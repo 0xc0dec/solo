@@ -1,0 +1,11 @@
+*_ReSharper*
+*.pdb
+*.sdf
+*.opensdf
+*.suo
+*.log
+*.tlog
+*.ilk
+*.idb
+*.obj
+build*
