@@ -1,5 +1,11 @@
+#include "Solo.h"
 
-int main()
+using namespace solo;
+
+int main(int argc, char *argv[])
 {
-    return 0;
+	auto engine = getEngine();
+	EngineLaunchArgs engineArgs = { 640, 480, 32, 24, false };
+	engine->run(argc, argv, engineArgs);
+	return 0;
 }

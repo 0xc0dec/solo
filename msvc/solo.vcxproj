@@ -11,12 +11,205 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\Common.h" />
+    <ClInclude Include="..\include\Common.h" />
+    <ClInclude Include="..\include\IEngine.h" />
+    <ClInclude Include="..\include\IWindow.h" />
+    <ClInclude Include="..\include\Solo.h" />
+    <ClInclude Include="..\src\CommonInternal.h" />
     <ClInclude Include="..\src\Engine.h" />
-    <ClInclude Include="..\src\Solo.h" />
+    <ClInclude Include="..\src\SDL\src\core\windows\SDL_windows.h" />
+    <ClInclude Include="..\src\SDL\src\events\blank_cursor.h" />
+    <ClInclude Include="..\src\SDL\src\events\default_cursor.h" />
+    <ClInclude Include="..\src\SDL\src\audio\directsound\directx.h" />
+    <ClInclude Include="..\src\SDL\src\events\SDL_clipboardevents_c.h" />
+    <ClInclude Include="..\src\SDL\src\events\SDL_gesture_c.h" />
+    <ClInclude Include="..\src\SDL\src\events\SDL_touch_c.h" />
+    <ClInclude Include="..\src\SDL\src\libm\math.h" />
+    <ClInclude Include="..\src\SDL\src\libm\math_private.h" />
+    <ClInclude Include="..\src\SDL\src\render\mmx.h" />
+    <ClInclude Include="..\src\SDL\src\render\opengl\SDL_shaders_gl.h" />
+    <ClInclude Include="..\src\SDL\src\render\SDL_sysrender.h" />
+    <ClInclude Include="..\src\SDL\src\render\SDL_yuv_sw_c.h" />
+    <ClInclude Include="..\src\SDL\src\audio\SDL_audio_c.h" />
+    <ClInclude Include="..\src\SDL\src\audio\SDL_audiodev_c.h" />
+    <ClInclude Include="..\src\SDL\src\audio\SDL_audiomem.h" />
+    <ClInclude Include="..\src\SDL\src\render\software\SDL_blendfillrect.h" />
+    <ClInclude Include="..\src\SDL\src\render\software\SDL_blendline.h" />
+    <ClInclude Include="..\src\SDL\src\render\software\SDL_blendpoint.h" />
+    <ClInclude Include="..\src\SDL\src\render\software\SDL_draw.h" />
+    <ClInclude Include="..\src\SDL\src\render\software\SDL_drawline.h" />
+    <ClInclude Include="..\src\SDL\src\render\software\SDL_drawpoint.h" />
+    <ClInclude Include="..\src\SDL\src\events\SDL_dropevents_c.h" />
+    <ClInclude Include="..\src\SDL\src\render\software\SDL_render_sw_c.h" />
+    <ClInclude Include="..\src\SDL\src\render\software\SDL_rotate.h" />
+    <ClInclude Include="..\src\SDL\src\video\dummy\SDL_nullframebuffer_c.h" />
+    <ClInclude Include="..\src\SDL\src\video\SDL_blit.h" />
+    <ClInclude Include="..\src\SDL\src\video\SDL_blit_auto.h" />
+    <ClInclude Include="..\src\SDL\src\video\SDL_blit_copy.h" />
+    <ClInclude Include="..\src\SDL\src\video\SDL_blit_slow.h" />
+    <ClInclude Include="..\src\SDL\src\video\SDL_shape_internals.h" />
+    <ClInclude Include="..\src\SDL\src\audio\winmm\SDL_winmm.h" />
+    <ClInclude Include="..\src\SDL\src\audio\disk\SDL_diskaudio.h" />
+    <ClInclude Include="..\src\SDL\src\audio\dummy\SDL_dummyaudio.h" />
+    <ClInclude Include="..\src\SDL\src\audio\directsound\SDL_directsound.h" />
+    <ClInclude Include="..\src\SDL\src\SDL_error_c.h" />
+    <ClInclude Include="..\src\SDL\src\SDL_hints_c.h" />
+    <ClInclude Include="..\src\SDL\src\events\SDL_events_c.h" />
+    <ClInclude Include="..\src\SDL\src\video\SDL_glesfuncs.h" />
+    <ClInclude Include="..\src\SDL\src\video\SDL_glfuncs.h" />
+    <ClInclude Include="..\src\SDL\src\joystick\SDL_joystick_c.h" />
+    <ClInclude Include="..\src\SDL\src\events\SDL_keyboard_c.h" />
+    <ClInclude Include="..\src\SDL\src\events\SDL_mouse_c.h" />
+    <ClInclude Include="..\src\SDL\src\video\dummy\SDL_nullevents_c.h" />
+    <ClInclude Include="..\src\SDL\src\video\dummy\SDL_nullvideo.h" />
+    <ClInclude Include="..\src\SDL\src\video\SDL_pixels_c.h" />
+    <ClInclude Include="..\src\SDL\src\video\SDL_rect_c.h" />
+    <ClInclude Include="..\src\SDL\src\video\SDL_RLEaccel_c.h" />
+    <ClInclude Include="..\src\SDL\src\video\SDL_stretch_c.h" />
+    <ClInclude Include="..\src\SDL\src\audio\SDL_sysaudio.h" />
+    <ClInclude Include="..\src\SDL\src\events\SDL_sysevents.h" />
+    <ClInclude Include="..\src\SDL\src\haptic\SDL_syshaptic.h" />
+    <ClInclude Include="..\src\SDL\src\joystick\SDL_sysjoystick.h" />
+    <ClInclude Include="..\src\SDL\src\thread\SDL_systhread.h" />
+    <ClInclude Include="..\src\SDL\src\thread\windows\SDL_systhread_c.h" />
+    <ClInclude Include="..\src\SDL\src\timer\SDL_systimer.h" />
+    <ClInclude Include="..\src\SDL\src\video\SDL_sysvideo.h" />
+    <ClInclude Include="..\src\SDL\src\thread\SDL_thread_c.h" />
+    <ClInclude Include="..\src\SDL\src\timer\SDL_timer_c.h" />
+    <ClInclude Include="..\src\SDL\src\video\windows\SDL_vkeys.h" />
+    <ClInclude Include="..\src\SDL\src\audio\SDL_wave.h" />
+    <ClInclude Include="..\src\SDL\src\video\windows\SDL_windowsclipboard.h" />
+    <ClInclude Include="..\src\SDL\src\video\windows\SDL_windowsevents.h" />
+    <ClInclude Include="..\src\SDL\src\video\windows\SDL_windowsframebuffer.h" />
+    <ClInclude Include="..\src\SDL\src\video\windows\SDL_windowskeyboard.h" />
+    <ClInclude Include="..\src\SDL\src\video\windows\SDL_windowsmessagebox.h" />
+    <ClInclude Include="..\src\SDL\src\video\windows\SDL_windowsmodes.h" />
+    <ClInclude Include="..\src\SDL\src\video\windows\SDL_windowsmouse.h" />
+    <ClInclude Include="..\src\SDL\src\video\windows\SDL_windowsopengl.h" />
+    <ClInclude Include="..\src\SDL\src\video\windows\SDL_windowsshape.h" />
+    <ClInclude Include="..\src\SDL\src\video\windows\SDL_windowsvideo.h" />
+    <ClInclude Include="..\src\SDL\src\video\windows\SDL_windowswindow.h" />
+    <ClInclude Include="..\src\SDL\src\events\SDL_windowevents_c.h" />
+    <ClInclude Include="..\src\SDL\src\video\windows\wmmsg.h" />
+    <ClInclude Include="..\src\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\CommonInternal.cpp" />
     <ClCompile Include="..\src\Engine.cpp" />
+    <ClCompile Include="..\src\SDL\src\core\windows\SDL_windows.c" />
+    <ClCompile Include="..\src\SDL\src\events\SDL_clipboardevents.c" />
+    <ClCompile Include="..\src\SDL\src\events\SDL_gesture.c" />
+    <ClCompile Include="..\src\SDL\src\events\SDL_touch.c" />
+    <ClCompile Include="..\src\SDL\src\libm\e_atan2.c" />
+    <ClCompile Include="..\src\SDL\src\libm\e_log.c" />
+    <ClCompile Include="..\src\SDL\src\libm\e_pow.c" />
+    <ClCompile Include="..\src\SDL\src\libm\e_rem_pio2.c" />
+    <ClCompile Include="..\src\SDL\src\libm\e_sqrt.c" />
+    <ClCompile Include="..\src\SDL\src\libm\k_cos.c" />
+    <ClCompile Include="..\src\SDL\src\libm\k_rem_pio2.c" />
+    <ClCompile Include="..\src\SDL\src\libm\k_sin.c" />
+    <ClCompile Include="..\src\SDL\src\libm\s_atan.c" />
+    <ClCompile Include="..\src\SDL\src\libm\s_copysign.c" />
+    <ClCompile Include="..\src\SDL\src\libm\s_cos.c" />
+    <ClCompile Include="..\src\SDL\src\libm\s_fabs.c" />
+    <ClCompile Include="..\src\SDL\src\libm\s_floor.c" />
+    <ClCompile Include="..\src\SDL\src\libm\s_scalbn.c" />
+    <ClCompile Include="..\src\SDL\src\libm\s_sin.c" />
+    <ClCompile Include="..\src\SDL\src\render\direct3d\SDL_render_d3d.c" />
+    <ClCompile Include="..\src\SDL\src\render\opengl\SDL_render_gl.c" />
+    <ClCompile Include="..\src\SDL\src\render\opengl\SDL_shaders_gl.c" />
+    <ClCompile Include="..\src\SDL\src\render\SDL_render.c" />
+    <ClCompile Include="..\src\SDL\src\render\SDL_yuv_mmx.c" />
+    <ClCompile Include="..\src\SDL\src\render\SDL_yuv_sw.c" />
+    <ClCompile Include="..\src\SDL\src\render\software\SDL_blendfillrect.c" />
+    <ClCompile Include="..\src\SDL\src\render\software\SDL_blendline.c" />
+    <ClCompile Include="..\src\SDL\src\render\software\SDL_blendpoint.c" />
+    <ClCompile Include="..\src\SDL\src\render\software\SDL_drawline.c" />
+    <ClCompile Include="..\src\SDL\src\render\software\SDL_drawpoint.c" />
+    <ClCompile Include="..\src\SDL\src\render\software\SDL_render_sw.c" />
+    <ClCompile Include="..\src\SDL\src\render\software\SDL_rotate.c" />
+    <ClCompile Include="..\src\SDL\src\SDL.c" />
+    <ClCompile Include="..\src\SDL\src\SDL_assert.c" />
+    <ClCompile Include="..\src\SDL\src\atomic\SDL_atomic.c" />
+    <ClCompile Include="..\src\SDL\src\atomic\SDL_spinlock.c" />
+    <ClCompile Include="..\src\SDL\src\audio\SDL_audio.c" />
+    <ClCompile Include="..\src\SDL\src\audio\SDL_audiocvt.c" />
+    <ClCompile Include="..\src\SDL\src\audio\SDL_audiodev.c" />
+    <ClCompile Include="..\src\SDL\src\audio\SDL_audiotypecvt.c" />
+    <ClCompile Include="..\src\SDL\src\SDL_hints.c" />
+    <ClCompile Include="..\src\SDL\src\SDL_log.c" />
+    <ClCompile Include="..\src\SDL\src\video\dummy\SDL_nullframebuffer.c" />
+    <ClCompile Include="..\src\SDL\src\video\SDL_blit.c" />
+    <ClCompile Include="..\src\SDL\src\video\SDL_blit_0.c" />
+    <ClCompile Include="..\src\SDL\src\video\SDL_blit_1.c" />
+    <ClCompile Include="..\src\SDL\src\video\SDL_blit_A.c" />
+    <ClCompile Include="..\src\SDL\src\video\SDL_blit_auto.c" />
+    <ClCompile Include="..\src\SDL\src\video\SDL_blit_copy.c" />
+    <ClCompile Include="..\src\SDL\src\video\SDL_blit_N.c" />
+    <ClCompile Include="..\src\SDL\src\video\SDL_blit_slow.c" />
+    <ClCompile Include="..\src\SDL\src\video\SDL_bmp.c" />
+    <ClCompile Include="..\src\SDL\src\cpuinfo\SDL_cpuinfo.c" />
+    <ClCompile Include="..\src\SDL\src\video\SDL_clipboard.c" />
+    <ClCompile Include="..\src\SDL\src\video\SDL_shape.c" />
+    <ClCompile Include="..\src\SDL\src\audio\winmm\SDL_winmm.c" />
+    <ClCompile Include="..\src\SDL\src\audio\disk\SDL_diskaudio.c" />
+    <ClCompile Include="..\src\SDL\src\audio\dummy\SDL_dummyaudio.c" />
+    <ClCompile Include="..\src\SDL\src\audio\directsound\SDL_directsound.c" />
+    <ClCompile Include="..\src\SDL\src\events\SDL_dropevents.c" />
+    <ClCompile Include="..\src\SDL\src\audio\xaudio2\SDL_xaudio2.c" />
+    <ClCompile Include="..\src\SDL\src\joystick\windows\SDL_dxjoystick.c" />
+    <ClCompile Include="..\src\SDL\src\SDL_error.c" />
+    <ClCompile Include="..\src\SDL\src\events\SDL_events.c" />
+    <ClCompile Include="..\src\SDL\src\video\SDL_fillrect.c" />
+    <ClCompile Include="..\src\SDL\src\stdlib\SDL_getenv.c" />
+    <ClCompile Include="..\src\SDL\src\haptic\SDL_haptic.c" />
+    <ClCompile Include="..\src\SDL\src\stdlib\SDL_iconv.c" />
+    <ClCompile Include="..\src\SDL\src\joystick\SDL_joystick.c" />
+    <ClCompile Include="..\src\SDL\src\events\SDL_keyboard.c" />
+    <ClCompile Include="..\src\SDL\src\stdlib\SDL_malloc.c" />
+    <ClCompile Include="..\src\SDL\src\audio\SDL_mixer.c" />
+    <ClCompile Include="..\src\SDL\src\joystick\windows\SDL_mmjoystick.c" />
+    <ClCompile Include="..\src\SDL\src\events\SDL_mouse.c" />
+    <ClCompile Include="..\src\SDL\src\video\dummy\SDL_nullevents.c" />
+    <ClCompile Include="..\src\SDL\src\video\dummy\SDL_nullvideo.c" />
+    <ClCompile Include="..\src\SDL\src\video\SDL_pixels.c" />
+    <ClCompile Include="..\src\SDL\src\power\SDL_power.c" />
+    <ClCompile Include="..\src\SDL\src\stdlib\SDL_qsort.c" />
+    <ClCompile Include="..\src\SDL\src\events\SDL_quit.c" />
+    <ClCompile Include="..\src\SDL\src\video\SDL_rect.c" />
+    <ClCompile Include="..\src\SDL\src\video\SDL_RLEaccel.c" />
+    <ClCompile Include="..\src\SDL\src\file\SDL_rwops.c" />
+    <ClCompile Include="..\src\SDL\src\stdlib\SDL_stdlib.c" />
+    <ClCompile Include="..\src\SDL\src\video\SDL_stretch.c" />
+    <ClCompile Include="..\src\SDL\src\stdlib\SDL_string.c" />
+    <ClCompile Include="..\src\SDL\src\video\SDL_surface.c" />
+    <ClCompile Include="..\src\SDL\src\thread\generic\SDL_syscond.c" />
+    <ClCompile Include="..\src\SDL\src\haptic\windows\SDL_syshaptic.c" />
+    <ClCompile Include="..\src\SDL\src\loadso\windows\SDL_sysloadso.c" />
+    <ClCompile Include="..\src\SDL\src\thread\windows\SDL_sysmutex.c" />
+    <ClCompile Include="..\src\SDL\src\power\windows\SDL_syspower.c" />
+    <ClCompile Include="..\src\SDL\src\thread\windows\SDL_syssem.c" />
+    <ClCompile Include="..\src\SDL\src\thread\windows\SDL_systhread.c" />
+    <ClCompile Include="..\src\SDL\src\thread\windows\SDL_systls.c" />
+    <ClCompile Include="..\src\SDL\src\timer\windows\SDL_systimer.c" />
+    <ClCompile Include="..\src\SDL\src\thread\SDL_thread.c" />
+    <ClCompile Include="..\src\SDL\src\timer\SDL_timer.c" />
+    <ClCompile Include="..\src\SDL\src\video\SDL_video.c" />
+    <ClCompile Include="..\src\SDL\src\audio\SDL_wave.c" />
+    <ClCompile Include="..\src\SDL\src\video\windows\SDL_windowsclipboard.c" />
+    <ClCompile Include="..\src\SDL\src\video\windows\SDL_windowsevents.c" />
+    <ClCompile Include="..\src\SDL\src\video\windows\SDL_windowsframebuffer.c" />
+    <ClCompile Include="..\src\SDL\src\video\windows\SDL_windowskeyboard.c" />
+    <ClCompile Include="..\src\SDL\src\video\windows\SDL_windowsmessagebox.c" />
+    <ClCompile Include="..\src\SDL\src\video\windows\SDL_windowsmodes.c" />
+    <ClCompile Include="..\src\SDL\src\video\windows\SDL_windowsmouse.c" />
+    <ClCompile Include="..\src\SDL\src\video\windows\SDL_windowsopengl.c" />
+    <ClCompile Include="..\src\SDL\src\video\windows\SDL_windowsshape.c" />
+    <ClCompile Include="..\src\SDL\src\video\windows\SDL_windowsvideo.c" />
+    <ClCompile Include="..\src\SDL\src\video\windows\SDL_windowswindow.c" />
+    <ClCompile Include="..\src\SDL\src\events\SDL_windowevents.c" />
+    <ClCompile Include="..\src\SDL\src\joystick\SDL_gamecontroller.c" />
+    <ClCompile Include="..\src\Window.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{278CAB21-1CAB-49AD-9959-6F97743501FB}</ProjectGuid>
@@ -49,20 +242,27 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)..\build\</OutDir>
     <IntDir>$(SolutionDir)..\build\tmp\solo\</IntDir>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\src\SDL\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\build\</OutDir>
     <IntDir>$(SolutionDir)..\build\tmp\solo\</IntDir>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\src\SDL\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;BUILD_WINDOWS;HAVE_LIBC;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -70,13 +270,18 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;BUILD_WINDOWS;HAVE_LIBC;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <Lib>
+      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
