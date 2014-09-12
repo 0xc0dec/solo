@@ -1,5 +1,6 @@
-#include "Window.h"
-#include "Common.h"
+#include "SoloWindow.h"
+#include "SoloCommons.h"
+#include "SoloLog.h"
 
 using namespace solo;
 
@@ -11,11 +12,11 @@ Window::Window(EngineLaunchArgs args)
 		args.canvasWidth, args.canvasHeight,
 		SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 	if (!_window)
-		throw Exception();
+		throw EngineException("Failed to create window");
 
 	_context = SDL_GL_CreateContext(_window);
 	if (!_context)
-		throw Exception();
+		throw EngineException("Failed to init GL context");
 
 	SDL_GL_SetSwapInterval(1);
 }

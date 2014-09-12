@@ -1,5 +1,5 @@
-#include "CommonInternal.h"
-#include "Engine.h"
+#include "SoloCommonsInternal.h"
+#include "SoloEngine.h"
 
 using namespace solo;
 

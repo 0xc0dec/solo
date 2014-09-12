@@ -11,12 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\Common.h" />
-    <ClInclude Include="..\include\IEngine.h" />
-    <ClInclude Include="..\include\IWindow.h" />
+    <ClInclude Include="..\include\SoloCommons.h" />
+    <ClInclude Include="..\include\SoloIEngine.h" />
+    <ClInclude Include="..\include\SoloIWindow.h" />
     <ClInclude Include="..\include\Solo.h" />
-    <ClInclude Include="..\src\CommonInternal.h" />
-    <ClInclude Include="..\src\Engine.h" />
+    <ClInclude Include="..\src\SoloCommonsInternal.h" />
+    <ClInclude Include="..\src\SoloEngine.h" />
     <ClInclude Include="..\src\SDL\src\core\windows\SDL_windows.h" />
     <ClInclude Include="..\src\SDL\src\events\blank_cursor.h" />
     <ClInclude Include="..\src\SDL\src\events\default_cursor.h" />
@@ -91,11 +91,12 @@
     <ClInclude Include="..\src\SDL\src\video\windows\SDL_windowswindow.h" />
     <ClInclude Include="..\src\SDL\src\events\SDL_windowevents_c.h" />
     <ClInclude Include="..\src\SDL\src\video\windows\wmmsg.h" />
-    <ClInclude Include="..\src\Window.h" />
+    <ClInclude Include="..\src\SoloLog.h" />
+    <ClInclude Include="..\src\SoloWindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\CommonInternal.cpp" />
-    <ClCompile Include="..\src\Engine.cpp" />
+    <ClCompile Include="..\src\SoloCommonsInternal.cpp" />
+    <ClCompile Include="..\src\SoloEngine.cpp" />
     <ClCompile Include="..\src\SDL\src\core\windows\SDL_windows.c" />
     <ClCompile Include="..\src\SDL\src\events\SDL_clipboardevents.c" />
     <ClCompile Include="..\src\SDL\src\events\SDL_gesture.c" />
@@ -209,7 +210,8 @@
     <ClCompile Include="..\src\SDL\src\video\windows\SDL_windowswindow.c" />
     <ClCompile Include="..\src\SDL\src\events\SDL_windowevents.c" />
     <ClCompile Include="..\src\SDL\src\joystick\SDL_gamecontroller.c" />
-    <ClCompile Include="..\src\Window.cpp" />
+    <ClCompile Include="..\src\SoloLog.cpp" />
+    <ClCompile Include="..\src\SoloWindow.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{278CAB21-1CAB-49AD-9959-6F97743501FB}</ProjectGuid>
@@ -254,14 +256,18 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>_WINDOWS;WIN32;BUILD_WINDOWS;HAVE_LIBC;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;BUILD_WINDOWS;HAVE_LIBC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
       <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <AdditionalOptions>/ignore:4006</AdditionalOptions>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -271,8 +277,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>_WINDOWS;WIN32;BUILD_WINDOWS;HAVE_LIBC;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;BUILD_WINDOWS;HAVE_LIBC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -281,6 +289,8 @@
     </Link>
     <Lib>
       <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <AdditionalOptions>/ignore:4006</AdditionalOptions>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

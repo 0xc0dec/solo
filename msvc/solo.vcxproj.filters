@@ -1,162 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="..\include\IEngine.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_assert.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_atomic.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_audio.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_bits.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_blendmode.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_clipboard.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_config.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_config_windows.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_copying.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_cpuinfo.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_endian.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_error.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_events.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_gamecontroller.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_gesture.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_haptic.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_hints.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_joystick.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_keyboard.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_keycode.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_loadso.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_log.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_main.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_mouse.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_mutex.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_name.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_opengl.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_opengles.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_pixels.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_platform.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_power.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_quit.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_rect.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_render.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_revision.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_rwops.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_scancode.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_shape.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_stdinc.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_surface.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_system.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_syswm.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_thread.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_timer.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_touch.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_types.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_version.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SDL\include\SDL_video.h">
-      <Filter>SDL\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\IWindow.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Window.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\Solo.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -382,13 +226,25 @@
     <ClInclude Include="..\src\SDL\src\video\windows\wmmsg.h">
       <Filter>SDL</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Engine.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Common.h">
+    <ClInclude Include="..\include\SoloCommons.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\CommonInternal.h">
+    <ClInclude Include="..\include\SoloIEngine.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloIWindow.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloCommonsInternal.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloEngine.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloWindow.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloLog.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
@@ -732,13 +588,16 @@
     <ClCompile Include="..\src\SDL\src\render\SDL_yuv_sw.c">
       <Filter>SDL</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Engine.cpp">
+    <ClCompile Include="..\src\SoloCommonsInternal.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\CommonInternal.cpp">
+    <ClCompile Include="..\src\SoloEngine.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Window.cpp">
+    <ClCompile Include="..\src\SoloWindow.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloLog.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

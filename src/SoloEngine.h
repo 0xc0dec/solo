@@ -1,9 +1,9 @@
 #ifndef __SOLO_ENGINE_H__
 #define __SOLO_ENGINE_H__
 
-#include "Common.h"
-#include "Window.h"
-#include "IEngine.h"
+#include "SoloCommonsInternal.h"
+#include "SoloWindow.h"
+#include "SoloIEngine.h"
 
 namespace solo
 {
@@ -28,6 +28,12 @@ namespace solo
 
 	private:
 		sptr<Window> _window;
+
+		bool _stopSignalled;
+
+		void _run(const EngineLaunchArgs & args);
+		void _loop();
+		void _processSystemEvents();
 	};
 }
 

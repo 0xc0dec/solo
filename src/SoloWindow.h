@@ -2,8 +2,8 @@
 #define __SOLO_WINDOW_H__
 
 #include <SDL.h>
-#include "IEngine.h"
-#include "IWindow.h"
+#include "SoloIEngine.h"
+#include "SoloIWindow.h"
 
 namespace solo
 {

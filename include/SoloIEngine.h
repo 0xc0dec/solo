@@ -1,6 +1,8 @@
 #ifndef __SOLO_I_ENGINE_H__
 #define __SOLO_I_ENGINE_H__
 
+#include "SoloCommons.h"
+
 namespace solo
 {
 	struct EngineLaunchArgs
@@ -20,7 +22,7 @@ namespace solo
 	public:
 		virtual ~IEngine() {}
 
-		virtual void run(const EngineLaunchArgs &launchArgs) = 0;
+		virtual void run(const EngineLaunchArgs &args) = 0;
 
 		virtual sptr<IWindow> getWindow() const = 0;
 	};

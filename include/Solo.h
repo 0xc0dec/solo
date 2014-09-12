@@ -1,9 +1,9 @@
 #ifndef __SOLO_H__
 #define __SOLO_H__
 
-#include "Common.h"
-#include "IEngine.h"
-#include "IWindow.h"
+#include "SoloCommons.h"
+#include "SoloIEngine.h"
+#include "SoloIWindow.h"
 
 namespace solo
 {
