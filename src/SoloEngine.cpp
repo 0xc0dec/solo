@@ -69,7 +69,7 @@ void Engine::run(const EngineLaunchArgs & args)
 {
 	try
 	{
-		run(args);
+		_run(args);
 	}
 	catch (EngineException &e)
 	{

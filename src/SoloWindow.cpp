@@ -7,14 +7,13 @@ using namespace solo;
 
 Window::Window(EngineLaunchArgs args)
 {
-	_window = SDL_CreateWindow(args.windowTitle,
-		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-		args.canvasWidth, args.canvasHeight,
-		SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+	_window = SDL_CreateWindow(args.windowTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+		args.canvasWidth, args.canvasHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 	if (!_window)
 		throw EngineException("Failed to create window");
 
 	_context = SDL_GL_CreateContext(_window);
+
 	if (!_context)
 		throw EngineException("Failed to init GL context");
 

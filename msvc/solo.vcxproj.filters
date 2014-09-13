@@ -247,6 +247,12 @@
     <ClInclude Include="..\src\SoloLog.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloIScene.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloScene.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SDL\src\libm\e_atan2.c">
@@ -598,6 +604,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloLog.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloScene.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

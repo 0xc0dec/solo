@@ -2,8 +2,9 @@
 #define __SOLO_ENGINE_H__
 
 #include "SoloCommonsInternal.h"
-#include "SoloWindow.h"
 #include "SoloIEngine.h"
+#include "SoloWindow.h"
+#include "SoloScene.h"
 
 namespace solo
 {
@@ -26,8 +27,14 @@ namespace solo
 			return _window;
 		}
 
+		sptr<IScene> getScene() const override
+		{
+			return _scene;
+		}
+
 	private:
 		sptr<Window> _window;
+		sptr<Scene> _scene;
 
 		bool _stopSignalled;
 

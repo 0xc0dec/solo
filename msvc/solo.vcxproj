@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClInclude Include="..\include\SoloCommons.h" />
     <ClInclude Include="..\include\SoloIEngine.h" />
+    <ClInclude Include="..\include\SoloIScene.h" />
     <ClInclude Include="..\include\SoloIWindow.h" />
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\src\SoloCommonsInternal.h" />
@@ -92,6 +93,7 @@
     <ClInclude Include="..\src\SDL\src\events\SDL_windowevents_c.h" />
     <ClInclude Include="..\src\SDL\src\video\windows\wmmsg.h" />
     <ClInclude Include="..\src\SoloLog.h" />
+    <ClInclude Include="..\src\SoloScene.h" />
     <ClInclude Include="..\src\SoloWindow.h" />
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +213,7 @@
     <ClCompile Include="..\src\SDL\src\events\SDL_windowevents.c" />
     <ClCompile Include="..\src\SDL\src\joystick\SDL_gamecontroller.c" />
     <ClCompile Include="..\src\SoloLog.cpp" />
+    <ClCompile Include="..\src\SoloScene.cpp" />
     <ClCompile Include="..\src\SoloWindow.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

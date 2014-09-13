@@ -16,6 +16,7 @@ namespace solo
 	};
 
 	class IWindow;
+	class IScene;
 
 	class IEngine
 	{
@@ -25,6 +26,7 @@ namespace solo
 		virtual void run(const EngineLaunchArgs &args) = 0;
 
 		virtual sptr<IWindow> getWindow() const = 0;
+		virtual sptr<IScene> getScene() const = 0;
 	};
 }
 
