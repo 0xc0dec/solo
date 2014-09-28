@@ -232,16 +232,10 @@
     <ClInclude Include="..\include\SoloIEngine.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloIWindow.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\SoloCommonsInternal.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\src\SoloEngine.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloWindow.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\src\SoloLog.h">
@@ -251,6 +245,24 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\src\SoloScene.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloDevice.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloDeviceSDL.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloIDevice.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloIEngineCallback.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloIWindow.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloEmptyEngineCallback.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
@@ -600,13 +612,16 @@
     <ClCompile Include="..\src\SoloEngine.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloWindow.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloLog.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloDevice.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloDeviceSDL.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -15,8 +15,9 @@ namespace solo
 		const char *windowTitle;
 	};
 
-	class IWindow;
 	class IScene;
+	class IDevice;
+	class IEngineCallback;
 
 	class IEngine
 	{
@@ -25,7 +26,9 @@ namespace solo
 
 		virtual void run(const EngineLaunchArgs &args) = 0;
 
-		virtual sptr<IWindow> getWindow() const = 0;
+		virtual void setCallback(IEngineCallback *callback) = 0;
+
+		virtual sptr<IDevice> getDevice() const = 0;
 		virtual sptr<IScene> getScene() const = 0;
 	};
 }

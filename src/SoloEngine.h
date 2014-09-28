@@ -3,11 +3,14 @@
 
 #include "SoloCommonsInternal.h"
 #include "SoloIEngine.h"
-#include "SoloWindow.h"
 #include "SoloScene.h"
+#include "SoloDevice.h"
+#include "SoloEmptyEngineCallback.h"
 
 namespace solo
 {
+	class IEngineCallback;
+
 	class Engine: public IEngine
 	{
 	public:
@@ -21,26 +24,27 @@ namespace solo
 		}
 
 		void run(const EngineLaunchArgs &launchArgs) override;
-
-		sptr<IWindow> getWindow() const override
-		{
-			return _window;
-		}
+		void setCallback(IEngineCallback* callback) override;
 
 		sptr<IScene> getScene() const override
 		{
 			return _scene;
 		}
 
-	private:
-		sptr<Window> _window;
-		sptr<Scene> _scene;
+		sptr<IDevice> getDevice() const override
+		{
+			return _device;
+		}
 
-		bool _stopSignalled;
+	private:
+		IEngineCallback *_callback;
+		sptr<Scene> _scene;
+		sptr<Device> _device;
+		EmptyEngineCallback _emptyCallback;
+
+		unsigned long _lastUpdateTime;
 
 		void _run(const EngineLaunchArgs & args);
-		void _loop();
-		void _processSystemEvents();
 	};
 }
 

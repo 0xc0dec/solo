@@ -12,11 +12,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\SoloCommons.h" />
+    <ClInclude Include="..\include\SoloIDevice.h" />
     <ClInclude Include="..\include\SoloIEngine.h" />
+    <ClInclude Include="..\include\SoloIEngineCallback.h" />
     <ClInclude Include="..\include\SoloIScene.h" />
-    <ClInclude Include="..\include\SoloIWindow.h" />
     <ClInclude Include="..\include\Solo.h" />
+    <ClInclude Include="..\include\SoloIWindow.h" />
+    <ClInclude Include="..\src\SoloEmptyEngineCallback.h" />
     <ClInclude Include="..\src\SoloCommonsInternal.h" />
+    <ClInclude Include="..\src\SoloDevice.h" />
+    <ClInclude Include="..\src\SoloDeviceSDL.h" />
     <ClInclude Include="..\src\SoloEngine.h" />
     <ClInclude Include="..\src\SDL\src\core\windows\SDL_windows.h" />
     <ClInclude Include="..\src\SDL\src\events\blank_cursor.h" />
@@ -94,10 +99,11 @@
     <ClInclude Include="..\src\SDL\src\video\windows\wmmsg.h" />
     <ClInclude Include="..\src\SoloLog.h" />
     <ClInclude Include="..\src\SoloScene.h" />
-    <ClInclude Include="..\src\SoloWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloCommonsInternal.cpp" />
+    <ClCompile Include="..\src\SoloDevice.cpp" />
+    <ClCompile Include="..\src\SoloDeviceSDL.cpp" />
     <ClCompile Include="..\src\SoloEngine.cpp" />
     <ClCompile Include="..\src\SDL\src\core\windows\SDL_windows.c" />
     <ClCompile Include="..\src\SDL\src\events\SDL_clipboardevents.c" />
@@ -214,7 +220,6 @@
     <ClCompile Include="..\src\SDL\src\joystick\SDL_gamecontroller.c" />
     <ClCompile Include="..\src\SoloLog.cpp" />
     <ClCompile Include="..\src\SoloScene.cpp" />
-    <ClCompile Include="..\src\SoloWindow.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{278CAB21-1CAB-49AD-9959-6F97743501FB}</ProjectGuid>
