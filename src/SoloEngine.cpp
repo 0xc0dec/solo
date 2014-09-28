@@ -3,8 +3,10 @@
 #include "SoloEngine.h"
 #include "SoloLog.h"
 #include "SoloDeviceSDL.h"
+#include "SoloException.h"
 
 using namespace solo;
+
 
 Engine::Engine()
 	: _callback(nullptr),

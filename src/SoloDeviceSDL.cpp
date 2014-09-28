@@ -1,5 +1,6 @@
 #include "SoloDeviceSDL.h"
 #include "SoloCommonsInternal.h"
+#include "SoloException.h"
 
 using namespace solo;
 

@@ -12,12 +12,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\SoloCommons.h" />
+    <ClInclude Include="..\include\SoloException.h" />
     <ClInclude Include="..\include\SoloIDevice.h" />
     <ClInclude Include="..\include\SoloIEngine.h" />
     <ClInclude Include="..\include\SoloIEngineCallback.h" />
     <ClInclude Include="..\include\SoloIScene.h" />
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\include\SoloIWindow.h" />
+    <ClInclude Include="..\include\SoloMath.h" />
+    <ClInclude Include="..\include\SoloVec3.h" />
     <ClInclude Include="..\src\SoloEmptyEngineCallback.h" />
     <ClInclude Include="..\src\SoloCommonsInternal.h" />
     <ClInclude Include="..\src\SoloDevice.h" />

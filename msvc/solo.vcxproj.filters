@@ -265,6 +265,15 @@
     <ClInclude Include="..\src\SoloEmptyEngineCallback.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloVec3.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloMath.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloException.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SDL\src\libm\e_atan2.c">
