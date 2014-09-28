@@ -18,7 +18,6 @@
     <ClInclude Include="..\include\SoloIEngineCallback.h" />
     <ClInclude Include="..\include\SoloIScene.h" />
     <ClInclude Include="..\include\Solo.h" />
-    <ClInclude Include="..\include\SoloIWindow.h" />
     <ClInclude Include="..\include\SoloMath.h" />
     <ClInclude Include="..\include\SoloVec3.h" />
     <ClInclude Include="..\src\SoloEmptyEngineCallback.h" />

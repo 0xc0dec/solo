@@ -26,12 +26,12 @@ namespace solo
 		void run(const EngineLaunchArgs &launchArgs) override;
 		void setCallback(IEngineCallback* callback) override;
 
-		sptr<IScene> getScene() const override
+		sptr<IScene> scene() const override
 		{
 			return _scene;
 		}
 
-		sptr<IDevice> getDevice() const override
+		sptr<IDevice> device() const override
 		{
 			return _device;
 		}
@@ -42,9 +42,9 @@ namespace solo
 		sptr<Device> _device;
 		EmptyEngineCallback _emptyCallback;
 
-		unsigned long _lastUpdateTime;
+		u64 _lastUpdateTime;
 
-		void _run(const EngineLaunchArgs & args);
+		void _run(const EngineLaunchArgs &args);
 	};
 }
 

@@ -1,20 +1,20 @@
 #ifndef __SOLO_EXCEPTION_H__
 #define __SOLO_EXCEPTION_H__
 
-#include <string>
+#include "SoloCommons.h"
 
 namespace solo
 {
 	class EngineException
 	{
 	public:
-		std::string message;
+		str message;
 
 		EngineException()
 		{
 		}
 
-		EngineException(const std::string msg) : message(msg)
+		EngineException(const str msg) : message(msg)
 		{
 		}
 	};

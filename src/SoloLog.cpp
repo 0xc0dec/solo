@@ -8,21 +8,21 @@ Log::~Log()
 	std::cout << _buffer.str() << std::endl;
 }
 
-Log &Log::operator<<(char const* msg)
+Log &Log::operator<<(const c8 *msg)
 {
 	_buffer << msg;
 	return *this;
 }
 
 
-Log& Log::operator<<(int i)
+Log& Log::operator<<(s32 i)
 {
 	_buffer << i;
 	return *this;
 }
 
 
-Log& Log::operator<<(std::string const& s)
+Log& Log::operator<<(const str &s)
 {
 	_buffer << s;
 	return *this;

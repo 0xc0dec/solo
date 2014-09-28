@@ -2,7 +2,7 @@
 #define __SOLO_LOG_H__
 
 #include <sstream>
-#include <string>
+#include "SoloCommonsInternal.h"
 
 #define INFO(msg) solo::Log() << msg;
 #define CRITICAL(msg) solo::Log() << msg;
@@ -14,9 +14,9 @@ namespace solo
 	public:
 		~Log();
 
-		Log &operator <<(const char *msg);
-		Log &operator <<(int i);
-		Log &operator <<(const std::string &s);
+		Log &operator <<(const c8 *msg);
+		Log &operator <<(s32 i);
+		Log &operator <<(const str &s);
 
 	private:
 		std::ostringstream _buffer;

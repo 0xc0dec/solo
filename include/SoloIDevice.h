@@ -1,6 +1,8 @@
 #ifndef __SOLO_IDEVICE_H__
 #define __SOLO_IDEVICE_H__
 
+#include "SoloCommons.h"
+
 namespace solo
 {
 	class IDevice
@@ -8,7 +10,7 @@ namespace solo
 	public:
 		virtual ~IDevice() {}
 
-		virtual void setWindowTitle(const char *caption) = 0;
+		virtual void setWindowTitle(const c8 *caption) = 0;
 	};
 }
 

@@ -3,6 +3,7 @@
 
 #include "SoloIDevice.h"
 #include "SoloIEngine.h"
+#include "SoloCommonsInternal.h"
 
 namespace solo
 {
@@ -15,8 +16,7 @@ namespace solo
 		bool closeRequested() const { return _closeRequested; }
 
 		/// Returns time elapsed since the engine startup in ms
-		virtual unsigned long getLifetime() = 0;
-
+		virtual u64 lifetime() = 0;
 		virtual void update() = 0;
 
 	protected:

@@ -33,6 +33,7 @@ DeviceSDL::~DeviceSDL()
 {
 	SDL_GL_DeleteContext(_context);
 	SDL_DestroyWindow(_window);
+	SDL_Quit();
 }
 
 
@@ -70,7 +71,7 @@ void DeviceSDL::_processSystemEvents()
 }
 
 
-unsigned long DeviceSDL::getLifetime()
+u64 DeviceSDL::lifetime()
 {
 	return SDL_GetTicks();
 }

@@ -14,7 +14,7 @@ namespace solo
 
 		void setWindowTitle(char const* caption) override;
 
-		unsigned long getLifetime() override;
+		u64 lifetime() override;
 		void update() override;
 
 	private:

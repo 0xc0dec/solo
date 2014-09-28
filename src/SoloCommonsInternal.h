@@ -3,6 +3,7 @@
 
 #include "SoloCommons.h"
 
+
 namespace solo
 {
 	

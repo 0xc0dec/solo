@@ -1,4 +1,3 @@
-#include <SDL.h>
 #include "SoloIEngineCallback.h"
 #include "SoloEngine.h"
 #include "SoloLog.h"
@@ -25,12 +24,13 @@ void Engine::_run(const EngineLaunchArgs & args)
 {
 	INFO("Starting engine");
 
+	// SDL is the only available option at this moment
 	_device = std::make_shared<DeviceSDL>(args);
 	_callback->onEngineStarted();
 
 	while (true)
 	{
-		auto time = _device->getLifetime();
+		auto time = _device->lifetime();
 		auto dt = (time - _lastUpdateTime) / 1000.0f;
 		_lastUpdateTime = time;
 		_callback->onBeforeFrame(dt);
@@ -41,8 +41,6 @@ void Engine::_run(const EngineLaunchArgs & args)
 
 	_callback->onEngineStopped();
 	_device.reset();
-
-	SDL_Quit();
 }
 
 

@@ -13,7 +13,7 @@ public:
 
 	void onEngineStarted() override
 	{
-		_engine->getDevice()->setWindowTitle("Test title");
+		_engine->device()->setWindowTitle("Test title");
 	}
 
 	void onEngineStopped() override

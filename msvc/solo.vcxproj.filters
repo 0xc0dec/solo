@@ -259,9 +259,6 @@
     <ClInclude Include="..\include\SoloIEngineCallback.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloIWindow.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\SoloEmptyEngineCallback.h">
       <Filter>src</Filter>
     </ClInclude>

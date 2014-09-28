@@ -7,12 +7,12 @@ namespace solo
 {
 	struct EngineLaunchArgs
 	{
-		int canvasWidth;
-		int canvasHeight;
-		int bits;
-		int depth;
+		s32 canvasWidth;
+		s32 canvasHeight;
+		s32 bits;
+		s32 depth;
 		bool fullScreen;
-		const char *windowTitle;
+		const c8 *windowTitle;
 	};
 
 	class IScene;
@@ -28,8 +28,8 @@ namespace solo
 
 		virtual void setCallback(IEngineCallback *callback) = 0;
 
-		virtual sptr<IDevice> getDevice() const = 0;
-		virtual sptr<IScene> getScene() const = 0;
+		virtual sptr<IDevice> device() const = 0;
+		virtual sptr<IScene> scene() const = 0;
 	};
 }
 
