@@ -235,9 +235,9 @@ namespace solo
 		Vec3d<T> &normalize()
 		{
 			f64 length = x * x + y * y + z * z;
-			if (length == 0) // this check isn't an optimization but prevents getting NAN in the sqrt.
+			if (length == 0)
 				return *this;
-			length = solo::reciprocalSqrt(length);
+			length = reciprocalSqrt(length);
 
 			x = static_cast<T>(x * length);
 			y = static_cast<T>(y * length);
