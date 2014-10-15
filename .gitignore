@@ -9,3 +9,4 @@
 *.idb
 *.obj
 build*
+*DS_Store*

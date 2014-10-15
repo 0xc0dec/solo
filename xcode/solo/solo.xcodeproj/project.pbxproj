@@ -1,0 +1,339 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3199442E19EEF706003F04A0 /* SoloCommonsInternal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3199434A19EEF6DC003F04A0 /* SoloCommonsInternal.cpp */; };
+		3199442F19EEF706003F04A0 /* SoloDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3199434C19EEF6DC003F04A0 /* SoloDevice.cpp */; };
+		3199443019EEF706003F04A0 /* SoloDeviceSDL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3199434E19EEF6DC003F04A0 /* SoloDeviceSDL.cpp */; };
+		3199443119EEF706003F04A0 /* SoloEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3199435119EEF6DC003F04A0 /* SoloEngine.cpp */; };
+		3199443219EEF706003F04A0 /* SoloLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3199435319EEF6DC003F04A0 /* SoloLog.cpp */; };
+		3199443319EEF706003F04A0 /* SoloScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3199435519EEF6DC003F04A0 /* SoloScene.cpp */; };
+		3199443419EEF706003F04A0 /* SoloWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3199435719EEF6DC003F04A0 /* SoloWindow.cpp */; };
+		3199443619EEFC42003F04A0 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3199443519EEFC42003F04A0 /* SDL2.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		319940BC19EEF53D003F04A0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		319940BE19EEF53D003F04A0 /* solo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = solo; sourceTree = BUILT_PRODUCTS_DIR; };
+		319940CF19EEF6DC003F04A0 /* Solo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Solo.h; sourceTree = "<group>"; };
+		319940D019EEF6DC003F04A0 /* SoloCommons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloCommons.h; sourceTree = "<group>"; };
+		319940D119EEF6DC003F04A0 /* SoloException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloException.h; sourceTree = "<group>"; };
+		319940D219EEF6DC003F04A0 /* SoloIDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloIDevice.h; sourceTree = "<group>"; };
+		319940D319EEF6DC003F04A0 /* SoloIEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloIEngine.h; sourceTree = "<group>"; };
+		319940D419EEF6DC003F04A0 /* SoloIEngineCallback.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloIEngineCallback.h; sourceTree = "<group>"; };
+		319940D519EEF6DC003F04A0 /* SoloIScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloIScene.h; sourceTree = "<group>"; };
+		319940D619EEF6DC003F04A0 /* SoloMath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloMath.h; sourceTree = "<group>"; };
+		319940D719EEF6DC003F04A0 /* SoloVec3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloVec3.h; sourceTree = "<group>"; };
+		3199434A19EEF6DC003F04A0 /* SoloCommonsInternal.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoloCommonsInternal.cpp; sourceTree = "<group>"; };
+		3199434B19EEF6DC003F04A0 /* SoloCommonsInternal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloCommonsInternal.h; sourceTree = "<group>"; };
+		3199434C19EEF6DC003F04A0 /* SoloDevice.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoloDevice.cpp; sourceTree = "<group>"; };
+		3199434D19EEF6DC003F04A0 /* SoloDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloDevice.h; sourceTree = "<group>"; };
+		3199434E19EEF6DC003F04A0 /* SoloDeviceSDL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoloDeviceSDL.cpp; sourceTree = "<group>"; };
+		3199434F19EEF6DC003F04A0 /* SoloDeviceSDL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloDeviceSDL.h; sourceTree = "<group>"; };
+		3199435019EEF6DC003F04A0 /* SoloEmptyEngineCallback.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloEmptyEngineCallback.h; sourceTree = "<group>"; };
+		3199435119EEF6DC003F04A0 /* SoloEngine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoloEngine.cpp; sourceTree = "<group>"; };
+		3199435219EEF6DC003F04A0 /* SoloEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloEngine.h; sourceTree = "<group>"; };
+		3199435319EEF6DC003F04A0 /* SoloLog.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoloLog.cpp; sourceTree = "<group>"; };
+		3199435419EEF6DC003F04A0 /* SoloLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloLog.h; sourceTree = "<group>"; };
+		3199435519EEF6DC003F04A0 /* SoloScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoloScene.cpp; sourceTree = "<group>"; };
+		3199435619EEF6DC003F04A0 /* SoloScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloScene.h; sourceTree = "<group>"; };
+		3199435719EEF6DC003F04A0 /* SoloWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoloWindow.cpp; sourceTree = "<group>"; };
+		3199435819EEF6DC003F04A0 /* SoloWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloWindow.h; sourceTree = "<group>"; };
+		3199443519EEFC42003F04A0 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../external/SDL/2.0.3/SDL2.framework; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		319940BB19EEF53D003F04A0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3199443619EEFC42003F04A0 /* SDL2.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		319940B519EEF53D003F04A0 = {
+			isa = PBXGroup;
+			children = (
+				3199443719EEFE05003F04A0 /* Frameworks */,
+				319940CE19EEF6DC003F04A0 /* include */,
+				319940D819EEF6DC003F04A0 /* src */,
+				319940BF19EEF53D003F04A0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		319940BF19EEF53D003F04A0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				319940BE19EEF53D003F04A0 /* solo */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		319940CE19EEF6DC003F04A0 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				319940CF19EEF6DC003F04A0 /* Solo.h */,
+				319940D019EEF6DC003F04A0 /* SoloCommons.h */,
+				319940D119EEF6DC003F04A0 /* SoloException.h */,
+				319940D219EEF6DC003F04A0 /* SoloIDevice.h */,
+				319940D319EEF6DC003F04A0 /* SoloIEngine.h */,
+				319940D419EEF6DC003F04A0 /* SoloIEngineCallback.h */,
+				319940D519EEF6DC003F04A0 /* SoloIScene.h */,
+				319940D619EEF6DC003F04A0 /* SoloMath.h */,
+				319940D719EEF6DC003F04A0 /* SoloVec3.h */,
+			);
+			name = include;
+			path = ../../include;
+			sourceTree = "<group>";
+		};
+		319940D819EEF6DC003F04A0 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				3199434A19EEF6DC003F04A0 /* SoloCommonsInternal.cpp */,
+				3199434B19EEF6DC003F04A0 /* SoloCommonsInternal.h */,
+				3199434C19EEF6DC003F04A0 /* SoloDevice.cpp */,
+				3199434D19EEF6DC003F04A0 /* SoloDevice.h */,
+				3199434E19EEF6DC003F04A0 /* SoloDeviceSDL.cpp */,
+				3199434F19EEF6DC003F04A0 /* SoloDeviceSDL.h */,
+				3199435019EEF6DC003F04A0 /* SoloEmptyEngineCallback.h */,
+				3199435119EEF6DC003F04A0 /* SoloEngine.cpp */,
+				3199435219EEF6DC003F04A0 /* SoloEngine.h */,
+				3199435319EEF6DC003F04A0 /* SoloLog.cpp */,
+				3199435419EEF6DC003F04A0 /* SoloLog.h */,
+				3199435519EEF6DC003F04A0 /* SoloScene.cpp */,
+				3199435619EEF6DC003F04A0 /* SoloScene.h */,
+				3199435719EEF6DC003F04A0 /* SoloWindow.cpp */,
+				3199435819EEF6DC003F04A0 /* SoloWindow.h */,
+			);
+			name = src;
+			path = ../../src;
+			sourceTree = "<group>";
+		};
+		3199443719EEFE05003F04A0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3199443519EEFC42003F04A0 /* SDL2.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		319940BD19EEF53D003F04A0 /* solo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 319940C519EEF53D003F04A0 /* Build configuration list for PBXNativeTarget "solo" */;
+			buildPhases = (
+				319940BA19EEF53D003F04A0 /* Sources */,
+				319940BB19EEF53D003F04A0 /* Frameworks */,
+				319940BC19EEF53D003F04A0 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = solo;
+			productName = solo;
+			productReference = 319940BE19EEF53D003F04A0 /* solo */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		319940B619EEF53D003F04A0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				ORGANIZATIONNAME = "Aleksey Fedotov";
+				TargetAttributes = {
+					319940BD19EEF53D003F04A0 = {
+						CreatedOnToolsVersion = 6.0.1;
+					};
+				};
+			};
+			buildConfigurationList = 319940B919EEF53D003F04A0 /* Build configuration list for PBXProject "solo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 319940B519EEF53D003F04A0;
+			productRefGroup = 319940BF19EEF53D003F04A0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				319940BD19EEF53D003F04A0 /* solo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		319940BA19EEF53D003F04A0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3199442E19EEF706003F04A0 /* SoloCommonsInternal.cpp in Sources */,
+				3199442F19EEF706003F04A0 /* SoloDevice.cpp in Sources */,
+				3199443019EEF706003F04A0 /* SoloDeviceSDL.cpp in Sources */,
+				3199443119EEF706003F04A0 /* SoloEngine.cpp in Sources */,
+				3199443219EEF706003F04A0 /* SoloLog.cpp in Sources */,
+				3199443319EEF706003F04A0 /* SoloScene.cpp in Sources */,
+				3199443419EEF706003F04A0 /* SoloWindow.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		319940C319EEF53D003F04A0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "../external/SDL/2.0.3/**";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "/Users/fan/dev/solo/external/SDL/2.0.3/SDL2.framework/headers/**";
+			};
+			name = Debug;
+		};
+		319940C419EEF53D003F04A0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "../external/SDL/2.0.3/**";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "/Users/fan/dev/solo/external/SDL/2.0.3/SDL2.framework/headers/**";
+			};
+			name = Release;
+		};
+		319940C619EEF53D003F04A0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/fan/dev/solo/external/SDL/2.0.3,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		319940C719EEF53D003F04A0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/fan/dev/solo/external/SDL/2.0.3,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		319940B919EEF53D003F04A0 /* Build configuration list for PBXProject "solo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				319940C319EEF53D003F04A0 /* Debug */,
+				319940C419EEF53D003F04A0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		319940C519EEF53D003F04A0 /* Build configuration list for PBXNativeTarget "solo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				319940C619EEF53D003F04A0 /* Debug */,
+				319940C719EEF53D003F04A0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 319940B619EEF53D003F04A0 /* Project object */;
+}
