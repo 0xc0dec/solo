@@ -271,6 +271,9 @@
     <ClInclude Include="..\include\SoloException.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\SoloFileSystem.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SDL\src\libm\e_atan2.c">
@@ -628,6 +631,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloDeviceSDL.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloFileSystem.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
