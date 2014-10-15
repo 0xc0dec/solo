@@ -22,7 +22,6 @@ public:
 
 	void onBeforeFrame(float dt) override
 	{
-		std::cout << dt << std::endl;
 	}
 
 	bool onDeviceCloseRequested() override
@@ -38,7 +37,7 @@ private:
 int main(int argc, char *argv[])
 {
 	auto engine = getEngine();
-	EngineLaunchArgs engineArgs = { 640, 480, 32, 24, false };
+	EngineLaunchArgs engineArgs = { 1366, 768, 32, 24, false };
 	Callback callback(engine);
 	engine->setCallback(&callback);
 	engine->run(engineArgs);

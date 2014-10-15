@@ -20,6 +20,7 @@
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\include\SoloMath.h" />
     <ClInclude Include="..\include\SoloVec3.h" />
+    <ClInclude Include="..\src\SoloFileSystem.h" />
     <ClInclude Include="..\src\SoloEmptyEngineCallback.h" />
     <ClInclude Include="..\src\SoloCommonsInternal.h" />
     <ClInclude Include="..\src\SoloDevice.h" />
@@ -103,6 +104,7 @@
     <ClInclude Include="..\src\SoloScene.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\SoloFileSystem.cpp" />
     <ClCompile Include="..\src\SoloCommonsInternal.cpp" />
     <ClCompile Include="..\src\SoloDevice.cpp" />
     <ClCompile Include="..\src\SoloDeviceSDL.cpp" />
