@@ -5,8 +5,10 @@
 #include <string>
 #include "SoloCommonsInternal.h"
 
-#define INFO(msg) solo::Log() << msg;
-#define CRITICAL(msg) solo::Log() << msg;
+#define INFO(msg) solo::Log(solo::Log::LogLevel::INFO) << msg;
+#define WARN(msg) solo::Log(solo::Log::LogLevel::WARNING) << msg;
+#define ERROR(msg) solo::Log(solo::Log::LogLevel::ERROR) << msg;
+#define CRITICAL(msg) solo::Log(solo::Log::LogLevel::CRITICAL) << msg;
 
 namespace solo
 {
