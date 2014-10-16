@@ -5,6 +5,9 @@
 
 using namespace solo;
 
+#define MAX_GL_CONTEXT_VERSION_MAJOR 4
+#define MAX_GL_CONTEXT_VERSION_MINOR 5
+
 
 DeviceSDL::DeviceSDL(EngineLaunchArgs const& args)
 	: Device(args)
@@ -12,8 +15,8 @@ DeviceSDL::DeviceSDL(EngineLaunchArgs const& args)
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) < 0)
 		throw EngineException("Failed to initialize system");
 	
-	s32 major = 4;
-	s32 minor = 5;
+	s32 major = MAX_GL_CONTEXT_VERSION_MAJOR;
+	s32 minor = MAX_GL_CONTEXT_VERSION_MINOR;
 	_selectContextVersion(major, minor);
 	INFO("Selected OpenGL context version " << major << "." << minor);
 	

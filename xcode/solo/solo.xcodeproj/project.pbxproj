@@ -7,23 +7,36 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3199445C19EF0567003F04A0 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3199443519EEFC42003F04A0 /* SDL2.framework */; };
-		3199445D19EF056B003F04A0 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3199443D19EF04AB003F04A0 /* CoreFoundation.framework */; };
+		31873FAA19F0308900FBBD61 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31873FA919F0308900FBBD61 /* libSDL2.a */; };
+		31873FC519F0343B00FBBD61 /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3199447219EF06E6003F04A0 /* Main.cpp */; };
+		31873FC619F0344C00FBBD61 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31873FB819F0333A00FBBD61 /* Carbon.framework */; };
+		31873FC719F0344C00FBBD61 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31873FB619F0330C00FBBD61 /* IOKit.framework */; };
+		31873FC819F0344C00FBBD61 /* ForceFeedback.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31873FB219F0328000FBBD61 /* ForceFeedback.framework */; };
+		31873FC919F0344C00FBBD61 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31873FB019F0323E00FBBD61 /* Cocoa.framework */; };
+		31873FCA19F0344C00FBBD61 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31873FAE19F0322100FBBD61 /* AudioUnit.framework */; };
+		31873FCB19F0344C00FBBD61 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31873FAC19F031F100FBBD61 /* CoreAudio.framework */; };
+		31873FCC19F0344C00FBBD61 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 319D5E8D19F02C24009E4F8F /* OpenGL.framework */; };
+		31873FCD19F0344C00FBBD61 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3199443D19EF04AB003F04A0 /* CoreFoundation.framework */; };
+		31873FD019F0346B00FBBD61 /* libsolo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3199445119EF051E003F04A0 /* libsolo.a */; };
+		31873FD119F0347E00FBBD61 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31873FB819F0333A00FBBD61 /* Carbon.framework */; };
+		31873FD219F0347E00FBBD61 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31873FB619F0330C00FBBD61 /* IOKit.framework */; };
+		31873FD319F0347E00FBBD61 /* ForceFeedback.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31873FB219F0328000FBBD61 /* ForceFeedback.framework */; };
+		31873FD419F0347E00FBBD61 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31873FB019F0323E00FBBD61 /* Cocoa.framework */; };
+		31873FD519F0347E00FBBD61 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31873FAE19F0322100FBBD61 /* AudioUnit.framework */; };
+		31873FD619F0347E00FBBD61 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31873FAC19F031F100FBBD61 /* CoreAudio.framework */; };
+		31873FD719F0347E00FBBD61 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31873FA919F0308900FBBD61 /* libSDL2.a */; };
+		31873FD819F0347E00FBBD61 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 319D5E8D19F02C24009E4F8F /* OpenGL.framework */; };
+		31873FD919F0347E00FBBD61 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3199443D19EF04AB003F04A0 /* CoreFoundation.framework */; };
 		3199445E19EF0580003F04A0 /* SoloCommonsInternal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3199434A19EEF6DC003F04A0 /* SoloCommonsInternal.cpp */; };
 		3199445F19EF0580003F04A0 /* SoloDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3199434C19EEF6DC003F04A0 /* SoloDevice.cpp */; };
 		3199446019EF0580003F04A0 /* SoloDeviceSDL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3199434E19EEF6DC003F04A0 /* SoloDeviceSDL.cpp */; };
 		3199446119EF0580003F04A0 /* SoloEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3199435119EEF6DC003F04A0 /* SoloEngine.cpp */; };
 		3199446219EF0580003F04A0 /* SoloLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3199435319EEF6DC003F04A0 /* SoloLog.cpp */; };
 		3199446319EF0580003F04A0 /* SoloScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3199435519EEF6DC003F04A0 /* SoloScene.cpp */; };
-		3199449E19EF6E60003F04A0 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3199443519EEFC42003F04A0 /* SDL2.framework */; };
-		3199449F19EF6E68003F04A0 /* libsolo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3199445119EF051E003F04A0 /* libsolo.a */; };
-		319944A319EF6F1D003F04A0 /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3199447219EF06E6003F04A0 /* Main.cpp */; };
-		319944A519EF6F9D003F04A0 /* SDL2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3199443519EEFC42003F04A0 /* SDL2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		319D5E8E19F02C24009E4F8F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 319D5E8D19F02C24009E4F8F /* OpenGL.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		3199449C19EF6E5A003F04A0 /* PBXContainerItemProxy */ = {
+		31873FCE19F0346500FBBD61 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 319940B619EEF53D003F04A0 /* Project object */;
 			proxyType = 1;
@@ -33,20 +46,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		319944A619EF6F9D003F04A0 /* Embed Frameworks */ = {
+		31873FBC19F0342800FBBD61 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
 			files = (
-				319944A519EF6F9D003F04A0 /* SDL2.framework in Embed Frameworks */,
 			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		31873FA919F0308900FBBD61 /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2.a; path = ../../external/SDL/2.0.3/libSDL2.a; sourceTree = "<group>"; };
+		31873FAC19F031F100FBBD61 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		31873FAE19F0322100FBBD61 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
+		31873FB019F0323E00FBBD61 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		31873FB219F0328000FBBD61 /* ForceFeedback.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ForceFeedback.framework; path = System/Library/Frameworks/ForceFeedback.framework; sourceTree = SDKROOT; };
+		31873FB619F0330C00FBBD61 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		31873FB819F0333A00FBBD61 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		31873FBE19F0342800FBBD61 /* Test1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Test1; sourceTree = BUILT_PRODUCTS_DIR; };
 		319940CF19EEF6DC003F04A0 /* Solo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Solo.h; sourceTree = "<group>"; };
 		319940D019EEF6DC003F04A0 /* SoloCommons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloCommons.h; sourceTree = "<group>"; };
 		319940D119EEF6DC003F04A0 /* SoloException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloException.h; sourceTree = "<group>"; };
@@ -69,31 +88,43 @@
 		3199435419EEF6DC003F04A0 /* SoloLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloLog.h; sourceTree = "<group>"; };
 		3199435519EEF6DC003F04A0 /* SoloScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoloScene.cpp; sourceTree = "<group>"; };
 		3199435619EEF6DC003F04A0 /* SoloScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloScene.h; sourceTree = "<group>"; };
-		3199443519EEFC42003F04A0 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../external/SDL/2.0.3/SDL2.framework; sourceTree = "<group>"; };
 		3199443D19EF04AB003F04A0 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		3199445119EF051E003F04A0 /* libsolo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsolo.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3199447219EF06E6003F04A0 /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
-		3199447C19EF6DD5003F04A0 /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		319D5E8D19F02C24009E4F8F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		31873FBB19F0342800FBBD61 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31873FD019F0346B00FBBD61 /* libsolo.a in Frameworks */,
+				31873FD119F0347E00FBBD61 /* Carbon.framework in Frameworks */,
+				31873FD219F0347E00FBBD61 /* IOKit.framework in Frameworks */,
+				31873FD319F0347E00FBBD61 /* ForceFeedback.framework in Frameworks */,
+				31873FD419F0347E00FBBD61 /* Cocoa.framework in Frameworks */,
+				31873FD519F0347E00FBBD61 /* AudioUnit.framework in Frameworks */,
+				31873FD619F0347E00FBBD61 /* CoreAudio.framework in Frameworks */,
+				31873FD719F0347E00FBBD61 /* libSDL2.a in Frameworks */,
+				31873FD819F0347E00FBBD61 /* OpenGL.framework in Frameworks */,
+				31873FD919F0347E00FBBD61 /* CoreFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3199444E19EF051E003F04A0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3199445C19EF0567003F04A0 /* SDL2.framework in Frameworks */,
-				3199445D19EF056B003F04A0 /* CoreFoundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3199447919EF6DD5003F04A0 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				319D5E8E19F02C24009E4F8F /* OpenGL.framework in Frameworks */,
-				3199449E19EF6E60003F04A0 /* SDL2.framework in Frameworks */,
-				3199449F19EF6E68003F04A0 /* libsolo.a in Frameworks */,
+				31873FC619F0344C00FBBD61 /* Carbon.framework in Frameworks */,
+				31873FC719F0344C00FBBD61 /* IOKit.framework in Frameworks */,
+				31873FC819F0344C00FBBD61 /* ForceFeedback.framework in Frameworks */,
+				31873FC919F0344C00FBBD61 /* Cocoa.framework in Frameworks */,
+				31873FCA19F0344C00FBBD61 /* AudioUnit.framework in Frameworks */,
+				31873FCB19F0344C00FBBD61 /* CoreAudio.framework in Frameworks */,
+				31873FAA19F0308900FBBD61 /* libSDL2.a in Frameworks */,
+				31873FCC19F0344C00FBBD61 /* OpenGL.framework in Frameworks */,
+				31873FCD19F0344C00FBBD61 /* CoreFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,8 +134,8 @@
 		319940B519EEF53D003F04A0 = {
 			isa = PBXGroup;
 			children = (
-				3199447019EF06E6003F04A0 /* tests */,
-				3199446419EF0677003F04A0 /* solo */,
+				3199447019EF06E6003F04A0 /* Tests */,
+				3199446419EF0677003F04A0 /* Solo */,
 				3199443719EEFE05003F04A0 /* Frameworks */,
 				319940BF19EEF53D003F04A0 /* Products */,
 			);
@@ -114,7 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				3199445119EF051E003F04A0 /* libsolo.a */,
-				3199447C19EF6DD5003F04A0 /* Test.app */,
+				31873FBE19F0342800FBBD61 /* Test1 */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -160,36 +191,43 @@
 		3199443719EEFE05003F04A0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				31873FB819F0333A00FBBD61 /* Carbon.framework */,
+				31873FB619F0330C00FBBD61 /* IOKit.framework */,
+				31873FB219F0328000FBBD61 /* ForceFeedback.framework */,
+				31873FB019F0323E00FBBD61 /* Cocoa.framework */,
+				31873FAE19F0322100FBBD61 /* AudioUnit.framework */,
+				31873FAC19F031F100FBBD61 /* CoreAudio.framework */,
+				31873FA919F0308900FBBD61 /* libSDL2.a */,
 				319D5E8D19F02C24009E4F8F /* OpenGL.framework */,
-				3199443519EEFC42003F04A0 /* SDL2.framework */,
 				3199443D19EF04AB003F04A0 /* CoreFoundation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		3199446419EF0677003F04A0 /* solo */ = {
+		3199446419EF0677003F04A0 /* Solo */ = {
 			isa = PBXGroup;
 			children = (
 				319940CE19EEF6DC003F04A0 /* include */,
 				319940D819EEF6DC003F04A0 /* src */,
 			);
-			name = solo;
+			name = Solo;
 			sourceTree = "<group>";
 		};
-		3199447019EF06E6003F04A0 /* tests */ = {
+		3199447019EF06E6003F04A0 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				3199447119EF06E6003F04A0 /* test1 */,
+				3199447119EF06E6003F04A0 /* Test1 */,
 			);
-			name = tests;
+			name = Tests;
 			path = ../../tests;
 			sourceTree = "<group>";
 		};
-		3199447119EF06E6003F04A0 /* test1 */ = {
+		3199447119EF06E6003F04A0 /* Test1 */ = {
 			isa = PBXGroup;
 			children = (
 				3199447219EF06E6003F04A0 /* Main.cpp */,
 			);
+			name = Test1;
 			path = test1;
 			sourceTree = "<group>";
 		};
@@ -206,6 +244,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		31873FBD19F0342800FBBD61 /* Test1 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 31873FC219F0342800FBBD61 /* Build configuration list for PBXNativeTarget "Test1" */;
+			buildPhases = (
+				31873FBA19F0342800FBBD61 /* Sources */,
+				31873FBB19F0342800FBBD61 /* Frameworks */,
+				31873FBC19F0342800FBBD61 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				31873FCF19F0346500FBBD61 /* PBXTargetDependency */,
+			);
+			name = Test1;
+			productName = Test1;
+			productReference = 31873FBE19F0342800FBBD61 /* Test1 */;
+			productType = "com.apple.product-type.tool";
+		};
 		3199445019EF051E003F04A0 /* solo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3199445919EF051E003F04A0 /* Build configuration list for PBXNativeTarget "solo" */;
@@ -223,25 +279,6 @@
 			productReference = 3199445119EF051E003F04A0 /* libsolo.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		3199447B19EF6DD5003F04A0 /* Test */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3199449619EF6DD5003F04A0 /* Build configuration list for PBXNativeTarget "Test" */;
-			buildPhases = (
-				3199447819EF6DD5003F04A0 /* Sources */,
-				3199447919EF6DD5003F04A0 /* Frameworks */,
-				3199447A19EF6DD5003F04A0 /* Resources */,
-				319944A619EF6F9D003F04A0 /* Embed Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				3199449D19EF6E5A003F04A0 /* PBXTargetDependency */,
-			);
-			name = Test;
-			productName = Test;
-			productReference = 3199447C19EF6DD5003F04A0 /* Test.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -251,10 +288,10 @@
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "Aleksey Fedotov";
 				TargetAttributes = {
-					3199445019EF051E003F04A0 = {
+					31873FBD19F0342800FBBD61 = {
 						CreatedOnToolsVersion = 6.0.1;
 					};
-					3199447B19EF6DD5003F04A0 = {
+					3199445019EF051E003F04A0 = {
 						CreatedOnToolsVersion = 6.0.1;
 					};
 				};
@@ -273,22 +310,20 @@
 			projectRoot = "";
 			targets = (
 				3199445019EF051E003F04A0 /* solo */,
-				3199447B19EF6DD5003F04A0 /* Test */,
+				31873FBD19F0342800FBBD61 /* Test1 */,
 			);
 		};
 /* End PBXProject section */
 
-/* Begin PBXResourcesBuildPhase section */
-		3199447A19EF6DD5003F04A0 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
+/* Begin PBXSourcesBuildPhase section */
+		31873FBA19F0342800FBBD61 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31873FC519F0343B00FBBD61 /* Main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-/* End PBXResourcesBuildPhase section */
-
-/* Begin PBXSourcesBuildPhase section */
 		3199444D19EF051E003F04A0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -302,25 +337,45 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3199447819EF6DD5003F04A0 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				319944A319EF6F1D003F04A0 /* Main.cpp in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		3199449D19EF6E5A003F04A0 /* PBXTargetDependency */ = {
+		31873FCF19F0346500FBBD61 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3199445019EF051E003F04A0 /* solo */;
-			targetProxy = 3199449C19EF6E5A003F04A0 /* PBXContainerItemProxy */;
+			targetProxy = 31873FCE19F0346500FBBD61 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		31873FC319F0342800FBBD61 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/fan/dev/solo/external/SDL/2.0.3,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		31873FC419F0342800FBBD61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/fan/dev/solo/external/SDL/2.0.3,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		319940C319EEF53D003F04A0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -357,7 +412,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"../../external/SDL/2.0.3/SDL2.framework/headers/**",
+					"../../external/SDL/2.0.3/include/**",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
@@ -399,7 +454,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"../../external/SDL/2.0.3/SDL2.framework/headers/**",
+					"../../external/SDL/2.0.3/include/**",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
@@ -425,6 +480,10 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/fan/dev/solo/external/SDL/2.0.3,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -441,44 +500,10 @@
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		3199449719EF6DD5003F04A0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
+				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/fan/dev/solo/external/SDL/2.0.3,
 				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		3199449819EF6DD5003F04A0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/fan/dev/solo/external/SDL/2.0.3,
-				);
-				INFOPLIST_FILE = "";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -486,6 +511,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		31873FC219F0342800FBBD61 /* Build configuration list for PBXNativeTarget "Test1" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				31873FC319F0342800FBBD61 /* Debug */,
+				31873FC419F0342800FBBD61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		319940B919EEF53D003F04A0 /* Build configuration list for PBXProject "solo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -500,15 +533,6 @@
 			buildConfigurations = (
 				3199445A19EF051E003F04A0 /* Debug */,
 				3199445B19EF051E003F04A0 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		3199449619EF6DD5003F04A0 /* Build configuration list for PBXNativeTarget "Test" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3199449719EF6DD5003F04A0 /* Debug */,
-				3199449819EF6DD5003F04A0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
