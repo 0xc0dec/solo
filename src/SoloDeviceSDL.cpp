@@ -18,7 +18,7 @@ DeviceSDL::DeviceSDL(EngineLaunchArgs const& args)
 	s32 major = MAX_GL_CONTEXT_VERSION_MAJOR;
 	s32 minor = MAX_GL_CONTEXT_VERSION_MINOR;
 	_selectContextVersion(major, minor);
-	INFO("Selected OpenGL context version " << major << "." << minor);
+	INFO("Using OpenGL context version " << major << "." << minor);
 	
 	auto windowWithContext = _tryInitWindowWithContext(args.windowTitle,
 		args.canvasWidth, args.canvasHeight, major, minor, false);

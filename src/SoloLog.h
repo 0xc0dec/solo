@@ -2,6 +2,7 @@
 #define __SOLO_LOG_H__
 
 #include <sstream>
+#include <string>
 #include "SoloCommonsInternal.h"
 
 #define INFO(msg) solo::Log() << msg;
@@ -12,6 +13,16 @@ namespace solo
 	class Log
 	{
 	public:
+		enum class LogLevel
+		{
+			INFO = 0,
+			WARNING,
+			ERROR,
+			CRITICAL
+		};
+		
+	public:
+		Log(LogLevel level = LogLevel::INFO);
 		~Log();
 
 		Log &operator <<(const c8 *msg);
@@ -19,7 +30,10 @@ namespace solo
 		Log &operator <<(const str &s);
 
 	private:
+		LogLevel _level;
 		std::ostringstream _buffer;
+		
+		str _getLevelString();
 	};
 }
 

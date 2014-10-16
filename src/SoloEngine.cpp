@@ -25,8 +25,10 @@ void Engine::_run(const EngineLaunchArgs & args)
 	INFO("Starting engine");
 
 	// SDL is the only available option at this moment
+	INFO("Creating device");
 	_device = std::make_shared<DeviceSDL>(args);
 	_callback->onEngineStarted();
+	INFO("Device created");
 
 	while (true)
 	{
@@ -39,8 +41,11 @@ void Engine::_run(const EngineLaunchArgs & args)
 			break;
 	}
 
+	INFO("Stopping engine");
 	_callback->onEngineStopped();
 	_device.reset();
+	
+	INFO("Engine stopped");
 }
 
 
