@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Solo.h"
+#include "../../include/Solo.h"
 
 using namespace solo;
 
@@ -37,7 +37,7 @@ private:
 int main(int argc, char *argv[])
 {
 	auto engine = getEngine();
-	EngineLaunchArgs engineArgs = { 1366, 768, 32, 24, false };
+	EngineLaunchArgs engineArgs = { 800, 600, 32, 24, false };
 	Callback callback(engine);
 	engine->setCallback(&callback);
 	engine->run(engineArgs);

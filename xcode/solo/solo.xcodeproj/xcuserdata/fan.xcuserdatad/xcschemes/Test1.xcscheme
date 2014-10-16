@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3199445019EF051E003F04A0"
-               BuildableName = "libsolo.a"
-               BlueprintName = "solo"
+               BlueprintIdentifier = "3199446819EF06BA003F04A0"
+               BuildableName = "Test1"
+               BlueprintName = "Test1"
                ReferencedContainer = "container:solo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +32,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3199445019EF051E003F04A0"
-            BuildableName = "libsolo.a"
-            BlueprintName = "solo"
+            BlueprintIdentifier = "3199446819EF06BA003F04A0"
+            BuildableName = "Test1"
+            BlueprintName = "Test1"
             ReferencedContainer = "container:solo.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -51,9 +51,9 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3199445019EF051E003F04A0"
-            BuildableName = "libsolo.a"
-            BlueprintName = "solo"
+            BlueprintIdentifier = "3199446819EF06BA003F04A0"
+            BuildableName = "Test1"
+            BlueprintName = "Test1"
             ReferencedContainer = "container:solo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -69,9 +69,9 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3199445019EF051E003F04A0"
-            BuildableName = "libsolo.a"
-            BlueprintName = "solo"
+            BlueprintIdentifier = "3199446819EF06BA003F04A0"
+            BuildableName = "Test1"
+            BlueprintName = "Test1"
             ReferencedContainer = "container:solo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

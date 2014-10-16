@@ -2,6 +2,7 @@
 #define __SOLO_DEVICE_SDL_H__
 
 #include <SDL.h>
+#include <tuple>
 #include "SoloDevice.h"
 
 namespace solo
@@ -22,6 +23,10 @@ namespace solo
 		SDL_GLContext _context;
 
 		void _processSystemEvents();
+		void _selectContextVersion(s32 &desiredMajorVersion, s32 &desiredMinorVersion);
+		
+		std::tuple<SDL_Window*, SDL_GLContext> _tryInitWindowWithContext(
+			const c8 *title, s32 width, s32 height, s32 ctxMajorVersion, s32 ctxMinorVersion, bool hidden);
 	};
 }
 
