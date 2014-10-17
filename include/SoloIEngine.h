@@ -5,7 +5,7 @@
 
 namespace solo
 {
-	struct EngineLaunchArgs
+	struct EngineCreationArgs
 	{
 		s32 canvasWidth;
 		s32 canvasHeight;
@@ -24,7 +24,7 @@ namespace solo
 	public:
 		virtual ~IEngine() {}
 
-		virtual void run(const EngineLaunchArgs &args) = 0;
+		virtual void run(const EngineCreationArgs &args) = 0;
 
 		virtual void setCallback(IEngineCallback *callback) = 0;
 

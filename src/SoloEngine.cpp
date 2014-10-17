@@ -20,7 +20,7 @@ Engine::~Engine()
 }
 
 
-void Engine::_run(const EngineLaunchArgs & args)
+void Engine::_run(const EngineCreationArgs & args)
 {
 	INFO("Starting engine");
 
@@ -49,7 +49,7 @@ void Engine::_run(const EngineLaunchArgs & args)
 }
 
 
-void Engine::run(const EngineLaunchArgs & args)
+void Engine::run(const EngineCreationArgs & args)
 {
 	try
 	{

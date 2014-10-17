@@ -27,6 +27,12 @@
 		31873FD719F0347E00FBBD61 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31873FA919F0308900FBBD61 /* libSDL2.a */; };
 		31873FD819F0347E00FBBD61 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 319D5E8D19F02C24009E4F8F /* OpenGL.framework */; };
 		31873FD919F0347E00FBBD61 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3199443D19EF04AB003F04A0 /* CoreFoundation.framework */; };
+		31873FDB19F12A9400FBBD61 /* SoloIGameObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 31873FDA19F12A9400FBBD61 /* SoloIGameObject.h */; };
+		31873FDD19F12B4600FBBD61 /* SoloGameObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 31873FDC19F12B4600FBBD61 /* SoloGameObject.h */; };
+		31873FDF19F12BC500FBBD61 /* SoloGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 31873FDE19F12BC500FBBD61 /* SoloGameObject.cpp */; };
+		31873FE119F12CD600FBBD61 /* SoloIComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = 31873FE019F12CD600FBBD61 /* SoloIComponent.h */; };
+		31873FE319F12D9800FBBD61 /* SoloComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = 31873FE219F12D9800FBBD61 /* SoloComponent.h */; };
+		31873FE519F12E2500FBBD61 /* SoloComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 31873FE419F12E2500FBBD61 /* SoloComponent.cpp */; };
 		3199445E19EF0580003F04A0 /* SoloCommonsInternal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3199434A19EEF6DC003F04A0 /* SoloCommonsInternal.cpp */; };
 		3199445F19EF0580003F04A0 /* SoloDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3199434C19EEF6DC003F04A0 /* SoloDevice.cpp */; };
 		3199446019EF0580003F04A0 /* SoloDeviceSDL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3199434E19EEF6DC003F04A0 /* SoloDeviceSDL.cpp */; };
@@ -66,6 +72,12 @@
 		31873FB619F0330C00FBBD61 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		31873FB819F0333A00FBBD61 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		31873FBE19F0342800FBBD61 /* Test1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Test1; sourceTree = BUILT_PRODUCTS_DIR; };
+		31873FDA19F12A9400FBBD61 /* SoloIGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoloIGameObject.h; sourceTree = "<group>"; };
+		31873FDC19F12B4600FBBD61 /* SoloGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoloGameObject.h; sourceTree = "<group>"; };
+		31873FDE19F12BC500FBBD61 /* SoloGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoloGameObject.cpp; sourceTree = "<group>"; };
+		31873FE019F12CD600FBBD61 /* SoloIComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoloIComponent.h; sourceTree = "<group>"; };
+		31873FE219F12D9800FBBD61 /* SoloComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoloComponent.h; sourceTree = "<group>"; };
+		31873FE419F12E2500FBBD61 /* SoloComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoloComponent.cpp; sourceTree = "<group>"; };
 		319940CF19EEF6DC003F04A0 /* Solo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Solo.h; sourceTree = "<group>"; };
 		319940D019EEF6DC003F04A0 /* SoloCommons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloCommons.h; sourceTree = "<group>"; };
 		319940D119EEF6DC003F04A0 /* SoloException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoloException.h; sourceTree = "<group>"; };
@@ -162,6 +174,8 @@
 				319940D519EEF6DC003F04A0 /* SoloIScene.h */,
 				319940D619EEF6DC003F04A0 /* SoloMath.h */,
 				319940D719EEF6DC003F04A0 /* SoloVec3.h */,
+				31873FDA19F12A9400FBBD61 /* SoloIGameObject.h */,
+				31873FE019F12CD600FBBD61 /* SoloIComponent.h */,
 			);
 			name = include;
 			path = ../../include;
@@ -183,6 +197,10 @@
 				3199435419EEF6DC003F04A0 /* SoloLog.h */,
 				3199435519EEF6DC003F04A0 /* SoloScene.cpp */,
 				3199435619EEF6DC003F04A0 /* SoloScene.h */,
+				31873FDC19F12B4600FBBD61 /* SoloGameObject.h */,
+				31873FDE19F12BC500FBBD61 /* SoloGameObject.cpp */,
+				31873FE219F12D9800FBBD61 /* SoloComponent.h */,
+				31873FE419F12E2500FBBD61 /* SoloComponent.cpp */,
 			);
 			name = src;
 			path = ../../src;
@@ -238,6 +256,10 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31873FE119F12CD600FBBD61 /* SoloIComponent.h in Headers */,
+				31873FE319F12D9800FBBD61 /* SoloComponent.h in Headers */,
+				31873FDD19F12B4600FBBD61 /* SoloGameObject.h in Headers */,
+				31873FDB19F12A9400FBBD61 /* SoloIGameObject.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,10 +351,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				3199445E19EF0580003F04A0 /* SoloCommonsInternal.cpp in Sources */,
+				31873FDF19F12BC500FBBD61 /* SoloGameObject.cpp in Sources */,
+				31873FE519F12E2500FBBD61 /* SoloComponent.cpp in Sources */,
 				3199445F19EF0580003F04A0 /* SoloDevice.cpp in Sources */,
-				3199446019EF0580003F04A0 /* SoloDeviceSDL.cpp in Sources */,
 				3199446119EF0580003F04A0 /* SoloEngine.cpp in Sources */,
 				3199446219EF0580003F04A0 /* SoloLog.cpp in Sources */,
+				3199446019EF0580003F04A0 /* SoloDeviceSDL.cpp in Sources */,
 				3199446319EF0580003F04A0 /* SoloScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

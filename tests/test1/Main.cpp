@@ -37,7 +37,7 @@ private:
 int main(int argc, char *argv[])
 {
 	auto engine = getEngine();
-	EngineLaunchArgs engineArgs = { 800, 600, 32, 24, false };
+	EngineCreationArgs engineArgs = { 800, 600, 32, 24, false };
 	Callback callback(engine);
 	engine->setCallback(&callback);
 	engine->run(engineArgs);

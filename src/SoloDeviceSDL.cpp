@@ -9,7 +9,7 @@ using namespace solo;
 #define MAX_GL_CONTEXT_VERSION_MINOR 5
 
 
-DeviceSDL::DeviceSDL(EngineLaunchArgs const& args)
+DeviceSDL::DeviceSDL(EngineCreationArgs const& args)
 	: Device(args)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) < 0)
@@ -20,8 +20,7 @@ DeviceSDL::DeviceSDL(EngineLaunchArgs const& args)
 	_selectContextVersion(major, minor);
 	INFO("Using OpenGL context version " << major << "." << minor);
 	
-	auto windowWithContext = _tryInitWindowWithContext(args.windowTitle,
-		args.canvasWidth, args.canvasHeight, major, minor, false);
+	auto windowWithContext = _tryInitWindowWithContext(false, major, minor);
 	
 	_window = std::get<0>(windowWithContext);
 	if (!_window)
@@ -44,7 +43,7 @@ void DeviceSDL::_selectContextVersion(s32 &desiredMajorVersion, s32 &desiredMino
 		SDL_GLContext context = nullptr;
 		for (minor = maxMinorVersion; minor >= 0; --minor)
 		{
-			auto windowWithContext = _tryInitWindowWithContext("", 100, 100, major, minor, true);
+			auto windowWithContext = _tryInitWindowWithContext(true, major, minor);
 			auto window = std::get<0>(windowWithContext);
 			if (!window)
 				continue;
@@ -68,8 +67,7 @@ void DeviceSDL::_selectContextVersion(s32 &desiredMajorVersion, s32 &desiredMino
 }
 
 
-std::tuple<SDL_Window*, SDL_GLContext> DeviceSDL::_tryInitWindowWithContext(
-	const c8 *title, s32 width, s32 height, s32 ctxMajorVersion, s32 ctxMinorVersion, bool hidden)
+std::tuple<SDL_Window*, SDL_GLContext> DeviceSDL::_tryInitWindowWithContext(bool fake, s32 ctxMajorVersion, s32 ctxMinorVersion)
 {
 	SDL_Window *window = nullptr;
 	SDL_GLContext context;
@@ -77,9 +75,14 @@ std::tuple<SDL_Window*, SDL_GLContext> DeviceSDL::_tryInitWindowWithContext(
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, ctxMajorVersion);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, ctxMinorVersion);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, _creationArgs.depth);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	
 	auto flags = static_cast<int>(SDL_WINDOW_OPENGL);
-	if (hidden)
+	auto title = fake ? "" : _creationArgs.windowTitle;
+	auto width = fake ? 100 : _creationArgs.canvasWidth;
+	auto height = fake ? 100 : _creationArgs.canvasHeight;
+	if (fake)
 		flags |= SDL_WINDOW_HIDDEN;
 	window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
 	if (window)

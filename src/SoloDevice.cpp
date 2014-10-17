@@ -3,8 +3,9 @@
 using namespace solo;
 
 
-Device::Device(EngineLaunchArgs args)
-	: _closeRequested(false)
+Device::Device(EngineCreationArgs args)
+	: _closeRequested(false),
+	_creationArgs(args)
 {
 }
 

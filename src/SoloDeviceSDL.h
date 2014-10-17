@@ -10,7 +10,7 @@ namespace solo
 	class DeviceSDL : public Device
 	{
 	public:
-		explicit DeviceSDL(EngineLaunchArgs const& args);
+		explicit DeviceSDL(EngineCreationArgs const& args);
 		~DeviceSDL();
 
 		void setWindowTitle(char const* caption) override;
@@ -24,9 +24,7 @@ namespace solo
 
 		void _processSystemEvents();
 		void _selectContextVersion(s32 &desiredMajorVersion, s32 &desiredMinorVersion);
-		
-		std::tuple<SDL_Window*, SDL_GLContext> _tryInitWindowWithContext(
-			const c8 *title, s32 width, s32 height, s32 ctxMajorVersion, s32 ctxMinorVersion, bool hidden);
+		std::tuple<SDL_Window*, SDL_GLContext> _tryInitWindowWithContext(bool fake, s32 ctxMajorVersion, s32 ctxMinorVersion);
 	};
 }
 

@@ -10,7 +10,7 @@ namespace solo
 	class Device: public IDevice
 	{
 	public:
-		explicit Device(EngineLaunchArgs args);
+		explicit Device(EngineCreationArgs args);
 		~Device();
 
 		bool closeRequested() const { return _closeRequested; }
@@ -21,6 +21,7 @@ namespace solo
 
 	protected:
 		bool _closeRequested;
+		EngineCreationArgs _creationArgs;
 	};
 }
 

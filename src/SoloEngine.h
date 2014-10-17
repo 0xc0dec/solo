@@ -23,7 +23,7 @@ namespace solo
 			return &instance;
 		}
 
-		void run(const EngineLaunchArgs &launchArgs) override;
+		void run(const EngineCreationArgs &launchArgs) override;
 		void setCallback(IEngineCallback* callback) override;
 
 		sptr<IScene> scene() const override
@@ -44,7 +44,7 @@ namespace solo
 
 		u64 _lastUpdateTime;
 
-		void _run(const EngineLaunchArgs &args);
+		void _run(const EngineCreationArgs &args);
 	};
 }
 
