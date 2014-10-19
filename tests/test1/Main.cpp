@@ -18,6 +18,7 @@ public:
 
 	void onEngineStopped() override
 	{
+
 	}
 
 	void onBeforeFrame(float dt) override

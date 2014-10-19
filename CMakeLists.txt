@@ -8,15 +8,13 @@ add_compile_options(-std=c++0x)
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/include
-    ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/external/SDL/2.0.3/include)
+
+link_directories(${PROJECT_SOURCE_DIR}/external/SDL/2.0.3)
 
 # Engine
 
-file(GLOB sources
-    "src/*.h"
-    "src/*.cpp"
-    "include/*.h")
+file(GLOB sources "src/*.cpp")
 
 find_library(carbon_lib Carbon)
 find_library(iokit_lib IOKit)
@@ -26,16 +24,6 @@ find_library(audiounit_lib AudioUnit)
 find_library(coreaudio_lib CoreAudio)
 find_library(opengl_lib OpenGL)
 find_library(corefoundation_lib CoreFoundation)
-
-mark_as_advanced(
-    carbon_lib
-    iokit_lib
-    forcefeedback_lib
-    cocoa_lib
-    audiounit_lib
-    coreaudio_lib
-    opengl_lib
-    corefoundation_lib)
 
 set(frameworks
     ${carbon_lib}
@@ -48,7 +36,8 @@ set(frameworks
     ${corefoundation_lib})
 
 add_library(solo STATIC ${sources})
-link_directories(${PROJECT_SOURCE_DIR}/external/SDL/2.0.3)
 target_link_libraries(solo SDL2 ${frameworks})
 
-add_subdirectory("tests/test1")
+# Tests
+add_executable(Test1 tests/test1/Main.cpp)
+target_link_libraries(Test1 LINK_PUBLIC solo)
