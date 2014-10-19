@@ -9,7 +9,7 @@ namespace solo
 	{
 	public:
 		Component();
-		~Component();
+		virtual ~Component();
 	};
 }
 

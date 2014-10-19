@@ -69,7 +69,7 @@ void DeviceSDL::_selectContextVersion(s32 &desiredMajorVersion, s32 &desiredMino
 
 std::tuple<SDL_Window*, SDL_GLContext> DeviceSDL::_tryInitWindowWithContext(bool fake, s32 ctxMajorVersion, s32 ctxMinorVersion)
 {
-	SDL_Window *window = nullptr;
+	SDL_Window *window;
 	SDL_GLContext context;
 	
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, ctxMajorVersion);
