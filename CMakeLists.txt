@@ -19,7 +19,6 @@ link_directories(${PROJECT_SOURCE_DIR}/external/SDL/2.0.3)
 
 add_executable(solo ${sources})
 
-# include_directories( /Developer/Headers/FlatCarbon )
 find_library(carbon_lib Carbon)
 find_library(iokit_lib IOKit)
 find_library(forcefeedback_lib ForceFeedback)
