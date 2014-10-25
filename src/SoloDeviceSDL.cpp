@@ -1,5 +1,4 @@
 #include "SoloDeviceSDL.h"
-#include "SoloCommonsInternal.h"
 #include "SoloException.h"
 #include "SoloLog.h"
 

@@ -20,15 +20,18 @@ Engine::~Engine()
 }
 
 
-void Engine::_run(const EngineCreationArgs & args)
+void Engine::_run(const EngineCreationArgs &args)
 {
 	INFO("Starting engine");
 
 	// SDL is the only available option at this moment
 	INFO("Creating device");
-	_device = std::make_shared<DeviceSDL>(args);
+	_device = make_ptr<DeviceSDL>(args);
+
+	INFO("Creating scene");
+	_scene = make_ptr<Scene>();
+
 	_callback->onEngineStarted();
-	INFO("Device created");
 
 	while (true)
 	{
@@ -44,6 +47,7 @@ void Engine::_run(const EngineCreationArgs & args)
 	INFO("Stopping engine");
 	_callback->onEngineStopped();
 	_device.reset();
+	_scene.reset();
 	
 	INFO("Engine stopped");
 }
@@ -68,3 +72,4 @@ void Engine::setCallback(IEngineCallback* callback)
 	if (!_callback)
 		_callback = &_emptyCallback;
 }
+

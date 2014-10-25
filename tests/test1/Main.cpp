@@ -3,6 +3,14 @@
 
 using namespace solo;
 
+#define LOG(msg) std::cout << msg << std::endl;
+
+class TestComponent: public IComponent
+{
+public:
+
+};
+
 class Callback : public IEngineCallback
 {
 public:
@@ -14,6 +22,9 @@ public:
 	void onEngineStarted() override
 	{
 		_engine->device()->setWindowTitle("Test title");
+		auto node = _engine->scene()->createNode("Test node");
+		LOG(node->name());
+		node->addComponent<TestComponent>();
 	}
 
 	void onEngineStopped() override

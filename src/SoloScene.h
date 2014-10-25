@@ -5,9 +5,15 @@
 
 namespace solo
 {
+	class SceneNode;
+
 	class Scene: public IScene
 	{
-	
+	public:
+		virtual sptr<ISceneNode> createNode(const str name);
+
+	private:
+		list<sptr<SceneNode>> _nodes;
 	};
 }
 

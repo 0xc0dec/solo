@@ -26,12 +26,12 @@ namespace solo
 		void run(const EngineCreationArgs &launchArgs) override;
 		void setCallback(IEngineCallback* callback) override;
 
-		sptr<IScene> scene() const override
+		virtual sptr<IScene> scene() const override
 		{
 			return _scene;
 		}
 
-		sptr<IDevice> device() const override
+		virtual sptr<IDevice> device() const override
 		{
 			return _device;
 		}
