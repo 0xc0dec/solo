@@ -30,6 +30,8 @@ namespace solo
 
 		virtual sptr<IDevice> device() const = 0;
 		virtual sptr<IScene> scene() const = 0;
+
+		virtual f32 deltaTime() const = 0;
 	};
 }
 

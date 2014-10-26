@@ -10,7 +10,9 @@ namespace solo
 	class Scene: public IScene
 	{
 	public:
-		virtual sptr<ISceneNode> createNode(const str name);
+		virtual sptr<ISceneNode> createNode(const str &name);
+
+		void update();
 
 	private:
 		list<sptr<SceneNode>> _nodes;

@@ -10,10 +10,20 @@ namespace solo
 	public:
 		SceneNode(const str &name);
 		
-		virtual str name() const override { return _name; }
+		virtual str name() const override
+		{
+			return _name;
+		}
+
+		virtual void addComponent(sptr<IComponent> cmp) override;
+		virtual sptr<IComponent> findComponent(const str &id) override;
+		virtual sptr<IComponent> getComponent(const str &id) override;
+
+		void update();
 
 	protected:
 		str _name;
+		dict<str, sptr<IComponent>> _components;
 	};
 }
 

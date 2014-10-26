@@ -10,10 +10,10 @@ namespace solo
 	class DeviceSDL : public Device
 	{
 	public:
-		explicit DeviceSDL(EngineCreationArgs const& args);
+		explicit DeviceSDL(const EngineCreationArgs &args);
 		~DeviceSDL();
 
-		void setWindowTitle(char const* caption) override;
+		void setWindowTitle(const c8 *title) override;
 
 		u64 lifetime() override;
 		void update() override;

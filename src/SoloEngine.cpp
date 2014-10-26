@@ -9,7 +9,8 @@ using namespace solo;
 
 Engine::Engine()
 	: _callback(nullptr),
-	_lastUpdateTime(0)
+	_lastUpdateTime(0),
+	_deltaTime(0)
 {
 	_callback = &_emptyCallback;
 }
@@ -24,22 +25,23 @@ void Engine::_run(const EngineCreationArgs &args)
 {
 	INFO("Starting engine");
 
-	// SDL is the only available option at this moment
+	// SDL is the only available option right now
 	INFO("Creating device");
-	_device = make_ptr<DeviceSDL>(args);
+	_device = makePtr<DeviceSDL>(args);
 
 	INFO("Creating scene");
-	_scene = make_ptr<Scene>();
+	_scene = makePtr<Scene>();
 
 	_callback->onEngineStarted();
 
 	while (true)
 	{
 		auto time = _device->lifetime();
-		auto dt = (time - _lastUpdateTime) / 1000.0f;
+		_deltaTime = (time - _lastUpdateTime) / 1000.0f;
 		_lastUpdateTime = time;
-		_callback->onBeforeFrame(dt);
+		_callback->onBeforeFrame();
 		_device->update();
+		_scene->update();
 		if (_device->closeRequested() && _callback->onDeviceCloseRequested())
 			break;
 	}
@@ -72,4 +74,3 @@ void Engine::setCallback(IEngineCallback* callback)
 	if (!_callback)
 		_callback = &_emptyCallback;
 }
-

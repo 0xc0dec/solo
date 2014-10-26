@@ -8,8 +8,20 @@ using namespace solo;
 class TestComponent: public IComponent
 {
 public:
+	static str componentId()
+	{
+		return "TestComponent";
+	};
 
+	virtual str id() override { return componentId(); }
+
+
+	virtual void update() override
+	{
+		
+	}
 };
+
 
 class Callback : public IEngineCallback
 {
@@ -23,8 +35,9 @@ public:
 	{
 		_engine->device()->setWindowTitle("Test title");
 		auto node = _engine->scene()->createNode("Test node");
-		LOG(node->name());
 		node->addComponent<TestComponent>();
+		auto cmp = node->getComponent<TestComponent>(TestComponent::componentId());
+		LOG(cmp->id());
 	}
 
 	void onEngineStopped() override
@@ -32,7 +45,7 @@ public:
 
 	}
 
-	void onBeforeFrame(float dt) override
+	void onBeforeFrame() override
 	{
 	}
 

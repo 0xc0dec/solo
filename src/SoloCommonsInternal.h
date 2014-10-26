@@ -3,8 +3,6 @@
 
 #include "SoloCommons.h"
 
-#define make_ptr std::make_shared
-
 namespace solo
 {
 	

@@ -12,7 +12,7 @@ namespace solo
 		bool onDeviceCloseRequested() override { return true; }
 		void onEngineStarted() override {}
 		void onEngineStopped() override {}
-		void onBeforeFrame(float dt) override {}
+		void onBeforeFrame() override {}
 	};
 }
 

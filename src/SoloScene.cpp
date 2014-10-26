@@ -3,7 +3,16 @@
 
 using namespace solo;
 
-sptr<ISceneNode> Scene::createNode(const str name)
+sptr<ISceneNode> Scene::createNode(const str &name)
 {
-	return std::make_shared<SceneNode>(name);
+	auto node = std::make_shared<SceneNode>(name);
+	_nodes.push_back(node);
+	return node;
+}
+
+
+void Scene::update()
+{
+	for (auto node: _nodes)
+		node->update();
 }

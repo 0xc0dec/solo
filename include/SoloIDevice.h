@@ -10,7 +10,7 @@ namespace solo
 	public:
 		virtual ~IDevice() {}
 
-		virtual void setWindowTitle(const c8 *caption) = 0;
+		virtual void setWindowTitle(const c8 *title) = 0;
 	};
 }
 

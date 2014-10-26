@@ -106,9 +106,9 @@ void DeviceSDL::update()
 }
 
 
-void DeviceSDL::setWindowTitle(char const* caption)
+void DeviceSDL::setWindowTitle(char const *title)
 {
-	SDL_SetWindowTitle(_window, caption);
+	SDL_SetWindowTitle(_window, title);
 }
 
 

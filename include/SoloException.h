@@ -14,7 +14,7 @@ namespace solo
 		{
 		}
 
-		EngineException(const str msg) : message(msg)
+		EngineException(const str &msg) : message(msg)
 		{
 		}
 	};

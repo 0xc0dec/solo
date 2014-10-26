@@ -15,7 +15,7 @@ namespace solo
 	{
 	public:
 		Engine();
-		~Engine();
+		virtual ~Engine();
 
 		static Engine *getEngine()
 		{
@@ -36,6 +36,11 @@ namespace solo
 			return _device;
 		}
 
+		virtual f32 deltaTime() const override
+		{
+			return _deltaTime;
+		}
+
 	private:
 		IEngineCallback *_callback;
 		sptr<Scene> _scene;
@@ -43,6 +48,7 @@ namespace solo
 		EmptyEngineCallback _emptyCallback;
 
 		u64 _lastUpdateTime;
+		f32 _deltaTime;
 
 		void _run(const EngineCreationArgs &args);
 	};
