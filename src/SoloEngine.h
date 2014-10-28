@@ -5,7 +5,6 @@
 #include "SoloIEngine.h"
 #include "SoloScene.h"
 #include "SoloDevice.h"
-#include "SoloEmptyEngineCallback.h"
 
 namespace solo
 {
@@ -45,7 +44,6 @@ namespace solo
 		IEngineCallback *_callback;
 		sptr<Scene> _scene;
 		sptr<Device> _device;
-		EmptyEngineCallback _emptyCallback;
 
 		u64 _lastUpdateTime;
 		f32 _deltaTime;

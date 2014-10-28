@@ -7,12 +7,22 @@
 using namespace solo;
 
 
+class EmptyEngineCallback: public IEngineCallback
+{
+public:
+	bool onDeviceCloseRequested() override { return true; }
+	void onEngineStarted() override {}
+	void onEngineStopped() override {}
+	void onBeforeFrame() override {}
+} emptyCallback;
+
+
 Engine::Engine()
 	: _callback(nullptr),
 	_lastUpdateTime(0),
 	_deltaTime(0)
 {
-	_callback = &_emptyCallback;
+	_callback = &emptyCallback;
 }
 
 
@@ -72,5 +82,5 @@ void Engine::setCallback(IEngineCallback* callback)
 {
 	_callback = callback;
 	if (!_callback)
-		_callback = &_emptyCallback;
+		_callback = &emptyCallback;
 }
