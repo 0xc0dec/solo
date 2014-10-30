@@ -13,8 +13,7 @@ public:
 		return "TestComponent";
 	};
 
-	virtual str id() override { return componentId(); }
-
+	virtual str id() override { return "TestComponent"; }
 
 	virtual void update() override
 	{

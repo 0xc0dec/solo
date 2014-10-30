@@ -58,6 +58,21 @@
     <ClInclude Include="..\src\SoloSceneNode.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloIMaterial.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloMaterial.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloIShader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloShader.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloGLSLShader.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloCommonsInternal.cpp">
@@ -82,6 +97,15 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloSceneNode.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloMaterial.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloGLSLShader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloShader.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
