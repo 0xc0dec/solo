@@ -37,9 +37,6 @@
     <ClInclude Include="..\include\SoloIEngineCallback.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloEmptyEngineCallback.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloVec3.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -55,13 +52,10 @@
     <ClInclude Include="..\include\SoloIComponent.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloIGameObject.h">
+    <ClInclude Include="..\include\SoloISceneNode.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloComponent.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloGameObject.h">
+    <ClInclude Include="..\src\SoloSceneNode.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
@@ -87,10 +81,7 @@
     <ClCompile Include="..\src\SoloFileSystem.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloComponent.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloGameObject.cpp">
+    <ClCompile Include="..\src\SoloSceneNode.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
