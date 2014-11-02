@@ -7,6 +7,8 @@
 #include "SoloIDevice.h"
 #include "SoloIEngine.h"
 #include "SoloIEngineCallback.h"
+#include "SoloIGPUProgram.h"
+#include "SoloIMaterial.h"
 #include "SoloIScene.h"
 #include "SoloISceneNode.h"
 #include "SoloMath.h"

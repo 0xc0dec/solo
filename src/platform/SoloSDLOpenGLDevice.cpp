@@ -1,6 +1,8 @@
-#include "SoloDeviceSDL.h"
+#include <GL/glew.h>
+#include "SoloSDLOpenGLDevice.h"
 #include "SoloException.h"
-#include "SoloLog.h"
+#include "SoloGLSLGPUProgram.h"
+#include "../SoloLog.h"
 
 using namespace solo;
 
@@ -8,15 +10,15 @@ using namespace solo;
 #define MAX_GL_CONTEXT_VERSION_MINOR 5
 
 
-DeviceSDL::DeviceSDL(EngineCreationArgs const& args)
+SDLOpenGLDevice::SDLOpenGLDevice(EngineCreationArgs const& args)
 	: Device(args)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) < 0)
 		throw EngineException("Failed to initialize system");
 	
-	s32 major = MAX_GL_CONTEXT_VERSION_MAJOR;
-	s32 minor = MAX_GL_CONTEXT_VERSION_MINOR;
-	_selectContextVersion(major, minor);
+	auto ctxVersion = _selectContextVersion(MAX_GL_CONTEXT_VERSION_MAJOR, MAX_GL_CONTEXT_VERSION_MINOR);
+	auto major = std::get<0>(ctxVersion);
+	auto minor = std::get<1>(ctxVersion);
 	INFO("Using OpenGL context version " << major << "." << minor);
 	
 	auto windowWithContext = _tryInitWindowWithContext(false, major, minor);
@@ -27,13 +29,17 @@ DeviceSDL::DeviceSDL(EngineCreationArgs const& args)
 
 	_context = std::get<1>(windowWithContext);
 	if (!_context)
-		throw EngineException("Failed to init GL context");
+		throw EngineException("Failed to init OpenGL context");
+
+	glewExperimental = true;
+	if (glewInit())
+		throw EngineException("Failed to init OpenGL extensions");
 
 	SDL_GL_SetSwapInterval(1);
 }
 
 
-void DeviceSDL::_selectContextVersion(s32 &desiredMajorVersion, s32 &desiredMinorVersion)
+std::tuple<s32, s32> SDLOpenGLDevice::_selectContextVersion(s32 desiredMajorVersion, s32 desiredMinorVersion)
 {
 	auto maxMinorVersion = desiredMinorVersion;
 	s32 minor = maxMinorVersion, major;
@@ -61,12 +67,11 @@ void DeviceSDL::_selectContextVersion(s32 &desiredMajorVersion, s32 &desiredMino
 		maxMinorVersion = 9;
 	}
 	
-	desiredMajorVersion = major;
-	desiredMinorVersion = minor;
+	return std::make_tuple(major, minor);
 }
 
 
-std::tuple<SDL_Window*, SDL_GLContext> DeviceSDL::_tryInitWindowWithContext(bool fake, s32 ctxMajorVersion, s32 ctxMinorVersion)
+std::tuple<SDL_Window*, SDL_GLContext> SDLOpenGLDevice::_tryInitWindowWithContext(bool fake, s32 ctxMajorVersion, s32 ctxMinorVersion)
 {
 	SDL_Window *window;
 	SDL_GLContext context;
@@ -91,7 +96,7 @@ std::tuple<SDL_Window*, SDL_GLContext> DeviceSDL::_tryInitWindowWithContext(bool
 }
 
 
-DeviceSDL::~DeviceSDL()
+SDLOpenGLDevice::~SDLOpenGLDevice()
 {
 	SDL_GL_DeleteContext(_context);
 	SDL_DestroyWindow(_window);
@@ -99,20 +104,28 @@ DeviceSDL::~DeviceSDL()
 }
 
 
-void DeviceSDL::update()
+void SDLOpenGLDevice::update()
 {
 	_processSystemEvents();
 	SDL_GL_SwapWindow(_window);
 }
 
 
-void DeviceSDL::setWindowTitle(char const *title)
+void SDLOpenGLDevice::setWindowTitle(const c8 *title)
 {
 	SDL_SetWindowTitle(_window, title);
 }
 
 
-void DeviceSDL::_processSystemEvents()
+sptr<IGPUProgram> SDLOpenGLDevice::createGPUProgram(const str &vsSrc, const str &fsSrc)
+{
+	auto program = makePtr<GLSLGPUProgram>(vsSrc, fsSrc);
+	_gpuPrograms.push_back(program);
+	return program;
+}
+
+
+void SDLOpenGLDevice::_processSystemEvents()
 {
 	SDL_Event evt;
 	while (SDL_PollEvent(&evt))
@@ -133,7 +146,7 @@ void DeviceSDL::_processSystemEvents()
 }
 
 
-u64 DeviceSDL::lifetime()
+u64 SDLOpenGLDevice::lifetime()
 {
 	return SDL_GetTicks();
 }

@@ -7,6 +7,8 @@
 
 namespace solo
 {
+	class GPUProgram;
+
 	class Device: public IDevice
 	{
 	public:
@@ -22,6 +24,8 @@ namespace solo
 	protected:
 		bool _closeRequested;
 		EngineCreationArgs _creationArgs;
+
+		list<sptr<GPUProgram>> _gpuPrograms;
 	};
 }
 

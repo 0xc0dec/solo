@@ -22,13 +22,15 @@ str Log::_getLevelString()
 {
 	switch (_level)
 	{
-		case LogLevel::INFO:
+		case LogLevel::Debug:
+			return "debug";
+		case LogLevel::Info:
 			return "info";
-		case LogLevel::WARNING:
+		case LogLevel::Warning:
 			return "warn";
-		case LogLevel::ERROR:
+		case LogLevel::Error:
 			return "error";
-		case LogLevel::CRITICAL:
+		case LogLevel::Critical:
 			return "crit";
 		default:
 			return "";

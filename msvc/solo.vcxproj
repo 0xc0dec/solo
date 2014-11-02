@@ -29,33 +29,36 @@
     <ClInclude Include="..\include\SoloIScene.h" />
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\include\SoloISceneNode.h" />
-    <ClInclude Include="..\include\SoloIShader.h" />
+    <ClInclude Include="..\include\SoloIGPUProgram.h" />
     <ClInclude Include="..\include\SoloMaterial.h" />
     <ClInclude Include="..\include\SoloMath.h" />
     <ClInclude Include="..\include\SoloVec3.h" />
+    <ClInclude Include="..\src\platform\SoloGLSLGPUProgram.h" />
+    <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h" />
     <ClInclude Include="..\src\SoloFileSystem.h" />
     <ClInclude Include="..\src\SoloCommonsInternal.h" />
     <ClInclude Include="..\src\SoloDevice.h" />
-    <ClInclude Include="..\src\SoloDeviceSDL.h" />
     <ClInclude Include="..\src\SoloEngine.h" />
-    <ClInclude Include="..\src\SoloGLSLShader.h" />
     <ClInclude Include="..\src\SoloLog.h" />
     <ClInclude Include="..\src\SoloScene.h" />
     <ClInclude Include="..\src\SoloSceneNode.h" />
-    <ClInclude Include="..\src\SoloShader.h" />
+    <ClInclude Include="..\src\SoloGPUProgram.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\external\glew\src\glew.c" />
+    <ClCompile Include="..\external\glew\src\glewinfo.c" />
+    <ClCompile Include="..\external\glew\src\visualinfo.c" />
+    <ClCompile Include="..\src\platform\SoloGLSLGPUProgram.cpp" />
+    <ClCompile Include="..\src\platform\SoloSDLOpenGLDevice.cpp" />
     <ClCompile Include="..\src\SoloFileSystem.cpp" />
     <ClCompile Include="..\src\SoloCommonsInternal.cpp" />
     <ClCompile Include="..\src\SoloDevice.cpp" />
-    <ClCompile Include="..\src\SoloDeviceSDL.cpp" />
     <ClCompile Include="..\src\SoloEngine.cpp" />
-    <ClCompile Include="..\src\SoloGLSLShader.cpp" />
     <ClCompile Include="..\src\SoloLog.cpp" />
     <ClCompile Include="..\src\SoloMaterial.cpp" />
     <ClCompile Include="..\src\SoloScene.cpp" />
     <ClCompile Include="..\src\SoloSceneNode.cpp" />
-    <ClCompile Include="..\src\SoloShader.cpp" />
+    <ClCompile Include="..\src\SoloGPUProgram.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{278CAB21-1CAB-49AD-9959-6F97743501FB}</ProjectGuid>
@@ -110,7 +113,7 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\src\SDL\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
     <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;$(LibraryPath)</LibraryPath>
@@ -121,7 +124,7 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\src\SDL\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
     <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;$(LibraryPath)</LibraryPath>
@@ -150,7 +153,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>_WINDOWS;WIN32;BUILD_WINDOWS;HAVE_LIBC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;BUILD_WINDOWS;HAVE_LIBC;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -159,7 +162,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;SDL2_release_mt_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;SDL2_release_mt_x64.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalOptions>/ignore:4006</AdditionalOptions>
     </Lib>
@@ -194,7 +197,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>_WINDOWS;WIN32;BUILD_WINDOWS;HAVE_LIBC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;BUILD_WINDOWS;HAVE_LIBC;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -205,7 +208,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;SDL2_release_mt_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;SDL2_release_mt_x64.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalOptions>/ignore:4006</AdditionalOptions>
     </Lib>

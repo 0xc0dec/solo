@@ -5,10 +5,11 @@
 #include <string>
 #include "SoloCommonsInternal.h"
 
-#define INFO(msg) solo::Log(solo::Log::LogLevel::INFO) << msg;
-#define WARN(msg) solo::Log(solo::Log::LogLevel::WARNING) << msg;
-#define ERROR(msg) solo::Log(solo::Log::LogLevel::ERROR) << msg;
-#define CRITICAL(msg) solo::Log(solo::Log::LogLevel::CRITICAL) << msg;
+#define DEBUG(msg) solo::Log(solo::Log::LogLevel::Debug) << msg;
+#define INFO(msg) solo::Log(solo::Log::LogLevel::Info) << msg;
+#define WARN(msg) solo::Log(solo::Log::LogLevel::Warning) << msg;
+#define ERROR(msg) solo::Log(solo::Log::LogLevel::Error) << msg;
+#define CRITICAL(msg) solo::Log(solo::Log::LogLevel::Critical) << msg;
 
 namespace solo
 {
@@ -17,14 +18,14 @@ namespace solo
 	public:
 		enum class LogLevel
 		{
-			INFO = 0,
-			WARNING,
-			ERROR,
-			CRITICAL
+			Debug = 0,
+			Info,
+			Warning,
+			Error,
+			Critical
 		};
-		
-	public:
-		Log(LogLevel level = LogLevel::INFO);
+
+		explicit Log(LogLevel level = LogLevel::Info);
 		~Log();
 
 		Log &operator <<(const c8 *msg);

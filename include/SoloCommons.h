@@ -5,6 +5,7 @@
 #include <string>
 #include <list>
 #include <map>
+#include <functional>
 
 #define castDynamic std::dynamic_pointer_cast
 #define castStatic std::static_pointer_cast
@@ -15,6 +16,7 @@ namespace solo
 	template <typename T> using sptr = std::shared_ptr<T>;
 	template <typename T> using list = std::list<T>;
 	template <typename TKey, typename TValue> using dict = std::map<TKey, TValue>;
+
 
 	typedef float			f32;
 	typedef double			f64;
@@ -29,6 +31,8 @@ namespace solo
 
 	typedef std::string		str;
 	typedef std::wstring	wstr;
+
+	extern "C" size_t computeHash(const str &s);
 }
 
 #endif
