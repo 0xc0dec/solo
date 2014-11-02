@@ -27,7 +27,7 @@ GLSLGPUProgram::GLSLGPUProgram(const str &vsShaderSrc, const str &fsShaderSrc)
 	glDeleteShader(vs);
 	glDeleteShader(fs);
 
-	DEBUG("Successfully compiled gpu program " << _id);
+	DEBUG("Created gpu program " << _id);
 }
 
 
