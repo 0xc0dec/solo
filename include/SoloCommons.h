@@ -17,7 +17,6 @@ namespace solo
 	template <typename T> using list = std::list<T>;
 	template <typename TKey, typename TValue> using dict = std::map<TKey, TValue>;
 
-
 	typedef float			f32;
 	typedef double			f64;
 

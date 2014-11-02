@@ -22,6 +22,8 @@ GLSLGPUProgram::GLSLGPUProgram(const str &vsShaderSrc, const str &fsShaderSrc)
 	_valid = true;
 	_program = program;
 
+	glDetachShader(_program, vs);
+	glDetachShader(_program, fs);
 	glDeleteShader(vs);
 	glDeleteShader(fs);
 
