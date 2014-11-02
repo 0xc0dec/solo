@@ -49,8 +49,8 @@
       <file leaf-file-name="SoloSceneNode.h" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/SoloSceneNode.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4272152" vertical-offset="0" max-vertical-offset="632">
-              <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.11867089" vertical-offset="0" max-vertical-offset="632">
+              <caret line="5" column="14" selection-start-line="5" selection-start-column="14" selection-end-line="5" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -848,8 +848,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/SoloSceneNode.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4272152" vertical-offset="0" max-vertical-offset="632">
-          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.11867089" vertical-offset="0" max-vertical-offset="632">
+          <caret line="5" column="14" selection-start-line="5" selection-start-column="14" selection-end-line="5" selection-end-column="14" />
           <folding />
         </state>
       </provider>
