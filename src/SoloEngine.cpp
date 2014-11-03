@@ -2,7 +2,7 @@
 #include "SoloEngine.h"
 #include "SoloLog.h"
 #include "SoloException.h"
-#include "platform/SoloSDLOpenGLDevice.h"
+#include "platform/SoloDeviceSDLGL.h"
 
 using namespace solo;
 
@@ -37,7 +37,7 @@ void Engine::_run(const EngineCreationArgs &args)
 
 	// SDL is the only available option right now
 	INFO("Creating device");
-	_device = makePtr<SDLOpenGLDevice>(args);
+	_device = makePtr<DeviceSDLGL>(args);
 
 	INFO("Creating scene");
 	_scene = makePtr<Scene>();

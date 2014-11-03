@@ -1,7 +1,7 @@
 #include <GL/glew.h>
-#include "SoloSDLOpenGLDevice.h"
+#include "SoloDeviceSDLGL.h"
 #include "SoloException.h"
-#include "SoloGLSLGPUProgram.h"
+#include "SoloGPUProgramGLSL.h"
 #include "../SoloLog.h"
 
 using namespace solo;
@@ -10,7 +10,7 @@ using namespace solo;
 #define MAX_GL_CONTEXT_VERSION_MINOR 5
 
 
-SDLOpenGLDevice::SDLOpenGLDevice(EngineCreationArgs const& args)
+DeviceSDLGL::DeviceSDLGL(EngineCreationArgs const& args)
 	: Device(args)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) < 0)
@@ -39,7 +39,7 @@ SDLOpenGLDevice::SDLOpenGLDevice(EngineCreationArgs const& args)
 }
 
 
-std::tuple<s32, s32> SDLOpenGLDevice::_selectContextVersion(s32 desiredMajorVersion, s32 desiredMinorVersion)
+std::tuple<s32, s32> DeviceSDLGL::_selectContextVersion(s32 desiredMajorVersion, s32 desiredMinorVersion)
 {
 	auto maxMinorVersion = desiredMinorVersion;
 	s32 minor = maxMinorVersion, major;
@@ -71,7 +71,7 @@ std::tuple<s32, s32> SDLOpenGLDevice::_selectContextVersion(s32 desiredMajorVers
 }
 
 
-std::tuple<SDL_Window*, SDL_GLContext> SDLOpenGLDevice::_tryInitWindowWithContext(bool fake, s32 ctxMajorVersion, s32 ctxMinorVersion)
+std::tuple<SDL_Window*, SDL_GLContext> DeviceSDLGL::_tryInitWindowWithContext(bool fake, s32 ctxMajorVersion, s32 ctxMinorVersion)
 {
 	SDL_Window *window;
 	SDL_GLContext context;
@@ -96,7 +96,7 @@ std::tuple<SDL_Window*, SDL_GLContext> SDLOpenGLDevice::_tryInitWindowWithContex
 }
 
 
-SDLOpenGLDevice::~SDLOpenGLDevice()
+DeviceSDLGL::~DeviceSDLGL()
 {
 	SDL_GL_DeleteContext(_context);
 	SDL_DestroyWindow(_window);
@@ -104,28 +104,28 @@ SDLOpenGLDevice::~SDLOpenGLDevice()
 }
 
 
-void SDLOpenGLDevice::update()
+void DeviceSDLGL::update()
 {
 	_processSystemEvents();
 	SDL_GL_SwapWindow(_window);
 }
 
 
-void SDLOpenGLDevice::setWindowTitle(const c8 *title)
+void DeviceSDLGL::setWindowTitle(const c8 *title)
 {
 	SDL_SetWindowTitle(_window, title);
 }
 
 
-sptr<IGPUProgram> SDLOpenGLDevice::createGPUProgram(const str &vsSrc, const str &fsSrc)
+sptr<IGPUProgram> DeviceSDLGL::createGPUProgram(const str &vsSrc, const str &fsSrc)
 {
-	auto program = makePtr<GLSLGPUProgram>(vsSrc, fsSrc);
+	auto program = makePtr<GPUProgramGLSL>(vsSrc, fsSrc);
 	_gpuPrograms.push_back(program);
 	return program;
 }
 
 
-void SDLOpenGLDevice::_processSystemEvents()
+void DeviceSDLGL::_processSystemEvents()
 {
 	SDL_Event evt;
 	while (SDL_PollEvent(&evt))
@@ -146,7 +146,7 @@ void SDLOpenGLDevice::_processSystemEvents()
 }
 
 
-u64 SDLOpenGLDevice::lifetime() const
+u64 DeviceSDLGL::lifetime() const
 {
 	return SDL_GetTicks();
 }

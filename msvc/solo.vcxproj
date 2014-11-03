@@ -33,8 +33,8 @@
     <ClInclude Include="..\include\SoloMaterial.h" />
     <ClInclude Include="..\include\SoloMath.h" />
     <ClInclude Include="..\include\SoloVec3.h" />
-    <ClInclude Include="..\src\platform\SoloGLSLGPUProgram.h" />
-    <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h" />
+    <ClInclude Include="..\src\platform\SoloGPUProgramGLSL.h" />
+    <ClInclude Include="..\src\platform\SoloDeviceSDLGL.h" />
     <ClInclude Include="..\src\SoloFileSystem.h" />
     <ClInclude Include="..\src\SoloCommonsInternal.h" />
     <ClInclude Include="..\src\SoloDevice.h" />
@@ -48,8 +48,8 @@
     <ClCompile Include="..\external\glew\src\glew.c" />
     <ClCompile Include="..\external\glew\src\glewinfo.c" />
     <ClCompile Include="..\external\glew\src\visualinfo.c" />
-    <ClCompile Include="..\src\platform\SoloGLSLGPUProgram.cpp" />
-    <ClCompile Include="..\src\platform\SoloSDLOpenGLDevice.cpp" />
+    <ClCompile Include="..\src\platform\SoloGPUProgramGLSL.cpp" />
+    <ClCompile Include="..\src\platform\SoloDeviceSDLGL.cpp" />
     <ClCompile Include="..\src\SoloFileSystem.cpp" />
     <ClCompile Include="..\src\SoloCommonsInternal.cpp" />
     <ClCompile Include="..\src\SoloDevice.cpp" />

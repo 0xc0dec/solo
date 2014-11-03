@@ -1,10 +1,10 @@
-#include "SoloGLSLGPUProgram.h"
+#include "SoloGPUProgramGLSL.h"
 #include "../SoloLog.h"
 
 using namespace solo;
 
 
-GLSLGPUProgram::GLSLGPUProgram(const str &vsShaderSrc, const str &fsShaderSrc)
+GPUProgramGLSL::GPUProgramGLSL(const str &vsShaderSrc, const str &fsShaderSrc)
 	: GPUProgram(vsShaderSrc, fsShaderSrc)
 {
 	auto vs = _tryCreateShader(GL_VERTEX_SHADER, vsShaderSrc);
@@ -31,7 +31,7 @@ GLSLGPUProgram::GLSLGPUProgram(const str &vsShaderSrc, const str &fsShaderSrc)
 }
 
 
-GLSLGPUProgram::~GLSLGPUProgram()
+GPUProgramGLSL::~GPUProgramGLSL()
 {
 	if (_valid)
 	{
@@ -41,7 +41,7 @@ GLSLGPUProgram::~GLSLGPUProgram()
 }
 
 
-GLint GLSLGPUProgram::_tryCreateProgram(GLuint vs, GLuint fs)
+GLint GPUProgramGLSL::_tryCreateProgram(GLuint vs, GLuint fs)
 {
 	auto program = glCreateProgram();
 	glAttachShader(program, vs);
@@ -68,7 +68,7 @@ GLint GLSLGPUProgram::_tryCreateProgram(GLuint vs, GLuint fs)
 }
 
 
-GLint GLSLGPUProgram::_tryCreateShader(GLuint type, str src)
+GLint GPUProgramGLSL::_tryCreateShader(GLuint type, str src)
 {
 	auto shader = glCreateShader(type);
 

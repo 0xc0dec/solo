@@ -1,16 +1,16 @@
-#ifndef __SOLO_SDL_OPENGL_DEVICE_H__
-#define __SOLO_SDL_OPENGL_DEVICE_H__
+#ifndef __SOLO_DEVICE_SDLGL_H__
+#define __SOLO_DEVICE_SDLGL_H__
 
 #include <SDL.h>
 #include "../SoloDevice.h"
 
 namespace solo
 {
-	class SDLOpenGLDevice : public Device
+	class DeviceSDLGL : public Device
 	{
 	public:
-		explicit SDLOpenGLDevice(const EngineCreationArgs &args);
-		~SDLOpenGLDevice();
+		explicit DeviceSDLGL(const EngineCreationArgs &args);
+		~DeviceSDLGL();
 
 		void setWindowTitle(const c8 *title) override;
 

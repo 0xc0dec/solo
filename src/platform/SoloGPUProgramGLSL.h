@@ -1,16 +1,16 @@
-#ifndef __SOLO_GLSL_GPU_PROGRAM_H__
-#define __SOLO_GLSL_GPU_PROGRAM_H__
+#ifndef __SOLO_GPU_PROGRAM_GLSL_H__
+#define __SOLO_GPU_PROGRAM_GLSL_H__
 
 #include <GL/glew.h>
 #include "../SoloGPUProgram.h"
 
 namespace solo
 {
-	class GLSLGPUProgram: public GPUProgram
+	class GPUProgramGLSL: public GPUProgram
 	{
 	public:
-		GLSLGPUProgram(str const& vsShaderSrc, str const& fsShaderSrc);
-		~GLSLGPUProgram();
+		explicit GPUProgramGLSL(str const& vsShaderSrc, str const& fsShaderSrc);
+		~GPUProgramGLSL();
 
 	private:
 		GLuint _program;

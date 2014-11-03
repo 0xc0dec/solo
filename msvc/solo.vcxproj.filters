@@ -61,17 +61,17 @@
     <ClInclude Include="..\include\SoloMaterial.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h">
-      <Filter>src\platform</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\SoloGPUProgram.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\SoloGLSLGPUProgram.h">
-      <Filter>src\platform</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloIGPUProgram.h">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\SoloDeviceSDLGL.h">
+      <Filter>src\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\SoloGPUProgramGLSL.h">
+      <Filter>src\platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -108,13 +108,13 @@
     <ClCompile Include="..\external\glew\src\visualinfo.c">
       <Filter>src\glew</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\SoloSDLOpenGLDevice.cpp">
-      <Filter>src\platform</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloGPUProgram.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\SoloGLSLGPUProgram.cpp">
+    <ClCompile Include="..\src\platform\SoloDeviceSDLGL.cpp">
+      <Filter>src\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\SoloGPUProgramGLSL.cpp">
       <Filter>src\platform</Filter>
     </ClCompile>
   </ItemGroup>
