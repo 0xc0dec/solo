@@ -1,6 +1,7 @@
 #ifndef __SOLO_DEVICE_H__
 #define __SOLO_DEVICE_H__
 
+#include <list>
 #include "SoloIDevice.h"
 #include "SoloIEngine.h"
 #include "SoloCommonsInternal.h"
@@ -18,14 +19,14 @@ namespace solo
 		bool closeRequested() const { return _closeRequested; }
 
 		/// Returns time elapsed since the engine startup in ms
-		virtual u64 lifetime() = 0;
+		virtual u64 lifetime() const = 0;
 		virtual void update() = 0;
 
 	protected:
 		bool _closeRequested;
 		EngineCreationArgs _creationArgs;
 
-		list<sptr<GPUProgram>> _gpuPrograms;
+		std::list<sptr<GPUProgram>> _gpuPrograms;
 	};
 }
 

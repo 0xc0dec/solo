@@ -1,14 +1,16 @@
 #ifndef __SOLO__GAME_OBJECT_H__
 #define	__SOLO__GAME_OBJECT_H__
 
+#include <map>
 #include "SoloISceneNode.h"
+
 
 namespace solo
 {
 	class SceneNode : public ISceneNode
 	{
 	public:
-		SceneNode(const str &name);
+		explicit SceneNode(const str &name);
 		
 		virtual str name() const override
 		{
@@ -23,7 +25,7 @@ namespace solo
 
 	protected:
 		str _name;
-		dict<str, sptr<IComponent>> _components;
+		std::map<str, sptr<IComponent>> _components;
 	};
 }
 

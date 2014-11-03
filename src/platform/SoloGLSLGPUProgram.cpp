@@ -72,7 +72,7 @@ GLint GLSLGPUProgram::_tryCreateShader(GLuint type, str src)
 {
 	auto shader = glCreateShader(type);
 
-	const c8 *rawSrc = src.c_str();
+	const GLchar *rawSrc = src.c_str();
 	glShaderSource(shader, 1, &rawSrc, nullptr);
 	glCompileShader(shader);
 

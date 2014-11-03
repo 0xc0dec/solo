@@ -146,7 +146,7 @@ void SDLOpenGLDevice::_processSystemEvents()
 }
 
 
-u64 SDLOpenGLDevice::lifetime()
+u64 SDLOpenGLDevice::lifetime() const
 {
 	return SDL_GetTicks();
 }

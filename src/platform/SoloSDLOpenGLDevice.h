@@ -2,7 +2,6 @@
 #define __SOLO_SDL_OPENGL_DEVICE_H__
 
 #include <SDL.h>
-#include <tuple>
 #include "../SoloDevice.h"
 
 namespace solo
@@ -17,7 +16,7 @@ namespace solo
 
 		sptr<IGPUProgram> createGPUProgram(const str &vsSrc, const str &fsSrc) override;
 
-		u64 lifetime() override;
+		u64 lifetime() const override;
 		void update() override;
 
 	private:

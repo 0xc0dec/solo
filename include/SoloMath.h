@@ -70,7 +70,7 @@ namespace solo
 		return std::sqrtf(f);
 	}
 
-	inline f32 sqrt(const f64 x)
+	inline f64 sqrt(const f64 x)
 	{
 		return std::sqrt(x);
 	}

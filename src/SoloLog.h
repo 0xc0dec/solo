@@ -2,7 +2,6 @@
 #define __SOLO_LOG_H__
 
 #include <sstream>
-#include <string>
 #include "SoloCommonsInternal.h"
 
 #define DEBUG(msg) solo::Log(solo::Log::LogLevel::Debug) << msg;
@@ -30,6 +29,7 @@ namespace solo
 
 		Log &operator <<(const c8 *msg);
 		Log &operator <<(s32 i);
+		Log &operator <<(size_t s);
 		Log &operator <<(const str &s);
 
 	private:

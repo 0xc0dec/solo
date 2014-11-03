@@ -52,6 +52,13 @@ Log& Log::operator<<(s32 i)
 }
 
 
+Log& Log::operator<<(size_t s)
+{
+	_buffer << s;
+	return *this;
+}
+
+
 Log& Log::operator<<(const str &s)
 {
 	_buffer << s;

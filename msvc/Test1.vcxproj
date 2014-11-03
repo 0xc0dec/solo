@@ -151,7 +151,7 @@
   <ItemGroup>
     <ProjectReference Include="solo.vcxproj">
       <Project>{278cab21-1cab-49ad-9959-6f97743501fb}</Project>
-      <Private>false</Private>
+      <Private>true</Private>
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
       <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>

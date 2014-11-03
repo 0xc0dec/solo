@@ -6,12 +6,6 @@
 
 namespace solo
 {
-	enum class ShaderType
-	{
-		Vertex,
-		Fragment
-	};
-
 	class GPUProgram: public IGPUProgram
 	{
 	public:
