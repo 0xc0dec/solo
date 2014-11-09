@@ -6,22 +6,22 @@
 namespace solo
 {
 	template <class T>
-	class Vec3d
+	class Vec3
 	{
 	public:
 		T x, y, z;
 
-		Vec3d() : x(0), y(0), z(0) {}
-		Vec3d(T nx, T ny, T nz) : x(nx), y(ny), z(nz) {}
-		Vec3d(const Vec3d<T> &other) : x(other.x), y(other.y), z(other.z) {}
-		explicit Vec3d(T n) : x(n), y(n), z(n) {}
+		Vec3() : x(0), y(0), z(0) {}
+		Vec3(T nx, T ny, T nz) : x(nx), y(ny), z(nz) {}
+		Vec3(const Vec3<T> &other) : x(other.x), y(other.y), z(other.z) {}
+		explicit Vec3(T n) : x(n), y(n), z(n) {}
 
-		Vec3d<T> operator-() const
+		Vec3<T> operator-() const
 		{
-			return Vec3d<T>(-x, -y, -z);
+			return Vec3<T>(-x, -y, -z);
 		}
 
-		Vec3d<T> &operator=(const Vec3d<T> &other)
+		Vec3<T> &operator=(const Vec3<T> &other)
 		{
 			x = other.x;
 			y = other.y;
@@ -29,12 +29,12 @@ namespace solo
 			return *this;
 		}
 
-		Vec3d<T> operator+(const Vec3d<T> &other) const
+		Vec3<T> operator+(const Vec3<T> &other) const
 		{
-			return Vec3d<T>(x + other.x, y + other.y, z + other.z);
+			return Vec3<T>(x + other.x, y + other.y, z + other.z);
 		}
 
-		Vec3d<T> &operator+=(const Vec3d<T> &other)
+		Vec3<T> &operator+=(const Vec3<T> &other)
 		{
 			x += other.x;
 			y += other.y;
@@ -42,12 +42,12 @@ namespace solo
 			return *this;
 		}
 
-		Vec3d<T> operator+(const T val) const
+		Vec3<T> operator+(const T val) const
 		{
-			return Vec3d<T>(x + val, y + val, z + val);
+			return Vec3<T>(x + val, y + val, z + val);
 		}
 
-		Vec3d<T> &operator+=(const T val)
+		Vec3<T> &operator+=(const T val)
 		{
 			x += val;
 			y += val;
@@ -55,12 +55,12 @@ namespace solo
 			return *this;
 		}
 
-		Vec3d<T> operator-(const Vec3d<T> &other) const
+		Vec3<T> operator-(const Vec3<T> &other) const
 		{
-			return Vec3d<T>(x - other.x, y - other.y, z - other.z);
+			return Vec3<T>(x - other.x, y - other.y, z - other.z);
 		}
 
-		Vec3d<T> &operator-=(const Vec3d<T> &other)
+		Vec3<T> &operator-=(const Vec3<T> &other)
 		{
 			x -= other.x;
 			y -= other.y;
@@ -68,12 +68,12 @@ namespace solo
 			return *this;
 		}
 
-		Vec3d<T> operator-(const T val) const
+		Vec3<T> operator-(const T val) const
 		{
-			return Vec3d<T>(x - val, y - val, z - val);
+			return Vec3<T>(x - val, y - val, z - val);
 		}
 
-		Vec3d<T> &operator-=(const T val)
+		Vec3<T> &operator-=(const T val)
 		{
 			x -= val;
 			y -= val;
@@ -81,12 +81,12 @@ namespace solo
 			return *this;
 		}
 
-		Vec3d<T> operator*(const Vec3d<T> &other) const
+		Vec3<T> operator*(const Vec3<T> &other) const
 		{
-			return Vec3d<T>(x * other.x, y * other.y, z * other.z);
+			return Vec3<T>(x * other.x, y * other.y, z * other.z);
 		}
 
-		Vec3d<T> &operator*=(const Vec3d<T> &other)
+		Vec3<T> &operator*=(const Vec3<T> &other)
 		{
 			x *= other.x;
 			y *= other.y;
@@ -94,12 +94,12 @@ namespace solo
 			return *this;
 		}
 
-		Vec3d<T> operator*(const T v) const
+		Vec3<T> operator*(const T v) const
 		{
-			return Vec3d<T>(x * v, y * v, z * v);
+			return Vec3<T>(x * v, y * v, z * v);
 		}
 
-		Vec3d<T> &operator*=(const T v)
+		Vec3<T> &operator*=(const T v)
 		{
 			x *= v;
 			y *= v;
@@ -107,12 +107,12 @@ namespace solo
 			return *this;
 		}
 
-		Vec3d<T> operator/(const Vec3d<T> &other) const
+		Vec3<T> operator/(const Vec3<T> &other) const
 		{
-			return Vec3d<T>(x / other.x, y / other.y, z / other.z);
+			return Vec3<T>(x / other.x, y / other.y, z / other.z);
 		}
 
-		Vec3d<T> &operator/=(const Vec3d<T> &other)
+		Vec3<T> &operator/=(const Vec3<T> &other)
 		{
 			x /= other.x;
 			y /= other.y;
@@ -120,13 +120,13 @@ namespace solo
 			return *this;
 		}
 
-		Vec3d<T> operator/(const T v) const
+		Vec3<T> operator/(const T v) const
 		{
 			T i = static_cast<T>(1.0) / v;
-			return Vec3d<T>(x * i, y * i, z * i);
+			return Vec3<T>(x * i, y * i, z * i);
 		}
 
-		Vec3d<T> &operator/=(const T v)
+		Vec3<T> &operator/=(const T v)
 		{
 			T i = static_cast<T>(1.0) / v;
 			x *= i;
@@ -135,52 +135,52 @@ namespace solo
 			return *this;
 		}
 
-		bool operator <=(const Vec3d<T> &other) const
+		bool operator <=(const Vec3<T> &other) const
 		{
 			return 	(x < other.x || solo::equals(x, other.x)) ||
 				(solo::equals(x, other.x) && (y < other.y || solo::equals(y, other.y))) ||
 				(solo::equals(x, other.x) && solo::equals(y, other.y) && (z < other.z || solo::equals(z, other.z)));
 		}
 
-		bool operator >=(const Vec3d<T> &other) const
+		bool operator >=(const Vec3<T> &other) const
 		{
 			return (x > other.x || solo::equals(x, other.x)) ||
 				(solo::equals(x, other.x) && (y > other.y || solo::equals(y, other.y))) ||
 				(solo::equals(x, other.x) && solo::equals(y, other.y) && (z > other.z || solo::equals(z, other.z)));
 		}
 
-		bool operator <(const Vec3d<T> &other) const
+		bool operator <(const Vec3<T> &other) const
 		{
 			return (x < other.x && !solo::equals(x, other.x)) ||
 				(solo::equals(x, other.x) && y < other.y && !solo::equals(y, other.y)) ||
 				(solo::equals(x, other.x) && solo::equals(y, other.y) && z < other.z && !solo::equals(z, other.z));
 		}
 
-		bool operator >(const Vec3d<T> &other) const
+		bool operator >(const Vec3<T> &other) const
 		{
 			return (x > other.x && !solo::equals(x, other.x)) ||
 				(solo::equals(x, other.x) && y > other.y && !solo::equals(y, other.y)) ||
 				(solo::equals(x, other.x) && solo::equals(y, other.y) && z > other.z && !solo::equals(z, other.z));
 		}
 
-		bool operator ==(const Vec3d<T> &other) const
+		bool operator ==(const Vec3<T> &other) const
 		{
 			return this->equals(other);
 		}
 
-		bool operator !=(const Vec3d<T> &other) const
+		bool operator !=(const Vec3<T> &other) const
 		{
 			return !this->equals(other);
 		}
 
-		bool equals(const Vec3d<T> &other, const T tolerance = static_cast<T>(ROUNDING_ERROR_f32)) const
+		bool equals(const Vec3<T> &other, const T tolerance = static_cast<T>(ROUNDING_ERROR_F32)) const
 		{
 			return solo::equals(x, other.x, tolerance) &&
 				solo::equals(y, other.y, tolerance) &&
 				solo::equals(z, other.z, tolerance);
 		}
 
-		Vec3d<T> &set(const T nx, const T ny, const T nz)
+		Vec3<T> &set(const T nx, const T ny, const T nz)
 		{
 			x = nx;
 			y = ny;
@@ -188,7 +188,7 @@ namespace solo
 			return *this;
 		}
 
-		Vec3d<T> &set(const Vec3d<T> &p)
+		Vec3<T> &set(const Vec3<T> &p)
 		{
 			x = p.x;
 			y = p.y;
@@ -206,33 +206,33 @@ namespace solo
 			return x * x + y * y + z * z;
 		}
 
-		T dot(const Vec3d<T> &other) const
+		T dot(const Vec3<T> &other) const
 		{
 			return x * other.x + y * other.y + z * other.z;
 		}
 
-		T getDistanceFrom(const Vec3d<T> &other) const
+		T getDistanceFrom(const Vec3<T> &other) const
 		{
-			return Vec3d<T>(x - other.x, y - other.y, z - other.z).getLength();
+			return Vec3<T>(x - other.x, y - other.y, z - other.z).getLength();
 		}
 
-		T getSquaredDistanceFrom(const Vec3d<T> &other) const
+		T getSquaredDistanceFrom(const Vec3<T> &other) const
 		{
-			return Vec3d<T>(x - other.x, y - other.y, z - other.z).getSquaredLength();
+			return Vec3<T>(x - other.x, y - other.y, z - other.z).getSquaredLength();
 		}
 
-		Vec3d<T> crossProduct(const Vec3d<T> &p) const
+		Vec3<T> crossProduct(const Vec3<T> &p) const
 		{
-			return Vec3d<T>(y * p.z - z * p.y, z * p.x - x * p.z, x * p.y - y * p.x);
+			return Vec3<T>(y * p.z - z * p.y, z * p.x - x * p.z, x * p.y - y * p.x);
 		}
 
-		bool isBetweenPoints(const Vec3d<T> &begin, const Vec3d<T> &end) const
+		bool isBetweenPoints(const Vec3<T> &begin, const Vec3<T> &end) const
 		{
 			const T f = (end - begin).getLengthSquared();
 			return getSquaredDistanceFrom(begin) <= f && getSquaredDistanceFrom(end) <= f;
 		}
 
-		Vec3d<T> &normalize()
+		Vec3<T> &normalize()
 		{
 			f64 length = x * x + y * y + z * z;
 			if (length == 0)
@@ -245,13 +245,13 @@ namespace solo
 			return *this;
 		}
 
-		Vec3d<T> &setLength(T newlength)
+		Vec3<T> &setLength(T newlength)
 		{
 			normalize();
 			return (*this *= newlength);
 		}
 
-		Vec3d<T> &invert()
+		Vec3<T> &invert()
 		{
 			x *= -1;
 			y *= -1;
@@ -259,6 +259,8 @@ namespace solo
 			return *this;
 		}
 	};
+
+	typedef Vec3<f32> Vec3f;
 }
 
 #endif

@@ -16,6 +16,7 @@ void SceneNode::addComponent(sptr<IComponent> cmp)
 	if (findComponent(cmp->id()))
 		throw EngineException("Component with same id already exists");
 	_components[cmp->id()] = cmp;
+	_newComponents.push_back(cmp);
 }
 
 
@@ -37,6 +38,13 @@ sptr<IComponent> SceneNode::findComponent(const str &id)
 
 void SceneNode::update()
 {
+	if (_newComponents.size() > 0)
+	{
+		for (auto cmp : _newComponents)
+			cmp->start();
+		_newComponents.clear();
+	}
+
 	for (auto cmp: _components)
 		cmp.second->update();
 }

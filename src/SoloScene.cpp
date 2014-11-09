@@ -4,6 +4,11 @@
 using namespace solo;
 
 
+Scene::Scene()
+{
+}
+
+
 sptr<ISceneNode> Scene::createNode(const str &name)
 {
 	auto node = std::make_shared<SceneNode>(name);

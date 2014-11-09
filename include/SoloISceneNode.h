@@ -18,10 +18,11 @@ namespace solo
 		virtual void addComponent(sptr<IComponent> cmp) = 0;
 		virtual sptr<IComponent> findComponent(const str &id) = 0;
 		virtual sptr<IComponent> getComponent(const str &id) = 0;
+		virtual std::map<str, sptr<IComponent>> components() const = 0;
 
 		template <typename TComponent> sptr<TComponent> addComponent()
 		{
-			auto cmp = makePtr<TComponent>();
+			auto cmp = makePtr<TComponent>(this);
 			auto base = castStatic<IComponent>(cmp);
 			addComponent(base);
 			return cmp;

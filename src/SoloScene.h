@@ -1,7 +1,7 @@
 #ifndef __SOLO_SCENE_H__
 #define __SOLO_SCENE_H__
 
-#include <list>
+#include "SoloCommonsInternal.h"
 #include "SoloIScene.h"
 
 namespace solo
@@ -11,6 +11,8 @@ namespace solo
 	class Scene: public IScene
 	{
 	public:
+		explicit Scene();
+
 		virtual sptr<ISceneNode> createNode(const str &name) override;
 		
 		void update();

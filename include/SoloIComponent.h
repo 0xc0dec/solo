@@ -6,13 +6,25 @@
 
 namespace solo
 {
+	class ISceneNode;
+
 	class IComponent
 	{
 	public:
+		explicit IComponent(ISceneNode *node)
+			: _node(node)
+		{
+		}
+
 		virtual ~IComponent() {}
 
 		virtual str id() = 0;
+
 		virtual void update() {}
+		virtual void start() {}
+
+	protected:
+		ISceneNode *_node;
 	};
 }
 

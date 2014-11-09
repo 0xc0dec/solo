@@ -1,9 +1,8 @@
 #ifndef __SOLO__GAME_OBJECT_H__
 #define	__SOLO__GAME_OBJECT_H__
 
-#include <map>
+#include "SoloCommonsInternal.h"
 #include "SoloISceneNode.h"
-
 
 namespace solo
 {
@@ -21,11 +20,17 @@ namespace solo
 		virtual sptr<IComponent> findComponent(const str &id) override;
 		virtual sptr<IComponent> getComponent(const str &id) override;
 
+		std::map<str, sptr<IComponent>> components() const override
+		{
+			return _components;
+		}
+
 		void update();
 
 	protected:
 		str _name;
 		std::map<str, sptr<IComponent>> _components;
+		std::list<sptr<IComponent>> _newComponents;
 	};
 }
 

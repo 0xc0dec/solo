@@ -29,6 +29,11 @@ const c8 *testFragmentShader =
 class TestComponent: public IComponent
 {
 public:
+	TestComponent(ISceneNode *node)
+		: IComponent(node)
+	{
+	}
+
 	static str componentId()
 	{
 		return "TestComponent";
@@ -38,7 +43,12 @@ public:
 
 	virtual void update() override
 	{
+		
+	}
 
+	virtual void start() override
+	{
+		LOG("Component " << id() << " started on node " << _node->name());
 	}
 };
 
@@ -51,7 +61,7 @@ public:
 	{
 	}
 
-	void onEngineStarted() override
+	void processEngineStartedEvent() override
 	{
 		_engine->device()->setWindowTitle("Test title");
 		
@@ -65,16 +75,15 @@ public:
 		LOG("Program compilation log: " << program->log());
 	}
 
-	void onEngineStopped() override
-	{
-
-	}
-
-	void onBeforeFrame() override
+	void processEngineStoppedEvent() override
 	{
 	}
 
-	bool onDeviceCloseRequested() override
+	void processBeforeFrameEvent() override
+	{
+	}
+
+	bool processDeviceCloseRequestedEvent() override
 	{
 		return true;
 	}

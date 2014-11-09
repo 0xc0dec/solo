@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <functional>
+#include <map>
 
 #define castDynamic std::dynamic_pointer_cast
 #define castStatic std::static_pointer_cast

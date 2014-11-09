@@ -10,10 +10,10 @@ namespace solo
 	public:
 		virtual ~IEngineCallback() {}
 
-		virtual bool onDeviceCloseRequested() = 0;
-		virtual void onEngineStarted() = 0;
-		virtual void onEngineStopped() = 0;
-		virtual void onBeforeFrame() = 0;
+		virtual bool processDeviceCloseRequestedEvent() = 0;
+		virtual void processEngineStartedEvent() = 0;
+		virtual void processEngineStoppedEvent() = 0;
+		virtual void processBeforeFrameEvent() = 0;
 	};
 }
 

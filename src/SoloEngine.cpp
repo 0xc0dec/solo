@@ -10,10 +10,10 @@ using namespace solo;
 class EmptyEngineCallback: public IEngineCallback
 {
 public:
-	bool onDeviceCloseRequested() override { return true; }
-	void onEngineStarted() override {}
-	void onEngineStopped() override {}
-	void onBeforeFrame() override {}
+	bool processDeviceCloseRequestedEvent() override { return true; }
+	void processEngineStartedEvent() override {}
+	void processEngineStoppedEvent() override {}
+	void processBeforeFrameEvent() override {}
 } emptyCallback;
 
 
@@ -42,22 +42,22 @@ void Engine::_run(const EngineCreationArgs &args)
 	INFO("Creating scene");
 	_scene = makePtr<Scene>();
 
-	_callback->onEngineStarted();
+	_callback->processEngineStartedEvent();
 
 	while (true)
 	{
 		auto time = _device->lifetime();
 		_deltaTime = (time - _lastUpdateTime) / 1000.0f;
 		_lastUpdateTime = time;
-		_callback->onBeforeFrame();
+		_callback->processBeforeFrameEvent();
 		_device->update();
 		_scene->update();
-		if (_device->closeRequested() && _callback->onDeviceCloseRequested())
+		if (_device->closeRequested() && _callback->processDeviceCloseRequestedEvent())
 			break;
 	}
 
 	INFO("Stopping engine");
-	_callback->onEngineStopped();
+	_callback->processEngineStoppedEvent();
 	_device.reset();
 	_scene.reset();
 	

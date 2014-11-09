@@ -32,6 +32,7 @@
     <ClInclude Include="..\include\SoloIGPUProgram.h" />
     <ClInclude Include="..\include\SoloMaterial.h" />
     <ClInclude Include="..\include\SoloMath.h" />
+    <ClInclude Include="..\include\SoloMatrix4.h" />
     <ClInclude Include="..\include\SoloVec3.h" />
     <ClInclude Include="..\src\platform\SoloGPUProgramGLSL.h" />
     <ClInclude Include="..\src\platform\SoloDeviceSDLGL.h" />
