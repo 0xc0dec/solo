@@ -34,9 +34,6 @@
     <ClInclude Include="..\include\SoloIEngineCallback.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloVec3.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloMath.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -74,6 +71,36 @@
       <Filter>src\platform</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloMatrix4.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloVector2.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloVector3.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloQuaternion.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloMatrix3.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloVector4.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloPlane.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloSphere.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloAxisAlignedBox.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloRay.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloPlaneBoundedVolume.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

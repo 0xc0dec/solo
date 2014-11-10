@@ -5,10 +5,14 @@
 #include <string>
 #include <functional>
 #include <map>
+#include <list>
+#include <vector>
+#include <cassert>
+#include <algorithm>
 
-#define castDynamic std::dynamic_pointer_cast
-#define castStatic std::static_pointer_cast
-#define makePtr std::make_shared
+#define castDynamic	std::dynamic_pointer_cast
+#define castStatic	std::static_pointer_cast
+#define makePtr		std::make_shared
 
 namespace solo
 {
