@@ -66,9 +66,14 @@
     <ClCompile Include="..\src\SoloEngine.cpp" />
     <ClCompile Include="..\src\SoloLog.cpp" />
     <ClCompile Include="..\src\SoloMaterial.cpp" />
+    <ClCompile Include="..\src\SoloMath.cpp" />
+    <ClCompile Include="..\src\SoloQuaternion.cpp" />
     <ClCompile Include="..\src\SoloScene.cpp" />
     <ClCompile Include="..\src\SoloSceneNode.cpp" />
     <ClCompile Include="..\src\SoloGPUProgram.cpp" />
+    <ClCompile Include="..\src\SoloVector2.cpp" />
+    <ClCompile Include="..\src\SoloVector3.cpp" />
+    <ClCompile Include="..\src\SoloVector4.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{278CAB21-1CAB-49AD-9959-6F97743501FB}</ProjectGuid>

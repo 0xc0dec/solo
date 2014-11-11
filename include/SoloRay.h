@@ -11,6 +11,7 @@ namespace solo
 	protected:
 		Vector3 mOrigin;
 		Vector3 mDirection;
+		
 	public:
 		Ray() :mOrigin(Vector3::ZERO), mDirection(Vector3::UNIT_Z)
 		{

@@ -6,6 +6,7 @@
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 #include "SoloAxisAlignedBox.h"
+#include "SoloRay.h"
 
 namespace solo
 {
@@ -739,8 +740,7 @@ namespace solo
 		If the point is outside the triangle, <b>false</b> is
 		returned.
 		*/
-		static bool pointInTri2D(const Vector2& p, const Vector2& a,
-								const Vector2& b, const Vector2& c);
+		static bool pointInTri2D(const Vector2& p, const Vector2& a, const Vector2& b, const Vector2& c);
 
 		/** Checks whether a given 3D point is inside a triangle.
 		@remarks
@@ -800,8 +800,7 @@ namespace solo
 		If the ray isn't intersects the box, <b>false</b> is returned, and
 		<i>d1</i> and <i>d2</i> is unmodified.
 		*/
-		static bool intersects(const Ray& ray, const AxisAlignedBox& box,
-								f32* d1, f32* d2);
+		static bool intersects(const Ray& ray, const AxisAlignedBox& box, f32* d1, f32* d2);
 
 		/** Ray / triangle intersection, returns boolean result and distance.
 		@param
@@ -866,9 +865,7 @@ namespace solo
 		@param plaeList List of planes which form a convex volume
 		@param normalIsOutside Does the normal point outside the volume
 		*/
-		static std::pair<bool, f32> intersects(
-			const Ray& ray, const std::vector<Plane>& planeList,
-			bool normalIsOutside);
+		static std::pair<bool, f32> intersects(const Ray& ray, const std::vector<Plane>& planeList, bool normalIsOutside);
 		/** Ray / convex plane list intersection test.
 		@param ray The ray to test with
 		@param plaeList List of planes which form a convex volume
@@ -885,12 +882,10 @@ namespace solo
 
 		/** Compare 2 f32s, using tolerance for inaccuracies.
 		*/
-		static bool f32Equal(f32 a, f32 b,
-							f32 tolerance = std::numeric_limits<f32>::epsilon());
+		static bool f32Equal(f32 a, f32 b, f32 tolerance = std::numeric_limits<f32>::epsilon());
 
 		/** Calculates the tangent space vector for a given set of positions / texture coords. */
-		static Vector3 calculateTangentSpaceVector(
-			const Vector3& position1, const Vector3& position2, const Vector3& position3,
+		static Vector3 calculateTangentSpaceVector(const Vector3& position1, const Vector3& position2, const Vector3& position3,
 			f32 u1, f32 v1, f32 u2, f32 v2, f32 u3, f32 v3);
 
 		/** Build a reflection matrix for the passed in plane. */
