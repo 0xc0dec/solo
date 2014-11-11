@@ -1,4 +1,8 @@
 #include "SoloMath.h"
+#include "SoloVector2.h"
+#include "SoloVector3.h"
+#include "SoloPlane.h"
+#include "SoloRay.h"
 
 using namespace solo;
 

@@ -1,7 +1,7 @@
 #ifndef __SOLO_EXCEPTION_H__
 #define __SOLO_EXCEPTION_H__
 
-#include "SoloCommons.h"
+#include "SoloCommon.h"
 
 namespace solo
 {

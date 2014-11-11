@@ -4,7 +4,7 @@
 #include <list>
 #include "SoloIDevice.h"
 #include "SoloIEngine.h"
-#include "SoloCommonsInternal.h"
+#include "SoloCommonInternal.h"
 
 namespace solo
 {

@@ -1,6 +1,6 @@
 #include "SoloSceneNode.h"
 #include "SoloException.h"
-#include "SoloCommonsInternal.h"
+#include "SoloCommonInternal.h"
 
 using namespace solo;
 

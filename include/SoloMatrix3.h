@@ -1,7 +1,7 @@
 #ifndef __SOLO_MATRIX3_H__
 #define __SOLO_MATRIX3_H__
 
-#include "SoloCommons.h"
+#include "SoloCommon.h"
 #include "SoloMath.h"
 #include "SoloVector3.h"
 

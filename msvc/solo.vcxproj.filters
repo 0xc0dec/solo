@@ -4,14 +4,8 @@
     <ClInclude Include="..\include\Solo.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloCommons.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloIEngine.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloCommonsInternal.h">
-      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\src\SoloEngine.h">
       <Filter>src</Filter>
@@ -103,11 +97,14 @@
     <ClInclude Include="..\include\SoloPlaneBoundedVolume.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloCommon.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloCommonInternal.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\SoloCommonsInternal.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloEngine.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -160,6 +157,21 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloQuaternion.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloAxisAlignedBox.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloMatrix3.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloMatrix4.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloPlane.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloCommonInternal.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

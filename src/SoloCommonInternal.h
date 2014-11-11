@@ -1,7 +1,7 @@
 #ifndef __SOLO_COMMONS_INTERNAL_H__
 #define __SOLO_COMMONS_INTERNAL_H__
 
-#include "SoloCommons.h"
+#include "SoloCommon.h"
 
 namespace solo
 {

@@ -2,15 +2,21 @@
 #define __SOLO_MATH_H__
 
 #include <cmath>
-#include "SoloCommons.h"
-#include "SoloVector2.h"
-#include "SoloVector3.h"
-#include "SoloAxisAlignedBox.h"
-#include "SoloRay.h"
+#include "SoloCommon.h"
+
 
 namespace solo
 {
+	class AxisAlignedBox;
 	class Degree;
+	class Vector2;
+	class Vector3;
+	class Vector4;
+	class Ray;
+	class Sphere;
+	class Plane;
+	class Quaternion;
+	class Matrix4;
 
 	class Radian
 	{
@@ -149,7 +155,6 @@ namespace solo
 	private:
 		f32 _value;
 	};
-
 
 	class Degree
 	{
@@ -926,6 +931,56 @@ namespace solo
 		static const f32 fDeg2Rad;
 		static const f32 fRad2Deg;
 	};
+
+	inline f32 Radian::valueDegrees() const
+	{
+		return Math::RadiansToDegrees(_value);
+	}
+
+	inline f32 Radian::valueAngleUnits() const
+	{
+		return Math::RadiansToAngleUnits(_value);
+	}
+
+	inline f32 Degree::valueRadians() const
+	{
+		return Math::DegreesToRadians(_value);
+	}
+
+	inline f32 Degree::valueAngleUnits() const
+	{
+		return Math::DegreesToAngleUnits(_value);
+	}
+
+	inline Angle::operator Radian() const
+	{
+		return Radian(Math::AngleUnitsToRadians(_value));
+	}
+
+	inline Angle::operator Degree() const
+	{
+		return Degree(Math::AngleUnitsToDegrees(_value));
+	}
+
+	inline Radian operator * (f32 a, const Radian& b)
+	{
+		return Radian(a * b.valueRadians());
+	}
+
+	inline Radian operator / (f32 a, const Radian& b)
+	{
+		return Radian(a / b.valueRadians());
+	}
+
+	inline Degree operator * (f32 a, const Degree& b)
+	{
+		return Degree(a * b.valueDegrees());
+	}
+
+	inline Degree operator / (f32 a, const Degree& b)
+	{
+		return Degree(a / b.valueDegrees());
+	}
 }
 
 #endif

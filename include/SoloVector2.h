@@ -1,6 +1,7 @@
 #ifndef __SOLO_VECTOR2_H__
 #define __SOLO_VECTOR2_H__
 
+#include "SoloCommon.h"
 #include "SoloMath.h"
 
 namespace solo

@@ -1,7 +1,7 @@
 #ifndef __SOLO_I_DEVICE_H__
 #define __SOLO_I_DEVICE_H__
 
-#include "SoloCommons.h"
+#include "SoloCommon.h"
 
 namespace solo
 {

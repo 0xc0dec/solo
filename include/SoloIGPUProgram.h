@@ -1,7 +1,7 @@
 #ifndef __SOLO_I_GPU_PROGRAM_H__
 #define __SOLO_I_GPU_PROGRAM_H__
 
-#include "SoloCommons.h"
+#include "SoloCommon.h"
 
 namespace solo
 {

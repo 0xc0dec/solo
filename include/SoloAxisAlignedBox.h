@@ -1,12 +1,10 @@
 #ifndef __SOLO_AXIS_ALIGNED_BOX_H__
 #define __SOLO_AXIS_ALIGNED_BOX_H__
 
+#include "SoloCommon.h"
 #include "SoloMath.h"
-#include "SoloCommons.h"
 #include "SoloVector3.h"
-#include "SoloMatrix4.h"
-#include "SoloPlane.h"
-#include "SoloSphere.h"
+
 
 namespace solo
 {

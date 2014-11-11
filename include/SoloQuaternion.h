@@ -1,13 +1,14 @@
 #ifndef __SOLO_QUATERNION_H__
 #define __SOLO_QUATERNION_H__
 
+#include "SoloCommon.h"
 #include "SoloMath.h"
-#include "SoloCommons.h"
-#include "SoloVector3.h"
-#include "SoloMatrix3.h"
 
 namespace solo
 {
+	class Vector3;
+	class Matrix3;
+
 	class Quaternion
 	{
 	public:

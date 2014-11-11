@@ -1,7 +1,7 @@
 #ifndef __SOLO_PLANE_BOUNDED_VOLUME_H__
 #define __SOLO_PLANE_BOUNDED_VOLUME_H__
 
-#include "SoloCommons.h"
+#include "SoloCommon.h"
 #include "SoloPlane.h"
 #include "SoloRay.h"
 

@@ -2,10 +2,9 @@
 #define __SOLO_MATRIX4_H__
 
 #include "SoloMath.h"
-#include "SoloMatrix3.h"
-#include "SoloVector3.h"
-#include "SoloVector4.h"
 #include "SoloPlane.h"
+#include "SoloMatrix3.h"
+#include "SoloVector4.h"
 
 namespace solo
 {

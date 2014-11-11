@@ -1,5 +1,4 @@
-#include <functional>
-#include "SoloCommonsInternal.h"
+#include "SoloCommonInternal.h"
 #include "SoloEngine.h"
 
 using namespace solo;

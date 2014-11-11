@@ -1,7 +1,7 @@
 #ifndef __SOLO_H__
 #define __SOLO_H__
 
-#include "SoloCommons.h"
+#include "SoloCommon.h"
 #include "SoloException.h"
 #include "SoloIComponent.h"
 #include "SoloIDevice.h"
