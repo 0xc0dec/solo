@@ -878,7 +878,7 @@ namespace solo
 		static Pair<bool, f32> intersects(const Ray& ray, const List<Plane>& planeList, bool normalIsOutside);
 
 		/** Sphere / plane intersection test.
-		@remarks NB just do a plane.getDistance(sphere.getCenter()) for more detail!
+		@remarks NB just do a plane.getDistance(sphere.center()) for more detail!
 		*/
 		static bool intersects(const Sphere& sphere, const Plane& plane);
 

@@ -446,8 +446,8 @@ Pair<bool, f32> Math::intersects(const Ray& ray, const AxisAlignedBox& box)
 	f32 t;
 	bool hit = false;
 	Vector3 hitpoint;
-	const Vector3& min = box.getMinimum();
-	const Vector3& max = box.getMaximum();
+	const Vector3& min = box.minimum();
+	const Vector3& max = box.maximum();
 	const Vector3& rayorig = ray.getOrigin();
 	const Vector3& raydir = ray.getDirection();
 
@@ -577,8 +577,8 @@ bool Math::intersects(const Ray& ray, const AxisAlignedBox& box, f32* d1, f32* d
 		return true;
 	}
 
-	const Vector3& min = box.getMinimum();
-	const Vector3& max = box.getMaximum();
+	const Vector3& min = box.minimum();
+	const Vector3& max = box.maximum();
 	const Vector3& rayorig = ray.getOrigin();
 	const Vector3& raydir = ray.getDirection();
 
@@ -759,8 +759,8 @@ bool Math::intersects(const Sphere& sphere, const AxisAlignedBox& box)
 	// Use splitting planes
 	const Vector3& center = sphere.getCenter();
 	f32 radius = sphere.getRadius();
-	const Vector3& min = box.getMinimum();
-	const Vector3& max = box.getMaximum();
+	const Vector3& min = box.minimum();
+	const Vector3& max = box.maximum();
 
 	// Arvo's algorithm
 	f32 s, d = 0;
@@ -913,8 +913,8 @@ Matrix4 Math::makeViewMatrix(const Vector3& position, const Quaternion& orientat
 
 f32 Math::boundingRadiusFromAABB(const AxisAlignedBox& aabb)
 {
-	Vector3 max = aabb.getMaximum();
-	Vector3 min = aabb.getMinimum();
+	Vector3 max = aabb.maximum();
+	Vector3 min = aabb.minimum();
 
 	Vector3 magnitude = max;
 	magnitude.makeCeil(-max);

@@ -37,9 +37,9 @@ namespace solo
 			if (box.isInfinite()) return true;
 
 			// Get centre of the box
-			Vector3 centre = box.getCenter();
+			Vector3 centre = box.center();
 			// Get the half-size of the box
-			Vector3 halfSize = box.getHalfSize();
+			Vector3 halfSize = box.halfSize();
 
 			PlaneList::const_iterator i, iend;
 			iend = planes.end();

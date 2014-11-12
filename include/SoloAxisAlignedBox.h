@@ -63,15 +63,15 @@ namespace solo
 			_extent = e;
 		}
 
-		inline AxisAlignedBox(const AxisAlignedBox& rkBox)
+		inline AxisAlignedBox(const AxisAlignedBox& box)
 			: _min(Vector3::ZERO), _max(Vector3::UNIT_SCALE), _corners(nullptr)
 		{
-			if (rkBox.isNull())
+			if (box.isNull())
 				setNull();
-			else if (rkBox.isInfinite())
+			else if (box.isInfinite())
 				setInfinite();
 			else
-				setExtents(rkBox._min, rkBox._max);
+				setExtents(box._min, box._max);
 		}
 
 		inline AxisAlignedBox(const Vector3& min, const Vector3& max)
@@ -86,15 +86,15 @@ namespace solo
 			setExtents(mx, my, mz, Mx, My, Mz);
 		}
 
-		AxisAlignedBox& operator=(const AxisAlignedBox& rhs)
+		AxisAlignedBox& operator=(const AxisAlignedBox& other)
 		{
 			// Specifically override to avoid copying _corners
-			if (rhs.isNull())
+			if (other.isNull())
 				setNull();
-			else if (rhs.isInfinite())
+			else if (other.isInfinite())
 				setInfinite();
 			else
-				setExtents(rhs._min, rhs._max);
+				setExtents(other._min, other._max);
 
 			return *this;
 		}
@@ -105,22 +105,22 @@ namespace solo
 				delete _corners;
 		}
 
-		inline const Vector3& getMinimum(void) const
+		inline const Vector3& minimum(void) const
 		{
 			return _min;
 		}
 
-		inline Vector3& getMinimum(void)
+		inline Vector3& minimum(void)
 		{
 			return _min;
 		}
 
-		inline const Vector3& getMaximum(void) const
+		inline const Vector3& maximum(void) const
 		{
 			return _max;
 		}
 
-		inline Vector3& getMaximum(void)
+		inline Vector3& maximum(void)
 		{
 			return _max;
 		}
@@ -233,7 +233,7 @@ namespace solo
 		</pre>
 		@remarks as this implementation uses a static member, make sure to use your own copy !
 		*/
-		inline const Vector3* getAllCorners(void) const
+		inline const Vector3* allCorners(void) const
 		{
 			assert((_extent == EXTENT_FINITE) && "Can't get corners of a null or infinite AAB");
 
@@ -271,7 +271,7 @@ namespace solo
 			return _corners;
 		}
 
-		Vector3 getCorner(CornerEnum cornerToGet) const
+		Vector3 corner(CornerEnum cornerToGet) const
 		{
 			switch (cornerToGet)
 			{
@@ -318,24 +318,24 @@ namespace solo
 			}
 		}
 
-		void merge(const AxisAlignedBox& rhs)
+		void merge(const AxisAlignedBox& other)
 		{
 			// Do nothing if rhs null, or this is infinite
-			if ((rhs._extent == EXTENT_NULL) || (_extent == EXTENT_INFINITE))
+			if ((other._extent == EXTENT_NULL) || (_extent == EXTENT_INFINITE))
 				return;
-			// Otherwise if rhs is infinite, make this infinite, too
-			if (rhs._extent == EXTENT_INFINITE)
+			// Otherwise if other is infinite, make this infinite, too
+			if (other._extent == EXTENT_INFINITE)
 				_extent = EXTENT_INFINITE;
-			// Otherwise if current null, just take rhs
+			// Otherwise if current null, just take other
 			else if (_extent == EXTENT_NULL)
-				setExtents(rhs._min, rhs._max);
+				setExtents(other._min, other._max);
 			// Otherwise merge
 			else
 			{
 				Vector3 min = _min;
 				Vector3 max = _max;
-				max.makeCeil(rhs._max);
-				min.makeFloor(rhs._min);
+				max.makeCeil(other._max);
+				min.makeFloor(other._min);
 
 				setExtents(min, max);
 			}
@@ -445,8 +445,8 @@ namespace solo
 			if (_extent != EXTENT_FINITE)
 				return;
 
-			Vector3 centre = getCenter();
-			Vector3 halfSize = getHalfSize();
+			Vector3 centre = center();
+			Vector3 halfSize = this->halfSize();
 
 			Vector3 newCentre = m.transformAffine(centre);
 			Vector3 newHalfSize(
@@ -529,8 +529,8 @@ namespace solo
 			Vector3 intMin = _min;
 			Vector3 intMax = _max;
 
-			intMin.makeCeil(b2.getMinimum());
-			intMax.makeFloor(b2.getMaximum());
+			intMin.makeCeil(b2.minimum());
+			intMax.makeFloor(b2.maximum());
 
 			// Check intersection isn't null
 			if (intMin.x < intMax.x &&
@@ -608,7 +608,7 @@ namespace solo
 			}
 		}
 
-		Vector3 getCenter(void) const
+		Vector3 center(void) const
 		{
 			assert((_extent == EXTENT_FINITE) && "Can't get center of a null or infinite AAB");
 
@@ -618,7 +618,7 @@ namespace solo
 				(_max.z + _min.z) * 0.5f);
 		}
 
-		Vector3 getSize(void) const
+		Vector3 size(void) const
 		{
 			switch (_extent)
 			{
@@ -640,7 +640,7 @@ namespace solo
 			}
 		}
 
-		Vector3 getHalfSize(void) const
+		Vector3 halfSize(void) const
 		{
 			switch (_extent)
 			{

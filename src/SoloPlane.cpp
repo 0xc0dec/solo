@@ -63,7 +63,7 @@ Plane::Side Plane::getSide(const AxisAlignedBox& box) const
 	if (box.isInfinite())
 		return BOTH_SIDE;
 
-	return getSide(box.getCenter(), box.getHalfSize());
+	return getSide(box.center(), box.halfSize());
 }
 
 Plane::Side Plane::getSide(const Vector3& centre, const Vector3& halfSize) const
