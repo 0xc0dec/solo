@@ -10,13 +10,19 @@
 #include <cassert>
 #include <algorithm>
 
-#define castDynamic	std::dynamic_pointer_cast
-#define castStatic	std::static_pointer_cast
-#define makePtr		std::make_shared
 
 namespace solo
 {
-	template <typename T> using sptr = std::shared_ptr<T>;
+#	define castDynamic	std::dynamic_pointer_cast
+#	define castStatic	std::static_pointer_cast
+#	define makePtr		std::make_shared
+
+#	define List			std::list
+#	define Map			std::map
+#	define Array		std::vector
+#	define Pair			std::pair
+
+	template <typename T> using ptr = std::shared_ptr<T>;
 
 	typedef float			f32;
 	typedef double			f64;
@@ -29,10 +35,10 @@ namespace solo
 
 	typedef char			c8;
 
-	typedef std::string		str;
-	typedef std::wstring	wstr;
+	typedef std::string		String;
+	typedef std::wstring	WideString;
 
-	extern "C" size_t computeHash(const str &s);
+	extern "C" size_t computeHash(const String &s);
 }
 
 #endif

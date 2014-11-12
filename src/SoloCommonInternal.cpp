@@ -10,7 +10,7 @@ extern "C" IEngine *getEngine()
 }
 
 
-extern "C" size_t computeHash(const str &s)
+extern "C" size_t computeHash(const String &s)
 {
-	return std::hash<str>()(s);
+	return std::hash<String>()(s);
 }

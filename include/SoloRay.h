@@ -64,7 +64,7 @@ namespace solo
 		indicate the distance along the ray at which it intersects.
 		This can be converted to a point in space by calling getPoint().
 		*/
-		std::pair<bool, f32> intersects(const Plane& p) const
+		Pair<bool, f32> intersects(const Plane& p) const
 		{
 			return Math::intersects(*this, p);
 		}
@@ -75,7 +75,7 @@ namespace solo
 		indicate the distance along the ray at which it intersects.
 		This can be converted to a point in space by calling getPoint().
 		*/
-		std::pair<bool, f32> intersects(const PlaneBoundedVolume& p) const
+		Pair<bool, f32> intersects(const PlaneBoundedVolume& p) const
 		{
 			return Math::intersects(*this, p.planes, p.outside == Plane::POSITIVE_SIDE);
 		}
@@ -86,7 +86,7 @@ namespace solo
 		indicate the distance along the ray at which it intersects.
 		This can be converted to a point in space by calling getPoint().
 		*/
-		std::pair<bool, f32> intersects(const Sphere& s) const
+		Pair<bool, f32> intersects(const Sphere& s) const
 		{
 			return Math::intersects(*this, s);
 		}
@@ -97,7 +97,7 @@ namespace solo
 		indicate the distance along the ray at which it intersects.
 		This can be converted to a point in space by calling getPoint().
 		*/
-		std::pair<bool, f32> intersects(const AxisAlignedBox& box) const
+		Pair<bool, f32> intersects(const AxisAlignedBox& box) const
 		{
 			return Math::intersects(*this, box);
 		}

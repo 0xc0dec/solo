@@ -9,13 +9,13 @@ namespace solo
 	class GPUProgramGLSL: public GPUProgram
 	{
 	public:
-		explicit GPUProgramGLSL(str const& vsShaderSrc, str const& fsShaderSrc);
+		explicit GPUProgramGLSL(String const& vsShaderSrc, String const& fsShaderSrc);
 		~GPUProgramGLSL();
 
 	private:
 		GLuint _program;
 
-		GLint _tryCreateShader(GLuint type, str src);
+		GLint _tryCreateShader(GLuint type, String src);
 		GLint _tryCreateProgram(GLuint vs, GLuint fs);
 	};
 }

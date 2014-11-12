@@ -8,13 +8,13 @@ namespace solo
 	class EngineException
 	{
 	public:
-		str message;
+		String message;
 
 		EngineException()
 		{
 		}
 
-		EngineException(const str &msg) : message(msg)
+		EngineException(const String &msg) : message(msg)
 		{
 		}
 	};

@@ -774,14 +774,14 @@ namespace solo
 		static bool pointInTri3D(const Vector3& p, const Vector3& a,
 								const Vector3& b, const Vector3& c, const Vector3& normal);
 		/** Ray / plane intersection, returns boolean result and distance. */
-		static std::pair<bool, f32> intersects(const Ray& ray, const Plane& plane);
+		static Pair<bool, f32> intersects(const Ray& ray, const Plane& plane);
 
 		/** Ray / sphere intersection, returns boolean result and distance. */
-		static std::pair<bool, f32> intersects(const Ray& ray, const Sphere& sphere,
+		static Pair<bool, f32> intersects(const Ray& ray, const Sphere& sphere,
 												bool discardInside = true);
 
 		/** Ray / box intersection, returns boolean result and distance. */
-		static std::pair<bool, f32> intersects(const Ray& ray, const AxisAlignedBox& box);
+		static Pair<bool, f32> intersects(const Ray& ray, const AxisAlignedBox& box);
 
 		/** Ray / box intersection, returns boolean result and two intersection distance.
 		@param
@@ -831,7 +831,7 @@ namespace solo
 		If the ray isn't intersects the triangle, a pair of <b>false</b> and
 		<b>0</b> returned.
 		*/
-		static std::pair<bool, f32> intersects(const Ray& ray, const Vector3& a,
+		static Pair<bool, f32> intersects(const Ray& ray, const Vector3& a,
 												const Vector3& b, const Vector3& c, const Vector3& normal,
 												bool positiveSide = true, bool negativeSide = true);
 
@@ -855,7 +855,7 @@ namespace solo
 		If the ray isn't intersects the triangle, a pair of <b>false</b> and
 		<b>0</b> returned.
 		*/
-		static std::pair<bool, f32> intersects(const Ray& ray, const Vector3& a,
+		static Pair<bool, f32> intersects(const Ray& ray, const Vector3& a,
 												const Vector3& b, const Vector3& c,
 												bool positiveSide = true, bool negativeSide = true);
 
@@ -870,15 +870,13 @@ namespace solo
 		@param plaeList List of planes which form a convex volume
 		@param normalIsOutside Does the normal point outside the volume
 		*/
-		static std::pair<bool, f32> intersects(const Ray& ray, const std::vector<Plane>& planeList, bool normalIsOutside);
+		static Pair<bool, f32> intersects(const Ray& ray, const Array<Plane>& planeList, bool normalIsOutside);
 		/** Ray / convex plane list intersection test.
 		@param ray The ray to test with
 		@param plaeList List of planes which form a convex volume
 		@param normalIsOutside Does the normal point outside the volume
 		*/
-		static std::pair<bool, f32> intersects(
-			const Ray& ray, const std::list<Plane>& planeList,
-			bool normalIsOutside);
+		static Pair<bool, f32> intersects(const Ray& ray, const List<Plane>& planeList, bool normalIsOutside);
 
 		/** Sphere / plane intersection test.
 		@remarks NB just do a plane.getDistance(sphere.getCenter()) for more detail!

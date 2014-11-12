@@ -1,7 +1,6 @@
 #ifndef __SOLO_DEVICE_H__
 #define __SOLO_DEVICE_H__
 
-#include <list>
 #include "SoloIDevice.h"
 #include "SoloIEngine.h"
 #include "SoloCommonInternal.h"
@@ -26,7 +25,7 @@ namespace solo
 		bool _closeRequested;
 		EngineCreationArgs _creationArgs;
 
-		std::list<sptr<GPUProgram>> _gpuPrograms;
+		List<ptr<GPUProgram>> _gpuPrograms;
 	};
 }
 

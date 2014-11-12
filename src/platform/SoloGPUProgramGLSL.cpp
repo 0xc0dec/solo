@@ -4,7 +4,7 @@
 using namespace solo;
 
 
-GPUProgramGLSL::GPUProgramGLSL(const str &vsShaderSrc, const str &fsShaderSrc)
+GPUProgramGLSL::GPUProgramGLSL(const String &vsShaderSrc, const String &fsShaderSrc)
 	: GPUProgram(vsShaderSrc, fsShaderSrc)
 {
 	auto vs = _tryCreateShader(GL_VERTEX_SHADER, vsShaderSrc);
@@ -68,7 +68,7 @@ GLint GPUProgramGLSL::_tryCreateProgram(GLuint vs, GLuint fs)
 }
 
 
-GLint GPUProgramGLSL::_tryCreateShader(GLuint type, str src)
+GLint GPUProgramGLSL::_tryCreateShader(GLuint type, String src)
 {
 	auto shader = glCreateShader(type);
 

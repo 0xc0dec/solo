@@ -25,12 +25,12 @@ namespace solo
 		void run(const EngineCreationArgs &launchArgs) override;
 		void setCallback(IEngineCallback* callback) override;
 
-		virtual sptr<IScene> scene() const override
+		virtual ptr<IScene> scene() const override
 		{
 			return _scene;
 		}
 
-		virtual sptr<IDevice> device() const override
+		virtual ptr<IDevice> device() const override
 		{
 			return _device;
 		}
@@ -42,8 +42,8 @@ namespace solo
 
 	private:
 		IEngineCallback *_callback;
-		sptr<Scene> _scene;
-		sptr<Device> _device;
+		ptr<Scene> _scene;
+		ptr<Device> _device;
 
 		u64 _lastUpdateTime;
 		f32 _deltaTime;

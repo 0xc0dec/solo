@@ -9,7 +9,7 @@ Scene::Scene()
 }
 
 
-sptr<ISceneNode> Scene::createNode(const str &name)
+ptr<ISceneNode> Scene::createNode(const String &name)
 {
 	auto node = std::make_shared<SceneNode>(name);
 	_nodes.push_back(node);

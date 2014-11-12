@@ -3,6 +3,9 @@
 #include "SoloVector3.h"
 #include "SoloPlane.h"
 #include "SoloRay.h"
+#include "SoloSphere.h"
+#include "SoloMatrix4.h"
+
 
 using namespace solo;
 
@@ -27,7 +30,7 @@ Math::Math(unsigned int trigTableSize)
 {
 	msAngleUnit = AU_DEGREE;
 	mTrigTableSize = trigTableSize;
-	mTrigTableFactor = mTrigTableSize / Math::TWO_PI;
+	mTrigTableFactor = mTrigTableSize / TWO_PI;
 
 	mSinTable = new f32[mTrigTableSize];
 	mTanTable = new f32[mTrigTableSize];
@@ -52,7 +55,7 @@ void Math::buildTrigTables(void)
 	f32 angle;
 	for (int i = 0; i < mTrigTableSize; ++i)
 	{
-		angle = Math::TWO_PI * i / mTrigTableSize;
+		angle = TWO_PI * i / mTrigTableSize;
 		mSinTable[i] = sin(angle);
 		mTanTable[i] = tan(angle);
 	}
@@ -150,7 +153,7 @@ f32 Math::SymmetricRandom()
 }
 
 
-void Math::setAngleUnit(Math::AngleUnit unit)
+void Math::setAngleUnit(AngleUnit unit)
 {
 	msAngleUnit = unit;
 }
@@ -166,8 +169,7 @@ f32 Math::AngleUnitsToRadians(f32 angleunits)
 {
 	if (msAngleUnit == AU_DEGREE)
 		return angleunits * fDeg2Rad;
-	else
-		return angleunits;
+	return angleunits;
 }
 
 
@@ -175,8 +177,7 @@ f32 Math::RadiansToAngleUnits(f32 radians)
 {
 	if (msAngleUnit == AU_DEGREE)
 		return radians * fRad2Deg;
-	else
-		return radians;
+	return radians;
 }
 
 
@@ -184,8 +185,7 @@ f32 Math::AngleUnitsToDegrees(f32 angleunits)
 {
 	if (msAngleUnit == AU_RADIAN)
 		return angleunits * fRad2Deg;
-	else
-		return angleunits;
+	return angleunits;
 }
 
 
@@ -193,8 +193,7 @@ f32 Math::DegreesToAngleUnits(f32 degrees)
 {
 	if (msAngleUnit == AU_RADIAN)
 		return degrees * fDeg2Rad;
-	else
-		return degrees;
+	return degrees;
 }
 
 
@@ -211,18 +210,17 @@ bool Math::pointInTri2D(const Vector2& p, const Vector2& a, const Vector2& b, co
 	// Note we don't care about normalisation here since sign is all we need
 	// It means we don't have to worry about magnitude of cross products either
 	dot[0] = v1.crossProduct(v2);
-	zeroDot[0] = Math::f32Equal(dot[0], 0.0f, 1e-3);
+	zeroDot[0] = f32Equal(dot[0], 0.0f, 1e-3);
 
 
 	v1 = c - b;
 	v2 = p - b;
 
 	dot[1] = v1.crossProduct(v2);
-	zeroDot[1] = Math::f32Equal(dot[1], 0.0f, 1e-3);
+	zeroDot[1] = f32Equal(dot[1], 0.0f, 1e-3);
 
 	// Compare signs (ignore colinear / coincident points)
-	if (!zeroDot[0] && !zeroDot[1]
-		&& Math::Sign(dot[0]) != Math::Sign(dot[1]))
+	if (!zeroDot[0] && !zeroDot[1] && Sign(dot[0]) != Sign(dot[1]))
 	{
 		return false;
 	}
@@ -231,12 +229,10 @@ bool Math::pointInTri2D(const Vector2& p, const Vector2& a, const Vector2& b, co
 	v2 = p - c;
 
 	dot[2] = v1.crossProduct(v2);
-	zeroDot[2] = Math::f32Equal(dot[2], 0.0f, 1e-3);
+	zeroDot[2] = f32Equal(dot[2], 0.0f, 1e-3);
 	// Compare signs (ignore colinear / coincident points)
-	if ((!zeroDot[0] && !zeroDot[2]
-			&& Math::Sign(dot[0]) != Math::Sign(dot[2])) ||
-		(!zeroDot[1] && !zeroDot[2]
-			&& Math::Sign(dot[1]) != Math::Sign(dot[2])))
+	if ((!zeroDot[0] && !zeroDot[2] && Sign(dot[0]) != Sign(dot[2])) ||
+		(!zeroDot[1] && !zeroDot[2] && Sign(dot[1]) != Sign(dot[2])))
 	{
 		return false;
 	}
@@ -260,18 +256,17 @@ bool Math::pointInTri3D(const Vector3& p, const Vector3& a,
 	// Note we don't care about normalisation here since sign is all we need
 	// It means we don't have to worry about magnitude of cross products either
 	dot[0] = v1.crossProduct(v2).dotProduct(normal);
-	zeroDot[0] = Math::f32Equal(dot[0], 0.0f, 1e-3);
+	zeroDot[0] = f32Equal(dot[0], 0.0f, 1e-3);
 
 
 	v1 = c - b;
 	v2 = p - b;
 
 	dot[1] = v1.crossProduct(v2).dotProduct(normal);
-	zeroDot[1] = Math::f32Equal(dot[1], 0.0f, 1e-3);
+	zeroDot[1] = f32Equal(dot[1], 0.0f, 1e-3);
 
 	// Compare signs (ignore colinear / coincident points)
-	if (!zeroDot[0] && !zeroDot[1]
-		&& Math::Sign(dot[0]) != Math::Sign(dot[1]))
+	if (!zeroDot[0] && !zeroDot[1] && Sign(dot[0]) != Sign(dot[1]))
 	{
 		return false;
 	}
@@ -280,12 +275,10 @@ bool Math::pointInTri3D(const Vector3& p, const Vector3& a,
 	v2 = p - c;
 
 	dot[2] = v1.crossProduct(v2).dotProduct(normal);
-	zeroDot[2] = Math::f32Equal(dot[2], 0.0f, 1e-3);
+	zeroDot[2] = f32Equal(dot[2], 0.0f, 1e-3);
 	// Compare signs (ignore colinear / coincident points)
-	if ((!zeroDot[0] && !zeroDot[2]
-			&& Math::Sign(dot[0]) != Math::Sign(dot[2])) ||
-		(!zeroDot[1] && !zeroDot[2]
-			&& Math::Sign(dot[1]) != Math::Sign(dot[2])))
+	if ((!zeroDot[0] && !zeroDot[2] && Sign(dot[0]) != Sign(dot[2])) ||
+		(!zeroDot[1] && !zeroDot[2] && Sign(dot[1]) != Sign(dot[2])))
 	{
 		return false;
 	}
@@ -299,44 +292,40 @@ bool Math::f32Equal(f32 a, f32 b, f32 tolerance)
 {
 	if (fabs(b - a) <= tolerance)
 		return true;
-	else
-		return false;
+	return false;
 }
 
 
-std::pair<bool, f32> Math::intersects(const Ray& ray, const Plane& plane)
+Pair<bool, f32> Math::intersects(const Ray& ray, const Plane& plane)
 {
 	f32 denom = plane.normal.dotProduct(ray.getDirection());
-	if (Math::Abs(denom) < std::numeric_limits<f32>::epsilon())
+	if (Abs(denom) < std::numeric_limits<f32>::epsilon())
 	{
 		// Parallel
-		return std::pair<bool, f32>(false, 0);
+		return Pair<bool, f32>(false, 0);
 	}
-	else
-	{
-		f32 nom = plane.normal.dotProduct(ray.getOrigin()) + plane.d;
-		f32 t = -(nom / denom);
-		return std::pair<bool, f32>(t >= 0, t);
-	}
+	f32 nom = plane.normal.dotProduct(ray.getOrigin()) + plane.d;
+	f32 t = -(nom / denom);
+	return Pair<bool, f32>(t >= 0, t);
 }
 
 
-std::pair<bool, f32> Math::intersects(const Ray& ray, const std::vector<Plane>& planes, bool normalIsOutside)
+Pair<bool, f32> Math::intersects(const Ray& ray, const Array<Plane>& planes, bool normalIsOutside)
 {
-	std::list<Plane> planesList;
+	List<Plane> planesList;
 	for (auto i = planes.cbegin(); i != planes.cend(); ++i)
 		planesList.push_back(*i);
 	return intersects(ray, planesList, normalIsOutside);
 }
 
 
-std::pair<bool, f32> Math::intersects(const Ray& ray, const std::list<Plane>& planes, bool normalIsOutside)
+Pair<bool, f32> Math::intersects(const Ray& ray, const List<Plane>& planes, bool normalIsOutside)
 {
-	std::list<Plane>::const_iterator planeit, planeitend;
+	List<Plane>::const_iterator planeit, planeitend;
 	planeitend = planes.end();
 	bool allInside = true;
-	std::pair<bool, f32> ret;
-	std::pair<bool, f32> end;
+	Pair<bool, f32> ret;
+	Pair<bool, f32> end;
 	ret.first = false;
 	ret.second = 0.0f;
 	end.first = false;
@@ -355,7 +344,7 @@ std::pair<bool, f32> Math::intersects(const Ray& ray, const std::list<Plane>& pl
 		{
 			allInside = false;
 			// Test single plane
-			std::pair<bool, f32> planeRes =
+			Pair<bool, f32> planeRes =
 				ray.intersects(plane);
 			if (planeRes.first)
 			{
@@ -373,7 +362,7 @@ std::pair<bool, f32> Math::intersects(const Ray& ray, const std::list<Plane>& pl
 		}
 		else
 		{
-			std::pair<bool, f32> planeRes =
+			Pair<bool, f32> planeRes =
 				ray.intersects(plane);
 			if (planeRes.first)
 			{
@@ -410,8 +399,7 @@ std::pair<bool, f32> Math::intersects(const Ray& ray, const std::list<Plane>& pl
 }
 
 
-std::pair<bool, f32> Math::intersects(const Ray& ray, const Sphere& sphere,
-									bool discardInside)
+Pair<bool, f32> Math::intersects(const Ray& ray, const Sphere& sphere, bool discardInside)
 {
 	const Vector3& raydir = ray.getDirection();
 	// Adjust ray origin relative to sphere center
@@ -421,7 +409,7 @@ std::pair<bool, f32> Math::intersects(const Ray& ray, const Sphere& sphere,
 	// Check origin inside first
 	if (rayorig.squaredLength() <= radius * radius && discardInside)
 	{
-		return std::pair<bool, f32>(true, 0);
+		return Pair<bool, f32>(true, 0);
 	}
 
 	// Mmm, quadratics
@@ -436,23 +424,23 @@ std::pair<bool, f32> Math::intersects(const Ray& ray, const Sphere& sphere,
 	if (d < 0)
 	{
 		// No intersection
-		return std::pair<bool, f32>(false, 0);
+		return Pair<bool, f32>(false, 0);
 	}
 
 	// BTW, if d=0 there is one intersection, if d > 0 there are 2
 	// But we only want the closest one, so that's ok, just use the 
 	// '-' version of the solver
-	f32 t = (-b - Math::Sqrt(d)) / (2 * a);
+	f32 t = (-b - Sqrt(d)) / (2 * a);
 	if (t < 0)
-		t = (-b + Math::Sqrt(d)) / (2 * a);
-	return std::pair<bool, f32>(true, t);
+		t = (-b + Sqrt(d)) / (2 * a);
+	return Pair<bool, f32>(true, t);
 }
 
 
-std::pair<bool, f32> Math::intersects(const Ray& ray, const AxisAlignedBox& box)
+Pair<bool, f32> Math::intersects(const Ray& ray, const AxisAlignedBox& box)
 {
-	if (box.isNull()) return std::pair<bool, f32>(false, 0);
-	if (box.isInfinite()) return std::pair<bool, f32>(true, 0);
+	if (box.isNull()) return Pair<bool, f32>(false, 0);
+	if (box.isInfinite()) return Pair<bool, f32>(true, 0);
 
 	f32 lowt = 0.0f;
 	f32 t;
@@ -466,7 +454,7 @@ std::pair<bool, f32> Math::intersects(const Ray& ray, const AxisAlignedBox& box)
 	// Check origin inside first
 	if (rayorig > min && rayorig < max)
 	{
-		return std::pair<bool, f32>(true, 0);
+		return Pair<bool, f32>(true, 0);
 	}
 
 	// Check each face in turn, only check closest 3
@@ -573,7 +561,7 @@ std::pair<bool, f32> Math::intersects(const Ray& ray, const AxisAlignedBox& box)
 		}
 	}
 
-	return std::pair<bool, f32>(hit, lowt);
+	return Pair<bool, f32>(hit, lowt);
 }
 
 
@@ -585,7 +573,7 @@ bool Math::intersects(const Ray& ray, const AxisAlignedBox& box, f32* d1, f32* d
 	if (box.isInfinite())
 	{
 		if (d1) *d1 = 0;
-		if (d2) *d2 = Math::POS_INFINITY;
+		if (d2) *d2 = POS_INFINITY;
 		return true;
 	}
 
@@ -595,9 +583,9 @@ bool Math::intersects(const Ray& ray, const AxisAlignedBox& box, f32* d1, f32* d
 	const Vector3& raydir = ray.getDirection();
 
 	Vector3 absDir;
-	absDir[0] = Math::Abs(raydir[0]);
-	absDir[1] = Math::Abs(raydir[1]);
-	absDir[2] = Math::Abs(raydir[2]);
+	absDir[0] = Abs(raydir[0]);
+	absDir[1] = Abs(raydir[1]);
+	absDir[2] = Abs(raydir[2]);
 
 	// Sort the axis, ensure check minimise floating error axis first
 	int imax = 0, imid = 1, imin = 2;
@@ -617,7 +605,7 @@ bool Math::intersects(const Ray& ray, const AxisAlignedBox& box, f32* d1, f32* d
 		imax = 1;
 	}
 
-	f32 start = 0, end = Math::POS_INFINITY;
+	f32 start = 0, end = POS_INFINITY;
 
 #define _CALC_AXIS(i) \
 	do { \
@@ -663,9 +651,9 @@ bool Math::intersects(const Ray& ray, const AxisAlignedBox& box, f32* d1, f32* d
 	return true;
 }
 
-std::pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a,
-									const Vector3& b, const Vector3& c, const Vector3& normal,
-									bool positiveSide, bool negativeSide)
+Pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a,
+								const Vector3& b, const Vector3& c, const Vector3& normal,
+								bool positiveSide, bool negativeSide)
 {
 	//
 	// Calculate intersection with plane.
@@ -678,18 +666,18 @@ std::pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a,
 		if (denom > +std::numeric_limits<f32>::epsilon())
 		{
 			if (!negativeSide)
-				return std::pair<bool, f32>(false, 0);
+				return Pair<bool, f32>(false, 0);
 		}
 		else if (denom < -std::numeric_limits<f32>::epsilon())
 		{
 			if (!positiveSide)
-				return std::pair<bool, f32>(false, 0);
+				return Pair<bool, f32>(false, 0);
 		}
 		else
 		{
 			// Parallel or triangle area is close to zero when
 			// the plane normal not normalised.
-			return std::pair<bool, f32>(false, 0);
+			return Pair<bool, f32>(false, 0);
 		}
 
 		t = normal.dotProduct(a - ray.getOrigin()) / denom;
@@ -697,7 +685,7 @@ std::pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a,
 		if (t < 0)
 		{
 			// Intersection is behind origin
-			return std::pair<bool, f32>(false, 0);
+			return Pair<bool, f32>(false, 0);
 		}
 	}
 
@@ -706,9 +694,9 @@ std::pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a,
 	//
 	size_t i0, i1;
 	{
-		f32 n0 = Math::Abs(normal[0]);
-		f32 n1 = Math::Abs(normal[1]);
-		f32 n2 = Math::Abs(normal[2]);
+		f32 n0 = Abs(normal[0]);
+		f32 n1 = Abs(normal[1]);
+		f32 n2 = Abs(normal[2]);
 
 		i0 = 1;
 		i1 = 2;
@@ -745,21 +733,21 @@ std::pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a,
 		if (area > 0)
 		{
 			if (alpha < tolerance || beta < tolerance || alpha + beta > area - tolerance)
-				return std::pair<bool, f32>(false, 0);
+				return Pair<bool, f32>(false, 0);
 		}
 		else
 		{
 			if (alpha > tolerance || beta > tolerance || alpha + beta < area - tolerance)
-				return std::pair<bool, f32>(false, 0);
+				return Pair<bool, f32>(false, 0);
 		}
 	}
 
-	return std::pair<bool, f32>(true, t);
+	return Pair<bool, f32>(true, t);
 }
 
-std::pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a,
-									const Vector3& b, const Vector3& c,
-									bool positiveSide, bool negativeSide)
+Pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a,
+								const Vector3& b, const Vector3& c,
+								bool positiveSide, bool negativeSide)
 {
 	Vector3 normal = calculateBasicFaceNormalWithoutNormalize(a, b, c);
 	return intersects(ray, a, b, c, normal, positiveSide, negativeSide);
@@ -801,9 +789,7 @@ bool Math::intersects(const Plane& plane, const AxisAlignedBox& box)
 
 bool Math::intersects(const Sphere& sphere, const Plane& plane)
 {
-	return (
-		Math::Abs(plane.getDistance(sphere.getCenter()))
-		<= sphere.getRadius());
+	return (Abs(plane.getDistance(sphere.getCenter())) <= sphere.getRadius());
 }
 
 Vector3 Math::calculateTangentSpaceVector(
@@ -883,16 +869,13 @@ Vector3 Math::calculateBasicFaceNormalWithoutNormalize(const Vector3& v1, const 
 
 f32 Math::gaussianDistribution(f32 x, f32 offset, f32 scale)
 {
-	f32 nom = Math::Exp(
-		-Math::Sqr(x - offset) / (2 * Math::Sqr(scale)));
-	f32 denom = scale * Math::Sqrt(2 * Math::PI);
-
+	f32 nom = Exp(-Sqr(x - offset) / (2 * Sqr(scale)));
+	f32 denom = scale * Sqrt(2 * PI);
 	return nom / denom;
 }
 
 
-Matrix4 Math::makeViewMatrix(const Vector3& position, const Quaternion& orientation,
-							const Matrix4* reflectMatrix)
+Matrix4 Math::makeViewMatrix(const Vector3& position, const Quaternion& orientation, const Matrix4* reflectMatrix)
 {
 	Matrix4 viewMatrix;
 

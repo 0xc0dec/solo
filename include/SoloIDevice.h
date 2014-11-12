@@ -13,7 +13,7 @@ namespace solo
 		virtual ~IDevice() {}
 
 		virtual void setWindowTitle(const c8 *title) = 0;
-		virtual sptr<IGPUProgram> createGPUProgram(const str &vsSrc, const str &fsSrc) = 0;
+		virtual ptr<IGPUProgram> createGPUProgram(const String &vsSrc, const String &fsSrc) = 0;
 	};
 }
 

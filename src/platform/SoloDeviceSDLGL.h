@@ -14,7 +14,7 @@ namespace solo
 
 		void setWindowTitle(const c8 *title) override;
 
-		sptr<IGPUProgram> createGPUProgram(const str &vsSrc, const str &fsSrc) override;
+		ptr<IGPUProgram> createGPUProgram(const String &vsSrc, const String &fsSrc) override;
 
 		u64 lifetime() const override;
 		void update() override;

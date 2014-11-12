@@ -10,7 +10,7 @@ namespace solo
 	class PlaneBoundedVolume
 	{
 	public:
-		typedef std::vector<Plane> PlaneList;
+		typedef Array<Plane> PlaneList;
 		/// Publicly accessible plane list, you can modify this direct
 		PlaneList planes;
 		Plane::Side outside;
@@ -80,10 +80,10 @@ namespace solo
 		}
 
 		/** Intersection test with a Ray
-		@return std::pair of hit (bool) and distance
+		@return Pair of hit (bool) and distance
 		@remarks May return false positives but will never miss an intersection.
 		*/
-		inline std::pair<bool, f32> intersects(const Ray& ray)
+		inline Pair<bool, f32> intersects(const Ray& ray)
 		{
 			return Math::intersects(ray, planes, outside == Plane::POSITIVE_SIDE);
 		}

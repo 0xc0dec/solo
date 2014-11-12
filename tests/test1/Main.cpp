@@ -34,12 +34,12 @@ public:
 	{
 	}
 
-	static str componentId()
+	static String componentId()
 	{
 		return "TestComponent";
 	};
 
-	virtual str id() override { return "TestComponent"; }
+	virtual String id() override { return "TestComponent"; }
 
 	virtual void update() override
 	{

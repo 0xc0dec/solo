@@ -30,13 +30,13 @@ namespace solo
 		Log &operator <<(const c8 *msg);
 		Log &operator <<(s32 i);
 		Log &operator <<(size_t s);
-		Log &operator <<(const str &s);
+		Log &operator <<(const String &s);
 
 	private:
 		LogLevel _level;
 		std::ostringstream _buffer;
 		
-		str _getLevelString();
+		String _getLevelString();
 	};
 }
 

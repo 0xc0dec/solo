@@ -3,7 +3,7 @@
 using namespace solo;
 
 
-GPUProgram::GPUProgram(const str &vsShaderSrc, const str &fsShaderSrc)
+GPUProgram::GPUProgram(const String &vsShaderSrc, const String &fsShaderSrc)
 	: _valid(false)
 {
 	auto allSources = vsShaderSrc;
@@ -17,7 +17,7 @@ GPUProgram::~GPUProgram()
 }
 
 
-void GPUProgram::_appendToLog(const str &newLog)
+void GPUProgram::_appendToLog(const String &newLog)
 {
 	_log.append(newLog).append("\n");
 }

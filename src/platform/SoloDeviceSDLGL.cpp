@@ -117,7 +117,7 @@ void DeviceSDLGL::setWindowTitle(const c8 *title)
 }
 
 
-sptr<IGPUProgram> DeviceSDLGL::createGPUProgram(const str &vsSrc, const str &fsSrc)
+ptr<IGPUProgram> DeviceSDLGL::createGPUProgram(const String &vsSrc, const String &fsSrc)
 {
 	auto program = makePtr<GPUProgramGLSL>(vsSrc, fsSrc);
 	_gpuPrograms.push_back(program);

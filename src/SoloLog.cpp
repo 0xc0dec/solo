@@ -18,7 +18,7 @@ Log::~Log()
 }
 
 
-str Log::_getLevelString()
+String Log::_getLevelString()
 {
 	switch (_level)
 	{
@@ -59,7 +59,7 @@ Log& Log::operator<<(size_t s)
 }
 
 
-Log& Log::operator<<(const str &s)
+Log& Log::operator<<(const String &s)
 {
 	_buffer << s;
 	return *this;
