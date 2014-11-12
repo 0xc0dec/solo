@@ -4,7 +4,7 @@
 #include "SoloCommon.h"
 #include "SoloMath.h"
 #include "SoloVector3.h"
-
+#include "SoloMatrix4.h"
 
 namespace solo
 {
@@ -19,16 +19,16 @@ namespace solo
 		};
 
 	protected:
-		Vector3 mMinimum;
-		Vector3 mMaximum;
-		Extent mExtent;
-		mutable Vector3* mCorners;
+		Vector3 _min;
+		Vector3 _max;
+		Extent _extent;
+		mutable Vector3* _corners;
 
 	public:
 		/*
-		1-----2
-		/|    /|
-		/ |   / |
+		   1-----2
+		  /|    /|
+		 / |   / |
 		5-----4  |
 		|  0--|--3
 		| /   | /
@@ -47,190 +47,166 @@ namespace solo
 			NEAR_RIGHT_TOP = 4
 		} CornerEnum;
 
-		inline AxisAlignedBox() : mMinimum(Vector3::ZERO), mMaximum(Vector3::UNIT_SCALE), mCorners(nullptr)
+		inline AxisAlignedBox() : _min(Vector3::ZERO), _max(Vector3::UNIT_SCALE), _corners(nullptr)
 		{
 			// Default to a null box 
 			setMinimum(-0.5, -0.5, -0.5);
 			setMaximum(0.5, 0.5, 0.5);
-			mExtent = EXTENT_NULL;
+			_extent = EXTENT_NULL;
 		}
 
-		inline AxisAlignedBox(Extent e) : mMinimum(Vector3::ZERO), mMaximum(Vector3::UNIT_SCALE), mCorners(nullptr)
+		inline AxisAlignedBox(Extent e)
+			: _min(Vector3::ZERO), _max(Vector3::UNIT_SCALE), _corners(nullptr)
 		{
 			setMinimum(-0.5, -0.5, -0.5);
 			setMaximum(0.5, 0.5, 0.5);
-			mExtent = e;
+			_extent = e;
 		}
 
-		inline AxisAlignedBox(const AxisAlignedBox& rkBox) : mMinimum(Vector3::ZERO), mMaximum(Vector3::UNIT_SCALE), mCorners(nullptr)
+		inline AxisAlignedBox(const AxisAlignedBox& rkBox)
+			: _min(Vector3::ZERO), _max(Vector3::UNIT_SCALE), _corners(nullptr)
 		{
 			if (rkBox.isNull())
 				setNull();
 			else if (rkBox.isInfinite())
 				setInfinite();
 			else
-				setExtents(rkBox.mMinimum, rkBox.mMaximum);
+				setExtents(rkBox._min, rkBox._max);
 		}
 
-		inline AxisAlignedBox(const Vector3& min, const Vector3& max) : mMinimum(Vector3::ZERO), mMaximum(Vector3::UNIT_SCALE), mCorners(nullptr)
+		inline AxisAlignedBox(const Vector3& min, const Vector3& max)
+			: _min(Vector3::ZERO), _max(Vector3::UNIT_SCALE), _corners(nullptr)
 		{
 			setExtents(min, max);
 		}
 
-		inline AxisAlignedBox(
-			f32 mx, f32 my, f32 mz,
-			f32 Mx, f32 My, f32 Mz) : mMinimum(Vector3::ZERO), mMaximum(Vector3::UNIT_SCALE), mCorners(nullptr)
+		inline AxisAlignedBox(f32 mx, f32 my, f32 mz, f32 Mx, f32 My, f32 Mz)
+			: _min(Vector3::ZERO), _max(Vector3::UNIT_SCALE), _corners(nullptr)
 		{
 			setExtents(mx, my, mz, Mx, My, Mz);
 		}
 
 		AxisAlignedBox& operator=(const AxisAlignedBox& rhs)
 		{
-			// Specifically override to avoid copying mCorners
+			// Specifically override to avoid copying _corners
 			if (rhs.isNull())
 				setNull();
 			else if (rhs.isInfinite())
 				setInfinite();
 			else
-				setExtents(rhs.mMinimum, rhs.mMaximum);
+				setExtents(rhs._min, rhs._max);
 
 			return *this;
 		}
 
 		~AxisAlignedBox()
 		{
-			if (mCorners)
-				delete mCorners;
+			if (_corners)
+				delete _corners;
 		}
 
-
-		/** Gets the minimum corner of the box.
-		*/
 		inline const Vector3& getMinimum(void) const
 		{
-			return mMinimum;
+			return _min;
 		}
 
-		/** Gets a modifiable version of the minimum
-		corner of the box.
-		*/
 		inline Vector3& getMinimum(void)
 		{
-			return mMinimum;
+			return _min;
 		}
 
-		/** Gets the maximum corner of the box.
-		*/
 		inline const Vector3& getMaximum(void) const
 		{
-			return mMaximum;
+			return _max;
 		}
 
-		/** Gets a modifiable version of the maximum
-		corner of the box.
-		*/
 		inline Vector3& getMaximum(void)
 		{
-			return mMaximum;
+			return _max;
 		}
 
-
-		/** Sets the minimum corner of the box.
-		*/
 		inline void setMinimum(const Vector3& vec)
 		{
-			mExtent = EXTENT_FINITE;
-			mMinimum = vec;
+			_extent = EXTENT_FINITE;
+			_min = vec;
 		}
 
 		inline void setMinimum(f32 x, f32 y, f32 z)
 		{
-			mExtent = EXTENT_FINITE;
-			mMinimum.x = x;
-			mMinimum.y = y;
-			mMinimum.z = z;
+			_extent = EXTENT_FINITE;
+			_min.x = x;
+			_min.y = y;
+			_min.z = z;
 		}
 
-		/** Changes one of the components of the minimum corner of the box
-		used to resize only one dimension of the box
-		*/
 		inline void setMinimumX(f32 x)
 		{
-			mMinimum.x = x;
+			_min.x = x;
 		}
 
 		inline void setMinimumY(f32 y)
 		{
-			mMinimum.y = y;
+			_min.y = y;
 		}
 
 		inline void setMinimumZ(f32 z)
 		{
-			mMinimum.z = z;
+			_min.z = z;
 		}
 
-		/** Sets the maximum corner of the box.
-		*/
 		inline void setMaximum(const Vector3& vec)
 		{
-			mExtent = EXTENT_FINITE;
-			mMaximum = vec;
+			_extent = EXTENT_FINITE;
+			_max = vec;
 		}
 
 		inline void setMaximum(f32 x, f32 y, f32 z)
 		{
-			mExtent = EXTENT_FINITE;
-			mMaximum.x = x;
-			mMaximum.y = y;
-			mMaximum.z = z;
+			_extent = EXTENT_FINITE;
+			_max.x = x;
+			_max.y = y;
+			_max.z = z;
 		}
 
-		/** Changes one of the components of the maximum corner of the box
-		used to resize only one dimension of the box
-		*/
 		inline void setMaximumX(f32 x)
 		{
-			mMaximum.x = x;
+			_max.x = x;
 		}
 
 		inline void setMaximumY(f32 y)
 		{
-			mMaximum.y = y;
+			_max.y = y;
 		}
 
 		inline void setMaximumZ(f32 z)
 		{
-			mMaximum.z = z;
+			_max.z = z;
 		}
 
-		/** Sets both minimum and maximum extents at once.
-		*/
 		inline void setExtents(const Vector3& min, const Vector3& max)
 		{
 			assert((min.x <= max.x && min.y <= max.y && min.z <= max.z) &&
 				"The minimum corner of the box must be less than or equal to maximum corner");
 
-			mExtent = EXTENT_FINITE;
-			mMinimum = min;
-			mMaximum = max;
+			_extent = EXTENT_FINITE;
+			_min = min;
+			_max = max;
 		}
 
-		inline void setExtents(
-			f32 mx, f32 my, f32 mz,
-			f32 Mx, f32 My, f32 Mz)
+		inline void setExtents(f32 mx, f32 my, f32 mz, f32 Mx, f32 My, f32 Mz)
 		{
 			assert((mx <= Mx && my <= My && mz <= Mz) &&
 				"The minimum corner of the box must be less than or equal to maximum corner");
 
-			mExtent = EXTENT_FINITE;
+			_extent = EXTENT_FINITE;
 
-			mMinimum.x = mx;
-			mMinimum.y = my;
-			mMinimum.z = mz;
+			_min.x = mx;
+			_min.y = my;
+			_min.z = mz;
 
-			mMaximum.x = Mx;
-			mMaximum.y = My;
-			mMaximum.z = Mz;
+			_max.x = Mx;
+			_max.y = My;
+			_max.z = Mz;
 		}
 
 		/** Returns a pointer to an array of 8 corner points, useful for
@@ -246,9 +222,9 @@ namespace solo
 		anticlockwise around this face (looking onto the face from
 		outside the box). Like this:
 		<pre>
-		1-----2
-		/|    /|
-		/ |   / |
+		   1-----2
+		  /|    /|
+		 / |   / |
 		5-----4  |
 		|  0--|--3
 		| /   | /
@@ -259,7 +235,7 @@ namespace solo
 		*/
 		inline const Vector3* getAllCorners(void) const
 		{
-			assert((mExtent == EXTENT_FINITE) && "Can't get corners of a null or infinite AAB");
+			assert((_extent == EXTENT_FINITE) && "Can't get corners of a null or infinite AAB");
 
 			// The order of these items is, using right-handed co-ordinates:
 			// Minimum Z face, starting with Min(all), then anticlockwise
@@ -267,56 +243,54 @@ namespace solo
 			// Maximum Z face, starting with Max(all), then anticlockwise
 			//   around face (looking onto the face)
 			// Only for optimization/compatibility.
-			if (!mCorners)
-				mCorners = new Vector3();
+			if (!_corners)
+				_corners = new Vector3();
 
-			mCorners[0] = mMinimum;
-			mCorners[1].x = mMinimum.x;
-			mCorners[1].y = mMaximum.y;
-			mCorners[1].z = mMinimum.z;
-			mCorners[2].x = mMaximum.x;
-			mCorners[2].y = mMaximum.y;
-			mCorners[2].z = mMinimum.z;
-			mCorners[3].x = mMaximum.x;
-			mCorners[3].y = mMinimum.y;
-			mCorners[3].z = mMinimum.z;
+			_corners[0] = _min;
+			_corners[1].x = _min.x;
+			_corners[1].y = _max.y;
+			_corners[1].z = _min.z;
+			_corners[2].x = _max.x;
+			_corners[2].y = _max.y;
+			_corners[2].z = _min.z;
+			_corners[3].x = _max.x;
+			_corners[3].y = _min.y;
+			_corners[3].z = _min.z;
 
-			mCorners[4] = mMaximum;
-			mCorners[5].x = mMinimum.x;
-			mCorners[5].y = mMaximum.y;
-			mCorners[5].z = mMaximum.z;
-			mCorners[6].x = mMinimum.x;
-			mCorners[6].y = mMinimum.y;
-			mCorners[6].z = mMaximum.z;
-			mCorners[7].x = mMaximum.x;
-			mCorners[7].y = mMinimum.y;
-			mCorners[7].z = mMaximum.z;
+			_corners[4] = _max;
+			_corners[5].x = _min.x;
+			_corners[5].y = _max.y;
+			_corners[5].z = _max.z;
+			_corners[6].x = _min.x;
+			_corners[6].y = _min.y;
+			_corners[6].z = _max.z;
+			_corners[7].x = _max.x;
+			_corners[7].y = _min.y;
+			_corners[7].z = _max.z;
 
-			return mCorners;
+			return _corners;
 		}
 
-		/** gets the position of one of the corners
-		*/
 		Vector3 getCorner(CornerEnum cornerToGet) const
 		{
 			switch (cornerToGet)
 			{
 			case FAR_LEFT_BOTTOM:
-				return mMinimum;
+				return _min;
 			case FAR_LEFT_TOP:
-				return Vector3(mMinimum.x, mMaximum.y, mMinimum.z);
+				return Vector3(_min.x, _max.y, _min.z);
 			case FAR_RIGHT_TOP:
-				return Vector3(mMaximum.x, mMaximum.y, mMinimum.z);
+				return Vector3(_max.x, _max.y, _min.z);
 			case FAR_RIGHT_BOTTOM:
-				return Vector3(mMaximum.x, mMinimum.y, mMinimum.z);
+				return Vector3(_max.x, _min.y, _min.z);
 			case NEAR_RIGHT_BOTTOM:
-				return Vector3(mMaximum.x, mMinimum.y, mMaximum.z);
+				return Vector3(_max.x, _min.y, _max.z);
 			case NEAR_LEFT_BOTTOM:
-				return Vector3(mMinimum.x, mMinimum.y, mMaximum.z);
+				return Vector3(_min.x, _min.y, _max.z);
 			case NEAR_LEFT_TOP:
-				return Vector3(mMinimum.x, mMaximum.y, mMaximum.z);
+				return Vector3(_min.x, _max.y, _max.z);
 			case NEAR_RIGHT_TOP:
-				return mMaximum;
+				return _max;
 			default:
 				return Vector3();
 			}
@@ -324,14 +298,14 @@ namespace solo
 
 		friend std::ostream& operator<<(std::ostream& o, const AxisAlignedBox aab)
 		{
-			switch (aab.mExtent)
+			switch (aab._extent)
 			{
 			case EXTENT_NULL:
 				o << "AxisAlignedBox(null)";
 				return o;
 
 			case EXTENT_FINITE:
-				o << "AxisAlignedBox(min=" << aab.mMinimum << ", max=" << aab.mMaximum << ")";
+				o << "AxisAlignedBox(min=" << aab._min << ", max=" << aab._max << ")";
 				return o;
 
 			case EXTENT_INFINITE:
@@ -344,45 +318,40 @@ namespace solo
 			}
 		}
 
-		/** Merges the passed in box into the current box. The result is the
-		box which encompasses both.
-		*/
 		void merge(const AxisAlignedBox& rhs)
 		{
 			// Do nothing if rhs null, or this is infinite
-			if ((rhs.mExtent == EXTENT_NULL) || (mExtent == EXTENT_INFINITE))
+			if ((rhs._extent == EXTENT_NULL) || (_extent == EXTENT_INFINITE))
 				return;
 			// Otherwise if rhs is infinite, make this infinite, too
-			if (rhs.mExtent == EXTENT_INFINITE)
-				mExtent = EXTENT_INFINITE;
+			if (rhs._extent == EXTENT_INFINITE)
+				_extent = EXTENT_INFINITE;
 			// Otherwise if current null, just take rhs
-			else if (mExtent == EXTENT_NULL)
-				setExtents(rhs.mMinimum, rhs.mMaximum);
+			else if (_extent == EXTENT_NULL)
+				setExtents(rhs._min, rhs._max);
 			// Otherwise merge
 			else
 			{
-				Vector3 min = mMinimum;
-				Vector3 max = mMaximum;
-				max.makeCeil(rhs.mMaximum);
-				min.makeFloor(rhs.mMinimum);
+				Vector3 min = _min;
+				Vector3 max = _max;
+				max.makeCeil(rhs._max);
+				min.makeFloor(rhs._min);
 
 				setExtents(min, max);
 			}
 		}
 
-		/** Extends the box to encompass the specified point (if needed).
-		*/
 		inline void merge(const Vector3& point)
 		{
-			switch (mExtent)
+			switch (_extent)
 			{
 			case EXTENT_NULL: // if null, use this point
 				setExtents(point, point);
 				return;
 
 			case EXTENT_FINITE:
-				mMaximum.makeCeil(point);
-				mMinimum.makeFloor(point);
+				_max.makeCeil(point);
+				_min.makeFloor(point);
 				return;
 
 			case EXTENT_INFINITE: // if infinite, makes no difference
@@ -404,14 +373,14 @@ namespace solo
 		inline void transform(const Matrix4& matrix)
 		{
 			// Do nothing if current null or infinite
-			if (mExtent != EXTENT_FINITE)
+			if (_extent != EXTENT_FINITE)
 				return;
 
 			Vector3 oldMin, oldMax, currentCorner;
 
 			// Getting the old values so that we can use the existing merge method.
-			oldMin = mMinimum;
-			oldMax = mMaximum;
+			oldMin = _min;
+			oldMax = _max;
 
 			// reset
 			setNull();
@@ -473,7 +442,7 @@ namespace solo
 			assert(m.isAffine());
 
 			// Do nothing if current null or infinite
-			if (mExtent != EXTENT_FINITE)
+			if (_extent != EXTENT_FINITE)
 				return;
 
 			Vector3 centre = getCenter();
@@ -488,42 +457,31 @@ namespace solo
 			setExtents(newCentre - newHalfSize, newCentre + newHalfSize);
 		}
 
-		/** Sets the box to a 'null' value i.e. not a box.
-		*/
 		inline void setNull()
 		{
-			mExtent = EXTENT_NULL;
+			_extent = EXTENT_NULL;
 		}
 
-		/** Returns true if the box is null i.e. empty.
-		*/
 		inline bool isNull(void) const
 		{
-			return (mExtent == EXTENT_NULL);
+			return (_extent == EXTENT_NULL);
 		}
 
-		/** Returns true if the box is finite.
-		*/
 		bool isFinite(void) const
 		{
-			return (mExtent == EXTENT_FINITE);
+			return (_extent == EXTENT_FINITE);
 		}
 
-		/** Sets the box to 'infinite'
-		*/
 		inline void setInfinite()
 		{
-			mExtent = EXTENT_INFINITE;
+			_extent = EXTENT_INFINITE;
 		}
 
-		/** Returns true if the box is infinite.
-		*/
 		bool isInfinite(void) const
 		{
-			return (mExtent == EXTENT_INFINITE);
+			return (_extent == EXTENT_INFINITE);
 		}
 
-		/** Returns whether or not this box intersects another. */
 		inline bool intersects(const AxisAlignedBox& b2) const
 		{
 			// Early-fail for nulls
@@ -535,25 +493,24 @@ namespace solo
 				return true;
 
 			// Use up to 6 separating planes
-			if (mMaximum.x < b2.mMinimum.x)
+			if (_max.x < b2._min.x)
 				return false;
-			if (mMaximum.y < b2.mMinimum.y)
+			if (_max.y < b2._min.y)
 				return false;
-			if (mMaximum.z < b2.mMinimum.z)
+			if (_max.z < b2._min.z)
 				return false;
 
-			if (mMinimum.x > b2.mMaximum.x)
+			if (_min.x > b2._max.x)
 				return false;
-			if (mMinimum.y > b2.mMaximum.y)
+			if (_min.y > b2._max.y)
 				return false;
-			if (mMinimum.z > b2.mMaximum.z)
+			if (_min.z > b2._max.z)
 				return false;
 
 			// otherwise, must be intersecting
 			return true;
 		}
 
-		/// Calculate the area of intersection of this box and another
 		inline AxisAlignedBox intersection(const AxisAlignedBox& b2) const
 		{
 			if (this->isNull() || b2.isNull())
@@ -569,8 +526,8 @@ namespace solo
 				return *this;
 			}
 
-			Vector3 intMin = mMinimum;
-			Vector3 intMax = mMaximum;
+			Vector3 intMin = _min;
+			Vector3 intMax = _max;
 
 			intMin.makeCeil(b2.getMinimum());
 			intMax.makeFloor(b2.getMaximum());
@@ -586,17 +543,16 @@ namespace solo
 			return AxisAlignedBox();
 		}
 
-		/// Calculate the volume of this box
 		f32 volume(void) const
 		{
-			switch (mExtent)
+			switch (_extent)
 			{
 			case EXTENT_NULL:
 				return 0.0f;
 
 			case EXTENT_FINITE:
 				{
-					Vector3 diff = mMaximum - mMinimum;
+					Vector3 diff = _max - _min;
 					return diff.x * diff.y * diff.z;
 				}
 
@@ -609,43 +565,39 @@ namespace solo
 			}
 		}
 
-		/** Scales the AABB by the vector given. */
 		inline void scale(const Vector3& s)
 		{
 			// Do nothing if current null or infinite
-			if (mExtent != EXTENT_FINITE)
+			if (_extent != EXTENT_FINITE)
 				return;
 
 			// NB assumes centered on origin
-			Vector3 min = mMinimum * s;
-			Vector3 max = mMaximum * s;
+			Vector3 min = _min * s;
+			Vector3 max = _max * s;
 			setExtents(min, max);
 		}
 
-		/** Tests whether this box intersects a sphere. */
 		bool intersects(const Sphere& s) const
 		{
 			return Math::intersects(s, *this);
 		}
 
-		/** Tests whether this box intersects a plane. */
 		bool intersects(const Plane& p) const
 		{
 			return Math::intersects(p, *this);
 		}
 
-		/** Tests whether the vector point is within this box. */
 		bool intersects(const Vector3& v) const
 		{
-			switch (mExtent)
+			switch (_extent)
 			{
 			case EXTENT_NULL:
 				return false;
 
 			case EXTENT_FINITE:
-				return(v.x >= mMinimum.x && v.x <= mMaximum.x &&
-					v.y >= mMinimum.y && v.y <= mMaximum.y &&
-					v.z >= mMinimum.z && v.z <= mMaximum.z);
+				return(v.x >= _min.x && v.x <= _max.x &&
+					v.y >= _min.y && v.y <= _max.y &&
+					v.z >= _min.z && v.z <= _max.z);
 
 			case EXTENT_INFINITE:
 				return true;
@@ -656,27 +608,25 @@ namespace solo
 			}
 		}
 
-		/// Gets the centre of the box
 		Vector3 getCenter(void) const
 		{
-			assert((mExtent == EXTENT_FINITE) && "Can't get center of a null or infinite AAB");
+			assert((_extent == EXTENT_FINITE) && "Can't get center of a null or infinite AAB");
 
 			return Vector3(
-				(mMaximum.x + mMinimum.x) * 0.5f,
-				(mMaximum.y + mMinimum.y) * 0.5f,
-				(mMaximum.z + mMinimum.z) * 0.5f);
+				(_max.x + _min.x) * 0.5f,
+				(_max.y + _min.y) * 0.5f,
+				(_max.z + _min.z) * 0.5f);
 		}
 
-		/// Gets the size of the box
 		Vector3 getSize(void) const
 		{
-			switch (mExtent)
+			switch (_extent)
 			{
 			case EXTENT_NULL:
 				return Vector3::ZERO;
 
 			case EXTENT_FINITE:
-				return mMaximum - mMinimum;
+				return _max - _min;
 
 			case EXTENT_INFINITE:
 				return Vector3(
@@ -690,16 +640,15 @@ namespace solo
 			}
 		}
 
-		/// Gets the half-size of the box
 		Vector3 getHalfSize(void) const
 		{
-			switch (mExtent)
+			switch (_extent)
 			{
 			case EXTENT_NULL:
 				return Vector3::ZERO;
 
 			case EXTENT_FINITE:
-				return (mMaximum - mMinimum) * 0.5;
+				return (_max - _min) * 0.5;
 
 			case EXTENT_INFINITE:
 				return Vector3(
@@ -713,8 +662,6 @@ namespace solo
 			}
 		}
 
-		/** Tests whether the given point contained by this box.
-		*/
 		bool contains(const Vector3& v) const
 		{
 			if (isNull())
@@ -722,12 +669,11 @@ namespace solo
 			if (isInfinite())
 				return true;
 
-			return mMinimum.x <= v.x && v.x <= mMaximum.x &&
-				mMinimum.y <= v.y && v.y <= mMaximum.y &&
-				mMinimum.z <= v.z && v.z <= mMaximum.z;
+			return _min.x <= v.x && v.x <= _max.x &&
+				_min.y <= v.y && v.y <= _max.y &&
+				_min.z <= v.z && v.z <= _max.z;
 		}
 
-		/** Returns the minimum distance between a given point and any part of the box. */
 		f32 distance(const Vector3& v) const
 		{
 			if (this->contains(v))
@@ -735,25 +681,23 @@ namespace solo
 
 			f32 maxDist = std::numeric_limits<f32>::min();
 
-			if (v.x < mMinimum.x)
-				maxDist = std::max(maxDist, mMinimum.x - v.x);
-			if (v.y < mMinimum.y)
-				maxDist = std::max(maxDist, mMinimum.y - v.y);
-			if (v.z < mMinimum.z)
-				maxDist = std::max(maxDist, mMinimum.z - v.z);
+			if (v.x < _min.x)
+				maxDist = std::max(maxDist, _min.x - v.x);
+			if (v.y < _min.y)
+				maxDist = std::max(maxDist, _min.y - v.y);
+			if (v.z < _min.z)
+				maxDist = std::max(maxDist, _min.z - v.z);
 
-			if (v.x > mMaximum.x)
-				maxDist = std::max(maxDist, v.x - mMaximum.x);
-			if (v.y > mMaximum.y)
-				maxDist = std::max(maxDist, v.y - mMaximum.y);
-			if (v.z > mMaximum.z)
-				maxDist = std::max(maxDist, v.z - mMaximum.z);
+			if (v.x > _max.x)
+				maxDist = std::max(maxDist, v.x - _max.x);
+			if (v.y > _max.y)
+				maxDist = std::max(maxDist, v.y - _max.y);
+			if (v.z > _max.z)
+				maxDist = std::max(maxDist, v.z - _max.z);
 
 			return maxDist;
 		}
 
-		/** Tests whether another box contained by this box.
-		*/
 		bool contains(const AxisAlignedBox& other) const
 		{
 			if (other.isNull() || this->isInfinite())
@@ -762,36 +706,31 @@ namespace solo
 			if (this->isNull() || other.isInfinite())
 				return false;
 
-			return this->mMinimum.x <= other.mMinimum.x &&
-				this->mMinimum.y <= other.mMinimum.y &&
-				this->mMinimum.z <= other.mMinimum.z &&
-				other.mMaximum.x <= this->mMaximum.x &&
-				other.mMaximum.y <= this->mMaximum.y &&
-				other.mMaximum.z <= this->mMaximum.z;
+			return this->_min.x <= other._min.x &&
+				this->_min.y <= other._min.y &&
+				this->_min.z <= other._min.z &&
+				other._max.x <= this->_max.x &&
+				other._max.y <= this->_max.y &&
+				other._max.z <= this->_max.z;
 		}
 
-		/** Tests 2 boxes for equality.
-		*/
 		bool operator==(const AxisAlignedBox& rhs) const
 		{
-			if (this->mExtent != rhs.mExtent)
+			if (this->_extent != rhs._extent)
 				return false;
 
 			if (!this->isFinite())
 				return true;
 
-			return this->mMinimum == rhs.mMinimum &&
-				this->mMaximum == rhs.mMaximum;
+			return this->_min == rhs._min &&
+				this->_max == rhs._max;
 		}
 
-		/** Tests 2 boxes for inequality.
-		*/
 		bool operator!=(const AxisAlignedBox& rhs) const
 		{
 			return !(*this == rhs);
 		}
 
-		// special values
 		static const AxisAlignedBox BOX_NULL;
 		static const AxisAlignedBox BOX_INFINITE;
 	};

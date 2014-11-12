@@ -1,4 +1,5 @@
 #include "SoloPlane.h"
+#include "SoloAxisAlignedBox.h"
 
 using namespace solo;
 
@@ -46,12 +47,12 @@ Plane::Side Plane::getSide(const Vector3& rkPoint) const
 	f32 fDistance = getDistance(rkPoint);
 
 	if (fDistance < 0.0)
-		return Plane::NEGATIVE_SIDE;
+		return NEGATIVE_SIDE;
 
 	if (fDistance > 0.0)
-		return Plane::POSITIVE_SIDE;
+		return POSITIVE_SIDE;
 
-	return Plane::NO_SIDE;
+	return NO_SIDE;
 }
 
 
@@ -75,16 +76,15 @@ Plane::Side Plane::getSide(const Vector3& centre, const Vector3& halfSize) const
 	f32 maxAbsDist = normal.absDotProduct(halfSize);
 
 	if (dist < -maxAbsDist)
-		return Plane::NEGATIVE_SIDE;
+		return NEGATIVE_SIDE;
 
 	if (dist > +maxAbsDist)
-		return Plane::POSITIVE_SIDE;
+		return POSITIVE_SIDE;
 
-	return Plane::BOTH_SIDE;
+	return BOTH_SIDE;
 }
 
-void Plane::redefine(const Vector3& rkPoint0, const Vector3& rkPoint1,
-					const Vector3& rkPoint2)
+void Plane::redefine(const Vector3& rkPoint0, const Vector3& rkPoint1, const Vector3& rkPoint2)
 {
 	Vector3 kEdge1 = rkPoint1 - rkPoint0;
 	Vector3 kEdge2 = rkPoint2 - rkPoint0;

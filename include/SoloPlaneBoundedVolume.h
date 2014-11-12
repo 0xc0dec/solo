@@ -3,10 +3,13 @@
 
 #include "SoloCommon.h"
 #include "SoloPlane.h"
-#include "SoloRay.h"
+#include "SoloAxisAlignedBox.h"
+#include "SoloSphere.h"
 
 namespace solo
 {
+	class Ray;
+
 	class PlaneBoundedVolume
 	{
 	public:

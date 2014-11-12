@@ -20,16 +20,16 @@ namespace solo
 		{
 		}
 
-		inline explicit Vector3(const f32 afCoordinate[3])
-			: x(afCoordinate[0]), y(afCoordinate[1]), z(afCoordinate[2])
+		inline explicit Vector3(const f32 coords[3])
+			: x(coords[0]), y(coords[1]), z(coords[2])
 		{
 		}
 
-		inline explicit Vector3(const int afCoordinate[3])
+		inline explicit Vector3(const int coords[3])
 		{
-			x = static_cast<f32>(afCoordinate[0]);
-			y = static_cast<f32>(afCoordinate[1]);
-			z = static_cast<f32>(afCoordinate[2]);
+			x = static_cast<f32>(coords[0]);
+			y = static_cast<f32>(coords[1]);
+			z = static_cast<f32>(coords[2]);
 		}
 
 		inline explicit Vector3(f32* const r)
@@ -62,21 +62,17 @@ namespace solo
 
 			return *(&x + i);
 		}
-		/// Pointer accessor for direct copying
+
 		inline f32* ptr()
 		{
 			return &x;
 		}
-		/// Pointer accessor for direct copying
+		
 		inline const f32* ptr() const
 		{
 			return &x;
 		}
 
-		/** Assigns the value of the other vector.
-		@param
-		rkVector The other vector
-		*/
 		inline Vector3& operator = (const Vector3& rkVector)
 		{
 			x = rkVector.x;
@@ -105,7 +101,6 @@ namespace solo
 			return (x != rkVector.x || y != rkVector.y || z != rkVector.z);
 		}
 
-		// arithmetic operations
 		inline Vector3 operator + (const Vector3& rkVector) const
 		{
 			return Vector3(
@@ -168,7 +163,6 @@ namespace solo
 			return Vector3(-x, -y, -z);
 		}
 
-		// overloaded operators to help Vector3
 		inline friend Vector3 operator * (const f32 fScalar, const Vector3& rkVector)
 		{
 			return Vector3(

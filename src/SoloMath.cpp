@@ -302,7 +302,7 @@ Pair<bool, f32> Math::intersects(const Ray& ray, const Plane& plane)
 	if (Abs(denom) < std::numeric_limits<f32>::epsilon())
 	{
 		// Parallel
-		return Pair<bool, f32>(false, 0);
+		return Pair<bool, f32>(false, 0.0f);
 	}
 	f32 nom = plane.normal.dotProduct(ray.getOrigin()) + plane.d;
 	f32 t = -(nom / denom);
@@ -409,7 +409,7 @@ Pair<bool, f32> Math::intersects(const Ray& ray, const Sphere& sphere, bool disc
 	// Check origin inside first
 	if (rayorig.squaredLength() <= radius * radius && discardInside)
 	{
-		return Pair<bool, f32>(true, 0);
+		return Pair<bool, f32>(true, 0.0f);
 	}
 
 	// Mmm, quadratics
@@ -424,7 +424,7 @@ Pair<bool, f32> Math::intersects(const Ray& ray, const Sphere& sphere, bool disc
 	if (d < 0)
 	{
 		// No intersection
-		return Pair<bool, f32>(false, 0);
+		return Pair<bool, f32>(false, 0.0f);
 	}
 
 	// BTW, if d=0 there is one intersection, if d > 0 there are 2
@@ -439,8 +439,8 @@ Pair<bool, f32> Math::intersects(const Ray& ray, const Sphere& sphere, bool disc
 
 Pair<bool, f32> Math::intersects(const Ray& ray, const AxisAlignedBox& box)
 {
-	if (box.isNull()) return Pair<bool, f32>(false, 0);
-	if (box.isInfinite()) return Pair<bool, f32>(true, 0);
+	if (box.isNull()) return Pair<bool, f32>(false, 0.0f);
+	if (box.isInfinite()) return Pair<bool, f32>(true, 0.0f);
 
 	f32 lowt = 0.0f;
 	f32 t;
@@ -454,7 +454,7 @@ Pair<bool, f32> Math::intersects(const Ray& ray, const AxisAlignedBox& box)
 	// Check origin inside first
 	if (rayorig > min && rayorig < max)
 	{
-		return Pair<bool, f32>(true, 0);
+		return Pair<bool, f32>(true, 0.0f);
 	}
 
 	// Check each face in turn, only check closest 3
@@ -666,18 +666,18 @@ Pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a,
 		if (denom > +std::numeric_limits<f32>::epsilon())
 		{
 			if (!negativeSide)
-				return Pair<bool, f32>(false, 0);
+				return Pair<bool, f32>(false, 0.0f);
 		}
 		else if (denom < -std::numeric_limits<f32>::epsilon())
 		{
 			if (!positiveSide)
-				return Pair<bool, f32>(false, 0);
+				return Pair<bool, f32>(false, 0.0f);
 		}
 		else
 		{
 			// Parallel or triangle area is close to zero when
 			// the plane normal not normalised.
-			return Pair<bool, f32>(false, 0);
+			return Pair<bool, f32>(false, 0.0f);
 		}
 
 		t = normal.dotProduct(a - ray.getOrigin()) / denom;
@@ -685,7 +685,7 @@ Pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a,
 		if (t < 0)
 		{
 			// Intersection is behind origin
-			return Pair<bool, f32>(false, 0);
+			return Pair<bool, f32>(false, 0.0f);
 		}
 	}
 
@@ -733,21 +733,19 @@ Pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a,
 		if (area > 0)
 		{
 			if (alpha < tolerance || beta < tolerance || alpha + beta > area - tolerance)
-				return Pair<bool, f32>(false, 0);
+				return Pair<bool, f32>(false, 0.0f);
 		}
 		else
 		{
 			if (alpha > tolerance || beta > tolerance || alpha + beta < area - tolerance)
-				return Pair<bool, f32>(false, 0);
+				return Pair<bool, f32>(false, 0.0f);
 		}
 	}
 
 	return Pair<bool, f32>(true, t);
 }
 
-Pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a,
-								const Vector3& b, const Vector3& c,
-								bool positiveSide, bool negativeSide)
+Pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a, const Vector3& b, const Vector3& c, bool positiveSide, bool negativeSide)
 {
 	Vector3 normal = calculateBasicFaceNormalWithoutNormalize(a, b, c);
 	return intersects(ray, a, b, c, normal, positiveSide, negativeSide);
@@ -893,7 +891,7 @@ Matrix4 Math::makeViewMatrix(const Vector3& position, const Quaternion& orientat
 	orientation.ToRotationMatrix(rot);
 
 	// Make the translation relative to new axes
-	Matrix3 rotT = rot.Transpose();
+	Matrix3 rotT = rot.transpose();
 	Vector3 trans = -rotT * position;
 
 	// Make final matrix

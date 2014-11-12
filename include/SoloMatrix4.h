@@ -47,17 +47,11 @@ namespace solo
 			m[3][3] = m33;
 		}
 
-		/** Creates a standard 4x4 transformation matrix with a zero translation part from a rotation/scaling 3x3 matrix.
-		*/
-
 		inline Matrix4(const Matrix3& m3x3)
 		{
 			operator=(IDENTITY);
 			operator=(m3x3);
 		}
-
-		/** Creates a standard 4x4 transformation matrix with a zero translation part from a rotation/scaling Quaternion.
-		*/
 
 		inline Matrix4(const Quaternion& rot)
 		{
@@ -67,9 +61,6 @@ namespace solo
 			operator=(m3x3);
 		}
 
-
-		/** Exchange the contents of this matrix with another.
-		*/
 		inline void swap(Matrix4& other)
 		{
 			std::swap(m[0][0], other.m[0][0]);
@@ -128,8 +119,6 @@ namespace solo
 			return r;
 		}
 
-		/** Matrix concatenation using '*'.
-		*/
 		inline Matrix4 operator *(const Matrix4& m2) const
 		{
 			return concatenate(m2);
@@ -181,9 +170,6 @@ namespace solo
 			return ret;
 		}
 
-
-		/** Matrix addition.
-		*/
 		inline Matrix4 operator +(const Matrix4& m2) const
 		{
 			Matrix4 r;
@@ -211,8 +197,6 @@ namespace solo
 			return r;
 		}
 
-		/** Matrix subtraction.
-		*/
 		inline Matrix4 operator -(const Matrix4& m2) const
 		{
 			Matrix4 r;
@@ -239,8 +223,6 @@ namespace solo
 			return r;
 		}
 
-		/** Tests 2 matrices for equality.
-		*/
 		inline bool operator ==(const Matrix4& m2) const
 		{
 			if (
@@ -252,8 +234,6 @@ namespace solo
 			return true;
 		}
 
-		/** Tests 2 matrices for inequality.
-		*/
 		inline bool operator !=(const Matrix4& m2) const
 		{
 			if (
@@ -265,8 +245,6 @@ namespace solo
 			return false;
 		}
 
-		/** Assignment from 3x3 matrix.
-		*/
 		inline void operator =(const Matrix3& mat3)
 		{
 			m[0][0] = mat3.m[0][0];
@@ -288,13 +266,6 @@ namespace solo
 							m[0][3], m[1][3], m[2][3], m[3][3]);
 		}
 
-		/*
-		-----------------------------------------------------------------------
-		Translation Transformation
-		-----------------------------------------------------------------------
-		*/
-		/** Sets the translation transformation part of the matrix.
-		*/
 		inline void setTrans(const Vector3& v)
 		{
 			m[0][3] = v.x;
@@ -302,16 +273,11 @@ namespace solo
 			m[2][3] = v.z;
 		}
 
-		/** Extracts the translation transformation part of the matrix.
-		*/
 		inline Vector3 getTrans() const
 		{
 			return Vector3(m[0][3], m[1][3], m[2][3]);
 		}
 
-
-		/** Builds a translation matrix
-		*/
 		inline void makeTrans(const Vector3& v)
 		{
 			m[0][0] = 1.0;
@@ -352,8 +318,6 @@ namespace solo
 			m[3][3] = 1.0;
 		}
 
-		/** Gets a translation matrix.
-		*/
 		inline static Matrix4 getTrans(const Vector3& v)
 		{
 			Matrix4 r;
@@ -378,8 +342,6 @@ namespace solo
 			return r;
 		}
 
-		/** Gets a translation matrix - variation for not using a vector.
-		*/
 		inline static Matrix4 getTrans(f32 t_x, f32 t_y, f32 t_z)
 		{
 			Matrix4 r;
@@ -404,13 +366,6 @@ namespace solo
 			return r;
 		}
 
-		/*
-		-----------------------------------------------------------------------
-		Scale Transformation
-		-----------------------------------------------------------------------
-		*/
-		/** Sets the scale part of the matrix.
-		*/
 		inline void setScale(const Vector3& v)
 		{
 			m[0][0] = v.x;
@@ -418,8 +373,6 @@ namespace solo
 			m[2][2] = v.z;
 		}
 
-		/** Gets a scale matrix.
-		*/
 		inline static Matrix4 getScale(const Vector3& v)
 		{
 			Matrix4 r;
@@ -443,8 +396,6 @@ namespace solo
 			return r;
 		}
 
-		/** Gets a scale matrix - variation for not using a vector.
-		*/
 		inline static Matrix4 getScale(f32 s_x, f32 s_y, f32 s_z)
 		{
 			Matrix4 r;
@@ -468,9 +419,6 @@ namespace solo
 			return r;
 		}
 
-		/** Extracts the rotation / scaling part of the Matrix as a 3x3 matrix.
-		@param m3x3 Destination Matrix3
-		*/
 		inline void extract3x3Matrix(Matrix3& m3x3) const
 		{
 			m3x3.m[0][0] = m[0][0];
@@ -484,7 +432,6 @@ namespace solo
 			m3x3.m[2][2] = m[2][2];
 		}
 
-		/** Determines if this matrix involves a scaling. */
 		inline bool hasScale() const
 		{
 			// check magnitude of column vectors (==local axes)
@@ -501,14 +448,11 @@ namespace solo
 			return false;
 		}
 
-		/** Determines if this matrix involves a negative scaling. */
 		inline bool hasNegativeScale() const
 		{
 			return determinant() < 0;
 		}
 
-		/** Extracts the rotation / scaling part as a quaternion from the Matrix.
-		*/
 		inline Quaternion extractQuaternion() const
 		{
 			Matrix3 m3x3;
@@ -519,8 +463,7 @@ namespace solo
 		static const Matrix4 ZERO;
 		static const Matrix4 ZEROAFFINE;
 		static const Matrix4 IDENTITY;
-		/** Useful little matrix which takes 2D clipspace {-1, 1} to {0,1}
-		and inverts the Y. */
+		/** Useful little matrix which takes 2D clipspace {-1, 1} to {0,1} and inverts the Y. */
 		static const Matrix4 CLIPSPACE2DTOIMAGESPACE;
 
 		inline Matrix4 operator*(f32 scalar) const
@@ -532,8 +475,6 @@ namespace solo
 				scalar * m[3][0], scalar * m[3][1], scalar * m[3][2], scalar * m[3][3]);
 		}
 
-		/** Function for writing to a stream.
-		*/
 		inline friend std::ostream& operator <<(std::ostream& o, const Matrix4& mat)
 		{
 			o << "Matrix4(";
@@ -649,10 +590,7 @@ namespace solo
 		}
 	};
 
-	/* Removed from Vector4 and made a non-member here because otherwise
-	OgreMatrix4.h and OgreVector4.h have to try to include and inline each
-	other, which frankly doesn't work ;)
-	*/
+	
 	inline Vector4 operator *(const Vector4& v, const Matrix4& mat)
 	{
 		return Vector4(

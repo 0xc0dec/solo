@@ -4,7 +4,6 @@
 #include <cmath>
 #include "SoloCommon.h"
 
-
 namespace solo
 {
 	class AxisAlignedBox;
@@ -915,8 +914,7 @@ namespace solo
 			return std::max(std::min(val, maxval), minval);
 		}
 
-		static Matrix4 makeViewMatrix(const Vector3& position, const Quaternion& orientation,
-									const Matrix4* reflectMatrix = 0);
+		static Matrix4 makeViewMatrix(const Vector3& position, const Quaternion& orientation, const Matrix4* reflectMatrix = 0);
 
 		/** Get a bounding radius value from a bounding box. */
 		static f32 boundingRadiusFromAABB(const AxisAlignedBox& aabb);
