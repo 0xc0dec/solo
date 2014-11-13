@@ -371,7 +371,7 @@ namespace solo
 		*/
 		inline f32 absDotProduct(const Vector3& vec) const
 		{
-			return Math::Abs(x * vec.x) + Math::Abs(y * vec.y) + Math::Abs(z * vec.z);
+			return Math::abs(x * vec.x) + Math::abs(y * vec.y) + Math::abs(z * vec.z);
 		}
 
 		/** Normalises the vector.
@@ -703,7 +703,7 @@ namespace solo
 			f32 dot = dotProduct(rhs);
 			Radian angle = Math::ACos(dot);
 
-			return Math::Abs(angle.valueRadians()) <= tolerance.valueRadians();
+			return Math::abs(angle.valueRadians()) <= tolerance.valueRadians();
 
 		}
 
@@ -716,9 +716,9 @@ namespace solo
 		/// Extract the primary (dominant) axis from this direction vector
 		inline Vector3 primaryAxis() const
 		{
-			f32 absx = Math::Abs(x);
-			f32 absy = Math::Abs(y);
-			f32 absz = Math::Abs(z);
+			f32 absx = Math::abs(x);
+			f32 absy = Math::abs(y);
+			f32 absz = Math::abs(z);
 			if (absx > absy)
 			{
 				if (absx > absz)

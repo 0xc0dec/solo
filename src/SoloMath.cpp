@@ -18,76 +18,76 @@ const f32 Math::fDeg2Rad = PI / f32(180.0);
 const f32 Math::fRad2Deg = f32(180.0) / PI;
 const f32 Math::LOG2 = log(f32(2.0));
 
-int Math::mTrigTableSize;
-Math::AngleUnit Math::msAngleUnit;
+int Math::_trigTableSize;
+Math::AngleUnit Math::_angleUnit;
 
-f32 Math::mTrigTableFactor;
-f32* Math::mSinTable = nullptr;
-f32* Math::mTanTable = nullptr;
+f32 Math::_trigTableFactor;
+f32* Math::_sinTable = nullptr;
+f32* Math::_tanTable = nullptr;
 
 
 Math::Math(unsigned int trigTableSize)
 {
-	msAngleUnit = AU_DEGREE;
-	mTrigTableSize = trigTableSize;
-	mTrigTableFactor = mTrigTableSize / TWO_PI;
+	_angleUnit = AU_DEGREE;
+	_trigTableSize = trigTableSize;
+	_trigTableFactor = _trigTableSize / TWO_PI;
 
-	mSinTable = new f32[mTrigTableSize];
-	mTanTable = new f32[mTrigTableSize];
+	_sinTable = new f32[_trigTableSize];
+	_tanTable = new f32[_trigTableSize];
 
-	buildTrigTables();
+	_buildTrigTables();
 }
 
 
 Math::~Math()
 {
-	delete[] mSinTable;
-	delete[] mTanTable;
+	delete[] _sinTable;
+	delete[] _tanTable;
 }
 
 
-void Math::buildTrigTables(void)
+void Math::_buildTrigTables(void)
 {
 	// Build trig lookup tables
 	// Could get away with building only PI sized Sin table but simpler this 
 	// way. Who cares, it'll ony use an extra 8k of memory anyway and I like 
 	// simplicity.
 	f32 angle;
-	for (int i = 0; i < mTrigTableSize; ++i)
+	for (int i = 0; i < _trigTableSize; ++i)
 	{
-		angle = TWO_PI * i / mTrigTableSize;
-		mSinTable[i] = sin(angle);
-		mTanTable[i] = tan(angle);
+		angle = TWO_PI * i / _trigTableSize;
+		_sinTable[i] = sin(angle);
+		_tanTable[i] = tan(angle);
 	}
 }
 
 
-f32 Math::SinTable(f32 fValue)
+f32 Math::_fromSinTable(f32 fValue)
 {
 	// Convert range to index values, wrap if required
 	int idx;
 	if (fValue >= 0)
 	{
-		idx = int(fValue * mTrigTableFactor) % mTrigTableSize;
+		idx = int(fValue * _trigTableFactor) % _trigTableSize;
 	}
 	else
 	{
-		idx = mTrigTableSize - (int(-fValue * mTrigTableFactor) % mTrigTableSize) - 1;
+		idx = _trigTableSize - (int(-fValue * _trigTableFactor) % _trigTableSize) - 1;
 	}
 
-	return mSinTable[idx];
+	return _sinTable[idx];
 }
 
 
-f32 Math::TanTable(f32 fValue)
+f32 Math::_fromTanTable(f32 fValue)
 {
 	// Convert range to index values, wrap if required
-	int idx = int(fValue *= mTrigTableFactor) % mTrigTableSize;
-	return mTanTable[idx];
+	int idx = int(fValue *= _trigTableFactor) % _trigTableSize;
+	return _tanTable[idx];
 }
 
 
-int Math::ISign(int iValue)
+int Math::sign(int iValue)
 {
 	return (iValue > 0 ? +1 : (iValue < 0 ? -1 : 0));
 }
@@ -155,19 +155,19 @@ f32 Math::SymmetricRandom()
 
 void Math::setAngleUnit(AngleUnit unit)
 {
-	msAngleUnit = unit;
+	_angleUnit = unit;
 }
 
 
 Math::AngleUnit Math::getAngleUnit(void)
 {
-	return msAngleUnit;
+	return _angleUnit;
 }
 
 
 f32 Math::AngleUnitsToRadians(f32 angleunits)
 {
-	if (msAngleUnit == AU_DEGREE)
+	if (_angleUnit == AU_DEGREE)
 		return angleunits * fDeg2Rad;
 	return angleunits;
 }
@@ -175,7 +175,7 @@ f32 Math::AngleUnitsToRadians(f32 angleunits)
 
 f32 Math::RadiansToAngleUnits(f32 radians)
 {
-	if (msAngleUnit == AU_DEGREE)
+	if (_angleUnit == AU_DEGREE)
 		return radians * fRad2Deg;
 	return radians;
 }
@@ -183,7 +183,7 @@ f32 Math::RadiansToAngleUnits(f32 radians)
 
 f32 Math::AngleUnitsToDegrees(f32 angleunits)
 {
-	if (msAngleUnit == AU_RADIAN)
+	if (_angleUnit == AU_RADIAN)
 		return angleunits * fRad2Deg;
 	return angleunits;
 }
@@ -191,7 +191,7 @@ f32 Math::AngleUnitsToDegrees(f32 angleunits)
 
 f32 Math::DegreesToAngleUnits(f32 degrees)
 {
-	if (msAngleUnit == AU_RADIAN)
+	if (_angleUnit == AU_RADIAN)
 		return degrees * fDeg2Rad;
 	return degrees;
 }
@@ -299,7 +299,7 @@ bool Math::f32Equal(f32 a, f32 b, f32 tolerance)
 Pair<bool, f32> Math::intersects(const Ray& ray, const Plane& plane)
 {
 	f32 denom = plane.normal.dotProduct(ray.getDirection());
-	if (Abs(denom) < std::numeric_limits<f32>::epsilon())
+	if (abs(denom) < std::numeric_limits<f32>::epsilon())
 	{
 		// Parallel
 		return Pair<bool, f32>(false, 0.0f);
@@ -583,9 +583,9 @@ bool Math::intersects(const Ray& ray, const AxisAlignedBox& box, f32* d1, f32* d
 	const Vector3& raydir = ray.getDirection();
 
 	Vector3 absDir;
-	absDir[0] = Abs(raydir[0]);
-	absDir[1] = Abs(raydir[1]);
-	absDir[2] = Abs(raydir[2]);
+	absDir[0] = abs(raydir[0]);
+	absDir[1] = abs(raydir[1]);
+	absDir[2] = abs(raydir[2]);
 
 	// Sort the axis, ensure check minimise floating error axis first
 	int imax = 0, imid = 1, imin = 2;
@@ -694,9 +694,9 @@ Pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a,
 	//
 	size_t i0, i1;
 	{
-		f32 n0 = Abs(normal[0]);
-		f32 n1 = Abs(normal[1]);
-		f32 n2 = Abs(normal[2]);
+		f32 n0 = abs(normal[0]);
+		f32 n1 = abs(normal[1]);
+		f32 n2 = abs(normal[2]);
 
 		i0 = 1;
 		i1 = 2;
@@ -787,7 +787,7 @@ bool Math::intersects(const Plane& plane, const AxisAlignedBox& box)
 
 bool Math::intersects(const Sphere& sphere, const Plane& plane)
 {
-	return (Abs(plane.getDistance(sphere.getCenter())) <= sphere.getRadius());
+	return (abs(plane.getDistance(sphere.getCenter())) <= sphere.getRadius());
 }
 
 Vector3 Math::calculateTangentSpaceVector(

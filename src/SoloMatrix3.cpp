@@ -190,7 +190,7 @@ bool Matrix3::inverse(Matrix3& inverse, f32 tolerance) const
 		m[0][1] * inverse[1][0] +
 		m[0][2] * inverse[2][0];
 
-	if (Math::Abs(det) <= tolerance)
+	if (Math::abs(det) <= tolerance)
 		return false;
 
 	f32 invDet = 1.0f / det;
@@ -350,8 +350,8 @@ void Matrix3::_golubKahanStep(Matrix3& a, Matrix3& l, Matrix3& r)
 	f32 root2 = 0.5f * (trace - discr);
 
 	// adjust right
-	f32 y = a[0][0] - (Math::Abs(root1 - t22) <=
-						Math::Abs(root2 - t22) ? root1 : root2);
+	f32 y = a[0][0] - (Math::abs(root1 - t22) <=
+						Math::abs(root2 - t22) ? root1 : root2);
 	f32 z = a[0][1];
 	f32 invLength = Math::InvSqrt(y * y + z * z);
 	f32 sin = z * invLength;
@@ -457,10 +457,10 @@ void Matrix3::singularValueDecomposition(Matrix3& kL, Vector3& kS, Matrix3& kR) 
 		f32 fSin0, fCos0, fTan0;
 		f32 fSin1, fCos1, fTan1;
 
-		bool bTest1 = (Math::Abs(kA[0][1]) <=
-			_svdEpsilon * (Math::Abs(kA[0][0]) + Math::Abs(kA[1][1])));
-		bool bTest2 = (Math::Abs(kA[1][2]) <=
-			_svdEpsilon * (Math::Abs(kA[1][1]) + Math::Abs(kA[2][2])));
+		bool bTest1 = (Math::abs(kA[0][1]) <=
+			_svdEpsilon * (Math::abs(kA[0][0]) + Math::abs(kA[1][1])));
+		bool bTest2 = (Math::abs(kA[1][2]) <=
+			_svdEpsilon * (Math::abs(kA[1][1]) + Math::abs(kA[2][2])));
 		if (bTest1)
 		{
 			if (bTest2)
@@ -768,11 +768,11 @@ f32 Matrix3::_maxCubicRoot(f32 afCoeff[3])
 	if (fPoly < 0.0)
 	{
 		// uses a matrix norm to find an upper bound on maximum root
-		fX = Math::Abs(afCoeff[0]);
-		f32 fTmp = 1.0f + Math::Abs(afCoeff[1]);
+		fX = Math::abs(afCoeff[0]);
+		f32 fTmp = 1.0f + Math::abs(afCoeff[1]);
 		if (fTmp > fX)
 			fX = fTmp;
-		fTmp = 1.0f + Math::Abs(afCoeff[2]);
+		fTmp = 1.0f + Math::abs(afCoeff[2]);
 		if (fTmp > fX)
 			fX = fTmp;
 	}
@@ -782,7 +782,7 @@ f32 Matrix3::_maxCubicRoot(f32 afCoeff[3])
 	for (int i = 0; i < 16; i++)
 	{
 		fPoly = afCoeff[0] + fX * (afCoeff[1] + fX * (afCoeff[2] + fX));
-		if (Math::Abs(fPoly) <= fEpsilon)
+		if (Math::abs(fPoly) <= fEpsilon)
 			return fX;
 
 		f32 fDeriv = afCoeff[1] + fX * (fTwoC2 + 3.0f * fX);
@@ -1258,7 +1258,7 @@ void Matrix3::tridiagonal(f32 afDiag[3], f32 afSubDiag[3])
 
 	afDiag[0] = fA;
 	afSubDiag[2] = 0.0;
-	if (Math::Abs(fC) >= EPSILON)
+	if (Math::abs(fC) >= EPSILON)
 	{
 		f32 fLength = Math::Sqrt(fB * fB + fC * fC);
 		f32 fInvLength = 1.0f / fLength;
@@ -1311,9 +1311,9 @@ bool Matrix3::qlAlgorithm(f32 afDiag[3], f32 afSubDiag[3])
 			int i1;
 			for (i1 = i0; i1 <= 1; i1++)
 			{
-				f32 fSum = Math::Abs(afDiag[i1]) +
-					Math::Abs(afDiag[i1 + 1]);
-				if (Math::Abs(afSubDiag[i1]) + fSum == fSum)
+				f32 fSum = Math::abs(afDiag[i1]) +
+					Math::abs(afDiag[i1 + 1]);
+				if (Math::abs(afSubDiag[i1]) + fSum == fSum)
 					break;
 			}
 			if (i1 == i0)
@@ -1332,7 +1332,7 @@ bool Matrix3::qlAlgorithm(f32 afDiag[3], f32 afSubDiag[3])
 			{
 				f32 fTmp3 = fSin * afSubDiag[i2];
 				f32 fTmp4 = fCos * afSubDiag[i2];
-				if (Math::Abs(fTmp3) >= Math::Abs(fTmp0))
+				if (Math::abs(fTmp3) >= Math::abs(fTmp0))
 				{
 					fCos = fTmp0 / fTmp3;
 					fTmp1 = Math::Sqrt(fCos * fCos + 1.0f);

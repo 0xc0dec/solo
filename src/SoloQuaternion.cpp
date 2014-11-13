@@ -325,7 +325,7 @@ Quaternion Quaternion::Exp() const
 	Quaternion kResult;
 	kResult.w = Math::Cos(fAngle);
 
-	if (Math::Abs(fSin) >= msEpsilon)
+	if (Math::abs(fSin) >= msEpsilon)
 	{
 		f32 fCoeff = fSin / (fAngle.valueRadians());
 		kResult.x = fCoeff * x;
@@ -352,11 +352,11 @@ Quaternion Quaternion::Log() const
 	Quaternion kResult;
 	kResult.w = 0.0;
 
-	if (Math::Abs(w) < 1.0)
+	if (Math::abs(w) < 1.0)
 	{
 		Radian fAngle(Math::ACos(w));
 		f32 fSin = Math::Sin(fAngle);
-		if (Math::Abs(fSin) >= msEpsilon)
+		if (Math::abs(fSin) >= msEpsilon)
 		{
 			f32 fCoeff = fAngle.valueRadians() / fSin;
 			kResult.x = fCoeff * x;
@@ -393,7 +393,7 @@ bool Quaternion::equals(const Quaternion& rhs, const Radian& tolerance) const
 	f32 fCos = Dot(rhs);
 	Radian angle = Math::ACos(fCos);
 
-	return (Math::Abs(angle.valueRadians()) <= tolerance.valueRadians())
+	return (Math::abs(angle.valueRadians()) <= tolerance.valueRadians())
 		|| Math::f32Equal(angle.valueRadians(), Math::PI, tolerance.valueRadians());
 }
 
@@ -414,7 +414,7 @@ Quaternion Quaternion::Slerp(f32 fT, const Quaternion& rkP, const Quaternion& rk
 		rkT = rkQ;
 	}
 
-	if (Math::Abs(fCos) < 1 - msEpsilon)
+	if (Math::abs(fCos) < 1 - msEpsilon)
 	{
 		// Standard case (slerp)
 		f32 fSin = Math::Sqrt(1 - Math::Sqr(fCos));
@@ -443,7 +443,7 @@ Quaternion Quaternion::SlerpExtraSpins(f32 fT, const Quaternion& rkP, const Quat
 	f32 fCos = rkP.Dot(rkQ);
 	Radian fAngle(Math::ACos(fCos));
 
-	if (Math::Abs(fAngle.valueRadians()) < msEpsilon)
+	if (Math::abs(fAngle.valueRadians()) < msEpsilon)
 		return rkP;
 
 	f32 fSin = Math::Sin(fAngle);

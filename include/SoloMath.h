@@ -379,22 +379,22 @@ namespace solo
 
 	protected:
 		// angle units used by the api
-		static AngleUnit msAngleUnit;
+		static AngleUnit _angleUnit;
 
 		/// Size of the trig tables as determined by constructor.
-		static int mTrigTableSize;
+		static int _trigTableSize;
 
-		/// Radian -> index factor value ( mTrigTableSize / 2 * PI )
-		static f32 mTrigTableFactor;
-		static f32* mSinTable;
-		static f32* mTanTable;
+		/// Radian -> index factor value ( _trigTableSize / 2 * PI )
+		static f32 _trigTableFactor;
+		static f32* _sinTable;
+		static f32* _tanTable;
 
 		/** Private function to build trig tables.
 		*/
-		void buildTrigTables();
+		void _buildTrigTables();
 
-		static f32 SinTable(f32 fValue);
-		static f32 TanTable(f32 fValue);
+		static f32 _fromSinTable(f32 fValue);
+		static f32 _fromTanTable(f32 fValue);
 	public:
 
 		/** Default constructor.
@@ -408,48 +408,48 @@ namespace solo
 		*/
 		~Math();
 
-		static inline int IAbs(int iValue)
+		static inline int abs(int val)
 		{
-			return (iValue >= 0 ? iValue : -iValue);
+			return (val >= 0 ? val : -val);
 		}
 
-		static inline int ICeil(float fValue)
+		static inline int ceil(float val)
 		{
-			return int(ceil(fValue));
+			return int(ceil(val));
 		}
 
-		static inline int IFloor(float fValue)
+		static inline int floor(float val)
 		{
-			return int(floor(fValue));
+			return int(floor(val));
 		}
 
-		static int ISign(int iValue);
+		static int sign(int val);
 
 		/** Absolute value function
 		@param
 		fValue The value whose absolute value will be returned.
 		*/
-		static inline f32 Abs(f32 fValue)
+		static inline f32 abs(f32 val)
 		{
-			return f32(fabs(fValue));
+			return f32(fabs(val));
 		}
 
 		/** Absolute value function
 		@param
 		fValue The value, in degrees, whose absolute value will be returned.
 		*/
-		static inline Degree Abs(const Degree& dValue)
+		static inline Degree abs(const Degree& val)
 		{
-			return Degree(fabs(dValue.valueDegrees()));
+			return Degree(fabs(val.valueDegrees()));
 		}
 
 		/** Absolute value function
 		@param
 		fValue The value, in radians, whose absolute value will be returned.
 		*/
-		static inline Radian Abs(const Radian& rValue)
+		static inline Radian abs(const Radian& val)
 		{
-			return Radian(fabs(rValue.valueRadians()));
+			return Radian(fabs(val.valueRadians()));
 		}
 
 		/** Arc cosine function
@@ -511,7 +511,7 @@ namespace solo
 		*/
 		static inline f32 Cos(const Radian& fValue, bool useTables = false)
 		{
-			return (!useTables) ? f32(cos(fValue.valueRadians())) : SinTable(fValue.valueRadians() + HALF_PI);
+			return (!useTables) ? f32(cos(fValue.valueRadians())) : _fromSinTable(fValue.valueRadians() + HALF_PI);
 		}
 
 		/** Cosine function.
@@ -523,7 +523,7 @@ namespace solo
 		*/
 		static inline f32 Cos(f32 fValue, bool useTables = false)
 		{
-			return (!useTables) ? f32(cos(fValue)) : SinTable(fValue + HALF_PI);
+			return (!useTables) ? f32(cos(fValue)) : _fromSinTable(fValue + HALF_PI);
 		}
 
 		static inline f32 Exp(f32 fValue)
@@ -586,7 +586,7 @@ namespace solo
 		*/
 		static inline f32 Sin(const Radian& fValue, bool useTables = false)
 		{
-			return (!useTables) ? f32(sin(fValue.valueRadians())) : SinTable(fValue.valueRadians());
+			return (!useTables) ? f32(sin(fValue.valueRadians())) : _fromSinTable(fValue.valueRadians());
 		}
 
 		/** Sine function.
@@ -598,7 +598,7 @@ namespace solo
 		*/
 		static inline f32 Sin(f32 fValue, bool useTables = false)
 		{
-			return (!useTables) ? f32(sin(fValue)) : SinTable(fValue);
+			return (!useTables) ? f32(sin(fValue)) : _fromSinTable(fValue);
 		}
 
 		/** Squared function.
@@ -679,7 +679,7 @@ namespace solo
 		*/
 		static inline f32 Tan(const Radian& fValue, bool useTables = false)
 		{
-			return (!useTables) ? f32(tan(fValue.valueRadians())) : TanTable(fValue.valueRadians());
+			return (!useTables) ? f32(tan(fValue.valueRadians())) : _fromTanTable(fValue.valueRadians());
 		}
 
 		/** Tangent function.
@@ -691,7 +691,7 @@ namespace solo
 		*/
 		static inline f32 Tan(f32 fValue, bool useTables = false)
 		{
-			return (!useTables) ? f32(tan(fValue)) : TanTable(fValue);
+			return (!useTables) ? f32(tan(fValue)) : _fromTanTable(fValue);
 		}
 
 		static inline f32 DegreesToRadians(f32 degrees)
