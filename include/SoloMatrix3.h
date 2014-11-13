@@ -3,7 +3,6 @@
 
 #include "SoloCommon.h"
 #include "SoloMath.h"
-//#include "SoloVector3.h"
 
 namespace solo
 {
@@ -57,9 +56,9 @@ namespace solo
 			return const_cast<f32*>(m[i]);
 		}
 
-		Vector3 GetColumn(size_t i) const;
-		void SetColumn(size_t i, const Vector3& vector);
-		void FromAxes(const Vector3& x, const Vector3& y, const Vector3& z);
+		Vector3 column(size_t i) const;
+		void setColumn(size_t i, const Vector3& vector);
+		void fromAxes(const Vector3& x, const Vector3& y, const Vector3& z);
 
 		inline Matrix3& operator=(const Matrix3& other)
 		{
@@ -76,7 +75,7 @@ namespace solo
 
 		Matrix3 operator+(const Matrix3& other) const;
 		Matrix3 operator-(const Matrix3& other) const;
-		Matrix3 operator*(const Matrix3& matrix) const;
+		Matrix3 operator*(const Matrix3& other) const;
 		Matrix3 operator-() const;
 
 		Vector3 operator*(const Vector3& vector) const;
@@ -86,52 +85,52 @@ namespace solo
 		friend Matrix3 operator*(f32 scalar, const Matrix3& matrix);
 
 		Matrix3 transpose() const;
-		bool inverse(Matrix3& rkInverse, f32 fTolerance = 1e-06) const;
-		Matrix3 inverse(f32 fTolerance = 1e-06) const;
+		bool inverse(Matrix3& inverse, f32 tolerance = 1e-06) const;
+		Matrix3 inverse(f32 tolerance = 1e-06) const;
 		f32 determinant() const;
 
-		void SingularValueDecomposition(Matrix3& rkL, Vector3& rkS, Matrix3& rkR) const;
-		void SingularValueComposition(const Matrix3& rkL, const Vector3& rkS, const Matrix3& rkR);
+		void singularValueDecomposition(Matrix3& l, Vector3& s, Matrix3& r) const;
+		void singularValueComposition(const Matrix3& l, const Vector3& s, const Matrix3& r);
 
 		/// Gram-Schmidt orthonormalization (applied to columns of rotation matrix)
-		void Orthonormalize();
+		void orthonormalize();
 
 		/// Orthogonal Q, diagonal D, upper triangular U stored as (u01,u02,u12)
-		void QDUDecomposition(Matrix3& rkQ, Vector3& rkD, Vector3& rkU) const;
+		void qduDecomposition(Matrix3& q, Vector3& d, Vector3& u) const;
 
-		f32 SpectralNorm() const;
+		f32 spectralNorm() const;
 
 		// matrix must be orthonormal
-		void ToAngleAxis(Vector3& rkAxis, Radian& rfAngle) const;
+		void toAngleAxis(Vector3& axis, Radian& angle) const;
 
-		inline void ToAngleAxis(Vector3& axis, Degree& angle) const
+		inline void toAngleAxis(Vector3& axis, Degree& angle) const
 		{
 			Radian r;
-			ToAngleAxis(axis, r);
+			toAngleAxis(axis, r);
 			angle = r;
 		}
 
-		void FromAngleAxis(const Vector3& rkAxis, const Radian& fRadians);
+		void fromAngleAxis(const Vector3& axis, const Radian& angle);
 
 		// The matrix must be orthonormal.  The decomposition is yaw*pitch*roll
 		// where yaw is rotation about the Up vector, pitch is rotation about the
 		// Right axis, and roll is rotation about the Direction axis.
-		bool ToEulerAnglesXYZ(Radian& rfYAngle, Radian& rfPAngle, Radian& rfRAngle) const;
-		bool ToEulerAnglesXZY(Radian& rfYAngle, Radian& rfPAngle, Radian& rfRAngle) const;
-		bool ToEulerAnglesYXZ(Radian& rfYAngle, Radian& rfPAngle, Radian& rfRAngle) const;
-		bool ToEulerAnglesYZX(Radian& rfYAngle, Radian& rfPAngle, Radian& rfRAngle) const;
-		bool ToEulerAnglesZXY(Radian& rfYAngle, Radian& rfPAngle, Radian& rfRAngle) const;
-		bool ToEulerAnglesZYX(Radian& rfYAngle, Radian& rfPAngle, Radian& rfRAngle) const;
-		void FromEulerAnglesXYZ(const Radian& fYAngle, const Radian& fPAngle, const Radian& fRAngle);
-		void FromEulerAnglesXZY(const Radian& fYAngle, const Radian& fPAngle, const Radian& fRAngle);
-		void FromEulerAnglesYXZ(const Radian& fYAngle, const Radian& fPAngle, const Radian& fRAngle);
-		void FromEulerAnglesYZX(const Radian& fYAngle, const Radian& fPAngle, const Radian& fRAngle);
-		void FromEulerAnglesZXY(const Radian& fYAngle, const Radian& fPAngle, const Radian& fRAngle);
-		void FromEulerAnglesZYX(const Radian& fYAngle, const Radian& fPAngle, const Radian& fRAngle);
+		bool toEulerAnglesXYZ(Radian& yawAngle, Radian& pitchAngle, Radian& rollAngle) const;
+		bool toEulerAnglesXZY(Radian& yawAngle, Radian& pitchAngle, Radian& rollAngle) const;
+		bool toEulerAnglesYXZ(Radian& yawAngle, Radian& pitchAngle, Radian& rollAngle) const;
+		bool toEulerAnglesYZX(Radian& yawAngle, Radian& pitchAngle, Radian& rollAngle) const;
+		bool toEulerAnglesZXY(Radian& yawAngle, Radian& pitchAngle, Radian& rollAngle) const;
+		bool toEulerAnglesZYX(Radian& yawAngle, Radian& pitchAngle, Radian& rollAngle) const;
+		void fromEulerAnglesXYZ(const Radian& yawAngle, const Radian& pitchAngle, const Radian& rollAngle);
+		void fromEulerAnglesXZY(const Radian& yawAngle, const Radian& pitchAngle, const Radian& rollAngle);
+		void fromEulerAnglesYXZ(const Radian& yawAngle, const Radian& pitchAngle, const Radian& rollAngle);
+		void fromEulerAnglesYZX(const Radian& yawAngle, const Radian& pitchAngle, const Radian& rollAngle);
+		void fromEulerAnglesZXY(const Radian& yawAngle, const Radian& pitchAngle, const Radian& rollAngle);
+		void fromEulerAnglesZYX(const Radian& yawAngle, const Radian& pitchAngle, const Radian& rollAngle);
 		/// Eigensolver, matrix must be symmetric
-		void EigenSolveSymmetric(f32 afEigenvalue[3], Vector3 akEigenvector[3]) const;
+		void eigenSolveSymmetric(f32 eigenValue[3], Vector3 eigenVector[3]) const;
 
-		static void TensorProduct(const Vector3& rkU, const Vector3& rkV, Matrix3& rkProduct);
+		static void tensorProduct(const Vector3& u, const Vector3& v, Matrix3& product);
 
 		inline bool hasScale() const
 		{
@@ -163,17 +162,17 @@ namespace solo
 
 	protected:
 		// support for eigensolver
-		void Tridiagonal(f32 afDiag[3], f32 afSubDiag[3]);
-		bool QLAlgorithm(f32 afDiag[3], f32 afSubDiag[3]);
+		void tridiagonal(f32 diag[3], f32 subDiag[3]);
+		bool qlAlgorithm(f32 diag[3], f32 subDiag[3]);
 
 		// support for singular value decomposition
-		static const f32 msSvdEpsilon;
-		static const unsigned int msSvdMaxIterations;
-		static void Bidiagonalize(Matrix3& kA, Matrix3& kL, Matrix3& kR);
-		static void GolubKahanStep(Matrix3& kA, Matrix3& kL, Matrix3& kR);
+		static const f32 _svdEpsilon;
+		static const unsigned int _svdMaxIterations;
+		static void _bidiagonalize(Matrix3& a, Matrix3& l, Matrix3& r);
+		static void _golubKahanStep(Matrix3& a, Matrix3& l, Matrix3& r);
 
 		// support for spectral norm
-		static f32 MaxCubicRoot(f32 afCoeff[3]);
+		static f32 _maxCubicRoot(f32 coeff[3]);
 
 		f32 m[3][3];
 

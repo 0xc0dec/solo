@@ -108,11 +108,11 @@ namespace solo
 		}
 
 		/** Constructs the quaternion using 3 axes, the axes are assumed to be orthonormal
-		@see FromAxes
+		@see fromAxes
 		*/
 		void FromAxes(const Vector3* akAxis);
 		void FromAxes(const Vector3& xAxis, const Vector3& yAxis, const Vector3& zAxis);
-		/** Gets the 3 orthonormal axes defining the quaternion. @see FromAxes */
+		/** Gets the 3 orthonormal axes defining the quaternion. @see fromAxes */
 		void ToAxes(Vector3* akAxis) const;
 		void ToAxes(Vector3& xAxis, Vector3& yAxis, Vector3& zAxis) const;
 

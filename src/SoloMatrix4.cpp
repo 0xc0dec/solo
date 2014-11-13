@@ -226,7 +226,7 @@ void Matrix4::decomposition(Vector3& position, Vector3& scale, Quaternion& orien
 
 	Matrix3 matQ;
 	Vector3 vecU;
-	m3x3.QDUDecomposition(matQ, scale, vecU);
+	m3x3.qduDecomposition(matQ, scale, vecU);
 
 	orientation = Quaternion(matQ);
 	position = Vector3(m[0][3], m[1][3], m[2][3]);
