@@ -15,22 +15,22 @@ namespace solo
 		{
 		}
 
-		inline Vector4(const f32 fX, const f32 fY, const f32 fZ, const f32 fW)
-			: x(fX), y(fY), z(fZ), w(fW)
+		inline Vector4(const f32 x, const f32 y, const f32 z, const f32 w)
+			: x(x), y(y), z(z), w(w)
 		{
 		}
 
-		inline explicit Vector4(const f32 afCoordinate[4])
-			: x(afCoordinate[0]), y(afCoordinate[1]), z(afCoordinate[2]), w(afCoordinate[3])
+		inline explicit Vector4(const f32 coords[4])
+			: x(coords[0]), y(coords[1]), z(coords[2]), w(coords[3])
 		{
 		}
 
-		inline explicit Vector4(const int afCoordinate[4])
+		inline explicit Vector4(const int coords[4])
 		{
-			x = static_cast<f32>(afCoordinate[0]);
-			y = static_cast<f32>(afCoordinate[1]);
-			z = static_cast<f32>(afCoordinate[2]);
-			w = static_cast<f32>(afCoordinate[3]);
+			x = static_cast<f32>(coords[0]);
+			y = static_cast<f32>(coords[1]);
+			z = static_cast<f32>(coords[2]);
+			w = static_cast<f32>(coords[3]);
 		}
 
 		inline explicit Vector4(f32* const r)
@@ -43,8 +43,8 @@ namespace solo
 		{
 		}
 
-		inline explicit Vector4(const Vector3& rhs)
-			: x(rhs.x), y(rhs.y), z(rhs.z), w(1.0f)
+		inline explicit Vector4(const Vector3& other)
+			: x(other.x), y(other.y), z(other.z), w(1.0f)
 		{
 		}
 
@@ -86,94 +86,94 @@ namespace solo
 
 		/** Assigns the value of the other vector.
 		@param
-		rkVector The other vector
+		other The other vector
 		*/
-		inline Vector4& operator =(const Vector4& rkVector)
+		inline Vector4& operator =(const Vector4& other)
 		{
-			x = rkVector.x;
-			y = rkVector.y;
-			z = rkVector.z;
-			w = rkVector.w;
+			x = other.x;
+			y = other.y;
+			z = other.z;
+			w = other.w;
 
 			return *this;
 		}
 
-		inline Vector4& operator =(const f32 fScalar)
+		inline Vector4& operator =(const f32 scalar)
 		{
-			x = fScalar;
-			y = fScalar;
-			z = fScalar;
-			w = fScalar;
+			x = scalar;
+			y = scalar;
+			z = scalar;
+			w = scalar;
 			return *this;
 		}
 
-		inline bool operator ==(const Vector4& rkVector) const
+		inline bool operator ==(const Vector4& other) const
 		{
-			return (x == rkVector.x &&
-				y == rkVector.y &&
-				z == rkVector.z &&
-				w == rkVector.w);
+			return (x == other.x &&
+				y == other.y &&
+				z == other.z &&
+				w == other.w);
 		}
 
-		inline bool operator !=(const Vector4& rkVector) const
+		inline bool operator !=(const Vector4& other) const
 		{
-			return (x != rkVector.x ||
-				y != rkVector.y ||
-				z != rkVector.z ||
-				w != rkVector.w);
+			return (x != other.x ||
+				y != other.y ||
+				z != other.z ||
+				w != other.w);
 		}
 
-		inline Vector4& operator =(const Vector3& rhs)
+		inline Vector4& operator =(const Vector3& other)
 		{
-			x = rhs.x;
-			y = rhs.y;
-			z = rhs.z;
+			x = other.x;
+			y = other.y;
+			z = other.z;
 			w = 1.0f;
 			return *this;
 		}
 
 		// arithmetic operations
-		inline Vector4 operator +(const Vector4& rkVector) const
+		inline Vector4 operator +(const Vector4& other) const
 		{
 			return Vector4(
-				x + rkVector.x,
-				y + rkVector.y,
-				z + rkVector.z,
-				w + rkVector.w);
+				x + other.x,
+				y + other.y,
+				z + other.z,
+				w + other.w);
 		}
 
-		inline Vector4 operator -(const Vector4& rkVector) const
+		inline Vector4 operator -(const Vector4& other) const
 		{
 			return Vector4(
-				x - rkVector.x,
-				y - rkVector.y,
-				z - rkVector.z,
-				w - rkVector.w);
+				x - other.x,
+				y - other.y,
+				z - other.z,
+				w - other.w);
 		}
 
-		inline Vector4 operator *(const f32 fScalar) const
+		inline Vector4 operator *(const f32 scalar) const
 		{
 			return Vector4(
-				x * fScalar,
-				y * fScalar,
-				z * fScalar,
-				w * fScalar);
+				x * scalar,
+				y * scalar,
+				z * scalar,
+				w * scalar);
 		}
 
-		inline Vector4 operator *(const Vector4& rhs) const
+		inline Vector4 operator *(const Vector4& other) const
 		{
 			return Vector4(
-				rhs.x * x,
-				rhs.y * y,
-				rhs.z * z,
-				rhs.w * w);
+				other.x * x,
+				other.y * y,
+				other.z * z,
+				other.w * w);
 		}
 
-		inline Vector4 operator /(const f32 fScalar) const
+		inline Vector4 operator /(const f32 scalar) const
 		{
-			assert(fScalar != 0.0);
+			assert(scalar != 0.0);
 
-			f32 fInv = 1.0f / fScalar;
+			f32 fInv = 1.0f / scalar;
 
 			return Vector4(
 				x * fInv,
@@ -182,13 +182,13 @@ namespace solo
 				w * fInv);
 		}
 
-		inline Vector4 operator /(const Vector4& rhs) const
+		inline Vector4 operator /(const Vector4& other) const
 		{
 			return Vector4(
-				x / rhs.x,
-				y / rhs.y,
-				z / rhs.z,
-				w / rhs.w);
+				x / other.x,
+				y / other.y,
+				z / other.z,
+				w / other.w);
 		}
 
 		inline const Vector4& operator +() const
@@ -201,58 +201,58 @@ namespace solo
 			return Vector4(-x, -y, -z, -w);
 		}
 
-		inline friend Vector4 operator *(const f32 fScalar, const Vector4& rkVector)
+		inline friend Vector4 operator *(const f32 scalar, const Vector4& other)
 		{
 			return Vector4(
-				fScalar * rkVector.x,
-				fScalar * rkVector.y,
-				fScalar * rkVector.z,
-				fScalar * rkVector.w);
+				scalar * other.x,
+				scalar * other.y,
+				scalar * other.z,
+				scalar * other.w);
 		}
 
-		inline friend Vector4 operator /(const f32 fScalar, const Vector4& rkVector)
+		inline friend Vector4 operator /(const f32 scalar, const Vector4& other)
 		{
 			return Vector4(
-				fScalar / rkVector.x,
-				fScalar / rkVector.y,
-				fScalar / rkVector.z,
-				fScalar / rkVector.w);
+				scalar / other.x,
+				scalar / other.y,
+				scalar / other.z,
+				scalar / other.w);
 		}
 
-		inline friend Vector4 operator +(const Vector4& lhs, const f32 rhs)
+		inline friend Vector4 operator +(const Vector4& first, const f32 second)
 		{
 			return Vector4(
-				lhs.x + rhs,
-				lhs.y + rhs,
-				lhs.z + rhs,
-				lhs.w + rhs);
+				first.x + second,
+				first.y + second,
+				first.z + second,
+				first.w + second);
 		}
 
-		inline friend Vector4 operator +(const f32 lhs, const Vector4& rhs)
+		inline friend Vector4 operator +(const f32 first, const Vector4& second)
 		{
 			return Vector4(
-				lhs + rhs.x,
-				lhs + rhs.y,
-				lhs + rhs.z,
-				lhs + rhs.w);
+				first + second.x,
+				first + second.y,
+				first + second.z,
+				first + second.w);
 		}
 
-		inline friend Vector4 operator -(const Vector4& lhs, f32 rhs)
+		inline friend Vector4 operator -(const Vector4& first, f32 second)
 		{
 			return Vector4(
-				lhs.x - rhs,
-				lhs.y - rhs,
-				lhs.z - rhs,
-				lhs.w - rhs);
+				first.x - second,
+				first.y - second,
+				first.z - second,
+				first.w - second);
 		}
 
-		inline friend Vector4 operator -(const f32 lhs, const Vector4& rhs)
+		inline friend Vector4 operator -(const f32 first, const Vector4& second)
 		{
 			return Vector4(
-				lhs - rhs.x,
-				lhs - rhs.y,
-				lhs - rhs.z,
-				lhs - rhs.w);
+				first - second.x,
+				first - second.y,
+				first - second.z,
+				first - second.w);
 		}
 
 		// arithmetic updates
@@ -276,48 +276,48 @@ namespace solo
 			return *this;
 		}
 
-		inline Vector4& operator *=(const f32 fScalar)
+		inline Vector4& operator *=(const f32 scalar)
 		{
-			x *= fScalar;
-			y *= fScalar;
-			z *= fScalar;
-			w *= fScalar;
+			x *= scalar;
+			y *= scalar;
+			z *= scalar;
+			w *= scalar;
 			return *this;
 		}
 
-		inline Vector4& operator +=(const f32 fScalar)
+		inline Vector4& operator +=(const f32 scalar)
 		{
-			x += fScalar;
-			y += fScalar;
-			z += fScalar;
-			w += fScalar;
+			x += scalar;
+			y += scalar;
+			z += scalar;
+			w += scalar;
 			return *this;
 		}
 
-		inline Vector4& operator -=(const f32 fScalar)
+		inline Vector4& operator -=(const f32 scalar)
 		{
-			x -= fScalar;
-			y -= fScalar;
-			z -= fScalar;
-			w -= fScalar;
+			x -= scalar;
+			y -= scalar;
+			z -= scalar;
+			w -= scalar;
 			return *this;
 		}
 
-		inline Vector4& operator *=(const Vector4& rkVector)
+		inline Vector4& operator *=(const Vector4& other)
 		{
-			x *= rkVector.x;
-			y *= rkVector.y;
-			z *= rkVector.z;
-			w *= rkVector.w;
+			x *= other.x;
+			y *= other.y;
+			z *= other.z;
+			w *= other.w;
 
 			return *this;
 		}
 
-		inline Vector4& operator /=(const f32 fScalar)
+		inline Vector4& operator /=(const f32 scalar)
 		{
-			assert(fScalar != 0.0);
+			assert(scalar != 0.0);
 
-			f32 fInv = 1.0f / fScalar;
+			f32 fInv = 1.0f / scalar;
 
 			x *= fInv;
 			y *= fInv;
@@ -344,26 +344,22 @@ namespace solo
 		@return
 		A float representing the dot product value.
 		*/
-		inline f32 dotProduct(const Vector4& vec) const
+		inline f32 dot(const Vector4& vec) const
 		{
 			return x * vec.x + y * vec.y + z * vec.z + w * vec.w;
 		}
 
-		/// Check whether this vector contains valid values
 		inline bool isNaN() const
 		{
 			return Math::isNaN(x) || Math::isNaN(y) || Math::isNaN(z) || Math::isNaN(w);
 		}
 
-		/** Function for writing to a stream.
-		*/
 		inline friend std::ostream& operator <<(std::ostream& o, const Vector4& v)
 		{
 			o << "Vector4(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")";
 			return o;
 		}
 
-		// special
 		static const Vector4 ZERO;
 	};
 }
