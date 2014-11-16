@@ -73,71 +73,71 @@ namespace solo
 			return &x;
 		}
 
-		inline Vector3& operator = (const Vector3& rkVector)
+		inline Vector3& operator = (const Vector3& other)
 		{
-			x = rkVector.x;
-			y = rkVector.y;
-			z = rkVector.z;
+			x = other.x;
+			y = other.y;
+			z = other.z;
 
 			return *this;
 		}
 
-		inline Vector3& operator = (const f32 fScaler)
+		inline Vector3& operator = (const f32 scalar)
 		{
-			x = fScaler;
-			y = fScaler;
-			z = fScaler;
+			x = scalar;
+			y = scalar;
+			z = scalar;
 
 			return *this;
 		}
 
-		inline bool operator == (const Vector3& rkVector) const
+		inline bool operator == (const Vector3& other) const
 		{
-			return (x == rkVector.x && y == rkVector.y && z == rkVector.z);
+			return (x == other.x && y == other.y && z == other.z);
 		}
 
-		inline bool operator != (const Vector3& rkVector) const
+		inline bool operator != (const Vector3& other) const
 		{
-			return (x != rkVector.x || y != rkVector.y || z != rkVector.z);
+			return (x != other.x || y != other.y || z != other.z);
 		}
 
-		inline Vector3 operator + (const Vector3& rkVector) const
+		inline Vector3 operator + (const Vector3& other) const
 		{
 			return Vector3(
-				x + rkVector.x,
-				y + rkVector.y,
-				z + rkVector.z);
+				x + other.x,
+				y + other.y,
+				z + other.z);
 		}
 
-		inline Vector3 operator - (const Vector3& rkVector) const
+		inline Vector3 operator - (const Vector3& other) const
 		{
 			return Vector3(
-				x - rkVector.x,
-				y - rkVector.y,
-				z - rkVector.z);
+				x - other.x,
+				y - other.y,
+				z - other.z);
 		}
 
-		inline Vector3 operator * (const f32 fScalar) const
+		inline Vector3 operator * (const f32 scalar) const
 		{
 			return Vector3(
-				x * fScalar,
-				y * fScalar,
-				z * fScalar);
+				x * scalar,
+				y * scalar,
+				z * scalar);
 		}
 
-		inline Vector3 operator * (const Vector3& rhs) const
+		inline Vector3 operator * (const Vector3& other) const
 		{
 			return Vector3(
-				x * rhs.x,
-				y * rhs.y,
-				z * rhs.z);
+				x * other.x,
+				y * other.y,
+				z * other.z);
 		}
 
-		inline Vector3 operator / (const f32 fScalar) const
+		inline Vector3 operator / (const f32 scalar) const
 		{
-			assert(fScalar != 0.0);
+			assert(scalar != 0.0);
 
-			f32 fInv = 1.0f / fScalar;
+			f32 fInv = 1.0f / scalar;
 
 			return Vector3(
 				x * fInv,
@@ -145,12 +145,12 @@ namespace solo
 				z * fInv);
 		}
 
-		inline Vector3 operator / (const Vector3& rhs) const
+		inline Vector3 operator / (const Vector3& other) const
 		{
 			return Vector3(
-				x / rhs.x,
-				y / rhs.y,
-				z / rhs.z);
+				x / other.x,
+				y / other.y,
+				z / other.z);
 		}
 
 		inline const Vector3& operator + () const
@@ -163,111 +163,111 @@ namespace solo
 			return Vector3(-x, -y, -z);
 		}
 
-		inline friend Vector3 operator * (const f32 fScalar, const Vector3& rkVector)
+		inline friend Vector3 operator * (const f32 scalar, const Vector3& other)
 		{
 			return Vector3(
-				fScalar * rkVector.x,
-				fScalar * rkVector.y,
-				fScalar * rkVector.z);
+				scalar * other.x,
+				scalar * other.y,
+				scalar * other.z);
 		}
 
-		inline friend Vector3 operator / (const f32 fScalar, const Vector3& rkVector)
+		inline friend Vector3 operator / (const f32 scalar, const Vector3& other)
 		{
 			return Vector3(
-				fScalar / rkVector.x,
-				fScalar / rkVector.y,
-				fScalar / rkVector.z);
+				scalar / other.x,
+				scalar / other.y,
+				scalar / other.z);
 		}
 
-		inline friend Vector3 operator + (const Vector3& lhs, const f32 rhs)
+		inline friend Vector3 operator + (const Vector3& first, const f32 second)
 		{
 			return Vector3(
-				lhs.x + rhs,
-				lhs.y + rhs,
-				lhs.z + rhs);
+				first.x + second,
+				first.y + second,
+				first.z + second);
 		}
 
-		inline friend Vector3 operator + (const f32 lhs, const Vector3& rhs)
+		inline friend Vector3 operator + (const f32 first, const Vector3& second)
 		{
 			return Vector3(
-				lhs + rhs.x,
-				lhs + rhs.y,
-				lhs + rhs.z);
+				first + second.x,
+				first + second.y,
+				first + second.z);
 		}
 
-		inline friend Vector3 operator - (const Vector3& lhs, const f32 rhs)
+		inline friend Vector3 operator - (const Vector3& first, const f32 second)
 		{
 			return Vector3(
-				lhs.x - rhs,
-				lhs.y - rhs,
-				lhs.z - rhs);
+				first.x - second,
+				first.y - second,
+				first.z - second);
 		}
 
-		inline friend Vector3 operator - (const f32 lhs, const Vector3& rhs)
+		inline friend Vector3 operator - (const f32 first, const Vector3& second)
 		{
 			return Vector3(
-				lhs - rhs.x,
-				lhs - rhs.y,
-				lhs - rhs.z);
+				first - second.x,
+				first - second.y,
+				first - second.z);
 		}
 
 		// arithmetic updates
-		inline Vector3& operator += (const Vector3& rkVector)
+		inline Vector3& operator += (const Vector3& other)
 		{
-			x += rkVector.x;
-			y += rkVector.y;
-			z += rkVector.z;
+			x += other.x;
+			y += other.y;
+			z += other.z;
 
 			return *this;
 		}
 
-		inline Vector3& operator += (const f32 fScalar)
+		inline Vector3& operator += (const f32 scalar)
 		{
-			x += fScalar;
-			y += fScalar;
-			z += fScalar;
+			x += scalar;
+			y += scalar;
+			z += scalar;
 			return *this;
 		}
 
-		inline Vector3& operator -= (const Vector3& rkVector)
+		inline Vector3& operator -= (const Vector3& other)
 		{
-			x -= rkVector.x;
-			y -= rkVector.y;
-			z -= rkVector.z;
-
-			return *this;
-		}
-
-		inline Vector3& operator -= (const f32 fScalar)
-		{
-			x -= fScalar;
-			y -= fScalar;
-			z -= fScalar;
-			return *this;
-		}
-
-		inline Vector3& operator *= (const f32 fScalar)
-		{
-			x *= fScalar;
-			y *= fScalar;
-			z *= fScalar;
-			return *this;
-		}
-
-		inline Vector3& operator *= (const Vector3& rkVector)
-		{
-			x *= rkVector.x;
-			y *= rkVector.y;
-			z *= rkVector.z;
+			x -= other.x;
+			y -= other.y;
+			z -= other.z;
 
 			return *this;
 		}
 
-		inline Vector3& operator /= (const f32 fScalar)
+		inline Vector3& operator -= (const f32 scalar)
 		{
-			assert(fScalar != 0.0);
+			x -= scalar;
+			y -= scalar;
+			z -= scalar;
+			return *this;
+		}
 
-			f32 fInv = 1.0f / fScalar;
+		inline Vector3& operator *= (const f32 scalar)
+		{
+			x *= scalar;
+			y *= scalar;
+			z *= scalar;
+			return *this;
+		}
+
+		inline Vector3& operator *= (const Vector3& other)
+		{
+			x *= other.x;
+			y *= other.y;
+			z *= other.z;
+
+			return *this;
+		}
+
+		inline Vector3& operator /= (const f32 scalar)
+		{
+			assert(scalar != 0.0);
+
+			f32 fInv = 1.0f / scalar;
 
 			x *= fInv;
 			y *= fInv;
@@ -276,11 +276,11 @@ namespace solo
 			return *this;
 		}
 
-		inline Vector3& operator /= (const Vector3& rkVector)
+		inline Vector3& operator /= (const Vector3& other)
 		{
-			x /= rkVector.x;
-			y /= rkVector.y;
-			z /= rkVector.z;
+			x /= other.x;
+			y /= other.y;
+			z /= other.z;
 
 			return *this;
 		}
@@ -320,9 +320,9 @@ namespace solo
 		distance (e.g. for just comparing distances) use squaredDistance()
 		instead.
 		*/
-		inline f32 distance(const Vector3& rhs) const
+		inline f32 distance(const Vector3& other) const
 		{
-			return (*this - rhs).length();
+			return (*this - other).length();
 		}
 
 		/** Returns the square of the distance to another vector.
@@ -335,9 +335,9 @@ namespace solo
 		Use this if you want to find the longest / shortest distance
 		without incurring the square root.
 		*/
-		inline f32 squaredDistance(const Vector3& rhs) const
+		inline f32 squaredDistance(const Vector3& other) const
 		{
-			return (*this - rhs).squaredLength();
+			return (*this - other).squaredLength();
 		}
 
 		/** Calculates the dot (scalar) product of this vector with another.
@@ -354,7 +354,7 @@ namespace solo
 		@return
 		A float representing the dot product value.
 		*/
-		inline f32 dotProduct(const Vector3& vec) const
+		inline f32 dot(const Vector3& vec) const
 		{
 			return x * vec.x + y * vec.y + z * vec.z;
 		}
@@ -369,7 +369,7 @@ namespace solo
 		@return
 		A f32 representing the absolute dot product value.
 		*/
-		inline f32 absDotProduct(const Vector3& vec) const
+		inline f32 absDot(const Vector3& vec) const
 		{
 			return Math::abs(x * vec.x) + Math::abs(y * vec.y) + Math::abs(z * vec.z);
 		}
@@ -383,22 +383,22 @@ namespace solo
 		will be no changes made to their components.
 		@return The previous length of the vector.
 		*/
-		inline f32 normalise()
+		inline f32 normalize()
 		{
-			f32 fLength = Math::Sqrt(x * x + y * y + z * z);
+			f32 len = Math::Sqrt(x * x + y * y + z * z);
 
 			// Will also work for zero-sized vectors, but will change nothing
 			// We're not using epsilons because we don't need to.
 			// Read http://www.ogre3d.org/forums/viewtopic.php?f=4&t=61259
-			if (fLength > f32(0.0f))
+			if (len > f32(0.0f))
 			{
-				f32 fInvLength = 1.0f / fLength;
-				x *= fInvLength;
-				y *= fInvLength;
-				z *= fInvLength;
+				f32 invLen = 1.0f / len;
+				x *= invLen;
+				y *= invLen;
+				z *= invLen;
 			}
 
-			return fLength;
+			return len;
 		}
 
 		/** Calculates the cross-product of 2 vectors, i.e. the vector that
@@ -417,7 +417,7 @@ namespace solo
 		- call Vector3::normalise on the result if you wish this to
 		be done. As for which side the resultant vector will be on, the
 		returned vector will be on the side from which the arc from 'this'
-		to rkVector is anticlockwise, e.g. UNIT_Y.crossProduct(UNIT_Z)
+		to other is anticlockwise, e.g. UNIT_Y.crossProduct(UNIT_Z)
 		= UNIT_X, whilst UNIT_Z.crossProduct(UNIT_Y) = -UNIT_X.
 		This is because OGRE uses a right-handed coordinate system.
 		@par
@@ -429,12 +429,12 @@ namespace solo
 		and will go <i>inside</i> the screen, towards the cathode tube
 		(assuming you're using a CRT monitor, of course).
 		*/
-		inline Vector3 crossProduct(const Vector3& rkVector) const
+		inline Vector3 cross(const Vector3& other) const
 		{
 			return Vector3(
-				y * rkVector.z - z * rkVector.y,
-				z * rkVector.x - x * rkVector.z,
-				x * rkVector.y - y * rkVector.x);
+				y * other.z - z * other.y,
+				z * other.x - x * other.z,
+				x * other.y - y * other.x);
 		}
 
 		/** Returns a vector at a point half way between this and the passed
@@ -451,9 +451,9 @@ namespace solo
 		/** Returns true if the vector's scalar components are all greater
 		that the ones of the vector it is compared against.
 		*/
-		inline bool operator < (const Vector3& rhs) const
+		inline bool operator < (const Vector3& other) const
 		{
-			if (x < rhs.x && y < rhs.y && z < rhs.z)
+			if (x < other.x && y < other.y && z < other.z)
 				return true;
 			return false;
 		}
@@ -461,9 +461,9 @@ namespace solo
 		/** Returns true if the vector's scalar components are all smaller
 		that the ones of the vector it is compared against.
 		*/
-		inline bool operator >(const Vector3& rhs) const
+		inline bool operator >(const Vector3& other) const
 		{
-			if (x > rhs.x && y > rhs.y && z > rhs.z)
+			if (x > other.x && y > other.y && z > other.z)
 				return true;
 			return false;
 		}
@@ -505,19 +505,19 @@ namespace solo
 		*/
 		inline Vector3 perpendicular(void) const
 		{
-			static const f32 fSquareZero = static_cast<f32>(1e-06 * 1e-06);
+			static const f32 squareZero = static_cast<f32>(1e-06 * 1e-06);
 
-			Vector3 perp = this->crossProduct(UNIT_X);
+			Vector3 perp = this->cross(UNIT_X);
 
 			// Check length
-			if (perp.squaredLength() < fSquareZero)
+			if (perp.squaredLength() < squareZero)
 			{
 				/* This vector is the Y axis multiplied by a scalar, so we have
 				to use another axis.
 				*/
-				perp = this->crossProduct(UNIT_Y);
+				perp = this->cross(UNIT_Y);
 			}
-			perp.normalise();
+			perp.normalize();
 
 			return perp;
 		}
@@ -576,7 +576,7 @@ namespace solo
 			if (lenProduct < 1e-6f)
 				lenProduct = 1e-6f;
 
-			f32 f = dotProduct(dest) / lenProduct;
+			f32 f = dot(dest) / lenProduct;
 
 			f = Math::Clamp(f, static_cast<f32>(-1.0), static_cast<f32>(1.0));
 			return Math::ACos(f);
@@ -597,10 +597,10 @@ namespace solo
 			// Copy, since cannot modify local
 			Vector3 v0 = *this;
 			Vector3 v1 = dest;
-			v0.normalise();
-			v1.normalise();
+			v0.normalize();
+			v1.normalize();
 
-			f32 d = v0.dotProduct(v1);
+			f32 d = v0.dot(v1);
 			// If dot == 1, vectors are the same
 			if (d >= 1.0f)
 			{
@@ -616,10 +616,10 @@ namespace solo
 				else
 				{
 					// Generate an axis
-					Vector3 axis = UNIT_X.crossProduct(*this);
+					Vector3 axis = UNIT_X.cross(*this);
 					if (axis.isZeroLength()) // pick another if colinear
-						axis = UNIT_Y.crossProduct(*this);
-					axis.normalise();
+						axis = UNIT_Y.cross(*this);
+					axis.normalize();
 					q.fromAngleAxis(Radian(Math::PI), axis);
 				}
 			}
@@ -628,7 +628,7 @@ namespace solo
 				f32 s = Math::Sqrt((1 + d) * 2);
 				f32 invs = 1 / s;
 
-				Vector3 c = v0.crossProduct(v1);
+				Vector3 c = v0.cross(v1);
 
 				q.x = c.x * invs;
 				q.y = c.y * invs;
@@ -652,7 +652,7 @@ namespace solo
 		inline Vector3 normalisedCopy(void) const
 		{
 			Vector3 ret = *this;
-			ret.normalise();
+			ret.normalize();
 			return ret;
 		}
 
@@ -661,46 +661,44 @@ namespace solo
 		*/
 		inline Vector3 reflect(const Vector3& normal) const
 		{
-			return Vector3(*this - (2 * this->dotProduct(normal) * normal));
+			return Vector3(*this - (2 * this->dot(normal) * normal));
 		}
 
 		/** Returns whether this vector is within a positional tolerance
 		of another vector.
-		@param rhs The vector to compare with
+		@param other The vector to compare with
 		@param tolerance The amount that each element of the vector may vary by
 		and still be considered equal
 		*/
-		inline bool positionEquals(const Vector3& rhs, f32 tolerance = 1e-03) const
+		inline bool positionEquals(const Vector3& other, f32 tolerance = 1e-03) const
 		{
-			return Math::f32Equal(x, rhs.x, tolerance) &&
-				Math::f32Equal(y, rhs.y, tolerance) &&
-				Math::f32Equal(z, rhs.z, tolerance);
+			return Math::f32Equal(x, other.x, tolerance) &&
+				Math::f32Equal(y, other.y, tolerance) &&
+				Math::f32Equal(z, other.z, tolerance);
 
 		}
 
 		/** Returns whether this vector is within a positional tolerance
 		of another vector, also take scale of the vectors into account.
-		@param rhs The vector to compare with
+		@param other The vector to compare with
 		@param tolerance The amount (related to the scale of vectors) that distance
 		of the vector may vary by and still be considered close
 		*/
-		inline bool positionCloses(const Vector3& rhs, f32 tolerance = 1e-03f) const
+		inline bool positionCloses(const Vector3& other, f32 tolerance = 1e-03f) const
 		{
-			return squaredDistance(rhs) <=
-				(squaredLength() + rhs.squaredLength()) * tolerance;
+			return squaredDistance(other) <= (squaredLength() + other.squaredLength()) * tolerance;
 		}
 
 		/** Returns whether this vector is within a directional tolerance
 		of another vector.
-		@param rhs The vector to compare with
+		@param other The vector to compare with
 		@param tolerance The maximum angle by which the vectors may vary and
 		still be considered equal
 		@note Both vectors should be normalised.
 		*/
-		inline bool directionEquals(const Vector3& rhs,
-			const Radian& tolerance) const
+		inline bool directionEquals(const Vector3& other, const Radian& tolerance) const
 		{
-			f32 dot = dotProduct(rhs);
+			f32 dot = Vector3::dot(other);
 			Radian angle = Math::ACos(dot);
 
 			return Math::abs(angle.valueRadians()) <= tolerance.valueRadians();

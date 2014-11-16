@@ -255,14 +255,14 @@ bool Math::pointInTri3D(const Vector3& p, const Vector3& a,
 
 	// Note we don't care about normalisation here since sign is all we need
 	// It means we don't have to worry about magnitude of cross products either
-	dot[0] = v1.crossProduct(v2).dotProduct(normal);
+	dot[0] = v1.cross(v2).dot(normal);
 	zeroDot[0] = f32Equal(dot[0], 0.0f, 1e-3);
 
 
 	v1 = c - b;
 	v2 = p - b;
 
-	dot[1] = v1.crossProduct(v2).dotProduct(normal);
+	dot[1] = v1.cross(v2).dot(normal);
 	zeroDot[1] = f32Equal(dot[1], 0.0f, 1e-3);
 
 	// Compare signs (ignore colinear / coincident points)
@@ -274,7 +274,7 @@ bool Math::pointInTri3D(const Vector3& p, const Vector3& a,
 	v1 = a - c;
 	v2 = p - c;
 
-	dot[2] = v1.crossProduct(v2).dotProduct(normal);
+	dot[2] = v1.cross(v2).dot(normal);
 	zeroDot[2] = f32Equal(dot[2], 0.0f, 1e-3);
 	// Compare signs (ignore colinear / coincident points)
 	if ((!zeroDot[0] && !zeroDot[2] && Sign(dot[0]) != Sign(dot[2])) ||
@@ -298,13 +298,13 @@ bool Math::f32Equal(f32 a, f32 b, f32 tolerance)
 
 Pair<bool, f32> Math::intersects(const Ray& ray, const Plane& plane)
 {
-	f32 denom = plane.normal.dotProduct(ray.getDirection());
+	f32 denom = plane.normal.dot(ray.getDirection());
 	if (abs(denom) < std::numeric_limits<f32>::epsilon())
 	{
 		// Parallel
 		return Pair<bool, f32>(false, 0.0f);
 	}
-	f32 nom = plane.normal.dotProduct(ray.getOrigin()) + plane.d;
+	f32 nom = plane.normal.dot(ray.getOrigin()) + plane.d;
 	f32 t = -(nom / denom);
 	return Pair<bool, f32>(t >= 0, t);
 }
@@ -415,9 +415,9 @@ Pair<bool, f32> Math::intersects(const Ray& ray, const Sphere& sphere, bool disc
 	// Mmm, quadratics
 	// Build coeffs which can be used with std quadratic solver
 	// ie t = (-b +/- sqrt(b*b + 4ac)) / 2a
-	f32 a = raydir.dotProduct(raydir);
-	f32 b = 2 * rayorig.dotProduct(raydir);
-	f32 c = rayorig.dotProduct(rayorig) - radius * radius;
+	f32 a = raydir.dot(raydir);
+	f32 b = 2 * rayorig.dot(raydir);
+	f32 c = rayorig.dot(rayorig) - radius * radius;
 
 	// Calc determinant
 	f32 d = (b * b) - (4 * a * c);
@@ -660,7 +660,7 @@ Pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a,
 	//
 	f32 t;
 	{
-		f32 denom = normal.dotProduct(ray.getDirection());
+		f32 denom = normal.dot(ray.getDirection());
 
 		// Check intersect side
 		if (denom > +std::numeric_limits<f32>::epsilon())
@@ -680,7 +680,7 @@ Pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a,
 			return Pair<bool, f32>(false, 0.0f);
 		}
 
-		t = normal.dotProduct(a - ray.getOrigin()) / denom;
+		t = normal.dot(a - ray.getOrigin()) / denom;
 
 		if (t < 0)
 		{
@@ -799,26 +799,26 @@ Vector3 Math::calculateTangentSpaceVector(
 	Vector3 side0 = position1 - position2;
 	Vector3 side1 = position3 - position1;
 	//Calculate face normal
-	Vector3 normal = side1.crossProduct(side0);
-	normal.normalise();
+	Vector3 normal = side1.cross(side0);
+	normal.normalize();
 	//Now we use a formula to calculate the tangent. 
 	f32 deltaV0 = v1 - v2;
 	f32 deltaV1 = v3 - v1;
 	Vector3 tangent = deltaV1 * side0 - deltaV0 * side1;
-	tangent.normalise();
+	tangent.normalize();
 	//Calculate binormal
 	f32 deltaU0 = u1 - u2;
 	f32 deltaU1 = u3 - u1;
 	Vector3 binormal = deltaU1 * side0 - deltaU0 * side1;
-	binormal.normalise();
+	binormal.normalize();
 	//Now, we take the cross product of the tangents to get a vector which 
 	//should point in the same direction as our normal calculated above. 
 	//If it points in the opposite direction (the dot product between the normals is less than zero), 
 	//then we need to reverse the s and t tangents. 
 	//This is because the triangle has been mirrored when going from tangent space to object space.
 	//reverse tangents if necessary
-	Vector3 tangentCross = tangent.crossProduct(binormal);
-	if (tangentCross.dotProduct(normal) < 0.0f)
+	Vector3 tangentCross = tangent.cross(binormal);
+	if (tangentCross.dot(normal) < 0.0f)
 	{
 		tangent = -tangent;
 		binormal = -binormal;
@@ -840,13 +840,13 @@ Vector4 Math::calculateFaceNormal(const Vector3& v1, const Vector3& v2, const Ve
 {
 	Vector3 normal = calculateBasicFaceNormal(v1, v2, v3);
 	// Now set up the w (distance of tri from origin
-	return Vector4(normal.x, normal.y, normal.z, -(normal.dotProduct(v1)));
+	return Vector4(normal.x, normal.y, normal.z, -(normal.dot(v1)));
 }
 
 Vector3 Math::calculateBasicFaceNormal(const Vector3& v1, const Vector3& v2, const Vector3& v3)
 {
-	Vector3 normal = (v2 - v1).crossProduct(v3 - v1);
-	normal.normalise();
+	Vector3 normal = (v2 - v1).cross(v3 - v1);
+	normal.normalize();
 	return normal;
 }
 
@@ -854,13 +854,13 @@ Vector4 Math::calculateFaceNormalWithoutNormalize(const Vector3& v1, const Vecto
 {
 	Vector3 normal = calculateBasicFaceNormalWithoutNormalize(v1, v2, v3);
 	// Now set up the w (distance of tri from origin)
-	return Vector4(normal.x, normal.y, normal.z, -(normal.dotProduct(v1)));
+	return Vector4(normal.x, normal.y, normal.z, -(normal.dot(v1)));
 }
 
 
 Vector3 Math::calculateBasicFaceNormalWithoutNormalize(const Vector3& v1, const Vector3& v2, const Vector3& v3)
 {
-	Vector3 normal = (v2 - v1).crossProduct(v3 - v1);
+	Vector3 normal = (v2 - v1).cross(v3 - v1);
 	return normal;
 }
 

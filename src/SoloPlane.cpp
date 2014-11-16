@@ -39,7 +39,7 @@ Plane::Plane(const Vector3& rkPoint0, const Vector3& rkPoint1,
 
 f32 Plane::getDistance(const Vector3& rkPoint) const
 {
-	return normal.dotProduct(rkPoint) + d;
+	return normal.dot(rkPoint) + d;
 }
 
 Plane::Side Plane::getSide(const Vector3& rkPoint) const
@@ -73,7 +73,7 @@ Plane::Side Plane::getSide(const Vector3& centre, const Vector3& halfSize) const
 
 	// Calculate the maximise allows absolute distance for
 	// the distance between box centre and plane
-	f32 maxAbsDist = normal.absDotProduct(halfSize);
+	f32 maxAbsDist = normal.absDot(halfSize);
 
 	if (dist < -maxAbsDist)
 		return NEGATIVE_SIDE;
@@ -88,15 +88,15 @@ void Plane::redefine(const Vector3& rkPoint0, const Vector3& rkPoint1, const Vec
 {
 	Vector3 kEdge1 = rkPoint1 - rkPoint0;
 	Vector3 kEdge2 = rkPoint2 - rkPoint0;
-	normal = kEdge1.crossProduct(kEdge2);
-	normal.normalise();
-	d = -normal.dotProduct(rkPoint0);
+	normal = kEdge1.cross(kEdge2);
+	normal.normalize();
+	d = -normal.dot(rkPoint0);
 }
 
 void Plane::redefine(const Vector3& rkNormal, const Vector3& rkPoint)
 {
 	normal = rkNormal;
-	d = -rkNormal.dotProduct(rkPoint);
+	d = -rkNormal.dot(rkPoint);
 }
 
 Vector3 Plane::projectVector(const Vector3& p) const

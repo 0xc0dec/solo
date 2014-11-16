@@ -165,7 +165,7 @@ namespace solo
 			ret.normal.x = v4.x;
 			ret.normal.y = v4.y;
 			ret.normal.z = v4.z;
-			ret.d = v4.w / ret.normal.normalise();
+			ret.d = v4.w / ret.normal.normalize();
 
 			return ret;
 		}
