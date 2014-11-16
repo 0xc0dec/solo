@@ -11,14 +11,14 @@ using namespace solo;
 
 const f32 Math::POS_INFINITY = std::numeric_limits<f32>::infinity();
 const f32 Math::NEG_INFINITY = -std::numeric_limits<f32>::infinity();
-const f32 Math::PI = f32(4.0 * atan(1.0));
+const f32 Math::PI = f32(4.0 * std::atan(1.0));
 const f32 Math::TWO_PI = f32(2.0 * PI);
 const f32 Math::HALF_PI = f32(0.5 * PI);
-const f32 Math::fDeg2Rad = PI / f32(180.0);
-const f32 Math::fRad2Deg = f32(180.0) / PI;
+const f32 Math::deg2Rad = PI / f32(180.0);
+const f32 Math::rad2Deg = f32(180.0) / PI;
 const f32 Math::LOG2 = log(f32(2.0));
 
-int Math::_trigTableSize;
+u32 Math::_trigTableSize;
 Math::AngleUnit Math::_angleUnit;
 
 f32 Math::_trigTableFactor;
@@ -28,7 +28,7 @@ f32* Math::_tanTable = nullptr;
 
 Math::Math(unsigned int trigTableSize)
 {
-	_angleUnit = AU_DEGREE;
+	_angleUnit = AngleUnit::Degree;
 	_trigTableSize = trigTableSize;
 	_trigTableFactor = _trigTableSize / TWO_PI;
 
@@ -53,7 +53,7 @@ void Math::_buildTrigTables(void)
 	// way. Who cares, it'll ony use an extra 8k of memory anyway and I like 
 	// simplicity.
 	f32 angle;
-	for (int i = 0; i < _trigTableSize; ++i)
+	for (u32 i = 0; i < _trigTableSize; ++i)
 	{
 		angle = TWO_PI * i / _trigTableSize;
 		_sinTable[i] = sin(angle);
@@ -62,94 +62,94 @@ void Math::_buildTrigTables(void)
 }
 
 
-f32 Math::_fromSinTable(f32 fValue)
+f32 Math::_fromSinTable(f32 val)
 {
 	// Convert range to index values, wrap if required
 	int idx;
-	if (fValue >= 0)
+	if (val >= 0)
 	{
-		idx = int(fValue * _trigTableFactor) % _trigTableSize;
+		idx = int(val * _trigTableFactor) % _trigTableSize;
 	}
 	else
 	{
-		idx = _trigTableSize - (int(-fValue * _trigTableFactor) % _trigTableSize) - 1;
+		idx = _trigTableSize - (int(-val * _trigTableFactor) % _trigTableSize) - 1;
 	}
 
 	return _sinTable[idx];
 }
 
 
-f32 Math::_fromTanTable(f32 fValue)
+f32 Math::_fromTanTable(f32 val)
 {
 	// Convert range to index values, wrap if required
-	int idx = int(fValue *= _trigTableFactor) % _trigTableSize;
+	int idx = int(val *= _trigTableFactor) % _trigTableSize;
 	return _tanTable[idx];
 }
 
 
-int Math::sign(int iValue)
+int Math::sign(int val)
 {
-	return (iValue > 0 ? +1 : (iValue < 0 ? -1 : 0));
+	return (val > 0 ? +1 : (val < 0 ? -1 : 0));
 }
 
 
-Radian Math::ACos(f32 fValue)
+Radian Math::acos(f32 val)
 {
-	if (-1.0 < fValue)
+	if (-1.0 < val)
 	{
-		if (fValue < 1.0)
-			return Radian(acos(fValue));
+		if (val < 1.0)
+			return Radian(acos(val));
 		return Radian(0.0);
 	}
 	return Radian(PI);
 }
 
 
-Radian Math::ASin(f32 fValue)
+Radian Math::asin(f32 val)
 {
-	if (-1.0 < fValue)
+	if (-1.0 < val)
 	{
-		if (fValue < 1.0)
-			return Radian(asin(fValue));
+		if (val < 1.0)
+			return Radian(asin(val));
 		return Radian(HALF_PI);
 	}
 	return Radian(-HALF_PI);
 }
 
 
-f32 Math::Sign(f32 fValue)
+f32 Math::sign(f32 val)
 {
-	if (fValue > 0.0)
+	if (val > 0.0)
 		return 1.0;
 
-	if (fValue < 0.0)
+	if (val < 0.0)
 		return -1.0;
 
 	return 0.0;
 }
 
 
-f32 Math::InvSqrt(f32 fValue)
+f32 Math::invSqrt(f32 val)
 {
-	return f32(1. / sqrt(fValue));
+	return f32(1. / sqrt(val));
 }
 
 
-f32 Math::UnitRandom()
+f32 Math::randomUnit()
 {
 	return rand() / f32(RAND_MAX);
 }
 
 
-f32 Math::RangeRandom(f32 fLow, f32 fHigh)
+f32 Math::randomRange(f32 low, f32 high)
 {
-	return (fHigh - fLow) * UnitRandom() + fLow;
+	return (high - low) * randomUnit() + low;
 }
 
 
-f32 Math::SymmetricRandom()
+f32 Math::randomSymmetric()
 {
-	return 2.0f * UnitRandom() - 1.0f;
+	return 2.0f * randomUnit() - 1.0f;
 }
 
 
@@ -159,40 +159,40 @@ void Math::setAngleUnit(AngleUnit unit)
 }
 
 
-Math::AngleUnit Math::getAngleUnit(void)
+Math::AngleUnit Math::angleUnit(void)
 {
 	return _angleUnit;
 }
 
 
-f32 Math::AngleUnitsToRadians(f32 angleunits)
+f32 Math::angleUnitsToRadians(f32 angleunits)
 {
-	if (_angleUnit == AU_DEGREE)
-		return angleunits * fDeg2Rad;
+	if (_angleUnit == AngleUnit::Degree)
+		return angleunits * deg2Rad;
 	return angleunits;
 }
 
 
-f32 Math::RadiansToAngleUnits(f32 radians)
+f32 Math::radiansToAngleUnits(f32 radians)
 {
-	if (_angleUnit == AU_DEGREE)
-		return radians * fRad2Deg;
+	if (_angleUnit == AngleUnit::Degree)
+		return radians * rad2Deg;
 	return radians;
 }
 
 
-f32 Math::AngleUnitsToDegrees(f32 angleunits)
+f32 Math::angleUnitsToDegrees(f32 angleunits)
 {
-	if (_angleUnit == AU_RADIAN)
-		return angleunits * fRad2Deg;
+	if (_angleUnit == AngleUnit::Degree)
+		return angleunits * rad2Deg;
 	return angleunits;
 }
 
 
-f32 Math::DegreesToAngleUnits(f32 degrees)
+f32 Math::degreesToAngleUnits(f32 degrees)
 {
-	if (_angleUnit == AU_RADIAN)
-		return degrees * fDeg2Rad;
+	if (_angleUnit == AngleUnit::Degree)
+		return degrees * deg2Rad;
 	return degrees;
 }
 
@@ -212,7 +212,6 @@ bool Math::pointInTri2D(const Vector2& p, const Vector2& a, const Vector2& b, co
 	dot[0] = v1.crossProduct(v2);
 	zeroDot[0] = f32Equal(dot[0], 0.0f, 1e-3);
 
-
 	v1 = c - b;
 	v2 = p - b;
 
@@ -220,10 +219,8 @@ bool Math::pointInTri2D(const Vector2& p, const Vector2& a, const Vector2& b, co
 	zeroDot[1] = f32Equal(dot[1], 0.0f, 1e-3);
 
 	// Compare signs (ignore colinear / coincident points)
-	if (!zeroDot[0] && !zeroDot[1] && Sign(dot[0]) != Sign(dot[1]))
-	{
+	if (!zeroDot[0] && !zeroDot[1] && sign(dot[0]) != sign(dot[1]))
 		return false;
-	}
 
 	v1 = a - c;
 	v2 = p - c;
@@ -231,8 +228,8 @@ bool Math::pointInTri2D(const Vector2& p, const Vector2& a, const Vector2& b, co
 	dot[2] = v1.crossProduct(v2);
 	zeroDot[2] = f32Equal(dot[2], 0.0f, 1e-3);
 	// Compare signs (ignore colinear / coincident points)
-	if ((!zeroDot[0] && !zeroDot[2] && Sign(dot[0]) != Sign(dot[2])) ||
-		(!zeroDot[1] && !zeroDot[2] && Sign(dot[1]) != Sign(dot[2])))
+	if ((!zeroDot[0] && !zeroDot[2] && sign(dot[0]) != sign(dot[2])) ||
+		(!zeroDot[1] && !zeroDot[2] && sign(dot[1]) != sign(dot[2])))
 	{
 		return false;
 	}
@@ -242,8 +239,7 @@ bool Math::pointInTri2D(const Vector2& p, const Vector2& a, const Vector2& b, co
 }
 
 
-bool Math::pointInTri3D(const Vector3& p, const Vector3& a,
-						const Vector3& b, const Vector3& c, const Vector3& normal)
+bool Math::pointInTri3D(const Vector3& p, const Vector3& a, const Vector3& b, const Vector3& c, const Vector3& normal)
 {
 	// Winding must be consistent from all edges for point to be inside
 	Vector3 v1, v2;
@@ -258,7 +254,6 @@ bool Math::pointInTri3D(const Vector3& p, const Vector3& a,
 	dot[0] = v1.cross(v2).dot(normal);
 	zeroDot[0] = f32Equal(dot[0], 0.0f, 1e-3);
 
-
 	v1 = c - b;
 	v2 = p - b;
 
@@ -266,10 +261,8 @@ bool Math::pointInTri3D(const Vector3& p, const Vector3& a,
 	zeroDot[1] = f32Equal(dot[1], 0.0f, 1e-3);
 
 	// Compare signs (ignore colinear / coincident points)
-	if (!zeroDot[0] && !zeroDot[1] && Sign(dot[0]) != Sign(dot[1]))
-	{
+	if (!zeroDot[0] && !zeroDot[1] && sign(dot[0]) != sign(dot[1]))
 		return false;
-	}
 
 	v1 = a - c;
 	v2 = p - c;
@@ -277,8 +270,8 @@ bool Math::pointInTri3D(const Vector3& p, const Vector3& a,
 	dot[2] = v1.cross(v2).dot(normal);
 	zeroDot[2] = f32Equal(dot[2], 0.0f, 1e-3);
 	// Compare signs (ignore colinear / coincident points)
-	if ((!zeroDot[0] && !zeroDot[2] && Sign(dot[0]) != Sign(dot[2])) ||
-		(!zeroDot[1] && !zeroDot[2] && Sign(dot[1]) != Sign(dot[2])))
+	if ((!zeroDot[0] && !zeroDot[2] && sign(dot[0]) != sign(dot[2])) ||
+		(!zeroDot[1] && !zeroDot[2] && sign(dot[1]) != sign(dot[2])))
 	{
 		return false;
 	}
@@ -344,8 +337,7 @@ Pair<bool, f32> Math::intersects(const Ray& ray, const List<Plane>& planes, bool
 		{
 			allInside = false;
 			// Test single plane
-			Pair<bool, f32> planeRes =
-				ray.intersects(plane);
+			Pair<bool, f32> planeRes = ray.intersects(plane);
 			if (planeRes.first)
 			{
 				// Ok, we intersected
@@ -362,8 +354,7 @@ Pair<bool, f32> Math::intersects(const Ray& ray, const List<Plane>& planes, bool
 		}
 		else
 		{
-			Pair<bool, f32> planeRes =
-				ray.intersects(plane);
+			Pair<bool, f32> planeRes = ray.intersects(plane);
 			if (planeRes.first)
 			{
 				if (!end.first)
@@ -430,9 +421,9 @@ Pair<bool, f32> Math::intersects(const Ray& ray, const Sphere& sphere, bool disc
 	// BTW, if d=0 there is one intersection, if d > 0 there are 2
 	// But we only want the closest one, so that's ok, just use the 
 	// '-' version of the solver
-	f32 t = (-b - Sqrt(d)) / (2 * a);
+	f32 t = (-b - sqrt(d)) / (2 * a);
 	if (t < 0)
-		t = (-b + Sqrt(d)) / (2 * a);
+		t = (-b + sqrt(d)) / (2 * a);
 	return Pair<bool, f32>(true, t);
 }
 
@@ -651,8 +642,7 @@ bool Math::intersects(const Ray& ray, const AxisAlignedBox& box, f32* d1, f32* d
 	return true;
 }
 
-Pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a,
-								const Vector3& b, const Vector3& c, const Vector3& normal,
+Pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a, const Vector3& b, const Vector3& c, const Vector3& normal,
 								bool positiveSide, bool negativeSide)
 {
 	//
@@ -747,7 +737,7 @@ Pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a,
 
 Pair<bool, f32> Math::intersects(const Ray& ray, const Vector3& a, const Vector3& b, const Vector3& c, bool positiveSide, bool negativeSide)
 {
-	Vector3 normal = calculateBasicFaceNormalWithoutNormalize(a, b, c);
+	Vector3 normal = calculateFaceNormalBasicWithoutNormalize(a, b, c);
 	return intersects(ray, a, b, c, normal, positiveSide, negativeSide);
 }
 
@@ -838,12 +828,12 @@ Matrix4 Math::buildReflectionMatrix(const Plane& p)
 
 Vector4 Math::calculateFaceNormal(const Vector3& v1, const Vector3& v2, const Vector3& v3)
 {
-	Vector3 normal = calculateBasicFaceNormal(v1, v2, v3);
+	Vector3 normal = calculateFaceNormalBasic(v1, v2, v3);
 	// Now set up the w (distance of tri from origin
 	return Vector4(normal.x, normal.y, normal.z, -(normal.dot(v1)));
 }
 
-Vector3 Math::calculateBasicFaceNormal(const Vector3& v1, const Vector3& v2, const Vector3& v3)
+Vector3 Math::calculateFaceNormalBasic(const Vector3& v1, const Vector3& v2, const Vector3& v3)
 {
 	Vector3 normal = (v2 - v1).cross(v3 - v1);
 	normal.normalize();
@@ -852,13 +842,13 @@ Vector3 Math::calculateBasicFaceNormal(const Vector3& v1, const Vector3& v2, con
 
 Vector4 Math::calculateFaceNormalWithoutNormalize(const Vector3& v1, const Vector3& v2, const Vector3& v3)
 {
-	Vector3 normal = calculateBasicFaceNormalWithoutNormalize(v1, v2, v3);
+	Vector3 normal = calculateFaceNormalBasicWithoutNormalize(v1, v2, v3);
 	// Now set up the w (distance of tri from origin)
 	return Vector4(normal.x, normal.y, normal.z, -(normal.dot(v1)));
 }
 
 
-Vector3 Math::calculateBasicFaceNormalWithoutNormalize(const Vector3& v1, const Vector3& v2, const Vector3& v3)
+Vector3 Math::calculateFaceNormalBasicWithoutNormalize(const Vector3& v1, const Vector3& v2, const Vector3& v3)
 {
 	Vector3 normal = (v2 - v1).cross(v3 - v1);
 	return normal;
@@ -867,8 +857,8 @@ Vector3 Math::calculateBasicFaceNormalWithoutNormalize(const Vector3& v1, const 
 
 f32 Math::gaussianDistribution(f32 x, f32 offset, f32 scale)
 {
-	f32 nom = Exp(-Sqr(x - offset) / (2 * Sqr(scale)));
-	f32 denom = scale * Sqrt(2 * PI);
+	f32 nom = exp(-sqr(x - offset) / (2 * sqr(scale)));
+	f32 denom = scale * sqrt(2 * PI);
 	return nom / denom;
 }
 

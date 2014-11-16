@@ -189,8 +189,8 @@ namespace solo
 			return _value;
 		}
 
-		f32 valueRadians() const; // see bottom of this file
-		f32 valueAngleUnits() const;
+		f32 toRadians() const; // see bottom of this file
+		f32 toAngleUnits() const;
 
 		const Degree& operator +() const
 		{
@@ -330,35 +330,35 @@ namespace solo
 
 	// these functions could not be defined within the class definition of class
 	// Radian because they required class Degree to be defined
-	inline Radian::Radian(const Degree& d) : _value(d.valueRadians())
+	inline Radian::Radian(const Degree& d) : _value(d.toRadians())
 	{
 	}
 
 	inline Radian& Radian::operator =(const Degree& d)
 	{
-		_value = d.valueRadians();
+		_value = d.toRadians();
 		return *this;
 	}
 
 	inline Radian Radian::operator +(const Degree& d) const
 	{
-		return Radian(_value + d.valueRadians());
+		return Radian(_value + d.toRadians());
 	}
 
 	inline Radian& Radian::operator +=(const Degree& d)
 	{
-		_value += d.valueRadians();
+		_value += d.toRadians();
 		return *this;
 	}
 
 	inline Radian Radian::operator -(const Degree& d) const
 	{
-		return Radian(_value - d.valueRadians());
+		return Radian(_value - d.toRadians());
 	}
 
 	inline Radian& Radian::operator -=(const Degree& d)
 	{
-		_value -= d.valueRadians();
+		_value -= d.toRadians();
 		return *this;
 	}
 
@@ -371,10 +371,10 @@ namespace solo
 		this functionality is actually still used is when parsing files. Search for
 		usage of the Angle class for those instances
 		*/
-		enum AngleUnit
+		enum class AngleUnit
 		{
-			AU_DEGREE,
-			AU_RADIAN
+			Degree,
+			Radian
 		};
 
 	protected:
@@ -382,7 +382,7 @@ namespace solo
 		static AngleUnit _angleUnit;
 
 		/// Size of the trig tables as determined by constructor.
-		static int _trigTableSize;
+		static u32 _trigTableSize;
 
 		/// Radian -> index factor value ( _trigTableSize / 2 * PI )
 		static f32 _trigTableFactor;
@@ -393,41 +393,41 @@ namespace solo
 		*/
 		void _buildTrigTables();
 
-		static f32 _fromSinTable(f32 fValue);
-		static f32 _fromTanTable(f32 fValue);
+		static f32 _fromSinTable(f32 val);
+		static f32 _fromTanTable(f32 val);
 	public:
 
 		/** Default constructor.
 		@param
 		trigTableSize Optional parameter to set the size of the
-		tables used to implement Sin, Cos, Tan
+		tables used to implement Sin, Cos, tan
 		*/
-		Math(unsigned int trigTableSize = 4096);
+		Math(u32 trigTableSize = 4096);
 
 		/** Default destructor.
 		*/
 		~Math();
 
-		static inline int abs(int val)
+		static inline s32 abs(s32 val)
 		{
 			return (val >= 0 ? val : -val);
 		}
 
-		static inline int ceil(float val)
+		static inline s32 ceil(f32 val)
 		{
-			return int(ceil(val));
+			return s32(std::ceil(val));
 		}
 
-		static inline int floor(float val)
+		static inline s32 floor(f32 val)
 		{
-			return int(floor(val));
+			return s32(floor(val));
 		}
 
-		static int sign(int val);
+		static s32 sign(s32 val);
 
 		/** Absolute value function
 		@param
-		fValue The value whose absolute value will be returned.
+		val The value whose absolute value will be returned.
 		*/
 		static inline f32 abs(f32 val)
 		{
@@ -436,7 +436,7 @@ namespace solo
 
 		/** Absolute value function
 		@param
-		fValue The value, in degrees, whose absolute value will be returned.
+		val The value, in degrees, whose absolute value will be returned.
 		*/
 		static inline Degree abs(const Degree& val)
 		{
@@ -445,7 +445,7 @@ namespace solo
 
 		/** Absolute value function
 		@param
-		fValue The value, in radians, whose absolute value will be returned.
+		val The value, in radians, whose absolute value will be returned.
 		*/
 		static inline Radian abs(const Radian& val)
 		{
@@ -454,45 +454,34 @@ namespace solo
 
 		/** Arc cosine function
 		@param
-		fValue The value whose arc cosine will be returned.
+		val The value whose arc cosine will be returned.
 		*/
-		static Radian ACos(f32 fValue);
+		static Radian acos(f32 val);
 
 		/** Arc sine function
 		@param
-		fValue The value whose arc sine will be returned.
+		val The value whose arc sine will be returned.
 		*/
-		static Radian ASin(f32 fValue);
+		static Radian asin(f32 val);
 
 		/** Arc tangent function
 		@param
-		fValue The value whose arc tangent will be returned.
+		val The value whose arc tangent will be returned.
 		*/
-		static inline Radian ATan(f32 fValue)
+		static inline Radian atan(f32 val)
 		{
-			return Radian(atan(fValue));
+			return Radian(atan(val));
 		}
 
 		/** Arc tangent between two values function
 		@param
-		fY The first value to calculate the arc tangent with.
+		y The first value to calculate the arc tangent with.
 		@param
-		fX The second value to calculate the arc tangent with.
+		x The second value to calculate the arc tangent with.
 		*/
-		static inline Radian ATan2(f32 fY, f32 fX)
+		static inline Radian atan2(f32 y, f32 x)
 		{
-			return Radian(atan2(fY, fX));
-		}
-
-		/** Ceiling function
-		Returns the smallest following integer. (example: Ceil(1.1) = 2)
-
-		@param
-		fValue The value to round up to the nearest integer.
-		*/
-		static inline f32 Ceil(f32 fValue)
-		{
-			return f32(ceil(fValue));
+			return Radian(std::atan2(y, x));
 		}
 
 		static inline bool isNaN(f32 f)
@@ -504,204 +493,193 @@ namespace solo
 
 		/** Cosine function.
 		@param
-		fValue Angle in radians
+		val Angle in radians
 		@param
 		useTables If true, uses lookup tables rather than
 		calculation - faster but less accurate.
 		*/
-		static inline f32 Cos(const Radian& fValue, bool useTables = false)
+		static inline f32 cos(const Radian& val, bool useTables = false)
 		{
-			return (!useTables) ? f32(cos(fValue.valueRadians())) : _fromSinTable(fValue.valueRadians() + HALF_PI);
+			return (!useTables) ? f32(cos(val.valueRadians())) : _fromSinTable(val.valueRadians() + HALF_PI);
 		}
 
 		/** Cosine function.
 		@param
-		fValue Angle in radians
+		val Angle in radians
 		@param
 		useTables If true, uses lookup tables rather than
 		calculation - faster but less accurate.
 		*/
-		static inline f32 Cos(f32 fValue, bool useTables = false)
+		static inline f32 cos(f32 val, bool useTables = false)
 		{
-			return (!useTables) ? f32(cos(fValue)) : _fromSinTable(fValue + HALF_PI);
+			return (!useTables) ? f32(cos(val)) : _fromSinTable(val + HALF_PI);
 		}
 
-		static inline f32 Exp(f32 fValue)
+		static inline f32 exp(f32 val)
 		{
-			return f32(exp(fValue));
+			return f32(std::exp(val));
 		}
 
-		/** Floor function
-		Returns the largest previous integer. (example: Floor(1.9) = 1)
-
-		@param
-		fValue The value to round down to the nearest integer.
-		*/
-		static inline f32 Floor(f32 fValue)
+		static inline f32 log(f32 val)
 		{
-			return f32(floor(fValue));
-		}
-
-		static inline f32 Log(f32 fValue)
-		{
-			return f32(log(fValue));
+			return f32(std::log(val));
 		}
 
 		/// Stored value of log(2) for frequent use
 		static const f32 LOG2;
 
-		static inline f32 Log2(f32 fValue)
+		static inline f32 log2(f32 val)
 		{
-			return f32(log(fValue) / LOG2);
+			return f32(log(val) / LOG2);
 		}
 
-		static inline f32 LogN(f32 base, f32 fValue)
+		static inline f32 logN(f32 base, f32 val)
 		{
-			return f32(log(fValue) / log(base));
+			return f32(log(val) / log(base));
 		}
 
-		static inline f32 Pow(f32 fBase, f32 fExponent)
+		static inline f32 pow(f32 fBase, f32 fExponent)
 		{
 			return f32(pow(fBase, fExponent));
 		}
 
-		static f32 Sign(f32 fValue);
+		static f32 sign(f32 val);
 
-		static inline Radian Sign(const Radian& rValue)
+		static inline Radian sign(const Radian& val)
 		{
-			return Radian(Sign(rValue.valueRadians()));
+			return Radian(sign(val.valueRadians()));
 		}
 
-		static inline Degree Sign(const Degree& dValue)
+		static inline Degree sign(const Degree& val)
 		{
-			return Degree(Sign(dValue.valueDegrees()));
-		}
-
-		/** Sine function.
-		@param
-		fValue Angle in radians
-		@param
-		useTables If true, uses lookup tables rather than
-		calculation - faster but less accurate.
-		*/
-		static inline f32 Sin(const Radian& fValue, bool useTables = false)
-		{
-			return (!useTables) ? f32(sin(fValue.valueRadians())) : _fromSinTable(fValue.valueRadians());
+			return Degree(sign(val.valueDegrees()));
 		}
 
 		/** Sine function.
 		@param
-		fValue Angle in radians
+		val Angle in radians
 		@param
 		useTables If true, uses lookup tables rather than
 		calculation - faster but less accurate.
 		*/
-		static inline f32 Sin(f32 fValue, bool useTables = false)
+		static inline f32 sin(const Radian& val, bool useTables = false)
 		{
-			return (!useTables) ? f32(sin(fValue)) : _fromSinTable(fValue);
+			return (!useTables) ? f32(sin(val.valueRadians())) : _fromSinTable(val.valueRadians());
+		}
+
+		/** Sine function.
+		@param
+		val Angle in radians
+		@param
+		useTables If true, uses lookup tables rather than
+		calculation - faster but less accurate.
+		*/
+		static inline f32 sin(f32 val, bool useTables = false)
+		{
+			return (!useTables) ? f32(sin(val)) : _fromSinTable(val);
 		}
 
 		/** Squared function.
 		@param
-		fValue The value to be squared (fValue^2)
+		val The value to be squared (val^2)
 		*/
-		static inline f32 Sqr(f32 fValue)
+		static inline f32 sqr(f32 val)
 		{
-			return fValue * fValue;
+			return val * val;
 		}
 
 		/** Square root function.
 		@param
-		fValue The value whose square root will be calculated.
+		val The value whose square root will be calculated.
 		*/
-		static inline f32 Sqrt(f32 fValue)
+		static inline f32 sqrt(f32 val)
 		{
-			return f32(sqrt(fValue));
+			return f32(std::sqrt(val));
 		}
 
 		/** Square root function.
 		@param
-		fValue The value, in radians, whose square root will be calculated.
+		val The value, in radians, whose square root will be calculated.
 		@return
 		The square root of the angle in radians.
 		*/
-		static inline Radian Sqrt(const Radian& fValue)
+		static inline Radian sqrt(const Radian& val)
 		{
-			return Radian(sqrt(fValue.valueRadians()));
+			return Radian(sqrt(val.valueRadians()));
 		}
 
 		/** Square root function.
 		@param
-		fValue The value, in degrees, whose square root will be calculated.
+		val The value, in degrees, whose square root will be calculated.
 		@return
 		The square root of the angle in degrees.
 		*/
-		static inline Degree Sqrt(const Degree& fValue)
+		static inline Degree sqrt(const Degree& val)
 		{
-			return Degree(sqrt(fValue.valueDegrees()));
+			return Degree(sqrt(val.valueDegrees()));
 		}
 
 		/** Inverse square root i.e. 1 / Sqrt(x), good for vector
 		normalisation.
 		@param
-		fValue The value whose inverse square root will be calculated.
+		val The value whose inverse square root will be calculated.
 		*/
-		static f32 InvSqrt(f32 fValue);
+		static f32 invSqrt(f32 val);
 
 		/** Generate a random number of unit length.
 		@return
 		A random number in the range from [0,1].
 		*/
-		static f32 UnitRandom();
+		static f32 randomUnit();
 
 		/** Generate a random number within the range provided.
 		@param
-		fLow The lower bound of the range.
+		low The lower bound of the range.
 		@param
-		fHigh The upper bound of the range.
+		high The upper bound of the range.
 		@return
-		A random number in the range from [fLow,fHigh].
+		A random number in the range from [low,high].
 		*/
-		static f32 RangeRandom(f32 fLow, f32 fHigh);
+		static f32 randomRange(f32 low, f32 high);
 
 		/** Generate a random number in the range [-1,1].
 		@return
 		A random number in the range from [-1,1].
 		*/
-		static f32 SymmetricRandom();
+		static f32 randomSymmetric();
 
 		/** Tangent function.
 		@param
-		fValue Angle in radians
+		val Angle in radians
 		@param
 		useTables If true, uses lookup tables rather than
 		calculation - faster but less accurate.
 		*/
-		static inline f32 Tan(const Radian& fValue, bool useTables = false)
+		static inline f32 tan(const Radian& val, bool useTables = false)
 		{
-			return (!useTables) ? f32(tan(fValue.valueRadians())) : _fromTanTable(fValue.valueRadians());
+			return (!useTables) ? f32(tan(val.valueRadians())) : _fromTanTable(val.valueRadians());
 		}
 
 		/** Tangent function.
 		@param
-		fValue Angle in radians
+		val Angle in radians
 		@param
 		useTables If true, uses lookup tables rather than
 		calculation - faster but less accurate.
 		*/
-		static inline f32 Tan(f32 fValue, bool useTables = false)
+		static inline f32 tan(f32 val, bool useTables = false)
 		{
-			return (!useTables) ? f32(tan(fValue)) : _fromTanTable(fValue);
+			return (!useTables) ? f32(tan(val)) : _fromTanTable(val);
 		}
 
-		static inline f32 DegreesToRadians(f32 degrees)
+		static inline f32 degreesToRadians(f32 degrees)
 		{
-			return degrees * fDeg2Rad;
+			return degrees * deg2Rad;
 		}
 
-		static inline f32 RadiansToDegrees(f32 radians)
+		static inline f32 radiansToDegrees(f32 radians)
 		{
-			return radians * fRad2Deg;
+			return radians * rad2Deg;
 		}
 
 		/** These functions used to set the assumed angle units (radians or degrees)
@@ -712,16 +690,16 @@ namespace solo
 		*/
 		static void setAngleUnit(AngleUnit unit);
 		/** Get the unit being used for angles. */
-		static AngleUnit getAngleUnit(void);
+		static AngleUnit angleUnit(void);
 
 		/** Convert from the current AngleUnit to radians. */
-		static f32 AngleUnitsToRadians(f32 units);
+		static f32 angleUnitsToRadians(f32 units);
 		/** Convert from radians to the current AngleUnit . */
-		static f32 RadiansToAngleUnits(f32 radians);
+		static f32 radiansToAngleUnits(f32 radians);
 		/** Convert from the current AngleUnit to degrees. */
-		static f32 AngleUnitsToDegrees(f32 units);
+		static f32 angleUnitsToDegrees(f32 units);
 		/** Convert from degrees to the current AngleUnit. */
-		static f32 DegreesToAngleUnits(f32 degrees);
+		static f32 degreesToAngleUnits(f32 degrees);
 
 		/** Checks whether a given point is inside a triangle, in a
 		2-dimensional (Cartesian) space.
@@ -770,14 +748,12 @@ namespace solo
 		If the point is outside the triangle, <b>false</b> is
 		returned.
 		*/
-		static bool pointInTri3D(const Vector3& p, const Vector3& a,
-								const Vector3& b, const Vector3& c, const Vector3& normal);
+		static bool pointInTri3D(const Vector3& p, const Vector3& a, const Vector3& b, const Vector3& c, const Vector3& normal);
 		/** Ray / plane intersection, returns boolean result and distance. */
 		static Pair<bool, f32> intersects(const Ray& ray, const Plane& plane);
 
 		/** Ray / sphere intersection, returns boolean result and distance. */
-		static Pair<bool, f32> intersects(const Ray& ray, const Sphere& sphere,
-												bool discardInside = true);
+		static Pair<bool, f32> intersects(const Ray& ray, const Sphere& sphere, bool discardInside = true);
 
 		/** Ray / box intersection, returns boolean result and distance. */
 		static Pair<bool, f32> intersects(const Ray& ray, const AxisAlignedBox& box);
@@ -831,8 +807,8 @@ namespace solo
 		<b>0</b> returned.
 		*/
 		static Pair<bool, f32> intersects(const Ray& ray, const Vector3& a,
-												const Vector3& b, const Vector3& c, const Vector3& normal,
-												bool positiveSide = true, bool negativeSide = true);
+											const Vector3& b, const Vector3& c, const Vector3& normal,
+											bool positiveSide = true, bool negativeSide = true);
 
 		/** Ray / triangle intersection, returns boolean result and distance.
 		@param
@@ -855,8 +831,8 @@ namespace solo
 		<b>0</b> returned.
 		*/
 		static Pair<bool, f32> intersects(const Ray& ray, const Vector3& a,
-												const Vector3& b, const Vector3& c,
-												bool positiveSide = true, bool negativeSide = true);
+											const Vector3& b, const Vector3& c,
+											bool positiveSide = true, bool negativeSide = true);
 
 		/** Sphere / box intersection test. */
 		static bool intersects(const Sphere& sphere, const AxisAlignedBox& box);
@@ -895,26 +871,26 @@ namespace solo
 		/** Calculate a face normal, including the w component which is the offset from the origin. */
 		static Vector4 calculateFaceNormal(const Vector3& v1, const Vector3& v2, const Vector3& v3);
 		/** Calculate a face normal, no w-information. */
-		static Vector3 calculateBasicFaceNormal(const Vector3& v1, const Vector3& v2, const Vector3& v3);
+		static Vector3 calculateFaceNormalBasic(const Vector3& v1, const Vector3& v2, const Vector3& v3);
 		/** Calculate a face normal without normalize, including the w component which is the offset from the origin. */
 		static Vector4 calculateFaceNormalWithoutNormalize(const Vector3& v1, const Vector3& v2, const Vector3& v3);
 		/** Calculate a face normal without normalize, no w-information. */
-		static Vector3 calculateBasicFaceNormalWithoutNormalize(const Vector3& v1, const Vector3& v2, const Vector3& v3);
+		static Vector3 calculateFaceNormalBasicWithoutNormalize(const Vector3& v1, const Vector3& v2, const Vector3& v3);
 
 		/** Generates a value based on the Gaussian (normal) distribution function
 		with the given offset and scale parameters.
 		*/
 		static f32 gaussianDistribution(f32 x, f32 offset = 0.0f, f32 scale = 1.0f);
 
-		/** Clamp a value within an inclusive range. */
+		/** clamp a value within an inclusive range. */
 		template <typename T>
-		static T Clamp(T val, T minval, T maxval)
+		static T clamp(T val, T minval, T maxval)
 		{
 			assert(minval <= maxval && "Invalid clamp range");
 			return std::max(std::min(val, maxval), minval);
 		}
 
-		static Matrix4 makeViewMatrix(const Vector3& position, const Quaternion& orientation, const Matrix4* reflectMatrix = 0);
+		static Matrix4 makeViewMatrix(const Vector3& position, const Quaternion& orientation, const Matrix4* reflectMatrix = nullptr);
 
 		/** Get a bounding radius value from a bounding box. */
 		static f32 boundingRadiusFromAABB(const AxisAlignedBox& aabb);
@@ -924,38 +900,38 @@ namespace solo
 		static const f32 PI;
 		static const f32 TWO_PI;
 		static const f32 HALF_PI;
-		static const f32 fDeg2Rad;
-		static const f32 fRad2Deg;
+		static const f32 deg2Rad;
+		static const f32 rad2Deg;
 	};
 
 	inline f32 Radian::valueDegrees() const
 	{
-		return Math::RadiansToDegrees(_value);
+		return Math::radiansToDegrees(_value);
 	}
 
 	inline f32 Radian::valueAngleUnits() const
 	{
-		return Math::RadiansToAngleUnits(_value);
+		return Math::radiansToAngleUnits(_value);
 	}
 
-	inline f32 Degree::valueRadians() const
+	inline f32 Degree::toRadians() const
 	{
-		return Math::DegreesToRadians(_value);
+		return Math::degreesToRadians(_value);
 	}
 
-	inline f32 Degree::valueAngleUnits() const
+	inline f32 Degree::toAngleUnits() const
 	{
-		return Math::DegreesToAngleUnits(_value);
+		return Math::degreesToAngleUnits(_value);
 	}
 
 	inline Angle::operator Radian() const
 	{
-		return Radian(Math::AngleUnitsToRadians(_value));
+		return Radian(Math::angleUnitsToRadians(_value));
 	}
 
 	inline Angle::operator Degree() const
 	{
-		return Degree(Math::AngleUnitsToDegrees(_value));
+		return Degree(Math::angleUnitsToDegrees(_value));
 	}
 
 	inline Radian operator * (f32 a, const Radian& b)

@@ -295,7 +295,7 @@ namespace solo
 		*/
 		inline f32 length() const
 		{
-			return Math::Sqrt(x * x + y * y + z * z);
+			return Math::sqrt(x * x + y * y + z * z);
 		}
 
 		/** Returns the square of the length(magnitude) of the vector.
@@ -385,7 +385,7 @@ namespace solo
 		*/
 		inline f32 normalize()
 		{
-			f32 len = Math::Sqrt(x * x + y * y + z * z);
+			f32 len = Math::sqrt(x * x + y * y + z * z);
 
 			// Will also work for zero-sized vectors, but will change nothing
 			// We're not using epsilons because we don't need to.
@@ -556,7 +556,7 @@ namespace solo
 
 			// Rotate up vector by random amount around this
 			Quaternion q;
-			q.fromAngleAxis(Radian(Math::UnitRandom() * Math::TWO_PI), *this);
+			q.fromAngleAxis(Radian(Math::randomUnit() * Math::TWO_PI), *this);
 			newUp = q * newUp;
 
 			// Finally rotate this by given angle around randomised up
@@ -578,8 +578,8 @@ namespace solo
 
 			f32 f = dot(dest) / lenProduct;
 
-			f = Math::Clamp(f, static_cast<f32>(-1.0), static_cast<f32>(1.0));
-			return Math::ACos(f);
+			f = Math::clamp(f, static_cast<f32>(-1.0), static_cast<f32>(1.0));
+			return Math::acos(f);
 
 		}
 		/** Gets the shortest arc quaternion to rotate this vector to the destination
@@ -625,7 +625,7 @@ namespace solo
 			}
 			else
 			{
-				f32 s = Math::Sqrt((1 + d) * 2);
+				f32 s = Math::sqrt((1 + d) * 2);
 				f32 invs = 1 / s;
 
 				Vector3 c = v0.cross(v1);
@@ -699,7 +699,7 @@ namespace solo
 		inline bool directionEquals(const Vector3& other, const Radian& tolerance) const
 		{
 			f32 dot = Vector3::dot(other);
-			Radian angle = Math::ACos(dot);
+			Radian angle = Math::acos(dot);
 
 			return Math::abs(angle.valueRadians()) <= tolerance.valueRadians();
 

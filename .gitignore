@@ -10,3 +10,4 @@
 *.obj
 build*
 *DS_Store*
+*DotSettings.user

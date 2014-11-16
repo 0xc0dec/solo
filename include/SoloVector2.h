@@ -263,7 +263,7 @@ namespace solo
 		*/
 		inline f32 length() const
 		{
-			return Math::Sqrt(x * x + y * y);
+			return Math::sqrt(x * x + y * y);
 		}
 
 		/** Returns the square of the length(magnitude) of the vector.
@@ -339,7 +339,7 @@ namespace solo
 
 		inline f32 normalize()
 		{
-			f32 len = Math::Sqrt(x * x + y * y);
+			f32 len = Math::sqrt(x * x + y * y);
 
 			// Will also work for zero-sized vectors, but will change nothing
 			// We're not using epsilons because we don't need to.
@@ -451,7 +451,7 @@ namespace solo
 		*/
 		inline Vector2 randomDeviant(f32 angle) const
 		{
-			angle *= Math::UnitRandom() * Math::TWO_PI;
+			angle *= Math::randomUnit() * Math::TWO_PI;
 			f32 cosa = cos(angle);
 			f32 sina = sin(angle);
 			return Vector2(cosa * x - sina * y,
@@ -501,8 +501,8 @@ namespace solo
 
 			f32 f = dot(other) / lenProduct;
 
-			f = Math::Clamp(f, static_cast<f32>(- 1.0), static_cast<f32>(1.0));
-			return Math::ACos(f);
+			f = Math::clamp(f, static_cast<f32>(- 1.0), static_cast<f32>(1.0));
+			return Math::acos(f);
 		}
 
 		/**	 Gets the oriented angle between 2 vectors.

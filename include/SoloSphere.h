@@ -54,7 +54,7 @@ namespace solo
 		bool intersects(const Sphere& s) const
 		{
 			return (s.mCenter - mCenter).squaredLength() <=
-				Math::Sqr(s.mRadius + mRadius);
+				Math::sqr(s.mRadius + mRadius);
 		}
 
 		/** Returns whether or not this sphere intersects a box. */
@@ -72,7 +72,7 @@ namespace solo
 		/** Returns whether or not this sphere intersects a point. */
 		bool intersects(const Vector3& v) const
 		{
-			return ((v - mCenter).squaredLength() <= Math::Sqr(mRadius));
+			return ((v - mCenter).squaredLength() <= Math::sqr(mRadius));
 		}
 
 		/** Merges another Sphere into the current sphere */
@@ -83,7 +83,7 @@ namespace solo
 			f32 radiusDiff = oth.getRadius() - mRadius;
 
 			// Early-out
-			if (Math::Sqr(radiusDiff) >= lengthSq)
+			if (Math::sqr(radiusDiff) >= lengthSq)
 			{
 				// One fully contains the other
 				if (radiusDiff <= 0.0f)
@@ -93,7 +93,7 @@ namespace solo
 				return;
 			}
 
-			f32 length = Math::Sqrt(lengthSq);
+			f32 length = Math::sqrt(lengthSq);
 
 			Vector3 newCenter;
 			f32 newRadius;
