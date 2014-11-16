@@ -15,8 +15,8 @@ namespace solo
 		{
 		}
 
-		inline Vector2(const f32 fX, const f32 fY)
-			: x(fX), y(fY)
+		inline Vector2(const f32 x, const f32 y)
+			: x(x), y(y)
 		{
 		}
 
@@ -25,15 +25,15 @@ namespace solo
 		{
 		}
 
-		inline explicit Vector2(const f32 afCoordinate[2])
-			: x(afCoordinate[0]), y(afCoordinate[1])
+		inline explicit Vector2(const f32 coords[2])
+			: x(coords[0]), y(coords[1])
 		{
 		}
 
-		inline explicit Vector2(const int afCoordinate[2])
+		inline explicit Vector2(const int coords[2])
 		{
-			x = static_cast<f32>(afCoordinate[0]);
-			y = static_cast<f32>(afCoordinate[1]);
+			x = static_cast<f32>(coords[0]);
+			y = static_cast<f32>(coords[1]);
 		}
 
 		inline explicit Vector2(f32* const r)
@@ -77,54 +77,53 @@ namespace solo
 
 		/** Assigns the value of the other vector.
 		@param
-		rkVector The other vector
+		other The other vector
 		*/
-		inline Vector2& operator =(const Vector2& rkVector)
+		inline Vector2& operator =(const Vector2& other)
 		{
-			x = rkVector.x;
-			y = rkVector.y;
+			x = other.x;
+			y = other.y;
 
 			return *this;
 		}
 
-		inline Vector2& operator =(const f32 fScalar)
+		inline Vector2& operator =(const f32 scalar)
 		{
-			x = fScalar;
-			y = fScalar;
+			x = scalar;
+			y = scalar;
 
 			return *this;
 		}
 
-		inline bool operator ==(const Vector2& rkVector) const
+		inline bool operator ==(const Vector2& other) const
 		{
-			return (x == rkVector.x && y == rkVector.y);
+			return (x == other.x && y == other.y);
 		}
 
-		inline bool operator !=(const Vector2& rkVector) const
+		inline bool operator !=(const Vector2& other) const
 		{
-			return (x != rkVector.x || y != rkVector.y);
+			return (x != other.x || y != other.y);
 		}
 
-		// arithmetic operations
-		inline Vector2 operator +(const Vector2& rkVector) const
+		inline Vector2 operator +(const Vector2& other) const
 		{
 			return Vector2(
-				x + rkVector.x,
-				y + rkVector.y);
+				x + other.x,
+				y + other.y);
 		}
 
-		inline Vector2 operator -(const Vector2& rkVector) const
+		inline Vector2 operator -(const Vector2& other) const
 		{
 			return Vector2(
-				x - rkVector.x,
-				y - rkVector.y);
+				x - other.x,
+				y - other.y);
 		}
 
-		inline Vector2 operator *(const f32 fScalar) const
+		inline Vector2 operator *(const f32 scalar) const
 		{
 			return Vector2(
-				x * fScalar,
-				y * fScalar);
+				x * scalar,
+				y * scalar);
 		}
 
 		inline Vector2 operator *(const Vector2& rhs) const
@@ -134,22 +133,20 @@ namespace solo
 				y * rhs.y);
 		}
 
-		inline Vector2 operator /(const f32 fScalar) const
+		inline Vector2 operator /(const f32 scalar) const
 		{
-			assert(fScalar != 0.0);
+			assert(scalar != 0.0);
 
-			f32 fInv = 1.0f / fScalar;
+			f32 fInv = 1.0f / scalar;
 
 			return Vector2(
 				x * fInv,
 				y * fInv);
 		}
 
-		inline Vector2 operator /(const Vector2& rhs) const
+		inline Vector2 operator /(const Vector2& other) const
 		{
-			return Vector2(
-				x / rhs.x,
-				y / rhs.y);
+			return Vector2(x / other.x, y / other.y);
 		}
 
 		inline const Vector2& operator +() const
@@ -163,113 +160,96 @@ namespace solo
 		}
 
 		// overloaded operators to help Vector2
-		inline friend Vector2 operator *(const f32 fScalar, const Vector2& rkVector)
+		inline friend Vector2 operator *(const f32 scalar, const Vector2& other)
 		{
-			return Vector2(
-				fScalar * rkVector.x,
-				fScalar * rkVector.y);
+			return Vector2(scalar * other.x, scalar * other.y);
 		}
 
-		inline friend Vector2 operator /(const f32 fScalar, const Vector2& rkVector)
+		inline friend Vector2 operator /(const f32 scalar, const Vector2& other)
 		{
-			return Vector2(
-				fScalar / rkVector.x,
-				fScalar / rkVector.y);
+			return Vector2(scalar / other.x, scalar / other.y);
 		}
 
-		inline friend Vector2 operator +(const Vector2& lhs, const f32 rhs)
+		inline friend Vector2 operator +(const Vector2& vec, const f32 scalar)
 		{
-			return Vector2(
-				lhs.x + rhs,
-				lhs.y + rhs);
+			return Vector2(vec.x + scalar, vec.y + scalar);
 		}
 
-		inline friend Vector2 operator +(const f32 lhs, const Vector2& rhs)
+		inline friend Vector2 operator +(const f32 scalar, const Vector2& vector)
 		{
-			return Vector2(
-				lhs + rhs.x,
-				lhs + rhs.y);
+			return Vector2(scalar + vector.x, scalar + vector.y);
 		}
 
-		inline friend Vector2 operator -(const Vector2& lhs, const f32 rhs)
+		inline friend Vector2 operator -(const Vector2& vector, const f32 scalar)
 		{
-			return Vector2(
-				lhs.x - rhs,
-				lhs.y - rhs);
+			return Vector2(vector.x - scalar, vector.y - scalar);
 		}
 
-		inline friend Vector2 operator -(const f32 lhs, const Vector2& rhs)
+		inline friend Vector2 operator -(const f32 scalar, const Vector2& vector)
 		{
-			return Vector2(
-				lhs - rhs.x,
-				lhs - rhs.y);
+			return Vector2(scalar - vector.x, scalar - vector.y);
 		}
 
 		// arithmetic updates
-		inline Vector2& operator +=(const Vector2& rkVector)
+		inline Vector2& operator +=(const Vector2& other)
 		{
-			x += rkVector.x;
-			y += rkVector.y;
+			x += other.x;
+			y += other.y;
 
 			return *this;
 		}
 
-		inline Vector2& operator +=(const f32 fScaler)
+		inline Vector2& operator +=(const f32 scalar)
 		{
-			x += fScaler;
-			y += fScaler;
+			x += scalar;
+			y += scalar;
+			return *this;
+		}
+
+		inline Vector2& operator -=(const Vector2& other)
+		{
+			x -= other.x;
+			y -= other.y;
+			return *this;
+		}
+
+		inline Vector2& operator -=(const f32 scalar)
+		{
+			x -= scalar;
+			y -= scalar;
+			return *this;
+		}
+
+		inline Vector2& operator *=(const f32 scalar)
+		{
+			x *= scalar;
+			y *= scalar;
+			return *this;
+		}
+
+		inline Vector2& operator *=(const Vector2& other)
+		{
+			x *= other.x;
+			y *= other.y;
+			return *this;
+		}
+
+		inline Vector2& operator /=(const f32 scalar)
+		{
+			assert(scalar != 0.0);
+
+			f32 inv = 1.0f / scalar;
+
+			x *= inv;
+			y *= inv;
 
 			return *this;
 		}
 
-		inline Vector2& operator -=(const Vector2& rkVector)
+		inline Vector2& operator /=(const Vector2& other)
 		{
-			x -= rkVector.x;
-			y -= rkVector.y;
-
-			return *this;
-		}
-
-		inline Vector2& operator -=(const f32 fScaler)
-		{
-			x -= fScaler;
-			y -= fScaler;
-
-			return *this;
-		}
-
-		inline Vector2& operator *=(const f32 fScalar)
-		{
-			x *= fScalar;
-			y *= fScalar;
-
-			return *this;
-		}
-
-		inline Vector2& operator *=(const Vector2& rkVector)
-		{
-			x *= rkVector.x;
-			y *= rkVector.y;
-
-			return *this;
-		}
-
-		inline Vector2& operator /=(const f32 fScalar)
-		{
-			assert(fScalar != 0.0);
-
-			f32 fInv = 1.0f / fScalar;
-
-			x *= fInv;
-			y *= fInv;
-
-			return *this;
-		}
-
-		inline Vector2& operator /=(const Vector2& rkVector)
-		{
-			x /= rkVector.x;
-			y /= rkVector.y;
+			x /= other.x;
+			y /= other.y;
 
 			return *this;
 		}
@@ -308,9 +288,9 @@ namespace solo
 		distance (e.g. for just comparing distances) use squaredDistance()
 		instead.
 		*/
-		inline f32 distance(const Vector2& rhs) const
+		inline f32 distance(const Vector2& other) const
 		{
-			return (*this - rhs).length();
+			return (*this - other).length();
 		}
 
 		/** Returns the square of the distance to another vector.
@@ -342,7 +322,7 @@ namespace solo
 		@return
 		A float representing the dot product value.
 		*/
-		inline f32 dotProduct(const Vector2& vec) const
+		inline f32 dot(const Vector2& vec) const
 		{
 			return x * vec.x + y * vec.y;
 		}
@@ -357,21 +337,21 @@ namespace solo
 		@return The previous length of the vector.
 		*/
 
-		inline f32 normalise()
+		inline f32 normalize()
 		{
-			f32 fLength = Math::Sqrt(x * x + y * y);
+			f32 len = Math::Sqrt(x * x + y * y);
 
 			// Will also work for zero-sized vectors, but will change nothing
 			// We're not using epsilons because we don't need to.
 			// Read http://www.ogre3d.org/forums/viewtopic.php?f=4&t=61259
-			if (fLength > f32(0.0f))
+			if (len > f32(0.0f))
 			{
-				f32 fInvLength = 1.0f / fLength;
-				x *= fInvLength;
-				y *= fInvLength;
+				f32 invLen = 1.0f / len;
+				x *= invLen;
+				y *= invLen;
 			}
 
-			return fLength;
+			return len;
 		}
 
 		/** Returns a vector at a point half way between this and the passed
@@ -387,9 +367,9 @@ namespace solo
 		/** Returns true if the vector's scalar components are all greater
 		that the ones of the vector it is compared against.
 		*/
-		inline bool operator <(const Vector2& rhs) const
+		inline bool operator <(const Vector2& other) const
 		{
-			if (x < rhs.x && y < rhs.y)
+			if (x < other.x && y < other.y)
 				return true;
 			return false;
 		}
@@ -397,9 +377,9 @@ namespace solo
 		/** Returns true if the vector's scalar components are all smaller
 		that the ones of the vector it is compared against.
 		*/
-		inline bool operator >(const Vector2& rhs) const
+		inline bool operator >(const Vector2& other) const
 		{
-			if (x > rhs.x && y > rhs.y)
+			if (x > other.x && y > other.y)
 				return true;
 			return false;
 		}
@@ -445,9 +425,9 @@ namespace solo
 		/** Calculates the 2 dimensional cross-product of 2 vectors, which results
 		in a single floating point value which is 2 times the area of the triangle.
 		*/
-		inline f32 crossProduct(const Vector2& rkVector) const
+		inline f32 crossProduct(const Vector2& other) const
 		{
-			return x * rkVector.y - y * rkVector.x;
+			return x * other.y - y * other.x;
 		}
 
 		/** Generates a new random vector which deviates from this vector by a
@@ -490,7 +470,7 @@ namespace solo
 		inline Vector2 normalisedCopy(void) const
 		{
 			Vector2 ret = *this;
-			ret.normalise();
+			ret.normalize();
 			return ret;
 		}
 
@@ -499,7 +479,7 @@ namespace solo
 		*/
 		inline Vector2 reflect(const Vector2& normal) const
 		{
-			return Vector2(*this - (2 * this->dotProduct(normal) * normal));
+			return Vector2(*this - (2 * this->dot(normal) * normal));
 		}
 
 		/// Check whether this vector contains valid values
@@ -519,7 +499,7 @@ namespace solo
 			if (lenProduct < 1e-6f)
 				lenProduct = 1e-6f;
 
-			f32 f = dotProduct(other) / lenProduct;
+			f32 f = dot(other) / lenProduct;
 
 			f = Math::Clamp(f, static_cast<f32>(- 1.0), static_cast<f32>(1.0));
 			return Math::ACos(f);
@@ -548,8 +528,6 @@ namespace solo
 		static const Vector2 NEGATIVE_UNIT_Y;
 		static const Vector2 UNIT_SCALE;
 
-		/** Function for writing to a stream.
-		*/
 		inline friend std::ostream& operator <<(std::ostream& o, const Vector2& v)
 		{
 			o << "Vector2(" << v.x << ", " << v.y << ")";
