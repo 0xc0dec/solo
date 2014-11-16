@@ -27,25 +27,25 @@ namespace solo
 		/// Construct a quaternion from a rotation matrix
 		inline Quaternion(const Matrix3& rot)
 		{
-			this->FromRotationMatrix(rot);
+			this->fromRotationMatrix(rot);
 		}
 
 		/// Construct a quaternion from an angle/axis
 		inline Quaternion(const Radian& rfAngle, const Vector3& rkAxis)
 		{
-			this->FromAngleAxis(rfAngle, rkAxis);
+			this->fromAngleAxis(rfAngle, rkAxis);
 		}
 
 		/// Construct a quaternion from 3 orthonormal local axes
 		inline Quaternion(const Vector3& xaxis, const Vector3& yaxis, const Vector3& zaxis)
 		{
-			this->FromAxes(xaxis, yaxis, zaxis);
+			this->fromAxes(xaxis, yaxis, zaxis);
 		}
 
 		/// Construct a quaternion from 3 orthonormal local axes
 		inline Quaternion(const Vector3* akAxis)
 		{
-			this->FromAxes(akAxis);
+			this->fromAxes(akAxis);
 		}
 
 		/// Construct a quaternion from 4 manual w/x/y/z values
@@ -92,29 +92,31 @@ namespace solo
 			return &w;
 		}
 
-		void FromRotationMatrix(const Matrix3& kRot);
-		void ToRotationMatrix(Matrix3& kRot) const;
+		void fromRotationMatrix(const Matrix3& rot);
+		void toRotationMatrix(Matrix3& rot) const;
+
 		/** Setups the quaternion using the supplied vector, and "roll" around
 		that vector by the specified radians.
 		*/
-		void FromAngleAxis(const Radian& rfAngle, const Vector3& rkAxis);
-		void ToAngleAxis(Radian& rfAngle, Vector3& rkAxis) const;
+		void fromAngleAxis(const Radian& angle, const Vector3& axis);
+		void toAngleAxis(Radian& angle, Vector3& axis) const;
 
-		inline void ToAngleAxis(Degree& dAngle, Vector3& rkAxis) const
+		inline void toAngleAxis(Degree& angle, Vector3& axis) const
 		{
-			Radian rAngle;
-			ToAngleAxis(rAngle, rkAxis);
-			dAngle = rAngle;
+			Radian a;
+			toAngleAxis(a, axis);
+			angle = a;
 		}
 
 		/** Constructs the quaternion using 3 axes, the axes are assumed to be orthonormal
 		@see fromAxes
 		*/
-		void FromAxes(const Vector3* akAxis);
-		void FromAxes(const Vector3& xAxis, const Vector3& yAxis, const Vector3& zAxis);
+		void fromAxes(const Vector3* axes);
+		void fromAxes(const Vector3& xAxis, const Vector3& yAxis, const Vector3& zAxis);
+
 		/** Gets the 3 orthonormal axes defining the quaternion. @see fromAxes */
-		void ToAxes(Vector3* akAxis) const;
-		void ToAxes(Vector3& xAxis, Vector3& yAxis, Vector3& zAxis) const;
+		void toAxes(Vector3* axes) const;
+		void toAxes(Vector3& xAxis, Vector3& yAxis, Vector3& zAxis) const;
 
 		/** Returns the X orthonormal axis defining the quaternion. Same as doing
 		xAxis = Vector3::UNIT_X * this. Also called the local X-axis
@@ -140,37 +142,41 @@ namespace solo
 			return *this;
 		}
 
-		Quaternion operator+(const Quaternion& rkQ) const;
-		Quaternion operator-(const Quaternion& rkQ) const;
-		Quaternion operator*(const Quaternion& rkQ) const;
-		Quaternion operator*(f32 fScalar) const;
-		friend Quaternion operator*(f32 fScalar, const Quaternion& rkQ);
+		Quaternion operator+(const Quaternion& other) const;
+		Quaternion operator-(const Quaternion& other) const;
+		Quaternion operator*(const Quaternion& other) const;
+		Quaternion operator*(f32 scalar) const;
+		friend Quaternion operator*(f32 scalar, const Quaternion& q);
+
 		Quaternion operator-() const;
 
-		inline bool operator==(const Quaternion& rhs) const
+		inline bool operator==(const Quaternion& other) const
 		{
-			return (rhs.x == x) && (rhs.y == y) &&
-				(rhs.z == z) && (rhs.w == w);
+			return (other.x == x) && (other.y == y) &&
+				(other.z == z) && (other.w == w);
 		}
 
-		inline bool operator!=(const Quaternion& rhs) const
+		inline bool operator!=(const Quaternion& other) const
 		{
-			return !operator==(rhs);
+			return !operator==(other);
 		}
 
 		// functions of a quaternion
 		/// Returns the dot product of the quaternion
-		f32 Dot(const Quaternion& rkQ) const;
+		f32 dot(const Quaternion& other) const;
+
 		/* Returns the normal length of this quaternion.
 		@note This does <b>not</b> alter any values.
 		*/
-		f32 Norm() const;
+		f32 normalLength() const;
+
 		/// Normalises this quaternion, and returns the previous length
 		f32 normalise(void);
-		Quaternion Inverse() const; // apply to non-zero quaternion
-		Quaternion UnitInverse() const; // apply to unit-length quaternion
-		Quaternion Exp() const;
-		Quaternion Log() const;
+
+		Quaternion inverse() const; // apply to non-zero quaternion
+		Quaternion unitInverse() const; // apply to unit-length quaternion
+		Quaternion exp() const;
+		Quaternion log() const;
 
 		/// Rotation of a vector by a quaternion
 		Vector3 operator*(const Vector3& rkVector) const;
@@ -184,7 +190,8 @@ namespace solo
 		may involve less axial rotation.  The co-domain of the returned value is
 		from -180 to 180 degrees.
 		*/
-		Radian getRoll(bool reprojectAxis = true) const;
+		Radian roll(bool reprojectAxis = true) const;
+
 		/** Calculate the local pitch element of this quaternion
 		@param reprojectAxis By default the method returns the 'intuitive' result
 		that is, if you projected the local Z of the quaternion onto the X and
@@ -194,7 +201,8 @@ namespace solo
 		may involve less axial rotation.  The co-domain of the returned value is
 		from -180 to 180 degrees.
 		*/
-		Radian getPitch(bool reprojectAxis = true) const;
+		Radian pitch(bool reprojectAxis = true) const;
+
 		/** Calculate the local yaw element of this quaternion
 		@param reprojectAxis By default the method returns the 'intuitive' result
 		that is, if you projected the local Y of the quaternion onto the X and
@@ -204,77 +212,69 @@ namespace solo
 		may involve less axial rotation. The co-domain of the returned value is
 		from -180 to 180 degrees.
 		*/
-		Radian getYaw(bool reprojectAxis = true) const;
-		/// Equality with tolerance (tolerance is max angle difference)
+		Radian yaw(bool reprojectAxis = true) const;
+
 		bool equals(const Quaternion& rhs, const Radian& tolerance) const;
 
 		/** Performs Spherical linear interpolation between two quaternions, and returns the result.
-		Slerp ( 0.0f, A, B ) = A
-		Slerp ( 1.0f, A, B ) = B
+		slerp ( 0.0f, A, B ) = A
+		slerp ( 1.0f, A, B ) = B
 		@return Interpolated quaternion
 		@remarks
-		Slerp has the proprieties of performing the interpolation at constant
+		slerp has the proprieties of performing the interpolation at constant
 		velocity, and being torque-minimal (unless shortestPath=false).
 		However, it's NOT commutative, which means
-		Slerp ( 0.75f, A, B ) != Slerp ( 0.25f, B, A );
+		slerp ( 0.75f, A, B ) != slerp ( 0.25f, B, A );
 		therefore be careful if your code relies in the order of the operands.
 		This is specially important in IK animation.
 		*/
-		static Quaternion Slerp(f32 fT, const Quaternion& rkP,
-								const Quaternion& rkQ, bool shortestPath = false);
+		static Quaternion slerp(f32 t, const Quaternion& p, const Quaternion& q, bool shortestPath = false);
 
-		/** @see Slerp. It adds extra "spins" (i.e. rotates several times) specified
-		by parameter 'iExtraSpins' while interpolating before arriving to the
+		/** @see slerp. It adds extra "spins" (i.e. rotates several times) specified
+		by parameter 'extraSpins' while interpolating before arriving to the
 		final values
 		*/
-		static Quaternion SlerpExtraSpins(f32 fT,
-										const Quaternion& rkP, const Quaternion& rkQ,
-										int iExtraSpins);
+		static Quaternion slerpExtraSpins(f32 t, const Quaternion& p, const Quaternion& q, int extraSpins);
 
 		// setup for spherical quadratic interpolation
-		static void Intermediate(const Quaternion& rkQ0,
-								const Quaternion& rkQ1, const Quaternion& rkQ2,
-								Quaternion& rka, Quaternion& rkB);
+		static void intermediate(const Quaternion& q0,
+								const Quaternion& q1, const Quaternion& q2,
+								Quaternion& a, Quaternion& b);
 
 		// spherical quadratic interpolation
-		static Quaternion Squad(f32 fT, const Quaternion& rkP,
-								const Quaternion& rkA, const Quaternion& rkB,
-								const Quaternion& rkQ, bool shortestPath = false);
+		static Quaternion squad(f32 t, const Quaternion& p,
+								const Quaternion& a, const Quaternion& b,
+								const Quaternion& q, bool shortestPath = false);
 
 		/** Performs Normalised linear interpolation between two quaternions, and returns the result.
 		nlerp ( 0.0f, A, B ) = A
 		nlerp ( 1.0f, A, B ) = B
 		@remarks
-		Nlerp is faster than Slerp.
-		Nlerp has the proprieties of being commutative (@see Slerp;
+		Nlerp is faster than slerp.
+		Nlerp has the proprieties of being commutative (@see slerp;
 		commutativity is desired in certain places, like IK animation), and
 		being torque-minimal (unless shortestPath=false). However, it's performing
 		the interpolation at non-constant velocity; sometimes this is desired,
 		sometimes it is not. Having a non-constant velocity can produce a more
 		natural rotation feeling without the need of tweaking the weights; however
 		if your scene relies on the timing of the rotation or assumes it will point
-		at a specific angle at a specific weight value, Slerp is a better choice.
+		at a specific angle at a specific weight value, slerp is a better choice.
 		*/
-		static Quaternion nlerp(f32 fT, const Quaternion& rkP, const Quaternion& rkQ, bool shortestPath = false);
+		static Quaternion nlerp(f32 t, const Quaternion& p, const Quaternion& q, bool shortestPath = false);
 
 		/// Cutoff for sine near zero
-		static const f32 msEpsilon;
+		static const f32 epsilon;
 
-		// special values
 		static const Quaternion ZERO;
 		static const Quaternion IDENTITY;
 
 		f32 w, x, y, z;
 
-		/// Check whether this quaternion contains valid values
 		inline bool isNaN() const
 		{
 			return Math::isNaN(x) || Math::isNaN(y) || Math::isNaN(z) || Math::isNaN(w);
 		}
 
-		/** Function for writing to a stream. Outputs "Quaternion(w, x, y, z)" with w,x,y,z
-		being the member values of the quaternion.
-		*/
 		inline friend std::ostream& operator <<(std::ostream& o, const Quaternion& q)
 		{
 			o << "Quaternion(" << q.w << ", " << q.x << ", " << q.y << ", " << q.z << ")";

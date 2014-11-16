@@ -556,11 +556,11 @@ namespace solo
 
 			// Rotate up vector by random amount around this
 			Quaternion q;
-			q.FromAngleAxis(Radian(Math::UnitRandom() * Math::TWO_PI), *this);
+			q.fromAngleAxis(Radian(Math::UnitRandom() * Math::TWO_PI), *this);
 			newUp = q * newUp;
 
 			// Finally rotate this by given angle around randomised up
-			q.FromAngleAxis(angle, newUp);
+			q.fromAngleAxis(angle, newUp);
 			return q * (*this);
 		}
 
@@ -611,7 +611,7 @@ namespace solo
 				if (fallbackAxis != ZERO)
 				{
 					// rotate 180 degrees about the fallback axis
-					q.FromAngleAxis(Radian(Math::PI), fallbackAxis);
+					q.fromAngleAxis(Radian(Math::PI), fallbackAxis);
 				}
 				else
 				{
@@ -620,7 +620,7 @@ namespace solo
 					if (axis.isZeroLength()) // pick another if colinear
 						axis = UNIT_Y.crossProduct(*this);
 					axis.normalise();
-					q.FromAngleAxis(Radian(Math::PI), axis);
+					q.fromAngleAxis(Radian(Math::PI), axis);
 				}
 			}
 			else
