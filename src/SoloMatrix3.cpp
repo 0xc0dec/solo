@@ -446,136 +446,134 @@ void Matrix3::singularValueDecomposition(Matrix3& kL, Vector3& kS, Matrix3& kR) 
 {
 	// temas: currently unused
 	//const int iMax = 16;
-	size_t iRow, iCol;
+	size_t row, col;
 
-	Matrix3 kA = *this;
-	_bidiagonalize(kA, kL, kR);
+	Matrix3 a = *this;
+	_bidiagonalize(a, kL, kR);
 
 	for (unsigned int i = 0; i < _svdMaxIterations; i++)
 	{
-		f32 fTmp, fTmp0, fTmp1;
-		f32 fSin0, fCos0, fTan0;
-		f32 fSin1, fCos1, fTan1;
+		f32 tmp, tmp0, tmp1;
+		f32 sin0, cos0, tan0;
+		f32 sin1, cos1, tan1;
 
-		bool bTest1 = (Math::abs(kA[0][1]) <=
-			_svdEpsilon * (Math::abs(kA[0][0]) + Math::abs(kA[1][1])));
-		bool bTest2 = (Math::abs(kA[1][2]) <=
-			_svdEpsilon * (Math::abs(kA[1][1]) + Math::abs(kA[2][2])));
-		if (bTest1)
+		bool test1 = (Math::abs(a[0][1]) <=
+			_svdEpsilon * (Math::abs(a[0][0]) + Math::abs(a[1][1])));
+		bool test2 = (Math::abs(a[1][2]) <=
+			_svdEpsilon * (Math::abs(a[1][1]) + Math::abs(a[2][2])));
+		if (test1)
 		{
-			if (bTest2)
+			if (test2)
 			{
-				kS[0] = kA[0][0];
-				kS[1] = kA[1][1];
-				kS[2] = kA[2][2];
+				kS[0] = a[0][0];
+				kS[1] = a[1][1];
+				kS[2] = a[2][2];
 				break;
 			}
 
 			// 2x2 closed form factorization
-			fTmp = (kA[1][1] * kA[1][1] - kA[2][2] * kA[2][2] +
-				kA[1][2] * kA[1][2]) / (kA[1][2] * kA[2][2]);
-			fTan0 = 0.5f * (fTmp + Math::sqrt(fTmp * fTmp + 4.0f));
-			fCos0 = Math::invSqrt(1.0f + fTan0 * fTan0);
-			fSin0 = fTan0 * fCos0;
+			tmp = (a[1][1] * a[1][1] - a[2][2] * a[2][2] +
+				a[1][2] * a[1][2]) / (a[1][2] * a[2][2]);
+			tan0 = 0.5f * (tmp + Math::sqrt(tmp * tmp + 4.0f));
+			cos0 = Math::invSqrt(1.0f + tan0 * tan0);
+			sin0 = tan0 * cos0;
 
-			for (iCol = 0; iCol < 3; iCol++)
+			for (col = 0; col < 3; col++)
 			{
-				fTmp0 = kL[iCol][1];
-				fTmp1 = kL[iCol][2];
-				kL[iCol][1] = fCos0 * fTmp0 - fSin0 * fTmp1;
-				kL[iCol][2] = fSin0 * fTmp0 + fCos0 * fTmp1;
+				tmp0 = kL[col][1];
+				tmp1 = kL[col][2];
+				kL[col][1] = cos0 * tmp0 - sin0 * tmp1;
+				kL[col][2] = sin0 * tmp0 + cos0 * tmp1;
 			}
 
-			fTan1 = (kA[1][2] - kA[2][2] * fTan0) / kA[1][1];
-			fCos1 = Math::invSqrt(1.0f + fTan1 * fTan1);
-			fSin1 = -fTan1 * fCos1;
+			tan1 = (a[1][2] - a[2][2] * tan0) / a[1][1];
+			cos1 = Math::invSqrt(1.0f + tan1 * tan1);
+			sin1 = -tan1 * cos1;
 
-			for (iRow = 0; iRow < 3; iRow++)
+			for (row = 0; row < 3; row++)
 			{
-				fTmp0 = kR[1][iRow];
-				fTmp1 = kR[2][iRow];
-				kR[1][iRow] = fCos1 * fTmp0 - fSin1 * fTmp1;
-				kR[2][iRow] = fSin1 * fTmp0 + fCos1 * fTmp1;
+				tmp0 = kR[1][row];
+				tmp1 = kR[2][row];
+				kR[1][row] = cos1 * tmp0 - sin1 * tmp1;
+				kR[2][row] = sin1 * tmp0 + cos1 * tmp1;
 			}
 
-			kS[0] = kA[0][0];
-			kS[1] = fCos0 * fCos1 * kA[1][1] -
-				fSin1 * (fCos0 * kA[1][2] - fSin0 * kA[2][2]);
-			kS[2] = fSin0 * fSin1 * kA[1][1] +
-				fCos1 * (fSin0 * kA[1][2] + fCos0 * kA[2][2]);
+			kS[0] = a[0][0];
+			kS[1] = cos0 * cos1 * a[1][1] - sin1 * (cos0 * a[1][2] - sin0 * a[2][2]);
+			kS[2] = sin0 * sin1 * a[1][1] + cos1 * (sin0 * a[1][2] + cos0 * a[2][2]);
 			break;
 		}
-		if (bTest2)
+		if (test2)
 		{
 			// 2x2 closed form factorization
-			fTmp = (kA[0][0] * kA[0][0] + kA[1][1] * kA[1][1] -
-				kA[0][1] * kA[0][1]) / (kA[0][1] * kA[1][1]);
-			fTan0 = 0.5f * (-fTmp + Math::sqrt(fTmp * fTmp + 4.0f));
-			fCos0 = Math::invSqrt(1.0f + fTan0 * fTan0);
-			fSin0 = fTan0 * fCos0;
+			tmp = (a[0][0] * a[0][0] + a[1][1] * a[1][1] -
+				a[0][1] * a[0][1]) / (a[0][1] * a[1][1]);
+			tan0 = 0.5f * (-tmp + Math::sqrt(tmp * tmp + 4.0f));
+			cos0 = Math::invSqrt(1.0f + tan0 * tan0);
+			sin0 = tan0 * cos0;
 
-			for (iCol = 0; iCol < 3; iCol++)
+			for (col = 0; col < 3; col++)
 			{
-				fTmp0 = kL[iCol][0];
-				fTmp1 = kL[iCol][1];
-				kL[iCol][0] = fCos0 * fTmp0 - fSin0 * fTmp1;
-				kL[iCol][1] = fSin0 * fTmp0 + fCos0 * fTmp1;
+				tmp0 = kL[col][0];
+				tmp1 = kL[col][1];
+				kL[col][0] = cos0 * tmp0 - sin0 * tmp1;
+				kL[col][1] = sin0 * tmp0 + cos0 * tmp1;
 			}
 
-			fTan1 = (kA[0][1] - kA[1][1] * fTan0) / kA[0][0];
-			fCos1 = Math::invSqrt(1.0f + fTan1 * fTan1);
-			fSin1 = -fTan1 * fCos1;
+			tan1 = (a[0][1] - a[1][1] * tan0) / a[0][0];
+			cos1 = Math::invSqrt(1.0f + tan1 * tan1);
+			sin1 = -tan1 * cos1;
 
-			for (iRow = 0; iRow < 3; iRow++)
+			for (row = 0; row < 3; row++)
 			{
-				fTmp0 = kR[0][iRow];
-				fTmp1 = kR[1][iRow];
-				kR[0][iRow] = fCos1 * fTmp0 - fSin1 * fTmp1;
-				kR[1][iRow] = fSin1 * fTmp0 + fCos1 * fTmp1;
+				tmp0 = kR[0][row];
+				tmp1 = kR[1][row];
+				kR[0][row] = cos1 * tmp0 - sin1 * tmp1;
+				kR[1][row] = sin1 * tmp0 + cos1 * tmp1;
 			}
 
-			kS[0] = fCos0 * fCos1 * kA[0][0] -
-				fSin1 * (fCos0 * kA[0][1] - fSin0 * kA[1][1]);
-			kS[1] = fSin0 * fSin1 * kA[0][0] +
-				fCos1 * (fSin0 * kA[0][1] + fCos0 * kA[1][1]);
-			kS[2] = kA[2][2];
+			kS[0] = cos0 * cos1 * a[0][0] -
+				sin1 * (cos0 * a[0][1] - sin0 * a[1][1]);
+			kS[1] = sin0 * sin1 * a[0][0] +
+				cos1 * (sin0 * a[0][1] + cos0 * a[1][1]);
+			kS[2] = a[2][2];
 			break;
 		}
-		_golubKahanStep(kA, kL, kR);
+		_golubKahanStep(a, kL, kR);
 	}
 
 	// positize diagonal
-	for (iRow = 0; iRow < 3; iRow++)
+	for (row = 0; row < 3; row++)
 	{
-		if (kS[iRow] < 0.0)
+		if (kS[row] < 0.0)
 		{
-			kS[iRow] = -kS[iRow];
-			for (iCol = 0; iCol < 3; iCol++)
-				kR[iRow][iCol] = -kR[iRow][iCol];
+			kS[row] = -kS[row];
+			for (col = 0; col < 3; col++)
+				kR[row][col] = -kR[row][col];
 		}
 	}
 }
 
 void Matrix3::singularValueComposition(const Matrix3& kL, const Vector3& kS, const Matrix3& kR)
 {
-	size_t iRow, iCol;
+	size_t row, col;
 	Matrix3 kTmp;
 
 	// product S*R
-	for (iRow = 0; iRow < 3; iRow++)
+	for (row = 0; row < 3; row++)
 	{
-		for (iCol = 0; iCol < 3; iCol++)
-			kTmp[iRow][iCol] = kS[iRow] * kR[iRow][iCol];
+		for (col = 0; col < 3; col++)
+			kTmp[row][col] = kS[row] * kR[row][col];
 	}
 
 	// product L*S*R
-	for (iRow = 0; iRow < 3; iRow++)
+	for (row = 0; row < 3; row++)
 	{
-		for (iCol = 0; iCol < 3; iCol++)
+		for (col = 0; col < 3; col++)
 		{
-			m[iRow][iCol] = 0.0;
+			m[row][col] = 0.0;
 			for (int iMid = 0; iMid < 3; iMid++)
-				m[iRow][iCol] += kL[iRow][iMid] * kTmp[iMid][iCol];
+				m[row][col] += kL[row][iMid] * kTmp[iMid][col];
 		}
 	}
 }
@@ -593,31 +591,31 @@ void Matrix3::orthonormalize()
 	// product of vectors A and B.
 
 	// compute q0
-	f32 fInvLength = Math::invSqrt(m[0][0] * m[0][0]
+	f32 invLength = Math::invSqrt(m[0][0] * m[0][0]
 		+ m[1][0] * m[1][0] +
 		m[2][0] * m[2][0]);
 
-	m[0][0] *= fInvLength;
-	m[1][0] *= fInvLength;
-	m[2][0] *= fInvLength;
+	m[0][0] *= invLength;
+	m[1][0] *= invLength;
+	m[2][0] *= invLength;
 
 	// compute q1
-	f32 fDot0 =
+	f32 dot0 =
 		m[0][0] * m[0][1] +
 		m[1][0] * m[1][1] +
 		m[2][0] * m[2][1];
 
-	m[0][1] -= fDot0 * m[0][0];
-	m[1][1] -= fDot0 * m[1][0];
-	m[2][1] -= fDot0 * m[2][0];
+	m[0][1] -= dot0 * m[0][0];
+	m[1][1] -= dot0 * m[1][0];
+	m[2][1] -= dot0 * m[2][0];
 
-	fInvLength = Math::invSqrt(m[0][1] * m[0][1] +
+	invLength = Math::invSqrt(m[0][1] * m[0][1] +
 		m[1][1] * m[1][1] +
 		m[2][1] * m[2][1]);
 
-	m[0][1] *= fInvLength;
-	m[1][1] *= fInvLength;
-	m[2][1] *= fInvLength;
+	m[0][1] *= invLength;
+	m[1][1] *= invLength;
+	m[2][1] *= invLength;
 
 	// compute q2
 	f32 fDot1 =
@@ -625,22 +623,22 @@ void Matrix3::orthonormalize()
 		m[1][1] * m[1][2] +
 		m[2][1] * m[2][2];
 
-	fDot0 =
+	dot0 =
 		m[0][0] * m[0][2] +
 		m[1][0] * m[1][2] +
 		m[2][0] * m[2][2];
 
-	m[0][2] -= fDot0 * m[0][0] + fDot1 * m[0][1];
-	m[1][2] -= fDot0 * m[1][0] + fDot1 * m[1][1];
-	m[2][2] -= fDot0 * m[2][0] + fDot1 * m[2][1];
+	m[0][2] -= dot0 * m[0][0] + fDot1 * m[0][1];
+	m[1][2] -= dot0 * m[1][0] + fDot1 * m[1][1];
+	m[2][2] -= dot0 * m[2][0] + fDot1 * m[2][1];
 
-	fInvLength = Math::invSqrt(m[0][2] * m[0][2] +
+	invLength = Math::invSqrt(m[0][2] * m[0][2] +
 		m[1][2] * m[1][2] +
 		m[2][2] * m[2][2]);
 
-	m[0][2] *= fInvLength;
-	m[1][2] *= fInvLength;
-	m[2][2] *= fInvLength;
+	m[0][2] *= invLength;
+	m[1][2] *= invLength;
+	m[2][2] *= invLength;
 }
 
 void Matrix3::qduDecomposition(Matrix3& kQ, Vector3& kD, Vector3& kU) const
@@ -673,24 +671,24 @@ void Matrix3::qduDecomposition(Matrix3& kQ, Vector3& kD, Vector3& kU) const
 	// U stores the entries U[0] = u01, U[1] = u02, U[2] = u12
 
 	// build orthogonal matrix Q
-	f32 fInvLength = m[0][0] * m[0][0] + m[1][0] * m[1][0] + m[2][0] * m[2][0];
-	if (!Math::f32Equal(fInvLength, 0)) fInvLength = Math::invSqrt(fInvLength);
+	f32 invLength = m[0][0] * m[0][0] + m[1][0] * m[1][0] + m[2][0] * m[2][0];
+	if (!Math::f32Equal(invLength, 0)) invLength = Math::invSqrt(invLength);
 
-	kQ[0][0] = m[0][0] * fInvLength;
-	kQ[1][0] = m[1][0] * fInvLength;
-	kQ[2][0] = m[2][0] * fInvLength;
+	kQ[0][0] = m[0][0] * invLength;
+	kQ[1][0] = m[1][0] * invLength;
+	kQ[2][0] = m[2][0] * invLength;
 
 	f32 fDot = kQ[0][0] * m[0][1] + kQ[1][0] * m[1][1] +
 		kQ[2][0] * m[2][1];
 	kQ[0][1] = m[0][1] - fDot * kQ[0][0];
 	kQ[1][1] = m[1][1] - fDot * kQ[1][0];
 	kQ[2][1] = m[2][1] - fDot * kQ[2][0];
-	fInvLength = kQ[0][1] * kQ[0][1] + kQ[1][1] * kQ[1][1] + kQ[2][1] * kQ[2][1];
-	if (!Math::f32Equal(fInvLength, 0)) fInvLength = Math::invSqrt(fInvLength);
+	invLength = kQ[0][1] * kQ[0][1] + kQ[1][1] * kQ[1][1] + kQ[2][1] * kQ[2][1];
+	if (!Math::f32Equal(invLength, 0)) invLength = Math::invSqrt(invLength);
 
-	kQ[0][1] *= fInvLength;
-	kQ[1][1] *= fInvLength;
-	kQ[2][1] *= fInvLength;
+	kQ[0][1] *= invLength;
+	kQ[1][1] *= invLength;
+	kQ[2][1] *= invLength;
 
 	fDot = kQ[0][0] * m[0][2] + kQ[1][0] * m[1][2] +
 		kQ[2][0] * m[2][2];
@@ -702,12 +700,12 @@ void Matrix3::qduDecomposition(Matrix3& kQ, Vector3& kD, Vector3& kU) const
 	kQ[0][2] -= fDot * kQ[0][1];
 	kQ[1][2] -= fDot * kQ[1][1];
 	kQ[2][2] -= fDot * kQ[2][1];
-	fInvLength = kQ[0][2] * kQ[0][2] + kQ[1][2] * kQ[1][2] + kQ[2][2] * kQ[2][2];
-	if (!Math::f32Equal(fInvLength, 0)) fInvLength = Math::invSqrt(fInvLength);
+	invLength = kQ[0][2] * kQ[0][2] + kQ[1][2] * kQ[1][2] + kQ[2][2] * kQ[2][2];
+	if (!Math::f32Equal(invLength, 0)) invLength = Math::invSqrt(invLength);
 
-	kQ[0][2] *= fInvLength;
-	kQ[1][2] *= fInvLength;
-	kQ[2][2] *= fInvLength;
+	kQ[0][2] *= invLength;
+	kQ[1][2] *= invLength;
+	kQ[2][2] *= invLength;
 
 	// guarantee that orthogonal matrix has determinant 1 (no reflections)
 	f32 fDet = kQ[0][0] * kQ[1][1] * kQ[2][2] + kQ[0][1] * kQ[1][2] * kQ[2][0] +
@@ -748,48 +746,48 @@ void Matrix3::qduDecomposition(Matrix3& kQ, Vector3& kD, Vector3& kU) const
 	kU[2] = kR[1][2] / kD[1];
 }
 
-f32 Matrix3::_maxCubicRoot(f32 afCoeff[3])
+f32 Matrix3::_maxCubicRoot(f32 coeffs[3])
 {
 	// Spectral norm is for A^T*A, so characteristic polynomial
 	// P(x) = c[0]+c[1]*x+c[2]*x^2+x^3 has three positive f32 roots.
 	// This yields the assertions c[0] < 0 and c[2]*c[2] >= 3*c[1].
 
 	// quick out for uniform scale (triple root)
-	const f32 fOneThird = 1.0 / 3.0;
-	const f32 fEpsilon = 1e-06;
-	f32 fDiscr = afCoeff[2] * afCoeff[2] - 3.0f * afCoeff[1];
-	if (fDiscr <= fEpsilon)
-		return -fOneThird * afCoeff[2];
+	const f32 oneThird = 1.0 / 3.0;
+	const f32 epsilon = 1e-06;
+	f32 discr = coeffs[2] * coeffs[2] - 3.0f * coeffs[1];
+	if (discr <= epsilon)
+		return -oneThird * coeffs[2];
 
 	// Compute an upper bound on roots of P(x).  This assumes that A^T*A
 	// has been scaled by its largest entry.
-	f32 fX = 1.0;
-	f32 fPoly = afCoeff[0] + fX * (afCoeff[1] + fX * (afCoeff[2] + fX));
-	if (fPoly < 0.0)
+	f32 x = 1.0;
+	f32 poly = coeffs[0] + x * (coeffs[1] + x * (coeffs[2] + x));
+	if ( poly < 0.0)
 	{
 		// uses a matrix norm to find an upper bound on maximum root
-		fX = Math::abs(afCoeff[0]);
-		f32 fTmp = 1.0f + Math::abs(afCoeff[1]);
-		if (fTmp > fX)
-			fX = fTmp;
-		fTmp = 1.0f + Math::abs(afCoeff[2]);
-		if (fTmp > fX)
-			fX = fTmp;
+		x = Math::abs(coeffs[0]);
+		f32 fTmp = 1.0f + Math::abs(coeffs[1]);
+		if (fTmp > x)
+			x = fTmp;
+		fTmp = 1.0f + Math::abs(coeffs[2]);
+		if (fTmp > x)
+			x = fTmp;
 	}
 
 	// Newton's method to find root
-	f32 fTwoC2 = 2.0f * afCoeff[2];
+	f32 fTwoC2 = 2.0f * coeffs[2];
 	for (int i = 0; i < 16; i++)
 	{
-		fPoly = afCoeff[0] + fX * (afCoeff[1] + fX * (afCoeff[2] + fX));
-		if (Math::abs(fPoly) <= fEpsilon)
-			return fX;
+		poly = coeffs[0] + x * (coeffs[1] + x * (coeffs[2] + x));
+		if (Math::abs( poly) <= epsilon)
+			return x;
 
-		f32 fDeriv = afCoeff[1] + fX * (fTwoC2 + 3.0f * fX);
-		fX -= fPoly / fDeriv;
+		f32 deriv = coeffs[1] + x * (fTwoC2 + 3.0f * x);
+		x -=  poly / deriv;
 	}
 
-	return fX;
+	return x;
 }
 
 f32 Matrix3::spectralNorm() const
