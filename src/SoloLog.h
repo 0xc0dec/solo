@@ -2,7 +2,7 @@
 #define __SOLO_LOG_H__
 
 #include <sstream>
-#include "SoloCommonInternal.h"
+#include "SoloBaseInternal.h"
 
 #define DEBUG(msg) solo::Log(solo::Log::LogLevel::Debug) << msg;
 #define INFO(msg) solo::Log(solo::Log::LogLevel::Info) << msg;

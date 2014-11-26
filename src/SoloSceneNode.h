@@ -1,7 +1,7 @@
 #ifndef __SOLO__GAME_OBJECT_H__
 #define	__SOLO__GAME_OBJECT_H__
 
-#include "SoloCommonInternal.h"
+#include "SoloBaseInternal.h"
 #include "SoloISceneNode.h"
 
 namespace solo

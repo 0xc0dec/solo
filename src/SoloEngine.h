@@ -1,7 +1,7 @@
 #ifndef __SOLO_ENGINE_H__
 #define __SOLO_ENGINE_H__
 
-#include "SoloCommonInternal.h"
+#include "SoloBaseInternal.h"
 #include "SoloIEngine.h"
 #include "SoloScene.h"
 #include "SoloDevice.h"

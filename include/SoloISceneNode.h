@@ -1,7 +1,7 @@
 #ifndef __SOLO_I_SCENE_NODE_H__
 #define __SOLO_I_SCENE_NODE_H__
 
-#include "SoloCommon.h"
+#include "SoloBase.h"
 #include "SoloIComponent.h"
 
 namespace solo

@@ -2,7 +2,7 @@
 #define __SOLO_GPU_PROGRAM_H__
 
 #include "SoloIGPUProgram.h"
-#include "SoloCommonInternal.h"
+#include "SoloBaseInternal.h"
 
 namespace solo
 {

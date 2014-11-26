@@ -19,8 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\SoloAxisAlignedBox.h" />
-    <ClInclude Include="..\include\SoloCommon.h" />
+    <ClInclude Include="..\include\SoloBase.h" />
     <ClInclude Include="..\include\SoloException.h" />
     <ClInclude Include="..\include\SoloIComponent.h" />
     <ClInclude Include="..\include\SoloIDevice.h" />
@@ -33,20 +32,11 @@
     <ClInclude Include="..\include\SoloIGPUProgram.h" />
     <ClInclude Include="..\include\SoloMaterial.h" />
     <ClInclude Include="..\include\SoloMath.h" />
-    <ClInclude Include="..\include\SoloMatrix3.h" />
-    <ClInclude Include="..\include\SoloMatrix4.h" />
-    <ClInclude Include="..\include\SoloPlane.h" />
-    <ClInclude Include="..\include\SoloPlaneBoundedVolume.h" />
-    <ClInclude Include="..\include\SoloQuaternion.h" />
-    <ClInclude Include="..\include\SoloRay.h" />
-    <ClInclude Include="..\include\SoloSphere.h" />
     <ClInclude Include="..\include\SoloVector2.h" />
-    <ClInclude Include="..\include\SoloVector3.h" />
-    <ClInclude Include="..\include\SoloVector4.h" />
     <ClInclude Include="..\src\platform\SoloGPUProgramGLSL.h" />
     <ClInclude Include="..\src\platform\SoloDeviceSDLGL.h" />
     <ClInclude Include="..\src\SoloFileSystem.h" />
-    <ClInclude Include="..\src\SoloCommonInternal.h" />
+    <ClInclude Include="..\src\SoloBaseInternal.h" />
     <ClInclude Include="..\src\SoloDevice.h" />
     <ClInclude Include="..\src\SoloEngine.h" />
     <ClInclude Include="..\src\SoloLog.h" />
@@ -60,24 +50,16 @@
     <ClCompile Include="..\external\glew\src\visualinfo.c" />
     <ClCompile Include="..\src\platform\SoloGPUProgramGLSL.cpp" />
     <ClCompile Include="..\src\platform\SoloDeviceSDLGL.cpp" />
-    <ClCompile Include="..\src\SoloAxisAlignedBox.cpp" />
     <ClCompile Include="..\src\SoloFileSystem.cpp" />
-    <ClCompile Include="..\src\SoloCommonInternal.cpp" />
+    <ClCompile Include="..\src\SoloBaseInternal.cpp" />
     <ClCompile Include="..\src\SoloDevice.cpp" />
     <ClCompile Include="..\src\SoloEngine.cpp" />
     <ClCompile Include="..\src\SoloLog.cpp" />
     <ClCompile Include="..\src\SoloMaterial.cpp" />
-    <ClCompile Include="..\src\SoloMath.cpp" />
-    <ClCompile Include="..\src\SoloMatrix3.cpp" />
-    <ClCompile Include="..\src\SoloMatrix4.cpp" />
-    <ClCompile Include="..\src\SoloPlane.cpp" />
-    <ClCompile Include="..\src\SoloQuaternion.cpp" />
     <ClCompile Include="..\src\SoloScene.cpp" />
     <ClCompile Include="..\src\SoloSceneNode.cpp" />
     <ClCompile Include="..\src\SoloGPUProgram.cpp" />
     <ClCompile Include="..\src\SoloVector2.cpp" />
-    <ClCompile Include="..\src\SoloVector3.cpp" />
-    <ClCompile Include="..\src\SoloVector4.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{278CAB21-1CAB-49AD-9959-6F97743501FB}</ProjectGuid>

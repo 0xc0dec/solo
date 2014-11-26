@@ -1,5 +1,5 @@
-#ifndef __SOLO_COMMON_H__
-#define __SOLO_COMMON_H__
+#ifndef __SOLO_BASE_H__
+#define __SOLO_BASE_H__
 
 #include <memory>
 #include <string>

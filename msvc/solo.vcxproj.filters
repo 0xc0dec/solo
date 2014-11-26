@@ -28,9 +28,6 @@
     <ClInclude Include="..\include\SoloIEngineCallback.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloMath.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloException.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -64,43 +61,16 @@
     <ClInclude Include="..\src\platform\SoloGPUProgramGLSL.h">
       <Filter>src\platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloMatrix4.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloVector2.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloVector3.h">
+    <ClInclude Include="..\include\SoloMath.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloQuaternion.h">
+    <ClInclude Include="..\include\SoloBase.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloMatrix3.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloVector4.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloPlane.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloSphere.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloAxisAlignedBox.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloRay.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloPlaneBoundedVolume.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloCommon.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloCommonInternal.h">
+    <ClInclude Include="..\src\SoloBaseInternal.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
@@ -144,34 +114,10 @@
     <ClCompile Include="..\src\platform\SoloGPUProgramGLSL.cpp">
       <Filter>src\platform</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloMath.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloVector2.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloVector3.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloVector4.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloQuaternion.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloAxisAlignedBox.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloMatrix3.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloMatrix4.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloPlane.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloCommonInternal.cpp">
+    <ClCompile Include="..\src\SoloBaseInternal.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

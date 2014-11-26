@@ -1,539 +1,362 @@
 #ifndef __SOLO_VECTOR2_H__
 #define __SOLO_VECTOR2_H__
 
-#include "SoloCommon.h"
-#include "SoloMath.h"
-
 namespace solo
 {
+	class Matrix;
+
 	class Vector2
 	{
 	public:
-		f32 x, y;
-
-		inline Vector2()
-		{
-		}
-
-		inline Vector2(const f32 x, const f32 y)
-			: x(x), y(y)
-		{
-		}
-
-		inline explicit Vector2(const f32 scaler)
-			: x(scaler), y(scaler)
-		{
-		}
-
-		inline explicit Vector2(const f32 coords[2])
-			: x(coords[0]), y(coords[1])
-		{
-		}
-
-		inline explicit Vector2(const int coords[2])
-		{
-			x = static_cast<f32>(coords[0]);
-			y = static_cast<f32>(coords[1]);
-		}
-
-		inline explicit Vector2(f32* const r)
-			: x(r[0]), y(r[1])
-		{
-		}
-
-		/** Exchange the contents of this vector with another.
-		*/
-		inline void swap(Vector2& other)
-		{
-			std::swap(x, other.x);
-			std::swap(y, other.y);
-		}
-
-		inline f32 operator [](const size_t i) const
-		{
-			assert(i < 2);
-
-			return *(&x + i);
-		}
-
-		inline f32& operator [](const size_t i)
-		{
-			assert(i < 2);
-
-			return *(&x + i);
-		}
-
-		/// Pointer accessor for direct copying
-		inline f32* ptr()
-		{
-			return &x;
-		}
-
-		/// Pointer accessor for direct copying
-		inline const f32* ptr() const
-		{
-			return &x;
-		}
-
-		/** Assigns the value of the other vector.
-		@param
-		other The other vector
-		*/
-		inline Vector2& operator =(const Vector2& other)
-		{
-			x = other.x;
-			y = other.y;
-
-			return *this;
-		}
-
-		inline Vector2& operator =(const f32 scalar)
-		{
-			x = scalar;
-			y = scalar;
-
-			return *this;
-		}
-
-		inline bool operator ==(const Vector2& other) const
-		{
-			return (x == other.x && y == other.y);
-		}
-
-		inline bool operator !=(const Vector2& other) const
-		{
-			return (x != other.x || y != other.y);
-		}
-
-		inline Vector2 operator +(const Vector2& other) const
-		{
-			return Vector2(
-				x + other.x,
-				y + other.y);
-		}
-
-		inline Vector2 operator -(const Vector2& other) const
-		{
-			return Vector2(
-				x - other.x,
-				y - other.y);
-		}
-
-		inline Vector2 operator *(const f32 scalar) const
-		{
-			return Vector2(
-				x * scalar,
-				y * scalar);
-		}
-
-		inline Vector2 operator *(const Vector2& rhs) const
-		{
-			return Vector2(
-				x * rhs.x,
-				y * rhs.y);
-		}
-
-		inline Vector2 operator /(const f32 scalar) const
-		{
-			assert(scalar != 0.0);
-
-			f32 fInv = 1.0f / scalar;
-
-			return Vector2(
-				x * fInv,
-				y * fInv);
-		}
-
-		inline Vector2 operator /(const Vector2& other) const
-		{
-			return Vector2(x / other.x, y / other.y);
-		}
-
-		inline const Vector2& operator +() const
-		{
-			return *this;
-		}
-
-		inline Vector2 operator -() const
-		{
-			return Vector2(-x, -y);
-		}
-
-		// overloaded operators to help Vector2
-		inline friend Vector2 operator *(const f32 scalar, const Vector2& other)
-		{
-			return Vector2(scalar * other.x, scalar * other.y);
-		}
-
-		inline friend Vector2 operator /(const f32 scalar, const Vector2& other)
-		{
-			return Vector2(scalar / other.x, scalar / other.y);
-		}
-
-		inline friend Vector2 operator +(const Vector2& vec, const f32 scalar)
-		{
-			return Vector2(vec.x + scalar, vec.y + scalar);
-		}
-
-		inline friend Vector2 operator +(const f32 scalar, const Vector2& vector)
-		{
-			return Vector2(scalar + vector.x, scalar + vector.y);
-		}
-
-		inline friend Vector2 operator -(const Vector2& vector, const f32 scalar)
-		{
-			return Vector2(vector.x - scalar, vector.y - scalar);
-		}
-
-		inline friend Vector2 operator -(const f32 scalar, const Vector2& vector)
-		{
-			return Vector2(scalar - vector.x, scalar - vector.y);
-		}
-
-		// arithmetic updates
-		inline Vector2& operator +=(const Vector2& other)
-		{
-			x += other.x;
-			y += other.y;
-
-			return *this;
-		}
-
-		inline Vector2& operator +=(const f32 scalar)
-		{
-			x += scalar;
-			y += scalar;
-			return *this;
-		}
-
-		inline Vector2& operator -=(const Vector2& other)
-		{
-			x -= other.x;
-			y -= other.y;
-			return *this;
-		}
-
-		inline Vector2& operator -=(const f32 scalar)
-		{
-			x -= scalar;
-			y -= scalar;
-			return *this;
-		}
-
-		inline Vector2& operator *=(const f32 scalar)
-		{
-			x *= scalar;
-			y *= scalar;
-			return *this;
-		}
-
-		inline Vector2& operator *=(const Vector2& other)
-		{
-			x *= other.x;
-			y *= other.y;
-			return *this;
-		}
-
-		inline Vector2& operator /=(const f32 scalar)
-		{
-			assert(scalar != 0.0);
-
-			f32 inv = 1.0f / scalar;
-
-			x *= inv;
-			y *= inv;
-
-			return *this;
-		}
-
-		inline Vector2& operator /=(const Vector2& other)
-		{
-			x /= other.x;
-			y /= other.y;
-
-			return *this;
-		}
-
-		/** Returns the length (magnitude) of the vector.
-		@warning
-		This operation requires a square root and is expensive in
-		terms of CPU operations. If you don't need to know the exact
-		length (e.g. for just comparing lengths) use squaredLength()
-		instead.
-		*/
-		inline f32 length() const
-		{
-			return Math::sqrt(x * x + y * y);
-		}
-
-		/** Returns the square of the length(magnitude) of the vector.
-		@remarks
-		This  method is for efficiency - calculating the actual
-		length of a vector requires a square root, which is expensive
-		in terms of the operations required. This method returns the
-		square of the length of the vector, i.e. the same as the
-		length but before the square root is taken. Use this if you
-		want to find the longest / shortest vector without incurring
-		the square root.
-		*/
-		inline f32 squaredLength() const
-		{
-			return x * x + y * y;
-		}
-
-		/** Returns the distance to another vector.
-		@warning
-		This operation requires a square root and is expensive in
-		terms of CPU operations. If you don't need to know the exact
-		distance (e.g. for just comparing distances) use squaredDistance()
-		instead.
-		*/
-		inline f32 distance(const Vector2& other) const
-		{
-			return (*this - other).length();
-		}
-
-		/** Returns the square of the distance to another vector.
-		@remarks
-		This method is for efficiency - calculating the actual
-		distance to another vector requires a square root, which is
-		expensive in terms of the operations required. This method
-		returns the square of the distance to another vector, i.e.
-		the same as the distance but before the square root is taken.
-		Use this if you want to find the longest / shortest distance
-		without incurring the square root.
-		*/
-		inline f32 squaredDistance(const Vector2& rhs) const
-		{
-			return (*this - rhs).squaredLength();
-		}
-
-		/** Calculates the dot (scalar) product of this vector with another.
-		@remarks
-		The dot product can be used to calculate the angle between 2
-		vectors. If both are unit vectors, the dot product is the
-		cosine of the angle; otherwise the dot product must be
-		divided by the product of the lengths of both vectors to get
-		the cosine of the angle. This result can further be used to
-		calculate the distance of a point from a plane.
-		@param
-		vec Vector with which to calculate the dot product (together
-		with this one).
-		@return
-		A float representing the dot product value.
-		*/
-		inline f32 dot(const Vector2& vec) const
-		{
-			return x * vec.x + y * vec.y;
-		}
-
-		/** Normalises the vector.
-		@remarks
-		This method normalises the vector such that it's
-		length / magnitude is 1. The result is called a unit vector.
-		@note
-		This function will not crash for zero-sized vectors, but there
-		will be no changes made to their components.
-		@return The previous length of the vector.
-		*/
-
-		inline f32 normalize()
-		{
-			f32 len = Math::sqrt(x * x + y * y);
-
-			// Will also work for zero-sized vectors, but will change nothing
-			// We're not using epsilons because we don't need to.
-			// Read http://www.ogre3d.org/forums/viewtopic.php?f=4&t=61259
-			if (len > f32(0.0f))
-			{
-				f32 invLen = 1.0f / len;
-				x *= invLen;
-				y *= invLen;
-			}
-
-			return len;
-		}
-
-		/** Returns a vector at a point half way between this and the passed
-		in vector.
-		*/
-		inline Vector2 midPoint(const Vector2& vec) const
-		{
-			return Vector2(
-				(x + vec.x) * 0.5f,
-				(y + vec.y) * 0.5f);
-		}
-
-		/** Returns true if the vector's scalar components are all greater
-		that the ones of the vector it is compared against.
-		*/
-		inline bool operator <(const Vector2& other) const
-		{
-			if (x < other.x && y < other.y)
-				return true;
-			return false;
-		}
-
-		/** Returns true if the vector's scalar components are all smaller
-		that the ones of the vector it is compared against.
-		*/
-		inline bool operator >(const Vector2& other) const
-		{
-			if (x > other.x && y > other.y)
-				return true;
-			return false;
-		}
-
-		/** Sets this vector's components to the minimum of its own and the
-		ones of the passed in vector.
-		@remarks
-		'Minimum' in this case means the combination of the lowest
-		value of x, y and z from both vectors. Lowest is taken just
-		numerically, not magnitude, so -1 < 0.
-		*/
-		inline void makeFloor(const Vector2& cmp)
-		{
-			if (cmp.x < x) x = cmp.x;
-			if (cmp.y < y) y = cmp.y;
-		}
-
-		/** Sets this vector's components to the maximum of its own and the
-		ones of the passed in vector.
-		@remarks
-		'Maximum' in this case means the combination of the highest
-		value of x, y and z from both vectors. Highest is taken just
-		numerically, not magnitude, so 1 > -3.
-		*/
-		inline void makeCeil(const Vector2& cmp)
-		{
-			if (cmp.x > x) x = cmp.x;
-			if (cmp.y > y) y = cmp.y;
-		}
-
-		/** Generates a vector perpendicular to this vector (eg an 'up' vector).
-		@remarks
-		This method will return a vector which is perpendicular to this
-		vector. There are an infinite number of possibilities but this
-		method will guarantee to generate one of them. If you need more
-		control you should use the Quaternion class.
-		*/
-		inline Vector2 perpendicular(void) const
-		{
-			return Vector2(-y, x);
-		}
-
-		/** Calculates the 2 dimensional cross-product of 2 vectors, which results
-		in a single floating point value which is 2 times the area of the triangle.
-		*/
-		inline f32 crossProduct(const Vector2& other) const
-		{
-			return x * other.y - y * other.x;
-		}
-
-		/** Generates a new random vector which deviates from this vector by a
-		given angle in a random direction.
-		@remarks
-		This method assumes that the random number generator has already
-		been seeded appropriately.
-		@param
-		angle The angle at which to deviate in radians
-		@param
-		up Any vector perpendicular to this one (which could generated
-		by cross-product of this vector and any other non-colinear
-		vector). If you choose not to provide this the function will
-		derive one on it's own, however if you provide one yourself the
-		function will be faster (this allows you to reuse up vectors if
-		you call this method more than once)
-		@return
-		A random vector which deviates from this vector by angle. This
-		vector will not be normalised, normalise it if you wish
-		afterwards.
-		*/
-		inline Vector2 randomDeviant(f32 angle) const
-		{
-			angle *= Math::randomUnit() * Math::TWO_PI;
-			f32 cosa = cos(angle);
-			f32 sina = sin(angle);
-			return Vector2(cosa * x - sina * y,
-							sina * x + cosa * y);
-		}
-
-		/** Returns true if this vector is zero length. */
-		inline bool isZeroLength(void) const
-		{
-			f32 sqlen = (x * x) + (y * y);
-			return (sqlen < (1e-06 * 1e-06));
-		}
-
-		/** As normalise, except that this vector is unaffected and the
-		normalised vector is returned as a copy. */
-		inline Vector2 normalisedCopy(void) const
-		{
-			Vector2 ret = *this;
-			ret.normalize();
-			return ret;
-		}
-
-		/** Calculates a reflection vector to the plane with the given normal .
-		@remarks NB assumes 'this' is pointing AWAY FROM the plane, invert if it is not.
-		*/
-		inline Vector2 reflect(const Vector2& normal) const
-		{
-			return Vector2(*this - (2 * this->dot(normal) * normal));
-		}
-
-		/// Check whether this vector contains valid values
-		inline bool isNaN() const
-		{
-			return Math::isNaN(x) || Math::isNaN(y);
-		}
-
-		/**	 Gets the angle between 2 vectors.
-		@remarks
-		Vectors do not have to be unit-length but must represent directions.
-		*/
-		inline Radian angleBetween(const Vector2& other) const
-		{
-			f32 lenProduct = length() * other.length();
-			// Divide by zero check
-			if (lenProduct < 1e-6f)
-				lenProduct = 1e-6f;
-
-			f32 f = dot(other) / lenProduct;
-
-			f = Math::clamp(f, static_cast<f32>(- 1.0), static_cast<f32>(1.0));
-			return Math::acos(f);
-		}
-
-		/**	 Gets the oriented angle between 2 vectors.
-		@remarks
-		Vectors do not have to be unit-length but must represent directions.
-		The angle is comprised between 0 and 2 PI.
-		*/
-		inline Radian angleTo(const Vector2& other) const
-		{
-			Radian angle = angleBetween(other);
-
-			if (crossProduct(other) < 0)
-				angle = static_cast<Radian>(Math::TWO_PI) - angle;
-
-			return angle;
-		}
-
-		// special points
-		static const Vector2 ZERO;
-		static const Vector2 UNIT_X;
-		static const Vector2 UNIT_Y;
-		static const Vector2 NEGATIVE_UNIT_X;
-		static const Vector2 NEGATIVE_UNIT_Y;
-		static const Vector2 UNIT_SCALE;
-
-		inline friend std::ostream& operator <<(std::ostream& o, const Vector2& v)
-		{
-			o << "Vector2(" << v.x << ", " << v.y << ")";
-			return o;
-		}
+		float x;
+		float y;
+
+		Vector2();
+		Vector2(float x, float y);
+		Vector2(const float* array);
+		Vector2(const Vector2& p1, const Vector2& p2);
+		Vector2(const Vector2& copy);
+
+		~Vector2();
+
+		static const Vector2& zero();
+		static const Vector2& one();
+		
+		static const Vector2& unitX();
+		static const Vector2& unitY();
+		
+		bool isZero() const;
+		bool isOne() const;
+
+		/**
+     * Returns the angle (in radians) between the specified vectors.
+     *
+     * @param v1 The first vector.
+     * @param v2 The second vector.
+     * 
+     * @return The angle between the two vectors (in radians).
+     */
+		static float angle(const Vector2& v1, const Vector2& v2);
+
+		/**
+     * Adds the elements of the specified vector to this one.
+     *
+     * @param v The vector to add.
+     */
+		void add(const Vector2& v);
+
+		/**
+     * Adds the specified vectors and stores the result in dst.
+     *
+     * @param v1 The first vector.
+     * @param v2 The second vector.
+     * @param dst A vector to store the result in.
+     */
+		static void add(const Vector2& v1, const Vector2& v2, Vector2* dst);
+
+		/**
+     * Clamps this vector within the specified range.
+     *
+     * @param min The minimum value.
+     * @param max The maximum value.
+     */
+		void clamp(const Vector2& min, const Vector2& max);
+
+		/**
+     * Clamps the specified vector within the specified range and returns it in dst.
+     *
+     * @param v The vector to clamp.
+     * @param min The minimum value.
+     * @param max The maximum value.
+     * @param dst A vector to store the result in.
+     */
+		static void clamp(const Vector2& v, const Vector2& min, const Vector2& max, Vector2* dst);
+
+		/**
+     * Returns the distance between this vector and v.
+     *
+     * @param v The other vector.
+     * 
+     * @return The distance between this vector and v.
+     * 
+     * @see distanceSquared
+     */
+		float distance(const Vector2& v) const;
+
+		/**
+     * Returns the squared distance between this vector and v.
+     *
+     * When it is not necessary to get the exact distance between
+     * two vectors (for example, when simply comparing the
+     * distance between different vectors), it is advised to use
+     * this method instead of distance.
+     *
+     * @param v The other vector.
+     * 
+     * @return The squared distance between this vector and v.
+     * 
+     * @see distance
+     */
+		float distanceSquared(const Vector2& v) const;
+
+		/**
+     * Returns the dot product of this vector and the specified vector.
+     *
+     * @param v The vector to compute the dot product with.
+     * 
+     * @return The dot product.
+     */
+		float dot(const Vector2& v) const;
+
+		/**
+     * Returns the dot product between the specified vectors.
+     *
+     * @param v1 The first vector.
+     * @param v2 The second vector.
+     * 
+     * @return The dot product between the vectors.
+     */
+		static float dot(const Vector2& v1, const Vector2& v2);
+
+		/**
+     * Computes the length of this vector.
+     *
+     * @return The length of the vector.
+     * 
+     * @see lengthSquared
+     */
+		float length() const;
+
+		/**
+     * Returns the squared length of this vector.
+     *
+     * When it is not necessary to get the exact length of a
+     * vector (for example, when simply comparing the lengths of
+     * different vectors), it is advised to use this method
+     * instead of length.
+     *
+     * @return The squared length of the vector.
+     * 
+     * @see length
+     */
+		float lengthSquared() const;
+
+		/**
+     * Negates this vector.
+     */
+		void negate();
+
+		/**
+     * Normalizes this vector.
+     *
+     * This method normalizes this Vector2 so that it is of
+     * unit length (in other words, the length of the vector
+     * after calling this method will be 1.0f). If the vector
+     * already has unit length or if the length of the vector
+     * is zero, this method does nothing.
+     * 
+     * @return This vector, after the normalization occurs.
+     */
+		Vector2& normalize();
+
+		/**
+     * Normalizes this vector and stores the result in dst.
+     *
+     * If the vector already has unit length or if the length
+     * of the vector is zero, this method simply copies the
+     * current vector into dst.
+     *
+     * @param dst The destination vector.
+     */
+		void normalize(Vector2* dst) const;
+
+		/**
+     * Scales all elements of this vector by the specified value.
+     *
+     * @param scalar The scalar value.
+     */
+		void scale(float scalar);
+
+		/**
+     * Scales each element of this vector by the matching component of scale.
+     *
+     * @param scale The vector to scale by.
+     */
+		void scale(const Vector2& scale);
+
+		/**
+     * Rotates this vector by angle (specified in radians) around the given point.
+     *
+     * @param point The point to rotate around.
+     * @param angle The angle to rotate by (in radians).
+     */
+		void rotate(const Vector2& point, float angle);
+
+		/**
+     * Sets the elements of this vector to the specified values.
+     *
+     * @param x The new x coordinate.
+     * @param y The new y coordinate.
+     */
+		void set(float x, float y);
+
+		/**
+     * Sets the elements of this vector from the values in the specified array.
+     *
+     * @param array An array containing the elements of the vector in the order x, y.
+     */
+		void set(const float* array);
+
+		/**
+     * Sets the elements of this vector to those in the specified vector.
+     *
+     * @param v The vector to copy.
+     */
+		void set(const Vector2& v);
+
+		/**
+     * Sets this vector to the directional vector between the specified points.
+     * 
+     * @param p1 The first point.
+     * @param p2 The second point.
+     */
+		void set(const Vector2& p1, const Vector2& p2);
+
+		/**
+     * Subtracts this vector and the specified vector as (this - v)
+     * and stores the result in this vector.
+     *
+     * @param v The vector to subtract.
+     */
+		void subtract(const Vector2& v);
+
+		/**
+     * Subtracts the specified vectors and stores the result in dst.
+     * The resulting vector is computed as (v1 - v2).
+     *
+     * @param v1 The first vector.
+     * @param v2 The second vector.
+     * @param dst The destination vector.
+     */
+		static void subtract(const Vector2& v1, const Vector2& v2, Vector2* dst);
+
+		/**
+     * Updates this vector towards the given target using a smoothing function.
+     * The given response time determines the amount of smoothing (lag). A longer
+     * response time yields a smoother result and more lag. To force this vector to
+     * follow the target closely, provide a response time that is very small relative
+     * to the given elapsed time.
+     *
+     * @param target target value.
+     * @param elapsedTime elapsed time between calls.
+     * @param responseTime response time (in the same units as elapsedTime).
+     */
+		void smooth(const Vector2& target, float elapsedTime, float responseTime);
+		
+		inline Vector2 operator+(const Vector2& v) const;
+		inline Vector2& operator+=(const Vector2& v);
+
+		inline Vector2 operator-(const Vector2& v) const;
+		inline Vector2& operator-=(const Vector2& v);
+
+		inline Vector2 operator-() const;
+		
+		inline Vector2 operator*(float x) const;
+		inline Vector2& operator*=(float x);
+
+		inline Vector2 operator/(float x) const;
+
+		inline bool operator<(const Vector2& v) const;
+		
+		inline bool operator==(const Vector2& v) const;
+		inline bool operator!=(const Vector2& v) const;
 	};
+
+	/**
+ * Calculates the scalar product of the given vector with the given value.
+ * 
+ * @param x The value to scale by.
+ * @param v The vector to scale.
+ * @return The scaled vector.
+ */
+	inline Vector2 operator*(float x, const Vector2& v)
+	{
+		Vector2 result(v);
+		result.scale(x);
+		return result;
+	}
+
+	inline Vector2 Vector2::operator+(const Vector2& v) const
+	{
+		Vector2 result(*this);
+		result.add(v);
+		return result;
+	}
+
+	inline Vector2& Vector2::operator+=(const Vector2& v)
+	{
+		add(v);
+		return *this;
+	}
+
+	inline Vector2 Vector2::operator-(const Vector2& v) const
+	{
+		Vector2 result(*this);
+		result.subtract(v);
+		return result;
+	}
+
+	inline Vector2& Vector2::operator-=(const Vector2& v)
+	{
+		subtract(v);
+		return *this;
+	}
+
+	inline Vector2 Vector2::operator-() const
+	{
+		Vector2 result(*this);
+		result.negate();
+		return result;
+	}
+
+	inline Vector2 Vector2::operator*(float x) const
+	{
+		Vector2 result(*this);
+		result.scale(x);
+		return result;
+	}
+
+	inline Vector2& Vector2::operator*=(float x)
+	{
+		scale(x);
+		return *this;
+	}
+
+	inline Vector2 Vector2::operator/(const float x) const
+	{
+		return Vector2(this->x / x, this->y / x);
+	}
+
+	inline bool Vector2::operator<(const Vector2& v) const
+	{
+		if (x == v.x)
+		{
+			return y < v.y;
+		}
+		return x < v.x;
+	}
+
+	inline bool Vector2::operator==(const Vector2& v) const
+	{
+		return x == v.x && y == v.y;
+	}
+
+	inline bool Vector2::operator!=(const Vector2& v) const
+	{
+		return x != v.x || y != v.y;
+	}
 }
+
+
 
 #endif

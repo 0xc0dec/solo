@@ -3,7 +3,7 @@
 
 #include "SoloIDevice.h"
 #include "SoloIEngine.h"
-#include "SoloCommonInternal.h"
+#include "SoloBaseInternal.h"
 
 namespace solo
 {
