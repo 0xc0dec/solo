@@ -28,10 +28,10 @@ namespace solo
 
 		virtual void setCallback(IEngineCallback *callback) = 0;
 
-		virtual ptr<IDevice> device() const = 0;
-		virtual ptr<IScene> scene() const = 0;
+		virtual ptr<IDevice> getDevice() const = 0;
+		virtual ptr<IScene> getScene() const = 0;
 
-		virtual f32 deltaTime() const = 0;
+		virtual f32 getDeltaTime() const = 0;
 	};
 }
 

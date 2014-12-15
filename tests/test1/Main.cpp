@@ -63,14 +63,14 @@ public:
 
 	void processEngineStartedEvent() override
 	{
-		_engine->device()->setWindowTitle("Test title");
+		_engine->getDevice()->setWindowTitle("Test title");
 		
-		auto node = _engine->scene()->createNode("Test node");
+		auto node = _engine->getScene()->createNode("Test node");
 		node->addComponent<TestComponent>();
 		auto cmp = node->getComponent<TestComponent>(TestComponent::componentId());
 		LOG(cmp->id());
 
-		auto program = _engine->device()->createGPUProgram(testVertexShader, testFragmentShader);
+		auto program = _engine->getDevice()->createGPUProgram(testVertexShader, testFragmentShader);
 		LOG("Program is valid: " << program->valid());
 		LOG("Program compilation log: " << program->log());
 	}
