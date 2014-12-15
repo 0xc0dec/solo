@@ -824,7 +824,7 @@ namespace solo
 		* @param m The matrix to add.
 		* @return The matrix sum.
 		*/
-		inline const Matrix operator+(const Matrix& m) const;
+		inline Matrix operator+(const Matrix& m) const;
 
 		/**
 		* Adds the given matrix to this matrix.
@@ -842,7 +842,7 @@ namespace solo
 		* @param m The matrix to subtract.
 		* @return The matrix difference.
 		*/
-		inline const Matrix operator-(const Matrix& m) const;
+		inline Matrix operator-(const Matrix& m) const;
 
 		/**
 		* Subtracts the given matrix from this matrix.
@@ -859,7 +859,7 @@ namespace solo
 		*
 		* @return The negation of this matrix.
 		*/
-		inline const Matrix operator-() const;
+		inline Matrix operator-() const;
 
 		/**
 		* Calculates the matrix product of this matrix with the given matrix.
@@ -869,7 +869,7 @@ namespace solo
 		* @param m The matrix to multiply by.
 		* @return The matrix product.
 		*/
-		inline const Matrix operator*(const Matrix& m) const;
+		inline Matrix operator*(const Matrix& m) const;
 
 		/**
 		* Right-multiplies this matrix by the given matrix.
@@ -880,55 +880,83 @@ namespace solo
 		inline Matrix& operator*=(const Matrix& m);
 
 	private:
-
 		static void createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
 			const Vector3& cameraUpVector, const Vector3* cameraForwardVector,
 			Matrix* dst);
 	};
 
-	/**
-	* Transforms the given vector by the given matrix.
-	*
-	* Note: this treats the given vector as a vector and not as a point.
-	*
-	* @param v The vector to transform.
-	* @param m The matrix to transform by.
-	* @return This vector, after the transformation occurs.
-	*/
-	inline Vector3& operator*=(Vector3& v, const Matrix& m);
 
-	/**
-	* Transforms the given vector by the given matrix.
-	*
-	* Note: this treats the given vector as a vector and not as a point.
-	*
-	* @param m The matrix to transform by.
-	* @param v The vector to transform.
-	* @return The resulting transformed vector.
-	*/
-	inline const Vector3 operator*(const Matrix& m, const Vector3& v);
+	inline Matrix Matrix::operator+(const Matrix& m) const
+	{
+		Matrix result(*this);
+		result.add(m);
+		return result;
+	}
 
-	/**
-	* Transforms the given vector by the given matrix.
-	*
-	* Note: this treats the given vector as a vector and not as a point.
-	*
-	* @param v The vector to transform.
-	* @param m The matrix to transform by.
-	* @return This vector, after the transformation occurs.
-	*/
-	inline Vector4& operator*=(Vector4& v, const Matrix& m);
+	inline Matrix& Matrix::operator+=(const Matrix& m)
+	{
+		add(m);
+		return *this;
+	}
 
-	/**
-	* Transforms the given vector by the given matrix.
-	*
-	* Note: this treats the given vector as a vector and not as a point.
-	*
-	* @param m The matrix to transform by.
-	* @param v The vector to transform.
-	* @return The resulting transformed vector.
-	*/
-	inline const Vector4 operator*(const Matrix& m, const Vector4& v);
+	inline Matrix Matrix::operator-(const Matrix& m) const
+	{
+		Matrix result(*this);
+		result.subtract(m);
+		return result;
+	}
+
+	inline Matrix& Matrix::operator-=(const Matrix& m)
+	{
+		subtract(m);
+		return *this;
+	}
+
+	inline Matrix Matrix::operator-() const
+	{
+		Matrix m(*this);
+		m.negate();
+		return m;
+	}
+
+	inline Matrix Matrix::operator*(const Matrix& m) const
+	{
+		Matrix result(*this);
+		result.multiply(m);
+		return result;
+	}
+
+	inline Matrix& Matrix::operator*=(const Matrix& m)
+	{
+		multiply(m);
+		return *this;
+	}
+
+	inline Vector3& operator*=(Vector3& v, const Matrix& m)
+	{
+		m.transformVector(&v);
+		return v;
+	}
+
+	inline Vector3 operator*(const Matrix& m, const Vector3& v)
+	{
+		Vector3 x;
+		m.transformVector(v, &x);
+		return x;
+	}
+
+	inline Vector4& operator*=(Vector4& v, const Matrix& m)
+	{
+		m.transformVector(&v);
+		return v;
+	}
+
+	inline Vector4 operator*(const Matrix& m, const Vector4& v)
+	{
+		Vector4 x;
+		m.transformVector(v, &x);
+		return x;
+	}
 }
 
 #endif
