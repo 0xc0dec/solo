@@ -64,35 +64,11 @@ namespace solo
 		*/
 		Matrix(const float* m);
 
-		/**
-		* Constructs a new matrix by copying the values from the specified matrix.
-		*
-		* @param copy The matrix to copy.
-		*/
 		Matrix(const Matrix& copy);
 
-		/**
-		* Destructor.
-		*/
 		~Matrix();
 
-		/**
-		* Returns the identity matrix:
-		*
-		* 1  0  0  0
-		* 0  1  0  0
-		* 0  0  1  0
-		* 0  0  0  1
-		*
-		* @return The identity matrix.
-		*/
 		static const Matrix& identity();
-
-		/**
-		* Returns the matrix with all zeros.
-		*
-		* @return The matrix with all zeros.
-		*/
 		static const Matrix& zero();
 
 		/**
@@ -215,8 +191,7 @@ namespace solo
 		* @param dst A matrix to store the result in.
 		*/
 		static void createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
-			const Vector3& cameraUpVector, const Vector3& cameraForwardVector,
-			Matrix* dst);
+			const Vector3& cameraUpVector, const Vector3& cameraForwardVector, Matrix* dst);
 
 		/**
 		* Fills in an existing Matrix so that it reflects the coordinate system about a specified Plane.
@@ -674,14 +649,7 @@ namespace solo
 		*/
 		void set(const Matrix& m);
 
-		/**
-		* Sets this matrix to the identity matrix.
-		*/
 		void setIdentity();
-
-		/**
-		* Sets all elements of the current matrix to zero.
-		*/
 		void setZero();
 
 		/**
