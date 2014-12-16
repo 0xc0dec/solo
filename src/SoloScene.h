@@ -7,18 +7,28 @@
 namespace solo
 {
 	class SceneNode;
+	class IComponent;
 
 	class Scene: public IScene
 	{
 	public:
 		explicit Scene();
 
-		virtual ptr<ISceneNode> createNode(const std::string &name) override;
+		virtual int createNode() override;
+
+		virtual bool nodeExists(int node) override;
+
+		virtual void addComponent(int node, ptr<IComponent> cmp) override;
+		virtual ptr<IComponent> findComponent(int node, const std::string &id) override;
+		virtual ptr<IComponent> getComponent(int node, const std::string &id) override;
 		
 		void update();
 
 	private:
-		std::list<ptr<SceneNode>> _nodes;
+		int _nodeCounter;
+		std::map<int, std::map<std::string, ptr<IComponent>>> _nodeComponents;
+
+		void _ensureNodeExists(int node);
 	};
 }
 

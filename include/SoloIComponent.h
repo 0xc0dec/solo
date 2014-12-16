@@ -2,7 +2,6 @@
 #define __SOLO_I_COMPONENT_H__
 
 #include "SoloBase.h"
-#include "SoloISceneNode.h"
 
 namespace solo
 {
@@ -11,20 +10,12 @@ namespace solo
 	class IComponent
 	{
 	public:
-		explicit IComponent(ISceneNode *node)
-			: _node(node)
-		{
-		}
-
 		virtual ~IComponent() {}
 
 		virtual std::string id() = 0;
 
 		virtual void update() {}
 		virtual void start() {}
-
-	protected:
-		ISceneNode *_node;
 	};
 }
 

@@ -37,12 +37,6 @@
     <ClInclude Include="..\include\SoloIComponent.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloISceneNode.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloSceneNode.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloIMaterial.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -115,9 +109,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloFileSystem.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloSceneNode.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloMaterial.cpp">

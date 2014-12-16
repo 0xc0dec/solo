@@ -31,7 +31,6 @@
     <ClInclude Include="..\include\SoloIMaterial.h" />
     <ClInclude Include="..\include\SoloIScene.h" />
     <ClInclude Include="..\include\Solo.h" />
-    <ClInclude Include="..\include\SoloISceneNode.h" />
     <ClInclude Include="..\include\SoloIGPUProgram.h" />
     <ClInclude Include="..\include\SoloMaterial.h" />
     <ClInclude Include="..\include\SoloMath.h" />
@@ -50,7 +49,6 @@
     <ClInclude Include="..\src\SoloEngine.h" />
     <ClInclude Include="..\src\SoloLog.h" />
     <ClInclude Include="..\src\SoloScene.h" />
-    <ClInclude Include="..\src\SoloSceneNode.h" />
     <ClInclude Include="..\src\SoloGPUProgram.h" />
   </ItemGroup>
   <ItemGroup>
@@ -74,7 +72,6 @@
     <ClCompile Include="..\src\SoloPlane.cpp" />
     <ClCompile Include="..\src\SoloRay.cpp" />
     <ClCompile Include="..\src\SoloScene.cpp" />
-    <ClCompile Include="..\src\SoloSceneNode.cpp" />
     <ClCompile Include="..\src\SoloGPUProgram.cpp" />
     <ClCompile Include="..\src\SoloVector2.cpp" />
     <ClCompile Include="..\src\SoloVector3.cpp" />

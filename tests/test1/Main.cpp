@@ -26,32 +26,6 @@ const char *testFragmentShader =
 	"	color = vec3(1);\n"
 	"}";
 
-class TestComponent: public IComponent
-{
-public:
-	TestComponent(ISceneNode *node)
-		: IComponent(node)
-	{
-	}
-
-	static std::string componentId()
-	{
-		return "TestComponent";
-	};
-
-	virtual std::string id() override { return "TestComponent"; }
-
-	virtual void update() override
-	{
-		
-	}
-
-	virtual void start() override
-	{
-		LOG("Component " << id() << " started on node " << _node->name());
-	}
-};
-
 
 class Callback : public IEngineCallback
 {
@@ -65,11 +39,6 @@ public:
 	{
 		_engine->getDevice()->setWindowTitle("Test title");
 		
-		auto node = _engine->getScene()->createNode("Test node");
-		node->addComponent<TestComponent>();
-		auto cmp = node->getComponent<TestComponent>(TestComponent::componentId());
-		LOG(cmp->id());
-
 		auto program = _engine->getDevice()->createGPUProgram(testVertexShader, testFragmentShader);
 		LOG("Program is valid: " << program->valid());
 		LOG("Program compilation log: " << program->log());
