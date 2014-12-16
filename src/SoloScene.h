@@ -6,7 +6,6 @@
 
 namespace solo
 {
-	class SceneNode;
 	class IComponent;
 
 	class Scene: public IScene
