@@ -27,16 +27,16 @@ namespace solo
 		explicit Log(LogLevel level = LogLevel::Info);
 		~Log();
 
-		Log &operator <<(const c8 *msg);
-		Log &operator <<(s32 i);
+		Log &operator <<(const char *msg);
+		Log &operator <<(int i);
 		Log &operator <<(size_t s);
-		Log &operator <<(const String &s);
+		Log &operator <<(const std::string &s);
 
 	private:
 		LogLevel _level;
 		std::ostringstream _buffer;
 		
-		String _getLevelString();
+		std::string _getLevelString();
 	};
 }
 

@@ -18,7 +18,7 @@ namespace solo
 
 		virtual ~IComponent() {}
 
-		virtual String id() = 0;
+		virtual std::string id() = 0;
 
 		virtual void update() {}
 		virtual void start() {}

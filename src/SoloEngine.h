@@ -35,7 +35,7 @@ namespace solo
 			return _device;
 		}
 
-		virtual f32 getDeltaTime() const override
+		virtual float getDeltaTime() const override
 		{
 			return _deltaTime;
 		}
@@ -45,8 +45,8 @@ namespace solo
 		ptr<Scene> _scene;
 		ptr<Device> _device;
 
-		u64 _lastUpdateTime;
-		f32 _deltaTime;
+		unsigned long _lastUpdateTime;
+		float _deltaTime;
 
 		void _run(const EngineCreationArgs &args);
 	};

@@ -13,25 +13,25 @@ namespace solo
 	public:
 		virtual ~ISceneNode() {}
 		
-		virtual String name() const = 0;
+		virtual std::string name() const = 0;
 
 		virtual void addComponent(ptr<IComponent> cmp) = 0;
-		virtual ptr<IComponent> findComponent(const String &id) = 0;
-		virtual ptr<IComponent> getComponent(const String &id) = 0;
-		virtual Map<String, ptr<IComponent>> components() const = 0;
+		virtual ptr<IComponent> findComponent(const std::string &id) = 0;
+		virtual ptr<IComponent> getComponent(const std::string &id) = 0;
+		virtual std::map<std::string, ptr<IComponent>> components() const = 0;
 
 		template <typename TComponent> ptr<TComponent> addComponent()
 		{
-			auto cmp = makePtr<TComponent>(this);
-			auto base = castStatic<IComponent>(cmp);
+			auto cmp = makeptr<TComponent>(this);
+			auto base = scast<IComponent>(cmp);
 			addComponent(base);
 			return cmp;
 		}
 
-		template <typename TComponent> ptr<TComponent> getComponent(const String &id)
+		template <typename TComponent> ptr<TComponent> getComponent(const std::string &id)
 		{
 			auto cmp = getComponent(id);
-			return castDynamic<TComponent>(cmp);
+			return dcast<TComponent>(cmp);
 		}
 	};
 }

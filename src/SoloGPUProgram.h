@@ -9,7 +9,7 @@ namespace solo
 	class GPUProgram: public IGPUProgram
 	{
 	public:
-		GPUProgram(const String &vsShaderSrc, const String &fsShaderSrc);
+		GPUProgram(const std::string &vsShaderSrc, const std::string &fsShaderSrc);
 		virtual ~GPUProgram();
 
 		virtual bool valid() const override
@@ -17,7 +17,7 @@ namespace solo
 			return _valid;
 		}
 
-		virtual String log() const override
+		virtual std::string log() const override
 		{
 			return _log;
 		}
@@ -29,10 +29,10 @@ namespace solo
 
 	protected:
 		bool _valid;
-		String _log;
+		std::string _log;
 		size_t _id;
 
-		void _appendToLog(const String &newLog);
+		void _appendToLog(const std::string &newLog);
 	};
 }
 

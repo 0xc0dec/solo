@@ -7,12 +7,12 @@ namespace solo
 {
 	struct EngineCreationArgs
 	{
-		s32 canvasWidth;
-		s32 canvasHeight;
-		s32 bits;
-		s32 depth;
+		int canvasWidth;
+		int canvasHeight;
+		int bits;
+		int depth;
 		bool fullScreen;
-		const c8 *windowTitle;
+		const char *windowTitle;
 	};
 
 	class IScene;
@@ -31,7 +31,7 @@ namespace solo
 		virtual ptr<IDevice> getDevice() const = 0;
 		virtual ptr<IScene> getScene() const = 0;
 
-		virtual f32 getDeltaTime() const = 0;
+		virtual float getDeltaTime() const = 0;
 	};
 }
 

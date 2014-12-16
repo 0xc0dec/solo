@@ -5,7 +5,7 @@
 using namespace solo;
 
 
-SceneNode::SceneNode(const String &name)
+SceneNode::SceneNode(const std::string &name)
 	: _name(name)
 {
 }
@@ -20,7 +20,7 @@ void SceneNode::addComponent(ptr<IComponent> cmp)
 }
 
 
-ptr<IComponent> SceneNode::getComponent(const String &id)
+ptr<IComponent> SceneNode::getComponent(const std::string &id)
 {
 	auto cmp = findComponent(id);
 	if (!cmp)
@@ -29,7 +29,7 @@ ptr<IComponent> SceneNode::getComponent(const String &id)
 }
 
 
-ptr<IComponent> SceneNode::findComponent(const String &id)
+ptr<IComponent> SceneNode::findComponent(const std::string &id)
 {
 	auto it = _components.find(id);
 	return it != _components.end() ? it->second : nullptr;

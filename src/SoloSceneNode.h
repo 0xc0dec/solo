@@ -9,18 +9,18 @@ namespace solo
 	class SceneNode : public ISceneNode
 	{
 	public:
-		explicit SceneNode(const String &name);
+		explicit SceneNode(const std::string &name);
 		
-		virtual String name() const override
+		virtual std::string name() const override
 		{
 			return _name;
 		}
 
 		virtual void addComponent(ptr<IComponent> cmp) override;
-		virtual ptr<IComponent> findComponent(const String &id) override;
-		virtual ptr<IComponent> getComponent(const String &id) override;
+		virtual ptr<IComponent> findComponent(const std::string &id) override;
+		virtual ptr<IComponent> getComponent(const std::string &id) override;
 
-		Map<String, ptr<IComponent>> components() const override
+		std::map<std::string, ptr<IComponent>> components() const override
 		{
 			return _components;
 		}
@@ -28,9 +28,9 @@ namespace solo
 		void update();
 
 	protected:
-		String _name;
-		Map<String, ptr<IComponent>> _components;
-		List<ptr<IComponent>> _newComponents;
+		std::string _name;
+		std::map<std::string, ptr<IComponent>> _components;
+		std::list<ptr<IComponent>> _newComponents;
 	};
 }
 

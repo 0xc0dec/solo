@@ -13,7 +13,7 @@ namespace solo
 	public:
 		virtual ~IScene() {}
 
-		virtual ptr<ISceneNode> createNode(const String &name) = 0;
+		virtual ptr<ISceneNode> createNode(const std::string &name) = 0;
 	};
 }
 

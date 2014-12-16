@@ -37,10 +37,10 @@ void Engine::_run(const EngineCreationArgs &args)
 
 	// SDL is the only available option right now
 	INFO("Creating device");
-	_device = makePtr<DeviceSDLGL>(args);
+	_device = makeptr<DeviceSDLGL>(args);
 
 	INFO("Creating scene");
-	_scene = makePtr<Scene>();
+	_scene = makeptr<Scene>();
 
 	_callback->processEngineStartedEvent();
 

@@ -5,7 +5,7 @@ using namespace solo;
 
 #define LOG(msg) std::cout << msg << std::endl;
 
-const c8 * testVertexShader = 
+const char * testVertexShader = 
 	"#version 330 core\n"
 
 	"layout(location = 0) in vec3 vertexPositionModelSpace;"
@@ -16,7 +16,7 @@ const c8 * testVertexShader =
 	"	gl_Position = vec4(vertexPositionModelSpace, 1);\n"
 	"}";
 
-const c8 *testFragmentShader = 
+const char *testFragmentShader = 
 	"#version 330 core\n"
 
 	"out vec3 color;\n"
@@ -34,12 +34,12 @@ public:
 	{
 	}
 
-	static String componentId()
+	static std::string componentId()
 	{
 		return "TestComponent";
 	};
 
-	virtual String id() override { return "TestComponent"; }
+	virtual std::string id() override { return "TestComponent"; }
 
 	virtual void update() override
 	{

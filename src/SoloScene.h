@@ -13,12 +13,12 @@ namespace solo
 	public:
 		explicit Scene();
 
-		virtual ptr<ISceneNode> createNode(const String &name) override;
+		virtual ptr<ISceneNode> createNode(const std::string &name) override;
 		
 		void update();
 
 	private:
-		List<ptr<SceneNode>> _nodes;
+		std::list<ptr<SceneNode>> _nodes;
 	};
 }
 

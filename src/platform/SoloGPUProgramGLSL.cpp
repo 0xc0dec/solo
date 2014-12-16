@@ -4,7 +4,7 @@
 using namespace solo;
 
 
-GPUProgramGLSL::GPUProgramGLSL(const String &vsShaderSrc, const String &fsShaderSrc)
+GPUProgramGLSL::GPUProgramGLSL(const std::string &vsShaderSrc, const std::string &fsShaderSrc)
 	: GPUProgram(vsShaderSrc, fsShaderSrc)
 {
 	auto vs = _tryCreateShader(GL_VERTEX_SHADER, vsShaderSrc);
@@ -48,15 +48,15 @@ GLint GPUProgramGLSL::_tryCreateProgram(GLuint vs, GLuint fs)
 	glAttachShader(program, fs);
 	glLinkProgram(program);
 
-	s32 logLength;
+	int logLength;
 	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
-	auto log = new c8[logLength];
+	auto log = new char[logLength];
 	glGetProgramInfoLog(program, logLength, nullptr, log);
 	if (logLength > 1)
 		_appendToLog(log);
 	delete[] log;
 	
-	s32 status;
+	int status;
 	glGetProgramiv(program, GL_COMPILE_STATUS, &status);
 	if (status == GL_FALSE)
 	{
@@ -68,7 +68,7 @@ GLint GPUProgramGLSL::_tryCreateProgram(GLuint vs, GLuint fs)
 }
 
 
-GLint GPUProgramGLSL::_tryCreateShader(GLuint type, String src)
+GLint GPUProgramGLSL::_tryCreateShader(GLuint type, std::string src)
 {
 	auto shader = glCreateShader(type);
 
@@ -76,15 +76,15 @@ GLint GPUProgramGLSL::_tryCreateShader(GLuint type, String src)
 	glShaderSource(shader, 1, &rawSrc, nullptr);
 	glCompileShader(shader);
 
-	s32 logLength;
+	int logLength;
 	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-	auto log = new c8[logLength];
+	auto log = new char[logLength];
 	glGetShaderInfoLog(shader, logLength, nullptr, log);
 	if (logLength > 1)
 		_appendToLog(log);
 	delete[] log;
 
-	s32 status;
+	int status;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 	if (status == GL_FALSE)
 	{

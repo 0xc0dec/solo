@@ -18,14 +18,14 @@ namespace solo
 		bool closeRequested() const { return _closeRequested; }
 
 		/// Returns time elapsed since the engine startup in ms
-		virtual u64 lifetime() const = 0;
+		virtual unsigned long lifetime() const = 0;
 		virtual void update() = 0;
 
 	protected:
 		bool _closeRequested;
 		EngineCreationArgs _creationArgs;
 
-		List<ptr<GPUProgram>> _gpuPrograms;
+		std::list<ptr<GPUProgram>> _gpuPrograms;
 	};
 }
 

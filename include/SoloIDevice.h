@@ -12,8 +12,8 @@ namespace solo
 	public:
 		virtual ~IDevice() {}
 
-		virtual void setWindowTitle(const c8 *title) = 0;
-		virtual ptr<IGPUProgram> createGPUProgram(const String &vsSrc, const String &fsSrc) = 0;
+		virtual void setWindowTitle(const char *title) = 0;
+		virtual ptr<IGPUProgram> createGPUProgram(const std::string &vsSrc, const std::string &fsSrc) = 0;
 	};
 }
 

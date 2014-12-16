@@ -12,11 +12,11 @@ namespace solo
 		explicit DeviceSDLGL(const EngineCreationArgs &args);
 		~DeviceSDLGL();
 
-		void setWindowTitle(const c8 *title) override;
+		void setWindowTitle(const char *title) override;
 
-		ptr<IGPUProgram> createGPUProgram(const String &vsSrc, const String &fsSrc) override;
+		ptr<IGPUProgram> createGPUProgram(const std::string &vsSrc, const std::string &fsSrc) override;
 
-		u64 lifetime() const override;
+		unsigned long lifetime() const override;
 		void update() override;
 
 	private:
@@ -24,8 +24,8 @@ namespace solo
 		SDL_GLContext _context;
 
 		void _processSystemEvents();
-		std::tuple<s32, s32> _selectContextVersion(s32 desiredMajorVersion, s32 desiredMinorVersion);
-		std::tuple<SDL_Window*, SDL_GLContext> _tryInitWindowWithContext(bool fake, s32 ctxMajorVersion, s32 ctxMinorVersion);
+		std::tuple<int, int> _selectContextVersion(int desiredMajorVersion, int desiredMinorVersion);
+		std::tuple<SDL_Window*, SDL_GLContext> _tryInitWindowWithContext(bool fake, int ctxMajorVersion, int ctxMinorVersion);
 	};
 }
 
