@@ -13,6 +13,8 @@
 #include "SoloIGPUProgram.h"
 #include "SoloIMaterial.h"
 #include "SoloIScene.h"
+#include "SoloISystem.h"
+#include "SoloITransform.h"
 #include "SoloMath.h"
 #include "SoloMatrix.h"
 #include "SoloPlane.h"

@@ -13,21 +13,32 @@ namespace solo
 	public:
 		explicit Scene();
 
-		virtual int createNode() override;
+		virtual size_t createNode() override;
 
-		virtual bool nodeExists(int node) override;
+		virtual bool nodeExists(size_t node) override;
 
-		virtual void addComponent(int node, ptr<IComponent> cmp) override;
-		virtual ptr<IComponent> findComponent(int node, const std::string &id) override;
-		virtual ptr<IComponent> getComponent(int node, const std::string &id) override;
-		
+		virtual void addComponent(size_t node, ptr<IComponent> cmp) override;
+		virtual ptr<IComponent> findComponent(size_t node, size_t typeId) override;
+		virtual ptr<IComponent> getComponent(size_t node, size_t typeId) override;
+
+		void addSystem(ptr<ISystem> system, size_t targetComponentTypeId) override;
+		void removeSystem(ptr<ISystem> system) override;
+		bool systemAlreadyAdded(ptr<ISystem> system) override;
+
 		void update();
 
 	private:
 		int _nodeCounter;
-		std::map<int, std::map<std::string, ptr<IComponent>>> _nodeComponents;
 
-		void _ensureNodeExists(int node);
+		typedef std::map<size_t, std::map<size_t, ptr<IComponent>>> NodeComponents;
+		typedef std::list<std::pair<size_t, ptr<ISystem>>> Systems; // { nodeId: { componentTypeId: component } }
+
+		NodeComponents _nodeComponents;
+		Systems _systems;
+
+		void _ensureNodeExists(size_t node);
+		Systems::iterator _findSystem(ptr<ISystem> system);
+		void _ensureSystemNotAdded(ptr<ISystem> system);
 	};
 }
 

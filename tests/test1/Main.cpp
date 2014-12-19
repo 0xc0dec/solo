@@ -27,6 +27,32 @@ const char *testFragmentShader =
 	"}";
 
 
+class TestComponent : public IComponent
+{
+public:
+	static size_t getComponentTypeId()
+	{
+		static auto hash = computeHash("TestComponent");
+		return hash;
+	}
+
+	size_t getTypeId() override
+	{
+		return getComponentTypeId();
+	}
+};
+
+
+class TestSystem : public ISystem
+{
+public:
+	void update(size_t node, ptr<IComponent> component) override
+	{
+		LOG("Updating test system, node: " << node << ", component: " << component->getTypeId());
+	}
+};
+
+
 class Callback : public IEngineCallback
 {
 public:
@@ -35,24 +61,29 @@ public:
 	{
 	}
 
-	void processEngineStartedEvent() override
+	virtual void onEngineStarted() override
 	{
 		_engine->getDevice()->setWindowTitle("Test title");
-		
+
+		_engine->getScene()->addSystem<TestSystem>(TestComponent::getComponentTypeId());
+		auto node = _engine->getScene()->createNode();
+		auto cmp = _engine->getScene()->addComponent<TestComponent>(node);
+		LOG("Created component " << cmp->getTypeId());
+
 		auto program = _engine->getDevice()->createGPUProgram(testVertexShader, testFragmentShader);
 		LOG("Program is valid: " << program->valid());
 		LOG("Program compilation log: " << program->log());
 	}
 
-	void processEngineStoppedEvent() override
+	virtual void onEngineStopped() override
 	{
 	}
 
-	void processBeforeFrameEvent() override
+	virtual void onBeforeFrame() override
 	{
 	}
 
-	bool processDeviceCloseRequestedEvent() override
+	virtual bool onDeviceCloseRequested() override
 	{
 		return true;
 	}
@@ -62,10 +93,10 @@ private:
 };
 
 
-int main(int argc, char *argv[])
+int main()
 {
 	auto engine = getEngine();
-	EngineCreationArgs engineArgs = { 800, 600, 32, 24, false };
+	EngineCreationArgs engineArgs = { 1366, 768, 32, 24, false };
 	Callback callback(engine);
 	engine->setCallback(&callback);
 	engine->run(engineArgs);

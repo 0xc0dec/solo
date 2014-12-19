@@ -10,10 +10,7 @@ namespace solo
 	public:
 		virtual ~IComponent() {}
 
-		virtual std::string id() = 0;
-
-		virtual void update() {}
-		virtual void start() {}
+		virtual size_t getTypeId() = 0;
 	};
 }
 

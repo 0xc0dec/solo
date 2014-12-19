@@ -94,6 +94,18 @@
     <ClInclude Include="..\include\SoloFrustum.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloITransform.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloTransform.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloSystem.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloISystem.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">
@@ -166,6 +178,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloFrustum.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloTransform.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloSystem.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
