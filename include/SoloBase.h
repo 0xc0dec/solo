@@ -10,6 +10,7 @@
 #include <cassert>
 #include <algorithm>
 #include <tuple>
+#include <sstream>
 
 namespace solo
 {
