@@ -30,15 +30,19 @@ const char *testFragmentShader =
 class TestComponent : public IComponent
 {
 public:
-	static size_t getComponentTypeId()
+	virtual size_t getTypeId() override
 	{
-		static auto hash = computeHash("TestComponent");
-		return hash;
+		return solo::getTypeId<TestComponent>();
 	}
+};
 
-	size_t getTypeId() override
+
+class TestComponent2 : public IComponent
+{
+public:
+	virtual size_t getTypeId() override
 	{
-		return getComponentTypeId();
+		return solo::getTypeId<TestComponent2>();
 	}
 };
 
@@ -56,8 +60,8 @@ public:
 class Callback : public IEngineCallback
 {
 public:
-	explicit Callback(IEngine* i_engine)
-		: _engine(i_engine)
+	explicit Callback(IEngine* engine)
+		: _engine(engine)
 	{
 	}
 
@@ -65,10 +69,14 @@ public:
 	{
 		_engine->getDevice()->setWindowTitle("Test title");
 
-		_engine->getScene()->addSystem<TestSystem>(TestComponent::getComponentTypeId());
-		auto node = _engine->getScene()->createNode();
-		auto cmp = _engine->getScene()->addComponent<TestComponent>(node);
+		auto scene = _engine->getScene();
+		scene->addSystem<TestSystem>(getTypeId<TestComponent>());
+		auto node = scene->createNode();
+
+		auto cmp = scene->addComponent<TestComponent>(node);
+		auto cmp2 = scene->addComponent<TestComponent2>(node);
 		LOG("Created component " << cmp->getTypeId());
+		LOG("Created component " << cmp2->getTypeId());
 
 		auto program = _engine->getDevice()->createGPUProgram(testVertexShader, testFragmentShader);
 		LOG("Program is valid: " << program->valid());
@@ -100,5 +108,6 @@ int main()
 	Callback callback(engine);
 	engine->setCallback(&callback);
 	engine->run(engineArgs);
+	std::cin.get();
 	return 0;
 }

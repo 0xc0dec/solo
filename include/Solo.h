@@ -20,6 +20,7 @@
 #include "SoloPlane.h"
 #include "SoloQuaternion.h"
 #include "SoloRay.h"
+#include "SoloTypeId.h"
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 #include "SoloVector4.h"

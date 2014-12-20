@@ -106,6 +106,9 @@
     <ClInclude Include="..\include\SoloISystem.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloTypeId.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">

@@ -40,6 +40,7 @@
     <ClInclude Include="..\include\SoloPlane.h" />
     <ClInclude Include="..\include\SoloQuaternion.h" />
     <ClInclude Include="..\include\SoloRay.h" />
+    <ClInclude Include="..\include\SoloTypeId.h" />
     <ClInclude Include="..\include\SoloVector2.h" />
     <ClInclude Include="..\include\SoloVector3.h" />
     <ClInclude Include="..\include\SoloVector4.h" />

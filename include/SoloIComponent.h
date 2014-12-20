@@ -3,6 +3,7 @@
 
 #include "SoloBase.h"
 
+
 namespace solo
 {
 	class IComponent
