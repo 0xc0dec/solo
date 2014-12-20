@@ -1,2 +1,0 @@
-TODO
-* Компонент Transform
