@@ -21,3 +21,21 @@ void GPUProgram::_appendToLog(const std::string &newLog)
 {
 	_log.append(newLog).append("\n");
 }
+
+
+bool GPUProgram::isValid() const
+{
+	return _valid;
+}
+
+
+std::string GPUProgram::getLog() const
+{
+	return _log;
+}
+
+
+size_t GPUProgram::getId() const
+{
+	return _id;
+}

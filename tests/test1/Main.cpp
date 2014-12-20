@@ -79,8 +79,8 @@ public:
 		LOG("Created component " << cmp2->getTypeId());
 
 		auto program = _engine->getDevice()->createGPUProgram(testVertexShader, testFragmentShader);
-		LOG("Program is valid: " << program->valid());
-		LOG("Program compilation log: " << program->log());
+		LOG("Program is valid: " << program->isValid());
+		LOG("Program compilation log: " << program->getLog());
 	}
 
 	virtual void onEngineStopped() override

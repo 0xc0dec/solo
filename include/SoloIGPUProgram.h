@@ -10,10 +10,10 @@ namespace solo
 	public:
 		virtual ~IGPUProgram() {}
 
-		virtual size_t id() const = 0;
+		virtual size_t getId() const = 0;
 
-		virtual bool valid() const = 0;
-		virtual std::string log() const = 0;
+		virtual bool isValid() const = 0;
+		virtual std::string getLog() const = 0;
 	};
 }
 

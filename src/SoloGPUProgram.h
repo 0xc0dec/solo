@@ -12,20 +12,11 @@ namespace solo
 		GPUProgram(const std::string &vsShaderSrc, const std::string &fsShaderSrc);
 		virtual ~GPUProgram();
 
-		virtual bool valid() const override
-		{
-			return _valid;
-		}
+		virtual bool isValid() const override;
 
-		virtual std::string log() const override
-		{
-			return _log;
-		}
+		virtual std::string getLog() const override;
 
-		virtual size_t id() const override
-		{
-			return _id;
-		}
+		virtual size_t getId() const override;
 
 	protected:
 		bool _valid;
