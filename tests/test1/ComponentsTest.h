@@ -3,20 +3,18 @@
 
 #include "TestBase.h"
 
-using namespace solo;
-
 
 class TestComponent : public IComponent
 {
 public:
-	DECLARE_CMP_ID(TestComponent)
+	DECLARE_COMPONENT(TestComponent)
 };
 
 
 class TestComponent2 : public IComponent
 {
 public:
-	DECLARE_CMP_ID(TestComponent2)
+	DECLARE_COMPONENT(TestComponent2)
 };
 
 
@@ -33,11 +31,15 @@ public:
 class ComponentsTest : public TestBase
 {
 public:
-	virtual void run(solo::IEngine* engine) override
+	virtual void run(IEngine* engine) override
+	{
+		engine->getScene()->addSystem<TestSystem>(TestComponent::getComponentTypeId());
+		testComponentsAddition(engine);
+	}
+
+	void testComponentsAddition(IEngine *engine)
 	{
 		auto scene = engine->getScene();
-		scene->addSystem<TestSystem>(TestComponent::getComponentTypeId());
-
 		auto node = scene->createNode();
 		auto cmp = scene->addComponent<TestComponent>(node);
 		auto cmp2 = scene->addComponent<TestComponent2>(node);

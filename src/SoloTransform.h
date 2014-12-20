@@ -8,8 +8,6 @@ namespace solo
 	class Transform : public ITransform
 	{
 	public:
-		DECLARE_CMP_ID(Transform)
-
 		virtual void addChild(ptr<ITransform> child) override;
 		virtual void removeChild(ptr<ITransform> child) override;
 		virtual void removeChildren() override;

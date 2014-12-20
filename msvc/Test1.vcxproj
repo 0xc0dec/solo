@@ -164,6 +164,7 @@
   <ItemGroup>
     <ClInclude Include="..\tests\test1\ComponentsTest.h" />
     <ClInclude Include="..\tests\test1\GPUProgramTest.h" />
+    <ClInclude Include="..\tests\test1\TransformTest.h" />
     <ClInclude Include="..\tests\test1\TestBase.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

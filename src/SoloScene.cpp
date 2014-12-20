@@ -2,6 +2,7 @@
 #include "SoloIComponent.h"
 #include "SoloSystem.h"
 #include "SoloException.h"
+#include "SoloTransform.h"
 
 using namespace solo;
 
@@ -16,6 +17,14 @@ size_t Scene::createNode()
 {
 	_nodeComponents[++_nodeCounter];
 	return _nodeCounter;
+}
+
+
+size_t Scene::createNodeWithTransform()
+{
+	auto node = createNode();
+	this->IScene::addComponent<Transform>(node);
+	return node;
 }
 
 

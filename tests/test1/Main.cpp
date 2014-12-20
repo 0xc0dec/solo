@@ -1,6 +1,7 @@
 #include <iostream>
 #include "GPUProgramTest.h"
 #include "ComponentsTest.h"
+#include "TransformTest.h"
 
 using namespace solo;
 
@@ -18,6 +19,7 @@ public:
 		_engine->getDevice()->setWindowTitle("Test title");
 		GPUProgramTest().run(_engine);
 		ComponentsTest().run(_engine);
+		TransformTest().run(_engine);
 	}
 
 	virtual void onEngineStopped() override

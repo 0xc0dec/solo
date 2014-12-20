@@ -14,6 +14,7 @@ namespace solo
 		virtual ~IScene() {}
 
 		virtual size_t createNode() = 0;
+		virtual size_t createNodeWithTransform() = 0;
 
 		virtual bool nodeExists(size_t node) = 0;
 

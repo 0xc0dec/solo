@@ -6,13 +6,15 @@
 
 #define LOG(msg) std::cout << msg << std::endl;
 
+using namespace solo;
+
 
 class TestBase
 {
 public:
 	virtual ~TestBase() {}
 
-	virtual void run(solo::IEngine *engine) = 0;
+	virtual void run(IEngine *engine) = 0;
 };
 
 #endif

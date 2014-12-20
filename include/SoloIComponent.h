@@ -4,7 +4,7 @@
 #include "SoloBase.h"
 #include "SoloTypeId.h"
 
-#define DECLARE_CMP_ID(ComponentType) \
+#define DECLARE_COMPONENT(ComponentType) \
 	static size_t getComponentTypeId() \
 	{ \
 		return solo::getTypeId<ComponentType>(); \

@@ -28,7 +28,7 @@ const char *testFragmentShader =
 class GPUProgramTest : public TestBase
 {
 public:
-	virtual void run(solo::IEngine *engine) override
+	virtual void run(IEngine *engine) override
 	{
 		auto program = engine->getDevice()->createGPUProgram(testVertexShader, testFragmentShader);
 		assert(program->isValid());

@@ -14,6 +14,7 @@ namespace solo
 		explicit Scene();
 
 		virtual size_t createNode() override;
+		virtual size_t createNodeWithTransform() override;
 
 		virtual bool nodeExists(size_t node) override;
 

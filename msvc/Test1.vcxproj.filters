@@ -7,5 +7,6 @@
     <ClInclude Include="..\tests\test1\GPUProgramTest.h" />
     <ClInclude Include="..\tests\test1\TestBase.h" />
     <ClInclude Include="..\tests\test1\ComponentsTest.h" />
+    <ClInclude Include="..\tests\test1\TransformTest.h" />
   </ItemGroup>
 </Project>

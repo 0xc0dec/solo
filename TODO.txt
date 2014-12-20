@@ -1,1 +1,2 @@
+* Finish Transform test, implement easier-to-use method for component finding (probably using macroses)
 * Transform component, node hierarchy
