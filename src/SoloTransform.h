@@ -11,7 +11,7 @@ namespace solo
 	class Transform : public ITransform
 	{
 	public:
-		virtual size_t getTypeId() override;
+		DECLARE_CMP_ID(Transform)
 	};
 }
 

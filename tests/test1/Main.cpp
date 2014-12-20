@@ -30,20 +30,14 @@ const char *testFragmentShader =
 class TestComponent : public IComponent
 {
 public:
-	virtual size_t getTypeId() override
-	{
-		return solo::getTypeId<TestComponent>();
-	}
+	DECLARE_CMP_ID(TestComponent)
 };
 
 
 class TestComponent2 : public IComponent
 {
 public:
-	virtual size_t getTypeId() override
-	{
-		return solo::getTypeId<TestComponent2>();
-	}
+	DECLARE_CMP_ID(TestComponent2)
 };
 
 
@@ -70,7 +64,7 @@ public:
 		_engine->getDevice()->setWindowTitle("Test title");
 
 		auto scene = _engine->getScene();
-		scene->addSystem<TestSystem>(getTypeId<TestComponent>());
+		scene->addSystem<TestSystem>(TestComponent::getComponentTypeId());
 		auto node = scene->createNode();
 
 		auto cmp = scene->addComponent<TestComponent>(node);
@@ -99,6 +93,13 @@ public:
 private:
 	IEngine *_engine;
 };
+
+template <typename T>
+void f()
+{
+}
+
+#define CALL(Type) f<Type>()
 
 
 int main()
