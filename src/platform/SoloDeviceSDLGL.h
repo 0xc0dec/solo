@@ -16,9 +16,9 @@ namespace solo
 
 		virtual unsigned long getLifetime() const override;
 
-		virtual void update() override;
+		virtual void beginUpdate() override;
 
-		virtual void flush() override;
+		virtual void endUpdate() override;
 
 	private:
 		SDL_Window *_window;

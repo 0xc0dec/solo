@@ -28,10 +28,6 @@ public:
 	{
 	}
 
-	virtual void update() override
-	{
-	}
-
 	virtual bool onDeviceCloseRequested() override
 	{
 		return true;

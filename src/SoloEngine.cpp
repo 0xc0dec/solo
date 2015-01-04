@@ -14,7 +14,6 @@ public:
 	bool onDeviceCloseRequested() override { return true; }
 	void onEngineStarted() override {}
 	void onEngineStopped() override {}
-	void update() override {}
 } emptyCallback;
 
 
@@ -59,11 +58,10 @@ void Engine::_run(const EngineCreationArgs &args)
 	while (true)
 	{
 		_updateTime();
-		_callback->update();
-		_device->update();
+		_device->beginUpdate();
 		_scene->update();
 		_scene->render();
-		_device->flush();
+		_device->endUpdate();
 		if (_device->closeRequested() && _callback->onDeviceCloseRequested())
 			break;
 	}

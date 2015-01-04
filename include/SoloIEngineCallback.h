@@ -11,7 +11,6 @@ namespace solo
 		virtual bool onDeviceCloseRequested() = 0;
 		virtual void onEngineStarted() = 0;
 		virtual void onEngineStopped() = 0;
-		virtual void update() = 0;
 	};
 }
 
