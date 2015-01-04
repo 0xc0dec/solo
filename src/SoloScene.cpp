@@ -70,6 +70,12 @@ void Scene::update()
 }
 
 
+void Scene::render()
+{
+	
+}
+
+
 void Scene::_ensureNodeExists(size_t node)
 {
 	if (!nodeExists(node))

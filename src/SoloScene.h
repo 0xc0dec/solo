@@ -23,6 +23,7 @@ namespace solo
 		virtual ptr<IComponent> getComponent(size_t node, size_t typeId) override;
 
 		void update();
+		void render();
 
 	private:
 		typedef std::map<size_t, std::map<size_t, ptr<IComponent>>> NodeComponents;

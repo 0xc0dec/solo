@@ -37,7 +37,7 @@ namespace solo
 
 		virtual float getTimeDelta() const override
 		{
-			return _deltaTime;
+			return _timeDelta;
 		}
 
 	private:
@@ -46,8 +46,9 @@ namespace solo
 		ptr<Device> _device;
 
 		unsigned long _lastUpdateTime;
-		float _deltaTime;
+		float _timeDelta;
 
+		inline void _updateTime();
 		void _run(const EngineCreationArgs &args);
 	};
 }

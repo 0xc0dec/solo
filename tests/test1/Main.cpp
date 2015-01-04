@@ -24,7 +24,7 @@ public:
 	{
 	}
 
-	virtual void onBeforeFrame() override
+	virtual void update() override
 	{
 	}
 

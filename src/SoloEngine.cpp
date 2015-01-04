@@ -13,14 +13,14 @@ public:
 	bool onDeviceCloseRequested() override { return true; }
 	void onEngineStarted() override {}
 	void onEngineStopped() override {}
-	void onBeforeFrame() override {}
+	void update() override {}
 } emptyCallback;
 
 
 Engine::Engine()
 	: _callback(nullptr),
 	_lastUpdateTime(0),
-	_deltaTime(0)
+	_timeDelta(0)
 {
 	_callback = &emptyCallback;
 }
@@ -28,6 +28,14 @@ Engine::Engine()
 
 Engine::~Engine()
 {
+}
+
+
+void Engine::_updateTime()
+{
+	auto time = _device->getLifetime();
+	_timeDelta = (time - _lastUpdateTime) / 1000.0f;
+	_lastUpdateTime = time;
 }
 
 
@@ -46,10 +54,8 @@ void Engine::_run(const EngineCreationArgs &args)
 
 	while (true)
 	{
-		auto time = _device->getLifetime();
-		_deltaTime = (time - _lastUpdateTime) / 1000.0f;
-		_lastUpdateTime = time;
-		_callback->onBeforeFrame();
+		_updateTime();
+		_callback->update();
 		_device->update();
 		_scene->update();
 		if (_device->closeRequested() && _callback->onDeviceCloseRequested())
