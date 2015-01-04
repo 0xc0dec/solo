@@ -3,6 +3,8 @@
 
 #include <sstream>
 
+#define FORMAT(...) solo::Formatter()(__VA_ARGS__)
+
 namespace solo
 {
 	class Formatter
@@ -24,7 +26,5 @@ namespace solo
 		std::ostringstream _buf;
 	};
 }
-
-#define FORMAT(...) solo::Formatter()(__VA_ARGS__)
 
 #endif
