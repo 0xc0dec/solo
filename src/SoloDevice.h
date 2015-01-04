@@ -16,7 +16,10 @@ namespace solo
 
 		/// Returns time elapsed since the engine startup in ms
 		virtual unsigned long getLifetime() const = 0;
+
 		virtual void update() = 0;
+
+		virtual void flush() = 0;
 
 	protected:
 		bool _closeRequested;

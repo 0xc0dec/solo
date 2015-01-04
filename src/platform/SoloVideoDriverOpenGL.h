@@ -10,7 +10,11 @@ namespace solo
 	public:
 		virtual ptr<IGPUProgram> createGPUProgram(const std::string &vsSrc, const std::string &fsSrc) override;
 
-		virtual void setViewport(int left, int top, int width, int height) override;
+		virtual void setViewport(float left, float top, float width, float height) override;
+
+		virtual void setClearColor(float r, float g, float b, float a) override;
+
+		virtual void clear() override;
 	};
 }
 

@@ -105,6 +105,12 @@ DeviceSDLGL::~DeviceSDLGL()
 void DeviceSDLGL::update()
 {
 	_processSystemEvents();
+	
+}
+
+
+void DeviceSDLGL::flush()
+{
 	SDL_GL_SwapWindow(_window);
 }
 

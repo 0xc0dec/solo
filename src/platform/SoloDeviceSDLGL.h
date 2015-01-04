@@ -12,10 +12,13 @@ namespace solo
 		explicit DeviceSDLGL(const EngineCreationArgs &args);
 		~DeviceSDLGL();
 
-		void setWindowTitle(const char *title) override;
+		virtual void setWindowTitle(const char *title) override;
 
-		unsigned long getLifetime() const override;
-		void update() override;
+		virtual unsigned long getLifetime() const override;
+
+		virtual void update() override;
+
+		virtual void flush() override;
 
 	private:
 		SDL_Window *_window;

@@ -26,25 +26,11 @@ namespace solo
 		void run(const EngineCreationArgs &launchArgs) override;
 		void setCallback(IEngineCallback* callback) override;
 
-		virtual ptr<IScene> getScene() const override
-		{
-			return _scene;
-		}
+		virtual ptr<IScene> getScene() const override;
+		virtual ptr<IDevice> getDevice() const override;
+		virtual ptr<IVideoDriver> getVideoDriver() const override;
 
-		virtual ptr<IDevice> getDevice() const override
-		{
-			return _device;
-		}
-
-		virtual ptr<IVideoDriver> getVideoDriver() const override
-		{
-			return _driver;
-		}
-
-		virtual float getTimeDelta() const override
-		{
-			return _timeDelta;
-		}
+		virtual float getTimeDelta() const override;
 
 	private:
 		IEngineCallback *_callback;

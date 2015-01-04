@@ -3,6 +3,7 @@
 #include "SoloLog.h"
 #include "SoloException.h"
 #include "platform/SoloDeviceSDLGL.h"
+#include "platform/SoloVideoDriverOpenGL.h"
 
 using namespace solo;
 
@@ -47,6 +48,9 @@ void Engine::_run(const EngineCreationArgs &args)
 	INFO("Creating device");
 	_device = NEW<DeviceSDLGL>(args);
 
+	INFO("Creating video driver");
+	_driver = NEW<VideoDriverOpenGL>();
+
 	INFO("Creating scene");
 	_scene = NEW<Scene>();
 
@@ -58,6 +62,8 @@ void Engine::_run(const EngineCreationArgs &args)
 		_callback->update();
 		_device->update();
 		_scene->update();
+		_scene->render();
+		_device->flush();
 		if (_device->closeRequested() && _callback->onDeviceCloseRequested())
 			break;
 	}
@@ -89,4 +95,28 @@ void Engine::setCallback(IEngineCallback* callback)
 	_callback = callback;
 	if (!_callback)
 		_callback = &emptyCallback;
+}
+
+
+float Engine::getTimeDelta() const
+{
+	return _timeDelta;
+}
+
+
+ptr<IScene> Engine::getScene() const
+{
+	return _scene;
+}
+
+
+ptr<IDevice> Engine::getDevice() const
+{
+	return _device;
+}
+
+
+ptr<IVideoDriver> Engine::getVideoDriver() const
+{
+	return _driver;
 }

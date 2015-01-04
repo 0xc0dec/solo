@@ -13,7 +13,19 @@ ptr<IGPUProgram> VideoDriverOpenGL::createGPUProgram(const std::string &vsSrc, c
 }
 
 
-void VideoDriverOpenGL::setViewport(int left, int top, int width, int height)
+void VideoDriverOpenGL::setViewport(float left, float top, float width, float height)
 {
 	glViewport(static_cast<GLuint>(left), static_cast<GLuint>(top), static_cast<GLuint>(width), static_cast<GLuint>(height));
+}
+
+
+void VideoDriverOpenGL::setClearColor(float r, float g, float b, float a)
+{
+	glClearColor(r, g, b, a);
+}
+
+
+void VideoDriverOpenGL::clear()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

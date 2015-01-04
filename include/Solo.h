@@ -7,6 +7,7 @@
 #include "SoloException.h"
 #include "SoloFormatter.h"
 #include "SoloFrustum.h"
+#include "SoloICamera.h"
 #include "SoloIComponent.h"
 #include "SoloIDevice.h"
 #include "SoloIEngine.h"

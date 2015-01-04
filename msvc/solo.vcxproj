@@ -25,6 +25,7 @@
     <ClInclude Include="..\include\SoloException.h" />
     <ClInclude Include="..\include\SoloFormatter.h" />
     <ClInclude Include="..\include\SoloFrustum.h" />
+    <ClInclude Include="..\include\SoloICamera.h" />
     <ClInclude Include="..\include\SoloIComponent.h" />
     <ClInclude Include="..\include\SoloIDevice.h" />
     <ClInclude Include="..\include\SoloIEngine.h" />
@@ -48,6 +49,8 @@
     <ClInclude Include="..\src\platform\SoloGPUProgramGLSL.h" />
     <ClInclude Include="..\src\platform\SoloDeviceSDLGL.h" />
     <ClInclude Include="..\src\platform\SoloVideoDriverOpenGL.h" />
+    <ClInclude Include="..\src\SoloCamera.h" />
+    <ClInclude Include="..\src\SoloDirty.h" />
     <ClInclude Include="..\src\SoloFileSystem.h" />
     <ClInclude Include="..\src\SoloBaseInternal.h" />
     <ClInclude Include="..\src\SoloDevice.h" />
@@ -68,6 +71,7 @@
     <ClCompile Include="..\src\platform\SoloVideoDriverOpenGL.cpp" />
     <ClCompile Include="..\src\SoloBoundingBox.cpp" />
     <ClCompile Include="..\src\SoloBoundingSphere.cpp" />
+    <ClCompile Include="..\src\SoloCamera.cpp" />
     <ClCompile Include="..\src\SoloFileSystem.cpp" />
     <ClCompile Include="..\src\SoloBaseInternal.cpp" />
     <ClCompile Include="..\src\SoloDevice.cpp" />

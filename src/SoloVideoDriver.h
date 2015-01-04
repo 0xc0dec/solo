@@ -10,7 +10,11 @@ namespace solo
 	class VideoDriver: public IVideoDriver
 	{
 	public:
-		virtual void setViewport(int left, int top, int width, int height) = 0;
+		virtual void setViewport(float left, float top, float width, float height) = 0;
+
+		virtual void setClearColor(float r, float g, float b, float a) = 0;
+
+		virtual void clear() = 0;
 
 	protected:
 		std::list<ptr<GPUProgram>> _gpuPrograms;

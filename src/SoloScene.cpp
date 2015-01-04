@@ -2,12 +2,14 @@
 #include "SoloIComponent.h"
 #include "SoloException.h"
 #include "SoloTransform.h"
+#include "SoloCamera.h"
 
 using namespace solo;
 
 
-Scene::Scene()
-	: _nodeCounter(0)
+Scene::Scene():
+	_nodeCounter(0),
+	_primaryCamera(nullptr)
 {
 }
 
@@ -30,6 +32,19 @@ size_t Scene::createNode()
 bool Scene::nodeExists(size_t node)
 {
 	return _nodeComponents.find(node) != _nodeComponents.end();
+}
+
+
+ptr<ICamera> Scene::createCamera(size_t node)
+{
+	auto camera = NEW<Camera>();
+	addComponent(node, camera);
+	if (!_primaryCamera)
+	{
+		_primaryCamera = camera;
+		_primaryCamera->setPrimary(true);
+	}
+	return camera;
 }
 
 
@@ -64,15 +79,17 @@ void Scene::update()
 {
 	for (auto node : _nodeComponents)
 	{
-		for (auto cmp : node.second)
-			cmp.second->update();
+		for (auto component : node.second)
+			component.second->update();
 	}
 }
 
 
 void Scene::render()
 {
-	
+	if (_primaryCamera)
+		_primaryCamera->render();
+	// ...
 }
 
 

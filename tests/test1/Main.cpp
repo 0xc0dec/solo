@@ -7,7 +7,7 @@ using namespace solo;
 class Callback : public IEngineCallback
 {
 public:
-	explicit Callback(IEngine* engine)
+	Callback(IEngine* engine)
 		: _engine(engine)
 	{
 	}
@@ -18,6 +18,10 @@ public:
 		GPUProgramTest().run(_engine);
 		ComponentsTest().run(_engine);
 		TransformTest().run(_engine);
+
+		auto node = _engine->getScene()->createNode();
+		auto camera = _engine->getScene()->createCamera(node);
+		camera->setClearColor(1, 0, 0, 1);
 	}
 
 	virtual void onEngineStopped() override

@@ -7,6 +7,7 @@ namespace solo
 {
 	class IComponent;
 	class ISystem;
+	class ICamera;
 
 	class IScene
 	{
@@ -20,6 +21,8 @@ namespace solo
 		virtual size_t createNode() = 0;
 
 		virtual bool nodeExists(size_t node) = 0;
+
+		virtual ptr<ICamera> createCamera(size_t node) = 0;
 
 		virtual void addComponent(size_t node, ptr<IComponent> cmp) = 0;
 		virtual ptr<IComponent> findComponent(size_t node, size_t typeId) = 0;

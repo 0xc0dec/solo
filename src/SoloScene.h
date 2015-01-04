@@ -7,6 +7,8 @@
 namespace solo
 {
 	class IComponent;
+	class ICamera;
+	class Camera;
 
 	class Scene: public IScene
 	{
@@ -17,6 +19,8 @@ namespace solo
 		virtual size_t createNode() override;
 
 		virtual bool nodeExists(size_t node) override;
+
+		virtual ptr<ICamera> createCamera(size_t node) override;
 
 		virtual void addComponent(size_t node, ptr<IComponent> cmp) override;
 		virtual ptr<IComponent> findComponent(size_t node, size_t typeId) override;
@@ -29,6 +33,7 @@ namespace solo
 		typedef std::map<size_t, std::map<size_t, ptr<IComponent>>> NodeComponents;
 
 		int _nodeCounter;
+		ptr<Camera> _primaryCamera;
 		NodeComponents _nodeComponents;
 
 		void _ensureNodeExists(size_t node);
