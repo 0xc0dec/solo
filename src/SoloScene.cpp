@@ -38,7 +38,7 @@ void Scene::addComponent(size_t node, ptr<IComponent> cmp)
 {
 	_ensureNodeExists(node);
 	if (findComponent(node, cmp->getTypeId()))
-		throw EngineException("Component with same id already exists");
+		THROW(EngineException, "Component " << cmp->getTypeId() << " already exists");
 	_nodeComponents[node][cmp->getTypeId()] = cmp;
 }
 
@@ -47,7 +47,7 @@ ptr<IComponent> Scene::getComponent(size_t node, size_t typeId)
 {
 	auto cmp = findComponent(node, typeId);
 	if (!cmp)
-		throw EngineException("Component not found"); // TODO include component id
+		THROW(EngineException, "Component " << typeId << " not found");
 	return cmp;
 }
 
@@ -63,7 +63,7 @@ ptr<IComponent> Scene::findComponent(size_t node, size_t typeId)
 
 void Scene::update()
 {
-	// TODO This might be optimised.
+	// TODO This might be optimised
 	for (auto system : _systems)
 	{
 		auto targetComponentId = system.first;
@@ -82,7 +82,7 @@ void Scene::update()
 void Scene::_ensureNodeExists(size_t node)
 {
 	if (!nodeExists(node))
-		throw EngineException("Node not found"); // TODO include node id
+		THROW(EngineException, "Node " << node << " not found");
 }
 
 

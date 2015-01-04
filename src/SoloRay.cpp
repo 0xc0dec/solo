@@ -188,9 +188,9 @@ void Ray::transform(const Matrix& matrix)
 void Ray::normalize()
 {
 	if (_direction.isZero())
-		throw EngineException("Invalid ray object; a ray's direction must be non-zero.");
+		THROW(EngineException, "Invalid ray object: the ray's direction must be non-zero");
 
-	// Normalize the ray's direction vector.
+	// Normalize the ray's direction vector
 	float normalizeFactor = 1.0f / sqrt(_direction.x * _direction.x + _direction.y * _direction.y + _direction.z * _direction.z);
 	if (normalizeFactor != 1.0f)
 	{

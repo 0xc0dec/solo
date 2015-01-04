@@ -4,7 +4,6 @@
 
 using namespace solo;
 
-
 class Callback : public IEngineCallback
 {
 public:

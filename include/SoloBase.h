@@ -12,11 +12,14 @@
 #include <tuple>
 #include <sstream>
 
+// It's possibly slow as hell due to the ostringstream inline creation
+#define TOSTR(x) [&] () -> std::string { std::ostringstream ss; ss << x; return ss.str(); }()
+
 namespace solo
 {
-#	define PTR_DCAST		std::dynamic_pointer_cast
-#	define PTR_SCAST		std::static_pointer_cast
-#	define NEW				std::make_shared
+#	define PTR_DCAST	std::dynamic_pointer_cast
+#	define PTR_SCAST	std::static_pointer_cast
+#	define NEW			std::make_shared
 
 	template <typename T> using ptr = std::shared_ptr<T>;
 

@@ -14,7 +14,7 @@ DeviceSDLGL::DeviceSDLGL(EngineCreationArgs const& args)
 	: Device(args)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) < 0)
-		throw EngineException("Failed to initialize system");
+		THROW(EngineException, "Failed to initialize system");
 	
 	auto ctxVersion = _selectContextVersion(MAX_GL_CONTEXT_VERSION_MAJOR, MAX_GL_CONTEXT_VERSION_MINOR);
 	auto major = std::get<0>(ctxVersion);
@@ -25,15 +25,15 @@ DeviceSDLGL::DeviceSDLGL(EngineCreationArgs const& args)
 	
 	_window = std::get<0>(windowWithContext);
 	if (!_window)
-		throw EngineException("Failed to create device");
+		THROW(EngineException, "Failed to create device");
 
 	_context = std::get<1>(windowWithContext);
 	if (!_context)
-		throw EngineException("Failed to init OpenGL context");
+		THROW(EngineException, "Failed to init OpenGL context");
 
 	glewExperimental = true;
 	if (glewInit())
-		throw EngineException("Failed to init OpenGL extensions");
+		THROW(EngineException, "Failed to init OpenGL extensions");
 
 	SDL_GL_SetSwapInterval(1);
 }

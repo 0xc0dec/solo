@@ -3,6 +3,8 @@
 
 #include "SoloBase.h"
 
+#define THROW(TExc, msg) throw TExc(TOSTR(msg))
+
 namespace solo
 {
 	class EngineException

@@ -3,7 +3,7 @@
 
 #include "TestBase.h"
 
-const char * testVertexShader =
+const char * vs =
 	"#version 330 core\n"
 
 	"layout(location = 0) in vec3 vertexPositionModelSpace;"
@@ -14,7 +14,7 @@ const char * testVertexShader =
 	"	gl_Position = vec4(vertexPositionModelSpace, 1);\n"
 	"}";
 
-const char *testFragmentShader =
+const char *fs =
 	"#version 330 core\n"
 
 	"out vec3 color;\n"
@@ -30,7 +30,7 @@ class GPUProgramTest : public TestBase
 public:
 	virtual void run(IEngine *engine) override
 	{
-		auto program = engine->getDevice()->createGPUProgram(testVertexShader, testFragmentShader);
+		auto program = engine->getDevice()->createGPUProgram(vs, fs);
 		assert(program->isValid());
 		assert(program->getLog().empty());
 	}

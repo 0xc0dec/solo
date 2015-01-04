@@ -3,11 +3,12 @@
 
 #include "SoloBaseInternal.h"
 
-#define DEBUG(msg) solo::Log(solo::Log::LogLevel::Debug) << msg;
-#define INFO(msg) solo::Log(solo::Log::LogLevel::Info) << msg;
-#define WARN(msg) solo::Log(solo::Log::LogLevel::Warning) << msg;
-#define ERROR(msg) solo::Log(solo::Log::LogLevel::Error) << msg;
-#define CRITICAL(msg) solo::Log(solo::Log::LogLevel::Critical) << msg;
+#define DEBUG(msg) solo::Log(solo::Log::LogLevel::Debug) << TOSTR(msg);
+#define INFO(msg) solo::Log(solo::Log::LogLevel::Info) << TOSTR(msg);
+#define WARN(msg) solo::Log(solo::Log::LogLevel::Warning) << TOSTR(msg);
+#define ERROR(msg) solo::Log(solo::Log::LogLevel::Error) << TOSTR(msg);
+#define CRITICAL(msg) solo::Log(solo::Log::LogLevel::Critical) << TOSTR(msg);
+#define CRITICAL(msg) solo::Log(solo::Log::LogLevel::Critical) << TOSTR(msg);
 
 namespace solo
 {
