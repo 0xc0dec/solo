@@ -8,7 +8,9 @@ namespace solo
 	class VideoDriverOpenGL : public VideoDriver
 	{
 	public:
-		ptr<IGPUProgram> createGPUProgram(const std::string &vsSrc, const std::string &fsSrc) override;
+		virtual ptr<IGPUProgram> createGPUProgram(const std::string &vsSrc, const std::string &fsSrc) override;
+
+		virtual void setViewport(int left, int top, int width, int height) override;
 	};
 }
 
