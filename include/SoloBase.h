@@ -14,13 +14,13 @@
 
 namespace solo
 {
-#	define dcast		std::dynamic_pointer_cast
-#	define scast		std::static_pointer_cast
-#	define makeptr		std::make_shared
+#	define PTR_DCAST		std::dynamic_pointer_cast
+#	define PTR_SCAST		std::static_pointer_cast
+#	define NEW				std::make_shared
 
 	template <typename T> using ptr = std::shared_ptr<T>;
 
-	extern "C" size_t computeHash(const std::string &s);
+	extern "C" size_t getHash(const std::string &s);
 }
 
 #endif

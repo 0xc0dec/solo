@@ -24,16 +24,17 @@ namespace solo
 
 		template <typename TComponent> ptr<TComponent> addComponent(size_t node)
 		{
-			auto cmp = makeptr<TComponent>();
-			auto base = scast<IComponent>(cmp);
+			auto cmp = NEW<TComponent>();
+			auto base = PTR_SCAST<IComponent>(cmp);
 			addComponent(node, base);
 			return cmp;
 		}
 
-		template <typename TComponent> ptr<TComponent> getComponent(size_t node, size_t typeId)
+		template <typename TComponent> ptr<TComponent> getComponent(size_t node)
 		{
+			auto typeId = TComponent::getComponentTypeId();
 			auto cmp = getComponent(node, typeId);
-			return dcast<TComponent>(cmp);
+			return PTR_DCAST<TComponent>(cmp);
 		}
 
 		virtual void addSystem(ptr<ISystem> system, size_t targetComponentTypeId) = 0;
@@ -42,8 +43,8 @@ namespace solo
 
 		template <typename TSystem> ptr<TSystem> addSystem(size_t targetComponentTypeId)
 		{
-			auto system = makeptr<TSystem>();
-			auto base = scast<ISystem>(system);
+			auto system = NEW<TSystem>();
+			auto base = PTR_SCAST<ISystem>(system);
 			addSystem(base, targetComponentTypeId);
 			return system;
 		}

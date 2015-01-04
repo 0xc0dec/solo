@@ -1,4 +1,3 @@
-#include <iostream>
 #include "GPUProgramTest.h"
 #include "ComponentsTest.h"
 #include "TransformTest.h"

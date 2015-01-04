@@ -16,7 +16,7 @@ namespace solo
 
 		ptr<IGPUProgram> createGPUProgram(const std::string &vsSrc, const std::string &fsSrc) override;
 
-		unsigned long lifetime() const override;
+		unsigned long getLifetime() const override;
 		void update() override;
 
 	private:

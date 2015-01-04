@@ -37,16 +37,16 @@ void Engine::_run(const EngineCreationArgs &args)
 
 	// SDL is the only available option right now
 	INFO("Creating device");
-	_device = makeptr<DeviceSDLGL>(args);
+	_device = NEW<DeviceSDLGL>(args);
 
 	INFO("Creating scene");
-	_scene = makeptr<Scene>();
+	_scene = NEW<Scene>();
 
 	_callback->onEngineStarted();
 
 	while (true)
 	{
-		auto time = _device->lifetime();
+		auto time = _device->getLifetime();
 		_deltaTime = (time - _lastUpdateTime) / 1000.0f;
 		_lastUpdateTime = time;
 		_callback->onBeforeFrame();

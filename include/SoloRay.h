@@ -13,9 +13,6 @@ namespace solo
 	class Ray
 	{
 	public:
-		/**
-		* Represents when a 3D entity does not intersect a ray.
-		*/
 		static const int INTERSECTS_NONE = -1;
 
 		Ray();

@@ -11,7 +11,7 @@ public:
 	{
 		auto scene = engine->getScene();
 		auto node = scene->createNodeWithTransform();
-		auto transform = scene->getComponent<ITransform>(node, ITransform::getComponentTypeId());
+		auto transform = scene->getComponent<ITransform>(node);
 		assert(transform);
 	}
 };

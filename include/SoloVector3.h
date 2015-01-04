@@ -19,14 +19,6 @@ namespace solo
 		Vector3(const Vector3& p1, const Vector3& p2);
 		Vector3(const Vector3& copy);
 
-		/**
-		* Creates a new vector from an integer interpreted as an RGB value.
-		* E.g. 0xff0000 represents red or the vector (1, 0, 0).
-		*
-		* @param color The integer to interpret as an RGB value.
-		*
-		* @return A vector corresponding to the interpreted RGB color.
-		*/
 		static Vector3 fromColor(unsigned int color);
 
 		~Vector3();
@@ -41,14 +33,7 @@ namespace solo
 		bool isZero() const;
 		bool isOne() const;
 
-		/**
-		* Returns the angle (in radians) between the specified vectors.
-		*
-		* @param v1 The first vector.
-		* @param v2 The second vector.
-		*
-		* @return The angle between the two vectors (in radians).
-		*/
+		// in radians
 		static float angle(const Vector3& v1, const Vector3& v2);
 
 		void add(const Vector3& v);
@@ -84,17 +69,6 @@ namespace solo
 		void subtract(const Vector3& v);
 		static void subtract(const Vector3& v1, const Vector3& v2, Vector3* dst);
 
-		/**
-		* Updates this vector towards the given target using a smoothing function.
-		* The given response time determines the amount of smoothing (lag). A longer
-		* response time yields a smoother result and more lag. To force this vector to
-		* follow the target closely, provide a response time that is very small relative
-		* to the given elapsed time.
-		*
-		* @param target target value.
-		* @param elapsedTime elapsed time between calls.
-		* @param responseTime response time (in the same units as elapsedTime).
-		*/
 		void smooth(const Vector3& target, float elapsedTime, float responseTime);
 
 		inline Vector3 operator+(const Vector3& v) const;

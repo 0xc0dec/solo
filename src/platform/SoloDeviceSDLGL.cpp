@@ -72,7 +72,7 @@ std::tuple<int, int> DeviceSDLGL::_selectContextVersion(int desiredMajorVersion,
 }
 
 
-std::tuple<SDL_Window*, SDL_GLContext> DeviceSDLGL::_tryInitWindowWithContext(bool fake, int ctxMajorVersion, int ctxMinorVersion)
+std::tuple<SDL_Window*, SDL_GLContext> DeviceSDLGL::_tryInitWindowWithContext(bool hidden, int ctxMajorVersion, int ctxMinorVersion)
 {
 	SDL_Window *window;
 	SDL_GLContext context;
@@ -84,12 +84,9 @@ std::tuple<SDL_Window*, SDL_GLContext> DeviceSDLGL::_tryInitWindowWithContext(bo
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	
 	auto flags = static_cast<int>(SDL_WINDOW_OPENGL);
-	auto title = fake ? "" : _creationArgs.windowTitle;
-	auto width = fake ? 100 : _creationArgs.canvasWidth;
-	auto height = fake ? 100 : _creationArgs.canvasHeight;
-	if (fake)
+	if (hidden)
 		flags |= SDL_WINDOW_HIDDEN;
-	window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
+	window = SDL_CreateWindow(_creationArgs.windowTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _creationArgs.canvasWidth, _creationArgs.canvasHeight, flags);
 	if (window)
 		context = SDL_GL_CreateContext(window);
 	
@@ -120,7 +117,7 @@ void DeviceSDLGL::setWindowTitle(const char *title)
 
 ptr<IGPUProgram> DeviceSDLGL::createGPUProgram(const std::string &vsSrc, const std::string &fsSrc)
 {
-	auto program = makeptr<GPUProgramGLSL>(vsSrc, fsSrc);
+	auto program = NEW<GPUProgramGLSL>(vsSrc, fsSrc);
 	_gpuPrograms.push_back(program);
 	return program;
 }
@@ -147,7 +144,7 @@ void DeviceSDLGL::_processSystemEvents()
 }
 
 
-unsigned long DeviceSDLGL::lifetime() const
+unsigned long DeviceSDLGL::getLifetime() const
 {
 	return SDL_GetTicks();
 }

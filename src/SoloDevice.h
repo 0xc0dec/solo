@@ -18,7 +18,7 @@ namespace solo
 		bool closeRequested() const { return _closeRequested; }
 
 		/// Returns time elapsed since the engine startup in ms
-		virtual unsigned long lifetime() const = 0;
+		virtual unsigned long getLifetime() const = 0;
 		virtual void update() = 0;
 
 	protected:

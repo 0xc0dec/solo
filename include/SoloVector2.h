@@ -28,9 +28,7 @@ namespace solo
 		bool isZero() const;
 		bool isOne() const;
 
-		/**
-		 * Returns the angle (in radians) between the specified vectors.
-		 */
+		// in radians
 		static float angle(const Vector2& v1, const Vector2& v2);
 
 		void add(const Vector2& v);
@@ -56,12 +54,6 @@ namespace solo
 		void scale(float scalar);
 		void scale(const Vector2& scale);
 
-		/**
-		 * Rotates this vector by angle (specified in radians) around the given point.
-		 *
-		 * @param point The point to rotate around.
-		 * @param angle The angle to rotate by (in radians).
-		 */
 		void rotate(const Vector2& point, float angle);
 
 		void set(float x, float y);
@@ -72,17 +64,6 @@ namespace solo
 		void subtract(const Vector2& v);
 		static void subtract(const Vector2& v1, const Vector2& v2, Vector2* dst);
 
-		/**
-		 * Updates this vector towards the given target using a smoothing function.
-		 * The given response time determines the amount of smoothing (lag). A longer
-		 * response time yields a smoother result and more lag. To force this vector to
-		 * follow the target closely, provide a response time that is very small relative
-		 * to the given elapsed time.
-		 *
-		 * @param target target value.
-		 * @param elapsedTime elapsed time between calls.
-		 * @param responseTime response time (in the same units as elapsedTime).
-		 */
 		void smooth(const Vector2& target, float elapsedTime, float responseTime);
 		
 		inline Vector2 operator+(const Vector2& v) const;
@@ -104,13 +85,6 @@ namespace solo
 		inline bool operator!=(const Vector2& v) const;
 	};
 
-	/**
-	 * Calculates the scalar product of the given vector with the given value.
-	 * 
-	 * @param x The value to scale by.
-	 * @param v The vector to scale.
-	 * @return The scaled vector.
-	 */
 	inline Vector2 operator*(float x, const Vector2& v)
 	{
 		Vector2 result(v);

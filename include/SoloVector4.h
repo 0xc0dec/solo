@@ -17,14 +17,6 @@ namespace solo
 		Vector4(const Vector4& p1, const Vector4& p2);
 		Vector4(const Vector4& copy);
 
-		/**
-		* Creates a new vector from an integer interpreted as an RGBA value.
-		* E.g. 0xff0000ff represents opaque red or the vector (1, 0, 0, 1).
-		*
-		* @param color The integer to interpret as an RGBA value.
-		*
-		* @return A vector corresponding to the interpreted RGBA color.
-		*/
 		static Vector4 fromColor(unsigned int color);
 
 		~Vector4();
@@ -40,14 +32,7 @@ namespace solo
 		bool isZero() const;
 		bool isOne() const;
 
-		/**
-		* Returns the angle (in radians) between the specified vectors.
-		*
-		* @param v1 The first vector.
-		* @param v2 The second vector.
-		*
-		* @return The angle between the two vectors (in radians).
-		*/
+		// in radians
 		static float angle(const Vector4& v1, const Vector4& v2);
 
 		void add(const Vector4& v);

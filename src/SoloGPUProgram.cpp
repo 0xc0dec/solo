@@ -8,7 +8,7 @@ GPUProgram::GPUProgram(const std::string &vsShaderSrc, const std::string &fsShad
 {
 	auto allSources = vsShaderSrc;
 	allSources.append(fsShaderSrc);
-	_id = computeHash(allSources);
+	_id = getHash(allSources);
 }
 
 
