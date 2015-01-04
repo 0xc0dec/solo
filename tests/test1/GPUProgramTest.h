@@ -30,7 +30,7 @@ class GPUProgramTest : public TestBase
 public:
 	virtual void run(IEngine *engine) override
 	{
-		auto program = engine->getDevice()->createGPUProgram(vs, fs);
+		auto program = engine->getVideoDriver()->createGPUProgram(vs, fs);
 		assert(program->isValid());
 		assert(program->getLog().empty());
 	}

@@ -34,6 +34,7 @@
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\include\SoloIGPUProgram.h" />
     <ClInclude Include="..\include\SoloITransform.h" />
+    <ClInclude Include="..\include\SoloIVideoDriver.h" />
     <ClInclude Include="..\include\SoloMaterial.h" />
     <ClInclude Include="..\include\SoloMath.h" />
     <ClInclude Include="..\include\SoloMatrix.h" />
@@ -46,6 +47,7 @@
     <ClInclude Include="..\include\SoloVector4.h" />
     <ClInclude Include="..\src\platform\SoloGPUProgramGLSL.h" />
     <ClInclude Include="..\src\platform\SoloDeviceSDLGL.h" />
+    <ClInclude Include="..\src\platform\SoloVideoDriverOpenGL.h" />
     <ClInclude Include="..\src\SoloFileSystem.h" />
     <ClInclude Include="..\src\SoloBaseInternal.h" />
     <ClInclude Include="..\src\SoloDevice.h" />
@@ -54,6 +56,7 @@
     <ClInclude Include="..\src\SoloScene.h" />
     <ClInclude Include="..\src\SoloGPUProgram.h" />
     <ClInclude Include="..\src\SoloTransform.h" />
+    <ClInclude Include="..\src\SoloVideoDriver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\glew\src\glew.c" />
@@ -62,6 +65,7 @@
     <ClCompile Include="..\include\SoloQuaternion.cpp" />
     <ClCompile Include="..\src\platform\SoloGPUProgramGLSL.cpp" />
     <ClCompile Include="..\src\platform\SoloDeviceSDLGL.cpp" />
+    <ClCompile Include="..\src\platform\SoloVideoDriverOpenGL.cpp" />
     <ClCompile Include="..\src\SoloBoundingBox.cpp" />
     <ClCompile Include="..\src\SoloBoundingSphere.cpp" />
     <ClCompile Include="..\src\SoloFileSystem.cpp" />

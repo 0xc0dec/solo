@@ -5,6 +5,7 @@
 #include "SoloIEngine.h"
 #include "SoloScene.h"
 #include "SoloDevice.h"
+#include "SoloVideoDriver.h"
 
 namespace solo
 {
@@ -35,6 +36,11 @@ namespace solo
 			return _device;
 		}
 
+		virtual ptr<IVideoDriver> getVideoDriver() const override
+		{
+			return _driver;
+		}
+
 		virtual float getTimeDelta() const override
 		{
 			return _timeDelta;
@@ -44,6 +50,7 @@ namespace solo
 		IEngineCallback *_callback;
 		ptr<Scene> _scene;
 		ptr<Device> _device;
+		ptr<VideoDriver> _driver;
 
 		unsigned long _lastUpdateTime;
 		float _timeDelta;

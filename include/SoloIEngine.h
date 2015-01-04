@@ -17,6 +17,7 @@ namespace solo
 
 	class IScene;
 	class IDevice;
+	class IVideoDriver;
 	class IEngineCallback;
 
 	class IEngine
@@ -30,6 +31,7 @@ namespace solo
 
 		virtual ptr<IDevice> getDevice() const = 0;
 		virtual ptr<IScene> getScene() const = 0;
+		virtual ptr<IVideoDriver> getVideoDriver() const = 0;
 
 		virtual float getTimeDelta() const = 0;
 	};

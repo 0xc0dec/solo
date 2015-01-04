@@ -115,14 +115,6 @@ void DeviceSDLGL::setWindowTitle(const char *title)
 }
 
 
-ptr<IGPUProgram> DeviceSDLGL::createGPUProgram(const std::string &vsSrc, const std::string &fsSrc)
-{
-	auto program = NEW<GPUProgramGLSL>(vsSrc, fsSrc);
-	_gpuPrograms.push_back(program);
-	return program;
-}
-
-
 void DeviceSDLGL::_processSystemEvents()
 {
 	SDL_Event evt;

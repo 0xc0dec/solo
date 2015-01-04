@@ -15,6 +15,7 @@
 #include "SoloIMaterial.h"
 #include "SoloIScene.h"
 #include "SoloITransform.h"
+#include "SoloIVideoDriver.h"
 #include "SoloMath.h"
 #include "SoloMatrix.h"
 #include "SoloPlane.h"

@@ -106,6 +106,15 @@
     <ClInclude Include="..\include\SoloFormatter.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloIVideoDriver.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloVideoDriver.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\SoloVideoDriverOpenGL.h">
+      <Filter>src\platform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">
@@ -182,6 +191,9 @@
     </ClCompile>
     <ClCompile Include="..\src\SoloTransform.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\SoloVideoDriverOpenGL.cpp">
+      <Filter>src\platform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

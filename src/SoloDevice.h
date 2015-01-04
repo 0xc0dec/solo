@@ -3,12 +3,9 @@
 
 #include "SoloIDevice.h"
 #include "SoloIEngine.h"
-#include "SoloBaseInternal.h"
 
 namespace solo
 {
-	class GPUProgram;
-
 	class Device: public IDevice
 	{
 	public:
@@ -24,8 +21,6 @@ namespace solo
 	protected:
 		bool _closeRequested;
 		EngineCreationArgs _creationArgs;
-
-		std::list<ptr<GPUProgram>> _gpuPrograms;
 	};
 }
 
