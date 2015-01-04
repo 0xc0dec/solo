@@ -3,7 +3,7 @@
 
 #include "SoloBase.h"
 
-#define THROW(TExc, msg) throw TExc(TOSTR(msg))
+#define THROW(TExc, ...) throw TExc(FORMAT(__VA_ARGS__))
 
 namespace solo
 {

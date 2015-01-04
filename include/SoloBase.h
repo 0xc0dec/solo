@@ -11,9 +11,7 @@
 #include <algorithm>
 #include <tuple>
 #include <sstream>
-
-// It's possibly slow as hell due to the ostringstream inline creation
-#define TOSTR(x) [&] () -> std::string { std::ostringstream ss; ss << x; return ss.str(); }()
+#include "SoloFormatter.h"
 
 namespace solo
 {

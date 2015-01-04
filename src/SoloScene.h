@@ -13,8 +13,8 @@ namespace solo
 	public:
 		explicit Scene();
 
+		virtual size_t createEmptyNode() override;
 		virtual size_t createNode() override;
-		virtual size_t createNodeWithTransform() override;
 
 		virtual bool nodeExists(size_t node) override;
 
@@ -22,24 +22,15 @@ namespace solo
 		virtual ptr<IComponent> findComponent(size_t node, size_t typeId) override;
 		virtual ptr<IComponent> getComponent(size_t node, size_t typeId) override;
 
-		void addSystem(ptr<ISystem> system, size_t targetComponentTypeId) override;
-		void removeSystem(ptr<ISystem> system) override;
-		bool systemAlreadyAdded(ptr<ISystem> system) override;
-
 		void update();
 
 	private:
-		int _nodeCounter;
-
 		typedef std::map<size_t, std::map<size_t, ptr<IComponent>>> NodeComponents;
-		typedef std::list<std::pair<size_t, ptr<ISystem>>> Systems; // { nodeId: { componentTypeId: component } }
 
+		int _nodeCounter;
 		NodeComponents _nodeComponents;
-		Systems _systems;
 
 		void _ensureNodeExists(size_t node);
-		Systems::iterator _findSystem(ptr<ISystem> system);
-		void _ensureSystemNotAdded(ptr<ISystem> system);
 	};
 }
 

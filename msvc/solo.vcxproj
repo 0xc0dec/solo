@@ -23,6 +23,7 @@
     <ClInclude Include="..\include\SoloBoundingBox.h" />
     <ClInclude Include="..\include\SoloBoundingSphere.h" />
     <ClInclude Include="..\include\SoloException.h" />
+    <ClInclude Include="..\include\SoloFormatter.h" />
     <ClInclude Include="..\include\SoloFrustum.h" />
     <ClInclude Include="..\include\SoloIComponent.h" />
     <ClInclude Include="..\include\SoloIDevice.h" />
@@ -32,7 +33,6 @@
     <ClInclude Include="..\include\SoloIScene.h" />
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\include\SoloIGPUProgram.h" />
-    <ClInclude Include="..\include\SoloISystem.h" />
     <ClInclude Include="..\include\SoloITransform.h" />
     <ClInclude Include="..\include\SoloMaterial.h" />
     <ClInclude Include="..\include\SoloMath.h" />
@@ -53,7 +53,6 @@
     <ClInclude Include="..\src\SoloLog.h" />
     <ClInclude Include="..\src\SoloScene.h" />
     <ClInclude Include="..\src\SoloGPUProgram.h" />
-    <ClInclude Include="..\src\SoloSystem.h" />
     <ClInclude Include="..\src\SoloTransform.h" />
   </ItemGroup>
   <ItemGroup>
@@ -78,7 +77,6 @@
     <ClCompile Include="..\src\SoloRay.cpp" />
     <ClCompile Include="..\src\SoloScene.cpp" />
     <ClCompile Include="..\src\SoloGPUProgram.cpp" />
-    <ClCompile Include="..\src\SoloSystem.cpp" />
     <ClCompile Include="..\src\SoloTransform.cpp" />
     <ClCompile Include="..\src\SoloVector2.cpp" />
     <ClCompile Include="..\src\SoloVector3.cpp" />

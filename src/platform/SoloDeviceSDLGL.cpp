@@ -19,7 +19,7 @@ DeviceSDLGL::DeviceSDLGL(EngineCreationArgs const& args)
 	auto ctxVersion = _selectContextVersion(MAX_GL_CONTEXT_VERSION_MAJOR, MAX_GL_CONTEXT_VERSION_MINOR);
 	auto major = std::get<0>(ctxVersion);
 	auto minor = std::get<1>(ctxVersion);
-	INFO("Using OpenGL context version " << major << "." << minor);
+	INFO("Using OpenGL context version ", major, ".", minor);
 	
 	auto windowWithContext = _tryInitWindowWithContext(false, major, minor);
 	

@@ -10,7 +10,7 @@ public:
 	virtual void run(IEngine *engine) override
 	{
 		auto scene = engine->getScene();
-		auto node = scene->createNodeWithTransform();
+		auto node = scene->createNode();
 		auto transform = scene->getComponent<ITransform>(node);
 		assert(transform);
 	}

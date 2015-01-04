@@ -1,6 +1,5 @@
 #include "SoloScene.h"
 #include "SoloIComponent.h"
-#include "SoloSystem.h"
 #include "SoloException.h"
 #include "SoloTransform.h"
 
@@ -13,16 +12,16 @@ Scene::Scene()
 }
 
 
-size_t Scene::createNode()
+size_t Scene::createEmptyNode()
 {
 	_nodeComponents[++_nodeCounter];
 	return _nodeCounter;
 }
 
 
-size_t Scene::createNodeWithTransform()
+size_t Scene::createNode()
 {
-	auto node = createNode();
+	auto node = createEmptyNode();
 	this->IScene::addComponent<Transform>(node);
 	return node;
 }
@@ -38,7 +37,7 @@ void Scene::addComponent(size_t node, ptr<IComponent> cmp)
 {
 	_ensureNodeExists(node);
 	if (findComponent(node, cmp->getTypeId()))
-		THROW(EngineException, "Component " << cmp->getTypeId() << " already exists");
+		THROW(EngineException, "Component ", cmp->getTypeId(), " already exists");
 	_nodeComponents[node][cmp->getTypeId()] = cmp;
 }
 
@@ -47,7 +46,7 @@ ptr<IComponent> Scene::getComponent(size_t node, size_t typeId)
 {
 	auto cmp = findComponent(node, typeId);
 	if (!cmp)
-		THROW(EngineException, "Component " << typeId << " not found");
+		THROW(EngineException, "Component ", typeId, " not found");
 	return cmp;
 }
 
@@ -63,18 +62,10 @@ ptr<IComponent> Scene::findComponent(size_t node, size_t typeId)
 
 void Scene::update()
 {
-	// TODO This might be optimised
-	for (auto system : _systems)
+	for (auto node : _nodeComponents)
 	{
-		auto targetComponentId = system.first;
-		for (auto node : _nodeComponents)
-		{
-			for (auto cmp : node.second)
-			{
-				if (cmp.second->getTypeId() == targetComponentId)
-					system.second->update(node.first, cmp.second);
-			}
-		}
+		for (auto cmp : node.second)
+			cmp.second->update();
 	}
 }
 
@@ -82,39 +73,5 @@ void Scene::update()
 void Scene::_ensureNodeExists(size_t node)
 {
 	if (!nodeExists(node))
-		THROW(EngineException, "Node " << node << " not found");
-}
-
-
-Scene::Systems::iterator Scene::_findSystem(ptr<ISystem> system)
-{
-	return std::find_if(_systems.begin(), _systems.end(), [&](Systems::reference pair) -> bool { return pair.second == system; });
-}
-
-
-void Scene::_ensureSystemNotAdded(ptr<ISystem> system)
-{
-	if (systemAlreadyAdded(system))
-		throw EngineException("System already added");
-}
-
-
-void Scene::addSystem(ptr<ISystem> system, size_t targetComponentTypeId)
-{
-	_ensureSystemNotAdded(system);
-	_systems.push_back(std::make_pair(targetComponentTypeId, system));
-}
-
-
-void Scene::removeSystem(ptr<ISystem> system)
-{
-	auto it = _findSystem(system);
-	if (it != _systems.end()) // really needed?
-		_systems.erase(it);
-}
-
-
-bool Scene::systemAlreadyAdded(ptr<ISystem> system)
-{
-	return _findSystem(system) != _systems.end();
+		THROW(EngineException, "Node ", node, " not found");
 }

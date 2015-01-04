@@ -27,7 +27,7 @@ GPUProgramGLSL::GPUProgramGLSL(const std::string &vsShaderSrc, const std::string
 	glDeleteShader(vs);
 	glDeleteShader(fs);
 
-	DEBUG("Created gpu program " << _id);
+	DEBUG("Created gpu program ", _id);
 }
 
 
@@ -36,7 +36,7 @@ GPUProgramGLSL::~GPUProgramGLSL()
 	if (_valid)
 	{
 		glDeleteProgram(_program);
-		DEBUG("Destroyed gpu program " << _id);
+		DEBUG("Destroyed gpu program ", _id);
 	}
 }
 

@@ -113,7 +113,7 @@ void Matrix::createPerspective(float fieldOfView, float aspectRatio, float zNear
 	float f_n = 1.0f / (zFarPlane - zNearPlane);
 	float theta = MATH_DEG_TO_RAD(fieldOfView) * 0.5f;
 	if (fabs(fmod(theta, MATH_PIOVER2)) < MATH_EPSILON)
-		THROW(EngineException, "Invalid field of view value " << fieldOfView << " caused attempted tan calculation, which is undefined");
+		THROW(EngineException, "Invalid field of view value ", fieldOfView, " caused attempted tan calculation, which is undefined");
 	float divisor = tan(theta);
 	float factor = 1.0f / divisor;
 

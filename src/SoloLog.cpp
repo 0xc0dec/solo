@@ -3,18 +3,16 @@
 
 using namespace solo;
 
-Log::Log(LogLevel level)
-	: _level(level)
+Log::Log(const std::string &msg, LogLevel level)
+	: _level(level),
+	_message(msg)
 {
 }
 
 
 Log::~Log()
 {
-	std::cout <<
-		"[" << _getLevelString() << "]	" <<
-		_buffer.str() <<
-		std::endl;
+	std::cout << FORMAT("[", _getLevelString(), "]	", _message) << std::endl;
 }
 
 
@@ -35,32 +33,4 @@ std::string Log::_getLevelString()
 		default:
 			return "";
 	}
-}
-
-
-Log &Log::operator<<(const char *msg)
-{
-	_buffer << msg;
-	return *this;
-}
-
-
-Log& Log::operator<<(int i)
-{
-	_buffer << i;
-	return *this;
-}
-
-
-Log& Log::operator<<(size_t s)
-{
-	_buffer << s;
-	return *this;
-}
-
-
-Log& Log::operator<<(const std::string &s)
-{
-	_buffer << s;
-	return *this;
 }

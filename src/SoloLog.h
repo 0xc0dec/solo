@@ -3,12 +3,11 @@
 
 #include "SoloBaseInternal.h"
 
-#define DEBUG(msg) solo::Log(solo::Log::LogLevel::Debug) << TOSTR(msg);
-#define INFO(msg) solo::Log(solo::Log::LogLevel::Info) << TOSTR(msg);
-#define WARN(msg) solo::Log(solo::Log::LogLevel::Warning) << TOSTR(msg);
-#define ERROR(msg) solo::Log(solo::Log::LogLevel::Error) << TOSTR(msg);
-#define CRITICAL(msg) solo::Log(solo::Log::LogLevel::Critical) << TOSTR(msg);
-#define CRITICAL(msg) solo::Log(solo::Log::LogLevel::Critical) << TOSTR(msg);
+#define DEBUG(...) solo::Log(FORMAT(__VA_ARGS__), solo::Log::LogLevel::Debug);
+#define INFO(...) solo::Log(FORMAT(__VA_ARGS__), solo::Log::LogLevel::Info);
+#define WARN(...) solo::Log(FORMAT(__VA_ARGS__), solo::Log::LogLevel::Warning);
+#define ERROR(...) solo::Log(FORMAT(__VA_ARGS__), solo::Log::LogLevel::Error);
+#define CRITICAL(...) solo::Log(FORMAT(__VA_ARGS__), solo::Log::LogLevel::Critical);
 
 namespace solo
 {
@@ -24,17 +23,12 @@ namespace solo
 			Critical
 		};
 
-		explicit Log(LogLevel level = LogLevel::Info);
+		explicit Log(const std::string &msg, LogLevel level = LogLevel::Info);
 		~Log();
-
-		Log &operator <<(const char *msg);
-		Log &operator <<(int i);
-		Log &operator <<(size_t s);
-		Log &operator <<(const std::string &s);
 
 	private:
 		LogLevel _level;
-		std::ostringstream _buffer;
+		std::string _message;
 		
 		std::string _getLevelString();
 	};

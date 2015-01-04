@@ -8,6 +8,10 @@ class TestComponent : public IComponent
 {
 public:
 	DECLARE_COMPONENT(TestComponent)
+
+	virtual void update() override
+	{
+	}
 };
 
 
@@ -18,29 +22,18 @@ public:
 };
 
 
-class TestSystem : public ISystem
-{
-public:
-	void update(size_t node, ptr<IComponent> component) override
-	{
-		assert(component->getTypeId() == TestComponent::getComponentTypeId());
-	}
-};
-
-
 class ComponentsTest : public TestBase
 {
 public:
 	virtual void run(IEngine* engine) override
 	{
-		engine->getScene()->addSystem<TestSystem>(TestComponent::getComponentTypeId());
 		testComponentsAddition(engine);
 	}
 
 	void testComponentsAddition(IEngine *engine)
 	{
 		auto scene = engine->getScene();
-		auto node = scene->createNode();
+		auto node = scene->createEmptyNode();
 		auto cmp = scene->addComponent<TestComponent>(node);
 		auto cmp2 = scene->addComponent<TestComponent2>(node);
 		assert(cmp);

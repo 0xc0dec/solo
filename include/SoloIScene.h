@@ -13,8 +13,11 @@ namespace solo
 	public:
 		virtual ~IScene() {}
 
+		// Creates node without components
+		virtual size_t createEmptyNode() = 0;
+
+		// Creates node with transform
 		virtual size_t createNode() = 0;
-		virtual size_t createNodeWithTransform() = 0;
 
 		virtual bool nodeExists(size_t node) = 0;
 
@@ -30,23 +33,18 @@ namespace solo
 			return cmp;
 		}
 
+		template <typename TComponent> ptr<TComponent> findComponent(size_t node)
+		{
+			auto typeId = TComponent::getComponentTypeId();
+			auto cmp = findComponent(node, typeId);
+			return PTR_DCAST<TComponent>(cmp);
+		}
+
 		template <typename TComponent> ptr<TComponent> getComponent(size_t node)
 		{
 			auto typeId = TComponent::getComponentTypeId();
 			auto cmp = getComponent(node, typeId);
 			return PTR_DCAST<TComponent>(cmp);
-		}
-
-		virtual void addSystem(ptr<ISystem> system, size_t targetComponentTypeId) = 0;
-		virtual void removeSystem(ptr<ISystem> system) = 0;
-		virtual bool systemAlreadyAdded(ptr<ISystem> system) = 0;
-
-		template <typename TSystem> ptr<TSystem> addSystem(size_t targetComponentTypeId)
-		{
-			auto system = NEW<TSystem>();
-			auto base = PTR_SCAST<ISystem>(system);
-			addSystem(base, targetComponentTypeId);
-			return system;
 		}
 	};
 }

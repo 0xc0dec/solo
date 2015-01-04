@@ -100,13 +100,10 @@
     <ClInclude Include="..\src\SoloTransform.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloSystem.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloISystem.h">
+    <ClInclude Include="..\include\SoloTypeId.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloTypeId.h">
+    <ClInclude Include="..\include\SoloFormatter.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
@@ -184,9 +181,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloTransform.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloSystem.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
