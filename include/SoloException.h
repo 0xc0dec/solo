@@ -10,13 +10,8 @@ namespace solo
 	public:
 		std::string message;
 
-		EngineException()
-		{
-		}
-
-		EngineException(const std::string &msg) : message(msg)
-		{
-		}
+		EngineException() {}
+		EngineException(const std::string &msg) : message(msg) {}
 	};
 }
 

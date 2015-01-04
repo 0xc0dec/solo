@@ -31,7 +31,7 @@ namespace solo
 		virtual ptr<IDevice> getDevice() const = 0;
 		virtual ptr<IScene> getScene() const = 0;
 
-		virtual float getDeltaTime() const = 0;
+		virtual float getTimeDelta() const = 0;
 	};
 }
 

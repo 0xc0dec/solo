@@ -35,7 +35,7 @@ namespace solo
 			return _device;
 		}
 
-		virtual float getDeltaTime() const override
+		virtual float getTimeDelta() const override
 		{
 			return _deltaTime;
 		}

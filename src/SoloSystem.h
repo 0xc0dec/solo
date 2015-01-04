@@ -3,7 +3,6 @@
 
 #include "SoloISystem.h"
 
-
 namespace solo
 {
 	class System: public ISystem

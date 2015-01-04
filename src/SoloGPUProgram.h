@@ -9,7 +9,7 @@ namespace solo
 	class GPUProgram: public IGPUProgram
 	{
 	public:
-		GPUProgram(const std::string &vsShaderSrc, const std::string &fsShaderSrc);
+		GPUProgram(const std::string &vsSrc, const std::string &fsSrc);
 		virtual ~GPUProgram();
 
 		virtual bool isValid() const override;

@@ -3,11 +3,11 @@
 using namespace solo;
 
 
-GPUProgram::GPUProgram(const std::string &vsShaderSrc, const std::string &fsShaderSrc)
+GPUProgram::GPUProgram(const std::string &vsSrc, const std::string &fsSrc)
 	: _valid(false)
 {
-	auto allSources = vsShaderSrc;
-	allSources.append(fsShaderSrc);
+	auto allSources = vsSrc;
+	allSources.append(fsSrc);
 	_id = getHash(allSources);
 }
 
