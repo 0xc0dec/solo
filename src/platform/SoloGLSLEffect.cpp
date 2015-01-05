@@ -1,21 +1,21 @@
-#include "SoloEffectGLSL.h"
+#include "SoloGLSLEffect.h"
 #include "../SoloLog.h"
 
 using namespace solo;
 
 
-EffectGLSL::EffectGLSL(const std::string &vsShaderSrc, const std::string &fsShaderSrc)
+GLSLEffect::GLSLEffect(const std::string &vsShaderSrc, const std::string &fsShaderSrc)
 	: Effect(vsShaderSrc, fsShaderSrc)
 {
-	auto vs = _tryCreateShader(GL_VERTEX_SHADER, vsShaderSrc);
+	auto vs = tryCreateShader(GL_VERTEX_SHADER, vsShaderSrc);
 	if (vs < 0)
 		return;
 
-	auto fs = _tryCreateShader(GL_FRAGMENT_SHADER, fsShaderSrc);
+	auto fs = tryCreateShader(GL_FRAGMENT_SHADER, fsShaderSrc);
 	if (fs < 0)
 		return;
 
-	auto program = _tryCreateProgram(vs, fs);
+	auto program = tryCreateProgram(vs, fs);
 	if (program < 0)
 		return;
 
@@ -31,7 +31,7 @@ EffectGLSL::EffectGLSL(const std::string &vsShaderSrc, const std::string &fsShad
 }
 
 
-EffectGLSL::~EffectGLSL()
+GLSLEffect::~GLSLEffect()
 {
 	if (_valid)
 	{
@@ -41,7 +41,7 @@ EffectGLSL::~EffectGLSL()
 }
 
 
-GLint EffectGLSL::_tryCreateProgram(GLuint vs, GLuint fs)
+GLint GLSLEffect::tryCreateProgram(GLuint vs, GLuint fs)
 {
 	auto program = glCreateProgram();
 	glAttachShader(program, vs);
@@ -68,7 +68,7 @@ GLint EffectGLSL::_tryCreateProgram(GLuint vs, GLuint fs)
 }
 
 
-GLint EffectGLSL::_tryCreateShader(GLuint type, std::string src)
+GLint GLSLEffect::tryCreateShader(GLuint type, std::string src)
 {
 	auto shader = glCreateShader(type);
 

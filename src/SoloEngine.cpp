@@ -2,8 +2,8 @@
 #include "SoloEngine.h"
 #include "SoloLog.h"
 #include "SoloException.h"
-#include "platform/SoloDeviceSDLGL.h"
-#include "platform/SoloVideoDriverOpenGL.h"
+#include "platform/SoloSDLGLDevice.h"
+#include "platform/SoloOpenGLVideoDriver.h"
 
 using namespace solo;
 
@@ -45,10 +45,10 @@ void Engine::doRun(const EngineCreationArgs &args)
 
 	// SDL is the only available option right now
 	INFO("Creating device");
-	_device = NEW<DeviceSDLGL>(args);
+	_device = NEW<SDLGLDevice>(args);
 
 	INFO("Creating video driver");
-	_driver = NEW<VideoDriverOpenGL>();
+	_driver = NEW<OpenGLVideoDriver>();
 
 	INFO("Creating scene");
 	_scene = NEW<Scene>();

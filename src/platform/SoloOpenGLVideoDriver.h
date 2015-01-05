@@ -1,11 +1,11 @@
-#ifndef __SOLO_VIDEO_DRIVER_OPENGL_H__
-#define __SOLO_VIDEO_DRIVER_OPENGL_H__
+#ifndef __SOLO_OPENGL_VIDEO_DRIVER_H__
+#define __SOLO_OPENGL_VIDEO_DRIVER_H__
 
 #include "../SoloVideoDriver.h"
 
 namespace solo
 {
-	class VideoDriverOpenGL : public VideoDriver
+	class OpenGLVideoDriver : public VideoDriver
 	{
 	public:
 		virtual ptr<IEffect> createEffect(const std::string &vsSrc, const std::string &fsSrc) override;

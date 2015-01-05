@@ -43,9 +43,6 @@
     <ClInclude Include="..\include\SoloMaterial.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\SoloDeviceSDLGL.h">
-      <Filter>src\platform</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloVector2.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -103,9 +100,6 @@
     <ClInclude Include="..\src\SoloVideoDriver.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\SoloVideoDriverOpenGL.h">
-      <Filter>src\platform</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloICamera.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -121,7 +115,13 @@
     <ClInclude Include="..\src\SoloEffect.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\SoloEffectGLSL.h">
+    <ClInclude Include="..\src\platform\SoloSDLGLDevice.h">
+      <Filter>src\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\SoloGLSLEffect.h">
+      <Filter>src\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\SoloOpenGLVideoDriver.h">
       <Filter>src\platform</Filter>
     </ClInclude>
   </ItemGroup>
@@ -152,9 +152,6 @@
     </ClCompile>
     <ClCompile Include="..\external\glew\src\visualinfo.c">
       <Filter>src\glew</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\SoloDeviceSDLGL.cpp">
-      <Filter>src\platform</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloVector2.cpp">
       <Filter>src</Filter>
@@ -195,16 +192,19 @@
     <ClCompile Include="..\src\SoloTransform.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\SoloVideoDriverOpenGL.cpp">
-      <Filter>src\platform</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloCamera.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloEffect.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\SoloEffectGLSL.cpp">
+    <ClCompile Include="..\src\platform\SoloSDLGLDevice.cpp">
+      <Filter>src\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\SoloGLSLEffect.cpp">
+      <Filter>src\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\SoloOpenGLVideoDriver.cpp">
       <Filter>src\platform</Filter>
     </ClCompile>
   </ItemGroup>

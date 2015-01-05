@@ -46,9 +46,9 @@
     <ClInclude Include="..\include\SoloVector2.h" />
     <ClInclude Include="..\include\SoloVector3.h" />
     <ClInclude Include="..\include\SoloVector4.h" />
-    <ClInclude Include="..\src\platform\SoloEffectGLSL.h" />
-    <ClInclude Include="..\src\platform\SoloDeviceSDLGL.h" />
-    <ClInclude Include="..\src\platform\SoloVideoDriverOpenGL.h" />
+    <ClInclude Include="..\src\platform\SoloGLSLEffect.h" />
+    <ClInclude Include="..\src\platform\SoloSDLGLDevice.h" />
+    <ClInclude Include="..\src\platform\SoloOpenGLVideoDriver.h" />
     <ClInclude Include="..\src\SoloCamera.h" />
     <ClInclude Include="..\src\SoloDirty.h" />
     <ClInclude Include="..\src\SoloFileSystem.h" />
@@ -66,9 +66,9 @@
     <ClCompile Include="..\external\glew\src\glewinfo.c" />
     <ClCompile Include="..\external\glew\src\visualinfo.c" />
     <ClCompile Include="..\include\SoloQuaternion.cpp" />
-    <ClCompile Include="..\src\platform\SoloEffectGLSL.cpp" />
-    <ClCompile Include="..\src\platform\SoloDeviceSDLGL.cpp" />
-    <ClCompile Include="..\src\platform\SoloVideoDriverOpenGL.cpp" />
+    <ClCompile Include="..\src\platform\SoloGLSLEffect.cpp" />
+    <ClCompile Include="..\src\platform\SoloSDLGLDevice.cpp" />
+    <ClCompile Include="..\src\platform\SoloOpenGLVideoDriver.cpp" />
     <ClCompile Include="..\src\SoloBoundingBox.cpp" />
     <ClCompile Include="..\src\SoloBoundingSphere.cpp" />
     <ClCompile Include="..\src\SoloCamera.cpp" />

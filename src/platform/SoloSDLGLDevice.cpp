@@ -1,7 +1,6 @@
 #include <GL/glew.h>
-#include "SoloDeviceSDLGL.h"
+#include "SoloSDLGLDevice.h"
 #include "SoloException.h"
-#include "SoloEffectGLSL.h"
 #include "../SoloLog.h"
 
 using namespace solo;
@@ -10,18 +9,18 @@ using namespace solo;
 #define MAX_GL_CONTEXT_VERSION_MINOR 5
 
 
-DeviceSDLGL::DeviceSDLGL(EngineCreationArgs const& args)
-	: Device(args)
+SDLGLDevice::SDLGLDevice(EngineCreationArgs const& args):
+	Device(args)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) < 0)
 		THROW(EngineException, "Failed to initialize system");
 	
-	auto ctxVersion = _selectContextVersion(MAX_GL_CONTEXT_VERSION_MAJOR, MAX_GL_CONTEXT_VERSION_MINOR);
+	auto ctxVersion = selectContextVersion(MAX_GL_CONTEXT_VERSION_MAJOR, MAX_GL_CONTEXT_VERSION_MINOR);
 	auto major = std::get<0>(ctxVersion);
 	auto minor = std::get<1>(ctxVersion);
 	INFO("Using OpenGL context version ", major, ".", minor);
 	
-	auto windowWithContext = _tryInitWindowWithContext(false, major, minor);
+	auto windowWithContext = tryCreateWindowWithContext(false, major, minor);
 	
 	_window = std::get<0>(windowWithContext);
 	if (!_window)
@@ -39,7 +38,7 @@ DeviceSDLGL::DeviceSDLGL(EngineCreationArgs const& args)
 }
 
 
-std::tuple<int, int> DeviceSDLGL::_selectContextVersion(int desiredMajorVersion, int desiredMinorVersion)
+std::tuple<int, int> SDLGLDevice::selectContextVersion(int desiredMajorVersion, int desiredMinorVersion)
 {
 	auto maxMinorVersion = desiredMinorVersion;
 	int minor = maxMinorVersion, major;
@@ -48,7 +47,7 @@ std::tuple<int, int> DeviceSDLGL::_selectContextVersion(int desiredMajorVersion,
 		SDL_GLContext context = nullptr;
 		for (minor = maxMinorVersion; minor >= 0; --minor)
 		{
-			auto windowWithContext = _tryInitWindowWithContext(true, major, minor);
+			auto windowWithContext = tryCreateWindowWithContext(true, major, minor);
 			auto window = std::get<0>(windowWithContext);
 			if (!window)
 				continue;
@@ -72,7 +71,7 @@ std::tuple<int, int> DeviceSDLGL::_selectContextVersion(int desiredMajorVersion,
 }
 
 
-std::tuple<SDL_Window*, SDL_GLContext> DeviceSDLGL::_tryInitWindowWithContext(bool hidden, int ctxMajorVersion, int ctxMinorVersion)
+std::tuple<SDL_Window*, SDL_GLContext> SDLGLDevice::tryCreateWindowWithContext(bool hidden, int ctxMajorVersion, int ctxMinorVersion)
 {
 	SDL_Window *window;
 	SDL_GLContext context;
@@ -94,7 +93,7 @@ std::tuple<SDL_Window*, SDL_GLContext> DeviceSDLGL::_tryInitWindowWithContext(bo
 }
 
 
-DeviceSDLGL::~DeviceSDLGL()
+SDLGLDevice::~SDLGLDevice()
 {
 	SDL_GL_DeleteContext(_context);
 	SDL_DestroyWindow(_window);
@@ -102,25 +101,25 @@ DeviceSDLGL::~DeviceSDLGL()
 }
 
 
-void DeviceSDLGL::beginUpdate()
+void SDLGLDevice::beginUpdate()
 {
-	_processSystemEvents();
+	processSystemEvents();
 }
 
 
-void DeviceSDLGL::endUpdate()
+void SDLGLDevice::endUpdate()
 {
 	SDL_GL_SwapWindow(_window);
 }
 
 
-void DeviceSDLGL::setWindowTitle(const char *title)
+void SDLGLDevice::setWindowTitle(const char *title)
 {
 	SDL_SetWindowTitle(_window, title);
 }
 
 
-void DeviceSDLGL::_processSystemEvents()
+void SDLGLDevice::processSystemEvents()
 {
 	SDL_Event evt;
 	while (SDL_PollEvent(&evt))
@@ -141,13 +140,13 @@ void DeviceSDLGL::_processSystemEvents()
 }
 
 
-unsigned long DeviceSDLGL::getLifetime() const
+unsigned long SDLGLDevice::getLifetime() const
 {
 	return SDL_GetTicks();
 }
 
 
-Vector2 DeviceSDLGL::getCanvasSize() const
+Vector2 SDLGLDevice::getCanvasSize() const
 {
 	int width, height;
 	SDL_GetWindowSize(_window, &width, &height);
