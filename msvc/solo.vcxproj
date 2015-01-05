@@ -31,6 +31,7 @@
     <ClInclude Include="..\include\SoloIEngine.h" />
     <ClInclude Include="..\include\SoloIEngineCallback.h" />
     <ClInclude Include="..\include\SoloIMaterial.h" />
+    <ClInclude Include="..\include\SoloIMeshRenderer.h" />
     <ClInclude Include="..\include\SoloIScene.h" />
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\include\SoloIEffect.h" />
@@ -56,6 +57,7 @@
     <ClInclude Include="..\src\SoloDevice.h" />
     <ClInclude Include="..\src\SoloEngine.h" />
     <ClInclude Include="..\src\SoloLog.h" />
+    <ClInclude Include="..\src\SoloMeshRenderer.h" />
     <ClInclude Include="..\src\SoloPass.h" />
     <ClInclude Include="..\src\SoloScene.h" />
     <ClInclude Include="..\src\SoloEffect.h" />
@@ -83,6 +85,7 @@
     <ClCompile Include="..\src\SoloMaterial.cpp" />
     <ClCompile Include="..\src\SoloMath.cpp" />
     <ClCompile Include="..\src\SoloMatrix.cpp" />
+    <ClCompile Include="..\src\SoloMeshRenderer.cpp" />
     <ClCompile Include="..\src\SoloPass.cpp" />
     <ClCompile Include="..\src\SoloPlane.cpp" />
     <ClCompile Include="..\src\SoloRay.cpp" />

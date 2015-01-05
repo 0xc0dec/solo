@@ -40,7 +40,7 @@ namespace solo
 
 	private:
 		float distance(const BoundingSphere& sphere, const Vector3&);
-		bool contains(const BoundingSphere& sphere, Vector3* points, unsigned int count);
+		bool contains(const BoundingSphere& sphere, Vector3* points, unsigned count);
 	};
 
 	inline BoundingSphere& BoundingSphere::operator*=(const Matrix& matrix)

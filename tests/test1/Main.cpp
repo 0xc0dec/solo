@@ -7,8 +7,8 @@ using namespace solo;
 class Callback : public IEngineCallback
 {
 public:
-	Callback(IEngine* engine)
-		: _engine(engine)
+	Callback(IEngine* engine):
+		_engine(engine)
 	{
 	}
 
@@ -18,10 +18,11 @@ public:
 		EffectsTest().run(_engine);
 		ComponentsTest().run(_engine);
 		TransformTest().run(_engine);
+		LOG("All tests passed");
 
 		auto node = _engine->getScene()->createNode();
 		auto camera = _engine->getScene()->createCamera(node);
-		camera->setClearColor(1, 0, 0, 1);
+		camera->setClearColor(0.2f, 0.5f, 0.5f, 1);
 
 		auto canvasSize = _engine->getDevice()->getCanvasSize();
 		std::cout << FORMAT("Canvas width: ", canvasSize.x, ", height: ", canvasSize.y) << std::endl;

@@ -44,7 +44,7 @@ namespace solo
 
 		template <typename TComponent> ptr<TComponent> getComponent(size_t node)
 		{
-			auto typeId = TComponent::getComponentTypeId();
+			auto typeId = TComponent::getId();
 			auto cmp = getComponent(node, typeId);
 			return PTR_CAST_DYNAMIC<TComponent>(cmp);
 		}

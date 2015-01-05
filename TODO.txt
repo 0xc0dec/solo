@@ -1,2 +1,2 @@
-* Camera handling
+* Materials, Passes, Techniques, Effects handling
 * Transform component, node hierarchy

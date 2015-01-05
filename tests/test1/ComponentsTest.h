@@ -3,21 +3,23 @@
 #include "TestBase.h"
 
 
-class TestComponent : public IComponent
+class A : public Component<A>
 {
-public:
-	DECLARE_COMPONENT(TestComponent)
-
-	virtual void update() override
-	{
-	}
 };
 
 
-class TestComponent2 : public IComponent
+class B: public Component<B>
 {
-public:
-	DECLARE_COMPONENT(TestComponent2)
+};
+
+
+class Base : public Component<Base>
+{
+};
+
+
+class Derived : public Base
+{
 };
 
 
@@ -26,18 +28,36 @@ class ComponentsTest : public TestBase
 public:
 	virtual void run(IEngine* engine) override
 	{
-		testComponentsAddition(engine);
+		_scene = engine->getScene();
+		_node = _scene->createEmptyNode();
+		testComponentsAddition();
+		testDerivedComponents();
 	}
 
-	void testComponentsAddition(IEngine *engine)
+	void testComponentsAddition()
 	{
-		auto scene = engine->getScene();
-		auto node = scene->createEmptyNode();
-		auto cmp = scene->addComponent<TestComponent>(node);
-		auto cmp2 = scene->addComponent<TestComponent2>(node);
-		assert(cmp);
-		assert(cmp2);
-		assert(cmp->getTypeId() == TestComponent::getComponentTypeId());
-		assert(cmp2->getTypeId() == TestComponent2::getComponentTypeId());
+		auto a = _scene->addComponent<A>(_node);
+		auto b = _scene->addComponent<B>(_node);
+		assert(a);
+		assert(b);
+		assert(a->getComponentTypeId() == A::getId());
+		assert(b->getComponentTypeId() == B::getId());
 	}
+
+	void testDerivedComponents()
+	{
+		_scene->addComponent<Derived>(_node);
+		auto base = _scene->getComponent<Base>(_node);
+		auto derived = _scene->getComponent<Derived>(_node);
+		assert(base);
+		assert(derived);
+		assert(base == derived);
+		assert(base->getComponentTypeId() == Derived::getId());
+		assert(base->getComponentTypeId() == Base::getId());
+		assert(derived->getComponentTypeId() == base->getComponentTypeId());
+	}
+
+private:
+	ptr<IScene> _scene;
+	size_t _node;
 };

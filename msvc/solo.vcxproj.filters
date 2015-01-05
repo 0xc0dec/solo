@@ -130,6 +130,12 @@
     <ClInclude Include="..\src\SoloTechnique.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\SoloMeshRenderer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloIMeshRenderer.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">
@@ -220,6 +226,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloTechnique.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloMeshRenderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

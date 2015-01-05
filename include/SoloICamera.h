@@ -5,11 +5,9 @@
 
 namespace solo
 {
-	class ICamera: public IComponent
+	class ICamera: public Component<ICamera>
 	{
 	public:
-		DECLARE_COMPONENT(ICamera);
-
 		virtual void setViewport(float left, float top, float width, float height) = 0;
 		virtual Vector4 getViewport() const = 0;
 

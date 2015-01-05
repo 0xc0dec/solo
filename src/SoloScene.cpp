@@ -57,9 +57,9 @@ ptr<ICamera> Scene::createCamera(size_t node)
 void Scene::addComponent(size_t node, ptr<IComponent> cmp)
 {
 	_ensureNodeExists(node);
-	if (findComponent(node, cmp->getTypeId()))
-		THROW(EngineException, "Component ", cmp->getTypeId(), " already exists");
-	_nodeComponents[node][cmp->getTypeId()] = cmp;
+	if (findComponent(node, cmp->getComponentTypeId()))
+		THROW(EngineException, "Component ", cmp->getComponentTypeId(), " already exists");
+	_nodeComponents[node][cmp->getComponentTypeId()] = cmp;
 }
 
 

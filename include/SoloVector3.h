@@ -18,7 +18,7 @@ namespace solo
 		Vector3(const Vector3& p1, const Vector3& p2);
 		Vector3(const Vector3& copy);
 
-		static Vector3 fromColor(unsigned int color);
+		static Vector3 fromColor(unsigned color);
 
 		~Vector3();
 
