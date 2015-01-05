@@ -4,14 +4,14 @@
 using namespace solo;
 
 
-GLSLEffect::GLSLEffect(const std::string &vsShaderSrc, const std::string &fsShaderSrc)
-	: Effect(vsShaderSrc, fsShaderSrc)
+GLSLEffect::GLSLEffect(const std::string &vsSrc, const std::string &fsSrc)
+	: Effect(vsSrc, fsSrc)
 {
-	auto vs = tryCreateShader(GL_VERTEX_SHADER, vsShaderSrc);
+	auto vs = tryCreateShader(GL_VERTEX_SHADER, vsSrc);
 	if (vs < 0)
 		return;
 
-	auto fs = tryCreateShader(GL_FRAGMENT_SHADER, fsShaderSrc);
+	auto fs = tryCreateShader(GL_FRAGMENT_SHADER, fsSrc);
 	if (fs < 0)
 		return;
 
@@ -27,7 +27,7 @@ GLSLEffect::GLSLEffect(const std::string &vsShaderSrc, const std::string &fsShad
 	glDeleteShader(vs);
 	glDeleteShader(fs);
 
-	DEBUG("Created gpu program ", _id);
+	DEBUG("Created effect ", _id);
 }
 
 
@@ -36,7 +36,7 @@ GLSLEffect::~GLSLEffect()
 	if (_valid)
 	{
 		glDeleteProgram(_program);
-		DEBUG("Destroyed gpu program ", _id);
+		DEBUG("Destroyed effect ", _id);
 	}
 }
 

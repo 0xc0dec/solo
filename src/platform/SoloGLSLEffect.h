@@ -9,7 +9,7 @@ namespace solo
 	class GLSLEffect: public Effect
 	{
 	public:
-		explicit GLSLEffect(std::string const& vsShaderSrc, std::string const& fsShaderSrc);
+		explicit GLSLEffect(std::string const& vsSrc, std::string const& fsSrc);
 		~GLSLEffect();
 
 	private:

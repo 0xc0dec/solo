@@ -1,4 +1,4 @@
-#include "GPUProgramTest.h"
+#include "EffectsTest.h"
 #include "ComponentsTest.h"
 #include "TransformTest.h"
 
@@ -15,7 +15,7 @@ public:
 	virtual void onEngineStarted() override
 	{
 		_engine->getDevice()->setWindowTitle("Test title");
-		GPUProgramTest().run(_engine);
+		EffectsTest().run(_engine);
 		ComponentsTest().run(_engine);
 		TransformTest().run(_engine);
 

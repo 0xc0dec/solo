@@ -1,5 +1,5 @@
-#ifndef __GPU_PROGRAM_TEST_H__
-#define __GPU_PROGRAM_TEST_H__
+#ifndef __EFFECTS_TEST_H__
+#define __EFFECTS_TEST_H__
 
 #include "TestBase.h"
 
@@ -25,14 +25,14 @@ const char *fs =
 	"}";
 
 
-class GPUProgramTest : public TestBase
+class EffectsTest : public TestBase
 {
 public:
 	virtual void run(IEngine *engine) override
 	{
-		auto program = engine->getVideoDriver()->createEffect(vs, fs);
-		assert(program->isValid());
-		assert(program->getLog().empty());
+		auto effect = engine->getVideoDriver()->createEffect(vs, fs);
+		assert(effect->isValid());
+		assert(effect->getLog().empty());
 	}
 };
 
