@@ -30,7 +30,7 @@ namespace solo
 		LogLevel _level;
 		std::string _message;
 		
-		std::string _getLevelString();
+		std::string getLevelString();
 	};
 }
 

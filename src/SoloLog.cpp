@@ -12,11 +12,11 @@ Log::Log(const std::string &msg, LogLevel level)
 
 Log::~Log()
 {
-	std::cout << FORMAT("[", _getLevelString(), "]	", _message) << std::endl;
+	std::cout << FORMAT("[", getLevelString(), "]	", _message) << std::endl;
 }
 
 
-std::string Log::_getLevelString()
+std::string Log::getLevelString()
 {
 	switch (_level)
 	{
