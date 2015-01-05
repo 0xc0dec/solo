@@ -13,9 +13,6 @@ namespace solo
 	class Engine: public IEngine
 	{
 	public:
-		Engine();
-		virtual ~Engine();
-
 		static Engine *getEngine()
 		{
 			static Engine instance;
@@ -32,6 +29,9 @@ namespace solo
 		virtual float getTimeDelta() const override;
 
 	private:
+		Engine();
+		virtual ~Engine();
+
 		IEngineCallback *_callback;
 		ptr<Scene> _scene;
 		ptr<Device> _device;

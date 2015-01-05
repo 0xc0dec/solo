@@ -21,7 +21,7 @@ namespace solo
 
 	private:
 		SDLGLDevice(const EngineCreationArgs &args);
-		virtual ~SDLGLDevice();
+		virtual ~SDLGLDevice() override;
 
 		SDL_Window *_window;
 		SDL_GLContext _context;

@@ -30,7 +30,7 @@ namespace solo
 
 	private:
 		Scene();
-		virtual ~Scene() {}
+		virtual ~Scene() override {}
 
 		typedef std::map<size_t, std::map<size_t, ptr<IComponent>>> NodeComponents;
 

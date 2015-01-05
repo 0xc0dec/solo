@@ -17,7 +17,7 @@ namespace solo
 
 	protected:
 		Effect(const std::string &vsSrc, const std::string &fsSrc);
-		virtual ~Effect();
+		virtual ~Effect() override;
 
 		bool _valid;
 		std::string _log;
