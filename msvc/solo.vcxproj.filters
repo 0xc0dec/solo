@@ -43,16 +43,7 @@
     <ClInclude Include="..\include\SoloMaterial.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloGPUProgram.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloIGPUProgram.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\platform\SoloDeviceSDLGL.h">
-      <Filter>src\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\SoloGPUProgramGLSL.h">
       <Filter>src\platform</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloVector2.h">
@@ -124,6 +115,15 @@
     <ClInclude Include="..\src\SoloDirty.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloIEffect.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloEffect.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\SoloEffectGLSL.h">
+      <Filter>src\platform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">
@@ -153,13 +153,7 @@
     <ClCompile Include="..\external\glew\src\visualinfo.c">
       <Filter>src\glew</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloGPUProgram.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\platform\SoloDeviceSDLGL.cpp">
-      <Filter>src\platform</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\SoloGPUProgramGLSL.cpp">
       <Filter>src\platform</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloVector2.cpp">
@@ -206,6 +200,12 @@
     </ClCompile>
     <ClCompile Include="..\src\SoloCamera.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloEffect.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\SoloEffectGLSL.cpp">
+      <Filter>src\platform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

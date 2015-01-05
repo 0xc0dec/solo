@@ -12,7 +12,7 @@
 #include "SoloIDevice.h"
 #include "SoloIEngine.h"
 #include "SoloIEngineCallback.h"
-#include "SoloIGPUProgram.h"
+#include "SoloIEffect.h"
 #include "SoloIMaterial.h"
 #include "SoloIScene.h"
 #include "SoloITransform.h"

@@ -1,16 +1,15 @@
-#ifndef __SOLO_GPU_PROGRAM_H__
-#define __SOLO_GPU_PROGRAM_H__
+#ifndef __SOLO_EFFECT_H__
+#define __SOLO_EFFECT_H__
 
-#include "SoloIGPUProgram.h"
-#include "SoloBaseInternal.h"
+#include "SoloIEffect.h"
 
 namespace solo
 {
-	class GPUProgram: public IGPUProgram
+	class Effect: public IEffect
 	{
 	public:
-		GPUProgram(const std::string &vsSrc, const std::string &fsSrc);
-		virtual ~GPUProgram();
+		Effect(const std::string &vsSrc, const std::string &fsSrc);
+		virtual ~Effect();
 
 		virtual bool isValid() const override;
 

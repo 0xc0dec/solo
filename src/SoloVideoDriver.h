@@ -5,7 +5,7 @@
 
 namespace solo
 {
-	class GPUProgram;
+	class Effect;
 
 	class VideoDriver: public IVideoDriver
 	{
@@ -17,7 +17,7 @@ namespace solo
 		virtual void clear() = 0;
 
 	protected:
-		std::list<ptr<GPUProgram>> _gpuPrograms;
+		std::list<ptr<Effect>> _effects;
 	};
 }
 

@@ -5,14 +5,14 @@
 
 namespace solo
 {
-	class IGPUProgram;
+	class IEffect;
 
 	class IVideoDriver
 	{
 	public:
 		virtual ~IVideoDriver() {}
 
-		virtual ptr<IGPUProgram> createGPUProgram(const std::string &vsSrc, const std::string &fsSrc) = 0;
+		virtual ptr<IEffect> createEffect(const std::string &vsSrc, const std::string &fsSrc) = 0;
 	};
 }
 

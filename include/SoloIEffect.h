@@ -1,14 +1,14 @@
-#ifndef __SOLO_I_GPU_PROGRAM_H__
-#define __SOLO_I_GPU_PROGRAM_H__
+#ifndef __SOLO_I_EFFECT_H__
+#define __SOLO_I_EFFECT_H__
 
 #include "SoloBase.h"
 
 namespace solo
 {
-	class IGPUProgram
+	class IEffect
 	{
 	public:
-		virtual ~IGPUProgram() {}
+		virtual ~IEffect() {}
 
 		virtual size_t getId() const = 0;
 

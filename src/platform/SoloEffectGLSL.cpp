@@ -1,11 +1,11 @@
-#include "SoloGPUProgramGLSL.h"
+#include "SoloEffectGLSL.h"
 #include "../SoloLog.h"
 
 using namespace solo;
 
 
-GPUProgramGLSL::GPUProgramGLSL(const std::string &vsShaderSrc, const std::string &fsShaderSrc)
-	: GPUProgram(vsShaderSrc, fsShaderSrc)
+EffectGLSL::EffectGLSL(const std::string &vsShaderSrc, const std::string &fsShaderSrc)
+	: Effect(vsShaderSrc, fsShaderSrc)
 {
 	auto vs = _tryCreateShader(GL_VERTEX_SHADER, vsShaderSrc);
 	if (vs < 0)
@@ -31,7 +31,7 @@ GPUProgramGLSL::GPUProgramGLSL(const std::string &vsShaderSrc, const std::string
 }
 
 
-GPUProgramGLSL::~GPUProgramGLSL()
+EffectGLSL::~EffectGLSL()
 {
 	if (_valid)
 	{
@@ -41,7 +41,7 @@ GPUProgramGLSL::~GPUProgramGLSL()
 }
 
 
-GLint GPUProgramGLSL::_tryCreateProgram(GLuint vs, GLuint fs)
+GLint EffectGLSL::_tryCreateProgram(GLuint vs, GLuint fs)
 {
 	auto program = glCreateProgram();
 	glAttachShader(program, vs);
@@ -68,7 +68,7 @@ GLint GPUProgramGLSL::_tryCreateProgram(GLuint vs, GLuint fs)
 }
 
 
-GLint GPUProgramGLSL::_tryCreateShader(GLuint type, std::string src)
+GLint EffectGLSL::_tryCreateShader(GLuint type, std::string src)
 {
 	auto shader = glCreateShader(type);
 
