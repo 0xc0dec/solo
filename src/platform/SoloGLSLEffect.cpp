@@ -1,4 +1,5 @@
 #include "SoloGLSLEffect.h"
+#include "../SoloBaseInternal.h"
 #include "../SoloLog.h"
 
 using namespace solo;
@@ -38,6 +39,12 @@ GLSLEffect::~GLSLEffect()
 		glDeleteProgram(_program);
 		DEBUG("Destroyed effect ", _id);
 	}
+}
+
+
+ptr<GLSLEffect> GLSLEffect::create(std::string const& vsSrc, std::string const& fsSrc)
+{
+	return ALLOC_WITH_DELETER(GLSLEffect, vsSrc, fsSrc);
 }
 
 

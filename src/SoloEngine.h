@@ -2,13 +2,13 @@
 
 #include "SoloBaseInternal.h"
 #include "SoloIEngine.h"
-#include "SoloScene.h"
-#include "SoloDevice.h"
-#include "SoloVideoDriver.h"
 
 namespace solo
 {
 	class IEngineCallback;
+	class VideoDriver;
+	class Scene;
+	class Device;
 
 	class Engine: public IEngine
 	{

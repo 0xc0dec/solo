@@ -5,7 +5,7 @@ using namespace solo;
 
 void Transform::addChild(ptr<ITransform> child)
 {
-	auto impl = PTR_SCAST<Transform>(child);
+	auto impl = PTR_CAST_STATIC<Transform>(child);
 	if (impl->_parent.get() == this)
 		return;
 	if (impl->_parent)
@@ -17,7 +17,7 @@ void Transform::addChild(ptr<ITransform> child)
 
 void Transform::removeChild(ptr<ITransform> child)
 {
-	auto impl = PTR_SCAST<Transform>(child);
+	auto impl = PTR_CAST_STATIC<Transform>(child);
 	if (impl->_parent.get() != this)
 		return;
 	_children.remove(impl);

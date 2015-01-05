@@ -1,15 +1,22 @@
 #include <GL/glew.h>
 #include "SoloOpenGLVideoDriver.h"
-#include "SoloGLSLEffect.h"
 
 using namespace solo;
 
 
-ptr<IEffect> OpenGLVideoDriver::createEffect(const std::string &vsSrc, const std::string &fsSrc)
+OpenGLVideoDriver::OpenGLVideoDriver()
 {
-	auto result = NEW<GLSLEffect>(vsSrc, fsSrc);
-	_effects.push_back(result);
-	return result;
+}
+
+
+OpenGLVideoDriver::~OpenGLVideoDriver()
+{
+}
+
+
+ptr<OpenGLVideoDriver> OpenGLVideoDriver::create()
+{
+	return ALLOC_WITH_DELETER(OpenGLVideoDriver);
 }
 
 

@@ -1,4 +1,5 @@
 #include "SoloEffect.h"
+#include "platform/SoloGLSLEffect.h"
 
 using namespace solo;
 
@@ -12,6 +13,13 @@ Effect::Effect(const std::string &vsSrc, const std::string &fsSrc)
 
 Effect::~Effect()
 {
+}
+
+
+ptr<Effect> Effect::create(const std::string& vsSrc, const std::string& fsSrc)
+{
+	// GLSL is the only option at the moment
+	return GLSLEffect::create(vsSrc, fsSrc);
 }
 
 

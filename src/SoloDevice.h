@@ -8,10 +8,9 @@ namespace solo
 	class Device: public IDevice
 	{
 	public:
-		explicit Device(EngineCreationArgs args);
-		~Device();
+		static ptr<Device> create(const EngineCreationArgs& args);
 
-		bool closeRequested() const { return _closeRequested; }
+		bool closeRequested() const;
 
 		/// Returns time elapsed since the engine startup in ms
 		virtual unsigned long getLifetime() const = 0;
@@ -20,6 +19,9 @@ namespace solo
 		virtual void endUpdate() = 0;
 
 	protected:
+		Device(const EngineCreationArgs& args);
+		~Device() {}
+
 		bool _closeRequested;
 		EngineCreationArgs _creationArgs;
 	};

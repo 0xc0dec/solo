@@ -14,8 +14,8 @@ Camera::Camera():
 	_primary(false),
 	_viewport(0, 0, 1, 1)
 {
-	_driver = PTR_SCAST<VideoDriver>(Engine::getEngine()->getVideoDriver());
-	_device = PTR_SCAST<Device>(Engine::getEngine()->getDevice());
+	_driver = PTR_CAST_STATIC<VideoDriver>(Engine::getEngine()->getVideoDriver());
+	_device = PTR_CAST_STATIC<Device>(Engine::getEngine()->getDevice());
 	setDirty<DIRTY_BIT_ALL>(); // arguably
 }
 

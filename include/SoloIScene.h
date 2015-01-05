@@ -30,7 +30,7 @@ namespace solo
 		template <typename TComponent> ptr<TComponent> addComponent(size_t node)
 		{
 			auto cmp = NEW<TComponent>();
-			auto base = PTR_SCAST<IComponent>(cmp);
+			auto base = PTR_CAST_STATIC<IComponent>(cmp);
 			addComponent(node, base);
 			return cmp;
 		}
@@ -39,14 +39,14 @@ namespace solo
 		{
 			auto typeId = TComponent::getComponentTypeId();
 			auto cmp = findComponent(node, typeId);
-			return PTR_DCAST<TComponent>(cmp);
+			return PTR_CAST_DYNAMIC<TComponent>(cmp);
 		}
 
 		template <typename TComponent> ptr<TComponent> getComponent(size_t node)
 		{
 			auto typeId = TComponent::getComponentTypeId();
 			auto cmp = getComponent(node, typeId);
-			return PTR_DCAST<TComponent>(cmp);
+			return PTR_CAST_DYNAMIC<TComponent>(cmp);
 		}
 	};
 }

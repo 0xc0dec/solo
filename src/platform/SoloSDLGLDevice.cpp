@@ -113,6 +113,12 @@ void SDLGLDevice::endUpdate()
 }
 
 
+ptr<SDLGLDevice> SDLGLDevice::create(const EngineCreationArgs &args)
+{
+	return ALLOC_WITH_DELETER(SDLGLDevice, args);
+}
+
+
 void SDLGLDevice::setWindowTitle(const char *title)
 {
 	SDL_SetWindowTitle(_window, title);

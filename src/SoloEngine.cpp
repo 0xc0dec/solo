@@ -1,9 +1,10 @@
 #include "SoloIEngineCallback.h"
 #include "SoloEngine.h"
+#include "SoloScene.h"
+#include "SoloVideoDriver.h"
+#include "SoloDevice.h"
 #include "SoloLog.h"
 #include "SoloException.h"
-#include "platform/SoloSDLGLDevice.h"
-#include "platform/SoloOpenGLVideoDriver.h"
 
 using namespace solo;
 
@@ -41,17 +42,16 @@ void Engine::updateTime()
 
 void Engine::doRun(const EngineCreationArgs &args)
 {
-	INFO("Starting engine");
+	DEBUG("Starting engine");
 
-	// SDL is the only available option right now
-	INFO("Creating device");
-	_device = NEW<SDLGLDevice>(args);
+	DEBUG("Creating device");
+	_device = Device::create(args);
 
-	INFO("Creating video driver");
-	_driver = NEW<OpenGLVideoDriver>();
+	DEBUG("Creating video driver");
+	_driver = VideoDriver::create();
 
-	INFO("Creating scene");
-	_scene = NEW<Scene>();
+	DEBUG("Creating scene");
+	_scene = Scene::create();
 
 	_callback->onEngineStarted();
 
@@ -66,12 +66,12 @@ void Engine::doRun(const EngineCreationArgs &args)
 			break;
 	}
 
-	INFO("Stopping engine");
+	DEBUG("Stopping engine");
 	_callback->onEngineStopped();
 	_device.reset();
 	_scene.reset();
 	
-	INFO("Engine stopped");
+	DEBUG("Engine stopped");
 }
 
 

@@ -1,11 +1,10 @@
 #pragma once
 
 #include "SoloBase.h"
+#include "SoloIEffect.h"
 
 namespace solo
 {
-	class IEffect;
-
 	class IVideoDriver
 	{
 	public:

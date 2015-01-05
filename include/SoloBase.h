@@ -14,9 +14,10 @@
 
 namespace solo
 {
-#	define PTR_DCAST	std::dynamic_pointer_cast
-#	define PTR_SCAST	std::static_pointer_cast
-#	define NEW			std::make_shared
+#	define PTR_CAST_DYNAMIC					std::dynamic_pointer_cast
+#	define PTR_CAST_STATIC					std::static_pointer_cast
+#	define NEW								std::make_shared
+#	define ALLOC_WITH_DELETER(type, ...)	std::shared_ptr<type>(new type(__VA_ARGS__), [](type *p) { delete p; })
 
 	template <typename T> using ptr = std::shared_ptr<T>;
 

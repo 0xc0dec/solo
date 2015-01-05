@@ -12,7 +12,7 @@ namespace solo
 	class Scene: public IScene
 	{
 	public:
-		explicit Scene();
+		static ptr<Scene> create();
 
 		virtual size_t createEmptyNode() override;
 		virtual size_t createNode() override;
@@ -29,6 +29,9 @@ namespace solo
 		void render();
 
 	private:
+		Scene();
+		virtual ~Scene() {}
+
 		typedef std::map<size_t, std::map<size_t, ptr<IComponent>>> NodeComponents;
 
 		int _nodeCounter;

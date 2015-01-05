@@ -14,6 +14,12 @@ Scene::Scene():
 }
 
 
+ptr<Scene> Scene::create()
+{
+	return ALLOC_WITH_DELETER(Scene);
+}
+
+
 size_t Scene::createEmptyNode()
 {
 	_nodeComponents[++_nodeCounter];

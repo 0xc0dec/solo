@@ -124,8 +124,11 @@
     <ClInclude Include="..\src\platform\SoloOpenGLVideoDriver.h">
       <Filter>src\platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloIPass.h">
-      <Filter>include</Filter>
+    <ClInclude Include="..\src\SoloPass.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloTechnique.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -209,6 +212,12 @@
     </ClCompile>
     <ClCompile Include="..\src\platform\SoloOpenGLVideoDriver.cpp">
       <Filter>src\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloPass.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloVideoDriver.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

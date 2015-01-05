@@ -8,8 +8,7 @@ namespace solo
 	class SDLGLDevice : public Device
 	{
 	public:
-		explicit SDLGLDevice(const EngineCreationArgs &args);
-		~SDLGLDevice();
+		static ptr<SDLGLDevice> create(const EngineCreationArgs &args);
 
 		virtual void setWindowTitle(const char *title) override;
 
@@ -21,6 +20,9 @@ namespace solo
 		virtual void endUpdate() override;
 
 	private:
+		SDLGLDevice(const EngineCreationArgs &args);
+		virtual ~SDLGLDevice();
+
 		SDL_Window *_window;
 		SDL_GLContext _context;
 
