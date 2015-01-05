@@ -41,8 +41,8 @@ namespace solo
 		unsigned long _lastUpdateTime;
 		float _timeDelta;
 
-		inline void _updateTime();
-		void _run(const EngineCreationArgs &args);
+		inline void updateTime();
+		void doRun(const EngineCreationArgs &args);
 	};
 }
 

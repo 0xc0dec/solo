@@ -63,7 +63,6 @@ namespace solo
 		b.transform(matrix);
 		return b;
 	}
-
 }
 
 #endif

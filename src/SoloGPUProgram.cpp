@@ -17,7 +17,7 @@ GPUProgram::~GPUProgram()
 }
 
 
-void GPUProgram::_appendToLog(const std::string &newLog)
+void GPUProgram::appendToLog(const std::string &newLog)
 {
 	_log.append(newLog).append("\n");
 }

@@ -22,6 +22,9 @@ public:
 		auto node = _engine->getScene()->createNode();
 		auto camera = _engine->getScene()->createCamera(node);
 		camera->setClearColor(1, 0, 0, 1);
+
+		auto canvasSize = _engine->getDevice()->getCanvasSize();
+		std::cout << FORMAT("Canvas width: ", canvasSize.x, ", height: ", canvasSize.y) << std::endl;
 	}
 
 	virtual void onEngineStopped() override

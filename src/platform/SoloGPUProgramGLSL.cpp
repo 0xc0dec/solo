@@ -53,7 +53,7 @@ GLint GPUProgramGLSL::_tryCreateProgram(GLuint vs, GLuint fs)
 	auto log = new char[logLength];
 	glGetProgramInfoLog(program, logLength, nullptr, log);
 	if (logLength > 1)
-		_appendToLog(log);
+		appendToLog(log);
 	delete[] log;
 	
 	int status;
@@ -81,7 +81,7 @@ GLint GPUProgramGLSL::_tryCreateShader(GLuint type, std::string src)
 	auto log = new char[logLength];
 	glGetShaderInfoLog(shader, logLength, nullptr, log);
 	if (logLength > 1)
-		_appendToLog(log);
+		appendToLog(log);
 	delete[] log;
 
 	int status;

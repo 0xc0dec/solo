@@ -1,5 +1,7 @@
 #include "SoloCamera.h"
 #include "SoloEngine.h"
+#include "SoloVideoDriver.h"
+#include "SoloDevice.h"
 
 using namespace solo;
 
@@ -13,6 +15,7 @@ Camera::Camera():
 	_viewport(0, 0, 1, 1)
 {
 	_driver = PTR_SCAST<VideoDriver>(Engine::getEngine()->getVideoDriver());
+	_device = PTR_SCAST<Device>(Engine::getEngine()->getDevice());
 	setDirty<DIRTY_BIT_ALL>(); // arguably
 }
 
@@ -59,7 +62,10 @@ void Camera::render()
 	if (_primary)
 	{
 		if (checkBitAndClean<DIRTY_BIT_VIEWPORT>())
-			_driver->setViewport(_viewport.x, _viewport.y, _viewport.z, _viewport.w);
+		{
+			auto size = _device->getCanvasSize();
+			_driver->setViewport(_viewport.x * size.x, _viewport.y * size.y, _viewport.z * size.x, _viewport.w * size.y);
+		}
 		if (checkBitAndClean<DIRTY_BIT_CLEAR_COLOR>())
 			_driver->setClearColor(_clearColor.x, _clearColor.y, _clearColor.z, _clearColor.w);
 		_driver->clear();

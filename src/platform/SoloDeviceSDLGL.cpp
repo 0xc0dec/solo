@@ -145,3 +145,11 @@ unsigned long DeviceSDLGL::getLifetime() const
 {
 	return SDL_GetTicks();
 }
+
+
+Vector2 DeviceSDLGL::getCanvasSize() const
+{
+	int width, height;
+	SDL_GetWindowSize(_window, &width, &height);
+	return Vector2(static_cast<float>(width), static_cast<float>(height));
+}

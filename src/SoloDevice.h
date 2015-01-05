@@ -18,7 +18,6 @@ namespace solo
 		virtual unsigned long getLifetime() const = 0;
 
 		virtual void beginUpdate() = 0;
-
 		virtual void endUpdate() = 0;
 
 	protected:

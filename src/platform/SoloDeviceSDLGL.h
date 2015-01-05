@@ -16,8 +16,9 @@ namespace solo
 
 		virtual unsigned long getLifetime() const override;
 
-		virtual void beginUpdate() override;
+		virtual Vector2 getCanvasSize() const override;
 
+		virtual void beginUpdate() override;
 		virtual void endUpdate() override;
 
 	private:

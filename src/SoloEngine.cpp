@@ -31,7 +31,7 @@ Engine::~Engine()
 }
 
 
-void Engine::_updateTime()
+void Engine::updateTime()
 {
 	auto time = _device->getLifetime();
 	_timeDelta = (time - _lastUpdateTime) / 1000.0f;
@@ -39,7 +39,7 @@ void Engine::_updateTime()
 }
 
 
-void Engine::_run(const EngineCreationArgs &args)
+void Engine::doRun(const EngineCreationArgs &args)
 {
 	INFO("Starting engine");
 
@@ -57,7 +57,7 @@ void Engine::_run(const EngineCreationArgs &args)
 
 	while (true)
 	{
-		_updateTime();
+		updateTime();
 		_device->beginUpdate();
 		_scene->update();
 		_scene->render();
@@ -79,7 +79,7 @@ void Engine::run(const EngineCreationArgs & args)
 {
 	try
 	{
-		_run(args);
+		doRun(args);
 	}
 	catch (EngineException &e)
 	{

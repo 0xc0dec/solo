@@ -8,6 +8,7 @@
 namespace solo
 {
 	class VideoDriver;
+	class Device;
 
 	class Camera : public ICamera, public Dirty
 	{
@@ -27,6 +28,7 @@ namespace solo
 
 	private:
 		ptr<VideoDriver> _driver;
+		ptr<Device> _device;
 
 		bool _primary;
 		Vector4 _viewport; // all values in range 0..1

@@ -23,7 +23,7 @@ namespace solo
 		std::string _log;
 		size_t _id;
 
-		void _appendToLog(const std::string &newLog);
+		void appendToLog(const std::string &newLog);
 	};
 }
 
