@@ -124,6 +124,9 @@
     <ClInclude Include="..\src\platform\SoloOpenGLVideoDriver.h">
       <Filter>src\platform</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloIPass.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">

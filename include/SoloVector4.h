@@ -1,5 +1,4 @@
-#ifndef __SOLO_VECTOR4_H__
-#define __SOLO_VECTOR4_H__
+#pragma once
 
 namespace solo
 {
@@ -168,5 +167,3 @@ namespace solo
 		return result;
 	}
 }
-
-#endif

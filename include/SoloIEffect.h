@@ -1,10 +1,10 @@
-#ifndef __SOLO_I_EFFECT_H__
-#define __SOLO_I_EFFECT_H__
+#pragma once
 
 #include "SoloBase.h"
 
 namespace solo
 {
+	// A wrap around a GPU program
 	class IEffect
 	{
 	public:
@@ -16,5 +16,3 @@ namespace solo
 		virtual std::string getLog() const = 0;
 	};
 }
-
-#endif

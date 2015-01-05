@@ -1,5 +1,4 @@
-#ifndef __SOLO_SDLGL_DEVICE_H__
-#define __SOLO_SDLGL_DEVICE_H__
+#pragma once
 
 #include <SDL.h>
 #include "../SoloDevice.h"
@@ -30,5 +29,3 @@ namespace solo
 		std::tuple<SDL_Window*, SDL_GLContext> tryCreateWindowWithContext(bool fake, int ctxMajorVersion, int ctxMinorVersion);
 	};
 }
-
-#endif

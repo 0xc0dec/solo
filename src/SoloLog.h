@@ -1,5 +1,4 @@
-#ifndef __SOLO_LOG_H__
-#define __SOLO_LOG_H__
+#pragma once
 
 #include "SoloBaseInternal.h"
 
@@ -33,5 +32,3 @@ namespace solo
 		std::string getLevelString();
 	};
 }
-
-#endif

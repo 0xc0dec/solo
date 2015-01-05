@@ -1,5 +1,4 @@
-#ifndef __SOLO_I_TRANSFORM_H__
-#define __SOLO_I_TRANSFORM_H__
+#pragma once
 
 #include "SoloIComponent.h"
 
@@ -15,5 +14,3 @@ namespace solo
 		virtual void removeChildren() = 0;
 	};
 }
-
-#endif

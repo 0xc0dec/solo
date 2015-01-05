@@ -1,5 +1,4 @@
-#ifndef __EFFECTS_TEST_H__
-#define __EFFECTS_TEST_H__
+#pragma once
 
 #include "TestBase.h"
 
@@ -35,6 +34,3 @@ public:
 		assert(effect->getLog().empty());
 	}
 };
-
-
-#endif

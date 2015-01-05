@@ -1,5 +1,4 @@
-#ifndef __SOLO_I_DEVICE_H__
-#define __SOLO_I_DEVICE_H__
+#pragma once
 
 #include "SoloVector2.h"
 
@@ -15,5 +14,3 @@ namespace solo
 		virtual Vector2 getCanvasSize() const = 0;
 	};
 }
-
-#endif

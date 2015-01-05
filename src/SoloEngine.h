@@ -1,5 +1,4 @@
-#ifndef __SOLO_ENGINE_H__
-#define __SOLO_ENGINE_H__
+#pragma once
 
 #include "SoloBaseInternal.h"
 #include "SoloIEngine.h"
@@ -45,5 +44,3 @@ namespace solo
 		void doRun(const EngineCreationArgs &args);
 	};
 }
-
-#endif

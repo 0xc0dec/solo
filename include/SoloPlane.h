@@ -1,5 +1,4 @@
-#ifndef __SOLO_PLANE_H__
-#define __SOLO_PLANE_H__
+#pragma once
 
 #include "SoloVector3.h"
 
@@ -70,5 +69,3 @@ namespace solo
 		return p;
 	}
 }
-
-#endif

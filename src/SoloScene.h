@@ -1,5 +1,4 @@
-#ifndef __SOLO_SCENE_H__
-#define __SOLO_SCENE_H__
+#pragma once
 
 #include "SoloBaseInternal.h"
 #include "SoloIScene.h"
@@ -39,5 +38,3 @@ namespace solo
 		void _ensureNodeExists(size_t node);
 	};
 }
-
-#endif

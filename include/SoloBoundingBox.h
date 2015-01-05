@@ -1,5 +1,4 @@
-#ifndef __SOLO_BOUNDING_BOX_H__
-#define __SOLO_BOUNDING_BOX_H__
+#pragma once
 
 #include "SoloVector3.h"
 
@@ -64,5 +63,3 @@ namespace solo
 		return b;
 	}
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef __SOLO_H__
-#define __SOLO_H__
+#pragma once
 
 #include "SoloBase.h"
 #include "SoloBoundingBox.h"
@@ -31,5 +30,3 @@ namespace solo
 {
 	extern "C" IEngine *getEngine();
 }
-
-#endif

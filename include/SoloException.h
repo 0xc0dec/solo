@@ -1,5 +1,4 @@
-#ifndef __SOLO_EXCEPTION_H__
-#define __SOLO_EXCEPTION_H__
+#pragma once
 
 #include "SoloBase.h"
 
@@ -16,5 +15,3 @@ namespace solo
 		EngineException(const std::string &msg) : message(msg) {}
 	};
 }
-
-#endif

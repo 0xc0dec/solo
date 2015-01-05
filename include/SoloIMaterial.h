@@ -1,5 +1,4 @@
-#ifndef __SOLO_I_MATERIAL_H__
-#define __SOLO_I_MATERIAL_H__
+#pragma once
 
 namespace solo
 {
@@ -9,5 +8,3 @@ namespace solo
 		virtual ~IMaterial() {}
 	};
 }
-
-#endif

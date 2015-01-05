@@ -1,5 +1,4 @@
-#ifndef __COMPONENTS_TEST_H__
-#define __COMPONENTS_TEST_H__
+#pragma once
 
 #include "TestBase.h"
 
@@ -42,6 +41,3 @@ public:
 		assert(cmp2->getTypeId() == TestComponent2::getComponentTypeId());
 	}
 };
-
-
-#endif

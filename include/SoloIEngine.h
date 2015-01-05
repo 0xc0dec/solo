@@ -1,5 +1,4 @@
-#ifndef __SOLO_I_ENGINE_H__
-#define __SOLO_I_ENGINE_H__
+#pragma once
 
 #include "SoloBase.h"
 
@@ -36,5 +35,3 @@ namespace solo
 		virtual float getTimeDelta() const = 0;
 	};
 }
-
-#endif

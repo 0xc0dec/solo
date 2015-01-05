@@ -1,5 +1,4 @@
-#ifndef __SOLO_GLSL_EFFECT_H__
-#define __SOLO_GLSL_EFFECT_H__
+#pragma once
 
 #include <GL/glew.h>
 #include "../SoloEffect.h"
@@ -19,5 +18,3 @@ namespace solo
 		GLint tryCreateProgram(GLuint vs, GLuint fs);
 	};
 }
-
-#endif

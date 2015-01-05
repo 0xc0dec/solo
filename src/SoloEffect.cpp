@@ -6,9 +6,7 @@ using namespace solo;
 Effect::Effect(const std::string &vsSrc, const std::string &fsSrc)
 	: _valid(false)
 {
-	auto allSources = vsSrc;
-	allSources.append(fsSrc);
-	_id = getHash(allSources);
+	_id = getHash(vsSrc + fsSrc);
 }
 
 

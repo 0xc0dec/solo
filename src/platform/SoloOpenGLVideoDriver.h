@@ -1,5 +1,4 @@
-#ifndef __SOLO_OPENGL_VIDEO_DRIVER_H__
-#define __SOLO_OPENGL_VIDEO_DRIVER_H__
+#pragma once
 
 #include "../SoloVideoDriver.h"
 
@@ -17,5 +16,3 @@ namespace solo
 		virtual void clear() override;
 	};
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef __TEST_BASE_H__
-#define __TEST_BASE_H__
+#pragma once
 
 #include <iostream>
 #include "../../include/solo.h"
@@ -16,5 +15,3 @@ public:
 
 	virtual void run(IEngine *engine) = 0;
 };
-
-#endif

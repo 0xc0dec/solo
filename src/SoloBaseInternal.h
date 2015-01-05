@@ -1,5 +1,4 @@
-#ifndef __SOLO_BASE_INTERNAL_H__
-#define __SOLO_BASE_INTERNAL_H__
+#pragma once
 
 #include "SoloBase.h"
 
@@ -7,5 +6,3 @@ namespace solo
 {
 	
 }
-
-#endif

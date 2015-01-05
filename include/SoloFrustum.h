@@ -1,5 +1,4 @@
-#ifndef __SOLO_FRUSTUM_H__
-#define __SOLO_FRUSTUM_H__
+#pragma once
 
 #include "SoloPlane.h"
 #include "SoloMatrix.h"
@@ -55,5 +54,3 @@ namespace solo
 		Matrix _matrix;
 	};
 }
-
-#endif

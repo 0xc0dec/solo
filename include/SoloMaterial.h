@@ -1,5 +1,4 @@
-#ifndef __SOLO_MATERIAL_H__
-#define __SOLO_MATERIAL_H__
+#pragma once
 
 #include "SoloIMaterial.h"
 
@@ -11,5 +10,3 @@ namespace solo
 		
 	};
 }
-
-#endif

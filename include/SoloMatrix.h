@@ -1,5 +1,4 @@
-#ifndef __SOLO_MATRIX_H__
-#define __SOLO_MATRIX_H__
+#pragma once
 
 #include "SoloVector3.h"
 #include "SoloVector4.h"
@@ -926,5 +925,3 @@ namespace solo
 		return x;
 	}
 }
-
-#endif

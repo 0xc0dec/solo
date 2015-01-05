@@ -1,5 +1,4 @@
-#ifndef __SOLO_DIRTY_H__
-#define __SOLO_DIRTY_H__
+#pragma once
 
 namespace solo
 {
@@ -51,5 +50,3 @@ namespace solo
 		}
 	};
 }
-
-#endif

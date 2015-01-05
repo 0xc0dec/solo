@@ -1,5 +1,4 @@
-#ifndef __SOLO_TYPE_ID_H__
-#define __SOLO_TYPE_ID_H__
+#pragma once
 
 #include "SoloBase.h"
 
@@ -17,5 +16,3 @@ namespace solo
 		return reinterpret_cast<size_t>(&TypeMarker<T>::f);
 	}
 }
-
-#endif

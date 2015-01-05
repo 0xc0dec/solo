@@ -1,5 +1,4 @@
-#ifndef __SOLO_QUATERNION_H__
-#define __SOLO_QUATERNION_H__
+#pragma once
 
 #include "SoloMatrix.h"
 
@@ -80,5 +79,3 @@ namespace solo
 		return *this;
 	}
 }
-
-#endif

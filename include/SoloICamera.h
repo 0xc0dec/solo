@@ -1,5 +1,4 @@
-#ifndef __SOLO_I_CAMERA_H__
-#define __SOLO_I_CAMERA_H__
+#pragma once
 
 #include "SoloIComponent.h"
 #include "SoloVector4.h"
@@ -17,5 +16,3 @@ namespace solo
 		virtual void setClearColor(float r, float g, float b, float a) = 0;
 	};
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef __SOLO_VIDEO_DRIVER_H__
-#define __SOLO_VIDEO_DRIVER_H__
+#pragma once
 
 #include "SoloIVideoDriver.h"
 
@@ -20,5 +19,3 @@ namespace solo
 		std::list<ptr<Effect>> _effects;
 	};
 }
-
-#endif

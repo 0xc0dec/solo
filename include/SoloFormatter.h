@@ -1,5 +1,4 @@
-#ifndef __SOLO_FORMATTER_H__
-#define __SOLO_FORMATTER_H__
+#pragma once
 
 #include <sstream>
 
@@ -26,5 +25,3 @@ namespace solo
 		std::ostringstream _buf;
 	};
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef __SOLO_BOUNDING_SPHERE_H__
-#define __SOLO_BOUNDING_SPHERE_H__
+#pragma once
 
 #include "SoloVector3.h"
 #include "SoloPlane.h"
@@ -57,5 +56,3 @@ namespace solo
 		return s;
 	}
 }
-
-#endif

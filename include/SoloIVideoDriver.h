@@ -1,5 +1,4 @@
-#ifndef __SOLO_I_VIDEO_DRIVER_H__
-#define __SOLO_I_VIDEO_DRIVER_H__
+#pragma once
 
 #include "SoloBase.h"
 
@@ -15,5 +14,3 @@ namespace solo
 		virtual ptr<IEffect> createEffect(const std::string &vsSrc, const std::string &fsSrc) = 0;
 	};
 }
-
-#endif

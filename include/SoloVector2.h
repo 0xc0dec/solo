@@ -1,5 +1,4 @@
-#ifndef __SOLO_VECTOR2_H__
-#define __SOLO_VECTOR2_H__
+#pragma once
 
 namespace solo
 {
@@ -162,7 +161,3 @@ namespace solo
 		return x != v.x || y != v.y;
 	}
 }
-
-
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef __SOLO_I_ENGINE_CALLBACK_H__
-#define __SOLO_I_ENGINE_CALLBACK_H__
+#pragma once
 
 namespace solo
 {
@@ -13,5 +12,3 @@ namespace solo
 		virtual void onEngineStopped() = 0;
 	};
 }
-
-#endif

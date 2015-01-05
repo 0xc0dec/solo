@@ -1,8 +1,6 @@
-#ifndef __TRANSFORM_TEST_H__
-#define __TRANSFORM_TEST_H__
+#pragma once
 
 #include "TestBase.h"
-
 
 class TransformTest : public TestBase
 {
@@ -15,6 +13,3 @@ public:
 		assert(transform);
 	}
 };
-
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef __SOLO_CAMERA_H__
-#define __SOLO_CAMERA_H__
+#pragma once
 
 #include "SoloICamera.h"
 #include "SoloVector4.h"
@@ -35,5 +34,3 @@ namespace solo
 		Vector4 _clearColor;
 	};
 }
-
-#endif

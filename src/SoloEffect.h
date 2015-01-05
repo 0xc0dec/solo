@@ -1,5 +1,4 @@
-#ifndef __SOLO_EFFECT_H__
-#define __SOLO_EFFECT_H__
+#pragma once
 
 #include "SoloIEffect.h"
 
@@ -25,5 +24,3 @@ namespace solo
 		void appendToLog(const std::string &newLog);
 	};
 }
-
-#endif

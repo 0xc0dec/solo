@@ -1,5 +1,4 @@
-#ifndef __SOLO_RAY_H__
-#define __SOLO_RAY_H__
+#pragma once
 
 #include "SoloVector3.h"
 
@@ -62,5 +61,3 @@ namespace solo
 		return r;
 	}
 }
-
-#endif

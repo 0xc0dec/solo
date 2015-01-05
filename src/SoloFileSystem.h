@@ -1,5 +1,4 @@
-#ifndef __SOLO_FILE_SYSTEM_H__
-#define __SOLO_FILE_SYSTEM_H__
+#pragma once
 
 namespace solo
 {
@@ -10,5 +9,3 @@ namespace solo
 		~FileSystem();
 	};
 }
-
-#endif

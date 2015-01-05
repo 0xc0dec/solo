@@ -1,5 +1,4 @@
-#ifndef __SOLO_MATH_H__
-#define __SOLO_MATH_H__
+#pragma once
 
 #include <cmath>
 #include "SoloBase.h"
@@ -219,5 +218,3 @@ namespace solo
 		dst[2] = z;
 	}
 }
-
-#endif

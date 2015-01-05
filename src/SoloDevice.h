@@ -1,5 +1,4 @@
-#ifndef __SOLO_DEVICE_H__
-#define __SOLO_DEVICE_H__
+#pragma once
 
 #include "SoloIDevice.h"
 #include "SoloIEngine.h"
@@ -25,5 +24,3 @@ namespace solo
 		EngineCreationArgs _creationArgs;
 	};
 }
-
-#endif

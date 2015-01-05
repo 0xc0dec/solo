@@ -1,5 +1,4 @@
-#ifndef __SOLO_I_COMPONENT_H__
-#define __SOLO_I_COMPONENT_H__
+#pragma once
 
 #include "SoloBase.h"
 #include "SoloTypeId.h"
@@ -26,5 +25,3 @@ namespace solo
 		virtual void update() {}
 	};
 }
-
-#endif

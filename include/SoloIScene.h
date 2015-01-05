@@ -1,5 +1,4 @@
-#ifndef __SOLO_I_SCENE_H__
-#define __SOLO_I_SCENE_H__
+#pragma once
 
 #include "SoloBase.h"
 
@@ -51,5 +50,3 @@ namespace solo
 		}
 	};
 }
-
-#endif

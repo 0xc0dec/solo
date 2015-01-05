@@ -1,5 +1,4 @@
-#ifndef __SOLO_TRANSFORM_H__
-#define __SOLO_TRANSFORM_H__
+#pragma once
 
 #include "SoloITransform.h"
 
@@ -17,5 +16,3 @@ namespace solo
 		std::list<ptr<Transform>> _children;
 	};
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef __SOLO_BASE_H__
-#define __SOLO_BASE_H__
+#pragma once
 
 #include <memory>
 #include <string>
@@ -23,5 +22,3 @@ namespace solo
 
 	extern "C" size_t getHash(const std::string &s);
 }
-
-#endif
