@@ -19,8 +19,6 @@ namespace solo
 
 		bool nodeExists(size_t node);
 
-		void removeComponent(size_t node, ptr<Component> cmp);
-
 		template <typename T> ptr<T> addComponent(size_t node)
 		{
 			auto cmp = NEW<T>();

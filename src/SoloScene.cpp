@@ -56,13 +56,6 @@ void Scene::removeComponent(size_t node, size_t typeId)
 }
 
 
-void Scene::removeComponent(size_t node, ptr<Component> cmp)
-{
-	ensureNodeExists(node);
-	_components[node].erase(cmp->getTypeId());
-}
-
-
 ptr<Component> Scene::getComponent(size_t node, size_t typeId)
 {
 	auto cmp = findComponent(node, typeId);
