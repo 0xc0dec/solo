@@ -12,9 +12,6 @@ namespace solo
 
 		static ptr<Pass> create();
 
-		void bind();
-		void unbind();
-
 	private:
 		Pass() {}
 	};

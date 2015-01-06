@@ -33,16 +33,16 @@ void ModelRenderer::render()
 		if (!material)
 			break;
 		auto technique = material->getCurrentTechnique();
-		if (technique) // do not break the loop because other materials can have techniques
+		if (technique) // do not break the loop because other materials might have techniques
 		{
 			auto mesh = _model->getMesh(i);
 			auto passCount = technique->getPassCount();
 			for (auto k = 0; k < passCount; ++k)
 			{
 				auto pass = technique->getPass(k);
-				pass->bind();
+				_driver->bindRenderPass(pass);
 				_driver->drawMesh(mesh);
-				pass->unbind();
+				_driver->unbindRenderPass(pass);
 			}
 		}
 	}

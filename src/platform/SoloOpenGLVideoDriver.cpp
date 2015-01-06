@@ -20,6 +20,16 @@ ptr<OpenGLVideoDriver> OpenGLVideoDriver::create()
 }
 
 
+void OpenGLVideoDriver::bindRenderPass(ptr<Pass> pass)
+{
+}
+
+
+void OpenGLVideoDriver::unbindRenderPass(ptr<Pass> pass)
+{
+}
+
+
 void OpenGLVideoDriver::drawMesh(ptr<Mesh> mesh)
 {
 	// TODO :)

@@ -11,6 +11,9 @@ namespace solo
 
 		static ptr<OpenGLVideoDriver> create();
 
+		virtual void bindRenderPass(ptr<Pass> pass) override;
+		virtual void unbindRenderPass(ptr<Pass> pass) override;
+
 		virtual void drawMesh(ptr<Mesh> mesh) override;
 
 		virtual void setViewport(float left, float top, float width, float height) override;
