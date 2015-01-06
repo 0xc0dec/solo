@@ -21,7 +21,7 @@ public:
 		LOG("All tests passed");
 
 		auto node = _engine->getScene()->createNode();
-		auto camera = _engine->getScene()->createCamera(node);
+		auto camera = _engine->getScene()->addCamera(node);
 		camera->setClearColor(0.2f, 0.5f, 0.5f, 1);
 
 		auto canvasSize = _engine->getDevice()->getCanvasSize();

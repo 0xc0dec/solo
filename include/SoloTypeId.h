@@ -5,14 +5,14 @@
 namespace solo
 {
 	template <typename T>
-	struct TypeMarker
+	struct TypeId
 	{
 		static void f() { }
 	};
 
-	template <typename T>
+	template <class T>
 	size_t getTypeId()
 	{
-		return reinterpret_cast<size_t>(&TypeMarker<T>::f);
+		return reinterpret_cast<size_t>(&TypeId<T>::f);
 	}
 }

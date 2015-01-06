@@ -12,7 +12,11 @@ namespace solo
 
 		virtual size_t getComponentTypeId() = 0;
 
+		// Called right before rendering. Use this to update object position, animation or any other game logic.
 		virtual void update() {}
+
+		// Called when the component is allowed to render anything.
+		virtual void render() {}
 	};
 
 	template <class T>

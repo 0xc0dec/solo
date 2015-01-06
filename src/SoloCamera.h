@@ -12,7 +12,7 @@ namespace solo
 	class Camera : public ICamera, public Dirty
 	{
 	public:
-		Camera();
+		static ptr<Camera> create();
 
 		virtual void setViewport(float left, float top, float width, float height) override;
 		virtual Vector4 getViewport() const override;
@@ -23,9 +23,12 @@ namespace solo
 		bool isPrimary() const;
 
 		virtual void update() override;
-		void render();
+		virtual void render() override;
 
 	private:
+		Camera();
+		virtual ~Camera() {}
+
 		ptr<VideoDriver> _driver;
 		ptr<Device> _device;
 

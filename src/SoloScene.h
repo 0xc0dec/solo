@@ -16,10 +16,10 @@ namespace solo
 
 		virtual size_t createEmptyNode() override;
 		virtual size_t createNode() override;
-
 		virtual bool nodeExists(size_t node) override;
 
-		virtual ptr<ICamera> createCamera(size_t node) override;
+		virtual ptr<ICamera> addCamera(size_t node) override;
+		virtual ptr<IModelRenderer> addModelRenderer(size_t node) override;
 
 		virtual void addComponent(size_t node, ptr<IComponent> cmp) override;
 		virtual ptr<IComponent> findComponent(size_t node, size_t typeId) override;
@@ -38,6 +38,6 @@ namespace solo
 		ptr<Camera> _primaryCamera;
 		NodeComponents _nodeComponents;
 
-		void _ensureNodeExists(size_t node);
+		void ensureNodeExists(size_t node);
 	};
 }

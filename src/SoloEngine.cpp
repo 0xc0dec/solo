@@ -42,15 +42,8 @@ void Engine::updateTime()
 
 void Engine::doRun(const EngineCreationArgs &args)
 {
-	DEBUG("Starting engine");
-
-	DEBUG("Creating device");
 	_device = Device::create(args);
-
-	DEBUG("Creating video driver");
 	_driver = VideoDriver::create();
-
-	DEBUG("Creating scene");
 	_scene = Scene::create();
 
 	_callback->onEngineStarted();
@@ -66,12 +59,9 @@ void Engine::doRun(const EngineCreationArgs &args)
 			break;
 	}
 
-	DEBUG("Stopping engine");
 	_callback->onEngineStopped();
 	_device.reset();
 	_scene.reset();
-	
-	DEBUG("Engine stopped");
 }
 
 
