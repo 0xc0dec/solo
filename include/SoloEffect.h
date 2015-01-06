@@ -11,11 +11,11 @@ namespace solo
 
 		static ptr<Effect> create(const std::string &vsSrc, const std::string &fsSrc);
 
-		virtual size_t getId() const;
+		size_t getId() const;
 
-		virtual std::string getLog() const;
+		std::string getLog() const;
 
-		virtual bool isValid() const;
+		bool isValid() const;
 
 	protected:
 		Effect(const std::string &vsSrc, const std::string &fsSrc);

@@ -16,13 +16,13 @@ namespace solo
 
 		virtual Vector2 getCanvasSize() const = 0;
 
-		bool closeRequested() const;
-
 		/// Returns time elapsed since the engine startup in ms
 		virtual unsigned long getLifetime() const = 0;
 
 		virtual void beginUpdate() = 0;
 		virtual void endUpdate() = 0;
+
+		bool closeRequested() const;
 
 	protected:
 		Device(const EngineCreationArgs& args);

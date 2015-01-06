@@ -16,6 +16,9 @@ namespace solo
 
 		static ptr<Camera> create();
 
+		virtual void update() override;
+		virtual void render() override;
+
 		void setViewport(float left, float top, float width, float height);
 		Vector4 getViewport() const;
 
@@ -23,9 +26,6 @@ namespace solo
 
 		void setPrimary(bool primary);
 		bool isPrimary() const;
-
-		virtual void update() override;
-		virtual void render() override;
 
 	private:
 		Camera();
