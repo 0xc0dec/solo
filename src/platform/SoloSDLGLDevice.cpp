@@ -115,7 +115,7 @@ void SDLGLDevice::endUpdate()
 
 ptr<SDLGLDevice> SDLGLDevice::create(const EngineCreationArgs &args)
 {
-	return ALLOC_WITH_DELETER(SDLGLDevice, args);
+	return NEW2(SDLGLDevice, args);
 }
 
 

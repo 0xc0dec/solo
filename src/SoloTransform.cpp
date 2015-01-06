@@ -3,24 +3,28 @@
 using namespace solo;
 
 
-void Transform::addChild(ptr<ITransform> child)
+ptr<Transform> Transform::create()
 {
-	auto impl = CAST_PTR_STATIC<Transform>(child);
-	if (impl->_parent.get() == this)
-		return;
-	if (impl->_parent)
-		impl->_parent->removeChild(child);
-	impl->_parent.reset(this);
-	_children.push_back(impl);
+	return NEW2(Transform);
 }
 
 
-void Transform::removeChild(ptr<ITransform> child)
+void Transform::addChild(ptr<Transform> child)
 {
-	auto impl = CAST_PTR_STATIC<Transform>(child);
-	if (impl->_parent.get() != this)
+	if (child->_parent.get() == this)
 		return;
-	_children.remove(impl);
+	if (child->_parent)
+		child->_parent->removeChild(child);
+	child->_parent.reset(this);
+	_children.push_back(child);
+}
+
+
+void Transform::removeChild(ptr<Transform> child)
+{
+	if (child->_parent.get() != this)
+		return;
+	_children.remove(child);
 }
 
 

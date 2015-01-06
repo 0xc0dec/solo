@@ -16,7 +16,7 @@ OpenGLVideoDriver::~OpenGLVideoDriver()
 
 ptr<OpenGLVideoDriver> OpenGLVideoDriver::create()
 {
-	return ALLOC_WITH_DELETER(OpenGLVideoDriver);
+	return NEW2(OpenGLVideoDriver);
 }
 
 

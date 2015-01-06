@@ -1,19 +1,21 @@
 #include "SoloTechnique.h"
 
+using namespace solo;
 
-std::shared_ptr<solo::Technique> solo::Technique::create()
+
+std::shared_ptr<Technique> Technique::create()
 {
-	return ALLOC_WITH_DELETER(Technique);
+	return NEW2(Technique);
 }
 
 
-unsigned solo::Technique::getPassCount() const
+unsigned Technique::getPassCount() const
 {
 	return static_cast<unsigned>(_passes.size());
 }
 
 
-std::shared_ptr<solo::Pass> solo::Technique::getPass(unsigned index) const
+std::shared_ptr<Pass> Technique::getPass(unsigned index) const
 {
 	return _passes[index];
 }

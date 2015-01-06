@@ -1,18 +1,18 @@
 #pragma once
 
-#include "SoloBaseInternal.h"
-#include "SoloIMesh.h"
+#include "SoloBase.h"
 
 namespace solo
 {
 	// Represents a connected set of vertices and their attributes.
-	class Mesh : public IMesh
+	class Mesh
 	{
 	public:
+		~Mesh() {}
+
 		static ptr<Mesh> create();
 
 	private:
 		Mesh() {}
-		virtual ~Mesh() {}
 	};
 }

@@ -14,15 +14,15 @@ Camera::Camera():
 	_primary(false),
 	_viewport(0, 0, 1, 1)
 {
-	_driver = CAST_PTR_STATIC<VideoDriver>(Engine::getEngine()->getVideoDriver());
-	_device = CAST_PTR_STATIC<Device>(Engine::getEngine()->getDevice());
+	_driver = Engine::getEngine()->getVideoDriver();
+	_device = Engine::getEngine()->getDevice();
 	setDirty<DIRTY_BIT_ALL>(); // arguably
 }
 
 
 ptr<Camera> Camera::create()
 {
-	return ALLOC_WITH_DELETER(Camera);
+	return NEW2(Camera);
 }
 
 

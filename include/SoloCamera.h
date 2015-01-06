@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SoloICamera.h"
+#include "SoloComponent.h"
 #include "SoloVector4.h"
 #include "SoloDirty.h"
 
@@ -9,15 +9,17 @@ namespace solo
 	class VideoDriver;
 	class Device;
 
-	class Camera : public ICamera, public Dirty
+	class Camera : public ComponentBase<Camera>, public Dirty
 	{
 	public:
+		virtual ~Camera() {}
+
 		static ptr<Camera> create();
 
-		virtual void setViewport(float left, float top, float width, float height) override;
-		virtual Vector4 getViewport() const override;
+		void setViewport(float left, float top, float width, float height);
+		Vector4 getViewport() const;
 
-		virtual void setClearColor(float r, float g, float b, float a) override;
+		void setClearColor(float r, float g, float b, float a);
 
 		void setPrimary(bool primary);
 		bool isPrimary() const;
@@ -27,7 +29,6 @@ namespace solo
 
 	private:
 		Camera();
-		virtual ~Camera() {}
 
 		ptr<VideoDriver> _driver;
 		ptr<Device> _device;

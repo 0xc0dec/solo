@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SoloBaseInternal.h"
+#include "SoloBase.h"
 
 namespace solo
 {
@@ -10,14 +10,15 @@ namespace solo
 	class Technique
 	{
 	public:
+		~Technique() {}
+
 		static ptr<Technique> create();
 
-		virtual unsigned getPassCount() const;
-		virtual ptr<Pass> getPass(unsigned index) const;
+		unsigned getPassCount() const;
+		ptr<Pass> getPass(unsigned index) const;
 
 	private:
 		Technique() {}
-		virtual ~Technique() {}
 
 		std::vector<ptr<Pass>> _passes;
 	};

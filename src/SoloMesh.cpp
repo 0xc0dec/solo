@@ -1,7 +1,9 @@
 #include "SoloMesh.h"
 
+using namespace solo;
 
-std::shared_ptr<solo::Mesh> solo::Mesh::create()
+
+std::shared_ptr<Mesh> Mesh::create()
 {
-	return ALLOC_WITH_DELETER(Mesh);
+	return NEW2(Mesh);
 }

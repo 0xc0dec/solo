@@ -5,7 +5,7 @@ using namespace solo;
 
 ptr<Model> Model::create()
 {
-	return ALLOC_WITH_DELETER(Model);
+	return NEW2(Model);
 }
 
 
@@ -29,7 +29,7 @@ ptr<Mesh> Model::getMesh(unsigned index) const
 }
 
 
-unsigned Model::getMeshCount() const
+size_t Model::getMeshCount() const
 {
 	return _meshes.size();
 }

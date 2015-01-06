@@ -4,44 +4,8 @@
     <ClInclude Include="..\include\Solo.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloIEngine.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloEngine.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloLog.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloIScene.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloScene.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloDevice.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloIDevice.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloIEngineCallback.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloException.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloFileSystem.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloIComponent.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloIMaterial.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloMaterial.h">
-      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloVector2.h">
       <Filter>include</Filter>
@@ -51,9 +15,6 @@
     </ClInclude>
     <ClInclude Include="..\include\SoloBase.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloBaseInternal.h">
-      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloVector3.h">
       <Filter>include</Filter>
@@ -82,38 +43,11 @@
     <ClInclude Include="..\include\SoloFrustum.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloITransform.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloTransform.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloTypeId.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloFormatter.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloIVideoDriver.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloVideoDriver.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloICamera.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloCamera.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloDirty.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloIEffect.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloEffect.h">
-      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\src\platform\SoloSDLGLDevice.h">
       <Filter>src\platform</Filter>
@@ -124,29 +58,59 @@
     <ClInclude Include="..\src\platform\SoloOpenGLVideoDriver.h">
       <Filter>src\platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloPass.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloTechnique.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloIMesh.h">
+    <ClInclude Include="..\include\SoloCamera.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloMesh.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloIModelRenderer.h">
+    <ClInclude Include="..\include\SoloDevice.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloIModel.h">
+    <ClInclude Include="..\include\SoloEffect.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloModelRenderer.h">
+    <ClInclude Include="..\include\SoloEngine.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloFileSystem.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloMaterial.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloMesh.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloModel.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloModelRenderer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloPass.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloScene.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloTechnique.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloTransform.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloVideoDriver.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloLog.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloModel.h">
-      <Filter>src</Filter>
+    <ClInclude Include="..\include\SoloDirty.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloComponent.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloEngineCallback.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -180,9 +144,6 @@
     <ClCompile Include="..\src\SoloVector2.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloBaseInternal.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloVector3.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -193,9 +154,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloMatrix.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\include\SoloQuaternion.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloPlane.cpp">
@@ -247,6 +205,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloModel.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloQuaternion.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloBase.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

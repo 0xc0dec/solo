@@ -5,7 +5,7 @@ using namespace solo;
 
 ptr<Material> Material::create()
 {
-	return ALLOC_WITH_DELETER(Material);
+	return NEW2(Material);
 }
 
 

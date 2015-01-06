@@ -1,26 +1,28 @@
 #include "SoloModelRenderer.h"
 #include "SoloModel.h"
 
+using namespace solo;
 
-std::shared_ptr<solo::ModelRenderer> solo::ModelRenderer::create()
+
+std::shared_ptr<solo::ModelRenderer> ModelRenderer::create()
 {
-	return ALLOC_WITH_DELETER(ModelRenderer);
+	return NEW2(ModelRenderer);
 }
 
 
-void solo::ModelRenderer::render()
+void ModelRenderer::render()
 {
 
 }
 
 
-void solo::ModelRenderer::setModel(const ptr<IModel> model)
+void ModelRenderer::setModel(const ptr<Model> model)
 {
-	_model = CAST_PTR_STATIC<Model>(model);
+	_model = model;
 }
 
 
-std::shared_ptr<solo::IModel> solo::ModelRenderer::getModel()
+std::shared_ptr<solo::Model> ModelRenderer::getModel()
 {
 	return _model;
 }

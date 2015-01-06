@@ -5,10 +5,10 @@
 
 namespace solo
 {
-	class IComponent
+	class Component
 	{
 	public:
-		virtual ~IComponent() {}
+		virtual ~Component() {}
 
 		virtual size_t getComponentTypeId() = 0;
 
@@ -20,7 +20,7 @@ namespace solo
 	};
 
 	template <class T>
-	class Component: public IComponent
+	class ComponentBase: public Component
 	{
 	public:
 		static size_t getId()

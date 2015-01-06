@@ -14,9 +14,9 @@
 
 namespace solo
 {
-#	define CAST_PTR_STATIC					std::static_pointer_cast
-#	define NEW								std::make_shared
-#	define ALLOC_WITH_DELETER(type, ...)	std::shared_ptr<type>(new type(__VA_ARGS__), [](type *p) { delete p; })
+#	define CAST_PTR_STATIC	std::static_pointer_cast
+#	define NEW				std::make_shared
+#	define NEW2(type, ...)	std::shared_ptr<type>(new type(__VA_ARGS__))
 
 	template <typename T> using ptr = std::shared_ptr<T>;
 

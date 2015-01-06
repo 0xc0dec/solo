@@ -13,5 +13,5 @@ class TestBase
 public:
 	virtual ~TestBase() {}
 
-	virtual void run(IEngine *engine) = 0;
+	virtual void run(Engine *engine) = 0;
 };

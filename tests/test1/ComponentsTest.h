@@ -3,17 +3,17 @@
 #include "TestBase.h"
 
 
-class A : public Component<A>
+class A : public ComponentBase<A>
 {
 };
 
 
-class B: public Component<B>
+class B: public ComponentBase<B>
 {
 };
 
 
-class Base : public Component<Base>
+class Base : public ComponentBase<Base>
 {
 };
 
@@ -26,7 +26,7 @@ class Derived : public Base
 class ComponentsTest : public TestBase
 {
 public:
-	virtual void run(IEngine* engine) override
+	virtual void run(Engine* engine) override
 	{
 		_scene = engine->getScene();
 		_node = _scene->createEmptyNode();
@@ -58,6 +58,6 @@ public:
 	}
 
 private:
-	ptr<IScene> _scene;
+	ptr<Scene> _scene;
 	size_t _node;
 };

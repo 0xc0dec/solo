@@ -1,4 +1,4 @@
-#include "SoloIEngineCallback.h"
+#include "SoloEngineCallback.h"
 #include "SoloEngine.h"
 #include "SoloScene.h"
 #include "SoloVideoDriver.h"
@@ -9,7 +9,7 @@
 using namespace solo;
 
 
-class EmptyEngineCallback: public IEngineCallback
+class EmptyEngineCallback: public EngineCallback
 {
 public:
 	bool onDeviceCloseRequested() override { return true; }
@@ -78,7 +78,7 @@ void Engine::run(const EngineCreationArgs & args)
 }
 
 
-void Engine::setCallback(IEngineCallback* callback)
+void Engine::setCallback(EngineCallback* callback)
 {
 	_callback = callback;
 	if (!_callback)
@@ -92,19 +92,19 @@ float Engine::getTimeDelta() const
 }
 
 
-ptr<IScene> Engine::getScene() const
+ptr<Scene> Engine::getScene() const
 {
 	return _scene;
 }
 
 
-ptr<IDevice> Engine::getDevice() const
+ptr<Device> Engine::getDevice() const
 {
 	return _device;
 }
 
 
-ptr<IVideoDriver> Engine::getVideoDriver() const
+ptr<VideoDriver> Engine::getVideoDriver() const
 {
 	return _driver;
 }

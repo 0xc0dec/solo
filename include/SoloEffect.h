@@ -1,23 +1,24 @@
 #pragma once
 
-#include "SoloIEffect.h"
+#include "SoloBase.h"
 
 namespace solo
 {
-	class Effect: public IEffect
+	class Effect
 	{
 	public:
+		virtual ~Effect() {}
+
 		static ptr<Effect> create(const std::string &vsSrc, const std::string &fsSrc);
 
-		virtual size_t getId() const override;
+		virtual size_t getId() const;
 
-		virtual std::string getLog() const override;
+		virtual std::string getLog() const;
 
-		virtual bool isValid() const override;
+		virtual bool isValid() const;
 
 	protected:
 		Effect(const std::string &vsSrc, const std::string &fsSrc);
-		virtual ~Effect() override;
 
 		bool _valid;
 		std::string _log;

@@ -1,14 +1,20 @@
 #pragma once
 
-#include "SoloIDevice.h"
-#include "SoloIEngine.h"
+#include "SoloEngine.h"
+#include "SoloVector2.h"
 
 namespace solo
 {
-	class Device: public IDevice
+	class Device
 	{
 	public:
+		virtual ~Device() {}
+
 		static ptr<Device> create(const EngineCreationArgs& args);
+
+		virtual void setWindowTitle(const char *title) = 0;
+
+		virtual Vector2 getCanvasSize() const = 0;
 
 		bool closeRequested() const;
 
@@ -20,7 +26,6 @@ namespace solo
 
 	protected:
 		Device(const EngineCreationArgs& args);
-		~Device() {}
 
 		bool _closeRequested;
 		EngineCreationArgs _creationArgs;

@@ -6,6 +6,6 @@ namespace solo
 	{
 	public:
 		FileSystem();
-		~FileSystem();
+		virtual ~FileSystem();
 	};
 }

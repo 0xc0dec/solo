@@ -2,10 +2,10 @@
 
 namespace solo
 {
-	class IEngineCallback
+	class EngineCallback
 	{
 	public:
-		virtual ~IEngineCallback() {}
+		virtual ~EngineCallback() {}
 
 		virtual bool onDeviceCloseRequested() = 0;
 		virtual void onEngineStarted() = 0;

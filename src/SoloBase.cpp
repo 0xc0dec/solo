@@ -1,10 +1,10 @@
-#include "SoloBaseInternal.h"
+#include "SoloBase.h"
 #include "SoloEngine.h"
 
 using namespace solo;
 
 
-extern "C" IEngine *getEngine()
+extern "C" Engine *getEngine()
 {
 	return Engine::getEngine();
 }

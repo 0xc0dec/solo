@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SoloBaseInternal.h"
+#include "SoloBase.h"
 
 #define DEBUG(...) solo::Log(FORMAT(__VA_ARGS__), solo::Log::LogLevel::Debug);
 #define INFO(...) solo::Log(FORMAT(__VA_ARGS__), solo::Log::LogLevel::Info);

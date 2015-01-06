@@ -1,5 +1,5 @@
 #include "SoloScene.h"
-#include "SoloIComponent.h"
+#include "SoloComponent.h"
 #include "SoloException.h"
 #include "SoloTransform.h"
 #include "SoloCamera.h"
@@ -17,7 +17,7 @@ Scene::Scene():
 
 ptr<Scene> Scene::create()
 {
-	return ALLOC_WITH_DELETER(Scene);
+	return NEW2(Scene);
 }
 
 
@@ -31,7 +31,8 @@ size_t Scene::createEmptyNode()
 size_t Scene::createNode()
 {
 	auto node = createEmptyNode();
-	this->IScene::addComponent<Transform>(node);
+	auto transform = Transform::create();
+	this->Scene::addComponent(node, transform);
 	return node;
 }
 
@@ -42,7 +43,7 @@ bool Scene::nodeExists(size_t node)
 }
 
 
-ptr<ICamera> Scene::addCamera(size_t node)
+ptr<Camera> Scene::addCamera(size_t node)
 {
 	auto camera = Camera::create();
 	addComponent(node, camera);
@@ -55,7 +56,7 @@ ptr<ICamera> Scene::addCamera(size_t node)
 }
 
 
-ptr<IModelRenderer> Scene::addModelRenderer(size_t node)
+ptr<ModelRenderer> Scene::addModelRenderer(size_t node)
 {
 	auto renderer = ModelRenderer::create();
 	addComponent(node, renderer);
@@ -63,7 +64,7 @@ ptr<IModelRenderer> Scene::addModelRenderer(size_t node)
 }
 
 
-void Scene::addComponent(size_t node, ptr<IComponent> cmp)
+void Scene::addComponent(size_t node, ptr<Component> cmp)
 {
 	ensureNodeExists(node);
 	if (findComponent(node, cmp->getComponentTypeId()))
@@ -72,7 +73,7 @@ void Scene::addComponent(size_t node, ptr<IComponent> cmp)
 }
 
 
-ptr<IComponent> Scene::getComponent(size_t node, size_t typeId)
+ptr<Component> Scene::getComponent(size_t node, size_t typeId)
 {
 	auto cmp = findComponent(node, typeId);
 	if (!cmp)
@@ -81,7 +82,7 @@ ptr<IComponent> Scene::getComponent(size_t node, size_t typeId)
 }
 
 
-ptr<IComponent> Scene::findComponent(size_t node, size_t typeId)
+ptr<Component> Scene::findComponent(size_t node, size_t typeId)
 {
 	ensureNodeExists(node);
 	auto nodeComponents = _nodeComponents[node];

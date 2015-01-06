@@ -1,17 +1,19 @@
 #include "SoloPass.h"
 
+using namespace solo;
 
-std::shared_ptr<solo::Pass> solo::Pass::create()
+
+std::shared_ptr<Pass> Pass::create()
 {
-	return ALLOC_WITH_DELETER(Pass);
+	return NEW2(Pass);
 }
 
 
-void solo::Pass::bind()
+void Pass::bind()
 {
 }
 
 
-void solo::Pass::unbind()
+void Pass::unbind()
 {
 }

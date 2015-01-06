@@ -1,16 +1,19 @@
 #pragma once
 
-#include "SoloIVideoDriver.h"
-#include "SoloEffect.h"
+#include "SoloBase.h"
 
 namespace solo
 {
-	class VideoDriver: public IVideoDriver
+	class Effect;
+
+	class VideoDriver
 	{
 	public:
+		virtual ~VideoDriver() {}
+
 		static ptr<VideoDriver> create();
 
-		virtual ptr<IEffect> createEffect(const std::string &vsSrc, const std::string &fsSrc) override;
+		virtual ptr<Effect> createEffect(const std::string &vsSrc, const std::string &fsSrc);
 
 		virtual void setViewport(float left, float top, float width, float height) = 0;
 
@@ -19,8 +22,7 @@ namespace solo
 		virtual void clear() = 0;
 
 	protected:
-		explicit VideoDriver();
-		~VideoDriver();
+		VideoDriver() {}
 
 		std::list<ptr<Effect>> _effects;
 	};

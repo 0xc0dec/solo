@@ -1,13 +1,15 @@
 #pragma once
 
 #include <SDL.h>
-#include "../SoloDevice.h"
+#include "SoloDevice.h"
 
 namespace solo
 {
 	class SDLGLDevice : public Device
 	{
 	public:
+		virtual ~SDLGLDevice() override;
+
 		static ptr<SDLGLDevice> create(const EngineCreationArgs &args);
 
 		virtual void setWindowTitle(const char *title) override;
@@ -21,7 +23,6 @@ namespace solo
 
 	private:
 		SDLGLDevice(const EngineCreationArgs &args);
-		virtual ~SDLGLDevice() override;
 
 		SDL_Window *_window;
 		SDL_GLContext _context;

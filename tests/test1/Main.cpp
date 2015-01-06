@@ -4,10 +4,10 @@
 
 using namespace solo;
 
-class Callback : public IEngineCallback
+class Callback : public EngineCallback
 {
 public:
-	Callback(IEngine* engine):
+	Callback(Engine* engine):
 		_engine(engine)
 	{
 	}
@@ -38,7 +38,7 @@ public:
 	}
 
 private:
-	IEngine *_engine;
+	Engine *_engine;
 };
 
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SoloBaseInternal.h"
+#include "SoloBase.h"
 
 namespace solo
 {
@@ -8,6 +8,8 @@ namespace solo
 	class Pass
 	{
 	public:
+		~Pass() {}
+
 		static ptr<Pass> create();
 
 		void bind();
@@ -15,6 +17,5 @@ namespace solo
 
 	private:
 		Pass() {}
-		virtual ~Pass() {}
 	};
 }

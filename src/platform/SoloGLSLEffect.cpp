@@ -1,5 +1,4 @@
 #include "SoloGLSLEffect.h"
-#include "../SoloBaseInternal.h"
 #include "../SoloLog.h"
 
 using namespace solo;
@@ -44,7 +43,7 @@ GLSLEffect::~GLSLEffect()
 
 ptr<GLSLEffect> GLSLEffect::create(std::string const& vsSrc, std::string const& fsSrc)
 {
-	return ALLOC_WITH_DELETER(GLSLEffect, vsSrc, fsSrc);
+	return NEW2(GLSLEffect, vsSrc, fsSrc);
 }
 
 

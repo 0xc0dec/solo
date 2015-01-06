@@ -6,16 +6,16 @@
 #include "SoloException.h"
 #include "SoloFormatter.h"
 #include "SoloFrustum.h"
-#include "SoloICamera.h"
-#include "SoloIComponent.h"
-#include "SoloIDevice.h"
-#include "SoloIEngine.h"
-#include "SoloIEngineCallback.h"
-#include "SoloIEffect.h"
-#include "SoloIMaterial.h"
-#include "SoloIScene.h"
-#include "SoloITransform.h"
-#include "SoloIVideoDriver.h"
+#include "SoloCamera.h"
+#include "SoloComponent.h"
+#include "SoloDevice.h"
+#include "SoloEngine.h"
+#include "SoloEngineCallback.h"
+#include "SoloEffect.h"
+#include "SoloMaterial.h"
+#include "SoloScene.h"
+#include "SoloTransform.h"
+#include "SoloVideoDriver.h"
 #include "SoloMath.h"
 #include "SoloMatrix.h"
 #include "SoloPlane.h"
@@ -28,5 +28,5 @@
 
 namespace solo
 {
-	extern "C" IEngine *getEngine();
+	extern "C" Engine *getEngine();
 }

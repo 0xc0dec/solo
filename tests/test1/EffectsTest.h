@@ -27,7 +27,7 @@ const char *fs =
 class EffectsTest : public TestBase
 {
 public:
-	virtual void run(IEngine *engine) override
+	virtual void run(Engine *engine) override
 	{
 		auto effect = engine->getVideoDriver()->createEffect(vs, fs);
 		assert(effect->isValid());
