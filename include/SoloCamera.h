@@ -12,9 +12,8 @@ namespace solo
 	class Camera : public ComponentBase<Camera>, public Dirty
 	{
 	public:
+		Camera();
 		virtual ~Camera() {}
-
-		static ptr<Camera> create();
 
 		virtual void update() override;
 		virtual void render() override;
@@ -24,17 +23,10 @@ namespace solo
 
 		void setClearColor(float r, float g, float b, float a);
 
-		// TODO probably not an interface methods
-		void setPrimary(bool primary);
-		bool isPrimary() const;
-
 	private:
-		Camera();
-
 		ptr<VideoDriver> _driver;
 		ptr<Device> _device;
 
-		bool _primary;
 		Vector4 _viewport; // all values in range 0..1
 		Vector4 _clearColor;
 	};

@@ -1,2 +1,3 @@
 * Materials, Passes, Techniques, Effects handling
 * Transform component, node hierarchy
+* Registering components for rendering (and remove camera _rendered flag)

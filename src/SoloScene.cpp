@@ -3,14 +3,12 @@
 #include "SoloException.h"
 #include "SoloTransform.h"
 #include "SoloCamera.h"
-#include "SoloModelRenderer.h"
 
 using namespace solo;
 
 
 Scene::Scene():
-	_nodeCounter(0),
-	_primaryCamera(nullptr)
+	_nodeCounter(0)
 {
 }
 
@@ -31,8 +29,7 @@ size_t Scene::createEmptyNode()
 size_t Scene::createNode()
 {
 	auto node = createEmptyNode();
-	auto transform = Transform::create();
-	this->Scene::addComponent(node, transform);
+	addComponent<Transform>(node);
 	return node;
 }
 
@@ -43,33 +40,26 @@ bool Scene::nodeExists(size_t node)
 }
 
 
-ptr<Camera> Scene::createCamera(size_t node)
-{
-	auto camera = Camera::create();
-	addComponent(node, camera);
-	if (!_primaryCamera)
-	{
-		_primaryCamera = camera;
-		_primaryCamera->setPrimary(true);
-	}
-	return camera;
-}
-
-
-ptr<ModelRenderer> Scene::createModelRenderer(size_t node)
-{
-	auto renderer = ModelRenderer::create();
-	addComponent(node, renderer);
-	return renderer;
-}
-
-
 void Scene::addComponent(size_t node, ptr<Component> cmp)
 {
 	ensureNodeExists(node);
 	if (findComponent(node, cmp->getTypeId()))
 		THROW(EngineException, "Component ", cmp->getTypeId(), " already exists");
 	_components[node][cmp->getTypeId()] = cmp;
+}
+
+
+void Scene::removeComponent(size_t node, size_t typeId)
+{
+	ensureNodeExists(node);
+	_components[node].erase(typeId);
+}
+
+
+void Scene::removeComponent(size_t node, ptr<Component> cmp)
+{
+	ensureNodeExists(node);
+	_components[node].erase(cmp->getTypeId());
 }
 
 
@@ -91,6 +81,22 @@ ptr<Component> Scene::findComponent(size_t node, size_t typeId)
 }
 
 
+std::vector<ptr<Camera>> Scene::getCameras()
+{
+	std::vector<ptr<Camera>> result;
+	result.reserve(10);
+	for (auto nodeComponents : _components)
+	{
+		for (auto component : nodeComponents.second)
+		{
+			if (component.second->getTypeId() == Camera::getId())
+				result.push_back(CAST_PTR_STATIC<Camera>(component.second));
+		}
+	}
+	return result;
+}
+
+
 void Scene::update()
 {
 	for (auto node : _components)
@@ -103,14 +109,18 @@ void Scene::update()
 
 void Scene::render()
 {
-	if (_primaryCamera)
-		_primaryCamera->render();
-	for (auto nodeComponents : _components)
+	auto cameras = getCameras(); // TODO cache lookup results or optimise in some other way
+	for (auto camera : cameras)
 	{
-		for (auto component : nodeComponents.second)
+		camera->render();
+		for (auto nodeComponents : _components)
 		{
-			if (component.second != _primaryCamera)
-				component.second->render();
+			for (auto component : nodeComponents.second)
+			{
+				// Ignore cameras - they're rendered in a special way
+				if (component.second->getTypeId() != Camera::getId())
+					component.second->render();
+			}
 		}
 	}
 }

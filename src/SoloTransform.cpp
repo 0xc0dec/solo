@@ -3,12 +3,6 @@
 using namespace solo;
 
 
-ptr<Transform> Transform::create()
-{
-	return NEW2(Transform);
-}
-
-
 void Transform::addChild(ptr<Transform> child)
 {
 	if (child->_parent.get() == this)

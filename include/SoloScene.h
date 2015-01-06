@@ -5,7 +5,6 @@
 namespace solo
 {
 	class Camera;
-	class ModelRenderer;
 	class Component;
 
 	class Scene
@@ -20,32 +19,33 @@ namespace solo
 
 		bool nodeExists(size_t node);
 
-		ptr<Camera> createCamera(size_t node);
-		ptr<ModelRenderer> createModelRenderer(size_t node);
+		void removeComponent(size_t node, ptr<Component> cmp);
 
-		void addComponent(size_t node, ptr<Component> cmp);
-		template <typename TComponent> ptr<TComponent> addComponent(size_t node)
+		template <typename T> ptr<T> addComponent(size_t node)
 		{
-			auto cmp = NEW<TComponent>();
+			auto cmp = NEW<T>();
 			auto base = CAST_PTR_STATIC<Component>(cmp);
 			addComponent(node, base);
 			return cmp;
 		}
 
-		ptr<Component> findComponent(size_t node, size_t typeId);
-		template <typename TComponent> ptr<TComponent> findComponent(size_t node)
+		template <typename T> void removeComponent(size_t node)
 		{
-			auto typeId = TComponent::getTypeId();
-			auto cmp = findComponent(node, typeId);
-			return CAST_PTR_STATIC<TComponent>(cmp);
+			removeComponent(node, T::getId());
 		}
 
-		ptr<Component> getComponent(size_t node, size_t typeId);
-		template <typename TComponent> ptr<TComponent> getComponent(size_t node)
+		template <typename T> ptr<T> getComponent(size_t node)
 		{
-			auto typeId = TComponent::getId();
+			auto typeId = T::getId();
 			auto cmp = getComponent(node, typeId);
-			return CAST_PTR_STATIC<TComponent>(cmp);
+			return CAST_PTR_STATIC<T>(cmp);
+		}
+
+		template <typename T> ptr<T> findComponent(size_t node)
+		{
+			auto typeId = T::getTypeId();
+			auto cmp = findComponent(node, typeId);
+			return CAST_PTR_STATIC<T>(cmp);
 		}
 
 		void update();
@@ -54,12 +54,18 @@ namespace solo
 	private:
 		Scene();
 
-		typedef std::map<size_t, std::map<size_t, ptr<Component>>> NodeComponents;
+		typedef std::map<size_t, std::map<size_t, ptr<Component>>> Components;
 
 		int _nodeCounter;
-		ptr<Camera> _primaryCamera;
-		NodeComponents _components;
+		Components _components;
 
 		void ensureNodeExists(size_t node);
+
+		void addComponent(size_t node, ptr<Component> cmp);
+		void removeComponent(size_t node, size_t typeId);
+		ptr<Component> getComponent(size_t node, size_t typeId);
+		ptr<Component> findComponent(size_t node, size_t typeId);
+
+		std::vector<ptr<Camera>> getCameras();
 	};
 }
