@@ -43,7 +43,7 @@ bool Scene::nodeExists(size_t node)
 }
 
 
-ptr<Camera> Scene::addCamera(size_t node)
+ptr<Camera> Scene::createCamera(size_t node)
 {
 	auto camera = Camera::create();
 	addComponent(node, camera);
@@ -56,7 +56,7 @@ ptr<Camera> Scene::addCamera(size_t node)
 }
 
 
-ptr<ModelRenderer> Scene::addModelRenderer(size_t node)
+ptr<ModelRenderer> Scene::createModelRenderer(size_t node)
 {
 	auto renderer = ModelRenderer::create();
 	addComponent(node, renderer);
@@ -105,9 +105,9 @@ void Scene::render()
 {
 	if (_primaryCamera)
 		_primaryCamera->render();
-	for (auto node : _nodeComponents)
+	for (auto nodeComponents : _nodeComponents)
 	{
-		for (auto component : node.second)
+		for (auto component : nodeComponents.second)
 		{
 			if (component.second != _primaryCamera)
 				component.second->render();

@@ -20,8 +20,8 @@ namespace solo
 
 		bool nodeExists(size_t node);
 
-		ptr<Camera> addCamera(size_t node);
-		ptr<ModelRenderer> addModelRenderer(size_t node);
+		ptr<Camera> createCamera(size_t node);
+		ptr<ModelRenderer> createModelRenderer(size_t node);
 
 		void addComponent(size_t node, ptr<Component> cmp);
 		template <typename TComponent> ptr<TComponent> addComponent(size_t node)
