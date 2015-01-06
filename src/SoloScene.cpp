@@ -67,9 +67,9 @@ ptr<ModelRenderer> Scene::createModelRenderer(size_t node)
 void Scene::addComponent(size_t node, ptr<Component> cmp)
 {
 	ensureNodeExists(node);
-	if (findComponent(node, cmp->getComponentTypeId()))
-		THROW(EngineException, "Component ", cmp->getComponentTypeId(), " already exists");
-	_components[node][cmp->getComponentTypeId()] = cmp;
+	if (findComponent(node, cmp->getTypeId()))
+		THROW(EngineException, "Component ", cmp->getTypeId(), " already exists");
+	_components[node][cmp->getTypeId()] = cmp;
 }
 
 

@@ -40,8 +40,8 @@ public:
 		auto b = _scene->addComponent<B>(_node);
 		assert(a);
 		assert(b);
-		assert(a->getComponentTypeId() == A::getId());
-		assert(b->getComponentTypeId() == B::getId());
+		assert(a->getTypeId() == A::getId());
+		assert(b->getTypeId() == B::getId());
 	}
 
 	void testDerivedComponents()
@@ -52,9 +52,9 @@ public:
 		assert(base);
 		assert(derived);
 		assert(base == derived);
-		assert(base->getComponentTypeId() == Derived::getId());
-		assert(base->getComponentTypeId() == Base::getId());
-		assert(derived->getComponentTypeId() == base->getComponentTypeId());
+		assert(base->getTypeId() == Derived::getId());
+		assert(base->getTypeId() == Base::getId());
+		assert(derived->getTypeId() == base->getTypeId());
 	}
 
 private:

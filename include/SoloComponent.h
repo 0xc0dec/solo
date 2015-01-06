@@ -10,7 +10,7 @@ namespace solo
 	public:
 		virtual ~Component() {}
 
-		virtual size_t getComponentTypeId() = 0;
+		virtual size_t getTypeId() = 0;
 
 		// Called right before rendering. Use this to update object position, animation or any other game logic.
 		virtual void update() {}
@@ -28,7 +28,7 @@ namespace solo
 			return solo::getTypeId<T>();
 		}
 
-		virtual size_t getComponentTypeId() override
+		virtual size_t getTypeId() override
 		{
 			return getId();
 		}
