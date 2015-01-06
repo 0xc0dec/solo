@@ -4,17 +4,18 @@ project(solo)
 set(EXECUTABLE_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/build/")
 set(LIBRARY_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/build/")
 
-add_compile_options(-std=c++0x)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/external/glew/include
     ${PROJECT_SOURCE_DIR}/external/SDL/2.0.3/include)
 
 link_directories(${PROJECT_SOURCE_DIR}/external/SDL/2.0.3)
 
 # Engine
 
-file(GLOB sources "src/*.cpp")
+file(GLOB_RECURSE sources "src/*.cpp" "external/glew/src/*.c")
 
 find_library(carbon_lib Carbon)
 find_library(iokit_lib IOKit)
