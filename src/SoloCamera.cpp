@@ -14,8 +14,8 @@ Camera::Camera():
 	_primary(false),
 	_viewport(0, 0, 1, 1)
 {
-	_driver = Engine::getEngine()->getVideoDriver();
-	_device = Engine::getEngine()->getDevice();
+	_driver = Engine::get()->getVideoDriver();
+	_device = Engine::get()->getDevice();
 	setDirty<DIRTY_BIT_ALL>(); // arguably
 }
 

@@ -6,7 +6,7 @@ using namespace solo;
 
 extern "C" Engine *getEngine()
 {
-	return Engine::getEngine();
+	return Engine::get();
 }
 
 

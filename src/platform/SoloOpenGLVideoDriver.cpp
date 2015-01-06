@@ -20,6 +20,12 @@ ptr<OpenGLVideoDriver> OpenGLVideoDriver::create()
 }
 
 
+void OpenGLVideoDriver::drawMesh(ptr<Mesh> mesh)
+{
+	// TODO :)
+}
+
+
 void OpenGLVideoDriver::setViewport(float left, float top, float width, float height)
 {
 	glViewport(static_cast<GLuint>(left), static_cast<GLuint>(top), static_cast<GLuint>(width), static_cast<GLuint>(height));

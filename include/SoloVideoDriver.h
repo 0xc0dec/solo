@@ -5,6 +5,7 @@
 namespace solo
 {
 	class Effect;
+	class Mesh;
 
 	class VideoDriver
 	{
@@ -12,6 +13,8 @@ namespace solo
 		virtual ~VideoDriver() {}
 
 		static ptr<VideoDriver> create();
+
+		virtual void drawMesh(ptr<Mesh> mesh) = 0;
 
 		virtual ptr<Effect> createEffect(const std::string &vsSrc, const std::string &fsSrc);
 

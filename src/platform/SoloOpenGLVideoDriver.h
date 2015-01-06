@@ -11,6 +11,8 @@ namespace solo
 
 		static ptr<OpenGLVideoDriver> create();
 
+		virtual void drawMesh(ptr<Mesh> mesh) override;
+
 		virtual void setViewport(float left, float top, float width, float height) override;
 
 		virtual void setClearColor(float r, float g, float b, float a) override;

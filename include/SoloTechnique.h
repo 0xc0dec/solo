@@ -14,7 +14,7 @@ namespace solo
 
 		static ptr<Technique> create();
 
-		unsigned getPassCount() const;
+		size_t getPassCount() const;
 		ptr<Pass> getPass(unsigned index) const;
 
 	private:

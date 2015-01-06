@@ -22,7 +22,7 @@ namespace solo
 	class Engine
 	{
 	public:
-		static Engine *getEngine()
+		static Engine *get()
 		{
 			static Engine instance;
 			return &instance;

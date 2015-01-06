@@ -17,15 +17,13 @@ namespace solo
 
 		size_t createEmptyNode();
 		size_t createNode();
+
 		bool nodeExists(size_t node);
 
 		ptr<Camera> addCamera(size_t node);
 		ptr<ModelRenderer> addModelRenderer(size_t node);
 
 		void addComponent(size_t node, ptr<Component> cmp);
-		ptr<Component> findComponent(size_t node, size_t typeId);
-		ptr<Component> getComponent(size_t node, size_t typeId);
-
 		template <typename TComponent> ptr<TComponent> addComponent(size_t node)
 		{
 			auto cmp = NEW<TComponent>();
@@ -34,6 +32,7 @@ namespace solo
 			return cmp;
 		}
 
+		ptr<Component> findComponent(size_t node, size_t typeId);
 		template <typename TComponent> ptr<TComponent> findComponent(size_t node)
 		{
 			auto typeId = TComponent::getComponentTypeId();
@@ -41,6 +40,7 @@ namespace solo
 			return CAST_PTR_STATIC<TComponent>(cmp);
 		}
 
+		ptr<Component> getComponent(size_t node, size_t typeId);
 		template <typename TComponent> ptr<TComponent> getComponent(size_t node)
 		{
 			auto typeId = TComponent::getId();

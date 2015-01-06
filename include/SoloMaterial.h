@@ -13,8 +13,12 @@ namespace solo
 
 		static ptr<Material> create();
 
-		unsigned getTechniquesCount() const;
+		void addTechnique(ptr<Technique> technique);
+		void removeTechnique(ptr<Technique> technique);
+		void setTechnique(ptr<Technique> technique);
 		ptr<Technique> getTechnique(unsigned index) const;
+		ptr<Technique> getCurrentTechnique() const;
+		size_t getTechniquesCount() const;
 
 	private:
 		Material() {}

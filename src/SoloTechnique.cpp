@@ -9,7 +9,7 @@ std::shared_ptr<Technique> Technique::create()
 }
 
 
-unsigned Technique::getPassCount() const
+size_t Technique::getPassCount() const
 {
 	return static_cast<unsigned>(_passes.size());
 }
