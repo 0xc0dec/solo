@@ -23,7 +23,7 @@ ptr<Scene> Scene::create()
 
 size_t Scene::createEmptyNode()
 {
-	_nodeComponents[++_nodeCounter];
+	_components[++_nodeCounter];
 	return _nodeCounter;
 }
 
@@ -39,7 +39,7 @@ size_t Scene::createNode()
 
 bool Scene::nodeExists(size_t node)
 {
-	return _nodeComponents.find(node) != _nodeComponents.end();
+	return _components.find(node) != _components.end();
 }
 
 
@@ -69,7 +69,7 @@ void Scene::addComponent(size_t node, ptr<Component> cmp)
 	ensureNodeExists(node);
 	if (findComponent(node, cmp->getComponentTypeId()))
 		THROW(EngineException, "Component ", cmp->getComponentTypeId(), " already exists");
-	_nodeComponents[node][cmp->getComponentTypeId()] = cmp;
+	_components[node][cmp->getComponentTypeId()] = cmp;
 }
 
 
@@ -85,7 +85,7 @@ ptr<Component> Scene::getComponent(size_t node, size_t typeId)
 ptr<Component> Scene::findComponent(size_t node, size_t typeId)
 {
 	ensureNodeExists(node);
-	auto nodeComponents = _nodeComponents[node];
+	auto nodeComponents = _components[node];
 	auto it = nodeComponents.find(typeId);
 	return it != nodeComponents.end() ? it->second : nullptr;
 }
@@ -93,7 +93,7 @@ ptr<Component> Scene::findComponent(size_t node, size_t typeId)
 
 void Scene::update()
 {
-	for (auto node : _nodeComponents)
+	for (auto node : _components)
 	{
 		for (auto component : node.second)
 			component.second->update();
@@ -105,7 +105,7 @@ void Scene::render()
 {
 	if (_primaryCamera)
 		_primaryCamera->render();
-	for (auto nodeComponents : _nodeComponents)
+	for (auto nodeComponents : _components)
 	{
 		for (auto component : nodeComponents.second)
 		{

@@ -58,7 +58,7 @@ namespace solo
 
 		int _nodeCounter;
 		ptr<Camera> _primaryCamera;
-		NodeComponents _nodeComponents;
+		NodeComponents _components;
 
 		void ensureNodeExists(size_t node);
 	};

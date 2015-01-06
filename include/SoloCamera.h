@@ -24,6 +24,7 @@ namespace solo
 
 		void setClearColor(float r, float g, float b, float a);
 
+		// TODO probably not an interface methods
 		void setPrimary(bool primary);
 		bool isPrimary() const;
 
