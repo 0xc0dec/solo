@@ -29,7 +29,7 @@ ptr<Mesh> Model::getMesh(unsigned index) const
 }
 
 
-size_t Model::getMesheCount() const
+size_t Model::getMeshCount() const
 {
 	return _meshes.size();
 }

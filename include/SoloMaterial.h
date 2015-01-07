@@ -4,8 +4,8 @@
 
 namespace solo
 {
-	class MaterialTechnique;
 	class MaterialParameter;
+	class MaterialPass;
 
 	class Material
 	{
@@ -14,22 +14,19 @@ namespace solo
 
 		static ptr<Material> create();
 
-		void addTechnique(ptr<MaterialTechnique> technique);
-		void removeTechnique(ptr<MaterialTechnique> technique);
-		size_t getTechniquesCount() const;
-		ptr<MaterialTechnique> getTechnique(unsigned index) const;
+		void addPass(ptr<MaterialPass> pass);
+		void removePass(ptr<MaterialPass> pass);
+		size_t getPassCount() const;
+		ptr<MaterialPass> getPass(unsigned index) const;
 		
-		void setCurrentTechnique(ptr<MaterialTechnique> technique);
-		void setCurrentTechnique(unsigned index);
-		ptr<MaterialTechnique> getCurrentTechnique() const;
-
 		ptr<MaterialParameter> findParameter(const std::string &name);
+
+		void bind();
 
 	private:
 		Material() {}
 
-		ptr<MaterialTechnique> _currentTechnique;
-		std::vector<ptr<MaterialTechnique>> _techniques;
+		std::vector<ptr<MaterialPass>> _passes;
 		std::map<std::string, ptr<MaterialParameter>> _parameters;
 	};
 }

@@ -115,9 +115,6 @@
     <ClInclude Include="..\include\SoloMaterialParameter.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloMaterialTechnique.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloMaterialPass.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -220,9 +217,6 @@
       <Filter>src\platform</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloEffectVariable.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloMaterialTechnique.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloMaterialPass.cpp">

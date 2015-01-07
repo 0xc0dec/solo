@@ -17,7 +17,7 @@ namespace solo
 		void addMesh(const ptr<Mesh> mesh);
 		void removeMesh(const ptr<Mesh> mesh);
 		ptr<Mesh> getMesh(unsigned index) const;
-		size_t getMesheCount() const;
+		size_t getMeshCount() const;
 
 	private:
 		Model() {}

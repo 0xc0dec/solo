@@ -10,54 +10,29 @@ ptr<Material> Material::create()
 }
 
 
-void Material::addTechnique(ptr<MaterialTechnique> technique)
+void Material::addPass(ptr<MaterialPass> pass)
 {
-	_techniques.push_back(technique);
-	if (!_currentTechnique)
-		_currentTechnique = technique;
+	_passes.push_back(pass);
 }
 
 
-void Material::removeTechnique(ptr<MaterialTechnique> technique)
+void Material::removePass(ptr<MaterialPass> pass)
 {
-	auto where = find(_techniques.begin(), _techniques.end(), technique);
-	if (where != _techniques.end())
-		_techniques.erase(where);
-	if (_currentTechnique == technique)
-		_currentTechnique = nullptr;
+	auto where = find(_passes.begin(), _passes.end(), pass);
+	if (where != _passes.end())
+		_passes.erase(where);
 }
 
 
-void Material::setCurrentTechnique(ptr<MaterialTechnique> technique)
+size_t Material::getPassCount() const
 {
-	auto where = find(_techniques.begin(), _techniques.end(), technique);
-	if (where == _techniques.end())
-		THROW(EngineException, "Material doesn't contain the specified technique");
-	_currentTechnique = technique;
+	return _passes.size();
 }
 
 
-void Material::setCurrentTechnique(unsigned index)
+ptr<MaterialPass> Material::getPass(unsigned index) const
 {
-	_currentTechnique = _techniques[index];
-}
-
-
-size_t Material::getTechniquesCount() const
-{
-	return _techniques.size();
-}
-
-
-ptr<MaterialTechnique> Material::getTechnique(unsigned index) const
-{
-	return _techniques[index];
-}
-
-
-ptr<MaterialTechnique> Material::getCurrentTechnique() const
-{
-	return _currentTechnique;
+	return _passes[index];
 }
 
 
@@ -65,4 +40,9 @@ ptr<MaterialParameter> Material::findParameter(const std::string& name)
 {
 	auto where = _parameters.find(name);
 	return where != _parameters.end() ? where->second : nullptr;
+}
+
+
+void Material::bind()
+{
 }

@@ -1,7 +1,6 @@
 #include "SoloModelRenderer.h"
 #include "SoloModel.h"
 #include "SoloMaterial.h"
-#include "SoloMaterialTechnique.h"
 #include "SoloMaterialPass.h"
 #include "SoloMesh.h"
 
@@ -22,7 +21,7 @@ ptr<ModelRenderer> ModelRenderer::create()
 void ModelRenderer::render()
 {
 	auto materialCount = getMaterialCount();
-	auto meshCount = _model->getMesheCount();
+	auto meshCount = _model->getMeshCount();
 	ptr<Material> material = nullptr;
 	for (auto i = 0; i < meshCount; ++i)
 	{
@@ -30,18 +29,15 @@ void ModelRenderer::render()
 			material = getMaterial(i);
 		if (!material)
 			break;
-		auto technique = material->getCurrentTechnique();
-		if (technique) // do not break the loop because other materials might have techniques
+		material->bind();
+		auto mesh = _model->getMesh(i);
+		auto passCount = material->getPassCount();
+		for (auto k = 0; k < passCount; ++k)
 		{
-			auto mesh = _model->getMesh(i);
-			auto passCount = technique->getPassCount();
-			for (auto k = 0; k < passCount; ++k)
-			{
-				auto pass = technique->getPass(k);
-				pass->bind();
-				mesh->draw();
-				pass->unbind();
-			}
+			auto pass = material->getPass(k);
+			pass->bind();
+			mesh->draw();
+			pass->unbind();
 		}
 	}
 }

@@ -4,6 +4,7 @@ namespace solo
 {
 	class MaterialParameter
 	{
-		
+	public:
+
 	};
 }
