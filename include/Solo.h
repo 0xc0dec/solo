@@ -31,7 +31,6 @@
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 #include "SoloVector4.h"
-#include "SoloVideoDriver.h"
 
 namespace solo
 {

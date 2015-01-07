@@ -7,7 +7,6 @@ namespace solo
 {
 	class Model;
 	class Material;
-	class VideoDriver;
 
 	class ModelRenderer: public ComponentBase<ModelRenderer>
 	{
@@ -28,8 +27,6 @@ namespace solo
 
 	private:
 		ModelRenderer();
-
-		ptr<VideoDriver> _driver;
 
 		ptr<Model> _model;
 		std::vector<ptr<Material>> _materials;

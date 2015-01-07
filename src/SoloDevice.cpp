@@ -1,5 +1,5 @@
 #include "SoloDevice.h"
-#include "platform/SoloSDLGLDevice.h"
+#include "platform/SoloSDLOpenGLDevice.h"
 
 using namespace solo;
 
@@ -13,7 +13,7 @@ Device::Device(const EngineCreationArgs& args)
 
 ptr<Device> Device::create(const EngineCreationArgs& args)
 {
-	return SDLGLDevice::create(args);
+	return SDLOpenGLDevice::create(args);
 }
 
 

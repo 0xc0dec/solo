@@ -5,7 +5,6 @@
 namespace solo
 {
 	class EngineCallback;
-	class VideoDriver;
 	class Scene;
 	class Device;
 
@@ -33,7 +32,6 @@ namespace solo
 
 		ptr<Scene> getScene() const;
 		ptr<Device> getDevice() const;
-		ptr<VideoDriver> getVideoDriver() const;
 
 		float getTimeDelta() const;
 
@@ -44,7 +42,6 @@ namespace solo
 		EngineCallback *_callback;
 		ptr<Scene> _scene;
 		ptr<Device> _device;
-		ptr<VideoDriver> _driver;
 
 		unsigned long _lastUpdateTime;
 		float _timeDelta;

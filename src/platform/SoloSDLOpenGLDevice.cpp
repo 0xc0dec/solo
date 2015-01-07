@@ -1,5 +1,5 @@
 #include <GL/glew.h>
-#include "SoloSDLGLDevice.h"
+#include "SoloSDLOpenGLDevice.h"
 #include "SoloException.h"
 #include "../SoloLog.h"
 
@@ -9,7 +9,7 @@ using namespace solo;
 #define MAX_GL_CONTEXT_VERSION_MINOR 5
 
 
-SDLGLDevice::SDLGLDevice(EngineCreationArgs const& args):
+SDLOpenGLDevice::SDLOpenGLDevice(EngineCreationArgs const& args):
 	Device(args)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) < 0)
@@ -38,7 +38,7 @@ SDLGLDevice::SDLGLDevice(EngineCreationArgs const& args):
 }
 
 
-std::tuple<int, int> SDLGLDevice::selectContextVersion(int desiredMajorVersion, int desiredMinorVersion)
+std::tuple<int, int> SDLOpenGLDevice::selectContextVersion(int desiredMajorVersion, int desiredMinorVersion)
 {
 	auto maxMinorVersion = desiredMinorVersion;
 	int minor = maxMinorVersion, major;
@@ -71,7 +71,7 @@ std::tuple<int, int> SDLGLDevice::selectContextVersion(int desiredMajorVersion, 
 }
 
 
-std::tuple<SDL_Window*, SDL_GLContext> SDLGLDevice::tryCreateWindowWithContext(bool hidden, int ctxMajorVersion, int ctxMinorVersion)
+std::tuple<SDL_Window*, SDL_GLContext> SDLOpenGLDevice::tryCreateWindowWithContext(bool hidden, int ctxMajorVersion, int ctxMinorVersion)
 {
 	SDL_Window *window;
 	SDL_GLContext context;
@@ -93,7 +93,7 @@ std::tuple<SDL_Window*, SDL_GLContext> SDLGLDevice::tryCreateWindowWithContext(b
 }
 
 
-SDLGLDevice::~SDLGLDevice()
+SDLOpenGLDevice::~SDLOpenGLDevice()
 {
 	SDL_GL_DeleteContext(_context);
 	SDL_DestroyWindow(_window);
@@ -101,31 +101,31 @@ SDLGLDevice::~SDLGLDevice()
 }
 
 
-void SDLGLDevice::beginUpdate()
+void SDLOpenGLDevice::beginUpdate()
 {
 	processSystemEvents();
 }
 
 
-void SDLGLDevice::endUpdate()
+void SDLOpenGLDevice::endUpdate()
 {
 	SDL_GL_SwapWindow(_window);
 }
 
 
-ptr<SDLGLDevice> SDLGLDevice::create(const EngineCreationArgs &args)
+ptr<SDLOpenGLDevice> SDLOpenGLDevice::create(const EngineCreationArgs &args)
 {
-	return NEW2(SDLGLDevice, args);
+	return NEW2(SDLOpenGLDevice, args);
 }
 
 
-void SDLGLDevice::setWindowTitle(const char *title)
+void SDLOpenGLDevice::setWindowTitle(const char *title)
 {
 	SDL_SetWindowTitle(_window, title);
 }
 
 
-void SDLGLDevice::processSystemEvents()
+void SDLOpenGLDevice::processSystemEvents()
 {
 	SDL_Event evt;
 	while (SDL_PollEvent(&evt))
@@ -146,13 +146,13 @@ void SDLGLDevice::processSystemEvents()
 }
 
 
-unsigned long SDLGLDevice::getLifetime() const
+unsigned long SDLOpenGLDevice::getLifetime() const
 {
 	return SDL_GetTicks();
 }
 
 
-Vector2 SDLGLDevice::getCanvasSize() const
+Vector2 SDLOpenGLDevice::getCanvasSize() const
 {
 	int width, height;
 	SDL_GetWindowSize(_window, &width, &height);

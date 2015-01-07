@@ -41,9 +41,8 @@ GLSLEffect::~GLSLEffect()
 }
 
 
-ptr<GLSLEffect> GLSLEffect::create(std::string const& vsSrc, std::string const& fsSrc)
+void GLSLEffect::bind()
 {
-	return NEW2(GLSLEffect, vsSrc, fsSrc);
 }
 
 

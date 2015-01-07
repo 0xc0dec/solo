@@ -1,9 +1,10 @@
 #include "SoloMesh.h"
+#include "platform/SoloOpenGLMesh.h"
 
 using namespace solo;
 
 
 std::shared_ptr<Mesh> Mesh::create()
 {
-	return NEW2(Mesh);
+	return NEW<OpenGLMesh>();
 }

@@ -29,7 +29,7 @@ class EffectsTest : public TestBase
 public:
 	virtual void run(Engine *engine) override
 	{
-		auto effect = engine->getVideoDriver()->createEffect(vs, fs);
+		auto effect = Effect::create(vs, fs);
 		assert(effect->isValid());
 		assert(effect->getLog().empty());
 	}

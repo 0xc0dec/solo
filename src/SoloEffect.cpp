@@ -14,7 +14,7 @@ Effect::Effect(const std::string &vsSrc, const std::string &fsSrc)
 ptr<Effect> Effect::create(const std::string& vsSrc, const std::string& fsSrc)
 {
 	// GLSL is the only option at the moment
-	return GLSLEffect::create(vsSrc, fsSrc);
+	return NEW<GLSLEffect>(vsSrc, fsSrc);
 }
 
 

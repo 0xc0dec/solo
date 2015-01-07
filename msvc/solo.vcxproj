@@ -53,8 +53,9 @@
     <ClInclude Include="..\include\SoloVector4.h" />
     <ClInclude Include="..\include\SoloVideoDriver.h" />
     <ClInclude Include="..\src\platform\SoloGLSLEffect.h" />
-    <ClInclude Include="..\src\platform\SoloSDLGLDevice.h" />
-    <ClInclude Include="..\src\platform\SoloOpenGLVideoDriver.h" />
+    <ClInclude Include="..\src\platform\SoloOpenGLCamera.h" />
+    <ClInclude Include="..\src\platform\SoloOpenGLMesh.h" />
+    <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h" />
     <ClInclude Include="..\src\SoloLog.h" />
   </ItemGroup>
   <ItemGroup>
@@ -62,8 +63,9 @@
     <ClCompile Include="..\external\glew\src\glewinfo.c" />
     <ClCompile Include="..\external\glew\src\visualinfo.c" />
     <ClCompile Include="..\src\platform\SoloGLSLEffect.cpp" />
-    <ClCompile Include="..\src\platform\SoloSDLGLDevice.cpp" />
-    <ClCompile Include="..\src\platform\SoloOpenGLVideoDriver.cpp" />
+    <ClCompile Include="..\src\platform\SoloOpenGLCamera.cpp" />
+    <ClCompile Include="..\src\platform\SoloOpenGLMesh.cpp" />
+    <ClCompile Include="..\src\platform\SoloSDLOpenGLDevice.cpp" />
     <ClCompile Include="..\src\SoloBoundingBox.cpp" />
     <ClCompile Include="..\src\SoloBoundingSphere.cpp" />
     <ClCompile Include="..\src\SoloCamera.cpp" />
@@ -90,7 +92,6 @@
     <ClCompile Include="..\src\SoloVector2.cpp" />
     <ClCompile Include="..\src\SoloVector3.cpp" />
     <ClCompile Include="..\src\SoloVector4.cpp" />
-    <ClCompile Include="..\src\SoloVideoDriver.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{278CAB21-1CAB-49AD-9959-6F97743501FB}</ProjectGuid>

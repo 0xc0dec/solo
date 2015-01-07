@@ -3,15 +3,14 @@
 #include "SoloMaterial.h"
 #include "SoloTechnique.h"
 #include "SoloPass.h"
+#include "SoloMesh.h"
 #include "SoloEngine.h"
-#include "SoloVideoDriver.h"
 
 using namespace solo;
 
 
 ModelRenderer::ModelRenderer()
 {
-	_driver = Engine::get()->getVideoDriver();
 }
 
 
@@ -40,9 +39,9 @@ void ModelRenderer::render()
 			for (auto k = 0; k < passCount; ++k)
 			{
 				auto pass = technique->getPass(k);
-				_driver->bindRenderPass(pass);
-				_driver->drawMesh(mesh);
-				_driver->unbindRenderPass(pass);
+				pass->bind();
+				mesh->draw();
+				pass->unbind();
 			}
 		}
 	}

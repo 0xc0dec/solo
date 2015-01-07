@@ -49,13 +49,7 @@
     <ClInclude Include="..\include\SoloFormatter.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\SoloSDLGLDevice.h">
-      <Filter>src\platform</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\platform\SoloGLSLEffect.h">
-      <Filter>src\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\SoloOpenGLVideoDriver.h">
       <Filter>src\platform</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloCamera.h">
@@ -111,6 +105,15 @@
     </ClInclude>
     <ClInclude Include="..\include\SoloEngineCallback.h">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\SoloOpenGLCamera.h">
+      <Filter>src\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\SoloOpenGLMesh.h">
+      <Filter>src\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h">
+      <Filter>src\platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -180,19 +183,10 @@
     <ClCompile Include="..\src\SoloEffect.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\SoloSDLGLDevice.cpp">
-      <Filter>src\platform</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\platform\SoloGLSLEffect.cpp">
       <Filter>src\platform</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\SoloOpenGLVideoDriver.cpp">
-      <Filter>src\platform</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloPass.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloVideoDriver.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloTechnique.cpp">
@@ -212,6 +206,15 @@
     </ClCompile>
     <ClCompile Include="..\src\SoloBase.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\SoloOpenGLCamera.cpp">
+      <Filter>src\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\SoloOpenGLMesh.cpp">
+      <Filter>src\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\SoloSDLOpenGLDevice.cpp">
+      <Filter>src\platform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

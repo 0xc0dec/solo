@@ -1,0 +1,28 @@
+#include <GL/glew.h>
+#include "SoloOpenGLCamera.h"
+#include "SoloDevice.h"
+
+using namespace solo;
+
+
+void OpenGLCamera::applyViewportChange()
+{
+	auto size = _device->getCanvasSize();
+	glViewport(
+		static_cast<GLuint>(_viewport.x * size.x),
+		static_cast<GLuint>(_viewport.y * size.y),
+		static_cast<GLuint>(_viewport.z * size.x),
+		static_cast<GLuint>(_viewport.w * size.y));
+}
+
+
+void OpenGLCamera::applyClearColor()
+{
+	glClearColor(_clearColor.x, _clearColor.y, _clearColor.z, _clearColor.w);
+}
+
+
+void OpenGLCamera::clear()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}

@@ -11,6 +11,8 @@ namespace solo
 
 		static ptr<Effect> create(const std::string &vsSrc, const std::string &fsSrc);
 
+		virtual void bind() = 0;
+
 		size_t getId() const;
 
 		std::string getLog() const;

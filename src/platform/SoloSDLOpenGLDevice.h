@@ -5,12 +5,12 @@
 
 namespace solo
 {
-	class SDLGLDevice : public Device
+	class SDLOpenGLDevice : public Device
 	{
 	public:
-		virtual ~SDLGLDevice() override;
+		virtual ~SDLOpenGLDevice() override;
 
-		static ptr<SDLGLDevice> create(const EngineCreationArgs &args);
+		static ptr<SDLOpenGLDevice> create(const EngineCreationArgs &args);
 
 		virtual void setWindowTitle(const char *title) override;
 
@@ -22,7 +22,7 @@ namespace solo
 		virtual void endUpdate() override;
 
 	private:
-		SDLGLDevice(const EngineCreationArgs &args);
+		SDLOpenGLDevice(const EngineCreationArgs &args);
 
 		SDL_Window *_window;
 		SDL_GLContext _context;

@@ -1,10 +1,10 @@
 #pragma once
 
 #include "SoloBase.h"
+#include "SoloCamera.h"
 
 namespace solo
 {
-	class Camera;
 	class Component;
 
 	class Scene
@@ -25,6 +25,13 @@ namespace solo
 			auto base = CAST_PTR_STATIC<Component>(cmp);
 			addComponent(node, base);
 			return cmp;
+		}
+
+		template<> ptr<Camera> addComponent<Camera>(size_t node)
+		{
+			auto camera = Camera::create();
+			addComponent(node, camera);
+			return camera;
 		}
 
 		template <typename T> void removeComponent(size_t node)

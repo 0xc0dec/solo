@@ -8,11 +8,13 @@ namespace solo
 	class Mesh
 	{
 	public:
-		~Mesh() {}
+		virtual ~Mesh() {}
 
 		static ptr<Mesh> create();
 
-	private:
+		virtual void draw() = 0;
+
+	protected:
 		Mesh() {}
 	};
 }

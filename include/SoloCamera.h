@@ -6,7 +6,6 @@
 
 namespace solo
 {
-	class VideoDriver;
 	class Device;
 
 	class Camera : public ComponentBase<Camera>, public Dirty
@@ -15,19 +14,24 @@ namespace solo
 		Camera();
 		virtual ~Camera() {}
 
+		static ptr<Camera> create();
+
 		virtual void update() override;
 		virtual void render() override;
 
-		void setViewport(float left, float top, float width, float height);
-		Vector4 getViewport() const;
-
 		void setClearColor(float r, float g, float b, float a);
 
-	private:
-		ptr<VideoDriver> _driver;
+		void setViewport(float left, float top, float width, float height);
+		Vector4 getViewport() const;
+	
+	protected:
 		ptr<Device> _device;
 
 		Vector4 _viewport; // all values in range 0..1
 		Vector4 _clearColor;
+
+		virtual void applyViewportChange() = 0;
+		virtual void applyClearColor() = 0;
+		virtual void clear() = 0;
 	};
 }

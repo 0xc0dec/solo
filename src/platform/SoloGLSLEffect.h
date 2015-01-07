@@ -8,13 +8,12 @@ namespace solo
 	class GLSLEffect: public Effect
 	{
 	public:
+		GLSLEffect(std::string const& vsSrc, std::string const& fsSrc);
 		virtual ~GLSLEffect() override;
 
-		static ptr<GLSLEffect> create(std::string const& vsSrc, std::string const& fsSrc);
+		virtual void bind() override;
 
 	private:
-		GLSLEffect(std::string const& vsSrc, std::string const& fsSrc);
-
 		GLuint _program;
 
 		GLint tryCreateShader(GLuint type, std::string src);

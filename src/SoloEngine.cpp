@@ -1,7 +1,6 @@
 #include "SoloEngineCallback.h"
 #include "SoloEngine.h"
 #include "SoloScene.h"
-#include "SoloVideoDriver.h"
 #include "SoloDevice.h"
 #include "SoloLog.h"
 #include "SoloException.h"
@@ -43,7 +42,6 @@ void Engine::updateTime()
 void Engine::doRun(const EngineCreationArgs &args)
 {
 	_device = Device::create(args);
-	_driver = VideoDriver::create();
 	_scene = Scene::create();
 
 	_callback->onEngineStarted();
@@ -101,10 +99,4 @@ ptr<Scene> Engine::getScene() const
 ptr<Device> Engine::getDevice() const
 {
 	return _device;
-}
-
-
-ptr<VideoDriver> Engine::getVideoDriver() const
-{
-	return _driver;
 }

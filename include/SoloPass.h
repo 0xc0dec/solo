@@ -4,7 +4,8 @@
 
 namespace solo
 {
-	// Encapsulates shader parameters and logic required to render an object with that shader.
+	class Effect;
+
 	class Pass
 	{
 	public:
@@ -12,7 +13,14 @@ namespace solo
 
 		static ptr<Pass> create();
 
+		void setEffect(ptr<Effect> effect);
+
+		void bind();
+		void unbind();
+
 	private:
-		Pass() {}
+		Pass();
+
+		ptr<Effect> _effect;
 	};
 }
