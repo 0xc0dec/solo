@@ -1,7 +1,7 @@
 #include "SoloModelRenderer.h"
 #include "SoloModel.h"
 #include "SoloMaterial.h"
-#include "SoloTechnique.h"
+#include "SoloMaterialTechnique.h"
 #include "SoloPass.h"
 #include "SoloMesh.h"
 

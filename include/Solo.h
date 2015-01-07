@@ -26,7 +26,7 @@
 #include "SoloQuaternion.h"
 #include "SoloRay.h"
 #include "SoloScene.h"
-#include "SoloTechnique.h"
+#include "SoloMaterialTechnique.h"
 #include "SoloTransform.h"
 #include "SoloTypeId.h"
 #include "SoloVector2.h"

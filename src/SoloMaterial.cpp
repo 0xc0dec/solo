@@ -10,7 +10,7 @@ ptr<Material> Material::create()
 }
 
 
-void Material::addTechnique(ptr<Technique> technique)
+void Material::addTechnique(ptr<MaterialTechnique> technique)
 {
 	_techniques.push_back(technique);
 	if (!_currentTechnique)
@@ -18,7 +18,7 @@ void Material::addTechnique(ptr<Technique> technique)
 }
 
 
-void Material::removeTechnique(ptr<Technique> technique)
+void Material::removeTechnique(ptr<MaterialTechnique> technique)
 {
 	auto where = find(_techniques.begin(), _techniques.end(), technique);
 	if (where != _techniques.end())
@@ -28,7 +28,7 @@ void Material::removeTechnique(ptr<Technique> technique)
 }
 
 
-void Material::setCurrentTechnique(ptr<Technique> technique)
+void Material::setCurrentTechnique(ptr<MaterialTechnique> technique)
 {
 	auto where = find(_techniques.begin(), _techniques.end(), technique);
 	if (where == _techniques.end())
@@ -49,13 +49,13 @@ size_t Material::getTechniquesCount() const
 }
 
 
-ptr<Technique> Material::getTechnique(unsigned index) const
+ptr<MaterialTechnique> Material::getTechnique(unsigned index) const
 {
 	return _techniques[index];
 }
 
 
-ptr<Technique> Material::getCurrentTechnique() const
+ptr<MaterialTechnique> Material::getCurrentTechnique() const
 {
 	return _currentTechnique;
 }

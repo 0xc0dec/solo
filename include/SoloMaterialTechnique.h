@@ -7,18 +7,18 @@ namespace solo
 	class Pass;
 
 	// Encapsulates one or multiple passes
-	class Technique
+	class MaterialTechnique
 	{
 	public:
-		~Technique() {}
+		~MaterialTechnique() {}
 
-		static ptr<Technique> create();
+		static ptr<MaterialTechnique> create();
 
 		size_t getPassCount() const;
 		ptr<Pass> getPass(unsigned index) const;
 
 	private:
-		Technique() {}
+		MaterialTechnique() {}
 
 		std::vector<ptr<Pass>> _passes;
 	};

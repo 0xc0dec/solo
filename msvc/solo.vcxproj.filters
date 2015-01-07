@@ -85,9 +85,6 @@
     <ClInclude Include="..\include\SoloScene.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloTechnique.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloTransform.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -119,6 +116,9 @@
       <Filter>src\platform</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloMaterialParameter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloMaterialTechnique.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
@@ -195,9 +195,6 @@
     <ClCompile Include="..\src\SoloPass.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloTechnique.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloMesh.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -226,6 +223,9 @@
       <Filter>src\platform</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloEffectVariable.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloMaterialTechnique.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
