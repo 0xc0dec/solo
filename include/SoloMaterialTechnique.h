@@ -4,7 +4,7 @@
 
 namespace solo
 {
-	class Pass;
+	class MaterialPass;
 
 	// Encapsulates one or multiple passes
 	class MaterialTechnique
@@ -15,11 +15,11 @@ namespace solo
 		static ptr<MaterialTechnique> create();
 
 		size_t getPassCount() const;
-		ptr<Pass> getPass(unsigned index) const;
+		ptr<MaterialPass> getPass(unsigned index) const;
 
 	private:
 		MaterialTechnique() {}
 
-		std::vector<ptr<Pass>> _passes;
+		std::vector<ptr<MaterialPass>> _passes;
 	};
 }

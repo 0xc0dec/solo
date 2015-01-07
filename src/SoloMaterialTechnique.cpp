@@ -3,7 +3,7 @@
 using namespace solo;
 
 
-std::shared_ptr<MaterialTechnique> MaterialTechnique::create()
+ptr<MaterialTechnique> MaterialTechnique::create()
 {
 	return NEW2(MaterialTechnique);
 }
@@ -15,7 +15,7 @@ size_t MaterialTechnique::getPassCount() const
 }
 
 
-std::shared_ptr<Pass> MaterialTechnique::getPass(unsigned index) const
+ptr<MaterialPass> MaterialTechnique::getPass(unsigned index) const
 {
 	return _passes[index];
 }

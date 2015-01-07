@@ -2,7 +2,7 @@
 #include "SoloModel.h"
 #include "SoloMaterial.h"
 #include "SoloMaterialTechnique.h"
-#include "SoloPass.h"
+#include "SoloMaterialPass.h"
 #include "SoloMesh.h"
 
 using namespace solo;
@@ -13,7 +13,7 @@ ModelRenderer::ModelRenderer()
 }
 
 
-std::shared_ptr<ModelRenderer> ModelRenderer::create()
+ptr<ModelRenderer> ModelRenderer::create()
 {
 	return NEW2(ModelRenderer);
 }
@@ -53,7 +53,7 @@ void ModelRenderer::setModel(const ptr<Model> model)
 }
 
 
-std::shared_ptr<Model> ModelRenderer::getModel() const
+ptr<Model> ModelRenderer::getModel() const
 {
 	return _model;
 }

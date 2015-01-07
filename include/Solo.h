@@ -21,7 +21,7 @@
 #include "SoloMesh.h"
 #include "SoloModel.h"
 #include "SoloModelRenderer.h"
-#include "SoloPass.h"
+#include "SoloMaterialPass.h"
 #include "SoloPlane.h"
 #include "SoloQuaternion.h"
 #include "SoloRay.h"

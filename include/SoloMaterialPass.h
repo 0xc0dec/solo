@@ -6,12 +6,12 @@ namespace solo
 {
 	class Effect;
 
-	class Pass
+	class MaterialPass
 	{
 	public:
-		~Pass() {}
+		~MaterialPass() {}
 
-		static ptr<Pass> create();
+		static ptr<MaterialPass> create();
 
 		void setEffect(ptr<Effect> effect);
 
@@ -19,7 +19,7 @@ namespace solo
 		void unbind();
 
 	private:
-		Pass();
+		MaterialPass();
 
 		ptr<Effect> _effect;
 	};

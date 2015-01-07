@@ -4,7 +4,7 @@
 using namespace solo;
 
 
-std::shared_ptr<Mesh> Mesh::create()
+ptr<Mesh> Mesh::create()
 {
 	return NEW<OpenGLMesh>();
 }
