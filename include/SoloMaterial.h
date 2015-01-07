@@ -15,10 +15,11 @@ namespace solo
 
 		void addTechnique(ptr<Technique> technique);
 		void removeTechnique(ptr<Technique> technique);
-		void setTechnique(ptr<Technique> technique);
-		ptr<Technique> getTechnique(unsigned index) const;
-		ptr<Technique> getCurrentTechnique() const;
 		size_t getTechniquesCount() const;
+		ptr<Technique> getTechnique(unsigned index) const;
+		
+		void setCurrentTechnique(ptr<Technique> technique);
+		ptr<Technique> getCurrentTechnique() const;
 
 	private:
 		Material() {}

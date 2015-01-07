@@ -23,10 +23,12 @@ void Material::removeTechnique(ptr<Technique> technique)
 	auto where = find(_techniques.begin(), _techniques.end(), technique);
 	if (where != _techniques.end())
 		_techniques.erase(where);
+	if (_currentTechnique == technique)
+		_currentTechnique = nullptr;
 }
 
 
-void Material::setTechnique(ptr<Technique> technique)
+void Material::setCurrentTechnique(ptr<Technique> technique)
 {
 	auto where = find(_techniques.begin(), _techniques.end(), technique);
 	if (where == _techniques.end())
@@ -43,7 +45,6 @@ size_t Material::getTechniquesCount() const
 
 ptr<Technique> Material::getTechnique(unsigned index) const
 {
-	// No bounds checks intentionally. It's user's responsibility to a pass correct index.
 	return _techniques[index];
 }
 

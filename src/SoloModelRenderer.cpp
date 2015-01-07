@@ -4,7 +4,6 @@
 #include "SoloTechnique.h"
 #include "SoloPass.h"
 #include "SoloMesh.h"
-#include "SoloEngine.h"
 
 using namespace solo;
 
