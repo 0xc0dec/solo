@@ -59,3 +59,10 @@ ptr<Technique> Material::getCurrentTechnique() const
 {
 	return _currentTechnique;
 }
+
+
+ptr<MaterialParameter> Material::findParameter(const std::string& name)
+{
+	auto where = _parameters.find(name);
+	return where != _parameters.end() ? where->second : nullptr;
+}

@@ -36,6 +36,7 @@
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\include\SoloEngineCallback.h" />
     <ClInclude Include="..\include\SoloMaterial.h" />
+    <ClInclude Include="..\include\SoloMaterialParameter.h" />
     <ClInclude Include="..\include\SoloMath.h" />
     <ClInclude Include="..\include\SoloMatrix.h" />
     <ClInclude Include="..\include\SoloMesh.h" />

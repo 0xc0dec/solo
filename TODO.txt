@@ -1,3 +1,5 @@
 * Materials, Passes, Techniques, Effects handling
 * Transform component, node hierarchy
-* Registering components for rendering (and remove camera _rendered flag)
+* Use weak pointers where possible
+* Rename Technique -> MaterialTechnique
+? Registering components for rendering

@@ -5,6 +5,7 @@
 namespace solo
 {
 	class Technique;
+	class MaterialParameter;
 
 	class Material
 	{
@@ -22,10 +23,13 @@ namespace solo
 		void setCurrentTechnique(unsigned index);
 		ptr<Technique> getCurrentTechnique() const;
 
+		ptr<MaterialParameter> findParameter(const std::string &name);
+
 	private:
 		Material() {}
 
 		ptr<Technique> _currentTechnique;
 		std::vector<ptr<Technique>> _techniques;
+		std::map<std::string, ptr<MaterialParameter>> _parameters;
 	};
 }
