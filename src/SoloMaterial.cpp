@@ -37,6 +37,12 @@ void Material::setCurrentTechnique(ptr<Technique> technique)
 }
 
 
+void Material::setCurrentTechnique(unsigned index)
+{
+	_currentTechnique = _techniques[index];
+}
+
+
 size_t Material::getTechniquesCount() const
 {
 	return _techniques.size();

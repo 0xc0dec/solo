@@ -51,7 +51,6 @@
     <ClInclude Include="..\include\SoloVector2.h" />
     <ClInclude Include="..\include\SoloVector3.h" />
     <ClInclude Include="..\include\SoloVector4.h" />
-    <ClInclude Include="..\include\SoloVideoDriver.h" />
     <ClInclude Include="..\src\platform\SoloGLSLEffect.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLCamera.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLMesh.h" />

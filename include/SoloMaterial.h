@@ -19,6 +19,7 @@ namespace solo
 		ptr<Technique> getTechnique(unsigned index) const;
 		
 		void setCurrentTechnique(ptr<Technique> technique);
+		void setCurrentTechnique(unsigned index);
 		ptr<Technique> getCurrentTechnique() const;
 
 	private:

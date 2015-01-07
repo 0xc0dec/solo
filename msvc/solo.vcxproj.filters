@@ -91,9 +91,6 @@
     <ClInclude Include="..\include\SoloTransform.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloVideoDriver.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\SoloLog.h">
       <Filter>src</Filter>
     </ClInclude>
