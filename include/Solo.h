@@ -8,6 +8,7 @@
 #include "SoloDevice.h"
 #include "SoloDirty.h"
 #include "SoloEffect.h"
+#include "SoloEffectVariable.h"
 #include "SoloEngine.h"
 #include "SoloException.h"
 #include "SoloFileSystem.h"

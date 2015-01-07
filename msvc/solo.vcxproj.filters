@@ -112,6 +112,12 @@
     <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h">
       <Filter>src\platform</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloEffectVariable.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\SoloGLSLEffectVariable.h">
+      <Filter>src\platform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">
@@ -212,6 +218,12 @@
     </ClCompile>
     <ClCompile Include="..\src\platform\SoloSDLOpenGLDevice.cpp">
       <Filter>src\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\SoloGLSLEffectVariable.cpp">
+      <Filter>src\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloEffectVariable.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

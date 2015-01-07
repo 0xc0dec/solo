@@ -4,12 +4,17 @@
 
 namespace solo
 {
+	class EffectVariable;
+
 	class Effect
 	{
 	public:
 		virtual ~Effect() {}
 
 		static ptr<Effect> create(const std::string &vsSrc, const std::string &fsSrc);
+
+		virtual ptr<EffectVariable> findVariable(const std::string &name) = 0;
+		virtual ptr<EffectVariable> getVariable(const std::string &name) = 0;
 
 		virtual void bind() = 0;
 

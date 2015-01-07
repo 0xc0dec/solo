@@ -4,8 +4,9 @@
 using namespace solo;
 
 
-Effect::Effect(const std::string &vsSrc, const std::string &fsSrc)
-	: _valid(false)
+Effect::Effect(const std::string &vsSrc, const std::string &fsSrc):
+	_valid(false),
+	_id(0)
 {
 	_id = getHash(vsSrc + fsSrc);
 }

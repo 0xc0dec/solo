@@ -27,6 +27,7 @@
     <ClInclude Include="..\include\SoloDevice.h" />
     <ClInclude Include="..\include\SoloDirty.h" />
     <ClInclude Include="..\include\SoloEffect.h" />
+    <ClInclude Include="..\include\SoloEffectVariable.h" />
     <ClInclude Include="..\include\SoloEngine.h" />
     <ClInclude Include="..\include\SoloException.h" />
     <ClInclude Include="..\include\SoloFileSystem.h" />
@@ -52,6 +53,7 @@
     <ClInclude Include="..\include\SoloVector3.h" />
     <ClInclude Include="..\include\SoloVector4.h" />
     <ClInclude Include="..\src\platform\SoloGLSLEffect.h" />
+    <ClInclude Include="..\src\platform\SoloGLSLEffectVariable.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLCamera.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLMesh.h" />
     <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h" />
@@ -61,6 +63,7 @@
     <ClCompile Include="..\external\glew\src\glew.c" />
     <ClCompile Include="..\external\glew\src\glewinfo.c" />
     <ClCompile Include="..\external\glew\src\visualinfo.c" />
+    <ClCompile Include="..\src\platform\SoloGLSLEffectVariable.cpp" />
     <ClCompile Include="..\src\platform\SoloGLSLEffect.cpp" />
     <ClCompile Include="..\src\platform\SoloOpenGLCamera.cpp" />
     <ClCompile Include="..\src\platform\SoloOpenGLMesh.cpp" />
@@ -68,6 +71,7 @@
     <ClCompile Include="..\src\SoloBoundingBox.cpp" />
     <ClCompile Include="..\src\SoloBoundingSphere.cpp" />
     <ClCompile Include="..\src\SoloCamera.cpp" />
+    <ClCompile Include="..\src\SoloEffectVariable.cpp" />
     <ClCompile Include="..\src\SoloFileSystem.cpp" />
     <ClCompile Include="..\src\SoloBase.cpp" />
     <ClCompile Include="..\src\SoloDevice.cpp" />

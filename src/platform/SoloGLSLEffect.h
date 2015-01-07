@@ -5,6 +5,8 @@
 
 namespace solo
 {
+	class GLSLEffectVariable;
+
 	class GLSLEffect: public Effect
 	{
 	public:
@@ -13,10 +15,15 @@ namespace solo
 
 		virtual void bind() override;
 
+		virtual ptr<EffectVariable> findVariable(const std::string& name) override;
+
 	private:
 		GLuint _program;
+		std::map<std::string, ptr<GLSLEffectVariable>> _variables; // TODO move to the base class (along with some methods)
 
-		GLint tryCreateShader(GLuint type, std::string src);
-		GLint tryCreateProgram(GLuint vs, GLuint fs);
+		GLint createShader(GLuint type, std::string src);
+		bool createProgram(GLuint vs, GLuint fs);
+		void deleteShader(GLuint vs);
+		void discoverVariables();
 	};
 }

@@ -1,31 +1,31 @@
 #include "SoloGLSLEffect.h"
+#include "SoloGLSLEffectVariable.h"
+#include "SoloException.h"
 #include "../SoloLog.h"
 
 using namespace solo;
 
 
-GLSLEffect::GLSLEffect(const std::string &vsSrc, const std::string &fsSrc)
-	: Effect(vsSrc, fsSrc)
+GLSLEffect::GLSLEffect(const std::string &vsSrc, const std::string &fsSrc):
+	Effect(vsSrc, fsSrc)
 {
-	auto vs = tryCreateShader(GL_VERTEX_SHADER, vsSrc);
+	auto vs = createShader(GL_VERTEX_SHADER, vsSrc);
 	if (vs < 0)
 		return;
 
-	auto fs = tryCreateShader(GL_FRAGMENT_SHADER, fsSrc);
+	auto fs = createShader(GL_FRAGMENT_SHADER, fsSrc);
 	if (fs < 0)
 		return;
 
-	auto program = tryCreateProgram(vs, fs);
-	if (program < 0)
+	if (!createProgram(vs, fs))
 		return;
 
 	_valid = true;
-	_program = program;
 
-	glDetachShader(_program, vs);
-	glDetachShader(_program, fs);
-	glDeleteShader(vs);
-	glDeleteShader(fs);
+	deleteShader(vs);
+	deleteShader(fs);
+
+	discoverVariables();
 
 	DEBUG("Created effect ", _id);
 }
@@ -43,37 +43,47 @@ GLSLEffect::~GLSLEffect()
 
 void GLSLEffect::bind()
 {
+	glUseProgram(_program);
 }
 
 
-GLint GLSLEffect::tryCreateProgram(GLuint vs, GLuint fs)
+ptr<EffectVariable> GLSLEffect::findVariable(const std::string& name)
 {
-	auto program = glCreateProgram();
-	glAttachShader(program, vs);
-	glAttachShader(program, fs);
-	glLinkProgram(program);
+	auto where = _variables.find(name);
+	if (where != _variables.end())
+		return where->second;
+	return nullptr;
+}
+
+
+bool GLSLEffect::createProgram(GLuint vs, GLuint fs)
+{
+	_program = glCreateProgram();
+	glAttachShader(_program, vs);
+	glAttachShader(_program, fs);
+	glLinkProgram(_program);
 
 	int logLength;
-	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
+	glGetProgramiv(_program, GL_INFO_LOG_LENGTH, &logLength);
 	auto log = new char[logLength];
-	glGetProgramInfoLog(program, logLength, nullptr, log);
+	glGetProgramInfoLog(_program, logLength, nullptr, log);
 	if (logLength > 1)
 		appendToLog(log);
 	delete[] log;
 	
 	int status;
-	glGetProgramiv(program, GL_COMPILE_STATUS, &status);
+	glGetProgramiv(_program, GL_COMPILE_STATUS, &status);
 	if (status == GL_FALSE)
 	{
-		glDeleteProgram(program);
-		return -1;
+		glDeleteProgram(_program);
+		return false;
 	}
 	
-	return program;
+	return true;
 }
 
 
-GLint GLSLEffect::tryCreateShader(GLuint type, std::string src)
+GLint GLSLEffect::createShader(GLuint type, std::string src)
 {
 	auto shader = glCreateShader(type);
 
@@ -83,7 +93,7 @@ GLint GLSLEffect::tryCreateShader(GLuint type, std::string src)
 
 	int logLength;
 	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-	auto log = new char[logLength];
+	auto log = new GLchar[logLength];
 	glGetShaderInfoLog(shader, logLength, nullptr, log);
 	if (logLength > 1)
 		appendToLog(log);
@@ -98,4 +108,53 @@ GLint GLSLEffect::tryCreateShader(GLuint type, std::string src)
 	}
 
 	return shader;
+}
+
+
+void GLSLEffect::deleteShader(GLuint shader)
+{
+	glDetachShader(_program, shader);
+	glDeleteShader(shader);
+}
+
+
+void GLSLEffect::discoverVariables()
+{
+	GLint activeUniforms, nameMaxLength;
+	glGetProgramiv(_program, GL_ACTIVE_UNIFORMS, &activeUniforms);
+	if (activeUniforms <= 0)
+		return;
+	glGetProgramiv(_program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &nameMaxLength);
+	if (nameMaxLength <= 0)
+		return;
+
+	auto rawName = new GLchar[nameMaxLength + 1];
+	GLint size;
+	GLenum type;
+	unsigned samplerIndex = 0;
+	for (int i = 0; i < activeUniforms; ++i)
+	{
+		glGetActiveUniform(_program, i, nameMaxLength, nullptr, &size, &type, rawName);
+		rawName[nameMaxLength] = '\0';
+		std::string name = rawName;
+
+		// Strip away possible square brackets for array uniforms since the brackets'
+		// presence is not consistent across platforms.
+		auto bracketIndex = name.find('[');
+		if (bracketIndex != std::string::npos)
+			name.erase(bracketIndex);
+
+		auto location = glGetUniformLocation(_program, rawName);
+		unsigned index = 0;
+		if (type == GL_SAMPLER_2D)
+		{
+			index = samplerIndex;
+			samplerIndex += size;
+		}
+
+		auto variable = NEW<GLSLEffectVariable>(name, location, type, index);
+		_variables[name] = variable;
+	}
+
+	delete[] rawName;
 }
