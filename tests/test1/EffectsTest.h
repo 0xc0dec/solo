@@ -31,6 +31,7 @@ class EffectsTest : public TestBase
 public:
 	virtual void run(Engine *engine) override
 	{
+		_engine = engine;
 		testCompilation();
 		testVariablesDetection();
 	}
@@ -55,4 +56,7 @@ public:
 		assert(effect->isValid());
 		assert(effect->getLog().empty());
 	}
+
+private:
+	Engine *_engine;
 };

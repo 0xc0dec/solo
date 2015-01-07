@@ -27,17 +27,17 @@ void ModelRenderer::render()
 	{
 		if (i < materialCount)
 			material = getMaterial(i);
-		if (!material)
-			break;
-		material->bind();
-		auto mesh = _model->getMesh(i);
-		auto passCount = material->getPassCount();
-		for (auto k = 0; k < passCount; ++k)
+		if (material)
 		{
-			auto pass = material->getPass(k);
-			pass->bind();
-			mesh->draw();
-			pass->unbind();
+			auto mesh = _model->getMesh(i);
+			auto passCount = material->getPassCount();
+			for (auto k = 0; k < passCount; ++k)
+			{
+				auto pass = material->getPass(k);
+				pass->bind();
+				mesh->draw();
+				pass->unbind();
+			}
 		}
 	}
 }

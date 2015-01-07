@@ -29,6 +29,8 @@ namespace solo
 		ModelRenderer();
 
 		ptr<Model> _model;
+		// TODO make in map and add method setMaterial(unsigned index, Material *m)
+		// instead of the addMaterial method
 		std::vector<ptr<Material>> _materials;
 	};
 }

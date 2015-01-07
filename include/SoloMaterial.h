@@ -1,32 +1,30 @@
 #pragma once
 
 #include "SoloBase.h"
+#include "SoloRenderState.h"
 
 namespace solo
 {
-	class MaterialParameter;
 	class MaterialPass;
+	class Effect;
 
-	class Material
+	class Material: public RenderState
 	{
 	public:
 		~Material() {}
 
 		static ptr<Material> create();
 
-		void addPass(ptr<MaterialPass> pass);
+		ptr<MaterialPass> addPass(ptr<Effect> effect);
+		ptr<MaterialPass> getPass(unsigned index) const;
 		void removePass(ptr<MaterialPass> pass);
 		size_t getPassCount() const;
-		ptr<MaterialPass> getPass(unsigned index) const;
+
+		void bind(ptr<Effect> effect);
 		
-		ptr<MaterialParameter> findParameter(const std::string &name);
-
-		void bind();
-
 	private:
 		Material() {}
 
 		std::vector<ptr<MaterialPass>> _passes;
-		std::map<std::string, ptr<MaterialParameter>> _parameters;
 	};
 }

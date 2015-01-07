@@ -1,4 +1,6 @@
 #include "SoloMaterial.h"
+#include "SoloMaterialParameter.h"
+#include "SoloMaterialPass.h"
 #include "SoloException.h"
 
 using namespace solo;
@@ -6,13 +8,15 @@ using namespace solo;
 
 ptr<Material> Material::create()
 {
-	return NEW2(Material);
+	return NEW<Material>();
 }
 
 
-void Material::addPass(ptr<MaterialPass> pass)
+ptr<MaterialPass> Material::addPass(ptr<Effect> effect)
 {
+	auto pass = NEW<MaterialPass>(this, effect);
 	_passes.push_back(pass);
+	return pass;
 }
 
 
@@ -30,19 +34,14 @@ size_t Material::getPassCount() const
 }
 
 
+void Material::bind(ptr<Effect> effect)
+{
+	for (auto p : _parameters)
+		p.second->bind(effect);
+}
+
+
 ptr<MaterialPass> Material::getPass(unsigned index) const
 {
 	return _passes[index];
-}
-
-
-ptr<MaterialParameter> Material::findParameter(const std::string& name)
-{
-	auto where = _parameters.find(name);
-	return where != _parameters.end() ? where->second : nullptr;
-}
-
-
-void Material::bind()
-{
 }

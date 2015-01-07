@@ -1,31 +1,27 @@
 #include "SoloMaterialPass.h"
-#include "SoloEngine.h"
+#include "SoloMaterial.h"
+#include "SoloMaterialParameter.h"
 #include "SoloEffect.h"
 
 using namespace solo;
 
 
-MaterialPass::MaterialPass()
+MaterialPass::MaterialPass(Material *material, ptr<Effect> effect):
+	_material(material),
+	_effect(effect)
 {
-}
-
-
-ptr<MaterialPass> MaterialPass::create()
-{
-	return NEW2(MaterialPass);
-}
-
-
-void MaterialPass::setEffect(ptr<Effect> effect)
-{
-	_effect = effect;
 }
 
 
 void MaterialPass::bind()
 {
 	if (_effect)
+	{
 		_effect->bind();
+		_material->bind(_effect);
+		for (auto p : _parameters)
+			p.second->bind(_effect);
+	}
 }
 
 
