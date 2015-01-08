@@ -2,11 +2,11 @@
 
 #include "SoloBase.h"
 #include "SoloRenderState.h"
-#include "SoloMaterialPass.h"
 
 namespace solo
 {
 	class Effect;
+	class MaterialPass;
 
 	class Material: public RenderState
 	{
@@ -21,7 +21,7 @@ namespace solo
 		size_t getPassCount() const;
 
 	private:
-		friend void MaterialPass::bind();
+		friend MaterialPass;
 
 		Material() {}
 

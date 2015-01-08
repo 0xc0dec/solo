@@ -5,6 +5,8 @@
 namespace solo
 {
 	class Effect;
+	class Material;
+	class MaterialPass;
 
 	class MaterialParameter
 	{
@@ -14,9 +16,10 @@ namespace solo
 
 		std::string getName() const;
 
-		void bind(ptr<Effect> effect);
-
 	private:
+		friend Material;
+		friend MaterialPass;
+
 		std::string _name;
 
 		enum
@@ -45,5 +48,7 @@ namespace solo
 		} _value;
 
 		unsigned _valuesCount;
+
+		void bind(ptr<Effect> effect);
 	};
 }
