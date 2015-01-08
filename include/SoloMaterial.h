@@ -10,6 +10,7 @@ namespace solo
 
 	class Material: public RenderState
 	{
+		friend MaterialPass;
 	public:
 		~Material() {}
 
@@ -21,8 +22,6 @@ namespace solo
 		size_t getPassCount() const;
 
 	private:
-		friend MaterialPass;
-
 		Material() {}
 
 		std::vector<ptr<MaterialPass>> _passes;

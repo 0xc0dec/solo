@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SoloBase.h"
+#include "SoloEffectVariable.h"
 
 namespace solo
 {
@@ -13,6 +14,9 @@ namespace solo
 
 	class MaterialParameter
 	{
+		friend Material;
+		friend MaterialPass;
+
 	public:
 		MaterialParameter(const std::string &name);
 		~MaterialParameter() {}
@@ -30,9 +34,39 @@ namespace solo
 		void setValue(const Vector4 &value);
 		void setValue(const Vector4 *value, unsigned count);
 
+		template <class TClass, class TParam>
+		void bindValue(TClass* classInstance, TParam(TClass::*getValue)() const);
+
 	private:
-		friend Material;
-		friend MaterialPass;
+		class ValueBinding
+		{
+			friend class MaterialParameter;
+
+		public:
+			virtual void setValue(ptr<EffectVariable> variable) = 0;
+
+		protected:
+			ValueBinding();
+			virtual ~ValueBinding() { }
+			ValueBinding& operator=(const ValueBinding&) { return *this; }
+
+			bool _autoBinding;
+		};
+
+		template <class TClass, class TParam>
+		class SingleValueBinding : public ValueBinding
+		{
+			typedef TParam (TClass::*ValueGetterMethod)() const;
+
+		public:
+			SingleValueBinding(TClass* instance, ValueGetterMethod getter);
+
+			virtual void setValue(ptr<EffectVariable> variable) override;
+
+		private:
+			TClass* _instance;
+			ValueGetterMethod _getter;
+		};
 
 		std::string _name;
 
@@ -46,9 +80,7 @@ namespace solo
 			VECTOR2,
 			VECTOR3,
 			VECTOR4,
-			MATRIX,
-			SAMPLER,
-			SAMPLER_ARRAY,
+			MATRIX, // TODO
 			METHOD
 		} _type;
 
@@ -58,6 +90,7 @@ namespace solo
 			int asInt;
 			float* asFloatPtr;
 			int* asIntPtr;
+			ValueBinding* method;
 			explicit MaterialParameterValue(): asInt(0) {}
 		} _value;
 
@@ -68,4 +101,29 @@ namespace solo
 
 		void clearValue();
 	};
+
+
+	template <class TClass, class TParam>
+	void MaterialParameter::SingleValueBinding<TClass, TParam>::setValue(ptr<EffectVariable> variable)
+	{
+		variable->setValue((_instance->*_getter)());
+	}
+
+
+	template <class TClass, class TParam>
+	MaterialParameter::SingleValueBinding<TClass, TParam>::SingleValueBinding(TClass* instance, ValueGetterMethod getter):
+		_instance(instance),
+		_getter(getter)
+	{
+	}
+
+
+	template <class TClass, class TParam>
+	void MaterialParameter::bindValue(TClass* instance, TParam (TClass::*getter)() const)
+	{
+		clearValue();
+		_value.method = new SingleValueBinding<TClass, TParam>(instance, getter);
+		_freeableValue = true;
+		_type = METHOD;
+	}
 }

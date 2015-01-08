@@ -146,6 +146,8 @@ void MaterialParameter::bind(ptr<Effect> effect)
 			case VECTOR4:
 				variable->setValue(reinterpret_cast<Vector4*>(_value.asFloatPtr), _valueCount);
 				break;
+			case METHOD:
+				_value.method->setValue(variable);
 			case NONE:
 			default:
 				break;
@@ -171,6 +173,9 @@ void MaterialParameter::clearValue()
 			case INT_ARRAY:
 				delete[] _value.asIntPtr;
 				break;
+			case METHOD:
+				delete _value.method;
+				break;
 			case NONE:
 			default:
 				break;
@@ -180,4 +185,10 @@ void MaterialParameter::clearValue()
 	_type = NONE;
 	_freeableValue = false;
 	_valueCount = 1;
+}
+
+
+MaterialParameter::ValueBinding::ValueBinding():
+	_autoBinding(false)
+{
 }
