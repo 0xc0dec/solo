@@ -7,6 +7,9 @@ namespace solo
 	class Effect;
 	class Material;
 	class MaterialPass;
+	class Vector2;
+	class Vector3;
+	class Vector4;
 
 	class MaterialParameter
 	{
@@ -15,6 +18,17 @@ namespace solo
 		~MaterialParameter() {}
 
 		std::string getName() const;
+
+		void setValue(float value);
+		void setValue(const float *value, unsigned count);
+		void setValue(int value);
+		void setValue(const int *value, unsigned count);
+		void setValue(const Vector2 &value);
+		void setValue(const Vector2 *value, unsigned count);
+		void setValue(const Vector3 &value);
+		void setValue(const Vector3 *value, unsigned count);
+		void setValue(const Vector4 &value);
+		void setValue(const Vector4 *value, unsigned count);
 
 	private:
 		friend Material;
@@ -47,8 +61,11 @@ namespace solo
 			explicit MaterialParameterValue(): asInt(0) {}
 		} _value;
 
-		unsigned _valuesCount;
+		unsigned _valueCount;
+		bool _freeableValue;
 
 		void bind(ptr<Effect> effect);
+
+		void clearValue();
 	};
 }
