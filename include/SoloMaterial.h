@@ -11,6 +11,7 @@ namespace solo
 	class Material: public RenderState
 	{
 		friend MaterialPass;
+
 	public:
 		~Material() {}
 

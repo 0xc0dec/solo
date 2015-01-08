@@ -1,3 +1,4 @@
+* create() methods, because smart pointers
 * Report "case FLOAT:" in "if (_dynamic)"
 * Materials, Passes, Techniques, Effects handling
 * Transform component, node hierarchy
