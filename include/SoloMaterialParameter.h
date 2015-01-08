@@ -40,17 +40,12 @@ namespace solo
 	private:
 		class ValueBinding
 		{
-			friend class MaterialParameter;
-
 		public:
+			virtual ~ValueBinding() { }
 			virtual void setValue(ptr<EffectVariable> variable) = 0;
 
 		protected:
-			ValueBinding();
-			virtual ~ValueBinding() { }
 			ValueBinding& operator=(const ValueBinding&) { return *this; }
-
-			bool _autoBinding;
 		};
 
 		template <class TClass, class TParam>
@@ -102,13 +97,11 @@ namespace solo
 		void clearValue();
 	};
 
-
 	template <class TClass, class TParam>
 	void MaterialParameter::SingleValueBinding<TClass, TParam>::setValue(ptr<EffectVariable> variable)
 	{
 		variable->setValue((_instance->*_getter)());
 	}
-
 
 	template <class TClass, class TParam>
 	MaterialParameter::SingleValueBinding<TClass, TParam>::SingleValueBinding(TClass* instance, ValueGetterMethod getter):
@@ -116,7 +109,6 @@ namespace solo
 		_getter(getter)
 	{
 	}
-
 
 	template <class TClass, class TParam>
 	void MaterialParameter::bindValue(TClass* instance, TParam (TClass::*getter)() const)

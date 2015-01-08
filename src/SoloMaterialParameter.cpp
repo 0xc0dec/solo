@@ -186,9 +186,3 @@ void MaterialParameter::clearValue()
 	_freeableValue = false;
 	_valueCount = 1;
 }
-
-
-MaterialParameter::ValueBinding::ValueBinding():
-	_autoBinding(false)
-{
-}
