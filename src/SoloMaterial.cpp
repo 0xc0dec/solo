@@ -8,7 +8,7 @@ using namespace solo;
 
 ptr<Material> Material::create()
 {
-	return NEW<Material>();
+	return NEW2(Material);
 }
 
 
