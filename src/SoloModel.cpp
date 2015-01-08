@@ -3,12 +3,6 @@
 using namespace solo;
 
 
-ptr<Model> Model::create()
-{
-	return NEW2(Model);
-}
-
-
 void Model::addMesh(const ptr<Mesh> mesh)
 {
 	_meshes.push_back(mesh);

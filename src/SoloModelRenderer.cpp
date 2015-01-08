@@ -7,26 +7,12 @@
 using namespace solo;
 
 
-ModelRenderer::ModelRenderer()
-{
-}
-
-
-ptr<ModelRenderer> ModelRenderer::create()
-{
-	return NEW2(ModelRenderer);
-}
-
-
 void ModelRenderer::render()
 {
-	auto materialCount = getMaterialCount();
 	auto meshCount = _model->getMeshCount();
-	ptr<Material> material = nullptr;
 	for (auto i = 0; i < meshCount; ++i)
 	{
-		if (i < materialCount)
-			material = getMaterial(i);
+		auto material = getMaterial(i);
 		if (material)
 		{
 			auto mesh = _model->getMesh(i);
@@ -55,17 +41,12 @@ ptr<Model> ModelRenderer::getModel() const
 }
 
 
-void ModelRenderer::addMaterial(ptr<Material> material)
+void ModelRenderer::setMaterial(unsigned index, ptr<Material> material)
 {
-	_materials.push_back(material);
-}
-
-
-void ModelRenderer::removeMaterial(ptr<Material> material)
-{
-	auto where = find(_materials.begin(), _materials.end(), material);
-	if (where != _materials.end())
-		_materials.erase(where);
+	if (!material)
+		_materials.erase(index);
+	else
+		_materials[index] = material;
 }
 
 
@@ -77,5 +58,7 @@ size_t ModelRenderer::getMaterialCount() const
 
 ptr<Material> ModelRenderer::getMaterial(unsigned index)
 {
+	if (_materials.find(index) == _materials.end())
+		return nullptr;
 	return _materials[index];
 }
