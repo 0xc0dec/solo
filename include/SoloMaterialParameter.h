@@ -7,8 +7,6 @@
 namespace solo
 {
 	class Effect;
-	class Material;
-	class MaterialPass;
 	class Vector2;
 	class Vector3;
 	class Vector4;
@@ -16,11 +14,26 @@ namespace solo
 
 	class MaterialParameter
 	{
-		friend Material;
-		friend MaterialPass;
-		friend RenderState;
+		friend class Material;
+		friend class MaterialPass;
+		friend class RenderState;
 
 	public:
+		enum class AutoBinding
+		{
+			NONE,
+			WORLD_MATRIX,
+			VIEW_MATRIX,
+			PROJECTION_MATRIX,
+			WORLD_VIEW_MATRIX,
+			VIEW_PROJECTION_MATRIX,
+			WORLD_VIEW_PROJECTION_MATRIX,
+			INVERSE_TRANSPOSE_WORLD_MATRIX,
+			INVERSE_TRANSPOSE_WORLD_VIEW_MATRIX,
+			CAMERA_WORLD_POSITION,
+			CAMERA_VIEW_POSITION,
+		};
+
 		~MaterialParameter() {}
 
 		std::string getName() const;
@@ -41,11 +54,23 @@ namespace solo
 		template <class TClass, class TParam>
 		void bindValue(TClass* classInstance, TParam(TClass::*getValue)() const);
 
+		void bindValue(AutoBinding autoBinding);
+
 	private:
-		MaterialParameter(const std::string &name);
-
-		static ptr<MaterialParameter> create(const std::string &name);
-
+		enum class ValueType
+		{
+			NONE = 0,
+			FLOAT,
+			FLOAT_ARRAY,
+			INT,
+			INT_ARRAY,
+			VECTOR2,
+			VECTOR3,
+			VECTOR4,
+			MATRIX, // TODO
+			METHOD
+		};
+		
 		class ValueBinding
 		{
 		public:
@@ -71,22 +96,6 @@ namespace solo
 			ValueGetterMethod _getter;
 		};
 
-		std::string _name;
-
-		enum
-		{
-			NONE = 0,
-			FLOAT,
-			FLOAT_ARRAY,
-			INT,
-			INT_ARRAY,
-			VECTOR2,
-			VECTOR3,
-			VECTOR4,
-			MATRIX, // TODO
-			METHOD
-		} _type;
-
 		union MaterialParameterValue
 		{
 			float asFloat;
@@ -94,15 +103,28 @@ namespace solo
 			float* asFloatPtr;
 			int* asIntPtr;
 			ValueBinding* method;
-			explicit MaterialParameterValue(): asInt(0) {}
-		} _value;
+			explicit MaterialParameterValue() : asInt(0) {}
+		};
 
+		MaterialParameter(const std::string &name);
+
+		std::string _name;
+		ValueType _type;
+		MaterialParameterValue _value;
 		unsigned _valueCount;
 		bool _freeableValue;
 
-		void bind(ptr<Effect> effect);
+		static ptr<MaterialParameter> create(const std::string &name);
 
+		void bind(ptr<Effect> effect, size_t node);
 		void clearValue();
+
+		const Matrix &getAutoBindWorldMatrix() const;
+		const Matrix &getAutoBindViewMatrix() const;
+		const Matrix &getAutoBindProjectionMatrix() const;
+		const Matrix &getAutoBindWorldViewMatrix() const;
+		const Matrix &getAutoBindViewProjectionMatrix() const;
+		const Matrix &getAutoBindWorldViewProjectionMatrix() const;
 	};
 
 	template <class TClass, class TParam>
@@ -124,6 +146,6 @@ namespace solo
 		clearValue();
 		_value.method = new SingleValueBinding<TClass, TParam>(instance, getter);
 		_freeableValue = true;
-		_type = METHOD;
+		_type = ValueType::METHOD;
 	}
 }

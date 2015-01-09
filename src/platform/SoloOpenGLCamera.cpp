@@ -5,9 +5,15 @@
 using namespace solo;
 
 
-ptr<OpenGLCamera> OpenGLCamera::create()
+ptr<OpenGLCamera> OpenGLCamera::create(size_t node)
 {
-	return NEW2(OpenGLCamera);
+	return NEW2(OpenGLCamera, node);
+}
+
+
+OpenGLCamera::OpenGLCamera(size_t node):
+	Camera(node)
+{
 }
 
 

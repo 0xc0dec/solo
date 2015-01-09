@@ -23,6 +23,11 @@ namespace solo
 	class ComponentBase: public Component
 	{
 	public:
+		explicit ComponentBase(size_t node):
+			_node(node)
+		{
+		}
+
 		static size_t getId()
 		{
 			return solo::getTypeId<T>();
@@ -32,5 +37,8 @@ namespace solo
 		{
 			return getId();
 		}
+
+	protected:
+		size_t _node;
 	};
 }

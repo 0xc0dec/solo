@@ -5,21 +5,41 @@
 
 class A : public ComponentBase<A>
 {
+public:
+	explicit A(size_t node):
+		ComponentBase<A>(node)
+	{
+	}
 };
 
 
 class B: public ComponentBase<B>
 {
+public:
+	explicit B(size_t node):
+		ComponentBase<B>(node)
+	{
+	}
 };
 
 
 class Base : public ComponentBase<Base>
 {
+public:
+	explicit Base(size_t node):
+		ComponentBase<Base>(node)
+	{
+	}
 };
 
 
 class Derived : public Base
 {
+public:
+	Derived(size_t node):
+		Base(node)
+	{
+	}
 };
 
 

@@ -19,14 +19,14 @@ ptr<MaterialPass> MaterialPass::create(Material* material, ptr<Effect> effect)
 }
 
 
-void MaterialPass::bind()
+void MaterialPass::bind(size_t node)
 {
 	if (_effect)
 	{
 		_effect->bind();
-		_material->bind(_effect);
+		_material->bind(_effect, node);
 		for (auto p : _parameters)
-			p.second->bind(_effect);
+			p.second->bind(_effect, node);
 	}
 }
 

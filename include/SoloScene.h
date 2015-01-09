@@ -2,6 +2,8 @@
 
 #include "SoloBase.h"
 #include "SoloCamera.h"
+#include "SoloTransform.h"
+#include "SoloModelRenderer.h"
 
 namespace solo
 {
@@ -21,7 +23,7 @@ namespace solo
 
 		template <typename T> ptr<T> addComponent(size_t node)
 		{
-			auto cmp = NEW<T>();
+			auto cmp = NEW<T>(node);
 			auto base = CAST_PTR_STATIC<Component>(cmp);
 			addComponent(node, base);
 			return cmp;
@@ -29,9 +31,23 @@ namespace solo
 
 		template<> ptr<Camera> addComponent<Camera>(size_t node)
 		{
-			auto camera = Camera::create();
+			auto camera = Camera::create(node);
 			addComponent(node, camera);
 			return camera;
+		}
+
+		template<> ptr<Transform> addComponent<Transform>(size_t node)
+		{
+			auto transform = Transform::create(node);
+			addComponent(node, transform);
+			return transform;
+		}
+
+		template<> ptr<ModelRenderer> addComponent<ModelRenderer>(size_t node)
+		{
+			auto renderer = ModelRenderer::create(node);
+			addComponent(node, renderer);
+			return renderer;
 		}
 
 		template <typename T> void removeComponent(size_t node)

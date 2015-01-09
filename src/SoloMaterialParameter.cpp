@@ -1,4 +1,5 @@
 #include "SoloMaterialParameter.h"
+#include "SoloTransform.h"
 #include "SoloEffect.h"
 #include "SoloVector2.h"
 #include "SoloVector3.h"
@@ -10,7 +11,7 @@ using namespace solo;
 
 MaterialParameter::MaterialParameter(const std::string& name):
 	_name(name),
-	_type(NONE),
+	_type(ValueType::NONE),
 	_valueCount(0),
 	_freeableValue(false)
 {
@@ -33,7 +34,7 @@ void MaterialParameter::setValue(float value)
 {
 	clearValue();
 	_value.asFloat = value;
-	_type = FLOAT;
+	_type = ValueType::FLOAT;
 }
 
 
@@ -42,7 +43,7 @@ void MaterialParameter::setValue(const float* value, unsigned count)
 	clearValue();
 	_value.asFloatPtr = const_cast<float*>(value);
 	_valueCount = count;
-	_type = FLOAT_ARRAY;
+	_type = ValueType::FLOAT_ARRAY;
 }
 
 
@@ -50,7 +51,7 @@ void MaterialParameter::setValue(int value)
 {
 	clearValue();
 	_value.asInt = value;
-	_type = INT;
+	_type = ValueType::INT;
 }
 
 
@@ -59,7 +60,7 @@ void MaterialParameter::setValue(const int* value, unsigned count)
 	clearValue();
 	_value.asIntPtr = const_cast<int*>(value);
 	_valueCount = count;
-	_type = INT_ARRAY;
+	_type = ValueType::INT_ARRAY;
 }
 
 
@@ -71,7 +72,7 @@ void MaterialParameter::setValue(const Vector2& value)
 	_value.asFloatPtr = buf;
 	_valueCount = 1;
 	_freeableValue = true;
-	_type = VECTOR2;
+	_type = ValueType::VECTOR2;
 }
 
 
@@ -80,7 +81,7 @@ void MaterialParameter::setValue(const Vector2* value, unsigned count)
 	clearValue();
 	_value.asFloatPtr = const_cast<float*>(&value[0].x);
 	_valueCount = count;
-	_type = VECTOR2;
+	_type = ValueType::VECTOR2;
 }
 
 
@@ -92,7 +93,7 @@ void MaterialParameter::setValue(const Vector3& value)
 	_value.asFloatPtr = buf;
 	_valueCount = 1;
 	_freeableValue = true;
-	_type = VECTOR3;
+	_type = ValueType::VECTOR3;
 }
 
 
@@ -101,7 +102,7 @@ void MaterialParameter::setValue(const Vector3* value, unsigned count)
 	clearValue();
 	_value.asFloatPtr = const_cast<float*>(&value[0].x);
 	_valueCount = count;
-	_type = VECTOR3;
+	_type = ValueType::VECTOR3;
 }
 
 
@@ -113,7 +114,7 @@ void MaterialParameter::setValue(const Vector4& value)
 	_value.asFloatPtr = buf;
 	_valueCount = 1;
 	_freeableValue = true;
-	_type = VECTOR4;
+	_type = ValueType::VECTOR4;
 }
 
 
@@ -122,7 +123,7 @@ void MaterialParameter::setValue(const Vector4* value, unsigned count)
 	clearValue();
 	_value.asFloatPtr = const_cast<float*>(&value[0].x);
 	_valueCount = count;
-	_type = VECTOR4;
+	_type = ValueType::VECTOR4;
 }
 
 
@@ -133,7 +134,7 @@ void MaterialParameter::setValue(const Matrix& value)
 	memcpy(_value.asFloatPtr, value.m, sizeof(float)* 16);
 	_freeableValue = true;
 	_valueCount = 1;
-	_type = MATRIX;
+	_type = ValueType::MATRIX;
 }
 
 
@@ -142,44 +143,44 @@ void MaterialParameter::setValue(const Matrix* value, unsigned count)
 	clearValue();
 	_value.asFloatPtr = const_cast<Matrix&>(value[0]).m;
 	_valueCount = count;
-	_type = MATRIX;
+	_type = ValueType::MATRIX;
 }
 
 
-void MaterialParameter::bind(ptr<Effect> effect)
+void MaterialParameter::bind(ptr<Effect> effect, size_t node)
 {
 	auto variable = effect->findVariable(_name);
 	if (variable)
 	{
 		switch (_type)
 		{
-			case FLOAT:
+			case ValueType::FLOAT:
 				variable->setValue(_value.asFloat);
 				break;
-			case FLOAT_ARRAY:
+			case ValueType::FLOAT_ARRAY:
 				variable->setValue(_value.asFloatPtr, _valueCount);
 				break;
-			case INT:
+			case ValueType::INT:
 				variable->setValue(_value.asInt);
 				break;
-			case INT_ARRAY:
+			case ValueType::INT_ARRAY:
 				variable->setValue(_value.asIntPtr, _valueCount);
 				break;
-			case VECTOR2:
+			case ValueType::VECTOR2:
 				variable->setValue(reinterpret_cast<Vector2*>(_value.asFloatPtr), _valueCount);
 				break;
-			case VECTOR3:
+			case ValueType::VECTOR3:
 				variable->setValue(reinterpret_cast<Vector3*>(_value.asFloatPtr), _valueCount);
 				break;
-			case VECTOR4:
+			case ValueType::VECTOR4:
 				variable->setValue(reinterpret_cast<Vector4*>(_value.asFloatPtr), _valueCount);
 				break;
-			case MATRIX:
+			case ValueType::MATRIX:
 				variable->setValue(reinterpret_cast<Matrix*>(_value.asFloatPtr), _valueCount);
 				break;
-			case METHOD:
+			case ValueType::METHOD:
 				_value.method->setValue(variable);
-			case NONE:
+			case ValueType::NONE:
 			default:
 				break;
 		}
@@ -193,28 +194,65 @@ void MaterialParameter::clearValue()
 	{
 		switch (_type)
 		{
-			case FLOAT:
-			case FLOAT_ARRAY:
-			case VECTOR2:
-			case VECTOR3:
-			case VECTOR4:
-			case MATRIX:
+			case ValueType::FLOAT:
+			case ValueType::FLOAT_ARRAY:
+			case ValueType::VECTOR2:
+			case ValueType::VECTOR3:
+			case ValueType::VECTOR4:
+			case ValueType::MATRIX:
 				delete[] _value.asFloatPtr;
 				break;
-			case INT:
-			case INT_ARRAY:
+			case ValueType::INT:
+			case ValueType::INT_ARRAY:
 				delete[] _value.asIntPtr;
 				break;
-			case METHOD:
+			case ValueType::METHOD:
 				delete _value.method;
 				break;
-			case NONE:
+			case ValueType::NONE:
 			default:
 				break;
 		}
 	}
 	memset(&_value, 0, sizeof(_value));
-	_type = NONE;
 	_freeableValue = false;
 	_valueCount = 1;
+	_type = ValueType::NONE;
+}
+
+
+void MaterialParameter::bindValue(AutoBinding autoBinding)
+{
+	switch (autoBinding)
+	{
+		case AutoBinding::WORLD_MATRIX:
+			bindValue(this, &MaterialParameter::getAutoBindWorldMatrix);
+			break;
+		case AutoBinding::VIEW_MATRIX:
+			bindValue(this, &MaterialParameter::getAutoBindViewMatrix);
+			break;
+		case AutoBinding::PROJECTION_MATRIX:
+			bindValue(this, &MaterialParameter::getAutoBindProjectionMatrix);
+			break;
+		case AutoBinding::WORLD_VIEW_MATRIX:
+			bindValue(this, &MaterialParameter::getAutoBindWorldViewMatrix);
+			break;
+		case AutoBinding::VIEW_PROJECTION_MATRIX:
+			bindValue(this, &MaterialParameter::getAutoBindViewProjectionMatrix);
+			break;
+		case AutoBinding::WORLD_VIEW_PROJECTION_MATRIX:
+			bindValue(this, &MaterialParameter::getAutoBindWorldViewProjectionMatrix);
+			break;
+		case AutoBinding::INVERSE_TRANSPOSE_WORLD_MATRIX:
+			break;
+		case AutoBinding::INVERSE_TRANSPOSE_WORLD_VIEW_MATRIX:
+			break;
+		case AutoBinding::CAMERA_WORLD_POSITION:
+			break;
+		case AutoBinding::CAMERA_VIEW_POSITION:
+			break;
+		case AutoBinding::NONE:
+		default:
+			break;
+	}
 }

@@ -27,6 +27,6 @@ namespace solo
 
 		std::vector<ptr<MaterialPass>> _passes;
 
-		void bind(ptr<Effect> effect);
+		void bind(ptr<Effect> effect, size_t node);
 	};
 }

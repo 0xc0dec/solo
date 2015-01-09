@@ -10,7 +10,8 @@ const int DIRTY_BIT_CLEAR_COLOR = 2;
 const int DIRTY_BIT_ALL = DIRTY_BIT_VIEWPORT | DIRTY_BIT_CLEAR_COLOR;
 
 
-Camera::Camera():
+Camera::Camera(size_t node):
+	ComponentBase(node),
 	_viewport(0, 0, 1, 1)
 {
 	_device = Engine::get()->getDevice();
@@ -18,9 +19,9 @@ Camera::Camera():
 }
 
 
-ptr<Camera> Camera::create()
+ptr<Camera> Camera::create(size_t node)
 {
-	return OpenGLCamera::create();
+	return OpenGLCamera::create(node);
 }
 
 

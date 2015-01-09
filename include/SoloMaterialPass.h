@@ -15,7 +15,7 @@ namespace solo
 	public:
 		~MaterialPass() {}
 
-		void bind();
+		void bind(size_t node);
 		void unbind();
 
 	private:

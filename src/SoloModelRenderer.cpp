@@ -7,6 +7,18 @@
 using namespace solo;
 
 
+ModelRenderer::ModelRenderer(size_t node):
+	ComponentBase(node)
+{
+}
+
+
+ptr<ModelRenderer> ModelRenderer::create(size_t node)
+{
+	return NEW2(ModelRenderer, node);
+}
+
+
 void ModelRenderer::render()
 {
 	auto meshCount = _model->getMeshCount();
@@ -20,7 +32,7 @@ void ModelRenderer::render()
 			for (auto k = 0; k < passCount; ++k)
 			{
 				auto pass = material->getPass(k);
-				pass->bind();
+				pass->bind(_node);
 				mesh->draw();
 				pass->unbind();
 			}

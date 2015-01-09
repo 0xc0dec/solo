@@ -11,8 +11,9 @@ namespace solo
 	class ModelRenderer: public ComponentBase<ModelRenderer>
 	{
 	public:
-		ModelRenderer() {}
 		virtual ~ModelRenderer() override {}
+
+		static ptr<ModelRenderer> create(size_t node);
 
 		virtual void render() override;
 
@@ -24,6 +25,8 @@ namespace solo
 		size_t getMaterialCount() const;
 
 	private:
+		ModelRenderer(size_t node);
+
 		ptr<Model> _model;
 		std::map<unsigned, ptr<Material>> _materials;
 	};

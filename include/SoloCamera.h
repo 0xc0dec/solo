@@ -13,7 +13,7 @@ namespace solo
 	public:
 		virtual ~Camera() {}
 
-		static ptr<Camera> create();
+		static ptr<Camera> create(size_t node);
 
 		virtual void update() override;
 		virtual void render() override;
@@ -24,7 +24,7 @@ namespace solo
 		Vector4 getViewport() const;
 	
 	protected:
-		Camera();
+		Camera(size_t node);
 
 		ptr<Device> _device;
 

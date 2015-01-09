@@ -3,6 +3,18 @@
 using namespace solo;
 
 
+Transform::Transform(size_t node):
+	ComponentBase(node)
+{
+}
+
+
+ptr<Transform> Transform::create(size_t node)
+{
+	return NEW2(Transform, node);
+}
+
+
 void Transform::addChild(ptr<Transform> child)
 {
 	if (child->_parent.get() == this)
