@@ -12,6 +12,7 @@ namespace solo
 	class Vector2;
 	class Vector3;
 	class Vector4;
+	class Matrix;
 
 	class MaterialParameter
 	{
@@ -34,6 +35,8 @@ namespace solo
 		void setValue(const Vector3 *value, unsigned count);
 		void setValue(const Vector4 &value);
 		void setValue(const Vector4 *value, unsigned count);
+		void setValue(const Matrix &value);
+		void setValue(const Matrix *value, unsigned count);
 
 		template <class TClass, class TParam>
 		void bindValue(TClass* classInstance, TParam(TClass::*getValue)() const);

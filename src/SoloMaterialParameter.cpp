@@ -3,6 +3,7 @@
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 #include "SoloVector4.h"
+#include "SoloMatrix.h"
 
 using namespace solo;
 
@@ -125,6 +126,26 @@ void MaterialParameter::setValue(const Vector4* value, unsigned count)
 }
 
 
+void MaterialParameter::setValue(const Matrix& value)
+{
+	clearValue(); // TODO eliminate memory deallocation for cases of second setting of a matrix
+	_value.asFloatPtr = new float[16];
+	memcpy(_value.asFloatPtr, value.m, sizeof(float)* 16);
+	_freeableValue = true;
+	_valueCount = 1;
+	_type = MATRIX;
+}
+
+
+void MaterialParameter::setValue(const Matrix* value, unsigned count)
+{
+	clearValue();
+	_value.asFloatPtr = const_cast<Matrix&>(value[0]).m;
+	_valueCount = count;
+	_type = MATRIX;
+}
+
+
 void MaterialParameter::bind(ptr<Effect> effect)
 {
 	auto variable = effect->findVariable(_name);
@@ -153,6 +174,9 @@ void MaterialParameter::bind(ptr<Effect> effect)
 			case VECTOR4:
 				variable->setValue(reinterpret_cast<Vector4*>(_value.asFloatPtr), _valueCount);
 				break;
+			case MATRIX:
+				variable->setValue(reinterpret_cast<Matrix*>(_value.asFloatPtr), _valueCount);
+				break;
 			case METHOD:
 				_value.method->setValue(variable);
 			case NONE:
@@ -174,6 +198,7 @@ void MaterialParameter::clearValue()
 			case VECTOR2:
 			case VECTOR3:
 			case VECTOR4:
+			case MATRIX:
 				delete[] _value.asFloatPtr;
 				break;
 			case INT:
