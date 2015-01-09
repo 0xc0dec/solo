@@ -113,9 +113,10 @@ namespace solo
 		MaterialParameter(const std::string &name);
 
 		ptr<Scene> _scene;
-		ptr<Transform> _renderedNodeTransform;
-		ptr<Camera> _renderedNodeCamera;
+
 		size_t _renderedNode;
+		ptr<Transform> _renderedNodeTransform;
+		ptr<Camera> _renderingCamera;
 
 		std::string _name;
 		ValueType _type;

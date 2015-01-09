@@ -156,7 +156,7 @@ void MaterialParameter::bind(ptr<Effect> effect, const RenderContext& context)
 {
 	_renderedNode = context.renderedNode;
 	_renderedNodeTransform = _scene->getComponent<Transform>(context.renderedNode);
-	_renderedNodeCamera = _scene->getComponent<Camera>(context.renderedNode);
+	_renderingCamera = context.renderingCamera;
 	auto variable = effect->findVariable(_name);
 	if (variable)
 	{
@@ -237,7 +237,19 @@ const Matrix& MaterialParameter::getAutoBoundWorldMatrix() const
 
 const Matrix& MaterialParameter::getAutoBoundViewMatrix() const
 {
-	return _renderedNodeCamera->getViewMatrix();
+	return _renderingCamera->getViewMatrix();
+}
+
+
+const Matrix& MaterialParameter::getAutoBoundProjectionMatrix() const
+{
+	return _renderingCamera->getProjectionMatrix();
+}
+
+
+const Matrix& MaterialParameter::getAutoBoundWorldViewMatrix() const
+{
+	return Matrix::identity();// TODO
 }
 
 
