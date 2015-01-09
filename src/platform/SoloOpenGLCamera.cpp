@@ -1,5 +1,6 @@
 #include <GL/glew.h>
 #include "SoloOpenGLCamera.h"
+#include "SoloEngine.h"
 #include "SoloDevice.h"
 
 using namespace solo;
@@ -14,6 +15,7 @@ ptr<OpenGLCamera> OpenGLCamera::create(size_t node)
 OpenGLCamera::OpenGLCamera(size_t node):
 	Camera(node)
 {
+	_device = Engine::get()->getDevice();
 }
 
 

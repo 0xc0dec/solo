@@ -121,6 +121,9 @@
     <ClInclude Include="..\include\SoloRenderState.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloRenderContext.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">

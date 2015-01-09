@@ -2,6 +2,7 @@
 #include "SoloMaterial.h"
 #include "SoloMaterialParameter.h"
 #include "SoloEffect.h"
+#include "SoloRenderContext.h"
 
 using namespace solo;
 
@@ -19,14 +20,14 @@ ptr<MaterialPass> MaterialPass::create(Material* material, ptr<Effect> effect)
 }
 
 
-void MaterialPass::bind(size_t node)
+void MaterialPass::bind(const RenderContext& context)
 {
 	if (_effect)
 	{
 		_effect->bind();
-		_material->bind(_effect, node);
+		_material->bind(_effect, context);
 		for (auto p : _parameters)
-			p.second->bind(_effect, node);
+			p.second->bind(_effect, context);
 	}
 }
 

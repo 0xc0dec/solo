@@ -7,6 +7,7 @@ namespace solo
 {
 	class Effect;
 	class MaterialPass;
+	struct RenderContext;
 
 	class Material: public RenderState
 	{
@@ -27,6 +28,6 @@ namespace solo
 
 		std::vector<ptr<MaterialPass>> _passes;
 
-		void bind(ptr<Effect> effect, size_t node);
+		void bind(ptr<Effect> effect, const RenderContext& context);
 	};
 }

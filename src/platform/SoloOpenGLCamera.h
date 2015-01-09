@@ -4,6 +4,8 @@
 
 namespace solo
 {
+	class Device;
+
 	class OpenGLCamera: public Camera
 	{
 	public:
@@ -11,6 +13,8 @@ namespace solo
 
 	protected:
 		OpenGLCamera(size_t node);
+
+		ptr<Device> _device;
 
 		void applyViewportChange() override;
 		void applyClearColor() override;

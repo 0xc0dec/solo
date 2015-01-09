@@ -2,6 +2,7 @@
 #include "SoloComponent.h"
 #include "SoloException.h"
 #include "SoloTransform.h"
+#include "SoloRenderContext.h"
 #include "SoloCamera.h"
 
 using namespace solo;
@@ -105,14 +106,16 @@ void Scene::render()
 	auto cameras = getCameras(); // TODO cache lookup results or optimise in some other way
 	for (auto camera : cameras)
 	{
-		camera->render();
+		auto context = RenderContext(0, camera);
+		camera->render(context);
 		for (auto nodeComponents : _components)
 		{
 			for (auto component : nodeComponents.second)
 			{
+				context.renderedNode = component.first;
 				// Ignore cameras - they're rendered in a special way
 				if (component.second->getTypeId() != Camera::getId())
-					component.second->render();
+					component.second->render(context);
 			}
 		}
 	}

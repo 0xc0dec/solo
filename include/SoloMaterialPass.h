@@ -7,6 +7,7 @@
 namespace solo
 {
 	class Effect;
+	struct RenderContext;
 
 	class MaterialPass: public RenderState
 	{
@@ -15,7 +16,7 @@ namespace solo
 	public:
 		~MaterialPass() {}
 
-		void bind(size_t node);
+		void bind(const RenderContext& context);
 		void unbind();
 
 	private:

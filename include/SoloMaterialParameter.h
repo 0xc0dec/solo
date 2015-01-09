@@ -11,6 +11,10 @@ namespace solo
 	class Vector3;
 	class Vector4;
 	class Matrix;
+	class Scene;
+	class Transform;
+	class Camera;
+	struct RenderContext;
 
 	class MaterialParameter
 	{
@@ -108,6 +112,11 @@ namespace solo
 
 		MaterialParameter(const std::string &name);
 
+		ptr<Scene> _scene;
+		ptr<Transform> _renderedNodeTransform;
+		ptr<Camera> _renderedNodeCamera;
+		size_t _renderedNode;
+
 		std::string _name;
 		ValueType _type;
 		MaterialParameterValue _value;
@@ -116,15 +125,15 @@ namespace solo
 
 		static ptr<MaterialParameter> create(const std::string &name);
 
-		void bind(ptr<Effect> effect, size_t node);
+		void bind(ptr<Effect> effect, const RenderContext& context);
 		void clearValue();
 
-		const Matrix &getAutoBindWorldMatrix() const;
-		const Matrix &getAutoBindViewMatrix() const;
-		const Matrix &getAutoBindProjectionMatrix() const;
-		const Matrix &getAutoBindWorldViewMatrix() const;
-		const Matrix &getAutoBindViewProjectionMatrix() const;
-		const Matrix &getAutoBindWorldViewProjectionMatrix() const;
+		const Matrix& getAutoBoundWorldMatrix() const;
+		const Matrix& getAutoBoundViewMatrix() const;
+		const Matrix& getAutoBoundProjectionMatrix() const;
+		const Matrix& getAutoBoundWorldViewMatrix() const;
+		const Matrix& getAutoBoundViewProjectionMatrix() const;
+		const Matrix& getAutoBoundWorldViewProjectionMatrix() const;
 	};
 
 	template <class TClass, class TParam>

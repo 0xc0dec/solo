@@ -31,7 +31,7 @@ namespace solo
 
 		template<> ptr<Camera> addComponent<Camera>(size_t node)
 		{
-			auto camera = Camera::create(node);
+			auto camera = Camera::createPerspective(node);
 			addComponent(node, camera);
 			return camera;
 		}

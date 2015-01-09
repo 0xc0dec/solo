@@ -5,6 +5,8 @@
 
 namespace solo
 {
+	struct RenderContext;
+
 	class Component
 	{
 	public:
@@ -16,7 +18,7 @@ namespace solo
 		virtual void update() {}
 
 		// Called when the component is allowed to render anything.
-		virtual void render() {}
+		virtual void render(const RenderContext& context) {}
 	};
 
 	template <class T>

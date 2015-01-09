@@ -19,7 +19,7 @@ ptr<ModelRenderer> ModelRenderer::create(size_t node)
 }
 
 
-void ModelRenderer::render()
+void ModelRenderer::render(const RenderContext& context)
 {
 	auto meshCount = _model->getMeshCount();
 	for (auto i = 0; i < meshCount; ++i)
@@ -32,7 +32,7 @@ void ModelRenderer::render()
 			for (auto k = 0; k < passCount; ++k)
 			{
 				auto pass = material->getPass(k);
-				pass->bind(_node);
+				pass->bind(context);
 				mesh->draw();
 				pass->unbind();
 			}

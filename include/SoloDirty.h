@@ -5,7 +5,7 @@ namespace solo
 	class Dirty
 	{
 	protected:
-		int _dirtyBits;
+		unsigned _dirtyBits;
 
 		Dirty() : _dirtyBits(0)
 		{
@@ -16,33 +16,40 @@ namespace solo
 			return _dirtyBits == 0;
 		}
 
-		template <int bit>
-		bool checkBitAndClean()
+		template <unsigned bit>
+		bool checkAndCleanBit()
 		{
 			auto result = isDirty<bit>();
 			clean<bit>();
 			return result;
 		}
 
-		template <int bit>
+		template <unsigned bit>
 		bool isDirty()
 		{
 			return (_dirtyBits & bit) != 0;
 		}
 
-		template <int bit>
+		template <unsigned bit>
 		void clean()
 		{
 			_dirtyBits &= ~bit;
 		}
 
-		template <int bit>
+		template <unsigned firstBit, unsigned secondBit, unsigned... otherBits>
+		void clean()
+		{
+			_dirtyBits &= ~firstBit;
+			clean<secondBit, otherBits...>();
+		}
+
+		template <unsigned bit>
 		void setDirty()
 		{
 			_dirtyBits |= bit;
 		}
 
-		template <int firstBit, int secondBit, int... otherBits>
+		template <unsigned firstBit, unsigned secondBit, unsigned... otherBits>
 		void setDirty()
 		{
 			_dirtyBits |= firstBit;

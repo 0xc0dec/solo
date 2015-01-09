@@ -1,20 +1,29 @@
 #include "SoloCamera.h"
+#include "SoloTransform.h"
 #include "SoloEngine.h"
-#include "SoloDevice.h"
+#include "SoloScene.h"
 #include "platform/SoloOpenGLCamera.h"
 
 using namespace solo;
 
-const int DIRTY_BIT_VIEWPORT = 1;
-const int DIRTY_BIT_CLEAR_COLOR = 2;
-const int DIRTY_BIT_ALL = DIRTY_BIT_VIEWPORT | DIRTY_BIT_CLEAR_COLOR;
+const unsigned DIRTY_BIT_VIEW = 1;
+const unsigned DIRTY_BIT_PROJ = 2;
+const unsigned DIRTY_BIT_VIEW_PROJ = 4;
+const unsigned DIRTY_BIT_INV_VIEW = 8;
+const unsigned DIRTY_BIT_INV_VIEW_PROJ = 16;
+const unsigned DIRTY_BIT_VIEWPORT = 32;
+const unsigned DIRTY_BIT_CLEAR_COLOR = 64;
+const unsigned DIRTY_BIT_ALL = DIRTY_BIT_VIEW | DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ |
+								DIRTY_BIT_INV_VIEW | DIRTY_BIT_INV_VIEW_PROJ |
+								DIRTY_BIT_VIEWPORT | DIRTY_BIT_CLEAR_COLOR;
 
 
 Camera::Camera(size_t node):
 	ComponentBase(node),
-	_viewport(0, 0, 1, 1)
+	_ortho(false), _viewport(0, 0, 1, 1), _clearColor(0, 0, 0, 1),
+	_fov(60), _near(1), _far(100), _width(1), _height(1), _aspectRatio(16.f/9.f)
 {
-	_device = Engine::get()->getDevice();
+	_transform = Engine::get()->getScene()->getComponent<Transform>(node);
 	setDirty<DIRTY_BIT_ALL>(); // arguably
 }
 
@@ -38,6 +47,142 @@ Vector4 Camera::getViewport() const
 }
 
 
+void Camera::setPerspective(bool perspective)
+{
+	_ortho = !perspective;
+	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
+}
+
+
+bool Camera::isPerspective() const
+{
+	return !_ortho;
+}
+
+
+float Camera::getNear() const
+{
+	return _near;
+}
+
+
+float Camera::getFar() const
+{
+	return _far;
+}
+
+
+float Camera::getFOV() const
+{
+	return _fov;
+}
+
+
+float Camera::getWidth() const
+{
+	return _width;
+}
+
+
+float Camera::getHeight() const
+{
+	return _height;
+}
+
+
+float Camera::getAspectRatio() const
+{
+	return _aspectRatio;
+}
+
+
+void Camera::setFOV(float fov)
+{
+	_fov = fov;
+	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
+}
+
+
+void Camera::setWidth(float width)
+{
+	_width = width;
+	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
+}
+
+
+void Camera::setHeight(float height)
+{
+	_height = height;
+	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
+}
+
+
+void Camera::setAspectRatio(float ratio)
+{
+	_aspectRatio = ratio;
+	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
+}
+
+
+void Camera::setFar(float far)
+{
+	_far = far;
+	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
+}
+
+
+void Camera::setNear(float near)
+{
+	_near = near;
+	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
+}
+
+
+const Matrix& Camera::getViewMatrix()
+{
+	if (checkAndCleanBit<DIRTY_BIT_VIEW>())
+		_transform->getWorldMatrix().invert(&_view);
+	return _view;
+}
+
+
+const Matrix& Camera::getInverseViewMatrix()
+{
+	if (checkAndCleanBit<DIRTY_BIT_INV_VIEW>())
+		getViewMatrix().invert(&_inverseView);
+	return _inverseView;
+}
+
+
+const Matrix& Camera::getProjectionMatrix()
+{
+	if (checkAndCleanBit<DIRTY_BIT_PROJ>())
+	{
+		if (_ortho)
+			Matrix::createOrthographic(_width, _height, _near, _far, &_projection);
+		else
+			Matrix::createPerspective(_fov, _aspectRatio, _near, _far, &_projection);
+	}
+	return _projection;
+}
+
+
+const Matrix& Camera::getViewProjectionMatrix()
+{
+	if (checkAndCleanBit<DIRTY_BIT_VIEW_PROJ>())
+		Matrix::multiply(getViewMatrix(), getProjectionMatrix(), &_viewProjection);
+	return _viewProjection;
+}
+
+
+const Matrix& Camera::getInverseViewProjectionMatrix()
+{
+	if (checkAndCleanBit<DIRTY_BIT_INV_VIEW_PROJ>())
+		getViewProjectionMatrix().invert(&_inverseViewProjection);
+	return _inverseViewProjection;
+}
+
+
 void Camera::setClearColor(float r, float g, float b, float a)
 {
 	_clearColor.set(r, g, b, a);
@@ -50,11 +195,11 @@ void Camera::update()
 }
 
 
-void Camera::render()
+void Camera::render(const RenderContext& context)
 {
-	if (checkBitAndClean<DIRTY_BIT_VIEWPORT>())
+	if (checkAndCleanBit<DIRTY_BIT_VIEWPORT>())
 		applyViewportChange();
-	if (checkBitAndClean<DIRTY_BIT_CLEAR_COLOR>())
+	if (checkAndCleanBit<DIRTY_BIT_CLEAR_COLOR>())
 		applyClearColor();
 	clear();
 }

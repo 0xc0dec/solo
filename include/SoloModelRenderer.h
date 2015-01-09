@@ -15,7 +15,7 @@ namespace solo
 
 		static ptr<ModelRenderer> create(size_t node);
 
-		virtual void render() override;
+		virtual void render(const RenderContext& context) override;
 
 		void setModel(const ptr<Model> model);
 		ptr<Model> getModel() const;

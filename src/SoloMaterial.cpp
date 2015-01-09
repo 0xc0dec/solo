@@ -34,10 +34,10 @@ size_t Material::getPassCount() const
 }
 
 
-void Material::bind(ptr<Effect> effect, size_t node)
+void Material::bind(ptr<Effect> effect, const RenderContext& context)
 {
 	for (auto p : _parameters)
-		p.second->bind(effect, node);
+		p.second->bind(effect, context);
 }
 
 
