@@ -20,7 +20,7 @@ Camera::Camera():
 
 ptr<Camera> Camera::create()
 {
-	return NEW<OpenGLCamera>();
+	return OpenGLCamera::create();
 }
 
 

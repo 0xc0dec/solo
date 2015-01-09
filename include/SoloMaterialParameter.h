@@ -2,6 +2,7 @@
 
 #include "SoloBase.h"
 #include "SoloEffectVariable.h"
+#include "SoloRenderState.h"
 
 namespace solo
 {
@@ -16,9 +17,9 @@ namespace solo
 	{
 		friend Material;
 		friend MaterialPass;
+		friend RenderState;
 
 	public:
-		MaterialParameter(const std::string &name);
 		~MaterialParameter() {}
 
 		std::string getName() const;
@@ -38,6 +39,10 @@ namespace solo
 		void bindValue(TClass* classInstance, TParam(TClass::*getValue)() const);
 
 	private:
+		MaterialParameter(const std::string &name);
+
+		static ptr<MaterialParameter> create(const std::string &name);
+
 		class ValueBinding
 		{
 		public:

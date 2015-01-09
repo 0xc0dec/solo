@@ -13,7 +13,6 @@ namespace solo
 	class EffectVariable
 	{
 	public:
-		EffectVariable(const std::string &name);
 		virtual ~EffectVariable() {}
 
 		std::string getName() const;
@@ -32,6 +31,8 @@ namespace solo
 		virtual void setValue(const Vector4* values, unsigned count) = 0;
 
 	protected:
+		EffectVariable(const std::string &name);
+
 		std::string _name;
 	};
 }

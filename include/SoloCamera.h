@@ -11,7 +11,6 @@ namespace solo
 	class Camera : public ComponentBase<Camera>, public Dirty
 	{
 	public:
-		Camera();
 		virtual ~Camera() {}
 
 		static ptr<Camera> create();
@@ -25,6 +24,8 @@ namespace solo
 		Vector4 getViewport() const;
 	
 	protected:
+		Camera();
+
 		ptr<Device> _device;
 
 		Vector4 _viewport; // all values in range 0..1

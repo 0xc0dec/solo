@@ -6,5 +6,5 @@ using namespace solo;
 
 ptr<Mesh> Mesh::create()
 {
-	return NEW<OpenGLMesh>();
+	return OpenGLMesh::create();
 }

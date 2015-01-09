@@ -10,7 +10,7 @@ ptr<MaterialParameter> RenderState::getParameter(const std::string& name)
 	if (where != _parameters.end())
 		return where->second;
 	// Create a new one if not found
-	auto parameter = NEW<MaterialParameter>(name);
+	auto parameter = MaterialParameter::create(name);
 	_parameters[name] = parameter;
 	return parameter;
 }

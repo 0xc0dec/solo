@@ -5,6 +5,12 @@
 using namespace solo;
 
 
+ptr<OpenGLCamera> OpenGLCamera::create()
+{
+	return NEW2(OpenGLCamera);
+}
+
+
 void OpenGLCamera::applyViewportChange()
 {
 	auto size = _device->getCanvasSize();

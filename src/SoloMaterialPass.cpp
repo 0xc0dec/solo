@@ -13,6 +13,12 @@ MaterialPass::MaterialPass(Material *material, ptr<Effect> effect):
 }
 
 
+ptr<MaterialPass> MaterialPass::create(Material* material, ptr<Effect> effect)
+{
+	return NEW2(MaterialPass, material, effect);
+}
+
+
 void MaterialPass::bind()
 {
 	if (_effect)

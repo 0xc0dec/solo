@@ -1,6 +1,5 @@
 #include "SoloMaterialParameter.h"
 #include "SoloEffect.h"
-#include "SoloEffectVariable.h"
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 #include "SoloVector4.h"
@@ -14,6 +13,12 @@ MaterialParameter::MaterialParameter(const std::string& name):
 	_valueCount(0),
 	_freeableValue(false)
 {
+}
+
+
+ptr<MaterialParameter> MaterialParameter::create(const std::string& name)
+{
+	return NEW2(MaterialParameter, name);
 }
 
 

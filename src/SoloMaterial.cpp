@@ -14,7 +14,7 @@ ptr<Material> Material::create()
 
 ptr<MaterialPass> Material::addPass(ptr<Effect> effect)
 {
-	auto pass = NEW<MaterialPass>(this, effect);
+	auto pass = MaterialPass::create(this, effect);
 	_passes.push_back(pass);
 	return pass;
 }

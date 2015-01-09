@@ -9,6 +9,11 @@ namespace solo
 	public:
 		virtual ~OpenGLMesh() override {}
 
+		static ptr<OpenGLMesh> create();
+
 		virtual void draw() override;
+
+	private:
+		OpenGLMesh() {}
 	};
 }

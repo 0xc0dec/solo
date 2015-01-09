@@ -41,6 +41,12 @@ GLSLEffect::~GLSLEffect()
 }
 
 
+ptr<GLSLEffect> GLSLEffect::create(const std::string& vsSrc, const std::string& fsSrc)
+{
+	return NEW2(GLSLEffect, vsSrc, fsSrc);
+}
+
+
 void GLSLEffect::bind()
 {
 	glUseProgram(_program);
@@ -152,7 +158,7 @@ void GLSLEffect::discoverVariables()
 			samplerIndex += size;
 		}
 
-		auto variable = NEW<GLSLEffectVariable>(name, location, type, index);
+		auto variable = GLSLEffectVariable::create(name, location, type, index);
 		_variables[name] = variable;
 	}
 

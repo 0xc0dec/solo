@@ -10,14 +10,17 @@ namespace solo
 	class GLSLEffect: public Effect
 	{
 	public:
-		GLSLEffect(std::string const& vsSrc, std::string const& fsSrc);
 		virtual ~GLSLEffect() override;
+
+		static ptr<GLSLEffect> create(const std::string& vsSrc, const std::string& fsSrc);
 
 		virtual void bind() override;
 
 		virtual ptr<EffectVariable> findVariable(const std::string& name) override;
 
 	private:
+		GLSLEffect(const std::string& vsSrc, const std::string& fsSrc);
+
 		GLuint _program;
 		std::map<std::string, ptr<GLSLEffectVariable>> _variables; // TODO move to the base class (along with some methods)
 

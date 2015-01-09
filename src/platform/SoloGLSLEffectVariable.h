@@ -9,7 +9,7 @@ namespace solo
 	class GLSLEffectVariable : public EffectVariable
 	{
 	public:
-		GLSLEffectVariable(const std::string& name, GLint location, GLenum type, unsigned index = 0);
+		static ptr<GLSLEffectVariable> create(const std::string& name, GLint location, GLenum type, unsigned index = 0);
 
 		virtual void setValue(float value) override;
 		virtual void setValue(const float* values, unsigned count) override;
@@ -25,6 +25,8 @@ namespace solo
 		virtual void setValue(const Vector4* values, unsigned count) override;
 
 	private:
+		GLSLEffectVariable(const std::string& name, GLint location, GLenum type, unsigned index = 0);
+
 		GLint _location;
 		GLenum _type;
 		unsigned _index;
