@@ -40,6 +40,7 @@ void MaterialParameter::setValue(const float* value, unsigned count)
 {
 	clearValue();
 	_value.asFloatPtr = const_cast<float*>(value);
+	_valueCount = count;
 	_type = FLOAT_ARRAY;
 }
 
@@ -56,6 +57,7 @@ void MaterialParameter::setValue(const int* value, unsigned count)
 {
 	clearValue();
 	_value.asIntPtr = const_cast<int*>(value);
+	_valueCount = count;
 	_type = INT_ARRAY;
 }
 
