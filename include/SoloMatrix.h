@@ -67,8 +67,13 @@ namespace solo
 		void getLeftVector(Vector3* dst) const;
 		void getRightVector(Vector3* dst) const;
 		void getForwardVector(Vector3* dst) const;
-		Vector3 getForwardVector() const;
 		void getBackVector(Vector3* dst) const;
+		Vector3 getUpVector() const;
+		Vector3 getDownVector() const;
+		Vector3 getLeftVector() const;
+		Vector3 getRightVector() const;
+		Vector3 getForwardVector() const;
+		Vector3 getBackVector() const;
 
 		bool invert();
 		bool invert(Matrix* dst) const;

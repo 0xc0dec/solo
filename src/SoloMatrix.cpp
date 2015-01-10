@@ -618,6 +618,46 @@ void Matrix::getForwardVector(Vector3* dst) const
 }
 
 
+void Matrix::getBackVector(Vector3* dst) const
+{
+	dst->x = m[8];
+	dst->y = m[9];
+	dst->z = m[10];
+}
+
+
+Vector3 Matrix::getUpVector() const
+{
+	Vector3 result;
+	getUpVector(&result);
+	return result;
+}
+
+
+Vector3 Matrix::getDownVector() const
+{
+	Vector3 result;
+	getDownVector(&result);
+	return result;
+}
+
+
+Vector3 Matrix::getLeftVector() const
+{
+	Vector3 result;
+	getLeftVector(&result);
+	return result;
+}
+
+
+Vector3 Matrix::getRightVector() const
+{
+	Vector3 result;
+	getRightVector(&result);
+	return result;
+}
+
+
 Vector3 Matrix::getForwardVector() const
 {
 	Vector3 result;
@@ -626,11 +666,11 @@ Vector3 Matrix::getForwardVector() const
 }
 
 
-void Matrix::getBackVector(Vector3* dst) const
+Vector3 Matrix::getBackVector() const
 {
-	dst->x = m[8];
-	dst->y = m[9];
-	dst->z = m[10];
+	Vector3 result;
+	getBackVector(&result);
+	return result;
 }
 
 

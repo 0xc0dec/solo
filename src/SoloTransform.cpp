@@ -149,11 +149,41 @@ const Vector3& Transform::getLocalPosition() const
 
 Vector3 Transform::getWorldPosition() const
 {
-	return _worldMatrix.getTranslation();
+	return getWorldMatrix().getTranslation();
+}
+
+
+Vector3 Transform::getUp() const
+{
+	return getMatrix().getUpVector();
+}
+
+
+Vector3 Transform::getDown() const
+{
+	return getMatrix().getDownVector();
+}
+
+
+Vector3 Transform::getLeft() const
+{
+	return getMatrix().getLeftVector();
+}
+
+
+Vector3 Transform::getRight() const
+{
+	return getMatrix().getRightVector();
 }
 
 
 Vector3 Transform::getForward() const
 {
 	return getMatrix().getForwardVector();
+}
+
+
+Vector3 Transform::getBack() const
+{
+	return getMatrix().getBackVector();
 }

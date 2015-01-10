@@ -27,7 +27,12 @@ namespace solo
 		const Vector3& getLocalPosition() const;
 		Vector3 getWorldPosition() const;
 
+		Vector3 getUp() const;
+		Vector3 getDown() const;
+		Vector3 getLeft() const;
+		Vector3 getRight() const;
 		Vector3 getForward() const;
+		Vector3 getBack() const;
 
 		const Matrix& getMatrix() const;
 		const Matrix& getWorldMatrix() const;
