@@ -26,17 +26,6 @@ Plane::Plane(float normalX, float normalY, float normalZ, float distance)
 }
 
 
-Plane::Plane(const Plane& copy)
-{
-	set(copy);
-}
-
-
-Plane::~Plane()
-{
-}
-
-
 const Vector3& Plane::getNormal() const
 {
 	return _normal;
@@ -136,7 +125,6 @@ float Plane::intersects(const BoundingBox& box) const
 
 float Plane::intersects(const Frustum& frustum) const
 {
-	// Get the corners of the frustum.
 	Vector3 corners[8];
 	frustum.getCorners(corners);
 

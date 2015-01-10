@@ -17,9 +17,6 @@ namespace solo
 		Ray();
 		Ray(const Vector3& origin, const Vector3& direction);
 		Ray(float originX, float originY, float originZ, float dirX, float dirY, float dirZ);
-		Ray(const Ray& copy);
-
-		~Ray();
 
 		const Vector3& getOrigin() const;
 		void setOrigin(const Vector3& origin);

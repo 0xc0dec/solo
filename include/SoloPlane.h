@@ -19,9 +19,6 @@ namespace solo
 		Plane();
 		Plane(const Vector3& normal, float distance);
 		Plane(float normalX, float normalY, float normalZ, float distance);
-		Plane(const Plane& copy);
-
-		~Plane();
 		
 		const Vector3& getNormal() const;
 		void setNormal(const Vector3& normal);

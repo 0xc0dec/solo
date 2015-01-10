@@ -26,17 +26,6 @@ Ray::Ray(float originX, float originY, float originZ, float dirX, float dirY, fl
 }
 
 
-Ray::Ray(const Ray& copy)
-{
-	set(copy);
-}
-
-
-Ray::~Ray()
-{
-}
-
-
 const Vector3& Ray::getOrigin() const
 {
 	return _origin;

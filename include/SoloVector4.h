@@ -14,15 +14,8 @@ namespace solo
 		Vector4(float x, float y, float z, float w);
 		Vector4(const float* array);
 		Vector4(const Vector4& p1, const Vector4& p2);
-		Vector4(const Vector4& copy);
-		Vector4(Vector4 &&other);
-		
-		~Vector4() {}
 
 		static Vector4 fromColor(unsigned color);
-
-		Vector4& operator=(const Vector4& other) = default;
-		Vector4& operator=(Vector4&& other);
 
 		static const Vector4& zero();
 		static const Vector4& one();

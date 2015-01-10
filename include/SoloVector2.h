@@ -14,13 +14,6 @@ namespace solo
 		Vector2(float x, float y);
 		Vector2(const float* array);
 		Vector2(const Vector2& p1, const Vector2& p2);
-		Vector2(const Vector2& copy);
-		Vector2(Vector2 &&other);
-
-		~Vector2();
-
-		Vector2& operator=(const Vector2& other) = default;
-		Vector2& operator=(Vector2&& other);
 
 		static const Vector2& zero();
 		static const Vector2& one();

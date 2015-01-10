@@ -13,9 +13,6 @@ namespace solo
 
 		BoundingSphere();
 		BoundingSphere(const Vector3& center, float radius);
-		BoundingSphere(const BoundingSphere& copy);
-		
-		~BoundingSphere();
 
 		static const BoundingSphere& empty();
 

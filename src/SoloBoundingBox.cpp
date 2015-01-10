@@ -26,17 +26,6 @@ BoundingBox::BoundingBox(float minX, float minY, float minZ, float maxX, float m
 }
 
 
-BoundingBox::BoundingBox(const BoundingBox& copy)
-{
-	set(copy);
-}
-
-
-BoundingBox::~BoundingBox()
-{
-}
-
-
 const BoundingBox& BoundingBox::empty()
 {
 	static BoundingBox b;

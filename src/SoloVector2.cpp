@@ -28,32 +28,6 @@ Vector2::Vector2(const Vector2& p1, const Vector2& p2)
 }
 
 
-Vector2::Vector2(const Vector2& copy)
-{
-	set(copy);
-}
-
-
-Vector2::~Vector2()
-{
-}
-
-
-Vector2::Vector2(Vector2&& other):
-	x(std::move(other.x)),
-	y(std::move(other.y))
-{
-}
-
-
-Vector2& Vector2::operator=(Vector2&& other)
-{
-	x = std::move(other.x);
-	y = std::move(other.y);
-	return *this;
-}
-
-
 const Vector2& Vector2::zero()
 {
 	static Vector2 value(0.0f, 0.0f);

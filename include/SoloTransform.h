@@ -11,7 +11,7 @@ namespace solo
 {
 	class Camera;
 
-	class Transform: public ComponentBase<Transform>, Dirty
+	class Transform: public ComponentBase<Transform>, public Dirty
 	{
 	public:
 		virtual ~Transform() override {}

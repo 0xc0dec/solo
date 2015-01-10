@@ -28,20 +28,6 @@ Vector3::Vector3(const Vector3& p1, const Vector3& p2)
 }
 
 
-Vector3::Vector3(const Vector3& copy)
-{
-	set(copy);
-}
-
-
-Vector3::Vector3(Vector3&& other):
-	x(std::move(other.x)),
-	y(std::move(other.y)),
-	z(std::move(other.z))
-{
-}
-
-
 Vector3 Vector3::fromColor(unsigned int color)
 {
 	float components[3];
@@ -55,15 +41,6 @@ Vector3 Vector3::fromColor(unsigned int color)
 
 	Vector3 value(components);
 	return value;
-}
-
-
-Vector3& Vector3::operator=(Vector3&& other)
-{
-	x = std::move(other.x);
-	y = std::move(other.y);
-	z = std::move(other.z);
-	return *this;
 }
 
 

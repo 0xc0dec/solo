@@ -17,13 +17,6 @@ namespace solo
 		Quaternion(float* array);
 		Quaternion(const Matrix& m);
 		Quaternion(const Vector3& axis, float angle);
-		Quaternion(const Quaternion& other);
-		Quaternion(Quaternion&& other);
-		
-		~Quaternion() {}
-
-		Quaternion& operator=(const Quaternion& other) = default;
-		Quaternion& operator=(Quaternion&& other);
 
 		static const Quaternion& identity();
 		static const Quaternion& zero();

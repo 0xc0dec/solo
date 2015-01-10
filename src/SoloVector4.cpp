@@ -26,21 +26,6 @@ Vector4::Vector4(const Vector4& p1, const Vector4& p2)
 }
 
 
-Vector4::Vector4(const Vector4& copy)
-{
-	set(copy);
-}
-
-
-Vector4::Vector4(Vector4&& other):
-	x(std::move(other.x)),
-	y(std::move(other.y)),
-	z(std::move(other.z)),
-	w(std::move(other.w))
-{
-}
-
-
 Vector4 Vector4::fromColor(unsigned int color)
 {
 	float components[4];
@@ -52,16 +37,6 @@ Vector4 Vector4::fromColor(unsigned int color)
 	}
 	Vector4 value(components);
 	return value;
-}
-
-
-Vector4& Vector4::operator=(Vector4&& other)
-{
-	x = std::move(other.x);
-	y = std::move(other.y);
-	z = std::move(other.z);
-	w = std::move(other.w);
-	return *this;
 }
 
 

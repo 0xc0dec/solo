@@ -18,17 +18,6 @@ BoundingSphere::BoundingSphere(const Vector3& center, float radius)
 }
 
 
-BoundingSphere::BoundingSphere(const BoundingSphere& copy)
-{
-	set(copy);
-}
-
-
-BoundingSphere::~BoundingSphere()
-{
-}
-
-
 const BoundingSphere& BoundingSphere::empty()
 {
 	static BoundingSphere s;

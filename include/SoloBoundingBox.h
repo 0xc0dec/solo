@@ -18,9 +18,6 @@ namespace solo
 		BoundingBox();
 		BoundingBox(const Vector3& min, const Vector3& max);
 		BoundingBox(float minX, float minY, float minZ, float maxX, float maxY, float maxZ);
-		BoundingBox(const BoundingBox& copy);
-
-		~BoundingBox();
 
 		static const BoundingBox& empty();
 
