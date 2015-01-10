@@ -3,4 +3,5 @@
 * Transform component, node hierarchy
 * Use weak pointers where possible
 * Move constructors for matrices and other math classes
+* Remove methods like multiply() from math classes
 ? Registering components for rendering

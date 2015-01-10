@@ -13,9 +13,9 @@ namespace solo
 		{
 		}
 
-		bool isClean() const
+		bool isDirty() const
 		{
-			return _dirtyBits == 0;
+			return _dirtyBits != 0;
 		}
 
 		template <unsigned bit>

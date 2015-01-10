@@ -22,7 +22,7 @@ namespace solo
 		void removeChild(ptr<Transform> child);
 		void removeChildren();
 
-		const Vector3 &getLocalScale() const;
+		const Vector3& getLocalScale() const;
 		const Quaternion& getLocalRotation() const;
 		const Vector3& getLocalPosition() const;
 		Vector3 getWorldPosition() const;
@@ -41,6 +41,13 @@ namespace solo
 		Matrix getWorldViewMatrix(ptr<Camera> camera) const;
 		Matrix getWorldViewProjectionMatrix(ptr<Camera> camera) const;
 		Matrix getInverseTransposedWorldViewMatrix(ptr<Camera> camera) const;
+
+		void rotate(const Quaternion& rotation);
+		void rotate(const Vector3& axis, float angle);
+
+		void scale(float scale);
+		void scale(const Vector3& scale);
+		// TODO setScale and so on
 
 	private:
 		Transform(size_t node);

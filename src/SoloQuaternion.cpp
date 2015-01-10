@@ -63,6 +63,7 @@ void Quaternion::createFromRotationMatrix(const Matrix& m, Quaternion* dst)
 	m.getRotation(dst);
 }
 
+
 void Quaternion::createFromAxisAngle(const Vector3& axis, float angle, Quaternion* dst)
 {
 	float halfAngle = angle * 0.5f;
@@ -74,6 +75,22 @@ void Quaternion::createFromAxisAngle(const Vector3& axis, float angle, Quaternio
 	dst->y = normal.y * sinHalfAngle;
 	dst->z = normal.z * sinHalfAngle;
 	dst->w = cosf(halfAngle);
+}
+
+
+Quaternion Quaternion::createFromRotationMatrix(const Matrix& m)
+{
+	Quaternion result;
+	createFromRotationMatrix(m, &result);
+	return result;
+}
+
+
+Quaternion Quaternion::createFromAxisAngle(const Vector3& axis, float angle)
+{
+	Quaternion result;
+	createFromAxisAngle(axis, angle, &result);
+	return result;
 }
 
 

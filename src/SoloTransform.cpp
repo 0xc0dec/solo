@@ -6,13 +6,15 @@ using namespace solo;
 const unsigned DIRTY_BIT_TRANSLATION = 1;
 const unsigned DIRTY_BIT_ROTATION = 2;
 const unsigned DIRTY_BIT_SCALE = 4;
-const unsigned DIRTY_BIT_WORLD = 8;
+const unsigned DIRTY_BIT_WORLD = 8; // TODO needed?
+const unsigned DIRTY_BIT_ALL = DIRTY_BIT_TRANSLATION | DIRTY_BIT_ROTATION | DIRTY_BIT_SCALE | DIRTY_BIT_WORLD;
 
 
 Transform::Transform(size_t node):
 	ComponentBase(node)
 {
 	_localScale.set(Vector3::one());
+	setDirty<DIRTY_BIT_ALL>();
 }
 
 
@@ -61,7 +63,7 @@ const Quaternion& Transform::getLocalRotation() const
 
 const Matrix& Transform::getMatrix() const
 {
-	if (_dirtyBits)
+	if (isDirty())
 	{
 		bool hasTranslation = !_localPosition.isZero();
 		bool hasScale = !_localScale.isOne();
@@ -138,6 +140,39 @@ Matrix Transform::getInverseTransposedWorldViewMatrix(ptr<Camera> camera) const
 	result.invert();
 	result.transpose();
 	return result;
+}
+
+
+void Transform::rotate(const Quaternion& rotation)
+{
+	_localRotation *= rotation;
+	setDirty<DIRTY_BIT_ROTATION, DIRTY_BIT_WORLD>();
+}
+
+
+void Transform::rotate(const Vector3& axis, float angle)
+{
+	auto rotation = Quaternion::createFromAxisAngle(axis, angle);
+	_localRotation *= rotation;
+	_localRotation.normalize();
+	setDirty<DIRTY_BIT_ROTATION, DIRTY_BIT_WORLD>();
+}
+
+
+void Transform::scale(float scale)
+{
+	_localScale.scale(scale);
+	setDirty<DIRTY_BIT_SCALE, DIRTY_BIT_WORLD>();
+}
+
+
+void Transform::scale(const Vector3& scale)
+{
+	// TODO replace with *=
+	_localScale.x *= scale.x;
+	_localScale.y *= scale.y;
+	_localScale.z *= scale.z;
+	setDirty<DIRTY_BIT_SCALE, DIRTY_BIT_WORLD>();
 }
 
 

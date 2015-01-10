@@ -26,6 +26,8 @@ namespace solo
 
 		static void createFromRotationMatrix(const Matrix& m, Quaternion* dst);
 		static void createFromAxisAngle(const Vector3& axis, float angle, Quaternion* dst);
+		static Quaternion createFromRotationMatrix(const Matrix& m);
+		static Quaternion createFromAxisAngle(const Vector3& axis, float angle);
 
 		void conjugate();
 		void conjugate(Quaternion* dst) const;
