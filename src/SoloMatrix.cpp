@@ -1,5 +1,3 @@
-/// Original version taken from https://github.com/gameplay3d/GamePlay
-
 #include "SoloMatrix.h"
 #include "SoloMath.h"
 #include "SoloQuaternion.h"
