@@ -1,3 +1,5 @@
+/// Original version taken from https://github.com/gameplay3d/GamePlay
+
 #include "SoloMatrix.h"
 #include "SoloMath.h"
 #include "SoloQuaternion.h"
@@ -15,10 +17,12 @@ static const float MATRIX_IDENTITY[16] =
 	0.0f, 0.0f, 0.0f, 1.0f
 };
 
+
 Matrix::Matrix()
 {
 	*this = Matrix::identity();
 }
+
 
 Matrix::Matrix(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24,
 	float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44)
@@ -26,19 +30,23 @@ Matrix::Matrix(float m11, float m12, float m13, float m14, float m21, float m22,
 	set(m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44);
 }
 
+
 Matrix::Matrix(const float* m)
 {
 	set(m);
 }
+
 
 Matrix::Matrix(const Matrix& copy)
 {
 	memcpy(m, copy.m, MATRIX_SIZE);
 }
 
+
 Matrix::~Matrix()
 {
 }
+
 
 const Matrix& Matrix::identity()
 {
@@ -50,6 +58,7 @@ const Matrix& Matrix::identity()
 	return m;
 }
 
+
 const Matrix& Matrix::zero()
 {
 	static Matrix m(
@@ -60,15 +69,16 @@ const Matrix& Matrix::zero()
 	return m;
 }
 
+
 void Matrix::createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up, Matrix* dst)
 {
 	createLookAt(eyePosition.x, eyePosition.y, eyePosition.z, targetPosition.x, targetPosition.y, targetPosition.z,
 		up.x, up.y, up.z, dst);
 }
 
+
 void Matrix::createLookAt(float eyePositionX, float eyePositionY, float eyePositionZ,
-	float targetPositionX, float targetPositionY, float targetPositionZ,
-	float upX, float upY, float upZ, Matrix* dst)
+	float targetPositionX, float targetPositionY, float targetPositionZ, float upX, float upY, float upZ, Matrix* dst)
 {
 	Vector3 eye(eyePositionX, eyePositionY, eyePositionZ);
 	Vector3 target(targetPositionX, targetPositionY, targetPositionZ);
@@ -108,6 +118,7 @@ void Matrix::createLookAt(float eyePositionX, float eyePositionY, float eyePosit
 	dst->m[15] = 1.0f;
 }
 
+
 void Matrix::createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane, Matrix* dst)
 {
 	float f_n = 1.0f / (zFarPlane - zNearPlane);
@@ -135,16 +146,15 @@ void Matrix::createOrthographic(float width, float height, float zNearPlane, flo
 }
 
 
-void Matrix::createOrthographicOffCenter(float left, float right, float bottom, float top,
-	float zNearPlane, float zFarPlane, Matrix* dst)
+void Matrix::createOrthographicOffCenter(float left, float right, float bottom, float top, float near, float far, Matrix* dst)
 {
 	memset(dst, 0, MATRIX_SIZE);
 	dst->m[0] = 2 / (right - left);
 	dst->m[5] = 2 / (top - bottom);
 	dst->m[12] = (left + right) / (left - right);
-	dst->m[10] = 1 / (zNearPlane - zFarPlane);
+	dst->m[10] = 1 / (near - far);
 	dst->m[13] = (top + bottom) / (bottom - top);
-	dst->m[14] = zNearPlane / (zNearPlane - zFarPlane);
+	dst->m[14] = near / (near - far);
 	dst->m[15] = 1;
 }
 
@@ -421,14 +431,13 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
 {
 	if (translation)
 	{
-		// Extract the translation.
 		translation->x = m[12];
 		translation->y = m[13];
 		translation->z = m[14];
 	}
 
 	// Nothing left to do.
-	if (scale == NULL && rotation == NULL)
+	if (scale == nullptr && rotation == nullptr)
 		return true;
 
 	// Extract the scale.
@@ -455,8 +464,7 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
 		scale->z = scaleZ;
 	}
 
-	// Nothing left to do.
-	if (rotation == NULL)
+	if (rotation == nullptr)
 		return true;
 
 	// Scale too close to zero, can't decompose rotation.

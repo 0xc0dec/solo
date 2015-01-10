@@ -34,6 +34,7 @@ namespace solo
 
 	private:
 		Transform(size_t node);
+		Transform(const Transform& other);
 
 		ptr<Transform> _parent;
 		std::list<ptr<Transform>> _children;

@@ -32,14 +32,28 @@ Quaternion::Quaternion(const Vector3& axis, float angle)
 }
 
 
-Quaternion::Quaternion(const Quaternion& copy)
+Quaternion::Quaternion(const Quaternion& other)
 {
-	set(copy);
+	set(other);
 }
 
 
-Quaternion::~Quaternion()
+Quaternion::Quaternion(Quaternion&& other):
+	x(std::move(other.x)),
+	y(std::move(other.y)),
+	z(std::move(other.z)),
+	w(std::move(other.w))
 {
+}
+
+
+Quaternion& Quaternion::operator=(Quaternion&& other)
+{
+	x = std::move(other.x);
+	y = std::move(other.y);
+	z = std::move(other.z);
+	w = std::move(other.w);
+	return *this;
 }
 
 
