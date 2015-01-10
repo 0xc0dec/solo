@@ -1,4 +1,5 @@
 #include "SoloTransform.h"
+#include "SoloCamera.h"
 
 using namespace solo;
 
@@ -46,7 +47,7 @@ void Transform::removeChildren()
 }
 
 
-const Matrix& Transform::getRawMatrix()
+const Matrix& Transform::getMatrix()
 {
 	if (_dirtyBits)
 	{
@@ -56,24 +57,24 @@ const Matrix& Transform::getRawMatrix()
 
 		if (hasTranslation || isDirty<DIRTY_BIT_TRANSLATION>())
 		{
-			Matrix::createTranslation(_translation, &_rawMatrix);
+			Matrix::createTranslation(_translation, &_matrix);
 			if (hasRotation || isDirty<DIRTY_BIT_ROTATION>())
-				_rawMatrix.rotate(_rotation);
+				_matrix.rotate(_rotation);
 			if (hasScale || isDirty<DIRTY_BIT_SCALE>())
-				_rawMatrix.scale(_scale);
+				_matrix.scale(_scale);
 		}
 		else if (hasRotation || isDirty<DIRTY_BIT_ROTATION>())
 		{
-			Matrix::createRotation(_rotation, &_rawMatrix);
+			Matrix::createRotation(_rotation, &_matrix);
 			if (hasScale || isDirty<DIRTY_BIT_SCALE>())
-				_rawMatrix.scale(_scale);
+				_matrix.scale(_scale);
 		}
 		else if (hasScale || isDirty<DIRTY_BIT_SCALE>())
-			Matrix::createScale(_scale, &_rawMatrix);
+			Matrix::createScale(_scale, &_matrix);
 
 		clean<DIRTY_BIT_TRANSLATION, DIRTY_BIT_ROTATION, DIRTY_BIT_SCALE>();
 	}
-	return _rawMatrix;
+	return _matrix;
 }
 
 
@@ -82,9 +83,47 @@ const Matrix& Transform::getWorldMatrix()
 	if (checkAndCleanBit<DIRTY_BIT_WORLD>())
 	{
 		if (_parent)
-			Matrix::multiply(_parent->getWorldMatrix(), getRawMatrix(), &_worldMatrix);
+			Matrix::multiply(_parent->getWorldMatrix(), getMatrix(), &_worldMatrix);
 		else
-			_worldMatrix = getRawMatrix();
+			_worldMatrix = getMatrix();
 	}
 	return _worldMatrix;
+}
+
+
+const Matrix& Transform::getInverseTransposedWorldMatrix()
+{
+	if (checkAndCleanBit<DIRTY_BIT_WORLD>())
+	{
+		_inverseTransposedWorldMatrix = getWorldMatrix();
+		_inverseTransposedWorldMatrix.invert();
+		_inverseTransposedWorldMatrix.transpose();
+	}
+	return _inverseTransposedWorldMatrix;
+}
+
+
+Matrix Transform::getWorldViewMatrix(ptr<Camera> camera)
+{
+	Matrix result;
+	Matrix::multiply(camera->getViewMatrix(), getWorldMatrix(), &result);
+	return result;
+}
+
+
+Matrix Transform::getWorldViewProjectionMatrix(ptr<Camera> camera)
+{
+	Matrix result;
+	Matrix::multiply(camera->getViewProjectionMatrix(), getWorldMatrix(), &result);
+	return result;
+}
+
+
+Matrix Transform::getInverseTransposedWorldViewMatrix(ptr<Camera> camera)
+{
+	Matrix result;
+	Matrix::multiply(camera->getViewMatrix(), getWorldMatrix(), &result);
+	result.invert();
+	result.transpose();
+	return result;
 }

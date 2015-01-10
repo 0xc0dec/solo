@@ -45,7 +45,7 @@ namespace solo
 		const Matrix& getProjectionMatrix();
 		const Matrix& getViewProjectionMatrix();
 		const Matrix& getInverseViewProjectionMatrix();
-	
+
 	protected:
 		Camera(size_t node);
 
@@ -66,10 +66,10 @@ namespace solo
 		float _height;
 		float _aspectRatio;
 		
-		Matrix _view;
-		Matrix _projection;
-		Matrix _viewProjection;
-		Matrix _inverseView;
-		Matrix _inverseViewProjection;
+		Matrix _viewMatrix;
+		Matrix _projectionMatrix;
+		Matrix _viewProjectionMatrix;
+		Matrix _inverseViewMatrix;
+		Matrix _inverseViewProjectionMatrix;
 	};
 }

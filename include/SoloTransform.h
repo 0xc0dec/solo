@@ -9,6 +9,8 @@
 
 namespace solo
 {
+	class Camera;
+
 	class Transform: public ComponentBase<Transform>, Dirty
 	{
 	public:
@@ -20,8 +22,13 @@ namespace solo
 		void removeChild(ptr<Transform> child);
 		void removeChildren();
 
-		const Matrix& getRawMatrix();
+		const Matrix& getMatrix();
 		const Matrix& getWorldMatrix();
+		const Matrix& getInverseTransposedWorldMatrix();
+
+		Matrix getWorldViewMatrix(ptr<Camera> camera);
+		Matrix getWorldViewProjectionMatrix(ptr<Camera> camera);
+		Matrix getInverseTransposedWorldViewMatrix(ptr<Camera> camera);
 
 	private:
 		Transform(size_t node);
@@ -32,7 +39,9 @@ namespace solo
 		Vector3 _translation;
 		Vector3 _scale;
 		Quaternion _rotation;
-		Matrix _rawMatrix;
+		Matrix _matrix;
 		Matrix _worldMatrix;
+		Matrix _inverseTransposedWorldMatrix;
+		Matrix _inverseTransposedViewMatrix;
 	};
 }

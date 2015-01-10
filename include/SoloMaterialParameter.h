@@ -32,8 +32,8 @@ namespace solo
 			WORLD_VIEW_MATRIX,
 			VIEW_PROJECTION_MATRIX,
 			WORLD_VIEW_PROJECTION_MATRIX,
-			INVERSE_TRANSPOSE_WORLD_MATRIX,
-			INVERSE_TRANSPOSE_WORLD_VIEW_MATRIX,
+			INVERSE_TRANSPOSED_WORLD_MATRIX,
+			INVERSE_TRANSPOSED_WORLD_VIEW_MATRIX,
 			CAMERA_WORLD_POSITION,
 			CAMERA_VIEW_POSITION,
 		};
@@ -132,9 +132,11 @@ namespace solo
 		const Matrix& getAutoBoundWorldMatrix() const;
 		const Matrix& getAutoBoundViewMatrix() const;
 		const Matrix& getAutoBoundProjectionMatrix() const;
-		const Matrix& getAutoBoundWorldViewMatrix() const;
-		const Matrix& getAutoBoundViewProjectionMatrix() const;
-		const Matrix& getAutoBoundWorldViewProjectionMatrix() const;
+		const Matrix& getAutoBoundInverseTransposedWorldMatrix() const;
+		Matrix getAutoBoundWorldViewMatrix() const;
+		Matrix getAutoBoundViewProjectionMatrix() const;
+		Matrix getAutoBoundWorldViewProjectionMatrix() const;
+		Matrix getAutoBoundInverseTransposedWorldViewMatrix() const;
 	};
 
 	template <class TClass, class TParam>

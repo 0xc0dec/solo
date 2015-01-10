@@ -247,9 +247,33 @@ const Matrix& MaterialParameter::getAutoBoundProjectionMatrix() const
 }
 
 
-const Matrix& MaterialParameter::getAutoBoundWorldViewMatrix() const
+Matrix MaterialParameter::getAutoBoundWorldViewMatrix() const
 {
-	return Matrix::identity();// TODO
+	return _renderedNodeTransform->getWorldViewMatrix(_renderingCamera);
+}
+
+
+Matrix MaterialParameter::getAutoBoundViewProjectionMatrix() const
+{
+	return _renderingCamera->getViewProjectionMatrix();
+}
+
+
+Matrix MaterialParameter::getAutoBoundWorldViewProjectionMatrix() const
+{
+	return _renderedNodeTransform->getWorldViewProjectionMatrix(_renderingCamera);
+}
+
+
+Matrix MaterialParameter::getAutoBoundInverseTransposedWorldViewMatrix() const
+{
+	return _renderedNodeTransform->getInverseTransposedWorldViewMatrix(_renderingCamera);
+}
+
+
+const Matrix& MaterialParameter::getAutoBoundInverseTransposedWorldMatrix() const
+{
+	return _renderedNodeTransform->getInverseTransposedWorldMatrix();
 }
 
 
@@ -275,9 +299,11 @@ void MaterialParameter::bindValue(AutoBinding autoBinding)
 		case AutoBinding::WORLD_VIEW_PROJECTION_MATRIX:
 			bindValue(this, &MaterialParameter::getAutoBoundWorldViewProjectionMatrix);
 			break;
-		case AutoBinding::INVERSE_TRANSPOSE_WORLD_MATRIX:
+		case AutoBinding::INVERSE_TRANSPOSED_WORLD_MATRIX:
+			bindValue(this, &MaterialParameter::getAutoBoundInverseTransposedWorldMatrix);
 			break;
-		case AutoBinding::INVERSE_TRANSPOSE_WORLD_VIEW_MATRIX:
+		case AutoBinding::INVERSE_TRANSPOSED_WORLD_VIEW_MATRIX:
+			bindValue(this, &MaterialParameter::getAutoBoundInverseTransposedWorldViewMatrix);
 			break;
 		case AutoBinding::CAMERA_WORLD_POSITION:
 			break;

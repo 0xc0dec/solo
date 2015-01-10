@@ -141,16 +141,16 @@ void Camera::setNear(float near)
 const Matrix& Camera::getViewMatrix()
 {
 	if (checkAndCleanBit<DIRTY_BIT_VIEW>())
-		_transform->getWorldMatrix().invert(&_view);
-	return _view;
+		_transform->getWorldMatrix().invert(&_viewMatrix);
+	return _viewMatrix;
 }
 
 
 const Matrix& Camera::getInverseViewMatrix()
 {
 	if (checkAndCleanBit<DIRTY_BIT_INV_VIEW>())
-		getViewMatrix().invert(&_inverseView);
-	return _inverseView;
+		getViewMatrix().invert(&_inverseViewMatrix);
+	return _inverseViewMatrix;
 }
 
 
@@ -159,27 +159,27 @@ const Matrix& Camera::getProjectionMatrix()
 	if (checkAndCleanBit<DIRTY_BIT_PROJ>())
 	{
 		if (_ortho)
-			Matrix::createOrthographic(_width, _height, _near, _far, &_projection);
+			Matrix::createOrthographic(_width, _height, _near, _far, &_projectionMatrix);
 		else
-			Matrix::createPerspective(_fov, _aspectRatio, _near, _far, &_projection);
+			Matrix::createPerspective(_fov, _aspectRatio, _near, _far, &_projectionMatrix);
 	}
-	return _projection;
+	return _projectionMatrix;
 }
 
 
 const Matrix& Camera::getViewProjectionMatrix()
 {
 	if (checkAndCleanBit<DIRTY_BIT_VIEW_PROJ>())
-		Matrix::multiply(getViewMatrix(), getProjectionMatrix(), &_viewProjection);
-	return _viewProjection;
+		Matrix::multiply(getViewMatrix(), getProjectionMatrix(), &_viewProjectionMatrix);
+	return _viewProjectionMatrix;
 }
 
 
 const Matrix& Camera::getInverseViewProjectionMatrix()
 {
 	if (checkAndCleanBit<DIRTY_BIT_INV_VIEW_PROJ>())
-		getViewProjectionMatrix().invert(&_inverseViewProjection);
-	return _inverseViewProjection;
+		getViewProjectionMatrix().invert(&_inverseViewProjectionMatrix);
+	return _inverseViewProjectionMatrix;
 }
 
 

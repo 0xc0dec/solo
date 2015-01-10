@@ -1,6 +1,6 @@
-* create() methods, because smart pointers
 * Report "case FLOAT:" in "if (_dynamic)"
 * Materials, Passes, Techniques, Effects handling
 * Transform component, node hierarchy
 * Use weak pointers where possible
+* Move constructors for matrices and other math classes
 ? Registering components for rendering
