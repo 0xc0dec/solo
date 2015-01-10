@@ -47,7 +47,19 @@ void Transform::removeChildren()
 }
 
 
-const Matrix& Transform::getMatrix()
+const Vector3& Transform::getLocalScale() const
+{
+	return _localScale;
+}
+
+
+const Quaternion& Transform::getLocalRotation() const
+{
+	return _localRotation;
+}
+
+
+const Matrix& Transform::getMatrix() const
 {
 	if (_dirtyBits)
 	{
@@ -78,7 +90,7 @@ const Matrix& Transform::getMatrix()
 }
 
 
-const Matrix& Transform::getWorldMatrix()
+const Matrix& Transform::getWorldMatrix() const
 {
 	if (checkAndCleanBit<DIRTY_BIT_WORLD>())
 	{
@@ -91,7 +103,7 @@ const Matrix& Transform::getWorldMatrix()
 }
 
 
-const Matrix& Transform::getInverseTransposedWorldMatrix()
+const Matrix& Transform::getInverseTransposedWorldMatrix() const
 {
 	if (checkAndCleanBit<DIRTY_BIT_WORLD>())
 	{
@@ -103,7 +115,7 @@ const Matrix& Transform::getInverseTransposedWorldMatrix()
 }
 
 
-Matrix Transform::getWorldViewMatrix(ptr<Camera> camera)
+Matrix Transform::getWorldViewMatrix(ptr<Camera> camera) const
 {
 	Matrix result;
 	Matrix::multiply(camera->getViewMatrix(), getWorldMatrix(), &result);
@@ -111,7 +123,7 @@ Matrix Transform::getWorldViewMatrix(ptr<Camera> camera)
 }
 
 
-Matrix Transform::getWorldViewProjectionMatrix(ptr<Camera> camera)
+Matrix Transform::getWorldViewProjectionMatrix(ptr<Camera> camera) const
 {
 	Matrix result;
 	Matrix::multiply(camera->getViewProjectionMatrix(), getWorldMatrix(), &result);
@@ -119,7 +131,7 @@ Matrix Transform::getWorldViewProjectionMatrix(ptr<Camera> camera)
 }
 
 
-Matrix Transform::getInverseTransposedWorldViewMatrix(ptr<Camera> camera)
+Matrix Transform::getInverseTransposedWorldViewMatrix(ptr<Camera> camera) const
 {
 	Matrix result;
 	Matrix::multiply(camera->getViewMatrix(), getWorldMatrix(), &result);
@@ -129,9 +141,19 @@ Matrix Transform::getInverseTransposedWorldViewMatrix(ptr<Camera> camera)
 }
 
 
+const Vector3& Transform::getLocalPosition() const
+{
+	return _localPosition;
+}
+
+
 Vector3 Transform::getWorldPosition() const
 {
-	Vector3 result;
-	_worldMatrix.getTranslation(&result);
-	return result;
+	return _worldMatrix.getTranslation();
+}
+
+
+Vector3 Transform::getForward() const
+{
+	return getMatrix().getForwardVector();
 }

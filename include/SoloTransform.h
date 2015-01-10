@@ -11,7 +11,7 @@ namespace solo
 {
 	class Camera;
 
-	class Transform: public ComponentBase<Transform>, public Dirty
+	class Transform: public ComponentBase<Transform>, Dirty
 	{
 	public:
 		virtual ~Transform() override {}
@@ -22,15 +22,20 @@ namespace solo
 		void removeChild(ptr<Transform> child);
 		void removeChildren();
 
-		const Matrix& getMatrix();
-		const Matrix& getWorldMatrix();
-		const Matrix& getInverseTransposedWorldMatrix();
-
-		Matrix getWorldViewMatrix(ptr<Camera> camera);
-		Matrix getWorldViewProjectionMatrix(ptr<Camera> camera);
-		Matrix getInverseTransposedWorldViewMatrix(ptr<Camera> camera);
-
+		const Vector3 &getLocalScale() const;
+		const Quaternion& getLocalRotation() const;
+		const Vector3& getLocalPosition() const;
 		Vector3 getWorldPosition() const;
+
+		Vector3 getForward() const;
+
+		const Matrix& getMatrix() const;
+		const Matrix& getWorldMatrix() const;
+		const Matrix& getInverseTransposedWorldMatrix() const;
+
+		Matrix getWorldViewMatrix(ptr<Camera> camera) const;
+		Matrix getWorldViewProjectionMatrix(ptr<Camera> camera) const;
+		Matrix getInverseTransposedWorldViewMatrix(ptr<Camera> camera) const;
 
 	private:
 		Transform(size_t node);
@@ -42,9 +47,9 @@ namespace solo
 		Vector3 _localPosition;
 		Vector3 _localScale;
 		Quaternion _localRotation;
-		Matrix _matrix;
-		Matrix _worldMatrix;
-		Matrix _inverseTransposedWorldMatrix;
-		Matrix _inverseTransposedViewMatrix;
+		mutable Matrix _matrix;
+		mutable Matrix _worldMatrix;
+		mutable Matrix _inverseTransposedWorldMatrix;
+		mutable Matrix _inverseTransposedViewMatrix;
 	};
 }

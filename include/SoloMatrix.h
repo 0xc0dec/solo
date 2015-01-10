@@ -60,12 +60,14 @@ namespace solo
 		void getScale(Vector3* scale) const;
 		bool getRotation(Quaternion* rotation) const;
 		void getTranslation(Vector3* translation) const;
+		Vector3 getTranslation() const;
 		
 		void getUpVector(Vector3* dst) const;
 		void getDownVector(Vector3* dst) const;
 		void getLeftVector(Vector3* dst) const;
 		void getRightVector(Vector3* dst) const;
 		void getForwardVector(Vector3* dst) const;
+		Vector3 getForwardVector() const;
 		void getBackVector(Vector3* dst) const;
 
 		bool invert();

@@ -570,6 +570,14 @@ void Matrix::getTranslation(Vector3* translation) const
 }
 
 
+Vector3 Matrix::getTranslation() const
+{
+	Vector3 result;
+	getTranslation(&result);
+	return result;
+}
+
+
 void Matrix::getUpVector(Vector3* dst) const
 {
 	dst->x = m[4];
@@ -607,6 +615,14 @@ void Matrix::getForwardVector(Vector3* dst) const
 	dst->x = -m[8];
 	dst->y = -m[9];
 	dst->z = -m[10];
+}
+
+
+Vector3 Matrix::getForwardVector() const
+{
+	Vector3 result;
+	getForwardVector(&result);
+	return result;
 }
 
 

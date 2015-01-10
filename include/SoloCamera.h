@@ -9,7 +9,7 @@ namespace solo
 {
 	class Transform;
 
-	class Camera : public ComponentBase<Camera>, public Dirty
+	class Camera : public ComponentBase<Camera>, Dirty
 	{
 	public:
 		virtual ~Camera() {}

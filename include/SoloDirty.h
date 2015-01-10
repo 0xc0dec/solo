@@ -2,22 +2,24 @@
 
 namespace solo
 {
+	// TODO do something with constness. Currently all methods are constant
+	// to allow usage in constant methods of child classes.
 	class Dirty
 	{
 	protected:
-		unsigned _dirtyBits;
+		mutable unsigned _dirtyBits;
 
 		Dirty() : _dirtyBits(0)
 		{
 		}
 
-		bool isClean()
+		bool isClean() const
 		{
 			return _dirtyBits == 0;
 		}
 
 		template <unsigned bit>
-		bool checkAndCleanBit()
+		bool checkAndCleanBit() const
 		{
 			auto result = isDirty<bit>();
 			clean<bit>();
@@ -25,32 +27,32 @@ namespace solo
 		}
 
 		template <unsigned bit>
-		bool isDirty()
+		bool isDirty() const
 		{
 			return (_dirtyBits & bit) != 0;
 		}
 
 		template <unsigned bit>
-		void clean()
+		void clean() const
 		{
 			_dirtyBits &= ~bit;
 		}
 
 		template <unsigned firstBit, unsigned secondBit, unsigned... otherBits>
-		void clean()
+		void clean() const
 		{
 			_dirtyBits &= ~firstBit;
 			clean<secondBit, otherBits...>();
 		}
 
 		template <unsigned bit>
-		void setDirty()
+		void setDirty() const
 		{
 			_dirtyBits |= bit;
 		}
 
 		template <unsigned firstBit, unsigned secondBit, unsigned... otherBits>
-		void setDirty()
+		void setDirty() const
 		{
 			_dirtyBits |= firstBit;
 			setDirty<secondBit, otherBits...>();
