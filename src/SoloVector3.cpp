@@ -9,25 +9,38 @@ Vector3::Vector3()
 {
 }
 
+
 Vector3::Vector3(float x, float y, float z)
 : x(x), y(y), z(z)
 {
 }
+
 
 Vector3::Vector3(const float* array)
 {
 	set(array);
 }
 
+
 Vector3::Vector3(const Vector3& p1, const Vector3& p2)
 {
 	set(p1, p2);
 }
 
+
 Vector3::Vector3(const Vector3& copy)
 {
 	set(copy);
 }
+
+
+Vector3::Vector3(Vector3&& other):
+	x(std::move(other.x)),
+	y(std::move(other.y)),
+	z(std::move(other.z))
+{
+}
+
 
 Vector3 Vector3::fromColor(unsigned int color)
 {
@@ -44,9 +57,15 @@ Vector3 Vector3::fromColor(unsigned int color)
 	return value;
 }
 
-Vector3::~Vector3()
+
+Vector3& Vector3::operator=(Vector3&& other)
 {
+	x = std::move(other.x);
+	y = std::move(other.y);
+	z = std::move(other.z);
+	return *this;
 }
+
 
 const Vector3& Vector3::zero()
 {
@@ -54,11 +73,13 @@ const Vector3& Vector3::zero()
 	return value;
 }
 
+
 const Vector3& Vector3::one()
 {
 	static Vector3 value(1.0f, 1.0f, 1.0f);
 	return value;
 }
+
 
 const Vector3& Vector3::unitX()
 {
@@ -66,11 +87,13 @@ const Vector3& Vector3::unitX()
 	return value;
 }
 
+
 const Vector3& Vector3::unitY()
 {
 	static Vector3 value(0.0f, 1.0f, 0.0f);
 	return value;
 }
+
 
 const Vector3& Vector3::unitZ()
 {
@@ -78,15 +101,18 @@ const Vector3& Vector3::unitZ()
 	return value;
 }
 
+
 bool Vector3::isZero() const
 {
 	return x == 0.0f && y == 0.0f && z == 0.0f;
 }
 
+
 bool Vector3::isOne() const
 {
 	return x == 1.0f && y == 1.0f && z == 1.0f;
 }
+
 
 float Vector3::angle(const Vector3& v1, const Vector3& v2)
 {
@@ -97,6 +123,7 @@ float Vector3::angle(const Vector3& v1, const Vector3& v2)
 	return atan2f(sqrt(dx * dx + dy * dy + dz * dz) + MATH_FLOAT_SMALL, dot(v1, v2));
 }
 
+
 void Vector3::add(const Vector3& v)
 {
 	x += v.x;
@@ -104,12 +131,14 @@ void Vector3::add(const Vector3& v)
 	z += v.z;
 }
 
+
 void Vector3::add(const Vector3& v1, const Vector3& v2, Vector3* dst)
 {
 	dst->x = v1.x + v2.x;
 	dst->y = v1.y + v2.y;
 	dst->z = v1.z + v2.z;
 }
+
 
 void Vector3::clamp(const Vector3& min, const Vector3& max)
 {
@@ -131,6 +160,7 @@ void Vector3::clamp(const Vector3& min, const Vector3& max)
 	if (z > max.z)
 		z = max.z;
 }
+
 
 void Vector3::clamp(const Vector3& v, const Vector3& min, const Vector3& max, Vector3* dst)
 {
@@ -156,10 +186,12 @@ void Vector3::clamp(const Vector3& v, const Vector3& min, const Vector3& max, Ve
 		dst->z = max.z;
 }
 
+
 void Vector3::cross(const Vector3& v)
 {
 	cross(*this, v, this);
 }
+
 
 void Vector3::cross(const Vector3& v1, const Vector3& v2, Vector3* dst)
 {
@@ -168,6 +200,7 @@ void Vector3::cross(const Vector3& v1, const Vector3& v2, Vector3* dst)
 	// later to guarantee 100% safety/compatibility.
 	Math::crossVector3(&v1.x, &v2.x, &dst->x);
 }
+
 
 float Vector3::distance(const Vector3& v) const
 {
@@ -178,6 +211,7 @@ float Vector3::distance(const Vector3& v) const
 	return sqrt(dx * dx + dy * dy + dz * dz);
 }
 
+
 float Vector3::distanceSquared(const Vector3& v) const
 {
 	float dx = v.x - x;
@@ -187,25 +221,30 @@ float Vector3::distanceSquared(const Vector3& v) const
 	return (dx * dx + dy * dy + dz * dz);
 }
 
+
 float Vector3::dot(const Vector3& v) const
 {
 	return (x * v.x + y * v.y + z * v.z);
 }
+
 
 float Vector3::dot(const Vector3& v1, const Vector3& v2)
 {
 	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 }
 
+
 float Vector3::length() const
 {
 	return sqrt(x * x + y * y + z * z);
 }
 
+
 float Vector3::lengthSquared() const
 {
 	return (x * x + y * y + z * z);
 }
+
 
 void Vector3::negate()
 {
@@ -214,11 +253,13 @@ void Vector3::negate()
 	z = -z;
 }
 
+
 Vector3& Vector3::normalize()
 {
 	normalize(this);
 	return *this;
 }
+
 
 void Vector3::normalize(Vector3* dst) const
 {
@@ -245,12 +286,14 @@ void Vector3::normalize(Vector3* dst) const
 	dst->z *= n;
 }
 
+
 void Vector3::scale(float scalar)
 {
 	x *= scalar;
 	y *= scalar;
 	z *= scalar;
 }
+
 
 void Vector3::set(float x, float y, float z)
 {
@@ -259,12 +302,14 @@ void Vector3::set(float x, float y, float z)
 	this->z = z;
 }
 
+
 void Vector3::set(const float* array)
 {
 	x = array[0];
 	y = array[1];
 	z = array[2];
 }
+
 
 void Vector3::set(const Vector3& v)
 {
@@ -273,12 +318,14 @@ void Vector3::set(const Vector3& v)
 	this->z = v.z;
 }
 
+
 void Vector3::set(const Vector3& p1, const Vector3& p2)
 {
 	x = p2.x - p1.x;
 	y = p2.y - p1.y;
 	z = p2.z - p1.z;
 }
+
 
 void Vector3::subtract(const Vector3& v)
 {
@@ -287,6 +334,7 @@ void Vector3::subtract(const Vector3& v)
 	z -= v.z;
 }
 
+
 void Vector3::subtract(const Vector3& v1, const Vector3& v2, Vector3* dst)
 {
 	dst->x = v1.x - v2.x;
@@ -294,10 +342,9 @@ void Vector3::subtract(const Vector3& v1, const Vector3& v2, Vector3* dst)
 	dst->z = v1.z - v2.z;
 }
 
+
 void Vector3::smooth(const Vector3& target, float elapsedTime, float responseTime)
 {
 	if (elapsedTime > 0)
-	{
 		*this += (target - *this) * (elapsedTime / (elapsedTime + responseTime));
-	}
 }

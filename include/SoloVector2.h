@@ -20,7 +20,7 @@ namespace solo
 		~Vector2();
 
 		Vector2& operator=(const Vector2& other) = default;
-		Vector2& operator=(const Vector2&& other);
+		Vector2& operator=(Vector2&& other);
 
 		static const Vector2& zero();
 		static const Vector2& one();

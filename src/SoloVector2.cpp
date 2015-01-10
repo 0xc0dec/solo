@@ -46,7 +46,7 @@ Vector2::Vector2(Vector2&& other):
 }
 
 
-Vector2& Vector2::operator=(const Vector2&& other)
+Vector2& Vector2::operator=(Vector2&& other)
 {
 	x = std::move(other.x);
 	y = std::move(other.y);

@@ -32,6 +32,15 @@ Vector4::Vector4(const Vector4& copy)
 }
 
 
+Vector4::Vector4(Vector4&& other):
+	x(std::move(other.x)),
+	y(std::move(other.y)),
+	z(std::move(other.z)),
+	w(std::move(other.w))
+{
+}
+
+
 Vector4 Vector4::fromColor(unsigned int color)
 {
 	float components[4];
@@ -39,17 +48,20 @@ Vector4 Vector4::fromColor(unsigned int color)
 	for (int i = 3; i >= 0; --i)
 	{
 		int component = (color >> i * 8) & 0x000000ff;
-
 		components[componentIndex++] = static_cast<float>(component) / 255.0f;
 	}
-
 	Vector4 value(components);
 	return value;
 }
 
 
-Vector4::~Vector4()
+Vector4& Vector4::operator=(Vector4&& other)
 {
+	x = std::move(other.x);
+	y = std::move(other.y);
+	z = std::move(other.z);
+	w = std::move(other.w);
+	return *this;
 }
 
 

@@ -17,10 +17,14 @@ namespace solo
 		Vector3(const float* array);
 		Vector3(const Vector3& p1, const Vector3& p2);
 		Vector3(const Vector3& copy);
+		Vector3(Vector3 &&other);
+
+		~Vector3() {}
 
 		static Vector3 fromColor(unsigned color);
 
-		~Vector3();
+		Vector3& operator=(const Vector3& other) = default;
+		Vector3& operator=(Vector3&& other);
 
 		static const Vector3& zero();
 		static const Vector3& one();
