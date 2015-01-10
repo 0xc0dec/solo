@@ -12,7 +12,7 @@ const unsigned DIRTY_BIT_WORLD = 8;
 Transform::Transform(size_t node):
 	ComponentBase(node)
 {
-	_scale.set(Vector3::one());
+	_localScale.set(Vector3::one());
 }
 
 
@@ -51,26 +51,26 @@ const Matrix& Transform::getMatrix()
 {
 	if (_dirtyBits)
 	{
-		bool hasTranslation = !_translation.isZero();
-		bool hasScale = !_scale.isOne();
-		bool hasRotation = !_rotation.isIdentity();
+		bool hasTranslation = !_localPosition.isZero();
+		bool hasScale = !_localScale.isOne();
+		bool hasRotation = !_localRotation.isIdentity();
 
 		if (hasTranslation || isDirty<DIRTY_BIT_TRANSLATION>())
 		{
-			Matrix::createTranslation(_translation, &_matrix);
+			Matrix::createTranslation(_localPosition, &_matrix);
 			if (hasRotation || isDirty<DIRTY_BIT_ROTATION>())
-				_matrix.rotate(_rotation);
+				_matrix.rotate(_localRotation);
 			if (hasScale || isDirty<DIRTY_BIT_SCALE>())
-				_matrix.scale(_scale);
+				_matrix.scale(_localScale);
 		}
 		else if (hasRotation || isDirty<DIRTY_BIT_ROTATION>())
 		{
-			Matrix::createRotation(_rotation, &_matrix);
+			Matrix::createRotation(_localRotation, &_matrix);
 			if (hasScale || isDirty<DIRTY_BIT_SCALE>())
-				_matrix.scale(_scale);
+				_matrix.scale(_localScale);
 		}
 		else if (hasScale || isDirty<DIRTY_BIT_SCALE>())
-			Matrix::createScale(_scale, &_matrix);
+			Matrix::createScale(_localScale, &_matrix);
 
 		clean<DIRTY_BIT_TRANSLATION, DIRTY_BIT_ROTATION, DIRTY_BIT_SCALE>();
 	}
@@ -125,5 +125,13 @@ Matrix Transform::getInverseTransposedWorldViewMatrix(ptr<Camera> camera)
 	Matrix::multiply(camera->getViewMatrix(), getWorldMatrix(), &result);
 	result.invert();
 	result.transpose();
+	return result;
+}
+
+
+Vector3 Transform::getWorldPosition() const
+{
+	Vector3 result;
+	_worldMatrix.getTranslation(&result);
 	return result;
 }

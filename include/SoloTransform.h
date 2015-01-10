@@ -30,15 +30,17 @@ namespace solo
 		Matrix getWorldViewProjectionMatrix(ptr<Camera> camera);
 		Matrix getInverseTransposedWorldViewMatrix(ptr<Camera> camera);
 
+		Vector3 getWorldPosition() const;
+
 	private:
 		Transform(size_t node);
 
 		ptr<Transform> _parent;
 		std::list<ptr<Transform>> _children;
 
-		Vector3 _translation;
-		Vector3 _scale;
-		Quaternion _rotation;
+		Vector3 _localPosition;
+		Vector3 _localScale;
+		Quaternion _localRotation;
 		Matrix _matrix;
 		Matrix _worldMatrix;
 		Matrix _inverseTransposedWorldMatrix;

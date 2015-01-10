@@ -35,7 +35,6 @@ namespace solo
 			INVERSE_TRANSPOSED_WORLD_MATRIX,
 			INVERSE_TRANSPOSED_WORLD_VIEW_MATRIX,
 			CAMERA_WORLD_POSITION,
-			CAMERA_VIEW_POSITION,
 		};
 
 		~MaterialParameter() {}
@@ -114,9 +113,10 @@ namespace solo
 
 		ptr<Scene> _scene;
 
-		size_t _renderedNode;
-		ptr<Transform> _renderedNodeTransform;
-		ptr<Camera> _renderingCamera;
+		size_t _node;
+		ptr<Transform> _nodeTransform;
+		ptr<Camera> _camera;
+		ptr<Transform> _cameraTransform;
 
 		std::string _name;
 		ValueType _type;
@@ -129,14 +129,15 @@ namespace solo
 		void bind(ptr<Effect> effect, const RenderContext& context);
 		void clearValue();
 
-		const Matrix& getAutoBoundWorldMatrix() const;
-		const Matrix& getAutoBoundViewMatrix() const;
-		const Matrix& getAutoBoundProjectionMatrix() const;
-		const Matrix& getAutoBoundInverseTransposedWorldMatrix() const;
-		Matrix getAutoBoundWorldViewMatrix() const;
-		Matrix getAutoBoundViewProjectionMatrix() const;
-		Matrix getAutoBoundWorldViewProjectionMatrix() const;
-		Matrix getAutoBoundInverseTransposedWorldViewMatrix() const;
+		const Matrix& getWorldMatrix() const;
+		const Matrix& getViewMatrix() const;
+		const Matrix& getProjectionMatrix() const;
+		const Matrix& getInverseTransposedWorldMatrix() const;
+		Vector3 getCameraWorldPosition() const;
+		Matrix getWorldViewMatrix() const;
+		Matrix getViewProjectionMatrix() const;
+		Matrix getWorldViewProjectionMatrix() const;
+		Matrix getInverseTransposedWorldViewMatrix() const;
 	};
 
 	template <class TClass, class TParam>

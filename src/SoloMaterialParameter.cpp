@@ -13,7 +13,7 @@ using namespace solo;
 
 
 MaterialParameter::MaterialParameter(const std::string& name):
-	_renderedNode(0),
+	_node(0),
 	_name(name),
 	_type(ValueType::NONE),
 	_valueCount(0),
@@ -154,9 +154,10 @@ void MaterialParameter::setValue(const Matrix* value, unsigned count)
 
 void MaterialParameter::bind(ptr<Effect> effect, const RenderContext& context)
 {
-	_renderedNode = context.renderedNode;
-	_renderedNodeTransform = _scene->getComponent<Transform>(context.renderedNode);
-	_renderingCamera = context.renderingCamera;
+	_node = context.renderedNode;
+	_nodeTransform = _scene->getComponent<Transform>(context.renderedNode);
+	_camera = context.renderingCamera;
+	_cameraTransform = _scene->getComponent<Transform>(_camera->getNode());
 	auto variable = effect->findVariable(_name);
 	if (variable)
 	{
@@ -229,51 +230,57 @@ void MaterialParameter::clearValue()
 }
 
 
-const Matrix& MaterialParameter::getAutoBoundWorldMatrix() const
+const Matrix& MaterialParameter::getWorldMatrix() const
 {
-	return _renderedNodeTransform->getWorldMatrix();
+	return _nodeTransform->getWorldMatrix();
 }
 
 
-const Matrix& MaterialParameter::getAutoBoundViewMatrix() const
+const Matrix& MaterialParameter::getViewMatrix() const
 {
-	return _renderingCamera->getViewMatrix();
+	return _camera->getViewMatrix();
 }
 
 
-const Matrix& MaterialParameter::getAutoBoundProjectionMatrix() const
+const Matrix& MaterialParameter::getProjectionMatrix() const
 {
-	return _renderingCamera->getProjectionMatrix();
+	return _camera->getProjectionMatrix();
 }
 
 
-Matrix MaterialParameter::getAutoBoundWorldViewMatrix() const
+Matrix MaterialParameter::getWorldViewMatrix() const
 {
-	return _renderedNodeTransform->getWorldViewMatrix(_renderingCamera);
+	return _nodeTransform->getWorldViewMatrix(_camera);
 }
 
 
-Matrix MaterialParameter::getAutoBoundViewProjectionMatrix() const
+Matrix MaterialParameter::getViewProjectionMatrix() const
 {
-	return _renderingCamera->getViewProjectionMatrix();
+	return _camera->getViewProjectionMatrix();
 }
 
 
-Matrix MaterialParameter::getAutoBoundWorldViewProjectionMatrix() const
+Matrix MaterialParameter::getWorldViewProjectionMatrix() const
 {
-	return _renderedNodeTransform->getWorldViewProjectionMatrix(_renderingCamera);
+	return _nodeTransform->getWorldViewProjectionMatrix(_camera);
 }
 
 
-Matrix MaterialParameter::getAutoBoundInverseTransposedWorldViewMatrix() const
+Matrix MaterialParameter::getInverseTransposedWorldViewMatrix() const
 {
-	return _renderedNodeTransform->getInverseTransposedWorldViewMatrix(_renderingCamera);
+	return _nodeTransform->getInverseTransposedWorldViewMatrix(_camera);
 }
 
 
-const Matrix& MaterialParameter::getAutoBoundInverseTransposedWorldMatrix() const
+const Matrix& MaterialParameter::getInverseTransposedWorldMatrix() const
 {
-	return _renderedNodeTransform->getInverseTransposedWorldMatrix();
+	return _nodeTransform->getInverseTransposedWorldMatrix();
+}
+
+
+Vector3 MaterialParameter::getCameraWorldPosition() const
+{
+	return _cameraTransform->getWorldPosition();
 }
 
 
@@ -282,32 +289,31 @@ void MaterialParameter::bindValue(AutoBinding autoBinding)
 	switch (autoBinding)
 	{
 		case AutoBinding::WORLD_MATRIX:
-			bindValue(this, &MaterialParameter::getAutoBoundWorldMatrix);
+			bindValue(this, &MaterialParameter::getWorldMatrix);
 			break;
 		case AutoBinding::VIEW_MATRIX:
-			bindValue(this, &MaterialParameter::getAutoBoundViewMatrix);
+			bindValue(this, &MaterialParameter::getViewMatrix);
 			break;
 		case AutoBinding::PROJECTION_MATRIX:
-			bindValue(this, &MaterialParameter::getAutoBoundProjectionMatrix);
+			bindValue(this, &MaterialParameter::getProjectionMatrix);
 			break;
 		case AutoBinding::WORLD_VIEW_MATRIX:
-			bindValue(this, &MaterialParameter::getAutoBoundWorldViewMatrix);
+			bindValue(this, &MaterialParameter::getWorldViewMatrix);
 			break;
 		case AutoBinding::VIEW_PROJECTION_MATRIX:
-			bindValue(this, &MaterialParameter::getAutoBoundViewProjectionMatrix);
+			bindValue(this, &MaterialParameter::getViewProjectionMatrix);
 			break;
 		case AutoBinding::WORLD_VIEW_PROJECTION_MATRIX:
-			bindValue(this, &MaterialParameter::getAutoBoundWorldViewProjectionMatrix);
+			bindValue(this, &MaterialParameter::getWorldViewProjectionMatrix);
 			break;
 		case AutoBinding::INVERSE_TRANSPOSED_WORLD_MATRIX:
-			bindValue(this, &MaterialParameter::getAutoBoundInverseTransposedWorldMatrix);
+			bindValue(this, &MaterialParameter::getInverseTransposedWorldMatrix);
 			break;
 		case AutoBinding::INVERSE_TRANSPOSED_WORLD_VIEW_MATRIX:
-			bindValue(this, &MaterialParameter::getAutoBoundInverseTransposedWorldViewMatrix);
+			bindValue(this, &MaterialParameter::getInverseTransposedWorldViewMatrix);
 			break;
 		case AutoBinding::CAMERA_WORLD_POSITION:
-			break;
-		case AutoBinding::CAMERA_VIEW_POSITION:
+			bindValue(this, &MaterialParameter::getCameraWorldPosition);
 			break;
 		case AutoBinding::NONE:
 		default:

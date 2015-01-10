@@ -40,6 +40,11 @@ namespace solo
 			return getId();
 		}
 
+		size_t getNode() const
+		{
+			return _node;
+		}
+
 	protected:
 		size_t _node;
 	};
