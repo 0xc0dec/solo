@@ -107,16 +107,17 @@ void Scene::render()
 	for (auto camera : cameras)
 	{
 		auto cameraTransform = getComponent<Transform>(camera->getNode());
-		auto context = RenderContext(0, camera, nullptr, cameraTransform);
+		auto context = RenderContext(0, nullptr, camera, cameraTransform);
 		camera->render(context);
 		for (auto nodeComponents : _components)
 		{
+			auto node = nodeComponents.first;
 			for (auto component : nodeComponents.second)
 			{
-				context.node = nodeComponents.first;
-				context.nodeTransform = findComponent<Transform>(context.node);
+				auto nodeTransform = findComponent<Transform>(node);
+				context.setNode(node, nodeTransform);
 				// Ignore cameras - they're rendered in a special way
-				if (context.nodeTransform && component.second->getTypeId() != Camera::getId())
+				if (nodeTransform && component.second->getTypeId() != Camera::getId())
 					component.second->render(context);
 			}
 		}

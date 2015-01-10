@@ -7,7 +7,7 @@
 namespace solo
 {
 	class Effect;
-	struct RenderContext;
+	class RenderContext;
 
 	class MaterialPass: public RenderState
 	{

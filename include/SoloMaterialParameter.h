@@ -14,7 +14,7 @@ namespace solo
 	class Scene;
 	class Transform;
 	class Camera;
-	struct RenderContext;
+	class RenderContext;
 
 	class MaterialParameter
 	{
