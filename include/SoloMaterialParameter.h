@@ -41,6 +41,8 @@ namespace solo
 
 		std::string getName() const;
 
+		void clearValue();
+
 		void setValue(float value);
 		void setValue(const float *value, unsigned count);
 		void setValue(int value);
@@ -54,8 +56,8 @@ namespace solo
 		void setValue(const Matrix &value);
 		void setValue(const Matrix *value, unsigned count);
 
-		template <class TClass, class TParam>
-		void bindValue(TClass* classInstance, TParam(TClass::*getValue)() const);
+		template <class TClass, class TValue>
+		void bindValue(TClass* classInstance, TValue(TClass::*getValue)(const RenderContext& context) const);
 
 		void bindValue(AutoBinding autoBinding);
 
@@ -70,7 +72,7 @@ namespace solo
 			VECTOR2,
 			VECTOR3,
 			VECTOR4,
-			MATRIX, // TODO
+			MATRIX,
 			METHOD
 		};
 		
@@ -78,7 +80,7 @@ namespace solo
 		{
 		public:
 			virtual ~ValueBinding() { }
-			virtual void setValue(ptr<EffectVariable> variable) = 0;
+			virtual void setValue(ptr<EffectVariable> variable, const RenderContext& context) = 0;
 
 		protected:
 			ValueBinding& operator=(const ValueBinding&) { return *this; }
@@ -87,12 +89,12 @@ namespace solo
 		template <class TClass, class TParam>
 		class SingleValueBinding : public ValueBinding
 		{
-			typedef TParam (TClass::*ValueGetterMethod)() const;
+			typedef TParam(TClass::*ValueGetterMethod)(const RenderContext& context) const;
 
 		public:
 			SingleValueBinding(TClass* instance, ValueGetterMethod getter);
 
-			virtual void setValue(ptr<EffectVariable> variable) override;
+			virtual void setValue(ptr<EffectVariable> variable, const RenderContext& renderContext) override;
 
 		private:
 			TClass* _instance;
@@ -113,11 +115,6 @@ namespace solo
 
 		ptr<Scene> _scene;
 
-		size_t _node;
-		ptr<Transform> _nodeTransform;
-		ptr<Camera> _camera;
-		ptr<Transform> _cameraTransform;
-
 		std::string _name;
 		ValueType _type;
 		MaterialParameterValue _value;
@@ -127,23 +124,22 @@ namespace solo
 		static ptr<MaterialParameter> create(const std::string &name);
 
 		void bind(ptr<Effect> effect, const RenderContext& context);
-		void clearValue();
 
-		const Matrix& getWorldMatrix() const;
-		const Matrix& getViewMatrix() const;
-		const Matrix& getProjectionMatrix() const;
-		const Matrix& getInverseTransposedWorldMatrix() const;
-		Vector3 getCameraWorldPosition() const;
-		Matrix getWorldViewMatrix() const;
-		Matrix getViewProjectionMatrix() const;
-		Matrix getWorldViewProjectionMatrix() const;
-		Matrix getInverseTransposedWorldViewMatrix() const;
+		const Matrix& getWorldMatrix(const RenderContext& context) const;
+		const Matrix& getViewMatrix(const RenderContext& context) const;
+		const Matrix& getProjectionMatrix(const RenderContext& context) const;
+		const Matrix& getInverseTransposedWorldMatrix(const RenderContext& context) const;
+		Vector3 getCameraWorldPosition(const RenderContext& context) const;
+		Matrix getWorldViewMatrix(const RenderContext& context) const;
+		Matrix getViewProjectionMatrix(const RenderContext& context) const;
+		Matrix getWorldViewProjectionMatrix(const RenderContext& context) const;
+		Matrix getInverseTransposedWorldViewMatrix(const RenderContext& context) const;
 	};
 
 	template <class TClass, class TParam>
-	void MaterialParameter::SingleValueBinding<TClass, TParam>::setValue(ptr<EffectVariable> variable)
+	void MaterialParameter::SingleValueBinding<TClass, TParam>::setValue(ptr<EffectVariable> variable, const RenderContext& context)
 	{
-		variable->setValue((_instance->*_getter)());
+		variable->setValue((_instance->*_getter)(context));
 	}
 
 	template <class TClass, class TParam>
@@ -154,7 +150,7 @@ namespace solo
 	}
 
 	template <class TClass, class TParam>
-	void MaterialParameter::bindValue(TClass* instance, TParam (TClass::*getter)() const)
+	void MaterialParameter::bindValue(TClass* instance, TParam(TClass::*getter)(const RenderContext& context) const)
 	{
 		clearValue();
 		_value.method = new SingleValueBinding<TClass, TParam>(instance, getter);

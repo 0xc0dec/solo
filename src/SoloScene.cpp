@@ -106,15 +106,17 @@ void Scene::render()
 	auto cameras = getCameras(); // TODO cache lookup results or optimise in some other way
 	for (auto camera : cameras)
 	{
-		auto context = RenderContext(0, camera);
+		auto cameraTransform = getComponent<Transform>(camera->getNode());
+		auto context = RenderContext(0, camera, nullptr, cameraTransform);
 		camera->render(context);
 		for (auto nodeComponents : _components)
 		{
 			for (auto component : nodeComponents.second)
 			{
-				context.renderedNode = component.first;
+				context.node = nodeComponents.first;
+				context.nodeTransform = findComponent<Transform>(context.node);
 				// Ignore cameras - they're rendered in a special way
-				if (component.second->getTypeId() != Camera::getId())
+				if (context.nodeTransform && component.second->getTypeId() != Camera::getId())
 					component.second->render(context);
 			}
 		}

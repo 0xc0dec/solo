@@ -5,11 +5,15 @@
 class TransformTest : public TestBase
 {
 public:
-	virtual void run(Engine *engine) override
+	TransformTest(Engine* engine)
+		: TestBase(engine)
 	{
-		auto scene = engine->getScene();
-		auto node = scene->createNode();
-		auto transform = scene->getComponent<Transform>(node);
+	}
+
+	virtual void run() override
+	{
+		auto node = _scene->createNode();
+		auto transform = _scene->getComponent<Transform>(node);
 		assert(transform);
 	}
 };

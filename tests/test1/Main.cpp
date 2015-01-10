@@ -1,6 +1,7 @@
-#include "EffectsTest.h"
+#include "MaterialsTest.h"
 #include "ComponentsTest.h"
 #include "TransformTest.h"
+#include "DeviceTest.h"
 
 using namespace solo;
 
@@ -15,17 +16,11 @@ public:
 	virtual void onEngineStarted() override
 	{
 		_engine->getDevice()->setWindowTitle("Test title");
-		EffectsTest().run(_engine);
-		ComponentsTest().run(_engine);
-		TransformTest().run(_engine);
+		MaterialsTest(_engine).run();
+		ComponentsTest(_engine).run();
+		TransformTest(_engine).run();
+		DeviceTest(_engine).run();
 		LOG("All tests passed");
-
-		auto node = _engine->getScene()->createNode();
-		auto camera = _engine->getScene()->addComponent<Camera>(node);
-		camera->setClearColor(0.2f, 0.5f, 0.5f, 1);
-
-		auto canvasSize = _engine->getDevice()->getCanvasSize();
-		std::cout << FORMAT("Canvas width: ", canvasSize.x, ", height: ", canvasSize.y) << std::endl;
 	}
 
 	virtual void onEngineStopped() override

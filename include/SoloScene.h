@@ -64,7 +64,7 @@ namespace solo
 
 		template <typename T> ptr<T> findComponent(size_t node)
 		{
-			auto typeId = T::getTypeId();
+			auto typeId = T::getId();
 			auto cmp = findComponent(node, typeId);
 			return CAST_PTR_STATIC<T>(cmp);
 		}

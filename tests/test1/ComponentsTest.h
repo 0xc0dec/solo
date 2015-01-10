@@ -46,9 +46,13 @@ public:
 class ComponentsTest : public TestBase
 {
 public:
-	virtual void run(Engine* engine) override
+	ComponentsTest(Engine* engine)
+		: TestBase(engine)
 	{
-		_scene = engine->getScene();
+	}
+
+	virtual void run() override
+	{
 		_node = _scene->createEmptyNode();
 		testComponentsAddition();
 		testDerivedComponents();
@@ -78,6 +82,5 @@ public:
 	}
 
 private:
-	ptr<Scene> _scene;
 	size_t _node;
 };

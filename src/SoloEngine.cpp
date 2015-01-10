@@ -39,7 +39,7 @@ void Engine::updateTime()
 }
 
 
-void Engine::doRun(const EngineCreationArgs &args)
+void Engine::run(const EngineCreationArgs & args)
 {
 	_device = Device::create(args);
 	_scene = Scene::create();
@@ -60,19 +60,6 @@ void Engine::doRun(const EngineCreationArgs &args)
 	_callback->onEngineStopped();
 	_device.reset();
 	_scene.reset();
-}
-
-
-void Engine::run(const EngineCreationArgs & args)
-{
-	try
-	{
-		doRun(args);
-	}
-	catch (EngineException &e)
-	{
-		CRITICAL(e.message);
-	}
 }
 
 

@@ -13,7 +13,6 @@ using namespace solo;
 
 
 MaterialParameter::MaterialParameter(const std::string& name):
-	_node(0),
 	_name(name),
 	_type(ValueType::NONE),
 	_valueCount(0),
@@ -154,10 +153,12 @@ void MaterialParameter::setValue(const Matrix* value, unsigned count)
 
 void MaterialParameter::bind(ptr<Effect> effect, const RenderContext& context)
 {
-	_node = context.renderedNode;
-	_nodeTransform = _scene->getComponent<Transform>(context.renderedNode);
-	_camera = context.renderingCamera;
-	_cameraTransform = _scene->getComponent<Transform>(_camera->getNode());
+//	_nodeTransform = _scene->findComponent<Transform>(context.node);
+//	if (!_nodeTransform)
+//		return;
+//	_node = context.node;
+//	_camera = context.camera;
+//	_cameraTransform = _scene->getComponent<Transform>(_camera->getNode());
 	auto variable = effect->findVariable(_name);
 	if (variable)
 	{
@@ -188,7 +189,7 @@ void MaterialParameter::bind(ptr<Effect> effect, const RenderContext& context)
 				variable->setValue(reinterpret_cast<Matrix*>(_value.asFloatPtr), _valueCount);
 				break;
 			case ValueType::METHOD:
-				_value.method->setValue(variable);
+				_value.method->setValue(variable, context);
 			case ValueType::NONE:
 			default:
 				break;
@@ -230,57 +231,57 @@ void MaterialParameter::clearValue()
 }
 
 
-const Matrix& MaterialParameter::getWorldMatrix() const
+const Matrix& MaterialParameter::getWorldMatrix(const RenderContext& context) const
 {
-	return _nodeTransform->getWorldMatrix();
+	return context.nodeTransform->getWorldMatrix();
 }
 
 
-const Matrix& MaterialParameter::getViewMatrix() const
+const Matrix& MaterialParameter::getViewMatrix(const RenderContext& context) const
 {
-	return _camera->getViewMatrix();
+	return context.camera->getViewMatrix();
 }
 
 
-const Matrix& MaterialParameter::getProjectionMatrix() const
+const Matrix& MaterialParameter::getProjectionMatrix(const RenderContext& context) const
 {
-	return _camera->getProjectionMatrix();
+	return context.camera->getProjectionMatrix();
 }
 
 
-Matrix MaterialParameter::getWorldViewMatrix() const
+Matrix MaterialParameter::getWorldViewMatrix(const RenderContext& context) const
 {
-	return _nodeTransform->getWorldViewMatrix(_camera);
+	return context.nodeTransform->getWorldViewMatrix(context.camera);
 }
 
 
-Matrix MaterialParameter::getViewProjectionMatrix() const
+Matrix MaterialParameter::getViewProjectionMatrix(const RenderContext& context) const
 {
-	return _camera->getViewProjectionMatrix();
+	return context.camera->getViewProjectionMatrix();
 }
 
 
-Matrix MaterialParameter::getWorldViewProjectionMatrix() const
+Matrix MaterialParameter::getWorldViewProjectionMatrix(const RenderContext& context) const
 {
-	return _nodeTransform->getWorldViewProjectionMatrix(_camera);
+	return context.nodeTransform->getWorldViewProjectionMatrix(context.camera);
 }
 
 
-Matrix MaterialParameter::getInverseTransposedWorldViewMatrix() const
+Matrix MaterialParameter::getInverseTransposedWorldViewMatrix(const RenderContext& context) const
 {
-	return _nodeTransform->getInverseTransposedWorldViewMatrix(_camera);
+	return context.nodeTransform->getInverseTransposedWorldViewMatrix(context.camera);
 }
 
 
-const Matrix& MaterialParameter::getInverseTransposedWorldMatrix() const
+const Matrix& MaterialParameter::getInverseTransposedWorldMatrix(const RenderContext& context) const
 {
-	return _nodeTransform->getInverseTransposedWorldMatrix();
+	return context.nodeTransform->getInverseTransposedWorldMatrix();
 }
 
 
-Vector3 MaterialParameter::getCameraWorldPosition() const
+Vector3 MaterialParameter::getCameraWorldPosition(const RenderContext& context) const
 {
-	return _cameraTransform->getWorldPosition();
+	return context.cameraTransform->getWorldPosition();
 }
 
 

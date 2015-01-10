@@ -47,6 +47,5 @@ namespace solo
 		float _timeDelta;
 
 		inline void updateTime();
-		void doRun(const EngineCreationArgs &args);
 	};
 }

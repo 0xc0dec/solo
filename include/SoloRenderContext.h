@@ -5,15 +5,20 @@
 namespace solo
 {
 	class Camera;
+	class Transform;
 
 	struct RenderContext
 	{
-		size_t renderedNode;
-		ptr<Camera> renderingCamera;
+		size_t node;
+		ptr<Camera> camera;
+		ptr<Transform> nodeTransform;
+		ptr<Transform> cameraTransform;
 
-		RenderContext(size_t renderedNode, ptr<Camera> renderingCamera) :
-			renderedNode(renderedNode),
-			renderingCamera(renderingCamera)
+		RenderContext(size_t node, ptr<Camera> camera, ptr<Transform> nodeTransform, ptr<Transform> cameraTransform):
+			node(node),
+			camera(camera),
+			nodeTransform(nodeTransform),
+			cameraTransform(cameraTransform)
 		{
 		}
 	};

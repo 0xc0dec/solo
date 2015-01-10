@@ -10,8 +10,9 @@ namespace solo
 	class Model
 	{
 	public:
-		Model() {}
 		~Model() {}
+
+		static ptr<Model> create();
 
 		void addMesh(const ptr<Mesh> mesh);
 		void removeMesh(const ptr<Mesh> mesh);
@@ -19,6 +20,7 @@ namespace solo
 		size_t getMeshCount() const;
 
 	private:
+		Model() {}
 		std::vector<ptr<Mesh>> _meshes;
 	};
 }
