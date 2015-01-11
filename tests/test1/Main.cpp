@@ -2,6 +2,7 @@
 #include "ComponentsTest.h"
 #include "TransformTest.h"
 #include "DeviceTest.h"
+#include "SoloManualTest.h"
 
 using namespace solo;
 
@@ -20,6 +21,7 @@ public:
 		ComponentsTest(_engine).run();
 		TransformTest(_engine).run();
 		DeviceTest(_engine).run();
+		ManualTest(_engine).run();
 		LOG("All tests passed");
 	}
 

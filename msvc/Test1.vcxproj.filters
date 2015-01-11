@@ -9,5 +9,6 @@
     <ClInclude Include="..\tests\test1\TransformTest.h" />
     <ClInclude Include="..\tests\test1\MaterialsTest.h" />
     <ClInclude Include="..\tests\test1\DeviceTest.h" />
+    <ClInclude Include="..\tests\test1\SoloManualTest.h" />
   </ItemGroup>
 </Project>
