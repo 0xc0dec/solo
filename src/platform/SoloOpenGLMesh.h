@@ -1,5 +1,6 @@
 #pragma once
 
+#include <GL/glew.h>
 #include "SoloMesh.h"
 
 namespace solo
@@ -14,6 +15,9 @@ namespace solo
 		virtual void draw() override;
 
 	private:
-		OpenGLMesh() {}
+		OpenGLMesh();
+
+		GLuint _vao;
+		GLuint _vb;
 	};
 }
