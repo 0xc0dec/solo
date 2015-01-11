@@ -28,25 +28,25 @@ const char *fs =
 
 
 const char *vsBasic =
-"#version 330 core\n"
+	"#version 330 core\n"
 
-"layout (location = 0) in vec4 position;\n"
+	"layout (location = 0) in vec4 position;\n"
 
-"void main()\n"
-"{\n"
-"	gl_Position = position;\n"
-"}";
+	"void main()\n"
+	"{\n"
+	"	gl_Position = position;\n"
+	"}";
 
 const char *fsSimleColor =
-"#version 330 core\n"
+	"#version 330 core\n"
 
-"uniform vec4 color;\n"
-"out vec4 fragColor;\n"
+	"uniform vec4 color;\n"
+	"out vec4 fragColor;\n"
 
-"void main()\n"
-"{\n"
-"	fragColor = color;\n"
-"}\n";
+	"void main()\n"
+	"{\n"
+	"	fragColor = color;\n"
+	"}\n";
 
 
 class MaterialsTest : public TestBase
@@ -71,7 +71,23 @@ public:
 		material->addPass(effect);
 
 		auto model = Model::create();
-		auto mesh = Mesh::create();
+		auto mesh = Mesh::create(
+		{
+			{ -0.95f, -0.95f, 0 },
+			{ 0.95f, 0.95f, 0 },
+			{ 0.95f, -0.95f, 0 },
+			{ -0.95f, -0.95f, 0 },
+			{ -0.95f, 0.95f, 0 },
+			{ 0.95f, 0.95f, 0 }
+		},
+		{
+			{ 0, 0, -1 },
+			{ 0, 0, -1 },
+			{ 0, 0, -1 },
+			{ 0, 0, -1 },
+			{ 0, 0, -1 },
+			{ 0, 0, -1 }
+		});
 		model->addMesh(mesh);
 
 		auto node = _scene->createNode();
