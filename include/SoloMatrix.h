@@ -139,12 +139,14 @@ namespace solo
 		
 		void transformPoint(Vector3* point) const;
 		void transformPoint(const Vector3& point, Vector3* dst) const;
+		Vector3 transformPoint(const Vector3& point) const;
 
-		void transformVector(Vector3* vector) const;
-		void transformVector(const Vector3& vector, Vector3* dst) const;
-		void transformVector(float x, float y, float z, float w, Vector3* dst) const;
-		void transformVector(Vector4* vector) const;
-		void transformVector(const Vector4& vector, Vector4* dst) const;
+		void transformDirection(Vector3* dir) const;
+		void transformDirection(const Vector3& dir, Vector3* dst) const;
+		void transformDirection(float x, float y, float z, float w, Vector3* dst) const;
+		void transformDirection(Vector4* dir) const;
+		void transformDirection(const Vector4& dir, Vector4* dst) const;
+		Vector3 transformDirection(const Vector3& direction) const;
 
 	private:
 		static void createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
@@ -199,27 +201,27 @@ namespace solo
 
 	inline Vector3& operator*=(Vector3& v, const Matrix& m)
 	{
-		m.transformVector(&v);
+		m.transformDirection(&v);
 		return v;
 	}
 
 	inline Vector3 operator*(const Matrix& m, const Vector3& v)
 	{
 		Vector3 x;
-		m.transformVector(v, &x);
+		m.transformDirection(v, &x);
 		return x;
 	}
 
 	inline Vector4& operator*=(Vector4& v, const Matrix& m)
 	{
-		m.transformVector(&v);
+		m.transformDirection(&v);
 		return v;
 	}
 
 	inline Vector4 operator*(const Matrix& m, const Vector4& v)
 	{
 		Vector4 x;
-		m.transformVector(v, &x);
+		m.transformDirection(v, &x);
 		return x;
 	}
 }

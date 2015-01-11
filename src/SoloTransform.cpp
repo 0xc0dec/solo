@@ -3,11 +3,11 @@
 
 using namespace solo;
 
-const unsigned DIRTY_BIT_TRANSLATION = 1;
+const unsigned DIRTY_BIT_POSITION = 1;
 const unsigned DIRTY_BIT_ROTATION = 2;
 const unsigned DIRTY_BIT_SCALE = 4;
 const unsigned DIRTY_BIT_WORLD = 8; // TODO needed?
-const unsigned DIRTY_BIT_ALL = DIRTY_BIT_TRANSLATION | DIRTY_BIT_ROTATION | DIRTY_BIT_SCALE | DIRTY_BIT_WORLD;
+const unsigned DIRTY_BIT_ALL = DIRTY_BIT_POSITION | DIRTY_BIT_ROTATION | DIRTY_BIT_SCALE | DIRTY_BIT_WORLD;
 
 
 Transform::Transform(size_t node):
@@ -49,13 +49,13 @@ void Transform::removeChildren()
 }
 
 
-const Vector3& Transform::getLocalScale() const
+const Vector3& Transform::getScale() const
 {
 	return _localScale;
 }
 
 
-const Quaternion& Transform::getLocalRotation() const
+const Quaternion& Transform::getRotation() const
 {
 	return _localRotation;
 }
@@ -69,7 +69,7 @@ const Matrix& Transform::getMatrix() const
 		bool hasScale = !_localScale.isOne();
 		bool hasRotation = !_localRotation.isIdentity();
 
-		if (hasTranslation || isDirty<DIRTY_BIT_TRANSLATION>())
+		if (hasTranslation || isDirty<DIRTY_BIT_POSITION>())
 		{
 			Matrix::createTranslation(_localPosition, &_matrix);
 			if (hasRotation || isDirty<DIRTY_BIT_ROTATION>())
@@ -86,7 +86,7 @@ const Matrix& Transform::getMatrix() const
 		else if (hasScale || isDirty<DIRTY_BIT_SCALE>())
 			Matrix::createScale(_localScale, &_matrix);
 
-		clean<DIRTY_BIT_TRANSLATION, DIRTY_BIT_ROTATION, DIRTY_BIT_SCALE>();
+		clean<DIRTY_BIT_POSITION, DIRTY_BIT_ROTATION, DIRTY_BIT_SCALE>();
 	}
 	return _matrix;
 }
@@ -143,6 +143,22 @@ Matrix Transform::getInverseTransposedWorldViewMatrix(ptr<Camera> camera) const
 }
 
 
+void Transform::translate(const Vector3& translation)
+{
+	_localPosition += translation;
+	setDirty<DIRTY_BIT_POSITION, DIRTY_BIT_WORLD>();
+}
+
+
+void Transform::translate(float x, float y, float z)
+{
+	_localPosition.x += x;
+	_localPosition.y += y;
+	_localPosition.z += z;
+	setDirty<DIRTY_BIT_POSITION, DIRTY_BIT_WORLD>();
+}
+
+
 void Transform::rotate(const Quaternion& rotation)
 {
 	_localRotation *= rotation;
@@ -176,7 +192,77 @@ void Transform::scale(const Vector3& scale)
 }
 
 
-const Vector3& Transform::getLocalPosition() const
+void Transform::scale(float x, float y, float z)
+{
+	_localScale.x *= x;
+	_localScale.y *= y;
+	_localScale.z *= z;
+	setDirty<DIRTY_BIT_SCALE, DIRTY_BIT_WORLD>();
+}
+
+
+void Transform::setScale(float scale)
+{
+	_localScale.set(scale, scale, scale);
+	setDirty<DIRTY_BIT_SCALE, DIRTY_BIT_WORLD>();
+}
+
+
+void Transform::setScale(const Vector3& scale)
+{
+	_localScale.set(scale);
+	setDirty<DIRTY_BIT_SCALE, DIRTY_BIT_WORLD>();
+}
+
+
+void Transform::setScale(float x, float y, float z)
+{
+	_localScale.set(x, y, z);
+	setDirty<DIRTY_BIT_SCALE, DIRTY_BIT_WORLD>();
+}
+
+
+Vector3 Transform::transformPoint(const Vector3& point) const
+{
+	return getMatrix().transformPoint(point);
+}
+
+
+Vector3 Transform::transforDirection(const Vector3& direction) const
+{
+	return getMatrix().transformDirection(direction);
+}
+
+
+void Transform::setRotation(const Quaternion& rotation)
+{
+	_localRotation.set(rotation);
+	setDirty<DIRTY_BIT_ROTATION, DIRTY_BIT_WORLD>();
+}
+
+
+void Transform::setRotation(const Vector3& axis, float angle)
+{
+	_localRotation.set(axis, angle);
+	setDirty<DIRTY_BIT_ROTATION, DIRTY_BIT_WORLD>();
+}
+
+
+void Transform::setPosition(const Vector3& position)
+{
+	_localPosition.set(position);
+	setDirty<DIRTY_BIT_POSITION, DIRTY_BIT_WORLD>();
+}
+
+
+void Transform::setPosition(float x, float y, float z)
+{
+	_localPosition.set(x, y, z);
+	setDirty<DIRTY_BIT_POSITION, DIRTY_BIT_WORLD>();
+}
+
+
+const Vector3& Transform::getPosition() const
 {
 	return _localPosition;
 }

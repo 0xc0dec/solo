@@ -169,7 +169,7 @@ void Ray::set(const Ray& ray)
 void Ray::transform(const Matrix& matrix)
 {
 	matrix.transformPoint(&_origin);
-	matrix.transformVector(&_direction);
+	matrix.transformDirection(&_direction);
 	_direction.normalize();
 }
 

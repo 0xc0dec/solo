@@ -946,43 +946,59 @@ void Matrix::subtract(const Matrix& m1, const Matrix& m2, Matrix* dst)
 
 void Matrix::transformPoint(Vector3* point) const
 {
-	transformVector(point->x, point->y, point->z, 1.0f, point);
+	transformDirection(point->x, point->y, point->z, 1.0f, point);
 }
 
 
 void Matrix::transformPoint(const Vector3& point, Vector3* dst) const
 {
-	transformVector(point.x, point.y, point.z, 1.0f, dst);
+	transformDirection(point.x, point.y, point.z, 1.0f, dst);
 }
 
 
-void Matrix::transformVector(Vector3* vector) const
+Vector3 Matrix::transformPoint(const Vector3& point) const
 {
-	transformVector(vector->x, vector->y, vector->z, 0.0f, vector);
+	Vector3 result;
+	transformPoint(point, &result);
+	return result;
 }
 
 
-void Matrix::transformVector(const Vector3& vector, Vector3* dst) const
+void Matrix::transformDirection(Vector3* dir) const
 {
-	transformVector(vector.x, vector.y, vector.z, 0.0f, dst);
+	transformDirection(dir->x, dir->y, dir->z, 0.0f, dir);
 }
 
 
-void Matrix::transformVector(float x, float y, float z, float w, Vector3* dst) const
+void Matrix::transformDirection(const Vector3& dir, Vector3* dst) const
+{
+	transformDirection(dir.x, dir.y, dir.z, 0.0f, dst);
+}
+
+
+void Matrix::transformDirection(float x, float y, float z, float w, Vector3* dst) const
 {
 	Math::transformVector4(m, x, y, z, w, reinterpret_cast<float*>(dst));
 }
 
 
-void Matrix::transformVector(Vector4* vector) const
+void Matrix::transformDirection(Vector4* dir) const
 {
-	transformVector(*vector, vector);
+	transformDirection(*dir, dir);
 }
 
 
-void Matrix::transformVector(const Vector4& vector, Vector4* dst) const
+void Matrix::transformDirection(const Vector4& dir, Vector4* dst) const
 {
-	Math::transformVector4(m, reinterpret_cast<const float*>(&vector), reinterpret_cast<float*>(dst));
+	Math::transformVector4(m, reinterpret_cast<const float*>(&dir), reinterpret_cast<float*>(dst));
+}
+
+
+Vector3 Matrix::transformDirection(const Vector3& direction) const
+{
+	Vector3 result;
+	transformDirection(direction, &result);
+	return result;
 }
 
 
