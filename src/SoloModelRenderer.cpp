@@ -21,13 +21,13 @@ ptr<ModelRenderer> ModelRenderer::create(size_t node)
 
 void ModelRenderer::render(const RenderContext& context)
 {
-	auto meshCount = _model->getMeshCount();
+	auto meshCount = model->getMeshCount();
 	for (auto i = 0; i < meshCount; ++i)
 	{
 		auto material = getMaterial(i);
 		if (material)
 		{
-			auto mesh = _model->getMesh(i);
+			auto mesh = model->getMesh(i);
 			auto passCount = material->getPassCount();
 			for (auto k = 0; k < passCount; ++k)
 			{
@@ -43,34 +43,34 @@ void ModelRenderer::render(const RenderContext& context)
 
 void ModelRenderer::setModel(const ptr<Model> model)
 {
-	_model = model;
+	this->model = model;
 }
 
 
 ptr<Model> ModelRenderer::getModel() const
 {
-	return _model;
+	return model;
 }
 
 
 void ModelRenderer::setMaterial(unsigned index, ptr<Material> material)
 {
 	if (!material)
-		_materials.erase(index);
+		materials.erase(index);
 	else
-		_materials[index] = material;
+		materials[index] = material;
 }
 
 
 size_t ModelRenderer::getMaterialCount() const
 {
-	return _materials.size();
+	return materials.size();
 }
 
 
 ptr<Material> ModelRenderer::getMaterial(unsigned index)
 {
-	if (_materials.find(index) == _materials.end())
+	if (materials.find(index) == materials.end())
 		return nullptr;
-	return _materials[index];
+	return materials[index];
 }

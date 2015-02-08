@@ -21,6 +21,6 @@ namespace solo
 
 	private:
 		Model() {}
-		std::vector<ptr<Mesh>> _meshes;
+		std::vector<ptr<Mesh>> meshes;
 	};
 }

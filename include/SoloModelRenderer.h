@@ -27,7 +27,7 @@ namespace solo
 	private:
 		ModelRenderer(size_t node);
 
-		ptr<Model> _model;
-		std::map<unsigned, ptr<Material>> _materials;
+		ptr<Model> model;
+		std::map<unsigned, ptr<Material>> materials;
 	};
 }

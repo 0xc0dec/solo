@@ -24,9 +24,9 @@ ptr<Mesh> Mesh::create(const std::vector<Vector3>& vertices)
 
 
 Mesh::Mesh(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs) :
-	_vertices(vertices),
-	_normals(normals),
-	_uvs(uvs)
+	vertices(vertices),
+	normals(normals),
+	uvs(uvs)
 {
 	auto verticesCount = vertices.size();
 	auto normalsCount = normals.size();

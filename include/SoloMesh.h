@@ -24,8 +24,8 @@ namespace solo
 		Mesh& operator=(const Mesh& other) = default;
 		Mesh& operator=(Mesh&& other);
 
-		std::vector<Vector3> _vertices;
-		std::vector<Vector3> _normals;
-		std::vector<Vector2> _uvs;
+		std::vector<Vector3> vertices;
+		std::vector<Vector3> normals;
+		std::vector<Vector2> uvs;
 	};
 }
