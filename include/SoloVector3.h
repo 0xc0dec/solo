@@ -88,7 +88,7 @@ namespace solo
 	
 	inline Vector3 Vector3::operator+(const Vector3& v) const
 	{
-		Vector3 result(*this);
+		auto result(*this);
 		result.add(v);
 		return result;
 	}
@@ -101,7 +101,7 @@ namespace solo
 
 	inline Vector3 Vector3::operator-(const Vector3& v) const
 	{
-		Vector3 result(*this);
+		auto result(*this);
 		result.subtract(v);
 		return result;
 	}
@@ -114,14 +114,14 @@ namespace solo
 
 	inline Vector3 Vector3::operator-() const
 	{
-		Vector3 result(*this);
+		auto result(*this);
 		result.negate();
 		return result;
 	}
 
 	inline Vector3 Vector3::operator*(float x) const
 	{
-		Vector3 result(*this);
+		auto result(*this);
 		result.scale(x);
 		return result;
 	}
@@ -160,7 +160,7 @@ namespace solo
 
 	inline Vector3 operator*(float x, const Vector3& v)
 	{
-		Vector3 result(v);
+		auto result(v);
 		result.scale(x);
 		return result;
 	}

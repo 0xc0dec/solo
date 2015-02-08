@@ -83,7 +83,7 @@ namespace solo
 
 	inline Vector4 Vector4::operator+(const Vector4& v) const
 	{
-		Vector4 result(*this);
+		auto result(*this);
 		result.add(v);
 		return result;
 	}
@@ -96,7 +96,7 @@ namespace solo
 
 	inline Vector4 Vector4::operator-(const Vector4& v) const
 	{
-		Vector4 result(*this);
+		auto result(*this);
 		result.subtract(v);
 		return result;
 	}
@@ -109,14 +109,14 @@ namespace solo
 
 	inline Vector4 Vector4::operator-() const
 	{
-		Vector4 result(*this);
+		auto result(*this);
 		result.negate();
 		return result;
 	}
 
 	inline Vector4 Vector4::operator*(float x) const
 	{
-		Vector4 result(*this);
+		auto result(*this);
 		result.scale(x);
 		return result;
 	}
@@ -159,7 +159,7 @@ namespace solo
 
 	inline Vector4 operator*(float x, const Vector4& v)
 	{
-		Vector4 result(v);
+		auto result(v);
 		result.scale(x);
 		return result;
 	}

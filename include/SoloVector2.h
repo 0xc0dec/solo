@@ -83,14 +83,14 @@ namespace solo
 
 	inline Vector2 operator*(float x, const Vector2& v)
 	{
-		Vector2 result(v);
+		auto result(v);
 		result.scale(x);
 		return result;
 	}
 
 	inline Vector2 Vector2::operator+(const Vector2& v) const
 	{
-		Vector2 result(*this);
+		auto result(*this);
 		result.add(v);
 		return result;
 	}
@@ -103,7 +103,7 @@ namespace solo
 
 	inline Vector2 Vector2::operator-(const Vector2& v) const
 	{
-		Vector2 result(*this);
+		auto result(*this);
 		result.subtract(v);
 		return result;
 	}
@@ -116,14 +116,14 @@ namespace solo
 
 	inline Vector2 Vector2::operator-() const
 	{
-		Vector2 result(*this);
+		auto result(*this);
 		result.negate();
 		return result;
 	}
 
 	inline Vector2 Vector2::operator*(float x) const
 	{
-		Vector2 result(*this);
+		auto result(*this);
 		result.scale(x);
 		return result;
 	}
@@ -142,9 +142,7 @@ namespace solo
 	inline bool Vector2::operator<(const Vector2& v) const
 	{
 		if (x == v.x)
-		{
 			return y < v.y;
-		}
 		return x < v.x;
 	}
 
