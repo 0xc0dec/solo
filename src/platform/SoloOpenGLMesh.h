@@ -12,14 +12,14 @@ namespace solo
 	public:
 		virtual ~OpenGLMesh() override;
 
-		static ptr<OpenGLMesh> create(const std::vector<Vector3> vertices);
-		static ptr<OpenGLMesh> create(const std::vector<Vector3> vertices, const std::vector<Vector3>& normals);
-		static ptr<OpenGLMesh> create(const std::vector<Vector3> vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs);
+		static ptr<OpenGLMesh> create(const std::vector<Vector3>& vertices);
+		static ptr<OpenGLMesh> create(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals);
+		static ptr<OpenGLMesh> create(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs);
 
 		virtual void draw() override;
 
 	private:
-		OpenGLMesh(const std::vector<Vector3> vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs);
+		OpenGLMesh(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs);
 		OpenGLMesh(const OpenGLMesh& other) = default;
 		OpenGLMesh(OpenGLMesh&& other);
 		OpenGLMesh& operator=(const OpenGLMesh& other) = default;

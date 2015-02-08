@@ -3,7 +3,7 @@
 using namespace solo;
 
 
-OpenGLMesh::OpenGLMesh(const std::vector<Vector3> vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs) :
+OpenGLMesh::OpenGLMesh(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs) :
 	Mesh(vertices, normals, uvs),
 	_vertexArrayHandle(0),
 	_vertexBufferHandle(0),
@@ -55,19 +55,19 @@ OpenGLMesh::~OpenGLMesh()
 }
 
 
-ptr<OpenGLMesh> OpenGLMesh::create(const std::vector<Vector3> vertices)
+ptr<OpenGLMesh> OpenGLMesh::create(const std::vector<Vector3>& vertices)
 {
 	return NEW2(OpenGLMesh, vertices, {}, {});
 }
 
 
-ptr<OpenGLMesh> OpenGLMesh::create(const std::vector<Vector3> vertices, const std::vector<Vector3>& normals)
+ptr<OpenGLMesh> OpenGLMesh::create(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals)
 {
 	return NEW2(OpenGLMesh, vertices, normals, {});
 }
 
 
-ptr<OpenGLMesh> OpenGLMesh::create(const std::vector<Vector3> vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs)
+ptr<OpenGLMesh> OpenGLMesh::create(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs)
 {
 	return NEW2(OpenGLMesh, vertices, normals, uvs);
 }
