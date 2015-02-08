@@ -26,7 +26,7 @@ namespace solo
 	private:
 		Material() {}
 
-		std::vector<ptr<MaterialPass>> _passes;
+		std::vector<ptr<MaterialPass>> passes;
 
 		void bind(ptr<Effect> effect, const RenderContext& context);
 	};

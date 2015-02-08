@@ -15,22 +15,22 @@ ptr<Material> Material::create()
 ptr<MaterialPass> Material::addPass(ptr<Effect> effect)
 {
 	auto pass = MaterialPass::create(this, effect);
-	_passes.push_back(pass);
+	passes.push_back(pass);
 	return pass;
 }
 
 
 void Material::removePass(ptr<MaterialPass> pass)
 {
-	auto where = find(_passes.begin(), _passes.end(), pass);
-	if (where != _passes.end())
-		_passes.erase(where);
+	auto where = find(passes.begin(), passes.end(), pass);
+	if (where != passes.end())
+		passes.erase(where);
 }
 
 
 size_t Material::getPassCount() const
 {
-	return _passes.size();
+	return passes.size();
 }
 
 
@@ -43,5 +43,5 @@ void Material::bind(ptr<Effect> effect, const RenderContext& context)
 
 ptr<MaterialPass> Material::getPass(unsigned index) const
 {
-	return _passes[index];
+	return passes[index];
 }

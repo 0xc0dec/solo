@@ -20,43 +20,43 @@ Frustum::Frustum(const Matrix& matrix)
 
 const Plane& Frustum::getNear() const
 {
-	return _near;
+	return near;
 }
 
 
 const Plane& Frustum::getFar() const
 {
-	return _far;
+	return far;
 }
 
 
 const Plane& Frustum::getLeft() const
 {
-	return _left;
+	return left;
 }
 
 
 const Plane& Frustum::getRight() const
 {
-	return _right;
+	return right;
 }
 
 
 const Plane& Frustum::getBottom() const
 {
-	return _bottom;
+	return bottom;
 }
 
 
 const Plane& Frustum::getTop() const
 {
-	return _top;
+	return top;
 }
 
 
 void Frustum::getMatrix(Matrix* dst) const
 {
-	dst->set(_matrix);
+	dst->set(matrix);
 }
 
 
@@ -69,35 +69,35 @@ void Frustum::getCorners(Vector3* corners) const
 
 void Frustum::getNearCorners(Vector3* corners) const
 {
-	Plane::intersection(_near, _left, _top, &corners[0]);
-	Plane::intersection(_near, _left, _bottom, &corners[1]);
-	Plane::intersection(_near, _right, _bottom, &corners[2]);
-	Plane::intersection(_near, _right, _top, &corners[3]);
+	Plane::intersection(near, left, top, &corners[0]);
+	Plane::intersection(near, left, bottom, &corners[1]);
+	Plane::intersection(near, right, bottom, &corners[2]);
+	Plane::intersection(near, right, top, &corners[3]);
 }
 
 
 void Frustum::getFarCorners(Vector3* corners) const
 {
-	Plane::intersection(_far, _right, _top, &corners[0]);
-	Plane::intersection(_far, _right, _bottom, &corners[1]);
-	Plane::intersection(_far, _left, _bottom, &corners[2]);
-	Plane::intersection(_far, _left, _top, &corners[3]);
+	Plane::intersection(far, right, top, &corners[0]);
+	Plane::intersection(far, right, bottom, &corners[1]);
+	Plane::intersection(far, left, bottom, &corners[2]);
+	Plane::intersection(far, left, top, &corners[3]);
 }
 
 
 bool Frustum::intersects(const Vector3& point) const
 {
-	if (_near.getDistance(point) <= 0)
+	if (near.getDistance(point) <= 0)
 		return false;
-	if (_far.getDistance(point) <= 0)
+	if (far.getDistance(point) <= 0)
 		return false;
-	if (_left.getDistance(point) <= 0)
+	if (left.getDistance(point) <= 0)
 		return false;
-	if (_right.getDistance(point) <= 0)
+	if (right.getDistance(point) <= 0)
 		return false;
-	if (_top.getDistance(point) <= 0)
+	if (top.getDistance(point) <= 0)
 		return false;
-	if (_bottom.getDistance(point) <= 0)
+	if (bottom.getDistance(point) <= 0)
 		return false;
 
 	return true;
@@ -136,29 +136,29 @@ float Frustum::intersects(const Ray& ray) const
 
 void Frustum::set(const Frustum& frustum)
 {
-	_near = frustum._near;
-	_far = frustum._far;
-	_bottom = frustum._bottom;
-	_top = frustum._top;
-	_left = frustum._left;
-	_right = frustum._right;
-	_matrix.set(frustum._matrix);
+	near = frustum.near;
+	far = frustum.far;
+	bottom = frustum.bottom;
+	top = frustum.top;
+	left = frustum.left;
+	right = frustum.right;
+	matrix.set(frustum.matrix);
 }
 
 
 void Frustum::updatePlanes()
 {
-	_near.set(Vector3(_matrix.m[3] + _matrix.m[2], _matrix.m[7] + _matrix.m[6], _matrix.m[11] + _matrix.m[10]), _matrix.m[15] + _matrix.m[14]);
-	_far.set(Vector3(_matrix.m[3] - _matrix.m[2], _matrix.m[7] - _matrix.m[6], _matrix.m[11] - _matrix.m[10]), _matrix.m[15] - _matrix.m[14]);
-	_bottom.set(Vector3(_matrix.m[3] + _matrix.m[1], _matrix.m[7] + _matrix.m[5], _matrix.m[11] + _matrix.m[9]), _matrix.m[15] + _matrix.m[13]);
-	_top.set(Vector3(_matrix.m[3] - _matrix.m[1], _matrix.m[7] - _matrix.m[5], _matrix.m[11] - _matrix.m[9]), _matrix.m[15] - _matrix.m[13]);
-	_left.set(Vector3(_matrix.m[3] + _matrix.m[0], _matrix.m[7] + _matrix.m[4], _matrix.m[11] + _matrix.m[8]), _matrix.m[15] + _matrix.m[12]);
-	_right.set(Vector3(_matrix.m[3] - _matrix.m[0], _matrix.m[7] - _matrix.m[4], _matrix.m[11] - _matrix.m[8]), _matrix.m[15] - _matrix.m[12]);
+	near.set(Vector3(matrix.m[3] + matrix.m[2], matrix.m[7] + matrix.m[6], matrix.m[11] + matrix.m[10]), matrix.m[15] + matrix.m[14]);
+	far.set(Vector3(matrix.m[3] - matrix.m[2], matrix.m[7] - matrix.m[6], matrix.m[11] - matrix.m[10]), matrix.m[15] - matrix.m[14]);
+	bottom.set(Vector3(matrix.m[3] + matrix.m[1], matrix.m[7] + matrix.m[5], matrix.m[11] + matrix.m[9]), matrix.m[15] + matrix.m[13]);
+	top.set(Vector3(matrix.m[3] - matrix.m[1], matrix.m[7] - matrix.m[5], matrix.m[11] - matrix.m[9]), matrix.m[15] - matrix.m[13]);
+	left.set(Vector3(matrix.m[3] + matrix.m[0], matrix.m[7] + matrix.m[4], matrix.m[11] + matrix.m[8]), matrix.m[15] + matrix.m[12]);
+	right.set(Vector3(matrix.m[3] - matrix.m[0], matrix.m[7] - matrix.m[4], matrix.m[11] - matrix.m[8]), matrix.m[15] - matrix.m[12]);
 }
 
 
 void Frustum::set(const Matrix& matrix)
 {
-	_matrix.set(matrix);
+	this->matrix.set(matrix);
 	updatePlanes();
 }

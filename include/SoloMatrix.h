@@ -155,7 +155,7 @@ namespace solo
 
 	inline Matrix Matrix::operator+(const Matrix& m) const
 	{
-		Matrix result(*this);
+		auto result(*this);
 		result.add(m);
 		return result;
 	}
@@ -168,7 +168,7 @@ namespace solo
 
 	inline Matrix Matrix::operator-(const Matrix& m) const
 	{
-		Matrix result(*this);
+		auto result(*this);
 		result.subtract(m);
 		return result;
 	}
@@ -181,14 +181,14 @@ namespace solo
 
 	inline Matrix Matrix::operator-() const
 	{
-		Matrix m(*this);
+		auto m(*this);
 		m.negate();
 		return m;
 	}
 
 	inline Matrix Matrix::operator*(const Matrix& m) const
 	{
-		Matrix result(*this);
+		auto result(*this);
 		result.multiply(m);
 		return result;
 	}

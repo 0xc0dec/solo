@@ -196,10 +196,10 @@ namespace solo
 	inline void Math::transformVector4(const float* m, const float* v, float* dst)
 	{
 		// Handle case where v == dst.
-		float x = v[0] * m[0] + v[1] * m[4] + v[2] * m[8] + v[3] * m[12];
-		float y = v[0] * m[1] + v[1] * m[5] + v[2] * m[9] + v[3] * m[13];
-		float z = v[0] * m[2] + v[1] * m[6] + v[2] * m[10] + v[3] * m[14];
-		float w = v[0] * m[3] + v[1] * m[7] + v[2] * m[11] + v[3] * m[15];
+		auto x = v[0] * m[0] + v[1] * m[4] + v[2] * m[8] + v[3] * m[12];
+		auto y = v[0] * m[1] + v[1] * m[5] + v[2] * m[9] + v[3] * m[13];
+		auto z = v[0] * m[2] + v[1] * m[6] + v[2] * m[10] + v[3] * m[14];
+		auto w = v[0] * m[3] + v[1] * m[7] + v[2] * m[11] + v[3] * m[15];
 
 		dst[0] = x;
 		dst[1] = y;
@@ -209,9 +209,9 @@ namespace solo
 
 	inline void Math::crossVector3(const float* v1, const float* v2, float* dst)
 	{
-		float x = (v1[1] * v2[2]) - (v1[2] * v2[1]);
-		float y = (v1[2] * v2[0]) - (v1[0] * v2[2]);
-		float z = (v1[0] * v2[1]) - (v1[1] * v2[0]);
+		auto x = (v1[1] * v2[2]) - (v1[2] * v2[1]);
+		auto y = (v1[2] * v2[0]) - (v1[0] * v2[2]);
+		auto z = (v1[0] * v2[1]) - (v1[1] * v2[0]);
 
 		dst[0] = x;
 		dst[1] = y;

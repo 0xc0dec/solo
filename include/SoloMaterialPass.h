@@ -24,7 +24,7 @@ namespace solo
 
 		static ptr<MaterialPass> create(Material *material, ptr<Effect> effect);
 
-		Material *_material;
-		ptr<Effect> _effect;
+		Material *material;
+		ptr<Effect> effect;
 	};
 }

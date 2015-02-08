@@ -42,12 +42,12 @@ namespace solo
 	private:
 		void updatePlanes();
 
-		Plane _near;
-		Plane _far;
-		Plane _bottom;
-		Plane _top;
-		Plane _left;
-		Plane _right;
-		Matrix _matrix;
+		Plane near;
+		Plane far;
+		Plane bottom;
+		Plane top;
+		Plane left;
+		Plane right;
+		Matrix matrix;
 	};
 }

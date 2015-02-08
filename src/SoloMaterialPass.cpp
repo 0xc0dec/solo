@@ -8,8 +8,8 @@ using namespace solo;
 
 
 MaterialPass::MaterialPass(Material *material, ptr<Effect> effect):
-	_material(material),
-	_effect(effect)
+	material(material),
+	effect(effect)
 {
 }
 
@@ -22,12 +22,12 @@ ptr<MaterialPass> MaterialPass::create(Material* material, ptr<Effect> effect)
 
 void MaterialPass::bind(const RenderContext& context)
 {
-	if (_effect)
+	if (effect)
 	{
-		_effect->bind();
-		_material->bind(_effect, context);
+		effect->bind();
+		material->bind(effect, context);
 		for (auto p : parameters)
-			p.second->bind(_effect, context);
+			p.second->bind(effect, context);
 	}
 }
 

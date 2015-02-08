@@ -116,10 +116,10 @@ namespace solo
 		ptr<Scene> _scene;
 
 		std::string _name;
-		ValueType _type;
-		MaterialParameterValue _value;
+		ValueType type;
+		MaterialParameterValue value;
 		unsigned _valueCount;
-		bool _freeableValue;
+		bool freeableValue;
 
 		static ptr<MaterialParameter> create(const std::string &name);
 
@@ -153,8 +153,8 @@ namespace solo
 	void MaterialParameter::bindValue(TClass* instance, TParam(TClass::*getter)(const RenderContext& context) const)
 	{
 		clearValue();
-		_value.method = new SingleValueBinding<TClass, TParam>(instance, getter);
-		_freeableValue = true;
-		_type = ValueType::METHOD;
+		value.method = new SingleValueBinding<TClass, TParam>(instance, getter);
+		freeableValue = true;
+		type = ValueType::METHOD;
 	}
 }
