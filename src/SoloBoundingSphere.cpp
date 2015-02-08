@@ -29,9 +29,9 @@ bool BoundingSphere::intersects(const BoundingSphere& sphere) const
 {
 	// If the distance between the spheres' centers is less than or equal
 	// to the sum of their radii, then the spheres intersect.
-	float vx = sphere.center.x - center.x;
-	float vy = sphere.center.y - center.y;
-	float vz = sphere.center.z - center.z;
+	auto vx = sphere.center.x - center.x;
+	auto vy = sphere.center.y - center.y;
+	auto vz = sphere.center.z - center.z;
 
 	return sqrt(vx * vx + vy * vy + vz * vz) <= (radius + sphere.radius);
 }
@@ -41,12 +41,12 @@ bool BoundingSphere::intersects(const BoundingBox& box) const
 {
 	// Determine what point is closest; if the distance to that
 	// point is less than the radius, then this sphere intersects.
-	float cpX = center.x;
-	float cpY = center.y;
-	float cpZ = center.z;
+	auto cpX = center.x;
+	auto cpY = center.y;
+	auto cpZ = center.z;
 
-	const Vector3& boxMin = box.min;
-	const Vector3& boxMax = box.max;
+	const auto& boxMin = box.min;
+	const auto& boxMax = box.max;
 	// Closest x value.
 	if (center.x < boxMin.x)
 		cpX = boxMin.x;
@@ -88,7 +88,7 @@ bool BoundingSphere::intersects(const Frustum& frustum) const
 
 float BoundingSphere::intersects(const Plane& plane) const
 {
-	float distance = plane.distance(center);
+	auto distance = plane.distance(center);
 
 	if (fabsf(distance) <= radius)
 		return static_cast<float>(Plane::INTERSECTS_INTERSECTING);
@@ -100,29 +100,29 @@ float BoundingSphere::intersects(const Plane& plane) const
 
 float BoundingSphere::intersects(const Ray& ray) const
 {
-	const Vector3& origin = ray.getOrigin();
-	const Vector3& direction = ray.getDirection();
+	const auto& origin = ray.getOrigin();
+	const auto& direction = ray.getDirection();
 
 	// Calculate the vector and the square of the distance from the ray's origin to this sphere's center.
-	float vx = origin.x - center.x;
-	float vy = origin.y - center.y;
-	float vz = origin.z - center.z;
-	float d2 = vx * vx + vy * vy + vz * vz;
+	auto vx = origin.x - center.x;
+	auto vy = origin.y - center.y;
+	auto vz = origin.z - center.z;
+	auto d2 = vx * vx + vy * vy + vz * vz;
 
 	// Solve the quadratic equation using the ray's and sphere's equations together.
 	// Since the ray's direction is guaranteed to be 1 by the Ray, we don't need to
 	// calculate and use A (A=ray.getDirection().lengthSquared()).
-	float B = 2.0f * (vx * direction.x + vy * direction.y + vz * direction.z);
-	float C = d2 - radius * radius;
-	float discriminant = B * B - 4.0f * C;
+	auto B = 2.0f * (vx * direction.x + vy * direction.y + vz * direction.z);
+	auto C = d2 - radius * radius;
+	auto discriminant = B * B - 4.0f * C;
 
 	// If the discriminant is negative, then there is no intersection.
 	if (discriminant < 0.0f)
 		return static_cast<float>(Ray::INTERSECTS_NONE);
 	// The intersection is at the smaller positive root.
-	float sqrtDisc = sqrt(discriminant);
-	float t0 = (-B - sqrtDisc) * 0.5f;
-	float t1 = (-B + sqrtDisc) * 0.5f;
+	auto sqrtDisc = sqrt(discriminant);
+	auto t0 = (-B - sqrtDisc) * 0.5f;
+	auto t1 = (-B + sqrtDisc) * 0.5f;
 	return (t0 > 0.0f && t0 < t1) ? t0 : t1;
 }
 
@@ -139,10 +139,10 @@ void BoundingSphere::merge(const BoundingSphere& sphere)
 		return;
 
 	// Calculate the distance between the two centers.
-	float vx = center.x - sphere.center.x;
-	float vy = center.y - sphere.center.y;
-	float vz = center.z - sphere.center.z;
-	float d = sqrt(vx * vx + vy * vy + vz * vz);
+	auto vx = center.x - sphere.center.x;
+	auto vy = center.y - sphere.center.y;
+	auto vz = center.z - sphere.center.z;
+	auto d = sqrt(vx * vx + vy * vy + vz * vz);
 
 	// If one sphere is contained inside the other, set to the larger sphere.
 	if (d <= (sphere.radius - radius))
@@ -151,22 +151,20 @@ void BoundingSphere::merge(const BoundingSphere& sphere)
 		radius = sphere.radius;
 		return;
 	}
-	else if (d <= (radius - sphere.radius))
-	{
+	if (d <= (radius - sphere.radius))
 		return;
-	}
 
 	// Calculate the unit vector between the two centers.
-	float dI = 1.0f / d;
+	auto dI = 1.0f / d;
 	vx *= dI;
 	vy *= dI;
 	vz *= dI;
 
 	// Calculate the new radius.
-	float r = (radius + sphere.radius + d) * 0.5f;
+	auto r = (radius + sphere.radius + d) * 0.5f;
 
 	// Calculate the new center.
-	float scaleFactor = (r - sphere.radius);
+	auto scaleFactor = (r - sphere.radius);
 	vx = vx * scaleFactor + sphere.center.x;
 	vy = vy * scaleFactor + sphere.center.y;
 	vz = vz * scaleFactor + sphere.center.z;
@@ -184,19 +182,19 @@ void BoundingSphere::merge(const BoundingBox& box)
 	if (box.isEmpty())
 		return;
 
-	const Vector3& min = box.min;
-	const Vector3& max = box.max;
+	const auto& min = box.min;
+	const auto& max = box.max;
 
 	// Find the corner of the bounding box that is farthest away from this sphere's center.
-	float v1x = min.x - center.x;
-	float v1y = min.y - center.y;
-	float v1z = min.z - center.z;
-	float v2x = max.x - center.x;
-	float v2y = max.y - center.y;
-	float v2z = max.z - center.z;
-	float fx = min.x;
-	float fy = min.y;
-	float fz = min.z;
+	auto v1x = min.x - center.x;
+	auto v1y = min.y - center.y;
+	auto v1z = min.z - center.z;
+	auto v2x = max.x - center.x;
+	auto v2y = max.y - center.y;
+	auto v2z = max.z - center.z;
+	auto fx = min.x;
+	auto fy = min.y;
+	auto fz = min.z;
 
 	if (v2x > v1x)
 		fx = max.x;
@@ -209,20 +207,20 @@ void BoundingSphere::merge(const BoundingBox& box)
 	v1x = center.x - fx;
 	v1y = center.y - fy;
 	v1z = center.z - fz;
-	float distance = sqrt(v1x * v1x + v1y * v1y + v1z * v1z);
+	auto distance = sqrt(v1x * v1x + v1y * v1y + v1z * v1z);
 
 	// If the box is inside the sphere, we are done.
 	if (distance <= radius)
 		return;
 
 	// Calculate the unit vector between the center and the farthest point.
-	float dI = 1.0f / distance;
+	auto dI = 1.0f / distance;
 	v1x *= dI;
 	v1y *= dI;
 	v1z *= dI;
 
 	// Calculate the new radius.
-	float r = (radius + distance) * 0.5f;
+	auto r = (radius + distance) * 0.5f;
 
 	// Calculate the new center.
 	v1x = v1x * r + fx;
@@ -268,7 +266,7 @@ void BoundingSphere::transform(const Matrix& matrix)
 	// Scale the sphere's radius by the scale fo the matrix
 	Vector3 scale;
 	matrix.decompose(&scale, nullptr, nullptr);
-	float r = radius * scale.x;
+	auto r = radius * scale.x;
 	r = std::max(r, radius * scale.y);
 	r = std::max(r, radius * scale.z);
 	radius = r;
