@@ -77,8 +77,8 @@ namespace solo
 
 		typedef std::map<size_t, std::map<size_t, ptr<Component>>> Components;
 
-		int _nodeCounter;
-		Components _components;
+		int nodeCounter;
+		Components components;
 
 		void ensureNodeExists(size_t node);
 

@@ -9,7 +9,7 @@ using namespace solo;
 
 
 Scene::Scene():
-	_nodeCounter(0)
+	nodeCounter(0)
 {
 }
 
@@ -22,8 +22,8 @@ ptr<Scene> Scene::create()
 
 size_t Scene::createEmptyNode()
 {
-	_components[++_nodeCounter];
-	return _nodeCounter;
+	components[++nodeCounter];
+	return nodeCounter;
 }
 
 
@@ -37,7 +37,7 @@ size_t Scene::createNode()
 
 bool Scene::nodeExists(size_t node)
 {
-	return _components.find(node) != _components.end();
+	return components.find(node) != components.end();
 }
 
 
@@ -46,14 +46,14 @@ void Scene::addComponent(size_t node, ptr<Component> cmp)
 	ensureNodeExists(node);
 	if (findComponent(node, cmp->getTypeId()))
 		THROW(EngineException, "Component ", cmp->getTypeId(), " already exists");
-	_components[node][cmp->getTypeId()] = cmp;
+	components[node][cmp->getTypeId()] = cmp;
 }
 
 
 void Scene::removeComponent(size_t node, size_t typeId)
 {
 	ensureNodeExists(node);
-	_components[node].erase(typeId);
+	components[node].erase(typeId);
 }
 
 
@@ -69,7 +69,7 @@ ptr<Component> Scene::getComponent(size_t node, size_t typeId)
 ptr<Component> Scene::findComponent(size_t node, size_t typeId)
 {
 	ensureNodeExists(node);
-	auto nodeComponents = _components[node];
+	auto nodeComponents = components[node];
 	auto it = nodeComponents.find(typeId);
 	return it != nodeComponents.end() ? it->second : nullptr;
 }
@@ -79,7 +79,7 @@ std::vector<ptr<Camera>> Scene::getCameras()
 {
 	std::vector<ptr<Camera>> result;
 	result.reserve(10);
-	for (auto nodeComponents : _components)
+	for (auto nodeComponents : components)
 	{
 		for (auto component : nodeComponents.second)
 		{
@@ -93,7 +93,7 @@ std::vector<ptr<Camera>> Scene::getCameras()
 
 void Scene::update()
 {
-	for (auto node : _components)
+	for (auto node : components)
 	{
 		for (auto component : node.second)
 			component.second->update();
@@ -109,7 +109,7 @@ void Scene::render()
 		auto cameraTransform = getComponent<Transform>(camera->getNode());
 		auto context = RenderContext(0, nullptr, camera, cameraTransform);
 		camera->render(context);
-		for (auto nodeComponents : _components)
+		for (auto nodeComponents : components)
 		{
 			auto node = nodeComponents.first;
 			for (auto component : nodeComponents.second)

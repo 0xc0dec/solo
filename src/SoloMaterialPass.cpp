@@ -26,7 +26,7 @@ void MaterialPass::bind(const RenderContext& context)
 	{
 		_effect->bind();
 		_material->bind(_effect, context);
-		for (auto p : _parameters)
+		for (auto p : parameters)
 			p.second->bind(_effect, context);
 	}
 }

@@ -6,11 +6,11 @@ using namespace solo;
 
 ptr<MaterialParameter> RenderState::getParameter(const std::string& name)
 {
-	auto where = _parameters.find(name);
-	if (where != _parameters.end())
+	auto where = parameters.find(name);
+	if (where != parameters.end())
 		return where->second;
 	// Create a new one if not found
 	auto parameter = MaterialParameter::create(name);
-	_parameters[name] = parameter;
+	parameters[name] = parameter;
 	return parameter;
 }

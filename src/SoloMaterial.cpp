@@ -36,7 +36,7 @@ size_t Material::getPassCount() const
 
 void Material::bind(ptr<Effect> effect, const RenderContext& context)
 {
-	for (auto p : _parameters)
+	for (auto p : parameters)
 		p.second->bind(effect, context);
 }
 
