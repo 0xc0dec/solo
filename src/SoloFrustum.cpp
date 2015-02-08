@@ -87,17 +87,17 @@ void Frustum::getFarCorners(Vector3* corners) const
 
 bool Frustum::intersects(const Vector3& point) const
 {
-	if (_near.distance(point) <= 0)
+	if (_near.getDistance(point) <= 0)
 		return false;
-	if (_far.distance(point) <= 0)
+	if (_far.getDistance(point) <= 0)
 		return false;
-	if (_left.distance(point) <= 0)
+	if (_left.getDistance(point) <= 0)
 		return false;
-	if (_right.distance(point) <= 0)
+	if (_right.getDistance(point) <= 0)
 		return false;
-	if (_top.distance(point) <= 0)
+	if (_top.getDistance(point) <= 0)
 		return false;
-	if (_bottom.distance(point) <= 0)
+	if (_bottom.getDistance(point) <= 0)
 		return false;
 
 	return true;

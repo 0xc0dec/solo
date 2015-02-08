@@ -67,7 +67,7 @@ namespace solo
 
 	inline Quaternion Quaternion::operator*(const Quaternion& q) const
 	{
-		Quaternion result(*this);
+		auto result(*this);
 		result.multiply(q);
 		return result;
 	}

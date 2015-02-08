@@ -27,7 +27,7 @@ namespace solo
 		float getDistance() const;
 		void setDistance(float distance);
 
-		float distance(const Vector3& point) const;
+		float getDistance(const Vector3& point) const;
 
 		static void intersection(const Plane& p1, const Plane& p2, const Plane& p3, Vector3* point);
 
@@ -49,8 +49,8 @@ namespace solo
 	private:
 		void normalize();
 
-		Vector3 _normal;
-		float _distance;
+		Vector3 normal;
+		float distance;
 	};
 
 	inline Plane& Plane::operator*=(const Matrix& matrix)
@@ -61,7 +61,7 @@ namespace solo
 
 	inline Plane operator*(const Matrix& matrix, const Plane& plane)
 	{
-		Plane p(plane);
+		auto p(plane);
 		p.transform(matrix);
 		return p;
 	}

@@ -80,27 +80,27 @@ float Ray::intersects(const Frustum& frustum) const
 {
 	auto n = frustum.getNear();
 	auto nD = intersects(n);
-	auto nOD = n.distance(origin);
+	auto nOD = n.getDistance(origin);
 
 	auto f = frustum.getFar();
 	auto fD = intersects(f);
-	auto fOD = f.distance(origin);
+	auto fOD = f.getDistance(origin);
 
 	auto l = frustum.getLeft();
 	auto lD = intersects(l);
-	auto lOD = l.distance(origin);
+	auto lOD = l.getDistance(origin);
 
 	auto r = frustum.getRight();
 	auto rD = intersects(r);
-	auto rOD = r.distance(origin);
+	auto rOD = r.getDistance(origin);
 
 	auto b = frustum.getBottom();
 	auto bD = intersects(b);
-	auto bOD = b.distance(origin);
+	auto bOD = b.getDistance(origin);
 
 	auto t = frustum.getTop();
 	auto tD = intersects(t);
-	auto tOD = t.distance(origin);
+	auto tOD = t.getDistance(origin);
 
 	// If the ray's origin is in the negative half-space of one of the frustum's planes
 	// and it does not intersect that same plane, then it does not intersect the frustum.

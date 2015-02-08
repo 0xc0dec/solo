@@ -88,7 +88,7 @@ bool BoundingSphere::intersects(const Frustum& frustum) const
 
 float BoundingSphere::intersects(const Plane& plane) const
 {
-	auto distance = plane.distance(center);
+	auto distance = plane.getDistance(center);
 
 	if (fabsf(distance) <= radius)
 		return static_cast<float>(Plane::INTERSECTS_INTERSECTING);

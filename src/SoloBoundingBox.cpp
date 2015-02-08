@@ -103,7 +103,7 @@ float BoundingBox::intersects(const Plane& plane) const
 {
 	// Calculate the distance from the center of the box to the plane.
 	Vector3 center((min.x + max.x) * 0.5f, (min.y + max.y) * 0.5f, (min.z + max.z) * 0.5f);
-	auto distance = plane.distance(center);
+	auto distance = plane.getDistance(center);
 
 	// Get the extents of the box from its center along each axis.
 	auto extentX = (max.x - min.x) * 0.5f;
