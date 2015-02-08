@@ -20,10 +20,10 @@ const unsigned DIRTY_BIT_ALL = DIRTY_BIT_VIEW | DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_
 
 Camera::Camera(size_t node):
 	ComponentBase(node),
-	_ortho(false), _viewport(0, 0, 1, 1), _clearColor(0, 0, 0, 1),
-	_fov(60), _near(1), _far(100), _width(1), _height(1), _aspectRatio(16.f/9.f)
+	ortho(false), viewport(0, 0, 1, 1), clearColor(0, 0, 0, 1),
+	fov(60), near(1), far(100), width(1), height(1), aspectRatio(16.f/9.f)
 {
-	_transform = Engine::get()->getScene()->getComponent<Transform>(node);
+	transform = Engine::get()->getScene()->getComponent<Transform>(node);
 	setDirty<DIRTY_BIT_ALL>(); // arguably
 }
 
@@ -36,104 +36,104 @@ ptr<Camera> Camera::create(size_t node)
 
 void Camera::setViewport(float left, float top, float width, float height)
 {
-	_viewport.set(left, top, width, height);
+	viewport.set(left, top, width, height);
 	setDirty<DIRTY_BIT_VIEWPORT>();
 }
 
 
 Vector4 Camera::getViewport() const
 {
-	return _viewport;
+	return viewport;
 }
 
 
 void Camera::setPerspective(bool perspective)
 {
-	_ortho = !perspective;
+	ortho = !perspective;
 	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
 
 bool Camera::isPerspective() const
 {
-	return !_ortho;
+	return !ortho;
 }
 
 
 float Camera::getNear() const
 {
-	return _near;
+	return near;
 }
 
 
 float Camera::getFar() const
 {
-	return _far;
+	return far;
 }
 
 
 float Camera::getFOV() const
 {
-	return _fov;
+	return fov;
 }
 
 
 float Camera::getWidth() const
 {
-	return _width;
+	return width;
 }
 
 
 float Camera::getHeight() const
 {
-	return _height;
+	return height;
 }
 
 
 float Camera::getAspectRatio() const
 {
-	return _aspectRatio;
+	return aspectRatio;
 }
 
 
 void Camera::setFOV(float fov)
 {
-	_fov = fov;
+	fov = fov;
 	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
 
 void Camera::setWidth(float width)
 {
-	_width = width;
+	width = width;
 	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
 
 void Camera::setHeight(float height)
 {
-	_height = height;
+	height = height;
 	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
 
 void Camera::setAspectRatio(float ratio)
 {
-	_aspectRatio = ratio;
+	aspectRatio = ratio;
 	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
 
 void Camera::setFar(float far)
 {
-	_far = far;
+	far = far;
 	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
 
 void Camera::setNear(float near)
 {
-	_near = near;
+	near = near;
 	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
@@ -141,16 +141,16 @@ void Camera::setNear(float near)
 const Matrix& Camera::getViewMatrix()
 {
 	if (checkAndCleanBit<DIRTY_BIT_VIEW>())
-		_transform->getWorldMatrix().invert(&_viewMatrix);
-	return _viewMatrix;
+		transform->getWorldMatrix().invert(&viewMatrix);
+	return viewMatrix;
 }
 
 
 const Matrix& Camera::getInverseViewMatrix()
 {
 	if (checkAndCleanBit<DIRTY_BIT_INV_VIEW>())
-		getViewMatrix().invert(&_inverseViewMatrix);
-	return _inverseViewMatrix;
+		getViewMatrix().invert(&inverseViewMatrix);
+	return inverseViewMatrix;
 }
 
 
@@ -158,34 +158,34 @@ const Matrix& Camera::getProjectionMatrix()
 {
 	if (checkAndCleanBit<DIRTY_BIT_PROJ>())
 	{
-		if (_ortho)
-			Matrix::createOrthographic(_width, _height, _near, _far, &_projectionMatrix);
+		if (ortho)
+			Matrix::createOrthographic(width, height, near, far, &projectionMatrix);
 		else
-			Matrix::createPerspective(_fov, _aspectRatio, _near, _far, &_projectionMatrix);
+			Matrix::createPerspective(fov, aspectRatio, near, far, &projectionMatrix);
 	}
-	return _projectionMatrix;
+	return projectionMatrix;
 }
 
 
 const Matrix& Camera::getViewProjectionMatrix()
 {
 	if (checkAndCleanBit<DIRTY_BIT_VIEW_PROJ>())
-		Matrix::multiply(getViewMatrix(), getProjectionMatrix(), &_viewProjectionMatrix);
-	return _viewProjectionMatrix;
+		Matrix::multiply(getViewMatrix(), getProjectionMatrix(), &viewProjectionMatrix);
+	return viewProjectionMatrix;
 }
 
 
 const Matrix& Camera::getInverseViewProjectionMatrix()
 {
 	if (checkAndCleanBit<DIRTY_BIT_INV_VIEW_PROJ>())
-		getViewProjectionMatrix().invert(&_inverseViewProjectionMatrix);
-	return _inverseViewProjectionMatrix;
+		getViewProjectionMatrix().invert(&inverseViewProjectionMatrix);
+	return inverseViewProjectionMatrix;
 }
 
 
 void Camera::setClearColor(float r, float g, float b, float a)
 {
-	_clearColor.set(r, g, b, a);
+	clearColor.set(r, g, b, a);
 	setDirty<DIRTY_BIT_CLEAR_COLOR>();
 }
 

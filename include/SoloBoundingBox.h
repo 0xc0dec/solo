@@ -55,7 +55,7 @@ namespace solo
 
 	inline BoundingBox operator*(const Matrix& matrix, const BoundingBox& box)
 	{
-		BoundingBox b(box);
+		auto b(box);
 		b.transform(matrix);
 		return b;
 	}

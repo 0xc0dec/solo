@@ -23,16 +23,16 @@ void OpenGLCamera::applyViewportChange()
 {
 	auto size = _device->getCanvasSize();
 	glViewport(
-		static_cast<GLuint>(_viewport.x * size.x),
-		static_cast<GLuint>(_viewport.y * size.y),
-		static_cast<GLuint>(_viewport.z * size.x),
-		static_cast<GLuint>(_viewport.w * size.y));
+		static_cast<GLuint>(viewport.x * size.x),
+		static_cast<GLuint>(viewport.y * size.y),
+		static_cast<GLuint>(viewport.z * size.x),
+		static_cast<GLuint>(viewport.w * size.y));
 }
 
 
 void OpenGLCamera::applyClearColor()
 {
-	glClearColor(_clearColor.x, _clearColor.y, _clearColor.z, _clearColor.w);
+	glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
 }
 
 

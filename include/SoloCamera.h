@@ -53,23 +53,23 @@ namespace solo
 		virtual void applyClearColor() = 0;
 		virtual void clear() = 0;
 
-		ptr<Transform> _transform;
+		ptr<Transform> transform;
 
-		bool _ortho;
+		bool ortho;
 
-		Vector4 _viewport; // all values in range 0..1
-		Vector4 _clearColor;
-		float _fov;
-		float _near;
-		float _far;
-		float _width;
-		float _height;
-		float _aspectRatio;
+		Vector4 viewport; // all values in range 0..1
+		Vector4 clearColor;
+		float fov;
+		float near;
+		float far;
+		float width;
+		float height;
+		float aspectRatio;
 		
-		Matrix _viewMatrix;
-		Matrix _projectionMatrix;
-		Matrix _viewProjectionMatrix;
-		Matrix _inverseViewMatrix;
-		Matrix _inverseViewProjectionMatrix;
+		Matrix viewMatrix;
+		Matrix projectionMatrix;
+		Matrix viewProjectionMatrix;
+		Matrix inverseViewMatrix;
+		Matrix inverseViewProjectionMatrix;
 	};
 }
