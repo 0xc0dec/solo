@@ -69,15 +69,15 @@ namespace solo
 		Transform(size_t node);
 		Transform(const Transform& other);
 
-		ptr<Transform> _parent;
-		std::list<ptr<Transform>> _children;
+		ptr<Transform> parent;
+		std::list<ptr<Transform>> children;
 
-		Vector3 _localPosition;
-		Vector3 _localScale;
-		Quaternion _localRotation;
-		mutable Matrix _matrix;
-		mutable Matrix _worldMatrix;
-		mutable Matrix _inverseTransposedWorldMatrix;
-		mutable Matrix _inverseTransposedViewMatrix;
+		Vector3 localPosition;
+		Vector3 localScale;
+		Quaternion localRotation;
+		mutable Matrix matrix;
+		mutable Matrix worldMatrix;
+		mutable Matrix inverseTransposedWorldMatrix;
+		mutable Matrix inverseTransposedViewMatrix;
 	};
 }
