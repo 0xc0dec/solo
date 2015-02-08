@@ -39,12 +39,12 @@ namespace solo
 		Engine();
 		~Engine();
 
-		EngineCallback *_callback;
-		ptr<Scene> _scene;
-		ptr<Device> _device;
+		EngineCallback *callback;
+		ptr<Scene> scene;
+		ptr<Device> device;
 
-		unsigned long _lastUpdateTime;
-		float _timeDelta;
+		unsigned long lastUpdateTime;
+		float timeDelta;
 
 		inline void updateTime();
 	};

@@ -2,8 +2,6 @@
 #include "SoloEngine.h"
 #include "SoloScene.h"
 #include "SoloDevice.h"
-#include "SoloLog.h"
-#include "SoloException.h"
 
 using namespace solo;
 
@@ -18,11 +16,11 @@ public:
 
 
 Engine::Engine()
-	: _callback(nullptr),
-	_lastUpdateTime(0),
-	_timeDelta(0)
+	: callback(nullptr),
+	lastUpdateTime(0),
+	timeDelta(0)
 {
-	_callback = &emptyCallback;
+	callback = &emptyCallback;
 }
 
 
@@ -33,57 +31,55 @@ Engine::~Engine()
 
 void Engine::updateTime()
 {
-	auto time = _device->getLifetime();
-	_timeDelta = (time - _lastUpdateTime) / 1000.0f;
-	_lastUpdateTime = time;
+	auto time = device->getLifetime();
+	timeDelta = (time - lastUpdateTime) / 1000.0f;
+	lastUpdateTime = time;
 }
 
 
 void Engine::run(const EngineCreationArgs & args)
 {
-	_device = Device::create(args);
-	_scene = Scene::create();
+	device = Device::create(args);
+	scene = Scene::create();
 
-	_callback->onEngineStarted();
+	callback->onEngineStarted();
 
 	while (true)
 	{
 		updateTime();
-		_device->beginUpdate();
-		_scene->update();
-		_scene->render();
-		_device->endUpdate();
-		if (_device->closeRequested() && _callback->onDeviceCloseRequested())
+		device->beginUpdate();
+		scene->update();
+		scene->render();
+		device->endUpdate();
+		if (device->closeRequested() && callback->onDeviceCloseRequested())
 			break;
 	}
 
-	_callback->onEngineStopped();
-	_device.reset();
-	_scene.reset();
+	callback->onEngineStopped();
+	device.reset();
+	scene.reset();
 }
 
 
 void Engine::setCallback(EngineCallback* callback)
 {
-	_callback = callback;
-	if (!_callback)
-		_callback = &emptyCallback;
+	this->callback = callback ? callback : &emptyCallback;
 }
 
 
 float Engine::getTimeDelta() const
 {
-	return _timeDelta;
+	return timeDelta;
 }
 
 
 ptr<Scene> Engine::getScene() const
 {
-	return _scene;
+	return scene;
 }
 
 
 ptr<Device> Engine::getDevice() const
 {
-	return _device;
+	return device;
 }
