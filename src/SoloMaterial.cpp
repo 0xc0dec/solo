@@ -1,7 +1,6 @@
 #include "SoloMaterial.h"
 #include "SoloMaterialParameter.h"
 #include "SoloMaterialPass.h"
-#include "SoloException.h"
 
 using namespace solo;
 

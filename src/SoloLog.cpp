@@ -3,22 +3,21 @@
 
 using namespace solo;
 
-Log::Log(const std::string &msg, LogLevel level)
-	: _level(level),
-	_message(msg)
+Log::Log(const std::string &msg, LogLevel level):
+	level(level), message(msg)
 {
 }
 
 
 Log::~Log()
 {
-	std::cout << FORMAT("[", getLevelString(), "]	", _message) << std::endl;
+	std::cout << FORMAT("[", getLevelString(), "]	", message) << std::endl;
 }
 
 
 std::string Log::getLevelString()
 {
-	switch (_level)
+	switch (level)
 	{
 		case LogLevel::Debug:
 			return "debug";

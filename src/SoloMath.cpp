@@ -14,7 +14,7 @@ void Math::smooth(float* x, float target, float elapsedTime, float riseTime, flo
 {
 	if (elapsedTime > 0)
 	{
-		float delta = target - *x;
+		auto delta = target - *x;
 		*x += delta * elapsedTime / (elapsedTime + (delta > 0 ? riseTime : fallTime));
 	}
 }

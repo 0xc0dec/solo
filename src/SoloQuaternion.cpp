@@ -66,10 +66,10 @@ void Quaternion::createFromRotationMatrix(const Matrix& m, Quaternion* dst)
 
 void Quaternion::createFromAxisAngle(const Vector3& axis, float angle, Quaternion* dst)
 {
-	float halfAngle = angle * 0.5f;
-	float sinHalfAngle = sinf(halfAngle);
+	auto halfAngle = angle * 0.5f;
+	auto sinHalfAngle = sinf(halfAngle);
 
-	Vector3 normal(axis);
+	auto normal(axis);
 	normal.normalize();
 	dst->x = normal.x * sinHalfAngle;
 	dst->y = normal.y * sinHalfAngle;
@@ -117,14 +117,13 @@ bool Quaternion::inverse()
 
 bool Quaternion::inverse(Quaternion* dst) const
 {
-	float n = x * x + y * y + z * z + w * w;
+	auto n = x * x + y * y + z * z + w * w;
 	if (n == 1.0f)
 	{
 		dst->x = -x;
 		dst->y = -y;
 		dst->z = -z;
 		dst->w = w;
-
 		return true;
 	}
 
@@ -150,11 +149,10 @@ void Quaternion::multiply(const Quaternion& q)
 
 void Quaternion::multiply(const Quaternion& q1, const Quaternion& q2, Quaternion* dst)
 {
-	float x = q1.w * q2.x + q1.x * q2.w + q1.y * q2.z - q1.z * q2.y;
-	float y = q1.w * q2.y - q1.x * q2.z + q1.y * q2.w + q1.z * q2.x;
-	float z = q1.w * q2.z + q1.x * q2.y - q1.y * q2.x + q1.z * q2.w;
-	float w = q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z;
-
+	auto x = q1.w * q2.x + q1.x * q2.w + q1.y * q2.z - q1.z * q2.y;
+	auto y = q1.w * q2.y - q1.x * q2.z + q1.y * q2.w + q1.z * q2.x;
+	auto z = q1.w * q2.z + q1.x * q2.y - q1.y * q2.x + q1.z * q2.w;
+	auto w = q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z;
 	dst->x = x;
 	dst->y = y;
 	dst->z = z;
@@ -178,7 +176,7 @@ void Quaternion::normalize(Quaternion* dst) const
 		dst->w = w;
 	}
 
-	float n = x * x + y * y + z * z + w * w;
+	auto n = x * x + y * y + z * z + w * w;
 
 	// Already normalized.
 	if (n == 1.0f)
@@ -217,13 +215,13 @@ void Quaternion::set(float* array)
 
 void Quaternion::set(const Matrix& m)
 {
-	Quaternion::createFromRotationMatrix(m, this);
+	createFromRotationMatrix(m, this);
 }
 
 
 void Quaternion::set(const Vector3& axis, float angle)
 {
-	Quaternion::createFromAxisAngle(axis, angle, this);
+	createFromAxisAngle(axis, angle, this);
 }
 
 
@@ -265,7 +263,7 @@ void Quaternion::lerp(const Quaternion& q1, const Quaternion& q2, float t, Quate
 		memcpy(dst, &q1, sizeof(float)* 4);
 		return;
 	}
-	else if (t == 1.0f)
+	if (t == 1.0f)
 	{
 		memcpy(dst, &q2, sizeof(float)* 4);
 		return;
@@ -397,7 +395,7 @@ void Quaternion::slerpForSquad(const Quaternion& q1, const Quaternion& q2, float
 	// slerp(q1, q2, t) = (q1*sin((1-t)*omega) + q2*sin(t*omega))/sin(omega);
 	// q1 = +- q2, slerp(q1,q2,t) = q1.
 	// This is a straight-forward implementation of the formula of slerp. It does not do any sign switching.
-	float c = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
+	auto c = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
 
 	if (fabs(c) >= 1.0f)
 	{
@@ -408,8 +406,8 @@ void Quaternion::slerpForSquad(const Quaternion& q1, const Quaternion& q2, float
 		return;
 	}
 
-	float omega = acos(c);
-	float s = sqrt(1.0f - c * c);
+	auto omega = acos(c);
+	auto s = sqrt(1.0f - c * c);
 	if (fabs(s) <= 0.00001f)
 	{
 		dst->x = q1.x;
@@ -419,8 +417,8 @@ void Quaternion::slerpForSquad(const Quaternion& q1, const Quaternion& q2, float
 		return;
 	}
 
-	float r1 = sin((1 - t) * omega) / s;
-	float r2 = sin(t * omega) / s;
+	auto r1 = sin((1 - t) * omega) / s;
+	auto r2 = sin(t * omega) / s;
 	dst->x = (q1.x * r1 + q2.x * r2);
 	dst->y = (q1.y * r1 + q2.y * r2);
 	dst->z = (q1.z * r1 + q2.z * r2);

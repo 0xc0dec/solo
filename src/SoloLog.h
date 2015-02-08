@@ -26,8 +26,8 @@ namespace solo
 		~Log();
 
 	private:
-		LogLevel _level;
-		std::string _message;
+		LogLevel level;
+		std::string message;
 		
 		std::string getLevelString();
 	};

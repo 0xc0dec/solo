@@ -119,12 +119,12 @@ void Matrix::createLookAt(float eyePositionX, float eyePositionY, float eyePosit
 
 void Matrix::createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane, Matrix* dst)
 {
-	float f_n = 1.0f / (zFarPlane - zNearPlane);
-	float theta = MATH_DEG_TO_RAD(fieldOfView) * 0.5f;
+	auto f_n = 1.0f / (zFarPlane - zNearPlane);
+	auto theta = MATH_DEG_TO_RAD(fieldOfView) * 0.5f;
 	if (fabs(fmod(theta, MATH_PIOVER2)) < MATH_EPSILON)
 		THROW(EngineException, "Invalid field of view value ", fieldOfView, " caused attempted tan calculation, which is undefined");
-	float divisor = tan(theta);
-	float factor = 1.0f / divisor;
+	auto divisor = tan(theta);
+	auto factor = 1.0f / divisor;
 
 	memset(dst, 0, MATRIX_SIZE);
 
@@ -138,8 +138,8 @@ void Matrix::createPerspective(float fieldOfView, float aspectRatio, float zNear
 
 void Matrix::createOrthographic(float width, float height, float zNearPlane, float zFarPlane, Matrix* dst)
 {
-	float halfWidth = width / 2.0f;
-	float halfHeight = height / 2.0f;
+	auto halfWidth = width / 2.0f;
+	auto halfHeight = height / 2.0f;
 	createOrthographicOffCenter(-halfWidth, halfWidth, -halfHeight, halfHeight, zNearPlane, zFarPlane, dst);
 }
 
@@ -174,7 +174,7 @@ void Matrix::createBillboardHelper(const Vector3& objectPosition, const Vector3&
 	const Vector3& cameraUpVector, const Vector3* cameraForwardVector, Matrix* dst)
 {
 	Vector3 delta(objectPosition, cameraPosition);
-	bool isSufficientDelta = delta.lengthSquared() > MATH_EPSILON;
+	auto isSufficientDelta = delta.lengthSquared() > MATH_EPSILON;
 
 	dst->setIdentity();
 	dst->m[3] = objectPosition.x;
@@ -185,7 +185,7 @@ void Matrix::createBillboardHelper(const Vector3& objectPosition, const Vector3&
 	// either a safe default or a sufficient distance between object and camera.
 	if (cameraForwardVector || isSufficientDelta)
 	{
-		Vector3 target = isSufficientDelta ? cameraPosition : (objectPosition - *cameraForwardVector);
+		auto target = isSufficientDelta ? cameraPosition : (objectPosition - *cameraForwardVector);
 
 		// A billboard is the inverse of a lookAt rotation
 		Matrix lookAt;
@@ -205,8 +205,8 @@ void Matrix::createBillboardHelper(const Vector3& objectPosition, const Vector3&
 
 void Matrix::createReflection(const Plane& plane, Matrix* dst)
 {
-	Vector3 normal(plane.getNormal());
-	float k = -2.0f * plane.getDistance();
+	auto normal(plane.getNormal());
+	auto k = -2.0f * plane.getDistance();
 
 	dst->setIdentity();
 
@@ -245,19 +245,19 @@ void Matrix::createScale(float xScale, float yScale, float zScale, Matrix* dst)
 
 void Matrix::createRotation(const Quaternion& q, Matrix* dst)
 {
-	float x2 = q.x + q.x;
-	float y2 = q.y + q.y;
-	float z2 = q.z + q.z;
+	auto x2 = q.x + q.x;
+	auto y2 = q.y + q.y;
+	auto z2 = q.z + q.z;
 
-	float xx2 = q.x * x2;
-	float yy2 = q.y * y2;
-	float zz2 = q.z * z2;
-	float xy2 = q.x * y2;
-	float xz2 = q.x * z2;
-	float yz2 = q.y * z2;
-	float wx2 = q.w * x2;
-	float wy2 = q.w * y2;
-	float wz2 = q.w * z2;
+	auto xx2 = q.x * x2;
+	auto yy2 = q.y * y2;
+	auto zz2 = q.z * z2;
+	auto xy2 = q.x * y2;
+	auto xz2 = q.x * z2;
+	auto yz2 = q.y * z2;
+	auto wx2 = q.w * x2;
+	auto wy2 = q.w * y2;
+	auto wz2 = q.w * z2;
 
 	dst->m[0] = 1.0f - yy2 - zz2;
 	dst->m[1] = xy2 + wz2;
@@ -283,12 +283,12 @@ void Matrix::createRotation(const Quaternion& q, Matrix* dst)
 
 void Matrix::createRotation(const Vector3& axis, float angle, Matrix* dst)
 {
-	float x = axis.x;
-	float y = axis.y;
-	float z = axis.z;
+	auto x = axis.x;
+	auto y = axis.y;
+	auto z = axis.z;
 
 	// Make sure the input axis is normalized.
-	float n = x*x + y*y + z*z;
+	auto n = x*x + y*y + z*z;
 	if (n != 1.0f)
 	{
 		// Not normalized.
@@ -303,19 +303,19 @@ void Matrix::createRotation(const Vector3& axis, float angle, Matrix* dst)
 		}
 	}
 
-	float c = cos(angle);
-	float s = sin(angle);
+	auto c = cos(angle);
+	auto s = sin(angle);
 
-	float t = 1.0f - c;
-	float tx = t * x;
-	float ty = t * y;
-	float tz = t * z;
-	float txy = tx * y;
-	float txz = tx * z;
-	float tyz = ty * z;
-	float sx = s * x;
-	float sy = s * y;
-	float sz = s * z;
+	auto t = 1.0f - c;
+	auto tx = t * x;
+	auto ty = t * y;
+	auto tz = t * z;
+	auto txy = tx * y;
+	auto txz = tx * z;
+	auto tyz = ty * z;
+	auto sx = s * x;
+	auto sy = s * y;
+	auto sz = s * z;
 
 	dst->m[0] = c + tx*x;
 	dst->m[1] = txy + sz;
@@ -343,8 +343,8 @@ void Matrix::createRotationX(float angle, Matrix* dst)
 {
 	memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
 
-	float c = cos(angle);
-	float s = sin(angle);
+	auto c = cos(angle);
+	auto s = sin(angle);
 
 	dst->m[5] = c;
 	dst->m[6] = s;
@@ -357,8 +357,8 @@ void Matrix::createRotationY(float angle, Matrix* dst)
 {
 	memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
 
-	float c = cos(angle);
-	float s = sin(angle);
+	auto c = cos(angle);
+	auto s = sin(angle);
 
 	dst->m[0] = c;
 	dst->m[2] = -s;
@@ -371,8 +371,8 @@ void Matrix::createRotationZ(float angle, Matrix* dst)
 {
 	memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
 
-	float c = cos(angle);
-	float s = sin(angle);
+	auto c = cos(angle);
+	auto s = sin(angle);
 
 	dst->m[0] = c;
 	dst->m[1] = s;
@@ -441,17 +441,17 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
 	// Extract the scale.
 	// This is simply the length of each axis (row/column) in the matrix.
 	Vector3 xaxis(m[0], m[1], m[2]);
-	float scaleX = xaxis.length();
+	auto scaleX = xaxis.length();
 
 	Vector3 yaxis(m[4], m[5], m[6]);
-	float scaleY = yaxis.length();
+	auto scaleY = yaxis.length();
 
 	Vector3 zaxis(m[8], m[9], m[10]);
-	float scaleZ = zaxis.length();
+	auto scaleZ = zaxis.length();
 
 	// Determine if we have a negative scale (true if determinant is less than zero).
 	// In this case, we simply negate a single axis of the scale.
-	float det = determinant();
+	auto det = determinant();
 	if (det < 0)
 		scaleZ = -scaleZ;
 
@@ -488,11 +488,11 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
 	zaxis.z *= rn;
 
 	// Now calculate the rotation from the resulting matrix (axes).
-	float trace = xaxis.x + yaxis.y + zaxis.z + 1.0f;
+	auto trace = xaxis.x + yaxis.y + zaxis.z + 1.0f;
 
 	if (trace > MATH_EPSILON)
 	{
-		float s = 0.5f / sqrt(trace);
+		auto s = 0.5f / sqrt(trace);
 		rotation->w = 0.25f / s;
 		rotation->x = (yaxis.z - zaxis.y) * s;
 		rotation->y = (zaxis.x - xaxis.z) * s;
@@ -504,7 +504,7 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
 		// we will never divide by zero in the code below.
 		if (xaxis.x > yaxis.y && xaxis.x > zaxis.z)
 		{
-			float s = 0.5f / sqrt(1.0f + xaxis.x - yaxis.y - zaxis.z);
+			auto s = 0.5f / sqrt(1.0f + xaxis.x - yaxis.y - zaxis.z);
 			rotation->w = (yaxis.z - zaxis.y) * s;
 			rotation->x = 0.25f / s;
 			rotation->y = (yaxis.x + xaxis.y) * s;
@@ -512,7 +512,7 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
 		}
 		else if (yaxis.y > zaxis.z)
 		{
-			float s = 0.5f / sqrt(1.0f + yaxis.y - xaxis.x - zaxis.z);
+			auto s = 0.5f / sqrt(1.0f + yaxis.y - xaxis.x - zaxis.z);
 			rotation->w = (zaxis.x - xaxis.z) * s;
 			rotation->x = (yaxis.x + xaxis.y) * s;
 			rotation->y = 0.25f / s;
@@ -520,7 +520,7 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
 		}
 		else
 		{
-			float s = 0.5f / sqrt(1.0f + zaxis.z - xaxis.x - yaxis.y);
+			auto s = 0.5f / sqrt(1.0f + zaxis.z - xaxis.x - yaxis.y);
 			rotation->w = (xaxis.y - yaxis.x) * s;
 			rotation->x = (zaxis.x + xaxis.z) * s;
 			rotation->y = (zaxis.y + yaxis.z) * s;
@@ -534,18 +534,18 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
 
 float Matrix::determinant() const
 {
-	float a0 = m[0] * m[5] - m[1] * m[4];
-	float a1 = m[0] * m[6] - m[2] * m[4];
-	float a2 = m[0] * m[7] - m[3] * m[4];
-	float a3 = m[1] * m[6] - m[2] * m[5];
-	float a4 = m[1] * m[7] - m[3] * m[5];
-	float a5 = m[2] * m[7] - m[3] * m[6];
-	float b0 = m[8] * m[13] - m[9] * m[12];
-	float b1 = m[8] * m[14] - m[10] * m[12];
-	float b2 = m[8] * m[15] - m[11] * m[12];
-	float b3 = m[9] * m[14] - m[10] * m[13];
-	float b4 = m[9] * m[15] - m[11] * m[13];
-	float b5 = m[10] * m[15] - m[11] * m[14];
+	auto a0 = m[0] * m[5] - m[1] * m[4];
+	auto a1 = m[0] * m[6] - m[2] * m[4];
+	auto a2 = m[0] * m[7] - m[3] * m[4];
+	auto a3 = m[1] * m[6] - m[2] * m[5];
+	auto a4 = m[1] * m[7] - m[3] * m[5];
+	auto a5 = m[2] * m[7] - m[3] * m[6];
+	auto b0 = m[8] * m[13] - m[9] * m[12];
+	auto b1 = m[8] * m[14] - m[10] * m[12];
+	auto b2 = m[8] * m[15] - m[11] * m[12];
+	auto b3 = m[9] * m[14] - m[10] * m[13];
+	auto b4 = m[9] * m[15] - m[11] * m[13];
+	auto b5 = m[10] * m[15] - m[11] * m[14];
 
 	// Calculate the determinant.
 	return (a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0);
@@ -682,21 +682,21 @@ bool Matrix::invert()
 
 bool Matrix::invert(Matrix* dst) const
 {
-	float a0 = m[0] * m[5] - m[1] * m[4];
-	float a1 = m[0] * m[6] - m[2] * m[4];
-	float a2 = m[0] * m[7] - m[3] * m[4];
-	float a3 = m[1] * m[6] - m[2] * m[5];
-	float a4 = m[1] * m[7] - m[3] * m[5];
-	float a5 = m[2] * m[7] - m[3] * m[6];
-	float b0 = m[8] * m[13] - m[9] * m[12];
-	float b1 = m[8] * m[14] - m[10] * m[12];
-	float b2 = m[8] * m[15] - m[11] * m[12];
-	float b3 = m[9] * m[14] - m[10] * m[13];
-	float b4 = m[9] * m[15] - m[11] * m[13];
-	float b5 = m[10] * m[15] - m[11] * m[14];
+	auto a0 = m[0] * m[5] - m[1] * m[4];
+	auto a1 = m[0] * m[6] - m[2] * m[4];
+	auto a2 = m[0] * m[7] - m[3] * m[4];
+	auto a3 = m[1] * m[6] - m[2] * m[5];
+	auto a4 = m[1] * m[7] - m[3] * m[5];
+	auto a5 = m[2] * m[7] - m[3] * m[6];
+	auto b0 = m[8] * m[13] - m[9] * m[12];
+	auto b1 = m[8] * m[14] - m[10] * m[12];
+	auto b2 = m[8] * m[15] - m[11] * m[12];
+	auto b3 = m[9] * m[14] - m[10] * m[13];
+	auto b4 = m[9] * m[15] - m[11] * m[13];
+	auto b5 = m[10] * m[15] - m[11] * m[14];
 
 	// Calculate the determinant.
-	float det = a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
+	auto det = a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
 
 	// Close to zero, can't invert.
 	if (fabs(det) <= MATH_TOLERANCE)

@@ -4,9 +4,8 @@
 using namespace solo;
 
 
-Device::Device(const EngineCreationArgs& args)
-	: close(false),
-	creationArgs(args)
+Device::Device(const EngineCreationArgs& args):
+	close(false), creationArgs(args)
 {
 }
 
