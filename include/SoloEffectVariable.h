@@ -33,6 +33,6 @@ namespace solo
 	protected:
 		EffectVariable(const std::string &name);
 
-		std::string _name;
+		std::string name;
 	};
 }
