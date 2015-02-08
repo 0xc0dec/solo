@@ -103,18 +103,16 @@ float BoundingBox::intersects(const Plane& plane) const
 {
 	// Calculate the distance from the center of the box to the plane.
 	Vector3 center((min.x + max.x) * 0.5f, (min.y + max.y) * 0.5f, (min.z + max.z) * 0.5f);
-	float distance = plane.distance(center);
+	auto distance = plane.distance(center);
 
 	// Get the extents of the box from its center along each axis.
-	float extentX = (max.x - min.x) * 0.5f;
-	float extentY = (max.y - min.y) * 0.5f;
-	float extentZ = (max.z - min.z) * 0.5f;
+	auto extentX = (max.x - min.x) * 0.5f;
+	auto extentY = (max.y - min.y) * 0.5f;
+	auto extentZ = (max.z - min.z) * 0.5f;
 
-	const Vector3& planeNormal = plane.getNormal();
+	const auto& planeNormal = plane.getNormal();
 	if (fabsf(distance) <= (fabsf(extentX * planeNormal.x) + fabsf(extentY * planeNormal.y) + fabsf(extentZ * planeNormal.z)))
-	{
 		return static_cast<float>(Plane::INTERSECTS_INTERSECTING);
-	}
 
 	return (distance > 0.0f) ? static_cast<float>(Plane::INTERSECTS_FRONT) : static_cast<float>(Plane::INTERSECTS_BACK);
 }
@@ -122,17 +120,15 @@ float BoundingBox::intersects(const Plane& plane) const
 
 float BoundingBox::intersects(const Ray& ray) const
 {
-	// Intermediate calculation variables.
-	float dnear = 0.0f;
-	float dfar = 0.0f;
-	float tmin = 0.0f;
-	float tmax = 0.0f;
+	auto dnear = 0.0f;
+	auto dfar = 0.0f;
+	auto tmin = 0.0f;
+	auto tmax = 0.0f;
 
-	const Vector3& origin = ray.getOrigin();
-	const Vector3& direction = ray.getDirection();
+	const auto& origin = ray.getOrigin();
+	const auto& direction = ray.getDirection();
 
-	// X direction.
-	float div = 1.0f / direction.x;
+	auto div = 1.0f / direction.x;
 	if (div >= 0.0f)
 	{
 		tmin = (min.x - origin.x) * div;
@@ -150,7 +146,6 @@ float BoundingBox::intersects(const Ray& ray) const
 	if (dnear > dfar || dfar < 0.0f)
 		return static_cast<float>(Ray::INTERSECTS_NONE);
 
-	// Y direction.
 	div = 1.0f / direction.y;
 	if (div >= 0.0f)
 	{
@@ -165,18 +160,14 @@ float BoundingBox::intersects(const Ray& ray) const
 
 	// Update the near and far intersection distances.
 	if (tmin > dnear)
-	{
 		dnear = tmin;
-	}
 	if (tmax < dfar)
-	{
 		dfar = tmax;
-	}
+
 	// Check if the ray misses the box.
 	if (dnear > dfar || dfar < 0.0f)
 		return static_cast<float>(Ray::INTERSECTS_NONE);
 
-	// Z direction.
 	div = 1.0f / direction.z;
 	if (div >= 0.0f)
 	{
@@ -191,13 +182,9 @@ float BoundingBox::intersects(const Ray& ray) const
 
 	// Update the near and far intersection distances.
 	if (tmin > dnear)
-	{
 		dnear = tmin;
-	}
 	if (tmax < dfar)
-	{
 		dfar = tmax;
-	}
 
 	// Check if the ray misses the box.
 	if (dnear > dfar || dfar < 0.0f)
@@ -229,8 +216,8 @@ void BoundingBox::merge(const BoundingBox& box)
 
 void BoundingBox::merge(const BoundingSphere& sphere)
 {
-	const Vector3& center = sphere.center;
-	float radius = sphere.radius;
+	const auto& center = sphere.center;
+	auto radius = sphere.radius;
 
 	// Calculate the new minimum point for the merged bounding box.
 	min.x = std::min(min.x, center.x - radius);
@@ -295,8 +282,8 @@ void BoundingBox::set(const BoundingBox& box)
 
 void BoundingBox::set(const BoundingSphere& sphere)
 {
-	const Vector3& center = sphere.center;
-	float radius = sphere.radius;
+	const auto& center = sphere.center;
+	auto radius = sphere.radius;
 
 	// Calculate the minimum point for the box.
 	min.x = center.x - radius;
@@ -318,8 +305,8 @@ void BoundingBox::transform(const Matrix& matrix)
 
 	// Transform the corners, recalculating the min and max points along the way.
 	matrix.transformPoint(&corners[0]);
-	Vector3 newMin = corners[0];
-	Vector3 newMax = corners[0];
+	auto newMin = corners[0];
+	auto newMax = corners[0];
 	for (int i = 1; i < 8; i++)
 	{
 		matrix.transformPoint(&corners[i]);
