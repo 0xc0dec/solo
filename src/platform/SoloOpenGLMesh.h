@@ -25,9 +25,9 @@ namespace solo
 		OpenGLMesh& operator=(const OpenGLMesh& other) = default;
 		OpenGLMesh& operator=(OpenGLMesh&& other);
 
-		GLuint _vertexArrayHandle;
-		GLuint _vertexBufferHandle;
-		GLuint _normalBufferHandle;
-		GLuint _uvBufferHandle;
+		GLuint vertexArrayHandle;
+		GLuint vertexBufferHandle;
+		GLuint normalBufferHandle;
+		GLuint uvBufferHandle;
 	};
 }

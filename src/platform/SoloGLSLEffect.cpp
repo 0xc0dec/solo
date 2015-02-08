@@ -34,7 +34,7 @@ GLSLEffect::~GLSLEffect()
 {
 	if (valid)
 	{
-		glDeleteProgram(_program);
+		glDeleteProgram(program);
 		DEBUG("Destroyed effect ", id);
 	}
 }
@@ -48,14 +48,14 @@ ptr<GLSLEffect> GLSLEffect::create(const std::string& vsSrc, const std::string& 
 
 void GLSLEffect::bind()
 {
-	glUseProgram(_program);
+	glUseProgram(program);
 }
 
 
 ptr<EffectVariable> GLSLEffect::findVariable(const std::string& name)
 {
-	auto where = _variables.find(name);
-	if (where != _variables.end())
+	auto where = variables.find(name);
+	if (where != variables.end())
 		return where->second;
 	return nullptr;
 }
@@ -63,24 +63,24 @@ ptr<EffectVariable> GLSLEffect::findVariable(const std::string& name)
 
 bool GLSLEffect::createProgram(GLuint vs, GLuint fs)
 {
-	_program = glCreateProgram();
-	glAttachShader(_program, vs);
-	glAttachShader(_program, fs);
-	glLinkProgram(_program);
+	program = glCreateProgram();
+	glAttachShader(program, vs);
+	glAttachShader(program, fs);
+	glLinkProgram(program);
 
 	int logLength;
-	glGetProgramiv(_program, GL_INFO_LOG_LENGTH, &logLength);
+	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
 	auto log = new char[logLength];
-	glGetProgramInfoLog(_program, logLength, nullptr, log);
+	glGetProgramInfoLog(program, logLength, nullptr, log);
 	if (logLength > 1)
 		appendToLog(log);
 	delete[] log;
 	
 	int status;
-	glGetProgramiv(_program, GL_COMPILE_STATUS, &status);
+	glGetProgramiv(program, GL_COMPILE_STATUS, &status);
 	if (status == GL_FALSE)
 	{
-		glDeleteProgram(_program);
+		glDeleteProgram(program);
 		return false;
 	}
 	
@@ -118,7 +118,7 @@ GLint GLSLEffect::createShader(GLuint type, std::string src)
 
 void GLSLEffect::deleteShader(GLuint shader)
 {
-	glDetachShader(_program, shader);
+	glDetachShader(program, shader);
 	glDeleteShader(shader);
 }
 
@@ -126,10 +126,10 @@ void GLSLEffect::deleteShader(GLuint shader)
 void GLSLEffect::discoverVariables()
 {
 	GLint activeUniforms, nameMaxLength;
-	glGetProgramiv(_program, GL_ACTIVE_UNIFORMS, &activeUniforms);
+	glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &activeUniforms);
 	if (activeUniforms <= 0)
 		return;
-	glGetProgramiv(_program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &nameMaxLength);
+	glGetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &nameMaxLength);
 	if (nameMaxLength <= 0)
 		return;
 
@@ -139,7 +139,7 @@ void GLSLEffect::discoverVariables()
 	unsigned samplerIndex = 0;
 	for (int i = 0; i < activeUniforms; ++i)
 	{
-		glGetActiveUniform(_program, i, nameMaxLength, nullptr, &size, &type, rawName);
+		glGetActiveUniform(program, i, nameMaxLength, nullptr, &size, &type, rawName);
 		rawName[nameMaxLength] = '\0';
 		std::string name = rawName;
 
@@ -149,7 +149,7 @@ void GLSLEffect::discoverVariables()
 		if (bracketIndex != std::string::npos)
 			name.erase(bracketIndex);
 
-		auto location = glGetUniformLocation(_program, rawName);
+		auto location = glGetUniformLocation(program, rawName);
 		unsigned index = 0;
 		if (type == GL_SAMPLER_2D)
 		{
@@ -158,7 +158,7 @@ void GLSLEffect::discoverVariables()
 		}
 
 		auto variable = GLSLEffectVariable::create(name, location, type, index);
-		_variables[name] = variable;
+		variables[name] = variable;
 	}
 
 	delete[] rawName;

@@ -24,8 +24,8 @@ namespace solo
 	private:
 		SDLOpenGLDevice(const EngineCreationArgs &args);
 
-		SDL_Window *_window;
-		SDL_GLContext _context;
+		SDL_Window *window;
+		SDL_GLContext context;
 
 		void processSystemEvents();
 		std::tuple<int, int> selectContextVersion(int desiredMajorVersion, int desiredMinorVersion);

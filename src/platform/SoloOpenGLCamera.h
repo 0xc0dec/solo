@@ -14,7 +14,7 @@ namespace solo
 	protected:
 		OpenGLCamera(size_t node);
 
-		ptr<Device> _device;
+		ptr<Device> device;
 
 		void applyViewportChange() override;
 		void applyClearColor() override;

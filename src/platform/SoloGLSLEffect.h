@@ -21,8 +21,8 @@ namespace solo
 	private:
 		GLSLEffect(const std::string& vsSrc, const std::string& fsSrc);
 
-		GLuint _program;
-		std::map<std::string, ptr<GLSLEffectVariable>> _variables; // TODO move to the base class (along with some methods)
+		GLuint program;
+		std::map<std::string, ptr<GLSLEffectVariable>> variables; // TODO move to the base class (along with some methods)
 
 		GLint createShader(GLuint type, std::string src);
 		bool createProgram(GLuint vs, GLuint fs);

@@ -22,12 +22,12 @@ SDLOpenGLDevice::SDLOpenGLDevice(EngineCreationArgs const& args):
 	
 	auto windowWithContext = tryCreateWindowWithContext(false, major, minor);
 	
-	_window = std::get<0>(windowWithContext);
-	if (!_window)
+	window = std::get<0>(windowWithContext);
+	if (!window)
 		THROW(EngineException, "Failed to create device");
 
-	_context = std::get<1>(windowWithContext);
-	if (!_context)
+	context = std::get<1>(windowWithContext);
+	if (!context)
 		THROW(EngineException, "Failed to init OpenGL context");
 
 	glewExperimental = true;
@@ -95,8 +95,8 @@ std::tuple<SDL_Window*, SDL_GLContext> SDLOpenGLDevice::tryCreateWindowWithConte
 
 SDLOpenGLDevice::~SDLOpenGLDevice()
 {
-	SDL_GL_DeleteContext(_context);
-	SDL_DestroyWindow(_window);
+	SDL_GL_DeleteContext(context);
+	SDL_DestroyWindow(window);
 	SDL_Quit();
 }
 
@@ -109,7 +109,7 @@ void SDLOpenGLDevice::beginUpdate()
 
 void SDLOpenGLDevice::endUpdate()
 {
-	SDL_GL_SwapWindow(_window);
+	SDL_GL_SwapWindow(window);
 }
 
 
@@ -121,7 +121,7 @@ ptr<SDLOpenGLDevice> SDLOpenGLDevice::create(const EngineCreationArgs &args)
 
 void SDLOpenGLDevice::setWindowTitle(const char *title)
 {
-	SDL_SetWindowTitle(_window, title);
+	SDL_SetWindowTitle(window, title);
 }
 
 
@@ -155,6 +155,6 @@ unsigned long SDLOpenGLDevice::getLifetime() const
 Vector2 SDLOpenGLDevice::getCanvasSize() const
 {
 	int width, height;
-	SDL_GetWindowSize(_window, &width, &height);
+	SDL_GetWindowSize(window, &width, &height);
 	return Vector2(static_cast<float>(width), static_cast<float>(height));
 }

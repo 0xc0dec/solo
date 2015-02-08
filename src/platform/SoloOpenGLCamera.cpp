@@ -15,13 +15,13 @@ ptr<OpenGLCamera> OpenGLCamera::create(size_t node)
 OpenGLCamera::OpenGLCamera(size_t node):
 	Camera(node)
 {
-	_device = Engine::get()->getDevice();
+	device = Engine::get()->getDevice();
 }
 
 
 void OpenGLCamera::applyViewportChange()
 {
-	auto size = _device->getCanvasSize();
+	auto size = device->getCanvasSize();
 	glViewport(
 		static_cast<GLuint>(viewport.x * size.x),
 		static_cast<GLuint>(viewport.y * size.y),

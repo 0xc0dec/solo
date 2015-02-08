@@ -27,8 +27,8 @@ namespace solo
 	private:
 		GLSLEffectVariable(const std::string& name, GLint location, GLenum type, unsigned index = 0);
 
-		GLint _location;
-		GLenum _type;
-		unsigned _index;
+		GLint location;
+		GLenum type;
+		unsigned index;
 	};
 }
