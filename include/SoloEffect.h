@@ -26,9 +26,9 @@ namespace solo
 	protected:
 		Effect(const std::string &vsSrc, const std::string &fsSrc);
 
-		bool _valid;
-		std::string _log;
-		size_t _id;
+		bool valid;
+		std::string log;
+		size_t id;
 
 		void appendToLog(const std::string &newLog);
 	};

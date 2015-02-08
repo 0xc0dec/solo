@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SoloBase.h"
 #include "SoloTypeId.h"
 
 namespace solo
@@ -26,7 +25,7 @@ namespace solo
 	{
 	public:
 		explicit ComponentBase(size_t node):
-			_node(node)
+			node(node)
 		{
 		}
 
@@ -42,10 +41,10 @@ namespace solo
 
 		size_t getNode() const
 		{
-			return _node;
+			return node;
 		}
 
 	protected:
-		size_t _node;
+		size_t node;
 	};
 }

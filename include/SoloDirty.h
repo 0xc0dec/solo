@@ -7,15 +7,15 @@ namespace solo
 	class Dirty
 	{
 	protected:
-		mutable unsigned _dirtyBits;
+		mutable unsigned dirtyBits;
 
-		Dirty() : _dirtyBits(0)
+		Dirty() : dirtyBits(0)
 		{
 		}
 
 		bool isDirty() const
 		{
-			return _dirtyBits != 0;
+			return dirtyBits != 0;
 		}
 
 		template <unsigned bit>
@@ -29,32 +29,32 @@ namespace solo
 		template <unsigned bit>
 		bool isDirty() const
 		{
-			return (_dirtyBits & bit) != 0;
+			return (dirtyBits & bit) != 0;
 		}
 
 		template <unsigned bit>
 		void clean() const
 		{
-			_dirtyBits &= ~bit;
+			dirtyBits &= ~bit;
 		}
 
 		template <unsigned firstBit, unsigned secondBit, unsigned... otherBits>
 		void clean() const
 		{
-			_dirtyBits &= ~firstBit;
+			dirtyBits &= ~firstBit;
 			clean<secondBit, otherBits...>();
 		}
 
 		template <unsigned bit>
 		void setDirty() const
 		{
-			_dirtyBits |= bit;
+			dirtyBits |= bit;
 		}
 
 		template <unsigned firstBit, unsigned secondBit, unsigned... otherBits>
 		void setDirty() const
 		{
-			_dirtyBits |= firstBit;
+			dirtyBits |= firstBit;
 			setDirty<secondBit, otherBits...>();
 		}
 	};

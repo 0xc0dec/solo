@@ -5,10 +5,10 @@ using namespace solo;
 
 
 Effect::Effect(const std::string &vsSrc, const std::string &fsSrc):
-	_valid(false),
-	_id(0)
+	valid(false),
+	id(0)
 {
-	_id = getHash(vsSrc + fsSrc);
+	id = getHash(vsSrc + fsSrc);
 }
 
 
@@ -21,23 +21,23 @@ ptr<Effect> Effect::create(const std::string& vsSrc, const std::string& fsSrc)
 
 void Effect::appendToLog(const std::string &newLog)
 {
-	_log.append(newLog).append("\n");
+	log.append(newLog).append("\n");
 }
 
 
 bool Effect::isValid() const
 {
-	return _valid;
+	return valid;
 }
 
 
 std::string Effect::getLog() const
 {
-	return _log;
+	return log;
 }
 
 
 size_t Effect::getId() const
 {
-	return _id;
+	return id;
 }

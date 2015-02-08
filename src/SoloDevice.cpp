@@ -5,8 +5,8 @@ using namespace solo;
 
 
 Device::Device(const EngineCreationArgs& args)
-	: _closeRequested(false),
-	_creationArgs(args)
+	: close(false),
+	creationArgs(args)
 {
 }
 
@@ -19,5 +19,5 @@ ptr<Device> Device::create(const EngineCreationArgs& args)
 
 bool Device::closeRequested() const
 {
-	return _closeRequested;
+	return close;
 }

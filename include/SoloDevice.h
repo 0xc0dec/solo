@@ -27,7 +27,7 @@ namespace solo
 	protected:
 		Device(const EngineCreationArgs& args);
 
-		bool _closeRequested;
-		EngineCreationArgs _creationArgs;
+		bool close;
+		EngineCreationArgs creationArgs;
 	};
 }

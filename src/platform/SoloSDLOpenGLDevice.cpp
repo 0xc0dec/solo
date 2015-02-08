@@ -79,13 +79,13 @@ std::tuple<SDL_Window*, SDL_GLContext> SDLOpenGLDevice::tryCreateWindowWithConte
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, ctxMajorVersion);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, ctxMinorVersion);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, _creationArgs.depth);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, creationArgs.depth);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	
 	auto flags = static_cast<int>(SDL_WINDOW_OPENGL);
 	if (hidden)
 		flags |= SDL_WINDOW_HIDDEN;
-	window = SDL_CreateWindow(_creationArgs.windowTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _creationArgs.canvasWidth, _creationArgs.canvasHeight, flags);
+	window = SDL_CreateWindow(creationArgs.windowTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, creationArgs.canvasWidth, creationArgs.canvasHeight, flags);
 	if (window)
 		context = SDL_GL_CreateContext(window);
 	
@@ -133,11 +133,11 @@ void SDLOpenGLDevice::processSystemEvents()
 		switch (evt.type)
 		{
 		case SDL_QUIT:
-			_closeRequested = true;
+			close = true;
 			break;
 		case SDL_KEYUP:
 			if (evt.key.keysym.sym == SDLK_ESCAPE)
-				_closeRequested = true;
+				close = true;
 			break;
 		default:
 			break;

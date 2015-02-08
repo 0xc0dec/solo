@@ -1,6 +1,5 @@
 #include "SoloGLSLEffect.h"
 #include "SoloGLSLEffectVariable.h"
-#include "SoloException.h"
 #include "../SoloLog.h"
 
 using namespace solo;
@@ -20,23 +19,23 @@ GLSLEffect::GLSLEffect(const std::string &vsSrc, const std::string &fsSrc):
 	if (!createProgram(vs, fs))
 		return;
 
-	_valid = true;
+	valid = true;
 
 	deleteShader(vs);
 	deleteShader(fs);
 
 	discoverVariables();
 
-	DEBUG("Created effect ", _id);
+	DEBUG("Created effect ", id);
 }
 
 
 GLSLEffect::~GLSLEffect()
 {
-	if (_valid)
+	if (valid)
 	{
 		glDeleteProgram(_program);
-		DEBUG("Destroyed effect ", _id);
+		DEBUG("Destroyed effect ", id);
 	}
 }
 
