@@ -4,14 +4,14 @@
 using namespace solo;
 
 
-Vector3::Vector3()
-: x(0.0f), y(0.0f), z(0.0f)
+Vector3::Vector3():
+	x(0.0f), y(0.0f), z(0.0f)
 {
 }
 
 
-Vector3::Vector3(float x, float y, float z)
-: x(x), y(y), z(z)
+Vector3::Vector3(float x, float y, float z):
+	x(x), y(y), z(z)
 {
 }
 
@@ -31,7 +31,7 @@ Vector3::Vector3(const Vector3& p1, const Vector3& p2)
 Vector3 Vector3::fromColor(unsigned int color)
 {
 	float components[3];
-	int componentIndex = 0;
+	auto componentIndex = 0;
 	for (int i = 2; i >= 0; --i)
 	{
 		int component = (color >> i * 8) & 0x0000ff;
@@ -93,9 +93,9 @@ bool Vector3::isOne() const
 
 float Vector3::angle(const Vector3& v1, const Vector3& v2)
 {
-	float dx = v1.y * v2.z - v1.z * v2.y;
-	float dy = v1.z * v2.x - v1.x * v2.z;
-	float dz = v1.x * v2.y - v1.y * v2.x;
+	auto dx = v1.y * v2.z - v1.z * v2.y;
+	auto dy = v1.z * v2.x - v1.x * v2.z;
+	auto dz = v1.x * v2.y - v1.y * v2.x;
 
 	return atan2f(sqrt(dx * dx + dy * dy + dz * dz) + MATH_FLOAT_SMALL, dot(v1, v2));
 }
@@ -181,9 +181,9 @@ void Vector3::cross(const Vector3& v1, const Vector3& v2, Vector3* dst)
 
 float Vector3::distance(const Vector3& v) const
 {
-	float dx = v.x - x;
-	float dy = v.y - y;
-	float dz = v.z - z;
+	auto dx = v.x - x;
+	auto dy = v.y - y;
+	auto dz = v.z - z;
 
 	return sqrt(dx * dx + dy * dy + dz * dz);
 }
@@ -191,23 +191,22 @@ float Vector3::distance(const Vector3& v) const
 
 float Vector3::distanceSquared(const Vector3& v) const
 {
-	float dx = v.x - x;
-	float dy = v.y - y;
-	float dz = v.z - z;
-
-	return (dx * dx + dy * dy + dz * dz);
+	auto dx = v.x - x;
+	auto dy = v.y - y;
+	auto dz = v.z - z;
+	return dx * dx + dy * dy + dz * dz;
 }
 
 
 float Vector3::dot(const Vector3& v) const
 {
-	return (x * v.x + y * v.y + z * v.z);
+	return x * v.x + y * v.y + z * v.z;
 }
 
 
 float Vector3::dot(const Vector3& v1, const Vector3& v2)
 {
-	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
+	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
 
 
@@ -219,7 +218,7 @@ float Vector3::length() const
 
 float Vector3::lengthSquared() const
 {
-	return (x * x + y * y + z * z);
+	return x * x + y * y + z * z;
 }
 
 
@@ -247,7 +246,7 @@ void Vector3::normalize(Vector3* dst) const
 		dst->z = z;
 	}
 
-	float n = x * x + y * y + z * z;
+	auto n = x * x + y * y + z * z;
 	// Already normalized.
 	if (n == 1.0f)
 		return;

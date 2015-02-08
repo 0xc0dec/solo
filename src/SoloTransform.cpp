@@ -65,9 +65,9 @@ const Matrix& Transform::getMatrix() const
 {
 	if (isDirty())
 	{
-		bool hasTranslation = !localPosition.isZero();
-		bool hasScale = !localScale.isOne();
-		bool hasRotation = !localRotation.isIdentity();
+		auto hasTranslation = !localPosition.isZero();
+		auto hasScale = !localScale.isOne();
+		auto hasRotation = !localRotation.isIdentity();
 
 		if (hasTranslation || isDirty<DIRTY_BIT_POSITION>())
 		{

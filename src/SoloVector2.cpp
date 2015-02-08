@@ -4,14 +4,14 @@
 using namespace solo;
 
 
-Vector2::Vector2()
-	: x(0.0f), y(0.0f)
+Vector2::Vector2():
+	x(0.0f), y(0.0f)
 {
 }
 
 
-Vector2::Vector2(float x, float y)
-	: x(x), y(y)
+Vector2::Vector2(float x, float y):
+	x(x), y(y)
 {
 }
 
@@ -70,7 +70,7 @@ bool Vector2::isOne() const
 
 float Vector2::angle(const Vector2& v1, const Vector2& v2)
 {
-	float dz = v1.x * v2.y - v1.y * v2.x;
+	auto dz = v1.x * v2.y - v1.y * v2.x;
 	return atan2f(fabsf(dz) + MATH_FLOAT_SMALL, dot(v1, v2));
 }
 
@@ -125,30 +125,29 @@ void Vector2::clamp(const Vector2& v, const Vector2& min, const Vector2& max, Ve
 
 float Vector2::distance(const Vector2& v) const
 {
-	float dx = v.x - x;
-	float dy = v.y - y;
-
+	auto dx = v.x - x;
+	auto dy = v.y - y;
 	return sqrt(dx * dx + dy * dy);
 }
 
 
 float Vector2::distanceSquared(const Vector2& v) const
 {
-	float dx = v.x - x;
-	float dy = v.y - y;
+	auto dx = v.x - x;
+	auto dy = v.y - y;
 	return (dx * dx + dy * dy);
 }
 
 
 float Vector2::dot(const Vector2& v) const
 {
-	return (x * v.x + y * v.y);
+	return x * v.x + y * v.y;
 }
 
 
 float Vector2::dot(const Vector2& v1, const Vector2& v2)
 {
-	return (v1.x * v2.x + v1.y * v2.y);
+	return v1.x * v2.x + v1.y * v2.y;
 }
 
 
@@ -160,7 +159,7 @@ float Vector2::length() const
 
 float Vector2::lengthSquared() const
 {
-	return (x * x + y * y);
+	return x * x + y * y;
 }
 
 
@@ -186,7 +185,7 @@ void Vector2::normalize(Vector2* dst) const
 		dst->y = y;
 	}
 
-	float n = x * x + y * y;
+	auto n = x * x + y * y;
 	// Already normalized.
 	if (n == 1.0f)
 		return;
@@ -218,19 +217,19 @@ void Vector2::scale(const Vector2& scale)
 
 void Vector2::rotate(const Vector2& point, float angle)
 {
-	float sinAngle = sin(angle);
-	float cosAngle = cos(angle);
+	auto sinAngle = sin(angle);
+	auto cosAngle = cos(angle);
 
 	if (point.isZero())
 	{
-		float tempX = x * cosAngle - y * sinAngle;
+		auto tempX = x * cosAngle - y * sinAngle;
 		y = y * cosAngle + x * sinAngle;
 		x = tempX;
 	}
 	else
 	{
-		float tempX = x - point.x;
-		float tempY = y - point.y;
+		auto tempX = x - point.x;
+		auto tempY = y - point.y;
 
 		x = tempX * cosAngle - tempY * sinAngle + point.x;
 		y = tempY * cosAngle + tempX * sinAngle + point.y;
