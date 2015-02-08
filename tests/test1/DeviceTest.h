@@ -7,8 +7,8 @@ using namespace solo;
 class DeviceTest : public TestBase
 {
 public:
-	DeviceTest(Engine* engine)
-		: TestBase(engine)
+	DeviceTest(Engine* engine):
+		TestBase(engine)
 	{
 	}
 
@@ -19,7 +19,7 @@ public:
 
 	void testCanvasSize()
 	{
-		auto size = _device->getCanvasSize();
+		auto size = device->getCanvasSize();
 		assert(size.x == 1366);
 		assert(size.y == 768);
 	}

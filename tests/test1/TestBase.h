@@ -12,7 +12,7 @@ class TestBase
 {
 public:
 	TestBase(Engine *engine) :
-		_engine(engine), _device(engine->getDevice()), _scene(_engine->getScene())
+		engine(engine), device(engine->getDevice()), scene(engine->getScene())
 	{
 	}
 
@@ -21,7 +21,7 @@ public:
 	virtual void run() = 0;
 
 protected:
-	Engine *_engine;
-	ptr<Device> _device;
-	ptr<Scene> _scene;
+	Engine *engine;
+	ptr<Device> device;
+	ptr<Scene> scene;
 };

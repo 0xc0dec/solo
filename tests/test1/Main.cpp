@@ -10,18 +10,18 @@ class Callback : public EngineCallback
 {
 public:
 	Callback(Engine* engine):
-		_engine(engine)
+		engine(engine)
 	{
 	}
 
 	virtual void onEngineStarted() override
 	{
-		_engine->getDevice()->setWindowTitle("Test title");
-		MaterialsTest(_engine).run();
-		ComponentsTest(_engine).run();
-		TransformTest(_engine).run();
-		DeviceTest(_engine).run();
-		ManualTest(_engine).run();
+		engine->getDevice()->setWindowTitle("Test title");
+		MaterialsTest(engine).run();
+		ComponentsTest(engine).run();
+		TransformTest(engine).run();
+		DeviceTest(engine).run();
+		ManualTest(engine).run();
 		LOG("All tests passed");
 	}
 
@@ -35,7 +35,7 @@ public:
 	}
 
 private:
-	Engine *_engine;
+	Engine *engine;
 };
 
 

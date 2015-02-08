@@ -39,7 +39,7 @@ public:
 
 	void createQuadInScreenSpace()
 	{
-		auto _scene = _engine->getScene();
+		auto _scene = engine->getScene();
 		auto effect = Effect::create(vsBasic, fsSimleColor);
 		auto material = Material::create();
 		material->addPass(effect);
