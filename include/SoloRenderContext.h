@@ -14,42 +14,42 @@ namespace solo
 	public:
 		size_t getNode() const
 		{
-			return _node;
+			return node;
 		}
 
 		ptr<Camera> getCamera() const
 		{
-			return _camera;
+			return camera;
 		}
 
 		ptr<Transform> getNodeTransform() const
 		{
-			return _nodeTransform;
+			return nodeTransform;
 		}
 
 		ptr<Transform> getCameraTransform() const
 		{
-			return _cameraTransform;
+			return cameraTransform;
 		}
 
 	private:
-		size_t _node;
-		ptr<Camera> _camera;
-		ptr<Transform> _nodeTransform;
-		ptr<Transform> _cameraTransform;
+		size_t node;
+		ptr<Camera> camera;
+		ptr<Transform> nodeTransform;
+		ptr<Transform> cameraTransform;
 
 		RenderContext(size_t node, ptr<Transform> nodeTransform, ptr<Camera> camera, ptr<Transform> cameraTransform) :
-			_node(node),
-			_camera(camera),
-			_nodeTransform(nodeTransform),
-			_cameraTransform(cameraTransform)
+			node(node),
+			camera(camera),
+			nodeTransform(nodeTransform),
+			cameraTransform(cameraTransform)
 		{
 		}
 
 		void setNode(size_t node, ptr<Transform> nodeTransform)
 		{
-			_node = node;
-			_nodeTransform = nodeTransform;
+			this->node = node;
+			this->nodeTransform = nodeTransform;
 		}
 	};
 }

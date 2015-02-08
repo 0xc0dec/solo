@@ -9,7 +9,7 @@
 using namespace solo;
 
 
-Ray::Ray(): _direction(0, 0, 1)
+Ray::Ray(): direction(0, 0, 1)
 {
 }
 
@@ -28,38 +28,38 @@ Ray::Ray(float originX, float originY, float originZ, float dirX, float dirY, fl
 
 const Vector3& Ray::getOrigin() const
 {
-	return _origin;
+	return origin;
 }
 
 
 void Ray::setOrigin(const Vector3& origin)
 {
-	_origin = origin;
+	this->origin = origin;
 }
 
 
 void Ray::setOrigin(float x, float y, float z)
 {
-	_origin.set(x, y, z);
+	origin.set(x, y, z);
 }
 
 
 const Vector3& Ray::getDirection() const
 {
-	return _direction;
+	return direction;
 }
 
 
 void Ray::setDirection(const Vector3& direction)
 {
-	_direction = direction;
+	this->direction = direction;
 	normalize();
 }
 
 
 void Ray::setDirection(float x, float y, float z)
 {
-	_direction.set(x, y, z);
+	direction.set(x, y, z);
 	normalize();
 }
 
@@ -78,29 +78,29 @@ float Ray::intersects(const BoundingBox& box) const
 
 float Ray::intersects(const Frustum& frustum) const
 {
-	Plane n = frustum.getNear();
-	float nD = intersects(n);
-	float nOD = n.distance(_origin);
+	auto n = frustum.getNear();
+	auto nD = intersects(n);
+	auto nOD = n.distance(origin);
 
-	Plane f = frustum.getFar();
-	float fD = intersects(f);
-	float fOD = f.distance(_origin);
+	auto f = frustum.getFar();
+	auto fD = intersects(f);
+	auto fOD = f.distance(origin);
 
-	Plane l = frustum.getLeft();
-	float lD = intersects(l);
-	float lOD = l.distance(_origin);
+	auto l = frustum.getLeft();
+	auto lD = intersects(l);
+	auto lOD = l.distance(origin);
 
-	Plane r = frustum.getRight();
-	float rD = intersects(r);
-	float rOD = r.distance(_origin);
+	auto r = frustum.getRight();
+	auto rD = intersects(r);
+	auto rOD = r.distance(origin);
 
-	Plane b = frustum.getBottom();
-	float bD = intersects(b);
-	float bOD = b.distance(_origin);
+	auto b = frustum.getBottom();
+	auto bD = intersects(b);
+	auto bOD = b.distance(origin);
 
-	Plane t = frustum.getTop();
-	float tD = intersects(t);
-	float tOD = t.distance(_origin);
+	auto t = frustum.getTop();
+	auto tD = intersects(t);
+	auto tOD = t.distance(origin);
 
 	// If the ray's origin is in the negative half-space of one of the frustum's planes
 	// and it does not intersect that same plane, then it does not intersect the frustum.
@@ -112,7 +112,7 @@ float Ray::intersects(const Frustum& frustum) const
 	}
 
 	// Otherwise, the intersection distance is the minimum positive intersection distance.
-	float d = (nD > 0.0f) ? nD : 0.0f;
+	auto d = (nD > 0.0f) ? nD : 0.0f;
 	d = (fD > 0.0f) ? ((d == 0.0f) ? fD : std::min(fD, d)) : d;
 	d = (lD > 0.0f) ? ((d == 0.0f) ? lD : std::min(lD, d)) : d;
 	d = (rD > 0.0f) ? ((d == 0.0f) ? rD : std::min(rD, d)) : d;
@@ -125,15 +125,13 @@ float Ray::intersects(const Frustum& frustum) const
 
 float Ray::intersects(const Plane& plane) const
 {
-	const Vector3& normal = plane.getNormal();
+	const auto& normal = plane.getNormal();
 	// If the origin of the ray is on the plane then the distance is zero.
-	float alpha = (normal.dot(_origin) + plane.getDistance());
+	auto alpha = (normal.dot(origin) + plane.getDistance());
 	if (fabs(alpha) < MATH_EPSILON)
-	{
 		return 0.0f;
-	}
 
-	float dot = normal.dot(_direction);
+	auto dot = normal.dot(direction);
 
 	// If the dot product of the plane's normal and this ray's direction is zero,
 	// then the ray is parallel to the plane and does not intersect it.
@@ -142,7 +140,7 @@ float Ray::intersects(const Plane& plane) const
 
 	// Calculate the distance along the ray's direction vector to the point where
 	// the ray intersects the plane (if it is negative the plane is behind the ray).
-	float d = -alpha / dot;
+	auto d = -alpha / dot;
 	if (d < 0.0f)
 		return static_cast<float>(INTERSECTS_NONE);
 	
@@ -152,39 +150,39 @@ float Ray::intersects(const Plane& plane) const
 
 void Ray::set(const Vector3& origin, const Vector3& direction)
 {
-	_origin = origin;
-	_direction = direction;
+	this->origin = origin;
+	this->direction = direction;
 	normalize();
 }
 
 
 void Ray::set(const Ray& ray)
 {
-	_origin = ray._origin;
-	_direction = ray._direction;
+	origin = ray.origin;
+	direction = ray.direction;
 	normalize();
 }
 
 
 void Ray::transform(const Matrix& matrix)
 {
-	matrix.transformPoint(&_origin);
-	matrix.transformDirection(&_direction);
-	_direction.normalize();
+	matrix.transformPoint(&origin);
+	matrix.transformDirection(&direction);
+	direction.normalize();
 }
 
 
 void Ray::normalize()
 {
-	if (_direction.isZero())
+	if (direction.isZero())
 		THROW(EngineException, "Invalid ray object: the ray's direction must be non-zero");
 
 	// Normalize the ray's direction vector
-	float normalizeFactor = 1.0f / sqrt(_direction.x * _direction.x + _direction.y * _direction.y + _direction.z * _direction.z);
+	auto normalizeFactor = 1.0f / sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
 	if (normalizeFactor != 1.0f)
 	{
-		_direction.x *= normalizeFactor;
-		_direction.y *= normalizeFactor;
-		_direction.z *= normalizeFactor;
+		direction.x *= normalizeFactor;
+		direction.y *= normalizeFactor;
+		direction.z *= normalizeFactor;
 	}
 }

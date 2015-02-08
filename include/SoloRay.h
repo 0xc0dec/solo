@@ -41,8 +41,8 @@ namespace solo
 	private:
 		void normalize();
 
-		Vector3 _origin;
-		Vector3 _direction;
+		Vector3 origin;
+		Vector3 direction;
 	};
 
 	inline Ray& Ray::operator*=(const Matrix& matrix)
@@ -53,7 +53,7 @@ namespace solo
 
 	inline Ray operator*(const Matrix& matrix, const Ray& ray)
 	{
-		Ray r(ray);
+		auto r(ray);
 		r.transform(matrix);
 		return r;
 	}
