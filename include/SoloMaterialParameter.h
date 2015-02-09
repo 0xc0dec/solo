@@ -97,8 +97,8 @@ namespace solo
 			virtual void setValue(ptr<EffectVariable> variable, const RenderContext& renderContext) override;
 
 		private:
-			TClass* _instance;
-			ValueGetterMethod _getter;
+			TClass* instance;
+			ValueGetterMethod getter;
 		};
 
 		union MaterialParameterValue
@@ -113,12 +113,12 @@ namespace solo
 
 		MaterialParameter(const std::string &name);
 
-		ptr<Scene> _scene;
+		ptr<Scene> scene;
 
-		std::string _name;
+		std::string name;
 		ValueType type;
 		MaterialParameterValue value;
-		unsigned _valueCount;
+		unsigned valueCount;
 		bool freeableValue;
 
 		static ptr<MaterialParameter> create(const std::string &name);
@@ -139,13 +139,13 @@ namespace solo
 	template <class TClass, class TParam>
 	void MaterialParameter::SingleValueBinding<TClass, TParam>::setValue(ptr<EffectVariable> variable, const RenderContext& context)
 	{
-		variable->setValue((_instance->*_getter)(context));
+		variable->setValue((instance->*getter)(context));
 	}
 
 	template <class TClass, class TParam>
 	MaterialParameter::SingleValueBinding<TClass, TParam>::SingleValueBinding(TClass* instance, ValueGetterMethod getter):
-		_instance(instance),
-		_getter(getter)
+		instance(instance),
+		getter(getter)
 	{
 	}
 

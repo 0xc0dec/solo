@@ -13,12 +13,12 @@ using namespace solo;
 
 
 MaterialParameter::MaterialParameter(const std::string& name):
-	_name(name),
+	name(name),
 	type(ValueType::NONE),
-	_valueCount(0),
+	valueCount(0),
 	freeableValue(false)
 {
-	_scene = Engine::get()->getScene();
+	scene = Engine::get()->getScene();
 }
 
 
@@ -30,7 +30,7 @@ ptr<MaterialParameter> MaterialParameter::create(const std::string& name)
 
 std::string MaterialParameter::getName() const
 {
-	return _name;
+	return name;
 }
 
 
@@ -46,7 +46,7 @@ void MaterialParameter::setValue(const float* value, unsigned count)
 {
 	clearValue();
 	this->value.asFloatPtr = const_cast<float*>(value);
-	_valueCount = count;
+	valueCount = count;
 	type = ValueType::FLOAT_ARRAY;
 }
 
@@ -63,7 +63,7 @@ void MaterialParameter::setValue(const int* value, unsigned count)
 {
 	clearValue();
 	this->value.asIntPtr = const_cast<int*>(value);
-	_valueCount = count;
+	valueCount = count;
 	type = ValueType::INT_ARRAY;
 }
 
@@ -74,7 +74,7 @@ void MaterialParameter::setValue(const Vector2& value)
 	auto buf = new float[2];
 	memcpy(buf, &value.x, sizeof(float) * 2);
 	this->value.asFloatPtr = buf;
-	_valueCount = 1;
+	valueCount = 1;
 	freeableValue = true;
 	type = ValueType::VECTOR2;
 }
@@ -84,7 +84,7 @@ void MaterialParameter::setValue(const Vector2* value, unsigned count)
 {
 	clearValue();
 	this->value.asFloatPtr = const_cast<float*>(&value[0].x);
-	_valueCount = count;
+	valueCount = count;
 	type = ValueType::VECTOR2;
 }
 
@@ -95,7 +95,7 @@ void MaterialParameter::setValue(const Vector3& value)
 	auto buf = new float[3];
 	memcpy(buf, &value.x, sizeof(float) * 3);
 	this->value.asFloatPtr = buf;
-	_valueCount = 1;
+	valueCount = 1;
 	freeableValue = true;
 	type = ValueType::VECTOR3;
 }
@@ -105,7 +105,7 @@ void MaterialParameter::setValue(const Vector3* value, unsigned count)
 {
 	clearValue();
 	this->value.asFloatPtr = const_cast<float*>(&value[0].x);
-	_valueCount = count;
+	valueCount = count;
 	type = ValueType::VECTOR3;
 }
 
@@ -116,7 +116,7 @@ void MaterialParameter::setValue(const Vector4& value)
 	auto buf = new float[4];
 	memcpy(buf, &value.x, sizeof(float) * 4);
 	this->value.asFloatPtr = buf;
-	_valueCount = 1;
+	valueCount = 1;
 	freeableValue = true;
 	type = ValueType::VECTOR4;
 }
@@ -126,7 +126,7 @@ void MaterialParameter::setValue(const Vector4* value, unsigned count)
 {
 	clearValue();
 	this->value.asFloatPtr = const_cast<float*>(&value[0].x);
-	_valueCount = count;
+	valueCount = count;
 	type = ValueType::VECTOR4;
 }
 
@@ -137,7 +137,7 @@ void MaterialParameter::setValue(const Matrix& value)
 	this->value.asFloatPtr = new float[16];
 	memcpy(this->value.asFloatPtr, value.m, sizeof(float)* 16);
 	freeableValue = true;
-	_valueCount = 1;
+	valueCount = 1;
 	type = ValueType::MATRIX;
 }
 
@@ -146,14 +146,14 @@ void MaterialParameter::setValue(const Matrix* value, unsigned count)
 {
 	clearValue();
 	this->value.asFloatPtr = const_cast<Matrix&>(value[0]).m;
-	_valueCount = count;
+	valueCount = count;
 	type = ValueType::MATRIX;
 }
 
 
 void MaterialParameter::bind(ptr<Effect> effect, const RenderContext& context)
 {
-	auto variable = effect->findVariable(_name);
+	auto variable = effect->findVariable(name);
 	if (variable)
 	{
 		switch (type)
@@ -162,25 +162,25 @@ void MaterialParameter::bind(ptr<Effect> effect, const RenderContext& context)
 				variable->setValue(value.asFloat);
 				break;
 			case ValueType::FLOAT_ARRAY:
-				variable->setValue(value.asFloatPtr, _valueCount);
+				variable->setValue(value.asFloatPtr, valueCount);
 				break;
 			case ValueType::INT:
 				variable->setValue(value.asInt);
 				break;
 			case ValueType::INT_ARRAY:
-				variable->setValue(value.asIntPtr, _valueCount);
+				variable->setValue(value.asIntPtr, valueCount);
 				break;
 			case ValueType::VECTOR2:
-				variable->setValue(reinterpret_cast<Vector2*>(value.asFloatPtr), _valueCount);
+				variable->setValue(reinterpret_cast<Vector2*>(value.asFloatPtr), valueCount);
 				break;
 			case ValueType::VECTOR3:
-				variable->setValue(reinterpret_cast<Vector3*>(value.asFloatPtr), _valueCount);
+				variable->setValue(reinterpret_cast<Vector3*>(value.asFloatPtr), valueCount);
 				break;
 			case ValueType::VECTOR4:
-				variable->setValue(reinterpret_cast<Vector4*>(value.asFloatPtr), _valueCount);
+				variable->setValue(reinterpret_cast<Vector4*>(value.asFloatPtr), valueCount);
 				break;
 			case ValueType::MATRIX:
-				variable->setValue(reinterpret_cast<Matrix*>(value.asFloatPtr), _valueCount);
+				variable->setValue(reinterpret_cast<Matrix*>(value.asFloatPtr), valueCount);
 				break;
 			case ValueType::METHOD:
 				value.method->setValue(variable, context);
@@ -220,7 +220,7 @@ void MaterialParameter::clearValue()
 	}
 	memset(&value, 0, sizeof(value));
 	freeableValue = false;
-	_valueCount = 1;
+	valueCount = 1;
 	type = ValueType::NONE;
 }
 
