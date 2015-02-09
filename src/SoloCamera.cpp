@@ -98,21 +98,21 @@ float Camera::getAspectRatio() const
 
 void Camera::setFOV(float fov)
 {
-	fov = fov;
+	this->fov = fov;
 	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
 
 void Camera::setWidth(float width)
 {
-	width = width;
+	this->width = width;
 	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
 
 void Camera::setHeight(float height)
 {
-	height = height;
+	this->height = height;
 	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
@@ -126,14 +126,14 @@ void Camera::setAspectRatio(float ratio)
 
 void Camera::setFar(float far)
 {
-	far = far;
+	this->far = far;
 	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
 
 void Camera::setNear(float near)
 {
-	near = near;
+	this->near = near;
 	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 

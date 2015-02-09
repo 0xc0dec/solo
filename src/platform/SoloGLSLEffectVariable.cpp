@@ -55,7 +55,7 @@ void GLSLEffectVariable::setValue(const Matrix& value)
 
 void GLSLEffectVariable::setValue(const Matrix* values, unsigned count)
 {
-	glUniformMatrix4fv(location, 1, GL_FALSE, reinterpret_cast<const GLfloat*>(values));
+	glUniformMatrix4fv(location, count, GL_FALSE, reinterpret_cast<const GLfloat*>(values));
 }
 
 
