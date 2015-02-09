@@ -70,7 +70,7 @@ void MaterialParameter::setValue(const int* value, unsigned count)
 
 void MaterialParameter::setValue(const Vector2& value)
 {
-	clearValue();
+	clearValue(); // TODO eliminate memory deallocation for the case when setting a value of the same type twice
 	auto buf = new float[2];
 	memcpy(buf, &value.x, sizeof(float) * 2);
 	this->value.asFloatPtr = buf;
@@ -91,7 +91,7 @@ void MaterialParameter::setValue(const Vector2* value, unsigned count)
 
 void MaterialParameter::setValue(const Vector3& value)
 {
-	clearValue();
+	clearValue(); // TODO eliminate memory deallocation for the case when setting a value of the same type twice
 	auto buf = new float[3];
 	memcpy(buf, &value.x, sizeof(float) * 3);
 	this->value.asFloatPtr = buf;
@@ -133,7 +133,7 @@ void MaterialParameter::setValue(const Vector4* value, unsigned count)
 
 void MaterialParameter::setValue(const Matrix& value)
 {
-	clearValue(); // TODO eliminate memory deallocation for cases of second setting of a matrix
+	clearValue(); // TODO eliminate memory deallocation for the case when setting a value of the same type twice
 	this->value.asFloatPtr = new float[16];
 	memcpy(this->value.asFloatPtr, value.m, sizeof(float)* 16);
 	freeableValue = true;

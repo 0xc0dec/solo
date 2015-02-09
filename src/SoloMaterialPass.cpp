@@ -2,7 +2,6 @@
 #include "SoloMaterial.h"
 #include "SoloMaterialParameter.h"
 #include "SoloEffect.h"
-#include "SoloRenderContext.h"
 
 using namespace solo;
 

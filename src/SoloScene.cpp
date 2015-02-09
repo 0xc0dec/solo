@@ -106,7 +106,7 @@ void Scene::render()
 	for (auto camera : cameras)
 	{
 		auto cameraTransform = getComponent<Transform>(camera->getNode());
-		auto context = RenderContext(0, nullptr, camera, cameraTransform);
+		RenderContext context(0, nullptr, camera, cameraTransform);
 		camera->render(context);
 		for (auto nodeComponents : components)
 		{
