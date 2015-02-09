@@ -92,7 +92,7 @@ GLint GLSLEffect::createShader(GLuint type, std::string src)
 {
 	auto shader = glCreateShader(type);
 
-	const GLchar *rawSrc = src.c_str();
+	auto rawSrc = src.c_str();
 	glShaderSource(shader, 1, &rawSrc, nullptr);
 	glCompileShader(shader);
 
