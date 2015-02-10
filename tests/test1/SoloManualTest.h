@@ -8,9 +8,11 @@ const char *vsBasic =
 
 	"layout (location = 0) in vec4 position;\n"
 
+	"uniform mat4 worldViewProj;\n"
+
 	"void main()\n"
 	"{\n"
-	"	gl_Position = position;\n"
+	"	gl_Position = worldViewProj * position;\n"
 	"}";
 
 const char *fsSimleColor =
@@ -66,12 +68,43 @@ public:
 
 		auto node = _scene->createNode();
 		auto renderer = _scene->addComponent<ModelRenderer>(node);
+		_scene->addComponent<Rotator>(node);
 		renderer->setModel(model);
 		renderer->setMaterial(0, material);
 		material->getParameter("color")->setValue(Vector4(0, 1, 0, 1));
+		material->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WORLD_VIEW_PROJECTION_MATRIX);
 
 		auto cameraNode = _scene->createNode();
+		auto cameraTransform = _scene->getComponent<Transform>(cameraNode);
+		cameraTransform->setPosition(0, 0, 5);
 		auto camera = _scene->addComponent<Camera>(cameraNode);
-		camera->setClearColor(0, 0, 1, 1);
+		camera->setPerspective(true);
+		camera->setFOV(60);
+		camera->setNear(1);
+		camera->setFar(100);
+		camera->setAspectRatio(1.7f);
+		camera->setClearColor(0, 0.8f, 0.8f, 1);
 	}
+
+	class Rotator : public ComponentBase<Rotator>
+	{
+	public:
+		explicit Rotator(size_t node):
+			ComponentBase<Rotator>(node)
+		{
+			engine = Engine::get();
+			transform = engine->getScene()->getComponent<Transform>(node);
+		}
+
+		virtual void update() override
+		{
+			auto angle = engine->getTimeDelta() * 3;
+			transform->rotate(Vector3::unitY(), angle);
+			transform->rotate(Vector3::unitZ(), angle);
+		}
+
+	private:
+		Engine *engine;
+		ptr<Transform> transform;
+	};
 };
