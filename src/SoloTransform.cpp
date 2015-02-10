@@ -11,7 +11,8 @@ const unsigned DIRTY_BIT_ALL = DIRTY_BIT_POSITION | DIRTY_BIT_ROTATION | DIRTY_B
 
 
 Transform::Transform(size_t node):
-	ComponentBase(node)
+	ComponentBase(node),
+	parent(nullptr)
 {
 	localScale.set(Vector3::one());
 	setDirty<DIRTY_BIT_ALL>();
@@ -36,28 +37,49 @@ void Transform::removeCallback(TransformCallback* callback)
 }
 
 
-void Transform::addChild(ptr<Transform> child)
+void Transform::setParent(Transform* parent)
 {
-	if (child->parent.get() == this)
+	if (parent == this || parent == this->parent)
 		return;
-	if (child->parent)
-		child->parent->removeChild(child);
-	child->parent.reset(this);
-	children.push_back(child.get());
+	if (this->parent)
+	{
+		auto parentChildren = this->parent->children;
+		this->parent->children.erase(std::remove(parentChildren.begin(), parentChildren.end(), this), parentChildren.end());
+	}
+	this->parent = parent;
+	if (parent)
+		parent->children.push_back(this);
+}
+
+Transform* Transform::getParent() const
+{
+	return parent;
 }
 
 
-void Transform::removeChild(ptr<Transform> child)
+Transform* Transform::getChild(size_t index) const
 {
-	if (child->parent.get() != this)
-		return;
-	children.erase(std::remove(children.begin(), children.end(), child.get()), children.end());
+	return children[index];
 }
 
 
 void Transform::removeChildren()
 {
-	children.clear();
+	while (!children.empty())
+		(*children.begin())->setParent(nullptr);
+}
+
+
+void Transform::iterateChildren(std::function<void(Transform*)> action) const
+{
+	for (auto child : children)
+		action(child);
+}
+
+
+size_t Transform::getChildrenCount() const
+{
+	return children.size();
 }
 
 

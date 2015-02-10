@@ -35,9 +35,12 @@ namespace solo
 		void addCallback(TransformCallback *callback);
 		void removeCallback(TransformCallback *callback);
 
-		void addChild(ptr<Transform> child);
-		void removeChild(ptr<Transform> child);
+		void setParent(Transform *parent);
+		Transform *getParent() const;
+		Transform *getChild(size_t index) const;
 		void removeChildren();
+		void iterateChildren(std::function<void(Transform*)> action) const;
+		size_t getChildrenCount() const;
 
 		const Vector3& getScale() const;
 		const Quaternion& getRotation() const;
@@ -86,7 +89,7 @@ namespace solo
 		Transform(size_t node);
 		Transform(const Transform& other);
 
-		ptr<Transform> parent;
+		Transform* parent;
 		std::vector<Transform*> children;
 		std::vector<TransformCallback*> callbacks;
 
