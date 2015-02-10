@@ -1,9 +1,9 @@
 * Vertex format
 * Index array
-* Notify camera when a transform changes
+* Notify about transform changes
+* Optimise transform: calculate global position/rotation/scale bypassing the matrix
+* Use position, rotation and scale to calculate the corresponding getter method results (instead of the matrix)
 * Materials, Passes, Techniques, Effects handling
-* Transform component, node hierarchy
 * Use weak pointers where possible
 * Move constructors for matrices and other math classes
 * Remove methods like multiply() from math classes
-? Registering components for rendering

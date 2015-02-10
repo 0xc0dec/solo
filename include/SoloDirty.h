@@ -38,11 +38,11 @@ namespace solo
 			dirtyBits &= ~bit;
 		}
 
-		template <unsigned firstBit, unsigned secondBit, unsigned... otherBits>
+		template <unsigned bit1, unsigned bit2, unsigned... bitN>
 		void clean() const
 		{
-			dirtyBits &= ~firstBit;
-			clean<secondBit, otherBits...>();
+			dirtyBits &= ~bit1;
+			clean<bit2, bitN...>();
 		}
 
 		template <unsigned bit>

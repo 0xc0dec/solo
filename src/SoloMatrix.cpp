@@ -558,9 +558,25 @@ void Matrix::getScale(Vector3* scale) const
 }
 
 
+Vector3 Matrix::getScale() const
+{
+	Vector3 result;
+	getScale(&result);
+	return result;
+}
+
+
 bool Matrix::getRotation(Quaternion* rotation) const
 {
 	return decompose(nullptr, rotation, nullptr);
+}
+
+
+Quaternion Matrix::getRotation() const
+{
+	Quaternion result;
+	getRotation(&result);
+	return result;
 }
 
 

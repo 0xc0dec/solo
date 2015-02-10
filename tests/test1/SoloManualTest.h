@@ -49,12 +49,12 @@ public:
 		auto model = Model::create();
 		auto mesh = Mesh::create(
 		{
-			{ -0.95f, -0.95f, 0 },
-			{ 0.95f, 0.95f, 0 },
-			{ 0.95f, -0.95f, 0 },
-			{ -0.95f, -0.95f, 0 },
-			{ -0.95f, 0.95f, 0 },
-			{ 0.95f, 0.95f, 0 }
+			{	-1,	-1,	0 },
+			{	1,	1,	0 },
+			{	1,	-1,	0 },
+			{	-1,	-1,	0 },
+			{	-1,	1,	0 },
+			{	1,	1,	0 }
 		},
 		{
 			{ 0, 0, -1 },
@@ -68,15 +68,17 @@ public:
 
 		auto node = _scene->createNode();
 		auto renderer = _scene->addComponent<ModelRenderer>(node);
-		_scene->addComponent<Rotator>(node);
+		auto nodeTransform = _scene->getComponent<Transform>(node);
+		nodeTransform->rotate(Vector3::unitX(), 0.5f, Transform::TransformSpace::Self);
 		renderer->setModel(model);
 		renderer->setMaterial(0, material);
 		material->getParameter("color")->setValue(Vector4(0, 1, 0, 1));
 		material->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
+		_scene->addComponent<Rotator>(node);
 
 		auto cameraNode = _scene->createNode();
 		auto cameraTransform = _scene->getComponent<Transform>(cameraNode);
-		cameraTransform->setPosition(0, 0, 5);
+		cameraTransform->setLocalPosition(0, 0, 5);
 		auto camera = _scene->addComponent<Camera>(cameraNode);
 		camera->setPerspective(true);
 		camera->setFOV(60);
@@ -98,9 +100,10 @@ public:
 
 		virtual void update() override
 		{
-			auto angle = engine->getTimeDelta() * 3;
-			transform->rotate(Vector3::unitY(), angle);
-			transform->rotate(Vector3::unitZ(), angle);
+			auto angle1 = engine->getTimeDelta() * 5;
+			auto angle2 = engine->getTimeDelta();
+			transform->rotate(Vector3::unitZ(), angle1, Transform::TransformSpace::Self);
+			transform->rotate(Vector3::unitY(), angle2, Transform::TransformSpace::World);
 		}
 
 	private:

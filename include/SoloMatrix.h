@@ -58,7 +58,11 @@ namespace solo
 		float determinant() const;
 
 		void getScale(Vector3* scale) const;
+		Vector3 getScale() const;
+
 		bool getRotation(Quaternion* rotation) const;
+		Quaternion getRotation() const;
+
 		void getTranslation(Vector3* translation) const;
 		Vector3 getTranslation() const;
 		
