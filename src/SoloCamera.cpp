@@ -170,7 +170,7 @@ const Matrix& Camera::getProjectionMatrix()
 const Matrix& Camera::getViewProjectionMatrix()
 {
 	if (checkAndCleanBit<DIRTY_BIT_VIEW_PROJ>())
-		Matrix::multiply(getViewMatrix(), getProjectionMatrix(), &viewProjectionMatrix);
+		Matrix::multiply(getProjectionMatrix(), getViewMatrix(), &viewProjectionMatrix);
 	return viewProjectionMatrix;
 }
 
