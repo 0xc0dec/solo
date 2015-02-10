@@ -14,6 +14,12 @@ namespace solo
 	class Transform: public ComponentBase<Transform>, Dirty
 	{
 	public:
+		enum class TransformSpace
+		{
+			Local,
+			Global
+		};
+
 		virtual ~Transform() override {}
 		
 		static ptr<Transform> create(size_t node);
@@ -45,8 +51,8 @@ namespace solo
 		void translate(const Vector3& translation);
 		void translate(float x, float y, float z);
 
-		void rotate(const Quaternion& rotation);
-		void rotate(const Vector3& axis, float angle);
+		void rotate(const Quaternion& rotation, TransformSpace space = TransformSpace::Local);
+		void rotate(const Vector3& axis, float angle, TransformSpace space = TransformSpace::Local);
 
 		void scale(float scale);
 		void scale(const Vector3& scale);

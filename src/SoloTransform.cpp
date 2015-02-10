@@ -159,15 +159,18 @@ void Transform::translate(float x, float y, float z)
 }
 
 
-void Transform::rotate(const Quaternion& rotation)
+void Transform::rotate(const Quaternion& rotation, TransformSpace space)
 {
+	// TODO use space
 	localRotation *= rotation;
+	localRotation.normalize();
 	setDirty<DIRTY_BIT_ROTATION, DIRTY_BIT_WORLD>();
 }
 
 
-void Transform::rotate(const Vector3& axis, float angle)
+void Transform::rotate(const Vector3& axis, float angle, TransformSpace space)
 {
+	// TODO use space
 	auto rotation = Quaternion::createFromAxisAngle(axis, angle);
 	localRotation *= rotation;
 	localRotation.normalize();
