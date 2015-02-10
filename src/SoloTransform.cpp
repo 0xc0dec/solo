@@ -70,13 +70,6 @@ void Transform::removeChildren()
 }
 
 
-void Transform::iterateChildren(std::function<void(Transform*)> action) const
-{
-	for (auto child : children)
-		action(child);
-}
-
-
 size_t Transform::getChildrenCount() const
 {
 	return children.size();

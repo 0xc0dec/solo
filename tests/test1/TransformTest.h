@@ -40,9 +40,5 @@ public:
 		assert(t1->getChildrenCount() == 2);
 		assert(t1->getChild(0) == t2.get());
 		assert(t1->getChild(1) == t3.get());
-
-		std::list<Transform*> untouched = { t2.get(), t3.get() };
-		t1->iterateChildren([&untouched](Transform *t) { untouched.remove(t); });
-		assert(untouched.empty());
 	}
 };

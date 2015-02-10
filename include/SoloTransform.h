@@ -38,9 +38,8 @@ namespace solo
 		void setParent(Transform *parent);
 		Transform *getParent() const;
 		Transform *getChild(size_t index) const;
-		void removeChildren();
-		void iterateChildren(std::function<void(Transform*)> action) const;
 		size_t getChildrenCount() const;
+		void removeChildren();
 
 		const Vector3& getScale() const;
 		const Quaternion& getRotation() const;
