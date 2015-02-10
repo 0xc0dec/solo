@@ -76,7 +76,7 @@ namespace solo
 		Transform(const Transform& other);
 
 		ptr<Transform> parent;
-		std::list<ptr<Transform>> children;
+		std::vector<Transform*> children;
 
 		Vector3 localPosition;
 		Vector3 localScale;

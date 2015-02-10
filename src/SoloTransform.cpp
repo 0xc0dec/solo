@@ -31,7 +31,7 @@ void Transform::addChild(ptr<Transform> child)
 	if (child->parent)
 		child->parent->removeChild(child);
 	child->parent.reset(this);
-	children.push_back(child);
+	children.push_back(child.get());
 }
 
 
@@ -39,7 +39,7 @@ void Transform::removeChild(ptr<Transform> child)
 {
 	if (child->parent.get() != this)
 		return;
-	children.remove(child);
+	children.erase(std::remove(children.begin(), children.end(), child.get()), children.end());
 }
 
 

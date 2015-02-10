@@ -19,7 +19,6 @@ namespace solo
 #	define NEW2(type, ...)	std::shared_ptr<type>(new type(__VA_ARGS__))
 
 	template <typename T> using ptr = std::shared_ptr<T>;
-	template <typename T> using wptr = std::weak_ptr<T>;
 
 	extern "C" size_t getHash(const std::string &s);
 }
