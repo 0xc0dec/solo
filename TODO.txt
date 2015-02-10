@@ -1,6 +1,5 @@
 * Vertex format
 * Index array
-* Rename capsed enums
 * Notify camera when a transform changes
 * Materials, Passes, Techniques, Effects handling
 * Transform component, node hierarchy

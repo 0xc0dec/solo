@@ -72,7 +72,7 @@ public:
 		renderer->setModel(model);
 		renderer->setMaterial(0, material);
 		material->getParameter("color")->setValue(Vector4(0, 1, 0, 1));
-		material->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WORLD_VIEW_PROJECTION_MATRIX);
+		material->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
 
 		auto cameraNode = _scene->createNode();
 		auto cameraTransform = _scene->getComponent<Transform>(cameraNode);

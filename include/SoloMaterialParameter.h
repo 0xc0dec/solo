@@ -25,16 +25,16 @@ namespace solo
 	public:
 		enum class AutoBinding
 		{
-			NONE,
-			WORLD_MATRIX,
-			VIEW_MATRIX,
-			PROJECTION_MATRIX,
-			WORLD_VIEW_MATRIX,
-			VIEW_PROJECTION_MATRIX,
-			WORLD_VIEW_PROJECTION_MATRIX,
-			INVERSE_TRANSPOSED_WORLD_MATRIX,
-			INVERSE_TRANSPOSED_WORLD_VIEW_MATRIX,
-			CAMERA_WORLD_POSITION,
+			None,
+			WorldMatrix,
+			ViewMatrix,
+			ProjectionMatrix,
+			WorldViewProjection,
+			ViewProjectionMatrix,
+			WorldViewProjectionMatrix,
+			InverseTransposedWorldMatrix,
+			InverseTransposedWorldViewMatrix,
+			CameraWorldPosition,
 		};
 
 		~MaterialParameter() {}
@@ -64,16 +64,16 @@ namespace solo
 	private:
 		enum class ValueType
 		{
-			NONE = 0,
-			FLOAT,
-			FLOAT_ARRAY,
-			INT,
-			INT_ARRAY,
-			VECTOR2,
-			VECTOR3,
-			VECTOR4,
-			MATRIX,
-			METHOD
+			None = 0,
+			Float,
+			FloatArray,
+			Int,
+			IntArray,
+			Vector2,
+			Vector3,
+			Vector4,
+			Matrix,
+			Method
 		};
 		
 		class ValueBinding
@@ -155,6 +155,6 @@ namespace solo
 		clearValue();
 		value.method = new SingleValueBinding<TClass, TParam>(instance, getter);
 		freeableValue = true;
-		type = ValueType::METHOD;
+		type = ValueType::Method;
 	}
 }
