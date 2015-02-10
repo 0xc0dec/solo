@@ -11,6 +11,14 @@ namespace solo
 {
 	class Camera;
 
+	class TransformCallback
+	{
+	public:
+		virtual ~TransformCallback() {}
+		
+		virtual void onTransformChanged() = 0;
+	};
+
 	class Transform: public ComponentBase<Transform>, Dirty
 	{
 	public:
@@ -23,6 +31,9 @@ namespace solo
 		virtual ~Transform() override {}
 		
 		static ptr<Transform> create(size_t node);
+
+		void addCallback(TransformCallback *callback);
+		void removeCallback(TransformCallback *callback);
 
 		void addChild(ptr<Transform> child);
 		void removeChild(ptr<Transform> child);
@@ -77,6 +88,7 @@ namespace solo
 
 		ptr<Transform> parent;
 		std::vector<Transform*> children;
+		std::vector<TransformCallback*> callbacks;
 
 		Vector3 localPosition;
 		Vector3 localScale;

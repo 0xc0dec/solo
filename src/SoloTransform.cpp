@@ -24,6 +24,18 @@ ptr<Transform> Transform::create(size_t node)
 }
 
 
+void Transform::addCallback(TransformCallback* callback)
+{
+	callbacks.push_back(callback);
+}
+
+
+void Transform::removeCallback(TransformCallback* callback)
+{
+	callbacks.erase(std::remove(callbacks.begin(), callbacks.end(), callback), callbacks.end());
+}
+
+
 void Transform::addChild(ptr<Transform> child)
 {
 	if (child->parent.get() == this)

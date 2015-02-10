@@ -4,15 +4,16 @@
 #include "SoloVector4.h"
 #include "SoloDirty.h"
 #include "SoloMatrix.h"
+#include "SoloTransform.h"
 
 namespace solo
 {
 	class Transform;
 
-	class Camera : public ComponentBase<Camera>, Dirty
+	class Camera : public ComponentBase<Camera>, protected TransformCallback, Dirty
 	{
 	public:
-		virtual ~Camera() {}
+		virtual ~Camera();
 
 		static ptr<Camera> create(size_t node);
 
@@ -48,6 +49,8 @@ namespace solo
 
 	protected:
 		Camera(size_t node);
+
+		virtual void onTransformChanged() override;
 
 		virtual void applyViewportChange() = 0;
 		virtual void applyClearColor() = 0;
