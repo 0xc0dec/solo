@@ -45,7 +45,7 @@ public:
 		auto effect = Effect::create(vsBasic, fsSimleColor);
 		auto material = Material::create();
 		material->addPass(effect);
-		material->getParameter("color")->setValue(Vector4(0, 1, 0, 1));
+		material->getParameter("color")->setValue(Vector4(0, 0, 1, 1));
 		material->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
 
 		auto model = Model::create();
@@ -76,7 +76,7 @@ public:
 		auto quadRenderer = _scene->addComponent<ModelRenderer>(quad);
 		auto quadTransform = _scene->getComponent<Transform>(quad);
 		quadTransform->setParent(emptyTransform.get());
-		quadTransform->setLocalPosition(1, 0, 0);
+		quadTransform->setLocalPosition(2, 0, 0);
 		quadRenderer->setModel(model);
 		quadRenderer->setMaterial(0, material);
 		_scene->addComponent<RotatorAroundLocalAxis>(quad);
@@ -121,7 +121,7 @@ public:
 
 		virtual void update() override
 		{
-			auto angle = engine->getTimeDelta() * 0.3f;
+			auto angle = engine->getTimeDelta() * 1.3f;
 			transform->rotate(Vector3::unitX(), angle, Transform::TransformSpace::Self);
 		}
 
