@@ -6,8 +6,8 @@
 #include "SoloVector4.h"
 #include "SoloMatrix.h"
 #include "SoloEngine.h"
-#include "SoloCamera.h"
 #include "SoloRenderContext.h"
+#include "SoloNode.h"
 
 using namespace solo;
 
@@ -227,55 +227,55 @@ void MaterialParameter::clearValue()
 
 const Matrix& MaterialParameter::getWorldMatrix(const RenderContext& context) const
 {
-	return context.getNodeTransform()->getWorldMatrix();
+	return context.getNode()->getComponent<Transform>()->getWorldMatrix();
 }
 
 
 const Matrix& MaterialParameter::getViewMatrix(const RenderContext& context) const
 {
-	return context.getCamera()->getViewMatrix();
+	return context.getCameraNode()->getComponent<Camera>()->getViewMatrix();
 }
 
 
 const Matrix& MaterialParameter::getProjectionMatrix(const RenderContext& context) const
 {
-	return context.getCamera()->getProjectionMatrix();
+	return context.getCameraNode()->getComponent<Camera>()->getProjectionMatrix();
 }
 
 
 Matrix MaterialParameter::getWorldViewMatrix(const RenderContext& context) const
 {
-	return context.getNodeTransform()->getWorldViewMatrix(context.getCamera());
+	return context.getNode()->getComponent<Transform>()->getWorldViewMatrix(context.getCameraNode()->getComponent<Camera>().get());
 }
 
 
 Matrix MaterialParameter::getViewProjectionMatrix(const RenderContext& context) const
 {
-	return context.getCamera()->getViewProjectionMatrix();
+	return context.getCameraNode()->getComponent<Camera>()->getViewProjectionMatrix();
 }
 
 
 Matrix MaterialParameter::getWorldViewProjectionMatrix(const RenderContext& context) const
 {
-	return context.getNodeTransform()->getWorldViewProjectionMatrix(context.getCamera());
+	return context.getNode()->getComponent<Transform>()->getWorldViewProjectionMatrix(context.getCameraNode()->getComponent<Camera>().get());
 }
 
 
 Matrix MaterialParameter::getInverseTransposedWorldViewMatrix(const RenderContext& context) const
 {
-	return context.getNodeTransform()->getInverseTransposedWorldViewMatrix(context.getCamera());
+	return context.getNode()->getComponent<Transform>()->getInverseTransposedWorldViewMatrix(context.getCameraNode()->getComponent<Camera>().get());
 }
 
 
 const Matrix& MaterialParameter::getInverseTransposedWorldMatrix(const RenderContext& context) const
 {
-	return context.getNodeTransform()->getInverseTransposedWorldMatrix();
+	return context.getNode()->getComponent<Transform>()->getInverseTransposedWorldMatrix();
 }
 
 
 Vector3 MaterialParameter::getCameraWorldPosition(const RenderContext& context) const
 {
-	return context.getCameraTransform()->getWorldPosition();
+	return context.getCameraNode()->getComponent<Transform>()->getWorldPosition();
 }
 
 

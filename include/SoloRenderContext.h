@@ -1,16 +1,12 @@
 #pragma once
 
-#include "SoloBase.h"
-
 namespace solo
 {
-	class Camera;
-	class Transform;
 	class Node;
 
 	class RenderContext
 	{
-		friend class Scene;
+		friend class RenderContextFactory;
 
 	public:
 		Node* getNode() const
@@ -18,39 +14,29 @@ namespace solo
 			return node;
 		}
 
-		Camera* getCamera() const
+		Node* getCameraNode() const
 		{
 			return camera;
 		}
 
-		Transform* getNodeTransform() const
-		{
-			return nodeTransform;
-		}
-
-		Transform* getCameraTransform() const
-		{
-			return cameraTransform;
-		}
-
 	private:
 		Node* node;
-		Camera* camera;
-		Transform* nodeTransform;
-		Transform* cameraTransform;
+		Node* camera;
 
-		RenderContext(Node* node, Transform* nodeTransform, Camera* camera, Transform* cameraTransform):
+		RenderContext(Node* node, Node* camera):
 			node(node),
-			camera(camera),
-			nodeTransform(nodeTransform),
-			cameraTransform(cameraTransform)
+			camera(camera)
 		{
 		}
+	};
 
-		void setNode(Node* node, Transform* nodeTransform)
+	class RenderContextFactory
+	{
+		friend class Scene;
+
+		static RenderContext create(Node* node, Node* camera)
 		{
-			this->node = node;
-			this->nodeTransform = nodeTransform;
+			return RenderContext(node, camera);
 		}
 	};
 }
