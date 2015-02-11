@@ -45,6 +45,8 @@ public:
 		auto effect = Effect::create(vsBasic, fsSimleColor);
 		auto material = Material::create();
 		material->addPass(effect);
+		material->getParameter("color")->setValue(Vector4(0, 1, 0, 1));
+		material->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
 
 		auto model = Model::create();
 		auto mesh = Mesh::create(
@@ -66,33 +68,31 @@ public:
 		});
 		model->addMesh(mesh);
 
-		auto node = _scene->createNode();
-		auto renderer = _scene->addComponent<ModelRenderer>(node);
-		auto nodeTransform = _scene->getComponent<Transform>(node);
-		nodeTransform->rotate(Vector3::unitX(), 0.5f, Transform::TransformSpace::Self);
-		renderer->setModel(model);
-		renderer->setMaterial(0, material);
-		material->getParameter("color")->setValue(Vector4(0, 1, 0, 1));
-		material->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
-		_scene->addComponent<Rotator>(node);
+		auto empty = _scene->createNode();
+		auto emptyTransform = _scene->getComponent<Transform>(empty);
+		_scene->addComponent<RotatorAroundWorldAxis>(empty);
+
+		auto quad = _scene->createNode();
+		auto quadRenderer = _scene->addComponent<ModelRenderer>(quad);
+		auto quadTransform = _scene->getComponent<Transform>(quad);
+		quadTransform->setParent(emptyTransform.get());
+		quadTransform->setLocalPosition(1, 0, 0);
+		quadRenderer->setModel(model);
+		quadRenderer->setMaterial(0, material);
+		_scene->addComponent<RotatorAroundLocalAxis>(quad);
 
 		auto cameraNode = _scene->createNode();
 		auto cameraTransform = _scene->getComponent<Transform>(cameraNode);
 		cameraTransform->setLocalPosition(0, 0, 5);
 		auto camera = _scene->addComponent<Camera>(cameraNode);
-		camera->setPerspective(true);
-		camera->setFOV(60);
-		camera->setNear(1);
-		camera->setFar(100);
-		camera->setAspectRatio(1.7f);
 		camera->setClearColor(0, 0.8f, 0.8f, 1);
 	}
 
-	class Rotator : public ComponentBase<Rotator>
+	class RotatorAroundWorldAxis : public ComponentBase<RotatorAroundWorldAxis>
 	{
 	public:
-		explicit Rotator(size_t node):
-			ComponentBase<Rotator>(node)
+		explicit RotatorAroundWorldAxis(size_t node):
+			ComponentBase<RotatorAroundWorldAxis>(node)
 		{
 			engine = Engine::get();
 			transform = engine->getScene()->getComponent<Transform>(node);
@@ -100,10 +100,29 @@ public:
 
 		virtual void update() override
 		{
-			auto angle1 = engine->getTimeDelta() * 5;
-			auto angle2 = engine->getTimeDelta();
-			transform->rotate(Vector3::unitZ(), angle1, Transform::TransformSpace::Self);
-			transform->rotate(Vector3::unitY(), angle2, Transform::TransformSpace::World);
+			auto angle = engine->getTimeDelta();
+			transform->rotate(Vector3::unitY(), angle, Transform::TransformSpace::World);
+		}
+
+	private:
+		Engine *engine;
+		ptr<Transform> transform;
+	};
+
+	class RotatorAroundLocalAxis : public ComponentBase<RotatorAroundLocalAxis>
+	{
+	public:
+		explicit RotatorAroundLocalAxis(size_t node) :
+			ComponentBase<RotatorAroundLocalAxis>(node)
+		{
+			engine = Engine::get();
+			transform = engine->getScene()->getComponent<Transform>(node);
+		}
+
+		virtual void update() override
+		{
+			auto angle = engine->getTimeDelta() * 0.3f;
+			transform->rotate(Vector3::unitX(), angle, Transform::TransformSpace::Self);
 		}
 
 	private:
