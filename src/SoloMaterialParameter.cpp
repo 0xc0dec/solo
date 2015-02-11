@@ -245,7 +245,7 @@ const Matrix& MaterialParameter::getProjectionMatrix(const RenderContext& contex
 
 Matrix MaterialParameter::getWorldViewMatrix(const RenderContext& context) const
 {
-	return context.getNode()->getComponent<Transform>()->getWorldViewMatrix(context.getCameraNode()->getComponent<Camera>().get());
+	return context.getNode()->getComponent<Transform>()->getWorldViewMatrix(context.getCameraNode()->getComponent<Camera>());
 }
 
 
@@ -257,13 +257,13 @@ Matrix MaterialParameter::getViewProjectionMatrix(const RenderContext& context) 
 
 Matrix MaterialParameter::getWorldViewProjectionMatrix(const RenderContext& context) const
 {
-	return context.getNode()->getComponent<Transform>()->getWorldViewProjectionMatrix(context.getCameraNode()->getComponent<Camera>().get());
+	return context.getNode()->getComponent<Transform>()->getWorldViewProjectionMatrix(context.getCameraNode()->getComponent<Camera>());
 }
 
 
 Matrix MaterialParameter::getInverseTransposedWorldViewMatrix(const RenderContext& context) const
 {
-	return context.getNode()->getComponent<Transform>()->getInverseTransposedWorldViewMatrix(context.getCameraNode()->getComponent<Camera>().get());
+	return context.getNode()->getComponent<Transform>()->getInverseTransposedWorldViewMatrix(context.getCameraNode()->getComponent<Camera>());
 }
 
 

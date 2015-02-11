@@ -57,7 +57,7 @@ namespace solo
 		virtual void applyClearColor() = 0;
 		virtual void clear() = 0;
 
-		ptr<Transform> transform;
+		Transform* transform;
 
 		bool ortho;
 

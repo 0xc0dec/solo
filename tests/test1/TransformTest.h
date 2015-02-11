@@ -31,14 +31,14 @@ public:
 
 		assert(t1->getChildrenCount() == 0);
 
-		t2->setParent(t1.get());
-		assert(t2->getParent() == t1.get());
+		t2->setParent(t1);
+		assert(t2->getParent() == t1);
 		assert(t1->getChildrenCount() == 1);
-		assert(t1->getChild(0) == t2.get());
+		assert(t1->getChild(0) == t2);
 
-		t3->setParent(t1.get());
+		t3->setParent(t1);
 		assert(t1->getChildrenCount() == 2);
-		assert(t1->getChild(0) == t2.get());
-		assert(t1->getChild(1) == t3.get());
+		assert(t1->getChild(0) == t2);
+		assert(t1->getChild(1) == t3);
 	}
 };

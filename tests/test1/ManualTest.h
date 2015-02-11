@@ -76,7 +76,7 @@ public:
 		auto quadRenderer = quad->addComponent<ModelRenderer>();
 		auto quadTransform = quad->getComponent<Transform>();
 		quad->addComponent<RotatorAroundLocalAxis>();
-		quadTransform->setParent(emptyTransform.get());
+		quadTransform->setParent(emptyTransform);
 		quadTransform->setLocalPosition(2, 0, 0);
 		quadRenderer->setModel(model);
 		quadRenderer->setMaterial(0, material);
@@ -106,7 +106,7 @@ public:
 
 	private:
 		Engine *engine;
-		ptr<Transform> transform;
+		Transform* transform;
 	};
 
 	class RotatorAroundLocalAxis : public ComponentBase<RotatorAroundLocalAxis>
@@ -127,6 +127,6 @@ public:
 
 	private:
 		Engine *engine;
-		ptr<Transform> transform;
+		Transform* transform;
 	};
 };

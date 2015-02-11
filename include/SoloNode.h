@@ -19,33 +19,33 @@ namespace solo
 			return reinterpret_cast<size_t>(this);
 		}
 
-		template <typename T> ptr<T> addComponent()
+		template <typename T> T* addComponent()
 		{
 			auto cmp = NEW<T>(this);
 			auto base = CAST_PTR_STATIC<Component>(cmp);
 			scene->addComponent(this, base);
-			return cmp;
+			return cmp.get();
 		}
 
-		template<> ptr<Camera> addComponent<Camera>()
+		template<> Camera* addComponent<Camera>()
 		{
 			auto camera = Camera::create(this);
 			scene->addComponent(this, camera);
-			return camera;
+			return camera.get();
 		}
 
-		template<> ptr<Transform> addComponent<Transform>()
+		template<> Transform* addComponent<Transform>()
 		{
 			auto transform = Transform::create(this);
 			scene->addComponent(this, transform);
-			return transform;
+			return transform.get();
 		}
 
-		template<> ptr<ModelRenderer> addComponent<ModelRenderer>()
+		template<> ModelRenderer* addComponent<ModelRenderer>()
 		{
 			auto renderer = ModelRenderer::create(this);
 			scene->addComponent(this, renderer);
-			return renderer;
+			return renderer.get();
 		}
 
 		template <typename T> void removeComponent()
@@ -53,18 +53,18 @@ namespace solo
 			scene->removeComponent(this, T::getId());
 		}
 
-		template <typename T> ptr<T> getComponent()
+		template <typename T> T* getComponent()
 		{
 			auto typeId = T::getId();
 			auto cmp = scene->getComponent(this, typeId);
-			return CAST_PTR_STATIC<T>(cmp);
+			return static_cast<T*>(cmp.get());
 		}
 
-		template <typename T> ptr<T> findComponent()
+		template <typename T> T* findComponent()
 		{
 			auto typeId = T::getId();
 			auto cmp = scene->findComponent(this, typeId);
-			return CAST_PTR_STATIC<T>(cmp);
+			return static_cast<T*>(cmp.get());
 		}
 
 	private:
