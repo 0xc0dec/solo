@@ -5,6 +5,7 @@
 namespace solo
 {
 	class RenderContext;
+	class Node;
 
 	class Component
 	{
@@ -24,7 +25,7 @@ namespace solo
 	class ComponentBase: public Component
 	{
 	public:
-		explicit ComponentBase(size_t node):
+		explicit ComponentBase(Node* node):
 			node(node)
 		{
 		}
@@ -39,12 +40,12 @@ namespace solo
 			return getId();
 		}
 
-		size_t getNode() const
+		Node *getNode() const
 		{
 			return node;
 		}
 
 	protected:
-		size_t node;
+		Node* node;
 	};
 }

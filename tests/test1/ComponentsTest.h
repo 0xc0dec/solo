@@ -6,7 +6,7 @@
 class A : public ComponentBase<A>
 {
 public:
-	explicit A(size_t node):
+	explicit A(Node* node):
 		ComponentBase<A>(node)
 	{
 	}
@@ -16,7 +16,7 @@ public:
 class B: public ComponentBase<B>
 {
 public:
-	explicit B(size_t node):
+	explicit B(Node* node):
 		ComponentBase<B>(node)
 	{
 	}
@@ -26,7 +26,7 @@ public:
 class Base : public ComponentBase<Base>
 {
 public:
-	explicit Base(size_t node):
+	explicit Base(Node* node):
 		ComponentBase<Base>(node)
 	{
 	}
@@ -36,7 +36,7 @@ public:
 class Derived : public Base
 {
 public:
-	Derived(size_t node):
+	Derived(Node* node) :
 		Base(node)
 	{
 	}
@@ -60,8 +60,8 @@ public:
 
 	void testComponentsAddition()
 	{
-		auto a = scene->addComponent<A>(node);
-		auto b = scene->addComponent<B>(node);
+		auto a = node->addComponent<A>();
+		auto b = node->addComponent<B>();
 		assert(a);
 		assert(b);
 		assert(a->getTypeId() == A::getId());
@@ -70,9 +70,9 @@ public:
 
 	void testDerivedComponents()
 	{
-		scene->addComponent<Derived>(node);
-		auto base = scene->getComponent<Base>(node);
-		auto derived = scene->getComponent<Derived>(node);
+		node->addComponent<Derived>();
+		auto base = node->getComponent<Base>();
+		auto derived = node->getComponent<Derived>();
 		assert(base);
 		assert(derived);
 		assert(base == derived);
@@ -82,5 +82,5 @@ public:
 	}
 
 private:
-	size_t node;
+	Node* node;
 };

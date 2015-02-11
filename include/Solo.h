@@ -23,6 +23,7 @@
 #include "SoloMesh.h"
 #include "SoloModel.h"
 #include "SoloModelRenderer.h"
+#include "SoloNode.h"
 #include "SoloPlane.h"
 #include "SoloQuaternion.h"
 #include "SoloRay.h"

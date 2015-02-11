@@ -1,6 +1,5 @@
 #include "SoloCamera.h"
-#include "SoloEngine.h"
-#include "SoloScene.h"
+#include "SoloNode.h"
 #include "platform/SoloOpenGLCamera.h"
 
 using namespace solo;
@@ -17,12 +16,12 @@ const unsigned DIRTY_BIT_ALL = DIRTY_BIT_VIEW | DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_
 								DIRTY_BIT_VIEWPORT | DIRTY_BIT_CLEAR_COLOR;
 
 
-Camera::Camera(size_t node):
+Camera::Camera(Node* node):
 	ComponentBase(node),
 	ortho(false), viewport(0, 0, 1, 1), clearColor(0, 0, 0, 1),
 	fov(60), near(1), far(100), width(1), height(1), aspectRatio(16.f / 9.f)
 {
-	transform = Engine::get()->getScene()->getComponent<Transform>(node);
+	transform = node->getComponent<Transform>();
 	transform->addCallback(this);
 	setDirty<DIRTY_BIT_ALL>(); // arguably
 }
@@ -40,7 +39,7 @@ void Camera::onTransformChanged()
 }
 
 
-ptr<Camera> Camera::create(size_t node)
+ptr<Camera> Camera::create(Node* node)
 {
 	return OpenGLCamera::create(node);
 }

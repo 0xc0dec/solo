@@ -19,15 +19,15 @@ public:
 	void testGetTransform()
 	{
 		auto node = scene->createNode();
-		auto transform = scene->getComponent<Transform>(node);
+		auto transform = node->getComponent<Transform>();
 		assert(transform);
 	}
 
 	void testParentAndChildren()
 	{
-		auto t1 = scene->getComponent<Transform>(scene->createNode());
-		auto t2 = scene->getComponent<Transform>(scene->createNode());
-		auto t3 = scene->getComponent<Transform>(scene->createNode());
+		auto t1 = scene->createNode()->getComponent<Transform>();
+		auto t2 = scene->createNode()->getComponent<Transform>();
+		auto t3 = scene->createNode()->getComponent<Transform>();
 
 		assert(t1->getChildrenCount() == 0);
 

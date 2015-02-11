@@ -9,13 +9,14 @@
 namespace solo
 {
 	class Transform;
+	class Node;
 
 	class Camera : public ComponentBase<Camera>, protected TransformCallback, Dirty
 	{
 	public:
 		virtual ~Camera();
 
-		static ptr<Camera> create(size_t node);
+		static ptr<Camera> create(Node* node);
 
 		virtual void update() override;
 		virtual void render(const RenderContext& context) override;
@@ -48,7 +49,7 @@ namespace solo
 		const Matrix& getInverseViewProjectionMatrix();
 
 	protected:
-		Camera(size_t node);
+		Camera(Node* node);
 
 		virtual void onTransformChanged() override;
 

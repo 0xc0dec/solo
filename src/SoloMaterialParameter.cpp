@@ -5,8 +5,8 @@
 #include "SoloVector3.h"
 #include "SoloVector4.h"
 #include "SoloMatrix.h"
-#include "SoloScene.h"
 #include "SoloEngine.h"
+#include "SoloCamera.h"
 #include "SoloRenderContext.h"
 
 using namespace solo;

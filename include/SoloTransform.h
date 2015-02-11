@@ -10,6 +10,7 @@
 namespace solo
 {
 	class Camera;
+	class Node;
 
 	class TransformCallback
 	{
@@ -31,7 +32,7 @@ namespace solo
 
 		virtual ~Transform() override {}
 		
-		static ptr<Transform> create(size_t node);
+		static ptr<Transform> create(Node* node);
 
 		void addCallback(TransformCallback *callback);
 		void removeCallback(TransformCallback *callback);
@@ -82,16 +83,17 @@ namespace solo
 		const Matrix& getWorldMatrix() const;
 		const Matrix& getInverseTransposedWorldMatrix() const;
 
-		Matrix getWorldViewMatrix(ptr<Camera> camera) const;
-		Matrix getWorldViewProjectionMatrix(ptr<Camera> camera) const;
-		Matrix getInverseTransposedWorldViewMatrix(ptr<Camera> camera) const;
+		Matrix getWorldViewMatrix(Camera* camera) const;
+		Matrix getWorldViewProjectionMatrix(Camera* camera) const;
+		Matrix getInverseTransposedWorldViewMatrix(Camera* camera) const;
 
 		Vector3 transformPoint(const Vector3& point) const;
 		Vector3 transforDirection(const Vector3& direction) const;
 
 	private:
-		Transform(size_t node);
+		Transform(Node* node);
 		Transform(const Transform& other);
+		Transform(Transform&& other);
 
 		template <unsigned bit1, unsigned... bitN>
 		void setDirtyWithChildren() const

@@ -7,13 +7,13 @@
 using namespace solo;
 
 
-ModelRenderer::ModelRenderer(size_t node):
+ModelRenderer::ModelRenderer(Node* node):
 	ComponentBase(node)
 {
 }
 
 
-ptr<ModelRenderer> ModelRenderer::create(size_t node)
+ptr<ModelRenderer> ModelRenderer::create(Node* node)
 {
 	return NEW2(ModelRenderer, node);
 }

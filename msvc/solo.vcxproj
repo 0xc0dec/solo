@@ -43,6 +43,7 @@
     <ClInclude Include="..\include\SoloModel.h" />
     <ClInclude Include="..\include\SoloModelRenderer.h" />
     <ClInclude Include="..\include\SoloMaterialPass.h" />
+    <ClInclude Include="..\include\SoloNode.h" />
     <ClInclude Include="..\include\SoloPlane.h" />
     <ClInclude Include="..\include\SoloQuaternion.h" />
     <ClInclude Include="..\include\SoloRay.h" />

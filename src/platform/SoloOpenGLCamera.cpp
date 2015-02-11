@@ -6,16 +6,16 @@
 using namespace solo;
 
 
-ptr<OpenGLCamera> OpenGLCamera::create(size_t node)
+ptr<OpenGLCamera> OpenGLCamera::create(Node* node)
 {
 	return NEW2(OpenGLCamera, node);
 }
 
 
-OpenGLCamera::OpenGLCamera(size_t node):
+OpenGLCamera::OpenGLCamera(Node* node):
 	Camera(node)
 {
-	device = Engine::get()->getDevice();
+	device = Engine::get()->getDevice().get();
 }
 
 

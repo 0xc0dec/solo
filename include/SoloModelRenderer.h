@@ -13,7 +13,7 @@ namespace solo
 	public:
 		virtual ~ModelRenderer() override {}
 
-		static ptr<ModelRenderer> create(size_t node);
+		static ptr<ModelRenderer> create(Node* node);
 
 		virtual void render(const RenderContext& context) override;
 
@@ -25,7 +25,7 @@ namespace solo
 		size_t getMaterialCount() const;
 
 	private:
-		ModelRenderer(size_t node);
+		ModelRenderer(Node* node);
 
 		ptr<Model> model;
 		std::map<unsigned, ptr<Material>> materials;

@@ -6,39 +6,40 @@ namespace solo
 {
 	class Camera;
 	class Transform;
+	class Node;
 
 	class RenderContext
 	{
 		friend class Scene;
 
 	public:
-		size_t getNode() const
+		Node* getNode() const
 		{
 			return node;
 		}
 
-		ptr<Camera> getCamera() const
+		Camera* getCamera() const
 		{
 			return camera;
 		}
 
-		ptr<Transform> getNodeTransform() const
+		Transform* getNodeTransform() const
 		{
 			return nodeTransform;
 		}
 
-		ptr<Transform> getCameraTransform() const
+		Transform* getCameraTransform() const
 		{
 			return cameraTransform;
 		}
 
 	private:
-		size_t node;
-		ptr<Camera> camera;
-		ptr<Transform> nodeTransform;
-		ptr<Transform> cameraTransform;
+		Node* node;
+		Camera* camera;
+		Transform* nodeTransform;
+		Transform* cameraTransform;
 
-		RenderContext(size_t node, ptr<Transform> nodeTransform, ptr<Camera> camera, ptr<Transform> cameraTransform) :
+		RenderContext(Node* node, Transform* nodeTransform, Camera* camera, Transform* cameraTransform):
 			node(node),
 			camera(camera),
 			nodeTransform(nodeTransform),
@@ -46,7 +47,7 @@ namespace solo
 		{
 		}
 
-		void setNode(size_t node, ptr<Transform> nodeTransform)
+		void setNode(Node* node, Transform* nodeTransform)
 		{
 			this->node = node;
 			this->nodeTransform = nodeTransform;

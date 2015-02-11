@@ -9,12 +9,12 @@ namespace solo
 	class OpenGLCamera: public Camera
 	{
 	public:
-		static ptr<OpenGLCamera> create(size_t node);
+		static ptr<OpenGLCamera> create(Node* node);
 
 	protected:
-		OpenGLCamera(size_t node);
+		OpenGLCamera(Node* node);
 
-		ptr<Device> device;
+		Device* device;
 
 		void applyViewportChange() override;
 		void applyClearColor() override;

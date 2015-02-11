@@ -41,7 +41,7 @@ public:
 
 	void createQuad()
 	{
-		auto _scene = engine->getScene();
+		auto scene = engine->getScene();
 		auto effect = Effect::create(vsBasic, fsSimleColor);
 		auto material = Material::create();
 		material->addPass(effect);
@@ -68,34 +68,34 @@ public:
 		});
 		model->addMesh(mesh);
 
-		auto empty = _scene->createNode();
-		auto emptyTransform = _scene->getComponent<Transform>(empty);
-		_scene->addComponent<RotatorAroundWorldAxis>(empty);
+		auto empty = scene->createNode();
+		auto emptyTransform = empty->getComponent<Transform>();
+		empty->addComponent<RotatorAroundWorldAxis>();
 
-		auto quad = _scene->createNode();
-		auto quadRenderer = _scene->addComponent<ModelRenderer>(quad);
-		auto quadTransform = _scene->getComponent<Transform>(quad);
+		auto quad = scene->createNode();
+		auto quadRenderer = quad->addComponent<ModelRenderer>();
+		auto quadTransform = quad->getComponent<Transform>();
+		quad->addComponent<RotatorAroundLocalAxis>();
 		quadTransform->setParent(emptyTransform.get());
 		quadTransform->setLocalPosition(2, 0, 0);
 		quadRenderer->setModel(model);
 		quadRenderer->setMaterial(0, material);
-		_scene->addComponent<RotatorAroundLocalAxis>(quad);
 
-		auto cameraNode = _scene->createNode();
-		auto cameraTransform = _scene->getComponent<Transform>(cameraNode);
+		auto cameraNode = scene->createNode();
+		auto cameraTransform = cameraNode->getComponent<Transform>();
 		cameraTransform->setLocalPosition(0, 0, 5);
-		auto camera = _scene->addComponent<Camera>(cameraNode);
+		auto camera = cameraNode->addComponent<Camera>();
 		camera->setClearColor(0, 0.8f, 0.8f, 1);
 	}
 
 	class RotatorAroundWorldAxis : public ComponentBase<RotatorAroundWorldAxis>
 	{
 	public:
-		explicit RotatorAroundWorldAxis(size_t node):
+		explicit RotatorAroundWorldAxis(Node* node):
 			ComponentBase<RotatorAroundWorldAxis>(node)
 		{
 			engine = Engine::get();
-			transform = engine->getScene()->getComponent<Transform>(node);
+			transform = node->getComponent<Transform>();
 		}
 
 		virtual void update() override
@@ -112,11 +112,11 @@ public:
 	class RotatorAroundLocalAxis : public ComponentBase<RotatorAroundLocalAxis>
 	{
 	public:
-		explicit RotatorAroundLocalAxis(size_t node) :
+		explicit RotatorAroundLocalAxis(Node* node) :
 			ComponentBase<RotatorAroundLocalAxis>(node)
 		{
 			engine = Engine::get();
-			transform = engine->getScene()->getComponent<Transform>(node);
+			transform = node->getComponent<Transform>();
 		}
 
 		virtual void update() override

@@ -3,6 +3,7 @@
 #include "SoloException.h"
 #include "SoloRenderContext.h"
 #include "SoloCamera.h"
+#include "SoloNode.h"
 
 using namespace solo;
 
@@ -19,46 +20,50 @@ ptr<Scene> Scene::create()
 }
 
 
-size_t Scene::createEmptyNode()
+Node* Scene::createEmptyNode()
 {
-	components[++nodeCounter];
-	return nodeCounter;
+	auto node = NEW2(Node, this);
+	components[node->getId()];
+	nodes[node->getId()] = node;
+	return node.get();
 }
 
 
-size_t Scene::createNode()
+Node* Scene::createNode()
 {
 	auto node = createEmptyNode();
-	addComponent<Transform>(node);
+	node->addComponent<Transform>();
 	return node;
 }
 
 
-bool Scene::nodeExists(size_t node)
+bool Scene::nodeExists(size_t nodeId)
 {
-	return components.find(node) != components.end();
+	return nodes.find(nodeId) != nodes.end();
 }
 
 
-void Scene::addComponent(size_t node, ptr<Component> cmp)
+void Scene::addComponent(size_t nodeId, ptr<Component> cmp)
 {
-	ensureNodeExists(node);
-	if (findComponent(node, cmp->getTypeId()))
+	ensureNodeExists(nodeId);
+	if (findComponent(nodeId, cmp->getTypeId()))
 		THROW(EngineException, "Component ", cmp->getTypeId(), " already exists");
-	components[node][cmp->getTypeId()] = cmp;
+	components[nodeId][cmp->getTypeId()] = cmp;
 }
 
 
-void Scene::removeComponent(size_t node, size_t typeId)
+void Scene::removeComponent(size_t nodeId, size_t typeId)
 {
-	ensureNodeExists(node);
-	components[node].erase(typeId);
+	ensureNodeExists(nodeId);
+	components[nodeId].erase(typeId);
+	if (components.at(nodeId).empty())
+		nodes.erase(nodeId);
 }
 
 
-ptr<Component> Scene::getComponent(size_t node, size_t typeId)
+ptr<Component> Scene::getComponent(size_t nodeId, size_t typeId)
 {
-	auto cmp = findComponent(node, typeId);
+	auto cmp = findComponent(nodeId, typeId);
 	if (!cmp)
 		THROW(EngineException, "Component ", typeId, " not found");
 	return cmp;
@@ -105,16 +110,16 @@ void Scene::render()
 	auto cameras = getCameras(); // TODO cache lookup results or optimise in some other way
 	for (auto camera : cameras)
 	{
-		auto cameraTransform = getComponent<Transform>(camera->getNode());
-		RenderContext context(0, nullptr, camera, cameraTransform);
+		auto cameraTransform = camera->getNode()->getComponent<Transform>();
+		RenderContext context(nullptr, nullptr, camera.get(), cameraTransform.get());
 		camera->render(context);
-		for (auto nodeComponents : components)
+		for (auto nodeInfo : nodes)
 		{
-			auto node = nodeComponents.first;
-			for (auto component : nodeComponents.second)
+			auto node = nodeInfo.second;
+			for (auto component : components[nodeInfo.first])
 			{
-				auto nodeTransform = findComponent<Transform>(node);
-				context.setNode(node, nodeTransform);
+				auto nodeTransform = node->findComponent<Transform>();
+				context.setNode(node.get(), nodeTransform.get());
 				// Ignore cameras - they're rendered in a special way
 				if (nodeTransform && component.second->getTypeId() != Camera::getId())
 					component.second->render(context);
@@ -124,8 +129,8 @@ void Scene::render()
 }
 
 
-void Scene::ensureNodeExists(size_t node)
+void Scene::ensureNodeExists(size_t nodeId)
 {
-	if (!nodeExists(node))
-		THROW(EngineException, "Node ", node, " not found");
+	if (!nodeExists(nodeId))
+		THROW(EngineException, "Node ", nodeId, " not found");
 }

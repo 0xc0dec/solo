@@ -6,11 +6,11 @@ using namespace solo;
 const unsigned DIRTY_BIT_POSITION = 1;
 const unsigned DIRTY_BIT_ROTATION = 2;
 const unsigned DIRTY_BIT_SCALE = 4;
-const unsigned DIRTY_BIT_WORLD = 8; // TODO needed?
+const unsigned DIRTY_BIT_WORLD = 8;
 const unsigned DIRTY_BIT_ALL = DIRTY_BIT_POSITION | DIRTY_BIT_ROTATION | DIRTY_BIT_SCALE | DIRTY_BIT_WORLD;
 
 
-Transform::Transform(size_t node):
+Transform::Transform(Node* node):
 	ComponentBase(node),
 	parent(nullptr)
 {
@@ -19,7 +19,7 @@ Transform::Transform(size_t node):
 }
 
 
-ptr<Transform> Transform::create(size_t node)
+ptr<Transform> Transform::create(Node* node)
 {
 	return NEW2(Transform, node);
 }
@@ -160,7 +160,7 @@ const Matrix& Transform::getInverseTransposedWorldMatrix() const
 }
 
 
-Matrix Transform::getWorldViewMatrix(ptr<Camera> camera) const
+Matrix Transform::getWorldViewMatrix(Camera* camera) const
 {
 	Matrix result;
 	Matrix::multiply(camera->getViewMatrix(), getWorldMatrix(), &result);
@@ -168,7 +168,7 @@ Matrix Transform::getWorldViewMatrix(ptr<Camera> camera) const
 }
 
 
-Matrix Transform::getWorldViewProjectionMatrix(ptr<Camera> camera) const
+Matrix Transform::getWorldViewProjectionMatrix(Camera* camera) const
 {
 	Matrix result;
 	Matrix::multiply(camera->getViewProjectionMatrix(), getWorldMatrix(), &result);
@@ -176,7 +176,7 @@ Matrix Transform::getWorldViewProjectionMatrix(ptr<Camera> camera) const
 }
 
 
-Matrix Transform::getInverseTransposedWorldViewMatrix(ptr<Camera> camera) const
+Matrix Transform::getInverseTransposedWorldViewMatrix(Camera* camera) const
 {
 	Matrix result;
 	Matrix::multiply(camera->getViewMatrix(), getWorldMatrix(), &result);
