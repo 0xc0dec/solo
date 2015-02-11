@@ -37,17 +37,19 @@ Node* Scene::createNode()
 }
 
 
-void Scene::addComponent(size_t nodeId, ptr<Component> cmp)
+void Scene::addComponent(Node* node, ptr<Component> cmp)
 {
+	auto nodeId = node->getId();
 	ensureNodeExists(nodeId);
-	if (findComponent(nodeId, cmp->getTypeId()))
+	if (findComponent(node, cmp->getTypeId()))
 		THROW(EngineException, "Component ", cmp->getTypeId(), " already exists");
 	components[nodeId][cmp->getTypeId()] = cmp;
 }
 
 
-void Scene::removeComponent(size_t nodeId, size_t typeId)
+void Scene::removeComponent(Node* node, size_t typeId)
 {
+	auto nodeId = node->getId();
 	ensureNodeExists(nodeId);
 	components[nodeId].erase(typeId);
 	if (components.at(nodeId).empty())
@@ -55,19 +57,20 @@ void Scene::removeComponent(size_t nodeId, size_t typeId)
 }
 
 
-ptr<Component> Scene::getComponent(size_t nodeId, size_t typeId)
+ptr<Component> Scene::getComponent(Node* node, size_t typeId)
 {
-	auto cmp = findComponent(nodeId, typeId);
+	auto cmp = findComponent(node, typeId);
 	if (!cmp)
 		THROW(EngineException, "Component ", typeId, " not found");
 	return cmp;
 }
 
 
-ptr<Component> Scene::findComponent(size_t node, size_t typeId)
+ptr<Component> Scene::findComponent(Node* node, size_t typeId)
 {
-	ensureNodeExists(node);
-	auto nodeComponents = components[node];
+	auto nodeId = node->getId();
+	ensureNodeExists(nodeId);
+	auto nodeComponents = components[nodeId];
 	auto it = nodeComponents.find(typeId);
 	return it != nodeComponents.end() ? it->second : nullptr;
 }

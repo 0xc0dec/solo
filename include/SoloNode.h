@@ -23,47 +23,47 @@ namespace solo
 		{
 			auto cmp = NEW<T>(this);
 			auto base = CAST_PTR_STATIC<Component>(cmp);
-			scene->addComponent(getId(), base);
+			scene->addComponent(this, base);
 			return cmp;
 		}
 
 		template<> ptr<Camera> addComponent<Camera>()
 		{
 			auto camera = Camera::create(this);
-			scene->addComponent(getId(), camera);
+			scene->addComponent(this, camera);
 			return camera;
 		}
 
 		template<> ptr<Transform> addComponent<Transform>()
 		{
 			auto transform = Transform::create(this);
-			scene->addComponent(getId(), transform);
+			scene->addComponent(this, transform);
 			return transform;
 		}
 
 		template<> ptr<ModelRenderer> addComponent<ModelRenderer>()
 		{
 			auto renderer = ModelRenderer::create(this);
-			scene->addComponent(getId(), renderer);
+			scene->addComponent(this, renderer);
 			return renderer;
 		}
 
 		template <typename T> void removeComponent()
 		{
-			scene->removeComponent(getId(), T::getId());
+			scene->removeComponent(this, T::getId());
 		}
 
 		template <typename T> ptr<T> getComponent()
 		{
 			auto typeId = T::getId();
-			auto cmp = scene->getComponent(getId(), typeId);
+			auto cmp = scene->getComponent(this, typeId);
 			return CAST_PTR_STATIC<T>(cmp);
 		}
 
 		template <typename T> ptr<T> findComponent()
 		{
 			auto typeId = T::getId();
-			auto cmp = scene->findComponent(getId(), typeId);
+			auto cmp = scene->findComponent(this, typeId);
 			return CAST_PTR_STATIC<T>(cmp);
 		}
 

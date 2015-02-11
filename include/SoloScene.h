@@ -18,10 +18,10 @@ namespace solo
 		Node* createEmptyNode();
 		Node* createNode();
 
-		void addComponent(size_t nodeId, ptr<Component> cmp);
-		void removeComponent(size_t nodeId, size_t typeId);
-		ptr<Component> getComponent(size_t nodeId, size_t typeId);
-		ptr<Component> findComponent(size_t nodeId, size_t typeId);
+		void addComponent(Node* node, ptr<Component> cmp);
+		void removeComponent(Node* node, size_t typeId);
+		ptr<Component> getComponent(Node* node, size_t typeId);
+		ptr<Component> findComponent(Node* node, size_t typeId);
 
 		void update();
 		void render();
