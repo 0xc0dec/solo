@@ -215,10 +215,10 @@ void Vector2::scale(const Vector2& scale)
 }
 
 
-void Vector2::rotate(const Vector2& point, float angle)
+void Vector2::rotate(const Vector2& point, float angleRadians)
 {
-	auto sinAngle = sin(angle);
-	auto cosAngle = cos(angle);
+	auto sinAngle = sin(angleRadians);
+	auto cosAngle = cos(angleRadians);
 
 	if (point.isZero())
 	{

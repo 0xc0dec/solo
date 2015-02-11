@@ -62,7 +62,7 @@ namespace solo
 		void translateLocal(float x, float y, float z);
 
 		void rotate(const Quaternion& rotation, TransformSpace space = TransformSpace::Self);
-		void rotate(const Vector3& axis, float angle, TransformSpace space = TransformSpace::Self);
+		void rotate(const Vector3& axis, float angleRadians, TransformSpace space = TransformSpace::Self);
 
 		void scaleLocal(float scale);
 		void scaleLocal(const Vector3& scale);
@@ -72,7 +72,7 @@ namespace solo
 		void setLocalPosition(float x, float y, float z);
 
 		void setLocalRotation(const Quaternion& rotation);
-		void setLocalRotation(const Vector3& axis, float angle);
+		void setLocalRotation(const Vector3& axis, float angleRadians);
 		
 		void setLocalScale(float scale);
 		void setLocalScale(const Vector3& scale);

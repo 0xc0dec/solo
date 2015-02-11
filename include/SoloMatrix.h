@@ -41,10 +41,10 @@ namespace solo
 		static void createScale(const Vector3& scale, Matrix* dst);
 		static void createScale(float xScale, float yScale, float zScale, Matrix* dst);
 		static void createRotation(const Quaternion& quat, Matrix* dst);
-		static void createRotation(const Vector3& axis, float angle, Matrix* dst);
-		static void createRotationX(float angle, Matrix* dst);
-		static void createRotationY(float angle, Matrix* dst);
-		static void createRotationZ(float angle, Matrix* dst);
+		static void createRotation(const Vector3& axis, float angleRadians, Matrix* dst);
+		static void createRotationX(float angleRadians, Matrix* dst);
+		static void createRotationY(float angleRadians, Matrix* dst);
+		static void createRotationZ(float angleRadians, Matrix* dst);
 		static void createTranslation(const Vector3& translation, Matrix* dst);
 		static void createTranslation(float xTranslation, float yTranslation, float zTranslation, Matrix* dst);
 
@@ -98,14 +98,14 @@ namespace solo
 		
 		void rotate(const Quaternion& q);
 		void rotate(const Quaternion& q, Matrix* dst) const;
-		void rotate(const Vector3& axis, float angle);
-		void rotate(const Vector3& axis, float angle, Matrix* dst) const;
-		void rotateX(float angle);
-		void rotateX(float angle, Matrix* dst) const;
-		void rotateY(float angle);
-		void rotateY(float angle, Matrix* dst) const;
-		void rotateZ(float angle);
-		void rotateZ(float angle, Matrix* dst) const;
+		void rotate(const Vector3& axis, float angleRadians);
+		void rotate(const Vector3& axis, float angleRadians, Matrix* dst) const;
+		void rotateX(float angleRadians);
+		void rotateX(float angleRadians, Matrix* dst) const;
+		void rotateY(float angleRadians);
+		void rotateY(float angleRadians, Matrix* dst) const;
+		void rotateZ(float angleRadians);
+		void rotateZ(float angleRadians, Matrix* dst) const;
 
 		void scale(float value);
 		void scale(float value, Matrix* dst) const;

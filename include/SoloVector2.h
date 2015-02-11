@@ -24,7 +24,6 @@ namespace solo
 		bool isZero() const;
 		bool isOne() const;
 
-		// in radians
 		static float angle(const Vector2& v1, const Vector2& v2);
 
 		void add(const Vector2& v);
@@ -50,7 +49,7 @@ namespace solo
 		void scale(float scalar);
 		void scale(const Vector2& scale);
 
-		void rotate(const Vector2& point, float angle);
+		void rotate(const Vector2& point, float angleRadians);
 
 		void set(float x, float y);
 		void set(const float* array);

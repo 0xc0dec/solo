@@ -36,10 +36,10 @@ public:
 
 	virtual void run() override
 	{
-		createQuadInScreenSpace();
+		createQuad();
 	}
 
-	void createQuadInScreenSpace()
+	void createQuad()
 	{
 		auto _scene = engine->getScene();
 		auto effect = Effect::create(vsBasic, fsSimleColor);

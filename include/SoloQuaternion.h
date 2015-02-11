@@ -16,7 +16,7 @@ namespace solo
 		Quaternion(float x, float y, float z, float w);
 		Quaternion(float* array);
 		Quaternion(const Matrix& m);
-		Quaternion(const Vector3& axis, float angle);
+		Quaternion(const Vector3& axis, float angleRadians);
 
 		static const Quaternion& identity();
 		static const Quaternion& zero();
@@ -25,9 +25,9 @@ namespace solo
 		bool isZero() const;
 
 		static void createFromRotationMatrix(const Matrix& m, Quaternion* dst);
-		static void createFromAxisAngle(const Vector3& axis, float angle, Quaternion* dst);
+		static void createFromAxisAngle(const Vector3& axis, float angleRadians, Quaternion* dst);
 		static Quaternion createFromRotationMatrix(const Matrix& m);
-		static Quaternion createFromAxisAngle(const Vector3& axis, float angle);
+		static Quaternion createFromAxisAngle(const Vector3& axis, float angleRadians);
 
 		void conjugate();
 		void conjugate(Quaternion* dst) const;
@@ -44,7 +44,7 @@ namespace solo
 		void set(float x, float y, float z, float w);
 		void set(float* array);
 		void set(const Matrix& m);
-		void set(const Vector3& axis, float angle);
+		void set(const Vector3& axis, float angleRadians);
 		void set(const Quaternion& q);
 
 		void setIdentity();

@@ -281,7 +281,7 @@ void Matrix::createRotation(const Quaternion& q, Matrix* dst)
 }
 
 
-void Matrix::createRotation(const Vector3& axis, float angle, Matrix* dst)
+void Matrix::createRotation(const Vector3& axis, float angleRadians, Matrix* dst)
 {
 	auto x = axis.x;
 	auto y = axis.y;
@@ -303,8 +303,8 @@ void Matrix::createRotation(const Vector3& axis, float angle, Matrix* dst)
 		}
 	}
 
-	auto c = cos(angle);
-	auto s = sin(angle);
+	auto c = cos(angleRadians);
+	auto s = sin(angleRadians);
 
 	auto t = 1.0f - c;
 	auto tx = t * x;
@@ -339,12 +339,12 @@ void Matrix::createRotation(const Vector3& axis, float angle, Matrix* dst)
 }
 
 
-void Matrix::createRotationX(float angle, Matrix* dst)
+void Matrix::createRotationX(float angleRadians, Matrix* dst)
 {
 	memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
 
-	auto c = cos(angle);
-	auto s = sin(angle);
+	auto c = cos(angleRadians);
+	auto s = sin(angleRadians);
 
 	dst->m[5] = c;
 	dst->m[6] = s;
@@ -353,12 +353,12 @@ void Matrix::createRotationX(float angle, Matrix* dst)
 }
 
 
-void Matrix::createRotationY(float angle, Matrix* dst)
+void Matrix::createRotationY(float angleRadians, Matrix* dst)
 {
 	memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
 
-	auto c = cos(angle);
-	auto s = sin(angle);
+	auto c = cos(angleRadians);
+	auto s = sin(angleRadians);
 
 	dst->m[0] = c;
 	dst->m[2] = -s;
@@ -367,12 +367,12 @@ void Matrix::createRotationY(float angle, Matrix* dst)
 }
 
 
-void Matrix::createRotationZ(float angle, Matrix* dst)
+void Matrix::createRotationZ(float angleRadians, Matrix* dst)
 {
 	memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
 
-	auto c = cos(angle);
-	auto s = sin(angle);
+	auto c = cos(angleRadians);
+	auto s = sin(angleRadians);
 
 	dst->m[0] = c;
 	dst->m[1] = s;
@@ -808,58 +808,58 @@ void Matrix::rotate(const Quaternion& q, Matrix* dst) const
 }
 
 
-void Matrix::rotate(const Vector3& axis, float angle)
+void Matrix::rotate(const Vector3& axis, float angleRadians)
 {
-	rotate(axis, angle, this);
+	rotate(axis, angleRadians, this);
 }
 
 
-void Matrix::rotate(const Vector3& axis, float angle, Matrix* dst) const
+void Matrix::rotate(const Vector3& axis, float angleRadians, Matrix* dst) const
 {
 	Matrix r;
-	createRotation(axis, angle, &r);
+	createRotation(axis, angleRadians, &r);
 	multiply(*this, r, dst);
 }
 
 
-void Matrix::rotateX(float angle)
+void Matrix::rotateX(float angleRadians)
 {
-	rotateX(angle, this);
+	rotateX(angleRadians, this);
 }
 
 
-void Matrix::rotateX(float angle, Matrix* dst) const
+void Matrix::rotateX(float angleRadians, Matrix* dst) const
 {
 	Matrix r;
-	createRotationX(angle, &r);
+	createRotationX(angleRadians, &r);
 	multiply(*this, r, dst);
 }
 
 
-void Matrix::rotateY(float angle)
+void Matrix::rotateY(float angleRadians)
 {
-	rotateY(angle, this);
+	rotateY(angleRadians, this);
 }
 
 
-void Matrix::rotateY(float angle, Matrix* dst) const
+void Matrix::rotateY(float angleRadians, Matrix* dst) const
 {
 	Matrix r;
-	createRotationY(angle, &r);
+	createRotationY(angleRadians, &r);
 	multiply(*this, r, dst);
 }
 
 
-void Matrix::rotateZ(float angle)
+void Matrix::rotateZ(float angleRadians)
 {
-	rotateZ(angle, this);
+	rotateZ(angleRadians, this);
 }
 
 
-void Matrix::rotateZ(float angle, Matrix* dst) const
+void Matrix::rotateZ(float angleRadians, Matrix* dst) const
 {
 	Matrix r;
-	createRotationZ(angle, &r);
+	createRotationZ(angleRadians, &r);
 	multiply(*this, r, dst);
 }
 

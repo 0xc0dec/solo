@@ -26,9 +26,9 @@ Quaternion::Quaternion(const Matrix& m)
 }
 
 
-Quaternion::Quaternion(const Vector3& axis, float angle)
+Quaternion::Quaternion(const Vector3& axis, float angleRadians)
 {
-	set(axis, angle);
+	set(axis, angleRadians);
 }
 
 
@@ -64,9 +64,9 @@ void Quaternion::createFromRotationMatrix(const Matrix& m, Quaternion* dst)
 }
 
 
-void Quaternion::createFromAxisAngle(const Vector3& axis, float angle, Quaternion* dst)
+void Quaternion::createFromAxisAngle(const Vector3& axis, float angleRadians, Quaternion* dst)
 {
-	auto halfAngle = angle * 0.5f;
+	auto halfAngle = angleRadians * 0.5f;
 	auto sinHalfAngle = sinf(halfAngle);
 
 	auto normal(axis);
@@ -86,10 +86,10 @@ Quaternion Quaternion::createFromRotationMatrix(const Matrix& m)
 }
 
 
-Quaternion Quaternion::createFromAxisAngle(const Vector3& axis, float angle)
+Quaternion Quaternion::createFromAxisAngle(const Vector3& axis, float angleRadians)
 {
 	Quaternion result;
-	createFromAxisAngle(axis, angle, &result);
+	createFromAxisAngle(axis, angleRadians, &result);
 	return result;
 }
 
@@ -219,9 +219,9 @@ void Quaternion::set(const Matrix& m)
 }
 
 
-void Quaternion::set(const Vector3& axis, float angle)
+void Quaternion::set(const Vector3& axis, float angleRadians)
 {
-	createFromAxisAngle(axis, angle, this);
+	createFromAxisAngle(axis, angleRadians, this);
 }
 
 
