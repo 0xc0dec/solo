@@ -2,7 +2,7 @@
 #include "ComponentsTest.h"
 #include "TransformTest.h"
 #include "DeviceTest.h"
-#include "SoloManualTest.h"
+#include "ManualTest.h"
 
 using namespace solo;
 

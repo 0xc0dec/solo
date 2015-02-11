@@ -165,7 +165,7 @@
     <ClInclude Include="..\tests\test1\ComponentsTest.h" />
     <ClInclude Include="..\tests\test1\DeviceTest.h" />
     <ClInclude Include="..\tests\test1\MaterialsTest.h" />
-    <ClInclude Include="..\tests\test1\SoloManualTest.h" />
+    <ClInclude Include="..\tests\test1\ManualTest.h" />
     <ClInclude Include="..\tests\test1\TransformTest.h" />
     <ClInclude Include="..\tests\test1\TestBase.h" />
   </ItemGroup>
