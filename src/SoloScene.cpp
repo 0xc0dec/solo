@@ -22,7 +22,7 @@ ptr<Scene> Scene::create()
 
 Node* Scene::createEmptyNode()
 {
-	auto node = NEW2(Node, this);
+	auto node = NodeFactory::createNode(this);
 	components[node->getId()];
 	nodes[node->getId()] = node;
 	return node.get();
@@ -34,12 +34,6 @@ Node* Scene::createNode()
 	auto node = createEmptyNode();
 	node->addComponent<Transform>();
 	return node;
-}
-
-
-bool Scene::nodeExists(size_t nodeId)
-{
-	return nodes.find(nodeId) != nodes.end();
 }
 
 
@@ -131,6 +125,6 @@ void Scene::render()
 
 void Scene::ensureNodeExists(size_t nodeId)
 {
-	if (!nodeExists(nodeId))
+	if (nodes.find(nodeId) == nodes.end())
 		THROW(EngineException, "Node ", nodeId, " not found");
 }

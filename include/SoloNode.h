@@ -2,13 +2,14 @@
 
 #include "SoloScene.h"
 #include "SoloModelRenderer.h"
+#include "SoloCamera.h"
+#include "SoloTransform.h"
 
 namespace solo
 {
-	// A wrapper class for more laconic nodes workflow
 	class Node
 	{
-		friend class Scene;
+		friend class NodeFactory;
 
 	public:
 		~Node() {}
@@ -66,12 +67,26 @@ namespace solo
 			return CAST_PTR_STATIC<T>(cmp);
 		}
 
-
 	private:
 		Scene* scene;
 
 		Node(Scene* scene) : scene(scene)
 		{
+		}
+
+		Node(const Node& other);
+		Node(Node&& other);
+		Node& operator=(const Node& other);
+		Node& operator=(Node&& other);
+	};
+
+	class NodeFactory
+	{
+		friend class Scene;
+
+		static ptr<Node> createNode(Scene *scene)
+		{
+			return NEW2(Node, scene);
 		}
 	};
 }
