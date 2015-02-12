@@ -10,13 +10,13 @@ Device::Device(const EngineCreationArgs& args):
 }
 
 
-ptr<Device> Device::create(const EngineCreationArgs& args)
-{
-	return SDLOpenGLDevice::create(args);
-}
-
-
 bool Device::closeRequested() const
 {
 	return close;
+}
+
+
+ptr<Device> DeviceFactory::create(const EngineCreationArgs& args)
+{
+	return NEW2(SDLOpenGLDevice, args);
 }

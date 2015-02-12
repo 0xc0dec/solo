@@ -113,12 +113,6 @@ void SDLOpenGLDevice::endUpdate()
 }
 
 
-ptr<SDLOpenGLDevice> SDLOpenGLDevice::create(const EngineCreationArgs &args)
-{
-	return NEW2(SDLOpenGLDevice, args);
-}
-
-
 void SDLOpenGLDevice::setWindowTitle(const char *title)
 {
 	SDL_SetWindowTitle(window, title);

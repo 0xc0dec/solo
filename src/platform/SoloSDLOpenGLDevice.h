@@ -10,8 +10,6 @@ namespace solo
 	public:
 		virtual ~SDLOpenGLDevice() override;
 
-		static ptr<SDLOpenGLDevice> create(const EngineCreationArgs &args);
-
 		virtual void setWindowTitle(const char *title) override;
 
 		virtual unsigned long getLifetime() const override;
@@ -22,6 +20,8 @@ namespace solo
 		virtual void endUpdate() override;
 
 	private:
+		friend class DeviceFactory;
+
 		SDLOpenGLDevice(const EngineCreationArgs &args);
 
 		SDL_Window *window;

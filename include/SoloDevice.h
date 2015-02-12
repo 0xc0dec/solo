@@ -10,8 +10,6 @@ namespace solo
 	public:
 		virtual ~Device() {}
 
-		static ptr<Device> create(const EngineCreationArgs& args);
-
 		virtual void setWindowTitle(const char *title) = 0;
 
 		virtual Vector2 getCanvasSize() const = 0;
@@ -25,9 +23,17 @@ namespace solo
 		bool closeRequested() const;
 
 	protected:
+		friend class DeviceFactory;
+
 		Device(const EngineCreationArgs& args);
 
 		bool close;
 		EngineCreationArgs creationArgs;
+	};
+
+	class DeviceFactory
+	{
+		friend class Engine;
+		static ptr<Device> create(const EngineCreationArgs& args);
 	};
 }

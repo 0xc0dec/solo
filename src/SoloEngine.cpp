@@ -39,7 +39,7 @@ void Engine::updateTime()
 
 void Engine::run(const EngineCreationArgs & args)
 {
-	device = Device::create(args);
+	device = DeviceFactory::create(args);
 	scene = Scene::create();
 
 	callback->onEngineStarted();
