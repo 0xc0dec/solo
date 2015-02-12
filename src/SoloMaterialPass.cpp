@@ -13,12 +13,6 @@ MaterialPass::MaterialPass(Material *material, ptr<Effect> effect):
 }
 
 
-ptr<MaterialPass> MaterialPass::create(Material* material, ptr<Effect> effect)
-{
-	return NEW2(MaterialPass, material, effect);
-}
-
-
 void MaterialPass::bind(const RenderContext& context)
 {
 	if (effect)
@@ -33,4 +27,10 @@ void MaterialPass::bind(const RenderContext& context)
 
 void MaterialPass::unbind()
 {
+}
+
+
+ptr<MaterialPass> MaterialPassFactory::create(Material* material, ptr<Effect> effect)
+{
+	return NEW2(MaterialPass, material, effect);
 }

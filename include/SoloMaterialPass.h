@@ -20,11 +20,17 @@ namespace solo
 		void unbind();
 
 	private:
-		MaterialPass(Material *material, ptr<Effect> effect);
+		friend class MaterialPassFactory;
 
-		static ptr<MaterialPass> create(Material *material, ptr<Effect> effect);
+		MaterialPass(Material *material, ptr<Effect> effect);
 
 		Material *material;
 		ptr<Effect> effect;
+	};
+
+	class MaterialPassFactory
+	{
+		friend class Material;
+		static ptr<MaterialPass> create(Material *material, ptr<Effect> effect);
 	};
 }

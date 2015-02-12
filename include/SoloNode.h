@@ -9,8 +9,6 @@ namespace solo
 {
 	class Node
 	{
-		friend class NodeFactory;
-
 	public:
 		~Node() {}
 
@@ -68,6 +66,8 @@ namespace solo
 		}
 
 	private:
+		friend class NodeFactory;
+
 		Scene* scene;
 
 		Node(Scene* scene) : scene(scene)
@@ -83,10 +83,6 @@ namespace solo
 	class NodeFactory
 	{
 		friend class Scene;
-
-		static ptr<Node> createNode(Scene *scene)
-		{
-			return NEW2(Node, scene);
-		}
+		static ptr<Node> createNode(Scene *scene);
 	};
 }
