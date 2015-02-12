@@ -12,13 +12,13 @@ namespace solo
 	public:
 		virtual ~GLSLEffect() override;
 
-		static ptr<GLSLEffect> create(const std::string& vsSrc, const std::string& fsSrc);
-
 		virtual void bind() override;
 
 		virtual ptr<EffectVariable> findVariable(const std::string& name) override;
 
 	private:
+		friend class EffectFactory;
+
 		GLSLEffect(const std::string& vsSrc, const std::string& fsSrc);
 
 		GLuint program;

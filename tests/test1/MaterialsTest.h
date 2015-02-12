@@ -42,7 +42,7 @@ public:
 
 	void testEffectVariablesDetection()
 	{
-		auto effect = Effect::create(vs, fs);
+		auto effect = engine->getResourceManager()->createEffect(vs, fs);
 		auto var1 = effect->findVariable("testFloat");
 		auto var2 = effect->findVariable("testSampler");
 		auto var3 = effect->findVariable("testArray");
@@ -56,7 +56,7 @@ public:
 
 	void testEffectCompilation()
 	{
-		auto effect = Effect::create(vs, fs);
+		auto effect = engine->getResourceManager()->createEffect(vs, fs);
 		assert(effect->isValid());
 		assert(effect->getLog().empty());
 	}

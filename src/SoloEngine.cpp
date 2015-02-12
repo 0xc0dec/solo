@@ -2,6 +2,7 @@
 #include "SoloEngine.h"
 #include "SoloScene.h"
 #include "SoloDevice.h"
+#include "SoloResourceManager.h"
 
 using namespace solo;
 
@@ -40,6 +41,7 @@ void Engine::updateTime()
 void Engine::run(const EngineCreationArgs & args)
 {
 	device = DeviceFactory::create(args);
+	resourceManager = ResourceManagerFactory::create();
 	scene = Scene::create();
 
 	callback->onEngineStarted();
@@ -82,4 +84,10 @@ ptr<Scene> Engine::getScene() const
 ptr<Device> Engine::getDevice() const
 {
 	return device;
+}
+
+
+ptr<ResourceManager> Engine::getResourceManager() const
+{
+	return resourceManager;
 }

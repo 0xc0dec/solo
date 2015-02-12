@@ -40,12 +40,6 @@ GLSLEffect::~GLSLEffect()
 }
 
 
-ptr<GLSLEffect> GLSLEffect::create(const std::string& vsSrc, const std::string& fsSrc)
-{
-	return NEW2(GLSLEffect, vsSrc, fsSrc);
-}
-
-
 void GLSLEffect::bind()
 {
 	glUseProgram(program);

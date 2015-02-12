@@ -12,13 +12,6 @@ Effect::Effect(const std::string &vsSrc, const std::string &fsSrc):
 }
 
 
-ptr<Effect> Effect::create(const std::string& vsSrc, const std::string& fsSrc)
-{
-	// GLSL is the only option at the moment
-	return GLSLEffect::create(vsSrc, fsSrc);
-}
-
-
 void Effect::appendToLog(const std::string &newLog)
 {
 	log.append(newLog).append("\n");
@@ -40,4 +33,10 @@ std::string Effect::getLog() const
 size_t Effect::getId() const
 {
 	return id;
+}
+
+
+ptr<Effect> EffectFactory::create(const std::string& vsSrc, const std::string& fsSrc)
+{
+	return NEW2(GLSLEffect, vsSrc, fsSrc);
 }

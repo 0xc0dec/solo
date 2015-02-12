@@ -42,7 +42,7 @@ public:
 	void createQuad()
 	{
 		auto scene = engine->getScene();
-		auto effect = Effect::create(vsBasic, fsSimleColor);
+		auto effect = engine->getResourceManager()->createEffect(vsBasic, fsSimleColor);
 		auto material = Material::create();
 		material->addPass(effect);
 		material->getParameter("color")->setValue(Vector4(0, 0, 1, 1));

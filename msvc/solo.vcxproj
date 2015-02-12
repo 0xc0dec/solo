@@ -49,6 +49,7 @@
     <ClInclude Include="..\include\SoloRay.h" />
     <ClInclude Include="..\include\SoloRenderContext.h" />
     <ClInclude Include="..\include\SoloRenderState.h" />
+    <ClInclude Include="..\include\SoloResourceManager.h" />
     <ClInclude Include="..\include\SoloScene.h" />
     <ClInclude Include="..\include\SoloTransform.h" />
     <ClInclude Include="..\include\SoloTypeId.h" />
@@ -94,6 +95,7 @@
     <ClCompile Include="..\src\SoloQuaternion.cpp" />
     <ClCompile Include="..\src\SoloRay.cpp" />
     <ClCompile Include="..\src\SoloRenderState.cpp" />
+    <ClCompile Include="..\src\SoloResourceManager.cpp" />
     <ClCompile Include="..\src\SoloScene.cpp" />
     <ClCompile Include="..\src\SoloEffect.cpp" />
     <ClCompile Include="..\src\SoloTransform.cpp" />

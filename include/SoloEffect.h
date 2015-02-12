@@ -11,8 +11,6 @@ namespace solo
 	public:
 		virtual ~Effect() {}
 
-		static ptr<Effect> create(const std::string &vsSrc, const std::string &fsSrc);
-
 		virtual ptr<EffectVariable> findVariable(const std::string &name) = 0;
 
 		virtual void bind() = 0;
@@ -31,5 +29,11 @@ namespace solo
 		size_t id;
 
 		void appendToLog(const std::string &newLog);
+	};
+
+	class EffectFactory
+	{
+		friend class ResourceManager;
+		static ptr<Effect> create(const std::string &vsSrc, const std::string &fsSrc);
 	};
 }
