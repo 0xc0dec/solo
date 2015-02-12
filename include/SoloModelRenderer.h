@@ -26,6 +26,10 @@ namespace solo
 		friend class ModelRendererFactory;
 
 		ModelRenderer(Node* node);
+		ModelRenderer(const ModelRenderer& other) = delete;
+		ModelRenderer(ModelRenderer&& other) = delete;
+		ModelRenderer& operator=(const ModelRenderer& other) = delete;
+		ModelRenderer& operator=(ModelRenderer&& other) = delete;
 
 		Model* model;
 		std::map<unsigned, Material*> materials;

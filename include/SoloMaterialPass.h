@@ -21,6 +21,10 @@ namespace solo
 		friend Material;
 
 		MaterialPass(Material *material, Effect* effect);
+		MaterialPass(const MaterialPass& other) = delete;
+		MaterialPass(MaterialPass&& other) = delete;
+		MaterialPass& operator=(const MaterialPass& other) = delete;
+		MaterialPass& operator=(MaterialPass&& other) = delete;
 
 		Material *material;
 		Effect* effect;

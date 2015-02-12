@@ -20,10 +20,10 @@ namespace solo
 		friend class ModelFactory;
 
 		Model() {}
-		Model(const Model& other);
-		Model(Model&& other);
-		Model& operator=(const Model& other);
-		Model& operator=(Model&& other);
+		Model(const Model& other) = delete;
+		Model(Model&& other) = delete;
+		Model& operator=(const Model& other) = delete;
+		Model& operator=(Model&& other) = delete;
 
 		std::vector<Mesh*> meshes;
 	};

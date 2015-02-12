@@ -4,13 +4,13 @@
 using namespace solo;
 
 
-ptr<MaterialParameter> RenderState::getParameter(const std::string& name)
+MaterialParameter* RenderState::getParameter(const std::string& name)
 {
 	auto where = parameters.find(name);
 	if (where != parameters.end())
-		return where->second;
+		return where->second.get();
 	// Create a new one if not found
 	auto parameter = NEW2(MaterialParameter, name);
 	parameters[name] = parameter;
-	return parameter;
+	return parameter.get();
 }

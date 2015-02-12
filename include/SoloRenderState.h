@@ -13,7 +13,7 @@ namespace solo
 		RenderState() {}
 		virtual ~RenderState() {}
 
-		ptr<MaterialParameter> getParameter(const std::string &name);
+		MaterialParameter* getParameter(const std::string &name);
 
 	protected:
 		std::map<std::string, ptr<MaterialParameter>> parameters;

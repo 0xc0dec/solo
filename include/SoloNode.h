@@ -69,11 +69,10 @@ namespace solo
 		friend class NodeFactory;
 	
 		Node(Scene* scene) : scene(scene) {}
-
-		Node(const Node& other);
-		Node(Node&& other);
-		Node& operator=(const Node& other);
-		Node& operator=(Node&& other);
+		Node(const Node& other) = delete;
+		Node(Node&& other) = delete;
+		Node& operator=(const Node& other) = delete;
+		Node& operator=(Node&& other) = delete;
 
 		Scene* scene;
 	};

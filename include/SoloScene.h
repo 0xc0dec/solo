@@ -28,6 +28,10 @@ namespace solo
 		friend class SceneFactory;
 
 		Scene();
+		Scene(const Scene& other) = delete;
+		Scene(Scene&& other) = delete;
+		Scene& operator=(const Scene& other) = delete;
+		Scene& operator=(Scene&& other) = delete;
 
 		typedef std::map<size_t, std::map<size_t, ptr<Component>>> Components;
 		typedef std::map<size_t, ptr<Node>> Nodes;

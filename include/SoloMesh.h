@@ -15,10 +15,10 @@ namespace solo
 
 	protected:
 		Mesh(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs);
-		Mesh(const Mesh& other) = default;
-		Mesh(Mesh&& other);
-		Mesh& operator=(const Mesh& other);
-		Mesh& operator=(Mesh&& other);
+		Mesh(const Mesh& other) = delete;
+		Mesh(Mesh&& other) = delete;
+		Mesh& operator=(const Mesh& other) = delete;
+		Mesh& operator=(Mesh&& other) = delete;
 
 		std::vector<Vector3> vertices;
 		std::vector<Vector3> normals;

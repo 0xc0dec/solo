@@ -26,6 +26,10 @@ namespace solo
 
 	private:
 		GLSLEffectVariable(const std::string& name, GLint location, GLenum type, unsigned index = 0);
+		GLSLEffectVariable(const GLSLEffectVariable& other) = delete;
+		GLSLEffectVariable(GLSLEffectVariable&& other) = delete;
+		GLSLEffectVariable& operator=(const GLSLEffectVariable& other) = delete;
+		GLSLEffectVariable& operator=(GLSLEffectVariable&& other) = delete;
 
 		GLint location;
 		GLenum type;

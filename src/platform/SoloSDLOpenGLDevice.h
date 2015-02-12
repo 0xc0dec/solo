@@ -23,6 +23,10 @@ namespace solo
 		friend class DeviceFactory;
 
 		SDLOpenGLDevice(const EngineCreationArgs &args);
+		SDLOpenGLDevice(const SDLOpenGLDevice& other) = delete;
+		SDLOpenGLDevice(SDLOpenGLDevice&& other) = delete;
+		SDLOpenGLDevice& operator=(const SDLOpenGLDevice& other) = delete;
+		SDLOpenGLDevice& operator=(SDLOpenGLDevice&& other) = delete;
 
 		SDL_Window *window;
 		SDL_GLContext context;

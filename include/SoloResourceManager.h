@@ -25,6 +25,10 @@ namespace solo
 		friend class ResourceManagerFactory;
 
 		ResourceManager() {}
+		ResourceManager(const ResourceManager& other) = delete;
+		ResourceManager(ResourceManager&& other) = delete;
+		ResourceManager& operator=(const ResourceManager& other) = delete;
+		ResourceManager& operator=(ResourceManager&& other) = delete;
 
 		std::list<ptr<Effect>> effects;
 		std::list<ptr<Material>> materials;

@@ -12,6 +12,10 @@ namespace solo
 		friend class CameraFactory;
 
 		OpenGLCamera(Node* node);
+		OpenGLCamera(const OpenGLCamera& other) = delete;
+		OpenGLCamera(OpenGLCamera&& other) = delete;
+		OpenGLCamera& operator=(const OpenGLCamera& other) = delete;
+		OpenGLCamera& operator=(OpenGLCamera&& other) = delete;
 
 		Device* device;
 

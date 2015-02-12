@@ -18,10 +18,10 @@ namespace solo
 		friend class MeshFactory;
 
 		OpenGLMesh(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs);
-		OpenGLMesh(const OpenGLMesh& other) = default;
-		OpenGLMesh(OpenGLMesh&& other);
-		OpenGLMesh& operator=(const OpenGLMesh& other) = default;
-		OpenGLMesh& operator=(OpenGLMesh&& other);
+		OpenGLMesh(const OpenGLMesh& other) = delete;
+		OpenGLMesh(OpenGLMesh&& other) = delete;
+		OpenGLMesh& operator=(const OpenGLMesh& other) = delete;
+		OpenGLMesh& operator=(OpenGLMesh&& other) = delete;
 
 		GLuint vertexArrayHandle;
 		GLuint vertexBufferHandle;

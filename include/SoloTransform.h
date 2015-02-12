@@ -92,10 +92,10 @@ namespace solo
 		friend class TransformFactory;
 
 		Transform(Node* node);
-		Transform(const Transform& other);
-		Transform(Transform&& other);
-		Transform& operator=(const Transform& other);
-		Transform& operator=(Transform&& other);
+		Transform(const Transform& other) = delete;
+		Transform(Transform&& other) = delete;
+		Transform& operator=(const Transform& other) = delete;
+		Transform& operator=(Transform&& other) = delete;
 
 		template <unsigned bit1, unsigned... bitN>
 		void setDirtyWithChildren() const

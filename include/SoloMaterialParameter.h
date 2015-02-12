@@ -112,6 +112,10 @@ namespace solo
 		};
 
 		MaterialParameter(const std::string &name);
+		MaterialParameter(const MaterialParameter& other) = delete;
+		MaterialParameter(MaterialParameter&& other) = delete;
+		MaterialParameter& operator=(const MaterialParameter& other) = delete;
+		MaterialParameter& operator=(MaterialParameter&& other) = delete;
 
 		ptr<Scene> scene;
 

@@ -25,10 +25,10 @@ namespace solo
 		friend class MaterialFactory;
 
 		Material() {}
-		Material(const Material& other);
-		Material(Material&& other);
-		Material& operator=(const Material& other);
-		Material& operator=(Material&& other);
+		Material(const Material& other) = delete;
+		Material(Material&& other) = delete;
+		Material& operator=(const Material& other) = delete;
+		Material& operator=(Material&& other) = delete;
 
 		std::vector<ptr<MaterialPass>> passes;
 

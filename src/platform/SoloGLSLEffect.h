@@ -20,6 +20,10 @@ namespace solo
 		friend class EffectFactory;
 
 		GLSLEffect(const std::string& vsSrc, const std::string& fsSrc);
+		GLSLEffect(const GLSLEffect& other) = delete;
+		GLSLEffect(GLSLEffect&& other) = delete;
+		GLSLEffect& operator=(const GLSLEffect& other) = delete;
+		GLSLEffect& operator=(GLSLEffect&& other) = delete;
 
 		GLuint program;
 		std::map<std::string, ptr<GLSLEffectVariable>> variables; // TODO move to the base class (along with some methods)
