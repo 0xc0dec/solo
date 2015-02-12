@@ -13,21 +13,27 @@ namespace solo
 	public:
 		virtual ~ModelRenderer() override {}
 
-		static ptr<ModelRenderer> create(Node* node);
-
 		virtual void render(const RenderContext& context) override;
 
-		void setModel(const ptr<Model> model);
-		ptr<Model> getModel() const;
+		void setModel(Model* model);
+		Model* getModel() const;
 
-		void setMaterial(unsigned index, ptr<Material> material);
-		ptr<Material> getMaterial(unsigned index);
+		void setMaterial(unsigned index, Material* material);
+		Material* getMaterial(unsigned index);
 		size_t getMaterialCount() const;
 
 	private:
+		friend class ModelRendererFactory;
+
 		ModelRenderer(Node* node);
 
-		ptr<Model> model;
-		std::map<unsigned, ptr<Material>> materials;
+		Model* model;
+		std::map<unsigned, Material*> materials;
+	};
+
+	class ModelRendererFactory
+	{
+		friend class Node;
+		static ptr<ModelRenderer> create(Node *node);
 	};
 }

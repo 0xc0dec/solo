@@ -16,18 +16,28 @@ namespace solo
 	public:
 		~Material() {}
 
-		static ptr<Material> create();
-
-		ptr<MaterialPass> addPass(ptr<Effect> effect);
-		ptr<MaterialPass> getPass(unsigned index) const;
-		void removePass(ptr<MaterialPass> pass);
+		MaterialPass* addPass(Effect* effect);
+		MaterialPass* getPass(unsigned index) const;
+		void removePass(MaterialPass* pass);
 		size_t getPassCount() const;
 
 	private:
+		friend class MaterialFactory;
+
 		Material() {}
+		Material(const Material& other);
+		Material(Material&& other);
+		Material& operator=(const Material& other);
+		Material& operator=(Material&& other);
 
 		std::vector<ptr<MaterialPass>> passes;
 
-		void bind(ptr<Effect> effect, const RenderContext& context);
+		void bind(Effect* effect, const RenderContext& context);
+	};
+
+	class MaterialFactory
+	{
+		friend class ResourceManager;
+		static ptr<Material> create();
 	};
 }

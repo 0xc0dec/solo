@@ -55,24 +55,6 @@ OpenGLMesh::~OpenGLMesh()
 }
 
 
-ptr<OpenGLMesh> OpenGLMesh::create(const std::vector<Vector3>& vertices)
-{
-	return NEW2(OpenGLMesh, vertices, {}, {});
-}
-
-
-ptr<OpenGLMesh> OpenGLMesh::create(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals)
-{
-	return NEW2(OpenGLMesh, vertices, normals, {});
-}
-
-
-ptr<OpenGLMesh> OpenGLMesh::create(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs)
-{
-	return NEW2(OpenGLMesh, vertices, normals, uvs);
-}
-
-
 void OpenGLMesh::draw()
 {
 	glBindVertexArray(vertexArrayHandle);

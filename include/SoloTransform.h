@@ -32,8 +32,6 @@ namespace solo
 
 		virtual ~Transform() override {}
 		
-		static ptr<Transform> create(Node* node);
-
 		void addCallback(TransformCallback *callback);
 		void removeCallback(TransformCallback *callback);
 
@@ -91,9 +89,13 @@ namespace solo
 		Vector3 transforDirection(const Vector3& direction) const;
 
 	private:
+		friend class TransformFactory;
+
 		Transform(Node* node);
 		Transform(const Transform& other);
 		Transform(Transform&& other);
+		Transform& operator=(const Transform& other);
+		Transform& operator=(Transform&& other);
 
 		template <unsigned bit1, unsigned... bitN>
 		void setDirtyWithChildren() const
@@ -121,5 +123,11 @@ namespace solo
 		mutable Matrix worldMatrix;
 		mutable Matrix inverseTransposedWorldMatrix;
 		mutable Matrix inverseTransposedViewMatrix;
+	};
+
+	class TransformFactory
+	{
+		friend class Node;
+		static ptr<Transform> create(Node *node);
 	};
 }

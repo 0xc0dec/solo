@@ -3,19 +3,19 @@
 using namespace solo;
 
 
-ptr<Model> Model::create()
+ptr<Model> ModelFactory::create()
 {
 	return NEW2(Model);
 }
 
 
-void Model::addMesh(const ptr<Mesh> mesh)
+void Model::addMesh(Mesh* mesh)
 {
 	meshes.push_back(mesh);
 }
 
 
-void Model::removeMesh(const ptr<Mesh> mesh)
+void Model::removeMesh(Mesh* mesh)
 {
 	auto pos = std::find(meshes.begin(), meshes.end(), mesh);
 	if (pos != meshes.end())
@@ -23,7 +23,7 @@ void Model::removeMesh(const ptr<Mesh> mesh)
 }
 
 
-ptr<Mesh> Model::getMesh(unsigned index) const
+Mesh* Model::getMesh(unsigned index) const
 {
 	return meshes[index];
 }

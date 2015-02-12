@@ -11,8 +11,6 @@ namespace solo
 
 	class MaterialPass: public RenderState
 	{
-		friend Material;
-
 	public:
 		~MaterialPass() {}
 
@@ -20,17 +18,11 @@ namespace solo
 		void unbind();
 
 	private:
-		friend class MaterialPassFactory;
+		friend Material;
 
-		MaterialPass(Material *material, ptr<Effect> effect);
+		MaterialPass(Material *material, Effect* effect);
 
 		Material *material;
-		ptr<Effect> effect;
-	};
-
-	class MaterialPassFactory
-	{
-		friend class Material;
-		static ptr<MaterialPass> create(Material *material, ptr<Effect> effect);
+		Effect* effect;
 	};
 }

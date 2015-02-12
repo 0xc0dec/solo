@@ -10,18 +10,18 @@ const unsigned DIRTY_BIT_WORLD = 8;
 const unsigned DIRTY_BIT_ALL = DIRTY_BIT_POSITION | DIRTY_BIT_ROTATION | DIRTY_BIT_SCALE | DIRTY_BIT_WORLD;
 
 
+ptr<Transform> TransformFactory::create(Node* node)
+{
+	return NEW2(Transform, node);
+}
+
+
 Transform::Transform(Node* node):
 	ComponentBase(node),
 	parent(nullptr)
 {
 	localScale.set(Vector3::one());
 	setDirty<DIRTY_BIT_ALL>();
-}
-
-
-ptr<Transform> Transform::create(Node* node)
-{
-	return NEW2(Transform, node);
 }
 
 

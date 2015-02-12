@@ -41,15 +41,16 @@ public:
 
 	void createQuad()
 	{
+		auto resManager = engine->getResourceManager();
 		auto scene = engine->getScene();
-		auto effect = engine->getResourceManager()->createEffect(vsBasic, fsSimleColor);
-		auto material = Material::create();
+		auto effect = resManager->createEffect(vsBasic, fsSimleColor);
+		auto material = resManager->createMaterial();
 		material->addPass(effect);
 		material->getParameter("color")->setValue(Vector4(0, 0, 1, 1));
 		material->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
 
-		auto model = Model::create();
-		auto mesh = Mesh::create(
+		auto model = resManager->createModel();
+		auto mesh = resManager->createMesh(
 		{
 			{	-1,	-1,	0 },
 			{	1,	1,	0 },
@@ -65,7 +66,7 @@ public:
 			{ 0, 0, -1 },
 			{ 0, 0, -1 },
 			{ 0, 0, -1 }
-		});
+		}, {});
 		model->addMesh(mesh);
 
 		auto empty = scene->createNode();
@@ -77,7 +78,7 @@ public:
 		auto quadTransform = quad->getComponent<Transform>();
 		quad->addComponent<RotatorAroundLocalAxis>();
 		quadTransform->setParent(emptyTransform);
-		quadTransform->setLocalPosition(2, 0, 0);
+		quadTransform->setLocalPosition(1, 0, 0);
 		quadRenderer->setModel(model);
 		quadRenderer->setMaterial(0, material);
 

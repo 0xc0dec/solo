@@ -22,12 +22,6 @@ MaterialParameter::MaterialParameter(const std::string& name):
 }
 
 
-ptr<MaterialParameter> MaterialParameter::create(const std::string& name)
-{
-	return NEW2(MaterialParameter, name);
-}
-
-
 std::string MaterialParameter::getName() const
 {
 	return name;
@@ -151,7 +145,7 @@ void MaterialParameter::setValue(const Matrix* value, unsigned count)
 }
 
 
-void MaterialParameter::bind(ptr<Effect> effect, const RenderContext& context)
+void MaterialParameter::bind(Effect* effect, const RenderContext& context)
 {
 	auto variable = effect->findVariable(name);
 	if (variable)

@@ -5,25 +5,13 @@
 using namespace solo;
 
 
-ptr<Mesh> Mesh::create(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs)
+ptr<Mesh> MeshFactory::create(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs)
 {
-	return OpenGLMesh::create(vertices, normals, uvs);
+	return NEW2(OpenGLMesh, vertices, normals, uvs);
 }
 
 
-ptr<Mesh> Mesh::create(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals)
-{
-	return OpenGLMesh::create(vertices, normals);
-}
-
-
-ptr<Mesh> Mesh::create(const std::vector<Vector3>& vertices)
-{
-	return OpenGLMesh::create(vertices);
-}
-
-
-Mesh::Mesh(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs) :
+Mesh::Mesh(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs):
 	vertices(vertices),
 	normals(normals),
 	uvs(uvs)

@@ -5,23 +5,18 @@
 using namespace solo;
 
 
-ptr<Material> Material::create()
+MaterialPass* Material::addPass(Effect* effect)
 {
-	return NEW2(Material);
-}
-
-
-ptr<MaterialPass> Material::addPass(ptr<Effect> effect)
-{
-	auto pass = MaterialPassFactory::create(this, effect);
+	auto pass = NEW2(MaterialPass, this, effect);
 	passes.push_back(pass);
-	return pass;
+	return pass.get();
 }
 
 
-void Material::removePass(ptr<MaterialPass> pass)
+void Material::removePass(MaterialPass* pass)
 {
-	auto where = find(passes.begin(), passes.end(), pass);
+	auto where = std::find_if(passes.begin(), passes.end(),
+		[pass](ptr<MaterialPass> p) -> bool { return p.get() == pass; });
 	if (where != passes.end())
 		passes.erase(where);
 }
@@ -33,14 +28,20 @@ size_t Material::getPassCount() const
 }
 
 
-void Material::bind(ptr<Effect> effect, const RenderContext& context)
+void Material::bind(Effect* effect, const RenderContext& context)
 {
 	for (auto p : parameters)
 		p.second->bind(effect, context);
 }
 
 
-ptr<MaterialPass> Material::getPass(unsigned index) const
+MaterialPass* Material::getPass(unsigned index) const
 {
-	return passes[index];
+	return passes[index].get();
+}
+
+
+ptr<Material> MaterialFactory::create()
+{
+	return NEW2(Material);
 }

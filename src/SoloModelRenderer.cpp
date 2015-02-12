@@ -7,15 +7,15 @@
 using namespace solo;
 
 
-ModelRenderer::ModelRenderer(Node* node):
-	ComponentBase(node)
+ptr<ModelRenderer> ModelRendererFactory::create(Node* node)
 {
+	return NEW2(ModelRenderer, node);
 }
 
 
-ptr<ModelRenderer> ModelRenderer::create(Node* node)
+ModelRenderer::ModelRenderer(Node* node):
+	ComponentBase(node)
 {
-	return NEW2(ModelRenderer, node);
 }
 
 
@@ -41,19 +41,19 @@ void ModelRenderer::render(const RenderContext& context)
 }
 
 
-void ModelRenderer::setModel(const ptr<Model> model)
+void ModelRenderer::setModel(Model* model)
 {
 	this->model = model;
 }
 
 
-ptr<Model> ModelRenderer::getModel() const
+Model* ModelRenderer::getModel() const
 {
 	return model;
 }
 
 
-void ModelRenderer::setMaterial(unsigned index, ptr<Material> material)
+void ModelRenderer::setMaterial(unsigned index, Material* material)
 {
 	if (!material)
 		materials.erase(index);
@@ -68,7 +68,7 @@ size_t ModelRenderer::getMaterialCount() const
 }
 
 
-ptr<Material> ModelRenderer::getMaterial(unsigned index)
+Material* ModelRenderer::getMaterial(unsigned index)
 {
 	if (materials.find(index) == materials.end())
 		return nullptr;

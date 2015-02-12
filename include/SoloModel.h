@@ -6,21 +6,31 @@ namespace solo
 {
 	class Mesh;
 
-	// Represents a renderable 3D model composed of one or more meshes.
 	class Model
 	{
 	public:
 		~Model() {}
 
-		static ptr<Model> create();
-
-		void addMesh(const ptr<Mesh> mesh);
-		void removeMesh(const ptr<Mesh> mesh);
-		ptr<Mesh> getMesh(unsigned index) const;
+		void addMesh(Mesh* mesh);
+		void removeMesh(Mesh* mesh);
+		Mesh* getMesh(unsigned index) const;
 		size_t getMeshCount() const;
 
 	private:
+		friend class ModelFactory;
+
 		Model() {}
-		std::vector<ptr<Mesh>> meshes;
+		Model(const Model& other);
+		Model(Model&& other);
+		Model& operator=(const Model& other);
+		Model& operator=(Model&& other);
+
+		std::vector<Mesh*> meshes;
+	};
+
+	class ModelFactory
+	{
+		friend class ResourceManager;
+		static ptr<Model> create();
 	};
 }

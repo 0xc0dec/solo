@@ -6,7 +6,7 @@
 using namespace solo;
 
 
-MaterialPass::MaterialPass(Material *material, ptr<Effect> effect):
+MaterialPass::MaterialPass(Material *material, Effect* effect):
 	material(material),
 	effect(effect)
 {
@@ -27,10 +27,4 @@ void MaterialPass::bind(const RenderContext& context)
 
 void MaterialPass::unbind()
 {
-}
-
-
-ptr<MaterialPass> MaterialPassFactory::create(Material* material, ptr<Effect> effect)
-{
-	return NEW2(MaterialPass, material, effect);
 }

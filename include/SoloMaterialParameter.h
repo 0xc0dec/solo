@@ -121,9 +121,7 @@ namespace solo
 		unsigned valueCount;
 		bool freeableValue;
 
-		static ptr<MaterialParameter> create(const std::string &name);
-
-		void bind(ptr<Effect> effect, const RenderContext& context);
+		void bind(Effect* effect, const RenderContext& context);
 
 		const Matrix& getWorldMatrix(const RenderContext& context) const;
 		const Matrix& getViewMatrix(const RenderContext& context) const;

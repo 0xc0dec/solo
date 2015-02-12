@@ -34,14 +34,14 @@ namespace solo
 
 		template<> Transform* addComponent<Transform>()
 		{
-			auto transform = Transform::create(this);
+			auto transform = TransformFactory::create(this);
 			scene->addComponent(this, transform);
 			return transform.get();
 		}
 
 		template<> ModelRenderer* addComponent<ModelRenderer>()
 		{
-			auto renderer = ModelRenderer::create(this);
+			auto renderer = ModelRendererFactory::create(this);
 			scene->addComponent(this, renderer);
 			return renderer.get();
 		}
@@ -67,17 +67,15 @@ namespace solo
 
 	private:
 		friend class NodeFactory;
-
-		Scene* scene;
-
-		Node(Scene* scene) : scene(scene)
-		{
-		}
+	
+		Node(Scene* scene) : scene(scene) {}
 
 		Node(const Node& other);
 		Node(Node&& other);
 		Node& operator=(const Node& other);
 		Node& operator=(Node&& other);
+
+		Scene* scene;
 	};
 
 	class NodeFactory
