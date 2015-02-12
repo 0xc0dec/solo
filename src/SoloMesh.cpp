@@ -1,26 +1,10 @@
 #include "SoloMesh.h"
-#include "SoloException.h"
 #include "platform/SoloOpenGLMesh.h"
 
 using namespace solo;
 
 
-ptr<Mesh> MeshFactory::create(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs)
+ptr<Mesh> MeshFactory::create()
 {
-	return NEW2(OpenGLMesh, vertices, normals, uvs);
-}
-
-
-Mesh::Mesh(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs):
-	vertices(vertices),
-	normals(normals),
-	uvs(uvs)
-{
-	auto verticesCount = vertices.size();
-	auto normalsCount = normals.size();
-	if (normalsCount > 0 && normalsCount != verticesCount)
-		THROW(EngineException, "Number of normals (", normalsCount, ") doesn't equal to the number of vertices (", verticesCount, ")");
-	auto uvsCount = uvs.size();
-	if (uvsCount > 0 && uvsCount != verticesCount)
-		THROW(EngineException, "Number of UVs (", uvsCount, ") doesn't equal to the number of vertices (", verticesCount, ")");
+	return NEW2(OpenGLMesh);
 }

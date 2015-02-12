@@ -18,7 +18,7 @@ namespace solo
 
 		Effect* createEffect(const std::string &vsSrc, const std::string &fsSrc);
 		Material* createMaterial();
-		Mesh* createMesh(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs);
+		Mesh* createMesh();
 		Model* createModel();
 
 	private:

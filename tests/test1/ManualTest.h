@@ -4,27 +4,34 @@
 
 
 const char *vsBasic =
-	"#version 330 core\n"
+"#version 330 core\n"
 
-	"layout (location = 0) in vec4 position;\n"
+"layout (location = 0) in vec4 position;\n"
+"layout (location = 2) in vec2 uv;\n"
 
-	"uniform mat4 worldViewProj;\n"
+"uniform mat4 worldViewProj;\n"
 
-	"void main()\n"
-	"{\n"
-	"	gl_Position = worldViewProj * position;\n"
-	"}";
+"out vec2 uv0;\n"
+
+"void main()\n"
+"{\n"
+"	gl_Position = worldViewProj * position;\n"
+"	uv0 = uv;\n"
+"}";
 
 const char *fsSimleColor =
-	"#version 330 core\n"
+"#version 330 core\n"
 
-	"uniform vec4 color;\n"
-	"out vec4 fragColor;\n"
+"in vec2 uv0;\n"
 
-	"void main()\n"
-	"{\n"
-	"	fragColor = color;\n"
-	"}\n";
+"uniform vec4 color;\n"
+"out vec4 fragColor;\n"
+
+"void main()\n"
+"{\n"
+"	float ratio = uv0.x * uv0.y;\n"
+"	fragColor = color * ratio;\n"
+"}\n";
 
 
 class ManualTest : public TestBase
@@ -50,23 +57,32 @@ public:
 		material->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
 
 		auto model = resManager->createModel();
-		auto mesh = resManager->createMesh(
+		auto mesh = resManager->createMesh();
+		mesh->setVertices(
 		{
-			{	-1,	-1,	0 },
-			{	1,	1,	0 },
-			{	1,	-1,	0 },
 			{	-1,	-1,	0 },
 			{	-1,	1,	0 },
-			{	1,	1,	0 }
-		},
+			{	1,	1,	0 },
+			{	1,	-1,	0 }
+		});
+		mesh->setNormals(
 		{
-			{ 0, 0, -1 },
-			{ 0, 0, -1 },
 			{ 0, 0, -1 },
 			{ 0, 0, -1 },
 			{ 0, 0, -1 },
 			{ 0, 0, -1 }
-		}, {});
+		});
+		mesh->setUVs(
+		{
+			{ 0, 0 },
+			{ 0, 1 },
+			{ 1, 1 },
+			{ 1, 0 }
+		});
+		mesh->setIndices({
+			0, 1, 2,
+			0, 2, 3
+		});
 		model->addMesh(mesh);
 
 		auto empty = scene->createNode();

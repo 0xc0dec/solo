@@ -13,21 +13,22 @@ namespace solo
 
 		virtual void draw() = 0;
 
+		virtual void setVertices(const std::vector<Vector3>& vertices) = 0;
+		virtual void setNormals(const std::vector<Vector3>& normals) = 0;
+		virtual void setUVs(const std::vector<Vector2>& uvs) = 0;
+		virtual void setIndices(const std::vector<unsigned short>& indices) = 0;
+
 	protected:
-		Mesh(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs);
+		Mesh() {}
 		Mesh(const Mesh& other) = delete;
 		Mesh(Mesh&& other) = delete;
 		Mesh& operator=(const Mesh& other) = delete;
 		Mesh& operator=(Mesh&& other) = delete;
-
-		std::vector<Vector3> vertices;
-		std::vector<Vector3> normals;
-		std::vector<Vector2> uvs;
 	};
 
 	class MeshFactory
 	{
 		friend class ResourceManager;
-		static ptr<Mesh> create(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs);
+		static ptr<Mesh> create();
 	};
 }

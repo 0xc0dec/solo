@@ -29,9 +29,9 @@ Material* ResourceManager::createMaterial()
 }
 
 
-Mesh* ResourceManager::createMesh(const std::vector<Vector3>& vertices, const std::vector<Vector3>& normals, const std::vector<Vector2>& uvs)
+Mesh* ResourceManager::createMesh()
 {
-	auto mesh = MeshFactory::create(vertices, normals, uvs);
+	auto mesh = MeshFactory::create();
 	meshes.push_back(mesh);
 	return mesh.get();
 }
