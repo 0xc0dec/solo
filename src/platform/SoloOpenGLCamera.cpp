@@ -6,12 +6,6 @@
 using namespace solo;
 
 
-ptr<OpenGLCamera> OpenGLCamera::create(Node* node)
-{
-	return NEW2(OpenGLCamera, node);
-}
-
-
 OpenGLCamera::OpenGLCamera(Node* node):
 	Camera(node)
 {

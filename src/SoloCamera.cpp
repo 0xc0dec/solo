@@ -39,12 +39,6 @@ void Camera::onTransformChanged()
 }
 
 
-ptr<Camera> Camera::create(Node* node)
-{
-	return OpenGLCamera::create(node);
-}
-
-
 void Camera::setViewport(float left, float top, float width, float height)
 {
 	viewport.set(left, top, width, height);
@@ -213,4 +207,10 @@ void Camera::render(const RenderContext& context)
 	if (checkAndCleanBit<DIRTY_BIT_CLEAR_COLOR>())
 		applyClearColor();
 	clear();
+}
+
+
+ptr<Camera> CameraFactory::create(Node* node)
+{
+	return NEW2(OpenGLCamera, node);
 }

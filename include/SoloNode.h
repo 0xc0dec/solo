@@ -27,7 +27,7 @@ namespace solo
 
 		template<> Camera* addComponent<Camera>()
 		{
-			auto camera = Camera::create(this);
+			auto camera = CameraFactory::create(this);
 			scene->addComponent(this, camera);
 			return camera.get();
 		}

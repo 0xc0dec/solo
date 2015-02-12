@@ -8,10 +8,9 @@ namespace solo
 
 	class OpenGLCamera: public Camera
 	{
-	public:
-		static ptr<OpenGLCamera> create(Node* node);
-
 	protected:
+		friend class CameraFactory;
+
 		OpenGLCamera(Node* node);
 
 		Device* device;

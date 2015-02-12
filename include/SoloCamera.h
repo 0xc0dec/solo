@@ -16,8 +16,6 @@ namespace solo
 	public:
 		virtual ~Camera();
 
-		static ptr<Camera> create(Node* node);
-
 		virtual void update() override;
 		virtual void render(const RenderContext& context) override;
 
@@ -49,6 +47,8 @@ namespace solo
 		const Matrix& getInverseViewProjectionMatrix();
 
 	protected:
+		friend class CameraFactory;
+
 		Camera(Node* node);
 
 		virtual void onTransformChanged() override;
@@ -75,5 +75,11 @@ namespace solo
 		Matrix viewProjectionMatrix;
 		Matrix inverseViewMatrix;
 		Matrix inverseViewProjectionMatrix;
+	};
+
+	class CameraFactory
+	{
+		friend class Node;
+		static ptr<Camera> create(Node* node);
 	};
 }
