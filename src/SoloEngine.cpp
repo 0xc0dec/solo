@@ -42,7 +42,7 @@ void Engine::run(const EngineCreationArgs & args)
 {
 	device = DeviceFactory::create(args);
 	resourceManager = ResourceManagerFactory::create();
-	scene = Scene::create();
+	scene = SceneFactory::create();
 
 	callback->onEngineStarted();
 

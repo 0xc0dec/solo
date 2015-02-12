@@ -14,12 +14,6 @@ Scene::Scene():
 }
 
 
-ptr<Scene> Scene::create()
-{
-	return NEW2(Scene);
-}
-
-
 Node* Scene::createEmptyNode()
 {
 	auto node = NodeFactory::createNode(this);
@@ -129,4 +123,10 @@ void Scene::ensureNodeExists(size_t nodeId)
 {
 	if (nodes.find(nodeId) == nodes.end())
 		THROW(EngineException, "Node ", nodeId, " not found");
+}
+
+
+ptr<Scene> SceneFactory::create()
+{
+	return NEW2(Scene);
 }

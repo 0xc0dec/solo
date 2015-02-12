@@ -13,8 +13,6 @@ namespace solo
 	public:
 		virtual ~Scene() {}
 
-		static ptr<Scene> create();
-
 		Node* createEmptyNode();
 		Node* createNode();
 
@@ -27,6 +25,8 @@ namespace solo
 		void render();
 
 	private:
+		friend class SceneFactory;
+
 		Scene();
 
 		typedef std::map<size_t, std::map<size_t, ptr<Component>>> Components;
@@ -38,5 +38,11 @@ namespace solo
 
 		void ensureNodeExists(size_t nodeId);
 		std::vector<ptr<Camera>> getCameras();
+	};
+
+	class SceneFactory
+	{
+		friend class Engine;
+		static ptr<Scene> create();
 	};
 }
