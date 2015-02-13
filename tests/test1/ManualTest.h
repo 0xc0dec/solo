@@ -30,9 +30,11 @@ const char *fsSimleColor =
 "void main()\n"
 "{\n"
 "	float xfloor = floor(uv0.x / 0.2);\n"
-"	float yfloor = floor(uv0.y / 0.2);\n"
-"	if (mod(xfloor, 2) > 0 || mod(yfloor, 2) > 0)\n"
-"		fragColor = vec4(1, 0, 0, 1);\n"
+"	float yfloor = floor(uv0.y / 0.2) + 1;\n"
+"	if (mod(xfloor, 2) == 0 && mod(yfloor, 2) == 0)\n"
+"		fragColor = vec4(0, 0, 0, 1);\n"
+"	else if (mod(xfloor, 2) > 0 && mod(yfloor, 2) > 0)\n"
+"		fragColor = vec4(0, 0, 0, 1);\n"
 "	else\n"
 "		fragColor = color;\n"
 "}\n";
@@ -57,7 +59,7 @@ public:
 		auto effect = resManager->createEffect(vsBasic, fsSimleColor);
 		auto material = resManager->createMaterial();
 		material->addPass(effect);
-		material->getParameter("color")->setValue(Vector4(0, 0, 1, 1));
+		material->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
 		material->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
 
 		auto model = resManager->createModel();
