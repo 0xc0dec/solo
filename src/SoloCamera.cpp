@@ -1,6 +1,7 @@
 #include "SoloCamera.h"
 #include "SoloNode.h"
 #include "platform/SoloOpenGLCamera.h"
+#include "SoloLog.h"
 
 using namespace solo;
 
@@ -33,8 +34,9 @@ Camera::~Camera()
 }
 
 
-void Camera::onTransformChanged()
+void Camera::onTransformChanged(const Transform* transform)
 {
+	DEBUG("Transform changed");
 	setDirty<DIRTY_BIT_VIEW, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 

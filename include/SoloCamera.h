@@ -51,7 +51,7 @@ namespace solo
 
 		Camera(Node* node);
 
-		virtual void onTransformChanged() override;
+		virtual void onTransformChanged(const Transform* transform) override;
 
 		virtual void applyViewportChange() = 0;
 		virtual void applyClearColor() = 0;

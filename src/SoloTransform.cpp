@@ -25,6 +25,13 @@ Transform::Transform(Node* node):
 }
 
 
+void Transform::notifyChanged() const
+{
+	for (auto callback : callbacks)
+		callback->onTransformChanged(this);
+}
+
+
 void Transform::addCallback(TransformCallback* callback)
 {
 	callbacks.push_back(callback);
@@ -49,7 +56,7 @@ void Transform::setParent(Transform* parent)
 	this->parent = parent;
 	if (parent)
 		parent->children.push_back(this);
-	setDirty<DIRTY_BIT_WORLD>();
+	setDirtyWithChildren<DIRTY_BIT_WORLD>();
 }
 
 
@@ -370,4 +377,22 @@ Vector3 Transform::getLocalForward() const
 Vector3 Transform::getLocalBack() const
 {
 	return getMatrix().getBackVector();
+}
+
+
+template <unsigned bit1, unsigned... bitN>
+void Transform::setDirtyWithChildren() const
+{
+	setDirty<bit1, bitN...>();
+	notifyChanged();
+	for (auto child : children)
+		child->setDirtyWithChildren<bit1, bitN...>();
+}
+
+
+template <unsigned bit1, unsigned... bitN>
+void Transform::setChildrenDirty() const
+{
+	for (auto child : children)
+		child->setDirtyWithChildren<bit1, bitN...>();
 }

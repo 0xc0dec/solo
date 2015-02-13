@@ -209,7 +209,8 @@
     <Lib>
       <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;SDL2_release_mt_x64.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
-      <AdditionalOptions>/ignore:4006 /ignore:4204 /ignore:4221</AdditionalOptions>
+      <AdditionalOptions>
+      </AdditionalOptions>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -257,7 +258,8 @@
     <Lib>
       <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;SDL2_release_mt_x64.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
-      <AdditionalOptions>/ignore:4006 /ignore:4204 /ignore:4221</AdditionalOptions>
+      <AdditionalOptions>
+      </AdditionalOptions>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

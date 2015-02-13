@@ -1,6 +1,3 @@
-* Vertex format
-* Index array
-* Notify about transform changes
 * Optimise transform: calculate global position/rotation/scale bypassing the matrix
 * Use position, rotation and scale to calculate the corresponding getter method results (instead of the matrix)
 * Materials, Passes, Techniques, Effects handling

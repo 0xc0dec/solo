@@ -11,14 +11,7 @@ namespace solo
 {
 	class Camera;
 	class Node;
-
-	class TransformCallback
-	{
-	public:
-		virtual ~TransformCallback() {}
-		
-		virtual void onTransformChanged() = 0;
-	};
+	class TransformCallback;
 
 	class Transform: public ComponentBase<Transform>, Dirty
 	{
@@ -98,19 +91,12 @@ namespace solo
 		Transform& operator=(Transform&& other) = delete;
 
 		template <unsigned bit1, unsigned... bitN>
-		void setDirtyWithChildren() const
-		{
-			setDirty<bit1, bitN...>();
-			for (auto child : children)
-				child->setDirtyWithChildren<bit1, bitN...>();
-		}
+		void setDirtyWithChildren() const;
 
 		template <unsigned bit1, unsigned... bitN>
-		void setChildrenDirty() const
-		{
-			for (auto child : children)
-				child->setDirtyWithChildren<bit1, bitN...>();
-		}
+		void setChildrenDirty() const;
+
+		void notifyChanged() const;
 
 		Transform* parent;
 		std::vector<Transform*> children;
@@ -123,6 +109,13 @@ namespace solo
 		mutable Matrix worldMatrix;
 		mutable Matrix inverseTransposedWorldMatrix;
 		mutable Matrix inverseTransposedViewMatrix;
+	};
+
+	class TransformCallback
+	{
+	public:
+		virtual ~TransformCallback() {}
+		virtual void onTransformChanged(const Transform *transform) = 0;
 	};
 
 	class TransformFactory

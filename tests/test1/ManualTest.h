@@ -129,7 +129,7 @@ public:
 	class RotatorAroundLocalAxis : public ComponentBase<RotatorAroundLocalAxis>
 	{
 	public:
-		explicit RotatorAroundLocalAxis(Node* node) :
+		explicit RotatorAroundLocalAxis(Node* node):
 			ComponentBase<RotatorAroundLocalAxis>(node)
 		{
 			engine = Engine::get();
