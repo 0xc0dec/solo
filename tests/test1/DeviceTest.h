@@ -14,6 +14,7 @@ public:
 
 	virtual void run() override
 	{
+		engine->getDevice()->setWindowTitle("Test title");
 		testCanvasSize();
 	}
 

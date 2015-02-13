@@ -1,5 +1,7 @@
+#include <SoloEngine.h>
 #include "SoloCamera.h"
 #include "SoloNode.h"
+#include "SoloDevice.h"
 #include "platform/SoloOpenGLCamera.h"
 #include "SoloLog.h"
 
@@ -20,10 +22,12 @@ const unsigned DIRTY_BIT_ALL = DIRTY_BIT_VIEW | DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_
 Camera::Camera(Node* node):
 	ComponentBase(node),
 	ortho(false), viewport(0, 0, 1, 1), clearColor(0, 0, 0, 1),
-	fov(60), near(1), far(100), width(1), height(1), aspectRatio(16.f / 9.f)
+	fov(60), near(1), far(100), width(1), height(1), aspectRatio(1)
 {
 	transform = node->getComponent<Transform>();
 	transform->addCallback(this);
+	auto canvasSize = Engine::get()->getDevice()->getCanvasSize();
+	setAspectRatio(canvasSize.x / canvasSize.y);
 	setDirty<DIRTY_BIT_ALL>(); // arguably
 }
 
@@ -36,7 +40,6 @@ Camera::~Camera()
 
 void Camera::onTransformChanged(const Transform* transform)
 {
-	DEBUG("Transform changed");
 	setDirty<DIRTY_BIT_VIEW, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 

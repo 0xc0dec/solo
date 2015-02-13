@@ -16,13 +16,11 @@ public:
 
 	virtual void onEngineStarted() override
 	{
-		engine->getDevice()->setWindowTitle("Test title");
 		MaterialsTest(engine).run();
 		ComponentsTest(engine).run();
 		TransformTest(engine).run();
 		DeviceTest(engine).run();
 		ManualTest(engine).run();
-		LOG("All tests passed");
 	}
 
 	virtual void onEngineStopped() override
