@@ -20,7 +20,7 @@ public:
 	void testCanvasSize()
 	{
 		auto size = device->getCanvasSize();
-		assert(size.x == 1366);
-		assert(size.y == 768);
+		assert(size.x == 640);
+		assert(size.y == 480);
 	}
 };

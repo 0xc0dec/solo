@@ -42,7 +42,7 @@ private:
 int main()
 {
 	auto engine = getEngine();
-	EngineCreationArgs engineArgs = { 1366, 768, 32, 24, false };
+	EngineCreationArgs engineArgs = { 640, 480, 32, 24, false };
 	Callback callback(engine);
 	engine->setCallback(&callback);
 	engine->run(engineArgs);

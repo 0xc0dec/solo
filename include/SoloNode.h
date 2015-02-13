@@ -25,27 +25,6 @@ namespace solo
 			return cmp.get();
 		}
 
-		template<> Camera* addComponent<Camera>()
-		{
-			auto camera = CameraFactory::create(this);
-			scene->addComponent(this, camera);
-			return camera.get();
-		}
-
-		template<> Transform* addComponent<Transform>()
-		{
-			auto transform = TransformFactory::create(this);
-			scene->addComponent(this, transform);
-			return transform.get();
-		}
-
-		template<> ModelRenderer* addComponent<ModelRenderer>()
-		{
-			auto renderer = ModelRendererFactory::create(this);
-			scene->addComponent(this, renderer);
-			return renderer.get();
-		}
-
 		template <typename T> void removeComponent()
 		{
 			scene->removeComponent(this, T::getId());
@@ -82,4 +61,8 @@ namespace solo
 		friend class Scene;
 		static ptr<Node> createNode(Scene *scene);
 	};
+
+	template<> Transform* Node::addComponent<Transform>();
+	template<> Camera* Node::addComponent<Camera>();
+	template<> ModelRenderer* Node::addComponent<ModelRenderer>();
 }
