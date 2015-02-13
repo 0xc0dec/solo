@@ -29,8 +29,12 @@ const char *fsSimleColor =
 
 "void main()\n"
 "{\n"
-"	float ratio = uv0.x * uv0.y;\n"
-"	fragColor = color * ratio;\n"
+"	float xfloor = floor(uv0.x / 0.2);\n"
+"	float yfloor = floor(uv0.y / 0.2);\n"
+"	if (mod(xfloor, 2) > 0 || mod(yfloor, 2) > 0)\n"
+"		fragColor = vec4(1, 0, 0, 1);\n"
+"	else\n"
+"		fragColor = color;\n"
 "}\n";
 
 
