@@ -18,9 +18,9 @@ namespace solo
 		void unbind();
 
 	private:
-		friend Material;
+		friend class Material;
 
-		MaterialPass(Material *material, Effect* effect);
+		MaterialPass(Material* material, Effect* effect);
 		MaterialPass(const MaterialPass& other) = delete;
 		MaterialPass(MaterialPass&& other) = delete;
 		MaterialPass& operator=(const MaterialPass& other) = delete;
