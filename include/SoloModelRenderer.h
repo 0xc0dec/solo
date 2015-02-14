@@ -11,14 +11,14 @@ namespace solo
 	class ModelRenderer: public ComponentBase<ModelRenderer>
 	{
 	public:
-		virtual ~ModelRenderer() override {}
+		virtual ~ModelRenderer() {}
 
 		virtual void render(const RenderContext& context) override;
 
-		void setModel(Model* model);
+		void setModel(shared<Model> model);
 		Model* getModel() const;
 
-		void setMaterial(unsigned index, Material* material);
+		void setMaterial(unsigned index, shared<Material> material);
 		Material* getMaterial(unsigned index);
 		size_t getMaterialCount() const;
 
@@ -31,8 +31,8 @@ namespace solo
 		ModelRenderer& operator=(const ModelRenderer& other) = delete;
 		ModelRenderer& operator=(ModelRenderer&& other) = delete;
 
-		Model* model;
-		std::map<unsigned, Material*> materials;
+		shared<Model> model;
+		std::map<unsigned, shared<Material>> materials;
 	};
 
 	class ModelRendererFactory

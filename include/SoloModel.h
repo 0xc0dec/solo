@@ -11,7 +11,7 @@ namespace solo
 	public:
 		~Model() {}
 
-		void addMesh(Mesh* mesh);
+		void addMesh(shared<Mesh> mesh);
 		void removeMesh(Mesh* mesh);
 		Mesh* getMesh(unsigned index) const;
 		size_t getMeshCount() const;
@@ -25,7 +25,7 @@ namespace solo
 		Model& operator=(const Model& other) = delete;
 		Model& operator=(Model&& other) = delete;
 
-		std::vector<Mesh*> meshes;
+		std::vector<shared<Mesh>> meshes;
 	};
 
 	class ModelFactory

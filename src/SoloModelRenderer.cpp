@@ -41,7 +41,7 @@ void ModelRenderer::render(const RenderContext& context)
 }
 
 
-void ModelRenderer::setModel(Model* model)
+void ModelRenderer::setModel(shared<Model> model)
 {
 	this->model = model;
 }
@@ -49,11 +49,11 @@ void ModelRenderer::setModel(Model* model)
 
 Model* ModelRenderer::getModel() const
 {
-	return model;
+	return model.get();
 }
 
 
-void ModelRenderer::setMaterial(unsigned index, Material* material)
+void ModelRenderer::setMaterial(unsigned index, shared<Material> material)
 {
 	if (!material)
 		materials.erase(index);
@@ -72,5 +72,5 @@ Material* ModelRenderer::getMaterial(unsigned index)
 {
 	if (materials.find(index) == materials.end())
 		return nullptr;
-	return materials[index];
+	return materials[index].get();
 }
