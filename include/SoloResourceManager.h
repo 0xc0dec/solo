@@ -16,10 +16,10 @@ namespace solo
 	public:
 		~ResourceManager() {}
 
-		Effect* getEffect(const std::string &vsSrc, const std::string &fsSrc);
+		shared<Effect> getEffect(const std::string &vsSrc, const std::string &fsSrc);
 		Material* getMaterial();
-		Mesh* createMesh();
-		Model* createModel();
+		Mesh* getMesh();
+		Model* getModel();
 
 	private:
 		friend class ResourceManagerFactory;

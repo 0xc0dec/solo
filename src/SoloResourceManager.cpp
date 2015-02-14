@@ -13,11 +13,11 @@ shared <ResourceManager> ResourceManagerFactory::create()
 }
 
 
-Effect* ResourceManager::getEffect(const std::string &vsSrc, const std::string &fsSrc)
+shared<Effect> ResourceManager::getEffect(const std::string &vsSrc, const std::string &fsSrc)
 {
 	auto effect = EffectFactory::create(vsSrc, fsSrc);
 	effects.push_back(effect);
-	return effect.get();
+	return effect;
 }
 
 
@@ -29,7 +29,7 @@ Material* ResourceManager::getMaterial()
 }
 
 
-Mesh* ResourceManager::createMesh()
+Mesh* ResourceManager::getMesh()
 {
 	auto mesh = MeshFactory::create();
 	meshes.push_back(mesh);
@@ -37,7 +37,7 @@ Mesh* ResourceManager::createMesh()
 }
 
 
-Model* ResourceManager::createModel()
+Model* ResourceManager::getModel()
 {
 	auto model = ModelFactory::create();
 	models.push_back(model);

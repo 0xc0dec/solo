@@ -62,8 +62,8 @@ public:
 		material->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
 		material->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
 
-		auto model = resManager->createModel();
-		auto mesh = resManager->createMesh();
+		auto model = resManager->getModel();
+		auto mesh = resManager->getMesh();
 		mesh->setVertices(
 		{
 			{	-1,	-1,	0 },

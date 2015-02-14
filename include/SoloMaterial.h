@@ -16,7 +16,7 @@ namespace solo
 	public:
 		~Material() {}
 
-		MaterialPass* addPass(Effect* effect);
+		MaterialPass* addPass(shared<Effect> effect);
 		MaterialPass* getPass(unsigned index) const;
 		void removePass(MaterialPass* pass);
 		size_t getPassCount() const;

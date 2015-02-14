@@ -6,7 +6,13 @@
 using namespace solo;
 
 
-MaterialPass::MaterialPass(Material *material, Effect* effect):
+shared<MaterialPass> MaterialPassFactory::create(Material* material, shared<Effect> effect)
+{
+	return NEW2(MaterialPass, material, effect);
+}
+
+
+MaterialPass::MaterialPass(Material *material, shared<Effect> effect):
 	material(material),
 	effect(effect)
 {
@@ -18,9 +24,9 @@ void MaterialPass::bind(const RenderContext& context)
 	if (effect)
 	{
 		effect->bind();
-		material->bind(effect, context);
+		material->bind(effect.get(), context);
 		for (auto p : parameters)
-			p.second->bind(effect, context);
+			p.second->bind(effect.get(), context);
 	}
 }
 

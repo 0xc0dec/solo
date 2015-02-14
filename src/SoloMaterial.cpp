@@ -5,9 +5,9 @@
 using namespace solo;
 
 
-MaterialPass* Material::addPass(Effect* effect)
+MaterialPass* Material::addPass(shared<Effect> effect)
 {
-	auto pass = NEW2(MaterialPass, this, effect);
+	auto pass = MaterialPassFactory::create(this, effect);
 	passes.push_back(pass);
 	return pass.get();
 }
