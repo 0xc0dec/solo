@@ -17,7 +17,7 @@ namespace solo
 		~ResourceManager() {}
 
 		Effect* getEffect(const std::string &vsSrc, const std::string &fsSrc);
-		Material* createMaterial();
+		Material* getMaterial();
 		Mesh* createMesh();
 		Model* createModel();
 

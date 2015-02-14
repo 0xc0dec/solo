@@ -21,7 +21,7 @@ Effect* ResourceManager::getEffect(const std::string &vsSrc, const std::string &
 }
 
 
-Material* ResourceManager::createMaterial()
+Material* ResourceManager::getMaterial()
 {
 	auto material = MaterialFactory::create();
 	materials.push_back(material);

@@ -57,7 +57,7 @@ public:
 		auto resManager = engine->getResourceManager();
 		auto scene = engine->getScene();
 		auto effect = resManager->getEffect(vsBasic, fsSimleColor);
-		auto material = resManager->createMaterial();
+		auto material = resManager->getMaterial();
 		material->addPass(effect);
 		material->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
 		material->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
