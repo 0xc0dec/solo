@@ -80,7 +80,7 @@ namespace solo
 		{
 		public:
 			virtual ~ValueBinding() { }
-			virtual void setValue(ptr<EffectVariable> variable, const RenderContext& context) = 0;
+			virtual void setValue(EffectVariable* variable, const RenderContext& context) = 0;
 
 		protected:
 			ValueBinding& operator=(const ValueBinding&) { return *this; }
@@ -94,7 +94,7 @@ namespace solo
 		public:
 			SingleValueBinding(TClass* instance, ValueGetterMethod getter);
 
-			virtual void setValue(ptr<EffectVariable> variable, const RenderContext& renderContext) override;
+			virtual void setValue(EffectVariable* variable, const RenderContext& renderContext) override;
 
 		private:
 			TClass* instance;
@@ -139,7 +139,7 @@ namespace solo
 	};
 
 	template <class TClass, class TParam>
-	void MaterialParameter::SingleValueBinding<TClass, TParam>::setValue(ptr<EffectVariable> variable, const RenderContext& context)
+	void MaterialParameter::SingleValueBinding<TClass, TParam>::setValue(EffectVariable* variable, const RenderContext& context)
 	{
 		variable->setValue((instance->*getter)(context));
 	}

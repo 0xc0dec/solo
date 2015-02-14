@@ -46,11 +46,11 @@ void GLSLEffect::bind()
 }
 
 
-ptr<EffectVariable> GLSLEffect::findVariable(const std::string& name)
+EffectVariable* GLSLEffect::findVariable(const std::string& name)
 {
 	auto where = variables.find(name);
 	if (where != variables.end())
-		return where->second;
+		return where->second.get();
 	return nullptr;
 }
 

@@ -11,7 +11,7 @@ namespace solo
 	public:
 		virtual ~Effect() {}
 
-		virtual ptr<EffectVariable> findVariable(const std::string &name) = 0;
+		virtual EffectVariable* findVariable(const std::string &name) = 0;
 
 		virtual void bind() = 0;
 

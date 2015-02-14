@@ -14,7 +14,7 @@ namespace solo
 
 		virtual void bind() override;
 
-		virtual ptr<EffectVariable> findVariable(const std::string& name) override;
+		virtual EffectVariable* findVariable(const std::string& name) override;
 
 	private:
 		friend class EffectFactory;
