@@ -56,7 +56,7 @@ public:
 	{
 		auto resManager = engine->getResourceManager();
 		auto scene = engine->getScene();
-		auto effect = resManager->createEffect(vsBasic, fsSimleColor);
+		auto effect = resManager->getEffect(vsBasic, fsSimleColor);
 		auto material = resManager->createMaterial();
 		material->addPass(effect);
 		material->getParameter("color")->setValue(Vector4(1, 1, 0, 1));

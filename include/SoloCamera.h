@@ -80,6 +80,6 @@ namespace solo
 	class CameraFactory
 	{
 		friend class Node;
-		static ptr<Camera> create(Node* node);
+		static shared<Camera> create(Node* node);
 	};
 }

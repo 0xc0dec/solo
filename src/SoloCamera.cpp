@@ -215,7 +215,7 @@ void Camera::render(const RenderContext& context)
 }
 
 
-ptr<Camera> CameraFactory::create(Node* node)
+shared <Camera> CameraFactory::create(Node* node)
 {
 	return NEW2(OpenGLCamera, node);
 }

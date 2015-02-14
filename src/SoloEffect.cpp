@@ -36,7 +36,7 @@ size_t Effect::getId() const
 }
 
 
-ptr<Effect> EffectFactory::create(const std::string& vsSrc, const std::string& fsSrc)
+shared<Effect> EffectFactory::create(const std::string& vsSrc, const std::string& fsSrc)
 {
 	return NEW2(GLSLEffect, vsSrc, fsSrc);
 }

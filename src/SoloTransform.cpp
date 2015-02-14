@@ -10,7 +10,7 @@ const unsigned DIRTY_BIT_WORLD = 8;
 const unsigned DIRTY_BIT_ALL = DIRTY_BIT_POSITION | DIRTY_BIT_ROTATION | DIRTY_BIT_SCALE | DIRTY_BIT_WORLD;
 
 
-ptr<Transform> TransformFactory::create(Node* node)
+shared<Transform> TransformFactory::create(Node* node)
 {
 	return NEW2(Transform, node);
 }

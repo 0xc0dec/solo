@@ -3,7 +3,7 @@
 using namespace solo;
 
 
-ptr<Model> ModelFactory::create()
+shared<Model> ModelFactory::create()
 {
 	return NEW2(Model);
 }

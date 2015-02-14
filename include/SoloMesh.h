@@ -29,6 +29,6 @@ namespace solo
 	class MeshFactory
 	{
 		friend class ResourceManager;
-		static ptr<Mesh> create();
+		static shared<Mesh> create();
 	};
 }

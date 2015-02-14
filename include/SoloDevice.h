@@ -34,6 +34,6 @@ namespace solo
 	class DeviceFactory
 	{
 		friend class Engine;
-		static ptr<Device> create(const EngineCreationArgs& args);
+		static shared<Device> create(const EngineCreationArgs& args);
 	};
 }

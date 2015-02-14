@@ -38,6 +38,6 @@ namespace solo
 	class ModelRendererFactory
 	{
 		friend class Node;
-		static ptr<ModelRenderer> create(Node *node);
+		static shared<ModelRenderer> create(Node *node);
 	};
 }

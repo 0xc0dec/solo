@@ -59,7 +59,7 @@ namespace solo
 	class NodeFactory
 	{
 		friend class Scene;
-		static ptr<Node> createNode(Scene *scene);
+		static shared<Node> createNode(Scene *scene);
 	};
 
 	template<> Transform* Node::addComponent<Transform>();

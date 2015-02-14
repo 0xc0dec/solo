@@ -7,13 +7,13 @@
 using namespace solo;
 
 
-ptr<ResourceManager> ResourceManagerFactory::create()
+shared <ResourceManager> ResourceManagerFactory::create()
 {
 	return NEW2(ResourceManager);
 }
 
 
-Effect* ResourceManager::createEffect(const std::string& vsSrc, const std::string& fsSrc)
+Effect* ResourceManager::getEffect(const std::string &vsSrc, const std::string &fsSrc)
 {
 	auto effect = EffectFactory::create(vsSrc, fsSrc);
 	effects.push_back(effect);

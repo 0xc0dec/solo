@@ -31,7 +31,7 @@ Node* Scene::createNode()
 }
 
 
-void Scene::addComponent(Node* node, ptr<Component> cmp)
+void Scene::addComponent(Node* node, shared<Component> cmp)
 {
 	auto nodeId = node->getId();
 	ensureNodeExists(nodeId);
@@ -51,7 +51,7 @@ void Scene::removeComponent(Node* node, size_t typeId)
 }
 
 
-ptr<Component> Scene::getComponent(Node* node, size_t typeId)
+shared<Component> Scene::getComponent(Node* node, size_t typeId)
 {
 	auto cmp = findComponent(node, typeId);
 	if (!cmp)
@@ -60,7 +60,7 @@ ptr<Component> Scene::getComponent(Node* node, size_t typeId)
 }
 
 
-ptr<Component> Scene::findComponent(Node* node, size_t typeId)
+shared<Component> Scene::findComponent(Node* node, size_t typeId)
 {
 	auto nodeId = node->getId();
 	ensureNodeExists(nodeId);
@@ -70,9 +70,9 @@ ptr<Component> Scene::findComponent(Node* node, size_t typeId)
 }
 
 
-std::vector<ptr<Camera>> Scene::getCameras()
+std::vector<shared<Camera>> Scene::getCameras()
 {
-	std::vector<ptr<Camera>> result;
+	std::vector<shared<Camera>> result;
 	result.reserve(10);
 	for (auto nodeComponents : components)
 	{
@@ -126,7 +126,7 @@ void Scene::ensureNodeExists(size_t nodeId)
 }
 
 
-ptr<Scene> SceneFactory::create()
+shared<Scene> SceneFactory::create()
 {
 	return NEW2(Scene);
 }

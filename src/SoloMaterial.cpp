@@ -16,7 +16,7 @@ MaterialPass* Material::addPass(Effect* effect)
 void Material::removePass(MaterialPass* pass)
 {
 	auto where = std::find_if(passes.begin(), passes.end(),
-		[pass](ptr<MaterialPass> p) -> bool { return p.get() == pass; });
+		[pass](shared <MaterialPass> p) -> bool { return p.get() == pass; });
 	if (where != passes.end())
 		passes.erase(where);
 }
@@ -41,7 +41,7 @@ MaterialPass* Material::getPass(unsigned index) const
 }
 
 
-ptr<Material> MaterialFactory::create()
+shared <Material> MaterialFactory::create()
 {
 	return NEW2(Material);
 }

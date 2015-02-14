@@ -17,7 +17,7 @@ GLSLEffectVariable::GLSLEffectVariable(const std::string& name, GLint location, 
 }
 
 
-ptr<GLSLEffectVariable> GLSLEffectVariable::create(const std::string& name, GLint location, GLenum type, unsigned index)
+shared<GLSLEffectVariable> GLSLEffectVariable::create(const std::string& name, GLint location, GLenum type, unsigned index)
 {
 	return NEW2(GLSLEffectVariable, name, location, type, index);
 }

@@ -16,7 +16,7 @@ namespace solo
 	public:
 		~ResourceManager() {}
 
-		Effect* createEffect(const std::string &vsSrc, const std::string &fsSrc);
+		Effect* getEffect(const std::string &vsSrc, const std::string &fsSrc);
 		Material* createMaterial();
 		Mesh* createMesh();
 		Model* createModel();
@@ -30,15 +30,15 @@ namespace solo
 		ResourceManager& operator=(const ResourceManager& other) = delete;
 		ResourceManager& operator=(ResourceManager&& other) = delete;
 
-		std::list<ptr<Effect>> effects;
-		std::list<ptr<Material>> materials;
-		std::list<ptr<Mesh>> meshes;
-		std::list<ptr<Model>> models;
+		std::list<shared<Effect>> effects;
+		std::list<shared<Material>> materials;
+		std::list<shared<Mesh>> meshes;
+		std::list<shared<Model>> models;
 	};
 
 	class ResourceManagerFactory
 	{
 		friend class Engine;
-		static ptr<ResourceManager> create();
+		static shared<ResourceManager> create();
 	};
 }

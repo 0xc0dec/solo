@@ -16,10 +16,10 @@ namespace solo
 		Node* createEmptyNode();
 		Node* createNode();
 
-		void addComponent(Node* node, ptr<Component> cmp);
+		void addComponent(Node* node, shared<Component> cmp);
 		void removeComponent(Node* node, size_t typeId);
-		ptr<Component> getComponent(Node* node, size_t typeId);
-		ptr<Component> findComponent(Node* node, size_t typeId);
+		shared<Component> getComponent(Node* node, size_t typeId);
+		shared<Component> findComponent(Node* node, size_t typeId);
 
 		void update();
 		void render();
@@ -33,20 +33,20 @@ namespace solo
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
-		typedef std::map<size_t, std::map<size_t, ptr<Component>>> Components;
-		typedef std::map<size_t, ptr<Node>> Nodes;
+		typedef std::map<size_t, std::map<size_t, shared<Component>>> Components;
+		typedef std::map<size_t, shared<Node>> Nodes;
 
 		int nodeCounter;
 		Components components;
 		Nodes nodes;
 
 		void ensureNodeExists(size_t nodeId);
-		std::vector<ptr<Camera>> getCameras();
+		std::vector<shared<Camera>> getCameras();
 	};
 
 	class SceneFactory
 	{
 		friend class Engine;
-		static ptr<Scene> create();
+		static shared<Scene> create();
 	};
 }

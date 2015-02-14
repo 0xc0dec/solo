@@ -7,7 +7,7 @@
 using namespace solo;
 
 
-ptr<ModelRenderer> ModelRendererFactory::create(Node* node)
+shared<ModelRenderer> ModelRendererFactory::create(Node* node)
 {
 	return NEW2(ModelRenderer, node);
 }

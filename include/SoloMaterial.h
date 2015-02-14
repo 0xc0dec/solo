@@ -30,7 +30,7 @@ namespace solo
 		Material& operator=(const Material& other) = delete;
 		Material& operator=(Material&& other) = delete;
 
-		std::vector<ptr<MaterialPass>> passes;
+		std::vector<shared<MaterialPass>> passes;
 
 		void bind(Effect* effect, const RenderContext& context);
 	};
@@ -38,6 +38,6 @@ namespace solo
 	class MaterialFactory
 	{
 		friend class ResourceManager;
-		static ptr<Material> create();
+		static shared<Material> create();
 	};
 }

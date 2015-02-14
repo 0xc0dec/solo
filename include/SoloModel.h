@@ -31,6 +31,6 @@ namespace solo
 	class ModelFactory
 	{
 		friend class ResourceManager;
-		static ptr<Model> create();
+		static shared<Model> create();
 	};
 }

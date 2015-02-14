@@ -22,6 +22,6 @@ public:
 
 protected:
 	Engine *engine;
-	ptr<Device> device;
-	ptr<Scene> scene;
+	shared<Device> device;
+	shared<Scene> scene;
 };

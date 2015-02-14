@@ -34,6 +34,6 @@ namespace solo
 	class EffectFactory
 	{
 		friend class ResourceManager;
-		static ptr<Effect> create(const std::string &vsSrc, const std::string &fsSrc);
+		static shared<Effect> create(const std::string &vsSrc, const std::string &fsSrc);
 	};
 }

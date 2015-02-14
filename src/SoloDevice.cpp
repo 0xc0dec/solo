@@ -16,7 +16,7 @@ bool Device::closeRequested() const
 }
 
 
-ptr<Device> DeviceFactory::create(const EngineCreationArgs& args)
+shared<Device> DeviceFactory::create(const EngineCreationArgs& args)
 {
 	return NEW2(SDLOpenGLDevice, args);
 }

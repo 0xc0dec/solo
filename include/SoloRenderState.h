@@ -16,6 +16,6 @@ namespace solo
 		MaterialParameter* getParameter(const std::string &name);
 
 	protected:
-		std::map<std::string, ptr<MaterialParameter>> parameters;
+		std::map<std::string, shared<MaterialParameter>> parameters;
 	};
 }

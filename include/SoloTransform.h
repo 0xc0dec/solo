@@ -121,6 +121,6 @@ namespace solo
 	class TransformFactory
 	{
 		friend class Node;
-		static ptr<Transform> create(Node *node);
+		static shared<Transform> create(Node *node);
 	};
 }

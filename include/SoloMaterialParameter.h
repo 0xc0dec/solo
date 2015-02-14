@@ -117,7 +117,7 @@ namespace solo
 		MaterialParameter& operator=(const MaterialParameter& other) = delete;
 		MaterialParameter& operator=(MaterialParameter&& other) = delete;
 
-		ptr<Scene> scene;
+		shared<Scene> scene;
 
 		std::string name;
 		ValueType type;

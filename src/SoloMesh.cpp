@@ -4,7 +4,7 @@
 using namespace solo;
 
 
-ptr<Mesh> MeshFactory::create()
+shared <Mesh> MeshFactory::create()
 {
 	return NEW2(OpenGLMesh);
 }

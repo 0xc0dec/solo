@@ -26,7 +26,7 @@ namespace solo
 		GLSLEffect& operator=(GLSLEffect&& other) = delete;
 
 		GLuint program;
-		std::map<std::string, ptr<GLSLEffectVariable>> variables; // TODO move to the base class (along with some methods)
+		std::map<std::string, shared<GLSLEffectVariable>> variables; // TODO move to the base class (along with some methods)
 
 		GLint createShader(GLuint type, std::string src);
 		bool createProgram(GLuint vs, GLuint fs);
