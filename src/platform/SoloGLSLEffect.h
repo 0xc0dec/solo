@@ -10,7 +10,7 @@ namespace solo
 	class GLSLEffect: public Effect
 	{
 	public:
-		virtual ~GLSLEffect() override;
+		virtual ~GLSLEffect();
 
 		virtual void bind() override;
 
