@@ -51,7 +51,7 @@ void Scene::removeComponent(Node* node, size_t typeId)
 }
 
 
-shared<Component> Scene::getComponent(Node* node, size_t typeId)
+Component* Scene::getComponent(Node* node, size_t typeId)
 {
 	auto cmp = findComponent(node, typeId);
 	if (!cmp)
@@ -60,13 +60,13 @@ shared<Component> Scene::getComponent(Node* node, size_t typeId)
 }
 
 
-shared<Component> Scene::findComponent(Node* node, size_t typeId)
+Component* Scene::findComponent(Node* node, size_t typeId)
 {
 	auto nodeId = node->getId();
 	ensureNodeExists(nodeId);
 	auto nodeComponents = components[nodeId];
 	auto it = nodeComponents.find(typeId);
-	return it != nodeComponents.end() ? it->second : nullptr;
+	return it != nodeComponents.end() ? it->second.get() : nullptr;
 }
 
 

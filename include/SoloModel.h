@@ -13,6 +13,7 @@ namespace solo
 
 		void addMesh(shared<Mesh> mesh);
 		void removeMesh(Mesh* mesh);
+		void removeMesh(shared<Mesh> mesh);
 		Mesh* getMesh(unsigned index) const;
 		size_t getMeshCount() const;
 

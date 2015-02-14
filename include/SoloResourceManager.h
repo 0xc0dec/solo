@@ -1,8 +1,6 @@
 #pragma once
 
 #include "SoloBase.h"
-#include "SoloVector2.h"
-#include "SoloVector3.h"
 
 namespace solo
 {

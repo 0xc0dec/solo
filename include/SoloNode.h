@@ -34,14 +34,14 @@ namespace solo
 		{
 			auto typeId = T::getId();
 			auto cmp = scene->getComponent(this, typeId);
-			return static_cast<T*>(cmp.get());
+			return static_cast<T*>(cmp);
 		}
 
 		template <typename T> T* findComponent()
 		{
 			auto typeId = T::getId();
 			auto cmp = scene->findComponent(this, typeId);
-			return static_cast<T*>(cmp.get());
+			return static_cast<T*>(cmp);
 		}
 
 	private:
