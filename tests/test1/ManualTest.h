@@ -42,6 +42,20 @@ const char *fsSimleColor =
 
 class ManualTest : public TestBase
 {
+	class Closer : public ComponentBase<Closer>
+	{
+	public:
+		explicit Closer(Node* node): ComponentBase<Closer>(node)
+		{
+		}
+
+		void update() override
+		{
+			if (Engine::get()->getDevice()->isKeyPressed(KeyCode::Escape))
+				Engine::get()->getDevice()->requestClose();
+		}
+	};
+
 public:
 	ManualTest(Engine *engine) : TestBase(engine)
 	{
@@ -94,6 +108,7 @@ public:
 		auto empty = scene->createNode();
 		auto emptyTransform = empty->getComponent<Transform>();
 		empty->addComponent<RotatorAroundWorldAxis>();
+		empty->addComponent<Closer>();
 
 		auto quad = scene->createNode();
 		auto quadRenderer = quad->addComponent<ModelRenderer>();

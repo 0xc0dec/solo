@@ -28,6 +28,9 @@ namespace solo
 		SDLOpenGLDevice& operator=(const SDLOpenGLDevice& other) = delete;
 		SDLOpenGLDevice& operator=(SDLOpenGLDevice&& other) = delete;
 
+		void updateInput(const SDL_Event& evt);
+		void processWindowEvent(const SDL_Event& evt);
+
 		SDL_Window *window;
 		SDL_GLContext context;
 

@@ -10,6 +10,25 @@ Device::Device(const EngineCreationArgs& args):
 }
 
 
+bool Device::isKeyPressed(KeyCode code, bool repeat) const
+{
+	auto where = pressedKeys.find(code);
+	return where != pressedKeys.end() && where->second == repeat;
+}
+
+
+bool Device::isKeyReleased(KeyCode code) const
+{
+	return releasedKeys.find(code) != releasedKeys.end();
+}
+
+
+void Device::requestClose()
+{
+	close = true;
+}
+
+
 bool Device::closeRequested() const
 {
 	return close;

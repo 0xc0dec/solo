@@ -1,4 +1,4 @@
-* Optimise transform: calculate global position/rotation/scale bypassing the matrix
+* Models loading
+* Input
 * Use position, rotation and scale to calculate the corresponding getter method results (instead of the matrix)
-* Materials, Passes, Techniques, Effects handling
 * Remove methods like multiply() from math classes
