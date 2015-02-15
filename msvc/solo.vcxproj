@@ -156,7 +156,7 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\src\SDL\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
     <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;$(LibraryPath)</LibraryPath>
@@ -167,7 +167,7 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\src\SDL\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
     <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;$(LibraryPath)</LibraryPath>
