@@ -20,6 +20,7 @@ std::unordered_map<SDL_Keycode, KeyCode> keymap =
 	{ SDLK_UP, KeyCode::UpArrow },
 	{ SDLK_DOWN, KeyCode::DownArrow },
 	{ SDLK_ESCAPE, KeyCode::Escape },
+	// TODO
 };
 
 std::unordered_map<Uint8, MouseButton> mouseButtonsMap = 
@@ -159,12 +160,16 @@ void SDLOpenGLDevice::setCursorCaptured(bool captured)
 void SDLOpenGLDevice::prepareKeyboardState()
 {
 	releasedKeys.clear();
-	if (!hasKeyboardFocus)
+	if (hasKeyboardFocus)
+	{
+
+	}
+	else
 	{
 		for (auto pair : pressedKeys)
 			releasedKeys.insert(pair.first);
+		pressedKeys.clear();
 	}
-	pressedKeys.clear();
 }
 
 
