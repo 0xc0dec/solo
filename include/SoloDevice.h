@@ -7,6 +7,10 @@ namespace solo
 {
 	enum class KeyCode
 	{
+		W,
+		S,
+		A,
+		D,
 		Escape,
 		LeftArrow,
 		RightArrow,
@@ -30,12 +34,14 @@ namespace solo
 		virtual void setWindowTitle(const char *title) = 0;
 		virtual std::string getWindowTitle() const = 0;
 
-		bool isKeyPressed(KeyCode code, bool firstTime = true) const;
+		bool isKeyPressed(KeyCode code, bool firstTimeOnly = false) const;
 		bool isKeyReleased(KeyCode code) const;
 
 		Vector2 getMouseMotion() const;
-		bool isMouseButtonPressed(MouseButton button, bool firstTime = true) const;
+		bool isMouseButtonPressed(MouseButton button, bool firstTimeOnly = false) const;
 		bool isMouseButtonReleased(MouseButton button) const;
+
+		virtual void setCursorCaptured(bool captured) = 0;
 
 		virtual Vector2 getCanvasSize() const = 0;
 

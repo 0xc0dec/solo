@@ -79,7 +79,7 @@ namespace solo
 		Matrix getInverseTransposedWorldViewMatrix(Camera* camera) const;
 
 		Vector3 transformPoint(const Vector3& point) const;
-		Vector3 transforDirection(const Vector3& direction) const;
+		Vector3 transformDirection(const Vector3& direction) const;
 
 	private:
 		friend class TransformFactory;

@@ -13,6 +13,8 @@ namespace solo
 		virtual void setWindowTitle(const char *title) override;
 		virtual std::string getWindowTitle() const override;
 
+		virtual void setCursorCaptured(bool captured) override;
+
 		virtual unsigned long getLifetime() const override;
 
 		virtual Vector2 getCanvasSize() const override;

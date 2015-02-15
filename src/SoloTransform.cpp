@@ -298,7 +298,7 @@ Vector3 Transform::transformPoint(const Vector3& point) const
 }
 
 
-Vector3 Transform::transforDirection(const Vector3& direction) const
+Vector3 Transform::transformDirection(const Vector3& direction) const
 {
 	return getMatrix().transformDirection(direction);
 }

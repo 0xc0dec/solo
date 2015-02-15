@@ -230,10 +230,9 @@ void Vector3::negate()
 }
 
 
-Vector3& Vector3::normalize()
+void Vector3::normalize()
 {
 	normalize(this);
-	return *this;
 }
 
 

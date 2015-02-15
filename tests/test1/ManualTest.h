@@ -51,22 +51,25 @@ class ManualTest : public TestBase
 
 		void update() override
 		{
-			if (device->isKeyPressed(KeyCode::Escape))
+			if (device->isKeyPressed(KeyCode::Escape, true))
+			{
+				DEBUG("Requesting shutdown");
 				device->requestShutdown();
+			}
 
-			if (device->isKeyPressed(KeyCode::LeftArrow, true))
-				DEBUG("Left arrow pressed first time");
-			if (device->isKeyPressed(KeyCode::LeftArrow, false))
-				DEBUG("Left arrow is held down");
-			if (device->isKeyReleased(KeyCode::LeftArrow))
-				DEBUG("Left arrow released");
+//			if (device->isKeyPressed(KeyCode::LeftArrow, true))
+//				DEBUG("Left arrow pressed first time");
+//			if (device->isKeyPressed(KeyCode::LeftArrow, false))
+//				DEBUG("Left arrow is held down");
+//			if (device->isKeyReleased(KeyCode::LeftArrow))
+//				DEBUG("Left arrow released");
 
-			if (device->isMouseButtonPressed(MouseButton::Left))
-				DEBUG("Left button pressed for the first time");
-			if (device->isMouseButtonPressed(MouseButton::Left, false))
-				DEBUG("Left button is held down");
-			if (device->isMouseButtonReleased(MouseButton::Left))
-				DEBUG("Left button released");
+//			if (device->isMouseButtonPressed(MouseButton::Left))
+//				DEBUG("Left button pressed for the first time");
+//			if (device->isMouseButtonPressed(MouseButton::Left, false))
+//				DEBUG("Left button is held down");
+//			if (device->isMouseButtonReleased(MouseButton::Left))
+//				DEBUG("Left button released");
 		}
 
 	private:
@@ -140,9 +143,58 @@ public:
 		auto cameraNode = scene->createNode();
 		auto cameraTransform = cameraNode->getComponent<Transform>();
 		cameraTransform->setLocalPosition(0, 0, 5);
+		cameraNode->addComponent<SpectatorCamera>();
 		auto camera = cameraNode->addComponent<Camera>();
 		camera->setClearColor(0, 0.8f, 0.8f, 1);
 	}
+
+	class SpectatorCamera : public ComponentBase<SpectatorCamera>
+	{
+	public:
+		SpectatorCamera(Node* node): ComponentBase<SpectatorCamera>(node)
+		{
+			engine = Engine::get();
+			device = engine->getDevice();
+			transform = node->getComponent<Transform>();
+		}
+
+		virtual void update() override
+		{
+			auto mouseMotion = device->getMouseMotion();
+			auto dt = engine->getTimeDelta();
+
+			if (device->isMouseButtonPressed(MouseButton::Right, true))
+				device->setCursorCaptured(true);
+			if (device->isMouseButtonReleased(MouseButton::Right))
+				device->setCursorCaptured(false);
+
+			if (device->isMouseButtonPressed(MouseButton::Right, false))
+			{
+				if (mouseMotion.x != 0)
+					transform->rotate(Vector3::unitY(), dt * 0.5f * -mouseMotion.x, Transform::TransformSpace::World);
+				if (mouseMotion.y != 0)
+					transform->rotate(Vector3::unitX(), dt * 0.5f * -mouseMotion.y, Transform::TransformSpace::Self);
+			}
+
+			Vector3 movement;
+			if (device->isKeyPressed(KeyCode::W))
+				movement += transform->getLocalForward();
+			if (device->isKeyPressed(KeyCode::S))
+				movement += transform->getLocalBack();
+			if (device->isKeyPressed(KeyCode::A))
+				movement += transform->getLocalLeft();
+			if (device->isKeyPressed(KeyCode::D))
+				movement += transform->getLocalRight();
+			movement.normalize();
+			movement *= dt * 10;
+			transform->translateLocal(movement);
+		}
+
+	private:
+		Transform* transform;
+		Engine* engine;
+		Device *device;
+	};
 
 	class RotatorAroundWorldAxis : public ComponentBase<RotatorAroundWorldAxis>
 	{

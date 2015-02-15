@@ -12,10 +12,10 @@ Device::Device(const EngineCreationArgs& args):
 }
 
 
-bool Device::isKeyPressed(KeyCode code, bool firstTime) const
+bool Device::isKeyPressed(KeyCode code, bool firstTimeOnly) const
 {
 	auto where = pressedKeys.find(code);
-	return where != pressedKeys.end() && where->second == firstTime;
+	return where != pressedKeys.end() && (!firstTimeOnly || where->second);
 }
 
 
@@ -31,10 +31,10 @@ Vector2 Device::getMouseMotion() const
 }
 
 
-bool Device::isMouseButtonPressed(MouseButton button, bool firstTime) const
+bool Device::isMouseButtonPressed(MouseButton button, bool firstTimeOnly) const
 {
 	auto where = pressedMouseButtons.find(button);
-	return where != pressedMouseButtons.end() && where->second == firstTime;
+	return where != pressedMouseButtons.end() && (!firstTimeOnly || where->second);
 }
 
 

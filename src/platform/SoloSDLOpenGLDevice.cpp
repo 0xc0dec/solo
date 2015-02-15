@@ -11,6 +11,10 @@ using namespace solo;
 
 std::unordered_map<SDL_Keycode, KeyCode> keymap =
 {
+	{ SDLK_w, KeyCode::W },
+	{ SDLK_s, KeyCode::S },
+	{ SDLK_a, KeyCode::A },
+	{ SDLK_d, KeyCode::D },
 	{ SDLK_LEFT, KeyCode::LeftArrow },
 	{ SDLK_RIGHT, KeyCode::RightArrow },
 	{ SDLK_UP, KeyCode::UpArrow },
@@ -146,6 +150,12 @@ std::string SDLOpenGLDevice::getWindowTitle() const
 }
 
 
+void SDLOpenGLDevice::setCursorCaptured(bool captured)
+{
+	SDL_SetRelativeMouseMode(captured ? SDL_TRUE : SDL_FALSE);
+}
+
+
 void SDLOpenGLDevice::prepareKeyboardState()
 {
 	releasedKeys.clear();
@@ -250,6 +260,7 @@ void SDLOpenGLDevice::processWindowEvent(const SDL_Event& evt)
 
 void SDLOpenGLDevice::readEvents()
 {
+	static auto firstTime = true;
 	SDL_Event evt;
 	while (SDL_PollEvent(&evt))
 	{
@@ -262,9 +273,13 @@ void SDLOpenGLDevice::readEvents()
 				processWindowEvent(evt);
 				break;
 		}
-		processKeyboardEvent(evt);
-		processMouseEvent(evt);
+		if (!firstTime)
+		{
+			processKeyboardEvent(evt);
+			processMouseEvent(evt);
+		}
 	}
+	firstTime = false;
 }
 
 
