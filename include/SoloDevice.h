@@ -21,6 +21,7 @@ namespace solo
 		virtual ~Device() {}
 
 		virtual void setWindowTitle(const char *title) = 0;
+		virtual std::string getWindowTitle() const = 0;
 
 		virtual bool isKeyPressed(KeyCode code, bool repeat = false) const;
 		virtual bool isKeyReleased(KeyCode code) const;
@@ -33,8 +34,8 @@ namespace solo
 		virtual void beginUpdate() = 0;
 		virtual void endUpdate() = 0;
 
-		void requestClose();
-		bool closeRequested() const;
+		void requestShutdown();
+		bool shutdownRequested() const;
 
 	protected:
 		friend class DeviceFactory;
@@ -48,7 +49,7 @@ namespace solo
 		// stores what keys were pressed and if it was a repeat
 		std::unordered_map<KeyCode, bool> pressedKeys;
 		std::unordered_set<KeyCode> releasedKeys;
-
+		
 		bool close;
 		EngineCreationArgs creationArgs;
 	};

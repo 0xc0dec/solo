@@ -52,7 +52,7 @@ class ManualTest : public TestBase
 		void update() override
 		{
 			if (Engine::get()->getDevice()->isKeyPressed(KeyCode::Escape))
-				Engine::get()->getDevice()->requestClose();
+				Engine::get()->getDevice()->requestShutdown();
 		}
 	};
 

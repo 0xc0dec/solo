@@ -14,7 +14,7 @@ public:
 
 	virtual void run() override
 	{
-		engine->getDevice()->setWindowTitle("Test title");
+		testWindowTitle();
 		testCanvasSize();
 	}
 
@@ -23,5 +23,11 @@ public:
 		auto size = device->getCanvasSize();
 		assert(size.x == 640);
 		assert(size.y == 480);
+	}
+
+	void testWindowTitle()
+	{
+		engine->getDevice()->setWindowTitle("Test window");
+		assert(engine->getDevice()->getWindowTitle() == "Test window");
 	}
 };

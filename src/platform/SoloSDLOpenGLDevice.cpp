@@ -23,7 +23,7 @@ SDLOpenGLDevice::SDLOpenGLDevice(EngineCreationArgs const& args):
 	Device(args)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
-	THROW(EngineException, "Failed to initialize system");
+		THROW(EngineException, "Failed to initialize system");
 
 	auto ctxVersion = selectContextVersion(MAX_GL_CONTEXT_VERSION_MAJOR, MAX_GL_CONTEXT_VERSION_MINOR);
 	auto major = std::get<0>(ctxVersion);
@@ -34,25 +34,25 @@ SDLOpenGLDevice::SDLOpenGLDevice(EngineCreationArgs const& args):
 
 	window = std::get<0>(windowWithContext);
 	if (!window)
-	THROW(EngineException, "Failed to create device");
+		THROW(EngineException, "Failed to create device");
 
 	context = std::get<1>(windowWithContext);
 	if (!context)
-	THROW(EngineException, "Failed to init OpenGL context");
+		THROW(EngineException, "Failed to init OpenGL context");
 
 	glewExperimental = true;
 	if (glewInit())
-	THROW(EngineException, "Failed to init OpenGL extensions");
+		THROW(EngineException, "Failed to init OpenGL extensions");
 
 	SDL_GL_SetSwapInterval(1);
 }
 
 
-std::tuple<int, int> SDLOpenGLDevice::selectContextVersion(int desiredMajorVersion, int desiredMinorVersion)
+std::tuple<int, int> SDLOpenGLDevice::selectContextVersion(int targetMajorVersion, int targetMinorVersion)
 {
-	auto maxMinorVersion = desiredMinorVersion;
+	auto maxMinorVersion = targetMinorVersion;
 	int minor = maxMinorVersion, major;
-	for (major = desiredMajorVersion; major >= 2; --major)
+	for (major = targetMajorVersion; major >= 2; --major)
 	{
 		SDL_GLContext context = nullptr;
 		for (minor = maxMinorVersion; minor >= 0; --minor)
@@ -73,7 +73,7 @@ std::tuple<int, int> SDLOpenGLDevice::selectContextVersion(int desiredMajorVersi
 		}
 		if (context)
 			break;
-		// try desiredMinorVersion..0 first, then 9..0
+		// try targetMinorVersion..0 first, then 9..0
 		maxMinorVersion = 9;
 	}
 
@@ -129,7 +129,13 @@ void SDLOpenGLDevice::setWindowTitle(const char* title)
 }
 
 
-void SDLOpenGLDevice::updateInput(const SDL_Event& evt)
+std::string SDLOpenGLDevice::getWindowTitle() const
+{
+	return std::string(SDL_GetWindowTitle(window));
+}
+
+
+void SDLOpenGLDevice::processKeyboardEvent(const SDL_Event& evt)
 {
 	pressedKeys.clear();
 	releasedKeys.clear();
@@ -153,12 +159,23 @@ void SDLOpenGLDevice::updateInput(const SDL_Event& evt)
 }
 
 
+void SDLOpenGLDevice::processMouseEvent(const SDL_Event& evt)
+{
+	switch (evt.type)
+	{
+		case SDL_MOUSEMOTION:
+
+			break;
+	}
+}
+
+
 void SDLOpenGLDevice::processWindowEvent(const SDL_Event& evt)
 {
 	switch (evt.window.event)
 	{
 		case SDL_WINDOWEVENT_CLOSE:
-			requestClose();
+			requestShutdown();
 			break;
 	}
 }
@@ -172,14 +189,17 @@ void SDLOpenGLDevice::processSystemEvents()
 		switch (evt.type)
 		{
 			case SDL_QUIT:
-				requestClose();
+				requestShutdown();
 				break;
 			case SDL_WINDOWEVENT:
 				processWindowEvent(evt);
 				break;
 			case SDL_KEYDOWN:
 			case SDL_KEYUP:
-				updateInput(evt);
+				processKeyboardEvent(evt);
+				break;
+			case SDL_MOUSEMOTION:
+				processMouseEvent(evt);
 				break;
 		}
 	}

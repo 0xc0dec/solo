@@ -23,13 +23,13 @@ bool Device::isKeyReleased(KeyCode code) const
 }
 
 
-void Device::requestClose()
+void Device::requestShutdown()
 {
 	close = true;
 }
 
 
-bool Device::closeRequested() const
+bool Device::shutdownRequested() const
 {
 	return close;
 }

@@ -53,7 +53,7 @@ void Engine::run(const EngineCreationArgs & args)
 		scene->update();
 		scene->render();
 		device->endUpdate();
-		if (device->closeRequested() && callback->onDeviceCloseRequested())
+		if (device->shutdownRequested() && callback->onDeviceCloseRequested())
 			break;
 	}
 

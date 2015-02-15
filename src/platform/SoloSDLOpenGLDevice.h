@@ -11,6 +11,7 @@ namespace solo
 		virtual ~SDLOpenGLDevice() override;
 
 		virtual void setWindowTitle(const char *title) override;
+		virtual std::string getWindowTitle() const override;
 
 		virtual unsigned long getLifetime() const override;
 
@@ -28,14 +29,15 @@ namespace solo
 		SDLOpenGLDevice& operator=(const SDLOpenGLDevice& other) = delete;
 		SDLOpenGLDevice& operator=(SDLOpenGLDevice&& other) = delete;
 
-		void updateInput(const SDL_Event& evt);
+		void processKeyboardEvent(const SDL_Event& evt);
+		void processMouseEvent(const SDL_Event& evt);
 		void processWindowEvent(const SDL_Event& evt);
 
 		SDL_Window *window;
 		SDL_GLContext context;
 
 		void processSystemEvents();
-		std::tuple<int, int> selectContextVersion(int desiredMajorVersion, int desiredMinorVersion);
+		std::tuple<int, int> selectContextVersion(int targetMajorVersion, int targetMinorVersion);
 		std::tuple<SDL_Window*, SDL_GLContext> tryCreateWindowWithContext(bool fake, int ctxMajorVersion, int ctxMinorVersion);
 	};
 }
