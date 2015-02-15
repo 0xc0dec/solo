@@ -75,19 +75,19 @@ float Engine::getTimeDelta() const
 }
 
 
-shared <Scene> Engine::getScene() const
+Scene* Engine::getScene() const
 {
-	return scene;
+	return scene.get();
 }
 
 
-shared <Device> Engine::getDevice() const
+Device* Engine::getDevice() const
 {
-	return device;
+	return device.get();
 }
 
 
-shared <ResourceManager> Engine::getResourceManager() const
+ResourceManager* Engine::getResourceManager() const
 {
-	return resourceManager;
+	return resourceManager.get();
 }

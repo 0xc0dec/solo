@@ -9,7 +9,7 @@ using namespace solo;
 OpenGLCamera::OpenGLCamera(Node* node):
 	Camera(node)
 {
-	device = Engine::get()->getDevice().get();
+	device = Engine::get()->getDevice();
 }
 
 

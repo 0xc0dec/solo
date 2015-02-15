@@ -29,14 +29,21 @@ namespace solo
 		SDLOpenGLDevice& operator=(const SDLOpenGLDevice& other) = delete;
 		SDLOpenGLDevice& operator=(SDLOpenGLDevice&& other) = delete;
 
+		void prepareKeyboardState();
+		void prepareMouseState();
+
+		void readWindowState();
+		void readEvents();
 		void processKeyboardEvent(const SDL_Event& evt);
 		void processMouseEvent(const SDL_Event& evt);
 		void processWindowEvent(const SDL_Event& evt);
+		
+		bool hasMouseFocus;
+		bool hasKeyboardFocus;
 
 		SDL_Window *window;
 		SDL_GLContext context;
 
-		void processSystemEvents();
 		std::tuple<int, int> selectContextVersion(int targetMajorVersion, int targetMinorVersion);
 		std::tuple<SDL_Window*, SDL_GLContext> tryCreateWindowWithContext(bool fake, int ctxMajorVersion, int ctxMinorVersion);
 	};

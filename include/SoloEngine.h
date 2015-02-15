@@ -31,9 +31,9 @@ namespace solo
 		void run(const EngineCreationArgs &launchArgs);
 		void setCallback(EngineCallback* callback);
 
-		shared<Scene> getScene() const;
-		shared<Device> getDevice() const;
-		shared<ResourceManager> getResourceManager() const;
+		Scene* getScene() const;
+		Device* getDevice() const;
+		ResourceManager* getResourceManager() const;
 
 		float getTimeDelta() const;
 

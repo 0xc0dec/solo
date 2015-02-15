@@ -1,7 +1,7 @@
 #include <GL/glew.h>
 #include "SoloSDLOpenGLDevice.h"
 #include "SoloException.h"
-#include "../SoloLog.h"
+#include "SoloLog.h"
 
 using namespace solo;
 
@@ -11,11 +11,18 @@ using namespace solo;
 
 std::unordered_map<SDL_Keycode, KeyCode> keymap =
 {
-	{SDLK_LEFT, KeyCode::LeftArrow},
-	{SDLK_RIGHT, KeyCode::RightArrow},
-	{SDLK_UP, KeyCode::UpArrow},
-	{SDLK_DOWN, KeyCode::DownArrow},
-	{SDLK_ESCAPE, KeyCode::Escape},
+	{ SDLK_LEFT, KeyCode::LeftArrow },
+	{ SDLK_RIGHT, KeyCode::RightArrow },
+	{ SDLK_UP, KeyCode::UpArrow },
+	{ SDLK_DOWN, KeyCode::DownArrow },
+	{ SDLK_ESCAPE, KeyCode::Escape },
+};
+
+std::unordered_map<Uint8, MouseButton> mouseButtonsMap = 
+{
+	{ SDL_BUTTON_LEFT, MouseButton::Left },
+	{ SDL_BUTTON_MIDDLE, MouseButton::Middle },
+	{ SDL_BUTTON_RIGHT, MouseButton::Right },
 };
 
 
@@ -92,10 +99,11 @@ std::tuple<SDL_Window*, SDL_GLContext> SDLOpenGLDevice::tryCreateWindowWithConte
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, creationArgs.depth);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	auto flags = static_cast<int>(SDL_WINDOW_OPENGL);
+	auto flags = static_cast<int>(SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
 	if (hidden)
 		flags |= SDL_WINDOW_HIDDEN;
-	window = SDL_CreateWindow(creationArgs.windowTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, creationArgs.canvasWidth, creationArgs.canvasHeight, flags);
+	window = SDL_CreateWindow(creationArgs.windowTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+		creationArgs.canvasWidth, creationArgs.canvasHeight, flags);
 	if (window)
 		context = SDL_GL_CreateContext(window);
 
@@ -113,7 +121,10 @@ SDLOpenGLDevice::~SDLOpenGLDevice()
 
 void SDLOpenGLDevice::beginUpdate()
 {
-	processSystemEvents();
+	readWindowState();
+	prepareMouseState();
+	prepareKeyboardState();
+	readEvents();
 }
 
 
@@ -135,16 +146,54 @@ std::string SDLOpenGLDevice::getWindowTitle() const
 }
 
 
+void SDLOpenGLDevice::prepareKeyboardState()
+{
+	releasedKeys.clear();
+	if (!hasKeyboardFocus)
+	{
+		for (auto pair : pressedKeys)
+			releasedKeys.insert(pair.first);
+	}
+	pressedKeys.clear();
+}
+
+
+void SDLOpenGLDevice::prepareMouseState()
+{
+	mouseDeltaX = mouseDeltaY = 0;
+	releasedMouseButtons.clear();
+	if (hasMouseFocus)
+	{
+		for (auto pair : pressedMouseButtons)
+			pressedMouseButtons[pair.first] = false;
+	}
+	else
+	{
+		for (auto pair : pressedMouseButtons)
+			releasedMouseButtons.insert(pair.first);
+		pressedMouseButtons.clear();
+	}
+}
+
+
+void SDLOpenGLDevice::readWindowState()
+{
+	auto flags = SDL_GetWindowFlags(window);
+	hasKeyboardFocus = (flags & SDL_WINDOW_INPUT_FOCUS) != 0;
+	hasMouseFocus = (flags & SDL_WINDOW_MOUSE_FOCUS) != 0;
+}
+
+
 void SDLOpenGLDevice::processKeyboardEvent(const SDL_Event& evt)
 {
-	pressedKeys.clear();
-	releasedKeys.clear();
+	if (!hasKeyboardFocus)
+		return;
 	switch (evt.type)
 	{
 		case SDL_KEYDOWN:
 		{
 			auto code = keymap[evt.key.keysym.sym];
-			pressedKeys[code] = evt.key.repeat > 0;
+			pressedKeys[code] = evt.key.repeat == 0;
 			releasedKeys.erase(code);
 			break;
 		}
@@ -164,8 +213,26 @@ void SDLOpenGLDevice::processMouseEvent(const SDL_Event& evt)
 	switch (evt.type)
 	{
 		case SDL_MOUSEMOTION:
-
+			mouseDeltaX = evt.motion.xrel;
+			mouseDeltaY = evt.motion.yrel;
 			break;
+		case SDL_MOUSEBUTTONDOWN:
+		{
+			auto button = mouseButtonsMap[evt.button.button];
+			pressedMouseButtons[button] = true; // pressed for the first time
+			releasedMouseButtons.erase(button);
+			break;
+		}
+		case SDL_MOUSEBUTTONUP:
+		{
+			auto button = mouseButtonsMap[evt.button.button];
+			if (pressedMouseButtons.find(button) != pressedMouseButtons.end())
+			{
+				releasedMouseButtons.insert(button);
+				pressedMouseButtons.erase(button);
+			}
+			break;
+		}
 	}
 }
 
@@ -181,7 +248,7 @@ void SDLOpenGLDevice::processWindowEvent(const SDL_Event& evt)
 }
 
 
-void SDLOpenGLDevice::processSystemEvents()
+void SDLOpenGLDevice::readEvents()
 {
 	SDL_Event evt;
 	while (SDL_PollEvent(&evt))
@@ -194,14 +261,9 @@ void SDLOpenGLDevice::processSystemEvents()
 			case SDL_WINDOWEVENT:
 				processWindowEvent(evt);
 				break;
-			case SDL_KEYDOWN:
-			case SDL_KEYUP:
-				processKeyboardEvent(evt);
-				break;
-			case SDL_MOUSEMOTION:
-				processMouseEvent(evt);
-				break;
 		}
+		processKeyboardEvent(evt);
+		processMouseEvent(evt);
 	}
 }
 

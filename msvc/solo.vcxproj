@@ -35,6 +35,7 @@
     <ClInclude Include="..\include\SoloFrustum.h" />
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\include\SoloEngineCallback.h" />
+    <ClInclude Include="..\include\SoloLog.h" />
     <ClInclude Include="..\include\SoloMaterial.h" />
     <ClInclude Include="..\include\SoloMaterialParameter.h" />
     <ClInclude Include="..\include\SoloMath.h" />
@@ -61,7 +62,6 @@
     <ClInclude Include="..\src\platform\SoloOpenGLCamera.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLMesh.h" />
     <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h" />
-    <ClInclude Include="..\src\SoloLog.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\glew\src\glew.c" />

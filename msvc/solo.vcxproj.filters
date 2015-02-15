@@ -85,9 +85,6 @@
     <ClInclude Include="..\include\SoloTransform.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloLog.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloDirty.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -128,6 +125,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloResourceManager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloLog.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

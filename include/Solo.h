@@ -14,6 +14,7 @@
 #include "SoloFileSystem.h"
 #include "SoloFormatter.h"
 #include "SoloFrustum.h"
+#include "SoloLog.h"
 #include "SoloEngineCallback.h"
 #include "SoloMaterial.h"
 #include "SoloMaterialParameter.h"

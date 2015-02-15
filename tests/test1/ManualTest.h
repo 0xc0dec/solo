@@ -2,7 +2,6 @@
 
 #include "TestBase.h"
 
-
 const char *vsBasic =
 "#version 330 core\n"
 
@@ -42,18 +41,36 @@ const char *fsSimleColor =
 
 class ManualTest : public TestBase
 {
-	class Closer : public ComponentBase<Closer>
+	class InputWatcher : public ComponentBase<InputWatcher>
 	{
 	public:
-		explicit Closer(Node* node): ComponentBase<Closer>(node)
+		explicit InputWatcher(Node* node): ComponentBase<InputWatcher>(node)
 		{
+			device = Engine::get()->getDevice();
 		}
 
 		void update() override
 		{
-			if (Engine::get()->getDevice()->isKeyPressed(KeyCode::Escape))
-				Engine::get()->getDevice()->requestShutdown();
+			if (device->isKeyPressed(KeyCode::Escape))
+				device->requestShutdown();
+
+			if (device->isKeyPressed(KeyCode::LeftArrow, true))
+				DEBUG("Left arrow pressed first time");
+			if (device->isKeyPressed(KeyCode::LeftArrow, false))
+				DEBUG("Left arrow is held down");
+			if (device->isKeyReleased(KeyCode::LeftArrow))
+				DEBUG("Left arrow released");
+
+			if (device->isMouseButtonPressed(MouseButton::Left))
+				DEBUG("Left button pressed for the first time");
+			if (device->isMouseButtonPressed(MouseButton::Left, false))
+				DEBUG("Left button is held down");
+			if (device->isMouseButtonReleased(MouseButton::Left))
+				DEBUG("Left button released");
 		}
+
+	private:
+		Device* device;
 	};
 
 public:
@@ -99,7 +116,8 @@ public:
 			{ 1, 1 },
 			{ 1, 0 }
 		});
-		mesh->setIndices({
+		mesh->setIndices(
+		{
 			0, 1, 2,
 			0, 2, 3
 		});
@@ -108,7 +126,7 @@ public:
 		auto empty = scene->createNode();
 		auto emptyTransform = empty->getComponent<Transform>();
 		empty->addComponent<RotatorAroundWorldAxis>();
-		empty->addComponent<Closer>();
+		empty->addComponent<InputWatcher>();
 
 		auto quad = scene->createNode();
 		auto quadRenderer = quad->addComponent<ModelRenderer>();

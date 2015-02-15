@@ -1,6 +1,6 @@
 #include "SoloGLSLEffect.h"
 #include "SoloGLSLEffectVariable.h"
-#include "../SoloLog.h"
+#include "SoloLog.h"
 
 using namespace solo;
 
