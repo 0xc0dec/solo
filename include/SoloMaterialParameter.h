@@ -102,7 +102,7 @@ namespace solo
 		};
 
 		template <class TClass, class TParam>
-		class SingleValueBinding : public ValueBinding
+		class SingleValueBinding : public ValueBinding // TODO needed? Now that we have lambda function binding...
 		{
 			typedef TParam(TClass::*ValueGetterMethod)(const RenderContext& context) const;
 
