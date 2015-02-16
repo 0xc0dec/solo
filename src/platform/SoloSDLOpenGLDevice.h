@@ -15,7 +15,7 @@ namespace solo
 
 		virtual void setCursorCaptured(bool captured) override;
 
-		virtual unsigned long getLifetime() const override;
+		virtual float getLifetime() const override;
 
 		virtual Vector2 getCanvasSize() const override;
 

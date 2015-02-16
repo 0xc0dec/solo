@@ -81,6 +81,9 @@ SDLOpenGLDevice::SDLOpenGLDevice(EngineCreationArgs const& args):
 	if (glewInit())
 		THROW(EngineException, "Failed to init OpenGL extensions");
 
+	glDepthFunc(GL_LEQUAL);
+	glEnable(GL_DEPTH_TEST);
+
 	SDL_GL_SetSwapInterval(1);
 }
 
@@ -309,9 +312,9 @@ void SDLOpenGLDevice::readEvents()
 }
 
 
-unsigned long SDLOpenGLDevice::getLifetime() const
+float SDLOpenGLDevice::getLifetime() const
 {
-	return SDL_GetTicks();
+	return SDL_GetTicks() / 1000.0f;
 }
 
 

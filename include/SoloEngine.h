@@ -46,7 +46,7 @@ namespace solo
 		shared<Device> device;
 		shared<ResourceManager> resourceManager;
 
-		unsigned long lastUpdateTime;
+		float lastUpdateTime;
 		float timeDelta;
 
 		inline void updateTime();

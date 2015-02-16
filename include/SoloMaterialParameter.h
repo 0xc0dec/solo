@@ -59,6 +59,9 @@ namespace solo
 		template <class TClass, class TValue>
 		void bindValue(TClass* classInstance, TValue(TClass::*getValue)(const RenderContext& context) const);
 
+		template <class TValue>
+		void bindValue(std::function<TValue(const RenderContext& context)> lambda);
+
 		void bindValue(AutoBinding autoBinding);
 
 	private:
@@ -84,6 +87,18 @@ namespace solo
 
 		protected:
 			ValueBinding& operator=(const ValueBinding&) { return *this; }
+		};
+
+		template <class TValue>
+		class LambdaValueBinding : public ValueBinding
+		{
+		public:
+			LambdaValueBinding(std::function<TValue(const RenderContext& context)> lambda);
+
+			virtual void setValue(EffectVariable* variable, const RenderContext& context) override;
+
+		private:
+			std::function<TValue(const RenderContext& context)> lambda;
 		};
 
 		template <class TClass, class TParam>
@@ -151,11 +166,32 @@ namespace solo
 	{
 	}
 
+	template <class TValue>
+	MaterialParameter::LambdaValueBinding<TValue>::LambdaValueBinding(std::function<TValue(const RenderContext& context)> lambda) :
+		lambda(lambda)
+	{
+	}
+
+	template <class TValue>
+	void MaterialParameter::LambdaValueBinding<TValue>::setValue(EffectVariable* variable, const RenderContext& context)
+	{
+		variable->setValue(lambda(context));
+	}
+
 	template <class TClass, class TParam>
 	void MaterialParameter::bindValue(TClass* instance, TParam(TClass::*getter)(const RenderContext& context) const)
 	{
 		clearValue();
 		value.method = new SingleValueBinding<TClass, TParam>(instance, getter);
+		freeableValue = true;
+		type = ValueType::Method;
+	}
+
+	template <class TValue>
+	void MaterialParameter::bindValue(std::function<TValue(const RenderContext& context)> lambda)
+	{
+		clearValue();
+		value.method = new LambdaValueBinding<TValue>(lambda);
 		freeableValue = true;
 		type = ValueType::Method;
 	}

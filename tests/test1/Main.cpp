@@ -16,11 +16,13 @@ public:
 
 	virtual void onEngineStarted() override
 	{
-		MaterialsTest(engine).run();
-		ComponentsTest(engine).run();
-		TransformTest(engine).run();
-		DeviceTest(engine).run();
-		ManualTest(engine).run();
+		tests.push_back(NEW2(MaterialsTest, engine));
+		tests.push_back(NEW2(ComponentsTest, engine));
+		tests.push_back(NEW2(TransformTest, engine));
+		tests.push_back(NEW2(DeviceTest, engine));
+		tests.push_back(NEW2(ManualTest, engine));
+		for (auto test : tests)
+			test->run();
 	}
 
 	virtual void onEngineStopped() override
@@ -33,6 +35,7 @@ public:
 	}
 
 private:
+	std::list<shared<TestBase>> tests; // to keeps tests in memory
 	Engine *engine;
 };
 

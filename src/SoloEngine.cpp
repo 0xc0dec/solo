@@ -33,7 +33,7 @@ Engine::~Engine()
 void Engine::updateTime()
 {
 	auto time = device->getLifetime();
-	timeDelta = (time - lastUpdateTime) / 1000.0f;
+	timeDelta = time - lastUpdateTime;
 	lastUpdateTime = time;
 }
 
