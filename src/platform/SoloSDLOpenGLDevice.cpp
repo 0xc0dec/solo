@@ -11,10 +11,35 @@ using namespace solo;
 
 std::unordered_map<SDL_Keycode, KeyCode> keymap =
 {
+	{ SDLK_q, KeyCode::Q },
 	{ SDLK_w, KeyCode::W },
-	{ SDLK_s, KeyCode::S },
+	{ SDLK_e, KeyCode::E },
+	{ SDLK_r, KeyCode::R },
+	{ SDLK_t, KeyCode::T },
+	{ SDLK_y, KeyCode::Y },
+	{ SDLK_u, KeyCode::U },
+	{ SDLK_i, KeyCode::I },
+	{ SDLK_o, KeyCode::O },
+	{ SDLK_p, KeyCode::P },
+
 	{ SDLK_a, KeyCode::A },
+	{ SDLK_s, KeyCode::S },
 	{ SDLK_d, KeyCode::D },
+	{ SDLK_f, KeyCode::F },
+	{ SDLK_g, KeyCode::G },
+	{ SDLK_h, KeyCode::H },
+	{ SDLK_j, KeyCode::J },
+	{ SDLK_k, KeyCode::K },
+	{ SDLK_l, KeyCode::L },
+
+	{ SDLK_z, KeyCode::Z },
+	{ SDLK_x, KeyCode::X },
+	{ SDLK_c, KeyCode::C },
+	{ SDLK_v, KeyCode::V },
+	{ SDLK_b, KeyCode::B },
+	{ SDLK_n, KeyCode::N },
+	{ SDLK_m, KeyCode::M },
+
 	{ SDLK_LEFT, KeyCode::LeftArrow },
 	{ SDLK_RIGHT, KeyCode::RightArrow },
 	{ SDLK_UP, KeyCode::UpArrow },
@@ -160,11 +185,7 @@ void SDLOpenGLDevice::setCursorCaptured(bool captured)
 void SDLOpenGLDevice::prepareKeyboardState()
 {
 	releasedKeys.clear();
-	if (hasKeyboardFocus)
-	{
-
-	}
-	else
+	if (!hasKeyboardFocus)
 	{
 		for (auto pair : pressedKeys)
 			releasedKeys.insert(pair.first);
