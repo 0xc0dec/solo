@@ -39,46 +39,127 @@ const char *fsSimleColor =
 "}\n";
 
 
+class InputWatcher : public ComponentBase<InputWatcher>
+{
+public:
+	explicit InputWatcher(Node* node) : ComponentBase<InputWatcher>(node)
+	{
+		device = Engine::get()->getDevice();
+	}
+
+	void update() override
+	{
+		if (device->isKeyPressed(KeyCode::Escape, true))
+		{
+			device->requestShutdown();
+		}
+	}
+
+private:
+	Device* device;
+};
+
+
+class SpectatorCamera : public ComponentBase<SpectatorCamera>
+{
+public:
+	SpectatorCamera(Node* node) : ComponentBase<SpectatorCamera>(node)
+	{
+		engine = Engine::get();
+		device = engine->getDevice();
+		transform = node->getComponent<Transform>();
+	}
+
+	virtual void update() override
+	{
+		auto mouseMotion = device->getMouseMotion();
+		auto dt = engine->getTimeDelta();
+
+		if (device->isMouseButtonPressed(MouseButton::Right, true))
+			device->setCursorCaptured(true);
+		if (device->isMouseButtonReleased(MouseButton::Right))
+			device->setCursorCaptured(false);
+
+		if (device->isMouseButtonPressed(MouseButton::Right, false))
+		{
+			if (mouseMotion.x != 0)
+				transform->rotate(Vector3::unitY(), dt * 0.5f * -mouseMotion.x, Transform::TransformSpace::World);
+			if (mouseMotion.y != 0)
+				transform->rotate(Vector3::unitX(), dt * 0.5f * -mouseMotion.y, Transform::TransformSpace::Self);
+		}
+
+		Vector3 movement;
+		if (device->isKeyPressed(KeyCode::W))
+			movement += transform->getLocalForward();
+		if (device->isKeyPressed(KeyCode::S))
+			movement += transform->getLocalBack();
+		if (device->isKeyPressed(KeyCode::A))
+			movement += transform->getLocalLeft();
+		if (device->isKeyPressed(KeyCode::D))
+			movement += transform->getLocalRight();
+		movement.normalize();
+		movement *= dt * 10;
+		transform->translateLocal(movement);
+	}
+
+private:
+	Transform* transform;
+	Engine* engine;
+	Device *device;
+};
+
+
+class RotatorAroundWorldAxis : public ComponentBase<RotatorAroundWorldAxis>
+{
+public:
+	explicit RotatorAroundWorldAxis(Node* node) :
+		ComponentBase<RotatorAroundWorldAxis>(node)
+	{
+			engine = Engine::get();
+			transform = node->getComponent<Transform>();
+		}
+
+	virtual void update() override
+	{
+		auto angle = engine->getTimeDelta();
+		transform->rotate(Vector3::unitY(), angle, Transform::TransformSpace::World);
+	}
+
+private:
+	Engine *engine;
+	Transform* transform;
+};
+
+
+class RotatorAroundLocalAxis : public ComponentBase<RotatorAroundLocalAxis>
+{
+public:
+	explicit RotatorAroundLocalAxis(Node* node) :
+		ComponentBase<RotatorAroundLocalAxis>(node)
+	{
+			engine = Engine::get();
+			transform = node->getComponent<Transform>();
+		}
+
+	virtual void update() override
+	{
+		auto angle = engine->getTimeDelta() * 1.3f;
+		transform->rotate(Vector3::unitX(), angle, Transform::TransformSpace::Self);
+	}
+
+private:
+	Engine *engine;
+	Transform* transform;
+};
+
+
 class ManualTest : public TestBase
 {
-	class InputWatcher : public ComponentBase<InputWatcher>
-	{
-	public:
-		explicit InputWatcher(Node* node): ComponentBase<InputWatcher>(node)
-		{
-			device = Engine::get()->getDevice();
-		}
-
-		void update() override
-		{
-			if (device->isKeyPressed(KeyCode::Escape, true))
-			{
-				DEBUG("Requesting shutdown");
-				device->requestShutdown();
-			}
-
-//			if (device->isKeyPressed(KeyCode::LeftArrow, true))
-//				DEBUG("Left arrow pressed first time");
-//			if (device->isKeyPressed(KeyCode::LeftArrow, false))
-//				DEBUG("Left arrow is held down");
-//			if (device->isKeyReleased(KeyCode::LeftArrow))
-//				DEBUG("Left arrow released");
-
-//			if (device->isMouseButtonPressed(MouseButton::Left))
-//				DEBUG("Left button pressed for the first time");
-//			if (device->isMouseButtonPressed(MouseButton::Left, false))
-//				DEBUG("Left button is held down");
-//			if (device->isMouseButtonReleased(MouseButton::Left))
-//				DEBUG("Left button released");
-		}
-
-	private:
-		Device* device;
-	};
-
 public:
 	ManualTest(Engine *engine) : TestBase(engine)
 	{
+		resManager = engine->getResourceManager();
+		scene = engine->getScene();
 	}
 
 	virtual void run() override
@@ -88,22 +169,47 @@ public:
 
 	void createQuad()
 	{
-		auto resManager = engine->getResourceManager();
-		auto scene = engine->getScene();
 		auto effect = resManager->getEffect(vsBasic, fsSimleColor);
 		auto material = resManager->getMaterial();
 		material->addPass(effect);
 		material->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
 		material->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
 
-		auto model = resManager->getModel();
+		auto quadModel = resManager->getModel();
+		auto quadMesh = createQuadMesh();
+		quadModel->addMesh(quadMesh);
+
+		auto empty = scene->createNode();
+		auto emptyTransform = empty->getComponent<Transform>();
+		empty->addComponent<RotatorAroundWorldAxis>();
+		empty->addComponent<InputWatcher>();
+
+		auto quad = scene->createNode();
+		auto quadRenderer = quad->addComponent<ModelRenderer>();
+		auto quadTransform = quad->getComponent<Transform>();
+		quad->addComponent<RotatorAroundLocalAxis>();
+		quadTransform->setParent(emptyTransform);
+		quadTransform->setLocalPosition(1, 0, 0);
+		quadRenderer->setModel(quadModel);
+		quadRenderer->setMaterial(0, material);
+
+		auto cameraNode = scene->createNode();
+		auto cameraTransform = cameraNode->getComponent<Transform>();
+		cameraTransform->setLocalPosition(0, 0, 5);
+		cameraNode->addComponent<SpectatorCamera>();
+		auto camera = cameraNode->addComponent<Camera>();
+		camera->setClearColor(0, 0.6f, 0.6f, 1);
+	}
+
+	shared<Mesh> createQuadMesh()
+	{
 		auto mesh = resManager->getMesh();
 		mesh->setVertices(
 		{
-			{	-1,	-1,	0 },
-			{	-1,	1,	0 },
-			{	1,	1,	0 },
-			{	1,	-1,	0 }
+			{ -1, -1, 0 },
+			{ -1, 1, 0 },
+			{ 1, 1, 0 },
+			{ 1, -1, 0 }
 		});
 		mesh->setNormals(
 		{
@@ -124,117 +230,10 @@ public:
 			0, 1, 2,
 			0, 2, 3
 		});
-		model->addMesh(mesh);
-
-		auto empty = scene->createNode();
-		auto emptyTransform = empty->getComponent<Transform>();
-		empty->addComponent<RotatorAroundWorldAxis>();
-		empty->addComponent<InputWatcher>();
-
-		auto quad = scene->createNode();
-		auto quadRenderer = quad->addComponent<ModelRenderer>();
-		auto quadTransform = quad->getComponent<Transform>();
-		quad->addComponent<RotatorAroundLocalAxis>();
-		quadTransform->setParent(emptyTransform);
-		quadTransform->setLocalPosition(1, 0, 0);
-		quadRenderer->setModel(model);
-		quadRenderer->setMaterial(0, material);
-
-		auto cameraNode = scene->createNode();
-		auto cameraTransform = cameraNode->getComponent<Transform>();
-		cameraTransform->setLocalPosition(0, 0, 5);
-		cameraNode->addComponent<SpectatorCamera>();
-		auto camera = cameraNode->addComponent<Camera>();
-		camera->setClearColor(0, 0.8f, 0.8f, 1);
+		return mesh;
 	}
 
-	class SpectatorCamera : public ComponentBase<SpectatorCamera>
-	{
-	public:
-		SpectatorCamera(Node* node): ComponentBase<SpectatorCamera>(node)
-		{
-			engine = Engine::get();
-			device = engine->getDevice();
-			transform = node->getComponent<Transform>();
-		}
-
-		virtual void update() override
-		{
-			auto mouseMotion = device->getMouseMotion();
-			auto dt = engine->getTimeDelta();
-
-			if (device->isMouseButtonPressed(MouseButton::Right, true))
-				device->setCursorCaptured(true);
-			if (device->isMouseButtonReleased(MouseButton::Right))
-				device->setCursorCaptured(false);
-
-			if (device->isMouseButtonPressed(MouseButton::Right, false))
-			{
-				if (mouseMotion.x != 0)
-					transform->rotate(Vector3::unitY(), dt * 0.5f * -mouseMotion.x, Transform::TransformSpace::World);
-				if (mouseMotion.y != 0)
-					transform->rotate(Vector3::unitX(), dt * 0.5f * -mouseMotion.y, Transform::TransformSpace::Self);
-			}
-
-			Vector3 movement;
-			if (device->isKeyPressed(KeyCode::W))
-				movement += transform->getLocalForward();
-			if (device->isKeyPressed(KeyCode::S))
-				movement += transform->getLocalBack();
-			if (device->isKeyPressed(KeyCode::A))
-				movement += transform->getLocalLeft();
-			if (device->isKeyPressed(KeyCode::D))
-				movement += transform->getLocalRight();
-			movement.normalize();
-			movement *= dt * 10;
-			transform->translateLocal(movement);
-		}
-
-	private:
-		Transform* transform;
-		Engine* engine;
-		Device *device;
-	};
-
-	class RotatorAroundWorldAxis : public ComponentBase<RotatorAroundWorldAxis>
-	{
-	public:
-		explicit RotatorAroundWorldAxis(Node* node):
-			ComponentBase<RotatorAroundWorldAxis>(node)
-		{
-			engine = Engine::get();
-			transform = node->getComponent<Transform>();
-		}
-
-		virtual void update() override
-		{
-			auto angle = engine->getTimeDelta();
-			transform->rotate(Vector3::unitY(), angle, Transform::TransformSpace::World);
-		}
-
-	private:
-		Engine *engine;
-		Transform* transform;
-	};
-
-	class RotatorAroundLocalAxis : public ComponentBase<RotatorAroundLocalAxis>
-	{
-	public:
-		explicit RotatorAroundLocalAxis(Node* node):
-			ComponentBase<RotatorAroundLocalAxis>(node)
-		{
-			engine = Engine::get();
-			transform = node->getComponent<Transform>();
-		}
-
-		virtual void update() override
-		{
-			auto angle = engine->getTimeDelta() * 1.3f;
-			transform->rotate(Vector3::unitX(), angle, Transform::TransformSpace::Self);
-		}
-
-	private:
-		Engine *engine;
-		Transform* transform;
-	};
+private:
+	ResourceManager* resManager;
+	Scene* scene;
 };
