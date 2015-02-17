@@ -14,7 +14,7 @@ OpenGLMesh::OpenGLMesh():
 }
 
 
-GLuint OpenGLMesh::initElementArrayBufferBuffer(const std::vector<unsigned short>& elements)
+GLuint OpenGLMesh::buildElementArrayBuffer(const std::vector<unsigned short>& elements)
 {
 	GLuint handle;
 	glGenBuffers(1, &handle);
@@ -26,7 +26,7 @@ GLuint OpenGLMesh::initElementArrayBufferBuffer(const std::vector<unsigned short
 
 
 template<typename TElement>
-GLuint OpenGLMesh::initArrayBufferBuffer(const std::vector<TElement>& elements, GLuint elementSize, GLuint index, GLenum elementType)
+GLuint OpenGLMesh::buildArrayBuffer(const std::vector<TElement>& elements, GLuint elementSize, GLuint index, GLenum elementType)
 {
 	GLuint handle;
 	glGenBuffers(1, &handle);
@@ -72,7 +72,7 @@ void OpenGLMesh::setVertices(const std::vector<Vector3>& vertices)
 	if (!vertices.empty())
 	{
 		glBindVertexArray(vertexArrayHandle);
-		vertexBufferHandle = initArrayBufferBuffer(vertices, 3, 0, GL_FLOAT);
+		vertexBufferHandle = buildArrayBuffer(vertices, 3, 0, GL_FLOAT);
 		glBindVertexArray(0);
 		verticesCount = vertices.size();
 	}
@@ -84,7 +84,7 @@ void OpenGLMesh::setNormals(const std::vector<Vector3>& normals)
 	if (!normals.empty())
 	{
 		glBindVertexArray(vertexArrayHandle);
-		normalBufferHandle = initArrayBufferBuffer(normals, 3, 1, GL_FLOAT);
+		normalBufferHandle = buildArrayBuffer(normals, 3, 1, GL_FLOAT);
 		glBindVertexArray(0);
 		normalsCount = normals.size();
 	}
@@ -96,7 +96,7 @@ void OpenGLMesh::setUVs(const std::vector<Vector2>& uvs)
 	if (!uvs.empty())
 	{
 		glBindVertexArray(vertexArrayHandle);
-		uvBufferHandle = initArrayBufferBuffer(uvs, 2, 2, GL_FLOAT);
+		uvBufferHandle = buildArrayBuffer(uvs, 2, 2, GL_FLOAT);
 		glBindVertexArray(0);
 		uvsCount = uvs.size();
 	}
@@ -108,7 +108,7 @@ void OpenGLMesh::setIndices(const std::vector<unsigned short>& indices)
 	if (!indices.empty())
 	{
 		glBindVertexArray(vertexArrayHandle);
-		indicesBufferHandle = initElementArrayBufferBuffer(indices);
+		indicesBufferHandle = buildElementArrayBuffer(indices);
 		glBindVertexArray(0);
 		indicesCount = indices.size();
 	}

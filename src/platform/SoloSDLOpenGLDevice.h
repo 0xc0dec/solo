@@ -46,7 +46,7 @@ namespace solo
 		SDL_Window *window;
 		SDL_GLContext context;
 
-		std::tuple<int, int> selectContextVersion(int targetMajorVersion, int targetMinorVersion);
+		std::tuple<int, int> selectContextVersion();
 		std::tuple<SDL_Window*, SDL_GLContext> tryCreateWindowWithContext(bool fake, int ctxMajorVersion, int ctxMinorVersion);
 	};
 }

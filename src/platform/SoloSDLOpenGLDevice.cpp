@@ -5,8 +5,15 @@
 
 using namespace solo;
 
-#define MAX_GL_CONTEXT_VERSION_MAJOR 4
-#define MAX_GL_CONTEXT_VERSION_MINOR 5
+
+std::list<std::pair<int, int>> supportedContextVersions =
+{
+	{ 4, 4 },
+	{ 4, 3 },
+	{ 4, 2 },
+	{ 4, 1 },
+	{ 4, 0 },
+};
 
 
 std::unordered_map<SDL_Keycode, KeyCode> keymap =
@@ -57,12 +64,16 @@ std::unordered_map<Uint8, MouseButton> mouseButtonsMap =
 
 
 SDLOpenGLDevice::SDLOpenGLDevice(EngineCreationArgs const& args):
-	Device(args)
+	Device(args),
+	hasKeyboardFocus(false),
+	hasMouseFocus(false),
+	window(nullptr),
+	context(nullptr)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
 		THROW(EngineException, "Failed to initialize system");
 
-	auto ctxVersion = selectContextVersion(MAX_GL_CONTEXT_VERSION_MAJOR, MAX_GL_CONTEXT_VERSION_MINOR);
+	auto ctxVersion = selectContextVersion();
 	auto major = std::get<0>(ctxVersion);
 	auto minor = std::get<1>(ctxVersion);
 	INFO("Using OpenGL context version ", major, ".", minor);
@@ -88,36 +99,25 @@ SDLOpenGLDevice::SDLOpenGLDevice(EngineCreationArgs const& args):
 }
 
 
-std::tuple<int, int> SDLOpenGLDevice::selectContextVersion(int targetMajorVersion, int targetMinorVersion)
+std::tuple<int, int> SDLOpenGLDevice::selectContextVersion()
 {
-	auto maxMinorVersion = targetMinorVersion;
-	int minor = maxMinorVersion, major;
-	for (major = targetMajorVersion; major >= 2; --major)
+	for (auto version : supportedContextVersions)
 	{
 		SDL_GLContext context = nullptr;
-		for (minor = maxMinorVersion; minor >= 0; --minor)
+		auto windowWithContext = tryCreateWindowWithContext(true, version.first, version.second);
+		auto window = std::get<0>(windowWithContext);
+		if (window)
 		{
-			auto windowWithContext = tryCreateWindowWithContext(true, major, minor);
-			auto window = std::get<0>(windowWithContext);
-			if (!window)
-				continue;
-
 			context = std::get<1>(windowWithContext);
-			if (!context)
-				continue;
-
-			SDL_DestroyWindow(window);
-			SDL_GL_DeleteContext(context);
-
-			break;
+			if (context)
+			{
+				SDL_DestroyWindow(window);
+				SDL_GL_DeleteContext(context);
+				return version;
+			}
 		}
-		if (context)
-			break;
-		// try targetMinorVersion..0 first, then 9..0
-		maxMinorVersion = 9;
 	}
-
-	return std::make_tuple(major, minor);
+	THROW(EngineException, "None of the supported OpenGL versions found");
 }
 
 
@@ -146,8 +146,10 @@ std::tuple<SDL_Window*, SDL_GLContext> SDLOpenGLDevice::tryCreateWindowWithConte
 
 SDLOpenGLDevice::~SDLOpenGLDevice()
 {
-	SDL_GL_DeleteContext(context);
-	SDL_DestroyWindow(window);
+	if (context)
+		SDL_GL_DeleteContext(context);
+	if (window)
+		SDL_DestroyWindow(window);
 	SDL_Quit();
 }
 
