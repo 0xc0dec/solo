@@ -14,6 +14,7 @@
 #include <tuple>
 #include <sstream>
 #include "SoloFormatter.h"
+#include "SoloException.h"
 
 namespace solo
 {

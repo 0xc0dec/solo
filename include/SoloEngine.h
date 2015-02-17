@@ -7,6 +7,7 @@ namespace solo
 	class EngineCallback;
 	class Scene;
 	class Device;
+	class FileSystem;
 	class ResourceManager;
 
 	struct EngineCreationArgs
@@ -33,6 +34,7 @@ namespace solo
 
 		Scene* getScene() const;
 		Device* getDevice() const;
+		FileSystem* getFileSystem() const;
 		ResourceManager* getResourceManager() const;
 
 		float getTimeDelta() const;
@@ -44,6 +46,7 @@ namespace solo
 		EngineCallback *callback;
 		shared<Scene> scene;
 		shared<Device> device;
+		shared<FileSystem> fs;
 		shared<ResourceManager> resourceManager;
 
 		float lastUpdateTime;

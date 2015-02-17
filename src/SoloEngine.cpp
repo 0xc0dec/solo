@@ -2,6 +2,7 @@
 #include "SoloEngine.h"
 #include "SoloScene.h"
 #include "SoloDevice.h"
+#include "SoloFileSystem.h"
 #include "SoloResourceManager.h"
 
 using namespace solo;
@@ -16,8 +17,8 @@ public:
 } emptyCallback;
 
 
-Engine::Engine()
-	: callback(nullptr),
+Engine::Engine():
+	callback(nullptr),
 	lastUpdateTime(0),
 	timeDelta(0)
 {
@@ -41,6 +42,7 @@ void Engine::updateTime()
 void Engine::run(const EngineCreationArgs & args)
 {
 	device = DeviceFactory::create(args);
+	fs = FileSystemFactory::create();
 	resourceManager = ResourceManagerFactory::create();
 	scene = SceneFactory::create();
 
@@ -84,6 +86,12 @@ Scene* Engine::getScene() const
 Device* Engine::getDevice() const
 {
 	return device.get();
+}
+
+
+FileSystem* Engine::getFileSystem() const
+{
+	return fs.get();
 }
 
 
