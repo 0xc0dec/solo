@@ -15,9 +15,7 @@ public:
 	void update() override
 	{
 		if (device->isKeyPressed(KeyCode::Escape, true))
-		{
 			device->requestShutdown();
-		}
 	}
 
 private:
@@ -107,9 +105,9 @@ public:
 	explicit RotatorAroundLocalAxis(Node* node) :
 		ComponentBase<RotatorAroundLocalAxis>(node)
 	{
-			engine = Engine::get();
-			transform = node->getComponent<Transform>();
-		}
+		engine = Engine::get();
+		transform = node->getComponent<Transform>();
+	}
 
 	virtual void update() override
 	{
