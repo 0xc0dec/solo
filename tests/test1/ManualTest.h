@@ -241,7 +241,7 @@ public:
 		return node;
 	}
 
-	// Check if the engine works well with rebuilding meshes
+	// Check if the engine is capable of rebuilding meshes
 	void rebuildQuadToBox(Node *quadNode)
 	{
 		auto model = quadNode->getComponent<ModelRenderer>()->getModel();

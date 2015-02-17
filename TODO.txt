@@ -1,4 +1,3 @@
 * Models loading
-* Input
 * Use position, rotation and scale to calculate the corresponding getter method results (instead of the matrix)
 * Remove methods like multiply() from math classes
