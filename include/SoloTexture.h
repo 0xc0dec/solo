@@ -9,6 +9,12 @@ namespace solo
 	class Texture
 	{
 	public:
+		enum class Format
+		{
+			RGB,
+			RGBA
+		};
+
 		virtual ~Texture() {}
 
 	protected:
@@ -23,6 +29,6 @@ namespace solo
 
 	class TextureFactory
 	{
-		static shared<Texture2D> create2D(std::vector<char> data);
+		static shared<Texture2D> create2D(Texture::Format format, std::vector<char> data, unsigned width, unsigned height, bool generateMipmaps);
 	};
 }
