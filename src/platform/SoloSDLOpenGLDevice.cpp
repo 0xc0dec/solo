@@ -95,9 +95,6 @@ SDLOpenGLDevice::SDLOpenGLDevice(EngineCreationArgs const& args):
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
 
-	glFrontFace(GL_CW);
-	glEnable(GL_CULL_FACE);
-
 	SDL_GL_SetSwapInterval(1);
 }
 

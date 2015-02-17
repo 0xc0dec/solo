@@ -152,6 +152,7 @@ public:
 
 		auto effChecker = resManager->getEffect(vsBasic, fsChecker);
 		matChecker = resManager->getMaterial();
+		matChecker->setPolygonFace(RenderState::PolygonFace::All);
 		matChecker->addPass(effChecker);
 		matChecker->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
 		matChecker->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);

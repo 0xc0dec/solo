@@ -2,7 +2,6 @@
 
 #include "SoloBase.h"
 #include "SoloEffectVariable.h"
-#include "SoloRenderState.h"
 
 namespace solo
 {
@@ -12,16 +11,10 @@ namespace solo
 	class Vector4;
 	class Matrix;
 	class Scene;
-	class Transform;
-	class Camera;
 	class RenderContext;
 
 	class MaterialParameter
 	{
-		friend class Material;
-		friend class MaterialPass;
-		friend class RenderState;
-
 	public:
 		enum class AutoBinding
 		{
@@ -61,6 +54,10 @@ namespace solo
 		void bindValue(AutoBinding autoBinding);
 
 	private:
+		friend class Material;
+		friend class MaterialPass;
+		friend class RenderState;
+
 		enum class ValueType
 		{
 			None = 0,
@@ -119,7 +116,7 @@ namespace solo
 			float* asFloatPtr;
 			int* asIntPtr;
 			ValueBinding* method;
-			explicit MaterialParameterValue() : asInt(0) {}
+			MaterialParameterValue() : asInt(0) {}
 		};
 
 		MaterialParameter(const std::string &name);
@@ -129,7 +126,6 @@ namespace solo
 		MaterialParameter& operator=(MaterialParameter&& other) = delete;
 
 		Scene* scene;
-
 		std::string name;
 		ValueType type;
 		MaterialParameterValue value;

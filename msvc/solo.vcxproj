@@ -60,6 +60,7 @@
     <ClInclude Include="..\src\platform\SoloGLSLEffect.h" />
     <ClInclude Include="..\src\platform\SoloGLSLEffectVariable.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLCamera.h" />
+    <ClInclude Include="..\src\platform\SoloOpenGLMaterial.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLMesh.h" />
     <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h" />
   </ItemGroup>
@@ -70,6 +71,7 @@
     <ClCompile Include="..\src\platform\SoloGLSLEffectVariable.cpp" />
     <ClCompile Include="..\src\platform\SoloGLSLEffect.cpp" />
     <ClCompile Include="..\src\platform\SoloOpenGLCamera.cpp" />
+    <ClCompile Include="..\src\platform\SoloOpenGLMaterial.cpp" />
     <ClCompile Include="..\src\platform\SoloOpenGLMesh.cpp" />
     <ClCompile Include="..\src\platform\SoloSDLOpenGLDevice.cpp" />
     <ClCompile Include="..\src\SoloBoundingBox.cpp" />

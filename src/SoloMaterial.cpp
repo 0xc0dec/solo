@@ -1,8 +1,15 @@
 #include "SoloMaterial.h"
 #include "SoloMaterialParameter.h"
 #include "SoloMaterialPass.h"
+#include "platform/SoloOpenGLMaterial.h"
 
 using namespace solo;
+
+
+shared <Material> MaterialFactory::create()
+{
+	return NEW2(OpenGLMaterial);
+}
 
 
 MaterialPass* Material::addPass(shared<Effect> effect)
@@ -30,6 +37,7 @@ size_t Material::getPassCount() const
 
 void Material::bind(Effect* effect, const RenderContext& context)
 {
+	applyFaceCull();
 	for (auto p : parameters)
 		p.second->bind(effect, context);
 }
@@ -38,10 +46,4 @@ void Material::bind(Effect* effect, const RenderContext& context)
 MaterialPass* Material::getPass(unsigned index) const
 {
 	return passes[index].get();
-}
-
-
-shared <Material> MaterialFactory::create()
-{
-	return NEW2(Material);
 }
