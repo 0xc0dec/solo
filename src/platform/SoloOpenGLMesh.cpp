@@ -9,15 +9,14 @@ OpenGLMesh::OpenGLMesh():
 	verticesCount(0), normalsCount(0), uvsCount(0), indicesCount(0)
 {
 	glGenVertexArrays(1, &vertexArrayHandle);
-	glBindVertexArray(vertexArrayHandle);
-	glBindVertexArray(0);
 }
 
 
-GLuint OpenGLMesh::buildElementArrayBuffer(const std::vector<unsigned short>& elements)
+GLuint OpenGLMesh::buildElementArrayBuffer(GLuint existingHandle, const std::vector<unsigned short>& elements)
 {
-	GLuint handle;
-	glGenBuffers(1, &handle);
+	auto handle = existingHandle ? existingHandle : 0;
+	if (!handle)
+		glGenBuffers(1, &handle);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(unsigned short), elements.data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -26,10 +25,11 @@ GLuint OpenGLMesh::buildElementArrayBuffer(const std::vector<unsigned short>& el
 
 
 template<typename TElement>
-GLuint OpenGLMesh::buildArrayBuffer(const std::vector<TElement>& elements, GLuint elementSize, GLuint index, GLenum elementType)
+GLuint OpenGLMesh::buildArrayBuffer(GLuint existingHandle, const std::vector<TElement>& elements, GLuint elementSize, GLuint index, GLenum elementType)
 {
-	GLuint handle;
-	glGenBuffers(1, &handle);
+	auto handle = existingHandle ? existingHandle : 0;
+	if (!handle)
+		glGenBuffers(1, &handle);
 	glBindBuffer(GL_ARRAY_BUFFER, handle);
 	glBufferData(GL_ARRAY_BUFFER, elements.size() * sizeof(TElement), elements.data(), GL_STATIC_DRAW);
 	glEnableVertexAttribArray(index);
@@ -72,7 +72,7 @@ void OpenGLMesh::setVertices(const std::vector<Vector3>& vertices)
 	if (!vertices.empty())
 	{
 		glBindVertexArray(vertexArrayHandle);
-		vertexBufferHandle = buildArrayBuffer(vertices, 3, 0, GL_FLOAT);
+		vertexBufferHandle = buildArrayBuffer(vertexBufferHandle, vertices, 3, 0, GL_FLOAT);
 		glBindVertexArray(0);
 		verticesCount = vertices.size();
 	}
@@ -84,7 +84,7 @@ void OpenGLMesh::setNormals(const std::vector<Vector3>& normals)
 	if (!normals.empty())
 	{
 		glBindVertexArray(vertexArrayHandle);
-		normalBufferHandle = buildArrayBuffer(normals, 3, 1, GL_FLOAT);
+		normalBufferHandle = buildArrayBuffer(normalBufferHandle, normals, 3, 1, GL_FLOAT);
 		glBindVertexArray(0);
 		normalsCount = normals.size();
 	}
@@ -96,7 +96,7 @@ void OpenGLMesh::setUVs(const std::vector<Vector2>& uvs)
 	if (!uvs.empty())
 	{
 		glBindVertexArray(vertexArrayHandle);
-		uvBufferHandle = buildArrayBuffer(uvs, 2, 2, GL_FLOAT);
+		uvBufferHandle = buildArrayBuffer(uvBufferHandle, uvs, 2, 2, GL_FLOAT);
 		glBindVertexArray(0);
 		uvsCount = uvs.size();
 	}
@@ -108,7 +108,7 @@ void OpenGLMesh::setIndices(const std::vector<unsigned short>& indices)
 	if (!indices.empty())
 	{
 		glBindVertexArray(vertexArrayHandle);
-		indicesBufferHandle = buildElementArrayBuffer(indices);
+		indicesBufferHandle = buildElementArrayBuffer(indicesBufferHandle, indices);
 		glBindVertexArray(0);
 		indicesCount = indices.size();
 	}

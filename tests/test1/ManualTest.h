@@ -77,11 +77,11 @@ private:
 };
 
 
-class RotatorAroundWorldAxis : public ComponentBase<RotatorAroundWorldAxis>
+class RotatorAroundWorldYAxis : public ComponentBase<RotatorAroundWorldYAxis>
 {
 public:
-	explicit RotatorAroundWorldAxis(Node* node) :
-		ComponentBase<RotatorAroundWorldAxis>(node)
+	explicit RotatorAroundWorldYAxis(Node* node) :
+		ComponentBase<RotatorAroundWorldYAxis>(node)
 	{
 			engine = Engine::get();
 			transform = node->getComponent<Transform>();
@@ -99,11 +99,11 @@ private:
 };
 
 
-class RotatorAroundLocalAxis : public ComponentBase<RotatorAroundLocalAxis>
+class RotatorAroundLocalXAxis : public ComponentBase<RotatorAroundLocalXAxis>
 {
 public:
-	explicit RotatorAroundLocalAxis(Node* node) :
-		ComponentBase<RotatorAroundLocalAxis>(node)
+	explicit RotatorAroundLocalXAxis(Node* node) :
+		ComponentBase<RotatorAroundLocalXAxis>(node)
 	{
 		engine = Engine::get();
 		transform = node->getComponent<Transform>();
@@ -131,53 +131,70 @@ public:
 
 	virtual void run() override
 	{
+		createMaterials();
 		createAndPlaceQuad1();
 		createAndPlaceQuad2();
+		createAndPlaceBox();
 		createCamera();
+	}
+
+	void createMaterials()
+	{
+		auto canvasSize = device->getCanvasSize();
+
+		auto effRare = resManager->getEffect(vsBasic, fsRare);
+		matRare = resManager->getMaterial();
+		matRare->addPass(effRare);
+		matRare->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
+		matRare->getParameter("canvasWidth")->setValue(canvasSize.x);
+		matRare->getParameter("canvasHeight")->setValue(canvasSize.y);
+		matRare->getParameter("time")->bindValue<float>([this](const RenderContext& context) -> float { return this->device->getLifetime(); });
+
+		auto effChecker = resManager->getEffect(vsBasic, fsChecker);
+		matChecker = resManager->getMaterial();
+		matChecker->addPass(effChecker);
+		matChecker->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
+		matChecker->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
+	}
+
+	void createAndPlaceBox()
+	{
+		auto box = createQuad();
+		rebuildQuadToBox(box);
+		box->getComponent<ModelRenderer>()->setMaterial(0, matChecker);
+		box->getComponent<Transform>()->setLocalPosition(-2, 0, 0);
+		box->addComponent<RotatorAroundWorldYAxis>();
 	}
 
 	void createAndPlaceQuad2()
 	{
-		auto canvasSize = device->getCanvasSize();
-
-		auto effect = resManager->getEffect(vsBasic, fsRare);
-		auto material = resManager->getMaterial();
-		material->addPass(effect);
-		material->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
-		material->getParameter("canvasWidth")->setValue(canvasSize.x);
-		material->getParameter("canvasHeight")->setValue(canvasSize.y);
-		material->getParameter("time")->bindValue<float>([this](const RenderContext& context) -> float { return this->device->getLifetime(); });
-
 		auto quad = createQuad();
-		quad->getComponent<ModelRenderer>()->setMaterial(0, material);
+		quad->getComponent<ModelRenderer>()->setMaterial(0, matRare);
 		quad->getComponent<Transform>()->setLocalPosition(0, 0, -10);
+
+		auto canvasSize = device->getCanvasSize();
 		quad->getComponent<Transform>()->setLocalScale(5, 5 * canvasSize.y / canvasSize.x, 1);
 	}
 
 	void createAndPlaceQuad1()
 	{
-		auto effect = resManager->getEffect(vsBasic, fsChecker);
-		auto material = resManager->getMaterial();
-		material->addPass(effect);
-		material->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
-		material->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
-
 		auto empty = scene->createNode();
 		auto emptyTransform = empty->getComponent<Transform>();
-		empty->addComponent<RotatorAroundWorldAxis>();
+		emptyTransform->setLocalPosition(2, 0, 0);
+		empty->addComponent<RotatorAroundWorldYAxis>();
 
 		auto quad = createQuad();
-		quad->addComponent<RotatorAroundLocalAxis>();
+		quad->addComponent<RotatorAroundLocalXAxis>();
 		quad->getComponent<Transform>()->setParent(emptyTransform);
 		quad->getComponent<Transform>()->setLocalPosition(1, 0, 0);
-		quad->getComponent<ModelRenderer>()->setMaterial(0, material);
+		quad->getComponent<ModelRenderer>()->setMaterial(0, matChecker);
 	}
 
 	void createCamera()
 	{
 		auto cameraNode = scene->createNode();
 		auto cameraTransform = cameraNode->getComponent<Transform>();
-		cameraTransform->setLocalPosition(0, 0, 5);
+		cameraTransform->setLocalPosition(0, 0, 10);
 		cameraNode->addComponent<SpectatorCamera>();
 		cameraNode->addComponent<InputWatcher>();
 		auto camera = cameraNode->addComponent<Camera>();
@@ -190,9 +207,9 @@ public:
 		mesh->setVertices(
 		{
 			{ -1, -1, 0 },
-			{ -1, 1, 0 },
-			{ 1, 1, 0 },
-			{ 1, -1, 0 }
+			{ -1,  1, 0 },
+			{  1,  1, 0 },
+			{  1, -1, 0 }
 		});
 		mesh->setNormals(
 		{
@@ -223,6 +240,43 @@ public:
 		return node;
 	}
 
+	// Check if the engine works well with rebuilding meshes
+	void rebuildQuadToBox(Node *quadNode)
+	{
+		auto model = quadNode->getComponent<ModelRenderer>()->getModel();
+		auto mesh = model->getMesh(0);
+		mesh->setVertices(
+		{
+			{ -1, -1,  1 }, { -1,  1,  1 }, {  1,  1,  1 }, {  1, -1,  1 }, // front face
+			{ -1, -1, -1 }, { -1,  1, -1 }, { -1,  1,  1 }, { -1, -1,  1 }, // left face
+			{  1, -1, -1 }, {  1,  1, -1 }, { -1,  1, -1 }, { -1, -1, -1 }, // back face
+			{  1, -1,  1 }, {  1,  1,  1 }, {  1,  1, -1 }, {  1, -1, -1 }, // right face
+			{ -1,  1,  1 }, { -1,  1, -1 }, {  1,  1, -1 }, {  1,  1,  1 }, // top face
+			{ -1, -1, -1 }, { -1, -1,  1 }, {  1, -1,  1 }, {  1, -1, -1 }, // bottom face
+
+		});
+		mesh->setUVs(
+		{
+			{ 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 0 },
+			{ 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 0 },
+			{ 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 0 },
+			{ 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 0 },
+			{ 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 0 },
+			{ 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 0 },
+		});
+		mesh->setIndices(
+		{
+			 0,  1,  2,		 0,  2,  3,
+			 4,  5,  6,		 4,  6,  7,
+			 8,  9, 10,		 8, 10, 11,
+			12, 13, 14,		12, 14, 15,
+			16, 17, 18,		16, 18, 19,
+			20, 21, 22,		20, 22, 23,
+		});
+	}
+
 private:
+	shared<Material> matChecker;
+	shared<Material> matRare;
 	ResourceManager* resManager;
 };

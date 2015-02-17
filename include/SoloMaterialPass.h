@@ -12,8 +12,6 @@ namespace solo
 	class MaterialPass: public RenderState
 	{
 	public:
-		~MaterialPass() {}
-
 		void bind(const RenderContext& context);
 		void unbind();
 

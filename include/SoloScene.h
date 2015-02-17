@@ -33,12 +33,9 @@ namespace solo
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
-		typedef std::map<size_t, std::map<size_t, shared<Component>>> Components;
-		typedef std::map<size_t, shared<Node>> Nodes;
-
 		int nodeCounter;
-		Components components;
-		Nodes nodes;
+		std::map<size_t, std::map<size_t, shared<Component>>> components;
+		std::map<size_t, shared<Node>> nodes;
 
 		void ensureNodeExists(size_t nodeId);
 		std::vector<shared<Camera>> getCameras();

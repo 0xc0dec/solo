@@ -22,12 +22,6 @@ MaterialParameter::MaterialParameter(const std::string& name):
 }
 
 
-std::string MaterialParameter::getName() const
-{
-	return name;
-}
-
-
 void MaterialParameter::setValue(float value)
 {
 	clearValue();

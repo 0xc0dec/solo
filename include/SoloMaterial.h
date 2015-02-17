@@ -14,8 +14,6 @@ namespace solo
 		friend MaterialPass;
 
 	public:
-		~Material() {}
-
 		MaterialPass* addPass(shared<Effect> effect);
 		MaterialPass* getPass(unsigned index) const;
 		void removePass(MaterialPass* pass);

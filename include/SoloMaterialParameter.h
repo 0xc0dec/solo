@@ -37,10 +37,6 @@ namespace solo
 			CameraWorldPosition,
 		};
 
-		~MaterialParameter() {}
-
-		std::string getName() const;
-
 		void clearValue();
 
 		void setValue(float value);
