@@ -22,19 +22,20 @@ MaterialPass::MaterialPass(Material *material, shared<Effect> effect):
 
 void MaterialPass::bind(RenderContext& context)
 {
-	if (effect)
+	if (effect && effect->isValid())
 	{
-		context.setCurrentPass(this);
+		context.setPass(this);
 		effect->bind();
 		material->bind(context);
 		for (auto p : parameters)
-			p.second->bind(context);
+			p.second->apply(context);
 	}
 }
 
 
-void MaterialPass::unbind()
+void MaterialPass::unbind(RenderContext& context)
 {
+	context.setPass(nullptr);
 }
 
 

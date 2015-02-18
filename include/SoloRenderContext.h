@@ -8,9 +8,26 @@ namespace solo
 	class RenderContext
 	{
 	public:
+		RenderContext() :
+			node(nullptr),
+			camera(nullptr),
+			pass(nullptr)
+		{
+		}
+
+		void setNode(Node* node)
+		{
+			this->node = node;
+		}
+
 		Node* getNode() const
 		{
 			return node;
+		}
+
+		void setCameraNode(Node* node)
+		{
+			this->camera = node;
 		}
 
 		Node* getCameraNode() const
@@ -18,38 +35,19 @@ namespace solo
 			return camera;
 		}
 
-		void setCurrentPass(MaterialPass* pass)
+		void setPass(MaterialPass* pass)
 		{
 			this->pass = pass;
 		}
 
-		MaterialPass* getCurrentPass() const
+		MaterialPass* getPass() const
 		{
 			return pass;
 		}
 
 	private:
-		friend class RenderContextFactory;
-
-		RenderContext(Node* node, Node* camera, MaterialPass* pass):
-			node(node),
-			camera(camera),
-			pass(pass)
-		{
-		}
-
 		Node* node;
 		Node* camera;
 		MaterialPass* pass;
-	};
-
-	class RenderContextFactory
-	{
-		friend class Scene;
-
-		static RenderContext create(Node* node, Node* camera, MaterialPass* pass)
-		{
-			return RenderContext(node, camera, pass);
-		}
 	};
 }

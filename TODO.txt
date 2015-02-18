@@ -1,3 +1,5 @@
+* Refactor binding and render context
+* Texture loading
 * Models loading
 * Use position, rotation and scale to calculate the corresponding getter method results (instead of the matrix)
 * Remove methods like multiply() from math classes

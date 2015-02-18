@@ -39,11 +39,11 @@ void Material::bind(RenderContext& context)
 {
 	applyFaceCull();
 	for (auto p : parameters)
-		p.second->bind(context);
+		p.second->apply(context);
 }
 
 
-void Material::unbind()
+void Material::unbind(RenderContext& context)
 {
 }
 

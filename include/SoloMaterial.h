@@ -18,7 +18,7 @@ namespace solo
 		size_t getPassCount() const;
 
 		virtual void bind(RenderContext& context) override;
-		virtual void unbind() override;
+		virtual void unbind(RenderContext& context) override;
 
 	protected:
 		Material() = default;

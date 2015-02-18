@@ -35,7 +35,7 @@ void ModelRenderer::render(RenderContext& context)
 				auto pass = material->getPass(k);
 				pass->bind(context);
 				mesh->draw();
-				pass->unbind();
+				pass->unbind(context);
 			}
 		}
 	}

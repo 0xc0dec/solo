@@ -140,9 +140,9 @@ void MaterialParameter::setValue(const Matrix* value, unsigned count)
 }
 
 
-void MaterialParameter::bind(RenderContext& context)
+void MaterialParameter::apply(RenderContext& context)
 {
-	auto variable = context.getCurrentPass()->getEffect()->findVariable(name);
+	auto variable = context.getPass()->getEffect()->findVariable(name);
 	if (variable)
 	{
 		switch (type)

@@ -132,7 +132,7 @@ namespace solo
 		unsigned valueCount;
 		bool freeableValue;
 
-		void bind(RenderContext& context);
+		void apply(RenderContext& context);
 
 		const Matrix& getWorldMatrix(const RenderContext& context) const;
 		const Matrix& getViewMatrix(const RenderContext& context) const;

@@ -2,18 +2,18 @@
 
 #include "SoloBase.h"
 #include "SoloRenderState.h"
-#include "SoloMaterial.h"
 
 namespace solo
 {
 	class Effect;
 	class RenderContext;
+	class Material;
 
 	class MaterialPass: public RenderState
 	{
 	public:
 		virtual void bind(RenderContext& context) override;
-		virtual void unbind() override;
+		virtual void unbind(RenderContext& context) override;
 
 		Effect* getEffect();
 
