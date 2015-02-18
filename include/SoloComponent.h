@@ -18,7 +18,7 @@ namespace solo
 		virtual void update() {}
 
 		// Called when the component is allowed to render anything.
-		virtual void render(const RenderContext& context) {}
+		virtual void render(RenderContext& context) {}
 	};
 
 	template <class T>

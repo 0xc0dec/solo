@@ -5,6 +5,7 @@
 namespace solo
 {
 	class MaterialParameter;
+	class RenderContext;
 
 	class RenderState
 	{
@@ -17,6 +18,9 @@ namespace solo
 		};
 
 		virtual ~RenderState() {}
+
+		virtual void bind(RenderContext& context) = 0;
+		virtual void unbind() = 0;
 
 		MaterialParameter* getParameter(const std::string &name);
 

@@ -132,7 +132,7 @@ namespace solo
 		unsigned valueCount;
 		bool freeableValue;
 
-		void bind(Effect* effect, const RenderContext& context);
+		void bind(RenderContext& context);
 
 		const Matrix& getWorldMatrix(const RenderContext& context) const;
 		const Matrix& getViewMatrix(const RenderContext& context) const;

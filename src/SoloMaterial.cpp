@@ -35,11 +35,16 @@ size_t Material::getPassCount() const
 }
 
 
-void Material::bind(Effect* effect, const RenderContext& context)
+void Material::bind(RenderContext& context)
 {
 	applyFaceCull();
 	for (auto p : parameters)
-		p.second->bind(effect, context);
+		p.second->bind(context);
+}
+
+
+void Material::unbind()
+{
 }
 
 

@@ -17,6 +17,9 @@ namespace solo
 		void removePass(MaterialPass* pass);
 		size_t getPassCount() const;
 
+		virtual void bind(RenderContext& context) override;
+		virtual void unbind() override;
+
 	protected:
 		Material() = default;
 		virtual void applyFaceCull() = 0;
@@ -30,8 +33,6 @@ namespace solo
 		Material(Material&& other) = delete;
 		Material& operator=(const Material& other) = delete;
 		Material& operator=(Material&& other) = delete;
-
-		void bind(Effect* effect, const RenderContext& context);
 
 		std::vector<shared<MaterialPass>> passes;
 	};

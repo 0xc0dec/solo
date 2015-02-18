@@ -17,7 +17,7 @@ namespace solo
 		virtual ~Camera();
 
 		virtual void update() override;
-		virtual void render(const RenderContext& context) override;
+		virtual void render(RenderContext& context) override;
 
 		void setClearColor(float r, float g, float b, float a);
 

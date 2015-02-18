@@ -12,8 +12,10 @@ namespace solo
 	class MaterialPass: public RenderState
 	{
 	public:
-		void bind(const RenderContext& context);
-		void unbind();
+		virtual void bind(RenderContext& context) override;
+		virtual void unbind() override;
+
+		Effect* getEffect();
 
 	private:
 		friend class MaterialPassFactory;

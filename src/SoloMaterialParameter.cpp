@@ -1,6 +1,5 @@
 #include "SoloMaterialParameter.h"
 #include "SoloTransform.h"
-#include "SoloEffect.h"
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 #include "SoloVector4.h"
@@ -8,6 +7,8 @@
 #include "SoloEngine.h"
 #include "SoloRenderContext.h"
 #include "SoloNode.h"
+#include "SoloMaterialPass.h"
+#include "SoloEffect.h"
 
 using namespace solo;
 
@@ -139,9 +140,9 @@ void MaterialParameter::setValue(const Matrix* value, unsigned count)
 }
 
 
-void MaterialParameter::bind(Effect* effect, const RenderContext& context)
+void MaterialParameter::bind(RenderContext& context)
 {
-	auto variable = effect->findVariable(name);
+	auto variable = context.getCurrentPass()->getEffect()->findVariable(name);
 	if (variable)
 	{
 		switch (type)

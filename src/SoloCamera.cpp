@@ -205,7 +205,7 @@ void Camera::update()
 }
 
 
-void Camera::render(const RenderContext& context)
+void Camera::render(RenderContext& context)
 {
 	if (checkAndCleanBit<DIRTY_BIT_VIEWPORT>())
 		applyViewportChange();

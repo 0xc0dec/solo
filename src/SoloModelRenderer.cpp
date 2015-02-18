@@ -3,6 +3,7 @@
 #include "SoloMaterial.h"
 #include "SoloMaterialPass.h"
 #include "SoloMesh.h"
+#include "SoloRenderContext.h"
 
 using namespace solo;
 
@@ -19,7 +20,7 @@ ModelRenderer::ModelRenderer(Node* node):
 }
 
 
-void ModelRenderer::render(const RenderContext& context)
+void ModelRenderer::render(RenderContext& context)
 {
 	auto meshCount = model->getMeshCount();
 	for (auto i = 0; i < meshCount; ++i)

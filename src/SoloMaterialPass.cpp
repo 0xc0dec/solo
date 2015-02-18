@@ -2,6 +2,7 @@
 #include "SoloMaterial.h"
 #include "SoloMaterialParameter.h"
 #include "SoloEffect.h"
+#include "SoloRenderContext.h"
 
 using namespace solo;
 
@@ -19,18 +20,25 @@ MaterialPass::MaterialPass(Material *material, shared<Effect> effect):
 }
 
 
-void MaterialPass::bind(const RenderContext& context)
+void MaterialPass::bind(RenderContext& context)
 {
 	if (effect)
 	{
+		context.setCurrentPass(this);
 		effect->bind();
-		material->bind(effect.get(), context);
+		material->bind(context);
 		for (auto p : parameters)
-			p.second->bind(effect.get(), context);
+			p.second->bind(context);
 	}
 }
 
 
 void MaterialPass::unbind()
 {
+}
+
+
+Effect* MaterialPass::getEffect()
+{
+	return effect.get();
 }

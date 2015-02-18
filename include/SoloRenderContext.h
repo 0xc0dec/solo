@@ -3,11 +3,10 @@
 namespace solo
 {
 	class Node;
+	class MaterialPass;
 
 	class RenderContext
 	{
-		friend class RenderContextFactory;
-
 	public:
 		Node* getNode() const
 		{
@@ -19,24 +18,38 @@ namespace solo
 			return camera;
 		}
 
-	private:
-		Node* node;
-		Node* camera;
+		void setCurrentPass(MaterialPass* pass)
+		{
+			this->pass = pass;
+		}
 
-		RenderContext(Node* node, Node* camera):
+		MaterialPass* getCurrentPass() const
+		{
+			return pass;
+		}
+
+	private:
+		friend class RenderContextFactory;
+
+		RenderContext(Node* node, Node* camera, MaterialPass* pass):
 			node(node),
-			camera(camera)
+			camera(camera),
+			pass(pass)
 		{
 		}
+
+		Node* node;
+		Node* camera;
+		MaterialPass* pass;
 	};
 
 	class RenderContextFactory
 	{
 		friend class Scene;
 
-		static RenderContext create(Node* node, Node* camera)
+		static RenderContext create(Node* node, Node* camera, MaterialPass* pass)
 		{
-			return RenderContext(node, camera);
+			return RenderContext(node, camera, pass);
 		}
 	};
 }

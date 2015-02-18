@@ -101,7 +101,7 @@ void Scene::render()
 	auto cameras = getCameras(); // TODO cache lookup results or optimise in some other way
 	for (auto camera : cameras)
 	{
-		auto context = RenderContextFactory::create(nullptr, camera->getNode());
+		auto context = RenderContextFactory::create(nullptr, camera->getNode(), nullptr);
 		camera->render(context);
 		for (auto nodeInfo : nodes)
 		{
@@ -109,7 +109,7 @@ void Scene::render()
 			for (auto component : components[nodeInfo.first])
 			{
 				auto nodeTransform = node->findComponent<Transform>();
-				context = RenderContextFactory::create(node.get(), camera->getNode());
+				context = RenderContextFactory::create(node.get(), camera->getNode(), nullptr);
 				// Render only non-camera nodes with transforms
 				if (nodeTransform && component.second->getTypeId() != Camera::getId())
 					component.second->render(context);

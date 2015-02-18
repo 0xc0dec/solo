@@ -13,7 +13,7 @@ namespace solo
 	public:
 		virtual ~ModelRenderer() {}
 
-		virtual void render(const RenderContext& context) override;
+		virtual void render(RenderContext& context) override;
 
 		void setModel(shared<Model> model);
 		Model* getModel() const;
