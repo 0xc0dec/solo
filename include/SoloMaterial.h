@@ -7,7 +7,6 @@ namespace solo
 {
 	class Effect;
 	class MaterialPass;
-	class RenderContext;
 
 	class Material: public RenderState
 	{
@@ -26,8 +25,6 @@ namespace solo
 
 	private:
 		friend class MaterialFactory;
-		friend class ModelRenderer;
-		friend class MaterialPass;
 
 		Material(const Material& other) = delete;
 		Material(Material&& other) = delete;
