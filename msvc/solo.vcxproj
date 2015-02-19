@@ -54,6 +54,7 @@
     <ClInclude Include="..\include\SoloResourceManager.h" />
     <ClInclude Include="..\include\SoloScene.h" />
     <ClInclude Include="..\include\SoloTexture2D.h" />
+    <ClInclude Include="..\include\SoloTextureSampler.h" />
     <ClInclude Include="..\include\SoloTransform.h" />
     <ClInclude Include="..\include\SoloTypeId.h" />
     <ClInclude Include="..\include\SoloVector2.h" />
@@ -65,6 +66,7 @@
     <ClInclude Include="..\src\platform\SoloOpenGLMaterial.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLMesh.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLTexture2D.h" />
+    <ClInclude Include="..\src\platform\SoloOpenGLTextureSampler2D.h" />
     <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h" />
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +79,7 @@
     <ClCompile Include="..\src\platform\SoloOpenGLMaterial.cpp" />
     <ClCompile Include="..\src\platform\SoloOpenGLMesh.cpp" />
     <ClCompile Include="..\src\platform\SoloOpenGLTexture2D.cpp" />
+    <ClCompile Include="..\src\platform\SoloOpenGLTextureSampler2D.cpp" />
     <ClCompile Include="..\src\platform\SoloSDLOpenGLDevice.cpp" />
     <ClCompile Include="..\src\SoloBoundingBox.cpp" />
     <ClCompile Include="..\src\SoloBoundingSphere.cpp" />
@@ -105,6 +108,7 @@
     <ClCompile Include="..\src\SoloScene.cpp" />
     <ClCompile Include="..\src\SoloEffect.cpp" />
     <ClCompile Include="..\src\SoloTexture.cpp" />
+    <ClCompile Include="..\src\SoloTextureSampler.cpp" />
     <ClCompile Include="..\src\SoloTransform.cpp" />
     <ClCompile Include="..\src\SoloVector2.cpp" />
     <ClCompile Include="..\src\SoloVector3.cpp" />

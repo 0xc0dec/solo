@@ -9,8 +9,6 @@ namespace solo
 	class GLSLEffectVariable : public EffectVariable
 	{
 	public:
-		static shared<GLSLEffectVariable> create(const std::string& name, GLint location, GLenum type, unsigned index = 0);
-
 		virtual void setValue(float value) override;
 		virtual void setValue(const float* values, unsigned count) override;
 		virtual void setValue(int value) override;
@@ -23,9 +21,13 @@ namespace solo
 		virtual void setValue(const Vector3* values, unsigned count) override;
 		virtual void setValue(const Vector4& value) override;
 		virtual void setValue(const Vector4* values, unsigned count) override;
+		virtual void setValue(shared<TextureSampler> sampler) override;
+		virtual void setValue(const std::vector<shared<TextureSampler>>& samplers, unsigned count) override;
 
 	private:
-		GLSLEffectVariable(const std::string& name, GLint location, GLenum type, unsigned index = 0);
+		friend class GLSLEffectVariableFactory;
+
+		GLSLEffectVariable(const std::string& name, GLint location, GLenum type, unsigned index);
 		GLSLEffectVariable(const GLSLEffectVariable& other) = delete;
 		GLSLEffectVariable(GLSLEffectVariable&& other) = delete;
 		GLSLEffectVariable& operator=(const GLSLEffectVariable& other) = delete;
@@ -34,5 +36,11 @@ namespace solo
 		GLint location;
 		GLenum type;
 		unsigned index;
+	};
+
+	class GLSLEffectVariableFactory
+	{
+		friend class GLSLEffect;
+		static shared<GLSLEffectVariable> create(const std::string& name, GLint location, GLenum type, unsigned index = 0);
 	};
 }

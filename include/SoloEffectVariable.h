@@ -8,6 +8,7 @@ namespace solo
 	class Vector2;
 	class Vector3;
 	class Vector4;
+	class TextureSampler;
 
 	// Wrap around a uniform variable
 	class EffectVariable
@@ -29,6 +30,8 @@ namespace solo
 		virtual void setValue(const Vector3* values, unsigned count) = 0;
 		virtual void setValue(const Vector4& value) = 0;
 		virtual void setValue(const Vector4* values, unsigned count) = 0;
+		virtual void setValue(shared<TextureSampler> sampler) = 0;
+		virtual void setValue(const std::vector<shared<TextureSampler>>& samplers, unsigned count) = 0;
 
 	protected:
 		EffectVariable(const std::string &name);

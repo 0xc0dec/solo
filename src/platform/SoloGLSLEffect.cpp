@@ -1,12 +1,10 @@
 #include "SoloGLSLEffect.h"
 #include "SoloGLSLEffectVariable.h"
-#include "SoloLog.h"
 
 using namespace solo;
 
 
-GLSLEffect::GLSLEffect(const std::string &vsSrc, const std::string &fsSrc):
-	Effect(vsSrc, fsSrc)
+GLSLEffect::GLSLEffect(const std::string &vsSrc, const std::string &fsSrc)
 {
 	auto vs = createShader(GL_VERTEX_SHADER, vsSrc);
 	if (vs < 0)
@@ -25,18 +23,13 @@ GLSLEffect::GLSLEffect(const std::string &vsSrc, const std::string &fsSrc):
 	deleteShader(fs);
 
 	discoverVariables();
-
-	DEBUG("Created effect ", id);
 }
 
 
 GLSLEffect::~GLSLEffect()
 {
 	if (valid)
-	{
 		glDeleteProgram(program);
-		DEBUG("Destroyed effect ", id);
-	}
 }
 
 
@@ -151,7 +144,7 @@ void GLSLEffect::discoverVariables()
 			samplerIndex += size;
 		}
 
-		auto variable = GLSLEffectVariable::create(name, location, type, index);
+		auto variable = GLSLEffectVariableFactory::create(name, location, type, index);
 		variables[name] = variable;
 	}
 

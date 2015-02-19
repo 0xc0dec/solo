@@ -8,18 +8,18 @@
 using namespace solo;
 
 
+shared<GLSLEffectVariable> GLSLEffectVariableFactory::create(const std::string& name, GLint location, GLenum type, unsigned index)
+{
+	return NEW2(GLSLEffectVariable, name, location, type, index);
+}
+
+
 GLSLEffectVariable::GLSLEffectVariable(const std::string& name, GLint location, GLenum type, unsigned index):
 	EffectVariable(name),
 	location(location),
 	type(type),
 	index(index)
 {
-}
-
-
-shared<GLSLEffectVariable> GLSLEffectVariable::create(const std::string& name, GLint location, GLenum type, unsigned index)
-{
-	return NEW2(GLSLEffectVariable, name, location, type, index);
 }
 
 
@@ -92,4 +92,16 @@ void GLSLEffectVariable::setValue(const Vector4& value)
 void GLSLEffectVariable::setValue(const Vector4* values, unsigned count)
 {
 	glUniform4fv(location, count, reinterpret_cast<const GLfloat*>(values));
+}
+
+
+void GLSLEffectVariable::setValue(shared<TextureSampler> sampler)
+{
+	// TODO
+}
+
+
+void GLSLEffectVariable::setValue(const std::vector<shared<TextureSampler>>& samplers, unsigned count)
+{
+	// TODO
 }

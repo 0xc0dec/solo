@@ -140,6 +140,26 @@ void MaterialParameter::setValue(const Matrix* value, unsigned count)
 }
 
 
+void MaterialParameter::setValue(const shared<TextureSampler> sampler)
+{
+	clearValue();
+	samplerValue = sampler;
+	valueCount = 1;
+	type = ValueType::Sampler;
+	freeableValue = true;
+}
+
+
+void MaterialParameter::setValue(const std::vector<shared<TextureSampler>>& samplers, unsigned count)
+{
+	clearValue();
+	samplerArrayValue = samplers;
+	valueCount = count;
+	type = ValueType::SamplerArray;
+	freeableValue = true;
+}
+
+
 void MaterialParameter::apply(RenderContext& context)
 {
 	auto variable = context.getPass()->getEffect()->findVariable(name);
@@ -171,8 +191,15 @@ void MaterialParameter::apply(RenderContext& context)
 			case ValueType::Matrix:
 				variable->setValue(reinterpret_cast<Matrix*>(value.asFloatPtr), valueCount);
 				break;
+			case ValueType::Sampler:
+				variable->setValue(samplerValue);
+				break;
+			case ValueType::SamplerArray:
+				variable->setValue(samplerArrayValue, valueCount);
+				break;
 			case ValueType::Method:
 				value.method->setValue(variable, context);
+				break;
 			case ValueType::None:
 			default:
 				break;
@@ -198,6 +225,12 @@ void MaterialParameter::clearValue()
 			case ValueType::Int:
 			case ValueType::IntArray:
 				delete[] value.asIntPtr;
+				break;
+			case ValueType::Sampler:
+				samplerValue = nullptr;
+				break;
+			case ValueType::SamplerArray:
+				samplerArrayValue.clear();
 				break;
 			case ValueType::Method:
 				delete value.method;
