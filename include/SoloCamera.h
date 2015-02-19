@@ -75,6 +75,12 @@ namespace solo
 		Matrix viewProjectionMatrix;
 		Matrix inverseViewMatrix;
 		Matrix inverseViewProjectionMatrix;
+
+	private:
+		Camera(const Camera& other) = delete;
+		Camera(Camera&& other) = delete;
+		Camera& operator=(const Camera& other) = delete;
+		Camera& operator=(Camera&& other) = delete;
 	};
 
 	class CameraFactory

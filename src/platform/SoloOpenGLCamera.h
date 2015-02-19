@@ -9,13 +9,10 @@ namespace solo
 	class OpenGLCamera: public Camera
 	{
 	protected:
-		friend class CameraFactory;
-
 		OpenGLCamera(Node* node);
-		OpenGLCamera(const OpenGLCamera& other) = delete;
-		OpenGLCamera(OpenGLCamera&& other) = delete;
-		OpenGLCamera& operator=(const OpenGLCamera& other) = delete;
-		OpenGLCamera& operator=(OpenGLCamera&& other) = delete;
+
+	private:
+		friend class CameraFactory;
 
 		Device* device;
 
