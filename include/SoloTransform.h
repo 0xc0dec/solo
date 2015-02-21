@@ -23,8 +23,6 @@ namespace solo
 			World
 		};
 
-		virtual ~Transform() override {}
-		
 		void addCallback(TransformCallback *callback);
 		void removeCallback(TransformCallback *callback);
 

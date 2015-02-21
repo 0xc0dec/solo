@@ -8,3 +8,17 @@ shared<Texture2D> TextureFactory::create2D(Texture::Format format, std::vector<c
 {
 	return NEW2(OpenGLTexture2D, format, data, width, height, generateMipmaps);
 }
+
+
+void Texture::setWrapMode(WrapMode verticalWrap, WrapMode horizontalWrap)
+{
+	this->verticalWrap = verticalWrap;
+	this->horizontalWrap = horizontalWrap;
+}
+
+
+void Texture::setFilterMode(Filter minFilter, Filter magFilter)
+{
+	this->minFilter = minFilter;
+	this->magFilter = magFilter;
+}

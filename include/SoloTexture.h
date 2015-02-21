@@ -15,10 +15,36 @@ namespace solo
 			RGBA
 		};
 
+		enum class WrapMode
+		{
+			Clamp,
+			Repeat
+		};
+
+		enum class Filter
+		{
+			Nearest,
+			Linear,
+			NearestMipmapNearest,
+			LineapMipmapNearest,
+			NearestMipmapLinear,
+			LinearMipmapLinear
+		};
+
 		virtual ~Texture() {}
+
+		void setWrapMode(WrapMode verticalWrap, WrapMode horizontalWrap);
+		void setFilterMode(Filter minFilter, Filter magFilter);
+
+		virtual void apply() = 0;
 
 	protected:
 		Texture() {}
+
+		WrapMode verticalWrap;
+		WrapMode horizontalWrap;
+		Filter minFilter;
+		Filter magFilter;
 
 	private:
 		Texture(const Texture& other) = delete;

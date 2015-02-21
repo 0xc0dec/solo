@@ -31,3 +31,13 @@ GLint OpenGLTexture2D::toGLFormat(Format format)
 			THROW(EngineException, "Unexpected texture format ", static_cast<int>(format));
 	}
 }
+
+
+void OpenGLTexture2D::apply()
+{
+	glBindTexture(GL_TEXTURE_2D, handle);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, static_cast<GLenum>(minFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, static_cast<GLenum>(magFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, static_cast<GLenum>(horizontalWrap));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, static_cast<GLenum>(verticalWrap));
+}

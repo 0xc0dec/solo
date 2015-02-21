@@ -21,8 +21,8 @@ namespace solo
 		virtual void setValue(const Vector3* values, unsigned count) override;
 		virtual void setValue(const Vector4& value) override;
 		virtual void setValue(const Vector4* values, unsigned count) override;
-		virtual void setValue(shared<TextureSampler> sampler) override;
-		virtual void setValue(const std::vector<shared<TextureSampler>>& samplers, unsigned count) override;
+		virtual void setValue(const shared<Texture> sampler) override;
+		virtual void setValue(const std::vector<shared<Texture>>& samplers, unsigned count) override;
 
 	private:
 		friend class GLSLEffectVariableFactory;

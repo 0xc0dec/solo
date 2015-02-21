@@ -10,6 +10,8 @@ namespace solo
 	public:
 		virtual ~OpenGLTexture2D();
 
+		virtual void apply() override;
+
 	private:
 		friend class TextureFactory;
 

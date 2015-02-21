@@ -139,12 +139,6 @@
     <ClInclude Include="..\src\platform\SoloOpenGLTexture2D.h">
       <Filter>src\platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloTextureSampler.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\SoloOpenGLTextureSampler2D.h">
-      <Filter>src\platform</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">
@@ -266,12 +260,6 @@
     </ClCompile>
     <ClCompile Include="..\src\SoloTexture.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloTextureSampler.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\SoloOpenGLTextureSampler2D.cpp">
-      <Filter>src\platform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

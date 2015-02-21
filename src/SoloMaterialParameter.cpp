@@ -140,22 +140,22 @@ void MaterialParameter::setValue(const Matrix* value, unsigned count)
 }
 
 
-void MaterialParameter::setValue(const shared<TextureSampler> sampler)
+void MaterialParameter::setValue(const shared<Texture> texture)
 {
 	clearValue();
-	samplerValue = sampler;
+	textureValue = texture;
 	valueCount = 1;
-	type = ValueType::Sampler;
+	type = ValueType::Texture;
 	freeableValue = true;
 }
 
 
-void MaterialParameter::setValue(const std::vector<shared<TextureSampler>>& samplers, unsigned count)
+void MaterialParameter::setValue(const std::vector<shared<Texture>>& textures, unsigned count)
 {
 	clearValue();
-	samplerArrayValue = samplers;
+	textureArrayValue = textures;
 	valueCount = count;
-	type = ValueType::SamplerArray;
+	type = ValueType::TextureArray;
 	freeableValue = true;
 }
 
@@ -163,47 +163,46 @@ void MaterialParameter::setValue(const std::vector<shared<TextureSampler>>& samp
 void MaterialParameter::apply(RenderContext& context)
 {
 	auto variable = context.getMaterial()->getEffect()->findVariable(name);
-	if (variable)
+	if (!variable)
+		return;
+	switch (type)
 	{
-		switch (type)
-		{
-			case ValueType::Float:
-				variable->setValue(value.asFloat);
-				break;
-			case ValueType::FloatArray:
-				variable->setValue(value.asFloatPtr, valueCount);
-				break;
-			case ValueType::Int:
-				variable->setValue(value.asInt);
-				break;
-			case ValueType::IntArray:
-				variable->setValue(value.asIntPtr, valueCount);
-				break;
-			case ValueType::Vector2:
-				variable->setValue(reinterpret_cast<Vector2*>(value.asFloatPtr), valueCount);
-				break;
-			case ValueType::Vector3:
-				variable->setValue(reinterpret_cast<Vector3*>(value.asFloatPtr), valueCount);
-				break;
-			case ValueType::Vector4:
-				variable->setValue(reinterpret_cast<Vector4*>(value.asFloatPtr), valueCount);
-				break;
-			case ValueType::Matrix:
-				variable->setValue(reinterpret_cast<Matrix*>(value.asFloatPtr), valueCount);
-				break;
-			case ValueType::Sampler:
-				variable->setValue(samplerValue);
-				break;
-			case ValueType::SamplerArray:
-				variable->setValue(samplerArrayValue, valueCount);
-				break;
-			case ValueType::Method:
-				value.method->setValue(variable, context);
-				break;
-			case ValueType::None:
-			default:
-				break;
-		}
+		case ValueType::Float:
+			variable->setValue(value.asFloat);
+			break;
+		case ValueType::FloatArray:
+			variable->setValue(value.asFloatPtr, valueCount);
+			break;
+		case ValueType::Int:
+			variable->setValue(value.asInt);
+			break;
+		case ValueType::IntArray:
+			variable->setValue(value.asIntPtr, valueCount);
+			break;
+		case ValueType::Vector2:
+			variable->setValue(reinterpret_cast<Vector2*>(value.asFloatPtr), valueCount);
+			break;
+		case ValueType::Vector3:
+			variable->setValue(reinterpret_cast<Vector3*>(value.asFloatPtr), valueCount);
+			break;
+		case ValueType::Vector4:
+			variable->setValue(reinterpret_cast<Vector4*>(value.asFloatPtr), valueCount);
+			break;
+		case ValueType::Matrix:
+			variable->setValue(reinterpret_cast<Matrix*>(value.asFloatPtr), valueCount);
+			break;
+		case ValueType::Texture:
+			variable->setValue(textureValue);
+			break;
+		case ValueType::TextureArray:
+			variable->setValue(textureArrayValue, valueCount);
+			break;
+		case ValueType::Method:
+			value.method->setValue(variable, context);
+			break;
+		case ValueType::None:
+		default:
+			break;
 	}
 }
 
@@ -226,11 +225,11 @@ void MaterialParameter::clearValue()
 			case ValueType::IntArray:
 				delete[] value.asIntPtr;
 				break;
-			case ValueType::Sampler:
-				samplerValue = nullptr;
+			case ValueType::Texture:
+				textureValue = nullptr;
 				break;
-			case ValueType::SamplerArray:
-				samplerArrayValue.clear();
+			case ValueType::TextureArray:
+				textureArrayValue.clear();
 				break;
 			case ValueType::Method:
 				delete value.method;

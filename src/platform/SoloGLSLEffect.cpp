@@ -143,6 +143,7 @@ void GLSLEffect::discoverVariables()
 			index = samplerIndex;
 			samplerIndex += size;
 		}
+		// TODO other types of samplers
 
 		auto variable = GLSLEffectVariableFactory::create(name, location, type, index);
 		variables[name] = variable;

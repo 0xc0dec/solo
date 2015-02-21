@@ -4,6 +4,7 @@
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 #include "SoloVector4.h"
+#include "SoloTexture.h"
 
 using namespace solo;
 
@@ -95,13 +96,15 @@ void GLSLEffectVariable::setValue(const Vector4* values, unsigned count)
 }
 
 
-void GLSLEffectVariable::setValue(shared<TextureSampler> sampler)
+void GLSLEffectVariable::setValue(const shared<Texture> texture)
 {
-	// TODO
+	glActiveTexture(GL_TEXTURE0 + index);
+	texture->apply();
+	glUniform1i(location, index);
 }
 
 
-void GLSLEffectVariable::setValue(const std::vector<shared<TextureSampler>>& samplers, unsigned count)
+void GLSLEffectVariable::setValue(const std::vector<shared<Texture>>& textures, unsigned count)
 {
 	// TODO
 }

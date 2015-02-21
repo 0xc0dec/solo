@@ -12,7 +12,7 @@ namespace solo
 	class Matrix;
 	class Scene;
 	class RenderContext;
-	class TextureSampler;
+	class Texture;
 
 	class MaterialParameter
 	{
@@ -45,8 +45,8 @@ namespace solo
 		void setValue(const Vector4 *value, unsigned count);
 		void setValue(const Matrix &value);
 		void setValue(const Matrix *value, unsigned count);
-		void setValue(const shared<TextureSampler> sampler);
-		void setValue(const std::vector<shared<TextureSampler>>& samplers, unsigned count);
+		void setValue(const shared<Texture> texture);
+		void setValue(const std::vector<shared<Texture>>& textures, unsigned count);
 
 		template <class TClass, class TValue>
 		void bindValue(TClass* classInstance, TValue(TClass::*getValue)(const RenderContext& context) const);
@@ -71,8 +71,8 @@ namespace solo
 			Vector3,
 			Vector4,
 			Matrix,
-			Sampler,
-			SamplerArray,
+			Texture,
+			TextureArray,
 			Method
 		};
 		
@@ -133,8 +133,8 @@ namespace solo
 		std::string name;
 		ValueType type;
 		MaterialParameterValue value;
-		shared<TextureSampler> samplerValue;
-		std::vector<shared<TextureSampler>> samplerArrayValue;
+		shared<Texture> textureValue;
+		std::vector<shared<Texture>> textureArrayValue;
 		unsigned valueCount;
 		bool freeableValue;
 
