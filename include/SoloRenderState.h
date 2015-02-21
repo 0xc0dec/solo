@@ -29,12 +29,16 @@ namespace solo
 
 	protected:
 		RenderState();
+
+		virtual void applyFaceCull() = 0;
+
+		PolygonFace polygonFace;
+		std::map<std::string, shared<MaterialParameter>> parameters;
+
+	private:
 		RenderState(const RenderState& other) = delete;
 		RenderState(RenderState&& other) = delete;
 		RenderState& operator=(const RenderState& other) = delete;
 		RenderState& operator=(RenderState&& other) = delete;
-
-		std::map<std::string, shared<MaterialParameter>> parameters;
-		PolygonFace polygonFace;
 	};
 }

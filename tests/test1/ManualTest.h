@@ -83,9 +83,9 @@ public:
 	explicit RotatorAroundWorldYAxis(Node* node) :
 		ComponentBase<RotatorAroundWorldYAxis>(node)
 	{
-			engine = Engine::get();
-			transform = node->getComponent<Transform>();
-		}
+		engine = Engine::get();
+		transform = node->getComponent<Transform>();
+	}
 
 	virtual void update() override
 	{

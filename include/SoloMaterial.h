@@ -18,8 +18,6 @@ namespace solo
 	protected:
 		Material(shared<Effect> effect);
 
-		virtual void applyFaceCull() = 0;
-
 	private:
 		Material(const Material& other) = delete;
 		Material(Material&& other) = delete;
