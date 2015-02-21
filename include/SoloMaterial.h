@@ -6,7 +6,6 @@
 namespace solo
 {
 	class Effect;
-	class MaterialPass;
 
 	class Material: public RenderState
 	{

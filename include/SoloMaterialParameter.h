@@ -58,7 +58,6 @@ namespace solo
 
 	private:
 		friend class Material;
-		friend class MaterialPass;
 		friend class RenderState;
 
 		enum class ValueType
