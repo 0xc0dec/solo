@@ -18,7 +18,6 @@
 #include "SoloLog.h"
 #include "SoloMaterial.h"
 #include "SoloMaterialParameter.h"
-#include "SoloMaterialPass.h"
 #include "SoloMath.h"
 #include "SoloMatrix.h"
 #include "SoloMesh.h"

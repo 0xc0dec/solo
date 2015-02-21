@@ -20,10 +20,16 @@ namespace solo
 	protected:
 		Effect();
 
+		void appendToLog(const std::string &newLog);
+
 		bool valid;
 		std::string log;
 
-		void appendToLog(const std::string &newLog);
+	private:
+		Effect(const Effect& other) = delete;
+		Effect(Effect&& other) = delete;
+		Effect& operator=(const Effect& other) = delete;
+		Effect& operator=(Effect&& other) = delete;
 	};
 
 	class EffectFactory

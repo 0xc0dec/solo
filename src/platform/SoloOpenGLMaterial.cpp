@@ -4,6 +4,12 @@
 using namespace solo;
 
 
+OpenGLMaterial::OpenGLMaterial(shared<Effect> effect):
+	Material(effect)
+{
+}
+
+
 void OpenGLMaterial::applyFaceCull()
 {
 	switch (polygonFace)

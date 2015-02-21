@@ -143,17 +143,15 @@ public:
 		auto canvasSize = device->getCanvasSize();
 
 		auto effRare = resManager->getEffect(vsBasic, fsRare);
-		matRare = resManager->getMaterial();
-		matRare->addPass(effRare);
+		matRare = resManager->getMaterial(effRare);
 		matRare->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
 		matRare->getParameter("canvasWidth")->setValue(canvasSize.x);
 		matRare->getParameter("canvasHeight")->setValue(canvasSize.y);
 		matRare->getParameter("time")->bindValue<float>([this](const RenderContext& context) -> float { return this->device->getLifetime(); });
 
 		auto effChecker = resManager->getEffect(vsBasic, fsChecker);
-		matChecker = resManager->getMaterial();
+		matChecker = resManager->getMaterial(effChecker);
 		matChecker->setPolygonFace(RenderState::PolygonFace::All);
-		matChecker->addPass(effChecker);
 		matChecker->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
 		matChecker->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
 	}

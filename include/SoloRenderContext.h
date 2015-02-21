@@ -3,15 +3,14 @@
 namespace solo
 {
 	class Node;
-	class MaterialPass;
+	class Material;
 
 	class RenderContext
 	{
 	public:
 		RenderContext() :
 			node(nullptr),
-			camera(nullptr),
-			pass(nullptr)
+			camera(nullptr)
 		{
 		}
 
@@ -35,19 +34,19 @@ namespace solo
 			return camera;
 		}
 
-		void setPass(MaterialPass* pass)
+		void setMaterial(Material* material)
 		{
-			this->pass = pass;
+			this->material = material;
 		}
 
-		MaterialPass* getPass() const
+		Material* getMaterial() const
 		{
-			return pass;
+			return material;
 		}
 
 	private:
 		Node* node;
 		Node* camera;
-		MaterialPass* pass;
+		Material* material;
 	};
 }

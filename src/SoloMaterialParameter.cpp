@@ -7,7 +7,7 @@
 #include "SoloEngine.h"
 #include "SoloRenderContext.h"
 #include "SoloNode.h"
-#include "SoloMaterialPass.h"
+#include "SoloMaterial.h"
 #include "SoloEffect.h"
 
 using namespace solo;
@@ -162,7 +162,7 @@ void MaterialParameter::setValue(const std::vector<shared<TextureSampler>>& samp
 
 void MaterialParameter::apply(RenderContext& context)
 {
-	auto variable = context.getPass()->getEffect()->findVariable(name);
+	auto variable = context.getMaterial()->getEffect()->findVariable(name);
 	if (variable)
 	{
 		switch (type)

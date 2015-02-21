@@ -11,32 +11,28 @@ namespace solo
 	class Material: public RenderState
 	{
 	public:
-		MaterialPass* addPass(shared<Effect> effect);
-		MaterialPass* getPass(unsigned index) const;
-		void removePass(MaterialPass* pass);
-		size_t getPassCount() const;
-
 		virtual void bind(RenderContext& context) override;
 		virtual void unbind(RenderContext& context) override;
 
+		Effect* getEffect() const;
+
 	protected:
-		Material() = default;
+		Material(shared<Effect> effect);
+
 		virtual void applyFaceCull() = 0;
 
 	private:
-		friend class MaterialFactory;
-
 		Material(const Material& other) = delete;
 		Material(Material&& other) = delete;
 		Material& operator=(const Material& other) = delete;
 		Material& operator=(Material&& other) = delete;
 
-		std::vector<shared<MaterialPass>> passes;
+		shared<Effect> effect;
 	};
 
 	class MaterialFactory
 	{
 		friend class ResourceManager;
-		static shared<Material> create();
+		static shared<Material> create(shared<Effect> effect);
 	};
 }

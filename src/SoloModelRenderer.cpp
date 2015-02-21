@@ -1,7 +1,6 @@
 #include "SoloModelRenderer.h"
 #include "SoloModel.h"
 #include "SoloMaterial.h"
-#include "SoloMaterialPass.h"
 #include "SoloMesh.h"
 #include "SoloRenderContext.h"
 
@@ -29,14 +28,9 @@ void ModelRenderer::render(RenderContext& context)
 		if (material)
 		{
 			auto mesh = model->getMesh(i);
-			auto passCount = material->getPassCount();
-			for (auto k = 0; k < passCount; ++k)
-			{
-				auto pass = material->getPass(k);
-				pass->bind(context);
-				mesh->draw();
-				pass->unbind(context);
-			}
+			material->bind(context);
+			mesh->draw();
+			material->unbind(context);
 		}
 	}
 }
