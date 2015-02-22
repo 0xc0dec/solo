@@ -193,7 +193,7 @@ public:
 		quad->addComponent<RotatorAroundLocalXAxis>();
 		quad->getComponent<Transform>()->setParent(emptyTransform);
 		quad->getComponent<Transform>()->setLocalPosition(1, 0, 0);
-		quad->getComponent<ModelRenderer>()->setMaterial(0, matTexture);// matChecker);
+		quad->getComponent<ModelRenderer>()->setMaterial(0, matTexture);
 	}
 
 	void createCamera()
