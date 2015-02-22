@@ -46,9 +46,9 @@ public:
 		if (device->isMouseButtonPressed(MouseButton::Right, false))
 		{
 			if (mouseMotion.x != 0)
-				transform->rotate(Vector3::unitY(), dt * -mouseMotion.x, Transform::TransformSpace::World);
+				transform->rotate(Vector3::unitY(), 0.5f * dt * -mouseMotion.x, Transform::TransformSpace::World);
 			if (mouseMotion.y != 0)
-				transform->rotate(Vector3::unitX(), dt * -mouseMotion.y, Transform::TransformSpace::Self);
+				transform->rotate(Vector3::unitX(), 0.5f * dt * -mouseMotion.y, Transform::TransformSpace::Self);
 		}
 
 		Vector3 movement;
