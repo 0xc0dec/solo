@@ -9,7 +9,7 @@ namespace solo
 	class Texture
 	{
 	public:
-		enum class Format
+		enum class ColorFormat
 		{
 			RGB,
 			RGBA
@@ -26,7 +26,7 @@ namespace solo
 			Nearest,
 			Linear,
 			NearestMipmapNearest,
-			LineapMipmapNearest,
+			LinearMipmapNearest,
 			NearestMipmapLinear,
 			LinearMipmapLinear
 		};
@@ -39,7 +39,7 @@ namespace solo
 		virtual void apply() = 0;
 
 	protected:
-		Texture() {}
+		Texture();
 
 		WrapMode verticalWrap;
 		WrapMode horizontalWrap;
@@ -55,6 +55,7 @@ namespace solo
 
 	class TextureFactory
 	{
-		static shared<Texture2D> create2D(Texture::Format format, std::vector<char> data, unsigned width, unsigned height, bool generateMipmaps);
+		friend class PNGTextureLoader;
+		static shared<Texture2D> create2D(Texture::ColorFormat format, std::vector<byte> data, unsigned width, unsigned height, bool generateMipmaps);
 	};
 }

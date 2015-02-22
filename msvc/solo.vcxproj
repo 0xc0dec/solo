@@ -35,6 +35,7 @@
     <ClInclude Include="..\include\SoloFrustum.h" />
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\include\SoloEngineCallback.h" />
+    <ClInclude Include="..\include\SoloTextureLoader.h" />
     <ClInclude Include="..\include\SoloTexture.h" />
     <ClInclude Include="..\include\SoloLog.h" />
     <ClInclude Include="..\include\SoloMaterial.h" />
@@ -65,11 +66,38 @@
     <ClInclude Include="..\src\platform\SoloOpenGLMesh.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLTexture2D.h" />
     <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h" />
+    <ClInclude Include="..\src\SoloPNGTextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\glew\src\glew.c" />
     <ClCompile Include="..\external\glew\src\glewinfo.c" />
     <ClCompile Include="..\external\glew\src\visualinfo.c" />
+    <ClCompile Include="..\external\png\src\png.c" />
+    <ClCompile Include="..\external\png\src\pngerror.c" />
+    <ClCompile Include="..\external\png\src\pngget.c" />
+    <ClCompile Include="..\external\png\src\pngmem.c" />
+    <ClCompile Include="..\external\png\src\pngpread.c" />
+    <ClCompile Include="..\external\png\src\pngread.c" />
+    <ClCompile Include="..\external\png\src\pngrio.c" />
+    <ClCompile Include="..\external\png\src\pngrtran.c" />
+    <ClCompile Include="..\external\png\src\pngrutil.c" />
+    <ClCompile Include="..\external\png\src\pngset.c" />
+    <ClCompile Include="..\external\png\src\pngtrans.c" />
+    <ClCompile Include="..\external\png\src\pngwio.c" />
+    <ClCompile Include="..\external\png\src\pngwrite.c" />
+    <ClCompile Include="..\external\png\src\pngwtran.c" />
+    <ClCompile Include="..\external\png\src\pngwutil.c" />
+    <ClCompile Include="..\external\zlib\src\adler32.c" />
+    <ClCompile Include="..\external\zlib\src\compress.c" />
+    <ClCompile Include="..\external\zlib\src\crc32.c" />
+    <ClCompile Include="..\external\zlib\src\deflate.c" />
+    <ClCompile Include="..\external\zlib\src\infback.c" />
+    <ClCompile Include="..\external\zlib\src\inffast.c" />
+    <ClCompile Include="..\external\zlib\src\inflate.c" />
+    <ClCompile Include="..\external\zlib\src\inftrees.c" />
+    <ClCompile Include="..\external\zlib\src\trees.c" />
+    <ClCompile Include="..\external\zlib\src\uncompr.c" />
+    <ClCompile Include="..\external\zlib\src\zutil.c" />
     <ClCompile Include="..\src\platform\SoloGLSLEffectVariable.cpp" />
     <ClCompile Include="..\src\platform\SoloGLSLEffect.cpp" />
     <ClCompile Include="..\src\platform\SoloOpenGLCamera.cpp" />
@@ -96,6 +124,7 @@
     <ClCompile Include="..\src\SoloModelRenderer.cpp" />
     <ClCompile Include="..\src\SoloNode.cpp" />
     <ClCompile Include="..\src\SoloPlane.cpp" />
+    <ClCompile Include="..\src\SoloPNGTextureLoader.cpp" />
     <ClCompile Include="..\src\SoloQuaternion.cpp" />
     <ClCompile Include="..\src\SoloRay.cpp" />
     <ClCompile Include="..\src\SoloRenderState.cpp" />
@@ -161,10 +190,10 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\src\SDL\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(ProjectDir)..\external\zlib\include;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
-    <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;$(ProjectDir)..\external\png\lib\windows\x64\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\build\</OutDir>
@@ -172,10 +201,10 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\src\SDL\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(ProjectDir)..\external\zlib\include;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
-    <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;$(ProjectDir)..\external\png\lib\windows\x64\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -206,7 +235,7 @@
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <FloatingPointModel>Fast</FloatingPointModel>
       <ProgramDataBaseFileName>$(OutDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -252,7 +281,7 @@
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <FloatingPointModel>Fast</FloatingPointModel>
       <ProgramDataBaseFileName>$(OutDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

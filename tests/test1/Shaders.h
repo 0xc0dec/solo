@@ -38,6 +38,20 @@ void main()\n \
 		fragColor = color;\n \
 }";
 
+const char *fsTexture =
+"\
+#version 330 core\n \
+\
+uniform sampler2D mainTex;\n \
+\
+in vec2 uv0;\n \
+out vec4 fragColor;\n \
+\
+void main()\n \
+{\n \
+	fragColor = texture(mainTex, uv0);\n \
+}";
+
 // taken from ShaderToy
 const char* fsRare =
 " \

@@ -17,7 +17,7 @@ public:
 
 	void testWriteBytesReadBytes()
 	{
-		std::vector<char> data = { 0x01, 0x02, 0x03, 0x04 };
+		std::vector<byte> data = { 0x01, 0x02, 0x03, 0x04 };
 		engine->getFileSystem()->writeBytes("temp.bin", data);
 		auto readData = engine->getFileSystem()->readBytes("temp.bin");
 		assert(readData.size() == data.size());

@@ -2,13 +2,14 @@
 
 using namespace solo;
 
-OpenGLTexture2D::OpenGLTexture2D(Format format, std::vector<char> data, unsigned width, unsigned height, bool generateMipmaps):
+OpenGLTexture2D::OpenGLTexture2D(ColorFormat format, std::vector<byte> data, unsigned width, unsigned height, bool generateMipmaps):
 	handle(0)
 {
 	glGenTextures(1, &handle);
 	glBindTexture(GL_TEXTURE_2D, handle);
-	glTexImage2D(GL_TEXTURE_2D, 0, toGLFormat(format), width, height, 0, toGLFormat(format), GL_UNSIGNED_BYTE, &data[0]);
-	// TODO mipmaps, filtering...
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, toGLColorFormat(format), width, height, 0, toGLColorFormat(format), GL_UNSIGNED_BYTE, data.data());
+	// TODO mipmaps...
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -19,13 +20,13 @@ OpenGLTexture2D::~OpenGLTexture2D()
 }
 
 
-GLint OpenGLTexture2D::toGLFormat(Format format)
+GLenum OpenGLTexture2D::toGLColorFormat(ColorFormat format)
 {
 	switch (format)
 	{
-		case Format::RGB:
+		case ColorFormat::RGB:
 			return GL_RGB;
-		case Format::RGBA:
+		case ColorFormat::RGBA:
 			return GL_RGBA;
 		default:
 			THROW(EngineException, "Unexpected texture format ", static_cast<int>(format));
@@ -33,11 +34,47 @@ GLint OpenGLTexture2D::toGLFormat(Format format)
 }
 
 
+GLenum OpenGLTexture2D::toGLWrapMode(WrapMode mode)
+{
+	switch (mode)
+	{
+	case WrapMode::Clamp:
+		return GL_CLAMP_TO_EDGE;
+	case WrapMode::Repeat:
+		return GL_REPEAT;
+	default:
+		THROW(EngineException, "Unexpected wrap mode ", static_cast<int>(mode));
+	}
+}
+
+
+GLenum OpenGLTexture2D::toGLFilter(Filter filter)
+{
+	switch (filter)
+	{
+		case Filter::Linear:
+			return GL_LINEAR;
+		case Filter::Nearest:
+			return GL_NEAREST;
+		case Filter::LinearMipmapNearest:
+			return GL_LINEAR_MIPMAP_NEAREST;
+		case Filter::LinearMipmapLinear:
+			return GL_LINEAR_MIPMAP_LINEAR;
+		case Filter::NearestMipmapLinear:
+			return GL_NEAREST_MIPMAP_LINEAR;
+		case Filter::NearestMipmapNearest:
+			return GL_NEAREST_MIPMAP_NEAREST;
+		default:
+			THROW(EngineException, "Unexpected texture filter ", static_cast<int>(filter));
+	}
+}
+
+
 void OpenGLTexture2D::apply()
 {
 	glBindTexture(GL_TEXTURE_2D, handle);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, static_cast<GLenum>(minFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, static_cast<GLenum>(magFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, static_cast<GLenum>(horizontalWrap));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, static_cast<GLenum>(verticalWrap));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, toGLFilter(minFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, toGLFilter(magFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, toGLWrapMode(horizontalWrap));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, toGLWrapMode(verticalWrap));
 }

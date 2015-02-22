@@ -15,26 +15,26 @@ FileSystem::FileSystem()
 }
 
 
-std::vector<char> FileSystem::readBytes(const std::string& path)
+std::vector<byte> FileSystem::readBytes(const std::string& path)
 {
 	std::ifstream file(path, std::ios::binary | std::ios::ate);
 	if (!file.is_open())
 		THROW(EngineException, "Failed to open file '", path, "'");
 	auto size = file.tellg();
 	file.seekg(0, std::ios::beg);
-	auto result = std::vector<char>(size);
-	file.read(&result[0], size);
+	auto result = std::vector<byte>(size);
+	file.read(reinterpret_cast<char*>(&result[0]), size);
 	file.close();
 	return result;
 }
 
 
-void FileSystem::writeBytes(const std::string& path, const std::vector<char>& data)
+void FileSystem::writeBytes(const std::string& path, const std::vector<byte>& data)
 {
 	std::ofstream file(path, std::ios::binary | std::ios::trunc);
 	if (!file.is_open())
 		THROW(EngineException, "Failed to open file '", path, "'");
-	file.write(&data[0], data.size());
+	file.write(reinterpret_cast<const char*>(&data[0]), data.size());
 	file.close();
 }
 

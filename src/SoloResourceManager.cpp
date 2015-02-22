@@ -3,6 +3,8 @@
 #include "SoloMaterial.h"
 #include "SoloMesh.h"
 #include "SoloModel.h"
+#include "SoloPNGTextureLoader.h"
+#include "SoloTexture2D.h"
 
 using namespace solo;
 
@@ -16,6 +18,7 @@ shared<ResourceManager> ResourceManagerFactory::create()
 ResourceManager::ResourceManager():
 	resourceCounter(0)
 {
+	textureLoaders.push_back(NEW2(PNGTextureLoader));
 }
 
 
@@ -61,6 +64,24 @@ shared<Material> ResourceManager::getMaterial(shared<Effect> effect)
 	auto material = MaterialFactory::create(effect);
 	materials[url] = material;
 	return material;
+}
+
+
+shared<Texture> ResourceManager::getTexture(const std::string& url)
+{
+	auto existing = textures.find(url);
+	if (existing != textures.end())
+		return existing->second;
+	for (auto loader : textureLoaders)
+	{
+		if (loader->isLoadable(url))
+		{
+			auto texture = loader->load2D(url);
+			textures[url] = texture;
+			return texture;
+		}
+	}
+	THROW(EngineException, "No suitable loader found for texture ", url);
 }
 
 

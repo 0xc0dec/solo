@@ -1,5 +1,5 @@
-* Refactor RenderState::bind() mess in descendant classes; applyFaceCull() for material pass. Maybe remove material passes completely, because there's no need for them so far.
-* Texture loading. Made basic sampler binding functionality through the material paramter; need to fill in the actual GL code.
+* Texture loading. Made basic sampler binding functionality through the material paramter; need to fill in the actual GL code
+* Remove factories when not needed (for example, for internal classes)
 * Models loading
 * Use position, rotation and scale to calculate the corresponding getter method results (instead of the matrix)
 * Remove methods like multiply() from math classes

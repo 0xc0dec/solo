@@ -4,9 +4,18 @@
 using namespace solo;
 
 
-shared<Texture2D> TextureFactory::create2D(Texture::Format format, std::vector<char> data, unsigned width, unsigned height, bool generateMipmaps)
+shared<Texture2D> TextureFactory::create2D(Texture::ColorFormat format, std::vector<byte> data, unsigned width, unsigned height, bool generateMipmaps)
 {
 	return NEW2(OpenGLTexture2D, format, data, width, height, generateMipmaps);
+}
+
+
+Texture::Texture():
+	verticalWrap(WrapMode::Repeat),
+	horizontalWrap(WrapMode::Repeat),
+	minFilter(Filter::Linear),
+	magFilter(Filter::Linear)
+{
 }
 
 

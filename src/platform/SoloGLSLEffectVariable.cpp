@@ -99,8 +99,8 @@ void GLSLEffectVariable::setValue(const Vector4* values, unsigned count)
 void GLSLEffectVariable::setValue(const shared<Texture> texture)
 {
 	glActiveTexture(GL_TEXTURE0 + index);
-	texture->apply();
 	glUniform1i(location, index);
+	texture->apply();
 }
 
 

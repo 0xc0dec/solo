@@ -149,6 +149,13 @@ public:
 		matRare->getParameter("canvasHeight")->setValue(canvasSize.y);
 		matRare->getParameter("time")->bindValue<float>([this](const RenderContext& context) -> float { return this->device->getLifetime(); });
 
+		auto effTexture = resManager->getEffect(vsBasic, fsTexture);
+		auto texture = resManager->getTexture("data/Troll.png");
+		matTexture = resManager->getMaterial(effTexture);
+		matTexture->setPolygonFace(RenderState::PolygonFace::All);
+		matTexture->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
+		matTexture->getParameter("mainTex")->setValue(texture);
+
 		auto effChecker = resManager->getEffect(vsBasic, fsChecker);
 		matChecker = resManager->getMaterial(effChecker);
 		matChecker->setPolygonFace(RenderState::PolygonFace::All);
@@ -186,7 +193,7 @@ public:
 		quad->addComponent<RotatorAroundLocalXAxis>();
 		quad->getComponent<Transform>()->setParent(emptyTransform);
 		quad->getComponent<Transform>()->setLocalPosition(1, 0, 0);
-		quad->getComponent<ModelRenderer>()->setMaterial(0, matChecker);
+		quad->getComponent<ModelRenderer>()->setMaterial(0, matTexture);// matChecker);
 	}
 
 	void createCamera()
@@ -277,5 +284,6 @@ public:
 private:
 	shared<Material> matChecker;
 	shared<Material> matRare;
+	shared<Material> matTexture;
 	ResourceManager* resManager;
 };

@@ -22,6 +22,8 @@ namespace solo
 #	define NEW				std::make_shared
 #	define NEW2(type, ...)	std::shared_ptr<type>(new type(__VA_ARGS__))
 
+	typedef unsigned char byte;
+
 	// Usage of this pointer should indicate that that place owns an object this pointer points to.
 	// Code that operates on raw pointers doesn't claim to own the pointed object.
 	template <typename T> using shared = std::shared_ptr<T>;

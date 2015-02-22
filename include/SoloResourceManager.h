@@ -8,6 +8,8 @@ namespace solo
 	class Material;
 	class Mesh;
 	class Model;
+	class Texture;
+	class TextureLoader;
 
 	class ResourceManager
 	{
@@ -16,6 +18,7 @@ namespace solo
 
 		shared<Effect> getEffect(const std::string &vsSrc, const std::string &fsSrc);
 		shared<Material> getMaterial(shared<Effect> effect);
+		shared<Texture> getTexture(const std::string& url);
 		shared<Mesh> getMesh(const std::string& url);
 		shared<Mesh> getMesh();
 		shared<Model> getModel(const std::string& url);
@@ -37,6 +40,9 @@ namespace solo
 		std::map<std::string, shared<Material>> materials;
 		std::map<std::string, shared<Mesh>> meshes;
 		std::map<std::string, shared<Model>> models;
+		std::map<std::string, shared<Texture>> textures;
+
+		std::vector<shared<TextureLoader>> textureLoaders;
 
 		size_t resourceCounter;
 	};
