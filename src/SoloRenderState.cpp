@@ -5,7 +5,7 @@ using namespace solo;
 
 
 RenderState::RenderState():
-	polygonFace(PolygonFace::CW)
+	polygonFace{PolygonFace::CW}
 {
 }
 

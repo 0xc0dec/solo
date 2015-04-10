@@ -4,14 +4,8 @@
 using namespace solo;
 
 
-Vector3::Vector3():
-	x(0.0f), y(0.0f), z(0.0f)
-{
-}
-
-
 Vector3::Vector3(float x, float y, float z):
-	x(x), y(y), z(z)
+	x{x}, y{y}, z{z}
 {
 }
 
@@ -35,7 +29,6 @@ Vector3 Vector3::fromColor(unsigned int color)
 	for (int i = 2; i >= 0; --i)
 	{
 		int component = (color >> i * 8) & 0x0000ff;
-
 		components[componentIndex++] = static_cast<float>(component) / 255.0f;
 	}
 

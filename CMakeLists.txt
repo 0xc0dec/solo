@@ -10,13 +10,19 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 include_directories(
     ${PROJECT_SOURCE_DIR}/include
     ${PROJECT_SOURCE_DIR}/external/glew/include
-    ${PROJECT_SOURCE_DIR}/external/SDL/2.0.3/include)
+    ${PROJECT_SOURCE_DIR}/external/SDL/2.0.3/include
+    ${PROJECT_SOURCE_DIR}/external/png/include
+    ${PROJECT_SOURCE_DIR}/external/zlib/include)
 
 link_directories(${PROJECT_SOURCE_DIR}/external/SDL/2.0.3)
 
 # Engine
 
-file(GLOB_RECURSE sources "src/*.cpp" "external/glew/src/*.c")
+file(GLOB_RECURSE sources
+    "src/*.cpp"
+    "external/glew/src/*.c"
+    "external/png/src/*.c"
+    "external/zlib/src/*.c")
 
 find_library(carbon_lib Carbon)
 find_library(iokit_lib IOKit)

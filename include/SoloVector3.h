@@ -8,11 +8,11 @@ namespace solo
 	class Vector3
 	{
 	public:
-		float x;
-		float y;
-		float z;
+		float x = 0;
+		float y = 0;
+		float z = 0;
 
-		Vector3();
+		Vector3() {}
 		Vector3(float x, float y, float z);
 		Vector3(const float* array);
 		Vector3(const Vector3& p1, const Vector3& p2);
@@ -160,7 +160,7 @@ namespace solo
 
 	inline Vector3 operator*(float x, const Vector3& v)
 	{
-		auto result(v);
+		auto result(const_cast<Vector3&>(v));
 		result.scale(x);
 		return result;
 	}

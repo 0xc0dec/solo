@@ -5,12 +5,12 @@ namespace solo
 	class Vector4
 	{
 	public:
-		float x;
-		float y;
-		float z;
-		float w;
+		float x = 0;
+		float y = 0;
+		float z = 0;
+		float w = 0;
 
-		Vector4();
+		Vector4() {}
 		Vector4(float x, float y, float z, float w);
 		Vector4(const float* array);
 		Vector4(const Vector4& p1, const Vector4& p2);
@@ -159,7 +159,7 @@ namespace solo
 
 	inline Vector4 operator*(float x, const Vector4& v)
 	{
-		auto result(v);
+		auto result(const_cast<Vector4&>(v));
 		result.scale(x);
 		return result;
 	}

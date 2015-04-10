@@ -9,7 +9,7 @@ using namespace solo;
 
 
 Scene::Scene():
-	nodeCounter(0)
+	nodeCounter{0}
 {
 }
 

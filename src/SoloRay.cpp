@@ -9,7 +9,8 @@
 using namespace solo;
 
 
-Ray::Ray(): direction(0, 0, 1)
+Ray::Ray():
+	direction{0, 0, 1}
 {
 }
 

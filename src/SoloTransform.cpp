@@ -17,8 +17,8 @@ shared<Transform> TransformFactory::create(Node* node)
 
 
 Transform::Transform(Node* node):
-	ComponentBase(node),
-	parent(nullptr)
+	ComponentBase{node},
+	parent{nullptr}
 {
 	localScale.set(Vector3::one());
 	setDirty<DIRTY_BIT_ALL>();

@@ -7,10 +7,10 @@ namespace solo
 	class Vector2
 	{
 	public:
-		float x;
-		float y;
+		float x = 0;
+		float y = 0;
 
-		Vector2();
+		Vector2() {}
 		Vector2(float x, float y);
 		Vector2(const float* array);
 		Vector2(const Vector2& p1, const Vector2& p2);
@@ -82,7 +82,7 @@ namespace solo
 
 	inline Vector2 operator*(float x, const Vector2& v)
 	{
-		auto result(v);
+		auto result(const_cast<Vector2&>(v));
 		result.scale(x);
 		return result;
 	}

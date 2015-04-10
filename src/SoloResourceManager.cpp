@@ -16,7 +16,7 @@ shared<ResourceManager> ResourceManagerFactory::create()
 
 
 ResourceManager::ResourceManager():
-	resourceCounter(0)
+	resourceCounter{0}
 {
 	textureLoaders.push_back(NEW2(PNGTextureLoader));
 }
