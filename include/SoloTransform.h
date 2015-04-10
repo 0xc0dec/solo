@@ -96,7 +96,7 @@ namespace solo
 
 		void notifyChanged() const;
 
-		Transform* parent;
+		Transform* parent = nullptr;
 		std::vector<Transform*> children;
 		std::vector<TransformCallback*> callbacks;
 

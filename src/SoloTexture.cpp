@@ -10,15 +10,6 @@ shared<Texture2D> TextureFactory::create2D(Texture::ColorFormat format, std::vec
 }
 
 
-Texture::Texture():
-	verticalWrap(WrapMode::Repeat),
-	horizontalWrap(WrapMode::Repeat),
-	minFilter(Filter::Linear),
-	magFilter(Filter::Linear)
-{
-}
-
-
 void Texture::setWrapMode(WrapMode verticalWrap, WrapMode horizontalWrap)
 {
 	this->verticalWrap = verticalWrap;

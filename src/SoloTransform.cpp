@@ -17,8 +17,7 @@ shared<Transform> TransformFactory::create(Node* node)
 
 
 Transform::Transform(Node* node):
-	ComponentBase{node},
-	parent{nullptr}
+	ComponentBase{node}
 {
 	localScale.set(Vector3::one());
 	setDirty<DIRTY_BIT_ALL>();
@@ -211,7 +210,7 @@ void Transform::translateLocal(float x, float y, float z)
 
 void Transform::rotate(const Quaternion& rotation, TransformSpace space)
 {
-	auto normalizedRotation = rotation;
+	auto normalizedRotation(const_cast<Quaternion&>(rotation));
 	normalizedRotation.normalize();
 
 	switch (space)

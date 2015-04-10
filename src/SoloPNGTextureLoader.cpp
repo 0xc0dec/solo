@@ -46,14 +46,15 @@ shared<Texture2D> PNGTextureLoader::load2D(const std::string& url)
 		THROW(EngineException, "Failed to read PNG file ", url);
 	}
 
-	auto context = new PNGReadContext { &bytes, 8 };
-	png_set_read_fn(png, reinterpret_cast<png_voidp>(context), readCallback);
+	std::unique_ptr<PNGReadContext> context(new PNGReadContext{ &bytes, 8 });
+	png_set_read_fn(png, reinterpret_cast<png_voidp>(context.get()), readCallback);
 	png_set_sig_bytes(png, 8);
 	png_read_png(png, info, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND, nullptr);
 
 	auto width = png_get_image_width(png, info);
 	auto height = png_get_image_height(png, info);
 	auto colorType = png_get_color_type(png, info);
+
 	Texture::ColorFormat colorFormat;
 	switch (colorType)
 	{
@@ -64,16 +65,17 @@ shared<Texture2D> PNGTextureLoader::load2D(const std::string& url)
 		colorFormat = Texture::ColorFormat::RGBA;
 		break;
 	default:
+		png_destroy_read_struct(&png, &info, nullptr);
 		THROW(EngineException, "Unsupported PNG color type ", colorType);
 	}
 
 	auto stride = png_get_rowbytes(png, info);
-	auto textureData = std::vector<byte>(stride * height);
+	auto data = std::vector<byte>(stride * height);
 	auto rows = png_get_rows(png, info);
 	for (unsigned int i = 0; i < height; ++i)
-		memcpy(textureData.data() + stride * (height - 1 - i), rows[i], stride);
+		memcpy(data.data() + stride * (height - 1 - i), rows[i], stride);
 
 	png_destroy_read_struct(&png, &info, nullptr);
 
-	return TextureFactory::create2D(colorFormat, textureData, width, height, false);
+	return TextureFactory::create2D(colorFormat, data, width, height, false);
 }

@@ -4,12 +4,6 @@
 using namespace solo;
 
 
-Quaternion::Quaternion():
-	x{0.0f}, y{0.0f}, z{0.0f}, w{1.0f}
-{
-}
-
-
 Quaternion::Quaternion(float x, float y, float z, float w): x(x), y(y), z(z), w(w)
 {
 }

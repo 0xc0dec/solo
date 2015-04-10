@@ -16,7 +16,7 @@ namespace solo
 		static const int INTERSECTS_FRONT = 1;
 		static const int INTERSECTS_BACK = -1;
 
-		Plane();
+		Plane() {}
 		Plane(const Vector3& normal, float distance);
 		Plane(float normalX, float normalY, float normalZ, float distance);
 		
@@ -49,8 +49,8 @@ namespace solo
 	private:
 		void normalize();
 
-		Vector3 normal;
-		float distance;
+		Vector3 normal { 0, 1, 0 };
+		float distance = 0;
 	};
 
 	inline Plane& Plane::operator*=(const Matrix& matrix)
@@ -61,7 +61,7 @@ namespace solo
 
 	inline Plane operator*(const Matrix& matrix, const Plane& plane)
 	{
-		auto p(plane);
+		auto p(const_cast<Plane&>(plane));
 		p.transform(matrix);
 		return p;
 	}

@@ -39,12 +39,12 @@ namespace solo
 		virtual void apply() = 0;
 
 	protected:
-		Texture();
+		Texture() {}
 
-		WrapMode verticalWrap;
-		WrapMode horizontalWrap;
-		Filter minFilter;
-		Filter magFilter;
+		WrapMode verticalWrap = WrapMode::Repeat;
+		WrapMode horizontalWrap = WrapMode::Repeat;
+		Filter minFilter = Filter::Linear;
+		Filter magFilter = Filter::Linear;
 
 	private:
 		Texture(const Texture& other) = delete;
