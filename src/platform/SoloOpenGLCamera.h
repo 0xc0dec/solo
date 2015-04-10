@@ -14,7 +14,7 @@ namespace solo
 	private:
 		friend class CameraFactory;
 
-		Device* device;
+		Device* device = nullptr;
 
 		void applyViewportChange() override;
 		void applyClearColor() override;

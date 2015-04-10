@@ -25,6 +25,6 @@ namespace solo
 		GLenum toGLWrapMode(WrapMode mode);
 		GLenum toGLFilter(Filter filter);
 
-		GLuint handle;
+		GLuint handle = 0;
 	};
 }

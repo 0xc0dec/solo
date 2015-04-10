@@ -10,12 +10,6 @@ shared<Effect> EffectFactory::create(const std::string& vsSrc, const std::string
 }
 
 
-Effect::Effect():
-	valid(false)
-{
-}
-
-
 void Effect::appendToLog(const std::string &newLog)
 {
 	log.append(newLog).append("\n");

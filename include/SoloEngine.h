@@ -43,14 +43,14 @@ namespace solo
 		Engine();
 		~Engine();
 
-		EngineCallback *callback;
+		EngineCallback *callback = nullptr;
 		shared<Scene> scene;
 		shared<Device> device;
 		shared<FileSystem> fs;
 		shared<ResourceManager> resourceManager;
 
-		float lastUpdateTime;
-		float timeDelta;
+		float lastUpdateTime = 0;
+		float timeDelta = 0;
 
 		inline void updateTime();
 	};

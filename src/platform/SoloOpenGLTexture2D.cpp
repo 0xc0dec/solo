@@ -2,8 +2,7 @@
 
 using namespace solo;
 
-OpenGLTexture2D::OpenGLTexture2D(ColorFormat format, std::vector<byte> data, unsigned width, unsigned height, bool generateMipmaps):
-	handle(0)
+OpenGLTexture2D::OpenGLTexture2D(ColorFormat format, std::vector<byte> data, unsigned width, unsigned height, bool generateMipmaps)
 {
 	glGenTextures(1, &handle);
 	glBindTexture(GL_TEXTURE_2D, handle);

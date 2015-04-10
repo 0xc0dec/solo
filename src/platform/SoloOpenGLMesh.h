@@ -10,7 +10,7 @@ namespace solo
 	class OpenGLMesh : public Mesh
 	{
 	public:
-		virtual ~OpenGLMesh() override;
+		virtual ~OpenGLMesh();
 
 		virtual void draw() override;
 
@@ -32,15 +32,15 @@ namespace solo
 		GLuint buildArrayBuffer(GLuint existingHandle, const std::vector<TElement>& elements, GLuint elementSize, GLuint index, GLenum elementType);
 		GLuint buildElementArrayBuffer(GLuint existingHandle, const std::vector<unsigned short>& elements);
 
-		GLuint vertexArrayHandle;
-		GLuint vertexBufferHandle;
-		GLuint normalBufferHandle;
-		GLuint uvBufferHandle;
-		GLuint indicesBufferHandle;
+		GLuint vertexArrayHandle = 0;
+		GLuint vertexBufferHandle = 0;
+		GLuint normalBufferHandle = 0;
+		GLuint uvBufferHandle = 0;
+		GLuint indicesBufferHandle = 0;
 
-		size_t verticesCount;
-		size_t normalsCount;
-		size_t uvsCount;
-		size_t indicesCount;
+		size_t verticesCount = 0;
+		size_t normalsCount = 0;
+		size_t uvsCount = 0;
+		size_t indicesCount = 0;
 	};
 }

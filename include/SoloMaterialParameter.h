@@ -129,14 +129,14 @@ namespace solo
 		MaterialParameter& operator=(const MaterialParameter& other) = delete;
 		MaterialParameter& operator=(MaterialParameter&& other) = delete;
 
-		Scene* scene;
+		Scene* scene = nullptr;
 		std::string name;
-		ValueType type;
+		ValueType type = ValueType::None;
 		MaterialParameterValue value;
 		shared<Texture> textureValue;
 		std::vector<shared<Texture>> textureArrayValue;
-		unsigned valueCount;
-		bool freeableValue;
+		unsigned valueCount = 0;
+		bool freeableValue = false;
 
 		void apply(RenderContext& context);
 

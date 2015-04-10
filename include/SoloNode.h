@@ -53,7 +53,7 @@ namespace solo
 		Node& operator=(const Node& other) = delete;
 		Node& operator=(Node&& other) = delete;
 
-		Scene* scene;
+		Scene* scene = nullptr;
 	};
 
 	class NodeFactory

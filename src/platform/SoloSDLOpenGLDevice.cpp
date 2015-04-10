@@ -64,11 +64,7 @@ std::unordered_map<Uint8, MouseButton> mouseButtonsMap =
 
 
 SDLOpenGLDevice::SDLOpenGLDevice(EngineCreationArgs const& args):
-	Device(args),
-	hasKeyboardFocus(false),
-	hasMouseFocus(false),
-	window(nullptr),
-	context(nullptr)
+	Device(args)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
 		THROW(EngineException, "Failed to initialize system");

@@ -4,9 +4,7 @@ using namespace solo;
 
 
 OpenGLMesh::OpenGLMesh():
-	Mesh(),
-	vertexArrayHandle(0), vertexBufferHandle(0), normalBufferHandle(0), uvBufferHandle(0), indicesBufferHandle(0),
-	verticesCount(0), normalsCount(0), uvsCount(0), indicesCount(0)
+	Mesh()
 {
 	glGenVertexArrays(1, &vertexArrayHandle);
 }

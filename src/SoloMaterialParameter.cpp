@@ -14,10 +14,7 @@ using namespace solo;
 
 
 MaterialParameter::MaterialParameter(const std::string& name):
-	name(name),
-	type(ValueType::None),
-	valueCount(0),
-	freeableValue(false)
+	name(name)
 {
 	scene = Engine::get()->getScene();
 }

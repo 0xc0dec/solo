@@ -17,10 +17,7 @@ public:
 } emptyCallback;
 
 
-Engine::Engine():
-	callback(nullptr),
-	lastUpdateTime(0),
-	timeDelta(0)
+Engine::Engine()
 {
 	callback = &emptyCallback;
 }

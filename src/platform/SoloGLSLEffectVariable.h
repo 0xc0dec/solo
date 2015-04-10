@@ -33,9 +33,9 @@ namespace solo
 		GLSLEffectVariable& operator=(const GLSLEffectVariable& other) = delete;
 		GLSLEffectVariable& operator=(GLSLEffectVariable&& other) = delete;
 
-		GLint location;
-		GLenum type;
-		unsigned index;
+		GLint location = 0;
+		GLenum type = 0;
+		unsigned index = 0;
 	};
 
 	class GLSLEffectVariableFactory

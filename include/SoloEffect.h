@@ -18,11 +18,11 @@ namespace solo
 		bool isValid() const;
 
 	protected:
-		Effect();
+		Effect() {}
 
 		void appendToLog(const std::string &newLog);
 
-		bool valid;
+		bool valid = false;
 		std::string log;
 
 	private:

@@ -10,11 +10,6 @@ shared<FileSystem> FileSystemFactory::create()
 }
 
 
-FileSystem::FileSystem()
-{
-}
-
-
 std::vector<byte> FileSystem::readBytes(const std::string& path)
 {
 	std::ifstream file(path, std::ios::binary | std::ios::ate);

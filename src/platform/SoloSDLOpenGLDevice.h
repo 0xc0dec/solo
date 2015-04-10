@@ -40,11 +40,11 @@ namespace solo
 		void processMouseEvent(const SDL_Event& evt);
 		void processWindowEvent(const SDL_Event& evt);
 		
-		bool hasMouseFocus;
-		bool hasKeyboardFocus;
+		bool hasMouseFocus = false;
+		bool hasKeyboardFocus = false;
 
-		SDL_Window *window;
-		SDL_GLContext context;
+		SDL_Window *window = nullptr;
+		SDL_GLContext context = nullptr;
 
 		std::tuple<int, int> selectContextVersion();
 		std::tuple<SDL_Window*, SDL_GLContext> tryCreateWindowWithContext(bool fake, int ctxMajorVersion, int ctxMinorVersion);

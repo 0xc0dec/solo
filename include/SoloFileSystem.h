@@ -18,7 +18,7 @@ namespace solo
 	private:
 		friend class FileSystemFactory;
 
-		FileSystem();
+		FileSystem() {}
 		FileSystem(const FileSystem& other) = delete;
 		FileSystem(FileSystem&& other) = delete;
 		FileSystem& operator=(const FileSystem& other) = delete;
