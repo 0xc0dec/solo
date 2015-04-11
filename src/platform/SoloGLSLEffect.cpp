@@ -39,15 +39,6 @@ void GLSLEffect::bind()
 }
 
 
-EffectVariable* GLSLEffect::findVariable(const std::string& name)
-{
-	auto where = variables.find(name);
-	if (where != variables.end())
-		return where->second.get();
-	return nullptr;
-}
-
-
 bool GLSLEffect::createProgram(GLuint vs, GLuint fs)
 {
 	program = glCreateProgram();

@@ -11,8 +11,9 @@ namespace solo
 	public:
 		virtual ~Effect() {}
 
-		virtual EffectVariable* findVariable(const std::string &name) = 0;
 		virtual void bind() = 0;
+
+		EffectVariable* findVariable(const std::string& name) const;
 
 		std::string getLog() const;
 		bool isValid() const;
@@ -21,6 +22,8 @@ namespace solo
 		Effect() {}
 
 		void appendToLog(const std::string &newLog);
+
+		std::map<std::string, shared<EffectVariable>> variables; // TODO move to the base class (along with some methods)
 
 		bool valid = false;
 		std::string log;

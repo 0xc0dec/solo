@@ -169,13 +169,13 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\external\glew\src\glew.c">
-      <Filter>src\glew</Filter>
+      <Filter>src\external\glew</Filter>
     </ClCompile>
     <ClCompile Include="..\external\glew\src\glewinfo.c">
-      <Filter>src\glew</Filter>
+      <Filter>src\external\glew</Filter>
     </ClCompile>
     <ClCompile Include="..\external\glew\src\visualinfo.c">
-      <Filter>src\glew</Filter>
+      <Filter>src\external\glew</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloVector2.cpp">
       <Filter>src</Filter>
@@ -274,82 +274,82 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\external\zlib\src\adler32.c">
-      <Filter>src\zlib</Filter>
+      <Filter>src\external\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\external\zlib\src\compress.c">
-      <Filter>src\zlib</Filter>
+      <Filter>src\external\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\external\zlib\src\crc32.c">
-      <Filter>src\zlib</Filter>
+      <Filter>src\external\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\external\zlib\src\deflate.c">
-      <Filter>src\zlib</Filter>
+      <Filter>src\external\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\external\zlib\src\infback.c">
-      <Filter>src\zlib</Filter>
+      <Filter>src\external\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\external\zlib\src\inffast.c">
-      <Filter>src\zlib</Filter>
+      <Filter>src\external\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\external\zlib\src\inflate.c">
-      <Filter>src\zlib</Filter>
+      <Filter>src\external\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\external\zlib\src\inftrees.c">
-      <Filter>src\zlib</Filter>
+      <Filter>src\external\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\external\zlib\src\trees.c">
-      <Filter>src\zlib</Filter>
+      <Filter>src\external\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\external\zlib\src\uncompr.c">
-      <Filter>src\zlib</Filter>
+      <Filter>src\external\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\external\zlib\src\zutil.c">
-      <Filter>src\zlib</Filter>
+      <Filter>src\external\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\external\png\src\png.c">
-      <Filter>src\png</Filter>
+      <Filter>src\external\png</Filter>
     </ClCompile>
     <ClCompile Include="..\external\png\src\pngerror.c">
-      <Filter>src\png</Filter>
+      <Filter>src\external\png</Filter>
     </ClCompile>
     <ClCompile Include="..\external\png\src\pngget.c">
-      <Filter>src\png</Filter>
+      <Filter>src\external\png</Filter>
     </ClCompile>
     <ClCompile Include="..\external\png\src\pngmem.c">
-      <Filter>src\png</Filter>
+      <Filter>src\external\png</Filter>
     </ClCompile>
     <ClCompile Include="..\external\png\src\pngpread.c">
-      <Filter>src\png</Filter>
+      <Filter>src\external\png</Filter>
     </ClCompile>
     <ClCompile Include="..\external\png\src\pngread.c">
-      <Filter>src\png</Filter>
+      <Filter>src\external\png</Filter>
     </ClCompile>
     <ClCompile Include="..\external\png\src\pngrio.c">
-      <Filter>src\png</Filter>
+      <Filter>src\external\png</Filter>
     </ClCompile>
     <ClCompile Include="..\external\png\src\pngrtran.c">
-      <Filter>src\png</Filter>
+      <Filter>src\external\png</Filter>
     </ClCompile>
     <ClCompile Include="..\external\png\src\pngrutil.c">
-      <Filter>src\png</Filter>
+      <Filter>src\external\png</Filter>
     </ClCompile>
     <ClCompile Include="..\external\png\src\pngset.c">
-      <Filter>src\png</Filter>
+      <Filter>src\external\png</Filter>
     </ClCompile>
     <ClCompile Include="..\external\png\src\pngtrans.c">
-      <Filter>src\png</Filter>
+      <Filter>src\external\png</Filter>
     </ClCompile>
     <ClCompile Include="..\external\png\src\pngwio.c">
-      <Filter>src\png</Filter>
+      <Filter>src\external\png</Filter>
     </ClCompile>
     <ClCompile Include="..\external\png\src\pngwrite.c">
-      <Filter>src\png</Filter>
+      <Filter>src\external\png</Filter>
     </ClCompile>
     <ClCompile Include="..\external\png\src\pngwtran.c">
-      <Filter>src\png</Filter>
+      <Filter>src\external\png</Filter>
     </ClCompile>
     <ClCompile Include="..\external\png\src\pngwutil.c">
-      <Filter>src\png</Filter>
+      <Filter>src\external\png</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -359,17 +359,20 @@
     <Filter Include="src">
       <UniqueIdentifier>{51a992ed-ff70-41ea-960d-564482663af1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\glew">
-      <UniqueIdentifier>{c71565b1-047c-43cf-ac19-33d2ac0eba05}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\platform">
       <UniqueIdentifier>{19865fe9-5ca9-4b65-8e94-a5c33cfc767f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\zlib">
-      <UniqueIdentifier>{c75d28c3-b7bf-43af-91dd-132d3fea8685}</UniqueIdentifier>
+    <Filter Include="src\external">
+      <UniqueIdentifier>{ac6c24da-1afc-4cc5-85d6-9c987812afe7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\png">
+    <Filter Include="src\external\glew">
+      <UniqueIdentifier>{c71565b1-047c-43cf-ac19-33d2ac0eba05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\external\png">
       <UniqueIdentifier>{308fcd1a-298e-4726-b0ad-977bc1e9763a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\external\zlib">
+      <UniqueIdentifier>{c75d28c3-b7bf-43af-91dd-132d3fea8685}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

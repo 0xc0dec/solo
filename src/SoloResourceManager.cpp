@@ -15,8 +15,7 @@ shared<ResourceManager> ResourceManagerFactory::create()
 }
 
 
-ResourceManager::ResourceManager():
-	resourceCounter{0}
+ResourceManager::ResourceManager()
 {
 	textureLoaders.push_back(NEW2(PNGTextureLoader));
 }
@@ -36,7 +35,7 @@ std::string ResourceManager::findEffectUrl(shared<Effect> effect) const
 		if (pair.second == effect)
 			return pair.first;
 	}
-	return std::string();
+	return {};
 }
 
 

@@ -26,8 +26,8 @@ namespace solo
 
 		static void createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up, Matrix* dst);
 		static void createLookAt(float eyePositionX, float eyePositionY, float eyePositionZ,
-			float targetCenterX, float targetCenterY, float targetCenterZ,
-			float upX, float upY, float upZ, Matrix* dst);
+								float targetCenterX, float targetCenterY, float targetCenterZ,
+								float upX, float upY, float upZ, Matrix* dst);
 
 		static void createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane, Matrix* dst);
 		static void createOrthographic(float width, float height, float zNearPlane, float zFarPlane, Matrix* dst);

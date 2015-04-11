@@ -44,7 +44,7 @@ namespace solo
 
 		std::vector<shared<TextureLoader>> textureLoaders;
 
-		size_t resourceCounter;
+		size_t resourceCounter { 0 };
 	};
 
 	class ResourceManagerFactory
