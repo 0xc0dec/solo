@@ -9,12 +9,6 @@
 using namespace solo;
 
 
-shared<GLSLEffectVariable> GLSLEffectVariableFactory::create(const std::string& name, GLint location, GLenum type, unsigned index)
-{
-	return NEW2(GLSLEffectVariable, name, location, type, index);
-}
-
-
 GLSLEffectVariable::GLSLEffectVariable(const std::string& name, GLint location, GLenum type, unsigned index):
 	EffectVariable(name),
 	location(location),

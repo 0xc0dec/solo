@@ -8,12 +8,10 @@ namespace solo
 
 	class OpenGLCamera: public Camera
 	{
-	protected:
+	public:
 		OpenGLCamera(Node* node);
 
 	private:
-		friend class CameraFactory;
-
 		Device* device = nullptr;
 
 		void applyViewportChange() override;

@@ -8,6 +8,7 @@ namespace solo
 	class SDLOpenGLDevice : public Device
 	{
 	public:
+		SDLOpenGLDevice(const EngineCreationArgs &args);
 		virtual ~SDLOpenGLDevice();
 
 		virtual void setWindowTitle(const char *title) override;
@@ -23,9 +24,6 @@ namespace solo
 		virtual void endUpdate() override;
 
 	private:
-		friend class DeviceFactory;
-
-		SDLOpenGLDevice(const EngineCreationArgs &args);
 		SDLOpenGLDevice(const SDLOpenGLDevice& other) = delete;
 		SDLOpenGLDevice(SDLOpenGLDevice&& other) = delete;
 		SDLOpenGLDevice& operator=(const SDLOpenGLDevice& other) = delete;

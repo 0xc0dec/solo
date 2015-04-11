@@ -17,7 +17,7 @@ GLSLEffect::GLSLEffect(const std::string &vsSrc, const std::string &fsSrc)
 	if (!createProgram(vs, fs))
 		return;
 
-	valid = true;
+	valid = true; // TODO remove
 
 	deleteShader(vs);
 	deleteShader(fs);
@@ -145,7 +145,7 @@ void GLSLEffect::discoverVariables()
 		}
 		// TODO other types of samplers
 
-		auto variable = GLSLEffectVariableFactory::create(name, location, type, index);
+		auto variable = NEW2(GLSLEffectVariable, name, location, type, index);
 		variables[name] = variable;
 	}
 }

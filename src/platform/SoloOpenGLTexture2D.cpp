@@ -5,6 +5,9 @@ using namespace solo;
 OpenGLTexture2D::OpenGLTexture2D(ColorFormat format, std::vector<byte> data, unsigned width, unsigned height, bool generateMipmaps)
 {
 	glGenTextures(1, &handle);
+	if (!handle)
+		THROW(EngineException, "Failed to obtain texture handle");
+
 	glBindTexture(GL_TEXTURE_2D, handle);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glTexImage2D(GL_TEXTURE_2D, 0, toGLColorFormat(format), width, height, 0, toGLColorFormat(format), GL_UNSIGNED_BYTE, data.data());

@@ -10,6 +10,7 @@ namespace solo
 	class OpenGLMesh : public Mesh
 	{
 	public:
+		OpenGLMesh();
 		virtual ~OpenGLMesh();
 
 		virtual void draw() override;
@@ -20,9 +21,6 @@ namespace solo
 		virtual void setIndices(const std::vector<unsigned short>& indices) override;
 
 	private:
-		friend class MeshFactory;
-
-		OpenGLMesh();
 		OpenGLMesh(const OpenGLMesh& other) = delete;
 		OpenGLMesh(OpenGLMesh&& other) = delete;
 		OpenGLMesh& operator=(const OpenGLMesh& other) = delete;
