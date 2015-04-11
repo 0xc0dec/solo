@@ -4,7 +4,6 @@
 
 namespace solo
 {
-	class MaterialParameter;
 	class RenderContext;
 
 	class RenderState
@@ -22,8 +21,6 @@ namespace solo
 		virtual void bind(RenderContext& context) = 0;
 		virtual void unbind(RenderContext& context) = 0;
 
-		MaterialParameter* getParameter(const std::string &name);
-
 		void setPolygonFace(PolygonFace face);
 		PolygonFace getPolygonFace() const;
 
@@ -33,7 +30,6 @@ namespace solo
 		virtual void applyFaceCull() = 0;
 
 		PolygonFace polygonFace = PolygonFace::CW;
-		std::map<std::string, shared<MaterialParameter>> parameters;
 
 	private:
 		RenderState(const RenderState& other) = delete;

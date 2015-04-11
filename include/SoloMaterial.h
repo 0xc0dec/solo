@@ -6,12 +6,15 @@
 namespace solo
 {
 	class Effect;
+	class MaterialParameter;
 
 	class Material: public RenderState
 	{
 	public:
 		virtual void bind(RenderContext& context) override;
 		virtual void unbind(RenderContext& context) override;
+
+		MaterialParameter* getParameter(const std::string &name);
 
 		Effect* getEffect() const;
 
@@ -23,6 +26,8 @@ namespace solo
 		Material(Material&& other) = delete;
 		Material& operator=(const Material& other) = delete;
 		Material& operator=(Material&& other) = delete;
+
+		std::map<std::string, shared<MaterialParameter>> parameters;
 
 		shared<Effect> effect;
 	};

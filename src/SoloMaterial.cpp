@@ -38,6 +38,17 @@ void Material::unbind(RenderContext& context)
 }
 
 
+MaterialParameter* Material::getParameter(const std::string& name)
+{
+	auto where = parameters.find(name);
+	if (where != parameters.end())
+		return where->second.get();
+	auto parameter = NEW2(MaterialParameter, name);
+	parameters[name] = parameter;
+	return parameter.get();
+}
+
+
 Effect* Material::getEffect() const
 {
 	return effect.get();
