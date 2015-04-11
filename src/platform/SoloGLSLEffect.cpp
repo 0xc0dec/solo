@@ -120,15 +120,15 @@ void GLSLEffect::discoverVariables()
 	if (nameMaxLength <= 0)
 		return;
 
-	auto rawName = new GLchar[nameMaxLength + 1];
+	std::vector<GLchar> rawName(nameMaxLength + 1);
 	GLint size;
 	GLenum type;
 	unsigned samplerIndex = 0;
 	for (int i = 0; i < activeUniforms; ++i)
 	{
-		glGetActiveUniform(program, i, nameMaxLength, nullptr, &size, &type, rawName);
+		glGetActiveUniform(program, i, nameMaxLength, nullptr, &size, &type, rawName.data());
 		rawName[nameMaxLength] = '\0';
-		std::string name = rawName;
+		std::string name = rawName.data();
 
 		// Strip away possible square brackets for array uniforms since the brackets'
 		// presence is not consistent across platforms.
@@ -136,7 +136,7 @@ void GLSLEffect::discoverVariables()
 		if (bracketIndex != std::string::npos)
 			name.erase(bracketIndex);
 
-		auto location = glGetUniformLocation(program, rawName);
+		auto location = glGetUniformLocation(program, rawName.data());
 		unsigned index = 0;
 		if (type == GL_SAMPLER_2D)
 		{
@@ -148,6 +148,4 @@ void GLSLEffect::discoverVariables()
 		auto variable = GLSLEffectVariableFactory::create(name, location, type, index);
 		variables[name] = variable;
 	}
-
-	delete[] rawName;
 }
