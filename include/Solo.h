@@ -11,6 +11,7 @@
 #include "SoloEffectVariable.h"
 #include "SoloEngine.h"
 #include "SoloEngineCallback.h"
+#include "SoloEngineCreationArgs.h"
 #include "SoloException.h"
 #include "SoloFileSystem.h"
 #include "SoloFormatter.h"

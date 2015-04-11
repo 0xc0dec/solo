@@ -17,6 +17,13 @@ public:
 } emptyCallback;
 
 
+Engine *Engine::get()
+{
+	static Engine instance;
+	return &instance;
+}
+
+
 Engine::Engine()
 {
 	callback = &emptyCallback;
@@ -36,7 +43,7 @@ void Engine::updateTime()
 }
 
 
-void Engine::run(const EngineCreationArgs & args)
+void Engine::run(const EngineCreationArgs &args)
 {
 	device = DeviceFactory::create(args);
 	fs = FileSystemFactory::create();

@@ -43,7 +43,7 @@ set(frameworks
     ${opengl_lib}
     ${corefoundation_lib})
 
-add_library(solo STATIC ${sources})
+add_library(solo STATIC ${sources} src/SoloEngineCreationArgs.h)
 target_link_libraries(solo SDL2 ${frameworks})
 
 # Tests

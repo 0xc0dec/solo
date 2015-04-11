@@ -65,7 +65,7 @@ namespace solo
 		std::map<MouseButton, bool> pressedMouseButtons;
 		std::set<MouseButton> releasedMouseButtons;
 
-		bool close;
+		bool close = false;
 		EngineCreationArgs creationArgs;
 
 	private:

@@ -8,7 +8,7 @@ namespace solo
 	class SDLOpenGLDevice : public Device
 	{
 	public:
-		virtual ~SDLOpenGLDevice() override;
+		virtual ~SDLOpenGLDevice();
 
 		virtual void setWindowTitle(const char *title) override;
 		virtual std::string getWindowTitle() const override;

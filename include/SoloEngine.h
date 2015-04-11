@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SoloBase.h"
+#include "SoloEngineCreationArgs.h"
 
 namespace solo
 {
@@ -10,26 +11,12 @@ namespace solo
 	class FileSystem;
 	class ResourceManager;
 
-	struct EngineCreationArgs
-	{
-		int canvasWidth;
-		int canvasHeight;
-		int bits;
-		int depth;
-		bool fullScreen;
-		const char *windowTitle;
-	};
-
 	class Engine
 	{
 	public:
-		static Engine *get()
-		{
-			static Engine instance;
-			return &instance;
-		}
+		static Engine *get();
 
-		void run(const EngineCreationArgs &launchArgs);
+		void run(const EngineCreationArgs &creationArgs);
 		void setCallback(EngineCallback* callback);
 
 		Scene* getScene() const;
