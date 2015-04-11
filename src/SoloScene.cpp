@@ -36,7 +36,7 @@ void Scene::addComponent(Node* node, shared<Component> cmp)
 	auto nodeId = node->getId();
 	ensureNodeExists(nodeId);
 	if (findComponent(node, cmp->getTypeId()))
-		THROW(EngineException, "Component ", cmp->getTypeId(), " already exists");
+		THROW_FMT(EngineException, "Component ", cmp->getTypeId(), " already exists");
 	components[nodeId][cmp->getTypeId()] = cmp;
 }
 
@@ -55,7 +55,7 @@ Component* Scene::getComponent(Node* node, size_t typeId)
 {
 	auto cmp = findComponent(node, typeId);
 	if (!cmp)
-		THROW(EngineException, "Component ", typeId, " not found");
+		THROW_FMT(EngineException, "Component ", typeId, " not found");
 	return cmp;
 }
 
@@ -123,7 +123,7 @@ void Scene::render()
 void Scene::ensureNodeExists(size_t nodeId)
 {
 	if (nodes.find(nodeId) == nodes.end())
-		THROW(EngineException, "Node ", nodeId, " not found");
+		THROW_FMT(EngineException, "Node ", nodeId, " not found");
 }
 
 

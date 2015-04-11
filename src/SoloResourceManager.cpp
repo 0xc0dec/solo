@@ -55,7 +55,7 @@ shared<Material> ResourceManager::getMaterial(shared<Effect> effect)
 {
 	auto effectUrl = findEffectUrl(effect);
 	if (effectUrl.empty())
-		THROW(EngineException, "Unknown effect");
+		THROW_FMT(EngineException, "Unknown effect");
 	auto url = std::string("Material_") + effectUrl;
 	auto existing = materials.find(url);
 	if (existing != materials.end())
@@ -80,7 +80,7 @@ shared<Texture> ResourceManager::getTexture(const std::string& url)
 			return texture;
 		}
 	}
-	THROW(EngineException, "No suitable loader found for texture ", url);
+	THROW_FMT(EngineException, "No suitable loader found for texture ", url);
 }
 
 

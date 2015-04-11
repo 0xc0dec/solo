@@ -15,18 +15,10 @@ namespace solo
 
 		EffectVariable* findVariable(const std::string& name) const;
 
-		std::string getLog() const;
-		bool isValid() const;
-
 	protected:
 		Effect() {}
 
-		void appendToLog(const std::string &newLog);
-
-		std::map<std::string, shared<EffectVariable>> variables; // TODO move to the base class (along with some methods)
-
-		bool valid = false;
-		std::string log;
+		std::map<std::string, shared<EffectVariable>> variables;
 
 	private:
 		Effect(const Effect& other) = delete;

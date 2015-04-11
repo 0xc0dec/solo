@@ -6,7 +6,7 @@ OpenGLTexture2D::OpenGLTexture2D(ColorFormat format, std::vector<byte> data, uns
 {
 	glGenTextures(1, &handle);
 	if (!handle)
-		THROW(EngineException, "Failed to obtain texture handle");
+		THROW_FMT(EngineException, "Failed to obtain texture handle");
 
 	glBindTexture(GL_TEXTURE_2D, handle);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -31,7 +31,7 @@ GLenum OpenGLTexture2D::toGLColorFormat(ColorFormat format)
 		case ColorFormat::RGBA:
 			return GL_RGBA;
 		default:
-			THROW(EngineException, "Unexpected texture format ", static_cast<int>(format));
+			THROW_FMT(EngineException, "Unexpected texture format ", static_cast<int>(format));
 	}
 }
 
@@ -45,7 +45,7 @@ GLenum OpenGLTexture2D::toGLWrapMode(WrapMode mode)
 		case WrapMode::Repeat:
 			return GL_REPEAT;
 		default:
-			THROW(EngineException, "Unexpected wrap mode ", static_cast<int>(mode));
+			THROW_FMT(EngineException, "Unexpected wrap mode ", static_cast<int>(mode));
 	}
 }
 
@@ -67,7 +67,7 @@ GLenum OpenGLTexture2D::toGLFilter(Filter filter)
 		case Filter::NearestMipmapNearest:
 			return GL_NEAREST_MIPMAP_NEAREST;
 		default:
-			THROW(EngineException, "Unexpected texture filter ", static_cast<int>(filter));
+			THROW_FMT(EngineException, "Unexpected texture filter ", static_cast<int>(filter));
 	}
 }
 

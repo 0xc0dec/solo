@@ -6,19 +6,10 @@ using namespace solo;
 
 GLSLEffect::GLSLEffect(const std::string &vsSrc, const std::string &fsSrc)
 {
-	auto vs = createShader(GL_VERTEX_SHADER, vsSrc);
-	if (vs < 0)
-		return;
-
-	auto fs = createShader(GL_FRAGMENT_SHADER, fsSrc);
-	if (fs < 0)
-		return;
-
-	if (!createProgram(vs, fs))
-		return;
-
-	valid = true; // TODO remove
-
+	auto vs = compileShader(GL_VERTEX_SHADER, vsSrc);
+	auto fs = compileShader(GL_FRAGMENT_SHADER, fsSrc);
+	program = createProgram(vs, fs);
+	
 	deleteShader(vs);
 	deleteShader(fs);
 
@@ -28,8 +19,7 @@ GLSLEffect::GLSLEffect(const std::string &vsSrc, const std::string &fsSrc)
 
 GLSLEffect::~GLSLEffect()
 {
-	if (valid)
-		glDeleteProgram(program);
+	glDeleteProgram(program);
 }
 
 
@@ -39,34 +29,32 @@ void GLSLEffect::bind()
 }
 
 
-bool GLSLEffect::createProgram(GLuint vs, GLuint fs)
+GLint GLSLEffect::createProgram(GLuint vs, GLuint fs)
 {
-	program = glCreateProgram();
+	auto program = glCreateProgram();
 	glAttachShader(program, vs);
 	glAttachShader(program, fs);
 	glLinkProgram(program);
 
 	int logLength;
 	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
-	auto log = new char[logLength];
-	glGetProgramInfoLog(program, logLength, nullptr, log);
-	if (logLength > 1)
-		appendToLog(log);
-	delete[] log;
+	
+	std::vector<GLchar> log(logLength);
+	glGetProgramInfoLog(program, logLength, nullptr, log.data());
 	
 	int status;
 	glGetProgramiv(program, GL_COMPILE_STATUS, &status);
 	if (status == GL_FALSE)
 	{
 		glDeleteProgram(program);
-		return false;
+		THROW(EffectCompilationException, "Failed to link effect program", log.data());
 	}
 	
-	return true;
+	return program;
 }
 
 
-GLint GLSLEffect::createShader(GLuint type, std::string src)
+GLint GLSLEffect::compileShader(GLuint type, std::string src)
 {
 	auto shader = glCreateShader(type);
 
@@ -76,18 +64,16 @@ GLint GLSLEffect::createShader(GLuint type, std::string src)
 
 	int logLength;
 	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-	auto log = new GLchar[logLength];
-	glGetShaderInfoLog(shader, logLength, nullptr, log);
-	if (logLength > 1)
-		appendToLog(log);
-	delete[] log;
+	
+	std::vector<GLchar> log(logLength);
+	glGetShaderInfoLog(shader, logLength, nullptr, log.data());
 
 	int status;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 	if (status == GL_FALSE)
 	{
 		glDeleteShader(shader);
-		return -1;
+		THROW(EffectCompilationException, "Failed to compile shader", log.data());
 	}
 
 	return shader;
@@ -115,7 +101,7 @@ void GLSLEffect::discoverVariables()
 	GLint size;
 	GLenum type;
 	unsigned samplerIndex = 0;
-	for (int i = 0; i < activeUniforms; ++i)
+	for (size_t i = 0; i < activeUniforms; ++i)
 	{
 		glGetActiveUniform(program, i, nameMaxLength, nullptr, &size, &type, rawName.data());
 		rawName[nameMaxLength] = '\0';

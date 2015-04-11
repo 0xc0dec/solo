@@ -24,7 +24,7 @@ namespace solo
 
 	typedef unsigned char byte;
 
-	// Usage of this pointer should indicate that that place owns an object this pointer points to.
+	// Usage of this pointer should indicate that the context owns an object this pointer points to.
 	// Code that operates on raw pointers doesn't claim to own the pointed object.
 	template <typename T> using shared = std::shared_ptr<T>;
 

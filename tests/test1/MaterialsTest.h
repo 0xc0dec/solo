@@ -36,8 +36,9 @@ public:
 
 	virtual void run() override
 	{
-		testEffectCompilation();
 		testEffectVariablesDetection();
+		testCompiledSuccessfully();
+		testCompilationFails();
 	}
 
 	void testEffectVariablesDetection()
@@ -54,10 +55,29 @@ public:
 		assert(var3->getName() == "testArray");
 	}
 
-	void testEffectCompilation()
+	void testCompiledSuccessfully()
 	{
-		auto effect = engine->getResourceManager()->getEffect(vs, fs);
-		assert(effect->isValid());
-		assert(effect->getLog().empty());
+		engine->getResourceManager()->getEffect(vs, fs);
+	}
+
+	void testCompilationFails()
+	{
+		testFailedCompilation("sdfsdf", fs);
+		testFailedCompilation(vs, "sdfsdf");
+	}
+
+private:
+	void testFailedCompilation(const std::string& vertex, const std::string& fragment)
+	{
+		try
+		{
+			engine->getResourceManager()->getEffect(vertex, fragment);
+		}
+		catch (EffectCompilationException &e)
+		{
+			assert(e.message == "Failed to compile shader");
+			return;
+		}
+		assert(false);
 	}
 };

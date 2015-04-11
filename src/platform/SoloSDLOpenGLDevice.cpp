@@ -67,7 +67,7 @@ SDLOpenGLDevice::SDLOpenGLDevice(EngineCreationArgs const& args):
 	Device(args)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
-		THROW(EngineException, "Failed to initialize system");
+		THROW_FMT(EngineException, "Failed to initialize system");
 
 	auto ctxVersion = selectContextVersion();
 	auto major = std::get<0>(ctxVersion);
@@ -78,15 +78,15 @@ SDLOpenGLDevice::SDLOpenGLDevice(EngineCreationArgs const& args):
 
 	window = std::get<0>(windowWithContext);
 	if (!window)
-		THROW(EngineException, "Failed to create device");
+		THROW_FMT(EngineException, "Failed to create device");
 
 	context = std::get<1>(windowWithContext);
 	if (!context)
-		THROW(EngineException, "Failed to init OpenGL context");
+		THROW_FMT(EngineException, "Failed to init OpenGL context");
 
 	glewExperimental = true;
 	if (glewInit())
-		THROW(EngineException, "Failed to init OpenGL extensions");
+		THROW_FMT(EngineException, "Failed to init OpenGL extensions");
 
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
@@ -113,7 +113,7 @@ std::tuple<int, int> SDLOpenGLDevice::selectContextVersion()
 			}
 		}
 	}
-	THROW(EngineException, "None of the supported OpenGL versions found");
+	THROW_FMT(EngineException, "None of the supported OpenGL versions found");
 }
 
 

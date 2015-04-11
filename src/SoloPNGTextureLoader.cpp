@@ -36,14 +36,14 @@ shared<Texture2D> PNGTextureLoader::load2D(const std::string& url)
 
 	auto bytes = fs->readBytes(url);
 	if (bytes.size() < 8 || png_sig_cmp(&bytes[0], 0, 8) != 0)
-		THROW(EngineException, "Failed to read PNG file ", url);
+		THROW_FMT(EngineException, "Failed to read PNG file ", url);
 
 	auto png = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
 	auto info = png_create_info_struct(png);
 	if (setjmp(png_jmpbuf(png)))
 	{
 		png_destroy_read_struct(&png, &info, nullptr);
-		THROW(EngineException, "Failed to read PNG file ", url);
+		THROW_FMT(EngineException, "Failed to read PNG file ", url);
 	}
 
 	std::unique_ptr<PNGReadContext> context(new PNGReadContext{ &bytes, 8 });
@@ -66,7 +66,7 @@ shared<Texture2D> PNGTextureLoader::load2D(const std::string& url)
 		break;
 	default:
 		png_destroy_read_struct(&png, &info, nullptr);
-		THROW(EngineException, "Unsupported PNG color type ", colorType);
+		THROW_FMT(EngineException, "Unsupported PNG color type ", colorType);
 	}
 
 	auto stride = png_get_rowbytes(png, info);

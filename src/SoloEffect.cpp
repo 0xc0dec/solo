@@ -17,22 +17,3 @@ EffectVariable* Effect::findVariable(const std::string& name) const
 		return where->second.get();
 	return nullptr;
 }
-
-
-void Effect::appendToLog(const std::string &newLog)
-{
-	log.append(newLog).append("\n");
-}
-
-
-bool Effect::isValid() const
-{
-	return valid;
-}
-
-
-std::string Effect::getLog() const
-{
-	return log;
-}
-
