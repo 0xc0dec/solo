@@ -4,9 +4,9 @@
 using namespace solo;
 
 
-shared<Texture2D> TextureFactory::create2D(Texture::ColorFormat format, std::vector<byte> data, unsigned width, unsigned height, bool generateMipmaps)
+shared<Texture2D> TextureFactory::create2D(Texture::ColorFormat format, std::vector<byte> data, unsigned width, unsigned height)
 {
-	return NEW2(OpenGLTexture2D, format, data, width, height, generateMipmaps);
+	return NEW2(OpenGLTexture2D, format, data, width, height);
 }
 
 

@@ -8,10 +8,12 @@ namespace solo
 	class OpenGLTexture2D: public Texture2D
 	{
 	public:
-		OpenGLTexture2D(ColorFormat format, std::vector<byte> data, unsigned width, unsigned height, bool generateMipmaps);
+		OpenGLTexture2D(ColorFormat format, std::vector<byte> data, unsigned width, unsigned height);
 		virtual ~OpenGLTexture2D();
 
 		virtual void apply() override;
+
+		virtual void generateMipmaps() override;
 
 	private:
 		OpenGLTexture2D(const OpenGLTexture2D& other) = delete;

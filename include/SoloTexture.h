@@ -56,6 +56,6 @@ namespace solo
 	class TextureFactory
 	{
 		friend class PNGTextureLoader;
-		static shared<Texture2D> create2D(Texture::ColorFormat format, std::vector<byte> data, unsigned width, unsigned height, bool generateMipmaps);
+		static shared<Texture2D> create2D(Texture::ColorFormat format, std::vector<byte> data, unsigned width, unsigned height);
 	};
 }

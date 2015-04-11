@@ -2,7 +2,7 @@
 
 using namespace solo;
 
-OpenGLTexture2D::OpenGLTexture2D(ColorFormat format, std::vector<byte> data, unsigned width, unsigned height, bool generateMipmaps)
+OpenGLTexture2D::OpenGLTexture2D(ColorFormat format, std::vector<byte> data, unsigned width, unsigned height)
 {
 	glGenTextures(1, &handle);
 	if (!handle)
@@ -11,7 +11,6 @@ OpenGLTexture2D::OpenGLTexture2D(ColorFormat format, std::vector<byte> data, uns
 	glBindTexture(GL_TEXTURE_2D, handle);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glTexImage2D(GL_TEXTURE_2D, 0, toGLColorFormat(format), width, height, 0, toGLColorFormat(format), GL_UNSIGNED_BYTE, data.data());
-	// TODO mipmaps...
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -79,4 +78,12 @@ void OpenGLTexture2D::apply()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, toGLFilter(magFilter));
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, toGLWrapMode(horizontalWrap));
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, toGLWrapMode(verticalWrap));
+}
+
+
+void OpenGLTexture2D::generateMipmaps()
+{
+	glBindTexture(GL_TEXTURE_2D, handle);
+	glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
+	glGenerateMipmap(GL_TEXTURE_2D);
 }

@@ -150,7 +150,9 @@ public:
 		matRare->getParameter("time")->bindValue<float>([this](const RenderContext& context) -> float { return this->device->getLifetime(); });
 
 		auto effTexture = resManager->getEffect(vsBasic, fsTexture);
-		auto texture = resManager->getTexture("../data/Freeman.png");
+		auto texture = std::dynamic_pointer_cast<Texture2D>(resManager->getTexture("../data/Freeman.png"));
+		texture->generateMipmaps();
+		texture->setFilterMode(Texture::Filter::LinearMipmapNearest, Texture::Filter::LinearMipmapLinear);
 		matTexture = resManager->getMaterial(effTexture);
 		matTexture->setPolygonFace(RenderState::PolygonFace::All);
 		matTexture->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);

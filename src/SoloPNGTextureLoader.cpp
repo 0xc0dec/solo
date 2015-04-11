@@ -77,5 +77,5 @@ shared<Texture2D> PNGTextureLoader::load2D(const std::string& url)
 
 	png_destroy_read_struct(&png, &info, nullptr);
 
-	return TextureFactory::create2D(colorFormat, data, width, height, false);
+	return TextureFactory::create2D(colorFormat, data, width, height);
 }
