@@ -64,7 +64,7 @@ void Quaternion::createFromAxisAngle(const Vector3& axis, float angleRadians, Qu
 	auto halfAngle = angleRadians * 0.5f;
 	auto sinHalfAngle = sinf(halfAngle);
 
-	auto normal(axis);
+	auto normal(const_cast<Vector3&>(axis));
 	normal.normalize();
 	dst->x = normal.x * sinHalfAngle;
 	dst->y = normal.y * sinHalfAngle;
