@@ -7,6 +7,8 @@ OpenGLMesh::OpenGLMesh():
 	Mesh()
 {
 	glGenVertexArrays(1, &vertexArrayHandle);
+	if (!vertexArrayHandle)
+		THROW(EngineException, "Failed to obtain mesh handle");
 }
 
 

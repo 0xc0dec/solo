@@ -40,12 +40,12 @@ GLenum OpenGLTexture2D::toGLWrapMode(WrapMode mode)
 {
 	switch (mode)
 	{
-	case WrapMode::Clamp:
-		return GL_CLAMP_TO_EDGE;
-	case WrapMode::Repeat:
-		return GL_REPEAT;
-	default:
-		THROW(EngineException, "Unexpected wrap mode ", static_cast<int>(mode));
+		case WrapMode::Clamp:
+			return GL_CLAMP_TO_EDGE;
+		case WrapMode::Repeat:
+			return GL_REPEAT;
+		default:
+			THROW(EngineException, "Unexpected wrap mode ", static_cast<int>(mode));
 	}
 }
 
