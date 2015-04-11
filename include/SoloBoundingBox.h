@@ -1,12 +1,12 @@
 #pragma once
 
 #include "SoloVector3.h"
+#include "SoloPlane.h"
 
 namespace solo
 {
 	class BoundingSphere;
 	class Frustum;
-	class Plane;
 	class Ray;
 
 	class BoundingBox
@@ -15,7 +15,7 @@ namespace solo
 		Vector3 min;
 		Vector3 max;
 
-		BoundingBox();
+		BoundingBox() {}
 		BoundingBox(const Vector3& min, const Vector3& max);
 		BoundingBox(float minX, float minY, float minZ, float maxX, float maxY, float maxZ);
 
@@ -29,7 +29,7 @@ namespace solo
 		bool intersects(const BoundingBox& box) const;
 		bool intersects(const BoundingSphere& sphere) const;
 		bool intersects(const Frustum& frustum) const;
-		float intersects(const Plane& plane) const;
+		Plane::PlaneIntersection intersects(const Plane& plane) const;
 		float intersects(const Ray& ray) const;
 
 		bool isEmpty() const;
@@ -55,7 +55,7 @@ namespace solo
 
 	inline BoundingBox operator*(const Matrix& matrix, const BoundingBox& box)
 	{
-		auto b(box);
+		auto b(const_cast<BoundingBox&>(box));
 		b.transform(matrix);
 		return b;
 	}

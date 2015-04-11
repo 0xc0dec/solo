@@ -106,19 +106,19 @@ void Plane::intersection(const Plane& p1, const Plane& p2, const Plane& p3, Vect
 }
 
 
-float Plane::intersects(const BoundingSphere& sphere) const
+Plane::PlaneIntersection Plane::intersects(const BoundingSphere& sphere) const
 {
 	return sphere.intersects(*this);
 }
 
 
-float Plane::intersects(const BoundingBox& box) const
+Plane::PlaneIntersection Plane::intersects(const BoundingBox& box) const
 {
 	return box.intersects(*this);
 }
 
 
-float Plane::intersects(const Frustum& frustum) const
+Plane::PlaneIntersection Plane::intersects(const Frustum& frustum) const
 {
 	Vector3 corners[8];
 	frustum.getCorners(corners);
@@ -139,10 +139,10 @@ float Plane::intersects(const Frustum& frustum) const
 			getDistance(corners[6]) <= 0.0f ||
 			getDistance(corners[7]) <= 0.0f)
 		{
-			return static_cast<float>(INTERSECTS_INTERSECTING);
+			return PlaneIntersection::Intersecting;
 		}
 
-		return static_cast<float>(INTERSECTS_FRONT);
+		return PlaneIntersection::Front;
 	}
 	if (d < 0.0f)
 	{
@@ -154,21 +154,21 @@ float Plane::intersects(const Frustum& frustum) const
 			getDistance(corners[6]) >= 0.0f ||
 			getDistance(corners[7]) >= 0.0f)
 		{
-			return static_cast<float>(INTERSECTS_INTERSECTING);
+			return PlaneIntersection::Intersecting;
 		}
 
-		return static_cast<float>(INTERSECTS_BACK);
+		return PlaneIntersection::Back;
 	}
 	
-	return static_cast<float>(INTERSECTS_INTERSECTING);
+	return PlaneIntersection::Intersecting;
 }
 
 
-float Plane::intersects(const Plane& plane) const
+Plane::PlaneIntersection Plane::intersects(const Plane& plane) const
 {
 	// Check if the planes intersect.
 	if ((normal.x == plane.normal.x && normal.y == plane.normal.y && normal.z == plane.normal.z) || !isParallel(plane))
-		return static_cast<float>(INTERSECTS_INTERSECTING);
+		return PlaneIntersection::Intersecting;
 
 	// Calculate the point where the given plane's normal vector intersects the given plane.
 	Vector3 point(plane.normal.x * -plane.distance, plane.normal.y * -plane.distance, plane.normal.z * -plane.distance);
@@ -176,33 +176,27 @@ float Plane::intersects(const Plane& plane) const
 	// Calculate whether the given plane is in the positive or negative half-space of this plane
 	// (corresponds directly to the sign of the distance from the point calculated above to this plane).
 	if (getDistance(point) > 0.0f)
-		return static_cast<float>(INTERSECTS_FRONT);
-	return static_cast<float>(INTERSECTS_BACK);
+		return PlaneIntersection::Front;
+	return PlaneIntersection::Back;
 }
 
 
-float Plane::intersects(const Ray& ray) const
+Plane::PlaneIntersection Plane::intersects(const Ray& ray) const
 {
 	// Calculate the distance from the ray's origin to the plane.
 	auto d = getDistance(ray.getOrigin());
 
 	// If the origin of the ray lies in the plane, then it intersects.
 	if (d == 0.0f)
-		return static_cast<float>(INTERSECTS_INTERSECTING);
+		return PlaneIntersection::Intersecting;
 	auto rayDirection = ray.getDirection();
 	// If the dot product of this plane's normal and the ray's direction is positive, and
 	// if the distance from this plane to the ray's origin is negative -> intersection, OR
 	// if the dot product of this plane's normal and the ray's direction is negative, and
 	// if the distance from this plane to the ray's origin is positive -> intersection.
 	if (normal.x * rayDirection.x + normal.y * rayDirection.y + normal.z * rayDirection.z > 0.0f)
-	{
-		if (d < 0.0f)
-			return static_cast<float>(INTERSECTS_INTERSECTING);
-		return static_cast<float>(INTERSECTS_FRONT);
-	}
-	if (d > 0.0f)
-		return static_cast<float>(INTERSECTS_INTERSECTING);
-	return static_cast<float>(INTERSECTS_BACK);
+		return d < 0.0f ? PlaneIntersection::Intersecting : PlaneIntersection::Front;
+	return d > 0.0f ? PlaneIntersection::Intersecting : PlaneIntersection::Back;
 }
 
 

@@ -9,9 +9,9 @@ namespace solo
 	{
 	public:
 		Vector3 center;
-		float radius;
+		float radius = 0;
 
-		BoundingSphere();
+		BoundingSphere() {}
 		BoundingSphere(const Vector3& center, float radius);
 
 		static const BoundingSphere& empty();
@@ -19,7 +19,7 @@ namespace solo
 		bool intersects(const BoundingSphere& sphere) const;
 		bool intersects(const BoundingBox& box) const;
 		bool intersects(const Frustum& frustum) const;
-		float intersects(const Plane& plane) const;
+		Plane::PlaneIntersection intersects(const Plane& plane) const;
 		float intersects(const Ray& ray) const;
 
 		bool isEmpty() const;
@@ -48,7 +48,7 @@ namespace solo
 
 	inline BoundingSphere operator*(const Matrix& matrix, const BoundingSphere& sphere)
 	{
-		auto s(sphere);
+		auto s(const_cast<BoundingSphere&>(sphere));
 		s.transform(matrix);
 		return s;
 	}

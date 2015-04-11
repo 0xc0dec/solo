@@ -14,7 +14,7 @@ namespace solo
 	public:
 		static const int INTERSECTS_NONE = -1;
 
-		Ray();
+		Ray() {}
 		Ray(const Vector3& origin, const Vector3& direction);
 		Ray(float originX, float originY, float originZ, float dirX, float dirY, float dirZ);
 
@@ -41,8 +41,8 @@ namespace solo
 	private:
 		void normalize();
 
-		Vector3 origin;
-		Vector3 direction;
+		Vector3 origin = { 0, 0, 0 };
+		Vector3 direction = { 0, 0, 1 };
 	};
 
 	inline Ray& Ray::operator*=(const Matrix& matrix)
@@ -53,7 +53,7 @@ namespace solo
 
 	inline Ray operator*(const Matrix& matrix, const Ray& ray)
 	{
-		auto r(ray);
+		auto r(const_cast<Ray&>(ray));
 		r.transform(matrix);
 		return r;
 	}

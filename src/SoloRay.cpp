@@ -9,12 +9,6 @@
 using namespace solo;
 
 
-Ray::Ray():
-	direction{0, 0, 1}
-{
-}
-
-
 Ray::Ray(const Vector3& origin, const Vector3& direction)
 {
 	set(origin, direction);

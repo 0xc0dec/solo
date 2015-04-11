@@ -9,11 +9,6 @@
 using namespace solo;
 
 
-BoundingBox::BoundingBox()
-{
-}
-
-
 BoundingBox::BoundingBox(const Vector3& min, const Vector3& max)
 {
 	set(min, max);
@@ -90,16 +85,16 @@ bool BoundingBox::intersects(const BoundingBox& box) const
 bool BoundingBox::intersects(const Frustum& frustum) const
 {
 	// The box must either intersect or be in the positive half-space of all six planes of the frustum.
-	return (intersects(frustum.getNear()) != Plane::INTERSECTS_BACK &&
-		intersects(frustum.getFar()) != Plane::INTERSECTS_BACK &&
-		intersects(frustum.getLeft()) != Plane::INTERSECTS_BACK &&
-		intersects(frustum.getRight()) != Plane::INTERSECTS_BACK &&
-		intersects(frustum.getBottom()) != Plane::INTERSECTS_BACK &&
-		intersects(frustum.getTop()) != Plane::INTERSECTS_BACK);
+	return (intersects(frustum.getNear()) != Plane::PlaneIntersection::Back &&
+		intersects(frustum.getFar()) != Plane::PlaneIntersection::Back &&
+		intersects(frustum.getLeft()) != Plane::PlaneIntersection::Back &&
+		intersects(frustum.getRight()) != Plane::PlaneIntersection::Back &&
+		intersects(frustum.getBottom()) != Plane::PlaneIntersection::Back &&
+		intersects(frustum.getTop()) != Plane::PlaneIntersection::Back);
 }
 
 
-float BoundingBox::intersects(const Plane& plane) const
+Plane::PlaneIntersection BoundingBox::intersects(const Plane& plane) const
 {
 	// Calculate the distance from the center of the box to the plane.
 	Vector3 center((min.x + max.x) * 0.5f, (min.y + max.y) * 0.5f, (min.z + max.z) * 0.5f);
@@ -112,9 +107,9 @@ float BoundingBox::intersects(const Plane& plane) const
 
 	const auto& planeNormal = plane.getNormal();
 	if (fabsf(distance) <= (fabsf(extentX * planeNormal.x) + fabsf(extentY * planeNormal.y) + fabsf(extentZ * planeNormal.z)))
-		return static_cast<float>(Plane::INTERSECTS_INTERSECTING);
+		return Plane::PlaneIntersection::Intersecting;
 
-	return (distance > 0.0f) ? static_cast<float>(Plane::INTERSECTS_FRONT) : static_cast<float>(Plane::INTERSECTS_BACK);
+	return (distance > 0.0f) ? Plane::PlaneIntersection::Front : Plane::PlaneIntersection::Back;
 }
 
 

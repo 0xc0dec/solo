@@ -12,9 +12,12 @@ namespace solo
 	class Plane
 	{
 	public:
-		static const int INTERSECTS_INTERSECTING = 0;
-		static const int INTERSECTS_FRONT = 1;
-		static const int INTERSECTS_BACK = -1;
+		enum class PlaneIntersection
+		{
+			Intersecting = 0,
+			Front = 1,
+			Back = -1
+		};
 
 		Plane() {}
 		Plane(const Vector3& normal, float distance);
@@ -31,11 +34,11 @@ namespace solo
 
 		static void intersection(const Plane& p1, const Plane& p2, const Plane& p3, Vector3* point);
 
-		float intersects(const BoundingSphere& sphere) const;
-		float intersects(const BoundingBox& box) const;
-		float intersects(const Frustum& frustum) const;
-		float intersects(const Plane& plane) const;
-		float intersects(const Ray& ray) const;
+		PlaneIntersection intersects(const BoundingSphere& sphere) const;
+		PlaneIntersection intersects(const BoundingBox& box) const;
+		PlaneIntersection intersects(const Frustum& frustum) const;
+		PlaneIntersection intersects(const Plane& plane) const;
+		PlaneIntersection intersects(const Ray& ray) const;
 
 		bool isParallel(const Plane& plane) const;
 

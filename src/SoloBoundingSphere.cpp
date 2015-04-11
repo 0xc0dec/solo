@@ -7,11 +7,6 @@
 using namespace solo;
 
 
-BoundingSphere::BoundingSphere(): radius(0)
-{
-}
-
-
 BoundingSphere::BoundingSphere(const Vector3& center, float radius)
 {
 	set(center, radius);
@@ -77,24 +72,21 @@ bool BoundingSphere::intersects(const BoundingBox& box) const
 bool BoundingSphere::intersects(const Frustum& frustum) const
 {
 	// The sphere must either intersect or be in the positive half-space of all six planes of the frustum.
-	return (intersects(frustum.getNear()) != Plane::INTERSECTS_BACK &&
-		intersects(frustum.getFar()) != Plane::INTERSECTS_BACK &&
-		intersects(frustum.getLeft()) != Plane::INTERSECTS_BACK &&
-		intersects(frustum.getRight()) != Plane::INTERSECTS_BACK &&
-		intersects(frustum.getBottom()) != Plane::INTERSECTS_BACK &&
-		intersects(frustum.getTop()) != Plane::INTERSECTS_BACK);
+	return intersects(frustum.getNear()) != Plane::PlaneIntersection::Back &&
+		intersects(frustum.getFar()) != Plane::PlaneIntersection::Back &&
+		intersects(frustum.getLeft()) != Plane::PlaneIntersection::Back &&
+		intersects(frustum.getRight()) != Plane::PlaneIntersection::Back &&
+		intersects(frustum.getBottom()) != Plane::PlaneIntersection::Back &&
+		intersects(frustum.getTop()) != Plane::PlaneIntersection::Back;
 }
 
 
-float BoundingSphere::intersects(const Plane& plane) const
+Plane::PlaneIntersection BoundingSphere::intersects(const Plane& plane) const
 {
 	auto distance = plane.getDistance(center);
-
 	if (fabsf(distance) <= radius)
-		return static_cast<float>(Plane::INTERSECTS_INTERSECTING);
-	if (distance > 0.0f)
-		return static_cast<float>(Plane::INTERSECTS_FRONT);
-	return static_cast<float>(Plane::INTERSECTS_BACK);
+		return Plane::PlaneIntersection::Intersecting;
+	return distance > 0.0f ? Plane::PlaneIntersection::Front : Plane::PlaneIntersection::Back;
 }
 
 
