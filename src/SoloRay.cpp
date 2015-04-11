@@ -59,42 +59,42 @@ void Ray::setDirection(float x, float y, float z)
 }
 
 
-float Ray::intersects(const BoundingSphere& sphere) const
+float Ray::getIntersection(const BoundingSphere &sphere) const
 {
 	return sphere.intersects(*this);
 }
 
 
-float Ray::intersects(const BoundingBox& box) const
+float Ray::getIntersection(const BoundingBox &box) const
 {
 	return box.intersects(*this);
 }
 
 
-float Ray::intersects(const Frustum& frustum) const
+float Ray::getIntersection(const Frustum &frustum) const
 {
 	auto n = frustum.getNear();
-	auto nD = intersects(n);
+	auto nD = getIntersection(n);
 	auto nOD = n.getDistance(origin);
 
 	auto f = frustum.getFar();
-	auto fD = intersects(f);
+	auto fD = getIntersection(f);
 	auto fOD = f.getDistance(origin);
 
 	auto l = frustum.getLeft();
-	auto lD = intersects(l);
+	auto lD = getIntersection(l);
 	auto lOD = l.getDistance(origin);
 
 	auto r = frustum.getRight();
-	auto rD = intersects(r);
+	auto rD = getIntersection(r);
 	auto rOD = r.getDistance(origin);
 
 	auto b = frustum.getBottom();
-	auto bD = intersects(b);
+	auto bD = getIntersection(b);
 	auto bOD = b.getDistance(origin);
 
 	auto t = frustum.getTop();
-	auto tD = intersects(t);
+	auto tD = getIntersection(t);
 	auto tOD = t.getDistance(origin);
 
 	// If the ray's origin is in the negative half-space of one of the frustum's planes
@@ -103,7 +103,7 @@ float Ray::intersects(const Frustum& frustum) const
 		(lOD < 0.0f && lD < 0.0f) || (rOD < 0.0f && rD < 0.0f) ||
 		(bOD < 0.0f && bD < 0.0f) || (tOD < 0.0f && tD < 0.0f))
 	{
-		return static_cast<float>(INTERSECTS_NONE);
+		return static_cast<float>(RayIntersection::None);
 	}
 
 	// Otherwise, the intersection distance is the minimum positive intersection distance.
@@ -118,7 +118,7 @@ float Ray::intersects(const Frustum& frustum) const
 }
 
 
-float Ray::intersects(const Plane& plane) const
+float Ray::getIntersection(const Plane &plane) const
 {
 	const auto& normal = plane.getNormal();
 	// If the origin of the ray is on the plane then the distance is zero.
@@ -131,13 +131,13 @@ float Ray::intersects(const Plane& plane) const
 	// If the dot product of the plane's normal and this ray's direction is zero,
 	// then the ray is parallel to the plane and does not intersect it.
 	if (dot == 0.0f)
-		return static_cast<float>(INTERSECTS_NONE);
+		return static_cast<float>(RayIntersection::None);
 
 	// Calculate the distance along the ray's direction vector to the point where
 	// the ray getIntersection the plane (if it is negative the plane is behind the ray).
 	auto d = -alpha / dot;
 	if (d < 0.0f)
-		return static_cast<float>(INTERSECTS_NONE);
+		return static_cast<float>(RayIntersection::None);
 	
 	return d;
 }

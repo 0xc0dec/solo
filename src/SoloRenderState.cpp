@@ -4,12 +4,6 @@
 using namespace solo;
 
 
-RenderState::RenderState():
-	polygonFace{PolygonFace::CW}
-{
-}
-
-
 MaterialParameter* RenderState::getParameter(const std::string& name)
 {
 	auto where = parameters.find(name);

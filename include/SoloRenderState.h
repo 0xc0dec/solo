@@ -28,11 +28,11 @@ namespace solo
 		PolygonFace getPolygonFace() const;
 
 	protected:
-		RenderState();
+		RenderState() {}
 
 		virtual void applyFaceCull() = 0;
 
-		PolygonFace polygonFace;
+		PolygonFace polygonFace = PolygonFace::CW;
 		std::map<std::string, shared<MaterialParameter>> parameters;
 
 	private:

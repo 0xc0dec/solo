@@ -8,11 +8,7 @@ namespace solo
 	class RenderContext
 	{
 	public:
-		RenderContext() :
-			node(nullptr),
-			camera(nullptr)
-		{
-		}
+		RenderContext() {}
 
 		void setNode(Node* node)
 		{
@@ -45,8 +41,8 @@ namespace solo
 		}
 
 	private:
-		Node* node;
-		Node* camera;
-		Material* material;
+		Node* node = nullptr;
+		Node* camera = nullptr;
+		Material* material = nullptr;
 	};
 }

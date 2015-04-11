@@ -139,7 +139,7 @@ float BoundingBox::intersects(const Ray& ray) const
 
 	// Check if the ray misses the box.
 	if (dnear > dfar || dfar < 0.0f)
-		return static_cast<float>(Ray::INTERSECTS_NONE);
+		return static_cast<float>(Ray::RayIntersection::None);
 
 	div = 1.0f / direction.y;
 	if (div >= 0.0f)
@@ -161,7 +161,7 @@ float BoundingBox::intersects(const Ray& ray) const
 
 	// Check if the ray misses the box.
 	if (dnear > dfar || dfar < 0.0f)
-		return static_cast<float>(Ray::INTERSECTS_NONE);
+		return static_cast<float>(Ray::RayIntersection::None);
 
 	div = 1.0f / direction.z;
 	if (div >= 0.0f)
@@ -183,7 +183,7 @@ float BoundingBox::intersects(const Ray& ray) const
 
 	// Check if the ray misses the box.
 	if (dnear > dfar || dfar < 0.0f)
-		return static_cast<float>(Ray::INTERSECTS_NONE);
+		return static_cast<float>(Ray::RayIntersection::None);
 	// The ray getIntersection the box (and since the direction of a Ray is normalized, dnear is the distance to the ray).
 	return dnear;
 }

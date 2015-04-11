@@ -130,7 +130,7 @@ Plane::PlaneIntersection Frustum::intersects(const Plane& plane) const
 
 float Frustum::intersects(const Ray& ray) const
 {
-	return ray.intersects(*this);
+	return ray.getIntersection(*this);
 }
 
 

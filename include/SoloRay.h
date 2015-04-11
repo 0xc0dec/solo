@@ -12,7 +12,10 @@ namespace solo
 	class Ray
 	{
 	public:
-		static const int INTERSECTS_NONE = -1;
+		enum class RayIntersection
+		{
+			None = -1
+		};
 
 		Ray() {}
 		Ray(const Vector3& origin, const Vector3& direction);
@@ -26,10 +29,10 @@ namespace solo
 		void setDirection(const Vector3& direction);
 		void setDirection(float x, float y, float z);
 
-		float intersects(const BoundingSphere& sphere) const;
-		float intersects(const BoundingBox& box) const;
-		float intersects(const Frustum& frustum) const;
-		float intersects(const Plane& plane) const;
+		float getIntersection(const BoundingSphere &sphere) const;
+		float getIntersection(const BoundingBox &box) const;
+		float getIntersection(const Frustum &frustum) const;
+		float getIntersection(const Plane &plane) const;
 		
 		void set(const Vector3& origin, const Vector3& direction);
 		void set(const Ray& ray);
