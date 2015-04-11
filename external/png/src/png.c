@@ -1271,7 +1271,7 @@ png_XYZ_from_xy(png_XYZ *XYZ, const png_xy *xy)
     *
     *   x + y + z = 1
     *
-    * This describes the plane in (X,Y,Z) space that intersects each axis at the
+    * This describes the plane in (X,Y,Z) space that getIntersection each axis at the
     * value 1.0; call this the chromaticity plane.  Thus the chromaticity
     * calculation has scaled each end-point so that it is on the x+y+z=1 plane
     * and chromaticity is the intersection of the vector from the origin to the

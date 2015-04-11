@@ -106,19 +106,19 @@ void Plane::intersection(const Plane& p1, const Plane& p2, const Plane& p3, Vect
 }
 
 
-Plane::PlaneIntersection Plane::intersects(const BoundingSphere& sphere) const
+Plane::PlaneIntersection Plane::getIntersection(const BoundingSphere &sphere) const
 {
 	return sphere.intersects(*this);
 }
 
 
-Plane::PlaneIntersection Plane::intersects(const BoundingBox& box) const
+Plane::PlaneIntersection Plane::getIntersection(const BoundingBox &box) const
 {
 	return box.intersects(*this);
 }
 
 
-Plane::PlaneIntersection Plane::intersects(const Frustum& frustum) const
+Plane::PlaneIntersection Plane::getIntersection(const Frustum &frustum) const
 {
 	Vector3 corners[8];
 	frustum.getCorners(corners);
@@ -127,7 +127,7 @@ Plane::PlaneIntersection Plane::intersects(const Frustum& frustum) const
 	// If all of the distances are positive, then the frustum is in the
 	// positive half-space of this plane; if all the distances are negative,
 	// then the frustum is in the negative half-space of this plane; if some of
-	// the distances are positive and some are negative, the frustum intersects.
+	// the distances are positive and some are negative, the frustum getIntersection.
 	auto d = getDistance(corners[0]);
 	if (d > 0.0f)
 	{
@@ -164,13 +164,13 @@ Plane::PlaneIntersection Plane::intersects(const Frustum& frustum) const
 }
 
 
-Plane::PlaneIntersection Plane::intersects(const Plane& plane) const
+Plane::PlaneIntersection Plane::getIntersection(const Plane &plane) const
 {
 	// Check if the planes intersect.
 	if ((normal.x == plane.normal.x && normal.y == plane.normal.y && normal.z == plane.normal.z) || !isParallel(plane))
 		return PlaneIntersection::Intersecting;
 
-	// Calculate the point where the given plane's normal vector intersects the given plane.
+	// Calculate the point where the given plane's normal vector getIntersection the given plane.
 	Vector3 point(plane.normal.x * -plane.distance, plane.normal.y * -plane.distance, plane.normal.z * -plane.distance);
 
 	// Calculate whether the given plane is in the positive or negative half-space of this plane
@@ -181,12 +181,12 @@ Plane::PlaneIntersection Plane::intersects(const Plane& plane) const
 }
 
 
-Plane::PlaneIntersection Plane::intersects(const Ray& ray) const
+Plane::PlaneIntersection Plane::getIntersection(const Ray &ray) const
 {
 	// Calculate the distance from the ray's origin to the plane.
 	auto d = getDistance(ray.getOrigin());
 
-	// If the origin of the ray lies in the plane, then it intersects.
+	// If the origin of the ray lies in the plane, then it getIntersection.
 	if (d == 0.0f)
 		return PlaneIntersection::Intersecting;
 	auto rayDirection = ray.getDirection();

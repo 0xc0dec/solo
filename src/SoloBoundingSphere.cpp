@@ -35,7 +35,7 @@ bool BoundingSphere::intersects(const BoundingSphere& sphere) const
 bool BoundingSphere::intersects(const BoundingBox& box) const
 {
 	// Determine what point is closest; if the distance to that
-	// point is less than the radius, then this sphere intersects.
+	// point is less than the radius, then this sphere getIntersection.
 	auto cpX = center.x;
 	auto cpY = center.y;
 	auto cpZ = center.z;

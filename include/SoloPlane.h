@@ -34,11 +34,11 @@ namespace solo
 
 		static void intersection(const Plane& p1, const Plane& p2, const Plane& p3, Vector3* point);
 
-		PlaneIntersection intersects(const BoundingSphere& sphere) const;
-		PlaneIntersection intersects(const BoundingBox& box) const;
-		PlaneIntersection intersects(const Frustum& frustum) const;
-		PlaneIntersection intersects(const Plane& plane) const;
-		PlaneIntersection intersects(const Ray& ray) const;
+		PlaneIntersection getIntersection(const BoundingSphere &sphere) const;
+		PlaneIntersection getIntersection(const BoundingBox &box) const;
+		PlaneIntersection getIntersection(const Frustum &frustum) const;
+		PlaneIntersection getIntersection(const Plane &plane) const;
+		PlaneIntersection getIntersection(const Ray &ray) const;
 
 		bool isParallel(const Plane& plane) const;
 

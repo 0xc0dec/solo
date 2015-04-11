@@ -134,7 +134,7 @@ float Ray::intersects(const Plane& plane) const
 		return static_cast<float>(INTERSECTS_NONE);
 
 	// Calculate the distance along the ray's direction vector to the point where
-	// the ray intersects the plane (if it is negative the plane is behind the ray).
+	// the ray getIntersection the plane (if it is negative the plane is behind the ray).
 	auto d = -alpha / dot;
 	if (d < 0.0f)
 		return static_cast<float>(INTERSECTS_NONE);
