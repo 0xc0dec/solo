@@ -1,5 +1,5 @@
 * Look through all the constructors and ensure there's no resource leak when an exception is thrown
-* Texture loading. Made basic sampler binding functionality through the material paramter; need to fill in the actual GL code
+* Texture loading. Made basic sampler binding functionality through the material parameter; need to fill in the actual GL code
 * Models loading
 * Use position, rotation and scale to calculate the corresponding getter method results (instead of the matrix)
 * Remove methods like multiply() from math classes

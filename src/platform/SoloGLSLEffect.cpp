@@ -122,7 +122,7 @@ void GLSLEffect::discoverVariables()
 		}
 		// TODO other types of samplers
 
-		auto variable = NEW2(GLSLEffectVariable, name, location, type, index);
+		auto variable = NEW<GLSLEffectVariable>(name, location, type, index);
 		variables[name] = variable;
 	}
 }

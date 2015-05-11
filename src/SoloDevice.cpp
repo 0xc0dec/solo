@@ -7,7 +7,8 @@ using namespace solo;
 Device::Device(const EngineCreationArgs& args):
 	mouseDeltaX(0),
 	mouseDeltaY(0),
-	close(false), creationArgs(args)
+	close(false),
+	creationArgs(args)
 {
 }
 
@@ -58,5 +59,5 @@ bool Device::shutdownRequested() const
 
 shared<Device> DeviceFactory::create(const EngineCreationArgs& args)
 {
-	return NEW2(SDLOpenGLDevice, args);
+	return NEW<SDLOpenGLDevice>(args);
 }
