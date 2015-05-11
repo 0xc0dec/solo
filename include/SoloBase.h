@@ -18,8 +18,10 @@
 
 namespace solo
 {
-#	define CAST_PTR_STATIC	std::static_pointer_cast
+#	define STATIC_CAST		std::static_pointer_cast
+#	define DYNAMIC_CAST		std::dynamic_pointer_cast
 #	define NEW				std::make_shared
+	// used when a class has private constructor that is available to factories only
 #	define NEW2(type, ...)	std::shared_ptr<type>(new type(__VA_ARGS__))
 
 	typedef unsigned char byte;

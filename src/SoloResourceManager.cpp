@@ -17,7 +17,7 @@ shared<ResourceManager> ResourceManagerFactory::create()
 
 ResourceManager::ResourceManager()
 {
-	textureLoaders.push_back(NEW2(PNGTextureLoader));
+	textureLoaders.push_back(NEW<PNGTextureLoader>());
 }
 
 
@@ -39,38 +39,73 @@ std::string ResourceManager::findEffectUrl(shared<Effect> effect) const
 }
 
 
-shared<Effect> ResourceManager::getEffect(const std::string& vsSrc, const std::string& fsSrc)
+shared<Effect> ResourceManager::findEffect(const std::string& url)
+{
+	auto existing = effects.find(url);
+	return existing != effects.end() ? existing->second : nullptr;
+}
+
+
+shared<Material> ResourceManager::findMaterial(const std::string& url)
+{
+	auto existing = materials.find(url);
+	return existing != materials.end() ? existing->second : nullptr;
+}
+
+
+shared<Texture> ResourceManager::findTexture(const std::string& url)
+{
+	auto existing = textures.find(url);
+	return existing != textures.end() ? existing->second : nullptr;
+}
+
+
+shared<Mesh> ResourceManager::findMesh(const std::string& url)
+{
+	auto existing = meshes.find(url);
+	return existing != meshes.end() ? existing->second : nullptr;
+}
+
+
+shared<Model> ResourceManager::findModel(const std::string& url)
+{
+	auto existing = models.find(url);
+	return existing != models.end() ? existing->second : nullptr;
+}
+
+
+shared<Effect> ResourceManager::getOrCreateEffect(const std::string& vsSrc, const std::string& fsSrc)
 {
 	auto url = std::to_string(getHash(vsSrc + fsSrc));
-	auto existing = effects.find(url);
-	if (existing != effects.end())
-		return existing->second;
+	auto existing = findEffect(url);
+	if (existing)
+		return existing;
 	auto effect = EffectFactory::create(vsSrc, fsSrc);
 	effects[url] = effect;
 	return effect;
 }
 
 
-shared<Material> ResourceManager::getMaterial(shared<Effect> effect)
+shared<Material> ResourceManager::getOrCreateMaterial(shared<Effect> effect)
 {
 	auto effectUrl = findEffectUrl(effect);
 	if (effectUrl.empty())
 		THROW_FMT(EngineException, "Unknown effect");
 	auto url = std::string("Material_") + effectUrl;
-	auto existing = materials.find(url);
-	if (existing != materials.end())
-		return existing->second;
+	auto existing = findMaterial(url);
+	if (existing)
+		return existing;
 	auto material = MaterialFactory::create(effect);
 	materials[url] = material;
 	return material;
 }
 
 
-shared<Texture> ResourceManager::getTexture(const std::string& url)
+shared<Texture> ResourceManager::getOrCreateTexture(const std::string& url)
 {
-	auto existing = textures.find(url);
-	if (existing != textures.end())
-		return existing->second;
+	auto existing = findTexture(url);
+	if (existing)
+		return existing;
 	for (auto loader : textureLoaders)
 	{
 		if (loader->isLoadable(url))
@@ -84,37 +119,63 @@ shared<Texture> ResourceManager::getTexture(const std::string& url)
 }
 
 
-shared<Mesh> ResourceManager::getMesh(const std::string& url)
+shared<Mesh> ResourceManager::getOrCreateMesh(const std::string& url)
 {
-	auto existing = meshes.find(url);
-	if (existing != meshes.end())
-		return existing->second;
+	auto existing = findMesh(url);
+	if (existing)
+		return existing;
 	auto mesh = MeshFactory::create();
 	meshes[url] = mesh;
 	return mesh;
 }
 
 
-shared<Mesh> ResourceManager::getMesh()
+shared<Mesh> ResourceManager::getOrCreateMesh()
 {
 	auto url = calculateAutoUrl();
-	return getMesh(url);
+	return getOrCreateMesh(url);
 }
 
 
-shared<Model> ResourceManager::getModel(const std::string& url)
+shared<Model> ResourceManager::getOrCreateModel(const std::string& url)
 {
-	auto existing = models.find(url);
-	if (existing != models.end())
-		return existing->second;
+	auto existing = findModel(url);
+	if (existing)
+		return existing;
 	auto model = ModelFactory::create();
 	models[url] = model;
 	return model;
 }
 
 
-shared<Model> ResourceManager::getModel()
+shared<Model> ResourceManager::getOrCreateModel()
 {
 	auto url = calculateAutoUrl();
-	return getModel(url);
+	return getOrCreateModel(url);
+}
+
+
+template <typename T>
+static void cleanUnusedResources(std::map<std::string, shared<T>> &resources)
+{
+	auto urls = std::unordered_set<std::string>();
+	for (auto &it : resources)
+	{
+		if (it.second.use_count() == 1)
+			urls.insert(it.first);
+	}
+	for (auto &url : urls)
+		resources.erase(url);
+}
+
+
+void ResourceManager::cleanUnusedResources()
+{
+	// Clean in order of references. I.e. models reference materials,
+	// materials reference effects, etc.
+	::cleanUnusedResources(models);
+	::cleanUnusedResources(materials);
+	::cleanUnusedResources(effects);
+	::cleanUnusedResources(meshes);
+	::cleanUnusedResources(textures);
 }

@@ -20,7 +20,7 @@ namespace solo
 		template <typename T> T* addComponent()
 		{
 			auto cmp = NEW<T>(this);
-			auto base = CAST_PTR_STATIC<Component>(cmp);
+			auto base = STATIC_CAST<Component>(cmp);
 			scene->addComponent(this, base);
 			return cmp.get();
 		}

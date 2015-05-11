@@ -12,5 +12,6 @@
     <ClInclude Include="..\tests\test1\ManualTest.h" />
     <ClInclude Include="..\tests\test1\Shaders.h" />
     <ClInclude Include="..\tests\test1\FileSystemTest.h" />
+    <ClInclude Include="..\tests\test1\ResourcesTest.h" />
   </ItemGroup>
 </Project>

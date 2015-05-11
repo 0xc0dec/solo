@@ -79,7 +79,7 @@ std::vector<shared<Camera>> Scene::getCameras()
 		for (auto component : nodeComponents.second)
 		{
 			if (component.second->getTypeId() == Camera::getId())
-				result.push_back(CAST_PTR_STATIC<Camera>(component.second));
+				result.push_back(STATIC_CAST<Camera>(component.second));
 		}
 	}
 	return result;

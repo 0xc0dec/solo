@@ -16,13 +16,21 @@ namespace solo
 	public:
 		~ResourceManager() {}
 
-		shared<Effect> getEffect(const std::string &vsSrc, const std::string &fsSrc);
-		shared<Material> getMaterial(shared<Effect> effect);
-		shared<Texture> getTexture(const std::string& url);
-		shared<Mesh> getMesh(const std::string& url);
-		shared<Mesh> getMesh();
-		shared<Model> getModel(const std::string& url);
-		shared<Model> getModel();
+		shared<Effect> findEffect(const std::string &url);
+		shared<Material> findMaterial(const std::string &url);
+		shared<Texture> findTexture(const std::string &url);
+		shared<Mesh> findMesh(const std::string &url);
+		shared<Model> findModel(const std::string &url);
+
+		shared<Effect> getOrCreateEffect(const std::string &vsSrc, const std::string &fsSrc);
+		shared<Material> getOrCreateMaterial(shared<Effect> effect);
+		shared<Texture> getOrCreateTexture(const std::string& url);
+		shared<Mesh> getOrCreateMesh(const std::string& url);
+		shared<Mesh> getOrCreateMesh();
+		shared<Model> getOrCreateModel(const std::string& url);
+		shared<Model> getOrCreateModel();
+
+		void cleanUnusedResources();
 
 	private:
 		friend class ResourceManagerFactory;

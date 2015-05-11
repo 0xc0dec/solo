@@ -142,24 +142,24 @@ public:
 	{
 		auto canvasSize = device->getCanvasSize();
 
-		auto effRare = resManager->getEffect(vsBasic, fsRare);
-		matRare = resManager->getMaterial(effRare);
+		auto effRare = resManager->getOrCreateEffect(vsBasic, fsRare);
+		matRare = resManager->getOrCreateMaterial(effRare);
 		matRare->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
 		matRare->getParameter("canvasWidth")->setValue(canvasSize.x);
 		matRare->getParameter("canvasHeight")->setValue(canvasSize.y);
 		matRare->getParameter("time")->bindValue<float>([this](const RenderContext& context) -> float { return this->device->getLifetime(); });
 
-		auto effTexture = resManager->getEffect(vsBasic, fsTexture);
-		auto texture = std::dynamic_pointer_cast<Texture2D>(resManager->getTexture("../data/Freeman.png"));
+		auto effTexture = resManager->getOrCreateEffect(vsBasic, fsTexture);
+		auto texture = DYNAMIC_CAST<Texture2D>(resManager->getOrCreateTexture("../data/Freeman.png"));
 		texture->generateMipmaps();
 		texture->setFilterMode(Texture::Filter::LinearMipmapNearest, Texture::Filter::LinearMipmapLinear);
-		matTexture = resManager->getMaterial(effTexture);
+		matTexture = resManager->getOrCreateMaterial(effTexture);
 		matTexture->setPolygonFace(RenderState::PolygonFace::All);
 		matTexture->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
 		matTexture->getParameter("mainTex")->setValue(texture);
 
-		auto effChecker = resManager->getEffect(vsBasic, fsChecker);
-		matChecker = resManager->getMaterial(effChecker);
+		auto effChecker = resManager->getOrCreateEffect(vsBasic, fsChecker);
+		matChecker = resManager->getOrCreateMaterial(effChecker);
 		matChecker->setPolygonFace(RenderState::PolygonFace::All);
 		matChecker->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
 		matChecker->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
@@ -211,7 +211,7 @@ public:
 
 	Node* createQuad()
 	{
-		auto mesh = resManager->getMesh();
+		auto mesh = resManager->getOrCreateMesh();
 		mesh->setVertices(
 		{
 			{ -1, -1, 0 },
@@ -239,7 +239,7 @@ public:
 			0, 2, 3
 		});
 
-		auto quadModel = resManager->getModel();
+		auto quadModel = resManager->getOrCreateModel();
 		quadModel->addMesh(mesh);
 
 		auto node = scene->createNode();

@@ -3,7 +3,9 @@
 #include "TransformTest.h"
 #include "DeviceTest.h"
 #include "FileSystemTest.h"
+#include "ResourcesTest.h"
 #include "ManualTest.h"
+
 
 using namespace solo;
 
@@ -22,6 +24,7 @@ public:
 		tests.push_back(NEW2(TransformTest, engine));
 		tests.push_back(NEW2(DeviceTest, engine));
 		tests.push_back(NEW2(FileSystemTest, engine));
+		tests.push_back(NEW2(ResourcesTest, engine));
 		tests.push_back(NEW2(ManualTest, engine));
 		for (auto test : tests)
 			test->run();
