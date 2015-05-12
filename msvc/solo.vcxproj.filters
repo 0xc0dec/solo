@@ -351,6 +351,9 @@
     <ClCompile Include="..\external\png\src\pngwutil.c">
       <Filter>src\external\png</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SoloTexture2D.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

@@ -2,16 +2,12 @@
 
 using namespace solo;
 
-OpenGLTexture2D::OpenGLTexture2D(ColorFormat format, std::vector<byte> data, unsigned width, unsigned height)
+
+OpenGLTexture2D::OpenGLTexture2D()
 {
 	glGenTextures(1, &handle);
 	if (!handle)
 		THROW_FMT(EngineException, "Failed to obtain texture handle");
-
-	glBindTexture(GL_TEXTURE_2D, handle);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glTexImage2D(GL_TEXTURE_2D, 0, toGLColorFormat(format), width, height, 0, toGLColorFormat(format), GL_UNSIGNED_BYTE, data.data());
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
@@ -78,6 +74,15 @@ void OpenGLTexture2D::apply()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, toGLFilter(magFilter));
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, toGLWrapMode(horizontalWrap));
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, toGLWrapMode(verticalWrap));
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy);
+}
+
+
+void OpenGLTexture2D::setData(ColorFormat format, const std::vector<byte> &data, unsigned width, unsigned height)
+{
+	glBindTexture(GL_TEXTURE_2D, handle);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, toGLColorFormat(format), width, height, 0, toGLColorFormat(format), GL_UNSIGNED_BYTE, data.data());
 }
 
 

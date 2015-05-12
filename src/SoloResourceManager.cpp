@@ -171,7 +171,7 @@ static void cleanUnusedResources(std::map<std::string, shared<T>> &resources)
 
 void ResourceManager::cleanUnusedResources()
 {
-	// Clean in order of references. I.e. models reference materials,
+	// Clean in order of reference hierarchy. I.e. models reference materials,
 	// materials reference effects, etc.
 	::cleanUnusedResources(models);
 	::cleanUnusedResources(materials);

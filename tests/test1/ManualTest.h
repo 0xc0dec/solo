@@ -152,7 +152,8 @@ public:
 		auto effTexture = resManager->getOrCreateEffect(vsBasic, fsTexture);
 		auto texture = DYNAMIC_CAST<Texture2D>(resManager->getOrCreateTexture("../data/Freeman.png"));
 		texture->generateMipmaps();
-		texture->setFilterMode(Texture::Filter::LinearMipmapNearest, Texture::Filter::LinearMipmapLinear);
+		texture->setFilterMode(Texture2D::Filter::Linear, Texture2D::Filter::Linear);
+		texture->setAnisotropyLevel(8);
 		matTexture = resManager->getOrCreateMaterial(effTexture);
 		matTexture->setPolygonFace(RenderState::PolygonFace::All);
 		matTexture->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);

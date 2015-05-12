@@ -7,6 +7,7 @@
 
 using namespace solo;
 
+
 const unsigned DIRTY_BIT_VIEW = 1;
 const unsigned DIRTY_BIT_PROJ = 2;
 const unsigned DIRTY_BIT_VIEW_PROJ = 4;

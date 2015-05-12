@@ -2,7 +2,7 @@
 #include "SoloPNGTextureLoader.h"
 #include "SoloEngine.h"
 #include "SoloFileSystem.h"
-#include "SoloTexture.h"
+#include "SoloTexture2D.h"
 
 using namespace solo;
 
@@ -77,5 +77,7 @@ shared<Texture2D> PNGTextureLoader::load2D(const std::string& url)
 
 	png_destroy_read_struct(&png, &info, nullptr);
 
-	return TextureFactory::create2D(colorFormat, data, width, height);
+	auto tex = TextureFactory::create2D();
+	tex->setData(colorFormat, data, width, height);
+	return tex;
 }

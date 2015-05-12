@@ -133,6 +133,7 @@
     <ClCompile Include="..\src\SoloScene.cpp" />
     <ClCompile Include="..\src\SoloEffect.cpp" />
     <ClCompile Include="..\src\SoloTexture.cpp" />
+    <ClCompile Include="..\src\SoloTexture2D.cpp" />
     <ClCompile Include="..\src\SoloTransform.cpp" />
     <ClCompile Include="..\src\SoloVector2.cpp" />
     <ClCompile Include="..\src\SoloVector3.cpp" />

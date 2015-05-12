@@ -3,6 +3,7 @@
 
 using namespace solo;
 
+
 const unsigned DIRTY_BIT_POSITION = 1;
 const unsigned DIRTY_BIT_ROTATION = 2;
 const unsigned DIRTY_BIT_SCALE = 4;

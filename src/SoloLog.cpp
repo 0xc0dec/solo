@@ -3,6 +3,7 @@
 
 using namespace solo;
 
+
 Log::Log(const std::string &msg, LogLevel level):
 	level(level), message(msg)
 {
