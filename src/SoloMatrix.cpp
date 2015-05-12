@@ -752,27 +752,9 @@ bool Matrix::isIdentity() const
 }
 
 
-void Matrix::multiply(float scalar)
-{
-	multiply(scalar, this);
-}
-
-
-void Matrix::multiply(float scalar, Matrix* dst) const
-{
-	multiply(*this, scalar, dst);
-}
-
-
 void Matrix::multiply(const Matrix& m, float scalar, Matrix* dst)
 {
 	Math::multiplyMatrix(m.m, scalar, dst->m);
-}
-
-
-void Matrix::multiply(const Matrix& m)
-{
-	multiply(*this, m, this);
 }
 
 
