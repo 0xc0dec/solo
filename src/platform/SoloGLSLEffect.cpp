@@ -19,13 +19,15 @@ GLSLEffect::GLSLEffect(const std::string &vsSrc, const std::string &fsSrc)
 
 GLSLEffect::~GLSLEffect()
 {
-	glDeleteProgram(program);
+	if (program)
+		glDeleteProgram(program);
 }
 
 
 void GLSLEffect::bind()
 {
-	glUseProgram(program);
+	if (program)
+		glUseProgram(program);
 }
 
 
