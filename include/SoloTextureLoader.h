@@ -5,6 +5,7 @@
 namespace solo
 {
 	class Texture2D;
+	class FileSystem;
 
 	class TextureLoader
 	{
@@ -15,7 +16,9 @@ namespace solo
 		virtual shared<Texture2D> load2D(const std::string& url) = 0;
 
 	protected:
-		TextureLoader() {}
+		TextureLoader(FileSystem *fs): fs(fs) {}
+
+		FileSystem *fs;
 
 	private:
 		TextureLoader(const TextureLoader& other) = delete;

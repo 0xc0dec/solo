@@ -148,6 +148,12 @@
     <ClInclude Include="..\include\SoloEngineCreationArgs.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloMeshLoader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloObjMeshLoader.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">
@@ -352,6 +358,9 @@
       <Filter>src\external\png</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloTexture2D.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloObjMeshLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -10,6 +10,8 @@ namespace solo
 	class Model;
 	class Texture;
 	class TextureLoader;
+	class MeshLoader;
+	class Engine;
 
 	class ResourceManager
 	{
@@ -24,8 +26,8 @@ namespace solo
 
 		shared<Effect> getOrCreateEffect(const std::string &vsSrc, const std::string &fsSrc);
 		shared<Material> getOrCreateMaterial(shared<Effect> effect);
-		shared<Texture> getOrCreateTexture(const std::string& url);
-		shared<Mesh> getOrCreateMesh(const std::string& url);
+		shared<Texture> getOrLoadTexture(const std::string& url);
+		shared<Mesh> getOrLoadMesh(const std::string& url);
 		shared<Mesh> getOrCreateMesh();
 		shared<Model> getOrCreateModel(const std::string& url);
 		shared<Model> getOrCreateModel();
@@ -35,7 +37,7 @@ namespace solo
 	private:
 		friend class ResourceManagerFactory;
 
-		ResourceManager();
+		ResourceManager(Engine *engine);
 		ResourceManager(const ResourceManager& other) = delete;
 		ResourceManager(ResourceManager&& other) = delete;
 		ResourceManager& operator=(const ResourceManager& other) = delete;
@@ -44,6 +46,8 @@ namespace solo
 		std::string calculateAutoUrl();
 		std::string findEffectUrl(shared<Effect> effect) const;
 
+		Engine *engine;
+
 		std::map<std::string, shared<Effect>> effects;
 		std::map<std::string, shared<Material>> materials;
 		std::map<std::string, shared<Mesh>> meshes;
@@ -51,6 +55,7 @@ namespace solo
 		std::map<std::string, shared<Texture>> textures;
 
 		std::vector<shared<TextureLoader>> textureLoaders;
+		std::vector<shared<MeshLoader>> meshLoaders;
 
 		size_t resourceCounter { 0 };
 	};
@@ -58,6 +63,6 @@ namespace solo
 	class ResourceManagerFactory
 	{
 		friend class Engine;
-		static shared<ResourceManager> create();
+		static shared<ResourceManager> create(Engine *engine);
 	};
 }

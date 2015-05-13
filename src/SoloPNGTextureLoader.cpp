@@ -1,6 +1,5 @@
 #include <png.h>
 #include "SoloPNGTextureLoader.h"
-#include "SoloEngine.h"
 #include "SoloFileSystem.h"
 #include "SoloTexture2D.h"
 
@@ -32,8 +31,6 @@ bool PNGTextureLoader::isLoadable(const std::string& url)
 
 shared<Texture2D> PNGTextureLoader::load2D(const std::string& url)
 {
-	auto fs = Engine::get()->getFileSystem();
-
 	auto bytes = fs->readBytes(url);
 	if (bytes.size() < 8 || png_sig_cmp(&bytes[0], 0, 8) != 0)
 		THROW_FMT(EngineException, "Failed to read PNG file ", url);

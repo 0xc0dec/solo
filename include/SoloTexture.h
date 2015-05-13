@@ -31,7 +31,7 @@ namespace solo
 
 	class TextureFactory
 	{
-		friend class PNGTextureLoader;
+		friend class PNGTextureLoader; // TODO can it be TextureLoader?
 		static shared<Texture2D> create2D();
 	};
 }

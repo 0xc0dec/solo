@@ -135,6 +135,7 @@ public:
 		createAndPlaceQuad1();
 		createAndPlaceQuad2();
 		createAndPlaceBox();
+		loadAndPlaceBox();
 		createCamera();
 	}
 
@@ -150,7 +151,7 @@ public:
 		matRare->getParameter("time")->bindValue<float>([this](const RenderContext& context) -> float { return this->device->getLifetime(); });
 
 		auto effTexture = resManager->getOrCreateEffect(vsBasic, fsTexture);
-		auto texture = DYNAMIC_CAST<Texture2D>(resManager->getOrCreateTexture("../data/Freeman.png"));
+		auto texture = DYNAMIC_CAST<Texture2D>(resManager->getOrLoadTexture("../data/Freeman.png"));
 		texture->generateMipmaps();
 		texture->setFilterMode(Texture2D::Filter::Linear, Texture2D::Filter::Linear);
 		texture->setAnisotropyLevel(8);
@@ -168,11 +169,22 @@ public:
 
 	void createAndPlaceBox()
 	{
-		auto box = createQuad();
-		rebuildQuadToBox(box);
-		box->getComponent<ModelRenderer>()->setMaterial(0, matChecker);
-		box->getComponent<Transform>()->setLocalPosition(-2, 0, 0);
-		box->addComponent<RotatorAroundWorldYAxis>();
+		auto node = createQuad();
+		rebuildQuadToBox(node);
+		node->getComponent<ModelRenderer>()->setMaterial(0, matChecker);
+		node->getComponent<Transform>()->setLocalPosition(-3, 0, 0);
+		node->addComponent<RotatorAroundWorldYAxis>();
+	}
+
+	void loadAndPlaceBox()
+	{
+		auto mesh = engine->getResourceManager()->getOrLoadMesh("../data/monkey_nouv.obj");
+		auto model = resManager->getOrCreateModel();
+		model->addMesh(mesh);
+		auto node = scene->createNode();
+		auto renderer = node->addComponent<ModelRenderer>();
+		renderer->setModel(model);
+		renderer->setMaterial(0, matChecker);
 	}
 
 	void createAndPlaceQuad2()
@@ -189,7 +201,7 @@ public:
 	{
 		auto empty = scene->createNode();
 		auto emptyTransform = empty->getComponent<Transform>();
-		emptyTransform->setLocalPosition(2, 0, 0);
+		emptyTransform->setLocalPosition(3, 0, 0);
 		empty->addComponent<RotatorAroundWorldYAxis>();
 
 		auto quad = createQuad();
@@ -240,12 +252,12 @@ public:
 			0, 2, 3
 		});
 
-		auto quadModel = resManager->getOrCreateModel();
-		quadModel->addMesh(mesh);
+		auto model = resManager->getOrCreateModel();
+		model->addMesh(mesh);
 
 		auto node = scene->createNode();
 		auto renderer = node->addComponent<ModelRenderer>();
-		renderer->setModel(quadModel);
+		renderer->setModel(model);
 		return node;
 	}
 

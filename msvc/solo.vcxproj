@@ -36,6 +36,7 @@
     <ClInclude Include="..\include\SoloFrustum.h" />
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\include\SoloEngineCallback.h" />
+    <ClInclude Include="..\include\SoloMeshLoader.h" />
     <ClInclude Include="..\include\SoloTextureLoader.h" />
     <ClInclude Include="..\include\SoloTexture.h" />
     <ClInclude Include="..\include\SoloLog.h" />
@@ -67,6 +68,7 @@
     <ClInclude Include="..\src\platform\SoloOpenGLMesh.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLTexture2D.h" />
     <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h" />
+    <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPNGTextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +126,7 @@
     <ClCompile Include="..\src\SoloModel.cpp" />
     <ClCompile Include="..\src\SoloModelRenderer.cpp" />
     <ClCompile Include="..\src\SoloNode.cpp" />
+    <ClCompile Include="..\src\SoloObjMeshLoader.cpp" />
     <ClCompile Include="..\src\SoloPlane.cpp" />
     <ClCompile Include="..\src\SoloPNGTextureLoader.cpp" />
     <ClCompile Include="..\src\SoloQuaternion.cpp" />
