@@ -16,6 +16,23 @@ std::list<std::pair<int, int>> supportedContextVersions =
 };
 
 
+struct WindowWithContextCreationResult
+{
+	SDL_Window *window;
+	SDL_GLContext context;
+
+	WindowWithContextCreationResult(SDL_Window* window, SDL_GLContext context):
+		window(window), context(context)
+	{
+	}
+
+	bool succeeded()
+	{
+		return window && context;
+	}
+};
+
+
 std::unordered_map<SDL_Keycode, KeyCode> keymap =
 {
 	{ SDLK_q, KeyCode::Q },
@@ -63,30 +80,56 @@ std::unordered_map<Uint8, MouseButton> mouseButtonsMap =
 };
 
 
+WindowWithContextCreationResult tryCreateWindowWithContext(bool hidden, int ctxMajorVersion, int ctxMinorVersion, EngineCreationArgs creationArgs)
+{
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, ctxMajorVersion);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, ctxMinorVersion);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, creationArgs.depth);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+	auto flags = static_cast<int>(SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
+	if (hidden)
+		flags |= SDL_WINDOW_HIDDEN;
+	auto window = SDL_CreateWindow(creationArgs.windowTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+		creationArgs.canvasWidth, creationArgs.canvasHeight, flags);
+
+	if (window)
+	{
+		auto context = SDL_GL_CreateContext(window);
+		return { window, context };
+	}
+	return { nullptr, nullptr };
+}
+
+
 SDLOpenGLDevice::SDLOpenGLDevice(EngineCreationArgs const& args):
 	Device(args)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
 		THROW_FMT(EngineException, "Failed to initialize system");
 
-	auto ctxVersion = selectContextVersion();
-	auto major = std::get<0>(ctxVersion);
-	auto minor = std::get<1>(ctxVersion);
+	auto contextVersion = selectContextVersion();
+	auto major = std::get<0>(contextVersion);
+	auto minor = std::get<1>(contextVersion);
 	INFO("Using OpenGL context version ", major, ".", minor);
 
-	auto windowWithContext = tryCreateWindowWithContext(false, major, minor);
-
-	window = std::get<0>(windowWithContext);
-	if (!window)
-		THROW_FMT(EngineException, "Failed to create device");
-
-	context = std::get<1>(windowWithContext);
-	if (!context)
-		THROW_FMT(EngineException, "Failed to init OpenGL context");
+	auto windowWithContext = tryCreateWindowWithContext(false, major, minor, creationArgs);
+	if (!windowWithContext.succeeded())
+		THROW_FMT(EngineException, "Failed to create window");
 
 	glewExperimental = true;
 	if (glewInit())
+	{
+		// TODO this code is repeated a bit in different places - refactor it
+		SDL_GL_DeleteContext(windowWithContext.context);
+		SDL_DestroyWindow(windowWithContext.window);
+		SDL_Quit();
 		THROW_FMT(EngineException, "Failed to init OpenGL extensions");
+	}
+
+	window = windowWithContext.window;
+	context = windowWithContext.context;
 
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
@@ -100,43 +143,16 @@ std::tuple<int, int> SDLOpenGLDevice::selectContextVersion()
 	for (auto version : supportedContextVersions)
 	{
 		SDL_GLContext context = nullptr;
-		auto windowWithContext = tryCreateWindowWithContext(true, version.first, version.second);
-		auto window = std::get<0>(windowWithContext);
-		if (window)
+		auto windowWithContext = tryCreateWindowWithContext(true, version.first, version.second, creationArgs);
+		if (windowWithContext.succeeded())
 		{
-			context = std::get<1>(windowWithContext);
-			if (context)
-			{
-				SDL_DestroyWindow(window);
-				SDL_GL_DeleteContext(context);
-				return version;
-			}
+			SDL_GL_DeleteContext(context);
+			SDL_DestroyWindow(window);
+			return version;
 		}
 	}
+	SDL_Quit();
 	THROW_FMT(EngineException, "No supported OpenGL versions found");
-}
-
-
-std::tuple<SDL_Window*, SDL_GLContext> SDLOpenGLDevice::tryCreateWindowWithContext(bool hidden, int ctxMajorVersion, int ctxMinorVersion)
-{
-	SDL_Window* window;
-	SDL_GLContext context;
-
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, ctxMajorVersion);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, ctxMinorVersion);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, creationArgs.depth);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-	auto flags = static_cast<int>(SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
-	if (hidden)
-		flags |= SDL_WINDOW_HIDDEN;
-	window = SDL_CreateWindow(creationArgs.windowTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-		creationArgs.canvasWidth, creationArgs.canvasHeight, flags);
-	if (window)
-		context = SDL_GL_CreateContext(window);
-
-	return std::make_tuple(window, context);
 }
 
 
