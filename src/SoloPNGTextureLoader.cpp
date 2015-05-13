@@ -1,12 +1,12 @@
 #include <png.h>
-#include "SoloPNGTextureLoader.h"
+#include "SoloPngTextureLoader.h"
 #include "SoloFileSystem.h"
 #include "SoloTexture2D.h"
 
 using namespace solo;
 
 
-struct PNGReadContext
+struct PngReadContext
 {
 	std::vector<byte>* bytes;
 	unsigned int offset;
@@ -15,7 +15,7 @@ struct PNGReadContext
 
 static void readCallback(png_structp png, png_bytep data, png_size_t length)
 {
-	auto context = reinterpret_cast<PNGReadContext*>(png_get_io_ptr(png));
+	auto context = reinterpret_cast<PngReadContext*>(png_get_io_ptr(png));
 	if (!context)
 		png_error(png, "Error reading PNG.");
 	memcpy(data, context->bytes->data() + context->offset, length);
@@ -23,13 +23,13 @@ static void readCallback(png_structp png, png_bytep data, png_size_t length)
 }
 
 
-bool PNGTextureLoader::isLoadable(const std::string& url)
+bool PngTextureLoader::isLoadable(const std::string& url)
 {
 	return url.find(".png", url.size() - 5) != std::string::npos;
 }
 
 
-shared<Texture2D> PNGTextureLoader::load2D(const std::string& url)
+shared<Texture2D> PngTextureLoader::load2D(const std::string& url)
 {
 	auto bytes = fs->readBytes(url);
 	if (bytes.size() < 8 || png_sig_cmp(&bytes[0], 0, 8) != 0)
@@ -43,7 +43,7 @@ shared<Texture2D> PNGTextureLoader::load2D(const std::string& url)
 		THROW_FMT(EngineException, "Failed to read PNG file ", url);
 	}
 
-	std::unique_ptr<PNGReadContext> context(new PNGReadContext{ &bytes, 8 });
+	std::unique_ptr<PngReadContext> context(new PngReadContext{ &bytes, 8 });
 	png_set_read_fn(png, reinterpret_cast<png_voidp>(context.get()), readCallback);
 	png_set_sig_bytes(png, 8);
 	png_read_png(png, info, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND, nullptr);

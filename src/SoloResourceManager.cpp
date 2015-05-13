@@ -3,7 +3,7 @@
 #include "SoloMaterial.h"
 #include "SoloMesh.h"
 #include "SoloModel.h"
-#include "SoloPNGTextureLoader.h"
+#include "SoloPngTextureLoader.h"
 #include "SoloObjMeshLoader.h"
 #include "SoloTexture2D.h"
 #include "SoloEngine.h"
@@ -21,7 +21,7 @@ shared<ResourceManager> ResourceManagerFactory::create(Engine *engine)
 ResourceManager::ResourceManager(Engine *engine):
 	engine(engine)
 {
-	textureLoaders.push_back(NEW<PNGTextureLoader>(engine->getFileSystem()));
+	textureLoaders.push_back(NEW<PngTextureLoader>(engine->getFileSystem()));
 	meshLoaders.push_back(NEW<ObjMeshLoader>(engine->getFileSystem()));
 }
 

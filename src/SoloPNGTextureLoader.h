@@ -4,10 +4,10 @@
 
 namespace solo
 {
-	class PNGTextureLoader : public TextureLoader
+	class PngTextureLoader : public TextureLoader
 	{
 	public:
-		explicit PNGTextureLoader(FileSystem* fs):
+		explicit PngTextureLoader(FileSystem* fs):
 			TextureLoader(fs)
 		{
 		}

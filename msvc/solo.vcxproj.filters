@@ -142,9 +142,6 @@
     <ClInclude Include="..\include\SoloTextureLoader.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloPNGTextureLoader.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloEngineCreationArgs.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -152,6 +149,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\src\SoloObjMeshLoader.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloPngTextureLoader.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
@@ -276,9 +276,6 @@
     <ClCompile Include="..\src\SoloTexture.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloPNGTextureLoader.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\external\zlib\src\adler32.c">
       <Filter>src\external\zlib</Filter>
     </ClCompile>
@@ -361,6 +358,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloObjMeshLoader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloPngTextureLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
