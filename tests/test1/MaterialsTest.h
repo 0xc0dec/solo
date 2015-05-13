@@ -14,7 +14,7 @@ const char * vs = R"s(
 	{
 		float nonsense = testFloat * texture(testSampler, testVector.xy).x;
 		gl_Position = vec4(nonsense, testArray[0], testArray[1], testArray[2]);
-	}"
+	}
 )s";
 
 const char *fs = R"s(
@@ -25,7 +25,7 @@ const char *fs = R"s(
 	void main()
 	{
 		color = vec4(1, 1, 1, 1);
-	}"
+	}
 )s";
 
 

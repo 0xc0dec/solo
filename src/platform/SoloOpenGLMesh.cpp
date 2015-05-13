@@ -70,7 +70,7 @@ void OpenGLMesh::setVertices(const std::vector<Vector3>& vertices)
 	if (!vertices.empty())
 	{
 		glBindVertexArray(vertexArrayHandle);
-		vertexBufferHandle = buildArrayBuffer(vertexBufferHandle, vertices, 3, 0, GL_FLOAT);
+		vertexBufferHandle = buildArrayBuffer(vertexBufferHandle, vertices, 3, 0, GL_FLOAT); // binds to the zero vertex attribute
 		verticesCount = vertices.size();
 	}
 }
@@ -81,7 +81,7 @@ void OpenGLMesh::setNormals(const std::vector<Vector3>& normals)
 	if (!normals.empty())
 	{
 		glBindVertexArray(vertexArrayHandle);
-		normalBufferHandle = buildArrayBuffer(normalBufferHandle, normals, 3, 1, GL_FLOAT);
+		normalBufferHandle = buildArrayBuffer(normalBufferHandle, normals, 3, 1, GL_FLOAT); // binds to the first vertex attribute
 		normalsCount = normals.size();
 	}
 }
@@ -92,7 +92,7 @@ void OpenGLMesh::setUVs(const std::vector<Vector2>& uvs)
 	if (!uvs.empty())
 	{
 		glBindVertexArray(vertexArrayHandle);
-		uvBufferHandle = buildArrayBuffer(uvBufferHandle, uvs, 2, 2, GL_FLOAT);
+		uvBufferHandle = buildArrayBuffer(uvBufferHandle, uvs, 2, 2, GL_FLOAT); // binds to the second vertex attribute
 		uvsCount = uvs.size();
 	}
 }

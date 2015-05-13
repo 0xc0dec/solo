@@ -226,6 +226,7 @@ public:
 		cameraNode->addComponent<InputWatcher>();
 		auto camera = cameraNode->addComponent<Camera>();
 		camera->setClearColor(0, 0.6f, 0.6f, 1);
+		camera->setNear(0.05f);
 	}
 
 	Node* createQuad()
