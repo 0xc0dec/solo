@@ -1,4 +1,3 @@
-* Move effect initialization into a separate method. Currently throwing exceptions from the constructor requires cleanup code to accompany each such "throw".
-* Models loading
+* Make shader to test normals
 * Use position, rotation and scale to calculate the corresponding getter method results (instead of the matrix)
 * Remove methods like multiply() from math classes

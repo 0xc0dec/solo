@@ -135,7 +135,7 @@ public:
 		createAndPlaceQuad1();
 		createAndPlaceQuad2();
 		createAndPlaceBox();
-		loadAndPlaceBox();
+		loadAndPlaceModel();
 		createCamera();
 	}
 
@@ -176,7 +176,7 @@ public:
 		node->addComponent<RotatorAroundWorldYAxis>();
 	}
 
-	void loadAndPlaceBox()
+	void loadAndPlaceModel()
 	{
 		auto mesh = engine->getResourceManager()->getOrLoadMesh("../data/monkey_nouv.obj");
 		auto model = resManager->getOrCreateModel();
