@@ -144,53 +144,59 @@ public:
 		auto canvasSize = device->getCanvasSize();
 
 		auto effRare = resManager->getOrCreateEffect(vsBasic, fsRare);
-		matRare = resManager->getOrCreateMaterial(effRare);
-		matRare->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
-		matRare->getParameter("canvasWidth")->setValue(canvasSize.x);
-		matRare->getParameter("canvasHeight")->setValue(canvasSize.y);
-		matRare->getParameter("time")->bindValue<float>([this](const RenderContext& context) -> float { return this->device->getLifetime(); });
+		rareMaterial = resManager->getOrCreateMaterial(effRare);
+		rareMaterial->getParameter("worldViewProjMatrix")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
+		rareMaterial->getParameter("canvasWidth")->setValue(canvasSize.x);
+		rareMaterial->getParameter("canvasHeight")->setValue(canvasSize.y);
+		rareMaterial->getParameter("time")->bindValue<float>([this](const RenderContext& context) -> float { return this->device->getLifetime(); });
 
 		auto effTexture = resManager->getOrCreateEffect(vsBasic, fsTexture);
 		auto texture = DYNAMIC_CAST<Texture2D>(resManager->getOrLoadTexture("../data/Freeman.png"));
 		texture->generateMipmaps();
 		texture->setFilterMode(Texture2D::Filter::Linear, Texture2D::Filter::Linear);
 		texture->setAnisotropyLevel(8);
-		matTexture = resManager->getOrCreateMaterial(effTexture);
-		matTexture->setPolygonFace(RenderState::PolygonFace::All);
-		matTexture->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
-		matTexture->getParameter("mainTex")->setValue(texture);
+		simpleTextureMaterial = resManager->getOrCreateMaterial(effTexture);
+		simpleTextureMaterial->setPolygonFace(RenderState::PolygonFace::All);
+		simpleTextureMaterial->getParameter("worldViewProjMatrix")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
+		simpleTextureMaterial->getParameter("mainTex")->setValue(texture);
 
 		auto effChecker = resManager->getOrCreateEffect(vsBasic, fsChecker);
-		matChecker = resManager->getOrCreateMaterial(effChecker);
-		matChecker->setPolygonFace(RenderState::PolygonFace::All);
-		matChecker->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
-		matChecker->getParameter("worldViewProj")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
+		checkerMaterial = resManager->getOrCreateMaterial(effChecker);
+		checkerMaterial->setPolygonFace(RenderState::PolygonFace::All);
+		checkerMaterial->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
+		checkerMaterial->getParameter("worldViewProjMatrix")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
+
+		auto effTextureWithLighting = resManager->getOrCreateEffect(vsBasicLighting, fsTextureWithLighting);
+		simpleLightingMaterial = resManager->getOrCreateMaterial(effTextureWithLighting);
+		simpleLightingMaterial->setPolygonFace(RenderState::PolygonFace::All);
+		simpleLightingMaterial->getParameter("worldViewProjMatrix")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
+		simpleLightingMaterial->getParameter("normalMatrix")->bindValue(MaterialParameter::AutoBinding::InverseTransposedWorldMatrix);
 	}
 
 	void createAndPlaceBox()
 	{
 		auto node = createQuad();
 		rebuildQuadToBox(node);
-		node->getComponent<ModelRenderer>()->setMaterial(0, matChecker);
+		node->getComponent<ModelRenderer>()->setMaterial(0, checkerMaterial);
 		node->getComponent<Transform>()->setLocalPosition(-3, 0, 0);
 		node->addComponent<RotatorAroundWorldYAxis>();
 	}
 
 	void loadAndPlaceModel()
 	{
-		auto mesh = engine->getResourceManager()->getOrLoadMesh("../data/monkey_nouv.obj");
+		auto mesh = engine->getResourceManager()->getOrLoadMesh("../data/monkey.obj");
 		auto model = resManager->getOrCreateModel();
 		model->addMesh(mesh);
 		auto node = scene->createNode();
 		auto renderer = node->addComponent<ModelRenderer>();
 		renderer->setModel(model);
-		renderer->setMaterial(0, matChecker);
+		renderer->setMaterial(0, simpleLightingMaterial);
 	}
 
 	void createAndPlaceQuad2()
 	{
 		auto quad = createQuad();
-		quad->getComponent<ModelRenderer>()->setMaterial(0, matRare);
+		quad->getComponent<ModelRenderer>()->setMaterial(0, rareMaterial);
 		quad->getComponent<Transform>()->setLocalPosition(0, 0, -10);
 
 		auto canvasSize = device->getCanvasSize();
@@ -208,7 +214,7 @@ public:
 		quad->addComponent<RotatorAroundLocalXAxis>();
 		quad->getComponent<Transform>()->setParent(emptyTransform);
 		quad->getComponent<Transform>()->setLocalPosition(1, 0, 0);
-		quad->getComponent<ModelRenderer>()->setMaterial(0, matTexture);
+		quad->getComponent<ModelRenderer>()->setMaterial(0, simpleTextureMaterial);
 	}
 
 	void createCamera()
@@ -297,8 +303,9 @@ public:
 	}
 
 private:
-	shared<Material> matChecker;
-	shared<Material> matRare;
-	shared<Material> matTexture;
+	shared<Material> checkerMaterial;
+	shared<Material> rareMaterial;
+	shared<Material> simpleTextureMaterial;
+	shared<Material> simpleLightingMaterial;
 	ResourceManager* resManager;
 };

@@ -4,18 +4,56 @@ const char *vsBasic = R"s(
 	#version 330 core
 
 	layout (location = 0) in vec4 position;
+	layout (location = 1) in vec3 normal;
 	layout (location = 2) in vec2 uv;
 
-	uniform mat4 worldViewProj;
+	uniform mat4 worldViewProjMatrix;
 	out vec2 uv0;
+	out vec3 n;
 
 	void main()
 	{
-		gl_Position = worldViewProj * position;
+		gl_Position = worldViewProjMatrix * position;
 		uv0 = uv;
 	}
 )s";
 
+
+const char *vsBasicLighting = R"s(
+	#version 330 core
+
+	layout (location = 0) in vec4 position;
+	layout (location = 1) in vec3 normal;
+	layout (location = 2) in vec2 uv;
+
+	uniform mat4 worldViewProjMatrix;
+	uniform mat4 normalMatrix;
+	out vec2 uv0;
+	out vec3 n;
+
+	void main()
+	{
+		gl_Position = worldViewProjMatrix * position;
+		uv0 = uv;
+		n = normalize((normalMatrix * vec4(normal, 1)).xyz);
+	}
+)s";
+
+const char *fsTextureWithLighting = R"s(
+	#version 330 core
+	
+	uniform sampler2D mainTex;
+	
+	in vec2 uv0;
+	in vec3 n;
+	out vec4 fragColor;
+	
+	void main()
+	{
+		vec4 color = texture(mainTex, uv0);
+		fragColor = color * dot(vec3(1, 1, 1), n) / (length(vec3(1, 1, 1)) * length(n));
+	}
+)s";
 
 const char *fsChecker = R"s(
 	#version 330 core
