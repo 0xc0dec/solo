@@ -7,7 +7,6 @@
 *.tlog
 *.ilk
 *.idb
-*.obj
 build*
 *DS_Store*
 *DotSettings.user
