@@ -4,6 +4,13 @@
 using namespace solo;
 
 
+std::map<GLuint, std::string> shaderTypeNames =
+{
+	{ GL_VERTEX_SHADER, "vertex" },
+	{ GL_FRAGMENT_SHADER, "fragment" }
+};
+
+
 GLSLEffect::GLSLEffect(const std::string &vsSrc, const std::string &fsSrc)
 {
 	auto vs = compileShader(GL_VERTEX_SHADER, vsSrc);
@@ -38,16 +45,14 @@ GLint GLSLEffect::createProgram(GLuint vs, GLuint fs)
 	glAttachShader(program, fs);
 	glLinkProgram(program);
 
-	int logLength;
-	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
-	
-	std::vector<GLchar> log(logLength);
-	glGetProgramInfoLog(program, logLength, nullptr, log.data());
-	
 	int status;
-	glGetProgramiv(program, GL_COMPILE_STATUS, &status);
+	glGetProgramiv(program, GL_LINK_STATUS, &status);
 	if (status == GL_FALSE)
 	{
+		int logLength;
+		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
+		std::vector<GLchar> log(logLength);
+		glGetProgramInfoLog(program, logLength, nullptr, log.data());
 		glDeleteProgram(program);
 		THROW(EffectCompilationException, "Failed to link effect program", log.data());
 	}
@@ -64,18 +69,16 @@ GLint GLSLEffect::compileShader(GLuint type, std::string src)
 	glShaderSource(shader, 1, &rawSrc, nullptr);
 	glCompileShader(shader);
 
-	int logLength;
-	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-	
-	std::vector<GLchar> log(logLength);
-	glGetShaderInfoLog(shader, logLength, nullptr, log.data());
-
 	int status;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 	if (status == GL_FALSE)
 	{
+		int logLength;
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
+		std::vector<GLchar> log(logLength);
+		glGetShaderInfoLog(shader, logLength, nullptr, log.data());
 		glDeleteShader(shader);
-		THROW(EffectCompilationException, "Failed to compile shader", log.data());
+		THROW(EffectCompilationException, FORMAT("Failed to compile ", shaderTypeNames[type], " shader"), log.data());
 	}
 
 	return shader;

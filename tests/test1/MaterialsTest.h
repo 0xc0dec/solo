@@ -2,29 +2,31 @@
 
 #include "TestBase.h"
 
-const char * vs =
-	"#version 330 core\n"
+const char * vs = R"s(
+	#version 330 core
 
-	"uniform float testFloat;\n"
-	"uniform sampler2D testSampler;\n"
-	"uniform float testArray[3];\n"
-	"uniform vec3 testVector;\n"
+	uniform float testFloat;
+	uniform sampler2D testSampler;
+	uniform float testArray[3];
+	uniform vec3 testVector;
 
-	"void main()\n"
-	"{\n"
-	"	float nonsense = testFloat * texture(testSampler, testVector.xy).x;\n"
-	"	gl_Position = vec4(nonsense, testArray[0], testArray[1], testArray[2]);\n"
-	"}";
+	void main()
+	{
+		float nonsense = testFloat * texture(testSampler, testVector.xy).x;
+		gl_Position = vec4(nonsense, testArray[0], testArray[1], testArray[2]);
+	}"
+)s";
 
-const char *fs =
-	"#version 330 core\n"
+const char *fs = R"s(
+	#version 330 core
 
-	"layout (location = 0) out vec4 color;\n"
+	layout (location = 0) out vec4 color;
 
-	"void main()\n"
-	"{\n"
-	"	color = vec4(1, 1, 1, 1);\n"
-	"}";
+	void main()
+	{
+		color = vec4(1, 1, 1, 1);
+	}"
+)s";
 
 
 class MaterialsTest : public TestBase
@@ -37,8 +39,8 @@ public:
 	virtual void run() override
 	{
 		testEffectVariablesDetection();
-		testCompiledSuccessfully();
-		testCompilationFails();
+		testEffectCompiledSuccessfully();
+		testEffectCompilationFails();
 	}
 
 	void testEffectVariablesDetection()
@@ -55,19 +57,19 @@ public:
 		assert(var3->getName() == "testArray");
 	}
 
-	void testCompiledSuccessfully()
+	void testEffectCompiledSuccessfully()
 	{
 		engine->getResourceManager()->getOrCreateEffect(vs, fs);
 	}
 
-	void testCompilationFails()
+	void testEffectCompilationFails()
 	{
-		testFailedCompilation("sdfsdf", fs);
-		testFailedCompilation(vs, "sdfsdf");
+		testFailedCompilation("sdfsdf", fs, "vertex");
+		testFailedCompilation(vs, "sdfsdf", "fragment");
 	}
 
 private:
-	void testFailedCompilation(const std::string& vertex, const std::string& fragment)
+	void testFailedCompilation(const std::string& vertex, const std::string& fragment, const std::string& failedShaderTypeName)
 	{
 		try
 		{
@@ -75,7 +77,10 @@ private:
 		}
 		catch (EffectCompilationException &e)
 		{
-			assert(e.message == "Failed to compile shader");
+			assert(
+				e.message == FORMAT("Failed to compile ", failedShaderTypeName, " shader") ||
+				e.message == FORMAT("Failed to link effect program")
+			);
 			return;
 		}
 		assert(false);
