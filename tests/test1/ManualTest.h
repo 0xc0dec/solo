@@ -184,7 +184,7 @@ public:
 
 	void loadAndPlaceModel()
 	{
-		auto mesh = engine->getResourceManager()->getOrLoadMesh("../data/monkey.obj");
+		auto mesh = engine->getResourceManager()->getOrLoadMesh("../data/monkey_hires.obj");
 		auto model = resManager->getOrCreateModel();
 		model->addMesh(mesh);
 		auto node = scene->createNode();
