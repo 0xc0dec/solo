@@ -113,7 +113,7 @@ std::tuple<int, int> SDLOpenGLDevice::selectContextVersion()
 			}
 		}
 	}
-	THROW_FMT(EngineException, "None of the supported OpenGL versions found");
+	THROW_FMT(EngineException, "No supported OpenGL versions found");
 }
 
 
