@@ -32,8 +32,8 @@ namespace solo
 		// in radians
 		static float angle(const Vector3& v1, const Vector3& v2);
 
-		void add(const Vector3& v);
 		static void add(const Vector3& v1, const Vector3& v2, Vector3* dst);
+		static void subtract(const Vector3& v1, const Vector3& v2, Vector3* dst);
 
 		void clamp(const Vector3& min, const Vector3& max);
 		static void clamp(const Vector3& v, const Vector3& min, const Vector3& max, Vector3* dst);
@@ -50,8 +50,6 @@ namespace solo
 		float length() const;
 		float lengthSquared() const;
 
-		void negate();
-
 		void normalize();
 		void normalize(Vector3* dst) const;
 
@@ -61,9 +59,6 @@ namespace solo
 		void set(const float* array);
 		void set(const Vector3& v);
 		void set(const Vector3& p1, const Vector3& p2);
-
-		void subtract(const Vector3& v);
-		static void subtract(const Vector3& v1, const Vector3& v2, Vector3* dst);
 
 		void smooth(const Vector3& target, float elapsedTime, float responseTime);
 
@@ -89,33 +84,35 @@ namespace solo
 	inline Vector3 Vector3::operator+(const Vector3& v) const
 	{
 		auto result(*this);
-		result.add(v);
+		add(result, v, &result);
 		return result;
 	}
 
 	inline Vector3& Vector3::operator+=(const Vector3& v)
 	{
-		add(v);
+		add(*this, v, this);
 		return *this;
 	}
 
 	inline Vector3 Vector3::operator-(const Vector3& v) const
 	{
 		auto result(*this);
-		result.subtract(v);
+		subtract(result, v, &result);
 		return result;
 	}
 
 	inline Vector3& Vector3::operator-=(const Vector3& v)
 	{
-		subtract(v);
+		subtract(*this, v, this);
 		return *this;
 	}
 
 	inline Vector3 Vector3::operator-() const
 	{
-		auto result(*this);
-		result.negate();
+		Vector3 result;
+		result.x = -x;
+		result.y = -y;
+		result.z = -z;
 		return result;
 	}
 

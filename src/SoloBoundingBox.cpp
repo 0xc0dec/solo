@@ -64,7 +64,7 @@ void BoundingBox::getCenter(Vector3* dst) const
 {
 	dst->set(min, max);
 	dst->scale(0.5f);
-	dst->add(min);
+	*dst += min;
 }
 
 

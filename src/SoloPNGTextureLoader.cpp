@@ -23,6 +23,12 @@ static void readCallback(png_structp png, png_bytep data, png_size_t length)
 }
 
 
+PngTextureLoader::PngTextureLoader(FileSystem* fs) :
+	TextureLoader(fs)
+{
+}
+
+
 bool PngTextureLoader::isLoadable(const std::string& url)
 {
 	return url.find(".png", url.size() - 5) != std::string::npos;

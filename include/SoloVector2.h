@@ -26,8 +26,8 @@ namespace solo
 
 		static float angle(const Vector2& v1, const Vector2& v2);
 
-		void add(const Vector2& v);
 		static void add(const Vector2& v1, const Vector2& v2, Vector2* dst);
+		static void subtract(const Vector2& v1, const Vector2& v2, Vector2* dst);
 		
 		void clamp(const Vector2& min, const Vector2& max);
 		static void clamp(const Vector2& v, const Vector2& min, const Vector2& max, Vector2* dst);
@@ -55,9 +55,6 @@ namespace solo
 		void set(const float* array);
 		void set(const Vector2& v);
 		void set(const Vector2& p1, const Vector2& p2);
-
-		void subtract(const Vector2& v);
-		static void subtract(const Vector2& v1, const Vector2& v2, Vector2* dst);
 
 		void smooth(const Vector2& target, float elapsedTime, float responseTime);
 		
@@ -90,26 +87,26 @@ namespace solo
 	inline Vector2 Vector2::operator+(const Vector2& v) const
 	{
 		auto result(*this);
-		result.add(v);
+		add(result, v, &result);
 		return result;
 	}
 
 	inline Vector2& Vector2::operator+=(const Vector2& v)
 	{
-		add(v);
+		add(*this, v, this);
 		return *this;
 	}
 
 	inline Vector2 Vector2::operator-(const Vector2& v) const
 	{
 		auto result(*this);
-		result.subtract(v);
+		subtract(result, v, &result);
 		return result;
 	}
 
 	inline Vector2& Vector2::operator-=(const Vector2& v)
 	{
-		subtract(v);
+		subtract(*this, v, this);
 		return *this;
 	}
 

@@ -69,13 +69,6 @@ float Vector2::angle(const Vector2& v1, const Vector2& v2)
 }
 
 
-void Vector2::add(const Vector2& v)
-{
-	x += v.x;
-	y += v.y;
-}
-
-
 void Vector2::add(const Vector2& v1, const Vector2& v2, Vector2* dst)
 {
 	dst->x = v1.x + v2.x;
@@ -256,13 +249,6 @@ void Vector2::set(const Vector2& p1, const Vector2& p2)
 {
 	x = p2.x - p1.x;
 	y = p2.y - p1.y;
-}
-
-
-void Vector2::subtract(const Vector2& v)
-{
-	x -= v.x;
-	y -= v.y;
 }
 
 

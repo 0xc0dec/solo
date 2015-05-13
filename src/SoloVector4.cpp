@@ -99,15 +99,6 @@ float Vector4::angle(const Vector4& v1, const Vector4& v2)
 }
 
 
-void Vector4::add(const Vector4& v)
-{
-	x += v.x;
-	y += v.y;
-	z += v.z;
-	w += v.w;
-}
-
-
 void Vector4::add(const Vector4& v1, const Vector4& v2, Vector4* dst)
 {
 	dst->x = v1.x + v2.x;
@@ -223,15 +214,6 @@ float Vector4::lengthSquared() const
 }
 
 
-void Vector4::negate()
-{
-	x = -x;
-	y = -y;
-	z = -z;
-	w = -w;
-}
-
-
 Vector4& Vector4::normalize()
 {
 	normalize(this);
@@ -309,15 +291,6 @@ void Vector4::set(const Vector4& p1, const Vector4& p2)
 	y = p2.y - p1.y;
 	z = p2.z - p1.z;
 	w = p2.w - p1.w;
-}
-
-
-void Vector4::subtract(const Vector4& v)
-{
-	x -= v.x;
-	y -= v.y;
-	z -= v.z;
-	w -= v.w;
 }
 
 

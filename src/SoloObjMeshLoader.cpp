@@ -5,6 +5,12 @@
 using namespace solo;
 
 
+ObjMeshLoader::ObjMeshLoader(FileSystem* fs):
+	MeshLoader(fs)
+{
+}
+
+
 bool ObjMeshLoader::isLoadable(const std::string& url)
 {
 	return url.find(".obj", url.size() - 5) != std::string::npos;
@@ -66,7 +72,7 @@ shared<Mesh> ObjMeshLoader::load(const std::string& url)
 					ss >> dummy;
 					if (ss >> normalIndex)
 						normals.push_back(inputNormals[normalIndex - 1]);
-					auto newIndex = vertices.size() - 1;
+					auto newIndex = static_cast<unsigned short>(vertices.size() - 1);
 					uniqueIndices[three] = newIndex;
 					indices.push_back(newIndex);
 				}
