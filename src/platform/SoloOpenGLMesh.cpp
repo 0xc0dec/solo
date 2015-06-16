@@ -19,7 +19,6 @@ GLuint OpenGLMesh::buildElementArrayBuffer(GLuint existingHandle, const std::vec
 		glGenBuffers(1, &handle);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(unsigned short), elements.data(), GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	return handle;
 }
 
