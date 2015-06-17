@@ -1,4 +1,3 @@
-* Cache all matrices in the Transform class. Currently only world matrix and inverse transposed world view matrix are cached
 * Discover vertex attributes in shader and bind them by name
 * Use position, rotation and scale to calculate the corresponding getter method results (instead of the matrix)
 * Remove methods like multiply() from math classes
