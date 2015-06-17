@@ -70,11 +70,11 @@ namespace solo
 
 		const Matrix& getMatrix() const;
 		const Matrix& getWorldMatrix() const;
-		const Matrix& getInverseTransposedWorldMatrix() const;
 
 		Matrix getWorldViewMatrix(Camera* camera) const;
 		Matrix getWorldViewProjectionMatrix(Camera* camera) const;
 		Matrix getInverseTransposedWorldViewMatrix(Camera* camera) const;
+		Matrix getInverseTransposedWorldMatrix() const;
 
 		Vector3 transformPoint(const Vector3& point) const;
 		Vector3 transformDirection(const Vector3& direction) const;

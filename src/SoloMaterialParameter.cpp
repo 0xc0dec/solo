@@ -285,7 +285,7 @@ Matrix MaterialParameter::getInverseTransposedWorldViewMatrix(const RenderContex
 }
 
 
-const Matrix& MaterialParameter::getInverseTransposedWorldMatrix(const RenderContext& context) const
+Matrix MaterialParameter::getInverseTransposedWorldMatrix(const RenderContext& context) const
 {
 	return context.getNode()->getComponent<Transform>()->getInverseTransposedWorldMatrix();
 }

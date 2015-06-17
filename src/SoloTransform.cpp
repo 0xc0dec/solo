@@ -111,6 +111,7 @@ const Quaternion& Transform::getLocalRotation() const
 
 const Matrix& Transform::getMatrix() const
 {
+//	static Matrix matrix;
 	if (isDirty())
 	{
 		auto hasTranslation = !localPosition.isZero();
@@ -142,6 +143,7 @@ const Matrix& Transform::getMatrix() const
 
 const Matrix& Transform::getWorldMatrix() const
 {
+//	static Matrix worldMatrix;
 	if (checkAndCleanBit<DIRTY_BIT_WORLD>())
 	{
 		if (parent)
@@ -154,15 +156,11 @@ const Matrix& Transform::getWorldMatrix() const
 }
 
 
-const Matrix& Transform::getInverseTransposedWorldMatrix() const
+Matrix Transform::getInverseTransposedWorldMatrix() const
 {
-	if (checkAndCleanBit<DIRTY_BIT_WORLD>())
-	{
-		inverseTransposedWorldMatrix = getWorldMatrix();
-		inverseTransposedWorldMatrix.invert();
-		inverseTransposedWorldMatrix.transpose();
-		setChildrenDirty<DIRTY_BIT_WORLD>();
-	}
+	auto inverseTransposedWorldMatrix = getWorldMatrix();
+	inverseTransposedWorldMatrix.invert();
+	inverseTransposedWorldMatrix.transpose();
 	return inverseTransposedWorldMatrix;
 }
 

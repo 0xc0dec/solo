@@ -64,7 +64,7 @@ public:
 			movement += transform->getLocalDown();
 		if (device->isKeyPressed(KeyCode::E))
 			movement += transform->getLocalUp();
-			
+
 		movement.normalize();
 		movement *= dt * 10;
 		transform->translateLocal(movement);
@@ -73,7 +73,7 @@ public:
 private:
 	Transform* transform;
 	Engine* engine;
-	Device *device;
+	Device* device;
 };
 
 
@@ -94,7 +94,7 @@ public:
 	}
 
 private:
-	Engine *engine;
+	Engine* engine;
 	Transform* transform;
 };
 
@@ -116,7 +116,7 @@ public:
 	}
 
 private:
-	Engine *engine;
+	Engine* engine;
 	Transform* transform;
 };
 
@@ -124,7 +124,7 @@ private:
 class Demo : public TestBase
 {
 public:
-	Demo(Engine *engine) : TestBase(engine)
+	Demo(Engine* engine) : TestBase(engine)
 	{
 		resManager = engine->getResourceManager();
 	}
@@ -132,10 +132,10 @@ public:
 	virtual void run() override
 	{
 		createMaterials();
-		createAndPlaceQuad1();
-		createAndPlaceQuad2();
-		createAndPlaceBox();
-		loadAndPlaceModel();
+		createAndPlaceBackgroundQuad();
+		createAndPlaceQuad({5, 0, 0});
+		createAndPlaceBox({-5, 0, 0});
+		loadAndPlaceModel("../data/monkey_hires.obj", Vector3(0, 0, 0), simpleLightingMaterial);
 		createCamera();
 	}
 
@@ -148,7 +148,10 @@ public:
 		rareMaterial->getParameter("worldViewProjMatrix")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
 		rareMaterial->getParameter("canvasWidth")->setValue(canvasSize.x);
 		rareMaterial->getParameter("canvasHeight")->setValue(canvasSize.y);
-		rareMaterial->getParameter("time")->bindValue<float>([this](const RenderContext& context) -> float { return this->device->getLifetime(); });
+		rareMaterial->getParameter("time")->bindValue<float>([this](const RenderContext& context) -> float
+		{
+			return this->device->getLifetime();
+		});
 
 		auto effTexture = resManager->getOrCreateEffect(vsBasic, fsTexture);
 		auto texture = DYNAMIC_CAST<Texture2D>(resManager->getOrLoadTexture("../data/Freeman.png"));
@@ -173,27 +176,29 @@ public:
 		simpleLightingMaterial->getParameter("normalMatrix")->bindValue(MaterialParameter::AutoBinding::InverseTransposedWorldMatrix);
 	}
 
-	void createAndPlaceBox()
+	void createAndPlaceBox(const Vector3& position)
 	{
 		auto node = createQuad();
 		rebuildQuadToBox(node);
 		node->getComponent<ModelRenderer>()->setMaterial(0, checkerMaterial);
-		node->getComponent<Transform>()->setLocalPosition(-3, 0, 0);
+		node->getComponent<Transform>()->setLocalPosition(position);
 		node->addComponent<RotatorAroundWorldYAxis>();
 	}
 
-	void loadAndPlaceModel()
+	void loadAndPlaceModel(const char* url, const Vector3& position, shared<Material> material)
 	{
-		auto mesh = engine->getResourceManager()->getOrLoadMesh("../data/monkey_hires.obj");
+		auto mesh = engine->getResourceManager()->getOrLoadMesh(url);
 		auto model = resManager->getOrCreateModel();
 		model->addMesh(mesh);
 		auto node = scene->createNode();
 		auto renderer = node->addComponent<ModelRenderer>();
 		renderer->setModel(model);
-		renderer->setMaterial(0, simpleLightingMaterial);
+		renderer->setMaterial(0, material);
+		node->getComponent<Transform>()->setLocalPosition(position);
+		node->addComponent<RotatorAroundLocalXAxis>();
 	}
 
-	void createAndPlaceQuad2()
+	void createAndPlaceBackgroundQuad()
 	{
 		auto quad = createQuad();
 		quad->getComponent<ModelRenderer>()->setMaterial(0, rareMaterial);
@@ -203,17 +208,17 @@ public:
 		quad->getComponent<Transform>()->setLocalScale(5, 5 * canvasSize.y / canvasSize.x, 1);
 	}
 
-	void createAndPlaceQuad1()
+	void createAndPlaceQuad(const Vector3& position)
 	{
 		auto empty = scene->createNode();
 		auto emptyTransform = empty->getComponent<Transform>();
-		emptyTransform->setLocalPosition(3, 0, 0);
+		emptyTransform->setLocalPosition(position);
 		empty->addComponent<RotatorAroundWorldYAxis>();
 
 		auto quad = createQuad();
 		quad->addComponent<RotatorAroundLocalXAxis>();
 		quad->getComponent<Transform>()->setParent(emptyTransform);
-		quad->getComponent<Transform>()->setLocalPosition(1, 0, 0);
+		quad->getComponent<Transform>()->setLocalPosition({1, 0, 0});
 		quad->getComponent<ModelRenderer>()->setMaterial(0, simpleTextureMaterial);
 	}
 
@@ -234,24 +239,24 @@ public:
 		auto mesh = resManager->getOrCreateMesh();
 		mesh->setVertices(
 		{
-			{ -1, -1, 0 },
-			{ -1,  1, 0 },
-			{  1,  1, 0 },
-			{  1, -1, 0 }
+			{-1, -1, 0},
+			{-1, 1, 0},
+			{1, 1, 0},
+			{1, -1, 0}
 		});
 		mesh->setNormals(
 		{
-			{ 0, 0, -1 },
-			{ 0, 0, -1 },
-			{ 0, 0, -1 },
-			{ 0, 0, -1 }
+			{0, 0, -1},
+			{0, 0, -1},
+			{0, 0, -1},
+			{0, 0, -1}
 		});
 		mesh->setUVs(
 		{
-			{ 0, 0 },
-			{ 0, 1 },
-			{ 1, 1 },
-			{ 1, 0 }
+			{0, 0},
+			{0, 1},
+			{1, 1},
+			{1, 0}
 		});
 		mesh->setIndices(
 		{
@@ -269,37 +274,37 @@ public:
 	}
 
 	// Check if the engine is capable of rebuilding meshes
-	void rebuildQuadToBox(Node *quadNode)
+	void rebuildQuadToBox(Node* quadNode)
 	{
 		auto model = quadNode->getComponent<ModelRenderer>()->getModel();
 		auto mesh = model->getMesh(0);
 		mesh->setVertices(
 		{
-			{ -1, -1,  1 }, { -1,  1,  1 }, {  1,  1,  1 }, {  1, -1,  1 }, // front face
-			{ -1, -1, -1 }, { -1,  1, -1 }, { -1,  1,  1 }, { -1, -1,  1 }, // left face
-			{  1, -1, -1 }, {  1,  1, -1 }, { -1,  1, -1 }, { -1, -1, -1 }, // back face
-			{  1, -1,  1 }, {  1,  1,  1 }, {  1,  1, -1 }, {  1, -1, -1 }, // right face
-			{ -1,  1,  1 }, { -1,  1, -1 }, {  1,  1, -1 }, {  1,  1,  1 }, // top face
-			{ -1, -1, -1 }, { -1, -1,  1 }, {  1, -1,  1 }, {  1, -1, -1 }, // bottom face
+			{-1, -1, 1},	{-1, 1, 1},		{1, 1, 1},		{1, -1, 1}, // front face
+			{-1, -1, -1},	{-1, 1, -1},	{-1, 1, 1},		{-1, -1, 1}, // left face
+			{1, -1, -1},	{1, 1, -1},		{-1, 1, -1},	{-1, -1, -1}, // back face
+			{1, -1, 1},		{1, 1, 1},		{1, 1, -1},		{1, -1, -1}, // right face
+			{-1, 1, 1},		{-1, 1, -1},	{1, 1, -1},		{1, 1, 1}, // top face
+			{-1, -1, -1},	{-1, -1, 1},	{1, -1, 1},		{1, -1, -1}, // bottom face
 
 		});
 		mesh->setUVs(
 		{
-			{ 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 0 },
-			{ 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 0 },
-			{ 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 0 },
-			{ 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 0 },
-			{ 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 0 },
-			{ 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 0 },
+			{0, 0}, {0, 1}, {1, 1}, {1, 0},
+			{0, 0}, {0, 1}, {1, 1}, {1, 0},
+			{0, 0}, {0, 1}, {1, 1}, {1, 0},
+			{0, 0}, {0, 1}, {1, 1}, {1, 0},
+			{0, 0}, {0, 1}, {1, 1}, {1, 0},
+			{0, 0}, {0, 1}, {1, 1}, {1, 0},
 		});
 		mesh->setIndices(
 		{
-			 0,  1,  2,	 0,  2,  3,
-			 4,  5,  6,	 4,  6,  7,
-			 8,  9, 10,	 8, 10, 11,
-			12, 13, 14,	12, 14, 15,
-			16, 17, 18,	16, 18, 19,
-			20, 21, 22,	20, 22, 23,
+			0,	1,	2,	0,	2,	3,
+			4,	5,	6,	4,	6,	7,
+			8,	9,	10,	8,	10,	11,
+			12,	13,	14,	12,	14,	15,
+			16,	17,	18,	16,	18,	19,
+			20,	21,	22,	20,	22,	23,
 		});
 	}
 
