@@ -106,7 +106,6 @@ namespace solo
 		mutable Matrix matrix;
 		mutable Matrix worldMatrix;
 		mutable Matrix inverseTransposedWorldMatrix;
-		mutable Matrix inverseTransposedViewMatrix;
 	};
 
 	class TransformCallback

@@ -8,7 +8,10 @@ const unsigned DIRTY_BIT_POSITION = 1;
 const unsigned DIRTY_BIT_ROTATION = 2;
 const unsigned DIRTY_BIT_SCALE = 4;
 const unsigned DIRTY_BIT_WORLD = 8;
-const unsigned DIRTY_BIT_ALL = DIRTY_BIT_POSITION | DIRTY_BIT_ROTATION | DIRTY_BIT_SCALE | DIRTY_BIT_WORLD;
+const unsigned DIRTY_BIT_INSERSE_TRANSPOSED_WORLD = 16;
+const unsigned DIRTY_BIT_ALL =
+	DIRTY_BIT_POSITION | DIRTY_BIT_ROTATION | DIRTY_BIT_SCALE |
+	DIRTY_BIT_WORLD | DIRTY_BIT_INSERSE_TRANSPOSED_WORLD;
 
 
 shared<Transform> TransformFactory::create(Node* node)
@@ -111,7 +114,6 @@ const Quaternion& Transform::getLocalRotation() const
 
 const Matrix& Transform::getMatrix() const
 {
-//	static Matrix matrix;
 	if (isDirty())
 	{
 		auto hasTranslation = !localPosition.isZero();
@@ -143,7 +145,6 @@ const Matrix& Transform::getMatrix() const
 
 const Matrix& Transform::getWorldMatrix() const
 {
-//	static Matrix worldMatrix;
 	if (checkAndCleanBit<DIRTY_BIT_WORLD>())
 	{
 		if (parent)
@@ -151,6 +152,7 @@ const Matrix& Transform::getWorldMatrix() const
 		else
 			worldMatrix = getMatrix();
 		setChildrenDirty<DIRTY_BIT_WORLD>();
+		setDirtyWithChildren<DIRTY_BIT_INSERSE_TRANSPOSED_WORLD>();
 	}
 	return worldMatrix;
 }
@@ -158,9 +160,13 @@ const Matrix& Transform::getWorldMatrix() const
 
 Matrix Transform::getInverseTransposedWorldMatrix() const
 {
-	auto inverseTransposedWorldMatrix = getWorldMatrix();
-	inverseTransposedWorldMatrix.invert();
-	inverseTransposedWorldMatrix.transpose();
+	if (checkAndCleanBit<DIRTY_BIT_INSERSE_TRANSPOSED_WORLD>() || isDirty<DIRTY_BIT_WORLD>())
+	{
+		inverseTransposedWorldMatrix = getWorldMatrix();
+		inverseTransposedWorldMatrix.invert();
+		inverseTransposedWorldMatrix.transpose();
+		setChildrenDirty<DIRTY_BIT_INSERSE_TRANSPOSED_WORLD>();
+	}
 	return inverseTransposedWorldMatrix;
 }
 
