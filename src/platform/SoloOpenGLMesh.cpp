@@ -3,16 +3,7 @@
 using namespace solo;
 
 
-OpenGLMesh::OpenGLMesh():
-	Mesh()
-{
-	glGenVertexArrays(1, &vertexArrayHandle);
-	if (!vertexArrayHandle)
-		THROW_FMT(EngineException, "Failed to obtain mesh handle");
-}
-
-
-GLuint OpenGLMesh::buildElementArrayBuffer(GLuint existingHandle, const std::vector<unsigned short>& elements)
+static GLuint buildElementArrayBuffer(GLuint existingHandle, const std::vector<unsigned short>& elements)
 {
 	auto handle = existingHandle ? existingHandle : 0;
 	if (!handle)
@@ -24,16 +15,25 @@ GLuint OpenGLMesh::buildElementArrayBuffer(GLuint existingHandle, const std::vec
 
 
 template<typename TElement>
-GLuint OpenGLMesh::buildArrayBuffer(GLuint existingHandle, const std::vector<TElement>& elements, GLuint elementSize, GLuint vertexAttributeIndex, GLenum elementType)
+static GLuint buildArrayBuffer(GLuint existingHandle, const std::vector<TElement>& elements, GLuint elementSize, GLuint vertexAttribIndex, GLenum elementType)
 {
 	auto handle = existingHandle ? existingHandle : 0;
 	if (!handle)
 		glGenBuffers(1, &handle);
 	glBindBuffer(GL_ARRAY_BUFFER, handle);
 	glBufferData(GL_ARRAY_BUFFER, elements.size() * sizeof(TElement), elements.data(), GL_STATIC_DRAW);
-	glEnableVertexAttribArray(vertexAttributeIndex);
-	glVertexAttribPointer(vertexAttributeIndex, elementSize, elementType, GL_FALSE, 0, nullptr);
+	glEnableVertexAttribArray(vertexAttribIndex);
+	glVertexAttribPointer(vertexAttribIndex, elementSize, elementType, GL_FALSE, 0, nullptr);
 	return handle;
+}
+
+
+OpenGLMesh::OpenGLMesh():
+	Mesh()
+{
+	glGenVertexArrays(1, &vertexArrayHandle);
+	if (!vertexArrayHandle)
+		THROW_FMT(EngineException, "Failed to obtain mesh handle");
 }
 
 

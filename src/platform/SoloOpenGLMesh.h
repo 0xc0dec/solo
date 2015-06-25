@@ -26,10 +26,6 @@ namespace solo
 		OpenGLMesh& operator=(const OpenGLMesh& other) = delete;
 		OpenGLMesh& operator=(OpenGLMesh&& other) = delete;
 
-		template<typename TElement>
-		GLuint buildArrayBuffer(GLuint existingHandle, const std::vector<TElement>& elements, GLuint elementSize, GLuint index, GLenum elementType);
-		GLuint buildElementArrayBuffer(GLuint existingHandle, const std::vector<unsigned short>& elements);
-
 		GLuint vertexArrayHandle = 0;
 		GLuint vertexBufferHandle = 0;
 		GLuint normalBufferHandle = 0;
