@@ -122,7 +122,7 @@ bool Frustum::intersects(const BoundingBox& box) const
 }
 
 
-Plane::PlaneIntersection Frustum::intersects(const Plane& plane) const
+PlaneIntersection Frustum::intersects(const Plane& plane) const
 {
 	return plane.getIntersection(*this);
 }

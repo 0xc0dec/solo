@@ -72,21 +72,21 @@ bool BoundingSphere::intersects(const BoundingBox& box) const
 bool BoundingSphere::intersects(const Frustum& frustum) const
 {
 	// The sphere must either intersect or be in the positive half-space of all six planes of the frustum.
-	return getIntersection(frustum.getNear()) != Plane::PlaneIntersection::Back &&
-		   getIntersection(frustum.getFar()) != Plane::PlaneIntersection::Back &&
-		   getIntersection(frustum.getLeft()) != Plane::PlaneIntersection::Back &&
-		   getIntersection(frustum.getRight()) != Plane::PlaneIntersection::Back &&
-		   getIntersection(frustum.getBottom()) != Plane::PlaneIntersection::Back &&
-		   getIntersection(frustum.getTop()) != Plane::PlaneIntersection::Back;
+	return getIntersection(frustum.getNear()) != PlaneIntersection::Back &&
+		   getIntersection(frustum.getFar()) != PlaneIntersection::Back &&
+		   getIntersection(frustum.getLeft()) != PlaneIntersection::Back &&
+		   getIntersection(frustum.getRight()) != PlaneIntersection::Back &&
+		   getIntersection(frustum.getBottom()) != PlaneIntersection::Back &&
+		   getIntersection(frustum.getTop()) != PlaneIntersection::Back;
 }
 
 
-Plane::PlaneIntersection BoundingSphere::getIntersection(const Plane &plane) const
+PlaneIntersection BoundingSphere::getIntersection(const Plane &plane) const
 {
 	auto distance = plane.getDistance(center);
 	if (fabsf(distance) <= radius)
-		return Plane::PlaneIntersection::Intersecting;
-	return distance > 0.0f ? Plane::PlaneIntersection::Front : Plane::PlaneIntersection::Back;
+		return PlaneIntersection::Intersecting;
+	return distance > 0.0f ? PlaneIntersection::Front : PlaneIntersection::Back;
 }
 
 
@@ -110,7 +110,7 @@ float BoundingSphere::intersects(const Ray& ray) const
 
 	// If the discriminant is negative, then there is no intersection.
 	if (discriminant < 0.0f)
-		return static_cast<float>(Ray::RayIntersection::None);
+		return static_cast<float>(RayIntersection::None);
 	// The intersection is at the smaller positive root.
 	auto sqrtDisc = sqrt(discriminant);
 	auto t0 = (-B - sqrtDisc) * 0.5f;

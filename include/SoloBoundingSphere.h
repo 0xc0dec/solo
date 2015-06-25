@@ -19,7 +19,7 @@ namespace solo
 		bool intersects(const BoundingSphere& sphere) const;
 		bool intersects(const BoundingBox& box) const;
 		bool intersects(const Frustum& frustum) const;
-		Plane::PlaneIntersection getIntersection(const Plane &plane) const;
+		PlaneIntersection getIntersection(const Plane &plane) const;
 		float intersects(const Ray& ray) const;
 
 		bool isEmpty() const;

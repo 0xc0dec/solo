@@ -13,16 +13,16 @@ namespace solo
 	class Node;
 	class TransformCallback;
 
+	enum class TransformSpace
+	{
+		Self,
+		Parent,
+		World
+	};
+
 	class Transform: public ComponentBase<Transform>, Dirty
 	{
 	public:
-		enum class TransformSpace
-		{
-			Self,
-			Parent,
-			World
-		};
-
 		void addCallback(TransformCallback *callback);
 		void removeCallback(TransformCallback *callback);
 

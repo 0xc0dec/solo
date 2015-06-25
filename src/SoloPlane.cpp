@@ -106,19 +106,19 @@ void Plane::intersection(const Plane& p1, const Plane& p2, const Plane& p3, Vect
 }
 
 
-Plane::PlaneIntersection Plane::getIntersection(const BoundingSphere &sphere) const
+PlaneIntersection Plane::getIntersection(const BoundingSphere &sphere) const
 {
 	return sphere.getIntersection(*this);
 }
 
 
-Plane::PlaneIntersection Plane::getIntersection(const BoundingBox &box) const
+PlaneIntersection Plane::getIntersection(const BoundingBox &box) const
 {
 	return box.intersects(*this);
 }
 
 
-Plane::PlaneIntersection Plane::getIntersection(const Frustum &frustum) const
+PlaneIntersection Plane::getIntersection(const Frustum &frustum) const
 {
 	Vector3 corners[8];
 	frustum.getCorners(corners);
@@ -164,7 +164,7 @@ Plane::PlaneIntersection Plane::getIntersection(const Frustum &frustum) const
 }
 
 
-Plane::PlaneIntersection Plane::getIntersection(const Plane &plane) const
+PlaneIntersection Plane::getIntersection(const Plane &plane) const
 {
 	// Check if the planes intersect.
 	if ((normal.x == plane.normal.x && normal.y == plane.normal.y && normal.z == plane.normal.z) || !isParallel(plane))
@@ -181,7 +181,7 @@ Plane::PlaneIntersection Plane::getIntersection(const Plane &plane) const
 }
 
 
-Plane::PlaneIntersection Plane::getIntersection(const Ray &ray) const
+PlaneIntersection Plane::getIntersection(const Ray &ray) const
 {
 	// Calculate the distance from the ray's origin to the plane.
 	auto d = getDistance(ray.getOrigin());

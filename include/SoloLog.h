@@ -2,26 +2,26 @@
 
 #include "SoloBase.h"
 
-#define DEBUG(...) solo::Log(FORMAT(__VA_ARGS__), solo::Log::LogLevel::Debug);
-#define INFO(...) solo::Log(FORMAT(__VA_ARGS__), solo::Log::LogLevel::Info);
-#define WARN(...) solo::Log(FORMAT(__VA_ARGS__), solo::Log::LogLevel::Warning);
-#define ERROR(...) solo::Log(FORMAT(__VA_ARGS__), solo::Log::LogLevel::Error);
-#define CRITICAL(...) solo::Log(FORMAT(__VA_ARGS__), solo::Log::LogLevel::Critical);
+#define DEBUG(...) solo::Log(FORMAT(__VA_ARGS__), solo::LogLevel::Debug);
+#define INFO(...) solo::Log(FORMAT(__VA_ARGS__), solo::LogLevel::Info);
+#define WARN(...) solo::Log(FORMAT(__VA_ARGS__), solo::LogLevel::Warning);
+#define ERROR(...) solo::Log(FORMAT(__VA_ARGS__), solo::LogLevel::Error);
+#define CRITICAL(...) solo::Log(FORMAT(__VA_ARGS__), solo::LogLevel::Critical);
 
 namespace solo
 {
+	enum class LogLevel
+	{
+		Debug = 0,
+		Info,
+		Warning,
+		Error,
+		Critical
+	};
+
 	class Log
 	{
 	public:
-		enum class LogLevel
-		{
-			Debug = 0,
-			Info,
-			Warning,
-			Error,
-			Critical
-		};
-
 		explicit Log(const std::string &msg, LogLevel level = LogLevel::Info);
 		~Log();
 

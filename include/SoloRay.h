@@ -9,14 +9,14 @@ namespace solo
 	class BoundingSphere;
 	class BoundingBox;
 
+	enum class RayIntersection
+	{
+		None = -1
+	};
+
 	class Ray
 	{
 	public:
-		enum class RayIntersection
-		{
-			None = -1
-		};
-
 		Ray() {}
 		Ray(const Vector3& origin, const Vector3& direction);
 		Ray(float originX, float originY, float originZ, float dirX, float dirY, float dirZ);

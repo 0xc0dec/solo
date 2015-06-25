@@ -14,23 +14,23 @@ namespace solo
 	class RenderContext;
 	class Texture;
 
+	enum class AutoBinding
+	{
+		None,
+		WorldMatrix,
+		ViewMatrix,
+		ProjectionMatrix,
+		WorldViewProjection,
+		ViewProjectionMatrix,
+		WorldViewProjectionMatrix,
+		InverseTransposedWorldMatrix,
+		InverseTransposedWorldViewMatrix,
+		CameraWorldPosition,
+	};
+
 	class MaterialParameter
 	{
 	public:
-		enum class AutoBinding
-		{
-			None,
-			WorldMatrix,
-			ViewMatrix,
-			ProjectionMatrix,
-			WorldViewProjection,
-			ViewProjectionMatrix,
-			WorldViewProjectionMatrix,
-			InverseTransposedWorldMatrix,
-			InverseTransposedWorldViewMatrix,
-			CameraWorldPosition,
-		};
-
 		void clearValue();
 
 		void setValue(float value);

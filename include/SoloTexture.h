@@ -6,15 +6,15 @@ namespace solo
 {
 	class Texture2D;
 
+	enum class ColorFormat
+	{
+		RGB,
+		RGBA
+	};
+
 	class Texture
 	{
 	public:
-		enum class ColorFormat
-		{
-			RGB,
-			RGBA
-		};
-
 		virtual ~Texture() {}
 
 		virtual void apply() = 0;

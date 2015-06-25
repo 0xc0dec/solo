@@ -58,14 +58,14 @@ shared<Texture2D> PngTextureLoader::load2D(const std::string& url)
 	auto height = png_get_image_height(png, info);
 	auto colorType = png_get_color_type(png, info);
 
-	Texture::ColorFormat colorFormat;
+	ColorFormat colorFormat;
 	switch (colorType)
 	{
 	case PNG_COLOR_TYPE_RGB:
-		colorFormat = Texture::ColorFormat::RGB;
+		colorFormat = ColorFormat::RGB;
 		break;
 	case PNG_COLOR_TYPE_RGBA:
-		colorFormat = Texture::ColorFormat::RGBA;
+		colorFormat = ColorFormat::RGBA;
 		break;
 	default:
 		png_destroy_read_struct(&png, &info, nullptr);

@@ -9,16 +9,16 @@ namespace solo
 	class Frustum;
 	class Ray;
 
+	enum class PlaneIntersection
+	{
+		Intersecting = 0,
+		Front = 1,
+		Back = -1
+	};
+
 	class Plane
 	{
 	public:
-		enum class PlaneIntersection
-		{
-			Intersecting = 0,
-			Front = 1,
-			Back = -1
-		};
-
 		Plane() {}
 		Plane(const Vector3& normal, float distance);
 		Plane(float normalX, float normalY, float normalZ, float distance);

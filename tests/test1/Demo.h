@@ -46,9 +46,9 @@ public:
 		if (device->isMouseButtonPressed(MouseButton::Right, false))
 		{
 			if (mouseMotion.x != 0)
-				transform->rotate(Vector3::unitY(), 0.5f * dt * -mouseMotion.x, Transform::TransformSpace::World);
+				transform->rotate(Vector3::unitY(), 0.5f * dt * -mouseMotion.x, TransformSpace::World);
 			if (mouseMotion.y != 0)
-				transform->rotate(Vector3::unitX(), 0.5f * dt * -mouseMotion.y, Transform::TransformSpace::Self);
+				transform->rotate(Vector3::unitX(), 0.5f * dt * -mouseMotion.y, TransformSpace::Self);
 		}
 
 		Vector3 movement;
@@ -90,7 +90,7 @@ public:
 	virtual void update() override
 	{
 		auto angle = engine->getTimeDelta();
-		transform->rotate(Vector3::unitY(), angle, Transform::TransformSpace::World);
+		transform->rotate(Vector3::unitY(), angle, TransformSpace::World);
 	}
 
 private:
@@ -112,7 +112,7 @@ public:
 	virtual void update() override
 	{
 		auto angle = engine->getTimeDelta() * 1.3f;
-		transform->rotate(Vector3::unitX(), angle, Transform::TransformSpace::Self);
+		transform->rotate(Vector3::unitX(), angle, TransformSpace::Self);
 	}
 
 private:
@@ -145,7 +145,7 @@ public:
 
 		auto effRare = resManager->getOrCreateEffect(vsBasic, fsRare);
 		rareMaterial = resManager->getOrCreateMaterial(effRare);
-		rareMaterial->getParameter("worldViewProjMatrix")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
+		rareMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
 		rareMaterial->getParameter("canvasWidth")->setValue(canvasSize.x);
 		rareMaterial->getParameter("canvasHeight")->setValue(canvasSize.y);
 		rareMaterial->getParameter("time")->bindValue<float>([this](const RenderContext& context) -> float
@@ -156,24 +156,24 @@ public:
 		auto effTexture = resManager->getOrCreateEffect(vsBasic, fsTexture);
 		auto texture = DYNAMIC_CAST<Texture2D>(resManager->getOrLoadTexture("../data/Freeman.png"));
 		texture->generateMipmaps();
-		texture->setFilterMode(Texture2D::Filter::Linear, Texture2D::Filter::Linear);
+		texture->setFilterMode(Filter::Linear, Filter::Linear);
 		texture->setAnisotropyLevel(8);
 		simpleTextureMaterial = resManager->getOrCreateMaterial(effTexture);
-		simpleTextureMaterial->setPolygonFace(RenderState::PolygonFace::All);
-		simpleTextureMaterial->getParameter("worldViewProjMatrix")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
+		simpleTextureMaterial->setPolygonFace(PolygonFace::All);
+		simpleTextureMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
 		simpleTextureMaterial->getParameter("mainTex")->setValue(texture);
 
 		auto effChecker = resManager->getOrCreateEffect(vsBasic, fsChecker);
 		checkerMaterial = resManager->getOrCreateMaterial(effChecker);
-		checkerMaterial->setPolygonFace(RenderState::PolygonFace::All);
+		checkerMaterial->setPolygonFace(PolygonFace::All);
 		checkerMaterial->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
-		checkerMaterial->getParameter("worldViewProjMatrix")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
+		checkerMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
 
 		auto effTextureWithLighting = resManager->getOrCreateEffect(vsBasicLighting, fsTextureWithLighting);
 		simpleLightingMaterial = resManager->getOrCreateMaterial(effTextureWithLighting);
-		simpleLightingMaterial->setPolygonFace(RenderState::PolygonFace::All);
-		simpleLightingMaterial->getParameter("worldViewProjMatrix")->bindValue(MaterialParameter::AutoBinding::WorldViewProjectionMatrix);
-		simpleLightingMaterial->getParameter("normalMatrix")->bindValue(MaterialParameter::AutoBinding::InverseTransposedWorldMatrix);
+		simpleLightingMaterial->setPolygonFace(PolygonFace::All);
+		simpleLightingMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
+		simpleLightingMaterial->getParameter("normalMatrix")->bindValue(AutoBinding::InverseTransposedWorldMatrix);
 	}
 
 	void createAndPlaceBox(const Vector3& position)

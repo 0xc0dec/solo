@@ -9,7 +9,7 @@ void RenderState::setPolygonFace(PolygonFace face)
 }
 
 
-RenderState::PolygonFace RenderState::getPolygonFace() const
+PolygonFace RenderState::getPolygonFace() const
 {
 	return polygonFace;
 }

@@ -4,25 +4,25 @@
 
 namespace solo
 {
+	enum class WrapMode
+	{
+		Clamp,
+		Repeat
+	};
+
+	enum class Filter
+	{
+		Nearest,
+		Linear,
+		NearestMipmapNearest,
+		LinearMipmapNearest,
+		NearestMipmapLinear,
+		LinearMipmapLinear
+	};
+
 	class Texture2D: public Texture
 	{
 	public:
-		enum class WrapMode
-		{
-			Clamp,
-			Repeat
-		};
-
-		enum class Filter
-		{
-			Nearest,
-			Linear,
-			NearestMipmapNearest,
-			LinearMipmapNearest,
-			NearestMipmapLinear,
-			LinearMipmapLinear
-		};
-
 		virtual void setData(ColorFormat format, const std::vector<byte> &data, unsigned width, unsigned height) = 0;
 
 		virtual void generateMipmaps() = 0;

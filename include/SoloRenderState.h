@@ -6,16 +6,16 @@ namespace solo
 {
 	class RenderContext;
 
+	enum class PolygonFace
+	{
+		CW,
+		CCW,
+		All
+	};
+
 	class RenderState
 	{
 	public:
-		enum class PolygonFace
-		{
-			CW,
-			CCW,
-			All
-		};
-
 		virtual ~RenderState() {}
 
 		virtual void bind(RenderContext& context) = 0;

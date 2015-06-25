@@ -33,7 +33,7 @@ namespace solo
 		bool intersects(float x, float y, float z) const;
 		bool intersects(const BoundingSphere& sphere) const;
 		bool intersects(const BoundingBox& box) const;
-		Plane::PlaneIntersection intersects(const Plane& plane) const;
+		PlaneIntersection intersects(const Plane& plane) const;
 		float intersects(const Ray& ray) const;
 
 		void set(const Frustum& frustum);
