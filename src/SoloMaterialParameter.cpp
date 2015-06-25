@@ -157,7 +157,7 @@ void MaterialParameter::setValue(const std::vector<shared<Texture>>& textures, u
 }
 
 
-void MaterialParameter::apply(RenderContext& context)
+void MaterialParameter::apply(const RenderContext& context)
 {
 	auto variable = context.getMaterial()->getEffect()->findVariable(name);
 	if (!variable)
