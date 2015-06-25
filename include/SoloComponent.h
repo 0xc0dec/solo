@@ -26,7 +26,7 @@ namespace solo
 	{
 	public:
 		explicit ComponentBase(Node* node):
-			node(node)
+			node{node}
 		{
 		}
 

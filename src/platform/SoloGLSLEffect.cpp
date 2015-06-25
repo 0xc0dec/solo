@@ -11,6 +11,53 @@ std::map<GLuint, std::string> shaderTypeNames =
 };
 
 
+static GLint createProgram(GLuint vs, GLuint fs)
+{
+	auto program = glCreateProgram();
+	glAttachShader(program, vs);
+	glAttachShader(program, fs);
+	glLinkProgram(program);
+
+	int status;
+	glGetProgramiv(program, GL_LINK_STATUS, &status);
+	if (status == GL_FALSE)
+	{
+		int logLength;
+		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
+		std::vector<GLchar> log(logLength);
+		glGetProgramInfoLog(program, logLength, nullptr, log.data());
+		glDeleteProgram(program);
+		THROW(EffectCompilationException, "Failed to link effect program", log.data());
+	}
+
+	return program;
+}
+
+
+static GLint compileShader(GLuint type, std::string src)
+{
+	auto shader = glCreateShader(type);
+
+	auto rawSrc = src.c_str();
+	glShaderSource(shader, 1, &rawSrc, nullptr);
+	glCompileShader(shader);
+
+	int status;
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+	if (status == GL_FALSE)
+	{
+		int logLength;
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
+		std::vector<GLchar> log(logLength);
+		glGetShaderInfoLog(shader, logLength, nullptr, log.data());
+		glDeleteShader(shader);
+		THROW(EffectCompilationException, FORMAT("Failed to compile ", shaderTypeNames[type], " shader"), log.data());
+	}
+
+	return shader;
+}
+
+
 GLSLEffect::GLSLEffect(const std::string &vsSrc, const std::string &fsSrc)
 {
 	auto vs = compileShader(GL_VERTEX_SHADER, vsSrc);
@@ -35,53 +82,6 @@ void GLSLEffect::bind()
 {
 	if (program)
 		glUseProgram(program);
-}
-
-
-GLint GLSLEffect::createProgram(GLuint vs, GLuint fs)
-{
-	auto program = glCreateProgram();
-	glAttachShader(program, vs);
-	glAttachShader(program, fs);
-	glLinkProgram(program);
-
-	int status;
-	glGetProgramiv(program, GL_LINK_STATUS, &status);
-	if (status == GL_FALSE)
-	{
-		int logLength;
-		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
-		std::vector<GLchar> log(logLength);
-		glGetProgramInfoLog(program, logLength, nullptr, log.data());
-		glDeleteProgram(program);
-		THROW(EffectCompilationException, "Failed to link effect program", log.data());
-	}
-	
-	return program;
-}
-
-
-GLint GLSLEffect::compileShader(GLuint type, std::string src)
-{
-	auto shader = glCreateShader(type);
-
-	auto rawSrc = src.c_str();
-	glShaderSource(shader, 1, &rawSrc, nullptr);
-	glCompileShader(shader);
-
-	int status;
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-	if (status == GL_FALSE)
-	{
-		int logLength;
-		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-		std::vector<GLchar> log(logLength);
-		glGetShaderInfoLog(shader, logLength, nullptr, log.data());
-		glDeleteShader(shader);
-		THROW(EffectCompilationException, FORMAT("Failed to compile ", shaderTypeNames[type], " shader"), log.data());
-	}
-
-	return shader;
 }
 
 

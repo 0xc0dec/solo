@@ -2,8 +2,8 @@
 #include "SoloCamera.h"
 #include "SoloNode.h"
 #include "SoloDevice.h"
+#include "SoloRenderBuffer.h"
 #include "platform/SoloOpenGLCamera.h"
-#include "SoloLog.h"
 
 using namespace solo;
 
@@ -22,8 +22,17 @@ const unsigned DIRTY_BIT_ALL = DIRTY_BIT_VIEW | DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_
 
 Camera::Camera(Node* node):
 	ComponentBase(node),
-	ortho(false), viewport(0, 0, 1, 1), clearColor(0, 0, 0, 1),
-	fov(60), near(1), far(100), width(1), height(1), aspectRatio(1)
+	transform{nullptr},
+	renderBuffer{nullptr},
+	ortho{false},
+	viewport(0, 0, 1, 1),
+	clearColor(0, 0, 0, 1),
+	fov(60),
+	near(1),
+	far(100),
+	width(1),
+	height(1),
+	aspectRatio(1)
 {
 	transform = node->getComponent<Transform>();
 	transform->addCallback(this);
@@ -208,11 +217,19 @@ void Camera::update()
 
 void Camera::render(RenderContext& context)
 {
+	if (renderBuffer)
+		renderBuffer->bind();
 	if (checkAndCleanBit<DIRTY_BIT_VIEWPORT>())
 		applyViewportChange();
 	if (checkAndCleanBit<DIRTY_BIT_CLEAR_COLOR>())
 		applyClearColor();
 	clear();
+}
+
+
+void Camera::setRenderBuffer(RenderBuffer* buffer)
+{
+	renderBuffer = buffer;
 }
 
 

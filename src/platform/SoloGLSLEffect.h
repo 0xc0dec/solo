@@ -21,8 +21,6 @@ namespace solo
 
 		GLuint program { 0 };
 
-		GLint compileShader(GLuint type, std::string src);
-		GLint createProgram(GLuint vs, GLuint fs);
 		void deleteShader(GLuint vs);
 		void discoverVariables();
 	};

@@ -104,18 +104,28 @@ void Scene::render()
 		RenderContext context;
 		context.setCameraNode(camera->getNode());
 		camera->render(context);
-		for (auto nodeInfo : nodes)
+		iterateComponents([&](shared<Node> node, shared<Component> component)
 		{
-			auto node = nodeInfo.second;
-			for (auto component : components[nodeInfo.first])
+			auto transform = node->findComponent<Transform>(); // not very optimal - could be done one level upper
+			if (transform)
 			{
-				auto nodeTransform = node->findComponent<Transform>();
 				context.setNode(node.get());
 				// Render only non-camera nodes with transforms
-				if (nodeTransform && component.second->getTypeId() != Camera::getId())
-					component.second->render(context);
+				if (component->getTypeId() != Camera::getId())
+					component->render(context);
 			}
-		}
+		});
+	}
+}
+
+
+void Scene::iterateComponents(std::function<void(shared<Node>, shared<Component>)> work)
+{
+	for (auto nodeInfo : nodes)
+	{
+		auto node = nodeInfo.second;
+		for (auto component : components[nodeInfo.first])
+			work(node, component.second);
 	}
 }
 

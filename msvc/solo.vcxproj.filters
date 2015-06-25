@@ -154,6 +154,12 @@
     <ClInclude Include="..\src\SoloPngTextureLoader.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloRenderBuffer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\SoloOpenGLRenderBuffer.h">
+      <Filter>src\platform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">
@@ -361,6 +367,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloPngTextureLoader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\SoloOpenGLRenderBuffer.cpp">
+      <Filter>src\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloRenderBuffer.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -7,6 +7,7 @@ namespace solo
 	class Component;
 	class Node;
 	class Camera;
+	class RenderContext;
 
 	class Scene
 	{
@@ -32,6 +33,8 @@ namespace solo
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
+
+		void iterateComponents(std::function<void(shared<Node>, shared<Component>)> work);
 
 		int nodeCounter;
 		std::map<size_t, std::map<size_t, shared<Component>>> components;

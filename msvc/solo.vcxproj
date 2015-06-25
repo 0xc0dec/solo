@@ -37,6 +37,7 @@
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\include\SoloEngineCallback.h" />
     <ClInclude Include="..\include\SoloMeshLoader.h" />
+    <ClInclude Include="..\include\SoloRenderBuffer.h" />
     <ClInclude Include="..\include\SoloTextureLoader.h" />
     <ClInclude Include="..\include\SoloTexture.h" />
     <ClInclude Include="..\include\SoloLog.h" />
@@ -66,6 +67,7 @@
     <ClInclude Include="..\src\platform\SoloOpenGLCamera.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLMaterial.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLMesh.h" />
+    <ClInclude Include="..\src\platform\SoloOpenGLRenderBuffer.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLTexture2D.h" />
     <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
@@ -101,6 +103,7 @@
     <ClCompile Include="..\external\zlib\src\trees.c" />
     <ClCompile Include="..\external\zlib\src\uncompr.c" />
     <ClCompile Include="..\external\zlib\src\zutil.c" />
+    <ClCompile Include="..\src\platform\SoloOpenGLRenderBuffer.cpp" />
     <ClCompile Include="..\src\platform\SoloGLSLEffectVariable.cpp" />
     <ClCompile Include="..\src\platform\SoloGLSLEffect.cpp" />
     <ClCompile Include="..\src\platform\SoloOpenGLCamera.cpp" />
@@ -131,6 +134,7 @@
     <ClCompile Include="..\src\SoloPngTextureLoader.cpp" />
     <ClCompile Include="..\src\SoloQuaternion.cpp" />
     <ClCompile Include="..\src\SoloRay.cpp" />
+    <ClCompile Include="..\src\SoloRenderBuffer.cpp" />
     <ClCompile Include="..\src\SoloRenderState.cpp" />
     <ClCompile Include="..\src\SoloResourceManager.cpp" />
     <ClCompile Include="..\src\SoloScene.cpp" />
