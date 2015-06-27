@@ -15,7 +15,7 @@ namespace solo
 		virtual void unbind() override;
 
 	protected:
-		virtual void applyTexture() override;
+		virtual void applyTextures(const std::vector<shared<Texture2D>>& textures) override;
 
 	private:
 		void checkStatus();

@@ -152,16 +152,6 @@ public:
 		texture2->setFilterMode(Filter::Linear, Filter::Linear);
 		texture2->setAnisotropyLevel(8);
 
-		auto effRare = resManager->getOrCreateEffect(vsBasic, fsRare);
-		auto rareMaterial = resManager->createMaterial(effRare);
-		rareMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
-		rareMaterial->getParameter("canvasWidth")->setValue(canvasSize.x);
-		rareMaterial->getParameter("canvasHeight")->setValue(canvasSize.y);
-		rareMaterial->getParameter("time")->bindValue<float>([this](const RenderContext& context) -> float
-		{
-			return this->device->getLifetime();
-		});
-
 		auto textureEffect = resManager->getOrCreateEffect(vsBasic, fsTexture);
 		auto textureMaterial = resManager->createMaterial(textureEffect);
 		textureMaterial->setPolygonFace(PolygonFace::All);
@@ -186,7 +176,7 @@ public:
 		renderTexture->setData(ColorFormat::RGB, {}, 320, 240);
 		renderTexture->setFilterMode(Filter::Nearest, Filter::Nearest);
 		renderTexture->setWrapMode(WrapMode::Clamp, WrapMode::Clamp);
-		renderTarget->setTexture(renderTexture);
+		renderTarget->setTextures({ renderTexture });
 
 		auto offscreenCameraNode = scene->createNode();
 		auto offscreenCameraTransform = offscreenCameraNode->getComponent<Transform>();

@@ -10,8 +10,8 @@ shared<RenderTarget> RenderTargetFactory::create()
 }
 
 
-void RenderTarget::setTexture(shared<Texture2D> texture)
+void RenderTarget::setTextures(const std::vector<shared<Texture2D>>& textures)
 {
-	this->texture = texture;
-	applyTexture();
+	this->textures = textures;
+	applyTextures(textures);
 }
