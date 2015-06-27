@@ -22,6 +22,7 @@ namespace solo
 		virtual void postRender() override;
 
 		void setRenderTarget(shared<RenderTarget> target);
+		shared<RenderTarget> getRenderTarget() const;
 
 		void setClearColor(float r, float g, float b, float a);
 

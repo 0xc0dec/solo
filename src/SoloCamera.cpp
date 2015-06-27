@@ -229,7 +229,13 @@ void Camera::setRenderTarget(shared<RenderTarget> target)
 }
 
 
-shared <Camera> CameraFactory::create(Node* node)
+shared<RenderTarget> Camera::getRenderTarget() const
+{
+	return renderTarget;
+}
+
+
+shared<Camera> CameraFactory::create(Node* node)
 {
 	return NEW2(OpenGLCamera, node);
 }

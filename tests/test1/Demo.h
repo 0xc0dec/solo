@@ -140,13 +140,6 @@ public:
 		mainCamera->setClearColor(0, 0.6f, 0.6f, 1);
 		mainCamera->setNear(0.05f);
 
-		auto offscreenCameraNode = scene->createNode();
-		auto offscreenCameraTransform = offscreenCameraNode->getComponent<Transform>();
-		offscreenCameraTransform->setLocalPosition(0, 0, 10);
-		auto offscreenCamera = offscreenCameraNode->addComponent<Camera>();
-		offscreenCamera->setClearColor(0, 0.6f, 0.6f, 1);
-		offscreenCamera->setNear(0.05f);
-
 		auto canvasSize = device->getCanvasSize();
 
 		auto texture1 = DYNAMIC_CAST<Texture2D>(resManager->getOrLoadTexture("../data/freeman1.png"));
@@ -190,19 +183,26 @@ public:
 
 		auto renderTarget = resManager->getOrCreateRenderTarget("test");
 		auto renderTexture = DYNAMIC_CAST<Texture2D>(resManager->getOrCreateTexture("RTT"));
-		renderTexture->setData(ColorFormat::RGB, {}, 32, 24);
+		renderTexture->setData(ColorFormat::RGB, {}, 320, 240);
 		renderTexture->setFilterMode(Filter::Nearest, Filter::Nearest);
 		renderTexture->setWrapMode(WrapMode::Clamp, WrapMode::Clamp);
 		renderTarget->setTexture(renderTexture);
+
+		auto offscreenCameraNode = scene->createNode();
+		auto offscreenCameraTransform = offscreenCameraNode->getComponent<Transform>();
+		offscreenCameraTransform->setLocalPosition(0, 0, 10);
+		auto offscreenCamera = offscreenCameraNode->addComponent<Camera>();
+		offscreenCamera->setClearColor(1, 1, 1, 1);
+		offscreenCamera->setNear(0.05f);
 		offscreenCamera->setRenderTarget(renderTarget);
-		offscreenCamera->setViewport(0, 0, 32, 24);
+		offscreenCamera->setViewport(0, 0, 320, 240);
 
 		auto rtMaterial = resManager->createMaterial(textureEffect);
 		rtMaterial->setPolygonFace(PolygonFace::All);
 		rtMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
 		rtMaterial->getParameter("mainTex")->setValue(renderTexture);
 
-		initStaticQuad({ 0, 5, 0 }, rtMaterial);
+		initStaticQuad({ 0, 7, 0 }, rtMaterial);
 		initRotatingQuad({ 5, 0, 0 }, textureMaterial);
 		initBox({ -5, 0, 0 }, checkerMaterial);
 		initModel("../data/monkey_hires.obj", Vector3(0, 0, 0), simpleLightingMaterial);
