@@ -28,6 +28,7 @@
 #include "SoloPlane.h"
 #include "SoloQuaternion.h"
 #include "SoloRay.h"
+#include "SoloRenderTarget.h"
 #include "SoloRenderContext.h"
 #include "SoloRenderState.h"
 #include "SoloResourceManager.h"

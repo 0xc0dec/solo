@@ -14,7 +14,7 @@ namespace solo
 	private:
 		Device* device = nullptr;
 
-		void applyViewportChange() override;
+		void applyViewport() override;
 		void applyClearColor() override;
 		void clear() override;
 	};

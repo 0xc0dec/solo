@@ -1,3 +1,4 @@
-* Discover vertex attributes in shader and bind them by name
+* getOrCreateMaterial by its url. Currently there's only one method left - the one that always creates a new material based on an effect.
+* Finish rendering to texture. Now buffer creation is coded, need to check how it works
 * Use position, rotation and scale to calculate the corresponding getter method results (instead of the matrix)
 * Remove methods like multiply() from math classes

@@ -19,6 +19,8 @@ namespace solo
 
 		// Called when the component is allowed to render anything.
 		virtual void render(RenderContext& context) {}
+
+		virtual void postRender() {}
 	};
 
 	template <class T>

@@ -19,6 +19,8 @@ namespace solo
 
 		virtual void apply() = 0;
 
+		virtual void *getNativeHandle() = 0;
+
 	protected:
 		Texture() {}
 
@@ -32,6 +34,7 @@ namespace solo
 	class TextureFactory
 	{
 		friend class PngTextureLoader;
+		friend class ResourceManager;
 		static shared<Texture2D> create2D();
 	};
 }

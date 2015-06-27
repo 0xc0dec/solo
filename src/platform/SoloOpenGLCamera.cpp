@@ -13,7 +13,7 @@ OpenGLCamera::OpenGLCamera(Node* node):
 }
 
 
-void OpenGLCamera::applyViewportChange()
+void OpenGLCamera::applyViewport()
 {
 	auto size = device->getCanvasSize();
 	glViewport(

@@ -9,6 +9,7 @@ namespace solo
 	class Mesh;
 	class Model;
 	class Texture;
+	class RenderTarget;
 	class TextureLoader;
 	class MeshLoader;
 	class Engine;
@@ -23,14 +24,17 @@ namespace solo
 		shared<Texture> findTexture(const std::string &url);
 		shared<Mesh> findMesh(const std::string &url);
 		shared<Model> findModel(const std::string &url);
+		shared<RenderTarget> findRenderTarget(const std::string &url);
 
+		shared<Material> createMaterial(shared<Effect> effect);
 		shared<Effect> getOrCreateEffect(const std::string &vsSrc, const std::string &fsSrc);
-		shared<Material> getOrCreateMaterial(shared<Effect> effect);
-		shared<Texture> getOrLoadTexture(const std::string& url);
+		shared<Texture> getOrLoadTexture(const std::string &url);
+		shared<Texture> getOrCreateTexture(const std::string &url);
 		shared<Mesh> getOrLoadMesh(const std::string& url);
 		shared<Mesh> getOrCreateMesh();
 		shared<Model> getOrCreateModel(const std::string& url);
 		shared<Model> getOrCreateModel();
+		shared<RenderTarget> getOrCreateRenderTarget(const std::string &url);
 
 		void cleanUnusedResources();
 
@@ -46,18 +50,19 @@ namespace solo
 		std::string calculateAutoUrl();
 		std::string findEffectUrl(shared<Effect> effect) const;
 
-		Engine *engine;
+		Engine *engine{ nullptr };
 
 		std::map<std::string, shared<Effect>> effects;
 		std::map<std::string, shared<Material>> materials;
 		std::map<std::string, shared<Mesh>> meshes;
 		std::map<std::string, shared<Model>> models;
 		std::map<std::string, shared<Texture>> textures;
+		std::map<std::string, shared<RenderTarget>> renderTargets;
 
 		std::vector<shared<TextureLoader>> textureLoaders;
 		std::vector<shared<MeshLoader>> meshLoaders;
 
-		size_t resourceCounter { 0 };
+		size_t resourceCounter{ 0 };
 	};
 
 	class ResourceManagerFactory

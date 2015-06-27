@@ -2,7 +2,7 @@
 #include "SoloCamera.h"
 #include "SoloNode.h"
 #include "SoloDevice.h"
-#include "SoloRenderBuffer.h"
+#include "SoloRenderTarget.h"
 #include "platform/SoloOpenGLCamera.h"
 
 using namespace solo;
@@ -13,17 +13,13 @@ const unsigned DIRTY_BIT_PROJ = 2;
 const unsigned DIRTY_BIT_VIEW_PROJ = 4;
 const unsigned DIRTY_BIT_INV_VIEW = 8;
 const unsigned DIRTY_BIT_INV_VIEW_PROJ = 16;
-const unsigned DIRTY_BIT_VIEWPORT = 32;
-const unsigned DIRTY_BIT_CLEAR_COLOR = 64;
-const unsigned DIRTY_BIT_ALL = DIRTY_BIT_VIEW | DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ |
-								DIRTY_BIT_INV_VIEW | DIRTY_BIT_INV_VIEW_PROJ |
-								DIRTY_BIT_VIEWPORT | DIRTY_BIT_CLEAR_COLOR;
+const unsigned DIRTY_BIT_ALL = DIRTY_BIT_VIEW | DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW | DIRTY_BIT_INV_VIEW_PROJ;
 
 
 Camera::Camera(Node* node):
 	ComponentBase(node),
 	transform{nullptr},
-	renderBuffer{nullptr},
+	renderTarget{nullptr},
 	ortho{false},
 	viewport(0, 0, 1, 1),
 	clearColor(0, 0, 0, 1),
@@ -57,7 +53,6 @@ void Camera::onTransformChanged(const Transform* transform)
 void Camera::setViewport(float left, float top, float width, float height)
 {
 	viewport.set(left, top, width, height);
-	setDirty<DIRTY_BIT_VIEWPORT>();
 }
 
 
@@ -206,7 +201,6 @@ const Matrix& Camera::getInverseViewProjectionMatrix()
 void Camera::setClearColor(float r, float g, float b, float a)
 {
 	clearColor.set(r, g, b, a);
-	setDirty<DIRTY_BIT_CLEAR_COLOR>();
 }
 
 
@@ -217,19 +211,24 @@ void Camera::update()
 
 void Camera::render(RenderContext& context)
 {
-	if (renderBuffer)
-		renderBuffer->bind();
-	if (checkAndCleanBit<DIRTY_BIT_VIEWPORT>())
-		applyViewportChange();
-	if (checkAndCleanBit<DIRTY_BIT_CLEAR_COLOR>())
-		applyClearColor();
+	if (renderTarget)
+		renderTarget->bind();
+	applyViewport();
+	applyClearColor();
 	clear();
 }
 
 
-void Camera::setRenderBuffer(RenderBuffer* buffer)
+void Camera::postRender()
 {
-	renderBuffer = buffer;
+	if (renderTarget)
+		renderTarget->unbind();
+}
+
+
+void Camera::setRenderTarget(shared<RenderTarget> target)
+{
+	renderTarget = target;
 }
 
 

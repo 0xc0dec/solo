@@ -3,6 +3,7 @@
 #include "SoloMaterial.h"
 #include "SoloMesh.h"
 #include "SoloModel.h"
+#include "SoloRenderTarget.h"
 #include "SoloPngTextureLoader.h"
 #include "SoloObjMeshLoader.h"
 #include "SoloTexture2D.h"
@@ -79,6 +80,13 @@ shared<Model> ResourceManager::findModel(const std::string& url)
 }
 
 
+shared<RenderTarget> ResourceManager::findRenderTarget(const std::string& url)
+{
+	auto existing = renderTargets.find(url);
+	return existing != renderTargets.end() ? existing->second : nullptr;
+}
+
+
 shared<Effect> ResourceManager::getOrCreateEffect(const std::string& vsSrc, const std::string& fsSrc)
 {
 	auto url = std::to_string(getHash(vsSrc + fsSrc));
@@ -91,15 +99,12 @@ shared<Effect> ResourceManager::getOrCreateEffect(const std::string& vsSrc, cons
 }
 
 
-shared<Material> ResourceManager::getOrCreateMaterial(shared<Effect> effect)
+shared<Material> ResourceManager::createMaterial(shared<Effect> effect)
 {
 	auto effectUrl = findEffectUrl(effect);
 	if (effectUrl.empty())
-		THROW_FMT(EngineException, "Unknown effect");
-	auto url = std::string("Material_") + effectUrl;
-	auto existing = findMaterial(url);
-	if (existing)
-		return existing;
+		THROW_FMT(EngineException, "Unknown effect.");
+	auto url = calculateAutoUrl();
 	auto material = MaterialFactory::create(effect);
 	materials[url] = material;
 	return material;
@@ -121,6 +126,17 @@ shared<Texture> ResourceManager::getOrLoadTexture(const std::string& url)
 		}
 	}
 	THROW_FMT(EngineException, "No suitable loader found for texture ", url);
+}
+
+
+shared<Texture> ResourceManager::getOrCreateTexture(const std::string &url)
+{
+	auto existing = findTexture(url);
+	if (existing)
+		return existing;
+	auto texture = TextureFactory::create2D();
+	textures[url] = texture;
+	return texture;
 }
 
 
@@ -169,6 +185,17 @@ shared<Model> ResourceManager::getOrCreateModel()
 {
 	auto url = calculateAutoUrl();
 	return getOrCreateModel(url);
+}
+
+
+shared<RenderTarget> ResourceManager::getOrCreateRenderTarget(const std::string& url)
+{
+	auto existing = findRenderTarget(url);
+	if (existing)
+		return existing;
+	auto target = RenderTargetFactory::create();
+	renderTargets[url] = target;
+	return target;
 }
 
 

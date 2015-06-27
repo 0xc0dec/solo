@@ -131,20 +131,36 @@ public:
 
 	virtual void run() override
 	{
-		createMaterials();
-		createAndPlaceBackgroundQuad();
-		createAndPlaceQuad({5, 0, 0});
-		createAndPlaceBox({-5, 0, 0});
-		loadAndPlaceModel("../data/monkey_hires.obj", Vector3(0, 0, 0), simpleLightingMaterial);
-		createCamera();
-	}
+		auto mainCameraNode = scene->createNode();
+		auto mainCameraTransform = mainCameraNode->getComponent<Transform>();
+		mainCameraTransform->setLocalPosition(0, 0, 10);
+		mainCameraNode->addComponent<SpectatorCamera>();
+		mainCameraNode->addComponent<InputWatcher>();
+		auto mainCamera = mainCameraNode->addComponent<Camera>();
+		mainCamera->setClearColor(0, 0.6f, 0.6f, 1);
+		mainCamera->setNear(0.05f);
 
-	void createMaterials()
-	{
+		auto offscreenCameraNode = scene->createNode();
+		auto offscreenCameraTransform = offscreenCameraNode->getComponent<Transform>();
+		offscreenCameraTransform->setLocalPosition(0, 0, 5);
+		auto offscreenCamera = offscreenCameraNode->addComponent<Camera>();
+		offscreenCamera->setClearColor(0, 0.6f, 0.6f, 1);
+		offscreenCamera->setNear(0.05f);
+
 		auto canvasSize = device->getCanvasSize();
 
+		auto texture1 = DYNAMIC_CAST<Texture2D>(resManager->getOrLoadTexture("../data/freeman1.png"));
+		texture1->generateMipmaps();
+		texture1->setFilterMode(Filter::Linear, Filter::Linear);
+		texture1->setAnisotropyLevel(8);
+
+		auto texture2 = DYNAMIC_CAST<Texture2D>(resManager->getOrLoadTexture("../data/freeman2.png"));
+		texture2->generateMipmaps();
+		texture2->setFilterMode(Filter::Linear, Filter::Linear);
+		texture2->setAnisotropyLevel(8);
+
 		auto effRare = resManager->getOrCreateEffect(vsBasic, fsRare);
-		rareMaterial = resManager->getOrCreateMaterial(effRare);
+		auto rareMaterial = resManager->createMaterial(effRare);
 		rareMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
 		rareMaterial->getParameter("canvasWidth")->setValue(canvasSize.x);
 		rareMaterial->getParameter("canvasHeight")->setValue(canvasSize.y);
@@ -153,39 +169,55 @@ public:
 			return this->device->getLifetime();
 		});
 
-		auto effTexture = resManager->getOrCreateEffect(vsBasic, fsTexture);
-		auto texture = DYNAMIC_CAST<Texture2D>(resManager->getOrLoadTexture("../data/Freeman.png"));
-		texture->generateMipmaps();
-		texture->setFilterMode(Filter::Linear, Filter::Linear);
-		texture->setAnisotropyLevel(8);
-		simpleTextureMaterial = resManager->getOrCreateMaterial(effTexture);
-		simpleTextureMaterial->setPolygonFace(PolygonFace::All);
-		simpleTextureMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
-		simpleTextureMaterial->getParameter("mainTex")->setValue(texture);
+		auto textureEffect = resManager->getOrCreateEffect(vsBasic, fsTexture);
+		auto textureMaterial = resManager->createMaterial(textureEffect);
+		textureMaterial->setPolygonFace(PolygonFace::All);
+		textureMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
+		textureMaterial->getParameter("mainTex")->setValue(texture1);
 
-		auto effChecker = resManager->getOrCreateEffect(vsBasic, fsChecker);
-		checkerMaterial = resManager->getOrCreateMaterial(effChecker);
+		auto checkerEffect = resManager->getOrCreateEffect(vsBasic, fsChecker);
+		auto checkerMaterial = resManager->createMaterial(checkerEffect);
 		checkerMaterial->setPolygonFace(PolygonFace::All);
 		checkerMaterial->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
 		checkerMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
 
-		auto effTextureWithLighting = resManager->getOrCreateEffect(vsBasicLighting, fsTextureWithLighting);
-		simpleLightingMaterial = resManager->getOrCreateMaterial(effTextureWithLighting);
+		auto textureWithLightingEffect = resManager->getOrCreateEffect(vsBasicLighting, fsTextureWithLighting);
+		auto simpleLightingMaterial = resManager->createMaterial(textureWithLightingEffect);
 		simpleLightingMaterial->setPolygonFace(PolygonFace::All);
 		simpleLightingMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
 		simpleLightingMaterial->getParameter("normalMatrix")->bindValue(AutoBinding::InverseTransposedWorldMatrix);
+		simpleLightingMaterial->getParameter("mainTex")->setValue(texture2);
+
+		auto renderTarget = resManager->getOrCreateRenderTarget("test");
+		auto renderTexture = DYNAMIC_CAST<Texture2D>(resManager->getOrCreateTexture("RTT"));
+		renderTexture->setData(ColorFormat::RGB, {}, 1920, 1080);
+		renderTexture->setFilterMode(Filter::Nearest, Filter::Nearest);
+		renderTexture->setWrapMode(WrapMode::Clamp, WrapMode::Clamp);
+		renderTarget->setTexture(renderTexture);
+		offscreenCamera->setRenderTarget(renderTarget);
+		offscreenCamera->setViewport(0, 0, 2, 2);
+
+		auto rtMaterial = resManager->createMaterial(textureEffect);
+		rtMaterial->setPolygonFace(PolygonFace::All);
+		rtMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
+		rtMaterial->getParameter("mainTex")->setValue(renderTexture);
+
+		initStaticQuad({ 0, 5, 0 }, rtMaterial);
+		initRotatingQuad({ 5, 0, 0 }, textureMaterial);
+		initBox({ -5, 0, 0 }, checkerMaterial);
+		initModel("../data/monkey_hires.obj", Vector3(0, 0, 0), simpleLightingMaterial);
 	}
 
-	void createAndPlaceBox(const Vector3& position)
+	void initBox(const Vector3& position, shared<Material> material)
 	{
 		auto node = createQuad();
-		rebuildQuadToBox(node);
-		node->getComponent<ModelRenderer>()->setMaterial(0, checkerMaterial);
+		buildAndAttachBoxMesh(node);
+		node->getComponent<ModelRenderer>()->setMaterial(0, material);
 		node->getComponent<Transform>()->setLocalPosition(position);
 		node->addComponent<RotatorAroundWorldYAxis>();
 	}
 
-	void loadAndPlaceModel(const char* url, const Vector3& position, shared<Material> material)
+	void initModel(const char* url, const Vector3& position, shared<Material> material)
 	{
 		auto mesh = engine->getResourceManager()->getOrLoadMesh(url);
 		auto model = resManager->getOrCreateModel();
@@ -198,17 +230,17 @@ public:
 		node->addComponent<RotatorAroundLocalXAxis>();
 	}
 
-	void createAndPlaceBackgroundQuad()
+	void initStaticQuad(const Vector3 &position, shared<Material> material)
 	{
 		auto quad = createQuad();
-		quad->getComponent<ModelRenderer>()->setMaterial(0, rareMaterial);
-		quad->getComponent<Transform>()->setLocalPosition(0, 0, -10);
+		quad->getComponent<ModelRenderer>()->setMaterial(0, material);
+		quad->getComponent<Transform>()->setLocalPosition(position);
 
 		auto canvasSize = device->getCanvasSize();
 		quad->getComponent<Transform>()->setLocalScale(5, 5 * canvasSize.y / canvasSize.x, 1);
 	}
 
-	void createAndPlaceQuad(const Vector3& position)
+	void initRotatingQuad(const Vector3& position, shared<Material> material)
 	{
 		auto empty = scene->createNode();
 		auto emptyTransform = empty->getComponent<Transform>();
@@ -219,19 +251,7 @@ public:
 		quad->addComponent<RotatorAroundLocalXAxis>();
 		quad->getComponent<Transform>()->setParent(emptyTransform);
 		quad->getComponent<Transform>()->setLocalPosition({1, 0, 0});
-		quad->getComponent<ModelRenderer>()->setMaterial(0, simpleTextureMaterial);
-	}
-
-	void createCamera()
-	{
-		auto cameraNode = scene->createNode();
-		auto cameraTransform = cameraNode->getComponent<Transform>();
-		cameraTransform->setLocalPosition(0, 0, 10);
-		cameraNode->addComponent<SpectatorCamera>();
-		cameraNode->addComponent<InputWatcher>();
-		auto camera = cameraNode->addComponent<Camera>();
-		camera->setClearColor(0, 0.6f, 0.6f, 1);
-		camera->setNear(0.05f);
+		quad->getComponent<ModelRenderer>()->setMaterial(0, material);
 	}
 
 	Node* createQuad()
@@ -274,9 +294,9 @@ public:
 	}
 
 	// Check if the engine is capable of rebuilding meshes
-	void rebuildQuadToBox(Node* quadNode)
+	void buildAndAttachBoxMesh(Node* node)
 	{
-		auto model = quadNode->getComponent<ModelRenderer>()->getModel();
+		auto model = node->getComponent<ModelRenderer>()->getModel();
 		auto mesh = model->getMesh(0);
 		mesh->setVertices(
 		{
@@ -309,9 +329,5 @@ public:
 	}
 
 private:
-	shared<Material> checkerMaterial;
-	shared<Material> rareMaterial;
-	shared<Material> simpleTextureMaterial;
-	shared<Material> simpleLightingMaterial;
 	ResourceManager* resManager;
 };

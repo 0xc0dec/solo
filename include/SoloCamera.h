@@ -10,7 +10,7 @@ namespace solo
 {
 	class Transform;
 	class Node;
-	class RenderBuffer;
+	class RenderTarget;
 
 	class Camera : public ComponentBase<Camera>, protected TransformCallback, Dirty
 	{
@@ -19,8 +19,9 @@ namespace solo
 
 		virtual void update() override;
 		virtual void render(RenderContext& context) override;
+		virtual void postRender() override;
 
-		void setRenderBuffer(RenderBuffer *buffer);
+		void setRenderTarget(shared<RenderTarget> target);
 
 		void setClearColor(float r, float g, float b, float a);
 
@@ -56,12 +57,12 @@ namespace solo
 
 		virtual void onTransformChanged(const Transform* transform) override;
 
-		virtual void applyViewportChange() = 0;
+		virtual void applyViewport() = 0;
 		virtual void applyClearColor() = 0;
 		virtual void clear() = 0;
 
 		Transform *transform;
-		RenderBuffer *renderBuffer;
+		shared<RenderTarget> renderTarget;
 
 		bool ortho;
 

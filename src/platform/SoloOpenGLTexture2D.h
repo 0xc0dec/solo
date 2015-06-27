@@ -14,12 +14,16 @@ namespace solo
 		virtual void apply() override;
 		virtual void setData(ColorFormat format, const std::vector<byte> &data, unsigned width, unsigned height) override;
 		virtual void generateMipmaps() override;
+		virtual void *getNativeHandle() override;
 
 	private:
 		OpenGLTexture2D(const OpenGLTexture2D& other) = delete;
 		OpenGLTexture2D(OpenGLTexture2D&& other) = delete;
 		OpenGLTexture2D& operator=(const OpenGLTexture2D& other) = delete;
 		OpenGLTexture2D& operator=(OpenGLTexture2D&& other) = delete;
+
+		void bind();
+		void unbind();
 
 		GLenum toGLColorFormat(ColorFormat format);
 		GLenum toGLWrapMode(WrapMode mode);

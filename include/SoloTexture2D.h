@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SoloTexture.h"
+#include "SoloVector2.h"
 
 namespace solo
 {
@@ -24,16 +25,25 @@ namespace solo
 	{
 	public:
 		virtual void setData(ColorFormat format, const std::vector<byte> &data, unsigned width, unsigned height) = 0;
-
 		virtual void generateMipmaps() = 0;
 
+		Vector2 getSize() const;
+
+		WrapMode getVerticalWrapMode() const;
+		WrapMode getHorizontalWrapMode() const;
 		void setWrapMode(WrapMode verticalWrap, WrapMode horizontalWrap);
+
+		Filter getMinFilter() const;
+		Filter getMagFilter() const;
 		void setFilterMode(Filter minFilter, Filter magFilter);
+
+		float getAnisotropyLevel() const;
 		void setAnisotropyLevel(float level);
 
 	protected:
 		Texture2D() {}
 
+		Vector2 size;
 		WrapMode verticalWrap = WrapMode::Repeat;
 		WrapMode horizontalWrap = WrapMode::Repeat;
 		Filter minFilter = Filter::Linear;
