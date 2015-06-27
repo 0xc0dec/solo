@@ -5,9 +5,6 @@ using namespace solo;
 
 
 Device::Device(const EngineCreationArgs& args):
-	mouseDeltaX(0),
-	mouseDeltaY(0),
-	close(false),
 	creationArgs(args)
 {
 }

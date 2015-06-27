@@ -60,8 +60,8 @@ namespace solo
 		std::map<KeyCode, bool> pressedKeys;
 		std::set<KeyCode> releasedKeys;
 
-		int mouseDeltaX;
-		int mouseDeltaY;
+		int mouseDeltaX = 0;
+		int mouseDeltaY = 0;
 		std::map<MouseButton, bool> pressedMouseButtons;
 		std::set<MouseButton> releasedMouseButtons;
 

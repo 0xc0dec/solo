@@ -28,7 +28,7 @@ namespace solo
 	private:
 		friend class SceneFactory;
 
-		Scene();
+		Scene() {}
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
@@ -36,7 +36,7 @@ namespace solo
 
 		void iterateComponents(std::function<void(shared<Node>, shared<Component>)> work);
 
-		int nodeCounter;
+		int nodeCounter{ 0 };
 		std::map<size_t, std::map<size_t, shared<Component>>> components;
 		std::map<size_t, shared<Node>> nodes;
 

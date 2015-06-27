@@ -12,8 +12,7 @@ using namespace solo;
 class Callback : public EngineCallback
 {
 public:
-	Callback(Engine* engine):
-		engine(engine)
+	Callback(Engine* engine): engine(engine)
 	{
 	}
 

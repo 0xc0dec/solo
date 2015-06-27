@@ -8,12 +8,6 @@
 using namespace solo;
 
 
-Scene::Scene():
-	nodeCounter{0}
-{
-}
-
-
 Node* Scene::createEmptyNode()
 {
 	auto node = NodeFactory::createNode(this);
