@@ -14,12 +14,16 @@ namespace solo
 		virtual void bind() = 0;
 		virtual void unbind() = 0;
 
+		// should be reentrant
 		void setTextures(const std::vector<shared<Texture2D>> &textures);
+		std::vector<shared<Texture2D>> getTextures() const;
 
 	protected:
 		RenderTarget() {}
 
-		virtual void applyTextures(const std::vector<shared<Texture2D>> &textures) = 0;
+		virtual void update() = 0;
+
+		std::vector<shared<Texture2D>> textures;
 
 	private:
 		friend class RenderTargetFactory;
@@ -28,8 +32,6 @@ namespace solo
 		RenderTarget(RenderTarget&& other) = delete;
 		RenderTarget& operator=(const RenderTarget& other) = delete;
 		RenderTarget& operator=(RenderTarget&& other) = delete;
-
-		std::vector<shared<Texture2D>> textures;
 	};
 
 	class RenderTargetFactory

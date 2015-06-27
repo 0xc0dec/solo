@@ -7,7 +7,7 @@
 class InputWatcher : public ComponentBase<InputWatcher>
 {
 public:
-	explicit InputWatcher(Node* node) : ComponentBase<InputWatcher>(node)
+	explicit InputWatcher(Node* node): ComponentBase<InputWatcher>(node)
 	{
 		device = Engine::get()->getDevice();
 	}
@@ -26,7 +26,7 @@ private:
 class SpectatorCamera : public ComponentBase<SpectatorCamera>
 {
 public:
-	SpectatorCamera(Node* node) : ComponentBase<SpectatorCamera>(node)
+	SpectatorCamera(Node* node): ComponentBase<SpectatorCamera>(node)
 	{
 		engine = Engine::get();
 		device = engine->getDevice();
@@ -80,8 +80,7 @@ private:
 class RotatorAroundWorldYAxis : public ComponentBase<RotatorAroundWorldYAxis>
 {
 public:
-	explicit RotatorAroundWorldYAxis(Node* node) :
-		ComponentBase<RotatorAroundWorldYAxis>(node)
+	explicit RotatorAroundWorldYAxis(Node* node): ComponentBase<RotatorAroundWorldYAxis>(node)
 	{
 		engine = Engine::get();
 		transform = node->getComponent<Transform>();
@@ -102,8 +101,7 @@ private:
 class RotatorAroundLocalXAxis : public ComponentBase<RotatorAroundLocalXAxis>
 {
 public:
-	explicit RotatorAroundLocalXAxis(Node* node) :
-		ComponentBase<RotatorAroundLocalXAxis>(node)
+	explicit RotatorAroundLocalXAxis(Node* node): ComponentBase<RotatorAroundLocalXAxis>(node)
 	{
 		engine = Engine::get();
 		transform = node->getComponent<Transform>();
@@ -118,6 +116,52 @@ public:
 private:
 	Engine* engine;
 	Transform* transform;
+};
+
+
+class RenderTargetUpdater: public ComponentBase<RenderTargetUpdater>
+{
+public:
+	explicit RenderTargetUpdater(Node* node): ComponentBase<RenderTargetUpdater>(node)
+	{
+		engine = Engine::get();
+		sizes.push_back({ 80, 60 });
+		sizes.push_back({ 160, 120 });
+		sizes.push_back({ 320, 240 });
+		sizes.push_back({ 640, 480 });
+		sizes.push_back({ 1280, 960 });
+		updateSize();
+	}
+
+	void update() override
+	{
+		time += engine->getTimeDelta();
+		if (time >= 1)
+		{
+			time = 0;
+			updateSize();
+		}
+	}
+
+	void updateSize()
+	{
+		auto camera = node->getComponent<Camera>();
+		auto renderTarget = camera->getRenderTarget();
+		auto texture = renderTarget->getTextures()[0];
+		currentSizeIdx++;
+		if (currentSizeIdx >= sizes.size())
+			currentSizeIdx = 0;
+		auto newSize = sizes[currentSizeIdx];
+		texture->setData(ColorFormat::RGB, {}, newSize.x, newSize.y);
+		camera->setViewport(0, 0, newSize.x, newSize.y);
+		renderTarget->setTextures({ texture });
+	}
+
+private:
+	Engine *engine;
+	float time = 0;
+	std::vector<Vector2> sizes;
+	int currentSizeIdx = 0;
 };
 
 
@@ -173,7 +217,7 @@ public:
 
 		auto renderTarget = resManager->getOrCreateRenderTarget("test");
 		auto renderTexture = DYNAMIC_CAST<Texture2D>(resManager->getOrCreateTexture("RTT"));
-		renderTexture->setData(ColorFormat::RGB, {}, 320, 240);
+		renderTexture->setData(ColorFormat::RGB, {}, 640, 480);
 		renderTexture->setFilterMode(Filter::Nearest, Filter::Nearest);
 		renderTexture->setWrapMode(WrapMode::Clamp, WrapMode::Clamp);
 		renderTarget->setTextures({ renderTexture });
@@ -185,7 +229,8 @@ public:
 		offscreenCamera->setClearColor(1, 1, 1, 1);
 		offscreenCamera->setNear(0.05f);
 		offscreenCamera->setRenderTarget(renderTarget);
-		offscreenCamera->setViewport(0, 0, 320, 240);
+//		offscreenCamera->setViewport(0, 0, 320, 240);
+		offscreenCamera->getNode()->addComponent<RenderTargetUpdater>();
 
 		auto rtMaterial = resManager->createMaterial(textureEffect);
 		rtMaterial->setPolygonFace(PolygonFace::All);
