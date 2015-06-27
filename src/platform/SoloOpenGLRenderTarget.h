@@ -14,7 +14,8 @@ namespace solo
 		virtual void bind() override;
 		virtual void unbind() override;
 
-		virtual void setTexture(shared<Texture2D> texture) override;
+	protected:
+		virtual void applyTexture() override;
 
 	private:
 		void checkStatus();

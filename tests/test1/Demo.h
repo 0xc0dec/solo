@@ -142,7 +142,7 @@ public:
 
 		auto offscreenCameraNode = scene->createNode();
 		auto offscreenCameraTransform = offscreenCameraNode->getComponent<Transform>();
-		offscreenCameraTransform->setLocalPosition(0, 0, 5);
+		offscreenCameraTransform->setLocalPosition(0, 0, 10);
 		auto offscreenCamera = offscreenCameraNode->addComponent<Camera>();
 		offscreenCamera->setClearColor(0, 0.6f, 0.6f, 1);
 		offscreenCamera->setNear(0.05f);

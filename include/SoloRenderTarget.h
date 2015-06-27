@@ -14,10 +14,14 @@ namespace solo
 		virtual void bind() = 0;
 		virtual void unbind() = 0;
 
-		virtual void setTexture(shared<Texture2D> texture) = 0;
+		void setTexture(shared<Texture2D> texture);
 
 	protected:
 		RenderTarget() {}
+
+		virtual void applyTexture() = 0;
+
+		shared<Texture2D> texture;
 
 	private:
 		friend class RenderTargetFactory;

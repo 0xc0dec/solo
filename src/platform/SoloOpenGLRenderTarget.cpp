@@ -32,7 +32,7 @@ void OpenGLRenderTarget::unbind()
 }
 
 
-void OpenGLRenderTarget::setTexture(shared<Texture2D> texture)
+void OpenGLRenderTarget::applyTexture()
 {
 	static GLenum buffers = GL_COLOR_ATTACHMENT0;
 
