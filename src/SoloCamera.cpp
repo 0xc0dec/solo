@@ -16,19 +16,7 @@ const unsigned DIRTY_BIT_INV_VIEW_PROJ = 16;
 const unsigned DIRTY_BIT_ALL = DIRTY_BIT_VIEW | DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW | DIRTY_BIT_INV_VIEW_PROJ;
 
 
-Camera::Camera(Node* node):
-	ComponentBase(node),
-	transform{nullptr},
-	renderTarget{nullptr},
-	ortho{false},
-	viewport(0, 0, 1, 1),
-	clearColor(0, 0, 0, 1),
-	fov(60),
-	near(1),
-	far(100),
-	width(1),
-	height(1),
-	aspectRatio(1)
+Camera::Camera(Node* node): ComponentBase(node)
 {
 	transform = node->getComponent<Transform>();
 	transform->addCallback(this);
@@ -53,12 +41,21 @@ void Camera::onTransformChanged(const Transform* transform)
 void Camera::setViewport(float left, float top, float width, float height)
 {
 	viewport.set(left, top, width, height);
+	viewportSet = true;
+}
+
+
+void Camera::resetViewport()
+{
+	viewportSet = false;
 }
 
 
 Vector4 Camera::getViewport() const
 {
-	return viewport;
+	if (viewportSet)
+		return viewport;
+	return Vector4();
 }
 
 

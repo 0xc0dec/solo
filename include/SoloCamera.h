@@ -26,6 +26,7 @@ namespace solo
 		void setClearColor(float r, float g, float b, float a);
 
 		void setViewport(float left, float top, float width, float height);
+		void resetViewport();
 		Vector4 getViewport() const;
 
 		void setPerspective(bool perspective);
@@ -61,19 +62,21 @@ namespace solo
 		virtual void applyClearColor() = 0;
 		virtual void clear() = 0;
 
-		Transform *transform;
-		shared<RenderTarget> renderTarget;
+		Transform *transform = nullptr;
+		shared<RenderTarget> renderTarget = nullptr;
 
-		bool ortho;
+		bool ortho = false;
 
-		Vector4 viewport; // all values in range 0..1
-		Vector4 clearColor;
-		float fov;
-		float near;
-		float far;
-		float width;
-		float height;
-		float aspectRatio;
+		Vector4 viewport;
+		bool viewportSet = false;
+
+		Vector4 clearColor{ 0, 0, 0, 1 };
+		float fov = 60;
+		float near = 1;
+		float far = 100;
+		float width = 1;
+		float height = 1;
+		float aspectRatio = 1;
 		
 		Matrix viewMatrix;
 		Matrix projectionMatrix;

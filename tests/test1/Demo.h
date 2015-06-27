@@ -190,12 +190,12 @@ public:
 
 		auto renderTarget = resManager->getOrCreateRenderTarget("test");
 		auto renderTexture = DYNAMIC_CAST<Texture2D>(resManager->getOrCreateTexture("RTT"));
-		renderTexture->setData(ColorFormat::RGB, {}, 1920, 1080);
+		renderTexture->setData(ColorFormat::RGB, {}, 32, 24);
 		renderTexture->setFilterMode(Filter::Nearest, Filter::Nearest);
 		renderTexture->setWrapMode(WrapMode::Clamp, WrapMode::Clamp);
 		renderTarget->setTexture(renderTexture);
 		offscreenCamera->setRenderTarget(renderTarget);
-		offscreenCamera->setViewport(0, 0, 2, 2);
+		offscreenCamera->setViewport(0, 0, 32, 24);
 
 		auto rtMaterial = resManager->createMaterial(textureEffect);
 		rtMaterial->setPolygonFace(PolygonFace::All);
