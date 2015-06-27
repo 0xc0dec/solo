@@ -175,6 +175,10 @@ public:
 
 	virtual void run() override
 	{
+		initTextures();
+		initMaterials();
+		initOffscreenRendering();
+
 		auto mainCameraNode = scene->createNode();
 		auto mainCameraTransform = mainCameraNode->getComponent<Transform>();
 		mainCameraTransform->setLocalPosition(0, 0, 10);
@@ -184,37 +188,14 @@ public:
 		mainCamera->setClearColor(0, 0.6f, 0.6f, 1);
 		mainCamera->setNear(0.05f);
 
-		auto canvasSize = device->getCanvasSize();
+		initStaticQuad({ 0, 7, 0 }, renderTargetMaterial);
+		initRotatingQuad({ 5, 0, 0 }, textureMaterial);
+		initBox({ -5, 0, 0 }, checkerMaterial);
+		initModel("../data/monkey_hires.obj", Vector3(0, 0, 0), texWithLightingMaterial);
+	}
 
-		auto texture1 = DYNAMIC_CAST<Texture2D>(resManager->getOrLoadTexture("../data/freeman1.png"));
-		texture1->generateMipmaps();
-		texture1->setFilterMode(Filter::Linear, Filter::Linear);
-		texture1->setAnisotropyLevel(8);
-
-		auto texture2 = DYNAMIC_CAST<Texture2D>(resManager->getOrLoadTexture("../data/freeman2.png"));
-		texture2->generateMipmaps();
-		texture2->setFilterMode(Filter::Linear, Filter::Linear);
-		texture2->setAnisotropyLevel(8);
-
-		auto textureEffect = resManager->getOrCreateEffect(vsBasic, fsTexture);
-		auto textureMaterial = resManager->createMaterial(textureEffect);
-		textureMaterial->setPolygonFace(PolygonFace::All);
-		textureMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
-		textureMaterial->getParameter("mainTex")->setValue(texture1);
-
-		auto checkerEffect = resManager->getOrCreateEffect(vsBasic, fsChecker);
-		auto checkerMaterial = resManager->createMaterial(checkerEffect);
-		checkerMaterial->setPolygonFace(PolygonFace::All);
-		checkerMaterial->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
-		checkerMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
-
-		auto textureWithLightingEffect = resManager->getOrCreateEffect(vsBasicLighting, fsTextureWithLighting);
-		auto simpleLightingMaterial = resManager->createMaterial(textureWithLightingEffect);
-		simpleLightingMaterial->setPolygonFace(PolygonFace::All);
-		simpleLightingMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
-		simpleLightingMaterial->getParameter("normalMatrix")->bindValue(AutoBinding::InverseTransposedWorldMatrix);
-		simpleLightingMaterial->getParameter("mainTex")->setValue(texture2);
-
+	void initOffscreenRendering()
+	{
 		auto renderTarget = resManager->getOrCreateRenderTarget("test");
 		auto renderTexture = DYNAMIC_CAST<Texture2D>(resManager->getOrCreateTexture("RTT"));
 		renderTexture->setData(ColorFormat::RGB, {}, 640, 480);
@@ -229,24 +210,53 @@ public:
 		offscreenCamera->setClearColor(1, 1, 1, 1);
 		offscreenCamera->setNear(0.05f);
 		offscreenCamera->setRenderTarget(renderTarget);
-//		offscreenCamera->setViewport(0, 0, 320, 240);
 		offscreenCamera->getNode()->addComponent<RenderTargetUpdater>();
 
-		auto rtMaterial = resManager->createMaterial(textureEffect);
-		rtMaterial->setPolygonFace(PolygonFace::All);
-		rtMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
-		rtMaterial->getParameter("mainTex")->setValue(renderTexture);
+		renderTargetMaterial = resManager->createMaterial(textureEffect);
+		renderTargetMaterial->setPolygonFace(PolygonFace::All);
+		renderTargetMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
+		renderTargetMaterial->getParameter("mainTex")->setValue(renderTexture);
+	}
 
-		initStaticQuad({ 0, 7, 0 }, rtMaterial);
-		initRotatingQuad({ 5, 0, 0 }, textureMaterial);
-		initBox({ -5, 0, 0 }, checkerMaterial);
-		initModel("../data/monkey_hires.obj", Vector3(0, 0, 0), simpleLightingMaterial);
+	void initTextures()
+	{
+		texture1 = DYNAMIC_CAST<Texture2D>(resManager->getOrLoadTexture("../data/freeman1.png"));
+		texture1->generateMipmaps();
+		texture1->setFilterMode(Filter::Linear, Filter::Linear);
+		texture1->setAnisotropyLevel(8);
+
+		texture2 = DYNAMIC_CAST<Texture2D>(resManager->getOrLoadTexture("../data/freeman2.png"));
+		texture2->generateMipmaps();
+		texture2->setFilterMode(Filter::Linear, Filter::Linear);
+		texture2->setAnisotropyLevel(8);
+	}
+
+	void initMaterials()
+	{
+		textureEffect = resManager->getOrCreateEffect(vsBasic, fsTexture);
+		textureMaterial = resManager->createMaterial(textureEffect);
+		textureMaterial->setPolygonFace(PolygonFace::All);
+		textureMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
+		textureMaterial->getParameter("mainTex")->setValue(texture1);
+
+		auto checkerEffect = resManager->getOrCreateEffect(vsBasic, fsChecker);
+		checkerMaterial = resManager->createMaterial(checkerEffect);
+		checkerMaterial->setPolygonFace(PolygonFace::All);
+		checkerMaterial->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
+		checkerMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
+
+		auto textureWithLightingEffect = resManager->getOrCreateEffect(vsBasicLighting, fsTextureWithLighting);
+		texWithLightingMaterial = resManager->createMaterial(textureWithLightingEffect);
+		texWithLightingMaterial->setPolygonFace(PolygonFace::All);
+		texWithLightingMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
+		texWithLightingMaterial->getParameter("normalMatrix")->bindValue(AutoBinding::InverseTransposedWorldMatrix);
+		texWithLightingMaterial->getParameter("mainTex")->setValue(texture2);
 	}
 
 	void initBox(const Vector3& position, shared<Material> material)
 	{
 		auto node = createQuad();
-		buildAndAttachBoxMesh(node);
+		rebuildToBoxMesh(node);
 		node->getComponent<ModelRenderer>()->setMaterial(0, material);
 		node->getComponent<Transform>()->setLocalPosition(position);
 		node->addComponent<RotatorAroundWorldYAxis>();
@@ -329,7 +339,7 @@ public:
 	}
 
 	// Check if the engine is capable of rebuilding meshes
-	void buildAndAttachBoxMesh(Node* node)
+	void rebuildToBoxMesh(Node* node)
 	{
 		auto model = node->getComponent<ModelRenderer>()->getModel();
 		auto mesh = model->getMesh(0);
@@ -364,5 +374,12 @@ public:
 	}
 
 private:
+	shared<Texture2D> texture1;
+	shared<Texture2D> texture2;
+	shared<Effect> textureEffect;
+	shared<Material> textureMaterial;
+	shared<Material> texWithLightingMaterial;
+	shared<Material> checkerMaterial;
+	shared<Material> renderTargetMaterial;
 	ResourceManager* resManager;
 };
