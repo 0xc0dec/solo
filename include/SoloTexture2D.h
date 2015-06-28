@@ -24,7 +24,7 @@ namespace solo
 	class Texture2D: public Texture
 	{
 	public:
-		virtual void setData(ColorFormat format, const std::vector<byte> &data, unsigned width, unsigned height) = 0;
+		void setData(ColorFormat format, const std::vector<byte> &data, unsigned width, unsigned height);
 		virtual void generateMipmaps() = 0;
 
 		Vector2 getSize() const;
@@ -43,7 +43,8 @@ namespace solo
 	protected:
 		Texture2D() {}
 
-		Vector2 size;
+		virtual void applyData(ColorFormat format, const std::vector<byte> &data, unsigned width, unsigned height) = 0;
+
 		WrapMode verticalWrap = WrapMode::Repeat;
 		WrapMode horizontalWrap = WrapMode::Repeat;
 		Filter minFilter = Filter::Linear;
@@ -55,5 +56,7 @@ namespace solo
 		Texture2D(Texture2D&& other) = delete;
 		Texture2D& operator=(const Texture2D& other) = delete;
 		Texture2D& operator=(Texture2D&& other) = delete;
+
+		Vector2 size;
 	};
 }

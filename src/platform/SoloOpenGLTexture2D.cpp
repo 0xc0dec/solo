@@ -90,12 +90,11 @@ void OpenGLTexture2D::apply()
 }
 
 
-void OpenGLTexture2D::setData(ColorFormat format, const std::vector<byte> &data, unsigned width, unsigned height)
+void OpenGLTexture2D::applyData(ColorFormat format, const std::vector<byte>& data, unsigned width, unsigned height)
 {
 	bind();
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glTexImage2D(GL_TEXTURE_2D, 0, toGLColorFormat(format), width, height, 0, toGLColorFormat(format), GL_UNSIGNED_BYTE, data.size() ? data.data() : 0);
-	size = { static_cast<float>(width), static_cast<float>(height) };
 	unbind();
 }
 

@@ -12,9 +12,11 @@ namespace solo
 		virtual ~OpenGLTexture2D();
 
 		virtual void apply() override;
-		virtual void setData(ColorFormat format, const std::vector<byte> &data, unsigned width, unsigned height) override;
 		virtual void generateMipmaps() override;
 		virtual void *getNativeHandle() override;
+
+	protected:
+		virtual void applyData(ColorFormat format, const std::vector<byte>& data, unsigned width, unsigned height) override;
 
 	private:
 		OpenGLTexture2D(const OpenGLTexture2D& other) = delete;
