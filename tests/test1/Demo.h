@@ -119,52 +119,6 @@ private:
 };
 
 
-class RenderTargetUpdater: public ComponentBase<RenderTargetUpdater>
-{
-public:
-	explicit RenderTargetUpdater(Node* node): ComponentBase<RenderTargetUpdater>(node)
-	{
-		engine = Engine::get();
-		sizes.push_back({ 80, 60 });
-		sizes.push_back({ 160, 120 });
-		sizes.push_back({ 320, 240 });
-		sizes.push_back({ 640, 480 });
-		sizes.push_back({ 1280, 960 });
-		updateSize();
-	}
-
-	void update() override
-	{
-		time += engine->getTimeDelta();
-		if (time >= 1)
-		{
-			time = 0;
-			updateSize();
-		}
-	}
-
-	void updateSize()
-	{
-		auto camera = node->getComponent<Camera>();
-		auto renderTarget = camera->getRenderTarget();
-		auto texture = renderTarget->getTextures()[0];
-		currentSizeIdx++;
-		if (currentSizeIdx >= sizes.size())
-			currentSizeIdx = 0;
-		auto newSize = sizes[currentSizeIdx];
-		texture->setData(ColorFormat::RGB, {}, newSize.x, newSize.y);
-		camera->setViewport(0, 0, newSize.x, newSize.y);
-		renderTarget->setTextures({ texture });
-	}
-
-private:
-	Engine *engine;
-	float time = 0;
-	std::vector<Vector2> sizes;
-	int currentSizeIdx = 0;
-};
-
-
 class Demo : public TestBase
 {
 public:
@@ -198,7 +152,7 @@ public:
 	{
 		auto renderTarget = resManager->getOrCreateRenderTarget("test");
 		auto renderTexture = DYNAMIC_CAST<Texture2D>(resManager->getOrCreateTexture("RTT"));
-		renderTexture->setData(ColorFormat::RGB, {}, 640, 480);
+		renderTexture->setData(ColorFormat::RGB, {}, 160, 120);
 		renderTexture->setFilterMode(Filter::Nearest, Filter::Nearest);
 		renderTexture->setWrapMode(WrapMode::Clamp, WrapMode::Clamp);
 		renderTarget->setTextures({ renderTexture });
@@ -210,7 +164,7 @@ public:
 		offscreenCamera->setClearColor(1, 1, 1, 1);
 		offscreenCamera->setNear(0.05f);
 		offscreenCamera->setRenderTarget(renderTarget);
-		offscreenCamera->getNode()->addComponent<RenderTargetUpdater>();
+		offscreenCamera->setViewport(0, 0, 160, 120);
 
 		renderTargetMaterial = resManager->createMaterial(textureEffect);
 		renderTargetMaterial->setPolygonFace(PolygonFace::All);
