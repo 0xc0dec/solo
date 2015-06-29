@@ -37,7 +37,7 @@ namespace solo
 		bool isKeyReleased(KeyCode code) const;
 
 		Vector2 getMouseMotion() const;
-		bool isMouseButtonPressed(MouseButton button, bool firstTimeOnly = false) const;
+		bool isMouseButtonDown(MouseButton button, bool firstTimeOnly = false) const;
 		bool isMouseButtonReleased(MouseButton button) const;
 
 		virtual void setCursorCaptured(bool captured) = 0;

@@ -29,7 +29,7 @@ Vector2 Device::getMouseMotion() const
 }
 
 
-bool Device::isMouseButtonPressed(MouseButton button, bool firstTimeOnly) const
+bool Device::isMouseButtonDown(MouseButton button, bool firstTimeOnly) const
 {
 	auto where = pressedMouseButtons.find(button);
 	return where != pressedMouseButtons.end() && (!firstTimeOnly || where->second);

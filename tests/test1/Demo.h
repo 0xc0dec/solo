@@ -38,12 +38,12 @@ public:
 		auto mouseMotion = device->getMouseMotion();
 		auto dt = engine->getTimeDelta();
 
-		if (device->isMouseButtonPressed(MouseButton::Right, true))
+		if (device->isMouseButtonDown(MouseButton::Right, true))
 			device->setCursorCaptured(true);
 		if (device->isMouseButtonReleased(MouseButton::Right))
 			device->setCursorCaptured(false);
 
-		if (device->isMouseButtonPressed(MouseButton::Right, false))
+		if (device->isMouseButtonDown(MouseButton::Right, false))
 		{
 			if (mouseMotion.x != 0)
 				transform->rotate(Vector3::unitY(), 0.5f * dt * -mouseMotion.x, TransformSpace::World);
