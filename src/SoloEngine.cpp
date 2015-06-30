@@ -4,6 +4,7 @@
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
 #include "SoloResourceManager.h"
+#include "SoloScripter.h"
 
 using namespace solo;
 
@@ -49,6 +50,7 @@ void Engine::run(const EngineCreationArgs &args)
 	fs = FileSystemFactory::create();
 	resourceManager = ResourceManagerFactory::create(this);
 	scene = SceneFactory::create();
+	scripter = ScripterFactory::create();
 
 	callback->onEngineStarted();
 
@@ -64,8 +66,12 @@ void Engine::run(const EngineCreationArgs &args)
 	}
 
 	callback->onEngineStopped();
-	device.reset();
+
+	scripter.reset();
 	scene.reset();
+	resourceManager.reset();
+	fs.reset();
+	device.reset();
 }
 
 
@@ -81,25 +87,31 @@ float Engine::getTimeDelta() const
 }
 
 
-Scene* Engine::getScene() const
+Scene *Engine::getScene() const
 {
 	return scene.get();
 }
 
 
-Device* Engine::getDevice() const
+Device *Engine::getDevice() const
 {
 	return device.get();
 }
 
 
-FileSystem* Engine::getFileSystem() const
+FileSystem *Engine::getFileSystem() const
 {
 	return fs.get();
 }
 
 
-ResourceManager* Engine::getResourceManager() const
+ResourceManager *Engine::getResourceManager() const
 {
 	return resourceManager.get();
+}
+
+
+Scripter *Engine::getScripter() const
+{
+	return scripter.get();
 }

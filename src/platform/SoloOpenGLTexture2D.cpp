@@ -74,7 +74,7 @@ GLenum OpenGLTexture2D::toGLFilter(Filter filter)
 		case Filter::NearestMipmapNearest:
 			return GL_NEAREST_MIPMAP_NEAREST;
 		default:
-			THROW_FMT(EngineException, "Unexpected texture filter ", static_cast<int>(filter));
+			THROW_FMT(EngineException, "Unexpected texture filter ", static_cast<int>(filter), ".");
 	}
 }
 

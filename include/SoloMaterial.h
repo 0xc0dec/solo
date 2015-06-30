@@ -15,7 +15,6 @@ namespace solo
 		virtual void unbind(RenderContext& context) override;
 
 		MaterialParameter* getParameter(const std::string &name);
-
 		Effect* getEffect() const;
 
 	protected:

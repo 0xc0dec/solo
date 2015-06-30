@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\external\inclua\inclua.h" />
     <ClInclude Include="..\include\SoloBase.h" />
     <ClInclude Include="..\include\SoloBoundingBox.h" />
     <ClInclude Include="..\include\SoloBoundingSphere.h" />
@@ -38,6 +39,7 @@
     <ClInclude Include="..\include\SoloEngineCallback.h" />
     <ClInclude Include="..\include\SoloMeshLoader.h" />
     <ClInclude Include="..\include\SoloRenderTarget.h" />
+    <ClInclude Include="..\include\SoloScripter.h" />
     <ClInclude Include="..\include\SoloTextureLoader.h" />
     <ClInclude Include="..\include\SoloTexture.h" />
     <ClInclude Include="..\include\SoloLog.h" />
@@ -64,6 +66,7 @@
     <ClInclude Include="..\include\SoloVector4.h" />
     <ClInclude Include="..\src\platform\SoloGLSLEffect.h" />
     <ClInclude Include="..\src\platform\SoloGLSLEffectVariable.h" />
+    <ClInclude Include="..\src\platform\SoloLuaScripter.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLCamera.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLMaterial.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLMesh.h" />
@@ -103,6 +106,40 @@
     <ClCompile Include="..\external\zlib\src\trees.c" />
     <ClCompile Include="..\external\zlib\src\uncompr.c" />
     <ClCompile Include="..\external\zlib\src\zutil.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lapi.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lauxlib.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lbaselib.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lbitlib.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lcode.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lcorolib.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lctype.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\ldblib.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\ldebug.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\ldo.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\ldump.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lfunc.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lgc.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\linit.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\liolib.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\llex.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lmathlib.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lmem.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\loadlib.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lobject.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lopcodes.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\loslib.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lparser.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lstate.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lstring.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lstrlib.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\ltable.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\ltablib.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\ltm.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lundump.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lutf8lib.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lvm.c" />
+    <ClCompile Include="..\external\lua\5.3\lua\lzio.c" />
+    <ClCompile Include="..\src\platform\SoloLuaScripter.cpp" />
     <ClCompile Include="..\src\platform\SoloOpenGLRenderTarget.cpp" />
     <ClCompile Include="..\src\platform\SoloGLSLEffectVariable.cpp" />
     <ClCompile Include="..\src\platform\SoloGLSLEffect.cpp" />
@@ -139,6 +176,7 @@
     <ClCompile Include="..\src\SoloResourceManager.cpp" />
     <ClCompile Include="..\src\SoloScene.cpp" />
     <ClCompile Include="..\src\SoloEffect.cpp" />
+    <ClCompile Include="..\src\SoloScripter.cpp" />
     <ClCompile Include="..\src\SoloTexture.cpp" />
     <ClCompile Include="..\src\SoloTexture2D.cpp" />
     <ClCompile Include="..\src\SoloTransform.cpp" />
@@ -199,7 +237,7 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\src\SDL\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(ProjectDir)..\external\zlib\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(ProjectDir)..\external\zlib\include;$(ProjectDir)..\external\inclua;$(ProjectDir)..\external\lua\5.3\lua;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
     <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;$(LibraryPath)</LibraryPath>
@@ -210,7 +248,7 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\src\SDL\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(ProjectDir)..\external\zlib\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(ProjectDir)..\external\zlib\include;$(ProjectDir)..\external\inclua;$(ProjectDir)..\external\lua\5.3\lua;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
     <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;$(LibraryPath)</LibraryPath>
