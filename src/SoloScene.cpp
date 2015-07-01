@@ -10,7 +10,7 @@ using namespace solo;
 
 Node* Scene::createEmptyNode()
 {
-	auto node = NodeFactory::createNode(this);
+	auto node = NodeFactory::createNode();
 	components[node->getId()];
 	nodes[node->getId()] = node;
 	return node.get();

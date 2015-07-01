@@ -1,11 +1,18 @@
 #include "SoloNode.h"
+#include "SoloEngine.h"
 
 using namespace solo;
 
 
-shared<Node> NodeFactory::createNode(Scene *scene)
+shared<Node> NodeFactory::createNode()
 {
-	return NEW2(Node, scene);
+	return NEW2(Node);
+}
+
+
+Node::Node()
+{
+	scene = Engine::get()->getScene();
 }
 
 

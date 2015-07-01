@@ -1,7 +1,7 @@
-#include <GL/glew.h>
 #include "SoloOpenGLCamera.h"
 #include "SoloEngine.h"
 #include "SoloDevice.h"
+#include <GL/glew.h>
 
 using namespace solo;
 

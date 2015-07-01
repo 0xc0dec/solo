@@ -46,19 +46,19 @@ namespace solo
 	private:
 		friend class NodeFactory;
 	
-		Node(Scene* scene) : scene(scene) {}
+		Node();
 		Node(const Node& other) = delete;
 		Node(Node&& other) = delete;
 		Node& operator=(const Node& other) = delete;
 		Node& operator=(Node&& other) = delete;
 
-		Scene* scene = nullptr;
+		Scene* scene;
 	};
 
 	class NodeFactory
 	{
 		friend class Scene;
-		static shared<Node> createNode(Scene *scene);
+		static shared<Node> createNode();
 	};
 
 	template<> Transform* Node::addComponent();
