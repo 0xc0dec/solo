@@ -6,17 +6,6 @@ print(device:getWindowTitle())
 
 local node = scene:createNode()
 print(node:getId())
+node:addScriptComponent("lalala")
 
---[[ print("1")
-local a = solo.A()
-print(a)
-print("2")
-print(a:func())
-print("3")
-]]--
-
-print("1")
-local a = solo.B()
-print("2")
-print(a:func())
-print("3")
+print("Done")

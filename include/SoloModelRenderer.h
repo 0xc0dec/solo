@@ -11,8 +11,6 @@ namespace solo
 	class ModelRenderer: public ComponentBase<ModelRenderer>
 	{
 	public:
-		virtual ~ModelRenderer() {}
-
 		virtual void render(RenderContext& context) override;
 
 		void setModel(shared<Model> model);

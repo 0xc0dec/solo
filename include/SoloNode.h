@@ -4,19 +4,21 @@
 #include "SoloModelRenderer.h"
 #include "SoloCamera.h"
 #include "SoloTransform.h"
+#include "SoloScriptedNode.h"
 
 namespace solo
 {
-	class Node
+	class Node: public ScriptedNode<Node>
 	{
 	public:
 		~Node() {}
 
 		long getId() const;
 
-		template <typename T> T* addComponent()
+		template <typename T, typename... Args>
+		T* addComponent(Args... args)
 		{
-			auto cmp = NEW<T>(this);
+			auto cmp = NEW<T>(this, args...);
 			auto base = STATIC_CAST<Component>(cmp);
 			scene->addComponent(this, base);
 			return cmp.get();
@@ -59,7 +61,8 @@ namespace solo
 		static shared<Node> createNode(Scene *scene);
 	};
 
-	template<> Transform* Node::addComponent<Transform>();
-	template<> Camera* Node::addComponent<Camera>();
-	template<> ModelRenderer* Node::addComponent<ModelRenderer>();
+	template<> Transform* Node::addComponent();
+	template<> Camera* Node::addComponent();
+	template<> ModelRenderer* Node::addComponent();
+	template<> Script* Node::addComponent(const std::string& componentObjectName);
 }

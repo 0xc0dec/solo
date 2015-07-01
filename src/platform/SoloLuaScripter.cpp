@@ -8,44 +8,6 @@
 
 using namespace solo;
 
-/*
-template <class T>
-class Base
-{
-public:
-	int baseFunc()
-	{
-		return static_cast<T*>(this)->aFunc() * 10;
-	}
-};
-
-class A : public Base<A>
-{
-public:
-	int aFunc()
-	{
-		return 5;
-	}
-};
-*/
-
-template <class T>
-struct A
-{
-	int aFunc()
-	{
-		return static_cast<T*>(this)->bFunc();
-	}
-};
-
-struct B : public A<B>
-{
-	int bFunc()
-	{
-		return 5;
-	}
-};
-
 
 LuaScripter::LuaScripter()
 {
@@ -61,7 +23,10 @@ LuaScripter::LuaScripter()
 				.addFunction("getWindowTitle", &Device::getWindowTitle)
 			.endClass()
 
-			.beginClass<Node>("Node")
+			.beginClass<ScriptedNode<Node>>("ScriptedNode")
+				.addFunction("addScriptComponent", &ScriptedNode<Node>::addScriptComponent)
+			.endClass()
+			.deriveClass<Node, ScriptedNode<Node>>("Node")
 				.addFunction("getId", &Node::getId)
 			.endClass()
 
@@ -74,22 +39,8 @@ LuaScripter::LuaScripter()
 				.addFunction("getScene", &Engine::getScene)
 			.endClass()
 
-			.beginClass <A<B>>("A")
-				.addFunction("func", &A<B>::aFunc)
-			.endClass()
-			.deriveClass <B, A<B>>("B")
-				.addConstructor<void(*)(void)>()
-			.endClass()
-
 			.addVariable("engine", Engine::get(), false)
 		.endNamespace();
-
-	/*
-	.beginClass<A>("A")
-	.addConstructor<void(*)(void)>()
-	.addFunction("func", &A::baseFunc)
-	.endClass()
-	*/
 }
 
 

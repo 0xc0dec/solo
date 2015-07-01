@@ -166,6 +166,15 @@
     <ClInclude Include="..\src\platform\SoloLuaScripter.h">
       <Filter>src\platform</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloScript.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloScriptedNode.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\SoloLuaScript.h">
+      <Filter>src\platform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">
@@ -484,6 +493,15 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\SoloLuaScripter.cpp">
+      <Filter>src\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloScript.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloScriptedNode.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\SoloLuaScript.cpp">
       <Filter>src\platform</Filter>
     </ClCompile>
   </ItemGroup>

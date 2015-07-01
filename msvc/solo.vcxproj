@@ -38,6 +38,8 @@
     <ClInclude Include="..\include\SoloEngineCallback.h" />
     <ClInclude Include="..\include\SoloMeshLoader.h" />
     <ClInclude Include="..\include\SoloRenderTarget.h" />
+    <ClInclude Include="..\include\SoloScript.h" />
+    <ClInclude Include="..\include\SoloScriptedNode.h" />
     <ClInclude Include="..\include\SoloScripter.h" />
     <ClInclude Include="..\include\SoloTextureLoader.h" />
     <ClInclude Include="..\include\SoloTexture.h" />
@@ -65,6 +67,7 @@
     <ClInclude Include="..\include\SoloVector4.h" />
     <ClInclude Include="..\src\platform\SoloGLSLEffect.h" />
     <ClInclude Include="..\src\platform\SoloGLSLEffectVariable.h" />
+    <ClInclude Include="..\src\platform\SoloLuaScript.h" />
     <ClInclude Include="..\src\platform\SoloLuaScripter.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLCamera.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLMaterial.h" />
@@ -138,6 +141,7 @@
     <ClCompile Include="..\external\lua\5.3\lua\lutf8lib.c" />
     <ClCompile Include="..\external\lua\5.3\lua\lvm.c" />
     <ClCompile Include="..\external\lua\5.3\lua\lzio.c" />
+    <ClCompile Include="..\src\platform\SoloLuaScript.cpp" />
     <ClCompile Include="..\src\platform\SoloLuaScripter.cpp" />
     <ClCompile Include="..\src\platform\SoloOpenGLRenderTarget.cpp" />
     <ClCompile Include="..\src\platform\SoloGLSLEffectVariable.cpp" />
@@ -175,6 +179,8 @@
     <ClCompile Include="..\src\SoloResourceManager.cpp" />
     <ClCompile Include="..\src\SoloScene.cpp" />
     <ClCompile Include="..\src\SoloEffect.cpp" />
+    <ClCompile Include="..\src\SoloScript.cpp" />
+    <ClCompile Include="..\src\SoloScriptedNode.cpp" />
     <ClCompile Include="..\src\SoloScripter.cpp" />
     <ClCompile Include="..\src\SoloTexture.cpp" />
     <ClCompile Include="..\src\SoloTexture2D.cpp" />
