@@ -64,5 +64,5 @@ namespace solo
 	template<> Transform* Node::addComponent();
 	template<> Camera* Node::addComponent();
 	template<> ModelRenderer* Node::addComponent();
-	template<> Script* Node::addComponent(const std::string& componentObjectName);
+	template<> Script* Node::addComponent(const std::string& callbackObjectName);
 }

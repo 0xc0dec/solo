@@ -39,9 +39,9 @@ template<> ModelRenderer* Node::addComponent<ModelRenderer>()
 }
 
 
-template<> Script* Node::addComponent<Script>(const std::string& componentObjectName)
+template<> Script* Node::addComponent<Script>(const std::string& callbackObjectName)
 {
-	auto script = ScriptFactory::create(this, componentObjectName);
+	auto script = ScriptFactory::create(this, callbackObjectName);
 	scene->addComponent(this, script);
 	return script.get();
 }

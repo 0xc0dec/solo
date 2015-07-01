@@ -16,7 +16,7 @@ namespace solo
 	private:
 		friend class ScriptFactory;
 
-		LuaScript(Node* node, const std::string& componentObjectName);
+		LuaScript(Node* node, const std::string& callbackObjectName);
 
 		luabridge::LuaRef callback;
 	};

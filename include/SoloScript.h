@@ -22,6 +22,6 @@ namespace solo
 	{
 	public:
 		friend class Node;
-		static shared<Script> create(Node* node, const std::string& componentObjectName);
+		static shared<Script> create(Node* node, const std::string& callbackObjectName);
 	};
 }

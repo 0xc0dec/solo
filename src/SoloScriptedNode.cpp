@@ -4,7 +4,7 @@
 using namespace solo;
 
 
-template<> void ScriptedNode<Node>::addScriptComponent(const std::string &componentObjectName)
+template<> void ScriptedNode<Node>::addScriptComponent(const std::string &callbackObjectName)
 {
-	static_cast<Node*>(this)->addComponent<Script, const std::string&>(componentObjectName);
+	static_cast<Node*>(this)->addComponent<Script, const std::string&>(callbackObjectName);
 }

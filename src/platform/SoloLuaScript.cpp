@@ -3,8 +3,8 @@
 using namespace solo;
 
 
-LuaScript::LuaScript(Node* node, const std::string& componentObjectName):
-	Script(node),
+LuaScript::LuaScript(Node* node, const std::string& callbackObjectName) :
+	Script(node)
 {
 
 }

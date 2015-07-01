@@ -11,6 +11,6 @@ namespace solo
 	public:
 		virtual ~ScriptedNode() {}
 
-		void addScriptComponent(const std::string& componentObjectName);
+		void addScriptComponent(const std::string& callbackObjectName);
 	};
 }
