@@ -27,6 +27,7 @@ public:
 		tests.push_back(NEW2(Demo, engine));
 		for (auto test : tests)
 			test->run();
+		engine->getScripter()->execFile("../data/main.lua");
 	}
 
 	virtual void onEngineStopped() override

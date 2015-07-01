@@ -30,7 +30,7 @@ namespace solo
 	public:
 		virtual ~Device() {}
 
-		virtual void setWindowTitle(const char *title) = 0;
+		virtual void setWindowTitle(const std::string &title) = 0;
 		virtual std::string getWindowTitle() const = 0;
 
 		bool isKeyPressed(KeyCode code, bool firstTimeOnly = false) const;
@@ -44,17 +44,21 @@ namespace solo
 
 		virtual Vector2 getCanvasSize() const = 0;
 
-		/// Returns time elapsed since the engine startup in seconds
+		/// Returns time elapsed since the engine startup, in seconds
 		virtual float getLifetime() const = 0;
 
 		virtual void beginUpdate() = 0;
 		virtual void endUpdate() = 0;
+
+		float getTimeDelta() const;
 
 		void requestShutdown();
 		bool shutdownRequested() const;
 
 	protected:
 		Device(const EngineCreationArgs& args);
+
+		void updateTime();
 
 		// stores what keys were pressed and if it was a repeat
 		std::map<KeyCode, bool> pressedKeys;
@@ -66,13 +70,15 @@ namespace solo
 		std::set<MouseButton> releasedMouseButtons;
 
 		bool close = false;
+		float lastUpdateTime = 0;
+		float timeDelta = 0;
 		EngineCreationArgs creationArgs;
 
 	private:
 		Device(const Device& other) = delete;
 		Device(Device&& device) = delete;
 		Device& operator=(const Device& other) = delete;
-		Device& operator=(const Device&& other) = delete;
+		Device& operator=(Device&& other) = delete;
 	};
 
 	class DeviceFactory

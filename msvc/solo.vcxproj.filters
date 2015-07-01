@@ -169,6 +169,9 @@
     <ClInclude Include="..\src\platform\SoloLuaScripter.h">
       <Filter>src\platform</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\scripting\SoloDevice_ScriptWrap.h">
+      <Filter>src\scripting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">
@@ -517,6 +520,9 @@
     </Filter>
     <Filter Include="src\external\lua">
       <UniqueIdentifier>{1ebd02aa-2285-4476-8542-bead8d4a7fae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\scripting">
+      <UniqueIdentifier>{f5db0fb5-e9ae-42f3-8234-75c9afe50248}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

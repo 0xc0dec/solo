@@ -58,3 +58,17 @@ shared<Device> DeviceFactory::create(const EngineCreationArgs& args)
 {
 	return NEW<SDLOpenGLDevice>(args);
 }
+
+
+void Device::updateTime()
+{
+	auto time = getLifetime();
+	timeDelta = time - lastUpdateTime;
+	lastUpdateTime = time;
+}
+
+
+float Device::getTimeDelta() const
+{
+	return timeDelta;
+}

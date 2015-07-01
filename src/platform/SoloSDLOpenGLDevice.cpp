@@ -172,6 +172,7 @@ void SDLOpenGLDevice::beginUpdate()
 	prepareMouseState();
 	prepareKeyboardState();
 	readEvents();
+	updateTime();
 }
 
 
@@ -181,9 +182,9 @@ void SDLOpenGLDevice::endUpdate()
 }
 
 
-void SDLOpenGLDevice::setWindowTitle(const char* title)
+void SDLOpenGLDevice::setWindowTitle(const std::string &title)
 {
-	SDL_SetWindowTitle(window, title);
+	SDL_SetWindowTitle(window, title.c_str());
 }
 
 

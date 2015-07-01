@@ -36,14 +36,6 @@ Engine::~Engine()
 }
 
 
-void Engine::updateTime()
-{
-	auto time = device->getLifetime();
-	timeDelta = time - lastUpdateTime;
-	lastUpdateTime = time;
-}
-
-
 void Engine::run(const EngineCreationArgs &args)
 {
 	device = DeviceFactory::create(args);
@@ -56,7 +48,6 @@ void Engine::run(const EngineCreationArgs &args)
 
 	while (true)
 	{
-		updateTime();
 		device->beginUpdate();
 		scene->update();
 		scene->render();
@@ -78,12 +69,6 @@ void Engine::run(const EngineCreationArgs &args)
 void Engine::setCallback(EngineCallback* callback)
 {
 	this->callback = callback ? callback : &emptyCallback;
-}
-
-
-float Engine::getTimeDelta() const
-{
-	return timeDelta;
 }
 
 

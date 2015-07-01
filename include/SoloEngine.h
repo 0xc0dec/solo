@@ -15,6 +15,8 @@ namespace solo
 	class Engine
 	{
 	public:
+		~Engine();
+
 		static Engine *get();
 
 		void run(const EngineCreationArgs &creationArgs);
@@ -26,11 +28,8 @@ namespace solo
 		ResourceManager *getResourceManager() const;
 		Scripter *getScripter() const;
 
-		float getTimeDelta() const;
-
 	private:
 		Engine();
-		~Engine();
 
 		EngineCallback *callback = nullptr;
 		shared<Scene> scene;
@@ -38,10 +37,5 @@ namespace solo
 		shared<FileSystem> fs;
 		shared<ResourceManager> resourceManager;
 		shared<Scripter> scripter;
-
-		float lastUpdateTime = 0;
-		float timeDelta = 0;
-
-		inline void updateTime();
 	};
 }

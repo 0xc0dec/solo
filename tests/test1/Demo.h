@@ -36,7 +36,7 @@ public:
 	virtual void update() override
 	{
 		auto mouseMotion = device->getMouseMotion();
-		auto dt = engine->getTimeDelta();
+		auto dt = device->getTimeDelta();
 
 		if (device->isMouseButtonDown(MouseButton::Right, true))
 			device->setCursorCaptured(true);
@@ -82,18 +82,18 @@ class RotatorAroundWorldYAxis : public ComponentBase<RotatorAroundWorldYAxis>
 public:
 	explicit RotatorAroundWorldYAxis(Node* node): ComponentBase<RotatorAroundWorldYAxis>(node)
 	{
-		engine = Engine::get();
+		device = Engine::get()->getDevice();
 		transform = node->getComponent<Transform>();
 	}
 
 	virtual void update() override
 	{
-		auto angle = engine->getTimeDelta();
+		auto angle = device->getTimeDelta();
 		transform->rotate(Vector3::unitY(), angle, TransformSpace::World);
 	}
 
 private:
-	Engine* engine;
+	Device* device;
 	Transform* transform;
 };
 
@@ -103,19 +103,19 @@ class RotatorAroundLocalXAxis : public ComponentBase<RotatorAroundLocalXAxis>
 public:
 	explicit RotatorAroundLocalXAxis(Node* node): ComponentBase<RotatorAroundLocalXAxis>(node)
 	{
-		engine = Engine::get();
+		device = Engine::get()->getDevice();
 		transform = node->getComponent<Transform>();
 	}
 
 	virtual void update() override
 	{
-		auto angle = engine->getTimeDelta() * 1.3f;
+		auto angle = device->getTimeDelta() * 1.3f;
 		transform->rotate(Vector3::unitX(), angle, TransformSpace::Self);
 	}
 
 private:
-	Engine* engine;
-	Transform* transform;
+	Device *device;
+	Transform *transform;
 };
 
 

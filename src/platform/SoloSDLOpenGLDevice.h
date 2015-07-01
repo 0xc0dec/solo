@@ -11,7 +11,7 @@ namespace solo
 		SDLOpenGLDevice(const EngineCreationArgs &args);
 		virtual ~SDLOpenGLDevice();
 
-		virtual void setWindowTitle(const char *title) override;
+		virtual void setWindowTitle(const std::string &title) override;
 		virtual std::string getWindowTitle() const override;
 
 		virtual void setCursorCaptured(bool captured) override;

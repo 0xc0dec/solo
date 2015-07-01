@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SoloScripter.h"
-#include <inclua.h>
+#include <lua.hpp>
 
 namespace solo
 {
@@ -12,6 +12,11 @@ namespace solo
 		virtual void execFile(const std::string& scriptFileName) override;
 
 	private:
-		inclua::Script script{ true };
+		friend class ScripterFactory;
+
+		LuaScripter();
+
+		lua_State *lua;
+//		inclua::Script script{ true };
 	};
 }
