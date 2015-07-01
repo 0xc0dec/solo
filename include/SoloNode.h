@@ -4,7 +4,7 @@
 #include "SoloModelRenderer.h"
 #include "SoloCamera.h"
 #include "SoloTransform.h"
-#include "SoloScriptedNode.h"
+#include "scripting/SoloScriptedNode.h"
 
 namespace solo
 {

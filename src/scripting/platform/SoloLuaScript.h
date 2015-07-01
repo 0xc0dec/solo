@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SoloScript.h"
+#include "scripting/SoloScript.h"
 #include <lua.hpp>
 
 

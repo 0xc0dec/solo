@@ -160,20 +160,20 @@
     <ClInclude Include="..\src\platform\SoloOpenGLRenderTarget.h">
       <Filter>src\platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloScripter.h">
-      <Filter>include</Filter>
+    <ClInclude Include="..\include\scripting\SoloScript.h">
+      <Filter>include\scripting</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\SoloLuaScripter.h">
-      <Filter>src\platform</Filter>
+    <ClInclude Include="..\include\scripting\SoloScriptedNode.h">
+      <Filter>include\scripting</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloScript.h">
-      <Filter>include</Filter>
+    <ClInclude Include="..\include\scripting\SoloScripter.h">
+      <Filter>include\scripting</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloScriptedNode.h">
-      <Filter>include</Filter>
+    <ClInclude Include="..\src\scripting\platform\SoloLuaScript.h">
+      <Filter>src\scripting\platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\SoloLuaScript.h">
-      <Filter>src\platform</Filter>
+    <ClInclude Include="..\src\scripting\platform\SoloLuaScripter.h">
+      <Filter>src\scripting\platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -489,20 +489,20 @@
     <ClCompile Include="..\external\lua\5.3\lua\lzio.c">
       <Filter>src\external\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloScripter.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\src\scripting\SoloScript.cpp">
+      <Filter>src\scripting</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\SoloLuaScripter.cpp">
-      <Filter>src\platform</Filter>
+    <ClCompile Include="..\src\scripting\SoloScriptedNode.cpp">
+      <Filter>src\scripting</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloScript.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\src\scripting\SoloScripter.cpp">
+      <Filter>src\scripting</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloScriptedNode.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\src\scripting\platform\SoloLuaScript.cpp">
+      <Filter>src\scripting\platform</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\SoloLuaScript.cpp">
-      <Filter>src\platform</Filter>
+    <ClCompile Include="..\src\scripting\platform\SoloLuaScripter.cpp">
+      <Filter>src\scripting\platform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -529,6 +529,15 @@
     </Filter>
     <Filter Include="src\external\lua">
       <UniqueIdentifier>{1ebd02aa-2285-4476-8542-bead8d4a7fae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\scripting">
+      <UniqueIdentifier>{487f08b1-cbaa-427f-8857-5e767743d5ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\scripting">
+      <UniqueIdentifier>{b5aa56d2-c891-4913-a946-3496f9b268f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\scripting\platform">
+      <UniqueIdentifier>{1fe4ad2f-4a1d-4c84-8a98-d7becba92634}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

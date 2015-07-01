@@ -1,4 +1,4 @@
-#include "SoloScriptedNode.h"
+#include "scripting/SoloScriptedNode.h"
 #include "SoloNode.h"
 
 using namespace solo;

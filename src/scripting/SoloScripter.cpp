@@ -1,4 +1,4 @@
-#include "SoloScripter.h"
+#include "scripting/SoloScripter.h"
 #include "platform/SoloLuaScripter.h"
 
 using namespace solo;

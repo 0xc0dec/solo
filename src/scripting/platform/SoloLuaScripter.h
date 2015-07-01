@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SoloScripter.h"
+#include "scripting/SoloScripter.h"
 #include <lua.hpp>
 
 namespace solo

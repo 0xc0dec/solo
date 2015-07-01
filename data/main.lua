@@ -12,6 +12,6 @@ callback = {
 
 local node = scene:createNode()
 print(node:getId())
-node:addScriptComponent("callback")
+node:addScript("callback")
 
 print("Done")

@@ -4,7 +4,7 @@
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
 #include "SoloResourceManager.h"
-#include "SoloScripter.h"
+#include "scripting/SoloScripter.h"
 
 using namespace solo;
 
