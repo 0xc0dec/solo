@@ -504,6 +504,66 @@
     <ClCompile Include="..\src\scripting\SoloNode_ScriptWrap.cpp">
       <Filter>src\scripting</Filter>
     </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\class_from_stack.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_check_result.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_chunk.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_error.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_exception.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_function.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_helpers.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_open.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_pull.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_push.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_ref.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_registration.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_script.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_stack_dump.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_string.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_table.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\proxy_storage.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\push_pointer_internal.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\oolua\2.0.0\src\stack_get.cpp">
+      <Filter>src\external\oolua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -538,6 +598,9 @@
     </Filter>
     <Filter Include="src\scripting\platform">
       <UniqueIdentifier>{1fe4ad2f-4a1d-4c84-8a98-d7becba92634}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\external\oolua">
+      <UniqueIdentifier>{1de6bb41-1d6a-4050-9397-5125b62c420d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

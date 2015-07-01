@@ -3,8 +3,11 @@
 #include "SoloDevice.h"
 #include "SoloScene.h"
 #include "SoloNode.h"
+#include "SoloResourceManager.h"
+#include "SoloTexture.h"
 
 #include <LuaBridge.h>
+#include <oolua.h>
 
 using namespace solo;
 
@@ -41,6 +44,12 @@ void LuaScripter::registerScriptApi()
 
 	getGlobalNamespace(lua)
 		.beginNamespace("solo")
+			.beginClass<Texture>("Texture")
+			.endClass()
+
+			.beginClass<ResourceManager>("ResourceManager")
+			.endClass()
+
 			.beginClass<Device>("Device")
 				.addFunction("setWindowTitle", &Device::setWindowTitle)
 				.addFunction("getWindowTitle", &Device::getWindowTitle)
@@ -48,6 +57,7 @@ void LuaScripter::registerScriptApi()
 
 			.beginClass<Node_ScriptWrap<Node>>("Node_ScriptWrap")
 				.addFunction("addScript", &Node_ScriptWrap<Node>::addScript)
+				.addFunction("removeScript", &Node_ScriptWrap<Node>::removeScript)
 			.endClass()
 			.deriveClass<Node, Node_ScriptWrap<Node>>("Node")
 				.addFunction("getId", &Node::getId)
@@ -60,6 +70,7 @@ void LuaScripter::registerScriptApi()
 			.beginClass<Engine>("Engine")
 				.addFunction("getDevice", &Engine::getDevice)
 				.addFunction("getScene", &Engine::getScene)
+				.addFunction("getResourceManager", &Engine::getResourceManager)
 			.endClass()
 
 			.addVariable("engine", Engine::get(), false)

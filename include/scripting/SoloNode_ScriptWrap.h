@@ -2,7 +2,6 @@
 
 #include "SoloScript.h"
 
-
 namespace solo
 {
 	template <class TNode>
@@ -12,5 +11,6 @@ namespace solo
 		virtual ~Node_ScriptWrap() {}
 
 		void addScript(const std::string& callbackObjectName);
+		void removeScript();
 	};
 }

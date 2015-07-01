@@ -1,17 +1,21 @@
-local device = solo.engine:getDevice()
-local scene = solo.engine:getScene()
+local engine = solo.engine
+local device = engine:getDevice()
+local scene = engine:getScene()
+local resManager = engine:getResourceManager()
 
 device:setWindowTitle("Set from script!")
-print(device:getWindowTitle())
-
-callback = {
-	["update"] = function(dt)
-		print("Updating")
-	end
-}
+print("Window title is: " .. device:getWindowTitle())
 
 local node = scene:createNode()
-print(node:getId())
+
+callback = 
+{
+	["update"] = function(dt)
+	end
+}
 node:addScript("callback")
 
-print("Done")
+local tex = resManager:getOrLoadTexture("../data/freeman1.png")
+print(tex)
+
+print("Initialized")

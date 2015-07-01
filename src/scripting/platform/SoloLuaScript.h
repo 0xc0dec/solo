@@ -1,7 +1,7 @@
 #pragma once
 
 #include "scripting/SoloScript.h"
-#include <lua.hpp>
+#include <lua/lua.hpp>
 
 namespace solo
 {

@@ -8,3 +8,9 @@ template<> void Node_ScriptWrap<Node>::addScript(const std::string &callbackObje
 {
 	static_cast<Node*>(this)->addComponent<Script, const std::string&>(callbackObjectName);
 }
+
+
+template<> void Node_ScriptWrap<Node>::removeScript()
+{
+	static_cast<Node*>(this)->removeComponent<Script>();
+}

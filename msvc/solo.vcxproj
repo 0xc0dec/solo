@@ -82,6 +82,26 @@
     <ClCompile Include="..\external\glew\src\glew.c" />
     <ClCompile Include="..\external\glew\src\glewinfo.c" />
     <ClCompile Include="..\external\glew\src\visualinfo.c" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\class_from_stack.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_check_result.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_chunk.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_error.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_exception.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_function.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_helpers.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_open.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_pull.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_push.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_ref.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_registration.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_script.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_stack_dump.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_string.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_table.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\proxy_storage.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\push_pointer_internal.cpp" />
+    <ClCompile Include="..\external\oolua\2.0.0\src\stack_get.cpp" />
     <ClCompile Include="..\external\png\src\png.c" />
     <ClCompile Include="..\external\png\src\pngerror.c" />
     <ClCompile Include="..\external\png\src\pngget.c" />
@@ -242,7 +262,7 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\src\SDL\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(ProjectDir)..\external\zlib\include;$(ProjectDir)..\external\inclua;$(ProjectDir)..\external\lua\5.3\lua;$(ProjectDir)..\external\luabridge\1.0.2;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(ProjectDir)..\external\zlib\include;$(ProjectDir)..\external\lua\5.3;$(ProjectDir)..\external\luabridge\1.0.2;$(ProjectDir)..\external\oolua\2.0.0\include;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
     <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;$(LibraryPath)</LibraryPath>
@@ -253,7 +273,7 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\src\SDL\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(ProjectDir)..\external\zlib\include;$(ProjectDir)..\external\inclua;$(ProjectDir)..\external\lua\5.3\lua;$(ProjectDir)..\external\luabridge\1.0.2;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(ProjectDir)..\external\zlib\include;$(ProjectDir)..\external\lua\5.3;$(ProjectDir)..\external\luabridge\1.0.2;$(ProjectDir)..\external\oolua\2.0.0\include;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
     <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;$(LibraryPath)</LibraryPath>
