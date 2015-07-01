@@ -17,6 +17,7 @@ namespace solo
 		friend class ScripterFactory;
 
 		LuaScripter();
+		void registerScriptApi();
 
 		lua_State *lua;
 	};

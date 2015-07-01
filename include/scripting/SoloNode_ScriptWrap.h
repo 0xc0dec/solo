@@ -6,10 +6,10 @@
 namespace solo
 {
 	template <class TNode>
-	class ScriptedNode
+	class Node_ScriptWrap
 	{
 	public:
-		virtual ~ScriptedNode() {}
+		virtual ~Node_ScriptWrap() {}
 
 		void addScript(const std::string& callbackObjectName);
 	};

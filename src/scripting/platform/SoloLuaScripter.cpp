@@ -13,34 +13,7 @@ LuaScripter::LuaScripter()
 {
 	lua = luaL_newstate();
 	luaL_openlibs(lua);
-
-	using namespace luabridge;
-
-	getGlobalNamespace(lua)
-		.beginNamespace("solo")
-			.beginClass<Device>("Device")
-				.addFunction("setWindowTitle", &Device::setWindowTitle)
-				.addFunction("getWindowTitle", &Device::getWindowTitle)
-			.endClass()
-
-			.beginClass<ScriptedNode<Node>>("ScriptedNode")
-				.addFunction("addScript", &ScriptedNode<Node>::addScript)
-			.endClass()
-			.deriveClass<Node, ScriptedNode<Node>>("Node")
-				.addFunction("getId", &Node::getId)
-			.endClass()
-
-			.beginClass<Scene>("Scene")
-				.addFunction("createNode", &Scene::createNode)
-			.endClass()
-
-			.beginClass<Engine>("Engine")
-				.addFunction("getDevice", &Engine::getDevice)
-				.addFunction("getScene", &Engine::getScene)
-			.endClass()
-
-			.addVariable("engine", Engine::get(), false)
-		.endNamespace();
+	registerScriptApi();
 }
 
 
@@ -59,4 +32,36 @@ void LuaScripter::execFile(const std::string& scriptFileName)
 lua_State* LuaScripter::getLuaState() const
 {
 	return lua;
+}
+
+
+void LuaScripter::registerScriptApi()
+{
+	using namespace luabridge;
+
+	getGlobalNamespace(lua)
+		.beginNamespace("solo")
+			.beginClass<Device>("Device")
+				.addFunction("setWindowTitle", &Device::setWindowTitle)
+				.addFunction("getWindowTitle", &Device::getWindowTitle)
+			.endClass()
+
+			.beginClass<Node_ScriptWrap<Node>>("Node_ScriptWrap")
+				.addFunction("addScript", &Node_ScriptWrap<Node>::addScript)
+			.endClass()
+			.deriveClass<Node, Node_ScriptWrap<Node>>("Node")
+				.addFunction("getId", &Node::getId)
+			.endClass()
+
+			.beginClass<Scene>("Scene")
+				.addFunction("createNode", &Scene::createNode)
+			.endClass()
+
+			.beginClass<Engine>("Engine")
+				.addFunction("getDevice", &Engine::getDevice)
+				.addFunction("getScene", &Engine::getScene)
+			.endClass()
+
+			.addVariable("engine", Engine::get(), false)
+		.endNamespace();
 }

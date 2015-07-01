@@ -20,7 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\scripting\SoloScript.h" />
-    <ClInclude Include="..\include\scripting\SoloScriptedNode.h" />
+    <ClInclude Include="..\include\scripting\SoloNode_ScriptWrap.h" />
     <ClInclude Include="..\include\scripting\SoloScripter.h" />
     <ClInclude Include="..\include\SoloBase.h" />
     <ClInclude Include="..\include\SoloBoundingBox.h" />

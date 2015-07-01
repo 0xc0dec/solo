@@ -4,11 +4,11 @@
 #include "SoloModelRenderer.h"
 #include "SoloCamera.h"
 #include "SoloTransform.h"
-#include "scripting/SoloScriptedNode.h"
+#include "scripting/SoloNode_ScriptWrap.h"
 
 namespace solo
 {
-	class Node: public ScriptedNode<Node>
+	class Node: public Node_ScriptWrap<Node>
 	{
 	public:
 		~Node() {}

@@ -3,7 +3,6 @@
 #include "scripting/SoloScript.h"
 #include <lua.hpp>
 
-
 namespace solo
 {
 	class Device;

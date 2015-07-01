@@ -163,9 +163,6 @@
     <ClInclude Include="..\include\scripting\SoloScript.h">
       <Filter>include\scripting</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\scripting\SoloScriptedNode.h">
-      <Filter>include\scripting</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\scripting\SoloScripter.h">
       <Filter>include\scripting</Filter>
     </ClInclude>
@@ -174,6 +171,9 @@
     </ClInclude>
     <ClInclude Include="..\src\scripting\platform\SoloLuaScripter.h">
       <Filter>src\scripting\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\scripting\SoloNode_ScriptWrap.h">
+      <Filter>include\scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
