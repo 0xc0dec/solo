@@ -1,7 +1,7 @@
 #pragma once
 
-#include "SoloBase.h"
 #include "SoloScript.h"
+
 
 namespace solo
 {
@@ -11,6 +11,6 @@ namespace solo
 	public:
 		virtual ~ScriptedNode() {}
 
-		void addScriptComponent(const std::string& callbackObjectName);
+		void addScript(const std::string& callbackObjectName);
 	};
 }

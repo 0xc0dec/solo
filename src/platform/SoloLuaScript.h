@@ -2,10 +2,12 @@
 
 #include "SoloScript.h"
 #include <lua.hpp>
-#include <LuaBridge.h>
+
 
 namespace solo
 {
+	class Device;
+
 	class LuaScript : public Script
 	{
 	public:
@@ -18,6 +20,8 @@ namespace solo
 
 		LuaScript(Node* node, const std::string& callbackObjectName);
 
-		luabridge::LuaRef callback;
+		Device* device = nullptr;
+		lua_State* lua = nullptr;
+		std::string callbackObjectName;
 	};
 }

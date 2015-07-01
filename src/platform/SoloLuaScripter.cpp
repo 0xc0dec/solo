@@ -24,7 +24,7 @@ LuaScripter::LuaScripter()
 			.endClass()
 
 			.beginClass<ScriptedNode<Node>>("ScriptedNode")
-				.addFunction("addScriptComponent", &ScriptedNode<Node>::addScriptComponent)
+				.addFunction("addScript", &ScriptedNode<Node>::addScript)
 			.endClass()
 			.deriveClass<Node, ScriptedNode<Node>>("Node")
 				.addFunction("getId", &Node::getId)
@@ -53,4 +53,10 @@ void LuaScripter::execString(const std::string& script)
 void LuaScripter::execFile(const std::string& scriptFileName)
 {
 	luaL_dofile(lua, scriptFileName.c_str());
+}
+
+
+lua_State* LuaScripter::getLuaState() const
+{
+	return lua;
 }
