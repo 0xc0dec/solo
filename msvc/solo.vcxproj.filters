@@ -492,9 +492,6 @@
     <ClCompile Include="..\src\scripting\SoloScript.cpp">
       <Filter>src\scripting</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\scripting\SoloScriptedNode.cpp">
-      <Filter>src\scripting</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\scripting\SoloScripter.cpp">
       <Filter>src\scripting</Filter>
     </ClCompile>
@@ -503,6 +500,9 @@
     </ClCompile>
     <ClCompile Include="..\src\scripting\platform\SoloLuaScripter.cpp">
       <Filter>src\scripting\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\scripting\SoloNode_ScriptWrap.cpp">
+      <Filter>src\scripting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

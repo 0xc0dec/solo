@@ -152,7 +152,7 @@
     <ClCompile Include="..\src\scripting\platform\SoloLuaScript.cpp" />
     <ClCompile Include="..\src\scripting\platform\SoloLuaScripter.cpp" />
     <ClCompile Include="..\src\scripting\SoloScript.cpp" />
-    <ClCompile Include="..\src\scripting\SoloScriptedNode.cpp" />
+    <ClCompile Include="..\src\scripting\SoloNode_ScriptWrap.cpp" />
     <ClCompile Include="..\src\scripting\SoloScripter.cpp" />
     <ClCompile Include="..\src\SoloBoundingBox.cpp" />
     <ClCompile Include="..\src\SoloBoundingSphere.cpp" />
