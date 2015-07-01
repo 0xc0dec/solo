@@ -12,10 +12,7 @@ namespace solo
 	public:
 		~Node() {}
 
-		size_t getId() const
-		{
-			return reinterpret_cast<size_t>(this);
-		}
+		long getId() const;
 
 		template <typename T> T* addComponent()
 		{

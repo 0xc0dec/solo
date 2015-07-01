@@ -160,17 +160,11 @@
     <ClInclude Include="..\src\platform\SoloOpenGLRenderTarget.h">
       <Filter>src\platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\external\inclua\inclua.h">
-      <Filter>src\external\inclua</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloScripter.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\src\platform\SoloLuaScripter.h">
       <Filter>src\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\scripting\SoloDevice_ScriptWrap.h">
-      <Filter>src\scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -515,14 +509,8 @@
     <Filter Include="src\external\zlib">
       <UniqueIdentifier>{c75d28c3-b7bf-43af-91dd-132d3fea8685}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\external\inclua">
-      <UniqueIdentifier>{019b5baa-08fa-4cbd-8a33-03782ac76920}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\external\lua">
       <UniqueIdentifier>{1ebd02aa-2285-4476-8542-bead8d4a7fae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\scripting">
-      <UniqueIdentifier>{f5db0fb5-e9ae-42f3-8234-75c9afe50248}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

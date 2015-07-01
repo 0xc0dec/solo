@@ -18,6 +18,7 @@ public:
 
 	virtual void onEngineStarted() override
 	{
+		/*
 		tests.push_back(NEW2(MaterialsTest, engine));
 		tests.push_back(NEW2(ComponentsTest, engine));
 		tests.push_back(NEW2(TransformTest, engine));
@@ -27,6 +28,7 @@ public:
 		tests.push_back(NEW2(Demo, engine));
 		for (auto test : tests)
 			test->run();
+		*/
 		engine->getScripter()->execFile("../data/main.lua");
 	}
 

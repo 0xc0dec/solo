@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\external\inclua\inclua.h" />
     <ClInclude Include="..\include\SoloBase.h" />
     <ClInclude Include="..\include\SoloBoundingBox.h" />
     <ClInclude Include="..\include\SoloBoundingSphere.h" />
@@ -73,7 +72,6 @@
     <ClInclude Include="..\src\platform\SoloOpenGLRenderTarget.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLTexture2D.h" />
     <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h" />
-    <ClInclude Include="..\src\scripting\SoloDevice_ScriptWrap.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPngTextureLoader.h" />
   </ItemGroup>

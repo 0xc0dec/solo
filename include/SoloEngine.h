@@ -20,7 +20,7 @@ namespace solo
 		static Engine *get();
 
 		void run(const EngineCreationArgs &creationArgs);
-		void setCallback(EngineCallback* callback);
+		void setCallback(EngineCallback *callback);
 
 		Scene *getScene() const;
 		Device *getDevice() const;

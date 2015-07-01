@@ -36,7 +36,7 @@ namespace solo
 
 		void iterateComponents(std::function<void(shared<Node>, shared<Component>)> work);
 
-		int nodeCounter{ 0 };
+		int nodeCounter = 0;
 		std::map<size_t, std::map<size_t, shared<Component>>> components;
 		std::map<size_t, shared<Node>> nodes;
 

@@ -17,6 +17,5 @@ namespace solo
 		LuaScripter();
 
 		lua_State *lua;
-//		inclua::Script script{ true };
 	};
 }

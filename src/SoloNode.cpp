@@ -3,9 +3,15 @@
 using namespace solo;
 
 
-shared <Node> NodeFactory::createNode(Scene* scene)
+shared<Node> NodeFactory::createNode(Scene *scene)
 {
 	return NEW2(Node, scene);
+}
+
+
+long Node::getId() const
+{
+	return reinterpret_cast<long>(this);
 }
 
 
