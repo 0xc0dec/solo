@@ -10,7 +10,7 @@ namespace solo
 	public:
 		virtual ~Node_ScriptWrap() {}
 
-		void addScript(const std::string& callbackObjectName);
+		Script* addScript();
 		void removeScript();
 	};
 }

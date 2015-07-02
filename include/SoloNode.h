@@ -1,13 +1,15 @@
 #pragma once
 
 #include "SoloScene.h"
-#include "SoloModelRenderer.h"
-#include "SoloCamera.h"
-#include "SoloTransform.h"
 #include "scripting/SoloNode_ScriptWrap.h"
 
 namespace solo
 {
+	class Transform;
+	class Camera;
+	class ModelRenderer;
+	class Script;
+
 	class Node: public Node_ScriptWrap<Node>
 	{
 	public:
@@ -64,5 +66,5 @@ namespace solo
 	template<> Transform* Node::addComponent();
 	template<> Camera* Node::addComponent();
 	template<> ModelRenderer* Node::addComponent();
-	template<> Script* Node::addComponent(const std::string& callbackObjectName);
+	template<> Script* Node::addComponent();
 }

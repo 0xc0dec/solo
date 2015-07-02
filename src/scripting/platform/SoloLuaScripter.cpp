@@ -5,6 +5,9 @@
 #include "SoloNode.h"
 #include "SoloResourceManager.h"
 #include "SoloTexture.h"
+#include "SoloFileSystem.h"
+#include "SoloNode.h"
+#include "SoloLuaScript.h"
 #include <chaiscript.hpp>
 #include <chaiscript_stdlib.hpp>
 
@@ -13,85 +16,86 @@ using namespace solo;
 
 LuaScripter::LuaScripter()
 {
+	engine = NEW<chaiscript::ChaiScript>(chaiscript::Std_Lib::library());
 	registerScriptApi();
 }
 
 
 void LuaScripter::execString(const std::string& script)
 {
+	try
+	{
+		engine->eval(script);
+	}
+	catch (chaiscript::exception::eval_error &e)
+	{
+		THROW_FMT(EngineException, e.pretty_print());
+	}
 }
 
 
 void LuaScripter::execFile(const std::string& scriptFileName)
 {
+	try
+	{
+		engine->eval_file(scriptFileName);
+	}
+	catch (chaiscript::exception::eval_error &e)
+	{
+		THROW_FMT(EngineException, e.pretty_print());
+	}
 }
 
 
-class Lol
+chaiscript::ChaiScript* LuaScripter::getScriptEngine() const
 {
-public:
-	int getInt()
-	{
-		return 100;
-	}
-};
-
-
-class Test
-{
-public:
-	int getInt()
-	{
-		return 10;
-	}
-
-	std::string getString()
-	{
-		return "Some string";
-	}
-
-	std::string acceptString(const std::string& s)
-	{
-		return s;
-	}
-
-	std::shared_ptr<Lol> getPtr()
-	{
-		return std::make_shared<Lol>();
-	}
-
-	int acceptPtr(std::shared_ptr<Lol> ptr)
-	{
-		return ptr->getInt();
-	}
-};
+	return engine.get();
+}
 
 
 void LuaScripter::registerScriptApi()
 {
 	using namespace chaiscript;
 
-	ChaiScript engine(Std_Lib::library());
+	// Engine
+	engine->add(user_type<Engine>(), "Engine");
+	engine->add(fun(&Engine::getDevice), "getDevice");
+	engine->add(fun(&Engine::getFileSystem), "getFileSystem");
+	engine->add(fun(&Engine::getResourceManager), "getResourceManager");
+	engine->add(fun(&Engine::getScene), "getScene");
+	engine->add(var(Engine::get()), "engine");
 
-	engine.add(user_type<Lol>(), "Lol");
-	engine.add(constructor<Lol()>(), "Lol");
-	engine.add(fun(&Lol::getInt), "getInt");
+	// Device
+	engine->add(user_type<Device>(), "Device");
+	engine->add(fun(&Device::getWindowTitle), "getWindowTitle");
+	engine->add(fun(&Device::setWindowTitle), "setWindowTitle");
 
-	engine.add(user_type<Test>(), "Test");
-	engine.add(constructor<Test()>(), "Test");
-	engine.add(fun(&Test::getInt), "getInt");
-	engine.add(fun(&Test::getString), "getString");
-	engine.add(fun(&Test::acceptString), "acceptString");
-	engine.add(fun(&Test::getPtr), "getPtr");
-	engine.add(fun(&Test::acceptPtr), "acceptPtr");
+	// File system
+	engine->add(user_type<FileSystem>(), "FileSystem");
 
-	engine.eval(R"s(
-		var t = Test();
-		print(t.getInt());
-		print(t.getString());
-		print(t.acceptString("Lalala"));
-		var l = t.getPtr();
-		print(l.getInt());
-		print(t.acceptPtr(l));
-	)s");
+	// Resource manager
+	engine->add(user_type<ResourceManager>(), "ResourceManager");
+
+	// Scene
+	engine->add(user_type<Scene>(), "Scene");
+	engine->add(fun(&Scene::createNode), "createNode");
+
+	// Node
+	engine->add(user_type<Node_ScriptWrap<Node>>(), "Node_ScriptWrap");
+	engine->add(user_type<Node>(), "Node");
+	engine->add(base_class<Node_ScriptWrap<Node>, Node>());
+	engine->add(fun(&Node::getId), "getId");
+	engine->add(fun(&Node_ScriptWrap<Node>::addScript), "addScript");
+
+	// LuaScript
+	engine->add(user_type<Script>(), "Script");
+	engine->add(user_type<LuaScript>(), "LuaScript");
+	engine->add(base_class<Script, LuaScript>());
+	engine->add(fun(&LuaScript::setUpdateCallback), "setUpdateCallback");
+}
+
+
+template <typename T> T LuaScripter::eval(const std::string& code)
+{
+	return engine->eval<T>(code);
 }

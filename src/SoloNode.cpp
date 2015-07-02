@@ -1,5 +1,8 @@
 #include "SoloNode.h"
 #include "SoloEngine.h"
+#include "SoloModelRenderer.h"
+#include "SoloCamera.h"
+#include "SoloTransform.h"
 
 using namespace solo;
 
@@ -46,9 +49,9 @@ template<> ModelRenderer* Node::addComponent<ModelRenderer>()
 }
 
 
-template<> Script* Node::addComponent<Script>(const std::string& callbackObjectName)
+template<> Script* Node::addComponent<Script>()
 {
-	auto script = ScriptFactory::create(this, callbackObjectName);
+	auto script = ScriptFactory::create(this);
 	scene->addComponent(this, script);
 	return script.get();
 }

@@ -1,24 +1,31 @@
 #include "SoloLuaScript.h"
 #include "SoloEngine.h"
-#include "SoloLuaScripter.h"
 #include "SoloDevice.h"
-#include <LuaBridge.h>
 
 using namespace solo;
 
 
-LuaScript::LuaScript(Node* node, const std::string& callbackObjectName) :
-	Script(node),
-	callbackObjectName(callbackObjectName)
+LuaScript::LuaScript(Node* node): Script(node)
 {
 	auto engine = Engine::get();
-//	lua = static_cast<LuaScripter*>(engine->getScripter())->getLuaState();
 	device = engine->getDevice();
 }
 
 
 void LuaScript::update()
 {
-//	auto callback = luabridge::getGlobal(lua, callbackObjectName.c_str());
-//	callback["update"](device->getTimeDelta());
+	if (updateCallback)
+		updateCallback(device->getTimeDelta());
+}
+
+
+void LuaScript::setUpdateCallback(const std::function<void(float)>& callback)
+{
+	updateCallback = callback;
+}
+
+
+void LuaScript::lalala(const std::string& s)
+{
+	auto b = s;
 }

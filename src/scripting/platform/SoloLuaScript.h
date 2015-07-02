@@ -1,7 +1,6 @@
 #pragma once
 
 #include "scripting/SoloScript.h"
-#include <lua/lua.hpp>
 
 namespace solo
 {
@@ -10,17 +9,19 @@ namespace solo
 	class LuaScript : public Script
 	{
 	public:
-		~LuaScript() {}
+		virtual ~LuaScript() {}
 
 		virtual void update() override;
+
+		void setUpdateCallback(const std::function<void(float)>& callback);
+		void lalala(const std::string& s);
 
 	private:
 		friend class ScriptFactory;
 
-		LuaScript(Node* node, const std::string& callbackObjectName);
+		LuaScript(Node* node);
 
 		Device* device = nullptr;
-		lua_State* lua = nullptr;
-		std::string callbackObjectName;
+		std::function<void(float)> updateCallback;
 	};
 }

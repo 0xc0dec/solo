@@ -1,0 +1,10 @@
+var device = engine.getDevice();
+var scene = engine.getScene();
+
+print("Current window title: " + device.getWindowTitle());
+device.setWindowTitle("Set from scripts!");
+
+var node = scene.createNode();
+print(node.getId());
+var script = node.addScript();
+script.setUpdateCallback(fun(dt) { print(dt); });

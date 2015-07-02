@@ -4,9 +4,9 @@
 using namespace solo;
 
 
-shared<Script> ScriptFactory::create(Node* node, const std::string& callbackObjectName)
+shared<Script> ScriptFactory::create(Node* node)
 {
-	return NEW2(LuaScript, node, callbackObjectName);
+	return NEW2(LuaScript, node);
 }
 
 

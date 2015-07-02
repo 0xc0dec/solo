@@ -20,8 +20,7 @@ namespace solo
 
 	class ScriptFactory
 	{
-	public:
 		friend class Node;
-		static shared<Script> create(Node* node, const std::string& callbackObjectName);
+		static shared<Script> create(Node* node);
 	};
 }

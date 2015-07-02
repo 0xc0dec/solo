@@ -9,6 +9,7 @@
 #include "SoloNode.h"
 #include "SoloMaterial.h"
 #include "SoloEffect.h"
+#include "SoloCamera.h"
 
 using namespace solo;
 

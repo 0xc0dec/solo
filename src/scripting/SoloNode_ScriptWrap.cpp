@@ -4,9 +4,9 @@
 using namespace solo;
 
 
-template<> void Node_ScriptWrap<Node>::addScript(const std::string &callbackObjectName)
+template<> Script* Node_ScriptWrap<Node>::addScript()
 {
-	static_cast<Node*>(this)->addComponent<Script, const std::string&>(callbackObjectName);
+	return static_cast<Node*>(this)->addComponent<Script>();
 }
 
 
