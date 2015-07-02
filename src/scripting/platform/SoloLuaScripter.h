@@ -1,8 +1,11 @@
 #pragma once
 
 #include "scripting/SoloScripter.h"
-#include <lua/lua.hpp>
-#include <oolua.h>
+
+namespace chaiscript
+{
+	class ChaiScript;
+}
 
 namespace solo
 {
@@ -12,16 +15,12 @@ namespace solo
 		virtual void execString(const std::string& script) override;
 		virtual void execFile(const std::string& scriptFileName) override;
 
-		lua_State *getLuaState() const;
-
 	private:
 		friend class ScripterFactory;
 
 		LuaScripter();
 		void registerScriptApi();
 
-//		chaiscript::ChaiScript engine;
-		OOLUA::Script* script;
-		lua_State *lua;
+		chaiscript::ChaiScript *engine;
 	};
 }

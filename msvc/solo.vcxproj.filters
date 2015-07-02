@@ -390,105 +390,6 @@
     <ClCompile Include="..\src\SoloRenderTarget.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lapi.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lauxlib.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lbaselib.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lbitlib.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lcode.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lcorolib.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lctype.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\ldblib.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\ldebug.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\ldo.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\ldump.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lfunc.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lgc.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\linit.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\liolib.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\llex.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lmathlib.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lmem.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\loadlib.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lobject.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lopcodes.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\loslib.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lparser.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lstate.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lstring.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lstrlib.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\ltable.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\ltablib.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\ltm.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lundump.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lutf8lib.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lvm.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\lua\5.3\lua\lzio.c">
-      <Filter>src\external\lua</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\scripting\SoloScript.cpp">
       <Filter>src\scripting</Filter>
     </ClCompile>
@@ -503,72 +404,6 @@
     </ClCompile>
     <ClCompile Include="..\src\scripting\SoloNode_ScriptWrap.cpp">
       <Filter>src\scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\class_from_stack.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\oolua.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_check_result.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_chunk.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_error.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_exception.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_function.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_helpers.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_open.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_pull.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_push.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_ref.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_registration.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_script.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_stack_dump.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_string.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\oolua_table.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\proxy_storage.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\push_pointer_internal.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\oolua\2.0.0\src\stack_get.cpp">
-      <Filter>src\external\oolua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\slb\src\slb3.cc">
-      <Filter>src\external\slb</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\slb\src\slb3_extra.cc">
-      <Filter>src\external\slb</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -593,9 +428,6 @@
     <Filter Include="src\external\zlib">
       <UniqueIdentifier>{c75d28c3-b7bf-43af-91dd-132d3fea8685}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\external\lua">
-      <UniqueIdentifier>{1ebd02aa-2285-4476-8542-bead8d4a7fae}</UniqueIdentifier>
-    </Filter>
     <Filter Include="include\scripting">
       <UniqueIdentifier>{487f08b1-cbaa-427f-8857-5e767743d5ff}</UniqueIdentifier>
     </Filter>
@@ -604,12 +436,6 @@
     </Filter>
     <Filter Include="src\scripting\platform">
       <UniqueIdentifier>{1fe4ad2f-4a1d-4c84-8a98-d7becba92634}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\external\oolua">
-      <UniqueIdentifier>{1de6bb41-1d6a-4050-9397-5125b62c420d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\external\slb">
-      <UniqueIdentifier>{d449385f-427f-4517-af34-cd4cf777850b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
