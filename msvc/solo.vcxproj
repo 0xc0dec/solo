@@ -264,7 +264,7 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\src\SDL\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(ProjectDir)..\external\zlib\include;$(ProjectDir)..\external\lua\5.3;$(ProjectDir)..\external\luabridge\1.0.2;$(ProjectDir)..\external\oolua\2.0.0\include;$(ProjectDir)..\external\slb\include;$(ProjectDir)..\external\lua\5.3\lua;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(ProjectDir)..\external\zlib\include;$(ProjectDir)..\external\lua\5.3;$(ProjectDir)..\external\luabridge\1.0.2;$(ProjectDir)..\external\oolua\2.0.0\include;$(ProjectDir)..\external\slb\include;$(ProjectDir)..\external\lua\5.3\lua;$(ProjectDir)..\external\chaiscript\5.7.0;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
     <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;$(LibraryPath)</LibraryPath>
@@ -275,7 +275,7 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\src\SDL\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(ProjectDir)..\external\zlib\include;$(ProjectDir)..\external\lua\5.3;$(ProjectDir)..\external\luabridge\1.0.2;$(ProjectDir)..\external\oolua\2.0.0\include;$(ProjectDir)..\external\slb\include;$(ProjectDir)..\external\lua\5.3\lua;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(ProjectDir)..\external\zlib\include;$(ProjectDir)..\external\lua\5.3;$(ProjectDir)..\external\luabridge\1.0.2;$(ProjectDir)..\external\oolua\2.0.0\include;$(ProjectDir)..\external\slb\include;$(ProjectDir)..\external\lua\5.3\lua;$(ProjectDir)..\external\chaiscript\5.7.0;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
     <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;$(LibraryPath)</LibraryPath>
@@ -310,6 +310,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <ProgramDataBaseFileName>$(OutDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <AdditionalOptions>/bigobj /wd4503 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -356,6 +357,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <ProgramDataBaseFileName>$(OutDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <AdditionalOptions>/bigobj /wd4503 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

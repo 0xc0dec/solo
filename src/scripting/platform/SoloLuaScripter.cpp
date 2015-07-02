@@ -9,6 +9,8 @@
 //#include <SLB3/slb.h>
 #include <LuaBridge.h>
 #include <oolua.h>
+#include <chaiscript.hpp>
+#include <chaiscript_stdlib.hpp>
 
 using namespace solo;
 
@@ -17,7 +19,7 @@ LuaScripter::LuaScripter()
 {
 	lua = luaL_newstate();
 	luaL_openlibs(lua);
-	script = new OOLUA::Script();
+//	script = new OOLUA::Script();
 	registerScriptApi();
 }
 
@@ -25,14 +27,14 @@ LuaScripter::LuaScripter()
 void LuaScripter::execString(const std::string& script)
 {
 //	luaL_dostring(lua, script.c_str());
-	this->script->run_chunk(script);
+//	this->script->run_chunk(script);
 }
 
 
 void LuaScripter::execFile(const std::string& scriptFileName)
 {
 //	luaL_dofile(lua, scriptFileName.c_str());
-	this->script->run_file(scriptFileName);
+//	this->script->run_file(scriptFileName);
 }
 
 
@@ -57,12 +59,12 @@ class Test
 public:
 	int getInt()
 	{
-		return 5;
+		return 10;
 	}
 
 	std::string getString()
 	{
-		return "abc";
+		return "Some string";
 	}
 
 	std::string acceptString(const std::string& s)
@@ -70,34 +72,58 @@ public:
 		return s;
 	}
 
-	Lol* getPtr()
+	std::shared_ptr<Lol> getPtr()
 	{
-		return new Lol();
+		return std::make_shared<Lol>();
 	}
 };
 
-
-OOLUA_PROXY(Test)
-	OOLUA_MFUNC(getInt)
-	OOLUA_MFUNC(getString)
-	OOLUA_MFUNC(acceptString)
-	OOLUA_MFUNC(getPtr)
-OOLUA_PROXY_END
-OOLUA_EXPORT_FUNCTIONS(Test, getInt, getString, acceptString, getPtr)
-OOLUA_EXPORT_FUNCTIONS_CONST(Test)
-
-OOLUA_PROXY(Lol)
-	OOLUA_MFUNC(getInt)
-OOLUA_PROXY_END
-OOLUA_EXPORT_FUNCTIONS(Lol, getInt)
-OOLUA_EXPORT_FUNCTIONS_CONST(Lol)
+//
+//OOLUA_PROXY(Test)
+//	OOLUA_MFUNC(getInt)
+//	OOLUA_MFUNC(getString)
+//	OOLUA_MFUNC(acceptString)
+//	OOLUA_MFUNC(getPtr)
+//OOLUA_PROXY_END
+//OOLUA_EXPORT_FUNCTIONS(Test, getInt, getString, acceptString, getPtr)
+//OOLUA_EXPORT_FUNCTIONS_CONST(Test)
+//
+//OOLUA_PROXY(Lol)
+//	OOLUA_MFUNC(getInt)
+//OOLUA_PROXY_END
+//OOLUA_EXPORT_FUNCTIONS(Lol, getInt)
+//OOLUA_EXPORT_FUNCTIONS_CONST(Lol)
 
 void LuaScripter::registerScriptApi()
 {
-	script->register_class<Lol>();
-	script->register_class<Test>();
+//	script->register_class<Lol>();
+//	script->register_class<Test>();
 
-	using namespace luabridge;
+	using namespace chaiscript;
+
+	ChaiScript engine(Std_Lib::library());
+
+	engine.add(user_type<Lol>(), "Lol");
+	engine.add(constructor<Lol()>(), "Lol");
+	engine.add(fun(&Lol::getInt), "getInt");
+
+	engine.add(user_type<Test>(), "Test");
+	engine.add(constructor<Test()>(), "Test");
+	engine.add(fun(&Test::getInt), "getInt");
+	engine.add(fun(&Test::getString), "getString");
+	engine.add(fun(&Test::acceptString), "acceptString");
+	engine.add(fun(&Test::getPtr), "getPtr");
+
+	engine.eval(R"s(
+		var t = Test();
+		print(t.getInt());
+		print(t.getString());
+		print(t.acceptString("Lalala"));
+		var l = t.getPtr();
+		print(l.getInt());
+	)s");
+
+//	using namespace luabridge;
 
 //	getGlobalNamespace(lua)
 //		.beginNamespace("solo")

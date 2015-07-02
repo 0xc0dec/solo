@@ -20,6 +20,7 @@ namespace solo
 		LuaScripter();
 		void registerScriptApi();
 
+//		chaiscript::ChaiScript engine;
 		OOLUA::Script* script;
 		lua_State *lua;
 	};
