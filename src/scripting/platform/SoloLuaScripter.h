@@ -2,6 +2,7 @@
 
 #include "scripting/SoloScripter.h"
 #include <lua/lua.hpp>
+#include <oolua.h>
 
 namespace solo
 {
@@ -19,6 +20,7 @@ namespace solo
 		LuaScripter();
 		void registerScriptApi();
 
+		OOLUA::Script* script;
 		lua_State *lua;
 	};
 }

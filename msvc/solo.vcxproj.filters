@@ -564,6 +564,12 @@
     <ClCompile Include="..\external\oolua\2.0.0\src\stack_get.cpp">
       <Filter>src\external\oolua</Filter>
     </ClCompile>
+    <ClCompile Include="..\external\slb\src\slb3.cc">
+      <Filter>src\external\slb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\slb\src\slb3_extra.cc">
+      <Filter>src\external\slb</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -601,6 +607,9 @@
     </Filter>
     <Filter Include="src\external\oolua">
       <UniqueIdentifier>{1de6bb41-1d6a-4050-9397-5125b62c420d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\external\slb">
+      <UniqueIdentifier>{d449385f-427f-4517-af34-cd4cf777850b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
