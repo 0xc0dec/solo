@@ -6,20 +6,19 @@ namespace solo
 {
 	class Device;
 
-	class LuaScript : public Script
+	class ChaiScriptScript : public Script
 	{
 	public:
-		virtual ~LuaScript() {}
+		virtual ~ChaiScriptScript() {}
 
 		virtual void update() override;
 
 		void setUpdateCallback(const std::function<void(float)>& callback);
-		void lalala(const std::string& s);
 
 	private:
 		friend class ScriptFactory;
 
-		LuaScript(Node* node);
+		ChaiScriptScript(Node* node);
 
 		Device* device = nullptr;
 		std::function<void(float)> updateCallback;

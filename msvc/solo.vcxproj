@@ -73,8 +73,8 @@
     <ClInclude Include="..\src\platform\SoloOpenGLRenderTarget.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLTexture2D.h" />
     <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h" />
-    <ClInclude Include="..\src\scripting\platform\SoloLuaScript.h" />
-    <ClInclude Include="..\src\scripting\platform\SoloLuaScripter.h" />
+    <ClInclude Include="..\src\scripting\platform\SoloChaiScriptScript.h" />
+    <ClInclude Include="..\src\scripting\platform\SoloChaiScriptScripter.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPngTextureLoader.h" />
   </ItemGroup>
@@ -116,8 +116,8 @@
     <ClCompile Include="..\src\platform\SoloOpenGLMesh.cpp" />
     <ClCompile Include="..\src\platform\SoloOpenGLTexture2D.cpp" />
     <ClCompile Include="..\src\platform\SoloSDLOpenGLDevice.cpp" />
-    <ClCompile Include="..\src\scripting\platform\SoloLuaScript.cpp" />
-    <ClCompile Include="..\src\scripting\platform\SoloLuaScripter.cpp" />
+    <ClCompile Include="..\src\scripting\platform\SoloChaiScriptScript.cpp" />
+    <ClCompile Include="..\src\scripting\platform\SoloChaiScriptScripter.cpp" />
     <ClCompile Include="..\src\scripting\SoloScript.cpp" />
     <ClCompile Include="..\src\scripting\SoloNode_ScriptWrap.cpp" />
     <ClCompile Include="..\src\scripting\SoloScripter.cpp" />

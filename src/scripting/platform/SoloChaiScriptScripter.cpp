@@ -1,4 +1,5 @@
-#include "SoloLuaScripter.h"
+#include "SoloChaiScriptScripter.h"
+#include "SoloChaiScriptScript.h"
 #include "SoloEngine.h"
 #include "SoloDevice.h"
 #include "SoloScene.h"
@@ -7,21 +8,20 @@
 #include "SoloTexture.h"
 #include "SoloFileSystem.h"
 #include "SoloNode.h"
-#include "SoloLuaScript.h"
 #include <chaiscript.hpp>
 #include <chaiscript_stdlib.hpp>
 
 using namespace solo;
 
 
-LuaScripter::LuaScripter()
+ChaiScriptScripter::ChaiScriptScripter()
 {
 	engine = NEW<chaiscript::ChaiScript>(chaiscript::Std_Lib::library());
 	registerScriptApi();
 }
 
 
-void LuaScripter::execString(const std::string& script)
+void ChaiScriptScripter::execString(const std::string& script)
 {
 	try
 	{
@@ -34,7 +34,7 @@ void LuaScripter::execString(const std::string& script)
 }
 
 
-void LuaScripter::execFile(const std::string& scriptFileName)
+void ChaiScriptScripter::execFile(const std::string& scriptFileName)
 {
 	try
 	{
@@ -47,13 +47,20 @@ void LuaScripter::execFile(const std::string& scriptFileName)
 }
 
 
-chaiscript::ChaiScript* LuaScripter::getScriptEngine() const
+template <typename T> T ChaiScriptScripter::eval(const std::string& code)
 {
-	return engine.get();
+	try
+	{
+		return engine->eval<T>(code);
+	}
+	catch (chaiscript::exception::eval_error &e)
+	{
+		THROW_FMT(EngineException, e.pretty_print());
+	}
 }
 
 
-void LuaScripter::registerScriptApi()
+void ChaiScriptScripter::registerScriptApi()
 {
 	using namespace chaiscript;
 
@@ -87,15 +94,9 @@ void LuaScripter::registerScriptApi()
 	engine->add(fun(&Node::getId), "getId");
 	engine->add(fun(&Node_ScriptWrap<Node>::addScript), "addScript");
 
-	// LuaScript
+	// Script
 	engine->add(user_type<Script>(), "Script");
-	engine->add(user_type<LuaScript>(), "LuaScript");
-	engine->add(base_class<Script, LuaScript>());
-	engine->add(fun(&LuaScript::setUpdateCallback), "setUpdateCallback");
-}
-
-
-template <typename T> T LuaScripter::eval(const std::string& code)
-{
-	return engine->eval<T>(code);
+	engine->add(user_type<ChaiScriptScript>(), "ChaiScriptScript");
+	engine->add(base_class<Script, ChaiScriptScript>());
+	engine->add(fun(&ChaiScriptScript::setUpdateCallback), "setUpdateCallback");
 }

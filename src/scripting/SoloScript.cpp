@@ -1,12 +1,12 @@
 #include "scripting/SoloScript.h"
-#include "platform/SoloLuaScript.h"
+#include "platform/SoloChaiScriptScript.h"
 
 using namespace solo;
 
 
 shared<Script> ScriptFactory::create(Node* node)
 {
-	return NEW2(LuaScript, node);
+	return NEW2(ChaiScriptScript, node);
 }
 
 

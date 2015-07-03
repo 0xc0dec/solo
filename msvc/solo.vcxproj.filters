@@ -166,14 +166,14 @@
     <ClInclude Include="..\include\scripting\SoloScripter.h">
       <Filter>include\scripting</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\scripting\platform\SoloLuaScript.h">
-      <Filter>src\scripting\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\scripting\platform\SoloLuaScripter.h">
-      <Filter>src\scripting\platform</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\scripting\SoloNode_ScriptWrap.h">
       <Filter>include\scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\scripting\platform\SoloChaiScriptScripter.h">
+      <Filter>src\scripting\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\scripting\platform\SoloChaiScriptScript.h">
+      <Filter>src\scripting\platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -396,14 +396,14 @@
     <ClCompile Include="..\src\scripting\SoloScripter.cpp">
       <Filter>src\scripting</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\scripting\platform\SoloLuaScript.cpp">
-      <Filter>src\scripting\platform</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\scripting\platform\SoloLuaScripter.cpp">
-      <Filter>src\scripting\platform</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\scripting\SoloNode_ScriptWrap.cpp">
       <Filter>src\scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\scripting\platform\SoloChaiScriptScripter.cpp">
+      <Filter>src\scripting\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\scripting\platform\SoloChaiScriptScript.cpp">
+      <Filter>src\scripting\platform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
