@@ -7,27 +7,22 @@ namespace solo
 {
 	class Device;
 
-	class ChaiScriptScript : public ComponentBase<ChaiScriptScript>
+	class ChaiScriptComponent : public ComponentBase<ChaiScriptComponent>
 	{
 	public:
-		virtual ~ChaiScriptScript() {}
+		virtual ~ChaiScriptComponent() {}
 
 		virtual void update() override;
+
+		static ChaiScriptComponent* addComponent(chaiscript::Boxed_Value&, chaiscript::Boxed_Value&);
 
 	private:
 		friend class ScriptFactory_Chai;
 
-		ChaiScriptScript(Node* node, chaiscript::Boxed_Value obj);
+		ChaiScriptComponent(Node* node, chaiscript::Boxed_Value obj);
 
 		Device* device = nullptr;
-		chaiscript::Boxed_Value obj;
+		chaiscript::Boxed_Value component;
 		std::function<void(chaiscript::Boxed_Value&, float)> updateFunc;
-	};
-
-	class ScriptFactory_Chai
-	{
-	public:
-//		friend Script* addComponent(chaiscript::Boxed_Value&, chaiscript::Boxed_Value&);
-		static shared<ChaiScriptScript> create(Node* node, chaiscript::Boxed_Value obj);
 	};
 }

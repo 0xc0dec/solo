@@ -53,15 +53,6 @@ shared<chaiscript::ChaiScript> ChaiScriptScripter::getEngine() const
 }
 
 
-ChaiScriptScript* addComponent(chaiscript::Boxed_Value& node, chaiscript::Boxed_Value component)
-{
-	auto n = chaiscript::boxed_cast<Node*>(node);
-	auto script = ScriptFactory_Chai::create(n, component);
-	Engine::get()->getScene()->addComponent(n, script);
-	return script.get();
-}
-
-
 void ChaiScriptScripter::registerScriptApi()
 {
 	using namespace chaiscript;
@@ -94,13 +85,13 @@ void ChaiScriptScripter::registerScriptApi()
 	engine->add(user_type<Node>(), "Node");
 //	engine->add(base_class<Node_ScriptWrap<Node>, Node>());
 	engine->add(fun(&Node::getId), "getId");
-	engine->add(fun(&addComponent), "addComponent");
+	engine->add(fun(&ChaiScriptComponent::addComponent), "addComponent");
 //	engine->add(fun(&Node_ScriptWrap<Node>::addComponent), "addComponent");
 //	engine->add(fun(&Node_ScriptWrap<Node>::removeComponent), "removeComponent");
 
 	// Script
 //	engine->add(user_type<Script>(), "Script");
-//	engine->add(user_type<ChaiScriptScript>(), "ChaiScriptScript");
-//	engine->add(base_class<Script, ChaiScriptScript>());
-//	engine->add(fun(&ChaiScriptScript::setUpdateCallback), "setUpdateCallback");
+//	engine->add(user_type<ChaiScriptComponent>(), "ChaiScriptComponent");
+//	engine->add(base_class<Script, ChaiScriptComponent>());
+//	engine->add(fun(&ChaiScriptComponent::setUpdateCallback), "setUpdateCallback");
 }

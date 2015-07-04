@@ -2,19 +2,15 @@
 #include "SoloEngine.h"
 #include "SoloDevice.h"
 #include "SoloChaiScriptScripter.h"
+#include "SoloScene.h"
+#include "SoloNode.h"
 
 using namespace solo;
 
 
-shared<ChaiScriptScript> ScriptFactory_Chai::create(Node* node, chaiscript::Boxed_Value obj)
-{
-	return NEW2(ChaiScriptScript, node, obj);
-}
-
-
-ChaiScriptScript::ChaiScriptScript(Node* node, chaiscript::Boxed_Value obj) :
+ChaiScriptComponent::ChaiScriptComponent(Node* node, chaiscript::Boxed_Value obj) :
 	ComponentBase(node),
-	obj(obj)
+	component(obj)
 {
 	auto engine = Engine::get();
 	device = engine->getDevice();
@@ -23,7 +19,16 @@ ChaiScriptScript::ChaiScriptScript(Node* node, chaiscript::Boxed_Value obj) :
 }
 
 
-void ChaiScriptScript::update()
+void ChaiScriptComponent::update()
 {
-	updateFunc(obj, device->getTimeDelta());
+	updateFunc(component, device->getTimeDelta());
+}
+
+
+ChaiScriptComponent* ChaiScriptComponent::addComponent(chaiscript::Boxed_Value& node, chaiscript::Boxed_Value& component)
+{
+	auto n = chaiscript::boxed_cast<Node*>(node);
+	auto script = NEW2(ChaiScriptComponent, n, component);
+	Engine::get()->getScene()->addComponent(n, script);
+	return script.get();
 }
