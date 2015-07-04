@@ -49,5 +49,11 @@ namespace solo
 
 	protected:
 		Node* node;
+
+	private:
+		ComponentBase(const ComponentBase& other) = delete;
+		ComponentBase(ComponentBase&& other) = delete;
+		ComponentBase& operator=(const ComponentBase& other) = delete;
+		ComponentBase& operator=(ComponentBase&& other) = delete;
 	};
 }

@@ -47,16 +47,18 @@ void ChaiScriptScripter::execFile(const std::string& scriptFileName)
 }
 
 
-template <typename T> T ChaiScriptScripter::eval(const std::string& code)
+shared<chaiscript::ChaiScript> ChaiScriptScripter::getEngine() const
 {
-	try
-	{
-		return engine->eval<T>(code);
-	}
-	catch (chaiscript::exception::eval_error &e)
-	{
-		THROW_FMT(EngineException, e.pretty_print());
-	}
+	return engine;
+}
+
+
+ChaiScriptScript* addComponent(chaiscript::Boxed_Value& node, chaiscript::Boxed_Value component)
+{
+	auto n = chaiscript::boxed_cast<Node*>(node);
+	auto script = ScriptFactory_Chai::create(n, component);
+	Engine::get()->getScene()->addComponent(n, script);
+	return script.get();
 }
 
 
@@ -88,15 +90,17 @@ void ChaiScriptScripter::registerScriptApi()
 	engine->add(fun(&Scene::createNode), "createNode");
 
 	// Node
-	engine->add(user_type<Node_ScriptWrap<Node>>(), "Node_ScriptWrap");
+//	engine->add(user_type<Node_ScriptWrap<Node>>(), "Node_ScriptWrap");
 	engine->add(user_type<Node>(), "Node");
-	engine->add(base_class<Node_ScriptWrap<Node>, Node>());
+//	engine->add(base_class<Node_ScriptWrap<Node>, Node>());
 	engine->add(fun(&Node::getId), "getId");
-	engine->add(fun(&Node_ScriptWrap<Node>::addScript), "addScript");
+	engine->add(fun(&addComponent), "addComponent");
+//	engine->add(fun(&Node_ScriptWrap<Node>::addComponent), "addComponent");
+//	engine->add(fun(&Node_ScriptWrap<Node>::removeComponent), "removeComponent");
 
 	// Script
-	engine->add(user_type<Script>(), "Script");
-	engine->add(user_type<ChaiScriptScript>(), "ChaiScriptScript");
-	engine->add(base_class<Script, ChaiScriptScript>());
-	engine->add(fun(&ChaiScriptScript::setUpdateCallback), "setUpdateCallback");
+//	engine->add(user_type<Script>(), "Script");
+//	engine->add(user_type<ChaiScriptScript>(), "ChaiScriptScript");
+//	engine->add(base_class<Script, ChaiScriptScript>());
+//	engine->add(fun(&ChaiScriptScript::setUpdateCallback), "setUpdateCallback");
 }

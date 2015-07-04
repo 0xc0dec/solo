@@ -4,7 +4,20 @@ var scene = engine.getScene();
 print("Current window title: " + device.getWindowTitle());
 device.setWindowTitle("Set from scripts!");
 
+class Script
+{
+	def Script()
+	{
+	}
+
+	def update(dt)
+	{
+		print(dt);
+	}
+};
+
 var node = scene.createNode();
 print(node.getId());
-var script = node.addScript();
-script.setUpdateCallback(fun(dt) { print(dt); });
+var script = node.addComponent(Script());
+
+print("Done");

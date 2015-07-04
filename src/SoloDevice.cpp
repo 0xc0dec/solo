@@ -4,6 +4,12 @@
 using namespace solo;
 
 
+shared<Device> DeviceFactory::create(const EngineCreationArgs& args)
+{
+	return NEW2(SDLOpenGLDevice, args);
+}
+
+
 Device::Device(const EngineCreationArgs& args):
 	creationArgs(args)
 {
@@ -51,12 +57,6 @@ void Device::requestShutdown()
 bool Device::shutdownRequested() const
 {
 	return close;
-}
-
-
-shared<Device> DeviceFactory::create(const EngineCreationArgs& args)
-{
-	return NEW<SDLOpenGLDevice>(args);
 }
 
 

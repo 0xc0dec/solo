@@ -26,7 +26,7 @@ namespace solo
 
 	class ScripterFactory
 	{
-	public:
+		friend class Engine;
 		static shared<Scripter> create();
 	};
 }

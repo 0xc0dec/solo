@@ -47,11 +47,3 @@ template<> ModelRenderer* Node::addComponent<ModelRenderer>()
 	scene->addComponent(this, renderer);
 	return renderer.get();
 }
-
-
-template<> Script* Node::addComponent<Script>()
-{
-	auto script = ScriptFactory::create(this);
-	scene->addComponent(this, script);
-	return script.get();
-}

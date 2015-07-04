@@ -19,8 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\scripting\SoloScript.h" />
-    <ClInclude Include="..\include\scripting\SoloNode_ScriptWrap.h" />
     <ClInclude Include="..\include\scripting\SoloScripter.h" />
     <ClInclude Include="..\include\SoloBase.h" />
     <ClInclude Include="..\include\SoloBoundingBox.h" />
@@ -118,8 +116,6 @@
     <ClCompile Include="..\src\platform\SoloSDLOpenGLDevice.cpp" />
     <ClCompile Include="..\src\scripting\platform\SoloChaiScriptScript.cpp" />
     <ClCompile Include="..\src\scripting\platform\SoloChaiScriptScripter.cpp" />
-    <ClCompile Include="..\src\scripting\SoloScript.cpp" />
-    <ClCompile Include="..\src\scripting\SoloNode_ScriptWrap.cpp" />
     <ClCompile Include="..\src\scripting\SoloScripter.cpp" />
     <ClCompile Include="..\src\SoloBoundingBox.cpp" />
     <ClCompile Include="..\src\SoloBoundingSphere.cpp" />

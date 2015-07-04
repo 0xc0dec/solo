@@ -15,7 +15,7 @@ namespace solo
 		virtual void execString(const std::string& script) override;
 		virtual void execFile(const std::string& scriptFileName) override;
 
-		template <typename T> T eval(const std::string& code);
+		shared<chaiscript::ChaiScript> getEngine() const;
 
 	private:
 		friend class ScripterFactory;
