@@ -1,7 +1,7 @@
-#include "SoloChaiScriptScript.h"
+#include "SoloScriptComponent_Chai.h"
+#include "SoloScripter_Chai.h"
 #include "SoloEngine.h"
 #include "SoloDevice.h"
-#include "SoloChaiScriptScripter.h"
 #include "SoloScene.h"
 #include "SoloNode.h"
 
@@ -14,7 +14,7 @@ ChaiScriptComponent::ChaiScriptComponent(Node* node, chaiscript::Boxed_Value obj
 {
 	auto engine = Engine::get();
 	device = engine->getDevice();
-	auto scripter = static_cast<ChaiScriptScripter*>(engine->getScripter());
+	auto scripter = static_cast<Scripter_Chai*>(engine->getScripter());
 	updateFunc = scripter->getEngine()->eval<std::function<void(chaiscript::Boxed_Value&, float)>>("update");
 }
 

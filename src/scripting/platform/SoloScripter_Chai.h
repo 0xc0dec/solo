@@ -9,7 +9,7 @@ namespace chaiscript
 
 namespace solo
 {
-	class ChaiScriptScripter: public Scripter
+	class Scripter_Chai: public Scripter
 	{
 	public:
 		virtual void execString(const std::string& script) override;
@@ -20,7 +20,7 @@ namespace solo
 	private:
 		friend class ScripterFactory;
 
-		ChaiScriptScripter();
+		Scripter_Chai();
 		void registerScriptApi();
 
 		shared<chaiscript::ChaiScript> engine;

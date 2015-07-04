@@ -1,10 +1,10 @@
 #include "scripting/SoloScripter.h"
-#include "platform/SoloChaiScriptScripter.h"
+#include "platform/SoloScripter_Chai.h"
 
 using namespace solo;
 
 
 shared<Scripter> ScripterFactory::create()
 {
-	return NEW2(ChaiScriptScripter);
+	return NEW2(Scripter_Chai);
 }

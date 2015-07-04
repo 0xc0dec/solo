@@ -163,10 +163,10 @@
     <ClInclude Include="..\include\scripting\SoloScripter.h">
       <Filter>include\scripting</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\scripting\platform\SoloChaiScriptScripter.h">
+    <ClInclude Include="..\src\scripting\platform\SoloScriptComponent_Chai.h">
       <Filter>src\scripting\platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\scripting\platform\SoloChaiScriptScript.h">
+    <ClInclude Include="..\src\scripting\platform\SoloScripter_Chai.h">
       <Filter>src\scripting\platform</Filter>
     </ClInclude>
   </ItemGroup>
@@ -387,10 +387,10 @@
     <ClCompile Include="..\src\scripting\SoloScripter.cpp">
       <Filter>src\scripting</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\scripting\platform\SoloChaiScriptScripter.cpp">
+    <ClCompile Include="..\src\scripting\platform\SoloScriptComponent_Chai.cpp">
       <Filter>src\scripting\platform</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\scripting\platform\SoloChaiScriptScript.cpp">
+    <ClCompile Include="..\src\scripting\platform\SoloScripter_Chai.cpp">
       <Filter>src\scripting\platform</Filter>
     </ClCompile>
   </ItemGroup>

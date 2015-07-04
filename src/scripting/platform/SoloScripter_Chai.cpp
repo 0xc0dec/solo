@@ -1,5 +1,5 @@
-#include "SoloChaiScriptScripter.h"
-#include "SoloChaiScriptScript.h"
+#include "SoloScripter_Chai.h"
+#include "SoloScriptComponent_Chai.h"
 #include "SoloEngine.h"
 #include "SoloDevice.h"
 #include "SoloScene.h"
@@ -14,14 +14,14 @@
 using namespace solo;
 
 
-ChaiScriptScripter::ChaiScriptScripter()
+Scripter_Chai::Scripter_Chai()
 {
 	engine = NEW<chaiscript::ChaiScript>(chaiscript::Std_Lib::library());
 	registerScriptApi();
 }
 
 
-void ChaiScriptScripter::execString(const std::string& script)
+void Scripter_Chai::execString(const std::string& script)
 {
 	try
 	{
@@ -34,7 +34,7 @@ void ChaiScriptScripter::execString(const std::string& script)
 }
 
 
-void ChaiScriptScripter::execFile(const std::string& scriptFileName)
+void Scripter_Chai::execFile(const std::string& scriptFileName)
 {
 	try
 	{
@@ -47,13 +47,13 @@ void ChaiScriptScripter::execFile(const std::string& scriptFileName)
 }
 
 
-shared<chaiscript::ChaiScript> ChaiScriptScripter::getEngine() const
+shared<chaiscript::ChaiScript> Scripter_Chai::getEngine() const
 {
 	return engine;
 }
 
 
-void ChaiScriptScripter::registerScriptApi()
+void Scripter_Chai::registerScriptApi()
 {
 	using namespace chaiscript;
 

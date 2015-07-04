@@ -71,8 +71,8 @@
     <ClInclude Include="..\src\platform\SoloOpenGLRenderTarget.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLTexture2D.h" />
     <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h" />
-    <ClInclude Include="..\src\scripting\platform\SoloChaiScriptScript.h" />
-    <ClInclude Include="..\src\scripting\platform\SoloChaiScriptScripter.h" />
+    <ClInclude Include="..\src\scripting\platform\SoloScriptComponent_Chai.h" />
+    <ClInclude Include="..\src\scripting\platform\SoloScripter_Chai.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPngTextureLoader.h" />
   </ItemGroup>
@@ -114,8 +114,8 @@
     <ClCompile Include="..\src\platform\SoloOpenGLMesh.cpp" />
     <ClCompile Include="..\src\platform\SoloOpenGLTexture2D.cpp" />
     <ClCompile Include="..\src\platform\SoloSDLOpenGLDevice.cpp" />
-    <ClCompile Include="..\src\scripting\platform\SoloChaiScriptScript.cpp" />
-    <ClCompile Include="..\src\scripting\platform\SoloChaiScriptScripter.cpp" />
+    <ClCompile Include="..\src\scripting\platform\SoloScriptComponent_Chai.cpp" />
+    <ClCompile Include="..\src\scripting\platform\SoloScripter_Chai.cpp" />
     <ClCompile Include="..\src\scripting\SoloScripter.cpp" />
     <ClCompile Include="..\src\SoloBoundingBox.cpp" />
     <ClCompile Include="..\src\SoloBoundingSphere.cpp" />
