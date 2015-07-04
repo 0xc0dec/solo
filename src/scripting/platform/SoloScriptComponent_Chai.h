@@ -14,12 +14,10 @@ namespace solo
 
 		virtual void update() override;
 
-		static ChaiScriptComponent* addComponent(chaiscript::Boxed_Value&, chaiscript::Boxed_Value&);
+		static chaiscript::Boxed_Value& addComponent(chaiscript::Boxed_Value& node, const std::string& componentClass);
 
 	private:
-		friend class ScriptFactory_Chai;
-
-		ChaiScriptComponent(Node* node, chaiscript::Boxed_Value obj);
+		ChaiScriptComponent(Node* node, const std::string& componentClass);
 
 		Device* device = nullptr;
 		chaiscript::Boxed_Value component;

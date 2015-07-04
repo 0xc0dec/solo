@@ -25,6 +25,12 @@ long Node::getId() const
 }
 
 
+Scene* Node::getScene() const
+{
+	return scene;
+}
+
+
 template<> Transform* Node::addComponent<Transform>()
 {
 	auto transform = TransformFactory::create(this);

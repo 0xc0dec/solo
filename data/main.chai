@@ -10,6 +10,11 @@ class Script
 	{
 	}
 
+	def lalala()
+	{
+		return 10;
+	}
+
 	def update(dt)
 	{
 		print(dt);
@@ -18,6 +23,8 @@ class Script
 
 var node = scene.createNode();
 print(node.getId());
-var script = node.addComponent(Script());
+var script = node.addComponent("Script");
+print(script.lalala());
+
 
 print("Done");

@@ -14,6 +14,7 @@ namespace solo
 		~Node() {}
 
 		long getId() const;
+		Scene* getScene() const;
 
 		template <typename T, typename... Args>
 		T* addComponent(Args... args)

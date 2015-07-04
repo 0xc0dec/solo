@@ -8,14 +8,14 @@
 using namespace solo;
 
 
-ChaiScriptComponent::ChaiScriptComponent(Node* node, chaiscript::Boxed_Value obj) :
-	ComponentBase(node),
-	component(obj)
+ChaiScriptComponent::ChaiScriptComponent(Node* node, const std::string& componentClass) :
+	ComponentBase(node)
 {
 	auto engine = Engine::get();
 	device = engine->getDevice();
-	auto scripter = static_cast<Scripter_Chai*>(engine->getScripter());
-	updateFunc = scripter->getEngine()->eval<std::function<void(chaiscript::Boxed_Value&, float)>>("update");
+	auto chai = static_cast<Scripter_Chai*>(engine->getScripter())->getEngine();
+	component = chai->eval<chaiscript::Boxed_Value>(componentClass + "()");
+	updateFunc = chai->eval<std::function<void(chaiscript::Boxed_Value&, float)>>("update");
 }
 
 
@@ -25,10 +25,10 @@ void ChaiScriptComponent::update()
 }
 
 
-ChaiScriptComponent* ChaiScriptComponent::addComponent(chaiscript::Boxed_Value& node, chaiscript::Boxed_Value& component)
+chaiscript::Boxed_Value& ChaiScriptComponent::addComponent(chaiscript::Boxed_Value& node, const std::string& componentClass)
 {
 	auto n = chaiscript::boxed_cast<Node*>(node);
-	auto script = NEW2(ChaiScriptComponent, n, component);
-	Engine::get()->getScene()->addComponent(n, script);
-	return script.get();
+	auto script = NEW2(ChaiScriptComponent, n, componentClass);
+	n->getScene()->addComponent(n, script);
+	return script->component;
 }
