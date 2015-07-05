@@ -32,9 +32,24 @@ void ScriptComponent_Lua::addComponent(Node& node, const std::string& expression
 }
 
 
+bool tryRemoveDefaultComponent(Node& node, const std::string& componentName)
+{
+	if (componentName == "Transform")
+		node.removeComponent<Transform>();
+	else if (componentName == "Camera")
+		node.removeComponent<Camera>();
+	else
+		return false;
+	return true;
+}
+
+
 void ScriptComponent_Lua::removeComponent(Node& node, const std::string& expression)
 {
-	auto engine = static_cast<Scripter_Lua*>(Engine::get()->getScripter())->getEngine();
-	auto typeId = getHash(engine->executeCode<const std::string&>("return " + expression + ".id"));
-	node.getScene()->removeComponent(&node, typeId);
+	if (!tryRemoveDefaultComponent(node, expression))
+	{
+		auto engine = static_cast<Scripter_Lua*>(Engine::get()->getScripter())->getEngine();
+		auto typeId = getHash(engine->executeCode<const std::string&>("return " + expression + ".id"));
+		node.getScene()->removeComponent(&node, typeId);
+	}
 }

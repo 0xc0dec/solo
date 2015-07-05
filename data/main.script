@@ -36,3 +36,7 @@ end)();
 
 	node:addComponent("Component")
 end)();
+
+
+local n = scene:createNode()
+print(n:findCamera())

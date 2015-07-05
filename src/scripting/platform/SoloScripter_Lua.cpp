@@ -6,6 +6,7 @@
 #include "SoloNode.h"
 #include "SoloScriptComponent_Lua.h"
 #include "SoloTransform.h"
+#include "SoloCamera.h"
 
 using namespace solo;
 
@@ -56,9 +57,17 @@ void Scripter_Lua::registerScriptApi()
 	engine->registerFunction("getChildrenCount", &Transform::getChildrenCount);
 	engine->registerFunction("removeChildrent", &Transform::removeChildren);
 
+	// Camera
+	engine->registerFunction("setClearColor", &Camera::setClearColor);
+	engine->registerFunction("setViewport", &Camera::setViewport);
+	engine->registerFunction("resetViewport", &Camera::resetViewport);
+	engine->registerFunction("getViewport", &Camera::getViewport);
+
 	// Node
 	engine->registerFunction("getId", &Node::getId);
 	engine->registerFunction<Node, void(const std::string&)>("addComponent", &ScriptComponent_Lua::addComponent);
 	engine->registerFunction<Node, void(const std::string&)>("removeComponent", &ScriptComponent_Lua::removeComponent);
 	engine->registerFunction<Node, Transform*(void)>("findTransform", [](Node& node) { return node.findComponent<Transform>(); });
+	engine->registerFunction<Node, Camera*(void)>("findCamera", [](Node& node) { return node.findComponent<Camera>(); });
+	engine->registerFunction<Node, Camera*(void)>("addCamera", [](Node& node) { return node.addComponent<Camera>(); });
 }
