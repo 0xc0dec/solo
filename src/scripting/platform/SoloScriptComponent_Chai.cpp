@@ -8,7 +8,7 @@
 using namespace solo;
 
 
-ChaiScriptComponent::ChaiScriptComponent(Node* node, const std::string& componentClass) :
+ScriptComponent_Chai::ScriptComponent_Chai(Node* node, const std::string& componentClass) :
 	ComponentBase(node)
 {
 	auto engine = Engine::get();
@@ -19,16 +19,16 @@ ChaiScriptComponent::ChaiScriptComponent(Node* node, const std::string& componen
 }
 
 
-void ChaiScriptComponent::update()
+void ScriptComponent_Chai::update()
 {
 	updateFunc(component, device->getTimeDelta());
 }
 
 
-chaiscript::Boxed_Value& ChaiScriptComponent::addComponent(chaiscript::Boxed_Value& node, const std::string& componentClass)
+chaiscript::Boxed_Value& ScriptComponent_Chai::addComponent(chaiscript::Boxed_Value& node, const std::string& componentClass)
 {
 	auto n = chaiscript::boxed_cast<Node*>(node);
-	auto script = NEW2(ChaiScriptComponent, n, componentClass);
+	auto script = NEW2(ScriptComponent_Chai, n, componentClass);
 	n->getScene()->addComponent(n, script);
 	return script->component;
 }
