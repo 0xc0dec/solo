@@ -27,11 +27,6 @@ namespace solo
 
 		SDLOpenGLDevice(const EngineCreationArgs &args);
 
-		SDLOpenGLDevice(const SDLOpenGLDevice& other) = delete;
-		SDLOpenGLDevice(SDLOpenGLDevice&& other) = delete;
-		SDLOpenGLDevice& operator=(const SDLOpenGLDevice& other) = delete;
-		SDLOpenGLDevice& operator=(SDLOpenGLDevice&& other) = delete;
-
 		void prepareKeyboardState();
 		void prepareMouseState();
 
