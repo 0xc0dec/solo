@@ -6,8 +6,8 @@
 #include "ResourcesTest.h"
 #include "Demo.h"
 
-
 using namespace solo;
+
 
 class Callback : public EngineCallback
 {
@@ -18,17 +18,15 @@ public:
 
 	virtual void onEngineStarted() override
 	{
-		/*
 		tests.push_back(NEW2(MaterialsTest, engine));
 		tests.push_back(NEW2(ComponentsTest, engine));
 		tests.push_back(NEW2(TransformTest, engine));
 		tests.push_back(NEW2(DeviceTest, engine));
 		tests.push_back(NEW2(FileSystemTest, engine));
 		tests.push_back(NEW2(ResourcesTest, engine));
-		tests.push_back(NEW2(Demo, engine));
+//		tests.push_back(NEW2(Demo, engine));
 		for (auto test : tests)
 			test->run();
-		*/
 		engine->getScripter()->execFile("../data/main.script");
 	}
 
@@ -53,6 +51,13 @@ int main()
 	EngineCreationArgs engineArgs { 640, 480 };
 	Callback callback(engine);
 	engine->setCallback(&callback);
-	engine->run(engineArgs);
+	try
+	{
+		engine->run(engineArgs);
+	}
+	catch (std::exception &e)
+	{
+		std::cout << e.what() << std::endl;
+	}
 	return 0;
 }

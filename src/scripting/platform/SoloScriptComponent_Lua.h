@@ -12,8 +12,8 @@ namespace solo
 	public:
 		void update() override;
 
-		static void addComponent(Node& node, const std::string& componentName);
-		static void removeComponent(Node& node, const std::string& componentName);
+		static void addComponent(Node& node, const std::string& expression);
+		static void removeComponent(Node& node, const std::string& expression);
 
 	private:
 		ScriptComponent_Lua(Node* node, const std::string& componentName);
