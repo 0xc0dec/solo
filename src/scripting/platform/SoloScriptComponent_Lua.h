@@ -17,7 +17,6 @@ namespace solo
 
 		static void addComponent(Node& node, const std::string& expression);
 		static void removeComponent(Node& node, const std::string& expression);
-		static boost::variant<Transform*, Camera*> findComponent(Node& node, const std::string& name);
 
 	private:
 		ScriptComponent_Lua(Node* node, const std::string& componentName);
