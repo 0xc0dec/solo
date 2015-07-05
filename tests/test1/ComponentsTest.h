@@ -54,11 +54,11 @@ public:
 	virtual void run() override
 	{
 		node = scene->createEmptyNode();
-		testComponentsAddition();
-		testDerivedComponents();
+		test_AddComponents_EnsureAdded();
+		test_AddDerivedComponent_EnsureFoundAsParentAsWell();
 	}
 
-	void testComponentsAddition()
+	void test_AddComponents_EnsureAdded()
 	{
 		auto a = node->addComponent<A>();
 		auto b = node->addComponent<B>();
@@ -68,7 +68,7 @@ public:
 		assert(b->getTypeId() == B::getId());
 	}
 
-	void testDerivedComponents()
+	void test_AddDerivedComponent_EnsureFoundAsParentAsWell()
 	{
 		node->addComponent<Derived>();
 		auto base = node->getComponent<Base>();

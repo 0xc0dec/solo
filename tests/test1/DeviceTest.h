@@ -14,18 +14,18 @@ public:
 
 	virtual void run() override
 	{
-		testWindowTitle();
-		testCanvasSize();
+		test_SetWindowTitle_GetWindowTitle();
+		test_GetCanvasSize();
 	}
 
-	void testCanvasSize()
+	void test_GetCanvasSize()
 	{
 		auto size = device->getCanvasSize();
 		assert(size.x == 640);
 		assert(size.y == 480);
 	}
 
-	void testWindowTitle()
+	void test_SetWindowTitle_GetWindowTitle()
 	{
 		engine->getDevice()->setWindowTitle("Test window");
 		assert(engine->getDevice()->getWindowTitle() == "Test window");

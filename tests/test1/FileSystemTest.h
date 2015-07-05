@@ -11,11 +11,30 @@ public:
 
 	virtual void run() override
 	{
-		testWriteBytesReadBytes();
-		testWriteLinesReadLines();
+		test_WriteBytes_ReadBytes();
+		test_WriteLines_ReadLines();
+		test_WriteLines_ReadText();
 	}
 
-	void testWriteBytesReadBytes()
+	void test_WriteLines_ReadText()
+	{
+		std::vector<std::string> lines =
+		{
+			"First",
+			"Sec ond",
+			"Third",
+			"   ... line."
+		};
+		engine->getFileSystem()->writeLines("temp2.txt", lines);
+		auto text = engine->getFileSystem()->readText("temp2.txt");
+		auto expected = R"_(First
+Sec ond
+Third
+   ... line.)_";
+		assert(text == expected);
+	}
+
+	void test_WriteBytes_ReadBytes()
 	{
 		std::vector<byte> data = { 0x01, 0x02, 0x03, 0x04 };
 		engine->getFileSystem()->writeBytes("temp.bin", data);
@@ -27,7 +46,7 @@ public:
 		assert(readData[3] == data[3]);
 	}
 
-	void testWriteLinesReadLines()
+	void test_WriteLines_ReadLines()
 	{
 		std::vector<std::string> lines =
 		{

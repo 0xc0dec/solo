@@ -12,18 +12,18 @@ public:
 
 	virtual void run() override
 	{
-		testGetTransform();
-		testParentAndChildren();
+		test_GetTransformComponent();
+		test_ChildrenManipulation();
 	}
 
-	void testGetTransform()
+	void test_GetTransformComponent()
 	{
 		auto node = scene->createNode();
 		auto transform = node->getComponent<Transform>();
 		assert(transform);
 	}
 
-	void testParentAndChildren()
+	void test_ChildrenManipulation()
 	{
 		auto t1 = scene->createNode()->getComponent<Transform>();
 		auto t2 = scene->createNode()->getComponent<Transform>();

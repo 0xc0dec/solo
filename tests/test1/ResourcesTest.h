@@ -12,11 +12,11 @@ public:
 
 	virtual void run() override
 	{
-		testCreateResourceAndTryToCleanIt();
-		testCreateAndForgetResourceThenCleanIt();
+		test_CreateResource_TryToCleanIt_EnsureRemains();
+		test_CreateAndForgetResource_CleanIt();
 	}
 
-	void testCreateResourceAndTryToCleanIt()
+	void test_CreateResource_TryToCleanIt_EnsureRemains()
 	{
 		auto mgr = engine->getResourceManager();
 		auto modelUrl = "testCreateResourceAndTryToCleanIt";
@@ -25,7 +25,7 @@ public:
 		assert(mgr->findModel(modelUrl) == model);
 	}
 
-	void testCreateAndForgetResourceThenCleanIt()
+	void test_CreateAndForgetResource_CleanIt()
 	{
 		auto mgr = engine->getResourceManager();
 		auto modelUrl = "testCreateAndForgetResourceThenCleanIt";

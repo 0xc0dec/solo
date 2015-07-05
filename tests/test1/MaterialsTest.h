@@ -38,12 +38,12 @@ public:
 
 	virtual void run() override
 	{
-		testEffectVariablesDetection();
-		testEffectCompiledSuccessfully();
-		testEffectCompilationFails();
+		test_CreateEffect_FindVariables();
+		test_CompileEffect_OK();
+		test_CompileEffect_Fail();
 	}
 
-	void testEffectVariablesDetection()
+	void test_CreateEffect_FindVariables()
 	{
 		auto effect = engine->getResourceManager()->getOrCreateEffect(vs, fs);
 		auto var1 = effect->findVariable("testFloat");
@@ -57,12 +57,12 @@ public:
 		assert(var3->getName() == "testArray");
 	}
 
-	void testEffectCompiledSuccessfully()
+	void test_CompileEffect_OK()
 	{
 		engine->getResourceManager()->getOrCreateEffect(vs, fs);
 	}
 
-	void testEffectCompilationFails()
+	void test_CompileEffect_Fail()
 	{
 		testFailedCompilation("sdfsdf", fs, "vertex");
 		testFailedCompilation(vs, "sdfsdf", "fragment");
