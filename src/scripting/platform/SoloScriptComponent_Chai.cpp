@@ -12,8 +12,8 @@ ScriptComponent_Chai::ScriptComponent_Chai(Node* node, const std::string& compon
 	ComponentBase(node)
 {
 	auto engine = Engine::get();
-	device = engine->getDevice();
 	auto chai = static_cast<Scripter_Chai*>(engine->getScripter())->getEngine();
+	device = engine->getDevice();
 	component = chai->eval<chaiscript::Boxed_Value>(componentClass + "()");
 	updateFunc = chai->eval<std::function<void(chaiscript::Boxed_Value&, float)>>("update");
 }

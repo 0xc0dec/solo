@@ -6,25 +6,23 @@ device.setWindowTitle("Set from scripts!");
 
 class Script
 {
+	var field;
+
 	def Script()
 	{
-	}
-
-	def lalala()
-	{
-		return 10;
+		this.field = 1;
 	}
 
 	def update(dt)
 	{
-		print(dt);
+		this.field += 1;
+		print(this.field);
 	}
 };
 
 var node = scene.createNode();
 print(node.getId());
 var script = node.addComponent("Script");
-print(script.lalala());
-
+script.field = 2;
 
 print("Done");
