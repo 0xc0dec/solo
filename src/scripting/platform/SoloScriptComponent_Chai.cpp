@@ -29,6 +29,7 @@ chaiscript::Boxed_Value& ScriptComponent_Chai::addComponent(chaiscript::Boxed_Va
 {
 	auto n = chaiscript::boxed_cast<Node*>(node);
 	auto script = NEW2(ScriptComponent_Chai, n, componentClass);
-	n->getScene()->addComponent(n, script);
+	auto cmpTypeId = getHash(componentClass);
+	n->getScene()->addComponent(n, script, cmpTypeId);
 	return script->component;
 }

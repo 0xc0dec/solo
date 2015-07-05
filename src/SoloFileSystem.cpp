@@ -34,6 +34,14 @@ void FileSystem::writeBytes(const std::string& path, const std::vector<byte>& da
 }
 
 
+std::string FileSystem::readText(const std::string& path)
+{
+	std::ifstream f(path);
+	auto result = std::string(std::istreambuf_iterator<char>(f), std::istreambuf_iterator<char>());
+	return result;
+}
+
+
 std::vector<std::string> FileSystem::readLines(const std::string& path)
 {
 	std::ifstream file(path);

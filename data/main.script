@@ -1,0 +1,19 @@
+local device = engine:getDevice()
+local scene = engine:getScene()
+
+device:setWindowTitle("Lol!")
+
+local node = scene:createNode()
+print(node:getId())
+
+Component =
+{
+	id = "SomeComponent",
+
+	update = function(dt)
+		print(dt)
+		node:removeComponent("Component")
+	end
+}
+
+node:addComponent("Component")

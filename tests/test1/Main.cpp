@@ -29,7 +29,7 @@ public:
 		for (auto test : tests)
 			test->run();
 		*/
-		engine->getScripter()->execFile("../data/main.chai");
+		engine->getScripter()->execFile("../data/main.script");
 	}
 
 	virtual void onEngineStopped() override

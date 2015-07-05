@@ -38,11 +38,11 @@ Engine::~Engine()
 
 void Engine::run(const EngineCreationArgs &args)
 {
+	scripter = ScripterFactory::create();
 	device = DeviceFactory::create(args);
 	fs = FileSystemFactory::create();
 	resourceManager = ResourceManagerFactory::create(this);
 	scene = SceneFactory::create();
-	scripter = ScripterFactory::create();
 
 	callback->onEngineStarted();
 
@@ -58,11 +58,11 @@ void Engine::run(const EngineCreationArgs &args)
 
 	callback->onEngineStopped();
 
-	scripter.reset();
 	scene.reset();
 	resourceManager.reset();
 	fs.reset();
 	device.reset();
+	scripter.reset();
 }
 
 

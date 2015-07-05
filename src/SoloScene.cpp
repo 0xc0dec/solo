@@ -27,11 +27,17 @@ Node* Scene::createNode()
 
 void Scene::addComponent(Node* node, shared<Component> cmp)
 {
+	addComponent(node, cmp, cmp->getTypeId());
+}
+
+
+void Scene::addComponent(Node* node, shared<Component> cmp, size_t typeId)
+{
 	auto nodeId = node->getId();
 	ensureNodeExists(nodeId);
-	if (findComponent(node, cmp->getTypeId()))
+	if (findComponent(node, typeId))
 		THROW_FMT(EngineException, "Component ", cmp->getTypeId(), " already exists.");
-	components[nodeId][cmp->getTypeId()] = cmp;
+	components[nodeId][typeId] = cmp;
 }
 
 

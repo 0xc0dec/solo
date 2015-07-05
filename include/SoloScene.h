@@ -18,6 +18,7 @@ namespace solo
 		Node* createNode();
 
 		void addComponent(Node* node, shared<Component> cmp);
+		void addComponent(Node* node, shared<Component> cmp, size_t typeId);
 		void removeComponent(Node* node, size_t typeId);
 		Component* getComponent(Node* node, size_t typeId);
 		Component* findComponent(Node* node, size_t typeId);

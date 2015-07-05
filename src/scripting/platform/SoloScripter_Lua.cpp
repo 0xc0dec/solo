@@ -1,0 +1,51 @@
+#include "SoloScripter_Lua.h"
+#include "SoloEngine.h"
+#include "SoloDevice.h"
+#include "SoloFileSystem.h"
+#include "SoloScene.h"
+#include "SoloNode.h"
+#include "SoloScriptComponent_Lua.h"
+
+using namespace solo;
+
+
+Scripter_Lua::Scripter_Lua()
+{
+	engine = NEW<LuaContext>();
+	registerScriptApi();
+}
+
+
+void Scripter_Lua::execString(const std::string& script)
+{
+	engine->executeCode(script);
+}
+
+
+void Scripter_Lua::execFile(const std::string& scriptFilePath)
+{
+	engine->executeCode(Engine::get()->getFileSystem()->readText(scriptFilePath));
+}
+
+
+LuaContext* Scripter_Lua::getEngine() const
+{
+	return engine.get();
+}
+
+
+void Scripter_Lua::registerScriptApi()
+{
+	engine->writeVariable("engine", Engine::get());
+	engine->registerFunction("getDevice", &Engine::getDevice);
+	engine->registerFunction("getScene", &Engine::getScene);
+
+	engine->registerFunction("getWindowTitle", &Device::getWindowTitle);
+	engine->registerFunction("setWindowTitle", &Device::setWindowTitle);
+
+	engine->registerFunction("createNode", &Scene::createNode);
+
+	engine->registerFunction("getId", &Node::getId);
+	engine->registerFunction<Node, void(const std::string&)>("addComponent", &ScriptComponent_Lua::addComponent);
+	engine->registerFunction<Node, void(const std::string&)>("removeComponent", &ScriptComponent_Lua::removeComponent);
+}
