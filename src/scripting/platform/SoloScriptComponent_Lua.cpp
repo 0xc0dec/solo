@@ -2,6 +2,8 @@
 #include "SoloEngine.h"
 #include "SoloScripter_Lua.h"
 #include "SoloDevice.h"
+#include "SoloTransform.h"
+#include "SoloCamera.h"
 
 using namespace solo;
 
@@ -36,3 +38,20 @@ void ScriptComponent_Lua::removeComponent(Node& node, const std::string& express
 	auto typeId = getHash(engine->executeCode<const std::string&>("return " + expression + ".id"));
 	node.getScene()->removeComponent(&node, typeId);
 }
+
+
+boost::variant<Transform*, Camera*> ScriptComponent_Lua::findComponent(Node& node, const std::string& name)
+{
+	if (name == "Transform")
+		return node.findComponent<Transform>();
+	if (name == "Camera")
+		return node.findComponent<Camera>();
+	return static_cast<Transform*>(nullptr);
+}
+
+//
+//void ScriptComponent_Lua::findComponent(Node& node, const std::string& name)
+//{
+//	if (name == "Transform")
+//		return node.getComponent<Transform>();
+//}

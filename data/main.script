@@ -1,19 +1,38 @@
-local device = engine:getDevice()
-local scene = engine:getScene()
+local device = engine:getDevice();
+local scene = engine:getScene();
 
-device:setWindowTitle("Lol!")
 
-local node = scene:createNode()
-print(node:getId())
+(function()
+	print("Test: window title changing")
+	device:setWindowTitle("Test window title");
+	assert(device:getWindowTitle() == "Test window title");
+end)();
 
-Component =
-{
-	id = "SomeComponent",
 
-	update = function(dt)
-		print(dt)
-		node:removeComponent("Component")
-	end
-}
+(function()
+	print("Test: transform parenting")
+	local n1 = scene:createNode();
+	local n2 = scene:createNode();
+	local t1 = n1:findTransform();
+	local t2 = n2:findTransform();
+	t1:setParent(t2);
+	assert(t2:getChildrenCount() == 1);
+end)();
 
-node:addComponent("Component")
+
+(function()
+	print("Test: attaching script components")
+	local node = scene:createNode()
+
+	Component =
+	{
+		id = "SomeComponent",
+
+		update = function(dt)
+			print(dt)
+			node:removeComponent("Component")
+		end
+	}
+
+	node:addComponent("Component")
+end)();
