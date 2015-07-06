@@ -1,3 +1,34 @@
+var device = engine.getDevice();
+var scene = engine.getScene();
+
+print("Current window title: " + device.getWindowTitle());
+device.setWindowTitle("Set from scripts!");
+
+class Script
+{
+	var field;
+
+	def Script()
+	{
+		this.field = 1;
+	}
+
+	def update(dt)
+	{
+		this.field += 1;
+		print(this.field);
+	}
+};
+
+var node = scene.createNode();
+print(node.getId());
+var script := node.addComponent("Script");
+script.field = 200;
+
+print("Done");
+
+
+/*
 local device = engine:getDevice();
 local scene = engine:getScene();
 
@@ -40,3 +71,4 @@ end)();
 
 local n = scene:createNode()
 print(n:findCamera())
+*/
