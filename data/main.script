@@ -17,6 +17,7 @@ class Script
 	{
 		this.field += 1;
 		print(this.field);
+		node.removeComponent("Script");
 	}
 };
 
@@ -25,50 +26,11 @@ print(node.getId());
 var script := node.addComponent("Script");
 script.field = 200;
 
+var foundScript := node.findComponent("Script");
+foundScript.field = 100500;
+
+var notFoundScript := node.findComponent("Lalala");
+print(notFoundScript.is_var_undef());
+print(notFoundScript.is_var_null());
+
 print("Done");
-
-
-/*
-local device = engine:getDevice();
-local scene = engine:getScene();
-
-
-(function()
-	print("Test: window title changing")
-	device:setWindowTitle("Test window title");
-	assert(device:getWindowTitle() == "Test window title");
-end)();
-
-
-(function()
-	print("Test: transform parenting")
-	local n1 = scene:createNode();
-	local n2 = scene:createNode();
-	local t1 = n1:findTransform();
-	local t2 = n2:findTransform();
-	t1:setParent(t2);
-	assert(t2:getChildrenCount() == 1);
-end)();
-
-
-(function()
-	print("Test: attaching script components")
-	local node = scene:createNode()
-
-	Component =
-	{
-		id = "SomeComponent",
-
-		update = function(dt)
-			print(dt)
-			node:removeComponent("Component")
-		end
-	}
-
-	node:addComponent("Component")
-end)();
-
-
-local n = scene:createNode()
-print(n:findCamera())
-*/

@@ -78,8 +78,8 @@ private:
 		catch (EffectCompilationException &e)
 		{
 			assert(
-				e.message == FORMAT("Failed to compile ", failedShaderTypeName, " shader") ||
-				e.message == FORMAT("Failed to link effect program")
+				e.what() == FORMAT("Failed to compile ", failedShaderTypeName, " shader") ||
+				e.what() == FORMAT("Failed to link effect program")
 			);
 			return;
 		}

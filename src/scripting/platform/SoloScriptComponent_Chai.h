@@ -14,7 +14,9 @@ namespace solo
 
 		virtual void update() override;
 
-		static chaiscript::Boxed_Value& addComponent(chaiscript::Boxed_Value& node, const std::string& componentClass);
+		static chaiscript::Boxed_Value& addComponent(chaiscript::Boxed_Value& boxedNode, const std::string& componentClass);
+		static void removeComponent(chaiscript::Boxed_Value& boxedNode, const std::string& componentClass);
+		static chaiscript::Boxed_Value findComponent(chaiscript::Boxed_Value& boxedNode, const std::string& componentClass);
 
 	private:
 		ScriptComponent_Chai(Node* node, const std::string& componentClass);

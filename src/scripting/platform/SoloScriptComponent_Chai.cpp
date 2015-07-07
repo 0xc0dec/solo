@@ -6,6 +6,7 @@
 #include "SoloNode.h"
 
 using namespace solo;
+using namespace chaiscript;
 
 
 ScriptComponent_Chai::ScriptComponent_Chai(Node* node, const std::string& componentClass) :
@@ -14,8 +15,8 @@ ScriptComponent_Chai::ScriptComponent_Chai(Node* node, const std::string& compon
 	auto engine = Engine::get();
 	auto chai = static_cast<Scripter_Chai*>(engine->getScripter())->getEngine();
 	device = engine->getDevice();
-	component = chai->eval<chaiscript::Boxed_Value>(componentClass + "()");
-	updateFunc = chai->eval<std::function<void(chaiscript::Boxed_Value&, float)>>("update");
+	component = chai->eval<Boxed_Value>(componentClass + "()");
+	updateFunc = chai->eval<std::function<void(Boxed_Value&, float)>>("update");
 }
 
 
@@ -25,11 +26,30 @@ void ScriptComponent_Chai::update()
 }
 
 
-chaiscript::Boxed_Value& ScriptComponent_Chai::addComponent(chaiscript::Boxed_Value& node, const std::string& componentClass)
+Boxed_Value& ScriptComponent_Chai::addComponent(Boxed_Value& boxedNode, const std::string& componentClass)
 {
-	auto n = chaiscript::boxed_cast<Node*>(node);
-	auto script = NEW2(ScriptComponent_Chai, n, componentClass);
+	auto node = boxed_cast<Node*>(boxedNode);
+	auto script = NEW2(ScriptComponent_Chai, node, componentClass);
 	auto cmpTypeId = getHash(componentClass);
-	n->getScene()->addComponent(n, script, cmpTypeId);
+	node->getScene()->addComponent(node, script, cmpTypeId);
 	return script->component;
+}
+
+
+void ScriptComponent_Chai::removeComponent(chaiscript::Boxed_Value& boxedNode, const std::string& componentClass)
+{
+	auto node = boxed_cast<Node*>(boxedNode);
+	auto cmpTypeId = getHash(componentClass);
+	node->getScene()->removeComponent(node, cmpTypeId);
+}
+
+
+Boxed_Value ScriptComponent_Chai::findComponent(Boxed_Value& boxedNode, const std::string& componentClass)
+{
+	auto node = boxed_cast<Node*>(boxedNode);
+	auto cmpTypeId = getHash(componentClass);
+	auto cmp = node->getScene()->findComponent(node, cmpTypeId);
+	if (!cmp)
+		return Boxed_Value();
+	return static_cast<ScriptComponent_Chai*>(cmp)->component;
 }

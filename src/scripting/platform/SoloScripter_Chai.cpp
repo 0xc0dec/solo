@@ -84,4 +84,6 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(user_type<Node>(), "Node");
 	engine->add(fun(&Node::getId), "getId");
 	engine->add(fun(&ScriptComponent_Chai::addComponent), "addComponent");
+	engine->add(fun(&ScriptComponent_Chai::removeComponent), "removeComponent");
+	engine->add(fun(&ScriptComponent_Chai::findComponent), "findComponent");
 }
