@@ -33,4 +33,19 @@ var notFoundScript := node.findComponent("Lalala");
 print(notFoundScript.is_var_undef());
 print(notFoundScript.is_var_null());
 
+class Test
+{
+	def Test()
+	{
+
+	}
+
+	def func()
+	{
+		print("func() called");
+	}
+}
+
+Test().func();
+
 print("Done");

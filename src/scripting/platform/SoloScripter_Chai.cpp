@@ -69,6 +69,7 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(user_type<Device>(), "Device");
 	engine->add(fun(&Device::getWindowTitle), "getWindowTitle");
 	engine->add(fun(&Device::setWindowTitle), "setWindowTitle");
+	engine->add(fun(&Device::requestShutdown), "requestShutdown");
 
 	// File system
 	engine->add(user_type<FileSystem>(), "FileSystem");
