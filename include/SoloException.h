@@ -7,13 +7,12 @@
 
 namespace solo
 {
-	class EngineException
+	class EngineException: public std::runtime_error
 	{
 	public:
-		std::string message;
-
-		EngineException() {}
-		EngineException(const std::string &msg) : message(msg) {}
+		EngineException(const std::string &msg) : std::runtime_error(msg)
+		{
+		}
 	};
 
 	class EffectCompilationException: public EngineException
@@ -21,7 +20,6 @@ namespace solo
 	public:
 		std::string log;
 
-		EffectCompilationException() {}
 		EffectCompilationException(const std::string& message, const std::string& log) : EngineException(message), log(log) {}
 	};
 }
