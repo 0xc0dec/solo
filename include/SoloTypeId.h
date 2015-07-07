@@ -4,15 +4,16 @@
 
 namespace solo
 {
-	template <typename T>
 	struct TypeId
 	{
-		static void f() { }
-	};
+		template <typename T>
+		static size_t get()
+		{
+			static const auto id = counter++;
+			return id;
+		}
 
-	template <class T>
-	size_t getTypeId()
-	{
-		return reinterpret_cast<size_t>(&TypeId<T>::f);
-	}
+	private:
+		static size_t counter;
+	};
 }

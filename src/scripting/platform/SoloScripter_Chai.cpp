@@ -8,6 +8,9 @@
 #include "SoloTexture.h"
 #include "SoloFileSystem.h"
 #include "SoloNode.h"
+#include "SoloVector2.h"
+#include "SoloVector3.h"
+#include "SoloQuaternion.h"
 #include <chaiscript.hpp>
 #include <chaiscript_stdlib.hpp>
 
@@ -78,6 +81,8 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(&Device::getTimeDelta), "getTimeDelta");
 	engine->add(fun(&Device::isKeyPressed), "isKeyPressed");
 	engine->add(fun(&Device::isKeyReleased), "isKeyReleased");
+	engine->add(fun(&Device::isMouseButtonDown), "isMouseButtonDown");
+	engine->add(fun(&Device::isMouseButtonReleased), "isMouseButtonReleased");
 
 	// File system
 	engine->add(user_type<FileSystem>(), "FileSystem");
@@ -101,6 +106,20 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(&Vector2::x), "x");
 	engine->add(fun(&Vector2::y), "y");
 
+	// Vector3
+	engine->add(user_type<Vector3>(), "Vector3");
+	engine->add(fun(&Vector3::x), "x");
+	engine->add(fun(&Vector3::y), "y");
+	engine->add(fun(&Vector3::z), "z");
+
+	// Quaternion
+	engine->add(user_type<Quaternion>(), "Quaternion");
+	engine->add(fun(&Quaternion::x), "x");
+	engine->add(fun(&Quaternion::y), "y");
+	engine->add(fun(&Quaternion::z), "z");
+	engine->add(fun(&Quaternion::w), "w");
+
+	// KeyCode
 	engine->add(user_type<KeyCode>(), "KeyCode");
 	engine->add(const_var(KeyCode::A), "KeyCode_A");
 	engine->add(const_var(KeyCode::B), "KeyCode_B");
@@ -133,4 +152,10 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(const_var(KeyCode::LeftArrow), "KeyCode_LeftArrow");
 	engine->add(const_var(KeyCode::RightArrow), "KeyCode_RightArrow");
 	engine->add(const_var(KeyCode::Escape), "KeyCode_Escape");
+
+	// MouseButton
+	engine->add(user_type<MouseButton>(), "MouseButton");
+	engine->add(const_var(MouseButton::Left), "MouseButton_Left");
+	engine->add(const_var(MouseButton::Right), "MouseButton_Right");
+	engine->add(const_var(MouseButton::Middle), "MouseButton_Middle");
 }

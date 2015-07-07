@@ -24,7 +24,7 @@ void ScriptComponent_Chai::update()
 }
 
 
-Boxed_Value& ScriptComponent_Chai::addComponent(Boxed_Value& boxedNode, const std::string& componentClass)
+Boxed_Value ScriptComponent_Chai::addComponent(Boxed_Value& boxedNode, const std::string& componentClass)
 {
 	auto node = boxed_cast<Node*>(boxedNode);
 	auto script = NEW2(ScriptComponent_Chai, node, componentClass);

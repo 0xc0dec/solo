@@ -1,7 +1,11 @@
 #include "SoloBase.h"
 #include "SoloEngine.h"
+#include "SoloTypeId.h"
 
 using namespace solo;
+
+
+size_t TypeId::counter = 0;
 
 
 extern "C" Engine *getEngine()

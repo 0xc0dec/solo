@@ -34,7 +34,7 @@ namespace solo
 
 		static size_t getId()
 		{
-			return solo::getTypeId<T>();
+			return TypeId::get<T>();
 		}
 
 		virtual size_t getTypeId() override

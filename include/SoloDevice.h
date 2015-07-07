@@ -30,15 +30,11 @@ namespace solo
 	public:
 		virtual ~Device() {}
 
+		virtual void beginUpdate() = 0;
+		virtual void endUpdate() = 0;
+
 		virtual void setWindowTitle(const std::string &title) = 0;
 		virtual std::string getWindowTitle() const = 0;
-
-		bool isKeyPressed(KeyCode code, bool firstTimeOnly = false) const;
-		bool isKeyReleased(KeyCode code) const;
-
-		Vector2 getMouseMotion() const;
-		bool isMouseButtonDown(MouseButton button, bool firstTimeOnly = false) const;
-		bool isMouseButtonReleased(MouseButton button) const;
 
 		virtual void setCursorCaptured(bool captured) = 0;
 
@@ -47,8 +43,12 @@ namespace solo
 		/// Returns time elapsed since the engine startup, in seconds
 		virtual float getLifetime() const = 0;
 
-		virtual void beginUpdate() = 0;
-		virtual void endUpdate() = 0;
+		bool isKeyPressed(KeyCode code, bool firstTimeOnly = false) const;
+		bool isKeyReleased(KeyCode code) const;
+
+		Vector2 getMouseMotion() const;
+		bool isMouseButtonDown(MouseButton button, bool firstTimeOnly = false) const;
+		bool isMouseButtonReleased(MouseButton button) const;
 
 		float getTimeDelta() const;
 
@@ -56,7 +56,7 @@ namespace solo
 		bool shutdownRequested() const;
 
 	protected:
-		Device(const EngineCreationArgs& args);
+		explicit Device(const EngineCreationArgs& args);
 
 		void updateTime();
 
