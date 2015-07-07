@@ -12,17 +12,15 @@ using namespace chaiscript;
 ScriptComponent_Chai::ScriptComponent_Chai(Node* node, const std::string& componentClass) :
 	ComponentBase(node)
 {
-	auto engine = Engine::get();
-	auto chai = static_cast<Scripter_Chai*>(engine->getScripter())->getEngine();
-	device = engine->getDevice();
+	auto chai = static_cast<Scripter_Chai*>(Engine::get()->getScripter())->getEngine();
 	component = chai->eval<Boxed_Value>(componentClass + "()");
-	updateFunc = chai->eval<std::function<void(Boxed_Value&, float)>>("update");
+	updateFunc = chai->eval<std::function<void(Boxed_Value&)>>("update");
 }
 
 
 void ScriptComponent_Chai::update()
 {
-	updateFunc(component, device->getTimeDelta());
+	updateFunc(component);
 }
 
 

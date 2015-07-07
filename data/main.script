@@ -4,20 +4,44 @@ var scene = engine.getScene();
 print("Current window title: " + device.getWindowTitle());
 device.setWindowTitle("Set from scripts!");
 
+class EscapeWatcher
+{
+	def EscapeWatcher()
+	{
+	}
+
+	def update()
+	{
+		if (device.isKeyPressed(KeyCode_Escape, true))
+		{
+			device.requestShutdown();
+		}
+	}
+}
+
 class Script
 {
 	var field;
+	var t;
 
 	def Script()
 	{
 		this.field = 1;
+		this.t = 0;
 	}
 
-	def update(dt)
+	def update()
 	{
 		this.field += 1;
 		print(this.field);
-		node.removeComponent("Script");
+		if (this.field >= 500000)
+		{
+			node.removeComponent("Script");
+		}
+		var motion = device.getMouseMotion();
+		var dt = device.getTimeDelta();
+		print("Delta: " + to_string(dt));
+		print("Mouse motion: " + to_string(motion.x) + ", " + to_string(motion.y));
 	}
 };
 
@@ -33,19 +57,6 @@ var notFoundScript := node.findComponent("Lalala");
 print(notFoundScript.is_var_undef());
 print(notFoundScript.is_var_null());
 
-class Test
-{
-	def Test()
-	{
-
-	}
-
-	def func()
-	{
-		print("func() called");
-	}
-}
-
-Test().func();
+node.addComponent("EscapeWatcher");
 
 print("Done");

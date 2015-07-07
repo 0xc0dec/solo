@@ -21,8 +21,7 @@ namespace solo
 	private:
 		ScriptComponent_Chai(Node* node, const std::string& componentClass);
 
-		Device* device = nullptr;
 		chaiscript::Boxed_Value component;
-		std::function<void(chaiscript::Boxed_Value&, float)> updateFunc;
+		std::function<void(chaiscript::Boxed_Value&)> updateFunc;
 	};
 }
