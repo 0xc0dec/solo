@@ -11,6 +11,7 @@
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 #include "SoloQuaternion.h"
+#include "SoloTransform.h"
 #include <chaiscript.hpp>
 #include <chaiscript_stdlib.hpp>
 
@@ -103,21 +104,54 @@ void Scripter_Chai::registerScriptApi()
 
 	// Vector2
 	engine->add(user_type<Vector2>(), "Vector2");
+	engine->add(constructor<Vector2()>(), "Vector2");
+	engine->add(constructor<Vector2(float, float)>(), "Vector2");
 	engine->add(fun(&Vector2::x), "x");
 	engine->add(fun(&Vector2::y), "y");
+	engine->add(fun(&Vector3::unitX), "unitVector2X");
+	engine->add(fun(&Vector3::unitY), "unitVector2Y");
 
 	// Vector3
 	engine->add(user_type<Vector3>(), "Vector3");
+	engine->add(constructor<Vector3()>(), "Vector3");
+	engine->add(constructor<Vector3(float, float, float)>(), "Vector3");
 	engine->add(fun(&Vector3::x), "x");
 	engine->add(fun(&Vector3::y), "y");
 	engine->add(fun(&Vector3::z), "z");
+	engine->add(fun(&Vector3::unitX), "unitVector3X");
+	engine->add(fun(&Vector3::unitY), "unitVector3Y");
+	engine->add(fun(&Vector3::unitZ), "unitVector3Z");
 
 	// Quaternion
 	engine->add(user_type<Quaternion>(), "Quaternion");
+	engine->add(constructor<Quaternion()>(), "Quaternion");
+	engine->add(constructor<Quaternion(float, float, float, float)>(), "Quaternion");
 	engine->add(fun(&Quaternion::x), "x");
 	engine->add(fun(&Quaternion::y), "y");
 	engine->add(fun(&Quaternion::z), "z");
 	engine->add(fun(&Quaternion::w), "w");
+	engine->add(fun(&Quaternion::identity), "identityQuaternion");
+	engine->add(fun(static_cast<void(*)(const Vector3&, float, Quaternion*)>(&Quaternion::createFromAxisAngle)), "createQuaternionFromAxisAngle");
+	engine->add(fun(static_cast<Quaternion(*)(const Vector3&, float)>(&Quaternion::createFromAxisAngle)), "createQuaternionFromAxisAngle");
+	engine->add(fun(static_cast<void(*)(const Matrix&, Quaternion*)>(&Quaternion::createFromRotationMatrix)), "createQuaternionFromRotationMatrix");
+	engine->add(fun(static_cast<Quaternion(*)(const Matrix&)>(&Quaternion::createFromRotationMatrix)), "createQuaternionFromRotationMatrix");
+	engine->add(fun(static_cast<void(*)(const Quaternion&, const Quaternion&, float, Quaternion*)>(&Quaternion::lerp)), "lertQuaternion");
+	engine->add(fun(static_cast<void(*)(const Quaternion&, const Quaternion&, float, Quaternion*)>(&Quaternion::slerp)), "slertQuaternion");
+	engine->add(fun(static_cast<void(*)(const Quaternion&, const Quaternion&, const Quaternion&, const Quaternion&, float, Quaternion*)>(&Quaternion::squad)), "squadQuaternion");
+	engine->add(fun(static_cast<bool(Quaternion::*)()>(&Quaternion::inverse)), "inverse");
+	engine->add(fun(&Quaternion::multiply), "multiply"); // TODO the static version
+	engine->add(fun(static_cast<bool(Quaternion::*)(Quaternion*)const>(&Quaternion::inverse)), "inverse");
+	engine->add(fun(static_cast<void(Quaternion::*)()>(&Quaternion::conjugate)), "conjugate");
+	engine->add(fun(static_cast<void(Quaternion::*)(Quaternion*)const>(&Quaternion::conjugate)), "conjugate");
+	engine->add(fun(&Quaternion::isIdentity), "isIdentity");
+	engine->add(fun(&Quaternion::isZero), "isZero");
+	
+
+	// Transform
+	engine->add(user_type<Transform>(), "Transform");
+	engine->add(fun(&Transform::getLocalPosition), "getLocalPosition");
+	engine->add(fun(static_cast<void(Transform::*)(float, float, float)>(&Transform::setLocalPosition)), "setLocalPosition");
+	engine->add(fun(static_cast<void(Transform::*)(const Vector3&)>(&Transform::setLocalPosition)), "setLocalPosition");
 
 	// KeyCode
 	engine->add(user_type<KeyCode>(), "KeyCode");

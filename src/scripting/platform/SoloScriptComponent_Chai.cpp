@@ -1,9 +1,11 @@
+#include "SoloCamera.h"
 #include "SoloScriptComponent_Chai.h"
 #include "SoloScripter_Chai.h"
 #include "SoloEngine.h"
 #include "SoloDevice.h"
 #include "SoloScene.h"
 #include "SoloNode.h"
+#include "SoloTransform.h"
 
 using namespace solo;
 using namespace chaiscript;
@@ -45,6 +47,11 @@ void ScriptComponent_Chai::removeComponent(chaiscript::Boxed_Value& boxedNode, c
 Boxed_Value ScriptComponent_Chai::findComponent(Boxed_Value& boxedNode, const std::string& componentClass)
 {
 	auto node = boxed_cast<Node*>(boxedNode);
+	if (componentClass == "Transform")
+		return Boxed_Value(node->getComponent<Transform>());
+	if (componentClass == "Camera")
+		return Boxed_Value(node->getComponent<Camera>());
+	// TODO other predefined components
 	auto cmpTypeId = getHash(componentClass);
 	auto cmp = node->getScene()->findComponent(node, cmpTypeId);
 	if (!cmp)

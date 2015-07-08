@@ -21,20 +21,18 @@ class EscapeWatcher
 
 class Script
 {
-	var field;
-	var t;
+	var iterations;
 
 	def Script()
 	{
-		this.field = 1;
-		this.t = 0;
+		this.iterations = 0;
 	}
 
 	def update()
 	{
-		this.field += 1;
-		print(this.field);
-		if (this.field >= 500000)
+		this.iterations += 1;
+		print(this.iterations);
+		if (this.iterations >= 20)
 		{
 			node.removeComponent("Script");
 		}
@@ -45,18 +43,16 @@ class Script
 	}
 };
 
+
 var node = scene.createNode();
 print(node.getId());
-var script := node.addComponent("Script");
-script.field = 200;
-
-var foundScript := node.findComponent("Script");
-foundScript.field = 100500;
-
-var notFoundScript := node.findComponent("Lalala");
-print(notFoundScript.is_var_undef());
-print(notFoundScript.is_var_null());
 
 node.addComponent("EscapeWatcher");
+node.addComponent("Script");
 
-print("Done");
+var transform := node.findComponent("Transform");
+transform.setLocalPosition(1, 2, 3);
+print("Y component: " + to_string(node.findComponent("Transform").getLocalPosition().y));
+
+transform.setLocalPosition(Vector3(10, 20, 30));
+print("Y component second time: " + to_string(node.findComponent("Transform").getLocalPosition().y));
