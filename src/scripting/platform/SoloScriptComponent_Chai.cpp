@@ -15,7 +15,9 @@ ScriptComponent_Chai::ScriptComponent_Chai(Node* node, const std::string& compon
 	ComponentBase(node)
 {
 	auto chai = static_cast<Scripter_Chai*>(Engine::get()->getScripter())->getEngine();
-	component = chai->eval<Boxed_Value>(componentClass + "()");
+//	component = chai->eval<Boxed_Value>(componentClass + "()");
+	auto constructor = chai->eval<std::function<Boxed_Value(Node*)>>(componentClass);
+	component = constructor(node);
 	updateFunc = chai->eval<std::function<void(Boxed_Value&)>>("update");
 }
 

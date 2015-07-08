@@ -12,6 +12,7 @@
 #include "SoloVector3.h"
 #include "SoloQuaternion.h"
 #include "SoloTransform.h"
+#include "SoloCamera.h"
 #include <chaiscript.hpp>
 #include <chaiscript_stdlib.hpp>
 
@@ -108,13 +109,14 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(constructor<Vector2(float, float)>(), "Vector2");
 	engine->add(fun(&Vector2::x), "x");
 	engine->add(fun(&Vector2::y), "y");
-	engine->add(fun(&Vector3::unitX), "unitVector2X");
-	engine->add(fun(&Vector3::unitY), "unitVector2Y");
-	engine->add(fun(&Vector3::zero), "zeroVector2");
-	engine->add(fun(&Vector3::isZero), "isZero");
+	engine->add(fun(&Vector2::unitX), "unitVector2X");
+	engine->add(fun(&Vector2::unitY), "unitVector2Y");
+	engine->add(fun(&Vector2::zero), "zeroVector2");
+	engine->add(fun(&Vector2::isZero), "isZero");
 	engine->add(fun(static_cast<void(Vector2::*)()>(&Vector2::normalize)), "normalize");
 	engine->add(fun(static_cast<void(Vector2::*)(Vector2*)const>(&Vector2::normalize)), "normalize");
 	engine->add(fun(&Vector2::normalized), "normalized");
+	// TODO operators
 
 	// Vector3
 	engine->add(user_type<Vector3>(), "Vector3");
@@ -127,7 +129,6 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(&Vector3::unitY), "unitVector3Y");
 	engine->add(fun(&Vector3::unitZ), "unitVector3Z");
 	engine->add(fun(&Vector3::zero), "zeroVector3");
-	engine->add(fun(&Vector3::isZero), "isZero");
 	engine->add(fun(static_cast<void(Vector3::*)()>(&Vector3::normalize)), "normalize");
 	engine->add(fun(static_cast<void(Vector3::*)(Vector3*)const>(&Vector3::normalize)), "normalize");
 	engine->add(fun(&Vector3::normalized), "normalized");
@@ -139,9 +140,20 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(&Vector3::distanceSquared), "distanceSquared");
 	engine->add(fun(&Vector3::dot), "dot");
 	engine->add(fun(&Vector3::isOne), "isOne");
+	engine->add(fun(&Vector3::isZero), "isZero");
 	engine->add(fun(&Vector3::scale), "scale");
 	engine->add(fun(&Vector3::smooth), "smooth");
 	engine->add(fun(&Vector3::subtract), "subtract");
+	engine->add(fun(&Vector3::operator*=), "*=");
+	engine->add(fun(&Vector3::operator!=), "!=");
+	engine->add(fun(&Vector3::operator*), "*");
+	engine->add(fun(&Vector3::operator+), "+");
+	engine->add(fun(&Vector3::operator+=), "+=");
+	engine->add(fun(static_cast<Vector3(Vector3::*)()const>(&Vector3::operator-)), "-=");
+	engine->add(fun(static_cast<Vector3(Vector3::*)(const Vector3&)const>(&Vector3::operator-)), "-=");
+	engine->add(fun(&Vector3::operator/), "/");
+	engine->add(fun(&Vector3::operator<), "<");
+	engine->add(fun(&Vector3::operator==), "==");
 
 	// Quaternion
 	engine->add(user_type<Quaternion>(), "Quaternion");
@@ -175,9 +187,45 @@ void Scripter_Chai::registerScriptApi()
 
 	// Transform
 	engine->add(user_type<Transform>(), "Transform");
+	engine->add(fun(&Transform::getParent), "getParent");
+	engine->add(fun(&Transform::setParent), "setParent");
 	engine->add(fun(&Transform::getLocalPosition), "getLocalPosition");
+	engine->add(fun(&Transform::getLocalRotation), "getLocalRotation");
+	engine->add(fun(&Transform::getLocalScale), "getLocalScale");
+	engine->add(fun(&Transform::getWorldPosition), "getWorldPosition");
+	engine->add(fun(&Transform::getWorldRotation), "getWorldRotation");
+	engine->add(fun(&Transform::getWorldScale), "getWorldScale");
 	engine->add(fun(static_cast<void(Transform::*)(float, float, float)>(&Transform::setLocalPosition)), "setLocalPosition");
 	engine->add(fun(static_cast<void(Transform::*)(const Vector3&)>(&Transform::setLocalPosition)), "setLocalPosition");
+	engine->add(fun(static_cast<void(Transform::*)(const Quaternion&)>(&Transform::setLocalRotation)), "setLocalRotation");
+	engine->add(fun(static_cast<void(Transform::*)(const Vector3&, float)>(&Transform::setLocalRotation)), "setLocalRotation");
+	engine->add(fun(static_cast<void(Transform::*)(float)>(&Transform::setLocalScale)), "setLocalScale");
+	engine->add(fun(static_cast<void(Transform::*)(const Vector3&)>(&Transform::setLocalScale)), "setLocalScale");
+	engine->add(fun(static_cast<void(Transform::*)(float, float, float)>(&Transform::setLocalScale)), "setLocalScale");
+	engine->add(fun(&Transform::getChild), "getChild");
+	engine->add(fun(&Transform::getChildrenCount), "getChildrenCount");
+	engine->add(fun(&Transform::getInverseTransposedWorldMatrix), "getInverseTransposedWorldMatrix");
+	engine->add(fun(&Transform::getInverseTransposedWorldViewMatrix), "getInverseTransposedWorldViewMatrix");
+	engine->add(fun(&Transform::getLocalForward), "getLocalForward");
+	engine->add(fun(&Transform::getLocalBack), "getLocalBack");
+	engine->add(fun(&Transform::getLocalLeft), "getLocalLeft");
+	engine->add(fun(&Transform::getLocalRight), "getLocalRight");
+	engine->add(fun(&Transform::getLocalUp), "getLocalUp");
+	engine->add(fun(&Transform::getLocalDown), "getLocalDown");
+	engine->add(fun(&Transform::getMatrix), "getMatrix");
+	engine->add(fun(&Transform::getWorldMatrix), "getWorldMatrix");
+	engine->add(fun(&Transform::getWorldViewMatrix), "getWorldViewMatrix");
+	engine->add(fun(&Transform::getWorldViewProjectionMatrix), "getWorldViewProjectionMatrix");
+	engine->add(fun(static_cast<void(Transform::*)(const Quaternion&, TransformSpace)>(&Transform::rotate)), "rotate");
+	engine->add(fun(static_cast<void(Transform::*)(const Vector3&, float, TransformSpace)>(&Transform::rotate)), "rotate");
+	engine->add(fun(static_cast<void(Transform::*)(float)>(&Transform::scaleLocal)), "scaleLocal");
+	engine->add(fun(static_cast<void(Transform::*)(const Vector3&)>(&Transform::scaleLocal)), "scaleLocal");
+	engine->add(fun(static_cast<void(Transform::*)(float, float, float)>(&Transform::scaleLocal)), "scaleLocal");
+	engine->add(fun(&Transform::removeChildren), "removeChildren");
+	engine->add(fun(static_cast<void(Transform::*)(const Vector3&)>(&Transform::translateLocal)), "translateLocal");
+	engine->add(fun(static_cast<void(Transform::*)(float, float, float)>(&Transform::translateLocal)), "translateLocal");
+	engine->add(fun(&Transform::transformPoint), "transformPoint");
+	engine->add(fun(&Transform::transformDirection), "transformDirection");
 
 	// KeyCode
 	engine->add(user_type<KeyCode>(), "KeyCode");
@@ -218,4 +266,9 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(const_var(MouseButton::Left), "MouseButton_Left");
 	engine->add(const_var(MouseButton::Right), "MouseButton_Right");
 	engine->add(const_var(MouseButton::Middle), "MouseButton_Middle");
+
+	engine->add(user_type<TransformSpace>(), "TransformSpace");
+	engine->add(const_var(TransformSpace::Parent), "TransformSpace_Parent");
+	engine->add(const_var(TransformSpace::Self), "TransformSpace_Self");
+	engine->add(const_var(TransformSpace::World), "TransformSpace_World");
 }

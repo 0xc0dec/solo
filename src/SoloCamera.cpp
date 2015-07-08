@@ -74,13 +74,13 @@ bool Camera::isPerspective() const
 
 float Camera::getNear() const
 {
-	return near;
+	return nearClip;
 }
 
 
 float Camera::getFar() const
 {
-	return far;
+	return farClip;
 }
 
 
@@ -138,14 +138,14 @@ void Camera::setAspectRatio(float ratio)
 
 void Camera::setFar(float far)
 {
-	this->far = far;
+	this->farClip = far;
 	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
 
 void Camera::setNear(float near)
 {
-	this->near = near;
+	this->nearClip = near;
 	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
@@ -171,9 +171,9 @@ const Matrix& Camera::getProjectionMatrix()
 	if (checkAndCleanBit<DIRTY_BIT_PROJ>())
 	{
 		if (ortho)
-			Matrix::createOrthographic(width, height, near, far, &projectionMatrix);
+			Matrix::createOrthographic(width, height, nearClip, farClip, &projectionMatrix);
 		else
-			Matrix::createPerspective(fov, aspectRatio, near, far, &projectionMatrix);
+			Matrix::createPerspective(fov, aspectRatio, nearClip, farClip, &projectionMatrix);
 	}
 	return projectionMatrix;
 }

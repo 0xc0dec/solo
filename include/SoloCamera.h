@@ -73,8 +73,8 @@ namespace solo
 
 		Vector4 clearColor{ 0, 0, 0, 1 };
 		float fov = 60;
-		float near = 1;
-		float far = 100;
+		float nearClip = 1;
+		float farClip = 100;
 		float width = 1;
 		float height = 1;
 		float aspectRatio = 1;

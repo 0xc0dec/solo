@@ -1,12 +1,12 @@
-var device = engine.getDevice();
-var scene = engine.getScene();
+var device := engine.getDevice();
+var scene := engine.getScene();
 
 print("Current window title: " + device.getWindowTitle());
 device.setWindowTitle("Set from scripts!");
 
 class EscapeWatcher
 {
-	def EscapeWatcher()
+	def EscapeWatcher(node)
 	{
 	}
 
@@ -22,19 +22,20 @@ class EscapeWatcher
 class Script
 {
 	var iterations;
+	var node;
 
-	def Script()
+	def Script(node)
 	{
 		this.iterations = 0;
+		this.node := node;
 	}
 
 	def update()
 	{
 		this.iterations += 1;
-		print(this.iterations);
 		if (this.iterations >= 20)
 		{
-			node.removeComponent("Script");
+			this.node.removeComponent("Script");
 		}
 		var motion = device.getMouseMotion();
 		var dt = device.getTimeDelta();
@@ -44,7 +45,7 @@ class Script
 };
 
 
-var node = scene.createNode();
+var node := scene.createNode();
 print(node.getId());
 
 node.addComponent("EscapeWatcher");
@@ -56,3 +57,73 @@ print("Y component: " + to_string(node.findComponent("Transform").getLocalPositi
 
 transform.setLocalPosition(Vector3(10, 20, 30));
 print("Y component second time: " + to_string(node.findComponent("Transform").getLocalPosition().y));
+
+
+class Spectator
+{
+	var transform;
+
+	def Spectator(node)
+	{
+		this.node := node;
+	}
+
+	def update()
+	{
+		var mouseMotion = device.getMouseMotion();
+		var dt = device.getTimeDelta();
+
+		if (device.isMouseButtonDown(MouseButton_Right, true))
+		{
+			device.setCursorCaptured(true);
+		}
+		if (device.isMouseButtonReleased(MouseButton_Right))
+		{
+			device.setCursorCaptured(false);
+		}
+
+		if (device.isMouseButtonDown(MouseButton_Right, false))
+		{
+			if (mouseMotion.x != 0)
+			{
+				transform.rotate(unitVector3Y(), 0.5f * dt * -mouseMotion.x, TransformSpace_World);
+			}
+			if (mouseMotion.y != 0)
+			{
+				transform.rotate(unitVector3X(), 0.5f * dt * -mouseMotion.y, TransformSpace_Self);
+			}
+		}
+
+		var movement = Vector3();
+		if (device.isKeyPressed(KeyCode_W, false))
+		{
+			movement += transform.getLocalForward();
+		}
+		if (device.isKeyPressed(KeyCode_S, false))
+		{
+			movement += transform.getLocalBack();
+		}
+		if (device.isKeyPressed(KeyCode_A, false))
+		{
+			movement += transform.getLocalLeft();
+		}
+		if (device.isKeyPressed(KeyCode_D, false))
+		{
+			movement += transform.getLocalRight();
+		}
+		if (device.isKeyPressed(KeyCode_Q, false))
+		{
+			movement += transform.getLocalDown();
+		}
+		if (device.isKeyPressed(KeyCode_E, false))
+		{
+			movement += transform.getLocalUp();
+		}
+
+		movement.normalize();
+		movement *= dt * 10;
+		transform.translateLocal(movement);
+	}
+}
+
+node.addComponent("Spectator");
