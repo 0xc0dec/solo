@@ -2,7 +2,6 @@
 #include "SoloScriptComponent_Chai.h"
 #include "SoloScripter_Chai.h"
 #include "SoloEngine.h"
-#include "SoloDevice.h"
 #include "SoloScene.h"
 #include "SoloNode.h"
 #include "SoloTransform.h"
@@ -14,11 +13,10 @@ using namespace chaiscript;
 ScriptComponent_Chai::ScriptComponent_Chai(Node* node, const std::string& componentClass) :
 	ComponentBase(node)
 {
-	auto chai = static_cast<Scripter_Chai*>(Engine::get()->getScripter())->getEngine();
-//	component = chai->eval<Boxed_Value>(componentClass + "()");
-	auto constructor = chai->eval<std::function<Boxed_Value(Node*)>>(componentClass);
+	auto scriptEngine = static_cast<Scripter_Chai*>(Engine::get()->getScripter())->getEngine();
+	auto constructor = scriptEngine->eval<std::function<Boxed_Value(Node*)>>(componentClass);
 	component = constructor(node);
-	updateFunc = chai->eval<std::function<void(Boxed_Value&)>>("update");
+	updateFunc = scriptEngine->eval<std::function<void(Boxed_Value&)>>("update");
 }
 
 
@@ -31,6 +29,9 @@ void ScriptComponent_Chai::update()
 Boxed_Value ScriptComponent_Chai::addComponent(Boxed_Value& boxedNode, const std::string& componentClass)
 {
 	auto node = boxed_cast<Node*>(boxedNode);
+	if (componentClass == "Camera")
+		return Boxed_Value(node->addComponent<Camera>());
+
 	auto script = NEW2(ScriptComponent_Chai, node, componentClass);
 	auto cmpTypeId = getHash(componentClass);
 	node->getScene()->addComponent(node, script, cmpTypeId);
@@ -38,7 +39,7 @@ Boxed_Value ScriptComponent_Chai::addComponent(Boxed_Value& boxedNode, const std
 }
 
 
-void ScriptComponent_Chai::removeComponent(chaiscript::Boxed_Value& boxedNode, const std::string& componentClass)
+void ScriptComponent_Chai::removeComponent(Boxed_Value& boxedNode, const std::string& componentClass)
 {
 	auto node = boxed_cast<Node*>(boxedNode);
 	auto cmpTypeId = getHash(componentClass);
@@ -54,9 +55,8 @@ Boxed_Value ScriptComponent_Chai::findComponent(Boxed_Value& boxedNode, const st
 	if (componentClass == "Camera")
 		return Boxed_Value(node->getComponent<Camera>());
 	// TODO other predefined components
+
 	auto cmpTypeId = getHash(componentClass);
 	auto cmp = node->getScene()->findComponent(node, cmpTypeId);
-	if (!cmp)
-		return Boxed_Value();
-	return static_cast<ScriptComponent_Chai*>(cmp)->component;
+	return cmp ? static_cast<ScriptComponent_Chai*>(cmp)->component : Boxed_Value();
 }
