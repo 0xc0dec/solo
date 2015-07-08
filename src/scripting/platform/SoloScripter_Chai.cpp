@@ -13,6 +13,11 @@
 #include "SoloQuaternion.h"
 #include "SoloTransform.h"
 #include "SoloCamera.h"
+#include "SoloModel.h"
+#include "SoloMesh.h"
+#include "SoloTexture.h"
+#include "SoloTexture2D.h"
+#include "SoloRenderState.h"
 #include <chaiscript.hpp>
 #include <chaiscript_stdlib.hpp>
 
@@ -91,6 +96,75 @@ void Scripter_Chai::registerScriptApi()
 
 	// Resource manager
 	engine->add(user_type<ResourceManager>(), "ResourceManager");
+	engine->add(fun(&ResourceManager::findEffect), "findEffect");
+	engine->add(fun(&ResourceManager::findMaterial), "findMaterial");
+	engine->add(fun(&ResourceManager::findMesh), "findMesh");
+	engine->add(fun(&ResourceManager::findModel), "findModel");
+	engine->add(fun(&ResourceManager::findRenderTarget), "findRenderTarget");
+	engine->add(fun(&ResourceManager::findTexture), "findTexture");
+	engine->add(fun(&ResourceManager::getOrCreateRenderTarget), "getOrCreateRenderTarget");
+	engine->add(fun(&ResourceManager::getOrLoadTexture), "getOrLoadTexture");
+	engine->add(fun(&ResourceManager::getOrLoadMesh), "getOrLoadMesh");
+	engine->add(fun(&ResourceManager::getOrCreateEffect), "getOrCreateEffect");
+	engine->add(fun(&ResourceManager::getOrCreateMesh), "getOrCreateMesh");
+	engine->add(fun(static_cast<shared<Model>(ResourceManager::*)()>(&ResourceManager::getOrCreateModel)), "getOrCreateModel");
+	engine->add(fun(static_cast<shared<Model>(ResourceManager::*)(const std::string&)>(&ResourceManager::getOrCreateModel)), "getOrCreateModel");
+	engine->add(fun(&ResourceManager::cleanUnusedResources), "cleanUnusedResources");
+	engine->add(fun(&ResourceManager::createMaterial), "createMaterial");
+
+	// Model
+	engine->add(user_type<Model>(), "Model");
+	engine->add(fun(&Model::addMesh), "addMesh");
+	engine->add(fun(&Model::getMesh), "getMesh");
+	engine->add(fun(&Model::getMeshCount), "getMeshCount");
+	engine->add(fun(static_cast<void(Model::*)(Mesh*)>(&Model::removeMesh)), "removeMesh");
+	engine->add(fun(static_cast<void(Model::*)(shared<Mesh>)>(&Model::removeMesh)), "removeMesh");
+
+	// Mesh
+	engine->add(user_type<Mesh>(), "Mesh");
+	engine->add(fun(&Mesh::setVertices), "setVertices");
+	engine->add(fun(&Mesh::setNormals), "setNormals");
+	engine->add(fun(&Mesh::setUVs), "setUVs");
+	engine->add(fun(&Mesh::setIndices), "setIndices");
+
+	// Texture
+	engine->add(user_type<Texture>(), "Texture");
+
+	// Texture2D
+	engine->add(user_type<Texture2D>(), "Texture2D");
+	engine->add(base_class<Texture, Texture2D>());
+	engine->add(fun(&Texture2D::getSize), "getSize");
+	engine->add(fun(&Texture2D::generateMipmaps), "generateMipmaps");
+	engine->add(fun(&Texture2D::getAnisotropyLevel), "getAnisotropyLevel");
+	engine->add(fun(&Texture2D::getVerticalWrapMode), "getVerticalWrapMode");
+	engine->add(fun(&Texture2D::getHorizontalWrapMode), "getHorizontalWrapMode");
+	engine->add(fun(&Texture2D::getMagFilter), "getMagFilter");
+	engine->add(fun(&Texture2D::getMinFilter), "getMinFilter");
+	engine->add(fun(&Texture2D::setAnisotropyLevel), "setAnisotropyLevel");
+	engine->add(fun(&Texture2D::setData), "setData");
+	engine->add(fun(&Texture2D::setFilterMode), "setFilterMode");
+	engine->add(fun(&Texture2D::setWrapMode), "setWrapMode");
+	
+	// WrapMode
+	engine->add(const_var(WrapMode::Clamp), "WrapMode_Clamp");
+	engine->add(const_var(WrapMode::Repeat), "WrapMode_Repeat");
+
+	// Filter
+	engine->add(const_var(Filter::Linear), "Filter_Linear");
+	engine->add(const_var(Filter::LinearMipmapLinear), "Filter_LinearMipmapLinear");
+	engine->add(const_var(Filter::LinearMipmapNearest), "Filter_LinearMipmapNearest");
+	engine->add(const_var(Filter::Nearest), "Filter_Nearest");
+	engine->add(const_var(Filter::NearestMipmapLinear), "Filter_NearestMipmapLinear");
+	engine->add(const_var(Filter::NearestMipmapNearest), "Filter_NearestMipmapNearest");
+
+	// ColorFormat
+	engine->add(const_var(ColorFormat::RGB), "ColorFormat_RGB");
+	engine->add(const_var(ColorFormat::RGBA), "ColorFormat_RGBA");
+
+	// PolygonFace
+	engine->add(const_var(PolygonFace::CW), "PolygonFace_CW");
+	engine->add(const_var(PolygonFace::All), "PolygonFace_All");
+	engine->add(const_var(PolygonFace::CCW), "PolygonFace_CCW");
 
 	// Scene
 	engine->add(user_type<Scene>(), "Scene");
@@ -116,7 +190,16 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(static_cast<void(Vector2::*)()>(&Vector2::normalize)), "normalize");
 	engine->add(fun(static_cast<void(Vector2::*)(Vector2*)const>(&Vector2::normalize)), "normalize");
 	engine->add(fun(&Vector2::normalized), "normalized");
-	// TODO operators
+	engine->add(fun(&Vector2::operator*=), "*=");
+	engine->add(fun(&Vector2::operator!=), "!=");
+	engine->add(fun(&Vector2::operator*), "*");
+	engine->add(fun(&Vector2::operator+), "+");
+	engine->add(fun(&Vector2::operator+=), "+=");
+	engine->add(fun(static_cast<Vector2(Vector2::*)()const>(&Vector2::operator-)), "-=");
+	engine->add(fun(static_cast<Vector2(Vector2::*)(const Vector2&)const>(&Vector2::operator-)), "-=");
+	engine->add(fun(&Vector2::operator/), "/");
+	engine->add(fun(&Vector2::operator<), "<");
+	engine->add(fun(&Vector2::operator==), "==");
 
 	// Vector3
 	engine->add(user_type<Vector3>(), "Vector3");
@@ -184,6 +267,8 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(&Quaternion::isIdentity), "isIdentity");
 	engine->add(fun(&Quaternion::isZero), "isZero");
 	engine->add(fun(&Quaternion::toAxisAngle), "toAxisAngle");
+	engine->add(fun(&Quaternion::operator*), "*");
+	engine->add(fun(&Quaternion::operator*=), "*=");
 
 	// Transform
 	engine->add(user_type<Transform>(), "Transform");
@@ -267,6 +352,7 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(const_var(MouseButton::Right), "MouseButton_Right");
 	engine->add(const_var(MouseButton::Middle), "MouseButton_Middle");
 
+	// Transform space
 	engine->add(user_type<TransformSpace>(), "TransformSpace");
 	engine->add(const_var(TransformSpace::Parent), "TransformSpace_Parent");
 	engine->add(const_var(TransformSpace::Self), "TransformSpace_Self");
