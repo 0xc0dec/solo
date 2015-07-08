@@ -110,6 +110,11 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(&Vector2::y), "y");
 	engine->add(fun(&Vector3::unitX), "unitVector2X");
 	engine->add(fun(&Vector3::unitY), "unitVector2Y");
+	engine->add(fun(&Vector3::zero), "zeroVector2");
+	engine->add(fun(&Vector3::isZero), "isZero");
+	engine->add(fun(static_cast<void(Vector2::*)()>(&Vector2::normalize)), "normalize");
+	engine->add(fun(static_cast<void(Vector2::*)(Vector2*)const>(&Vector2::normalize)), "normalize");
+	engine->add(fun(&Vector2::normalized), "normalized");
 
 	// Vector3
 	engine->add(user_type<Vector3>(), "Vector3");
@@ -121,6 +126,22 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(&Vector3::unitX), "unitVector3X");
 	engine->add(fun(&Vector3::unitY), "unitVector3Y");
 	engine->add(fun(&Vector3::unitZ), "unitVector3Z");
+	engine->add(fun(&Vector3::zero), "zeroVector3");
+	engine->add(fun(&Vector3::isZero), "isZero");
+	engine->add(fun(static_cast<void(Vector3::*)()>(&Vector3::normalize)), "normalize");
+	engine->add(fun(static_cast<void(Vector3::*)(Vector3*)const>(&Vector3::normalize)), "normalize");
+	engine->add(fun(&Vector3::normalized), "normalized");
+	engine->add(fun(&Vector3::add), "add");
+	engine->add(fun(&Vector3::angle), "angle");
+	engine->add(fun(&Vector3::clamp), "clamp");
+	engine->add(fun(&Vector3::cross), "cross");
+	engine->add(fun(&Vector3::distance), "distance");
+	engine->add(fun(&Vector3::distanceSquared), "distanceSquared");
+	engine->add(fun(&Vector3::dot), "dot");
+	engine->add(fun(&Vector3::isOne), "isOne");
+	engine->add(fun(&Vector3::scale), "scale");
+	engine->add(fun(&Vector3::smooth), "smooth");
+	engine->add(fun(&Vector3::subtract), "subtract");
 
 	// Quaternion
 	engine->add(user_type<Quaternion>(), "Quaternion");
@@ -131,6 +152,7 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(&Quaternion::z), "z");
 	engine->add(fun(&Quaternion::w), "w");
 	engine->add(fun(&Quaternion::identity), "identityQuaternion");
+	engine->add(fun(&Quaternion::zero), "zeroQuaternion");
 	engine->add(fun(static_cast<void(*)(const Vector3&, float, Quaternion*)>(&Quaternion::createFromAxisAngle)), "createQuaternionFromAxisAngle");
 	engine->add(fun(static_cast<Quaternion(*)(const Vector3&, float)>(&Quaternion::createFromAxisAngle)), "createQuaternionFromAxisAngle");
 	engine->add(fun(static_cast<void(*)(const Matrix&, Quaternion*)>(&Quaternion::createFromRotationMatrix)), "createQuaternionFromRotationMatrix");
@@ -139,13 +161,17 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(static_cast<void(*)(const Quaternion&, const Quaternion&, float, Quaternion*)>(&Quaternion::slerp)), "slertQuaternion");
 	engine->add(fun(static_cast<void(*)(const Quaternion&, const Quaternion&, const Quaternion&, const Quaternion&, float, Quaternion*)>(&Quaternion::squad)), "squadQuaternion");
 	engine->add(fun(static_cast<bool(Quaternion::*)()>(&Quaternion::inverse)), "inverse");
-	engine->add(fun(&Quaternion::multiply), "multiply"); // TODO the static version
+	engine->add(fun(static_cast<void(*)(const Quaternion&, const Quaternion&, Quaternion*)>(&Quaternion::multiply)), "multiplyQuaternions");
+	engine->add(fun(&Quaternion::multiply), "multiply");
+	engine->add(fun(static_cast<void(Quaternion::*)(Quaternion*)const>(&Quaternion::normalize)), "normalize");
+	engine->add(fun(static_cast<void(Quaternion::*)()>(&Quaternion::normalize)), "normalize");
+	engine->add(fun(&Quaternion::setIdentity), "setIdentity");
 	engine->add(fun(static_cast<bool(Quaternion::*)(Quaternion*)const>(&Quaternion::inverse)), "inverse");
 	engine->add(fun(static_cast<void(Quaternion::*)()>(&Quaternion::conjugate)), "conjugate");
 	engine->add(fun(static_cast<void(Quaternion::*)(Quaternion*)const>(&Quaternion::conjugate)), "conjugate");
 	engine->add(fun(&Quaternion::isIdentity), "isIdentity");
 	engine->add(fun(&Quaternion::isZero), "isZero");
-	
+	engine->add(fun(&Quaternion::toAxisAngle), "toAxisAngle");
 
 	// Transform
 	engine->add(user_type<Transform>(), "Transform");

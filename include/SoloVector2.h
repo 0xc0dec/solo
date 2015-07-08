@@ -43,7 +43,8 @@ namespace solo
 
 		void negate();
 
-		Vector2& normalize();
+		Vector2 normalized() const;
+		void normalize();
 		void normalize(Vector2* dst) const;
 
 		void scale(float scalar);

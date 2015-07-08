@@ -50,6 +50,7 @@ namespace solo
 		float length() const;
 		float lengthSquared() const;
 
+		Vector3 normalized() const;
 		void normalize();
 		void normalize(Vector3* dst) const;
 

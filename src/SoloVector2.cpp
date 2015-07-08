@@ -157,10 +157,17 @@ void Vector2::negate()
 }
 
 
-Vector2& Vector2::normalize()
+Vector2 Vector2::normalized() const
+{
+	auto result = *this;
+	result.normalize();
+	return result;
+}
+
+
+void Vector2::normalize()
 {
 	normalize(this);
-	return *this;
 }
 
 

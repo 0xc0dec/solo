@@ -207,6 +207,14 @@ float Vector3::lengthSquared() const
 }
 
 
+Vector3 Vector3::normalized() const
+{
+	auto result = *this;
+	result.normalize();
+	return result;
+}
+
+
 void Vector3::normalize()
 {
 	normalize(this);
