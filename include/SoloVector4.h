@@ -46,7 +46,8 @@ namespace solo
 		float length() const;
 		float lengthSquared() const;
 
-		Vector4& normalize();
+		Vector4 normalized() const;
+		void normalize();
 		void normalize(Vector4* dst) const;
 
 		void scale(float scalar);

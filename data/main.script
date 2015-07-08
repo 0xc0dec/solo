@@ -1,8 +1,7 @@
-var device := engine.getDevice();
-var scene := engine.getScene();
+GLOBAL device := engine.getDevice();
+GLOBAL scene := engine.getScene();
+GLOBAL resManager := engine.getResourceManager();
 
-print("Current window title: " + device.getWindowTitle());
-device.setWindowTitle("Set from scripts!");
 
 class EscapeWatcher
 {
@@ -18,45 +17,6 @@ class EscapeWatcher
 		}
 	}
 }
-
-class Script
-{
-	var iterations;
-	var node;
-
-	def Script(node)
-	{
-		this.iterations = 0;
-		this.node := node;
-	}
-
-	def update()
-	{
-		this.iterations += 1;
-		if (this.iterations >= 20)
-		{
-			this.node.removeComponent("Script");
-		}
-		var motion = device.getMouseMotion();
-		var dt = device.getTimeDelta();
-		print("Delta: " + to_string(dt));
-		print("Mouse motion: " + to_string(motion.x) + ", " + to_string(motion.y));
-	}
-};
-
-
-var node := scene.createNode();
-print(node.getId());
-
-node.addComponent("EscapeWatcher");
-node.addComponent("Script");
-
-var transform := node.findComponent("Transform");
-transform.setLocalPosition(1, 2, 3);
-print("Y component: " + to_string(node.findComponent("Transform").getLocalPosition().y));
-
-transform.setLocalPosition(Vector3(10, 20, 30));
-print("Y component second time: " + to_string(node.findComponent("Transform").getLocalPosition().y));
 
 
 class Spectator
@@ -126,4 +86,55 @@ class Spectator
 	}
 }
 
-node.addComponent("Spectator");
+
+var node := scene.createNode();
+node.addComponent("EscapeWatcher");
+
+
+def loadTexture(path)
+{
+	var result := resManager.getOrLoadTexture(path);
+	result.generateMipmaps();
+	result.setFilterMode(Filter_Linear, Filter_Linear);
+	result.setAnisotropyLevel(8);
+	return result;
+}
+
+var tex1 := loadTexture("../data/freeman1.png");
+var tex2 := loadTexture("../data/freeman2.png");
+
+var vsBasic = "
+#version 330 core
+
+layout (location = 0) in vec4 position;
+layout (location = 1) in vec3 normal;
+layout (location = 2) in vec2 uv;
+
+uniform mat4 worldViewProjMatrix;
+out vec2 uv0;
+out vec3 n;
+
+void main()
+{
+	gl_Position = worldViewProjMatrix * position;
+	uv0 = uv;
+}";
+
+var fsTexture = "
+#version 330 core
+	
+uniform sampler2D mainTex;
+
+in vec2 uv0;
+out vec4 fragColor;
+
+void main()
+{
+	fragColor = texture(mainTex, uv0);
+}";
+
+var texEffect := resManager.getOrCreateEffect(vsBasic, fsTexture);
+var texMaterial := resManager.createMaterial(texEffect);
+texMaterial.setPolygonFace(PolygonFace_All);
+texMaterial.getParameter("color").setValue(Vector4(1, 1, 0, 1));
+texMaterial.getParameter("worldViewProjMatrix").bindValue(AutoBinding_WorldViewProjectionMatrix);

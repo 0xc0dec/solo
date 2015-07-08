@@ -10,6 +10,7 @@
 #include "SoloNode.h"
 #include "SoloVector2.h"
 #include "SoloVector3.h"
+#include "SoloVector4.h"
 #include "SoloQuaternion.h"
 #include "SoloTransform.h"
 #include "SoloCamera.h"
@@ -18,15 +19,20 @@
 #include "SoloTexture.h"
 #include "SoloTexture2D.h"
 #include "SoloRenderState.h"
+#include "SoloMaterialParameter.h"
+#include "SoloRenderContext.h"
+#include "SoloMaterial.h"
+#include "SoloEffect.h"
 #include <chaiscript.hpp>
 #include <chaiscript_stdlib.hpp>
 
 using namespace solo;
+using namespace chaiscript;
 
 
 Scripter_Chai::Scripter_Chai()
 {
-	engine = NEW<chaiscript::ChaiScript>(chaiscript::Std_Lib::library());
+	engine = NEW<ChaiScript>(Std_Lib::library());
 	registerScriptApi();
 }
 
@@ -37,7 +43,7 @@ void Scripter_Chai::execString(const std::string& script)
 	{
 		engine->eval(script);
 	}
-	catch (chaiscript::exception::eval_error &e)
+	catch (exception::eval_error &e)
 	{
 		THROW_FMT(EngineException, e.pretty_print());
 	}
@@ -50,14 +56,14 @@ void Scripter_Chai::execFile(const std::string& scriptFileName)
 	{
 		engine->eval_file(scriptFileName);
 	}
-	catch (chaiscript::exception::eval_error &e)
+	catch (exception::eval_error &e)
 	{
 		THROW_FMT(EngineException, e.pretty_print());
 	}
 }
 
 
-shared<chaiscript::ChaiScript> Scripter_Chai::getEngine() const
+shared<ChaiScript> Scripter_Chai::getEngine() const
 {
 	return engine;
 }
@@ -73,7 +79,7 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(&Engine::getFileSystem), "getFileSystem");
 	engine->add(fun(&Engine::getResourceManager), "getResourceManager");
 	engine->add(fun(&Engine::getScene), "getScene");
-	engine->add(var(Engine::get()), "engine");
+	engine->add_global(var(Engine::get()), "engine");
 
 	// Device
 	engine->add(user_type<Device>(), "Device");
@@ -112,6 +118,17 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(&ResourceManager::cleanUnusedResources), "cleanUnusedResources");
 	engine->add(fun(&ResourceManager::createMaterial), "createMaterial");
 
+	// RenderState
+	engine->add(user_type<RenderState>(), "RenderState");
+	engine->add(fun(&RenderState::getPolygonFace), "getPolygonFace");
+	engine->add(fun(&RenderState::setPolygonFace), "setPolygonFace");
+
+	// Material
+	engine->add(user_type<Material>(), "Material");
+	engine->add(base_class<RenderState, Material>());
+	engine->add(fun(&Material::getEffect), "getEffect");
+	engine->add(fun(&Material::getParameter), "getParameter");
+
 	// Model
 	engine->add(user_type<Model>(), "Model");
 	engine->add(fun(&Model::addMesh), "addMesh");
@@ -146,25 +163,29 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(&Texture2D::setWrapMode), "setWrapMode");
 	
 	// WrapMode
-	engine->add(const_var(WrapMode::Clamp), "WrapMode_Clamp");
-	engine->add(const_var(WrapMode::Repeat), "WrapMode_Repeat");
+	engine->add(user_type<WrapMode>(), "WrapMode");
+	engine->add_global_const(const_var(WrapMode::Clamp), "WrapMode_Clamp");
+	engine->add_global_const(const_var(WrapMode::Repeat), "WrapMode_Repeat");
 
 	// Filter
-	engine->add(const_var(Filter::Linear), "Filter_Linear");
-	engine->add(const_var(Filter::LinearMipmapLinear), "Filter_LinearMipmapLinear");
-	engine->add(const_var(Filter::LinearMipmapNearest), "Filter_LinearMipmapNearest");
-	engine->add(const_var(Filter::Nearest), "Filter_Nearest");
-	engine->add(const_var(Filter::NearestMipmapLinear), "Filter_NearestMipmapLinear");
-	engine->add(const_var(Filter::NearestMipmapNearest), "Filter_NearestMipmapNearest");
+	engine->add(user_type<Filter>(), "Filter");
+	engine->add_global_const(const_var(Filter::Linear), "Filter_Linear");
+	engine->add_global_const(const_var(Filter::LinearMipmapLinear), "Filter_LinearMipmapLinear");
+	engine->add_global_const(const_var(Filter::LinearMipmapNearest), "Filter_LinearMipmapNearest");
+	engine->add_global_const(const_var(Filter::Nearest), "Filter_Nearest");
+	engine->add_global_const(const_var(Filter::NearestMipmapLinear), "Filter_NearestMipmapLinear");
+	engine->add_global_const(const_var(Filter::NearestMipmapNearest), "Filter_NearestMipmapNearest");
 
 	// ColorFormat
-	engine->add(const_var(ColorFormat::RGB), "ColorFormat_RGB");
-	engine->add(const_var(ColorFormat::RGBA), "ColorFormat_RGBA");
+	engine->add(user_type<ColorFormat>(), "ColorFormat");
+	engine->add_global_const(const_var(ColorFormat::RGB), "ColorFormat_RGB");
+	engine->add_global_const(const_var(ColorFormat::RGBA), "ColorFormat_RGBA");
 
 	// PolygonFace
-	engine->add(const_var(PolygonFace::CW), "PolygonFace_CW");
-	engine->add(const_var(PolygonFace::All), "PolygonFace_All");
-	engine->add(const_var(PolygonFace::CCW), "PolygonFace_CCW");
+	engine->add(user_type<PolygonFace>(), "PolygonFace");
+	engine->add_global_const(const_var(PolygonFace::CW), "PolygonFace_CW");
+	engine->add_global_const(const_var(PolygonFace::All), "PolygonFace_All");
+	engine->add_global_const(const_var(PolygonFace::CCW), "PolygonFace_CCW");
 
 	// Scene
 	engine->add(user_type<Scene>(), "Scene");
@@ -176,6 +197,41 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(&ScriptComponent_Chai::addComponent), "addComponent");
 	engine->add(fun(&ScriptComponent_Chai::removeComponent), "removeComponent");
 	engine->add(fun(&ScriptComponent_Chai::findComponent), "findComponent");
+
+	// MaterialParameter
+	engine->add(user_type<MaterialParameter>(), "MaterialParameter");
+	engine->add(fun(static_cast<void(MaterialParameter::*)(AutoBinding)>(&MaterialParameter::bindValue)), "bindValue");
+	engine->add(fun(static_cast<void(MaterialParameter::*)(std::function<int(const RenderContext& context)>)>(&MaterialParameter::bindValue)), "bindValue");
+	engine->add(fun(static_cast<void(MaterialParameter::*)(std::function<float(const RenderContext& context)>)>(&MaterialParameter::bindValue)), "bindValue");
+	engine->add(fun(static_cast<void(MaterialParameter::*)(std::function<Vector2(const RenderContext& context)>)>(&MaterialParameter::bindValue)), "bindValue");
+	engine->add(fun(static_cast<void(MaterialParameter::*)(std::function<Vector3(const RenderContext& context)>)>(&MaterialParameter::bindValue)), "bindValue");
+	engine->add(fun(static_cast<void(MaterialParameter::*)(std::function<Vector4(const RenderContext& context)>)>(&MaterialParameter::bindValue)), "bindValue");
+	engine->add(fun(static_cast<void(MaterialParameter::*)(std::function<Matrix(const RenderContext& context)>)>(&MaterialParameter::bindValue)), "bindValue");
+	engine->add(fun(static_cast<void(MaterialParameter::*)(std::function<shared<Texture>(const RenderContext& context)>)>(&MaterialParameter::bindValue)), "bindValue");
+	engine->add(fun(static_cast<void(MaterialParameter::*)(int)>(&MaterialParameter::setValue)), "setValue");
+	engine->add(fun(static_cast<void(MaterialParameter::*)(float)>(&MaterialParameter::setValue)), "setValue");
+	engine->add(fun(static_cast<void(MaterialParameter::*)(const Vector2&)>(&MaterialParameter::setValue)), "setValue");
+	engine->add(fun(static_cast<void(MaterialParameter::*)(const Vector3&)>(&MaterialParameter::setValue)), "setValue");
+	engine->add(fun(static_cast<void(MaterialParameter::*)(const Vector4&)>(&MaterialParameter::setValue)), "setValue");
+	engine->add(fun(static_cast<void(MaterialParameter::*)(const Matrix&)>(&MaterialParameter::setValue)), "setValue");
+	engine->add(fun(static_cast<void(MaterialParameter::*)(shared<Texture>)>(&MaterialParameter::setValue)), "setValue");
+	// TODO other
+
+	// AutoBinding
+	engine->add(user_type<AutoBinding>(), "AutoBinding");
+	engine->add_global_const(const_var(AutoBinding::None), "AutoBinding_None");
+	engine->add_global_const(const_var(AutoBinding::CameraWorldPosition), "AutoBinding_CameraWorldPosition");
+	engine->add_global_const(const_var(AutoBinding::InverseTransposedWorldMatrix), "AutoBinding_InverseTransposedWorldMatrix");
+	engine->add_global_const(const_var(AutoBinding::InverseTransposedWorldViewMatrix), "AutoBinding_InverseTransposedWorldViewMatrix");
+	engine->add_global_const(const_var(AutoBinding::ProjectionMatrix), "AutoBinding_ProjectionMatrix");
+	engine->add_global_const(const_var(AutoBinding::ViewMatrix), "AutoBinding_ViewMatrix");
+	engine->add_global_const(const_var(AutoBinding::ViewProjectionMatrix), "AutoBinding_ViewProjectionMatrix");
+	engine->add_global_const(const_var(AutoBinding::WorldMatrix), "AutoBinding_WorldMatrix");
+	engine->add_global_const(const_var(AutoBinding::WorldViewProjection), "AutoBinding_WorldViewProjection");
+	engine->add_global_const(const_var(AutoBinding::WorldViewProjectionMatrix), "AutoBinding_WorldViewProjectionMatrix");
+
+	// RenderContext
+	engine->add(user_type<RenderContext>(), "RenderContext");
 
 	// Vector2
 	engine->add(user_type<Vector2>(), "Vector2");
@@ -237,6 +293,41 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(&Vector3::operator/), "/");
 	engine->add(fun(&Vector3::operator<), "<");
 	engine->add(fun(&Vector3::operator==), "==");
+
+	// Vector4
+	engine->add(user_type<Vector4>(), "Vector4");
+	engine->add(constructor<Vector4()>(), "Vector4");
+	engine->add(constructor<Vector4(float, float, float, float)>(), "Vector4");
+	engine->add(fun(&Vector4::x), "x");
+	engine->add(fun(&Vector4::y), "y");
+	engine->add(fun(&Vector4::z), "z");
+	engine->add(fun(&Vector4::unitX), "unitVector4X");
+	engine->add(fun(&Vector4::unitY), "unitVector4Y");
+	engine->add(fun(&Vector4::unitZ), "unitVector4Z");
+	engine->add(fun(&Vector4::zero), "zeroVector4");
+	engine->add(fun(static_cast<void(Vector4::*)()>(&Vector4::normalize)), "normalize");
+	engine->add(fun(static_cast<void(Vector4::*)(Vector4*)const>(&Vector4::normalize)), "normalize");
+	engine->add(fun(&Vector4::normalized), "normalized");
+	engine->add(fun(&Vector4::add), "add");
+	engine->add(fun(&Vector4::angle), "angle");
+	engine->add(fun(&Vector4::clamp), "clamp");
+	engine->add(fun(&Vector4::distance), "distance");
+	engine->add(fun(&Vector4::distanceSquared), "distanceSquared");
+	engine->add(fun(&Vector4::dot), "dot");
+	engine->add(fun(&Vector4::isOne), "isOne");
+	engine->add(fun(&Vector4::isZero), "isZero");
+	engine->add(fun(&Vector4::scale), "scale");
+	engine->add(fun(&Vector4::subtract), "subtract");
+	engine->add(fun(&Vector4::operator*=), "*=");
+	engine->add(fun(&Vector4::operator!=), "!=");
+	engine->add(fun(&Vector4::operator*), "*");
+	engine->add(fun(&Vector4::operator+), "+");
+	engine->add(fun(&Vector4::operator+=), "+=");
+	engine->add(fun(static_cast<Vector4(Vector4::*)()const>(&Vector4::operator-)), "-=");
+	engine->add(fun(static_cast<Vector4(Vector4::*)(const Vector4&)const>(&Vector4::operator-)), "-=");
+	engine->add(fun(&Vector4::operator/), "/");
+	engine->add(fun(&Vector4::operator<), "<");
+	engine->add(fun(&Vector4::operator==), "==");
 
 	// Quaternion
 	engine->add(user_type<Quaternion>(), "Quaternion");
@@ -314,47 +405,47 @@ void Scripter_Chai::registerScriptApi()
 
 	// KeyCode
 	engine->add(user_type<KeyCode>(), "KeyCode");
-	engine->add(const_var(KeyCode::A), "KeyCode_A");
-	engine->add(const_var(KeyCode::B), "KeyCode_B");
-	engine->add(const_var(KeyCode::C), "KeyCode_C");
-	engine->add(const_var(KeyCode::D), "KeyCode_D");
-	engine->add(const_var(KeyCode::E), "KeyCode_E");
-	engine->add(const_var(KeyCode::F), "KeyCode_F");
-	engine->add(const_var(KeyCode::G), "KeyCode_G");
-	engine->add(const_var(KeyCode::H), "KeyCode_H");
-	engine->add(const_var(KeyCode::I), "KeyCode_I");
-	engine->add(const_var(KeyCode::J), "KeyCode_J");
-	engine->add(const_var(KeyCode::K), "KeyCode_K");
-	engine->add(const_var(KeyCode::L), "KeyCode_L");
-	engine->add(const_var(KeyCode::M), "KeyCode_M");
-	engine->add(const_var(KeyCode::N), "KeyCode_N");
-	engine->add(const_var(KeyCode::O), "KeyCode_O");
-	engine->add(const_var(KeyCode::P), "KeyCode_P");
-	engine->add(const_var(KeyCode::Q), "KeyCode_Q");
-	engine->add(const_var(KeyCode::R), "KeyCode_R");
-	engine->add(const_var(KeyCode::S), "KeyCode_S");
-	engine->add(const_var(KeyCode::T), "KeyCode_T");
-	engine->add(const_var(KeyCode::U), "KeyCode_U");
-	engine->add(const_var(KeyCode::V), "KeyCode_V");
-	engine->add(const_var(KeyCode::W), "KeyCode_W");
-	engine->add(const_var(KeyCode::X), "KeyCode_X");
-	engine->add(const_var(KeyCode::Y), "KeyCode_Y");
-	engine->add(const_var(KeyCode::Z), "KeyCode_Z");
-	engine->add(const_var(KeyCode::UpArrow), "KeyCode_UpArrow");
-	engine->add(const_var(KeyCode::DownArrow), "KeyCode_DownArrow");
-	engine->add(const_var(KeyCode::LeftArrow), "KeyCode_LeftArrow");
-	engine->add(const_var(KeyCode::RightArrow), "KeyCode_RightArrow");
-	engine->add(const_var(KeyCode::Escape), "KeyCode_Escape");
+	engine->add_global_const(const_var(KeyCode::A), "KeyCode_A");
+	engine->add_global_const(const_var(KeyCode::B), "KeyCode_B");
+	engine->add_global_const(const_var(KeyCode::C), "KeyCode_C");
+	engine->add_global_const(const_var(KeyCode::D), "KeyCode_D");
+	engine->add_global_const(const_var(KeyCode::E), "KeyCode_E");
+	engine->add_global_const(const_var(KeyCode::F), "KeyCode_F");
+	engine->add_global_const(const_var(KeyCode::G), "KeyCode_G");
+	engine->add_global_const(const_var(KeyCode::H), "KeyCode_H");
+	engine->add_global_const(const_var(KeyCode::I), "KeyCode_I");
+	engine->add_global_const(const_var(KeyCode::J), "KeyCode_J");
+	engine->add_global_const(const_var(KeyCode::K), "KeyCode_K");
+	engine->add_global_const(const_var(KeyCode::L), "KeyCode_L");
+	engine->add_global_const(const_var(KeyCode::M), "KeyCode_M");
+	engine->add_global_const(const_var(KeyCode::N), "KeyCode_N");
+	engine->add_global_const(const_var(KeyCode::O), "KeyCode_O");
+	engine->add_global_const(const_var(KeyCode::P), "KeyCode_P");
+	engine->add_global_const(const_var(KeyCode::Q), "KeyCode_Q");
+	engine->add_global_const(const_var(KeyCode::R), "KeyCode_R");
+	engine->add_global_const(const_var(KeyCode::S), "KeyCode_S");
+	engine->add_global_const(const_var(KeyCode::T), "KeyCode_T");
+	engine->add_global_const(const_var(KeyCode::U), "KeyCode_U");
+	engine->add_global_const(const_var(KeyCode::V), "KeyCode_V");
+	engine->add_global_const(const_var(KeyCode::W), "KeyCode_W");
+	engine->add_global_const(const_var(KeyCode::X), "KeyCode_X");
+	engine->add_global_const(const_var(KeyCode::Y), "KeyCode_Y");
+	engine->add_global_const(const_var(KeyCode::Z), "KeyCode_Z");
+	engine->add_global_const(const_var(KeyCode::UpArrow), "KeyCode_UpArrow");
+	engine->add_global_const(const_var(KeyCode::DownArrow), "KeyCode_DownArrow");
+	engine->add_global_const(const_var(KeyCode::LeftArrow), "KeyCode_LeftArrow");
+	engine->add_global_const(const_var(KeyCode::RightArrow), "KeyCode_RightArrow");
+	engine->add_global_const(const_var(KeyCode::Escape), "KeyCode_Escape");
 
 	// MouseButton
 	engine->add(user_type<MouseButton>(), "MouseButton");
-	engine->add(const_var(MouseButton::Left), "MouseButton_Left");
-	engine->add(const_var(MouseButton::Right), "MouseButton_Right");
-	engine->add(const_var(MouseButton::Middle), "MouseButton_Middle");
+	engine->add_global_const(const_var(MouseButton::Left), "MouseButton_Left");
+	engine->add_global_const(const_var(MouseButton::Right), "MouseButton_Right");
+	engine->add_global_const(const_var(MouseButton::Middle), "MouseButton_Middle");
 
 	// Transform space
 	engine->add(user_type<TransformSpace>(), "TransformSpace");
-	engine->add(const_var(TransformSpace::Parent), "TransformSpace_Parent");
-	engine->add(const_var(TransformSpace::Self), "TransformSpace_Self");
-	engine->add(const_var(TransformSpace::World), "TransformSpace_World");
+	engine->add_global_const(const_var(TransformSpace::Parent), "TransformSpace_Parent");
+	engine->add_global_const(const_var(TransformSpace::Self), "TransformSpace_Self");
+	engine->add_global_const(const_var(TransformSpace::World), "TransformSpace_World");
 }

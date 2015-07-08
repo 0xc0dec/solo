@@ -13,6 +13,7 @@ namespace solo
 	class Scene;
 	class RenderContext;
 	class Texture;
+	class Quaternion;
 
 	enum class AutoBinding
 	{
@@ -132,11 +133,11 @@ namespace solo
 		Scene* scene = nullptr;
 		std::string name;
 		ValueType type = ValueType::None;
+		unsigned valueCount = 0;
+		bool freeableValue = false;
 		MaterialParameterValue value;
 		shared<Texture> textureValue;
 		std::vector<shared<Texture>> textureArrayValue;
-		unsigned valueCount = 0;
-		bool freeableValue = false;
 
 		void apply(const RenderContext& context);
 
@@ -152,12 +153,6 @@ namespace solo
 	};
 
 	template <class TClass, class TParam>
-	void MaterialParameter::SingleValueBinding<TClass, TParam>::setValue(EffectVariable* variable, const RenderContext& context)
-	{
-		variable->setValue((instance->*getter)(context));
-	}
-
-	template <class TClass, class TParam>
 	MaterialParameter::SingleValueBinding<TClass, TParam>::SingleValueBinding(TClass* instance, ValueGetterMethod getter):
 		instance(instance),
 		getter(getter)
@@ -168,6 +163,12 @@ namespace solo
 	MaterialParameter::LambdaValueBinding<TValue>::LambdaValueBinding(std::function<TValue(const RenderContext& context)> lambda) :
 		lambda(lambda)
 	{
+	}
+
+	template <class TClass, class TParam>
+	void MaterialParameter::SingleValueBinding<TClass, TParam>::setValue(EffectVariable* variable, const RenderContext& context)
+	{
+		variable->setValue((instance->*getter)(context));
 	}
 
 	template <class TValue>

@@ -215,10 +215,17 @@ float Vector4::lengthSquared() const
 }
 
 
-Vector4& Vector4::normalize()
+Vector4 Vector4::normalized() const
+{
+	Vector4 result;
+	result.normalize();
+	return result;
+}
+
+
+void Vector4::normalize()
 {
 	normalize(this);
-	return *this;
 }
 
 
