@@ -1,3 +1,5 @@
+use("../data/shaders.ch");
+
 GLOBAL device := engine.getDevice();
 GLOBAL scene := engine.getScene();
 GLOBAL resManager := engine.getResourceManager();
@@ -86,11 +88,6 @@ class Spectator
 	}
 }
 
-
-var node := scene.createNode();
-node.addComponent("EscapeWatcher");
-
-
 def loadTexture(path)
 {
 	var result := resManager.getOrLoadTexture(path);
@@ -100,41 +97,58 @@ def loadTexture(path)
 	return result;
 }
 
+
 var tex1 := loadTexture("../data/freeman1.png");
 var tex2 := loadTexture("../data/freeman2.png");
-
-var vsBasic = "
-#version 330 core
-
-layout (location = 0) in vec4 position;
-layout (location = 1) in vec3 normal;
-layout (location = 2) in vec2 uv;
-
-uniform mat4 worldViewProjMatrix;
-out vec2 uv0;
-out vec3 n;
-
-void main()
-{
-	gl_Position = worldViewProjMatrix * position;
-	uv0 = uv;
-}";
-
-var fsTexture = "
-#version 330 core
-	
-uniform sampler2D mainTex;
-
-in vec2 uv0;
-out vec4 fragColor;
-
-void main()
-{
-	fragColor = texture(mainTex, uv0);
-}";
 
 var texEffect := resManager.getOrCreateEffect(vsBasic, fsTexture);
 var texMaterial := resManager.createMaterial(texEffect);
 texMaterial.setPolygonFace(PolygonFace_All);
-texMaterial.getParameter("color").setValue(Vector4(1, 1, 0, 1));
 texMaterial.getParameter("worldViewProjMatrix").bindValue(AutoBinding_WorldViewProjectionMatrix);
+texMaterial.getParameter("mainTex").setValue(tex1);
+
+var checkerEffect := resManager.getOrCreateEffect(vsBasic, fsChecker);
+var checkerMaterial := resManager.createMaterial(checkerEffect);
+checkerMaterial.setPolygonFace(PolygonFace_All);
+checkerMaterial.getParameter("color").setValue(Vector4(1, 1, 0, 1));
+checkerMaterial.getParameter("worldViewProjMatrix").bindValue(AutoBinding_WorldViewProjectionMatrix);
+
+var textureWithLightingEffect := resManager.getOrCreateEffect(vsBasicLighting, fsTextureWithLighting);
+var texWithLightingMaterial := resManager.createMaterial(textureWithLightingEffect);
+texWithLightingMaterial.setPolygonFace(PolygonFace_All);
+texWithLightingMaterial.getParameter("worldViewProjMatrix").bindValue(AutoBinding_WorldViewProjectionMatrix);
+texWithLightingMaterial.getParameter("normalMatrix").bindValue(AutoBinding_InverseTransposedWorldMatrix);
+texWithLightingMaterial.getParameter("mainTex").setValue(tex2);
+
+
+var renderTarget := resManager.getOrCreateRenderTarget("test");
+var renderTexture := resManager.getOrCreateTexture("RTT");
+renderTexture.setData(ColorFormat_RGB, ByteVector(), 160, 120);
+renderTexture.setFilterMode(Filter_Nearest, Filter_Nearest);
+renderTexture.setWrapMode(WrapMode_Clamp, WrapMode_Clamp);
+var texVector = Texture2DVector();
+texVector.push_back(renderTexture);
+renderTarget.setTextures(texVector);
+
+var offscreenCameraNode := scene.createNode();
+var offscreenCameraTransform := offscreenCameraNode.findComponent("Transform");
+offscreenCameraTransform.setLocalPosition(Vector3(0, 0, 10));
+var offscreenCamera := offscreenCameraNode.addComponent("Camera");
+offscreenCamera.setClearColor(1, 1, 1, 1);
+offscreenCamera.setNear(0.05f);
+offscreenCamera.setRenderTarget(renderTarget);
+offscreenCamera.setViewport(0, 0, 160, 120);
+
+var renderTargetMaterial := resManager.createMaterial(texEffect);
+renderTargetMaterial.setPolygonFace(PolygonFace_All);
+renderTargetMaterial.getParameter("worldViewProjMatrix").bindValue(AutoBinding_WorldViewProjectionMatrix);
+renderTargetMaterial.getParameter("mainTex").setValue(renderTexture);
+
+var mainCameraNode := scene.createNode();
+var mainCameraTransform := mainCameraNode.findComponent("Transform");
+mainCameraTransform.setLocalPosition(0, 0, 10);
+mainCameraNode.addComponent("Spectator");
+mainCameraNode.addComponent("EscapeWatcher");
+var mainCamera := mainCameraNode.addComponent("Camera");
+mainCamera.setClearColor(0, 0.6f, 0.6f, 1);
+mainCamera.setNear(0.05f);

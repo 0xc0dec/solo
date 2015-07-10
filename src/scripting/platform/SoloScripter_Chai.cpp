@@ -7,21 +7,20 @@
 #include "SoloResourceManager.h"
 #include "SoloTexture.h"
 #include "SoloFileSystem.h"
-#include "SoloNode.h"
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 #include "SoloVector4.h"
 #include "SoloQuaternion.h"
 #include "SoloTransform.h"
-#include "SoloCamera.h"
 #include "SoloModel.h"
 #include "SoloMesh.h"
-#include "SoloTexture.h"
 #include "SoloTexture2D.h"
 #include "SoloRenderState.h"
 #include "SoloMaterialParameter.h"
 #include "SoloRenderContext.h"
 #include "SoloMaterial.h"
+#include "SoloRenderTarget.h"
+#include "SoloCamera.h"
 #include "SoloEffect.h"
 #include <chaiscript.hpp>
 #include <chaiscript_stdlib.hpp>
@@ -69,9 +68,19 @@ shared<ChaiScript> Scripter_Chai::getEngine() const
 }
 
 
+void _setData(Boxed_Value texture2d, ColorFormat format, const std::vector<Boxed_Value>& data, unsigned width, unsigned height)
+{
+	
+}
+
+
 void Scripter_Chai::registerScriptApi()
 {
 	using namespace chaiscript;
+
+	engine->add(bootstrap::standard_library::vector_type<std::vector<byte>>("ByteVector"));
+	engine->add(bootstrap::standard_library::vector_type<std::vector<shared<Texture>>>("TextureVector"));
+	engine->add(bootstrap::standard_library::vector_type<std::vector<shared<Texture2D>>>("Texture2DVector"));
 
 	// Engine
 	engine->add(user_type<Engine>(), "Engine");
@@ -100,6 +109,11 @@ void Scripter_Chai::registerScriptApi()
 	// File system
 	engine->add(user_type<FileSystem>(), "FileSystem");
 
+	// RenderTarget
+	engine->add(user_type<RenderTarget>(), "RenderTarget");
+	engine->add(fun(&RenderTarget::getTextures), "getTextures");
+	engine->add(fun(&RenderTarget::setTextures), "setTextures");
+
 	// Resource manager
 	engine->add(user_type<ResourceManager>(), "ResourceManager");
 	engine->add(fun(&ResourceManager::findEffect), "findEffect");
@@ -110,6 +124,7 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(&ResourceManager::findTexture), "findTexture");
 	engine->add(fun(&ResourceManager::getOrCreateRenderTarget), "getOrCreateRenderTarget");
 	engine->add(fun(&ResourceManager::getOrLoadTexture), "getOrLoadTexture");
+	engine->add(fun(&ResourceManager::getOrCreateTexture), "getOrCreateTexture");
 	engine->add(fun(&ResourceManager::getOrLoadMesh), "getOrLoadMesh");
 	engine->add(fun(&ResourceManager::getOrCreateEffect), "getOrCreateEffect");
 	engine->add(fun(&ResourceManager::getOrCreateMesh), "getOrCreateMesh");
@@ -197,6 +212,33 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(&ScriptComponent_Chai::addComponent), "addComponent");
 	engine->add(fun(&ScriptComponent_Chai::removeComponent), "removeComponent");
 	engine->add(fun(&ScriptComponent_Chai::findComponent), "findComponent");
+
+	// Camera
+	engine->add(user_type<Camera>(), "Camera");
+	engine->add(fun(&Camera::getFOV), "getFOV");
+	engine->add(fun(&Camera::getFar), "getFar");
+	engine->add(fun(&Camera::getNear), "getNear");
+	engine->add(fun(&Camera::getHeight), "getHeight");
+	engine->add(fun(&Camera::getWidth), "getWidth");
+	engine->add(fun(&Camera::getInverseViewMatrix), "getInverseViewMatrix");
+	engine->add(fun(&Camera::getInverseViewProjectionMatrix), "getInverseViewProjectionMatrix");
+	engine->add(fun(&Camera::getProjectionMatrix), "getProjectionMatrix");
+	engine->add(fun(&Camera::getRenderTarget), "getRenderTarget");
+	engine->add(fun(&Camera::getViewMatrix), "getViewMatrix");
+	engine->add(fun(&Camera::getAspectRatio), "getAspectRatio");
+	engine->add(fun(&Camera::getViewProjectionMatrix), "getViewProjectionMatrix");
+	engine->add(fun(&Camera::setHeight), "setHeight");
+	engine->add(fun(&Camera::setWidth), "setWidth");
+	engine->add(fun(&Camera::setAspectRatio), "setAspectRatio");
+	engine->add(fun(&Camera::setViewport), "setViewport");
+	engine->add(fun(&Camera::setClearColor), "setClearColor");
+	engine->add(fun(&Camera::setFOV), "setFOV");
+	engine->add(fun(&Camera::setFar), "setFar");
+	engine->add(fun(&Camera::setNear), "setNear");
+	engine->add(fun(&Camera::setPerspective), "setPerspective");
+	engine->add(fun(&Camera::resetViewport), "resetViewport");
+	engine->add(fun(&Camera::isPerspective), "isPerspective");
+	engine->add(fun(&Camera::setRenderTarget), "setRenderTarget");
 
 	// MaterialParameter
 	engine->add(user_type<MaterialParameter>(), "MaterialParameter");
