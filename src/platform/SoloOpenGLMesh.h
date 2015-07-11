@@ -18,14 +18,9 @@ namespace solo
 		virtual void setVertices(const std::vector<Vector3>& vertices) override;
 		virtual void setNormals(const std::vector<Vector3>& normals) override;
 		virtual void setUVs(const std::vector<Vector2>& uvs) override;
-		virtual void setIndices(const std::vector<unsigned short>& indices) override;
+		virtual void setIndices(const std::vector<uint16_t>& indices) override;
 
 	private:
-		OpenGLMesh(const OpenGLMesh& other) = delete;
-		OpenGLMesh(OpenGLMesh&& other) = delete;
-		OpenGLMesh& operator=(const OpenGLMesh& other) = delete;
-		OpenGLMesh& operator=(OpenGLMesh&& other) = delete;
-
 		GLuint vertexArrayHandle = 0;
 		GLuint vertexBufferHandle = 0;
 		GLuint normalBufferHandle = 0;

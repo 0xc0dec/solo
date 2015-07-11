@@ -5,6 +5,7 @@
 #include "SoloScene.h"
 #include "SoloNode.h"
 #include "SoloTransform.h"
+#include "SoloModelRenderer.h"
 
 using namespace solo;
 using namespace chaiscript;
@@ -31,6 +32,8 @@ Boxed_Value ScriptComponent_Chai::addComponent(Boxed_Value& boxedNode, const std
 	auto node = boxed_cast<Node*>(boxedNode);
 	if (componentClass == "Camera")
 		return Boxed_Value(node->addComponent<Camera>());
+	if (componentClass == "ModelRenderer")
+		return Boxed_Value(node->addComponent<ModelRenderer>());
 
 	auto script = NEW2(ScriptComponent_Chai, node, componentClass);
 	auto cmpTypeId = getHash(componentClass);
@@ -51,10 +54,11 @@ Boxed_Value ScriptComponent_Chai::findComponent(Boxed_Value& boxedNode, const st
 {
 	auto node = boxed_cast<Node*>(boxedNode);
 	if (componentClass == "Transform")
-		return Boxed_Value(node->getComponent<Transform>());
+		return Boxed_Value(node->findComponent<Transform>());
 	if (componentClass == "Camera")
-		return Boxed_Value(node->getComponent<Camera>());
-	// TODO other predefined components
+		return Boxed_Value(node->findComponent<Camera>());
+	if (componentClass == "ModelRenderer")
+		return Boxed_Value(node->findComponent<ModelRenderer>());
 
 	auto cmpTypeId = getHash(componentClass);
 	auto cmp = node->getScene()->findComponent(node, cmpTypeId);

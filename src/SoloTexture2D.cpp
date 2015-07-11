@@ -5,7 +5,7 @@
 using namespace solo;
 
 
-void Texture2D::setData(ColorFormat format, const std::vector<byte>& data, unsigned width, unsigned height)
+void Texture2D::setData(ColorFormat format, const std::vector<uint8_t>& data, unsigned width, unsigned height)
 {
 	applyData(format, data, width, height);
 	size = { static_cast<float>(width), static_cast<float>(height) };

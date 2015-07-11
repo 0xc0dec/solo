@@ -10,21 +10,21 @@ shared<FileSystem> FileSystemFactory::create()
 }
 
 
-std::vector<byte> FileSystem::readBytes(const std::string& path)
+std::vector<uint8_t> FileSystem::readBytes(const std::string& path)
 {
 	std::ifstream file(path, std::ios::binary | std::ios::ate);
 	if (!file.is_open())
 		THROW_FMT(EngineException, "Failed to open file '", path, "'");
 	auto size = file.tellg();
 	file.seekg(0, std::ios::beg);
-	auto result = std::vector<byte>(size);
+	auto result = std::vector<uint8_t>(size);
 	file.read(reinterpret_cast<char*>(&result[0]), size);
 	file.close();
 	return result;
 }
 
 
-void FileSystem::writeBytes(const std::string& path, const std::vector<byte>& data)
+void FileSystem::writeBytes(const std::string& path, const std::vector<uint8_t>& data)
 {
 	std::ofstream file(path, std::ios::binary | std::ios::trunc);
 	if (!file.is_open())

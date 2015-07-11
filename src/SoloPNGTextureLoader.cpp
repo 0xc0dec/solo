@@ -8,7 +8,7 @@ using namespace solo;
 
 struct PngReadContext
 {
-	std::vector<byte>* bytes;
+	std::vector<uint8_t>* bytes;
 	unsigned int offset;
 };
 
@@ -73,7 +73,7 @@ shared<Texture2D> PngTextureLoader::load2D(const std::string& url)
 	}
 
 	auto stride = png_get_rowbytes(png, info);
-	auto data = std::vector<byte>(stride * height);
+	auto data = std::vector<uint8_t>(stride * height);
 	auto rows = png_get_rows(png, info);
 	for (unsigned int i = 0; i < height; ++i)
 		memcpy(data.data() + stride * (height - 1 - i), rows[i], stride);

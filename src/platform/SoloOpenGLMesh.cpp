@@ -3,13 +3,13 @@
 using namespace solo;
 
 
-static GLuint buildElementArrayBuffer(GLuint existingHandle, const std::vector<unsigned short>& elements)
+static GLuint buildElementArrayBuffer(GLuint existingHandle, const std::vector<uint16_t>& elements)
 {
 	auto handle = existingHandle ? existingHandle : 0;
 	if (!handle)
 		glGenBuffers(1, &handle);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(unsigned short), elements.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(uint16_t), elements.data(), GL_STATIC_DRAW);
 	return handle;
 }
 
@@ -97,7 +97,7 @@ void OpenGLMesh::setUVs(const std::vector<Vector2>& uvs)
 }
 
 
-void OpenGLMesh::setIndices(const std::vector<unsigned short>& indices)
+void OpenGLMesh::setIndices(const std::vector<uint16_t>& indices)
 {
 	if (!indices.empty())
 	{

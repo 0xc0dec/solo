@@ -21,6 +21,15 @@ namespace solo
 		virtual void render(RenderContext& context) {}
 
 		virtual void postRender() {}
+
+	protected:
+		Component() {}
+
+	private:
+		Component(const Component& other) = delete;
+		Component(Component&& other) = delete;
+		Component& operator=(const Component& other) = delete;
+		Component& operator=(Component&& other) = delete;
 	};
 
 	template <class T>
@@ -49,11 +58,5 @@ namespace solo
 
 	protected:
 		Node* node;
-
-	private:
-		ComponentBase(const ComponentBase& other) = delete;
-		ComponentBase(ComponentBase&& other) = delete;
-		ComponentBase& operator=(const ComponentBase& other) = delete;
-		ComponentBase& operator=(ComponentBase&& other) = delete;
 	};
 }

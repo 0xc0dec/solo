@@ -22,6 +22,7 @@
 #include "SoloRenderTarget.h"
 #include "SoloCamera.h"
 #include "SoloEffect.h"
+#include "SoloModelRenderer.h"
 #include <chaiscript.hpp>
 #include <chaiscript_stdlib.hpp>
 
@@ -68,19 +69,20 @@ shared<ChaiScript> Scripter_Chai::getEngine() const
 }
 
 
-void _setData(Boxed_Value texture2d, ColorFormat format, const std::vector<Boxed_Value>& data, unsigned width, unsigned height)
-{
-	
-}
-
-
 void Scripter_Chai::registerScriptApi()
 {
 	using namespace chaiscript;
 
-	engine->add(bootstrap::standard_library::vector_type<std::vector<byte>>("ByteVector"));
-	engine->add(bootstrap::standard_library::vector_type<std::vector<shared<Texture>>>("TextureVector"));
-	engine->add(bootstrap::standard_library::vector_type<std::vector<shared<Texture2D>>>("Texture2DVector"));
+	engine->add(bootstrap::standard_library::vector_type<std::vector<uint8_t>>("ByteArray"));
+	engine->add(bootstrap::standard_library::vector_type<std::vector<uint16_t>>("U16Array"));
+	engine->add(bootstrap::standard_library::vector_type<std::vector<int16_t>>("S16Array"));
+	engine->add(bootstrap::standard_library::vector_type<std::vector<uint32_t>>("U32Array"));
+	engine->add(bootstrap::standard_library::vector_type<std::vector<int32_t>>("S32Array"));
+	engine->add(bootstrap::standard_library::vector_type<std::vector<shared<Texture>>>("TextureArray"));
+	engine->add(bootstrap::standard_library::vector_type<std::vector<shared<Texture2D>>>("Texture2DArray"));
+	engine->add(bootstrap::standard_library::vector_type<std::vector<Vector2>>("Vector2Array"));
+	engine->add(bootstrap::standard_library::vector_type<std::vector<Vector3>>("Vector3Array"));
+	engine->add(bootstrap::standard_library::vector_type<std::vector<Vector4>>("Vector4Array"));
 
 	// Engine
 	engine->add(user_type<Engine>(), "Engine");
@@ -444,6 +446,14 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(static_cast<void(Transform::*)(float, float, float)>(&Transform::translateLocal)), "translateLocal");
 	engine->add(fun(&Transform::transformPoint), "transformPoint");
 	engine->add(fun(&Transform::transformDirection), "transformDirection");
+
+	// ModelRenderer
+	engine->add(user_type<ModelRenderer>(), "ModelRenderer");
+	engine->add(fun(&ModelRenderer::getMaterial), "getMaterial");
+	engine->add(fun(&ModelRenderer::getMaterialCount), "getMaterialCount");
+	engine->add(fun(&ModelRenderer::getModel), "getModel");
+	engine->add(fun(&ModelRenderer::setMaterial), "setMaterial");
+	engine->add(fun(&ModelRenderer::setModel), "setModel");
 
 	// KeyCode
 	engine->add(user_type<KeyCode>(), "KeyCode");

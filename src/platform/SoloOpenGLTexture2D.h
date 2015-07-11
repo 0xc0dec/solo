@@ -16,14 +16,9 @@ namespace solo
 		virtual void *getNativeHandle() override;
 
 	protected:
-		virtual void applyData(ColorFormat format, const std::vector<byte>& data, unsigned width, unsigned height) override;
+		virtual void applyData(ColorFormat format, const std::vector<uint8_t>& data, unsigned width, unsigned height) override;
 
 	private:
-		OpenGLTexture2D(const OpenGLTexture2D& other) = delete;
-		OpenGLTexture2D(OpenGLTexture2D&& other) = delete;
-		OpenGLTexture2D& operator=(const OpenGLTexture2D& other) = delete;
-		OpenGLTexture2D& operator=(OpenGLTexture2D&& other) = delete;
-
 		void bind();
 		void unbind();
 

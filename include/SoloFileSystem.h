@@ -9,8 +9,8 @@ namespace solo
 	public:
 		virtual ~FileSystem() {}
 
-		std::vector<byte> readBytes(const std::string& path);
-		void writeBytes(const std::string& path, const std::vector<byte>& data);
+		std::vector<uint8_t> readBytes(const std::string& path);
+		void writeBytes(const std::string& path, const std::vector<uint8_t>& data);
 
 		std::string readText(const std::string& path);
 		std::vector<std::string> readLines(const std::string& path);

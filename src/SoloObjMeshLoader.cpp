@@ -22,8 +22,8 @@ shared<Mesh> ObjMeshLoader::load(const std::string& url)
 	std::vector<Vector3> inputVertices, vertices;
 	std::vector<Vector3> inputNormals, normals;
 	std::vector<Vector2> inputUvs, uvs;
-	std::vector<unsigned short> indices;
-	std::unordered_map<std::string, unsigned short> uniqueIndices;
+	std::vector<uint16_t> indices;
+	std::unordered_map<std::string, uint16_t> uniqueIndices;
 
 	// no materials import
 	// no support for anything other than triangles
@@ -72,7 +72,7 @@ shared<Mesh> ObjMeshLoader::load(const std::string& url)
 					ss >> dummy;
 					if (ss >> normalIndex)
 						normals.push_back(inputNormals[normalIndex - 1]);
-					auto newIndex = static_cast<unsigned short>(vertices.size() - 1);
+					auto newIndex = static_cast<uint16_t>(vertices.size() - 1);
 					uniqueIndices[three] = newIndex;
 					indices.push_back(newIndex);
 				}
