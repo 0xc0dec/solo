@@ -30,7 +30,7 @@ class RotatorAroundWorldYAxis
 {
 	var transform;
 
-	def RotatorAroundLocalXAxis(node)
+	def RotatorAroundWorldYAxis(node)
 	{
 		this.transform := node.findComponent("Transform");
 	}
@@ -146,31 +146,125 @@ def initStaticQuad(position, material)
 }
 
 
+def initRotatingQuad(position, material)
+{
+	var empty := scene.createNode();
+	var emptyTransform := empty.findComponent("Transform");
+	emptyTransform.setLocalPosition(position);
+	empty.addComponent("RotatorAroundWorldYAxis");
+
+	var quad := createQuad();
+	quad.addComponent("RotatorAroundLocalXAxis");
+	quad.findComponent("Transform").setParent(emptyTransform);
+	quad.findComponent("Transform").setLocalPosition(Vector3(1, 0, 0));
+	quad.findComponent("ModelRenderer").setMaterial(0, material);
+}
+
+
+def initBox(position, material)
+{
+	var node := createQuad();
+	rebuildToBoxMesh(node);
+	node.findComponent("ModelRenderer").setMaterial(0, material);
+	node.findComponent("Transform").setLocalPosition(position);
+	node.addComponent("RotatorAroundWorldYAxis");
+}
+
+
+def rebuildToBoxMesh(node)
+{
+	var model := node.findComponent("ModelRenderer").getModel();
+	var mesh := model.getMesh(0);
+
+	var newVertices = Vector3Array();
+	newVertices.push_back(Vector3(-1, -1, 1));
+	newVertices.push_back(Vector3(-1, 1, 1));
+	newVertices.push_back(Vector3(1, 1, 1));
+	newVertices.push_back(Vector3(1, -1, 1));
+
+	newVertices.push_back(Vector3(-1, -1, -1));
+	newVertices.push_back(Vector3(-1, 1, -1));
+	newVertices.push_back(Vector3(-1, 1, 1));
+	newVertices.push_back(Vector3(-1, -1, 1));
+
+	newVertices.push_back(Vector3(1, -1, -1));
+	newVertices.push_back(Vector3(1, 1, -1));
+	newVertices.push_back(Vector3(-1, 1, -1));
+	newVertices.push_back(Vector3(-1, -1, -1));
+
+	newVertices.push_back(Vector3(1, -1, 1));
+	newVertices.push_back(Vector3(1, 1, 1));
+	newVertices.push_back(Vector3(1, 1, -1));
+	newVertices.push_back(Vector3(1, -1, -1));
+
+	newVertices.push_back(Vector3(-1, 1, 1));
+	newVertices.push_back(Vector3(-1, 1, -1));
+	newVertices.push_back(Vector3(1, 1, -1));
+	newVertices.push_back(Vector3(1, 1, 1));
+
+	newVertices.push_back(Vector3(-1, -1, -1));
+	newVertices.push_back(Vector3(-1, -1, 1));
+	newVertices.push_back(Vector3(1, -1, 1));
+	newVertices.push_back(Vector3(1, -1, -1));
+
+	var newUVs = Vector2Array();
+	newUVs.push_back(Vector2(0, 0)); newUVs.push_back(Vector2(0, 1)); newUVs.push_back(Vector2(1, 1)); newUVs.push_back(Vector2(1, 0));
+	newUVs.push_back(Vector2(0, 0)); newUVs.push_back(Vector2(0, 1)); newUVs.push_back(Vector2(1, 1)); newUVs.push_back(Vector2(1, 0));
+	newUVs.push_back(Vector2(0, 0)); newUVs.push_back(Vector2(0, 1)); newUVs.push_back(Vector2(1, 1)); newUVs.push_back(Vector2(1, 0));
+	newUVs.push_back(Vector2(0, 0)); newUVs.push_back(Vector2(0, 1)); newUVs.push_back(Vector2(1, 1)); newUVs.push_back(Vector2(1, 0));
+	newUVs.push_back(Vector2(0, 0)); newUVs.push_back(Vector2(0, 1)); newUVs.push_back(Vector2(1, 1)); newUVs.push_back(Vector2(1, 0));
+	newUVs.push_back(Vector2(0, 0)); newUVs.push_back(Vector2(0, 1)); newUVs.push_back(Vector2(1, 1)); newUVs.push_back(Vector2(1, 0));
+
+	var newIndices = U16Array();
+	newIndices.push_back(uint16_t(0)); newIndices.push_back(uint16_t(1)); newIndices.push_back(uint16_t(2));
+	newIndices.push_back(uint16_t(0)); newIndices.push_back(uint16_t(2)); newIndices.push_back(uint16_t(3));
+	newIndices.push_back(uint16_t(4)); newIndices.push_back(uint16_t(5)); newIndices.push_back(uint16_t(6));
+	newIndices.push_back(uint16_t(4)); newIndices.push_back(uint16_t(6)); newIndices.push_back(uint16_t(7));
+	newIndices.push_back(uint16_t(8)); newIndices.push_back(uint16_t(9)); newIndices.push_back(uint16_t(10));
+	newIndices.push_back(uint16_t(8)); newIndices.push_back(uint16_t(10)); newIndices.push_back(uint16_t(11));
+	newIndices.push_back(uint16_t(12)); newIndices.push_back(uint16_t(13)); newIndices.push_back(uint16_t(14));
+	newIndices.push_back(uint16_t(12)); newIndices.push_back(uint16_t(14)); newIndices.push_back(uint16_t(15));
+	newIndices.push_back(uint16_t(16)); newIndices.push_back(uint16_t(17)); newIndices.push_back(uint16_t(18));
+	newIndices.push_back(uint16_t(16)); newIndices.push_back(uint16_t(18)); newIndices.push_back(uint16_t(19));
+	newIndices.push_back(uint16_t(20)); newIndices.push_back(uint16_t(21)); newIndices.push_back(uint16_t(22));
+	newIndices.push_back(uint16_t(20)); newIndices.push_back(uint16_t(22)); newIndices.push_back(uint16_t(23));
+
+	mesh.setVertices(newVertices);
+	mesh.setUVs(newUVs);
+	mesh.setIndices(newIndices);
+}
+
+
 def createQuad()
 {
 	var mesh := resManager.getOrCreateMesh();
+
 	var vertices = Vector3Array();
 	vertices.push_back(Vector3(-1, -1, 0));
 	vertices.push_back(Vector3(-1, 1, 0));
 	vertices.push_back(Vector3(1, 1, 0));
 	vertices.push_back(Vector3(1, -1, 0));
+
 	var normals = Vector3Array();
 	normals.push_back(Vector3(0, 0, -1));
 	normals.push_back(Vector3(0, 0, -1));
 	normals.push_back(Vector3(0, 0, -1));
 	normals.push_back(Vector3(0, 0, -1));
+
 	var uvs = Vector2Array();
 	uvs.push_back(Vector2(0, 0));
 	uvs.push_back(Vector2(0, 1));
 	uvs.push_back(Vector2(1, 1));
 	uvs.push_back(Vector2(1, 0));
+
 	var indices = U16Array();
-	indices.push_back(0);
-	indices.push_back(1);
-	indices.push_back(2);
-	indices.push_back(0);
-	indices.push_back(2);
-	indices.push_back(3);
+	indices.push_back(uint16_t(0));
+	indices.push_back(uint16_t(1));
+	indices.push_back(uint16_t(2));
+	indices.push_back(uint16_t(0));
+	indices.push_back(uint16_t(2));
+	indices.push_back(uint16_t(3));
+
 	mesh.setVertices(vertices);
 	mesh.setNormals(normals);
 	mesh.setUVs(uvs);
@@ -192,3 +286,5 @@ var renderTarget := initRenderTargets();
 initCameras(renderTarget);
 initModel("../data/monkey_hires.obj", Vector3(0, 0, 0), texWithLightingMaterial);
 initStaticQuad(Vector3(0, 7, 0), renderTargetMaterial);
+initRotatingQuad(Vector3(5, 0, 0), texMaterial);
+initBox(Vector3(-5, 0, 0), checkerMaterial);
