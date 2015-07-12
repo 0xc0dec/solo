@@ -1,5 +1,5 @@
 #include "MaterialsTest.h"
-#include "ComponentsTest.h"
+#include "ComponentsAndNodesTest.h"
 #include "TransformTest.h"
 #include "DeviceTest.h"
 #include "FileSystemTest.h"
@@ -18,7 +18,7 @@ public:
 	virtual void onEngineStarted() override
 	{
 		tests.push_back(NEW2(MaterialsTest, engine));
-		tests.push_back(NEW2(ComponentsTest, engine));
+		tests.push_back(NEW2(ComponentsAndNodesTest, engine));
 		tests.push_back(NEW2(TransformTest, engine));
 		tests.push_back(NEW2(DeviceTest, engine));
 		tests.push_back(NEW2(FileSystemTest, engine));

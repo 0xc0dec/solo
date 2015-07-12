@@ -1,27 +1,19 @@
 #include "SoloNode.h"
-#include "SoloEngine.h"
-#include "SoloModelRenderer.h"
-#include "SoloCamera.h"
-#include "SoloTransform.h"
+#include "SoloScene.h"
 
 using namespace solo;
 
 
-shared<Node> NodeFactory::createNode()
+Node::Node(Scene* scene, size_t nodeId) :
+	scene(scene),
+	id(nodeId)
 {
-	return NEW2(Node);
 }
 
 
-Node::Node()
+size_t Node::getId() const
 {
-	scene = Engine::get()->getScene();
-}
-
-
-long Node::getId() const
-{
-	return reinterpret_cast<long>(this);
+	return id;// reinterpret_cast<size_t>(this);
 }
 
 
@@ -31,25 +23,7 @@ Scene* Node::getScene() const
 }
 
 
-template<> Transform* Node::addComponent<Transform>()
+void Node::removeAllComponents()
 {
-	auto transform = TransformFactory::create(this);
-	scene->addComponent(this, transform);
-	return transform.get();
-}
-
-
-template<> Camera* Node::addComponent<Camera>()
-{
-	auto camera = CameraFactory::create(this);
-	scene->addComponent(this, camera);
-	return camera.get();
-}
-
-
-template<> ModelRenderer* Node::addComponent<ModelRenderer>()
-{
-	auto renderer = ModelRendererFactory::create(this);
-	scene->addComponent(this, renderer);
-	return renderer.get();
+	scene->removeAllComponents(this->getId());
 }

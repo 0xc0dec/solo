@@ -12,7 +12,7 @@ using namespace chaiscript;
 
 
 ScriptComponent_Chai::ScriptComponent_Chai(Node* node, const std::string& componentClass) :
-	ComponentBase(node)
+	ComponentBase(node->getScene(), node->getId())
 {
 	auto scriptEngine = static_cast<Scripter_Chai*>(Engine::get()->getScripter())->getEngine();
 	auto constructor = scriptEngine->eval<std::function<Boxed_Value(Node*)>>(componentClass);
@@ -37,7 +37,7 @@ Boxed_Value ScriptComponent_Chai::addComponent(Boxed_Value& boxedNode, const std
 
 	auto script = NEW2(ScriptComponent_Chai, node, componentClass);
 	auto cmpTypeId = getHash(componentClass);
-	node->getScene()->addComponent(node, script, cmpTypeId);
+	node->getScene()->addComponent(node->getId(), script, cmpTypeId);
 	return script->component;
 }
 
@@ -46,7 +46,7 @@ void ScriptComponent_Chai::removeComponent(Boxed_Value& boxedNode, const std::st
 {
 	auto node = boxed_cast<Node*>(boxedNode);
 	auto cmpTypeId = getHash(componentClass);
-	node->getScene()->removeComponent(node, cmpTypeId);
+	node->getScene()->removeComponent(node->getId(), cmpTypeId);
 }
 
 
@@ -61,6 +61,6 @@ Boxed_Value ScriptComponent_Chai::findComponent(Boxed_Value& boxedNode, const st
 		return Boxed_Value(node->findComponent<ModelRenderer>());
 
 	auto cmpTypeId = getHash(componentClass);
-	auto cmp = node->getScene()->findComponent(node, cmpTypeId);
+	auto cmp = node->getScene()->findComponent(node->getId(), cmpTypeId);
 	return cmp ? static_cast<ScriptComponent_Chai*>(cmp)->component : Boxed_Value();
 }

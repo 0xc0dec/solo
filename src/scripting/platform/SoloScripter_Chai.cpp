@@ -207,10 +207,12 @@ void Scripter_Chai::registerScriptApi()
 	// Scene
 	engine->add(user_type<Scene>(), "Scene");
 	engine->add(fun(&Scene::createNode), "createNode");
+	engine->add(fun(&Scene::clear), "clear");
 
 	// Node
 	engine->add(user_type<Node>(), "Node");
 	engine->add(fun(&Node::getId), "getId");
+	engine->add(fun(&Node::removeAllComponents), "removeAllComponents");
 	engine->add(fun(&ScriptComponent_Chai::addComponent), "addComponent");
 	engine->add(fun(&ScriptComponent_Chai::removeComponent), "removeComponent");
 	engine->add(fun(&ScriptComponent_Chai::findComponent), "findComponent");

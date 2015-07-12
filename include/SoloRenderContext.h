@@ -4,30 +4,41 @@ namespace solo
 {
 	class Node;
 	class Material;
+	class Scene;
 
 	class RenderContext
 	{
 	public:
 		RenderContext() {}
 
-		void setNode(Node* node)
+		void setScene(Scene* scene)
 		{
-			this->node = node;
+			this->scene = scene;
 		}
 
-		Node* getNode() const
+		Scene* getScene() const
 		{
-			return node;
+			return this->scene;
 		}
 
-		void setCameraNode(Node* node)
+		void setNodeId(size_t nodeId)
 		{
-			this->camera = node;
+			this->nodeId = nodeId;
 		}
 
-		Node* getCameraNode() const
+		size_t getNodeId() const
 		{
-			return camera;
+			return nodeId;
+		}
+
+		void setCameraNodeId(size_t cameraNodeId)
+		{
+			this->cameraNodeId = cameraNodeId;
+		}
+
+		size_t getCameraNodeId() const
+		{
+			return cameraNodeId;
 		}
 
 		void setMaterial(Material* material)
@@ -41,8 +52,9 @@ namespace solo
 		}
 
 	private:
-		Node* node = nullptr;
-		Node* camera = nullptr;
+		size_t nodeId = 0;
+		size_t cameraNodeId = 0;
+		Scene* scene = nullptr; // to be sure that in the future when we (possibly) have multiple scenes, the whole thing won't break apart.
 		Material* material = nullptr;
 	};
 }

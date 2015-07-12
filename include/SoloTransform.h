@@ -82,11 +82,7 @@ namespace solo
 	private:
 		friend class TransformFactory;
 
-		Transform(Node* node);
-		Transform(const Transform& other) = delete;
-		Transform(Transform&& other) = delete;
-		Transform& operator=(const Transform& other) = delete;
-		Transform& operator=(Transform&& other) = delete;
+		Transform(Scene* scene, size_t nodeId);
 
 		template <unsigned bit1, unsigned... bitN>
 		void setDirtyWithChildren() const;
@@ -117,7 +113,7 @@ namespace solo
 
 	class TransformFactory
 	{
-		friend class Node;
-		static shared<Transform> create(Node *node);
+		friend class Scene;
+		static shared<Transform> create(Scene* scene, size_t nodeId);
 	};
 }

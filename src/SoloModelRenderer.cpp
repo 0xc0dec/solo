@@ -7,14 +7,14 @@
 using namespace solo;
 
 
-shared<ModelRenderer> ModelRendererFactory::create(Node* node)
+shared<ModelRenderer> ModelRendererFactory::create(Scene* scene, size_t nodeId)
 {
-	return NEW2(ModelRenderer, node);
+	return NEW2(ModelRenderer, scene, nodeId);
 }
 
 
-ModelRenderer::ModelRenderer(Node* node):
-	ComponentBase(node)
+ModelRenderer::ModelRenderer(Scene* scene, size_t nodeId) :
+	ComponentBase(scene, nodeId)
 {
 }
 

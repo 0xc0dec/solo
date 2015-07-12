@@ -9,7 +9,7 @@ namespace solo
 	class OpenGLCamera: public Camera
 	{
 	public:
-		OpenGLCamera(Node* node);
+		OpenGLCamera(Scene* scene, size_t nodeId);
 
 	private:
 		Device* device = nullptr;

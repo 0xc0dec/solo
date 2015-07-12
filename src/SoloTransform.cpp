@@ -14,14 +14,14 @@ const unsigned DIRTY_BIT_ALL =
 	DIRTY_BIT_WORLD | DIRTY_BIT_INSERSE_TRANSPOSED_WORLD;
 
 
-shared<Transform> TransformFactory::create(Node* node)
+shared<Transform> TransformFactory::create(Scene* scene, size_t nodeId)
 {
-	return NEW2(Transform, node);
+	return NEW2(Transform, scene, nodeId);
 }
 
 
-Transform::Transform(Node* node):
-	ComponentBase{node}
+Transform::Transform(Scene* scene, size_t nodeId) :
+	ComponentBase(scene, nodeId)
 {
 	localScale.set(Vector3::one());
 	setDirty<DIRTY_BIT_ALL>();

@@ -3,6 +3,7 @@
 #include "SoloNode.h"
 #include "SoloDevice.h"
 #include "SoloRenderTarget.h"
+#include "SoloScene.h"
 #include "platform/SoloOpenGLCamera.h"
 
 using namespace solo;
@@ -16,9 +17,16 @@ const unsigned DIRTY_BIT_INV_VIEW_PROJ = 16;
 const unsigned DIRTY_BIT_ALL = DIRTY_BIT_VIEW | DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW | DIRTY_BIT_INV_VIEW_PROJ;
 
 
-Camera::Camera(Node* node): ComponentBase(node)
+shared<Camera> CameraFactory::create(Scene* scene, size_t nodeId)
 {
-	transform = node->getComponent<Transform>();
+	return NEW2(OpenGLCamera, scene, nodeId);
+}
+
+
+Camera::Camera(Scene* scene, size_t nodeId)
+	: ComponentBase(scene, nodeId)
+{
+	transform = scene->getComponent<Transform>(nodeId);
 	transform->addCallback(this);
 	auto canvasSize = Engine::get()->getDevice()->getCanvasSize();
 	setAspectRatio(canvasSize.x / canvasSize.y);
@@ -234,8 +242,3 @@ shared<RenderTarget> Camera::getRenderTarget() const
 	return renderTarget;
 }
 
-
-shared<Camera> CameraFactory::create(Node* node)
-{
-	return NEW2(OpenGLCamera, node);
-}

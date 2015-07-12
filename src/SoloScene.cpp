@@ -4,66 +4,74 @@
 #include "SoloRenderContext.h"
 #include "SoloCamera.h"
 #include "SoloNode.h"
+#include "SoloModelRenderer.h"
 
 using namespace solo;
 
 
-Node* Scene::createEmptyNode()
+shared<Scene> SceneFactory::create()
 {
-	auto node = NodeFactory::createNode();
-	components[node->getId()];
-	nodes[node->getId()] = node;
-	return node.get();
+	return NEW2(Scene);
 }
 
 
-Node* Scene::createNode()
+shared<Node> Scene::createNode()
 {
-	auto node = createEmptyNode();
+	auto node = NEW2(Node, this, nodeCounter++);
 	node->addComponent<Transform>();
 	return node;
 }
 
 
-void Scene::addComponent(Node* node, shared<Component> cmp)
+void Scene::clear()
 {
-	addComponent(node, cmp, cmp->getTypeId());
+	components.clear();
 }
 
 
-void Scene::addComponent(Node* node, shared<Component> cmp, size_t typeId)
+void Scene::addComponent(size_t nodeId, shared<Component> cmp)
 {
-	auto nodeId = node->getId();
-	ensureNodeExists(nodeId);
-	if (findComponent(node, typeId))
+	addComponent(nodeId, cmp, cmp->getTypeId());
+}
+
+
+void Scene::addComponent(size_t nodeId, shared<Component> cmp, size_t typeId)
+{
+	if (findComponent(nodeId, typeId))
 		THROW_FMT(EngineException, "Component ", cmp->getTypeId(), " already exists.");
 	components[nodeId][typeId] = cmp;
 }
 
 
-void Scene::removeComponent(Node* node, size_t typeId)
+void Scene::removeComponent(size_t nodeId, size_t typeId)
 {
-	auto nodeId = node->getId();
-	ensureNodeExists(nodeId);
+	if (components.find(nodeId) == components.end())
+		return;
 	components[nodeId].erase(typeId);
 	if (components.at(nodeId).empty())
-		nodes.erase(nodeId);
+		components.erase(nodeId);
 }
 
 
-Component* Scene::getComponent(Node* node, size_t typeId)
+void Scene::removeAllComponents(size_t nodeId)
 {
-	auto cmp = findComponent(node, typeId);
+	components.erase(nodeId);
+}
+
+
+Component* Scene::getComponent(size_t nodeId, size_t typeId)
+{
+	auto cmp = findComponent(nodeId, typeId);
 	if (!cmp)
-		THROW_FMT(EngineException, "Component ", typeId, " not found.");
+		THROW_FMT(EngineException, "Component ", typeId, " not found on node ", nodeId, ".");
 	return cmp;
 }
 
 
-Component* Scene::findComponent(Node* node, size_t typeId)
+Component* Scene::findComponent(size_t nodeId, size_t typeId)
 {
-	auto nodeId = node->getId();
-	ensureNodeExists(nodeId);
+	if (components.find(nodeId) == components.end())
+		return nullptr;
 	auto nodeComponents = components[nodeId];
 	auto it = nodeComponents.find(typeId);
 	return it != nodeComponents.end() ? it->second.get() : nullptr;
@@ -102,22 +110,23 @@ void Scene::render()
 	for (auto camera : cameras)
 	{
 		RenderContext context;
-		context.setCameraNode(camera->getNode());
+		context.setScene(this);
+		context.setCameraNodeId(camera->getNodeId());
 		camera->render(context);
-		iterateComponents([&](shared<Node> node, shared<Component> component)
+		iterateComponents([&](size_t nodeId, shared<Component> component)
 		{
-			if (node->findComponent<Transform>())  // not very optimal - could be done one level upper
+			if (findComponent(nodeId, Transform::getId()))  // not very optimal - could be done one level upper
 			{
-				context.setNode(node.get());
+				context.setNodeId(nodeId);
 				// Render only non-camera nodes with transforms
 				if (component->getTypeId() != Camera::getId())
 					component->render(context);
 			}
 		});
 		camera->postRender();
-		iterateComponents([&](shared<Node> node, shared<Component> component)
+		iterateComponents([&](size_t nodeId, shared<Component> component)
 		{
-			if (node->findComponent<Transform>())  // not very optimal - could be done one level upper
+			if (findComponent(nodeId, Transform::getId()))  // not very optimal - could be done one level upper
 			{
 				if (component->getTypeId() != Camera::getId())
 					component->postRender();
@@ -127,25 +136,36 @@ void Scene::render()
 }
 
 
-void Scene::iterateComponents(std::function<void(shared<Node>, shared<Component>)> work)
+void Scene::iterateComponents(ComponentInterationWorker work)
 {
-	for (auto nodeInfo : nodes)
+	for (auto nodeComponents : components)
 	{
-		auto node = nodeInfo.second;
-		for (auto component : components[nodeInfo.first])
-			work(node, component.second);
+		auto nodeId = nodeComponents.first;
+		for (auto component : nodeComponents.second)
+			work(nodeId, component.second);
 	}
 }
 
 
-void Scene::ensureNodeExists(size_t nodeId)
+template<> Transform* Scene::addComponent<Transform>(size_t nodeId)
 {
-	if (nodes.find(nodeId) == nodes.end())
-		THROW_FMT(EngineException, "Node ", nodeId, " not found.");
+	auto transform = TransformFactory::create(this, nodeId);
+	addComponent(nodeId, transform);
+	return transform.get();
 }
 
 
-shared<Scene> SceneFactory::create()
+template<> Camera* Scene::addComponent<Camera>(size_t nodeId)
 {
-	return NEW2(Scene);
+	auto camera = CameraFactory::create(this, nodeId);
+	addComponent(nodeId, camera);
+	return camera.get();
+}
+
+
+template<> ModelRenderer* Scene::addComponent<ModelRenderer>(size_t nodeId)
+{
+	auto renderer = ModelRendererFactory::create(this, nodeId);
+	addComponent(nodeId, renderer);
+	return renderer.get();
 }

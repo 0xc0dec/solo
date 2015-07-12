@@ -23,11 +23,7 @@ namespace solo
 	private:
 		friend class ModelRendererFactory;
 
-		ModelRenderer(Node* node);
-		ModelRenderer(const ModelRenderer& other) = delete;
-		ModelRenderer(ModelRenderer&& other) = delete;
-		ModelRenderer& operator=(const ModelRenderer& other) = delete;
-		ModelRenderer& operator=(ModelRenderer&& other) = delete;
+		ModelRenderer(Scene* scene, size_t nodeId);
 
 		shared<Model> model;
 		std::map<unsigned, shared<Material>> materials;
@@ -35,7 +31,7 @@ namespace solo
 
 	class ModelRendererFactory
 	{
-		friend class Node;
-		static shared<ModelRenderer> create(Node *node);
+		friend class Scene;
+		static shared<ModelRenderer> create(Scene* scene, size_t nodeId);
 	};
 }

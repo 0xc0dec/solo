@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SoloComponent.h"
+#include "SoloNode.h"
 #include <chaiscript.hpp>
 
 namespace solo

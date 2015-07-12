@@ -6,8 +6,8 @@
 using namespace solo;
 
 
-OpenGLCamera::OpenGLCamera(Node* node):
-	Camera(node)
+OpenGLCamera::OpenGLCamera(Scene* scene, size_t nodeId) :
+	Camera(scene, nodeId)
 {
 	device = Engine::get()->getDevice();
 }

@@ -55,7 +55,7 @@ namespace solo
 	protected:
 		friend class CameraFactory;
 
-		Camera(Node* node);
+		Camera(Scene* scene, size_t nodeId);
 
 		virtual void onTransformChanged(const Transform* transform) override;
 
@@ -84,17 +84,11 @@ namespace solo
 		Matrix viewProjectionMatrix;
 		Matrix inverseViewMatrix;
 		Matrix inverseViewProjectionMatrix;
-
-	private:
-		Camera(const Camera& other) = delete;
-		Camera(Camera&& other) = delete;
-		Camera& operator=(const Camera& other) = delete;
-		Camera& operator=(Camera&& other) = delete;
 	};
 
 	class CameraFactory
 	{
-		friend class Node;
-		static shared<Camera> create(Node* node);
+		friend class Scene;
+		static shared<Camera> create(Scene* scene, size_t nodeId);
 	};
 }
