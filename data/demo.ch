@@ -1,3 +1,7 @@
+use("../data/shaders.ch");
+use("../data/spectator.ch");
+use("../data/escapeWatcher.ch");
+
 GLOBAL device := engine.getDevice();
 GLOBAL scene := engine.getScene();
 GLOBAL resManager := engine.getResourceManager();
@@ -216,18 +220,18 @@ def rebuildToBoxMesh(node)
 	newUVs.push_back(Vector2(0, 0)); newUVs.push_back(Vector2(0, 1)); newUVs.push_back(Vector2(1, 1)); newUVs.push_back(Vector2(1, 0));
 
 	var newIndices = U16Array();
-	newIndices.push_back(uint16_t(0)); newIndices.push_back(uint16_t(1)); newIndices.push_back(uint16_t(2));
-	newIndices.push_back(uint16_t(0)); newIndices.push_back(uint16_t(2)); newIndices.push_back(uint16_t(3));
-	newIndices.push_back(uint16_t(4)); newIndices.push_back(uint16_t(5)); newIndices.push_back(uint16_t(6));
-	newIndices.push_back(uint16_t(4)); newIndices.push_back(uint16_t(6)); newIndices.push_back(uint16_t(7));
-	newIndices.push_back(uint16_t(8)); newIndices.push_back(uint16_t(9)); newIndices.push_back(uint16_t(10));
-	newIndices.push_back(uint16_t(8)); newIndices.push_back(uint16_t(10)); newIndices.push_back(uint16_t(11));
-	newIndices.push_back(uint16_t(12)); newIndices.push_back(uint16_t(13)); newIndices.push_back(uint16_t(14));
-	newIndices.push_back(uint16_t(12)); newIndices.push_back(uint16_t(14)); newIndices.push_back(uint16_t(15));
-	newIndices.push_back(uint16_t(16)); newIndices.push_back(uint16_t(17)); newIndices.push_back(uint16_t(18));
-	newIndices.push_back(uint16_t(16)); newIndices.push_back(uint16_t(18)); newIndices.push_back(uint16_t(19));
-	newIndices.push_back(uint16_t(20)); newIndices.push_back(uint16_t(21)); newIndices.push_back(uint16_t(22));
-	newIndices.push_back(uint16_t(20)); newIndices.push_back(uint16_t(22)); newIndices.push_back(uint16_t(23));
+	newIndices.push_back(0u); newIndices.push_back(1u); newIndices.push_back(2u);
+	newIndices.push_back(0u); newIndices.push_back(2u); newIndices.push_back(3u);
+	newIndices.push_back(4u); newIndices.push_back(5u); newIndices.push_back(6u);
+	newIndices.push_back(4u); newIndices.push_back(6u); newIndices.push_back(7u);
+	newIndices.push_back(8u); newIndices.push_back(9u); newIndices.push_back(10u);
+	newIndices.push_back(8u); newIndices.push_back(10u); newIndices.push_back(11u);
+	newIndices.push_back(12u); newIndices.push_back(13u); newIndices.push_back(14u);
+	newIndices.push_back(12u); newIndices.push_back(14u); newIndices.push_back(15u);
+	newIndices.push_back(16u); newIndices.push_back(17u); newIndices.push_back(18u);
+	newIndices.push_back(16u); newIndices.push_back(18u); newIndices.push_back(19u);
+	newIndices.push_back(20u); newIndices.push_back(21u); newIndices.push_back(22u);
+	newIndices.push_back(20u); newIndices.push_back(22u); newIndices.push_back(23u);
 
 	mesh.setVertices(newVertices);
 	mesh.setUVs(newUVs);
@@ -258,12 +262,12 @@ def createQuad()
 	uvs.push_back(Vector2(1, 0));
 
 	var indices = U16Array();
-	indices.push_back(uint16_t(0));
-	indices.push_back(uint16_t(1));
-	indices.push_back(uint16_t(2));
-	indices.push_back(uint16_t(0));
-	indices.push_back(uint16_t(2));
-	indices.push_back(uint16_t(3));
+	indices.push_back(0u);
+	indices.push_back(1u);
+	indices.push_back(2u);
+	indices.push_back(0u);
+	indices.push_back(2u);
+	indices.push_back(3u);
 
 	mesh.setVertices(vertices);
 	mesh.setNormals(normals);
