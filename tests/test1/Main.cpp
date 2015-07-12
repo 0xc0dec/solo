@@ -25,7 +25,7 @@ public:
 		tests.push_back(NEW2(ResourcesTest, engine));
 		for (auto test : tests)
 			test->run();
-		engine->getScripter()->execFile("../data/main.ch");
+		engine->getScripter()->execFile("../data/scripts/main.ch");
 	}
 
 	virtual void onEngineStopped() override

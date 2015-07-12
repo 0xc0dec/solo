@@ -1,6 +1,6 @@
-use("../data/shaders.ch");
-use("../data/spectator.ch");
-use("../data/escapeWatcher.ch");
+use("../data/scripts/shaders.ch");
+use("../data/scripts/spectator.ch");
+use("../data/scripts/escapeWatcher.ch");
 
 GLOBAL device := engine.getDevice();
 GLOBAL scene := engine.getScene();
