@@ -247,61 +247,61 @@ void MaterialParameter::clearValue()
 
 const Matrix& MaterialParameter::getWorldMatrix(const RenderContext& context) const
 {
-	return context.getScene()->getComponent<Transform>(context.getNodeId())->getWorldMatrix();
+	return Node::getComponent<Transform>(context.getScene(), context.getNodeId())->getWorldMatrix();
 }
 
 
 const Matrix& MaterialParameter::getViewMatrix(const RenderContext& context) const
 {
-	return context.getScene()->getComponent<Camera>(context.getCameraNodeId())->getViewMatrix();
+	return Node::getComponent<Camera>(context.getScene(), context.getCameraNodeId())->getViewMatrix();
 }
 
 
 const Matrix& MaterialParameter::getProjectionMatrix(const RenderContext& context) const
 {
-	return context.getScene()->getComponent<Camera>(context.getCameraNodeId())->getProjectionMatrix();
+	return Node::getComponent<Camera>(context.getScene(), context.getCameraNodeId())->getProjectionMatrix();
 }
 
 
 Matrix MaterialParameter::getWorldViewMatrix(const RenderContext& context) const
 {
 	auto scene = context.getScene();
-	return scene->getComponent<Transform>(context.getNodeId())
-		->getWorldViewMatrix(scene->getComponent<Camera>(context.getCameraNodeId()));
+	return Node::getComponent<Transform>(context.getScene(), context.getNodeId())
+			->getWorldViewMatrix(Node::getComponent<Camera>(scene, context.getCameraNodeId()));
 }
 
 
 Matrix MaterialParameter::getViewProjectionMatrix(const RenderContext& context) const
 {
-	return context.getScene()->getComponent<Camera>(context.getCameraNodeId())->getViewProjectionMatrix();
+	return Node::getComponent<Camera>(context.getScene(), context.getCameraNodeId())->getViewProjectionMatrix();
 }
 
 
 Matrix MaterialParameter::getWorldViewProjectionMatrix(const RenderContext& context) const
 {
 	auto scene = context.getScene();
-	return scene->getComponent<Transform>(context.getNodeId())
-		->getWorldViewProjectionMatrix(scene->getComponent<Camera>(context.getCameraNodeId()));
+	return Node::getComponent<Transform>(context.getScene(), context.getNodeId())
+			->getWorldViewProjectionMatrix(Node::getComponent<Camera>(scene, context.getCameraNodeId()));
 }
 
 
 Matrix MaterialParameter::getInverseTransposedWorldViewMatrix(const RenderContext& context) const
 {
 	auto scene = context.getScene();
-	return scene->getComponent<Transform>(context.getNodeId())
-		->getInverseTransposedWorldViewMatrix(scene->getComponent<Camera>(context.getCameraNodeId()));
+	return Node::getComponent<Transform>(context.getScene(), context.getNodeId())
+			->getInverseTransposedWorldViewMatrix(Node::getComponent<Camera>(scene, context.getCameraNodeId()));
 }
 
 
 Matrix MaterialParameter::getInverseTransposedWorldMatrix(const RenderContext& context) const
 {
-	return context.getScene()->getComponent<Transform>(context.getNodeId())->getInverseTransposedWorldMatrix();
+	return Node::getComponent<Transform>(context.getScene(), context.getNodeId())->getInverseTransposedWorldMatrix();
 }
 
 
 Vector3 MaterialParameter::getCameraWorldPosition(const RenderContext& context) const
 {
-	return context.getScene()->getComponent<Transform>(context.getCameraNodeId())->getWorldPosition();
+	return Node::getComponent<Transform>(context.getScene(), context.getCameraNodeId())->getWorldPosition();
 }
 
 

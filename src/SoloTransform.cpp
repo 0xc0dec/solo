@@ -10,18 +10,21 @@ const unsigned DIRTY_BIT_SCALE = 4;
 const unsigned DIRTY_BIT_WORLD = 8;
 const unsigned DIRTY_BIT_INSERSE_TRANSPOSED_WORLD = 16;
 const unsigned DIRTY_BIT_ALL =
-	DIRTY_BIT_POSITION | DIRTY_BIT_ROTATION | DIRTY_BIT_SCALE |
-	DIRTY_BIT_WORLD | DIRTY_BIT_INSERSE_TRANSPOSED_WORLD;
+	DIRTY_BIT_POSITION |
+	DIRTY_BIT_ROTATION |
+	DIRTY_BIT_SCALE |
+	DIRTY_BIT_WORLD |
+	DIRTY_BIT_INSERSE_TRANSPOSED_WORLD;
 
 
-shared<Transform> TransformFactory::create(Scene* scene, size_t nodeId)
+shared<Transform> TransformFactory::create(Node node)
 {
-	return NEW2(Transform, scene, nodeId);
+	return NEW2(Transform, node);
 }
 
 
-Transform::Transform(Scene* scene, size_t nodeId) :
-	ComponentBase(scene, nodeId)
+Transform::Transform(Node node) :
+	ComponentBase(node)
 {
 	localScale.set(Vector3::one());
 	setDirty<DIRTY_BIT_ALL>();

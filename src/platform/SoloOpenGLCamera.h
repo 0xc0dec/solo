@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SoloCamera.h"
+#include "SoloNode.h"
 
 namespace solo
 {
@@ -9,7 +10,7 @@ namespace solo
 	class OpenGLCamera: public Camera
 	{
 	public:
-		OpenGLCamera(Scene* scene, size_t nodeId);
+		OpenGLCamera(Node node);
 
 	private:
 		Device* device = nullptr;

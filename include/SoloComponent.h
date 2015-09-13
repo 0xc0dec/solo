@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SoloTypeId.h"
+#include "SoloNode.h"
 
 namespace solo
 {
@@ -36,9 +37,7 @@ namespace solo
 	class ComponentBase: public Component
 	{
 	public:
-		explicit ComponentBase(Scene* scene, size_t nodeId):
-			scene(scene),
-			nodeId(nodeId)
+		explicit ComponentBase(Node node): node(node)
 		{
 		}
 
@@ -52,13 +51,12 @@ namespace solo
 			return getId();
 		}
 
-		size_t getNodeId() const
+		Node getNode() const
 		{
-			return nodeId;
+			return node;
 		}
 
 	protected:
-		Scene* scene;
-		size_t nodeId;
+		Node node;
 	};
 }

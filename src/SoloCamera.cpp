@@ -14,19 +14,24 @@ const unsigned DIRTY_BIT_PROJ = 2;
 const unsigned DIRTY_BIT_VIEW_PROJ = 4;
 const unsigned DIRTY_BIT_INV_VIEW = 8;
 const unsigned DIRTY_BIT_INV_VIEW_PROJ = 16;
-const unsigned DIRTY_BIT_ALL = DIRTY_BIT_VIEW | DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW | DIRTY_BIT_INV_VIEW_PROJ;
+const unsigned DIRTY_BIT_ALL =
+		DIRTY_BIT_VIEW |
+		DIRTY_BIT_PROJ |
+		DIRTY_BIT_VIEW_PROJ |
+		DIRTY_BIT_INV_VIEW |
+		DIRTY_BIT_INV_VIEW_PROJ;
 
 
-shared<Camera> CameraFactory::create(Scene* scene, size_t nodeId)
+shared<Camera> CameraFactory::create(Node node)
 {
-	return NEW2(OpenGLCamera, scene, nodeId);
+	return NEW2(OpenGLCamera, node);
 }
 
 
-Camera::Camera(Scene* scene, size_t nodeId)
-	: ComponentBase(scene, nodeId)
+Camera::Camera(Node node)
+	: ComponentBase(node)
 {
-	transform = scene->getComponent<Transform>(nodeId);
+	transform = node.getComponent<Transform>();
 	transform->addCallback(this);
 	auto canvasSize = Engine::get()->getDevice()->getCanvasSize();
 	setAspectRatio(canvasSize.x / canvasSize.y);

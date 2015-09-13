@@ -2,6 +2,7 @@
 
 #include "SoloBase.h"
 #include "SoloComponent.h"
+#include "SoloNode.h"
 
 namespace solo
 {
@@ -23,7 +24,7 @@ namespace solo
 	private:
 		friend class ModelRendererFactory;
 
-		ModelRenderer(Scene* scene, size_t nodeId);
+		ModelRenderer(Node node);
 
 		shared<Model> model;
 		std::map<unsigned, shared<Material>> materials;
@@ -31,7 +32,8 @@ namespace solo
 
 	class ModelRendererFactory
 	{
-		friend class Scene;
-		static shared<ModelRenderer> create(Scene* scene, size_t nodeId);
+//		friend class Scene;
+		friend class Node;
+		static shared<ModelRenderer> create(Node node);
 	};
 }

@@ -27,10 +27,7 @@ public:
 		};
 		engine->getFileSystem()->writeLines("temp2.txt", lines);
 		auto text = engine->getFileSystem()->readText("temp2.txt");
-		auto expected = R"_(First
-Sec ond
-Third
-   ... line.)_";
+		auto expected = "First\nSec ond\nThird\n   ... line.";
 		assert(text == expected);
 	}
 

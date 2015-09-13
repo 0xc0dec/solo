@@ -111,7 +111,7 @@ void Scene::render()
 	{
 		RenderContext context;
 		context.setScene(this);
-		context.setCameraNodeId(camera->getNodeId());
+		context.setCameraNodeId(camera->getNode().getId());
 		camera->render(context);
 		iterateComponents([&](size_t nodeId, shared<Component> component)
 		{
@@ -136,7 +136,7 @@ void Scene::render()
 }
 
 
-void Scene::iterateComponents(ComponentInterationWorker work)
+void Scene::iterateComponents(ComponentIterationWorker work)
 {
 	for (auto nodeComponents : components)
 	{
@@ -144,28 +144,4 @@ void Scene::iterateComponents(ComponentInterationWorker work)
 		for (auto component : nodeComponents.second)
 			work(nodeId, component.second);
 	}
-}
-
-
-template<> Transform* Scene::addComponent<Transform>(size_t nodeId)
-{
-	auto transform = TransformFactory::create(this, nodeId);
-	addComponent(nodeId, transform);
-	return transform.get();
-}
-
-
-template<> Camera* Scene::addComponent<Camera>(size_t nodeId)
-{
-	auto camera = CameraFactory::create(this, nodeId);
-	addComponent(nodeId, camera);
-	return camera.get();
-}
-
-
-template<> ModelRenderer* Scene::addComponent<ModelRenderer>(size_t nodeId)
-{
-	auto renderer = ModelRendererFactory::create(this, nodeId);
-	addComponent(nodeId, renderer);
-	return renderer.get();
 }

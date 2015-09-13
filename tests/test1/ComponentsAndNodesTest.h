@@ -6,7 +6,7 @@
 class A : public ComponentBase<A>
 {
 public:
-	explicit A(Node node): ComponentBase<A>(node.getScene(), node.getId())
+	explicit A(Node node): ComponentBase<A>(node)
 	{
 	}
 };
@@ -15,7 +15,7 @@ public:
 class B: public ComponentBase<B>
 {
 public:
-	explicit B(Node node): ComponentBase<B>(node.getScene(), node.getId())
+	explicit B(Node node): ComponentBase<B>(node)
 	{
 	}
 };
@@ -24,7 +24,7 @@ public:
 class Base : public ComponentBase<Base>
 {
 public:
-	explicit Base(Node node): ComponentBase<Base>(node.getScene(), node.getId())
+	explicit Base(Node node): ComponentBase<Base>(node)
 	{
 	}
 };

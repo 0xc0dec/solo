@@ -6,11 +6,11 @@
 #include "SoloMatrix.h"
 #include "SoloVector3.h"
 #include "SoloQuaternion.h"
+#include "SoloNode.h"
 
 namespace solo
 {
 	class Camera;
-	class Node;
 	class TransformCallback;
 
 	enum class TransformSpace
@@ -82,7 +82,7 @@ namespace solo
 	private:
 		friend class TransformFactory;
 
-		Transform(Scene* scene, size_t nodeId);
+		Transform(Node node);
 
 		template <unsigned bit1, unsigned... bitN>
 		void setDirtyWithChildren() const;
@@ -113,7 +113,8 @@ namespace solo
 
 	class TransformFactory
 	{
-		friend class Scene;
-		static shared<Transform> create(Scene* scene, size_t nodeId);
+//		friend class Scene;
+		friend class Node;
+		static shared<Transform> create(Node node);
 	};
 }

@@ -12,7 +12,7 @@ using namespace chaiscript;
 
 
 ScriptComponent_Chai::ScriptComponent_Chai(Node* node, const std::string& componentClass) :
-	ComponentBase(node->getScene(), node->getId())
+	ComponentBase(*node)
 {
 	auto scriptEngine = static_cast<Scripter_Chai*>(Engine::get()->getScripter())->getEngine();
 	auto constructor = scriptEngine->eval<std::function<Boxed_Value(Node*)>>(componentClass);

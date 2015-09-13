@@ -5,6 +5,7 @@
 #include "SoloDirty.h"
 #include "SoloMatrix.h"
 #include "SoloTransform.h"
+#include "SoloNode.h"
 
 namespace solo
 {
@@ -55,7 +56,7 @@ namespace solo
 	protected:
 		friend class CameraFactory;
 
-		Camera(Scene* scene, size_t nodeId);
+		Camera(Node node);
 
 		virtual void onTransformChanged(const Transform* transform) override;
 
@@ -88,7 +89,7 @@ namespace solo
 
 	class CameraFactory
 	{
-		friend class Scene;
-		static shared<Camera> create(Scene* scene, size_t nodeId);
+		friend class Node;
+		static shared<Camera> create(Node node);
 	};
 }

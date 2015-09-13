@@ -68,7 +68,7 @@ void FileSystem::writeLines(const std::string& path, const std::vector<std::stri
 	{
 		file << lines[i];
 		if (i < lines.size() - 1)
-			file << std::endl;
+			file << "\n";
 	}
 	file.close();
 }
