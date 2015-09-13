@@ -1,10 +1,6 @@
-use("../data/scripts/shaders.ch");
-use("../data/scripts/spectator.ch");
-use("../data/scripts/escapeWatcher.ch");
-
-GLOBAL device := engine.getDevice();
-GLOBAL scene := engine.getScene();
-GLOBAL resManager := engine.getResourceManager();
+use("../data/scripts/demo/shaders.ch");
+use("../data/scripts/demo/spectator.ch");
+use("../data/scripts/demo/escapeWatcher.ch");
 
 GLOBAL texMaterial;
 GLOBAL checkerMaterial;
@@ -85,7 +81,7 @@ def initMaterials()
 }
 
 
-def initRenderTargets()
+def initRenderTarget()
 {
 	var renderTarget := resManager.getOrCreateRenderTarget("test");
 	var renderTexture := resManager.getOrCreateTexture("RTT");
@@ -287,8 +283,8 @@ def createQuad()
 }
 
 
-var materials := initMaterials();
-var renderTarget := initRenderTargets();
+initMaterials();
+var renderTarget := initRenderTarget();
 initCameras(renderTarget);
 initModel("../data/monkey_hires.obj", Vector3(0, 0, 0), texWithLightingMaterial);
 initStaticQuad(Vector3(0, 7, 0), renderTargetMaterial);
