@@ -1,5 +1,3 @@
-#pragma once
-
 #include "SoloTexture2D.h"
 
 using namespace solo;

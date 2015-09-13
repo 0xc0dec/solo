@@ -113,7 +113,6 @@ namespace solo
 
 	class TransformFactory
 	{
-//		friend class Scene;
 		friend class Node;
 		static shared<Transform> create(Node node);
 	};

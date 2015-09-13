@@ -32,7 +32,6 @@ namespace solo
 
 	class ModelRendererFactory
 	{
-//		friend class Scene;
 		friend class Node;
 		static shared<ModelRenderer> create(Node node);
 	};
