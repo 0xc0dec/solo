@@ -12,6 +12,8 @@ GLOBAL texWithLightingMaterial;
 GLOBAL texEffect;
 GLOBAL renderTargetMaterial;
 
+GLOBAL canvasSize := device.getCanvasSize();
+
 
 class RotatorAroundLocalXAxis
 {
@@ -87,7 +89,7 @@ def initRenderTargets()
 {
 	var renderTarget := resManager.getOrCreateRenderTarget("test");
 	var renderTexture := resManager.getOrCreateTexture("RTT");
-	renderTexture.setData(ColorFormat_RGB, ByteArray(), 160, 120);
+	renderTexture.setData(ColorFormat_RGB, ByteArray(), canvasSize.x / 8, canvasSize.y / 8);
 	renderTexture.setFilterMode(Filter_Nearest, Filter_Nearest);
 	renderTexture.setWrapMode(WrapMode_Clamp, WrapMode_Clamp);
 	var texVector = Texture2DArray();
@@ -112,11 +114,11 @@ def initCameras(renderTarget)
 	offscreenCamera.setClearColor(1, 1, 1, 1);
 	offscreenCamera.setNear(0.05f);
 	offscreenCamera.setRenderTarget(renderTarget);
-	offscreenCamera.setViewport(0, 0, 160, 120);
+	offscreenCamera.setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8);
 
 	var mainCameraNode := scene.createNode();
 	var mainCameraTransform := mainCameraNode.findComponent("Transform");
-	mainCameraTransform.setLocalPosition(0, 0, 10);
+	mainCameraTransform.setLocalPosition(0, 2, 15);
 	mainCameraNode.addComponent("Spectator");
 	mainCameraNode.addComponent("EscapeWatcher");
 	var mainCamera := mainCameraNode.addComponent("Camera");

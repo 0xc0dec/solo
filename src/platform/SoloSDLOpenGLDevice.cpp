@@ -341,6 +341,6 @@ float SDLOpenGLDevice::getLifetime() const
 Vector2 SDLOpenGLDevice::getCanvasSize() const
 {
 	int width, height;
-	SDL_GetWindowSize(window, &width, &height);
+	SDL_GL_GetDrawableSize(window, &width, &height);
 	return Vector2(static_cast<float>(width), static_cast<float>(height));
 }
