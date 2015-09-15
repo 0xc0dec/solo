@@ -23,7 +23,7 @@ class RotatorAroundLocalXAxis
 	def update()
 	{
 		var angle = device.getTimeDelta() * 1.3f;
-		this.transform.rotate(unitVector3X(), angle, TransformSpace_Self);
+		this.transform.rotate(Vector3_unitX(), angle, TransformSpace_Self);
 	}
 }
 
@@ -40,7 +40,7 @@ class RotatorAroundWorldYAxis
 	def update()
 	{
 		var angle = device.getTimeDelta();
-		this.transform.rotate(unitVector3Y(), angle, TransformSpace_World);
+		this.transform.rotate(Vector3_unitY(), angle, TransformSpace_World);
 	}
 }
 

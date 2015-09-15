@@ -25,11 +25,11 @@ class Spectator
 		{
 			if (mouseMotion.x != 0)
 			{
-				this.transform.rotate(unitVector3Y(), 0.5f * dt * -mouseMotion.x, TransformSpace_World);
+				this.transform.rotate(Vector3_unitY(), 0.5f * dt * -mouseMotion.x, TransformSpace_World);
 			}
 			if (mouseMotion.y != 0)
 			{
-				this.transform.rotate(unitVector3X(), 0.5f * dt * -mouseMotion.y, TransformSpace_Self);
+				this.transform.rotate(Vector3_unitX(), 0.5f * dt * -mouseMotion.y, TransformSpace_Self);
 			}
 		}
 

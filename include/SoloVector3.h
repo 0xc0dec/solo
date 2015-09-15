@@ -1,5 +1,7 @@
 #pragma once
 
+#include <math.h>
+
 namespace solo
 {
 	class Matrix;
@@ -17,29 +19,21 @@ namespace solo
 		Vector3(const float* array);
 		Vector3(const Vector3& p1, const Vector3& p2);
 
-		static Vector3 fromColor(unsigned color); // TODO move to other place or remove completely
-
-		static const Vector3& zero();
-		static const Vector3& one();
-
-		static const Vector3& unitX();
-		static const Vector3& unitY();
-		static const Vector3& unitZ();
+		static Vector3 zero();
+		static Vector3 unit();
+		static Vector3 unitX();
+		static Vector3 unitY();
+		static Vector3 unitZ();
 
 		bool isZero() const;
-		bool isOne() const;
+		bool isUnit() const;
 
 		// in radians
 		static float angle(const Vector3& v1, const Vector3& v2);
 
-		static void add(const Vector3& v1, const Vector3& v2, Vector3* dst);
-		static void subtract(const Vector3& v1, const Vector3& v2, Vector3* dst);
-
 		void clamp(const Vector3& min, const Vector3& max);
-		static void clamp(const Vector3& v, const Vector3& min, const Vector3& max, Vector3* dst);
 
-		void cross(const Vector3& v);
-		static void cross(const Vector3& v1, const Vector3& v2, Vector3* dst);
+		static Vector3 cross(const Vector3& v1, const Vector3& v2);
 
 		float distance(const Vector3& v) const;
 		float distanceSquared(const Vector3& v) const;
@@ -52,25 +46,27 @@ namespace solo
 
 		Vector3 normalized() const;
 		void normalize();
-		void normalize(Vector3* dst) const;
 		
-		void set(float x, float y, float z);
-		void set(const float* array);
-		void set(const Vector3& v);
+		inline void set(float x, float y, float z);
+		inline void set(const float* array);
+		inline void set(const Vector3& v);
 
-		void smooth(const Vector3& target, float elapsedTime, float responseTime);
-
+		inline Vector3 operator+(float scalar) const;
 		inline Vector3 operator+(const Vector3& v) const;
 		inline Vector3& operator+=(const Vector3& v);
+		inline Vector3& operator+=(float scalar);
 
-		inline Vector3 operator-(const Vector3& v) const;
 		inline Vector3 operator-() const;
+		inline Vector3 operator-(float scalar) const;
+		inline Vector3 operator-(const Vector3& v) const;
+		inline Vector3& operator-=(float);
 		inline Vector3& operator-=(const Vector3& v);
 
-		inline Vector3 operator*(float x) const;
-		inline Vector3& operator*=(float x);
+		inline Vector3 operator*(float scalar) const;
+		inline Vector3& operator*=(float scalar);
 
-		inline Vector3 operator/(float x) const;
+		inline Vector3 operator/(float scalar) const;
+		inline Vector3& operator/=(float scalar);
 
 		inline bool operator<(const Vector3& v) const;
 		
@@ -78,30 +74,55 @@ namespace solo
 		inline bool operator!=(const Vector3& v) const;
 	};
 
-	
+
+	inline void Vector3::set(float x, float y, float z)
+	{
+		this->x = x;
+		this->y = y;
+		this->z = z;
+	}
+
+	inline void Vector3::set(const float* array)
+	{
+		x = array[0];
+		y = array[1];
+		z = array[2];
+	}
+
+	inline void Vector3::set(const Vector3& v)
+	{
+		this->x = v.x;
+		this->y = v.y;
+		this->z = v.z;
+	}
+
 	inline Vector3 Vector3::operator+(const Vector3& v) const
 	{
 		auto result(*this);
-		add(result, v, &result);
+		result += v;
+		return result;
+	}
+
+	inline Vector3 Vector3::operator+(float scalar) const
+	{
+		auto result(*this);
+		result += scalar;
 		return result;
 	}
 
 	inline Vector3& Vector3::operator+=(const Vector3& v)
 	{
-		add(*this, v, this);
+		x += v.x;
+		y += v.y;
+		z += v.z;
 		return *this;
 	}
 
-	inline Vector3 Vector3::operator-(const Vector3& v) const
+	inline Vector3& Vector3::operator+=(float scalar)
 	{
-		auto result(*this);
-		subtract(result, v, &result);
-		return result;
-	}
-
-	inline Vector3& Vector3::operator-=(const Vector3& v)
-	{
-		subtract(*this, v, this);
+		x += scalar;
+		y += scalar;
+		z += scalar;
 		return *this;
 	}
 
@@ -114,10 +135,40 @@ namespace solo
 		return result;
 	}
 
-	inline Vector3 Vector3::operator*(float x) const
+	inline Vector3 Vector3::operator-(float scalar) const
 	{
 		auto result(*this);
-		result *= x;
+		result -= scalar;
+		return result;
+	}
+
+	inline Vector3 Vector3::operator-(const Vector3& v) const
+	{
+		auto result(*this);
+		result -= v;
+		return result;
+	}
+
+	inline Vector3& Vector3::operator-=(const Vector3& v)
+	{
+		x -= v.x;
+		y -= v.y;
+		z -= v.z;
+		return *this;
+	}
+
+	inline Vector3& Vector3::operator-=(float scalar)
+	{
+		x -= scalar;
+		y -= scalar;
+		z -= scalar;
+		return *this;
+	}
+
+	inline Vector3 Vector3::operator*(float scalar) const
+	{
+		auto result(*this);
+		result *= scalar;
 		return result;
 	}
 
@@ -129,9 +180,17 @@ namespace solo
 		return *this;
 	}
 
-	inline Vector3 Vector3::operator/(const float x) const
+	inline Vector3 Vector3::operator/(const float scalar) const
 	{
-		return Vector3(this->x / x, this->y / x, this->z / x);
+		return Vector3(this->x / scalar, this->y / scalar, this->z / scalar);
+	}
+
+	inline Vector3& Vector3::operator/=(float scalar)
+	{
+		x /= scalar;
+		y /= scalar;
+		z /= scalar;
+		return *this;
 	}
 
 	inline bool Vector3::operator<(const Vector3& v) const

@@ -279,7 +279,7 @@ void Scripter_Chai::registerScriptApi()
 	// RenderContext
 	engine->add(user_type<RenderContext>(), "RenderContext");
 
-	// Vector2
+	// Vector2 TODO clean up and make similar to Vector3
 	engine->add(user_type<Vector2>(), "Vector2");
 	engine->add(constructor<Vector2()>(), "Vector2");
 	engine->add(constructor<Vector2(float, float)>(), "Vector2");
@@ -310,39 +310,45 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(&Vector3::x), "x");
 	engine->add(fun(&Vector3::y), "y");
 	engine->add(fun(&Vector3::z), "z");
-	engine->add(fun(&Vector3::unitX), "unitVector3X");
-	engine->add(fun(&Vector3::unitY), "unitVector3Y");
-	engine->add(fun(&Vector3::unitZ), "unitVector3Z");
-	engine->add(fun(&Vector3::zero), "zeroVector3");
-	engine->add(fun(static_cast<void(Vector3::*)()>(&Vector3::normalize)), "normalize");
-	engine->add(fun(static_cast<void(Vector3::*)(Vector3*)const>(&Vector3::normalize)), "normalize");
-	engine->add(fun(&Vector3::normalized), "normalized");
-	engine->add(fun(&Vector3::add), "add");
-	engine->add(fun(&Vector3::angle), "angle");
+	engine->add(fun(&Vector3::unitX), "Vector3_unitX");
+	engine->add(fun(&Vector3::unitY), "Vector3_unitY");
+	engine->add(fun(&Vector3::unitZ), "Vector3_unitZ");
+	engine->add(fun(&Vector3::zero), "Vector3_zero");
+	engine->add(fun(&Vector3::unit), "Vector3_unit");
+	engine->add(fun(&Vector3::isUnit), "isUnit");
+	engine->add(fun(&Vector3::isZero), "isZero");
+	engine->add(fun(&Vector3::angle), "Vector3_angle");
 	engine->add(fun(static_cast<void(Vector3::*)(const Vector3&, const Vector3&)>(&Vector3::clamp)), "clamp");
-	engine->add(fun(static_cast<void(*)(const Vector3&, const Vector3&, const Vector3&, Vector3*)>(&Vector3::clamp)), "clamp");
-	engine->add(fun(static_cast<void(Vector3::*)(const Vector3&)>(&Vector3::cross)), "cross");
-	engine->add(fun(static_cast<void(*)(const Vector3&, const Vector3&, Vector3*)>(&Vector3::cross)), "cross");
+	engine->add(fun(&Vector3::cross), "Vector3_cross");
 	engine->add(fun(&Vector3::distance), "distance");
 	engine->add(fun(&Vector3::distanceSquared), "distanceSquared");
 	engine->add(fun(static_cast<float(Vector3::*)(const Vector3&)const>(&Vector3::dot)), "dot");
-	engine->add(fun(static_cast<float(*)(const Vector3&, const Vector3&)>(&Vector3::dot)), "dot");
-	engine->add(fun(&Vector3::isOne), "isOne");
-	engine->add(fun(&Vector3::isZero), "isZero");
-	engine->add(fun(&Vector3::smooth), "smooth");
-	engine->add(fun(&Vector3::subtract), "subtract");
-	engine->add(fun(&Vector3::operator*=), "*=");
-	engine->add(fun(&Vector3::operator!=), "!=");
+	engine->add(fun(static_cast<float(*)(const Vector3&, const Vector3&)>(&Vector3::dot)), "Vector3_dot");
+	engine->add(fun(&Vector3::length), "length");
+	engine->add(fun(&Vector3::lengthSquared), "lengthSquared");
+	engine->add(fun(&Vector3::normalized), "normalized");
+	engine->add(fun(static_cast<void(Vector3::*)()>(&Vector3::normalize)), "normalize");
+	engine->add(fun(static_cast<void(Vector3::*)(float, float, float)>(&Vector3::set)), "set");
+	engine->add(fun(static_cast<void(Vector3::*)(const Vector3&)>(&Vector3::set)), "set");
+	engine->add(fun(static_cast<Vector3(Vector3::*)(const Vector3&)const>(&Vector3::operator+)), "+");
+	engine->add(fun(static_cast<Vector3(Vector3::*)(float)const>(&Vector3::operator+)), "+");
+	engine->add(fun(static_cast<Vector3&(Vector3::*)(const Vector3&)>(&Vector3::operator+=)), "+=");
+	engine->add(fun(static_cast<Vector3&(Vector3::*)(float)>(&Vector3::operator+=)), "+=");
+	// TODO unary - is probably not supported by ChaiScript
+//	engine->add(fun(static_cast<Vector3(Vector3::*)()const>(&Vector3::operator-)), "-");
+	engine->add(fun(static_cast<Vector3(Vector3::*)(float)const>(&Vector3::operator-)), "-");
+	engine->add(fun(static_cast<Vector3(Vector3::*)(const Vector3&)const>(&Vector3::operator-)), "-");
+	engine->add(fun(static_cast<Vector3&(Vector3::*)(const Vector3&)>(&Vector3::operator-=)), "-=");
+	engine->add(fun(static_cast<Vector3&(Vector3::*)(float)>(&Vector3::operator-=)), "-=");
 	engine->add(fun(&Vector3::operator*), "*");
-	engine->add(fun(&Vector3::operator+), "+");
-	engine->add(fun(&Vector3::operator+=), "+=");
-	engine->add(fun(static_cast<Vector3(Vector3::*)()const>(&Vector3::operator-)), "-=");
-	engine->add(fun(static_cast<Vector3(Vector3::*)(const Vector3&)const>(&Vector3::operator-)), "-=");
+	engine->add(fun(&Vector3::operator*=), "*=");
 	engine->add(fun(&Vector3::operator/), "/");
+	engine->add(fun(&Vector3::operator/=), "/=");
 	engine->add(fun(&Vector3::operator<), "<");
 	engine->add(fun(&Vector3::operator==), "==");
+	engine->add(fun(&Vector3::operator!=), "!=");
 
-	// Vector4
+	// Vector4 TODO clean up and make similar to Vector3
 	engine->add(user_type<Vector4>(), "Vector4");
 	engine->add(constructor<Vector4()>(), "Vector4");
 	engine->add(constructor<Vector4(float, float, float, float)>(), "Vector4");

@@ -26,7 +26,7 @@ shared<Transform> TransformFactory::create(Node node)
 Transform::Transform(Node node) :
 	ComponentBase(node)
 {
-	localScale.set(Vector3::one());
+	localScale.set(Vector3::unit());
 	setDirty<DIRTY_BIT_ALL>();
 }
 
@@ -120,7 +120,7 @@ const Matrix& Transform::getMatrix() const
 	if (isDirty())
 	{
 		auto hasTranslation = !localPosition.isZero();
-		auto hasScale = !localScale.isOne();
+		auto hasScale = !localScale.isUnit();
 		auto hasRotation = !localRotation.isIdentity();
 
 		if (hasTranslation || isDirty<DIRTY_BIT_POSITION>())

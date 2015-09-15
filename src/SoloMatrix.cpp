@@ -83,16 +83,13 @@ void Matrix::createLookAt(float eyePositionX, float eyePositionY, float eyePosit
 	Vector3 up(upX, upY, upZ);
 	up.normalize();
 
-	Vector3 zaxis;
-	Vector3::subtract(eye, target, &zaxis);
+	Vector3 zaxis(eye - target);
 	zaxis.normalize();
 
-	Vector3 xaxis;
-	Vector3::cross(up, zaxis, &xaxis);
+	Vector3 xaxis = Vector3::cross(up, zaxis);
 	xaxis.normalize();
 
-	Vector3 yaxis;
-	Vector3::cross(zaxis, xaxis, &yaxis);
+	Vector3 yaxis = Vector3::cross(zaxis, xaxis);
 	yaxis.normalize();
 
 	dst->m[0] = xaxis.x;
