@@ -192,7 +192,7 @@ namespace solo
 	Matrix Matrix::operator*(float scalar) const
 	{
 		Matrix result;
-		Math::multiplyMatrix(m, scalar, result.m);
+		Matrix::multiply(*this, scalar, &result);
 		return result;
 	}
 
@@ -204,7 +204,7 @@ namespace solo
 
 	Matrix& Matrix::operator*=(float scalar)
 	{
-		Math::multiplyMatrix(m, scalar, m);
+		Matrix::multiply(*this, scalar, this);
 		return *this;
 	}
 

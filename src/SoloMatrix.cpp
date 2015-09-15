@@ -409,7 +409,22 @@ void Matrix::add(float scalar)
 
 void Matrix::add(float scalar, Matrix* dst)
 {
-	Math::addMatrix(m, scalar, dst->m);
+	dst->m[0] = m[0] + scalar;
+	dst->m[1] = m[1] + scalar;
+	dst->m[2] = m[2] + scalar;
+	dst->m[3] = m[3] + scalar;
+	dst->m[4] = m[4] + scalar;
+	dst->m[5] = m[5] + scalar;
+	dst->m[6] = m[6] + scalar;
+	dst->m[7] = m[7] + scalar;
+	dst->m[8] = m[8] + scalar;
+	dst->m[9] = m[9] + scalar;
+	dst->m[10] = m[10] + scalar;
+	dst->m[11] = m[11] + scalar;
+	dst->m[12] = m[12] + scalar;
+	dst->m[13] = m[13] + scalar;
+	dst->m[14] = m[14] + scalar;
+	dst->m[15] = m[15] + scalar;
 }
 
 
@@ -421,7 +436,22 @@ void Matrix::add(const Matrix& m)
 
 void Matrix::add(const Matrix& m1, const Matrix& m2, Matrix* dst)
 {
-	Math::addMatrix(m1.m, m2.m, dst->m);
+	dst->m[0] = m1.m[0] + m2.m[0];
+	dst->m[1] = m1.m[1] + m2.m[1];
+	dst->m[2] = m1.m[2] + m2.m[2];
+	dst->m[3] = m1.m[3] + m2.m[3];
+	dst->m[4] = m1.m[4] + m2.m[4];
+	dst->m[5] = m1.m[5] + m2.m[5];
+	dst->m[6] = m1.m[6] + m2.m[6];
+	dst->m[7] = m1.m[7] + m2.m[7];
+	dst->m[8] = m1.m[8] + m2.m[8];
+	dst->m[9] = m1.m[9] + m2.m[9];
+	dst->m[10] = m1.m[10] + m2.m[10];
+	dst->m[11] = m1.m[11] + m2.m[11];
+	dst->m[12] = m1.m[12] + m2.m[12];
+	dst->m[13] = m1.m[13] + m2.m[13];
+	dst->m[14] = m1.m[14] + m2.m[14];
+	dst->m[15] = m1.m[15] + m2.m[15];
 }
 
 
@@ -754,13 +784,51 @@ bool Matrix::isIdentity() const
 
 void Matrix::multiply(const Matrix& m, float scalar, Matrix* dst)
 {
-	Math::multiplyMatrix(m.m, scalar, dst->m);
+	dst->m[0] = m.m[0] * scalar;
+	dst->m[1] = m.m[1] * scalar;
+	dst->m[2] = m.m[2] * scalar;
+	dst->m[3] = m.m[3] * scalar;
+	dst->m[4] = m.m[4] * scalar;
+	dst->m[5] = m.m[5] * scalar;
+	dst->m[6] = m.m[6] * scalar;
+	dst->m[7] = m.m[7] * scalar;
+	dst->m[8] = m.m[8] * scalar;
+	dst->m[9] = m.m[9] * scalar;
+	dst->m[10] = m.m[10] * scalar;
+	dst->m[11] = m.m[11] * scalar;
+	dst->m[12] = m.m[12] * scalar;
+	dst->m[13] = m.m[13] * scalar;
+	dst->m[14] = m.m[14] * scalar;
+	dst->m[15] = m.m[15] * scalar;
 }
 
 
 void Matrix::multiply(const Matrix& m1, const Matrix& m2, Matrix* dst)
 {
-	Math::multiplyMatrix(m1.m, m2.m, dst->m);
+	// Support the case where m1 or m2 is the same array as dst.
+	float product[16];
+
+	product[0] = m1.m[0] * m2.m[0] + m1.m[4] * m2.m[1] + m1.m[8] * m2.m[2] + m1.m[12] * m2.m[3];
+	product[1] = m1.m[1] * m2.m[0] + m1.m[5] * m2.m[1] + m1.m[9] * m2.m[2] + m1.m[13] * m2.m[3];
+	product[2] = m1.m[2] * m2.m[0] + m1.m[6] * m2.m[1] + m1.m[10] * m2.m[2] + m1.m[14] * m2.m[3];
+	product[3] = m1.m[3] * m2.m[0] + m1.m[7] * m2.m[1] + m1.m[11] * m2.m[2] + m1.m[15] * m2.m[3];
+
+	product[4] = m1.m[0] * m2.m[4] + m1.m[4] * m2.m[5] + m1.m[8] * m2.m[6] + m1.m[12] * m2.m[7];
+	product[5] = m1.m[1] * m2.m[4] + m1.m[5] * m2.m[5] + m1.m[9] * m2.m[6] + m1.m[13] * m2.m[7];
+	product[6] = m1.m[2] * m2.m[4] + m1.m[6] * m2.m[5] + m1.m[10] * m2.m[6] + m1.m[14] * m2.m[7];
+	product[7] = m1.m[3] * m2.m[4] + m1.m[7] * m2.m[5] + m1.m[11] * m2.m[6] + m1.m[15] * m2.m[7];
+
+	product[8] = m1.m[0] * m2.m[8] + m1.m[4] * m2.m[9] + m1.m[8] * m2.m[10] + m1.m[12] * m2.m[11];
+	product[9] = m1.m[1] * m2.m[8] + m1.m[5] * m2.m[9] + m1.m[9] * m2.m[10] + m1.m[13] * m2.m[11];
+	product[10] = m1.m[2] * m2.m[8] + m1.m[6] * m2.m[9] + m1.m[10] * m2.m[10] + m1.m[14] * m2.m[11];
+	product[11] = m1.m[3] * m2.m[8] + m1.m[7] * m2.m[9] + m1.m[11] * m2.m[10] + m1.m[15] * m2.m[11];
+
+	product[12] = m1.m[0] * m2.m[12] + m1.m[4] * m2.m[13] + m1.m[8] * m2.m[14] + m1.m[12] * m2.m[15];
+	product[13] = m1.m[1] * m2.m[12] + m1.m[5] * m2.m[13] + m1.m[9] * m2.m[14] + m1.m[13] * m2.m[15];
+	product[14] = m1.m[2] * m2.m[12] + m1.m[6] * m2.m[13] + m1.m[10] * m2.m[14] + m1.m[14] * m2.m[15];
+	product[15] = m1.m[3] * m2.m[12] + m1.m[7] * m2.m[13] + m1.m[11] * m2.m[14] + m1.m[15] * m2.m[15];
+
+	memcpy(dst, product, MATRIX_SIZE);
 }
 
 
@@ -772,7 +840,22 @@ void Matrix::negate()
 
 void Matrix::negate(Matrix* dst) const
 {
-	Math::negateMatrix(m, dst->m);
+	dst->m[0] = -m[0];
+	dst->m[1] = -m[1];
+	dst->m[2] = -m[2];
+	dst->m[3] = -m[3];
+	dst->m[4] = -m[4];
+	dst->m[5] = -m[5];
+	dst->m[6] = -m[6];
+	dst->m[7] = -m[7];
+	dst->m[8] = -m[8];
+	dst->m[9] = -m[9];
+	dst->m[10] = -m[10];
+	dst->m[11] = -m[11];
+	dst->m[12] = -m[12];
+	dst->m[13] = -m[13];
+	dst->m[14] = -m[14];
+	dst->m[15] = -m[15];
 }
 
 
@@ -938,7 +1021,22 @@ void Matrix::subtract(const Matrix& m)
 
 void Matrix::subtract(const Matrix& m1, const Matrix& m2, Matrix* dst)
 {
-	Math::subtractMatrix(m1.m, m2.m, dst->m);
+	dst->m[0] = m1.m[0] - m2.m[0];
+	dst->m[1] = m1.m[1] - m2.m[1];
+	dst->m[2] = m1.m[2] - m2.m[2];
+	dst->m[3] = m1.m[3] - m2.m[3];
+	dst->m[4] = m1.m[4] - m2.m[4];
+	dst->m[5] = m1.m[5] - m2.m[5];
+	dst->m[6] = m1.m[6] - m2.m[6];
+	dst->m[7] = m1.m[7] - m2.m[7];
+	dst->m[8] = m1.m[8] - m2.m[8];
+	dst->m[9] = m1.m[9] - m2.m[9];
+	dst->m[10] = m1.m[10] - m2.m[10];
+	dst->m[11] = m1.m[11] - m2.m[11];
+	dst->m[12] = m1.m[12] - m2.m[12];
+	dst->m[13] = m1.m[13] - m2.m[13];
+	dst->m[14] = m1.m[14] - m2.m[14];
+	dst->m[15] = m1.m[15] - m2.m[15];
 }
 
 
@@ -976,7 +1074,9 @@ void Matrix::transformDirection(const Vector3& dir, Vector3* dst) const
 
 void Matrix::transformDirection(float x, float y, float z, float w, Vector3* dst) const
 {
-	Math::transformVector4(m, x, y, z, w, reinterpret_cast<float*>(dst));
+	dst->x = x * m[0] + y * m[4] + z * m[8] + w * m[12];
+	dst->y = x * m[1] + y * m[5] + z * m[9] + w * m[13];
+	dst->z = x * m[2] + y * m[6] + z * m[10] + w * m[14];
 }
 
 
@@ -1034,5 +1134,11 @@ void Matrix::transpose()
 
 void Matrix::transpose(Matrix* dst) const
 {
-	Math::transposeMatrix(m, dst->m);
+	float t[16] = {
+			m[0], m[4], m[8], m[12],
+			m[1], m[5], m[9], m[13],
+			m[2], m[6], m[10], m[14],
+			m[3], m[7], m[11], m[15]
+	};
+	memcpy(dst, t, MATRIX_SIZE);
 }
