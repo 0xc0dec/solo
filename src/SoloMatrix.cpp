@@ -1088,7 +1088,16 @@ void Matrix::transformDirection(Vector4* dir) const
 
 void Matrix::transformDirection(const Vector4& dir, Vector4* dst) const
 {
-	Math::transformVector4(m, reinterpret_cast<const float*>(&dir), reinterpret_cast<float*>(dst));
+	// Handle case where v == dst.
+	auto x = dir.x * m[0] + dir.y * m[4] + dir.z * m[8] + dir.w * m[12];
+	auto y = dir.x * m[1] + dir.y * m[5] + dir.z * m[9] + dir.w * m[13];
+	auto z = dir.x * m[2] + dir.y * m[6] + dir.z * m[10] + dir.w * m[14];
+	auto w = dir.x * m[3] + dir.y * m[7] + dir.z * m[11] + dir.w * m[15];
+
+	dst->x = x;
+	dst->y = y;
+	dst->z = z;
+	dst->w = w;
 }
 
 

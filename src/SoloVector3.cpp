@@ -157,10 +157,13 @@ void Vector3::cross(const Vector3& v)
 
 void Vector3::cross(const Vector3& v1, const Vector3& v2, Vector3* dst)
 {
-	// NOTE: This code assumes Vector3 struct members are contiguous floats in memory.
-	// We might want to revisit this (and other areas of code that make this assumption)
-	// later to guarantee 100% safety/compatibility.
-	Math::crossVector3(&v1.x, &v2.x, &dst->x);
+	auto x = (v1.y * v2.z) - (v1.z * v2.y);
+	auto y = (v1.z * v2.x) - (v1.x * v2.z);
+	auto z = (v1.x * v2.y) - (v1.y * v2.x);
+
+	dst->x = x;
+	dst->y = y;
+	dst->z = z;
 }
 
 
