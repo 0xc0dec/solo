@@ -53,13 +53,11 @@ namespace solo
 		Vector3 normalized() const;
 		void normalize();
 		void normalize(Vector3* dst) const;
-
-		void scale(float scalar);
 		
 		void set(float x, float y, float z);
 		void set(const float* array);
 		void set(const Vector3& v);
-		void set(const Vector3& p1, const Vector3& p2);
+//		void set(const Vector3& p1, const Vector3& p2);
 
 		void smooth(const Vector3& target, float elapsedTime, float responseTime);
 
@@ -120,13 +118,15 @@ namespace solo
 	inline Vector3 Vector3::operator*(float x) const
 	{
 		auto result(*this);
-		result.scale(x);
+		result *= x;
 		return result;
 	}
 
-	inline Vector3& Vector3::operator*=(float x)
+	inline Vector3& Vector3::operator*=(float scalar)
 	{
-		scale(x);
+		x *= scalar;
+		y *= scalar;
+		z *= scalar;
 		return *this;
 	}
 
@@ -159,7 +159,7 @@ namespace solo
 	inline Vector3 operator*(float x, const Vector3& v)
 	{
 		auto result(const_cast<Vector3&>(v));
-		result.scale(x);
+		result *= x;
 		return result;
 	}
 }

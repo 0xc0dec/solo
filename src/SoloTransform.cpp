@@ -254,7 +254,7 @@ void Transform::rotate(const Vector3& axis, float angleRadians, TransformSpace s
 
 void Transform::scaleLocal(float scale)
 {
-	localScale.scale(scale);
+	localScale *= scale;
 	setDirtyWithChildren<DIRTY_BIT_SCALE, DIRTY_BIT_WORLD>();
 }
 

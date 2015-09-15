@@ -18,7 +18,7 @@ Vector3::Vector3(const float* array)
 
 Vector3::Vector3(const Vector3& p1, const Vector3& p2)
 {
-	set(p1, p2);
+	*this = p2 - p1;
 }
 
 
@@ -250,14 +250,6 @@ void Vector3::normalize(Vector3* dst) const
 }
 
 
-void Vector3::scale(float scalar)
-{
-	x *= scalar;
-	y *= scalar;
-	z *= scalar;
-}
-
-
 void Vector3::set(float x, float y, float z)
 {
 	this->x = x;
@@ -282,12 +274,12 @@ void Vector3::set(const Vector3& v)
 }
 
 
-void Vector3::set(const Vector3& p1, const Vector3& p2)
-{
-	x = p2.x - p1.x;
-	y = p2.y - p1.y;
-	z = p2.z - p1.z;
-}
+//void Vector3::set(const Vector3& p1, const Vector3& p2)
+//{
+//	x = p2.x - p1.x;
+//	y = p2.y - p1.y;
+//	z = p2.z - p1.z;
+//}
 
 
 void Vector3::subtract(const Vector3& v1, const Vector3& v2, Vector3* dst)

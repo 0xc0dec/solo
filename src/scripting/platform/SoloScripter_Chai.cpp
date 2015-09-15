@@ -329,7 +329,6 @@ void Scripter_Chai::registerScriptApi()
 	engine->add(fun(static_cast<float(*)(const Vector3&, const Vector3&)>(&Vector3::dot)), "dot");
 	engine->add(fun(&Vector3::isOne), "isOne");
 	engine->add(fun(&Vector3::isZero), "isZero");
-	engine->add(fun(&Vector3::scale), "scale");
 	engine->add(fun(&Vector3::smooth), "smooth");
 	engine->add(fun(&Vector3::subtract), "subtract");
 	engine->add(fun(&Vector3::operator*=), "*=");
