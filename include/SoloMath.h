@@ -3,10 +3,6 @@
 #include <cmath>
 #include "SoloBase.h"
 
-#define MATH_DEG_TO_RAD(x)			((x) * 0.0174532925f)
-#define MATH_RAD_TO_DEG(x)			((x) * 57.29577951f)
-#define MATH_RANDOM_MINUS1_1()		((2.0f * ((float)rand() / RAND_MAX)) - 1.0f)		// Returns a random float between -1 and 1.
-#define MATH_RANDOM_0_1()			((float)rand() / RAND_MAX)					// Returns a random float between 0 and 1.
 #define MATH_FLOAT_SMALL			1.0e-37f
 #define MATH_TOLERANCE				2e-37f
 #define MATH_E						2.71828182845904523536f
@@ -17,7 +13,6 @@
 #define MATH_PIOVER4				0.785398163397448309616f
 #define MATH_PIX2					6.28318530717958647693f
 #define MATH_EPSILON				0.000001f
-#define MATH_CLAMP(x, lo, hi)		((x < lo) ? lo : ((x > hi) ? hi : x))
 #ifndef M_1_PI
 #	define M_1_PI					0.31830988618379067154
 #endif
@@ -27,10 +22,46 @@ namespace solo
 	class Math
 	{
 	public:
-		static void smooth(float* x, float target, float elapsedTime, float responseTime);
-		static void smooth(float* x, float target, float elapsedTime, float riseTime, float fallTime);
+		Math() = delete;
 
-	private:
-		Math() {}
+		static inline void smooth(float* x, float target, float elapsedTime, float responseTime)
+		{
+			if (elapsedTime > 0)
+				*x += (target - *x) * elapsedTime / (elapsedTime + responseTime);
+		}
+
+		static inline void smooth(float* x, float target, float elapsedTime, float riseTime, float fallTime)
+		{
+			if (elapsedTime > 0)
+			{
+				auto delta = target - *x;
+				*x += delta * elapsedTime / (elapsedTime + (delta > 0 ? riseTime : fallTime));
+			}
+		}
+
+		static inline float degToRad(float degrees)
+		{
+			return degrees * 0.0174532925f;
+		}
+
+		static inline float radToDeg(float radians)
+		{
+			return radians * 57.29577951f;
+		}
+
+		static inline float getRandomAroundZero()
+		{
+			return (2.0f * ((float)rand() / RAND_MAX)) - 1.0f;
+		}
+
+		static inline float getRandom01()
+		{
+			return (float)rand() / RAND_MAX;
+		}
+
+		static inline float clamp(float x, float lo, float hi)
+		{
+			return (x < lo) ? lo : ((x > hi) ? hi : x);
+		}
 	};
 }
