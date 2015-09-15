@@ -274,14 +274,6 @@ void Vector3::set(const Vector3& v)
 }
 
 
-//void Vector3::set(const Vector3& p1, const Vector3& p2)
-//{
-//	x = p2.x - p1.x;
-//	y = p2.y - p1.y;
-//	z = p2.z - p1.z;
-//}
-
-
 void Vector3::subtract(const Vector3& v1, const Vector3& v2, Vector3* dst)
 {
 	dst->x = v1.x - v2.x;

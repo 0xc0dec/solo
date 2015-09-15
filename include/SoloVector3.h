@@ -17,7 +17,7 @@ namespace solo
 		Vector3(const float* array);
 		Vector3(const Vector3& p1, const Vector3& p2);
 
-		static Vector3 fromColor(unsigned color);
+		static Vector3 fromColor(unsigned color); // TODO move to other place or remove completely
 
 		static const Vector3& zero();
 		static const Vector3& one();
@@ -57,7 +57,6 @@ namespace solo
 		void set(float x, float y, float z);
 		void set(const float* array);
 		void set(const Vector3& v);
-//		void set(const Vector3& p1, const Vector3& p2);
 
 		void smooth(const Vector3& target, float elapsedTime, float responseTime);
 
