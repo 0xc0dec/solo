@@ -1,0 +1,490 @@
+#include "DemoTest.h"
+
+
+auto vsBasic = R"s(
+	#version 330 core
+
+	layout (location = 0) in vec4 position;
+	layout (location = 1) in vec3 normal;
+	layout (location = 2) in vec2 uv;
+
+	uniform mat4 worldViewProjMatrix;
+	out vec2 uv0;
+	out vec3 n;
+
+	void main()
+	{
+		gl_Position = worldViewProjMatrix * position;
+		uv0 = uv;
+	}
+)s";
+
+auto fsTexture = R"s(
+	#version 330 core
+
+	uniform sampler2D mainTex;
+
+	in vec2 uv0;
+	out vec4 fragColor;
+
+	void main()
+	{
+		fragColor = texture(mainTex, uv0);
+	}
+)s";
+
+auto fsChecker = R"s(
+	#version 330 core
+
+	in vec2 uv0;
+	uniform vec4 color;
+	out vec4 fragColor;
+
+	void main()
+	{
+		float xfloor = floor(uv0.x / 0.2);
+		float yfloor = floor(uv0.y / 0.2) + 1;
+		if (mod(xfloor, 2) == 0 && mod(yfloor, 2) == 0)
+			fragColor = vec4(0, 0, 0, 1);
+		else if (mod(xfloor, 2) > 0 && mod(yfloor, 2) > 0)
+			fragColor = vec4(0, 0, 0, 1);
+		else
+			fragColor = color;
+	}
+)s";
+
+auto vsBasicLighting = R"s(
+	#version 330 core
+
+	layout (location = 0) in vec4 position;
+	layout (location = 1) in vec3 normal;
+	layout (location = 2) in vec2 uv;
+
+	uniform mat4 worldViewProjMatrix;
+	uniform mat4 normalMatrix;
+	out vec2 uv0;
+	out vec3 n;
+
+	void main()
+	{
+		gl_Position = worldViewProjMatrix * position;
+		uv0 = uv;
+		n = normalize((normalMatrix * vec4(normal, 1)).xyz);
+	}
+)s";
+
+
+auto fsTextureWithLighting = R"s(
+	#version 330 core
+
+	uniform sampler2D mainTex;
+
+	in vec2 uv0;
+	in vec3 n;
+	out vec4 fragColor;
+
+	void main()
+	{
+		vec4 color = texture(mainTex, uv0);
+		fragColor = color * dot(vec3(1, 1, 1), n) / (length(vec3(1, 1, 1)) * length(n));
+	}
+)s";
+
+
+class EscapeWatcher: public ComponentBase<EscapeWatcher>
+{
+
+public:
+	explicit EscapeWatcher(Node node, Device *device) :
+		ComponentBase(node),
+		device(device)
+	{
+	}
+
+	virtual void update() override
+	{
+		if (device->isKeyPressed(KeyCode::Escape, true))
+			device->requestShutdown();
+	}
+
+private:
+	Device *device;
+};
+
+
+class Spectator: public ComponentBase<Spectator>
+{
+public:
+	explicit Spectator(Node node, Device *device):
+		ComponentBase(node),
+		device(device)
+	{
+		transform = node.getComponent<Transform>();
+	}
+
+	virtual void update() override
+	{
+		auto mouseMotion = device->getMouseMotion();
+		auto dt = device->getTimeDelta();
+
+		if (device->isMouseButtonDown(MouseButton::Right, true))
+			device->setCursorCaptured(true);
+		if (device->isMouseButtonReleased(MouseButton::Right))
+			device->setCursorCaptured(false);
+
+		if (device->isMouseButtonDown(MouseButton::Right, false))
+		{
+			if (mouseMotion.x != 0)
+				transform->rotate(Vector3::unitY(), 0.5f * dt * -mouseMotion.x, TransformSpace::World);
+			if (mouseMotion.y != 0)
+				transform->rotate(Vector3::unitX(), 0.5f * dt * -mouseMotion.y, TransformSpace::Self);
+		}
+
+		Vector3 movement;
+		if (device->isKeyPressed(KeyCode::W, false))
+			movement += transform->getLocalForward();
+		if (device->isKeyPressed(KeyCode::S, false))
+			movement += transform->getLocalBack();
+		if (device->isKeyPressed(KeyCode::A, false))
+			movement += transform->getLocalLeft();
+		if (device->isKeyPressed(KeyCode::D, false))
+			movement += transform->getLocalRight();
+		if (device->isKeyPressed(KeyCode::Q, false))
+			movement += transform->getLocalDown();
+		if (device->isKeyPressed(KeyCode::E, false))
+			movement += transform->getLocalUp();
+
+		movement.normalize();
+		movement *= dt * 10;
+		transform->translateLocal(movement);
+	}
+
+private:
+	Transform *transform;
+	Device *device;
+};
+
+
+class RotatorAroundLocalXAxis: public ComponentBase<RotatorAroundLocalXAxis>
+{
+public:
+	explicit RotatorAroundLocalXAxis(Node node, Device *device):
+		ComponentBase(node),
+		device(device)
+	{
+		transform = node.getComponent<Transform>();
+	}
+
+	virtual void update() override
+	{
+		auto angle = device->getTimeDelta() * 1.3f;
+		transform->rotate(Vector3::unitX(), angle, TransformSpace::Self);
+	}
+
+private:
+	Transform *transform;
+	Device *device;
+};
+
+
+class RotatorAroundWorldYAxis: public ComponentBase<RotatorAroundWorldYAxis>
+{
+public:
+	explicit RotatorAroundWorldYAxis(Node node, Device *device):
+		ComponentBase(node),
+		device(device)
+	{
+		transform = node.getComponent<Transform>();
+	}
+
+	virtual void update() override
+	{
+		auto angle = device->getTimeDelta();
+		transform->rotate(Vector3::unitY(), angle, TransformSpace::World);
+	}
+
+private:
+	Transform *transform;
+	Device *device;
+};
+
+
+shared<Texture> DemoTest::loadTexture(const std::string &path)
+{
+	auto texture = DYNAMIC_CAST<Texture2D>(resourceManager->getOrLoadTexture(path));
+	texture->generateMipmaps();
+	texture->setFilterMode(Filter::Linear, Filter::Linear);
+	texture->setAnisotropyLevel(8);
+	return texture;
+}
+
+
+void DemoTest::initMaterials()
+{
+	auto tex1 = loadTexture("../data/freeman1.png");
+	auto tex2 = loadTexture("../data/freeman2.png");
+
+	texEffect = resourceManager->getOrCreateEffect(vsBasic, fsTexture);
+	texMaterial = resourceManager->createMaterial(texEffect);
+	texMaterial->setPolygonFace(PolygonFace::All);
+	texMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
+	texMaterial->getParameter("mainTex")->setValue(tex1);
+
+	auto checkerEffect = resourceManager->getOrCreateEffect(vsBasic, fsChecker);
+	checkerMaterial = resourceManager->createMaterial(checkerEffect);
+	checkerMaterial->setPolygonFace(PolygonFace::All);
+	checkerMaterial->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
+	checkerMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
+
+	auto texWithLightingEffect = resourceManager->getOrCreateEffect(vsBasicLighting, fsTextureWithLighting);
+	texWithLightingMaterial = resourceManager->createMaterial(texWithLightingEffect);
+	texWithLightingMaterial->setPolygonFace(PolygonFace::All);
+	texWithLightingMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
+	texWithLightingMaterial->getParameter("normalMatrix")->bindValue(AutoBinding::InverseTransposedWorldMatrix);
+	texWithLightingMaterial->getParameter("mainTex")->setValue(tex2);
+}
+
+
+shared<RenderTarget> DemoTest::initRenderTarget()
+{
+	auto canvasSize = device->getCanvasSize();
+	auto renderTarget = resourceManager->getOrCreateRenderTarget("test");
+	auto renderTexture = DYNAMIC_CAST<Texture2D>(resourceManager->getOrCreateTexture("RTT"));
+	renderTexture->setData(ColorFormat::RGB, std::vector<uint8_t>(), canvasSize.x / 8, canvasSize.y / 8);
+	renderTexture->setFilterMode(Filter::Nearest, Filter::Nearest);
+	renderTexture->setWrapMode(WrapMode::Clamp, WrapMode::Clamp);
+	auto texVector = std::vector<shared<Texture2D>>();
+	texVector.push_back(renderTexture);
+	renderTarget->setTextures(texVector);
+
+	renderTargetMaterial = resourceManager->createMaterial(texEffect);
+	renderTargetMaterial->setPolygonFace(PolygonFace::All);
+	renderTargetMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
+	renderTargetMaterial->getParameter("mainTex")->setValue(renderTexture);
+
+	return renderTarget;
+}
+
+
+void DemoTest::initCameras(shared<RenderTarget> renderTarget)
+{
+	auto canvasSize = device->getCanvasSize();
+	auto offscreenCameraNode = scene->createNode();
+	auto offscreenCameraTransform = offscreenCameraNode->getComponent<Transform>();
+	offscreenCameraTransform->setLocalPosition(Vector3(0, 0, 10));
+	auto offscreenCamera = offscreenCameraNode->addComponent<Camera>();
+	offscreenCamera->setClearColor(1, 1, 1, 1);
+	offscreenCamera->setNear(0.05f);
+	offscreenCamera->setRenderTarget(renderTarget);
+	offscreenCamera->setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8);
+
+	auto mainCameraNode = scene->createNode();
+	auto mainCameraTransform = mainCameraNode->getComponent<Transform>();
+	mainCameraTransform->setLocalPosition(0, 2, 15);
+	mainCameraNode->addComponent<Spectator>(device);
+	mainCameraNode->addComponent<EscapeWatcher>(device);
+	auto mainCamera = mainCameraNode->addComponent<Camera>();
+	mainCamera->setClearColor(0, 0.6f, 0.6f, 1);
+	mainCamera->setNear(0.05f);
+}
+
+
+void DemoTest::initModel()
+{
+	auto mesh = resourceManager->getOrLoadMesh("../data/monkey_hires.obj");
+	auto model = resourceManager->getOrCreateModel();
+	model->addMesh(mesh);
+	auto node = scene->createNode();
+	auto renderer = node->addComponent<ModelRenderer>();
+	renderer->setModel(model);
+	renderer->setMaterial(0, texWithLightingMaterial);
+	node->getComponent<Transform>()->setLocalPosition(Vector3::zero());
+	node->addComponent<RotatorAroundLocalXAxis>(device);
+}
+
+
+shared<Node> DemoTest::createQuad()
+{
+	auto mesh = resourceManager->getOrCreateMesh();
+
+	std::vector<Vector3> vertices
+	{
+		Vector3(-1, -1, 0),
+		Vector3(-1, 1, 0),
+		Vector3(1, 1, 0),
+		Vector3(1, -1, 0)
+	};
+
+	std::vector<Vector3> normals
+	{
+		Vector3(0, 0, -1),
+		Vector3(0, 0, -1),
+		Vector3(0, 0, -1),
+		Vector3(0, 0, -1)
+	};
+
+	std::vector<Vector2> uvs
+	{
+		Vector2(0, 0),
+		Vector2(0, 1),
+		Vector2(1, 1),
+		Vector2(1, 0)
+	};
+
+	std::vector<unsigned short> indices
+	{
+		0, 1, 2,
+		0, 2, 3
+	};
+
+	mesh->setVertices(vertices);
+	mesh->setNormals(normals);
+	mesh->setUVs(uvs);
+	mesh->setIndices(indices);
+
+	auto model = resourceManager->getOrCreateModel();
+	model->addMesh(mesh);
+
+	auto node = scene->createNode();
+	auto renderer = node->addComponent<ModelRenderer>();
+	renderer->setModel(model);
+
+	return node;
+}
+
+
+void DemoTest::initStaticQuad()
+{
+	auto quad = createQuad();
+	quad->getComponent<ModelRenderer>()->setMaterial(0, renderTargetMaterial);
+	quad->getComponent<Transform>()->setLocalPosition(Vector3(0, 7, 0));
+
+	auto canvasSize = device->getCanvasSize();
+	quad->getComponent<Transform>()->setLocalScale(5, 5 * canvasSize.y / canvasSize.x, 1);
+}
+
+
+void DemoTest::initRotatingQuad()
+{
+	auto empty = scene->createNode();
+	auto emptyTransform = empty->getComponent<Transform>();
+	emptyTransform->setLocalPosition(Vector3(5, 0, 0));
+	empty->addComponent<RotatorAroundWorldYAxis>(device);
+
+	auto quad = createQuad();
+	quad->addComponent<RotatorAroundLocalXAxis>(device);
+	quad->getComponent<Transform>()->setParent(emptyTransform);
+	quad->getComponent<Transform>()->setLocalPosition(Vector3(1, 0, 0));
+	quad->getComponent<ModelRenderer>()->setMaterial(0, texMaterial);
+}
+
+
+void DemoTest::rebuildToBoxMesh(shared<Node> node)
+{
+	auto model = node->getComponent<ModelRenderer>()->getModel();
+	auto mesh = model->getMesh(0);
+
+	std::vector<Vector3> newVertices
+	{
+		Vector3(-1, -1, 1),
+		Vector3(-1, 1, 1),
+		Vector3(1, 1, 1),
+		Vector3(1, -1, 1),
+
+		Vector3(-1, -1, -1),
+		Vector3(-1, 1, -1),
+		Vector3(-1, 1, 1),
+		Vector3(-1, -1, 1),
+
+		Vector3(1, -1, -1),
+		Vector3(1, 1, -1),
+		Vector3(-1, 1, -1),
+		Vector3(-1, -1, -1),
+
+		Vector3(1, -1, 1),
+		Vector3(1, 1, 1),
+		Vector3(1, 1, -1),
+		Vector3(1, -1, -1),
+
+		Vector3(-1, 1, 1),
+		Vector3(-1, 1, -1),
+		Vector3(1, 1, -1),
+		Vector3(1, 1, 1),
+
+		Vector3(-1, -1, -1),
+		Vector3(-1, -1, 1),
+		Vector3(1, -1, 1),
+		Vector3(1, -1, -1)
+	};
+
+	std::vector<Vector2> newUVs
+	{
+		Vector2(0, 0),
+		Vector2(0, 1),
+		Vector2(1, 1),
+		Vector2(1, 0),
+		Vector2(0, 0),
+		Vector2(0, 1),
+		Vector2(1, 1),
+		Vector2(1, 0),
+		Vector2(0, 0),
+		Vector2(0, 1),
+		Vector2(1, 1),
+		Vector2(1, 0),
+		Vector2(0, 0),
+		Vector2(0, 1),
+		Vector2(1, 1),
+		Vector2(1, 0),
+		Vector2(0, 0),
+		Vector2(0, 1),
+		Vector2(1, 1),
+		Vector2(1, 0),
+		Vector2(0, 0),
+		Vector2(0, 1),
+		Vector2(1, 1),
+		Vector2(1, 0)
+	};
+
+	std::vector<unsigned short> newIndices
+	{
+
+		0u, 1u, 2u,
+		0u, 2u, 3u,
+		4u, 5u, 6u,
+		4u, 6u, 7u,
+		8u, 9u, 10u,
+		8u, 10u, 11u,
+		12u, 13u, 14u,
+		12u, 14u, 15u,
+		16u, 17u, 18u,
+		16u, 18u, 19u,
+		20u, 21u, 22u,
+		20u, 22u, 23u
+	};
+
+	mesh->setVertices(newVertices);
+	mesh->setUVs(newUVs);
+	mesh->setIndices(newIndices);
+}
+
+
+void DemoTest::initBox()
+{
+	auto node = createQuad();
+	rebuildToBoxMesh(node);
+	node->getComponent<ModelRenderer>()->setMaterial(0, checkerMaterial);
+	node->getComponent<Transform>()->setLocalPosition(Vector3(-5, 0, 0));
+	node->addComponent<RotatorAroundWorldYAxis>(device);
+}
+
+
+void DemoTest::run()
+{
+	initMaterials();
+	auto renderTarget = initRenderTarget();
+	initCameras(renderTarget);
+	initModel();
+	initStaticQuad();
+	initRotatingQuad();
+	initBox();
+}

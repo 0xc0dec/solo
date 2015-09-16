@@ -51,5 +51,6 @@ target_link_libraries(solo SDL2 ${frameworks})
 
 # Tester
 
-add_executable(Tester tests/tester/Main.cpp)
+file(GLOB_RECURSE tester_sources "tests/tester/*.cpp")
+add_executable(Tester ${tester_sources} tests)
 target_link_libraries(Tester LINK_PUBLIC solo)

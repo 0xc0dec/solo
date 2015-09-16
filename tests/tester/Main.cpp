@@ -4,6 +4,7 @@
 #include "DeviceTest.h"
 #include "FileSystemTest.h"
 #include "ResourcesTest.h"
+#include "DemoTest.h"
 
 using namespace solo;
 
@@ -23,9 +24,10 @@ public:
 		tests.push_back(NEW2(DeviceTest, engine));
 		tests.push_back(NEW2(FileSystemTest, engine));
 		tests.push_back(NEW2(ResourcesTest, engine));
+		tests.push_back(NEW2(DemoTest, engine));
 		for (auto test : tests)
 			test->run();
-		engine->getScripter()->execFile("../data/scripts/main.ch");
+		//engine->getScripter()->execFile("../data/scripts/main.ch");
 	}
 
 	virtual void onEngineStopped() override

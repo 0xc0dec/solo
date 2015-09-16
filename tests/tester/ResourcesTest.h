@@ -18,19 +18,17 @@ public:
 
 	void test_CreateResource_TryToCleanIt_EnsureRemains()
 	{
-		auto mgr = engine->getResourceManager();
 		auto modelUrl = "testCreateResourceAndTryToCleanIt";
-		auto model = mgr->getOrCreateModel(modelUrl);
-		mgr->cleanUnusedResources();
-		assert(mgr->findModel(modelUrl) == model);
+		auto model = resourceManager->getOrCreateModel(modelUrl);
+		resourceManager->cleanUnusedResources();
+		assert(resourceManager->findModel(modelUrl) == model);
 	}
 
 	void test_CreateAndForgetResource_CleanIt()
 	{
-		auto mgr = engine->getResourceManager();
 		auto modelUrl = "testCreateAndForgetResourceThenCleanIt";
-		mgr->getOrCreateModel(modelUrl);
-		mgr->cleanUnusedResources();
-		assert(mgr->findModel(modelUrl) == nullptr);
+		resourceManager->getOrCreateModel(modelUrl);
+		resourceManager->cleanUnusedResources();
+		assert(resourceManager->findModel(modelUrl) == nullptr);
 	}
 };

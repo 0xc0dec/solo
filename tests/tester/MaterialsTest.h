@@ -45,7 +45,7 @@ public:
 
 	void test_CreateEffect_FindVariables()
 	{
-		auto effect = engine->getResourceManager()->getOrCreateEffect(vs, fs);
+		auto effect = resourceManager->getOrCreateEffect(vs, fs);
 		auto var1 = effect->findVariable("testFloat");
 		auto var2 = effect->findVariable("testSampler");
 		auto var3 = effect->findVariable("testArray");
@@ -59,7 +59,7 @@ public:
 
 	void test_CompileEffect_OK()
 	{
-		engine->getResourceManager()->getOrCreateEffect(vs, fs);
+		resourceManager->getOrCreateEffect(vs, fs);
 	}
 
 	void test_CompileEffect_Fail()
@@ -73,7 +73,7 @@ private:
 	{
 		try
 		{
-			engine->getResourceManager()->getOrCreateEffect(vertex, fragment);
+			resourceManager->getOrCreateEffect(vertex, fragment);
 		}
 		catch (EffectCompilationException &e)
 		{

@@ -12,7 +12,10 @@ class TestBase
 {
 public:
 	TestBase(Engine *engine) :
-		engine(engine), device(engine->getDevice()), scene(engine->getScene())
+		engine(engine),
+		device(engine->getDevice()),
+		scene(engine->getScene()),
+		resourceManager(engine->getResourceManager())
 	{
 	}
 
@@ -22,6 +25,7 @@ public:
 
 protected:
 	Engine *engine;
-	Device* device;
-	Scene* scene;
+	Device *device;
+	Scene *scene;
+	ResourceManager *resourceManager;
 };
