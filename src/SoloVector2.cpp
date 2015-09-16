@@ -18,7 +18,7 @@ Vector2::Vector2(const float* array)
 
 Vector2::Vector2(const Vector2& p1, const Vector2& p2)
 {
-	set(p1, p2);
+	*this = p2 - p1;
 }
 
 
@@ -29,7 +29,7 @@ const Vector2& Vector2::zero()
 }
 
 
-const Vector2& Vector2::one()
+const Vector2& Vector2::unit()
 {
 	static Vector2 value(1.0f, 1.0f);
 	return value;
@@ -56,7 +56,7 @@ bool Vector2::isZero() const
 }
 
 
-bool Vector2::isOne() const
+bool Vector2::isUnit() const
 {
 	return x == 1.0f && y == 1.0f;
 }
@@ -66,13 +66,6 @@ float Vector2::angle(const Vector2& v1, const Vector2& v2)
 {
 	auto dz = v1.x * v2.y - v1.y * v2.x;
 	return atan2f(fabsf(dz) + MATH_FLOAT_SMALL, dot(v1, v2));
-}
-
-
-void Vector2::add(const Vector2& v1, const Vector2& v2, Vector2* dst)
-{
-	dst->x = v1.x + v2.x;
-	dst->y = v1.y + v2.y;
 }
 
 
@@ -89,24 +82,6 @@ void Vector2::clamp(const Vector2& min, const Vector2& max)
 		y = min.y;
 	if (y > max.y)
 		y = max.y;
-}
-
-
-void Vector2::clamp(const Vector2& v, const Vector2& min, const Vector2& max, Vector2* dst)
-{
-	// Clamp the x value.
-	dst->x = v.x;
-	if (dst->x < min.x)
-		dst->x = min.x;
-	if (dst->x > max.x)
-		dst->x = max.x;
-
-	// Clamp the y value.
-	dst->y = v.y;
-	if (dst->y < min.y)
-		dst->y = min.y;
-	if (dst->y > max.y)
-		dst->y = max.y;
 }
 
 
@@ -150,13 +125,6 @@ float Vector2::lengthSquared() const
 }
 
 
-void Vector2::negate()
-{
-	x = -x;
-	y = -y;
-}
-
-
 Vector2 Vector2::normalized() const
 {
 	auto result = *this;
@@ -167,18 +135,6 @@ Vector2 Vector2::normalized() const
 
 void Vector2::normalize()
 {
-	normalize(this);
-}
-
-
-void Vector2::normalize(Vector2* dst) const
-{
-	if (dst != this)
-	{
-		dst->x = x;
-		dst->y = y;
-	}
-
 	auto n = x * x + y * y;
 	// Already normalized.
 	if (n == 1.0f)
@@ -190,44 +146,8 @@ void Vector2::normalize(Vector2* dst) const
 		return;
 
 	n = 1.0f / n;
-	dst->x *= n;
-	dst->y *= n;
-}
-
-
-void Vector2::scale(float scalar)
-{
-	x *= scalar;
-	y *= scalar;
-}
-
-
-void Vector2::scale(const Vector2& scale)
-{
-	x *= scale.x;
-	y *= scale.y;
-}
-
-
-void Vector2::rotate(const Vector2& point, float angleRadians)
-{
-	auto sinAngle = sin(angleRadians);
-	auto cosAngle = cos(angleRadians);
-
-	if (point.isZero())
-	{
-		auto tempX = x * cosAngle - y * sinAngle;
-		y = y * cosAngle + x * sinAngle;
-		x = tempX;
-	}
-	else
-	{
-		auto tempX = x - point.x;
-		auto tempY = y - point.y;
-
-		x = tempX * cosAngle - tempY * sinAngle + point.x;
-		y = tempY * cosAngle + tempX * sinAngle + point.y;
-	}
+	x *= n;
+	y *= n;
 }
 
 
@@ -249,25 +169,4 @@ void Vector2::set(const Vector2& v)
 {
 	this->x = v.x;
 	this->y = v.y;
-}
-
-
-void Vector2::set(const Vector2& p1, const Vector2& p2)
-{
-	x = p2.x - p1.x;
-	y = p2.y - p1.y;
-}
-
-
-void Vector2::subtract(const Vector2& v1, const Vector2& v2, Vector2* dst)
-{
-	dst->x = v1.x - v2.x;
-	dst->y = v1.y - v2.y;
-}
-
-
-void Vector2::smooth(const Vector2& target, float elapsedTime, float responseTime)
-{
-	if (elapsedTime > 0)
-		*this += (target - *this) * (elapsedTime / (elapsedTime + responseTime));
 }

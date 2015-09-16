@@ -59,7 +59,7 @@ namespace solo
 		inline Vector3 operator-() const;
 		inline Vector3 operator-(float scalar) const;
 		inline Vector3 operator-(const Vector3& v) const;
-		inline Vector3& operator-=(float);
+		inline Vector3& operator-=(float scalar);
 		inline Vector3& operator-=(const Vector3& v);
 
 		inline Vector3 operator*(float scalar) const;
