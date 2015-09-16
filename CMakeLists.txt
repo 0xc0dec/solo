@@ -49,6 +49,7 @@ set(frameworks
 add_library(solo STATIC ${sources})
 target_link_libraries(solo SDL2 ${frameworks})
 
-# Tests
-add_executable(Test1 tests/test1/Main.cpp)
-target_link_libraries(Test1 LINK_PUBLIC solo)
+# Tester
+
+add_executable(Tester tests/tester/Main.cpp)
+target_link_libraries(Tester LINK_PUBLIC solo)
