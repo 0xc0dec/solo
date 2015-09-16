@@ -10,7 +10,6 @@ namespace solo
 	class Device;
 	class FileSystem;
 	class ResourceManager;
-	class Scripter;
 
 	class Engine
 	{
@@ -26,7 +25,6 @@ namespace solo
 		Device *getDevice() const;
 		FileSystem *getFileSystem() const;
 		ResourceManager *getResourceManager() const;
-		Scripter *getScripter() const;
 
 	private:
 		Engine();
@@ -36,6 +34,5 @@ namespace solo
 		shared<Device> device;
 		shared<FileSystem> fs;
 		shared<ResourceManager> resourceManager;
-		shared<Scripter> scripter;
 	};
 }

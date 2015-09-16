@@ -33,7 +33,6 @@
 #include "SoloRenderState.h"
 #include "SoloResourceManager.h"
 #include "SoloScene.h"
-#include "scripting/SoloScripter.h"
 #include "SoloTexture.h"
 #include "SoloTexture2D.h"
 #include "SoloTransform.h"

@@ -4,7 +4,6 @@
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
 #include "SoloResourceManager.h"
-#include "scripting/SoloScripter.h"
 
 using namespace solo;
 
@@ -38,7 +37,6 @@ Engine::~Engine()
 
 void Engine::run(const EngineCreationArgs &args)
 {
-	scripter = ScripterFactory::create();
 	device = DeviceFactory::create(args);
 	fs = FileSystemFactory::create();
 	resourceManager = ResourceManagerFactory::create(this);
@@ -62,7 +60,6 @@ void Engine::run(const EngineCreationArgs &args)
 	resourceManager.reset();
 	fs.reset();
 	device.reset();
-	scripter.reset();
 }
 
 
@@ -93,10 +90,4 @@ FileSystem *Engine::getFileSystem() const
 ResourceManager *Engine::getResourceManager() const
 {
 	return resourceManager.get();
-}
-
-
-Scripter *Engine::getScripter() const
-{
-	return scripter.get();
 }

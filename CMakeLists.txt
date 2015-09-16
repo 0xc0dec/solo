@@ -12,8 +12,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/external/glew/include
     ${PROJECT_SOURCE_DIR}/external/SDL/2.0.3/include
     ${PROJECT_SOURCE_DIR}/external/png/include
-    ${PROJECT_SOURCE_DIR}/external/zlib/include
-    ${PROJECT_SOURCE_DIR}/external/chaiscript/develop)
+    ${PROJECT_SOURCE_DIR}/external/zlib/include)
 
 link_directories(${PROJECT_SOURCE_DIR}/external/SDL/2.0.3)
 
@@ -22,7 +21,6 @@ link_directories(${PROJECT_SOURCE_DIR}/external/SDL/2.0.3)
 file(GLOB_RECURSE sources
     "src/*.cpp"
     "src/platform/*.cpp"
-    "src/scripting/platform/*.cpp"
     "external/glew/src/*.c"
     "external/png/src/*.c"
     "external/zlib/src/*.c")
