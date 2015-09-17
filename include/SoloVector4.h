@@ -82,6 +82,11 @@ namespace solo
 		return result;
 	}
 
+	inline Vector4 operator+(float scalar, const Vector4& v)
+	{
+		return Vector4(v.x + scalar, v.y + scalar, v.z + scalar, v.w + scalar);
+	}
+
 	inline Vector4& Vector4::operator+=(const Vector4& v)
 	{
 		x += v.x;
@@ -149,6 +154,11 @@ namespace solo
 		return result;
 	}
 
+	inline Vector4 operator*(float scalar, const Vector4& v)
+	{
+		return Vector4(v.x * scalar, v.y * scalar, v.z * scalar, v.w * scalar);
+	}
+
 	inline Vector4& Vector4::operator*=(float scalar)
 	{
 		x *= scalar;
@@ -195,12 +205,5 @@ namespace solo
 	inline bool Vector4::operator!=(const Vector4& v) const
 	{
 		return x != v.x || y != v.y || z != v.z || w != v.w;
-	}
-
-	inline Vector4 operator*(float scalar, const Vector4& v)
-	{
-		auto result(const_cast<Vector4&>(v));
-		result *= scalar;
-		return result;
 	}
 }

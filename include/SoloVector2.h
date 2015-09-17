@@ -64,13 +64,6 @@ namespace solo
 		inline bool operator!=(const Vector2& v) const;
 	};
 
-	inline Vector2 operator*(float x, const Vector2& v)
-	{
-		auto result(const_cast<Vector2&>(v));
-		result *= x;
-		return result;
-	}
-
 	inline Vector2 Vector2::operator+(float scalar) const
 	{
 		auto result(*this);
@@ -83,6 +76,11 @@ namespace solo
 		auto result(*this);
 		result += v;
 		return result;
+	}
+
+	inline Vector2 operator+(float scalar, const Vector2& v)
+	{
+		return Vector2(v.x + scalar, v.y + scalar);
 	}
 
 	inline Vector2& Vector2::operator+=(float scalar)
@@ -140,6 +138,11 @@ namespace solo
 		auto result(*this);
 		result *= scalar;
 		return result;
+	}
+
+	inline Vector2 operator*(float scalar, const Vector2& v)
+	{
+		return Vector2(v.x * scalar, v.y * scalar);
 	}
 
 	inline Vector2& Vector2::operator*=(float scalar)

@@ -104,6 +104,11 @@ namespace solo
 		return result;
 	}
 
+	inline Vector3 operator+(float scalar, const Vector3& v)
+	{
+		return Vector3(v.x + scalar, v.y + scalar, v.z + scalar);
+	}
+
 	inline Vector3& Vector3::operator+=(const Vector3& v)
 	{
 		x += v.x;
@@ -166,6 +171,11 @@ namespace solo
 		return result;
 	}
 
+	inline Vector3 operator*(float scalar, const Vector3& v)
+	{
+		return Vector3(v.x * scalar, v.y * scalar, v.z * scalar);
+	}
+
 	inline Vector3& Vector3::operator*=(float scalar)
 	{
 		x *= scalar;
@@ -206,12 +216,5 @@ namespace solo
 	inline bool Vector3::operator!=(const Vector3& v) const
 	{
 		return x != v.x || y != v.y || z != v.z;
-	}
-
-	inline Vector3 operator*(float x, const Vector3& v)
-	{
-		auto result(const_cast<Vector3&>(v));
-		result *= x;
-		return result;
 	}
 }
