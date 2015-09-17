@@ -23,16 +23,11 @@ namespace solo
 		bool isIdentity() const;
 		bool isZero() const;
 
-		static void createFromRotationMatrix(const Matrix& m, Quaternion* dst);
-		static void createFromAxisAngle(const Vector3& axis, float angleRadians, Quaternion* dst);
 		static Quaternion createFromRotationMatrix(const Matrix& m);
 		static Quaternion createFromAxisAngle(const Vector3& axis, float angleRadians);
 
 		void conjugate();
-		void conjugate(Quaternion* dst) const;
-
 		bool inverse();
-		bool inverse(Quaternion* dst) const;
 
 		void multiply(const Quaternion& q);
 		static void multiply(const Quaternion& q1, const Quaternion& q2, Quaternion* dst);

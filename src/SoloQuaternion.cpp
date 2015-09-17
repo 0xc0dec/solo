@@ -54,84 +54,52 @@ bool Quaternion::isZero() const
 }
 
 
-void Quaternion::createFromRotationMatrix(const Matrix& m, Quaternion* dst)
-{
-	m.getRotation(dst);
-}
-
-
-void Quaternion::createFromAxisAngle(const Vector3& axis, float angleRadians, Quaternion* dst)
-{
-	auto halfAngle = angleRadians * 0.5f;
-	auto sinHalfAngle = sinf(halfAngle);
-
-	auto normal(const_cast<Vector3&>(axis));
-	normal.normalize();
-	dst->x = normal.x * sinHalfAngle;
-	dst->y = normal.y * sinHalfAngle;
-	dst->z = normal.z * sinHalfAngle;
-	dst->w = cosf(halfAngle);
-}
-
-
 Quaternion Quaternion::createFromRotationMatrix(const Matrix& m)
 {
 	Quaternion result;
-	createFromRotationMatrix(m, &result);
+	m.getRotation(&result);
 	return result;
 }
 
 
 Quaternion Quaternion::createFromAxisAngle(const Vector3& axis, float angleRadians)
 {
-	Quaternion result;
-	createFromAxisAngle(axis, angleRadians, &result);
-	return result;
+	auto halfAngle = angleRadians * 0.5f;
+	auto sinHalfAngle = sinf(halfAngle);
+	auto normal(const_cast<Vector3&>(axis));
+	normal.normalize();
+	return Quaternion(normal.x * sinHalfAngle, normal.y * sinHalfAngle, normal.z * sinHalfAngle, cosf(halfAngle));
 }
 
 
 void Quaternion::conjugate()
 {
-	conjugate(this);
-}
-
-
-void Quaternion::conjugate(Quaternion* dst) const
-{
-	dst->x = -x;
-	dst->y = -y;
-	dst->z = -z;
-	dst->w = w;
+	x = -x;
+	y = -y;
+	z = -z;
 }
 
 
 bool Quaternion::inverse()
 {
-	return inverse(this);
-}
-
-
-bool Quaternion::inverse(Quaternion* dst) const
-{
 	auto n = x * x + y * y + z * z + w * w;
 	if (n == 1.0f)
 	{
-		dst->x = -x;
-		dst->y = -y;
-		dst->z = -z;
-		dst->w = w;
+		x = -x;
+		y = -y;
+		z = -z;
 		return true;
 	}
 
-	// Too close to zero.
+	// Too close to zero
 	if (n < 0.000001f)
 		return false;
 
 	n = 1.0f / n;
-	dst->x = -x * n;
-	dst->y = -y * n;
-	dst->z = -z * n;
-	dst->w = w * n;
+	x = -x * n;
+	y = -y * n;
+	z = -z * n;
+	w = w * n;
 
 	return true;
 }
