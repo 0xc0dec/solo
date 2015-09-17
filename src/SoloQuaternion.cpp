@@ -179,13 +179,13 @@ void Quaternion::set(float* array)
 
 void Quaternion::set(const Matrix& m)
 {
-	createFromRotationMatrix(m, this);
+	*this = createFromRotationMatrix(m);
 }
 
 
 void Quaternion::set(const Vector3& axis, float angleRadians)
 {
-	createFromAxisAngle(axis, angleRadians, this);
+	*this = createFromAxisAngle(axis, angleRadians);
 }
 
 
@@ -207,77 +207,39 @@ float Quaternion::toAxisAngle(Vector3* axis) const
 	axis->z = q.z;
 	axis->normalize();
 
-	return (2.0f * acos(q.w));
+	return 2.0f * acos(q.w);
 }
 
 
-void Quaternion::lerp(const Quaternion& q1, const Quaternion& q2, float t, Quaternion* dst)
+Quaternion Quaternion::lerp(const Quaternion& q1, const Quaternion& q2, float t)
 {
 	if (t == 0.0f)
-	{
-		memcpy(dst, &q1, sizeof(float)* 4);
-		return;
-	}
+		return q1;
+
 	if (t == 1.0f)
-	{
-		memcpy(dst, &q2, sizeof(float)* 4);
-		return;
-	}
+		return q2;
 
-	float t1 = 1.0f - t;
+	auto t1 = 1.0f - t;
 
-	dst->x = t1 * q1.x + t * q2.x;
-	dst->y = t1 * q1.y + t * q2.y;
-	dst->z = t1 * q1.z + t * q2.z;
-	dst->w = t1 * q1.w + t * q2.w;
+	return Quaternion(
+		t1 * q1.x + t * q2.x,
+		t1 * q1.y + t * q2.y,
+		t1 * q1.z + t * q2.z,
+		t1 * q1.w + t * q2.w
+	);
 }
 
 
-void Quaternion::slerp(const Quaternion& q1, const Quaternion& q2, float t, Quaternion* dst)
-{
-	slerp(q1.x, q1.y, q1.z, q1.w, q2.x, q2.y, q2.z, q2.w, t, &dst->x, &dst->y, &dst->z, &dst->w);
-}
-
-
-void Quaternion::squad(const Quaternion& q1, const Quaternion& q2, const Quaternion& s1, const Quaternion& s2, float t, Quaternion* dst)
-{
-	Quaternion dstQ(0.0f, 0.0f, 0.0f, 1.0f);
-	Quaternion dstS(0.0f, 0.0f, 0.0f, 1.0f);
-
-	slerpForSquad(q1, q2, t, &dstQ);
-	slerpForSquad(s1, s2, t, &dstS);
-	slerpForSquad(dstQ, dstS, 2.0f * t * (1.0f - t), dst);
-}
-
-
-void Quaternion::slerp(float q1x, float q1y, float q1z, float q1w, float q2x, float q2y, float q2z, float q2w,
-	float t, float* dstx, float* dsty, float* dstz, float* dstw)
+Quaternion Quaternion::slerp(const Quaternion& q1, const Quaternion& q2, float t)
 {
 	if (t == 0.0f)
-	{
-		*dstx = q1x;
-		*dsty = q1y;
-		*dstz = q1z;
-		*dstw = q1w;
-		return;
-	}
-	else if (t == 1.0f)
-	{
-		*dstx = q2x;
-		*dsty = q2y;
-		*dstz = q2z;
-		*dstw = q2w;
-		return;
-	}
+		return q1;
 
-	if (q1x == q2x && q1y == q2y && q1z == q2z && q1w == q2w)
-	{
-		*dstx = q1x;
-		*dsty = q1y;
-		*dstz = q1z;
-		*dstw = q1w;
-		return;
-	}
+	if (t == 1.0f)
+		return q2;
+
+	if (q1.x == q2.x && q1.y == q2.y && q1.z == q2.z && q1.w == q2.w)
+		return q1;
 
 	float halfY, alpha, beta;
 	float u, f1, f2a, f2b;
@@ -285,7 +247,7 @@ void Quaternion::slerp(float q1x, float q1y, float q1z, float q1w, float q2x, fl
 	float halfSecHalfTheta, versHalfTheta;
 	float sqNotU, sqU;
 
-	float cosTheta = q1w * q2w + q1x * q2x + q1y * q2y + q1z * q2z;
+	auto cosTheta = q1.w * q2.w + q1.x * q2.x + q1.y * q2.y + q1.z * q2.z;
 
 	// As usual in all slerp implementations, we fold theta.
 	alpha = cosTheta >= 0 ? 1.0f : -1.0f;
@@ -326,10 +288,10 @@ void Quaternion::slerp(float q1x, float q1y, float q1z, float q1w, float q2x, fl
 	beta = f1 + f2b;
 
 	// Apply final coefficients to a and b as usual.
-	float w = alpha * q1w + beta * q2w;
-	float x = alpha * q1x + beta * q2x;
-	float y = alpha * q1y + beta * q2y;
-	float z = alpha * q1z + beta * q2z;
+	auto w = alpha * q1.w + beta * q2.w;
+	auto x = alpha * q1.x + beta * q2.x;
+	auto y = alpha * q1.y + beta * q2.y;
+	auto z = alpha * q1.z + beta * q2.z;
 
 	// This final adjustment to the quaternion's length corrects for
 	// any small constraint error in the inputs q1 and q2 But as you
@@ -337,14 +299,19 @@ void Quaternion::slerp(float q1x, float q1y, float q1z, float q1w, float q2x, fl
 	// operations. If this error-correcting feature is not required,
 	// the following code may be removed.
 	f1 = 1.5f - 0.5f * (w * w + x * x + y * y + z * z);
-	*dstw = w * f1;
-	*dstx = x * f1;
-	*dsty = y * f1;
-	*dstz = z * f1;
+	return Quaternion(w * f1, x * f1, y * f1, z * f1);
 }
 
 
-void Quaternion::slerpForSquad(const Quaternion& q1, const Quaternion& q2, float t, Quaternion* dst)
+Quaternion Quaternion::squad(const Quaternion& q1, const Quaternion& q2, const Quaternion& s1, const Quaternion& s2, float t)
+{
+	auto q = slerpForSquad(q1, q2, t);
+	auto s = slerpForSquad(s1, s2, t);
+	return slerpForSquad(q, s, 2.0f * t * (1.0f - t));
+}
+
+
+Quaternion Quaternion::slerpForSquad(const Quaternion& q1, const Quaternion& q2, float t)
 {
 	// cos(omega) = q1 * q2;
 	// slerp(q1, q2, t) = (q1*sin((1-t)*omega) + q2*sin(t*omega))/sin(omega);
@@ -353,29 +320,19 @@ void Quaternion::slerpForSquad(const Quaternion& q1, const Quaternion& q2, float
 	auto c = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
 
 	if (fabs(c) >= 1.0f)
-	{
-		dst->x = q1.x;
-		dst->y = q1.y;
-		dst->z = q1.z;
-		dst->w = q1.w;
-		return;
-	}
+		return q1;
 
 	auto omega = acos(c);
 	auto s = sqrt(1.0f - c * c);
 	if (fabs(s) <= 0.00001f)
-	{
-		dst->x = q1.x;
-		dst->y = q1.y;
-		dst->z = q1.z;
-		dst->w = q1.w;
-		return;
-	}
+		return q1;
 
 	auto r1 = sin((1 - t) * omega) / s;
 	auto r2 = sin(t * omega) / s;
-	dst->x = (q1.x * r1 + q2.x * r2);
-	dst->y = (q1.y * r1 + q2.y * r2);
-	dst->z = (q1.z * r1 + q2.z * r2);
-	dst->w = (q1.w * r1 + q2.w * r2);
+	return Quaternion(
+		q1.x * r1 + q2.x * r2,
+		q1.y * r1 + q2.y * r2,
+		q1.z * r1 + q2.z * r2,
+		q1.w * r1 + q2.w * r2
+	);
 }

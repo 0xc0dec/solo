@@ -43,18 +43,15 @@ namespace solo
 
 		float toAxisAngle(Vector3* e) const;
 		
-		static void lerp(const Quaternion& q1, const Quaternion& q2, float t, Quaternion* dst);
-		static void slerp(const Quaternion& q1, const Quaternion& q2, float t, Quaternion* dst);
-		static void squad(const Quaternion& q1, const Quaternion& q2, const Quaternion& s1, const Quaternion& s2, float t, Quaternion* dst);
+		static Quaternion lerp(const Quaternion& q1, const Quaternion& q2, float t);
+		static Quaternion slerp(const Quaternion& q1, const Quaternion& q2, float t);
+		static Quaternion squad(const Quaternion& q1, const Quaternion& q2, const Quaternion& s1, const Quaternion& s2, float t);
 
 		inline Quaternion operator*(const Quaternion& q) const;
 		inline Quaternion& operator*=(const Quaternion& q);
 
 	private:
-		static void slerp(float q1x, float q1y, float q1z, float q1w, float q2x, float q2y, float q2z, float q2w,
-			float t, float* dstx, float* dsty, float* dstz, float* dstw);
-
-		static void slerpForSquad(const Quaternion& q1, const Quaternion& q2, float t, Quaternion* dst);
+		static Quaternion slerpForSquad(const Quaternion& q1, const Quaternion& q2, float t);
 	};
 
 	inline Quaternion Quaternion::operator*(const Quaternion& q) const
