@@ -230,15 +230,6 @@ void Quaternion::set(const Quaternion& q)
 }
 
 
-void Quaternion::setIdentity()
-{
-	x = 0.0f;
-	y = 0.0f;
-	z = 0.0f;
-	w = 1.0f;
-}
-
-
 float Quaternion::toAxisAngle(Vector3* axis) const
 {
 	Quaternion q(x, y, z, w);

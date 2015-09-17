@@ -5,19 +5,18 @@
 namespace solo
 {
 	class Frustum;
-	class Plane;
+	struct Plane;
 	class BoundingSphere;
 	class BoundingBox;
-	class Matrix;
+	struct Matrix;
 
-	enum class RayIntersection
+	enum struct RayIntersection
 	{
 		None = -1
 	};
 
-	class Ray
+	struct Ray
 	{
-	public:
 		Ray() {}
 		Ray(const Vector3& origin, const Vector3& direction);
 		Ray(float originX, float originY, float originZ, float dirX, float dirY, float dirZ);

@@ -4,9 +4,8 @@
 
 namespace solo
 {
-	class Quaternion
+	struct Quaternion
 	{
-	public:
 		float x = 0;
 		float y = 0;
 		float z = 0;
@@ -47,8 +46,6 @@ namespace solo
 		void set(const Vector3& axis, float angleRadians);
 		void set(const Quaternion& q);
 
-		void setIdentity();
-		
 		float toAxisAngle(Vector3* e) const;
 		
 		static void lerp(const Quaternion& q1, const Quaternion& q2, float t, Quaternion* dst);

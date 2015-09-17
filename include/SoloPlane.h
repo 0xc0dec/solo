@@ -7,8 +7,8 @@ namespace solo
 	class BoundingSphere;
 	class BoundingBox;
 	class Frustum;
-	class Ray;
-	class Matrix;
+	struct Ray;
+	struct Matrix;
 
 	enum class PlaneIntersection
 	{
@@ -17,9 +17,8 @@ namespace solo
 		Back = -1
 	};
 
-	class Plane
+	struct Plane
 	{
-	public:
 		Plane() {}
 		Plane(const Vector3& normal, float distance);
 		Plane(float normalX, float normalY, float normalZ, float distance);

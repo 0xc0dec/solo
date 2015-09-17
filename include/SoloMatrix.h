@@ -7,12 +7,11 @@
 
 namespace solo
 {
-	class Plane;
-	class Quaternion;
+	struct Plane;
+	struct Quaternion;
 
-	class Matrix
+	struct Matrix
 	{
-	public:
 		// column-major order
 		float m[16];
 

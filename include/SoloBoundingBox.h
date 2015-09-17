@@ -7,8 +7,8 @@ namespace solo
 {
 	class BoundingSphere;
 	class Frustum;
-	class Ray;
-	class Matrix;
+	struct Ray;
+	struct Matrix;
 
 	class BoundingBox
 	{

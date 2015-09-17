@@ -9,11 +9,11 @@ namespace solo
 	struct Vector2;
 	struct Vector3;
 	struct Vector4;
-	class Matrix;
+	struct Matrix;
 	class Scene;
 	class RenderContext;
 	class Texture;
-	class Quaternion;
+	struct Quaternion;
 
 	enum class AutoBinding
 	{

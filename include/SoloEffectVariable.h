@@ -4,7 +4,7 @@
 
 namespace solo
 {
-	class Matrix;
+	struct Matrix;
 	struct Vector2;
 	struct Vector3;
 	struct Vector4;

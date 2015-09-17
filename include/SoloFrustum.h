@@ -8,7 +8,7 @@ namespace solo
 	struct Vector3;
 	class BoundingSphere;
 	class BoundingBox;
-	class Ray;
+	struct Ray;
 
 	class Frustum
 	{
