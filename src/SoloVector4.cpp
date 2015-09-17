@@ -18,21 +18,7 @@ Vector4::Vector4(const float* src)
 
 Vector4::Vector4(const Vector4& p1, const Vector4& p2)
 {
-	set(p1, p2);
-}
-
-
-Vector4 Vector4::fromColor(unsigned int color)
-{
-	float components[4];
-	auto componentIndex = 0;
-	for (int i = 3; i >= 0; --i)
-	{
-		int component = (color >> i * 8) & 0x000000ff;
-		components[componentIndex++] = static_cast<float>(component) / 255.0f;
-	}
-	Vector4 value(components);
-	return value;
+	*this = p2 - p1;
 }
 
 
@@ -43,7 +29,7 @@ const Vector4& Vector4::zero()
 }
 
 
-const Vector4& Vector4::one()
+const Vector4& Vector4::unit()
 {
 	static Vector4 value(1.0f, 1.0f, 1.0f, 1.0f);
 	return value;
@@ -84,7 +70,7 @@ bool Vector4::isZero() const
 }
 
 
-bool Vector4::isOne() const
+bool Vector4::isUnit() const
 {
 	return x == 1.0f && y == 1.0f && z == 1.0f && w == 1.0f;
 }
@@ -97,15 +83,6 @@ float Vector4::angle(const Vector4& v1, const Vector4& v2)
 	auto dz = v1.w * v2.z - v1.z * v2.w - v1.x * v2.y + v1.y * v2.x;
 
 	return atan2f(sqrt(dx * dx + dy * dy + dz * dz) + MATH_FLOAT_SMALL, dot(v1, v2));
-}
-
-
-void Vector4::add(const Vector4& v1, const Vector4& v2, Vector4* dst)
-{
-	dst->x = v1.x + v2.x;
-	dst->y = v1.y + v2.y;
-	dst->z = v1.z + v2.z;
-	dst->w = v1.w + v2.w;
 }
 
 
@@ -134,38 +111,6 @@ void Vector4::clamp(const Vector4& min, const Vector4& max)
 		w = min.w;
 	if (w > max.w)
 		w = max.w;
-}
-
-
-void Vector4::clamp(const Vector4& v, const Vector4& min, const Vector4& max, Vector4* dst)
-{
-	// Clamp the x value.
-	dst->x = v.x;
-	if (dst->x < min.x)
-		dst->x = min.x;
-	if (dst->x > max.x)
-		dst->x = max.x;
-
-	// Clamp the y value.
-	dst->y = v.y;
-	if (dst->y < min.y)
-		dst->y = min.y;
-	if (dst->y > max.y)
-		dst->y = max.y;
-
-	// Clamp the z value.
-	dst->z = v.z;
-	if (dst->z < min.z)
-		dst->z = min.z;
-	if (dst->z > max.z)
-		dst->z = max.z;
-
-	// Clamp the w value.
-	dst->w = v.w;
-	if (dst->w < min.w)
-		dst->w = min.w;
-	if (dst->w > max.w)
-		dst->w = max.w;
 }
 
 
@@ -225,20 +170,6 @@ Vector4 Vector4::normalized() const
 
 void Vector4::normalize()
 {
-	normalize(this);
-}
-
-
-void Vector4::normalize(Vector4* dst) const
-{
-	if (dst != this)
-	{
-		dst->x = x;
-		dst->y = y;
-		dst->z = z;
-		dst->w = w;
-	}
-
 	auto n = x * x + y * y + z * z + w * w;
 	// Already normalized.
 	if (n == 1.0f)
@@ -250,19 +181,10 @@ void Vector4::normalize(Vector4* dst) const
 		return;
 
 	n = 1.0f / n;
-	dst->x *= n;
-	dst->y *= n;
-	dst->z *= n;
-	dst->w *= n;
-}
-
-
-void Vector4::scale(float scalar)
-{
-	x *= scalar;
-	y *= scalar;
-	z *= scalar;
-	w *= scalar;
+	x *= n;
+	y *= n;
+	z *= n;
+	w *= n;
 }
 
 
@@ -290,22 +212,4 @@ void Vector4::set(const Vector4& v)
 	this->y = v.y;
 	this->z = v.z;
 	this->w = v.w;
-}
-
-
-void Vector4::set(const Vector4& p1, const Vector4& p2)
-{
-	x = p2.x - p1.x;
-	y = p2.y - p1.y;
-	z = p2.z - p1.z;
-	w = p2.w - p1.w;
-}
-
-
-void Vector4::subtract(const Vector4& v1, const Vector4& v2, Vector4* dst)
-{
-	dst->x = v1.x - v2.x;
-	dst->y = v1.y - v2.y;
-	dst->z = v1.z - v2.z;
-	dst->w = v1.w - v2.w;
 }
