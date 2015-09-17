@@ -4,7 +4,6 @@
 #include "SoloRenderContext.h"
 #include "SoloCamera.h"
 #include "SoloNode.h"
-#include "SoloModelRenderer.h"
 
 using namespace solo;
 
@@ -110,14 +109,15 @@ void Scene::render()
 	for (auto camera : cameras)
 	{
 		RenderContext context;
-		context.setScene(this);
-		context.setCameraNodeId(camera->getNode().getId());
+		context.scene = this;
+		context.camera = camera.get();
 		camera->render(context);
 		iterateComponents([&](size_t nodeId, shared<Component> component)
 		{
-			if (findComponent(nodeId, Transform::getId()))  // not very optimal - could be done one level upper
+			auto transform = Node::findComponent<Transform>(this, nodeId);
+			if (transform) // not very optimal - could be done one level upper
 			{
-				context.setNodeId(nodeId);
+				context.nodeTransform = transform;
 				// Render only non-camera nodes with transforms
 				if (component->getTypeId() != Camera::getId())
 					component->render(context);
@@ -126,7 +126,7 @@ void Scene::render()
 		camera->postRender();
 		iterateComponents([&](size_t nodeId, shared<Component> component)
 		{
-			if (findComponent(nodeId, Transform::getId()))  // not very optimal - could be done one level upper
+			if (Node::findComponent<Transform>(this, nodeId))  // not very optimal - could be done one level upper
 			{
 				if (component->getTypeId() != Camera::getId())
 					component->postRender();

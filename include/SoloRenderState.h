@@ -2,7 +2,7 @@
 
 namespace solo
 {
-	class RenderContext;
+	struct RenderContext;
 
 	enum class PolygonFace
 	{

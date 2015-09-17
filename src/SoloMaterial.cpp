@@ -21,7 +21,7 @@ shared <Material> MaterialFactory::create(shared<Effect> effect)
 
 void Material::bind(RenderContext& context)
 {
-	context.setMaterial(this);
+	context.material = this;
 	applyFaceCull();
 	if (effect)
 	{
@@ -34,7 +34,8 @@ void Material::bind(RenderContext& context)
 
 void Material::unbind(RenderContext& context)
 {
-	context.setMaterial(nullptr);
+	if (context.material == this)
+		context.material = nullptr;
 }
 
 

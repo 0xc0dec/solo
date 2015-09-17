@@ -11,7 +11,7 @@ namespace solo
 	struct Vector4;
 	struct Matrix;
 	class Scene;
-	class RenderContext;
+	struct RenderContext;
 	class Texture;
 	struct Quaternion;
 
