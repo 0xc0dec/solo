@@ -8,6 +8,7 @@ namespace solo
 	class BoundingBox;
 	class Frustum;
 	class Ray;
+	class Matrix;
 
 	enum class PlaneIntersection
 	{

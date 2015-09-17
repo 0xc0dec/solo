@@ -2,11 +2,8 @@
 
 namespace solo
 {
-	class Matrix;
-
-	class Vector2
+	struct Vector2
 	{
-	public:
 		float x = 0;
 		float y = 0;
 
@@ -49,15 +46,17 @@ namespace solo
 		inline Vector2& operator+=(float scalar);
 		inline Vector2& operator+=(const Vector2& v);
 
-		inline Vector2 operator-(const Vector2& v) const;
-		inline Vector2& operator-=(const Vector2& v);
-
 		inline Vector2 operator-() const;
+		inline Vector2 operator-(float scalar) const;
+		inline Vector2 operator-(const Vector2& v) const;
+		inline Vector2& operator-=(float scalar);
+		inline Vector2& operator-=(const Vector2& v);
 		
-		inline Vector2 operator*(float x) const;
-		inline Vector2& operator*=(float x);
+		inline Vector2 operator*(float scalar) const;
+		inline Vector2& operator*=(float scalar);
 
-		inline Vector2 operator/(float x) const;
+		inline Vector2 operator/(float scalar) const;
+		inline Vector2& operator/=(float scalar);
 
 		inline bool operator<(const Vector2& v) const;
 		
@@ -100,11 +99,33 @@ namespace solo
 		return *this;
 	}
 
+	inline Vector2 Vector2::operator-() const
+	{
+		auto result(*this);
+		result.x = -result.x;
+		result.y = -result.y;
+		return result;
+	}
+
+	inline Vector2 Vector2::operator-(float scalar) const
+	{
+		auto result(*this);
+		result -= scalar;
+		return result;
+	}
+
 	inline Vector2 Vector2::operator-(const Vector2& v) const
 	{
 		auto result(*this);
 		result -= v;
 		return result;
+	}
+
+	inline Vector2& Vector2::operator-=(float scalar)
+	{
+		x -= scalar;
+		y -= scalar;
+		return *this;
 	}
 
 	inline Vector2& Vector2::operator-=(const Vector2& v)
@@ -114,31 +135,32 @@ namespace solo
 		return *this;
 	}
 
-	inline Vector2 Vector2::operator-() const
+	inline Vector2 Vector2::operator*(float scalar) const
 	{
 		auto result(*this);
-		result.x = -result.x;
-		result.y = -result.y;
+		result *= scalar;
 		return result;
 	}
 
-	inline Vector2 Vector2::operator*(float x) const
+	inline Vector2& Vector2::operator*=(float scalar)
 	{
-		auto result(*this);
-		result *= x;
-		return result;
-	}
-
-	inline Vector2& Vector2::operator*=(float x)
-	{
-		this->x *= x;
-		this->y *= x;
+		this->x *= scalar;
+		this->y *= scalar;
 		return *this;
 	}
 
-	inline Vector2 Vector2::operator/(const float x) const
+	inline Vector2 Vector2::operator/(const float scalar) const
 	{
-		return Vector2(this->x / x, this->y / x);
+		Vector2 result;
+		result /= scalar;
+		return result;
+	}
+
+	inline Vector2& Vector2::operator/=(float scalar)
+	{
+		x /= scalar;
+		y /= scalar;
+		return *this;
 	}
 
 	inline bool Vector2::operator<(const Vector2& v) const

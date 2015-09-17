@@ -5,9 +5,9 @@
 namespace solo
 {
 	class Matrix;
-	class Vector2;
-	class Vector3;
-	class Vector4;
+	struct Vector2;
+	struct Vector3;
+	struct Vector4;
 	class Texture;
 
 	// Wrap around a uniform variable

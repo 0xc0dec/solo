@@ -2,13 +2,13 @@
 
 #include "SoloVector3.h"
 #include "SoloVector4.h"
-#include "SoloMath.h"
 
 #define MATRIX_SIZE (sizeof(float) * 16)
 
 namespace solo
 {
 	class Plane;
+	class Quaternion;
 
 	class Matrix
 	{

@@ -1,15 +1,9 @@
 #pragma once
 
-#include <math.h>
-
 namespace solo
 {
-	class Matrix;
-	class Quaternion;
-
-	class Vector3
+	struct Vector3
 	{
-	public:
 		float x = 0;
 		float y = 0;
 		float z = 0;

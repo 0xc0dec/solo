@@ -8,6 +8,7 @@ namespace solo
 	class BoundingSphere;
 	class Frustum;
 	class Ray;
+	class Matrix;
 
 	class BoundingBox
 	{

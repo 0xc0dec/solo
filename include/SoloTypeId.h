@@ -1,7 +1,5 @@
 #pragma once
 
-#include "SoloBase.h"
-
 namespace solo
 {
 	struct TypeId

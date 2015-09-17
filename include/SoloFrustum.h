@@ -5,7 +5,7 @@
 
 namespace solo
 {
-	class Vector3;
+	struct Vector3;
 	class BoundingSphere;
 	class BoundingBox;
 	class Ray;

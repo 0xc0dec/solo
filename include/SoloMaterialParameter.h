@@ -6,9 +6,9 @@
 namespace solo
 {
 	class Effect;
-	class Vector2;
-	class Vector3;
-	class Vector4;
+	struct Vector2;
+	struct Vector3;
+	struct Vector4;
 	class Matrix;
 	class Scene;
 	class RenderContext;
