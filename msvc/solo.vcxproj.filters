@@ -145,9 +145,6 @@
     <ClInclude Include="..\include\SoloEngineCreationArgs.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloMeshLoader.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\SoloObjMeshLoader.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -160,14 +157,8 @@
     <ClInclude Include="..\src\platform\SoloOpenGLRenderTarget.h">
       <Filter>src\platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\scripting\SoloScripter.h">
-      <Filter>include\scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\scripting\platform\SoloScriptComponent_Chai.h">
-      <Filter>src\scripting\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\scripting\platform\SoloScripter_Chai.h">
-      <Filter>src\scripting\platform</Filter>
+    <ClInclude Include="..\src\SoloMeshLoader.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -202,9 +193,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloVector3.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloMath.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloVector4.cpp">
@@ -384,15 +372,6 @@
     <ClCompile Include="..\src\SoloRenderTarget.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\scripting\SoloScripter.cpp">
-      <Filter>src\scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\scripting\platform\SoloScriptComponent_Chai.cpp">
-      <Filter>src\scripting\platform</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\scripting\platform\SoloScripter_Chai.cpp">
-      <Filter>src\scripting\platform</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -415,15 +394,6 @@
     </Filter>
     <Filter Include="src\external\zlib">
       <UniqueIdentifier>{c75d28c3-b7bf-43af-91dd-132d3fea8685}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\scripting">
-      <UniqueIdentifier>{487f08b1-cbaa-427f-8857-5e767743d5ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\scripting">
-      <UniqueIdentifier>{b5aa56d2-c891-4913-a946-3496f9b268f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\scripting\platform">
-      <UniqueIdentifier>{1fe4ad2f-4a1d-4c84-8a98-d7becba92634}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="..\tests\tester\ComponentsAndNodesTest.h" />
+    <ClInclude Include="..\tests\tester\DemoTest.h" />
+    <ClInclude Include="..\tests\tester\DeviceTest.h" />
+    <ClInclude Include="..\tests\tester\FileSystemTest.h" />
+    <ClInclude Include="..\tests\tester\MaterialsTest.h" />
+    <ClInclude Include="..\tests\tester\ResourcesTest.h" />
+    <ClInclude Include="..\tests\tester\Shaders.h" />
+    <ClInclude Include="..\tests\tester\TestBase.h" />
+    <ClInclude Include="..\tests\tester\TransformTest.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\tests\tester\DemoTest.cpp" />
+    <ClCompile Include="..\tests\tester\Main.cpp" />
+  </ItemGroup>
+</Project>

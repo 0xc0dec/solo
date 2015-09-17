@@ -31,6 +31,7 @@ void Node::removeAllComponents()
 	scene->removeAllComponents(this->getId());
 }
 
+
 template<> Transform* Node::addComponent<Transform>()
 {
 	auto transform = TransformFactory::create(*this);

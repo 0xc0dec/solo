@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\scripting\SoloScripter.h" />
     <ClInclude Include="..\include\SoloBase.h" />
     <ClInclude Include="..\include\SoloBoundingBox.h" />
     <ClInclude Include="..\include\SoloBoundingSphere.h" />
@@ -37,7 +36,6 @@
     <ClInclude Include="..\include\SoloFrustum.h" />
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\include\SoloEngineCallback.h" />
-    <ClInclude Include="..\include\SoloMeshLoader.h" />
     <ClInclude Include="..\include\SoloRenderTarget.h" />
     <ClInclude Include="..\include\SoloTextureLoader.h" />
     <ClInclude Include="..\include\SoloTexture.h" />
@@ -71,8 +69,7 @@
     <ClInclude Include="..\src\platform\SoloOpenGLRenderTarget.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLTexture2D.h" />
     <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h" />
-    <ClInclude Include="..\src\scripting\platform\SoloScriptComponent_Chai.h" />
-    <ClInclude Include="..\src\scripting\platform\SoloScripter_Chai.h" />
+    <ClInclude Include="..\src\SoloMeshLoader.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPngTextureLoader.h" />
   </ItemGroup>
@@ -114,9 +111,6 @@
     <ClCompile Include="..\src\platform\SoloOpenGLMesh.cpp" />
     <ClCompile Include="..\src\platform\SoloOpenGLTexture2D.cpp" />
     <ClCompile Include="..\src\platform\SoloSDLOpenGLDevice.cpp" />
-    <ClCompile Include="..\src\scripting\platform\SoloScriptComponent_Chai.cpp" />
-    <ClCompile Include="..\src\scripting\platform\SoloScripter_Chai.cpp" />
-    <ClCompile Include="..\src\scripting\SoloScripter.cpp" />
     <ClCompile Include="..\src\SoloBoundingBox.cpp" />
     <ClCompile Include="..\src\SoloBoundingSphere.cpp" />
     <ClCompile Include="..\src\SoloCamera.cpp" />
@@ -129,7 +123,6 @@
     <ClCompile Include="..\src\SoloLog.cpp" />
     <ClCompile Include="..\src\SoloMaterial.cpp" />
     <ClCompile Include="..\src\SoloMaterialParameter.cpp" />
-    <ClCompile Include="..\src\SoloMath.cpp" />
     <ClCompile Include="..\src\SoloMatrix.cpp" />
     <ClCompile Include="..\src\SoloMesh.cpp" />
     <ClCompile Include="..\src\SoloModel.cpp" />
@@ -160,26 +153,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
