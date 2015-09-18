@@ -10,21 +10,9 @@ Quaternion::Quaternion(float x, float y, float z, float w):
 }
 
 
-Quaternion::Quaternion(float* array)
-{
-	set(array);
-}
-
-
-Quaternion::Quaternion(const Matrix& m)
-{
-	set(m);
-}
-
-
 Quaternion::Quaternion(const Vector3& axis, float angleRadians)
 {
-	set(axis, angleRadians);
+	*this = createFromAxisAngle(axis, angleRadians);
 }
 
 
@@ -92,7 +80,7 @@ bool Quaternion::inverse()
 	}
 
 	// Too close to zero
-	if (n < 0.000001f)
+	if (n < MATH_EPSILON)
 		return false;
 
 	n = 1.0f / n;
@@ -105,57 +93,32 @@ bool Quaternion::inverse()
 }
 
 
-void Quaternion::multiply(const Quaternion& q)
-{
-	multiply(*this, q, this);
-}
-
-
-void Quaternion::multiply(const Quaternion& q1, const Quaternion& q2, Quaternion* dst)
-{
-	auto x = q1.w * q2.x + q1.x * q2.w + q1.y * q2.z - q1.z * q2.y;
-	auto y = q1.w * q2.y - q1.x * q2.z + q1.y * q2.w + q1.z * q2.x;
-	auto z = q1.w * q2.z + q1.x * q2.y - q1.y * q2.x + q1.z * q2.w;
-	auto w = q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z;
-	dst->x = x;
-	dst->y = y;
-	dst->z = z;
-	dst->w = w;
-}
-
-
 void Quaternion::normalize()
 {
-	normalize(this);
-}
-
-
-void Quaternion::normalize(Quaternion* dst) const
-{
-	if (this != dst)
-	{
-		dst->x = x;
-		dst->y = y;
-		dst->z = z;
-		dst->w = w;
-	}
-
 	auto n = x * x + y * y + z * z + w * w;
 
-	// Already normalized.
+	// Already normalized
 	if (n == 1.0f)
 		return;
 
 	n = sqrt(n);
-	// Too close to zero.
-	if (n < 0.000001f)
+	// Too close to zero
+	if (n < MATH_EPSILON)
 		return;
 
 	n = 1.0f / n;
-	dst->x *= n;
-	dst->y *= n;
-	dst->z *= n;
-	dst->w *= n;
+	x *= n;
+	y *= n;
+	z *= n;
+	w *= n;
+}
+
+
+Quaternion Quaternion::normalized() const
+{
+	auto result(*this);
+	result.normalize();
+	return result;
 }
 
 
@@ -165,36 +128,6 @@ void Quaternion::set(float x, float y, float z, float w)
 	this->y = y;
 	this->z = z;
 	this->w = w;
-}
-
-
-void Quaternion::set(float* array)
-{
-	x = array[0];
-	y = array[1];
-	z = array[2];
-	w = array[3];
-}
-
-
-void Quaternion::set(const Matrix& m)
-{
-	*this = createFromRotationMatrix(m);
-}
-
-
-void Quaternion::set(const Vector3& axis, float angleRadians)
-{
-	*this = createFromAxisAngle(axis, angleRadians);
-}
-
-
-void Quaternion::set(const Quaternion& q)
-{
-	this->x = q.x;
-	this->y = q.y;
-	this->z = q.z;
-	this->w = q.w;
 }
 
 
@@ -335,4 +268,18 @@ Quaternion Quaternion::slerpForSquad(const Quaternion& q1, const Quaternion& q2,
 		q1.z * r1 + q2.z * r2,
 		q1.w * r1 + q2.w * r2
 	);
+}
+
+
+Quaternion& Quaternion::operator*=(const Quaternion& q)
+{
+	auto newX = w * q.x + x * q.w + y * q.z - z * q.y;
+	auto newY = w * q.y - x * q.z + y * q.w + z * q.x;
+	auto newZ = w * q.z + x * q.y - y * q.x + z * q.w;
+	auto newW = w * q.w - x * q.x - y * q.y - z * q.z;
+	x = newX;
+	y = newY;
+	z = newZ;
+	w = newW;
+	return *this;
 }

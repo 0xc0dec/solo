@@ -22,8 +22,8 @@ namespace solo
 	// used when a class has private constructor that is available to factories only
 #	define NEW2(type, ...)	std::shared_ptr<type>(new type(__VA_ARGS__))
 
-	// Usage of this pointer should indicate that the context owns an object this pointer points to.
-	// Code that operates on raw pointers doesn't claim to own the pointed object.
+	// Having this pointer means that the code owns the pointed object (just like, maybe, several other places).
+	// Code that works with raw pointers doesn't claim to own the pointed object.
 	template <typename T> using shared = std::shared_ptr<T>;
 
 	extern "C" size_t getHash(const std::string &s);

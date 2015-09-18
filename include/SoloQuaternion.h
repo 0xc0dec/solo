@@ -13,9 +13,10 @@ namespace solo
 
 		Quaternion() {}
 		Quaternion(float x, float y, float z, float w);
-		Quaternion(float* array);
-		Quaternion(const Matrix& m);
 		Quaternion(const Vector3& axis, float angleRadians);
+
+		static Quaternion createFromRotationMatrix(const Matrix& m);
+		static Quaternion createFromAxisAngle(const Vector3& axis, float angleRadians);
 
 		static const Quaternion& identity();
 		static const Quaternion& zero();
@@ -23,23 +24,13 @@ namespace solo
 		bool isIdentity() const;
 		bool isZero() const;
 
-		static Quaternion createFromRotationMatrix(const Matrix& m);
-		static Quaternion createFromAxisAngle(const Vector3& axis, float angleRadians);
-
 		void conjugate();
 		bool inverse();
 
-		void multiply(const Quaternion& q);
-		static void multiply(const Quaternion& q1, const Quaternion& q2, Quaternion* dst);
-
+		Quaternion normalized() const;
 		void normalize();
-		void normalize(Quaternion* dst) const;
 
 		void set(float x, float y, float z, float w);
-		void set(float* array);
-		void set(const Matrix& m);
-		void set(const Vector3& axis, float angleRadians);
-		void set(const Quaternion& q);
 
 		float toAxisAngle(Vector3* e) const;
 		
@@ -48,7 +39,7 @@ namespace solo
 		static Quaternion squad(const Quaternion& q1, const Quaternion& q2, const Quaternion& s1, const Quaternion& s2, float t);
 
 		inline Quaternion operator*(const Quaternion& q) const;
-		inline Quaternion& operator*=(const Quaternion& q);
+		Quaternion& operator*=(const Quaternion& q);
 
 	private:
 		static Quaternion slerpForSquad(const Quaternion& q1, const Quaternion& q2, float t);
@@ -57,13 +48,7 @@ namespace solo
 	inline Quaternion Quaternion::operator*(const Quaternion& q) const
 	{
 		auto result(*this);
-		result.multiply(q);
+		result *= q;
 		return result;
-	}
-
-	inline Quaternion& Quaternion::operator*=(const Quaternion& q)
-	{
-		multiply(q);
-		return *this;
 	}
 }

@@ -313,14 +313,14 @@ Vector3 Transform::transformDirection(const Vector3& direction) const
 
 void Transform::setLocalRotation(const Quaternion& rotation)
 {
-	localRotation.set(rotation);
+	localRotation = rotation;
 	setDirtyWithChildren<DIRTY_BIT_ROTATION, DIRTY_BIT_WORLD>();
 }
 
 
 void Transform::setLocalRotation(const Vector3& axis, float angleRadians)
 {
-	localRotation.set(axis, angleRadians);
+	localRotation = Quaternion::createFromAxisAngle(axis, angleRadians);
 	setDirtyWithChildren<DIRTY_BIT_ROTATION, DIRTY_BIT_WORLD>();
 }
 

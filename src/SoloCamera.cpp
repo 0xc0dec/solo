@@ -3,7 +3,6 @@
 #include "SoloNode.h"
 #include "SoloDevice.h"
 #include "SoloRenderTarget.h"
-#include "SoloScene.h"
 #include "platform/SoloOpenGLCamera.h"
 
 using namespace solo;
