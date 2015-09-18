@@ -199,8 +199,8 @@ shared<RenderTarget> ResourceManager::getOrCreateRenderTarget(const std::string&
 }
 
 
-template <typename T>
-static void cleanUnusedResources(std::map<std::string, shared<T>> &resources)
+template <typename TResource>
+void ResourceManager::cleanUnusedResources(ResourceMap<TResource> &resources)
 {
 	auto urls = std::unordered_set<std::string>();
 	for (auto &it : resources)
@@ -217,9 +217,9 @@ void ResourceManager::cleanUnusedResources()
 {
 	// Clean in order of reference hierarchy. I.e. models reference materials,
 	// materials reference effects, etc.
-	::cleanUnusedResources(models);
-	::cleanUnusedResources(materials);
-	::cleanUnusedResources(effects);
-	::cleanUnusedResources(meshes);
-	::cleanUnusedResources(textures);
+	cleanUnusedResources(models);
+	cleanUnusedResources(materials);
+	cleanUnusedResources(effects);
+	cleanUnusedResources(meshes);
+	cleanUnusedResources(textures);
 }

@@ -41,6 +41,8 @@ namespace solo
 	private:
 		friend class ResourceManagerFactory;
 
+		template <typename TResource> using ResourceMap = std::unordered_map<std::string, shared<TResource>>;
+
 		ResourceManager(Engine *engine);
 		ResourceManager(const ResourceManager& other) = delete;
 		ResourceManager(ResourceManager&& other) = delete;
@@ -49,15 +51,18 @@ namespace solo
 
 		std::string calculateAutoUrl();
 		std::string findEffectUrl(shared<Effect> effect) const;
+		
+		template <typename TResource>
+		static void cleanUnusedResources(ResourceMap<TResource> &resources);
 
 		Engine *engine{ nullptr };
 
-		std::map<std::string, shared<Effect>> effects;
-		std::map<std::string, shared<Material>> materials;
-		std::map<std::string, shared<Mesh>> meshes;
-		std::map<std::string, shared<Model>> models;
-		std::map<std::string, shared<Texture>> textures;
-		std::map<std::string, shared<RenderTarget>> renderTargets;
+		ResourceMap<Effect> effects;
+		ResourceMap<Material> materials;
+		ResourceMap<Mesh> meshes;
+		ResourceMap<Model> models;
+		ResourceMap<Texture> textures;
+		ResourceMap<RenderTarget> renderTargets;
 
 		std::vector<shared<TextureLoader>> textureLoaders;
 		std::vector<shared<MeshLoader>> meshLoaders;
