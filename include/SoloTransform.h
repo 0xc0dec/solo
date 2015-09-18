@@ -29,8 +29,8 @@ namespace solo
 		void removeCallback(TransformCallback *callback);
 
 		void setParent(Transform *parent);
-		Transform *getParent() const;
-		Transform *getChild(size_t index) const;
+		Transform* getParent() const;
+		Transform* getChild(size_t index) const;
 		size_t getChildrenCount() const;
 		void removeChildren();
 
@@ -69,6 +69,9 @@ namespace solo
 		void setLocalScale(float scale);
 		void setLocalScale(const Vector3& scale);
 		void setLocalScale(float x, float y, float z);
+
+		// Target and Up are in world coordinates
+		void lookAt(const Vector3& target, const Vector3& up);
 
 		Matrix getMatrix() const;
 		Matrix getWorldMatrix() const;

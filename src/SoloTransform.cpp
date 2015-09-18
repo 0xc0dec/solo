@@ -110,7 +110,7 @@ Vector3 Transform::getWorldScale() const
 
 Quaternion Transform::getLocalRotation() const
 {
-	return localRotation;
+	return getMatrix().getRotation();
 }
 
 
@@ -238,8 +238,6 @@ void Transform::rotate(const Quaternion& rotation, TransformSpace space)
 			setDirtyWithChildren<DIRTY_BIT_ROTATION, DIRTY_BIT_WORLD>();
 			break;
 		}
-		default:
-			return;
 	}
 }
 
@@ -260,7 +258,6 @@ void Transform::scaleLocal(float scale)
 
 void Transform::scaleLocal(const Vector3& scale)
 {
-	// TODO replace with *=
 	localScale.x *= scale.x;
 	localScale.y *= scale.y;
 	localScale.z *= scale.z;
@@ -295,6 +292,19 @@ void Transform::setLocalScale(float x, float y, float z)
 {
 	localScale.set(x, y, z);
 	setDirtyWithChildren<DIRTY_BIT_SCALE, DIRTY_BIT_WORLD>();
+}
+
+
+void Transform::lookAt(const Vector3& target, const Vector3& up)
+{
+	// TODO fix
+	auto invertedMatrix(getWorldMatrix());
+	invertedMatrix.invert();
+	auto localTarget = invertedMatrix.transformPoint(target);
+	auto localUp = invertedMatrix.transformDirection(up);
+	Matrix lookAtMatrix;
+	Matrix::createLookAt(localPosition, localTarget, localUp, &lookAtMatrix);
+	setLocalRotation(lookAtMatrix.getRotation());
 }
 
 

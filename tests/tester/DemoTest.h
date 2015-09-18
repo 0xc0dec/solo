@@ -24,9 +24,9 @@ private:
 	void initMaterials();
 	shared<RenderTarget> initRenderTarget();
 	void initCameras(shared<RenderTarget> renderTarget);
-	void initModel();
-	void initStaticQuad();
-	void initRotatingQuad();
+	Transform *initModel();
+	void initRTTQuad(Transform *targetTransform);
+	void initTexturedQuad();
 	void initBox();
 	void rebuildToBoxMesh(shared<Node> node);
 	shared<Node> createQuad();

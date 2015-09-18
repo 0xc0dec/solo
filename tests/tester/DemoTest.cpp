@@ -117,7 +117,12 @@ class Spectator: public ComponentBase<Spectator>
 public:
 	explicit Spectator(Node node, Device *device):
 		ComponentBase(node),
-		device(device)
+		device(device),
+		transform(nullptr)
+	{
+	}
+
+	virtual void init() override
 	{
 		transform = node.getComponent<Transform>();
 	}
@@ -170,7 +175,12 @@ class RotatorAroundLocalXAxis: public ComponentBase<RotatorAroundLocalXAxis>
 public:
 	explicit RotatorAroundLocalXAxis(Node node, Device *device):
 		ComponentBase(node),
-		device(device)
+		device(device),
+		transform(nullptr)
+	{
+	}
+
+	virtual void init() override
 	{
 		transform = node.getComponent<Transform>();
 	}
@@ -192,7 +202,12 @@ class RotatorAroundWorldYAxis: public ComponentBase<RotatorAroundWorldYAxis>
 public:
 	explicit RotatorAroundWorldYAxis(Node node, Device *device):
 		ComponentBase(node),
-		device(device)
+		device(device),
+		transform(nullptr)
+	{
+	}
+
+	virtual void init() override
 	{
 		transform = node.getComponent<Transform>();
 	}
@@ -206,6 +221,32 @@ public:
 private:
 	Transform *transform;
 	Device *device;
+};
+
+
+class RTTQuad: public ComponentBase<RTTQuad>
+{
+public:
+	explicit RTTQuad(Node node, Transform *targetTransform):
+		ComponentBase(node),
+		transform(nullptr),
+		targetTransform(targetTransform)
+	{
+	}
+
+	virtual void init() override
+	{
+		transform = node.getComponent<Transform>();
+	}
+
+	virtual void update() override
+	{
+		transform->lookAt(targetTransform->getWorldPosition(), Vector3::unitY());
+	}
+
+private:
+	Transform *transform;
+	Transform *targetTransform;
 };
 
 
@@ -289,7 +330,7 @@ void DemoTest::initCameras(shared<RenderTarget> renderTarget)
 }
 
 
-void DemoTest::initModel()
+Transform *DemoTest::initModel()
 {
 	auto mesh = resourceManager->getOrLoadMesh("../data/monkey_hires.obj");
 	auto model = resourceManager->getOrCreateModel();
@@ -300,6 +341,7 @@ void DemoTest::initModel()
 	renderer->setMaterial(0, texWithLightingMaterial);
 	node->getComponent<Transform>()->setLocalPosition(Vector3::zero());
 	node->addComponent<RotatorAroundLocalXAxis>(device);
+	return node->getComponent<Transform>();
 }
 
 
@@ -353,18 +395,26 @@ shared<Node> DemoTest::createQuad()
 }
 
 
-void DemoTest::initStaticQuad()
+void DemoTest::initRTTQuad(Transform *targetTransform)
 {
+	auto quadParent = scene->createNode()->getComponent<Transform>();
+	quadParent->setLocalPosition(0, 5, -10);
+//	quadParent->getNode().addComponent<RotatorAroundWorldYAxis>(device);
+
 	auto quad = createQuad();
 	quad->getComponent<ModelRenderer>()->setMaterial(0, renderTargetMaterial);
-	quad->getComponent<Transform>()->setLocalPosition(Vector3(0, 7, 0));
+	auto quadTransform = quad->getComponent<Transform>();
+	quadTransform->setParent(quadParent);
+	quadTransform->setLocalPosition(10, 0, -5);
+	quadTransform->lookAt(targetTransform->getWorldPosition(), Vector3::unitY());
+//	quad->addComponent<RTTQuad>(targetTransform);
 
 	auto canvasSize = device->getCanvasSize();
 	quad->getComponent<Transform>()->setLocalScale(5, 5 * canvasSize.y / canvasSize.x, 1);
 }
 
 
-void DemoTest::initRotatingQuad()
+void DemoTest::initTexturedQuad()
 {
 	auto empty = scene->createNode();
 	auto emptyTransform = empty->getComponent<Transform>();
@@ -483,8 +533,8 @@ void DemoTest::run()
 	initMaterials();
 	auto renderTarget = initRenderTarget();
 	initCameras(renderTarget);
-	initModel();
-	initStaticQuad();
-	initRotatingQuad();
+	auto modelTransform = initModel();
+	initTexturedQuad();
 	initBox();
+	initRTTQuad(modelTransform);
 }
