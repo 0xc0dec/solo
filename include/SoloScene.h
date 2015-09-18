@@ -11,20 +11,19 @@ namespace solo
 	class Scene
 	{
 	public:
-		virtual ~Scene() {}
+		~Scene();
 
 		shared<Node> createNode();
-
-		void clear();
 
 		void addComponent(size_t nodeId, shared<Component> cmp);
 		void addComponent(size_t nodeId, shared<Component> cmp, size_t typeId);
 
 		void removeComponent(size_t nodeId, size_t typeId);
 		void removeAllComponents(size_t nodeId);
+		void clear();
 
-		Component* getComponent(size_t nodeId, size_t typeId);
-		Component* findComponent(size_t nodeId, size_t typeId);
+		Component* getComponent(size_t nodeId, size_t typeId) const;
+		Component* findComponent(size_t nodeId, size_t typeId) const;
 
 		void update();
 		void render();
@@ -41,7 +40,7 @@ namespace solo
 		Scene& operator=(Scene&& other) = delete;
 
 		void iterateComponents(ComponentIterationWorker work);
-		std::vector<shared<Camera>> getCameras();
+		std::vector<Camera*> getCameras() const;
 
 		size_t nodeCounter = 0;
 		std::unordered_map<size_t, std::unordered_map<size_t, shared<Component>>> components;

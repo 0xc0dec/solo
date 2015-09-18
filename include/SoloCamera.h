@@ -16,11 +16,13 @@ namespace solo
 	class Camera : public ComponentBase<Camera>, protected TransformCallback, Dirty
 	{
 	public:
-		virtual ~Camera();
+		virtual ~Camera() {}
 
+		virtual void init() override;
 		virtual void update() override;
 		virtual void render(RenderContext& context) override;
 		virtual void postRender() override;
+		virtual void terminate() override;
 
 		void setRenderTarget(shared<RenderTarget> target);
 		shared<RenderTarget> getRenderTarget() const;
@@ -56,7 +58,7 @@ namespace solo
 	protected:
 		friend class CameraFactory;
 
-		Camera(Node node);
+		explicit Camera(Node node): ComponentBase(node) {}
 
 		virtual void onTransformChanged(const Transform* transform) override;
 

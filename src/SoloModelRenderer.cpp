@@ -13,12 +13,6 @@ shared<ModelRenderer> ModelRendererFactory::create(Node node)
 }
 
 
-ModelRenderer::ModelRenderer(Node node) :
-	ComponentBase(node)
-{
-}
-
-
 void ModelRenderer::render(RenderContext& context)
 {
 	auto meshCount = model->getMeshCount();
@@ -63,9 +57,9 @@ size_t ModelRenderer::getMaterialCount() const
 }
 
 
-Material* ModelRenderer::getMaterial(unsigned index)
+Material* ModelRenderer::getMaterial(unsigned index) const
 {
 	if (materials.find(index) == materials.end())
 		return nullptr;
-	return materials[index].get();
+	return materials.at(index).get();
 }

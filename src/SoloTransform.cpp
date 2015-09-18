@@ -23,18 +23,17 @@ shared<Transform> TransformFactory::create(Node node)
 }
 
 
-Transform::Transform(Node node) :
-	ComponentBase(node)
-{
-	localScale.set(Vector3::unit());
-	setDirty<DIRTY_BIT_ALL>();
-}
-
-
 void Transform::notifyChanged() const
 {
 	for (auto callback : callbacks)
 		callback->onTransformChanged(this);
+}
+
+
+void Transform::init()
+{
+	localScale.set(Vector3::unit());
+	setDirty<DIRTY_BIT_ALL>();
 }
 
 

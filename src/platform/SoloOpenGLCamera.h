@@ -10,7 +10,9 @@ namespace solo
 	class OpenGLCamera: public Camera
 	{
 	public:
-		OpenGLCamera(Node node);
+		explicit OpenGLCamera::OpenGLCamera(Node node) : Camera(node) {}
+
+		virtual void init() override;
 
 	private:
 		Device* device = nullptr;

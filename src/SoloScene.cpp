@@ -14,17 +14,18 @@ shared<Scene> SceneFactory::create()
 }
 
 
+Scene::~Scene()
+{
+	// Allow components to do some cleanup work
+	clear();
+}
+
+
 shared<Node> Scene::createNode()
 {
 	auto node = NEW2(Node, this, nodeCounter++);
 	node->addComponent<Transform>();
 	return node;
-}
-
-
-void Scene::clear()
-{
-	components.clear();
 }
 
 
@@ -37,8 +38,9 @@ void Scene::addComponent(size_t nodeId, shared<Component> cmp)
 void Scene::addComponent(size_t nodeId, shared<Component> cmp, size_t typeId)
 {
 	if (findComponent(nodeId, typeId))
-		THROW_FMT(EngineException, "Component ", cmp->getTypeId(), " already exists.");
+		THROW_FMT(EngineException, "Component ", typeId, " already exists.");
 	components[nodeId][typeId] = cmp;
+	cmp->init();
 }
 
 
@@ -46,6 +48,7 @@ void Scene::removeComponent(size_t nodeId, size_t typeId)
 {
 	if (components.find(nodeId) == components.end())
 		return;
+	components[nodeId][typeId]->terminate();
 	components[nodeId].erase(typeId);
 	if (components.at(nodeId).empty())
 		components.erase(nodeId);
@@ -54,11 +57,22 @@ void Scene::removeComponent(size_t nodeId, size_t typeId)
 
 void Scene::removeAllComponents(size_t nodeId)
 {
+	if (components.find(nodeId) == components.end())
+		return;
+	for (auto cmp: components.at(nodeId))
+		cmp.second->terminate();
 	components.erase(nodeId);
 }
 
 
-Component* Scene::getComponent(size_t nodeId, size_t typeId)
+void Scene::clear()
+{
+	while (!components.empty())
+		removeAllComponents(components.begin()->first);
+}
+
+
+Component* Scene::getComponent(size_t nodeId, size_t typeId) const
 {
 	auto cmp = findComponent(nodeId, typeId);
 	if (!cmp)
@@ -67,26 +81,26 @@ Component* Scene::getComponent(size_t nodeId, size_t typeId)
 }
 
 
-Component* Scene::findComponent(size_t nodeId, size_t typeId)
+Component* Scene::findComponent(size_t nodeId, size_t typeId) const
 {
 	if (components.find(nodeId) == components.end())
 		return nullptr;
-	auto nodeComponents = components[nodeId];
+	auto nodeComponents = components.at(nodeId);
 	auto it = nodeComponents.find(typeId);
 	return it != nodeComponents.end() ? it->second.get() : nullptr;
 }
 
 
-std::vector<shared<Camera>> Scene::getCameras()
+std::vector<Camera*> Scene::getCameras() const
 {
-	std::vector<shared<Camera>> result;
+	std::vector<Camera*> result;
 	result.reserve(10);
 	for (auto nodeComponents : components)
 	{
 		for (auto component : nodeComponents.second)
 		{
 			if (component.second->getTypeId() == Camera::getId())
-				result.push_back(STATIC_CAST<Camera>(component.second));
+				result.push_back(static_cast<Camera*>(component.second.get()));
 		}
 	}
 	return result;
@@ -110,7 +124,7 @@ void Scene::render()
 	{
 		RenderContext context;
 		context.scene = this;
-		context.camera = camera.get();
+		context.camera = camera;
 		camera->render(context);
 		iterateComponents([&](size_t nodeId, shared<Component> component)
 		{

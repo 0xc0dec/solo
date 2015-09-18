@@ -8,16 +8,17 @@ namespace solo
 	class Camera;
 	class ModelRenderer;
 
-	// A convenient wrapper for working with components. There's no real "Node" in the engine ;)
+	// A convenient wrapper for working with components. There's no real "Node" in the engine
 	class Node
 	{
 	public:
-		Node(Scene* scene, size_t nodeId);
+		Node(Scene* scene, size_t nodeId):
+			scene(scene), id(nodeId)
+		{
+		}
 
-		size_t getId() const;
-		Scene* getScene() const;
-
-		void removeAllComponents();
+		inline size_t getId() const;
+		inline Scene* getScene() const;
 
 		template <typename T, typename... Args>
 		static T* addComponent(Scene *scene, size_t nodeId, Args... args)
@@ -57,7 +58,7 @@ namespace solo
 		}
 
 		template <typename T>
-		T* findComponent()
+		T* findComponent() const
 		{
 			return findComponent<T>(scene, id);
 		}
@@ -74,10 +75,27 @@ namespace solo
 			removeComponent<T>(scene, id);
 		}
 
+		inline void removeAllComponents();
+
 	private:
 		Scene* scene;
 		size_t id;
 	};
+
+	inline size_t Node::getId() const
+	{
+		return id;
+	}
+
+	Scene* Node::getScene() const
+	{
+		return scene;
+	}
+
+	void Node::removeAllComponents()
+	{
+		scene->removeAllComponents(id);
+	}
 
 	template<> Transform* Node::addComponent();
 	template<> Camera* Node::addComponent();

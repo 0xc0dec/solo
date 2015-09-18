@@ -23,6 +23,8 @@ namespace solo
 	class Transform: public ComponentBase<Transform>, Dirty
 	{
 	public:
+		virtual void init() override;
+
 		void addCallback(TransformCallback *callback);
 		void removeCallback(TransformCallback *callback);
 
@@ -82,7 +84,7 @@ namespace solo
 	private:
 		friend class TransformFactory;
 
-		Transform(Node node);
+		explicit Transform::Transform(Node node): ComponentBase(node) {}
 
 		template <unsigned bit1, unsigned... bitN>
 		void setDirtyWithChildren() const;

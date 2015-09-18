@@ -18,13 +18,13 @@ namespace solo
 		Model* getModel() const;
 
 		void setMaterial(unsigned index, shared<Material> material);
-		Material* getMaterial(unsigned index);
+		Material* getMaterial(unsigned index) const;
 		size_t getMaterialCount() const;
 
 	private:
 		friend class ModelRendererFactory;
 
-		ModelRenderer(Node node);
+		explicit ModelRenderer(Node node): ComponentBase(node) {}
 
 		shared<Model> model;
 		std::unordered_map<unsigned, shared<Material>> materials;

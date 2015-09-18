@@ -27,8 +27,7 @@ shared<Camera> CameraFactory::create(Node node)
 }
 
 
-Camera::Camera(Node node)
-	: ComponentBase(node)
+void Camera::init()
 {
 	transform = node.getComponent<Transform>();
 	transform->addCallback(this);
@@ -38,7 +37,7 @@ Camera::Camera(Node node)
 }
 
 
-Camera::~Camera()
+void Camera::terminate()
 {
 	transform->removeCallback(this);
 }

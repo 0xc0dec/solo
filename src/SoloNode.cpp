@@ -7,31 +7,6 @@
 using namespace solo;
 
 
-Node::Node(Scene* scene, size_t nodeId) :
-	scene(scene),
-	id(nodeId)
-{
-}
-
-
-size_t Node::getId() const
-{
-	return id;
-}
-
-
-Scene* Node::getScene() const
-{
-	return scene;
-}
-
-
-void Node::removeAllComponents()
-{
-	scene->removeAllComponents(this->getId());
-}
-
-
 template<> Transform* Node::addComponent<Transform>()
 {
 	auto transform = TransformFactory::create(*this);
