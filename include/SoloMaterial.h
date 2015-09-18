@@ -26,7 +26,7 @@ namespace solo
 		Material& operator=(const Material& other) = delete;
 		Material& operator=(Material&& other) = delete;
 
-		std::map<std::string, shared<MaterialParameter>> parameters;
+		std::unordered_map<std::string, shared<MaterialParameter>> parameters;
 
 		shared<Effect> effect;
 	};

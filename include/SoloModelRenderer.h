@@ -27,7 +27,7 @@ namespace solo
 		ModelRenderer(Node node);
 
 		shared<Model> model;
-		std::map<unsigned, shared<Material>> materials;
+		std::unordered_map<unsigned, shared<Material>> materials;
 	};
 
 	class ModelRendererFactory

@@ -4,7 +4,7 @@
 using namespace solo;
 
 
-std::map<GLuint, std::string> shaderTypeNames =
+std::unordered_map<GLuint, std::string> shaderTypeNames =
 {
 	{ GL_VERTEX_SHADER, "vertex" },
 	{ GL_FRAGMENT_SHADER, "fragment" }

@@ -31,6 +31,8 @@ namespace solo
 
 	private:
 		friend class SceneFactory;
+		
+		using ComponentIterationWorker = std::function<void(size_t, shared<Component>)>;
 
 		Scene() {}
 		Scene(const Scene& other) = delete;
@@ -38,12 +40,11 @@ namespace solo
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
-		typedef std::function<void(size_t, shared<Component>)> ComponentIterationWorker;
 		void iterateComponents(ComponentIterationWorker work);
 		std::vector<shared<Camera>> getCameras();
 
 		size_t nodeCounter = 0;
-		std::map<size_t, std::map<size_t, shared<Component>>> components;
+		std::unordered_map<size_t, std::unordered_map<size_t, shared<Component>>> components;
 	};
 
 	class SceneFactory

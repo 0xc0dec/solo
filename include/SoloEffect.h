@@ -18,7 +18,7 @@ namespace solo
 	protected:
 		Effect() {}
 
-		std::map<std::string, shared<EffectVariable>> variables;
+		std::unordered_map<std::string, shared<EffectVariable>> variables;
 
 	private:
 		Effect(const Effect& other) = delete;

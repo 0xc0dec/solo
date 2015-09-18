@@ -61,13 +61,13 @@ namespace solo
 		void updateTime();
 
 		// stores what keys were pressed and if it was a repeat
-		std::map<KeyCode, bool> pressedKeys;
-		std::set<KeyCode> releasedKeys;
+		std::unordered_map<KeyCode, bool> pressedKeys;
+		std::unordered_set<KeyCode> releasedKeys;
 
 		int mouseDeltaX = 0;
 		int mouseDeltaY = 0;
-		std::map<MouseButton, bool> pressedMouseButtons;
-		std::set<MouseButton> releasedMouseButtons;
+		std::unordered_map<MouseButton, bool> pressedMouseButtons;
+		std::unordered_set<MouseButton> releasedMouseButtons;
 
 		bool close = false;
 		float lastUpdateTime = 0;
