@@ -87,7 +87,7 @@ namespace solo
 	private:
 		friend class TransformFactory;
 
-		explicit Transform::Transform(Node node): ComponentBase(node) {}
+		explicit Transform(Node node): ComponentBase(node) {}
 
 		template <unsigned bit1, unsigned... bitN>
 		void setDirtyWithChildren() const;
