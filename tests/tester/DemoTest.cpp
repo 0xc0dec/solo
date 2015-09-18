@@ -224,10 +224,10 @@ private:
 };
 
 
-class RTTQuad: public ComponentBase<RTTQuad>
+class Targeter: public ComponentBase<Targeter>
 {
 public:
-	explicit RTTQuad(Node node, Transform *targetTransform):
+	explicit Targeter(Node node, Transform *targetTransform):
 		ComponentBase(node),
 		transform(nullptr),
 		targetTransform(targetTransform)
@@ -398,16 +398,15 @@ shared<Node> DemoTest::createQuad()
 void DemoTest::initRTTQuad(Transform *targetTransform)
 {
 	auto quadParent = scene->createNode()->getComponent<Transform>();
-	quadParent->setLocalPosition(0, 5, -10);
-//	quadParent->getNode().addComponent<RotatorAroundWorldYAxis>(device);
+	quadParent->setLocalPosition(0, 2, 0);
+	quadParent->getNode().addComponent<RotatorAroundWorldYAxis>(device);
 
 	auto quad = createQuad();
 	quad->getComponent<ModelRenderer>()->setMaterial(0, renderTargetMaterial);
 	auto quadTransform = quad->getComponent<Transform>();
 	quadTransform->setParent(quadParent);
-	quadTransform->setLocalPosition(10, 0, -5);
-	quadTransform->lookAt(targetTransform->getWorldPosition(), Vector3::unitY());
-//	quad->addComponent<RTTQuad>(targetTransform);
+	quadTransform->setLocalPosition(0, 2, -5);
+	quad->addComponent<Targeter>(targetTransform);
 
 	auto canvasSize = device->getCanvasSize();
 	quad->getComponent<Transform>()->setLocalScale(5, 5 * canvasSize.y / canvasSize.x, 1);

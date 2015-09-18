@@ -297,13 +297,20 @@ void Transform::setLocalScale(float x, float y, float z)
 
 void Transform::lookAt(const Vector3& target, const Vector3& up)
 {
-	// TODO fix
-	auto invertedMatrix(getWorldMatrix());
-	invertedMatrix.invert();
-	auto localTarget = invertedMatrix.transformPoint(target);
-	auto localUp = invertedMatrix.transformDirection(up);
+	auto finalTarget = target;
+	auto finalUp = up;
+
+	if (parent)
+	{
+		auto m(parent->getWorldMatrix());
+		m.invert();
+		finalTarget = m.transformPoint(target);
+		finalUp = m.transformDirection(up);
+	}
+
 	Matrix lookAtMatrix;
-	Matrix::createLookAt(localPosition, localTarget, localUp, &lookAtMatrix);
+	Matrix::createLookAt(localPosition, finalTarget, finalUp, &lookAtMatrix);
+	lookAtMatrix.transpose();
 	setLocalRotation(lookAtMatrix.getRotation());
 }
 
