@@ -15,7 +15,8 @@ public:
 		engine(engine),
 		device(engine->getDevice()),
 		scene(engine->getScene()),
-		resourceManager(engine->getResourceManager())
+		resourceManager(engine->getResourceManager()),
+		fileSystem(engine->getFileSystem())
 	{
 	}
 
@@ -28,4 +29,5 @@ protected:
 	Device *device;
 	Scene *scene;
 	ResourceManager *resourceManager;
+	FileSystem *fileSystem;
 };
