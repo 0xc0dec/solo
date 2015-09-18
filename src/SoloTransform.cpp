@@ -90,7 +90,7 @@ size_t Transform::getChildrenCount() const
 }
 
 
-const Vector3& Transform::getLocalScale() const
+Vector3 Transform::getLocalScale() const
 {
 	return localScale;
 }
@@ -108,13 +108,13 @@ Vector3 Transform::getWorldScale() const
 }
 
 
-const Quaternion& Transform::getLocalRotation() const
+Quaternion Transform::getLocalRotation() const
 {
 	return localRotation;
 }
 
 
-const Matrix& Transform::getMatrix() const
+Matrix Transform::getMatrix() const
 {
 	if (isDirty())
 	{
@@ -145,7 +145,7 @@ const Matrix& Transform::getMatrix() const
 }
 
 
-const Matrix& Transform::getWorldMatrix() const
+Matrix Transform::getWorldMatrix() const
 {
 	if (checkAndCleanBit<DIRTY_BIT_WORLD>())
 	{
@@ -338,7 +338,7 @@ void Transform::setLocalPosition(float x, float y, float z)
 }
 
 
-const Vector3& Transform::getLocalPosition() const
+Vector3 Transform::getLocalPosition() const
 {
 	return localPosition;
 }

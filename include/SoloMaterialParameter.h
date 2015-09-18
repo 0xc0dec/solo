@@ -141,9 +141,9 @@ namespace solo
 
 		void apply(const RenderContext& context);
 
-		const Matrix& getWorldMatrix(const RenderContext& context) const;
-		const Matrix& getViewMatrix(const RenderContext& context) const;
-		const Matrix& getProjectionMatrix(const RenderContext& context) const;
+		Matrix getWorldMatrix(const RenderContext& context) const;
+		Matrix getViewMatrix(const RenderContext& context) const;
+		Matrix getProjectionMatrix(const RenderContext& context) const;
 		Vector3 getCameraWorldPosition(const RenderContext& context) const;
 		Matrix getWorldViewMatrix(const RenderContext& context) const;
 		Matrix getViewProjectionMatrix(const RenderContext& context) const;

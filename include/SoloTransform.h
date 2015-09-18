@@ -35,13 +35,13 @@ namespace solo
 		void removeChildren();
 
 		Vector3 getWorldScale() const;
-		const Vector3& getLocalScale() const;
+		Vector3 getLocalScale() const;
 
 		Quaternion getWorldRotation() const;
-		const Quaternion& getLocalRotation() const;
+		Quaternion getLocalRotation() const;
 
 		Vector3 getWorldPosition() const;
-		const Vector3& getLocalPosition() const;
+		Vector3 getLocalPosition() const;
 
 		Vector3 getLocalUp() const;
 		Vector3 getLocalDown() const;
@@ -70,8 +70,8 @@ namespace solo
 		void setLocalScale(const Vector3& scale);
 		void setLocalScale(float x, float y, float z);
 
-		const Matrix& getMatrix() const;
-		const Matrix& getWorldMatrix() const;
+		Matrix getMatrix() const;
+		Matrix getWorldMatrix() const;
 
 		Matrix getWorldViewMatrix(Camera* camera) const;
 		Matrix getWorldViewProjectionMatrix(Camera* camera) const;

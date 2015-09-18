@@ -243,19 +243,19 @@ void MaterialParameter::clearValue()
 }
 
 
-const Matrix& MaterialParameter::getWorldMatrix(const RenderContext& context) const
+Matrix MaterialParameter::getWorldMatrix(const RenderContext& context) const
 {
 	return context.nodeTransform->getWorldMatrix();
 }
 
 
-const Matrix& MaterialParameter::getViewMatrix(const RenderContext& context) const
+Matrix MaterialParameter::getViewMatrix(const RenderContext& context) const
 {
 	return context.camera->getViewMatrix();
 }
 
 
-const Matrix& MaterialParameter::getProjectionMatrix(const RenderContext& context) const
+Matrix MaterialParameter::getProjectionMatrix(const RenderContext& context) const
 {
 	return context.camera->getProjectionMatrix();
 }
