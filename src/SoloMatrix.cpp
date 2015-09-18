@@ -70,8 +70,9 @@ const Matrix& Matrix::zero()
 
 void Matrix::createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up, Matrix* dst)
 {
-	createLookAt(eyePosition.x, eyePosition.y, eyePosition.z, targetPosition.x, targetPosition.y, targetPosition.z,
-		up.x, up.y, up.z, dst);
+	createLookAt(eyePosition.x, eyePosition.y, eyePosition.z,
+				 targetPosition.x, targetPosition.y, targetPosition.z,
+				 up.x, up.y, up.z, dst);
 }
 
 
@@ -83,7 +84,7 @@ void Matrix::createLookAt(float eyePositionX, float eyePositionY, float eyePosit
 	Vector3 up(upX, upY, upZ);
 	up.normalize();
 
-	Vector3 zaxis(eye - target);
+	Vector3 zaxis(target - eye);
 	zaxis.normalize();
 
 	Vector3 xaxis = Vector3::cross(up, zaxis);
@@ -92,24 +93,25 @@ void Matrix::createLookAt(float eyePositionX, float eyePositionY, float eyePosit
 	Vector3 yaxis = Vector3::cross(zaxis, xaxis);
 	yaxis.normalize();
 
+	// Matrix is built already transposed
 	dst->m[0] = xaxis.x;
-	dst->m[1] = yaxis.x;
-	dst->m[2] = zaxis.x;
-	dst->m[3] = 0.0f;
+	dst->m[4] = yaxis.x;
+	dst->m[8] = zaxis.x;
+	dst->m[12] = 0.0f;
 
-	dst->m[4] = xaxis.y;
+	dst->m[1] = xaxis.y;
 	dst->m[5] = yaxis.y;
-	dst->m[6] = zaxis.y;
-	dst->m[7] = 0.0f;
+	dst->m[9] = zaxis.y;
+	dst->m[13] = 0.0f;
 
-	dst->m[8] = xaxis.z;
-	dst->m[9] = yaxis.z;
+	dst->m[2] = xaxis.z;
+	dst->m[6] = yaxis.z;
 	dst->m[10] = zaxis.z;
-	dst->m[11] = 0.0f;
+	dst->m[14] = 0.0f;
 
-	dst->m[12] = -Vector3::dot(xaxis, eye);
-	dst->m[13] = -Vector3::dot(yaxis, eye);
-	dst->m[14] = -Vector3::dot(zaxis, eye);
+	dst->m[3] = -Vector3::dot(xaxis, eye);
+	dst->m[7] = -Vector3::dot(yaxis, eye);
+	dst->m[11] = -Vector3::dot(zaxis, eye);
 	dst->m[15] = 1.0f;
 }
 

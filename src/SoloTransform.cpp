@@ -310,7 +310,6 @@ void Transform::lookAt(const Vector3& target, const Vector3& up)
 
 	Matrix lookAtMatrix;
 	Matrix::createLookAt(localPosition, finalTarget, finalUp, &lookAtMatrix);
-	lookAtMatrix.transpose();
 	setLocalRotation(lookAtMatrix.getRotation());
 }
 

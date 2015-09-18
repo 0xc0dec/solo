@@ -398,7 +398,7 @@ shared<Node> DemoTest::createQuad()
 void DemoTest::initRTTQuad(Transform *targetTransform)
 {
 	auto quadParent = scene->createNode()->getComponent<Transform>();
-	quadParent->setLocalPosition(0, 2, 0);
+	quadParent->setLocalPosition(-2, 2, -2);
 	quadParent->getNode().addComponent<RotatorAroundWorldYAxis>(device);
 
 	auto quad = createQuad();
