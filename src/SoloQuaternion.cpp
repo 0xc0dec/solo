@@ -129,15 +129,14 @@ void Quaternion::set(float x, float y, float z, float w)
 }
 
 
-float Quaternion::toAxisAngle(Vector3* axis) const
+float Quaternion::toAxisAngle(Vector3& axis) const
 {
 	Quaternion q(x, y, z, w);
 	q.normalize();
-	axis->x = q.x;
-	axis->y = q.y;
-	axis->z = q.z;
-	axis->normalize();
-
+	axis.x = q.x;
+	axis.y = q.y;
+	axis.z = q.z;
+	axis.normalize();
 	return 2.0f * acos(q.w);
 }
 
