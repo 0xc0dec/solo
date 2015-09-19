@@ -702,27 +702,6 @@ bool Matrix::isIdentity() const
 }
 
 
-void Matrix::multiply(const Matrix& m, float scalar, Matrix* dst)
-{
-	dst->m[0] = m.m[0] * scalar;
-	dst->m[1] = m.m[1] * scalar;
-	dst->m[2] = m.m[2] * scalar;
-	dst->m[3] = m.m[3] * scalar;
-	dst->m[4] = m.m[4] * scalar;
-	dst->m[5] = m.m[5] * scalar;
-	dst->m[6] = m.m[6] * scalar;
-	dst->m[7] = m.m[7] * scalar;
-	dst->m[8] = m.m[8] * scalar;
-	dst->m[9] = m.m[9] * scalar;
-	dst->m[10] = m.m[10] * scalar;
-	dst->m[11] = m.m[11] * scalar;
-	dst->m[12] = m.m[12] * scalar;
-	dst->m[13] = m.m[13] * scalar;
-	dst->m[14] = m.m[14] * scalar;
-	dst->m[15] = m.m[15] * scalar;
-}
-
-
 void Matrix::multiply(const Matrix& m1, const Matrix& m2, Matrix* dst)
 {
 	// Support the case where m1 or m2 is the same array as dst.
@@ -787,8 +766,8 @@ void Matrix::rotate(const Quaternion& q)
 
 void Matrix::rotate(const Quaternion& q, Matrix* dst) const
 {
-	Matrix r = createRotation(q);
-	multiply(*this, r, dst);
+	auto r = createRotation(q);
+	*dst = *this * r;
 }
 
 
@@ -800,8 +779,8 @@ void Matrix::rotate(const Vector3& axis, float angleRadians)
 
 void Matrix::rotate(const Vector3& axis, float angleRadians, Matrix *dst) const
 {
-	Matrix r = createRotation(axis, angleRadians);
-	multiply(*this, r, dst);
+	auto r = createRotation(axis, angleRadians);
+	*dst = *this * r;
 }
 
 
@@ -813,8 +792,8 @@ void Matrix::rotateX(float angleRadians)
 
 void Matrix::rotateX(float angleRadians, Matrix* dst) const
 {
-	Matrix r = createRotationX(angleRadians);
-	multiply(*this, r, dst);
+	auto r = createRotationX(angleRadians);
+	*dst = *this * r;
 }
 
 
@@ -826,8 +805,8 @@ void Matrix::rotateY(float angleRadians)
 
 void Matrix::rotateY(float angleRadians, Matrix* dst) const
 {
-	Matrix r = createRotationY(angleRadians);
-	multiply(*this, r, dst);
+	auto r = createRotationY(angleRadians);
+	*dst = *this * r;
 }
 
 
@@ -839,8 +818,8 @@ void Matrix::rotateZ(float angleRadians)
 
 void Matrix::rotateZ(float angleRadians, Matrix* dst) const
 {
-	Matrix r = createRotationZ(angleRadians);
-	multiply(*this, r, dst);
+	auto r = createRotationZ(angleRadians);
+	*dst = *this * r;
 }
 
 
@@ -864,8 +843,8 @@ void Matrix::scale(float xScale, float yScale, float zScale)
 
 void Matrix::scale(float xScale, float yScale, float zScale, Matrix* dst) const
 {
-	Matrix s = createScale(xScale, yScale, zScale);
-	multiply(*this, s, dst);
+	auto s = createScale(xScale, yScale, zScale);
+	*dst = *this * s;
 }
 
 
@@ -1031,8 +1010,8 @@ void Matrix::translate(float x, float y, float z)
 
 void Matrix::translate(float x, float y, float z, Matrix* dst) const
 {
-	Matrix t = createTranslation(x, y, z);
-	multiply(*this, t, dst);
+	auto t = createTranslation(x, y, z);
+	*dst = *this * t;
 }
 
 
@@ -1050,11 +1029,34 @@ void Matrix::translate(const Vector3& t, Matrix* dst) const
 
 void Matrix::transpose()
 {
-	float t[16] = {
+	float t[16] =
+	{
 		m[0], m[4], m[8], m[12],
 		m[1], m[5], m[9], m[13],
 		m[2], m[6], m[10], m[14],
 		m[3], m[7], m[11], m[15]
 	};
 	memcpy(&m, t, MATRIX_SIZE);
+}
+
+
+Matrix& Matrix::operator*=(float scalar)
+{
+	m[0] *= scalar;
+	m[1] *= scalar;
+	m[2] *= scalar;
+	m[3] *= scalar;
+	m[4] *= scalar;
+	m[5] *= scalar;
+	m[6] *= scalar;
+	m[7] *= scalar;
+	m[8] *= scalar;
+	m[9] *= scalar;
+	m[10] *= scalar;
+	m[11] *= scalar;
+	m[12] *= scalar;
+	m[13] *= scalar;
+	m[14] *= scalar;
+	m[15] *= scalar;
+	return *this;
 }

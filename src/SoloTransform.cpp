@@ -150,7 +150,7 @@ Matrix Transform::getWorldMatrix() const
 	if (checkAndCleanBit<DIRTY_BIT_WORLD>())
 	{
 		if (parent)
-			Matrix::multiply(parent->getWorldMatrix(), getMatrix(), &worldMatrix);
+			worldMatrix = parent->getWorldMatrix() * getMatrix();
 		else
 			worldMatrix = getMatrix();
 		setChildrenDirty<DIRTY_BIT_WORLD>();
@@ -175,24 +175,19 @@ Matrix Transform::getInverseTransposedWorldMatrix() const
 
 Matrix Transform::getWorldViewMatrix(Camera* camera) const
 {
-	Matrix result;
-	Matrix::multiply(camera->getViewMatrix(), getWorldMatrix(), &result);
-	return result;
+	return camera->getViewMatrix() * getWorldMatrix();
 }
 
 
 Matrix Transform::getWorldViewProjectionMatrix(Camera* camera) const
 {
-	Matrix result;
-	Matrix::multiply(camera->getViewProjectionMatrix(), getWorldMatrix(), &result);
-	return result;
+	return camera->getViewProjectionMatrix() * getWorldMatrix();
 }
 
 
 Matrix Transform::getInverseTransposedWorldViewMatrix(Camera* camera) const
 {
-	Matrix result;
-	Matrix::multiply(camera->getViewMatrix(), getWorldMatrix(), &result);
+	auto result = camera->getViewMatrix() * getWorldMatrix();
 	result.invert();
 	result.transpose();
 	return result;

@@ -76,7 +76,6 @@ namespace solo
 		bool invert();
 		void transpose();
 
-		static void multiply(const Matrix& m, float scalar, Matrix* dst);
 		static void multiply(const Matrix& m1, const Matrix& m2, Matrix* dst);
 
 		void negate();
@@ -126,8 +125,8 @@ namespace solo
 
 		inline Matrix operator*(float scalar) const;
 		inline Matrix operator*(const Matrix& m) const;
-		inline Matrix& operator*=(float scalar);
-		inline Matrix& operator*=(const Matrix& m);
+		Matrix& operator*=(float scalar);
+		Matrix& operator*=(const Matrix& m);
 
 		void transformPoint(Vector3* point) const;
 		void transformPoint(const Vector3& point, Vector3* dst) const;
@@ -180,8 +179,8 @@ namespace solo
 
 	Matrix Matrix::operator*(float scalar) const
 	{
-		Matrix result;
-		Matrix::multiply(*this, scalar, &result);
+		auto result(*this);
+		result *= scalar;
 		return result;
 	}
 
@@ -189,12 +188,6 @@ namespace solo
 	{
 		auto result(*this);
 		return result *= m;
-	}
-
-	Matrix& Matrix::operator*=(float scalar)
-	{
-		Matrix::multiply(*this, scalar, this);
-		return *this;
 	}
 
 	inline Matrix& Matrix::operator*=(const Matrix& m)
