@@ -23,7 +23,7 @@ namespace solo
 		const Plane& getBottom() const;
 		const Plane& getTop() const;
 
-		void getMatrix(Matrix* dst) const;
+		Matrix getMatrix() const;
 
 		void getCorners(Vector3* corners) const;
 		void getNearCorners(Vector3* corners) const;
@@ -33,7 +33,7 @@ namespace solo
 		bool intersects(float x, float y, float z) const;
 		bool intersects(const BoundingSphere& sphere) const;
 		bool intersects(const BoundingBox& box) const;
-		PlaneIntersection intersects(const Plane& plane) const;
+		PlaneIntersection getIntersection(const Plane& plane) const;
 		float intersects(const Ray& ray) const;
 
 		void set(const Frustum& frustum);

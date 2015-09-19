@@ -21,11 +21,11 @@ namespace solo
 		Ray(const Vector3& origin, const Vector3& direction);
 		Ray(float originX, float originY, float originZ, float dirX, float dirY, float dirZ);
 
-		const Vector3& getOrigin() const;
+		Vector3 getOrigin() const;
 		void setOrigin(const Vector3& origin);
 		void setOrigin(float x, float y, float z);
 
-		const Vector3& getDirection() const;
+		Vector3 getDirection() const;
 		void setDirection(const Vector3& direction);
 		void setDirection(float x, float y, float z);
 
@@ -44,8 +44,8 @@ namespace solo
 	private:
 		void normalize();
 
-		Vector3 origin = { 0, 0, 0 };
-		Vector3 direction = { 0, 0, 1 };
+		Vector3 origin { 0, 0, 0 };
+		Vector3 direction { 0, 0, 1 };
 	};
 
 	inline Ray& Ray::operator*=(const Matrix& matrix)

@@ -54,9 +54,9 @@ const Plane& Frustum::getTop() const
 }
 
 
-void Frustum::getMatrix(Matrix* dst) const
+Matrix Frustum::getMatrix() const
 {
-	dst->set(matrix);
+	return matrix;
 }
 
 
@@ -122,7 +122,7 @@ bool Frustum::intersects(const BoundingBox& box) const
 }
 
 
-PlaneIntersection Frustum::intersects(const Plane& plane) const
+PlaneIntersection Frustum::getIntersection(const Plane& plane) const
 {
 	return plane.getIntersection(*this);
 }
