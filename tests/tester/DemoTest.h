@@ -14,20 +14,24 @@ public:
 	virtual void run() override;
 
 private:
+	shared<RenderTarget> renderTarget;
 	shared<Effect> texEffect;
+	shared<Effect> colorEffect;
+	shared<Material> redMaterial;
 	shared<Material> texMaterial;
 	shared<Material> checkerMaterial;
 	shared<Material> texWithLightingMaterial;
 	shared<Material> renderTargetMaterial;
 
+	shared<Model> axesModel;
+	shared<Model> monkeyModel;
+
 	shared<Texture> loadTexture(const std::string &path);
 	void initMaterials();
-	shared<RenderTarget> initRenderTarget();
-	void initCameras(shared<RenderTarget> renderTarget);
-	Transform *initModel();
-	void initRTTQuad(Transform *targetTransform);
-	void initTexturedQuad();
-	void initBox();
+	void initModels();
+	void initRenderTarget();
+	void initCameras();
+	void initObjects();
 	void rebuildToBoxMesh(shared<Node> node);
 	shared<Node> createQuad();
 };

@@ -19,6 +19,20 @@ auto vsBasic = R"s(
 	}
 )s";
 
+auto fsColor = R"s(
+	#version 330 core
+
+	uniform vec4 color;
+
+	in vec2 uv0;
+	out vec4 fragColor;
+
+	void main()
+	{
+		fragColor = color;
+	}
+)s";
+
 auto fsTexture = R"s(
 	#version 330 core
 
@@ -265,6 +279,12 @@ void DemoTest::initMaterials()
 	auto tex1 = loadTexture("../data/freeman1.png");
 	auto tex2 = loadTexture("../data/freeman2.png");
 
+	colorEffect = resourceManager->getOrCreateEffect(vsBasic, fsColor);
+	redMaterial = resourceManager->createMaterial(colorEffect);
+	redMaterial->setPolygonFace(PolygonFace::All);
+	redMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
+	redMaterial->getParameter("color")->setValue(Vector4(1, 0, 0, 1));
+
 	texEffect = resourceManager->getOrCreateEffect(vsBasic, fsTexture);
 	texMaterial = resourceManager->createMaterial(texEffect);
 	texMaterial->setPolygonFace(PolygonFace::All);
@@ -274,8 +294,8 @@ void DemoTest::initMaterials()
 	auto checkerEffect = resourceManager->getOrCreateEffect(vsBasic, fsChecker);
 	checkerMaterial = resourceManager->createMaterial(checkerEffect);
 	checkerMaterial->setPolygonFace(PolygonFace::All);
-	checkerMaterial->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
 	checkerMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
+	checkerMaterial->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
 
 	auto texWithLightingEffect = resourceManager->getOrCreateEffect(vsBasicLighting, fsTextureWithLighting);
 	texWithLightingMaterial = resourceManager->createMaterial(texWithLightingEffect);
@@ -286,28 +306,27 @@ void DemoTest::initMaterials()
 }
 
 
-shared<RenderTarget> DemoTest::initRenderTarget()
+void DemoTest::initRenderTarget()
 {
 	auto canvasSize = device->getCanvasSize();
-	auto renderTarget = resourceManager->getOrCreateRenderTarget("test");
 	auto renderTexture = DYNAMIC_CAST<Texture2D>(resourceManager->getOrCreateTexture("RTT"));
 	renderTexture->setData(ColorFormat::RGB, std::vector<uint8_t>(), canvasSize.x / 8, canvasSize.y / 8);
 	renderTexture->setFilterMode(Filter::Nearest, Filter::Nearest);
 	renderTexture->setWrapMode(WrapMode::Clamp, WrapMode::Clamp);
 	auto texVector = std::vector<shared<Texture2D>>();
 	texVector.push_back(renderTexture);
+
+	renderTarget = resourceManager->getOrCreateRenderTarget("test");
 	renderTarget->setTextures(texVector);
 
 	renderTargetMaterial = resourceManager->createMaterial(texEffect);
 	renderTargetMaterial->setPolygonFace(PolygonFace::All);
 	renderTargetMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
 	renderTargetMaterial->getParameter("mainTex")->setValue(renderTexture);
-
-	return renderTarget;
 }
 
 
-void DemoTest::initCameras(shared<RenderTarget> renderTarget)
+void DemoTest::initCameras()
 {
 	auto canvasSize = device->getCanvasSize();
 	auto offscreenCameraNode = scene->createNode();
@@ -330,18 +349,61 @@ void DemoTest::initCameras(shared<RenderTarget> renderTarget)
 }
 
 
-Transform *DemoTest::initModel()
+void DemoTest::initObjects()
 {
-	auto mesh = resourceManager->getOrLoadMesh("../data/monkey_hires.obj");
-	auto model = resourceManager->getOrCreateModel();
-	model->addMesh(mesh);
+	auto canvasSize = device->getCanvasSize();
+
+	// Monkey
 	auto node = scene->createNode();
 	auto renderer = node->addComponent<ModelRenderer>();
-	renderer->setModel(model);
+	renderer->setModel(monkeyModel);
 	renderer->setMaterial(0, texWithLightingMaterial);
 	node->getComponent<Transform>()->setLocalPosition(Vector3::zero());
 	node->addComponent<RotatorAroundLocalXAxis>(device);
-	return node->getComponent<Transform>();
+
+	// RTT quad
+	auto parent = scene->createNode();
+	parent->getComponent<Transform>()->setLocalPosition(-2, 2, -2);
+	parent->addComponent<RotatorAroundWorldYAxis>(device);
+	auto parentModelRenderer = parent->addComponent<ModelRenderer>();
+	parentModelRenderer->setModel(axesModel);
+	parentModelRenderer->setMaterial(0, redMaterial);
+
+	auto quad = createQuad();
+	quad->getComponent<ModelRenderer>()->setMaterial(0, renderTargetMaterial);
+	auto quadTransform = quad->getComponent<Transform>();
+	quadTransform->setParent(parent->getComponent<Transform>());
+	quadTransform->setLocalPosition(0, 2, -5);
+	quadTransform->setLocalScale(5, 5 * canvasSize.y / canvasSize.x, 1);
+	quad->addComponent<Targeter>(node->getComponent<Transform>()); // monkey
+
+	// Textured quad
+	parent = scene->createNode();
+	parent->getComponent<Transform>()->setLocalPosition(5, 0, 0);
+	parent->addComponent<RotatorAroundWorldYAxis>(device);
+
+	quad = createQuad();
+	quad->addComponent<RotatorAroundLocalXAxis>(device);
+	quad->getComponent<Transform>()->setParent(parent->getComponent<Transform>());
+	quad->getComponent<Transform>()->setLocalPosition(1, 0, 0);
+	quad->getComponent<ModelRenderer>()->setMaterial(0, texMaterial);
+
+	// Box
+	node = createQuad();
+	rebuildToBoxMesh(node);
+	node->getComponent<ModelRenderer>()->setMaterial(0, checkerMaterial);
+	node->getComponent<Transform>()->setLocalPosition(-5, 0, 0);
+	node->addComponent<RotatorAroundWorldYAxis>(device);
+}
+
+
+void DemoTest::initModels()
+{
+	axesModel = resourceManager->getOrCreateModel();
+	axesModel->addMesh(resourceManager->getOrLoadMesh("../data/axes.obj"));
+
+	monkeyModel = resourceManager->getOrCreateModel();
+	monkeyModel->addMesh(resourceManager->getOrLoadMesh("../data/monkey_hires.obj"));
 }
 
 
@@ -392,39 +454,6 @@ shared<Node> DemoTest::createQuad()
 	renderer->setModel(model);
 
 	return node;
-}
-
-
-void DemoTest::initRTTQuad(Transform *targetTransform)
-{
-	auto quadParent = scene->createNode()->getComponent<Transform>();
-	quadParent->setLocalPosition(-2, 2, -2);
-	quadParent->getNode().addComponent<RotatorAroundWorldYAxis>(device);
-
-	auto quad = createQuad();
-	quad->getComponent<ModelRenderer>()->setMaterial(0, renderTargetMaterial);
-	auto quadTransform = quad->getComponent<Transform>();
-	quadTransform->setParent(quadParent);
-	quadTransform->setLocalPosition(0, 2, -5);
-	quad->addComponent<Targeter>(targetTransform);
-
-	auto canvasSize = device->getCanvasSize();
-	quad->getComponent<Transform>()->setLocalScale(5, 5 * canvasSize.y / canvasSize.x, 1);
-}
-
-
-void DemoTest::initTexturedQuad()
-{
-	auto empty = scene->createNode();
-	auto emptyTransform = empty->getComponent<Transform>();
-	emptyTransform->setLocalPosition(Vector3(5, 0, 0));
-	empty->addComponent<RotatorAroundWorldYAxis>(device);
-
-	auto quad = createQuad();
-	quad->addComponent<RotatorAroundLocalXAxis>(device);
-	quad->getComponent<Transform>()->setParent(emptyTransform);
-	quad->getComponent<Transform>()->setLocalPosition(Vector3(1, 0, 0));
-	quad->getComponent<ModelRenderer>()->setMaterial(0, texMaterial);
 }
 
 
@@ -517,23 +546,11 @@ void DemoTest::rebuildToBoxMesh(shared<Node> node)
 }
 
 
-void DemoTest::initBox()
-{
-	auto node = createQuad();
-	rebuildToBoxMesh(node);
-	node->getComponent<ModelRenderer>()->setMaterial(0, checkerMaterial);
-	node->getComponent<Transform>()->setLocalPosition(Vector3(-5, 0, 0));
-	node->addComponent<RotatorAroundWorldYAxis>(device);
-}
-
-
 void DemoTest::run()
 {
 	initMaterials();
-	auto renderTarget = initRenderTarget();
-	initCameras(renderTarget);
-	auto modelTransform = initModel();
-	initTexturedQuad();
-	initBox();
-	initRTTQuad(modelTransform);
+	initModels();
+	initRenderTarget();
+	initObjects();
+	initCameras();
 }
