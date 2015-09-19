@@ -72,7 +72,6 @@ namespace solo
 		Vector3 getBackVector() const;
 
 		bool invert();
-		bool invert(Matrix* dst) const;
 
 		void transpose();
 		void transpose(Matrix* dst) const;

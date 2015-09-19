@@ -190,6 +190,8 @@ Matrix Matrix::createBillboardHelper(const Vector3& objectPosition, const Vector
 		result.m[9] = lookAt.m[6];
 		result.m[10] = lookAt.m[10];
 	}
+
+	return result;
 }
 
 
@@ -646,12 +648,6 @@ Vector3 Matrix::getBackVector() const
 
 bool Matrix::invert()
 {
-	return invert(this);
-}
-
-
-bool Matrix::invert(Matrix* dst) const
-{
 	auto a0 = m[0] * m[5] - m[1] * m[4];
 	auto a1 = m[0] * m[6] - m[2] * m[4];
 	auto a2 = m[0] * m[7] - m[3] * m[4];
@@ -665,14 +661,14 @@ bool Matrix::invert(Matrix* dst) const
 	auto b4 = m[9] * m[15] - m[11] * m[13];
 	auto b5 = m[10] * m[15] - m[11] * m[14];
 
-	// Calculate the determinant.
+	// Calculate the determinant
 	auto det = a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
 
-	// Close to zero, can't invert.
+	// Close to zero, can't invert
 	if (fabs(det) <= MATH_TOLERANCE)
 		return false;
 
-	// Support the case where m == dst.
+	// Support the case where m == dst
 	Matrix inverse;
 	inverse.m[0] = m[5] * b5 - m[6] * b4 + m[7] * b3;
 	inverse.m[1] = -m[1] * b5 + m[2] * b4 - m[3] * b3;
@@ -694,7 +690,7 @@ bool Matrix::invert(Matrix* dst) const
 	inverse.m[14] = -m[12] * a3 + m[13] * a1 - m[14] * a0;
 	inverse.m[15] = m[8] * a3 - m[9] * a1 + m[10] * a0;
 
-	multiply(inverse, 1.0f / det, dst);
+	*this = inverse * (1.0f / det);
 
 	return true;
 }

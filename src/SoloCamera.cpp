@@ -164,7 +164,10 @@ void Camera::setNear(float near)
 const Matrix& Camera::getViewMatrix()
 {
 	if (checkAndCleanBit<DIRTY_BIT_VIEW>())
-		transform->getWorldMatrix().invert(&viewMatrix);
+	{
+		viewMatrix = transform->getWorldMatrix();
+		viewMatrix.invert();
+	}
 	return viewMatrix;
 }
 
@@ -172,7 +175,10 @@ const Matrix& Camera::getViewMatrix()
 const Matrix& Camera::getInverseViewMatrix()
 {
 	if (checkAndCleanBit<DIRTY_BIT_INV_VIEW>())
-		getViewMatrix().invert(&inverseViewMatrix);
+	{
+		inverseViewMatrix = getViewMatrix();
+		inverseViewMatrix.invert();
+	}
 	return inverseViewMatrix;
 }
 
@@ -201,7 +207,10 @@ const Matrix& Camera::getViewProjectionMatrix()
 const Matrix& Camera::getInverseViewProjectionMatrix()
 {
 	if (checkAndCleanBit<DIRTY_BIT_INV_VIEW_PROJ>())
-		getViewProjectionMatrix().invert(&inverseViewProjectionMatrix);
+	{
+		inverseViewProjectionMatrix = getViewProjectionMatrix();
+		inverseViewProjectionMatrix.invert();
+	}
 	return inverseViewProjectionMatrix;
 }
 
