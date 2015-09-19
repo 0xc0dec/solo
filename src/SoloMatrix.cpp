@@ -485,7 +485,7 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
 
 	// Determine if we have a negative scale (true if determinant is less than zero).
 	// In this case, we simply negate a single axis of the scale.
-	auto det = determinant();
+	auto det = getDeterminant();
 	if (det < 0)
 		scaleZ = -scaleZ;
 
@@ -566,7 +566,7 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
 }
 
 
-float Matrix::determinant() const
+float Matrix::getDeterminant() const
 {
 	auto a0 = m[0] * m[5] - m[1] * m[4];
 	auto a1 = m[0] * m[6] - m[2] * m[4];
@@ -1050,17 +1050,11 @@ void Matrix::translate(const Vector3& t, Matrix* dst) const
 
 void Matrix::transpose()
 {
-	transpose(this);
-}
-
-
-void Matrix::transpose(Matrix* dst) const
-{
 	float t[16] = {
-			m[0], m[4], m[8], m[12],
-			m[1], m[5], m[9], m[13],
-			m[2], m[6], m[10], m[14],
-			m[3], m[7], m[11], m[15]
+		m[0], m[4], m[8], m[12],
+		m[1], m[5], m[9], m[13],
+		m[2], m[6], m[10], m[14],
+		m[3], m[7], m[11], m[15]
 	};
-	memcpy(dst, t, MATRIX_SIZE);
+	memcpy(&m, t, MATRIX_SIZE);
 }

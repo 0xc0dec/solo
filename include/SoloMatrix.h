@@ -28,6 +28,8 @@ namespace solo
 		static const Matrix& identity();
 		static const Matrix& zero();
 
+		bool isIdentity() const;
+
 		static Matrix createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up);
 		static Matrix createLookAt(float eyePositionX, float eyePositionY, float eyePositionZ,
 				float targetCenterX, float targetCenterY, float targetCenterZ,
@@ -58,7 +60,7 @@ namespace solo
 
 		bool decompose(Vector3* scale, Quaternion* rotation, Vector3* translation) const;
 
-		float determinant() const;
+		float getDeterminant() const;
 
 		Vector3 getScale() const;
 		Quaternion getRotation() const;
@@ -72,11 +74,7 @@ namespace solo
 		Vector3 getBackVector() const;
 
 		bool invert();
-
 		void transpose();
-		void transpose(Matrix* dst) const;
-
-		bool isIdentity() const;
 
 		static void multiply(const Matrix& m, float scalar, Matrix* dst);
 		static void multiply(const Matrix& m1, const Matrix& m2, Matrix* dst);
