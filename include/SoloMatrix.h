@@ -76,8 +76,6 @@ namespace solo
 		bool invert();
 		void transpose();
 
-		static void multiply(const Matrix& m1, const Matrix& m2, Matrix* dst);
-
 		void negate();
 		void negate(Matrix* dst) const;
 
@@ -188,12 +186,6 @@ namespace solo
 	{
 		auto result(*this);
 		return result *= m;
-	}
-
-	inline Matrix& Matrix::operator*=(const Matrix& m)
-	{
-		multiply(*this, m, this);
-		return *this;
 	}
 
 	inline Vector3& operator*=(Vector3& v, const Matrix& m)
