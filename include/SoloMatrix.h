@@ -16,8 +16,10 @@ namespace solo
 		float m[16];
 
 		Matrix();
-		Matrix(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24,
-		       float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44);
+		Matrix(float m11, float m12, float m13, float m14,
+			   float m21, float m22, float m23, float m24,
+		       float m31, float m32, float m33, float m34,
+			   float m41, float m42, float m43, float m44);
 		Matrix(const float* m);
 		Matrix(const Matrix& copy);
 
@@ -26,10 +28,10 @@ namespace solo
 		static const Matrix& identity();
 		static const Matrix& zero();
 
-		static void createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up, Matrix* dst);
-		static void createLookAt(float eyePositionX, float eyePositionY, float eyePositionZ,
+		static Matrix createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up);
+		static Matrix createLookAt(float eyePositionX, float eyePositionY, float eyePositionZ,
 		                         float targetCenterX, float targetCenterY, float targetCenterZ,
-		                         float upX, float upY, float upZ, Matrix* dst);
+		                         float upX, float upY, float upZ);
 
 		static void createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane, Matrix* dst);
 		static void createOrthographic(float width, float height, float zNearPlane, float zFarPlane, Matrix* dst);

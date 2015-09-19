@@ -68,16 +68,18 @@ const Matrix& Matrix::zero()
 }
 
 
-void Matrix::createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up, Matrix* dst)
+Matrix Matrix::createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up)
 {
-	createLookAt(eyePosition.x, eyePosition.y, eyePosition.z,
-				 targetPosition.x, targetPosition.y, targetPosition.z,
-				 up.x, up.y, up.z, dst);
+	return createLookAt(eyePosition.x, eyePosition.y, eyePosition.z,
+						targetPosition.x, targetPosition.y, targetPosition.z,
+						up.x, up.y, up.z);
 }
 
 
-void Matrix::createLookAt(float eyePositionX, float eyePositionY, float eyePositionZ,
-	float targetPositionX, float targetPositionY, float targetPositionZ, float upX, float upY, float upZ, Matrix* dst)
+Matrix Matrix::createLookAt(
+		float eyePositionX, float eyePositionY, float eyePositionZ,
+		float targetPositionX, float targetPositionY, float targetPositionZ,
+		float upX, float upY, float upZ)
 {
 	Vector3 eye(eyePositionX, eyePositionY, eyePositionZ);
 	Vector3 target(targetPositionX, targetPositionY, targetPositionZ);
@@ -94,25 +96,11 @@ void Matrix::createLookAt(float eyePositionX, float eyePositionY, float eyePosit
 	yaxis.normalize();
 
 	// Matrix is built already transposed
-	dst->m[0] = xaxis.x;
-	dst->m[4] = yaxis.x;
-	dst->m[8] = zaxis.x;
-	dst->m[12] = 0.0f;
-
-	dst->m[1] = xaxis.y;
-	dst->m[5] = yaxis.y;
-	dst->m[9] = zaxis.y;
-	dst->m[13] = 0.0f;
-
-	dst->m[2] = xaxis.z;
-	dst->m[6] = yaxis.z;
-	dst->m[10] = zaxis.z;
-	dst->m[14] = 0.0f;
-
-	dst->m[3] = -Vector3::dot(xaxis, eye);
-	dst->m[7] = -Vector3::dot(yaxis, eye);
-	dst->m[11] = -Vector3::dot(zaxis, eye);
-	dst->m[15] = 1.0f;
+	return Matrix(
+		xaxis.x, yaxis.x, zaxis.x, 0,
+		xaxis.y, yaxis.y, zaxis.y, 0,
+		xaxis.z, yaxis.z, zaxis.z, 0,
+		-Vector3::dot(xaxis, eye), -Vector3::dot(yaxis, eye), -Vector3::dot(zaxis, eye), 1);
 }
 
 
@@ -187,8 +175,7 @@ void Matrix::createBillboardHelper(const Vector3& objectPosition, const Vector3&
 		auto target = isSufficientDelta ? cameraPosition : (objectPosition - *cameraForwardVector);
 
 		// A billboard is the inverse of a lookAt rotation
-		Matrix lookAt;
-		createLookAt(objectPosition, target, cameraUpVector, &lookAt);
+		Matrix lookAt = createLookAt(objectPosition, target, cameraUpVector);
 		dst->m[0] = lookAt.m[0];
 		dst->m[1] = lookAt.m[4];
 		dst->m[2] = lookAt.m[8];
