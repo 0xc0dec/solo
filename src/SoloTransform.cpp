@@ -124,7 +124,7 @@ Matrix Transform::getMatrix() const
 
 		if (hasTranslation || isDirty<DIRTY_BIT_POSITION>())
 		{
-			Matrix::createTranslation(localPosition, &matrix);
+			matrix = Matrix::createTranslation(localPosition);
 			if (hasRotation || isDirty<DIRTY_BIT_ROTATION>())
 				matrix.rotate(localRotation);
 			if (hasScale || isDirty<DIRTY_BIT_SCALE>())
@@ -132,12 +132,12 @@ Matrix Transform::getMatrix() const
 		}
 		else if (hasRotation || isDirty<DIRTY_BIT_ROTATION>())
 		{
-			Matrix::createRotation(localRotation, &matrix);
+			matrix = Matrix::createRotation(localRotation);
 			if (hasScale || isDirty<DIRTY_BIT_SCALE>())
 				matrix.scale(localScale);
 		}
 		else if (hasScale || isDirty<DIRTY_BIT_SCALE>())
-			Matrix::createScale(localScale, &matrix);
+			matrix = Matrix::createScale(localScale);
 
 		clean<DIRTY_BIT_ALL>();
 	}

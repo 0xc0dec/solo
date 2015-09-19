@@ -30,26 +30,26 @@ namespace solo
 
 		static Matrix createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up);
 		static Matrix createLookAt(float eyePositionX, float eyePositionY, float eyePositionZ,
-		                         float targetCenterX, float targetCenterY, float targetCenterZ,
-		                         float upX, float upY, float upZ);
+				float targetCenterX, float targetCenterY, float targetCenterZ,
+				float upX, float upY, float upZ);
 
-		static void createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane, Matrix* dst);
-		static void createOrthographic(float width, float height, float zNearPlane, float zFarPlane, Matrix* dst);
-		static void createOrthographicOffCenter(float left, float right, float bottom, float top, float near, float far, Matrix* dst);
-		static void createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition, const Vector3& cameraUpVector, Matrix* dst);
-		static void createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition, const Vector3& cameraUpVector,
-		                            const Vector3& cameraForwardVector, Matrix* dst);
+		static Matrix createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane);
+		static Matrix createOrthographic(float width, float height, float zNearPlane, float zFarPlane);
+		static Matrix createOrthographicOffCenter(float left, float right, float bottom, float top, float near, float far);
+		static Matrix createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition, const Vector3& cameraUpVector);
+		static Matrix createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition, const Vector3& cameraUpVector,
+				const Vector3& cameraForwardVector);
 
-		static void createReflection(const Plane& plane, Matrix* dst);
-		static void createScale(const Vector3& scale, Matrix* dst);
-		static void createScale(float xScale, float yScale, float zScale, Matrix* dst);
-		static void createRotation(const Quaternion& quat, Matrix* dst);
-		static void createRotation(const Vector3& axis, float angleRadians, Matrix* dst);
-		static void createRotationX(float angleRadians, Matrix* dst);
-		static void createRotationY(float angleRadians, Matrix* dst);
-		static void createRotationZ(float angleRadians, Matrix* dst);
-		static void createTranslation(const Vector3& translation, Matrix* dst);
-		static void createTranslation(float xTranslation, float yTranslation, float zTranslation, Matrix* dst);
+		static Matrix createReflection(const Plane& plane);
+		static Matrix createScale(const Vector3& scale);
+		static Matrix createScale(float xScale, float yScale, float zScale);
+		static Matrix createRotation(const Quaternion& quat);
+		static Matrix createRotation(const Vector3& axis, float angleRadians);
+		static Matrix createRotationX(float angleRadians);
+		static Matrix createRotationY(float angleRadians);
+		static Matrix createRotationZ(float angleRadians);
+		static Matrix createTranslation(const Vector3& translation);
+		static Matrix createTranslation(float xTranslation, float yTranslation, float zTranslation);
 
 		void add(float scalar);
 		void add(float scalar, Matrix* dst);
@@ -60,21 +60,10 @@ namespace solo
 
 		float determinant() const;
 
-		void getScale(Vector3* scale) const;
 		Vector3 getScale() const;
-
-		bool getRotation(Quaternion* rotation) const;
 		Quaternion getRotation() const;
-
-		void getTranslation(Vector3* translation) const;
 		Vector3 getTranslation() const;
 
-		void getUpVector(Vector3* dst) const;
-		void getDownVector(Vector3* dst) const;
-		void getLeftVector(Vector3* dst) const;
-		void getRightVector(Vector3* dst) const;
-		void getForwardVector(Vector3* dst) const;
-		void getBackVector(Vector3* dst) const;
 		Vector3 getUpVector() const;
 		Vector3 getDownVector() const;
 		Vector3 getLeftVector() const;
@@ -155,8 +144,8 @@ namespace solo
 		Vector3 transformDirection(const Vector3& direction) const;
 
 	private:
-		static void createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
-		                                  const Vector3& cameraUpVector, const Vector3* cameraForwardVector, Matrix* dst);
+		static Matrix createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
+		                                  const Vector3& cameraUpVector, const Vector3* cameraForwardVector);
 	};
 
 	inline Matrix Matrix::operator+(const Matrix& m) const

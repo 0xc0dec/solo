@@ -44,9 +44,7 @@ bool Quaternion::isZero() const
 
 Quaternion Quaternion::createFromRotationMatrix(const Matrix& m)
 {
-	Quaternion result;
-	m.getRotation(&result);
-	return result;
+	return m.getRotation(); // TODO remove
 }
 
 

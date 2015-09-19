@@ -182,9 +182,9 @@ const Matrix& Camera::getProjectionMatrix()
 	if (checkAndCleanBit<DIRTY_BIT_PROJ>())
 	{
 		if (ortho)
-			Matrix::createOrthographic(width, height, nearClip, farClip, &projectionMatrix);
+			projectionMatrix = Matrix::createOrthographic(width, height, nearClip, farClip);
 		else
-			Matrix::createPerspective(fov, aspectRatio, nearClip, farClip, &projectionMatrix);
+			projectionMatrix = Matrix::createPerspective(fov, aspectRatio, nearClip, farClip);
 	}
 	return projectionMatrix;
 }

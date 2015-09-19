@@ -104,7 +104,7 @@ Matrix Matrix::createLookAt(
 }
 
 
-void Matrix::createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane, Matrix* dst)
+Matrix Matrix::createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane)
 {
 	auto f_n = 1.0f / (zFarPlane - zNearPlane);
 	auto theta = Math::degToRad(fieldOfView) * 0.5f;
@@ -113,60 +113,64 @@ void Matrix::createPerspective(float fieldOfView, float aspectRatio, float zNear
 	auto divisor = tan(theta);
 	auto factor = 1.0f / divisor;
 
-	memset(dst, 0, MATRIX_SIZE);
+	Matrix result;
+	memset(&result.m, 0, MATRIX_SIZE);
+	result.m[0] = (1.0f / aspectRatio) * factor;
+	result.m[5] = factor;
+	result.m[10] = (-(zFarPlane + zNearPlane)) * f_n;
+	result.m[11] = -1.0f;
+	result.m[14] = -2.0f * zFarPlane * zNearPlane * f_n;
 
-	dst->m[0] = (1.0f / aspectRatio) * factor;
-	dst->m[5] = factor;
-	dst->m[10] = (-(zFarPlane + zNearPlane)) * f_n;
-	dst->m[11] = -1.0f;
-	dst->m[14] = -2.0f * zFarPlane * zNearPlane * f_n;
+	return result;
 }
 
 
-void Matrix::createOrthographic(float width, float height, float zNearPlane, float zFarPlane, Matrix* dst)
+Matrix Matrix::createOrthographic(float width, float height, float zNearPlane, float zFarPlane)
 {
 	auto halfWidth = width / 2.0f;
 	auto halfHeight = height / 2.0f;
-	createOrthographicOffCenter(-halfWidth, halfWidth, -halfHeight, halfHeight, zNearPlane, zFarPlane, dst);
+	return createOrthographicOffCenter(-halfWidth, halfWidth, -halfHeight, halfHeight, zNearPlane, zFarPlane);
 }
 
 
-void Matrix::createOrthographicOffCenter(float left, float right, float bottom, float top, float near, float far, Matrix* dst)
+Matrix Matrix::createOrthographicOffCenter(float left, float right, float bottom, float top, float near, float far)
 {
-	memset(dst, 0, MATRIX_SIZE);
-	dst->m[0] = 2 / (right - left);
-	dst->m[5] = 2 / (top - bottom);
-	dst->m[12] = (left + right) / (left - right);
-	dst->m[10] = 1 / (near - far);
-	dst->m[13] = (top + bottom) / (bottom - top);
-	dst->m[14] = near / (near - far);
-	dst->m[15] = 1;
+	Matrix result;
+	memset(&result.m, 0, MATRIX_SIZE);
+	result.m[0] = 2 / (right - left);
+	result.m[5] = 2 / (top - bottom);
+	result.m[12] = (left + right) / (left - right);
+	result.m[10] = 1 / (near - far);
+	result.m[13] = (top + bottom) / (bottom - top);
+	result.m[14] = near / (near - far);
+	result.m[15] = 1;
+	return result;
 }
 
 
-void Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition, const Vector3& cameraUpVector, Matrix* dst)
+Matrix Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition, const Vector3& cameraUpVector)
 {
-	createBillboardHelper(objectPosition, cameraPosition, cameraUpVector, nullptr, dst);
+	return createBillboardHelper(objectPosition, cameraPosition, cameraUpVector, nullptr);
 }
 
 
-void Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
-	const Vector3& cameraUpVector, const Vector3& cameraForwardVector, Matrix* dst)
+Matrix Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
+	const Vector3& cameraUpVector, const Vector3& cameraForwardVector)
 {
-	createBillboardHelper(objectPosition, cameraPosition, cameraUpVector, &cameraForwardVector, dst);
+	return createBillboardHelper(objectPosition, cameraPosition, cameraUpVector, &cameraForwardVector);
 }
 
 
-void Matrix::createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
-	const Vector3& cameraUpVector, const Vector3* cameraForwardVector, Matrix* dst)
+Matrix Matrix::createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
+	const Vector3& cameraUpVector, const Vector3* cameraForwardVector)
 {
 	Vector3 delta(objectPosition, cameraPosition);
 	auto isSufficientDelta = delta.lengthSquared() > MATH_EPSILON;
 
-	dst->setIdentity();
-	dst->m[3] = objectPosition.x;
-	dst->m[7] = objectPosition.y;
-	dst->m[11] = objectPosition.z;
+	Matrix result;
+	result.m[3] = objectPosition.x;
+	result.m[7] = objectPosition.y;
+	result.m[11] = objectPosition.z;
 
 	// As per the contracts for the 2 variants of createBillboard, we need
 	// either a safe default or a sufficient distance between object and camera.
@@ -176,60 +180,62 @@ void Matrix::createBillboardHelper(const Vector3& objectPosition, const Vector3&
 
 		// A billboard is the inverse of a lookAt rotation
 		Matrix lookAt = createLookAt(objectPosition, target, cameraUpVector);
-		dst->m[0] = lookAt.m[0];
-		dst->m[1] = lookAt.m[4];
-		dst->m[2] = lookAt.m[8];
-		dst->m[4] = lookAt.m[1];
-		dst->m[5] = lookAt.m[5];
-		dst->m[6] = lookAt.m[9];
-		dst->m[8] = lookAt.m[2];
-		dst->m[9] = lookAt.m[6];
-		dst->m[10] = lookAt.m[10];
+		result.m[0] = lookAt.m[0];
+		result.m[1] = lookAt.m[4];
+		result.m[2] = lookAt.m[8];
+		result.m[4] = lookAt.m[1];
+		result.m[5] = lookAt.m[5];
+		result.m[6] = lookAt.m[9];
+		result.m[8] = lookAt.m[2];
+		result.m[9] = lookAt.m[6];
+		result.m[10] = lookAt.m[10];
 	}
 }
 
 
-void Matrix::createReflection(const Plane& plane, Matrix* dst)
+Matrix Matrix::createReflection(const Plane& plane)
 {
 	auto normal(plane.getNormal());
 	auto k = -2.0f * plane.getDistance();
 
-	dst->setIdentity();
+	Matrix result;
 
-	dst->m[0] -= 2.0f * normal.x * normal.x;
-	dst->m[5] -= 2.0f * normal.y * normal.y;
-	dst->m[10] -= 2.0f * normal.z * normal.z;
-	dst->m[1] = dst->m[4] = -2.0f * normal.x * normal.y;
-	dst->m[2] = dst->m[8] = -2.0f * normal.x * normal.z;
-	dst->m[6] = dst->m[9] = -2.0f * normal.y * normal.z;
+	result.m[0] -= 2.0f * normal.x * normal.x;
+	result.m[5] -= 2.0f * normal.y * normal.y;
+	result.m[10] -= 2.0f * normal.z * normal.z;
+	result.m[1] = result.m[4] = -2.0f * normal.x * normal.y;
+	result.m[2] = result.m[8] = -2.0f * normal.x * normal.z;
+	result.m[6] = result.m[9] = -2.0f * normal.y * normal.z;
 
-	dst->m[3] = k * normal.x;
-	dst->m[7] = k * normal.y;
-	dst->m[11] = k * normal.z;
+	result.m[3] = k * normal.x;
+	result.m[7] = k * normal.y;
+	result.m[11] = k * normal.z;
+
+	return result;
 }
 
 
-void Matrix::createScale(const Vector3& scale, Matrix* dst)
+Matrix Matrix::createScale(const Vector3& scale)
 {
-	memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
-
-	dst->m[0] = scale.x;
-	dst->m[5] = scale.y;
-	dst->m[10] = scale.z;
+	Matrix result;
+	result.m[0] = scale.x;
+	result.m[5] = scale.y;
+	result.m[10] = scale.z;
+	return result;
 }
 
 
-void Matrix::createScale(float xScale, float yScale, float zScale, Matrix* dst)
+Matrix Matrix::createScale(float xScale, float yScale, float zScale)
 {
-	memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
-
-	dst->m[0] = xScale;
-	dst->m[5] = yScale;
-	dst->m[10] = zScale;
+	Matrix result;
+	result.m[0] = xScale;
+	result.m[5] = yScale;
+	result.m[10] = zScale;
+	return result;
 }
 
 
-void Matrix::createRotation(const Quaternion& q, Matrix* dst)
+Matrix Matrix::createRotation(const Quaternion& q)
 {
 	auto x2 = q.x + q.x;
 	auto y2 = q.y + q.y;
@@ -245,29 +251,33 @@ void Matrix::createRotation(const Quaternion& q, Matrix* dst)
 	auto wy2 = q.w * y2;
 	auto wz2 = q.w * z2;
 
-	dst->m[0] = 1.0f - yy2 - zz2;
-	dst->m[1] = xy2 + wz2;
-	dst->m[2] = xz2 - wy2;
-	dst->m[3] = 0.0f;
+	Matrix result;
 
-	dst->m[4] = xy2 - wz2;
-	dst->m[5] = 1.0f - xx2 - zz2;
-	dst->m[6] = yz2 + wx2;
-	dst->m[7] = 0.0f;
+	result.m[0] = 1.0f - yy2 - zz2;
+	result.m[1] = xy2 + wz2;
+	result.m[2] = xz2 - wy2;
+	result.m[3] = 0.0f;
 
-	dst->m[8] = xz2 + wy2;
-	dst->m[9] = yz2 - wx2;
-	dst->m[10] = 1.0f - xx2 - yy2;
-	dst->m[11] = 0.0f;
+	result.m[4] = xy2 - wz2;
+	result.m[5] = 1.0f - xx2 - zz2;
+	result.m[6] = yz2 + wx2;
+	result.m[7] = 0.0f;
 
-	dst->m[12] = 0.0f;
-	dst->m[13] = 0.0f;
-	dst->m[14] = 0.0f;
-	dst->m[15] = 1.0f;
+	result.m[8] = xz2 + wy2;
+	result.m[9] = yz2 - wx2;
+	result.m[10] = 1.0f - xx2 - yy2;
+	result.m[11] = 0.0f;
+
+	result.m[12] = 0.0f;
+	result.m[13] = 0.0f;
+	result.m[14] = 0.0f;
+	result.m[15] = 1.0f;
+
+	return result;
 }
 
 
-void Matrix::createRotation(const Vector3& axis, float angleRadians, Matrix* dst)
+Matrix Matrix::createRotation(const Vector3& axis, float angleRadians)
 {
 	auto x = axis.x;
 	auto y = axis.y;
@@ -303,87 +313,93 @@ void Matrix::createRotation(const Vector3& axis, float angleRadians, Matrix* dst
 	auto sy = s * y;
 	auto sz = s * z;
 
-	dst->m[0] = c + tx*x;
-	dst->m[1] = txy + sz;
-	dst->m[2] = txz - sy;
-	dst->m[3] = 0.0f;
+	Matrix result;
 
-	dst->m[4] = txy - sz;
-	dst->m[5] = c + ty*y;
-	dst->m[6] = tyz + sx;
-	dst->m[7] = 0.0f;
+	result.m[0] = c + tx*x;
+	result.m[1] = txy + sz;
+	result.m[2] = txz - sy;
+	result.m[3] = 0.0f;
 
-	dst->m[8] = txz + sy;
-	dst->m[9] = tyz - sx;
-	dst->m[10] = c + tz*z;
-	dst->m[11] = 0.0f;
+	result.m[4] = txy - sz;
+	result.m[5] = c + ty*y;
+	result.m[6] = tyz + sx;
+	result.m[7] = 0.0f;
 
-	dst->m[12] = 0.0f;
-	dst->m[13] = 0.0f;
-	dst->m[14] = 0.0f;
-	dst->m[15] = 1.0f;
+	result.m[8] = txz + sy;
+	result.m[9] = tyz - sx;
+	result.m[10] = c + tz*z;
+	result.m[11] = 0.0f;
+
+	result.m[12] = 0.0f;
+	result.m[13] = 0.0f;
+	result.m[14] = 0.0f;
+	result.m[15] = 1.0f;
+
+	return result;
 }
 
 
-void Matrix::createRotationX(float angleRadians, Matrix* dst)
+Matrix Matrix::createRotationX(float angleRadians)
 {
-	memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
-
 	auto c = cos(angleRadians);
 	auto s = sin(angleRadians);
 
-	dst->m[5] = c;
-	dst->m[6] = s;
-	dst->m[9] = -s;
-	dst->m[10] = c;
+	Matrix result;
+	result.m[5] = c;
+	result.m[6] = s;
+	result.m[9] = -s;
+	result.m[10] = c;
+	return result;
 }
 
 
-void Matrix::createRotationY(float angleRadians, Matrix* dst)
+Matrix Matrix::createRotationY(float angleRadians)
 {
-	memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
-
 	auto c = cos(angleRadians);
 	auto s = sin(angleRadians);
 
-	dst->m[0] = c;
-	dst->m[2] = -s;
-	dst->m[8] = s;
-	dst->m[10] = c;
+	Matrix result;
+
+	result.m[0] = c;
+	result.m[2] = -s;
+	result.m[8] = s;
+	result.m[10] = c;
+
+	return result;
 }
 
 
-void Matrix::createRotationZ(float angleRadians, Matrix* dst)
+Matrix Matrix::createRotationZ(float angleRadians)
 {
-	memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
-
 	auto c = cos(angleRadians);
 	auto s = sin(angleRadians);
 
-	dst->m[0] = c;
-	dst->m[1] = s;
-	dst->m[4] = -s;
-	dst->m[5] = c;
+	Matrix result;
+	result.m[0] = c;
+	result.m[1] = s;
+	result.m[4] = -s;
+	result.m[5] = c;
+	return result;
 }
 
 
-void Matrix::createTranslation(const Vector3& translation, Matrix* dst)
+Matrix Matrix::createTranslation(const Vector3& translation)
 {
-	memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
-
-	dst->m[12] = translation.x;
-	dst->m[13] = translation.y;
-	dst->m[14] = translation.z;
+	Matrix result;
+	result.m[12] = translation.x;
+	result.m[13] = translation.y;
+	result.m[14] = translation.z;
+	return result;
 }
 
 
-void Matrix::createTranslation(float xTranslation, float yTranslation, float zTranslation, Matrix* dst)
+Matrix Matrix::createTranslation(float xTranslation, float yTranslation, float zTranslation)
 {
-	memcpy(dst, MATRIX_IDENTITY, MATRIX_SIZE);
-
-	dst->m[12] = xTranslation;
-	dst->m[13] = yTranslation;
-	dst->m[14] = zTranslation;
+	Matrix result;
+	result.m[12] = xTranslation;
+	result.m[13] = yTranslation;
+	result.m[14] = zTranslation;
+	return result;
 }
 
 
@@ -568,141 +584,63 @@ float Matrix::determinant() const
 }
 
 
-void Matrix::getScale(Vector3* scale) const
-{
-	decompose(scale, nullptr, nullptr);
-}
-
-
 Vector3 Matrix::getScale() const
 {
 	Vector3 result;
-	getScale(&result);
+	decompose(&result, nullptr, nullptr);
 	return result;
-}
-
-
-bool Matrix::getRotation(Quaternion* rotation) const
-{
-	return decompose(nullptr, rotation, nullptr);
 }
 
 
 Quaternion Matrix::getRotation() const
 {
 	Quaternion result;
-	getRotation(&result);
+	decompose(nullptr, &result, nullptr);
 	return result;
-}
-
-
-void Matrix::getTranslation(Vector3* translation) const
-{
-	decompose(nullptr, nullptr, translation);
 }
 
 
 Vector3 Matrix::getTranslation() const
 {
 	Vector3 result;
-	getTranslation(&result);
+	decompose(nullptr, nullptr, &result);
 	return result;
-}
-
-
-void Matrix::getUpVector(Vector3* dst) const
-{
-	dst->x = m[4];
-	dst->y = m[5];
-	dst->z = m[6];
-}
-
-
-void Matrix::getDownVector(Vector3* dst) const
-{
-	dst->x = -m[4];
-	dst->y = -m[5];
-	dst->z = -m[6];
-}
-
-
-void Matrix::getLeftVector(Vector3* dst) const
-{
-	dst->x = -m[0];
-	dst->y = -m[1];
-	dst->z = -m[2];
-}
-
-
-void Matrix::getRightVector(Vector3* dst) const
-{
-	dst->x = m[0];
-	dst->y = m[1];
-	dst->z = m[2];
-}
-
-
-void Matrix::getForwardVector(Vector3* dst) const
-{
-	dst->x = -m[8];
-	dst->y = -m[9];
-	dst->z = -m[10];
-}
-
-
-void Matrix::getBackVector(Vector3* dst) const
-{
-	dst->x = m[8];
-	dst->y = m[9];
-	dst->z = m[10];
 }
 
 
 Vector3 Matrix::getUpVector() const
 {
-	Vector3 result;
-	getUpVector(&result);
-	return result;
+	return Vector3(m[4], m[5], m[6]);
 }
 
 
 Vector3 Matrix::getDownVector() const
 {
-	Vector3 result;
-	getDownVector(&result);
-	return result;
+	return Vector3(-m[4], -m[5], -m[6]);
 }
 
 
 Vector3 Matrix::getLeftVector() const
 {
-	Vector3 result;
-	getLeftVector(&result);
-	return result;
+	return Vector3(-m[0], -m[1], -m[2]);
 }
 
 
 Vector3 Matrix::getRightVector() const
 {
-	Vector3 result;
-	getRightVector(&result);
-	return result;
+	return Vector3(m[0], m[1], m[2]);
 }
 
 
 Vector3 Matrix::getForwardVector() const
 {
-	Vector3 result;
-	getForwardVector(&result);
-	return result;
+	return Vector3(-m[8], -m[9], -m[10]);
 }
 
 
 Vector3 Matrix::getBackVector() const
 {
-	Vector3 result;
-	getBackVector(&result);
-	return result;
+	return Vector3(m[8], m[9], m[10]);
 }
 
 
@@ -853,8 +791,7 @@ void Matrix::rotate(const Quaternion& q)
 
 void Matrix::rotate(const Quaternion& q, Matrix* dst) const
 {
-	Matrix r;
-	createRotation(q, &r);
+	Matrix r = createRotation(q);
 	multiply(*this, r, dst);
 }
 
@@ -865,10 +802,9 @@ void Matrix::rotate(const Vector3& axis, float angleRadians)
 }
 
 
-void Matrix::rotate(const Vector3& axis, float angleRadians, Matrix* dst) const
+void Matrix::rotate(const Vector3& axis, float angleRadians, Matrix *dst) const
 {
-	Matrix r;
-	createRotation(axis, angleRadians, &r);
+	Matrix r = createRotation(axis, angleRadians);
 	multiply(*this, r, dst);
 }
 
@@ -881,8 +817,7 @@ void Matrix::rotateX(float angleRadians)
 
 void Matrix::rotateX(float angleRadians, Matrix* dst) const
 {
-	Matrix r;
-	createRotationX(angleRadians, &r);
+	Matrix r = createRotationX(angleRadians);
 	multiply(*this, r, dst);
 }
 
@@ -895,8 +830,7 @@ void Matrix::rotateY(float angleRadians)
 
 void Matrix::rotateY(float angleRadians, Matrix* dst) const
 {
-	Matrix r;
-	createRotationY(angleRadians, &r);
+	Matrix r = createRotationY(angleRadians);
 	multiply(*this, r, dst);
 }
 
@@ -909,8 +843,7 @@ void Matrix::rotateZ(float angleRadians)
 
 void Matrix::rotateZ(float angleRadians, Matrix* dst) const
 {
-	Matrix r;
-	createRotationZ(angleRadians, &r);
+	Matrix r = createRotationZ(angleRadians);
 	multiply(*this, r, dst);
 }
 
@@ -935,8 +868,7 @@ void Matrix::scale(float xScale, float yScale, float zScale)
 
 void Matrix::scale(float xScale, float yScale, float zScale, Matrix* dst) const
 {
-	Matrix s;
-	createScale(xScale, yScale, zScale, &s);
+	Matrix s = createScale(xScale, yScale, zScale);
 	multiply(*this, s, dst);
 }
 
@@ -1103,8 +1035,7 @@ void Matrix::translate(float x, float y, float z)
 
 void Matrix::translate(float x, float y, float z, Matrix* dst) const
 {
-	Matrix t;
-	createTranslation(x, y, z, &t);
+	Matrix t = createTranslation(x, y, z);
 	multiply(*this, t, dst);
 }
 
