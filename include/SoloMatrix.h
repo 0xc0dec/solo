@@ -53,11 +53,6 @@ namespace solo
 		static Matrix createTranslation(const Vector3& translation);
 		static Matrix createTranslation(float xTranslation, float yTranslation, float zTranslation);
 
-		void add(float scalar);
-		void add(float scalar, Matrix* dst);
-		void add(const Matrix& m);
-		static void add(const Matrix& m1, const Matrix& m2, Matrix* dst);
-
 		bool decompose(Vector3* scale, Quaternion* rotation, Vector3* translation) const;
 
 		float getDeterminant() const;
@@ -75,35 +70,23 @@ namespace solo
 
 		bool invert();
 		void transpose();
-
 		void negate();
-		void negate(Matrix* dst) const;
 
 		void rotate(const Quaternion& q);
-		void rotate(const Quaternion& q, Matrix* dst) const;
 		void rotate(const Vector3& axis, float angleRadians);
-		void rotate(const Vector3& axis, float angleRadians, Matrix* dst) const;
 		void rotateX(float angleRadians);
-		void rotateX(float angleRadians, Matrix* dst) const;
 		void rotateY(float angleRadians);
-		void rotateY(float angleRadians, Matrix* dst) const;
 		void rotateZ(float angleRadians);
-		void rotateZ(float angleRadians, Matrix* dst) const;
 
 		void scale(float value);
-		void scale(float value, Matrix* dst) const;
 		void scale(float xScale, float yScale, float zScale);
-		void scale(float xScale, float yScale, float zScale, Matrix* dst) const;
 		void scale(const Vector3& s);
-		void scale(const Vector3& s, Matrix* dst) const;
 
 		void translate(float x, float y, float z);
-		void translate(float x, float y, float z, Matrix* dst) const;
 		void translate(const Vector3& t);
-		void translate(const Vector3& t, Matrix* dst) const;
 
 		void set(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24,
-		         float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44);
+				float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44);
 
 		void set(const float* m);
 		void set(const Matrix& m);
@@ -111,15 +94,14 @@ namespace solo
 		void setIdentity();
 		void setZero();
 
-		void subtract(const Matrix& m);
-		static void subtract(const Matrix& m1, const Matrix& m2, Matrix* dst);
-
+		inline Matrix operator+(float scalar) const;
 		inline Matrix operator+(const Matrix& m) const;
-		inline Matrix& operator+=(const Matrix& m);
+		Matrix& operator+=(float scalar);
+		Matrix& operator+=(const Matrix& m);
 
 		inline Matrix operator-() const;
 		inline Matrix operator-(const Matrix& m) const;
-		inline Matrix& operator-=(const Matrix& m);
+		Matrix& operator-=(const Matrix& m);
 
 		inline Matrix operator*(float scalar) const;
 		inline Matrix operator*(const Matrix& m) const;
@@ -142,30 +124,25 @@ namespace solo
 		                                  const Vector3& cameraUpVector, const Vector3* cameraForwardVector);
 	};
 
-	inline Matrix Matrix::operator+(const Matrix& m) const
+	inline Matrix Matrix::operator+(float scalar) const
 	{
 		auto result(*this);
-		result.add(m);
+		result += scalar;
 		return result;
 	}
 
-	inline Matrix& Matrix::operator+=(const Matrix& m)
+	inline Matrix Matrix::operator+(const Matrix& m) const
 	{
-		add(m);
-		return *this;
+		auto result(*this);
+		result += m;
+		return result;
 	}
 
 	inline Matrix Matrix::operator-(const Matrix& m) const
 	{
 		auto result(*this);
-		result.subtract(m);
+		result -= m;
 		return result;
-	}
-
-	inline Matrix& Matrix::operator-=(const Matrix& m)
-	{
-		subtract(m);
-		return *this;
 	}
 
 	inline Matrix Matrix::operator-() const

@@ -405,60 +405,6 @@ Matrix Matrix::createTranslation(float xTranslation, float yTranslation, float z
 }
 
 
-void Matrix::add(float scalar)
-{
-	add(scalar, this);
-}
-
-
-void Matrix::add(float scalar, Matrix* dst)
-{
-	dst->m[0] = m[0] + scalar;
-	dst->m[1] = m[1] + scalar;
-	dst->m[2] = m[2] + scalar;
-	dst->m[3] = m[3] + scalar;
-	dst->m[4] = m[4] + scalar;
-	dst->m[5] = m[5] + scalar;
-	dst->m[6] = m[6] + scalar;
-	dst->m[7] = m[7] + scalar;
-	dst->m[8] = m[8] + scalar;
-	dst->m[9] = m[9] + scalar;
-	dst->m[10] = m[10] + scalar;
-	dst->m[11] = m[11] + scalar;
-	dst->m[12] = m[12] + scalar;
-	dst->m[13] = m[13] + scalar;
-	dst->m[14] = m[14] + scalar;
-	dst->m[15] = m[15] + scalar;
-}
-
-
-void Matrix::add(const Matrix& m)
-{
-	add(*this, m, this);
-}
-
-
-void Matrix::add(const Matrix& m1, const Matrix& m2, Matrix* dst)
-{
-	dst->m[0] = m1.m[0] + m2.m[0];
-	dst->m[1] = m1.m[1] + m2.m[1];
-	dst->m[2] = m1.m[2] + m2.m[2];
-	dst->m[3] = m1.m[3] + m2.m[3];
-	dst->m[4] = m1.m[4] + m2.m[4];
-	dst->m[5] = m1.m[5] + m2.m[5];
-	dst->m[6] = m1.m[6] + m2.m[6];
-	dst->m[7] = m1.m[7] + m2.m[7];
-	dst->m[8] = m1.m[8] + m2.m[8];
-	dst->m[9] = m1.m[9] + m2.m[9];
-	dst->m[10] = m1.m[10] + m2.m[10];
-	dst->m[11] = m1.m[11] + m2.m[11];
-	dst->m[12] = m1.m[12] + m2.m[12];
-	dst->m[13] = m1.m[13] + m2.m[13];
-	dst->m[14] = m1.m[14] + m2.m[14];
-	dst->m[15] = m1.m[15] + m2.m[15];
-}
-
-
 bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translation) const
 {
 	if (translation)
@@ -704,130 +650,76 @@ bool Matrix::isIdentity() const
 
 void Matrix::negate()
 {
-	negate(this);
-}
-
-
-void Matrix::negate(Matrix* dst) const
-{
-	dst->m[0] = -m[0];
-	dst->m[1] = -m[1];
-	dst->m[2] = -m[2];
-	dst->m[3] = -m[3];
-	dst->m[4] = -m[4];
-	dst->m[5] = -m[5];
-	dst->m[6] = -m[6];
-	dst->m[7] = -m[7];
-	dst->m[8] = -m[8];
-	dst->m[9] = -m[9];
-	dst->m[10] = -m[10];
-	dst->m[11] = -m[11];
-	dst->m[12] = -m[12];
-	dst->m[13] = -m[13];
-	dst->m[14] = -m[14];
-	dst->m[15] = -m[15];
+	m[0] = -m[0];
+	m[1] = -m[1];
+	m[2] = -m[2];
+	m[3] = -m[3];
+	m[4] = -m[4];
+	m[5] = -m[5];
+	m[6] = -m[6];
+	m[7] = -m[7];
+	m[8] = -m[8];
+	m[9] = -m[9];
+	m[10] = -m[10];
+	m[11] = -m[11];
+	m[12] = -m[12];
+	m[13] = -m[13];
+	m[14] = -m[14];
+	m[15] = -m[15];
 }
 
 
 void Matrix::rotate(const Quaternion& q)
 {
-	rotate(q, this);
-}
-
-
-void Matrix::rotate(const Quaternion& q, Matrix* dst) const
-{
 	auto r = createRotation(q);
-	*dst = *this * r;
+	*this *= r;
 }
 
 
 void Matrix::rotate(const Vector3& axis, float angleRadians)
 {
-	rotate(axis, angleRadians, this);
-}
-
-
-void Matrix::rotate(const Vector3& axis, float angleRadians, Matrix *dst) const
-{
 	auto r = createRotation(axis, angleRadians);
-	*dst = *this * r;
+	*this *= r;
 }
 
 
 void Matrix::rotateX(float angleRadians)
 {
-	rotateX(angleRadians, this);
-}
-
-
-void Matrix::rotateX(float angleRadians, Matrix* dst) const
-{
 	auto r = createRotationX(angleRadians);
-	*dst = *this * r;
+	*this *= r;
 }
 
 
 void Matrix::rotateY(float angleRadians)
 {
-	rotateY(angleRadians, this);
-}
-
-
-void Matrix::rotateY(float angleRadians, Matrix* dst) const
-{
 	auto r = createRotationY(angleRadians);
-	*dst = *this * r;
+	*this *= r;
 }
 
 
 void Matrix::rotateZ(float angleRadians)
 {
-	rotateZ(angleRadians, this);
-}
-
-
-void Matrix::rotateZ(float angleRadians, Matrix* dst) const
-{
 	auto r = createRotationZ(angleRadians);
-	*dst = *this * r;
+	*this *= r;
 }
 
 
 void Matrix::scale(float value)
 {
-	scale(value, this);
-}
-
-
-void Matrix::scale(float value, Matrix* dst) const
-{
-	scale(value, value, value, dst);
+	scale(value, value, value);
 }
 
 
 void Matrix::scale(float xScale, float yScale, float zScale)
 {
-	scale(xScale, yScale, zScale, this);
-}
-
-
-void Matrix::scale(float xScale, float yScale, float zScale, Matrix* dst) const
-{
 	auto s = createScale(xScale, yScale, zScale);
-	*dst = *this * s;
+	*this *= s;
 }
 
 
 void Matrix::scale(const Vector3& s)
 {
-	scale(s.x, s.y, s.z, this);
-}
-
-
-void Matrix::scale(const Vector3& s, Matrix* dst) const
-{
-	scale(s.x, s.y, s.z, dst);
+	scale(s.x, s.y, s.z);
 }
 
 
@@ -877,30 +769,47 @@ void Matrix::setZero()
 }
 
 
-void Matrix::subtract(const Matrix& m)
+Matrix& Matrix::operator+=(float scalar)
 {
-	subtract(*this, m, this);
+	m[0] += scalar;
+	m[1] += scalar;
+	m[2] += scalar;
+	m[3] += scalar;
+	m[4] += scalar;
+	m[5] += scalar;
+	m[6] += scalar;
+	m[7] += scalar;
+	m[8] += scalar;
+	m[9] += scalar;
+	m[10] += scalar;
+	m[11] += scalar;
+	m[12] += scalar;
+	m[13] += scalar;
+	m[14] += scalar;
+	m[15] += scalar;
+	return *this;
 }
 
 
-void Matrix::subtract(const Matrix& m1, const Matrix& m2, Matrix* dst)
+Matrix& Matrix::operator+=(const Matrix& other)
 {
-	dst->m[0] = m1.m[0] - m2.m[0];
-	dst->m[1] = m1.m[1] - m2.m[1];
-	dst->m[2] = m1.m[2] - m2.m[2];
-	dst->m[3] = m1.m[3] - m2.m[3];
-	dst->m[4] = m1.m[4] - m2.m[4];
-	dst->m[5] = m1.m[5] - m2.m[5];
-	dst->m[6] = m1.m[6] - m2.m[6];
-	dst->m[7] = m1.m[7] - m2.m[7];
-	dst->m[8] = m1.m[8] - m2.m[8];
-	dst->m[9] = m1.m[9] - m2.m[9];
-	dst->m[10] = m1.m[10] - m2.m[10];
-	dst->m[11] = m1.m[11] - m2.m[11];
-	dst->m[12] = m1.m[12] - m2.m[12];
-	dst->m[13] = m1.m[13] - m2.m[13];
-	dst->m[14] = m1.m[14] - m2.m[14];
-	dst->m[15] = m1.m[15] - m2.m[15];
+	m[0] += other.m[0];
+	m[1] += other.m[1];
+	m[2] += other.m[2];
+	m[3] += other.m[3];
+	m[4] += other.m[4];
+	m[5] += other.m[5];
+	m[6] += other.m[6];
+	m[7] += other.m[7];
+	m[8] += other.m[8];
+	m[9] += other.m[9];
+	m[10] += other.m[10];
+	m[11] += other.m[11];
+	m[12] += other.m[12];
+	m[13] += other.m[13];
+	m[14] += other.m[14];
+	m[15] += other.m[15];
+	return *this;
 }
 
 
@@ -975,26 +884,14 @@ Vector3 Matrix::transformDirection(const Vector3& direction) const
 
 void Matrix::translate(float x, float y, float z)
 {
-	translate(x, y, z, this);
-}
-
-
-void Matrix::translate(float x, float y, float z, Matrix* dst) const
-{
 	auto t = createTranslation(x, y, z);
-	*dst = *this * t;
+	*this *= t;
 }
 
 
 void Matrix::translate(const Vector3& t)
 {
-	translate(t.x, t.y, t.z, this);
-}
-
-
-void Matrix::translate(const Vector3& t, Matrix* dst) const
-{
-	translate(t.x, t.y, t.z, dst);
+	translate(t.x, t.y, t.z);
 }
 
 
@@ -1059,5 +956,27 @@ Matrix& Matrix::operator*=(const Matrix& m2)
 
 	memcpy(m, product, MATRIX_SIZE);
 
+	return *this;
+}
+
+
+Matrix& Matrix::operator-=(const Matrix& m2)
+{
+	m[0] -= m2.m[0];
+	m[1] -= m2.m[1];
+	m[2] -= m2.m[2];
+	m[3] -= m2.m[3];
+	m[4] -= m2.m[4];
+	m[5] -= m2.m[5];
+	m[6] -= m2.m[6];
+	m[7] -= m2.m[7];
+	m[8] -= m2.m[8];
+	m[9] -= m2.m[9];
+	m[10] -= m2.m[10];
+	m[11] -= m2.m[11];
+	m[12] -= m2.m[12];
+	m[13] -= m2.m[13];
+	m[14] -= m2.m[14];
+	m[15] -= m2.m[15];
 	return *this;
 }
