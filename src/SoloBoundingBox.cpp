@@ -299,12 +299,12 @@ void BoundingBox::transform(const Matrix& matrix)
 	getCorners(corners);
 
 	// Transform the corners, recalculating the min and max points along the way.
-	matrix.transformPoint(&corners[0]);
+	corners[0] = matrix.transformPoint(corners[0]);
 	auto newMin = corners[0];
 	auto newMax = corners[0];
-	for (int i = 1; i < 8; i++)
+	for (auto i = 1; i < 8; i++)
 	{
-		matrix.transformPoint(&corners[i]);
+		corners[i] = matrix.transformPoint(corners[i]);
 		updateMinMax(&corners[i], &newMin, &newMax);
 	}
 	this->min.x = newMin.x;

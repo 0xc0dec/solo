@@ -253,7 +253,7 @@ void BoundingSphere::set(const BoundingBox& box)
 void BoundingSphere::transform(const Matrix& matrix)
 {
 	// Translate the center point.
-	matrix.transformPoint(center, &center);
+	center = matrix.transformPoint(center);
 
 	// Scale the sphere's radius by the scale fo the matrix
 	Vector3 scale;

@@ -100,7 +100,9 @@ namespace solo
 		Matrix& operator+=(const Matrix& m);
 
 		inline Matrix operator-() const;
+		inline Matrix operator-(float scalar) const;
 		inline Matrix operator-(const Matrix& m) const;
+		Matrix& operator-=(float scalar);
 		Matrix& operator-=(const Matrix& m);
 
 		inline Matrix operator*(float scalar) const;
@@ -108,16 +110,10 @@ namespace solo
 		Matrix& operator*=(float scalar);
 		Matrix& operator*=(const Matrix& m);
 
-		void transformPoint(Vector3* point) const;
-		void transformPoint(const Vector3& point, Vector3* dst) const;
 		Vector3 transformPoint(const Vector3& point) const;
 
-		void transformDirection(Vector3* dir) const;
-		void transformDirection(const Vector3& dir, Vector3* dst) const;
-		void transformDirection(float x, float y, float z, float w, Vector3* dst) const;
-		void transformDirection(Vector4* dir) const;
-		void transformDirection(const Vector4& dir, Vector4* dst) const;
-		Vector3 transformDirection(const Vector3& direction) const;
+		Vector3 transformDirection(const Vector3& dir) const;
+		Vector4 transformDirection(const Vector4& dir) const;
 
 	private:
 		static Matrix createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
@@ -135,6 +131,13 @@ namespace solo
 	{
 		auto result(*this);
 		result += m;
+		return result;
+	}
+
+	inline Matrix Matrix::operator-(float scalar) const
+	{
+		auto result(*this);
+		result -= scalar;
 		return result;
 	}
 
@@ -167,27 +170,23 @@ namespace solo
 
 	inline Vector3& operator*=(Vector3& v, const Matrix& m)
 	{
-		m.transformDirection(&v);
+		v = m.transformDirection(v);
 		return v;
 	}
 
 	inline Vector3 operator*(const Matrix& m, const Vector3& v)
 	{
-		Vector3 x;
-		m.transformDirection(v, &x);
-		return x;
+		return m.transformDirection(v);
 	}
 
 	inline Vector4& operator*=(Vector4& v, const Matrix& m)
 	{
-		m.transformDirection(&v);
+		v = m.transformDirection(v);
 		return v;
 	}
 
 	inline Vector4 operator*(const Matrix& m, const Vector4& v)
 	{
-		Vector4 x;
-		m.transformDirection(v, &x);
-		return x;
+		return m.transformDirection(v);
 	}
 }

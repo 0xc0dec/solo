@@ -161,8 +161,8 @@ void Ray::set(const Ray& ray)
 
 void Ray::transform(const Matrix& matrix)
 {
-	matrix.transformPoint(&origin);
-	matrix.transformDirection(&direction);
+	origin = matrix.transformPoint(origin);
+	direction = matrix.transformDirection(direction);
 	direction.normalize();
 }
 

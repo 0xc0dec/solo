@@ -813,72 +813,34 @@ Matrix& Matrix::operator+=(const Matrix& other)
 }
 
 
-void Matrix::transformPoint(Vector3* point) const
-{
-	transformDirection(point->x, point->y, point->z, 1.0f, point);
-}
-
-
-void Matrix::transformPoint(const Vector3& point, Vector3* dst) const
-{
-	transformDirection(point.x, point.y, point.z, 1.0f, dst);
-}
-
-
 Vector3 Matrix::transformPoint(const Vector3& point) const
 {
-	Vector3 result;
-	transformPoint(point, &result);
-	return result;
+	return Vector3(
+		point.x * m[0] + point.y * m[4] + point.z * m[8] + m[12],
+		point.x * m[1] + point.y * m[5] + point.z * m[9] + m[13],
+		point.x * m[2] + point.y * m[6] + point.z * m[10] + m[14]
+	);
 }
 
 
-void Matrix::transformDirection(Vector3* dir) const
+Vector3 Matrix::transformDirection(const Vector3& dir) const
 {
-	transformDirection(dir->x, dir->y, dir->z, 0.0f, dir);
+	return Vector3(
+		dir.x * m[0] + dir.y * m[4] + dir.z * m[8],
+		dir.x * m[1] + dir.y * m[5] + dir.z * m[9],
+		dir.x * m[2] + dir.y * m[6] + dir.z * m[10]
+	);
 }
 
 
-void Matrix::transformDirection(const Vector3& dir, Vector3* dst) const
+Vector4 Matrix::transformDirection(const Vector4& dir) const
 {
-	transformDirection(dir.x, dir.y, dir.z, 0.0f, dst);
-}
-
-
-void Matrix::transformDirection(float x, float y, float z, float w, Vector3* dst) const
-{
-	dst->x = x * m[0] + y * m[4] + z * m[8] + w * m[12];
-	dst->y = x * m[1] + y * m[5] + z * m[9] + w * m[13];
-	dst->z = x * m[2] + y * m[6] + z * m[10] + w * m[14];
-}
-
-
-void Matrix::transformDirection(Vector4* dir) const
-{
-	transformDirection(*dir, dir);
-}
-
-
-void Matrix::transformDirection(const Vector4& dir, Vector4* dst) const
-{
-	// Handle case where v == dst.
-	auto x = dir.x * m[0] + dir.y * m[4] + dir.z * m[8] + dir.w * m[12];
-	auto y = dir.x * m[1] + dir.y * m[5] + dir.z * m[9] + dir.w * m[13];
-	auto z = dir.x * m[2] + dir.y * m[6] + dir.z * m[10] + dir.w * m[14];
-	auto w = dir.x * m[3] + dir.y * m[7] + dir.z * m[11] + dir.w * m[15];
-
-	dst->x = x;
-	dst->y = y;
-	dst->z = z;
-	dst->w = w;
-}
-
-
-Vector3 Matrix::transformDirection(const Vector3& direction) const
-{
-	Vector3 result;
-	transformDirection(direction, &result);
-	return result;
+	return Vector4(
+		dir.x * m[0] + dir.y * m[4] + dir.z * m[8] + dir.w * m[12],
+		dir.x * m[1] + dir.y * m[5] + dir.z * m[9] + dir.w * m[13],
+		dir.x * m[2] + dir.y * m[6] + dir.z * m[10] + dir.w * m[14],
+		dir.x * m[3] + dir.y * m[7] + dir.z * m[11] + dir.w * m[15]
+	);
 }
 
 
@@ -956,6 +918,28 @@ Matrix& Matrix::operator*=(const Matrix& m2)
 
 	memcpy(m, product, MATRIX_SIZE);
 
+	return *this;
+}
+
+
+Matrix& Matrix::operator-=(float scalar)
+{
+	m[0] -= scalar;
+	m[1] -= scalar;
+	m[2] -= scalar;
+	m[3] -= scalar;
+	m[4] -= scalar;
+	m[5] -= scalar;
+	m[6] -= scalar;
+	m[7] -= scalar;
+	m[8] -= scalar;
+	m[9] -= scalar;
+	m[10] -= scalar;
+	m[11] -= scalar;
+	m[12] -= scalar;
+	m[13] -= scalar;
+	m[14] -= scalar;
+	m[15] -= scalar;
 	return *this;
 }
 
