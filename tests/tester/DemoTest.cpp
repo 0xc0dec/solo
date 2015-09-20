@@ -381,11 +381,14 @@ void DemoTest::initObjects()
 	parent = scene->createNode();
 	parent->getComponent<Transform>()->setLocalPosition(5, 0, 0);
 	parent->addComponent<RotatorAroundWorldYAxis>(device);
+	parentModelRenderer = parent->addComponent<ModelRenderer>();
+	parentModelRenderer->setModel(axesModel);
+	parentModelRenderer->setMaterial(0, redMaterial);
 
 	quad = createQuad();
 	quad->addComponent<RotatorAroundLocalXAxis>(device);
 	quad->getComponent<Transform>()->setParent(parent->getComponent<Transform>());
-	quad->getComponent<Transform>()->setLocalPosition(1, 0, 0);
+	quad->getComponent<Transform>()->setLocalPosition(2, 0, 0);
 	quad->getComponent<ModelRenderer>()->setMaterial(0, texMaterial);
 
 	// Box
