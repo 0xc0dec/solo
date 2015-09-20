@@ -29,8 +29,7 @@ ResourceManager::ResourceManager(Engine *engine):
 
 std::string ResourceManager::calculateAutoUrl()
 {
-	auto url = std::string("Generated_") + std::to_string(++resourceCounter);
-	return url;
+	return std::string("Generated_") + std::to_string(++resourceCounter);
 }
 
 
@@ -45,57 +44,48 @@ std::string ResourceManager::findEffectUrl(shared<Effect> effect) const
 }
 
 
-shared<Effect> ResourceManager::findEffect(const std::string& url)
+shared<Effect> ResourceManager::findEffect(const std::string& uri)
 {
-	auto existing = effects.find(url);
-	return existing != effects.end() ? existing->second : nullptr;
+	return findResource(uri, effects);
 }
 
 
-shared<Material> ResourceManager::findMaterial(const std::string& url)
+shared<Material> ResourceManager::findMaterial(const std::string& uri)
 {
-	auto existing = materials.find(url);
-	return existing != materials.end() ? existing->second : nullptr;
+	return findResource(uri, materials);
 }
 
 
-shared<Texture> ResourceManager::findTexture(const std::string& url)
+shared<Texture> ResourceManager::findTexture(const std::string& uri)
 {
-	auto existing = textures.find(url);
-	return existing != textures.end() ? existing->second : nullptr;
+	return findResource(uri, textures);
 }
 
 
-shared<Mesh> ResourceManager::findMesh(const std::string& url)
+shared<Mesh> ResourceManager::findMesh(const std::string& uri)
 {
-	auto existing = meshes.find(url);
-	return existing != meshes.end() ? existing->second : nullptr;
+	return findResource(uri, meshes);
 }
 
 
-shared<Model> ResourceManager::findModel(const std::string& url)
+shared<Model> ResourceManager::findModel(const std::string& uri)
 {
-	auto existing = models.find(url);
-	return existing != models.end() ? existing->second : nullptr;
+	return findResource(uri, models);
 }
 
 
-shared<RenderTarget> ResourceManager::findRenderTarget(const std::string& url)
+shared<RenderTarget> ResourceManager::findRenderTarget(const std::string& uri)
 {
-	auto existing = renderTargets.find(url);
-	return existing != renderTargets.end() ? existing->second : nullptr;
+	return findResource(uri, renderTargets);
 }
 
 
 shared<Effect> ResourceManager::getOrCreateEffect(const std::string& vsSrc, const std::string& fsSrc)
 {
-	auto url = std::to_string(getHash(vsSrc + fsSrc));
-	auto existing = findEffect(url);
-	if (existing)
-		return existing;
-	auto effect = EffectFactory::create(vsSrc, fsSrc);
-	effects[url] = effect;
-	return effect;
+	auto uri = std::to_string(getHash(vsSrc + fsSrc));
+	return getOrCreateResource<Effect>(uri, effects,
+		std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
+		[&]() { return EffectFactory::create(vsSrc, fsSrc); });
 }
 
 
@@ -103,103 +93,97 @@ shared<Material> ResourceManager::createMaterial(shared<Effect> effect)
 {
 	auto effectUrl = findEffectUrl(effect);
 	if (effectUrl.empty())
-		THROW_FMT(EngineException, "Unknown effect.");
-	auto url = calculateAutoUrl();
+		THROW_FMT(EngineException, "Unknown effect");
+	auto uri = calculateAutoUrl();
 	auto material = MaterialFactory::create(effect);
-	materials[url] = material;
+	materials[uri] = material;
 	return material;
 }
 
 
-shared<Texture> ResourceManager::getOrLoadTexture(const std::string& url)
+shared<Texture> ResourceManager::getOrLoadTexture(const std::string& uri)
 {
-	auto existing = findTexture(url);
+	auto existing = findTexture(uri);
 	if (existing)
 		return existing;
 	for (auto loader : textureLoaders)
 	{
-		if (loader->isLoadable(url))
+		if (loader->isLoadable(uri))
 		{
-			auto texture = loader->load2D(url);
-			textures[url] = texture;
+			auto texture = loader->load2D(uri);
+			textures[uri] = texture;
 			return texture;
 		}
 	}
-	THROW_FMT(EngineException, "No suitable loader found for texture ", url);
+	THROW_FMT(EngineException, "No suitable loader found for texture ", uri);
 }
 
 
-shared<Texture> ResourceManager::getOrCreateTexture(const std::string &url)
+shared<Texture> ResourceManager::getOrCreateTexture(const std::string &uri)
 {
-	auto existing = findTexture(url.empty() ? calculateAutoUrl() : url);
-	if (existing)
-		return existing;
-	auto texture = TextureFactory::create2D();
-	textures[url] = texture;
-	return texture;
+	return getOrCreateResource<Texture>(uri, textures,
+		std::bind(&ResourceManager::findTexture, this, std::placeholders::_1), &TextureFactory::create2D);
 }
 
 
-shared<Model> ResourceManager::getOrLoadModel(const std::string& url)
+shared<Model> ResourceManager::getOrLoadModel(const std::string& uri)
 {
-	auto existing = findModel(url);
+	auto existing = findModel(uri);
 	if (existing)
 		return existing;
 	for (auto loader : modelLoaders)
 	{
-		if (loader->isLoadable(url))
+		if (loader->isLoadable(uri))
 		{
-			auto model = loader->load(url);
-			models[url] = model;
+			auto model = loader->load(uri);
+			models[uri] = model;
 			return model;
 		}
 	}
-	THROW_FMT(EngineException, "No suitable loader found for model ", url);
+	THROW_FMT(EngineException, "No suitable loader found for model ", uri);
 }
 
 
-shared<Model> ResourceManager::getOrCreateModel(const std::string& url)
+shared<Model> ResourceManager::getOrCreateModel(const std::string& uri)
 {
-	auto existing = findModel(url.empty() ? calculateAutoUrl() : url);
-	if (existing)
-		return existing;
-	auto model = ModelFactory::create();
-	models[url] = model;
-	return model;
+	return getOrCreateResource<Model>(uri, models,
+		std::bind(&ResourceManager::findModel, this, std::placeholders::_1), &ModelFactory::create);
 }
 
 
-//template <typename TResource, typename TResourceRepo>
-//shared<TResource> getOrCreateResource(const std::string& url, std::function<shared<TResource>(const std::string&)> find)
-//{
-//	auto existing = find(url.empty() ? calculateAutoUrl() : url);
-//	if (existing)
-//		return existing;
-//	auto mesh = MeshFactory::create();
-//	meshes[url] = mesh;
-//	return mesh;
-//}
-
-
-shared<Mesh> ResourceManager::getOrCreateMesh(const std::string& url)
+shared<Mesh> ResourceManager::getOrCreateMesh(const std::string& uri)
 {
-	auto existing = findMesh(url.empty() ? calculateAutoUrl() : url);
-	if (existing)
-		return existing;
-	auto mesh = MeshFactory::create();
-	meshes[url] = mesh;
-	return mesh;
+	return getOrCreateResource<Mesh>(uri, meshes,
+		std::bind(&ResourceManager::findMesh, this, std::placeholders::_1), &MeshFactory::create);
 }
 
 
-shared<RenderTarget> ResourceManager::getOrCreateRenderTarget(const std::string& url)
+shared<RenderTarget> ResourceManager::getOrCreateRenderTarget(const std::string& uri)
 {
-	auto existing = findRenderTarget(url.empty() ? calculateAutoUrl() : url);
+	return getOrCreateResource<RenderTarget>(uri, renderTargets,
+		std::bind(&ResourceManager::findRenderTarget, this, std::placeholders::_1), &RenderTargetFactory::create);
+}
+
+
+template <typename TResource>
+shared<TResource> ResourceManager::getOrCreateResource(const std::string& uri, ResourceMap<TResource>& resourceMap,
+	std::function<shared<TResource>(const std::basic_string<char>&)> find,
+	std::function<shared<TResource>()> create)
+{
+	auto existing = find(uri.empty() ? calculateAutoUrl() : uri);
 	if (existing)
 		return existing;
-	auto target = RenderTargetFactory::create();
-	renderTargets[url] = target;
-	return target;
+	auto result = create();
+	resourceMap[uri] = result;
+	return result;
+}
+
+
+template <typename TResource>
+shared<TResource> ResourceManager::findResource(const std::string& uri, const ResourceMap<TResource>& resourceMap)
+{
+	auto existing = resourceMap.find(uri);
+	return existing != resourceMap.end() ? existing->second : nullptr;
 }
 
 
@@ -212,8 +196,8 @@ void ResourceManager::cleanUnusedResources(ResourceMap<TResource> &resources)
 		if (it.second.use_count() == 1)
 			urls.insert(it.first);
 	}
-	for (auto &url : urls)
-		resources.erase(url);
+	for (auto &uri : urls)
+		resources.erase(uri);
 }
 
 
