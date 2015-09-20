@@ -145,9 +145,6 @@
     <ClInclude Include="..\include\SoloEngineCreationArgs.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloObjMeshLoader.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\SoloPngTextureLoader.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -157,7 +154,10 @@
     <ClInclude Include="..\src\platform\SoloOpenGLRenderTarget.h">
       <Filter>src\platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloMeshLoader.h">
+    <ClInclude Include="..\src\SoloObjModelLoader.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloModelLoader.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
@@ -360,9 +360,6 @@
     <ClCompile Include="..\src\SoloTexture2D.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloObjMeshLoader.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloPngTextureLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -370,6 +367,9 @@
       <Filter>src\platform</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloRenderTarget.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloObjModelLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

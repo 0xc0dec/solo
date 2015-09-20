@@ -18,6 +18,7 @@ namespace solo
 		Model* getModel() const;
 
 		void setMaterial(unsigned index, shared<Material> material);
+		void setMaterial(shared<Material> material);
 		Material* getMaterial(unsigned index) const;
 		size_t getMaterialCount() const;
 

@@ -1,3 +1,4 @@
+#include <functional>
 #include "SoloResourceManager.h"
 #include "SoloEffect.h"
 #include "SoloMaterial.h"
@@ -5,10 +6,9 @@
 #include "SoloModel.h"
 #include "SoloRenderTarget.h"
 #include "SoloPngTextureLoader.h"
-#include "SoloObjMeshLoader.h"
 #include "SoloTexture2D.h"
 #include "SoloEngine.h"
-#include "SoloMeshLoader.h"
+#include "SoloObjModelLoader.h"
 
 using namespace solo;
 
@@ -23,7 +23,7 @@ ResourceManager::ResourceManager(Engine *engine):
 	engine(engine)
 {
 	textureLoaders.push_back(NEW<PngTextureLoader>(engine->getFileSystem()));
-	meshLoaders.push_back(NEW<ObjMeshLoader>(engine->getFileSystem()));
+	modelLoaders.push_back(NEW<ObjModelLoader>(engine->getFileSystem()));
 }
 
 
@@ -131,7 +131,7 @@ shared<Texture> ResourceManager::getOrLoadTexture(const std::string& url)
 
 shared<Texture> ResourceManager::getOrCreateTexture(const std::string &url)
 {
-	auto existing = findTexture(url);
+	auto existing = findTexture(url.empty() ? calculateAutoUrl() : url);
 	if (existing)
 		return existing;
 	auto texture = TextureFactory::create2D();
@@ -140,39 +140,27 @@ shared<Texture> ResourceManager::getOrCreateTexture(const std::string &url)
 }
 
 
-shared<Mesh> ResourceManager::getOrLoadMesh(const std::string& url)
+shared<Model> ResourceManager::getOrLoadModel(const std::string& url)
 {
-	auto existing = findMesh(url);
+	auto existing = findModel(url);
 	if (existing)
 		return existing;
-	for (auto loader : meshLoaders)
+	for (auto loader : modelLoaders)
 	{
 		if (loader->isLoadable(url))
 		{
-			auto mesh = loader->load(url);
-			meshes[url] = mesh;
-			return mesh;
+			auto model = loader->load(url);
+			models[url] = model;
+			return model;
 		}
 	}
-	THROW_FMT(EngineException, "No suitable loader found for mesh ", url);
-}
-
-
-shared<Mesh> ResourceManager::getOrCreateMesh()
-{
-	auto url = calculateAutoUrl();
-	auto existing = findMesh(url);
-	if (existing)
-		return existing;
-	auto mesh = MeshFactory::create();
-	meshes[url] = mesh;
-	return mesh;
+	THROW_FMT(EngineException, "No suitable loader found for model ", url);
 }
 
 
 shared<Model> ResourceManager::getOrCreateModel(const std::string& url)
 {
-	auto existing = findModel(url);
+	auto existing = findModel(url.empty() ? calculateAutoUrl() : url);
 	if (existing)
 		return existing;
 	auto model = ModelFactory::create();
@@ -181,16 +169,32 @@ shared<Model> ResourceManager::getOrCreateModel(const std::string& url)
 }
 
 
-shared<Model> ResourceManager::getOrCreateModel()
+//template <typename TResource, typename TResourceRepo>
+//shared<TResource> getOrCreateResource(const std::string& url, std::function<shared<TResource>(const std::string&)> find)
+//{
+//	auto existing = find(url.empty() ? calculateAutoUrl() : url);
+//	if (existing)
+//		return existing;
+//	auto mesh = MeshFactory::create();
+//	meshes[url] = mesh;
+//	return mesh;
+//}
+
+
+shared<Mesh> ResourceManager::getOrCreateMesh(const std::string& url)
 {
-	auto url = calculateAutoUrl();
-	return getOrCreateModel(url);
+	auto existing = findMesh(url.empty() ? calculateAutoUrl() : url);
+	if (existing)
+		return existing;
+	auto mesh = MeshFactory::create();
+	meshes[url] = mesh;
+	return mesh;
 }
 
 
 shared<RenderTarget> ResourceManager::getOrCreateRenderTarget(const std::string& url)
 {
-	auto existing = findRenderTarget(url);
+	auto existing = findRenderTarget(url.empty() ? calculateAutoUrl() : url);
 	if (existing)
 		return existing;
 	auto target = RenderTargetFactory::create();

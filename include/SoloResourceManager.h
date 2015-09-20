@@ -11,7 +11,7 @@ namespace solo
 	class Texture;
 	class RenderTarget;
 	class TextureLoader;
-	class MeshLoader;
+	class ModelLoader;
 	class Engine;
 
 	class ResourceManager
@@ -29,11 +29,10 @@ namespace solo
 		shared<Material> createMaterial(shared<Effect> effect);
 		shared<Effect> getOrCreateEffect(const std::string &vsSrc, const std::string &fsSrc);
 		shared<Texture> getOrLoadTexture(const std::string &url);
-		shared<Texture> getOrCreateTexture(const std::string &url);
-		shared<Mesh> getOrLoadMesh(const std::string& url);
-		shared<Mesh> getOrCreateMesh();
-		shared<Model> getOrCreateModel(const std::string& url);
-		shared<Model> getOrCreateModel();
+		shared<Texture> getOrCreateTexture(const std::string &url = "");
+		shared<Model> getOrCreateModel(const std::string& url = "");
+		shared<Model> getOrLoadModel(const std::string& url);
+		shared<Mesh> getOrCreateMesh(const std::string& url = "");
 		shared<RenderTarget> getOrCreateRenderTarget(const std::string &url);
 
 		void cleanUnusedResources();
@@ -65,7 +64,7 @@ namespace solo
 		ResourceMap<RenderTarget> renderTargets;
 
 		std::vector<shared<TextureLoader>> textureLoaders;
-		std::vector<shared<MeshLoader>> meshLoaders;
+		std::vector<shared<ModelLoader>> modelLoaders;
 
 		size_t resourceCounter{ 0 };
 	};

@@ -51,6 +51,19 @@ void ModelRenderer::setMaterial(unsigned index, shared<Material> material)
 }
 
 
+void ModelRenderer::setMaterial(shared<Material> material)
+{
+	if (!material)
+		materials.clear();
+	else
+	{
+		auto meshCount = model->getMeshCount();
+		for (auto i = 0; i < meshCount; ++i)
+			setMaterial(i, material);
+	}
+}
+
+
 size_t ModelRenderer::getMaterialCount() const
 {
 	return materials.size();

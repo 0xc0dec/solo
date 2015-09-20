@@ -131,8 +131,8 @@ class Spectator: public ComponentBase<Spectator>
 public:
 	explicit Spectator(Node node, Device *device):
 		ComponentBase(node),
-		device(device),
-		transform(nullptr)
+		transform(nullptr),
+		device(device)
 	{
 	}
 
@@ -189,8 +189,8 @@ class RotatorAroundLocalXAxis: public ComponentBase<RotatorAroundLocalXAxis>
 public:
 	explicit RotatorAroundLocalXAxis(Node node, Device *device):
 		ComponentBase(node),
-		device(device),
-		transform(nullptr)
+		transform(nullptr),
+		device(device)
 	{
 	}
 
@@ -216,8 +216,8 @@ class RotatorAroundWorldYAxis: public ComponentBase<RotatorAroundWorldYAxis>
 public:
 	explicit RotatorAroundWorldYAxis(Node node, Device *device):
 		ComponentBase(node),
-		device(device),
-		transform(nullptr)
+		transform(nullptr),
+		device(device)
 	{
 	}
 
@@ -367,7 +367,7 @@ void DemoTest::initObjects()
 	parent->addComponent<RotatorAroundWorldYAxis>(device);
 	auto parentModelRenderer = parent->addComponent<ModelRenderer>();
 	parentModelRenderer->setModel(axesModel);
-	parentModelRenderer->setMaterial(0, redMaterial);
+	parentModelRenderer->setMaterial(redMaterial);
 
 	auto quad = createQuad();
 	quad->getComponent<ModelRenderer>()->setMaterial(0, renderTargetMaterial);
@@ -383,7 +383,7 @@ void DemoTest::initObjects()
 	parent->addComponent<RotatorAroundWorldYAxis>(device);
 	parentModelRenderer = parent->addComponent<ModelRenderer>();
 	parentModelRenderer->setModel(axesModel);
-	parentModelRenderer->setMaterial(0, redMaterial);
+	parentModelRenderer->setMaterial(redMaterial);
 
 	quad = createQuad();
 	quad->addComponent<RotatorAroundLocalXAxis>(device);
@@ -402,11 +402,8 @@ void DemoTest::initObjects()
 
 void DemoTest::initModels()
 {
-	axesModel = resourceManager->getOrCreateModel();
-	axesModel->addMesh(resourceManager->getOrLoadMesh("../data/axes.obj"));
-
-	monkeyModel = resourceManager->getOrCreateModel();
-	monkeyModel->addMesh(resourceManager->getOrLoadMesh("../data/monkey_hires.obj"));
+	axesModel = resourceManager->getOrLoadModel("../data/axes.obj");
+	monkeyModel = resourceManager->getOrLoadModel("../data/monkey_hires.obj");
 }
 
 

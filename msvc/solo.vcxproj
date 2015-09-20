@@ -69,8 +69,8 @@
     <ClInclude Include="..\src\platform\SoloOpenGLRenderTarget.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLTexture2D.h" />
     <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h" />
-    <ClInclude Include="..\src\SoloMeshLoader.h" />
-    <ClInclude Include="..\src\SoloObjMeshLoader.h" />
+    <ClInclude Include="..\src\SoloModelLoader.h" />
+    <ClInclude Include="..\src\SoloObjModelLoader.h" />
     <ClInclude Include="..\src\SoloPngTextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
@@ -128,7 +128,7 @@
     <ClCompile Include="..\src\SoloModel.cpp" />
     <ClCompile Include="..\src\SoloModelRenderer.cpp" />
     <ClCompile Include="..\src\SoloNode.cpp" />
-    <ClCompile Include="..\src\SoloObjMeshLoader.cpp" />
+    <ClCompile Include="..\src\SoloObjModelLoader.cpp" />
     <ClCompile Include="..\src\SoloPlane.cpp" />
     <ClCompile Include="..\src\SoloPngTextureLoader.cpp" />
     <ClCompile Include="..\src\SoloQuaternion.cpp" />

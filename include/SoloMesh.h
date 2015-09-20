@@ -29,7 +29,7 @@ namespace solo
 	class MeshFactory
 	{
 		friend class ResourceManager;
-		friend class ObjMeshLoader;
+		friend class ObjModelLoader;
 		static shared<Mesh> create();
 	};
 }
