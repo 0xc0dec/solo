@@ -33,6 +33,7 @@ void ModelRenderer::render(RenderContext& context)
 void ModelRenderer::setModel(shared<Model> model)
 {
 	this->model = model;
+	materials.clear();
 }
 
 
@@ -44,6 +45,10 @@ Model* ModelRenderer::getModel() const
 
 void ModelRenderer::setMaterial(unsigned index, shared<Material> material)
 {
+	if (!model)
+		THROW_FMT(EngineException, "Renderer has no model, hence setting material has no effect");
+	if (index >= model->getMeshCount())
+		THROW_FMT(EngineException, "Trying to set material with index ", index, ", but model has only ", model->getMeshCount(), " meshes");
 	if (!material)
 		materials.erase(index);
 	else

@@ -18,6 +18,9 @@ private:
 	shared<Effect> texEffect;
 	shared<Effect> colorEffect;
 	shared<Material> redMaterial;
+	shared<Material> greenMaterial;
+	shared<Material> blueMaterial;
+	shared<Material> whiteMaterial;
 	shared<Material> texMaterial;
 	shared<Material> checkerMaterial;
 	shared<Material> texWithLightingMaterial;
@@ -33,5 +36,6 @@ private:
 	void initCameras();
 	void initObjects();
 	void rebuildToBoxMesh(shared<Node> node);
+	void initAxesModel(shared<Node> node);
 	shared<Node> createQuad();
 };

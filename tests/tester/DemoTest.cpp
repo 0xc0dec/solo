@@ -284,6 +284,18 @@ void DemoTest::initMaterials()
 	redMaterial->setPolygonFace(PolygonFace::All);
 	redMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
 	redMaterial->getParameter("color")->setValue(Vector4(1, 0, 0, 1));
+	greenMaterial = resourceManager->getOrCreateMaterial(colorEffect);
+	greenMaterial->setPolygonFace(PolygonFace::All);
+	greenMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
+	greenMaterial->getParameter("color")->setValue(Vector4(0, 1, 0, 1));
+	blueMaterial = resourceManager->getOrCreateMaterial(colorEffect);
+	blueMaterial->setPolygonFace(PolygonFace::All);
+	blueMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
+	blueMaterial->getParameter("color")->setValue(Vector4(0, 0, 1, 1));
+	whiteMaterial = resourceManager->getOrCreateMaterial(colorEffect);
+	whiteMaterial->setPolygonFace(PolygonFace::All);
+	whiteMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
+	whiteMaterial->getParameter("color")->setValue(Vector4(1, 1, 1, 1));
 
 	texEffect = resourceManager->getOrCreateEffect(vsBasic, fsTexture);
 	texMaterial = resourceManager->getOrCreateMaterial(texEffect);
@@ -365,9 +377,7 @@ void DemoTest::initObjects()
 	auto parent = scene->createNode();
 	parent->getComponent<Transform>()->setLocalPosition(-2, 2, -2);
 	parent->addComponent<RotatorAroundWorldYAxis>(device);
-	auto parentModelRenderer = parent->addComponent<ModelRenderer>();
-	parentModelRenderer->setModel(axesModel);
-	parentModelRenderer->setMaterial(redMaterial);
+	initAxesModel(parent);
 
 	auto quad = createQuad();
 	quad->getComponent<ModelRenderer>()->setMaterial(0, renderTargetMaterial);
@@ -381,9 +391,7 @@ void DemoTest::initObjects()
 	parent = scene->createNode();
 	parent->getComponent<Transform>()->setLocalPosition(5, 0, 0);
 	parent->addComponent<RotatorAroundWorldYAxis>(device);
-	parentModelRenderer = parent->addComponent<ModelRenderer>();
-	parentModelRenderer->setModel(axesModel);
-	parentModelRenderer->setMaterial(redMaterial);
+	initAxesModel(parent);
 
 	quad = createQuad();
 	quad->addComponent<RotatorAroundLocalXAxis>(device);
@@ -543,6 +551,17 @@ void DemoTest::rebuildToBoxMesh(shared<Node> node)
 	mesh->setVertices(newVertices);
 	mesh->setUVs(newUVs);
 	mesh->setIndices(newIndices);
+}
+
+
+void DemoTest::initAxesModel(shared<Node> node)
+{
+	auto renderer = node->addComponent<ModelRenderer>();
+	renderer->setModel(axesModel);
+	renderer->setMaterial(0, blueMaterial);
+	renderer->setMaterial(1, greenMaterial);
+	renderer->setMaterial(2, whiteMaterial);
+	renderer->setMaterial(3, redMaterial);
 }
 
 
