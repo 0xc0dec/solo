@@ -20,20 +20,21 @@ namespace solo
 		~ResourceManager() {}
 
 		shared<Effect> findEffect(const std::string &uri);
-		shared<Material> findMaterial(const std::string &uri);
 		shared<Texture> findTexture(const std::string &uri);
+		shared<Material> findMaterial(const std::string &uri);
 		shared<Mesh> findMesh(const std::string &uri);
 		shared<Model> findModel(const std::string &uri);
 		shared<RenderTarget> findRenderTarget(const std::string &uri);
 
-		shared<Material> createMaterial(shared<Effect> effect);
-		shared<Effect> getOrCreateEffect(const std::string &vsSrc, const std::string &fsSrc);
-		shared<Texture> getOrLoadTexture(const std::string &uri);
+		shared<Effect> getOrCreateEffect(const std::string &vsSrc, const std::string &fsSrc, const std::string& uri = "");
 		shared<Texture> getOrCreateTexture(const std::string &uri = "");
-		shared<Model> getOrCreateModel(const std::string& uri = "");
-		shared<Model> getOrLoadModel(const std::string& uri);
+		shared<Material> getOrCreateMaterial(shared<Effect> effect, const std::string& uri = "");
 		shared<Mesh> getOrCreateMesh(const std::string& uri = "");
+		shared<Model> getOrCreateModel(const std::string& uri = "");
 		shared<RenderTarget> getOrCreateRenderTarget(const std::string &uri);
+
+		shared<Texture> getOrLoadTexture(const std::string &uri);
+		shared<Model> getOrLoadModel(const std::string& uri);
 
 		void cleanUnusedResources();
 
@@ -48,8 +49,7 @@ namespace solo
 		ResourceManager& operator=(const ResourceManager& other) = delete;
 		ResourceManager& operator=(ResourceManager&& other) = delete;
 
-		std::string calculateAutoUrl();
-		std::string findEffectUrl(shared<Effect> effect) const;
+		std::string generateUrl();
 		
 		template <typename TResource>
 		static void cleanUnusedResources(ResourceMap<TResource> &resources);

@@ -27,20 +27,9 @@ ResourceManager::ResourceManager(Engine *engine):
 }
 
 
-std::string ResourceManager::calculateAutoUrl()
+std::string ResourceManager::generateUrl()
 {
-	return std::string("Generated_") + std::to_string(++resourceCounter);
-}
-
-
-std::string ResourceManager::findEffectUrl(shared<Effect> effect) const
-{
-	for (auto pair : effects)
-	{
-		if (pair.second == effect)
-			return pair.first;
-	}
-	return {};
+	return std::string("generated/") + std::to_string(++resourceCounter);
 }
 
 
@@ -80,24 +69,20 @@ shared<RenderTarget> ResourceManager::findRenderTarget(const std::string& uri)
 }
 
 
-shared<Effect> ResourceManager::getOrCreateEffect(const std::string& vsSrc, const std::string& fsSrc)
+shared<Effect> ResourceManager::getOrCreateEffect(const std::string& vsSrc, const std::string& fsSrc, const std::string& uri)
 {
-	auto uri = std::to_string(getHash(vsSrc + fsSrc));
 	return getOrCreateResource<Effect>(uri, effects,
 		std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
 		[&]() { return EffectFactory::create(vsSrc, fsSrc); });
 }
 
 
-shared<Material> ResourceManager::createMaterial(shared<Effect> effect)
+shared<Material> ResourceManager::getOrCreateMaterial(shared<Effect> effect, const std::string& uri)
 {
-	auto effectUrl = findEffectUrl(effect);
-	if (effectUrl.empty())
-		THROW_FMT(EngineException, "Unknown effect");
-	auto uri = calculateAutoUrl();
-	auto material = MaterialFactory::create(effect);
-	materials[uri] = material;
-	return material;
+	// effectively ignores the effect if a material with the given uri already exists
+	return getOrCreateResource<Material>(uri, materials,
+		std::bind(&ResourceManager::findMaterial, this, std::placeholders::_1),
+		[&]() { return MaterialFactory::create(effect); });
 }
 
 
@@ -170,7 +155,7 @@ shared<TResource> ResourceManager::getOrCreateResource(const std::string& uri, R
 	std::function<shared<TResource>(const std::basic_string<char>&)> find,
 	std::function<shared<TResource>()> create)
 {
-	auto existing = find(uri.empty() ? calculateAutoUrl() : uri);
+	auto existing = find(uri.empty() ? generateUrl() : uri);
 	if (existing)
 		return existing;
 	auto result = create();

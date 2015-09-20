@@ -280,25 +280,25 @@ void DemoTest::initMaterials()
 	auto tex2 = loadTexture("../data/freeman2.png");
 
 	colorEffect = resourceManager->getOrCreateEffect(vsBasic, fsColor);
-	redMaterial = resourceManager->createMaterial(colorEffect);
+	redMaterial = resourceManager->getOrCreateMaterial(colorEffect);
 	redMaterial->setPolygonFace(PolygonFace::All);
 	redMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
 	redMaterial->getParameter("color")->setValue(Vector4(1, 0, 0, 1));
 
 	texEffect = resourceManager->getOrCreateEffect(vsBasic, fsTexture);
-	texMaterial = resourceManager->createMaterial(texEffect);
+	texMaterial = resourceManager->getOrCreateMaterial(texEffect);
 	texMaterial->setPolygonFace(PolygonFace::All);
 	texMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
 	texMaterial->getParameter("mainTex")->setValue(tex1);
 
 	auto checkerEffect = resourceManager->getOrCreateEffect(vsBasic, fsChecker);
-	checkerMaterial = resourceManager->createMaterial(checkerEffect);
+	checkerMaterial = resourceManager->getOrCreateMaterial(checkerEffect);
 	checkerMaterial->setPolygonFace(PolygonFace::All);
 	checkerMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
 	checkerMaterial->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
 
 	auto texWithLightingEffect = resourceManager->getOrCreateEffect(vsBasicLighting, fsTextureWithLighting);
-	texWithLightingMaterial = resourceManager->createMaterial(texWithLightingEffect);
+	texWithLightingMaterial = resourceManager->getOrCreateMaterial(texWithLightingEffect);
 	texWithLightingMaterial->setPolygonFace(PolygonFace::All);
 	texWithLightingMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
 	texWithLightingMaterial->getParameter("normalMatrix")->bindValue(AutoBinding::InverseTransposedWorldMatrix);
@@ -319,7 +319,7 @@ void DemoTest::initRenderTarget()
 	renderTarget = resourceManager->getOrCreateRenderTarget("test");
 	renderTarget->setTextures(texVector);
 
-	renderTargetMaterial = resourceManager->createMaterial(texEffect);
+	renderTargetMaterial = resourceManager->getOrCreateMaterial(texEffect);
 	renderTargetMaterial->setPolygonFace(PolygonFace::All);
 	renderTargetMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
 	renderTargetMaterial->getParameter("mainTex")->setValue(renderTexture);
