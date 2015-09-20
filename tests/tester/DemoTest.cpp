@@ -373,7 +373,7 @@ void DemoTest::initObjects()
 	quad->getComponent<ModelRenderer>()->setMaterial(0, renderTargetMaterial);
 	auto quadTransform = quad->getComponent<Transform>();
 	quadTransform->setParent(parent->getComponent<Transform>());
-	quadTransform->setLocalPosition(0, 2, -5);
+	quadTransform->setLocalPosition(5, 2, -5);
 	quadTransform->setLocalScale(5, 5 * canvasSize.y / canvasSize.x, 1);
 	quad->addComponent<Targeter>(node->getComponent<Transform>()); // monkey
 
