@@ -2,8 +2,15 @@
 
 namespace solo
 {
+	enum class EngineMode
+	{
+		Stub,
+		OpenGL
+	};
+
 	struct EngineCreationArgs
 	{
+		EngineMode mode;
 		int canvasWidth;
 		int canvasHeight;
 		int bits;
@@ -11,7 +18,15 @@ namespace solo
 		bool fullScreen;
 		const char *windowTitle;
 
-		EngineCreationArgs(int canvasWidth = 800, int canvasHeight = 600, int bits = 32, int depth = 16, bool fullScreen = false, const char *windowTitle = "Test"):
+		EngineCreationArgs(
+			EngineMode mode,
+			int canvasWidth = 800,
+			int canvasHeight = 600,
+			int bits = 32,
+			int depth = 16,
+			bool fullScreen = false,
+			const char *windowTitle = "Test"):
+			mode {mode},
 			canvasWidth {canvasWidth},
 			canvasHeight {canvasHeight},
 			bits {bits},

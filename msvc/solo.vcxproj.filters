@@ -160,6 +160,9 @@
     <ClInclude Include="..\src\SoloModelLoader.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\SoloStubDevice.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">
@@ -370,6 +373,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloObjModelLoader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloStubDevice.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

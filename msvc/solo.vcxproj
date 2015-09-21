@@ -72,6 +72,7 @@
     <ClInclude Include="..\src\SoloModelLoader.h" />
     <ClInclude Include="..\src\SoloObjModelLoader.h" />
     <ClInclude Include="..\src\SoloPngTextureLoader.h" />
+    <ClInclude Include="..\src\SoloStubDevice.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\glew\src\glew.c" />
@@ -138,6 +139,7 @@
     <ClCompile Include="..\src\SoloResourceManager.cpp" />
     <ClCompile Include="..\src\SoloScene.cpp" />
     <ClCompile Include="..\src\SoloEffect.cpp" />
+    <ClCompile Include="..\src\SoloStubDevice.cpp" />
     <ClCompile Include="..\src\SoloTexture.cpp" />
     <ClCompile Include="..\src\SoloTexture2D.cpp" />
     <ClCompile Include="..\src\SoloTransform.cpp" />

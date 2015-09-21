@@ -1,4 +1,5 @@
 #include "SoloDevice.h"
+#include "SoloStubDevice.h"
 #include "platform/SoloSDLOpenGLDevice.h"
 
 using namespace solo;
@@ -6,7 +7,9 @@ using namespace solo;
 
 shared<Device> DeviceFactory::create(const EngineCreationArgs& args)
 {
-	return NEW2(SDLOpenGLDevice, args);
+	if (args.mode == EngineMode::OpenGL)
+		return NEW2(SDLOpenGLDevice, args);
+	return NEW2(StubDevice, args);
 }
 
 

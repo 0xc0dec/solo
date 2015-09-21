@@ -47,7 +47,7 @@ private:
 int main()
 {
 	auto engine = getEngine();
-	EngineCreationArgs engineArgs { 640, 480 };
+	EngineCreationArgs engineArgs { EngineMode::OpenGL, 640, 480 };
 	Callback callback(engine);
 	engine->setCallback(&callback);
 	try
