@@ -6,11 +6,12 @@
 namespace solo
 {
 	class Device;
+	class Scene;
 
 	class OpenGLCamera: public Camera
 	{
 	public:
-		explicit OpenGLCamera(Node node) : Camera(node) {}
+		explicit OpenGLCamera(Scene *scene, Node node);
 
 		virtual void init() override;
 

@@ -8,9 +8,15 @@
 using namespace solo;
 
 
-shared<Scene> SceneFactory::create()
+shared<Scene> SceneFactory::create(Engine *engine)
 {
-	return NEW2(Scene);
+	return NEW2(Scene, engine);
+}
+
+
+Scene::Scene(Engine* engine) :
+	engine{ engine }
+{
 }
 
 
@@ -18,6 +24,12 @@ Scene::~Scene()
 {
 	// Allow components to do some cleanup work
 	clear();
+}
+
+
+Engine* Scene::getEngine()
+{
+	return engine;
 }
 
 

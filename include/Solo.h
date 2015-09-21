@@ -40,8 +40,3 @@
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 #include "SoloVector4.h"
-
-namespace solo
-{
-	extern "C" Engine *getEngine();
-}

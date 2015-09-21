@@ -7,11 +7,14 @@ namespace solo
 	class Component;
 	class Node;
 	class Camera;
+	class Engine;
 
 	class Scene
 	{
 	public:
 		~Scene();
+
+		Engine *getEngine();
 
 		shared<Node> createNode();
 
@@ -33,7 +36,7 @@ namespace solo
 		
 		using ComponentIterationWorker = std::function<void(size_t, shared<Component>)>;
 
-		Scene() {}
+		explicit Scene(Engine *engine);
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
@@ -42,6 +45,8 @@ namespace solo
 		void iterateComponents(ComponentIterationWorker work);
 		std::vector<Camera*> getCameras() const;
 
+		Engine *engine;
+
 		size_t nodeCounter = 0;
 		std::unordered_map<size_t, std::unordered_map<size_t, shared<Component>>> components;
 	};
@@ -49,6 +54,6 @@ namespace solo
 	class SceneFactory
 	{
 		friend class Engine;
-		static shared<Scene> create();
+		static shared<Scene> create(Engine *engine);
 	};
 }

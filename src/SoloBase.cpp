@@ -1,17 +1,10 @@
 #include "SoloBase.h"
-#include "SoloEngine.h"
 #include "SoloTypeId.h"
 
 using namespace solo;
 
 
 size_t TypeId::counter = 0;
-
-
-extern "C" Engine *getEngine()
-{
-	return Engine::get();
-}
 
 
 extern "C" size_t getHash(const std::string &s)

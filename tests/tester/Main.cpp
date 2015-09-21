@@ -46,13 +46,12 @@ private:
 
 int main()
 {
-	auto engine = getEngine();
-	EngineCreationArgs engineArgs { EngineMode::OpenGL, 640, 480 };
-	Callback callback(engine);
+	auto engine = Engine::create(EngineCreationArgs { EngineMode::OpenGL, 640, 480 });
+	Callback callback(engine.get());
 	engine->setCallback(&callback);
 	try
 	{
-		engine->run(engineArgs);
+		engine->run();
 	}
 	catch (const std::exception &e)
 	{

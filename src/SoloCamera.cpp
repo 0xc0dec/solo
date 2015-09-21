@@ -21,9 +21,16 @@ const unsigned DIRTY_BIT_ALL =
 		DIRTY_BIT_INV_VIEW_PROJ;
 
 
-shared<Camera> CameraFactory::create(Node node)
+shared<Camera> CameraFactory::create(Scene *scene, Node node)
 {
-	return NEW2(OpenGLCamera, node);
+	return NEW2(OpenGLCamera, scene, node);
+}
+
+
+Camera::Camera(Scene* scene, Node node):
+	ComponentBase{ node },
+	scene{ scene }
+{
 }
 
 
@@ -31,7 +38,7 @@ void Camera::init()
 {
 	transform = node.getComponent<Transform>();
 	transform->addCallback(this);
-	auto canvasSize = Engine::get()->getDevice()->getCanvasSize();
+	auto canvasSize = scene->getEngine()->getDevice()->getCanvasSize();
 	setAspectRatio(canvasSize.x / canvasSize.y);
 	setDirty<DIRTY_BIT_ALL>(); // arguably
 }

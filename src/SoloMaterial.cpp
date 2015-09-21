@@ -7,15 +7,15 @@
 using namespace solo;
 
 
-Material::Material(shared<Effect> effect):
-	effect(effect)
-{
-}
-
-
 shared <Material> MaterialFactory::create(shared<Effect> effect)
 {
 	return NEW2(OpenGLMaterial, effect);
+}
+
+
+Material::Material(shared<Effect> effect):
+	effect(effect)
+{
 }
 
 

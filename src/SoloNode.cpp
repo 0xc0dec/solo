@@ -17,7 +17,7 @@ template<> Transform* Node::addComponent<Transform>()
 
 template<> Camera* Node::addComponent<Camera>()
 {
-	auto camera = CameraFactory::create(*this);
+	auto camera = CameraFactory::create(scene, *this);
 	scene->addComponent(id, camera);
 	return camera.get();
 }

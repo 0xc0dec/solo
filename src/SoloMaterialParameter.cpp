@@ -16,7 +16,6 @@ using namespace solo;
 MaterialParameter::MaterialParameter(const std::string& name):
 	name(name)
 {
-	scene = Engine::get()->getScene();
 }
 
 

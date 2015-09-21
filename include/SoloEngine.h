@@ -16,12 +16,10 @@ namespace solo
 	public:
 		~Engine();
 
-		static Engine *get();
+		static shared<Engine> create(const EngineCreationArgs &args);
 
-		void run(const EngineCreationArgs &creationArgs);
+		void run();
 		void setCallback(EngineCallback *callback);
-
-		EngineMode getMode() const;
 
 		Scene *getScene() const;
 		Device *getDevice() const;
@@ -29,8 +27,11 @@ namespace solo
 		ResourceManager *getResourceManager() const;
 
 	private:
-		Engine();
+		friend class EngineFactory;
 
+		explicit Engine(const EngineCreationArgs &args);
+
+		EngineCreationArgs creationArgs;
 		EngineCallback *callback = nullptr;
 		shared<Scene> scene;
 		shared<Device> device;

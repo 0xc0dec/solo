@@ -17,16 +17,16 @@ public:
 } emptyCallback;
 
 
-Engine *Engine::get()
+shared<Engine> Engine::create(const EngineCreationArgs& args)
 {
-	static Engine instance;
-	return &instance;
+	return NEW2(Engine, args);
 }
 
 
-Engine::Engine()
+Engine::Engine(const EngineCreationArgs& args):
+	creationArgs{args},
+	callback{&emptyCallback}
 {
-	callback = &emptyCallback;
 }
 
 
@@ -35,12 +35,12 @@ Engine::~Engine()
 }
 
 
-void Engine::run(const EngineCreationArgs &args)
+void Engine::run()
 {
-	device = DeviceFactory::create(args);
+	device = DeviceFactory::create(creationArgs);
 	fs = FileSystemFactory::create();
 	resourceManager = ResourceManagerFactory::create(this);
-	scene = SceneFactory::create();
+	scene = SceneFactory::create(this);
 
 	callback->onEngineStarted();
 
@@ -66,12 +66,6 @@ void Engine::run(const EngineCreationArgs &args)
 void Engine::setCallback(EngineCallback* callback)
 {
 	this->callback = callback ? callback : &emptyCallback;
-}
-
-
-EngineMode Engine::getMode() const
-{
-
 }
 
 

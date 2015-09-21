@@ -12,6 +12,7 @@ namespace solo
 	class Transform;
 	class Node;
 	class RenderTarget;
+	class Scene;
 
 	class Camera : public ComponentBase<Camera>, protected TransformCallback, Dirty
 	{
@@ -58,13 +59,15 @@ namespace solo
 	protected:
 		friend class CameraFactory;
 
-		explicit Camera(Node node): ComponentBase(node) {}
+		Camera(Scene *scene, Node node);
 
 		virtual void onTransformChanged(const Transform* transform) override;
 
 		virtual void applyViewport() = 0;
 		virtual void applyClearColor() = 0;
 		virtual void clear() = 0;
+
+		Scene *scene;
 
 		Transform *transform = nullptr;
 		shared<RenderTarget> renderTarget = nullptr;
@@ -92,6 +95,6 @@ namespace solo
 	class CameraFactory
 	{
 		friend class Node;
-		static shared<Camera> create(Node node);
+		static shared<Camera> create(Scene *scene, Node node);
 	};
 }
