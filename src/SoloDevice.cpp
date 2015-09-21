@@ -5,7 +5,7 @@
 using namespace solo;
 
 
-shared<Device> DeviceFactory::create(const EngineCreationArgs& args)
+shared<Device> Device::create(const EngineCreationArgs& args)
 {
 	if (args.mode == EngineMode::OpenGL)
 		return NEW2(SDLOpenGLDevice, args);

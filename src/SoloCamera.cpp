@@ -1,5 +1,5 @@
 #include "SoloEngine.h"
-#include "SoloCamera.h"
+#include "SoloStubCamera.h"
 #include "SoloNode.h"
 #include "SoloDevice.h"
 #include "SoloRenderTarget.h"
@@ -21,16 +21,18 @@ const unsigned DIRTY_BIT_ALL =
 		DIRTY_BIT_INV_VIEW_PROJ;
 
 
-shared<Camera> CameraFactory::create(Scene *scene, Node node)
-{
-	return NEW2(OpenGLCamera, scene, node);
-}
-
-
 Camera::Camera(Scene* scene, Node node):
 	ComponentBase{ node },
 	scene{ scene }
 {
+}
+
+
+shared<Camera> Camera::create(EngineMode mode, Scene* scene, Node node)
+{
+	if (mode == EngineMode::OpenGL)
+		return NEW2(OpenGLCamera, scene, node);
+	return NEW2(StubCamera, scene, node);
 }
 
 

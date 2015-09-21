@@ -22,7 +22,7 @@ shared<ResourceManager> ResourceManagerFactory::create(Engine *engine)
 ResourceManager::ResourceManager(Engine *engine):
 	engine(engine)
 {
-	textureLoaders.push_back(NEW<PngTextureLoader>(engine->getFileSystem()));
+	textureLoaders.push_back(NEW<PngTextureLoader>(engine->getFileSystem(), this));
 	modelLoaders.push_back(NEW<ObjModelLoader>(engine->getFileSystem(), this));
 }
 
@@ -45,7 +45,7 @@ shared<Material> ResourceManager::findMaterial(const std::string& uri)
 }
 
 
-shared<Texture> ResourceManager::findTexture(const std::string& uri)
+shared<Texture2D> ResourceManager::findTexture(const std::string& uri)
 {
 	return findResource(uri, textures);
 }
@@ -73,7 +73,7 @@ shared<Effect> ResourceManager::getOrCreateEffect(const std::string& vsSrc, cons
 {
 	return getOrCreateResource<Effect>(uri, effects,
 		std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
-		[&]() { return EffectFactory::create(vsSrc, fsSrc); });
+		[&]() { return Effect::create(engine->getMode(), vsSrc, fsSrc); });
 }
 
 
@@ -82,11 +82,11 @@ shared<Material> ResourceManager::getOrCreateMaterial(shared<Effect> effect, con
 	// effectively ignores the effect if a material with the given uri already exists
 	return getOrCreateResource<Material>(uri, materials,
 		std::bind(&ResourceManager::findMaterial, this, std::placeholders::_1),
-		[&]() { return MaterialFactory::create(effect); });
+		[&]() { return Material::create(engine->getMode(), effect); });
 }
 
 
-shared<Texture> ResourceManager::getOrLoadTexture(const std::string& uri)
+shared<Texture2D> ResourceManager::getOrLoadTexture(const std::string& uri)
 {
 	auto existing = findTexture(uri);
 	if (existing)
@@ -104,10 +104,10 @@ shared<Texture> ResourceManager::getOrLoadTexture(const std::string& uri)
 }
 
 
-shared<Texture> ResourceManager::getOrCreateTexture(const std::string &uri)
+shared<Texture2D> ResourceManager::getOrCreateTexture2D(const std::string &uri)
 {
-	return getOrCreateResource<Texture>(uri, textures,
-		std::bind(&ResourceManager::findTexture, this, std::placeholders::_1), &TextureFactory::create2D);
+	return getOrCreateResource<Texture2D>(uri, textures,
+		std::bind(&ResourceManager::findTexture, this, std::placeholders::_1), std::bind(&Texture::create2D, engine->getMode()));
 }
 
 
@@ -139,14 +139,16 @@ shared<Model> ResourceManager::getOrCreateModel(const std::string& uri)
 shared<Mesh> ResourceManager::getOrCreateMesh(const std::string& uri)
 {
 	return getOrCreateResource<Mesh>(uri, meshes,
-		std::bind(&ResourceManager::findMesh, this, std::placeholders::_1), &MeshFactory::create);
+		std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
+		std::bind(&Mesh::create, engine->getMode()));
 }
 
 
 shared<RenderTarget> ResourceManager::getOrCreateRenderTarget(const std::string& uri)
 {
 	return getOrCreateResource<RenderTarget>(uri, renderTargets,
-		std::bind(&ResourceManager::findRenderTarget, this, std::placeholders::_1), &RenderTargetFactory::create);
+		std::bind(&ResourceManager::findRenderTarget, this, std::placeholders::_1),
+		std::bind(&RenderTarget::create, engine->getMode()));
 }
 
 

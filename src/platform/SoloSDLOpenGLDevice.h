@@ -23,7 +23,7 @@ namespace solo
 		virtual void endUpdate() override;
 
 	private:
-		friend class DeviceFactory;
+		friend class Device;
 
 		explicit SDLOpenGLDevice(const EngineCreationArgs &args);
 

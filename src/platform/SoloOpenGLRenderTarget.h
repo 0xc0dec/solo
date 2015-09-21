@@ -17,7 +17,7 @@ namespace solo
 		virtual void update() override;
 
 	private:
-		friend class RenderTargetFactory;
+		friend class RenderTarget;
 
 		OpenGLRenderTarget();
 

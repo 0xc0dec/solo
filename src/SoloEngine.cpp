@@ -37,7 +37,7 @@ Engine::~Engine()
 
 void Engine::run()
 {
-	device = DeviceFactory::create(creationArgs);
+	device = Device::create(creationArgs);
 	fs = FileSystemFactory::create();
 	resourceManager = ResourceManagerFactory::create(this);
 	scene = SceneFactory::create(this);

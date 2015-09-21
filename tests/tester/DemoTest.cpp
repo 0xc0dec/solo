@@ -321,7 +321,7 @@ void DemoTest::initMaterials()
 void DemoTest::initRenderTarget()
 {
 	auto canvasSize = device->getCanvasSize();
-	auto renderTexture = DYNAMIC_CAST<Texture2D>(resourceManager->getOrCreateTexture("RTT"));
+	auto renderTexture = DYNAMIC_CAST<Texture2D>(resourceManager->getOrCreateTexture2D("RTT"));
 	renderTexture->setData(ColorFormat::RGB, std::vector<uint8_t>(), canvasSize.x / 8, canvasSize.y / 8);
 	renderTexture->setFilterMode(Filter::Nearest, Filter::Nearest);
 	renderTexture->setWrapMode(WrapMode::Clamp, WrapMode::Clamp);

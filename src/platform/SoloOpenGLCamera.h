@@ -14,7 +14,7 @@ namespace solo
 		virtual void init() override;
 
 	private:
-		friend class CameraFactory;
+		friend class Camera;
 
 		OpenGLCamera(Scene *scene, Node node);
 

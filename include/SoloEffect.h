@@ -10,6 +10,8 @@ namespace solo
 	class Effect
 	{
 	public:
+		static shared<Effect> create(EngineMode engineMode, const std::string &vsSrc, const std::string &fsSrc);
+
 		virtual ~Effect() {}
 
 		virtual void bind() = 0;
@@ -26,11 +28,5 @@ namespace solo
 		Effect(Effect&& other) = delete;
 		Effect& operator=(const Effect& other) = delete;
 		Effect& operator=(Effect&& other) = delete;
-	};
-
-	class EffectFactory
-	{
-		friend class ResourceManager;
-		static shared<Effect> create(const std::string &vsSrc, const std::string &fsSrc);
 	};
 }

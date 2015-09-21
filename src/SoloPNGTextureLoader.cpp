@@ -2,6 +2,7 @@
 #include "SoloPngTextureLoader.h"
 #include "SoloFileSystem.h"
 #include "SoloTexture2D.h"
+#include "SoloResourceManager.h"
 
 using namespace solo;
 
@@ -23,8 +24,8 @@ static void readCallback(png_structp png, png_bytep data, png_size_t length)
 }
 
 
-PngTextureLoader::PngTextureLoader(FileSystem* fs) :
-	TextureLoader(fs)
+PngTextureLoader::PngTextureLoader(FileSystem* fs, ResourceManager *resourceManager) :
+	TextureLoader(fs, resourceManager)
 {
 }
 
@@ -80,7 +81,7 @@ shared<Texture2D> PngTextureLoader::load2D(const std::string& uri)
 
 	png_destroy_read_struct(&png, &info, nullptr);
 
-	auto tex = TextureFactory::create2D();
+	auto tex = resourceManager->getOrCreateTexture2D(uri);
 	tex->setData(colorFormat, data, width, height);
 	return tex;
 }

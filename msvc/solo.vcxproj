@@ -72,7 +72,13 @@
     <ClInclude Include="..\src\SoloModelLoader.h" />
     <ClInclude Include="..\src\SoloObjModelLoader.h" />
     <ClInclude Include="..\src\SoloPngTextureLoader.h" />
+    <ClInclude Include="..\src\SoloStubCamera.h" />
     <ClInclude Include="..\src\SoloStubDevice.h" />
+    <ClInclude Include="..\src\SoloStubEffect.h" />
+    <ClInclude Include="..\src\SoloStubMaterial.h" />
+    <ClInclude Include="..\src\SoloStubMesh.h" />
+    <ClInclude Include="..\src\SoloStubRenderTarget.h" />
+    <ClInclude Include="..\src\SoloStubTexture2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\glew\src\glew.c" />

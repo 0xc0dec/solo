@@ -6,9 +6,13 @@
 
 namespace solo
 {
+	enum class EngineMode;
+
 	class Mesh
 	{
 	public:
+		static shared<Mesh> create(EngineMode mode);
+
 		virtual ~Mesh() {}
 
 		virtual void draw() = 0;
@@ -24,11 +28,5 @@ namespace solo
 		Mesh(Mesh&& other) = delete;
 		Mesh& operator=(const Mesh& other) = delete;
 		Mesh& operator=(Mesh&& other) = delete;
-	};
-
-	class MeshFactory
-	{
-		friend class ResourceManager;
-		static shared<Mesh> create();
 	};
 }

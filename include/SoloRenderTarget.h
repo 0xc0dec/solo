@@ -5,10 +5,13 @@
 namespace solo
 {
 	class Texture2D;
+	enum class EngineMode;
 
 	class RenderTarget
 	{
 	public:
+		static shared<RenderTarget> create(EngineMode mode);
+
 		virtual ~RenderTarget() {}
 
 		virtual void bind() = 0;
@@ -30,11 +33,5 @@ namespace solo
 		RenderTarget(RenderTarget&& other) = delete;
 		RenderTarget& operator=(const RenderTarget& other) = delete;
 		RenderTarget& operator=(RenderTarget&& other) = delete;
-	};
-
-	class RenderTargetFactory
-	{
-		friend class ResourceManager;
-		static shared<RenderTarget> create();
 	};
 }

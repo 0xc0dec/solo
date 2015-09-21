@@ -20,7 +20,7 @@ namespace solo
 		virtual float getLifetime() const override;
 
 	private:
-		friend class DeviceFactory;
+		friend class Device;
 
 		explicit StubDevice(const EngineCreationArgs& args)
 			: Device(args)

@@ -1,12 +1,15 @@
-#include "SoloRenderTarget.h"
+#include "SoloStubRenderTarget.h"
+#include "SoloEngineCreationArgs.h"
 #include "platform/SoloOpenGLRenderTarget.h"
 
 using namespace solo;
 
 
-shared<RenderTarget> RenderTargetFactory::create()
+shared<RenderTarget> RenderTarget::create(EngineMode mode)
 {
-	return NEW2(OpenGLRenderTarget);
+	if (mode == EngineMode::OpenGL)
+		return NEW2(OpenGLRenderTarget);
+	return NEW2(StubRenderTarget);
 }
 
 

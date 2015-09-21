@@ -8,7 +8,7 @@ namespace solo
 	class Material;
 	class Mesh;
 	class Model;
-	class Texture;
+	class Texture2D;
 	class RenderTarget;
 	class TextureLoader;
 	class ModelLoader;
@@ -20,20 +20,20 @@ namespace solo
 		~ResourceManager() {}
 
 		shared<Effect> findEffect(const std::string &uri);
-		shared<Texture> findTexture(const std::string &uri);
+		shared<Texture2D> findTexture(const std::string &uri);
 		shared<Material> findMaterial(const std::string &uri);
 		shared<Mesh> findMesh(const std::string &uri);
 		shared<Model> findModel(const std::string &uri);
 		shared<RenderTarget> findRenderTarget(const std::string &uri);
 
 		shared<Effect> getOrCreateEffect(const std::string &vsSrc, const std::string &fsSrc, const std::string& uri = "");
-		shared<Texture> getOrCreateTexture(const std::string &uri = "");
+		shared<Texture2D> getOrCreateTexture2D(const std::string &uri = "");
 		shared<Material> getOrCreateMaterial(shared<Effect> effect, const std::string& uri = "");
 		shared<Mesh> getOrCreateMesh(const std::string& uri = "");
 		shared<Model> getOrCreateModel(const std::string& uri = "");
 		shared<RenderTarget> getOrCreateRenderTarget(const std::string &uri);
 
-		shared<Texture> getOrLoadTexture(const std::string &uri);
+		shared<Texture2D> getOrLoadTexture(const std::string &uri);
 		shared<Model> getOrLoadModel(const std::string& uri);
 
 		void cleanUnusedResources();
@@ -68,7 +68,7 @@ namespace solo
 		ResourceMap<Material> materials;
 		ResourceMap<Mesh> meshes;
 		ResourceMap<Model> models;
-		ResourceMap<Texture> textures;
+		ResourceMap<Texture2D> textures;
 		ResourceMap<RenderTarget> renderTargets;
 
 		std::vector<shared<TextureLoader>> textureLoaders;

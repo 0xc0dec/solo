@@ -10,7 +10,7 @@ namespace solo
 		virtual void applyFaceCull() override;
 
 	private:
-		friend class MaterialFactory;
+		friend class Material;
 
 		OpenGLMaterial(shared<Effect> effect);
 	};
