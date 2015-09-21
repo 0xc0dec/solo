@@ -11,7 +11,7 @@ namespace solo
 
 		Vector4() {}
 		Vector4(float x, float y, float z, float w);
-		Vector4(const float* array);
+		explicit Vector4(const float* array);
 		Vector4(const Vector4& p1, const Vector4& p2);
 
 		static const Vector4& zero();

@@ -9,7 +9,7 @@ namespace solo
 
 		Vector2() {}
 		Vector2(float x, float y);
-		Vector2(const float* array);
+		explicit Vector2(const float* array);
 		Vector2(const Vector2& p1, const Vector2& p2);
 
 		static const Vector2& zero();

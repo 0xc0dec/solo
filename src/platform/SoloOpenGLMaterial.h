@@ -12,6 +12,6 @@ namespace solo
 	private:
 		friend class MaterialFactory;
 
-		OpenGLMaterial(shared<Effect> effect);
+		explicit OpenGLMaterial(shared<Effect> effect);
 	};
 }

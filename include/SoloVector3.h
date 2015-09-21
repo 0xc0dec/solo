@@ -10,7 +10,7 @@ namespace solo
 
 		Vector3() {}
 		Vector3(float x, float y, float z);
-		Vector3(const float* array);
+		explicit Vector3(const float* array);
 		Vector3(const Vector3& p1, const Vector3& p2);
 
 		static Vector3 zero();

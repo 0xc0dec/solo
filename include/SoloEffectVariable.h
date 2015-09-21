@@ -34,7 +34,7 @@ namespace solo
 		virtual void setValue(const std::vector<shared<Texture>>& textures, unsigned count) = 0;
 
 	protected:
-		EffectVariable(const std::string &name);
+		explicit EffectVariable(const std::string &name);
 
 		std::string name;
 	};

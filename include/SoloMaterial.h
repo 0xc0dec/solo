@@ -19,7 +19,7 @@ namespace solo
 		Effect* getEffect() const;
 
 	protected:
-		Material(shared<Effect> effect);
+		explicit Material(shared<Effect> effect);
 
 	private:
 		Material(const Material& other) = delete;

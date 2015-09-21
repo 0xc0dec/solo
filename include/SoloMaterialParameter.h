@@ -91,7 +91,7 @@ namespace solo
 		class LambdaValueBinding : public ValueBinding
 		{
 		public:
-			LambdaValueBinding(std::function<TValue(const RenderContext& context)> lambda);
+			explicit LambdaValueBinding(std::function<TValue(const RenderContext& context)> lambda);
 
 			virtual void setValue(EffectVariable* variable, const RenderContext& context) override;
 
@@ -124,7 +124,7 @@ namespace solo
 			MaterialParameterValue() : asInt(0) {}
 		};
 
-		MaterialParameter(const std::string &name);
+		explicit MaterialParameter(const std::string &name);
 		MaterialParameter(const MaterialParameter& other) = delete;
 		MaterialParameter(MaterialParameter&& other) = delete;
 		MaterialParameter& operator=(const MaterialParameter& other) = delete;

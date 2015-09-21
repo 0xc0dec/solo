@@ -43,7 +43,7 @@ namespace solo
 
 		template <typename TResource> using ResourceMap = std::unordered_map<std::string, shared<TResource>>;
 
-		ResourceManager(Engine *engine);
+		explicit ResourceManager(Engine *engine);
 		ResourceManager(const ResourceManager& other) = delete;
 		ResourceManager(ResourceManager&& other) = delete;
 		ResourceManager& operator=(const ResourceManager& other) = delete;

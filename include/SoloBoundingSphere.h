@@ -34,10 +34,6 @@ namespace solo
 		void transform(const Matrix& matrix);
 
 		inline BoundingSphere& operator*=(const Matrix& matrix);
-
-	private:
-		float distance(const BoundingSphere& sphere, const Vector3&);
-		bool contains(const BoundingSphere& sphere, Vector3* points, unsigned count);
 	};
 
 	inline BoundingSphere& BoundingSphere::operator*=(const Matrix& matrix)
