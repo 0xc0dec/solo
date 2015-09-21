@@ -9,7 +9,7 @@ namespace solo
 	public:
 		ObjModelLoader(FileSystem* fs, ResourceManager *resourceManager);
 
-		virtual bool isLoadable(const std::string& url) override;
-		virtual shared<Model> load(const std::string& url) override;
+		virtual bool isLoadable(const std::string& uri) override;
+		virtual shared<Model> load(const std::string& uri) override;
 	};
 }

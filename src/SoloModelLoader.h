@@ -13,8 +13,8 @@ namespace solo
 	public:
 		virtual ~ModelLoader() {}
 
-		virtual bool isLoadable(const std::string& url) = 0;
-		virtual shared<Model> load(const std::string& url) = 0;
+		virtual bool isLoadable(const std::string& uri) = 0;
+		virtual shared<Model> load(const std::string& uri) = 0;
 
 	protected:
 		ModelLoader(FileSystem *fs, ResourceManager *resourceManager):

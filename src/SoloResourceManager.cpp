@@ -27,7 +27,7 @@ ResourceManager::ResourceManager(Engine *engine):
 }
 
 
-std::string ResourceManager::generateUrl()
+std::string ResourceManager::generateUri()
 {
 	return std::string("generated/") + std::to_string(++resourceCounter);
 }
@@ -155,7 +155,7 @@ shared<TResource> ResourceManager::getOrCreateResource(const std::string& uri, R
 	std::function<shared<TResource>(const std::basic_string<char>&)> find,
 	std::function<shared<TResource>()> create)
 {
-	auto existing = find(uri.empty() ? generateUrl() : uri);
+	auto existing = find(uri.empty() ? generateUri() : uri);
 	if (existing)
 		return existing;
 	auto result = create();
@@ -175,13 +175,13 @@ shared<TResource> ResourceManager::findResource(const std::string& uri, const Re
 template <typename TResource>
 void ResourceManager::cleanUnusedResources(ResourceMap<TResource> &resources)
 {
-	auto urls = std::unordered_set<std::string>();
+	auto uris = std::unordered_set<std::string>();
 	for (auto &it : resources)
 	{
 		if (it.second.use_count() == 1)
-			urls.insert(it.first);
+			uris.insert(it.first);
 	}
-	for (auto &uri : urls)
+	for (auto &uri : uris)
 		resources.erase(uri);
 }
 

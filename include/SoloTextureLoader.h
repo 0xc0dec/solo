@@ -12,8 +12,8 @@ namespace solo
 	public:
 		virtual ~TextureLoader() {}
 
-		virtual bool isLoadable(const std::string& url) = 0;
-		virtual shared<Texture2D> load2D(const std::string& url) = 0;
+		virtual bool isLoadable(const std::string& uri) = 0;
+		virtual shared<Texture2D> load2D(const std::string& uri) = 0;
 
 	protected:
 		TextureLoader(FileSystem *fs): fs(fs) {}

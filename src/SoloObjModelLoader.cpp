@@ -13,9 +13,9 @@ ObjModelLoader::ObjModelLoader(FileSystem* fs, ResourceManager *resourceManager)
 }
 
 
-bool ObjModelLoader::isLoadable(const std::string& url)
+bool ObjModelLoader::isLoadable(const std::string& uri)
 {
-	return url.find(".obj", url.size() - 5) != std::string::npos;
+	return uri.find(".obj", uri.size() - 5) != std::string::npos;
 }
 
 

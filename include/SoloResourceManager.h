@@ -49,7 +49,7 @@ namespace solo
 		ResourceManager& operator=(const ResourceManager& other) = delete;
 		ResourceManager& operator=(ResourceManager&& other) = delete;
 
-		std::string generateUrl();
+		std::string generateUri();
 		
 		template <typename TResource>
 		static void cleanUnusedResources(ResourceMap<TResource> &resources);

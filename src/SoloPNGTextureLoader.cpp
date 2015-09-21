@@ -29,24 +29,24 @@ PngTextureLoader::PngTextureLoader(FileSystem* fs) :
 }
 
 
-bool PngTextureLoader::isLoadable(const std::string& url)
+bool PngTextureLoader::isLoadable(const std::string& uri)
 {
-	return url.find(".png", url.size() - 5) != std::string::npos;
+	return uri.find(".png", uri.size() - 5) != std::string::npos;
 }
 
 
-shared<Texture2D> PngTextureLoader::load2D(const std::string& url)
+shared<Texture2D> PngTextureLoader::load2D(const std::string& uri)
 {
-	auto bytes = fs->readBytes(url);
+	auto bytes = fs->readBytes(uri);
 	if (bytes.size() < 8 || png_sig_cmp(&bytes[0], 0, 8) != 0)
-		THROW_FMT(EngineException, "Failed to read PNG file ", url);
+		THROW_FMT(EngineException, "Failed to read PNG file ", uri);
 
 	auto png = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
 	auto info = png_create_info_struct(png);
 	if (setjmp(png_jmpbuf(png)))
 	{
 		png_destroy_read_struct(&png, &info, nullptr);
-		THROW_FMT(EngineException, "Failed to read PNG file ", url);
+		THROW_FMT(EngineException, "Failed to read PNG file ", uri);
 	}
 
 	std::unique_ptr<PngReadContext> context(new PngReadContext{ &bytes, 8 });
