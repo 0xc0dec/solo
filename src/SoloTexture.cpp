@@ -6,7 +6,7 @@
 using namespace solo;
 
 
-shared<Texture2D> Texture::create2D(EngineMode mode)
+shared<Texture2D> TextureFactory::create2D(EngineMode mode)
 {
 	if (mode == EngineMode::OpenGL)
 		return NEW2(OpenGLTexture2D);

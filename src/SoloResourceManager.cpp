@@ -107,7 +107,7 @@ shared<Texture2D> ResourceManager::getOrLoadTexture(const std::string& uri)
 shared<Texture2D> ResourceManager::getOrCreateTexture2D(const std::string &uri)
 {
 	return getOrCreateResource<Texture2D>(uri, textures,
-		std::bind(&ResourceManager::findTexture, this, std::placeholders::_1), std::bind(&Texture::create2D, engine->getMode()));
+		std::bind(&ResourceManager::findTexture, this, std::placeholders::_1), std::bind(&TextureFactory::create2D, engine->getMode()));
 }
 
 

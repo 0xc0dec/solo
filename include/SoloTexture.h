@@ -16,8 +16,6 @@ namespace solo
 	class Texture
 	{
 	public:
-		static shared<Texture2D> create2D(EngineMode mode);
-
 		virtual ~Texture() {}
 
 		virtual void apply() = 0;
@@ -32,5 +30,11 @@ namespace solo
 		Texture(Texture&& other) = delete;
 		Texture& operator=(const Texture& other) = delete;
 		Texture& operator=(Texture&& other) = delete;
+	};
+
+	class TextureFactory
+	{
+		friend class ResourceManager;
+		static shared<Texture2D> create2D(EngineMode mode);
 	};
 }
