@@ -44,18 +44,25 @@ private:
 };
 
 
-int main()
+void runEngine(EngineMode mode)
 {
-	auto engine = Engine::create(EngineCreationArgs { EngineMode::OpenGL, 640, 480 });
-	Callback callback(engine.get());
-	engine->setCallback(&callback);
+	auto engine = Engine::create(EngineCreationArgs{ mode, 640, 480 });
 	try
 	{
+		Callback callback(engine.get());
+		engine->setCallback(&callback);
 		engine->run();
 	}
 	catch (const std::exception &e)
 	{
 		std::cout << e.what() << std::endl;
 	}
+}
+
+
+int main()
+{
+	runEngine(EngineMode::OpenGL);
+	runEngine(EngineMode::OpenGL);
 	return 0;
 }

@@ -69,6 +69,12 @@ void Engine::setCallback(EngineCallback* callback)
 }
 
 
+EngineMode Engine::getMode() const
+{
+	return creationArgs.mode;
+}
+
+
 Scene *Engine::getScene() const
 {
 	return scene.get();

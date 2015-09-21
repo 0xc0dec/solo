@@ -6,12 +6,10 @@ namespace solo
 {
 	class OpenGLMaterial: public Material
 	{
+	public:
+		OpenGLMaterial(shared<Effect> effect);
+
 	protected:
 		virtual void applyFaceCull() override;
-
-	private:
-		friend class MaterialFactory;
-
-		OpenGLMaterial(shared<Effect> effect);
 	};
 }

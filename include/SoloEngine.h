@@ -21,6 +21,8 @@ namespace solo
 		void run();
 		void setCallback(EngineCallback *callback);
 
+		EngineMode getMode() const;
+
 		Scene *getScene() const;
 		Device *getDevice() const;
 		FileSystem *getFileSystem() const;
