@@ -148,7 +148,7 @@ shared<RenderTarget> ResourceManager::getOrCreateRenderTarget(const std::string&
 {
 	return getOrCreateResource<RenderTarget>(uri, renderTargets,
 		std::bind(&ResourceManager::findRenderTarget, this, std::placeholders::_1),
-		std::bind(&RenderTarget::create, engine->getMode()));
+		std::bind(&RenderTargetFactory::create, engine->getMode()));
 }
 
 

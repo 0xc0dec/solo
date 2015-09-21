@@ -14,7 +14,7 @@ namespace solo
 		virtual void update() override {}
 
 	private:
-		friend class RenderTarget;
+		friend class RenderTargetFactory;
 
 		StubRenderTarget() {}
 	};

@@ -5,7 +5,7 @@
 using namespace solo;
 
 
-shared<RenderTarget> RenderTarget::create(EngineMode mode)
+shared<RenderTarget> RenderTargetFactory::create(EngineMode mode)
 {
 	if (mode == EngineMode::OpenGL)
 		return NEW2(OpenGLRenderTarget);
