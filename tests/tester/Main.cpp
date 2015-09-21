@@ -9,27 +9,10 @@
 using namespace solo;
 
 
-class Callback : public EngineCallback
+class TestRunner: public EngineCallback
 {
 public:
-	Callback(Engine* engine): engine(engine)
-	{
-	}
-
-	virtual void onEngineStarted() override
-	{
-		tests.push_back(NEW2(MaterialsTest, engine));
-		tests.push_back(NEW2(ComponentsAndNodesTest, engine));
-		tests.push_back(NEW2(TransformTest, engine));
-		tests.push_back(NEW2(DeviceTest, engine));
-		tests.push_back(NEW2(FileSystemTest, engine));
-		tests.push_back(NEW2(ResourcesTest, engine));
-		tests.push_back(NEW2(DemoTest, engine));
-		for (auto test : tests)
-			test->run();
-	}
-
-	virtual void onEngineStopped() override
+	explicit TestRunner(Engine* engine): engine(engine)
 	{
 	}
 
@@ -38,20 +21,84 @@ public:
 		return true;
 	}
 
-private:
-	std::list<shared<TestBase>> tests; // to keeps tests in memory
+	virtual void onEngineStarted() override
+	{
+		init();
+		for (auto test : tests)
+			test->run();
+		finish();
+	}
+
+	virtual void onEngineStopped() override
+	{
+	}
+
+protected:
+	std::list<shared<TestBase>> tests;
 	Engine *engine;
+
+	virtual void init() = 0;
+	virtual void finish() {}
 };
 
 
-void runEngine(EngineMode mode)
+class IntegrationTestAndDemoRunner : public TestRunner
 {
-	auto engine = Engine::create(EngineCreationArgs{ mode, 640, 480 });
+public:
+	explicit IntegrationTestAndDemoRunner(Engine* engine): TestRunner(engine)
+	{
+	}
+
+protected:
+	virtual void init() override
+	{
+		tests.push_back(NEW2(MaterialsTest, engine));
+		tests.push_back(NEW2(DemoTest, engine));
+	}
+};
+
+
+class UnitTestRunner: public TestRunner
+{
+public:
+	explicit UnitTestRunner(Engine* engine): TestRunner(engine)
+	{
+	}
+
+protected:
+	virtual void init() override
+	{
+		tests.push_back(NEW2(ResourcesTest, engine));
+		tests.push_back(NEW2(FileSystemTest, engine));
+		tests.push_back(NEW2(DeviceTest, engine));
+		tests.push_back(NEW2(ComponentsAndNodesTest, engine));
+		tests.push_back(NEW2(TransformTest, engine));
+	}
+
+	virtual void finish() override
+	{
+		engine->getDevice()->requestShutdown();
+	}
+};
+
+
+void runEngine(bool integrationMode)
+{
+	auto engine = Engine::create(EngineCreationArgs{ integrationMode ? EngineMode::OpenGL : EngineMode::Stub, 640, 480 });
 	try
 	{
-		Callback callback(engine.get());
-		engine->setCallback(&callback);
-		engine->run();
+		if (integrationMode)
+		{
+			IntegrationTestAndDemoRunner runner(engine.get());
+			engine->setCallback(&runner);
+			engine->run();
+		}
+		else
+		{
+			UnitTestRunner runner(engine.get());
+			engine->setCallback(&runner);
+			engine->run();
+		}
 	}
 	catch (const std::exception &e)
 	{
@@ -62,7 +109,7 @@ void runEngine(EngineMode mode)
 
 int main()
 {
-	runEngine(EngineMode::OpenGL);
-	runEngine(EngineMode::OpenGL);
+	runEngine(false);
+	runEngine(true);
 	return 0;
 }
