@@ -5,7 +5,7 @@
 using namespace solo;
 
 
-shared<Effect> Effect::create(EngineMode engineMode, const std::string& vsSrc, const std::string& fsSrc)
+shared<Effect> EffectFactory::create(EngineMode engineMode, const std::string& vsSrc, const std::string& fsSrc)
 {
 	if (engineMode == EngineMode::OpenGL)
 		return NEW2(GLSLEffect, vsSrc, fsSrc);

@@ -73,7 +73,7 @@ shared<Effect> ResourceManager::getOrCreateEffect(const std::string& vsSrc, cons
 {
 	return getOrCreateResource<Effect>(uri, effects,
 		std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
-		[&]() { return Effect::create(engine->getMode(), vsSrc, fsSrc); });
+		[&]() { return EffectFactory::create(engine->getMode(), vsSrc, fsSrc); });
 }
 
 

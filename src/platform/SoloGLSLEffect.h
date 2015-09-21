@@ -13,7 +13,7 @@ namespace solo
 		virtual void bind() override;
 
 	private:
-		friend class Effect;
+		friend class EffectFactory;
 
 		GLSLEffect(const std::string& vsSrc, const std::string& fsSrc);
 		GLSLEffect(const GLSLEffect& other) = delete;

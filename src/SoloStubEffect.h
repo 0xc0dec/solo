@@ -10,7 +10,7 @@ namespace solo
 		virtual void bind() override {}
 
 	private:
-		friend class Effect;
+		friend class EffectFactory;
 
 		StubEffect() {}
 	};
