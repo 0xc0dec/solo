@@ -11,11 +11,13 @@ namespace solo
 	class OpenGLCamera: public Camera
 	{
 	public:
-		explicit OpenGLCamera(Scene *scene, Node node);
-
 		virtual void init() override;
 
 	private:
+		friend class CameraFactory;
+
+		OpenGLCamera(Scene *scene, Node node);
+
 		Device* device = nullptr;
 
 		void applyViewport() override;

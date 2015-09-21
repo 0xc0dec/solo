@@ -9,8 +9,6 @@ namespace solo
 	class GLSLEffectVariable : public EffectVariable
 	{
 	public:
-		GLSLEffectVariable(const std::string& name, GLint location, GLenum type, unsigned index);
-
 		virtual void setValue(float value) override;
 		virtual void setValue(const float* values, unsigned count) override;
 		virtual void setValue(int value) override;
@@ -27,6 +25,9 @@ namespace solo
 		virtual void setValue(const std::vector<shared<Texture>>& samplers, unsigned count) override;
 
 	private:
+		friend class GLSLEffect;
+
+		GLSLEffectVariable(const std::string& name, GLint location, GLenum type, unsigned index);
 		GLSLEffectVariable(const GLSLEffectVariable& other) = delete;
 		GLSLEffectVariable(GLSLEffectVariable&& other) = delete;
 		GLSLEffectVariable& operator=(const GLSLEffectVariable& other) = delete;

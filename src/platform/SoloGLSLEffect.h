@@ -8,12 +8,14 @@ namespace solo
 	class GLSLEffect: public Effect
 	{
 	public:
-		GLSLEffect(const std::string& vsSrc, const std::string& fsSrc);
 		virtual ~GLSLEffect();
 
 		virtual void bind() override;
 
 	private:
+		friend class EffectFactory;
+
+		GLSLEffect(const std::string& vsSrc, const std::string& fsSrc);
 		GLSLEffect(const GLSLEffect& other) = delete;
 		GLSLEffect(GLSLEffect&& other) = delete;
 		GLSLEffect& operator=(const GLSLEffect& other) = delete;

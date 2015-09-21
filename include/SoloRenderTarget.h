@@ -26,8 +26,6 @@ namespace solo
 		std::vector<shared<Texture2D>> textures;
 
 	private:
-		friend class RenderTargetFactory;
-
 		RenderTarget(const RenderTarget& other) = delete;
 		RenderTarget(RenderTarget&& other) = delete;
 		RenderTarget& operator=(const RenderTarget& other) = delete;

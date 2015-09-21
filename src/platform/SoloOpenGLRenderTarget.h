@@ -8,7 +8,6 @@ namespace solo
 	class OpenGLRenderTarget: public RenderTarget
 	{
 	public:
-		OpenGLRenderTarget();
 		virtual ~OpenGLRenderTarget();
 
 		virtual void bind() override;
@@ -18,6 +17,10 @@ namespace solo
 		virtual void update() override;
 
 	private:
+		friend class RenderTargetFactory;
+
+		OpenGLRenderTarget();
+
 		void checkStatus();
 
 		GLuint handle{ 0 };

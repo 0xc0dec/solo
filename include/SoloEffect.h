@@ -5,6 +5,7 @@
 namespace solo
 {
 	class EffectVariable;
+	enum class EngineMode;
 
 	class Effect
 	{

@@ -57,8 +57,6 @@ namespace solo
 		const Matrix& getInverseViewProjectionMatrix();
 
 	protected:
-		friend class CameraFactory;
-
 		Camera(Scene *scene, Node node);
 
 		virtual void onTransformChanged(const Transform* transform) override;

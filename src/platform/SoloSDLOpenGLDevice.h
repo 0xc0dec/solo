@@ -8,7 +8,6 @@ namespace solo
 	class SDLOpenGLDevice : public Device
 	{
 	public:
-		SDLOpenGLDevice(const EngineCreationArgs &args);
 		virtual ~SDLOpenGLDevice();
 
 		virtual void setWindowTitle(const std::string &title) override;
@@ -24,6 +23,10 @@ namespace solo
 		virtual void endUpdate() override;
 
 	private:
+		friend class DeviceFactory;
+
+		explicit SDLOpenGLDevice(const EngineCreationArgs &args);
+
 		void prepareKeyboardState();
 		void prepareMouseState();
 
