@@ -140,7 +140,7 @@ shared<Mesh> ResourceManager::getOrCreateMesh(const std::string& uri)
 {
 	return getOrCreateResource<Mesh>(uri, meshes,
 		std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
-		std::bind(&Mesh::create, engine->getMode()));
+		std::bind(&MeshFactory::create, engine->getMode()));
 }
 
 

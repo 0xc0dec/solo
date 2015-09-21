@@ -5,7 +5,8 @@
 using namespace solo;
 
 
-shared<Mesh> Mesh::create(EngineMode mode)
+
+shared<Mesh> MeshFactory::create(EngineMode mode)
 {
 	if (mode == EngineMode::OpenGL)
 		return NEW2(OpenGLMesh);
