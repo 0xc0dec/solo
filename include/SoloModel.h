@@ -32,7 +32,6 @@ namespace solo
 	class ModelFactory
 	{
 		friend class ResourceManager;
-		friend class ObjModelLoader;
 		static shared<Model> create();
 	};
 }
