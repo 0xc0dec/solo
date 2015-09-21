@@ -82,7 +82,7 @@ shared<Material> ResourceManager::getOrCreateMaterial(shared<Effect> effect, con
 	// effectively ignores the effect if a material with the given uri already exists
 	return getOrCreateResource<Material>(uri, materials,
 		std::bind(&ResourceManager::findMaterial, this, std::placeholders::_1),
-		[&]() { return Material::create(engine->getMode(), effect); });
+		[&]() { return MaterialFactory::create(engine->getMode(), effect); });
 }
 
 

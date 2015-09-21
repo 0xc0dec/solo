@@ -12,8 +12,6 @@ namespace solo
 	class Material: public RenderState
 	{
 	public:
-		static shared<Material> create(EngineMode mode, shared<Effect> effect);
-
 		virtual void bind(RenderContext& context) override;
 		virtual void unbind(RenderContext& context) override;
 
@@ -31,5 +29,11 @@ namespace solo
 
 		shared<Effect> effect;
 		std::unordered_map<std::string, shared<MaterialParameter>> parameters;
+	};
+
+	class MaterialFactory
+	{
+		friend class ResourceManager;
+		static shared<Material> create(EngineMode mode, shared<Effect> effect);
 	};
 }

@@ -8,17 +8,17 @@
 using namespace solo;
 
 
-Material::Material(shared<Effect> effect):
-	effect(effect)
-{
-}
-
-
-shared<Material> Material::create(EngineMode mode, shared<Effect> effect)
+shared<Material> MaterialFactory::create(EngineMode mode, shared<Effect> effect)
 {
 	if (mode == EngineMode::OpenGL)
 		return NEW2(OpenGLMaterial, effect);
 	return NEW2(StubMaterial, effect);
+}
+
+
+Material::Material(shared<Effect> effect):
+	effect(effect)
+{
 }
 
 

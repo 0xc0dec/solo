@@ -10,7 +10,7 @@ namespace solo
 		virtual void applyFaceCull() override {}
 
 	private:
-		friend class Material;
+		friend class MaterialFactory;
 
 		explicit StubMaterial(const shared<Effect>& effect)
 			: Material(effect)
