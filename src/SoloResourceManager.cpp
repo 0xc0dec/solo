@@ -23,7 +23,7 @@ ResourceManager::ResourceManager(Engine *engine):
 	engine(engine)
 {
 	textureLoaders.push_back(NEW<PngTextureLoader>(engine->getFileSystem()));
-	modelLoaders.push_back(NEW<ObjModelLoader>(engine->getFileSystem()));
+	modelLoaders.push_back(NEW<ObjModelLoader>(engine->getFileSystem(), this));
 }
 
 

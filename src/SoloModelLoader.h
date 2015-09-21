@@ -6,6 +6,7 @@ namespace solo
 {
 	class Model;
 	class FileSystem;
+	class ResourceManager;
 
 	class ModelLoader
 	{
@@ -16,9 +17,14 @@ namespace solo
 		virtual shared<Model> load(const std::string& url) = 0;
 
 	protected:
-		ModelLoader(FileSystem *fs): fs(fs) {}
+		ModelLoader(FileSystem *fs, ResourceManager *resourceManager):
+			fs(fs),
+			resourceManager(resourceManager)
+		{
+		}
 
 		FileSystem *fs;
+		ResourceManager *resourceManager;
 
 	private:
 		ModelLoader(const ModelLoader& other) = delete;
