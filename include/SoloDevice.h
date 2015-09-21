@@ -28,8 +28,6 @@ namespace solo
 	class Device
 	{
 	public:
-		static shared<Device> create(const EngineCreationArgs& args);
-
 		virtual ~Device() {}
 
 		virtual void beginUpdate() = 0;
@@ -81,5 +79,11 @@ namespace solo
 		Device(Device&& device) = delete;
 		Device& operator=(const Device& other) = delete;
 		Device& operator=(Device&& other) = delete;
+	};
+
+	class DeviceFactory
+	{
+		friend class Engine;
+		static shared<Device> create(const EngineCreationArgs& args);
 	};
 }
