@@ -18,8 +18,6 @@ namespace solo
 	class Camera : public ComponentBase<Camera>, protected TransformCallback, Dirty
 	{
 	public:
-		static shared<Camera> create(EngineMode mode, Scene *scene, Node node);
-
 		virtual ~Camera() {}
 
 		virtual void init() override;
@@ -91,5 +89,11 @@ namespace solo
 		Matrix viewProjectionMatrix;
 		Matrix inverseViewMatrix;
 		Matrix inverseViewProjectionMatrix;
+	};
+
+	class CameraFactory
+	{
+		friend class Node;
+		static shared<Camera> create(EngineMode mode, Scene *scene, Node node);
 	};
 }

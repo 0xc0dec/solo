@@ -12,7 +12,7 @@ namespace solo
 		virtual void clear() override {}
 
 	private:
-		friend class Camera;
+		friend class CameraFactory;
 
 		StubCamera(Scene* scene, const Node& node):
 			Camera(scene, node)
