@@ -70,7 +70,6 @@ namespace solo
 
 		bool invert();
 		void transpose();
-		void negate();
 
 		void rotate(const Quaternion& q);
 		void rotate(const Vector3& axis, float angleRadians);
@@ -99,7 +98,7 @@ namespace solo
 		Matrix& operator+=(float scalar);
 		Matrix& operator+=(const Matrix& m);
 
-		inline Matrix operator-() const;
+		Matrix operator-() const;
 		inline Matrix operator-(float scalar) const;
 		inline Matrix operator-(const Matrix& m) const;
 		Matrix& operator-=(float scalar);
@@ -146,13 +145,6 @@ namespace solo
 		auto result(*this);
 		result -= m;
 		return result;
-	}
-
-	inline Matrix Matrix::operator-() const
-	{
-		auto m(*this);
-		m.negate();
-		return m;
 	}
 
 	Matrix Matrix::operator*(float scalar) const

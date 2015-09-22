@@ -10,6 +10,8 @@
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 #include "SoloVector4.h"
+#include "SoloQuaternion.h"
+#include "SoloMatrix.h"
 
 namespace LuaIntf
 {
@@ -140,6 +142,81 @@ void registerVector4(CppBindModule& module)
 }
 
 
+void registerMatrix(CppBindModule& module)
+{
+	module.beginClass<Matrix>("Matrix")
+		.addConstructor(LUA_ARGS())
+		.addStaticFunction("identity", &Matrix::identity)
+		.addStaticFunction("zero", &Matrix::zero)
+		.addStaticFunction("createLookAt", static_cast<Matrix(*)(const Vector3&, const Vector3&, const Vector3&)>(&Matrix::createLookAt))
+		.addStaticFunction("createLookAt2", static_cast<Matrix(*)(float, float, float, float, float, float, float, float, float)>(&Matrix::createLookAt))
+		.addStaticFunction("createPerspective", &Matrix::createPerspective)
+		.addStaticFunction("createOrthographic", &Matrix::createOrthographic)
+		.addStaticFunction("createOrthographicOffCenter", &Matrix::createOrthographicOffCenter)
+		.addStaticFunction("createBillboard", static_cast<Matrix(*)(const Vector3&, const Vector3&, const Vector3&)>(&Matrix::createBillboard))
+		.addStaticFunction("createBillboard2", static_cast<Matrix(*)(const Vector3&, const Vector3&, const Vector3&, const Vector3&)>(&Matrix::createBillboard))
+		.addStaticFunction("createReflection", &Matrix::createReflection)
+		.addStaticFunction("createScale", static_cast<Matrix(*)(const Vector3&)>(&Matrix::createScale))
+		.addStaticFunction("createScale2", static_cast<Matrix(*)(float, float, float)>(&Matrix::createScale))
+		.addStaticFunction("createRotation", static_cast<Matrix(*)(const Quaternion&)>(&Matrix::createRotation))
+		.addStaticFunction("createRotationAxisAngle", static_cast<Matrix(*)(const Vector3&, float)>(&Matrix::createRotation))
+		.addStaticFunction("createRotationX", &Matrix::createRotationX)
+		.addStaticFunction("createRotationY", &Matrix::createRotationY)
+		.addStaticFunction("createRotationZ", &Matrix::createRotationZ)
+		.addStaticFunction("createTranslation", static_cast<Matrix(*)(const Vector3&)>(&Matrix::createTranslation))
+		.addStaticFunction("createTranslation2", static_cast<Matrix(*)(float, float, float)>(&Matrix::createTranslation))
+		.addFunction("decompose", &Matrix::decompose)
+		.addFunction("getDeterminant", &Matrix::getDeterminant)
+		.addFunction("getScale", &Matrix::getScale)
+		.addFunction("getRotation", &Matrix::getRotation)
+		.addFunction("getTranslation", &Matrix::getTranslation)
+		.addFunction("getUpVector", &Matrix::getUpVector)
+		.addFunction("getDownVector", &Matrix::getDownVector)
+		.addFunction("getLeftVector", &Matrix::getLeftVector)
+		.addFunction("getRightVector", &Matrix::getRightVector)
+		.addFunction("getForwardVector", &Matrix::getForwardVector)
+		.addFunction("getBackVector", &Matrix::getBackVector)
+		.addFunction("invert", &Matrix::invert)
+		.addFunction("transpose", &Matrix::transpose)
+		.addFunction("rotate", static_cast<void(Matrix::*)(const Quaternion&)>(&Matrix::rotate))
+		.addFunction("rotateAxisAngle", static_cast<void(Matrix::*)(const Vector3&, float)>(&Matrix::rotate))
+		.addFunction("rotateX", &Matrix::rotateX)
+		.addFunction("rotateY", &Matrix::rotateY)
+		.addFunction("rotateZ", &Matrix::rotateZ)
+		.addFunction("scale", static_cast<void(Matrix::*)(float)>(&Matrix::scale))
+		.addFunction("scale2", static_cast<void(Matrix::*)(float, float, float)>(&Matrix::scale))
+		.addFunction("scale3", static_cast<void(Matrix::*)(const Vector3&)>(&Matrix::scale))
+		.addFunction("translate", static_cast<void(Matrix::*)(float, float, float)>(&Matrix::translate))
+		.addFunction("translate2", static_cast<void(Matrix::*)(const Vector3&)>(&Matrix::translate))
+		.addFunction("setIdentity", &Matrix::setIdentity)
+		.addFunction("setZero", &Matrix::setZero)
+		.addFunction("transformPoint", &Matrix::transformPoint)
+		.addFunction("transformVector3Direction", static_cast<Vector3(Matrix::*)(const Vector3&)const>(&Matrix::transformDirection))
+		.addFunction("transformVector4Direction", static_cast<Vector4(Matrix::*)(const Vector4&)const>(&Matrix::transformDirection))
+		.addFunction("plusScalar", static_cast<Matrix(Matrix::*)(float)const>(&Matrix::operator+))
+		.addFunction("plusMatrix", static_cast<Matrix(Matrix::*)(const Matrix&)const>(&Matrix::operator+))
+		.addFunction("addScalar", static_cast<Matrix&(Matrix::*)(float)>(&Matrix::operator+=))
+		.addFunction("addMatrix", static_cast<Matrix&(Matrix::*)(const Matrix&)>(&Matrix::operator+=))
+		.addFunction("negative", static_cast<Matrix(Matrix::*)()const>(&Matrix::operator-))
+		.addFunction("minusScalar", static_cast<Matrix(Matrix::*)(float)const>(&Matrix::operator-))
+		.addFunction("minusMatrix", static_cast<Matrix(Matrix::*)(const Matrix&)const>(&Matrix::operator-))
+		.addFunction("substractScalar", static_cast<Matrix&(Matrix::*)(float)>(&Matrix::operator-=))
+		.addFunction("substractMatrix", static_cast<Matrix&(Matrix::*)(const Matrix&)>(&Matrix::operator-=))
+		.addFunction("productScalar", static_cast<Matrix(Matrix::*)(float)const>(&Matrix::operator*))
+		.addFunction("productMatrix", static_cast<Matrix(Matrix::*)(const Matrix&)const>(&Matrix::operator*))
+		.addFunction("multScalar", static_cast<Matrix&(Matrix::*)(float)>(&Matrix::operator*=))
+		.addFunction("multMatrix", static_cast<Matrix&(Matrix::*)(const Matrix&)>(&Matrix::operator*=))
+	.endClass();
+}
+
+
+void registerQuaternion(CppBindModule& module)
+{
+	module.beginClass<Quaternion>("Quaternion")
+	.endClass();
+}
+
+
 void registerDevice(CppBindModule& module)
 {
 	module.beginClass<Device>("Device")
@@ -193,6 +270,8 @@ void LuaScriptManager::registerApi()
 	registerVector2(module);
 	registerVector3(module);
 	registerVector4(module);
+	registerQuaternion(module);
+	registerMatrix(module);
 	registerDevice(module);
 	registerResourceManager(module);
 	registerNode(module);
