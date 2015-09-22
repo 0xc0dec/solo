@@ -29,11 +29,11 @@ namespace solo
 
 		virtual size_t getTypeId() override;
 
+		static void addComponent(Node *node, LuaIntf::LuaRef& component);
 		static void removeComponent(Node *node, const std::string& componentTypeId);
-		static std::function<void(Node*, LuaIntf::LuaRef&)> getAddComponentFunc(LuaIntf::LuaState& lua);
 
 	private:
-		static void addComponent(LuaIntf::LuaState& lua, Node *node, LuaIntf::LuaRef& factoryFunction);
+		
 
 		size_t typeId;
 		std::function<void()> initFunc;

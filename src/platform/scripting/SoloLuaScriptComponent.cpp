@@ -56,10 +56,8 @@ size_t LuaScriptComponent::getTypeId()
 }
 
 
-void LuaScriptComponent::addComponent(LuaState& lua, Node* node, LuaRef& factoryFunction)
+void LuaScriptComponent::addComponent(Node* node, LuaRef& component)
 {
-	auto factory = factoryFunction.toValue<std::function<LuaRef()>>();
-	auto component = factory();
 	auto typeIdString = component.get<std::string>("typeId");
 	auto typeId = getHash(typeIdString);
 	auto initFunc = component.get<std::function<void()>>("init");
@@ -75,10 +73,4 @@ void LuaScriptComponent::removeComponent(Node* node, const std::string& componen
 {
 	auto typeId = getHash(componentTypeId);
 	node->getScene()->removeComponent(node->getId(), typeId);
-}
-
-
-std::function<void(Node*, LuaIntf::LuaRef&)> LuaScriptComponent::getAddComponentFunc(LuaState& lua)
-{
-	return std::function<void(Node*, LuaRef&)>(std::bind(&LuaScriptComponent::addComponent, lua, std::placeholders::_1, std::placeholders::_2));
 }
