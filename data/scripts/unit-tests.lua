@@ -35,11 +35,13 @@ function create()
 		end,
 
 		terminate = function()
-		end,
+			print("terminate() called")
+		end
 	}
 end
 
 print(node:addComponent(create))
+node:removeComponent("TestComponent")
 
 
 print("Unit tests finished")

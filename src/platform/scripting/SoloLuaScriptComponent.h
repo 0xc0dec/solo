@@ -29,6 +29,7 @@ namespace solo
 
 		virtual size_t getTypeId() override;
 
+		static void removeComponent(Node *node, const std::string& componentTypeId);
 		static std::function<void(Node*, LuaIntf::LuaRef&)> getAddComponentFunc(LuaIntf::LuaState& lua);
 
 	private:
