@@ -181,6 +181,90 @@
     <ClInclude Include="..\src\SoloStubTexture2D.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloScriptManager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\scripting\SoloLuaScriptManager.h">
+      <Filter>src\platform\scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lapi.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lauxlib.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lcode.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lctype.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\ldebug.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\ldo.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lfunc.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lgc.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\llex.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\llimits.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lmem.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lobject.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lopcodes.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lparser.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lprefix.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lstate.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lstring.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\ltable.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\ltm.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lua.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lua.hpp">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\luaconf.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lualib.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lundump.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lvm.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\lua\5.3.1\lzio.h">
+      <Filter>src\external\lua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">
@@ -396,6 +480,111 @@
     <ClCompile Include="..\src\SoloStubDevice.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SoloScriptManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\scripting\SoloLuaScriptManager.cpp">
+      <Filter>src\platform\scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lapi.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lauxlib.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lbaselib.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lbitlib.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lcode.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lcorolib.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lctype.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\ldblib.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\ldebug.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\ldo.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\ldump.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lfunc.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lgc.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\linit.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\liolib.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\llex.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lmathlib.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lmem.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\loadlib.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lobject.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lopcodes.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\loslib.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lparser.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lstate.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lstring.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lstrlib.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\ltable.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\ltablib.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\ltm.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lundump.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lutf8lib.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lvm.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\lua\5.3.1\lzio.c">
+      <Filter>src\external\lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -418,6 +607,12 @@
     </Filter>
     <Filter Include="src\external\zlib">
       <UniqueIdentifier>{c75d28c3-b7bf-43af-91dd-132d3fea8685}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\platform\scripting">
+      <UniqueIdentifier>{5218c9b5-9e47-4e4c-b2fa-c92321e11046}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\external\lua">
+      <UniqueIdentifier>{19798521-f950-4831-817c-18b9923ffa6e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -6,6 +6,7 @@
 namespace solo
 {
 	class EngineCallback;
+	class ScriptManager;
 	class Scene;
 	class Device;
 	class FileSystem;
@@ -23,6 +24,7 @@ namespace solo
 
 		EngineMode getMode() const;
 
+		ScriptManager *getScriptManager() const;
 		Scene *getScene() const;
 		Device *getDevice() const;
 		FileSystem *getFileSystem() const;
@@ -35,6 +37,7 @@ namespace solo
 
 		EngineCreationArgs creationArgs;
 		EngineCallback *callback = nullptr;
+		shared<ScriptManager> scriptManager;
 		shared<Scene> scene;
 		shared<Device> device;
 		shared<FileSystem> fs;

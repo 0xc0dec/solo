@@ -4,6 +4,7 @@
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
 #include "SoloResourceManager.h"
+#include "SoloScriptManager.h"
 
 using namespace solo;
 
@@ -27,6 +28,11 @@ Engine::Engine(const EngineCreationArgs& args):
 	creationArgs{args},
 	callback{&emptyCallback}
 {
+	scriptManager = ScriptManagerFactory::create(this);
+	device = DeviceFactory::create(creationArgs);
+	fs = FileSystemFactory::create();
+	resourceManager = ResourceManagerFactory::create(this);
+	scene = SceneFactory::create(this);
 }
 
 
@@ -37,12 +43,12 @@ Engine::~Engine()
 
 void Engine::run()
 {
-	device = DeviceFactory::create(creationArgs);
-	fs = FileSystemFactory::create();
-	resourceManager = ResourceManagerFactory::create(this);
-	scene = SceneFactory::create(this);
-
 	callback->onEngineStarted();
+
+	if (!creationArgs.entryScriptCode.empty())
+		scriptManager->execute(creationArgs.entryScriptCode);
+	if (!creationArgs.entryScriptFilePath.empty())
+		scriptManager->executeFile(creationArgs.entryScriptFilePath);
 
 	while (true)
 	{
@@ -55,11 +61,6 @@ void Engine::run()
 	}
 
 	callback->onEngineStopped();
-
-	scene.reset();
-	resourceManager.reset();
-	fs.reset();
-	device.reset();
 }
 
 
@@ -72,6 +73,12 @@ void Engine::setCallback(EngineCallback* callback)
 EngineMode Engine::getMode() const
 {
 	return creationArgs.mode;
+}
+
+
+ScriptManager* Engine::getScriptManager() const
+{
+	return scriptManager.get();
 }
 
 

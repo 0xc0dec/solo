@@ -16,7 +16,9 @@ namespace solo
 		int bits;
 		int depth;
 		bool fullScreen;
-		const char *windowTitle;
+		std::string windowTitle;
+		std::string entryScriptCode;
+		std::string entryScriptFilePath;
 
 		EngineCreationArgs(
 			EngineMode mode,
@@ -25,14 +27,18 @@ namespace solo
 			int bits = 32,
 			int depth = 16,
 			bool fullScreen = false,
-			const char *windowTitle = "Test"):
-			mode {mode},
-			canvasWidth {canvasWidth},
-			canvasHeight {canvasHeight},
-			bits {bits},
-			depth {depth},
-			fullScreen {fullScreen},
-			windowTitle {windowTitle}
+			const std::string& windowTitle = "",
+			const std::string& entryScriptCode = "",
+			const std::string& entryScriptFilePath = ""):
+			mode(mode),
+			canvasWidth(canvasWidth),
+			canvasHeight(canvasHeight),
+			bits(bits),
+			depth(depth),
+			fullScreen(fullScreen),
+			windowTitle(windowTitle),
+			entryScriptCode(entryScriptCode),
+			entryScriptFilePath(entryScriptFilePath)
 		{
 		}
 	};

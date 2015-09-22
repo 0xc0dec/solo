@@ -91,7 +91,7 @@ WindowWithContextCreationResult tryCreateWindowWithContext(bool hidden, int ctxM
 	auto flags = static_cast<int>(SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
 	if (hidden)
 		flags |= SDL_WINDOW_HIDDEN;
-	auto window = SDL_CreateWindow(creationArgs.windowTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+	auto window = SDL_CreateWindow(creationArgs.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		creationArgs.canvasWidth, creationArgs.canvasHeight, flags);
 
 	if (window)

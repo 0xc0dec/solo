@@ -84,17 +84,28 @@ protected:
 
 void runEngine(bool integrationMode)
 {
-	auto engine = Engine::create(EngineCreationArgs{ integrationMode ? EngineMode::OpenGL : EngineMode::Stub, 640, 480 });
+	EngineCreationArgs args
+	{
+		integrationMode ? EngineMode::OpenGL : EngineMode::Stub,
+		640,
+		480
+	};
+	args.entryScriptFilePath = integrationMode
+		? "../data/scripts/integration-tests.lua"
+		: "../data/scripts/unit-tests.lua";
+
 	try
 	{
 		if (integrationMode)
 		{
+			auto engine = Engine::create(args);
 			IntegrationTestAndDemoRunner runner(engine.get());
 			engine->setCallback(&runner);
 			engine->run();
 		}
 		else
 		{
+			auto engine = Engine::create(args);
 			UnitTestRunner runner(engine.get());
 			engine->setCallback(&runner);
 			engine->run();
