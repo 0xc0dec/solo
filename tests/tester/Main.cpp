@@ -121,6 +121,6 @@ void runEngine(bool integrationMode)
 int main()
 {
 	runEngine(false);
-	runEngine(true);
+//	runEngine(true);
 	return 0;
 }
