@@ -265,6 +265,9 @@
     <ClInclude Include="..\external\lua\5.3.1\lzio.h">
       <Filter>src\external\lua</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\platform\scripting\SoloLuaScriptComponent.h">
+      <Filter>src\platform\scripting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">
@@ -584,6 +587,9 @@
     </ClCompile>
     <ClCompile Include="..\external\lua\5.3.1\lzio.c">
       <Filter>src\external\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\scripting\SoloLuaScriptComponent.cpp">
+      <Filter>src\platform\scripting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

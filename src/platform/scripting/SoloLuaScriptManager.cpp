@@ -1,8 +1,12 @@
 #include <vector>
 #include <map>
 #include "SoloLuaScriptManager.h"
+#include "SoloLuaScriptComponent.h"
 #include "SoloEngine.h"
 #include "SoloDevice.h"
+#include "SoloScene.h"
+#include "SoloResourceManager.h"
+#include "SoloNode.h"
 
 namespace LuaIntf
 {
@@ -31,9 +35,23 @@ void LuaScriptManager::registerApi()
 		.beginClass<Device>("Device")
 			.addFunction("getWindowTitle", &Device::getWindowTitle)
 			.addFunction("setWindowTitle", &Device::setWindowTitle)
+			.addFunction("getLifetime", &Device::getLifetime)
+		.endClass()
+		.beginClass<ResourceManager>("ResourceManager")
+			// TODO
+		.endClass()
+		.beginClass<Node>("Node")
+			.addFunction("getScene", &Node::getScene)
+			.addFunction("getId", &Node::getId)
+			.addFunction("addComponent", LuaScriptComponent::getAddComponentFunc(lua))
+			.addFunction("removeAllComponents", &Node::removeAllComponents)
+		.endClass()
+		.beginClass<Scene>("Scene")
+			.addFunction("createNode", &Scene::createNode)
 		.endClass()
 		.beginClass<Engine>("Engine")
 			.addFunction("getDevice", &Engine::getDevice)
+			.addFunction("getScene", &Engine::getScene)
 		.endClass()
 		.addVariable("engine", engine, false)
 	.endModule();
