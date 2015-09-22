@@ -7,7 +7,9 @@
 #include "SoloScene.h"
 #include "SoloResourceManager.h"
 #include "SoloNode.h"
+#include "SoloVector2.h"
 #include "SoloVector3.h"
+#include "SoloVector4.h"
 
 namespace LuaIntf
 {
@@ -102,6 +104,41 @@ void registerVector2(CppBindModule& module)
 	.endClass();
 }
 
+void registerVector4(CppBindModule& module)
+{
+	module.beginClass<Vector4>("Vector4")
+		.addConstructor(LUA_ARGS(float, float, float, float))
+		.addStaticFunction("zero", &Vector4::zero)
+		.addStaticFunction("unit", &Vector4::unit)
+		.addStaticFunction("unitX", &Vector4::unitX)
+		.addStaticFunction("unitY", &Vector4::unitY)
+		.addStaticFunction("unitZ", &Vector4::unitZ)
+		.addStaticFunction("unitW", &Vector4::unitW)
+		.addStaticFunction("angle", &Vector4::angle)
+		.addStaticFunction("dot", static_cast<float(*)(const Vector4&, const Vector4&)>(&Vector4::dot))
+		.addFunction("distance", &Vector4::distance)
+		.addFunction("distanceSquared", &Vector4::distanceSquared)
+		.addFunction("dot", static_cast<float(Vector4::*)(const Vector4&)const>(&Vector4::dot))
+		.addFunction("clamp", &Vector4::clamp)
+		.addFunction("length", &Vector4::length)
+		.addFunction("lengthSquared", &Vector4::lengthSquared)
+		.addFunction("isUnit", &Vector4::isUnit)
+		.addFunction("isZero", &Vector4::isZero)
+		.addFunction("normalize", &Vector4::normalize)
+		.addFunction("normalized", &Vector4::normalized)
+		.addFunction("set", static_cast<void(Vector4::*)(float, float, float, float)>(&Vector4::set))
+		.addFunction("assign", static_cast<void(Vector4::*)(const Vector4&)>(&Vector4::set))
+		.addVariable("x", &Vector4::x, true)
+		.addVariable("y", &Vector4::y, true)
+		.addVariable("z", &Vector4::z, true)
+		.addVariable("w", &Vector4::w, true)
+		.addFunction("plusScalar", static_cast<Vector4(Vector4::*)(float)const>(&Vector4::operator+))
+		.addFunction("plusVector4", static_cast<Vector4(Vector4::*)(const Vector4&)const>(&Vector4::operator+))
+		.addFunction("addScalar", static_cast<Vector4&(Vector4::*)(float)>(&Vector4::operator+=))
+		.addFunction("addVector4", static_cast<Vector4&(Vector4::*)(const Vector4&)>(&Vector4::operator+=))
+	.endClass();
+}
+
 
 void registerDevice(CppBindModule& module)
 {
@@ -155,6 +192,7 @@ void LuaScriptManager::registerApi()
 	auto module = LuaBinding(lua).beginModule("solo");
 	registerVector2(module);
 	registerVector3(module);
+	registerVector4(module);
 	registerDevice(module);
 	registerResourceManager(module);
 	registerNode(module);
