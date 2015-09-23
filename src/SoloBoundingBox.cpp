@@ -9,15 +9,10 @@
 using namespace solo;
 
 
-BoundingBox::BoundingBox(const Vector3& min, const Vector3& max)
+BoundingBox::BoundingBox(const Vector3& min, const Vector3& max):
+	min(min),
+	max(max)
 {
-	set(min, max);
-}
-
-
-BoundingBox::BoundingBox(float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
-{
-	set(minX, minY, minZ, maxX, maxY, maxZ);
 }
 
 
@@ -32,23 +27,23 @@ void BoundingBox::getCorners(Vector3* dst) const
 {
 	// Near face, specified counter-clockwise looking towards the origin from the positive z-axis.
 	// Left-top-front.
-	dst[0].set(min.x, max.y, max.z);
+	dst[0] = Vector3(min.x, max.y, max.z);
 	// Left-bottom-front.
-	dst[1].set(min.x, min.y, max.z);
+	dst[1] = Vector3(min.x, min.y, max.z);
 	// Right-bottom-front.
-	dst[2].set(max.x, min.y, max.z);
+	dst[2] = Vector3(max.x, min.y, max.z);
 	// Right-top-front.
-	dst[3].set(max.x, max.y, max.z);
+	dst[3] = Vector3(max.x, max.y, max.z);
 
 	// Far face, specified counter-clockwise looking towards the origin from the negative z-axis.
 	// Right-top-back.
-	dst[4].set(max.x, max.y, min.z);
+	dst[4] = Vector3(max.x, max.y, min.z);
 	// Right-bottom-back.
-	dst[5].set(max.x, min.y, min.z);
+	dst[5] = Vector3(max.x, min.y, min.z);
 	// Left-bottom-back.
-	dst[6].set(min.x, min.y, min.z);
+	dst[6] = Vector3(min.x, min.y, min.z);
 	// Left-top-back.
-	dst[7].set(min.x, max.y, min.z);
+	dst[7] = Vector3(min.x, max.y, min.z);
 }
 
 
@@ -226,20 +221,6 @@ void BoundingBox::merge(const BoundingSphere& sphere)
 }
 
 
-void BoundingBox::set(const Vector3& min, const Vector3& max)
-{
-	this->min = min;
-	this->max = max;
-}
-
-
-void BoundingBox::set(float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
-{
-	min.set(minX, minY, minZ);
-	max.set(maxX, maxY, maxZ);
-}
-
-
 static void updateMinMax(Vector3* point, Vector3* min, Vector3* max)
 {
 	// Leftmost point.
@@ -265,30 +246,6 @@ static void updateMinMax(Vector3* point, Vector3* min, Vector3* max)
 	// Nearest point.
 	if (point->z > max->z)
 		max->z = point->z;
-}
-
-
-void BoundingBox::set(const BoundingBox& box)
-{
-	min = box.min;
-	max = box.max;
-}
-
-
-void BoundingBox::set(const BoundingSphere& sphere)
-{
-	const auto& center = sphere.center;
-	auto radius = sphere.radius;
-
-	// Calculate the minimum point for the box.
-	min.x = center.x - radius;
-	min.y = center.y - radius;
-	min.z = center.z - radius;
-
-	// Calculate the maximum point for the box.
-	max.x = center.x + radius;
-	max.y = center.y + radius;
-	max.z = center.z + radius;
 }
 
 

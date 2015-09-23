@@ -42,9 +42,6 @@ namespace solo
 
 		bool isParallel(const Plane& plane) const;
 
-		void set(const Vector3& normal, float distance);
-		void set(const Plane& plane);
-
 		void transform(const Matrix& matrix);
 
 		inline Plane& operator*=(const Matrix& matrix);

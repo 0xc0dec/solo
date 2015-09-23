@@ -10,18 +10,6 @@ Vector2::Vector2(float x, float y):
 }
 
 
-Vector2::Vector2(const float* array)
-{
-	set(array);
-}
-
-
-Vector2::Vector2(const Vector2& p1, const Vector2& p2)
-{
-	*this = p2 - p1;
-}
-
-
 const Vector2& Vector2::zero()
 {
 	static Vector2 value(0.0f, 0.0f);
@@ -148,25 +136,4 @@ void Vector2::normalize()
 	n = 1.0f / n;
 	x *= n;
 	y *= n;
-}
-
-
-void Vector2::set(float x, float y)
-{
-	this->x = x;
-	this->y = y;
-}
-
-
-void Vector2::set(const float* array)
-{
-	x = array[0];
-	y = array[1];
-}
-
-
-void Vector2::set(const Vector2& v)
-{
-	this->x = v.x;
-	this->y = v.y;
 }

@@ -60,7 +60,7 @@ void Camera::onTransformChanged(const Transform* transform)
 
 void Camera::setViewport(float left, float top, float width, float height)
 {
-	viewport.set(left, top, width, height);
+	viewport = Vector4(left, top, width, height);
 	viewportSet = true;
 }
 
@@ -226,7 +226,7 @@ const Matrix& Camera::getInverseViewProjectionMatrix()
 
 void Camera::setClearColor(float r, float g, float b, float a)
 {
-	clearColor.set(r, g, b, a);
+	clearColor = Vector4(r, g, b, a);
 }
 
 

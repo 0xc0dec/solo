@@ -35,7 +35,9 @@ void Ray::setOrigin(const Vector3& origin)
 
 void Ray::setOrigin(float x, float y, float z)
 {
-	origin.set(x, y, z);
+	origin.x = x;
+	origin.y = y;
+	origin.z = z;
 }
 
 
@@ -54,7 +56,9 @@ void Ray::setDirection(const Vector3& direction)
 
 void Ray::setDirection(float x, float y, float z)
 {
-	direction.set(x, y, z);
+	direction.x = x;
+	direction.y = y;
+	direction.z = z;
 	normalize();
 }
 

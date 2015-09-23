@@ -9,15 +9,17 @@
 using namespace solo;
 
 
-Plane::Plane(const Vector3& normal, float distance)
+Plane::Plane(const Vector3& normal, float distance):
+	normal(normal),
+	distance(distance)
 {
-	set(normal, distance);
 }
 
 
-Plane::Plane(float normalX, float normalY, float normalZ, float distance)
+Plane::Plane(float normalX, float normalY, float normalZ, float distance):
+	normal(normalX, normalY, normalZ),
+	distance(distance)
 {
-	set(Vector3(normalX, normalY, normalZ), distance);
 }
 
 
@@ -36,7 +38,9 @@ void Plane::setNormal(const Vector3& normal)
 
 void Plane::setNormal(float x, float y, float z)
 {
-	normal.set(x, y, z);
+	normal.x = x;
+	normal.y = y;
+	normal.z = z;
 	normalize();
 }
 
@@ -205,21 +209,6 @@ bool Plane::isParallel(const Plane& plane) const
 	return (normal.y * plane.normal.z) - (normal.z * plane.normal.y) == 0.0f &&
 		(normal.z * plane.normal.x) - (normal.x * plane.normal.z) == 0.0f &&
 		(normal.x * plane.normal.y) - (normal.y * plane.normal.x) == 0.0f;
-}
-
-
-void Plane::set(const Vector3& normal, float distance)
-{
-	this->normal = normal;
-	this->distance = distance;
-	normalize();
-}
-
-
-void Plane::set(const Plane& plane)
-{
-	normal = plane.normal;
-	distance = plane.distance;
 }
 
 

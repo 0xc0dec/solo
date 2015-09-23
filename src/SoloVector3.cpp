@@ -10,18 +10,6 @@ Vector3::Vector3(float x, float y, float z):
 }
 
 
-Vector3::Vector3(const float* array)
-{
-	set(array);
-}
-
-
-Vector3::Vector3(const Vector3& p1, const Vector3& p2)
-{
-	*this = p2 - p1;
-}
-
-
 Vector3 Vector3::zero()
 {
 	static Vector3 value(0.0f, 0.0f, 0.0f);

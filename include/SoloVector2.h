@@ -9,8 +9,6 @@ namespace solo
 
 		Vector2() {}
 		Vector2(float x, float y);
-		explicit Vector2(const float* array);
-		Vector2(const Vector2& p1, const Vector2& p2);
 
 		static const Vector2& zero();
 		static const Vector2& unit();
@@ -36,10 +34,6 @@ namespace solo
 
 		Vector2 normalized() const;
 		void normalize();
-
-		void set(float x, float y);
-		void set(const float* array);
-		void set(const Vector2& v);
 
 		inline Vector2 operator+(float scalar) const;
 		inline Vector2 operator+(const Vector2& v) const;

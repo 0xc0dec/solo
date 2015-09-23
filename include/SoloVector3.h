@@ -10,8 +10,6 @@ namespace solo
 
 		Vector3() {}
 		Vector3(float x, float y, float z);
-		explicit Vector3(const float* array);
-		Vector3(const Vector3& p1, const Vector3& p2);
 
 		static Vector3 zero();
 		static Vector3 unit();
@@ -41,10 +39,6 @@ namespace solo
 		Vector3 normalized() const;
 		void normalize();
 		
-		inline void set(float x, float y, float z);
-		inline void set(const float* array);
-		inline void set(const Vector3& v);
-
 		inline Vector3 operator+(float scalar) const;
 		inline Vector3 operator+(const Vector3& v) const;
 		inline Vector3& operator+=(const Vector3& v);
@@ -68,27 +62,6 @@ namespace solo
 		inline bool operator!=(const Vector3& v) const;
 	};
 
-
-	inline void Vector3::set(float x, float y, float z)
-	{
-		this->x = x;
-		this->y = y;
-		this->z = z;
-	}
-
-	inline void Vector3::set(const float* array)
-	{
-		x = array[0];
-		y = array[1];
-		z = array[2];
-	}
-
-	inline void Vector3::set(const Vector3& v)
-	{
-		this->x = v.x;
-		this->y = v.y;
-		this->z = v.z;
-	}
 
 	inline Vector3 Vector3::operator+(const Vector3& v) const
 	{

@@ -11,8 +11,6 @@ namespace solo
 
 		Vector4() {}
 		Vector4(float x, float y, float z, float w);
-		explicit Vector4(const float* array);
-		Vector4(const Vector4& p1, const Vector4& p2);
 
 		static const Vector4& zero();
 		static const Vector4& unit();
@@ -40,10 +38,6 @@ namespace solo
 
 		Vector4 normalized() const;
 		void normalize();
-
-		void set(float x, float y, float z, float w);
-		void set(const float* array);
-		void set(const Vector4& v);
 
 		inline Vector4 operator+(float scalar) const;
 		inline Vector4 operator+(const Vector4& v) const;

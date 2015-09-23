@@ -10,18 +10,6 @@ Vector4::Vector4(float x, float y, float z, float w):
 }
 
 
-Vector4::Vector4(const float* src)
-{
-	set(src);
-}
-
-
-Vector4::Vector4(const Vector4& p1, const Vector4& p2)
-{
-	*this = p2 - p1;
-}
-
-
 const Vector4& Vector4::zero()
 {
 	static Vector4 value(0.0f, 0.0f, 0.0f, 0.0f);
@@ -185,31 +173,4 @@ void Vector4::normalize()
 	y *= n;
 	z *= n;
 	w *= n;
-}
-
-
-void Vector4::set(float x, float y, float z, float w)
-{
-	this->x = x;
-	this->y = y;
-	this->z = z;
-	this->w = w;
-}
-
-
-void Vector4::set(const float* array)
-{
-	x = array[0];
-	y = array[1];
-	z = array[2];
-	w = array[3];
-}
-
-
-void Vector4::set(const Vector4& v)
-{
-	this->x = v.x;
-	this->y = v.y;
-	this->z = v.z;
-	this->w = v.w;
 }

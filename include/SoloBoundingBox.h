@@ -38,11 +38,6 @@ namespace solo
 		void merge(const BoundingSphere& sphere);
 		void merge(const BoundingBox& box);
 
-		void set(const Vector3& min, const Vector3& max);
-		void set(float minX, float minY, float minZ, float maxX, float maxY, float maxZ);
-		void set(const BoundingBox& box);
-		void set(const BoundingSphere& sphere);
-		
 		void transform(const Matrix& matrix);
 
 		inline BoundingBox& operator*=(const Matrix& matrix);

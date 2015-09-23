@@ -164,7 +164,7 @@ Matrix Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cam
 Matrix Matrix::createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
 	const Vector3& cameraUpVector, const Vector3* cameraForwardVector)
 {
-	Vector3 delta(objectPosition, cameraPosition);
+	auto delta = cameraPosition - objectPosition;
 	auto isSufficientDelta = delta.lengthSquared() > MATH_EPSILON;
 
 	Matrix result;
