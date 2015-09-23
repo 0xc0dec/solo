@@ -12,37 +12,37 @@ Frustum::Frustum()
 }
 
 
-const Plane& Frustum::getNear() const
+const Plane& Frustum::getNearPlane() const
 {
 	return near;
 }
 
 
-const Plane& Frustum::getFar() const
+const Plane& Frustum::getFarPlane() const
 {
 	return far;
 }
 
 
-const Plane& Frustum::getLeft() const
+const Plane& Frustum::getLeftPlane() const
 {
 	return left;
 }
 
 
-const Plane& Frustum::getRight() const
+const Plane& Frustum::getRightPlane() const
 {
 	return right;
 }
 
 
-const Plane& Frustum::getBottom() const
+const Plane& Frustum::getBottomPlane() const
 {
 	return bottom;
 }
 
 
-const Plane& Frustum::getTop() const
+const Plane& Frustum::getTopPlane() const
 {
 	return top;
 }
@@ -92,7 +92,7 @@ std::vector<Vector3> Frustum::getFarCorners() const
 }
 
 
-bool Frustum::intersects(const Vector3& point) const
+bool Frustum::intersectsPoint(const Vector3& point) const
 {
 	if (near.getDistance(point) <= 0)
 		return false;
@@ -111,25 +111,25 @@ bool Frustum::intersects(const Vector3& point) const
 }
 
 
-bool Frustum::intersects(const BoundingSphere& sphere) const
+bool Frustum::intersectsBoundingSphere(const BoundingSphere& sphere) const
 {
 	return sphere.intersects(*this);
 }
 
 
-bool Frustum::intersects(const BoundingBox& box) const
+bool Frustum::intersectsBoundingBox(const BoundingBox& box) const
 {
 	return box.intersects(*this);
 }
 
 
-PlaneIntersection Frustum::getIntersection(const Plane& plane) const
+PlaneIntersection Frustum::getPlaneIntersection(const Plane& plane) const
 {
 	return plane.getIntersection(*this);
 }
 
 
-float Frustum::intersects(const Ray& ray) const
+float Frustum::intersectsRay(const Ray& ray) const
 {
 	return ray.getIntersection(*this);
 }

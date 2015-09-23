@@ -16,12 +16,12 @@ namespace solo
 	public:
 		Frustum();
 
-		const Plane& getNear() const;
-		const Plane& getFar() const;
-		const Plane& getLeft() const;
-		const Plane& getRight() const;
-		const Plane& getBottom() const;
-		const Plane& getTop() const;
+		const Plane& getNearPlane() const;
+		const Plane& getFarPlane() const;
+		const Plane& getLeftPlane() const;
+		const Plane& getRightPlane() const;
+		const Plane& getTopPlane() const;
+		const Plane& getBottomPlane() const;
 
 		Matrix getMatrix() const;
 		void setMatrix(const Matrix& m);
@@ -30,11 +30,11 @@ namespace solo
 		std::vector<Vector3> getNearCorners() const;
 		std::vector<Vector3> getFarCorners() const;
 
-		bool intersects(const Vector3& point) const;
-		bool intersects(const BoundingSphere& sphere) const;
-		bool intersects(const BoundingBox& box) const;
-		float intersects(const Ray& ray) const;
-		PlaneIntersection getIntersection(const Plane& plane) const;
+		bool intersectsPoint(const Vector3& point) const;
+		bool intersectsBoundingSphere(const BoundingSphere& sphere) const;
+		bool intersectsBoundingBox(const BoundingBox& box) const;
+		float intersectsRay(const Ray& ray) const;
+		PlaneIntersection getPlaneIntersection(const Plane& plane) const;
 
 	private:
 		void updatePlanes();

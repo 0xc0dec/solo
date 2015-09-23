@@ -77,27 +77,27 @@ float Ray::getIntersection(const BoundingBox &box) const
 
 float Ray::getIntersection(const Frustum &frustum) const
 {
-	auto n = frustum.getNear();
+	auto n = frustum.getNearPlane();
 	auto nD = getIntersection(n);
 	auto nOD = n.getDistance(origin);
 
-	auto f = frustum.getFar();
+	auto f = frustum.getFarPlane();
 	auto fD = getIntersection(f);
 	auto fOD = f.getDistance(origin);
 
-	auto l = frustum.getLeft();
+	auto l = frustum.getLeftPlane();
 	auto lD = getIntersection(l);
 	auto lOD = l.getDistance(origin);
 
-	auto r = frustum.getRight();
+	auto r = frustum.getRightPlane();
 	auto rD = getIntersection(r);
 	auto rOD = r.getDistance(origin);
 
-	auto b = frustum.getBottom();
+	auto b = frustum.getBottomPlane();
 	auto bD = getIntersection(b);
 	auto bOD = b.getDistance(origin);
 
-	auto t = frustum.getTop();
+	auto t = frustum.getTopPlane();
 	auto tD = getIntersection(t);
 	auto tOD = t.getDistance(origin);
 

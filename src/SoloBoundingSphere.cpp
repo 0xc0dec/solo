@@ -73,12 +73,12 @@ bool BoundingSphere::intersects(const BoundingBox& box) const
 bool BoundingSphere::intersects(const Frustum& frustum) const
 {
 	// The sphere must either intersect or be in the positive half-space of all six planes of the frustum.
-	return getPlaneIntersection(frustum.getNear()) != PlaneIntersection::Back &&
-		   getPlaneIntersection(frustum.getFar()) != PlaneIntersection::Back &&
-		   getPlaneIntersection(frustum.getLeft()) != PlaneIntersection::Back &&
-		   getPlaneIntersection(frustum.getRight()) != PlaneIntersection::Back &&
-		   getPlaneIntersection(frustum.getBottom()) != PlaneIntersection::Back &&
-		   getPlaneIntersection(frustum.getTop()) != PlaneIntersection::Back;
+	return getPlaneIntersection(frustum.getNearPlane()) != PlaneIntersection::Back &&
+		   getPlaneIntersection(frustum.getFarPlane()) != PlaneIntersection::Back &&
+		   getPlaneIntersection(frustum.getLeftPlane()) != PlaneIntersection::Back &&
+		   getPlaneIntersection(frustum.getRightPlane()) != PlaneIntersection::Back &&
+		   getPlaneIntersection(frustum.getBottomPlane()) != PlaneIntersection::Back &&
+		   getPlaneIntersection(frustum.getTopPlane()) != PlaneIntersection::Back;
 }
 
 

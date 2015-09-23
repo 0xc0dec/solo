@@ -260,6 +260,22 @@ void registerFrustum(CppBindModule& module)
 {
 	module.beginClass<Frustum>("Frustum")
 		.addConstructor(LUA_ARGS())
+		.addFunction("getNearPlane", &Frustum::getNearPlane)
+		.addFunction("getFarPlane", &Frustum::getFarPlane)
+		.addFunction("getLeftPlane", &Frustum::getLeftPlane)
+		.addFunction("getRightPlane", &Frustum::getRightPlane)
+		.addFunction("getTopPlane", &Frustum::getTopPlane)
+		.addFunction("getBottomPlane", &Frustum::getBottomPlane)
+		.addFunction("getMatrix", &Frustum::getMatrix)
+		.addFunction("setMatrix", &Frustum::setMatrix)
+		.addFunction("getCorners", &Frustum::getCorners)
+		.addFunction("getNearCorners", &Frustum::getNearCorners)
+		.addFunction("getFarCorners", &Frustum::getFarCorners)
+		.addFunction("intersectsPoint", &Frustum::intersectsPoint)
+		.addFunction("intersectsBoundingBox", &Frustum::intersectsBoundingBox)
+		.addFunction("intersectsBoundingSphere", &Frustum::intersectsBoundingSphere)
+		.addFunction("intersectsRay", &Frustum::intersectsRay)
+		.addFunction("getPlaneIntersection", &Frustum::getPlaneIntersection)
 	.endClass();
 }
 
