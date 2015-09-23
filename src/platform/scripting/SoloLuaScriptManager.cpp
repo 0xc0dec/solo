@@ -223,6 +223,9 @@ void registerPlane(CppBindModule& module)
 {
 	module.beginClass<Plane>("Plane")
 		.addConstructor(LUA_ARGS())
+		.addFunction("getDistance", static_cast<float(Plane::*)()const>(&Plane::getDistance))
+		.addFunction("getDistanceToPoint", static_cast<float(Plane::*)(const Vector3&)const>(&Plane::getDistance))
+		// TODO
 	.endClass();
 }
 
