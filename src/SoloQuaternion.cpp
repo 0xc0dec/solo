@@ -120,15 +120,6 @@ Quaternion Quaternion::normalized() const
 }
 
 
-void Quaternion::set(float x, float y, float z, float w)
-{
-	this->x = x;
-	this->y = y;
-	this->z = z;
-	this->w = w;
-}
-
-
 float Quaternion::toAxisAngle(Vector3& axis) const
 {
 	Quaternion q(x, y, z, w);

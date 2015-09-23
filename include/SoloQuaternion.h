@@ -30,8 +30,6 @@ namespace solo
 		Quaternion normalized() const;
 		void normalize();
 
-		void set(float x, float y, float z, float w);
-
 		float toAxisAngle(Vector3& e) const;
 		
 		static Quaternion lerp(const Quaternion& q1, const Quaternion& q2, float t);
