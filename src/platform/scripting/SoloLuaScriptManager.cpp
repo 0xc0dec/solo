@@ -243,10 +243,17 @@ void registerQuaternion(CppBindModule& module)
 void registerPlane(CppBindModule& module)
 {
 	module.beginClass<Plane>("Plane")
-		.addConstructor(LUA_ARGS())
+		.addConstructor(LUA_ARGS(const Vector3&, float))
+		.addStaticFunction("intersection", &Plane::intersection)
+		.addFunction("getNormal", &Plane::getNormal)
+		.addFunction("setNormal", static_cast<void(Plane::*)(const Vector3&)>(&Plane::setNormal))
 		.addFunction("getDistance", static_cast<float(Plane::*)()const>(&Plane::getDistance))
+		.addFunction("setDistance", &Plane::setDistance)
 		.addFunction("getDistanceToPoint", static_cast<float(Plane::*)(const Vector3&)const>(&Plane::getDistance))
-		// TODO
+		.addFunction("isParallel", &Plane::isParallel)
+		.addFunction("set", static_cast<void(Plane::*)(const Vector3&, float)>(&Plane::set))
+		.addFunction("assign", static_cast<void(Plane::*)(const Plane&)>(&Plane::set))
+		.addFunction("transform", &Plane::transform)
 	.endClass();
 }
 
