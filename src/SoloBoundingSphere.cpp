@@ -7,9 +7,10 @@
 using namespace solo;
 
 
-BoundingSphere::BoundingSphere(const Vector3& center, float radius)
+BoundingSphere::BoundingSphere(const Vector3& center, float radius):
+	center(center),
+	radius(radius)
 {
-	set(center, radius);
 }
 
 
@@ -72,16 +73,16 @@ bool BoundingSphere::intersects(const BoundingBox& box) const
 bool BoundingSphere::intersects(const Frustum& frustum) const
 {
 	// The sphere must either intersect or be in the positive half-space of all six planes of the frustum.
-	return getIntersection(frustum.getNear()) != PlaneIntersection::Back &&
-		   getIntersection(frustum.getFar()) != PlaneIntersection::Back &&
-		   getIntersection(frustum.getLeft()) != PlaneIntersection::Back &&
-		   getIntersection(frustum.getRight()) != PlaneIntersection::Back &&
-		   getIntersection(frustum.getBottom()) != PlaneIntersection::Back &&
-		   getIntersection(frustum.getTop()) != PlaneIntersection::Back;
+	return getPlaneIntersection(frustum.getNear()) != PlaneIntersection::Back &&
+		   getPlaneIntersection(frustum.getFar()) != PlaneIntersection::Back &&
+		   getPlaneIntersection(frustum.getLeft()) != PlaneIntersection::Back &&
+		   getPlaneIntersection(frustum.getRight()) != PlaneIntersection::Back &&
+		   getPlaneIntersection(frustum.getBottom()) != PlaneIntersection::Back &&
+		   getPlaneIntersection(frustum.getTop()) != PlaneIntersection::Back;
 }
 
 
-PlaneIntersection BoundingSphere::getIntersection(const Plane &plane) const
+PlaneIntersection BoundingSphere::getPlaneIntersection(const Plane &plane) const
 {
 	auto distance = plane.getDistance(center);
 	if (fabsf(distance) <= radius)
@@ -90,7 +91,7 @@ PlaneIntersection BoundingSphere::getIntersection(const Plane &plane) const
 }
 
 
-float BoundingSphere::intersects(const Ray& ray) const
+float BoundingSphere::getRayIntersection(const Ray& ray) const
 {
 	const auto& origin = ray.getOrigin();
 	const auto& direction = ray.getDirection();
@@ -224,29 +225,6 @@ void BoundingSphere::merge(const BoundingBox& box)
 	center.y = v1y;
 	center.z = v1z;
 	radius = r;
-}
-
-
-void BoundingSphere::set(const Vector3& center, float radius)
-{
-	this->center = center;
-	this->radius = radius;
-}
-
-
-void BoundingSphere::set(const BoundingSphere& sphere)
-{
-	center = sphere.center;
-	radius = sphere.radius;
-}
-
-
-void BoundingSphere::set(const BoundingBox& box)
-{
-	center.x = (box.min.x + box.max.x) * 0.5f;
-	center.y = (box.min.y + box.max.y) * 0.5f;
-	center.z = (box.min.z + box.max.z) * 0.5f;
-	radius = center.distance(box.max);
 }
 
 

@@ -61,7 +61,7 @@ void Ray::setDirection(float x, float y, float z)
 
 float Ray::getIntersection(const BoundingSphere &sphere) const
 {
-	return sphere.intersects(*this);
+	return sphere.getRayIntersection(*this);
 }
 
 

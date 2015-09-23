@@ -14,7 +14,6 @@ namespace solo
 	{
 	public:
 		Frustum();
-		explicit Frustum(const Matrix& matrix);
 
 		const Plane& getNear() const;
 		const Plane& getFar() const;

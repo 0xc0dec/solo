@@ -12,12 +12,6 @@ Frustum::Frustum()
 }
 
 
-Frustum::Frustum(const Matrix& matrix)
-{
-	set(matrix);
-}
-
-
 const Plane& Frustum::getNear() const
 {
 	return near;

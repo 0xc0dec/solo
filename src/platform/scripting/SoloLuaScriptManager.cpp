@@ -13,6 +13,10 @@
 #include "SoloQuaternion.h"
 #include "SoloMatrix.h"
 #include "SoloPlane.h"
+#include "SoloFrustum.h"
+#include "SoloBoundingBox.h"
+#include "SoloBoundingSphere.h"
+#include "SoloRay.h"
 
 namespace LuaIntf
 {
@@ -258,6 +262,51 @@ void registerPlane(CppBindModule& module)
 }
 
 
+void registerFrustum(CppBindModule& module)
+{
+	module.beginClass<Frustum>("Frustum")
+		.addConstructor(LUA_ARGS())
+	.endClass();
+}
+
+
+void registerBoundingBox(CppBindModule& module)
+{
+	module.beginClass<BoundingBox>("BoundingBox")
+		.addConstructor(LUA_ARGS(const Vector3&, const Vector3&))
+		// TODO
+	.endClass();
+}
+
+
+void registerRay(CppBindModule& module)
+{
+	module.beginClass<Ray>("Ray")
+		.addConstructor(LUA_ARGS(const Vector3&, const Vector3&))
+	.endClass();
+}
+
+
+void registerBoundingSphere(CppBindModule& module)
+{
+	module.beginClass<BoundingSphere>("BoundingSphere")
+		.addConstructor(LUA_ARGS(const Vector3&, float))
+		.addStaticFunction("empty", &BoundingSphere::empty)
+		.addFunction("intersectsBoundingSphere", static_cast<bool(BoundingSphere::*)(const BoundingSphere&)const>(&BoundingSphere::intersects))
+		.addFunction("intersectsBoundingBox", static_cast<bool(BoundingSphere::*)(const BoundingBox&)const>(&BoundingSphere::intersects))
+		.addFunction("intersectsFrustum", static_cast<bool(BoundingSphere::*)(const Frustum&)const>(&BoundingSphere::intersects))
+		.addFunction("getRayIntersection", &BoundingSphere::getRayIntersection)
+		.addFunction("getPlaneIntersection", &BoundingSphere::getPlaneIntersection)
+		.addFunction("isEmpty", &BoundingSphere::isEmpty)
+		.addFunction("mergeBoundingBox", static_cast<void(BoundingSphere::*)(const BoundingBox&)>(&BoundingSphere::merge))
+		.addFunction("merge", static_cast<void(BoundingSphere::*)(const BoundingSphere&)>(&BoundingSphere::merge))
+		.addFunction("transform", &BoundingSphere::transform)
+		.addVariable("center", &BoundingSphere::center)
+		.addVariable("radius", &BoundingSphere::radius)
+	.endClass();
+}
+
+
 void registerDevice(CppBindModule& module)
 {
 	module.beginClass<Device>("Device")
@@ -311,6 +360,10 @@ void LuaScriptManager::registerApi()
 	registerVector2(module);
 	registerVector3(module);
 	registerVector4(module);
+	registerRay(module);
+	registerBoundingBox(module);
+	registerBoundingSphere(module);
+	registerFrustum(module);
 	registerQuaternion(module);
 	registerPlane(module);
 	registerMatrix(module);

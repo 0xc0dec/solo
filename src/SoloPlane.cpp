@@ -108,7 +108,7 @@ void Plane::intersection(const Plane& p1, const Plane& p2, const Plane& p3, Vect
 
 PlaneIntersection Plane::getIntersection(const BoundingSphere &sphere) const
 {
-	return sphere.getIntersection(*this);
+	return sphere.getPlaneIntersection(*this);
 }
 
 
