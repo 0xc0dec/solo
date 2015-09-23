@@ -127,8 +127,7 @@ PlaneIntersection Plane::getIntersection(const BoundingBox &box) const
 
 PlaneIntersection Plane::getIntersection(const Frustum &frustum) const
 {
-	Vector3 corners[8];
-	frustum.getCorners(corners);
+	auto corners = frustum.getCorners();
 
 	// Calculate the distances from all of the corners to the plane.
 	// If all of the distances are positive, then the frustum is in the

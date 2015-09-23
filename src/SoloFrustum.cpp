@@ -8,7 +8,7 @@ using namespace solo;
 
 Frustum::Frustum()
 {
-	set(Matrix::identity());
+	setMatrix(Matrix::identity());
 }
 
 
@@ -132,18 +132,6 @@ PlaneIntersection Frustum::getIntersection(const Plane& plane) const
 float Frustum::intersects(const Ray& ray) const
 {
 	return ray.getIntersection(*this);
-}
-
-
-void Frustum::set(const Frustum& frustum)
-{
-	near = frustum.near;
-	far = frustum.far;
-	bottom = frustum.bottom;
-	top = frustum.top;
-	left = frustum.left;
-	right = frustum.right;
-	matrix.set(frustum.matrix);
 }
 
 
