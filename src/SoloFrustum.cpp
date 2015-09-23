@@ -94,17 +94,17 @@ std::vector<Vector3> Frustum::getFarCorners() const
 
 bool Frustum::intersectsPoint(const Vector3& point) const
 {
-	if (near.getDistance(point) <= 0)
+	if (near.getDistanceToPoint(point) <= 0)
 		return false;
-	if (far.getDistance(point) <= 0)
+	if (far.getDistanceToPoint(point) <= 0)
 		return false;
-	if (left.getDistance(point) <= 0)
+	if (left.getDistanceToPoint(point) <= 0)
 		return false;
-	if (right.getDistance(point) <= 0)
+	if (right.getDistanceToPoint(point) <= 0)
 		return false;
-	if (top.getDistance(point) <= 0)
+	if (top.getDistanceToPoint(point) <= 0)
 		return false;
-	if (bottom.getDistance(point) <= 0)
+	if (bottom.getDistanceToPoint(point) <= 0)
 		return false;
 
 	return true;
@@ -113,13 +113,13 @@ bool Frustum::intersectsPoint(const Vector3& point) const
 
 bool Frustum::intersectsBoundingSphere(const BoundingSphere& sphere) const
 {
-	return sphere.intersects(*this);
+	return sphere.intersectsFrustum(*this);
 }
 
 
 bool Frustum::intersectsBoundingBox(const BoundingBox& box) const
 {
-	return box.intersects(*this);
+	return box.intersectsFrustum(*this);
 }
 
 

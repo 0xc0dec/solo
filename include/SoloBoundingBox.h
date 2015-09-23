@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include "SoloVector3.h"
 #include "SoloPlane.h"
 
@@ -22,20 +23,18 @@ namespace solo
 		static const BoundingBox& empty();
 
 		Vector3 getCenter() const;
-		void getCenter(Vector3* dst) const;
+		std::vector<Vector3> getCorners() const;
 
-		void getCorners(Vector3* dst) const;
-
-		bool intersects(const BoundingBox& box) const;
-		bool intersects(const BoundingSphere& sphere) const;
-		bool intersects(const Frustum& frustum) const;
-		PlaneIntersection intersects(const Plane& plane) const;
-		float intersects(const Ray& ray) const;
+		bool intersectsBoundingBox(const BoundingBox& box) const;
+		bool intersectsBoundingSphere(const BoundingSphere& sphere) const;
+		bool intersectsFrustum(const Frustum& frustum) const;
+		float getRayIntersection(const Ray& ray) const;
+		PlaneIntersection getPlaneIntersection(const Plane& plane) const;
 
 		bool isEmpty() const;
 
-		void merge(const BoundingSphere& sphere);
-		void merge(const BoundingBox& box);
+		void mergeBoundingSphere(const BoundingSphere& sphere);
+		void mergeBoundingBox(const BoundingBox& box);
 
 		void transform(const Matrix& matrix);
 

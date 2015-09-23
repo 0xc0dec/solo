@@ -10,7 +10,7 @@ runTest(function()
 	s:getPlaneIntersection(solo.Plane(v, 1))
 	s:isEmpty()
 	s:mergeBoundingBox(bb)
-	s:merge(s)
+	s:mergeBoundingSphere(s)
 	s:transform(solo.Matrix())
 	local c = s.center
 	local r = s.radius

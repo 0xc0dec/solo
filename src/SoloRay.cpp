@@ -71,7 +71,7 @@ float Ray::getIntersection(const BoundingSphere &sphere) const
 
 float Ray::getIntersection(const BoundingBox &box) const
 {
-	return box.intersects(*this);
+	return box.getRayIntersection(*this);
 }
 
 
@@ -79,27 +79,27 @@ float Ray::getIntersection(const Frustum &frustum) const
 {
 	auto n = frustum.getNearPlane();
 	auto nD = getIntersection(n);
-	auto nOD = n.getDistance(origin);
+	auto nOD = n.getDistanceToPoint(origin);
 
 	auto f = frustum.getFarPlane();
 	auto fD = getIntersection(f);
-	auto fOD = f.getDistance(origin);
+	auto fOD = f.getDistanceToPoint(origin);
 
 	auto l = frustum.getLeftPlane();
 	auto lD = getIntersection(l);
-	auto lOD = l.getDistance(origin);
+	auto lOD = l.getDistanceToPoint(origin);
 
 	auto r = frustum.getRightPlane();
 	auto rD = getIntersection(r);
-	auto rOD = r.getDistance(origin);
+	auto rOD = r.getDistanceToPoint(origin);
 
 	auto b = frustum.getBottomPlane();
 	auto bD = getIntersection(b);
-	auto bOD = b.getDistance(origin);
+	auto bOD = b.getDistanceToPoint(origin);
 
 	auto t = frustum.getTopPlane();
 	auto tD = getIntersection(t);
-	auto tOD = t.getDistance(origin);
+	auto tOD = t.getDistanceToPoint(origin);
 
 	// If the ray's origin is in the negative half-space of one of the frustum's planes
 	// and it does not intersect that same plane, then it does not intersect the frustum.

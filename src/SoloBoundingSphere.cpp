@@ -21,7 +21,7 @@ const BoundingSphere& BoundingSphere::empty()
 }
 
 
-bool BoundingSphere::intersects(const BoundingSphere& sphere) const
+bool BoundingSphere::intersectsBoundingSphere(const BoundingSphere& sphere) const
 {
 	// If the distance between the spheres' centers is less than or equal
 	// to the sum of their radii, then the spheres intersect.
@@ -33,7 +33,7 @@ bool BoundingSphere::intersects(const BoundingSphere& sphere) const
 }
 
 
-bool BoundingSphere::intersects(const BoundingBox& box) const
+bool BoundingSphere::intersectsBoundingBox(const BoundingBox& box) const
 {
 	// Determine what point is closest; if the distance to that
 	// point is less than the radius, then this sphere getIntersection.
@@ -70,7 +70,7 @@ bool BoundingSphere::intersects(const BoundingBox& box) const
 }
 
 
-bool BoundingSphere::intersects(const Frustum& frustum) const
+bool BoundingSphere::intersectsFrustum(const Frustum& frustum) const
 {
 	// The sphere must either intersect or be in the positive half-space of all six planes of the frustum.
 	return getPlaneIntersection(frustum.getNearPlane()) != PlaneIntersection::Back &&
@@ -84,7 +84,7 @@ bool BoundingSphere::intersects(const Frustum& frustum) const
 
 PlaneIntersection BoundingSphere::getPlaneIntersection(const Plane &plane) const
 {
-	auto distance = plane.getDistance(center);
+	auto distance = plane.getDistanceToPoint(center);
 	if (fabsf(distance) <= radius)
 		return PlaneIntersection::Intersecting;
 	return distance > 0.0f ? PlaneIntersection::Front : PlaneIntersection::Back;
@@ -126,7 +126,7 @@ bool BoundingSphere::isEmpty() const
 }
 
 
-void BoundingSphere::merge(const BoundingSphere& sphere)
+void BoundingSphere::mergeBoundingSphere(const BoundingSphere& sphere)
 {
 	if (sphere.isEmpty())
 		return;
@@ -170,7 +170,7 @@ void BoundingSphere::merge(const BoundingSphere& sphere)
 }
 
 
-void BoundingSphere::merge(const BoundingBox& box)
+void BoundingSphere::mergeBoundingBox(const BoundingBox& box)
 {
 	if (box.isEmpty())
 		return;

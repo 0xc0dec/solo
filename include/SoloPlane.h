@@ -30,7 +30,7 @@ namespace solo
 		float getDistance() const;
 		void setDistance(float distance);
 
-		float getDistance(const Vector3& point) const;
+		float getDistanceToPoint(const Vector3& point) const;
 
 		static Vector3 intersection(const Plane& p1, const Plane& p2, const Plane& p3);
 

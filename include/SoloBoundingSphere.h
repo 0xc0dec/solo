@@ -16,16 +16,16 @@ namespace solo
 
 		static const BoundingSphere& empty();
 
-		bool intersects(const BoundingSphere& sphere) const;
-		bool intersects(const BoundingBox& box) const;
-		bool intersects(const Frustum& frustum) const;
-		PlaneIntersection getPlaneIntersection(const Plane &plane) const;
+		bool intersectsBoundingSphere(const BoundingSphere& sphere) const;
+		bool intersectsBoundingBox(const BoundingBox& box) const;
+		bool intersectsFrustum(const Frustum& frustum) const;
 		float getRayIntersection(const Ray& ray) const;
+		PlaneIntersection getPlaneIntersection(const Plane &plane) const;
 
 		bool isEmpty() const;
 
-		void merge(const BoundingSphere& sphere);
-		void merge(const BoundingBox& box);
+		void mergeBoundingSphere(const BoundingSphere& sphere);
+		void mergeBoundingBox(const BoundingBox& box);
 
 		void transform(const Matrix& matrix);
 

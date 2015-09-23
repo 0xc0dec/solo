@@ -57,7 +57,7 @@ void Plane::setDistance(float distance)
 }
 
 
-float Plane::getDistance(const Vector3& point) const
+float Plane::getDistanceToPoint(const Vector3& point) const
 {
 	return normal.x * point.x + normal.y * point.y + normal.z * point.z + distance;
 }
@@ -121,7 +121,7 @@ PlaneIntersection Plane::getIntersection(const BoundingSphere &sphere) const
 
 PlaneIntersection Plane::getIntersection(const BoundingBox &box) const
 {
-	return box.intersects(*this);
+	return box.getPlaneIntersection(*this);
 }
 
 
@@ -134,16 +134,16 @@ PlaneIntersection Plane::getIntersection(const Frustum &frustum) const
 	// positive half-space of this plane; if all the distances are negative,
 	// then the frustum is in the negative half-space of this plane; if some of
 	// the distances are positive and some are negative, the frustum getIntersection.
-	auto d = getDistance(corners[0]);
+	auto d = getDistanceToPoint(corners[0]);
 	if (d > 0.0f)
 	{
-		if (getDistance(corners[1]) <= 0.0f ||
-			getDistance(corners[2]) <= 0.0f ||
-			getDistance(corners[3]) <= 0.0f ||
-			getDistance(corners[4]) <= 0.0f ||
-			getDistance(corners[5]) <= 0.0f ||
-			getDistance(corners[6]) <= 0.0f ||
-			getDistance(corners[7]) <= 0.0f)
+		if (getDistanceToPoint(corners[1]) <= 0.0f ||
+			getDistanceToPoint(corners[2]) <= 0.0f ||
+			getDistanceToPoint(corners[3]) <= 0.0f ||
+			getDistanceToPoint(corners[4]) <= 0.0f ||
+			getDistanceToPoint(corners[5]) <= 0.0f ||
+			getDistanceToPoint(corners[6]) <= 0.0f ||
+			getDistanceToPoint(corners[7]) <= 0.0f)
 		{
 			return PlaneIntersection::Intersecting;
 		}
@@ -152,13 +152,13 @@ PlaneIntersection Plane::getIntersection(const Frustum &frustum) const
 	}
 	if (d < 0.0f)
 	{
-		if (getDistance(corners[1]) >= 0.0f ||
-			getDistance(corners[2]) >= 0.0f ||
-			getDistance(corners[3]) >= 0.0f ||
-			getDistance(corners[4]) >= 0.0f ||
-			getDistance(corners[5]) >= 0.0f ||
-			getDistance(corners[6]) >= 0.0f ||
-			getDistance(corners[7]) >= 0.0f)
+		if (getDistanceToPoint(corners[1]) >= 0.0f ||
+			getDistanceToPoint(corners[2]) >= 0.0f ||
+			getDistanceToPoint(corners[3]) >= 0.0f ||
+			getDistanceToPoint(corners[4]) >= 0.0f ||
+			getDistanceToPoint(corners[5]) >= 0.0f ||
+			getDistanceToPoint(corners[6]) >= 0.0f ||
+			getDistanceToPoint(corners[7]) >= 0.0f)
 		{
 			return PlaneIntersection::Intersecting;
 		}
@@ -181,7 +181,7 @@ PlaneIntersection Plane::getIntersection(const Plane &plane) const
 
 	// Calculate whether the given plane is in the positive or negative half-space of this plane
 	// (corresponds directly to the sign of the distance from the point calculated above to this plane).
-	if (getDistance(point) > 0.0f)
+	if (getDistanceToPoint(point) > 0.0f)
 		return PlaneIntersection::Front;
 	return PlaneIntersection::Back;
 }
@@ -190,7 +190,7 @@ PlaneIntersection Plane::getIntersection(const Plane &plane) const
 PlaneIntersection Plane::getIntersection(const Ray &ray) const
 {
 	// Calculate the distance from the ray's origin to the plane.
-	auto d = getDistance(ray.getOrigin());
+	auto d = getDistanceToPoint(ray.getOrigin());
 
 	// If the origin of the ray lies in the plane, then it getIntersection.
 	if (d == 0.0f)

@@ -23,53 +23,55 @@ const BoundingBox& BoundingBox::empty()
 }
 
 
-void BoundingBox::getCorners(Vector3* dst) const
+std::vector<Vector3> BoundingBox::getCorners() const
 {
-	// Near face, specified counter-clockwise looking towards the origin from the positive z-axis.
-	// Left-top-front.
-	dst[0] = Vector3(min.x, max.y, max.z);
-	// Left-bottom-front.
-	dst[1] = Vector3(min.x, min.y, max.z);
-	// Right-bottom-front.
-	dst[2] = Vector3(max.x, min.y, max.z);
-	// Right-top-front.
-	dst[3] = Vector3(max.x, max.y, max.z);
+	return
+	{
+		// Near face, specified counter-clockwise looking towards the origin from the positive z-axis.
+		// Left-top-front
+		Vector3(min.x, max.y, max.z),
 
-	// Far face, specified counter-clockwise looking towards the origin from the negative z-axis.
-	// Right-top-back.
-	dst[4] = Vector3(max.x, max.y, min.z);
-	// Right-bottom-back.
-	dst[5] = Vector3(max.x, min.y, min.z);
-	// Left-bottom-back.
-	dst[6] = Vector3(min.x, min.y, min.z);
-	// Left-top-back.
-	dst[7] = Vector3(min.x, max.y, min.z);
+		// Left-bottom-front
+		Vector3(min.x, min.y, max.z),
+
+		// Right-bottom-front
+		Vector3(max.x, min.y, max.z),
+
+		// Right-top-front
+		Vector3(max.x, max.y, max.z),
+
+		// Far face, specified counter-clockwise looking towards the origin from the negative z-axis.
+		// Right-top-back.
+		Vector3(max.x, max.y, min.z),
+
+		// Right-bottom-back
+		Vector3(max.x, min.y, min.z),
+
+		// Left-bottom-back
+		Vector3(min.x, min.y, min.z),
+
+		// Left-top-back
+		Vector3(min.x, max.y, min.z)
+	};
 }
 
 
 Vector3 BoundingBox::getCenter() const
 {
-	Vector3 center;
-	getCenter(&center);
+	auto center = max - min;
+	center *= 0.5f;
+	center += min;
 	return center;
 }
 
 
-void BoundingBox::getCenter(Vector3* dst) const
+bool BoundingBox::intersectsBoundingSphere(const BoundingSphere& sphere) const
 {
-	*dst = max - min;
-	*dst *= 0.5f;
-	*dst += min;
+	return sphere.intersectsBoundingBox(*this);
 }
 
 
-bool BoundingBox::intersects(const BoundingSphere& sphere) const
-{
-	return sphere.intersects(*this);
-}
-
-
-bool BoundingBox::intersects(const BoundingBox& box) const
+bool BoundingBox::intersectsBoundingBox(const BoundingBox& box) const
 {
 	return ((min.x >= box.min.x && min.x <= box.max.x) || (box.min.x >= min.x && box.min.x <= max.x)) &&
 		((min.y >= box.min.y && min.y <= box.max.y) || (box.min.y >= min.y && box.min.y <= max.y)) &&
@@ -77,23 +79,23 @@ bool BoundingBox::intersects(const BoundingBox& box) const
 }
 
 
-bool BoundingBox::intersects(const Frustum& frustum) const
+bool BoundingBox::intersectsFrustum(const Frustum& frustum) const
 {
 	// The box must either intersect or be in the positive half-space of all six planes of the frustum.
-	return (intersects(frustum.getNearPlane()) != PlaneIntersection::Back &&
-		intersects(frustum.getFarPlane()) != PlaneIntersection::Back &&
-		intersects(frustum.getLeftPlane()) != PlaneIntersection::Back &&
-		intersects(frustum.getRightPlane()) != PlaneIntersection::Back &&
-		intersects(frustum.getBottomPlane()) != PlaneIntersection::Back &&
-		intersects(frustum.getTopPlane()) != PlaneIntersection::Back);
+	return (getPlaneIntersection(frustum.getNearPlane()) != PlaneIntersection::Back &&
+		getPlaneIntersection(frustum.getFarPlane()) != PlaneIntersection::Back &&
+		getPlaneIntersection(frustum.getLeftPlane()) != PlaneIntersection::Back &&
+		getPlaneIntersection(frustum.getRightPlane()) != PlaneIntersection::Back &&
+		getPlaneIntersection(frustum.getBottomPlane()) != PlaneIntersection::Back &&
+		getPlaneIntersection(frustum.getTopPlane()) != PlaneIntersection::Back);
 }
 
 
-PlaneIntersection BoundingBox::intersects(const Plane& plane) const
+PlaneIntersection BoundingBox::getPlaneIntersection(const Plane& plane) const
 {
 	// Calculate the distance from the center of the box to the plane.
 	Vector3 center((min.x + max.x) * 0.5f, (min.y + max.y) * 0.5f, (min.z + max.z) * 0.5f);
-	auto distance = plane.getDistance(center);
+	auto distance = plane.getDistanceToPoint(center);
 
 	// Get the extents of the box from its center along each axis.
 	auto extentX = (max.x - min.x) * 0.5f;
@@ -108,7 +110,7 @@ PlaneIntersection BoundingBox::intersects(const Plane& plane) const
 }
 
 
-float BoundingBox::intersects(const Ray& ray) const
+float BoundingBox::getRayIntersection(const Ray& ray) const
 {
 	auto dnear = 0.0f;
 	auto dfar = 0.0f;
@@ -190,7 +192,7 @@ bool BoundingBox::isEmpty() const
 }
 
 
-void BoundingBox::merge(const BoundingBox& box)
+void BoundingBox::mergeBoundingBox(const BoundingBox& box)
 {
 	// Calculate the new minimum point.
 	min.x = std::min(min.x, box.min.x);
@@ -204,7 +206,7 @@ void BoundingBox::merge(const BoundingBox& box)
 }
 
 
-void BoundingBox::merge(const BoundingSphere& sphere)
+void BoundingBox::mergeBoundingSphere(const BoundingSphere& sphere)
 {
 	const auto& center = sphere.center;
 	auto radius = sphere.radius;
@@ -252,8 +254,7 @@ static void updateMinMax(Vector3* point, Vector3* min, Vector3* max)
 void BoundingBox::transform(const Matrix& matrix)
 {
 	// Calculate the corners.
-	Vector3 corners[8];
-	getCorners(corners);
+	auto corners = getCorners();
 
 	// Transform the corners, recalculating the min and max points along the way.
 	corners[0] = matrix.transformPoint(corners[0]);
