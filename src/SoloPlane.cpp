@@ -63,8 +63,10 @@ float Plane::getDistance(const Vector3& point) const
 }
 
 
-void Plane::intersection(const Plane& p1, const Plane& p2, const Plane& p3, Vector3* point)
+Vector3 Plane::intersection(const Plane& p1, const Plane& p2, const Plane& p3)
 {
+	Vector3 result;
+
 	// The planes' normals must be all normalized (which we guarantee in the Plane class).
 	// Calculate the determinant of the matrix (i.e | n1 n2 n3 |).
 	auto det = p1.normal.x * (p2.normal.y * p3.normal.z -
@@ -73,7 +75,7 @@ void Plane::intersection(const Plane& p1, const Plane& p2, const Plane& p3, Vect
 
 	// If the determinant is zero, then the planes do not all intersect.
 	if (fabs(det) <= MATH_EPSILON)
-		return;
+		return result;
 
 	// Create 3 points, one on each plane.
 	// (We just pick the point on the plane directly along its normal from the origin).
@@ -104,9 +106,10 @@ void Plane::intersection(const Plane& p1, const Plane& p2, const Plane& p3, Vect
 	auto s2 = p2x * p2.normal.x + p2y * p2.normal.y + p2z * p2.normal.z;
 	auto s3 = p3x * p3.normal.x + p3y * p3.normal.y + p3z * p3.normal.z;
 	auto detI = 1.0f / det;
-	point->x = (s1 * c1x + s2 * c2x + s3 * c3x) * detI;
-	point->y = (s1 * c1y + s2 * c2y + s3 * c3y) * detI;
-	point->z = (s1 * c1z + s2 * c2z + s3 * c3z) * detI;
+	result.x = (s1 * c1x + s2 * c2x + s3 * c3x) * detI;
+	result.y = (s1 * c1y + s2 * c2y + s3 * c3y) * detI;
+	result.z = (s1 * c1z + s2 * c2z + s3 * c3z) * detI;
+	return result;
 }
 
 

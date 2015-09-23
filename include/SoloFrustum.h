@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include "SoloPlane.h"
 #include "SoloMatrix.h"
 
@@ -23,20 +24,17 @@ namespace solo
 		const Plane& getTop() const;
 
 		Matrix getMatrix() const;
+		void setMatrix(const Matrix& m);
 
-		void getCorners(Vector3* corners) const;
-		void getNearCorners(Vector3* corners) const;
-		void getFarCorners(Vector3* corners) const;
+		std::vector<Vector3> getCorners() const;
+		std::vector<Vector3> getNearCorners() const;
+		std::vector<Vector3> getFarCorners() const;
 
 		bool intersects(const Vector3& point) const;
-		bool intersects(float x, float y, float z) const;
 		bool intersects(const BoundingSphere& sphere) const;
 		bool intersects(const BoundingBox& box) const;
-		PlaneIntersection getIntersection(const Plane& plane) const;
 		float intersects(const Ray& ray) const;
-
-		void set(const Frustum& frustum);
-		void set(const Matrix& matrix);
+		PlaneIntersection getIntersection(const Plane& plane) const;
 
 	private:
 		void updatePlanes();
