@@ -12,6 +12,7 @@
 #include "SoloVector4.h"
 #include "SoloQuaternion.h"
 #include "SoloMatrix.h"
+#include "SoloPlane.h"
 
 namespace LuaIntf
 {
@@ -213,6 +214,15 @@ void registerMatrix(CppBindModule& module)
 void registerQuaternion(CppBindModule& module)
 {
 	module.beginClass<Quaternion>("Quaternion")
+		.addConstructor(LUA_ARGS())
+	.endClass();
+}
+
+
+void registerPlane(CppBindModule& module)
+{
+	module.beginClass<Plane>("Plane")
+		.addConstructor(LUA_ARGS())
 	.endClass();
 }
 
@@ -271,6 +281,7 @@ void LuaScriptManager::registerApi()
 	registerVector3(module);
 	registerVector4(module);
 	registerQuaternion(module);
+	registerPlane(module);
 	registerMatrix(module);
 	registerDevice(module);
 	registerResourceManager(module);
