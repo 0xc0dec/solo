@@ -1,5 +1,3 @@
-print("Running Quaternion tests...")
-
 runTest(function()
 	local q = solo.Quaternion()
 	solo.Quaternion.zero()
@@ -20,6 +18,4 @@ runTest(function()
 	local angle = q:toAxisAngle(v)
 	q:product(q):mult(q)
 	print(q.x .. q.y .. q.z .. q.w)
-end)
-
-print("Finished Quaternion tests")
+end, "Quaternion")

@@ -1,10 +1,12 @@
 print("Running unit tests...")
 
-function runTest(test)
+function runTest(test, name)
+	print("Running " .. name .. "...")
 	local status, err = pcall(test)
 	if err then
 		print(err)
 	end
+	print("Finished " .. name .. "...")
 end
 
 dofile("../data/scripts/unit-tests.vector2.lua")

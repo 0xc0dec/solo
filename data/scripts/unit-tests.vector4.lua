@@ -1,5 +1,3 @@
-print("Running Vector4 tests...")
-
 runTest(function()
 	local v1 = solo.Vector4(1, 2, 3, 4)
 	local v2 = solo.Vector4(2, 3, 4, 5)
@@ -25,6 +23,4 @@ runTest(function()
 	v1:assign(solo.Vector4(1, 2, 3, 4))
 	v1 = v1:plusScalar(1):addScalar(2):plusVector4(solo.Vector4.unit()):addVector4(solo.Vector4.unit())
 	print(v1.x .. v1.y .. v1.z .. v1.w)
-end)
-
-print("Finished Vector4 tests")
+end, "Vector4")

@@ -1,5 +1,3 @@
-print("Running Matrix tests...")
-
 runTest(function()
 	local v = solo.Vector3(1, 2, 3)
 	local v4 = solo.Vector4(1, 2, 3, 4)
@@ -58,6 +56,4 @@ runTest(function()
 	m:negative()
 	m:minusScalar(1):minusMatrix(m):substractScalar(2):substractMatrix(m)
 	m:productScalar(1):productMatrix(m):multScalar(2):multMatrix(m)
-end)
-
-print("Finished Matrix tests")
+end, "Matrix")

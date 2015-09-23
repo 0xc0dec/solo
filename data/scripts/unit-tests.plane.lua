@@ -1,5 +1,3 @@
-print("Running Plane tests...")
-
 runTest(function()
 	local p = solo.Plane(solo.Vector3(1, 2, 3), 1)
 	local v = solo.Vector3(1, 2, 3)
@@ -13,5 +11,4 @@ runTest(function()
 	p:set(solo.Vector3(1, 2, 3), 1)
 	p:assign(p)
 	p:transform(solo.Matrix())
-end)
-print("Finished Plane tests")
+end, "Plane")

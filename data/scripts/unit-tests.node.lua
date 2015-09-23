@@ -1,5 +1,3 @@
-print("Running Node tests...")
-
 runTest(function()
 	local scene = solo.engine:getScene()
 	local node = scene:createNode()
@@ -44,6 +42,4 @@ runTest(function()
 	node:removeComponent("TestComponent")
 	node:removeComponent("AnotherComponent")
 	node:removeAllComponents()
-end)
-
-print("Finished Node tests")
+end, "Node")

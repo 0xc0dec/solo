@@ -1,5 +1,3 @@
-print("Running BoundingSphere tests...")
-
 runTest(function()
 	local v = solo.Vector3(1, 2, 3)
 	local s = solo.BoundingSphere(v, 1)
@@ -16,6 +14,4 @@ runTest(function()
 	s:transform(solo.Matrix())
 	local c = s.center
 	local r = s.radius
-end)
-
-print("Finished BoundingSphere tests")
+end, "BoundingSphere")
