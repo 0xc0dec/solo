@@ -435,7 +435,7 @@ void registerComponent(CppBindModule& module)
 void registerRenderTarget(CppBindModule& module)
 {
 	module.beginClass<RenderTarget>("RenderTarget")
-	// TODO
+		// TODO
 	.endClass();
 }
 
@@ -457,6 +457,12 @@ void registerCamera(CppBindModule& module)
 	REGISTER_METHOD(camera, Camera, getWidth);
 	REGISTER_METHOD(camera, Camera, getHeight);
 	REGISTER_METHOD(camera, Camera, getAspectRatio);
+	REGISTER_METHOD(camera, Camera, setNear);
+	REGISTER_METHOD(camera, Camera, setFar);
+	REGISTER_METHOD(camera, Camera, setFOV);
+	REGISTER_METHOD(camera, Camera, setWidth);
+	REGISTER_METHOD(camera, Camera, setHeight);
+	REGISTER_METHOD(camera, Camera, setAspectRatio);
 	camera.endClass();
 }
 
@@ -571,6 +577,7 @@ void LuaScriptManager::registerApi()
 	registerNode(module);
 	registerComponent(module);
 	registerTransform(module);
+	registerRenderTarget(module);
 	registerCamera(module);
 	registerScene(module);
 	registerFileSystem(module);
