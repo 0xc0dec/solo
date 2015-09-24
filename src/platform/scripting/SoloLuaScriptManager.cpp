@@ -123,196 +123,195 @@ void registerVector2(CppBindModule& module)
 
 void registerVector4(CppBindModule& module)
 {
-	module.beginClass<Vector4>("Vector4")
-		.addConstructor(LUA_ARGS(float, float, float, float))
-		.addStaticFunction("zero", &Vector4::zero)
-		.addStaticFunction("unit", &Vector4::unit)
-		.addStaticFunction("unitX", &Vector4::unitX)
-		.addStaticFunction("unitY", &Vector4::unitY)
-		.addStaticFunction("unitZ", &Vector4::unitZ)
-		.addStaticFunction("unitW", &Vector4::unitW)
-		.addStaticFunction("angle", &Vector4::angle)
-		.addStaticFunction("dot", static_cast<float(*)(const Vector4&, const Vector4&)>(&Vector4::dot))
-		.addFunction("distance", &Vector4::distance)
-		.addFunction("distanceSquared", &Vector4::distanceSquared)
-		.addFunction("dot", static_cast<float(Vector4::*)(const Vector4&)const>(&Vector4::dot))
-		.addFunction("clamp", &Vector4::clamp)
-		.addFunction("length", &Vector4::length)
-		.addFunction("lengthSquared", &Vector4::lengthSquared)
-		.addFunction("isUnit", &Vector4::isUnit)
-		.addFunction("isZero", &Vector4::isZero)
-		.addFunction("normalize", &Vector4::normalize)
-		.addFunction("normalized", &Vector4::normalized)
-		.addVariable("x", &Vector4::x, true)
-		.addVariable("y", &Vector4::y, true)
-		.addVariable("z", &Vector4::z, true)
-		.addVariable("w", &Vector4::w, true)
-		.addFunction("plusScalar", static_cast<Vector4(Vector4::*)(float)const>(&Vector4::operator+))
-		.addFunction("plusVector4", static_cast<Vector4(Vector4::*)(const Vector4&)const>(&Vector4::operator+))
-		.addFunction("addScalar", static_cast<Vector4&(Vector4::*)(float)>(&Vector4::operator+=))
-		.addFunction("addVector4", static_cast<Vector4&(Vector4::*)(const Vector4&)>(&Vector4::operator+=))
-	.endClass();
+	auto vector4 = module.beginClass<Vector4>("Vector4");
+	vector4.addConstructor(LUA_ARGS(float, float, float, float));
+	REGISTER_VARIABLE(vector4, Vector4, x);
+	REGISTER_VARIABLE(vector4, Vector4, y);
+	REGISTER_VARIABLE(vector4, Vector4, z);
+	REGISTER_VARIABLE(vector4, Vector4, w);
+	REGISTER_STATIC_METHOD(vector4, Vector4, zero);
+	REGISTER_STATIC_METHOD(vector4, Vector4, unit);
+	REGISTER_STATIC_METHOD(vector4, Vector4, unitX);
+	REGISTER_STATIC_METHOD(vector4, Vector4, unitY);
+	REGISTER_STATIC_METHOD(vector4, Vector4, unitZ);
+	REGISTER_STATIC_METHOD(vector4, Vector4, unitW);
+	REGISTER_STATIC_METHOD(vector4, Vector4, angle);
+	REGISTER_STATIC_OVERLOADED_METHOD(vector4, Vector4, dot, "dot", float, , const Vector4&, const Vector4&);
+	REGISTER_METHOD(vector4, Vector4, distance);
+	REGISTER_METHOD(vector4, Vector4, distanceSquared);
+	REGISTER_OVERLOADED_METHOD(vector4, Vector4, dot, "dot", float, const, const Vector4&);
+	REGISTER_METHOD(vector4, Vector4, clamp);
+	REGISTER_METHOD(vector4, Vector4, length);
+	REGISTER_METHOD(vector4, Vector4, lengthSquared);
+	REGISTER_METHOD(vector4, Vector4, isUnit);
+	REGISTER_METHOD(vector4, Vector4, isZero);
+	REGISTER_METHOD(vector4, Vector4, normalize);
+	REGISTER_METHOD(vector4, Vector4, normalized);
+	REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator+, "plusScalar", Vector4, const, float);
+	REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator+, "plusVector4", Vector4, const, const Vector4&);
+	REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator+=, "addScalar", Vector4&, , float);
+	REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator+=, "addVector4", Vector4&, , const Vector4&);
+	vector4.endClass();
 }
 
 
 void registerMatrix(CppBindModule& module)
 {
-	module.beginClass<Matrix>("Matrix")
-		.addConstructor(LUA_ARGS())
-		.addStaticFunction("identity", &Matrix::identity)
-		.addStaticFunction("zero", &Matrix::zero)
-		.addStaticFunction("createLookAt", static_cast<Matrix(*)(const Vector3&, const Vector3&, const Vector3&)>(&Matrix::createLookAt))
-		.addStaticFunction("createLookAt2", static_cast<Matrix(*)(float, float, float, float, float, float, float, float, float)>(&Matrix::createLookAt))
-		.addStaticFunction("createPerspective", &Matrix::createPerspective)
-		.addStaticFunction("createOrthographic", &Matrix::createOrthographic)
-		.addStaticFunction("createOrthographicOffCenter", &Matrix::createOrthographicOffCenter)
-		.addStaticFunction("createBillboard", static_cast<Matrix(*)(const Vector3&, const Vector3&, const Vector3&)>(&Matrix::createBillboard))
-		.addStaticFunction("createBillboard2", static_cast<Matrix(*)(const Vector3&, const Vector3&, const Vector3&, const Vector3&)>(&Matrix::createBillboard))
-		.addStaticFunction("createReflection", &Matrix::createReflection)
-		.addStaticFunction("createScale", static_cast<Matrix(*)(const Vector3&)>(&Matrix::createScale))
-		.addStaticFunction("createScale2", static_cast<Matrix(*)(float, float, float)>(&Matrix::createScale))
-		.addStaticFunction("createRotation", static_cast<Matrix(*)(const Quaternion&)>(&Matrix::createRotation))
-		.addStaticFunction("createRotationAxisAngle", static_cast<Matrix(*)(const Vector3&, float)>(&Matrix::createRotation))
-		.addStaticFunction("createRotationX", &Matrix::createRotationX)
-		.addStaticFunction("createRotationY", &Matrix::createRotationY)
-		.addStaticFunction("createRotationZ", &Matrix::createRotationZ)
-		.addStaticFunction("createTranslation", static_cast<Matrix(*)(const Vector3&)>(&Matrix::createTranslation))
-		.addStaticFunction("createTranslation2", static_cast<Matrix(*)(float, float, float)>(&Matrix::createTranslation))
-		.addFunction("decompose", &Matrix::decompose)
-		.addFunction("getDeterminant", &Matrix::getDeterminant)
-		.addFunction("getScale", &Matrix::getScale)
-		.addFunction("getRotation", &Matrix::getRotation)
-		.addFunction("getTranslation", &Matrix::getTranslation)
-		.addFunction("getUpVector", &Matrix::getUpVector)
-		.addFunction("getDownVector", &Matrix::getDownVector)
-		.addFunction("getLeftVector", &Matrix::getLeftVector)
-		.addFunction("getRightVector", &Matrix::getRightVector)
-		.addFunction("getForwardVector", &Matrix::getForwardVector)
-		.addFunction("getBackVector", &Matrix::getBackVector)
-		.addFunction("invert", &Matrix::invert)
-		.addFunction("transpose", &Matrix::transpose)
-		.addFunction("rotate", static_cast<void(Matrix::*)(const Quaternion&)>(&Matrix::rotate))
-		.addFunction("rotateAxisAngle", static_cast<void(Matrix::*)(const Vector3&, float)>(&Matrix::rotate))
-		.addFunction("rotateX", &Matrix::rotateX)
-		.addFunction("rotateY", &Matrix::rotateY)
-		.addFunction("rotateZ", &Matrix::rotateZ)
-		.addFunction("scale", static_cast<void(Matrix::*)(float)>(&Matrix::scale))
-		.addFunction("scale2", static_cast<void(Matrix::*)(float, float, float)>(&Matrix::scale))
-		.addFunction("scale3", static_cast<void(Matrix::*)(const Vector3&)>(&Matrix::scale))
-		.addFunction("translate", static_cast<void(Matrix::*)(float, float, float)>(&Matrix::translate))
-		.addFunction("translate2", static_cast<void(Matrix::*)(const Vector3&)>(&Matrix::translate))
-		.addFunction("setIdentity", &Matrix::setIdentity)
-		.addFunction("setZero", &Matrix::setZero)
-		.addFunction("transformPoint", &Matrix::transformPoint)
-		.addFunction("transformVector3Direction", static_cast<Vector3(Matrix::*)(const Vector3&)const>(&Matrix::transformDirection))
-		.addFunction("transformVector4Direction", static_cast<Vector4(Matrix::*)(const Vector4&)const>(&Matrix::transformDirection))
-		.addFunction("plusScalar", static_cast<Matrix(Matrix::*)(float)const>(&Matrix::operator+))
-		.addFunction("plusMatrix", static_cast<Matrix(Matrix::*)(const Matrix&)const>(&Matrix::operator+))
-		.addFunction("addScalar", static_cast<Matrix&(Matrix::*)(float)>(&Matrix::operator+=))
-		.addFunction("addMatrix", static_cast<Matrix&(Matrix::*)(const Matrix&)>(&Matrix::operator+=))
-		.addFunction("negative", static_cast<Matrix(Matrix::*)()const>(&Matrix::operator-))
-		.addFunction("minusScalar", static_cast<Matrix(Matrix::*)(float)const>(&Matrix::operator-))
-		.addFunction("minusMatrix", static_cast<Matrix(Matrix::*)(const Matrix&)const>(&Matrix::operator-))
-		.addFunction("substractScalar", static_cast<Matrix&(Matrix::*)(float)>(&Matrix::operator-=))
-		.addFunction("substractMatrix", static_cast<Matrix&(Matrix::*)(const Matrix&)>(&Matrix::operator-=))
-		.addFunction("productScalar", static_cast<Matrix(Matrix::*)(float)const>(&Matrix::operator*))
-		.addFunction("productMatrix", static_cast<Matrix(Matrix::*)(const Matrix&)const>(&Matrix::operator*))
-		.addFunction("multScalar", static_cast<Matrix&(Matrix::*)(float)>(&Matrix::operator*=))
-		.addFunction("multMatrix", static_cast<Matrix&(Matrix::*)(const Matrix&)>(&Matrix::operator*=))
-	.endClass();
+	auto matrix = module.beginClass<Matrix>("Matrix");
+	matrix.addConstructor(LUA_ARGS());
+	REGISTER_STATIC_METHOD(matrix, Matrix, identity);
+	REGISTER_STATIC_METHOD(matrix, Matrix, zero);
+	REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createLookAt, "createLookAt", Matrix, , const Vector3&, const Vector3&, const Vector3&);
+	REGISTER_STATIC_METHOD(matrix, Matrix, createPerspective);
+	REGISTER_STATIC_METHOD(matrix, Matrix, createOrthographic);
+	REGISTER_STATIC_METHOD(matrix, Matrix, createOrthographicOffCenter);
+	REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createBillboard, "createBillboard", Matrix, , const Vector3&, const Vector3&, const Vector3&);
+	REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createBillboard, "createBillboard2", Matrix, , const Vector3&, const Vector3&, const Vector3&, const Vector3&);
+	REGISTER_STATIC_METHOD(matrix, Matrix, createReflection);
+	REGISTER_STATIC_METHOD(matrix, Matrix, createScale);
+	REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createRotation, "createRotation", Matrix, , const Quaternion&);
+	REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createRotation, "createRotationAxisAngle", Matrix, , const Vector3&, float);
+	REGISTER_STATIC_METHOD(matrix, Matrix, createRotationX);
+	REGISTER_STATIC_METHOD(matrix, Matrix, createRotationY);
+	REGISTER_STATIC_METHOD(matrix, Matrix, createRotationZ);
+	REGISTER_STATIC_METHOD(matrix, Matrix, createTranslation);
+	REGISTER_METHOD(matrix, Matrix, decompose);
+	REGISTER_METHOD(matrix, Matrix, getDeterminant);
+	REGISTER_METHOD(matrix, Matrix, getScale);
+	REGISTER_METHOD(matrix, Matrix, getRotation);
+	REGISTER_METHOD(matrix, Matrix, getTranslation);
+	REGISTER_METHOD(matrix, Matrix, getUpVector);
+	REGISTER_METHOD(matrix, Matrix, getDownVector);
+	REGISTER_METHOD(matrix, Matrix, getLeftVector);
+	REGISTER_METHOD(matrix, Matrix, getRightVector);
+	REGISTER_METHOD(matrix, Matrix, getForwardVector);
+	REGISTER_METHOD(matrix, Matrix, getBackVector);
+	REGISTER_METHOD(matrix, Matrix, invert);
+	REGISTER_METHOD(matrix, Matrix, transpose);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, rotate, "rotate", void, , const Quaternion&);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, rotate, "rotateAxisAngle", void, , const Vector3&, float);
+	REGISTER_METHOD(matrix, Matrix, rotateX);
+	REGISTER_METHOD(matrix, Matrix, rotateY);
+	REGISTER_METHOD(matrix, Matrix, rotateZ);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, scale, "scale", void, , float);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, scale, "scale2", void, , const Vector3&);
+	REGISTER_METHOD(matrix, Matrix, translate);
+	REGISTER_METHOD(matrix, Matrix, setIdentity);
+	REGISTER_METHOD(matrix, Matrix, setZero);
+	REGISTER_METHOD(matrix, Matrix, transformPoint);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, transformDirection, "transformVector3Direction", Vector3, const, const Vector3&);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, transformDirection, "transformVector4Direction", Vector4, const, const Vector4&);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator+, "plusScalar", Matrix, const, float);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator+, "plusMatrix", Matrix, const, const Matrix&);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator+=, "addScalar", Matrix&, , float);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator+=, "addMatrix", Matrix&, , const Matrix&);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-, "negative", Matrix, const, void);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-, "minusScalar", Matrix, const, float);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-, "minusMatrix", Matrix, const, const Matrix&);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-=, "subtractScalar", Matrix&, , float);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-=, "subtractMatrix", Matrix&, , const Matrix&);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-, "minusScalar", Matrix, const, float);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-, "minusMatrix", Matrix, const, const Matrix&);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-=, "subtractScalar", Matrix&, , float);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-=, "subtractMatrix", Matrix&, , const Matrix&);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator*, "productScalar", Matrix, const, float);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator*, "productMatrix", Matrix, const, const Matrix&);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator*=, "multScalar", Matrix&, , float);
+	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator*=, "multMatrix", Matrix&, , const Matrix&);
+	matrix.endClass();
 }
 
 
 void registerQuaternion(CppBindModule& module)
 {
-	module.beginClass<Quaternion>("Quaternion")
-		.addConstructor(LUA_ARGS())
-		.addStaticFunction("zero", &Quaternion::zero)
-		.addStaticFunction("identity", &Quaternion::identity)
-		.addStaticFunction("createFromAxisAngle", &Quaternion::createFromAxisAngle)
-		.addStaticFunction("createFromRotationMatrix", &Quaternion::createFromRotationMatrix)
-		.addStaticFunction("lerp", &Quaternion::lerp)
-		.addStaticFunction("slerp", &Quaternion::slerp)
-		.addStaticFunction("squad", &Quaternion::squad)
-		.addFunction("isIdentity", &Quaternion::isIdentity)
-		.addFunction("isZero", &Quaternion::isZero)
-		.addFunction("conjugate", &Quaternion::conjugate)
-		.addFunction("inverse", &Quaternion::inverse)
-		.addFunction("normalized", &Quaternion::normalized)
-		.addFunction("normalize", &Quaternion::normalize)
-		.addFunction("toAxisAngle", &Quaternion::toAxisAngle)
-		.addFunction("product", &Quaternion::operator*)
-		.addFunction("mult", &Quaternion::operator*=)
-		.addVariable("x", &Quaternion::x)
-		.addVariable("y", &Quaternion::y)
-		.addVariable("z", &Quaternion::z)
-		.addVariable("w", &Quaternion::w)
-	.endClass();
+	auto q = module.beginClass<Quaternion>("Quaternion");
+	q.addConstructor(LUA_ARGS());
+	REGISTER_STATIC_METHOD(q, Quaternion, zero);
+	REGISTER_STATIC_METHOD(q, Quaternion, identity);
+	REGISTER_STATIC_METHOD(q, Quaternion, createFromAxisAngle);
+	REGISTER_STATIC_METHOD(q, Quaternion, createFromRotationMatrix);
+	REGISTER_STATIC_METHOD(q, Quaternion, lerp);
+	REGISTER_STATIC_METHOD(q, Quaternion, slerp);
+	REGISTER_STATIC_METHOD(q, Quaternion, squad);
+	REGISTER_METHOD(q, Quaternion, isIdentity);
+	REGISTER_METHOD(q, Quaternion, isZero);
+	REGISTER_METHOD(q, Quaternion, conjugate);
+	REGISTER_METHOD(q, Quaternion, inverse);
+	REGISTER_METHOD(q, Quaternion, normalize);
+	REGISTER_METHOD(q, Quaternion, normalized);
+	REGISTER_METHOD(q, Quaternion, toAxisAngle);
+	REGISTER_METHOD_RENAMED(q, Quaternion, operator*, "product");
+	REGISTER_METHOD_RENAMED(q, Quaternion, operator*=, "mult");
+	REGISTER_VARIABLE(q, Quaternion, x);
+	REGISTER_VARIABLE(q, Quaternion, y);
+	REGISTER_VARIABLE(q, Quaternion, z);
+	REGISTER_VARIABLE(q, Quaternion, w);
+	q.endClass();
 }
 
 
 void registerPlane(CppBindModule& module)
 {
-	module.beginClass<Plane>("Plane")
-		.addConstructor(LUA_ARGS(const Vector3&, float))
+	auto p = module.beginClass<Plane>("Plane");
+	p.addConstructor(LUA_ARGS(const Vector3&, float))
 		.addConstant("Intersection_Intersecting", PlaneIntersection::Intersecting)
 		.addConstant("Intersection_Front", PlaneIntersection::Front)
-		.addConstant("Intersection_Back", PlaneIntersection::Back)
-		.addStaticFunction("intersection", &Plane::intersection)
-		.addFunction("getNormal", &Plane::getNormal)
-		.addFunction("setNormal", static_cast<void(Plane::*)(const Vector3&)>(&Plane::setNormal))
-		.addFunction("getDistance", &Plane::getDistance)
-		.addFunction("getDistanceToPoint", &Plane::getDistanceToPoint)
-		.addFunction("setDistance", &Plane::setDistance)
-		.addFunction("isParallel", &Plane::isParallel)
-		.addFunction("transform", &Plane::transform)
-	.endClass();
+		.addConstant("Intersection_Back", PlaneIntersection::Back);
+	REGISTER_STATIC_METHOD(p, Plane, intersection);
+	REGISTER_METHOD(p, Plane, getNormal);
+	REGISTER_METHOD(p, Plane, setNormal);
+	REGISTER_METHOD(p, Plane, getDistance);
+	REGISTER_METHOD(p, Plane, getDistanceToPoint);
+	REGISTER_METHOD(p, Plane, setDistance);
+	REGISTER_METHOD(p, Plane, isParallel);
+	REGISTER_METHOD(p, Plane, transform);
+	p.endClass();
 }
 
 
 void registerFrustum(CppBindModule& module)
 {
-	module.beginClass<Frustum>("Frustum")
-		.addConstructor(LUA_ARGS())
-		.addFunction("getNearPlane", &Frustum::getNearPlane)
-		.addFunction("getFarPlane", &Frustum::getFarPlane)
-		.addFunction("getLeftPlane", &Frustum::getLeftPlane)
-		.addFunction("getRightPlane", &Frustum::getRightPlane)
-		.addFunction("getTopPlane", &Frustum::getTopPlane)
-		.addFunction("getBottomPlane", &Frustum::getBottomPlane)
-		.addFunction("getMatrix", &Frustum::getMatrix)
-		.addFunction("setMatrix", &Frustum::setMatrix)
-		.addFunction("getCorners", &Frustum::getCorners)
-		.addFunction("getNearCorners", &Frustum::getNearCorners)
-		.addFunction("getFarCorners", &Frustum::getFarCorners)
-		.addFunction("intersectsPoint", &Frustum::intersectsPoint)
-		.addFunction("intersectsBoundingBox", &Frustum::intersectsBoundingBox)
-		.addFunction("intersectsBoundingSphere", &Frustum::intersectsBoundingSphere)
-		.addFunction("intersectsRay", &Frustum::intersectsRay)
-		.addFunction("getPlaneIntersection", &Frustum::getPlaneIntersection)
-	.endClass();
+	auto f = module.beginClass<Frustum>("Frustum");
+	f.addConstructor(LUA_ARGS());
+	REGISTER_METHOD(f, Frustum, getNearPlane);
+	REGISTER_METHOD(f, Frustum, getFarPlane);
+	REGISTER_METHOD(f, Frustum, getLeftPlane);
+	REGISTER_METHOD(f, Frustum, getRightPlane);
+	REGISTER_METHOD(f, Frustum, getTopPlane);
+	REGISTER_METHOD(f, Frustum, getBottomPlane);
+	REGISTER_METHOD(f, Frustum, getMatrix);
+	REGISTER_METHOD(f, Frustum, setMatrix);
+	REGISTER_METHOD(f, Frustum, getCorners);
+	REGISTER_METHOD(f, Frustum, getNearCorners);
+	REGISTER_METHOD(f, Frustum, getFarCorners);
+	REGISTER_METHOD(f, Frustum, intersectsPoint);
+	REGISTER_METHOD(f, Frustum, intersectsBoundingBox);
+	REGISTER_METHOD(f, Frustum, intersectsBoundingSphere);
+	REGISTER_METHOD(f, Frustum, intersectsRay);
+	REGISTER_METHOD(f, Frustum, getPlaneIntersection);
+	f.endClass();
 }
 
 
 void registerBoundingBox(CppBindModule& module)
 {
-	module.beginClass<BoundingBox>("BoundingBox")
-		.addConstructor(LUA_ARGS(const Vector3&, const Vector3&))
-		.addStaticFunction("empty", &BoundingBox::empty)
-		.addFunction("getCenter", &BoundingBox::getCenter)
-		.addFunction("getCorners", &BoundingBox::getCorners)
-		.addFunction("intersectsBoundingSphere", &BoundingBox::intersectsBoundingSphere)
-		.addFunction("intersectsBoundingBox", &BoundingBox::intersectsBoundingBox)
-		.addFunction("intersectsFrustum", &BoundingBox::intersectsFrustum)
-		.addFunction("getRayIntersection", &BoundingBox::getRayIntersection)
-		.addFunction("getPlaneIntersection", &BoundingBox::getPlaneIntersection)
-		.addFunction("isEmpty", &BoundingBox::isEmpty)
-		.addFunction("mergeBoundingBox", &BoundingBox::mergeBoundingBox)
-		.addFunction("mergeBoundingSphere", &BoundingBox::mergeBoundingSphere)
-		.addFunction("transform", &BoundingBox::transform)
-		.addVariable("min", &BoundingBox::min)
-		.addVariable("max", &BoundingBox::max)
-	.endClass();
+	auto bb = module.beginClass<BoundingBox>("BoundingBox");
+	bb.addConstructor(LUA_ARGS(const Vector3&, const Vector3&));
+	REGISTER_STATIC_METHOD(bb, BoundingBox, empty);
+	REGISTER_METHOD(bb, BoundingBox, getCenter);
+	REGISTER_METHOD(bb, BoundingBox, getCorners);
+	REGISTER_METHOD(bb, BoundingBox, intersectsBoundingBox);
+	REGISTER_METHOD(bb, BoundingBox, intersectsBoundingSphere);
+	REGISTER_METHOD(bb, BoundingBox, intersectsFrustum);
+	REGISTER_METHOD(bb, BoundingBox, getRayIntersection);
+	REGISTER_METHOD(bb, BoundingBox, getPlaneIntersection);
+	REGISTER_METHOD(bb, BoundingBox, isEmpty);
+	REGISTER_METHOD(bb, BoundingBox, mergeBoundingBox);
+	REGISTER_METHOD(bb, BoundingBox, mergeBoundingSphere);
+	REGISTER_METHOD(bb, BoundingBox, transform);
+	REGISTER_VARIABLE(bb, BoundingBox, min);
+	REGISTER_VARIABLE(bb, BoundingBox, max);
+	bb.endClass();
 }
 
 
@@ -326,21 +325,21 @@ void registerRay(CppBindModule& module)
 
 void registerBoundingSphere(CppBindModule& module)
 {
-	module.beginClass<BoundingSphere>("BoundingSphere")
-		.addConstructor(LUA_ARGS(const Vector3&, float))
-		.addStaticFunction("empty", &BoundingSphere::empty)
-		.addFunction("intersectsBoundingSphere", &BoundingSphere::intersectsBoundingSphere)
-		.addFunction("intersectsBoundingBox", &BoundingSphere::intersectsBoundingBox)
-		.addFunction("intersectsFrustum", &BoundingSphere::intersectsFrustum)
-		.addFunction("getRayIntersection", &BoundingSphere::getRayIntersection)
-		.addFunction("getPlaneIntersection", &BoundingSphere::getPlaneIntersection)
-		.addFunction("isEmpty", &BoundingSphere::isEmpty)
-		.addFunction("mergeBoundingBox", &BoundingSphere::mergeBoundingBox)
-		.addFunction("mergeBoundingSphere", &BoundingSphere::mergeBoundingSphere)
-		.addFunction("transform", &BoundingSphere::transform)
-		.addVariable("center", &BoundingSphere::center)
-		.addVariable("radius", &BoundingSphere::radius)
-	.endClass();
+	auto bs = module.beginClass<BoundingSphere>("BoundingSphere");
+	bs.addConstructor(LUA_ARGS(const Vector3&, float));
+	REGISTER_STATIC_METHOD(bs, BoundingSphere, empty);
+	REGISTER_METHOD(bs, BoundingSphere, intersectsBoundingSphere);
+	REGISTER_METHOD(bs, BoundingSphere, intersectsBoundingBox);
+	REGISTER_METHOD(bs, BoundingSphere, intersectsFrustum);
+	REGISTER_METHOD(bs, BoundingSphere, getRayIntersection);
+	REGISTER_METHOD(bs, BoundingSphere, getPlaneIntersection);
+	REGISTER_METHOD(bs, BoundingSphere, isEmpty);
+	REGISTER_METHOD(bs, BoundingSphere, mergeBoundingBox);
+	REGISTER_METHOD(bs, BoundingSphere, mergeBoundingSphere);
+	REGISTER_METHOD(bs, BoundingSphere, transform);
+	REGISTER_VARIABLE(bs, BoundingSphere, center);
+	REGISTER_VARIABLE(bs, BoundingSphere, radius);
+	bs.endClass();
 }
 
 
@@ -384,21 +383,21 @@ void registerDevice(CppBindModule& module)
 		.addConstant("MouseButton_Middle", MouseButton::Middle)
 		.addConstant("MouseButton_Right", MouseButton::Right);
 
-	module.beginClass<Device>("Device")
-		.addFunction("getWindowTitle", &Device::getWindowTitle)
-		.addFunction("setWindowTitle", &Device::setWindowTitle)
-		.addFunction("setCursorCaptured", &Device::setCursorCaptured)
-		.addFunction("getCanvasSize", &Device::getCanvasSize)
-		.addFunction("getLifetime", &Device::getLifetime)
-		.addFunction("isKeyPressed", &Device::isKeyPressed)
-		.addFunction("isKeyReleased", &Device::isKeyReleased)
-		.addFunction("getMouseMotion", &Device::getMouseMotion)
-		.addFunction("isMouseButtonDown", &Device::isMouseButtonDown)
-		.addFunction("isMouseButtonReleased", &Device::isMouseButtonReleased)
-		.addFunction("getTimeDelta", &Device::getTimeDelta)
-		.addFunction("requestShutdown", &Device::requestShutdown)
-		.addFunction("shutdownRequested", &Device::shutdownRequested)
-	.endClass();
+	auto device = module.beginClass<Device>("Device");
+	REGISTER_METHOD(device, Device, getWindowTitle);
+	REGISTER_METHOD(device, Device, setWindowTitle);
+	REGISTER_METHOD(device, Device, setCursorCaptured);
+	REGISTER_METHOD(device, Device, getCanvasSize);
+	REGISTER_METHOD(device, Device, getLifetime);
+	REGISTER_METHOD(device, Device, isKeyPressed);
+	REGISTER_METHOD(device, Device, isKeyReleased);
+	REGISTER_METHOD(device, Device, getMouseMotion);
+	REGISTER_METHOD(device, Device, isMouseButtonDown);
+	REGISTER_METHOD(device, Device, isMouseButtonReleased);
+	REGISTER_METHOD(device, Device, getTimeDelta);
+	REGISTER_METHOD(device, Device, requestShutdown);
+	REGISTER_METHOD(device, Device, shutdownRequested);
+	device.endClass();
 }
 
 
@@ -412,15 +411,15 @@ void registerResourceManager(CppBindModule& module)
 
 void registerNode(CppBindModule& module)
 {
-	module.beginClass<Node>("Node")
-		.addFunction("getScene", &Node::getScene)
-		.addFunction("getId", &Node::getId)
-		.addFunction("findComponent", LuaScriptComponent::getFindComponentFunc(module.state()))
+	auto node = module.beginClass<Node>("Node");
+	REGISTER_METHOD(node, Node, getScene);
+	REGISTER_METHOD(node, Node, getId);
+	REGISTER_METHOD(node, Node, removeAllComponents);
+	node.addFunction("findComponent", LuaScriptComponent::getFindComponentFunc(module.state()))
 		.addFunction("findStandardComponent", &LuaScriptComponent::findStandardComponent)
 		.addFunction("addComponent", &LuaScriptComponent::addComponent)
 		.addFunction("addStandardComponent", &LuaScriptComponent::addStandardComponent)
 		.addFunction("removeComponent", &LuaScriptComponent::removeComponent)
-		.addFunction("removeAllComponents", &Node::removeAllComponents)
 	.endClass();
 }
 
@@ -488,24 +487,23 @@ void registerTransform(CppBindModule& module)
 	REGISTER_METHOD(transform, Transform, getLocalForward);
 	REGISTER_METHOD(transform, Transform, getLocalBack);
 	REGISTER_METHOD(transform, Transform, translateLocal);
-		
-	transform.addFunction("rotate", static_cast<void(Transform::*)(const Quaternion&, TransformSpace)>(&Transform::rotate))
-		.addFunction("rotateAxisAngle", static_cast<void(Transform::*)(const Vector3&, float, TransformSpace)>(&Transform::rotate))
-		.addFunction("scaleLocal", &Transform::scaleLocal)
-		.addFunction("setLocalPosition", &Transform::setLocalPosition)
-		.addFunction("setLocalRotation", static_cast<void(Transform::*)(const Quaternion&)>(&Transform::setLocalRotation))
-		.addFunction("setLocalRotationAxisAngle", static_cast<void(Transform::*)(const Vector3&, float)>(&Transform::setLocalRotation))
-		.addFunction("setLocalScale", &Transform::setLocalScale)
-		.addFunction("lookAt", &Transform::lookAt)
-		.addFunction("getMatrix", &Transform::getMatrix)
-		.addFunction("getWorldMatrix", &Transform::getWorldMatrix)
-		.addFunction("getWorldViewMatrix", &Transform::getWorldViewMatrix)
-		.addFunction("getWorldViewProjectionMatrix", &Transform::getWorldViewProjectionMatrix)
-		.addFunction("getInverseTransposedWorldViewMatrix", &Transform::getInverseTransposedWorldViewMatrix)
-		.addFunction("getInverseTransposedWorldMatrix", &Transform::getInverseTransposedWorldMatrix)
-		.addFunction("transformPoint", &Transform::transformPoint)
-		.addFunction("transformDirection", &Transform::transformDirection)
-	.endClass();
+	REGISTER_OVERLOADED_METHOD(transform, Transform, rotate, "rotate", void, , const Quaternion&, TransformSpace);
+	REGISTER_OVERLOADED_METHOD(transform, Transform, rotate, "rotateAxisAngle", void, , const Vector3&, float, TransformSpace);
+	REGISTER_METHOD(transform, Transform, scaleLocal);
+	REGISTER_METHOD(transform, Transform, setLocalPosition);
+	REGISTER_OVERLOADED_METHOD(transform, Transform, setLocalRotation, "setLocalRotation", void, , const Quaternion&);
+	REGISTER_OVERLOADED_METHOD(transform, Transform, setLocalRotation, "setLocalRotationAxisAngle", void, , const Vector3&, float);
+	REGISTER_METHOD(transform, Transform, setLocalScale);
+	REGISTER_METHOD(transform, Transform, lookAt);
+	REGISTER_METHOD(transform, Transform, getMatrix);
+	REGISTER_METHOD(transform, Transform, getWorldMatrix);
+	REGISTER_METHOD(transform, Transform, getWorldViewMatrix);
+	REGISTER_METHOD(transform, Transform, getWorldViewProjectionMatrix);
+	REGISTER_METHOD(transform, Transform, getInverseTransposedWorldMatrix);
+	REGISTER_METHOD(transform, Transform, getInverseTransposedWorldViewMatrix);
+	REGISTER_METHOD(transform, Transform, transformPoint);
+	REGISTER_METHOD(transform, Transform, transformDirection);
+	transform.endClass();
 }
 
 

@@ -36,15 +36,6 @@ void Plane::setNormal(const Vector3& normal)
 }
 
 
-void Plane::setNormal(float x, float y, float z)
-{
-	normal.x = x;
-	normal.y = y;
-	normal.z = z;
-	normalize();
-}
-
-
 float Plane::getDistance() const
 {
 	return distance;

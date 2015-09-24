@@ -31,9 +31,6 @@ namespace solo
 		bool isIdentity() const;
 
 		static Matrix createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up);
-		static Matrix createLookAt(float eyePositionX, float eyePositionY, float eyePositionZ,
-				float targetCenterX, float targetCenterY, float targetCenterZ,
-				float upX, float upY, float upZ);
 
 		static Matrix createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane);
 		static Matrix createOrthographic(float width, float height, float zNearPlane, float zFarPlane);
@@ -44,14 +41,12 @@ namespace solo
 
 		static Matrix createReflection(const Plane& plane);
 		static Matrix createScale(const Vector3& scale);
-		static Matrix createScale(float xScale, float yScale, float zScale);
 		static Matrix createRotation(const Quaternion& quat);
 		static Matrix createRotation(const Vector3& axis, float angleRadians);
 		static Matrix createRotationX(float angleRadians);
 		static Matrix createRotationY(float angleRadians);
 		static Matrix createRotationZ(float angleRadians);
 		static Matrix createTranslation(const Vector3& translation);
-		static Matrix createTranslation(float xTranslation, float yTranslation, float zTranslation);
 
 		bool decompose(Vector3* scale, Quaternion* rotation, Vector3* translation) const;
 
@@ -78,17 +73,9 @@ namespace solo
 		void rotateZ(float angleRadians);
 
 		void scale(float value);
-		void scale(float xScale, float yScale, float zScale);
 		void scale(const Vector3& s);
 
-		void translate(float x, float y, float z);
 		void translate(const Vector3& t);
-
-		void set(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24,
-				float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44);
-
-		void set(const float* m);
-		void set(const Matrix& m);
 
 		void setIdentity();
 		void setZero();

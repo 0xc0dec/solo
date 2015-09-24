@@ -25,7 +25,6 @@ namespace solo
 		
 		const Vector3& getNormal() const;
 		void setNormal(const Vector3& normal);
-		void setNormal(float x, float y, float z);
 
 		float getDistance() const;
 		void setDistance(float distance);

@@ -25,13 +25,22 @@ Matrix::Matrix()
 Matrix::Matrix(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24,
 	float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44)
 {
-	set(m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44);
-}
-
-
-Matrix::Matrix(const float* m)
-{
-	set(m);
+	m[0] = m11;
+	m[1] = m21;
+	m[2] = m31;
+	m[3] = m41;
+	m[4] = m12;
+	m[5] = m22;
+	m[6] = m32;
+	m[7] = m42;
+	m[8] = m13;
+	m[9] = m23;
+	m[10] = m33;
+	m[11] = m43;
+	m[12] = m14;
+	m[13] = m24;
+	m[14] = m34;
+	m[15] = m44;
 }
 
 
@@ -68,31 +77,15 @@ const Matrix& Matrix::zero()
 }
 
 
-Matrix Matrix::createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up)
+Matrix Matrix::createLookAt(const Vector3& eye, const Vector3& target, const Vector3& up)
 {
-	return createLookAt(eyePosition.x, eyePosition.y, eyePosition.z,
-						targetPosition.x, targetPosition.y, targetPosition.z,
-						up.x, up.y, up.z);
-}
-
-
-Matrix Matrix::createLookAt(
-		float eyePositionX, float eyePositionY, float eyePositionZ,
-		float targetPositionX, float targetPositionY, float targetPositionZ,
-		float upX, float upY, float upZ)
-{
-	Vector3 eye(eyePositionX, eyePositionY, eyePositionZ);
-	Vector3 target(targetPositionX, targetPositionY, targetPositionZ);
-	Vector3 up(upX, upY, upZ);
-	up.normalize();
-
-	Vector3 zaxis(target - eye);
+	auto zaxis(target - eye);
 	zaxis.normalize();
 
-	Vector3 xaxis = Vector3::cross(up, zaxis);
+	auto xaxis = Vector3::cross(up.normalized(), zaxis);
 	xaxis.normalize();
 
-	Vector3 yaxis = Vector3::cross(zaxis, xaxis);
+	auto yaxis = Vector3::cross(zaxis, xaxis);
 	yaxis.normalize();
 
 	// Matrix is built already transposed
@@ -223,16 +216,6 @@ Matrix Matrix::createScale(const Vector3& scale)
 	result.m[0] = scale.x;
 	result.m[5] = scale.y;
 	result.m[10] = scale.z;
-	return result;
-}
-
-
-Matrix Matrix::createScale(float xScale, float yScale, float zScale)
-{
-	Matrix result;
-	result.m[0] = xScale;
-	result.m[5] = yScale;
-	result.m[10] = zScale;
 	return result;
 }
 
@@ -391,16 +374,6 @@ Matrix Matrix::createTranslation(const Vector3& translation)
 	result.m[12] = translation.x;
 	result.m[13] = translation.y;
 	result.m[14] = translation.z;
-	return result;
-}
-
-
-Matrix Matrix::createTranslation(float xTranslation, float yTranslation, float zTranslation)
-{
-	Matrix result;
-	result.m[12] = xTranslation;
-	result.m[13] = yTranslation;
-	result.m[14] = zTranslation;
 	return result;
 }
 
@@ -685,54 +658,15 @@ void Matrix::rotateZ(float angleRadians)
 
 void Matrix::scale(float value)
 {
-	scale(value, value, value);
+	scale(Vector3(value, value, value));
 }
 
-
-void Matrix::scale(float xScale, float yScale, float zScale)
-{
-	auto s = createScale(xScale, yScale, zScale);
-	*this *= s;
-}
 
 
 void Matrix::scale(const Vector3& s)
 {
-	scale(s.x, s.y, s.z);
-}
-
-
-void Matrix::set(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24,
-	float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44)
-{
-	m[0] = m11;
-	m[1] = m21;
-	m[2] = m31;
-	m[3] = m41;
-	m[4] = m12;
-	m[5] = m22;
-	m[6] = m32;
-	m[7] = m42;
-	m[8] = m13;
-	m[9] = m23;
-	m[10] = m33;
-	m[11] = m43;
-	m[12] = m14;
-	m[13] = m24;
-	m[14] = m34;
-	m[15] = m44;
-}
-
-
-void Matrix::set(const float* m)
-{
-	memcpy(this->m, m, MATRIX_SIZE);
-}
-
-
-void Matrix::set(const Matrix& m)
-{
-	memcpy(this->m, m.m, MATRIX_SIZE);
+	auto sm = createScale(s);
+	*this *= sm;
 }
 
 
@@ -823,16 +757,10 @@ Vector4 Matrix::transformDirection(const Vector4& dir) const
 }
 
 
-void Matrix::translate(float x, float y, float z)
-{
-	auto t = createTranslation(x, y, z);
-	*this *= t;
-}
-
-
 void Matrix::translate(const Vector3& t)
 {
-	translate(t.x, t.y, t.z);
+	auto tm = createTranslation(t);
+	*this *= tm;
 }
 
 
