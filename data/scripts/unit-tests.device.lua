@@ -1,7 +1,7 @@
 runTest(function()
 	local device = engine:getDevice()
-
-	device:getWindowTitle()
-	device:setWindowTitle("Solo engine window")
-	device:getLifetime()
+	assert(device)
+	device:setWindowTitle("Some title")
+	assert(device:getWindowTitle() == "Some title")
+	assert(device:getLifetime() ~= nil)
 end, "Device")

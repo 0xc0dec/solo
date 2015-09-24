@@ -1,15 +1,15 @@
 runTest(function()
 	local p = solo.Plane(solo.Vector3(1, 2, 3), 1)
 	local v = solo.Vector3(1, 2, 3)
-	solo.Plane.intersection(p, p, p)
-	local i = solo.Plane.Intersection_Front
-	i = solo.Plane.Intersection_Back
-	i = solo.Plane.Intersection_Intersecting
-	p:getNormal()
+	assert(solo.Plane.intersection(p, p, p))
+	assert(solo.Plane.Intersection_Front ~= nil)
+	assert(solo.Plane.Intersection_Back ~= nil)
+	assert(solo.Plane.Intersection_Intersecting ~= nil)
+	assert(p:getNormal())
 	p:setNormal(solo.Vector3(1, 2, 3))
-	p:getDistance()
+	assert(p:getDistance() ~= nil)
 	p:setDistance(1)
-	p:getDistanceToPoint(solo.Vector3(1, 2, 3))
-	p:isParallel(p)
+	assert(p:getDistanceToPoint(solo.Vector3(1, 2, 3)) ~= nil)
+	assert(p:isParallel(p) ~= nil)
 	p:transform(solo.Matrix())
 end, "Plane")

@@ -1,12 +1,16 @@
 print("Running unit tests...")
 
 function runTest(test, name)
-	print("Running " .. name .. " tests...")
+	io.write("Running " .. name .. " tests... ")
 	local status, err = pcall(test)
+	local failed = false
 	if err then
-		print(err)
+		print("\n" .. err)
+		failed = true
 	end
-	print("Finished " .. name .. " tests\n")
+	if not failed then
+		print("done")
+	end
 end
 
 callback =
@@ -38,4 +42,4 @@ dofile("../data/scripts/unit-tests.node.lua")
 dofile("../data/scripts/unit-tests.engine.lua")
 dofile("../data/scripts/unit-tests.device.lua")
 
-print("Finished unit tests")
+print("Finished unit tests\n")

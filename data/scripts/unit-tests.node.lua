@@ -2,19 +2,18 @@ runTest(function()
 	local scene = engine:getScene()
 	local node = scene:createNode()
 
-	node:getScene()
-	node:getId()
+	assert(node)
+	assert(node:getScene())
+	assert(node:getId())
 
 	function create()
 		return {
 			typeId = "TestComponent",
 
 			init = function()
-				print("Init called")
 			end,
 
 			update = function()
-				print("Update called")
 			end,
 
 			render = function()
@@ -24,7 +23,6 @@ runTest(function()
 			end,
 
 			terminate = function()
-				print("terminate() called")
 			end
 		}
 	end
