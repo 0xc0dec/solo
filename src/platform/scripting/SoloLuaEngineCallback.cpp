@@ -35,9 +35,9 @@ void LuaEngineCallback::onEngineStopped()
 
 void LuaEngineCallback::setCallback(Engine* engine, LuaIntf::LuaRef& callback)
 {
-	auto onDeviceCloseRequestedFunc = callback.get<std::function<bool()>>("onDeviceCloseRequested");
-	auto onEngineStartedFunc = callback.get<std::function<bool()>>("onEngineStarted");
-	auto onEngineStoppedFunc = callback.get<std::function<bool()>>("onEngineStoppedFunc");
+	auto onDeviceCloseRequestedFunc = callback.has("onDeviceCloseRequested") ? callback.get<std::function<bool()>>("onDeviceCloseRequested") : [] { return false; };
+	auto onEngineStartedFunc = callback.has("onEngineStarted") ? callback.get<std::function<bool()>>("onEngineStarted") : [] {};
+	auto onEngineStoppedFunc = callback.has("onEngineStoppedFunc") ? callback.get<std::function<bool()>>("onEngineStoppedFunc") : [] {};
 	auto actualCallback = NEW2(LuaEngineCallback, onDeviceCloseRequestedFunc, onEngineStartedFunc, onEngineStoppedFunc);
 	engine->setCallback(actualCallback);
 }

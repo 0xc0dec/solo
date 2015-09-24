@@ -60,11 +60,11 @@ void LuaScriptComponent::addComponent(Node* node, LuaRef& component)
 {
 	auto typeIdString = component.get<std::string>("typeId");
 	auto typeId = getHash(typeIdString);
-	auto initFunc = component.get<std::function<void()>>("init");
-	auto updateFunc = component.get<std::function<void()>>("update");
-	auto renderFunc = component.get<std::function<void()>>("render");
-	auto postRenderFunc = component.get<std::function<void()>>("postRender");
-	auto terminateFunc = component.get<std::function<void()>>("terminate");
+	auto initFunc = component.has("init") ? component.get<std::function<void()>>("init") : [] {};
+	auto updateFunc = component.has("update") ? component.get<std::function<void()>>("update") : [] {};
+	auto renderFunc = component.has("render") ? component.get<std::function<void()>>("render") : [] {};
+	auto postRenderFunc = component.has("postRender") ? component.get<std::function<void()>>("postRender") : [] {};
+	auto terminateFunc = component.has("terminate") ? component.get<std::function<void()>>("terminate") : [] {};
 	node->addComponent<LuaScriptComponent>(typeId, initFunc, updateFunc, renderFunc, postRenderFunc, terminateFunc);
 }
 

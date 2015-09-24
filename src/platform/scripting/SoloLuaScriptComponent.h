@@ -18,13 +18,9 @@ namespace solo
 			std::function<void()> terminateFunc);
 
 		virtual void init() override;
-
 		virtual void update() override;
-
 		virtual void render(RenderContext& context) override;
-
 		virtual void postRender() override;
-
 		virtual void terminate() override;
 
 		virtual size_t getTypeId() override;
@@ -33,8 +29,6 @@ namespace solo
 		static void removeComponent(Node *node, const std::string& componentTypeId);
 
 	private:
-		
-
 		size_t typeId;
 		std::function<void()> initFunc;
 		std::function<void()> updateFunc;
