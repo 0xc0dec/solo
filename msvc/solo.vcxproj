@@ -88,6 +88,7 @@
     <ClInclude Include="..\include\SoloVector2.h" />
     <ClInclude Include="..\include\SoloVector3.h" />
     <ClInclude Include="..\include\SoloVector4.h" />
+    <ClInclude Include="..\src\platform\scripting\SoloLuaEngineCallback.h" />
     <ClInclude Include="..\src\platform\scripting\SoloLuaScriptComponent.h" />
     <ClInclude Include="..\src\platform\scripting\SoloLuaScriptManager.h" />
     <ClInclude Include="..\src\platform\SoloGLSLEffect.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="..\external\zlib\src\trees.c" />
     <ClCompile Include="..\external\zlib\src\uncompr.c" />
     <ClCompile Include="..\external\zlib\src\zutil.c" />
+    <ClCompile Include="..\src\platform\scripting\SoloLuaEngineCallback.cpp" />
     <ClCompile Include="..\src\platform\scripting\SoloLuaScriptComponent.cpp" />
     <ClCompile Include="..\src\platform\scripting\SoloLuaScriptManager.cpp" />
     <ClCompile Include="..\src\platform\SoloOpenGLRenderTarget.cpp" />

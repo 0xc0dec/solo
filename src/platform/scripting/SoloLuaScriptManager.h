@@ -7,8 +7,6 @@
 
 namespace solo
 {
-	class Engine;
-
 	class LuaScriptManager: public ScriptManager
 	{
 	public:
@@ -18,13 +16,12 @@ namespace solo
 		virtual void executeFile(const std::string& path) override;
 
 	private:
-		friend class ScriptManagerFactory;
+		friend class ScriptManager;
 
-		LuaScriptManager(Engine *engine);
+		LuaScriptManager();
 
 		void registerApi();
 
-		Engine *engine;
 		LuaIntf::LuaState lua;
 	};
 }

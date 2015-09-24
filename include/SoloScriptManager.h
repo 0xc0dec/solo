@@ -11,13 +11,9 @@ namespace solo
 	public:
 		virtual ~ScriptManager() {}
 
+		static shared<ScriptManager> create();
+
 		virtual void execute(const std::string& code) = 0;
 		virtual void executeFile(const std::string& path) = 0;
-	};
-
-	class ScriptManagerFactory
-	{
-		friend class Engine;
-		static shared<ScriptManager> create(Engine *engine);
 	};
 }

@@ -4,7 +4,7 @@
 using namespace solo;
 
 
-shared<ScriptManager> ScriptManagerFactory::create(Engine *engine)
+shared<ScriptManager> ScriptManager::create()
 {
-	return NEW2(LuaScriptManager, engine);
+	return NEW2(LuaScriptManager);
 }

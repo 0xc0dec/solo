@@ -82,45 +82,42 @@ protected:
 };
 
 
-void runEngine(bool integrationMode)
+EngineCreationArgs openGlArgs
 {
-	EngineCreationArgs args
-	{
-		integrationMode ? EngineMode::OpenGL : EngineMode::Stub,
-		640,
-		480
-	};
-	args.entryScriptFilePath = integrationMode
-		? "../data/scripts/integration-tests.lua"
-		: "../data/scripts/unit-tests.lua";
+	EngineMode::OpenGL,
+	640,
+	480
+};
 
-	try
-	{
-		if (integrationMode)
-		{
-			auto engine = Engine::create(args);
-			IntegrationTestAndDemoRunner runner(engine.get());
-			engine->setCallback(&runner);
-			engine->run();
-		}
-		else
-		{
-			auto engine = Engine::create(args);
-			UnitTestRunner runner(engine.get());
-			engine->setCallback(&runner);
-			engine->run();
-		}
-	}
-	catch (const std::exception &e)
-	{
-		std::cout << e.what() << std::endl;
-	}
+
+EngineCreationArgs stubArgs
+{
+	EngineMode::Stub,
+	1,
+	1
+};
+
+
+void runCppUnitTests()
+{
+	auto engine = Engine::create(stubArgs);
+	auto runner = NEW2(UnitTestRunner, engine.get());
+	engine->setCallback(runner);
+	engine->run();
+}
+
+
+void runLuaTests(const std::string& entryScriptPath)
+{
+	auto scriptManager = ScriptManager::create();
+	scriptManager->executeFile(entryScriptPath);
 }
 
 
 int main()
 {
-	runEngine(false);
-//	runEngine(true);
+	runCppUnitTests();
+	runLuaTests("../data/scripts/unit-tests.lua");
+	runLuaTests("../data/scripts/integration-tests.lua");
 	return 0;
 }

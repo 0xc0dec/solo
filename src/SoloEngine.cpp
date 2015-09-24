@@ -4,7 +4,6 @@
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
 #include "SoloResourceManager.h"
-#include "SoloScriptManager.h"
 
 using namespace solo;
 
@@ -15,7 +14,7 @@ public:
 	bool onDeviceCloseRequested() override { return true; }
 	void onEngineStarted() override {}
 	void onEngineStopped() override {}
-} emptyCallback;
+};
 
 
 shared<Engine> Engine::create(const EngineCreationArgs& args)
@@ -25,10 +24,9 @@ shared<Engine> Engine::create(const EngineCreationArgs& args)
 
 
 Engine::Engine(const EngineCreationArgs& args):
-	creationArgs{args},
-	callback{&emptyCallback}
+	creationArgs{args}
 {
-	scriptManager = ScriptManagerFactory::create(this);
+	callback = NEW<EmptyEngineCallback>();
 	device = DeviceFactory::create(creationArgs);
 	fs = FileSystemFactory::create();
 	resourceManager = ResourceManagerFactory::create(this);
@@ -45,11 +43,6 @@ void Engine::run()
 {
 	callback->onEngineStarted();
 
-	if (!creationArgs.entryScriptCode.empty())
-		scriptManager->execute(creationArgs.entryScriptCode);
-	if (!creationArgs.entryScriptFilePath.empty())
-		scriptManager->executeFile(creationArgs.entryScriptFilePath);
-
 	while (true)
 	{
 		device->beginUpdate();
@@ -64,21 +57,15 @@ void Engine::run()
 }
 
 
-void Engine::setCallback(EngineCallback* callback)
+void Engine::setCallback(shared<EngineCallback> callback)
 {
-	this->callback = callback ? callback : &emptyCallback;
+	this->callback = callback ? callback : NEW<EmptyEngineCallback>();
 }
 
 
 EngineMode Engine::getMode() const
 {
 	return creationArgs.mode;
-}
-
-
-ScriptManager* Engine::getScriptManager() const
-{
-	return scriptManager.get();
 }
 
 

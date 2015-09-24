@@ -17,28 +17,22 @@ namespace solo
 		int depth;
 		bool fullScreen;
 		std::string windowTitle;
-		std::string entryScriptCode;
-		std::string entryScriptFilePath;
 
 		EngineCreationArgs(
-			EngineMode mode,
+			EngineMode mode = EngineMode::OpenGL,
 			int canvasWidth = 800,
 			int canvasHeight = 600,
 			int bits = 32,
 			int depth = 16,
 			bool fullScreen = false,
-			const std::string& windowTitle = "",
-			const std::string& entryScriptCode = "",
-			const std::string& entryScriptFilePath = ""):
+			const std::string& windowTitle = ""):
 			mode(mode),
 			canvasWidth(canvasWidth),
 			canvasHeight(canvasHeight),
 			bits(bits),
 			depth(depth),
 			fullScreen(fullScreen),
-			windowTitle(windowTitle),
-			entryScriptCode(entryScriptCode),
-			entryScriptFilePath(entryScriptFilePath)
+			windowTitle(windowTitle)
 		{
 		}
 	};

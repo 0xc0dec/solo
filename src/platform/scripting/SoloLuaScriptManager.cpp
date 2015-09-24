@@ -2,6 +2,7 @@
 #include <map>
 #include "SoloLuaScriptManager.h"
 #include "SoloLuaScriptComponent.h"
+#include "SoloLuaEngineCallback.h"
 #include "SoloEngine.h"
 #include "SoloDevice.h"
 #include "SoloScene.h"
@@ -30,8 +31,7 @@ using namespace solo;
 using namespace LuaIntf;
 
 
-LuaScriptManager::LuaScriptManager(Engine *engine):
-	engine(engine)
+LuaScriptManager::LuaScriptManager()
 {
 	lua = LuaState::newState();
 	lua.openLibs();
@@ -333,6 +333,7 @@ void registerBoundingSphere(CppBindModule& module)
 void registerDevice(CppBindModule& module)
 {
 	module.beginClass<Device>("Device")
+		.addFunction("requestShutdown", &Device::requestShutdown)
 		.addFunction("getWindowTitle", &Device::getWindowTitle)
 		.addFunction("setWindowTitle", &Device::setWindowTitle)
 		.addFunction("getLifetime", &Device::getLifetime)
@@ -370,9 +371,29 @@ void registerScene(CppBindModule& module)
 
 void registerEngine(CppBindModule& module)
 {
+	module
+		.addConstant("EngineMode_Stub", EngineMode::Stub)
+		.addConstant("EngineMode_OpenGL", EngineMode::OpenGL);
+		
+
+	module.beginClass<EngineCreationArgs>("EngineCreationArgs")
+		.addConstructor(LUA_ARGS(_opt<EngineMode>, _opt<int>, _opt<int>, _opt<int>, _opt<int>, _opt<bool>, _opt<std::string>))
+		.addVariable("mode", &EngineCreationArgs::mode, true)
+		.addVariable("bits", &EngineCreationArgs::bits, true)
+		.addVariable("canvasHeight", &EngineCreationArgs::canvasHeight, true)
+		.addVariable("canvasWidth", &EngineCreationArgs::canvasWidth, true)
+		.addVariable("depth", &EngineCreationArgs::depth, true)
+		.addVariable("fullScreen", &EngineCreationArgs::fullScreen, true)
+		.addVariable("windowTitle", &EngineCreationArgs::windowTitle, true)
+	.endClass();
+
 	module.beginClass<Engine>("Engine")
+		.addStaticFunction("create", &Engine::create)
 		.addFunction("getDevice", &Engine::getDevice)
 		.addFunction("getScene", &Engine::getScene)
+		.addFunction("getResourceManager", &Engine::getResourceManager)
+		.addFunction("setCallback", &LuaEngineCallback::setCallback)
+		.addFunction("run", &Engine::run)
 	.endClass();
 }
 
@@ -395,7 +416,6 @@ void LuaScriptManager::registerApi()
 	registerNode(module);
 	registerScene(module);
 	registerEngine(module);
-	module.addVariable("engine", engine, false);
 	module.endModule();
 }
 
