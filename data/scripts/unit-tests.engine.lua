@@ -23,6 +23,7 @@ runTest(function()
 	assert(engine:getDevice())
 	assert(engine:getScene())
 	assert(engine:getResourceManager())
+	assert(engine:getFileSystem())
 	assert(engine:getMode() ~= nil)
 
 	local callback =

@@ -7,6 +7,7 @@
 #include "SoloDevice.h"
 #include "SoloScene.h"
 #include "SoloResourceManager.h"
+#include "SoloFileSystem.h"
 #include "SoloNode.h"
 #include "SoloVector2.h"
 #include "SoloVector3.h"
@@ -369,6 +370,14 @@ void registerScene(CppBindModule& module)
 }
 
 
+void registerFileSystem(CppBindModule& module)
+{
+	module.beginClass<FileSystem>("FileSystem")
+		// TODO
+	.endClass();
+}
+
+
 void registerEngine(CppBindModule& module)
 {
 	module
@@ -416,6 +425,7 @@ void LuaScriptManager::registerApi()
 	registerResourceManager(module);
 	registerNode(module);
 	registerScene(module);
+	registerFileSystem(module);
 	registerEngine(module);
 	module.endModule();
 }
