@@ -2,30 +2,13 @@ print("Running unit tests...")
 
 function runTest(test, name)
 	io.write("Running " .. name .. " tests... ")
-	local status, err = pcall(test)
-	local failed = false
+	local _, err = select(1, pcall(test))
 	if err then
 		print("\n" .. err)
-		failed = true
-	end
-	if not failed then
+	else
 		print("done")
 	end
 end
-
-callback =
-{
-	onDeviceCloseRequested = function()
-		return true
-	end,
-
-	onEngineStarted = function()
-		engine:getDevice():requestShutdown()
-	end,
-
-	onEngineStopped = function()
-	end,
-}
 
 engine = solo.Engine.create(solo.EngineCreationArgs(EngineMode_Stub, 1, 1))
 

@@ -26,7 +26,7 @@ runTest(function()
 	assert(engine:getFileSystem())
 	assert(engine:getMode() ~= nil)
 
-	local callback =
+	engine:setCallback(
 	{
 		onDeviceCloseRequested = function()
 			return true
@@ -37,6 +37,7 @@ runTest(function()
 
 		onEngineStopped = function()
 		end
-	}
-	engine:setCallback(callback)
+	})
+
+	engine:setCallback({})
 end, "Engine")

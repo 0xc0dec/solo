@@ -333,11 +333,53 @@ void registerBoundingSphere(CppBindModule& module)
 
 void registerDevice(CppBindModule& module)
 {
+	module
+		.addConstant("KeyCode_A", KeyCode::A)
+		.addConstant("KeyCode_B", KeyCode::B)
+		.addConstant("KeyCode_C", KeyCode::C)
+		.addConstant("KeyCode_D", KeyCode::D)
+		.addConstant("KeyCode_E", KeyCode::E)
+		.addConstant("KeyCode_F", KeyCode::F)
+		.addConstant("KeyCode_G", KeyCode::G)
+		.addConstant("KeyCode_H", KeyCode::H)
+		.addConstant("KeyCode_I", KeyCode::I)
+		.addConstant("KeyCode_J", KeyCode::J)
+		.addConstant("KeyCode_K", KeyCode::K)
+		.addConstant("KeyCode_L", KeyCode::L)
+		.addConstant("KeyCode_M", KeyCode::M)
+		.addConstant("KeyCode_N", KeyCode::N)
+		.addConstant("KeyCode_O", KeyCode::O)
+		.addConstant("KeyCode_P", KeyCode::P)
+		.addConstant("KeyCode_Q", KeyCode::Q)
+		.addConstant("KeyCode_R", KeyCode::R)
+		.addConstant("KeyCode_S", KeyCode::S)
+		.addConstant("KeyCode_T", KeyCode::T)
+		.addConstant("KeyCode_U", KeyCode::U)
+		.addConstant("KeyCode_V", KeyCode::V)
+		.addConstant("KeyCode_W", KeyCode::W)
+		.addConstant("KeyCode_X", KeyCode::X)
+		.addConstant("KeyCode_Y", KeyCode::Y)
+		.addConstant("KeyCode_Z", KeyCode::Z);
+
+	module
+		.addConstant("MouseButton_Left", MouseButton::Left)
+		.addConstant("MouseButton_Middle", MouseButton::Middle)
+		.addConstant("MouseButton_Right", MouseButton::Right);
+
 	module.beginClass<Device>("Device")
-		.addFunction("requestShutdown", &Device::requestShutdown)
 		.addFunction("getWindowTitle", &Device::getWindowTitle)
 		.addFunction("setWindowTitle", &Device::setWindowTitle)
+		.addFunction("setCursorCaptured", &Device::setCursorCaptured)
+		.addFunction("getCanvasSize", &Device::getCanvasSize)
 		.addFunction("getLifetime", &Device::getLifetime)
+		.addFunction("isKeyPressed", &Device::isKeyPressed)
+		.addFunction("isKeyReleased", &Device::isKeyReleased)
+		.addFunction("getMouseMotion", &Device::getMouseMotion)
+		.addFunction("isMouseButtonDown", &Device::isMouseButtonDown)
+		.addFunction("isMouseButtonReleased", &Device::isMouseButtonReleased)
+		.addFunction("getTimeDelta", &Device::getTimeDelta)
+		.addFunction("requestShutdown", &Device::requestShutdown)
+		.addFunction("shutdownRequested", &Device::shutdownRequested)
 	.endClass();
 }
 

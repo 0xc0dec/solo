@@ -118,6 +118,6 @@ int main()
 {
 	runCppUnitTests();
 	runLuaTests("../data/scripts/unit-tests.lua");
-	runLuaTests("../data/scripts/integration-tests.lua");
+	runLuaTests("../data/scripts/demo.lua");
 	return 0;
 }
