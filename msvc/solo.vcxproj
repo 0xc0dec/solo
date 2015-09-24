@@ -262,6 +262,7 @@
       <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalOptions>/bigobj /wd4503 %(AdditionalOptions)</AdditionalOptions>
       <CompileAs>Default</CompileAs>
+      <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -310,6 +311,7 @@
       <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalOptions>/bigobj /wd4503 %(AdditionalOptions)</AdditionalOptions>
       <CompileAs>Default</CompileAs>
+      <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
