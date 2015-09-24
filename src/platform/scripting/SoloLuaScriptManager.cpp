@@ -422,6 +422,10 @@ void registerComponent(CppBindModule& module)
 
 void registerTransform(CppBindModule& module)
 {
+	module
+		.addConstant("TransformSpace_Parent", TransformSpace::Parent)
+		.addConstant("TransformSpace_Self", TransformSpace::Self)
+		.addConstant("TransformSpace_World", TransformSpace::World);
 	module.beginExtendClass<Transform, Component>("Transform")
 		.addFunction("getWorldPosition", &Transform::getWorldPosition)
 		// TODO

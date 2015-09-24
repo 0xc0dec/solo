@@ -15,10 +15,10 @@ namespace solo
 			size_t typeId,
 			LuaIntf::LuaRef& component,
 			std::function<void(LuaIntf::LuaRef)> initFunc,
-			std::function<void()> updateFunc,
-			std::function<void()> renderFunc,
-			std::function<void()> postRenderFunc,
-			std::function<void()> terminateFunc);
+			std::function<void(LuaIntf::LuaRef)> updateFunc,
+			std::function<void(LuaIntf::LuaRef)> renderFunc,
+			std::function<void(LuaIntf::LuaRef)> postRenderFunc,
+			std::function<void(LuaIntf::LuaRef)> terminateFunc);
 
 		virtual void init() override;
 		virtual void update() override;
@@ -39,9 +39,9 @@ namespace solo
 		size_t typeId;
 		LuaIntf::LuaRef component;
 		std::function<void(LuaIntf::LuaRef component)> initFunc;
-		std::function<void()> updateFunc;
-		std::function<void()> renderFunc;
-		std::function<void()> postRenderFunc;
-		std::function<void()> terminateFunc;
+		std::function<void(LuaIntf::LuaRef)> updateFunc;
+		std::function<void(LuaIntf::LuaRef)> renderFunc;
+		std::function<void(LuaIntf::LuaRef)> postRenderFunc;
+		std::function<void(LuaIntf::LuaRef)> terminateFunc;
 	};
 }

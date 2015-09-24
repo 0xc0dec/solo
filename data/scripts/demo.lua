@@ -103,7 +103,6 @@ local fsTextureWithLighting = [[
 callback =
 {
 	onDeviceCloseRequested = function()
-		print("Close requested")
 		return true
 	end,
 
@@ -116,40 +115,6 @@ callback =
 		end
 	end
 }
-
-function print_r ( t )
-    local print_r_cache={}
-    local function sub_print_r(t,indent)
-        if (print_r_cache[tostring(t)]) then
-            print(indent.."*"..tostring(t))
-        else
-            print_r_cache[tostring(t)]=true
-            if (type(t)=="table") then
-                for pos,val in pairs(t) do
-                    if (type(val)=="table") then
-                        print(indent.."["..pos.."] => "..tostring(t).." {")
-                        sub_print_r(val,indent..string.rep(" ",string.len(pos)+8))
-                        print(indent..string.rep(" ",string.len(pos)+6).."}")
-                    elseif (type(val)=="string") then
-                        print(indent.."["..pos..'] => "'..val..'"')
-                    else
-                        print(indent.."["..pos.."] => "..tostring(val))
-                    end
-                end
-            else
-                print(indent..tostring(t))
-            end
-        end
-    end
-    if (type(t)=="table") then
-        print(tostring(t).." {")
-        sub_print_r(t,"  ")
-        print("}")
-    else
-        sub_print_r(t,"  ")
-    end
-    print()
-end
 
 local escapeWatcher =
 {
@@ -167,11 +132,29 @@ local spectator =
 	typeId = "Spectator",
 
 	init = function(self)
-		-- local transform = self.node:findComponent("Transform")
-		-- local t = self.node:test()
-		-- print(transform:getTypeId())
-		-- print(t:getTypeId())
-		-- print(t:getWorldPosition().x)
+		self.transform = self.node:findBuiltInComponent("Transform")
+	end,
+
+	update = function(self)
+		print("Update")
+		local mouseMotion = device:getMouseMotion();
+		local dt = device:getTimeDelta();
+
+		if device:isMouseButtonDown(solo.MouseButton_Right, true) then
+			device:setCursorCaptured(true)
+		end
+		if device:isMouseButtonReleased(solo.MouseButton_Right) then
+			device:setCursorCaptured(false)
+		end
+
+		if device:isMouseButtonDown(solo.MouseButton_Right, false) then
+			if mouseMotion.x ~= 0 then
+				-- self.transform:rotate(solo.Vector3::unitY(), 0.5f * dt * -mouseMotion.x, solo.TransformSpace_World);
+			end
+			if mouseMotion.y ~= 0 then
+				-- self.transform:rotate(solo.Vector3::unitX(), 0.5f * dt * -mouseMotion.y, solo.TransformSpace_Self);
+			end
+		end
 	end
 }
 

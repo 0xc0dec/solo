@@ -10,10 +10,10 @@ LuaScriptComponent::LuaScriptComponent(
 	size_t typeId,
 	LuaRef& component,
 	std::function<void(LuaRef)> initFunc,
-	std::function<void()> updateFunc,
-	std::function<void()> renderFunc,
-	std::function<void()> postRenderFunc,
-	std::function<void()> terminateFunc) :
+	std::function<void(LuaRef)> updateFunc,
+	std::function<void(LuaRef)> renderFunc,
+	std::function<void(LuaRef)> postRenderFunc,
+	std::function<void(LuaRef)> terminateFunc) :
 	ComponentBase<LuaScriptComponent>(node),
 	typeId(typeId),
 	component(component),
@@ -35,25 +35,25 @@ void LuaScriptComponent::init()
 
 void LuaScriptComponent::update()
 {
-	updateFunc();
+	updateFunc(component);
 }
 
 
 void LuaScriptComponent::render(RenderContext& context)
 {
-	renderFunc(/* TODO pass context */);
+	renderFunc(component/* TODO pass context */);
 }
 
 
 void LuaScriptComponent::postRender()
 {
-	postRenderFunc();
+	postRenderFunc(component);
 }
 
 
 void LuaScriptComponent::terminate()
 {
-	terminateFunc();
+	terminateFunc(component);
 }
 
 
@@ -91,10 +91,10 @@ void LuaScriptComponent::addComponent(Node* node, LuaRef& component)
 	auto typeIdString = component.get<std::string>("typeId");
 	auto typeId = getHash(typeIdString);
 	auto initFunc = component.has("init") ? component.get<std::function<void(LuaRef)>>("init") : [](LuaRef) {};
-	auto updateFunc = component.has("update") ? component.get<std::function<void()>>("update") : [] {};
-	auto renderFunc = component.has("render") ? component.get<std::function<void()>>("render") : [] {};
-	auto postRenderFunc = component.has("postRender") ? component.get<std::function<void()>>("postRender") : [] {};
-	auto terminateFunc = component.has("terminate") ? component.get<std::function<void()>>("terminate") : [] {};
+	auto updateFunc = component.has("update") ? component.get<std::function<void(LuaRef)>>("update") : [](LuaRef) {};
+	auto renderFunc = component.has("render") ? component.get<std::function<void(LuaRef)>>("render") : [](LuaRef) {};
+	auto postRenderFunc = component.has("postRender") ? component.get<std::function<void(LuaRef)>>("postRender") : [](LuaRef) {};
+	auto terminateFunc = component.has("terminate") ? component.get<std::function<void(LuaRef)>>("terminate") : [](LuaRef) {};
 	auto actualComponent = NEW<LuaScriptComponent>(*node, typeId, component, initFunc, updateFunc, renderFunc, postRenderFunc, terminateFunc);
 	node->getScene()->addComponent(node->getId(), actualComponent, typeId);
 }
