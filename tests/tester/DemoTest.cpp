@@ -352,7 +352,7 @@ void DemoTest::initCameras()
 
 	auto mainCameraNode = scene->createNode();
 	auto mainCameraTransform = mainCameraNode->getComponent<Transform>();
-	mainCameraTransform->setLocalPosition(0, 2, 15);
+	mainCameraTransform->setLocalPosition(Vector3(0, 2, 15));
 	mainCameraNode->addComponent<Spectator>(device);
 	mainCameraNode->addComponent<EscapeWatcher>(device);
 	auto mainCamera = mainCameraNode->addComponent<Camera>();
@@ -375,7 +375,7 @@ void DemoTest::initObjects()
 
 	// RTT quad
 	auto parent = scene->createNode();
-	parent->getComponent<Transform>()->setLocalPosition(-2, 2, -2);
+	parent->getComponent<Transform>()->setLocalPosition(Vector3(-2, 2, -2));
 	parent->addComponent<RotatorAroundWorldYAxis>(device);
 	initAxesModel(parent);
 
@@ -383,27 +383,27 @@ void DemoTest::initObjects()
 	quad->getComponent<ModelRenderer>()->setMaterial(0, renderTargetMaterial);
 	auto quadTransform = quad->getComponent<Transform>();
 	quadTransform->setParent(parent->getComponent<Transform>());
-	quadTransform->setLocalPosition(5, 2, -5);
-	quadTransform->setLocalScale(5, 5 * canvasSize.y / canvasSize.x, 1);
+	quadTransform->setLocalPosition(Vector3(5, 2, -5));
+	quadTransform->setLocalScale(Vector3(5, 5 * canvasSize.y / canvasSize.x, 1));
 	quad->addComponent<Targeter>(node->getComponent<Transform>()); // monkey
 
 	// Textured quad
 	parent = scene->createNode();
-	parent->getComponent<Transform>()->setLocalPosition(5, 0, 0);
+	parent->getComponent<Transform>()->setLocalPosition(Vector3(5, 0, 0));
 	parent->addComponent<RotatorAroundWorldYAxis>(device);
 	initAxesModel(parent);
 
 	quad = createQuad();
 	quad->addComponent<RotatorAroundLocalXAxis>(device);
 	quad->getComponent<Transform>()->setParent(parent->getComponent<Transform>());
-	quad->getComponent<Transform>()->setLocalPosition(2, 0, 0);
+	quad->getComponent<Transform>()->setLocalPosition(Vector3(2, 0, 0));
 	quad->getComponent<ModelRenderer>()->setMaterial(0, texMaterial);
 
 	// Box
 	node = createQuad();
 	rebuildToBoxMesh(node);
 	node->getComponent<ModelRenderer>()->setMaterial(0, checkerMaterial);
-	node->getComponent<Transform>()->setLocalPosition(-5, 0, 0);
+	node->getComponent<Transform>()->setLocalPosition(Vector3(-5, 0, 0));
 	node->addComponent<RotatorAroundWorldYAxis>(device);
 }
 

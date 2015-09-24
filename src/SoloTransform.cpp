@@ -55,7 +55,7 @@ void Transform::setParent(Transform* parent)
 		return;
 	if (this->parent)
 	{
-		auto parentChildren = this->parent->children;
+		auto &parentChildren = this->parent->children;
 		this->parent->children.erase(std::remove(parentChildren.begin(), parentChildren.end(), this), parentChildren.end());
 	}
 	this->parent = parent;
@@ -80,7 +80,10 @@ Transform* Transform::getChild(size_t index) const
 void Transform::removeChildren()
 {
 	while (!children.empty())
-		(*children.begin())->setParent(nullptr);
+	{
+		auto child = *children.begin();
+		child->setParent(nullptr);
+	}
 }
 
 
@@ -201,15 +204,6 @@ void Transform::translateLocal(const Vector3& translation)
 }
 
 
-void Transform::translateLocal(float x, float y, float z)
-{
-	localPosition.x += x;
-	localPosition.y += y;
-	localPosition.z += z;
-	setDirtyWithChildren<DIRTY_BIT_POSITION, DIRTY_BIT_WORLD>();
-}
-
-
 void Transform::rotate(const Quaternion& rotation, TransformSpace space)
 {
 	auto normalizedRotation(const_cast<Quaternion&>(rotation));
@@ -244,13 +238,6 @@ void Transform::rotate(const Vector3& axis, float angleRadians, TransformSpace s
 }
 
 
-void Transform::scaleLocal(float scale)
-{
-	localScale *= scale;
-	setDirtyWithChildren<DIRTY_BIT_SCALE, DIRTY_BIT_WORLD>();
-}
-
-
 void Transform::scaleLocal(const Vector3& scale)
 {
 	localScale.x *= scale.x;
@@ -260,32 +247,9 @@ void Transform::scaleLocal(const Vector3& scale)
 }
 
 
-void Transform::scaleLocal(float x, float y, float z)
-{
-	localScale.x *= x;
-	localScale.y *= y;
-	localScale.z *= z;
-	setDirtyWithChildren<DIRTY_BIT_SCALE, DIRTY_BIT_WORLD>();
-}
-
-
-void Transform::setLocalScale(float scale)
-{
-	localScale = Vector3(scale, scale, scale);
-	setDirtyWithChildren<DIRTY_BIT_SCALE, DIRTY_BIT_WORLD>();
-}
-
-
 void Transform::setLocalScale(const Vector3& scale)
 {
 	localScale = scale;
-	setDirtyWithChildren<DIRTY_BIT_SCALE, DIRTY_BIT_WORLD>();
-}
-
-
-void Transform::setLocalScale(float x, float y, float z)
-{
-	localScale = Vector3(x, y, z);
 	setDirtyWithChildren<DIRTY_BIT_SCALE, DIRTY_BIT_WORLD>();
 }
 
@@ -337,13 +301,6 @@ void Transform::setLocalRotation(const Vector3& axis, float angleRadians)
 void Transform::setLocalPosition(const Vector3& position)
 {
 	localPosition = position;
-	setDirtyWithChildren<DIRTY_BIT_POSITION, DIRTY_BIT_WORLD>();
-}
-
-
-void Transform::setLocalPosition(float x, float y, float z)
-{
-	localPosition = Vector3(x, y, z);
 	setDirtyWithChildren<DIRTY_BIT_POSITION, DIRTY_BIT_WORLD>();
 }
 

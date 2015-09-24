@@ -51,24 +51,16 @@ namespace solo
 		Vector3 getLocalBack() const;
 
 		void translateLocal(const Vector3& translation);
-		void translateLocal(float x, float y, float z);
+		void scaleLocal(const Vector3& scale);
+
+		void setLocalPosition(const Vector3& position);
+		void setLocalScale(const Vector3& scale);
 
 		void rotate(const Quaternion& rotation, TransformSpace space = TransformSpace::Self);
 		void rotate(const Vector3& axis, float angleRadians, TransformSpace space = TransformSpace::Self);
 
-		void scaleLocal(float scale);
-		void scaleLocal(const Vector3& scale);
-		void scaleLocal(float x, float y, float z);
-
-		void setLocalPosition(const Vector3& position);
-		void setLocalPosition(float x, float y, float z);
-
 		void setLocalRotation(const Quaternion& rotation);
 		void setLocalRotation(const Vector3& axis, float angleRadians);
-		
-		void setLocalScale(float scale);
-		void setLocalScale(const Vector3& scale);
-		void setLocalScale(float x, float y, float z);
 
 		// Target and Up are in world coordinates
 		void lookAt(const Vector3& target, const Vector3& up);

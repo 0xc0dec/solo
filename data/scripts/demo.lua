@@ -136,7 +136,6 @@ local spectator =
 	end,
 
 	update = function(self)
-		print("Update")
 		local mouseMotion = device:getMouseMotion();
 		local dt = device:getTimeDelta();
 

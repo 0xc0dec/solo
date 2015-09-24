@@ -22,6 +22,7 @@ dofile("../data/scripts/unit-tests.bounding-sphere.lua")
 dofile("../data/scripts/unit-tests.matrix.lua")
 dofile("../data/scripts/unit-tests.frustum.lua")
 dofile("../data/scripts/unit-tests.node.lua")
+dofile("../data/scripts/unit-tests.transform.lua")
 dofile("../data/scripts/unit-tests.engine.lua")
 dofile("../data/scripts/unit-tests.device.lua")
 

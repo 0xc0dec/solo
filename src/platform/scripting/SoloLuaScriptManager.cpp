@@ -20,6 +20,7 @@
 #include "SoloBoundingSphere.h"
 #include "SoloRay.h"
 #include "SoloTransform.h"
+#include "SoloCamera.h"
 
 namespace LuaIntf
 {
@@ -415,7 +416,15 @@ void registerNode(CppBindModule& module)
 void registerComponent(CppBindModule& module)
 {
 	module.beginClass<Component>("Component")
-		.addFunction("getTypeId", &Component::getTypeId)
+		// TODO
+	.endClass();
+}
+
+
+void registerCamera(CppBindModule& module)
+{
+	module.beginClass<Camera>("Camera")
+
 	.endClass();
 }
 
@@ -426,9 +435,42 @@ void registerTransform(CppBindModule& module)
 		.addConstant("TransformSpace_Parent", TransformSpace::Parent)
 		.addConstant("TransformSpace_Self", TransformSpace::Self)
 		.addConstant("TransformSpace_World", TransformSpace::World);
+
 	module.beginExtendClass<Transform, Component>("Transform")
+		.addFunction("getParent", &Transform::getParent)
+		.addFunction("setParent", &Transform::setParent)
+		.addFunction("getChild", &Transform::getChild)
+		.addFunction("getChildrenCount", &Transform::getChildrenCount)
+		.addFunction("removeChildren", &Transform::removeChildren)
+		.addFunction("getWorldScale", &Transform::getWorldScale)
+		.addFunction("getLocalScale", &Transform::getLocalScale)
+		.addFunction("getWorldRotation", &Transform::getWorldRotation)
+		.addFunction("getLocalRotation", &Transform::getLocalRotation)
 		.addFunction("getWorldPosition", &Transform::getWorldPosition)
-		// TODO
+		.addFunction("getLocalPosition", &Transform::getLocalPosition)
+		.addFunction("getLocalUp", &Transform::getLocalUp)
+		.addFunction("getLocalDown", &Transform::getLocalDown)
+		.addFunction("getLocalLeft", &Transform::getLocalLeft)
+		.addFunction("getLocalRight", &Transform::getLocalRight)
+		.addFunction("getLocalForward", &Transform::getLocalForward)
+		.addFunction("getLocalBack", &Transform::getLocalBack)
+		.addFunction("translateLocal", &Transform::translateLocal)
+		.addFunction("rotate", static_cast<void(Transform::*)(const Quaternion&, TransformSpace)>(&Transform::rotate))
+		.addFunction("rotateAxisAngle", static_cast<void(Transform::*)(const Vector3&, float, TransformSpace)>(&Transform::rotate))
+		.addFunction("scaleLocal", &Transform::scaleLocal)
+		.addFunction("setLocalPosition", &Transform::setLocalPosition)
+		.addFunction("setLocalRotation", static_cast<void(Transform::*)(const Quaternion&)>(&Transform::setLocalRotation))
+		.addFunction("setLocalRotationAxisAngle", static_cast<void(Transform::*)(const Vector3&, float)>(&Transform::setLocalRotation))
+		.addFunction("setLocalScale", &Transform::setLocalScale)
+		.addFunction("lookAt", &Transform::lookAt)
+		.addFunction("getMatrix", &Transform::getMatrix)
+		.addFunction("getWorldMatrix", &Transform::getWorldMatrix)
+		.addFunction("getWorldViewMatrix", &Transform::getWorldViewMatrix)
+		.addFunction("getWorldViewProjectionMatrix", &Transform::getWorldViewProjectionMatrix)
+		.addFunction("getInverseTransposedWorldViewMatrix", &Transform::getInverseTransposedWorldViewMatrix)
+		.addFunction("getInverseTransposedWorldMatrix", &Transform::getInverseTransposedWorldMatrix)
+		.addFunction("transformPoint", &Transform::transformPoint)
+		.addFunction("transformDirection", &Transform::transformDirection)
 	.endClass();
 }
 
@@ -497,6 +539,7 @@ void LuaScriptManager::registerApi()
 	registerNode(module);
 	registerComponent(module);
 	registerTransform(module);
+	registerCamera(module);
 	registerScene(module);
 	registerFileSystem(module);
 	registerEngine(module);
