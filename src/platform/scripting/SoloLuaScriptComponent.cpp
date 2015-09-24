@@ -1,14 +1,13 @@
 #include "SoloLuaScriptComponent.h"
 #include "SoloTransform.h"
+#include "SoloCamera.h"
+#include "SoloModelRenderer.h"
 
 using namespace solo;
 using namespace LuaIntf;
 
 
-LuaScriptComponent::LuaScriptComponent(
-	const Node& node,
-	size_t typeId,
-	LuaRef& component,
+LuaScriptComponent::LuaScriptComponent(const Node& node, size_t typeId, LuaRef& component,
 	std::function<void(LuaRef)> initFunc,
 	std::function<void(LuaRef)> updateFunc,
 	std::function<void(LuaRef)> renderFunc,
@@ -63,10 +62,14 @@ size_t LuaScriptComponent::getTypeId()
 }
 
 
-Component* LuaScriptComponent::findBuiltInComponent(Node* node, const std::string& typeName)
+Component* LuaScriptComponent::findStandardComponent(Node* node, const std::string& typeName)
 {
 	if (typeName == "Transform")
 		return node->findComponent<Transform>();
+	if (typeName == "ModelRenderer")
+		return node->findComponent<ModelRenderer>();
+	if (typeName == "Camera")
+		return node->findComponent<Camera>();
 	return nullptr;
 }
 
@@ -97,6 +100,18 @@ void LuaScriptComponent::addComponent(Node* node, LuaRef& component)
 	auto terminateFunc = component.has("terminate") ? component.get<std::function<void(LuaRef)>>("terminate") : [](LuaRef) {};
 	auto actualComponent = NEW<LuaScriptComponent>(*node, typeId, component, initFunc, updateFunc, renderFunc, postRenderFunc, terminateFunc);
 	node->getScene()->addComponent(node->getId(), actualComponent, typeId);
+}
+
+
+Component* LuaScriptComponent::addStandardComponent(Node* node, const std::string& typeName)
+{
+	if (typeName == "Transform")
+		return node->addComponent<Transform>();
+	if (typeName == "ModelRenderer")
+		return node->addComponent<ModelRenderer>();
+	if (typeName == "Camera")
+		return node->addComponent<Camera>();
+	THROW_FMT(EngineException, "Unknown standard component ", typeName);
 }
 
 

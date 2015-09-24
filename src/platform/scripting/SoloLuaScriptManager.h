@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SoloScriptManager.h"
-
 #include <LuaIntf.h>
 
 namespace solo

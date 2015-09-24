@@ -405,8 +405,9 @@ void registerNode(CppBindModule& module)
 		.addFunction("getScene", &Node::getScene)
 		.addFunction("getId", &Node::getId)
 		.addFunction("findComponent", LuaScriptComponent::getFindComponentFunc(module.state()))
-		.addFunction("findBuiltInComponent", &LuaScriptComponent::findBuiltInComponent)
+		.addFunction("findStandardComponent", &LuaScriptComponent::findStandardComponent)
 		.addFunction("addComponent", &LuaScriptComponent::addComponent)
+		.addFunction("addStandardComponent", &LuaScriptComponent::addStandardComponent)
 		.addFunction("removeComponent", &LuaScriptComponent::removeComponent)
 		.addFunction("removeAllComponents", &Node::removeAllComponents)
 	.endClass();
@@ -423,8 +424,8 @@ void registerComponent(CppBindModule& module)
 
 void registerCamera(CppBindModule& module)
 {
-	module.beginClass<Camera>("Camera")
-
+	module.beginExtendClass<Camera, Component>("Camera")
+		// TODO
 	.endClass();
 }
 

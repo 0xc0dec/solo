@@ -28,9 +28,10 @@ namespace solo
 
 		virtual size_t getTypeId() override;
 
-		static Component* findBuiltInComponent(Node *node, const std::string& typeName);
+		static Component* findStandardComponent(Node *node, const std::string& typeName);
 		static std::function<LuaIntf::LuaRef(Node *, const std::string&)> getFindComponentFunc(lua_State *lua);
 		static void addComponent(Node *node, LuaIntf::LuaRef& component);
+		static Component* addStandardComponent(Node *node, const std::string& typeName);
 		static void removeComponent(Node *node, const std::string& componentTypeId);
 
 	private:

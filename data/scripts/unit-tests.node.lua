@@ -6,9 +6,13 @@ runTest(function()
 	assert(node:getScene())
 	assert(node:getId())
 
-	assert(node:findBuiltInComponent("Transform"))
-	assert(node:findBuiltInComponent("werwerwer") == nil)
+	assert(node:findStandardComponent("Transform"))
+	assert(node:findStandardComponent("werwerwer") == nil)
 	assert(node:findComponent("werwer") == nil)
+
+	assert(node:findStandardComponent("Camera") == nil)
+	assert(node:addStandardComponent("Camera"))
+	assert(node:findStandardComponent("Camera"))
 
 	function create()
 		return {

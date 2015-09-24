@@ -132,7 +132,7 @@ local spectator =
 	typeId = "Spectator",
 
 	init = function(self)
-		self.transform = self.node:findBuiltInComponent("Transform")
+		self.transform = self.node:findStandardComponent("Transform")
 	end,
 
 	update = function(self)
