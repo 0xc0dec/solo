@@ -374,7 +374,6 @@ void registerEngine(CppBindModule& module)
 	module
 		.addConstant("EngineMode_Stub", EngineMode::Stub)
 		.addConstant("EngineMode_OpenGL", EngineMode::OpenGL);
-		
 
 	module.beginClass<EngineCreationArgs>("EngineCreationArgs")
 		.addConstructor(LUA_ARGS(_opt<EngineMode>, _opt<int>, _opt<int>, _opt<int>, _opt<int>, _opt<bool>, _opt<std::string>))
@@ -392,7 +391,9 @@ void registerEngine(CppBindModule& module)
 		.addFunction("getDevice", &Engine::getDevice)
 		.addFunction("getScene", &Engine::getScene)
 		.addFunction("getResourceManager", &Engine::getResourceManager)
+		.addFunction("getFileSystem", &Engine::getFileSystem)
 		.addFunction("setCallback", &LuaEngineCallback::setCallback)
+		.addFunction("getMode", &Engine::getMode)
 		.addFunction("run", &Engine::run)
 	.endClass();
 }

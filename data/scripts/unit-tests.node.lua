@@ -1,5 +1,5 @@
 runTest(function()
-	local scene = solo.engine:getScene()
+	local scene = engine:getScene()
 	local node = scene:createNode()
 
 	node:getScene()

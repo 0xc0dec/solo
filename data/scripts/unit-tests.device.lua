@@ -1,5 +1,4 @@
 runTest(function()
-	local engine = solo.engine
 	local device = engine:getDevice()
 
 	device:getWindowTitle()
