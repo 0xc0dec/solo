@@ -25,6 +25,11 @@ runTest(function()
 	assert(solo.KeyCode_X ~= nil)
 	assert(solo.KeyCode_Y ~= nil)
 	assert(solo.KeyCode_Z ~= nil);
+	assert(solo.KeyCode_LeftArrow ~= nil);
+	assert(solo.KeyCode_RightArrow ~= nil);
+	assert(solo.KeyCode_UpArrow ~= nil);
+	assert(solo.KeyCode_DownArrow ~= nil);
+	assert(solo.KeyCode_Escape ~= nil);
 
 	assert(solo.MouseButton_Left ~= nil);
 	assert(solo.MouseButton_Middle ~= nil);

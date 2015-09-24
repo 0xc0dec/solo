@@ -6,6 +6,10 @@ runTest(function()
 	assert(node:getScene())
 	assert(node:getId())
 
+	assert(node:findBuiltInComponent("Transform"))
+	assert(node:findBuiltInComponent("werwerwer") == nil)
+	assert(node:findComponent("werwer") == nil)
+
 	function create()
 		return {
 			typeId = "TestComponent",
@@ -27,11 +31,14 @@ runTest(function()
 		}
 	end
 
-	node:addComponent(create())
-
 	local cmp = create()
+	node:addComponent(cmp)
+	assert(node:findComponent(cmp.typeId) == cmp)
+
+	cmp = create()
 	cmp.typeId = "AnotherComponent"
 	node:addComponent(cmp)
+	assert(node:findComponent("AnotherComponent") == cmp)
 
 	local cmp2 = create()
 	cmp2.typeId = "YetAnotherComponent"

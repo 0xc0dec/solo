@@ -11,7 +11,6 @@
 #include <limits.h>
 #include <stddef.h>
 
-
 /*
 ** ===================================================================
 ** Search for "@@" to find all configurable definitions.
@@ -741,9 +740,6 @@
 ** Local configuration. You can use this space to add your redefinitions
 ** without modifying the main part of the file.
 */
-
-
-
 
 
 #endif

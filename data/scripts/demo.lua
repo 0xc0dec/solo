@@ -99,27 +99,86 @@ local fsTextureWithLighting = [[
 		fragColor = color * dot(vec3(1, 1, 1), n) / (length(vec3(1, 1, 1)) * length(n));
 	}
 ]]
-
+--
 callback =
 {
 	onDeviceCloseRequested = function()
+		print("Close requested")
 		return true
 	end,
 
 	onEngineStarted = function()
-		init()
+		device = engine:getDevice()
+		scene = engine:getScene()
+		local _, err = pcall(init)
+		if err then
+			print(err)
+		end
 	end
 }
 
+function print_r ( t )
+    local print_r_cache={}
+    local function sub_print_r(t,indent)
+        if (print_r_cache[tostring(t)]) then
+            print(indent.."*"..tostring(t))
+        else
+            print_r_cache[tostring(t)]=true
+            if (type(t)=="table") then
+                for pos,val in pairs(t) do
+                    if (type(val)=="table") then
+                        print(indent.."["..pos.."] => "..tostring(t).." {")
+                        sub_print_r(val,indent..string.rep(" ",string.len(pos)+8))
+                        print(indent..string.rep(" ",string.len(pos)+6).."}")
+                    elseif (type(val)=="string") then
+                        print(indent.."["..pos..'] => "'..val..'"')
+                    else
+                        print(indent.."["..pos.."] => "..tostring(val))
+                    end
+                end
+            else
+                print(indent..tostring(t))
+            end
+        end
+    end
+    if (type(t)=="table") then
+        print(tostring(t).." {")
+        sub_print_r(t,"  ")
+        print("}")
+    else
+        sub_print_r(t,"  ")
+    end
+    print()
+end
+
 local escapeWatcher =
 {
+	typeId = "EscapeWatcher",
+
 	update = function()
-		
+		if device:isKeyPressed(solo.KeyCode_Escape, true) then
+			device:requestShutdown()
+		end
+	end
+}
+
+local spectator =
+{
+	typeId = "Spectator",
+
+	init = function(self)
+		-- local transform = self.node:findComponent("Transform")
+		-- local t = self.node:test()
+		-- print(transform:getTypeId())
+		-- print(t:getTypeId())
+		-- print(t:getWorldPosition().x)
 	end
 }
 
 function init()
-
+	local auxNode = scene:createNode() -- TODO local
+	auxNode:addComponent(escapeWatcher)
+	auxNode:addComponent(spectator)
 end
 
 engine = solo.Engine.create(solo.EngineCreationArgs(solo.EngineMode_OpenGL, 800, 600))

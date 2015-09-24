@@ -19,32 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\external\lua\5.3.1\lapi.h" />
-    <ClInclude Include="..\external\lua\5.3.1\lauxlib.h" />
-    <ClInclude Include="..\external\lua\5.3.1\lcode.h" />
-    <ClInclude Include="..\external\lua\5.3.1\lctype.h" />
-    <ClInclude Include="..\external\lua\5.3.1\ldebug.h" />
-    <ClInclude Include="..\external\lua\5.3.1\ldo.h" />
-    <ClInclude Include="..\external\lua\5.3.1\lfunc.h" />
-    <ClInclude Include="..\external\lua\5.3.1\lgc.h" />
-    <ClInclude Include="..\external\lua\5.3.1\llex.h" />
-    <ClInclude Include="..\external\lua\5.3.1\llimits.h" />
-    <ClInclude Include="..\external\lua\5.3.1\lmem.h" />
-    <ClInclude Include="..\external\lua\5.3.1\lobject.h" />
-    <ClInclude Include="..\external\lua\5.3.1\lopcodes.h" />
-    <ClInclude Include="..\external\lua\5.3.1\lparser.h" />
-    <ClInclude Include="..\external\lua\5.3.1\lprefix.h" />
-    <ClInclude Include="..\external\lua\5.3.1\lstate.h" />
-    <ClInclude Include="..\external\lua\5.3.1\lstring.h" />
-    <ClInclude Include="..\external\lua\5.3.1\ltable.h" />
-    <ClInclude Include="..\external\lua\5.3.1\ltm.h" />
-    <ClInclude Include="..\external\lua\5.3.1\lua.h" />
-    <ClInclude Include="..\external\lua\5.3.1\lua.hpp" />
-    <ClInclude Include="..\external\lua\5.3.1\luaconf.h" />
-    <ClInclude Include="..\external\lua\5.3.1\lualib.h" />
-    <ClInclude Include="..\external\lua\5.3.1\lundump.h" />
-    <ClInclude Include="..\external\lua\5.3.1\lvm.h" />
-    <ClInclude Include="..\external\lua\5.3.1\lzio.h" />
     <ClInclude Include="..\include\SoloBase.h" />
     <ClInclude Include="..\include\SoloBoundingBox.h" />
     <ClInclude Include="..\include\SoloBoundingSphere.h" />
@@ -114,39 +88,6 @@
     <ClCompile Include="..\external\glew\src\glew.c" />
     <ClCompile Include="..\external\glew\src\glewinfo.c" />
     <ClCompile Include="..\external\glew\src\visualinfo.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lapi.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lauxlib.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lbaselib.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lbitlib.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lcode.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lcorolib.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lctype.c" />
-    <ClCompile Include="..\external\lua\5.3.1\ldblib.c" />
-    <ClCompile Include="..\external\lua\5.3.1\ldebug.c" />
-    <ClCompile Include="..\external\lua\5.3.1\ldo.c" />
-    <ClCompile Include="..\external\lua\5.3.1\ldump.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lfunc.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lgc.c" />
-    <ClCompile Include="..\external\lua\5.3.1\linit.c" />
-    <ClCompile Include="..\external\lua\5.3.1\liolib.c" />
-    <ClCompile Include="..\external\lua\5.3.1\llex.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lmathlib.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lmem.c" />
-    <ClCompile Include="..\external\lua\5.3.1\loadlib.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lobject.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lopcodes.c" />
-    <ClCompile Include="..\external\lua\5.3.1\loslib.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lparser.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lstate.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lstring.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lstrlib.c" />
-    <ClCompile Include="..\external\lua\5.3.1\ltable.c" />
-    <ClCompile Include="..\external\lua\5.3.1\ltablib.c" />
-    <ClCompile Include="..\external\lua\5.3.1\ltm.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lundump.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lutf8lib.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lvm.c" />
-    <ClCompile Include="..\external\lua\5.3.1\lzio.c" />
     <ClCompile Include="..\external\png\src\png.c" />
     <ClCompile Include="..\external\png\src\pngerror.c" />
     <ClCompile Include="..\external\png\src\pngget.c" />
@@ -276,7 +217,7 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(ProjectDir)..\external\zlib\include;$(ProjectDir)..\external\;$(ProjectDir)..\external\lua\5.3.1\;$(ProjectDir)..\external\LuaIntf\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
-    <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;..\build\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\build\</OutDir>
@@ -287,7 +228,7 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(ProjectDir)..\external\zlib\include;$(ProjectDir)..\external\;$(ProjectDir)..\external\lua\5.3.1\;$(ProjectDir)..\external\LuaIntf\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
-    <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;..\build\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -320,12 +261,13 @@
       <ProgramDataBaseFileName>$(OutDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalOptions>/bigobj /wd4503 %(AdditionalOptions)</AdditionalOptions>
+      <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;opengl32.lib;SDL2_release_mt_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;opengl32.lib;lua.lib;SDL2_release_mt_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalOptions>/ignore:4006 /ignore:4221 /ignore:4204</AdditionalOptions>
     </Lib>
@@ -367,6 +309,7 @@
       <ProgramDataBaseFileName>$(OutDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalOptions>/bigobj /wd4503 %(AdditionalOptions)</AdditionalOptions>
+      <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -374,7 +317,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;opengl32.lib;SDL2_release_mt_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;opengl32.lib;lua.lib;SDL2_release_mt_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalOptions>/ignore:4006 /ignore:4221 /ignore:4204</AdditionalOptions>
     </Lib>

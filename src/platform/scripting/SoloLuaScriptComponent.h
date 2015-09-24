@@ -1,17 +1,20 @@
 #pragma once
 
 #include <functional>
-#define LUAINTF_LINK_LUA_COMPILED_IN_CXX 0
 #include <LuaIntf.h>
 #include "SoloComponent.h"
+
 
 namespace solo
 {
 	class LuaScriptComponent: public ComponentBase<LuaScriptComponent>
 	{
 	public:
-		explicit LuaScriptComponent(const Node& node, size_t typeId,
-			std::function<void()> initFunc,
+		LuaScriptComponent(
+			const Node& node,
+			size_t typeId,
+			LuaIntf::LuaRef& component,
+			std::function<void(LuaIntf::LuaRef)> initFunc,
 			std::function<void()> updateFunc,
 			std::function<void()> renderFunc,
 			std::function<void()> postRenderFunc,
@@ -25,12 +28,17 @@ namespace solo
 
 		virtual size_t getTypeId() override;
 
+		static Component* findBuiltInComponent(Node *node, const std::string& typeName);
+		static std::function<LuaIntf::LuaRef(Node *, const std::string&)> getFindComponentFunc(lua_State *lua);
 		static void addComponent(Node *node, LuaIntf::LuaRef& component);
 		static void removeComponent(Node *node, const std::string& componentTypeId);
 
 	private:
+		static LuaIntf::LuaRef findComponent(lua_State *lua, Node *node, const std::string& componentTypeId);
+
 		size_t typeId;
-		std::function<void()> initFunc;
+		LuaIntf::LuaRef component;
+		std::function<void(LuaIntf::LuaRef component)> initFunc;
 		std::function<void()> updateFunc;
 		std::function<void()> renderFunc;
 		std::function<void()> postRenderFunc;

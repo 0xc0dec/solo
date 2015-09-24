@@ -50,6 +50,7 @@
 ** C++ code, with _longjmp/_setjmp when asked to use them, and with
 ** longjmp/setjmp otherwise.
 */
+
 #if !defined(LUAI_THROW)				/* { */
 
 #if defined(__cplusplus) && !defined(LUA_USE_LONGJMP)	/* { */

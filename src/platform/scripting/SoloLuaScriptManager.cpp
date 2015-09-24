@@ -19,6 +19,7 @@
 #include "SoloBoundingBox.h"
 #include "SoloBoundingSphere.h"
 #include "SoloRay.h"
+#include "SoloTransform.h"
 
 namespace LuaIntf
 {
@@ -359,7 +360,12 @@ void registerDevice(CppBindModule& module)
 		.addConstant("KeyCode_W", KeyCode::W)
 		.addConstant("KeyCode_X", KeyCode::X)
 		.addConstant("KeyCode_Y", KeyCode::Y)
-		.addConstant("KeyCode_Z", KeyCode::Z);
+		.addConstant("KeyCode_Z", KeyCode::Z)
+		.addConstant("KeyCode_LeftArrow", KeyCode::LeftArrow)
+		.addConstant("KeyCode_RightArrow", KeyCode::RightArrow)
+		.addConstant("KeyCode_UpArrow", KeyCode::UpArrow)
+		.addConstant("KeyCode_DownArrow", KeyCode::DownArrow)
+		.addConstant("KeyCode_Escape", KeyCode::Escape);
 
 	module
 		.addConstant("MouseButton_Left", MouseButton::Left)
@@ -397,9 +403,28 @@ void registerNode(CppBindModule& module)
 	module.beginClass<Node>("Node")
 		.addFunction("getScene", &Node::getScene)
 		.addFunction("getId", &Node::getId)
-		.addFunction("addComponent", LuaScriptComponent::addComponent)
+		.addFunction("findComponent", LuaScriptComponent::getFindComponentFunc(module.state()))
+		.addFunction("findBuiltInComponent", &LuaScriptComponent::findBuiltInComponent)
+		.addFunction("addComponent", &LuaScriptComponent::addComponent)
 		.addFunction("removeComponent", &LuaScriptComponent::removeComponent)
 		.addFunction("removeAllComponents", &Node::removeAllComponents)
+	.endClass();
+}
+
+
+void registerComponent(CppBindModule& module)
+{
+	module.beginClass<Component>("Component")
+		.addFunction("getTypeId", &Component::getTypeId)
+	.endClass();
+}
+
+
+void registerTransform(CppBindModule& module)
+{
+	module.beginExtendClass<Transform, Component>("Transform")
+		.addFunction("getWorldPosition", &Transform::getWorldPosition)
+		// TODO
 	.endClass();
 }
 
@@ -466,6 +491,8 @@ void LuaScriptManager::registerApi()
 	registerDevice(module);
 	registerResourceManager(module);
 	registerNode(module);
+	registerComponent(module);
+	registerTransform(module);
 	registerScene(module);
 	registerFileSystem(module);
 	registerEngine(module);
