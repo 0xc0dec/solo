@@ -117,7 +117,7 @@ void runLuaTests(const std::string& entryScriptPath)
 int main()
 {
 	runCppUnitTests();
-	runLuaTests("../data/scripts/unit-tests.lua");
-	runLuaTests("../data/scripts/demo.lua");
+	runLuaTests("../tests/scripts/unit-tests.lua");
+	runLuaTests("../tests/scripts/demo.lua");
 	return 0;
 }
