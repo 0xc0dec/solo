@@ -32,6 +32,7 @@
 
 #define REGISTER_VARIABLE(binding, klass, name) binding.addVariable(#name, &klass::name, true)
 #define REGISTER_METHOD(binding, klass, name) binding.addFunction(#name, &klass::name)
+#define REGISTER_METHOD2(binding, klass, name, argsSpec) binding.addFunction(#name, &klass::name, argsSpec)
 #define REGISTER_METHOD_RENAMED(binding, klass, name, nameStr) binding.addFunction(nameStr, &klass::name)
 #define REGISTER_OVERLOADED_METHOD(binding, klass, name, nameStr, resultType, modifier, ...) \
 	binding.addFunction(nameStr, static_cast<resultType(klass::*)(__VA_ARGS__)modifier>(&klass::name))
@@ -440,8 +441,10 @@ void registerTexture(CppBindModule& module)
 
 void registerMaterial(CppBindModule& module)
 {
-	module.beginClass<Material>("Material")
-	.endClass();
+	auto m = module.beginClass<Material>("Material");
+	REGISTER_METHOD(m, Material, getParameter);
+	REGISTER_METHOD(m, Material, getEffect);
+	m.endClass();
 
 	auto mp = module.beginClass<MaterialParameter>("MaterialParameter");
 	// TODO
@@ -619,12 +622,12 @@ void registerResourceManager(CppBindModule module)
 	REGISTER_METHOD(mgr, ResourceManager, findMesh);
 	REGISTER_METHOD(mgr, ResourceManager, findModel);
 	REGISTER_METHOD(mgr, ResourceManager, findRenderTarget);
-	REGISTER_METHOD(mgr, ResourceManager, getOrCreateEffect);
-	REGISTER_METHOD(mgr, ResourceManager, getOrCreateTexture2D);
-	REGISTER_METHOD(mgr, ResourceManager, getOrCreateMaterial);
-	REGISTER_METHOD(mgr, ResourceManager, getOrCreateMesh);
-	REGISTER_METHOD(mgr, ResourceManager, getOrCreateModel);
-	REGISTER_METHOD(mgr, ResourceManager, getOrCreateRenderTarget);
+	REGISTER_METHOD2(mgr, ResourceManager, getOrCreateEffect, LUA_ARGS(const std::string&, const std::string&, _opt<const std::string&>));
+	REGISTER_METHOD2(mgr, ResourceManager, getOrCreateTexture2D, LUA_ARGS(_opt<const std::string&>));
+	REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMaterial, LUA_ARGS(shared<Effect>, _opt<const std::string&>));
+	REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMesh, LUA_ARGS(_opt<const std::string&>));
+	REGISTER_METHOD2(mgr, ResourceManager, getOrCreateModel, LUA_ARGS(_opt<const std::string&>));
+	REGISTER_METHOD2(mgr, ResourceManager, getOrCreateRenderTarget, LUA_ARGS(_opt<const std::string&>));
 	REGISTER_METHOD(mgr, ResourceManager, getOrLoadTexture);
 	REGISTER_METHOD(mgr, ResourceManager, getOrLoadModel);
 	REGISTER_OVERLOADED_METHOD(mgr, ResourceManager, cleanUnusedResources, "cleanUnusedResources", void,,void);
