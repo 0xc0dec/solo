@@ -81,8 +81,11 @@
     <ClInclude Include="..\src\SoloStubEffect.h" />
     <ClInclude Include="..\src\SoloStubMaterial.h" />
     <ClInclude Include="..\src\SoloStubMesh.h" />
+    <ClInclude Include="..\src\SoloStubModelLoader.h" />
     <ClInclude Include="..\src\SoloStubRenderTarget.h" />
+    <ClInclude Include="..\src\SoloStubResourceManager.h" />
     <ClInclude Include="..\src\SoloStubTexture2D.h" />
+    <ClInclude Include="..\src\SoloStubTextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\glew\src\glew.c" />
@@ -154,6 +157,9 @@
     <ClCompile Include="..\src\SoloEffect.cpp" />
     <ClCompile Include="..\src\SoloScriptManager.cpp" />
     <ClCompile Include="..\src\SoloStubDevice.cpp" />
+    <ClCompile Include="..\src\SoloStubModelLoader.cpp" />
+    <ClCompile Include="..\src\SoloStubResourceManager.cpp" />
+    <ClCompile Include="..\src\SoloStubTextureLoader.cpp" />
     <ClCompile Include="..\src\SoloTexture.cpp" />
     <ClCompile Include="..\src\SoloTexture2D.cpp" />
     <ClCompile Include="..\src\SoloTransform.cpp" />

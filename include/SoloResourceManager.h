@@ -38,12 +38,17 @@ namespace solo
 
 		void cleanUnusedResources();
 
+	protected:
+		explicit ResourceManager(Engine *engine);
+
+		std::vector<shared<TextureLoader>> textureLoaders;
+		std::vector<shared<ModelLoader>> modelLoaders;
+
 	private:
 		friend class ResourceManagerFactory;
 
 		template <typename TResource> using ResourceMap = std::unordered_map<std::string, shared<TResource>>;
-
-		explicit ResourceManager(Engine *engine);
+		
 		ResourceManager(const ResourceManager& other) = delete;
 		ResourceManager(ResourceManager&& other) = delete;
 		ResourceManager& operator=(const ResourceManager& other) = delete;
@@ -70,9 +75,6 @@ namespace solo
 		ResourceMap<Model> models;
 		ResourceMap<Texture2D> textures;
 		ResourceMap<RenderTarget> renderTargets;
-
-		std::vector<shared<TextureLoader>> textureLoaders;
-		std::vector<shared<ModelLoader>> modelLoaders;
 
 		size_t resourceCounter{ 0 };
 	};

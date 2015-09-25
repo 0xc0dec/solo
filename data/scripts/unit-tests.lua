@@ -28,6 +28,7 @@ dofile("../data/scripts/unit-tests.render-target.lua")
 dofile("../data/scripts/unit-tests.material.lua")
 dofile("../data/scripts/unit-tests.texture2d.lua")
 dofile("../data/scripts/unit-tests.mesh.lua")
+dofile("../data/scripts/unit-tests.resource-manager.lua")
 dofile("../data/scripts/unit-tests.engine.lua")
 dofile("../data/scripts/unit-tests.device.lua")
 

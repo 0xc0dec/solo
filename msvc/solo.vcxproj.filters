@@ -193,6 +193,15 @@
     <ClInclude Include="..\src\platform\scripting\SoloLuaEngineCallback.h">
       <Filter>src\platform\scripting</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\SoloStubResourceManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloStubTextureLoader.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloStubModelLoader.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">
@@ -419,6 +428,15 @@
     </ClCompile>
     <ClCompile Include="..\src\platform\scripting\SoloLuaEngineCallback.cpp">
       <Filter>src\platform\scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloStubResourceManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloStubTextureLoader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloStubModelLoader.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

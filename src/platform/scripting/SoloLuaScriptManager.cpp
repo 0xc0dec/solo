@@ -28,6 +28,7 @@
 #include "SoloMaterial.h"
 #include "SoloMaterialParameter.h"
 #include "SoloMesh.h"
+#include "SoloModel.h"
 
 
 #define REGISTER_VARIABLE(binding, klass, name) binding.addVariable(#name, &klass::name, true)
@@ -625,7 +626,7 @@ void registerEngine(CppBindModule& module)
 }
 
 
-void registerResourceManager(CppBindModule module)
+void registerResourceManager(CppBindModule& module)
 {
 	auto mgr = module.beginClass<ResourceManager>("ResourceManager");
 	REGISTER_METHOD(mgr, ResourceManager, findEffect);
@@ -647,6 +648,17 @@ void registerResourceManager(CppBindModule module)
 }
 
 
+void registerModel(CppBindModule& module)
+{
+	auto m = module.beginClass<Model>("Model");
+	REGISTER_METHOD(m, Model, addMesh);
+	REGISTER_METHOD(m, Model, getMesh);
+	REGISTER_METHOD(m, Model, getMeshCount);
+	REGISTER_METHOD(m, Model, removeMesh);
+	m.endClass();
+}
+
+
 void LuaScriptManager::registerApi()
 {
 	auto module = LuaBinding(lua).beginModule("solo");
@@ -662,6 +674,7 @@ void LuaScriptManager::registerApi()
 	registerMatrix(module);
 	registerDevice(module);
 	registerEffect(module);
+	registerModel(module);
 	registerTexture(module);
 	registerResourceManager(module);
 	registerNode(module);

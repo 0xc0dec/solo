@@ -1,5 +1,6 @@
 #include <functional>
 #include "SoloResourceManager.h"
+#include "SoloStubResourceManager.h"
 #include "SoloEffect.h"
 #include "SoloMaterial.h"
 #include "SoloMesh.h"
@@ -15,6 +16,8 @@ using namespace solo;
 
 shared<ResourceManager> ResourceManagerFactory::create(Engine *engine)
 {
+	if (engine->getMode() == EngineMode::Stub)
+		return NEW2(StubResourceManager, engine);
 	return NEW2(ResourceManager, engine);
 }
 
