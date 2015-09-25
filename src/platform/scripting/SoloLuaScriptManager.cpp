@@ -22,6 +22,13 @@
 #include "SoloTransform.h"
 #include "SoloCamera.h"
 #include "SoloRenderTarget.h"
+#include "SoloEffect.h"
+#include "SoloTexture.h"
+#include "SoloTexture2D.h"
+#include "SoloMaterial.h"
+#include "SoloMaterialParameter.h"
+#include "SoloMesh.h"
+
 
 #define REGISTER_VARIABLE(binding, klass, name) binding.addVariable(#name, &klass::name, true)
 #define REGISTER_METHOD(binding, klass, name) binding.addFunction(#name, &klass::name)
@@ -31,6 +38,7 @@
 #define REGISTER_STATIC_METHOD(binding, klass, name) binding.addStaticFunction(#name, &klass::name)
 #define REGISTER_STATIC_OVERLOADED_METHOD(binding, klass, name, nameStr, resultType, modifier, ...) \
 	binding.addStaticFunction(nameStr, static_cast<resultType(*)(__VA_ARGS__)modifier>(&klass::name))
+
 
 namespace LuaIntf
 {
@@ -401,11 +409,43 @@ void registerDevice(CppBindModule& module)
 }
 
 
-void registerResourceManager(CppBindModule& module)
+void registerEffect(CppBindModule& module)
 {
-	module.beginClass<ResourceManager>("ResourceManager")
-		// TODO
+	auto effect = module.beginClass<Effect>("Effect");
+	REGISTER_METHOD(effect, Effect, findVariable);
+	effect.endClass();
+}
+
+
+void registerTexture(CppBindModule& module)
+{
+	module.beginClass<Texture>("Texture") // TODO not sure if empty registration needed
 	.endClass();
+
+	auto tex2d = module.beginExtendClass<Texture2D, Texture>("Texture2D");
+	REGISTER_METHOD(tex2d, Texture2D, setData);
+	REGISTER_METHOD(tex2d, Texture2D, generateMipmaps);
+	REGISTER_METHOD(tex2d, Texture2D, getSize);
+	REGISTER_METHOD(tex2d, Texture2D, getVerticalWrapMode);
+	REGISTER_METHOD(tex2d, Texture2D, getHorizontalWrapMode);
+	REGISTER_METHOD(tex2d, Texture2D, setWrapMode);
+	REGISTER_METHOD(tex2d, Texture2D, getMinFilter);
+	REGISTER_METHOD(tex2d, Texture2D, getMagFilter);
+	REGISTER_METHOD(tex2d, Texture2D, setFilterMode);
+	REGISTER_METHOD(tex2d, Texture2D, getAnisotropyLevel);
+	REGISTER_METHOD(tex2d, Texture2D, setAnisotropyLevel);
+	tex2d.endClass();
+}
+
+
+void registerMaterial(CppBindModule& module)
+{
+	module.beginClass<Material>("Material")
+	.endClass();
+
+	auto mp = module.beginClass<MaterialParameter>("MaterialParameter");
+	// TODO
+	mp.endClass();
 }
 
 
@@ -437,6 +477,17 @@ void registerRenderTarget(CppBindModule& module)
 	module.beginClass<RenderTarget>("RenderTarget")
 		// TODO
 	.endClass();
+}
+
+
+void registerMesh(CppBindModule& module)
+{
+	auto mesh = module.beginClass<Mesh>("Mesh");
+	REGISTER_METHOD(mesh, Mesh, setIndices);
+	REGISTER_METHOD(mesh, Mesh, setNormals);
+	REGISTER_METHOD(mesh, Mesh, setUVs);
+	REGISTER_METHOD(mesh, Mesh, setVertices);
+	mesh.endClass();
 }
 
 
@@ -559,6 +610,28 @@ void registerEngine(CppBindModule& module)
 }
 
 
+void registerResourceManager(CppBindModule module)
+{
+	auto mgr = module.beginClass<ResourceManager>("ResourceManager");
+	REGISTER_METHOD(mgr, ResourceManager, findEffect);
+	REGISTER_METHOD(mgr, ResourceManager, findTexture);
+	REGISTER_METHOD(mgr, ResourceManager, findMaterial);
+	REGISTER_METHOD(mgr, ResourceManager, findMesh);
+	REGISTER_METHOD(mgr, ResourceManager, findModel);
+	REGISTER_METHOD(mgr, ResourceManager, findRenderTarget);
+	REGISTER_METHOD(mgr, ResourceManager, getOrCreateEffect);
+	REGISTER_METHOD(mgr, ResourceManager, getOrCreateTexture2D);
+	REGISTER_METHOD(mgr, ResourceManager, getOrCreateMaterial);
+	REGISTER_METHOD(mgr, ResourceManager, getOrCreateMesh);
+	REGISTER_METHOD(mgr, ResourceManager, getOrCreateModel);
+	REGISTER_METHOD(mgr, ResourceManager, getOrCreateRenderTarget);
+	REGISTER_METHOD(mgr, ResourceManager, getOrLoadTexture);
+	REGISTER_METHOD(mgr, ResourceManager, getOrLoadModel);
+	REGISTER_OVERLOADED_METHOD(mgr, ResourceManager, cleanUnusedResources, "cleanUnusedResources", void,,void);
+	mgr.endClass();
+}
+
+
 void LuaScriptManager::registerApi()
 {
 	auto module = LuaBinding(lua).beginModule("solo");
@@ -573,12 +646,16 @@ void LuaScriptManager::registerApi()
 	registerPlane(module);
 	registerMatrix(module);
 	registerDevice(module);
+	registerEffect(module);
+	registerTexture(module);
 	registerResourceManager(module);
 	registerNode(module);
 	registerComponent(module);
 	registerTransform(module);
 	registerRenderTarget(module);
 	registerCamera(module);
+	registerMaterial(module);
+	registerMesh(module);
 	registerScene(module);
 	registerFileSystem(module);
 	registerEngine(module);

@@ -24,6 +24,8 @@ dofile("../data/scripts/unit-tests.frustum.lua")
 dofile("../data/scripts/unit-tests.node.lua")
 dofile("../data/scripts/unit-tests.transform.lua")
 dofile("../data/scripts/unit-tests.camera.lua")
+dofile("../data/scripts/unit-tests.render-target.lua")
+dofile("../data/scripts/unit-tests.mesh.lua")
 dofile("../data/scripts/unit-tests.engine.lua")
 dofile("../data/scripts/unit-tests.device.lua")
 
