@@ -420,6 +420,18 @@ void registerEffect(CppBindModule& module)
 
 void registerTexture(CppBindModule& module)
 {
+	module
+		.addConstant("ColorFormat_RGB", ColorFormat::RGB)
+		.addConstant("ColorFormat_RGBA", ColorFormat::RGBA)
+		.addConstant("TextureWrapMode_Clamp", TextureWrapMode::Clamp)
+		.addConstant("TextureWrapMode_Repeat", TextureWrapMode::Repeat)
+		.addConstant("TextureFilter_Nearest", TextureFilter::Nearest)
+		.addConstant("TextureFilter_Linear", TextureFilter::Linear)
+		.addConstant("TextureFilter_LinearMipmapLinear", TextureFilter::LinearMipmapLinear)
+		.addConstant("TextureFilter_LinearMipmapNearest", TextureFilter::LinearMipmapNearest)
+		.addConstant("TextureFilter_NearestMipmapLinear", TextureFilter::NearestMipmapLinear)
+		.addConstant("TextureFilter_NearestMipmapNearest", TextureFilter::NearestMipmapNearest);
+
 	module.beginClass<Texture>("Texture") // TODO not sure if empty registration needed
 	.endClass();
 

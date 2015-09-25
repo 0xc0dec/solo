@@ -43,13 +43,13 @@ GLenum OpenGLTexture2D::toGLColorFormat(ColorFormat format)
 }
 
 
-GLenum OpenGLTexture2D::toGLWrapMode(WrapMode mode)
+GLenum OpenGLTexture2D::toGLWrapMode(TextureWrapMode mode)
 {
 	switch (mode)
 	{
-		case WrapMode::Clamp:
+		case TextureWrapMode::Clamp:
 			return GL_CLAMP_TO_EDGE;
-		case WrapMode::Repeat:
+		case TextureWrapMode::Repeat:
 			return GL_REPEAT;
 		default:
 			THROW_FMT(EngineException, "Unexpected wrap mode ", static_cast<int>(mode), ".");
@@ -57,21 +57,21 @@ GLenum OpenGLTexture2D::toGLWrapMode(WrapMode mode)
 }
 
 
-GLenum OpenGLTexture2D::toGLFilter(Filter filter)
+GLenum OpenGLTexture2D::toGLFilter(TextureFilter filter)
 {
 	switch (filter)
 	{
-		case Filter::Linear:
+		case TextureFilter::Linear:
 			return GL_LINEAR;
-		case Filter::Nearest:
+		case TextureFilter::Nearest:
 			return GL_NEAREST;
-		case Filter::LinearMipmapNearest:
+		case TextureFilter::LinearMipmapNearest:
 			return GL_LINEAR_MIPMAP_NEAREST;
-		case Filter::LinearMipmapLinear:
+		case TextureFilter::LinearMipmapLinear:
 			return GL_LINEAR_MIPMAP_LINEAR;
-		case Filter::NearestMipmapLinear:
+		case TextureFilter::NearestMipmapLinear:
 			return GL_NEAREST_MIPMAP_LINEAR;
-		case Filter::NearestMipmapNearest:
+		case TextureFilter::NearestMipmapNearest:
 			return GL_NEAREST_MIPMAP_NEAREST;
 		default:
 			THROW_FMT(EngineException, "Unexpected texture filter ", static_cast<int>(filter), ".");

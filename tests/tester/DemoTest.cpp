@@ -268,7 +268,7 @@ shared<Texture> DemoTest::loadTexture(const std::string &path)
 {
 	auto texture = DYNAMIC_CAST<Texture2D>(resourceManager->getOrLoadTexture(path));
 	texture->generateMipmaps();
-	texture->setFilterMode(Filter::Linear, Filter::Linear);
+	texture->setFilterMode(TextureFilter::Linear, TextureFilter::Linear);
 	texture->setAnisotropyLevel(8);
 	return texture;
 }
@@ -323,8 +323,8 @@ void DemoTest::initRenderTarget()
 	auto canvasSize = device->getCanvasSize();
 	auto renderTexture = DYNAMIC_CAST<Texture2D>(resourceManager->getOrCreateTexture2D("RTT"));
 	renderTexture->setData(ColorFormat::RGB, std::vector<uint8_t>(), canvasSize.x / 8, canvasSize.y / 8);
-	renderTexture->setFilterMode(Filter::Nearest, Filter::Nearest);
-	renderTexture->setWrapMode(WrapMode::Clamp, WrapMode::Clamp);
+	renderTexture->setFilterMode(TextureFilter::Nearest, TextureFilter::Nearest);
+	renderTexture->setWrapMode(TextureWrapMode::Clamp, TextureWrapMode::Clamp);
 	auto texVector = std::vector<shared<Texture2D>>();
 	texVector.push_back(renderTexture);
 

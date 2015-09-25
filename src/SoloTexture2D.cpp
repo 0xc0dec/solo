@@ -16,38 +16,38 @@ Vector2 Texture2D::getSize() const
 }
 
 
-WrapMode Texture2D::getVerticalWrapMode() const
+TextureWrapMode Texture2D::getVerticalWrapMode() const
 {
 	return verticalWrap;
 }
 
 
-WrapMode Texture2D::getHorizontalWrapMode() const
+TextureWrapMode Texture2D::getHorizontalWrapMode() const
 {
 	return horizontalWrap;
 }
 
 
-void Texture2D::setWrapMode(WrapMode verticalWrap, WrapMode horizontalWrap)
+void Texture2D::setWrapMode(TextureWrapMode verticalWrap, TextureWrapMode horizontalWrap)
 {
 	this->verticalWrap = verticalWrap;
 	this->horizontalWrap = horizontalWrap;
 }
 
 
-Filter Texture2D::getMinFilter() const
+TextureFilter Texture2D::getMinFilter() const
 {
 	return minFilter;
 }
 
 
-Filter Texture2D::getMagFilter() const
+TextureFilter Texture2D::getMagFilter() const
 {
 	return magFilter;
 }
 
 
-void Texture2D::setFilterMode(Filter minFilter, Filter magFilter)
+void Texture2D::setFilterMode(TextureFilter minFilter, TextureFilter magFilter)
 {
 	this->minFilter = minFilter;
 	this->magFilter = magFilter;

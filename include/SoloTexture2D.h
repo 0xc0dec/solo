@@ -5,13 +5,13 @@
 
 namespace solo
 {
-	enum class WrapMode
+	enum class TextureWrapMode
 	{
 		Clamp,
 		Repeat
 	};
 
-	enum class Filter
+	enum class TextureFilter
 	{
 		Nearest,
 		Linear,
@@ -29,13 +29,13 @@ namespace solo
 
 		Vector2 getSize() const;
 
-		WrapMode getVerticalWrapMode() const;
-		WrapMode getHorizontalWrapMode() const;
-		void setWrapMode(WrapMode verticalWrap, WrapMode horizontalWrap);
+		TextureWrapMode getVerticalWrapMode() const;
+		TextureWrapMode getHorizontalWrapMode() const;
+		void setWrapMode(TextureWrapMode verticalWrap, TextureWrapMode horizontalWrap);
 
-		Filter getMinFilter() const;
-		Filter getMagFilter() const;
-		void setFilterMode(Filter minFilter, Filter magFilter);
+		TextureFilter getMinFilter() const;
+		TextureFilter getMagFilter() const;
+		void setFilterMode(TextureFilter minFilter, TextureFilter magFilter);
 
 		float getAnisotropyLevel() const;
 		void setAnisotropyLevel(float level);
@@ -45,10 +45,10 @@ namespace solo
 
 		virtual void applyData(ColorFormat format, const std::vector<uint8_t> &data, unsigned width, unsigned height) = 0;
 
-		WrapMode verticalWrap = WrapMode::Repeat;
-		WrapMode horizontalWrap = WrapMode::Repeat;
-		Filter minFilter = Filter::Linear;
-		Filter magFilter = Filter::Linear;
+		TextureWrapMode verticalWrap = TextureWrapMode::Repeat;
+		TextureWrapMode horizontalWrap = TextureWrapMode::Repeat;
+		TextureFilter minFilter = TextureFilter::Linear;
+		TextureFilter magFilter = TextureFilter::Linear;
 		float anisotropy = 1.0f;
 
 	private:
