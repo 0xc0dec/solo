@@ -9,6 +9,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/external/lua/5.3.1
+    ${PROJECT_SOURCE_DIR}/external/LuaIntf
     ${PROJECT_SOURCE_DIR}/external/glew/include
     ${PROJECT_SOURCE_DIR}/external/SDL/2.0.3/include
     ${PROJECT_SOURCE_DIR}/external/png/include
@@ -16,11 +18,18 @@ include_directories(
 
 link_directories(${PROJECT_SOURCE_DIR}/external/SDL/2.0.3)
 
+# Lua
+
+file(GLOB_RECURSE lua_sources "external/lua/5.3.1/*.c")
+set_source_files_properties(${lua_sources} PROPERTIES LANGUAGE CXX)
+add_library(lua STATIC ${lua_sources})
+
 # Engine
 
 file(GLOB_RECURSE sources
     "src/*.cpp"
     "src/platform/*.cpp"
+    "src/platform/scripting/*.cpp"
     "external/glew/src/*.c"
     "external/png/src/*.c"
     "external/zlib/src/*.c")
@@ -45,7 +54,7 @@ set(frameworks
     ${corefoundation_lib})
 
 add_library(solo STATIC ${sources})
-target_link_libraries(solo SDL2 ${frameworks})
+target_link_libraries(solo lua SDL2 ${frameworks})
 
 # Tester
 
