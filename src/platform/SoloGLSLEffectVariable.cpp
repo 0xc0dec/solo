@@ -18,79 +18,79 @@ GLSLEffectVariable::GLSLEffectVariable(const std::string& name, GLint location, 
 }
 
 
-void GLSLEffectVariable::setValue(float value)
+void GLSLEffectVariable::setFloat(float value)
 {
 	glUniform1f(location, value);
 }
 
 
-void GLSLEffectVariable::setValue(const float* values, unsigned count)
+void GLSLEffectVariable::setFloatArray(const float* values, unsigned count)
 {
 	glUniform1fv(location, count, values);
 }
 
 
-void GLSLEffectVariable::setValue(int value)
+void GLSLEffectVariable::setInt(int value)
 {
 	glUniform1i(location, value);
 }
 
 
-void GLSLEffectVariable::setValue(const int* values, unsigned count)
+void GLSLEffectVariable::setIntArray(const int* values, unsigned count)
 {
 	glUniform1iv(location, count, values);
 }
 
 
-void GLSLEffectVariable::setValue(const Matrix& value)
+void GLSLEffectVariable::setMatrix(const Matrix& value)
 {
 	glUniformMatrix4fv(location, 1, GL_FALSE, value.m);
 }
 
 
-void GLSLEffectVariable::setValue(const Matrix* values, unsigned count)
+void GLSLEffectVariable::setMatrixArray(const Matrix* values, unsigned count)
 {
 	glUniformMatrix4fv(location, count, GL_FALSE, reinterpret_cast<const GLfloat*>(values));
 }
 
 
-void GLSLEffectVariable::setValue(const Vector2& value)
+void GLSLEffectVariable::setVector2(const Vector2& value)
 {
 	glUniform2f(location, value.x, value.y);
 }
 
 
-void GLSLEffectVariable::setValue(const Vector2* values, unsigned count)
+void GLSLEffectVariable::setVector2Array(const Vector2* values, unsigned count)
 {
 	glUniform2fv(location, count, reinterpret_cast<const GLfloat*>(values));
 }
 
 
-void GLSLEffectVariable::setValue(const Vector3& value)
+void GLSLEffectVariable::setVector3(const Vector3& value)
 {
 	glUniform3f(location, value.x, value.y, value.z);
 }
 
 
-void GLSLEffectVariable::setValue(const Vector3* values, unsigned count)
+void GLSLEffectVariable::setVector3Array(const Vector3* values, unsigned count)
 {
 	glUniform3fv(location, count, reinterpret_cast<const GLfloat*>(values));
 }
 
 
-void GLSLEffectVariable::setValue(const Vector4& value)
+void GLSLEffectVariable::setVector4(const Vector4& value)
 {
 	glUniform4f(location, value.x, value.y, value.z, value.z);
 }
 
 
-void GLSLEffectVariable::setValue(const Vector4* values, unsigned count)
+void GLSLEffectVariable::setVector4Array(const Vector4* values, unsigned count)
 {
 	glUniform4fv(location, count, reinterpret_cast<const GLfloat*>(values));
 }
 
 
-void GLSLEffectVariable::setValue(const shared<Texture> texture)
+void GLSLEffectVariable::setTexture(const shared<Texture> texture)
 {
 	glActiveTexture(GL_TEXTURE0 + index);
 	glUniform1i(location, index);
@@ -98,7 +98,7 @@ void GLSLEffectVariable::setValue(const shared<Texture> texture)
 }
 
 
-void GLSLEffectVariable::setValue(const std::vector<shared<Texture>>& textures, unsigned count)
+void GLSLEffectVariable::setTextureArray(const std::vector<shared<Texture>>& textures, unsigned count)
 {
 	// TODO
 }

@@ -4,7 +4,6 @@
 #include "SoloVector3.h"
 #include "SoloVector4.h"
 #include "SoloMatrix.h"
-#include "SoloEngine.h"
 #include "SoloRenderContext.h"
 #include "SoloMaterial.h"
 #include "SoloEffect.h"
@@ -22,16 +21,15 @@ MaterialParameter::MaterialParameter(const std::string& name):
 void MaterialParameter::setFloat(float value)
 {
 	clearValue();
-	this->value.asFloat = value;
+	floatValue = value;
 	type = ValueType::Float;
 }
 
 
-void MaterialParameter::setFloatArray(const float *value, unsigned count)
+void MaterialParameter::setFloatArray(const std::vector<float>& value)
 {
 	clearValue();
-	this->value.asFloatPtr = const_cast<float*>(value);
-	valueCount = count;
+	floatArrayValue = value;
 	type = ValueType::FloatArray;
 }
 
@@ -39,120 +37,104 @@ void MaterialParameter::setFloatArray(const float *value, unsigned count)
 void MaterialParameter::setInt(int value)
 {
 	clearValue();
-	this->value.asInt = value;
+	intValue = value;
 	type = ValueType::Int;
 }
 
 
-void MaterialParameter::setIntArray(const int *value, unsigned count)
+void MaterialParameter::setIntArray(const std::vector<int>& value)
 {
 	clearValue();
-	this->value.asIntPtr = const_cast<int*>(value);
-	valueCount = count;
+	intArrayValue = value;
 	type = ValueType::IntArray;
 }
 
 
 void MaterialParameter::setVector2(const Vector2 &value)
 {
-	clearValue(); // TODO eliminate memory deallocation for the case when setting a value of the same type twice
-	auto buf = new float[2];
-	memcpy(buf, &value.x, sizeof(float) * 2);
-	this->value.asFloatPtr = buf;
-	valueCount = 1;
-	freeableValue = true;
+	clearValue();
+	vector2Value = value;
 	type = ValueType::Vector2;
 }
 
 
-void MaterialParameter::setVector2Array(const Vector2 *value, unsigned count)
+void MaterialParameter::setVector2Array(const std::vector<Vector2>& value)
 {
 	clearValue();
-	this->value.asFloatPtr = const_cast<float*>(&value[0].x);
-	valueCount = count;
-	type = ValueType::Vector2;
+	vector2ArrayValue = value;
+	type = ValueType::Vector2Array;
 }
 
 
 void MaterialParameter::setVector3(const Vector3 &value)
 {
-	clearValue(); // TODO eliminate memory deallocation for the case when setting a value of the same type twice
-	auto buf = new float[3];
-	memcpy(buf, &value.x, sizeof(float) * 3);
-	this->value.asFloatPtr = buf;
-	valueCount = 1;
-	freeableValue = true;
+	clearValue();
+	vector3Value = value;
 	type = ValueType::Vector3;
 }
 
 
-void MaterialParameter::setValue(const Vector3* value, unsigned count)
+void MaterialParameter::setVector3Array(const std::vector<Vector3>& value)
 {
 	clearValue();
-	this->value.asFloatPtr = const_cast<float*>(&value[0].x);
-	valueCount = count;
-	type = ValueType::Vector3;
+	vector3ArrayValue = value;
+	type = ValueType::Vector3Array;
 }
 
 
-void MaterialParameter::setValue(const Vector4& value)
+void MaterialParameter::setVector4(const Vector4& value)
 {
 	clearValue();
-	auto buf = new float[4];
-	memcpy(buf, &value.x, sizeof(float) * 4);
-	this->value.asFloatPtr = buf;
-	valueCount = 1;
-	freeableValue = true;
+	vector4Value = value;
 	type = ValueType::Vector4;
 }
 
 
-void MaterialParameter::setValue(const Vector4* value, unsigned count)
+void MaterialParameter::setVector4Array(const std::vector<Vector4>& value)
 {
 	clearValue();
-	this->value.asFloatPtr = const_cast<float*>(&value[0].x);
-	valueCount = count;
-	type = ValueType::Vector4;
+	vector4ArrayValue = value;
+	type = ValueType::Vector4Array;
 }
 
 
-void MaterialParameter::setValue(const Matrix& value)
+void MaterialParameter::setMatrix(const Matrix& value)
 {
-	clearValue(); // TODO eliminate memory deallocation for the case when setting a value of the same type twice
-	this->value.asFloatPtr = new float[16];
-	memcpy(this->value.asFloatPtr, value.m, sizeof(float)* 16);
-	freeableValue = true;
-	valueCount = 1;
+	clearValue();
+	matrixValue = value;
 	type = ValueType::Matrix;
 }
 
 
-void MaterialParameter::setValue(const Matrix* value, unsigned count)
+void MaterialParameter::setMatrixArray(const std::vector<Matrix>& value)
 {
 	clearValue();
-	this->value.asFloatPtr = const_cast<Matrix&>(value[0]).m;
-	valueCount = count;
-	type = ValueType::Matrix;
+	matrixArrayValue = value;
+	type = ValueType::MatrixArray;
 }
 
 
-void MaterialParameter::setValue(const shared<Texture> texture)
+void MaterialParameter::setTexture(const shared<Texture> texture)
 {
 	clearValue();
 	textureValue = texture;
-	valueCount = 1;
 	type = ValueType::Texture;
-	freeableValue = true;
 }
 
 
-void MaterialParameter::setValue(const std::vector<shared<Texture>>& textures, unsigned count)
+void MaterialParameter::setTextureArray(const std::vector<shared<Texture>>& textures)
 {
 	clearValue();
 	textureArrayValue = textures;
-	valueCount = count;
 	type = ValueType::TextureArray;
-	freeableValue = true;
+}
+
+
+void MaterialParameter::setFunction(std::function<void(EffectVariable* variable, const RenderContext& context)> func)
+{
+	clearValue();
+	this->func = func;
+	type = ValueType::Func;
 }
 
 
@@ -164,37 +146,37 @@ void MaterialParameter::apply(const RenderContext& context)
 	switch (type)
 	{
 		case ValueType::Float:
-			variable->setValue(value.asFloat);
+			variable->setFloat(floatValue);
 			break;
 		case ValueType::FloatArray:
-			variable->setValue(value.asFloatPtr, valueCount);
+			variable->setFloatArray(floatArrayValue.data(), floatArrayValue.size());
 			break;
 		case ValueType::Int:
-			variable->setValue(value.asInt);
+			variable->setFloat(intValue);
 			break;
 		case ValueType::IntArray:
-			variable->setValue(value.asIntPtr, valueCount);
+			variable->setIntArray(intArrayValue.data(), intArrayValue.size());
 			break;
 		case ValueType::Vector2:
-			variable->setValue(reinterpret_cast<Vector2*>(value.asFloatPtr), valueCount);
+			variable->setVector2Array(vector2ArrayValue.data(), vector2ArrayValue.size());
 			break;
 		case ValueType::Vector3:
-			variable->setValue(reinterpret_cast<Vector3*>(value.asFloatPtr), valueCount);
+			variable->setVector3Array(vector3ArrayValue.data(), vector3ArrayValue.size());
 			break;
 		case ValueType::Vector4:
-			variable->setValue(reinterpret_cast<Vector4*>(value.asFloatPtr), valueCount);
+			variable->setVector4Array(vector4ArrayValue.data(), vector4ArrayValue.size());
 			break;
 		case ValueType::Matrix:
-			variable->setValue(reinterpret_cast<Matrix*>(value.asFloatPtr), valueCount);
+			variable->setMatrixArray(matrixArrayValue.data(), matrixArrayValue.size());
 			break;
 		case ValueType::Texture:
-			variable->setValue(textureValue);
+			variable->setTexture(textureValue);
 			break;
 		case ValueType::TextureArray:
-			variable->setValue(textureArrayValue, valueCount);
+			variable->setTextureArray(textureArrayValue, textureArrayValue.size());
 			break;
-		case ValueType::Method:
-			value.method->setValue(variable, context);
+		case ValueType::Func:
+			func(variable, context);
 			break;
 		case ValueType::None:
 		default:
@@ -205,94 +187,94 @@ void MaterialParameter::apply(const RenderContext& context)
 
 void MaterialParameter::clearValue()
 {
-	if (freeableValue)
+	switch (type)
 	{
-		switch (type)
-		{
-			case ValueType::Float:
-			case ValueType::FloatArray:
-			case ValueType::Vector2:
-			case ValueType::Vector3:
-			case ValueType::Vector4:
-			case ValueType::Matrix:
-				delete[] value.asFloatPtr;
-				break;
-			case ValueType::Int:
-			case ValueType::IntArray:
-				delete[] value.asIntPtr;
-				break;
-			case ValueType::Texture:
-				textureValue = nullptr;
-				break;
-			case ValueType::TextureArray:
-				textureArrayValue.clear();
-				break;
-			case ValueType::Method:
-				delete value.method;
-				break;
-			case ValueType::None:
-			default:
-				break;
-		}
+		case ValueType::FloatArray:
+			floatArrayValue.clear();
+			break;
+		case ValueType::IntArray:
+			intArrayValue.clear();
+			break;
+		case ValueType::Vector2Array:
+			vector2ArrayValue.clear();
+			break;
+		case ValueType::Vector3Array:
+			vector3ArrayValue.clear();
+			break;
+		case ValueType::Vector4Array:
+			vector4ArrayValue.clear();
+			break;
+		case ValueType::MatrixArray:
+			matrixArrayValue.clear();
+			break;
+		case ValueType::Texture:
+			textureValue = nullptr;
+			break;
+		case ValueType::TextureArray:
+			textureArrayValue.clear();
+			break;
+		case ValueType::Func:
+			func = nullptr;
+			break;
+		case ValueType::None:
+		default:
+			break;
 	}
-	memset(&value, 0, sizeof(value));
-	freeableValue = false;
-	valueCount = 1;
 	type = ValueType::None;
 }
 
 
-Matrix MaterialParameter::getWorldMatrix(const RenderContext& context) const
+void MaterialParameter::setWorldMatrix(EffectVariable *variable, const RenderContext& context)
 {
-	return context.nodeTransform->getWorldMatrix();
+	variable->setMatrix(context.nodeTransform->getWorldMatrix());
 }
 
 
-Matrix MaterialParameter::getViewMatrix(const RenderContext& context) const
+void MaterialParameter::setViewMatrix(EffectVariable *variable, const RenderContext& context)
 {
-	return context.camera->getViewMatrix();
+	variable->setMatrix(context.camera->getViewMatrix());
 }
 
 
-Matrix MaterialParameter::getProjectionMatrix(const RenderContext& context) const
+void MaterialParameter::setProjectionMatrix(EffectVariable *variable, const RenderContext& context)
 {
-	return context.camera->getProjectionMatrix();
+	variable->setMatrix(context.camera->getProjectionMatrix());
 }
 
 
-Matrix MaterialParameter::getWorldViewMatrix(const RenderContext& context) const
+void MaterialParameter::setWorldViewMatrix(EffectVariable *variable, const RenderContext& context)
 {
-	return context.nodeTransform->getWorldViewMatrix(context.camera);
+	variable->setMatrix(context.nodeTransform->getWorldViewMatrix(context.camera));
 }
 
 
-Matrix MaterialParameter::getViewProjectionMatrix(const RenderContext& context) const
+void MaterialParameter::setViewProjectionMatrix(EffectVariable *variable, const RenderContext& context)
 {
-	return context.camera->getViewProjectionMatrix();
+	variable->setMatrix(context.camera->getViewProjectionMatrix());
 }
 
 
-Matrix MaterialParameter::getWorldViewProjectionMatrix(const RenderContext& context) const
+void MaterialParameter::setWorldViewProjectionMatrix(EffectVariable *variable, const RenderContext& context)
 {
-	return context.nodeTransform->getWorldViewProjectionMatrix(context.camera);
+	variable->setMatrix(context.nodeTransform->getWorldViewProjectionMatrix(context.camera));
 }
 
 
-Matrix MaterialParameter::getInverseTransposedWorldViewMatrix(const RenderContext& context) const
+void MaterialParameter::setInverseTransposedWorldViewMatrix(EffectVariable *variable, const RenderContext& context)
 {
-	return context.nodeTransform->getInverseTransposedWorldViewMatrix(context.camera);
+	variable->setMatrix(context.nodeTransform->getInverseTransposedWorldViewMatrix(context.camera));
 }
 
 
-Matrix MaterialParameter::getInverseTransposedWorldMatrix(const RenderContext& context) const
+void MaterialParameter::setInverseTransposedWorldMatrix(EffectVariable *variable, const RenderContext& context)
 {
-	return context.nodeTransform->getInverseTransposedWorldMatrix();
+	variable->setMatrix(context.nodeTransform->getInverseTransposedWorldMatrix());
 }
 
 
-Vector3 MaterialParameter::getCameraWorldPosition(const RenderContext& context) const
+void MaterialParameter::setCameraWorldPosition(EffectVariable *variable, const RenderContext& context)
 {
-	return context.cameraTransform->getWorldPosition();
+	variable->setVector3(context.cameraTransform->getWorldPosition());
 }
 
 
@@ -301,31 +283,31 @@ void MaterialParameter::bindValue(AutoBinding autoBinding)
 	switch (autoBinding)
 	{
 		case AutoBinding::WorldMatrix:
-			bindValue(this, &MaterialParameter::getWorldMatrix);
+			setFunction(&MaterialParameter::setWorldMatrix);
 			break;
 		case AutoBinding::ViewMatrix:
-			bindValue(this, &MaterialParameter::getViewMatrix);
+			setFunction(&MaterialParameter::setViewMatrix);
 			break;
 		case AutoBinding::ProjectionMatrix:
-			bindValue(this, &MaterialParameter::getProjectionMatrix);
+			setFunction(&MaterialParameter::setProjectionMatrix);
 			break;
 		case AutoBinding::WorldViewProjection:
-			bindValue(this, &MaterialParameter::getWorldViewMatrix);
+			setFunction(&MaterialParameter::setWorldMatrix);
 			break;
 		case AutoBinding::ViewProjectionMatrix:
-			bindValue(this, &MaterialParameter::getViewProjectionMatrix);
+			setFunction(&MaterialParameter::setViewProjectionMatrix);
 			break;
 		case AutoBinding::WorldViewProjectionMatrix:
-			bindValue(this, &MaterialParameter::getWorldViewProjectionMatrix);
+			setFunction(&MaterialParameter::setWorldViewProjectionMatrix);
 			break;
 		case AutoBinding::InverseTransposedWorldMatrix:
-			bindValue(this, &MaterialParameter::getInverseTransposedWorldMatrix);
+			setFunction(&MaterialParameter::setInverseTransposedWorldMatrix);
 			break;
 		case AutoBinding::InverseTransposedWorldViewMatrix:
-			bindValue(this, &MaterialParameter::getInverseTransposedWorldViewMatrix);
+			setFunction(&MaterialParameter::setInverseTransposedWorldViewMatrix);
 			break;
 		case AutoBinding::CameraWorldPosition:
-			bindValue(this, &MaterialParameter::getCameraWorldPosition);
+			setFunction(&MaterialParameter::setCameraWorldPosition);
 			break;
 		case AutoBinding::None:
 		default:

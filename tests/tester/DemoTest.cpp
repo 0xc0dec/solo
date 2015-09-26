@@ -283,38 +283,38 @@ void DemoTest::initMaterials()
 	redMaterial = resourceManager->getOrCreateMaterial(colorEffect);
 	redMaterial->setPolygonFace(PolygonFace::All);
 	redMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
-	redMaterial->getParameter("color")->setValue(Vector4(1, 0, 0, 1));
+	redMaterial->getParameter("color")->setVector4(Vector4(1, 0, 0, 1));
 	greenMaterial = resourceManager->getOrCreateMaterial(colorEffect);
 	greenMaterial->setPolygonFace(PolygonFace::All);
 	greenMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
-	greenMaterial->getParameter("color")->setValue(Vector4(0, 1, 0, 1));
+	greenMaterial->getParameter("color")->setVector4(Vector4(0, 1, 0, 1));
 	blueMaterial = resourceManager->getOrCreateMaterial(colorEffect);
 	blueMaterial->setPolygonFace(PolygonFace::All);
 	blueMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
-	blueMaterial->getParameter("color")->setValue(Vector4(0, 0, 1, 1));
+	blueMaterial->getParameter("color")->setVector4(Vector4(0, 0, 1, 1));
 	whiteMaterial = resourceManager->getOrCreateMaterial(colorEffect);
 	whiteMaterial->setPolygonFace(PolygonFace::All);
 	whiteMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
-	whiteMaterial->getParameter("color")->setValue(Vector4(1, 1, 1, 1));
+	whiteMaterial->getParameter("color")->setVector4(Vector4(1, 1, 1, 1));
 
 	texEffect = resourceManager->getOrCreateEffect(vsBasic, fsTexture);
 	texMaterial = resourceManager->getOrCreateMaterial(texEffect);
 	texMaterial->setPolygonFace(PolygonFace::All);
 	texMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
-	texMaterial->getParameter("mainTex")->setValue(tex1);
+	texMaterial->getParameter("mainTex")->setTexture(tex1);
 
 	auto checkerEffect = resourceManager->getOrCreateEffect(vsBasic, fsChecker);
 	checkerMaterial = resourceManager->getOrCreateMaterial(checkerEffect);
 	checkerMaterial->setPolygonFace(PolygonFace::All);
 	checkerMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
-	checkerMaterial->getParameter("color")->setValue(Vector4(1, 1, 0, 1));
+	checkerMaterial->getParameter("color")->setVector4(Vector4(1, 1, 0, 1));
 
 	auto texWithLightingEffect = resourceManager->getOrCreateEffect(vsBasicLighting, fsTextureWithLighting);
 	texWithLightingMaterial = resourceManager->getOrCreateMaterial(texWithLightingEffect);
 	texWithLightingMaterial->setPolygonFace(PolygonFace::All);
 	texWithLightingMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
 	texWithLightingMaterial->getParameter("normalMatrix")->bindValue(AutoBinding::InverseTransposedWorldMatrix);
-	texWithLightingMaterial->getParameter("mainTex")->setValue(tex2);
+	texWithLightingMaterial->getParameter("mainTex")->setTexture(tex2);
 }
 
 
@@ -334,7 +334,7 @@ void DemoTest::initRenderTarget()
 	renderTargetMaterial = resourceManager->getOrCreateMaterial(texEffect);
 	renderTargetMaterial->setPolygonFace(PolygonFace::All);
 	renderTargetMaterial->getParameter("worldViewProjMatrix")->bindValue(AutoBinding::WorldViewProjectionMatrix);
-	renderTargetMaterial->getParameter("mainTex")->setValue(renderTexture);
+	renderTargetMaterial->getParameter("mainTex")->setTexture(renderTexture);
 }
 
 
