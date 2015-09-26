@@ -55,7 +55,7 @@ Matrix::~Matrix()
 }
 
 
-const Matrix& Matrix::identity()
+Matrix Matrix::identity()
 {
 	static Matrix m(
 		1, 0, 0, 0,
@@ -66,7 +66,7 @@ const Matrix& Matrix::identity()
 }
 
 
-const Matrix& Matrix::zero()
+Matrix Matrix::zero()
 {
 	static Matrix m(
 		0, 0, 0, 0,

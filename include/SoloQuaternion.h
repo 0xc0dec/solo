@@ -18,8 +18,8 @@ namespace solo
 		static Quaternion createFromRotationMatrix(const Matrix& m);
 		static Quaternion createFromAxisAngle(const Vector3& axis, float angleRadians);
 
-		static const Quaternion& identity();
-		static const Quaternion& zero();
+		static Quaternion identity();
+		static Quaternion zero();
 
 		bool isIdentity() const;
 		bool isZero() const;

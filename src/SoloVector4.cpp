@@ -10,42 +10,42 @@ Vector4::Vector4(float x, float y, float z, float w):
 }
 
 
-const Vector4& Vector4::zero()
+Vector4 Vector4::zero()
 {
 	static Vector4 value(0.0f, 0.0f, 0.0f, 0.0f);
 	return value;
 }
 
 
-const Vector4& Vector4::unit()
+Vector4 Vector4::unit()
 {
 	static Vector4 value(1.0f, 1.0f, 1.0f, 1.0f);
 	return value;
 }
 
 
-const Vector4& Vector4::unitX()
+Vector4 Vector4::unitX()
 {
 	static Vector4 value(1.0f, 0.0f, 0.0f, 0.0f);
 	return value;
 }
 
 
-const Vector4& Vector4::unitY()
+Vector4 Vector4::unitY()
 {
 	static Vector4 value(0.0f, 1.0f, 0.0f, 0.0f);
 	return value;
 }
 
 
-const Vector4& Vector4::unitZ()
+Vector4 Vector4::unitZ()
 {
 	static Vector4 value(0.0f, 0.0f, 1.0f, 0.0f);
 	return value;
 }
 
 
-const Vector4& Vector4::unitW()
+Vector4 Vector4::unitW()
 {
 	static Vector4 value(0.0f, 0.0f, 0.0f, 1.0f);
 	return value;

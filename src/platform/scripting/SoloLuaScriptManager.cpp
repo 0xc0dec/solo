@@ -459,8 +459,33 @@ void registerMaterial(CppBindModule& module)
 	REGISTER_METHOD(m, Material, getEffect);
 	m.endClass();
 
+	module
+		.addConstant("AutoBinding_None", AutoBinding::None)
+		.addConstant("AutoBinding_CameraWorldPosition", AutoBinding::CameraWorldPosition)
+		.addConstant("AutoBinding_InverseTransposedWorldMatrix", AutoBinding::InverseTransposedWorldMatrix)
+		.addConstant("AutoBinding_InverseTransposedWorldViewMatrix", AutoBinding::InverseTransposedWorldViewMatrix)
+		.addConstant("AutoBinding_ProjectionMatrix", AutoBinding::ProjectionMatrix)
+		.addConstant("AutoBinding_ViewMatrix", AutoBinding::ViewMatrix)
+		.addConstant("AutoBinding_ViewProjectionMatrix", AutoBinding::ViewProjectionMatrix)
+		.addConstant("AutoBinding_WorldMatrix", AutoBinding::WorldMatrix)
+		.addConstant("AutoBinding_WorldViewProjectionMatrix", AutoBinding::WorldViewProjectionMatrix);
+
 	auto mp = module.beginClass<MaterialParameter>("MaterialParameter");
-	// TODO
+	REGISTER_METHOD(mp, MaterialParameter, setFloat);
+	REGISTER_METHOD(mp, MaterialParameter, setFloatArray);
+	REGISTER_METHOD(mp, MaterialParameter, setInt);
+	REGISTER_METHOD(mp, MaterialParameter, setIntArray);
+	REGISTER_METHOD(mp, MaterialParameter, setVector2);
+	REGISTER_METHOD(mp, MaterialParameter, setVector2Array);
+	REGISTER_METHOD(mp, MaterialParameter, setVector3);
+	REGISTER_METHOD(mp, MaterialParameter, setVector3Array);
+	REGISTER_METHOD(mp, MaterialParameter, setVector4);
+	REGISTER_METHOD(mp, MaterialParameter, setVector4Array);
+	REGISTER_METHOD(mp, MaterialParameter, setMatrix);
+	REGISTER_METHOD(mp, MaterialParameter, setMatrixArray);
+	REGISTER_METHOD(mp, MaterialParameter, setTexture);
+	REGISTER_METHOD(mp, MaterialParameter, setTextureArray);
+	REGISTER_METHOD(mp, MaterialParameter, bindValue);
 	mp.endClass();
 }
 

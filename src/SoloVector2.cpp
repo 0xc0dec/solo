@@ -10,28 +10,28 @@ Vector2::Vector2(float x, float y):
 }
 
 
-const Vector2& Vector2::zero()
+Vector2 Vector2::zero()
 {
 	static Vector2 value(0.0f, 0.0f);
 	return value;
 }
 
 
-const Vector2& Vector2::unit()
+Vector2 Vector2::unit()
 {
 	static Vector2 value(1.0f, 1.0f);
 	return value;
 }
 
 
-const Vector2& Vector2::unitX()
+Vector2 Vector2::unitX()
 {
 	static Vector2 value(1.0f, 0.0f);
 	return value;
 }
 
 
-const Vector2& Vector2::unitY()
+Vector2 Vector2::unitY()
 {
 	static Vector2 value(0.0f, 1.0f);
 	return value;

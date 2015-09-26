@@ -25,8 +25,8 @@ namespace solo
 
 		~Matrix();
 
-		static const Matrix& identity();
-		static const Matrix& zero();
+		static Matrix identity();
+		static Matrix zero();
 
 		bool isIdentity() const;
 

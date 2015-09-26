@@ -16,14 +16,14 @@ Quaternion::Quaternion(const Vector3& axis, float angleRadians)
 }
 
 
-const Quaternion& Quaternion::identity()
+Quaternion Quaternion::identity()
 {
 	static Quaternion value(0.0f, 0.0f, 0.0f, 1.0f);
 	return value;
 }
 
 
-const Quaternion& Quaternion::zero()
+Quaternion Quaternion::zero()
 {
 	static Quaternion value(0.0f, 0.0f, 0.0f, 0.0f);
 	return value;

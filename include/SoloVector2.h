@@ -10,10 +10,10 @@ namespace solo
 		Vector2() {}
 		Vector2(float x, float y);
 
-		static const Vector2& zero();
-		static const Vector2& unit();
-		static const Vector2& unitX();
-		static const Vector2& unitY();
+		static Vector2 zero();
+		static Vector2 unit();
+		static Vector2 unitX();
+		static Vector2 unitY();
 		
 		bool isZero() const;
 		bool isUnit() const;

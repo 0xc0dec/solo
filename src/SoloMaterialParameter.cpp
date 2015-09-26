@@ -291,9 +291,6 @@ void MaterialParameter::bindValue(AutoBinding autoBinding)
 		case AutoBinding::ProjectionMatrix:
 			setFunction(&MaterialParameter::setProjectionMatrix);
 			break;
-		case AutoBinding::WorldViewProjection:
-			setFunction(&MaterialParameter::setWorldMatrix);
-			break;
 		case AutoBinding::ViewProjectionMatrix:
 			setFunction(&MaterialParameter::setViewProjectionMatrix);
 			break;

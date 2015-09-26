@@ -12,12 +12,12 @@ namespace solo
 		Vector4() {}
 		Vector4(float x, float y, float z, float w);
 
-		static const Vector4& zero();
-		static const Vector4& unit();
-		static const Vector4& unitX();
-		static const Vector4& unitY();
-		static const Vector4& unitZ();
-		static const Vector4& unitW();
+		static Vector4 zero();
+		static Vector4 unit();
+		static Vector4 unitX();
+		static Vector4 unitY();
+		static Vector4 unitZ();
+		static Vector4 unitW();
 
 		bool isZero() const;
 		bool isUnit() const;
