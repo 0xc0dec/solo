@@ -19,7 +19,7 @@ MaterialParameter::MaterialParameter(const std::string& name):
 }
 
 
-void MaterialParameter::setValue(float value)
+void MaterialParameter::setFloat(float value)
 {
 	clearValue();
 	this->value.asFloat = value;
@@ -27,7 +27,7 @@ void MaterialParameter::setValue(float value)
 }
 
 
-void MaterialParameter::setValue(const float* value, unsigned count)
+void MaterialParameter::setFloatArray(const float *value, unsigned count)
 {
 	clearValue();
 	this->value.asFloatPtr = const_cast<float*>(value);
@@ -36,7 +36,7 @@ void MaterialParameter::setValue(const float* value, unsigned count)
 }
 
 
-void MaterialParameter::setValue(int value)
+void MaterialParameter::setInt(int value)
 {
 	clearValue();
 	this->value.asInt = value;
@@ -44,7 +44,7 @@ void MaterialParameter::setValue(int value)
 }
 
 
-void MaterialParameter::setValue(const int* value, unsigned count)
+void MaterialParameter::setIntArray(const int *value, unsigned count)
 {
 	clearValue();
 	this->value.asIntPtr = const_cast<int*>(value);
@@ -53,7 +53,7 @@ void MaterialParameter::setValue(const int* value, unsigned count)
 }
 
 
-void MaterialParameter::setValue(const Vector2& value)
+void MaterialParameter::setVector2(const Vector2 &value)
 {
 	clearValue(); // TODO eliminate memory deallocation for the case when setting a value of the same type twice
 	auto buf = new float[2];
@@ -65,7 +65,7 @@ void MaterialParameter::setValue(const Vector2& value)
 }
 
 
-void MaterialParameter::setValue(const Vector2* value, unsigned count)
+void MaterialParameter::setVector2Array(const Vector2 *value, unsigned count)
 {
 	clearValue();
 	this->value.asFloatPtr = const_cast<float*>(&value[0].x);
@@ -74,7 +74,7 @@ void MaterialParameter::setValue(const Vector2* value, unsigned count)
 }
 
 
-void MaterialParameter::setValue(const Vector3& value)
+void MaterialParameter::setVector3(const Vector3 &value)
 {
 	clearValue(); // TODO eliminate memory deallocation for the case when setting a value of the same type twice
 	auto buf = new float[3];

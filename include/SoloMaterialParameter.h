@@ -34,13 +34,13 @@ namespace solo
 	public:
 		void clearValue();
 
-		void setValue(float value);
-		void setValue(const float *value, unsigned count);
-		void setValue(int value);
-		void setValue(const int *value, unsigned count);
-		void setValue(const Vector2 &value);
-		void setValue(const Vector2 *value, unsigned count);
-		void setValue(const Vector3 &value);
+		void setFloat(float value);
+		void setFloatArray(const float *value, unsigned count);
+		void setInt(int value);
+		void setIntArray(const int *value, unsigned count);
+		void setVector2(const Vector2 &value);
+		void setVector2Array(const Vector2 *value, unsigned count);
+		void setVector3(const Vector3 &value);
 		void setValue(const Vector3 *value, unsigned count);
 		void setValue(const Vector4 &value);
 		void setValue(const Vector4 *value, unsigned count);
