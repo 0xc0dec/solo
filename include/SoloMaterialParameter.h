@@ -30,8 +30,6 @@ namespace solo
 	class MaterialParameter
 	{
 	public:
-		void clearValue();
-
 		void setFloat(float value);
 		void setFloatArray(const std::vector<float>& value);
 		void setInt(int value);
@@ -73,49 +71,15 @@ namespace solo
 			Func
 		};
 		
-//		class ValueBinding
-//		{
-//		public:
-//			virtual ~ValueBinding() { }
-//			virtual void setValue(EffectVariable* variable, const RenderContext& context) = 0;
-//
-//		protected:
-//			ValueBinding& operator=(const ValueBinding&) { return *this; }
-//		};
-//
-//		template <class TValue>
-//		class LambdaValueBinding : public ValueBinding
-//		{
-//		public:
-//			explicit LambdaValueBinding(std::function<TValue(EffectVariable *variable, const RenderContext& context)> func):
-//				func(func)
-//			{
-//			}
-//
-//			virtual void setValue(EffectVariable* variable, const RenderContext& context) override
-//			{
-//				func(variable, context);
-//			}
-//
-//		private:
-//			std::function<void(EffectVariable *variable, const RenderContext& context)> func;
-//		};
-//
-//		union MaterialParameterValue
-//		{
-//			float asFloat;
-//			int asInt;
-//			float* asFloatPtr;
-//			int* asIntPtr;
-//			ValueBinding* method;
-//			MaterialParameterValue() : asInt(0) {}
-//		};
 
 		explicit MaterialParameter(const std::string &name);
+
 		MaterialParameter(const MaterialParameter& other) = delete;
 		MaterialParameter(MaterialParameter&& other) = delete;
 		MaterialParameter& operator=(const MaterialParameter& other) = delete;
 		MaterialParameter& operator=(MaterialParameter&& other) = delete;
+
+		void clearOldValueIfNeeded(ValueType newExpectedValue);
 
 		std::string name = "";
 		ValueType type = ValueType::None;

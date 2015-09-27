@@ -107,6 +107,15 @@ void runCppUnitTests()
 }
 
 
+void runCppIntegrationTests()
+{
+	auto engine = Engine::create(openGlArgs);
+	auto runner = NEW2(IntegrationTestAndDemoRunner, engine.get());
+	engine->setCallback(runner);
+	engine->run();
+}
+
+
 void runLuaTests(const std::string& entryScriptPath)
 {
 	auto scriptManager = ScriptManager::create();
@@ -117,6 +126,7 @@ void runLuaTests(const std::string& entryScriptPath)
 int main()
 {
 	runCppUnitTests();
+	runCppIntegrationTests();
 	runLuaTests("../tests/scripts/unit-tests.lua");
 	runLuaTests("../tests/scripts/demo.lua");
 	return 0;

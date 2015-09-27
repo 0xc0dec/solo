@@ -14,7 +14,7 @@ namespace solo
 
 		virtual void bind() = 0;
 
-		EffectVariable* findVariable(const std::string& name) const;
+		virtual EffectVariable* findVariable(const std::string& name) const;
 
 	protected:
 		Effect() {}

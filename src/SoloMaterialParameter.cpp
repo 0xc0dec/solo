@@ -20,7 +20,7 @@ MaterialParameter::MaterialParameter(const std::string& name):
 
 void MaterialParameter::setFloat(float value)
 {
-	clearValue();
+	clearOldValueIfNeeded(ValueType::Float);
 	floatValue = value;
 	type = ValueType::Float;
 }
@@ -28,7 +28,7 @@ void MaterialParameter::setFloat(float value)
 
 void MaterialParameter::setFloatArray(const std::vector<float>& value)
 {
-	clearValue();
+	clearOldValueIfNeeded(ValueType::FloatArray);
 	floatArrayValue = value;
 	type = ValueType::FloatArray;
 }
@@ -36,7 +36,7 @@ void MaterialParameter::setFloatArray(const std::vector<float>& value)
 
 void MaterialParameter::setInt(int value)
 {
-	clearValue();
+	clearOldValueIfNeeded(ValueType::Int);
 	intValue = value;
 	type = ValueType::Int;
 }
@@ -44,7 +44,7 @@ void MaterialParameter::setInt(int value)
 
 void MaterialParameter::setIntArray(const std::vector<int>& value)
 {
-	clearValue();
+	clearOldValueIfNeeded(ValueType::IntArray);
 	intArrayValue = value;
 	type = ValueType::IntArray;
 }
@@ -52,7 +52,7 @@ void MaterialParameter::setIntArray(const std::vector<int>& value)
 
 void MaterialParameter::setVector2(const Vector2 &value)
 {
-	clearValue();
+	clearOldValueIfNeeded(ValueType::Vector2);
 	vector2Value = value;
 	type = ValueType::Vector2;
 }
@@ -60,7 +60,7 @@ void MaterialParameter::setVector2(const Vector2 &value)
 
 void MaterialParameter::setVector2Array(const std::vector<Vector2>& value)
 {
-	clearValue();
+	clearOldValueIfNeeded(ValueType::Vector2Array);
 	vector2ArrayValue = value;
 	type = ValueType::Vector2Array;
 }
@@ -68,7 +68,7 @@ void MaterialParameter::setVector2Array(const std::vector<Vector2>& value)
 
 void MaterialParameter::setVector3(const Vector3 &value)
 {
-	clearValue();
+	clearOldValueIfNeeded(ValueType::Vector3);
 	vector3Value = value;
 	type = ValueType::Vector3;
 }
@@ -76,7 +76,7 @@ void MaterialParameter::setVector3(const Vector3 &value)
 
 void MaterialParameter::setVector3Array(const std::vector<Vector3>& value)
 {
-	clearValue();
+	clearOldValueIfNeeded(ValueType::Vector3Array);
 	vector3ArrayValue = value;
 	type = ValueType::Vector3Array;
 }
@@ -84,7 +84,7 @@ void MaterialParameter::setVector3Array(const std::vector<Vector3>& value)
 
 void MaterialParameter::setVector4(const Vector4& value)
 {
-	clearValue();
+	clearOldValueIfNeeded(ValueType::Vector4);
 	vector4Value = value;
 	type = ValueType::Vector4;
 }
@@ -92,7 +92,7 @@ void MaterialParameter::setVector4(const Vector4& value)
 
 void MaterialParameter::setVector4Array(const std::vector<Vector4>& value)
 {
-	clearValue();
+	clearOldValueIfNeeded(ValueType::Vector4Array);
 	vector4ArrayValue = value;
 	type = ValueType::Vector4Array;
 }
@@ -100,7 +100,7 @@ void MaterialParameter::setVector4Array(const std::vector<Vector4>& value)
 
 void MaterialParameter::setMatrix(const Matrix& value)
 {
-	clearValue();
+	clearOldValueIfNeeded(ValueType::Matrix);
 	matrixValue = value;
 	type = ValueType::Matrix;
 }
@@ -108,7 +108,7 @@ void MaterialParameter::setMatrix(const Matrix& value)
 
 void MaterialParameter::setMatrixArray(const std::vector<Matrix>& value)
 {
-	clearValue();
+	clearOldValueIfNeeded(ValueType::MatrixArray);
 	matrixArrayValue = value;
 	type = ValueType::MatrixArray;
 }
@@ -116,7 +116,7 @@ void MaterialParameter::setMatrixArray(const std::vector<Matrix>& value)
 
 void MaterialParameter::setTexture(const shared<Texture> texture)
 {
-	clearValue();
+	clearOldValueIfNeeded(ValueType::Texture);
 	textureValue = texture;
 	type = ValueType::Texture;
 }
@@ -124,7 +124,7 @@ void MaterialParameter::setTexture(const shared<Texture> texture)
 
 void MaterialParameter::setTextureArray(const std::vector<shared<Texture>>& textures)
 {
-	clearValue();
+	clearOldValueIfNeeded(ValueType::TextureArray);
 	textureArrayValue = textures;
 	type = ValueType::TextureArray;
 }
@@ -132,7 +132,7 @@ void MaterialParameter::setTextureArray(const std::vector<shared<Texture>>& text
 
 void MaterialParameter::setFunction(std::function<void(EffectVariable* variable, const RenderContext& context)> func)
 {
-	clearValue();
+	clearOldValueIfNeeded(ValueType::Func);
 	this->func = func;
 	type = ValueType::Func;
 }
@@ -149,31 +149,43 @@ void MaterialParameter::apply(const RenderContext& context)
 			variable->setFloat(floatValue);
 			break;
 		case ValueType::FloatArray:
-			variable->setFloatArray(floatArrayValue.data(), floatArrayValue.size());
+			variable->setFloatArray(floatArrayValue);
 			break;
 		case ValueType::Int:
 			variable->setFloat(intValue);
 			break;
 		case ValueType::IntArray:
-			variable->setIntArray(intArrayValue.data(), intArrayValue.size());
+			variable->setIntArray(intArrayValue);
 			break;
 		case ValueType::Vector2:
-			variable->setVector2Array(vector2ArrayValue.data(), vector2ArrayValue.size());
+			variable->setVector2(vector2Value);
+			break;
+		case ValueType::Vector2Array:
+			variable->setVector2Array(vector2ArrayValue);
 			break;
 		case ValueType::Vector3:
-			variable->setVector3Array(vector3ArrayValue.data(), vector3ArrayValue.size());
+			variable->setVector3(vector3Value);
+			break;
+		case ValueType::Vector3Array:
+			variable->setVector3Array(vector3ArrayValue);
 			break;
 		case ValueType::Vector4:
-			variable->setVector4Array(vector4ArrayValue.data(), vector4ArrayValue.size());
+			variable->setVector4(vector4Value);
+			break;
+		case ValueType::Vector4Array:
+			variable->setVector4Array(vector4ArrayValue);
 			break;
 		case ValueType::Matrix:
-			variable->setMatrixArray(matrixArrayValue.data(), matrixArrayValue.size());
+			variable->setMatrix(matrixValue);
+			break;
+		case ValueType::MatrixArray:
+			variable->setMatrixArray(matrixArrayValue);
 			break;
 		case ValueType::Texture:
 			variable->setTexture(textureValue);
 			break;
 		case ValueType::TextureArray:
-			variable->setTextureArray(textureArrayValue, textureArrayValue.size());
+			variable->setTextureArray(textureArrayValue);
 			break;
 		case ValueType::Func:
 			func(variable, context);
@@ -185,8 +197,10 @@ void MaterialParameter::apply(const RenderContext& context)
 }
 
 
-void MaterialParameter::clearValue()
+void MaterialParameter::clearOldValueIfNeeded(ValueType newExpectedValue)
 {
+	if (newExpectedValue == type)
+		return;
 	switch (type)
 	{
 		case ValueType::FloatArray:

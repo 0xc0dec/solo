@@ -79,6 +79,7 @@
     <ClInclude Include="..\src\SoloStubCamera.h" />
     <ClInclude Include="..\src\SoloStubDevice.h" />
     <ClInclude Include="..\src\SoloStubEffect.h" />
+    <ClInclude Include="..\src\SoloStubEffectVariable.h" />
     <ClInclude Include="..\src\SoloStubMaterial.h" />
     <ClInclude Include="..\src\SoloStubMesh.h" />
     <ClInclude Include="..\src\SoloStubModelLoader.h" />
@@ -157,6 +158,7 @@
     <ClCompile Include="..\src\SoloEffect.cpp" />
     <ClCompile Include="..\src\SoloScriptManager.cpp" />
     <ClCompile Include="..\src\SoloStubDevice.cpp" />
+    <ClCompile Include="..\src\SoloStubEffect.cpp" />
     <ClCompile Include="..\src\SoloStubModelLoader.cpp" />
     <ClCompile Include="..\src\SoloStubResourceManager.cpp" />
     <ClCompile Include="..\src\SoloStubTextureLoader.cpp" />

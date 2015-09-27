@@ -1,5 +1,5 @@
-#include <vector>
 #include <map>
+#include "SoloBase.h"
 #include "SoloLuaScriptManager.h"
 #include "SoloLuaScriptComponent.h"
 #include "SoloLuaEngineCallback.h"
@@ -46,7 +46,7 @@ namespace LuaIntf
 {
 	LUA_USING_SHARED_PTR_TYPE(std::shared_ptr)
 	LUA_USING_LIST_TYPE(std::vector)
-	LUA_USING_MAP_TYPE(std::map)
+	LUA_USING_MAP_TYPE(std::map) // TODO unordered_map
 }
 
 
@@ -68,8 +68,38 @@ LuaScriptManager::~LuaScriptManager()
 }
 
 
-void registerVector3(CppBindModule& module)
+void LuaScriptManager::registerApi()
 {
+	auto module = LuaBinding(lua).beginModule("solo");
+
+	// Vector2
+	auto vector2 = module.beginClass<Vector2>("Vector2");
+	vector2.addConstructor(LUA_ARGS(float, float));
+	REGISTER_STATIC_OVERLOADED_METHOD(vector2, Vector2, dot, "dot", float, , const Vector2&, const Vector2&);
+	REGISTER_STATIC_METHOD(vector2, Vector2, zero);
+	REGISTER_STATIC_METHOD(vector2, Vector2, unit);
+	REGISTER_STATIC_METHOD(vector2, Vector2, unitX);
+	REGISTER_STATIC_METHOD(vector2, Vector2, unitY);
+	REGISTER_STATIC_METHOD(vector2, Vector2, angle);
+	REGISTER_VARIABLE(vector2, Vector2, x);
+	REGISTER_VARIABLE(vector2, Vector2, y);
+	REGISTER_METHOD(vector2, Vector2, distance);
+	REGISTER_METHOD(vector2, Vector2, distanceSquared);
+	REGISTER_OVERLOADED_METHOD(vector2, Vector2, dot, "dot", float, const, const Vector2&);
+	REGISTER_METHOD(vector2, Vector2, clamp);
+	REGISTER_METHOD(vector2, Vector2, length);
+	REGISTER_METHOD(vector2, Vector2, lengthSquared);
+	REGISTER_METHOD(vector2, Vector2, isUnit);
+	REGISTER_METHOD(vector2, Vector2, isZero);
+	REGISTER_METHOD(vector2, Vector2, normalize);
+	REGISTER_METHOD(vector2, Vector2, normalized);
+	REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator+, "plusScalar", Vector2, const, float);
+	REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator+, "plusVector2", Vector2, const, const Vector2&);
+	REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator+=, "addScalar", Vector2&, , float);
+	REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator+=, "addVector2", Vector2&, , const Vector2&);
+	vector2.endClass();
+
+	// Vector3
 	auto vector3 = module.beginClass<Vector3>("Vector3");
 	vector3.addConstructor(LUA_ARGS(float, float, float));
 	REGISTER_STATIC_OVERLOADED_METHOD(vector3, Vector3, dot, "dot", float, , const Vector3&, const Vector3&);
@@ -96,43 +126,11 @@ void registerVector3(CppBindModule& module)
 	REGISTER_METHOD(vector3, Vector3, normalized);
 	REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+, "plusScalar", Vector3, const, float);
 	REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+, "plusVector3", Vector3, const, const Vector3&);
-	REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+=, "addScalar", Vector3&,, float);
-	REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+=, "addVector3", Vector3&,, const Vector3&);
+	REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+=, "addScalar", Vector3&, , float);
+	REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+=, "addVector3", Vector3&, , const Vector3&);
 	vector3.endClass();
-}
 
-
-void registerVector2(CppBindModule& module)
-{
-	auto vector2 = module.beginClass<Vector2>("Vector2");
-	vector2.addConstructor(LUA_ARGS(float, float));
-	REGISTER_STATIC_OVERLOADED_METHOD(vector2, Vector2, dot, "dot", float, , const Vector2&, const Vector2&);
-	REGISTER_STATIC_METHOD(vector2, Vector2, zero);
-	REGISTER_STATIC_METHOD(vector2, Vector2, unit);
-	REGISTER_STATIC_METHOD(vector2, Vector2, unitX);
-	REGISTER_STATIC_METHOD(vector2, Vector2, unitY);
-	REGISTER_STATIC_METHOD(vector2, Vector2, angle);
-	REGISTER_VARIABLE(vector2, Vector2, x);
-	REGISTER_VARIABLE(vector2, Vector2, y);
-	REGISTER_METHOD(vector2, Vector2, distance);
-	REGISTER_METHOD(vector2, Vector2, distanceSquared);
-	REGISTER_OVERLOADED_METHOD(vector2, Vector2, dot, "dot", float, const, const Vector2&);
-	REGISTER_METHOD(vector2, Vector2, clamp);
-	REGISTER_METHOD(vector2, Vector2, length);
-	REGISTER_METHOD(vector2, Vector2, lengthSquared);
-	REGISTER_METHOD(vector2, Vector2, isUnit);
-	REGISTER_METHOD(vector2, Vector2, isZero);
-	REGISTER_METHOD(vector2, Vector2, normalize);
-	REGISTER_METHOD(vector2, Vector2, normalized);
-	REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator+, "plusScalar", Vector2, const, float);
-	REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator+, "plusVector2", Vector2, const, const Vector2&);
-	REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator+=, "addScalar", Vector2&,, float);
-	REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator+=, "addVector2", Vector2&,, const Vector2&);
-	vector2.endClass();
-}
-
-void registerVector4(CppBindModule& module)
-{
+	// Vector4
 	auto vector4 = module.beginClass<Vector4>("Vector4");
 	vector4.addConstructor(LUA_ARGS(float, float, float, float));
 	REGISTER_VARIABLE(vector4, Vector4, x);
@@ -162,11 +160,33 @@ void registerVector4(CppBindModule& module)
 	REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator+=, "addScalar", Vector4&, , float);
 	REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator+=, "addVector4", Vector4&, , const Vector4&);
 	vector4.endClass();
-}
 
+	// Quaternion
+	auto q = module.beginClass<Quaternion>("Quaternion");
+	q.addConstructor(LUA_ARGS());
+	REGISTER_STATIC_METHOD(q, Quaternion, zero);
+	REGISTER_STATIC_METHOD(q, Quaternion, identity);
+	REGISTER_STATIC_METHOD(q, Quaternion, createFromAxisAngle);
+	REGISTER_STATIC_METHOD(q, Quaternion, createFromRotationMatrix);
+	REGISTER_STATIC_METHOD(q, Quaternion, lerp);
+	REGISTER_STATIC_METHOD(q, Quaternion, slerp);
+	REGISTER_STATIC_METHOD(q, Quaternion, squad);
+	REGISTER_METHOD(q, Quaternion, isIdentity);
+	REGISTER_METHOD(q, Quaternion, isZero);
+	REGISTER_METHOD(q, Quaternion, conjugate);
+	REGISTER_METHOD(q, Quaternion, inverse);
+	REGISTER_METHOD(q, Quaternion, normalize);
+	REGISTER_METHOD(q, Quaternion, normalized);
+	REGISTER_METHOD(q, Quaternion, toAxisAngle);
+	REGISTER_METHOD_RENAMED(q, Quaternion, operator*, "product");
+	REGISTER_METHOD_RENAMED(q, Quaternion, operator*=, "mult");
+	REGISTER_VARIABLE(q, Quaternion, x);
+	REGISTER_VARIABLE(q, Quaternion, y);
+	REGISTER_VARIABLE(q, Quaternion, z);
+	REGISTER_VARIABLE(q, Quaternion, w);
+	q.endClass();
 
-void registerMatrix(CppBindModule& module)
-{
+	// Matrix
 	auto matrix = module.beginClass<Matrix>("Matrix");
 	matrix.addConstructor(LUA_ARGS());
 	REGISTER_STATIC_METHOD(matrix, Matrix, identity);
@@ -229,39 +249,49 @@ void registerMatrix(CppBindModule& module)
 	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator*=, "multScalar", Matrix&, , float);
 	REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator*=, "multMatrix", Matrix&, , const Matrix&);
 	matrix.endClass();
-}
 
+	// Ray
+	module.beginClass<Ray>("Ray")
+		.addConstructor(LUA_ARGS(const Vector3&, const Vector3&))
+	.endClass();
 
-void registerQuaternion(CppBindModule& module)
-{
-	auto q = module.beginClass<Quaternion>("Quaternion");
-	q.addConstructor(LUA_ARGS());
-	REGISTER_STATIC_METHOD(q, Quaternion, zero);
-	REGISTER_STATIC_METHOD(q, Quaternion, identity);
-	REGISTER_STATIC_METHOD(q, Quaternion, createFromAxisAngle);
-	REGISTER_STATIC_METHOD(q, Quaternion, createFromRotationMatrix);
-	REGISTER_STATIC_METHOD(q, Quaternion, lerp);
-	REGISTER_STATIC_METHOD(q, Quaternion, slerp);
-	REGISTER_STATIC_METHOD(q, Quaternion, squad);
-	REGISTER_METHOD(q, Quaternion, isIdentity);
-	REGISTER_METHOD(q, Quaternion, isZero);
-	REGISTER_METHOD(q, Quaternion, conjugate);
-	REGISTER_METHOD(q, Quaternion, inverse);
-	REGISTER_METHOD(q, Quaternion, normalize);
-	REGISTER_METHOD(q, Quaternion, normalized);
-	REGISTER_METHOD(q, Quaternion, toAxisAngle);
-	REGISTER_METHOD_RENAMED(q, Quaternion, operator*, "product");
-	REGISTER_METHOD_RENAMED(q, Quaternion, operator*=, "mult");
-	REGISTER_VARIABLE(q, Quaternion, x);
-	REGISTER_VARIABLE(q, Quaternion, y);
-	REGISTER_VARIABLE(q, Quaternion, z);
-	REGISTER_VARIABLE(q, Quaternion, w);
-	q.endClass();
-}
+	// BoundingBox
+	auto bb = module.beginClass<BoundingBox>("BoundingBox");
+	bb.addConstructor(LUA_ARGS(const Vector3&, const Vector3&));
+	REGISTER_STATIC_METHOD(bb, BoundingBox, empty);
+	REGISTER_METHOD(bb, BoundingBox, getCenter);
+	REGISTER_METHOD(bb, BoundingBox, getCorners);
+	REGISTER_METHOD(bb, BoundingBox, intersectsBoundingBox);
+	REGISTER_METHOD(bb, BoundingBox, intersectsBoundingSphere);
+	REGISTER_METHOD(bb, BoundingBox, intersectsFrustum);
+	REGISTER_METHOD(bb, BoundingBox, getRayIntersection);
+	REGISTER_METHOD(bb, BoundingBox, getPlaneIntersection);
+	REGISTER_METHOD(bb, BoundingBox, isEmpty);
+	REGISTER_METHOD(bb, BoundingBox, mergeBoundingBox);
+	REGISTER_METHOD(bb, BoundingBox, mergeBoundingSphere);
+	REGISTER_METHOD(bb, BoundingBox, transform);
+	REGISTER_VARIABLE(bb, BoundingBox, min);
+	REGISTER_VARIABLE(bb, BoundingBox, max);
+	bb.endClass();
 
+	// BoundingSphere
+	auto bs = module.beginClass<BoundingSphere>("BoundingSphere");
+	bs.addConstructor(LUA_ARGS(const Vector3&, float));
+	REGISTER_STATIC_METHOD(bs, BoundingSphere, empty);
+	REGISTER_METHOD(bs, BoundingSphere, intersectsBoundingSphere);
+	REGISTER_METHOD(bs, BoundingSphere, intersectsBoundingBox);
+	REGISTER_METHOD(bs, BoundingSphere, intersectsFrustum);
+	REGISTER_METHOD(bs, BoundingSphere, getRayIntersection);
+	REGISTER_METHOD(bs, BoundingSphere, getPlaneIntersection);
+	REGISTER_METHOD(bs, BoundingSphere, isEmpty);
+	REGISTER_METHOD(bs, BoundingSphere, mergeBoundingBox);
+	REGISTER_METHOD(bs, BoundingSphere, mergeBoundingSphere);
+	REGISTER_METHOD(bs, BoundingSphere, transform);
+	REGISTER_VARIABLE(bs, BoundingSphere, center);
+	REGISTER_VARIABLE(bs, BoundingSphere, radius);
+	bs.endClass();
 
-void registerPlane(CppBindModule& module)
-{
+	// Plane
 	auto p = module.beginClass<Plane>("Plane");
 	p.addConstructor(LUA_ARGS(const Vector3&, float))
 		.addConstant("Intersection_Intersecting", PlaneIntersection::Intersecting)
@@ -276,11 +306,8 @@ void registerPlane(CppBindModule& module)
 	REGISTER_METHOD(p, Plane, isParallel);
 	REGISTER_METHOD(p, Plane, transform);
 	p.endClass();
-}
 
-
-void registerFrustum(CppBindModule& module)
-{
+	// Frustum
 	auto f = module.beginClass<Frustum>("Frustum");
 	f.addConstructor(LUA_ARGS());
 	REGISTER_METHOD(f, Frustum, getNearPlane);
@@ -300,132 +327,51 @@ void registerFrustum(CppBindModule& module)
 	REGISTER_METHOD(f, Frustum, intersectsRay);
 	REGISTER_METHOD(f, Frustum, getPlaneIntersection);
 	f.endClass();
-}
 
+	// EffectVariable
+	auto var = module.beginClass<EffectVariable>("EffectVariable");
+	REGISTER_METHOD(var, EffectVariable, getName);
+	REGISTER_METHOD(var, EffectVariable, setFloat);
+	REGISTER_METHOD(var, EffectVariable, setFloatArray);
+	REGISTER_METHOD(var, EffectVariable, setInt);
+	REGISTER_METHOD(var, EffectVariable, setIntArray);
+	REGISTER_METHOD(var, EffectVariable, setVector2);
+	REGISTER_METHOD(var, EffectVariable, setVector2Array);
+	REGISTER_METHOD(var, EffectVariable, setVector3);
+	REGISTER_METHOD(var, EffectVariable, setVector3Array);
+	REGISTER_METHOD(var, EffectVariable, setVector4);
+	REGISTER_METHOD(var, EffectVariable, setVector4Array);
+	REGISTER_METHOD(var, EffectVariable, setMatrix);
+	REGISTER_METHOD(var, EffectVariable, setMatrixArray);
+	REGISTER_METHOD(var, EffectVariable, setTexture);
+	REGISTER_METHOD(var, EffectVariable, setTextureArray);
+	var.endClass();
 
-void registerBoundingBox(CppBindModule& module)
-{
-	auto bb = module.beginClass<BoundingBox>("BoundingBox");
-	bb.addConstructor(LUA_ARGS(const Vector3&, const Vector3&));
-	REGISTER_STATIC_METHOD(bb, BoundingBox, empty);
-	REGISTER_METHOD(bb, BoundingBox, getCenter);
-	REGISTER_METHOD(bb, BoundingBox, getCorners);
-	REGISTER_METHOD(bb, BoundingBox, intersectsBoundingBox);
-	REGISTER_METHOD(bb, BoundingBox, intersectsBoundingSphere);
-	REGISTER_METHOD(bb, BoundingBox, intersectsFrustum);
-	REGISTER_METHOD(bb, BoundingBox, getRayIntersection);
-	REGISTER_METHOD(bb, BoundingBox, getPlaneIntersection);
-	REGISTER_METHOD(bb, BoundingBox, isEmpty);
-	REGISTER_METHOD(bb, BoundingBox, mergeBoundingBox);
-	REGISTER_METHOD(bb, BoundingBox, mergeBoundingSphere);
-	REGISTER_METHOD(bb, BoundingBox, transform);
-	REGISTER_VARIABLE(bb, BoundingBox, min);
-	REGISTER_VARIABLE(bb, BoundingBox, max);
-	bb.endClass();
-}
-
-
-void registerRay(CppBindModule& module)
-{
-	module.beginClass<Ray>("Ray")
-		.addConstructor(LUA_ARGS(const Vector3&, const Vector3&))
-	.endClass();
-}
-
-
-void registerBoundingSphere(CppBindModule& module)
-{
-	auto bs = module.beginClass<BoundingSphere>("BoundingSphere");
-	bs.addConstructor(LUA_ARGS(const Vector3&, float));
-	REGISTER_STATIC_METHOD(bs, BoundingSphere, empty);
-	REGISTER_METHOD(bs, BoundingSphere, intersectsBoundingSphere);
-	REGISTER_METHOD(bs, BoundingSphere, intersectsBoundingBox);
-	REGISTER_METHOD(bs, BoundingSphere, intersectsFrustum);
-	REGISTER_METHOD(bs, BoundingSphere, getRayIntersection);
-	REGISTER_METHOD(bs, BoundingSphere, getPlaneIntersection);
-	REGISTER_METHOD(bs, BoundingSphere, isEmpty);
-	REGISTER_METHOD(bs, BoundingSphere, mergeBoundingBox);
-	REGISTER_METHOD(bs, BoundingSphere, mergeBoundingSphere);
-	REGISTER_METHOD(bs, BoundingSphere, transform);
-	REGISTER_VARIABLE(bs, BoundingSphere, center);
-	REGISTER_VARIABLE(bs, BoundingSphere, radius);
-	bs.endClass();
-}
-
-
-void registerDevice(CppBindModule& module)
-{
-	module
-		.addConstant("KeyCode_A", KeyCode::A)
-		.addConstant("KeyCode_B", KeyCode::B)
-		.addConstant("KeyCode_C", KeyCode::C)
-		.addConstant("KeyCode_D", KeyCode::D)
-		.addConstant("KeyCode_E", KeyCode::E)
-		.addConstant("KeyCode_F", KeyCode::F)
-		.addConstant("KeyCode_G", KeyCode::G)
-		.addConstant("KeyCode_H", KeyCode::H)
-		.addConstant("KeyCode_I", KeyCode::I)
-		.addConstant("KeyCode_J", KeyCode::J)
-		.addConstant("KeyCode_K", KeyCode::K)
-		.addConstant("KeyCode_L", KeyCode::L)
-		.addConstant("KeyCode_M", KeyCode::M)
-		.addConstant("KeyCode_N", KeyCode::N)
-		.addConstant("KeyCode_O", KeyCode::O)
-		.addConstant("KeyCode_P", KeyCode::P)
-		.addConstant("KeyCode_Q", KeyCode::Q)
-		.addConstant("KeyCode_R", KeyCode::R)
-		.addConstant("KeyCode_S", KeyCode::S)
-		.addConstant("KeyCode_T", KeyCode::T)
-		.addConstant("KeyCode_U", KeyCode::U)
-		.addConstant("KeyCode_V", KeyCode::V)
-		.addConstant("KeyCode_W", KeyCode::W)
-		.addConstant("KeyCode_X", KeyCode::X)
-		.addConstant("KeyCode_Y", KeyCode::Y)
-		.addConstant("KeyCode_Z", KeyCode::Z)
-		.addConstant("KeyCode_LeftArrow", KeyCode::LeftArrow)
-		.addConstant("KeyCode_RightArrow", KeyCode::RightArrow)
-		.addConstant("KeyCode_UpArrow", KeyCode::UpArrow)
-		.addConstant("KeyCode_DownArrow", KeyCode::DownArrow)
-		.addConstant("KeyCode_Escape", KeyCode::Escape);
-
-	module
-		.addConstant("MouseButton_Left", MouseButton::Left)
-		.addConstant("MouseButton_Middle", MouseButton::Middle)
-		.addConstant("MouseButton_Right", MouseButton::Right);
-
-	auto device = module.beginClass<Device>("Device");
-	REGISTER_METHOD(device, Device, getWindowTitle);
-	REGISTER_METHOD(device, Device, setWindowTitle);
-	REGISTER_METHOD(device, Device, setCursorCaptured);
-	REGISTER_METHOD(device, Device, getCanvasSize);
-	REGISTER_METHOD(device, Device, getLifetime);
-	REGISTER_METHOD(device, Device, isKeyPressed);
-	REGISTER_METHOD(device, Device, isKeyReleased);
-	REGISTER_METHOD(device, Device, getMouseMotion);
-	REGISTER_METHOD(device, Device, isMouseButtonDown);
-	REGISTER_METHOD(device, Device, isMouseButtonReleased);
-	REGISTER_METHOD(device, Device, getTimeDelta);
-	REGISTER_METHOD(device, Device, requestShutdown);
-	REGISTER_METHOD(device, Device, shutdownRequested);
-	device.endClass();
-}
-
-
-void registerEffect(CppBindModule& module)
-{
+	// Effect
 	auto effect = module.beginClass<Effect>("Effect");
 	REGISTER_METHOD(effect, Effect, findVariable);
 	effect.endClass();
-}
 
+	// Model
+	auto m = module.beginClass<Model>("Model");
+	REGISTER_METHOD(m, Model, addMesh);
+	REGISTER_METHOD(m, Model, getMesh);
+	REGISTER_METHOD(m, Model, getMeshCount);
+	REGISTER_METHOD(m, Model, removeMesh);
+	m.endClass();
 
-void registerTexture(CppBindModule& module)
-{
+	// ColorFormat
 	module
 		.addConstant("ColorFormat_RGB", ColorFormat::RGB)
-		.addConstant("ColorFormat_RGBA", ColorFormat::RGBA)
+		.addConstant("ColorFormat_RGBA", ColorFormat::RGBA);
+
+	// TextureWrapMode
+	module
 		.addConstant("TextureWrapMode_Clamp", TextureWrapMode::Clamp)
-		.addConstant("TextureWrapMode_Repeat", TextureWrapMode::Repeat)
+		.addConstant("TextureWrapMode_Repeat", TextureWrapMode::Repeat);
+
+	// TextureFilter
+	module
 		.addConstant("TextureFilter_Nearest", TextureFilter::Nearest)
 		.addConstant("TextureFilter_Linear", TextureFilter::Linear)
 		.addConstant("TextureFilter_LinearMipmapLinear", TextureFilter::LinearMipmapLinear)
@@ -433,9 +379,11 @@ void registerTexture(CppBindModule& module)
 		.addConstant("TextureFilter_NearestMipmapLinear", TextureFilter::NearestMipmapLinear)
 		.addConstant("TextureFilter_NearestMipmapNearest", TextureFilter::NearestMipmapNearest);
 
+	// Texture
 	module.beginClass<Texture>("Texture") // TODO not sure if empty registration needed
 	.endClass();
 
+	// Texture2D
 	auto tex2d = module.beginExtendClass<Texture2D, Texture>("Texture2D");
 	REGISTER_METHOD(tex2d, Texture2D, setData);
 	REGISTER_METHOD(tex2d, Texture2D, generateMipmaps);
@@ -449,49 +397,13 @@ void registerTexture(CppBindModule& module)
 	REGISTER_METHOD(tex2d, Texture2D, getAnisotropyLevel);
 	REGISTER_METHOD(tex2d, Texture2D, setAnisotropyLevel);
 	tex2d.endClass();
-}
 
+	// RenderTarget
+	module.beginClass<RenderTarget>("RenderTarget")
+		// TODO
+	.endClass();
 
-void registerMaterial(CppBindModule& module)
-{
-	auto m = module.beginClass<Material>("Material");
-	REGISTER_METHOD(m, Material, getParameter);
-	REGISTER_METHOD(m, Material, getEffect);
-	m.endClass();
-
-	module
-		.addConstant("AutoBinding_None", AutoBinding::None)
-		.addConstant("AutoBinding_CameraWorldPosition", AutoBinding::CameraWorldPosition)
-		.addConstant("AutoBinding_InverseTransposedWorldMatrix", AutoBinding::InverseTransposedWorldMatrix)
-		.addConstant("AutoBinding_InverseTransposedWorldViewMatrix", AutoBinding::InverseTransposedWorldViewMatrix)
-		.addConstant("AutoBinding_ProjectionMatrix", AutoBinding::ProjectionMatrix)
-		.addConstant("AutoBinding_ViewMatrix", AutoBinding::ViewMatrix)
-		.addConstant("AutoBinding_ViewProjectionMatrix", AutoBinding::ViewProjectionMatrix)
-		.addConstant("AutoBinding_WorldMatrix", AutoBinding::WorldMatrix)
-		.addConstant("AutoBinding_WorldViewProjectionMatrix", AutoBinding::WorldViewProjectionMatrix);
-
-	auto mp = module.beginClass<MaterialParameter>("MaterialParameter");
-	REGISTER_METHOD(mp, MaterialParameter, setFloat);
-	REGISTER_METHOD(mp, MaterialParameter, setFloatArray);
-	REGISTER_METHOD(mp, MaterialParameter, setInt);
-	REGISTER_METHOD(mp, MaterialParameter, setIntArray);
-	REGISTER_METHOD(mp, MaterialParameter, setVector2);
-	REGISTER_METHOD(mp, MaterialParameter, setVector2Array);
-	REGISTER_METHOD(mp, MaterialParameter, setVector3);
-	REGISTER_METHOD(mp, MaterialParameter, setVector3Array);
-	REGISTER_METHOD(mp, MaterialParameter, setVector4);
-	REGISTER_METHOD(mp, MaterialParameter, setVector4Array);
-	REGISTER_METHOD(mp, MaterialParameter, setMatrix);
-	REGISTER_METHOD(mp, MaterialParameter, setMatrixArray);
-	REGISTER_METHOD(mp, MaterialParameter, setTexture);
-	REGISTER_METHOD(mp, MaterialParameter, setTextureArray);
-	REGISTER_METHOD(mp, MaterialParameter, bindValue);
-	mp.endClass();
-}
-
-
-void registerNode(CppBindModule& module)
-{
+	// Node
 	auto node = module.beginClass<Node>("Node");
 	REGISTER_METHOD(node, Node, getScene);
 	REGISTER_METHOD(node, Node, getId);
@@ -501,71 +413,20 @@ void registerNode(CppBindModule& module)
 		.addFunction("addComponent", &LuaScriptComponent::addComponent)
 		.addFunction("addStandardComponent", &LuaScriptComponent::addStandardComponent)
 		.addFunction("removeComponent", &LuaScriptComponent::removeComponent)
-	.endClass();
-}
+		.endClass();
 
-
-void registerComponent(CppBindModule& module)
-{
+	// Component
 	module.beginClass<Component>("Component")
 		// TODO
 	.endClass();
-}
 
-
-void registerRenderTarget(CppBindModule& module)
-{
-	module.beginClass<RenderTarget>("RenderTarget")
-		// TODO
-	.endClass();
-}
-
-
-void registerMesh(CppBindModule& module)
-{
-	auto mesh = module.beginClass<Mesh>("Mesh");
-	REGISTER_METHOD(mesh, Mesh, setIndices);
-	REGISTER_METHOD(mesh, Mesh, setNormals);
-	REGISTER_METHOD(mesh, Mesh, setUVs);
-	REGISTER_METHOD(mesh, Mesh, setVertices);
-	mesh.endClass();
-}
-
-
-void registerCamera(CppBindModule& module)
-{
-	auto camera = module.beginExtendClass<Camera, Component>("Camera");
-	REGISTER_METHOD(camera, Camera, getRenderTarget);
-	REGISTER_METHOD(camera, Camera, setRenderTarget);
-	REGISTER_METHOD(camera, Camera, setClearColor);
-	REGISTER_METHOD(camera, Camera, getViewport);
-	REGISTER_METHOD(camera, Camera, setViewport);
-	REGISTER_METHOD(camera, Camera, resetViewport);
-	REGISTER_METHOD(camera, Camera, setPerspective);
-	REGISTER_METHOD(camera, Camera, isPerspective);
-	REGISTER_METHOD(camera, Camera, getNear);
-	REGISTER_METHOD(camera, Camera, getFar);
-	REGISTER_METHOD(camera, Camera, getFOV);
-	REGISTER_METHOD(camera, Camera, getWidth);
-	REGISTER_METHOD(camera, Camera, getHeight);
-	REGISTER_METHOD(camera, Camera, getAspectRatio);
-	REGISTER_METHOD(camera, Camera, setNear);
-	REGISTER_METHOD(camera, Camera, setFar);
-	REGISTER_METHOD(camera, Camera, setFOV);
-	REGISTER_METHOD(camera, Camera, setWidth);
-	REGISTER_METHOD(camera, Camera, setHeight);
-	REGISTER_METHOD(camera, Camera, setAspectRatio);
-	camera.endClass();
-}
-
-
-void registerTransform(CppBindModule& module)
-{
+	// TransformSpace
 	module
 		.addConstant("TransformSpace_Parent", TransformSpace::Parent)
 		.addConstant("TransformSpace_Self", TransformSpace::Self)
 		.addConstant("TransformSpace_World", TransformSpace::World);
 
+	// Transform
 	auto transform = module.beginExtendClass<Transform, Component>("Transform");
 	REGISTER_METHOD(transform, Transform, getParent);
 	REGISTER_METHOD(transform, Transform, setParent);
@@ -602,57 +463,139 @@ void registerTransform(CppBindModule& module)
 	REGISTER_METHOD(transform, Transform, transformPoint);
 	REGISTER_METHOD(transform, Transform, transformDirection);
 	transform.endClass();
-}
 
+	// Camera
+	auto camera = module.beginExtendClass<Camera, Component>("Camera");
+	REGISTER_METHOD(camera, Camera, getRenderTarget);
+	REGISTER_METHOD(camera, Camera, setRenderTarget);
+	REGISTER_METHOD(camera, Camera, setClearColor);
+	REGISTER_METHOD(camera, Camera, getViewport);
+	REGISTER_METHOD(camera, Camera, setViewport);
+	REGISTER_METHOD(camera, Camera, resetViewport);
+	REGISTER_METHOD(camera, Camera, setPerspective);
+	REGISTER_METHOD(camera, Camera, isPerspective);
+	REGISTER_METHOD(camera, Camera, getNear);
+	REGISTER_METHOD(camera, Camera, getFar);
+	REGISTER_METHOD(camera, Camera, getFOV);
+	REGISTER_METHOD(camera, Camera, getWidth);
+	REGISTER_METHOD(camera, Camera, getHeight);
+	REGISTER_METHOD(camera, Camera, getAspectRatio);
+	REGISTER_METHOD(camera, Camera, setNear);
+	REGISTER_METHOD(camera, Camera, setFar);
+	REGISTER_METHOD(camera, Camera, setFOV);
+	REGISTER_METHOD(camera, Camera, setWidth);
+	REGISTER_METHOD(camera, Camera, setHeight);
+	REGISTER_METHOD(camera, Camera, setAspectRatio);
+	camera.endClass();
 
-void registerScene(CppBindModule& module)
-{
-	module.beginClass<Scene>("Scene")
-		.addFunction("createNode", &Scene::createNode)
-	.endClass();
-}
+	// Material
+	auto mat = module.beginClass<Material>("Material");
+	REGISTER_METHOD(mat, Material, getParameter);
+	REGISTER_METHOD(mat, Material, getEffect);
+	mat.endClass();
 
-
-void registerFileSystem(CppBindModule& module)
-{
-	module.beginClass<FileSystem>("FileSystem")
-		// TODO
-	.endClass();
-}
-
-
-void registerEngine(CppBindModule& module)
-{
+	// AutoBinding
 	module
-		.addConstant("EngineMode_Stub", EngineMode::Stub)
-		.addConstant("EngineMode_OpenGL", EngineMode::OpenGL);
+		.addConstant("AutoBinding_None", AutoBinding::None)
+		.addConstant("AutoBinding_CameraWorldPosition", AutoBinding::CameraWorldPosition)
+		.addConstant("AutoBinding_InverseTransposedWorldMatrix", AutoBinding::InverseTransposedWorldMatrix)
+		.addConstant("AutoBinding_InverseTransposedWorldViewMatrix", AutoBinding::InverseTransposedWorldViewMatrix)
+		.addConstant("AutoBinding_ProjectionMatrix", AutoBinding::ProjectionMatrix)
+		.addConstant("AutoBinding_ViewMatrix", AutoBinding::ViewMatrix)
+		.addConstant("AutoBinding_ViewProjectionMatrix", AutoBinding::ViewProjectionMatrix)
+		.addConstant("AutoBinding_WorldMatrix", AutoBinding::WorldMatrix)
+		.addConstant("AutoBinding_WorldViewProjectionMatrix", AutoBinding::WorldViewProjectionMatrix);
 
-	module.beginClass<EngineCreationArgs>("EngineCreationArgs")
-		.addConstructor(LUA_ARGS(_opt<EngineMode>, _opt<int>, _opt<int>, _opt<int>, _opt<int>, _opt<bool>, _opt<std::string>))
-		.addVariable("mode", &EngineCreationArgs::mode, true)
-		.addVariable("bits", &EngineCreationArgs::bits, true)
-		.addVariable("canvasHeight", &EngineCreationArgs::canvasHeight, true)
-		.addVariable("canvasWidth", &EngineCreationArgs::canvasWidth, true)
-		.addVariable("depth", &EngineCreationArgs::depth, true)
-		.addVariable("fullScreen", &EngineCreationArgs::fullScreen, true)
-		.addVariable("windowTitle", &EngineCreationArgs::windowTitle, true)
-	.endClass();
+	// MaterialParameter
+	auto mp = module.beginClass<MaterialParameter>("MaterialParameter");
+	REGISTER_METHOD(mp, MaterialParameter, setFloat);
+	REGISTER_METHOD(mp, MaterialParameter, setFloatArray);
+	REGISTER_METHOD(mp, MaterialParameter, setInt);
+	REGISTER_METHOD(mp, MaterialParameter, setIntArray);
+	REGISTER_METHOD(mp, MaterialParameter, setVector2);
+	REGISTER_METHOD(mp, MaterialParameter, setVector2Array);
+	REGISTER_METHOD(mp, MaterialParameter, setVector3);
+	REGISTER_METHOD(mp, MaterialParameter, setVector3Array);
+	REGISTER_METHOD(mp, MaterialParameter, setVector4);
+	REGISTER_METHOD(mp, MaterialParameter, setVector4Array);
+	REGISTER_METHOD(mp, MaterialParameter, setMatrix);
+	REGISTER_METHOD(mp, MaterialParameter, setMatrixArray);
+	REGISTER_METHOD(mp, MaterialParameter, setTexture);
+	REGISTER_METHOD(mp, MaterialParameter, setTextureArray);
+	REGISTER_METHOD(mp, MaterialParameter, bindValue);
+	mp.endClass();
 
-	module.beginClass<Engine>("Engine")
-		.addStaticFunction("create", &Engine::create)
-		.addFunction("getDevice", &Engine::getDevice)
-		.addFunction("getScene", &Engine::getScene)
-		.addFunction("getResourceManager", &Engine::getResourceManager)
-		.addFunction("getFileSystem", &Engine::getFileSystem)
-		.addFunction("setCallback", &LuaEngineCallback::setCallback)
-		.addFunction("getMode", &Engine::getMode)
-		.addFunction("run", &Engine::run)
-	.endClass();
-}
+	// Mesh
+	auto mesh = module.beginClass<Mesh>("Mesh");
+	REGISTER_METHOD(mesh, Mesh, setIndices);
+	REGISTER_METHOD(mesh, Mesh, setNormals);
+	REGISTER_METHOD(mesh, Mesh, setUVs);
+	REGISTER_METHOD(mesh, Mesh, setVertices);
+	mesh.endClass();
 
+	// Scene
+	auto scene = module.beginClass<Scene>("Scene");
+	REGISTER_METHOD(scene, Scene, createNode);
+	scene.endClass();
 
-void registerResourceManager(CppBindModule& module)
-{
+	// KeyCode
+	module
+		.addConstant("KeyCode_A", KeyCode::A)
+		.addConstant("KeyCode_B", KeyCode::B)
+		.addConstant("KeyCode_C", KeyCode::C)
+		.addConstant("KeyCode_D", KeyCode::D)
+		.addConstant("KeyCode_E", KeyCode::E)
+		.addConstant("KeyCode_F", KeyCode::F)
+		.addConstant("KeyCode_G", KeyCode::G)
+		.addConstant("KeyCode_H", KeyCode::H)
+		.addConstant("KeyCode_I", KeyCode::I)
+		.addConstant("KeyCode_J", KeyCode::J)
+		.addConstant("KeyCode_K", KeyCode::K)
+		.addConstant("KeyCode_L", KeyCode::L)
+		.addConstant("KeyCode_M", KeyCode::M)
+		.addConstant("KeyCode_N", KeyCode::N)
+		.addConstant("KeyCode_O", KeyCode::O)
+		.addConstant("KeyCode_P", KeyCode::P)
+		.addConstant("KeyCode_Q", KeyCode::Q)
+		.addConstant("KeyCode_R", KeyCode::R)
+		.addConstant("KeyCode_S", KeyCode::S)
+		.addConstant("KeyCode_T", KeyCode::T)
+		.addConstant("KeyCode_U", KeyCode::U)
+		.addConstant("KeyCode_V", KeyCode::V)
+		.addConstant("KeyCode_W", KeyCode::W)
+		.addConstant("KeyCode_X", KeyCode::X)
+		.addConstant("KeyCode_Y", KeyCode::Y)
+		.addConstant("KeyCode_Z", KeyCode::Z)
+		.addConstant("KeyCode_LeftArrow", KeyCode::LeftArrow)
+		.addConstant("KeyCode_RightArrow", KeyCode::RightArrow)
+		.addConstant("KeyCode_UpArrow", KeyCode::UpArrow)
+		.addConstant("KeyCode_DownArrow", KeyCode::DownArrow)
+		.addConstant("KeyCode_Escape", KeyCode::Escape);
+
+	// MouseButton
+	module
+		.addConstant("MouseButton_Left", MouseButton::Left)
+		.addConstant("MouseButton_Middle", MouseButton::Middle)
+		.addConstant("MouseButton_Right", MouseButton::Right);
+
+	// Device
+	auto device = module.beginClass<Device>("Device");
+	REGISTER_METHOD(device, Device, getWindowTitle);
+	REGISTER_METHOD(device, Device, setWindowTitle);
+	REGISTER_METHOD(device, Device, setCursorCaptured);
+	REGISTER_METHOD(device, Device, getCanvasSize);
+	REGISTER_METHOD(device, Device, getLifetime);
+	REGISTER_METHOD(device, Device, isKeyPressed);
+	REGISTER_METHOD(device, Device, isKeyReleased);
+	REGISTER_METHOD(device, Device, getMouseMotion);
+	REGISTER_METHOD(device, Device, isMouseButtonDown);
+	REGISTER_METHOD(device, Device, isMouseButtonReleased);
+	REGISTER_METHOD(device, Device, getTimeDelta);
+	REGISTER_METHOD(device, Device, requestShutdown);
+	REGISTER_METHOD(device, Device, shutdownRequested);
+	device.endClass();
+
+	// ResourceManager
 	auto mgr = module.beginClass<ResourceManager>("ResourceManager");
 	REGISTER_METHOD(mgr, ResourceManager, findEffect);
 	REGISTER_METHOD(mgr, ResourceManager, findTexture);
@@ -668,50 +611,43 @@ void registerResourceManager(CppBindModule& module)
 	REGISTER_METHOD2(mgr, ResourceManager, getOrCreateRenderTarget, LUA_ARGS(_opt<const std::string&>));
 	REGISTER_METHOD(mgr, ResourceManager, getOrLoadTexture);
 	REGISTER_METHOD(mgr, ResourceManager, getOrLoadModel);
-	REGISTER_OVERLOADED_METHOD(mgr, ResourceManager, cleanUnusedResources, "cleanUnusedResources", void,,void);
+	REGISTER_OVERLOADED_METHOD(mgr, ResourceManager, cleanUnusedResources, "cleanUnusedResources", void, , void);
 	mgr.endClass();
-}
 
+	// FileSystem
+	module.beginClass<FileSystem>("FileSystem")
+		// TODO
+	.endClass();
 
-void registerModel(CppBindModule& module)
-{
-	auto m = module.beginClass<Model>("Model");
-	REGISTER_METHOD(m, Model, addMesh);
-	REGISTER_METHOD(m, Model, getMesh);
-	REGISTER_METHOD(m, Model, getMeshCount);
-	REGISTER_METHOD(m, Model, removeMesh);
-	m.endClass();
-}
+	// EngineMode
+	module
+		.addConstant("EngineMode_Stub", EngineMode::Stub)
+		.addConstant("EngineMode_OpenGL", EngineMode::OpenGL);
 
+	// EngineCreationArgs
+	module.beginClass<EngineCreationArgs>("EngineCreationArgs")
+		.addConstructor(LUA_ARGS(_opt<EngineMode>, _opt<int>, _opt<int>, _opt<int>, _opt<int>, _opt<bool>, _opt<std::string>))
+		.addVariable("mode", &EngineCreationArgs::mode, true)
+		.addVariable("bits", &EngineCreationArgs::bits, true)
+		.addVariable("canvasHeight", &EngineCreationArgs::canvasHeight, true)
+		.addVariable("canvasWidth", &EngineCreationArgs::canvasWidth, true)
+		.addVariable("depth", &EngineCreationArgs::depth, true)
+		.addVariable("fullScreen", &EngineCreationArgs::fullScreen, true)
+		.addVariable("windowTitle", &EngineCreationArgs::windowTitle, true)
+		.endClass();
 
-void LuaScriptManager::registerApi()
-{
-	auto module = LuaBinding(lua).beginModule("solo");
-	registerVector2(module);
-	registerVector3(module);
-	registerVector4(module);
-	registerRay(module);
-	registerBoundingBox(module);
-	registerBoundingSphere(module);
-	registerFrustum(module);
-	registerQuaternion(module);
-	registerPlane(module);
-	registerMatrix(module);
-	registerDevice(module);
-	registerEffect(module);
-	registerModel(module);
-	registerTexture(module);
-	registerResourceManager(module);
-	registerNode(module);
-	registerComponent(module);
-	registerTransform(module);
-	registerRenderTarget(module);
-	registerCamera(module);
-	registerMaterial(module);
-	registerMesh(module);
-	registerScene(module);
-	registerFileSystem(module);
-	registerEngine(module);
+	// Engine
+	module.beginClass<Engine>("Engine")
+		.addStaticFunction("create", &Engine::create)
+		.addFunction("getDevice", &Engine::getDevice)
+		.addFunction("getScene", &Engine::getScene)
+		.addFunction("getResourceManager", &Engine::getResourceManager)
+		.addFunction("getFileSystem", &Engine::getFileSystem)
+		.addFunction("setCallback", &LuaEngineCallback::setCallback)
+		.addFunction("getMode", &Engine::getMode)
+		.addFunction("run", &Engine::run)
+		.endClass();
+
 	module.endModule();
 }
 

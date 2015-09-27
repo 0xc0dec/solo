@@ -4,13 +4,6 @@
 using namespace solo;
 
 
-std::unordered_map<GLuint, std::string> shaderTypeNames =
-{
-	{ GL_VERTEX_SHADER, "vertex" },
-	{ GL_FRAGMENT_SHADER, "fragment" }
-};
-
-
 static GLint createProgram(GLuint vs, GLuint fs)
 {
 	auto program = glCreateProgram();
@@ -36,6 +29,12 @@ static GLint createProgram(GLuint vs, GLuint fs)
 
 static GLint compileShader(GLuint type, std::string src)
 {
+	static std::unordered_map<GLuint, std::string> shaderTypeNames =
+	{
+		{ GL_VERTEX_SHADER, "vertex" },
+		{ GL_FRAGMENT_SHADER, "fragment" }
+	};
+
 	auto shader = glCreateShader(type);
 
 	auto rawSrc = src.c_str();
