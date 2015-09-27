@@ -85,9 +85,6 @@
     <ClInclude Include="..\include\SoloTransform.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloDirty.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloComponent.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -204,6 +201,9 @@
     </ClInclude>
     <ClInclude Include="..\src\SoloStubEffectVariable.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloFlags.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

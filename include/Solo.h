@@ -6,7 +6,7 @@
 #include "SoloCamera.h"
 #include "SoloComponent.h"
 #include "SoloDevice.h"
-#include "SoloDirty.h"
+#include "SoloFlags.h"
 #include "SoloEffect.h"
 #include "SoloEffectVariable.h"
 #include "SoloEngine.h"

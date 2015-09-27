@@ -25,7 +25,7 @@
     <ClInclude Include="..\include\SoloCamera.h" />
     <ClInclude Include="..\include\SoloComponent.h" />
     <ClInclude Include="..\include\SoloDevice.h" />
-    <ClInclude Include="..\include\SoloDirty.h" />
+    <ClInclude Include="..\include\SoloFlags.h" />
     <ClInclude Include="..\include\SoloEffect.h" />
     <ClInclude Include="..\include\SoloEffectVariable.h" />
     <ClInclude Include="..\include\SoloEngine.h" />

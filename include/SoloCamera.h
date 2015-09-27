@@ -2,7 +2,7 @@
 
 #include "SoloComponent.h"
 #include "SoloVector4.h"
-#include "SoloDirty.h"
+#include "SoloFlags.h"
 #include "SoloMatrix.h"
 #include "SoloTransform.h"
 #include "SoloNode.h"
@@ -15,7 +15,7 @@ namespace solo
 	class Scene;
 	enum class EngineMode;
 
-	class Camera : public ComponentBase<Camera>, protected TransformCallback, Dirty
+	class Camera : public ComponentBase<Camera>, protected TransformCallback
 	{
 	public:
 		virtual ~Camera() {}
@@ -65,6 +65,8 @@ namespace solo
 		virtual void applyViewport() = 0;
 		virtual void applyClearColor() = 0;
 		virtual void clear() = 0;
+
+		Flags dirtyFlags;
 
 		Scene *scene;
 

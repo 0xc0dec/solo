@@ -2,7 +2,7 @@
 
 #include "SoloBase.h"
 #include "SoloComponent.h"
-#include "SoloDirty.h"
+#include "SoloFlags.h"
 #include "SoloMatrix.h"
 #include "SoloVector3.h"
 #include "SoloQuaternion.h"
@@ -20,7 +20,7 @@ namespace solo
 		World
 	};
 
-	class Transform: public ComponentBase<Transform>, Dirty
+	class Transform: public ComponentBase<Transform>
 	{
 	public:
 		virtual void init() override;
@@ -88,6 +88,8 @@ namespace solo
 		void setChildrenDirty() const;
 
 		void notifyChanged() const;
+
+		Flags dirtyFlags;
 
 		Transform* parent = nullptr;
 		std::vector<Transform*> children;

@@ -33,7 +33,7 @@ void Transform::notifyChanged() const
 void Transform::init()
 {
 	localScale = Vector3::unit();
-	setDirty<DIRTY_BIT_ALL>();
+	dirtyFlags.set<DIRTY_BIT_ALL>();
 }
 
 
@@ -119,30 +119,30 @@ Quaternion Transform::getLocalRotation() const
 
 Matrix Transform::getMatrix() const
 {
-	if (isDirty())
+	if (dirtyFlags.anySet())
 	{
 		auto hasTranslation = !localPosition.isZero();
 		auto hasScale = !localScale.isUnit();
 		auto hasRotation = !localRotation.isIdentity();
 
-		if (hasTranslation || isDirty<DIRTY_BIT_POSITION>())
+		if (hasTranslation || dirtyFlags.isSet<DIRTY_BIT_POSITION>())
 		{
 			matrix = Matrix::createTranslation(localPosition);
-			if (hasRotation || isDirty<DIRTY_BIT_ROTATION>())
+			if (hasRotation || dirtyFlags.isSet<DIRTY_BIT_ROTATION>())
 				matrix.rotate(localRotation);
-			if (hasScale || isDirty<DIRTY_BIT_SCALE>())
+			if (hasScale || dirtyFlags.isSet<DIRTY_BIT_SCALE>())
 				matrix.scale(localScale);
 		}
-		else if (hasRotation || isDirty<DIRTY_BIT_ROTATION>())
+		else if (hasRotation || dirtyFlags.isSet<DIRTY_BIT_ROTATION>())
 		{
 			matrix = Matrix::createRotation(localRotation);
-			if (hasScale || isDirty<DIRTY_BIT_SCALE>())
+			if (hasScale || dirtyFlags.isSet<DIRTY_BIT_SCALE>())
 				matrix.scale(localScale);
 		}
-		else if (hasScale || isDirty<DIRTY_BIT_SCALE>())
+		else if (hasScale || dirtyFlags.isSet<DIRTY_BIT_SCALE>())
 			matrix = Matrix::createScale(localScale);
 
-		clean<DIRTY_BIT_ALL>();
+		dirtyFlags.clean<DIRTY_BIT_ALL>();
 	}
 	return matrix;
 }
@@ -150,7 +150,7 @@ Matrix Transform::getMatrix() const
 
 Matrix Transform::getWorldMatrix() const
 {
-	if (checkAndCleanBit<DIRTY_BIT_WORLD>())
+	if (dirtyFlags.checkAndUnset<DIRTY_BIT_WORLD>())
 	{
 		if (parent)
 			worldMatrix = parent->getWorldMatrix() * getMatrix();
@@ -165,7 +165,7 @@ Matrix Transform::getWorldMatrix() const
 
 Matrix Transform::getInverseTransposedWorldMatrix() const
 {
-	if (checkAndCleanBit<DIRTY_BIT_INSERSE_TRANSPOSED_WORLD>() || isDirty<DIRTY_BIT_WORLD>())
+	if (dirtyFlags.checkAndUnset<DIRTY_BIT_INSERSE_TRANSPOSED_WORLD>() || dirtyFlags.isSet<DIRTY_BIT_WORLD>())
 	{
 		inverseTransposedWorldMatrix = getWorldMatrix();
 		inverseTransposedWorldMatrix.invert();
@@ -356,7 +356,7 @@ Vector3 Transform::getLocalBack() const
 template <unsigned bit1, unsigned... bitN>
 void Transform::setDirtyWithChildren() const
 {
-	setDirty<bit1, bitN...>();
+	dirtyFlags.set<bit1, bitN...>();
 	notifyChanged();
 	for (auto child : children)
 		child->setDirtyWithChildren<bit1, bitN...>();

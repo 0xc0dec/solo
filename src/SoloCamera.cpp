@@ -42,7 +42,7 @@ void Camera::init()
 	transform->addCallback(this);
 	auto canvasSize = scene->getEngine()->getDevice()->getCanvasSize();
 	setAspectRatio(canvasSize.x / canvasSize.y);
-	setDirty<DIRTY_BIT_ALL>(); // arguably
+	dirtyFlags.set<DIRTY_BIT_ALL>(); // arguably
 }
 
 
@@ -54,7 +54,7 @@ void Camera::terminate()
 
 void Camera::onTransformChanged(const Transform* transform)
 {
-	setDirty<DIRTY_BIT_VIEW, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW, DIRTY_BIT_INV_VIEW_PROJ>();
+	dirtyFlags.set<DIRTY_BIT_VIEW, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
 
@@ -82,7 +82,7 @@ Vector4 Camera::getViewport() const
 void Camera::setPerspective(bool perspective)
 {
 	ortho = !perspective;
-	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
+	dirtyFlags.set<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
 
@@ -131,48 +131,48 @@ float Camera::getAspectRatio() const
 void Camera::setFOV(float fov)
 {
 	this->fov = fov;
-	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
+	dirtyFlags.set<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
 
 void Camera::setWidth(float width)
 {
 	this->width = width;
-	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
+	dirtyFlags.set<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
 
 void Camera::setHeight(float height)
 {
 	this->height = height;
-	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
+	dirtyFlags.set<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
 
 void Camera::setAspectRatio(float ratio)
 {
 	aspectRatio = ratio;
-	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
+	dirtyFlags.set<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
 
 void Camera::setFar(float far)
 {
 	this->farClip = far;
-	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
+	dirtyFlags.set<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
 
 void Camera::setNear(float near)
 {
 	this->nearClip = near;
-	setDirty<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
+	dirtyFlags.set<DIRTY_BIT_PROJ, DIRTY_BIT_VIEW_PROJ, DIRTY_BIT_INV_VIEW_PROJ>();
 }
 
 
 const Matrix& Camera::getViewMatrix()
 {
-	if (checkAndCleanBit<DIRTY_BIT_VIEW>())
+	if (dirtyFlags.checkAndUnset<DIRTY_BIT_VIEW>())
 	{
 		viewMatrix = transform->getWorldMatrix();
 		viewMatrix.invert();
@@ -183,7 +183,7 @@ const Matrix& Camera::getViewMatrix()
 
 const Matrix& Camera::getInverseViewMatrix()
 {
-	if (checkAndCleanBit<DIRTY_BIT_INV_VIEW>())
+	if (dirtyFlags.checkAndUnset<DIRTY_BIT_INV_VIEW>())
 	{
 		inverseViewMatrix = getViewMatrix();
 		inverseViewMatrix.invert();
@@ -194,7 +194,7 @@ const Matrix& Camera::getInverseViewMatrix()
 
 const Matrix& Camera::getProjectionMatrix()
 {
-	if (checkAndCleanBit<DIRTY_BIT_PROJ>())
+	if (dirtyFlags.checkAndUnset<DIRTY_BIT_PROJ>())
 	{
 		if (ortho)
 			projectionMatrix = Matrix::createOrthographic(width, height, nearClip, farClip);
@@ -207,7 +207,7 @@ const Matrix& Camera::getProjectionMatrix()
 
 const Matrix& Camera::getViewProjectionMatrix()
 {
-	if (checkAndCleanBit<DIRTY_BIT_VIEW_PROJ>())
+	if (dirtyFlags.checkAndUnset<DIRTY_BIT_VIEW_PROJ>())
 		viewProjectionMatrix = getProjectionMatrix() * getViewMatrix();
 	return viewProjectionMatrix;
 }
@@ -215,7 +215,7 @@ const Matrix& Camera::getViewProjectionMatrix()
 
 const Matrix& Camera::getInverseViewProjectionMatrix()
 {
-	if (checkAndCleanBit<DIRTY_BIT_INV_VIEW_PROJ>())
+	if (dirtyFlags.checkAndUnset<DIRTY_BIT_INV_VIEW_PROJ>())
 	{
 		inverseViewProjectionMatrix = getViewProjectionMatrix();
 		inverseViewProjectionMatrix.invert();
