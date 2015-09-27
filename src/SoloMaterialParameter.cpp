@@ -133,7 +133,7 @@ void MaterialParameter::setTextureArray(const std::vector<shared<Texture>>& text
 void MaterialParameter::setFunction(std::function<void(EffectVariable* variable, const RenderContext& context)> func)
 {
 	clearOldValueIfNeeded(ValueType::Func);
-	this->func = func;
+	this->funcValue = func;
 	type = ValueType::Func;
 }
 
@@ -188,7 +188,7 @@ void MaterialParameter::apply(const RenderContext& context)
 			variable->setTextureArray(textureArrayValue);
 			break;
 		case ValueType::Func:
-			func(variable, context);
+			funcValue(variable, context);
 			break;
 		case ValueType::None:
 		default:
@@ -228,7 +228,7 @@ void MaterialParameter::clearOldValueIfNeeded(ValueType newExpectedValue)
 			textureArrayValue.clear();
 			break;
 		case ValueType::Func:
-			func = nullptr;
+			funcValue = nullptr;
 			break;
 		case ValueType::None:
 		default:

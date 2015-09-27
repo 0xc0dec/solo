@@ -98,6 +98,8 @@ void LuaScriptManager::registerApi()
 	REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator+, "plusVector2", Vector2, const, const Vector2&);
 	REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator+=, "addScalar", Vector2&, , float);
 	REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator+=, "addVector2", Vector2&, , const Vector2&);
+	REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator*, "productScalar", Vector2, const, float);
+	REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator*=, "multScalar", Vector2&, , float);
 	vector2.endClass();
 
 	// Vector3
@@ -126,9 +128,12 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(vector3, Vector3, normalized);
 	REGISTER_METHOD(vector3, Vector3, normalized);
 	REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+, "plusScalar", Vector3, const, float);
-	REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+, "plusVector3", Vector3, const, const Vector3&);
 	REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+=, "addScalar", Vector3&, , float);
+	REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+, "plusVector3", Vector3, const, const Vector3&);
 	REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+=, "addVector3", Vector3&, , const Vector3&);
+	REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+, "multScalar", Vector3, const, float);
+	REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator*, "productScalar", Vector3, const, float);
+	REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator*=, "multScalar", Vector3&, , float);
 	vector3.endClass();
 
 	// Vector4
@@ -160,6 +165,8 @@ void LuaScriptManager::registerApi()
 	REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator+, "plusVector4", Vector4, const, const Vector4&);
 	REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator+=, "addScalar", Vector4&, , float);
 	REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator+=, "addVector4", Vector4&, , const Vector4&);
+	REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator*, "productScalar", Vector4, const, float);
+	REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator*=, "multScalar", Vector4&, , float);
 	vector4.endClass();
 
 	// Quaternion

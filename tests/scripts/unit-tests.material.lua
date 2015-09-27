@@ -26,6 +26,7 @@ runTest(function()
 	mp:setMatrixArray({mat})
 	mp:setTexture(tex)
 	mp:setTextureArray({tex})
+	mp:setFunction(function (var, renderContext) end)
 	mp:bindValue(solo.AutoBinding_WorldMatrix)
 
 end, "Material")

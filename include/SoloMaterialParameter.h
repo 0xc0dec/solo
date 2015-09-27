@@ -30,6 +30,11 @@ namespace solo
 	class MaterialParameter
 	{
 	public:
+		MaterialParameter(const MaterialParameter& other) = delete;
+		MaterialParameter(MaterialParameter&& other) = delete;
+		MaterialParameter& operator=(const MaterialParameter& other) = delete;
+		MaterialParameter& operator=(MaterialParameter&& other) = delete;
+
 		void setFloat(float value);
 		void setFloatArray(const std::vector<float>& value);
 		void setInt(int value);
@@ -70,14 +75,8 @@ namespace solo
 			TextureArray,
 			Func
 		};
-		
 
 		explicit MaterialParameter(const std::string &name);
-
-		MaterialParameter(const MaterialParameter& other) = delete;
-		MaterialParameter(MaterialParameter&& other) = delete;
-		MaterialParameter& operator=(const MaterialParameter& other) = delete;
-		MaterialParameter& operator=(MaterialParameter&& other) = delete;
 
 		void clearOldValueIfNeeded(ValueType newExpectedValue);
 
@@ -90,7 +89,7 @@ namespace solo
 		Vector4 vector4Value;
 		Matrix matrixValue;
 		shared<Texture> textureValue;
-		std::function<void(EffectVariable *variable, const RenderContext& context)> func;
+		std::function<void(EffectVariable *variable, const RenderContext& context)> funcValue;
 		std::vector<float> floatArrayValue;
 		std::vector<int> intArrayValue;
 		std::vector<Vector2> vector2ArrayValue;
