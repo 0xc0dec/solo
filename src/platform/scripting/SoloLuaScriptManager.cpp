@@ -29,6 +29,7 @@
 #include "SoloMaterialParameter.h"
 #include "SoloMesh.h"
 #include "SoloModel.h"
+#include "SoloRenderContext.h"
 
 
 #define REGISTER_VARIABLE(binding, klass, name) binding.addVariable(#name, &klass::name, true)
@@ -522,8 +523,18 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(mp, MaterialParameter, setMatrixArray);
 	REGISTER_METHOD(mp, MaterialParameter, setTexture);
 	REGISTER_METHOD(mp, MaterialParameter, setTextureArray);
+	REGISTER_METHOD(mp, MaterialParameter, setFunction);
 	REGISTER_METHOD(mp, MaterialParameter, bindValue);
 	mp.endClass();
+
+	// RenderContext
+	auto rc = module.beginClass<RenderContext>("RenderContext");
+	REGISTER_VARIABLE(rc, RenderContext, camera);
+	REGISTER_VARIABLE(rc, RenderContext, cameraTransform);
+	REGISTER_VARIABLE(rc, RenderContext, nodeTransform);
+	REGISTER_VARIABLE(rc, RenderContext, material);
+	REGISTER_VARIABLE(rc, RenderContext, scene);
+	rc.endClass();
 
 	// Mesh
 	auto mesh = module.beginClass<Mesh>("Mesh");
