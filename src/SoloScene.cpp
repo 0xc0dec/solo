@@ -58,11 +58,12 @@ void Scene::addComponent(size_t nodeId, shared<Component> cmp, size_t typeId)
 
 void Scene::removeComponent(size_t nodeId, size_t typeId)
 {
-	if (components.find(nodeId) == components.end())
+	if (!findComponent(nodeId, typeId))
 		return;
-	components[nodeId][typeId]->terminate();
-	components[nodeId].erase(typeId);
-	if (components.at(nodeId).empty())
+	auto &nodeComponents = components.at(nodeId);
+	nodeComponents.at(typeId)->terminate();
+	nodeComponents.erase(typeId);
+	if (nodeComponents.empty())
 		components.erase(nodeId);
 }
 

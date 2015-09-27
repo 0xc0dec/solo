@@ -10,10 +10,7 @@ namespace solo
 	class LuaScriptComponent: public ComponentBase<LuaScriptComponent>
 	{
 	public:
-		LuaScriptComponent(
-			const Node& node,
-			size_t typeId,
-			LuaIntf::LuaRef& component,
+		LuaScriptComponent(const Node& node, size_t typeId, LuaIntf::LuaRef& component,
 			std::function<void(LuaIntf::LuaRef)> initFunc,
 			std::function<void(LuaIntf::LuaRef)> updateFunc,
 			std::function<void(LuaIntf::LuaRef)> renderFunc,
@@ -28,14 +25,16 @@ namespace solo
 
 		virtual size_t getTypeId() override;
 
-		static Component* findStandardComponent(Node *node, const std::string& typeName);
-		static std::function<LuaIntf::LuaRef(Node *, const std::string&)> getFindComponentFunc(lua_State *lua);
-		static void addComponent(Node *node, LuaIntf::LuaRef& component);
-		static Component* addStandardComponent(Node *node, const std::string& typeName);
-		static void removeComponent(Node *node, const std::string& componentTypeId);
+		static Component* findComponent(Node *node, const std::string& typeName);
+		static Component* addComponent(Node *node, const std::string& typeName);
+		static void removeComponent(Node *node, const std::string& typeName);
+
+		static std::function<LuaIntf::LuaRef(Node *, const std::string&)> getFindScriptComponentFunc(lua_State *lua);
+		static void addScriptComponent(Node *node, LuaIntf::LuaRef& component);
+		static void removeScriptComponent(Node *node, const std::string& componentTypeId);
 
 	private:
-		static LuaIntf::LuaRef findComponent(lua_State *lua, Node *node, const std::string& componentTypeId);
+		static LuaIntf::LuaRef findScriptComponent(lua_State *lua, Node *node, const std::string& componentTypeId);
 
 		size_t typeId;
 		LuaIntf::LuaRef component;

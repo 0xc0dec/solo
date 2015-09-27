@@ -62,7 +62,7 @@ size_t LuaScriptComponent::getTypeId()
 }
 
 
-Component* LuaScriptComponent::findStandardComponent(Node* node, const std::string& typeName)
+Component* LuaScriptComponent::findComponent(Node* node, const std::string& typeName)
 {
 	if (typeName == "Transform")
 		return node->findComponent<Transform>();
@@ -74,13 +74,13 @@ Component* LuaScriptComponent::findStandardComponent(Node* node, const std::stri
 }
 
 
-std::function<LuaRef(Node*, const std::string&)> LuaScriptComponent::getFindComponentFunc(lua_State* lua)
+std::function<LuaRef(Node*, const std::string&)> LuaScriptComponent::getFindScriptComponentFunc(lua_State* lua)
 {
-	return std::bind(&findComponent, lua, std::placeholders::_1, std::placeholders::_2);
+	return std::bind(&findScriptComponent, lua, std::placeholders::_1, std::placeholders::_2);
 }
 
 
-LuaRef LuaScriptComponent::findComponent(lua_State *lua, Node* node, const std::string& componentTypeId)
+LuaRef LuaScriptComponent::findScriptComponent(lua_State *lua, Node* node, const std::string& componentTypeId)
 {
 	auto typeId = getHash(componentTypeId);
 	auto component = node->getScene()->findComponent(node->getId(), typeId);
@@ -89,7 +89,7 @@ LuaRef LuaScriptComponent::findComponent(lua_State *lua, Node* node, const std::
 }
 
 
-void LuaScriptComponent::addComponent(Node* node, LuaRef& component)
+void LuaScriptComponent::addScriptComponent(Node* node, LuaRef& component)
 {
 	auto typeIdString = component.get<std::string>("typeId");
 	auto typeId = getHash(typeIdString);
@@ -103,7 +103,7 @@ void LuaScriptComponent::addComponent(Node* node, LuaRef& component)
 }
 
 
-Component* LuaScriptComponent::addStandardComponent(Node* node, const std::string& typeName)
+Component* LuaScriptComponent::addComponent(Node* node, const std::string& typeName)
 {
 	if (typeName == "Transform")
 		return node->addComponent<Transform>();
@@ -115,7 +115,18 @@ Component* LuaScriptComponent::addStandardComponent(Node* node, const std::strin
 }
 
 
-void LuaScriptComponent::removeComponent(Node* node, const std::string& componentTypeId)
+void LuaScriptComponent::removeComponent(Node* node, const std::string& typeName)
+{
+	if (typeName == "Transform")
+		node->removeComponent<Transform>();
+	if (typeName == "ModelRenderer")
+		node->removeComponent<ModelRenderer>();
+	if (typeName == "Camera")
+		node->removeComponent<Camera>();
+}
+
+
+void LuaScriptComponent::removeScriptComponent(Node* node, const std::string& componentTypeId)
 {
 	auto typeId = getHash(componentTypeId);
 	node->getScene()->removeComponent(node->getId(), typeId);

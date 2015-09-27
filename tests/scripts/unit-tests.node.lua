@@ -6,13 +6,15 @@ runTest(function()
 	assert(node:getScene())
 	assert(node:getId())
 
-	assert(node:findStandardComponent("Transform"))
-	assert(node:findStandardComponent("werwerwer") == nil)
-	assert(node:findComponent("werwer") == nil)
+	assert(node:findComponent("Transform"))
+	assert(node:findComponent("werwerwer") == nil)
+	assert(node:findScriptComponent("werwer") == nil)
 
-	assert(node:findStandardComponent("Camera") == nil)
-	assert(node:addStandardComponent("Camera"))
-	assert(node:findStandardComponent("Camera"))
+	assert(node:findComponent("Camera") == nil)
+	assert(node:addComponent("Camera"))
+	assert(node:findComponent("Camera"))
+	node:removeComponent("Camera")
+	assert(node:findComponent("Camera") == nil)
 
 	function create()
 		return {
@@ -36,19 +38,19 @@ runTest(function()
 	end
 
 	local cmp = create()
-	node:addComponent(cmp)
-	assert(node:findComponent(cmp.typeId) == cmp)
+	node:addScriptComponent(cmp)
+	assert(node:findScriptComponent(cmp.typeId) == cmp)
 
 	cmp = create()
 	cmp.typeId = "AnotherComponent"
-	node:addComponent(cmp)
-	assert(node:findComponent("AnotherComponent") == cmp)
+	node:addScriptComponent(cmp)
+	assert(node:findScriptComponent("AnotherComponent") == cmp)
 
 	local cmp2 = create()
 	cmp2.typeId = "YetAnotherComponent"
-	node:addComponent(cmp2)
+	node:addScriptComponent(cmp2)
 
-	node:removeComponent("TestComponent")
-	node:removeComponent("AnotherComponent")
+	node:removeScriptComponent("TestComponent")
+	node:removeScriptComponent("AnotherComponent")
 	node:removeAllComponents()
 end, "Node")

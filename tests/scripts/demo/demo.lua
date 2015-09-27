@@ -107,49 +107,49 @@ function initObjects(models, materials, rtInfo)
 
 	-- Monkey
 	local node = scene:createNode()
-	local renderer = node:addStandardComponent("ModelRenderer")
+	local renderer = node:addComponent("ModelRenderer")
 	renderer:setModel(models.monkey)
 	renderer:setMaterial(materials.texWithLighting)
-	node:findStandardComponent("Transform"):setLocalPosition(solo.Vector3.zero())
-	node:addComponent(createLocalXRotator())
+	node:findComponent("Transform"):setLocalPosition(solo.Vector3.zero())
+	node:addScriptComponent(createLocalXRotator())
 
 	-- RTT quad
 	local parent = scene:createNode()
-	parent:findStandardComponent("Transform"):setLocalPosition(solo.Vector3(-2, 2, -2))
-	parent:addComponent(createWorldYRotator())
+	parent:findComponent("Transform"):setLocalPosition(solo.Vector3(-2, 2, -2))
+	parent:addScriptComponent(createWorldYRotator())
 	initAxesModel(parent, models, materials)
 
 	local quad = createQuad()
-	quad:findStandardComponent("ModelRenderer"):setMaterialForMesh(0, rtInfo.material)
-	local quadTransform = quad:findStandardComponent("Transform")
-	quadTransform:setParent(parent:findStandardComponent("Transform"))
+	quad:findComponent("ModelRenderer"):setMaterialForMesh(0, rtInfo.material)
+	local quadTransform = quad:findComponent("Transform")
+	quadTransform:setParent(parent:findComponent("Transform"))
 	quadTransform:setLocalPosition(solo.Vector3(5, 2, -5))
 	quadTransform:setLocalScale(solo.Vector3(5, 5 * canvasSize.y / canvasSize.x, 1))
-	quad:addComponent(createTargeter(node:findStandardComponent("Transform"))) -- monkey
+	quad:addScriptComponent(createTargeter(node:findComponent("Transform"))) -- monkey
 
 	-- Textured quad
 	parent = scene:createNode()
-	parent:findStandardComponent("Transform"):setLocalPosition(solo.Vector3(5, 0, 0))
-	parent:addComponent(createWorldYRotator())
+	parent:findComponent("Transform"):setLocalPosition(solo.Vector3(5, 0, 0))
+	parent:addScriptComponent(createWorldYRotator())
 	initAxesModel(parent, models, materials)
 
 	quad = createQuad()
-	quad:addComponent(createLocalXRotator());
-	quad:findStandardComponent("Transform"):setParent(parent:findStandardComponent("Transform"))
-	quad:findStandardComponent("Transform"):setLocalPosition(solo.Vector3(2, 0, 0))
-	quad:findStandardComponent("ModelRenderer"):setMaterialForMesh(0, materials.tex)
+	quad:addScriptComponent(createLocalXRotator());
+	quad:findComponent("Transform"):setParent(parent:findComponent("Transform"))
+	quad:findComponent("Transform"):setLocalPosition(solo.Vector3(2, 0, 0))
+	quad:findComponent("ModelRenderer"):setMaterialForMesh(0, materials.tex)
 
 	-- Box
 	node = createQuad()
 	rebuildToBoxMesh(node)
-	node:findStandardComponent("ModelRenderer"):setMaterialForMesh(0, materials.checker)
-	node:findStandardComponent("Transform"):setLocalPosition(solo.Vector3(-5, 0, 0))
-	node:addComponent(createWorldYRotator())
+	node:findComponent("ModelRenderer"):setMaterialForMesh(0, materials.checker)
+	node:findComponent("Transform"):setLocalPosition(solo.Vector3(-5, 0, 0))
+	node:addScriptComponent(createWorldYRotator())
 end
 
 
 function rebuildToBoxMesh(node)
-	local model = node:findStandardComponent("ModelRenderer"):getModel()
+	local model = node:findComponent("ModelRenderer"):getModel()
 	local mesh = model:getMesh(0)
 
 	mesh:setVertices(
@@ -231,7 +231,7 @@ end
 
 
 function initAxesModel(node, models, materials)
-	local renderer = node:addStandardComponent("ModelRenderer")
+	local renderer = node:addComponent("ModelRenderer")
 	renderer:setModel(models.axes)
 	renderer:setMaterialForMesh(0, materials.blue)
 	renderer:setMaterialForMesh(1, materials.green)
@@ -269,7 +269,7 @@ function createQuad()
 	model:addMesh(mesh)
 
 	local node = scene:createNode()
-	node:addStandardComponent("ModelRenderer"):setModel(model)
+	node:addComponent("ModelRenderer"):setModel(model)
 
 	return node
 end
@@ -278,20 +278,20 @@ end
 function initCameras(rtInfo)
 	local canvasSize = device:getCanvasSize()
 	local offscreenCameraNode = scene:createNode()
-	local offscreenCameraTransform = offscreenCameraNode:findStandardComponent("Transform")
+	local offscreenCameraTransform = offscreenCameraNode:findComponent("Transform")
 	offscreenCameraTransform:setLocalPosition(solo.Vector3(0, 0, 10))
-	local offscreenCamera = offscreenCameraNode:addStandardComponent("Camera")
+	local offscreenCamera = offscreenCameraNode:addComponent("Camera")
 	offscreenCamera:setClearColor(1, 1, 1, 1)
 	offscreenCamera:setNear(0.05)
 	offscreenCamera:setRenderTarget(rtInfo.renderTarget)
 	offscreenCamera:setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8)
 
 	local mainCameraNode = scene:createNode()
-	local mainCameraTransform = mainCameraNode:findStandardComponent("Transform")
+	local mainCameraTransform = mainCameraNode:findComponent("Transform")
 	mainCameraTransform:setLocalPosition(solo.Vector3(0, 2, 15))
-	mainCameraNode:addComponent(createSpectator())
-	mainCameraNode:addComponent(createEscapeWatcher())
-	local mainCamera = mainCameraNode:addStandardComponent("Camera")
+	mainCameraNode:addScriptComponent(createSpectator())
+	mainCameraNode:addScriptComponent(createEscapeWatcher())
+	local mainCamera = mainCameraNode:addComponent("Camera")
 	mainCamera:setClearColor(0, 0.6, 0.6, 1)
 	mainCamera:setNear(0.05)
 end

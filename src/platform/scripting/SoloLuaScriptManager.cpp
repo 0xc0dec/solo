@@ -418,12 +418,13 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(node, Node, getScene);
 	REGISTER_METHOD(node, Node, getId);
 	REGISTER_METHOD(node, Node, removeAllComponents);
-	node.addFunction("findComponent", LuaScriptComponent::getFindComponentFunc(module.state()))
-		.addFunction("findStandardComponent", &LuaScriptComponent::findStandardComponent)
+	node.addFunction("findScriptComponent", LuaScriptComponent::getFindScriptComponentFunc(module.state()))
+		.addFunction("addScriptComponent", &LuaScriptComponent::addScriptComponent)
+		.addFunction("removeScriptComponent", &LuaScriptComponent::removeScriptComponent)
+		.addFunction("findComponent", &LuaScriptComponent::findComponent)
 		.addFunction("addComponent", &LuaScriptComponent::addComponent)
-		.addFunction("addStandardComponent", &LuaScriptComponent::addStandardComponent)
 		.addFunction("removeComponent", &LuaScriptComponent::removeComponent)
-		.endClass();
+	.endClass();
 
 	// Component
 	module.beginClass<Component>("Component")

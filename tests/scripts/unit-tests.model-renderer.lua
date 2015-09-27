@@ -1,7 +1,7 @@
 runTest(function()
 	local scene = engine:getScene()
 	local mgr = engine:getResourceManager()
-	local mr = scene:createNode():addStandardComponent("ModelRenderer")
+	local mr = scene:createNode():addComponent("ModelRenderer")
 	local mesh = mgr:getOrCreateMesh("wer")
 	local model = mgr:getOrCreateModel("model")
 	model:addMesh(mesh)

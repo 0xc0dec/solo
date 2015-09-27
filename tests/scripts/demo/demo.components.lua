@@ -38,7 +38,7 @@ function createSpectator()
 		typeId = "Spectator",
 
 		init = function(self)
-			self.transform = self.node:findStandardComponent("Transform")
+			self.transform = self.node:findComponent("Transform")
 		end,
 
 		update = function(self)
@@ -82,7 +82,7 @@ function createLocalXRotator()
 		typeId = "RotatorAroundLocalXAxis",
 
 		init = function(self)
-			self.transform = self.node:findStandardComponent("Transform")
+			self.transform = self.node:findComponent("Transform")
 		end,
 
 		update = function(self)
@@ -99,7 +99,7 @@ function createWorldYRotator()
 		typeId = "RotatorAroundWorldYAxis",
 
 		init = function(self)
-			self.transform = self.node:findStandardComponent("Transform")
+			self.transform = self.node:findComponent("Transform")
 		end,
 
 		update = function(self)
@@ -116,7 +116,7 @@ function createTargeter(target)
 		typeId = "Targeter",
 
 		init = function(self)
-			self.transform = self.node:findStandardComponent("Transform")
+			self.transform = self.node:findComponent("Transform")
 		end,
 
 		update = function(self)
