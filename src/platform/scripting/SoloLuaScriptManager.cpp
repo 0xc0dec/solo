@@ -30,6 +30,7 @@
 #include "SoloMesh.h"
 #include "SoloModel.h"
 #include "SoloRenderContext.h"
+#include "SoloModelRenderer.h"
 
 
 #define REGISTER_VARIABLE(binding, klass, name) binding.addVariable(#name, &klass::name, true)
@@ -407,9 +408,10 @@ void LuaScriptManager::registerApi()
 	tex2d.endClass();
 
 	// RenderTarget
-	module.beginClass<RenderTarget>("RenderTarget")
-		// TODO
-	.endClass();
+	auto rt = module.beginClass<RenderTarget>("RenderTarget");
+	REGISTER_METHOD(rt, RenderTarget, setTextures);
+	REGISTER_METHOD(rt, RenderTarget, getTextures);
+	rt.endClass();
 
 	// Node
 	auto node = module.beginClass<Node>("Node");
@@ -433,6 +435,16 @@ void LuaScriptManager::registerApi()
 		.addConstant("TransformSpace_Parent", TransformSpace::Parent)
 		.addConstant("TransformSpace_Self", TransformSpace::Self)
 		.addConstant("TransformSpace_World", TransformSpace::World);
+
+	// ModelRenderer
+	auto mr = module.beginExtendClass<ModelRenderer, Component>("ModelRenderer");
+	REGISTER_METHOD(mr, ModelRenderer, getMaterial);
+	REGISTER_METHOD(mr, ModelRenderer, setMaterialForMesh);
+	REGISTER_METHOD(mr, ModelRenderer, setMaterial);
+	REGISTER_METHOD(mr, ModelRenderer, getMaterialCount);
+	REGISTER_METHOD(mr, ModelRenderer, getModel);
+	REGISTER_METHOD(mr, ModelRenderer, setModel);
+	mr.endClass();
 
 	// Transform
 	auto transform = module.beginExtendClass<Transform, Component>("Transform");
@@ -496,8 +508,20 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(camera, Camera, setAspectRatio);
 	camera.endClass();
 
+	// PolygonFace
+	module
+		.addConstant("PolygonFace_All", PolygonFace::All)
+		.addConstant("PolygonFace_CCW", PolygonFace::CCW)
+		.addConstant("PolygonFace_CW", PolygonFace::CW);
+
+	// RenderState
+	auto rs = module.beginClass<RenderState>("RenderState");
+	REGISTER_METHOD(rs, RenderState, setPolygonFace);
+	REGISTER_METHOD(rs, RenderState, getPolygonFace);
+	rs.endClass();
+
 	// Material
-	auto mat = module.beginClass<Material>("Material");
+	auto mat = module.beginExtendClass<Material, RenderState>("Material");
 	REGISTER_METHOD(mat, Material, getParameter);
 	REGISTER_METHOD(mat, Material, getEffect);
 	mat.endClass();

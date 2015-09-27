@@ -369,7 +369,7 @@ void DemoTest::initObjects()
 	auto node = scene->createNode();
 	auto renderer = node->addComponent<ModelRenderer>();
 	renderer->setModel(monkeyModel);
-	renderer->setMaterial(0, texWithLightingMaterial);
+	renderer->setMaterialForMesh(0, texWithLightingMaterial);
 	node->getComponent<Transform>()->setLocalPosition(Vector3::zero());
 	node->addComponent<RotatorAroundLocalXAxis>(device);
 
@@ -380,7 +380,7 @@ void DemoTest::initObjects()
 	initAxesModel(parent);
 
 	auto quad = createQuad();
-	quad->getComponent<ModelRenderer>()->setMaterial(0, renderTargetMaterial);
+	quad->getComponent<ModelRenderer>()->setMaterialForMesh(0, renderTargetMaterial);
 	auto quadTransform = quad->getComponent<Transform>();
 	quadTransform->setParent(parent->getComponent<Transform>());
 	quadTransform->setLocalPosition(Vector3(5, 2, -5));
@@ -397,12 +397,12 @@ void DemoTest::initObjects()
 	quad->addComponent<RotatorAroundLocalXAxis>(device);
 	quad->getComponent<Transform>()->setParent(parent->getComponent<Transform>());
 	quad->getComponent<Transform>()->setLocalPosition(Vector3(2, 0, 0));
-	quad->getComponent<ModelRenderer>()->setMaterial(0, texMaterial);
+	quad->getComponent<ModelRenderer>()->setMaterialForMesh(0, texMaterial);
 
 	// Box
 	node = createQuad();
 	rebuildToBoxMesh(node);
-	node->getComponent<ModelRenderer>()->setMaterial(0, checkerMaterial);
+	node->getComponent<ModelRenderer>()->setMaterialForMesh(0, checkerMaterial);
 	node->getComponent<Transform>()->setLocalPosition(Vector3(-5, 0, 0));
 	node->addComponent<RotatorAroundWorldYAxis>(device);
 }
@@ -533,7 +533,6 @@ void DemoTest::rebuildToBoxMesh(shared<Node> node)
 
 	std::vector<unsigned short> newIndices
 	{
-
 		0u, 1u, 2u,
 		0u, 2u, 3u,
 		4u, 5u, 6u,
@@ -558,10 +557,10 @@ void DemoTest::initAxesModel(shared<Node> node)
 {
 	auto renderer = node->addComponent<ModelRenderer>();
 	renderer->setModel(axesModel);
-	renderer->setMaterial(0, blueMaterial);
-	renderer->setMaterial(1, greenMaterial);
-	renderer->setMaterial(2, whiteMaterial);
-	renderer->setMaterial(3, redMaterial);
+	renderer->setMaterialForMesh(0, blueMaterial);
+	renderer->setMaterialForMesh(1, greenMaterial);
+	renderer->setMaterialForMesh(2, whiteMaterial);
+	renderer->setMaterialForMesh(3, redMaterial);
 }
 
 

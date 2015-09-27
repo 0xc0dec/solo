@@ -43,7 +43,7 @@ Model* ModelRenderer::getModel() const
 }
 
 
-void ModelRenderer::setMaterial(unsigned index, shared<Material> material)
+void ModelRenderer::setMaterialForMesh(unsigned index, shared<Material> material)
 {
 	if (!model)
 		THROW_FMT(EngineException, "Renderer has no model, hence setting material has no effect");
@@ -64,7 +64,7 @@ void ModelRenderer::setMaterial(shared<Material> material)
 	{
 		auto meshCount = model->getMeshCount();
 		for (auto i = 0; i < meshCount; ++i)
-			setMaterial(i, material);
+			setMaterialForMesh(i, material);
 	}
 }
 

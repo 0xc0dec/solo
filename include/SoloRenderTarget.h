@@ -11,6 +11,10 @@ namespace solo
 	{
 	public:
 		virtual ~RenderTarget() {}
+		RenderTarget(const RenderTarget& other) = delete;
+		RenderTarget(RenderTarget&& other) = delete;
+		RenderTarget& operator=(const RenderTarget& other) = delete;
+		RenderTarget& operator=(RenderTarget&& other) = delete;
 
 		virtual void bind() = 0;
 		virtual void unbind() = 0;
@@ -25,12 +29,6 @@ namespace solo
 		virtual void update() = 0;
 
 		std::vector<shared<Texture2D>> textures;
-
-	private:
-		RenderTarget(const RenderTarget& other) = delete;
-		RenderTarget(RenderTarget&& other) = delete;
-		RenderTarget& operator=(const RenderTarget& other) = delete;
-		RenderTarget& operator=(RenderTarget&& other) = delete;
 	};
 
 	class RenderTargetFactory

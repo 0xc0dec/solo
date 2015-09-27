@@ -6,6 +6,9 @@ runTest(function()
 	assert(mp)
 	assert(m:getEffect())
 
+	m:setPolygonFace(solo.PolygonFace_All)
+	assert(m:getPolygonFace() == solo.PolygonFace_All)
+
 	local v2 = solo.Vector2.unit()
 	local v3 = solo.Vector3.unit()
 	local v4 = solo.Vector4.unit()

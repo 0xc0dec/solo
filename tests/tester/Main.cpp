@@ -85,8 +85,8 @@ protected:
 EngineCreationArgs openGlArgs
 {
 	EngineMode::OpenGL,
-	640,
-	480
+	800,
+	600
 };
 
 
@@ -126,8 +126,8 @@ void runLuaTests(const std::string& entryScriptPath)
 int main()
 {
 	runCppUnitTests();
-//	runCppIntegrationTests();
 	runLuaTests("../tests/scripts/unit-tests.lua");
-	runLuaTests("../tests/scripts/demo.lua");
+	runLuaTests("../tests/scripts/demo/demo.lua");
+//	runCppIntegrationTests();
 	return 0;
 }
