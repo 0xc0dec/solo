@@ -53,6 +53,8 @@ public:
 		test_AddDerivedComponent_EnsureFoundAsParentAsWell();
 		test_AddComponent_RemoveIt();
 		test_AddComponent_RemoveAsParent();
+		test_RemoveInexistentComponent_EnsureNothingDone();
+		test_RemoveAllComponents_EnsureRemoved();
 		test_AddDuplicateComponent_EnsureError();
 	}
 
@@ -66,6 +68,18 @@ private:
 		assert(b);
 		assert(a->getTypeId() == A::getId());
 		assert(b->getTypeId() == B::getId());
+	}
+
+	void test_RemoveAllComponents_EnsureRemoved()
+	{
+		auto node = scene->createNode();
+		node->addComponent<Derived>();
+		node->addComponent<A>();
+		node->addComponent<B>();
+		node->removeAllComponents();
+		assert(node->findComponent<Derived>() == nullptr);
+		assert(node->findComponent<A>() == nullptr);
+		assert(node->findComponent<B>() == nullptr);
 	}
 
 	void test_AddComponent_RemoveIt()
@@ -83,6 +97,13 @@ private:
 		node->removeComponent<Base>();
 		assert(node->findComponent<Derived>() == nullptr);
 		assert(node->findComponent<Base>() == nullptr);
+	}
+
+	void test_RemoveInexistentComponent_EnsureNothingDone()
+	{
+		auto node = scene->createNode();
+		node->removeComponent<Base>();
+		node->removeComponent<Derived>();
 	}
 
 	void test_AddDerivedComponent_EnsureFoundAsParentAsWell()
