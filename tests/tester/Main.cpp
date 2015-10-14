@@ -1,10 +1,10 @@
-#include "MaterialsTest.h"
-#include "ComponentsAndNodesTest.h"
-#include "TransformTest.h"
-#include "DeviceTest.h"
-#include "FileSystemTest.h"
+#include "Materials_Test.h"
+#include "Components_Test.h"
+#include "Transform_Test.h"
+#include "Device_Test.h"
+#include "FileSystem_Test.h"
 #include "ResourcesTest.h"
-#include "DemoTest.h"
+#include "Demo_Test.h"
 
 using namespace solo;
 

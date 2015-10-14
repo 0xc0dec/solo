@@ -162,18 +162,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\tests\tester\ComponentsAndNodesTest.h" />
-    <ClInclude Include="..\tests\tester\DemoTest.h" />
-    <ClInclude Include="..\tests\tester\DeviceTest.h" />
-    <ClInclude Include="..\tests\tester\FileSystemTest.h" />
-    <ClInclude Include="..\tests\tester\MaterialsTest.h" />
+    <ClInclude Include="..\tests\tester\Components_Test.h" />
+    <ClInclude Include="..\tests\tester\Demo_Test.h" />
+    <ClInclude Include="..\tests\tester\Device_Test.h" />
+    <ClInclude Include="..\tests\tester\FileSystem_Test.h" />
+    <ClInclude Include="..\tests\tester\Materials_Test.h" />
     <ClInclude Include="..\tests\tester\ResourcesTest.h" />
     <ClInclude Include="..\tests\tester\Shaders.h" />
     <ClInclude Include="..\tests\tester\TestBase.h" />
-    <ClInclude Include="..\tests\tester\TransformTest.h" />
+    <ClInclude Include="..\tests\tester\Transform_Test.h" />
+    <ClInclude Include="ModelRenderer_Test.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\tests\tester\DemoTest.cpp" />
+    <ClCompile Include="..\tests\tester\Demo_Test.cpp" />
     <ClCompile Include="..\tests\tester\Main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
