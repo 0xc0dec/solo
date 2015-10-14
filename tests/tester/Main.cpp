@@ -53,7 +53,8 @@ protected:
 	virtual void init() override
 	{
 		tests.push_back(NEW2(MaterialsTest, engine));
-		tests.push_back(NEW2(DemoTest, engine));
+		// TODO currently runs via scripts
+//		tests.push_back(NEW2(DemoTest, engine));
 	}
 };
 
