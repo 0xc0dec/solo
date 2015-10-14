@@ -264,7 +264,7 @@ private:
 };
 
 
-shared<Texture> DemoTest::loadTexture(const std::string &path)
+shared<Texture> Demo_Test::loadTexture(const std::string &path)
 {
 	auto texture = DYNAMIC_CAST<Texture2D>(resourceManager->getOrLoadTexture(path));
 	texture->generateMipmaps();
@@ -274,7 +274,7 @@ shared<Texture> DemoTest::loadTexture(const std::string &path)
 }
 
 
-void DemoTest::initMaterials()
+void Demo_Test::initMaterials()
 {
 	auto tex1 = loadTexture("../data/freeman1.png");
 	auto tex2 = loadTexture("../data/freeman2.png");
@@ -318,7 +318,7 @@ void DemoTest::initMaterials()
 }
 
 
-void DemoTest::initRenderTarget()
+void Demo_Test::initRenderTarget()
 {
 	auto canvasSize = device->getCanvasSize();
 	auto renderTexture = DYNAMIC_CAST<Texture2D>(resourceManager->getOrCreateTexture2D("RTT"));
@@ -338,7 +338,7 @@ void DemoTest::initRenderTarget()
 }
 
 
-void DemoTest::initCameras()
+void Demo_Test::initCameras()
 {
 	auto canvasSize = device->getCanvasSize();
 	auto offscreenCameraNode = scene->createNode();
@@ -361,7 +361,7 @@ void DemoTest::initCameras()
 }
 
 
-void DemoTest::initObjects()
+void Demo_Test::initObjects()
 {
 	auto canvasSize = device->getCanvasSize();
 
@@ -408,14 +408,14 @@ void DemoTest::initObjects()
 }
 
 
-void DemoTest::initModels()
+void Demo_Test::initModels()
 {
 	axesModel = resourceManager->getOrLoadModel("../data/axes.obj");
 	monkeyModel = resourceManager->getOrLoadModel("../data/monkey_hires.obj");
 }
 
 
-shared<Node> DemoTest::createQuad()
+shared<Node> Demo_Test::createQuad()
 {
 	auto mesh = resourceManager->getOrCreateMesh();
 
@@ -465,7 +465,7 @@ shared<Node> DemoTest::createQuad()
 }
 
 
-void DemoTest::rebuildToBoxMesh(shared<Node> node)
+void Demo_Test::rebuildToBoxMesh(shared<Node> node)
 {
 	auto model = node->getComponent<ModelRenderer>()->getModel();
 	auto mesh = model->getMesh(0);
@@ -553,7 +553,7 @@ void DemoTest::rebuildToBoxMesh(shared<Node> node)
 }
 
 
-void DemoTest::initAxesModel(shared<Node> node)
+void Demo_Test::initAxesModel(shared<Node> node)
 {
 	auto renderer = node->addComponent<ModelRenderer>();
 	renderer->setModel(axesModel);
@@ -564,7 +564,7 @@ void DemoTest::initAxesModel(shared<Node> node)
 }
 
 
-void DemoTest::run()
+void Demo_Test::run()
 {
 	initMaterials();
 	initModels();

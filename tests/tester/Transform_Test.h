@@ -2,10 +2,11 @@
 
 #include "TestBase.h"
 
-class TransformTest : public TestBase
+
+class Transform_Test : public TestBase
 {
 public:
-	TransformTest(Engine* engine):
+	Transform_Test(Engine* engine):
 		TestBase(engine)
 	{
 	}

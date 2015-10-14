@@ -2,12 +2,11 @@
 
 #include "TestBase.h"
 
-using namespace solo;
 
-class DeviceTest : public TestBase
+class Device_Test : public TestBase
 {
 public:
-	DeviceTest(Engine* engine):
+	Device_Test(Engine* engine):
 		TestBase(engine)
 	{
 	}

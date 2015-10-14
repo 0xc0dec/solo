@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="..\tests\tester\ResourcesTest.h" />
     <ClInclude Include="..\tests\tester\Shaders.h" />
     <ClInclude Include="..\tests\tester\TestBase.h" />
-    <ClInclude Include="ModelRenderer_Test.h" />
     <ClInclude Include="..\tests\tester\Materials_Test.h" />
     <ClInclude Include="..\tests\tester\FileSystem_Test.h" />
     <ClInclude Include="..\tests\tester\Device_Test.h" />
     <ClInclude Include="..\tests\tester\Demo_Test.h" />
     <ClInclude Include="..\tests\tester\Transform_Test.h" />
     <ClInclude Include="..\tests\tester\Components_Test.h" />
+    <ClInclude Include="..\tests\tester\ModelRenderer_Test.h" />
+    <ClInclude Include="..\tests\tester\Resources_Test.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tests\tester\Main.cpp" />

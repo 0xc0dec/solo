@@ -2,10 +2,11 @@
 
 #include "TestBase.h"
 
-class FileSystemTest : public TestBase
+
+class FileSystem_Test : public TestBase
 {
 public:
-	FileSystemTest(Engine* engine): TestBase(engine)
+	FileSystem_Test(Engine* engine): TestBase(engine)
 	{
 	}
 

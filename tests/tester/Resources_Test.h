@@ -2,10 +2,11 @@
 
 #include "TestBase.h"
 
-class ResourcesTest : public TestBase
+
+class Resources_Test : public TestBase
 {
 public:
-	ResourcesTest(Engine* engine):
+	Resources_Test(Engine* engine):
 		TestBase(engine)
 	{
 	}

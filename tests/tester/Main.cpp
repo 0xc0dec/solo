@@ -3,7 +3,8 @@
 #include "Transform_Test.h"
 #include "Device_Test.h"
 #include "FileSystem_Test.h"
-#include "ResourcesTest.h"
+#include "Resources_Test.h"
+#include "ModelRenderer_Test.h"
 #include "Demo_Test.h"
 
 using namespace solo;
@@ -54,7 +55,7 @@ protected:
 	{
 		tests.push_back(NEW2(MaterialsTest, engine));
 		// TODO currently runs via scripts
-//		tests.push_back(NEW2(DemoTest, engine));
+//		tests.push_back(NEW2(Demo_Test, engine));
 	}
 };
 
@@ -69,11 +70,12 @@ public:
 protected:
 	virtual void init() override
 	{
-		tests.push_back(NEW2(ResourcesTest, engine));
-		tests.push_back(NEW2(FileSystemTest, engine));
-		tests.push_back(NEW2(DeviceTest, engine));
-		tests.push_back(NEW2(ComponentsAndNodesTest, engine));
-		tests.push_back(NEW2(TransformTest, engine));
+		tests.push_back(NEW2(Resources_Test, engine));
+		tests.push_back(NEW2(FileSystem_Test, engine));
+		tests.push_back(NEW2(Device_Test, engine));
+		tests.push_back(NEW2(ComponentsAndNodes_Test, engine));
+		tests.push_back(NEW2(Transform_Test, engine));
+		tests.push_back(NEW2(ModelRenderer_Test, engine));
 	}
 
 	virtual void finish() override

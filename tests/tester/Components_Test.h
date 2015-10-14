@@ -39,10 +39,10 @@ public:
 };
 
 
-class ComponentsAndNodesTest : public TestBase
+class ComponentsAndNodes_Test : public TestBase
 {
 public:
-	ComponentsAndNodesTest(Engine* engine): TestBase(engine)
+	ComponentsAndNodes_Test(Engine* engine): TestBase(engine)
 	{
 	}
 

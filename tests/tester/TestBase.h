@@ -25,6 +25,23 @@ public:
 	virtual void run() = 0;
 
 protected:
+	template <typename T>
+	void assertThrows(std::function<void(void)> code)
+	{
+		try
+		{
+			code();
+			assert(false);
+		}
+		catch (T &e)
+		{
+		}
+		catch (...)
+		{
+			assert(false);
+		}
+	}
+
 	Engine *engine;
 	Device *device;
 	Scene *scene;
