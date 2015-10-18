@@ -225,13 +225,13 @@
     <ClCompile Include="..\src\SoloMaterial.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\glew\src\glew.c">
+    <ClCompile Include="..\thirdparty\glew\src\glew.c">
       <Filter>src\external\glew</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\glew\src\glewinfo.c">
+    <ClCompile Include="..\thirdparty\glew\src\glewinfo.c">
       <Filter>src\external\glew</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\glew\src\visualinfo.c">
+    <ClCompile Include="..\thirdparty\glew\src\visualinfo.c">
       <Filter>src\external\glew</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloVector2.cpp">
@@ -324,82 +324,82 @@
     <ClCompile Include="..\src\SoloTexture.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\zlib\src\adler32.c">
+    <ClCompile Include="..\thirdparty\zlib\src\adler32.c">
       <Filter>src\external\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\zlib\src\compress.c">
+    <ClCompile Include="..\thirdparty\zlib\src\compress.c">
       <Filter>src\external\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\zlib\src\crc32.c">
+    <ClCompile Include="..\thirdparty\zlib\src\crc32.c">
       <Filter>src\external\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\zlib\src\deflate.c">
+    <ClCompile Include="..\thirdparty\zlib\src\deflate.c">
       <Filter>src\external\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\zlib\src\infback.c">
+    <ClCompile Include="..\thirdparty\zlib\src\infback.c">
       <Filter>src\external\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\zlib\src\inffast.c">
+    <ClCompile Include="..\thirdparty\zlib\src\inffast.c">
       <Filter>src\external\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\zlib\src\inflate.c">
+    <ClCompile Include="..\thirdparty\zlib\src\inflate.c">
       <Filter>src\external\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\zlib\src\inftrees.c">
+    <ClCompile Include="..\thirdparty\zlib\src\inftrees.c">
       <Filter>src\external\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\zlib\src\trees.c">
+    <ClCompile Include="..\thirdparty\zlib\src\trees.c">
       <Filter>src\external\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\zlib\src\uncompr.c">
+    <ClCompile Include="..\thirdparty\zlib\src\uncompr.c">
       <Filter>src\external\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\zlib\src\zutil.c">
+    <ClCompile Include="..\thirdparty\zlib\src\zutil.c">
       <Filter>src\external\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\png\src\png.c">
+    <ClCompile Include="..\thirdparty\png\src\png.c">
       <Filter>src\external\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\png\src\pngerror.c">
+    <ClCompile Include="..\thirdparty\png\src\pngerror.c">
       <Filter>src\external\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\png\src\pngget.c">
+    <ClCompile Include="..\thirdparty\png\src\pngget.c">
       <Filter>src\external\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\png\src\pngmem.c">
+    <ClCompile Include="..\thirdparty\png\src\pngmem.c">
       <Filter>src\external\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\png\src\pngpread.c">
+    <ClCompile Include="..\thirdparty\png\src\pngpread.c">
       <Filter>src\external\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\png\src\pngread.c">
+    <ClCompile Include="..\thirdparty\png\src\pngread.c">
       <Filter>src\external\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\png\src\pngrio.c">
+    <ClCompile Include="..\thirdparty\png\src\pngrio.c">
       <Filter>src\external\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\png\src\pngrtran.c">
+    <ClCompile Include="..\thirdparty\png\src\pngrtran.c">
       <Filter>src\external\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\png\src\pngrutil.c">
+    <ClCompile Include="..\thirdparty\png\src\pngrutil.c">
       <Filter>src\external\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\png\src\pngset.c">
+    <ClCompile Include="..\thirdparty\png\src\pngset.c">
       <Filter>src\external\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\png\src\pngtrans.c">
+    <ClCompile Include="..\thirdparty\png\src\pngtrans.c">
       <Filter>src\external\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\png\src\pngwio.c">
+    <ClCompile Include="..\thirdparty\png\src\pngwio.c">
       <Filter>src\external\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\png\src\pngwrite.c">
+    <ClCompile Include="..\thirdparty\png\src\pngwrite.c">
       <Filter>src\external\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\png\src\pngwtran.c">
+    <ClCompile Include="..\thirdparty\png\src\pngwtran.c">
       <Filter>src\external\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\external\png\src\pngwutil.c">
+    <ClCompile Include="..\thirdparty\png\src\pngwutil.c">
       <Filter>src\external\png</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloTexture2D.cpp">

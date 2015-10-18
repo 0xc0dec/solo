@@ -89,35 +89,35 @@
     <ClInclude Include="..\src\SoloStubTextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\external\glew\src\glew.c" />
-    <ClCompile Include="..\external\glew\src\glewinfo.c" />
-    <ClCompile Include="..\external\glew\src\visualinfo.c" />
-    <ClCompile Include="..\external\png\src\png.c" />
-    <ClCompile Include="..\external\png\src\pngerror.c" />
-    <ClCompile Include="..\external\png\src\pngget.c" />
-    <ClCompile Include="..\external\png\src\pngmem.c" />
-    <ClCompile Include="..\external\png\src\pngpread.c" />
-    <ClCompile Include="..\external\png\src\pngread.c" />
-    <ClCompile Include="..\external\png\src\pngrio.c" />
-    <ClCompile Include="..\external\png\src\pngrtran.c" />
-    <ClCompile Include="..\external\png\src\pngrutil.c" />
-    <ClCompile Include="..\external\png\src\pngset.c" />
-    <ClCompile Include="..\external\png\src\pngtrans.c" />
-    <ClCompile Include="..\external\png\src\pngwio.c" />
-    <ClCompile Include="..\external\png\src\pngwrite.c" />
-    <ClCompile Include="..\external\png\src\pngwtran.c" />
-    <ClCompile Include="..\external\png\src\pngwutil.c" />
-    <ClCompile Include="..\external\zlib\src\adler32.c" />
-    <ClCompile Include="..\external\zlib\src\compress.c" />
-    <ClCompile Include="..\external\zlib\src\crc32.c" />
-    <ClCompile Include="..\external\zlib\src\deflate.c" />
-    <ClCompile Include="..\external\zlib\src\infback.c" />
-    <ClCompile Include="..\external\zlib\src\inffast.c" />
-    <ClCompile Include="..\external\zlib\src\inflate.c" />
-    <ClCompile Include="..\external\zlib\src\inftrees.c" />
-    <ClCompile Include="..\external\zlib\src\trees.c" />
-    <ClCompile Include="..\external\zlib\src\uncompr.c" />
-    <ClCompile Include="..\external\zlib\src\zutil.c" />
+    <ClCompile Include="..\thirdparty\glew\src\glew.c" />
+    <ClCompile Include="..\thirdparty\glew\src\glewinfo.c" />
+    <ClCompile Include="..\thirdparty\glew\src\visualinfo.c" />
+    <ClCompile Include="..\thirdparty\png\src\png.c" />
+    <ClCompile Include="..\thirdparty\png\src\pngerror.c" />
+    <ClCompile Include="..\thirdparty\png\src\pngget.c" />
+    <ClCompile Include="..\thirdparty\png\src\pngmem.c" />
+    <ClCompile Include="..\thirdparty\png\src\pngpread.c" />
+    <ClCompile Include="..\thirdparty\png\src\pngread.c" />
+    <ClCompile Include="..\thirdparty\png\src\pngrio.c" />
+    <ClCompile Include="..\thirdparty\png\src\pngrtran.c" />
+    <ClCompile Include="..\thirdparty\png\src\pngrutil.c" />
+    <ClCompile Include="..\thirdparty\png\src\pngset.c" />
+    <ClCompile Include="..\thirdparty\png\src\pngtrans.c" />
+    <ClCompile Include="..\thirdparty\png\src\pngwio.c" />
+    <ClCompile Include="..\thirdparty\png\src\pngwrite.c" />
+    <ClCompile Include="..\thirdparty\png\src\pngwtran.c" />
+    <ClCompile Include="..\thirdparty\png\src\pngwutil.c" />
+    <ClCompile Include="..\thirdparty\zlib\src\adler32.c" />
+    <ClCompile Include="..\thirdparty\zlib\src\compress.c" />
+    <ClCompile Include="..\thirdparty\zlib\src\crc32.c" />
+    <ClCompile Include="..\thirdparty\zlib\src\deflate.c" />
+    <ClCompile Include="..\thirdparty\zlib\src\infback.c" />
+    <ClCompile Include="..\thirdparty\zlib\src\inffast.c" />
+    <ClCompile Include="..\thirdparty\zlib\src\inflate.c" />
+    <ClCompile Include="..\thirdparty\zlib\src\inftrees.c" />
+    <ClCompile Include="..\thirdparty\zlib\src\trees.c" />
+    <ClCompile Include="..\thirdparty\zlib\src\uncompr.c" />
+    <ClCompile Include="..\thirdparty\zlib\src\zutil.c" />
     <ClCompile Include="..\src\platform\scripting\SoloLuaEngineCallback.cpp" />
     <ClCompile Include="..\src\platform\scripting\SoloLuaScriptComponent.cpp" />
     <ClCompile Include="..\src\platform\scripting\SoloLuaScriptManager.cpp" />
@@ -222,10 +222,10 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\src\SDL\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(ProjectDir)..\external\zlib\include;$(ProjectDir)..\external\;$(ProjectDir)..\external\lua\5.3.1\;$(ProjectDir)..\external\LuaIntf\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\thirdparty\glew\include;$(ProjectDir)..\thirdparty\SDL\2.0.3\include;$(ProjectDir)..\thirdparty\png\include;$(ProjectDir)..\thirdparty\zlib\include;$(ProjectDir)..\thirdparty\;$(ProjectDir)..\thirdparty\lua\5.3.1\;$(ProjectDir)..\thirdparty\LuaIntf\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
-    <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;..\build\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)..\thirdparty\SDL\2.0.3\;..\build\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\build\</OutDir>
@@ -233,10 +233,10 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\src\SDL\include;$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\external\glew\include;$(ProjectDir)..\external\SDL\2.0.3\include;$(ProjectDir)..\external\png\include;$(ProjectDir)..\external\zlib\include;$(ProjectDir)..\external\;$(ProjectDir)..\external\lua\5.3.1\;$(ProjectDir)..\external\LuaIntf\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\thirdparty\glew\include;$(ProjectDir)..\thirdparty\SDL\2.0.3\include;$(ProjectDir)..\thirdparty\png\include;$(ProjectDir)..\thirdparty\zlib\include;$(ProjectDir)..\thirdparty\;$(ProjectDir)..\thirdparty\lua\5.3.1\;$(ProjectDir)..\thirdparty\LuaIntf\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
-    <LibraryPath>$(ProjectDir)..\external\SDL\2.0.3\;..\build\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)..\thirdparty\SDL\2.0.3\;..\build\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
