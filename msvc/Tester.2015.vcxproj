@@ -152,7 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="solo.vcxproj">
+    <ProjectReference Include="solo.2015.vcxproj">
       <Project>{278cab21-1cab-49ad-9959-6f97743501fb}</Project>
       <Private>true</Private>
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>

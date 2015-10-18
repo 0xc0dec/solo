@@ -172,6 +172,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{278CAB21-1CAB-49AD-9959-6F97743501FB}</ProjectGuid>
     <RootNamespace>solo</RootNamespace>
+    <ProjectName>solo</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
