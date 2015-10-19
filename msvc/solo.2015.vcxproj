@@ -38,6 +38,7 @@
     <ClInclude Include="..\include\SoloEngineCallback.h" />
     <ClInclude Include="..\include\SoloRenderTarget.h" />
     <ClInclude Include="..\include\SoloScriptManager.h" />
+    <ClInclude Include="..\include\SoloTextureCube.h" />
     <ClInclude Include="..\include\SoloTextureLoader.h" />
     <ClInclude Include="..\include\SoloTexture.h" />
     <ClInclude Include="..\include\SoloLog.h" />
@@ -89,6 +90,7 @@
     <ClInclude Include="..\src\SoloStubTextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\SoloTextureCube.cpp" />
     <ClCompile Include="..\thirdparty\glew\src\glew.c" />
     <ClCompile Include="..\thirdparty\glew\src\glewinfo.c" />
     <ClCompile Include="..\thirdparty\glew\src\visualinfo.c" />

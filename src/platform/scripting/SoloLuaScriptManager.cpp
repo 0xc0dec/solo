@@ -25,6 +25,7 @@
 #include "SoloEffect.h"
 #include "SoloTexture.h"
 #include "SoloTexture2D.h"
+#include "SoloTextureCube.h"
 #include "SoloMaterial.h"
 #include "SoloMaterialParameter.h"
 #include "SoloMesh.h"
@@ -389,23 +390,32 @@ void LuaScriptManager::registerApi()
 		.addConstant("TextureFilter_NearestMipmapNearest", TextureFilter::NearestMipmapNearest);
 
 	// Texture
-	module.beginClass<Texture>("Texture") // TODO not sure if empty registration needed
-	.endClass();
+	auto tex = module.beginClass<Texture>("Texture");
+	REGISTER_METHOD(tex, Texture, getHorizontalWrapMode);
+	REGISTER_METHOD(tex, Texture, setHorizontalWrapMode);
+	REGISTER_METHOD(tex, Texture, getVerticalWrapMode);
+	REGISTER_METHOD(tex, Texture, setVerticalWrapMode);
+	REGISTER_METHOD(tex, Texture, getMinFilter);
+	REGISTER_METHOD(tex, Texture, setMinFilter);
+	REGISTER_METHOD(tex, Texture, getMagFilter);
+	REGISTER_METHOD(tex, Texture, setMagFilter);
+	REGISTER_METHOD(tex, Texture, getAnisotropyLevel);
+	REGISTER_METHOD(tex, Texture, setAnisotropyLevel);
+	tex.endClass();
 
 	// Texture2D
 	auto tex2d = module.beginExtendClass<Texture2D, Texture>("Texture2D");
 	REGISTER_METHOD(tex2d, Texture2D, setData);
 	REGISTER_METHOD(tex2d, Texture2D, generateMipmaps);
 	REGISTER_METHOD(tex2d, Texture2D, getSize);
-	REGISTER_METHOD(tex2d, Texture2D, getVerticalWrapMode);
-	REGISTER_METHOD(tex2d, Texture2D, getHorizontalWrapMode);
-	REGISTER_METHOD(tex2d, Texture2D, setWrapMode);
-	REGISTER_METHOD(tex2d, Texture2D, getMinFilter);
-	REGISTER_METHOD(tex2d, Texture2D, getMagFilter);
-	REGISTER_METHOD(tex2d, Texture2D, setFilterMode);
-	REGISTER_METHOD(tex2d, Texture2D, getAnisotropyLevel);
-	REGISTER_METHOD(tex2d, Texture2D, setAnisotropyLevel);
 	tex2d.endClass();
+
+	// TextureCube
+	auto texCube = module.beginExtendClass<TextureCube, Texture>("TextureCube");
+	REGISTER_METHOD(texCube, TextureCube, getDepthWrapMode);
+	REGISTER_METHOD(texCube, TextureCube, setDepthWrapMode);
+	REGISTER_METHOD(texCube, TextureCube, generateMipmaps);
+	texCube.endClass();
 
 	// RenderTarget
 	auto rt = module.beginClass<RenderTarget>("RenderTarget");

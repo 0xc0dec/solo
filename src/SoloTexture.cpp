@@ -12,3 +12,63 @@ shared<Texture2D> TextureFactory::create2D(EngineMode mode)
 		return NEW2(OpenGLTexture2D);
 	return NEW2(StubTexture2D);
 }
+
+
+TextureWrapMode Texture::getVerticalWrapMode() const
+{
+	return verticalWrap;
+}
+
+
+void Texture::setVerticalWrapMode(TextureWrapMode verticalWrap)
+{
+	this->verticalWrap = verticalWrap;
+}
+
+
+TextureWrapMode Texture::getHorizontalWrapMode() const
+{
+	return horizontalWrap;
+}
+
+
+void Texture::setHorizontalWrapMode(TextureWrapMode horizontalWrap)
+{
+	this->horizontalWrap = horizontalWrap;
+}
+
+
+TextureFilter Texture::getMinFilter() const
+{
+	return minFilter;
+}
+
+
+void Texture::setMinFilter(TextureFilter minFilter)
+{
+	this->minFilter = minFilter;
+}
+
+
+TextureFilter Texture::getMagFilter() const
+{
+	return magFilter;
+}
+
+
+void Texture::setMagFilter(TextureFilter magFilter)
+{
+	this->magFilter = magFilter;
+}
+
+
+float Texture::getAnisotropyLevel() const
+{
+	return anisotropy;
+}
+
+
+void Texture::setAnisotropyLevel(float level)
+{
+	anisotropy = level;
+}
