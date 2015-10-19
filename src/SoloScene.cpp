@@ -89,7 +89,7 @@ Component* Scene::getComponent(size_t nodeId, size_t typeId) const
 {
 	auto cmp = findComponent(nodeId, typeId);
 	if (!cmp)
-		THROW_FMT(EngineException, "Component ", typeId, " not found on node ", nodeId, ".");
+		THROW_FMT(EngineException, "Component ", typeId, " not found on node ", nodeId);
 	return cmp;
 }
 

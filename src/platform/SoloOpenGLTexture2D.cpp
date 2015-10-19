@@ -38,7 +38,7 @@ GLenum OpenGLTexture2D::toGLColorFormat(ColorFormat format)
 		case ColorFormat::RGBA:
 			return GL_RGBA;
 		default:
-			THROW_FMT(EngineException, "Unexpected texture format ", static_cast<int>(format), ".");
+			THROW_FMT(EngineException, "Unexpected texture format ", static_cast<int>(format));
 	}
 }
 
@@ -52,7 +52,7 @@ GLenum OpenGLTexture2D::toGLWrapMode(TextureWrapMode mode)
 		case TextureWrapMode::Repeat:
 			return GL_REPEAT;
 		default:
-			THROW_FMT(EngineException, "Unexpected wrap mode ", static_cast<int>(mode), ".");
+			THROW_FMT(EngineException, "Unexpected wrap mode ", static_cast<int>(mode));
 	}
 }
 
@@ -74,7 +74,7 @@ GLenum OpenGLTexture2D::toGLFilter(TextureFilter filter)
 		case TextureFilter::NearestMipmapNearest:
 			return GL_NEAREST_MIPMAP_NEAREST;
 		default:
-			THROW_FMT(EngineException, "Unexpected texture filter ", static_cast<int>(filter), ".");
+			THROW_FMT(EngineException, "Unexpected texture filter ", static_cast<int>(filter));
 	}
 }
 

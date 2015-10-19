@@ -18,7 +18,7 @@ static void readCallback(png_structp png, png_bytep data, png_size_t length)
 {
 	auto context = reinterpret_cast<PngReadContext*>(png_get_io_ptr(png));
 	if (!context)
-		png_error(png, "Error reading PNG.");
+		png_error(png, "Error reading PNG");
 	memcpy(data, context->bytes->data() + context->offset, length);
 	context->offset += length;
 }
