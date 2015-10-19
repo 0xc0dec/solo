@@ -1,5 +1,6 @@
 #include "SoloStubTextureLoader.h"
 #include "SoloResourceManager.h"
+#include "SoloImage.h"
 
 using namespace solo;
 
@@ -16,7 +17,7 @@ bool StubTextureLoader::isLoadable(const std::string& uri)
 }
 
 
-shared<Texture2D> StubTextureLoader::load2D(const std::string& uri)
+shared<Image> StubTextureLoader::load2D(const std::string& uri)
 {
-	return resourceManager->getOrCreateTexture2D(uri);
+	return NEW2(Image);
 }

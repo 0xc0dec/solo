@@ -7,12 +7,6 @@ namespace solo
 	class Texture2D;
 	enum class EngineMode;
 
-	enum class ColorFormat
-	{
-		RGB,
-		RGBA
-	};
-
 	enum class TextureWrapMode
 	{
 		Clamp,

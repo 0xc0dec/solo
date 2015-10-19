@@ -1,7 +1,7 @@
 #include <png.h>
 #include "SoloPngTextureLoader.h"
 #include "SoloFileSystem.h"
-#include "SoloTexture2D.h"
+#include "SoloImage.h"
 #include "SoloResourceManager.h"
 
 using namespace solo;
@@ -36,7 +36,7 @@ bool PngTextureLoader::isLoadable(const std::string& uri)
 }
 
 
-shared<Texture2D> PngTextureLoader::load2D(const std::string& uri)
+shared<Image> PngTextureLoader::load2D(const std::string& uri)
 {
 	auto bytes = fs->readBytes(uri);
 	if (bytes.size() < 8 || png_sig_cmp(&bytes[0], 0, 8) != 0)
@@ -74,14 +74,13 @@ shared<Texture2D> PngTextureLoader::load2D(const std::string& uri)
 	}
 
 	auto stride = png_get_rowbytes(png, info);
-	auto data = std::vector<uint8_t>(stride * height);
+	auto result = NEW2(Image, { width, height, colorFormat });
+	result->data.resize(stride * height);
 	auto rows = png_get_rows(png, info);
 	for (unsigned int i = 0; i < height; ++i)
-		memcpy(data.data() + stride * (height - i - 1), rows[i], stride);
+		memcpy(result->data.data() + stride * (height - i - 1), rows[i], stride);
 
 	png_destroy_read_struct(&png, &info, nullptr);
 
-	auto tex = resourceManager->getOrCreateTexture2D(uri);
-	tex->setData(colorFormat, data, width, height);
-	return tex;
+	return result;
 }

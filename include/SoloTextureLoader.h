@@ -4,17 +4,17 @@
 
 namespace solo
 {
-	class Texture2D;
+	struct Image;
 	class FileSystem;
 	class ResourceManager;
-
-	class TextureLoader
+	
+	class TextureLoader // TODO rename
 	{
 	public:
 		virtual ~TextureLoader() {}
 
 		virtual bool isLoadable(const std::string& uri) = 0;
-		virtual shared<Texture2D> load2D(const std::string& uri) = 0;
+		virtual shared<Image> load2D(const std::string& uri) = 0;
 
 	protected:
 		TextureLoader(FileSystem *fs, ResourceManager *resourceManager):

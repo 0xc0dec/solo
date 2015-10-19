@@ -2,6 +2,7 @@
 
 #include "SoloTexture.h"
 #include "SoloVector2.h"
+#include "SoloImage.h"
 
 namespace solo
 {

@@ -208,6 +208,9 @@
     <ClInclude Include="..\include\SoloTextureCube.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloImage.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">

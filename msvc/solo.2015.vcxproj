@@ -36,6 +36,7 @@
     <ClInclude Include="..\include\SoloFrustum.h" />
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\include\SoloEngineCallback.h" />
+    <ClInclude Include="..\include\SoloImage.h" />
     <ClInclude Include="..\include\SoloRenderTarget.h" />
     <ClInclude Include="..\include\SoloScriptManager.h" />
     <ClInclude Include="..\include\SoloTextureCube.h" />

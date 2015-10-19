@@ -98,7 +98,9 @@ shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& uri)
 	{
 		if (loader->isLoadable(uri))
 		{
-			auto texture = loader->load2D(uri);
+			auto texture = TextureFactory::create2D(engine->getMode());
+			auto image = loader->load2D(uri);
+			texture->setData(image->colorFormat, image->data, image->width, image->height);
 			textures[uri] = texture;
 			return texture;
 		}
