@@ -2,7 +2,7 @@ local shaders = dofile("../tests/scripts/demo/demo.shaders.lua")
 dofile("../tests/scripts/demo/demo.components.lua")
 
 function loadTexture(path)
-	local texture = resourceManager:getOrLoadTexture(path)
+	local texture = resourceManager:getOrLoadTexture2D(path)
 	texture:generateMipmaps()
 	texture:setMinFilter(solo.TextureFilter_Linear)
 	texture:setMagFilter(solo.TextureFilter_Linear)

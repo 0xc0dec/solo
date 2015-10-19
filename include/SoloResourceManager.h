@@ -33,7 +33,7 @@ namespace solo
 		shared<Model> getOrCreateModel(const std::string& uri = "");
 		shared<RenderTarget> getOrCreateRenderTarget(const std::string &uri);
 
-		shared<Texture2D> getOrLoadTexture(const std::string &uri);
+		shared<Texture2D> getOrLoadTexture2D(const std::string &uri);
 		shared<Model> getOrLoadModel(const std::string& uri);
 
 		void cleanUnusedResources();

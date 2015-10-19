@@ -662,7 +662,7 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMesh, LUA_ARGS(_opt<const std::string&>));
 	REGISTER_METHOD2(mgr, ResourceManager, getOrCreateModel, LUA_ARGS(_opt<const std::string&>));
 	REGISTER_METHOD2(mgr, ResourceManager, getOrCreateRenderTarget, LUA_ARGS(_opt<const std::string&>));
-	REGISTER_METHOD(mgr, ResourceManager, getOrLoadTexture);
+	REGISTER_METHOD(mgr, ResourceManager, getOrLoadTexture2D);
 	REGISTER_METHOD(mgr, ResourceManager, getOrLoadModel);
 	REGISTER_OVERLOADED_METHOD(mgr, ResourceManager, cleanUnusedResources, "cleanUnusedResources", void, , void);
 	mgr.endClass();

@@ -89,7 +89,7 @@ shared<Material> ResourceManager::getOrCreateMaterial(shared<Effect> effect, con
 }
 
 
-shared<Texture2D> ResourceManager::getOrLoadTexture(const std::string& uri)
+shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& uri)
 {
 	auto existing = findTexture(uri);
 	if (existing)

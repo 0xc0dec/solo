@@ -266,7 +266,7 @@ private:
 
 shared<Texture> Demo_Test::loadTexture(const std::string &path)
 {
-	auto texture = DYNAMIC_CAST<Texture2D>(resourceManager->getOrLoadTexture(path));
+	auto texture = DYNAMIC_CAST<Texture2D>(resourceManager->getOrLoadTexture2D(path));
 	texture->generateMipmaps();
 	texture->setMinFilter(TextureFilter::Linear);
 	texture->setMagFilter(TextureFilter::Linear);
