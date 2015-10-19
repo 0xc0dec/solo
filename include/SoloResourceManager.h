@@ -10,7 +10,7 @@ namespace solo
 	class Model;
 	class Texture2D;
 	class RenderTarget;
-	class TextureLoader;
+	class ImageLoader;
 	class ModelLoader;
 	class Engine;
 
@@ -41,7 +41,7 @@ namespace solo
 	protected:
 		explicit ResourceManager(Engine *engine);
 
-		std::vector<shared<TextureLoader>> textureLoaders;
+		std::vector<shared<ImageLoader>> imageLoaders;
 		std::vector<shared<ModelLoader>> modelLoaders;
 
 	private:

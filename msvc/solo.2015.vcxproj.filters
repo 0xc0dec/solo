@@ -136,14 +136,8 @@
     <ClInclude Include="..\src\platform\SoloOpenGLTexture2D.h">
       <Filter>src\platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloTextureLoader.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloEngineCreationArgs.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloPngTextureLoader.h">
-      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloRenderTarget.h">
       <Filter>include</Filter>
@@ -193,9 +187,6 @@
     <ClInclude Include="..\src\SoloStubResourceManager.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloStubTextureLoader.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\SoloStubModelLoader.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -210,6 +201,15 @@
     </ClInclude>
     <ClInclude Include="..\include\SoloImage.h">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloImageLoader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloStubImageLoader.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloPngImageLoader.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -411,9 +411,6 @@
     <ClCompile Include="..\src\SoloTexture2D.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloPngTextureLoader.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\platform\SoloOpenGLRenderTarget.cpp">
       <Filter>src\platform</Filter>
     </ClCompile>
@@ -441,9 +438,6 @@
     <ClCompile Include="..\src\SoloStubResourceManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloStubTextureLoader.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloStubModelLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -451,6 +445,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloTextureCube.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloStubImageLoader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloPngImageLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

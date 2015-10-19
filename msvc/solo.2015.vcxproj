@@ -40,7 +40,7 @@
     <ClInclude Include="..\include\SoloRenderTarget.h" />
     <ClInclude Include="..\include\SoloScriptManager.h" />
     <ClInclude Include="..\include\SoloTextureCube.h" />
-    <ClInclude Include="..\include\SoloTextureLoader.h" />
+    <ClInclude Include="..\include\SoloImageLoader.h" />
     <ClInclude Include="..\include\SoloTexture.h" />
     <ClInclude Include="..\include\SoloLog.h" />
     <ClInclude Include="..\include\SoloMaterial.h" />
@@ -77,7 +77,7 @@
     <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h" />
     <ClInclude Include="..\src\SoloModelLoader.h" />
     <ClInclude Include="..\src\SoloObjModelLoader.h" />
-    <ClInclude Include="..\src\SoloPngTextureLoader.h" />
+    <ClInclude Include="..\src\SoloPngImageLoader.h" />
     <ClInclude Include="..\src\SoloStubCamera.h" />
     <ClInclude Include="..\src\SoloStubDevice.h" />
     <ClInclude Include="..\src\SoloStubEffect.h" />
@@ -88,7 +88,7 @@
     <ClInclude Include="..\src\SoloStubRenderTarget.h" />
     <ClInclude Include="..\src\SoloStubResourceManager.h" />
     <ClInclude Include="..\src\SoloStubTexture2D.h" />
-    <ClInclude Include="..\src\SoloStubTextureLoader.h" />
+    <ClInclude Include="..\src\SoloStubImageLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloTextureCube.cpp" />
@@ -151,7 +151,7 @@
     <ClCompile Include="..\src\SoloNode.cpp" />
     <ClCompile Include="..\src\SoloObjModelLoader.cpp" />
     <ClCompile Include="..\src\SoloPlane.cpp" />
-    <ClCompile Include="..\src\SoloPngTextureLoader.cpp" />
+    <ClCompile Include="..\src\SoloPngImageLoader.cpp" />
     <ClCompile Include="..\src\SoloQuaternion.cpp" />
     <ClCompile Include="..\src\SoloRay.cpp" />
     <ClCompile Include="..\src\SoloRenderTarget.cpp" />
@@ -164,7 +164,7 @@
     <ClCompile Include="..\src\SoloStubEffect.cpp" />
     <ClCompile Include="..\src\SoloStubModelLoader.cpp" />
     <ClCompile Include="..\src\SoloStubResourceManager.cpp" />
-    <ClCompile Include="..\src\SoloStubTextureLoader.cpp" />
+    <ClCompile Include="..\src\SoloStubImageLoader.cpp" />
     <ClCompile Include="..\src\SoloTexture.cpp" />
     <ClCompile Include="..\src\SoloTexture2D.cpp" />
     <ClCompile Include="..\src\SoloTransform.cpp" />

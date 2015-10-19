@@ -6,7 +6,7 @@
 #include "SoloMesh.h"
 #include "SoloModel.h"
 #include "SoloRenderTarget.h"
-#include "SoloPngTextureLoader.h"
+#include "SoloPngImageLoader.h"
 #include "SoloTexture2D.h"
 #include "SoloEngine.h"
 #include "SoloObjModelLoader.h"
@@ -25,7 +25,7 @@ shared<ResourceManager> ResourceManagerFactory::create(Engine *engine)
 ResourceManager::ResourceManager(Engine *engine):
 	engine(engine)
 {
-	textureLoaders.push_back(NEW<PngTextureLoader>(engine->getFileSystem(), this));
+	imageLoaders.push_back(NEW<PngImageLoader>(engine->getFileSystem(), this));
 	modelLoaders.push_back(NEW<ObjModelLoader>(engine->getFileSystem(), this));
 }
 
@@ -94,12 +94,12 @@ shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& uri)
 	auto existing = findTexture(uri);
 	if (existing)
 		return existing;
-	for (auto loader : textureLoaders)
+	for (auto loader : imageLoaders)
 	{
 		if (loader->isLoadable(uri))
 		{
 			auto texture = TextureFactory::create2D(engine->getMode());
-			auto image = loader->load2D(uri);
+			auto image = loader->load(uri);
 			texture->setData(image->colorFormat, image->data, image->width, image->height);
 			textures[uri] = texture;
 			return texture;

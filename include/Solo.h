@@ -36,7 +36,7 @@
 #include "SoloScriptManager.h"
 #include "SoloTexture.h"
 #include "SoloTexture2D.h"
-#include "SoloTextureLoader.h"
+#include "SoloImageLoader.h"
 #include "SoloTransform.h"
 #include "SoloTypeId.h"
 #include "SoloVector2.h"
