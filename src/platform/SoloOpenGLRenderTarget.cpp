@@ -1,5 +1,5 @@
 #include "SoloOpenGLRenderTarget.h"
-#include "SoloTexture2D.h"
+#include "SoloOpenGLTexture2D.h"
 
 using namespace solo;
 
@@ -44,7 +44,8 @@ void OpenGLRenderTarget::update()
 	for (auto i = 0; i < textures.size(); ++i)
 	{
 		auto attachment = GL_COLOR_ATTACHMENT0 + i;
-		glFramebufferTexture(GL_FRAMEBUFFER, attachment, *reinterpret_cast<GLuint*>(textures[i]->getNativeHandle()), 0);
+		auto texHandle = static_cast<OpenGLTexture2D*>(textures[i].get())->getHandle();
+		glFramebufferTexture(GL_FRAMEBUFFER, attachment, texHandle, 0);
 		colorAttachments.push_back(attachment);
 	}
 	glDrawBuffers(static_cast<GLsizei>(textures.size()), colorAttachments.data());

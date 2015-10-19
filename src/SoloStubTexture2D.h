@@ -8,7 +8,6 @@ namespace solo
 	{
 	public:
 		virtual void apply() override {}
-		virtual void* getNativeHandle() override { return nullptr; }
 		virtual void generateMipmaps() override {}
 
 	protected:

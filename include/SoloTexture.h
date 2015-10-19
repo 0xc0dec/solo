@@ -20,8 +20,6 @@ namespace solo
 
 		virtual void apply() = 0;
 
-		virtual void *getNativeHandle() = 0;
-
 	protected:
 		Texture() {}
 

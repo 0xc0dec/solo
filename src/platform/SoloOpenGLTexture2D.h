@@ -12,7 +12,8 @@ namespace solo
 
 		virtual void apply() override;
 		virtual void generateMipmaps() override;
-		virtual void *getNativeHandle() override;
+
+		GLuint getHandle() const;
 
 	protected:
 		virtual void applyData(ColorFormat format, const std::vector<uint8_t>& data, unsigned width, unsigned height) override;

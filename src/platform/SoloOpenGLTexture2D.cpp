@@ -108,7 +108,7 @@ void OpenGLTexture2D::generateMipmaps()
 }
 
 
-void* OpenGLTexture2D::getNativeHandle()
+GLuint OpenGLTexture2D::getHandle() const
 {
-	return &handle;
+	return handle;
 }
