@@ -74,6 +74,7 @@
     <ClInclude Include="..\src\platform\SoloOpenGLMesh.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLRenderTarget.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLTexture2D.h" />
+    <ClInclude Include="..\src\platform\SoloOpenGLTextureCube.h" />
     <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h" />
     <ClInclude Include="..\src\SoloModelLoader.h" />
     <ClInclude Include="..\src\SoloObjModelLoader.h" />
@@ -89,8 +90,10 @@
     <ClInclude Include="..\src\SoloStubResourceManager.h" />
     <ClInclude Include="..\src\SoloStubTexture2D.h" />
     <ClInclude Include="..\src\SoloStubImageLoader.h" />
+    <ClInclude Include="..\src\SoloStubTextureCube.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\platform\SoloOpenGLTextureCube.cpp" />
     <ClCompile Include="..\src\SoloTextureCube.cpp" />
     <ClCompile Include="..\thirdparty\glew\src\glew.c" />
     <ClCompile Include="..\thirdparty\glew\src\glewinfo.c" />

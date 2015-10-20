@@ -1,7 +1,9 @@
 #include "SoloTexture.h"
 #include "SoloStubTexture2D.h"
+#include "SoloStubTextureCube.h"
 #include "SoloEngineCreationArgs.h"
 #include "platform/SoloOpenGLTexture2D.h"
+#include "platform/SoloOpenGLTextureCube.h"
 
 using namespace solo;
 

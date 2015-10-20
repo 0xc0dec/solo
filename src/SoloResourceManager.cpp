@@ -8,6 +8,7 @@
 #include "SoloRenderTarget.h"
 #include "SoloPngImageLoader.h"
 #include "SoloTexture2D.h"
+#include "SoloTextureCube.h"
 #include "SoloEngine.h"
 #include "SoloObjModelLoader.h"
 
@@ -104,34 +105,54 @@ shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& uri)
 	{
 		if (loader->isLoadable(uri))
 		{
-			auto texture = TextureFactory::create2D(engine->getMode());
+			auto result = TextureFactory::create2D(engine->getMode());
 			auto image = loader->load(uri);
-			texture->setData(image->colorFormat, image->data, image->width, image->height);
-			textures2d[uri] = texture;
-			return texture;
+			result->setData(image->colorFormat, image->data, image->width, image->height);
+			textures2d[uri] = result;
+			return result;
 		}
 	}
 	THROW_FMT(EngineException, "No suitable loader found for texture ", uri);
 }
 
 
-shared<TextureCube> ResourceManager::getOrLoadTextureCube(
-	const std::string& frontImageUri, const std::string& backImageUri,
-	const std::string& leftImageUri, const std::string& rightImageUri,
-	const std::string& topImageUri, const std::string& bottomImageUri)
+shared<TextureCube> ResourceManager::getOrLoadTextureCube(const std::vector<std::string>& imageUris)
 {
-	auto uri = frontImageUri + backImageUri + leftImageUri + rightImageUri + topImageUri + bottomImageUri;
+	if (imageUris.size() != 6)
+		THROW_FMT(EngineException, "Wrong number of faces for cube texture (", imageUris.size(), " provided, 6 expected)");
+	auto uri = imageUris[0] + imageUris[1] + imageUris[2] + imageUris[3] + imageUris[4] + imageUris[5];
 	auto existing = findTextureCube(uri);
 	if (existing)
 		return existing;
-	// TODO
+	auto result = TextureFactory::createCube(engine->getMode());
+	auto idx = 0;
+	for (auto& imageUri: imageUris)
+	{
+		shared<Image> image;
+		for (auto loader : imageLoaders)
+		{
+			if (loader->isLoadable(imageUri))
+			{
+				image = loader->load(imageUri);
+				auto face = static_cast<int>(TextureCubeFace::Front) + idx;
+				result->setImageData(static_cast<TextureCubeFace>(face), image->colorFormat, image->data, image->width, image->height);
+				break;
+			}
+		}
+		if (!image)
+			THROW_FMT(EngineException, "No suitable loader found for texture ", imageUri);
+		idx++;
+	}
+	texturesCube[uri] = result;
+	return result;
 }
 
 
 shared<Texture2D> ResourceManager::getOrCreateTexture2D(const std::string &uri)
 {
 	return getOrCreateResource<Texture2D>(uri, textures2d,
-		std::bind(&ResourceManager::findTexture2D, this, std::placeholders::_1), std::bind(&TextureFactory::create2D, engine->getMode()));
+		std::bind(&ResourceManager::findTexture2D, this, std::placeholders::_1),
+		std::bind(&TextureFactory::create2D, engine->getMode()));
 }
 
 

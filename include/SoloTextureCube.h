@@ -5,15 +5,20 @@
 
 namespace solo
 {
+	enum class TextureCubeFace
+	{
+		Front = 0,
+		Back = 1,
+		Left = 2,
+		Right = 4,
+		Top = 5,
+		Bottom = 6
+	};
+
 	class TextureCube: public Texture
 	{
 	public:
-		void setFrontImageData(ColorFormat format, const std::vector<uint8_t> &data, unsigned width, unsigned height);
-		void setBackImageData(ColorFormat format, const std::vector<uint8_t> &data, unsigned width, unsigned height);
-		void setLeftImageData(ColorFormat format, const std::vector<uint8_t> &data, unsigned width, unsigned height);
-		void setRightImageData(ColorFormat format, const std::vector<uint8_t> &data, unsigned width, unsigned height);
-		void setTopImageData(ColorFormat format, const std::vector<uint8_t> &data, unsigned width, unsigned height);
-		void setBottomImageData(ColorFormat format, const std::vector<uint8_t> &data, unsigned width, unsigned height);
+		virtual void setImageData(TextureCubeFace face, ColorFormat format, const std::vector<uint8_t> &data, unsigned width, unsigned height) = 0;
 
 		virtual void generateMipmaps() = 0;
 
@@ -23,7 +28,6 @@ namespace solo
 	protected:
 		TextureCube() {}
 
-	private:
 		TextureWrapMode depthWrap = TextureWrapMode::Repeat;
 	};
 }

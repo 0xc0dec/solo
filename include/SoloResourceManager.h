@@ -36,10 +36,9 @@ namespace solo
 		shared<RenderTarget> getOrCreateRenderTarget(const std::string &uri);
 
 		shared<Texture2D> getOrLoadTexture2D(const std::string &uri);
-		shared<TextureCube> getOrLoadTextureCube(
-			const std::string &frontImageUri, const std::string &backImageUri,
-			const std::string &leftImageUri, const std::string &rightImageUri,
-			const std::string &topImageUri, const std::string &bottomImageUri);
+
+		// Image order: front, back, left, right, top, bottom
+		shared<TextureCube> getOrLoadTextureCube(const std::vector<std::string>& imageUris);
 
 		shared<Model> getOrLoadModel(const std::string& uri);
 

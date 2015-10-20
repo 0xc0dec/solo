@@ -1,7 +1,7 @@
 runTest(function()
 	local mgr = engine:getResourceManager()
 	mgr:findEffect("wer")
-	mgr:findTexture("wer")
+	mgr:findTexture2D("wer")
 	mgr:findMaterial("wer")
 	mgr:findMesh("wer")
 	mgr:findModel("wer")
