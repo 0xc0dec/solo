@@ -651,7 +651,7 @@ void LuaScriptManager::registerApi()
 	// ResourceManager
 	auto mgr = module.beginClass<ResourceManager>("ResourceManager");
 	REGISTER_METHOD(mgr, ResourceManager, findEffect);
-	REGISTER_METHOD(mgr, ResourceManager, findTexture);
+	REGISTER_METHOD(mgr, ResourceManager, findTexture2D);
 	REGISTER_METHOD(mgr, ResourceManager, findMaterial);
 	REGISTER_METHOD(mgr, ResourceManager, findMesh);
 	REGISTER_METHOD(mgr, ResourceManager, findModel);

@@ -14,6 +14,14 @@ shared<Texture2D> TextureFactory::create2D(EngineMode mode)
 }
 
 
+shared<TextureCube> TextureFactory::createCube(EngineMode mode)
+{
+	if (mode == EngineMode::OpenGL)
+		return NEW2(OpenGLTextureCube);
+	return NEW2(StubTextureCube);
+}
+
+
 TextureWrapMode Texture::getVerticalWrapMode() const
 {
 	return verticalWrap;

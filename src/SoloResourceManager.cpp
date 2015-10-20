@@ -48,9 +48,15 @@ shared<Material> ResourceManager::findMaterial(const std::string& uri)
 }
 
 
-shared<Texture2D> ResourceManager::findTexture(const std::string& uri)
+shared<Texture2D> ResourceManager::findTexture2D(const std::string& uri)
 {
-	return findResource(uri, textures);
+	return findResource(uri, textures2d);
+}
+
+
+shared<TextureCube> ResourceManager::findTextureCube(const std::string& uri)
+{
+	return findResource(uri, texturesCube);
 }
 
 
@@ -91,7 +97,7 @@ shared<Material> ResourceManager::getOrCreateMaterial(shared<Effect> effect, con
 
 shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& uri)
 {
-	auto existing = findTexture(uri);
+	auto existing = findTexture2D(uri);
 	if (existing)
 		return existing;
 	for (auto loader : imageLoaders)
@@ -101,7 +107,7 @@ shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& uri)
 			auto texture = TextureFactory::create2D(engine->getMode());
 			auto image = loader->load(uri);
 			texture->setData(image->colorFormat, image->data, image->width, image->height);
-			textures[uri] = texture;
+			textures2d[uri] = texture;
 			return texture;
 		}
 	}
@@ -109,10 +115,23 @@ shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& uri)
 }
 
 
+shared<TextureCube> ResourceManager::getOrLoadTextureCube(
+	const std::string& frontImageUri, const std::string& backImageUri,
+	const std::string& leftImageUri, const std::string& rightImageUri,
+	const std::string& topImageUri, const std::string& bottomImageUri)
+{
+	auto uri = frontImageUri + backImageUri + leftImageUri + rightImageUri + topImageUri + bottomImageUri;
+	auto existing = findTextureCube(uri);
+	if (existing)
+		return existing;
+	// TODO
+}
+
+
 shared<Texture2D> ResourceManager::getOrCreateTexture2D(const std::string &uri)
 {
-	return getOrCreateResource<Texture2D>(uri, textures,
-		std::bind(&ResourceManager::findTexture, this, std::placeholders::_1), std::bind(&TextureFactory::create2D, engine->getMode()));
+	return getOrCreateResource<Texture2D>(uri, textures2d,
+		std::bind(&ResourceManager::findTexture2D, this, std::placeholders::_1), std::bind(&TextureFactory::create2D, engine->getMode()));
 }
 
 
@@ -201,5 +220,6 @@ void ResourceManager::cleanUnusedResources()
 	cleanUnusedResources(materials);
 	cleanUnusedResources(effects);
 	cleanUnusedResources(meshes);
-	cleanUnusedResources(textures);
+	cleanUnusedResources(textures2d);
+	cleanUnusedResources(texturesCube);
 }

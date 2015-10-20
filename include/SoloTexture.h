@@ -5,6 +5,7 @@
 namespace solo
 {
 	class Texture2D;
+	class TextureCube;
 	enum class EngineMode;
 
 	enum class TextureWrapMode
@@ -63,5 +64,6 @@ namespace solo
 	{
 		friend class ResourceManager;
 		static shared<Texture2D> create2D(EngineMode mode);
+		static shared<TextureCube> createCube(EngineMode mode);
 	};
 }

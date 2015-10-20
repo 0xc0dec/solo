@@ -31,7 +31,7 @@ public:
 		assert(!resourceManager->findMesh("non existent"));
 		assert(!resourceManager->findModel("non existent"));
 		assert(!resourceManager->findRenderTarget("non existent"));
-		assert(!resourceManager->findTexture("non existent"));
+		assert(!resourceManager->findTexture2D("non existent"));
 	}
 
 	void test_CreateEffect_FindIt()
@@ -48,7 +48,7 @@ public:
 	{
 		auto uri = "tex2d";
 		auto tex = resourceManager->getOrCreateTexture2D(uri);
-		assert(resourceManager->findTexture(uri) == tex);
+		assert(resourceManager->findTexture2D(uri) == tex);
 		assert(resourceManager->getOrCreateTexture2D(uri) == tex);
 	}
 
