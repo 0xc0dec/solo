@@ -17,7 +17,7 @@ OpenGLTextureCube::~OpenGLTextureCube()
 }
 
 
-void OpenGLTextureCube::setImageData(TextureCubeFace face, ColorFormat format, const std::vector<uint8_t>& data, unsigned width, unsigned height)
+void OpenGLTextureCube::setData(TextureCubeFace face, ColorFormat format, const std::vector<uint8_t>& data, unsigned width, unsigned height)
 {
 	GLenum glFace;
 	switch (face)

@@ -19,6 +19,10 @@ namespace solo
 	{
 	public:
 		~ResourceManager() {}
+		ResourceManager(const ResourceManager& other) = delete;
+		ResourceManager(ResourceManager&& other) = delete;
+		ResourceManager& operator=(const ResourceManager& other) = delete;
+		ResourceManager& operator=(ResourceManager&& other) = delete;
 
 		shared<Effect> findEffect(const std::string &uri);
 		shared<Texture2D> findTexture2D(const std::string &uri);
@@ -36,10 +40,7 @@ namespace solo
 		shared<RenderTarget> getOrCreateRenderTarget(const std::string &uri);
 
 		shared<Texture2D> getOrLoadTexture2D(const std::string &uri);
-
-		// Image order: front, back, left, right, top, bottom
 		shared<TextureCube> getOrLoadTextureCube(const std::vector<std::string>& imageUris);
-
 		shared<Model> getOrLoadModel(const std::string& uri);
 
 		void cleanUnusedResources();
@@ -55,11 +56,6 @@ namespace solo
 
 		template <typename TResource> using ResourceMap = std::unordered_map<std::string, shared<TResource>>;
 		
-		ResourceManager(const ResourceManager& other) = delete;
-		ResourceManager(ResourceManager&& other) = delete;
-		ResourceManager& operator=(const ResourceManager& other) = delete;
-		ResourceManager& operator=(ResourceManager&& other) = delete;
-
 		std::string generateUri();
 		
 		template <typename TResource>

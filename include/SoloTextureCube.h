@@ -18,7 +18,7 @@ namespace solo
 	class TextureCube: public Texture
 	{
 	public:
-		virtual void setImageData(TextureCubeFace face, ColorFormat format, const std::vector<uint8_t> &data, unsigned width, unsigned height) = 0;
+		virtual void setData(TextureCubeFace face, ColorFormat format, const std::vector<uint8_t> &data, unsigned width, unsigned height) = 0;
 
 		virtual void generateMipmaps() = 0;
 

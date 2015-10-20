@@ -135,7 +135,7 @@ shared<TextureCube> ResourceManager::getOrLoadTextureCube(const std::vector<std:
 			{
 				image = loader->load(imageUri);
 				auto face = static_cast<int>(TextureCubeFace::Front) + idx;
-				result->setImageData(static_cast<TextureCubeFace>(face), image->colorFormat, image->data, image->width, image->height);
+				result->setData(static_cast<TextureCubeFace>(face), image->colorFormat, image->data, image->width, image->height);
 				break;
 			}
 		}
