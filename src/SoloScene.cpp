@@ -143,13 +143,12 @@ void Scene::render()
 		iterateComponents([&](size_t nodeId, shared<Component> component)
 		{
 			auto transform = Node::findComponent<Transform>(this, nodeId);
-			if (transform) // not very optimal - could be done one level upper
-			{
-				context.nodeTransform = transform;
-				// Render only non-camera nodes with transforms
-				if (component->getTypeId() != Camera::getId())
-					component->render(context);
-			}
+			if (!transform)
+				return;
+			context.nodeTransform = transform;
+			// Render only non-camera nodes with transforms
+			if (component->getTypeId() != Camera::getId())
+				component->render(context);
 		});
 
 		camera->finish();
