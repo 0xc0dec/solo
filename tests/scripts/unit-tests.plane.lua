@@ -1,8 +1,4 @@
 runTest(function()
-	assert(solo.Plane.Intersection_Front ~= nil)
-	assert(solo.Plane.Intersection_Back ~= nil)
-	assert(solo.Plane.Intersection_Intersecting ~= nil)
-
 	local p = solo.Plane(solo.Vector3(1, 2, 3), 1)
 	local v = solo.Vector3(1, 2, 3)
 	assert(solo.Plane.intersection(p, p, p))

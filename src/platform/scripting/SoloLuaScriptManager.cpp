@@ -689,19 +689,19 @@ void LuaScriptManager::registerApi()
 		.addVariable("depth", &EngineCreationArgs::depth, true)
 		.addVariable("fullScreen", &EngineCreationArgs::fullScreen, true)
 		.addVariable("windowTitle", &EngineCreationArgs::windowTitle, true)
-		.endClass();
+	.endClass();
 
 	// Engine
-	module.beginClass<Engine>("Engine")
-		.addStaticFunction("create", &Engine::create)
-		.addFunction("getDevice", &Engine::getDevice)
-		.addFunction("getScene", &Engine::getScene)
-		.addFunction("getResourceManager", &Engine::getResourceManager)
-		.addFunction("getFileSystem", &Engine::getFileSystem)
-		.addFunction("setCallback", &LuaEngineCallback::setCallback)
-		.addFunction("getMode", &Engine::getMode)
-		.addFunction("run", &Engine::run)
-		.endClass();
+	auto engine = module.beginClass<Engine>("Engine");
+	REGISTER_STATIC_METHOD(engine, Engine, create);
+	REGISTER_METHOD(engine, Engine, getDevice);
+	REGISTER_METHOD(engine, Engine, getScene);
+	REGISTER_METHOD(engine, Engine, getResourceManager);
+	REGISTER_METHOD(engine, Engine, getFileSystem);
+	REGISTER_METHOD(engine, Engine, getMode);
+	REGISTER_METHOD(engine, Engine, run);
+	engine.addFunction("setCallback", &LuaEngineCallback::setCallback);
+	engine.endClass();
 
 	module.endModule();
 }
