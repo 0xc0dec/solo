@@ -1,7 +1,7 @@
 #pragma once
 
-#include <GL/glew.h>
 #include "SoloTextureCube.h"
+#include <GL/glew.h>
 
 namespace solo
 {
@@ -9,7 +9,6 @@ namespace solo
 	{
 	public:
 		virtual ~OpenGLTextureCube();
-
 		virtual void setData(TextureCubeFace face, ColorFormat format, const std::vector<uint8_t>& data, unsigned width, unsigned height) override;
 		virtual void apply() override;
 		virtual void generateMipmaps() override;
@@ -23,10 +22,6 @@ namespace solo
 
 		void bind();
 		void unbind();
-
-		GLenum toGLColorFormat(ColorFormat format);
-		GLenum toGLWrapMode(TextureWrapMode mode);
-		GLenum toGLFilter(TextureFilter filter);
 
 		GLuint handle = 0;
 	};

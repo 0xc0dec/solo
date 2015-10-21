@@ -1,4 +1,5 @@
 #include "SoloOpenGLTexture2D.h"
+#include "SoloOpenGLHelper.h"
 
 using namespace solo;
 
@@ -29,63 +30,13 @@ void OpenGLTexture2D::unbind()
 }
 
 
-GLenum OpenGLTexture2D::toGLColorFormat(ColorFormat format)
-{
-	switch (format)
-	{
-		case ColorFormat::RGB:
-			return GL_RGB;
-		case ColorFormat::RGBA:
-			return GL_RGBA;
-		default:
-			SL_THROW_FMT(EngineException, "Unexpected texture format ", static_cast<int>(format));
-	}
-}
-
-
-GLenum OpenGLTexture2D::toGLWrapMode(TextureWrapMode mode)
-{
-	switch (mode)
-	{
-		case TextureWrapMode::Clamp:
-			return GL_CLAMP_TO_EDGE;
-		case TextureWrapMode::Repeat:
-			return GL_REPEAT;
-		default:
-			SL_THROW_FMT(EngineException, "Unexpected wrap mode ", static_cast<int>(mode));
-	}
-}
-
-
-GLenum OpenGLTexture2D::toGLFilter(TextureFilter filter)
-{
-	switch (filter)
-	{
-		case TextureFilter::Linear:
-			return GL_LINEAR;
-		case TextureFilter::Nearest:
-			return GL_NEAREST;
-		case TextureFilter::LinearMipmapNearest:
-			return GL_LINEAR_MIPMAP_NEAREST;
-		case TextureFilter::LinearMipmapLinear:
-			return GL_LINEAR_MIPMAP_LINEAR;
-		case TextureFilter::NearestMipmapLinear:
-			return GL_NEAREST_MIPMAP_LINEAR;
-		case TextureFilter::NearestMipmapNearest:
-			return GL_NEAREST_MIPMAP_NEAREST;
-		default:
-			SL_THROW_FMT(EngineException, "Unexpected texture filter ", static_cast<int>(filter));
-	}
-}
-
-
 void OpenGLTexture2D::apply()
 {
 	bind();
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, toGLFilter(minFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, toGLFilter(magFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, toGLWrapMode(horizontalWrap));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, toGLWrapMode(verticalWrap));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, OpenGLHelper::convertToGLFilter(minFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, OpenGLHelper::convertToGLFilter(magFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, OpenGLHelper::convertToGLWrapMode(horizontalWrap));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, OpenGLHelper::convertToGLWrapMode(verticalWrap));
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy);
 }
 
@@ -94,7 +45,7 @@ void OpenGLTexture2D::applyData(ColorFormat format, const std::vector<uint8_t>& 
 {
 	bind();
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glTexImage2D(GL_TEXTURE_2D, 0, toGLColorFormat(format), width, height, 0, toGLColorFormat(format), GL_UNSIGNED_BYTE, data.size() ? data.data() : 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, OpenGLHelper::convertToGLColorFormat(format), width, height, 0, OpenGLHelper::convertToGLColorFormat(format), GL_UNSIGNED_BYTE, data.size() ? data.data() : 0);
 	unbind();
 }
 

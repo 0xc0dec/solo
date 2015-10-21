@@ -26,10 +26,6 @@ namespace solo
 		void bind();
 		void unbind();
 
-		GLenum toGLColorFormat(ColorFormat format);
-		GLenum toGLWrapMode(TextureWrapMode mode);
-		GLenum toGLFilter(TextureFilter filter);
-
 		GLuint handle = 0;
 	};
 }

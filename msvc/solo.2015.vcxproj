@@ -70,6 +70,7 @@
     <ClInclude Include="..\src\platform\SoloGLSLEffect.h" />
     <ClInclude Include="..\src\platform\SoloGLSLEffectVariable.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLCamera.h" />
+    <ClInclude Include="..\src\platform\SoloOpenGLHelper.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLMaterial.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLMesh.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLRenderTarget.h" />
@@ -93,6 +94,7 @@
     <ClInclude Include="..\src\SoloStubTextureCube.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\platform\SoloOpenGLHelper.cpp" />
     <ClCompile Include="..\src\platform\SoloOpenGLTextureCube.cpp" />
     <ClCompile Include="..\src\SoloTextureCube.cpp" />
     <ClCompile Include="..\thirdparty\glew\src\glew.c" />
