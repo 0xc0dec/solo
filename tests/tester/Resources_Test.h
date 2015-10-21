@@ -23,6 +23,9 @@ public:
 		test_CreateResource_TryToCleanIt_EnsureRemains();
 		test_CreateAndForgetResource_CleanIt();
 		test_LoadCubeTextureWithWrongNumberOfFaces_EnsureFail();
+		test_LoadTexture2DWithOverridenUri_CheckUri();
+		test_LoadTextureCubeWithOverridenUri_CheckUri();
+		test_LoadModelWithOverridenUri_CheckUri();
 	}
 
 	void test_FindInexistentResources_EnsureNotFound()
@@ -106,5 +109,29 @@ public:
 	{
 		assertThrows<EngineException>([=] { resourceManager->getOrLoadTextureCube({ "1", "2" }); },
 			"Wrong number of face images for cube texture (2 provided, 6 expected)");
+	}
+
+	void test_LoadTexture2DWithOverridenUri_CheckUri()
+	{
+		auto overridenUri = "customUriForTexture2D";
+		auto tex = resourceManager->getOrLoadTexture2D("/image.png", overridenUri);
+		assert(resourceManager->getOrLoadTexture2D("doesn't matter", overridenUri) == tex);
+		assert(resourceManager->findTexture2D(overridenUri) == tex);
+	}
+
+	void test_LoadTextureCubeWithOverridenUri_CheckUri()
+	{
+		auto overridenUri = "customUriForTextureCube";
+		auto tex = resourceManager->getOrLoadTextureCube({ "1", "2", "3", "4", "5", "6" }, overridenUri);
+		assert(resourceManager->getOrLoadTextureCube({ "12", "23", "34", "45", "56", "67" }, overridenUri) == tex);
+		assert(resourceManager->findTextureCube(overridenUri) == tex);
+	}
+
+	void test_LoadModelWithOverridenUri_CheckUri()
+	{
+		auto overridenUri = "customUriForModel";
+		auto model = resourceManager->getOrLoadModel("/nonsense.obj", overridenUri);
+		assert(resourceManager->getOrLoadModel("/more_nonsense.obj", overridenUri) == model);
+		assert(resourceManager->findModel(overridenUri) == model);
 	}
 };
