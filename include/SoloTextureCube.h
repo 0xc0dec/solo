@@ -10,9 +10,9 @@ namespace solo
 		Front = 0,
 		Back = 1,
 		Left = 2,
-		Right = 4,
-		Top = 5,
-		Bottom = 6
+		Right = 3,
+		Top = 4,
+		Bottom = 5
 	};
 
 	class TextureCube: public Texture
