@@ -96,34 +96,41 @@ shared<Material> ResourceManager::getOrCreateMaterial(shared<Effect> effect, con
 }
 
 
-shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& uri)
+shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& imageUri, const std::string& uri)
 {
-	auto existing = findTexture2D(uri);
+	auto textureUri = uri.empty() ? imageUri : uri;
+	auto existing = findTexture2D(textureUri);
 	if (existing)
 		return existing;
+
 	for (auto loader : imageLoaders)
 	{
-		if (loader->isLoadable(uri))
+		if (loader->isLoadable(imageUri))
 		{
 			auto result = TextureFactory::create2D(engine->getMode());
-			auto image = loader->load(uri);
+			auto image = loader->load(imageUri);
 			result->setData(image->colorFormat, image->data, image->width, image->height);
-			textures2d[uri] = result;
+			textures2d[textureUri] = result;
 			return result;
 		}
 	}
-	THROW_FMT(EngineException, "No suitable loader found for texture ", uri);
+
+	THROW_FMT(EngineException, "No suitable loader found for image ", imageUri);
 }
 
 
-shared<TextureCube> ResourceManager::getOrLoadTextureCube(const std::vector<std::string>& imageUris)
+shared<TextureCube> ResourceManager::getOrLoadTextureCube(const std::vector<std::string>& imageUris, const std::string& uri)
 {
 	if (imageUris.size() != 6)
-		THROW_FMT(EngineException, "Wrong number of faces for cube texture (", imageUris.size(), " provided, 6 expected)");
-	auto uri = imageUris[0] + imageUris[1] + imageUris[2] + imageUris[3] + imageUris[4] + imageUris[5];
-	auto existing = findTextureCube(uri);
+		THROW_FMT(EngineException, "Wrong number of face images for cube texture (", imageUris.size(), " provided, 6 expected)");
+
+	auto textureUri = uri.empty()
+		? imageUris[0] + imageUris[1] + imageUris[2] + imageUris[3] + imageUris[4] + imageUris[5]
+		: uri;
+	auto existing = findTextureCube(textureUri);
 	if (existing)
 		return existing;
+
 	auto result = TextureFactory::createCube(engine->getMode());
 	auto idx = 0;
 	for (auto& imageUri: imageUris)
@@ -140,10 +147,11 @@ shared<TextureCube> ResourceManager::getOrLoadTextureCube(const std::vector<std:
 			}
 		}
 		if (!image)
-			THROW_FMT(EngineException, "No suitable loader found for texture ", imageUri);
+			THROW_FMT(EngineException, "No suitable loader found for image ", imageUri);
 		idx++;
 	}
-	texturesCube[uri] = result;
+
+	texturesCube[textureUri] = result;
 	return result;
 }
 
@@ -156,21 +164,24 @@ shared<Texture2D> ResourceManager::getOrCreateTexture2D(const std::string &uri)
 }
 
 
-shared<Model> ResourceManager::getOrLoadModel(const std::string& uri)
+shared<Model> ResourceManager::getOrLoadModel(const std::string& dataUri, const std::string& uri)
 {
-	auto existing = findModel(uri);
+	auto modelUri = uri.empty() ? dataUri : uri;
+	auto existing = findModel(modelUri);
 	if (existing)
 		return existing;
+
 	for (auto loader : modelLoaders)
 	{
-		if (loader->isLoadable(uri))
+		if (loader->isLoadable(dataUri))
 		{
-			auto model = loader->load(uri);
-			models[uri] = model;
+			auto model = loader->load(dataUri);
+			models[modelUri] = model;
 			return model;
 		}
 	}
-	THROW_FMT(EngineException, "No suitable loader found for model ", uri);
+
+	THROW_FMT(EngineException, "No suitable loader found for model ", dataUri);
 }
 
 
