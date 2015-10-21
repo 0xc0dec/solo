@@ -26,7 +26,7 @@ void GLSLEffectVariable::setFloat(float value)
 
 void GLSLEffectVariable::setFloatArray(const std::vector<float>& value)
 {
-	glUniform1fv(location, value.size(), value.data());
+	glUniform1fv(location, static_cast<GLsizei>(value.size()), value.data());
 }
 
 
@@ -38,7 +38,7 @@ void GLSLEffectVariable::setInt(int value)
 
 void GLSLEffectVariable::setIntArray(const std::vector<int>& value)
 {
-	glUniform1iv(location, value.size(), value.data());
+	glUniform1iv(location, static_cast<GLsizei>(value.size()), value.data());
 }
 
 
@@ -50,7 +50,7 @@ void GLSLEffectVariable::setMatrix(const Matrix& value)
 
 void GLSLEffectVariable::setMatrixArray(const std::vector<Matrix>& value)
 {
-	glUniformMatrix4fv(location, value.size(), GL_FALSE, reinterpret_cast<const GLfloat*>(value.data())); // TODO tests this
+	glUniformMatrix4fv(location, static_cast<GLsizei>(value.size()), GL_FALSE, reinterpret_cast<const GLfloat*>(value.data())); // TODO tests this
 }
 
 
@@ -62,7 +62,7 @@ void GLSLEffectVariable::setVector2(const Vector2& value)
 
 void GLSLEffectVariable::setVector2Array(const std::vector<Vector2>& value)
 {
-	glUniform2fv(location, value.size(), reinterpret_cast<const GLfloat*>(value.data()));
+	glUniform2fv(location, static_cast<GLsizei>(value.size()), reinterpret_cast<const GLfloat*>(value.data()));
 }
 
 
@@ -74,7 +74,7 @@ void GLSLEffectVariable::setVector3(const Vector3& value)
 
 void GLSLEffectVariable::setVector3Array(const std::vector<Vector3>& value)
 {
-	glUniform3fv(location, value.size(), reinterpret_cast<const GLfloat*>(value.data()));
+	glUniform3fv(location, static_cast<GLsizei>(value.size()), reinterpret_cast<const GLfloat*>(value.data()));
 }
 
 
@@ -86,7 +86,7 @@ void GLSLEffectVariable::setVector4(const Vector4& value)
 
 void GLSLEffectVariable::setVector4Array(const std::vector<Vector4>& value)
 {
-	glUniform4fv(location, value.size(), reinterpret_cast<const GLfloat*>(value.data()));
+	glUniform4fv(location, static_cast<GLsizei>(value.size()), reinterpret_cast<const GLfloat*>(value.data()));
 }
 
 

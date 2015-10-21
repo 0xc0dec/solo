@@ -3,6 +3,7 @@
 #include "SoloMath.h"
 #include "SoloRay.h"
 #include "SoloFrustum.h"
+#include <algorithm>
 
 using namespace solo;
 

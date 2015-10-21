@@ -7,10 +7,6 @@
 #include <unordered_set>
 #include <list>
 #include <vector>
-#include <cassert>
-#include <algorithm>
-#include <tuple>
-#include <sstream>
 #include "SoloFormatter.h"
 #include "SoloException.h"
 

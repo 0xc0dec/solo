@@ -1,4 +1,5 @@
 #include "SoloModel.h"
+#include <algorithm>
 
 using namespace solo;
 

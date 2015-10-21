@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cmath>
-#include "SoloBase.h"
 
 #define MATH_FLOAT_SMALL			1.0e-37f
 #define MATH_TOLERANCE				2e-37f
@@ -24,13 +23,13 @@ namespace solo
 	public:
 		Math() = delete;
 
-		static inline void smooth(float* x, float target, float elapsedTime, float responseTime)
+		static void smooth(float* x, float target, float elapsedTime, float responseTime)
 		{
 			if (elapsedTime > 0)
 				*x += (target - *x) * elapsedTime / (elapsedTime + responseTime);
 		}
 
-		static inline void smooth(float* x, float target, float elapsedTime, float riseTime, float fallTime)
+		static void smooth(float* x, float target, float elapsedTime, float riseTime, float fallTime)
 		{
 			if (elapsedTime > 0)
 			{
@@ -39,27 +38,27 @@ namespace solo
 			}
 		}
 
-		static inline float degToRad(float degrees)
+		static float degToRad(float degrees)
 		{
 			return degrees * 0.0174532925f;
 		}
 
-		static inline float radToDeg(float radians)
+		static float radToDeg(float radians)
 		{
 			return radians * 57.29577951f;
 		}
 
-		static inline float getRandomAroundZero()
+		static float getRandomAroundZero()
 		{
-			return (2.0f * ((float)rand() / RAND_MAX)) - 1.0f;
+			return 2.0f * (static_cast<float>(rand()) / RAND_MAX) - 1.0f;
 		}
 
-		static inline float getRandom01()
+		static float getRandom01()
 		{
-			return (float)rand() / RAND_MAX;
+			return static_cast<float>(rand()) / RAND_MAX;
 		}
 
-		static inline float clamp(float x, float lo, float hi)
+		static float clamp(float x, float lo, float hi)
 		{
 			return (x < lo) ? lo : ((x > hi) ? hi : x);
 		}

@@ -5,6 +5,7 @@
 #include "SoloMath.h"
 #include "SoloFrustum.h"
 #include "SoloRay.h"
+#include <algorithm>
 
 using namespace solo;
 
@@ -82,12 +83,12 @@ bool BoundingBox::intersectsBoundingBox(const BoundingBox& box) const
 bool BoundingBox::intersectsFrustum(const Frustum& frustum) const
 {
 	// The box must either intersect or be in the positive half-space of all six planes of the frustum.
-	return (getPlaneIntersection(frustum.getNearPlane()) != PlaneIntersection::Back &&
+	return getPlaneIntersection(frustum.getNearPlane()) != PlaneIntersection::Back &&
 		getPlaneIntersection(frustum.getFarPlane()) != PlaneIntersection::Back &&
 		getPlaneIntersection(frustum.getLeftPlane()) != PlaneIntersection::Back &&
 		getPlaneIntersection(frustum.getRightPlane()) != PlaneIntersection::Back &&
 		getPlaneIntersection(frustum.getBottomPlane()) != PlaneIntersection::Back &&
-		getPlaneIntersection(frustum.getTopPlane()) != PlaneIntersection::Back);
+		getPlaneIntersection(frustum.getTopPlane()) != PlaneIntersection::Back;
 }
 
 
@@ -106,7 +107,7 @@ PlaneIntersection BoundingBox::getPlaneIntersection(const Plane& plane) const
 	if (fabsf(distance) <= (fabsf(extentX * planeNormal.x) + fabsf(extentY * planeNormal.y) + fabsf(extentZ * planeNormal.z)))
 		return PlaneIntersection::Intersecting;
 
-	return (distance > 0.0f) ? PlaneIntersection::Front : PlaneIntersection::Back;
+	return distance > 0.0f ? PlaneIntersection::Front : PlaneIntersection::Back;
 }
 
 

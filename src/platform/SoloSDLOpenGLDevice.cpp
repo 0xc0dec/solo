@@ -1,5 +1,6 @@
 #include "SoloSDLOpenGLDevice.h"
 #include "SoloLog.h"
+#include <tuple>
 #include <GL/glew.h>
 
 using namespace solo;

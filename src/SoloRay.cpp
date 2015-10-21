@@ -4,6 +4,7 @@
 #include "SoloBoundingBox.h"
 #include "SoloMatrix.h"
 #include "SoloFrustum.h"
+#include <algorithm>
 
 using namespace solo;
 

@@ -2,6 +2,7 @@
 #include "SoloMath.h"
 #include "SoloQuaternion.h"
 #include "SoloPlane.h"
+#include "SoloBase.h"
 
 using namespace solo;
 

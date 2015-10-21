@@ -1,7 +1,8 @@
 #pragma once
 
-#include <iostream>
 #include "../../include/solo.h"
+#include <iostream>
+#include <cassert>
 
 #define LOG(msg) std::cout << msg << std::endl;
 

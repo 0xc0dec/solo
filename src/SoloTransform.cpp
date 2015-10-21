@@ -1,5 +1,6 @@
 #include "SoloTransform.h"
 #include "SoloCamera.h"
+#include <algorithm>
 
 using namespace solo;
 
