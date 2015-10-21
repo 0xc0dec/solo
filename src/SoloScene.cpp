@@ -50,9 +50,11 @@ void Scene::addComponent(size_t nodeId, shared<Component> cmp)
 void Scene::addComponent(size_t nodeId, shared<Component> cmp, size_t typeId)
 {
 	if (findComponent(nodeId, typeId))
-		SL_THROW_FMT(EngineException, "Component ", typeId, " already exists.");
+		SL_THROW_FMT(EngineException, "Component ", typeId, " already exists");
 	components[nodeId][typeId] = cmp;
 	cmp->init();
+	if (typeId == Camera::getId())
+		cameraCacheDirty = true;
 }
 
 
@@ -65,6 +67,8 @@ void Scene::removeComponent(size_t nodeId, size_t typeId)
 	nodeComponents.erase(typeId);
 	if (nodeComponents.empty())
 		components.erase(nodeId);
+	if (typeId == Camera::getId())
+		cameraCacheDirty = true;
 }
 
 
@@ -72,7 +76,7 @@ void Scene::removeAllComponents(size_t nodeId)
 {
 	if (components.find(nodeId) == components.end())
 		return;
-	for (auto cmp: components.at(nodeId))
+	for (auto& cmp: components.at(nodeId))
 		cmp.second->terminate();
 	components.erase(nodeId);
 }
@@ -104,27 +108,25 @@ Component* Scene::findComponent(size_t nodeId, size_t typeId) const
 }
 
 
-std::vector<Camera*> Scene::getCameras() const
+void Scene::updateCameraCache()
 {
-	std::vector<Camera*> result;
-	result.reserve(10);
-	for (auto nodeComponents : components)
+	cameraCache.clear();
+	for (auto& nodeComponents : components)
 	{
-		for (auto component : nodeComponents.second)
+		for (auto& component : nodeComponents.second)
 		{
 			if (component.second->getTypeId() == Camera::getId())
-				result.push_back(static_cast<Camera*>(component.second.get()));
+				cameraCache.push_back(static_cast<Camera*>(component.second.get()));
 		}
 	}
-	return result;
 }
 
 
 void Scene::update()
 {
-	for (auto node : components)
+	for (auto& node : components)
 	{
-		for (auto component : node.second)
+		for (auto& component : node.second)
 			component.second->update();
 	}
 }
@@ -132,12 +134,16 @@ void Scene::update()
 
 void Scene::render()
 {
-	auto cameras = getCameras(); // TODO cache lookup results or optimise in some other way
+	if (cameraCacheDirty)
+	{
+		updateCameraCache();
+		cameraCacheDirty = false;
+	}
 
 	RenderContext context;
 	context.scene = this;
 
-	for (auto camera : cameras)
+	for (auto& camera : cameraCache)
 	{
 		camera->apply();
 		context.camera = camera;
@@ -163,10 +169,10 @@ void Scene::render()
 
 void Scene::iterateComponents(ComponentIterationWorker work)
 {
-	for (auto nodeComponents : components)
+	for (auto& nodeComponents : components)
 	{
 		auto nodeId = nodeComponents.first;
-		for (auto component : nodeComponents.second)
+		for (auto& component : nodeComponents.second)
 			work(nodeId, component.second);
 	}
 }

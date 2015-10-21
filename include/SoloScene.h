@@ -7,6 +7,7 @@ namespace solo
 	class Component;
 	class Node;
 	class Camera;
+	class Renderer;
 	class Engine;
 
 	class Scene
@@ -35,6 +36,7 @@ namespace solo
 		friend class SceneFactory;
 		
 		using ComponentIterationWorker = std::function<void(size_t, shared<Component>)>;
+		using Components = std::unordered_map<size_t, std::unordered_map<size_t, shared<Component>>>;
 
 		explicit Scene(Engine *engine);
 		Scene(const Scene& other) = delete;
@@ -43,12 +45,14 @@ namespace solo
 		Scene& operator=(Scene&& other) = delete;
 
 		void iterateComponents(ComponentIterationWorker work);
-		std::vector<Camera*> getCameras() const;
+		void updateCameraCache();
 
 		Engine *engine;
-
 		size_t nodeCounter = 0;
-		std::unordered_map<size_t, std::unordered_map<size_t, shared<Component>>> components;
+		bool cameraCacheDirty = true;
+
+		std::vector<Camera*> cameraCache;
+		Components components;
 	};
 
 	class SceneFactory

@@ -8,7 +8,7 @@ OpenGLTexture2D::OpenGLTexture2D()
 {
 	glGenTextures(1, &handle);
 	if (!handle)
-		SL_THROW_FMT(EngineException, "Failed to obtain texture handle.");
+		SL_THROW_FMT(EngineException, "Failed to obtain texture handle");
 }
 
 
