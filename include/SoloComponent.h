@@ -12,32 +12,21 @@ namespace solo
 	{
 	public:
 		virtual ~Component() {}
-
-		virtual size_t getTypeId() = 0;
-
-		// Called after the component has been created, but before the first call to update()
-		virtual void init() {}
-
-		// Called right before rendering. Use this to update object position, animation or any other game logic.
-		virtual void update() {}
-
-		// Called when the component is allowed to render anything.
-		virtual void render(RenderContext& context) {}
-
-		// Called after all render() have been called
-		virtual void postRender() {}
-
-		// Called before the component has been removed from the scene
-		virtual void terminate() {}
-
-	protected:
-		Component() {}
-
-	private:
 		Component(const Component& other) = delete;
 		Component(Component&& other) = delete;
 		Component& operator=(const Component& other) = delete;
 		Component& operator=(Component&& other) = delete;
+
+		virtual size_t getTypeId() = 0;
+
+		virtual void init() {}
+		virtual void update() {}
+		virtual void render(RenderContext& context) {}
+		virtual void postRender() {}
+		virtual void terminate() {}
+
+	protected:
+		Component() {}
 	};
 
 	template <class T>
