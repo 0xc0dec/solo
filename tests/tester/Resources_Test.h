@@ -22,6 +22,7 @@ public:
 		test_CreateRenderTarget_FindIt();
 		test_CreateResource_TryToCleanIt_EnsureRemains();
 		test_CreateAndForgetResource_CleanIt();
+		test_LoadCubeTextureWithWrongNumberOfFaces_EnsureFail();
 	}
 
 	void test_FindInexistentResources_EnsureNotFound()
@@ -99,5 +100,11 @@ public:
 		resourceManager->getOrCreateModel(modelUri);
 		resourceManager->cleanUnusedResources();
 		assert(resourceManager->findModel(modelUri) == nullptr);
+	}
+
+	void test_LoadCubeTextureWithWrongNumberOfFaces_EnsureFail()
+	{
+		assertThrows<EngineException>([=] { resourceManager->getOrLoadTextureCube({ "1", "2" }); },
+			"Wrong number of face images for cube texture (2 provided, 6 expected)");
 	}
 };

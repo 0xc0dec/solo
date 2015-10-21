@@ -323,7 +323,7 @@ void Demo_Test::initRenderTarget()
 {
 	auto canvasSize = device->getCanvasSize();
 	auto renderTexture = DYNAMIC_CAST<Texture2D>(resourceManager->getOrCreateTexture2D("RTT"));
-	renderTexture->setData(ColorFormat::RGB, std::vector<uint8_t>(), canvasSize.x / 8, canvasSize.y / 8);
+	renderTexture->setData(ColorFormat::RGB, std::vector<uint8_t>(), static_cast<unsigned>(canvasSize.x / 8), static_cast<unsigned>(canvasSize.y / 8));
 	renderTexture->setMinFilter(TextureFilter::Nearest);
 	renderTexture->setMagFilter(TextureFilter::Nearest);
 	renderTexture->setVerticalWrapMode(TextureWrapMode::Clamp);

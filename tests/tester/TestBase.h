@@ -26,7 +26,7 @@ public:
 
 protected:
 	template <typename T>
-	void assertThrows(std::function<void(void)> code)
+	void assertThrows(std::function<void(void)> code, const std::string& expectedMsg = "")
 	{
 		try
 		{
@@ -35,6 +35,8 @@ protected:
 		}
 		catch (T &e)
 		{
+			if (!expectedMsg.empty())
+				assert(expectedMsg == e.what());
 		}
 		catch (...)
 		{
