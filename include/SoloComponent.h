@@ -21,7 +21,6 @@ namespace solo
 
 		virtual void init() {}
 		virtual void update() {}
-		virtual void render(RenderContext& context) {}
 		virtual void terminate() {}
 
 	protected:

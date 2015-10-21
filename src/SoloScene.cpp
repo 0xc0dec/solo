@@ -3,6 +3,7 @@
 #include "SoloRenderContext.h"
 #include "SoloCamera.h"
 #include "SoloNode.h"
+#include "SoloRenderer.h"
 
 using namespace solo;
 
@@ -132,21 +133,27 @@ void Scene::update()
 void Scene::render()
 {
 	auto cameras = getCameras(); // TODO cache lookup results or optimise in some other way
+
+	RenderContext context;
+	context.scene = this;
+
 	for (auto camera : cameras)
 	{
 		camera->apply();
-
-		RenderContext context;
-		context.scene = this;
 		context.camera = camera;
-		
+
 		iterateComponents([&](size_t nodeId, shared<Component> component)
 		{
 			auto transform = Node::findComponent<Transform>(this, nodeId);
-			if (!transform)
-				return;
-			context.nodeTransform = transform;
-			component->render(context);
+			if (transform)
+			{
+				auto renderer = dynamic_cast<Renderer*>(component.get());
+				if (renderer)
+				{
+					context.nodeTransform = transform;
+					renderer->render(context);
+				}
+			}
 		});
 
 		camera->finish();

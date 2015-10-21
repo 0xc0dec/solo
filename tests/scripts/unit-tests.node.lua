@@ -26,12 +26,6 @@ runTest(function()
 			update = function()
 			end,
 
-			render = function()
-			end,
-
-			postRender = function()
-			end,
-
 			terminate = function()
 			end
 		}

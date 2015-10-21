@@ -10,14 +10,12 @@ using namespace LuaIntf;
 LuaScriptComponent::LuaScriptComponent(const Node& node, size_t typeId, LuaRef& component,
 	std::function<void(LuaRef)> initFunc,
 	std::function<void(LuaRef)> updateFunc,
-	std::function<void(LuaRef)> renderFunc,
 	std::function<void(LuaRef)> terminateFunc) :
 	ComponentBase<LuaScriptComponent>(node),
 	typeId(typeId),
 	component(component),
 	initFunc(initFunc),
 	updateFunc(updateFunc),
-	renderFunc(renderFunc),
 	terminateFunc(terminateFunc)
 {
 	component.set("node", node);
@@ -33,12 +31,6 @@ void LuaScriptComponent::init()
 void LuaScriptComponent::update()
 {
 	updateFunc(component);
-}
-
-
-void LuaScriptComponent::render(RenderContext& context)
-{
-	renderFunc(component/* TODO pass context */);
 }
 
 
@@ -87,9 +79,8 @@ void LuaScriptComponent::addScriptComponent(Node* node, LuaRef& component)
 	auto typeId = getHash(typeIdString);
 	auto initFunc = component.has("init") ? component.get<std::function<void(LuaRef)>>("init") : [](LuaRef) {};
 	auto updateFunc = component.has("update") ? component.get<std::function<void(LuaRef)>>("update") : [](LuaRef) {};
-	auto renderFunc = component.has("render") ? component.get<std::function<void(LuaRef)>>("render") : [](LuaRef) {};
 	auto terminateFunc = component.has("terminate") ? component.get<std::function<void(LuaRef)>>("terminate") : [](LuaRef) {};
-	auto actualComponent = SL_NEW<LuaScriptComponent>(*node, typeId, component, initFunc, updateFunc, renderFunc, terminateFunc);
+	auto actualComponent = SL_NEW<LuaScriptComponent>(*node, typeId, component, initFunc, updateFunc, terminateFunc);
 	node->getScene()->addComponent(node->getId(), actualComponent, typeId);
 }
 

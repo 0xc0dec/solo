@@ -220,6 +220,9 @@
     <ClInclude Include="..\src\platform\SoloOpenGLHelper.h">
       <Filter>src\platform</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloRenderer.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">

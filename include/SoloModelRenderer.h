@@ -3,24 +3,26 @@
 #include "SoloBase.h"
 #include "SoloComponent.h"
 #include "SoloNode.h"
+#include "SoloRenderer.h"
 
 namespace solo
 {
 	class Model;
 	class Material;
 
-	class ModelRenderer: public ComponentBase<ModelRenderer>
+	class ModelRenderer: public ComponentBase<ModelRenderer>, public Renderer
 	{
 	public:
 		virtual void render(RenderContext& context) override;
 
-		void setModel(shared<Model> model);
 		Model* getModel() const;
+		void setModel(shared<Model> model);
+
+		Material* getMaterial(unsigned index) const;
+		size_t getMaterialCount() const;
 
 		void setMaterialForMesh(unsigned index, shared<Material> material);
 		void setMaterial(shared<Material> material);
-		Material* getMaterial(unsigned index) const;
-		size_t getMaterialCount() const;
 
 	private:
 		friend class ModelRendererFactory;
