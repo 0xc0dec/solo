@@ -1,6 +1,6 @@
 runTest(function()
-	assert(solo.EngineMode_Stub)
-	assert(solo.EngineMode_OpenGL)
+	assert(solo.EngineMode_Stub ~= nil)
+	assert(solo.EngineMode_OpenGL ~= nil)
 
 	assert(solo.EngineCreationArgs())
 	assert(solo.EngineCreationArgs(solo.EngineMode_OpenGL))

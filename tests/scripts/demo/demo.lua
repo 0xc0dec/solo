@@ -319,14 +319,17 @@ function init()
 	initObjects(models, materials, rtInfo)
 	initCameras(rtInfo)
 
-	local texCube = resourceManager:getOrLoadTextureCube({
-		"../data/freeman1.png",
-		"../data/freeman1.png",
-		"../data/freeman1.png",
-		"../data/freeman1.png",
-		"../data/freeman1.png",
-		"../data/freeman1.png"
+	local texSkybox = resourceManager:getOrLoadTextureCube({
+		"../data/skyboxes/deep-space/front.png",
+		"../data/skyboxes/deep-space/back.png",
+		"../data/skyboxes/deep-space/left.png",
+		"../data/skyboxes/deep-space/right.png",
+		"../data/skyboxes/deep-space/top.png",
+		"../data/skyboxes/deep-space/bottom.png"
 	}, "testCubeTex")
+	texSkybox:setVerticalWrapMode(solo.TextureWrapMode_Clamp)
+	texSkybox:setHorizontalWrapMode(solo.TextureWrapMode_Clamp)
+	texSkybox:setDepthWrapMode(solo.TextureWrapMode_Clamp)
 
 	local skyboxQuad = createQuad()
 	local skyboxQuadEffect = resourceManager:getOrCreateEffect(shaders.vsSkybox, shaders.fsSkybox)
@@ -334,7 +337,7 @@ function init()
 	skyboxQuadMaterial:setPolygonFace(solo.PolygonFace_All)
 	skyboxQuadMaterial:getParameter("projMatrix"):bindValue(solo.AutoBinding_ProjectionMatrix)
 	skyboxQuadMaterial:getParameter("worldViewMatrix"):bindValue(solo.AutoBinding_WorldViewMatrix)
-	skyboxQuadMaterial:getParameter("mainTex"):setTexture(texCube)
+	skyboxQuadMaterial:getParameter("mainTex"):setTexture(texSkybox)
 	skyboxQuad:findComponent("ModelRenderer"):setMaterial(skyboxQuadMaterial)
 end
 

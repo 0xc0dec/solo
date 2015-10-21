@@ -1,4 +1,8 @@
 runTest(function()
+	assert(solo.TransformSpace_Self ~= nil)
+	assert(solo.TransformSpace_Parent ~= nil)
+	assert(solo.TransformSpace_World ~= nil)
+
 	local v = solo.Vector3(1, 2, 3)
 	local q = solo.Quaternion()
 	local m = solo.Matrix()
