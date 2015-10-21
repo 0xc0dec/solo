@@ -50,7 +50,7 @@ static GLint compileShader(GLuint type, std::string src)
 		std::vector<GLchar> log(logLength);
 		glGetShaderInfoLog(shader, logLength, nullptr, log.data());
 		glDeleteShader(shader);
-		THROW(EffectCompilationException, FORMAT("Failed to compile ", shaderTypeNames[type], " shader"), log.data());
+		THROW(EffectCompilationException, FORMAT("Failed to compile ", shaderTypeNames[type], " shader: "), log.data());
 	}
 
 	return shader;

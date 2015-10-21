@@ -547,6 +547,7 @@ void LuaScriptManager::registerApi()
 		.addConstant("AutoBinding_ViewMatrix", AutoBinding::ViewMatrix)
 		.addConstant("AutoBinding_ViewProjectionMatrix", AutoBinding::ViewProjectionMatrix)
 		.addConstant("AutoBinding_WorldMatrix", AutoBinding::WorldMatrix)
+		.addConstant("AutoBinding_WorldViewMatrix", AutoBinding::WorldViewMatrix)
 		.addConstant("AutoBinding_WorldViewProjectionMatrix", AutoBinding::WorldViewProjectionMatrix);
 
 	// MaterialParameter

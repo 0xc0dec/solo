@@ -20,6 +20,7 @@ namespace solo
 		WorldMatrix,
 		ViewMatrix,
 		ProjectionMatrix,
+		WorldViewMatrix,
 		ViewProjectionMatrix,
 		WorldViewProjectionMatrix,
 		InverseTransposedWorldMatrix,

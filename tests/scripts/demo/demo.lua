@@ -11,20 +11,20 @@ function loadTexture(path)
 end
 
 
-function initMaterials()
+function initTextures()
 	local tex1 = loadTexture("../data/freeman1.png")
 	local tex2 = loadTexture("../data/freeman2.png")
 
-	print("Loading cube texture")
-	local texCube = resourceManager:getOrLoadTextureCube({
-		"../data/freeman1.png",
-		"../data/freeman1.png",
-		"../data/freeman1.png",
-		"../data/freeman1.png",
-		"../data/freeman1.png",
-		"../data/freeman1.png"
-	}, "testCubeTex")
-	print("Done")
+	return {
+		tex1 = tex1,
+		tex2 = tex2
+	}
+end
+
+
+function initMaterials(textures)
+	local tex1 = textures.tex1
+	local tex2 = textures.tex2
 
 	local result = {}
 
@@ -312,11 +312,31 @@ end
 
 
 function init()
-	local materials = initMaterials()
+	local textures = initTextures()
+	local materials = initMaterials(textures)
 	local models = initModels()
 	local rtInfo = initRenderTarget(materials)
 	initObjects(models, materials, rtInfo)
 	initCameras(rtInfo)
+
+	local texCube = resourceManager:getOrLoadTextureCube({
+		"../data/freeman1.png",
+		"../data/freeman1.png",
+		"../data/freeman1.png",
+		"../data/freeman1.png",
+		"../data/freeman1.png",
+		"../data/freeman1.png"
+	}, "testCubeTex")
+
+	local skyboxQuad = createQuad()
+	local skyboxQuadEffect = resourceManager:getOrCreateEffect(shaders.vsSkybox, shaders.fsSkybox)
+	local skyboxQuadMaterial = resourceManager:getOrCreateMaterial(skyboxQuadEffect)
+	skyboxQuadMaterial:setPolygonFace(solo.PolygonFace_All)
+	skyboxQuadMaterial:getParameter("projMatrix"):bindValue(solo.AutoBinding_ProjectionMatrix)
+	skyboxQuadMaterial:getParameter("worldViewMatrix"):bindValue(solo.AutoBinding_WorldViewMatrix)
+	skyboxQuadMaterial:getParameter("mainTex"):setTexture(texCube)
+	-- skyboxQuadMaterial:getParameter("projMatrix"):bindValue(solo.AutoBinding_ProjectionMatrix)
+	skyboxQuad:findComponent("ModelRenderer"):setMaterial(skyboxQuadMaterial)
 end
 
 
