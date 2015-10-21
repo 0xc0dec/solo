@@ -21,10 +21,10 @@ namespace solo
 		virtual ~Camera() {}
 
 		virtual void init() override;
-		virtual void update() override;
-		virtual void render(RenderContext& context) override;
-		virtual void postRender() override;
 		virtual void terminate() override;
+
+		void apply();
+		void finish();
 
 		void setRenderTarget(shared<RenderTarget> target);
 		shared<RenderTarget> getRenderTarget() const;

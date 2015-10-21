@@ -230,12 +230,7 @@ void Camera::setClearColor(float r, float g, float b, float a)
 }
 
 
-void Camera::update()
-{
-}
-
-
-void Camera::render(RenderContext& context)
+void Camera::apply()
 {
 	if (renderTarget)
 		renderTarget->bind();
@@ -245,7 +240,7 @@ void Camera::render(RenderContext& context)
 }
 
 
-void Camera::postRender()
+void Camera::finish()
 {
 	if (renderTarget)
 		renderTarget->unbind();

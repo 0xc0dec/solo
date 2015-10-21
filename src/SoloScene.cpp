@@ -134,10 +134,12 @@ void Scene::render()
 	auto cameras = getCameras(); // TODO cache lookup results or optimise in some other way
 	for (auto camera : cameras)
 	{
+		camera->apply();
+
 		RenderContext context;
 		context.scene = this;
 		context.camera = camera;
-		camera->render(context);
+		
 		iterateComponents([&](size_t nodeId, shared<Component> component)
 		{
 			auto transform = Node::findComponent<Transform>(this, nodeId);
@@ -149,15 +151,8 @@ void Scene::render()
 					component->render(context);
 			}
 		});
-		camera->postRender();
-		iterateComponents([&](size_t nodeId, shared<Component> component)
-		{
-			if (Node::findComponent<Transform>(this, nodeId))  // not very optimal - could be done one level upper
-			{
-				if (component->getTypeId() != Camera::getId())
-					component->postRender();
-			}
-		});
+
+		camera->finish();
 	}
 }
 
