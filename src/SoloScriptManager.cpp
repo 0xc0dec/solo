@@ -6,5 +6,5 @@ using namespace solo;
 
 shared<ScriptManager> ScriptManager::create()
 {
-	return NEW2(LuaScriptManager);
+	return SL_NEW2(LuaScriptManager);
 }

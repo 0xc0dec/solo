@@ -266,7 +266,7 @@ private:
 
 shared<Texture> Demo_Test::loadTexture(const std::string &path)
 {
-	auto texture = DYNAMIC_CAST<Texture2D>(resourceManager->getOrLoadTexture2D(path));
+	auto texture = SL_DYNAMIC_CAST<Texture2D>(resourceManager->getOrLoadTexture2D(path));
 	texture->generateMipmaps();
 	texture->setMinFilter(TextureFilter::Linear);
 	texture->setMagFilter(TextureFilter::Linear);
@@ -322,7 +322,7 @@ void Demo_Test::initMaterials()
 void Demo_Test::initRenderTarget()
 {
 	auto canvasSize = device->getCanvasSize();
-	auto renderTexture = DYNAMIC_CAST<Texture2D>(resourceManager->getOrCreateTexture2D("RTT"));
+	auto renderTexture = SL_DYNAMIC_CAST<Texture2D>(resourceManager->getOrCreateTexture2D("RTT"));
 	renderTexture->setData(ColorFormat::RGB, std::vector<uint8_t>(), static_cast<unsigned>(canvasSize.x / 8), static_cast<unsigned>(canvasSize.y / 8));
 	renderTexture->setMinFilter(TextureFilter::Nearest);
 	renderTexture->setMagFilter(TextureFilter::Nearest);

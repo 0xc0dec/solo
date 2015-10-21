@@ -19,14 +19,14 @@ public:
 
 shared<Engine> Engine::create(const EngineCreationArgs& args)
 {
-	return NEW2(Engine, args);
+	return SL_NEW2(Engine, args);
 }
 
 
 Engine::Engine(const EngineCreationArgs& args):
 	creationArgs{args}
 {
-	callback = NEW<EmptyEngineCallback>();
+	callback = SL_NEW<EmptyEngineCallback>();
 	device = DeviceFactory::create(creationArgs);
 	fs = FileSystemFactory::create();
 	resourceManager = ResourceManagerFactory::create(this);
@@ -59,7 +59,7 @@ void Engine::run()
 
 void Engine::setCallback(shared<EngineCallback> callback)
 {
-	this->callback = callback ? callback : NEW<EmptyEngineCallback>();
+	this->callback = callback ? callback : SL_NEW<EmptyEngineCallback>();
 }
 
 

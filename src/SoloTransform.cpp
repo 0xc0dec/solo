@@ -19,7 +19,7 @@ const unsigned DIRTY_BIT_ALL =
 
 shared<Transform> TransformFactory::create(Node node)
 {
-	return NEW2(Transform, node);
+	return SL_NEW2(Transform, node);
 }
 
 

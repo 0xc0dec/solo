@@ -7,7 +7,7 @@ OpenGLTextureCube::OpenGLTextureCube()
 {
 	glGenTextures(1, &handle);
 	if (!handle)
-		THROW_FMT(EngineException, "Failed to obtain texture handle");
+		SL_THROW_FMT(EngineException, "Failed to obtain texture handle");
 }
 
 
@@ -41,7 +41,7 @@ void OpenGLTextureCube::setData(TextureCubeFace face, ColorFormat format, const 
 		glFace = GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
 		break;
 	default:
-		THROW_FMT(EngineException, "Unexpected cube texture face ", static_cast<int>(face));
+		SL_THROW_FMT(EngineException, "Unexpected cube texture face ", static_cast<int>(face));
 	}
 
 	bind();
@@ -72,7 +72,7 @@ GLenum OpenGLTextureCube::toGLColorFormat(ColorFormat format)
 		case ColorFormat::RGBA:
 			return GL_RGBA;
 		default:
-			THROW_FMT(EngineException, "Unexpected texture format ", static_cast<int>(format));
+			SL_THROW_FMT(EngineException, "Unexpected texture format ", static_cast<int>(format));
 	}
 }
 
@@ -86,7 +86,7 @@ GLenum OpenGLTextureCube::toGLWrapMode(TextureWrapMode mode)
 		case TextureWrapMode::Repeat:
 			return GL_REPEAT;
 		default:
-			THROW_FMT(EngineException, "Unexpected wrap mode ", static_cast<int>(mode));
+			SL_THROW_FMT(EngineException, "Unexpected wrap mode ", static_cast<int>(mode));
 	}
 }
 
@@ -108,7 +108,7 @@ GLenum OpenGLTextureCube::toGLFilter(TextureFilter filter)
 		case TextureFilter::NearestMipmapNearest:
 			return GL_NEAREST_MIPMAP_NEAREST;
 		default:
-			THROW_FMT(EngineException, "Unexpected texture filter ", static_cast<int>(filter));
+			SL_THROW_FMT(EngineException, "Unexpected texture filter ", static_cast<int>(filter));
 	}
 }
 

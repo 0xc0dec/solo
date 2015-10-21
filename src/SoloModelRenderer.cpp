@@ -9,7 +9,7 @@ using namespace solo;
 
 shared<ModelRenderer> ModelRendererFactory::create(Node node)
 {
-	return NEW2(ModelRenderer, node);
+	return SL_NEW2(ModelRenderer, node);
 }
 
 
@@ -46,9 +46,9 @@ Model* ModelRenderer::getModel() const
 void ModelRenderer::setMaterialForMesh(unsigned index, shared<Material> material)
 {
 	if (!model)
-		THROW_FMT(EngineException, "Renderer has no model, hence setting material has no effect");
+		SL_THROW_FMT(EngineException, "Renderer has no model, hence setting material has no effect");
 	if (index >= model->getMeshCount())
-		THROW_FMT(EngineException, "Trying to set material with index ", index, ", but model has only ", model->getMeshCount(), " meshes");
+		SL_THROW_FMT(EngineException, "Trying to set material with index ", index, ", but model has only ", model->getMeshCount(), " meshes");
 	if (!material)
 		materials.erase(index);
 	else

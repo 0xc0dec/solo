@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-#define FORMAT(...) solo::Formatter()(__VA_ARGS__)
+#define SL_FMT(...) solo::Formatter()(__VA_ARGS__)
 
 namespace solo
 {

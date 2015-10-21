@@ -53,9 +53,9 @@ public:
 protected:
 	virtual void init() override
 	{
-		tests.push_back(NEW2(MaterialsTest, engine));
+		tests.push_back(SL_NEW2(MaterialsTest, engine));
 		// TODO currently runs via scripts
-//		tests.push_back(NEW2(Demo_Test, engine));
+//		tests.push_back(SL_NEW2(Demo_Test, engine));
 	}
 };
 
@@ -70,12 +70,12 @@ public:
 protected:
 	virtual void init() override
 	{
-		tests.push_back(NEW2(Resources_Test, engine));
-		tests.push_back(NEW2(FileSystem_Test, engine));
-		tests.push_back(NEW2(Device_Test, engine));
-		tests.push_back(NEW2(ComponentsAndNodes_Test, engine));
-		tests.push_back(NEW2(Transform_Test, engine));
-		tests.push_back(NEW2(ModelRenderer_Test, engine));
+		tests.push_back(SL_NEW2(Resources_Test, engine));
+		tests.push_back(SL_NEW2(FileSystem_Test, engine));
+		tests.push_back(SL_NEW2(Device_Test, engine));
+		tests.push_back(SL_NEW2(ComponentsAndNodes_Test, engine));
+		tests.push_back(SL_NEW2(Transform_Test, engine));
+		tests.push_back(SL_NEW2(ModelRenderer_Test, engine));
 	}
 
 	virtual void finish() override
@@ -104,7 +104,7 @@ EngineCreationArgs stubArgs
 void runCppUnitTests()
 {
 	auto engine = Engine::create(stubArgs);
-	auto runner = NEW2(UnitTestRunner, engine.get());
+	auto runner = SL_NEW2(UnitTestRunner, engine.get());
 	engine->setCallback(runner);
 	engine->run();
 }
@@ -113,7 +113,7 @@ void runCppUnitTests()
 void runCppIntegrationTests()
 {
 	auto engine = Engine::create(openGlArgs);
-	auto runner = NEW2(IntegrationTestAndDemoRunner, engine.get());
+	auto runner = SL_NEW2(IntegrationTestAndDemoRunner, engine.get());
 	engine->setCallback(runner);
 	engine->run();
 }

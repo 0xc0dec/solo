@@ -18,16 +18,16 @@ using namespace solo;
 shared<ResourceManager> ResourceManagerFactory::create(Engine *engine)
 {
 	if (engine->getMode() == EngineMode::Stub)
-		return NEW2(StubResourceManager, engine);
-	return NEW2(ResourceManager, engine);
+		return SL_NEW2(StubResourceManager, engine);
+	return SL_NEW2(ResourceManager, engine);
 }
 
 
 ResourceManager::ResourceManager(Engine *engine):
 	engine(engine)
 {
-	imageLoaders.push_back(NEW<PngImageLoader>(engine->getFileSystem(), this));
-	modelLoaders.push_back(NEW<ObjModelLoader>(engine->getFileSystem(), this));
+	imageLoaders.push_back(SL_NEW<PngImageLoader>(engine->getFileSystem(), this));
+	modelLoaders.push_back(SL_NEW<ObjModelLoader>(engine->getFileSystem(), this));
 }
 
 
@@ -115,14 +115,14 @@ shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& imageUr
 		}
 	}
 
-	THROW_FMT(EngineException, "No suitable loader found for image ", imageUri);
+	SL_THROW_FMT(EngineException, "No suitable loader found for image ", imageUri);
 }
 
 
 shared<TextureCube> ResourceManager::getOrLoadTextureCube(const std::vector<std::string>& imageUris, const std::string& uri)
 {
 	if (imageUris.size() != 6)
-		THROW_FMT(EngineException, "Wrong number of face images for cube texture (", imageUris.size(), " provided, 6 expected)");
+		SL_THROW_FMT(EngineException, "Wrong number of face images for cube texture (", imageUris.size(), " provided, 6 expected)");
 
 	auto textureUri = uri.empty()
 		? imageUris[0] + imageUris[1] + imageUris[2] + imageUris[3] + imageUris[4] + imageUris[5]
@@ -147,7 +147,7 @@ shared<TextureCube> ResourceManager::getOrLoadTextureCube(const std::vector<std:
 			}
 		}
 		if (!image)
-			THROW_FMT(EngineException, "No suitable loader found for image ", imageUri);
+			SL_THROW_FMT(EngineException, "No suitable loader found for image ", imageUri);
 		idx++;
 	}
 
@@ -181,7 +181,7 @@ shared<Model> ResourceManager::getOrLoadModel(const std::string& dataUri, const 
 		}
 	}
 
-	THROW_FMT(EngineException, "No suitable loader found for model ", dataUri);
+	SL_THROW_FMT(EngineException, "No suitable loader found for model ", dataUri);
 }
 
 

@@ -24,8 +24,8 @@ const unsigned DIRTY_BIT_ALL =
 shared<Camera> CameraFactory::create(EngineMode mode, Scene* scene, Node node)
 {
 	if (mode == EngineMode::OpenGL)
-		return NEW2(OpenGLCamera, scene, node);
-	return NEW2(StubCamera, scene, node);
+		return SL_NEW2(OpenGLCamera, scene, node);
+	return SL_NEW2(StubCamera, scene, node);
 }
 
 

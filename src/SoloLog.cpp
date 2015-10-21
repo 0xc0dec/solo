@@ -12,7 +12,7 @@ Log::Log(const std::string &msg, LogLevel level):
 
 Log::~Log()
 {
-	std::cout << FORMAT("[", getLevelString(), "]	", message) << std::endl;
+	std::cout << SL_FMT("[", getLevelString(), "]	", message) << std::endl;
 }
 
 

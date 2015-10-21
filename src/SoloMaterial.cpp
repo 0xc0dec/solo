@@ -11,8 +11,8 @@ using namespace solo;
 shared<Material> MaterialFactory::create(EngineMode mode, shared<Effect> effect)
 {
 	if (mode == EngineMode::OpenGL)
-		return NEW2(OpenGLMaterial, effect);
-	return NEW2(StubMaterial, effect);
+		return SL_NEW2(OpenGLMaterial, effect);
+	return SL_NEW2(StubMaterial, effect);
 }
 
 
@@ -47,7 +47,7 @@ MaterialParameter* Material::getParameter(const std::string& name)
 	auto where = parameters.find(name);
 	if (where != parameters.end())
 		return where->second.get();
-	auto parameter = NEW2(MaterialParameter, name);
+	auto parameter = SL_NEW2(MaterialParameter, name);
 	parameters[name] = parameter;
 	return parameter.get();
 }

@@ -23,8 +23,8 @@ namespace solo
 		template <typename T, typename... Args>
 		static T* addComponent(Scene *scene, size_t nodeId, Args... args)
 		{
-			auto cmp = NEW<T>(Node(scene, nodeId), args...);
-			auto base = STATIC_CAST<Component>(cmp);
+			auto cmp = SL_NEW<T>(Node(scene, nodeId), args...);
+			auto base = SL_STATIC_CAST<Component>(cmp);
 			scene->addComponent(nodeId, base);
 			return cmp.get();
 		}

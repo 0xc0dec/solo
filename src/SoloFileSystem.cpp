@@ -6,7 +6,7 @@ using namespace solo;
 
 shared<FileSystem> FileSystemFactory::create()
 {
-	return NEW2(FileSystem);
+	return SL_NEW2(FileSystem);
 }
 
 
@@ -14,7 +14,7 @@ std::vector<uint8_t> FileSystem::readBytes(const std::string& path)
 {
 	std::ifstream file(path, std::ios::binary | std::ios::ate);
 	if (!file.is_open())
-		THROW_FMT(EngineException, "Failed to open file '", path, "'");
+		SL_THROW_FMT(EngineException, "Failed to open file '", path, "'");
 	auto size = file.tellg();
 	file.seekg(0, std::ios::beg);
 	auto result = std::vector<uint8_t>(size);
@@ -28,7 +28,7 @@ void FileSystem::writeBytes(const std::string& path, const std::vector<uint8_t>&
 {
 	std::ofstream file(path, std::ios::binary | std::ios::trunc);
 	if (!file.is_open())
-		THROW_FMT(EngineException, "Failed to open file '", path, "'");
+		SL_THROW_FMT(EngineException, "Failed to open file '", path, "'");
 	file.write(reinterpret_cast<const char*>(&data[0]), data.size());
 	file.close();
 }
@@ -46,7 +46,7 @@ std::vector<std::string> FileSystem::readLines(const std::string& path)
 {
 	std::ifstream file(path);
 	if (!file.is_open())
-		THROW_FMT(EngineException, "Failed to open file '", path, "'");
+		SL_THROW_FMT(EngineException, "Failed to open file '", path, "'");
 	std::vector<std::string> result;
 	while (!file.eof())
 	{
@@ -63,7 +63,7 @@ void FileSystem::writeLines(const std::string& path, const std::vector<std::stri
 {
 	std::ofstream file(path, std::ios::trunc);
 	if (!file.is_open())
-		THROW_FMT(EngineException, "Failed to open file '", path, "'");
+		SL_THROW_FMT(EngineException, "Failed to open file '", path, "'");
 	for (size_t i = 0; i < lines.size(); ++i)
 	{
 		file << lines[i];

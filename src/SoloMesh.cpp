@@ -9,6 +9,6 @@ using namespace solo;
 shared<Mesh> MeshFactory::create(EngineMode mode)
 {
 	if (mode == EngineMode::OpenGL)
-		return NEW2(OpenGLMesh);
-	return NEW2(StubMesh);
+		return SL_NEW2(OpenGLMesh);
+	return SL_NEW2(StubMesh);
 }

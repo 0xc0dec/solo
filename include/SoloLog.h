@@ -2,11 +2,11 @@
 
 #include "SoloBase.h"
 
-#define DEBUG(...) solo::Log(FORMAT(__VA_ARGS__), solo::LogLevel::Debug);
-#define INFO(...) solo::Log(FORMAT(__VA_ARGS__), solo::LogLevel::Info);
-#define WARN(...) solo::Log(FORMAT(__VA_ARGS__), solo::LogLevel::Warning);
-#define ERROR(...) solo::Log(FORMAT(__VA_ARGS__), solo::LogLevel::Error);
-#define CRITICAL(...) solo::Log(FORMAT(__VA_ARGS__), solo::LogLevel::Critical);
+#define SL_LOG_DEBUG(...) solo::Log(SL_FMT(__VA_ARGS__), solo::LogLevel::Debug);
+#define SL_LOG_INFO(...) solo::Log(SL_FMT(__VA_ARGS__), solo::LogLevel::Info);
+#define SL_LOG_WARN(...) solo::Log(SL_FMT(__VA_ARGS__), solo::LogLevel::Warning);
+#define SL_LOG_ERR(...) solo::Log(SL_FMT(__VA_ARGS__), solo::LogLevel::Error);
+#define SL_LOG_CRITICAL(...) solo::Log(SL_FMT(__VA_ARGS__), solo::LogLevel::Critical);
 
 namespace solo
 {

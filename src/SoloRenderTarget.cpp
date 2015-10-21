@@ -8,8 +8,8 @@ using namespace solo;
 shared<RenderTarget> RenderTargetFactory::create(EngineMode mode)
 {
 	if (mode == EngineMode::OpenGL)
-		return NEW2(OpenGLRenderTarget);
-	return NEW2(StubRenderTarget);
+		return SL_NEW2(OpenGLRenderTarget);
+	return SL_NEW2(StubRenderTarget);
 }
 
 

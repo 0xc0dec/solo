@@ -9,7 +9,7 @@ using namespace solo;
 
 shared<Scene> SceneFactory::create(Engine *engine)
 {
-	return NEW2(Scene, engine);
+	return SL_NEW2(Scene, engine);
 }
 
 
@@ -34,7 +34,7 @@ Engine* Scene::getEngine()
 
 shared<Node> Scene::createNode()
 {
-	auto node = NEW2(Node, this, nodeCounter++);
+	auto node = SL_NEW2(Node, this, nodeCounter++);
 	node->addComponent<Transform>();
 	return node;
 }
@@ -49,7 +49,7 @@ void Scene::addComponent(size_t nodeId, shared<Component> cmp)
 void Scene::addComponent(size_t nodeId, shared<Component> cmp, size_t typeId)
 {
 	if (findComponent(nodeId, typeId))
-		THROW_FMT(EngineException, "Component ", typeId, " already exists.");
+		SL_THROW_FMT(EngineException, "Component ", typeId, " already exists.");
 	components[nodeId][typeId] = cmp;
 	cmp->init();
 }
@@ -88,7 +88,7 @@ Component* Scene::getComponent(size_t nodeId, size_t typeId) const
 {
 	auto cmp = findComponent(nodeId, typeId);
 	if (!cmp)
-		THROW_FMT(EngineException, "Component ", typeId, " not found on node ", nodeId);
+		SL_THROW_FMT(EngineException, "Component ", typeId, " not found on node ", nodeId);
 	return cmp;
 }
 

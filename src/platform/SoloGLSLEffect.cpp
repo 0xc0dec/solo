@@ -20,7 +20,7 @@ static GLint createProgram(GLuint vs, GLuint fs)
 		std::vector<GLchar> log(logLength);
 		glGetProgramInfoLog(program, logLength, nullptr, log.data());
 		glDeleteProgram(program);
-		THROW(EffectCompilationException, "Failed to link effect program", log.data());
+		SL_THROW(EffectCompilationException, "Failed to link effect program", log.data());
 	}
 
 	return program;
@@ -50,7 +50,7 @@ static GLint compileShader(GLuint type, std::string src)
 		std::vector<GLchar> log(logLength);
 		glGetShaderInfoLog(shader, logLength, nullptr, log.data());
 		glDeleteShader(shader);
-		THROW(EffectCompilationException, FORMAT("Failed to compile ", shaderTypeNames[type], " shader: "), log.data());
+		SL_THROW(EffectCompilationException, SL_FMT("Failed to compile ", shaderTypeNames[type], " shader: "), log.data());
 	}
 
 	return shader;
@@ -126,7 +126,7 @@ void GLSLEffect::discoverVariables()
 		}
 		// TODO other types of samplers
 
-		auto variable = NEW2(GLSLEffectVariable, name, location, type, index);
+		auto variable = SL_NEW2(GLSLEffectVariable, name, location, type, index);
 		variables[name] = variable;
 	}
 }

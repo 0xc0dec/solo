@@ -4,8 +4,8 @@
 #include <string>
 #include <exception>
 
-#define THROW(TExc, ...) throw TExc(__VA_ARGS__)
-#define THROW_FMT(TExc, ...) throw TExc(FORMAT(__VA_ARGS__))
+#define SL_THROW(TExc, ...) throw TExc(__VA_ARGS__)
+#define SL_THROW_FMT(TExc, ...) throw TExc(SL_FMT(__VA_ARGS__))
 
 namespace solo
 {

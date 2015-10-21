@@ -11,16 +11,16 @@ using namespace solo;
 shared<Texture2D> TextureFactory::create2D(EngineMode mode)
 {
 	if (mode == EngineMode::OpenGL)
-		return NEW2(OpenGLTexture2D);
-	return NEW2(StubTexture2D);
+		return SL_NEW2(OpenGLTexture2D);
+	return SL_NEW2(StubTexture2D);
 }
 
 
 shared<TextureCube> TextureFactory::createCube(EngineMode mode)
 {
 	if (mode == EngineMode::OpenGL)
-		return NEW2(OpenGLTextureCube);
-	return NEW2(StubTextureCube);
+		return SL_NEW2(OpenGLTextureCube);
+	return SL_NEW2(StubTextureCube);
 }
 
 

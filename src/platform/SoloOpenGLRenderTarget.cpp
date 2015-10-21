@@ -9,7 +9,7 @@ OpenGLRenderTarget::OpenGLRenderTarget():
 {
 	glGenFramebuffers(1, &handle);
 	if (!handle)
-		THROW_FMT(EngineException, "Failed to obtain render target handle.");
+		SL_THROW_FMT(EngineException, "Failed to obtain render target handle.");
 }
 
 
@@ -36,7 +36,7 @@ void OpenGLRenderTarget::unbind()
 void OpenGLRenderTarget::update()
 {
 	if (textures.size() > GL_MAX_COLOR_ATTACHMENTS)
-		THROW_FMT(EngineException, "Too many color textures for a render target (max allowed: ", GL_MAX_COLOR_ATTACHMENTS, ").");
+		SL_THROW_FMT(EngineException, "Too many color textures for a render target (max allowed: ", GL_MAX_COLOR_ATTACHMENTS, ").");
 
 	bind();
 
@@ -57,7 +57,7 @@ void OpenGLRenderTarget::update()
 		{
 			glGenRenderbuffers(1, &depthBufferHandle);
 			if (!depthBufferHandle)
-				THROW_FMT(EngineException, "Could not obtain depth buffer handle.");
+				SL_THROW_FMT(EngineException, "Could not obtain depth buffer handle.");
 		}
 		glBindRenderbuffer(GL_RENDERBUFFER, depthBufferHandle);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, textures[0]->getSize().x, textures[0]->getSize().y);
@@ -74,5 +74,5 @@ void OpenGLRenderTarget::update()
 void OpenGLRenderTarget::checkStatus()
 {
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		THROW_FMT(EngineException, "Render target has invalid state.");
+		SL_THROW_FMT(EngineException, "Render target has invalid state.");
 }

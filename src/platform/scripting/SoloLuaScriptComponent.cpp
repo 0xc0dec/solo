@@ -98,7 +98,7 @@ void LuaScriptComponent::addScriptComponent(Node* node, LuaRef& component)
 	auto renderFunc = component.has("render") ? component.get<std::function<void(LuaRef)>>("render") : [](LuaRef) {};
 	auto postRenderFunc = component.has("postRender") ? component.get<std::function<void(LuaRef)>>("postRender") : [](LuaRef) {};
 	auto terminateFunc = component.has("terminate") ? component.get<std::function<void(LuaRef)>>("terminate") : [](LuaRef) {};
-	auto actualComponent = NEW<LuaScriptComponent>(*node, typeId, component, initFunc, updateFunc, renderFunc, postRenderFunc, terminateFunc);
+	auto actualComponent = SL_NEW<LuaScriptComponent>(*node, typeId, component, initFunc, updateFunc, renderFunc, postRenderFunc, terminateFunc);
 	node->getScene()->addComponent(node->getId(), actualComponent, typeId);
 }
 
@@ -111,7 +111,7 @@ Component* LuaScriptComponent::addComponent(Node* node, const std::string& typeN
 		return node->addComponent<ModelRenderer>();
 	if (typeName == "Camera")
 		return node->addComponent<Camera>();
-	THROW_FMT(EngineException, "Unknown standard component ", typeName);
+	SL_THROW_FMT(EngineException, "Unknown standard component ", typeName);
 }
 
 

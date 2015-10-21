@@ -8,8 +8,8 @@ using namespace solo;
 shared<Device> DeviceFactory::create(const EngineCreationArgs& args)
 {
 	if (args.mode == EngineMode::OpenGL)
-		return NEW2(SDLOpenGLDevice, args);
-	return NEW2(StubDevice, args);
+		return SL_NEW2(SDLOpenGLDevice, args);
+	return SL_NEW2(StubDevice, args);
 }
 
 
