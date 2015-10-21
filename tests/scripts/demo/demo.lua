@@ -335,7 +335,6 @@ function init()
 	skyboxQuadMaterial:getParameter("projMatrix"):bindValue(solo.AutoBinding_ProjectionMatrix)
 	skyboxQuadMaterial:getParameter("worldViewMatrix"):bindValue(solo.AutoBinding_WorldViewMatrix)
 	skyboxQuadMaterial:getParameter("mainTex"):setTexture(texCube)
-	-- skyboxQuadMaterial:getParameter("projMatrix"):bindValue(solo.AutoBinding_ProjectionMatrix)
 	skyboxQuad:findComponent("ModelRenderer"):setMaterial(skyboxQuadMaterial)
 end
 
