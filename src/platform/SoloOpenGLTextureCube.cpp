@@ -9,12 +9,12 @@ GLenum convertToGLCubeTextureFace(TextureCubeFace face)
 	switch (face)
 	{
 		case TextureCubeFace::Front:
-			return GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
-		case TextureCubeFace::Back:
 			return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
-		case TextureCubeFace::Left:
-			return GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
+		case TextureCubeFace::Back:
+			return GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
 		case TextureCubeFace::Right:
+			return GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
+		case TextureCubeFace::Left:
 			return GL_TEXTURE_CUBE_MAP_POSITIVE_X;
 		case TextureCubeFace::Top:
 			return GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
