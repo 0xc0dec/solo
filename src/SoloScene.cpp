@@ -1,6 +1,5 @@
 #include "SoloScene.h"
 #include "SoloComponent.h"
-#include "SoloException.h"
 #include "SoloRenderContext.h"
 #include "SoloCamera.h"
 #include "SoloNode.h"

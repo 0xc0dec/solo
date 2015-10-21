@@ -1,9 +1,11 @@
 #pragma once
 
-#include "SoloBase.h"
+#include "SoloFormatter.h"
+#include <string>
+#include <exception>
 
-#define THROW_FMT(TExc, ...) throw TExc(FORMAT(__VA_ARGS__))
 #define THROW(TExc, ...) throw TExc(__VA_ARGS__)
+#define THROW_FMT(TExc, ...) throw TExc(FORMAT(__VA_ARGS__))
 
 namespace solo
 {

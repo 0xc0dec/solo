@@ -1,7 +1,6 @@
-#include <GL/glew.h>
 #include "SoloSDLOpenGLDevice.h"
-#include "SoloException.h"
 #include "SoloLog.h"
+#include <GL/glew.h>
 
 using namespace solo;
 
