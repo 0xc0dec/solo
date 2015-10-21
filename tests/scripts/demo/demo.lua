@@ -15,6 +15,17 @@ function initMaterials()
 	local tex1 = loadTexture("../data/freeman1.png")
 	local tex2 = loadTexture("../data/freeman2.png")
 
+	print("Loading cube texture")
+	local texCube = resourceManager:getOrLoadTextureCube({
+		"../data/freeman1.png",
+		"../data/freeman1.png",
+		"../data/freeman1.png",
+		"../data/freeman1.png",
+		"../data/freeman1.png",
+		"../data/freeman1.png"
+	}, "testCubeTex")
+	print("Done")
+
 	local result = {}
 
 	local colorEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsColor)
@@ -306,6 +317,26 @@ function init()
 	local rtInfo = initRenderTarget(materials)
 	initObjects(models, materials, rtInfo)
 	initCameras(rtInfo)
+end
+
+
+function createEngineCallback()
+	return
+	{
+		onDeviceCloseRequested = function()
+			return true
+		end,
+
+		onEngineStarted = function()
+			device = engine:getDevice()
+			scene = engine:getScene()
+			resourceManager = engine:getResourceManager()
+			local _, err = pcall(init)
+			if err then
+				print(err)
+			end
+		end
+	}
 end
 
 

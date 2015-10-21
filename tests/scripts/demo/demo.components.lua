@@ -1,23 +1,3 @@
-function createEngineCallback()
-	return
-	{
-		onDeviceCloseRequested = function()
-			return true
-		end,
-
-		onEngineStarted = function()
-			device = engine:getDevice()
-			scene = engine:getScene()
-			resourceManager = engine:getResourceManager()
-			local _, err = pcall(init)
-			if err then
-				print(err)
-			end
-		end
-	}
-end
-
-
 function createEscapeWatcher()
 	return
 	{
