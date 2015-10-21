@@ -146,9 +146,7 @@ void Scene::render()
 			if (!transform)
 				return;
 			context.nodeTransform = transform;
-			// Render only non-camera nodes with transforms
-			if (component->getTypeId() != Camera::getId())
-				component->render(context);
+			component->render(context);
 		});
 
 		camera->finish();
