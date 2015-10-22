@@ -18,8 +18,6 @@ namespace solo
 	class Camera : public ComponentBase<Camera>, protected TransformCallback
 	{
 	public:
-		virtual ~Camera() {}
-
 		virtual void init() override;
 		virtual void terminate() override;
 
