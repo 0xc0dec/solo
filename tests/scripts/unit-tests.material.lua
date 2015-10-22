@@ -6,8 +6,11 @@ runTest(function()
 	assert(mp)
 	assert(m:getEffect())
 
-	m:setPolygonFace(solo.PolygonFace_All)
 	assert(m:getPolygonFace() == solo.PolygonFace_All)
+	m:setPolygonFace(solo.PolygonFace_All)
+
+	assert(m:getZWriteEnabled() == true)
+	m:setZWriteEnabled(false))
 
 	local v2 = solo.Vector2.unit()
 	local v3 = solo.Vector3.unit()

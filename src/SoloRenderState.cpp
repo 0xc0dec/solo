@@ -13,3 +13,15 @@ PolygonFace RenderState::getPolygonFace() const
 {
 	return polygonFace;
 }
+
+
+bool RenderState::getZWriteEnabled() const
+{
+	return zwrite;
+}
+
+
+void RenderState::setZWriteEnabled(bool enabled)
+{
+	zwrite = enabled;
+}

@@ -5,7 +5,6 @@
 
 namespace solo
 {
-	struct RenderContext;
 	class Scene;
 
 	class Component

@@ -26,6 +26,7 @@ void Material::bind(RenderContext& context)
 {
 	context.material = this;
 	applyFaceCull();
+	applyZWrite();
 	if (effect)
 	{
 		effect->bind();

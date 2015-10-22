@@ -27,3 +27,9 @@ void OpenGLMaterial::applyFaceCull()
 			break;
 	}
 }
+
+
+void OpenGLMaterial::applyZWrite()
+{
+	glDepthMask(zwrite ? GL_TRUE : GL_FALSE);
+}

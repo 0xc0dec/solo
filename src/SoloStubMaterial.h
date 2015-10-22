@@ -8,6 +8,7 @@ namespace solo
 	{
 	protected:
 		virtual void applyFaceCull() override {}
+		virtual void applyZWrite() override {}
 
 	private:
 		friend class MaterialFactory;

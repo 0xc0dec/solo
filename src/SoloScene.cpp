@@ -17,6 +17,7 @@ shared<Scene> SceneFactory::create(Engine *engine)
 Scene::Scene(Engine* engine) :
 	engine{ engine }
 {
+	
 }
 
 
@@ -108,8 +109,11 @@ Component* Scene::findComponent(size_t nodeId, size_t typeId) const
 }
 
 
-void Scene::updateCameraCache()
+void Scene::syncCameraCache()
 {
+	if (!cameraCacheDirty)
+		return;
+
 	cameraCache.clear();
 	for (auto& nodeComponents : components)
 	{
@@ -119,6 +123,8 @@ void Scene::updateCameraCache()
 				cameraCache.push_back(static_cast<Camera*>(component.second.get()));
 		}
 	}
+
+	cameraCacheDirty = false;
 }
 
 
@@ -134,11 +140,7 @@ void Scene::update()
 
 void Scene::render()
 {
-	if (cameraCacheDirty)
-	{
-		updateCameraCache();
-		cameraCacheDirty = false;
-	}
+	syncCameraCache();
 
 	RenderContext context;
 	context.scene = this;
@@ -148,12 +150,12 @@ void Scene::render()
 		camera->apply();
 		context.camera = camera;
 
-		iterateComponents([&](size_t nodeId, shared<Component> component)
+		iterateComponents([&](size_t nodeId, Component* component)
 		{
 			auto transform = Node::findComponent<Transform>(this, nodeId);
 			if (transform)
 			{
-				auto renderer = dynamic_cast<Renderer*>(component.get());
+				auto renderer = dynamic_cast<Renderer*>(component);
 				if (renderer)
 				{
 					context.nodeTransform = transform;
@@ -173,6 +175,6 @@ void Scene::iterateComponents(ComponentIterationWorker work)
 	{
 		auto nodeId = nodeComponents.first;
 		for (auto& component : nodeComponents.second)
-			work(nodeId, component.second);
+			work(nodeId, component.second.get());
 	}
 }

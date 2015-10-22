@@ -527,8 +527,10 @@ void LuaScriptManager::registerApi()
 
 	// RenderState
 	auto rs = module.beginClass<RenderState>("RenderState");
-	REGISTER_METHOD(rs, RenderState, setPolygonFace);
 	REGISTER_METHOD(rs, RenderState, getPolygonFace);
+	REGISTER_METHOD(rs, RenderState, setPolygonFace);
+	REGISTER_METHOD(rs, RenderState, getZWriteEnabled);
+	REGISTER_METHOD(rs, RenderState, setZWriteEnabled);
 	rs.endClass();
 
 	// Material

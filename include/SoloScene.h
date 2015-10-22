@@ -14,6 +14,10 @@ namespace solo
 	{
 	public:
 		~Scene();
+		Scene(const Scene& other) = delete;
+		Scene(Scene&& other) = delete;
+		Scene& operator=(const Scene& other) = delete;
+		Scene& operator=(Scene&& other) = delete;
 
 		Engine *getEngine();
 
@@ -35,17 +39,13 @@ namespace solo
 	private:
 		friend class SceneFactory;
 		
-		using ComponentIterationWorker = std::function<void(size_t, shared<Component>)>;
+		using ComponentIterationWorker = std::function<void(size_t, Component*)>;
 		using Components = std::unordered_map<size_t, std::unordered_map<size_t, shared<Component>>>;
 
 		explicit Scene(Engine *engine);
-		Scene(const Scene& other) = delete;
-		Scene(Scene&& other) = delete;
-		Scene& operator=(const Scene& other) = delete;
-		Scene& operator=(Scene&& other) = delete;
 
 		void iterateComponents(ComponentIterationWorker work);
-		void updateCameraCache();
+		void syncCameraCache();
 
 		Engine *engine;
 		size_t nodeCounter = 0;

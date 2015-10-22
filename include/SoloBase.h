@@ -5,6 +5,7 @@
 #include <functional>
 #include <unordered_map>
 #include <unordered_set>
+#include <map>
 #include <list>
 #include <vector>
 #include "SoloFormatter.h"
