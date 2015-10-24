@@ -5,6 +5,7 @@
 #include "FileSystem_Test.h"
 #include "Resources_Test.h"
 #include "ModelRenderer_Test.h"
+#include "BitFlags_Test.h"
 #include "Demo_Test.h"
 
 using namespace solo;
@@ -76,6 +77,7 @@ protected:
 		tests.push_back(SL_NEW2(ComponentsAndNodes_Test, engine));
 		tests.push_back(SL_NEW2(Transform_Test, engine));
 		tests.push_back(SL_NEW2(ModelRenderer_Test, engine));
+		tests.push_back(SL_NEW2(BitFlags_Test, engine));
 	}
 
 	virtual void finish() override

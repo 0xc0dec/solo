@@ -1,6 +1,9 @@
 local shaders = dofile("../tests/scripts/demo/demo.shaders.lua")
 dofile("../tests/scripts/demo/demo.components.lua")
 
+local RENDER_TARGET_QUAD_TAG = 2
+
+
 function loadTexture(path)
 	local texture = resourceManager:getOrLoadTexture2D(path)
 	texture:generateMipmaps()
@@ -136,6 +139,7 @@ function initObjects(models, materials, rtInfo)
 	local quad = createQuad()
 	quad:findComponent("ModelRenderer"):setMaterialForMesh(0, rtInfo.material)
 	local quadTransform = quad:findComponent("Transform")
+	quadTransform:getTags():set(RENDER_TARGET_QUAD_TAG)
 	quadTransform:setParent(parent:findComponent("Transform"))
 	quadTransform:setLocalPosition(solo.Vector3(5, 2, -5))
 	quadTransform:setLocalScale(solo.Vector3(5, 5 * canvasSize.y / canvasSize.x, 1))
@@ -299,6 +303,7 @@ function initCameras(rtInfo)
 	offscreenCamera:setNear(0.05)
 	offscreenCamera:setRenderTarget(rtInfo.renderTarget)
 	offscreenCamera:setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8)
+	offscreenCamera:getRenderTags():remove(RENDER_TARGET_QUAD_TAG)
 
 	local mainCameraNode = scene:createNode()
 	local mainCameraTransform = mainCameraNode:findComponent("Transform")

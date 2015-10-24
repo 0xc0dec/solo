@@ -76,10 +76,12 @@ namespace solo
 		Vector3 transformPoint(const Vector3& point) const;
 		Vector3 transformDirection(const Vector3& direction) const;
 
+		BitFlags& getTags();
+
 	private:
 		friend class TransformFactory;
 
-		explicit Transform(Node node): ComponentBase(node) {}
+		explicit Transform(Node node);
 
 		void setDirtyWithChildren(unsigned flags) const;
 		void setChildrenDirty(unsigned flags) const;
@@ -87,6 +89,7 @@ namespace solo
 		void notifyChanged() const;
 
 		mutable BitFlags dirtyFlags;
+		BitFlags tags;
 
 		Transform* parent = nullptr;
 		std::vector<Transform*> children;

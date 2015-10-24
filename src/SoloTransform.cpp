@@ -18,6 +18,13 @@ const unsigned DIRTY_BIT_ALL =
 	DIRTY_BIT_INSERSE_TRANSPOSED_WORLD;
 
 
+Transform::Transform(Node node):
+	ComponentBase(node)
+{
+	tags.set(1);
+}
+
+
 shared<Transform> TransformFactory::create(Node node)
 {
 	return SL_NEW2(Transform, node);
@@ -34,7 +41,7 @@ void Transform::notifyChanged() const
 void Transform::init()
 {
 	localScale = Vector3::unit();
-	dirtyFlags.set(DIRTY_BIT_ALL);
+	dirtyFlags.add(DIRTY_BIT_ALL);
 }
 
 
@@ -120,7 +127,7 @@ Quaternion Transform::getLocalRotation() const
 
 Matrix Transform::getMatrix() const
 {
-	if (!dirtyFlags.empty())
+	if (!dirtyFlags.isEmpty())
 	{
 		auto hasTranslation = !localPosition.isZero();
 		auto hasScale = !localScale.isUnit();
@@ -143,7 +150,7 @@ Matrix Transform::getMatrix() const
 		else if (hasScale || dirtyFlags.isSet(DIRTY_BIT_SCALE))
 			matrix = Matrix::createScale(localScale);
 
-		dirtyFlags.clean(DIRTY_BIT_ALL);
+		dirtyFlags.remove(DIRTY_BIT_ALL);
 	}
 	return matrix;
 }
@@ -151,7 +158,7 @@ Matrix Transform::getMatrix() const
 
 Matrix Transform::getWorldMatrix() const
 {
-	if (dirtyFlags.checkAndUnset(DIRTY_BIT_WORLD))
+	if (dirtyFlags.checkAndRemove(DIRTY_BIT_WORLD))
 	{
 		if (parent)
 			worldMatrix = parent->getWorldMatrix() * getMatrix();
@@ -166,7 +173,7 @@ Matrix Transform::getWorldMatrix() const
 
 Matrix Transform::getInverseTransposedWorldMatrix() const
 {
-	if (dirtyFlags.checkAndUnset(DIRTY_BIT_INSERSE_TRANSPOSED_WORLD) || dirtyFlags.isSet(DIRTY_BIT_WORLD))
+	if (dirtyFlags.checkAndRemove(DIRTY_BIT_INSERSE_TRANSPOSED_WORLD) || dirtyFlags.isSet(DIRTY_BIT_WORLD))
 	{
 		inverseTransposedWorldMatrix = getWorldMatrix();
 		inverseTransposedWorldMatrix.invert();
@@ -285,6 +292,12 @@ Vector3 Transform::transformDirection(const Vector3& direction) const
 }
 
 
+BitFlags& Transform::getTags()
+{
+	return tags;
+}
+
+
 void Transform::setLocalRotation(const Quaternion& rotation)
 {
 	localRotation = rotation;
@@ -356,7 +369,7 @@ Vector3 Transform::getLocalBack() const
 
 void Transform::setDirtyWithChildren(unsigned flags) const
 {
-	dirtyFlags.set(flags);
+	dirtyFlags.add(flags);
 	notifyChanged();
 	for (auto child : children)
 		child->setDirtyWithChildren(flags);

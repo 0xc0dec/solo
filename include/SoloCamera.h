@@ -24,6 +24,8 @@ namespace solo
 		void apply();
 		void finish();
 
+		BitFlags& getRenderTags();
+
 		void setRenderTarget(shared<RenderTarget> target);
 		shared<RenderTarget> getRenderTarget() const;
 

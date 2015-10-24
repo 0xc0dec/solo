@@ -7,31 +7,51 @@ namespace solo
 	public:
 		BitFlags() {}
 
-		bool empty() const
+		unsigned getRaw() const
+		{
+			return flags;
+		}
+
+		bool isEmpty() const
 		{
 			return flags == 0;
 		}
 
-		bool checkAndUnset(unsigned flags)
+		bool checkAndRemove(unsigned flags)
 		{
 			auto result = isSet(flags);
-			clean(flags);
+			remove(flags);
 			return result;
 		}
 
 		bool isSet(unsigned flags) const
 		{
-			return (flags & flags) != 0;
+			return (this->flags & flags) != 0;
 		}
 
-		void clean(unsigned flags)
+		void setAll()
 		{
-			this->flags &= ~flags;
+			flags = ~0;
 		}
 
 		void set(unsigned flags)
 		{
+			this->flags = flags;
+		}
+
+		void add(unsigned flags)
+		{
 			this->flags |= flags;
+		}
+
+		void remove(unsigned flags)
+		{
+			this->flags &= ~flags;
+		}
+
+		void clear()
+		{
+			flags = 0;
 		}
 
 	private:

@@ -375,6 +375,19 @@ void LuaScriptManager::registerApi()
 		.addConstant("ColorFormat_RGB", ColorFormat::RGB)
 		.addConstant("ColorFormat_RGBA", ColorFormat::RGBA);
 
+	// BitFlags
+	auto flags = module.beginClass<BitFlags>("BitFlags");
+	flags.addConstructor(LUA_ARGS());
+	REGISTER_METHOD(flags, BitFlags, clear);
+	REGISTER_METHOD(flags, BitFlags, add);
+	REGISTER_METHOD(flags, BitFlags, checkAndRemove);
+	REGISTER_METHOD(flags, BitFlags, getRaw);
+	REGISTER_METHOD(flags, BitFlags, isEmpty);
+	REGISTER_METHOD(flags, BitFlags, isSet);
+	REGISTER_METHOD(flags, BitFlags, remove);
+	REGISTER_METHOD(flags, BitFlags, set);
+	flags.endClass();
+
 	// TextureWrapMode
 	module
 		.addConstant("TextureWrapMode_Clamp", TextureWrapMode::Clamp)
@@ -493,6 +506,7 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(transform, Transform, getInverseTransposedWorldViewMatrix);
 	REGISTER_METHOD(transform, Transform, transformPoint);
 	REGISTER_METHOD(transform, Transform, transformDirection);
+	REGISTER_METHOD(transform, Transform, getTags);
 	transform.endClass();
 
 	// Camera
@@ -517,6 +531,7 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(camera, Camera, setWidth);
 	REGISTER_METHOD(camera, Camera, setHeight);
 	REGISTER_METHOD(camera, Camera, setAspectRatio);
+	REGISTER_METHOD(camera, Camera, getRenderTags);
 	camera.endClass();
 
 	// PolygonFace

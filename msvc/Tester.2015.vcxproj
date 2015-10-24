@@ -162,6 +162,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\tests\tester\BitFlags_Test.h" />
     <ClInclude Include="..\tests\tester\Components_Test.h" />
     <ClInclude Include="..\tests\tester\Demo_Test.h" />
     <ClInclude Include="..\tests\tester\Device_Test.h" />

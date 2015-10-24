@@ -6,11 +6,11 @@ runTest(function()
 	assert(mp)
 	assert(m:getEffect())
 
-	assert(m:getPolygonFace() == solo.PolygonFace_All)
+	assert(m:getPolygonFace() == solo.PolygonFace_CW)
 	m:setPolygonFace(solo.PolygonFace_All)
 
 	assert(m:getZWriteEnabled() == true)
-	m:setZWriteEnabled(false))
+	m:setZWriteEnabled(false)
 
 	local v2 = solo.Vector2.unit()
 	local v3 = solo.Vector3.unit()
@@ -35,13 +35,5 @@ runTest(function()
 	mp:setFunction(function (var, renderContext) end)
 
 	mp:bindValue(solo.AutoBinding_CameraWorldPosition)
-	mp:bindValue(solo.AutoBinding_InverseTransposedWorldMatrix)
-	mp:bindValue(solo.AutoBinding_InverseTransposedWorldViewMatrix)
-	mp:bindValue(solo.AutoBinding_ProjectionMatrix)
-	mp:bindValue(solo.AutoBinding_ViewMatrix)
-	mp:bindValue(solo.AutoBinding_ViewProjectionMatrix)
-	mp:bindValue(solo.AutoBinding_WorldMatrix)
-	mp:bindValue(solo.AutoBinding_WorldViewMatrix)
-	mp:bindValue(solo.AutoBinding_WorldViewProjectionMatrix)
 
 end, "Material")

@@ -33,6 +33,7 @@ Camera::Camera(Scene* scene, Node node):
 	ComponentBase{ node },
 	scene{ scene }
 {
+	renderTags.setAll();
 }
 
 
@@ -42,7 +43,7 @@ void Camera::init()
 	transform->addCallback(this);
 	auto canvasSize = scene->getEngine()->getDevice()->getCanvasSize();
 	setAspectRatio(canvasSize.x / canvasSize.y);
-	dirtyFlags.set(DIRTY_BIT_ALL); // arguably
+	dirtyFlags.add(DIRTY_BIT_ALL); // arguably
 }
 
 
@@ -54,7 +55,7 @@ void Camera::terminate()
 
 void Camera::onTransformChanged(const Transform* transform)
 {
-	dirtyFlags.set(DIRTY_BIT_VIEW | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW | DIRTY_BIT_INV_VIEW_PROJ);
+	dirtyFlags.add(DIRTY_BIT_VIEW | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW | DIRTY_BIT_INV_VIEW_PROJ);
 }
 
 
@@ -82,7 +83,7 @@ Vector4 Camera::getViewport() const
 void Camera::setPerspective(bool perspective)
 {
 	ortho = !perspective;
-	dirtyFlags.set(DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW_PROJ);
+	dirtyFlags.add(DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW_PROJ);
 }
 
 
@@ -131,48 +132,48 @@ float Camera::getAspectRatio() const
 void Camera::setFOV(float fov)
 {
 	this->fov = fov;
-	dirtyFlags.set(DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW_PROJ);
+	dirtyFlags.add(DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW_PROJ);
 }
 
 
 void Camera::setWidth(float width)
 {
 	this->width = width;
-	dirtyFlags.set(DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ |DIRTY_BIT_INV_VIEW_PROJ);
+	dirtyFlags.add(DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ |DIRTY_BIT_INV_VIEW_PROJ);
 }
 
 
 void Camera::setHeight(float height)
 {
 	this->height = height;
-	dirtyFlags.set(DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW_PROJ);
+	dirtyFlags.add(DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW_PROJ);
 }
 
 
 void Camera::setAspectRatio(float ratio)
 {
 	aspectRatio = ratio;
-	dirtyFlags.set(DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW_PROJ);
+	dirtyFlags.add(DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW_PROJ);
 }
 
 
 void Camera::setFar(float far)
 {
 	this->farClip = far;
-	dirtyFlags.set(DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW_PROJ);
+	dirtyFlags.add(DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW_PROJ);
 }
 
 
 void Camera::setNear(float near)
 {
 	this->nearClip = near;
-	dirtyFlags.set(DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW_PROJ);
+	dirtyFlags.add(DIRTY_BIT_PROJ | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW_PROJ);
 }
 
 
 const Matrix& Camera::getViewMatrix()
 {
-	if (dirtyFlags.checkAndUnset(DIRTY_BIT_VIEW))
+	if (dirtyFlags.checkAndRemove(DIRTY_BIT_VIEW))
 	{
 		viewMatrix = transform->getWorldMatrix();
 		viewMatrix.invert();
@@ -183,7 +184,7 @@ const Matrix& Camera::getViewMatrix()
 
 const Matrix& Camera::getInverseViewMatrix()
 {
-	if (dirtyFlags.checkAndUnset(DIRTY_BIT_INV_VIEW))
+	if (dirtyFlags.checkAndRemove(DIRTY_BIT_INV_VIEW))
 	{
 		inverseViewMatrix = getViewMatrix();
 		inverseViewMatrix.invert();
@@ -194,7 +195,7 @@ const Matrix& Camera::getInverseViewMatrix()
 
 const Matrix& Camera::getProjectionMatrix()
 {
-	if (dirtyFlags.checkAndUnset(DIRTY_BIT_PROJ))
+	if (dirtyFlags.checkAndRemove(DIRTY_BIT_PROJ))
 	{
 		if (ortho)
 			projectionMatrix = Matrix::createOrthographic(width, height, nearClip, farClip);
@@ -207,7 +208,7 @@ const Matrix& Camera::getProjectionMatrix()
 
 const Matrix& Camera::getViewProjectionMatrix()
 {
-	if (dirtyFlags.checkAndUnset(DIRTY_BIT_VIEW_PROJ))
+	if (dirtyFlags.checkAndRemove(DIRTY_BIT_VIEW_PROJ))
 		viewProjectionMatrix = getProjectionMatrix() * getViewMatrix();
 	return viewProjectionMatrix;
 }
@@ -215,7 +216,7 @@ const Matrix& Camera::getViewProjectionMatrix()
 
 const Matrix& Camera::getInverseViewProjectionMatrix()
 {
-	if (dirtyFlags.checkAndUnset(DIRTY_BIT_INV_VIEW_PROJ))
+	if (dirtyFlags.checkAndRemove(DIRTY_BIT_INV_VIEW_PROJ))
 	{
 		inverseViewProjectionMatrix = getViewProjectionMatrix();
 		inverseViewProjectionMatrix.invert();
@@ -244,6 +245,12 @@ void Camera::finish()
 {
 	if (renderTarget)
 		renderTarget->unbind();
+}
+
+
+BitFlags& Camera::getRenderTags()
+{
+	return renderTags;
 }
 
 

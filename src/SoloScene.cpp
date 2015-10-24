@@ -138,6 +138,14 @@ void Scene::update()
 }
 
 
+bool tagsAreRenderable(const BitFlags& objectTags, const BitFlags& cameraTags)
+{
+	auto rawObjectTags = objectTags.getRaw();
+	auto rawCameraTags = cameraTags.getRaw();
+	return (rawObjectTags & rawCameraTags) != 0;
+}
+
+
 void Scene::render()
 {
 	syncCameraCache();
@@ -147,13 +155,14 @@ void Scene::render()
 
 	for (auto& camera : cameraCache)
 	{
+		auto renderTags = camera->getRenderTags();
 		camera->apply();
 		context.camera = camera;
 
 		iterateComponents([&](size_t nodeId, Component* component)
 		{
 			auto transform = Node::findComponent<Transform>(this, nodeId);
-			if (transform)
+			if (transform && tagsAreRenderable(transform->getTags(), renderTags))
 			{
 				auto renderer = dynamic_cast<Renderer*>(component);
 				if (renderer)

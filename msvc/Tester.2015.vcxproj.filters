@@ -11,6 +11,7 @@
     <ClInclude Include="..\tests\tester\Components_Test.h" />
     <ClInclude Include="..\tests\tester\ModelRenderer_Test.h" />
     <ClInclude Include="..\tests\tester\Resources_Test.h" />
+    <ClInclude Include="..\tests\tester\BitFlags_Test.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tests\tester\Main.cpp" />

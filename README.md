@@ -1,5 +1,5 @@
 ## Current progress
-![Current progress](/screenshot.png?raw=true)
+![Current progress](/screenshot1.png?raw=true)
 
 ## TODO
 * Use `unsigned` for ids instead of size_t

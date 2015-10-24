@@ -13,6 +13,7 @@ end
 engine = solo.Engine.create(solo.EngineCreationArgs(EngineMode_Stub, 1, 1))
 
 dofile("../tests/scripts/unit-tests.enums.lua")
+dofile("../tests/scripts/unit-tests.bit-flags.lua")
 dofile("../tests/scripts/unit-tests.vector2.lua")
 dofile("../tests/scripts/unit-tests.vector3.lua")
 dofile("../tests/scripts/unit-tests.vector4.lua")
