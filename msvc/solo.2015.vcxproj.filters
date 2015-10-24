@@ -193,9 +193,6 @@
     <ClInclude Include="..\src\SoloStubEffectVariable.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloFlags.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloTextureCube.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -221,6 +218,9 @@
       <Filter>src\platform</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloRenderer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloBitFlags.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

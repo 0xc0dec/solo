@@ -34,7 +34,7 @@ void Transform::notifyChanged() const
 void Transform::init()
 {
 	localScale = Vector3::unit();
-	dirtyFlags.set<DIRTY_BIT_ALL>();
+	dirtyFlags.set(DIRTY_BIT_ALL);
 }
 
 
@@ -62,7 +62,7 @@ void Transform::setParent(Transform* parent)
 	this->parent = parent;
 	if (parent)
 		parent->children.push_back(this);
-	setDirtyWithChildren<DIRTY_BIT_WORLD>();
+	setDirtyWithChildren(DIRTY_BIT_WORLD);
 }
 
 
@@ -120,30 +120,30 @@ Quaternion Transform::getLocalRotation() const
 
 Matrix Transform::getMatrix() const
 {
-	if (dirtyFlags.anySet())
+	if (!dirtyFlags.empty())
 	{
 		auto hasTranslation = !localPosition.isZero();
 		auto hasScale = !localScale.isUnit();
 		auto hasRotation = !localRotation.isIdentity();
 
-		if (hasTranslation || dirtyFlags.isSet<DIRTY_BIT_POSITION>())
+		if (hasTranslation || dirtyFlags.isSet(DIRTY_BIT_POSITION))
 		{
 			matrix = Matrix::createTranslation(localPosition);
-			if (hasRotation || dirtyFlags.isSet<DIRTY_BIT_ROTATION>())
+			if (hasRotation || dirtyFlags.isSet(DIRTY_BIT_ROTATION))
 				matrix.rotate(localRotation);
-			if (hasScale || dirtyFlags.isSet<DIRTY_BIT_SCALE>())
+			if (hasScale || dirtyFlags.isSet(DIRTY_BIT_SCALE))
 				matrix.scale(localScale);
 		}
-		else if (hasRotation || dirtyFlags.isSet<DIRTY_BIT_ROTATION>())
+		else if (hasRotation || dirtyFlags.isSet(DIRTY_BIT_ROTATION))
 		{
 			matrix = Matrix::createRotation(localRotation);
-			if (hasScale || dirtyFlags.isSet<DIRTY_BIT_SCALE>())
+			if (hasScale || dirtyFlags.isSet(DIRTY_BIT_SCALE))
 				matrix.scale(localScale);
 		}
-		else if (hasScale || dirtyFlags.isSet<DIRTY_BIT_SCALE>())
+		else if (hasScale || dirtyFlags.isSet(DIRTY_BIT_SCALE))
 			matrix = Matrix::createScale(localScale);
 
-		dirtyFlags.clean<DIRTY_BIT_ALL>();
+		dirtyFlags.clean(DIRTY_BIT_ALL);
 	}
 	return matrix;
 }
@@ -151,14 +151,14 @@ Matrix Transform::getMatrix() const
 
 Matrix Transform::getWorldMatrix() const
 {
-	if (dirtyFlags.checkAndUnset<DIRTY_BIT_WORLD>())
+	if (dirtyFlags.checkAndUnset(DIRTY_BIT_WORLD))
 	{
 		if (parent)
 			worldMatrix = parent->getWorldMatrix() * getMatrix();
 		else
 			worldMatrix = getMatrix();
-		setChildrenDirty<DIRTY_BIT_WORLD>();
-		setDirtyWithChildren<DIRTY_BIT_INSERSE_TRANSPOSED_WORLD>();
+		setChildrenDirty(DIRTY_BIT_WORLD);
+		setDirtyWithChildren(DIRTY_BIT_INSERSE_TRANSPOSED_WORLD);
 	}
 	return worldMatrix;
 }
@@ -166,12 +166,12 @@ Matrix Transform::getWorldMatrix() const
 
 Matrix Transform::getInverseTransposedWorldMatrix() const
 {
-	if (dirtyFlags.checkAndUnset<DIRTY_BIT_INSERSE_TRANSPOSED_WORLD>() || dirtyFlags.isSet<DIRTY_BIT_WORLD>())
+	if (dirtyFlags.checkAndUnset(DIRTY_BIT_INSERSE_TRANSPOSED_WORLD) || dirtyFlags.isSet(DIRTY_BIT_WORLD))
 	{
 		inverseTransposedWorldMatrix = getWorldMatrix();
 		inverseTransposedWorldMatrix.invert();
 		inverseTransposedWorldMatrix.transpose();
-		setChildrenDirty<DIRTY_BIT_INSERSE_TRANSPOSED_WORLD>();
+		setChildrenDirty(DIRTY_BIT_INSERSE_TRANSPOSED_WORLD);
 	}
 	return inverseTransposedWorldMatrix;
 }
@@ -201,7 +201,7 @@ Matrix Transform::getInverseTransposedWorldViewMatrix(Camera* camera) const
 void Transform::translateLocal(const Vector3& translation)
 {
 	localPosition += translation;
-	setDirtyWithChildren<DIRTY_BIT_POSITION, DIRTY_BIT_WORLD>();
+	setDirtyWithChildren(DIRTY_BIT_POSITION | DIRTY_BIT_WORLD);
 }
 
 
@@ -214,18 +214,18 @@ void Transform::rotate(const Quaternion& rotation, TransformSpace space)
 	{
 		case TransformSpace::Self:
 			localRotation = localRotation * normalizedRotation;
-			setDirtyWithChildren<DIRTY_BIT_ROTATION, DIRTY_BIT_WORLD>();
+			setDirtyWithChildren(DIRTY_BIT_ROTATION | DIRTY_BIT_WORLD);
 			break;
 		case TransformSpace::Parent:
 			localRotation = normalizedRotation * localRotation;
-			setDirtyWithChildren<DIRTY_BIT_ROTATION, DIRTY_BIT_WORLD>();
+			setDirtyWithChildren(DIRTY_BIT_ROTATION | DIRTY_BIT_WORLD);
 			break;
 		case TransformSpace::World:
 		{
 			auto inverseWorldRotation = getWorldRotation();
 			inverseWorldRotation.inverse();
 			localRotation = localRotation * inverseWorldRotation * normalizedRotation * getWorldRotation();
-			setDirtyWithChildren<DIRTY_BIT_ROTATION, DIRTY_BIT_WORLD>();
+			setDirtyWithChildren(DIRTY_BIT_ROTATION | DIRTY_BIT_WORLD);
 			break;
 		}
 	}
@@ -244,14 +244,14 @@ void Transform::scaleLocal(const Vector3& scale)
 	localScale.x *= scale.x;
 	localScale.y *= scale.y;
 	localScale.z *= scale.z;
-	setDirtyWithChildren<DIRTY_BIT_SCALE, DIRTY_BIT_WORLD>();
+	setDirtyWithChildren(DIRTY_BIT_SCALE | DIRTY_BIT_WORLD);
 }
 
 
 void Transform::setLocalScale(const Vector3& scale)
 {
 	localScale = scale;
-	setDirtyWithChildren<DIRTY_BIT_SCALE, DIRTY_BIT_WORLD>();
+	setDirtyWithChildren(DIRTY_BIT_SCALE | DIRTY_BIT_WORLD);
 }
 
 
@@ -288,21 +288,21 @@ Vector3 Transform::transformDirection(const Vector3& direction) const
 void Transform::setLocalRotation(const Quaternion& rotation)
 {
 	localRotation = rotation;
-	setDirtyWithChildren<DIRTY_BIT_ROTATION, DIRTY_BIT_WORLD>();
+	setDirtyWithChildren(DIRTY_BIT_ROTATION | DIRTY_BIT_WORLD);
 }
 
 
 void Transform::setLocalRotation(const Vector3& axis, float angleRadians)
 {
 	localRotation = Quaternion::createFromAxisAngle(axis, angleRadians);
-	setDirtyWithChildren<DIRTY_BIT_ROTATION, DIRTY_BIT_WORLD>();
+	setDirtyWithChildren(DIRTY_BIT_ROTATION | DIRTY_BIT_WORLD);
 }
 
 
 void Transform::setLocalPosition(const Vector3& position)
 {
 	localPosition = position;
-	setDirtyWithChildren<DIRTY_BIT_POSITION, DIRTY_BIT_WORLD>();
+	setDirtyWithChildren(DIRTY_BIT_POSITION | DIRTY_BIT_WORLD);
 }
 
 
@@ -354,19 +354,17 @@ Vector3 Transform::getLocalBack() const
 }
 
 
-template <unsigned bit1, unsigned... bitN>
-void Transform::setDirtyWithChildren() const
+void Transform::setDirtyWithChildren(unsigned flags) const
 {
-	dirtyFlags.set<bit1, bitN...>();
+	dirtyFlags.set(flags);
 	notifyChanged();
 	for (auto child : children)
-		child->setDirtyWithChildren<bit1, bitN...>();
+		child->setDirtyWithChildren(flags);
 }
 
 
-template <unsigned bit1, unsigned... bitN>
-void Transform::setChildrenDirty() const
+void Transform::setChildrenDirty(unsigned flags) const
 {
 	for (auto child : children)
-		child->setDirtyWithChildren<bit1, bitN...>();
+		child->setDirtyWithChildren(flags);
 }

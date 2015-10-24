@@ -2,7 +2,7 @@
 
 #include "SoloBase.h"
 #include "SoloComponent.h"
-#include "SoloFlags.h"
+#include "SoloBitFlags.h"
 #include "SoloMatrix.h"
 #include "SoloVector3.h"
 #include "SoloQuaternion.h"
@@ -62,7 +62,7 @@ namespace solo
 		void setLocalRotation(const Quaternion& rotation);
 		void setLocalRotation(const Vector3& axis, float angleRadians);
 
-		// Target and Up are in world coordinates
+		// Target and Up in world coordinates
 		void lookAt(const Vector3& target, const Vector3& up);
 
 		Matrix getMatrix() const;
@@ -81,15 +81,12 @@ namespace solo
 
 		explicit Transform(Node node): ComponentBase(node) {}
 
-		template <unsigned bit1, unsigned... bitN>
-		void setDirtyWithChildren() const;
-
-		template <unsigned bit1, unsigned... bitN>
-		void setChildrenDirty() const;
+		void setDirtyWithChildren(unsigned flags) const;
+		void setChildrenDirty(unsigned flags) const;
 
 		void notifyChanged() const;
 
-		Flags dirtyFlags;
+		mutable BitFlags dirtyFlags;
 
 		Transform* parent = nullptr;
 		std::vector<Transform*> children;

@@ -13,7 +13,7 @@
 #include "SoloEngineCreationArgs.h"
 #include "SoloException.h"
 #include "SoloFileSystem.h"
-#include "SoloFlags.h"
+#include "SoloBitFlags.h"
 #include "SoloFormatter.h"
 #include "SoloFrustum.h"
 #include "SoloLog.h"

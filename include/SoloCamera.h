@@ -2,7 +2,7 @@
 
 #include "SoloComponent.h"
 #include "SoloVector4.h"
-#include "SoloFlags.h"
+#include "SoloBitFlags.h"
 #include "SoloMatrix.h"
 #include "SoloTransform.h"
 #include "SoloNode.h"
@@ -64,7 +64,8 @@ namespace solo
 		virtual void applyClearColor() = 0;
 		virtual void clear() = 0;
 
-		Flags dirtyFlags;
+		BitFlags dirtyFlags;
+		BitFlags renderTags;
 
 		Scene *scene;
 
