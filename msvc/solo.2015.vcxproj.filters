@@ -205,9 +205,6 @@
     <ClInclude Include="..\src\SoloPngImageLoader.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloStubTextureCube.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\platform\SoloOpenGLHelper.h">
       <Filter>src\platform</Filter>
     </ClInclude>
@@ -222,6 +219,9 @@
     </ClInclude>
     <ClInclude Include="..\src\platform\SoloOpenGLCubeTexture.h">
       <Filter>src\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloStubCubeTexture.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

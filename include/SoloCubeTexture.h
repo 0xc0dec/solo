@@ -5,7 +5,7 @@
 
 namespace solo
 {
-	enum class TextureCubeFace
+	enum class CubeTextureFace
 	{
 		Front = 0,
 		Back = 1,
@@ -15,10 +15,10 @@ namespace solo
 		Bottom = 5
 	};
 
-	class TextureCube: public Texture
+	class CubeTexture: public Texture
 	{
 	public:
-		virtual void setData(TextureCubeFace face, ColorFormat format, const std::vector<uint8_t> &data, unsigned width, unsigned height) = 0;
+		virtual void setData(CubeTextureFace face, ColorFormat format, const std::vector<uint8_t> &data, unsigned width, unsigned height) = 0;
 
 		virtual void generateMipmaps() = 0;
 
@@ -26,7 +26,7 @@ namespace solo
 		void setDepthWrapMode(TextureWrapMode depthWrap);
 
 	protected:
-		TextureCube() {}
+		CubeTexture() {}
 
 		TextureWrapMode depthWrap = TextureWrapMode::Repeat;
 	};

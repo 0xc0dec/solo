@@ -55,9 +55,9 @@ shared<Texture2D> ResourceManager::findTexture2D(const std::string& uri)
 }
 
 
-shared<TextureCube> ResourceManager::findTextureCube(const std::string& uri)
+shared<CubeTexture> ResourceManager::findCubeTexture(const std::string& uri)
 {
-	return findResource(uri, texturesCube);
+	return findResource(uri, cubeTextures);
 }
 
 
@@ -119,7 +119,7 @@ shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& imageUr
 }
 
 
-shared<TextureCube> ResourceManager::getOrLoadTextureCube(const std::vector<std::string>& imageUris, const std::string& uri)
+shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std::string>& imageUris, const std::string& uri)
 {
 	if (imageUris.size() != 6)
 		SL_THROW_FMT(EngineException, "Wrong number of face images for cube texture (", imageUris.size(), " provided, 6 expected)");
@@ -127,7 +127,7 @@ shared<TextureCube> ResourceManager::getOrLoadTextureCube(const std::vector<std:
 	auto textureUri = uri.empty()
 		? imageUris[0] + imageUris[1] + imageUris[2] + imageUris[3] + imageUris[4] + imageUris[5]
 		: uri;
-	auto existing = findTextureCube(textureUri);
+	auto existing = findCubeTexture(textureUri);
 	if (existing)
 		return existing;
 
@@ -141,7 +141,7 @@ shared<TextureCube> ResourceManager::getOrLoadTextureCube(const std::vector<std:
 			if (loader->isLoadable(imageUri))
 			{
 				image = loader->load(imageUri);
-				auto face = static_cast<TextureCubeFace>(static_cast<int>(TextureCubeFace::Front) + idx);
+				auto face = static_cast<CubeTextureFace>(static_cast<int>(CubeTextureFace::Front) + idx);
 				result->setData(face, image->colorFormat, image->data, image->width, image->height);
 				break;
 			}
@@ -151,7 +151,7 @@ shared<TextureCube> ResourceManager::getOrLoadTextureCube(const std::vector<std:
 		idx++;
 	}
 
-	texturesCube[textureUri] = result;
+	cubeTextures[textureUri] = result;
 	return result;
 }
 
@@ -253,5 +253,5 @@ void ResourceManager::cleanUnusedResources()
 	cleanUnusedResources(effects);
 	cleanUnusedResources(meshes);
 	cleanUnusedResources(textures2d);
-	cleanUnusedResources(texturesCube);
+	cleanUnusedResources(cubeTextures);
 }

@@ -423,11 +423,11 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(tex2d, Texture2D, getSize);
 	tex2d.endClass();
 
-	// TextureCube
-	auto texCube = module.beginExtendClass<TextureCube, Texture>("TextureCube");
-	REGISTER_METHOD(texCube, TextureCube, getDepthWrapMode);
-	REGISTER_METHOD(texCube, TextureCube, setDepthWrapMode);
-	REGISTER_METHOD(texCube, TextureCube, generateMipmaps);
+	// CubeTexture
+	auto texCube = module.beginExtendClass<CubeTexture, Texture>("CubeTexture");
+	REGISTER_METHOD(texCube, CubeTexture, getDepthWrapMode);
+	REGISTER_METHOD(texCube, CubeTexture, setDepthWrapMode);
+	REGISTER_METHOD(texCube, CubeTexture, generateMipmaps);
 	texCube.endClass();
 
 	// RenderTarget
@@ -681,7 +681,7 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD2(mgr, ResourceManager, getOrCreateModel, LUA_ARGS(_opt<const std::string&>));
 	REGISTER_METHOD2(mgr, ResourceManager, getOrCreateRenderTarget, LUA_ARGS(_opt<const std::string&>));
 	REGISTER_METHOD2(mgr, ResourceManager, getOrLoadTexture2D, LUA_ARGS(const std::string&, _opt<const std::string&>));
-	REGISTER_METHOD2(mgr, ResourceManager, getOrLoadTextureCube, LUA_ARGS(const std::vector<std::string>&, _opt<const std::string&>));
+	REGISTER_METHOD2(mgr, ResourceManager, getOrLoadCubeTexture, LUA_ARGS(const std::vector<std::string>&, _opt<const std::string&>));
 	REGISTER_METHOD2(mgr, ResourceManager, getOrLoadModel, LUA_ARGS(const std::string&, _opt<const std::string&>));
 	REGISTER_OVERLOADED_METHOD(mgr, ResourceManager, cleanUnusedResources, "cleanUnusedResources", void, , void);
 	mgr.endClass();

@@ -1,6 +1,6 @@
 #include "SoloTexture.h"
 #include "SoloStubTexture2D.h"
-#include "SoloStubTextureCube.h"
+#include "SoloStubCubeTexture.h"
 #include "SoloEngineCreationArgs.h"
 #include "platform/SoloOpenGLTexture2D.h"
 #include "platform/SoloOpenGLCubeTexture.h"
@@ -16,11 +16,11 @@ shared<Texture2D> TextureFactory::create2D(EngineMode mode)
 }
 
 
-shared<TextureCube> TextureFactory::createCube(EngineMode mode)
+shared<CubeTexture> TextureFactory::createCube(EngineMode mode)
 {
 	if (mode == EngineMode::OpenGL)
-		return SL_NEW2(OpenGLTextureCube);
-	return SL_NEW2(StubTextureCube);
+		return SL_NEW2(OpenGLCubeTexture);
+	return SL_NEW2(StubCubeTexture);
 }
 
 

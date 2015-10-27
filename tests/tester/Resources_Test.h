@@ -24,7 +24,7 @@ public:
 		test_CreateAndForgetResource_CleanIt();
 		test_LoadCubeTextureWithWrongNumberOfFaces_EnsureFail();
 		test_LoadTexture2DWithOverridenUri_CheckUri();
-		test_LoadTextureCubeWithOverridenUri_CheckUri();
+		test_LoadCubeTextureWithOverridenUri_CheckUri();
 		test_LoadModelWithOverridenUri_CheckUri();
 	}
 
@@ -107,7 +107,7 @@ public:
 
 	void test_LoadCubeTextureWithWrongNumberOfFaces_EnsureFail()
 	{
-		assertThrows<EngineException>([=] { resourceManager->getOrLoadTextureCube({ "1", "2" }); },
+		assertThrows<EngineException>([=] { resourceManager->getOrLoadCubeTexture({ "1", "2" }); },
 			"Wrong number of face images for cube texture (2 provided, 6 expected)");
 	}
 
@@ -119,12 +119,12 @@ public:
 		assert(resourceManager->findTexture2D(overridenUri) == tex);
 	}
 
-	void test_LoadTextureCubeWithOverridenUri_CheckUri()
+	void test_LoadCubeTextureWithOverridenUri_CheckUri()
 	{
-		auto overridenUri = "customUriForTextureCube";
-		auto tex = resourceManager->getOrLoadTextureCube({ "1", "2", "3", "4", "5", "6" }, overridenUri);
-		assert(resourceManager->getOrLoadTextureCube({ "12", "23", "34", "45", "56", "67" }, overridenUri) == tex);
-		assert(resourceManager->findTextureCube(overridenUri) == tex);
+		auto overridenUri = "customUriForCubeTexture";
+		auto tex = resourceManager->getOrLoadCubeTexture({ "1", "2", "3", "4", "5", "6" }, overridenUri);
+		assert(resourceManager->getOrLoadCubeTexture({ "12", "23", "34", "45", "56", "67" }, overridenUri) == tex);
+		assert(resourceManager->findCubeTexture(overridenUri) == tex);
 	}
 
 	void test_LoadModelWithOverridenUri_CheckUri()

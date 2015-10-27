@@ -324,7 +324,7 @@ function init()
 	initObjects(models, materials, rtInfo)
 	initCameras(rtInfo)
 
-	local texSkybox = resourceManager:getOrLoadTextureCube({
+	local texSkybox = resourceManager:getOrLoadCubeTexture({
 		"../data/skyboxes/deep-space/front.png",
 		"../data/skyboxes/deep-space/back.png",
 		"../data/skyboxes/deep-space/left.png",

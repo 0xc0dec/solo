@@ -92,7 +92,7 @@
     <ClInclude Include="..\src\SoloStubResourceManager.h" />
     <ClInclude Include="..\src\SoloStubTexture2D.h" />
     <ClInclude Include="..\src\SoloStubImageLoader.h" />
-    <ClInclude Include="..\src\SoloStubTextureCube.h" />
+    <ClInclude Include="..\src\SoloStubCubeTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\platform\SoloOpenGLHelper.cpp" />

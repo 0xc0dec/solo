@@ -4,21 +4,21 @@
 using namespace solo;
 
 
-GLenum convertToGLCubeTextureFace(TextureCubeFace face)
+GLenum convertToGLCubeTextureFace(CubeTextureFace face)
 {
 	switch (face)
 	{
-		case TextureCubeFace::Front:
+		case CubeTextureFace::Front:
 			return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
-		case TextureCubeFace::Back:
+		case CubeTextureFace::Back:
 			return GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
-		case TextureCubeFace::Right:
+		case CubeTextureFace::Right:
 			return GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
-		case TextureCubeFace::Left:
+		case CubeTextureFace::Left:
 			return GL_TEXTURE_CUBE_MAP_POSITIVE_X;
-		case TextureCubeFace::Top:
+		case CubeTextureFace::Top:
 			return GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
-		case TextureCubeFace::Bottom:
+		case CubeTextureFace::Bottom:
 			return GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
 		default:
 			SL_THROW_FMT(EngineException, "Unexpected cube texture face ", static_cast<int>(face));
@@ -26,7 +26,7 @@ GLenum convertToGLCubeTextureFace(TextureCubeFace face)
 }
 
 
-OpenGLTextureCube::OpenGLTextureCube()
+OpenGLCubeTexture::OpenGLCubeTexture()
 {
 	glGenTextures(1, &handle);
 	if (!handle)
@@ -34,13 +34,13 @@ OpenGLTextureCube::OpenGLTextureCube()
 }
 
 
-OpenGLTextureCube::~OpenGLTextureCube()
+OpenGLCubeTexture::~OpenGLCubeTexture()
 {
 	glDeleteTextures(1, &handle);
 }
 
 
-void OpenGLTextureCube::setData(TextureCubeFace face, ColorFormat format, const std::vector<uint8_t>& data, unsigned width, unsigned height)
+void OpenGLCubeTexture::setData(CubeTextureFace face, ColorFormat format, const std::vector<uint8_t>& data, unsigned width, unsigned height)
 {
 	auto glFace = convertToGLCubeTextureFace(face);
 	bind();
@@ -50,19 +50,19 @@ void OpenGLTextureCube::setData(TextureCubeFace face, ColorFormat format, const 
 }
 
 
-void OpenGLTextureCube::bind()
+void OpenGLCubeTexture::bind()
 {
 	glBindTexture(GL_TEXTURE_CUBE_MAP, handle);
 }
 
 
-void OpenGLTextureCube::unbind()
+void OpenGLCubeTexture::unbind()
 {
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
 
-void OpenGLTextureCube::apply()
+void OpenGLCubeTexture::apply()
 {
 	bind();
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, OpenGLHelper::convertToGLFilter(minFilter));
@@ -74,7 +74,7 @@ void OpenGLTextureCube::apply()
 }
 
 
-void OpenGLTextureCube::generateMipmaps()
+void OpenGLCubeTexture::generateMipmaps()
 {
 	bind();
 	glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
@@ -83,7 +83,7 @@ void OpenGLTextureCube::generateMipmaps()
 }
 
 
-GLuint OpenGLTextureCube::getHandle() const
+GLuint OpenGLCubeTexture::getHandle() const
 {
 	return handle;
 }

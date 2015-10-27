@@ -3,13 +3,13 @@
 using namespace solo;
 
 
-TextureWrapMode TextureCube::getDepthWrapMode() const
+TextureWrapMode CubeTexture::getDepthWrapMode() const
 {
 	return depthWrap;
 }
 
 
-void TextureCube::setDepthWrapMode(TextureWrapMode depthWrap)
+void CubeTexture::setDepthWrapMode(TextureWrapMode depthWrap)
 {
 	this->depthWrap = depthWrap;
 }

@@ -5,11 +5,12 @@
 
 namespace solo
 {
-	class OpenGLTextureCube: public TextureCube
+	class OpenGLCubeTexture: public CubeTexture
 	{
 	public:
-		virtual ~OpenGLTextureCube();
-		virtual void setData(TextureCubeFace face, ColorFormat format, const std::vector<uint8_t>& data, unsigned width, unsigned height) override;
+		virtual ~OpenGLCubeTexture();
+
+		virtual void setData(CubeTextureFace face, ColorFormat format, const std::vector<uint8_t>& data, unsigned width, unsigned height) override;
 		virtual void apply() override;
 		virtual void generateMipmaps() override;
 
@@ -18,7 +19,7 @@ namespace solo
 	private:
 		friend class TextureFactory;
 
-		OpenGLTextureCube();
+		OpenGLCubeTexture();
 
 		void bind();
 		void unbind();

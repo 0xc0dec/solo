@@ -9,7 +9,7 @@ namespace solo
 	class Mesh;
 	class Model;
 	class Texture2D;
-	class TextureCube;
+	class CubeTexture;
 	class RenderTarget;
 	class ImageLoader;
 	class ModelLoader;
@@ -26,7 +26,7 @@ namespace solo
 
 		shared<Effect> findEffect(const std::string &uri);
 		shared<Texture2D> findTexture2D(const std::string &uri);
-		shared<TextureCube> findTextureCube(const std::string &uri);
+		shared<CubeTexture> findCubeTexture(const std::string &uri);
 		shared<Material> findMaterial(const std::string &uri);
 		shared<Mesh> findMesh(const std::string &uri);
 		shared<Model> findModel(const std::string &uri);
@@ -40,7 +40,7 @@ namespace solo
 		shared<RenderTarget> getOrCreateRenderTarget(const std::string &uri);
 
 		shared<Texture2D> getOrLoadTexture2D(const std::string& imageUri, const std::string& uri = "");
-		shared<TextureCube> getOrLoadTextureCube(const std::vector<std::string>& imageUris, const std::string& uri = "");
+		shared<CubeTexture> getOrLoadCubeTexture(const std::vector<std::string>& imageUris, const std::string& uri = "");
 		shared<Model> getOrLoadModel(const std::string& dataUri, const std::string& uri = "");
 
 		void cleanUnusedResources();
@@ -76,7 +76,7 @@ namespace solo
 		ResourceMap<Mesh> meshes;
 		ResourceMap<Model> models;
 		ResourceMap<Texture2D> textures2d;
-		ResourceMap<TextureCube> texturesCube;
+		ResourceMap<CubeTexture> cubeTextures;
 		ResourceMap<RenderTarget> renderTargets;
 
 		size_t resourceCounter{ 0 };
