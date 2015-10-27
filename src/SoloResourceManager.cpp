@@ -8,7 +8,7 @@
 #include "SoloRenderTarget.h"
 #include "SoloPngImageLoader.h"
 #include "SoloTexture2D.h"
-#include "SoloTextureCube.h"
+#include "SoloCubeTexture.h"
 #include "SoloEngine.h"
 #include "SoloObjModelLoader.h"
 

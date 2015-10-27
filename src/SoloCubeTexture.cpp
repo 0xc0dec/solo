@@ -1,4 +1,4 @@
-#include "SoloTextureCube.h"
+#include "SoloCubeTexture.h"
 
 using namespace solo;
 

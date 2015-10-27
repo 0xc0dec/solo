@@ -1,4 +1,4 @@
-#include "SoloOpenGLTextureCube.h"
+#include "SoloOpenGLCubeTexture.h"
 #include "SoloOpenGLHelper.h"
 
 using namespace solo;

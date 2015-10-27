@@ -40,7 +40,7 @@
     <ClInclude Include="..\include\SoloRenderer.h" />
     <ClInclude Include="..\include\SoloRenderTarget.h" />
     <ClInclude Include="..\include\SoloScriptManager.h" />
-    <ClInclude Include="..\include\SoloTextureCube.h" />
+    <ClInclude Include="..\include\SoloCubeTexture.h" />
     <ClInclude Include="..\include\SoloImageLoader.h" />
     <ClInclude Include="..\include\SoloTexture.h" />
     <ClInclude Include="..\include\SoloLog.h" />
@@ -76,7 +76,7 @@
     <ClInclude Include="..\src\platform\SoloOpenGLMesh.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLRenderTarget.h" />
     <ClInclude Include="..\src\platform\SoloOpenGLTexture2D.h" />
-    <ClInclude Include="..\src\platform\SoloOpenGLTextureCube.h" />
+    <ClInclude Include="..\src\platform\SoloOpenGLCubeTexture.h" />
     <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h" />
     <ClInclude Include="..\src\SoloModelLoader.h" />
     <ClInclude Include="..\src\SoloObjModelLoader.h" />
@@ -96,8 +96,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\platform\SoloOpenGLHelper.cpp" />
-    <ClCompile Include="..\src\platform\SoloOpenGLTextureCube.cpp" />
-    <ClCompile Include="..\src\SoloTextureCube.cpp" />
+    <ClCompile Include="..\src\platform\SoloOpenGLCubeTexture.cpp" />
+    <ClCompile Include="..\src\SoloCubeTexture.cpp" />
     <ClCompile Include="..\thirdparty\glew\src\glew.c" />
     <ClCompile Include="..\thirdparty\glew\src\glewinfo.c" />
     <ClCompile Include="..\thirdparty\glew\src\visualinfo.c" />

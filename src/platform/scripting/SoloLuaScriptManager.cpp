@@ -25,7 +25,7 @@
 #include "SoloEffect.h"
 #include "SoloTexture.h"
 #include "SoloTexture2D.h"
-#include "SoloTextureCube.h"
+#include "SoloCubeTexture.h"
 #include "SoloMaterial.h"
 #include "SoloMaterialParameter.h"
 #include "SoloMesh.h"

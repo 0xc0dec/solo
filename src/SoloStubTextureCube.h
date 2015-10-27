@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SoloTextureCube.h"
+#include "SoloCubeTexture.h"
 
 namespace solo
 {

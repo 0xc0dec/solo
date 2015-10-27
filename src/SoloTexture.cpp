@@ -3,7 +3,7 @@
 #include "SoloStubTextureCube.h"
 #include "SoloEngineCreationArgs.h"
 #include "platform/SoloOpenGLTexture2D.h"
-#include "platform/SoloOpenGLTextureCube.h"
+#include "platform/SoloOpenGLCubeTexture.h"
 
 using namespace solo;
 

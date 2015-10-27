@@ -193,9 +193,6 @@
     <ClInclude Include="..\src\SoloStubEffectVariable.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloTextureCube.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloImage.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -208,9 +205,6 @@
     <ClInclude Include="..\src\SoloPngImageLoader.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\SoloOpenGLTextureCube.h">
-      <Filter>src\platform</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\SoloStubTextureCube.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -222,6 +216,12 @@
     </ClInclude>
     <ClInclude Include="..\include\SoloBitFlags.h">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloCubeTexture.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\SoloOpenGLCubeTexture.h">
+      <Filter>src\platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -456,19 +456,19 @@
     <ClCompile Include="..\src\SoloStubEffect.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloTextureCube.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloStubImageLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloPngImageLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\SoloOpenGLTextureCube.cpp">
+    <ClCompile Include="..\src\platform\SoloOpenGLHelper.cpp">
       <Filter>src\platform</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\SoloOpenGLHelper.cpp">
+    <ClCompile Include="..\src\SoloCubeTexture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\SoloOpenGLCubeTexture.cpp">
       <Filter>src\platform</Filter>
     </ClCompile>
   </ItemGroup>
