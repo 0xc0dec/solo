@@ -164,6 +164,14 @@ shared<Texture2D> ResourceManager::getOrCreateTexture2D(const std::string &uri)
 }
 
 
+shared<CubeTexture> ResourceManager::getOrCreateCubeTexture(const std::string& uri)
+{
+	return getOrCreateResource<CubeTexture>(uri, cubeTextures,
+		std::bind(&ResourceManager::findCubeTexture, this, std::placeholders::_1),
+		std::bind(&TextureFactory::createCube, engine->getMode()));
+}
+
+
 shared<Model> ResourceManager::getOrLoadModel(const std::string& dataUri, const std::string& uri)
 {
 	auto modelUri = uri.empty() ? dataUri : uri;

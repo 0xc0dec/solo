@@ -301,12 +301,15 @@ void LuaScriptManager::registerApi()
 	REGISTER_VARIABLE(bs, BoundingSphere, radius);
 	bs.endClass();
 
+	// PlaneIntersection
+	module
+		.addConstant("PlaneIntersection_Intersecting", PlaneIntersection::Intersecting)
+		.addConstant("PlaneIntersection_Front", PlaneIntersection::Front)
+		.addConstant("PlaneIntersection_Back", PlaneIntersection::Back);
+
 	// Plane
 	auto p = module.beginClass<Plane>("Plane");
-	p.addConstructor(LUA_ARGS(const Vector3&, float))
-		.addConstant("Intersection_Intersecting", PlaneIntersection::Intersecting)
-		.addConstant("Intersection_Front", PlaneIntersection::Front)
-		.addConstant("Intersection_Back", PlaneIntersection::Back);
+	p.addConstructor(LUA_ARGS(const Vector3&, float));
 	REGISTER_STATIC_METHOD(p, Plane, intersection);
 	REGISTER_METHOD(p, Plane, getNormal);
 	REGISTER_METHOD(p, Plane, setNormal);
@@ -423,11 +426,21 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(tex2d, Texture2D, getSize);
 	tex2d.endClass();
 
+	// CubeTextureFace
+	module
+		.addConstant("CubeTextureFace_Front", CubeTextureFace::Front)
+		.addConstant("CubeTextureFace_Back", CubeTextureFace::Back)
+		.addConstant("CubeTextureFace_Left", CubeTextureFace::Left)
+		.addConstant("CubeTextureFace_Right", CubeTextureFace::Right)
+		.addConstant("CubeTextureFace_Top", CubeTextureFace::Top)
+		.addConstant("CubeTextureFace_Bottom", CubeTextureFace::Bottom);
+
 	// CubeTexture
 	auto texCube = module.beginExtendClass<CubeTexture, Texture>("CubeTexture");
 	REGISTER_METHOD(texCube, CubeTexture, getDepthWrapMode);
 	REGISTER_METHOD(texCube, CubeTexture, setDepthWrapMode);
 	REGISTER_METHOD(texCube, CubeTexture, generateMipmaps);
+	REGISTER_METHOD(texCube, CubeTexture, setData);
 	texCube.endClass();
 
 	// RenderTarget
@@ -670,12 +683,14 @@ void LuaScriptManager::registerApi()
 	auto mgr = module.beginClass<ResourceManager>("ResourceManager");
 	REGISTER_METHOD(mgr, ResourceManager, findEffect);
 	REGISTER_METHOD(mgr, ResourceManager, findTexture2D);
+	REGISTER_METHOD(mgr, ResourceManager, findCubeTexture);
 	REGISTER_METHOD(mgr, ResourceManager, findMaterial);
 	REGISTER_METHOD(mgr, ResourceManager, findMesh);
 	REGISTER_METHOD(mgr, ResourceManager, findModel);
 	REGISTER_METHOD(mgr, ResourceManager, findRenderTarget);
 	REGISTER_METHOD2(mgr, ResourceManager, getOrCreateEffect, LUA_ARGS(const std::string&, const std::string&, _opt<const std::string&>));
 	REGISTER_METHOD2(mgr, ResourceManager, getOrCreateTexture2D, LUA_ARGS(_opt<const std::string&>));
+	REGISTER_METHOD2(mgr, ResourceManager, getOrCreateCubeTexture, LUA_ARGS(_opt<const std::string&>));
 	REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMaterial, LUA_ARGS(shared<Effect>, _opt<const std::string&>));
 	REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMesh, LUA_ARGS(_opt<const std::string&>));
 	REGISTER_METHOD2(mgr, ResourceManager, getOrCreateModel, LUA_ARGS(_opt<const std::string&>));
