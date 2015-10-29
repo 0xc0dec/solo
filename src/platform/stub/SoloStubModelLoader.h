@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SoloModelLoader.h"
+#include "../../SoloModelLoader.h"
 
 namespace solo
 {

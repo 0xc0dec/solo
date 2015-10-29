@@ -1,6 +1,6 @@
-#include "SoloStubRenderTarget.h"
 #include "SoloEngineCreationArgs.h"
-#include "platform/SoloOpenGLRenderTarget.h"
+#include "platform/stub/SoloStubRenderTarget.h"
+#include "platform/opengl/SoloOpenGLRenderTarget.h"
 
 using namespace solo;
 

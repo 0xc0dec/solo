@@ -1,10 +1,11 @@
-#include <GL/glew.h>
 #include "SoloGLSLEffectVariable.h"
 #include "SoloMatrix.h"
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 #include "SoloVector4.h"
 #include "SoloTexture.h"
+#include <GL/glew.h>
+
 
 using namespace solo;
 

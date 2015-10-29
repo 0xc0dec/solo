@@ -22,10 +22,7 @@ namespace solo
 	private:
 		friend class DeviceFactory;
 
-		explicit StubDevice(const EngineCreationArgs& args)
-			: Device(args)
-		{
-		}
+		explicit StubDevice(const EngineCreationArgs& args);
 
 		std::string windowTitle;
 	};

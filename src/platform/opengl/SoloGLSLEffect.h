@@ -1,7 +1,7 @@
 #pragma once
 
-#include <GL/glew.h>
 #include "SoloEffect.h"
+#include <GL/glew.h>
 
 namespace solo
 {

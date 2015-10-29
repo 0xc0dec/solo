@@ -1,6 +1,6 @@
-#include "SoloStubMesh.h"
 #include "SoloEngineCreationArgs.h"
-#include "platform/SoloOpenGLMesh.h"
+#include "platform/stub/SoloStubMesh.h"
+#include "platform/opengl/SoloOpenGLMesh.h"
 
 using namespace solo;
 

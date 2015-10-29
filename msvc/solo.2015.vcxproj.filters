@@ -49,9 +49,6 @@
     <ClInclude Include="..\include\SoloFormatter.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\SoloGLSLEffect.h">
-      <Filter>src\platform</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloCamera.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -91,20 +88,8 @@
     <ClInclude Include="..\include\SoloEngineCallback.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\SoloOpenGLCamera.h">
-      <Filter>src\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\SoloOpenGLMesh.h">
-      <Filter>src\platform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\SoloSDLOpenGLDevice.h">
-      <Filter>src\platform</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloEffectVariable.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\SoloGLSLEffectVariable.h">
-      <Filter>src\platform</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloMaterialParameter.h">
       <Filter>include</Filter>
@@ -124,17 +109,11 @@
     <ClInclude Include="..\include\SoloLog.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\SoloOpenGLMaterial.h">
-      <Filter>src\platform</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloTexture.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloTexture2D.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\SoloOpenGLTexture2D.h">
-      <Filter>src\platform</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloEngineCreationArgs.h">
       <Filter>include</Filter>
@@ -142,34 +121,10 @@
     <ClInclude Include="..\include\SoloRenderTarget.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\SoloOpenGLRenderTarget.h">
-      <Filter>src\platform</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\SoloObjModelLoader.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\src\SoloModelLoader.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloStubDevice.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloStubEffect.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloStubCamera.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloStubMaterial.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloStubMesh.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloStubRenderTarget.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloStubTexture2D.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloScriptManager.h">
@@ -184,29 +139,14 @@
     <ClInclude Include="..\src\platform\scripting\SoloLuaEngineCallback.h">
       <Filter>src\platform\scripting</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloStubResourceManager.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloStubModelLoader.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloStubEffectVariable.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloImage.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloImageLoader.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloStubImageLoader.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\SoloPngImageLoader.h">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\SoloOpenGLHelper.h">
-      <Filter>src\platform</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloRenderer.h">
       <Filter>include</Filter>
@@ -217,11 +157,71 @@
     <ClInclude Include="..\include\SoloCubeTexture.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\SoloOpenGLCubeTexture.h">
-      <Filter>src\platform</Filter>
+    <ClInclude Include="..\src\platform\opengl\SoloGLSLEffect.h">
+      <Filter>src\platform\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloStubCubeTexture.h">
-      <Filter>src</Filter>
+    <ClInclude Include="..\src\platform\opengl\SoloGLSLEffectVariable.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLCamera.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLCubeTexture.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLHelper.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLMaterial.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLMesh.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderTarget.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLTexture2D.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\stub\SoloStubCamera.h">
+      <Filter>src\platform\stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\stub\SoloStubCubeTexture.h">
+      <Filter>src\platform\stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\stub\SoloStubDevice.h">
+      <Filter>src\platform\stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\stub\SoloStubEffect.h">
+      <Filter>src\platform\stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\stub\SoloStubEffectVariable.h">
+      <Filter>src\platform\stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\stub\SoloStubImageLoader.h">
+      <Filter>src\platform\stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\stub\SoloStubMaterial.h">
+      <Filter>src\platform\stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\stub\SoloStubMesh.h">
+      <Filter>src\platform\stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\stub\SoloStubModelLoader.h">
+      <Filter>src\platform\stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\stub\SoloStubRenderTarget.h">
+      <Filter>src\platform\stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\stub\SoloStubResourceManager.h">
+      <Filter>src\platform\stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\stub\SoloStubTexture2D.h">
+      <Filter>src\platform\stub</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -288,9 +288,6 @@
     <ClCompile Include="..\src\SoloEffect.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\SoloGLSLEffect.cpp">
-      <Filter>src\platform</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloMesh.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -306,18 +303,6 @@
     <ClCompile Include="..\src\SoloBase.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\SoloOpenGLCamera.cpp">
-      <Filter>src\platform</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\SoloOpenGLMesh.cpp">
-      <Filter>src\platform</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\SoloSDLOpenGLDevice.cpp">
-      <Filter>src\platform</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\SoloGLSLEffectVariable.cpp">
-      <Filter>src\platform</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloEffectVariable.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -332,12 +317,6 @@
     </ClCompile>
     <ClCompile Include="..\src\SoloResourceManager.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\SoloOpenGLMaterial.cpp">
-      <Filter>src\platform</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\SoloOpenGLTexture2D.cpp">
-      <Filter>src\platform</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloTexture.cpp">
       <Filter>src</Filter>
@@ -423,16 +402,10 @@
     <ClCompile Include="..\src\SoloTexture2D.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\SoloOpenGLRenderTarget.cpp">
-      <Filter>src\platform</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloRenderTarget.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloObjModelLoader.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloStubDevice.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloScriptManager.cpp">
@@ -447,29 +420,56 @@
     <ClCompile Include="..\src\platform\scripting\SoloLuaEngineCallback.cpp">
       <Filter>src\platform\scripting</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloStubResourceManager.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloStubModelLoader.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloStubEffect.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloStubImageLoader.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloPngImageLoader.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\SoloOpenGLHelper.cpp">
-      <Filter>src\platform</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloCubeTexture.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\SoloOpenGLCubeTexture.cpp">
-      <Filter>src\platform</Filter>
+    <ClCompile Include="..\src\platform\opengl\SoloGLSLEffect.cpp">
+      <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\opengl\SoloGLSLEffectVariable.cpp">
+      <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLCamera.cpp">
+      <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLCubeTexture.cpp">
+      <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLHelper.cpp">
+      <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLMaterial.cpp">
+      <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLMesh.cpp">
+      <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderTarget.cpp">
+      <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLTexture2D.cpp">
+      <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp">
+      <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\stub\SoloStubDevice.cpp">
+      <Filter>src\platform\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\stub\SoloStubEffect.cpp">
+      <Filter>src\platform\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\stub\SoloStubImageLoader.cpp">
+      <Filter>src\platform\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\stub\SoloStubModelLoader.cpp">
+      <Filter>src\platform\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\stub\SoloStubResourceManager.cpp">
+      <Filter>src\platform\stub</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -496,6 +496,12 @@
     </Filter>
     <Filter Include="src\platform\scripting">
       <UniqueIdentifier>{5218c9b5-9e47-4e4c-b2fa-c92321e11046}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\platform\opengl">
+      <UniqueIdentifier>{f14878d2-f3e0-46aa-8dde-49cd0692f7f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\platform\stub">
+      <UniqueIdentifier>{a2160cc5-f9a6-47d6-b537-be79b1e819d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

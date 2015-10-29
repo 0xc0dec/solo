@@ -1,7 +1,7 @@
 #pragma once
 
-#include <SDL.h>
 #include "SoloDevice.h"
+#include <SDL.h>
 
 namespace solo
 {

@@ -1,6 +1,6 @@
 #include "SoloDevice.h"
-#include "SoloStubDevice.h"
-#include "platform/SoloSDLOpenGLDevice.h"
+#include "platform/stub/SoloStubDevice.h"
+#include "platform/opengl/SoloSDLOpenGLDevice.h"
 
 using namespace solo;
 

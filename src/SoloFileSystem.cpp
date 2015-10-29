@@ -1,5 +1,5 @@
-#include <fstream>
 #include "SoloFileSystem.h"
+#include <fstream>
 
 using namespace solo;
 

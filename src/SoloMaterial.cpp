@@ -1,9 +1,9 @@
-#include "SoloStubMaterial.h"
 #include "SoloMaterialParameter.h"
 #include "SoloEffect.h"
 #include "SoloRenderContext.h"
 #include "SoloEngineCreationArgs.h"
-#include "platform/SoloOpenGLMaterial.h"
+#include "platform/stub/SoloStubMaterial.h"
+#include "platform/opengl/SoloOpenGLMaterial.h"
 
 using namespace solo;
 

@@ -3,6 +3,12 @@
 using namespace solo;
 
 
+StubDevice::StubDevice(const EngineCreationArgs& args):
+	Device(args)
+{
+}
+
+
 void StubDevice::beginUpdate()
 {
 }

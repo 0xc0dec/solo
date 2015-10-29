@@ -1,6 +1,4 @@
-#include <functional>
 #include "SoloResourceManager.h"
-#include "SoloStubResourceManager.h"
 #include "SoloEffect.h"
 #include "SoloMaterial.h"
 #include "SoloMesh.h"
@@ -11,6 +9,8 @@
 #include "SoloCubeTexture.h"
 #include "SoloEngine.h"
 #include "SoloObjModelLoader.h"
+#include "platform/stub/SoloStubResourceManager.h"
+#include <functional>
 
 using namespace solo;
 

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <GL/glew.h>
 #include "SoloBase.h"
 #include "SoloMesh.h"
 #include "SoloVector3.h"
+#include <GL/glew.h>
 
 namespace solo
 {

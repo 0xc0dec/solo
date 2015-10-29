@@ -1,5 +1,7 @@
 #pragma once
 
+#include "SoloBase.h"
+
 namespace solo
 {
 	enum class EngineMode

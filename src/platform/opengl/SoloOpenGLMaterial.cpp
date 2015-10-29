@@ -1,5 +1,5 @@
-#include <GL/glew.h>
 #include "SoloOpenGLMaterial.h"
+#include <GL/glew.h>
 
 using namespace solo;
 

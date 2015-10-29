@@ -1,7 +1,7 @@
 #pragma once
 
-#include <GL/glew.h>
 #include "SoloTexture2D.h"
+#include <GL/glew.h>
 
 namespace solo
 {

@@ -1,6 +1,6 @@
-#include "SoloStubEffect.h"
 #include "SoloEngineCreationArgs.h"
-#include "platform/SoloGLSLEffect.h"
+#include "platform/stub/SoloStubEffect.h"
+#include "platform/opengl/SoloGLSLEffect.h"
 
 using namespace solo;
 

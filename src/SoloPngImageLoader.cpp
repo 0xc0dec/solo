@@ -1,8 +1,8 @@
-#include <png.h>
 #include "SoloPngImageLoader.h"
 #include "SoloFileSystem.h"
 #include "SoloImage.h"
 #include "SoloResourceManager.h"
+#include <png.h>
 
 using namespace solo;
 
