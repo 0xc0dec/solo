@@ -14,7 +14,7 @@ namespace solo
 	class Engine
 	{
 	public:
-		~Engine();
+		~Engine() {}
 
 		static shared<Engine> create(const EngineCreationArgs &args);
 
@@ -40,4 +40,29 @@ namespace solo
 		shared<FileSystem> fs;
 		shared<ResourceManager> resourceManager;
 	};
+
+	inline EngineMode Engine::getMode() const
+	{
+		return creationArgs.mode;
+	}
+
+	inline Scene *Engine::getScene() const
+	{
+		return scene.get();
+	}
+
+	inline Device *Engine::getDevice() const
+	{
+		return device.get();
+	}
+
+	inline FileSystem *Engine::getFileSystem() const
+	{
+		return fs.get();
+	}
+
+	inline ResourceManager *Engine::getResourceManager() const
+	{
+		return resourceManager.get();
+	}
 }

@@ -51,27 +51,9 @@ bool Device::isMouseButtonReleased(MouseButton button) const
 }
 
 
-void Device::requestShutdown()
-{
-	close = true;
-}
-
-
-bool Device::shutdownRequested() const
-{
-	return close;
-}
-
-
 void Device::updateTime()
 {
 	auto time = getLifetime();
 	timeDelta = time - lastUpdateTime;
 	lastUpdateTime = time;
-}
-
-
-float Device::getTimeDelta() const
-{
-	return timeDelta;
 }

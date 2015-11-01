@@ -81,6 +81,22 @@ namespace solo
 		Device& operator=(Device&& other) = delete;
 	};
 
+	inline float Device::getTimeDelta() const
+	{
+		return timeDelta;
+	}
+
+	inline void Device::requestShutdown()
+	{
+		close = true;
+	}
+
+	inline bool Device::shutdownRequested() const
+	{
+		return close;
+	}
+
+
 	class DeviceFactory
 	{
 		friend class Engine;

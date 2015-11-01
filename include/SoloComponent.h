@@ -30,26 +30,31 @@ namespace solo
 	class ComponentBase: public Component
 	{
 	public:
-		explicit ComponentBase(const Node& node): node(node)
-		{
-		}
+		explicit ComponentBase(const Node& node): node(node) {}
 
-		static size_t getId()
-		{
-			return TypeId::get<T>();
-		}
-
-		virtual size_t getTypeId() override
-		{
-			return getId();
-		}
-
-		Node getNode() const
-		{
-			return node;
-		}
+		static size_t getId();
+		virtual size_t getTypeId() override;
+		Node getNode() const;
 
 	protected:
 		Node node;
 	};
+
+	template <class T>
+	size_t ComponentBase<T>::getId()
+	{
+		return TypeId::get<T>();
+	}
+
+	template <class T>
+	size_t ComponentBase<T>::getTypeId()
+	{
+		return getId();
+	}
+
+	template <class T>
+	Node ComponentBase<T>::getNode() const
+	{
+		return node;
+	}
 }

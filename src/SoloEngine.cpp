@@ -34,11 +34,6 @@ Engine::Engine(const EngineCreationArgs& args):
 }
 
 
-Engine::~Engine()
-{
-}
-
-
 void Engine::run()
 {
 	callback->onEngineStarted();
@@ -60,34 +55,4 @@ void Engine::run()
 void Engine::setCallback(shared<EngineCallback> callback)
 {
 	this->callback = callback ? callback : SL_NEW<EmptyEngineCallback>();
-}
-
-
-EngineMode Engine::getMode() const
-{
-	return creationArgs.mode;
-}
-
-
-Scene *Engine::getScene() const
-{
-	return scene.get();
-}
-
-
-Device *Engine::getDevice() const
-{
-	return device.get();
-}
-
-
-FileSystem *Engine::getFileSystem() const
-{
-	return fs.get();
-}
-
-
-ResourceManager *Engine::getResourceManager() const
-{
-	return resourceManager.get();
 }

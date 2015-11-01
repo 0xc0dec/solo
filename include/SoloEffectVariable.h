@@ -13,11 +13,11 @@ namespace solo
 	class EffectVariable
 	{
 	public:
+		virtual ~EffectVariable() {}
 		EffectVariable(const EffectVariable& other) = delete;
 		EffectVariable(EffectVariable&& other) = delete;
 		EffectVariable& operator=(const EffectVariable& other) = delete;
 		EffectVariable& operator=(EffectVariable&& other) = delete;
-		virtual ~EffectVariable() {}
 
 		std::string getName() const;
 
@@ -37,8 +37,13 @@ namespace solo
 		virtual void setTextureArray(const std::vector<shared<Texture>>& textures) = 0;
 
 	protected:
-		explicit EffectVariable(const std::string &name);
+		explicit EffectVariable(const std::string &name): name(name) {}
 
 		std::string name;
 	};
+
+	inline std::string EffectVariable::getName() const
+	{
+		return name;
+	}
 }

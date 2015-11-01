@@ -306,9 +306,6 @@
     <ClCompile Include="..\src\SoloBase.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloEffectVariable.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloMaterialParameter.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -424,9 +421,6 @@
       <Filter>src\platform\scripting</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloPngImageLoader.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloCubeTexture.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\opengl\SoloGLSLEffect.cpp">

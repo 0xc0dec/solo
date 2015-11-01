@@ -111,7 +111,6 @@
     <ClCompile Include="..\src\platform\stub\SoloStubImageLoader.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubModelLoader.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubResourceManager.cpp" />
-    <ClCompile Include="..\src\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\SoloSpectator.cpp" />
     <ClCompile Include="..\thirdparty\glew\src\glew.c" />
     <ClCompile Include="..\thirdparty\glew\src\glewinfo.c" />
@@ -148,7 +147,6 @@
     <ClCompile Include="..\src\SoloBoundingBox.cpp" />
     <ClCompile Include="..\src\SoloBoundingSphere.cpp" />
     <ClCompile Include="..\src\SoloCamera.cpp" />
-    <ClCompile Include="..\src\SoloEffectVariable.cpp" />
     <ClCompile Include="..\src\SoloFileSystem.cpp" />
     <ClCompile Include="..\src\SoloBase.cpp" />
     <ClCompile Include="..\src\SoloDevice.cpp" />

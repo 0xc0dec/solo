@@ -30,4 +30,14 @@ namespace solo
 
 		TextureWrapMode depthWrap = TextureWrapMode::Repeat;
 	};
+
+	inline TextureWrapMode CubeTexture::getDepthWrapMode() const
+	{
+		return depthWrap;
+	}
+
+	inline void CubeTexture::setDepthWrapMode(TextureWrapMode depthWrap)
+	{
+		this->depthWrap = depthWrap;
+	}
 }
