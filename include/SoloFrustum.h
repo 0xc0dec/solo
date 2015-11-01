@@ -47,4 +47,39 @@ namespace solo
 		Plane right;
 		Matrix matrix;
 	};
+
+	inline const Plane& Frustum::getNearPlane() const
+	{
+		return near;
+	}
+
+	inline const Plane& Frustum::getFarPlane() const
+	{
+		return far;
+	}
+
+	inline const Plane& Frustum::getLeftPlane() const
+	{
+		return left;
+	}
+
+	inline const Plane& Frustum::getRightPlane() const
+	{
+		return right;
+	}
+
+	inline const Plane& Frustum::getBottomPlane() const
+	{
+		return bottom;
+	}
+
+	inline const Plane& Frustum::getTopPlane() const
+	{
+		return top;
+	}
+
+	inline Matrix Frustum::getMatrix() const
+	{
+		return matrix;
+	}
 }

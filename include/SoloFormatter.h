@@ -9,7 +9,7 @@ namespace solo
 	class Formatter
 	{
 	public:
-		std::string operator()()
+		std::string operator()() const
 		{
 			return _buf.str();
 		}

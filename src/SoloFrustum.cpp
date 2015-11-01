@@ -12,52 +12,10 @@ Frustum::Frustum()
 }
 
 
-const Plane& Frustum::getNearPlane() const
-{
-	return near;
-}
-
-
-const Plane& Frustum::getFarPlane() const
-{
-	return far;
-}
-
-
-const Plane& Frustum::getLeftPlane() const
-{
-	return left;
-}
-
-
-const Plane& Frustum::getRightPlane() const
-{
-	return right;
-}
-
-
-const Plane& Frustum::getBottomPlane() const
-{
-	return bottom;
-}
-
-
-const Plane& Frustum::getTopPlane() const
-{
-	return top;
-}
-
-
 void Frustum::setMatrix(const Matrix& m)
 {
 	this->matrix = m;
 	updatePlanes();
-}
-
-
-Matrix Frustum::getMatrix() const
-{
-	return matrix;
 }
 
 
