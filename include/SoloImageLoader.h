@@ -11,11 +11,11 @@ namespace solo
 	class ImageLoader
 	{
 	public:
-		virtual ~ImageLoader() {}
 		ImageLoader(const ImageLoader& other) = delete;
 		ImageLoader(ImageLoader&& other) = delete;
 		ImageLoader& operator=(const ImageLoader& other) = delete;
 		ImageLoader& operator=(ImageLoader&& other) = delete;
+		virtual ~ImageLoader() {}
 
 		virtual bool isLoadable(const std::string& uri) = 0;
 		virtual shared<Image> load(const std::string& uri) = 0;

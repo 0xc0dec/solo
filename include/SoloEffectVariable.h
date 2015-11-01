@@ -13,11 +13,11 @@ namespace solo
 	class EffectVariable
 	{
 	public:
-		virtual ~EffectVariable() {}
 		EffectVariable(const EffectVariable& other) = delete;
 		EffectVariable(EffectVariable&& other) = delete;
 		EffectVariable& operator=(const EffectVariable& other) = delete;
 		EffectVariable& operator=(EffectVariable&& other) = delete;
+		virtual ~EffectVariable() {}
 
 		std::string getName() const;
 

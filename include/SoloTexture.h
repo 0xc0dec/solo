@@ -27,11 +27,11 @@ namespace solo
 	class Texture
 	{
 	public:
-		virtual ~Texture() {}
 		Texture(const Texture& other) = delete;
 		Texture(Texture&& other) = delete;
 		Texture& operator=(const Texture& other) = delete;
 		Texture& operator=(Texture&& other) = delete;
+		virtual ~Texture() {}
 
 		virtual void apply() = 0;
 

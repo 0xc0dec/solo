@@ -11,6 +11,10 @@ namespace solo
 	class Mesh
 	{
 	public:
+		Mesh(const Mesh& other) = delete;
+		Mesh(Mesh&& other) = delete;
+		Mesh& operator=(const Mesh& other) = delete;
+		Mesh& operator=(Mesh&& other) = delete;
 		virtual ~Mesh() {}
 
 		virtual void draw() = 0;
@@ -22,10 +26,6 @@ namespace solo
 
 	protected:
 		Mesh() {}
-		Mesh(const Mesh& other) = delete;
-		Mesh(Mesh&& other) = delete;
-		Mesh& operator=(const Mesh& other) = delete;
-		Mesh& operator=(Mesh&& other) = delete;
 	};
 
 	class MeshFactory

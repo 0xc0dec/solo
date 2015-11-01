@@ -10,6 +10,10 @@ namespace solo
 	class Effect
 	{
 	public:
+		Effect(const Effect& other) = delete;
+		Effect(Effect&& other) = delete;
+		Effect& operator=(const Effect& other) = delete;
+		Effect& operator=(Effect&& other) = delete;
 		virtual ~Effect() {}
 
 		virtual void bind() = 0;
@@ -20,12 +24,6 @@ namespace solo
 		Effect() {}
 
 		std::unordered_map<std::string, shared<EffectVariable>> variables;
-
-	private:
-		Effect(const Effect& other) = delete;
-		Effect(Effect&& other) = delete;
-		Effect& operator=(const Effect& other) = delete;
-		Effect& operator=(Effect&& other) = delete;
 	};
 
 	class EffectFactory

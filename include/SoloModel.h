@@ -9,6 +9,10 @@ namespace solo
 	class Model
 	{
 	public:
+		Model(const Model& other) = delete;
+		Model(Model&& other) = delete;
+		Model& operator=(const Model& other) = delete;
+		Model& operator=(Model&& other) = delete;
 		~Model() {}
 
 		void addMesh(shared<Mesh> mesh);
@@ -20,10 +24,6 @@ namespace solo
 		friend class ModelFactory;
 
 		Model() {}
-		Model(const Model& other) = delete;
-		Model(Model&& other) = delete;
-		Model& operator=(const Model& other) = delete;
-		Model& operator=(Model&& other) = delete;
 
 		std::vector<shared<Mesh>> meshes;
 	};

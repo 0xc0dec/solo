@@ -18,11 +18,11 @@ namespace solo
 	class ResourceManager
 	{
 	public:
-		~ResourceManager() {}
 		ResourceManager(const ResourceManager& other) = delete;
 		ResourceManager(ResourceManager&& other) = delete;
 		ResourceManager& operator=(const ResourceManager& other) = delete;
 		ResourceManager& operator=(ResourceManager&& other) = delete;
+		~ResourceManager() {}
 
 		shared<Effect> findEffect(const std::string &uri);
 		shared<Texture2D> findTexture2D(const std::string &uri);

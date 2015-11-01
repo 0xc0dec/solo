@@ -22,11 +22,6 @@ namespace solo
 		explicit Material(shared<Effect> effect);
 
 	private:
-		Material(const Material& other) = delete;
-		Material(Material&& other) = delete;
-		Material& operator=(const Material& other) = delete;
-		Material& operator=(Material&& other) = delete;
-
 		shared<Effect> effect;
 		std::unordered_map<std::string, shared<MaterialParameter>> parameters;
 	};

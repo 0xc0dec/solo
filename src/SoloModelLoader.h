@@ -11,6 +11,10 @@ namespace solo
 	class ModelLoader
 	{
 	public:
+		ModelLoader(const ModelLoader& other) = delete;
+		ModelLoader(ModelLoader&& other) = delete;
+		ModelLoader& operator=(const ModelLoader& other) = delete;
+		ModelLoader& operator=(ModelLoader&& other) = delete;
 		virtual ~ModelLoader() {}
 
 		virtual bool isLoadable(const std::string& uri) = 0;
@@ -25,11 +29,5 @@ namespace solo
 
 		FileSystem *fs;
 		ResourceManager *resourceManager;
-
-	private:
-		ModelLoader(const ModelLoader& other) = delete;
-		ModelLoader(ModelLoader&& other) = delete;
-		ModelLoader& operator=(const ModelLoader& other) = delete;
-		ModelLoader& operator=(ModelLoader&& other) = delete;
 	};
 }

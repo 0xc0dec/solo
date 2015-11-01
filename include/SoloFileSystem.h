@@ -7,6 +7,10 @@ namespace solo
 	class FileSystem
 	{
 	public:
+		FileSystem(const FileSystem& other) = delete;
+		FileSystem(FileSystem&& other) = delete;
+		FileSystem& operator=(const FileSystem& other) = delete;
+		FileSystem& operator=(FileSystem&& other) = delete;
 		virtual ~FileSystem() {}
 
 		std::vector<uint8_t> readBytes(const std::string& path);
@@ -20,10 +24,6 @@ namespace solo
 		friend class FileSystemFactory;
 
 		FileSystem() {}
-		FileSystem(const FileSystem& other) = delete;
-		FileSystem(FileSystem&& other) = delete;
-		FileSystem& operator=(const FileSystem& other) = delete;
-		FileSystem& operator=(FileSystem&& other) = delete;
 	};
 
 	class FileSystemFactory

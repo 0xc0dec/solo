@@ -10,11 +10,11 @@ namespace solo
 	class RenderTarget
 	{
 	public:
-		virtual ~RenderTarget() {}
 		RenderTarget(const RenderTarget& other) = delete;
 		RenderTarget(RenderTarget&& other) = delete;
 		RenderTarget& operator=(const RenderTarget& other) = delete;
 		RenderTarget& operator=(RenderTarget&& other) = delete;
+		virtual ~RenderTarget() {}
 
 		virtual void bind() = 0;
 		virtual void unbind() = 0;

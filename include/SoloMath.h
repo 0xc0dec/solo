@@ -21,8 +21,6 @@ namespace solo
 	class Math
 	{
 	public:
-		Math() = delete;
-
 		static void smooth(float* x, float target, float elapsedTime, float responseTime)
 		{
 			if (elapsedTime > 0)

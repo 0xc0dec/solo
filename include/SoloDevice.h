@@ -28,6 +28,10 @@ namespace solo
 	class Device
 	{
 	public:
+		Device(const Device& other) = delete;
+		Device(Device&& device) = delete;
+		Device& operator=(const Device& other) = delete;
+		Device& operator=(Device&& other) = delete;
 		virtual ~Device() {}
 
 		virtual void beginUpdate() = 0;
@@ -73,12 +77,6 @@ namespace solo
 		float lastUpdateTime = 0;
 		float timeDelta = 0;
 		EngineCreationArgs creationArgs;
-
-	private:
-		Device(const Device& other) = delete;
-		Device(Device&& device) = delete;
-		Device& operator=(const Device& other) = delete;
-		Device& operator=(Device&& other) = delete;
 	};
 
 	inline float Device::getTimeDelta() const

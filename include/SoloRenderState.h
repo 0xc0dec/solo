@@ -14,11 +14,11 @@ namespace solo
 	class RenderState
 	{
 	public:
-		virtual ~RenderState() {}
 		RenderState(const RenderState& other) = delete;
 		RenderState(RenderState&& other) = delete;
 		RenderState& operator=(const RenderState& other) = delete;
 		RenderState& operator=(RenderState&& other) = delete;
+		virtual ~RenderState() {}
 
 		virtual void bind(RenderContext& context) = 0;
 		virtual void unbind(RenderContext& context) = 0;

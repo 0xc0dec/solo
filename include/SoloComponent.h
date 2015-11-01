@@ -10,11 +10,11 @@ namespace solo
 	class Component
 	{
 	public:
-		virtual ~Component() {}
 		Component(const Component& other) = delete;
 		Component(Component&& other) = delete;
 		Component& operator=(const Component& other) = delete;
 		Component& operator=(Component&& other) = delete;
+		virtual ~Component() {}
 
 		virtual size_t getTypeId() = 0;
 
