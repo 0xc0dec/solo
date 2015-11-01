@@ -22,3 +22,10 @@ shared<CubeTexture> TextureFactory::createCube(EngineMode mode)
 		return SL_NEW2(OpenGLCubeTexture);
 	return SL_NEW2(StubCubeTexture);
 }
+
+
+void Texture::setWrapMode(TextureWrapMode wrap)
+{
+	horizontalWrap = wrap;
+	verticalWrap = wrap;
+}

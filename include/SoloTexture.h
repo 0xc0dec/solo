@@ -14,7 +14,7 @@ namespace solo
 		Repeat
 	};
 
-	enum class TextureFilter
+	enum class TextureFiltering
 	{
 		Nearest,
 		Linear,
@@ -41,11 +41,15 @@ namespace solo
 		TextureWrapMode getVerticalWrapMode() const;
 		void setVerticalWrapMode(TextureWrapMode verticalWrap);
 
-		TextureFilter getMinFilter() const;
-		void setMinFilter(TextureFilter minFilter);
+		virtual void setWrapMode(TextureWrapMode wrap);
 
-		TextureFilter getMagFilter() const;
-		void setMagFilter(TextureFilter magFilter);
+		TextureFiltering getMinFiltering() const;
+		void setMinFiltering(TextureFiltering filtering);
+
+		TextureFiltering getMagFiltering() const;
+		void setMagFiltering(TextureFiltering filtering);
+
+		void setFiltering(TextureFiltering filtering);
 
 		float getAnisotropyLevel() const;
 		void setAnisotropyLevel(float level);
@@ -55,8 +59,8 @@ namespace solo
 
 		TextureWrapMode horizontalWrap = TextureWrapMode::Repeat;
 		TextureWrapMode verticalWrap = TextureWrapMode::Repeat;
-		TextureFilter minFilter = TextureFilter::Linear;
-		TextureFilter magFilter = TextureFilter::Linear;
+		TextureFiltering minFiltering = TextureFiltering::Linear;
+		TextureFiltering magFiltering = TextureFiltering::Linear;
 		float anisotropy = 1.0f;
 	};
 
@@ -65,9 +69,9 @@ namespace solo
 		return verticalWrap;
 	}
 
-	inline void Texture::setVerticalWrapMode(TextureWrapMode verticalWrap)
+	inline void Texture::setVerticalWrapMode(TextureWrapMode wrap)
 	{
-		this->verticalWrap = verticalWrap;
+		verticalWrap = wrap;
 	}
 
 	inline TextureWrapMode Texture::getHorizontalWrapMode() const
@@ -75,29 +79,35 @@ namespace solo
 		return horizontalWrap;
 	}
 
-	inline void Texture::setHorizontalWrapMode(TextureWrapMode horizontalWrap)
+	inline void Texture::setHorizontalWrapMode(TextureWrapMode wrap)
 	{
-		this->horizontalWrap = horizontalWrap;
+		horizontalWrap = wrap;
 	}
 
-	inline TextureFilter Texture::getMinFilter() const
+	inline TextureFiltering Texture::getMinFiltering() const
 	{
-		return minFilter;
+		return minFiltering;
 	}
 
-	inline void Texture::setMinFilter(TextureFilter minFilter)
+	inline void Texture::setMinFiltering(TextureFiltering filtering)
 	{
-		this->minFilter = minFilter;
+		minFiltering = filtering;
 	}
 
-	inline TextureFilter Texture::getMagFilter() const
+	inline TextureFiltering Texture::getMagFiltering() const
 	{
-		return magFilter;
+		return magFiltering;
 	}
 
-	inline void Texture::setMagFilter(TextureFilter magFilter)
+	inline void Texture::setMagFiltering(TextureFiltering filtering)
 	{
-		this->magFilter = magFilter;
+		magFiltering = filtering;
+	}
+
+	inline void Texture::setFiltering(TextureFiltering filtering)
+	{
+		minFiltering = filtering;
+		magFiltering = filtering;
 	}
 
 	inline float Texture::getAnisotropyLevel() const

@@ -22,6 +22,8 @@ namespace solo
 
 		virtual void generateMipmaps() = 0;
 
+		virtual void setWrapMode(TextureWrapMode wrap) override;
+
 		TextureWrapMode getDepthWrapMode() const;
 		void setDepthWrapMode(TextureWrapMode depthWrap);
 

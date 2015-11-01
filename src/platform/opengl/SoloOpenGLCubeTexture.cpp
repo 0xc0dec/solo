@@ -65,8 +65,8 @@ void OpenGLCubeTexture::unbind()
 void OpenGLCubeTexture::apply()
 {
 	bind();
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, OpenGLHelper::convertToGLFilter(minFilter));
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, OpenGLHelper::convertToGLFilter(magFilter));
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, OpenGLHelper::convertToGLFilter(minFiltering));
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, OpenGLHelper::convertToGLFilter(magFiltering));
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, OpenGLHelper::convertToGLWrapMode(horizontalWrap));
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, OpenGLHelper::convertToGLWrapMode(verticalWrap));
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, OpenGLHelper::convertToGLWrapMode(depthWrap));

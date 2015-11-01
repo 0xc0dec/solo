@@ -31,21 +31,21 @@ GLenum OpenGLHelper::convertToGLWrapMode(TextureWrapMode mode)
 }
 
 
-GLenum OpenGLHelper::convertToGLFilter(TextureFilter filter)
+GLenum OpenGLHelper::convertToGLFilter(TextureFiltering filter)
 {
 	switch (filter)
 	{
-		case TextureFilter::Linear:
+		case TextureFiltering::Linear:
 			return GL_LINEAR;
-		case TextureFilter::Nearest:
+		case TextureFiltering::Nearest:
 			return GL_NEAREST;
-		case TextureFilter::LinearMipmapNearest:
+		case TextureFiltering::LinearMipmapNearest:
 			return GL_LINEAR_MIPMAP_NEAREST;
-		case TextureFilter::LinearMipmapLinear:
+		case TextureFiltering::LinearMipmapLinear:
 			return GL_LINEAR_MIPMAP_LINEAR;
-		case TextureFilter::NearestMipmapLinear:
+		case TextureFiltering::NearestMipmapLinear:
 			return GL_NEAREST_MIPMAP_LINEAR;
-		case TextureFilter::NearestMipmapNearest:
+		case TextureFiltering::NearestMipmapNearest:
 			return GL_NEAREST_MIPMAP_NEAREST;
 		default:
 			SL_THROW_FMT(EngineException, "Unexpected texture filter ", static_cast<int>(filter));

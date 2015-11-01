@@ -397,14 +397,14 @@ void LuaScriptManager::registerApi()
 		.addConstant("TextureWrapMode_Clamp", TextureWrapMode::Clamp)
 		.addConstant("TextureWrapMode_Repeat", TextureWrapMode::Repeat);
 
-	// TextureFilter
+	// TextureFiltering
 	module
-		.addConstant("TextureFilter_Nearest", TextureFilter::Nearest)
-		.addConstant("TextureFilter_Linear", TextureFilter::Linear)
-		.addConstant("TextureFilter_LinearMipmapLinear", TextureFilter::LinearMipmapLinear)
-		.addConstant("TextureFilter_LinearMipmapNearest", TextureFilter::LinearMipmapNearest)
-		.addConstant("TextureFilter_NearestMipmapLinear", TextureFilter::NearestMipmapLinear)
-		.addConstant("TextureFilter_NearestMipmapNearest", TextureFilter::NearestMipmapNearest);
+		.addConstant("TextureFiltering_Nearest", TextureFiltering::Nearest)
+		.addConstant("TextureFiltering_Linear", TextureFiltering::Linear)
+		.addConstant("TextureFiltering_LinearMipmapLinear", TextureFiltering::LinearMipmapLinear)
+		.addConstant("TextureFiltering_LinearMipmapNearest", TextureFiltering::LinearMipmapNearest)
+		.addConstant("TextureFiltering_NearestMipmapLinear", TextureFiltering::NearestMipmapLinear)
+		.addConstant("TextureFiltering_NearestMipmapNearest", TextureFiltering::NearestMipmapNearest);
 
 	// Texture
 	auto tex = module.beginClass<Texture>("Texture");
@@ -412,10 +412,12 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(tex, Texture, setHorizontalWrapMode);
 	REGISTER_METHOD(tex, Texture, getVerticalWrapMode);
 	REGISTER_METHOD(tex, Texture, setVerticalWrapMode);
-	REGISTER_METHOD(tex, Texture, getMinFilter);
-	REGISTER_METHOD(tex, Texture, setMinFilter);
-	REGISTER_METHOD(tex, Texture, getMagFilter);
-	REGISTER_METHOD(tex, Texture, setMagFilter);
+	REGISTER_METHOD(tex, Texture, setWrapMode);
+	REGISTER_METHOD(tex, Texture, getMinFiltering);
+	REGISTER_METHOD(tex, Texture, setMinFiltering);
+	REGISTER_METHOD(tex, Texture, getMagFiltering);
+	REGISTER_METHOD(tex, Texture, setMagFiltering);
+	REGISTER_METHOD(tex, Texture, setFiltering);
 	REGISTER_METHOD(tex, Texture, getAnisotropyLevel);
 	REGISTER_METHOD(tex, Texture, setAnisotropyLevel);
 	tex.endClass();
@@ -465,7 +467,7 @@ void LuaScriptManager::registerApi()
 
 	// Component
 	module.beginClass<Component>("Component")
-		// TODO
+		// TODO?
 	.endClass();
 
 	// TransformSpace

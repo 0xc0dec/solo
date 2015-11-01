@@ -11,6 +11,6 @@ namespace solo
 	public:
 		static GLenum convertToGLColorFormat(ColorFormat format);
 		static GLenum convertToGLWrapMode(TextureWrapMode mode);
-		static GLenum convertToGLFilter(TextureFilter filter);
+		static GLenum convertToGLFilter(TextureFiltering filter);
 	};
 }

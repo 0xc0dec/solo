@@ -7,8 +7,7 @@ local RENDER_TARGET_QUAD_TAG = 2
 function loadTexture(path)
 	local texture = resourceManager:getOrLoadTexture2D(path)
 	texture:generateMipmaps()
-	texture:setMinFilter(solo.TextureFilter_Linear)
-	texture:setMagFilter(solo.TextureFilter_Linear)
+	texture:setFiltering(solo.TextureFiltering_Linear)
 	texture:setAnisotropyLevel(8)
 	return texture
 end
@@ -98,10 +97,8 @@ function initRenderTarget(materials)
 	local canvasSize = device:getCanvasSize()
 	local renderTexture = resourceManager:getOrCreateTexture2D("RTT")
 	renderTexture:setData(solo.ColorFormat_RGB, {}, canvasSize.x / 8, canvasSize.y / 8)
-	renderTexture:setMinFilter(solo.TextureFilter_Nearest)
-	renderTexture:setMagFilter(solo.TextureFilter_Nearest)
-	renderTexture:setVerticalWrapMode(solo.TextureWrapMode_Clamp)
-	renderTexture:setHorizontalWrapMode(solo.TextureWrapMode_Clamp)
+	renderTexture:setFiltering(solo.TextureFiltering_Nearest)
+	renderTexture:setWrapMode(solo.TextureWrapMode_Clamp)
 
 	local renderTarget = resourceManager:getOrCreateRenderTarget("test")
 	renderTarget:setTextures({ renderTexture })
@@ -332,9 +329,7 @@ function init()
 		"../data/skyboxes/deep-space/top.png",
 		"../data/skyboxes/deep-space/bottom.png"
 	}, "testCubeTex")
-	texSkybox:setVerticalWrapMode(solo.TextureWrapMode_Clamp)
-	texSkybox:setHorizontalWrapMode(solo.TextureWrapMode_Clamp)
-	texSkybox:setDepthWrapMode(solo.TextureWrapMode_Clamp)
+	texSkybox:setWrapMode(solo.TextureWrapMode_Clamp)
 
 	local skyboxQuad = createQuad()
 	local skyboxQuadEffect = resourceManager:getOrCreateEffect(shaders.vsSkybox, shaders.fsSkybox)

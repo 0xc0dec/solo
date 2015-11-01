@@ -33,8 +33,8 @@ void OpenGLTexture2D::unbind()
 void OpenGLTexture2D::apply()
 {
 	bind();
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, OpenGLHelper::convertToGLFilter(minFilter));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, OpenGLHelper::convertToGLFilter(magFilter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, OpenGLHelper::convertToGLFilter(minFiltering));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, OpenGLHelper::convertToGLFilter(magFiltering));
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, OpenGLHelper::convertToGLWrapMode(horizontalWrap));
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, OpenGLHelper::convertToGLWrapMode(verticalWrap));
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy);
