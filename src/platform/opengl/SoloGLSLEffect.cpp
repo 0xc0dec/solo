@@ -119,12 +119,11 @@ void GLSLEffect::discoverVariables()
 
 		auto location = glGetUniformLocation(program, rawName.data());
 		unsigned index = 0;
-		if (type == GL_SAMPLER_2D)
+		if (type == GL_SAMPLER_2D || type == GL_SAMPLER_CUBE) // TODO other types of samplers
 		{
 			index = samplerIndex;
 			samplerIndex += size;
 		}
-		// TODO other types of samplers
 
 		auto variable = SL_NEW2(GLSLEffectVariable, name, location, type, index);
 		variables[name] = variable;
