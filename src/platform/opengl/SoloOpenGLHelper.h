@@ -10,7 +10,7 @@ namespace solo
 	{
 	public:
 		static GLenum convertToGLColorFormat(ColorFormat format);
-		static GLenum convertToGLWrapMode(TextureWrapMode mode);
+		static GLenum convertToGLWrapMode(TextureWrapping mode);
 		static GLenum convertToGLFilter(TextureFiltering filter);
 	};
 }

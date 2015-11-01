@@ -392,10 +392,10 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(flags, BitFlags, set);
 	flags.endClass();
 
-	// TextureWrapMode
+	// TextureWrapping
 	module
-		.addConstant("TextureWrapMode_Clamp", TextureWrapMode::Clamp)
-		.addConstant("TextureWrapMode_Repeat", TextureWrapMode::Repeat);
+		.addConstant("TextureWrapping_Clamp", TextureWrapping::Clamp)
+		.addConstant("TextureWrapping_Repeat", TextureWrapping::Repeat);
 
 	// TextureFiltering
 	module
@@ -408,11 +408,11 @@ void LuaScriptManager::registerApi()
 
 	// Texture
 	auto tex = module.beginClass<Texture>("Texture");
-	REGISTER_METHOD(tex, Texture, getHorizontalWrapMode);
-	REGISTER_METHOD(tex, Texture, setHorizontalWrapMode);
-	REGISTER_METHOD(tex, Texture, getVerticalWrapMode);
-	REGISTER_METHOD(tex, Texture, setVerticalWrapMode);
-	REGISTER_METHOD(tex, Texture, setWrapMode);
+	REGISTER_METHOD(tex, Texture, getHorizontalWrapping);
+	REGISTER_METHOD(tex, Texture, setHorizontalWrapping);
+	REGISTER_METHOD(tex, Texture, getVerticalWrapping);
+	REGISTER_METHOD(tex, Texture, setVerticalWrapping);
+	REGISTER_METHOD(tex, Texture, setWrapping);
 	REGISTER_METHOD(tex, Texture, getMinFiltering);
 	REGISTER_METHOD(tex, Texture, setMinFiltering);
 	REGISTER_METHOD(tex, Texture, getMagFiltering);
@@ -440,8 +440,8 @@ void LuaScriptManager::registerApi()
 
 	// CubeTexture
 	auto texCube = module.beginExtendClass<CubeTexture, Texture>("CubeTexture");
-	REGISTER_METHOD(texCube, CubeTexture, getDepthWrapMode);
-	REGISTER_METHOD(texCube, CubeTexture, setDepthWrapMode);
+	REGISTER_METHOD(texCube, CubeTexture, getDepthWrapping);
+	REGISTER_METHOD(texCube, CubeTexture, setDepthWrapping);
 	REGISTER_METHOD(texCube, CubeTexture, generateMipmaps);
 	REGISTER_METHOD(texCube, CubeTexture, setData);
 	texCube.endClass();

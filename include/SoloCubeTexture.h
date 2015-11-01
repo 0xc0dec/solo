@@ -22,24 +22,24 @@ namespace solo
 
 		virtual void generateMipmaps() = 0;
 
-		virtual void setWrapMode(TextureWrapMode wrap) override;
+		virtual void setWrapping(TextureWrapping wrapping) override;
 
-		TextureWrapMode getDepthWrapMode() const;
-		void setDepthWrapMode(TextureWrapMode depthWrap);
+		TextureWrapping getDepthWrapping() const;
+		void setDepthWrapping(TextureWrapping depthWrap);
 
 	protected:
 		CubeTexture() {}
 
-		TextureWrapMode depthWrap = TextureWrapMode::Repeat;
+		TextureWrapping depthWrapping = TextureWrapping::Repeat;
 	};
 
-	inline TextureWrapMode CubeTexture::getDepthWrapMode() const
+	inline TextureWrapping CubeTexture::getDepthWrapping() const
 	{
-		return depthWrap;
+		return depthWrapping;
 	}
 
-	inline void CubeTexture::setDepthWrapMode(TextureWrapMode depthWrap)
+	inline void CubeTexture::setDepthWrapping(TextureWrapping wrapping)
 	{
-		this->depthWrap = depthWrap;
+		this->depthWrapping = wrapping;
 	}
 }

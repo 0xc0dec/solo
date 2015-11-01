@@ -67,8 +67,8 @@ runTest(function()
 	assert(solo.ColorFormat_RGB ~= nil)
 	assert(solo.ColorFormat_RGBA ~= nil)
 
-	assert(solo.TextureWrapMode_Clamp ~= nil)
-	assert(solo.TextureWrapMode_Repeat ~= nil)
+	assert(solo.TextureWrapping_Clamp ~= nil)
+	assert(solo.TextureWrapping_Repeat ~= nil)
 
 	assert(solo.PlaneIntersection_Front ~= nil)
 	assert(solo.PlaneIntersection_Back ~= nil)

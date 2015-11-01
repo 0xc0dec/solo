@@ -98,7 +98,7 @@ function initRenderTarget(materials)
 	local renderTexture = resourceManager:getOrCreateTexture2D("RTT")
 	renderTexture:setData(solo.ColorFormat_RGB, {}, canvasSize.x / 8, canvasSize.y / 8)
 	renderTexture:setFiltering(solo.TextureFiltering_Nearest)
-	renderTexture:setWrapMode(solo.TextureWrapMode_Clamp)
+	renderTexture:setWrapping(solo.TextureWrapping_Clamp)
 
 	local renderTarget = resourceManager:getOrCreateRenderTarget("test")
 	renderTarget:setTextures({ renderTexture })
@@ -329,7 +329,7 @@ function init()
 		"../data/skyboxes/deep-space/top.png",
 		"../data/skyboxes/deep-space/bottom.png"
 	}, "testCubeTex")
-	texSkybox:setWrapMode(solo.TextureWrapMode_Clamp)
+	texSkybox:setWrapping(solo.TextureWrapping_Clamp)
 
 	local skyboxQuad = createQuad()
 	local skyboxQuadEffect = resourceManager:getOrCreateEffect(shaders.vsSkybox, shaders.fsSkybox)

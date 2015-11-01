@@ -3,9 +3,9 @@
 using namespace solo;
 
 
-void CubeTexture::setWrapMode(TextureWrapMode wrap)
+void CubeTexture::setWrapping(TextureWrapping wrap)
 {
-	verticalWrap = wrap;
-	horizontalWrap = wrap;
-	depthWrap = wrap;
+	verticalWrapping = wrap;
+	horizontalWrapping = wrap;
+	depthWrapping = wrap;
 }

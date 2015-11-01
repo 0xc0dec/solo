@@ -17,13 +17,13 @@ GLenum OpenGLHelper::convertToGLColorFormat(ColorFormat format)
 }
 
 
-GLenum OpenGLHelper::convertToGLWrapMode(TextureWrapMode mode)
+GLenum OpenGLHelper::convertToGLWrapMode(TextureWrapping mode)
 {
 	switch (mode)
 	{
-		case TextureWrapMode::Clamp:
+		case TextureWrapping::Clamp:
 			return GL_CLAMP_TO_EDGE;
-		case TextureWrapMode::Repeat:
+		case TextureWrapping::Repeat:
 			return GL_REPEAT;
 		default:
 			SL_THROW_FMT(EngineException, "Unexpected wrap mode ", static_cast<int>(mode));

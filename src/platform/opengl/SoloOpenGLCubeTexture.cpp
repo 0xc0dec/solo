@@ -67,9 +67,9 @@ void OpenGLCubeTexture::apply()
 	bind();
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, OpenGLHelper::convertToGLFilter(minFiltering));
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, OpenGLHelper::convertToGLFilter(magFiltering));
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, OpenGLHelper::convertToGLWrapMode(horizontalWrap));
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, OpenGLHelper::convertToGLWrapMode(verticalWrap));
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, OpenGLHelper::convertToGLWrapMode(depthWrap));
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, OpenGLHelper::convertToGLWrapMode(horizontalWrapping));
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, OpenGLHelper::convertToGLWrapMode(verticalWrapping));
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, OpenGLHelper::convertToGLWrapMode(depthWrapping));
 	glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy);
 }
 

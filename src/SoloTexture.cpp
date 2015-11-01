@@ -24,8 +24,8 @@ shared<CubeTexture> TextureFactory::createCube(EngineMode mode)
 }
 
 
-void Texture::setWrapMode(TextureWrapMode wrap)
+void Texture::setWrapping(TextureWrapping wrap)
 {
-	horizontalWrap = wrap;
-	verticalWrap = wrap;
+	horizontalWrapping = wrap;
+	verticalWrapping = wrap;
 }

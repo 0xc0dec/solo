@@ -8,7 +8,7 @@ namespace solo
 	class CubeTexture;
 	enum class EngineMode;
 
-	enum class TextureWrapMode
+	enum class TextureWrapping
 	{
 		Clamp,
 		Repeat
@@ -35,13 +35,13 @@ namespace solo
 
 		virtual void apply() = 0;
 
-		TextureWrapMode getHorizontalWrapMode() const;
-		void setHorizontalWrapMode(TextureWrapMode horizontalWrap);
+		TextureWrapping getHorizontalWrapping() const;
+		void setHorizontalWrapping(TextureWrapping horizontalWrap);
 		
-		TextureWrapMode getVerticalWrapMode() const;
-		void setVerticalWrapMode(TextureWrapMode verticalWrap);
+		TextureWrapping getVerticalWrapping() const;
+		void setVerticalWrapping(TextureWrapping verticalWrap);
 
-		virtual void setWrapMode(TextureWrapMode wrap);
+		virtual void setWrapping(TextureWrapping wrap);
 
 		TextureFiltering getMinFiltering() const;
 		void setMinFiltering(TextureFiltering filtering);
@@ -57,31 +57,31 @@ namespace solo
 	protected:
 		Texture() {}
 
-		TextureWrapMode horizontalWrap = TextureWrapMode::Repeat;
-		TextureWrapMode verticalWrap = TextureWrapMode::Repeat;
+		TextureWrapping horizontalWrapping = TextureWrapping::Repeat;
+		TextureWrapping verticalWrapping = TextureWrapping::Repeat;
 		TextureFiltering minFiltering = TextureFiltering::Linear;
 		TextureFiltering magFiltering = TextureFiltering::Linear;
 		float anisotropy = 1.0f;
 	};
 
-	inline TextureWrapMode Texture::getVerticalWrapMode() const
+	inline TextureWrapping Texture::getVerticalWrapping() const
 	{
-		return verticalWrap;
+		return verticalWrapping;
 	}
 
-	inline void Texture::setVerticalWrapMode(TextureWrapMode wrap)
+	inline void Texture::setVerticalWrapping(TextureWrapping wrap)
 	{
-		verticalWrap = wrap;
+		verticalWrapping = wrap;
 	}
 
-	inline TextureWrapMode Texture::getHorizontalWrapMode() const
+	inline TextureWrapping Texture::getHorizontalWrapping() const
 	{
-		return horizontalWrap;
+		return horizontalWrapping;
 	}
 
-	inline void Texture::setHorizontalWrapMode(TextureWrapMode wrap)
+	inline void Texture::setHorizontalWrapping(TextureWrapping wrap)
 	{
-		horizontalWrap = wrap;
+		horizontalWrapping = wrap;
 	}
 
 	inline TextureFiltering Texture::getMinFiltering() const
