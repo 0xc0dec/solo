@@ -8,6 +8,12 @@
 using namespace solo;
 
 
+Node::Node(Scene* scene, size_t nodeId) :
+	scene(scene), id(nodeId)
+{
+}
+
+
 template<> Transform* Node::addComponent<Transform>()
 {
 	auto transform = TransformFactory::create(*this);

@@ -12,68 +12,35 @@ namespace solo
 	class Node
 	{
 	public:
-		Node(Scene* scene, size_t nodeId):
-			scene(scene), id(nodeId)
-		{
-		}
+		Node(Scene* scene, size_t nodeId);
 
 		inline size_t getId() const;
+
 		inline Scene* getScene() const;
 
 		template <typename T, typename... Args>
-		static T* addComponent(Scene *scene, size_t nodeId, Args... args)
-		{
-			auto cmp = SL_NEW<T>(Node(scene, nodeId), args...);
-			auto base = SL_STATIC_CAST<Component>(cmp);
-			scene->addComponent(nodeId, base);
-			return cmp.get();
-		}
+		static inline T* addComponent(Scene *scene, size_t nodeId, Args... args);
 
 		template <typename T, typename... Args>
-		T* addComponent(Args... args)
-		{
-			return addComponent<T>(scene, id, args...);
-		}
+		inline T* addComponent(Args... args);
 
 		template <typename T>
-		static T* getComponent(Scene *scene, size_t nodeId)
-		{
-			auto typeId = T::getId();
-			auto cmp = scene->getComponent(nodeId, typeId);
-			return static_cast<T*>(cmp);
-		}
+		static inline T* getComponent(Scene *scene, size_t nodeId);
 
 		template <typename T>
-		T* getComponent()
-		{
-			return getComponent<T>(scene, id);
-		}
+		inline T* getComponent();
 
 		template <typename T>
-		static T* findComponent(Scene *scene, size_t nodeId)
-		{
-			auto typeId = T::getId();
-			auto cmp = scene->findComponent(nodeId, typeId);
-			return static_cast<T*>(cmp);
-		}
+		static inline T* findComponent(Scene *scene, size_t nodeId);
 
 		template <typename T>
-		T* findComponent() const
-		{
-			return findComponent<T>(scene, id);
-		}
+		inline T* findComponent() const;
 
 		template <typename T>
-		static void removeComponent(Scene *scene, size_t nodeId)
-		{
-			scene->removeComponent(nodeId, T::getId());
-		}
+		inline static void removeComponent(Scene *scene, size_t nodeId);
 
 		template <typename T>
-		void removeComponent()
-		{
-			removeComponent<T>(scene, id);
-		}
+		inline void removeComponent();
 
 		inline void removeAllComponents();
 
@@ -82,7 +49,8 @@ namespace solo
 		size_t id;
 	};
 
-	inline size_t Node::getId() const
+
+	size_t Node::getId() const
 	{
 		return id;
 	}
@@ -90,6 +58,61 @@ namespace solo
 	Scene* Node::getScene() const
 	{
 		return scene;
+	}
+
+	template <typename T, typename... Args>
+	T* Node::addComponent(Scene *scene, size_t nodeId, Args... args)
+	{
+		auto cmp = SL_NEW<T>(Node(scene, nodeId), args...);
+		auto base = SL_STATIC_CAST<Component>(cmp);
+		scene->addComponent(nodeId, base);
+		return cmp.get();
+	}
+
+	template <typename T, typename... Args>
+	T* Node::addComponent(Args... args)
+	{
+		return addComponent<T>(scene, id, args...);
+	}
+
+	template <typename T>
+	T* Node::getComponent(Scene *scene, size_t nodeId)
+	{
+		auto typeId = T::getId();
+		auto cmp = scene->getComponent(nodeId, typeId);
+		return static_cast<T*>(cmp);
+	}
+
+	template <typename T>
+	T* Node::getComponent()
+	{
+		return getComponent<T>(scene, id);
+	}
+
+	template <typename T>
+	T* Node::findComponent(Scene *scene, size_t nodeId)
+	{
+		auto typeId = T::getId();
+		auto cmp = scene->findComponent(nodeId, typeId);
+		return static_cast<T*>(cmp);
+	}
+
+	template <typename T>
+	inline T* Node::findComponent() const
+	{
+		return findComponent<T>(scene, id);
+	}
+
+	template <typename T>
+	void Node::removeComponent(Scene *scene, size_t nodeId)
+	{
+		scene->removeComponent(nodeId, T::getId());
+	}
+
+	template <typename T>
+	void Node::removeComponent()
+	{
+		removeComponent<T>(scene, id);
 	}
 
 	void Node::removeAllComponents()

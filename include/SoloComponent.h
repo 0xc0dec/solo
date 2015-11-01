@@ -30,7 +30,7 @@ namespace solo
 	class ComponentBase: public Component
 	{
 	public:
-		explicit ComponentBase(Node node): node(node)
+		explicit ComponentBase(const Node& node): node(node)
 		{
 		}
 

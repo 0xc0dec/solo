@@ -223,6 +223,9 @@
     <ClInclude Include="..\src\platform\stub\SoloStubTexture2D.h">
       <Filter>src\platform\stub</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloSpectator.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloEngine.cpp">
@@ -470,6 +473,9 @@
     </ClCompile>
     <ClCompile Include="..\src\platform\stub\SoloStubResourceManager.cpp">
       <Filter>src\platform\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloSpectator.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

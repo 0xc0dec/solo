@@ -42,6 +42,7 @@
     <ClInclude Include="..\include\SoloScriptManager.h" />
     <ClInclude Include="..\include\SoloCubeTexture.h" />
     <ClInclude Include="..\include\SoloImageLoader.h" />
+    <ClInclude Include="..\include\SoloSpectator.h" />
     <ClInclude Include="..\include\SoloTexture.h" />
     <ClInclude Include="..\include\SoloLog.h" />
     <ClInclude Include="..\include\SoloMaterial.h" />
@@ -111,6 +112,7 @@
     <ClCompile Include="..\src\platform\stub\SoloStubModelLoader.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubResourceManager.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
+    <ClCompile Include="..\src\SoloSpectator.cpp" />
     <ClCompile Include="..\thirdparty\glew\src\glew.c" />
     <ClCompile Include="..\thirdparty\glew\src\glewinfo.c" />
     <ClCompile Include="..\thirdparty\glew\src\visualinfo.c" />
