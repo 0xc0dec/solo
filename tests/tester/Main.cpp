@@ -27,7 +27,7 @@ public:
 		init();
 		for (auto test : tests)
 			test->run();
-		finish();
+		engine->getDevice()->requestShutdown();
 	}
 
 	virtual void onEngineStopped() override
@@ -39,7 +39,6 @@ protected:
 	Engine *engine;
 
 	virtual void init() = 0;
-	virtual void finish() {}
 };
 
 
@@ -75,11 +74,6 @@ protected:
 		tests.push_back(SL_NEW2(Transform_Test, engine));
 		tests.push_back(SL_NEW2(ModelRenderer_Test, engine));
 		tests.push_back(SL_NEW2(BitFlags_Test, engine));
-	}
-
-	virtual void finish() override
-	{
-		engine->getDevice()->requestShutdown();
 	}
 };
 
