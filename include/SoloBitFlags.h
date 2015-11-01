@@ -7,54 +7,66 @@ namespace solo
 	public:
 		BitFlags() {}
 
-		unsigned getRaw() const
-		{
-			return flags;
-		}
+		unsigned getRaw() const;
 
-		bool isEmpty() const
-		{
-			return flags == 0;
-		}
+		bool isEmpty() const;
+		bool checkAndRemove(unsigned flags);
+		bool isSet(unsigned flags) const;
 
-		bool checkAndRemove(unsigned flags)
-		{
-			auto result = isSet(flags);
-			remove(flags);
-			return result;
-		}
-
-		bool isSet(unsigned flags) const
-		{
-			return (this->flags & flags) != 0;
-		}
-
-		void setAll()
-		{
-			flags = ~0;
-		}
-
-		void set(unsigned flags)
-		{
-			this->flags = flags;
-		}
-
-		void add(unsigned flags)
-		{
-			this->flags |= flags;
-		}
-
-		void remove(unsigned flags)
-		{
-			this->flags &= ~flags;
-		}
-
-		void clear()
-		{
-			flags = 0;
-		}
+		void setAll();
+		void set(unsigned flags);
+		void add(unsigned flags);
+		void remove(unsigned flags);
+		void clear();
 
 	private:
 		unsigned flags = 0;
 	};
+
+	inline unsigned BitFlags::getRaw() const
+	{
+		return flags;
+	}
+
+	inline bool BitFlags::isEmpty() const
+	{
+		return flags == 0;
+	}
+
+	inline bool BitFlags::checkAndRemove(unsigned flags)
+	{
+		auto result = isSet(flags);
+		remove(flags);
+		return result;
+	}
+
+	inline bool BitFlags::isSet(unsigned flags) const
+	{
+		return (this->flags & flags) != 0;
+	}
+
+	inline void BitFlags::setAll()
+	{
+		flags = ~0;
+	}
+
+	inline void BitFlags::set(unsigned flags)
+	{
+		this->flags = flags;
+	}
+
+	inline void BitFlags::add(unsigned flags)
+	{
+		this->flags |= flags;
+	}
+
+	inline void BitFlags::remove(unsigned flags)
+	{
+		this->flags &= ~flags;
+	}
+
+	inline void BitFlags::clear()
+	{
+		flags = 0;
+	}
 }
