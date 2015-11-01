@@ -94,6 +94,73 @@ namespace solo
 		Matrix inverseViewProjectionMatrix;
 	};
 
+
+	inline void Camera::setClearColor(float r, float g, float b, float a)
+	{
+		clearColor = Vector4(r, g, b, a);
+	}
+
+	inline bool Camera::isPerspective() const
+	{
+		return !ortho;
+	}
+
+	inline float Camera::getNear() const
+	{
+		return nearClip;
+	}
+
+	inline float Camera::getFar() const
+	{
+		return farClip;
+	}
+
+	inline float Camera::getFOV() const
+	{
+		return fov;
+	}
+
+	inline float Camera::getWidth() const
+	{
+		return width;
+	}
+
+	inline float Camera::getHeight() const
+	{
+		return height;
+	}
+
+	inline float Camera::getAspectRatio() const
+	{
+		return aspectRatio;
+	}
+
+	inline BitFlags& Camera::getRenderTags()
+	{
+		return renderTags;
+	}
+
+	inline void Camera::setRenderTarget(shared<RenderTarget> target)
+	{
+		renderTarget = target;
+	}
+
+	inline shared<RenderTarget> Camera::getRenderTarget() const
+	{
+		return renderTarget;
+	}
+
+	inline void Camera::terminate()
+	{
+		transform->removeCallback(this);
+	}
+
+	inline void Camera::resetViewport()
+	{
+		viewportSet = false;
+	}
+
+
 	class CameraFactory
 	{
 		friend class Node;

@@ -38,8 +38,14 @@ namespace solo
 
 		void transform(const Matrix& matrix);
 
-		inline BoundingBox& operator*=(const Matrix& matrix);
+		BoundingBox& operator*=(const Matrix& matrix);
 	};
+
+
+	inline bool BoundingBox::isEmpty() const
+	{
+		return min.x == max.x && min.y == max.y && min.z == max.z;
+	}
 
 	inline BoundingBox& BoundingBox::operator*=(const Matrix& matrix)
 	{

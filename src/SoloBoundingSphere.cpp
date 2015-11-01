@@ -121,12 +121,6 @@ float BoundingSphere::getRayIntersection(const Ray& ray) const
 }
 
 
-bool BoundingSphere::isEmpty() const
-{
-	return radius == 0.0f;
-}
-
-
 void BoundingSphere::mergeBoundingSphere(const BoundingSphere& sphere)
 {
 	if (sphere.isEmpty())

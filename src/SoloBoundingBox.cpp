@@ -187,12 +187,6 @@ float BoundingBox::getRayIntersection(const Ray& ray) const
 }
 
 
-bool BoundingBox::isEmpty() const
-{
-	return min.x == max.x && min.y == max.y && min.z == max.z;
-}
-
-
 void BoundingBox::mergeBoundingBox(const BoundingBox& box)
 {
 	// Calculate the new minimum point.

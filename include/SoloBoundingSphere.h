@@ -32,6 +32,12 @@ namespace solo
 		inline BoundingSphere& operator*=(const Matrix& matrix);
 	};
 
+
+	inline bool BoundingSphere::isEmpty() const
+	{
+		return radius == 0.0f;
+	}
+
 	inline BoundingSphere& BoundingSphere::operator*=(const Matrix& matrix)
 	{
 		transform(matrix);
