@@ -6,7 +6,6 @@
 #include "Resources_Test.h"
 #include "ModelRenderer_Test.h"
 #include "BitFlags_Test.h"
-#include "Demo_Test.h"
 
 using namespace solo;
 
@@ -55,8 +54,6 @@ protected:
 	virtual void init() override
 	{
 		tests.push_back(SL_NEW2(MaterialsTest, engine));
-		// TODO currently runs via scripts
-//		tests.push_back(SL_NEW2(Demo_Test, engine));
 	}
 };
 
@@ -131,8 +128,8 @@ void runLuaTests(const std::string& entryScriptPath)
 int main()
 {
 	runCppUnitTests();
+	runCppIntegrationTests();
 	runLuaTests("../tests/scripts/unit-tests.lua");
 	runLuaTests("../tests/scripts/demo/demo.lua");
-//	runCppIntegrationTests();
 	return 0;
 }

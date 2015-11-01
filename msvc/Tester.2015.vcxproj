@@ -164,7 +164,6 @@
   <ItemGroup>
     <ClInclude Include="..\tests\tester\BitFlags_Test.h" />
     <ClInclude Include="..\tests\tester\Components_Test.h" />
-    <ClInclude Include="..\tests\tester\Demo_Test.h" />
     <ClInclude Include="..\tests\tester\Device_Test.h" />
     <ClInclude Include="..\tests\tester\FileSystem_Test.h" />
     <ClInclude Include="..\tests\tester\Materials_Test.h" />
@@ -175,7 +174,6 @@
     <ClInclude Include="..\tests\tester\Transform_Test.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\tests\tester\Demo_Test.cpp" />
     <ClCompile Include="..\tests\tester\Main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

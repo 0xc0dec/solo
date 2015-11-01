@@ -32,6 +32,7 @@
 #include "SoloModel.h"
 #include "SoloRenderContext.h"
 #include "SoloModelRenderer.h"
+#include "SoloSpectator.h"
 
 
 #define REGISTER_VARIABLE(binding, klass, name) binding.addVariable(#name, &klass::name, true)
@@ -546,6 +547,16 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(camera, Camera, setAspectRatio);
 	REGISTER_METHOD(camera, Camera, getRenderTags);
 	camera.endClass();
+	
+	// Spectator
+	auto spectator = module.beginExtendClass<Spectator, Component>("Spectator");
+	REGISTER_METHOD(spectator, Spectator, getHorizontalRotationSpeed);
+	REGISTER_METHOD(spectator, Spectator, setHorizontalRotationSpeed);
+	REGISTER_METHOD(spectator, Spectator, getVerticalRotationSpeed);
+	REGISTER_METHOD(spectator, Spectator, setVerticalRotationSpeed);
+	REGISTER_METHOD(spectator, Spectator, getMovementSpeed);
+	REGISTER_METHOD(spectator, Spectator, setMovementSpeed);
+	spectator.endClass();
 
 	// PolygonFace
 	module

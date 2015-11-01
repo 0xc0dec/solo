@@ -34,6 +34,7 @@
 #include "SoloResourceManager.h"
 #include "SoloScene.h"
 #include "SoloScriptManager.h"
+#include "SoloSpectator.h"
 #include "SoloTexture.h"
 #include "SoloTexture2D.h"
 #include "SoloCubeTexture.h"

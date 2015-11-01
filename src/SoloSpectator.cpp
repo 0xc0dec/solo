@@ -48,4 +48,3 @@ void Spectator::update()
 
 	transform->translateLocal(movement);
 }
-
