@@ -38,4 +38,24 @@ namespace solo
 		PolygonFace polygonFace = PolygonFace::CW;
 		bool zwrite = true;
 	};
+
+	inline void RenderState::setPolygonFace(PolygonFace face)
+	{
+		polygonFace = face;
+	}
+
+	inline PolygonFace RenderState::getPolygonFace() const
+	{
+		return polygonFace;
+	}
+
+	inline bool RenderState::getZWriteEnabled() const
+	{
+		return zwrite;
+	}
+
+	inline void RenderState::setZWriteEnabled(bool enabled)
+	{
+		zwrite = enabled;
+	}
 }

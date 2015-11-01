@@ -11,17 +11,20 @@ namespace solo
 
 		virtual void render(RenderContext& context) = 0;
 
-		unsigned getRenderQueue() const
-		{
-			return renderQueue;
-		}
-
-		void setRenderQueue(unsigned queue)
-		{
-			renderQueue = queue;
-		}
+		unsigned getRenderQueue() const;
+		void setRenderQueue(unsigned queue);
 
 	private:
 		unsigned renderQueue = 0;
 	};
+
+	inline unsigned Renderer::getRenderQueue() const
+	{
+		return renderQueue;
+	}
+
+	inline void Renderer::setRenderQueue(unsigned queue)
+	{
+		renderQueue = queue;
+	}
 }

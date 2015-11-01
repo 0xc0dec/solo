@@ -309,9 +309,6 @@
     <ClCompile Include="..\src\SoloMaterialParameter.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloRenderState.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloNode.cpp">
       <Filter>src</Filter>
     </ClCompile>

@@ -28,12 +28,6 @@ Scene::~Scene()
 }
 
 
-Engine* Scene::getEngine()
-{
-	return engine;
-}
-
-
 shared<Node> Scene::createNode()
 {
 	auto node = SL_NEW2(Node, this, nodeCounter++);

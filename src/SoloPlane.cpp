@@ -23,22 +23,10 @@ Plane::Plane(float normalX, float normalY, float normalZ, float distance):
 }
 
 
-const Vector3& Plane::getNormal() const
-{
-	return normal;
-}
-
-
 void Plane::setNormal(const Vector3& normal)
 {
 	this->normal = normal;
 	normalize();
-}
-
-
-float Plane::getDistance() const
-{
-	return distance;
 }
 
 

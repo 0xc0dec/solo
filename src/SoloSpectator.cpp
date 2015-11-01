@@ -49,38 +49,3 @@ void Spectator::update()
 	transform->translateLocal(movement);
 }
 
-
-float Spectator::getHorizontalRotationSpeed() const
-{
-	return horizontalRotationSpeed;
-}
-
-
-void Spectator::setHorizontalRotationSpeed(float speed)
-{
-	horizontalRotationSpeed = speed;
-}
-
-
-float Spectator::getVerticalRotationSpeed() const
-{
-	return verticalRotationSpeed;
-}
-
-
-void Spectator::setVerticalRotationSpeed(float speed)
-{
-	verticalRotationSpeed = speed;
-}
-
-
-float Spectator::getMovementSpeed() const
-{
-	return movementSpeed;
-}
-
-
-void Spectator::setMovementSpeed(float speed)
-{
-	movementSpeed = speed;
-}

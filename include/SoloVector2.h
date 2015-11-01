@@ -35,27 +35,27 @@ namespace solo
 		Vector2 normalized() const;
 		void normalize();
 
-		inline Vector2 operator+(float scalar) const;
-		inline Vector2 operator+(const Vector2& v) const;
-		inline Vector2& operator+=(float scalar);
-		inline Vector2& operator+=(const Vector2& v);
+		Vector2 operator+(float scalar) const;
+		Vector2 operator+(const Vector2& v) const;
+		Vector2& operator+=(float scalar);
+		Vector2& operator+=(const Vector2& v);
 
-		inline Vector2 operator-() const;
-		inline Vector2 operator-(float scalar) const;
-		inline Vector2 operator-(const Vector2& v) const;
-		inline Vector2& operator-=(float scalar);
-		inline Vector2& operator-=(const Vector2& v);
+		Vector2 operator-() const;
+		Vector2 operator-(float scalar) const;
+		Vector2 operator-(const Vector2& v) const;
+		Vector2& operator-=(float scalar);
+		Vector2& operator-=(const Vector2& v);
 		
-		inline Vector2 operator*(float scalar) const;
-		inline Vector2& operator*=(float scalar);
+		Vector2 operator*(float scalar) const;
+		Vector2& operator*=(float scalar);
 
-		inline Vector2 operator/(float scalar) const;
-		inline Vector2& operator/=(float scalar);
+		Vector2 operator/(float scalar) const;
+		Vector2& operator/=(float scalar);
 
-		inline bool operator<(const Vector2& v) const;
+		bool operator<(const Vector2& v) const;
 		
-		inline bool operator==(const Vector2& v) const;
-		inline bool operator!=(const Vector2& v) const;
+		bool operator==(const Vector2& v) const;
+		bool operator!=(const Vector2& v) const;
 	};
 
 	inline Vector2 Vector2::operator+(float scalar) const

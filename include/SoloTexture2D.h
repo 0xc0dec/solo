@@ -23,4 +23,9 @@ namespace solo
 	private:
 		Vector2 size;
 	};
+
+	inline Vector2 Texture2D::getSize() const
+	{
+		return size;
+	}
 }

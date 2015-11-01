@@ -19,7 +19,7 @@ namespace solo
 		Scene& operator=(Scene&& other) = delete;
 		~Scene();
 
-		Engine *getEngine();
+		Engine *getEngine() const;
 
 		shared<Node> createNode();
 
@@ -54,6 +54,11 @@ namespace solo
 		std::vector<Camera*> cameraCache;
 		Components components;
 	};
+
+	inline Engine* Scene::getEngine() const
+	{
+		return engine;
+	}
 
 	class SceneFactory
 	{

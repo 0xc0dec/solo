@@ -39,27 +39,27 @@ namespace solo
 		Vector4 normalized() const;
 		void normalize();
 
-		inline Vector4 operator+(float scalar) const;
-		inline Vector4 operator+(const Vector4& v) const;
-		inline Vector4& operator+=(float scalar);
-		inline Vector4& operator+=(const Vector4& v);
+		Vector4 operator+(float scalar) const;
+		Vector4 operator+(const Vector4& v) const;
+		Vector4& operator+=(float scalar);
+		Vector4& operator+=(const Vector4& v);
 
-		inline Vector4 operator-() const;
-		inline Vector4 operator-(float scalar) const;
-		inline Vector4 operator-(const Vector4& v) const;
-		inline Vector4& operator-=(float scalar);
-		inline Vector4& operator-=(const Vector4& v);
+		Vector4 operator-() const;
+		Vector4 operator-(float scalar) const;
+		Vector4 operator-(const Vector4& v) const;
+		Vector4& operator-=(float scalar);
+		Vector4& operator-=(const Vector4& v);
 		
-		inline Vector4 operator*(float x) const;
-		inline Vector4& operator*=(float x);
+		Vector4 operator*(float x) const;
+		Vector4& operator*=(float x);
 		
-		inline Vector4 operator/(float x) const;
-		inline Vector4 operator/=(float x);
+		Vector4 operator/(float x) const;
+		Vector4 operator/=(float x);
 		
-		inline bool operator<(const Vector4& v) const;
+		bool operator<(const Vector4& v) const;
 		
-		inline bool operator==(const Vector4& v) const;
-		inline bool operator!=(const Vector4& v) const;
+		bool operator==(const Vector4& v) const;
+		bool operator!=(const Vector4& v) const;
 	};
 
 	inline Vector4 Vector4::operator+(float scalar) const

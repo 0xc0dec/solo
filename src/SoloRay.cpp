@@ -21,12 +21,6 @@ Ray::Ray(float originX, float originY, float originZ, float dirX, float dirY, fl
 }
 
 
-Vector3 Ray::getOrigin() const
-{
-	return origin;
-}
-
-
 void Ray::setOrigin(const Vector3& origin)
 {
 	this->origin = origin;
@@ -38,12 +32,6 @@ void Ray::setOrigin(float x, float y, float z)
 	origin.x = x;
 	origin.y = y;
 	origin.z = z;
-}
-
-
-Vector3 Ray::getDirection() const
-{
-	return direction;
 }
 
 

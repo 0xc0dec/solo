@@ -39,27 +39,27 @@ namespace solo
 		Vector3 normalized() const;
 		void normalize();
 		
-		inline Vector3 operator+(float scalar) const;
-		inline Vector3 operator+(const Vector3& v) const;
-		inline Vector3& operator+=(const Vector3& v);
-		inline Vector3& operator+=(float scalar);
+		Vector3 operator+(float scalar) const;
+		Vector3 operator+(const Vector3& v) const;
+		Vector3& operator+=(const Vector3& v);
+		Vector3& operator+=(float scalar);
 
-		inline Vector3 operator-() const;
-		inline Vector3 operator-(float scalar) const;
-		inline Vector3 operator-(const Vector3& v) const;
-		inline Vector3& operator-=(float scalar);
-		inline Vector3& operator-=(const Vector3& v);
+		Vector3 operator-() const;
+		Vector3 operator-(float scalar) const;
+		Vector3 operator-(const Vector3& v) const;
+		Vector3& operator-=(float scalar);
+		Vector3& operator-=(const Vector3& v);
 
-		inline Vector3 operator*(float scalar) const;
-		inline Vector3& operator*=(float scalar);
+		Vector3 operator*(float scalar) const;
+		Vector3& operator*=(float scalar);
 
-		inline Vector3 operator/(float scalar) const;
-		inline Vector3& operator/=(float scalar);
+		Vector3 operator/(float scalar) const;
+		Vector3& operator/=(float scalar);
 
-		inline bool operator<(const Vector3& v) const;
+		bool operator<(const Vector3& v) const;
 		
-		inline bool operator==(const Vector3& v) const;
-		inline bool operator!=(const Vector3& v) const;
+		bool operator==(const Vector3& v) const;
+		bool operator!=(const Vector3& v) const;
 	};
 
 

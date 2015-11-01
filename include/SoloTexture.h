@@ -60,6 +60,56 @@ namespace solo
 		float anisotropy = 1.0f;
 	};
 
+	inline TextureWrapMode Texture::getVerticalWrapMode() const
+	{
+		return verticalWrap;
+	}
+
+	inline void Texture::setVerticalWrapMode(TextureWrapMode verticalWrap)
+	{
+		this->verticalWrap = verticalWrap;
+	}
+
+	inline TextureWrapMode Texture::getHorizontalWrapMode() const
+	{
+		return horizontalWrap;
+	}
+
+	inline void Texture::setHorizontalWrapMode(TextureWrapMode horizontalWrap)
+	{
+		this->horizontalWrap = horizontalWrap;
+	}
+
+	inline TextureFilter Texture::getMinFilter() const
+	{
+		return minFilter;
+	}
+
+	inline void Texture::setMinFilter(TextureFilter minFilter)
+	{
+		this->minFilter = minFilter;
+	}
+
+	inline TextureFilter Texture::getMagFilter() const
+	{
+		return magFilter;
+	}
+
+	inline void Texture::setMagFilter(TextureFilter magFilter)
+	{
+		this->magFilter = magFilter;
+	}
+
+	inline float Texture::getAnisotropyLevel() const
+	{
+		return anisotropy;
+	}
+
+	inline void Texture::setAnisotropyLevel(float level)
+	{
+		anisotropy = level;
+	}
+
 	class TextureFactory
 	{
 		friend class ResourceManager;

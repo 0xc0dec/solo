@@ -43,7 +43,7 @@ namespace solo
 
 		void transform(const Matrix& matrix);
 
-		inline Plane& operator*=(const Matrix& matrix);
+		Plane& operator*=(const Matrix& matrix);
 
 	private:
 		void normalize();
@@ -51,6 +51,16 @@ namespace solo
 		Vector3 normal { 0, 1, 0 };
 		float distance = 0;
 	};
+
+	inline const Vector3& Plane::getNormal() const
+	{
+		return normal;
+	}
+
+	inline float Plane::getDistance() const
+	{
+		return distance;
+	}
 
 	inline Plane& Plane::operator*=(const Matrix& matrix)
 	{

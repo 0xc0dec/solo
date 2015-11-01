@@ -32,4 +32,34 @@ namespace solo
 		float verticalRotationSpeed = 0.5f;
 		float movementSpeed = 10;
 	};
+
+	inline float Spectator::getHorizontalRotationSpeed() const
+	{
+		return horizontalRotationSpeed;
+	}
+
+	inline void Spectator::setHorizontalRotationSpeed(float speed)
+	{
+		horizontalRotationSpeed = speed;
+	}
+
+	inline float Spectator::getVerticalRotationSpeed() const
+	{
+		return verticalRotationSpeed;
+	}
+
+	inline void Spectator::setVerticalRotationSpeed(float speed)
+	{
+		verticalRotationSpeed = speed;
+	}
+
+	inline float Spectator::getMovementSpeed() const
+	{
+		return movementSpeed;
+	}
+
+	inline void Spectator::setMovementSpeed(float speed)
+	{
+		movementSpeed = speed;
+	}
 }
