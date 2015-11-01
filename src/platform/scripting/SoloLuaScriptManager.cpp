@@ -724,7 +724,7 @@ void LuaScriptManager::registerApi()
 
 	// EngineCreationArgs
 	module.beginClass<EngineCreationArgs>("EngineCreationArgs")
-		.addConstructor(LUA_ARGS(_opt<EngineMode>, _opt<int>, _opt<int>, _opt<int>, _opt<int>, _opt<bool>, _opt<std::string>))
+		.addConstructor(LUA_ARGS(_opt<EngineMode>, _opt<int>, _opt<int>, _opt<bool>, _opt<std::string>, _opt<int>, _opt<int>))
 		.addVariable("mode", &EngineCreationArgs::mode, true)
 		.addVariable("bits", &EngineCreationArgs::bits, true)
 		.addVariable("canvasHeight", &EngineCreationArgs::canvasHeight, true)

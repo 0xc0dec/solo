@@ -368,6 +368,6 @@ function createEngineCallback()
 end
 
 
-engine = solo.Engine.create(solo.EngineCreationArgs(solo.EngineMode_OpenGL, 1920, 1080, 32, 16, true))
+engine = solo.Engine.create(solo.EngineCreationArgs(solo.EngineMode_OpenGL, 800, 600, false))
 engine:setCallback(createEngineCallback())
 engine:run()

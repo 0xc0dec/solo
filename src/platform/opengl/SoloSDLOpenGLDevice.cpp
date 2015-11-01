@@ -80,7 +80,7 @@ std::unordered_map<Uint8, MouseButton> mouseButtonsMap =
 };
 
 
-WindowWithContextCreationResult tryCreateWindowWithContext(bool hidden, int ctxMajorVersion, int ctxMinorVersion, EngineCreationArgs creationArgs)
+WindowWithContextCreationResult tryCreateOpengGLWindow(bool hidden, int ctxMajorVersion, int ctxMinorVersion, EngineCreationArgs creationArgs)
 {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, ctxMajorVersion);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, ctxMinorVersion);
@@ -91,14 +91,19 @@ WindowWithContextCreationResult tryCreateWindowWithContext(bool hidden, int ctxM
 	auto flags = static_cast<int>(SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
 	if (hidden)
 		flags |= SDL_WINDOW_HIDDEN;
-	auto window = SDL_CreateWindow(creationArgs.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-		creationArgs.canvasWidth, creationArgs.canvasHeight, flags);
+	if (creationArgs.fullScreen)
+		flags |= SDL_WINDOW_FULLSCREEN;
+	auto window = SDL_CreateWindow(creationArgs.windowTitle.c_str(),
+		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+		creationArgs.canvasWidth, creationArgs.canvasHeight,
+		flags);
 
 	if (window)
 	{
 		auto context = SDL_GL_CreateContext(window);
 		return { window, context };
 	}
+
 	return { nullptr, nullptr };
 }
 
@@ -114,7 +119,7 @@ SDLOpenGLDevice::SDLOpenGLDevice(EngineCreationArgs const& args):
 	auto minor = std::get<1>(contextVersion);
 	SL_LOG_INFO("Using OpenGL context version ", major, ".", minor);
 
-	auto windowWithContext = tryCreateWindowWithContext(false, major, minor, creationArgs);
+	auto windowWithContext = tryCreateOpengGLWindow(false, major, minor, creationArgs);
 	if (!windowWithContext.succeeded())
 		SL_THROW_FMT(EngineException, "Failed to create window");
 
@@ -143,7 +148,7 @@ std::tuple<int, int> SDLOpenGLDevice::selectContextVersion()
 	for (auto version : supportedContextVersions)
 	{
 		SDL_GLContext context = nullptr;
-		auto windowWithContext = tryCreateWindowWithContext(true, version.first, version.second, creationArgs);
+		auto windowWithContext = tryCreateOpengGLWindow(true, version.first, version.second, creationArgs);
 		if (windowWithContext.succeeded())
 		{
 			SDL_GL_DeleteContext(context);
