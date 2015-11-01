@@ -17,13 +17,11 @@ namespace solo
 
 		Matrix();
 		Matrix(float m11, float m12, float m13, float m14,
-			   float m21, float m22, float m23, float m24,
-		       float m31, float m32, float m33, float m34,
-			   float m41, float m42, float m43, float m44);
+			float m21, float m22, float m23, float m24,
+			float m31, float m32, float m33, float m34,
+			float m41, float m42, float m43, float m44);
 		explicit Matrix(const float* m);
 		Matrix(const Matrix& copy);
-
-		~Matrix();
 
 		static Matrix identity();
 		static Matrix zero();
@@ -103,8 +101,19 @@ namespace solo
 
 	private:
 		static Matrix createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
-		                                  const Vector3& cameraUpVector, const Vector3* cameraForwardVector);
+											const Vector3& cameraUpVector, const Vector3* cameraForwardVector);
 	};
+
+	inline Matrix Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition, const Vector3& cameraUpVector)
+	{
+		return createBillboardHelper(objectPosition, cameraPosition, cameraUpVector, nullptr);
+	}
+
+	inline Matrix Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
+		const Vector3& cameraUpVector, const Vector3& cameraForwardVector)
+	{
+		return createBillboardHelper(objectPosition, cameraPosition, cameraUpVector, &cameraForwardVector);
+	}
 
 	inline Matrix Matrix::operator+(float scalar) const
 	{
@@ -167,5 +176,40 @@ namespace solo
 	inline Vector4 operator*(const Matrix& m, const Vector4& v)
 	{
 		return m.transformDirection(v);
+	}
+
+	inline Vector3 Matrix::getUpVector() const
+	{
+		return Vector3(m[4], m[5], m[6]);
+	}
+
+	inline Vector3 Matrix::getDownVector() const
+	{
+		return Vector3(-m[4], -m[5], -m[6]);
+	}
+
+	inline Vector3 Matrix::getLeftVector() const
+	{
+		return Vector3(-m[0], -m[1], -m[2]);
+	}
+
+	inline Vector3 Matrix::getRightVector() const
+	{
+		return Vector3(m[0], m[1], m[2]);
+	}
+
+	inline Vector3 Matrix::getForwardVector() const
+	{
+		return Vector3(-m[8], -m[9], -m[10]);
+	}
+
+	inline Vector3 Matrix::getBackVector() const
+	{
+		return Vector3(m[8], m[9], m[10]);
+	}
+
+	inline void Matrix::scale(float value)
+	{
+		scale(Vector3(value, value, value));
 	}
 }

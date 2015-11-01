@@ -52,9 +52,3 @@ MaterialParameter* Material::getParameter(const std::string& name)
 	parameters[name] = parameter;
 	return parameter.get();
 }
-
-
-Effect* Material::getEffect() const
-{
-	return effect.get();
-}

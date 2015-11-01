@@ -26,6 +26,11 @@ namespace solo
 		std::unordered_map<std::string, shared<MaterialParameter>> parameters;
 	};
 
+	inline Effect* Material::getEffect() const
+	{
+		return effect.get();
+	}
+
 	class MaterialFactory
 	{
 		friend class ResourceManager;

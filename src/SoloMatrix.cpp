@@ -50,11 +50,6 @@ Matrix::Matrix(const Matrix& copy)
 }
 
 
-Matrix::~Matrix()
-{
-}
-
-
 Matrix Matrix::identity()
 {
 	static Matrix m(
@@ -141,19 +136,6 @@ Matrix Matrix::createOrthographicOffCenter(float left, float right, float bottom
 }
 
 
-Matrix Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition, const Vector3& cameraUpVector)
-{
-	return createBillboardHelper(objectPosition, cameraPosition, cameraUpVector, nullptr);
-}
-
-
-Matrix Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
-	const Vector3& cameraUpVector, const Vector3& cameraForwardVector)
-{
-	return createBillboardHelper(objectPosition, cameraPosition, cameraUpVector, &cameraForwardVector);
-}
-
-
 Matrix Matrix::createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
 	const Vector3& cameraUpVector, const Vector3* cameraForwardVector)
 {
@@ -172,7 +154,7 @@ Matrix Matrix::createBillboardHelper(const Vector3& objectPosition, const Vector
 		auto target = isSufficientDelta ? cameraPosition : (objectPosition - *cameraForwardVector);
 
 		// A billboard is the inverse of a lookAt rotation
-		Matrix lookAt = createLookAt(objectPosition, target, cameraUpVector);
+		auto lookAt = createLookAt(objectPosition, target, cameraUpVector);
 		result.m[0] = lookAt.m[0];
 		result.m[1] = lookAt.m[4];
 		result.m[2] = lookAt.m[8];
@@ -529,42 +511,6 @@ Vector3 Matrix::getTranslation() const
 }
 
 
-Vector3 Matrix::getUpVector() const
-{
-	return Vector3(m[4], m[5], m[6]);
-}
-
-
-Vector3 Matrix::getDownVector() const
-{
-	return Vector3(-m[4], -m[5], -m[6]);
-}
-
-
-Vector3 Matrix::getLeftVector() const
-{
-	return Vector3(-m[0], -m[1], -m[2]);
-}
-
-
-Vector3 Matrix::getRightVector() const
-{
-	return Vector3(m[0], m[1], m[2]);
-}
-
-
-Vector3 Matrix::getForwardVector() const
-{
-	return Vector3(-m[8], -m[9], -m[10]);
-}
-
-
-Vector3 Matrix::getBackVector() const
-{
-	return Vector3(m[8], m[9], m[10]);
-}
-
-
 bool Matrix::invert()
 {
 	auto a0 = m[0] * m[5] - m[1] * m[4];
@@ -654,13 +600,6 @@ void Matrix::rotateZ(float angleRadians)
 	auto r = createRotationZ(angleRadians);
 	*this *= r;
 }
-
-
-void Matrix::scale(float value)
-{
-	scale(Vector3(value, value, value));
-}
-
 
 
 void Matrix::scale(const Vector3& s)
