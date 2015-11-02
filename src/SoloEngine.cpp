@@ -11,7 +11,7 @@ using namespace solo;
 class EmptyEngineCallback: public EngineCallback
 {
 public:
-	bool onDeviceCloseRequested() override { return true; }
+	bool onDeviceShutdownRequested() override { return true; }
 	void onEngineStarted() override {}
 	void onEngineStopped() override {}
 };
@@ -44,7 +44,7 @@ void Engine::run()
 		scene->update();
 		scene->render();
 		device->endUpdate();
-		if (device->shutdownRequested() && callback->onDeviceCloseRequested())
+		if (device->shutdownRequested() && callback->onDeviceShutdownRequested())
 			break;
 	}
 
@@ -56,3 +56,15 @@ void Engine::setCallback(shared<EngineCallback> callback)
 {
 	this->callback = callback ? callback : SL_NEW<EmptyEngineCallback>();
 }
+
+/*
+	camera->render(scene, <target_texture>, <some_tags>);
+
+	But how to render an already rendered texture in order to apply shader to it?
+	How to render the quad needed for that? Camera is not actually needed for that.
+	In Unity Graphics.Blit serves that purpose.
+
+	device->beginUpdate();
+	scene->update();
+	if (callback->onDeviceRendered())
+*/

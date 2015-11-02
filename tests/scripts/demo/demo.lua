@@ -346,7 +346,7 @@ end
 function createEngineCallback()
 	return
 	{
-		onDeviceCloseRequested = function()
+		onDeviceShutdownRequested = function()
 			return true
 		end,
 

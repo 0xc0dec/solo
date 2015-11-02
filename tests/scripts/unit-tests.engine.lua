@@ -25,7 +25,7 @@ runTest(function()
 
 	engine:setCallback(
 	{
-		onDeviceCloseRequested = function()
+		onDeviceShutdownRequested = function()
 			return true
 		end,
 

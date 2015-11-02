@@ -17,7 +17,7 @@ public:
 	{
 	}
 
-	virtual bool onDeviceCloseRequested() override
+	virtual bool onDeviceShutdownRequested() override
 	{
 		return true;
 	}
