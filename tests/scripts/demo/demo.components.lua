@@ -5,7 +5,7 @@ function createEscapeWatcher()
 
 		update = function()
 			if device:isKeyPressed(solo.KeyCode_Escape, true) then
-				device:requestShutdown()
+				engine:requestShutdown()
 			end
 		end
 	}
