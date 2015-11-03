@@ -148,9 +148,6 @@
     <ClInclude Include="..\src\SoloPngImageLoader.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloRenderer.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloBitFlags.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -224,6 +221,9 @@
       <Filter>src\platform\stub</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloSpectator.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloRenderer.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

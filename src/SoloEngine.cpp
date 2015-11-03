@@ -58,13 +58,29 @@ void Engine::setCallback(shared<EngineCallback> callback)
 }
 
 /*
-	camera->render(scene, <target_texture>, <some_tags>);
+	camera->render(scene, <render_target>, <some_tags>);
 
-	But how to render an already rendered texture in order to apply shader to it?
-	How to render the quad needed for that? Camera is not actually needed for that.
-	In Unity Graphics.Blit serves that purpose.
+	// Render to render target
+	camera->render(scene, target);
 
-	device->beginUpdate();
+	// Render to screen
+	camera->render(scene, nullptr);
+
+	// Chain of effects
+	camera->render(scene, rtt);
+	renderer->renderTexture(rtt, rtt2, material);
+	renderer->renderTexture(rtt2, rtt3, material);
+	camera->render(rtt3, nullptr);
+
+	// Use of a renderer (including custom one)
+	renderer->render(scene);
+	engine->setRenderer(customRenderer);
+
+	renderer->render(scene, camera, rtt);
+	renderer->render(scene, camera, nullptr);
+
+	// In engine:
 	scene->update();
-	if (callback->onDeviceRendered())
+	...
+	renderer->render(scene); // means "render the entire scene with all cameras"
 */
