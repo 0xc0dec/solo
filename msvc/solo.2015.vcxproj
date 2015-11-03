@@ -75,7 +75,6 @@
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderTarget.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLTexture2D.h" />
     <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h" />
-    <ClInclude Include="..\src\platform\scripting\SoloLuaEngineCallback.h" />
     <ClInclude Include="..\src\platform\scripting\SoloLuaScriptComponent.h" />
     <ClInclude Include="..\src\platform\scripting\SoloLuaScriptManager.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubCamera.h" />
@@ -141,7 +140,6 @@
     <ClCompile Include="..\thirdparty\zlib\src\trees.c" />
     <ClCompile Include="..\thirdparty\zlib\src\uncompr.c" />
     <ClCompile Include="..\thirdparty\zlib\src\zutil.c" />
-    <ClCompile Include="..\src\platform\scripting\SoloLuaEngineCallback.cpp" />
     <ClCompile Include="..\src\platform\scripting\SoloLuaScriptComponent.cpp" />
     <ClCompile Include="..\src\platform\scripting\SoloLuaScriptManager.cpp" />
     <ClCompile Include="..\src\SoloBoundingBox.cpp" />

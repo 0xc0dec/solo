@@ -133,9 +133,6 @@
     <ClInclude Include="..\src\platform\scripting\SoloLuaScriptComponent.h">
       <Filter>src\platform\scripting</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\scripting\SoloLuaEngineCallback.h">
-      <Filter>src\platform\scripting</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloImage.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -409,9 +406,6 @@
       <Filter>src\platform\scripting</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\scripting\SoloLuaScriptComponent.cpp">
-      <Filter>src\platform\scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\scripting\SoloLuaEngineCallback.cpp">
       <Filter>src\platform\scripting</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloPngImageLoader.cpp">

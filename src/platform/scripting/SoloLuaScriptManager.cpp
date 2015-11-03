@@ -1,7 +1,6 @@
 #include "SoloBase.h"
 #include "SoloLuaScriptManager.h"
 #include "SoloLuaScriptComponent.h"
-#include "SoloLuaEngineCallback.h"
 #include "SoloEngine.h"
 #include "SoloDevice.h"
 #include "SoloScene.h"
