@@ -22,19 +22,10 @@ runTest(function()
 	assert(engine:getResourceManager())
 	assert(engine:getFileSystem())
 	assert(engine:getMode() ~= nil)
+	engine:requestShutdown()
+	assert(engine:shutdownRequested() ~= nil)
 
-	engine:setCallback(
-	{
-		onDeviceShutdownRequested = function()
-			return true
-		end,
-
-		onEngineStarted = function()
-		end,
-
-		onEngineStopped = function()
-		end
-	})
-
-	engine:setCallback({})
+	engine:setStartCallback(function() end)
+	engine:setShutdownCallback(function() end)
+	engine:setShutdownRequestedCallback(function() return true end)
 end, "Engine")

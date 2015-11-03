@@ -343,26 +343,14 @@ function init()
 end
 
 
-function createEngineCallback()
-	return
-	{
-		onDeviceShutdownRequested = function()
-			return true
-		end,
-
-		onEngineStarted = function()
-			device = engine:getDevice()
-			scene = engine:getScene()
-			resourceManager = engine:getResourceManager()
-			local _, err = pcall(init)
-			if err then
-				print(err)
-			end
-		end
-	}
-end
-
-
 engine = solo.Engine.create(solo.EngineCreationArgs(solo.EngineMode_OpenGL, 800, 600, false))
-engine:setCallback(createEngineCallback())
+engine:setStartCallback(function()
+	device = engine:getDevice()
+	scene = engine:getScene()
+	resourceManager = engine:getResourceManager()
+	local _, err = pcall(init)
+	if err then
+		print(err)
+	end
+end)
 engine:run()
