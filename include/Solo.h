@@ -9,7 +9,6 @@
 #include "SoloEffect.h"
 #include "SoloEffectVariable.h"
 #include "SoloEngine.h"
-#include "SoloEngineCreationArgs.h"
 #include "SoloException.h"
 #include "SoloFileSystem.h"
 #include "SoloBitFlags.h"

@@ -29,7 +29,6 @@
     <ClInclude Include="..\include\SoloEffect.h" />
     <ClInclude Include="..\include\SoloEffectVariable.h" />
     <ClInclude Include="..\include\SoloEngine.h" />
-    <ClInclude Include="..\include\SoloEngineCreationArgs.h" />
     <ClInclude Include="..\include\SoloException.h" />
     <ClInclude Include="..\include\SoloFileSystem.h" />
     <ClInclude Include="..\include\SoloFormatter.h" />

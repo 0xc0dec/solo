@@ -1,5 +1,5 @@
 #include "SoloTexture.h"
-#include "SoloEngineCreationArgs.h"
+#include "SoloEngine.h"
 #include "platform/stub/SoloStubTexture2D.h"
 #include "platform/stub/SoloStubCubeTexture.h"
 #include "platform/opengl/SoloOpenGLTexture2D.h"

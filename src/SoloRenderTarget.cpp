@@ -1,4 +1,4 @@
-#include "SoloEngineCreationArgs.h"
+#include "SoloEngine.h"
 #include "platform/stub/SoloStubRenderTarget.h"
 #include "platform/opengl/SoloOpenGLRenderTarget.h"
 

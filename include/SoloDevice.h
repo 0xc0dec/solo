@@ -44,8 +44,9 @@ namespace solo
 
 		virtual Vector2 getCanvasSize() const = 0;
 
-		/// Returns time elapsed since the engine startup, in seconds
 		virtual float getLifetime() const = 0;
+		
+		float getTimeDelta() const;
 
 		bool isKeyPressed(KeyCode code, bool firstTimeOnly = false) const;
 		bool isKeyReleased(KeyCode code) const;
@@ -53,8 +54,6 @@ namespace solo
 		Vector2 getMouseMotion() const;
 		bool isMouseButtonDown(MouseButton button, bool firstTimeOnly = false) const;
 		bool isMouseButtonReleased(MouseButton button) const;
-
-		float getTimeDelta() const;
 
 		Engine* getEngine() const;
 

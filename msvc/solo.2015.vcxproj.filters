@@ -112,9 +112,6 @@
     <ClInclude Include="..\include\SoloTexture2D.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloEngineCreationArgs.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloRenderTarget.h">
       <Filter>include</Filter>
     </ClInclude>

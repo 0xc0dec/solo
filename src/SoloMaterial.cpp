@@ -1,7 +1,7 @@
 #include "SoloMaterialParameter.h"
 #include "SoloEffect.h"
 #include "SoloRenderContext.h"
-#include "SoloEngineCreationArgs.h"
+#include "SoloEngine.h"
 #include "platform/stub/SoloStubMaterial.h"
 #include "platform/opengl/SoloOpenGLMaterial.h"
 
