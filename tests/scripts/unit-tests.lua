@@ -10,7 +10,7 @@ function runTest(test, name)
 	end
 end
 
-engine = solo.Engine.create(solo.EngineCreationArgs(EngineMode_Stub, 1, 1))
+device = solo.Device.create(solo.DeviceCreationArgs(solo.DeviceMode_Stub, 1, 1))
 
 dofile("../tests/scripts/unit-tests.enums.lua")
 dofile("../tests/scripts/unit-tests.bit-flags.lua")
@@ -36,7 +36,6 @@ dofile("../tests/scripts/unit-tests.cube-texture.lua")
 dofile("../tests/scripts/unit-tests.mesh.lua")
 dofile("../tests/scripts/unit-tests.model.lua")
 dofile("../tests/scripts/unit-tests.resource-manager.lua")
-dofile("../tests/scripts/unit-tests.engine.lua")
 dofile("../tests/scripts/unit-tests.device.lua")
 
 print("Finished unit tests\n")

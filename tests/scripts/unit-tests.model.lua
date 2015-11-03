@@ -1,5 +1,5 @@
 runTest(function()
-	local mgr = engine:getResourceManager()
+	local mgr = device:getResourceManager()
 	local model = mgr:getOrCreateModel("dfg")
 	local mesh = mgr:getOrCreateMesh("wer")
 

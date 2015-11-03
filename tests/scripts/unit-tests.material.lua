@@ -1,5 +1,5 @@
 runTest(function()
-	local mgr = engine:getResourceManager()
+	local mgr = device:getResourceManager()
 	local e = mgr:getOrCreateEffect("vs", "fs")
 	local m = mgr:getOrCreateMaterial(e, "test/uri")
 	local mp = m:getParameter("param")

@@ -1,5 +1,5 @@
 runTest(function()
-	local mgr = engine:getResourceManager()
+	local mgr = device:getResourceManager()
 	local t = mgr:getOrCreateTexture2D()
 	t:setData(solo.ColorFormat_RGB, {1, 2, 3, 4}, 2, 2)
 	t:generateMipmaps()

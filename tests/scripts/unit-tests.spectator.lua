@@ -1,5 +1,5 @@
 runTest(function()
-	local scene = engine:getScene()
+	local scene = device:getScene()
 	local s = scene:createNode():addComponent("Spectator")
 	assert(s:getHorizontalRotationSpeed() ~= nil)
 	assert(s:getVerticalRotationSpeed() ~= nil)

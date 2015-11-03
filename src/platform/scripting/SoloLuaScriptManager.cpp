@@ -700,6 +700,7 @@ void LuaScriptManager::registerApi()
 
 	// Device
 	auto device = module.beginClass<Device>("Device");
+	REGISTER_STATIC_METHOD(device, Device, create);
 	REGISTER_METHOD(device, Device, getWindowTitle);
 	REGISTER_METHOD(device, Device, setWindowTitle);
 	REGISTER_METHOD(device, Device, setCursorCaptured);

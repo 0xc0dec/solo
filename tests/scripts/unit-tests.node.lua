@@ -1,5 +1,5 @@
 runTest(function()
-	local scene = engine:getScene()
+	local scene = device:getScene()
 	local node = scene:createNode()
 
 	assert(node)

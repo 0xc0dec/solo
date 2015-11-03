@@ -1,9 +1,9 @@
 runTest(function()
 	local v = solo.Vector3(1, 2, 3)
 	local q = solo.Quaternion()
-	local scene = engine:getScene()
+	local scene = device:getScene()
 	local c = scene:createNode():addComponent("Camera")
-	local rt = engine:getResourceManager():getOrCreateRenderTarget("abcd")
+	local rt = device:getResourceManager():getOrCreateRenderTarget("abcd")
 
 	c:setClearColor(1, 2, 3, 4)
 

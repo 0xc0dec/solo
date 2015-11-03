@@ -1,5 +1,5 @@
 runTest(function()
-	local mgr = engine:getResourceManager()
+	local mgr = device:getResourceManager()
 	local e = mgr:getOrCreateEffect("vs", "fs")
 	local v2 = solo.Vector2.unit()
 	local v3 = solo.Vector3.unit()

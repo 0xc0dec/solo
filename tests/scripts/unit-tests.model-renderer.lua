@@ -1,6 +1,6 @@
 runTest(function()
-	local scene = engine:getScene()
-	local mgr = engine:getResourceManager()
+	local scene = device:getScene()
+	local mgr = device:getResourceManager()
 	local mr = scene:createNode():addComponent("ModelRenderer")
 	local mesh = mgr:getOrCreateMesh("wer")
 	local model = mgr:getOrCreateModel("model")

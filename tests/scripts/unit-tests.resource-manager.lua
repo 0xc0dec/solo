@@ -1,5 +1,5 @@
 runTest(function()
-	local mgr = engine:getResourceManager()
+	local mgr = device:getResourceManager()
 	mgr:findEffect("wer")
 	mgr:findTexture2D("wer")
 	mgr:findCubeTexture("wer")

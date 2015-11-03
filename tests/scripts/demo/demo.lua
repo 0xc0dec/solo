@@ -343,14 +343,13 @@ function init()
 end
 
 
-engine = solo.Engine.create(solo.EngineCreationArgs(solo.EngineMode_OpenGL, 800, 600, false))
-engine:setStartCallback(function()
-	device = engine:getDevice()
-	scene = engine:getScene()
-	resourceManager = engine:getResourceManager()
+device = solo.Device.create(solo.DeviceCreationArgs(solo.DeviceMode_OpenGL, 800, 600, false))
+device:setStartCallback(function()
+	scene = device:getScene()
+	resourceManager = device:getResourceManager()
 	local _, err = pcall(init)
 	if err then
 		print(err)
 	end
 end)
-engine:run()
+device:run()

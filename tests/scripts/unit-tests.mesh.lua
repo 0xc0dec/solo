@@ -1,5 +1,5 @@
 runTest(function()
-	local m = engine:getResourceManager():getOrCreateMesh("test/uri")
+	local m = device:getResourceManager():getOrCreateMesh("test/uri")
 	m:setVertices({
 		solo.Vector3(1, 2, 3),
 		solo.Vector3(1, 2, 3)

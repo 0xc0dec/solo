@@ -35,8 +35,8 @@ runTest(function()
 	assert(solo.MouseButton_Middle ~= nil)
 	assert(solo.MouseButton_Right ~= nil)
 
-	assert(solo.EngineMode_Stub ~= nil)
-	assert(solo.EngineMode_OpenGL ~= nil)
+	assert(solo.DeviceMode_Stub ~= nil)
+	assert(solo.DeviceMode_OpenGL ~= nil)
 
 	assert(solo.PolygonFace_All ~= nil)
 	assert(solo.PolygonFace_CCW ~= nil)
