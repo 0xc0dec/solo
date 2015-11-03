@@ -8,17 +8,15 @@ using namespace solo;
 using namespace LuaIntf;
 
 
-LuaScriptComponent::LuaScriptComponent(const Node& node, size_t typeId, LuaRef& component,
-	std::function<void(LuaRef)> initFunc,
-	std::function<void(LuaRef)> updateFunc,
-	std::function<void(LuaRef)> terminateFunc) :
+LuaScriptComponent::LuaScriptComponent(const Node& node, LuaRef& component) :
 	ComponentBase<LuaScriptComponent>(node),
-	typeId(typeId),
-	component(component),
-	initFunc(initFunc),
-	updateFunc(updateFunc),
-	terminateFunc(terminateFunc)
+	component(component)
 {
+	auto typeIdString = component.get<std::string>("typeId");
+	typeId = getHash(typeIdString);
+	initFunc = component.has("init") ? component.get<std::function<void(LuaRef)>>("init") : [](LuaRef) {};
+	updateFunc = component.has("update") ? component.get<std::function<void(LuaRef)>>("update") : [](LuaRef) {};
+	terminateFunc = component.has("terminate") ? component.get<std::function<void(LuaRef)>>("terminate") : [](LuaRef) {};
 	component.set("node", node);
 }
 
@@ -78,13 +76,8 @@ LuaRef LuaScriptComponent::findScriptComponent(lua_State *lua, Node* node, const
 
 void LuaScriptComponent::addScriptComponent(Node* node, LuaRef& component)
 {
-	auto typeIdString = component.get<std::string>("typeId");
-	auto typeId = getHash(typeIdString);
-	auto initFunc = component.has("init") ? component.get<std::function<void(LuaRef)>>("init") : [](LuaRef) {};
-	auto updateFunc = component.has("update") ? component.get<std::function<void(LuaRef)>>("update") : [](LuaRef) {};
-	auto terminateFunc = component.has("terminate") ? component.get<std::function<void(LuaRef)>>("terminate") : [](LuaRef) {};
-	auto actualComponent = SL_NEW<LuaScriptComponent>(*node, typeId, component, initFunc, updateFunc, terminateFunc);
-	node->getScene()->addComponent(node->getId(), actualComponent, typeId);
+	auto actualComponent = SL_NEW<LuaScriptComponent>(*node, component);
+	node->getScene()->addComponent(node->getId(), actualComponent);
 }
 
 

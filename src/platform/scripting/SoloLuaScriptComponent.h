@@ -10,10 +10,7 @@ namespace solo
 	class LuaScriptComponent: public ComponentBase<LuaScriptComponent>
 	{
 	public:
-		LuaScriptComponent(const Node& node, size_t typeId, LuaIntf::LuaRef& component,
-			std::function<void(LuaIntf::LuaRef)> initFunc,
-			std::function<void(LuaIntf::LuaRef)> updateFunc,
-			std::function<void(LuaIntf::LuaRef)> terminateFunc);
+		LuaScriptComponent(const Node& node, LuaIntf::LuaRef& component);
 
 		virtual void init() override;
 		virtual void update() override;

@@ -83,4 +83,24 @@ void Engine::setCallback(shared<EngineCallback> callback)
 	scene->update();
 	...
 	renderer->render(scene); // means "render the entire scene with all cameras"
+
+	// Camera render mode + component methods
+	camera->setRenderMode(CameraRenderMode::Forward);
+	camera->setRenderMode(CameraRenderMode::Deferred);
+	camera->setRenderMode(CameraRenderMode::None);
+
+	// Component methods: invoked only when this component is attached to a node with camera
+	void preCameraRender()
+	{
+		// Can disable standard camera rendering in a way like this
+		camera->setRenderMode(CameraRenderMode::None);
+	}
+
+	void postCameraRender()
+	{
+		camera->renderScene(scene, rtt, material);
+		graphics->processImage(...)
+	}
+
+	TODO cleanup Lua component
 */
