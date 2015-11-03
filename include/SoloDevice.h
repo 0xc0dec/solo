@@ -1,10 +1,14 @@
 #pragma once
 
-#include "SoloEngine.h"
+#include "SoloBase.h"
 #include "SoloVector2.h"
 
 namespace solo
 {
+	class Scene;
+	class ResourceManager;
+	class FileSystem;
+
 	enum class KeyCode
 	{
 		Q, W, E, R, T, Y, U, I, O, P,
@@ -25,9 +29,46 @@ namespace solo
 		Right
 	};
 
+	enum class DeviceMode
+	{
+		Stub,
+		OpenGL
+	};
+
+	struct DeviceCreationArgs // TODO rename
+	{
+		DeviceMode mode;
+		int canvasWidth;
+		int canvasHeight;
+		bool fullScreen;
+		std::string windowTitle;
+		int bits;
+		int depth;
+
+		DeviceCreationArgs(
+			DeviceMode mode = DeviceMode::OpenGL,
+			int canvasWidth = 800,
+			int canvasHeight = 600,
+			bool fullScreen = false,
+			const std::string& windowTitle = "",
+			int bits = 32,
+			int depth = 16) :
+			mode(mode),
+			canvasWidth(canvasWidth > 0 ? canvasWidth : 1),
+			canvasHeight(canvasHeight > 0 ? canvasHeight : 1),
+			fullScreen(fullScreen),
+			windowTitle(windowTitle),
+			bits(bits > 0 ? bits : 32),
+			depth(depth > 0 ? depth : 16)
+		{
+		}
+	};
+
 	class Device
 	{
 	public:
+		static shared<Device> create(const DeviceCreationArgs &args);
+
 		Device(const Device& other) = delete;
 		Device(Device&& device) = delete;
 		Device& operator=(const Device& other) = delete;
@@ -55,12 +96,34 @@ namespace solo
 		bool isMouseButtonDown(MouseButton button, bool firstTimeOnly = false) const;
 		bool isMouseButtonReleased(MouseButton button) const;
 
-		Engine* getEngine() const;
+		void run();
+
+		void setStartCallback(std::function<void()> callback);
+		void setShutdownCallback(std::function<void()> callback);
+		void setShutdownRequestedCallback(std::function<bool()> callback);
+
+		void requestShutdown();
+		bool shutdownRequested() const;
+
+		DeviceMode getMode() const;
+
+		Scene *getScene() const;
+		FileSystem *getFileSystem() const;
+		ResourceManager *getResourceManager() const;
 
 	protected:
-		explicit Device(Engine *engine, const EngineCreationArgs& args);
+		explicit Device(const DeviceCreationArgs& args);
 
 		void updateTime();
+
+		bool shutdown = false;
+		DeviceCreationArgs creationArgs;
+		std::function<void()> startCallback{ [] {} };
+		std::function<void()> shutdownCallback{ [] {} };
+		std::function<bool()> shutdownRequestedCallback{ [] { return true; } };
+		shared<Scene> scene;
+		shared<FileSystem> fs;
+		shared<ResourceManager> resourceManager;
 
 		// stores what keys were pressed and if it was a repeat
 		std::unordered_map<KeyCode, bool> pressedKeys;
@@ -71,11 +134,9 @@ namespace solo
 		std::unordered_map<MouseButton, bool> pressedMouseButtons;
 		std::unordered_set<MouseButton> releasedMouseButtons;
 
-		Engine *engine;
 		bool close = false;
 		float lastUpdateTime = 0;
 		float timeDelta = 0;
-		EngineCreationArgs creationArgs;
 	};
 
 	inline float Device::getTimeDelta() const
@@ -83,14 +144,33 @@ namespace solo
 		return timeDelta;
 	}
 
-	inline Engine* Device::getEngine() const
+	inline void Device::requestShutdown()
 	{
-		return engine;
+		shutdown = true;
 	}
 
-	class DeviceFactory
+	inline bool Device::shutdownRequested() const
 	{
-		friend class Engine;
-		static shared<Device> create(Engine *engine, const EngineCreationArgs& args);
-	};
+		return shutdown;
+	}
+
+	inline DeviceMode Device::getMode() const
+	{
+		return creationArgs.mode;
+	}
+
+	inline Scene *Device::getScene() const
+	{
+		return scene.get();
+	}
+
+	inline FileSystem *Device::getFileSystem() const
+	{
+		return fs.get();
+	}
+
+	inline ResourceManager *Device::getResourceManager() const
+	{
+		return resourceManager.get();
+	}
 }

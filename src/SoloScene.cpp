@@ -8,14 +8,14 @@
 using namespace solo;
 
 
-shared<Scene> SceneFactory::create(Engine *engine)
+shared<Scene> SceneFactory::create(Device *device)
 {
-	return SL_NEW2(Scene, engine);
+	return SL_NEW2(Scene, device);
 }
 
 
-Scene::Scene(Engine* engine) :
-	engine{ engine }
+Scene::Scene(Device* device) :
+	device{ device }
 {
 	
 }

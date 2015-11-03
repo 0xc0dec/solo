@@ -6,8 +6,8 @@
 class Device_Test : public TestBase
 {
 public:
-	Device_Test(Engine* engine):
-		TestBase(engine)
+	Device_Test(Device* device):
+		TestBase(device)
 	{
 	}
 
@@ -18,7 +18,7 @@ public:
 
 	void test_SetWindowTitle_GetWindowTitle()
 	{
-		engine->getDevice()->setWindowTitle("Test window");
-		assert(engine->getDevice()->getWindowTitle() == "Test window");
+		device->setWindowTitle("Test window");
+		assert(device->getWindowTitle() == "Test window");
 	}
 };

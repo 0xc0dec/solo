@@ -13,7 +13,7 @@ namespace solo
 	class Node;
 	class RenderTarget;
 	class Scene;
-	enum class EngineMode;
+	enum class DeviceMode;
 
 	enum class CameraRenderMode
 	{
@@ -189,6 +189,6 @@ namespace solo
 	class CameraFactory
 	{
 		friend class Node;
-		static shared<Camera> create(EngineMode mode, Scene *scene, Node node);
+		static shared<Camera> create(DeviceMode mode, Scene *scene, Node node);
 	};
 }

@@ -5,7 +5,7 @@
 class BitFlags_Test : public TestBase
 {
 public:
-	BitFlags_Test(Engine* engine): TestBase(engine)
+	BitFlags_Test(Device* device): TestBase(device)
 	{
 	}
 

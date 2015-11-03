@@ -80,7 +80,7 @@ std::unordered_map<Uint8, MouseButton> mouseButtonsMap =
 };
 
 
-WindowWithContextCreationResult tryCreateOpengGLWindow(bool hidden, int ctxMajorVersion, int ctxMinorVersion, EngineCreationArgs creationArgs)
+WindowWithContextCreationResult tryCreateOpengGLWindow(bool hidden, int ctxMajorVersion, int ctxMinorVersion, DeviceCreationArgs creationArgs)
 {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, ctxMajorVersion);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, ctxMinorVersion);
@@ -108,8 +108,8 @@ WindowWithContextCreationResult tryCreateOpengGLWindow(bool hidden, int ctxMajor
 }
 
 
-SDLOpenGLDevice::SDLOpenGLDevice(Engine *engine, EngineCreationArgs const& args):
-	Device(engine, args)
+SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
+	Device(args)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
 		SL_THROW_FMT(EngineException, "Failed to initialize system");
@@ -306,7 +306,7 @@ void SDLOpenGLDevice::processWindowEvent(const SDL_Event& evt)
 	switch (evt.window.event)
 	{
 		case SDL_WINDOWEVENT_CLOSE:
-			engine->requestShutdown();
+			requestShutdown();
 			break;
 	}
 }
@@ -321,7 +321,7 @@ void SDLOpenGLDevice::readEvents()
 		switch (evt.type)
 		{
 			case SDL_QUIT:
-				engine->requestShutdown();
+				requestShutdown();
 				break;
 			case SDL_WINDOWEVENT:
 				processWindowEvent(evt);

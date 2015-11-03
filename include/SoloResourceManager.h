@@ -13,7 +13,7 @@ namespace solo
 	class RenderTarget;
 	class ImageLoader;
 	class ModelLoader;
-	class Engine;
+	class Device;
 
 	class ResourceManager
 	{
@@ -47,7 +47,7 @@ namespace solo
 		void cleanUnusedResources();
 
 	protected:
-		explicit ResourceManager(Engine *engine);
+		explicit ResourceManager(Device *device);
 
 		std::vector<shared<ImageLoader>> imageLoaders;
 		std::vector<shared<ModelLoader>> modelLoaders;
@@ -70,7 +70,7 @@ namespace solo
 		template <typename TResource>
 		shared<TResource> findResource(const std::string& uri, const ResourceMap<TResource>& resourceMap);
 
-		Engine *engine{ nullptr };
+		Device *device{ nullptr };
 
 		ResourceMap<Effect> effects;
 		ResourceMap<Material> materials;
@@ -85,7 +85,7 @@ namespace solo
 
 	class ResourceManagerFactory
 	{
-		friend class Engine;
-		static shared<ResourceManager> create(Engine *engine);
+		friend class Device;
+		static shared<ResourceManager> create(Device *device);
 	};
 }

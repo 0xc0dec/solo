@@ -32,7 +32,8 @@ const char *fs = R"s(
 class Materials_Test : public TestBase
 {
 public:
-	Materials_Test(Engine *engine) : TestBase(engine)
+	Materials_Test(Device* device):
+		TestBase(device)
 	{
 	}
 

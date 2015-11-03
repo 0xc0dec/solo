@@ -28,7 +28,7 @@ namespace solo
 
 	class FileSystemFactory
 	{
-		friend class Engine;
+		friend class Device;
 		static shared<FileSystem> create();
 	};
 }

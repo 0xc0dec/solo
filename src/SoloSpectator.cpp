@@ -8,7 +8,7 @@ using namespace solo;
 Spectator::Spectator(const Node& node):
 	ComponentBase(node)
 {
-	device = node.getScene()->getEngine()->getDevice();
+	device = node.getScene()->getDevice();
 }
 
 

@@ -42,7 +42,7 @@ public:
 class ComponentsAndNodes_Test : public TestBase
 {
 public:
-	ComponentsAndNodes_Test(Engine* engine): TestBase(engine)
+	ComponentsAndNodes_Test(Device* device): TestBase(device)
 	{
 	}
 

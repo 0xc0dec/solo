@@ -1,9 +1,9 @@
 #include "SoloNode.h"
 #include "SoloScene.h"
 #include "SoloCamera.h"
+#include "SoloDevice.h"
 #include "SoloModelRenderer.h"
 #include "SoloTransform.h"
-#include "SoloEngine.h"
 
 using namespace solo;
 
@@ -24,7 +24,7 @@ template<> Transform* Node::addComponent<Transform>()
 
 template<> Camera* Node::addComponent<Camera>()
 {
-	auto camera = CameraFactory::create(scene->getEngine()->getMode(), scene, *this);
+	auto camera = CameraFactory::create(scene->getDevice()->getMode(), scene, *this);
 	scene->addComponent(id, camera);
 	return camera.get();
 }

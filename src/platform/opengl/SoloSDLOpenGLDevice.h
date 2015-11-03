@@ -23,9 +23,9 @@ namespace solo
 		virtual void endUpdate() override;
 
 	private:
-		friend class DeviceFactory;
+		friend class Device;
 
-		explicit SDLOpenGLDevice(Engine *engine, const EngineCreationArgs &args);
+		explicit SDLOpenGLDevice(const DeviceCreationArgs &args);
 
 		void prepareKeyboardState();
 		void prepareMouseState();

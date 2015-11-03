@@ -7,7 +7,7 @@
 #include "SoloPngImageLoader.h"
 #include "SoloTexture2D.h"
 #include "SoloCubeTexture.h"
-#include "SoloEngine.h"
+#include "SoloDevice.h"
 #include "SoloObjModelLoader.h"
 #include "platform/stub/SoloStubResourceManager.h"
 #include <functional>
@@ -15,19 +15,19 @@
 using namespace solo;
 
 
-shared<ResourceManager> ResourceManagerFactory::create(Engine *engine)
+shared<ResourceManager> ResourceManagerFactory::create(Device *device)
 {
-	if (engine->getMode() == EngineMode::Stub)
-		return SL_NEW2(StubResourceManager, engine);
-	return SL_NEW2(ResourceManager, engine);
+	if (device->getMode() == DeviceMode::Stub)
+		return SL_NEW2(StubResourceManager, device);
+	return SL_NEW2(ResourceManager, device);
 }
 
 
-ResourceManager::ResourceManager(Engine *engine):
-	engine(engine)
+ResourceManager::ResourceManager(Device *device):
+	device(device)
 {
-	imageLoaders.push_back(SL_NEW<PngImageLoader>(engine->getFileSystem(), this));
-	modelLoaders.push_back(SL_NEW<ObjModelLoader>(engine->getFileSystem(), this));
+	imageLoaders.push_back(SL_NEW<PngImageLoader>(device->getFileSystem(), this));
+	modelLoaders.push_back(SL_NEW<ObjModelLoader>(device->getFileSystem(), this));
 }
 
 
@@ -83,7 +83,7 @@ shared<Effect> ResourceManager::getOrCreateEffect(const std::string& vsSrc, cons
 {
 	return getOrCreateResource<Effect>(uri, effects,
 		std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
-		[&]() { return EffectFactory::create(engine->getMode(), vsSrc, fsSrc); });
+		[&]() { return EffectFactory::create(device->getMode(), vsSrc, fsSrc); });
 }
 
 
@@ -92,7 +92,7 @@ shared<Material> ResourceManager::getOrCreateMaterial(shared<Effect> effect, con
 	// effectively ignores the effect if a material with the given uri already exists
 	return getOrCreateResource<Material>(uri, materials,
 		std::bind(&ResourceManager::findMaterial, this, std::placeholders::_1),
-		[&]() { return MaterialFactory::create(engine->getMode(), effect); });
+		[&]() { return MaterialFactory::create(device->getMode(), effect); });
 }
 
 
@@ -107,7 +107,7 @@ shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& imageUr
 	{
 		if (loader->isLoadable(imageUri))
 		{
-			auto result = TextureFactory::create2D(engine->getMode());
+			auto result = TextureFactory::create2D(device->getMode());
 			auto image = loader->load(imageUri);
 			result->setData(image->colorFormat, image->data, image->width, image->height);
 			textures2d[textureUri] = result;
@@ -131,7 +131,7 @@ shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std:
 	if (existing)
 		return existing;
 
-	auto result = TextureFactory::createCube(engine->getMode());
+	auto result = TextureFactory::createCube(device->getMode());
 	auto idx = 0;
 	for (auto& imageUri: imageUris)
 	{
@@ -160,7 +160,7 @@ shared<Texture2D> ResourceManager::getOrCreateTexture2D(const std::string &uri)
 {
 	return getOrCreateResource<Texture2D>(uri, textures2d,
 		std::bind(&ResourceManager::findTexture2D, this, std::placeholders::_1),
-		std::bind(&TextureFactory::create2D, engine->getMode()));
+		std::bind(&TextureFactory::create2D, device->getMode()));
 }
 
 
@@ -168,7 +168,7 @@ shared<CubeTexture> ResourceManager::getOrCreateCubeTexture(const std::string& u
 {
 	return getOrCreateResource<CubeTexture>(uri, cubeTextures,
 		std::bind(&ResourceManager::findCubeTexture, this, std::placeholders::_1),
-		std::bind(&TextureFactory::createCube, engine->getMode()));
+		std::bind(&TextureFactory::createCube, device->getMode()));
 }
 
 
@@ -204,7 +204,7 @@ shared<Mesh> ResourceManager::getOrCreateMesh(const std::string& uri)
 {
 	return getOrCreateResource<Mesh>(uri, meshes,
 		std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
-		std::bind(&MeshFactory::create, engine->getMode()));
+		std::bind(&MeshFactory::create, device->getMode()));
 }
 
 
@@ -212,7 +212,7 @@ shared<RenderTarget> ResourceManager::getOrCreateRenderTarget(const std::string&
 {
 	return getOrCreateResource<RenderTarget>(uri, renderTargets,
 		std::bind(&ResourceManager::findRenderTarget, this, std::placeholders::_1),
-		std::bind(&RenderTargetFactory::create, engine->getMode()));
+		std::bind(&RenderTargetFactory::create, device->getMode()));
 }
 
 

@@ -28,7 +28,6 @@
     <ClInclude Include="..\include\SoloBitFlags.h" />
     <ClInclude Include="..\include\SoloEffect.h" />
     <ClInclude Include="..\include\SoloEffectVariable.h" />
-    <ClInclude Include="..\include\SoloEngine.h" />
     <ClInclude Include="..\include\SoloException.h" />
     <ClInclude Include="..\include\SoloFileSystem.h" />
     <ClInclude Include="..\include\SoloFormatter.h" />
@@ -147,7 +146,6 @@
     <ClCompile Include="..\src\SoloFileSystem.cpp" />
     <ClCompile Include="..\src\SoloBase.cpp" />
     <ClCompile Include="..\src\SoloDevice.cpp" />
-    <ClCompile Include="..\src\SoloEngine.cpp" />
     <ClCompile Include="..\src\SoloFrustum.cpp" />
     <ClCompile Include="..\src\SoloLog.cpp" />
     <ClCompile Include="..\src\SoloMaterial.cpp" />

@@ -1,5 +1,4 @@
 #include "SoloOpenGLCamera.h"
-#include "SoloEngine.h"
 #include "SoloDevice.h"
 #include <GL/glew.h>
 
@@ -15,7 +14,7 @@ OpenGLCamera::OpenGLCamera(Scene* scene, Node node):
 void OpenGLCamera::init()
 {
 	Camera::init();
-	device = scene->getEngine()->getDevice();
+	device = scene->getDevice();
 }
 
 

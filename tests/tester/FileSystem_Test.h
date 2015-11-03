@@ -6,7 +6,7 @@
 class FileSystem_Test : public TestBase
 {
 public:
-	FileSystem_Test(Engine* engine): TestBase(engine)
+	FileSystem_Test(Device* device): TestBase(device)
 	{
 	}
 

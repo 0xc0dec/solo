@@ -5,7 +5,7 @@
 namespace solo
 {
 	class EffectVariable;
-	enum class EngineMode;
+	enum class DeviceMode;
 
 	class Effect
 	{
@@ -29,6 +29,6 @@ namespace solo
 	class EffectFactory
 	{
 		friend class ResourceManager;
-		static shared<Effect> create(EngineMode engineMode, const std::string &vsSrc, const std::string &fsSrc);
+		static shared<Effect> create(DeviceMode mode, const std::string &vsSrc, const std::string &fsSrc);
 	};
 }

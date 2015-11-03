@@ -6,8 +6,8 @@
 class ModelRenderer_Test : public TestBase
 {
 public:
-	ModelRenderer_Test(Engine* engine) :
-		TestBase(engine)
+	ModelRenderer_Test(Device* device) :
+		TestBase(device)
 	{
 	}
 

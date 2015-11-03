@@ -8,7 +8,7 @@ namespace solo
 	class Node;
 	class Camera;
 	class Renderer;
-	class Engine;
+	class Device;
 
 	class Scene
 	{
@@ -19,7 +19,7 @@ namespace solo
 		Scene& operator=(Scene&& other) = delete;
 		~Scene();
 
-		Engine *getEngine() const;
+		Device *getDevice() const;
 
 		shared<Node> createNode();
 
@@ -42,12 +42,12 @@ namespace solo
 		using ComponentIterationWorker = std::function<void(size_t, Component*)>;
 		using Components = std::unordered_map<size_t, std::unordered_map<size_t, shared<Component>>>;
 
-		explicit Scene(Engine *engine);
+		explicit Scene(Device *device);
 
 		void iterateComponents(ComponentIterationWorker work);
 		void syncCameraCache();
 
-		Engine *engine;
+		Device *device;
 		size_t nodeCounter = 0;
 		bool cameraCacheDirty = true;
 
@@ -55,14 +55,14 @@ namespace solo
 		Components components;
 	};
 
-	inline Engine* Scene::getEngine() const
+	inline Device* Scene::getDevice() const
 	{
-		return engine;
+		return device;
 	}
 
 	class SceneFactory
 	{
-		friend class Engine;
-		static shared<Scene> create(Engine *engine);
+		friend class Device;
+		static shared<Scene> create(Device *device);
 	};
 }

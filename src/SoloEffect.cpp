@@ -1,13 +1,13 @@
-#include "SoloEngine.h"
+#include "SoloDevice.h"
 #include "platform/stub/SoloStubEffect.h"
 #include "platform/opengl/SoloGLSLEffect.h"
 
 using namespace solo;
 
 
-shared<Effect> EffectFactory::create(EngineMode engineMode, const std::string& vsSrc, const std::string& fsSrc)
+shared<Effect> EffectFactory::create(DeviceMode mode, const std::string& vsSrc, const std::string& fsSrc)
 {
-	if (engineMode == EngineMode::OpenGL)
+	if (mode == DeviceMode::OpenGL)
 		return SL_NEW2(GLSLEffect, vsSrc, fsSrc);
 	return SL_NEW2(StubEffect);
 }

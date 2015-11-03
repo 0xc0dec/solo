@@ -1,16 +1,16 @@
 #include "SoloMaterialParameter.h"
 #include "SoloEffect.h"
 #include "SoloRenderContext.h"
-#include "SoloEngine.h"
+#include "SoloDevice.h"
 #include "platform/stub/SoloStubMaterial.h"
 #include "platform/opengl/SoloOpenGLMaterial.h"
 
 using namespace solo;
 
 
-shared<Material> MaterialFactory::create(EngineMode mode, shared<Effect> effect)
+shared<Material> MaterialFactory::create(DeviceMode mode, shared<Effect> effect)
 {
-	if (mode == EngineMode::OpenGL)
+	if (mode == DeviceMode::OpenGL)
 		return SL_NEW2(OpenGLMaterial, effect);
 	return SL_NEW2(StubMaterial, effect);
 }

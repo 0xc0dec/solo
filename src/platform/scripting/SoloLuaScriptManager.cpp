@@ -1,7 +1,6 @@
 #include "SoloBase.h"
 #include "SoloLuaScriptManager.h"
 #include "SoloLuaScriptComponent.h"
-#include "SoloEngine.h"
 #include "SoloDevice.h"
 #include "SoloScene.h"
 #include "SoloResourceManager.h"
@@ -682,6 +681,23 @@ void LuaScriptManager::registerApi()
 		.addConstant("MouseButton_Middle", MouseButton::Middle)
 		.addConstant("MouseButton_Right", MouseButton::Right);
 
+	// DeviceMode
+	module
+		.addConstant("DeviceMode_Stub", DeviceMode::Stub)
+		.addConstant("DeviceMode_OpenGL", DeviceMode::OpenGL);
+
+	// DeviceCreationArgs
+	module.beginClass<DeviceCreationArgs>("DeviceCreationArgs")
+		.addConstructor(LUA_ARGS(_opt<DeviceMode>, _opt<int>, _opt<int>, _opt<bool>, _opt<std::string>, _opt<int>, _opt<int>))
+		.addVariable("mode", &DeviceCreationArgs::mode, true)
+		.addVariable("bits", &DeviceCreationArgs::bits, true)
+		.addVariable("canvasHeight", &DeviceCreationArgs::canvasHeight, true)
+		.addVariable("canvasWidth", &DeviceCreationArgs::canvasWidth, true)
+		.addVariable("depth", &DeviceCreationArgs::depth, true)
+		.addVariable("fullScreen", &DeviceCreationArgs::fullScreen, true)
+		.addVariable("windowTitle", &DeviceCreationArgs::windowTitle, true)
+		.endClass();
+
 	// Device
 	auto device = module.beginClass<Device>("Device");
 	REGISTER_METHOD(device, Device, getWindowTitle);
@@ -695,6 +711,16 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(device, Device, isMouseButtonDown);
 	REGISTER_METHOD(device, Device, isMouseButtonReleased);
 	REGISTER_METHOD(device, Device, getTimeDelta);
+	REGISTER_METHOD(device, Device, getScene);
+	REGISTER_METHOD(device, Device, getResourceManager);
+	REGISTER_METHOD(device, Device, getFileSystem);
+	REGISTER_METHOD(device, Device, getMode);
+	REGISTER_METHOD(device, Device, run);
+	REGISTER_METHOD(device, Device, setStartCallback);
+	REGISTER_METHOD(device, Device, setShutdownCallback);
+	REGISTER_METHOD(device, Device, setShutdownRequestedCallback);
+	REGISTER_METHOD(device, Device, requestShutdown);
+	REGISTER_METHOD(device, Device, shutdownRequested);
 	device.endClass();
 
 	// ResourceManager
@@ -723,39 +749,6 @@ void LuaScriptManager::registerApi()
 	module.beginClass<FileSystem>("FileSystem")
 		// TODO
 	.endClass();
-
-	// EngineMode
-	module
-		.addConstant("EngineMode_Stub", EngineMode::Stub)
-		.addConstant("EngineMode_OpenGL", EngineMode::OpenGL);
-
-	// EngineCreationArgs
-	module.beginClass<EngineCreationArgs>("EngineCreationArgs")
-		.addConstructor(LUA_ARGS(_opt<EngineMode>, _opt<int>, _opt<int>, _opt<bool>, _opt<std::string>, _opt<int>, _opt<int>))
-		.addVariable("mode", &EngineCreationArgs::mode, true)
-		.addVariable("bits", &EngineCreationArgs::bits, true)
-		.addVariable("canvasHeight", &EngineCreationArgs::canvasHeight, true)
-		.addVariable("canvasWidth", &EngineCreationArgs::canvasWidth, true)
-		.addVariable("depth", &EngineCreationArgs::depth, true)
-		.addVariable("fullScreen", &EngineCreationArgs::fullScreen, true)
-		.addVariable("windowTitle", &EngineCreationArgs::windowTitle, true)
-	.endClass();
-
-	// Engine
-	auto engine = module.beginClass<Engine>("Engine");
-	REGISTER_STATIC_METHOD(engine, Engine, create);
-	REGISTER_METHOD(engine, Engine, getDevice);
-	REGISTER_METHOD(engine, Engine, getScene);
-	REGISTER_METHOD(engine, Engine, getResourceManager);
-	REGISTER_METHOD(engine, Engine, getFileSystem);
-	REGISTER_METHOD(engine, Engine, getMode);
-	REGISTER_METHOD(engine, Engine, run);
-	REGISTER_METHOD(engine, Engine, setStartCallback);
-	REGISTER_METHOD(engine, Engine, setShutdownCallback);
-	REGISTER_METHOD(engine, Engine, setShutdownRequestedCallback);
-	REGISTER_METHOD(engine, Engine, requestShutdown);
-	REGISTER_METHOD(engine, Engine, shutdownRequested);
-	engine.endClass();
 
 	module.endModule();
 }

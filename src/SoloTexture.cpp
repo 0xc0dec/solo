@@ -1,5 +1,5 @@
 #include "SoloTexture.h"
-#include "SoloEngine.h"
+#include "SoloDevice.h"
 #include "platform/stub/SoloStubTexture2D.h"
 #include "platform/stub/SoloStubCubeTexture.h"
 #include "platform/opengl/SoloOpenGLTexture2D.h"
@@ -8,17 +8,17 @@
 using namespace solo;
 
 
-shared<Texture2D> TextureFactory::create2D(EngineMode mode)
+shared<Texture2D> TextureFactory::create2D(DeviceMode mode)
 {
-	if (mode == EngineMode::OpenGL)
+	if (mode == DeviceMode::OpenGL)
 		return SL_NEW2(OpenGLTexture2D);
 	return SL_NEW2(StubTexture2D);
 }
 
 
-shared<CubeTexture> TextureFactory::createCube(EngineMode mode)
+shared<CubeTexture> TextureFactory::createCube(DeviceMode mode)
 {
-	if (mode == EngineMode::OpenGL)
+	if (mode == DeviceMode::OpenGL)
 		return SL_NEW2(OpenGLCubeTexture);
 	return SL_NEW2(StubCubeTexture);
 }

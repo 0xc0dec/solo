@@ -7,7 +7,7 @@ namespace solo
 {
 	class Effect;
 	class MaterialParameter;
-	enum class EngineMode;
+	enum class DeviceMode;
 
 	class Material: public RenderState
 	{
@@ -34,6 +34,6 @@ namespace solo
 	class MaterialFactory
 	{
 		friend class ResourceManager;
-		static shared<Material> create(EngineMode mode, shared<Effect> effect);
+		static shared<Material> create(DeviceMode mode, shared<Effect> effect);
 	};
 }

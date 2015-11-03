@@ -12,12 +12,11 @@ using namespace solo;
 class TestBase
 {
 public:
-	TestBase(Engine *engine) :
-		engine(engine),
-		device(engine->getDevice()),
-		scene(engine->getScene()),
-		resourceManager(engine->getResourceManager()),
-		fileSystem(engine->getFileSystem())
+	TestBase(Device *device) :
+		device(device),
+		scene(device->getScene()),
+		resourceManager(device->getResourceManager()),
+		fileSystem(device->getFileSystem())
 	{
 	}
 
@@ -45,7 +44,6 @@ protected:
 		}
 	}
 
-	Engine *engine;
 	Device *device;
 	Scene *scene;
 	ResourceManager *resourceManager;

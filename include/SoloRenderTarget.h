@@ -5,7 +5,7 @@
 namespace solo
 {
 	class Texture2D;
-	enum class EngineMode;
+	enum class DeviceMode;
 
 	class RenderTarget
 	{
@@ -34,6 +34,6 @@ namespace solo
 	class RenderTargetFactory
 	{
 		friend class ResourceManager;
-		static shared<RenderTarget> create(EngineMode mode);
+		static shared<RenderTarget> create(DeviceMode mode);
 	};
 }

@@ -6,7 +6,7 @@
 
 namespace solo
 {
-	enum class EngineMode;
+	enum class DeviceMode;
 
 	class Mesh
 	{
@@ -31,6 +31,6 @@ namespace solo
 	class MeshFactory
 	{
 		friend class ResourceManager;
-		static shared<Mesh> create(EngineMode mode);
+		static shared<Mesh> create(DeviceMode mode);
 	};
 }

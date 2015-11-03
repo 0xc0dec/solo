@@ -1,4 +1,4 @@
-#include "SoloEngine.h"
+#include "SoloDevice.h"
 #include "platform/stub/SoloStubMesh.h"
 #include "platform/opengl/SoloOpenGLMesh.h"
 
@@ -6,9 +6,9 @@ using namespace solo;
 
 
 
-shared<Mesh> MeshFactory::create(EngineMode mode)
+shared<Mesh> MeshFactory::create(DeviceMode mode)
 {
-	if (mode == EngineMode::OpenGL)
+	if (mode == DeviceMode::OpenGL)
 		return SL_NEW2(OpenGLMesh);
 	return SL_NEW2(StubMesh);
 }

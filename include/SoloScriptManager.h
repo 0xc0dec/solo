@@ -4,8 +4,6 @@
 
 namespace solo
 {
-	class Engine;
-
 	class ScriptManager
 	{
 	public:

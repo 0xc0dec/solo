@@ -58,9 +58,6 @@
     <ClInclude Include="..\include\SoloEffect.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloEngine.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloFileSystem.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -219,9 +216,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\SoloEngine.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloLog.cpp">
       <Filter>src</Filter>
     </ClCompile>

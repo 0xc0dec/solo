@@ -10,17 +10,17 @@
 using namespace solo;
 
 
-EngineCreationArgs openGlArgs
+DeviceCreationArgs openGlArgs
 {
-	EngineMode::OpenGL,
+	DeviceMode::OpenGL,
 	800,
 	600
 };
 
 
-EngineCreationArgs stubArgs
+DeviceCreationArgs stubArgs
 {
-	EngineMode::Stub,
+	DeviceMode::Stub,
 	1,
 	1
 };
@@ -28,31 +28,31 @@ EngineCreationArgs stubArgs
 
 void runCppUnitTests()
 {
-	auto engine = Engine::create(stubArgs);
-	engine->setStartCallback([&]
+	auto device = Device::create(stubArgs);
+	device->setStartCallback([&]
 	{
-		Resources_Test(engine.get()).run();
-		FileSystem_Test(engine.get()).run();
-		Device_Test(engine.get()).run();
-		ComponentsAndNodes_Test(engine.get()).run();
-		Transform_Test(engine.get()).run();
-		ModelRenderer_Test(engine.get()).run();
-		BitFlags_Test(engine.get()).run();
-		engine->requestShutdown();
+		Resources_Test(device.get()).run();
+		FileSystem_Test(device.get()).run();
+		Device_Test(device.get()).run();
+		ComponentsAndNodes_Test(device.get()).run();
+		Transform_Test(device.get()).run();
+		ModelRenderer_Test(device.get()).run();
+		BitFlags_Test(device.get()).run();
+		device->requestShutdown();
 	});
-	engine->run();
+	device->run();
 }
 
 
 void runCppIntegrationTests()
 {
-	auto engine = Engine::create(openGlArgs);
-	engine->setStartCallback([&]
+	auto device = Device::create(openGlArgs);
+	device->setStartCallback([&]
 	{
-		Materials_Test(engine.get()).run();
-		engine->requestShutdown();
+		Materials_Test(device.get()).run();
+		device->requestShutdown();
 	});
-	engine->run();
+	device->run();
 }
 
 

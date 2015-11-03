@@ -1,22 +1,63 @@
 #include "SoloDevice.h"
+#include "SoloFileSystem.h"
+#include "SoloResourceManager.h"
+#include "SoloScene.h"
 #include "platform/stub/SoloStubDevice.h"
 #include "platform/opengl/SoloSDLOpenGLDevice.h"
 
 using namespace solo;
 
 
-shared<Device> DeviceFactory::create(Engine *engine, const EngineCreationArgs& args)
+shared<Device> Device::create(const DeviceCreationArgs& args)
 {
-	if (args.mode == EngineMode::OpenGL)
-		return SL_NEW2(SDLOpenGLDevice, engine, args);
-	return SL_NEW2(StubDevice, engine, args);
+	if (args.mode == DeviceMode::OpenGL)
+		return SL_NEW2(SDLOpenGLDevice, args);
+	return SL_NEW2(StubDevice, args);
 }
 
 
-Device::Device(Engine *engine, const EngineCreationArgs& args):
-	engine(engine),
+Device::Device(const DeviceCreationArgs& args):
 	creationArgs(args)
 {
+	fs = FileSystemFactory::create();
+	resourceManager = ResourceManagerFactory::create(this);
+	scene = SceneFactory::create(this);
+}
+
+
+void Device::run()
+{
+	startCallback();
+
+	while (true)
+	{
+		beginUpdate();
+		scene->update();
+		scene->render();
+		endUpdate();
+		if (shutdown && shutdownRequestedCallback())
+			break;
+	}
+
+	shutdownCallback();
+}
+
+
+void Device::setStartCallback(std::function<void()> callback)
+{
+	startCallback = callback;
+}
+
+
+void Device::setShutdownCallback(std::function<void()> callback)
+{
+	shutdownCallback = callback;
+}
+
+
+void Device::setShutdownRequestedCallback(std::function<bool()> callback)
+{
+	shutdownRequestedCallback = callback;
 }
 
 

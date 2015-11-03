@@ -1,4 +1,3 @@
-#include "SoloEngine.h"
 #include "SoloNode.h"
 #include "SoloDevice.h"
 #include "SoloRenderTarget.h"
@@ -21,9 +20,9 @@ const unsigned DIRTY_BIT_ALL =
 		DIRTY_BIT_INV_VIEW_PROJ;
 
 
-shared<Camera> CameraFactory::create(EngineMode mode, Scene* scene, Node node)
+shared<Camera> CameraFactory::create(DeviceMode mode, Scene* scene, Node node)
 {
-	if (mode == EngineMode::OpenGL)
+	if (mode == DeviceMode::OpenGL)
 		return SL_NEW2(OpenGLCamera, scene, node);
 	return SL_NEW2(StubCamera, scene, node);
 }
@@ -41,7 +40,7 @@ void Camera::init()
 {
 	transform = node.getComponent<Transform>();
 	transform->addCallback(this);
-	auto canvasSize = scene->getEngine()->getDevice()->getCanvasSize();
+	auto canvasSize = scene->getDevice()->getCanvasSize();
 	setAspectRatio(canvasSize.x / canvasSize.y);
 	dirtyFlags.add(DIRTY_BIT_ALL); // arguably
 }

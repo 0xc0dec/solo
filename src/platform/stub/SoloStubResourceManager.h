@@ -8,6 +8,6 @@ namespace solo
 	{
 		friend class ResourceManagerFactory;
 
-		explicit StubResourceManager(Engine *engine);
+		explicit StubResourceManager(Device *device);
 	};
 }
