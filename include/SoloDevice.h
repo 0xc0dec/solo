@@ -56,11 +56,10 @@ namespace solo
 
 		float getTimeDelta() const;
 
-		void requestShutdown();
-		bool shutdownRequested() const;
+		Engine* getEngine() const;
 
 	protected:
-		explicit Device(const EngineCreationArgs& args);
+		explicit Device(Engine *engine, const EngineCreationArgs& args);
 
 		void updateTime();
 
@@ -73,6 +72,7 @@ namespace solo
 		std::unordered_map<MouseButton, bool> pressedMouseButtons;
 		std::unordered_set<MouseButton> releasedMouseButtons;
 
+		Engine *engine;
 		bool close = false;
 		float lastUpdateTime = 0;
 		float timeDelta = 0;
@@ -84,20 +84,14 @@ namespace solo
 		return timeDelta;
 	}
 
-	inline void Device::requestShutdown()
+	inline Engine* Device::getEngine() const
 	{
-		close = true;
+		return engine;
 	}
-
-	inline bool Device::shutdownRequested() const
-	{
-		return close;
-	}
-
 
 	class DeviceFactory
 	{
 		friend class Engine;
-		static shared<Device> create(const EngineCreationArgs& args);
+		static shared<Device> create(Engine *engine, const EngineCreationArgs& args);
 	};
 }

@@ -108,8 +108,8 @@ WindowWithContextCreationResult tryCreateOpengGLWindow(bool hidden, int ctxMajor
 }
 
 
-SDLOpenGLDevice::SDLOpenGLDevice(EngineCreationArgs const& args):
-	Device(args)
+SDLOpenGLDevice::SDLOpenGLDevice(Engine *engine, EngineCreationArgs const& args):
+	Device(engine, args)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
 		SL_THROW_FMT(EngineException, "Failed to initialize system");
@@ -306,7 +306,7 @@ void SDLOpenGLDevice::processWindowEvent(const SDL_Event& evt)
 	switch (evt.window.event)
 	{
 		case SDL_WINDOWEVENT_CLOSE:
-			requestShutdown();
+			engine->requestShutdown();
 			break;
 	}
 }
@@ -321,7 +321,7 @@ void SDLOpenGLDevice::readEvents()
 		switch (evt.type)
 		{
 			case SDL_QUIT:
-				requestShutdown();
+				engine->requestShutdown();
 				break;
 			case SDL_WINDOWEVENT:
 				processWindowEvent(evt);

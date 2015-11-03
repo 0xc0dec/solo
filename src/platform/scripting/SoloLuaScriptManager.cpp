@@ -1,4 +1,3 @@
-#include <map>
 #include "SoloBase.h"
 #include "SoloLuaScriptManager.h"
 #include "SoloLuaScriptComponent.h"
@@ -33,6 +32,7 @@
 #include "SoloRenderContext.h"
 #include "SoloModelRenderer.h"
 #include "SoloSpectator.h"
+#include <map>
 
 
 #define REGISTER_VARIABLE(binding, klass, name) binding.addVariable(#name, &klass::name, true)
@@ -688,8 +688,6 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(device, Device, isMouseButtonDown);
 	REGISTER_METHOD(device, Device, isMouseButtonReleased);
 	REGISTER_METHOD(device, Device, getTimeDelta);
-	REGISTER_METHOD(device, Device, requestShutdown);
-	REGISTER_METHOD(device, Device, shutdownRequested);
 	device.endClass();
 
 	// ResourceManager
@@ -745,7 +743,11 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(engine, Engine, getFileSystem);
 	REGISTER_METHOD(engine, Engine, getMode);
 	REGISTER_METHOD(engine, Engine, run);
-	engine.addFunction("setCallback", &LuaEngineCallback::setCallback);
+	REGISTER_METHOD(engine, Engine, setStartCallback);
+	REGISTER_METHOD(engine, Engine, setShutdownCallback);
+	REGISTER_METHOD(engine, Engine, setShutdownRequestedCallback);
+	REGISTER_METHOD(engine, Engine, requestShutdown);
+	REGISTER_METHOD(engine, Engine, shutdownRequested);
 	engine.endClass();
 
 	module.endModule();

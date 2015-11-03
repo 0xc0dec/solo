@@ -29,10 +29,10 @@ const char *fs = R"s(
 )s";
 
 
-class MaterialsTest : public TestBase
+class Materials_Test : public TestBase
 {
 public:
-	MaterialsTest(Engine *engine) : TestBase(engine)
+	Materials_Test(Engine *engine) : TestBase(engine)
 	{
 	}
 

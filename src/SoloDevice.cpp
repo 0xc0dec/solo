@@ -5,15 +5,16 @@
 using namespace solo;
 
 
-shared<Device> DeviceFactory::create(const EngineCreationArgs& args)
+shared<Device> DeviceFactory::create(Engine *engine, const EngineCreationArgs& args)
 {
 	if (args.mode == EngineMode::OpenGL)
-		return SL_NEW2(SDLOpenGLDevice, args);
-	return SL_NEW2(StubDevice, args);
+		return SL_NEW2(SDLOpenGLDevice, engine, args);
+	return SL_NEW2(StubDevice, engine, args);
 }
 
 
-Device::Device(const EngineCreationArgs& args):
+Device::Device(Engine *engine, const EngineCreationArgs& args):
+	engine(engine),
 	creationArgs(args)
 {
 }

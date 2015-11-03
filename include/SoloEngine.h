@@ -5,7 +5,6 @@
 
 namespace solo
 {
-	class EngineCallback;
 	class Scene;
 	class Device;
 	class FileSystem;
@@ -19,7 +18,12 @@ namespace solo
 		static shared<Engine> create(const EngineCreationArgs &args);
 
 		void run();
-		void setCallback(shared<EngineCallback> callback);
+		void setStartCallback(std::function<void()> callback);
+		void setShutdownCallback(std::function<void()> callback);
+		void setShutdownRequestedCallback(std::function<bool()> callback);
+
+		void requestShutdown();
+		bool shutdownRequested() const;
 
 		EngineMode getMode() const;
 
@@ -33,13 +37,26 @@ namespace solo
 
 		explicit Engine(const EngineCreationArgs &args);
 
+		bool shutdown = false;
 		EngineCreationArgs creationArgs;
-		shared<EngineCallback> callback;
+		std::function<void()> startCallback{ [] {} };
+		std::function<void()> shutdownCallback{ [] {} };
+		std::function<bool()> shutdownRequestedCallback{ [] { return true; } };
 		shared<Scene> scene;
 		shared<Device> device;
 		shared<FileSystem> fs;
 		shared<ResourceManager> resourceManager;
 	};
+
+	inline void Engine::requestShutdown()
+	{
+		shutdown = true;
+	}
+
+	inline bool Engine::shutdownRequested() const
+	{
+		return shutdown;
+	}
 
 	inline EngineMode Engine::getMode() const
 	{

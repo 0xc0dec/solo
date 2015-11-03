@@ -10,74 +10,6 @@
 using namespace solo;
 
 
-class TestRunner: public EngineCallback
-{
-public:
-	explicit TestRunner(Engine* engine): engine(engine)
-	{
-	}
-
-	virtual bool onDeviceShutdownRequested() override
-	{
-		return true;
-	}
-
-	virtual void onEngineStarted() override
-	{
-		init();
-		for (auto test : tests)
-			test->run();
-		engine->getDevice()->requestShutdown();
-	}
-
-	virtual void onEngineStopped() override
-	{
-	}
-
-protected:
-	std::list<shared<TestBase>> tests;
-	Engine *engine;
-
-	virtual void init() = 0;
-};
-
-
-class IntegrationTestAndDemoRunner : public TestRunner
-{
-public:
-	explicit IntegrationTestAndDemoRunner(Engine* engine): TestRunner(engine)
-	{
-	}
-
-protected:
-	virtual void init() override
-	{
-		tests.push_back(SL_NEW2(MaterialsTest, engine));
-	}
-};
-
-
-class UnitTestRunner: public TestRunner
-{
-public:
-	explicit UnitTestRunner(Engine* engine): TestRunner(engine)
-	{
-	}
-
-protected:
-	virtual void init() override
-	{
-		tests.push_back(SL_NEW2(Resources_Test, engine));
-		tests.push_back(SL_NEW2(FileSystem_Test, engine));
-		tests.push_back(SL_NEW2(Device_Test, engine));
-		tests.push_back(SL_NEW2(ComponentsAndNodes_Test, engine));
-		tests.push_back(SL_NEW2(Transform_Test, engine));
-		tests.push_back(SL_NEW2(ModelRenderer_Test, engine));
-		tests.push_back(SL_NEW2(BitFlags_Test, engine));
-	}
-};
-
-
 EngineCreationArgs openGlArgs
 {
 	EngineMode::OpenGL,
@@ -97,8 +29,17 @@ EngineCreationArgs stubArgs
 void runCppUnitTests()
 {
 	auto engine = Engine::create(stubArgs);
-	auto runner = SL_NEW2(UnitTestRunner, engine.get());
-	engine->setCallback(runner);
+	engine->setStartCallback([&]
+	{
+		Resources_Test(engine.get()).run();
+		FileSystem_Test(engine.get()).run();
+		Device_Test(engine.get()).run();
+		ComponentsAndNodes_Test(engine.get()).run();
+		Transform_Test(engine.get()).run();
+		ModelRenderer_Test(engine.get()).run();
+		BitFlags_Test(engine.get()).run();
+		engine->requestShutdown();
+	});
 	engine->run();
 }
 
@@ -106,8 +47,11 @@ void runCppUnitTests()
 void runCppIntegrationTests()
 {
 	auto engine = Engine::create(openGlArgs);
-	auto runner = SL_NEW2(IntegrationTestAndDemoRunner, engine.get());
-	engine->setCallback(runner);
+	engine->setStartCallback([&]
+	{
+		Materials_Test(engine.get()).run();
+		engine->requestShutdown();
+	});
 	engine->run();
 }
 
@@ -123,7 +67,7 @@ int main()
 {
 	runCppUnitTests();
 	runCppIntegrationTests();
-	runLuaTests("../tests/scripts/unit-tests.lua");
-	runLuaTests("../tests/scripts/demo/demo.lua");
+//	runLuaTests("../tests/scripts/unit-tests.lua");
+//	runLuaTests("../tests/scripts/demo/demo.lua");
 	return 0;
 }

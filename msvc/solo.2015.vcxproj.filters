@@ -85,9 +85,6 @@
     <ClInclude Include="..\include\SoloComponent.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloEngineCallback.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloEffectVariable.h">
       <Filter>include</Filter>
     </ClInclude>

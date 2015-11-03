@@ -25,7 +25,7 @@ namespace solo
 	private:
 		friend class DeviceFactory;
 
-		explicit SDLOpenGLDevice(const EngineCreationArgs &args);
+		explicit SDLOpenGLDevice(Engine *engine, const EngineCreationArgs &args);
 
 		void prepareKeyboardState();
 		void prepareMouseState();
