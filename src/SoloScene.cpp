@@ -149,6 +149,10 @@ void Scene::render()
 
 	for (auto& camera : cameraCache)
 	{
+		auto cameraMode = camera->getRenderMode();
+		if (cameraMode == CameraRenderMode::None)
+			continue;
+
 		auto renderTags = camera->getRenderTags();
 		camera->apply();
 		context.camera = camera;

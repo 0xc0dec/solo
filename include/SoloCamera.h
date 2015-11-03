@@ -15,6 +15,13 @@ namespace solo
 	class Scene;
 	enum class EngineMode;
 
+	enum class CameraRenderMode
+	{
+		None,
+		Forward,
+		Deferred
+	};
+
 	class Camera : public ComponentBase<Camera>, protected TransformCallback
 	{
 	public:
@@ -26,29 +33,37 @@ namespace solo
 
 		BitFlags& getRenderTags();
 
-		void setRenderTarget(shared<RenderTarget> target);
+		CameraRenderMode getRenderMode() const;
+		void setRenderMode(CameraRenderMode mode);
+
 		shared<RenderTarget> getRenderTarget() const;
+		void setRenderTarget(shared<RenderTarget> target);
 
 		void setClearColor(float r, float g, float b, float a);
 
+		Vector4 getViewport() const;
 		void setViewport(float left, float top, float width, float height);
 		void resetViewport();
-		Vector4 getViewport() const;
 
-		void setPerspective(bool perspective);
 		bool isPerspective() const;
+		void setPerspective(bool perspective);
 
 		float getNear() const;
-		float getFar() const;
-		float getFOV() const;
-		float getWidth() const;
-		float getHeight() const;
-		float getAspectRatio() const;
 		void setNear(float near);
+
+		float getFar() const;
 		void setFar(float far);
+		
+		float getFOV() const;
 		void setFOV(float fov);
+		
+		float getWidth() const;
 		void setWidth(float width);
+		
+		float getHeight() const;
 		void setHeight(float height);
+		
+		float getAspectRatio() const;
 		void setAspectRatio(float ratio);
 
 		const Matrix& getViewMatrix();
@@ -79,6 +94,8 @@ namespace solo
 		Vector4 viewport;
 		bool viewportSet = false;
 
+		CameraRenderMode mode{ CameraRenderMode::Forward };
+
 		Vector4 clearColor{ 0, 0, 0, 1 };
 		float fov = 60;
 		float nearClip = 1;
@@ -94,6 +111,15 @@ namespace solo
 		Matrix inverseViewProjectionMatrix;
 	};
 
+	inline CameraRenderMode Camera::getRenderMode() const
+	{
+		return mode;
+	}
+
+	inline void Camera::setRenderMode(CameraRenderMode mode)
+	{
+		this->mode = mode;
+	}
 
 	inline void Camera::setClearColor(float r, float g, float b, float a)
 	{
@@ -159,7 +185,6 @@ namespace solo
 	{
 		viewportSet = false;
 	}
-
 
 	class CameraFactory
 	{

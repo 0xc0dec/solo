@@ -524,6 +524,12 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(transform, Transform, getTags);
 	transform.endClass();
 
+	// CameraRenderMode
+	module
+		.addConstant("CameraRenderMode_None", CameraRenderMode::None)
+		.addConstant("CameraRenderMode_Forward", CameraRenderMode::Forward)
+		.addConstant("CameraRenderMode_Deferred", CameraRenderMode::Deferred);
+
 	// Camera
 	auto camera = module.beginExtendClass<Camera, Component>("Camera");
 	REGISTER_METHOD(camera, Camera, getRenderTarget);
@@ -547,6 +553,8 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(camera, Camera, setHeight);
 	REGISTER_METHOD(camera, Camera, setAspectRatio);
 	REGISTER_METHOD(camera, Camera, getRenderTags);
+	REGISTER_METHOD(camera, Camera, getRenderMode);
+	REGISTER_METHOD(camera, Camera, setRenderMode);
 	camera.endClass();
 	
 	// Spectator

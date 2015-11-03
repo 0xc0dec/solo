@@ -80,4 +80,8 @@ runTest(function()
 	assert(solo.CubeTextureFace_Right ~= nil)
 	assert(solo.CubeTextureFace_Top ~= nil)
 	assert(solo.CubeTextureFace_Bottom ~= nil)
+
+	assert(solo.CameraRenderMode_None ~= nil)
+	assert(solo.CameraRenderMode_Forward ~= nil)
+	assert(solo.CameraRenderMode_Deferred ~= nil)
 end, "Enums")
