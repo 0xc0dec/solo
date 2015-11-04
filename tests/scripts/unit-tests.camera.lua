@@ -5,6 +5,7 @@ runTest(function()
 	local c = scene:createNode():addComponent("Camera")
 	local rt = device:getResourceManager():getOrCreateRenderTarget("abcd")
 
+	assert(c:getClearColor())
 	c:setClearColor(1, 2, 3, 4)
 
 	assert(c:getViewport())

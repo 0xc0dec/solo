@@ -533,6 +533,7 @@ void LuaScriptManager::registerApi()
 	auto camera = module.beginExtendClass<Camera, Component>("Camera");
 	REGISTER_METHOD(camera, Camera, getRenderTarget);
 	REGISTER_METHOD(camera, Camera, setRenderTarget);
+	REGISTER_METHOD(camera, Camera, getClearColor);
 	REGISTER_METHOD(camera, Camera, setClearColor);
 	REGISTER_METHOD(camera, Camera, getViewport);
 	REGISTER_METHOD(camera, Camera, setViewport);

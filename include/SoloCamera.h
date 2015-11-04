@@ -39,6 +39,7 @@ namespace solo
 		shared<RenderTarget> getRenderTarget() const;
 		void setRenderTarget(shared<RenderTarget> target);
 
+		Vector4 getClearColor() const;
 		void setClearColor(float r, float g, float b, float a);
 
 		Vector4 getViewport() const;
@@ -169,6 +170,11 @@ namespace solo
 	inline void Camera::setRenderTarget(shared<RenderTarget> target)
 	{
 		renderTarget = target;
+	}
+
+	inline Vector4 Camera::getClearColor() const
+	{
+		return clearColor;
 	}
 
 	inline shared<RenderTarget> Camera::getRenderTarget() const
