@@ -214,6 +214,9 @@
     <ClInclude Include="..\include\SoloRenderer.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloGraphics.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloLog.cpp">
@@ -451,6 +454,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloCubeTexture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloGraphics.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
