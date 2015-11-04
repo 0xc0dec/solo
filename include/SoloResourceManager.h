@@ -38,7 +38,7 @@ namespace solo
 		shared<Material> getOrCreateMaterial(shared<Effect> effect, const std::string& uri = "");
 		shared<Mesh> getOrCreateMesh(const std::string& uri = "");
 		shared<Model> getOrCreateModel(const std::string& uri = "");
-		shared<RenderTarget> getOrCreateRenderTarget(const std::string &uri);
+		shared<RenderTarget> getOrCreateRenderTarget(const std::string &uri = "");
 
 		shared<Texture2D> getOrLoadTexture2D(const std::string& imageUri, const std::string& uri = "");
 		shared<CubeTexture> getOrLoadCubeTexture(const std::vector<std::string>& imageUris, const std::string& uri = "");
