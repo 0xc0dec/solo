@@ -9,19 +9,19 @@ namespace solo
 	class Material;
 	class Device;
 	class ResourceManager;
+	class Mesh;
 
 	class Graphics
 	{
 	public:
-		void renderImage(Texture2D *source, RenderTarget *target, Material *material);
+		void renderImage(shared<Texture2D> source, RenderTarget *target, Material *material, const std::string &textureParameterName = "_mainTex");
 
 	private:
 		friend class GraphicsFactory;
 
 		explicit Graphics(Device *device);
 
-		Device *device;
-		ResourceManager *resourceManager;
+		shared<Mesh> quadMesh;
 	};
 
 	class GraphicsFactory

@@ -36,6 +36,7 @@ dofile("../tests/scripts/unit-tests.cube-texture.lua")
 dofile("../tests/scripts/unit-tests.mesh.lua")
 dofile("../tests/scripts/unit-tests.model.lua")
 dofile("../tests/scripts/unit-tests.resource-manager.lua")
+dofile("../tests/scripts/unit-tests.scene.lua")
 dofile("../tests/scripts/unit-tests.device.lua")
 
 print("Finished unit tests\n")

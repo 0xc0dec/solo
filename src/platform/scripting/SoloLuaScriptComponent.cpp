@@ -17,6 +17,7 @@ LuaScriptComponent::LuaScriptComponent(const Node& node, LuaRef& component) :
 	initFunc = component.has("init") ? component.get<std::function<void(LuaRef)>>("init") : [](LuaRef) {};
 	updateFunc = component.has("update") ? component.get<std::function<void(LuaRef)>>("update") : [](LuaRef) {};
 	terminateFunc = component.has("terminate") ? component.get<std::function<void(LuaRef)>>("terminate") : [](LuaRef) {};
+	onAfterCameraRenderFunc = component.has("onAfterCameraRender") ? component.get<std::function<void(LuaRef)>>("onAfterCameraRender") : [](LuaRef) {};
 	component.set("node", node);
 }
 
@@ -36,6 +37,12 @@ void LuaScriptComponent::update()
 void LuaScriptComponent::terminate()
 {
 	terminateFunc(component);
+}
+
+
+void LuaScriptComponent::onAfterCameraRender()
+{
+	onAfterCameraRenderFunc(component);
 }
 
 

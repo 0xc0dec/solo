@@ -21,6 +21,7 @@ namespace solo
 		virtual void init() {}
 		virtual void update() {}
 		virtual void terminate() {}
+		virtual void onAfterCameraRender() {}
 
 	protected:
 		Component() {}
@@ -41,19 +42,19 @@ namespace solo
 	};
 
 	template <class T>
-	size_t ComponentBase<T>::getId()
+	inline size_t ComponentBase<T>::getId()
 	{
 		return TypeId::get<T>();
 	}
 
 	template <class T>
-	size_t ComponentBase<T>::getTypeId()
+	inline size_t ComponentBase<T>::getTypeId()
 	{
 		return getId();
 	}
 
 	template <class T>
-	Node ComponentBase<T>::getNode() const
+	inline Node ComponentBase<T>::getNode() const
 	{
 		return node;
 	}

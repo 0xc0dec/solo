@@ -1,4 +1,7 @@
 runTest(function()
 	local rt = device:getResourceManager():getOrCreateRenderTarget("test/uri")
-	assert(rt)
+	local tex = device:getResourceManager():getOrCreateTexture2D("nonesense")
+	rt:setTextures({ tex, tex })
+	local textures = rt:getTextures()
+	assert(#textures == 2)
 end, "RenderTarget")

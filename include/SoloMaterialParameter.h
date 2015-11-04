@@ -79,7 +79,7 @@ namespace solo
 
 		explicit MaterialParameter(const std::string &name);
 
-		void clearOldValueIfNeeded(ValueType newExpectedValue);
+		void tryClearOldValue(ValueType newExpectedValue);
 
 		std::string name = "";
 		ValueType type = ValueType::None;

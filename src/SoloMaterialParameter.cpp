@@ -20,7 +20,7 @@ MaterialParameter::MaterialParameter(const std::string& name):
 
 void MaterialParameter::setFloat(float value)
 {
-	clearOldValueIfNeeded(ValueType::Float);
+	tryClearOldValue(ValueType::Float);
 	floatValue = value;
 	type = ValueType::Float;
 }
@@ -28,7 +28,7 @@ void MaterialParameter::setFloat(float value)
 
 void MaterialParameter::setFloatArray(const std::vector<float>& value)
 {
-	clearOldValueIfNeeded(ValueType::FloatArray);
+	tryClearOldValue(ValueType::FloatArray);
 	floatArrayValue = value;
 	type = ValueType::FloatArray;
 }
@@ -36,7 +36,7 @@ void MaterialParameter::setFloatArray(const std::vector<float>& value)
 
 void MaterialParameter::setInt(int value)
 {
-	clearOldValueIfNeeded(ValueType::Int);
+	tryClearOldValue(ValueType::Int);
 	intValue = value;
 	type = ValueType::Int;
 }
@@ -44,7 +44,7 @@ void MaterialParameter::setInt(int value)
 
 void MaterialParameter::setIntArray(const std::vector<int>& value)
 {
-	clearOldValueIfNeeded(ValueType::IntArray);
+	tryClearOldValue(ValueType::IntArray);
 	intArrayValue = value;
 	type = ValueType::IntArray;
 }
@@ -52,7 +52,7 @@ void MaterialParameter::setIntArray(const std::vector<int>& value)
 
 void MaterialParameter::setVector2(const Vector2 &value)
 {
-	clearOldValueIfNeeded(ValueType::Vector2);
+	tryClearOldValue(ValueType::Vector2);
 	vector2Value = value;
 	type = ValueType::Vector2;
 }
@@ -60,7 +60,7 @@ void MaterialParameter::setVector2(const Vector2 &value)
 
 void MaterialParameter::setVector2Array(const std::vector<Vector2>& value)
 {
-	clearOldValueIfNeeded(ValueType::Vector2Array);
+	tryClearOldValue(ValueType::Vector2Array);
 	vector2ArrayValue = value;
 	type = ValueType::Vector2Array;
 }
@@ -68,7 +68,7 @@ void MaterialParameter::setVector2Array(const std::vector<Vector2>& value)
 
 void MaterialParameter::setVector3(const Vector3 &value)
 {
-	clearOldValueIfNeeded(ValueType::Vector3);
+	tryClearOldValue(ValueType::Vector3);
 	vector3Value = value;
 	type = ValueType::Vector3;
 }
@@ -76,7 +76,7 @@ void MaterialParameter::setVector3(const Vector3 &value)
 
 void MaterialParameter::setVector3Array(const std::vector<Vector3>& value)
 {
-	clearOldValueIfNeeded(ValueType::Vector3Array);
+	tryClearOldValue(ValueType::Vector3Array);
 	vector3ArrayValue = value;
 	type = ValueType::Vector3Array;
 }
@@ -84,7 +84,7 @@ void MaterialParameter::setVector3Array(const std::vector<Vector3>& value)
 
 void MaterialParameter::setVector4(const Vector4& value)
 {
-	clearOldValueIfNeeded(ValueType::Vector4);
+	tryClearOldValue(ValueType::Vector4);
 	vector4Value = value;
 	type = ValueType::Vector4;
 }
@@ -92,7 +92,7 @@ void MaterialParameter::setVector4(const Vector4& value)
 
 void MaterialParameter::setVector4Array(const std::vector<Vector4>& value)
 {
-	clearOldValueIfNeeded(ValueType::Vector4Array);
+	tryClearOldValue(ValueType::Vector4Array);
 	vector4ArrayValue = value;
 	type = ValueType::Vector4Array;
 }
@@ -100,7 +100,7 @@ void MaterialParameter::setVector4Array(const std::vector<Vector4>& value)
 
 void MaterialParameter::setMatrix(const Matrix& value)
 {
-	clearOldValueIfNeeded(ValueType::Matrix);
+	tryClearOldValue(ValueType::Matrix);
 	matrixValue = value;
 	type = ValueType::Matrix;
 }
@@ -108,7 +108,7 @@ void MaterialParameter::setMatrix(const Matrix& value)
 
 void MaterialParameter::setMatrixArray(const std::vector<Matrix>& value)
 {
-	clearOldValueIfNeeded(ValueType::MatrixArray);
+	tryClearOldValue(ValueType::MatrixArray);
 	matrixArrayValue = value;
 	type = ValueType::MatrixArray;
 }
@@ -116,7 +116,7 @@ void MaterialParameter::setMatrixArray(const std::vector<Matrix>& value)
 
 void MaterialParameter::setTexture(const shared<Texture> texture)
 {
-	clearOldValueIfNeeded(ValueType::Texture);
+	tryClearOldValue(ValueType::Texture);
 	textureValue = texture;
 	type = ValueType::Texture;
 }
@@ -124,7 +124,7 @@ void MaterialParameter::setTexture(const shared<Texture> texture)
 
 void MaterialParameter::setTextureArray(const std::vector<shared<Texture>>& textures)
 {
-	clearOldValueIfNeeded(ValueType::TextureArray);
+	tryClearOldValue(ValueType::TextureArray);
 	textureArrayValue = textures;
 	type = ValueType::TextureArray;
 }
@@ -132,7 +132,7 @@ void MaterialParameter::setTextureArray(const std::vector<shared<Texture>>& text
 
 void MaterialParameter::setFunction(std::function<void(EffectVariable* variable, const RenderContext& context)> func)
 {
-	clearOldValueIfNeeded(ValueType::Func);
+	tryClearOldValue(ValueType::Func);
 	this->funcValue = func;
 	type = ValueType::Func;
 }
@@ -197,7 +197,7 @@ void MaterialParameter::apply(const RenderContext& context)
 }
 
 
-void MaterialParameter::clearOldValueIfNeeded(ValueType newExpectedValue)
+void MaterialParameter::tryClearOldValue(ValueType newExpectedValue)
 {
 	if (newExpectedValue == type)
 		return;

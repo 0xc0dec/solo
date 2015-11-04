@@ -291,6 +291,24 @@ end
 
 
 function initCameras(rtInfo)
+	function test()
+		return
+		{
+			typeId = "Testy",
+
+			init = function(self)
+				self.camera = self.node:findComponent("Camera")
+			end,
+
+			onAfterCameraRender = function(self)
+				local rt = self.camera:getRenderTarget()
+				local rtTextures = rt:getTextures()
+				print(rtTextures[1])
+				-- TODO continue here...
+			end
+		}
+	end
+
 	local canvasSize = device:getCanvasSize()
 	local offscreenCameraNode = scene:createNode()
 	local offscreenCameraTransform = offscreenCameraNode:findComponent("Transform")
@@ -301,6 +319,7 @@ function initCameras(rtInfo)
 	offscreenCamera:setRenderTarget(rtInfo.renderTarget)
 	offscreenCamera:setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8)
 	offscreenCamera:getRenderTags():remove(RENDER_TARGET_QUAD_TAG)
+	offscreenCameraNode:addScriptComponent(test())
 
 	local mainCameraNode = scene:createNode()
 	local mainCameraTransform = mainCameraNode:findComponent("Transform")

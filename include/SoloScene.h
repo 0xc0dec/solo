@@ -24,7 +24,7 @@ namespace solo
 		shared<Node> createNode();
 
 		void addComponent(size_t nodeId, shared<Component> cmp);
-		void addComponent(size_t nodeId, shared<Component> cmp, size_t typeId);
+		void addComponentWithTypeId(size_t nodeId, shared<Component> cmp, size_t typeId);
 
 		void removeComponent(size_t nodeId, size_t typeId);
 		void removeAllComponents(size_t nodeId);
@@ -34,7 +34,9 @@ namespace solo
 		Component* findComponent(size_t nodeId, size_t typeId) const;
 
 		void update();
+
 		void render();
+		void renderWithCamera(Camera *camera);
 
 	private:
 		friend class SceneFactory;

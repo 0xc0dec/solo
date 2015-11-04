@@ -15,6 +15,11 @@ namespace solo
 	class ModelLoader;
 	class Device;
 
+	enum class PrimitiveMeshType
+	{
+		Quad
+	};
+
 	class ResourceManager
 	{
 	public:
@@ -37,6 +42,7 @@ namespace solo
 		shared<CubeTexture> getOrCreateCubeTexture(const std::string &uri = "");
 		shared<Material> getOrCreateMaterial(shared<Effect> effect, const std::string& uri = "");
 		shared<Mesh> getOrCreateMesh(const std::string& uri = "");
+		shared<Mesh> getOrCreatePrimitiveMesh(PrimitiveMeshType type, const std::string &uri = "");
 		shared<Model> getOrCreateModel(const std::string& uri = "");
 		shared<RenderTarget> getOrCreateRenderTarget(const std::string &uri = "");
 

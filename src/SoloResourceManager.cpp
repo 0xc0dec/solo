@@ -208,6 +208,13 @@ shared<Mesh> ResourceManager::getOrCreateMesh(const std::string& uri)
 }
 
 
+shared<Mesh> ResourceManager::getOrCreatePrimitiveMesh(PrimitiveMeshType type, const std::string& uri)
+{
+	// TODO
+	return nullptr;
+}
+
+
 shared<RenderTarget> ResourceManager::getOrCreateRenderTarget(const std::string& uri)
 {
 	return getOrCreateResource<RenderTarget>(uri, renderTargets,

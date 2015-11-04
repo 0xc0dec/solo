@@ -19,7 +19,6 @@ namespace solo
 		virtual void bind() = 0;
 		virtual void unbind() = 0;
 
-		// should be reentrant
 		void setTextures(const std::vector<shared<Texture2D>> &textures);
 		std::vector<shared<Texture2D>> getTextures() const;
 

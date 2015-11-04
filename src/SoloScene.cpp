@@ -38,11 +38,11 @@ shared<Node> Scene::createNode()
 
 void Scene::addComponent(size_t nodeId, shared<Component> cmp)
 {
-	addComponent(nodeId, cmp, cmp->getTypeId());
+	addComponentWithTypeId(nodeId, cmp, cmp->getTypeId());
 }
 
 
-void Scene::addComponent(size_t nodeId, shared<Component> cmp, size_t typeId)
+void Scene::addComponentWithTypeId(size_t nodeId, shared<Component> cmp, size_t typeId)
 {
 	if (findComponent(nodeId, typeId))
 		SL_THROW_FMT(EngineException, "Component ", typeId, " already exists");
@@ -140,39 +140,57 @@ bool tagsAreRenderable(const BitFlags& objectTags, const BitFlags& cameraTags)
 }
 
 
+/*
+	...
+	camera->setRenderTarget(rt);
+	...
+	scene->render(camera);
+	...
+	graphics->renderImage(rt->getTextures()[0], rt2, postProcessMat, "_mainTexture");
+	graphics->renderImage(rt2->getTextures()[0], rt3, postProcessMat, "_mainTexture");
+	graphics->renderImage(rt3->getTextures()[0], nullptr, postProcessMat, "_mainTexture");
+*/
+
 void Scene::render()
 {
 	syncCameraCache();
 
+	for (auto& camera : cameraCache)
+		renderWithCamera(camera);
+}
+
+
+void Scene::renderWithCamera(Camera* camera)
+{
+	auto cameraMode = camera->getRenderMode();
+	if (cameraMode == CameraRenderMode::None)
+		return;
+
+	auto renderTags = camera->getRenderTags();
+	camera->apply();
+
 	RenderContext context;
 	context.scene = this;
+	context.camera = camera;
 
-	for (auto& camera : cameraCache)
+	iterateComponents([&](size_t nodeId, Component* component)
 	{
-		auto cameraMode = camera->getRenderMode();
-		if (cameraMode == CameraRenderMode::None)
-			continue;
-
-		auto renderTags = camera->getRenderTags();
-		camera->apply();
-		context.camera = camera;
-
-		iterateComponents([&](size_t nodeId, Component* component)
+		auto transform = Node::findComponent<Transform>(this, nodeId);
+		if (transform && tagsAreRenderable(transform->getTags(), renderTags))
 		{
-			auto transform = Node::findComponent<Transform>(this, nodeId);
-			if (transform && tagsAreRenderable(transform->getTags(), renderTags))
+			auto renderer = dynamic_cast<Renderer*>(component);
+			if (renderer)
 			{
-				auto renderer = dynamic_cast<Renderer*>(component);
-				if (renderer)
-				{
-					context.nodeTransform = transform;
-					renderer->render(context);
-				}
+				context.nodeTransform = transform;
+				renderer->render(context);
 			}
-		});
+		}
+	});
 
-		camera->finish();
-	}
+	camera->finish();
+
+	for (auto &pair: components[camera->getNode().getId()])
+		pair.second->onAfterCameraRender();
 }
 
 

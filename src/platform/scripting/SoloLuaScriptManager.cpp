@@ -639,7 +639,13 @@ void LuaScriptManager::registerApi()
 
 	// Scene
 	auto scene = module.beginClass<Scene>("Scene");
+	REGISTER_METHOD(scene, Scene, getDevice);
 	REGISTER_METHOD(scene, Scene, createNode);
+	REGISTER_METHOD(scene, Scene, removeAllComponents);
+	REGISTER_METHOD(scene, Scene, clear);
+	REGISTER_METHOD(scene, Scene, update);
+	REGISTER_METHOD(scene, Scene, render);
+	REGISTER_METHOD(scene, Scene, renderWithCamera);
 	scene.endClass();
 
 	// KeyCode
