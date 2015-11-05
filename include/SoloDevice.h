@@ -8,6 +8,7 @@ namespace solo
 	class Scene;
 	class ResourceManager;
 	class FileSystem;
+	class Graphics;
 
 	enum class KeyCode
 	{
@@ -35,7 +36,7 @@ namespace solo
 		OpenGL
 	};
 
-	struct DeviceCreationArgs // TODO rename
+	struct DeviceCreationArgs
 	{
 		DeviceMode mode;
 		int canvasWidth;
@@ -111,6 +112,8 @@ namespace solo
 		FileSystem *getFileSystem() const;
 		ResourceManager *getResourceManager() const;
 
+		Graphics* getGraphics() const;
+
 	protected:
 		explicit Device(const DeviceCreationArgs& args);
 
@@ -121,9 +124,11 @@ namespace solo
 		std::function<void()> startCallback{ [] {} };
 		std::function<void()> shutdownCallback{ [] {} };
 		std::function<bool()> shutdownRequestedCallback{ [] { return true; } };
+
 		shared<Scene> scene;
 		shared<FileSystem> fs;
 		shared<ResourceManager> resourceManager;
+		shared<Graphics> graphics;
 
 		// stores what keys were pressed and if it was a repeat
 		std::unordered_map<KeyCode, bool> pressedKeys;
@@ -172,5 +177,10 @@ namespace solo
 	inline ResourceManager *Device::getResourceManager() const
 	{
 		return resourceManager.get();
+	}
+
+	inline Graphics* Device::getGraphics() const
+	{
+		return graphics.get();
 	}
 }

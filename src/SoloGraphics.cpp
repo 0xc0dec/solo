@@ -16,15 +16,18 @@ shared<Graphics> GraphicsFactory::create(Device* device)
 }
 
 
-Graphics::Graphics(Device *device)
+Graphics::Graphics(Device *device):
+	device(device)
 {
-	quadMesh = device->getResourceManager()->getOrCreatePrimitiveMesh(PrimitiveMeshType::Quad, "solo/internal/quad");
 }
 
 
 void Graphics::renderImage(shared<Texture2D> source, RenderTarget *target, Material *material, const std::string &textureParameterName)
 {
-	material->getParameter(textureParameterName)->setTexture(source);
+	if (!quadMesh) // TODO do this somewhere before
+		quadMesh = device->getResourceManager()->getOrCreatePrimitiveMesh(PrimitiveMeshType::Quad, "solo/internal/quad");
+
+	material->getParameter(textureParameterName.empty() ? "mainTexture" : textureParameterName)->setTexture(source);
 	if (target)
 		target->bind();
 	quadMesh->draw();

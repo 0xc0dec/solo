@@ -2,6 +2,7 @@
 #include "SoloFileSystem.h"
 #include "SoloResourceManager.h"
 #include "SoloScene.h"
+#include "SoloGraphics.h"
 #include "platform/stub/SoloStubDevice.h"
 #include "platform/opengl/SoloSDLOpenGLDevice.h"
 
@@ -22,6 +23,7 @@ Device::Device(const DeviceCreationArgs& args):
 	fs = FileSystemFactory::create();
 	resourceManager = ResourceManagerFactory::create(this);
 	scene = SceneFactory::create(this);
+	graphics = GraphicsFactory::create(this);
 }
 
 

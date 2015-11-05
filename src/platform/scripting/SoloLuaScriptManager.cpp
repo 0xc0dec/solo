@@ -30,6 +30,7 @@
 #include "SoloRenderContext.h"
 #include "SoloModelRenderer.h"
 #include "SoloSpectator.h"
+#include "SoloGraphics.h"
 #include <map>
 
 
@@ -70,9 +71,16 @@ LuaScriptManager::~LuaScriptManager()
 }
 
 
+void f(int *i)
+{
+}
+
+
 void LuaScriptManager::registerApi()
 {
 	auto module = LuaBinding(lua).beginModule("solo");
+
+	module.addFunction("f", &f);
 
 	// Vector2
 	auto vector2 = module.beginClass<Vector2>("Vector2");
@@ -722,6 +730,7 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(device, Device, getScene);
 	REGISTER_METHOD(device, Device, getResourceManager);
 	REGISTER_METHOD(device, Device, getFileSystem);
+	REGISTER_METHOD(device, Device, getGraphics);
 	REGISTER_METHOD(device, Device, getMode);
 	REGISTER_METHOD(device, Device, run);
 	REGISTER_METHOD(device, Device, setStartCallback);
@@ -752,6 +761,11 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD2(mgr, ResourceManager, getOrLoadModel, LUA_ARGS(const std::string&, _opt<const std::string&>));
 	REGISTER_OVERLOADED_METHOD(mgr, ResourceManager, cleanUnusedResources, "cleanUnusedResources", void, , void);
 	mgr.endClass();
+
+	// Graphics
+	auto graphics = module.beginClass<Graphics>("Graphics");
+	REGISTER_METHOD2(graphics, Graphics, renderImage, LUA_ARGS(shared<Texture2D>, RenderTarget*, Material*, _opt<const std::string&>));
+	graphics.endClass();
 
 	// FileSystem
 	module.beginClass<FileSystem>("FileSystem")

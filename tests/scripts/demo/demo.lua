@@ -57,6 +57,10 @@ function initMaterials(textures)
 	texMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding_WorldViewProjectionMatrix)
 	texMaterial:getParameter("mainTex"):setTexture(tex1)
 
+	local postProcessMaterial = resourceManager:getOrCreateMaterial(texEffect, "post-process")
+	postProcessMaterial:setPolygonFace(solo.PolygonFace_All)
+	postProcessMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding_WorldViewProjectionMatrix)
+
 	local checkerEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsChecker)
 	local checkerMaterial = resourceManager:getOrCreateMaterial(checkerEffect)
 	checkerMaterial:setPolygonFace(solo.PolygonFace_All)
@@ -79,7 +83,8 @@ function initMaterials(textures)
 		white = whiteMaterial,
 		tex = texMaterial,
 		checker = checkerMaterial,
-		texWithLighting = texWithLightingMaterial
+		texWithLighting = texWithLightingMaterial,
+		postProcess = postProcessMaterial
 	}
 end
 
@@ -290,7 +295,7 @@ function createQuad()
 end
 
 
-function initCameras(rtInfo)
+function initCameras(rtInfo, materials)
 	function test()
 		return
 		{
@@ -298,13 +303,26 @@ function initCameras(rtInfo)
 
 			init = function(self)
 				self.camera = self.node:findComponent("Camera")
+				self.graphics = device:getGraphics()
+				-- self.finalRt = resourceManager:getOrCreateRenderTarget("post-process")
+				self.rtTexture = self.camera:getRenderTarget():getTextures()[1]
+
+				local canvasSize = device:getCanvasSize()
+				local renderTexture = resourceManager:getOrCreateTexture2D("post-process")
+				renderTexture:setData(solo.ColorFormat_RGB, {}, canvasSize.x / 8, canvasSize.y / 8)
+				renderTexture:setFiltering(solo.TextureFiltering_Nearest)
+				renderTexture:setWrapping(solo.TextureWrapping_Clamp)
+				self.finalRt = resourceManager:getOrCreateRenderTarget("post-process")
+				self.finalRt:setTextures({ renderTexture })
 			end,
 
 			onAfterCameraRender = function(self)
-				local rt = self.camera:getRenderTarget()
-				local rtTextures = rt:getTextures()
-				print(rtTextures[1])
-				-- TODO continue here...
+				-- self.graphics:renderImage(self.rtTexture, self.finalRt, materials.postProcess, "mainTex")
+				local _, err = pcall(function() self.graphics:renderImage(self.rtTexture, nil, materials.postProcess, "mainTex") end)
+				if err then
+					print(err)
+				end
+				-- self.graphics:renderImage(self.finalRt:getTextures()[1], nil, materials.tex, "mainTex")
 			end
 		}
 	end
@@ -338,7 +356,7 @@ function init()
 	local models = initModels()
 	local rtInfo = initRenderTarget(materials)
 	initObjects(models, materials, rtInfo)
-	initCameras(rtInfo)
+	initCameras(rtInfo, materials)
 
 	local texSkybox = resourceManager:getOrLoadCubeTexture({
 		"../data/skyboxes/deep-space/front.png",

@@ -14,13 +14,14 @@ namespace solo
 	class Graphics
 	{
 	public:
-		void renderImage(shared<Texture2D> source, RenderTarget *target, Material *material, const std::string &textureParameterName = "_mainTex");
+		void renderImage(shared<Texture2D> source, RenderTarget *target, Material *material, const std::string &textureParameterName = "mainTexture");
 
 	private:
 		friend class GraphicsFactory;
 
 		explicit Graphics(Device *device);
 
+		Device *device;
 		shared<Mesh> quadMesh;
 	};
 

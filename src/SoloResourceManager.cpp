@@ -210,7 +210,34 @@ shared<Mesh> ResourceManager::getOrCreateMesh(const std::string& uri)
 
 shared<Mesh> ResourceManager::getOrCreatePrimitiveMesh(PrimitiveMeshType type, const std::string& uri)
 {
-	// TODO
+	if (type == PrimitiveMeshType::Quad)
+	{
+		// TODO move to a helper class
+		auto mesh = getOrCreateMesh(uri);
+		mesh->setVertices({
+			Vector3(-1, -1, 0),
+			Vector3(-1, 1, 0),
+			Vector3(1, 1, 0),
+			Vector3(1, -1, 0)
+		});
+		mesh->setNormals({
+			Vector3(0, 0, -1),
+			Vector3(0, 0, -1),
+			Vector3(0, 0, -1),
+			Vector3(0, 0, -1)
+		});
+		mesh->setUVs({
+			Vector2(0, 0),
+			Vector2(0, 1),
+			Vector2(1, 1),
+			Vector2(1, 0)
+		});
+		mesh->setIndices({
+			0, 1, 2,
+			0, 2, 3
+		});
+		return mesh;
+	}
 	return nullptr;
 }
 
