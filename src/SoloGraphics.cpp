@@ -6,6 +6,7 @@
 #include "SoloRenderTarget.h"
 #include "SoloTexture2D.h"
 #include "SoloMesh.h"
+#include "SoloRenderContext.h"
 
 using namespace solo;
 
@@ -22,9 +23,9 @@ Graphics::Graphics(Device *device):
 }
 
 
-void Graphics::renderImage(shared<Texture2D> source, RenderTarget *target, Material *material, const std::string &textureParameterName)
+void Graphics::renderImageToTarget(shared<Texture2D> source, RenderTarget *target, Material *material, const std::string &textureParameterName)
 {
-	if (!quadMesh) // TODO do this somewhere before
+	if (!quadMesh) // TODO move this to some kind of "init" function
 		quadMesh = device->getResourceManager()->getOrCreatePrimitiveMesh(PrimitiveMeshType::Quad, "solo/internal/quad");
 
 	material->getParameter(textureParameterName.empty() ? "mainTexture" : textureParameterName)->setTexture(source);
@@ -33,4 +34,17 @@ void Graphics::renderImage(shared<Texture2D> source, RenderTarget *target, Mater
 	quadMesh->draw();
 	if (target)
 		target->unbind();
+}
+
+
+void Graphics::renderImageToScreen(shared<Texture2D> source, Material* material, const std::string& textureParameterName)
+{
+	if (!quadMesh) // TODO move this to some kind of "init" function
+		quadMesh = device->getResourceManager()->getOrCreatePrimitiveMesh(PrimitiveMeshType::Quad, "solo/internal/quad");
+
+	material->getParameter(textureParameterName.empty() ? "mainTexture" : textureParameterName)->setTexture(source);
+	RenderContext ctx;
+	material->bind(ctx);
+	quadMesh->draw();
+	material->unbind(ctx);
 }

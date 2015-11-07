@@ -12,7 +12,8 @@
 using namespace solo;
 
 
-MaterialParameter::MaterialParameter(const std::string& name):
+MaterialParameter::MaterialParameter(const std::string& name, Material *material):
+	material(material),
 	name(name)
 {
 }
@@ -140,7 +141,7 @@ void MaterialParameter::setFunction(std::function<void(EffectVariable* variable,
 
 void MaterialParameter::apply(const RenderContext& context)
 {
-	auto variable = context.material->getEffect()->findVariable(name);
+	auto variable = material->getEffect()->findVariable(name);
 	if (!variable)
 		return;
 	switch (type)

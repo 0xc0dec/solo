@@ -11,6 +11,7 @@ namespace solo
 		virtual ~GLSLEffect();
 
 		virtual void bind() override;
+		virtual void unbind() override;
 
 	private:
 		friend class EffectFactory;

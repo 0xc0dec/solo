@@ -24,7 +24,6 @@ Material::Material(shared<Effect> effect):
 
 void Material::bind(RenderContext& context)
 {
-	context.material = this;
 	applyFaceCull();
 	applyZWrite();
 	if (effect)
@@ -38,8 +37,8 @@ void Material::bind(RenderContext& context)
 
 void Material::unbind(RenderContext& context)
 {
-	if (context.material == this)
-		context.material = nullptr;
+	if (effect)
+		effect->unbind();
 }
 
 
@@ -48,7 +47,7 @@ MaterialParameter* Material::getParameter(const std::string& name)
 	auto where = parameters.find(name);
 	if (where != parameters.end())
 		return where->second.get();
-	auto parameter = SL_NEW2(MaterialParameter, name);
+	auto parameter = SL_NEW2(MaterialParameter, name, this);
 	parameters[name] = parameter;
 	return parameter.get();
 }

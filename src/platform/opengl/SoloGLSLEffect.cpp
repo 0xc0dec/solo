@@ -84,6 +84,13 @@ void GLSLEffect::bind()
 }
 
 
+void GLSLEffect::unbind()
+{
+	if (program) // really, why unbinding if we couldn't have been bound anyway
+		glUseProgram(0);
+}
+
+
 void GLSLEffect::deleteShader(GLuint shader)
 {
 	glDetachShader(program, shader);

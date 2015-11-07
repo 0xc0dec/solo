@@ -7,7 +7,6 @@ namespace solo
 		class Camera *camera;
 		class Transform *cameraTransform;
 		class Transform *nodeTransform;
-		class Material* material = nullptr;
 		class Scene* scene = nullptr;
 	};
 }

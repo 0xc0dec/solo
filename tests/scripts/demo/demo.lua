@@ -59,7 +59,6 @@ function initMaterials(textures)
 
 	local postProcessMaterial = resourceManager:getOrCreateMaterial(texEffect, "post-process")
 	postProcessMaterial:setPolygonFace(solo.PolygonFace_All)
-	postProcessMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding_WorldViewProjectionMatrix)
 
 	local checkerEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsChecker)
 	local checkerMaterial = resourceManager:getOrCreateMaterial(checkerEffect)
@@ -318,10 +317,10 @@ function initCameras(rtInfo, materials)
 
 			onAfterCameraRender = function(self)
 				-- self.graphics:renderImage(self.rtTexture, self.finalRt, materials.postProcess, "mainTex")
-				local _, err = pcall(function() self.graphics:renderImage(self.rtTexture, nil, materials.postProcess, "mainTex") end)
-				if err then
-					print(err)
-				end
+				-- local _, err = pcall(function() self.graphics:renderImageToScreen(self.rtTexture, materials.postProcess, "mainTex") end)
+				-- if err then
+				-- 	print(err)
+				-- end
 				-- self.graphics:renderImage(self.finalRt:getTextures()[1], nil, materials.tex, "mainTex")
 			end
 		}

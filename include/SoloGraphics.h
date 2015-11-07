@@ -14,7 +14,8 @@ namespace solo
 	class Graphics
 	{
 	public:
-		void renderImage(shared<Texture2D> source, RenderTarget *target, Material *material, const std::string &textureParameterName = "mainTexture");
+		void renderImageToTarget(shared<Texture2D> source, RenderTarget *target, Material *material, const std::string &textureParameterName = "mainTexture");
+		void renderImageToScreen(shared<Texture2D> source, Material *material, const std::string &textureParameterName = "mainTexture");
 
 	private:
 		friend class GraphicsFactory;

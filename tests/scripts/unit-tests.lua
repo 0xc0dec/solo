@@ -39,8 +39,4 @@ dofile("../tests/scripts/unit-tests.resource-manager.lua")
 dofile("../tests/scripts/unit-tests.scene.lua")
 dofile("../tests/scripts/unit-tests.device.lua")
 
-runTest(function()
-	solo.f(nil)
-end, "Lol")
-
 print("Finished unit tests\n")

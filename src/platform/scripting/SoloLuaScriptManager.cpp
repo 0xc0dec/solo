@@ -71,16 +71,9 @@ LuaScriptManager::~LuaScriptManager()
 }
 
 
-void f(int *i)
-{
-}
-
-
 void LuaScriptManager::registerApi()
 {
 	auto module = LuaBinding(lua).beginModule("solo");
-
-	module.addFunction("f", &f);
 
 	// Vector2
 	auto vector2 = module.beginClass<Vector2>("Vector2");
@@ -633,7 +626,6 @@ void LuaScriptManager::registerApi()
 	REGISTER_VARIABLE(rc, RenderContext, camera);
 	REGISTER_VARIABLE(rc, RenderContext, cameraTransform);
 	REGISTER_VARIABLE(rc, RenderContext, nodeTransform);
-	REGISTER_VARIABLE(rc, RenderContext, material);
 	REGISTER_VARIABLE(rc, RenderContext, scene);
 	rc.endClass();
 
@@ -764,7 +756,8 @@ void LuaScriptManager::registerApi()
 
 	// Graphics
 	auto graphics = module.beginClass<Graphics>("Graphics");
-	REGISTER_METHOD2(graphics, Graphics, renderImage, LUA_ARGS(shared<Texture2D>, RenderTarget*, Material*, _opt<const std::string&>));
+	REGISTER_METHOD2(graphics, Graphics, renderImageToTarget, LUA_ARGS(shared<Texture2D>, RenderTarget*, Material*, _opt<const std::string&>));
+	REGISTER_METHOD2(graphics, Graphics, renderImageToScreen, LUA_ARGS(shared<Texture2D>, Material*, _opt<const std::string&>));
 	graphics.endClass();
 
 	// FileSystem

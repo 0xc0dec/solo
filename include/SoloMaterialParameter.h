@@ -12,6 +12,7 @@ namespace solo
 	class Effect;
 	class Scene;
 	class Texture;
+	class Material;
 	struct RenderContext;
 
 	enum class AutoBinding
@@ -77,9 +78,11 @@ namespace solo
 			Func
 		};
 
-		explicit MaterialParameter(const std::string &name);
+		MaterialParameter(const std::string &name, Material *material);
 
 		void tryClearOldValue(ValueType newExpectedValue);
+
+		Material *material;
 
 		std::string name = "";
 		ValueType type = ValueType::None;
