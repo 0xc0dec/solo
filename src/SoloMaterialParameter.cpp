@@ -241,55 +241,64 @@ void MaterialParameter::tryClearOldValue(ValueType newExpectedValue)
 
 void MaterialParameter::setWorldMatrix(EffectVariable *variable, const RenderContext& context)
 {
-	variable->setMatrix(context.nodeTransform->getWorldMatrix());
+	if (context.nodeTransform)
+		variable->setMatrix(context.nodeTransform->getWorldMatrix());
 }
 
 
 void MaterialParameter::setViewMatrix(EffectVariable *variable, const RenderContext& context)
 {
-	variable->setMatrix(context.camera->getViewMatrix());
+	if (context.camera)
+		variable->setMatrix(context.camera->getViewMatrix());
 }
 
 
 void MaterialParameter::setProjectionMatrix(EffectVariable *variable, const RenderContext& context)
 {
-	variable->setMatrix(context.camera->getProjectionMatrix());
+	if (context.camera)
+		variable->setMatrix(context.camera->getProjectionMatrix());
 }
 
 
 void MaterialParameter::setWorldViewMatrix(EffectVariable *variable, const RenderContext& context)
 {
-	variable->setMatrix(context.nodeTransform->getWorldViewMatrix(context.camera));
+	if (context.nodeTransform && context.camera)
+		variable->setMatrix(context.nodeTransform->getWorldViewMatrix(context.camera));
 }
 
 
 void MaterialParameter::setViewProjectionMatrix(EffectVariable *variable, const RenderContext& context)
 {
-	variable->setMatrix(context.camera->getViewProjectionMatrix());
+	if (context.camera)
+		variable->setMatrix(context.camera->getViewProjectionMatrix());
 }
 
 
 void MaterialParameter::setWorldViewProjectionMatrix(EffectVariable *variable, const RenderContext& context)
 {
-	variable->setMatrix(context.nodeTransform->getWorldViewProjectionMatrix(context.camera));
+	if (context.nodeTransform && context.camera)
+		variable->setMatrix(context.nodeTransform->getWorldViewProjectionMatrix(context.camera));
 }
 
 
 void MaterialParameter::setInverseTransposedWorldViewMatrix(EffectVariable *variable, const RenderContext& context)
 {
-	variable->setMatrix(context.nodeTransform->getInverseTransposedWorldViewMatrix(context.camera));
+	if (context.nodeTransform && context.camera)
+		variable->setMatrix(context.nodeTransform->getInverseTransposedWorldViewMatrix(context.camera));
 }
 
 
 void MaterialParameter::setInverseTransposedWorldMatrix(EffectVariable *variable, const RenderContext& context)
 {
-	variable->setMatrix(context.nodeTransform->getInverseTransposedWorldMatrix());
+	if (context.nodeTransform)
+		variable->setMatrix(context.nodeTransform->getInverseTransposedWorldMatrix());
 }
 
 
 void MaterialParameter::setCameraWorldPosition(EffectVariable *variable, const RenderContext& context)
 {
-	variable->setVector3(context.cameraTransform->getWorldPosition());
+	if (context.cameraTransform)
+		variable->setVector3(context.cameraTransform->getWorldPosition());
 }
 
 
