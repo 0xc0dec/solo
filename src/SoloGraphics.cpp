@@ -31,7 +31,10 @@ void Graphics::renderImageToTarget(shared<Texture2D> source, RenderTarget *targe
 	material->getParameter(textureParameterName.empty() ? "mainTexture" : textureParameterName)->setTexture(source);
 	if (target)
 		target->bind();
+	RenderContext ctx;
+	material->bind(ctx);
 	quadMesh->draw();
+	material->unbind(ctx);
 	if (target)
 		target->unbind();
 }

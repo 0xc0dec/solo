@@ -140,17 +140,6 @@ bool tagsAreRenderable(const BitFlags& objectTags, const BitFlags& cameraTags)
 }
 
 
-/*
-	...
-	camera->setRenderTarget(rt);
-	...
-	scene->render(camera);
-	...
-	graphics->renderImage(rt->getTextures()[0], rt2, postProcessMat, "_mainTexture");
-	graphics->renderImage(rt2->getTextures()[0], rt3, postProcessMat, "_mainTexture");
-	graphics->renderImage(rt3->getTextures()[0], nullptr, postProcessMat, "_mainTexture");
-*/
-
 void Scene::render()
 {
 	syncCameraCache();
@@ -166,12 +155,13 @@ void Scene::renderWithCamera(Camera* camera)
 	if (cameraMode == CameraRenderMode::None)
 		return;
 
-	auto renderTags = camera->getRenderTags();
 	camera->apply();
 
 	RenderContext context;
 	context.scene = this;
 	context.camera = camera;
+
+	auto renderTags = camera->getRenderTags();
 
 	iterateComponents([&](size_t nodeId, Component* component)
 	{
