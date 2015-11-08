@@ -62,28 +62,53 @@ function createTargeter(target)
 end
 
 
-function createPostProcessor(sourceTexture, material)
+function createPostProcessor(sourceTexture, shaders)
 	return
 	{
 		typeId = "PostProcessor",
 
 		init = function(self)
+			self.time = 0
+			self.separator = 0.5
 			self.graphics = device:getGraphics()
 			self.srcTexture = sourceTexture
 
+			local effect1 = resourceManager:getOrCreateEffect(shaders.vsPassThrough, shaders.fsPostProcessHalfGrayscale)
+			local effect2 = resourceManager:getOrCreateEffect(shaders.vsPassThrough, shaders.fsPostProcessHalfSaturate)
+			self.material1 = resourceManager:getOrCreateMaterial(effect1, "demo/post-processor/material1")
+			self.material2 = resourceManager:getOrCreateMaterial(effect2, "demo/post-processor/material2")
+			self.material1:getParameter("separator"):setFunction(
+				function (var, renderContext)
+					var:setFloat(self.separator)
+				end
+			)
+			self.material2:getParameter("separator"):setFunction(
+				function (var, renderContext)
+					var:setFloat(1 - self.separator)
+				end
+			)
+
 			local canvasSize = device:getCanvasSize()
-			local renderTexture = resourceManager:getOrCreateTexture2D("post-process")
-			renderTexture:setData(solo.ColorFormat_RGB, {}, canvasSize.x / 2, canvasSize.y / 2)
-			renderTexture:setFiltering(solo.TextureFiltering_Nearest)
-			renderTexture:setWrapping(solo.TextureWrapping_Clamp)
-			self.finalRt = resourceManager:getOrCreateRenderTarget("post-process")
-			self.finalRt:setColorAttachment(0, renderTexture)
-			self.finalRtTexture = renderTexture
+			local rtt = resourceManager:getOrCreateTexture2D("demo/post-processor/rtt")
+			rtt:setData(solo.ColorFormat_RGB, {}, canvasSize.x, canvasSize.y)
+			rtt:setFiltering(solo.TextureFiltering_Nearest)
+			rtt:setWrapping(solo.TextureWrapping_Clamp)
+			self.finalRTT = rtt
+			self.finalRT = resourceManager:getOrCreateRenderTarget("demo/post-processor/rt")
+			self.finalRT:setColorAttachment(0, rtt)
+		end,
+
+		update = function(self)
+			self.time = self.time + device:getTimeDelta()
+			self.separator = (1 + math.sin(self.time)) / 2
 		end,
 
 		onAfterCameraRender = function(self)
-			self.graphics:renderImageToTarget(self.srcTexture, self.finalRt, material, "mainTex")
-			self.graphics:renderImageToScreen(self.finalRtTexture, material, "mainTex")
+			self.material1:getParameter("mainTex"):setTexture(self.srcTexture)
+			self.graphics:drawMaterialToTarget(self.material1, self.finalRT)
+
+			self.material2:getParameter("mainTex"):setTexture(self.finalRTT)
+			self.graphics:drawMaterialToScreen(self.material2)
 		end
 	}
 end

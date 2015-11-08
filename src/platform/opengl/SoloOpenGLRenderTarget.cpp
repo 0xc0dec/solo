@@ -114,52 +114,6 @@ shared<Texture2D> OpenGLRenderTarget::getColorAttachment(size_t index) const
 }
 
 
-//void OpenGLRenderTarget::setTextures(const std::vector<shared<Texture2D>>& textures)
-//{
-//	if (textures.size() > GL_MAX_COLOR_ATTACHMENTS)
-//		SL_THROW_FMT(EngineException, "Too many color textures for a render target (max allowed: ", GL_MAX_COLOR_ATTACHMENTS, ")");
-//
-//	bind();
-//
-//	// TODO detach textures if no textures passed
-//
-//	std::vector<GLenum> colorAttachments;
-//	for (auto i = 0; i < textures.size(); ++i)
-//	{
-//		auto attachment = GL_COLOR_ATTACHMENT0 + i;
-//		auto texHandle = static_cast<OpenGLTexture2D*>(textures[i].get())->getHandle();
-//		glFramebufferTexture(GL_FRAMEBUFFER, attachment, texHandle, 0);
-//		colorAttachments.push_back(attachment);
-//	}
-//	glDrawBuffers(static_cast<GLsizei>(textures.size()), colorAttachments.data()); // TODO is this needed?
-//
-//	// attach default depth buffer
-//	if (!textures.empty())
-//	{
-//		if (!depthBufferHandle)
-//		{
-//			glGenRenderbuffers(1, &depthBufferHandle);
-//			if (!depthBufferHandle)
-//				SL_THROW_FMT(EngineException, "Could not obtain depth buffer handle");
-//		}
-//		glBindRenderbuffer(GL_RENDERBUFFER, depthBufferHandle);
-//		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, textures[0]->getSize().x, textures[0]->getSize().y);
-//		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferHandle);
-//	}
-//	else
-//	{
-//		if (depthBufferHandle)
-//			glDeleteRenderbuffers(1, &depthBufferHandle);
-//		depthBufferHandle = 0;
-//	}
-//
-//	checkStatus();
-//	unbind();
-//
-//	this->textures = textures;
-//}
-
-
 void OpenGLRenderTarget::checkStatus()
 {
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)

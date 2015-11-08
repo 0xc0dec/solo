@@ -757,8 +757,8 @@ void LuaScriptManager::registerApi()
 
 	// Graphics
 	auto graphics = module.beginClass<Graphics>("Graphics");
-	REGISTER_METHOD2(graphics, Graphics, renderImageToTarget, LUA_ARGS(shared<Texture2D>, RenderTarget*, Material*, _opt<const std::string&>));
-	REGISTER_METHOD2(graphics, Graphics, renderImageToScreen, LUA_ARGS(shared<Texture2D>, Material*, _opt<const std::string&>));
+	REGISTER_METHOD2(graphics, Graphics, drawMaterialToTarget, LUA_ARGS(Material*, RenderTarget*));
+	REGISTER_METHOD2(graphics, Graphics, drawMaterialToScreen, LUA_ARGS(Material*));
 	graphics.endClass();
 
 	// FileSystem

@@ -1,0 +1,8 @@
+runTest(function()
+	local g = device:getGraphics()
+	local e = device:getResourceManager():getOrCreateEffect("vs", "fs")
+	local m = device:getResourceManager():getOrCreateMaterial(e, "test/uri")
+	local rt = device:getResourceManager():getOrCreateRenderTarget("test")
+	g:drawMaterialToTarget(m, rt)
+	g:drawMaterialToScreen(m)
+end, "Graphics")

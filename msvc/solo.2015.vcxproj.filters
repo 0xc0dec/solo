@@ -214,6 +214,12 @@
     <ClInclude Include="..\include\SoloGraphics.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLGraphics.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\stub\SoloStubGraphics.h">
+      <Filter>src\platform\stub</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloLog.cpp">
@@ -455,6 +461,9 @@
     </ClCompile>
     <ClCompile Include="..\src\SoloGraphics.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLGraphics.cpp">
+      <Filter>src\platform\opengl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

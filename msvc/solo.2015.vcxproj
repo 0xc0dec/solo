@@ -67,6 +67,7 @@
     <ClInclude Include="..\src\platform\opengl\SoloGLSLEffectVariable.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLCamera.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLCubeTexture.h" />
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLGraphics.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLHelper.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLMaterial.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLMesh.h" />
@@ -80,6 +81,7 @@
     <ClInclude Include="..\src\platform\stub\SoloStubDevice.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubEffect.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubEffectVariable.h" />
+    <ClInclude Include="..\src\platform\stub\SoloStubGraphics.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubImageLoader.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubMaterial.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubMesh.h" />
@@ -96,6 +98,7 @@
     <ClCompile Include="..\src\platform\opengl\SoloGLSLEffectVariable.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLCamera.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLCubeTexture.cpp" />
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLGraphics.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLHelper.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLMaterial.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLMesh.cpp" />

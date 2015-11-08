@@ -3,6 +3,8 @@ dofile("../tests/scripts/demo/demo.components.lua")
 
 local RENDER_TARGET_QUAD_TAG = 2
 
+local demo = {}
+
 
 function loadTexture(path)
 	local texture = resourceManager:getOrLoadTexture2D(path)
@@ -14,27 +16,38 @@ end
 
 
 function initTextures()
-	local tex1 = loadTexture("../data/freeman1.png")
-	local tex2 = loadTexture("../data/freeman2.png")
-
 	local canvasSize = device:getCanvasSize()
-	local renderTexture = resourceManager:getOrCreateTexture2D("RTT")
-	renderTexture:setData(solo.ColorFormat_RGB, {}, canvasSize.x / 8, canvasSize.y / 8)
-	renderTexture:setFiltering(solo.TextureFiltering_Nearest)
-	renderTexture:setWrapping(solo.TextureWrapping_Clamp)
 
-	return {
-		tex1 = tex1,
-		tex2 = tex2,
-		rt = renderTexture
+	local mainCameraRTT = resourceManager:getOrCreateTexture2D("demo/main-camera-rtt")
+	mainCameraRTT:setData(solo.ColorFormat_RGB, {}, canvasSize.x, canvasSize.y)
+	mainCameraRTT:setFiltering(solo.TextureFiltering_Nearest)
+	mainCameraRTT:setWrapping(solo.TextureWrapping_Clamp)
+
+	local offscreenCameraRTT = resourceManager:getOrCreateTexture2D("demo/offscreen-camera-rtt")
+	offscreenCameraRTT:setData(solo.ColorFormat_RGB, {}, canvasSize.x / 8, canvasSize.y / 8)
+	offscreenCameraRTT:setFiltering(solo.TextureFiltering_Nearest)
+	offscreenCameraRTT:setWrapping(solo.TextureWrapping_Clamp)
+
+	demo.textures =
+	{
+		tex1 = loadTexture("../data/freeman1.png"),
+		tex2 = loadTexture("../data/freeman2.png"),
+		mainCameraRTT = mainCameraRTT,
+		offscreenCameraRTT = offscreenCameraRTT,
 	}
 end
 
 
-function initMaterials(textures)
-	local tex1 = textures.tex1
-	local tex2 = textures.tex2
+function initEffects()
+	local simpleTextureEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsTexture)
+	demo.effects =
+	{
+		simpleTextureEffect = simpleTextureEffect
+	}
+end
 
+
+function initMaterials()
 	local colorEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsColor)
 	local redMaterial = resourceManager:getOrCreateMaterial(colorEffect)
 	redMaterial:setPolygonFace(solo.PolygonFace_All)
@@ -56,15 +69,10 @@ function initMaterials(textures)
 	whiteMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding_WorldViewProjectionMatrix)
 	whiteMaterial:getParameter("color"):setVector4(solo.Vector4(1, 1, 1, 1))
 
-	local texEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsTexture)
-	local texMaterial = resourceManager:getOrCreateMaterial(texEffect)
-	texMaterial:setPolygonFace(solo.PolygonFace_All)
-	texMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding_WorldViewProjectionMatrix)
-	texMaterial:getParameter("mainTex"):setTexture(tex1)
-
-	local postProcessEffect = resourceManager:getOrCreateEffect(shaders.vsDirectDraw, shaders.fsPostProcess)
-	local postProcessMaterial = resourceManager:getOrCreateMaterial(postProcessEffect, "post-process")
-	postProcessMaterial:setPolygonFace(solo.PolygonFace_All)
+	local simpleTexture = resourceManager:getOrCreateMaterial(demo.effects.simpleTextureEffect)
+	simpleTexture:setPolygonFace(solo.PolygonFace_All)
+	simpleTexture:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding_WorldViewProjectionMatrix)
+	simpleTexture:getParameter("mainTex"):setTexture(demo.textures.tex1)
 
 	local checkerEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsChecker)
 	local checkerMaterial = resourceManager:getOrCreateMaterial(checkerEffect)
@@ -73,29 +81,33 @@ function initMaterials(textures)
 	checkerMaterial:getParameter("color"):setVector4(solo.Vector4(1, 1, 0, 1))
 
 	local texWithLightingEffect = resourceManager:getOrCreateEffect(shaders.vsBasicLighting, shaders.fsTextureWithLighting)
-	local texWithLightingMaterial = resourceManager:getOrCreateMaterial(texWithLightingEffect)
-	texWithLightingMaterial:setPolygonFace(solo.PolygonFace_All)
-	texWithLightingMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding_WorldViewProjectionMatrix)
-	texWithLightingMaterial:getParameter("normalMatrix"):bindValue(solo.AutoBinding_InverseTransposedWorldMatrix)
-	texWithLightingMaterial:getParameter("mainTex"):setTexture(tex2)
+	local textureWithLightingMaterial = resourceManager:getOrCreateMaterial(texWithLightingEffect)
+	textureWithLightingMaterial:setPolygonFace(solo.PolygonFace_All)
+	textureWithLightingMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding_WorldViewProjectionMatrix)
+	textureWithLightingMaterial:getParameter("normalMatrix"):bindValue(solo.AutoBinding_InverseTransposedWorldMatrix)
+	textureWithLightingMaterial:getParameter("mainTex"):setTexture(demo.textures.tex2)
 
-	return
+	local offscreenCameraRenderedMaterial = resourceManager:getOrCreateMaterial(demo.effects.simpleTextureEffect)
+	offscreenCameraRenderedMaterial:setPolygonFace(solo.PolygonFace_All)
+	offscreenCameraRenderedMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding_WorldViewProjectionMatrix)
+	offscreenCameraRenderedMaterial:getParameter("mainTex"):setTexture(demo.textures.offscreenCameraRTT)
+
+	demo.materials =
 	{
-		texEffect = texEffect,
+		simpleTexture = simpleTexture,
 		red = redMaterial,
 		green = greenMaterial,
 		blue = blueMaterial,
 		white = whiteMaterial,
-		tex = texMaterial,
 		checker = checkerMaterial,
-		texWithLighting = texWithLightingMaterial,
-		postProcess = postProcessMaterial
+		textureWithLighting = textureWithLightingMaterial,
+		offscreenCameraRendered = offscreenCameraRenderedMaterial
 	}
 end
 
 
 function initModels()
-	return
+	demo.models =
 	{
 		axes = resourceManager:getOrLoadModel("../data/axes.obj"),
 		monkey = resourceManager:getOrLoadModel("../data/monkey_hires.obj")
@@ -103,31 +115,29 @@ function initModels()
 end
 
 
-function initRenderTarget(rtt, materials)
-	local renderTarget = resourceManager:getOrCreateRenderTarget("test")
-	renderTarget:setColorAttachment(0, rtt)
+function initRenderTargets()
+	local offscreenCameraRT = resourceManager:getOrCreateRenderTarget("demo/offscreen-camera-rt")
+	offscreenCameraRT:setColorAttachment(0, demo.textures.offscreenCameraRTT)
 
-	local material = resourceManager:getOrCreateMaterial(materials.texEffect)
-	material:setPolygonFace(solo.PolygonFace_All)
-	material:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding_WorldViewProjectionMatrix)
-	material:getParameter("mainTex"):setTexture(rtt)
+	local mainCameraRT = resourceManager:getOrCreateRenderTarget("demo/main-camera-rt")
+	mainCameraRT:setColorAttachment(0, demo.textures.mainCameraRTT)
 
-	return
+	demo.renderTargets =
 	{
-		renderTarget = renderTarget,
-		material = material
+		offscreenCameraRT = offscreenCameraRT,
+		mainCameraRT = mainCameraRT
 	}
 end
 
 
-function initObjects(models, materials, rt)
+function initObjects()
 	local canvasSize = device:getCanvasSize()
 
 	-- Monkey
 	local node = scene:createNode()
 	local renderer = node:addComponent("ModelRenderer")
-	renderer:setModel(models.monkey)
-	renderer:setMaterial(materials.texWithLighting)
+	renderer:setModel(demo.models.monkey)
+	renderer:setMaterial(demo.materials.textureWithLighting)
 	node:findComponent("Transform"):setLocalPosition(solo.Vector3.zero())
 	node:addScriptComponent(createLocalXRotator())
 
@@ -135,10 +145,10 @@ function initObjects(models, materials, rt)
 	local parent = scene:createNode()
 	parent:findComponent("Transform"):setLocalPosition(solo.Vector3(-2, 2, -2))
 	parent:addScriptComponent(createWorldYRotator())
-	initAxesModel(parent, models, materials)
+	initAxesModel(parent)
 
 	local quad = createQuad()
-	quad:findComponent("ModelRenderer"):setMaterialForMesh(0, rt.material)
+	quad:findComponent("ModelRenderer"):setMaterialForMesh(0, demo.materials.offscreenCameraRendered)
 	local quadTransform = quad:findComponent("Transform")
 	quadTransform:getTags():set(RENDER_TARGET_QUAD_TAG)
 	quadTransform:setParent(parent:findComponent("Transform"))
@@ -150,18 +160,18 @@ function initObjects(models, materials, rt)
 	parent = scene:createNode()
 	parent:findComponent("Transform"):setLocalPosition(solo.Vector3(5, 0, 0))
 	parent:addScriptComponent(createWorldYRotator())
-	initAxesModel(parent, models, materials)
+	initAxesModel(parent)
 
 	quad = createQuad()
 	quad:addScriptComponent(createLocalXRotator());
 	quad:findComponent("Transform"):setParent(parent:findComponent("Transform"))
 	quad:findComponent("Transform"):setLocalPosition(solo.Vector3(2, 0, 0))
-	quad:findComponent("ModelRenderer"):setMaterialForMesh(0, materials.tex)
+	quad:findComponent("ModelRenderer"):setMaterialForMesh(0, demo.materials.simpleTexture)
 
 	-- Box
 	node = createQuad()
 	rebuildToBoxMesh(node)
-	node:findComponent("ModelRenderer"):setMaterialForMesh(0, materials.checker)
+	node:findComponent("ModelRenderer"):setMaterialForMesh(0, demo.materials.checker)
 	node:findComponent("Transform"):setLocalPosition(solo.Vector3(-5, 0, 0))
 	node:addScriptComponent(createWorldYRotator())
 end
@@ -249,13 +259,13 @@ function rebuildToBoxMesh(node)
 end
 
 
-function initAxesModel(node, models, materials)
+function initAxesModel(node)
 	local renderer = node:addComponent("ModelRenderer")
-	renderer:setModel(models.axes)
-	renderer:setMaterialForMesh(0, materials.blue)
-	renderer:setMaterialForMesh(1, materials.green)
-	renderer:setMaterialForMesh(2, materials.white)
-	renderer:setMaterialForMesh(3, materials.red)
+	renderer:setModel(demo.models.axes)
+	renderer:setMaterialForMesh(0, demo.materials.blue)
+	renderer:setMaterialForMesh(1, demo.materials.green)
+	renderer:setMaterialForMesh(2, demo.materials.white)
+	renderer:setMaterialForMesh(3, demo.materials.red)
 end
 
 
@@ -294,7 +304,7 @@ function createQuad()
 end
 
 
-function initCameras(rt, materials)
+function initCameras()
 	local mainCameraNode = scene:createNode()
 	local mainCameraTransform = mainCameraNode:findComponent("Transform")
 	mainCameraTransform:setLocalPosition(solo.Vector3(0, 2, 15))
@@ -303,30 +313,29 @@ function initCameras(rt, materials)
 	local mainCamera = mainCameraNode:addComponent("Camera")
 	mainCamera:setClearColor(0, 0.6, 0.6, 1)
 	mainCamera:setNear(0.05)
-	mainCameraNode:addScriptComponent(createPostProcessor(rt.renderTarget:getColorAttachment(0), materials.postProcess))
-	-- mainCamera:setRenderOrder(0)
+	mainCamera:setRenderTarget(demo.renderTargets.mainCameraRT)
+	mainCameraNode:addScriptComponent(createPostProcessor(demo.textures.mainCameraRTT, shaders))
 
 	local canvasSize = device:getCanvasSize()
 	local offscreenCameraNode = scene:createNode()
 	local offscreenCamera = offscreenCameraNode:addComponent("Camera")
 	offscreenCamera:setClearColor(1, 0, 1, 1)
 	offscreenCamera:setNear(0.05)
-	offscreenCamera:setRenderTarget(rt.renderTarget)
+	offscreenCamera:setRenderTarget(demo.renderTargets.offscreenCameraRT)
 	offscreenCamera:setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8)
 	offscreenCamera:getRenderTags():remove(RENDER_TARGET_QUAD_TAG)
 	offscreenCameraNode:findComponent("Transform"):setLocalPosition(solo.Vector3(0, 0, 10))
-	-- offscreenCamera:setRenderOrder(1)
-	-- offscreenCameraNode:addScriptComponent(createPostProcessor(rt.renderTarget:getColorAttachment(0), materials.postProcess))
 end
 
 
 function init()
-	local textures = initTextures()
-	local materials = initMaterials(textures)
-	local models = initModels()
-	local rt = initRenderTarget(textures.rt, materials)
-	initCameras(rt, materials)
-	initObjects(models, materials, rt)
+	initTextures()
+	initEffects()
+	initMaterials()
+	initRenderTargets()
+	initModels()
+	initCameras()
+	initObjects()
 
 	-- local texSkybox = resourceManager:getOrLoadCubeTexture({
 	-- 	"../data/skyboxes/deep-space/front.png",

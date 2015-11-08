@@ -14,16 +14,19 @@ namespace solo
 	class Graphics
 	{
 	public:
-		void renderImageToTarget(shared<Texture2D> source, RenderTarget *target, Material *material, const std::string &textureParameterName = "mainTexture");
-		void renderImageToScreen(shared<Texture2D> source, Material *material, const std::string &textureParameterName = "mainTexture");
+		Graphics(const Graphics& other) = delete;
+		Graphics(Graphics&& other) = delete;
+		Graphics& operator=(const Graphics& other) = delete;
+		Graphics& operator=(Graphics&& other) = delete;
+		virtual ~Graphics() {}
 
-	private:
-		friend class GraphicsFactory;
+		virtual void drawMaterialToTarget(Material* material, RenderTarget* target) = 0;
+		virtual void drawMaterialToScreen(Material* material) = 0;
 
+	protected:
 		explicit Graphics(Device *device);
 
 		Device *device;
-		shared<Mesh> quadMesh;
 	};
 
 	class GraphicsFactory
