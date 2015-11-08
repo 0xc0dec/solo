@@ -16,6 +16,36 @@ local vsBasic = [[
 	}
 ]]
 
+local vsDirectDraw = [[
+	#version 330 core
+
+	layout (location = 0) in vec4 position;
+	layout (location = 2) in vec2 uv;
+
+	out vec2 uv0;
+	out vec3 n;
+
+	void main()
+	{
+		gl_Position = position;
+		uv0 = uv;
+	}
+]]
+
+local fsPostProcess = [[
+	#version 330 core
+
+	uniform sampler2D mainTex;
+
+	in vec2 uv0;
+	out vec4 fragColor;
+
+	void main()
+	{
+		fragColor = texture(mainTex, uv0) / 2.0;
+	}
+]]
+
 local fsColor = [[
 	#version 330 core
 
@@ -137,11 +167,13 @@ local fsSkybox = [[
 return
 {
 	vsBasic = vsBasic,
+	vsDirectDraw = vsDirectDraw,
 	fsColor = fsColor,
 	fsTexture = fsTexture,
 	fsChecker = fsChecker,
 	vsBasicLighting = vsBasicLighting,
 	fsTextureWithLighting = fsTextureWithLighting,
 	vsSkybox = vsSkybox,
-	fsSkybox = fsSkybox
+	fsSkybox = fsSkybox,
+	fsPostProcess = fsPostProcess
 }

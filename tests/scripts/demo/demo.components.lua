@@ -60,3 +60,30 @@ function createTargeter(target)
 		end
 	}
 end
+
+
+function createPostProcessor(sourceTexture, material)
+	return
+	{
+		typeId = "PostProcessor",
+
+		init = function(self)
+			self.graphics = device:getGraphics()
+			self.srcTexture = sourceTexture
+
+			local canvasSize = device:getCanvasSize()
+			local renderTexture = resourceManager:getOrCreateTexture2D("post-process")
+			renderTexture:setData(solo.ColorFormat_RGB, {}, canvasSize.x, canvasSize.y)
+			renderTexture:setFiltering(solo.TextureFiltering_Nearest)
+			renderTexture:setWrapping(solo.TextureWrapping_Clamp)
+			self.finalRt = resourceManager:getOrCreateRenderTarget("post-process")
+			self.finalRt:setTextures({ renderTexture })
+			self.finalRtTexture = renderTexture
+		end,
+
+		onAfterCameraRender = function(self)
+			self.graphics:renderImageToTarget(self.srcTexture, self.finalRt, material, "mainTex")
+			self.graphics:renderImageToScreen(self.finalRtTexture, material, "mainTex")
+		end
+	}
+end
