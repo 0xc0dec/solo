@@ -73,17 +73,17 @@ function createPostProcessor(sourceTexture, material)
 
 			local canvasSize = device:getCanvasSize()
 			local renderTexture = resourceManager:getOrCreateTexture2D("post-process")
-			renderTexture:setData(solo.ColorFormat_RGB, {}, canvasSize.x, canvasSize.y)
+			renderTexture:setData(solo.ColorFormat_RGB, {}, canvasSize.x / 2, canvasSize.y / 2)
 			renderTexture:setFiltering(solo.TextureFiltering_Nearest)
 			renderTexture:setWrapping(solo.TextureWrapping_Clamp)
 			self.finalRt = resourceManager:getOrCreateRenderTarget("post-process")
-			self.finalRt:setTextures({ renderTexture })
+			self.finalRt:setColorAttachment(0, renderTexture)
 			self.finalRtTexture = renderTexture
 		end,
 
 		onAfterCameraRender = function(self)
-			-- self.graphics:renderImageToTarget(self.srcTexture, self.finalRt, material, "mainTex")
-			-- self.graphics:renderImageToScreen(self.finalRtTexture, material, "mainTex")
+			self.graphics:renderImageToTarget(self.srcTexture, self.finalRt, material, "mainTex")
+			self.graphics:renderImageToScreen(self.finalRtTexture, material, "mainTex")
 		end
 	}
 end

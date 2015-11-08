@@ -168,6 +168,7 @@
     <ClInclude Include="..\tests\tester\FileSystem_Test.h" />
     <ClInclude Include="..\tests\tester\Materials_Test.h" />
     <ClInclude Include="..\tests\tester\ModelRenderer_Test.h" />
+    <ClInclude Include="..\tests\tester\RenderTargets_Test.h" />
     <ClInclude Include="..\tests\tester\Resources_Test.h" />
     <ClInclude Include="..\tests\tester\Shaders.h" />
     <ClInclude Include="..\tests\tester\TestBase.h" />

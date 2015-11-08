@@ -10,8 +10,9 @@ namespace solo
 		virtual void bind() override {}
 		virtual void unbind() override {}
 
-	protected:
-		virtual void update() override {}
+		virtual void setColorAttachment(size_t index, shared<Texture2D> texture) override {}
+		virtual size_t getColorAttachmentCount() const override { return 0; }
+		virtual shared<Texture2D> getColorAttachment(size_t index) const override { return nullptr; }
 
 	private:
 		friend class RenderTargetFactory;

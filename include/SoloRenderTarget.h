@@ -19,16 +19,12 @@ namespace solo
 		virtual void bind() = 0;
 		virtual void unbind() = 0;
 
-		void setTextures(const std::vector<shared<Texture2D>> &textures);
-		size_t getTextureCount() const;
-		shared<Texture2D> getTexture(size_t index) const;
+		virtual void setColorAttachment(size_t index, shared<Texture2D> texture) = 0;
+		virtual size_t getColorAttachmentCount() const = 0;
+		virtual shared<Texture2D> getColorAttachment(size_t index) const = 0;
 
 	protected:
 		RenderTarget() {}
-
-		virtual void update() = 0;
-
-		std::vector<shared<Texture2D>> textures;
 	};
 
 	class RenderTargetFactory
