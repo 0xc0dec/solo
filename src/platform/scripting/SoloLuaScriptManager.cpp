@@ -447,8 +447,9 @@ void LuaScriptManager::registerApi()
 
 	// RenderTarget
 	auto rt = module.beginClass<RenderTarget>("RenderTarget");
+	REGISTER_METHOD(rt, RenderTarget, getTextureCount);
+	REGISTER_METHOD(rt, RenderTarget, getTexture);
 	REGISTER_METHOD(rt, RenderTarget, setTextures);
-	REGISTER_METHOD(rt, RenderTarget, getTextures);
 	rt.endClass();
 
 	// Node

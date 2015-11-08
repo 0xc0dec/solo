@@ -20,7 +20,8 @@ namespace solo
 		virtual void unbind() = 0;
 
 		void setTextures(const std::vector<shared<Texture2D>> &textures);
-		std::vector<shared<Texture2D>> getTextures() const;
+		size_t getTextureCount() const;
+		shared<Texture2D> getTexture(size_t index) const;
 
 	protected:
 		RenderTarget() {}

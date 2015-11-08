@@ -303,7 +303,7 @@ function initCameras(rt, materials)
 	local mainCamera = mainCameraNode:addComponent("Camera")
 	mainCamera:setClearColor(0, 0.6, 0.6, 1)
 	mainCamera:setNear(0.05)
-	mainCameraNode:addScriptComponent(createPostProcessor(rt.renderTarget:getTextures()[1], materials.postProcess))
+	mainCameraNode:addScriptComponent(createPostProcessor(rt.renderTarget:getTexture(0), materials.postProcess))
 	-- mainCamera:setRenderOrder(0)
 
 	local canvasSize = device:getCanvasSize()
@@ -316,7 +316,7 @@ function initCameras(rt, materials)
 	offscreenCamera:getRenderTags():remove(RENDER_TARGET_QUAD_TAG)
 	offscreenCameraNode:findComponent("Transform"):setLocalPosition(solo.Vector3(0, 0, 10))
 	-- offscreenCamera:setRenderOrder(1)
-	-- offscreenCameraNode:addScriptComponent(createPostProcessor(rt.renderTarget:getTextures()[1], materials.postProcess))
+	-- offscreenCameraNode:addScriptComponent(createPostProcessor(rt.renderTarget:getTexture(0), materials.postProcess))
 end
 
 

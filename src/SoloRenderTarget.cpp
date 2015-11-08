@@ -20,7 +20,16 @@ void RenderTarget::setTextures(const std::vector<shared<Texture2D>>& textures)
 }
 
 
-std::vector<shared<Texture2D>> RenderTarget::getTextures() const
+size_t RenderTarget::getTextureCount() const
 {
-	return textures;
+	return textures.size();
+}
+
+
+shared<Texture2D> RenderTarget::getTexture(size_t index) const
+{
+	auto total = textures.size();
+	if (index >= total)
+		SL_THROW_FMT(EngineException, "Invalid texture index ", index, " (expected less than ", total, ")");
+	return textures[index];
 }
