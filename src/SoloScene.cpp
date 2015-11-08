@@ -163,10 +163,6 @@ void Scene::render()
 
 void Scene::renderWithCamera(Camera* camera)
 {
-	auto cameraMode = camera->getRenderMode();
-	if (cameraMode == CameraRenderMode::None)
-		return;
-
 	camera->apply();
 
 	RenderContext context;

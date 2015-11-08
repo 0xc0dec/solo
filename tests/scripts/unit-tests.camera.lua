@@ -38,7 +38,4 @@ runTest(function()
 
 	c:getRenderTarget()
 	c:setRenderTarget(rt)
-
-	assert(c:getRenderMode() ~= nil)
-	c:setRenderMode(solo.CameraRenderMode_Deferred)
 end, "Camera")

@@ -105,10 +105,10 @@ function createPostProcessor(sourceTexture, shaders)
 
 		onAfterCameraRender = function(self)
 			self.material1:getParameter("mainTex"):setTexture(self.srcTexture)
-			self.graphics:drawMaterialToTarget(self.material1, self.finalRT)
+			self.graphics:renderMaterialSurfaceToTarget(self.material1, self.finalRT)
 
 			self.material2:getParameter("mainTex"):setTexture(self.finalRTT)
-			self.graphics:drawMaterialToScreen(self.material2)
+			self.graphics:renderMaterialSurfaceToScreen(self.material2)
 		end
 	}
 end

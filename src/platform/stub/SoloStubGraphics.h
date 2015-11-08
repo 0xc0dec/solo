@@ -7,8 +7,8 @@ namespace solo
 	class StubGraphics: public Graphics
 	{
 	public:
-		virtual void drawMaterialToTarget(Material* material, RenderTarget* target) override {}
-		virtual void drawMaterialToScreen(Material* material) override {}
+		virtual void renderMaterialSurfaceToTarget(Material* material, RenderTarget* target) override {}
+		virtual void renderMaterialSurfaceToScreen(Material* material) override {}
 
 	private:
 		friend class Graphics;

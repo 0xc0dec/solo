@@ -15,13 +15,6 @@ namespace solo
 	class Scene;
 	enum class DeviceMode;
 
-	enum class CameraRenderMode
-	{
-		None,
-		Forward,
-		Deferred
-	};
-
 	class Camera : public ComponentBase<Camera>, protected TransformCallback
 	{
 	public:
@@ -37,9 +30,6 @@ namespace solo
 
 		unsigned getRenderOrder() const;
 		void setRenderOrder(unsigned order);
-
-		CameraRenderMode getRenderMode() const;
-		void setRenderMode(CameraRenderMode mode);
 
 		shared<RenderTarget> getRenderTarget() const;
 		void setRenderTarget(shared<RenderTarget> target);
@@ -102,8 +92,6 @@ namespace solo
 		Vector4 viewport;
 		bool viewportSet = false;
 
-		CameraRenderMode mode{ CameraRenderMode::Forward };
-
 		Vector4 clearColor{ 0, 0, 0, 1 };
 		float fov = 60;
 		float nearClip = 1;
@@ -118,16 +106,6 @@ namespace solo
 		Matrix inverseViewMatrix;
 		Matrix inverseViewProjectionMatrix;
 	};
-
-	inline CameraRenderMode Camera::getRenderMode() const
-	{
-		return mode;
-	}
-
-	inline void Camera::setRenderMode(CameraRenderMode mode)
-	{
-		this->mode = mode;
-	}
 
 	inline unsigned Camera::getRenderOrder() const
 	{
