@@ -1,6 +1,7 @@
 runTest(function()
 	local rt = device:getResourceManager():getOrCreateRenderTarget("test/uri")
 	local tex = device:getResourceManager():getOrCreateTexture2D("nonesense")
+	rt:getColorAttachmentSize()
 	rt:setColorAttachment(0, tex)
 	rt:setColorAttachment(2, tex)
 	rt:setColorAttachment(1, tex)

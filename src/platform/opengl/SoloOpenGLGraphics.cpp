@@ -40,7 +40,7 @@ void OpenGLGraphics::drawMaterial(Material* material, RenderTarget* target)
 	if (target)
 		target->bind();
 
-	auto viewportSize = target ? target->getColorAttachment(0)->getSize() : device->getCanvasSize();
+	auto viewportSize = target ? target->getColorAttachmentSize() : device->getCanvasSize();
 	glViewport(
 		static_cast<GLuint>(0),
 		static_cast<GLuint>(0),

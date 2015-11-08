@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SoloBase.h"
+#include "SoloVector2.h"
 
 namespace solo
 {
@@ -20,6 +21,7 @@ namespace solo
 		virtual void unbind() = 0;
 
 		virtual void setColorAttachment(size_t index, shared<Texture2D> texture) = 0;
+		virtual Vector2 getColorAttachmentSize() const = 0;
 		virtual size_t getColorAttachmentCount() const = 0;
 		virtual shared<Texture2D> getColorAttachment(size_t index) const = 0;
 

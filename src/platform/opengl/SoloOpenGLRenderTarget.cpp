@@ -99,6 +99,14 @@ void OpenGLRenderTarget::setColorAttachment(size_t index, shared<Texture2D> text
 }
 
 
+Vector2 OpenGLRenderTarget::getColorAttachmentSize() const
+{
+	if (colorAttachments.empty())
+		return Vector2();
+	return colorAttachments.begin()->second->getSize();
+}
+
+
 size_t OpenGLRenderTarget::getColorAttachmentCount() const
 {
 	return colorAttachments.size();

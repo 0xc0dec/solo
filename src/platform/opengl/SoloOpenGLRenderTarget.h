@@ -16,6 +16,7 @@ namespace solo
 		virtual void unbind() override;
 
 		virtual void setColorAttachment(size_t index, shared<Texture2D> texture) override;
+		virtual Vector2 getColorAttachmentSize() const override;
 		virtual size_t getColorAttachmentCount() const override;
 		virtual shared<Texture2D> getColorAttachment(size_t index) const override;
 
