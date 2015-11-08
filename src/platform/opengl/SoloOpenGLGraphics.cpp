@@ -30,9 +30,9 @@ void OpenGLGraphics::renderSurfaceToScreen(Material* material)
 
 void OpenGLGraphics::drawMaterial(Material* material, RenderTarget* target)
 {
-	if (!quadMesh) // TODO move this to some kind of "init" function
+	if (!quadMesh)
 	{
-		quadMesh = device->getResourceManager()->getOrCreateMesh("solo/internal/quad");
+		quadMesh = device->getResourceManager()->getOrCreateMesh(KnownUris::UnitQuadMesh);
 		quadMesh->rebuildAsQuad();
 	}
 

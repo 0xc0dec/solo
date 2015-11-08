@@ -7,6 +7,8 @@ namespace solo
 	class Transform;
 	class Camera;
 	class ModelRenderer;
+	class SkyboxRenderer;
+	class Spectator;
 
 	// A convenient wrapper for working with components. There's no real "Node" in the engine
 	class Node
@@ -122,4 +124,6 @@ namespace solo
 	template<> Transform* Node::addComponent();
 	template<> Camera* Node::addComponent();
 	template<> ModelRenderer* Node::addComponent();
+	template<> Spectator* Node::addComponent();
+	template<> SkyboxRenderer* Node::addComponent();
 }

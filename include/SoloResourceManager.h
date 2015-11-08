@@ -18,6 +18,7 @@ namespace solo
 	struct KnownUris
 	{
 		static constexpr char* SkyboxEffect = "solo/internal/effects/skybox";
+		static constexpr char* UnitQuadMesh = "solo/internal/meshes/quad";
 	};
 
 	class ResourceManager

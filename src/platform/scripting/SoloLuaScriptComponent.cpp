@@ -3,6 +3,7 @@
 #include "SoloCamera.h"
 #include "SoloModelRenderer.h"
 #include "SoloSpectator.h"
+#include "SoloSkyboxRenderer.h"
 
 using namespace solo;
 using namespace LuaIntf;
@@ -62,6 +63,8 @@ Component* LuaScriptComponent::findComponent(Node* node, const std::string& type
 		return node->findComponent<Camera>();
 	if (typeName == "Spectator")
 		return node->findComponent<Spectator>();
+	if (typeName == "SkyboxRenderer")
+		return node->findComponent<SkyboxRenderer>();
 	return nullptr;
 }
 
@@ -98,6 +101,8 @@ Component* LuaScriptComponent::addComponent(Node* node, const std::string& typeN
 		return node->addComponent<Camera>();
 	if (typeName == "Spectator")
 		return node->addComponent<Spectator>();
+	if (typeName == "SkyboxRenderer")
+		return node->addComponent<SkyboxRenderer>();
 	SL_THROW_FMT(EngineException, "Unknown standard component ", typeName);
 }
 
@@ -112,6 +117,8 @@ void LuaScriptComponent::removeComponent(Node* node, const std::string& typeName
 		node->removeComponent<Camera>();
 	if (typeName == "Spectator")
 		node->removeComponent<Spectator>();
+	if (typeName == "SkyboxRenderer")
+		node->removeComponent<SkyboxRenderer>();
 }
 
 

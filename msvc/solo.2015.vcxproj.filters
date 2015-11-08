@@ -223,6 +223,9 @@
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLBuiltInShaders.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloSkyboxRenderer.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloLog.cpp">
@@ -467,6 +470,9 @@
     </ClCompile>
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLGraphics.cpp">
       <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloSkyboxRenderer.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

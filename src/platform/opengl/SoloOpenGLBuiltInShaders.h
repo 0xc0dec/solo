@@ -18,7 +18,6 @@ namespace solo
 				mat4 invProjMatrix = inverse(projMatrix);
 				mat3 invModelViewMatrix = inverse(mat3(worldViewMatrix));
 				vec3 unprojected = (invProjMatrix * position).xyz;
-
 				eyeDir = invModelViewMatrix * unprojected;
 				gl_Position = position;
 			}

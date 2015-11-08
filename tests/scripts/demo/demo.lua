@@ -217,18 +217,18 @@ function initCameras()
 	local mainCamera = mainCameraNode:addComponent("Camera")
 	mainCamera:setClearColor(0, 0.6, 0.6, 1)
 	mainCamera:setNear(0.05)
-	mainCamera:setRenderTarget(demo.renderTargets.mainCameraRT)
-	mainCameraNode:addScriptComponent(createPostProcessor(demo.textures.mainCameraRTT, shaders))
+	-- mainCamera:setRenderTarget(demo.renderTargets.mainCameraRT)
+	-- mainCameraNode:addScriptComponent(createPostProcessor(demo.textures.mainCameraRTT, shaders))
 
-	local canvasSize = device:getCanvasSize()
-	local offscreenCameraNode = scene:createNode()
-	local offscreenCamera = offscreenCameraNode:addComponent("Camera")
-	offscreenCamera:setClearColor(1, 0, 1, 1)
-	offscreenCamera:setNear(0.05)
-	offscreenCamera:setRenderTarget(demo.renderTargets.offscreenCameraRT)
-	offscreenCamera:setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8)
-	offscreenCamera:getRenderTags():remove(RENDER_TARGET_QUAD_TAG)
-	offscreenCameraNode:findComponent("Transform"):setLocalPosition(solo.Vector3(0, 0, 10))
+	-- local canvasSize = device:getCanvasSize()
+	-- local offscreenCameraNode = scene:createNode()
+	-- local offscreenCamera = offscreenCameraNode:addComponent("Camera")
+	-- offscreenCamera:setClearColor(1, 0, 1, 1)
+	-- offscreenCamera:setNear(0.05)
+	-- offscreenCamera:setRenderTarget(demo.renderTargets.offscreenCameraRT)
+	-- offscreenCamera:setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8)
+	-- offscreenCamera:getRenderTags():remove(RENDER_TARGET_QUAD_TAG)
+	-- offscreenCameraNode:findComponent("Transform"):setLocalPosition(solo.Vector3(0, 0, 10))
 end
 
 
@@ -241,21 +241,25 @@ function init()
 	initCameras()
 	initObjects()
 
-	-- local texSkybox = resourceManager:getOrLoadCubeTexture({
-	-- 	"../data/skyboxes/deep-space/front.png",
-	-- 	"../data/skyboxes/deep-space/back.png",
-	-- 	"../data/skyboxes/deep-space/left.png",
-	-- 	"../data/skyboxes/deep-space/right.png",
-	-- 	"../data/skyboxes/deep-space/top.png",
-	-- 	"../data/skyboxes/deep-space/bottom.png"
-	-- }, "testCubeTex")
-	-- texSkybox:setWrapping(solo.TextureWrapping_Clamp)
+	local texSkybox = resourceManager:getOrLoadCubeTexture({
+		"../data/skyboxes/deep-space/front.png",
+		"../data/skyboxes/deep-space/back.png",
+		"../data/skyboxes/deep-space/left.png",
+		"../data/skyboxes/deep-space/right.png",
+		"../data/skyboxes/deep-space/top.png",
+		"../data/skyboxes/deep-space/bottom.png"
+	}, "demo/textures/skybox")
+	texSkybox:setWrapping(solo.TextureWrapping_Clamp)
+
+	local skybox = scene:createNode()
+	local skyboxRenderer = skybox:addComponent("SkyboxRenderer")
+	skyboxRenderer:setTexture(texSkybox)
 
 	-- local skyboxQuad = createQuad()
-	local skyboxEffect = resourceManager:findEffect(solo.KnownUris.SkyboxEffect)
-	local skyboxMaterial = resourceManager:getOrCreateMaterial(skyboxEffect)
+	-- local skyboxEffect = resourceManager:findEffect(solo.KnownUris.SkyboxEffect)
+	-- local skyboxMaterial = resourceManager:getOrCreateMaterial(skyboxEffect)
 	-- TODO return skybox initialization back
-	
+
 	-- skyboxQuadMaterial:setPolygonFace(solo.PolygonFace_All)
 	-- skyboxQuadMaterial:setDepthWriteEnabled(false)
 	-- skyboxQuadMaterial:getParameter("projMatrix"):bindValue(solo.AutoBinding_ProjectionMatrix)

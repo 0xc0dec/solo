@@ -1,0 +1,7 @@
+runTest(function()
+	local mgr = device:getResourceManager()
+	local sr = device:getScene():createNode():addComponent("SkyboxRenderer")
+	local tex = mgr:getOrCreateCubeTexture("test")
+	sr:setTexture(tex)
+	assert(sr:getTexture() ~= nil)
+end, "SkyboxRenderer")

@@ -59,7 +59,6 @@ void OpenGLMaterial::applyState()
 	}
 
 	glDepthFunc(depthFunc);
-
 	glDepthMask(depthWrite ? GL_TRUE : GL_FALSE);
 
 	if (depthTest)

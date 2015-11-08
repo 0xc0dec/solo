@@ -29,6 +29,7 @@
 #include "SoloModel.h"
 #include "SoloRenderContext.h"
 #include "SoloModelRenderer.h"
+#include "SoloSkyboxRenderer.h"
 #include "SoloSpectator.h"
 #include "SoloGraphics.h"
 #include <map>
@@ -486,6 +487,12 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(mr, ModelRenderer, getModel);
 	REGISTER_METHOD(mr, ModelRenderer, setModel);
 	mr.endClass();
+
+	// SkyboxRenderer
+	auto sr = module.beginExtendClass<SkyboxRenderer, Component>("SkyboxRenderer");
+	REGISTER_METHOD(sr, SkyboxRenderer, getTexture);
+	REGISTER_METHOD(sr, SkyboxRenderer, setTexture);
+	sr.endClass();
 
 	// Transform
 	auto transform = module.beginExtendClass<Transform, Component>("Transform");
