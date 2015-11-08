@@ -55,7 +55,6 @@
     <ClInclude Include="..\include\SoloQuaternion.h" />
     <ClInclude Include="..\include\SoloRay.h" />
     <ClInclude Include="..\include\SoloRenderContext.h" />
-    <ClInclude Include="..\include\SoloRenderState.h" />
     <ClInclude Include="..\include\SoloResourceManager.h" />
     <ClInclude Include="..\include\SoloScene.h" />
     <ClInclude Include="..\include\SoloTexture2D.h" />

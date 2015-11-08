@@ -27,7 +27,6 @@
 #include "SoloRay.h"
 #include "SoloRenderContext.h"
 #include "SoloRenderer.h"
-#include "SoloRenderState.h"
 #include "SoloRenderTarget.h"
 #include "SoloResourceManager.h"
 #include "SoloScene.h"

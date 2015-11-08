@@ -576,18 +576,14 @@ void LuaScriptManager::registerApi()
 		.addConstant("PolygonFace_CCW", PolygonFace::CCW)
 		.addConstant("PolygonFace_CW", PolygonFace::CW);
 
-	// RenderState
-	auto rs = module.beginClass<RenderState>("RenderState");
-	REGISTER_METHOD(rs, RenderState, getPolygonFace);
-	REGISTER_METHOD(rs, RenderState, setPolygonFace);
-	REGISTER_METHOD(rs, RenderState, getZWriteEnabled);
-	REGISTER_METHOD(rs, RenderState, setZWriteEnabled);
-	rs.endClass();
-
 	// Material
-	auto mat = module.beginExtendClass<Material, RenderState>("Material");
+	auto mat = module.beginClass<Material>("Material");
 	REGISTER_METHOD(mat, Material, getParameter);
 	REGISTER_METHOD(mat, Material, getEffect);
+	REGISTER_METHOD(mat, Material, getPolygonFace);
+	REGISTER_METHOD(mat, Material, setPolygonFace);
+	REGISTER_METHOD(mat, Material, getZWriteEnabled);
+	REGISTER_METHOD(mat, Material, setZWriteEnabled);
 	mat.endClass();
 
 	// AutoBinding

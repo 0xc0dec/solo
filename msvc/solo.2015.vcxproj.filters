@@ -88,9 +88,6 @@
     <ClInclude Include="..\include\SoloMaterialParameter.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloRenderState.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloRenderContext.h">
       <Filter>include</Filter>
     </ClInclude>
