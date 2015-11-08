@@ -59,19 +59,24 @@ namespace solo
 		return effect.get();
 	}
 
+	inline PolygonFace Material::getPolygonFace() const
+	{
+		return polygonFace;
+	}
+	
 	inline void Material::setPolygonFace(PolygonFace face)
 	{
 		polygonFace = face;
 	}
 
-	inline PolygonFace Material::getPolygonFace() const
-	{
-		return polygonFace;
-	}
-
 	inline bool Material::isDepthWriteEnabled() const
 	{
 		return depthWrite;
+	}
+
+	inline void Material::setDepthWriteEnabled(bool enabled)
+	{
+		depthWrite = enabled;
 	}
 
 	inline bool Material::isDepthTestEnabled() const
@@ -82,11 +87,6 @@ namespace solo
 	inline void Material::setDepthTestEnabled(bool enabled)
 	{
 		depthTest = enabled;
-	}
-
-	inline void Material::setDepthWriteEnabled(bool enabled)
-	{
-		depthWrite = enabled;
 	}
 
 	class MaterialFactory
