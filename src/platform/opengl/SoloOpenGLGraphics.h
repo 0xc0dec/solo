@@ -7,8 +7,8 @@ namespace solo
 	class OpenGLGraphics: public Graphics
 	{
 	public:
-		virtual void renderMaterialSurfaceToTarget(Material* material, RenderTarget* target) override;
-		virtual void renderMaterialSurfaceToScreen(Material* material) override;
+		virtual void renderSurfaceToTarget(Material* material, RenderTarget* target) override;
+		virtual void renderSurfaceToScreen(Material* material) override;
 
 	private:
 		friend class Graphics;

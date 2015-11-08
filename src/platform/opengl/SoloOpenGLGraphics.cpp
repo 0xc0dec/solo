@@ -16,13 +16,13 @@ OpenGLGraphics::OpenGLGraphics(Device* device):
 }
 
 
-void OpenGLGraphics::renderMaterialSurfaceToTarget(Material* material, RenderTarget* target)
+void OpenGLGraphics::renderSurfaceToTarget(Material* material, RenderTarget* target)
 {
 	drawMaterial(material, target);
 }
 
 
-void OpenGLGraphics::renderMaterialSurfaceToScreen(Material* material)
+void OpenGLGraphics::renderSurfaceToScreen(Material* material)
 {
 	drawMaterial(material, nullptr);
 }

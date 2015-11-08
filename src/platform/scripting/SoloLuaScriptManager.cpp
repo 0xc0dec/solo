@@ -765,8 +765,8 @@ void LuaScriptManager::registerApi()
 
 	// Graphics
 	auto graphics = module.beginClass<Graphics>("Graphics");
-	REGISTER_METHOD2(graphics, Graphics, renderMaterialSurfaceToTarget, LUA_ARGS(Material*, RenderTarget*));
-	REGISTER_METHOD2(graphics, Graphics, renderMaterialSurfaceToScreen, LUA_ARGS(Material*));
+	REGISTER_METHOD2(graphics, Graphics, renderSurfaceToTarget, LUA_ARGS(Material*, RenderTarget*));
+	REGISTER_METHOD2(graphics, Graphics, renderSurfaceToScreen, LUA_ARGS(Material*));
 	graphics.endClass();
 
 	// FileSystem
