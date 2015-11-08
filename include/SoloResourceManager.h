@@ -15,6 +15,11 @@ namespace solo
 	class ModelLoader;
 	class Device;
 
+	struct KnownUris
+	{
+		static constexpr char* SkyboxEffect = "solo/internal/effects/skybox";
+	};
+
 	class ResourceManager
 	{
 	public:
@@ -65,6 +70,10 @@ namespace solo
 		template <typename TResource>
 		shared<TResource> getOrCreateResource(const std::string& uri, ResourceMap<TResource>& resourceMap,
 			std::function<shared<TResource>(const std::basic_string<char>&)> find,
+			std::function<shared<TResource>()> create);
+
+		template <typename TResource>
+		shared<TResource> createResource(const std::string& uri, ResourceMap<TResource>& resourceMap,
 			std::function<shared<TResource>()> create);
 
 		template <typename TResource>

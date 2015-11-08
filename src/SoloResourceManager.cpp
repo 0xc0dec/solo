@@ -10,6 +10,7 @@
 #include "SoloDevice.h"
 #include "SoloObjModelLoader.h"
 #include "platform/stub/SoloStubResourceManager.h"
+#include "platform/opengl/SoloOpenGLBuiltInShaders.h"
 #include <functional>
 
 using namespace solo;
@@ -39,7 +40,16 @@ std::string ResourceManager::generateUri()
 
 shared<Effect> ResourceManager::findEffect(const std::string& uri)
 {
-	return findResource(uri, effects);
+	auto result = findResource(uri, effects);
+	if (!result && uri == KnownUris::SkyboxEffect)
+	{
+		if (device->getMode() == DeviceMode::OpenGL)
+		{
+			return createResource<Effect>(KnownUris::SkyboxEffect, effects,
+				[&]() { return Effect::create(device->getMode(), OpenGLBuiltInShaders::vsSkybox, OpenGLBuiltInShaders::fsSkybox); });
+		}
+	}
+	return result;
 }
 
 
@@ -89,7 +99,6 @@ shared<Effect> ResourceManager::getOrCreateEffect(const std::string& vsSrc, cons
 
 shared<Material> ResourceManager::getOrCreateMaterial(shared<Effect> effect, const std::string& uri)
 {
-	// effectively ignores the effect if a material with the given uri already exists
 	return getOrCreateResource<Material>(uri, materials,
 		std::bind(&ResourceManager::findMaterial, this, std::placeholders::_1),
 		[&]() { return Material::create(device->getMode(), effect); });
@@ -217,13 +226,20 @@ shared<RenderTarget> ResourceManager::getOrCreateRenderTarget(const std::string&
 
 
 template <typename TResource>
-shared<TResource> ResourceManager::getOrCreateResource(const std::string& uri, ResourceMap<TResource>& resourceMap,
+shared<TResource> ResourceManager::getOrCreateResource(
+	const std::string& uri,
+	ResourceMap<TResource>& resourceMap,
 	std::function<shared<TResource>(const std::basic_string<char>&)> find,
 	std::function<shared<TResource>()> create)
 {
 	auto existing = find(uri.empty() ? generateUri() : uri);
-	if (existing)
-		return existing;
+	return existing ? existing : createResource<TResource>(uri, resourceMap, create);
+}
+
+
+template <typename TResource>
+shared<TResource> ResourceManager::createResource(const std::string& uri, ResourceMap<TResource>& resourceMap, std::function<shared<TResource>()> create)
+{
 	auto result = create();
 	resourceMap[uri] = result;
 	return result;

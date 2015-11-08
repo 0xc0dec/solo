@@ -252,8 +252,10 @@ function init()
 	-- texSkybox:setWrapping(solo.TextureWrapping_Clamp)
 
 	-- local skyboxQuad = createQuad()
-	-- local skyboxQuadEffect = resourceManager:getOrCreateEffect(shaders.vsSkybox, shaders.fsSkybox)
-	-- local skyboxQuadMaterial = resourceManager:getOrCreateMaterial(skyboxQuadEffect)
+	local skyboxEffect = resourceManager:findEffect(solo.KnownUris.SkyboxEffect)
+	local skyboxMaterial = resourceManager:getOrCreateMaterial(skyboxEffect)
+	-- TODO return skybox initialization back
+	
 	-- skyboxQuadMaterial:setPolygonFace(solo.PolygonFace_All)
 	-- skyboxQuadMaterial:setDepthWriteEnabled(false)
 	-- skyboxQuadMaterial:getParameter("projMatrix"):bindValue(solo.AutoBinding_ProjectionMatrix)

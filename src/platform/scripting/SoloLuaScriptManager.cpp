@@ -741,6 +741,11 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(device, Device, shutdownRequested);
 	device.endClass();
 
+	// KnownUris
+	module.beginModule("KnownUris")
+		.addConstant("SkyboxEffect", KnownUris::SkyboxEffect)
+	.endModule();
+
 	// ResourceManager
 	auto mgr = module.beginClass<ResourceManager>("ResourceManager");
 	REGISTER_METHOD(mgr, ResourceManager, findEffect);

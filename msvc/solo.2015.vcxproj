@@ -65,6 +65,7 @@
     <ClInclude Include="..\include\SoloVector4.h" />
     <ClInclude Include="..\src\platform\opengl\SoloGLSLEffect.h" />
     <ClInclude Include="..\src\platform\opengl\SoloGLSLEffectVariable.h" />
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLBuiltInShaders.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLCamera.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLCubeTexture.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLGraphics.h" />
