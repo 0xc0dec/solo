@@ -38,10 +38,9 @@ std::string ResourceManager::generateUri()
 }
 
 
-shared<Effect> ResourceManager::findEffect(const std::string& uri)
+shared<Effect> ResourceManager::tryCreateBuiltInEffect(const std::string& uri)
 {
-	auto result = findResource(uri, effects);
-	if (!result && uri == KnownUris::SkyboxEffect)
+	if (uri == KnownUris::SkyboxEffect)
 	{
 		if (device->getMode() == DeviceMode::OpenGL)
 		{
@@ -49,7 +48,14 @@ shared<Effect> ResourceManager::findEffect(const std::string& uri)
 				[&]() { return Effect::create(device->getMode(), OpenGLBuiltInShaders::vsSkybox, OpenGLBuiltInShaders::fsSkybox); });
 		}
 	}
-	return result;
+	return nullptr;
+}
+
+
+shared<Effect> ResourceManager::findEffect(const std::string& uri)
+{
+	auto result = findResource(uri, effects);
+	return result ? result : tryCreateBuiltInEffect(uri);
 }
 
 

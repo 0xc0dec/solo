@@ -79,6 +79,8 @@ namespace solo
 		template <typename TResource>
 		shared<TResource> findResource(const std::string& uri, const ResourceMap<TResource>& resourceMap);
 
+		shared<Effect> tryCreateBuiltInEffect(const std::string &uri);
+
 		Device *device{ nullptr };
 
 		ResourceMap<Effect> effects;
