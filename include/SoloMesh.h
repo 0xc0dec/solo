@@ -27,6 +27,7 @@ namespace solo
 		virtual void setIndices(const std::vector<unsigned short>& indices) = 0;
 
 		void rebuildAsQuad();
+		void rebuildAsBox();
 		// TODO other types of primitives
 
 	protected:

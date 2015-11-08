@@ -651,6 +651,7 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(mesh, Mesh, setUVs);
 	REGISTER_METHOD(mesh, Mesh, setVertices);
 	REGISTER_METHOD(mesh, Mesh, rebuildAsQuad);
+	REGISTER_METHOD(mesh, Mesh, rebuildAsBox);
 	mesh.endClass();
 
 	// Scene

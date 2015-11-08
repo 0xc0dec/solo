@@ -1,6 +1,6 @@
 runTest(function()
 	local m = device:getResourceManager():getOrCreateMesh("test/uri")
-	
+
 	m:setVertices({
 		solo.Vector3(1, 2, 3),
 		solo.Vector3(1, 2, 3)
@@ -18,4 +18,5 @@ runTest(function()
 	})
 
 	m:rebuildAsQuad()
+	m:rebuildAsBox()
 end, "Mesh")
