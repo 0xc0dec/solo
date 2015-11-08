@@ -1,5 +1,6 @@
 runTest(function()
 	local m = device:getResourceManager():getOrCreateMesh("test/uri")
+	
 	m:setVertices({
 		solo.Vector3(1, 2, 3),
 		solo.Vector3(1, 2, 3)
@@ -15,4 +16,6 @@ runTest(function()
 	m:setIndices({
 		0, 1
 	})
+
+	m:rebuildAsQuad()
 end, "Mesh")

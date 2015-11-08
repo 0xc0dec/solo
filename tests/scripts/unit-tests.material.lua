@@ -15,6 +15,9 @@ runTest(function()
 	assert(m:isDepthTestEnabled() == true)
 	m:setDepthTestEnabled(false)
 
+	assert(m:getDepthPassFunction() ~= nil)
+	m:setDepthPassFunction(solo.DepthPassFunction_Always)
+
 	local v2 = solo.Vector2.unit()
 	local v3 = solo.Vector3.unit()
 	local v4 = solo.Vector4.unit()

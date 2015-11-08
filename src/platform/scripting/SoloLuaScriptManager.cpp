@@ -578,6 +578,17 @@ void LuaScriptManager::registerApi()
 		.addConstant("PolygonFace_CCW", PolygonFace::CCW)
 		.addConstant("PolygonFace_CW", PolygonFace::CW);
 
+	// DepthPassFunction
+	module
+		.addConstant("DepthPassFunction_Never", DepthPassFunction::Never)
+		.addConstant("DepthPassFunction_Less", DepthPassFunction::Less)
+		.addConstant("DepthPassFunction_Equal", DepthPassFunction::Equal)
+		.addConstant("DepthPassFunction_LEqual", DepthPassFunction::LEqual)
+		.addConstant("DepthPassFunction_Greater", DepthPassFunction::Greater)
+		.addConstant("DepthPassFunction_NotEqual", DepthPassFunction::NotEqual)
+		.addConstant("DepthPassFunction_GEqual", DepthPassFunction::GEqual)
+		.addConstant("DepthPassFunction_Always", DepthPassFunction::Always);
+
 	// Material
 	auto mat = module.beginClass<Material>("Material");
 	REGISTER_METHOD(mat, Material, getParameter);
@@ -588,6 +599,8 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(mat, Material, setDepthWriteEnabled);
 	REGISTER_METHOD(mat, Material, isDepthTestEnabled);
 	REGISTER_METHOD(mat, Material, setDepthTestEnabled);
+	REGISTER_METHOD(mat, Material, getDepthPassFunction);
+	REGISTER_METHOD(mat, Material, setDepthPassFunction);
 	mat.endClass();
 
 	// AutoBinding
@@ -637,6 +650,7 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(mesh, Mesh, setNormals);
 	REGISTER_METHOD(mesh, Mesh, setUVs);
 	REGISTER_METHOD(mesh, Mesh, setVertices);
+	REGISTER_METHOD(mesh, Mesh, rebuildAsQuad);
 	mesh.endClass();
 
 	// Scene

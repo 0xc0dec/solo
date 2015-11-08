@@ -26,6 +26,9 @@ namespace solo
 		virtual void setUVs(const std::vector<Vector2>& uvs) = 0;
 		virtual void setIndices(const std::vector<unsigned short>& indices) = 0;
 
+		void rebuildAsQuad();
+		// TODO other types of primitives
+
 	protected:
 		Mesh() {}
 	};

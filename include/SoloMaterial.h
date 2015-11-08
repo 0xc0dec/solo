@@ -16,6 +16,18 @@ namespace solo
 		All
 	};
 
+	enum class DepthPassFunction
+	{
+		Never,
+		Less,
+		Equal,
+		LEqual,
+		Greater,
+		NotEqual,
+		GEqual,
+		Always
+	};
+
 	class Material
 	{
 	public:
@@ -42,6 +54,9 @@ namespace solo
 		bool isDepthTestEnabled() const;
 		void setDepthTestEnabled(bool enabled);
 
+		DepthPassFunction getDepthPassFunction() const;
+		void setDepthPassFunction(DepthPassFunction func);
+
 	protected:
 		explicit Material(shared<Effect> effect);
 
@@ -50,6 +65,7 @@ namespace solo
 		PolygonFace polygonFace = PolygonFace::CW;
 		bool depthWrite = true;
 		bool depthTest = true;
+		DepthPassFunction depthPassFunc = DepthPassFunction::Less;
 
 	private:
 		shared<Effect> effect;
@@ -84,6 +100,16 @@ namespace solo
 	inline bool Material::isDepthTestEnabled() const
 	{
 		return depthTest;
+	}
+
+	inline void Material::setDepthPassFunction(DepthPassFunction func)
+	{
+		depthPassFunc = func;
+	}
+
+	inline DepthPassFunction Material::getDepthPassFunction() const
+	{
+		return depthPassFunc;
 	}
 
 	inline void Material::setDepthTestEnabled(bool enabled)

@@ -136,8 +136,6 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
 	window = windowWithContext.window;
 	context = windowWithContext.context;
 
-	glDepthFunc(GL_LEQUAL); // TODO move to Material
-
 	SDL_GL_SetSwapInterval(1);
 }
 
