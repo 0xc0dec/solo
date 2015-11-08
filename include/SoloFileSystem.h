@@ -7,6 +7,8 @@ namespace solo
 	class FileSystem
 	{
 	public:
+		static shared<FileSystem> create();
+
 		FileSystem(const FileSystem& other) = delete;
 		FileSystem(FileSystem&& other) = delete;
 		FileSystem& operator=(const FileSystem& other) = delete;
@@ -21,14 +23,6 @@ namespace solo
 		void writeLines(const std::string& path, const std::vector<std::string>& lines);
 
 	private:
-		friend class FileSystemFactory;
-
 		FileSystem() {}
-	};
-
-	class FileSystemFactory
-	{
-		friend class Device;
-		static shared<FileSystem> create();
 	};
 }

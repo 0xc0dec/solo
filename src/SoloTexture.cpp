@@ -8,7 +8,7 @@
 using namespace solo;
 
 
-shared<Texture2D> TextureFactory::create2D(DeviceMode mode)
+shared<Texture2D> Texture::create2D(DeviceMode mode)
 {
 	if (mode == DeviceMode::OpenGL)
 		return SL_NEW2(OpenGLTexture2D);
@@ -16,7 +16,7 @@ shared<Texture2D> TextureFactory::create2D(DeviceMode mode)
 }
 
 
-shared<CubeTexture> TextureFactory::createCube(DeviceMode mode)
+shared<CubeTexture> Texture::createCube(DeviceMode mode)
 {
 	if (mode == DeviceMode::OpenGL)
 		return SL_NEW2(OpenGLCubeTexture);

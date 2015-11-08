@@ -20,7 +20,7 @@ namespace solo
 		virtual void setIndices(const std::vector<uint16_t>& indices) override;
 
 	private:
-		friend class MeshFactory;
+		friend class Mesh;
 
 		OpenGLMesh();
 

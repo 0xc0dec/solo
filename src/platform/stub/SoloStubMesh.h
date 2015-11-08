@@ -14,7 +14,7 @@ namespace solo
 		virtual void setIndices(const std::vector<unsigned short>& indices) override {}
 
 	private:
-		friend class MeshFactory;
+		friend class Mesh;
 
 		StubMesh() {}
 	};

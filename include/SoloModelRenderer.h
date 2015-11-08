@@ -13,6 +13,8 @@ namespace solo
 	class ModelRenderer: public ComponentBase<ModelRenderer>, public Renderer
 	{
 	public:
+		static shared<ModelRenderer> create(Node node);
+
 		virtual void render(RenderContext& context) override;
 
 		Model* getModel() const;
@@ -25,17 +27,9 @@ namespace solo
 		void setMaterial(shared<Material> material);
 
 	private:
-		friend class ModelRendererFactory;
-
 		explicit ModelRenderer(Node node): ComponentBase(node) {}
 
 		shared<Model> model;
 		std::unordered_map<unsigned, shared<Material>> materials;
-	};
-
-	class ModelRendererFactory
-	{
-		friend class Node;
-		static shared<ModelRenderer> create(Node node);
 	};
 }

@@ -11,6 +11,8 @@ namespace solo
 	class RenderTarget
 	{
 	public:
+		static shared<RenderTarget> create(DeviceMode mode);
+
 		RenderTarget(const RenderTarget& other) = delete;
 		RenderTarget(RenderTarget&& other) = delete;
 		RenderTarget& operator=(const RenderTarget& other) = delete;
@@ -27,11 +29,5 @@ namespace solo
 
 	protected:
 		RenderTarget() {}
-	};
-
-	class RenderTargetFactory
-	{
-		friend class ResourceManager;
-		static shared<RenderTarget> create(DeviceMode mode);
 	};
 }

@@ -13,6 +13,8 @@ namespace solo
 	class Scene
 	{
 	public:
+		static shared<Scene> create(Device *device);
+
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
@@ -39,8 +41,6 @@ namespace solo
 		void renderWithCamera(Camera *camera);
 
 	private:
-		friend class SceneFactory;
-		
 		using ComponentIterationWorker = std::function<void(size_t, Component*)>;
 		using Components = std::unordered_map<size_t, std::unordered_map<size_t, shared<Component>>>;
 
@@ -61,10 +61,4 @@ namespace solo
 	{
 		return device;
 	}
-
-	class SceneFactory
-	{
-		friend class Device;
-		static shared<Scene> create(Device *device);
-	};
 }

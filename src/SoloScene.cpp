@@ -9,7 +9,7 @@
 using namespace solo;
 
 
-shared<Scene> SceneFactory::create(Device *device)
+shared<Scene> Scene::create(Device *device)
 {
 	return SL_NEW2(Scene, device);
 }

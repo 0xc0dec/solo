@@ -12,7 +12,7 @@ namespace solo
 		virtual void generateMipmaps() override {}
 
 	private:
-		friend class TextureFactory;
+		friend class Texture;
 
 		StubCubeTexture() {}
 	};

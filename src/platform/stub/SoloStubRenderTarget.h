@@ -16,7 +16,7 @@ namespace solo
 		virtual shared<Texture2D> getColorAttachment(size_t index) const override { return nullptr; }
 
 	private:
-		friend class RenderTargetFactory;
+		friend class RenderTarget;
 
 		StubRenderTarget() {}
 	};

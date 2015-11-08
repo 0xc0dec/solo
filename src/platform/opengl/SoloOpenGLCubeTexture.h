@@ -17,7 +17,7 @@ namespace solo
 		GLuint getHandle() const;
 
 	private:
-		friend class TextureFactory;
+		friend class Texture;
 
 		OpenGLCubeTexture();
 

@@ -8,7 +8,7 @@
 using namespace solo;
 
 
-shared<Material> MaterialFactory::create(DeviceMode mode, shared<Effect> effect)
+shared<Material> Material::create(DeviceMode mode, shared<Effect> effect)
 {
 	if (mode == DeviceMode::OpenGL)
 		return SL_NEW2(OpenGLMaterial, effect);

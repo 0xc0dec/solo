@@ -14,7 +14,7 @@ namespace solo
 		virtual void unbind() override;
 
 	private:
-		friend class EffectFactory;
+		friend class Effect;
 
 		GLSLEffect(const std::string& vsSrc, const std::string& fsSrc);
 

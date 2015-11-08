@@ -10,7 +10,7 @@ namespace solo
 		virtual void applyState() override;
 
 	private:
-		friend class MaterialFactory;
+		friend class Material;
 
 		explicit OpenGLMaterial(shared<Effect> effect);
 	};

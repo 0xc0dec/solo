@@ -4,7 +4,7 @@
 using namespace solo;
 
 
-shared<FileSystem> FileSystemFactory::create()
+shared<FileSystem> FileSystem::create()
 {
 	return SL_NEW2(FileSystem);
 }

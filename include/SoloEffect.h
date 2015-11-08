@@ -10,6 +10,8 @@ namespace solo
 	class Effect
 	{
 	public:
+		static shared<Effect> create(DeviceMode mode, const std::string &vsSrc, const std::string &fsSrc);
+
 		Effect(const Effect& other) = delete;
 		Effect(Effect&& other) = delete;
 		Effect& operator=(const Effect& other) = delete;
@@ -25,11 +27,5 @@ namespace solo
 		Effect() {}
 
 		std::unordered_map<std::string, shared<EffectVariable>> variables;
-	};
-
-	class EffectFactory
-	{
-		friend class ResourceManager;
-		static shared<Effect> create(DeviceMode mode, const std::string &vsSrc, const std::string &fsSrc);
 	};
 }

@@ -6,7 +6,7 @@
 using namespace solo;
 
 
-shared<Graphics> GraphicsFactory::create(Device* device)
+shared<Graphics> Graphics::create(Device* device)
 {
 	if (device->getMode() == DeviceMode::OpenGL)
 		return SL_NEW2(OpenGLGraphics, device);

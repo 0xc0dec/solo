@@ -5,7 +5,6 @@
 #include "SoloRenderTarget.h"
 #include "SoloMesh.h"
 #include "SoloRenderContext.h"
-#include "SoloTexture2D.h"
 #include <GL/glew.h>
 
 using namespace solo;

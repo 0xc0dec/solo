@@ -15,7 +15,7 @@ namespace solo
 		virtual EffectVariable* findVariable(const std::string& name) const override;
 
 	private:
-		friend class EffectFactory;
+		friend class Effect;
 
 		StubEffect();
 

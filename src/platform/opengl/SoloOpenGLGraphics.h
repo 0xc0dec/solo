@@ -11,7 +11,7 @@ namespace solo
 		virtual void drawMaterialToScreen(Material* material) override;
 
 	private:
-		friend class GraphicsFactory;
+		friend class Graphics;
 
 		explicit OpenGLGraphics(Device *device);
 

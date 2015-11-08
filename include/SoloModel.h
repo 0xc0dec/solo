@@ -9,6 +9,8 @@ namespace solo
 	class Model
 	{
 	public:
+		static shared<Model> create();
+
 		Model(const Model& other) = delete;
 		Model(Model&& other) = delete;
 		Model& operator=(const Model& other) = delete;
@@ -21,16 +23,8 @@ namespace solo
 		size_t getMeshCount() const;
 
 	private:
-		friend class ModelFactory;
-
 		Model() {}
 
 		std::vector<shared<Mesh>> meshes;
-	};
-
-	class ModelFactory
-	{
-		friend class ResourceManager;
-		static shared<Model> create();
 	};
 }

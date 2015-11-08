@@ -5,7 +5,7 @@
 using namespace solo;
 
 
-shared<RenderTarget> RenderTargetFactory::create(DeviceMode mode)
+shared<RenderTarget> RenderTarget::create(DeviceMode mode)
 {
 	if (mode == DeviceMode::OpenGL)
 		return SL_NEW2(OpenGLRenderTarget);

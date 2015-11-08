@@ -20,7 +20,7 @@ const unsigned DIRTY_BIT_ALL =
 		DIRTY_BIT_INV_VIEW_PROJ;
 
 
-shared<Camera> CameraFactory::create(DeviceMode mode, Scene* scene, Node node)
+shared<Camera> Camera::create(DeviceMode mode, Scene* scene, Node node)
 {
 	if (mode == DeviceMode::OpenGL)
 		return SL_NEW2(OpenGLCamera, scene, node);

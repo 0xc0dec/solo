@@ -19,6 +19,8 @@ namespace solo
 	class Material
 	{
 	public:
+		static shared<Material> create(DeviceMode mode, shared<Effect> effect);
+
 		Material(const Material& other) = delete;
 		Material(Material&& device) = delete;
 		Material& operator=(const Material& other) = delete;
@@ -88,10 +90,4 @@ namespace solo
 	{
 		depthTest = enabled;
 	}
-
-	class MaterialFactory
-	{
-		friend class ResourceManager;
-		static shared<Material> create(DeviceMode mode, shared<Effect> effect);
-	};
 }

@@ -20,10 +20,10 @@ shared<Device> Device::create(const DeviceCreationArgs& args)
 Device::Device(const DeviceCreationArgs& args):
 	creationArgs(args)
 {
-	fs = FileSystemFactory::create();
-	resourceManager = ResourceManagerFactory::create(this);
-	scene = SceneFactory::create(this);
-	graphics = GraphicsFactory::create(this);
+	fs = FileSystem::create();
+	resourceManager = ResourceManager::create(this);
+	scene = Scene::create(this);
+	graphics = Graphics::create(this);
 }
 
 

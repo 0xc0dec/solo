@@ -15,7 +15,7 @@
 using namespace solo;
 
 
-shared<ResourceManager> ResourceManagerFactory::create(Device *device)
+shared<ResourceManager> ResourceManager::create(Device *device)
 {
 	if (device->getMode() == DeviceMode::Stub)
 		return SL_NEW2(StubResourceManager, device);
@@ -83,7 +83,7 @@ shared<Effect> ResourceManager::getOrCreateEffect(const std::string& vsSrc, cons
 {
 	return getOrCreateResource<Effect>(uri, effects,
 		std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
-		[&]() { return EffectFactory::create(device->getMode(), vsSrc, fsSrc); });
+		[&]() { return Effect::create(device->getMode(), vsSrc, fsSrc); });
 }
 
 
@@ -92,7 +92,7 @@ shared<Material> ResourceManager::getOrCreateMaterial(shared<Effect> effect, con
 	// effectively ignores the effect if a material with the given uri already exists
 	return getOrCreateResource<Material>(uri, materials,
 		std::bind(&ResourceManager::findMaterial, this, std::placeholders::_1),
-		[&]() { return MaterialFactory::create(device->getMode(), effect); });
+		[&]() { return Material::create(device->getMode(), effect); });
 }
 
 
@@ -107,7 +107,7 @@ shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& imageUr
 	{
 		if (loader->isLoadable(imageUri))
 		{
-			auto result = TextureFactory::create2D(device->getMode());
+			auto result = Texture::create2D(device->getMode());
 			auto image = loader->load(imageUri);
 			result->setData(image->colorFormat, image->data, image->width, image->height);
 			textures2d[textureUri] = result;
@@ -131,7 +131,7 @@ shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std:
 	if (existing)
 		return existing;
 
-	auto result = TextureFactory::createCube(device->getMode());
+	auto result = Texture::createCube(device->getMode());
 	auto idx = 0;
 	for (auto& imageUri: imageUris)
 	{
@@ -160,7 +160,7 @@ shared<Texture2D> ResourceManager::getOrCreateTexture2D(const std::string &uri)
 {
 	return getOrCreateResource<Texture2D>(uri, textures2d,
 		std::bind(&ResourceManager::findTexture2D, this, std::placeholders::_1),
-		std::bind(&TextureFactory::create2D, device->getMode()));
+		std::bind(&Texture::create2D, device->getMode()));
 }
 
 
@@ -168,7 +168,7 @@ shared<CubeTexture> ResourceManager::getOrCreateCubeTexture(const std::string& u
 {
 	return getOrCreateResource<CubeTexture>(uri, cubeTextures,
 		std::bind(&ResourceManager::findCubeTexture, this, std::placeholders::_1),
-		std::bind(&TextureFactory::createCube, device->getMode()));
+		std::bind(&Texture::createCube, device->getMode()));
 }
 
 
@@ -196,7 +196,7 @@ shared<Model> ResourceManager::getOrLoadModel(const std::string& dataUri, const 
 shared<Model> ResourceManager::getOrCreateModel(const std::string& uri)
 {
 	return getOrCreateResource<Model>(uri, models,
-		std::bind(&ResourceManager::findModel, this, std::placeholders::_1), &ModelFactory::create);
+		std::bind(&ResourceManager::findModel, this, std::placeholders::_1), &Model::create);
 }
 
 
@@ -204,7 +204,7 @@ shared<Mesh> ResourceManager::getOrCreateMesh(const std::string& uri)
 {
 	return getOrCreateResource<Mesh>(uri, meshes,
 		std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
-		std::bind(&MeshFactory::create, device->getMode()));
+		std::bind(&Mesh::create, device->getMode()));
 }
 
 
@@ -246,7 +246,7 @@ shared<RenderTarget> ResourceManager::getOrCreateRenderTarget(const std::string&
 {
 	return getOrCreateResource<RenderTarget>(uri, renderTargets,
 		std::bind(&ResourceManager::findRenderTarget, this, std::placeholders::_1),
-		std::bind(&RenderTargetFactory::create, device->getMode()));
+		std::bind(&RenderTarget::create, device->getMode()));
 }
 
 

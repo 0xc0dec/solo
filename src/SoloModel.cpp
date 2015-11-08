@@ -4,7 +4,7 @@
 using namespace solo;
 
 
-shared<Model> ModelFactory::create()
+shared<Model> Model::create()
 {
 	return SL_NEW2(Model);
 }

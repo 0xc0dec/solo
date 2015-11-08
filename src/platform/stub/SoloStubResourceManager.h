@@ -6,7 +6,7 @@ namespace solo
 {
 	class StubResourceManager: public ResourceManager
 	{
-		friend class ResourceManagerFactory;
+		friend class ResourceManager;
 
 		explicit StubResourceManager(Device *device);
 	};

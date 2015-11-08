@@ -11,6 +11,8 @@ namespace solo
 	class Mesh
 	{
 	public:
+		static shared<Mesh> create(DeviceMode mode);
+
 		Mesh(const Mesh& other) = delete;
 		Mesh(Mesh&& other) = delete;
 		Mesh& operator=(const Mesh& other) = delete;
@@ -26,11 +28,5 @@ namespace solo
 
 	protected:
 		Mesh() {}
-	};
-
-	class MeshFactory
-	{
-		friend class ResourceManager;
-		static shared<Mesh> create(DeviceMode mode);
 	};
 }

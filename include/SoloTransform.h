@@ -23,6 +23,8 @@ namespace solo
 	class Transform: public ComponentBase<Transform>
 	{
 	public:
+		static shared<Transform> create(Node node);
+
 		virtual void init() override;
 
 		void addCallback(TransformCallback *callback);
@@ -79,8 +81,6 @@ namespace solo
 		BitFlags& getTags();
 
 	private:
-		friend class TransformFactory;
-
 		explicit Transform(Node node);
 
 		void setDirtyWithChildren(unsigned flags) const;
@@ -108,11 +108,5 @@ namespace solo
 	public:
 		virtual ~TransformCallback() {}
 		virtual void onTransformChanged(const Transform *transform) = 0;
-	};
-
-	class TransformFactory
-	{
-		friend class Node;
-		static shared<Transform> create(Node node);
 	};
 }

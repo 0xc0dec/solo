@@ -14,7 +14,7 @@ namespace solo
 		void applyData(ColorFormat format, const std::vector<uint8_t>& data, unsigned width, unsigned height) override {}
 
 	private:
-		friend class TextureFactory;
+		friend class Texture;
 
 		StubTexture2D() {}
 	};

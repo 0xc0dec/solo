@@ -14,6 +14,8 @@ namespace solo
 	class Graphics
 	{
 	public:
+		static shared<Graphics> create(Device *device);
+
 		Graphics(const Graphics& other) = delete;
 		Graphics(Graphics&& other) = delete;
 		Graphics& operator=(const Graphics& other) = delete;
@@ -27,11 +29,5 @@ namespace solo
 		explicit Graphics(Device *device);
 
 		Device *device;
-	};
-
-	class GraphicsFactory
-	{
-		friend class Device;
-		static shared<Graphics> create(Device *device);
 	};
 }

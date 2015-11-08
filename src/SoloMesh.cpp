@@ -5,8 +5,7 @@
 using namespace solo;
 
 
-
-shared<Mesh> MeshFactory::create(DeviceMode mode)
+shared<Mesh> Mesh::create(DeviceMode mode)
 {
 	if (mode == DeviceMode::OpenGL)
 		return SL_NEW2(OpenGLMesh);

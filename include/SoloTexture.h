@@ -27,6 +27,9 @@ namespace solo
 	class Texture
 	{
 	public:
+		static shared<Texture2D> create2D(DeviceMode mode);
+		static shared<CubeTexture> createCube(DeviceMode mode);
+
 		Texture(const Texture& other) = delete;
 		Texture(Texture&& other) = delete;
 		Texture& operator=(const Texture& other) = delete;
@@ -119,11 +122,4 @@ namespace solo
 	{
 		anisotropy = level;
 	}
-
-	class TextureFactory
-	{
-		friend class ResourceManager;
-		static shared<Texture2D> create2D(DeviceMode mode);
-		static shared<CubeTexture> createCube(DeviceMode mode);
-	};
 }

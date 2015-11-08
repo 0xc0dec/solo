@@ -10,7 +10,7 @@ namespace solo
 		virtual void applyState() override {}
 
 	private:
-		friend class MaterialFactory;
+		friend class Material;
 
 		explicit StubMaterial(const shared<Effect>& effect)
 			: Material(effect)

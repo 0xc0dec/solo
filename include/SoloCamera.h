@@ -25,6 +25,8 @@ namespace solo
 	class Camera : public ComponentBase<Camera>, protected TransformCallback
 	{
 	public:
+		static shared<Camera> create(DeviceMode mode, Scene *scene, Node node);
+
 		virtual void init() override;
 		virtual void terminate() override;
 
@@ -206,10 +208,4 @@ namespace solo
 	{
 		viewportSet = false;
 	}
-
-	class CameraFactory
-	{
-		friend class Node;
-		static shared<Camera> create(DeviceMode mode, Scene *scene, Node node);
-	};
 }

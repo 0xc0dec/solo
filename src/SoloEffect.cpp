@@ -5,7 +5,7 @@
 using namespace solo;
 
 
-shared<Effect> EffectFactory::create(DeviceMode mode, const std::string& vsSrc, const std::string& fsSrc)
+shared<Effect> Effect::create(DeviceMode mode, const std::string& vsSrc, const std::string& fsSrc)
 {
 	if (mode == DeviceMode::OpenGL)
 		return SL_NEW2(GLSLEffect, vsSrc, fsSrc);

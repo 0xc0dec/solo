@@ -23,6 +23,8 @@ namespace solo
 	class ResourceManager
 	{
 	public:
+		static shared<ResourceManager> create(Device *device);
+
 		ResourceManager(const ResourceManager& other) = delete;
 		ResourceManager(ResourceManager&& other) = delete;
 		ResourceManager& operator=(const ResourceManager& other) = delete;
@@ -59,8 +61,6 @@ namespace solo
 		std::vector<shared<ModelLoader>> modelLoaders;
 
 	private:
-		friend class ResourceManagerFactory;
-
 		template <typename TResource> using ResourceMap = std::unordered_map<std::string, shared<TResource>>;
 		
 		std::string generateUri();
@@ -87,11 +87,5 @@ namespace solo
 		ResourceMap<RenderTarget> renderTargets;
 
 		size_t resourceCounter{ 0 };
-	};
-
-	class ResourceManagerFactory
-	{
-		friend class Device;
-		static shared<ResourceManager> create(Device *device);
 	};
 }
