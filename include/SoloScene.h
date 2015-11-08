@@ -47,7 +47,7 @@ namespace solo
 		explicit Scene(Device *device);
 
 		void iterateComponents(ComponentIterationWorker work);
-		void syncCameraCache();
+		void updateCameraCache();
 
 		Device *device;
 		size_t nodeCounter = 0;

@@ -4,6 +4,7 @@
 #include "SoloCamera.h"
 #include "SoloNode.h"
 #include "SoloRenderer.h"
+#include <algorithm>
 
 using namespace solo;
 
@@ -103,18 +104,29 @@ Component* Scene::findComponent(size_t nodeId, size_t typeId) const
 }
 
 
-void Scene::syncCameraCache()
+void Scene::updateCameraCache()
 {
 	if (!cameraCacheDirty)
 		return;
 
 	cameraCache.clear();
+	cameraCache.reserve(10); // hmm...
 	for (auto& nodeComponents : components)
 	{
 		for (auto& component : nodeComponents.second)
 		{
 			if (component.second->getTypeId() == Camera::getId())
-				cameraCache.push_back(static_cast<Camera*>(component.second.get()));
+			{
+				auto camera = static_cast<Camera*>(component.second.get());
+				auto renderOrder = camera->getRenderOrder();
+				auto whereToInsert = std::find_if(cameraCache.begin(), cameraCache.end(), [=](Camera *other)
+				{
+					return other->getRenderOrder() > renderOrder;
+				});
+				if (whereToInsert != cameraCache.begin())
+					whereToInsert = whereToInsert--;
+				cameraCache.insert(whereToInsert, camera);
+			}
 		}
 	}
 
@@ -142,7 +154,7 @@ bool tagsAreRenderable(const BitFlags& objectTags, const BitFlags& cameraTags)
 
 void Scene::render()
 {
-	syncCameraCache();
+	updateCameraCache();
 
 	for (auto& camera : cameraCache)
 		renderWithCamera(camera);

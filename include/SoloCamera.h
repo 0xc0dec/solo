@@ -33,6 +33,9 @@ namespace solo
 
 		BitFlags& getRenderTags();
 
+		unsigned getRenderOrder() const;
+		void setRenderOrder(unsigned order);
+
 		CameraRenderMode getRenderMode() const;
 		void setRenderMode(CameraRenderMode mode);
 
@@ -85,6 +88,8 @@ namespace solo
 		BitFlags dirtyFlags;
 		BitFlags renderTags;
 
+		unsigned renderOrder = 0;
+
 		Scene *scene;
 
 		Transform *transform = nullptr;
@@ -120,6 +125,16 @@ namespace solo
 	inline void Camera::setRenderMode(CameraRenderMode mode)
 	{
 		this->mode = mode;
+	}
+
+	inline unsigned Camera::getRenderOrder() const
+	{
+		return renderOrder;
+	}
+
+	inline void Camera::setRenderOrder(unsigned order)
+	{
+		renderOrder = order;
 	}
 
 	inline void Camera::setClearColor(float r, float g, float b, float a)
