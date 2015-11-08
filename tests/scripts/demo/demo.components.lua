@@ -82,8 +82,8 @@ function createPostProcessor(sourceTexture, material)
 		end,
 
 		onAfterCameraRender = function(self)
-			self.graphics:renderImageToTarget(self.srcTexture, self.finalRt, material, "mainTex")
-			self.graphics:renderImageToScreen(self.finalRtTexture, material, "mainTex")
+			-- self.graphics:renderImageToTarget(self.srcTexture, self.finalRt, material, "mainTex")
+			-- self.graphics:renderImageToScreen(self.finalRtTexture, material, "mainTex")
 		end
 	}
 end

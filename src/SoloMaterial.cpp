@@ -24,8 +24,7 @@ Material::Material(shared<Effect> effect):
 
 void Material::bind(RenderContext& context)
 {
-	applyFaceCull();
-	applyZWrite();
+	applyState();
 	if (effect)
 	{
 		effect->bind();

@@ -9,8 +9,11 @@ runTest(function()
 	assert(m:getPolygonFace() == solo.PolygonFace_CW)
 	m:setPolygonFace(solo.PolygonFace_All)
 
-	assert(m:getZWriteEnabled() == true)
-	m:setZWriteEnabled(false)
+	assert(m:isDepthWriteEnabled() == true)
+	m:setDepthWriteEnabled(false)
+
+	assert(m:isDepthTestEnabled() == true)
+	m:setDepthTestEnabled(false)
 
 	local v2 = solo.Vector2.unit()
 	local v3 = solo.Vector3.unit()

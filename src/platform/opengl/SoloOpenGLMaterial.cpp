@@ -10,7 +10,7 @@ OpenGLMaterial::OpenGLMaterial(shared<Effect> effect):
 }
 
 
-void OpenGLMaterial::applyFaceCull()
+void OpenGLMaterial::applyState()
 {
 	switch (polygonFace)
 	{
@@ -26,10 +26,10 @@ void OpenGLMaterial::applyFaceCull()
 			glEnable(GL_CULL_FACE);
 			break;
 	}
-}
 
-
-void OpenGLMaterial::applyZWrite()
-{
-	glDepthMask(zwrite ? GL_TRUE : GL_FALSE);
+	glDepthMask(depthWrite ? GL_TRUE : GL_FALSE);
+	if (depthTest)
+		glEnable(GL_DEPTH_TEST);
+	else
+		glDisable(GL_DEPTH_TEST);
 }

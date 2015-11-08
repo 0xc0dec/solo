@@ -34,17 +34,20 @@ namespace solo
 		PolygonFace getPolygonFace() const;
 		void setPolygonFace(PolygonFace face);
 
-		bool getZWriteEnabled() const;
-		void setZWriteEnabled(bool enabled);
+		bool isDepthWriteEnabled() const;
+		void setDepthWriteEnabled(bool enabled);
+
+		bool isDepthTestEnabled() const;
+		void setDepthTestEnabled(bool enabled);
 
 	protected:
 		explicit Material(shared<Effect> effect);
 
-		virtual void applyFaceCull() = 0;
-		virtual void applyZWrite() = 0;
+		virtual void applyState() = 0;
 
 		PolygonFace polygonFace = PolygonFace::CW;
-		bool zwrite = true;
+		bool depthWrite = true;
+		bool depthTest = true;
 
 	private:
 		shared<Effect> effect;
@@ -66,14 +69,24 @@ namespace solo
 		return polygonFace;
 	}
 
-	inline bool Material::getZWriteEnabled() const
+	inline bool Material::isDepthWriteEnabled() const
 	{
-		return zwrite;
+		return depthWrite;
 	}
 
-	inline void Material::setZWriteEnabled(bool enabled)
+	inline bool Material::isDepthTestEnabled() const
 	{
-		zwrite = enabled;
+		return depthTest;
+	}
+
+	inline void Material::setDepthTestEnabled(bool enabled)
+	{
+		depthTest = enabled;
+	}
+
+	inline void Material::setDepthWriteEnabled(bool enabled)
+	{
+		depthWrite = enabled;
 	}
 
 	class MaterialFactory

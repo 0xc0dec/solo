@@ -7,8 +7,7 @@ namespace solo
 	class StubMaterial: public Material
 	{
 	protected:
-		virtual void applyFaceCull() override {}
-		virtual void applyZWrite() override {}
+		virtual void applyState() override {}
 
 	private:
 		friend class MaterialFactory;

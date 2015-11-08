@@ -582,8 +582,10 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(mat, Material, getEffect);
 	REGISTER_METHOD(mat, Material, getPolygonFace);
 	REGISTER_METHOD(mat, Material, setPolygonFace);
-	REGISTER_METHOD(mat, Material, getZWriteEnabled);
-	REGISTER_METHOD(mat, Material, setZWriteEnabled);
+	REGISTER_METHOD(mat, Material, isDepthWriteEnabled);
+	REGISTER_METHOD(mat, Material, setDepthWriteEnabled);
+	REGISTER_METHOD(mat, Material, isDepthTestEnabled);
+	REGISTER_METHOD(mat, Material, setDepthTestEnabled);
 	mat.endClass();
 
 	// AutoBinding
