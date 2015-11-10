@@ -469,6 +469,8 @@ void LuaScriptManager::registerApi()
 
 	// Component
 	auto component = module.beginClass<Component>("Component");
+	REGISTER_METHOD(component, Component, getRenderQueue);
+	REGISTER_METHOD(component, Component, setRenderQueue);
 	REGISTER_METHOD(component, Component, getTags);
 	REGISTER_METHOD(component, Component, getNode);
 	component.endClass();
@@ -535,8 +537,6 @@ void LuaScriptManager::registerApi()
 
 	// Camera
 	auto camera = module.beginExtendClass<Camera, Component>("Camera");
-	REGISTER_METHOD(camera, Camera, getRenderOrder);
-	REGISTER_METHOD(camera, Camera, setRenderOrder);
 	REGISTER_METHOD(camera, Camera, getRenderTarget);
 	REGISTER_METHOD(camera, Camera, setRenderTarget);
 	REGISTER_METHOD(camera, Camera, getClearColor);

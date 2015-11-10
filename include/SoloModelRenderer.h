@@ -17,8 +17,6 @@ namespace solo
 
 		virtual void render(RenderContext& context) override;
 
-		virtual unsigned getRenderQueue() override;
-
 		Model* getModel() const;
 		void setModel(shared<Model> model);
 
@@ -29,14 +27,9 @@ namespace solo
 		void setMaterial(shared<Material> material);
 
 	private:
-		explicit ModelRenderer(Node node): ComponentBase(node) {}
+		explicit ModelRenderer(Node node);
 
 		shared<Model> model;
 		std::unordered_map<unsigned, shared<Material>> materials;
 	};
-
-	inline unsigned ModelRenderer::getRenderQueue()
-	{
-		return KnownRenderQueues::OpaqueObjects; // TODO change later for transparent objects
-	}
 }

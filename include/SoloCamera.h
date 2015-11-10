@@ -28,9 +28,6 @@ namespace solo
 
 		BitFlags& getRenderTags();
 
-		unsigned getRenderOrder() const;
-		void setRenderOrder(unsigned order);
-
 		shared<RenderTarget> getRenderTarget() const;
 		void setRenderTarget(shared<RenderTarget> target);
 
@@ -80,8 +77,6 @@ namespace solo
 		BitFlags dirtyFlags;
 		BitFlags renderTags;
 
-		unsigned renderOrder = 0;
-
 		Scene *scene;
 
 		Transform *transform = nullptr;
@@ -106,16 +101,6 @@ namespace solo
 		Matrix inverseViewMatrix;
 		Matrix inverseViewProjectionMatrix;
 	};
-
-	inline unsigned Camera::getRenderOrder() const
-	{
-		return renderOrder;
-	}
-
-	inline void Camera::setRenderOrder(unsigned order)
-	{
-		renderOrder = order;
-	}
 
 	inline void Camera::setClearColor(float r, float g, float b, float a)
 	{

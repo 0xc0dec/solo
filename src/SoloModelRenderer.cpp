@@ -13,6 +13,13 @@ shared<ModelRenderer> ModelRenderer::create(Node node)
 }
 
 
+ModelRenderer::ModelRenderer(Node node):
+	ComponentBase(node)
+{
+	renderQueue = KnownRenderQueues::OpaqueObjects;
+}
+
+
 void ModelRenderer::render(RenderContext& context)
 {
 	auto meshCount = model->getMeshCount();

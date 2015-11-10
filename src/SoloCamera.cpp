@@ -29,9 +29,10 @@ shared<Camera> Camera::create(DeviceMode mode, Scene* scene, Node node)
 
 
 Camera::Camera(Scene* scene, Node node):
-	ComponentBase{ node },
-	scene{ scene }
+	ComponentBase(node),
+	scene(scene)
 {
+	renderQueue = KnownRenderQueues::CameraDefault;
 	renderTags.setAll();
 }
 

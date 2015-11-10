@@ -18,8 +18,6 @@ namespace solo
 
 		virtual void render(RenderContext& context) override;
 
-		virtual unsigned getRenderQueue() override;
-
 		void setTexture(shared<CubeTexture> texture);
 		shared<CubeTexture> getTexture() const;
 
@@ -30,11 +28,6 @@ namespace solo
 		shared<Material> material;
 		shared<CubeTexture> texture;
 	};
-
-	inline unsigned SkyboxRenderer::getRenderQueue()
-	{
-		return KnownRenderQueues::Skyboxes;
-	}
 
 	inline shared<CubeTexture> SkyboxRenderer::getTexture() const
 	{

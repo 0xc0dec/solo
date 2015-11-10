@@ -45,14 +45,15 @@ namespace solo
 		explicit Scene(Device *device);
 
 		void iterateComponents(ComponentIterationWorker work);
-		void updateCameraCache();
-		void updateRenderQueue();
+
+		template <class T>
+		void updateRenderQueue(std::list<T>& queue, size_t componentTypeIdFilter);
 
 		Device *device;
 		size_t nodeCounter = 0;
 		bool cameraCacheDirty = true;
 
-		std::vector<Camera*> cameraCache;
+		std::list<Component*> cameraQueue;
 		std::list<Component*> renderQueue;
 
 		Components components;

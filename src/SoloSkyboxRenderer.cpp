@@ -19,6 +19,7 @@ shared<SkyboxRenderer> SkyboxRenderer::create(Node node)
 SkyboxRenderer::SkyboxRenderer(Node node):
 	ComponentBase(node)
 {
+	renderQueue = KnownRenderQueues::Skyboxes;
 	auto resourceManager = node.getScene()->getDevice()->getResourceManager();
 	quadMesh = resourceManager->findMesh(KnownUris::UnitQuadMesh);
 	auto effect = resourceManager->findEffect(KnownUris::SkyboxEffect);

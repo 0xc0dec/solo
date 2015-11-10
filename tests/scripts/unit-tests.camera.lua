@@ -5,9 +5,6 @@ runTest(function()
 	local c = scene:createNode():addComponent("Camera")
 	local rt = device:getResourceManager():getOrCreateRenderTarget("abcd")
 
-	assert(c:getRenderOrder() ~= nil)
-	c:setRenderOrder(10)
-
 	assert(c:getClearColor())
 	c:setClearColor(1, 2, 3, 4)
 

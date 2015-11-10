@@ -103,43 +103,16 @@ Component* Scene::findComponent(size_t nodeId, size_t typeId) const
 }
 
 
-void Scene::updateCameraCache()
+template <class T>
+void Scene::updateRenderQueue(std::list<T>& queue, size_t cmpTypeIdFilter)
 {
-	if (!cameraCacheDirty)
-		return;
-
-	cameraCache.clear();
-	cameraCache.reserve(10); // hmm...
-	for (auto& nodeComponents : components)
-	{
-		for (auto& component : nodeComponents.second)
-		{
-			if (component.second->getTypeId() == Camera::getId())
-			{
-				auto camera = static_cast<Camera*>(component.second.get());
-				auto renderOrder = camera->getRenderOrder();
-				auto whereToInsert = std::find_if(cameraCache.begin(), cameraCache.end(), [=](Camera *other)
-				{
-					return other->getRenderOrder() > renderOrder;
-				});
-				if (whereToInsert != cameraCache.begin())
-					whereToInsert = whereToInsert--;
-				cameraCache.insert(whereToInsert, camera);
-			}
-		}
-	}
-
-	cameraCacheDirty = false;
-}
-
-
-void Scene::updateRenderQueue()
-{
-	// TODO use more cache-friendly structure
-	renderQueue.clear();
+	queue.clear();
 
 	iterateComponents([&](size_t nodeId, Component* component)
 	{
+		if (cmpTypeIdFilter > 0 && component->getTypeId() != cmpTypeIdFilter)
+			return;
+
 		if (component->getRenderQueue() == KnownRenderQueues::NotRendered)
 			return;
 
@@ -147,11 +120,11 @@ void Scene::updateRenderQueue()
 		if (!transform) // TODO save this transform for later use
 			return;
 
-		for (auto it = renderQueue.begin();; ++it)
+		for (auto it = queue.begin();; ++it)
 		{
-			if (it == renderQueue.end() || component->getRenderQueue() < (*it)->getRenderQueue())
+			if (it == queue.end() || component->getRenderQueue() < (*it)->getRenderQueue())
 			{
-				renderQueue.insert(it, component);
+				queue.insert(it, component);
 				break;
 			}
 		}
@@ -179,11 +152,13 @@ bool tagsAreRenderable(const BitFlags& objectTags, const BitFlags& cameraTags)
 
 void Scene::render()
 {
-	updateCameraCache();
-	updateRenderQueue();
+	updateRenderQueue(cameraQueue, Camera::getId());
+	updateRenderQueue(renderQueue, 0);
 
-	for (auto camera : cameraCache)
+	for (auto cam : cameraQueue)
 	{
+		auto camera = dynamic_cast<Camera*>(cam);
+
 		camera->apply();
 
 		RenderContext context;
