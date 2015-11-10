@@ -130,8 +130,45 @@ function initRenderTargets()
 end
 
 
+function initSkybox()
+	local texSkybox = resourceManager:getOrLoadCubeTexture({
+		"../data/skyboxes/deep-space/front.png",
+		"../data/skyboxes/deep-space/back.png",
+		"../data/skyboxes/deep-space/left.png",
+		"../data/skyboxes/deep-space/right.png",
+		"../data/skyboxes/deep-space/top.png",
+		"../data/skyboxes/deep-space/bottom.png"
+	}, "demo/textures/skybox")
+	texSkybox:setWrapping(solo.TextureWrapping_Clamp)
+
+	local skybox = scene:createNode()
+	local skyboxRenderer = skybox:addComponent("SkyboxRenderer")
+	skyboxRenderer:setTexture(texSkybox)
+end
+
+
 function initObjects()
 	local canvasSize = device:getCanvasSize()
+
+	-- Textured quad
+	parent = scene:createNode()
+	parent:findComponent("Transform"):setLocalPosition(solo.Vector3(5, 0, 0))
+	parent:addScriptComponent(createWorldYRotator())
+	initAxesModel(parent)
+	quad = createQuad()
+	quad:addScriptComponent(createLocalXRotator());
+	quad:findComponent("Transform"):setParent(parent:findComponent("Transform"))
+	quad:findComponent("Transform"):setLocalPosition(solo.Vector3(2, 0, 0))
+	quad:findComponent("ModelRenderer"):setMaterialForMesh(0, demo.materials.simpleTexture)
+
+	initSkybox()
+
+	-- Box
+	node = createQuad()
+	rebuildToBoxMesh(node)
+	node:findComponent("ModelRenderer"):setMaterialForMesh(0, demo.materials.checker)
+	node:findComponent("Transform"):setLocalPosition(solo.Vector3(-5, 0, 0))
+	node:addScriptComponent(createWorldYRotator())
 
 	-- Monkey
 	local node = scene:createNode()
@@ -155,25 +192,6 @@ function initObjects()
 	quadTransform:setLocalPosition(solo.Vector3(5, 2, -5))
 	quadTransform:setLocalScale(solo.Vector3(5, 5 * canvasSize.y / canvasSize.x, 1))
 	quad:addScriptComponent(createTargeter(node:findComponent("Transform"))) -- monkey
-
-	-- Textured quad
-	parent = scene:createNode()
-	parent:findComponent("Transform"):setLocalPosition(solo.Vector3(5, 0, 0))
-	parent:addScriptComponent(createWorldYRotator())
-	initAxesModel(parent)
-
-	quad = createQuad()
-	quad:addScriptComponent(createLocalXRotator());
-	quad:findComponent("Transform"):setParent(parent:findComponent("Transform"))
-	quad:findComponent("Transform"):setLocalPosition(solo.Vector3(2, 0, 0))
-	quad:findComponent("ModelRenderer"):setMaterialForMesh(0, demo.materials.simpleTexture)
-
-	-- Box
-	node = createQuad()
-	rebuildToBoxMesh(node)
-	node:findComponent("ModelRenderer"):setMaterialForMesh(0, demo.materials.checker)
-	node:findComponent("Transform"):setLocalPosition(solo.Vector3(-5, 0, 0))
-	node:addScriptComponent(createWorldYRotator())
 end
 
 
@@ -239,21 +257,8 @@ function init()
 	initRenderTargets()
 	initModels()
 	initCameras()
+
 	initObjects()
-
-	local texSkybox = resourceManager:getOrLoadCubeTexture({
-		"../data/skyboxes/deep-space/front.png",
-		"../data/skyboxes/deep-space/back.png",
-		"../data/skyboxes/deep-space/left.png",
-		"../data/skyboxes/deep-space/right.png",
-		"../data/skyboxes/deep-space/top.png",
-		"../data/skyboxes/deep-space/bottom.png"
-	}, "demo/textures/skybox")
-	texSkybox:setWrapping(solo.TextureWrapping_Clamp)
-
-	local skybox = scene:createNode()
-	local skyboxRenderer = skybox:addComponent("SkyboxRenderer")
-	skyboxRenderer:setTexture(texSkybox)
 
 	-- local skyboxQuad = createQuad()
 	-- local skyboxEffect = resourceManager:findEffect(solo.KnownUris.SkyboxEffect)

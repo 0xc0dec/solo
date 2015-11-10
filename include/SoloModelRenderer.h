@@ -3,14 +3,13 @@
 #include "SoloBase.h"
 #include "SoloComponent.h"
 #include "SoloNode.h"
-#include "SoloRenderer.h"
 
 namespace solo
 {
 	class Model;
 	class Material;
 
-	class ModelRenderer: public ComponentBase<ModelRenderer>, public Renderer
+	class ModelRenderer: public ComponentBase<ModelRenderer>
 	{
 	public:
 		static shared<ModelRenderer> create(Node node);

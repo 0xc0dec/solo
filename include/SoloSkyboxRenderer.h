@@ -3,7 +3,6 @@
 #include "SoloBase.h"
 #include "SoloComponent.h"
 #include "SoloNode.h"
-#include "SoloRenderer.h"
 
 namespace solo
 {
@@ -11,7 +10,7 @@ namespace solo
 	class Material;
 	class CubeTexture;
 
-	class SkyboxRenderer: public ComponentBase<SkyboxRenderer>, public Renderer
+	class SkyboxRenderer: public ComponentBase<SkyboxRenderer>
 	{
 	public:
 		static shared<SkyboxRenderer> create(Node node);

@@ -31,10 +31,7 @@ void OpenGLGraphics::renderSurfaceToScreen(Material* material)
 void OpenGLGraphics::drawMaterial(Material* material, RenderTarget* target)
 {
 	if (!quadMesh)
-	{
-		quadMesh = device->getResourceManager()->getOrCreateMesh(KnownUris::UnitQuadMesh);
-		quadMesh->rebuildAsQuad();
-	}
+		quadMesh = device->getResourceManager()->findMesh(KnownUris::UnitQuadMesh);
 
 	auto depthTestEnabled = material->isDepthTestEnabled();
 	material->setDepthTestEnabled(false);
@@ -54,7 +51,7 @@ void OpenGLGraphics::drawMaterial(Material* material, RenderTarget* target)
 	quadMesh->draw();
 	material->unbind(ctx);
 
-	material->setDepthTestEnabled(depthTestEnabled);
+	material->setDepthTestEnabled(depthTestEnabled); // TODO really needed?
 
 	if (target)
 		target->unbind();

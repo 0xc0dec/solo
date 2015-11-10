@@ -208,9 +208,6 @@
     <ClInclude Include="..\include\SoloSpectator.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloRenderer.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloGraphics.h">
       <Filter>include</Filter>
     </ClInclude>

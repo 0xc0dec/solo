@@ -6,6 +6,7 @@
 namespace solo
 {
 	class Scene;
+	struct RenderContext;
 
 	class Component
 	{
@@ -21,6 +22,7 @@ namespace solo
 		virtual void init() {}
 		virtual void update() {}
 		virtual void terminate() {}
+		virtual void render(RenderContext& context) {}
 		virtual void onAfterCameraRender() {}
 
 	protected:

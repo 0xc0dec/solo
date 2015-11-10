@@ -4,6 +4,7 @@
 #include "SoloModelRenderer.h"
 #include "SoloSpectator.h"
 #include "SoloSkyboxRenderer.h"
+#include "SoloRenderContext.h"
 
 using namespace solo;
 using namespace LuaIntf;
@@ -18,6 +19,7 @@ LuaScriptComponent::LuaScriptComponent(const Node& node, LuaRef& component) :
 	initFunc = component.has("init") ? component.get<std::function<void(LuaRef)>>("init") : [](LuaRef) {};
 	updateFunc = component.has("update") ? component.get<std::function<void(LuaRef)>>("update") : [](LuaRef) {};
 	terminateFunc = component.has("terminate") ? component.get<std::function<void(LuaRef)>>("terminate") : [](LuaRef) {};
+	renderFunc = component.has("render") ? component.get<std::function<void(LuaRef, RenderContext&)>>("render") : [](LuaRef, RenderContext&) {};
 	onAfterCameraRenderFunc = component.has("onAfterCameraRender") ? component.get<std::function<void(LuaRef)>>("onAfterCameraRender") : [](LuaRef) {};
 	component.set("node", node);
 }
@@ -38,6 +40,12 @@ void LuaScriptComponent::update()
 void LuaScriptComponent::terminate()
 {
 	terminateFunc(component);
+}
+
+
+void LuaScriptComponent::render(RenderContext &context)
+{
+	renderFunc(component, context);
 }
 
 

@@ -20,14 +20,15 @@ SkyboxRenderer::SkyboxRenderer(Node node):
 	ComponentBase(node)
 {
 	auto resourceManager = node.getScene()->getDevice()->getResourceManager();
-	quadMesh = resourceManager->getOrCreateMesh(KnownUris::UnitQuadMesh);
+	quadMesh = resourceManager->findMesh(KnownUris::UnitQuadMesh);
 	auto effect = resourceManager->findEffect(KnownUris::SkyboxEffect);
 	material = resourceManager->getOrCreateMaterial(effect); // TODO use a known uri?
 	material->getParameter("projMatrix")->bindValue(AutoBinding::ProjectionMatrix);
 	material->getParameter("worldViewMatrix")->bindValue(AutoBinding::WorldViewMatrix);
-//	material->setDepthTestEnabled(false);
-//	material->setDepthWriteEnabled(false);
-	material->setPolygonFace(PolygonFace::All);
+	material->setDepthTestEnabled(true);
+	material->setDepthWriteEnabled(true);
+	material->setDepthPassFunction(DepthPassFunction::Always);
+	material->setPolygonFace(PolygonFace::CW);
 }
 
 

@@ -27,6 +27,11 @@ void OpenGLMaterial::applyState()
 			break;
 	}
 
+	if (depthTest)
+		glEnable(GL_DEPTH_TEST);
+	else
+		glDisable(GL_DEPTH_TEST);
+
 	GLenum depthFunc;
 	switch (depthPassFunc)
 	{
@@ -60,9 +65,4 @@ void OpenGLMaterial::applyState()
 
 	glDepthFunc(depthFunc);
 	glDepthMask(depthWrite ? GL_TRUE : GL_FALSE);
-
-	if (depthTest)
-		glEnable(GL_DEPTH_TEST);
-	else
-		glDisable(GL_DEPTH_TEST);
 }

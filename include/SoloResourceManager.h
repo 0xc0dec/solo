@@ -81,6 +81,7 @@ namespace solo
 		shared<TResource> findResource(const std::string& uri, const ResourceMap<TResource>& resourceMap);
 
 		shared<Effect> tryCreateBuiltInEffect(const std::string &uri);
+		shared<Mesh> tryCreateBuiltInMesh(const std::string &uri);
 
 		Device *device{ nullptr };
 

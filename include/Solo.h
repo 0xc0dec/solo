@@ -26,7 +26,6 @@
 #include "SoloQuaternion.h"
 #include "SoloRay.h"
 #include "SoloRenderContext.h"
-#include "SoloRenderer.h"
 #include "SoloRenderTarget.h"
 #include "SoloResourceManager.h"
 #include "SoloScene.h"

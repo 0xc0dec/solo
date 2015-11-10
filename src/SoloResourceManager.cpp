@@ -52,6 +52,21 @@ shared<Effect> ResourceManager::tryCreateBuiltInEffect(const std::string& uri)
 }
 
 
+shared<Mesh> ResourceManager::tryCreateBuiltInMesh(const std::string& uri)
+{
+	if (uri == KnownUris::UnitQuadMesh)
+	{
+		return createResource<Mesh>(KnownUris::UnitQuadMesh, meshes, [&]()
+		{
+			auto mesh = Mesh::create(device->getMode());
+			mesh->rebuildAsQuad();
+			return mesh;
+		});
+	}
+	return nullptr;
+}
+
+
 shared<Effect> ResourceManager::findEffect(const std::string& uri)
 {
 	auto result = findResource(uri, effects);
@@ -79,7 +94,8 @@ shared<CubeTexture> ResourceManager::findCubeTexture(const std::string& uri)
 
 shared<Mesh> ResourceManager::findMesh(const std::string& uri)
 {
-	return findResource(uri, meshes);
+	auto result = findResource(uri, meshes);
+	return result ? result : tryCreateBuiltInMesh(uri);
 }
 
 

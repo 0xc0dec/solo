@@ -3,7 +3,6 @@
 #include "SoloRenderContext.h"
 #include "SoloCamera.h"
 #include "SoloNode.h"
-#include "SoloRenderer.h"
 #include <algorithm>
 
 using namespace solo;
@@ -176,12 +175,8 @@ void Scene::renderWithCamera(Camera* camera)
 		auto transform = Node::findComponent<Transform>(this, nodeId);
 		if (transform && tagsAreRenderable(transform->getTags(), renderTags))
 		{
-			auto renderer = dynamic_cast<Renderer*>(component);
-			if (renderer)
-			{
-				context.nodeTransform = transform;
-				renderer->render(context);
-			}
+			context.nodeTransform = transform;
+			component->render(context);
 		}
 	});
 
