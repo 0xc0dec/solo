@@ -161,8 +161,6 @@ function initObjects()
 	quad:findComponent("Transform"):setLocalPosition(solo.Vector3(2, 0, 0))
 	quad:findComponent("ModelRenderer"):setMaterialForMesh(0, demo.materials.simpleTexture)
 
-	initSkybox()
-
 	-- Box
 	node = createQuad()
 	rebuildToBoxMesh(node)
@@ -235,18 +233,18 @@ function initCameras()
 	local mainCamera = mainCameraNode:addComponent("Camera")
 	mainCamera:setClearColor(0, 0.6, 0.6, 1)
 	mainCamera:setNear(0.05)
-	-- mainCamera:setRenderTarget(demo.renderTargets.mainCameraRT)
-	-- mainCameraNode:addScriptComponent(createPostProcessor(demo.textures.mainCameraRTT, shaders))
+	mainCamera:setRenderTarget(demo.renderTargets.mainCameraRT)
+	mainCameraNode:addScriptComponent(createPostProcessor(demo.textures.mainCameraRTT, shaders))
 
-	-- local canvasSize = device:getCanvasSize()
-	-- local offscreenCameraNode = scene:createNode()
-	-- local offscreenCamera = offscreenCameraNode:addComponent("Camera")
-	-- offscreenCamera:setClearColor(1, 0, 1, 1)
-	-- offscreenCamera:setNear(0.05)
-	-- offscreenCamera:setRenderTarget(demo.renderTargets.offscreenCameraRT)
-	-- offscreenCamera:setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8)
-	-- offscreenCamera:getRenderTags():remove(RENDER_TARGET_QUAD_TAG)
-	-- offscreenCameraNode:findComponent("Transform"):setLocalPosition(solo.Vector3(0, 0, 10))
+	local canvasSize = device:getCanvasSize()
+	local offscreenCameraNode = scene:createNode()
+	local offscreenCamera = offscreenCameraNode:addComponent("Camera")
+	offscreenCamera:setClearColor(1, 0, 1, 1)
+	offscreenCamera:setNear(0.05)
+	offscreenCamera:setRenderTarget(demo.renderTargets.offscreenCameraRT)
+	offscreenCamera:setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8)
+	offscreenCamera:getRenderTags():remove(RENDER_TARGET_QUAD_TAG)
+	offscreenCameraNode:findComponent("Transform"):setLocalPosition(solo.Vector3(0, 0, 10))
 end
 
 
@@ -257,20 +255,8 @@ function init()
 	initRenderTargets()
 	initModels()
 	initCameras()
-
 	initObjects()
-
-	-- local skyboxQuad = createQuad()
-	-- local skyboxEffect = resourceManager:findEffect(solo.KnownUris.SkyboxEffect)
-	-- local skyboxMaterial = resourceManager:getOrCreateMaterial(skyboxEffect)
-	-- TODO return skybox initialization back
-
-	-- skyboxQuadMaterial:setPolygonFace(solo.PolygonFace_All)
-	-- skyboxQuadMaterial:setDepthWriteEnabled(false)
-	-- skyboxQuadMaterial:getParameter("projMatrix"):bindValue(solo.AutoBinding_ProjectionMatrix)
-	-- skyboxQuadMaterial:getParameter("worldViewMatrix"):bindValue(solo.AutoBinding_WorldViewMatrix)
-	-- skyboxQuadMaterial:getParameter("mainTex"):setTexture(texSkybox)
-	-- skyboxQuad:findComponent("ModelRenderer"):setMaterial(skyboxQuadMaterial)
+	initSkybox()
 end
 
 
