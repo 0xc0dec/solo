@@ -1,2 +1,2 @@
 ## Current progress
-![Current progress](/screenshot1.png?raw=true)
+![Current progress](/screenshot2.png?raw=true)
