@@ -26,8 +26,7 @@ SkyboxRenderer::SkyboxRenderer(Node node):
 	material->getParameter("projMatrix")->bindValue(AutoBinding::ProjectionMatrix);
 	material->getParameter("worldViewMatrix")->bindValue(AutoBinding::WorldViewMatrix);
 	material->setDepthTestEnabled(true);
-	material->setDepthWriteEnabled(true);
-	material->setDepthPassFunction(DepthPassFunction::Always);
+	material->setDepthWriteEnabled(false);
 	material->setPolygonFace(PolygonFace::CW);
 }
 

@@ -35,6 +35,7 @@
 #include "SoloTexture2D.h"
 #include "SoloCubeTexture.h"
 #include "SoloImageLoader.h"
+#include "SoloRenderQueue.h"
 #include "SoloTransform.h"
 #include "SoloTypeId.h"
 #include "SoloVector2.h"

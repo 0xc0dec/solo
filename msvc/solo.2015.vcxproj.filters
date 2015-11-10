@@ -223,6 +223,9 @@
     <ClInclude Include="..\include\SoloSkyboxRenderer.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloRenderQueue.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloLog.cpp">

@@ -3,6 +3,7 @@
 #include "SoloBase.h"
 #include "SoloComponent.h"
 #include "SoloNode.h"
+#include "SoloRenderQueue.h"
 
 namespace solo
 {
@@ -15,6 +16,8 @@ namespace solo
 		static shared<ModelRenderer> create(Node node);
 
 		virtual void render(RenderContext& context) override;
+
+		virtual unsigned getRenderQueue() override;
 
 		Model* getModel() const;
 		void setModel(shared<Model> model);
@@ -31,4 +34,9 @@ namespace solo
 		shared<Model> model;
 		std::unordered_map<unsigned, shared<Material>> materials;
 	};
+
+	inline unsigned ModelRenderer::getRenderQueue()
+	{
+		return KnownRenderQueues::OpaqueObjects; // TODO change later for transparent objects
+	}
 }

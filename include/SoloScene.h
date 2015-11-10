@@ -48,12 +48,17 @@ namespace solo
 
 		void iterateComponents(ComponentIterationWorker work);
 		void updateCameraCache();
+		void updateRenderQueue();
 
 		Device *device;
 		size_t nodeCounter = 0;
 		bool cameraCacheDirty = true;
 
+		size_t componentCount = 0;
+
 		std::vector<Camera*> cameraCache;
+		std::list<Component*> renderQueue;
+
 		Components components;
 	};
 

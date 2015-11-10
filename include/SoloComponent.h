@@ -25,22 +25,30 @@ namespace solo
 		virtual void render(RenderContext& context) {}
 		virtual void onAfterCameraRender() {}
 
+		virtual unsigned getRenderQueue() { return 0; }
+
+		Node getNode() const;
+
 	protected:
-		Component() {}
+		explicit Component(const Node& node) : node(node) {}
+		
+		Node node;
 	};
+
+	inline Node Component::getNode() const
+	{
+		return node;
+	}
+
 
 	template <class T>
 	class ComponentBase: public Component
 	{
 	public:
-		explicit ComponentBase(const Node& node): node(node) {}
+		explicit ComponentBase(const Node& node): Component(node) {}
 
 		static size_t getId();
 		virtual size_t getTypeId() override;
-		Node getNode() const;
-
-	protected:
-		Node node;
 	};
 
 	template <class T>
@@ -53,11 +61,5 @@ namespace solo
 	inline size_t ComponentBase<T>::getTypeId()
 	{
 		return getId();
-	}
-
-	template <class T>
-	inline Node ComponentBase<T>::getNode() const
-	{
-		return node;
 	}
 }
