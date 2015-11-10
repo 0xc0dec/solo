@@ -21,7 +21,6 @@ const unsigned DIRTY_BIT_ALL =
 Transform::Transform(Node node):
 	ComponentBase(node)
 {
-	tags.set(1);
 }
 
 
@@ -289,12 +288,6 @@ Vector3 Transform::transformPoint(const Vector3& point) const
 Vector3 Transform::transformDirection(const Vector3& direction) const
 {
 	return getMatrix().transformDirection(direction);
-}
-
-
-BitFlags& Transform::getTags()
-{
-	return tags;
 }
 
 

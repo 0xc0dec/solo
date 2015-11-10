@@ -50,7 +50,6 @@ void Scene::addComponentWithTypeId(size_t nodeId, shared<Component> cmp, size_t 
 	cmp->init();
 	if (typeId == Camera::getId())
 		cameraCacheDirty = true;
-	componentCount++;
 }
 
 
@@ -65,7 +64,6 @@ void Scene::removeComponent(size_t nodeId, size_t typeId)
 		components.erase(nodeId);
 	if (typeId == Camera::getId())
 		cameraCacheDirty = true;
-	componentCount--;
 }
 
 
@@ -74,10 +72,7 @@ void Scene::removeAllComponents(size_t nodeId)
 	if (components.find(nodeId) == components.end())
 		return;
 	for (auto& cmp : components.at(nodeId))
-	{
 		cmp.second->terminate();
-		componentCount--;
-	}
 	components.erase(nodeId);
 }
 
@@ -140,16 +135,16 @@ void Scene::updateCameraCache()
 
 void Scene::updateRenderQueue()
 {
-	if (!componentCount)
-		return;
-
 	// TODO use more cache-friendly structure
 	renderQueue.clear();
 
 	iterateComponents([&](size_t nodeId, Component* component)
 	{
+		if (component->getRenderQueue() == KnownRenderQueues::NotRendered)
+			return;
+
 		auto transform = Node::findComponent<Transform>(this, nodeId);
-		if (!transform)
+		if (!transform) // TODO save this transform for later use
 			return;
 
 		for (auto it = renderQueue.begin();; ++it)
@@ -185,50 +180,33 @@ bool tagsAreRenderable(const BitFlags& objectTags, const BitFlags& cameraTags)
 void Scene::render()
 {
 	updateCameraCache();
-	for (auto& camera : cameraCache)
-		renderWithCamera(camera);
-}
-
-
-void Scene::renderWithCamera(Camera* camera)
-{
-	// TODO avoid this if this has been already done in render()
 	updateRenderQueue();
 
-	camera->apply();
-
-	RenderContext context;
-	context.scene = this;
-	context.camera = camera;
-
-	auto renderTags = camera->getRenderTags();
-
-	for (auto cmp: renderQueue)
+	for (auto camera : cameraCache)
 	{
-		auto transform = Node::findComponent<Transform>(this, cmp->getNode().getId()); // TODO can be cached
-		// TODO not really needed because render queue already contains components
-		// only for nodes with transforms
-		if (transform && tagsAreRenderable(transform->getTags(), renderTags)) // TODO add render tags to all components
+		camera->apply();
+
+		RenderContext context;
+		context.scene = this;
+		context.camera = camera;
+
+		auto renderTags = camera->getRenderTags();
+
+		for (auto cmp : renderQueue)
 		{
-			context.nodeTransform = transform;
-			cmp->render(context);
+			if (tagsAreRenderable(cmp->getTags(), renderTags))
+			{
+				auto transform = Node::findComponent<Transform>(this, cmp->getNode().getId()); // TODO can be cached
+				context.nodeTransform = transform;
+				cmp->render(context);
+			}
 		}
+
+		camera->finish();
+
+		for (auto &pair : components[camera->getNode().getId()])
+			pair.second->onAfterCameraRender();
 	}
-
-//	iterateComponents([&](size_t nodeId, Component* component)
-//	{
-//		auto transform = Node::findComponent<Transform>(this, nodeId);
-//		if (transform && tagsAreRenderable(transform->getTags(), renderTags))
-//		{
-//			context.nodeTransform = transform;
-//			component->render(context);
-//		}
-//	});
-
-	camera->finish();
-
-	for (auto &pair: components[camera->getNode().getId()])
-		pair.second->onAfterCameraRender();
 }
 
 

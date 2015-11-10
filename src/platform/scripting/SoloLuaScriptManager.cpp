@@ -468,9 +468,10 @@ void LuaScriptManager::registerApi()
 	.endClass();
 
 	// Component
-	module.beginClass<Component>("Component")
-		// TODO?
-	.endClass();
+	auto component = module.beginClass<Component>("Component");
+	REGISTER_METHOD(component, Component, getTags);
+	REGISTER_METHOD(component, Component, getNode);
+	component.endClass();
 
 	// TransformSpace
 	module
@@ -530,7 +531,6 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(transform, Transform, getInverseTransposedWorldViewMatrix);
 	REGISTER_METHOD(transform, Transform, transformPoint);
 	REGISTER_METHOD(transform, Transform, transformDirection);
-	REGISTER_METHOD(transform, Transform, getTags);
 	transform.endClass();
 
 	// Camera
@@ -661,7 +661,6 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(scene, Scene, clear);
 	REGISTER_METHOD(scene, Scene, update);
 	REGISTER_METHOD(scene, Scene, render);
-	REGISTER_METHOD(scene, Scene, renderWithCamera);
 	scene.endClass();
 
 	// KeyCode

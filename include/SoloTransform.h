@@ -78,8 +78,6 @@ namespace solo
 		Vector3 transformPoint(const Vector3& point) const;
 		Vector3 transformDirection(const Vector3& direction) const;
 
-		BitFlags& getTags();
-
 	private:
 		explicit Transform(Node node);
 
@@ -89,7 +87,6 @@ namespace solo
 		void notifyChanged() const;
 
 		mutable BitFlags dirtyFlags;
-		BitFlags tags;
 
 		Transform* parent = nullptr;
 		std::vector<Transform*> children;

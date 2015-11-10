@@ -36,9 +36,7 @@ namespace solo
 		Component* findComponent(size_t nodeId, size_t typeId) const;
 
 		void update();
-
 		void render();
-		void renderWithCamera(Camera *camera);
 
 	private:
 		using ComponentIterationWorker = std::function<void(size_t, Component*)>;
@@ -53,8 +51,6 @@ namespace solo
 		Device *device;
 		size_t nodeCounter = 0;
 		bool cameraCacheDirty = true;
-
-		size_t componentCount = 0;
 
 		std::vector<Camera*> cameraCache;
 		std::list<Component*> renderQueue;

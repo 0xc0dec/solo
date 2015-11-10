@@ -2,6 +2,8 @@
 
 #include "SoloTypeId.h"
 #include "SoloNode.h"
+#include "SoloBitFlags.h"
+#include "SoloRenderQueue.h"
 
 namespace solo
 {
@@ -25,19 +27,30 @@ namespace solo
 		virtual void render(RenderContext& context) {}
 		virtual void onAfterCameraRender() {}
 
-		virtual unsigned getRenderQueue() { return 0; }
+		virtual unsigned getRenderQueue() { return KnownRenderQueues::NotRendered; }
 
 		Node getNode() const;
 
+		BitFlags& getTags();
+
 	protected:
-		explicit Component(const Node& node) : node(node) {}
+		explicit Component(const Node& node) : node(node)
+		{
+			tags.set(1);
+		}
 		
 		Node node;
+		BitFlags tags;
 	};
 
 	inline Node Component::getNode() const
 	{
 		return node;
+	}
+
+	inline BitFlags& Component::getTags()
+	{
+		return tags;
 	}
 
 
