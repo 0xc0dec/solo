@@ -44,6 +44,7 @@
 #define REGISTER_STATIC_METHOD(binding, klass, name) binding.addStaticFunction(#name, &klass::name)
 #define REGISTER_STATIC_OVERLOADED_METHOD(binding, klass, name, nameStr, resultType, modifier, ...) \
 	binding.addStaticFunction(nameStr, static_cast<resultType(*)(__VA_ARGS__)modifier>(&klass::name))
+#define REGISTER_ENUM_CONSTANT(enumModule, enumClass, enumValue) enumModule.addConstant(#enumValue, enumClass::enumValue)
 
 
 namespace LuaIntf
@@ -303,10 +304,11 @@ void LuaScriptManager::registerApi()
 	bs.endClass();
 
 	// PlaneIntersection
-	module
-		.addConstant("PlaneIntersection_Intersecting", PlaneIntersection::Intersecting)
-		.addConstant("PlaneIntersection_Front", PlaneIntersection::Front)
-		.addConstant("PlaneIntersection_Back", PlaneIntersection::Back);
+	auto planeIntersection = module.beginModule("PlaneIntersection");
+	REGISTER_ENUM_CONSTANT(planeIntersection, PlaneIntersection, Intersecting);
+	REGISTER_ENUM_CONSTANT(planeIntersection, PlaneIntersection, Front);
+	REGISTER_ENUM_CONSTANT(planeIntersection, PlaneIntersection, Back);
+	planeIntersection.endModule();
 
 	// Plane
 	auto p = module.beginClass<Plane>("Plane");
@@ -375,9 +377,10 @@ void LuaScriptManager::registerApi()
 	m.endClass();
 
 	// ColorFormat
-	module
-		.addConstant("ColorFormat_RGB", ColorFormat::RGB)
-		.addConstant("ColorFormat_RGBA", ColorFormat::RGBA);
+	auto colorFormat = module.beginModule("ColorFormat");
+	REGISTER_ENUM_CONSTANT(colorFormat, ColorFormat, RGB);
+	REGISTER_ENUM_CONSTANT(colorFormat, ColorFormat, RGBA);
+	colorFormat.endModule();
 
 	// BitFlags
 	auto flags = module.beginClass<BitFlags>("BitFlags");
@@ -393,18 +396,20 @@ void LuaScriptManager::registerApi()
 	flags.endClass();
 
 	// TextureWrapping
-	module
-		.addConstant("TextureWrapping_Clamp", TextureWrapping::Clamp)
-		.addConstant("TextureWrapping_Repeat", TextureWrapping::Repeat);
+	auto textureWrapping = module.beginModule("TextureWrapping");
+	REGISTER_ENUM_CONSTANT(textureWrapping, TextureWrapping, Clamp);
+	REGISTER_ENUM_CONSTANT(textureWrapping, TextureWrapping, Repeat);
+	textureWrapping.endModule();
 
 	// TextureFiltering
-	module
-		.addConstant("TextureFiltering_Nearest", TextureFiltering::Nearest)
-		.addConstant("TextureFiltering_Linear", TextureFiltering::Linear)
-		.addConstant("TextureFiltering_LinearMipmapLinear", TextureFiltering::LinearMipmapLinear)
-		.addConstant("TextureFiltering_LinearMipmapNearest", TextureFiltering::LinearMipmapNearest)
-		.addConstant("TextureFiltering_NearestMipmapLinear", TextureFiltering::NearestMipmapLinear)
-		.addConstant("TextureFiltering_NearestMipmapNearest", TextureFiltering::NearestMipmapNearest);
+	auto textureFiltering = module.beginModule("TextureFiltering");
+	REGISTER_ENUM_CONSTANT(textureFiltering, TextureFiltering, Nearest);
+	REGISTER_ENUM_CONSTANT(textureFiltering, TextureFiltering, Linear);
+	REGISTER_ENUM_CONSTANT(textureFiltering, TextureFiltering, LinearMipmapLinear);
+	REGISTER_ENUM_CONSTANT(textureFiltering, TextureFiltering, LinearMipmapNearest);
+	REGISTER_ENUM_CONSTANT(textureFiltering, TextureFiltering, NearestMipmapLinear);
+	REGISTER_ENUM_CONSTANT(textureFiltering, TextureFiltering, NearestMipmapNearest);
+	textureFiltering.endModule();
 
 	// Texture
 	auto tex = module.beginClass<Texture>("Texture");
@@ -430,13 +435,14 @@ void LuaScriptManager::registerApi()
 	tex2d.endClass();
 
 	// CubeTextureFace
-	module
-		.addConstant("CubeTextureFace_Front", CubeTextureFace::Front)
-		.addConstant("CubeTextureFace_Back", CubeTextureFace::Back)
-		.addConstant("CubeTextureFace_Left", CubeTextureFace::Left)
-		.addConstant("CubeTextureFace_Right", CubeTextureFace::Right)
-		.addConstant("CubeTextureFace_Top", CubeTextureFace::Top)
-		.addConstant("CubeTextureFace_Bottom", CubeTextureFace::Bottom);
+	auto cubeTextureFace = module.beginModule("CubeTextureFace");
+	REGISTER_ENUM_CONSTANT(cubeTextureFace, CubeTextureFace, Front);
+	REGISTER_ENUM_CONSTANT(cubeTextureFace, CubeTextureFace, Back);
+	REGISTER_ENUM_CONSTANT(cubeTextureFace, CubeTextureFace, Left);
+	REGISTER_ENUM_CONSTANT(cubeTextureFace, CubeTextureFace, Right);
+	REGISTER_ENUM_CONSTANT(cubeTextureFace, CubeTextureFace, Top);
+	REGISTER_ENUM_CONSTANT(cubeTextureFace, CubeTextureFace, Bottom);
+	cubeTextureFace.endModule();
 
 	// CubeTexture
 	auto texCube = module.beginExtendClass<CubeTexture, Texture>("CubeTexture");
@@ -476,10 +482,11 @@ void LuaScriptManager::registerApi()
 	component.endClass();
 
 	// TransformSpace
-	module
-		.addConstant("TransformSpace_Parent", TransformSpace::Parent)
-		.addConstant("TransformSpace_Self", TransformSpace::Self)
-		.addConstant("TransformSpace_World", TransformSpace::World);
+	auto transformSpace = module.beginModule("TransformSpace");
+	REGISTER_ENUM_CONSTANT(transformSpace, TransformSpace, Parent);
+	REGISTER_ENUM_CONSTANT(transformSpace, TransformSpace, Self);
+	REGISTER_ENUM_CONSTANT(transformSpace, TransformSpace, World);
+	transformSpace.endModule();
 
 	// ModelRenderer
 	auto mr = module.beginExtendClass<ModelRenderer, Component>("ModelRenderer");
@@ -572,21 +579,23 @@ void LuaScriptManager::registerApi()
 	spectator.endClass();
 
 	// PolygonFace
-	module
-		.addConstant("PolygonFace_All", PolygonFace::All)
-		.addConstant("PolygonFace_CCW", PolygonFace::CCW)
-		.addConstant("PolygonFace_CW", PolygonFace::CW);
+	auto polygonFace = module.beginModule("PolygonFace");
+	REGISTER_ENUM_CONSTANT(polygonFace, PolygonFace, All);
+	REGISTER_ENUM_CONSTANT(polygonFace, PolygonFace, CW);
+	REGISTER_ENUM_CONSTANT(polygonFace, PolygonFace, CCW);
+	polygonFace.endModule();
 
 	// DepthPassFunction
-	module
-		.addConstant("DepthPassFunction_Never", DepthPassFunction::Never)
-		.addConstant("DepthPassFunction_Less", DepthPassFunction::Less)
-		.addConstant("DepthPassFunction_Equal", DepthPassFunction::Equal)
-		.addConstant("DepthPassFunction_LEqual", DepthPassFunction::LEqual)
-		.addConstant("DepthPassFunction_Greater", DepthPassFunction::Greater)
-		.addConstant("DepthPassFunction_NotEqual", DepthPassFunction::NotEqual)
-		.addConstant("DepthPassFunction_GEqual", DepthPassFunction::GEqual)
-		.addConstant("DepthPassFunction_Always", DepthPassFunction::Always);
+	auto depthPassFunction = module.beginModule("DepthPassFunction");
+	REGISTER_ENUM_CONSTANT(depthPassFunction, DepthPassFunction, Never);
+	REGISTER_ENUM_CONSTANT(depthPassFunction, DepthPassFunction, Always);
+	REGISTER_ENUM_CONSTANT(depthPassFunction, DepthPassFunction, Equal);
+	REGISTER_ENUM_CONSTANT(depthPassFunction, DepthPassFunction, NotEqual);
+	REGISTER_ENUM_CONSTANT(depthPassFunction, DepthPassFunction, Less);
+	REGISTER_ENUM_CONSTANT(depthPassFunction, DepthPassFunction, LEqual);
+	REGISTER_ENUM_CONSTANT(depthPassFunction, DepthPassFunction, Greater);
+	REGISTER_ENUM_CONSTANT(depthPassFunction, DepthPassFunction, GEqual);
+	depthPassFunction.endModule();
 
 	// Material
 	auto mat = module.beginClass<Material>("Material");
@@ -603,17 +612,18 @@ void LuaScriptManager::registerApi()
 	mat.endClass();
 
 	// AutoBinding
-	module
-		.addConstant("AutoBinding_None", AutoBinding::None)
-		.addConstant("AutoBinding_CameraWorldPosition", AutoBinding::CameraWorldPosition)
-		.addConstant("AutoBinding_InverseTransposedWorldMatrix", AutoBinding::InverseTransposedWorldMatrix)
-		.addConstant("AutoBinding_InverseTransposedWorldViewMatrix", AutoBinding::InverseTransposedWorldViewMatrix)
-		.addConstant("AutoBinding_ProjectionMatrix", AutoBinding::ProjectionMatrix)
-		.addConstant("AutoBinding_ViewMatrix", AutoBinding::ViewMatrix)
-		.addConstant("AutoBinding_ViewProjectionMatrix", AutoBinding::ViewProjectionMatrix)
-		.addConstant("AutoBinding_WorldMatrix", AutoBinding::WorldMatrix)
-		.addConstant("AutoBinding_WorldViewMatrix", AutoBinding::WorldViewMatrix)
-		.addConstant("AutoBinding_WorldViewProjectionMatrix", AutoBinding::WorldViewProjectionMatrix);
+	auto autoBinding = module.beginModule("AutoBinding");
+	REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, None);
+	REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, CameraWorldPosition);
+	REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, InverseTransposedWorldMatrix);
+	REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, InverseTransposedWorldViewMatrix);
+	REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, ProjectionMatrix);
+	REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, ViewMatrix);
+	REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, ViewProjectionMatrix);
+	REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, WorldMatrix);
+	REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, WorldViewMatrix);
+	REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, WorldViewProjectionMatrix);
+	autoBinding.endModule();
 
 	// MaterialParameter
 	auto mp = module.beginClass<MaterialParameter>("MaterialParameter");
@@ -664,49 +674,52 @@ void LuaScriptManager::registerApi()
 	scene.endClass();
 
 	// KeyCode
-	module
-		.addConstant("KeyCode_A", KeyCode::A)
-		.addConstant("KeyCode_B", KeyCode::B)
-		.addConstant("KeyCode_C", KeyCode::C)
-		.addConstant("KeyCode_D", KeyCode::D)
-		.addConstant("KeyCode_E", KeyCode::E)
-		.addConstant("KeyCode_F", KeyCode::F)
-		.addConstant("KeyCode_G", KeyCode::G)
-		.addConstant("KeyCode_H", KeyCode::H)
-		.addConstant("KeyCode_I", KeyCode::I)
-		.addConstant("KeyCode_J", KeyCode::J)
-		.addConstant("KeyCode_K", KeyCode::K)
-		.addConstant("KeyCode_L", KeyCode::L)
-		.addConstant("KeyCode_M", KeyCode::M)
-		.addConstant("KeyCode_N", KeyCode::N)
-		.addConstant("KeyCode_O", KeyCode::O)
-		.addConstant("KeyCode_P", KeyCode::P)
-		.addConstant("KeyCode_Q", KeyCode::Q)
-		.addConstant("KeyCode_R", KeyCode::R)
-		.addConstant("KeyCode_S", KeyCode::S)
-		.addConstant("KeyCode_T", KeyCode::T)
-		.addConstant("KeyCode_U", KeyCode::U)
-		.addConstant("KeyCode_V", KeyCode::V)
-		.addConstant("KeyCode_W", KeyCode::W)
-		.addConstant("KeyCode_X", KeyCode::X)
-		.addConstant("KeyCode_Y", KeyCode::Y)
-		.addConstant("KeyCode_Z", KeyCode::Z)
-		.addConstant("KeyCode_LeftArrow", KeyCode::LeftArrow)
-		.addConstant("KeyCode_RightArrow", KeyCode::RightArrow)
-		.addConstant("KeyCode_UpArrow", KeyCode::UpArrow)
-		.addConstant("KeyCode_DownArrow", KeyCode::DownArrow)
-		.addConstant("KeyCode_Escape", KeyCode::Escape);
+	auto keyCode = module.beginModule("KeyCode");
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, A);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, B);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, C);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, D);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, E);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, F);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, G);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, H);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, I);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, J);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, K);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, L);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, M);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, N);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, O);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, P);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, Q);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, R);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, S);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, T);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, U);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, V);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, W);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, X);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, Y);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, Z);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, LeftArrow);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, RightArrow);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, UpArrow);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, DownArrow);
+	REGISTER_ENUM_CONSTANT(keyCode, KeyCode, Escape);
+	keyCode.endModule();
 
 	// MouseButton
-	module
-		.addConstant("MouseButton_Left", MouseButton::Left)
-		.addConstant("MouseButton_Middle", MouseButton::Middle)
-		.addConstant("MouseButton_Right", MouseButton::Right);
+	auto mouseButton = module.beginModule("MouseButton");
+	REGISTER_ENUM_CONSTANT(mouseButton, MouseButton, Left);
+	REGISTER_ENUM_CONSTANT(mouseButton, MouseButton, Middle);
+	REGISTER_ENUM_CONSTANT(mouseButton, MouseButton, Right);
+	mouseButton.endModule();
 
 	// DeviceMode
-	module
-		.addConstant("DeviceMode_Stub", DeviceMode::Stub)
-		.addConstant("DeviceMode_OpenGL", DeviceMode::OpenGL);
+	auto deviceMode = module.beginModule("DeviceMode");
+	REGISTER_ENUM_CONSTANT(deviceMode, DeviceMode, OpenGL);
+	REGISTER_ENUM_CONSTANT(deviceMode, DeviceMode, Stub);
+	mouseButton.endModule();
 
 	// DeviceCreationArgs
 	module.beginClass<DeviceCreationArgs>("DeviceCreationArgs")
@@ -718,7 +731,7 @@ void LuaScriptManager::registerApi()
 		.addVariable("depth", &DeviceCreationArgs::depth, true)
 		.addVariable("fullScreen", &DeviceCreationArgs::fullScreen, true)
 		.addVariable("windowTitle", &DeviceCreationArgs::windowTitle, true)
-		.endClass();
+	.endClass();
 
 	// Device
 	auto device = module.beginClass<Device>("Device");
@@ -748,9 +761,10 @@ void LuaScriptManager::registerApi()
 	device.endClass();
 
 	// KnownUris
-	module.beginModule("KnownUris")
-		.addConstant("SkyboxEffect", KnownUris::SkyboxEffect)
-	.endModule();
+	auto knownUris = module.beginModule("KnownUris");
+	REGISTER_ENUM_CONSTANT(knownUris, KnownUris, SkyboxEffect);
+	REGISTER_ENUM_CONSTANT(knownUris, KnownUris, UnitQuadMesh);
+	mouseButton.endModule();
 
 	// ResourceManager
 	auto mgr = module.beginClass<ResourceManager>("ResourceManager");

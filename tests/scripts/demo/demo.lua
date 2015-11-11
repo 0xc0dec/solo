@@ -9,7 +9,7 @@ local demo = {}
 function loadTexture(path)
 	local texture = resourceManager:getOrLoadTexture2D(path)
 	texture:generateMipmaps()
-	texture:setFiltering(solo.TextureFiltering_Linear)
+	texture:setFiltering(solo.TextureFiltering.Linear)
 	texture:setAnisotropyLevel(8)
 	return texture
 end
@@ -19,14 +19,14 @@ function initTextures()
 	local canvasSize = device:getCanvasSize()
 
 	local mainCameraRTT = resourceManager:getOrCreateTexture2D("demo/main-camera-rtt")
-	mainCameraRTT:setData(solo.ColorFormat_RGB, {}, canvasSize.x, canvasSize.y)
-	mainCameraRTT:setFiltering(solo.TextureFiltering_Nearest)
-	mainCameraRTT:setWrapping(solo.TextureWrapping_Clamp)
+	mainCameraRTT:setData(solo.ColorFormat.RGB, {}, canvasSize.x, canvasSize.y)
+	mainCameraRTT:setFiltering(solo.TextureFiltering.Nearest)
+	mainCameraRTT:setWrapping(solo.TextureWrapping.Clamp)
 
 	local offscreenCameraRTT = resourceManager:getOrCreateTexture2D("demo/offscreen-camera-rtt")
-	offscreenCameraRTT:setData(solo.ColorFormat_RGB, {}, canvasSize.x / 8, canvasSize.y / 8)
-	offscreenCameraRTT:setFiltering(solo.TextureFiltering_Nearest)
-	offscreenCameraRTT:setWrapping(solo.TextureWrapping_Clamp)
+	offscreenCameraRTT:setData(solo.ColorFormat.RGB, {}, canvasSize.x / 8, canvasSize.y / 8)
+	offscreenCameraRTT:setFiltering(solo.TextureFiltering.Nearest)
+	offscreenCameraRTT:setWrapping(solo.TextureWrapping.Clamp)
 
 	demo.textures =
 	{
@@ -50,46 +50,46 @@ end
 function initMaterials()
 	local colorEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsColor)
 	local redMaterial = resourceManager:getOrCreateMaterial(colorEffect)
-	redMaterial:setPolygonFace(solo.PolygonFace_All)
-	redMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding_WorldViewProjectionMatrix)
+	redMaterial:setPolygonFace(solo.PolygonFace.All)
+	redMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding.WorldViewProjectionMatrix)
 	redMaterial:getParameter("color"):setVector4(solo.Vector4(1, 0, 0, 1))
 
 	local greenMaterial = resourceManager:getOrCreateMaterial(colorEffect)
-	greenMaterial:setPolygonFace(solo.PolygonFace_All)
-	greenMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding_WorldViewProjectionMatrix)
+	greenMaterial:setPolygonFace(solo.PolygonFace.All)
+	greenMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding.WorldViewProjectionMatrix)
 	greenMaterial:getParameter("color"):setVector4(solo.Vector4(0, 1, 0, 1))
 
 	local blueMaterial = resourceManager:getOrCreateMaterial(colorEffect)
-	blueMaterial:setPolygonFace(solo.PolygonFace_All)
-	blueMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding_WorldViewProjectionMatrix)
+	blueMaterial:setPolygonFace(solo.PolygonFace.All)
+	blueMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding.WorldViewProjectionMatrix)
 	blueMaterial:getParameter("color"):setVector4(solo.Vector4(0, 0, 1, 1))
 
 	local whiteMaterial = resourceManager:getOrCreateMaterial(colorEffect)
-	whiteMaterial:setPolygonFace(solo.PolygonFace_All)
-	whiteMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding_WorldViewProjectionMatrix)
+	whiteMaterial:setPolygonFace(solo.PolygonFace.All)
+	whiteMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding.WorldViewProjectionMatrix)
 	whiteMaterial:getParameter("color"):setVector4(solo.Vector4(1, 1, 1, 1))
 
 	local simpleTexture = resourceManager:getOrCreateMaterial(demo.effects.simpleTextureEffect)
-	simpleTexture:setPolygonFace(solo.PolygonFace_All)
-	simpleTexture:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding_WorldViewProjectionMatrix)
+	simpleTexture:setPolygonFace(solo.PolygonFace.All)
+	simpleTexture:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding.WorldViewProjectionMatrix)
 	simpleTexture:getParameter("mainTex"):setTexture(demo.textures.tex1)
 
 	local checkerEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsChecker)
 	local checkerMaterial = resourceManager:getOrCreateMaterial(checkerEffect)
-	checkerMaterial:setPolygonFace(solo.PolygonFace_All)
-	checkerMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding_WorldViewProjectionMatrix);
+	checkerMaterial:setPolygonFace(solo.PolygonFace.All)
+	checkerMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding.WorldViewProjectionMatrix);
 	checkerMaterial:getParameter("color"):setVector4(solo.Vector4(1, 1, 0, 1))
 
 	local texWithLightingEffect = resourceManager:getOrCreateEffect(shaders.vsBasicLighting, shaders.fsTextureWithLighting)
 	local textureWithLightingMaterial = resourceManager:getOrCreateMaterial(texWithLightingEffect)
-	textureWithLightingMaterial:setPolygonFace(solo.PolygonFace_All)
-	textureWithLightingMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding_WorldViewProjectionMatrix)
-	textureWithLightingMaterial:getParameter("normalMatrix"):bindValue(solo.AutoBinding_InverseTransposedWorldMatrix)
+	textureWithLightingMaterial:setPolygonFace(solo.PolygonFace.All)
+	textureWithLightingMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding.WorldViewProjectionMatrix)
+	textureWithLightingMaterial:getParameter("normalMatrix"):bindValue(solo.AutoBinding.InverseTransposedWorldMatrix)
 	textureWithLightingMaterial:getParameter("mainTex"):setTexture(demo.textures.tex2)
 
 	local offscreenCameraRenderedMaterial = resourceManager:getOrCreateMaterial(demo.effects.simpleTextureEffect)
-	offscreenCameraRenderedMaterial:setPolygonFace(solo.PolygonFace_All)
-	offscreenCameraRenderedMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding_WorldViewProjectionMatrix)
+	offscreenCameraRenderedMaterial:setPolygonFace(solo.PolygonFace.All)
+	offscreenCameraRenderedMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding.WorldViewProjectionMatrix)
 	offscreenCameraRenderedMaterial:getParameter("mainTex"):setTexture(demo.textures.offscreenCameraRTT)
 
 	demo.materials =
@@ -139,7 +139,7 @@ function initSkybox()
 		"../data/skyboxes/deep-space/top.png",
 		"../data/skyboxes/deep-space/bottom.png"
 	}, "demo/textures/skybox")
-	texSkybox:setWrapping(solo.TextureWrapping_Clamp)
+	texSkybox:setWrapping(solo.TextureWrapping.Clamp)
 
 	local skybox = scene:createNode()
 	local skyboxRenderer = skybox:addComponent("SkyboxRenderer")
@@ -261,7 +261,7 @@ function init()
 end
 
 
-device = solo.Device.create(solo.DeviceCreationArgs(solo.DeviceMode_OpenGL, 800, 600, false))
+device = solo.Device.create(solo.DeviceCreationArgs(solo.DeviceMode.OpenGL, 800, 600, false))
 device:setStartCallback(function()
 	scene = device:getScene()
 	resourceManager = device:getResourceManager()

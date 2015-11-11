@@ -4,7 +4,7 @@ function createEscapeWatcher()
 		typeId = "EscapeWatcher",
 
 		update = function()
-			if device:isKeyPressed(solo.KeyCode_Escape, true) then
+			if device:isKeyPressed(solo.KeyCode.Escape, true) then
 				device:requestShutdown()
 			end
 		end
@@ -23,7 +23,7 @@ function createLocalXRotator()
 
 		update = function(self)
 			local angle = device:getTimeDelta() * 1.3
-			self.transform:rotateAxisAngle(solo.Vector3.unitX(), angle, solo.TransformSpace_Self)
+			self.transform:rotateAxisAngle(solo.Vector3.unitX(), angle, solo.TransformSpace.Self)
 		end
 	}
 end
@@ -40,7 +40,7 @@ function createWorldYRotator()
 
 		update = function(self)
 			local angle = device:getTimeDelta()
-			self.transform:rotateAxisAngle(solo.Vector3.unitY(), angle, solo.TransformSpace_World)
+			self.transform:rotateAxisAngle(solo.Vector3.unitY(), angle, solo.TransformSpace.World)
 		end
 	}
 end
@@ -90,9 +90,9 @@ function createPostProcessor(sourceTexture, shaders)
 
 			local canvasSize = device:getCanvasSize()
 			local rtt = resourceManager:getOrCreateTexture2D("demo/post-processor/rtt")
-			rtt:setData(solo.ColorFormat_RGB, {}, canvasSize.x, canvasSize.y)
-			rtt:setFiltering(solo.TextureFiltering_Nearest)
-			rtt:setWrapping(solo.TextureWrapping_Clamp)
+			rtt:setData(solo.ColorFormat.RGB, {}, canvasSize.x, canvasSize.y)
+			rtt:setFiltering(solo.TextureFiltering.Nearest)
+			rtt:setWrapping(solo.TextureWrapping.Clamp)
 			self.finalRTT = rtt
 			self.finalRT = resourceManager:getOrCreateRenderTarget("demo/post-processor/rt")
 			self.finalRT:setColorAttachment(0, rtt)

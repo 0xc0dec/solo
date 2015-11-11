@@ -6,8 +6,8 @@ runTest(function()
 	assert(mp)
 	assert(m:getEffect())
 
-	assert(m:getPolygonFace() == solo.PolygonFace_CW)
-	m:setPolygonFace(solo.PolygonFace_All)
+	assert(m:getPolygonFace() == solo.PolygonFace.CW)
+	m:setPolygonFace(solo.PolygonFace.All)
 
 	assert(m:isDepthWriteEnabled() == true)
 	m:setDepthWriteEnabled(false)
@@ -16,7 +16,7 @@ runTest(function()
 	m:setDepthTestEnabled(false)
 
 	assert(m:getDepthPassFunction() ~= nil)
-	m:setDepthPassFunction(solo.DepthPassFunction_Always)
+	m:setDepthPassFunction(solo.DepthPassFunction.Always)
 
 	local v2 = solo.Vector2.unit()
 	local v3 = solo.Vector3.unit()
@@ -40,6 +40,6 @@ runTest(function()
 	mp:setTextureArray({tex})
 	mp:setFunction(function (var, renderContext) end)
 
-	mp:bindValue(solo.AutoBinding_CameraWorldPosition)
+	mp:bindValue(solo.AutoBinding.CameraWorldPosition)
 
 end, "Material")

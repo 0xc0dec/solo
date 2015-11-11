@@ -10,7 +10,7 @@ function runTest(test, name)
 	end
 end
 
-device = solo.Device.create(solo.DeviceCreationArgs(solo.DeviceMode_Stub, 1, 1))
+device = solo.Device.create(solo.DeviceCreationArgs(solo.DeviceMode.Stub, 1, 1))
 
 dofile("../tests/scripts/unit-tests.bit-flags.lua")
 dofile("../tests/scripts/unit-tests.bounding-box.lua")
