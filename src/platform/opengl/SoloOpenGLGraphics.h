@@ -14,8 +14,6 @@ namespace solo
 
 		explicit OpenGLGraphics(Device *device);
 
-		void drawMaterial(Material* material, RenderTarget* target);
-
 		shared<Mesh> quadMesh;
 	};
 }

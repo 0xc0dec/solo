@@ -18,12 +18,6 @@ OpenGLGraphics::OpenGLGraphics(Device* device):
 
 void OpenGLGraphics::renderSurface(Material* material, RenderTarget* target)
 {
-	drawMaterial(material, target);
-}
-
-
-void OpenGLGraphics::drawMaterial(Material* material, RenderTarget* target)
-{
 	if (!quadMesh)
 		quadMesh = device->getResourceManager()->findMesh(KnownUris::UnitQuadMesh);
 
