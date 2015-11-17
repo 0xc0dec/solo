@@ -118,12 +118,6 @@
     <ClInclude Include="..\include\SoloScriptManager.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\scripting\SoloLuaScriptManager.h">
-      <Filter>src\platform\scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\scripting\SoloLuaScriptComponent.h">
-      <Filter>src\platform\scripting</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloImage.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -225,6 +219,15 @@
     </ClInclude>
     <ClInclude Include="..\include\SoloRenderQueue.h">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\scripting\lua\SoloLuaGraphics.h">
+      <Filter>src\platform\scripting\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\scripting\lua\SoloLuaScriptComponent.h">
+      <Filter>src\platform\scripting\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\scripting\lua\SoloLuaScriptManager.h">
+      <Filter>src\platform\scripting\lua</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -405,12 +408,6 @@
     <ClCompile Include="..\src\SoloScriptManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\scripting\SoloLuaScriptManager.cpp">
-      <Filter>src\platform\scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\scripting\SoloLuaScriptComponent.cpp">
-      <Filter>src\platform\scripting</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloPngImageLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -474,6 +471,15 @@
     <ClCompile Include="..\src\SoloSkyboxRenderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\platform\scripting\lua\SoloLuaScriptComponent.cpp">
+      <Filter>src\platform\scripting\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\scripting\lua\SoloLuaScriptManager.cpp">
+      <Filter>src\platform\scripting\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\scripting\lua\SoloLuaGraphics.cpp">
+      <Filter>src\platform\scripting\lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -505,6 +511,9 @@
     </Filter>
     <Filter Include="src\platform\stub">
       <UniqueIdentifier>{a2160cc5-f9a6-47d6-b537-be79b1e819d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\platform\scripting\lua">
+      <UniqueIdentifier>{f84e4025-c703-41a4-9b96-cb6d0bbb4c60}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -22,8 +22,7 @@ namespace solo
 		Graphics& operator=(Graphics&& other) = delete;
 		virtual ~Graphics() {}
 
-		virtual void renderSurfaceToTarget(Material* material, RenderTarget* target) = 0;
-		virtual void renderSurfaceToScreen(Material* material) = 0;
+		virtual void renderSurface(Material* material, RenderTarget* target) = 0;
 
 	protected:
 		explicit Graphics(Device *device);

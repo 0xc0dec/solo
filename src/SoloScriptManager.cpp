@@ -1,5 +1,5 @@
 #include "SoloScriptManager.h"
-#include "platform/scripting/SoloLuaScriptManager.h"
+#include "platform/scripting/lua/SoloLuaScriptManager.h"
 
 using namespace solo;
 

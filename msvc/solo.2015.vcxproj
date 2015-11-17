@@ -76,8 +76,9 @@
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderTarget.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLTexture2D.h" />
     <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h" />
-    <ClInclude Include="..\src\platform\scripting\SoloLuaScriptComponent.h" />
-    <ClInclude Include="..\src\platform\scripting\SoloLuaScriptManager.h" />
+    <ClInclude Include="..\src\platform\scripting\lua\SoloLuaGraphics.h" />
+    <ClInclude Include="..\src\platform\scripting\lua\SoloLuaScriptComponent.h" />
+    <ClInclude Include="..\src\platform\scripting\lua\SoloLuaScriptManager.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubCamera.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubCubeTexture.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubDevice.h" />
@@ -107,6 +108,9 @@
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderTarget.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLTexture2D.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp" />
+    <ClCompile Include="..\src\platform\scripting\lua\SoloLuaGraphics.cpp" />
+    <ClCompile Include="..\src\platform\scripting\lua\SoloLuaScriptComponent.cpp" />
+    <ClCompile Include="..\src\platform\scripting\lua\SoloLuaScriptManager.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubDevice.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubEffect.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubImageLoader.cpp" />
@@ -145,8 +149,6 @@
     <ClCompile Include="..\thirdparty\zlib\src\trees.c" />
     <ClCompile Include="..\thirdparty\zlib\src\uncompr.c" />
     <ClCompile Include="..\thirdparty\zlib\src\zutil.c" />
-    <ClCompile Include="..\src\platform\scripting\SoloLuaScriptComponent.cpp" />
-    <ClCompile Include="..\src\platform\scripting\SoloLuaScriptManager.cpp" />
     <ClCompile Include="..\src\SoloBoundingBox.cpp" />
     <ClCompile Include="..\src\SoloBoundingSphere.cpp" />
     <ClCompile Include="..\src\SoloCamera.cpp" />
