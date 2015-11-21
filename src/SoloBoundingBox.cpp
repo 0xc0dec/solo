@@ -2,7 +2,6 @@
 #include "SoloPlane.h"
 #include "SoloBoundingSphere.h"
 #include "SoloMatrix.h"
-#include "SoloMath.h"
 #include "SoloFrustum.h"
 #include "SoloRay.h"
 #include <algorithm>

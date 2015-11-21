@@ -1,6 +1,5 @@
 #include "SoloBoundingSphere.h"
 #include "SoloBoundingBox.h"
-#include "SoloMath.h"
 #include "SoloRay.h"
 #include "SoloFrustum.h"
 #include <algorithm>
