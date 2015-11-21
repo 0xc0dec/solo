@@ -183,4 +183,19 @@ namespace solo
 	{
 		return graphics.get();
 	}
+
+	inline void Device::setStartCallback(std::function<void()> callback)
+	{
+		startCallback = callback;
+	}
+
+	inline void Device::setShutdownCallback(std::function<void()> callback)
+	{
+		shutdownCallback = callback;
+	}
+
+	inline void Device::setShutdownRequestedCallback(std::function<bool()> callback)
+	{
+		shutdownRequestedCallback = callback;
+	}
 }

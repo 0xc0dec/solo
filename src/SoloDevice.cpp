@@ -45,24 +45,6 @@ void Device::run()
 }
 
 
-void Device::setStartCallback(std::function<void()> callback)
-{
-	startCallback = callback;
-}
-
-
-void Device::setShutdownCallback(std::function<void()> callback)
-{
-	shutdownCallback = callback;
-}
-
-
-void Device::setShutdownRequestedCallback(std::function<bool()> callback)
-{
-	shutdownRequestedCallback = callback;
-}
-
-
 bool Device::isKeyPressed(KeyCode code, bool firstTimeOnly) const
 {
 	auto where = pressedKeys.find(code);
