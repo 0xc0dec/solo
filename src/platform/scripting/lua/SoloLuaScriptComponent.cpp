@@ -94,7 +94,7 @@ LuaRef LuaScriptComponent::findScript(lua_State *lua, Node* node, const std::str
 
 void LuaScriptComponent::addScript(Node* node, LuaRef& component)
 {
-	auto actualComponent = SL_NEW<LuaScriptComponent>(*node, component);
+	auto actualComponent = SL_MAKE_SHARED<LuaScriptComponent>(*node, component);
 	node->getScene()->addComponent(node->getId(), actualComponent);
 }
 

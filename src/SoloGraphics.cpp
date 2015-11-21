@@ -9,8 +9,8 @@ using namespace solo;
 shared<Graphics> Graphics::create(Device* device)
 {
 	if (device->getMode() == DeviceMode::OpenGL)
-		return SL_NEW2(OpenGLGraphics, device);
-	return SL_NEW2(StubGraphics, device);
+		return SL_NEW_SHARED(OpenGLGraphics, device);
+	return SL_NEW_SHARED(StubGraphics, device);
 }
 
 

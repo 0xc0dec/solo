@@ -19,5 +19,5 @@ bool StubImageLoader::isLoadable(const std::string& uri)
 
 shared<Image> StubImageLoader::load(const std::string& uri)
 {
-	return SL_NEW2(Image);
+	return SL_NEW_SHARED(Image);
 }

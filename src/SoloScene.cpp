@@ -10,7 +10,7 @@ using namespace solo;
 
 shared<Scene> Scene::create(Device *device)
 {
-	return SL_NEW2(Scene, device);
+	return SL_NEW_SHARED(Scene, device);
 }
 
 
@@ -30,7 +30,7 @@ Scene::~Scene()
 
 shared<Node> Scene::createNode()
 {
-	auto node = SL_NEW2(Node, this, nodeCounter++);
+	auto node = SL_NEW_SHARED(Node, this, nodeCounter++);
 	node->addComponent<Transform>();
 	return node;
 }

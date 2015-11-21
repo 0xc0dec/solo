@@ -64,8 +64,8 @@ namespace solo
 	template <typename T, typename... Args>
 	inline T* Node::addComponent(Scene *scene, size_t nodeId, Args... args)
 	{
-		auto cmp = SL_NEW<T>(Node(scene, nodeId), args...);
-		auto base = SL_STATIC_CAST<Component>(cmp);
+		auto cmp = SL_MAKE_SHARED<T>(Node(scene, nodeId), args...);
+		auto base = SL_SHARED_STATIC_CAST<Component>(cmp);
 		scene->addComponent(nodeId, base);
 		return cmp.get();
 	}

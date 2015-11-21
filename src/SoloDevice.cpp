@@ -12,8 +12,8 @@ using namespace solo;
 shared<Device> Device::create(const DeviceCreationArgs& args)
 {
 	if (args.mode == DeviceMode::OpenGL)
-		return SL_NEW2(SDLOpenGLDevice, args);
-	return SL_NEW2(StubDevice, args);
+		return SL_NEW_SHARED(SDLOpenGLDevice, args);
+	return SL_NEW_SHARED(StubDevice, args);
 }
 
 

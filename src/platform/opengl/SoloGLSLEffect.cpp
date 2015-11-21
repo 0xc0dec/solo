@@ -132,7 +132,7 @@ void GLSLEffect::discoverVariables()
 			samplerIndex += size;
 		}
 
-		auto variable = SL_NEW2(GLSLEffectVariable, name, location, type, index);
+		auto variable = SL_NEW_SHARED(GLSLEffectVariable, name, location, type, index);
 		variables[name] = variable;
 	}
 }

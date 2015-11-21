@@ -26,7 +26,7 @@ Transform::Transform(Node node):
 
 shared<Transform> Transform::create(Node node)
 {
-	return SL_NEW2(Transform, node);
+	return SL_NEW_SHARED(Transform, node);
 }
 
 

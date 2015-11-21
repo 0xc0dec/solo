@@ -6,7 +6,7 @@ using namespace solo;
 
 shared<Model> Model::create()
 {
-	return SL_NEW2(Model);
+	return SL_NEW_SHARED(Model);
 }
 
 

@@ -9,7 +9,7 @@ using namespace solo;
 
 shared<ModelRenderer> ModelRenderer::create(Node node)
 {
-	return SL_NEW2(ModelRenderer, node);
+	return SL_NEW_SHARED(ModelRenderer, node);
 }
 
 

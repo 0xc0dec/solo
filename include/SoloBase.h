@@ -13,10 +13,9 @@
 
 namespace solo
 {
-#	define SL_STATIC_CAST		std::static_pointer_cast
-#	define SL_DYNAMIC_CAST		std::dynamic_pointer_cast
-#	define SL_NEW				std::make_shared
-#	define SL_NEW2(type, ...)	std::shared_ptr<type>(new type(__VA_ARGS__))
+#	define SL_SHARED_STATIC_CAST		std::static_pointer_cast
+#	define SL_MAKE_SHARED				std::make_shared
+#	define SL_NEW_SHARED(type, ...)	std::shared_ptr<type>(new type(__VA_ARGS__))
 
 	// Having this pointer means that the code owns the pointed object (just like, maybe, several other places).
 	// Code that works with raw pointers doesn't claim to own the pointed object.

@@ -7,7 +7,7 @@ using namespace solo;
 
 shared<Spectator> Spectator::create(const Node& node)
 {
-	return SL_NEW2(Spectator, node);
+	return SL_NEW_SHARED(Spectator, node);
 }
 
 

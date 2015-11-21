@@ -8,6 +8,6 @@ using namespace solo;
 shared<RenderTarget> RenderTarget::create(DeviceMode mode)
 {
 	if (mode == DeviceMode::OpenGL)
-		return SL_NEW2(OpenGLRenderTarget);
-	return SL_NEW2(StubRenderTarget);
+		return SL_NEW_SHARED(OpenGLRenderTarget);
+	return SL_NEW_SHARED(StubRenderTarget);
 }

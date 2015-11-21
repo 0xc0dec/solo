@@ -19,16 +19,16 @@ using namespace solo;
 shared<ResourceManager> ResourceManager::create(Device *device)
 {
 	if (device->getMode() == DeviceMode::Stub)
-		return SL_NEW2(StubResourceManager, device);
-	return SL_NEW2(ResourceManager, device);
+		return SL_NEW_SHARED(StubResourceManager, device);
+	return SL_NEW_SHARED(ResourceManager, device);
 }
 
 
 ResourceManager::ResourceManager(Device *device):
 	device(device)
 {
-	imageLoaders.push_back(SL_NEW<PngImageLoader>(device->getFileSystem(), this));
-	modelLoaders.push_back(SL_NEW<ObjModelLoader>(device->getFileSystem(), this));
+	imageLoaders.push_back(SL_MAKE_SHARED<PngImageLoader>(device->getFileSystem(), this));
+	modelLoaders.push_back(SL_MAKE_SHARED<ObjModelLoader>(device->getFileSystem(), this));
 }
 
 

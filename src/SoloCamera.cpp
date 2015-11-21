@@ -23,8 +23,8 @@ const unsigned DIRTY_BIT_ALL =
 shared<Camera> Camera::create(DeviceMode mode, Scene* scene, Node node)
 {
 	if (mode == DeviceMode::OpenGL)
-		return SL_NEW2(OpenGLCamera, scene, node);
-	return SL_NEW2(StubCamera, scene, node);
+		return SL_NEW_SHARED(OpenGLCamera, scene, node);
+	return SL_NEW_SHARED(StubCamera, scene, node);
 }
 
 

@@ -74,7 +74,7 @@ shared<Image> PngImageLoader::load(const std::string& uri)
 	}
 
 	auto stride = png_get_rowbytes(png, info);
-	auto result = SL_NEW2(Image, { width, height, colorFormat });
+	auto result = SL_NEW_SHARED(Image, { width, height, colorFormat });
 	result->data.resize(stride * height);
 	auto rows = png_get_rows(png, info);
 	for (unsigned int i = 0; i < height; ++i)

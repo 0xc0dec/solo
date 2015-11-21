@@ -11,8 +11,8 @@ using namespace solo;
 shared<Material> Material::create(DeviceMode mode, shared<Effect> effect)
 {
 	if (mode == DeviceMode::OpenGL)
-		return SL_NEW2(OpenGLMaterial, effect);
-	return SL_NEW2(StubMaterial, effect);
+		return SL_NEW_SHARED(OpenGLMaterial, effect);
+	return SL_NEW_SHARED(StubMaterial, effect);
 }
 
 
@@ -46,7 +46,7 @@ MaterialParameter* Material::getParameter(const std::string& name)
 	auto where = parameters.find(name);
 	if (where != parameters.end())
 		return where->second.get();
-	auto parameter = SL_NEW2(MaterialParameter, name, this);
+	auto parameter = SL_NEW_SHARED(MaterialParameter, name, this);
 	parameters[name] = parameter;
 	return parameter.get();
 }

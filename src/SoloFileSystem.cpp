@@ -6,7 +6,7 @@ using namespace solo;
 
 shared<FileSystem> FileSystem::create()
 {
-	return SL_NEW2(FileSystem);
+	return SL_NEW_SHARED(FileSystem);
 }
 
 

@@ -11,16 +11,16 @@ using namespace solo;
 shared<Texture2D> Texture::create2D(DeviceMode mode)
 {
 	if (mode == DeviceMode::OpenGL)
-		return SL_NEW2(OpenGLTexture2D);
-	return SL_NEW2(StubTexture2D);
+		return SL_NEW_SHARED(OpenGLTexture2D);
+	return SL_NEW_SHARED(StubTexture2D);
 }
 
 
 shared<CubeTexture> Texture::createCube(DeviceMode mode)
 {
 	if (mode == DeviceMode::OpenGL)
-		return SL_NEW2(OpenGLCubeTexture);
-	return SL_NEW2(StubCubeTexture);
+		return SL_NEW_SHARED(OpenGLCubeTexture);
+	return SL_NEW_SHARED(StubCubeTexture);
 }
 
 
