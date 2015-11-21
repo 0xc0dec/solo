@@ -18,7 +18,7 @@ static const float MATRIX_IDENTITY[16] =
 
 Matrix::Matrix()
 {
-	*this = Matrix::identity();
+	*this = identity();
 }
 
 
