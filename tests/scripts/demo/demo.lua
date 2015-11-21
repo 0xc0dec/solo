@@ -153,10 +153,10 @@ function initObjects()
 	-- Textured quad
 	parent = scene:createNode()
 	parent:findComponent("Transform"):setLocalPosition(solo.Vector3(5, 0, 0))
-	parent:addScriptComponent(createWorldYRotator())
+	parent:addScript(createWorldYRotator())
 	initAxesModel(parent)
 	quad = createQuad()
-	quad:addScriptComponent(createLocalXRotator());
+	quad:addScript(createLocalXRotator());
 	quad:findComponent("Transform"):setParent(parent:findComponent("Transform"))
 	quad:findComponent("Transform"):setLocalPosition(solo.Vector3(2, 0, 0))
 	quad:findComponent("ModelRenderer"):setMaterialForMesh(0, demo.materials.simpleTexture)
@@ -166,7 +166,7 @@ function initObjects()
 	rebuildToBoxMesh(node)
 	node:findComponent("ModelRenderer"):setMaterialForMesh(0, demo.materials.checker)
 	node:findComponent("Transform"):setLocalPosition(solo.Vector3(-5, 0, 0))
-	node:addScriptComponent(createWorldYRotator())
+	node:addScript(createWorldYRotator())
 
 	-- Monkey
 	local node = scene:createNode()
@@ -174,12 +174,12 @@ function initObjects()
 	renderer:setModel(demo.models.monkey)
 	renderer:setMaterial(demo.materials.textureWithLighting)
 	node:findComponent("Transform"):setLocalPosition(solo.Vector3.zero())
-	node:addScriptComponent(createLocalXRotator())
+	node:addScript(createLocalXRotator())
 
 	-- RTT quad
 	local parent = scene:createNode()
 	parent:findComponent("Transform"):setLocalPosition(solo.Vector3(-2, 2, -2))
-	parent:addScriptComponent(createWorldYRotator())
+	parent:addScript(createWorldYRotator())
 	initAxesModel(parent)
 
 	local quad = createQuad()
@@ -190,7 +190,7 @@ function initObjects()
 	quadTransform:setParent(parent:findComponent("Transform"))
 	quadTransform:setLocalPosition(solo.Vector3(5, 2, -5))
 	quadTransform:setLocalScale(solo.Vector3(5, 5 * canvasSize.y / canvasSize.x, 1))
-	quad:addScriptComponent(createTargeter(node:findComponent("Transform"))) -- monkey
+	quad:addScript(createTargeter(node:findComponent("Transform"))) -- monkey
 end
 
 
@@ -230,12 +230,12 @@ function initCameras()
 	local mainCameraTransform = mainCameraNode:findComponent("Transform")
 	mainCameraTransform:setLocalPosition(solo.Vector3(0, 2, 15))
 	mainCameraNode:addComponent("Spectator")
-	mainCameraNode:addScriptComponent(createEscapeWatcher())
+	mainCameraNode:addScript(createEscapeWatcher())
 	local mainCamera = mainCameraNode:addComponent("Camera")
 	mainCamera:setClearColor(0, 0.6, 0.6, 1)
 	mainCamera:setNear(0.05)
 	mainCamera:setRenderTarget(demo.renderTargets.mainCameraRT)
-	mainCameraNode:addScriptComponent(createPostProcessor(demo.textures.mainCameraRTT, shaders))
+	mainCameraNode:addScript(createPostProcessor(demo.textures.mainCameraRTT, shaders))
 
 	local canvasSize = device:getCanvasSize()
 	local offscreenCameraNode = scene:createNode()

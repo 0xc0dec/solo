@@ -77,13 +77,13 @@ Component* LuaScriptComponent::findComponent(Node* node, const std::string& type
 }
 
 
-std::function<LuaRef(Node*, const std::string&)> LuaScriptComponent::getFindScriptComponentFunc(lua_State* lua)
+std::function<LuaRef(Node*, const std::string&)> LuaScriptComponent::getFindScriptFunc(lua_State* lua)
 {
-	return std::bind(&findScriptComponent, lua, std::placeholders::_1, std::placeholders::_2);
+	return std::bind(&findScript, lua, std::placeholders::_1, std::placeholders::_2);
 }
 
 
-LuaRef LuaScriptComponent::findScriptComponent(lua_State *lua, Node* node, const std::string& componentTypeId)
+LuaRef LuaScriptComponent::findScript(lua_State *lua, Node* node, const std::string& componentTypeId)
 {
 	auto typeId = getHash(componentTypeId);
 	auto component = node->getScene()->findComponent(node->getId(), typeId);
@@ -92,7 +92,7 @@ LuaRef LuaScriptComponent::findScriptComponent(lua_State *lua, Node* node, const
 }
 
 
-void LuaScriptComponent::addScriptComponent(Node* node, LuaRef& component)
+void LuaScriptComponent::addScript(Node* node, LuaRef& component)
 {
 	auto actualComponent = SL_NEW<LuaScriptComponent>(*node, component);
 	node->getScene()->addComponent(node->getId(), actualComponent);
@@ -130,7 +130,7 @@ void LuaScriptComponent::removeComponent(Node* node, const std::string& typeName
 }
 
 
-void LuaScriptComponent::removeScriptComponent(Node* node, const std::string& componentTypeId)
+void LuaScriptComponent::removeScript(Node* node, const std::string& componentTypeId)
 {
 	auto typeId = getHash(componentTypeId);
 	node->getScene()->removeComponent(node->getId(), typeId);

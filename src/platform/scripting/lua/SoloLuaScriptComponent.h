@@ -24,12 +24,12 @@ namespace solo
 		static Component* addComponent(Node *node, const std::string& typeName);
 		static void removeComponent(Node *node, const std::string& typeName);
 
-		static std::function<LuaIntf::LuaRef(Node *, const std::string&)> getFindScriptComponentFunc(lua_State *lua);
-		static void addScriptComponent(Node *node, LuaIntf::LuaRef& component);
-		static void removeScriptComponent(Node *node, const std::string& componentTypeId);
+		static std::function<LuaIntf::LuaRef(Node *, const std::string&)> getFindScriptFunc(lua_State *lua);
+		static void addScript(Node *node, LuaIntf::LuaRef& component);
+		static void removeScript(Node *node, const std::string& componentTypeId);
 
 	private:
-		static LuaIntf::LuaRef findScriptComponent(lua_State *lua, Node *node, const std::string& componentTypeId);
+		static LuaIntf::LuaRef findScript(lua_State *lua, Node *node, const std::string& componentTypeId);
 
 		size_t typeId;
 		LuaIntf::LuaRef component;
