@@ -44,8 +44,6 @@ namespace solo
 
 		explicit Scene(Device *device);
 
-		void iterateComponents(ComponentIterationWorker work);
-
 		template <class T>
 		void updateRenderQueue(std::list<T>& queue, size_t componentTypeIdFilter);
 

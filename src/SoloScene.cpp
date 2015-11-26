@@ -15,9 +15,8 @@ shared<Scene> Scene::create(Device *device)
 
 
 Scene::Scene(Device* device) :
-	device{ device }
+	device(device)
 {
-	
 }
 
 
@@ -108,27 +107,32 @@ void Scene::updateRenderQueue(std::list<T>& queue, size_t cmpTypeIdFilter)
 {
 	queue.clear();
 
-	iterateComponents([&](size_t nodeId, Component* component)
+	for (auto& nodeComponents : components)
 	{
-		if (cmpTypeIdFilter > 0 && component->getTypeId() != cmpTypeIdFilter)
-			return;
-
-		if (component->getRenderQueue() == KnownRenderQueues::NotRendered)
-			return;
-
-		auto transform = Node::findComponent<Transform>(this, nodeId);
-		if (!transform) // TODO save this transform for later use
-			return;
-
-		for (auto it = queue.begin();; ++it)
+		auto nodeId = nodeComponents.first;
+		for (auto& pair : nodeComponents.second)
 		{
-			if (it == queue.end() || component->getRenderQueue() < (*it)->getRenderQueue())
+			auto component = pair.second.get();
+			if (cmpTypeIdFilter > 0 && component->getTypeId() != cmpTypeIdFilter)
+				continue;
+
+			if (component->getRenderQueue() == KnownRenderQueues::NotRendered)
+				continue;
+
+			auto transform = Node::findComponent<Transform>(this, nodeId);
+			if (!transform) // TODO save this transform for later use
+				continue;
+
+			for (auto it = queue.begin();; ++it)
 			{
-				queue.insert(it, component);
-				break;
+				if (it == queue.end() || component->getRenderQueue() < (*it)->getRenderQueue())
+				{
+					queue.insert(it, component);
+					break;
+				}
 			}
 		}
-	});
+	}
 }
 
 
@@ -184,13 +188,3 @@ void Scene::render()
 	}
 }
 
-
-void Scene::iterateComponents(ComponentIterationWorker work)
-{
-	for (auto& nodeComponents : components)
-	{
-		auto nodeId = nodeComponents.first;
-		for (auto& component : nodeComponents.second)
-			work(nodeId, component.second.get());
-	}
-}
