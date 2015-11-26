@@ -74,6 +74,18 @@ LuaScriptManager::~LuaScriptManager()
 }
 
 
+void LuaScriptManager::execute(const std::string& code)
+{
+	lua.doString(code.c_str());
+}
+
+
+void LuaScriptManager::executeFile(const std::string& path)
+{
+	lua.doFile(path.c_str());
+}
+
+
 void LuaScriptManager::registerApi()
 {
 	auto module = LuaBinding(lua).beginModule("solo");
@@ -568,7 +580,7 @@ void LuaScriptManager::registerApi()
 	REGISTER_METHOD(camera, Camera, setAspectRatio);
 	REGISTER_METHOD(camera, Camera, getRenderTags);
 	camera.endClass();
-	
+
 	// Spectator
 	auto spectator = module.beginExtendClass<Spectator, Component>("Spectator");
 	REGISTER_METHOD(spectator, Spectator, getHorizontalRotationSpeed);
@@ -800,16 +812,4 @@ void LuaScriptManager::registerApi()
 	.endClass();
 
 	module.endModule();
-}
-
-
-void LuaScriptManager::execute(const std::string& code)
-{
-	lua.doString(code.c_str());
-}
-
-
-void LuaScriptManager::executeFile(const std::string& path)
-{
-	lua.doFile(path.c_str());
 }
