@@ -20,6 +20,28 @@ bool ObjModelLoader::isLoadable(const std::string& uri)
 }
 
 
+Vector3 parseVector3(const char *rangeStart, const char *rangeEnd)
+{
+	char buf[16];
+	size_t bufIdx = 0;
+	float result[3];
+	size_t resultIdx = -1;
+	for (; rangeStart <= rangeEnd; ++rangeStart)
+	{
+		auto c = *rangeStart;
+		if ((rangeStart == rangeEnd || isspace(c)) && bufIdx > 0)
+		{
+			buf[bufIdx] = '\0';
+			result[++resultIdx] = atof(buf);
+			bufIdx = 0;
+		}
+		else
+			buf[bufIdx++] = c;
+	}
+	return Vector3(result[0], result[1], result[2]);
+}
+
+
 shared<Model> ObjModelLoader::load(const std::string& uri)
 {
 	std::vector<Vector3> inputVertices, vertices;
@@ -36,33 +58,25 @@ shared<Model> ObjModelLoader::load(const std::string& uri)
 	// Yes, tons of other TODOs... but still what we have is enough for now
 	auto lines = fs->readLines(uri);
 	auto lineCount = lines.size();
-	std::string currentMeshName;
+	std::string meshName;
+	std::string threes[3];
 	for (auto i = 0; i < lineCount; ++i)
 	{
+		auto line = lines.at(i);
 		std::istringstream l(lines.at(i));
 		std::string type;
 		l >> type;
 		if (type == "v")
-		{
-			Vector3 v;
-			l >> v.x >> v.y >> v.z;
-			inputVertices.push_back(v);
-		}
+			inputVertices.push_back(parseVector3(line.c_str() + 2, line.c_str() + line.size() - 2));
 		else if (type == "vn")
-		{
-			Vector3 n;
-			l >> n.x >> n.y >> n.z;
-			inputNormals.push_back(n);
-		}
+			inputNormals.push_back(parseVector3(line.c_str() + 3, line.c_str() + line.size() - 3));
 		else if (type == "vt")
 		{
-			Vector2 uv;
-			l >> uv.x >> uv.y;
-			inputUvs.push_back(uv);
+			auto uv = parseVector3(line.c_str() + 3, line.c_str() + line.size() - 3);
+			inputUvs.push_back(Vector2(uv.x, uv.y));
 		}
 		else if (type == "f")
 		{
-			std::string threes[3];
 			char dummy;
 			l >> threes[0] >> threes[1] >> threes[2];
 			for (auto &three: threes)
@@ -92,8 +106,8 @@ shared<Model> ObjModelLoader::load(const std::string& uri)
 			if (!vertices.empty())
 			{
 				auto meshUri = uri + "/";
-				if (!currentMeshName.empty())
-					meshUri += currentMeshName;
+				if (!meshName.empty())
+					meshUri += meshName;
 				else
 					meshUri += std::to_string(meshes.size());
 				auto mesh = resourceManager->getOrCreateMesh(meshUri); // assume that the mesh doesn't exist yet
@@ -109,7 +123,7 @@ shared<Model> ObjModelLoader::load(const std::string& uri)
 				uniqueIndices.clear();
 			}
 			if (type == "o")
-				l >> currentMeshName;
+				l >> meshName;
 		}
 	}
 
