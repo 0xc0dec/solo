@@ -3,7 +3,6 @@
 #include "SoloModel.h"
 #include "SoloFileSystem.h"
 #include "SoloResourceManager.h"
-#include <sstream>
 
 using namespace solo;
 
