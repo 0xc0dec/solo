@@ -1,3 +1,6 @@
+## Current progress
+![Current progress](/screenshot2.png?raw=true)
+
 ## Third-party libraries
 * GLEW
 * Lua
@@ -5,6 +8,3 @@
 * png
 * SDL
 * zlib
-
-## Current progress
-![Current progress](/screenshot2.png?raw=true)
