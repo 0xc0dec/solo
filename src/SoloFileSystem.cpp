@@ -44,18 +44,29 @@ std::string FileSystem::readText(const std::string& path)
 
 std::vector<std::string> FileSystem::readLines(const std::string& path)
 {
+	std::vector<std::string> result;
+	iterateLines(path, [&](const std::string& s)
+	{
+		result.push_back(s);
+		return true;
+	});
+	return result;
+}
+
+
+void FileSystem::iterateLines(const std::string& path, std::function<bool(const std::string&)> process)
+{
 	std::ifstream file(path);
 	if (!file.is_open())
 		SL_THROW_FMT(EngineException, "Failed to open file '", path, "'");
-	std::vector<std::string> result;
 	while (!file.eof())
 	{
 		std::string line;
 		std::getline(file, line);
-		result.push_back(line);
+		if (!process(line))
+			break;
 	}
 	file.close();
-	return result;
 }
 
 

@@ -20,6 +20,7 @@ namespace solo
 
 		std::string readText(const std::string& path);
 		std::vector<std::string> readLines(const std::string& path);
+		void iterateLines(const std::string& path, std::function<bool(const std::string&)> process);
 		void writeLines(const std::string& path, const std::vector<std::string>& lines);
 
 	private:
