@@ -33,7 +33,6 @@ void runCppUnitTests()
 	device->setStartCallback([&]
 	{
 		Resources_Test(device.get()).run();
-		FileSystem_Test(device.get()).run();
 		Device_Test(device.get()).run();
 		ComponentsAndNodes_Test(device.get()).run();
 		Transform_Test(device.get()).run();
@@ -50,6 +49,7 @@ void runCppIntegrationTests()
 	auto device = Device::create(openGlArgs);
 	device->setStartCallback([&]
 	{
+		FileSystem_Test(device.get()).run();
 		Materials_Test(device.get()).run();
 		RenderTargets_Test(device.get()).run();
 		device->requestShutdown();

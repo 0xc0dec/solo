@@ -1,11 +1,15 @@
 #include "SoloFileSystem.h"
+#include "SoloDevice.h"
+#include "platform/stub/SoloStubFileSystem.h"
 #include <fstream>
 
 using namespace solo;
 
 
-shared<FileSystem> FileSystem::create()
+shared<FileSystem> FileSystem::create(Device *device)
 {
+	if (device->getMode() == DeviceMode::Stub)
+		return SL_NEW_SHARED(StubFileSystem);
 	return SL_NEW_SHARED(FileSystem);
 }
 

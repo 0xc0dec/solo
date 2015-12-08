@@ -84,6 +84,7 @@
     <ClInclude Include="..\src\platform\stub\SoloStubDevice.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubEffect.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubEffectVariable.h" />
+    <ClInclude Include="..\src\platform\stub\SoloStubFileSystem.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubGraphics.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubImageLoader.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubMaterial.h" />
@@ -113,6 +114,7 @@
     <ClCompile Include="..\src\platform\scripting\lua\SoloLuaScriptManager.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubDevice.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubEffect.cpp" />
+    <ClCompile Include="..\src\platform\stub\SoloStubFileSystem.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubImageLoader.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubModelLoader.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubResourceManager.cpp" />

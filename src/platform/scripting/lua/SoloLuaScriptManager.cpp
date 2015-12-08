@@ -807,9 +807,12 @@ void LuaScriptManager::registerApi()
 	graphics.endClass();
 
 	// FileSystem
-	module.beginClass<FileSystem>("FileSystem")
-		// TODO
-	.endClass();
+	auto fs = module.beginClass<FileSystem>("FileSystem");
+	REGISTER_METHOD(fs, FileSystem, iterateLines);
+	REGISTER_METHOD(fs, FileSystem, readLines);
+	REGISTER_METHOD(fs, FileSystem, readText);
+	REGISTER_METHOD(fs, FileSystem, writeLines);
+	fs.endClass();
 
 	module.endModule();
 }
