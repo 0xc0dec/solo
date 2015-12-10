@@ -7,6 +7,7 @@
 * Render to texture
 * Convenient system for applying post-processing effects
 
+All features in one picture:
 ![Current progress](/screenshot2.png?raw=true)
 
 ## Third-party libraries
