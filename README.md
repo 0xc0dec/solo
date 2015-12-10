@@ -6,6 +6,7 @@
 * Very basic resource manager
 * Render to texture
 * Convenient system for applying post-processing effects
+
 ![Current progress](/screenshot2.png?raw=true)
 
 ## Third-party libraries
