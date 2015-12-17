@@ -1,4 +1,7 @@
-## Current progress
+## WAT?
+An engine that I'm planning to use for my graphics/gamedev experiments. Not intended for something serious really.
+
+## What's currently inside
 * High-level API exposed to both C++ and Lua.
 * Object hierarchies/scene graph.
 * Component system: scenes consist of nodes, nodes hold any number of components. Components implement all in-game logic and allow building flexible and modular architecture. Inspired by Unity.
@@ -10,7 +13,7 @@
 In one picture:
 ![Current progress](/screenshot2.png?raw=true)
 
-## Third-party libraries
+## Made possible thanks to
 * GLEW
 * Lua
 * lua-intf
