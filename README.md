@@ -1,5 +1,5 @@
 ## WAT?
-An engine that I'm planning to use for my graphics/gamedev experiments. Not meant for something serious really.
+An engine for my personal graphics/gamedev experiments. Not meant for something serious, really.
 
 ## What's currently inside
 * High-level API exposed to both C++ and Lua.
