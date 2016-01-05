@@ -53,7 +53,7 @@ bool Vector2::isUnit() const
 float Vector2::angle(const Vector2& v1, const Vector2& v2)
 {
 	auto dz = v1.x * v2.y - v1.y * v2.x;
-	return atan2f(fabsf(dz) + Math::FLOAT_SMALL, dot(v1, v2));
+	return atan2f(fabsf(dz) + Math::SMALL_FLOAT2, dot(v1, v2));
 }
 
 
@@ -129,8 +129,7 @@ void Vector2::normalize()
 		return;
 
 	n = sqrt(n);
-	// Too close to zero.
-	if (n < Math::TOLERANCE)
+	if (n < Math::SMALL_FLOAT2)
 		return;
 
 	n = 1.0f / n;

@@ -48,16 +48,17 @@ Vector3 Plane::intersection(const Plane& p1, const Plane& p2, const Plane& p3)
 
 	// The planes' normals must be all normalized (which we guarantee in the Plane class).
 	// Calculate the determinant of the matrix (i.e | n1 n2 n3 |).
-	auto det = p1.normal.x * (p2.normal.y * p3.normal.z -
-		p2.normal.z * p3.normal.y) - p2.normal.x *(p1.normal.y * p3.normal.z -
-		p1.normal.z * p3.normal.y) + p3.normal.x * (p1.normal.y * p2.normal.z - p1.normal.z * p2.normal.y);
+	auto det =
+		p1.normal.x * (p2.normal.y * p3.normal.z - p2.normal.z * p3.normal.y) -
+		p2.normal.x *(p1.normal.y * p3.normal.z - p1.normal.z * p3.normal.y) + 
+		p3.normal.x * (p1.normal.y * p2.normal.z - p1.normal.z * p2.normal.y);
 
-	// If the determinant is zero, then the planes do not all intersect.
-	if (fabs(det) <= Math::EPSILON)
+	// If the determinant is zero, then the planes do not all intersect
+	if (Math::isApproxZero(det))
 		return result;
 
-	// Create 3 points, one on each plane.
-	// (We just pick the point on the plane directly along its normal from the origin).
+	// Create 3 points, one on each plane
+	// (we just pick the point on the plane directly along its normal from the origin)
 	auto p1x = -p1.normal.x * p1.distance;
 	auto p1y = -p1.normal.y * p1.distance;
 	auto p1z = -p1.normal.z * p1.distance;
@@ -68,7 +69,7 @@ Vector3 Plane::intersection(const Plane& p1, const Plane& p2, const Plane& p3)
 	auto p3y = -p3.normal.y * p3.distance;
 	auto p3z = -p3.normal.z * p3.distance;
 
-	// Calculate the cross products of the normals.
+	// Calculate the cross products of the normals
 	auto c1x = p2.normal.y * p3.normal.z - p2.normal.z * p3.normal.y;
 	auto c1y = p2.normal.z * p3.normal.x - p2.normal.x * p3.normal.z;
 	auto c1z = p2.normal.x * p3.normal.y - p2.normal.y * p3.normal.x;
@@ -151,29 +152,30 @@ PlaneIntersection Plane::getIntersection(const Frustum &frustum) const
 
 PlaneIntersection Plane::getIntersection(const Plane &plane) const
 {
-	// Check if the planes intersect.
-	if ((normal.x == plane.normal.x && normal.y == plane.normal.y && normal.z == plane.normal.z) || !isParallel(plane))
+	if (Math::isApproxZero(normal.x - plane.normal.x) &&
+		Math::isApproxZero(normal.y - plane.normal.y) &&
+		Math::isApproxZero(normal.z - plane.normal.z) || !isParallel(plane))
+	{
 		return PlaneIntersection::Intersecting;
+	}
 
-	// Calculate the point where the given plane's normal vector getIntersection the given plane.
+	// Calculate the point where the given plane's normal vector intersects the given plane
 	Vector3 point(plane.normal.x * -plane.distance, plane.normal.y * -plane.distance, plane.normal.z * -plane.distance);
 
 	// Calculate whether the given plane is in the positive or negative half-space of this plane
 	// (corresponds directly to the sign of the distance from the point calculated above to this plane).
-	if (getDistanceToPoint(point) > 0.0f)
-		return PlaneIntersection::Front;
-	return PlaneIntersection::Back;
+	return getDistanceToPoint(point) > 0.0f ? PlaneIntersection::Front : PlaneIntersection::Back;
 }
 
 
 PlaneIntersection Plane::getIntersection(const Ray &ray) const
 {
-	// Calculate the distance from the ray's origin to the plane.
 	auto d = getDistanceToPoint(ray.getOrigin());
 
 	// If the origin of the ray lies in the plane, then it getIntersection.
-	if (d == 0.0f)
+	if (Math::isApproxZero(d))
 		return PlaneIntersection::Intersecting;
+
 	auto rayDirection = ray.getDirection();
 	// If the dot product of this plane's normal and the ray's direction is positive, and
 	// if the distance from this plane to the ray's origin is negative -> intersection, OR
@@ -187,9 +189,9 @@ PlaneIntersection Plane::getIntersection(const Ray &ray) const
 
 bool Plane::isParallel(const Plane& plane) const
 {
-	return (normal.y * plane.normal.z - normal.z * plane.normal.y) == 0.0f &&
-		(normal.z * plane.normal.x - normal.x * plane.normal.z) == 0.0f &&
-		(normal.x * plane.normal.y - normal.y * plane.normal.x) == 0.0f;
+	return Math::isApproxZero(normal.y * plane.normal.z - normal.z * plane.normal.y) &&
+		Math::isApproxZero(normal.z * plane.normal.x - normal.x * plane.normal.z) &&
+		Math::isApproxZero(normal.x * plane.normal.y - normal.y * plane.normal.x);
 }
 
 
@@ -220,10 +222,10 @@ void Plane::normalize()
 	if (normal.isZero())
 		return;
 
-	// Normalize the plane's normal.
+	// Normalize the plane's normal
 	auto normalizeFactor = 1.0f / sqrt(normal.x * normal.x + normal.y * normal.y + normal.z * normal.z);
 
-	if (normalizeFactor != 1.0f)
+	if (!Math::isApproxZero(normalizeFactor - 1.0f))
 	{
 		normal.x *= normalizeFactor;
 		normal.y *= normalizeFactor;

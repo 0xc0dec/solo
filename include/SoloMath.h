@@ -7,8 +7,9 @@ namespace solo
 	class Math
 	{
 	public:
-		static constexpr float FLOAT_SMALL = 1.0e-37f;
-		static constexpr float TOLERANCE = 2e-37f;
+		static constexpr float SMALL_FLOAT1 = 0.000001f;
+		static constexpr float SMALL_FLOAT2 = 1.0e-37f;
+		static constexpr float SMALL_FLOAT3 = 2e-37f;
 		static constexpr float E = 2.71828182845904523536f;
 		static constexpr float LOG10E = 0.4342944819032518f;
 		static constexpr float LOG2E = 1.442695040888963387f;
@@ -16,7 +17,6 @@ namespace solo
 		static constexpr float PI_OVER_2 = 1.57079632679489661923f;
 		static constexpr float PI_OVER_4 = 0.785398163397448309616f;
 		static constexpr float PIX2 = 6.28318530717958647693f;
-		static constexpr float EPSILON = 0.000001f;
 
 		static bool isApproxZero(float value);
 
@@ -31,7 +31,7 @@ namespace solo
 
 	inline bool Math::isApproxZero(float value)
 	{
-		return fabs(value) <= EPSILON;
+		return fabs(value) <= SMALL_FLOAT1;
 	}
 
 	inline float Math::degToRad(float degrees)

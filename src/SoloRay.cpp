@@ -115,7 +115,7 @@ float Ray::getIntersection(const Plane &plane) const
 	const auto& normal = plane.getNormal();
 	// If the origin of the ray is on the plane then the distance is zero.
 	auto alpha = (normal.dot(origin) + plane.getDistance());
-	if (fabs(alpha) < Math::EPSILON)
+	if (fabs(alpha) < Math::SMALL_FLOAT1)
 		return 0.0f;
 
 	auto dot = normal.dot(direction);

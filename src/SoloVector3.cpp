@@ -47,7 +47,7 @@ Vector3 Vector3::unitZ()
 
 bool Vector3::isZero() const
 {
-	return x == 0.0f && y == 0.0f && z == 0.0f;
+	return Math::isApproxZero(x) && Math::isApproxZero(y) && Math::isApproxZero(z);
 }
 
 
@@ -63,7 +63,7 @@ float Vector3::angle(const Vector3& v1, const Vector3& v2)
 	auto dy = v1.z * v2.x - v1.x * v2.z;
 	auto dz = v1.x * v2.y - v1.y * v2.x;
 
-	return atan2f(sqrt(dx * dx + dy * dy + dz * dz) + Math::FLOAT_SMALL, dot(v1, v2));
+	return atan2f(sqrt(dx * dx + dy * dy + dz * dz) + Math::SMALL_FLOAT2, dot(v1, v2));
 }
 
 
@@ -158,8 +158,7 @@ void Vector3::normalize()
 		return;
 
 	n = sqrt(n);
-	// Too close to zero
-	if (n < Math::TOLERANCE)
+	if (n < Math::SMALL_FLOAT2)
 		return;
 
 	n = 1.0f / n;

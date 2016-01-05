@@ -96,7 +96,7 @@ Matrix Matrix::createPerspective(float fieldOfView, float aspectRatio, float zNe
 {
 	auto f_n = 1.0f / (zFarPlane - zNearPlane);
 	auto theta = Math::degToRad(fieldOfView) * 0.5f;
-	if (fabs(fmod(theta, Math::PI_OVER_2)) < Math::EPSILON)
+	if (fabs(fmod(theta, Math::PI_OVER_2)) < Math::SMALL_FLOAT1)
 		SL_THROW_FMT(EngineException, "Invalid field of view value ", fieldOfView, " caused attempted tan calculation, which is undefined");
 	auto divisor = tan(theta);
 	auto factor = 1.0f / divisor;
@@ -140,7 +140,7 @@ Matrix Matrix::createBillboardHelper(const Vector3& objectPosition, const Vector
 	const Vector3& cameraUpVector, const Vector3* cameraForwardVector)
 {
 	auto delta = cameraPosition - objectPosition;
-	auto isSufficientDelta = delta.lengthSquared() > Math::EPSILON;
+	auto isSufficientDelta = delta.lengthSquared() > Math::SMALL_FLOAT1;
 
 	Matrix result;
 	result.m[3] = objectPosition.x;
@@ -401,7 +401,7 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
 		return true;
 
 	// Scale too close to zero, can't decompose rotation.
-	if (scaleX < Math::TOLERANCE || scaleY < Math::TOLERANCE || fabs(scaleZ) < Math::TOLERANCE)
+	if (scaleX < Math::SMALL_FLOAT3 || scaleY < Math::SMALL_FLOAT3 || fabs(scaleZ) < Math::SMALL_FLOAT3)
 		return false;
 
 	float rn;
@@ -425,7 +425,7 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
 	// Now calculate the rotation from the resulting matrix (axes).
 	auto trace = xaxis.x + yaxis.y + zaxis.z + 1.0f;
 
-	if (trace > Math::TOLERANCE)
+	if (trace > Math::SMALL_FLOAT3)
 	{
 		auto s = 0.5f / sqrt(trace);
 		rotation->w = 0.25f / s;
@@ -530,7 +530,7 @@ bool Matrix::invert()
 	auto det = a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
 
 	// Close to zero, can't invert
-	if (fabs(det) <= Math::TOLERANCE)
+	if (fabs(det) <= Math::SMALL_FLOAT3)
 		return false;
 
 	// Support the case where m == dst
