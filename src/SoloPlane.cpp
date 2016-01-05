@@ -69,25 +69,25 @@ Vector3 Plane::intersection(const Plane& p1, const Plane& p2, const Plane& p3)
 	auto p3z = -p3.normal.z * p3.distance;
 
 	// Calculate the cross products of the normals.
-	auto c1x = (p2.normal.y * p3.normal.z) - (p2.normal.z * p3.normal.y);
-	auto c1y = (p2.normal.z * p3.normal.x) - (p2.normal.x * p3.normal.z);
-	auto c1z = (p2.normal.x * p3.normal.y) - (p2.normal.y * p3.normal.x);
-	auto c2x = (p3.normal.y * p1.normal.z) - (p3.normal.z * p1.normal.y);
-	auto c2y = (p3.normal.z * p1.normal.x) - (p3.normal.x * p1.normal.z);
-	auto c2z = (p3.normal.x * p1.normal.y) - (p3.normal.y * p1.normal.x);
-	auto c3x = (p1.normal.y * p2.normal.z) - (p1.normal.z * p2.normal.y);
-	auto c3y = (p1.normal.z * p2.normal.x) - (p1.normal.x * p2.normal.z);
-	auto c3z = (p1.normal.x * p2.normal.y) - (p1.normal.y * p2.normal.x);
+	auto c1x = p2.normal.y * p3.normal.z - p2.normal.z * p3.normal.y;
+	auto c1y = p2.normal.z * p3.normal.x - p2.normal.x * p3.normal.z;
+	auto c1z = p2.normal.x * p3.normal.y - p2.normal.y * p3.normal.x;
+	auto c2x = p3.normal.y * p1.normal.z - p3.normal.z * p1.normal.y;
+	auto c2y = p3.normal.z * p1.normal.x - p3.normal.x * p1.normal.z;
+	auto c2z = p3.normal.x * p1.normal.y - p3.normal.y * p1.normal.x;
+	auto c3x = p1.normal.y * p2.normal.z - p1.normal.z * p2.normal.y;
+	auto c3y = p1.normal.z * p2.normal.x - p1.normal.x * p2.normal.z;
+	auto c3z = p1.normal.x * p2.normal.y - p1.normal.y * p2.normal.x;
 
 	// Calculate the point of intersection using the formula:
 	// x = (| n1 n2 n3 |)^-1 * [(x1 * n1)(n2 x n3) + (x2 * n2)(n3 x n1) + (x3 * n3)(n1 x n2)]
 	auto s1 = p1x * p1.normal.x + p1y * p1.normal.y + p1z * p1.normal.z;
 	auto s2 = p2x * p2.normal.x + p2y * p2.normal.y + p2z * p2.normal.z;
 	auto s3 = p3x * p3.normal.x + p3y * p3.normal.y + p3z * p3.normal.z;
-	auto detI = 1.0f / det;
-	result.x = (s1 * c1x + s2 * c2x + s3 * c3x) * detI;
-	result.y = (s1 * c1y + s2 * c2y + s3 * c3y) * detI;
-	result.z = (s1 * c1z + s2 * c2z + s3 * c3z) * detI;
+	auto invDet = 1.0f / det;
+	result.x = (s1 * c1x + s2 * c2x + s3 * c3x) * invDet;
+	result.y = (s1 * c1y + s2 * c2y + s3 * c3y) * invDet;
+	result.z = (s1 * c1z + s2 * c2z + s3 * c3z) * invDet;
 	return result;
 }
 
@@ -187,9 +187,9 @@ PlaneIntersection Plane::getIntersection(const Ray &ray) const
 
 bool Plane::isParallel(const Plane& plane) const
 {
-	return (normal.y * plane.normal.z) - (normal.z * plane.normal.y) == 0.0f &&
-		(normal.z * plane.normal.x) - (normal.x * plane.normal.z) == 0.0f &&
-		(normal.x * plane.normal.y) - (normal.y * plane.normal.x) == 0.0f;
+	return (normal.y * plane.normal.z - normal.z * plane.normal.y) == 0.0f &&
+		(normal.z * plane.normal.x - normal.x * plane.normal.z) == 0.0f &&
+		(normal.x * plane.normal.y - normal.y * plane.normal.x) == 0.0f;
 }
 
 

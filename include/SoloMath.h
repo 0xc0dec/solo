@@ -21,44 +21,37 @@ namespace solo
 	class Math
 	{
 	public:
-		static void smooth(float* x, float target, float elapsedTime, float responseTime)
-		{
-			if (elapsedTime > 0)
-				*x += (target - *x) * elapsedTime / (elapsedTime + responseTime);
-		}
+		static float degToRad(float degrees);
+		static float radToDeg(float radians);
 
-		static void smooth(float* x, float target, float elapsedTime, float riseTime, float fallTime)
-		{
-			if (elapsedTime > 0)
-			{
-				auto delta = target - *x;
-				*x += delta * elapsedTime / (elapsedTime + (delta > 0 ? riseTime : fallTime));
-			}
-		}
+		static float getRandomAroundZero();
+		static float getRandom01();
 
-		static float degToRad(float degrees)
-		{
-			return degrees * 0.0174532925f;
-		}
-
-		static float radToDeg(float radians)
-		{
-			return radians * 57.29577951f;
-		}
-
-		static float getRandomAroundZero()
-		{
-			return 2.0f * (static_cast<float>(rand()) / RAND_MAX) - 1.0f;
-		}
-
-		static float getRandom01()
-		{
-			return static_cast<float>(rand()) / RAND_MAX;
-		}
-
-		static float clamp(float x, float lo, float hi)
-		{
-			return (x < lo) ? lo : ((x > hi) ? hi : x);
-		}
+		static float clamp(float x, float lo, float hi);
 	};
+
+	inline float Math::degToRad(float degrees)
+	{
+		return degrees * 0.0174532925f;
+	}
+
+	inline float Math::radToDeg(float radians)
+	{
+		return radians * 57.29577951f;
+	}
+
+	inline float Math::getRandomAroundZero()
+	{
+		return 2.0f * (static_cast<float>(rand()) / RAND_MAX) - 1.0f;
+	}
+
+	inline float Math::getRandom01()
+	{
+		return static_cast<float>(rand()) / RAND_MAX;
+	}
+
+	inline float Math::clamp(float x, float lo, float hi)
+	{
+		return (x < lo) ? lo : ((x > hi) ? hi : x);
+	}
 }
