@@ -70,7 +70,7 @@ float Vector4::angle(const Vector4& v1, const Vector4& v2)
 	auto dy = v1.w * v2.y - v1.y * v2.w - v1.z * v2.x + v1.x * v2.z;
 	auto dz = v1.w * v2.z - v1.z * v2.w - v1.x * v2.y + v1.y * v2.x;
 
-	return atan2f(sqrt(dx * dx + dy * dy + dz * dz) + MATH_FLOAT_SMALL, dot(v1, v2));
+	return atan2f(sqrt(dx * dx + dy * dy + dz * dz) + Math::FLOAT_SMALL, dot(v1, v2));
 }
 
 
@@ -165,7 +165,7 @@ void Vector4::normalize()
 
 	n = sqrt(n);
 	// Too close to zero.
-	if (n < MATH_TOLERANCE)
+	if (n < Math::TOLERANCE)
 		return;
 
 	n = 1.0f / n;

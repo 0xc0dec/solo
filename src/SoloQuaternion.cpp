@@ -78,7 +78,7 @@ bool Quaternion::inverse()
 	}
 
 	// Too close to zero
-	if (n < MATH_EPSILON)
+	if (n < Math::EPSILON)
 		return false;
 
 	n = 1.0f / n;
@@ -101,7 +101,7 @@ void Quaternion::normalize()
 
 	n = sqrt(n);
 	// Too close to zero
-	if (n < MATH_EPSILON)
+	if (n < Math::EPSILON)
 		return;
 
 	n = 1.0f / n;

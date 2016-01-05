@@ -53,7 +53,7 @@ Vector3 Plane::intersection(const Plane& p1, const Plane& p2, const Plane& p3)
 		p1.normal.z * p3.normal.y) + p3.normal.x * (p1.normal.y * p2.normal.z - p1.normal.z * p2.normal.y);
 
 	// If the determinant is zero, then the planes do not all intersect.
-	if (fabs(det) <= MATH_EPSILON)
+	if (fabs(det) <= Math::EPSILON)
 		return result;
 
 	// Create 3 points, one on each plane.

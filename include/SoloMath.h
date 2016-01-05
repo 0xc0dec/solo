@@ -2,25 +2,24 @@
 
 #include <cmath>
 
-#define MATH_FLOAT_SMALL			1.0e-37f
-#define MATH_TOLERANCE				2e-37f
-#define MATH_E						2.71828182845904523536f
-#define MATH_LOG10E					0.4342944819032518f
-#define MATH_LOG2E					1.442695040888963387f
-#define MATH_PI						3.14159265358979323846f
-#define MATH_PIOVER2				1.57079632679489661923f
-#define MATH_PIOVER4				0.785398163397448309616f
-#define MATH_PIX2					6.28318530717958647693f
-#define MATH_EPSILON				0.000001f
-#ifndef M_1_PI
-#	define M_1_PI					0.31830988618379067154
-#endif
-
 namespace solo
 {
 	class Math
 	{
 	public:
+		static constexpr float FLOAT_SMALL = 1.0e-37f;
+		static constexpr float TOLERANCE = 2e-37f;
+		static constexpr float E = 2.71828182845904523536f;
+		static constexpr float LOG10E = 0.4342944819032518f;
+		static constexpr float LOG2E = 1.442695040888963387f;
+		static constexpr float PI = 3.14159265358979323846f;
+		static constexpr float PI_OVER_2 = 1.57079632679489661923f;
+		static constexpr float PI_OVER_4 = 0.785398163397448309616f;
+		static constexpr float PIX2 = 6.28318530717958647693f;
+		static constexpr float EPSILON = 0.000001f;
+
+		static bool isApproxZero(float value);
+
 		static float degToRad(float degrees);
 		static float radToDeg(float radians);
 
@@ -29,6 +28,11 @@ namespace solo
 
 		static float clamp(float x, float lo, float hi);
 	};
+
+	inline bool Math::isApproxZero(float value)
+	{
+		return fabs(value) <= EPSILON;
+	}
 
 	inline float Math::degToRad(float degrees)
 	{
