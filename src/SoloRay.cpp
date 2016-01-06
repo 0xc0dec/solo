@@ -114,24 +114,21 @@ float Ray::getIntersection(const Plane &plane) const
 {
 	const auto& normal = plane.getNormal();
 	// If the origin of the ray is on the plane then the distance is zero.
-	auto alpha = (normal.dot(origin) + plane.getDistance());
-	if (fabs(alpha) < Math::SMALL_FLOAT1)
+	auto alpha = normal.dot(origin) + plane.getDistance();
+	if (Math::approxZero(alpha))
 		return 0.0f;
 
 	auto dot = normal.dot(direction);
 
 	// If the dot product of the plane's normal and this ray's direction is zero,
 	// then the ray is parallel to the plane and does not intersect it.
-	if (dot == 0.0f)
+	if (Math::approxZero(dot))
 		return static_cast<float>(RayIntersection::None);
 
 	// Calculate the distance along the ray's direction vector to the point where
 	// the ray getIntersection the plane (if it is negative the plane is behind the ray).
 	auto d = -alpha / dot;
-	if (d < 0.0f)
-		return static_cast<float>(RayIntersection::None);
-	
-	return d;
+	return d < 0.0f ? static_cast<float>(RayIntersection::None) : d;
 }
 
 
@@ -166,7 +163,7 @@ void Ray::normalize()
 
 	// Normalize the ray's direction vector
 	auto normalizeFactor = 1.0f / sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
-	if (normalizeFactor != 1.0f)
+	if (!Math::approxEqual(normalizeFactor, 1.0f))
 	{
 		direction.x *= normalizeFactor;
 		direction.y *= normalizeFactor;
