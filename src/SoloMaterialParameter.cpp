@@ -153,7 +153,7 @@ void MaterialParameter::apply(const RenderContext &context)
         variable->setFloatArray(floatArrayValue);
         break;
     case ValueType::Int:
-        variable->setFloat(intValue);
+        variable->setFloat(static_cast<float>(intValue));
         break;
     case ValueType::IntArray:
         variable->setIntArray(intArrayValue);
