@@ -10,6 +10,7 @@
 #include "SoloDevice.h"
 #include "SoloEffect.h"
 #include "SoloEffectVariable.h"
+#include "SoloEffectVertexAttribute.h"
 #include "SoloException.h"
 #include "SoloFileSystem.h"
 #include "SoloFormatter.h"

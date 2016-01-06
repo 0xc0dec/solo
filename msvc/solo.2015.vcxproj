@@ -28,6 +28,7 @@
     <ClInclude Include="..\include\SoloBitFlags.h" />
     <ClInclude Include="..\include\SoloEffect.h" />
     <ClInclude Include="..\include\SoloEffectVariable.h" />
+    <ClInclude Include="..\include\SoloEffectVertexAttribute.h" />
     <ClInclude Include="..\include\SoloException.h" />
     <ClInclude Include="..\include\SoloFileSystem.h" />
     <ClInclude Include="..\include\SoloFormatter.h" />
@@ -66,6 +67,7 @@
     <ClInclude Include="..\include\SoloVector4.h" />
     <ClInclude Include="..\src\platform\opengl\SoloGLSLEffect.h" />
     <ClInclude Include="..\src\platform\opengl\SoloGLSLEffectVariable.h" />
+    <ClInclude Include="..\src\platform\opengl\SoloGLSLEffectVertexAttribute.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLBuiltInShaders.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLCamera.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLCubeTexture.h" />
@@ -100,6 +102,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\platform\opengl\SoloGLSLEffect.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloGLSLEffectVariable.cpp" />
+    <ClCompile Include="..\src\platform\opengl\SoloGLSLEffectVertexAttribute.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLCamera.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLCubeTexture.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLGraphics.cpp" />

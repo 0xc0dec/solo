@@ -20,6 +20,7 @@ namespace solo
 
         void deleteShader(GLuint vs);
         void discoverVariables();
+		void discoverVertexAttributes();
 
         GLuint program { 0 };
     };

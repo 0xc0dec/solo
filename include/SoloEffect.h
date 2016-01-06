@@ -5,6 +5,7 @@
 namespace solo
 {
     class EffectVariable;
+	class EffectVertexAttribute;
     enum class DeviceMode;
 
     class Effect
@@ -22,10 +23,12 @@ namespace solo
         virtual void unbind() = 0;
 
         virtual EffectVariable *findVariable(const std::string &name) const;
+		virtual EffectVertexAttribute *findVertexAttribute(const std::string &name) const;
 
     protected:
         Effect() {}
 
         std::unordered_map<std::string, shared<EffectVariable>> variables;
+		std::unordered_map<std::string, shared<EffectVertexAttribute>> vertexAttributes;
     };
 }

@@ -8,11 +8,7 @@ using namespace solo;
 
 std::list<std::pair<int, int>> supportedContextVersions =
 {
-    { 4, 4 },
-    { 4, 3 },
-    { 4, 2 },
-    { 4, 1 },
-    { 4, 0 },
+    { 4, 4 }, { 4, 3 }, { 4, 2 }, { 4, 1 }, { 4, 0 },
 };
 
 

@@ -1,5 +1,6 @@
 #include "SoloGLSLEffect.h"
 #include "SoloGLSLEffectVariable.h"
+#include "SoloGLSLEffectVertexAttribute.h"
 
 using namespace solo;
 
@@ -67,6 +68,7 @@ GLSLEffect::GLSLEffect(const std::string &vsSrc, const std::string &fsSrc)
     deleteShader(fs);
 
     discoverVariables();
+	discoverVertexAttributes();
 }
 
 
@@ -100,10 +102,12 @@ void GLSLEffect::deleteShader(GLuint shader)
 
 void GLSLEffect::discoverVariables()
 {
-    GLint activeUniforms, nameMaxLength;
+    GLint activeUniforms;
     glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &activeUniforms);
     if (activeUniforms <= 0)
         return;
+
+	GLint nameMaxLength;
     glGetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &nameMaxLength);
     if (nameMaxLength <= 0)
         return;
@@ -118,8 +122,8 @@ void GLSLEffect::discoverVariables()
         rawName[nameMaxLength] = '\0';
         std::string name = rawName.data();
 
-        // Strip away possible square brackets for array uniforms since the brackets'
-        // presence is not consistent across platforms.
+        // Strip away possible square brackets for array uniforms, they are sometimes present on
+        // some platforms
         auto bracketIndex = name.find('[');
         if (bracketIndex != std::string::npos)
             name.erase(bracketIndex);
@@ -135,4 +139,31 @@ void GLSLEffect::discoverVariables()
         auto variable = SL_NEW_SHARED(GLSLEffectVariable, name, location, type, index);
         variables[name] = variable;
     }
+}
+
+
+void GLSLEffect::discoverVertexAttributes()
+{
+	GLint activeAttributes = 0;
+	glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &activeAttributes);
+	if (activeAttributes <= 0)
+		return;
+
+	GLint nameMaxLength = 0;
+	glGetProgramiv(program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &nameMaxLength);
+	if (nameMaxLength <= 0)
+		return;
+
+	GLint attribSize;
+	GLenum attribType;
+	std::vector<GLchar> rawName(nameMaxLength + 1);
+	for (size_t i = 0; i < activeAttributes; ++i)
+	{
+		glGetActiveAttrib(program, i, nameMaxLength, nullptr, &attribSize, &attribType, rawName.data());
+		rawName[nameMaxLength] = '\0';
+		auto location = glGetAttribLocation(program, rawName.data());
+		std::string name = rawName.data();
+		auto attrib = SL_NEW_SHARED(GLSLEffectVertexAttribute, name, location);
+		vertexAttributes[name] = attrib;
+	}
 }

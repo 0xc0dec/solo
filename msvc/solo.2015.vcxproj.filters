@@ -232,6 +232,12 @@
     <ClInclude Include="..\src\platform\stub\SoloStubFileSystem.h">
       <Filter>src\platform\stub</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloEffectVertexAttribute.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\opengl\SoloGLSLEffectVertexAttribute.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloLog.cpp">
@@ -485,6 +491,9 @@
     </ClCompile>
     <ClCompile Include="..\src\platform\stub\SoloStubFileSystem.cpp">
       <Filter>src\platform\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\opengl\SoloGLSLEffectVertexAttribute.cpp">
+      <Filter>src\platform\opengl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
