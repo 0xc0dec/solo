@@ -32,13 +32,13 @@ Quaternion Quaternion::zero()
 
 bool Quaternion::isIdentity() const
 {
-	return x == 0.0f && y == 0.0f && z == 0.0f && w == 1.0f;
+	return Math::approxZero(x) && Math::approxZero(y) && Math::approxZero(z) && Math::approxEqual(w, 1.0f);
 }
 
 
 bool Quaternion::isZero() const
 {
-	return x == 0.0f && y == 0.0f && z == 0.0f && w == 0.0f;
+	return Math::approxZero(x) && Math::approxZero(y) && Math::approxZero(z) && Math::approxZero(w);
 }
 
 
@@ -69,7 +69,7 @@ void Quaternion::conjugate()
 bool Quaternion::inverse()
 {
 	auto n = x * x + y * y + z * z + w * w;
-	if (n == 1.0f)
+	if (Math::approxEqual(n, 1.0f))
 	{
 		x = -x;
 		y = -y;
@@ -77,8 +77,7 @@ bool Quaternion::inverse()
 		return true;
 	}
 
-	// Too close to zero
-	if (n < Math::SMALL_FLOAT1)
+	if (Math::approxZero(n))
 		return false;
 
 	n = 1.0f / n;
@@ -96,12 +95,11 @@ void Quaternion::normalize()
 	auto n = x * x + y * y + z * z + w * w;
 
 	// Already normalized
-	if (n == 1.0f)
+	if (Math::approxEqual(n, 1.0f))
 		return;
 
 	n = sqrt(n);
-	// Too close to zero
-	if (n < Math::SMALL_FLOAT1)
+	if (Math::approxZero(n))
 		return;
 
 	n = 1.0f / n;
@@ -134,10 +132,10 @@ float Quaternion::toAxisAngle(Vector3& axis) const
 
 Quaternion Quaternion::lerp(const Quaternion& q1, const Quaternion& q2, float t)
 {
-	if (t == 0.0f)
+	if (Math::approxZero(t))
 		return q1;
 
-	if (t == 1.0f)
+	if (Math::approxEqual(t, 1.0f))
 		return q2;
 
 	auto t1 = 1.0f - t;
@@ -153,13 +151,13 @@ Quaternion Quaternion::lerp(const Quaternion& q1, const Quaternion& q2, float t)
 
 Quaternion Quaternion::slerp(const Quaternion& q1, const Quaternion& q2, float t)
 {
-	if (t == 0.0f)
+	if (Math::approxZero(t))
 		return q1;
 
-	if (t == 1.0f)
+	if (Math::approxEqual(t, 1.0f))
 		return q2;
 
-	if (q1.x == q2.x && q1.y == q2.y && q1.z == q2.z && q1.w == q2.w)
+	if (Math::approxEqual(q1.x, q2.x) && Math::approxEqual(q1.y, q2.y) && Math::approxEqual(q1.z, q2.z) && Math::approxEqual(q1.w, q2.w))
 		return q1;
 
 	float halfY, alpha, beta;
@@ -170,11 +168,9 @@ Quaternion Quaternion::slerp(const Quaternion& q1, const Quaternion& q2, float t
 
 	auto cosTheta = q1.w * q2.w + q1.x * q2.x + q1.y * q2.y + q1.z * q2.z;
 
-	// As usual in all slerp implementations, we fold theta.
 	alpha = cosTheta >= 0 ? 1.0f : -1.0f;
 	halfY = 1.0f + alpha * cosTheta;
 
-	// Here we bisect the interval, so we need to fold t as well.
 	f2b = t - 0.5f;
 	u = f2b >= 0 ? f2b : -f2b;
 	f2a = u - f2b;
@@ -182,12 +178,10 @@ Quaternion Quaternion::slerp(const Quaternion& q1, const Quaternion& q2, float t
 	u += u;
 	f1 = 1.0f - u;
 
-	// One iteration of Newton to get 1-cos(theta / 2) to good accuracy.
 	halfSecHalfTheta = 1.09f - (0.476537f - 0.0903321f * halfY) * halfY;
 	halfSecHalfTheta *= 1.5f - halfY * halfSecHalfTheta * halfSecHalfTheta;
 	versHalfTheta = 1.0f - halfY * halfSecHalfTheta;
 
-	// Evaluate series expansions of the coefficients.
 	sqNotU = f1 * f1;
 	ratio2 = 0.0000440917108f * versHalfTheta;
 	ratio1 = -0.00158730159f + (sqNotU - 16.0f) * ratio2;
@@ -201,24 +195,18 @@ Quaternion Quaternion::slerp(const Quaternion& q1, const Quaternion& q2, float t
 	ratio2 = -0.333333333f + ratio2 * (sqU - 4.0f) * versHalfTheta;
 	ratio2 = 1.0f + ratio2 * (sqU - 1.0f) * versHalfTheta;
 
-	// Perform the bisection and resolve the folding done earlier.
 	f1 *= ratio1 * halfSecHalfTheta;
 	f2a *= ratio2;
 	f2b *= ratio2;
 	alpha *= f1 + f2a;
 	beta = f1 + f2b;
 
-	// Apply final coefficients to a and b as usual.
 	auto w = alpha * q1.w + beta * q2.w;
 	auto x = alpha * q1.x + beta * q2.x;
 	auto y = alpha * q1.y + beta * q2.y;
 	auto z = alpha * q1.z + beta * q2.z;
 
-	// This final adjustment to the quaternion's length corrects for
-	// any small constraint error in the inputs q1 and q2 But as you
-	// can see, it comes at the cost of 9 additional multiplication
-	// operations. If this error-correcting feature is not required,
-	// the following code may be removed.
+	// Quaternion length correction, if needed
 	f1 = 1.5f - 0.5f * (w * w + x * x + y * y + z * z);
 	return Quaternion(w * f1, x * f1, y * f1, z * f1);
 }
@@ -234,10 +222,6 @@ Quaternion Quaternion::squad(const Quaternion& q1, const Quaternion& q2, const Q
 
 Quaternion Quaternion::slerpForSquad(const Quaternion& q1, const Quaternion& q2, float t)
 {
-	// cos(omega) = q1 * q2;
-	// slerp(q1, q2, t) = (q1*sin((1-t)*omega) + q2*sin(t*omega))/sin(omega);
-	// q1 = +- q2, slerp(q1,q2,t) = q1.
-	// This is a straight-forward implementation of the formula of slerp. It does not do any sign switching.
 	auto c = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
 
 	if (fabs(c) >= 1.0f)
@@ -245,7 +229,7 @@ Quaternion Quaternion::slerpForSquad(const Quaternion& q1, const Quaternion& q2,
 
 	auto omega = acos(c);
 	auto s = sqrt(1.0f - c * c);
-	if (fabs(s) <= 0.00001f)
+	if (Math::approxZero(s))
 		return q1;
 
 	auto r1 = sin((1 - t) * omega) / s;
