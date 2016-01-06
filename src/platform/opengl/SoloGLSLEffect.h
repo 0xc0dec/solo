@@ -5,22 +5,22 @@
 
 namespace solo
 {
-	class GLSLEffect: public Effect
-	{
-	public:
-		virtual ~GLSLEffect();
+    class GLSLEffect: public Effect
+    {
+    public:
+        virtual ~GLSLEffect();
 
-		virtual void bind() override;
-		virtual void unbind() override;
+        virtual void bind() override;
+        virtual void unbind() override;
 
-	private:
-		friend class Effect;
+    private:
+        friend class Effect;
 
-		GLSLEffect(const std::string& vsSrc, const std::string& fsSrc);
+        GLSLEffect(const std::string &vsSrc, const std::string &fsSrc);
 
-		void deleteShader(GLuint vs);
-		void discoverVariables();
+        void deleteShader(GLuint vs);
+        void discoverVariables();
 
-		GLuint program { 0 };
-	};
+        GLuint program { 0 };
+    };
 }

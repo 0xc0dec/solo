@@ -7,84 +7,84 @@
 
 namespace solo
 {
-	class Scene;
-	struct RenderContext;
+    class Scene;
+    struct RenderContext;
 
-	class Component
-	{
-	public:
-		Component(const Component& other) = delete;
-		Component(Component&& other) = delete;
-		Component& operator=(const Component& other) = delete;
-		Component& operator=(Component&& other) = delete;
-		virtual ~Component() {}
+    class Component
+    {
+    public:
+        Component(const Component &other) = delete;
+        Component(Component &&other) = delete;
+        Component &operator=(const Component &other) = delete;
+        Component &operator=(Component &&other) = delete;
+        virtual ~Component() {}
 
-		virtual size_t getTypeId() = 0;
+        virtual size_t getTypeId() = 0;
 
-		virtual void init() {}
-		virtual void update() {}
-		virtual void terminate() {}
-		virtual void render(RenderContext& context) {}
-		virtual void onAfterCameraRender() {}
+        virtual void init() {}
+        virtual void update() {}
+        virtual void terminate() {}
+        virtual void render(RenderContext &context) {}
+        virtual void onAfterCameraRender() {}
 
-		virtual unsigned getRenderQueue() const;
-		virtual void setRenderQueue(unsigned queue);
+        virtual unsigned getRenderQueue() const;
+        virtual void setRenderQueue(unsigned queue);
 
-		Node getNode() const;
+        Node getNode() const;
 
-		BitFlags& getTags();
+        BitFlags &getTags();
 
-	protected:
-		explicit Component(const Node& node) : node(node)
-		{
-			tags.set(1);
-		}
-		
-		Node node;
-		BitFlags tags;
-		unsigned renderQueue = KnownRenderQueues::NotRendered;
-	};
+    protected:
+        explicit Component(const Node &node) : node(node)
+        {
+            tags.set(1);
+        }
 
-	inline unsigned Component::getRenderQueue() const
-	{
-		return renderQueue;
-	}
+        Node node;
+        BitFlags tags;
+        unsigned renderQueue = KnownRenderQueues::NotRendered;
+    };
 
-	inline void Component::setRenderQueue(unsigned queue)
-	{
-		renderQueue = queue;
-	}
+    inline unsigned Component::getRenderQueue() const
+    {
+        return renderQueue;
+    }
 
-	inline Node Component::getNode() const
-	{
-		return node;
-	}
+    inline void Component::setRenderQueue(unsigned queue)
+    {
+        renderQueue = queue;
+    }
 
-	inline BitFlags& Component::getTags()
-	{
-		return tags;
-	}
+    inline Node Component::getNode() const
+    {
+        return node;
+    }
+
+    inline BitFlags &Component::getTags()
+    {
+        return tags;
+    }
 
 
-	template <class T>
-	class ComponentBase: public Component
-	{
-	public:
-		explicit ComponentBase(const Node& node): Component(node) {}
+    template <class T>
+    class ComponentBase: public Component
+    {
+    public:
+        explicit ComponentBase(const Node &node): Component(node) {}
 
-		static size_t getId();
-		virtual size_t getTypeId() override;
-	};
+        static size_t getId();
+        virtual size_t getTypeId() override;
+    };
 
-	template <class T>
-	inline size_t ComponentBase<T>::getId()
-	{
-		return TypeId::get<T>();
-	}
+    template <class T>
+    inline size_t ComponentBase<T>::getId()
+    {
+        return TypeId::get<T>();
+    }
 
-	template <class T>
-	inline size_t ComponentBase<T>::getTypeId()
-	{
-		return getId();
-	}
+    template <class T>
+    inline size_t ComponentBase<T>::getTypeId()
+    {
+        return getId();
+    }
 }

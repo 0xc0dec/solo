@@ -5,12 +5,12 @@ using namespace solo;
 
 
 StubEffect::StubEffect():
-	variable(new StubEffectVariable("testVariable"))
+    variable(new StubEffectVariable("testVariable"))
 {
 }
 
 
-EffectVariable* StubEffect::findVariable(const std::string& name) const
+EffectVariable *StubEffect::findVariable(const std::string &name) const
 {
-	return variable.get();
+    return variable.get();
 }

@@ -6,57 +6,57 @@
 
 namespace solo
 {
-	class BoundingSphere;
-	class Frustum;
-	struct Ray;
-	struct Matrix;
+    class BoundingSphere;
+    class Frustum;
+    struct Ray;
+    struct Matrix;
 
-	class BoundingBox
-	{
-	public:
-		Vector3 min;
-		Vector3 max;
+    class BoundingBox
+    {
+    public:
+        Vector3 min;
+        Vector3 max;
 
-		BoundingBox() {}
-		BoundingBox(const Vector3& min, const Vector3& max);
+        BoundingBox() {}
+        BoundingBox(const Vector3 &min, const Vector3 &max);
 
-		static const BoundingBox& empty();
+        static const BoundingBox &empty();
 
-		Vector3 getCenter() const;
-		std::vector<Vector3> getCorners() const;
+        Vector3 getCenter() const;
+        std::vector<Vector3> getCorners() const;
 
-		bool intersectsBoundingBox(const BoundingBox& box) const;
-		bool intersectsBoundingSphere(const BoundingSphere& sphere) const;
-		bool intersectsFrustum(const Frustum& frustum) const;
-		float getRayIntersection(const Ray& ray) const;
-		PlaneIntersection getPlaneIntersection(const Plane& plane) const;
+        bool intersectsBoundingBox(const BoundingBox &box) const;
+        bool intersectsBoundingSphere(const BoundingSphere &sphere) const;
+        bool intersectsFrustum(const Frustum &frustum) const;
+        float getRayIntersection(const Ray &ray) const;
+        PlaneIntersection getPlaneIntersection(const Plane &plane) const;
 
-		bool isEmpty() const;
+        bool isEmpty() const;
 
-		void mergeBoundingSphere(const BoundingSphere& sphere);
-		void mergeBoundingBox(const BoundingBox& box);
+        void mergeBoundingSphere(const BoundingSphere &sphere);
+        void mergeBoundingBox(const BoundingBox &box);
 
-		void transform(const Matrix& matrix);
+        void transform(const Matrix &matrix);
 
-		BoundingBox& operator*=(const Matrix& matrix);
-	};
+        BoundingBox &operator*=(const Matrix &matrix);
+    };
 
 
-	inline bool BoundingBox::isEmpty() const
-	{
-		return min.x == max.x && min.y == max.y && min.z == max.z;
-	}
+    inline bool BoundingBox::isEmpty() const
+    {
+        return min.x == max.x && min.y == max.y && min.z == max.z;
+    }
 
-	inline BoundingBox& BoundingBox::operator*=(const Matrix& matrix)
-	{
-		transform(matrix);
-		return *this;
-	}
+    inline BoundingBox &BoundingBox::operator*=(const Matrix &matrix)
+    {
+        transform(matrix);
+        return *this;
+    }
 
-	inline BoundingBox operator*(const Matrix& matrix, const BoundingBox& box)
-	{
-		auto b(const_cast<BoundingBox&>(box));
-		b.transform(matrix);
-		return b;
-	}
+    inline BoundingBox operator*(const Matrix &matrix, const BoundingBox &box)
+    {
+        auto b(const_cast<BoundingBox &>(box));
+        b.transform(matrix);
+        return b;
+    }
 }

@@ -7,30 +7,30 @@
 
 namespace solo
 {
-	class Mesh;
-	class Material;
-	class CubeTexture;
+    class Mesh;
+    class Material;
+    class CubeTexture;
 
-	class SkyboxRenderer: public ComponentBase<SkyboxRenderer>
-	{
-	public:
-		static shared<SkyboxRenderer> create(Node node);
+    class SkyboxRenderer: public ComponentBase<SkyboxRenderer>
+    {
+    public:
+        static shared<SkyboxRenderer> create(Node node);
 
-		virtual void render(RenderContext& context) override;
+        virtual void render(RenderContext &context) override;
 
-		void setTexture(shared<CubeTexture> texture);
-		shared<CubeTexture> getTexture() const;
+        void setTexture(shared<CubeTexture> texture);
+        shared<CubeTexture> getTexture() const;
 
-	private:
-		explicit SkyboxRenderer(Node node);
+    private:
+        explicit SkyboxRenderer(Node node);
 
-		shared<Mesh> quadMesh;
-		shared<Material> material;
-		shared<CubeTexture> texture;
-	};
+        shared<Mesh> quadMesh;
+        shared<Material> material;
+        shared<CubeTexture> texture;
+    };
 
-	inline shared<CubeTexture> SkyboxRenderer::getTexture() const
-	{
-		return texture;
-	}
+    inline shared<CubeTexture> SkyboxRenderer::getTexture() const
+    {
+        return texture;
+    }
 }

@@ -4,14 +4,14 @@
 
 namespace solo
 {
-	class OpenGLMaterial: public Material
-	{
-	protected:
-		virtual void applyState() override;
+    class OpenGLMaterial: public Material
+    {
+    protected:
+        virtual void applyState() override;
 
-	private:
-		friend class Material;
+    private:
+        friend class Material;
 
-		explicit OpenGLMaterial(shared<Effect> effect);
-	};
+        explicit OpenGLMaterial(shared<Effect> effect);
+    };
 }

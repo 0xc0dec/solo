@@ -5,27 +5,27 @@
 
 namespace solo
 {
-	class OpenGLTexture2D: public Texture2D
-	{
-	public:
-		virtual ~OpenGLTexture2D();
+    class OpenGLTexture2D: public Texture2D
+    {
+    public:
+        virtual ~OpenGLTexture2D();
 
-		virtual void apply() override;
-		virtual void generateMipmaps() override;
+        virtual void apply() override;
+        virtual void generateMipmaps() override;
 
-		GLuint getHandle() const;
+        GLuint getHandle() const;
 
-	protected:
-		virtual void applyData(ColorFormat format, const std::vector<uint8_t>& data, unsigned width, unsigned height) override;
+    protected:
+        virtual void applyData(ColorFormat format, const std::vector<uint8_t> &data, unsigned width, unsigned height) override;
 
-	private:
-		friend class Texture;
+    private:
+        friend class Texture;
 
-		OpenGLTexture2D();
+        OpenGLTexture2D();
 
-		void bind();
-		void unbind();
+        void bind();
+        void unbind();
 
-		GLuint handle = 0;
-	};
+        GLuint handle = 0;
+    };
 }

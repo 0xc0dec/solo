@@ -4,14 +4,14 @@
 
 namespace solo
 {
-	class ScriptManager
-	{
-	public:
-		virtual ~ScriptManager() {}
+    class ScriptManager
+    {
+    public:
+        virtual ~ScriptManager() {}
 
-		static shared<ScriptManager> create();
+        static shared<ScriptManager> create();
 
-		virtual void execute(const std::string& code) = 0;
-		virtual void executeFile(const std::string& path) = 0;
-	};
+        virtual void execute(const std::string &code) = 0;
+        virtual void executeFile(const std::string &path) = 0;
+    };
 }

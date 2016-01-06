@@ -4,29 +4,29 @@
 
 namespace solo
 {
-	class RenderTarget;
-	class Texture2D;
-	class Material;
-	class Device;
-	class ResourceManager;
-	class Mesh;
+    class RenderTarget;
+    class Texture2D;
+    class Material;
+    class Device;
+    class ResourceManager;
+    class Mesh;
 
-	class Graphics
-	{
-	public:
-		static shared<Graphics> create(Device *device);
+    class Graphics
+    {
+    public:
+        static shared<Graphics> create(Device *device);
 
-		Graphics(const Graphics& other) = delete;
-		Graphics(Graphics&& other) = delete;
-		Graphics& operator=(const Graphics& other) = delete;
-		Graphics& operator=(Graphics&& other) = delete;
-		virtual ~Graphics() {}
+        Graphics(const Graphics &other) = delete;
+        Graphics(Graphics &&other) = delete;
+        Graphics &operator=(const Graphics &other) = delete;
+        Graphics &operator=(Graphics &&other) = delete;
+        virtual ~Graphics() {}
 
-		virtual void renderSurface(Material* material, RenderTarget* target) = 0;
+        virtual void renderSurface(Material *material, RenderTarget *target) = 0;
 
-	protected:
-		explicit Graphics(Device *device);
+    protected:
+        explicit Graphics(Device *device);
 
-		Device *device;
-	};
+        Device *device;
+    };
 }

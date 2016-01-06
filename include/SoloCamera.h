@@ -9,166 +9,166 @@
 
 namespace solo
 {
-	class Transform;
-	class Node;
-	class RenderTarget;
-	class Scene;
-	enum class DeviceMode;
+    class Transform;
+    class Node;
+    class RenderTarget;
+    class Scene;
+    enum class DeviceMode;
 
-	class Camera : public ComponentBase<Camera>, protected TransformCallback
-	{
-	public:
-		static shared<Camera> create(DeviceMode mode, Scene *scene, Node node);
+    class Camera : public ComponentBase<Camera>, protected TransformCallback
+    {
+    public:
+        static shared<Camera> create(DeviceMode mode, Scene *scene, Node node);
 
-		virtual void init() override;
-		virtual void terminate() override;
+        virtual void init() override;
+        virtual void terminate() override;
 
-		void apply();
-		void finish();
+        void apply();
+        void finish();
 
-		BitFlags& getRenderTags();
+        BitFlags &getRenderTags();
 
-		shared<RenderTarget> getRenderTarget() const;
-		void setRenderTarget(shared<RenderTarget> target);
+        shared<RenderTarget> getRenderTarget() const;
+        void setRenderTarget(shared<RenderTarget> target);
 
-		Vector4 getClearColor() const;
-		void setClearColor(float r, float g, float b, float a);
+        Vector4 getClearColor() const;
+        void setClearColor(float r, float g, float b, float a);
 
-		Vector4 getViewport() const;
-		void setViewport(float left, float top, float width, float height);
-		void resetViewport();
+        Vector4 getViewport() const;
+        void setViewport(float left, float top, float width, float height);
+        void resetViewport();
 
-		bool isPerspective() const;
-		void setPerspective(bool perspective);
+        bool isPerspective() const;
+        void setPerspective(bool perspective);
 
-		float getNear() const;
-		void setNear(float near);
+        float getNear() const;
+        void setNear(float near);
 
-		float getFar() const;
-		void setFar(float far);
-		
-		float getFOV() const;
-		void setFOV(float fov);
-		
-		float getWidth() const;
-		void setWidth(float width);
-		
-		float getHeight() const;
-		void setHeight(float height);
-		
-		float getAspectRatio() const;
-		void setAspectRatio(float ratio);
+        float getFar() const;
+        void setFar(float far);
 
-		const Matrix& getViewMatrix();
-		const Matrix& getInverseViewMatrix();
-		const Matrix& getProjectionMatrix();
-		const Matrix& getViewProjectionMatrix();
-		const Matrix& getInverseViewProjectionMatrix();
+        float getFOV() const;
+        void setFOV(float fov);
 
-	protected:
-		Camera(Scene *scene, Node node);
+        float getWidth() const;
+        void setWidth(float width);
 
-		virtual void onTransformChanged(const Transform* transform) override;
+        float getHeight() const;
+        void setHeight(float height);
 
-		virtual void applyViewport() = 0;
-		virtual void applyClearColor() = 0;
-		virtual void clear() = 0;
+        float getAspectRatio() const;
+        void setAspectRatio(float ratio);
 
-		BitFlags dirtyFlags;
-		BitFlags renderTags;
+        const Matrix &getViewMatrix();
+        const Matrix &getInverseViewMatrix();
+        const Matrix &getProjectionMatrix();
+        const Matrix &getViewProjectionMatrix();
+        const Matrix &getInverseViewProjectionMatrix();
 
-		Scene *scene;
+    protected:
+        Camera(Scene *scene, Node node);
 
-		Transform *transform = nullptr;
-		shared<RenderTarget> renderTarget = nullptr;
+        virtual void onTransformChanged(const Transform *transform) override;
 
-		bool ortho = false;
+        virtual void applyViewport() = 0;
+        virtual void applyClearColor() = 0;
+        virtual void clear() = 0;
 
-		Vector4 viewport;
-		bool viewportSet = false;
+        BitFlags dirtyFlags;
+        BitFlags renderTags;
 
-		Vector4 clearColor{ 0, 0, 0, 1 };
-		float fov = 60;
-		float nearClip = 1;
-		float farClip = 100;
-		float width = 1;
-		float height = 1;
-		float aspectRatio = 1;
-		
-		Matrix viewMatrix;
-		Matrix projectionMatrix;
-		Matrix viewProjectionMatrix;
-		Matrix inverseViewMatrix;
-		Matrix inverseViewProjectionMatrix;
-	};
+        Scene *scene;
 
-	inline void Camera::setClearColor(float r, float g, float b, float a)
-	{
-		clearColor = Vector4(r, g, b, a);
-	}
+        Transform *transform = nullptr;
+        shared<RenderTarget> renderTarget = nullptr;
 
-	inline bool Camera::isPerspective() const
-	{
-		return !ortho;
-	}
+        bool ortho = false;
 
-	inline float Camera::getNear() const
-	{
-		return nearClip;
-	}
+        Vector4 viewport;
+        bool viewportSet = false;
 
-	inline float Camera::getFar() const
-	{
-		return farClip;
-	}
+        Vector4 clearColor{ 0, 0, 0, 1 };
+        float fov = 60;
+        float nearClip = 1;
+        float farClip = 100;
+        float width = 1;
+        float height = 1;
+        float aspectRatio = 1;
 
-	inline float Camera::getFOV() const
-	{
-		return fov;
-	}
+        Matrix viewMatrix;
+        Matrix projectionMatrix;
+        Matrix viewProjectionMatrix;
+        Matrix inverseViewMatrix;
+        Matrix inverseViewProjectionMatrix;
+    };
 
-	inline float Camera::getWidth() const
-	{
-		return width;
-	}
+    inline void Camera::setClearColor(float r, float g, float b, float a)
+    {
+        clearColor = Vector4(r, g, b, a);
+    }
 
-	inline float Camera::getHeight() const
-	{
-		return height;
-	}
+    inline bool Camera::isPerspective() const
+    {
+        return !ortho;
+    }
 
-	inline float Camera::getAspectRatio() const
-	{
-		return aspectRatio;
-	}
+    inline float Camera::getNear() const
+    {
+        return nearClip;
+    }
 
-	inline BitFlags& Camera::getRenderTags()
-	{
-		return renderTags;
-	}
+    inline float Camera::getFar() const
+    {
+        return farClip;
+    }
 
-	inline void Camera::setRenderTarget(shared<RenderTarget> target)
-	{
-		renderTarget = target;
-	}
+    inline float Camera::getFOV() const
+    {
+        return fov;
+    }
 
-	inline Vector4 Camera::getClearColor() const
-	{
-		return clearColor;
-	}
+    inline float Camera::getWidth() const
+    {
+        return width;
+    }
 
-	inline shared<RenderTarget> Camera::getRenderTarget() const
-	{
-		return renderTarget;
-	}
+    inline float Camera::getHeight() const
+    {
+        return height;
+    }
 
-	inline void Camera::terminate()
-	{
-		transform->removeCallback(this);
-	}
+    inline float Camera::getAspectRatio() const
+    {
+        return aspectRatio;
+    }
 
-	inline void Camera::resetViewport()
-	{
-		viewportSet = false;
-	}
+    inline BitFlags &Camera::getRenderTags()
+    {
+        return renderTags;
+    }
+
+    inline void Camera::setRenderTarget(shared<RenderTarget> target)
+    {
+        renderTarget = target;
+    }
+
+    inline Vector4 Camera::getClearColor() const
+    {
+        return clearColor;
+    }
+
+    inline shared<RenderTarget> Camera::getRenderTarget() const
+    {
+        return renderTarget;
+    }
+
+    inline void Camera::terminate()
+    {
+        transform->removeCallback(this);
+    }
+
+    inline void Camera::resetViewport()
+    {
+        viewportSet = false;
+    }
 }

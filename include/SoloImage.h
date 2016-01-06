@@ -4,17 +4,17 @@
 
 namespace solo
 {
-	enum class ColorFormat
-	{
-		RGB,
-		RGBA
-	};
+    enum class ColorFormat
+    {
+        RGB,
+        RGBA
+    };
 
-	struct Image
-	{
-		unsigned width;
-		unsigned height;
-		ColorFormat colorFormat;
-		std::vector<uint8_t> data;
-	};
+    struct Image
+    {
+        unsigned width;
+        unsigned height;
+        ColorFormat colorFormat;
+        std::vector<uint8_t> data;
+    };
 }

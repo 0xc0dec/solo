@@ -10,25 +10,25 @@
 
 namespace solo
 {
-	enum class LogLevel
-	{
-		Debug = 0,
-		Info,
-		Warning,
-		Error,
-		Critical
-	};
+    enum class LogLevel
+    {
+        Debug = 0,
+        Info,
+        Warning,
+        Error,
+        Critical
+    };
 
-	class Log
-	{
-	public:
-		explicit Log(const std::string &msg, LogLevel level = LogLevel::Info);
-		~Log();
+    class Log
+    {
+    public:
+        explicit Log(const std::string &msg, LogLevel level = LogLevel::Info);
+        ~Log();
 
-	private:
-		LogLevel level;
-		std::string message;
-		
-		std::string getLevelString();
-	};
+    private:
+        LogLevel level;
+        std::string message;
+
+        std::string getLevelString();
+    };
 }

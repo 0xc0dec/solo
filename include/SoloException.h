@@ -9,19 +9,19 @@
 
 namespace solo
 {
-	class EngineException: public std::runtime_error
-	{
-	public:
-		explicit EngineException(const std::string &msg) : std::runtime_error(msg)
-		{
-		}
-	};
+    class EngineException: public std::runtime_error
+    {
+    public:
+        explicit EngineException(const std::string &msg) : std::runtime_error(msg)
+        {
+        }
+    };
 
-	class EffectCompilationException: public EngineException
-	{
-	public:
-		std::string log;
+    class EffectCompilationException: public EngineException
+    {
+    public:
+        std::string log;
 
-		EffectCompilationException(const std::string& message, const std::string& log) : EngineException(message), log(log) {}
-	};
+        EffectCompilationException(const std::string &message, const std::string &log) : EngineException(message), log(log) {}
+    };
 }

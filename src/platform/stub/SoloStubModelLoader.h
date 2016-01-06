@@ -4,12 +4,12 @@
 
 namespace solo
 {
-	class StubModelLoader: public ModelLoader
-	{
-	public:
-		StubModelLoader(FileSystem* fs, ResourceManager* resourceManager);
+    class StubModelLoader: public ModelLoader
+    {
+    public:
+        StubModelLoader(FileSystem *fs, ResourceManager *resourceManager);
 
-		virtual bool isLoadable(const std::string& uri) override;
-		virtual shared<Model> load(const std::string& uri) override;
-	};
+        virtual bool isLoadable(const std::string &uri) override;
+        virtual shared<Model> load(const std::string &uri) override;
+    };
 }

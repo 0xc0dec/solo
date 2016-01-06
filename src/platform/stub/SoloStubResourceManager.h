@@ -4,10 +4,10 @@
 
 namespace solo
 {
-	class StubResourceManager: public ResourceManager
-	{
-		friend class ResourceManager;
+    class StubResourceManager: public ResourceManager
+    {
+        friend class ResourceManager;
 
-		explicit StubResourceManager(Device *device);
-	};
+        explicit StubResourceManager(Device *device);
+    };
 }

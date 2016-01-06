@@ -4,122 +4,122 @@
 
 namespace solo
 {
-	class Texture2D;
-	class CubeTexture;
-	enum class DeviceMode;
+    class Texture2D;
+    class CubeTexture;
+    enum class DeviceMode;
 
-	enum class TextureWrapping
-	{
-		Clamp,
-		Repeat
-	};
+    enum class TextureWrapping
+    {
+        Clamp,
+        Repeat
+    };
 
-	enum class TextureFiltering
-	{
-		Nearest,
-		Linear,
-		NearestMipmapNearest,
-		LinearMipmapNearest,
-		NearestMipmapLinear,
-		LinearMipmapLinear
-	};
+    enum class TextureFiltering
+    {
+        Nearest,
+        Linear,
+        NearestMipmapNearest,
+        LinearMipmapNearest,
+        NearestMipmapLinear,
+        LinearMipmapLinear
+    };
 
-	class Texture
-	{
-	public:
-		static shared<Texture2D> create2D(DeviceMode mode);
-		static shared<CubeTexture> createCube(DeviceMode mode);
+    class Texture
+    {
+    public:
+        static shared<Texture2D> create2D(DeviceMode mode);
+        static shared<CubeTexture> createCube(DeviceMode mode);
 
-		Texture(const Texture& other) = delete;
-		Texture(Texture&& other) = delete;
-		Texture& operator=(const Texture& other) = delete;
-		Texture& operator=(Texture&& other) = delete;
-		virtual ~Texture() {}
+        Texture(const Texture &other) = delete;
+        Texture(Texture &&other) = delete;
+        Texture &operator=(const Texture &other) = delete;
+        Texture &operator=(Texture &&other) = delete;
+        virtual ~Texture() {}
 
-		virtual void apply() = 0;
+        virtual void apply() = 0;
 
-		TextureWrapping getHorizontalWrapping() const;
-		void setHorizontalWrapping(TextureWrapping horizontalWrap);
-		
-		TextureWrapping getVerticalWrapping() const;
-		void setVerticalWrapping(TextureWrapping verticalWrap);
+        TextureWrapping getHorizontalWrapping() const;
+        void setHorizontalWrapping(TextureWrapping horizontalWrap);
 
-		virtual void setWrapping(TextureWrapping wrap);
+        TextureWrapping getVerticalWrapping() const;
+        void setVerticalWrapping(TextureWrapping verticalWrap);
 
-		TextureFiltering getMinFiltering() const;
-		void setMinFiltering(TextureFiltering filtering);
+        virtual void setWrapping(TextureWrapping wrap);
 
-		TextureFiltering getMagFiltering() const;
-		void setMagFiltering(TextureFiltering filtering);
+        TextureFiltering getMinFiltering() const;
+        void setMinFiltering(TextureFiltering filtering);
 
-		void setFiltering(TextureFiltering filtering);
+        TextureFiltering getMagFiltering() const;
+        void setMagFiltering(TextureFiltering filtering);
 
-		float getAnisotropyLevel() const;
-		void setAnisotropyLevel(float level);
+        void setFiltering(TextureFiltering filtering);
 
-	protected:
-		Texture() {}
+        float getAnisotropyLevel() const;
+        void setAnisotropyLevel(float level);
 
-		TextureWrapping horizontalWrapping = TextureWrapping::Repeat;
-		TextureWrapping verticalWrapping = TextureWrapping::Repeat;
-		TextureFiltering minFiltering = TextureFiltering::Linear;
-		TextureFiltering magFiltering = TextureFiltering::Linear;
-		float anisotropy = 1.0f;
-	};
+    protected:
+        Texture() {}
 
-	inline TextureWrapping Texture::getVerticalWrapping() const
-	{
-		return verticalWrapping;
-	}
+        TextureWrapping horizontalWrapping = TextureWrapping::Repeat;
+        TextureWrapping verticalWrapping = TextureWrapping::Repeat;
+        TextureFiltering minFiltering = TextureFiltering::Linear;
+        TextureFiltering magFiltering = TextureFiltering::Linear;
+        float anisotropy = 1.0f;
+    };
 
-	inline void Texture::setVerticalWrapping(TextureWrapping wrap)
-	{
-		verticalWrapping = wrap;
-	}
+    inline TextureWrapping Texture::getVerticalWrapping() const
+    {
+        return verticalWrapping;
+    }
 
-	inline TextureWrapping Texture::getHorizontalWrapping() const
-	{
-		return horizontalWrapping;
-	}
+    inline void Texture::setVerticalWrapping(TextureWrapping wrap)
+    {
+        verticalWrapping = wrap;
+    }
 
-	inline void Texture::setHorizontalWrapping(TextureWrapping wrap)
-	{
-		horizontalWrapping = wrap;
-	}
+    inline TextureWrapping Texture::getHorizontalWrapping() const
+    {
+        return horizontalWrapping;
+    }
 
-	inline TextureFiltering Texture::getMinFiltering() const
-	{
-		return minFiltering;
-	}
+    inline void Texture::setHorizontalWrapping(TextureWrapping wrap)
+    {
+        horizontalWrapping = wrap;
+    }
 
-	inline void Texture::setMinFiltering(TextureFiltering filtering)
-	{
-		minFiltering = filtering;
-	}
+    inline TextureFiltering Texture::getMinFiltering() const
+    {
+        return minFiltering;
+    }
 
-	inline TextureFiltering Texture::getMagFiltering() const
-	{
-		return magFiltering;
-	}
+    inline void Texture::setMinFiltering(TextureFiltering filtering)
+    {
+        minFiltering = filtering;
+    }
 
-	inline void Texture::setMagFiltering(TextureFiltering filtering)
-	{
-		magFiltering = filtering;
-	}
+    inline TextureFiltering Texture::getMagFiltering() const
+    {
+        return magFiltering;
+    }
 
-	inline void Texture::setFiltering(TextureFiltering filtering)
-	{
-		minFiltering = filtering;
-		magFiltering = filtering;
-	}
+    inline void Texture::setMagFiltering(TextureFiltering filtering)
+    {
+        magFiltering = filtering;
+    }
 
-	inline float Texture::getAnisotropyLevel() const
-	{
-		return anisotropy;
-	}
+    inline void Texture::setFiltering(TextureFiltering filtering)
+    {
+        minFiltering = filtering;
+        magFiltering = filtering;
+    }
 
-	inline void Texture::setAnisotropyLevel(float level)
-	{
-		anisotropy = level;
-	}
+    inline float Texture::getAnisotropyLevel() const
+    {
+        return anisotropy;
+    }
+
+    inline void Texture::setAnisotropyLevel(float level)
+    {
+        anisotropy = level;
+    }
 }

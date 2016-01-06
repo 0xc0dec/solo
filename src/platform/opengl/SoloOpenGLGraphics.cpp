@@ -10,37 +10,37 @@
 using namespace solo;
 
 
-OpenGLGraphics::OpenGLGraphics(Device* device):
-	Graphics(device)
+OpenGLGraphics::OpenGLGraphics(Device *device):
+    Graphics(device)
 {
 }
 
 
-void OpenGLGraphics::renderSurface(Material* material, RenderTarget* target)
+void OpenGLGraphics::renderSurface(Material *material, RenderTarget *target)
 {
-	if (!quadMesh)
-		quadMesh = device->getResourceManager()->findMesh(KnownUris::UnitQuadMesh);
+    if (!quadMesh)
+        quadMesh = device->getResourceManager()->findMesh(KnownUris::UnitQuadMesh);
 
-	auto depthTestEnabled = material->isDepthTestEnabled();
-	material->setDepthTestEnabled(false);
+    auto depthTestEnabled = material->isDepthTestEnabled();
+    material->setDepthTestEnabled(false);
 
-	if (target)
-		target->bind();
+    if (target)
+        target->bind();
 
-	auto viewportSize = target ? target->getColorAttachmentSize() : device->getCanvasSize();
-	glViewport(
-		static_cast<GLuint>(0),
-		static_cast<GLuint>(0),
-		static_cast<GLuint>(viewportSize.x),
-		static_cast<GLuint>(viewportSize.y));
+    auto viewportSize = target ? target->getColorAttachmentSize() : device->getCanvasSize();
+    glViewport(
+        static_cast<GLuint>(0),
+        static_cast<GLuint>(0),
+        static_cast<GLuint>(viewportSize.x),
+        static_cast<GLuint>(viewportSize.y));
 
-	RenderContext ctx;
-	material->bind(ctx);
-	quadMesh->draw();
-	material->unbind(ctx);
+    RenderContext ctx;
+    material->bind(ctx);
+    quadMesh->draw();
+    material->unbind(ctx);
 
-	material->setDepthTestEnabled(depthTestEnabled); // TODO really needed?
+    material->setDepthTestEnabled(depthTestEnabled); // TODO really needed?
 
-	if (target)
-		target->unbind();
+    if (target)
+        target->unbind();
 }

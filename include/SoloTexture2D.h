@@ -6,26 +6,26 @@
 
 namespace solo
 {
-	class Texture2D: public Texture
-	{
-	public:
-		void setData(ColorFormat format, const std::vector<uint8_t> &data, unsigned width, unsigned height);
+    class Texture2D: public Texture
+    {
+    public:
+        void setData(ColorFormat format, const std::vector<uint8_t> &data, unsigned width, unsigned height);
 
-		virtual void generateMipmaps() = 0;
+        virtual void generateMipmaps() = 0;
 
-		Vector2 getSize() const;
+        Vector2 getSize() const;
 
-	protected:
-		Texture2D() {}
+    protected:
+        Texture2D() {}
 
-		virtual void applyData(ColorFormat format, const std::vector<uint8_t> &data, unsigned width, unsigned height) = 0;
+        virtual void applyData(ColorFormat format, const std::vector<uint8_t> &data, unsigned width, unsigned height) = 0;
 
-	private:
-		Vector2 size;
-	};
+    private:
+        Vector2 size;
+    };
 
-	inline Vector2 Texture2D::getSize() const
-	{
-		return size;
-	}
+    inline Vector2 Texture2D::getSize() const
+    {
+        return size;
+    }
 }

@@ -6,22 +6,22 @@
 
 namespace solo
 {
-	class Formatter
-	{
-	public:
-		std::string operator()() const
-		{
-			return _buf.str();
-		}
+    class Formatter
+    {
+    public:
+        std::string operator()() const
+        {
+            return _buf.str();
+        }
 
-		template <class TFirst, class... TRest>
-		std::string operator()(TFirst first, TRest... rest)
-		{
-			_buf << first;
-			return operator()(rest...);
-		}
+        template <class TFirst, class... TRest>
+        std::string operator()(TFirst first, TRest... rest)
+        {
+            _buf << first;
+            return operator()(rest...);
+        }
 
-	private:
-		std::ostringstream _buf;
-	};
+    private:
+        std::ostringstream _buf;
+    };
 }

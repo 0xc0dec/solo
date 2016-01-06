@@ -4,12 +4,12 @@
 
 namespace solo
 {
-	class Graphics;
-	class Material;
+    class Graphics;
+    class Material;
 
-	class LuaGraphics
-	{
-	public:
-		static void renderSurface(Graphics *graphics, Material *material, LuaIntf::LuaRef target);
-	};
+    class LuaGraphics
+    {
+    public:
+        static void renderSurface(Graphics *graphics, Material *material, LuaIntf::LuaRef target);
+    };
 }

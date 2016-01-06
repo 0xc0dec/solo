@@ -5,21 +5,21 @@
 
 namespace solo
 {
-	class LuaScriptManager: public ScriptManager
-	{
-	public:
-		virtual ~LuaScriptManager();
+    class LuaScriptManager: public ScriptManager
+    {
+    public:
+        virtual ~LuaScriptManager();
 
-		virtual void execute(const std::string& code) override;
-		virtual void executeFile(const std::string& path) override;
+        virtual void execute(const std::string &code) override;
+        virtual void executeFile(const std::string &path) override;
 
-	private:
-		friend class ScriptManager;
+    private:
+        friend class ScriptManager;
 
-		LuaScriptManager();
+        LuaScriptManager();
 
-		void registerApi();
+        void registerApi();
 
-		LuaIntf::LuaState lua;
-	};
+        LuaIntf::LuaState lua;
+    };
 }

@@ -5,23 +5,23 @@
 
 namespace solo
 {
-	class Device;
-	class Scene;
+    class Device;
+    class Scene;
 
-	class OpenGLCamera: public Camera
-	{
-	public:
-		virtual void init() override;
+    class OpenGLCamera: public Camera
+    {
+    public:
+        virtual void init() override;
 
-	private:
-		friend class Camera;
+    private:
+        friend class Camera;
 
-		OpenGLCamera(Scene *scene, Node node);
+        OpenGLCamera(Scene *scene, Node node);
 
-		Device* device = nullptr;
+        Device *device = nullptr;
 
-		void applyViewport() override;
-		void applyClearColor() override;
-		void clear() override;
-	};
+        void applyViewport() override;
+        void applyClearColor() override;
+        void clear() override;
+    };
 }

@@ -6,11 +6,11 @@
 
 namespace solo
 {
-	class OpenGLHelper
-	{
-	public:
-		static GLenum convertToGLColorFormat(ColorFormat format);
-		static GLenum convertToGLWrapMode(TextureWrapping mode);
-		static GLenum convertToGLFilter(TextureFiltering filter);
-	};
+    class OpenGLHelper
+    {
+    public:
+        static GLenum convertToGLColorFormat(ColorFormat format);
+        static GLenum convertToGLWrapMode(TextureWrapping mode);
+        static GLenum convertToGLFilter(TextureFiltering filter);
+    };
 }

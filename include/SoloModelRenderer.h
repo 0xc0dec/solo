@@ -7,29 +7,29 @@
 
 namespace solo
 {
-	class Model;
-	class Material;
+    class Model;
+    class Material;
 
-	class ModelRenderer: public ComponentBase<ModelRenderer>
-	{
-	public:
-		static shared<ModelRenderer> create(Node node);
+    class ModelRenderer: public ComponentBase<ModelRenderer>
+    {
+    public:
+        static shared<ModelRenderer> create(Node node);
 
-		virtual void render(RenderContext& context) override;
+        virtual void render(RenderContext &context) override;
 
-		Model* getModel() const;
-		void setModel(shared<Model> model);
+        Model *getModel() const;
+        void setModel(shared<Model> model);
 
-		Material* getMaterial(unsigned index) const;
-		size_t getMaterialCount() const;
+        Material *getMaterial(unsigned index) const;
+        size_t getMaterialCount() const;
 
-		void setMaterialForMesh(unsigned index, shared<Material> material);
-		void setMaterial(shared<Material> material);
+        void setMaterialForMesh(unsigned index, shared<Material> material);
+        void setMaterial(shared<Material> material);
 
-	private:
-		explicit ModelRenderer(Node node);
+    private:
+        explicit ModelRenderer(Node node);
 
-		shared<Model> model;
-		std::unordered_map<unsigned, shared<Material>> materials;
-	};
+        shared<Model> model;
+        std::unordered_map<unsigned, shared<Material>> materials;
+    };
 }
