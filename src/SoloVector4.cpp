@@ -54,13 +54,13 @@ Vector4 Vector4::unitW()
 
 bool Vector4::isZero() const
 {
-	return x == 0.0f && y == 0.0f && z == 0.0f && w == 0.0f;
+	return Math::approxZero(x) && Math::approxZero(y) && Math::approxZero(z) && Math::approxZero(w);
 }
 
 
 bool Vector4::isUnit() const
 {
-	return x == 1.0f && y == 1.0f && z == 1.0f && w == 1.0f;
+	return Math::approxEqual(x, 1.0f) && Math::approxEqual(y, 1.0f) && Math::approxEqual(z, 1.0f) && Math::approxEqual(w, 1.0f);
 }
 
 
@@ -76,25 +76,21 @@ float Vector4::angle(const Vector4& v1, const Vector4& v2)
 
 void Vector4::clamp(const Vector4& min, const Vector4& max)
 {
-	// Clamp the x value.
 	if (x < min.x)
 		x = min.x;
 	if (x > max.x)
 		x = max.x;
 
-	// Clamp the y value.
 	if (y < min.y)
 		y = min.y;
 	if (y > max.y)
 		y = max.y;
 
-	// Clamp the z value.
 	if (z < min.z)
 		z = min.z;
 	if (z > max.z)
 		z = max.z;
 
-	// Clamp the z value.
 	if (w < min.w)
 		w = min.w;
 	if (w > max.w)
@@ -120,19 +116,19 @@ float Vector4::distanceSquared(const Vector4& v) const
 	auto dz = v.z - z;
 	auto dw = v.w - w;
 
-	return (dx * dx + dy * dy + dz * dz + dw * dw);
+	return dx * dx + dy * dy + dz * dz + dw * dw;
 }
 
 
 float Vector4::dot(const Vector4& v) const
 {
-	return (x * v.x + y * v.y + z * v.z + w * v.w);
+	return x * v.x + y * v.y + z * v.z + w * v.w;
 }
 
 
 float Vector4::dot(const Vector4& v1, const Vector4& v2)
 {
-	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w);
+	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
 }
 
 
@@ -144,7 +140,7 @@ float Vector4::length() const
 
 float Vector4::lengthSquared() const
 {
-	return (x * x + y * y + z * z + w * w);
+	return x * x + y * y + z * z + w * w;
 }
 
 
@@ -159,13 +155,12 @@ Vector4 Vector4::normalized() const
 void Vector4::normalize()
 {
 	auto n = x * x + y * y + z * z + w * w;
-	// Already normalized.
-	if (n == 1.0f)
+	// Already normalized
+	if (Math::approxEqual(n, 1.0f))
 		return;
 
 	n = sqrt(n);
-	// Too close to zero.
-	if (n < Math::SMALL_FLOAT2)
+	if (Math::approxZero(n, Math::SMALL_FLOAT2))
 		return;
 
 	n = 1.0f / n;

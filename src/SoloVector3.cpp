@@ -53,7 +53,7 @@ bool Vector3::isZero() const
 
 bool Vector3::isUnit() const
 {
-	return x == 1.0f && y == 1.0f && z == 1.0f;
+	return Math::approxEqual(x, 1.0f) && Math::approxEqual(y, 1.0f) && Math::approxEqual(z, 1.0f);
 }
 
 
@@ -69,19 +69,16 @@ float Vector3::angle(const Vector3& v1, const Vector3& v2)
 
 void Vector3::clamp(const Vector3& min, const Vector3& max)
 {
-	// Clamp the x value.
 	if (x < min.x)
 		x = min.x;
 	if (x > max.x)
 		x = max.x;
 
-	// Clamp the y value.
 	if (y < min.y)
 		y = min.y;
 	if (y > max.y)
 		y = max.y;
 
-	// Clamp the z value.
 	if (z < min.z)
 		z = min.z;
 	if (z > max.z)
@@ -153,12 +150,12 @@ Vector3 Vector3::normalized() const
 void Vector3::normalize()
 {
 	auto n = x * x + y * y + z * z;
-	// Already normalized.
-	if (n == 1.0f)
+	// Already normalized
+	if (Math::approxEqual(n, 1.0f))
 		return;
 
 	n = sqrt(n);
-	if (n < Math::SMALL_FLOAT2)
+	if (Math::approxZero(n, Math::SMALL_FLOAT2))
 		return;
 
 	n = 1.0f / n;
