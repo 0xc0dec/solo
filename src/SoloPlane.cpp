@@ -152,9 +152,9 @@ PlaneIntersection Plane::getIntersection(const Frustum &frustum) const
 
 PlaneIntersection Plane::getIntersection(const Plane &plane) const
 {
-	if (Math::approxZero(normal.x - plane.normal.x) &&
-		Math::approxZero(normal.y - plane.normal.y) &&
-		Math::approxZero(normal.z - plane.normal.z) || !isParallel(plane))
+	if (Math::approxEqual(normal.x, plane.normal.x) &&
+		Math::approxEqual(normal.y, plane.normal.y) &&
+		Math::approxEqual(normal.z, plane.normal.z) || !isParallel(plane))
 	{
 		return PlaneIntersection::Intersecting;
 	}
@@ -189,9 +189,9 @@ PlaneIntersection Plane::getIntersection(const Ray &ray) const
 
 bool Plane::isParallel(const Plane& plane) const
 {
-	return Math::approxZero(normal.y * plane.normal.z - normal.z * plane.normal.y) &&
-		Math::approxZero(normal.z * plane.normal.x - normal.x * plane.normal.z) &&
-		Math::approxZero(normal.x * plane.normal.y - normal.y * plane.normal.x);
+	return Math::approxEqual(normal.y * plane.normal.z, normal.z * plane.normal.y) &&
+		Math::approxEqual(normal.z * plane.normal.x, normal.x * plane.normal.z) &&
+		Math::approxEqual(normal.x * plane.normal.y, normal.y * plane.normal.x);
 }
 
 
@@ -225,7 +225,7 @@ void Plane::normalize()
 	// Normalize the plane's normal
 	auto normalizeFactor = 1.0f / sqrt(normal.x * normal.x + normal.y * normal.y + normal.z * normal.z);
 
-	if (!Math::approxZero(normalizeFactor - 1.0f))
+	if (!Math::approxEqual(normalizeFactor, 1.0f))
 	{
 		normal.x *= normalizeFactor;
 		normal.y *= normalizeFactor;
