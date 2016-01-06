@@ -65,6 +65,7 @@
     <ClInclude Include="..\include\SoloVector2.h" />
     <ClInclude Include="..\include\SoloVector3.h" />
     <ClInclude Include="..\include\SoloVector4.h" />
+    <ClInclude Include="..\include\SoloVertexFormat.h" />
     <ClInclude Include="..\src\platform\opengl\SoloGLSLEffect.h" />
     <ClInclude Include="..\src\platform\opengl\SoloGLSLEffectVariable.h" />
     <ClInclude Include="..\src\platform\opengl\SoloGLSLEffectVertexAttribute.h" />
@@ -125,6 +126,7 @@
     <ClCompile Include="..\src\SoloGraphics.cpp" />
     <ClCompile Include="..\src\SoloSkyboxRenderer.cpp" />
     <ClCompile Include="..\src\SoloSpectator.cpp" />
+    <ClCompile Include="..\src\SoloVertexFormat.cpp" />
     <ClCompile Include="..\thirdparty\glew\src\glew.c" />
     <ClCompile Include="..\thirdparty\glew\src\glewinfo.c" />
     <ClCompile Include="..\thirdparty\glew\src\visualinfo.c" />

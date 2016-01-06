@@ -45,3 +45,4 @@
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 #include "SoloVector4.h"
+#include "SoloVertexFormat.h"
