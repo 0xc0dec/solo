@@ -40,13 +40,13 @@ Vector2 Vector2::unitY()
 
 bool Vector2::isZero() const
 {
-	return x == 0.0f && y == 0.0f;
+	return Math::approxZero(x) && Math::approxZero(y);
 }
 
 
 bool Vector2::isUnit() const
 {
-	return x == 1.0f && y == 1.0f;
+	return Math::approxEqual(x, 1.0f) && Math::approxEqual(y, 1.0f);
 }
 
 
@@ -59,13 +59,11 @@ float Vector2::angle(const Vector2& v1, const Vector2& v2)
 
 void Vector2::clamp(const Vector2& min, const Vector2& max)
 {
-	// Clamp the x value.
 	if (x < min.x)
 		x = min.x;
 	if (x > max.x)
 		x = max.x;
 
-	// Clamp the y value.
 	if (y < min.y)
 		y = min.y;
 	if (y > max.y)
@@ -85,7 +83,7 @@ float Vector2::distanceSquared(const Vector2& v) const
 {
 	auto dx = v.x - x;
 	auto dy = v.y - y;
-	return (dx * dx + dy * dy);
+	return dx * dx + dy * dy;
 }
 
 
@@ -124,12 +122,12 @@ Vector2 Vector2::normalized() const
 void Vector2::normalize()
 {
 	auto n = x * x + y * y;
-	// Already normalized.
-	if (n == 1.0f)
+	// Already normalized
+	if (Math::approxEqual(n, 1.0f))
 		return;
 
 	n = sqrt(n);
-	if (n < Math::SMALL_FLOAT2)
+	if (Math::approxZero(n, Math::SMALL_FLOAT2))
 		return;
 
 	n = 1.0f / n;
