@@ -47,7 +47,7 @@ Vector3 Vector3::unitZ()
 
 bool Vector3::isZero() const
 {
-	return Math::isApproxZero(x) && Math::isApproxZero(y) && Math::isApproxZero(z);
+	return Math::approxZero(x) && Math::approxZero(y) && Math::approxZero(z);
 }
 
 

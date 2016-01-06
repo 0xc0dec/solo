@@ -18,7 +18,8 @@ namespace solo
 		static constexpr float PI_OVER_4 = 0.785398163397448309616f;
 		static constexpr float PIX2 = 6.28318530717958647693f;
 
-		static bool isApproxZero(float value);
+		static bool approxZero(float value, float tolerance = SMALL_FLOAT1);
+		static bool approxEqual(float first, float second, float tolerance = SMALL_FLOAT1);
 
 		static float degToRad(float degrees);
 		static float radToDeg(float radians);
@@ -29,9 +30,14 @@ namespace solo
 		static float clamp(float x, float lo, float hi);
 	};
 
-	inline bool Math::isApproxZero(float value)
+	inline bool Math::approxZero(float value, float tolerance)
 	{
-		return fabs(value) <= SMALL_FLOAT1;
+		return fabs(value) <= tolerance;
+	}
+
+	inline bool Math::approxEqual(float first, float second, float tolerance)
+	{
+		return fabs(first - second) <= tolerance;
 	}
 
 	inline float Math::degToRad(float degrees)

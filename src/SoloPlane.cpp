@@ -54,7 +54,7 @@ Vector3 Plane::intersection(const Plane& p1, const Plane& p2, const Plane& p3)
 		p3.normal.x * (p1.normal.y * p2.normal.z - p1.normal.z * p2.normal.y);
 
 	// If the determinant is zero, then the planes do not all intersect
-	if (Math::isApproxZero(det))
+	if (Math::approxZero(det))
 		return result;
 
 	// Create 3 points, one on each plane
@@ -152,9 +152,9 @@ PlaneIntersection Plane::getIntersection(const Frustum &frustum) const
 
 PlaneIntersection Plane::getIntersection(const Plane &plane) const
 {
-	if (Math::isApproxZero(normal.x - plane.normal.x) &&
-		Math::isApproxZero(normal.y - plane.normal.y) &&
-		Math::isApproxZero(normal.z - plane.normal.z) || !isParallel(plane))
+	if (Math::approxZero(normal.x - plane.normal.x) &&
+		Math::approxZero(normal.y - plane.normal.y) &&
+		Math::approxZero(normal.z - plane.normal.z) || !isParallel(plane))
 	{
 		return PlaneIntersection::Intersecting;
 	}
@@ -173,7 +173,7 @@ PlaneIntersection Plane::getIntersection(const Ray &ray) const
 	auto d = getDistanceToPoint(ray.getOrigin());
 
 	// If the origin of the ray lies in the plane, then it getIntersection.
-	if (Math::isApproxZero(d))
+	if (Math::approxZero(d))
 		return PlaneIntersection::Intersecting;
 
 	auto rayDirection = ray.getDirection();
@@ -189,9 +189,9 @@ PlaneIntersection Plane::getIntersection(const Ray &ray) const
 
 bool Plane::isParallel(const Plane& plane) const
 {
-	return Math::isApproxZero(normal.y * plane.normal.z - normal.z * plane.normal.y) &&
-		Math::isApproxZero(normal.z * plane.normal.x - normal.x * plane.normal.z) &&
-		Math::isApproxZero(normal.x * plane.normal.y - normal.y * plane.normal.x);
+	return Math::approxZero(normal.y * plane.normal.z - normal.z * plane.normal.y) &&
+		Math::approxZero(normal.z * plane.normal.x - normal.x * plane.normal.z) &&
+		Math::approxZero(normal.x * plane.normal.y - normal.y * plane.normal.x);
 }
 
 
@@ -225,7 +225,7 @@ void Plane::normalize()
 	// Normalize the plane's normal
 	auto normalizeFactor = 1.0f / sqrt(normal.x * normal.x + normal.y * normal.y + normal.z * normal.z);
 
-	if (!Math::isApproxZero(normalizeFactor - 1.0f))
+	if (!Math::approxZero(normalizeFactor - 1.0f))
 	{
 		normal.x *= normalizeFactor;
 		normal.y *= normalizeFactor;
