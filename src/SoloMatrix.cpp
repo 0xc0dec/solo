@@ -96,8 +96,9 @@ Matrix Matrix::createPerspective(float fieldOfView, float aspectRatio, float zNe
 {
 	auto f_n = 1.0f / (zFarPlane - zNearPlane);
 	auto theta = Math::degToRad(fieldOfView) * 0.5f;
-	if (fabs(fmod(theta, Math::PI_OVER_2)) < Math::SMALL_FLOAT1)
+	if (Math::approxZero(fmod(theta, Math::PI_OVER_2)))
 		SL_THROW_FMT(EngineException, "Invalid field of view value ", fieldOfView, " caused attempted tan calculation, which is undefined");
+
 	auto divisor = tan(theta);
 	auto factor = 1.0f / divisor;
 
@@ -105,7 +106,7 @@ Matrix Matrix::createPerspective(float fieldOfView, float aspectRatio, float zNe
 	memset(&result.m, 0, MATRIX_SIZE);
 	result.m[0] = (1.0f / aspectRatio) * factor;
 	result.m[5] = factor;
-	result.m[10] = (-(zFarPlane + zNearPlane)) * f_n;
+	result.m[10] = -(zFarPlane + zNearPlane) * f_n;
 	result.m[11] = -1.0f;
 	result.m[14] = -2.0f * zFarPlane * zNearPlane * f_n;
 
@@ -140,7 +141,7 @@ Matrix Matrix::createBillboardHelper(const Vector3& objectPosition, const Vector
 	const Vector3& cameraUpVector, const Vector3* cameraForwardVector)
 {
 	auto delta = cameraPosition - objectPosition;
-	auto isSufficientDelta = delta.lengthSquared() > Math::SMALL_FLOAT1;
+	auto isSufficientDelta = !Math::approxZero(delta.lengthSquared());
 
 	Matrix result;
 	result.m[3] = objectPosition.x;
@@ -250,14 +251,14 @@ Matrix Matrix::createRotation(const Vector3& axis, float angleRadians)
 	auto y = axis.y;
 	auto z = axis.z;
 
-	// Make sure the input axis is normalized.
+	// Make sure the input axis is normalized
 	auto n = x*x + y*y + z*z;
 	if (n != 1.0f)
 	{
-		// Not normalized.
+		// Not normalized
 		n = sqrt(n);
 		// Prevent divide too close to zero.
-		if (n > 0.000001f)
+		if (!Math::approxZero(n))
 		{
 			n = 1.0f / n;
 			x *= n;
@@ -369,7 +370,6 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
 		translation->z = m[14];
 	}
 
-	// Nothing left to do.
 	if (scale == nullptr && rotation == nullptr)
 		return true;
 
@@ -401,7 +401,7 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
 		return true;
 
 	// Scale too close to zero, can't decompose rotation.
-	if (scaleX < Math::SMALL_FLOAT3 || scaleY < Math::SMALL_FLOAT3 || fabs(scaleZ) < Math::SMALL_FLOAT3)
+	if (Math::approxZero(scaleX, Math::SMALL_FLOAT3) || Math::approxZero(scaleY, Math::SMALL_FLOAT3) || Math::approxZero(scaleZ, Math::SMALL_FLOAT3))
 		return false;
 
 	float rn;
@@ -422,10 +422,10 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
 	zaxis.y *= rn;
 	zaxis.z *= rn;
 
-	// Now calculate the rotation from the resulting matrix (axes).
+	// Calculate the rotation from the resulting matrix (axes).
 	auto trace = xaxis.x + yaxis.y + zaxis.z + 1.0f;
 
-	if (trace > Math::SMALL_FLOAT3)
+	if (!Math::approxZero(trace, Math::SMALL_FLOAT3))
 	{
 		auto s = 0.5f / sqrt(trace);
 		rotation->w = 0.25f / s;
@@ -482,8 +482,7 @@ float Matrix::getDeterminant() const
 	auto b4 = m[9] * m[15] - m[11] * m[13];
 	auto b5 = m[10] * m[15] - m[11] * m[14];
 
-	// Calculate the determinant.
-	return (a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0);
+	return a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
 }
 
 
@@ -526,11 +525,10 @@ bool Matrix::invert()
 	auto b4 = m[9] * m[15] - m[11] * m[13];
 	auto b5 = m[10] * m[15] - m[11] * m[14];
 
-	// Calculate the determinant
 	auto det = a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
 
 	// Close to zero, can't invert
-	if (fabs(det) <= Math::SMALL_FLOAT3)
+	if (Math::approxZero(det, Math::SMALL_FLOAT3))
 		return false;
 
 	// Support the case where m == dst
@@ -563,7 +561,7 @@ bool Matrix::invert()
 
 bool Matrix::isIdentity() const
 {
-	return (memcmp(m, MATRIX_IDENTITY, MATRIX_SIZE) == 0);
+	return memcmp(m, MATRIX_IDENTITY, MATRIX_SIZE) == 0;
 }
 
 
