@@ -18,8 +18,7 @@ void Model::addMesh(shared<Mesh> mesh)
 
 void Model::removeMesh(shared<Mesh> mesh)
 {
-    auto pos = std::find_if(meshes.begin(), meshes.end(),
-                            [mesh](shared<Mesh> p) -> bool { return p == mesh; });
+    auto pos = std::find_if(meshes.begin(), meshes.end(), [mesh](shared<Mesh> p) -> bool { return p == mesh; });
     if (pos != meshes.end())
         meshes.erase(pos);
 }

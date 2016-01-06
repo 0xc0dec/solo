@@ -3,7 +3,6 @@
 #include "SoloBase.h"
 #include "SoloComponent.h"
 #include "SoloNode.h"
-#include "SoloRenderQueue.h"
 
 namespace solo
 {
