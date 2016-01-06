@@ -7,7 +7,7 @@ using namespace solo;
 
 shared<RenderTarget> RenderTarget::create(DeviceMode mode)
 {
-	if (mode == DeviceMode::OpenGL)
-		return SL_NEW_SHARED(OpenGLRenderTarget);
-	return SL_NEW_SHARED(StubRenderTarget);
+    if (mode == DeviceMode::OpenGL)
+        return SL_NEW_SHARED(OpenGLRenderTarget);
+    return SL_NEW_SHARED(StubRenderTarget);
 }
