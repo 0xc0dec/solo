@@ -241,14 +241,8 @@
     <ClInclude Include="..\include\SoloVertexFormat.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloMesh2.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloSubmesh.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLMesh2.h">
-      <Filter>src\platform\opengl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -508,12 +502,6 @@
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloVertexFormat.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLMesh2.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloMesh2.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -36,7 +36,6 @@
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\include\SoloGraphics.h" />
     <ClInclude Include="..\include\SoloImage.h" />
-    <ClInclude Include="..\include\SoloMesh2.h" />
     <ClInclude Include="..\include\SoloRenderQueue.h" />
     <ClInclude Include="..\include\SoloRenderTarget.h" />
     <ClInclude Include="..\include\SoloScriptManager.h" />
@@ -78,7 +77,6 @@
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLHelper.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLMaterial.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLMesh.h" />
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLMesh2.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderTarget.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLTexture2D.h" />
     <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h" />
@@ -113,7 +111,6 @@
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLHelper.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLMaterial.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLMesh.cpp" />
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLMesh2.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderTarget.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLTexture2D.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp" />
@@ -128,7 +125,6 @@
     <ClCompile Include="..\src\platform\stub\SoloStubResourceManager.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\SoloGraphics.cpp" />
-    <ClCompile Include="..\src\SoloMesh2.cpp" />
     <ClCompile Include="..\src\SoloSkyboxRenderer.cpp" />
     <ClCompile Include="..\src\SoloSpectator.cpp" />
     <ClCompile Include="..\src\SoloVertexFormat.cpp" />
