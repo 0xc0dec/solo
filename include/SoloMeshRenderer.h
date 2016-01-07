@@ -22,11 +22,10 @@ namespace solo
         Mesh2 *getMesh() const;
         void setMesh(shared<Mesh2> mesh);
 
-        Material *getMaterial(unsigned index) const;
+        Material *findMaterial(unsigned index) const;
         size_t getMaterialCount() const;
 
-        void setMaterialForMeshPart(unsigned index, shared<Material> material);
-        void setMaterial(shared<Material> material);
+        void setMaterial(unsigned index, shared<Material> material);
 
     private:
         MeshRenderer(DeviceMode mode, Node node);
@@ -36,12 +35,6 @@ namespace solo
         std::unordered_map<unsigned, shared<Material>> materials;
         std::unordered_map<unsigned, shared<MeshEffectBinding>> bindings;
     };
-
-    inline void MeshRenderer::setMesh(shared<Mesh2> mesh)
-    {
-        this->mesh = mesh;
-        materials.clear();
-    }
 
     inline Mesh2 *MeshRenderer::getMesh() const
     {

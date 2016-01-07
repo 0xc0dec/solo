@@ -14,12 +14,20 @@ shared<MeshRenderer> MeshRenderer::create(DeviceMode mode, Node node)
 }
 
 
+MeshRenderer::MeshRenderer(DeviceMode mode, Node node) :
+    ComponentBase(node),
+    deviceMode(mode)
+{
+    renderQueue = KnownRenderQueues::OpaqueObjects;
+}
+
+
 void MeshRenderer::render(RenderContext& context)
 {
     auto partCount = mesh->getPartCount();
     if (partCount == 0)
     {
-        auto material = getMaterial(0);
+        auto material = findMaterial(0);
         if (material)
         {
             material->bind(context);
@@ -31,7 +39,7 @@ void MeshRenderer::render(RenderContext& context)
     {
         for (unsigned i = 0; i < partCount; ++i)
         {
-            auto material = getMaterial(i);
+            auto material = findMaterial(i);
             if (material)
             {
                 material->bind(context);
@@ -43,11 +51,22 @@ void MeshRenderer::render(RenderContext& context)
 }
 
 
-void MeshRenderer::setMaterialForMeshPart(unsigned index, shared<Material> material)
+void MeshRenderer::setMesh(shared<Mesh2> mesh)
+{
+    this->mesh = mesh;
+    // TODO maybe retain one material, if any
+    materials.clear();
+    bindings.clear();
+}
+
+
+void MeshRenderer::setMaterial(unsigned index, shared<Material> material)
 {
     if (!mesh)
         SL_THROW_FMT(EngineException, "Renderer has no mesh, setting material has no effect");
-    if (index >= mesh->getPartCount())
+
+    auto partCount = mesh->getPartCount();
+    if (partCount > 0 && index >= partCount)
         SL_THROW_FMT(EngineException, "Trying to set material with index ", index, ", but mesh has only ", mesh->getPartCount(), " parts");
 
     if (!material)
@@ -63,38 +82,7 @@ void MeshRenderer::setMaterialForMeshPart(unsigned index, shared<Material> mater
 }
 
 
-void MeshRenderer::setMaterial(shared<Material> material)
-{
-    bindings.clear();
-    materials.clear();
-
-    if (!material)
-        return;
-
-    auto partCount = mesh->getPartCount();
-    if (partCount)
-    {
-        for (size_t i = 0; i < partCount; ++i)
-            setMaterialForMeshPart(i, material);
-    }
-    else
-    {
-        // TODO ugly
-        materials[0] = material;
-        bindings[0] = MeshEffectBinding::create(deviceMode, mesh.get(), material->getEffect());
-    }
-}
-
-
-MeshRenderer::MeshRenderer(DeviceMode mode, Node node):
-    ComponentBase(node),
-    deviceMode(mode)
-{
-    renderQueue = KnownRenderQueues::OpaqueObjects;
-}
-
-
-Material *MeshRenderer::getMaterial(unsigned index) const
+Material *MeshRenderer::findMaterial(unsigned index) const
 {
     if (materials.find(index) == materials.end())
         return nullptr;

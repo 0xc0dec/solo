@@ -503,8 +503,7 @@ void LuaScriptManager::registerApi()
 
     // MeshRenderer
     auto mr = module.beginExtendClass<MeshRenderer, Component>("MeshRenderer");
-    REGISTER_METHOD(mr, MeshRenderer, getMaterial);
-    REGISTER_METHOD(mr, MeshRenderer, setMaterialForMeshPart);
+    REGISTER_METHOD(mr, MeshRenderer, findMaterial);
     REGISTER_METHOD(mr, MeshRenderer, setMaterial);
     REGISTER_METHOD(mr, MeshRenderer, getMaterialCount);
     REGISTER_METHOD(mr, MeshRenderer, getMesh);
