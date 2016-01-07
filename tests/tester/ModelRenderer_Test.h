@@ -2,7 +2,7 @@
 
 #include "TestBase.h"
 
-
+/*
 class ModelRenderer_Test : public TestBase
 {
 public:
@@ -66,3 +66,4 @@ private:
 	shared<Material> material{ nullptr };
 	ModelRenderer* renderer{ nullptr };
 };
+*/

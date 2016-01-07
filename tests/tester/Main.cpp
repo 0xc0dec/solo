@@ -36,7 +36,7 @@ void runCppUnitTests()
 		Device_Test(device.get()).run();
 		ComponentsAndNodes_Test(device.get()).run();
 		Transform_Test(device.get()).run();
-		ModelRenderer_Test(device.get()).run();
+//		ModelRenderer_Test(device.get()).run();
 		BitFlags_Test(device.get()).run();
 		device->requestShutdown();
 	});

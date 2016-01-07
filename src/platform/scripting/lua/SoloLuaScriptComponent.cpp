@@ -1,7 +1,7 @@
 #include "SoloLuaScriptComponent.h"
 #include "SoloTransform.h"
 #include "SoloCamera.h"
-#include "SoloModelRenderer.h"
+#include "SoloMeshRenderer.h"
 #include "SoloSpectator.h"
 #include "SoloSkyboxRenderer.h"
 #include "SoloRenderContext.h"
@@ -65,8 +65,8 @@ Component *LuaScriptComponent::findComponent(Node *node, const std::string &type
 {
     if (typeName == "Transform")
         return node->findComponent<Transform>();
-    if (typeName == "ModelRenderer")
-        return node->findComponent<ModelRenderer>();
+    if (typeName == "MeshRenderer")
+        return node->findComponent<MeshRenderer>();
     if (typeName == "Camera")
         return node->findComponent<Camera>();
     if (typeName == "Spectator")
@@ -103,8 +103,8 @@ Component *LuaScriptComponent::addComponent(Node *node, const std::string &typeN
 {
     if (typeName == "Transform")
         return node->addComponent<Transform>();
-    if (typeName == "ModelRenderer")
-        return node->addComponent<ModelRenderer>();
+    if (typeName == "MeshRenderer")
+        return node->addComponent<MeshRenderer>();
     if (typeName == "Camera")
         return node->addComponent<Camera>();
     if (typeName == "Spectator")
@@ -119,8 +119,8 @@ void LuaScriptComponent::removeComponent(Node *node, const std::string &typeName
 {
     if (typeName == "Transform")
         node->removeComponent<Transform>();
-    if (typeName == "ModelRenderer")
-        node->removeComponent<ModelRenderer>();
+    if (typeName == "MeshRenderer")
+        node->removeComponent<MeshRenderer>();
     if (typeName == "Camera")
         node->removeComponent<Camera>();
     if (typeName == "Spectator")

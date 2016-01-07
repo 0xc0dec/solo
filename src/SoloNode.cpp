@@ -2,7 +2,7 @@
 #include "SoloScene.h"
 #include "SoloCamera.h"
 #include "SoloDevice.h"
-#include "SoloModelRenderer.h"
+#include "SoloMeshRenderer.h"
 #include "SoloSkyboxRenderer.h"
 #include "SoloTransform.h"
 #include "SoloSpectator.h"
@@ -32,9 +32,9 @@ template<> Camera *Node::addComponent<Camera>()
 }
 
 
-template<> ModelRenderer *Node::addComponent<ModelRenderer>()
+template<> MeshRenderer *Node::addComponent<MeshRenderer>()
 {
-    auto renderer = ModelRenderer::create(*this);
+    auto renderer = MeshRenderer::create(scene->getDevice()->getMode(), *this);
     scene->addComponent(id, renderer);
     return renderer.get();
 }

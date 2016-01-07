@@ -4,7 +4,6 @@
 #include <LuaIntf.h>
 #include "SoloComponent.h"
 
-
 namespace solo
 {
     class LuaScriptComponent: public ComponentBase<LuaScriptComponent>

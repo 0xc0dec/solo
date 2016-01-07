@@ -52,7 +52,7 @@
     <ClInclude Include="..\include\SoloMatrix.h" />
     <ClInclude Include="..\include\SoloMesh.h" />
     <ClInclude Include="..\include\SoloModel.h" />
-    <ClInclude Include="..\include\SoloModelRenderer.h" />
+    <ClInclude Include="..\include\SoloMeshRenderer.h" />
     <ClInclude Include="..\include\SoloNode.h" />
     <ClInclude Include="..\include\SoloPlane.h" />
     <ClInclude Include="..\include\SoloQuaternion.h" />
@@ -174,7 +174,7 @@
     <ClCompile Include="..\src\SoloMatrix.cpp" />
     <ClCompile Include="..\src\SoloMesh.cpp" />
     <ClCompile Include="..\src\SoloModel.cpp" />
-    <ClCompile Include="..\src\SoloModelRenderer.cpp" />
+    <ClCompile Include="..\src\SoloMeshRenderer.cpp" />
     <ClCompile Include="..\src\SoloNode.cpp" />
     <ClCompile Include="..\src\SoloObjModelLoader.cpp" />
     <ClCompile Include="..\src\SoloPlane.cpp" />

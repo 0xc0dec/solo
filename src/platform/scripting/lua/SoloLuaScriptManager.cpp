@@ -28,7 +28,7 @@
 #include "SoloMesh.h"
 #include "SoloModel.h"
 #include "SoloRenderContext.h"
-#include "SoloModelRenderer.h"
+#include "SoloMeshRenderer.h"
 #include "SoloSkyboxRenderer.h"
 #include "SoloSpectator.h"
 #include "SoloGraphics.h"
@@ -501,14 +501,14 @@ void LuaScriptManager::registerApi()
     REGISTER_ENUM_CONSTANT(transformSpace, TransformSpace, World);
     transformSpace.endModule();
 
-    // ModelRenderer
-    auto mr = module.beginExtendClass<ModelRenderer, Component>("ModelRenderer");
-    REGISTER_METHOD(mr, ModelRenderer, getMaterial);
-    REGISTER_METHOD(mr, ModelRenderer, setMaterialForMesh);
-    REGISTER_METHOD(mr, ModelRenderer, setMaterial);
-    REGISTER_METHOD(mr, ModelRenderer, getMaterialCount);
-    REGISTER_METHOD(mr, ModelRenderer, getModel);
-    REGISTER_METHOD(mr, ModelRenderer, setModel);
+    // MeshRenderer
+    auto mr = module.beginExtendClass<MeshRenderer, Component>("MeshRenderer");
+    REGISTER_METHOD(mr, MeshRenderer, getMaterial);
+    REGISTER_METHOD(mr, MeshRenderer, setMaterialForMeshPart);
+    REGISTER_METHOD(mr, MeshRenderer, setMaterial);
+    REGISTER_METHOD(mr, MeshRenderer, getMaterialCount);
+    REGISTER_METHOD(mr, MeshRenderer, getMesh);
+    REGISTER_METHOD(mr, MeshRenderer, setMesh);
     mr.endClass();
 
     // SkyboxRenderer

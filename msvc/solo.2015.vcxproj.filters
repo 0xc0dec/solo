@@ -70,9 +70,6 @@
     <ClInclude Include="..\include\SoloModel.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloModelRenderer.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloScene.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -250,6 +247,9 @@
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLMeshEffectBinding.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloMeshRenderer.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloLog.cpp">
@@ -313,9 +313,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloMesh.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloModelRenderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloModel.cpp">
@@ -515,6 +512,9 @@
     </ClCompile>
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLMeshEffectBinding.cpp">
       <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloMeshRenderer.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
