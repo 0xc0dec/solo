@@ -7,7 +7,7 @@
 #include "SoloTexture2D.h"
 #include "SoloCubeTexture.h"
 #include "SoloDevice.h"
-#include "SoloObjModelLoader.h"
+#include "SoloObjMeshLoader.h"
 #include "platform/stub/SoloStubResourceManager.h"
 #include "platform/opengl/SoloOpenGLBuiltInShaders.h"
 #include <functional>
@@ -43,8 +43,7 @@ shared<Effect> ResourceManager::tryCreateBuiltInEffect(const std::string &uri)
     {
         if (device->getMode() == DeviceMode::OpenGL)
         {
-            return createResource<Effect>(KnownUris::SkyboxEffect, effects,
-                                          [&]()
+            return createResource<Effect>(KnownUris::SkyboxEffect, effects, [&]()
             {
                 return Effect::create(device->getMode(), OpenGLBuiltInShaders::vsSkybox, OpenGLBuiltInShaders::fsSkybox);
             });
@@ -109,9 +108,8 @@ shared<RenderTarget> ResourceManager::findRenderTarget(const std::string &uri)
 
 shared<Effect> ResourceManager::getOrCreateEffect(const std::string &vsSrc, const std::string &fsSrc, const std::string &uri)
 {
-    return getOrCreateResource<Effect>(uri, effects,
-                                       std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
-                                       [&]()
+    return getOrCreateResource<Effect>(uri, effects, std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
+    [&]()
     {
         return Effect::create(device->getMode(), vsSrc, fsSrc);
     });
@@ -120,9 +118,8 @@ shared<Effect> ResourceManager::getOrCreateEffect(const std::string &vsSrc, cons
 
 shared<Material> ResourceManager::getOrCreateMaterial(shared<Effect> effect, const std::string &uri)
 {
-    return getOrCreateResource<Material>(uri, materials,
-                                         std::bind(&ResourceManager::findMaterial, this, std::placeholders::_1),
-                                         [&]()
+    return getOrCreateResource<Material>(uri, materials, std::bind(&ResourceManager::findMaterial, this, std::placeholders::_1),
+    [&]()
     {
         return Material::create(device->getMode(), effect);
     });

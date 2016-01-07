@@ -1,4 +1,4 @@
-#include "SoloObjModelLoader.h"
+#include "SoloObjMeshLoader.h"
 #include "SoloMesh.h"
 #include "SoloFileSystem.h"
 #include "SoloResourceManager.h"

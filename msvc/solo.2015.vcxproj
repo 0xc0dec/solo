@@ -101,7 +101,7 @@
     <ClInclude Include="..\src\platform\stub\SoloStubTexture2D.h" />
     <ClInclude Include="..\src\SoloMeshEffectBinding.h" />
     <ClInclude Include="..\src\SoloModelLoader.h" />
-    <ClInclude Include="..\src\SoloObjModelLoader.h" />
+    <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPngImageLoader.h" />
   </ItemGroup>
   <ItemGroup>
@@ -177,7 +177,7 @@
     <ClCompile Include="..\src\SoloMesh.cpp" />
     <ClCompile Include="..\src\SoloMeshRenderer.cpp" />
     <ClCompile Include="..\src\SoloNode.cpp" />
-    <ClCompile Include="..\src\SoloObjModelLoader.cpp" />
+    <ClCompile Include="..\src\SoloObjMeshLoader.cpp" />
     <ClCompile Include="..\src\SoloPlane.cpp" />
     <ClCompile Include="..\src\SoloPngImageLoader.cpp" />
     <ClCompile Include="..\src\SoloQuaternion.cpp" />
