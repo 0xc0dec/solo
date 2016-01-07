@@ -54,13 +54,13 @@ shared<Effect> ResourceManager::tryCreateBuiltInEffect(const std::string &uri)
 }
 
 
-shared<Mesh2> ResourceManager::tryCreateBuiltInMesh(const std::string &uri)
+shared<Mesh> ResourceManager::tryCreateBuiltInMesh(const std::string &uri)
 {
     if (uri == KnownUris::UnitQuadMesh)
     {
-        return createResource<Mesh2>(KnownUris::UnitQuadMesh, meshes, [&]()
+        return createResource<Mesh>(KnownUris::UnitQuadMesh, meshes, [&]()
         {
-            auto mesh = Mesh2::create(device->getMode());
+            auto mesh = Mesh::create(device->getMode());
             mesh->rebuildAsQuad();
             return mesh;
         });
@@ -94,7 +94,7 @@ shared<CubeTexture> ResourceManager::findCubeTexture(const std::string &uri)
 }
 
 
-shared<Mesh2> ResourceManager::findMesh(const std::string &uri)
+shared<Mesh> ResourceManager::findMesh(const std::string &uri)
 {
     auto result = findResource(uri, meshes);
     return result ? result : tryCreateBuiltInMesh(uri);
@@ -205,7 +205,7 @@ shared<CubeTexture> ResourceManager::getOrCreateCubeTexture(const std::string &u
 }
 
 
-shared<Mesh2> ResourceManager::getOrLoadMesh(const std::string &dataUri, const std::string &uri)
+shared<Mesh> ResourceManager::getOrLoadMesh(const std::string &dataUri, const std::string &uri)
 {
     auto meshUri = uri.empty() ? dataUri : uri;
     auto existing = findMesh(meshUri);
@@ -226,11 +226,11 @@ shared<Mesh2> ResourceManager::getOrLoadMesh(const std::string &dataUri, const s
 }
 
 
-shared<Mesh2> ResourceManager::getOrCreateMesh(const std::string &uri)
+shared<Mesh> ResourceManager::getOrCreateMesh(const std::string &uri)
 {
-    return getOrCreateResource<Mesh2>(uri, meshes,
+    return getOrCreateResource<Mesh>(uri, meshes,
                                      std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
-                                     std::bind(&Mesh2::create, device->getMode()));
+                                     std::bind(&Mesh::create, device->getMode()));
 }
 
 

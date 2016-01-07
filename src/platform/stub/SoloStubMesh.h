@@ -4,10 +4,10 @@
 
 namespace solo
 {
-    class StubMesh2: public Mesh2
+    class StubMesh: public Mesh
     {
     public:
-        virtual ~StubMesh2() {}
+        virtual ~StubMesh() {}
 
         virtual void resetVertexData(const VertexFormat& format, float* data, unsigned elementCount, bool dynamic) override
         {
@@ -31,8 +31,8 @@ namespace solo
         void drawIndexedPart(unsigned part) override {}
 
     private:
-        friend class Mesh2;
+        friend class Mesh;
 
-        StubMesh2() {}
+        StubMesh() {}
     };
 }

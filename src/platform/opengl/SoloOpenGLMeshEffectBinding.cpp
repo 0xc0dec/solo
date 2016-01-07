@@ -6,7 +6,7 @@
 using namespace solo;
 
 
-OpenGLMeshEffectBinding::OpenGLMeshEffectBinding(Mesh2 *mesh, Effect *effect)
+OpenGLMeshEffectBinding::OpenGLMeshEffectBinding(Mesh *mesh, Effect *effect)
 {
     glGenVertexArrays(1, &vertexArrayHandle);
     if (!vertexArrayHandle)

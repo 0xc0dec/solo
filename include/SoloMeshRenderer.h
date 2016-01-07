@@ -8,7 +8,7 @@ namespace solo
 {
     enum class DeviceMode;
     class Material;
-    class Mesh2;
+    class Mesh;
     class MeshEffectBinding;
 
     class MeshRenderer: public ComponentBase<MeshRenderer>
@@ -18,8 +18,8 @@ namespace solo
 
         virtual void render(RenderContext &context) override;
 
-        Mesh2 *getMesh() const;
-        void setMesh(shared<Mesh2> mesh);
+        Mesh *getMesh() const;
+        void setMesh(shared<Mesh> mesh);
 
         Material *findMaterial(unsigned index) const;
         size_t getMaterialCount() const;
@@ -29,13 +29,13 @@ namespace solo
     private:
         MeshRenderer(DeviceMode mode, Node node);
 
-        shared<Mesh2> mesh;
+        shared<Mesh> mesh;
         DeviceMode deviceMode;
         std::unordered_map<unsigned, shared<Material>> materials;
         std::unordered_map<unsigned, shared<MeshEffectBinding>> bindings;
     };
 
-    inline Mesh2 *MeshRenderer::getMesh() const
+    inline Mesh *MeshRenderer::getMesh() const
     {
         return mesh.get();
     }

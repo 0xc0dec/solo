@@ -4,7 +4,7 @@
 
 namespace solo
 {
-    class Mesh2;
+    class Mesh;
     class FileSystem;
     class ResourceManager;
 
@@ -15,7 +15,7 @@ namespace solo
         virtual ~MeshLoader() {}
 
         virtual bool isLoadable(const std::string &uri) = 0;
-        virtual shared<Mesh2> load(const std::string &uri) = 0;
+        virtual shared<Mesh> load(const std::string &uri) = 0;
 
     protected:
         MeshLoader(FileSystem *fs, ResourceManager *resourceManager):

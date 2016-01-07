@@ -9,10 +9,10 @@ namespace solo
 {
     class OpenGLIndexedMeshPart;
 
-    class OpenGLMesh2 : public Mesh2
+    class OpenGLMesh : public Mesh
     {
     public:
-        virtual ~OpenGLMesh2();
+        virtual ~OpenGLMesh();
 
         virtual void resetVertexData(const VertexFormat &format, float *data, unsigned elementCount, bool dynamic) override;
         virtual void updateVertexData(float *data, unsigned elementCount, unsigned updateFromIndex) override;
@@ -24,9 +24,9 @@ namespace solo
         virtual void drawIndexedPart(unsigned part) override;
 
     private:
-        friend class Mesh2;
+        friend class Mesh;
 
-        OpenGLMesh2();
+        OpenGLMesh();
 
         static GLenum convertPrimitiveType(PrimitiveType primitiveType);
         static GLenum convertIndexType(MeshIndexFormat indexFormat);
@@ -36,7 +36,7 @@ namespace solo
         std::vector<shared<OpenGLIndexedMeshPart>> parts;
     };
 
-    inline size_t OpenGLMesh2::getPartCount() const
+    inline size_t OpenGLMesh::getPartCount() const
     {
         return parts.size();
     }

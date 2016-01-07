@@ -5,11 +5,11 @@
 using namespace solo;
 
 
-shared<Mesh2> Mesh2::create(DeviceMode mode)
+shared<Mesh> Mesh::create(DeviceMode mode)
 {
     if (mode == DeviceMode::OpenGL)
-        return SL_NEW_SHARED(StubMesh2);
-    return SL_NEW_SHARED(OpenGLMesh2);
+        return SL_NEW_SHARED(StubMesh);
+    return SL_NEW_SHARED(OpenGLMesh);
 }
 
 //

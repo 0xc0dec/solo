@@ -6,7 +6,7 @@ namespace solo
 {
     class Effect;
     class Material;
-    class Mesh2;
+    class Mesh;
     class Texture2D;
     class CubeTexture;
     class RenderTarget;
@@ -35,19 +35,19 @@ namespace solo
         shared<Texture2D> findTexture2D(const std::string &uri);
         shared<CubeTexture> findCubeTexture(const std::string &uri);
         shared<Material> findMaterial(const std::string &uri);
-        shared<Mesh2> findMesh(const std::string &uri);
+        shared<Mesh> findMesh(const std::string &uri);
         shared<RenderTarget> findRenderTarget(const std::string &uri);
 
         shared<Effect> getOrCreateEffect(const std::string &vsSrc, const std::string &fsSrc, const std::string &uri = "");
         shared<Texture2D> getOrCreateTexture2D(const std::string &uri = "");
         shared<CubeTexture> getOrCreateCubeTexture(const std::string &uri = "");
         shared<Material> getOrCreateMaterial(shared<Effect> effect, const std::string &uri = "");
-        shared<Mesh2> getOrCreateMesh(const std::string &uri = "");
+        shared<Mesh> getOrCreateMesh(const std::string &uri = "");
         shared<RenderTarget> getOrCreateRenderTarget(const std::string &uri = "");
 
         shared<Texture2D> getOrLoadTexture2D(const std::string &imageUri, const std::string &uri = "");
         shared<CubeTexture> getOrLoadCubeTexture(const std::vector<std::string> &imageUris, const std::string &uri = "");
-        shared<Mesh2> getOrLoadMesh(const std::string &dataUri, const std::string &uri = "");
+        shared<Mesh> getOrLoadMesh(const std::string &dataUri, const std::string &uri = "");
 
         void cleanUnusedResources();
 
@@ -78,13 +78,13 @@ namespace solo
         shared<TResource> findResource(const std::string &uri, const ResourceMap<TResource> &resourceMap);
 
         shared<Effect> tryCreateBuiltInEffect(const std::string &uri);
-        shared<Mesh2> tryCreateBuiltInMesh(const std::string &uri);
+        shared<Mesh> tryCreateBuiltInMesh(const std::string &uri);
 
         Device *device{ nullptr };
 
         ResourceMap<Effect> effects;
         ResourceMap<Material> materials;
-        ResourceMap<Mesh2> meshes;
+        ResourceMap<Mesh> meshes;
         ResourceMap<Texture2D> textures2d;
         ResourceMap<CubeTexture> cubeTextures;
         ResourceMap<RenderTarget> renderTargets;

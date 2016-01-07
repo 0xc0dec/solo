@@ -10,6 +10,6 @@ namespace solo
         StubMeshLoader(FileSystem *fs, ResourceManager *resourceManager);
 
         virtual bool isLoadable(const std::string &uri) override;
-        virtual shared<Mesh2> load(const std::string &uri) override;
+        virtual shared<Mesh> load(const std::string &uri) override;
     };
 }

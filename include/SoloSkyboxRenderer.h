@@ -7,7 +7,7 @@
 
 namespace solo
 {
-    class Mesh2;
+    class Mesh;
     class Material;
     class CubeTexture;
 
@@ -24,7 +24,7 @@ namespace solo
     private:
         explicit SkyboxRenderer(Node node);
 
-        shared<Mesh2> quadMesh;
+        shared<Mesh> quadMesh;
         shared<Material> material;
         shared<CubeTexture> texture;
     };

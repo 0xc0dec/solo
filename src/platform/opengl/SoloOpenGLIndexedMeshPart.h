@@ -20,7 +20,7 @@ namespace solo
         GLuint getBufferHandle() const;
 
     private:
-        friend class OpenGLMesh2;
+        friend class OpenGLMesh;
 
         OpenGLIndexedMeshPart();
 

@@ -51,7 +51,7 @@ void MeshRenderer::render(RenderContext& context)
 }
 
 
-void MeshRenderer::setMesh(shared<Mesh2> mesh)
+void MeshRenderer::setMesh(shared<Mesh> mesh)
 {
     this->mesh = mesh;
     // TODO maybe retain one material, if any

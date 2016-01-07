@@ -381,16 +381,16 @@ void LuaScriptManager::registerApi()
     effect.endClass();
 
     // Mesh
-    auto m = module.beginClass<Mesh2>("Mesh");
-    REGISTER_METHOD(m, Mesh2, resetVertexData);
-    REGISTER_METHOD(m, Mesh2, updateVertexData);
-    REGISTER_METHOD(m, Mesh2, addIndexedPart);
-    REGISTER_METHOD(m, Mesh2, getPartCount);
-    REGISTER_METHOD(m, Mesh2, getVertexFormat);
-    REGISTER_METHOD(m, Mesh2, setPrimitiveType);
-    REGISTER_METHOD(m, Mesh2, getPrimitiveType);
-    REGISTER_METHOD(m, Mesh2, rebuildAsBox);
-    REGISTER_METHOD(m, Mesh2, rebuildAsQuad);
+    auto m = module.beginClass<Mesh>("Mesh");
+    REGISTER_METHOD(m, Mesh, resetVertexData);
+    REGISTER_METHOD(m, Mesh, updateVertexData);
+    REGISTER_METHOD(m, Mesh, addIndexedPart);
+    REGISTER_METHOD(m, Mesh, getPartCount);
+    REGISTER_METHOD(m, Mesh, getVertexFormat);
+    REGISTER_METHOD(m, Mesh, setPrimitiveType);
+    REGISTER_METHOD(m, Mesh, getPrimitiveType);
+    REGISTER_METHOD(m, Mesh, rebuildAsBox);
+    REGISTER_METHOD(m, Mesh, rebuildAsQuad);
     m.endClass();
 
     // ColorFormat

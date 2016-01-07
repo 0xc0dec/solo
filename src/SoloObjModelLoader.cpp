@@ -72,7 +72,7 @@ void parseIndexes(const char **from, const char *to, unsigned **result)
 }
 
 
-shared<Mesh2> ObjMeshLoader::load(const std::string &uri)
+shared<Mesh> ObjMeshLoader::load(const std::string &uri)
 {
     // Yes, no materials support
     // Yes, no support for anything other than triangles

@@ -16,7 +16,7 @@ bool StubMeshLoader::isLoadable(const std::string &uri)
 }
 
 
-shared<Mesh2> StubMeshLoader::load(const std::string &uri)
+shared<Mesh> StubMeshLoader::load(const std::string &uri)
 {
     return resourceManager->getOrCreateMesh(uri);
 }

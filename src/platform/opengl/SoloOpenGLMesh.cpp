@@ -4,7 +4,7 @@
 using namespace solo;
 
 
-OpenGLMesh2::OpenGLMesh2()
+OpenGLMesh::OpenGLMesh()
 {
     glGenBuffers(1, &bufferHandle);
     if (!bufferHandle)
@@ -12,14 +12,14 @@ OpenGLMesh2::OpenGLMesh2()
 }
 
 
-OpenGLMesh2::~OpenGLMesh2()
+OpenGLMesh::~OpenGLMesh()
 {
     if (bufferHandle)
         glDeleteBuffers(1, &bufferHandle);
 }
 
 
-GLenum OpenGLMesh2::convertPrimitiveType(PrimitiveType primitiveType)
+GLenum OpenGLMesh::convertPrimitiveType(PrimitiveType primitiveType)
 {
     switch (primitiveType)
     {
@@ -34,7 +34,7 @@ GLenum OpenGLMesh2::convertPrimitiveType(PrimitiveType primitiveType)
 }
 
 
-GLenum OpenGLMesh2::convertIndexType(MeshIndexFormat indexFormat)
+GLenum OpenGLMesh::convertIndexType(MeshIndexFormat indexFormat)
 {
     switch (indexFormat)
     {
@@ -47,7 +47,7 @@ GLenum OpenGLMesh2::convertIndexType(MeshIndexFormat indexFormat)
 }
 
 
-void OpenGLMesh2::resetVertexData(const VertexFormat &format, float* data, unsigned elementCount, bool dynamic)
+void OpenGLMesh::resetVertexData(const VertexFormat &format, float* data, unsigned elementCount, bool dynamic)
 {
     if (!data || !elementCount)
         SL_THROW_FMT(EngineException, "Unable to reset mesh vertex data: no or empty data");
@@ -61,7 +61,7 @@ void OpenGLMesh2::resetVertexData(const VertexFormat &format, float* data, unsig
 }
 
 
-void OpenGLMesh2::updateVertexData(float* data, unsigned elementCount, unsigned updateFromIndex)
+void OpenGLMesh::updateVertexData(float* data, unsigned elementCount, unsigned updateFromIndex)
 {
     // This check automatically prevents updating a buffer without any data
     if (updateFromIndex + elementCount > bufferElementCount)
@@ -73,7 +73,7 @@ void OpenGLMesh2::updateVertexData(float* data, unsigned elementCount, unsigned 
 }
 
 
-IndexedMeshPart* OpenGLMesh2::addIndexedPart()
+IndexedMeshPart* OpenGLMesh::addIndexedPart()
 {
     auto part = SL_NEW_SHARED(OpenGLIndexedMeshPart);
     parts.push_back(part);
@@ -81,13 +81,13 @@ IndexedMeshPart* OpenGLMesh2::addIndexedPart()
 }
 
 
-void OpenGLMesh2::draw()
+void OpenGLMesh::draw()
 {
     glDrawArrays(convertPrimitiveType(primitiveType), 0, bufferElementCount);
 }
 
 
-void OpenGLMesh2::drawIndexedPart(unsigned partIndex)
+void OpenGLMesh::drawIndexedPart(unsigned partIndex)
 {
     auto part = parts[partIndex];
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, part->getBufferHandle());

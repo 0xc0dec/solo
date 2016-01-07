@@ -24,13 +24,13 @@ namespace solo
         UnsignedInt
     };
     
-    class Mesh2
+    class Mesh
     {
     public:
-        static shared<Mesh2> create(DeviceMode mode);
+        static shared<Mesh> create(DeviceMode mode);
 
-        SL_NONCOPYABLE(Mesh2);
-        virtual ~Mesh2() {}
+        SL_NONCOPYABLE(Mesh);
+        virtual ~Mesh() {}
 
         virtual void resetVertexData(const VertexFormat &format, float *data, unsigned elementCount, bool dynamic) = 0;
         virtual void updateVertexData(float *data, unsigned elementCount, unsigned updateFromIndex) = 0;
@@ -51,23 +51,23 @@ namespace solo
         // TODO other types of primitives
 
     protected:
-        Mesh2() {}
+        Mesh() {}
 
         PrimitiveType primitiveType = PrimitiveType::Triangles;
         VertexFormat vertexFormat;
     };
 
-    inline VertexFormat Mesh2::getVertexFormat() const
+    inline VertexFormat Mesh::getVertexFormat() const
     {
         return vertexFormat;
     }
 
-    inline void Mesh2::setPrimitiveType(PrimitiveType type)
+    inline void Mesh::setPrimitiveType(PrimitiveType type)
     {
         primitiveType = type;
     }
 
-    inline PrimitiveType Mesh2::getPrimitiveType() const
+    inline PrimitiveType Mesh::getPrimitiveType() const
     {
         return primitiveType;
     }
