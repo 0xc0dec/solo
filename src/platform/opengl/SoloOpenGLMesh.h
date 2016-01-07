@@ -8,19 +8,44 @@
 
 namespace solo
 {
+    class OpenGLIndexedMeshPart: public IndexedMeshPart
+    {
+    public:
+        void resetIndexData(MeshIndexFormat indexFormat, float* data, unsigned elementCount, bool dynamic);
+        void updateIndexData(float *data, unsigned elementCount, unsigned updateFromIndex);
+
+    private:
+        friend class OpenGLMesh2;
+
+        OpenGLIndexedMeshPart();
+
+        static unsigned getElementSize(MeshIndexFormat indexFormat);
+
+        GLuint bufferHandle = 0;
+        unsigned bufferElementCount = 0;
+        unsigned elementSize = 0;
+    };
+
+
     class OpenGLMesh2 : public Mesh2
     {
     public:
-        virtual void setVertexData(float *data, unsigned vertexCount, unsigned firstVertexIndex) override;
+        void resetVertexData(const VertexFormat &format, float *data, unsigned elementCount, bool dynamic);
+        void updateVertexData(float *data, unsigned elementCount, unsigned updateFromIndex);
+
+        IndexedMeshPart *addIndexedPart();
 
     private:
         friend class Mesh2;
 
-        OpenGLMesh2(const VertexFormat &vertexFormat, bool dynamic);
+        OpenGLMesh2();
 
-        GLuint vertexBufferHandle = 0;
-        unsigned lastVertexCount = 0;
+        GLuint bufferHandle = 0;
+        unsigned bufferElementCount = 0;
+        VertexFormat vertexFormat;
+        std::list<shared<OpenGLIndexedMeshPart>> parts;
     };
+
 
     class OpenGLMesh : public Mesh
     {

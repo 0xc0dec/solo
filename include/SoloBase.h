@@ -17,6 +17,12 @@ namespace solo
 #	define SL_MAKE_SHARED				std::make_shared
 #	define SL_NEW_SHARED(type, ...)	std::shared_ptr<type>(new type(__VA_ARGS__))
 
+#   define SL_NONCLONABLE(type) \
+        type(const type &other) = delete; \
+        type(type &&other) = delete; \
+        type &operator=(const type &other) = delete; \
+        type &operator=(type &&other) = delete;
+
     // Having this pointer means that the code owns the pointed object (just like, maybe, several other places).
     // Code that works with raw pointers doesn't claim to own the pointed object.
     template <typename T> using shared = std::shared_ptr<T>;

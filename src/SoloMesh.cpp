@@ -5,19 +5,12 @@
 using namespace solo;
 
 
-shared<Mesh2> Mesh2::create(DeviceMode mode, const VertexFormat &vertexFormat, bool dynamic)
+shared<Mesh2> Mesh2::create(DeviceMode mode)
 {
     //	if (mode == DeviceMode::OpenGL)
     //		return
     // TODO stub mesh2
-    return SL_NEW_SHARED(OpenGLMesh2, vertexFormat, dynamic);
-}
-
-
-Mesh2::Mesh2(const VertexFormat &vertexFormat, bool dynamic) :
-    vertexFormat(vertexFormat),
-    dynamic(dynamic)
-{
+    return SL_NEW_SHARED(OpenGLMesh2);
 }
 
 

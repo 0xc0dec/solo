@@ -18,33 +18,35 @@ namespace solo
         Points
     };
 
+    enum class MeshIndexFormat
+    {
+        UnsignedByte,
+        UnsignedShort,
+        UnsignedInt
+    };
+
+    class IndexedMeshPart
+    {
+    public:
+        SL_NONCLONABLE(IndexedMeshPart);
+        virtual ~IndexedMeshPart() {}
+
+    protected:
+        IndexedMeshPart() {}
+    };
+
+
     class Mesh2
     {
     public:
-        static shared<Mesh2> create(DeviceMode mode, const VertexFormat &vertexFormat, bool dynamic);
+        static shared<Mesh2> create(DeviceMode mode);
 
-        Mesh2(const Mesh2 &other) = delete;
-        Mesh2(Mesh2 &&other) = delete;
-        Mesh2 &operator=(const Mesh2 &other) = delete;
-        Mesh2 &operator=(Mesh2 &&other) = delete;
+        SL_NONCLONABLE(Mesh2);
         virtual ~Mesh2() {}
 
-        virtual void setVertexData(float *data, unsigned vertexCount, unsigned firstVertexIndex) = 0;
-
-        void setPrimitiveType(PrimitiveType primitiveType);
-
     protected:
-        Mesh2(const VertexFormat &vertexFormat, bool dynamic);
-
-        VertexFormat vertexFormat;
-        bool dynamic = false;
-        PrimitiveType primitiveType = PrimitiveType::Triangles;
+        Mesh2() {}
     };
-
-    inline void Mesh2::setPrimitiveType(PrimitiveType primitiveType)
-    {
-        this->primitiveType = primitiveType;
-    }
 
 
     class Mesh

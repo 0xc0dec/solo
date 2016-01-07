@@ -36,6 +36,7 @@ namespace solo
     class VertexFormat
     {
     public:
+        VertexFormat() {}
         VertexFormat(const std::vector<VertexFormatElement> &elements);
 
         unsigned getVertexSize() const;

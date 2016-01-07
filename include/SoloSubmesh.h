@@ -6,18 +6,18 @@ namespace solo
 {
     class Mesh;
 
-    class Submesh
+    class IndexedMeshPart
     {
     public:
-        static shared<Submesh> create();
+        static shared<IndexedMeshPart> create();
 
-        Submesh(const Submesh &other) = delete;
-        Submesh(Submesh &&other) = delete;
-        Submesh &operator=(const Submesh &other) = delete;
-        Submesh &operator=(Submesh &&other) = delete;
-        ~Submesh() {}
+        IndexedMeshPart(const IndexedMeshPart &other) = delete;
+        IndexedMeshPart(IndexedMeshPart &&other) = delete;
+        IndexedMeshPart &operator=(const IndexedMeshPart &other) = delete;
+        IndexedMeshPart &operator=(IndexedMeshPart &&other) = delete;
+        ~IndexedMeshPart() {}
 
     private:
-        Submesh() {}
+        IndexedMeshPart() {}
     };
 }
