@@ -18,6 +18,6 @@ namespace solo
         ~Submesh() {}
 
     private:
-		Submesh() {}
+        Submesh() {}
     };
 }

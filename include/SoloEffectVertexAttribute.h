@@ -15,17 +15,17 @@ namespace solo
         EffectVertexAttribute &operator=(EffectVertexAttribute &&other) = delete;
         virtual ~EffectVertexAttribute() {}
 
-		std::string getName() const;
+        std::string getName() const;
 
     protected:
-		EffectVertexAttribute(const std::string &name): name(name) {}
+        EffectVertexAttribute(const std::string &name): name(name) {}
 
-	private:
-		std::string name;
+    private:
+        std::string name;
     };
 
-	inline std::string EffectVertexAttribute::getName() const
-	{
-		return name;
-	}
+    inline std::string EffectVertexAttribute::getName() const
+    {
+        return name;
+    }
 }

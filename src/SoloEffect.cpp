@@ -22,11 +22,11 @@ EffectVariable *Effect::findVariable(const std::string &name) const
 }
 
 
-EffectVertexAttribute* Effect::findVertexAttribute(const std::string& name) const
+EffectVertexAttribute *Effect::findVertexAttribute(const std::string &name) const
 {
-	// TODO eliminate copy-paste from findVariable
-	auto where = vertexAttributes.find(name);
-	if (where != vertexAttributes.end())
-		return where->second.get();
-	return nullptr;
+    // TODO eliminate copy-paste from findVariable
+    auto where = vertexAttributes.find(name);
+    if (where != vertexAttributes.end())
+        return where->second.get();
+    return nullptr;
 }

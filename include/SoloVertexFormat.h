@@ -4,49 +4,49 @@
 
 namespace solo
 {
-	struct VertexFormatElement
-	{
-		enum class Semantics
-		{
-			Position = 1,
-			Normal = 2,
-			Color = 3,
-			Tangent = 4,
-			Binormal = 5,
-			TexCoord0 = 6,
-			TexCoord1 = 7,
-			TexCoord2 = 8,
-			TexCoord3 = 9,
-			TexCoord4 = 10,
-			TexCoord5 = 11,
-			TexCoord6 = 12,
-			TexCoord7 = 13
-		};
+    struct VertexFormatElement
+    {
+        enum class Semantics
+        {
+            Position = 1,
+            Normal = 2,
+            Color = 3,
+            Tangent = 4,
+            Binormal = 5,
+            TexCoord0 = 6,
+            TexCoord1 = 7,
+            TexCoord2 = 8,
+            TexCoord3 = 9,
+            TexCoord4 = 10,
+            TexCoord5 = 11,
+            TexCoord6 = 12,
+            TexCoord7 = 13
+        };
 
-		Semantics semantics;
-		unsigned size;
+        Semantics semantics;
+        unsigned size;
 
-		VertexFormatElement(Semantics semantics, unsigned size):
-			semantics(semantics),
-			size(size)
-		{
-		}
-	};
+        VertexFormatElement(Semantics semantics, unsigned size):
+            semantics(semantics),
+            size(size)
+        {
+        }
+    };
 
-	class VertexFormat
-	{
-	public:
-		VertexFormat(const std::vector<VertexFormatElement> &elements);
+    class VertexFormat
+    {
+    public:
+        VertexFormat(const std::vector<VertexFormatElement> &elements);
 
-		unsigned getVertexSize() const;
+        unsigned getVertexSize() const;
 
-	private:
-		unsigned vertexSize = 0;
-		std::vector<VertexFormatElement> elements;
-	};
+    private:
+        unsigned vertexSize = 0;
+        std::vector<VertexFormatElement> elements;
+    };
 
-	inline unsigned VertexFormat::getVertexSize() const
-	{
-		return vertexSize;
-	}
+    inline unsigned VertexFormat::getVertexSize() const
+    {
+        return vertexSize;
+    }
 }

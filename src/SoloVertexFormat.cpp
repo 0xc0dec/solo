@@ -3,9 +3,9 @@
 using namespace solo;
 
 
-VertexFormat::VertexFormat(const std::vector<VertexFormatElement>& elements):
-	elements(elements)
+VertexFormat::VertexFormat(const std::vector<VertexFormatElement> &elements):
+    elements(elements)
 {
-	for (const auto& e: elements)
-		vertexSize += e.size * sizeof(float);
+    for (const auto &e : elements)
+        vertexSize += e.size * sizeof(float);
 }

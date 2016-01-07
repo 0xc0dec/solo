@@ -9,42 +9,42 @@ namespace solo
 {
     enum class DeviceMode;
 
-	enum class PrimitiveType
-	{
-		Triangles,
-		TriangleStrip,
-		Lines,
-		LineStrip,
-		Points
-	};
+    enum class PrimitiveType
+    {
+        Triangles,
+        TriangleStrip,
+        Lines,
+        LineStrip,
+        Points
+    };
 
-	class Mesh2
-	{
-	public:
-		static shared<Mesh2> create(DeviceMode mode, const VertexFormat &vertexFormat, bool dynamic);
+    class Mesh2
+    {
+    public:
+        static shared<Mesh2> create(DeviceMode mode, const VertexFormat &vertexFormat, bool dynamic);
 
-		Mesh2(const Mesh2 &other) = delete;
-		Mesh2(Mesh2 &&other) = delete;
-		Mesh2 &operator=(const Mesh2 &other) = delete;
-		Mesh2 &operator=(Mesh2 &&other) = delete;
-		virtual ~Mesh2() {}
+        Mesh2(const Mesh2 &other) = delete;
+        Mesh2(Mesh2 &&other) = delete;
+        Mesh2 &operator=(const Mesh2 &other) = delete;
+        Mesh2 &operator=(Mesh2 &&other) = delete;
+        virtual ~Mesh2() {}
 
-		virtual void setVertexData(float *data, unsigned vertexCount, unsigned firstVertexIndex) = 0;
+        virtual void setVertexData(float *data, unsigned vertexCount, unsigned firstVertexIndex) = 0;
 
-		void setPrimitiveType(PrimitiveType primitiveType);
+        void setPrimitiveType(PrimitiveType primitiveType);
 
-	protected:
-		Mesh2(const VertexFormat &vertexFormat, bool dynamic);
+    protected:
+        Mesh2(const VertexFormat &vertexFormat, bool dynamic);
 
-		VertexFormat vertexFormat;
-		bool dynamic = false;
-		PrimitiveType primitiveType = PrimitiveType::Triangles;
-	};
+        VertexFormat vertexFormat;
+        bool dynamic = false;
+        PrimitiveType primitiveType = PrimitiveType::Triangles;
+    };
 
-	inline void Mesh2::setPrimitiveType(PrimitiveType primitiveType)
-	{
-		this->primitiveType = primitiveType;
-	}
+    inline void Mesh2::setPrimitiveType(PrimitiveType primitiveType)
+    {
+        this->primitiveType = primitiveType;
+    }
 
 
     class Mesh
