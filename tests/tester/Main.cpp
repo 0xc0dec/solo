@@ -5,8 +5,8 @@
 #include "Device_Test.h"
 #include "FileSystem_Test.h"
 #include "Resources_Test.h"
-#include "ModelRenderer_Test.h"
 #include "BitFlags_Test.h"
+#include "MeshRenderer_Test.h"
 
 using namespace solo;
 
@@ -36,7 +36,7 @@ void runCppUnitTests()
 		Device_Test(device.get()).run();
 		ComponentsAndNodes_Test(device.get()).run();
 		Transform_Test(device.get()).run();
-//		ModelRenderer_Test(device.get()).run();
+		MeshRenderer_Test(device.get()).run();
 		BitFlags_Test(device.get()).run();
 		device->requestShutdown();
 	});

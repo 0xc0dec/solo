@@ -4,35 +4,33 @@
 
 namespace solo
 {
+    class StubIndexedMeshPart;
+
     class StubMesh: public Mesh
     {
     public:
         virtual ~StubMesh() {}
 
-        virtual void resetVertexData(const VertexFormat& format, float* data, unsigned elementCount, bool dynamic) override
-        {
-        }
+        virtual void resetVertexData(const VertexFormat& format, float* data, unsigned elementCount, bool dynamic) override {}
+        virtual void updateVertexData(float* data, unsigned elementCount, unsigned updateFromIndex) override {}
 
-        virtual void updateVertexData(float* data, unsigned elementCount, unsigned updateFromIndex) override
-        {
-        }
+        virtual IndexedMeshPart* addIndexedPart() override;
 
-        IndexedMeshPart* addIndexedPart() override
-        {
-            return nullptr;
-        }
+        virtual size_t getPartCount() const override;
 
-        size_t getPartCount() const override
-        {
-            return 0;
-        }
-
-        void draw() override {}
-        void drawIndexedPart(unsigned part) override {}
+        virtual void draw() override {}
+        virtual void drawIndexedPart(unsigned part) override {}
 
     private:
         friend class Mesh;
 
         StubMesh() {}
+
+        std::vector<shared<StubIndexedMeshPart>> parts;
     };
+
+    inline size_t StubMesh::getPartCount() const
+    {
+        return parts.size();
+    }
 }
