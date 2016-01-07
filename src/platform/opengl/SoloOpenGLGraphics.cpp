@@ -36,7 +36,7 @@ void OpenGLGraphics::renderSurface(Material *material, RenderTarget *target)
 
     RenderContext ctx;
     material->bind(ctx);
-    quadMesh->draw();
+    quadMesh->draw(); // TODO use indexed part?
     material->unbind(ctx);
 
     material->setDepthTestEnabled(depthTestEnabled); // TODO really needed?

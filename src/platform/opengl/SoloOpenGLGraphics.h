@@ -4,6 +4,8 @@
 
 namespace solo
 {
+    class Mesh2;
+
     class OpenGLGraphics: public Graphics
     {
     public:
@@ -14,6 +16,6 @@ namespace solo
 
         explicit OpenGLGraphics(Device *device);
 
-        shared<Mesh> quadMesh;
+        shared<Mesh2> quadMesh;
     };
 }

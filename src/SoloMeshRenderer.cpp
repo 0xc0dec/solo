@@ -1,5 +1,5 @@
 #include "SoloMeshRenderer.h"
-#include "SoloModel.h"
+#include "SoloMesh.h"
 #include "SoloMaterial.h"
 #include "SoloMesh.h"
 #include "SoloRenderContext.h"

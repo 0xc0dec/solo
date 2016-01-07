@@ -4,18 +4,35 @@
 
 namespace solo
 {
-    class StubMesh: public Mesh
+    class StubMesh2: public Mesh2
     {
     public:
-        virtual void draw() override {}
-        virtual void setVertices(const std::vector<Vector3> &vertices) override {}
-        virtual void setNormals(const std::vector<Vector3> &normals) override {}
-        virtual void setUVs(const std::vector<Vector2> &uvs) override {}
-        virtual void setIndices(const std::vector<unsigned short> &indices) override {}
+        virtual ~StubMesh2() {}
+
+        virtual void resetVertexData(const VertexFormat& format, float* data, unsigned elementCount, bool dynamic) override
+        {
+        }
+
+        virtual void updateVertexData(float* data, unsigned elementCount, unsigned updateFromIndex) override
+        {
+        }
+
+        IndexedMeshPart* addIndexedPart() override
+        {
+            return nullptr;
+        }
+
+        size_t getPartCount() const override
+        {
+            return 0;
+        }
+
+        void draw() override {}
+        void drawIndexedPart(unsigned part) override {}
 
     private:
-        friend class Mesh;
+        friend class Mesh2;
 
-        StubMesh() {}
+        StubMesh2() {}
     };
 }

@@ -2,7 +2,6 @@
 #include "SoloEffect.h"
 #include "SoloMaterial.h"
 #include "SoloMesh.h"
-#include "SoloModel.h"
 #include "SoloRenderTarget.h"
 #include "SoloPngImageLoader.h"
 #include "SoloTexture2D.h"
@@ -28,7 +27,7 @@ ResourceManager::ResourceManager(Device *device):
     device(device)
 {
     imageLoaders.push_back(SL_MAKE_SHARED<PngImageLoader>(device->getFileSystem(), this));
-    modelLoaders.push_back(SL_MAKE_SHARED<ObjModelLoader>(device->getFileSystem(), this));
+    meshLoaders.push_back(SL_MAKE_SHARED<ObjMeshLoader>(device->getFileSystem(), this));
 }
 
 
@@ -55,13 +54,13 @@ shared<Effect> ResourceManager::tryCreateBuiltInEffect(const std::string &uri)
 }
 
 
-shared<Mesh> ResourceManager::tryCreateBuiltInMesh(const std::string &uri)
+shared<Mesh2> ResourceManager::tryCreateBuiltInMesh(const std::string &uri)
 {
     if (uri == KnownUris::UnitQuadMesh)
     {
-        return createResource<Mesh>(KnownUris::UnitQuadMesh, meshes, [&]()
+        return createResource<Mesh2>(KnownUris::UnitQuadMesh, meshes, [&]()
         {
-            auto mesh = Mesh::create(device->getMode());
+            auto mesh = Mesh2::create(device->getMode());
             mesh->rebuildAsQuad();
             return mesh;
         });
@@ -95,16 +94,10 @@ shared<CubeTexture> ResourceManager::findCubeTexture(const std::string &uri)
 }
 
 
-shared<Mesh> ResourceManager::findMesh(const std::string &uri)
+shared<Mesh2> ResourceManager::findMesh(const std::string &uri)
 {
     auto result = findResource(uri, meshes);
     return result ? result : tryCreateBuiltInMesh(uri);
-}
-
-
-shared<Model> ResourceManager::findModel(const std::string &uri)
-{
-    return findResource(uri, models);
 }
 
 
@@ -212,20 +205,20 @@ shared<CubeTexture> ResourceManager::getOrCreateCubeTexture(const std::string &u
 }
 
 
-shared<Model> ResourceManager::getOrLoadModel(const std::string &dataUri, const std::string &uri)
+shared<Mesh2> ResourceManager::getOrLoadMesh(const std::string &dataUri, const std::string &uri)
 {
-    auto modelUri = uri.empty() ? dataUri : uri;
-    auto existing = findModel(modelUri);
+    auto meshUri = uri.empty() ? dataUri : uri;
+    auto existing = findMesh(meshUri);
     if (existing)
         return existing;
 
-    for (auto loader : modelLoaders)
+    for (auto loader : meshLoaders)
     {
         if (loader->isLoadable(dataUri))
         {
-            auto model = loader->load(dataUri);
-            models[modelUri] = model;
-            return model;
+            auto mesh = loader->load(dataUri);
+            meshes[meshUri] = mesh;
+            return mesh;
         }
     }
 
@@ -233,18 +226,11 @@ shared<Model> ResourceManager::getOrLoadModel(const std::string &dataUri, const 
 }
 
 
-shared<Model> ResourceManager::getOrCreateModel(const std::string &uri)
+shared<Mesh2> ResourceManager::getOrCreateMesh(const std::string &uri)
 {
-    return getOrCreateResource<Model>(uri, models,
-                                      std::bind(&ResourceManager::findModel, this, std::placeholders::_1), &Model::create);
-}
-
-
-shared<Mesh> ResourceManager::getOrCreateMesh(const std::string &uri)
-{
-    return getOrCreateResource<Mesh>(uri, meshes,
+    return getOrCreateResource<Mesh2>(uri, meshes,
                                      std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
-                                     std::bind(&Mesh::create, device->getMode()));
+                                     std::bind(&Mesh2::create, device->getMode()));
 }
 
 
@@ -301,9 +287,7 @@ void ResourceManager::cleanUnusedResources(ResourceMap<TResource> &resources)
 
 void ResourceManager::cleanUnusedResources()
 {
-    // Clean in order of reference hierarchy. I.e. models reference materials,
-    // materials reference effects, etc.
-    cleanUnusedResources(models);
+    // Clean in order of reference hierarchy
     cleanUnusedResources(materials);
     cleanUnusedResources(effects);
     cleanUnusedResources(meshes);

@@ -4,12 +4,12 @@
 
 namespace solo
 {
-    class ObjModelLoader: public ModelLoader
+    class ObjMeshLoader: public MeshLoader
     {
     public:
-        ObjModelLoader(FileSystem *fs, ResourceManager *resourceManager);
+        ObjMeshLoader(FileSystem *fs, ResourceManager *resourceManager);
 
         virtual bool isLoadable(const std::string &uri) override;
-        virtual shared<Model> load(const std::string &uri) override;
+        virtual shared<Mesh2> load(const std::string &uri) override;
     };
 }

@@ -5,21 +5,15 @@
 namespace solo
 {
     class RenderTarget;
-    class Texture2D;
     class Material;
     class Device;
-    class ResourceManager;
-    class Mesh;
 
     class Graphics
     {
     public:
         static shared<Graphics> create(Device *device);
 
-        Graphics(const Graphics &other) = delete;
-        Graphics(Graphics &&other) = delete;
-        Graphics &operator=(const Graphics &other) = delete;
-        Graphics &operator=(Graphics &&other) = delete;
+        SL_NONCOPYABLE(Graphics);
         virtual ~Graphics() {}
 
         virtual void renderSurface(Material *material, RenderTarget *target) = 0;

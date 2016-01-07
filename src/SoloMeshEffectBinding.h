@@ -13,7 +13,7 @@ namespace solo
     public:
         static shared<MeshEffectBinding> create(DeviceMode mode, Mesh2 *mesh, Effect *effect);
 
-        SL_NONCLONABLE(MeshEffectBinding);
+        SL_NONCOPYABLE(MeshEffectBinding);
         virtual ~MeshEffectBinding() {}
 
         virtual void bind() = 0;

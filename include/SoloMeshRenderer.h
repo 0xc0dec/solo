@@ -7,7 +7,6 @@
 namespace solo
 {
     enum class DeviceMode;
-    class Model;
     class Material;
     class Mesh2;
     class MeshEffectBinding;

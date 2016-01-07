@@ -4,24 +4,21 @@
 
 namespace solo
 {
-    class Model;
+    class Mesh2;
     class FileSystem;
     class ResourceManager;
 
-    class ModelLoader
+    class MeshLoader
     {
     public:
-        ModelLoader(const ModelLoader &other) = delete;
-        ModelLoader(ModelLoader &&other) = delete;
-        ModelLoader &operator=(const ModelLoader &other) = delete;
-        ModelLoader &operator=(ModelLoader &&other) = delete;
-        virtual ~ModelLoader() {}
+        SL_NONCOPYABLE(MeshLoader);
+        virtual ~MeshLoader() {}
 
         virtual bool isLoadable(const std::string &uri) = 0;
-        virtual shared<Model> load(const std::string &uri) = 0;
+        virtual shared<Mesh2> load(const std::string &uri) = 0;
 
     protected:
-        ModelLoader(FileSystem *fs, ResourceManager *resourceManager):
+        MeshLoader(FileSystem *fs, ResourceManager *resourceManager):
             fs(fs),
             resourceManager(resourceManager)
         {

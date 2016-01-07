@@ -12,6 +12,6 @@ StubResourceManager::StubResourceManager(Device *device):
     imageLoaders.clear();
     imageLoaders.push_back(SL_MAKE_SHARED<StubImageLoader>(device->getFileSystem(), this));
 
-    modelLoaders.clear();
-    modelLoaders.push_back(SL_MAKE_SHARED<StubModelLoader>(device->getFileSystem(), this));
+    meshLoaders.clear();
+    meshLoaders.push_back(SL_MAKE_SHARED<StubMeshLoader>(device->getFileSystem(), this));
 }

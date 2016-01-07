@@ -17,7 +17,7 @@ namespace solo
 #	define SL_MAKE_SHARED				std::make_shared
 #	define SL_NEW_SHARED(type, ...)	std::shared_ptr<type>(new type(__VA_ARGS__))
 
-#   define SL_NONCLONABLE(type) \
+#   define SL_NONCOPYABLE(type) \
         type(const type &other) = delete; \
         type(type &&other) = delete; \
         type &operator=(const type &other) = delete; \

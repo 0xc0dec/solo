@@ -67,9 +67,6 @@
     <ClInclude Include="..\include\SoloMesh.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloModel.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloScene.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -313,9 +310,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloMesh.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloModel.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloQuaternion.cpp">

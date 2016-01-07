@@ -18,14 +18,13 @@ public:
 		test_CreateTexture2D_FindIt();
 		test_CreateMaterial_FindIt();
 		test_CreateMesh_FindIt();
-		test_CreateModel_FindIt();
 		test_CreateRenderTarget_FindIt();
 		test_CreateResource_TryToCleanIt_EnsureRemains();
 		test_CreateAndForgetResource_CleanIt();
 		test_LoadCubeTextureWithWrongNumberOfFaces_EnsureFail();
 		test_LoadTexture2DWithOverridenUri_CheckUri();
 		test_LoadCubeTextureWithOverridenUri_CheckUri();
-		test_LoadModelWithOverridenUri_CheckUri();
+		test_LoadMeshWithOverridenUri_CheckUri();
 	}
 
 	void test_FindInexistentResources_EnsureNotFound()
@@ -33,7 +32,6 @@ public:
 		assert(!resourceManager->findEffect("non existent"));
 		assert(!resourceManager->findMaterial("non existent"));
 		assert(!resourceManager->findMesh("non existent"));
-		assert(!resourceManager->findModel("non existent"));
 		assert(!resourceManager->findRenderTarget("non existent"));
 		assert(!resourceManager->findTexture2D("non existent"));
 	}
@@ -73,14 +71,6 @@ public:
 		assert(resourceManager->getOrCreateMesh(uri) == mesh);
 	}
 
-	void test_CreateModel_FindIt()
-	{
-		auto uri = "model";
-		auto model = resourceManager->getOrCreateModel(uri);
-		assert(resourceManager->findModel(uri) == model);
-		assert(resourceManager->getOrCreateModel(uri) == model);
-	}
-
 	void test_CreateRenderTarget_FindIt()
 	{
 		auto uri = "rt";
@@ -91,18 +81,18 @@ public:
 
 	void test_CreateResource_TryToCleanIt_EnsureRemains()
 	{
-		auto modelUri = "testCreateResourceAndTryToCleanIt";
-		auto model = resourceManager->getOrCreateModel(modelUri);
+		auto uri = "testCreateResourceAndTryToCleanIt";
+		auto mesh = resourceManager->getOrCreateMesh(uri);
 		resourceManager->cleanUnusedResources();
-		assert(resourceManager->findModel(modelUri) == model);
+		assert(resourceManager->findMesh(uri) == mesh);
 	}
 
 	void test_CreateAndForgetResource_CleanIt()
 	{
-		auto modelUri = "testCreateAndForgetResourceThenCleanIt";
-		resourceManager->getOrCreateModel(modelUri);
+		auto uri = "testCreateAndForgetResourceThenCleanIt";
+		resourceManager->getOrCreateMesh(uri);
 		resourceManager->cleanUnusedResources();
-		assert(resourceManager->findModel(modelUri) == nullptr);
+		assert(resourceManager->findMesh(uri) == nullptr);
 	}
 
 	void test_LoadCubeTextureWithWrongNumberOfFaces_EnsureFail()
@@ -127,11 +117,12 @@ public:
 		assert(resourceManager->findCubeTexture(overridenUri) == tex);
 	}
 
-	void test_LoadModelWithOverridenUri_CheckUri()
+	void test_LoadMeshWithOverridenUri_CheckUri()
 	{
+        // TODO probably needs fix
 		auto overridenUri = "customUriForModel";
-		auto model = resourceManager->getOrLoadModel("/nonsense.obj", overridenUri);
-		assert(resourceManager->getOrLoadModel("/more_nonsense.obj", overridenUri) == model);
-		assert(resourceManager->findModel(overridenUri) == model);
+		auto mesh = resourceManager->getOrLoadMesh("/nonsense.obj", overridenUri);
+		assert(resourceManager->getOrLoadMesh("/more_nonsense.obj", overridenUri) == mesh);
+		assert(resourceManager->findMesh(overridenUri) == mesh);
 	}
 };

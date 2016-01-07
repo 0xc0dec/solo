@@ -4,19 +4,19 @@
 using namespace solo;
 
 
-StubModelLoader::StubModelLoader(FileSystem *fs, ResourceManager *resourceManager)
-    : ModelLoader(fs, resourceManager)
+StubMeshLoader::StubMeshLoader(FileSystem *fs, ResourceManager *resourceManager)
+    : MeshLoader(fs, resourceManager)
 {
 }
 
 
-bool StubModelLoader::isLoadable(const std::string &uri)
+bool StubMeshLoader::isLoadable(const std::string &uri)
 {
     return true;
 }
 
 
-shared<Model> StubModelLoader::load(const std::string &uri)
+shared<Mesh2> StubMeshLoader::load(const std::string &uri)
 {
-    return resourceManager->getOrCreateModel(uri);
+    return resourceManager->getOrCreateMesh(uri);
 }

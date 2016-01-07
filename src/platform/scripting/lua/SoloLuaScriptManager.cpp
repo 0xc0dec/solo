@@ -26,7 +26,6 @@
 #include "SoloMaterial.h"
 #include "SoloMaterialParameter.h"
 #include "SoloMesh.h"
-#include "SoloModel.h"
 #include "SoloRenderContext.h"
 #include "SoloMeshRenderer.h"
 #include "SoloSkyboxRenderer.h"
@@ -381,12 +380,17 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(effect, Effect, findVariable);
     effect.endClass();
 
-    // Model
-    auto m = module.beginClass<Model>("Model");
-    REGISTER_METHOD(m, Model, addMesh);
-    REGISTER_METHOD(m, Model, getMesh);
-    REGISTER_METHOD(m, Model, getMeshCount);
-    REGISTER_METHOD(m, Model, removeMesh);
+    // Mesh
+    auto m = module.beginClass<Mesh2>("Mesh");
+    REGISTER_METHOD(m, Mesh2, resetVertexData);
+    REGISTER_METHOD(m, Mesh2, updateVertexData);
+    REGISTER_METHOD(m, Mesh2, addIndexedPart);
+    REGISTER_METHOD(m, Mesh2, getPartCount);
+    REGISTER_METHOD(m, Mesh2, getVertexFormat);
+    REGISTER_METHOD(m, Mesh2, setPrimitiveType);
+    REGISTER_METHOD(m, Mesh2, getPrimitiveType);
+    REGISTER_METHOD(m, Mesh2, rebuildAsBox);
+    REGISTER_METHOD(m, Mesh2, rebuildAsQuad);
     m.endClass();
 
     // ColorFormat
@@ -665,16 +669,6 @@ void LuaScriptManager::registerApi()
     REGISTER_VARIABLE(rc, RenderContext, scene);
     rc.endClass();
 
-    // Mesh
-    auto mesh = module.beginClass<Mesh>("Mesh");
-    REGISTER_METHOD(mesh, Mesh, setIndices);
-    REGISTER_METHOD(mesh, Mesh, setNormals);
-    REGISTER_METHOD(mesh, Mesh, setUVs);
-    REGISTER_METHOD(mesh, Mesh, setVertices);
-    REGISTER_METHOD(mesh, Mesh, rebuildAsQuad);
-    REGISTER_METHOD(mesh, Mesh, rebuildAsBox);
-    mesh.endClass();
-
     // Scene
     auto scene = module.beginClass<Scene>("Scene");
     REGISTER_METHOD(scene, Scene, getDevice);
@@ -785,18 +779,16 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(mgr, ResourceManager, findCubeTexture);
     REGISTER_METHOD(mgr, ResourceManager, findMaterial);
     REGISTER_METHOD(mgr, ResourceManager, findMesh);
-    REGISTER_METHOD(mgr, ResourceManager, findModel);
     REGISTER_METHOD(mgr, ResourceManager, findRenderTarget);
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateEffect, LUA_ARGS(const std::string &, const std::string &, _opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateTexture2D, LUA_ARGS(_opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateCubeTexture, LUA_ARGS(_opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMaterial, LUA_ARGS(shared<Effect>, _opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMesh, LUA_ARGS(_opt<const std::string &>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateModel, LUA_ARGS(_opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateRenderTarget, LUA_ARGS(_opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadTexture2D, LUA_ARGS(const std::string &, _opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadCubeTexture, LUA_ARGS(const std::vector<std::string> &, _opt<const std::string &>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrLoadModel, LUA_ARGS(const std::string &, _opt<const std::string &>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrLoadMesh, LUA_ARGS(const std::string &, _opt<const std::string &>));
     REGISTER_OVERLOADED_METHOD(mgr, ResourceManager, cleanUnusedResources, "cleanUnusedResources", void, , void);
     mgr.endClass();
 

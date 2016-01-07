@@ -28,7 +28,7 @@ namespace solo
     class IndexedMeshPart
     {
     public:
-        SL_NONCLONABLE(IndexedMeshPart);
+        SL_NONCOPYABLE(IndexedMeshPart);
         virtual ~IndexedMeshPart() {}
 
         virtual void resetIndexData(MeshIndexFormat indexFormat, float* data, unsigned elementCount, bool dynamic) = 0;
@@ -62,7 +62,7 @@ namespace solo
     public:
         static shared<Mesh2> create(DeviceMode mode);
 
-        SL_NONCLONABLE(Mesh2);
+        SL_NONCOPYABLE(Mesh2);
         virtual ~Mesh2() {}
 
         virtual void resetVertexData(const VertexFormat &format, float *data, unsigned elementCount, bool dynamic) = 0;
@@ -78,6 +78,10 @@ namespace solo
 
         void setPrimitiveType(PrimitiveType type);
         PrimitiveType getPrimitiveType() const;
+
+        void rebuildAsQuad() {} // TODO
+        void rebuildAsBox() {} // TODO
+        // TODO other types of primitives
 
     protected:
         Mesh2() {}
@@ -100,31 +104,4 @@ namespace solo
     {
         return primitiveType;
     }
-
-
-    class Mesh
-    {
-    public:
-        static shared<Mesh> create(DeviceMode mode);
-
-        Mesh(const Mesh &other) = delete;
-        Mesh(Mesh &&other) = delete;
-        Mesh &operator=(const Mesh &other) = delete;
-        Mesh &operator=(Mesh &&other) = delete;
-        virtual ~Mesh() {}
-
-        virtual void draw() = 0;
-
-        virtual void setVertices(const std::vector<Vector3> &vertices) = 0;
-        virtual void setNormals(const std::vector<Vector3> &normals) = 0;
-        virtual void setUVs(const std::vector<Vector2> &uvs) = 0;
-        virtual void setIndices(const std::vector<unsigned short> &indices) = 0;
-
-        void rebuildAsQuad();
-        void rebuildAsBox();
-        // TODO other types of primitives
-
-    protected:
-        Mesh() {}
-    };
 }
