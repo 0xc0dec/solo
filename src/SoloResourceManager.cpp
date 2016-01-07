@@ -219,7 +219,7 @@ shared<Mesh> ResourceManager::getOrLoadMesh(const std::string &dataUri, const st
         }
     }
 
-    SL_THROW_FMT(EngineException, "No suitable loader found for model ", dataUri);
+    SL_THROW_FMT(EngineException, "No suitable loader found for mesh ", dataUri);
 }
 
 
