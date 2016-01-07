@@ -36,6 +36,7 @@
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\include\SoloGraphics.h" />
     <ClInclude Include="..\include\SoloImage.h" />
+    <ClInclude Include="..\include\SoloIndexedMeshPart.h" />
     <ClInclude Include="..\include\SoloRenderQueue.h" />
     <ClInclude Include="..\include\SoloRenderTarget.h" />
     <ClInclude Include="..\include\SoloScriptManager.h" />
@@ -74,6 +75,7 @@
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLCubeTexture.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLGraphics.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLHelper.h" />
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLIndexedMeshPart.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLMaterial.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLMesh.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLMeshEffectBinding.h" />
@@ -110,6 +112,7 @@
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLCubeTexture.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLGraphics.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLHelper.cpp" />
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLIndexedMeshPart.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLMaterial.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLMesh.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLMeshEffectBinding.cpp" />

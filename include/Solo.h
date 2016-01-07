@@ -18,6 +18,7 @@
 #include "SoloGraphics.h"
 #include "SoloImage.h"
 #include "SoloImageLoader.h"
+#include "SoloIndexedMeshPart.h"
 #include "SoloLog.h"
 #include "SoloMaterial.h"
 #include "SoloMaterialParameter.h"

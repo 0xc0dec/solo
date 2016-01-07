@@ -2,6 +2,7 @@
 #include "SoloMesh.h"
 #include "SoloFileSystem.h"
 #include "SoloResourceManager.h"
+#include "SoloVector3.h"
 
 using namespace solo;
 

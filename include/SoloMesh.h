@@ -1,13 +1,12 @@
 #pragma once
 
 #include "SoloBase.h"
-#include "SoloVector3.h"
-#include "SoloVector2.h"
 #include "SoloVertexFormat.h"
 
 namespace solo
 {
     enum class DeviceMode;
+    class IndexedMeshPart;
 
     enum class PrimitiveType
     {
@@ -24,39 +23,7 @@ namespace solo
         UnsignedShort,
         UnsignedInt
     };
-
-    class IndexedMeshPart
-    {
-    public:
-        SL_NONCOPYABLE(IndexedMeshPart);
-        virtual ~IndexedMeshPart() {}
-
-        virtual void resetIndexData(MeshIndexFormat indexFormat, float* data, unsigned elementCount, bool dynamic) = 0;
-        virtual void updateIndexData(float *data, unsigned elementCount, unsigned updateFromIndex) = 0;
-
-        virtual unsigned getElementCount() const = 0;
-        virtual MeshIndexFormat getIndexFormat() const = 0;
-
-        void setPrimitiveType(PrimitiveType type);
-        PrimitiveType getPrimitiveType() const;
-
-    protected:
-        IndexedMeshPart() {}
-
-        PrimitiveType primitiveType = PrimitiveType::Triangles;
-    };
-
-    inline void IndexedMeshPart::setPrimitiveType(PrimitiveType type)
-    {
-        primitiveType = type;
-    }
-
-    inline PrimitiveType IndexedMeshPart::getPrimitiveType() const
-    {
-        return primitiveType;
-    }
-
-
+    
     class Mesh2
     {
     public:
