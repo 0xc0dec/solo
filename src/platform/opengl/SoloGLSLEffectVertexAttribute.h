@@ -9,17 +9,17 @@ namespace solo
     class GLSLEffectVertexAttribute: public EffectVertexAttribute
     {
     public:
-        GLint getLocation() const;
+        GLuint getLocation() const;
 
     private:
         friend class GLSLEffect;
 
-        explicit GLSLEffectVertexAttribute(const std::string &name, GLint location);
+        GLSLEffectVertexAttribute(const std::string &name, GLuint location);
 
-        GLint location = 0;
+        GLuint location = 0;
     };
 
-    inline GLint GLSLEffectVertexAttribute::getLocation() const
+    inline GLuint GLSLEffectVertexAttribute::getLocation() const
     {
         return location;
     }

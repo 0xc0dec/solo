@@ -244,6 +244,12 @@
     <ClInclude Include="..\include\SoloSubmesh.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\SoloMeshEffectBinding.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLMeshEffectBinding.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloLog.cpp">
@@ -503,6 +509,12 @@
     </ClCompile>
     <ClCompile Include="..\src\SoloVertexFormat.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloMeshEffectBinding.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLMeshEffectBinding.cpp">
+      <Filter>src\platform\opengl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

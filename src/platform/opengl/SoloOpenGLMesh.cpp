@@ -11,11 +11,53 @@ OpenGLMesh2::OpenGLMesh2()
 }
 
 
+OpenGLMesh2::~OpenGLMesh2()
+{
+    if (bufferHandle)
+        glDeleteBuffers(1, &bufferHandle);
+}
+
+
+GLenum OpenGLMesh2::convertPrimitiveType(PrimitiveType primitiveType)
+{
+    switch (primitiveType)
+    {
+    case PrimitiveType::Triangles: return GL_TRIANGLES;
+    case PrimitiveType::TriangleStrip: return GL_TRIANGLE_STRIP;
+    case PrimitiveType::Lines: return GL_LINES;
+    case PrimitiveType::LineStrip: return GL_LINE_STRIP;
+    case PrimitiveType::Points: return GL_POINTS;
+    default:
+        SL_THROW_FMT(EngineException, "Unknown primitive type");
+    }
+}
+
+
+GLenum OpenGLMesh2::convertIndexType(MeshIndexFormat indexFormat)
+{
+    switch (indexFormat)
+    {
+    case MeshIndexFormat::UnsignedByte: return GL_UNSIGNED_BYTE;
+    case MeshIndexFormat::UnsignedShort: return GL_UNSIGNED_SHORT;
+    case MeshIndexFormat::UnsignedInt: return GL_UNSIGNED_INT;
+    default:
+        SL_THROW_FMT(EngineException, "Unknown index type");
+    }
+}
+
+
 OpenGLIndexedMeshPart::OpenGLIndexedMeshPart()
 {
     glGenBuffers(1, &bufferHandle);
     if (!bufferHandle)
         SL_THROW_FMT(EngineException, "Unable to obtain indexed mesh part handle");
+}
+
+
+OpenGLIndexedMeshPart::~OpenGLIndexedMeshPart()
+{
+    if (bufferHandle)
+        glDeleteBuffers(1, &bufferHandle);
 }
 
 
@@ -32,11 +74,28 @@ unsigned OpenGLIndexedMeshPart::getElementSize(MeshIndexFormat indexFormat)
 }
 
 
+GLenum OpenGLIndexedMeshPart::convertPrimitiveType(PrimitiveType primitiveType)
+{
+    // TODO remove copy-paste
+    switch (primitiveType)
+    {
+    case PrimitiveType::Triangles: return GL_TRIANGLES;
+    case PrimitiveType::TriangleStrip: return GL_TRIANGLE_STRIP;
+    case PrimitiveType::Lines: return GL_LINES;
+    case PrimitiveType::LineStrip: return GL_LINE_STRIP;
+    case PrimitiveType::Points: return GL_POINTS;
+    default:
+        SL_THROW_FMT(EngineException, "Unknown primitive type");
+    }
+}
+
+
 void OpenGLIndexedMeshPart::resetIndexData(MeshIndexFormat format, float* data, unsigned elementCount, bool dynamic)
 {
     if (!data || !elementCount)
         SL_THROW_FMT(EngineException, "Unable to reset index data: no or empty data");
 
+    indexFormat = format;
     elementSize = getElementSize(format);
     bufferElementCount = elementCount;
 
@@ -89,6 +148,20 @@ IndexedMeshPart* OpenGLMesh2::addIndexedPart()
     auto part = SL_NEW_SHARED(OpenGLIndexedMeshPart);
     parts.push_back(part);
     return part.get();
+}
+
+
+void OpenGLMesh2::draw()
+{
+    glDrawArrays(convertPrimitiveType(primitiveType), 0, bufferElementCount);
+}
+
+
+void OpenGLMesh2::drawIndexedPart(unsigned partIndex)
+{
+    auto part = parts[partIndex];
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, part->getBufferHandle());
+    glDrawElements(convertPrimitiveType(part->getPrimitiveType()), part->getElementCount(), convertIndexType(part->getIndexFormat()), nullptr);
 }
 
 

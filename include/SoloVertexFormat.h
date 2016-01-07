@@ -39,12 +39,25 @@ namespace solo
         VertexFormat() {}
         VertexFormat(const std::vector<VertexFormatElement> &elements);
 
+        size_t getElementCount() const;
+        VertexFormatElement getElement(size_t index) const;
+
         unsigned getVertexSize() const;
 
     private:
         unsigned vertexSize = 0;
         std::vector<VertexFormatElement> elements;
     };
+
+    inline size_t VertexFormat::getElementCount() const
+    {
+        return elements.size();
+    }
+
+    inline VertexFormatElement VertexFormat::getElement(size_t index) const
+    {
+        return elements[index];
+    }
 
     inline unsigned VertexFormat::getVertexSize() const
     {
