@@ -8,8 +8,8 @@ using namespace solo;
 shared<Mesh> Mesh::create(DeviceMode mode)
 {
     if (mode == DeviceMode::OpenGL)
-        return SL_NEW_SHARED(StubMesh);
-    return SL_NEW_SHARED(OpenGLMesh);
+        return SL_NEW_SHARED(OpenGLMesh);
+    return SL_NEW_SHARED(StubMesh);
 }
 
 //

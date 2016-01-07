@@ -69,7 +69,7 @@ int main()
 {
 	runCppUnitTests();
 	runCppIntegrationTests();
-	runLuaTests("../tests/scripts/unit-tests.lua");
-	runLuaTests("../tests/scripts/demo/demo.lua");
+//	runLuaTests("../tests/scripts/unit-tests.lua");
+//	runLuaTests("../tests/scripts/demo/demo.lua");
 	return 0;
 }
