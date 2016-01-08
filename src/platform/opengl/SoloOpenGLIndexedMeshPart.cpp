@@ -3,7 +3,9 @@
 using namespace solo;
 
 
-OpenGLIndexedMeshPart::OpenGLIndexedMeshPart()
+OpenGLIndexedMeshPart::OpenGLIndexedMeshPart(MeshIndexFormat indexFormat):
+    IndexedMeshPart(indexFormat),
+    elementSize(getElementSize(indexFormat))
 {
     glGenBuffers(1, &bufferHandle);
     if (!bufferHandle)
@@ -31,13 +33,11 @@ unsigned OpenGLIndexedMeshPart::getElementSize(MeshIndexFormat indexFormat)
 }
 
 
-void OpenGLIndexedMeshPart::resetIndexData(MeshIndexFormat format, const void *data, unsigned elementCount, bool dynamic)
+void OpenGLIndexedMeshPart::resetIndexData(const void *data, unsigned elementCount, bool dynamic)
 {
     if (!data || !elementCount)
         SL_THROW_FMT(EngineException, "Unable to reset index data: empty or no data");
 
-    indexFormat = format;
-    elementSize = getElementSize(format);
     bufferElementCount = elementCount;
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferHandle);

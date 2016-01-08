@@ -4,9 +4,9 @@
 using namespace solo;
 
 
-IndexedMeshPart* StubMesh::addPart()
+IndexedMeshPart* StubMesh::addPart(MeshIndexFormat indexFormat)
 {
-    auto part = SL_NEW_SHARED(StubIndexedMeshPart);
+    auto part = SL_NEW_SHARED(StubIndexedMeshPart, indexFormat);
     parts.push_back(part);
     return part.get();
 }

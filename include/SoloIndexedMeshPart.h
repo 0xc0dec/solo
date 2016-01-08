@@ -5,6 +5,8 @@
 
 namespace solo
 {
+    enum class DeviceMode;
+
     enum class MeshIndexFormat
     {
         UnsignedByte,
@@ -18,16 +20,17 @@ namespace solo
         SL_NONCOPYABLE(IndexedMeshPart);
         virtual ~IndexedMeshPart() {}
 
-        virtual void resetIndexData(MeshIndexFormat indexFormat, const void* data, unsigned elementCount, bool dynamic) = 0;
+        virtual void resetIndexData(const void* data, unsigned elementCount, bool dynamic) = 0;
         virtual void updateIndexData(const void *data, unsigned elementCount, unsigned updateFromIndex) = 0;
 
         void setPrimitiveType(MeshPrimitiveType type);
         MeshPrimitiveType getPrimitiveType() const;
 
     protected:
-        IndexedMeshPart() {}
+        IndexedMeshPart(MeshIndexFormat indexFormat): indexFormat(indexFormat) {}
 
         MeshPrimitiveType primitiveType = MeshPrimitiveType::Triangles;
+        MeshIndexFormat indexFormat = MeshIndexFormat::UnsignedShort;
     };
 
     inline void IndexedMeshPart::setPrimitiveType(MeshPrimitiveType type)

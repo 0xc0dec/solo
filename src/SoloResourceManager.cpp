@@ -8,6 +8,7 @@
 #include "SoloCubeTexture.h"
 #include "SoloDevice.h"
 #include "SoloObjMeshLoader.h"
+#include "SoloSurfaceRenderer.h"
 #include "platform/stub/SoloStubResourceManager.h"
 #include "platform/opengl/SoloOpenGLBuiltInShaders.h"
 #include <functional>
@@ -39,30 +40,15 @@ std::string ResourceManager::generateUri()
 
 shared<Effect> ResourceManager::tryCreateBuiltInEffect(const std::string &uri)
 {
-    if (uri == KnownUris::SkyboxEffect)
+    if (uri == KnownUris::InternalSkyboxEffect)
     {
         if (device->getMode() == DeviceMode::OpenGL)
         {
-            return createResource<Effect>(KnownUris::SkyboxEffect, effects, [&]()
+            return createResource<Effect>(KnownUris::InternalSkyboxEffect, effects, [&]()
             {
                 return Effect::create(device->getMode(), OpenGLBuiltInShaders::vsSkybox, OpenGLBuiltInShaders::fsSkybox);
             });
         }
-    }
-    return nullptr;
-}
-
-
-shared<Mesh> ResourceManager::tryCreateBuiltInMesh(const std::string &uri)
-{
-    if (uri == KnownUris::UnitQuadMesh)
-    {
-        return createResource<Mesh>(KnownUris::UnitQuadMesh, meshes, [&]()
-        {
-            auto mesh = Mesh::create(device->getMode());
-            mesh->rebuildAsQuad();
-            return mesh;
-        });
     }
     return nullptr;
 }
@@ -95,8 +81,7 @@ shared<CubeTexture> ResourceManager::findCubeTexture(const std::string &uri)
 
 shared<Mesh> ResourceManager::findMesh(const std::string &uri)
 {
-    auto result = findResource(uri, meshes);
-    return result ? result : tryCreateBuiltInMesh(uri);
+    return findResource(uri, meshes);
 }
 
 
@@ -106,23 +91,25 @@ shared<RenderTarget> ResourceManager::findRenderTarget(const std::string &uri)
 }
 
 
+shared<SurfaceRenderer> ResourceManager::findSurfaceRenderer(const std::string& uri)
+{
+    return findResource(uri, surfaceRenderers);
+}
+
+
 shared<Effect> ResourceManager::getOrCreateEffect(const std::string &vsSrc, const std::string &fsSrc, const std::string &uri)
 {
-    return getOrCreateResource<Effect>(uri, effects, std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
-    [&]()
-    {
-        return Effect::create(device->getMode(), vsSrc, fsSrc);
-    });
+    return getOrCreateResource<Effect>(uri,
+        effects, std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
+        [&]() { return Effect::create(device->getMode(), vsSrc, fsSrc); });
 }
 
 
 shared<Material> ResourceManager::getOrCreateMaterial(shared<Effect> effect, const std::string &uri)
 {
-    return getOrCreateResource<Material>(uri, materials, std::bind(&ResourceManager::findMaterial, this, std::placeholders::_1),
-    [&]()
-    {
-        return Material::create(device->getMode(), effect);
-    });
+    return getOrCreateResource<Material>(uri, materials,
+        std::bind(&ResourceManager::findMaterial, this, std::placeholders::_1),
+        [&]() { return Material::create(device->getMode(), effect); });
 }
 
 
@@ -155,8 +142,8 @@ shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std:
         SL_THROW_FMT(EngineException, "Wrong number of face images for cube texture (", imageUris.size(), " provided, 6 expected)");
 
     auto textureUri = uri.empty()
-                      ? imageUris[0] + imageUris[1] + imageUris[2] + imageUris[3] + imageUris[4] + imageUris[5]
-                      : uri;
+        ? imageUris[0] + imageUris[1] + imageUris[2] + imageUris[3] + imageUris[4] + imageUris[5]
+        : uri;
     auto existing = findCubeTexture(textureUri);
     if (existing)
         return existing;
@@ -189,16 +176,16 @@ shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std:
 shared<Texture2D> ResourceManager::getOrCreateTexture2D(const std::string &uri)
 {
     return getOrCreateResource<Texture2D>(uri, textures2d,
-                                          std::bind(&ResourceManager::findTexture2D, this, std::placeholders::_1),
-                                          std::bind(&Texture::create2D, device->getMode()));
+        std::bind(&ResourceManager::findTexture2D, this, std::placeholders::_1),
+        std::bind(&Texture::create2D, device->getMode()));
 }
 
 
 shared<CubeTexture> ResourceManager::getOrCreateCubeTexture(const std::string &uri)
 {
     return getOrCreateResource<CubeTexture>(uri, cubeTextures,
-                                            std::bind(&ResourceManager::findCubeTexture, this, std::placeholders::_1),
-                                            std::bind(&Texture::createCube, device->getMode()));
+        std::bind(&ResourceManager::findCubeTexture, this, std::placeholders::_1),
+        std::bind(&Texture::createCube, device->getMode()));
 }
 
 
@@ -223,19 +210,35 @@ shared<Mesh> ResourceManager::getOrLoadMesh(const std::string &dataUri, const st
 }
 
 
-shared<Mesh> ResourceManager::getOrCreateMesh(const std::string &uri)
+shared<Mesh> ResourceManager::getOrCreateMesh(const VertexFormat &vertexFormat, const std::string &uri)
 {
     return getOrCreateResource<Mesh>(uri, meshes,
-                                     std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
-                                     std::bind(&Mesh::create, device->getMode()));
+        std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
+        std::bind(&Mesh::create, device->getMode(), vertexFormat));
+}
+
+
+shared<Mesh> ResourceManager::getOrCreatePrefabMesh(MeshPrefab prefab, const std::string& uri)
+{
+    return getOrCreateResource<Mesh>(uri, meshes,
+        std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
+        std::bind(&Mesh::createPrefab, device->getMode(), prefab));
 }
 
 
 shared<RenderTarget> ResourceManager::getOrCreateRenderTarget(const std::string &uri)
 {
     return getOrCreateResource<RenderTarget>(uri, renderTargets,
-            std::bind(&ResourceManager::findRenderTarget, this, std::placeholders::_1),
-            std::bind(&RenderTarget::create, device->getMode()));
+        std::bind(&ResourceManager::findRenderTarget, this, std::placeholders::_1),
+        std::bind(&RenderTarget::create, device->getMode()));
+}
+
+
+shared<SurfaceRenderer> ResourceManager::getOrCreateSurfaceRenderer(shared<Material> material, const std::string& uri)
+{
+    return getOrCreateResource<SurfaceRenderer>(uri, surfaceRenderers,
+        std::bind(&ResourceManager::findSurfaceRenderer, this, std::placeholders::_1),
+        std::bind(&SurfaceRenderer::create, device, material));
 }
 
 

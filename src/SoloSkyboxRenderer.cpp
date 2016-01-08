@@ -24,9 +24,9 @@ SkyboxRenderer::SkyboxRenderer(Node node):
 
     auto resourceManager = node.getScene()->getDevice()->getResourceManager();
 
-    quadMesh = resourceManager->findMesh(KnownUris::UnitQuadMesh);
+    quadMesh = resourceManager->getOrCreatePrefabMesh(MeshPrefab::Quad, "/solo/internal/skybox-renderer/mesh");
 
-    auto effect = resourceManager->findEffect(KnownUris::SkyboxEffect);
+    auto effect = resourceManager->findEffect(KnownUris::InternalSkyboxEffect);
     material = resourceManager->getOrCreateMaterial(effect); // TODO use a known uri?
     material->getParameter("projMatrix")->bindValue(AutoBinding::ProjectionMatrix);
     material->getParameter("worldViewMatrix")->bindValue(AutoBinding::WorldViewMatrix);

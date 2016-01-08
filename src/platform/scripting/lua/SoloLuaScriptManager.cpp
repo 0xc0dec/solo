@@ -33,8 +33,8 @@
 #include "SoloMeshRenderer.h"
 #include "SoloSkyboxRenderer.h"
 #include "SoloSpectator.h"
-#include "SoloGraphics.h"
-#include "SoloLuaGraphics.h"
+#include "SoloSurfaceRenderer.h"
+#include "SoloLuaSurfaceRenderer.h"
 #include <map>
 
 
@@ -47,7 +47,7 @@
 #define REGISTER_STATIC_METHOD(binding, klass, name) binding.addStaticFunction(#name, &klass::name)
 #define REGISTER_STATIC_OVERLOADED_METHOD(binding, klass, name, nameStr, resultType, modifier, ...) \
 	binding.addStaticFunction(nameStr, static_cast<resultType(*)(__VA_ARGS__)modifier>(&klass::name))
-#define REGISTER_ENUM_CONSTANT(enumModule, enumClass, enumValue) enumModule.addConstant(#enumValue, enumClass::enumValue)
+#define REGISTER_MODULE_CONSTANT(module, holder, constant) module.addConstant(#constant, holder::constant)
 
 
 namespace LuaIntf
@@ -320,9 +320,9 @@ void LuaScriptManager::registerApi()
 
     // PlaneIntersection
     auto planeIntersection = module.beginModule("PlaneIntersection");
-    REGISTER_ENUM_CONSTANT(planeIntersection, PlaneIntersection, Intersecting);
-    REGISTER_ENUM_CONSTANT(planeIntersection, PlaneIntersection, Front);
-    REGISTER_ENUM_CONSTANT(planeIntersection, PlaneIntersection, Back);
+    REGISTER_MODULE_CONSTANT(planeIntersection, PlaneIntersection, Intersecting);
+    REGISTER_MODULE_CONSTANT(planeIntersection, PlaneIntersection, Front);
+    REGISTER_MODULE_CONSTANT(planeIntersection, PlaneIntersection, Back);
     planeIntersection.endModule();
 
     // Plane
@@ -383,17 +383,21 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(effect, Effect, findVariable);
     effect.endClass();
 
+    // MeshPrefab
+    auto meshPrefab = module.beginModule("MeshPrefab");
+    REGISTER_MODULE_CONSTANT(meshPrefab, MeshPrefab, Cube);
+    REGISTER_MODULE_CONSTANT(meshPrefab, MeshPrefab, Quad);
+    meshPrefab.endModule();
+
     // Mesh
     auto mesh = module.beginClass<Mesh>("Mesh");
     mesh.addFunction("resetVertexData", &LuaMesh::resetVertexData);
     mesh.addFunction("updateVertexData", &LuaMesh::updateVertexData);
-    REGISTER_METHOD(mesh, Mesh, addPart);
+    mesh.addFunction("addPart", &LuaMesh::addPart);
     REGISTER_METHOD(mesh, Mesh, getPartCount);
     REGISTER_METHOD(mesh, Mesh, getVertexFormat);
     REGISTER_METHOD(mesh, Mesh, setPrimitiveType);
     REGISTER_METHOD(mesh, Mesh, getPrimitiveType);
-    REGISTER_METHOD(mesh, Mesh, rebuildAsBox);
-    REGISTER_METHOD(mesh, Mesh, rebuildAsQuad);
     mesh.endClass();
 
     // IndexedMeshPart
@@ -406,35 +410,35 @@ void LuaScriptManager::registerApi()
 
     // MeshPrimitiveType
     auto meshPrimitiveType = module.beginModule("MeshPrimitiveType");
-    REGISTER_ENUM_CONSTANT(meshPrimitiveType, MeshPrimitiveType, Lines);
-    REGISTER_ENUM_CONSTANT(meshPrimitiveType, MeshPrimitiveType, LineStrip);
-    REGISTER_ENUM_CONSTANT(meshPrimitiveType, MeshPrimitiveType, Points);
-    REGISTER_ENUM_CONSTANT(meshPrimitiveType, MeshPrimitiveType, TriangleStrip);
-    REGISTER_ENUM_CONSTANT(meshPrimitiveType, MeshPrimitiveType, Triangles);
+    REGISTER_MODULE_CONSTANT(meshPrimitiveType, MeshPrimitiveType, Lines);
+    REGISTER_MODULE_CONSTANT(meshPrimitiveType, MeshPrimitiveType, LineStrip);
+    REGISTER_MODULE_CONSTANT(meshPrimitiveType, MeshPrimitiveType, Points);
+    REGISTER_MODULE_CONSTANT(meshPrimitiveType, MeshPrimitiveType, TriangleStrip);
+    REGISTER_MODULE_CONSTANT(meshPrimitiveType, MeshPrimitiveType, Triangles);
     meshPrimitiveType.endModule();
 
     // MeshIndexFormat
     auto meshIndexFormat = module.beginModule("MeshIndexFormat");
-    REGISTER_ENUM_CONSTANT(meshIndexFormat, MeshIndexFormat, UnsignedByte);
-    REGISTER_ENUM_CONSTANT(meshIndexFormat, MeshIndexFormat, UnsignedShort);
-    REGISTER_ENUM_CONSTANT(meshIndexFormat, MeshIndexFormat, UnsignedInt);
+    REGISTER_MODULE_CONSTANT(meshIndexFormat, MeshIndexFormat, UnsignedByte);
+    REGISTER_MODULE_CONSTANT(meshIndexFormat, MeshIndexFormat, UnsignedShort);
+    REGISTER_MODULE_CONSTANT(meshIndexFormat, MeshIndexFormat, UnsignedInt);
     meshIndexFormat.endModule();
 
     // VertexFormatElementSemantics
     auto vertexFormatElementSemantics = module.beginModule("VertexFormatElementSemantics");
-    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Position);
-    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Normal);
-    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Color);
-    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Tangent);
-    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Binormal);
-    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord0);
-    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord1);
-    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord2);
-    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord3);
-    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord4);
-    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord5);
-    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord6);
-    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord7);
+    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Position);
+    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Normal);
+    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Color);
+    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Tangent);
+    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Binormal);
+    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord0);
+    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord1);
+    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord2);
+    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord3);
+    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord4);
+    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord5);
+    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord6);
+    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord7);
     vertexFormatElementSemantics.endModule();
 
     // VertexFormatElement
@@ -454,8 +458,8 @@ void LuaScriptManager::registerApi()
 
     // ColorFormat
     auto colorFormat = module.beginModule("ColorFormat");
-    REGISTER_ENUM_CONSTANT(colorFormat, ColorFormat, RGB);
-    REGISTER_ENUM_CONSTANT(colorFormat, ColorFormat, RGBA);
+    REGISTER_MODULE_CONSTANT(colorFormat, ColorFormat, RGB);
+    REGISTER_MODULE_CONSTANT(colorFormat, ColorFormat, RGBA);
     colorFormat.endModule();
 
     // BitFlags
@@ -473,18 +477,18 @@ void LuaScriptManager::registerApi()
 
     // TextureWrapping
     auto textureWrapping = module.beginModule("TextureWrapping");
-    REGISTER_ENUM_CONSTANT(textureWrapping, TextureWrapping, Clamp);
-    REGISTER_ENUM_CONSTANT(textureWrapping, TextureWrapping, Repeat);
+    REGISTER_MODULE_CONSTANT(textureWrapping, TextureWrapping, Clamp);
+    REGISTER_MODULE_CONSTANT(textureWrapping, TextureWrapping, Repeat);
     textureWrapping.endModule();
 
     // TextureFiltering
     auto textureFiltering = module.beginModule("TextureFiltering");
-    REGISTER_ENUM_CONSTANT(textureFiltering, TextureFiltering, Nearest);
-    REGISTER_ENUM_CONSTANT(textureFiltering, TextureFiltering, Linear);
-    REGISTER_ENUM_CONSTANT(textureFiltering, TextureFiltering, LinearMipmapLinear);
-    REGISTER_ENUM_CONSTANT(textureFiltering, TextureFiltering, LinearMipmapNearest);
-    REGISTER_ENUM_CONSTANT(textureFiltering, TextureFiltering, NearestMipmapLinear);
-    REGISTER_ENUM_CONSTANT(textureFiltering, TextureFiltering, NearestMipmapNearest);
+    REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, Nearest);
+    REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, Linear);
+    REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, LinearMipmapLinear);
+    REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, LinearMipmapNearest);
+    REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, NearestMipmapLinear);
+    REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, NearestMipmapNearest);
     textureFiltering.endModule();
 
     // Texture
@@ -512,12 +516,12 @@ void LuaScriptManager::registerApi()
 
     // CubeTextureFace
     auto cubeTextureFace = module.beginModule("CubeTextureFace");
-    REGISTER_ENUM_CONSTANT(cubeTextureFace, CubeTextureFace, Front);
-    REGISTER_ENUM_CONSTANT(cubeTextureFace, CubeTextureFace, Back);
-    REGISTER_ENUM_CONSTANT(cubeTextureFace, CubeTextureFace, Left);
-    REGISTER_ENUM_CONSTANT(cubeTextureFace, CubeTextureFace, Right);
-    REGISTER_ENUM_CONSTANT(cubeTextureFace, CubeTextureFace, Top);
-    REGISTER_ENUM_CONSTANT(cubeTextureFace, CubeTextureFace, Bottom);
+    REGISTER_MODULE_CONSTANT(cubeTextureFace, CubeTextureFace, Front);
+    REGISTER_MODULE_CONSTANT(cubeTextureFace, CubeTextureFace, Back);
+    REGISTER_MODULE_CONSTANT(cubeTextureFace, CubeTextureFace, Left);
+    REGISTER_MODULE_CONSTANT(cubeTextureFace, CubeTextureFace, Right);
+    REGISTER_MODULE_CONSTANT(cubeTextureFace, CubeTextureFace, Top);
+    REGISTER_MODULE_CONSTANT(cubeTextureFace, CubeTextureFace, Bottom);
     cubeTextureFace.endModule();
 
     // CubeTexture
@@ -559,9 +563,9 @@ void LuaScriptManager::registerApi()
 
     // TransformSpace
     auto transformSpace = module.beginModule("TransformSpace");
-    REGISTER_ENUM_CONSTANT(transformSpace, TransformSpace, Parent);
-    REGISTER_ENUM_CONSTANT(transformSpace, TransformSpace, Self);
-    REGISTER_ENUM_CONSTANT(transformSpace, TransformSpace, World);
+    REGISTER_MODULE_CONSTANT(transformSpace, TransformSpace, Parent);
+    REGISTER_MODULE_CONSTANT(transformSpace, TransformSpace, Self);
+    REGISTER_MODULE_CONSTANT(transformSpace, TransformSpace, World);
     transformSpace.endModule();
 
     // MeshRenderer
@@ -655,21 +659,21 @@ void LuaScriptManager::registerApi()
 
     // PolygonFace
     auto polygonFace = module.beginModule("PolygonFace");
-    REGISTER_ENUM_CONSTANT(polygonFace, PolygonFace, All);
-    REGISTER_ENUM_CONSTANT(polygonFace, PolygonFace, CW);
-    REGISTER_ENUM_CONSTANT(polygonFace, PolygonFace, CCW);
+    REGISTER_MODULE_CONSTANT(polygonFace, PolygonFace, All);
+    REGISTER_MODULE_CONSTANT(polygonFace, PolygonFace, CW);
+    REGISTER_MODULE_CONSTANT(polygonFace, PolygonFace, CCW);
     polygonFace.endModule();
 
     // DepthPassFunction
     auto depthPassFunction = module.beginModule("DepthPassFunction");
-    REGISTER_ENUM_CONSTANT(depthPassFunction, DepthPassFunction, Never);
-    REGISTER_ENUM_CONSTANT(depthPassFunction, DepthPassFunction, Always);
-    REGISTER_ENUM_CONSTANT(depthPassFunction, DepthPassFunction, Equal);
-    REGISTER_ENUM_CONSTANT(depthPassFunction, DepthPassFunction, NotEqual);
-    REGISTER_ENUM_CONSTANT(depthPassFunction, DepthPassFunction, Less);
-    REGISTER_ENUM_CONSTANT(depthPassFunction, DepthPassFunction, LEqual);
-    REGISTER_ENUM_CONSTANT(depthPassFunction, DepthPassFunction, Greater);
-    REGISTER_ENUM_CONSTANT(depthPassFunction, DepthPassFunction, GEqual);
+    REGISTER_MODULE_CONSTANT(depthPassFunction, DepthPassFunction, Never);
+    REGISTER_MODULE_CONSTANT(depthPassFunction, DepthPassFunction, Always);
+    REGISTER_MODULE_CONSTANT(depthPassFunction, DepthPassFunction, Equal);
+    REGISTER_MODULE_CONSTANT(depthPassFunction, DepthPassFunction, NotEqual);
+    REGISTER_MODULE_CONSTANT(depthPassFunction, DepthPassFunction, Less);
+    REGISTER_MODULE_CONSTANT(depthPassFunction, DepthPassFunction, LEqual);
+    REGISTER_MODULE_CONSTANT(depthPassFunction, DepthPassFunction, Greater);
+    REGISTER_MODULE_CONSTANT(depthPassFunction, DepthPassFunction, GEqual);
     depthPassFunction.endModule();
 
     // Material
@@ -688,16 +692,16 @@ void LuaScriptManager::registerApi()
 
     // AutoBinding
     auto autoBinding = module.beginModule("AutoBinding");
-    REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, None);
-    REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, CameraWorldPosition);
-    REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, InverseTransposedWorldMatrix);
-    REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, InverseTransposedWorldViewMatrix);
-    REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, ProjectionMatrix);
-    REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, ViewMatrix);
-    REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, ViewProjectionMatrix);
-    REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, WorldMatrix);
-    REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, WorldViewMatrix);
-    REGISTER_ENUM_CONSTANT(autoBinding, AutoBinding, WorldViewProjectionMatrix);
+    REGISTER_MODULE_CONSTANT(autoBinding, AutoBinding, None);
+    REGISTER_MODULE_CONSTANT(autoBinding, AutoBinding, CameraWorldPosition);
+    REGISTER_MODULE_CONSTANT(autoBinding, AutoBinding, InverseTransposedWorldMatrix);
+    REGISTER_MODULE_CONSTANT(autoBinding, AutoBinding, InverseTransposedWorldViewMatrix);
+    REGISTER_MODULE_CONSTANT(autoBinding, AutoBinding, ProjectionMatrix);
+    REGISTER_MODULE_CONSTANT(autoBinding, AutoBinding, ViewMatrix);
+    REGISTER_MODULE_CONSTANT(autoBinding, AutoBinding, ViewProjectionMatrix);
+    REGISTER_MODULE_CONSTANT(autoBinding, AutoBinding, WorldMatrix);
+    REGISTER_MODULE_CONSTANT(autoBinding, AutoBinding, WorldViewMatrix);
+    REGISTER_MODULE_CONSTANT(autoBinding, AutoBinding, WorldViewProjectionMatrix);
     autoBinding.endModule();
 
     // MaterialParameter
@@ -740,50 +744,50 @@ void LuaScriptManager::registerApi()
 
     // KeyCode
     auto keyCode = module.beginModule("KeyCode");
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, A);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, B);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, C);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, D);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, E);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, F);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, G);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, H);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, I);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, J);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, K);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, L);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, M);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, N);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, O);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, P);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, Q);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, R);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, S);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, T);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, U);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, V);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, W);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, X);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, Y);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, Z);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, LeftArrow);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, RightArrow);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, UpArrow);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, DownArrow);
-    REGISTER_ENUM_CONSTANT(keyCode, KeyCode, Escape);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, A);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, B);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, C);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, D);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, E);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, F);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, G);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, H);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, I);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, J);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, K);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, L);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, M);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, N);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, O);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, P);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, Q);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, R);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, S);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, T);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, U);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, V);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, W);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, X);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, Y);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, Z);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, LeftArrow);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, RightArrow);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, UpArrow);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, DownArrow);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, Escape);
     keyCode.endModule();
 
     // MouseButton
     auto mouseButton = module.beginModule("MouseButton");
-    REGISTER_ENUM_CONSTANT(mouseButton, MouseButton, Left);
-    REGISTER_ENUM_CONSTANT(mouseButton, MouseButton, Middle);
-    REGISTER_ENUM_CONSTANT(mouseButton, MouseButton, Right);
+    REGISTER_MODULE_CONSTANT(mouseButton, MouseButton, Left);
+    REGISTER_MODULE_CONSTANT(mouseButton, MouseButton, Middle);
+    REGISTER_MODULE_CONSTANT(mouseButton, MouseButton, Right);
     mouseButton.endModule();
 
     // DeviceMode
     auto deviceMode = module.beginModule("DeviceMode");
-    REGISTER_ENUM_CONSTANT(deviceMode, DeviceMode, OpenGL);
-    REGISTER_ENUM_CONSTANT(deviceMode, DeviceMode, Stub);
+    REGISTER_MODULE_CONSTANT(deviceMode, DeviceMode, OpenGL);
+    REGISTER_MODULE_CONSTANT(deviceMode, DeviceMode, Stub);
     mouseButton.endModule();
 
     // DeviceCreationArgs
@@ -815,7 +819,6 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(device, Device, getScene);
     REGISTER_METHOD(device, Device, getResourceManager);
     REGISTER_METHOD(device, Device, getFileSystem);
-    REGISTER_METHOD(device, Device, getGraphics);
     REGISTER_METHOD(device, Device, getMode);
     REGISTER_METHOD(device, Device, run);
     REGISTER_METHOD(device, Device, setStartCallback);
@@ -825,12 +828,6 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(device, Device, shutdownRequested);
     device.endClass();
 
-    // KnownUris
-    auto knownUris = module.beginModule("KnownUris");
-    REGISTER_ENUM_CONSTANT(knownUris, KnownUris, SkyboxEffect);
-    REGISTER_ENUM_CONSTANT(knownUris, KnownUris, UnitQuadMesh);
-    mouseButton.endModule();
-
     // ResourceManager
     auto mgr = module.beginClass<ResourceManager>("ResourceManager");
     REGISTER_METHOD(mgr, ResourceManager, findEffect);
@@ -839,22 +836,25 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(mgr, ResourceManager, findMaterial);
     REGISTER_METHOD(mgr, ResourceManager, findMesh);
     REGISTER_METHOD(mgr, ResourceManager, findRenderTarget);
+    REGISTER_METHOD(mgr, ResourceManager, findSurfaceRenderer);
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateEffect, LUA_ARGS(const std::string &, const std::string &, _opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateTexture2D, LUA_ARGS(_opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateCubeTexture, LUA_ARGS(_opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMaterial, LUA_ARGS(shared<Effect>, _opt<const std::string &>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMesh, LUA_ARGS(_opt<const std::string &>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMesh, LUA_ARGS(const VertexFormat&, _opt<const std::string &>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrCreatePrefabMesh, LUA_ARGS(MeshPrefab, _opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateRenderTarget, LUA_ARGS(_opt<const std::string &>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateSurfaceRenderer, LUA_ARGS(shared<Material>, _opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadTexture2D, LUA_ARGS(const std::string &, _opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadCubeTexture, LUA_ARGS(const std::vector<std::string> &, _opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadMesh, LUA_ARGS(const std::string &, _opt<const std::string &>));
     REGISTER_OVERLOADED_METHOD(mgr, ResourceManager, cleanUnusedResources, "cleanUnusedResources", void, , void);
     mgr.endClass();
 
-    // Graphics
-    auto graphics = module.beginClass<Graphics>("Graphics");
-    graphics.addFunction("renderSurface", &LuaGraphics::renderSurface);
-    graphics.endClass();
+    // SurfaceRenderer
+    auto surfaceRenderer = module.beginClass<SurfaceRenderer>("SurfaceRenderer");
+    surfaceRenderer.addFunction("renderSurface", &LuaSurfaceRenderer::renderSurface);
+    surfaceRenderer.endClass();
 
     // FileSystem
     auto fs = module.beginClass<FileSystem>("FileSystem");

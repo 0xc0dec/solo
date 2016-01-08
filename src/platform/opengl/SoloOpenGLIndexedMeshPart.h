@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SoloIndexedMeshPart.h"
-#include "SoloMesh.h"
 #include <GL/glew.h>
 
 namespace solo
@@ -11,7 +10,7 @@ namespace solo
     public:
         virtual ~OpenGLIndexedMeshPart();
 
-        virtual void resetIndexData(MeshIndexFormat indexFormat, const void *data, unsigned elementCount, bool dynamic) override;
+        virtual void resetIndexData(const void *data, unsigned elementCount, bool dynamic) override;
         virtual void updateIndexData(const void *data, unsigned elementCount, unsigned updateFromIndex) override;
 
         unsigned getElementCount() const;
@@ -22,7 +21,7 @@ namespace solo
     private:
         friend class OpenGLMesh;
 
-        OpenGLIndexedMeshPart();
+        OpenGLIndexedMeshPart(MeshIndexFormat indexFormat);
 
         static unsigned getElementSize(MeshIndexFormat indexFormat);
 

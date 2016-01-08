@@ -1,10 +1,10 @@
 runTest(function()
-	local m = device:getResourceManager():getOrCreateMesh("test/mesh")
 	local vf = solo.VertexFormat({
 		solo.VertexFormatElement(solo.VertexFormatElementSemantics.Position, 3)
 	})
+	local m = device:getResourceManager():getOrCreateMesh(vf, "test/mesh")
 
-	m:resetVertexData(vf, { 1, 2, 3 }, 1, false)
+	m:resetVertexData({ 1, 2, 3 }, 1, false)
 	m:updateVertexData({ 2, 3, 4}, 1, 0)
 
 	local part = m:addPart()
@@ -14,9 +14,6 @@ runTest(function()
 
 	m:setPrimitiveType(solo.MeshPrimitiveType.Lines)
 	assert(m:getPrimitiveType() == solo.MeshPrimitiveType.Lines)
-
-	m:rebuildAsQuad()
-	m:rebuildAsBox()
 
 	part:resetIndexData({ 1, 2, 3 }, 1, true)
 	part:updateIndexData({ 2, 3, 4}, 1, 0)

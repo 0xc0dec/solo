@@ -1,12 +1,19 @@
 #include "SoloLuaMesh.h"
 #include "SoloMesh.h"
+#include "SoloIndexedMeshPart.h"
 
 using namespace solo;
 
 
-void LuaMesh::resetVertexData(Mesh *mesh, const VertexFormat& format, const std::vector<float>& data, unsigned elementCount, bool dynamic)
+IndexedMeshPart *LuaMesh::addPart(Mesh* mesh)
 {
-    mesh->resetVertexData(format, data.data(), elementCount, dynamic);
+    return mesh->addPart(MeshIndexFormat::UnsignedShort);
+}
+
+
+void LuaMesh::resetVertexData(Mesh *mesh, const std::vector<float>& data, unsigned elementCount, bool dynamic)
+{
+    mesh->resetVertexData(data.data(), elementCount, dynamic);
 }
 
 

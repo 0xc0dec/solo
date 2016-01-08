@@ -70,7 +70,6 @@ function createPostProcessor(sourceTexture, shaders)
 		init = function(self)
 			self.time = 0
 			self.separator = 0.5
-			self.graphics = device:getGraphics()
 			self.srcTexture = sourceTexture
 
 			local effect1 = resourceManager:getOrCreateEffect(shaders.vsPassThrough, shaders.fsPostProcessHalfGrayscale)
@@ -96,6 +95,9 @@ function createPostProcessor(sourceTexture, shaders)
 			self.finalRTT = rtt
 			self.finalRT = resourceManager:getOrCreateRenderTarget("demo/post-processor/rt")
 			self.finalRT:setColorAttachment(0, rtt)
+
+			self.renderer1 = resourceManager:getOrCreateSurfaceRenderer(self.material1)
+			self.renderer2 = resourceManager:getOrCreateSurfaceRenderer(self.material2)
 		end,
 
 		update = function(self)
@@ -105,10 +107,10 @@ function createPostProcessor(sourceTexture, shaders)
 
 		onAfterCameraRender = function(self)
 			self.material1:getParameter("mainTex"):setTexture(self.srcTexture)
-			self.graphics:renderSurface(self.material1, self.finalRT)
+			self.renderer1:renderSurface(self.finalRT)
 
 			self.material2:getParameter("mainTex"):setTexture(self.finalRTT)
-			self.graphics:renderSurface(self.material2)
+			self.renderer2:renderSurface()
 		end
 	}
 end

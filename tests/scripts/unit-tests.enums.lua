@@ -113,4 +113,7 @@ runTest(function()
 	assert(solo.VertexFormatElementSemantics.TexCoord5 ~= nil)
 	assert(solo.VertexFormatElementSemantics.TexCoord6 ~= nil)
 	assert(solo.VertexFormatElementSemantics.TexCoord7 ~= nil)
+
+	assert(solo.MeshPrefab.Quad ~= nil)
+	assert(solo.MeshPrefab.Cube ~= nil)
 end, "Enums")

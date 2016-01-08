@@ -15,10 +15,10 @@ namespace solo
     public:
         virtual ~OpenGLMesh();
 
-        virtual void resetVertexData(const VertexFormat &format, const float *data, unsigned elementCount, bool dynamic) override;
+        virtual void resetVertexData(const float *data, unsigned elementCount, bool dynamic) override;
         virtual void updateVertexData(const float *data, unsigned elementCount, unsigned updateFromIndex) override;
         
-        virtual IndexedMeshPart *addPart() override;
+        virtual IndexedMeshPart *addPart(MeshIndexFormat indexFormat) override;
         virtual size_t getPartCount() const override;
         virtual IndexedMeshPart* getPart(unsigned index) const override;
 
@@ -30,7 +30,7 @@ namespace solo
     private:
         friend class Mesh;
 
-        OpenGLMesh();
+        OpenGLMesh(const VertexFormat &vertexFormat);
 
         static GLenum convertPrimitiveType(MeshPrimitiveType primitiveType);
         static GLenum convertIndexType(MeshIndexFormat indexFormat);

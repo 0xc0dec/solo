@@ -1,5 +1,6 @@
 #include "SoloStubModelLoader.h"
 #include "SoloResourceManager.h"
+#include "SoloMesh.h"
 
 using namespace solo;
 
@@ -18,5 +19,5 @@ bool StubMeshLoader::isLoadable(const std::string &uri)
 
 shared<Mesh> StubMeshLoader::load(const std::string &uri)
 {
-    return resourceManager->getOrCreateMesh(uri);
+    return resourceManager->getOrCreateMesh(VertexFormat(), uri);
 }

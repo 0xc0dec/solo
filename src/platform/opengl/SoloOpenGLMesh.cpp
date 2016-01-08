@@ -4,7 +4,8 @@
 using namespace solo;
 
 
-OpenGLMesh::OpenGLMesh()
+OpenGLMesh::OpenGLMesh(const VertexFormat &vertexFormat):
+    Mesh(vertexFormat)
 {
     glGenBuffers(1, &bufferHandle);
     if (!bufferHandle)
@@ -47,16 +48,15 @@ GLenum OpenGLMesh::convertIndexType(MeshIndexFormat indexFormat)
 }
 
 
-void OpenGLMesh::resetVertexData(const VertexFormat &format, const float *data, unsigned elementCount, bool dynamic)
+void OpenGLMesh::resetVertexData(const float *data, unsigned elementCount, bool dynamic)
 {
     if (!data || !elementCount)
         SL_THROW_FMT(EngineException, "Unable to reset mesh vertex data: empty or no data");
 
     glBindBuffer(GL_ARRAY_BUFFER, bufferHandle);
-    glBufferData(GL_ARRAY_BUFFER, format.getVertexSize() * elementCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize() * elementCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    vertexFormat = format;
     bufferElementCount = elementCount;
 }
 
@@ -76,9 +76,9 @@ void OpenGLMesh::updateVertexData(const float *data, unsigned elementCount, unsi
 }
 
 
-IndexedMeshPart* OpenGLMesh::addPart()
+IndexedMeshPart* OpenGLMesh::addPart(MeshIndexFormat indexFormat)
 {
-    auto part = SL_NEW_SHARED(OpenGLIndexedMeshPart);
+    auto part = SL_NEW_SHARED(OpenGLIndexedMeshPart, indexFormat);
     parts.push_back(part);
     return part.get();
 }

@@ -193,12 +193,6 @@
     <ClInclude Include="..\include\SoloSpectator.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloGraphics.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLGraphics.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\platform\stub\SoloStubGraphics.h">
       <Filter>src\platform\stub</Filter>
     </ClInclude>
@@ -210,9 +204,6 @@
     </ClInclude>
     <ClInclude Include="..\include\SoloRenderQueue.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\scripting\lua\SoloLuaGraphics.h">
-      <Filter>src\platform\scripting\lua</Filter>
     </ClInclude>
     <ClInclude Include="..\src\platform\scripting\lua\SoloLuaScriptComponent.h">
       <Filter>src\platform\scripting\lua</Filter>
@@ -270,6 +261,9 @@
     </ClInclude>
     <ClInclude Include="..\src\platform\stub\SoloStubSurfaceRenderer.h">
       <Filter>src\platform\stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\scripting\lua\SoloLuaSurfaceRenderer.h">
+      <Filter>src\platform\scripting\lua</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -495,12 +489,6 @@
     <ClCompile Include="..\src\SoloCubeTexture.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloGraphics.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLGraphics.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloSkyboxRenderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -508,9 +496,6 @@
       <Filter>src\platform\scripting\lua</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\scripting\lua\SoloLuaScriptManager.cpp">
-      <Filter>src\platform\scripting\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\scripting\lua\SoloLuaGraphics.cpp">
       <Filter>src\platform\scripting\lua</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\stub\SoloStubFileSystem.cpp">
@@ -551,6 +536,9 @@
     </ClCompile>
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLSurfaceRenderer.cpp">
       <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\scripting\lua\SoloLuaSurfaceRenderer.cpp">
+      <Filter>src\platform\scripting\lua</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

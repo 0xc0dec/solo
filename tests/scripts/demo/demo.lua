@@ -155,14 +155,14 @@ function initObjects()
 	parent:findComponent("Transform"):setLocalPosition(solo.Vector3(5, 0, 0))
 	parent:addScript(createWorldYRotator())
 	-- initAxesModel(parent)
-	quad = createBuiltInMeshNode("quad")
+	quad = createPrefabMeshNode("quad")
 	quad:addScript(createLocalXRotator());
 	quad:findComponent("Transform"):setParent(parent:findComponent("Transform"))
 	quad:findComponent("Transform"):setLocalPosition(solo.Vector3(2, 0, 0))
 	quad:findComponent("MeshRenderer"):setMaterial(0, demo.materials.simpleTexture)
 
 	-- Box
-	node = createBuiltInMeshNode("box")
+	node = createPrefabMeshNode("cube")
 	node:findComponent("MeshRenderer"):setMaterial(0, demo.materials.checker)
 	node:findComponent("Transform"):setLocalPosition(solo.Vector3(-5, 0, 0))
 	node:addScript(createWorldYRotator())
@@ -181,7 +181,7 @@ function initObjects()
 	parent:addScript(createWorldYRotator())
 	-- initAxesModel(parent)
 
-	local quad = createBuiltInMeshNode("quad")
+	local quad = createPrefabMeshNode("quad")
 	local renderer = quad:findComponent("MeshRenderer")
 	renderer:setMaterial(0, demo.materials.offscreenCameraRendered)
 	renderer:getTags():set(RENDER_TARGET_QUAD_TAG)
@@ -203,12 +203,12 @@ function initAxesModel(node)
 end
 
 
-function createBuiltInMeshNode(type)
-	local mesh = resourceManager:getOrCreateMesh()
+function createPrefabMeshNode(type)
+	local mesh = nil
 	if type == "quad" then
-		mesh:rebuildAsQuad()
-	elseif type == "box" then
-		mesh:rebuildAsBox()
+		mesh = resourceManager:getOrCreatePrefabMesh(solo.MeshPrefab.Quad)
+	elseif type == "cube" then
+		mesh = resourceManager:getOrCreatePrefabMesh(solo.MeshPrefab.Cube)
 	end
 
 	local node = scene:createNode()
@@ -227,8 +227,8 @@ function initCameras()
 	local mainCamera = mainCameraNode:addComponent("Camera")
 	mainCamera:setClearColor(0, 0.6, 0.6, 1)
 	mainCamera:setNear(0.05)
-	-- mainCamera:setRenderTarget(demo.renderTargets.mainCameraRT)
-	-- mainCameraNode:addScript(createPostProcessor(demo.textures.mainCameraRTT, shaders))
+	mainCamera:setRenderTarget(demo.renderTargets.mainCameraRT)
+	mainCameraNode:addScript(createPostProcessor(demo.textures.mainCameraRTT, shaders))
 
 	local canvasSize = device:getCanvasSize()
 	local offscreenCameraNode = scene:createNode()

@@ -66,9 +66,9 @@ public:
     void test_CreateMesh_FindIt()
     {
         auto uri = "mesh";
-        auto mesh = resourceManager->getOrCreateMesh(uri);
+        auto mesh = resourceManager->getOrCreateMesh(VertexFormat(), uri);
         assert(resourceManager->findMesh(uri) == mesh);
-        assert(resourceManager->getOrCreateMesh(uri) == mesh);
+        assert(resourceManager->getOrCreateMesh(VertexFormat(), uri) == mesh);
     }
 
     void test_CreateRenderTarget_FindIt()
@@ -82,7 +82,7 @@ public:
     void test_CreateResource_TryToCleanIt_EnsureRemains()
     {
         auto uri = "testCreateResourceAndTryToCleanIt";
-        auto mesh = resourceManager->getOrCreateMesh(uri);
+        auto mesh = resourceManager->getOrCreateMesh(VertexFormat(), uri);
         resourceManager->cleanUnusedResources();
         assert(resourceManager->findMesh(uri) == mesh);
     }
@@ -90,7 +90,7 @@ public:
     void test_CreateAndForgetResource_CleanIt()
     {
         auto uri = "testCreateAndForgetResourceThenCleanIt";
-        resourceManager->getOrCreateMesh(uri);
+        resourceManager->getOrCreateMesh(VertexFormat(), uri);
         resourceManager->cleanUnusedResources();
         assert(resourceManager->findMesh(uri) == nullptr);
     }

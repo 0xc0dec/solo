@@ -34,7 +34,6 @@
     <ClInclude Include="..\include\SoloFormatter.h" />
     <ClInclude Include="..\include\SoloFrustum.h" />
     <ClInclude Include="..\include\Solo.h" />
-    <ClInclude Include="..\include\SoloGraphics.h" />
     <ClInclude Include="..\include\SoloImage.h" />
     <ClInclude Include="..\include\SoloIndexedMeshPart.h" />
     <ClInclude Include="..\include\SoloRenderQueue.h" />
@@ -73,7 +72,6 @@
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLBuiltInShaders.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLCamera.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLCubeTexture.h" />
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLGraphics.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLHelper.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLIndexedMeshPart.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLMaterial.h" />
@@ -83,7 +81,7 @@
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLSurfaceRenderer.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLTexture2D.h" />
     <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h" />
-    <ClInclude Include="..\src\platform\scripting\lua\SoloLuaGraphics.h" />
+    <ClInclude Include="..\src\platform\scripting\lua\SoloLuaSurfaceRenderer.h" />
     <ClInclude Include="..\src\platform\scripting\lua\SoloLuaIndexedMeshPart.h" />
     <ClInclude Include="..\src\platform\scripting\lua\SoloLuaMesh.h" />
     <ClInclude Include="..\src\platform\scripting\lua\SoloLuaScriptComponent.h" />
@@ -116,7 +114,6 @@
     <ClCompile Include="..\src\platform\opengl\SoloGLSLEffectVertexAttribute.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLCamera.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLCubeTexture.cpp" />
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLGraphics.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLHelper.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLIndexedMeshPart.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLMaterial.cpp" />
@@ -126,7 +123,7 @@
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLSurfaceRenderer.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLTexture2D.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp" />
-    <ClCompile Include="..\src\platform\scripting\lua\SoloLuaGraphics.cpp" />
+    <ClCompile Include="..\src\platform\scripting\lua\SoloLuaSurfaceRenderer.cpp" />
     <ClCompile Include="..\src\platform\scripting\lua\SoloLuaIndexedMeshPart.cpp" />
     <ClCompile Include="..\src\platform\scripting\lua\SoloLuaMesh.cpp" />
     <ClCompile Include="..\src\platform\scripting\lua\SoloLuaScriptComponent.cpp" />
@@ -139,7 +136,6 @@
     <ClCompile Include="..\src\platform\stub\SoloStubModelLoader.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubResourceManager.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
-    <ClCompile Include="..\src\SoloGraphics.cpp" />
     <ClCompile Include="..\src\SoloMeshEffectBinding.cpp" />
     <ClCompile Include="..\src\SoloSkyboxRenderer.cpp" />
     <ClCompile Include="..\src\SoloSpectator.cpp" />

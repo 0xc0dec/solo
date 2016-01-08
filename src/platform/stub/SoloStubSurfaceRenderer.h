@@ -7,9 +7,11 @@ namespace solo
     class StubSurfaceRenderer: public SurfaceRenderer
     {
     public:
-        virtual void renderSurface(Material* material, RenderTarget* target) override {}
+        virtual void renderSurface(RenderTarget* target) override {}
 
     private:
         friend class SurfaceRenderer;
+        
+        StubSurfaceRenderer() {}
     };
 }
