@@ -155,26 +155,25 @@ function initObjects()
 	parent:findComponent("Transform"):setLocalPosition(solo.Vector3(5, 0, 0))
 	parent:addScript(createWorldYRotator())
 	-- initAxesModel(parent)
-	quad = createQuad()
+	quad = createBuiltInMeshNode("quad")
 	quad:addScript(createLocalXRotator());
 	quad:findComponent("Transform"):setParent(parent:findComponent("Transform"))
 	quad:findComponent("Transform"):setLocalPosition(solo.Vector3(2, 0, 0))
 	quad:findComponent("MeshRenderer"):setMaterial(0, demo.materials.simpleTexture)
 
 	-- Box
-	node = createQuad()
-	rebuildToBoxMesh(node)
+	node = createBuiltInMeshNode("box")
 	node:findComponent("MeshRenderer"):setMaterial(0, demo.materials.checker)
 	node:findComponent("Transform"):setLocalPosition(solo.Vector3(-5, 0, 0))
 	node:addScript(createWorldYRotator())
 
 	-- Monkey
-	-- local node = scene:createNode()
+	local node = scene:createNode()
 	-- local renderer = node:addComponent("MeshRenderer")
 	-- renderer:setModel(demo.models.monkey)
 	-- renderer:setMaterial(demo.materials.textureWithLighting)
-	-- node:findComponent("Transform"):setLocalPosition(solo.Vector3.zero())
-	-- node:addScript(createLocalXRotator())
+	node:findComponent("Transform"):setLocalPosition(solo.Vector3.zero())
+	node:addScript(createLocalXRotator())
 
 	-- RTT quad
 	local parent = scene:createNode()
@@ -182,7 +181,7 @@ function initObjects()
 	parent:addScript(createWorldYRotator())
 	-- initAxesModel(parent)
 
-	local quad = createQuad()
+	local quad = createBuiltInMeshNode("quad")
 	local renderer = quad:findComponent("MeshRenderer")
 	renderer:setMaterial(0, demo.materials.offscreenCameraRendered)
 	renderer:getTags():set(RENDER_TARGET_QUAD_TAG)
@@ -190,13 +189,7 @@ function initObjects()
 	quadTransform:setParent(parent:findComponent("Transform"))
 	quadTransform:setLocalPosition(solo.Vector3(5, 2, -5))
 	quadTransform:setLocalScale(solo.Vector3(5, 5 * canvasSize.y / canvasSize.x, 1))
-	-- quad:addScript(createTargeter(node:findComponent("Transform"))) -- monkey
-end
-
-
-function rebuildToBoxMesh(node)
-	local mesh = node:findComponent("MeshRenderer"):getMesh()
-	mesh:rebuildAsBox()
+	quad:addScript(createTargeter(node:findComponent("Transform"))) -- monkey
 end
 
 
@@ -210,9 +203,14 @@ function initAxesModel(node)
 end
 
 
-function createQuad()
+function createBuiltInMeshNode(type)
 	local mesh = resourceManager:getOrCreateMesh()
-	mesh:rebuildAsQuad()
+	if type == "quad" then
+		mesh:rebuildAsQuad()
+	elseif type == "box" then
+		mesh:rebuildAsQuad()
+		mesh:rebuildAsBox()
+	end
 
 	local node = scene:createNode()
 	node:addComponent("MeshRenderer"):setMesh(mesh)
@@ -230,8 +228,8 @@ function initCameras()
 	local mainCamera = mainCameraNode:addComponent("Camera")
 	mainCamera:setClearColor(0, 0.6, 0.6, 1)
 	mainCamera:setNear(0.05)
-	mainCamera:setRenderTarget(demo.renderTargets.mainCameraRT)
-	mainCameraNode:addScript(createPostProcessor(demo.textures.mainCameraRTT, shaders))
+	-- mainCamera:setRenderTarget(demo.renderTargets.mainCameraRT)
+	-- mainCameraNode:addScript(createPostProcessor(demo.textures.mainCameraRTT, shaders))
 
 	local canvasSize = device:getCanvasSize()
 	local offscreenCameraNode = scene:createNode()
@@ -252,7 +250,7 @@ function init()
 	initRenderTargets()
 	-- initModels()
 	initCameras()
-	-- initObjects()
+	initObjects()
 	initSkybox()
 	print("Initialized")
 end

@@ -5,7 +5,7 @@ return
 
 		in vec4 position;
 		in vec3 normal;
-		in vec2 uv;
+		in vec2 texCoord0;
 
 		uniform mat4 worldViewProjMatrix;
 		out vec2 uv0;
@@ -14,7 +14,7 @@ return
 		void main()
 		{
 			gl_Position = worldViewProjMatrix * position;
-			uv0 = uv;
+			uv0 = texCoord0;
 		}
 	]],
 
@@ -71,7 +71,7 @@ return
 
 		in vec4 position;
 		in vec3 normal;
-		in vec2 uv;
+		in vec2 texCoord0;
 
 		uniform mat4 worldViewProjMatrix;
 		uniform mat4 normalMatrix;
@@ -81,7 +81,7 @@ return
 		void main()
 		{
 			gl_Position = worldViewProjMatrix * position;
-			uv0 = uv;
+			uv0 = texCoord0;
 			n = normalize((normalMatrix * vec4(normal, 1)).xyz);
 		}
 	]],
@@ -106,7 +106,7 @@ return
 		#version 330 core
 
 		in vec4 position;
-		in vec2 uv;
+		in vec2 texCoord0;
 
 		out vec2 uv0;
 		out vec3 n;
@@ -114,7 +114,7 @@ return
 		void main()
 		{
 			gl_Position = position;
-			uv0 = uv;
+			uv0 = texCoord0;
 		}
 	]],
 

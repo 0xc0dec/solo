@@ -40,7 +40,7 @@ namespace solo
         MeshPrimitiveType getPrimitiveType() const;
 
         void rebuildAsQuad();
-        void rebuildAsBox() {}
+        void rebuildAsBox();
 
     protected:
         Mesh() {}
