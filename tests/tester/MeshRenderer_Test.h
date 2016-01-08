@@ -15,9 +15,9 @@ public:
         renderer = scene->createNode()->addComponent<MeshRenderer>();
         material = resourceManager->getOrCreateMaterial(resourceManager->getOrCreateEffect("1", "2"));
         mesh = resourceManager->getOrCreateMesh();
-        mesh->addIndexedPart();
-        mesh->addIndexedPart();
-        mesh->addIndexedPart();
+        mesh->addPart();
+        mesh->addPart();
+        mesh->addPart();
 
         test_EnsureNoMaterialsAtFirst();
         test_SetMesh_UnsetMesh_EnsureNoMesh();

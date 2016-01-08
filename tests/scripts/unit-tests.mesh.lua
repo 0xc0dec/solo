@@ -7,7 +7,7 @@ runTest(function()
 	m:resetVertexData(vf, { 1, 2, 3 }, 1, false)
 	m:updateVertexData({ 2, 3, 4}, 1, 0)
 
-	local part = m:addIndexedPart()
+	local part = m:addPart()
 	assert(m:getPartCount() == 1)
 
 	assert(m:getVertexFormat())

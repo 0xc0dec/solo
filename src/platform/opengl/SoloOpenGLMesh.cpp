@@ -76,11 +76,17 @@ void OpenGLMesh::updateVertexData(const float *data, unsigned elementCount, unsi
 }
 
 
-IndexedMeshPart* OpenGLMesh::addIndexedPart()
+IndexedMeshPart* OpenGLMesh::addPart()
 {
     auto part = SL_NEW_SHARED(OpenGLIndexedMeshPart);
     parts.push_back(part);
     return part.get();
+}
+
+
+IndexedMeshPart *OpenGLMesh::getPart(unsigned index) const
+{
+    return parts[index].get();
 }
 
 

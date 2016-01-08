@@ -14,6 +14,17 @@ shared<Mesh> Mesh::create(DeviceMode mode)
 }
 
 
+static void rebuildMesh(const VertexFormat &vertexFormat, Mesh *mesh, float *data, unsigned elementCount, unsigned short *indexData, unsigned indexElementCount)
+{
+    mesh->resetVertexData(vertexFormat, data, elementCount, false);
+    mesh->setPrimitiveType(MeshPrimitiveType::Triangles);
+
+    auto part = mesh->getPartCount() > 0 ? mesh->getPart(0) : mesh->addPart();
+    part->resetIndexData(MeshIndexFormat::UnsignedShort, indexData, indexElementCount, false);
+    part->setPrimitiveType(MeshPrimitiveType::Triangles);
+}
+
+
 void Mesh::rebuildAsQuad()
 {
     float data[] = {
@@ -29,12 +40,8 @@ void Mesh::rebuildAsQuad()
         VertexFormatElement(VertexFormatElementSemantics::Normal, 3),
         VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2)
     });
-    resetVertexData(vf, data, 4, false);
-    setPrimitiveType(MeshPrimitiveType::Triangles);
-    
-    auto part = addIndexedPart();
-    part->resetIndexData(MeshIndexFormat::UnsignedShort, indices, 6, false);
-    part->setPrimitiveType(MeshPrimitiveType::Triangles);
+
+    rebuildMesh(vf, this, data, 4, indices, 6);
 }
 
 
@@ -92,10 +99,5 @@ void Mesh::rebuildAsBox()
         VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2)
     });
 
-    resetVertexData(vf, data, 24, false);
-    setPrimitiveType(MeshPrimitiveType::Triangles);
-
-    auto part = addIndexedPart();
-    part->resetIndexData(MeshIndexFormat::UnsignedShort, indices, 36, false);
-    part->setPrimitiveType(MeshPrimitiveType::Triangles);
+    rebuildMesh(vf, this, data, 24, indices, 36);
 }

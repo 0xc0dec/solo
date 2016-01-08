@@ -387,7 +387,7 @@ void LuaScriptManager::registerApi()
     auto mesh = module.beginClass<Mesh>("Mesh");
     mesh.addFunction("resetVertexData", &LuaMesh::resetVertexData);
     mesh.addFunction("updateVertexData", &LuaMesh::updateVertexData);
-    REGISTER_METHOD(mesh, Mesh, addIndexedPart);
+    REGISTER_METHOD(mesh, Mesh, addPart);
     REGISTER_METHOD(mesh, Mesh, getPartCount);
     REGISTER_METHOD(mesh, Mesh, getVertexFormat);
     REGISTER_METHOD(mesh, Mesh, setPrimitiveType);

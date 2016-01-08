@@ -14,9 +14,9 @@ namespace solo
         virtual void resetVertexData(const VertexFormat& format, const float* data, unsigned elementCount, bool dynamic) override {}
         virtual void updateVertexData(const float* data, unsigned elementCount, unsigned updateFromIndex) override {}
 
-        virtual IndexedMeshPart* addIndexedPart() override;
-
+        virtual IndexedMeshPart* addPart() override;
         virtual size_t getPartCount() const override;
+        virtual IndexedMeshPart *getPart(unsigned index) const override;
 
         virtual void draw() override {}
         virtual void drawIndexedPart(unsigned part) override {}

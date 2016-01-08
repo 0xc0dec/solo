@@ -28,8 +28,9 @@ namespace solo
         virtual void resetVertexData(const VertexFormat &format, const float *data, unsigned elementCount, bool dynamic) = 0;
         virtual void updateVertexData(const float *data, unsigned elementCount, unsigned updateFromIndex) = 0;
 
-        virtual IndexedMeshPart *addIndexedPart() = 0;
+        virtual IndexedMeshPart *addPart() = 0;
         virtual size_t getPartCount() const = 0;
+        virtual IndexedMeshPart *getPart(unsigned index) const = 0;
 
         virtual void draw() = 0;
         virtual void drawIndexedPart(unsigned part) = 0;

@@ -208,7 +208,6 @@ function createBuiltInMeshNode(type)
 	if type == "quad" then
 		mesh:rebuildAsQuad()
 	elseif type == "box" then
-		mesh:rebuildAsQuad()
 		mesh:rebuildAsBox()
 	end
 

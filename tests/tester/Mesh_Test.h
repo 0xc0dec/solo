@@ -37,15 +37,15 @@ public:
     void test_AddPart_CheckPartCount()
     {
         auto mesh = resourceManager->getOrCreateMesh();
-        mesh->addIndexedPart();
-        mesh->addIndexedPart();
+        mesh->addPart();
+        mesh->addPart();
         assert(mesh->getPartCount() == 2);
     }
 
     void test_ChangePartPrimitiveType()
     {
         auto mesh = resourceManager->getOrCreateMesh();
-        auto part = mesh->addIndexedPart();
+        auto part = mesh->addPart();
         assert(part->getPrimitiveType() == MeshPrimitiveType::Triangles);
         part->setPrimitiveType(MeshPrimitiveType::Lines);
         assert(part->getPrimitiveType() == MeshPrimitiveType::Lines);
