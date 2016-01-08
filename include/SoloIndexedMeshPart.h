@@ -5,14 +5,21 @@
 
 namespace solo
 {
+    enum class MeshIndexFormat
+    {
+        UnsignedByte,
+        UnsignedShort,
+        UnsignedInt
+    };
+
     class IndexedMeshPart
     {
     public:
         SL_NONCOPYABLE(IndexedMeshPart);
         virtual ~IndexedMeshPart() {}
 
-        virtual void resetIndexData(MeshIndexFormat indexFormat, float* data, unsigned elementCount, bool dynamic) = 0;
-        virtual void updateIndexData(float *data, unsigned elementCount, unsigned updateFromIndex) = 0;
+        virtual void resetIndexData(MeshIndexFormat indexFormat, const void* data, unsigned elementCount, bool dynamic) = 0;
+        virtual void updateIndexData(const void *data, unsigned elementCount, unsigned updateFromIndex) = 0;
 
         void setPrimitiveType(MeshPrimitiveType type);
         MeshPrimitiveType getPrimitiveType() const;

@@ -7,7 +7,7 @@ runTest(function()
 	m:resetVertexData(vf, { 1, 2, 3 }, 1, false)
 	m:updateVertexData({ 2, 3, 4}, 1, 0)
 
-	m:addIndexedPart()
+	local part = m:addIndexedPart()
 	assert(m:getPartCount() == 1)
 
 	assert(m:getVertexFormat())
@@ -17,4 +17,9 @@ runTest(function()
 
 	m:rebuildAsQuad()
 	m:rebuildAsBox()
+
+	part:resetIndexData({ 1, 2, 3 }, 1, true)
+	part:updateIndexData({ 2, 3, 4}, 1, 0)
+	part:setPrimitiveType(solo.MeshPrimitiveType.Lines)
+	assert(part:getPrimitiveType() == solo.MeshPrimitiveType.Lines)
 end, "Mesh")

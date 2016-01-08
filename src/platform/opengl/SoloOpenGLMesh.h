@@ -8,6 +8,7 @@
 namespace solo
 {
     class OpenGLIndexedMeshPart;
+    enum class MeshIndexFormat;
 
     class OpenGLMesh : public Mesh
     {

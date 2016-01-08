@@ -16,13 +16,6 @@ namespace solo
         LineStrip,
         Points
     };
-
-    enum class MeshIndexFormat
-    {
-        UnsignedByte,
-        UnsignedShort,
-        UnsignedInt
-    };
     
     class Mesh
     {

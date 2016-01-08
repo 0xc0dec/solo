@@ -259,6 +259,9 @@
     <ClInclude Include="..\src\platform\scripting\lua\SoloLuaMesh.h">
       <Filter>src\platform\scripting\lua</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\platform\scripting\lua\SoloLuaIndexedMeshPart.h">
+      <Filter>src\platform\scripting\lua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloLog.cpp">
@@ -529,6 +532,9 @@
       <Filter>src\platform\stub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\scripting\lua\SoloLuaMesh.cpp">
+      <Filter>src\platform\scripting\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\scripting\lua\SoloLuaIndexedMeshPart.cpp">
       <Filter>src\platform\scripting\lua</Filter>
     </ClCompile>
   </ItemGroup>

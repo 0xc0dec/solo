@@ -11,8 +11,8 @@ namespace solo
     public:
         virtual ~OpenGLIndexedMeshPart();
 
-        virtual void resetIndexData(MeshIndexFormat indexFormat, float* data, unsigned elementCount, bool dynamic) override;
-        virtual void updateIndexData(float *data, unsigned elementCount, unsigned updateFromIndex) override;
+        virtual void resetIndexData(MeshIndexFormat indexFormat, const void *data, unsigned elementCount, bool dynamic) override;
+        virtual void updateIndexData(const void *data, unsigned elementCount, unsigned updateFromIndex) override;
 
         unsigned getElementCount() const;
         MeshIndexFormat getIndexFormat() const;

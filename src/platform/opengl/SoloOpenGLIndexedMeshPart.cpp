@@ -31,7 +31,7 @@ unsigned OpenGLIndexedMeshPart::getElementSize(MeshIndexFormat indexFormat)
 }
 
 
-void OpenGLIndexedMeshPart::resetIndexData(MeshIndexFormat format, float* data, unsigned elementCount, bool dynamic)
+void OpenGLIndexedMeshPart::resetIndexData(MeshIndexFormat format, const void *data, unsigned elementCount, bool dynamic)
 {
     if (!data || !elementCount)
         SL_THROW_FMT(EngineException, "Unable to reset index data: empty or no data");
@@ -46,7 +46,7 @@ void OpenGLIndexedMeshPart::resetIndexData(MeshIndexFormat format, float* data, 
 }
 
 
-void OpenGLIndexedMeshPart::updateIndexData(float* data, unsigned elementCount, unsigned updateFromIndex)
+void OpenGLIndexedMeshPart::updateIndexData(const void *data, unsigned elementCount, unsigned updateFromIndex)
 {
     if (!data || !elementCount)
         SL_THROW_FMT(EngineException, "Unable to update index data: empty or no data");

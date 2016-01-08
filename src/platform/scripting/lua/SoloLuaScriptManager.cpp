@@ -28,6 +28,7 @@
 #include "SoloMesh.h"
 #include "SoloLuaMesh.h"
 #include "SoloIndexedMeshPart.h"
+#include "SoloLuaIndexedMeshPart.h"
 #include "SoloRenderContext.h"
 #include "SoloMeshRenderer.h"
 #include "SoloSkyboxRenderer.h"
@@ -397,10 +398,10 @@ void LuaScriptManager::registerApi()
 
     // IndexedMeshPart
     auto meshPart = module.beginClass<IndexedMeshPart>("IndexedMeshPart");
+    meshPart.addFunction("resetIndexData", &LuaIndexedMeshPart::resetIndexData);
+    meshPart.addFunction("updateIndexData", &LuaIndexedMeshPart::updateIndexData);
     REGISTER_METHOD(meshPart, IndexedMeshPart, getPrimitiveType);
     REGISTER_METHOD(meshPart, IndexedMeshPart, setPrimitiveType);
-    REGISTER_METHOD(meshPart, IndexedMeshPart, resetIndexData);
-    REGISTER_METHOD(meshPart, IndexedMeshPart, updateIndexData);
     meshPart.endClass();
 
     // MeshPrimitiveType
