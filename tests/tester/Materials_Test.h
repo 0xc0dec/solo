@@ -2,7 +2,7 @@
 
 #include "TestBase.h"
 
-const char * vs = R"s(
+const char *vs = R"s(
 	#version 330 core
 
 	uniform float testFloat;

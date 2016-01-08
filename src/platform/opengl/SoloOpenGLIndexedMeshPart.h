@@ -14,8 +14,8 @@ namespace solo
         virtual void resetIndexData(MeshIndexFormat indexFormat, float* data, unsigned elementCount, bool dynamic) override;
         virtual void updateIndexData(float *data, unsigned elementCount, unsigned updateFromIndex) override;
 
-        virtual unsigned getElementCount() const override;
-        virtual MeshIndexFormat getIndexFormat() const override;
+        unsigned getElementCount() const;
+        MeshIndexFormat getIndexFormat() const;
 
         GLuint getBufferHandle() const;
 

@@ -14,9 +14,6 @@ namespace solo
         virtual void resetIndexData(MeshIndexFormat indexFormat, float* data, unsigned elementCount, bool dynamic) = 0;
         virtual void updateIndexData(float *data, unsigned elementCount, unsigned updateFromIndex) = 0;
 
-        virtual unsigned getElementCount() const = 0;
-        virtual MeshIndexFormat getIndexFormat() const = 0;
-
         void setPrimitiveType(PrimitiveType type);
         PrimitiveType getPrimitiveType() const;
 
