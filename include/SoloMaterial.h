@@ -33,10 +33,7 @@ namespace solo
     public:
         static shared<Material> create(DeviceMode mode, shared<Effect> effect);
 
-        Material(const Material &other) = delete;
-        Material(Material &&device) = delete;
-        Material &operator=(const Material &other) = delete;
-        Material &operator=(Material &&other) = delete;
+        SL_NONCOPYABLE(Material);
         virtual ~Material() {}
 
         void bind(RenderContext &context);

@@ -25,10 +25,7 @@ namespace solo
     public:
         static shared<ResourceManager> create(Device *device);
 
-        ResourceManager(const ResourceManager &other) = delete;
-        ResourceManager(ResourceManager &&other) = delete;
-        ResourceManager &operator=(const ResourceManager &other) = delete;
-        ResourceManager &operator=(ResourceManager &&other) = delete;
+        SL_NONCOPYABLE(ResourceManager);
         ~ResourceManager() {}
 
         shared<Effect> findEffect(const std::string &uri);

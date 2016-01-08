@@ -70,10 +70,7 @@ namespace solo
     public:
         static shared<Device> create(const DeviceCreationArgs &args);
 
-        Device(const Device &other) = delete;
-        Device(Device &&device) = delete;
-        Device &operator=(const Device &other) = delete;
-        Device &operator=(Device &&other) = delete;
+        SL_NONCOPYABLE(Device);
         virtual ~Device() {}
 
         virtual void beginUpdate() = 0;

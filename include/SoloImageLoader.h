@@ -11,10 +11,7 @@ namespace solo
     class ImageLoader
     {
     public:
-        ImageLoader(const ImageLoader &other) = delete;
-        ImageLoader(ImageLoader &&other) = delete;
-        ImageLoader &operator=(const ImageLoader &other) = delete;
-        ImageLoader &operator=(ImageLoader &&other) = delete;
+        SL_NONCOPYABLE(ImageLoader);
         virtual ~ImageLoader() {}
 
         virtual bool isLoadable(const std::string &uri) = 0;

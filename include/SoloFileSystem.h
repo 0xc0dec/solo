@@ -11,10 +11,7 @@ namespace solo
     public:
         static shared<FileSystem> create(Device *device);
 
-        FileSystem(const FileSystem &other) = delete;
-        FileSystem(FileSystem &&other) = delete;
-        FileSystem &operator=(const FileSystem &other) = delete;
-        FileSystem &operator=(FileSystem &&other) = delete;
+        SL_NONCOPYABLE(FileSystem);
         virtual ~FileSystem() {}
 
         virtual std::vector<uint8_t> readBytes(const std::string &path);

@@ -32,10 +32,7 @@ namespace solo
     class MaterialParameter
     {
     public:
-        MaterialParameter(const MaterialParameter &other) = delete;
-        MaterialParameter(MaterialParameter &&other) = delete;
-        MaterialParameter &operator=(const MaterialParameter &other) = delete;
-        MaterialParameter &operator=(MaterialParameter &&other) = delete;
+        SL_NONCOPYABLE(MaterialParameter);
 
         void setFloat(float value);
         void setFloatArray(const std::vector<float> &value);

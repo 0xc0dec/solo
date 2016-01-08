@@ -30,10 +30,7 @@ namespace solo
         static shared<Texture2D> create2D(DeviceMode mode);
         static shared<CubeTexture> createCube(DeviceMode mode);
 
-        Texture(const Texture &other) = delete;
-        Texture(Texture &&other) = delete;
-        Texture &operator=(const Texture &other) = delete;
-        Texture &operator=(Texture &&other) = delete;
+        SL_NONCOPYABLE(Texture);
         virtual ~Texture() {}
 
         virtual void apply() = 0;

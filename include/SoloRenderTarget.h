@@ -13,10 +13,7 @@ namespace solo
     public:
         static shared<RenderTarget> create(DeviceMode mode);
 
-        RenderTarget(const RenderTarget &other) = delete;
-        RenderTarget(RenderTarget &&other) = delete;
-        RenderTarget &operator=(const RenderTarget &other) = delete;
-        RenderTarget &operator=(RenderTarget &&other) = delete;
+        SL_NONCOPYABLE(RenderTarget);
         virtual ~RenderTarget() {}
 
         virtual void bind() = 0;

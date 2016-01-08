@@ -251,7 +251,6 @@ function init()
 	initCameras()
 	initObjects()
 	initSkybox()
-	print("Initialized")
 end
 
 

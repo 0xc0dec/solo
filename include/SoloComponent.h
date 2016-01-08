@@ -13,10 +13,7 @@ namespace solo
     class Component
     {
     public:
-        Component(const Component &other) = delete;
-        Component(Component &&other) = delete;
-        Component &operator=(const Component &other) = delete;
-        Component &operator=(Component &&other) = delete;
+        SL_NONCOPYABLE(Component);
         virtual ~Component() {}
 
         virtual size_t getTypeId() = 0;

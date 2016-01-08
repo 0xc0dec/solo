@@ -9,10 +9,7 @@ namespace solo
     class EffectVertexAttribute
     {
     public:
-        EffectVertexAttribute(const EffectVertexAttribute &other) = delete;
-        EffectVertexAttribute(EffectVertexAttribute &&other) = delete;
-        EffectVertexAttribute &operator=(const EffectVertexAttribute &other) = delete;
-        EffectVertexAttribute &operator=(EffectVertexAttribute &&other) = delete;
+        SL_NONCOPYABLE(EffectVertexAttribute);
         virtual ~EffectVertexAttribute() {}
 
         std::string getName() const;

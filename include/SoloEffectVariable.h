@@ -13,10 +13,7 @@ namespace solo
     class EffectVariable
     {
     public:
-        EffectVariable(const EffectVariable &other) = delete;
-        EffectVariable(EffectVariable &&other) = delete;
-        EffectVariable &operator=(const EffectVariable &other) = delete;
-        EffectVariable &operator=(EffectVariable &&other) = delete;
+        SL_NONCOPYABLE(EffectVariable);
         virtual ~EffectVariable() {}
 
         std::string getName() const;

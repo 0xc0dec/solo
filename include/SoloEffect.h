@@ -13,10 +13,7 @@ namespace solo
     public:
         static shared<Effect> create(DeviceMode mode, const std::string &vsSrc, const std::string &fsSrc);
 
-        Effect(const Effect &other) = delete;
-        Effect(Effect &&other) = delete;
-        Effect &operator=(const Effect &other) = delete;
-        Effect &operator=(Effect &&other) = delete;
+        SL_NONCOPYABLE(Effect);
         virtual ~Effect() {}
 
         virtual void bind() = 0;

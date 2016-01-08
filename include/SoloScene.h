@@ -15,10 +15,7 @@ namespace solo
     public:
         static shared<Scene> create(Device *device);
 
-        Scene(const Scene &other) = delete;
-        Scene(Scene &&other) = delete;
-        Scene &operator=(const Scene &other) = delete;
-        Scene &operator=(Scene &&other) = delete;
+        SL_NONCOPYABLE(Scene);
         ~Scene();
 
         Device *getDevice() const;
