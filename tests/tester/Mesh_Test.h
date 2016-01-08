@@ -21,7 +21,7 @@ public:
     void test_EmptyMesh_CheckDefaults()
     {
         auto mesh = resourceManager->getOrCreateMesh();
-        assert(mesh->getPrimitiveType() == PrimitiveType::Triangles);
+        assert(mesh->getPrimitiveType() == MeshPrimitiveType::Triangles);
         assert(mesh->getPartCount() == 0);
         assert(mesh->getVertexFormat().getElementCount() == 0);
         assert(mesh->getVertexFormat().getVertexSize() == 0);
@@ -30,8 +30,8 @@ public:
     void test_ChangePrimitiveType()
     {
         auto mesh = resourceManager->getOrCreateMesh();
-        mesh->setPrimitiveType(PrimitiveType::Points);
-        assert(mesh->getPrimitiveType() == PrimitiveType::Points);
+        mesh->setPrimitiveType(MeshPrimitiveType::Points);
+        assert(mesh->getPrimitiveType() == MeshPrimitiveType::Points);
     }
 
     void test_AddPart_CheckPartCount()
@@ -46,8 +46,8 @@ public:
     {
         auto mesh = resourceManager->getOrCreateMesh();
         auto part = mesh->addIndexedPart();
-        assert(part->getPrimitiveType() == PrimitiveType::Triangles);
-        part->setPrimitiveType(PrimitiveType::Lines);
-        assert(part->getPrimitiveType() == PrimitiveType::Lines);
+        assert(part->getPrimitiveType() == MeshPrimitiveType::Triangles);
+        part->setPrimitiveType(MeshPrimitiveType::Lines);
+        assert(part->getPrimitiveType() == MeshPrimitiveType::Lines);
     }
 };

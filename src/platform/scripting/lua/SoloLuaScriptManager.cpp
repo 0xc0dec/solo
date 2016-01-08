@@ -26,6 +26,7 @@
 #include "SoloMaterial.h"
 #include "SoloMaterialParameter.h"
 #include "SoloMesh.h"
+#include "SoloIndexedMeshPart.h"
 #include "SoloRenderContext.h"
 #include "SoloMeshRenderer.h"
 #include "SoloSkyboxRenderer.h"
@@ -381,17 +382,73 @@ void LuaScriptManager::registerApi()
     effect.endClass();
 
     // Mesh
-    auto m = module.beginClass<Mesh>("Mesh");
-    REGISTER_METHOD(m, Mesh, resetVertexData);
-    REGISTER_METHOD(m, Mesh, updateVertexData);
-    REGISTER_METHOD(m, Mesh, addIndexedPart);
-    REGISTER_METHOD(m, Mesh, getPartCount);
-    REGISTER_METHOD(m, Mesh, getVertexFormat);
-    REGISTER_METHOD(m, Mesh, setPrimitiveType);
-    REGISTER_METHOD(m, Mesh, getPrimitiveType);
-    REGISTER_METHOD(m, Mesh, rebuildAsBox);
-    REGISTER_METHOD(m, Mesh, rebuildAsQuad);
-    m.endClass();
+    auto mesh = module.beginClass<Mesh>("Mesh");
+    REGISTER_METHOD(mesh, Mesh, resetVertexData);
+    REGISTER_METHOD(mesh, Mesh, updateVertexData);
+    REGISTER_METHOD(mesh, Mesh, addIndexedPart);
+    REGISTER_METHOD(mesh, Mesh, getPartCount);
+    REGISTER_METHOD(mesh, Mesh, getVertexFormat);
+    REGISTER_METHOD(mesh, Mesh, setPrimitiveType);
+    REGISTER_METHOD(mesh, Mesh, getPrimitiveType);
+    REGISTER_METHOD(mesh, Mesh, rebuildAsBox);
+    REGISTER_METHOD(mesh, Mesh, rebuildAsQuad);
+    mesh.endClass();
+
+    // IndexedMeshPart
+    auto meshPart = module.beginClass<IndexedMeshPart>("IndexedMeshPart");
+    REGISTER_METHOD(meshPart, IndexedMeshPart, getPrimitiveType);
+    REGISTER_METHOD(meshPart, IndexedMeshPart, setPrimitiveType);
+    REGISTER_METHOD(meshPart, IndexedMeshPart, resetIndexData);
+    REGISTER_METHOD(meshPart, IndexedMeshPart, updateIndexData);
+    meshPart.endClass();
+
+    // MeshPrimitiveType
+    auto meshPrimitiveType = module.beginModule("MeshPrimitiveType");
+    REGISTER_ENUM_CONSTANT(meshPrimitiveType, MeshPrimitiveType, Lines);
+    REGISTER_ENUM_CONSTANT(meshPrimitiveType, MeshPrimitiveType, LineStrip);
+    REGISTER_ENUM_CONSTANT(meshPrimitiveType, MeshPrimitiveType, Points);
+    REGISTER_ENUM_CONSTANT(meshPrimitiveType, MeshPrimitiveType, TriangleStrip);
+    REGISTER_ENUM_CONSTANT(meshPrimitiveType, MeshPrimitiveType, Triangles);
+    meshPrimitiveType.endModule();
+
+    // MeshIndexFormat
+    auto meshIndexFormat = module.beginModule("MeshIndexFormat");
+    REGISTER_ENUM_CONSTANT(meshIndexFormat, MeshIndexFormat, UnsignedByte);
+    REGISTER_ENUM_CONSTANT(meshIndexFormat, MeshIndexFormat, UnsignedShort);
+    REGISTER_ENUM_CONSTANT(meshIndexFormat, MeshIndexFormat, UnsignedInt);
+    meshIndexFormat.endModule();
+
+    // VertexFormatElementSemantics
+    auto vertexFormatElementSemantics = module.beginModule("VertexFormatElementSemantics");
+    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Position);
+    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Normal);
+    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Color);
+    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Tangent);
+    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Binormal);
+    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord0);
+    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord1);
+    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord2);
+    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord3);
+    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord4);
+    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord5);
+    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord6);
+    REGISTER_ENUM_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord7);
+    vertexFormatElementSemantics.endModule();
+
+    // VertexFormatElement
+    auto vertexFormatElement = module.beginClass<VertexFormatElement>("VertexFormatElement");
+    vertexFormatElement.addConstructor(LUA_ARGS(VertexFormatElementSemantics, unsigned));
+    REGISTER_VARIABLE(vertexFormatElement, VertexFormatElement, size);
+    REGISTER_VARIABLE(vertexFormatElement, VertexFormatElement, semantics);
+    vertexFormatElement.endClass();
+
+    // VertexFormat
+    auto vertexFormat = module.beginClass<VertexFormat>("VertexFormat");
+    vertexFormat.addConstructor(LUA_ARGS(const std::vector<VertexFormatElement>&));
+    REGISTER_METHOD(vertexFormat, VertexFormat, getVertexSize);
+    REGISTER_METHOD(vertexFormat, VertexFormat, getElement);
+    REGISTER_METHOD(vertexFormat, VertexFormat, getElementCount);
+    vertexFormat.endClass();
 
     // ColorFormat
     auto colorFormat = module.beginModule("ColorFormat");

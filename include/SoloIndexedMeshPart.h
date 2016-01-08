@@ -14,21 +14,21 @@ namespace solo
         virtual void resetIndexData(MeshIndexFormat indexFormat, float* data, unsigned elementCount, bool dynamic) = 0;
         virtual void updateIndexData(float *data, unsigned elementCount, unsigned updateFromIndex) = 0;
 
-        void setPrimitiveType(PrimitiveType type);
-        PrimitiveType getPrimitiveType() const;
+        void setPrimitiveType(MeshPrimitiveType type);
+        MeshPrimitiveType getPrimitiveType() const;
 
     protected:
         IndexedMeshPart() {}
 
-        PrimitiveType primitiveType = PrimitiveType::Triangles;
+        MeshPrimitiveType primitiveType = MeshPrimitiveType::Triangles;
     };
 
-    inline void IndexedMeshPart::setPrimitiveType(PrimitiveType type)
+    inline void IndexedMeshPart::setPrimitiveType(MeshPrimitiveType type)
     {
         primitiveType = type;
     }
 
-    inline PrimitiveType IndexedMeshPart::getPrimitiveType() const
+    inline MeshPrimitiveType IndexedMeshPart::getPrimitiveType() const
     {
         return primitiveType;
     }

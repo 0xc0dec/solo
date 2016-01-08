@@ -22,31 +22,31 @@ OpenGLMeshEffectBinding::OpenGLMeshEffectBinding(Mesh *mesh, Effect *effect)
         EffectVertexAttribute *attr = nullptr;
         switch (element.semantics)
         {
-        case VertexFormatElement::Semantics::Position:
+        case VertexFormatElementSemantics::Position:
             attr = effect->findVertexAttribute("position");
             break;
-        case VertexFormatElement::Semantics::Normal:
+        case VertexFormatElementSemantics::Normal:
             attr = effect->findVertexAttribute("normal");
             break;
-        case VertexFormatElement::Semantics::Color:
+        case VertexFormatElementSemantics::Color:
             attr = effect->findVertexAttribute("color");
             break;
-        case VertexFormatElement::Semantics::Tangent:
+        case VertexFormatElementSemantics::Tangent:
             attr = effect->findVertexAttribute("tangent");
             break;
-        case VertexFormatElement::Semantics::Binormal:
+        case VertexFormatElementSemantics::Binormal:
             attr = effect->findVertexAttribute("binormal");
             break;
-        case VertexFormatElement::Semantics::TexCoord0:
-        case VertexFormatElement::Semantics::TexCoord1:
-        case VertexFormatElement::Semantics::TexCoord2:
-        case VertexFormatElement::Semantics::TexCoord3:
-        case VertexFormatElement::Semantics::TexCoord4:
-        case VertexFormatElement::Semantics::TexCoord5:
-        case VertexFormatElement::Semantics::TexCoord6:
-        case VertexFormatElement::Semantics::TexCoord7:
+        case VertexFormatElementSemantics::TexCoord0:
+        case VertexFormatElementSemantics::TexCoord1:
+        case VertexFormatElementSemantics::TexCoord2:
+        case VertexFormatElementSemantics::TexCoord3:
+        case VertexFormatElementSemantics::TexCoord4:
+        case VertexFormatElementSemantics::TexCoord5:
+        case VertexFormatElementSemantics::TexCoord6:
+        case VertexFormatElementSemantics::TexCoord7:
         {
-            auto name = "texCoord" + (static_cast<int>(element.semantics) - static_cast<int>(VertexFormatElement::Semantics::TexCoord0));
+            auto name = "texCoord" + (static_cast<int>(element.semantics) - static_cast<int>(VertexFormatElementSemantics::TexCoord0));
             attr = effect->findVertexAttribute(name);
             break;
         }

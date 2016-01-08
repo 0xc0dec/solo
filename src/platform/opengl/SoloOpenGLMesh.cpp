@@ -19,15 +19,15 @@ OpenGLMesh::~OpenGLMesh()
 }
 
 
-GLenum OpenGLMesh::convertPrimitiveType(PrimitiveType primitiveType)
+GLenum OpenGLMesh::convertPrimitiveType(MeshPrimitiveType primitiveType)
 {
     switch (primitiveType)
     {
-    case PrimitiveType::Triangles: return GL_TRIANGLES;
-    case PrimitiveType::TriangleStrip: return GL_TRIANGLE_STRIP;
-    case PrimitiveType::Lines: return GL_LINES;
-    case PrimitiveType::LineStrip: return GL_LINE_STRIP;
-    case PrimitiveType::Points: return GL_POINTS;
+    case MeshPrimitiveType::Triangles: return GL_TRIANGLES;
+    case MeshPrimitiveType::TriangleStrip: return GL_TRIANGLE_STRIP;
+    case MeshPrimitiveType::Lines: return GL_LINES;
+    case MeshPrimitiveType::LineStrip: return GL_LINE_STRIP;
+    case MeshPrimitiveType::Points: return GL_POINTS;
     default:
         SL_THROW_FMT(EngineException, "Unknown primitive type");
     }

@@ -8,7 +8,7 @@ namespace solo
     enum class DeviceMode;
     class IndexedMeshPart;
 
-    enum class PrimitiveType
+    enum class MeshPrimitiveType
     {
         Triangles,
         TriangleStrip,
@@ -43,8 +43,8 @@ namespace solo
 
         VertexFormat getVertexFormat() const;
 
-        void setPrimitiveType(PrimitiveType type);
-        PrimitiveType getPrimitiveType() const;
+        void setPrimitiveType(MeshPrimitiveType type);
+        MeshPrimitiveType getPrimitiveType() const;
 
         void rebuildAsQuad() {} // TODO
         void rebuildAsBox() {} // TODO
@@ -53,7 +53,7 @@ namespace solo
     protected:
         Mesh() {}
 
-        PrimitiveType primitiveType = PrimitiveType::Triangles;
+        MeshPrimitiveType primitiveType = MeshPrimitiveType::Triangles;
         VertexFormat vertexFormat;
     };
 
@@ -62,12 +62,12 @@ namespace solo
         return vertexFormat;
     }
 
-    inline void Mesh::setPrimitiveType(PrimitiveType type)
+    inline void Mesh::setPrimitiveType(MeshPrimitiveType type)
     {
         primitiveType = type;
     }
 
-    inline PrimitiveType Mesh::getPrimitiveType() const
+    inline MeshPrimitiveType Mesh::getPrimitiveType() const
     {
         return primitiveType;
     }

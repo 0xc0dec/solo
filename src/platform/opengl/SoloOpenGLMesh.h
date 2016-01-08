@@ -28,7 +28,7 @@ namespace solo
 
         OpenGLMesh();
 
-        static GLenum convertPrimitiveType(PrimitiveType primitiveType);
+        static GLenum convertPrimitiveType(MeshPrimitiveType primitiveType);
         static GLenum convertIndexType(MeshIndexFormat indexFormat);
 
         GLuint bufferHandle = 0;
