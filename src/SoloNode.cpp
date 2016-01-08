@@ -34,7 +34,7 @@ template<> Camera *Node::addComponent<Camera>()
 
 template<> MeshRenderer *Node::addComponent<MeshRenderer>()
 {
-    auto renderer = MeshRenderer::create(scene->getDevice()->getMode(), *this);
+    auto renderer = MeshRenderer::create(*this);
     scene->addComponent(id, renderer);
     return renderer.get();
 }

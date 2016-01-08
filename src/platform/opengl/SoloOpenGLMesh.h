@@ -24,6 +24,8 @@ namespace solo
         virtual void draw() override;
         virtual void drawIndexedPart(unsigned part) override;
 
+        GLuint getBufferHandle() const;
+
     private:
         friend class Mesh;
 
@@ -40,5 +42,10 @@ namespace solo
     inline size_t OpenGLMesh::getPartCount() const
     {
         return parts.size();
+    }
+
+    inline GLuint OpenGLMesh::getBufferHandle() const
+    {
+        return bufferHandle;
     }
 }

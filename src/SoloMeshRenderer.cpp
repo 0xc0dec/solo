@@ -1,22 +1,22 @@
 #include "SoloMeshRenderer.h"
 #include "SoloMesh.h"
 #include "SoloMaterial.h"
-#include "SoloMesh.h"
 #include "SoloRenderContext.h"
 #include "SoloMeshEffectBinding.h"
+#include "SoloDevice.h"
 
 using namespace solo;
 
 
-shared<MeshRenderer> MeshRenderer::create(DeviceMode mode, Node node)
+shared<MeshRenderer> MeshRenderer::create(Node node)
 {
-    return SL_NEW_SHARED(MeshRenderer, mode, node);
+    return SL_NEW_SHARED(MeshRenderer, node);
 }
 
 
-MeshRenderer::MeshRenderer(DeviceMode mode, Node node) :
+MeshRenderer::MeshRenderer(Node node):
     ComponentBase(node),
-    deviceMode(mode)
+    deviceMode(node.getScene()->getDevice()->getMode())
 {
     renderQueue = KnownRenderQueues::OpaqueObjects;
 }
@@ -31,7 +31,9 @@ void MeshRenderer::render(RenderContext& context)
         if (material)
         {
             material->bind(context);
+            bindings[0]->bind();
             mesh->draw();
+            bindings[0]->unbind();
             material->unbind(context);
         }
     }
@@ -43,7 +45,9 @@ void MeshRenderer::render(RenderContext& context)
             if (material)
             {
                 material->bind(context);
+                bindings[i]->bind();
                 mesh->drawIndexedPart(i);
+                bindings[i]->unbind();
                 material->unbind(context);
             }
         }

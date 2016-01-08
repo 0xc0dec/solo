@@ -3,12 +3,12 @@
 #include "SoloBase.h"
 #include "SoloComponent.h"
 #include "SoloNode.h"
-#include "SoloRenderQueue.h"
 
 namespace solo
 {
     class Mesh;
     class Material;
+    class MeshEffectBinding;
     class CubeTexture;
 
     class SkyboxRenderer: public ComponentBase<SkyboxRenderer>
@@ -27,6 +27,7 @@ namespace solo
         shared<Mesh> quadMesh;
         shared<Material> material;
         shared<CubeTexture> texture;
+        shared<MeshEffectBinding> binding;
     };
 
     inline shared<CubeTexture> SkyboxRenderer::getTexture() const

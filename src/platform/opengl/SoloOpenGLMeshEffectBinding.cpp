@@ -1,7 +1,7 @@
 #include "SoloOpenGLMeshEffectBinding.h"
 #include "SoloEffect.h"
-#include "SoloMesh.h"
 #include "SoloGLSLEffectVertexAttribute.h"
+#include "SoloOpenGLMesh.h"
 
 using namespace solo;
 
@@ -13,6 +13,7 @@ OpenGLMeshEffectBinding::OpenGLMeshEffectBinding(Mesh *mesh, Effect *effect)
         SL_THROW_FMT(EngineException, "Unable to obtain vertex array handle");
 
     glBindVertexArray(vertexArrayHandle);
+    glBindBuffer(GL_ARRAY_BUFFER, static_cast<OpenGLMesh*>(mesh)->getBufferHandle());
 
     auto vertexFormat = mesh->getVertexFormat();
     size_t offset = 0;

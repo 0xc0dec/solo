@@ -1,4 +1,5 @@
 #include "SoloDevice.h"
+#include "SoloIndexedMeshPart.h"
 #include "platform/stub/SoloStubMesh.h"
 #include "platform/opengl/SoloOpenGLMesh.h"
 
@@ -12,36 +13,28 @@ shared<Mesh> Mesh::create(DeviceMode mode)
     return SL_NEW_SHARED(StubMesh);
 }
 
-//
-//void Mesh::rebuildAsQuad()
-//{
-//    setVertices(
-//    {
-//        Vector3(-1, -1, 0),
-//        Vector3(-1, 1, 0),
-//        Vector3(1, 1, 0),
-//        Vector3(1, -1, 0)
-//    });
-//    setNormals(
-//    {
-//        Vector3(0, 0, -1),
-//        Vector3(0, 0, -1),
-//        Vector3(0, 0, -1),
-//        Vector3(0, 0, -1)
-//    });
-//    setUVs(
-//    {
-//        Vector2(0, 0),
-//        Vector2(0, 1),
-//        Vector2(1, 1),
-//        Vector2(1, 0)
-//    });
-//    setIndices(
-//    {
-//        0, 1, 2,
-//        0, 2, 3
-//    });
-//}
+
+void Mesh::rebuildAsQuad()
+{
+    VertexFormat vf({
+        VertexFormatElement(VertexFormatElementSemantics::Position, 3),
+        VertexFormatElement(VertexFormatElementSemantics::Normal, 3),
+        VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2)
+    });
+    float data[] = {
+        -1, -1, 0,  0, 0, -1,   0, 0,
+        -1, 1, 0,   0, 0, -1,   0, 1,
+        1, 1, 0,    0, 0, -1,   1, 1,
+        1, -1, 0,   0, 0, -1,   1, 0
+    };
+    resetVertexData(vf, data, 4, false);
+    setPrimitiveType(MeshPrimitiveType::Triangles);
+    
+    unsigned short indices[] = { 0, 1, 2, 0, 2, 3 };
+    auto part = addIndexedPart();
+    part->resetIndexData(MeshIndexFormat::UnsignedShort, indices, 6, false);
+    part->setPrimitiveType(MeshPrimitiveType::Triangles);
+}
 //
 //
 //void Mesh::rebuildAsBox()

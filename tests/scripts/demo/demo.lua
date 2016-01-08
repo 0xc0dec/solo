@@ -154,60 +154,59 @@ function initObjects()
 	parent = scene:createNode()
 	parent:findComponent("Transform"):setLocalPosition(solo.Vector3(5, 0, 0))
 	parent:addScript(createWorldYRotator())
-	initAxesModel(parent)
+	-- initAxesModel(parent)
 	quad = createQuad()
 	quad:addScript(createLocalXRotator());
 	quad:findComponent("Transform"):setParent(parent:findComponent("Transform"))
 	quad:findComponent("Transform"):setLocalPosition(solo.Vector3(2, 0, 0))
-	quad:findComponent("ModelRenderer"):setMaterialForMesh(0, demo.materials.simpleTexture)
+	quad:findComponent("MeshRenderer"):setMaterial(0, demo.materials.simpleTexture)
 
 	-- Box
 	node = createQuad()
 	rebuildToBoxMesh(node)
-	node:findComponent("ModelRenderer"):setMaterialForMesh(0, demo.materials.checker)
+	node:findComponent("MeshRenderer"):setMaterial(0, demo.materials.checker)
 	node:findComponent("Transform"):setLocalPosition(solo.Vector3(-5, 0, 0))
 	node:addScript(createWorldYRotator())
 
 	-- Monkey
-	local node = scene:createNode()
-	local renderer = node:addComponent("ModelRenderer")
-	renderer:setModel(demo.models.monkey)
-	renderer:setMaterial(demo.materials.textureWithLighting)
-	node:findComponent("Transform"):setLocalPosition(solo.Vector3.zero())
-	node:addScript(createLocalXRotator())
+	-- local node = scene:createNode()
+	-- local renderer = node:addComponent("MeshRenderer")
+	-- renderer:setModel(demo.models.monkey)
+	-- renderer:setMaterial(demo.materials.textureWithLighting)
+	-- node:findComponent("Transform"):setLocalPosition(solo.Vector3.zero())
+	-- node:addScript(createLocalXRotator())
 
 	-- RTT quad
 	local parent = scene:createNode()
 	parent:findComponent("Transform"):setLocalPosition(solo.Vector3(-2, 2, -2))
 	parent:addScript(createWorldYRotator())
-	initAxesModel(parent)
+	-- initAxesModel(parent)
 
 	local quad = createQuad()
-	local renderer = quad:findComponent("ModelRenderer")
-	renderer:setMaterialForMesh(0, demo.materials.offscreenCameraRendered)
+	local renderer = quad:findComponent("MeshRenderer")
+	renderer:setMaterial(0, demo.materials.offscreenCameraRendered)
 	renderer:getTags():set(RENDER_TARGET_QUAD_TAG)
 	local quadTransform = quad:findComponent("Transform")
 	quadTransform:setParent(parent:findComponent("Transform"))
 	quadTransform:setLocalPosition(solo.Vector3(5, 2, -5))
 	quadTransform:setLocalScale(solo.Vector3(5, 5 * canvasSize.y / canvasSize.x, 1))
-	quad:addScript(createTargeter(node:findComponent("Transform"))) -- monkey
+	-- quad:addScript(createTargeter(node:findComponent("Transform"))) -- monkey
 end
 
 
 function rebuildToBoxMesh(node)
-	local model = node:findComponent("ModelRenderer"):getModel()
-	local mesh = model:getMesh(0)
+	local mesh = node:findComponent("MeshRenderer"):getMesh()
 	mesh:rebuildAsBox()
 end
 
 
 function initAxesModel(node)
-	local renderer = node:addComponent("ModelRenderer")
+	local renderer = node:addComponent("MeshRenderer")
 	renderer:setModel(demo.models.axes)
-	renderer:setMaterialForMesh(0, demo.materials.blue)
-	renderer:setMaterialForMesh(1, demo.materials.green)
-	renderer:setMaterialForMesh(2, demo.materials.white)
-	renderer:setMaterialForMesh(3, demo.materials.red)
+	renderer:setMaterial(0, demo.materials.blue)
+	renderer:setMaterial(1, demo.materials.green)
+	renderer:setMaterial(2, demo.materials.white)
+	renderer:setMaterial(3, demo.materials.red)
 end
 
 
@@ -215,11 +214,8 @@ function createQuad()
 	local mesh = resourceManager:getOrCreateMesh()
 	mesh:rebuildAsQuad()
 
-	local model = resourceManager:getOrCreateModel()
-	model:addMesh(mesh)
-
 	local node = scene:createNode()
-	node:addComponent("ModelRenderer"):setModel(model)
+	node:addComponent("MeshRenderer"):setMesh(mesh)
 
 	return node
 end
@@ -254,10 +250,11 @@ function init()
 	initEffects()
 	initMaterials()
 	initRenderTargets()
-	initModels()
+	-- initModels()
 	initCameras()
-	initObjects()
+	-- initObjects()
 	initSkybox()
+	print("Initialized")
 end
 
 

@@ -3,9 +3,9 @@ return
 	vsBasic = [[
 		#version 330 core
 
-		layout (location = 0) in vec4 position;
-		layout (location = 1) in vec3 normal;
-		layout (location = 2) in vec2 uv;
+		in vec4 position;
+		in vec3 normal;
+		in vec2 uv;
 
 		uniform mat4 worldViewProjMatrix;
 		out vec2 uv0;
@@ -69,9 +69,9 @@ return
 	vsBasicLighting = [[
 		#version 330 core
 
-		layout (location = 0) in vec4 position;
-		layout (location = 1) in vec3 normal;
-		layout (location = 2) in vec2 uv;
+		in vec4 position;
+		in vec3 normal;
+		in vec2 uv;
 
 		uniform mat4 worldViewProjMatrix;
 		uniform mat4 normalMatrix;
@@ -105,8 +105,8 @@ return
 	vsPassThrough = [[
 		#version 330 core
 
-		layout (location = 0) in vec4 position;
-		layout (location = 2) in vec2 uv;
+		in vec4 position;
+		in vec2 uv;
 
 		out vec2 uv0;
 		out vec3 n;

@@ -6,6 +6,7 @@
 #include "SoloResourceManager.h"
 #include "SoloRenderContext.h"
 #include "SoloCubeTexture.h"
+#include "SoloMeshEffectBinding.h"
 
 using namespace solo;
 
@@ -20,8 +21,11 @@ SkyboxRenderer::SkyboxRenderer(Node node):
     ComponentBase(node)
 {
     renderQueue = KnownRenderQueues::Skyboxes;
+
     auto resourceManager = node.getScene()->getDevice()->getResourceManager();
+
     quadMesh = resourceManager->findMesh(KnownUris::UnitQuadMesh);
+
     auto effect = resourceManager->findEffect(KnownUris::SkyboxEffect);
     material = resourceManager->getOrCreateMaterial(effect); // TODO use a known uri?
     material->getParameter("projMatrix")->bindValue(AutoBinding::ProjectionMatrix);
@@ -29,13 +33,17 @@ SkyboxRenderer::SkyboxRenderer(Node node):
     material->setDepthTestEnabled(true);
     material->setDepthWriteEnabled(false);
     material->setPolygonFace(PolygonFace::CW);
+    
+    binding = MeshEffectBinding::create(node.getScene()->getDevice()->getMode(), quadMesh.get(), material->getEffect());
 }
 
 
 void SkyboxRenderer::render(RenderContext &context)
 {
     material->bind(context);
-    quadMesh->draw();
+    binding->bind();
+    quadMesh->drawIndexedPart(0);
+    binding->unbind();
     material->unbind(context);
 }
 
