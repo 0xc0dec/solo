@@ -47,7 +47,7 @@ OpenGLMeshEffectBinding::OpenGLMeshEffectBinding(Mesh *mesh, Effect *effect)
         case VertexFormatElementSemantics::TexCoord6:
         case VertexFormatElementSemantics::TexCoord7:
         {
-            auto name = "texCoord" + (static_cast<int>(element.semantics) - static_cast<int>(VertexFormatElementSemantics::TexCoord0));
+            auto name = "texCoord" + std::to_string(static_cast<int>(element.semantics) - static_cast<int>(VertexFormatElementSemantics::TexCoord0));
             attr = effect->findVertexAttribute(name);
             break;
         }
