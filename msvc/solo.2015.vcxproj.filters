@@ -256,6 +256,9 @@
     <ClInclude Include="..\src\platform\stub\SoloStubMeshEffectBinding.h">
       <Filter>src\platform\stub</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\platform\scripting\lua\SoloLuaMesh.h">
+      <Filter>src\platform\scripting\lua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloLog.cpp">
@@ -524,6 +527,9 @@
     </ClCompile>
     <ClCompile Include="..\src\platform\stub\SoloStubMesh.cpp">
       <Filter>src\platform\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\scripting\lua\SoloLuaMesh.cpp">
+      <Filter>src\platform\scripting\lua</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

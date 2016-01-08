@@ -82,6 +82,7 @@
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLTexture2D.h" />
     <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h" />
     <ClInclude Include="..\src\platform\scripting\lua\SoloLuaGraphics.h" />
+    <ClInclude Include="..\src\platform\scripting\lua\SoloLuaMesh.h" />
     <ClInclude Include="..\src\platform\scripting\lua\SoloLuaScriptComponent.h" />
     <ClInclude Include="..\src\platform\scripting\lua\SoloLuaScriptManager.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubCamera.h" />
@@ -121,6 +122,7 @@
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLTexture2D.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp" />
     <ClCompile Include="..\src\platform\scripting\lua\SoloLuaGraphics.cpp" />
+    <ClCompile Include="..\src\platform\scripting\lua\SoloLuaMesh.cpp" />
     <ClCompile Include="..\src\platform\scripting\lua\SoloLuaScriptComponent.cpp" />
     <ClCompile Include="..\src\platform\scripting\lua\SoloLuaScriptManager.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubDevice.cpp" />

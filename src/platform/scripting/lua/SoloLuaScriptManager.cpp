@@ -26,6 +26,7 @@
 #include "SoloMaterial.h"
 #include "SoloMaterialParameter.h"
 #include "SoloMesh.h"
+#include "SoloLuaMesh.h"
 #include "SoloIndexedMeshPart.h"
 #include "SoloRenderContext.h"
 #include "SoloMeshRenderer.h"
@@ -383,8 +384,8 @@ void LuaScriptManager::registerApi()
 
     // Mesh
     auto mesh = module.beginClass<Mesh>("Mesh");
-    REGISTER_METHOD(mesh, Mesh, resetVertexData);
-    REGISTER_METHOD(mesh, Mesh, updateVertexData);
+    mesh.addFunction("resetVertexData", &LuaMesh::resetVertexData);
+    mesh.addFunction("updateVertexData", &LuaMesh::updateVertexData);
     REGISTER_METHOD(mesh, Mesh, addIndexedPart);
     REGISTER_METHOD(mesh, Mesh, getPartCount);
     REGISTER_METHOD(mesh, Mesh, getVertexFormat);

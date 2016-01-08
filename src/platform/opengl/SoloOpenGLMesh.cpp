@@ -47,7 +47,7 @@ GLenum OpenGLMesh::convertIndexType(MeshIndexFormat indexFormat)
 }
 
 
-void OpenGLMesh::resetVertexData(const VertexFormat &format, float* data, unsigned elementCount, bool dynamic)
+void OpenGLMesh::resetVertexData(const VertexFormat &format, const float *data, unsigned elementCount, bool dynamic)
 {
     if (!data || !elementCount)
         SL_THROW_FMT(EngineException, "Unable to reset mesh vertex data: empty or no data");
@@ -61,7 +61,7 @@ void OpenGLMesh::resetVertexData(const VertexFormat &format, float* data, unsign
 }
 
 
-void OpenGLMesh::updateVertexData(float* data, unsigned elementCount, unsigned updateFromIndex)
+void OpenGLMesh::updateVertexData(const float *data, unsigned elementCount, unsigned updateFromIndex)
 {
     if (!data || !elementCount)
         SL_THROW_FMT(EngineException, "Unable to update mesh vertex data: empty or no data");

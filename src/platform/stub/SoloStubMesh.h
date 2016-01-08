@@ -11,8 +11,8 @@ namespace solo
     public:
         virtual ~StubMesh() {}
 
-        virtual void resetVertexData(const VertexFormat& format, float* data, unsigned elementCount, bool dynamic) override {}
-        virtual void updateVertexData(float* data, unsigned elementCount, unsigned updateFromIndex) override {}
+        virtual void resetVertexData(const VertexFormat& format, const float* data, unsigned elementCount, bool dynamic) override {}
+        virtual void updateVertexData(const float* data, unsigned elementCount, unsigned updateFromIndex) override {}
 
         virtual IndexedMeshPart* addIndexedPart() override;
 

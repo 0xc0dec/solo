@@ -32,8 +32,8 @@ namespace solo
         SL_NONCOPYABLE(Mesh);
         virtual ~Mesh() {}
 
-        virtual void resetVertexData(const VertexFormat &format, float *data, unsigned elementCount, bool dynamic) = 0;
-        virtual void updateVertexData(float *data, unsigned elementCount, unsigned updateFromIndex) = 0;
+        virtual void resetVertexData(const VertexFormat &format, const float *data, unsigned elementCount, bool dynamic) = 0;
+        virtual void updateVertexData(const float *data, unsigned elementCount, unsigned updateFromIndex) = 0;
 
         virtual IndexedMeshPart *addIndexedPart() = 0;
         virtual size_t getPartCount() const = 0;
