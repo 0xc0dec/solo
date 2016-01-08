@@ -232,9 +232,6 @@
     <ClInclude Include="..\include\SoloVertexFormat.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloSubmesh.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\SoloMeshEffectBinding.h">
       <Filter>src</Filter>
     </ClInclude>

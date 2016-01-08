@@ -44,7 +44,6 @@
     <ClInclude Include="..\include\SoloImageLoader.h" />
     <ClInclude Include="..\include\SoloSkyboxRenderer.h" />
     <ClInclude Include="..\include\SoloSpectator.h" />
-    <ClInclude Include="..\include\SoloSubmesh.h" />
     <ClInclude Include="..\include\SoloTexture.h" />
     <ClInclude Include="..\include\SoloLog.h" />
     <ClInclude Include="..\include\SoloMaterial.h" />
