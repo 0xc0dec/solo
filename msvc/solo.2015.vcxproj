@@ -44,6 +44,7 @@
     <ClInclude Include="..\include\SoloImageLoader.h" />
     <ClInclude Include="..\include\SoloSkyboxRenderer.h" />
     <ClInclude Include="..\include\SoloSpectator.h" />
+    <ClInclude Include="..\include\SoloSurfaceRenderer.h" />
     <ClInclude Include="..\include\SoloTexture.h" />
     <ClInclude Include="..\include\SoloLog.h" />
     <ClInclude Include="..\include\SoloMaterial.h" />
@@ -79,6 +80,7 @@
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLMesh.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLMeshEffectBinding.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderTarget.h" />
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLSurfaceRenderer.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLTexture2D.h" />
     <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h" />
     <ClInclude Include="..\src\platform\scripting\lua\SoloLuaGraphics.h" />
@@ -101,6 +103,7 @@
     <ClInclude Include="..\src\platform\stub\SoloStubModelLoader.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubRenderTarget.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubResourceManager.h" />
+    <ClInclude Include="..\src\platform\stub\SoloStubSurfaceRenderer.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubTexture2D.h" />
     <ClInclude Include="..\src\SoloMeshEffectBinding.h" />
     <ClInclude Include="..\src\SoloModelLoader.h" />
@@ -120,6 +123,7 @@
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLMesh.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLMeshEffectBinding.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderTarget.cpp" />
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLSurfaceRenderer.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLTexture2D.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp" />
     <ClCompile Include="..\src\platform\scripting\lua\SoloLuaGraphics.cpp" />
@@ -139,6 +143,7 @@
     <ClCompile Include="..\src\SoloMeshEffectBinding.cpp" />
     <ClCompile Include="..\src\SoloSkyboxRenderer.cpp" />
     <ClCompile Include="..\src\SoloSpectator.cpp" />
+    <ClCompile Include="..\src\SoloSurfaceRenderer.cpp" />
     <ClCompile Include="..\src\SoloVertexFormat.cpp" />
     <ClCompile Include="..\thirdparty\glew\src\glew.c" />
     <ClCompile Include="..\thirdparty\glew\src\glewinfo.c" />
