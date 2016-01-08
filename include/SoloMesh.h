@@ -39,9 +39,8 @@ namespace solo
         void setPrimitiveType(MeshPrimitiveType type);
         MeshPrimitiveType getPrimitiveType() const;
 
-        void rebuildAsQuad() {} // TODO
-        void rebuildAsBox() {} // TODO
-        // TODO other types of primitives
+        void rebuildAsQuad();
+        void rebuildAsBox() {}
 
     protected:
         Mesh() {}

@@ -14,7 +14,7 @@ namespace solo
     class MeshRenderer: public ComponentBase<MeshRenderer>
     {
     public:
-        static shared<MeshRenderer> create(DeviceMode mode, Node node);
+        static shared<MeshRenderer> create(Node node);
 
         virtual void render(RenderContext &context) override;
 
@@ -27,7 +27,7 @@ namespace solo
         void setMaterial(unsigned index, shared<Material> material);
 
     private:
-        MeshRenderer(DeviceMode mode, Node node);
+        MeshRenderer(Node node);
 
         shared<Mesh> mesh;
         DeviceMode deviceMode;
