@@ -7,6 +7,7 @@
 #include "Resources_Test.h"
 #include "BitFlags_Test.h"
 #include "MeshRenderer_Test.h"
+#include "Mesh_Test.h"
 
 using namespace solo;
 
@@ -52,6 +53,7 @@ void runCppIntegrationTests()
 		FileSystem_Test(device.get()).run();
 		Materials_Test(device.get()).run();
 		RenderTargets_Test(device.get()).run();
+        Mesh_Test(device.get()).run();
 		device->requestShutdown();
 	});
 	device->run();

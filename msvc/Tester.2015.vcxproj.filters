@@ -12,6 +12,7 @@
     <ClInclude Include="..\tests\tester\BitFlags_Test.h" />
     <ClInclude Include="..\tests\tester\RenderTargets_Test.h" />
     <ClInclude Include="..\tests\tester\MeshRenderer_Test.h" />
+    <ClInclude Include="..\tests\tester\Mesh_Test.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tests\tester\Main.cpp" />

@@ -2,7 +2,6 @@
 
 #include "TestBase.h"
 
-
 class MeshRenderer_Test : public TestBase
 {
 public:
