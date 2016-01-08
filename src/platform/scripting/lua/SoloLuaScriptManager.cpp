@@ -359,6 +359,11 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(f, Frustum, getPlaneIntersection);
     f.endClass();
 
+    // EffectPrefab
+    auto effectPrefab = module.beginModule("EffectPrefab");
+    REGISTER_MODULE_CONSTANT(effectPrefab, EffectPrefab, Skybox);
+    effectPrefab.endModule();
+
     // EffectVariable
     auto var = module.beginClass<EffectVariable>("EffectVariable");
     REGISTER_METHOD(var, EffectVariable, getName);
@@ -838,6 +843,7 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(mgr, ResourceManager, findRenderTarget);
     REGISTER_METHOD(mgr, ResourceManager, findSurfaceRenderer);
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateEffect, LUA_ARGS(const std::string &, const std::string &, _opt<const std::string &>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrCreatePrefabEffect, LUA_ARGS(EffectPrefab, _opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateTexture2D, LUA_ARGS(_opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateCubeTexture, LUA_ARGS(_opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMaterial, LUA_ARGS(shared<Effect>, _opt<const std::string &>));

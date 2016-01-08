@@ -8,10 +8,16 @@ namespace solo
     class EffectVertexAttribute;
     enum class DeviceMode;
 
+    enum class EffectPrefab
+    {
+        Skybox
+    };
+
     class Effect
     {
     public:
         static shared<Effect> create(DeviceMode mode, const std::string &vsSrc, const std::string &fsSrc);
+        static shared<Effect> createPrefab(DeviceMode mode, EffectPrefab prefab);
 
         SL_NONCOPYABLE(Effect);
         virtual ~Effect() {}

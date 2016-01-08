@@ -116,4 +116,6 @@ runTest(function()
 
 	assert(solo.MeshPrefab.Quad ~= nil)
 	assert(solo.MeshPrefab.Cube ~= nil)
+
+	assert(solo.EffectPrefab.Skybox ~= nil)
 end, "Enums")

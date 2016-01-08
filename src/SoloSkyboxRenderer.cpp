@@ -1,6 +1,7 @@
 #include "SoloSkyboxRenderer.h"
 #include "SoloMesh.h"
 #include "SoloMaterial.h"
+#include "SoloEffect.h"
 #include "SoloMaterialParameter.h"
 #include "SoloDevice.h"
 #include "SoloResourceManager.h"
@@ -26,8 +27,8 @@ SkyboxRenderer::SkyboxRenderer(Node node):
 
     quadMesh = resourceManager->getOrCreatePrefabMesh(MeshPrefab::Quad, "/solo/internal/skybox-renderer/mesh");
 
-    auto effect = resourceManager->findEffect(KnownUris::InternalSkyboxEffect);
-    material = resourceManager->getOrCreateMaterial(effect); // TODO use a known uri?
+    auto effect = resourceManager->getOrCreatePrefabEffect(EffectPrefab::Skybox, "/solo/internal/skybox-renderer/effect");
+    material = resourceManager->getOrCreateMaterial(effect);
     material->getParameter("projMatrix")->bindValue(AutoBinding::ProjectionMatrix);
     material->getParameter("worldViewMatrix")->bindValue(AutoBinding::WorldViewMatrix);
     material->setDepthTestEnabled(true);

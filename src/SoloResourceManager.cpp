@@ -10,7 +10,6 @@
 #include "SoloObjMeshLoader.h"
 #include "SoloSurfaceRenderer.h"
 #include "platform/stub/SoloStubResourceManager.h"
-#include "platform/opengl/SoloOpenGLBuiltInShaders.h"
 #include <functional>
 
 using namespace solo;
@@ -38,26 +37,9 @@ std::string ResourceManager::generateUri()
 }
 
 
-shared<Effect> ResourceManager::tryCreateBuiltInEffect(const std::string &uri)
-{
-    if (uri == KnownUris::InternalSkyboxEffect)
-    {
-        if (device->getMode() == DeviceMode::OpenGL)
-        {
-            return createResource<Effect>(KnownUris::InternalSkyboxEffect, effects, [&]()
-            {
-                return Effect::create(device->getMode(), OpenGLBuiltInShaders::vsSkybox, OpenGLBuiltInShaders::fsSkybox);
-            });
-        }
-    }
-    return nullptr;
-}
-
-
 shared<Effect> ResourceManager::findEffect(const std::string &uri)
 {
-    auto result = findResource(uri, effects);
-    return result ? result : tryCreateBuiltInEffect(uri);
+    return findResource(uri, effects);
 }
 
 
@@ -102,6 +84,14 @@ shared<Effect> ResourceManager::getOrCreateEffect(const std::string &vsSrc, cons
     return getOrCreateResource<Effect>(uri,
         effects, std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
         [&]() { return Effect::create(device->getMode(), vsSrc, fsSrc); });
+}
+
+
+shared<Effect> ResourceManager::getOrCreatePrefabEffect(EffectPrefab prefab, const std::string& uri)
+{
+    return getOrCreateResource<Effect>(uri, effects,
+        std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
+        std::bind(&Effect::createPrefab, device->getMode(), prefab));
 }
 
 

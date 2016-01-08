@@ -1,6 +1,7 @@
 #include "SoloDevice.h"
 #include "platform/stub/SoloStubEffect.h"
 #include "platform/opengl/SoloGLSLEffect.h"
+#include "platform/opengl/SoloOpenGLBuiltInShaders.h"
 
 using namespace solo;
 
@@ -10,6 +11,23 @@ shared<Effect> Effect::create(DeviceMode mode, const std::string &vsSrc, const s
     if (mode == DeviceMode::OpenGL)
         return SL_NEW_SHARED(GLSLEffect, vsSrc, fsSrc);
     return SL_NEW_SHARED(StubEffect);
+}
+
+
+shared<Effect> Effect::createPrefab(DeviceMode mode, EffectPrefab prefab)
+{
+    switch (prefab)
+    {
+    case EffectPrefab::Skybox:
+    {
+        // TODO would be better to remove platform knowledge from here
+        if (mode == DeviceMode::OpenGL)
+            return create(mode, OpenGLBuiltInShaders::vsSkybox, OpenGLBuiltInShaders::fsSkybox);
+        return create(DeviceMode::Stub, "", "");
+    }
+    default:
+        SL_THROW_FMT(EngineException, "Unknown effect prefab");
+    }
 }
 
 

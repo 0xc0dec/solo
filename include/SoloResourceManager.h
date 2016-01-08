@@ -16,11 +16,7 @@ namespace solo
     class VertexFormat;
     class SurfaceRenderer;
     enum class MeshPrefab;
-
-    struct KnownUris
-    {
-        static constexpr char *InternalSkyboxEffect = "solo/internal/effects/skybox";
-    };
+    enum class EffectPrefab;
 
     class ResourceManager
     {
@@ -39,6 +35,7 @@ namespace solo
         shared<SurfaceRenderer> findSurfaceRenderer(const std::string &uri = "");
 
         shared<Effect> getOrCreateEffect(const std::string &vsSrc, const std::string &fsSrc, const std::string &uri = "");
+        shared<Effect> getOrCreatePrefabEffect(EffectPrefab prefab, const std::string &uri = "");
         shared<Texture2D> getOrCreateTexture2D(const std::string &uri = "");
         shared<CubeTexture> getOrCreateCubeTexture(const std::string &uri = "");
         shared<Material> getOrCreateMaterial(shared<Effect> effect, const std::string &uri = "");
@@ -78,8 +75,6 @@ namespace solo
 
         template <typename TResource>
         shared<TResource> findResource(const std::string &uri, const ResourceMap<TResource> &resourceMap);
-
-        shared<Effect> tryCreateBuiltInEffect(const std::string &uri);
 
         Device *device = nullptr;
 
