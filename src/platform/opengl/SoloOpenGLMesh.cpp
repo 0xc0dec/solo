@@ -50,7 +50,7 @@ GLenum OpenGLMesh::convertIndexType(MeshIndexFormat indexFormat)
 void OpenGLMesh::resetVertexData(const VertexFormat &format, float* data, unsigned elementCount, bool dynamic)
 {
     if (!data || !elementCount)
-        SL_THROW_FMT(EngineException, "Unable to reset mesh vertex data: no or empty data");
+        SL_THROW_FMT(EngineException, "Unable to reset mesh vertex data: empty or no data");
 
     glBindBuffer(GL_ARRAY_BUFFER, bufferHandle);
     glBufferData(GL_ARRAY_BUFFER, format.getVertexSize() * elementCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
@@ -63,6 +63,9 @@ void OpenGLMesh::resetVertexData(const VertexFormat &format, float* data, unsign
 
 void OpenGLMesh::updateVertexData(float* data, unsigned elementCount, unsigned updateFromIndex)
 {
+    if (!data || !elementCount)
+        SL_THROW_FMT(EngineException, "Unable to update mesh vertex data: empty or no data");
+
     // This check automatically prevents updating a buffer without any data
     if (updateFromIndex + elementCount > bufferElementCount)
         SL_THROW_FMT(EngineException, "Unable to update mesh vertex data: new data out of bounds");

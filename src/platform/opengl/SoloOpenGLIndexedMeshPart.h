@@ -25,7 +25,6 @@ namespace solo
         OpenGLIndexedMeshPart();
 
         static unsigned getElementSize(MeshIndexFormat indexFormat);
-        static GLenum convertPrimitiveType(MeshPrimitiveType primitiveType);
 
         GLuint bufferHandle = 0;
         MeshIndexFormat indexFormat = MeshIndexFormat::UnsignedShort;
