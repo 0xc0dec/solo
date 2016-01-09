@@ -19,7 +19,7 @@ namespace solo
         virtual IndexedMeshPart *getPart(unsigned index) const override;
 
         virtual void draw() override {}
-        virtual void drawIndexedPart(unsigned part) override {}
+        virtual void drawPart(unsigned part) override {}
 
     private:
         friend class Mesh;

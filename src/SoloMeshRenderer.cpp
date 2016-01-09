@@ -46,7 +46,7 @@ void MeshRenderer::render(RenderContext& context)
             {
                 material->bind(context);
                 bindings[i]->bind();
-                mesh->drawIndexedPart(i);
+                mesh->drawPart(i);
                 bindings[i]->unbind();
                 material->unbind(context);
             }

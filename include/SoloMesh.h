@@ -41,7 +41,7 @@ namespace solo
         virtual IndexedMeshPart *getPart(unsigned index) const = 0;
 
         virtual void draw() = 0;
-        virtual void drawIndexedPart(unsigned part) = 0;
+        virtual void drawPart(unsigned part) = 0;
 
         VertexFormat getVertexFormat() const;
 

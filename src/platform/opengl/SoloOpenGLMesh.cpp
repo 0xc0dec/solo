@@ -96,7 +96,7 @@ void OpenGLMesh::draw()
 }
 
 
-void OpenGLMesh::drawIndexedPart(unsigned partIndex)
+void OpenGLMesh::drawPart(unsigned partIndex)
 {
     auto part = parts[partIndex];
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, part->getBufferHandle());

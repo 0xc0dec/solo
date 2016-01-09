@@ -39,7 +39,7 @@ void OpenGLSurfaceRenderer::renderSurface(RenderTarget* target)
     RenderContext ctx;
     material->bind(ctx);
     binding->bind();
-    mesh->drawIndexedPart(0);
+    mesh->drawPart(0);
     binding->unbind();
     material->unbind(ctx);
 
