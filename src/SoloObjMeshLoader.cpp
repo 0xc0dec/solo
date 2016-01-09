@@ -3,6 +3,7 @@
 #include "SoloFileSystem.h"
 #include "SoloResourceManager.h"
 #include "SoloVector3.h"
+#include "SoloVector2.h"
 
 using namespace solo;
 
@@ -74,12 +75,12 @@ void parseIndexes(const char **from, const char *to, unsigned **result)
 
 shared<Mesh> ObjMeshLoader::load(const std::string &uri)
 {
+    return resourceManager->getOrCreateMesh(VertexFormat()); // TODO
+
     // Yes, no materials support
     // Yes, no support for anything other than triangles
     // Yes, tons of other TODOs... but still what we have is enough for now
 
-    return nullptr; // TODO
-//
 //    std::vector<Vector3> inputVertices, vertices;
 //    std::vector<Vector3> inputNormals, normals;
 //    std::vector<Vector2> inputUvs, uvs;
@@ -114,14 +115,20 @@ shared<Mesh> ObjMeshLoader::load(const std::string &uri)
 //        if (line[0] == 'v')
 //        {
 //            if (line[1] == 'n')
-//                inputNormals.push_back(parseVector3(line.c_str() + 3, line.c_str() + lineSize - 3));
+//            {
+//                auto normal = parseVector3(line.c_str() + 3, line.c_str() + lineSize - 3);
+//                inputNormals.push_back(normal);
+//            }
 //            else if (line[1] == 't')
 //            {
 //                auto uv = parseVector3(line.c_str() + 3, line.c_str() + lineSize - 3);
 //                inputUvs.push_back(Vector2(uv.x, uv.y));
 //            }
 //            else
-//                inputVertices.push_back(parseVector3(line.c_str() + 2, line.c_str() + lineSize - 2));
+//            {
+//                auto vertex = parseVector3(line.c_str() + 2, line.c_str() + lineSize - 2);
+//                inputVertices.push_back(vertex);
+//            }
 //        }
 //        else if (line[0] == 'f')
 //        {

@@ -103,9 +103,6 @@
     <ClInclude Include="..\include\SoloRenderTarget.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloModelLoader.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloScriptManager.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -264,6 +261,9 @@
     </ClInclude>
     <ClInclude Include="..\src\platform\scripting\lua\SoloLuaSurfaceRenderer.h">
       <Filter>src\platform\scripting\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloMeshLoader.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

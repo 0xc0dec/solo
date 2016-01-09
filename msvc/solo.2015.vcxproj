@@ -104,7 +104,7 @@
     <ClInclude Include="..\src\platform\stub\SoloStubSurfaceRenderer.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubTexture2D.h" />
     <ClInclude Include="..\src\SoloMeshEffectBinding.h" />
-    <ClInclude Include="..\src\SoloModelLoader.h" />
+    <ClInclude Include="..\src\SoloMeshLoader.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPngImageLoader.h" />
   </ItemGroup>
