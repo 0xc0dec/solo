@@ -81,33 +81,17 @@ shared<Mesh> ObjMeshLoader::load(const std::string &uri)
     std::vector<Vector3> inputVertices, vertices;
     std::vector<Vector3> inputNormals, normals;
     std::vector<Vector2> inputUvs, uvs;
-    std::vector<uint16_t> indices;
+    std::vector<uint16_t> currentPartIndices;
     std::unordered_map<std::string, uint16_t> uniqueIndices;
-    auto mesh = resourceManager->getOrCreateMesh(VertexFormat({
-        VertexFormatElement(VertexFormatElementSemantics::Position, 3, 0),
-        VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2, 1),
-        VertexFormatElement(VertexFormatElementSemantics::Normal, 3, 2)
-    }));
+    std::vector<std::vector<uint16_t>> partIndices;
 
-    auto finishPart = [&](const std::string & partName)
+    auto finishPart = [&]()
     {
-        auto meshUri = uri + "/" + (!partName.empty() ? std::to_string(mesh->getPartCount()) : partName);
-        auto hasUVs = !uvs.empty();
-        auto hasNormals = !normals.empty();
-
-        mesh->resetStorage(0, reinterpret_cast<const float*>(vertices.data()), vertices.size(), false);
-        if (hasUVs)
-            mesh->resetStorage(1, reinterpret_cast<const float*>(uvs.data()), uvs.size(), false);
-        if (hasNormals)
-            mesh->resetStorage(2, reinterpret_cast<const float*>(normals.data()), normals.size(), false);
-        auto part = mesh->addPart(MeshIndexFormat::UnsignedShort);
-        part->resetIndexData(reinterpret_cast<const void*>(indices.data()), indices.size(), false);
-        part->setPrimitiveType(MeshPrimitiveType::Triangles);
-        indices.clear();
+        partIndices.push_back(std::move(currentPartIndices));
+        currentPartIndices = std::vector<uint16_t>();
         uniqueIndices.clear();
     };
 
-    std::string partName;
     fs->iterateLines(uri, [&](const std::string & line)
     {
         auto lineSize = line.size();
@@ -145,7 +129,7 @@ shared<Mesh> ObjMeshLoader::load(const std::string &uri)
                 auto it = uniqueIndices.find(three);
                 if (it != uniqueIndices.end())
                 {
-                    indices.push_back(it->second);
+                    currentPartIndices.push_back(it->second);
                     from += three.size() + 1;
                 }
                 else
@@ -158,21 +142,41 @@ shared<Mesh> ObjMeshLoader::load(const std::string &uri)
                         normals.push_back(inputNormals[nIdx - 1]);
                     auto newIndex = static_cast<uint16_t>(vertices.size() - 1);
                     uniqueIndices[three] = newIndex;
-                    indices.push_back(newIndex);
+                    currentPartIndices.push_back(newIndex);
                 }
             }
         }
         else if (line[0] == 'o')
         {
-            if (!vertices.empty())
-                finishPart(partName);
-            partName.assign(line.substr(2));
+            if (!currentPartIndices.empty())
+                finishPart();
         }
         return true;
     });
 
-    if (!vertices.empty())
-        finishPart(partName);
+    if (!currentPartIndices.empty())
+        finishPart();
+
+    auto hasUVs = !uvs.empty();
+    auto hasNormals = !normals.empty();
+    std::vector<VertexFormatElement> vertexFormatElements{ VertexFormatElement(VertexFormatElementSemantics::Position, 3, 0) };
+    if (hasUVs)
+        vertexFormatElements.push_back(VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2, 1));
+    if (hasNormals)
+        vertexFormatElements.push_back(VertexFormatElement(VertexFormatElementSemantics::Normal, 3, 2));
+    auto mesh = resourceManager->getOrCreateMesh(VertexFormat(vertexFormatElements), uri);
+    mesh->resetStorage(0, reinterpret_cast<const float*>(vertices.data()), vertices.size(), false);
+    if (hasUVs)
+        mesh->resetStorage(1, reinterpret_cast<const float*>(uvs.data()), uvs.size(), false);
+    if (hasNormals)
+        mesh->resetStorage(2, reinterpret_cast<const float*>(normals.data()), normals.size(), false);
+
+    for (const auto& indices: partIndices)
+    {
+        auto part = mesh->addPart(MeshIndexFormat::UnsignedShort);
+        part->setPrimitiveType(MeshPrimitiveType::Triangles);
+        part->resetIndexData(reinterpret_cast<const void*>(indices.data()), indices.size(), false);
+    }
 
     return mesh;
 }
