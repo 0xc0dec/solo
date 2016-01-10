@@ -51,7 +51,7 @@ void GLSLEffectVariable::setMatrix(const Matrix &value)
 
 void GLSLEffectVariable::setMatrixArray(const std::vector<Matrix> &value)
 {
-    glUniformMatrix4fv(location, static_cast<GLsizei>(value.size()), GL_FALSE, reinterpret_cast<const GLfloat *>(value.data())); // TODO tests this
+    glUniformMatrix4fv(location, static_cast<GLsizei>(value.size()), GL_FALSE, reinterpret_cast<const GLfloat *>(value.data())); // TODO test this
 }
 
 
