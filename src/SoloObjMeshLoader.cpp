@@ -165,17 +165,17 @@ shared<Mesh> ObjMeshLoader::load(const std::string &uri)
     if (hasNormals)
         vertexFormatElements.push_back(VertexFormatElement(VertexFormatElementSemantics::Normal, 3, 2));
     auto mesh = resourceManager->getOrCreateMesh(VertexFormat(vertexFormatElements), uri);
-    mesh->resetStorage(0, reinterpret_cast<const float*>(vertices.data()), vertices.size(), false);
+    mesh->resetStorage(0, reinterpret_cast<const float *>(vertices.data()), vertices.size(), false);
     if (hasUVs)
-        mesh->resetStorage(1, reinterpret_cast<const float*>(uvs.data()), uvs.size(), false);
+        mesh->resetStorage(1, reinterpret_cast<const float *>(uvs.data()), uvs.size(), false);
     if (hasNormals)
-        mesh->resetStorage(2, reinterpret_cast<const float*>(normals.data()), normals.size(), false);
+        mesh->resetStorage(2, reinterpret_cast<const float *>(normals.data()), normals.size(), false);
 
-    for (const auto& indices: partIndices)
+    for (const auto &indices : partIndices)
     {
         auto part = mesh->addPart(MeshIndexFormat::UnsignedShort);
         part->setPrimitiveType(MeshPrimitiveType::Triangles);
-        part->resetIndexData(reinterpret_cast<const void*>(indices.data()), indices.size(), false);
+        part->resetIndexData(reinterpret_cast<const void *>(indices.data()), indices.size(), false);
     }
 
     return mesh;

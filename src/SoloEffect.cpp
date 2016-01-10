@@ -19,12 +19,12 @@ shared<Effect> Effect::createPrefab(DeviceMode mode, EffectPrefab prefab)
     switch (prefab)
     {
     case EffectPrefab::Skybox:
-    {
-        // TODO would be better to remove platform knowledge from here
-        if (mode == DeviceMode::OpenGL)
-            return create(mode, OpenGLBuiltInShaders::vsSkybox, OpenGLBuiltInShaders::fsSkybox);
-        return create(DeviceMode::Stub, "", "");
-    }
+        {
+            // TODO would be better to remove platform knowledge from here
+            if (mode == DeviceMode::OpenGL)
+                return create(mode, OpenGLBuiltInShaders::vsSkybox, OpenGLBuiltInShaders::fsSkybox);
+            return create(DeviceMode::Stub, "", "");
+        }
     default:
         SL_THROW_FMT(EngineException, "Unknown effect prefab");
     }

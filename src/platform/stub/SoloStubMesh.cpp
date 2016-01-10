@@ -4,7 +4,7 @@
 using namespace solo;
 
 
-IndexedMeshPart* StubMesh::addPart(MeshIndexFormat indexFormat)
+IndexedMeshPart *StubMesh::addPart(MeshIndexFormat indexFormat)
 {
     auto part = SL_NEW_SHARED(StubIndexedMeshPart, indexFormat);
     parts.push_back(part);
@@ -12,7 +12,7 @@ IndexedMeshPart* StubMesh::addPart(MeshIndexFormat indexFormat)
 }
 
 
-IndexedMeshPart* StubMesh::getPart(unsigned index) const
+IndexedMeshPart *StubMesh::getPart(unsigned index) const
 {
     return parts[index].get();
 }

@@ -66,12 +66,12 @@ namespace solo
 
         template <typename TResource>
         shared<TResource> getOrCreateResource(const std::string &uri, ResourceMap<TResource> &resourceMap,
-            std::function<shared<TResource>(const std::basic_string<char>&)> find,
-            std::function<shared<TResource>()> create);
+                                              std::function<shared<TResource>(const std::basic_string<char>&)> find,
+                                              std::function<shared<TResource>()> create);
 
         template <typename TResource>
         shared<TResource> createResource(const std::string &uri, ResourceMap<TResource> &resourceMap,
-            std::function<shared<TResource>()> create);
+                                         std::function<shared<TResource>()> create);
 
         template <typename TResource>
         shared<TResource> findResource(const std::string &uri, const ResourceMap<TResource> &resourceMap);

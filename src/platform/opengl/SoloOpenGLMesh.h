@@ -17,10 +17,10 @@ namespace solo
 
         virtual void resetStorage(unsigned storageId, const float *data, unsigned elementCount, bool dynamic) override;
         virtual void updateStorage(unsigned storageId, const float *data, unsigned elementCount, unsigned updateFromIndex) override;
-        
+
         virtual IndexedMeshPart *addPart(MeshIndexFormat indexFormat) override;
         virtual size_t getPartCount() const override;
-        virtual IndexedMeshPart* getPart(unsigned index) const override;
+        virtual IndexedMeshPart *getPart(unsigned index) const override;
 
         virtual void draw() override;
         virtual void drawPart(unsigned part) override;

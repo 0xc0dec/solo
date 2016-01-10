@@ -8,7 +8,7 @@ using namespace solo;
 
 static void rebuildMesh(Mesh *mesh, float *data, unsigned elementCount, unsigned short *indexData, unsigned indexElementCount)
 {
-    
+
 }
 
 
@@ -24,8 +24,10 @@ shared<Mesh> Mesh::createPrefab(DeviceMode mode, MeshPrefab prefab)
 {
     switch (prefab)
     {
-    case MeshPrefab::Quad: return createQuadMesh(mode);
-    case MeshPrefab::Cube: return createBoxMesh(mode);
+    case MeshPrefab::Quad:
+        return createQuadMesh(mode);
+    case MeshPrefab::Cube:
+        return createBoxMesh(mode);
     default:
         SL_THROW_FMT(EngineException, "Unknown mesh prefab");
     }
@@ -34,14 +36,16 @@ shared<Mesh> Mesh::createPrefab(DeviceMode mode, MeshPrefab prefab)
 
 shared<Mesh> Mesh::createQuadMesh(DeviceMode mode)
 {
-    float data[] = {
+    float data[] =
+    {
         -1, -1, 0,  0, 0, -1,   0, 0,
         -1, 1, 0,   0, 0, -1,   0, 1,
         1, 1, 0,    0, 0, -1,   1, 1,
         1, -1, 0,   0, 0, -1,   1, 0
     };
     unsigned short indices[] = { 0, 1, 2, 0, 2, 3 };
-    VertexFormat vf({
+    VertexFormat vf(
+    {
         VertexFormatElement(VertexFormatElementSemantics::Position, 3, 0),
         VertexFormatElement(VertexFormatElementSemantics::Normal, 3, 0),
         VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2, 0)
@@ -62,16 +66,18 @@ shared<Mesh> Mesh::createQuadMesh(DeviceMode mode)
 
 shared<Mesh> Mesh::createBoxMesh(DeviceMode mode)
 {
-    float vertexData[] = {
-        -1, -1, 1,      -1, 1, 1,       1, 1, 1,        1, -1, 1,   
-        -1, -1, -1,     -1, 1, -1,      -1, 1, 1,       -1, -1, 1,  
-        1, -1, -1,      1, 1, -1,       -1, 1, -1,      -1, -1, -1, 
-        1, -1, 1,       1, 1, 1,        1, 1, -1,       1, -1, -1,  
-        -1, 1, 1,       -1, 1, -1,      1, 1, -1,       1, 1, 1,    
+    float vertexData[] =
+    {
+        -1, -1, 1,      -1, 1, 1,       1, 1, 1,        1, -1, 1,
+        -1, -1, -1,     -1, 1, -1,      -1, 1, 1,       -1, -1, 1,
+        1, -1, -1,      1, 1, -1,       -1, 1, -1,      -1, -1, -1,
+        1, -1, 1,       1, 1, 1,        1, 1, -1,       1, -1, -1,
+        -1, 1, 1,       -1, 1, -1,      1, 1, -1,       1, 1, 1,
 
-        -1, -1, -1,     -1, -1, 1,      1, -1, 1,       1, -1, -1, 
+        -1, -1, -1,     -1, -1, 1,      1, -1, 1,       1, -1, -1,
     };
-    float texCoordData[] = {
+    float texCoordData[] =
+    {
         0, 0,   0, 1,   1, 1,   1, 0,
         0, 0,   0, 1,   1, 1,   1, 0,
         0, 0,   0, 1,   1, 1,   1, 0,
@@ -79,7 +85,8 @@ shared<Mesh> Mesh::createBoxMesh(DeviceMode mode)
         0, 0,   0, 1,   1, 1,   1, 0,
         0, 0,   0, 1,   1, 1,   1, 0
     };
-    unsigned short indices[] = {
+    unsigned short indices[] =
+    {
         0, 1, 2,
         0, 2, 3,
         4, 5, 6,
@@ -93,7 +100,8 @@ shared<Mesh> Mesh::createBoxMesh(DeviceMode mode)
         20, 21, 22,
         20, 22, 23
     };
-    VertexFormat vf({
+    VertexFormat vf(
+    {
         VertexFormatElement(VertexFormatElementSemantics::Position, 3, 0),
         VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2, 1)
     });

@@ -22,7 +22,7 @@ MeshRenderer::MeshRenderer(Node node):
 }
 
 
-void MeshRenderer::render(RenderContext& context)
+void MeshRenderer::render(RenderContext &context)
 {
     auto partCount = mesh->getPartCount();
     if (partCount == 0)

@@ -24,9 +24,12 @@ unsigned OpenGLIndexedMeshPart::getElementSize(MeshIndexFormat indexFormat)
 {
     switch (indexFormat)
     {
-    case MeshIndexFormat::UnsignedByte: return 1;
-    case MeshIndexFormat::UnsignedShort: return 2;
-    case MeshIndexFormat::UnsignedInt: return 4;
+    case MeshIndexFormat::UnsignedByte:
+        return 1;
+    case MeshIndexFormat::UnsignedShort:
+        return 2;
+    case MeshIndexFormat::UnsignedInt:
+        return 4;
     default:
         SL_THROW_FMT(EngineException, "Unrecognized index format");
     }

@@ -12,7 +12,7 @@ OpenGLMeshEffectBinding::OpenGLMeshEffectBinding(Mesh *mesh, Effect *effect)
     if (!vertexArrayHandle)
         SL_THROW_FMT(EngineException, "Unable to obtain vertex array handle");
 
-    auto oglMesh = static_cast<OpenGLMesh*>(mesh);
+    auto oglMesh = static_cast<OpenGLMesh *>(mesh);
     glBindVertexArray(vertexArrayHandle);
 
     auto vertexFormat = mesh->getVertexFormat();
@@ -46,11 +46,11 @@ OpenGLMeshEffectBinding::OpenGLMeshEffectBinding(Mesh *mesh, Effect *effect)
         case VertexFormatElementSemantics::TexCoord5:
         case VertexFormatElementSemantics::TexCoord6:
         case VertexFormatElementSemantics::TexCoord7:
-        {
-            auto name = "texCoord" + std::to_string(static_cast<int>(element.semantics) - static_cast<int>(VertexFormatElementSemantics::TexCoord0));
-            attr = effect->findVertexAttribute(name);
-            break;
-        }
+            {
+                auto name = "texCoord" + std::to_string(static_cast<int>(element.semantics) - static_cast<int>(VertexFormatElementSemantics::TexCoord0));
+                attr = effect->findVertexAttribute(name);
+                break;
+            }
         default:
             break;
         }
@@ -60,9 +60,9 @@ OpenGLMeshEffectBinding::OpenGLMeshEffectBinding(Mesh *mesh, Effect *effect)
         if (attr)
         {
             glBindBuffer(GL_ARRAY_BUFFER, oglMesh->getBufferHandle(element.storageId));
-            auto glslAttr = static_cast<GLSLEffectVertexAttribute*>(attr);
+            auto glslAttr = static_cast<GLSLEffectVertexAttribute *>(attr);
             auto stride = static_cast<GLsizei>(vertexFormat.getVertexSize(element.storageId));
-            glVertexAttribPointer(glslAttr->getLocation(), element.size, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
+            glVertexAttribPointer(glslAttr->getLocation(), element.size, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void *>(offset));
             glEnableVertexAttribArray(glslAttr->getLocation());
         }
 

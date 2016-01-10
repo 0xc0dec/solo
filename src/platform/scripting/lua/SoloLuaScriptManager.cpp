@@ -456,7 +456,7 @@ void LuaScriptManager::registerApi()
 
     // VertexFormat
     auto vertexFormat = module.beginClass<VertexFormat>("VertexFormat");
-    vertexFormat.addConstructor(LUA_ARGS(const std::vector<VertexFormatElement>&));
+    vertexFormat.addConstructor(LUA_ARGS(const std::vector<VertexFormatElement> &));
     REGISTER_METHOD(vertexFormat, VertexFormat, getVertexSize);
     REGISTER_METHOD(vertexFormat, VertexFormat, getElement);
     REGISTER_METHOD(vertexFormat, VertexFormat, getElementCount);
@@ -848,7 +848,7 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateTexture2D, LUA_ARGS(_opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateCubeTexture, LUA_ARGS(_opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMaterial, LUA_ARGS(shared<Effect>, _opt<const std::string &>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMesh, LUA_ARGS(const VertexFormat&, _opt<const std::string &>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMesh, LUA_ARGS(const VertexFormat &, _opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreatePrefabMesh, LUA_ARGS(MeshPrefab, _opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateRenderTarget, LUA_ARGS(_opt<const std::string &>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateSurfaceRenderer, LUA_ARGS(shared<Material>, _opt<const std::string &>));

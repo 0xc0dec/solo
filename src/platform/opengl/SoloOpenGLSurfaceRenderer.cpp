@@ -21,7 +21,7 @@ OpenGLSurfaceRenderer::OpenGLSurfaceRenderer(Device *device, shared<Material> ma
 }
 
 
-void OpenGLSurfaceRenderer::renderSurface(RenderTarget* target)
+void OpenGLSurfaceRenderer::renderSurface(RenderTarget *target)
 {
     auto depthTestEnabled = material->isDepthTestEnabled();
     material->setDepthTestEnabled(false);

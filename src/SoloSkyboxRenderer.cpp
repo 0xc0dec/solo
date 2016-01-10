@@ -34,7 +34,7 @@ SkyboxRenderer::SkyboxRenderer(Node node):
     material->setDepthTestEnabled(true);
     material->setDepthWriteEnabled(false);
     material->setPolygonFace(PolygonFace::CW);
-    
+
     binding = MeshEffectBinding::create(node.getScene()->getDevice()->getMode(), quadMesh.get(), material->getEffect());
 }
 

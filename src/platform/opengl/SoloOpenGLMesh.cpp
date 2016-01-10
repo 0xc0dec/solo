@@ -39,11 +39,16 @@ GLenum OpenGLMesh::convertPrimitiveType(MeshPrimitiveType primitiveType)
 {
     switch (primitiveType)
     {
-    case MeshPrimitiveType::Triangles: return GL_TRIANGLES;
-    case MeshPrimitiveType::TriangleStrip: return GL_TRIANGLE_STRIP;
-    case MeshPrimitiveType::Lines: return GL_LINES;
-    case MeshPrimitiveType::LineStrip: return GL_LINE_STRIP;
-    case MeshPrimitiveType::Points: return GL_POINTS;
+    case MeshPrimitiveType::Triangles:
+        return GL_TRIANGLES;
+    case MeshPrimitiveType::TriangleStrip:
+        return GL_TRIANGLE_STRIP;
+    case MeshPrimitiveType::Lines:
+        return GL_LINES;
+    case MeshPrimitiveType::LineStrip:
+        return GL_LINE_STRIP;
+    case MeshPrimitiveType::Points:
+        return GL_POINTS;
     default:
         SL_THROW_FMT(EngineException, "Unknown primitive type");
     }
@@ -54,9 +59,12 @@ GLenum OpenGLMesh::convertIndexType(MeshIndexFormat indexFormat)
 {
     switch (indexFormat)
     {
-    case MeshIndexFormat::UnsignedByte: return GL_UNSIGNED_BYTE;
-    case MeshIndexFormat::UnsignedShort: return GL_UNSIGNED_SHORT;
-    case MeshIndexFormat::UnsignedInt: return GL_UNSIGNED_INT;
+    case MeshIndexFormat::UnsignedByte:
+        return GL_UNSIGNED_BYTE;
+    case MeshIndexFormat::UnsignedShort:
+        return GL_UNSIGNED_SHORT;
+    case MeshIndexFormat::UnsignedInt:
+        return GL_UNSIGNED_INT;
     default:
         SL_THROW_FMT(EngineException, "Unknown index type");
     }
@@ -94,7 +102,7 @@ void OpenGLMesh::updateStorage(unsigned storageId, const float *data, unsigned e
 }
 
 
-IndexedMeshPart* OpenGLMesh::addPart(MeshIndexFormat indexFormat)
+IndexedMeshPart *OpenGLMesh::addPart(MeshIndexFormat indexFormat)
 {
     auto part = SL_NEW_SHARED(OpenGLIndexedMeshPart, indexFormat);
     parts.push_back(part);

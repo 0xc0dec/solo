@@ -9,6 +9,6 @@ void LuaSurfaceRenderer::renderSurface(SurfaceRenderer *renderer, LuaIntf::LuaRe
     // This shit below allows for passing nulls from Lua
     RenderTarget *rt = nullptr;
     if (target.isValid() && target.toPtr()) // some checks figured out empirically
-        rt = target.toValue<RenderTarget*>();
+        rt = target.toValue<RenderTarget *>();
     renderer->renderSurface(rt);
 }

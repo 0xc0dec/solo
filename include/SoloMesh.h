@@ -23,7 +23,7 @@ namespace solo
         Quad,
         Cube
     };
-    
+
     class Mesh
     {
     public:
