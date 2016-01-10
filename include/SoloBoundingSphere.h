@@ -2,6 +2,7 @@
 
 #include "SoloVector3.h"
 #include "SoloPlane.h"
+#include "SoloMath.h"
 
 namespace solo
 {
@@ -11,10 +12,10 @@ namespace solo
         Vector3 center;
         float radius = 0;
 
+        static const BoundingSphere &empty();
+
         BoundingSphere() {}
         BoundingSphere(const Vector3 &center, float radius);
-
-        static const BoundingSphere &empty();
 
         bool intersectsBoundingSphere(const BoundingSphere &sphere) const;
         bool intersectsBoundingBox(const BoundingBox &box) const;
@@ -35,7 +36,7 @@ namespace solo
 
     inline bool BoundingSphere::isEmpty() const
     {
-        return radius == 0.0f;
+        return Math::approxZero(radius);
     }
 
     inline BoundingSphere &BoundingSphere::operator*=(const Matrix &matrix)
