@@ -8,12 +8,7 @@ using namespace solo;
 
 static void rebuildMesh(Mesh *mesh, float *data, unsigned elementCount, unsigned short *indexData, unsigned indexElementCount)
 {
-    mesh->resetStorage(0, data, elementCount, false);
-    mesh->setPrimitiveType(MeshPrimitiveType::Triangles);
-
-    auto part = mesh->getPartCount() > 0 ? mesh->getPart(0) : mesh->addPart(MeshIndexFormat::UnsignedShort);
-    part->resetIndexData(indexData, indexElementCount, false);
-    part->setPrimitiveType(MeshPrimitiveType::Triangles);
+    
 }
 
 
@@ -39,11 +34,6 @@ shared<Mesh> Mesh::createPrefab(DeviceMode mode, MeshPrefab prefab)
 
 shared<Mesh> Mesh::createQuadMesh(DeviceMode mode)
 {
-    VertexFormat vf({
-        VertexFormatElement(VertexFormatElementSemantics::Position, 3, 0),
-        VertexFormatElement(VertexFormatElementSemantics::Normal, 3, 0),
-        VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2, 0)
-    });
     float data[] = {
         -1, -1, 0,  0, 0, -1,   0, 0,
         -1, 1, 0,   0, 0, -1,   0, 1,
@@ -51,50 +41,43 @@ shared<Mesh> Mesh::createQuadMesh(DeviceMode mode)
         1, -1, 0,   0, 0, -1,   1, 0
     };
     unsigned short indices[] = { 0, 1, 2, 0, 2, 3 };
+    VertexFormat vf({
+        VertexFormatElement(VertexFormatElementSemantics::Position, 3, 0),
+        VertexFormatElement(VertexFormatElementSemantics::Normal, 3, 0),
+        VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2, 0)
+    });
 
-    auto quad = create(mode, vf);
-    rebuildMesh(quad.get(), data, 4, indices, 6);
-    return quad;
+    auto mesh = create(mode, vf);
+
+    mesh->resetStorage(0, data, 4, false);
+    mesh->setPrimitiveType(MeshPrimitiveType::Triangles);
+
+    auto part = mesh->getPartCount() > 0 ? mesh->getPart(0) : mesh->addPart(MeshIndexFormat::UnsignedShort);
+    part->resetIndexData(indices, 6, false);
+    part->setPrimitiveType(MeshPrimitiveType::Triangles);
+
+    return mesh;
 }
 
 
 shared<Mesh> Mesh::createBoxMesh(DeviceMode mode)
 {
-    VertexFormat vf({
-        VertexFormatElement(VertexFormatElementSemantics::Position, 3, 0),
-        VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2, 0)
-    });
-    float data[] = {
-        -1, -1, 1,  0, 0,
-        -1, 1, 1,   0, 1,
-        1, 1, 1,    1, 1,
-        1, -1, 1,   1, 0,
+    float vertexData[] = {
+        -1, -1, 1,      -1, 1, 1,       1, 1, 1,        1, -1, 1,   
+        -1, -1, -1,     -1, 1, -1,      -1, 1, 1,       -1, -1, 1,  
+        1, -1, -1,      1, 1, -1,       -1, 1, -1,      -1, -1, -1, 
+        1, -1, 1,       1, 1, 1,        1, 1, -1,       1, -1, -1,  
+        -1, 1, 1,       -1, 1, -1,      1, 1, -1,       1, 1, 1,    
 
-        -1, -1, -1, 0, 0,
-        -1, 1, -1,  0, 1,
-        -1, 1, 1,   1, 1,
-        -1, -1, 1,  1, 0,
-
-        1, -1, -1,  0, 0,
-        1, 1, -1,   0, 1,
-        -1, 1, -1,  1, 1,
-        -1, -1, -1, 1, 0,
-
-        1, -1, 1,   0, 0,
-        1, 1, 1,    0, 1,
-        1, 1, -1,   1, 1,
-        1, -1, -1,  1, 0,
-
-        -1, 1, 1,   0, 0,
-        -1, 1, -1,  0, 1,
-        1, 1, -1,   1, 1,
-        1, 1, 1,    1, 0,
-
-        -1, -1, -1, 0, 0,
-        -1, -1, 1,  0, 1,
-        1, -1, 1,   1, 1,
-        1, -1, -1,  1, 0
-
+        -1, -1, -1,     -1, -1, 1,      1, -1, 1,       1, -1, -1, 
+    };
+    float texCoordData[] = {
+        0, 0,   0, 1,   1, 1,   1, 0,
+        0, 0,   0, 1,   1, 1,   1, 0,
+        0, 0,   0, 1,   1, 1,   1, 0,
+        0, 0,   0, 1,   1, 1,   1, 0,
+        0, 0,   0, 1,   1, 1,   1, 0,
+        0, 0,   0, 1,   1, 1,   1, 0
     };
     unsigned short indices[] = {
         0, 1, 2,
@@ -110,8 +93,20 @@ shared<Mesh> Mesh::createBoxMesh(DeviceMode mode)
         20, 21, 22,
         20, 22, 23
     };
+    VertexFormat vf({
+        VertexFormatElement(VertexFormatElementSemantics::Position, 3, 0),
+        VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2, 1)
+    });
 
-    auto box = create(mode, vf);
-    rebuildMesh(box.get(), data, 24, indices, 36);
-    return box;
+    auto mesh = create(mode, vf);
+
+    mesh->resetStorage(0, vertexData, 24, false);
+    mesh->resetStorage(1, texCoordData, 24, false);
+    mesh->setPrimitiveType(MeshPrimitiveType::Triangles);
+
+    auto part = mesh->getPartCount() > 0 ? mesh->getPart(0) : mesh->addPart(MeshIndexFormat::UnsignedShort);
+    part->resetIndexData(indices, 36, false);
+    part->setPrimitiveType(MeshPrimitiveType::Triangles);
+
+    return mesh;
 }
