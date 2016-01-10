@@ -284,6 +284,8 @@ void ResourceManager::cleanUnusedResources(ResourceMap<TResource> &resources)
 void ResourceManager::cleanUnusedResources()
 {
     // Clean in order of reference hierarchy
+    cleanUnusedResources(surfaceRenderers);
+    cleanUnusedResources(renderTargets);
     cleanUnusedResources(materials);
     cleanUnusedResources(effects);
     cleanUnusedResources(meshes);
