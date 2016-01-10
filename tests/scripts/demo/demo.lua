@@ -106,11 +106,11 @@ function initMaterials()
 end
 
 
-function initModels()
-	demo.models =
+function initMeshes()
+	demo.meshes =
 	{
-		axes = resourceManager:getOrLoadModel("../data/axes.obj"),
-		monkey = resourceManager:getOrLoadModel("../data/monkey_hires.obj")
+		axes = resourceManager:getOrLoadMesh("../data/axes.obj"),
+		monkey = resourceManager:getOrLoadMesh("../data/monkey_hires.obj")
 	}
 end
 
@@ -154,7 +154,7 @@ function initObjects()
 	parent = scene:createNode()
 	parent:findComponent("Transform"):setLocalPosition(solo.Vector3(5, 0, 0))
 	parent:addScript(createWorldYRotator())
-	-- initAxesModel(parent)
+	initAxesMesh(parent)
 	quad = createPrefabMeshNode("quad")
 	quad:addScript(createLocalXRotator());
 	quad:findComponent("Transform"):setParent(parent:findComponent("Transform"))
@@ -169,9 +169,9 @@ function initObjects()
 
 	-- Monkey
 	local node = scene:createNode()
-	-- local renderer = node:addComponent("MeshRenderer")
-	-- renderer:setModel(demo.models.monkey)
-	-- renderer:setMaterial(demo.materials.textureWithLighting)
+	local renderer = node:addComponent("MeshRenderer")
+	renderer:setMesh(demo.meshes.monkey)
+	renderer:setMaterial(0, demo.materials.textureWithLighting)
 	node:findComponent("Transform"):setLocalPosition(solo.Vector3.zero())
 	node:addScript(createLocalXRotator())
 
@@ -179,7 +179,7 @@ function initObjects()
 	local parent = scene:createNode()
 	parent:findComponent("Transform"):setLocalPosition(solo.Vector3(-2, 2, -2))
 	parent:addScript(createWorldYRotator())
-	-- initAxesModel(parent)
+	initAxesMesh(parent)
 
 	local quad = createPrefabMeshNode("quad")
 	local renderer = quad:findComponent("MeshRenderer")
@@ -193,9 +193,9 @@ function initObjects()
 end
 
 
-function initAxesModel(node)
+function initAxesMesh(node)
 	local renderer = node:addComponent("MeshRenderer")
-	renderer:setModel(demo.models.axes)
+	renderer:setMesh(demo.meshes.axes)
 	renderer:setMaterial(0, demo.materials.blue)
 	renderer:setMaterial(1, demo.materials.green)
 	renderer:setMaterial(2, demo.materials.white)
@@ -247,7 +247,7 @@ function init()
 	initEffects()
 	initMaterials()
 	initRenderTargets()
-	-- initModels()
+	initMeshes()
 	initCameras()
 	initObjects()
 	initSkybox()
