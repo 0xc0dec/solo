@@ -448,9 +448,10 @@ void LuaScriptManager::registerApi()
 
     // VertexFormatElement
     auto vertexFormatElement = module.beginClass<VertexFormatElement>("VertexFormatElement");
-    vertexFormatElement.addConstructor(LUA_ARGS(VertexFormatElementSemantics, unsigned));
+    vertexFormatElement.addConstructor(LUA_ARGS(VertexFormatElementSemantics, unsigned, unsigned));
     REGISTER_VARIABLE(vertexFormatElement, VertexFormatElement, size);
     REGISTER_VARIABLE(vertexFormatElement, VertexFormatElement, semantics);
+    REGISTER_VARIABLE(vertexFormatElement, VertexFormatElement, storageId);
     vertexFormatElement.endClass();
 
     // VertexFormat

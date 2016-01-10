@@ -24,7 +24,6 @@ public:
         assert(mesh->getPrimitiveType() == MeshPrimitiveType::Triangles);
         assert(mesh->getPartCount() == 0);
         assert(mesh->getVertexFormat().getElementCount() == 0);
-        assert(mesh->getVertexFormat().getVertexSize() == 0);
     }
 
     void test_ChangePrimitiveType()

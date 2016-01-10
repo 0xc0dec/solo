@@ -11,13 +11,13 @@ IndexedMeshPart *LuaMesh::addPart(Mesh* mesh)
 }
 
 
-void LuaMesh::resetVertexData(Mesh *mesh, const std::vector<float>& data, unsigned elementCount, bool dynamic)
+void LuaMesh::resetVertexData(Mesh *mesh, unsigned storageId, const std::vector<float>& data, unsigned elementCount, bool dynamic)
 {
-    mesh->resetVertexData(data.data(), elementCount, dynamic);
+    mesh->resetStorage(storageId, data.data(), elementCount, dynamic);
 }
 
 
-void LuaMesh::updateVertexData(Mesh *mesh, const std::vector<float>& data, unsigned elementCount, unsigned updateFromIndex)
+void LuaMesh::updateVertexData(Mesh *mesh, unsigned storageId, const std::vector<float>& data, unsigned elementCount, unsigned updateFromIndex)
 {
-    mesh->updateVertexData(data.data(), elementCount, updateFromIndex);
+    mesh->updateStorage(storageId, data.data(), elementCount, updateFromIndex);
 }

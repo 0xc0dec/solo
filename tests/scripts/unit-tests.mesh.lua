@@ -1,11 +1,11 @@
 runTest(function()
 	local vf = solo.VertexFormat({
-		solo.VertexFormatElement(solo.VertexFormatElementSemantics.Position, 3)
+		solo.VertexFormatElement(solo.VertexFormatElementSemantics.Position, 3, 0)
 	})
 	local m = device:getResourceManager():getOrCreateMesh(vf, "test/mesh")
 
-	m:resetVertexData({ 1, 2, 3 }, 1, false)
-	m:updateVertexData({ 2, 3, 4}, 1, 0)
+	m:resetVertexData(0, { 1, 2, 3 }, 1, false)
+	m:updateVertexData(0, { 2, 3, 4}, 1, 0)
 
 	local part = m:addPart()
 	assert(m:getPartCount() == 1)

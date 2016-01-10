@@ -15,8 +15,8 @@ namespace solo
     public:
         virtual ~OpenGLMesh();
 
-        virtual void resetVertexData(const float *data, unsigned elementCount, bool dynamic) override;
-        virtual void updateVertexData(const float *data, unsigned elementCount, unsigned updateFromIndex) override;
+        virtual void resetStorage(unsigned storageId, const float *data, unsigned elementCount, bool dynamic) override;
+        virtual void updateStorage(unsigned storageId, const float *data, unsigned elementCount, unsigned updateFromIndex) override;
         
         virtual IndexedMeshPart *addPart(MeshIndexFormat indexFormat) override;
         virtual size_t getPartCount() const override;
@@ -25,7 +25,7 @@ namespace solo
         virtual void draw() override;
         virtual void drawPart(unsigned part) override;
 
-        GLuint getBufferHandle() const;
+        GLuint getBufferHandle(unsigned storageId) const;
 
     private:
         friend class Mesh;
@@ -37,6 +37,8 @@ namespace solo
 
         GLuint bufferHandle = 0;
         unsigned bufferElementCount = 0;
+        std::unordered_map<unsigned, GLuint> handles;
+        std::unordered_map<unsigned, unsigned> elementCounts;
         std::vector<shared<OpenGLIndexedMeshPart>> parts;
     };
 
@@ -45,8 +47,12 @@ namespace solo
         return parts.size();
     }
 
-    inline GLuint OpenGLMesh::getBufferHandle() const
+    inline GLuint OpenGLMesh::getBufferHandle(unsigned storageId) const
     {
-        return bufferHandle;
+        // TODO either remove this check or add it to the updateStorage method
+        auto it = handles.find(storageId);
+        if (it == handles.end())
+            SL_THROW_FMT(EngineException, "No storage id ", storageId, " found");
+        return it->second;
     }
 }

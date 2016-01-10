@@ -11,7 +11,7 @@ namespace solo
     {
     public:
         static IndexedMeshPart *addPart(Mesh *mesh);
-        static void resetVertexData(Mesh *mesh, const std::vector<float> &data, unsigned elementCount, bool dynamic);
-        static void updateVertexData(Mesh *mesh, const std::vector<float> &data, unsigned elementCount, unsigned updateFromIndex);
+        static void resetVertexData(Mesh *mesh, unsigned storageId, const std::vector<float> &data, unsigned elementCount, bool dynamic);
+        static void updateVertexData(Mesh *mesh, unsigned storageId, const std::vector<float> &data, unsigned elementCount, unsigned updateFromIndex);
     };
 }

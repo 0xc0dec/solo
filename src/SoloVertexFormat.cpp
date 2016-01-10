@@ -7,5 +7,5 @@ VertexFormat::VertexFormat(const std::vector<VertexFormatElement> &elements):
     elements(elements)
 {
     for (const auto &e : elements)
-        vertexSize += e.size * sizeof(float);
+        sizesPerStorage[e.storageId] += e.size * sizeof(float);
 }

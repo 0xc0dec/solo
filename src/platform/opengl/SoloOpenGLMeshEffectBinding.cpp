@@ -12,11 +12,11 @@ OpenGLMeshEffectBinding::OpenGLMeshEffectBinding(Mesh *mesh, Effect *effect)
     if (!vertexArrayHandle)
         SL_THROW_FMT(EngineException, "Unable to obtain vertex array handle");
 
+    auto oglMesh = static_cast<OpenGLMesh*>(mesh);
     glBindVertexArray(vertexArrayHandle);
-    glBindBuffer(GL_ARRAY_BUFFER, static_cast<OpenGLMesh*>(mesh)->getBufferHandle());
 
     auto vertexFormat = mesh->getVertexFormat();
-    size_t offset = 0;
+    std::unordered_map<unsigned, size_t> offsets;
     for (auto i = 0; i < vertexFormat.getElementCount(); ++i)
     {
         auto element = vertexFormat.getElement(i);
@@ -55,12 +55,15 @@ OpenGLMeshEffectBinding::OpenGLMeshEffectBinding(Mesh *mesh, Effect *effect)
             break;
         }
 
+        auto &offset = offsets[element.storageId];
+
         if (attr)
         {
-            auto glAttr = static_cast<GLSLEffectVertexAttribute*>(attr);
-            glVertexAttribPointer(glAttr->getLocation(), element.size, GL_FLOAT, GL_FALSE,
-                static_cast<GLsizei>(vertexFormat.getVertexSize()), reinterpret_cast<void*>(offset));
-            glEnableVertexAttribArray(glAttr->getLocation());
+            glBindBuffer(GL_ARRAY_BUFFER, oglMesh->getBufferHandle(element.storageId));
+            auto glslAttr = static_cast<GLSLEffectVertexAttribute*>(attr);
+            auto stride = static_cast<GLsizei>(vertexFormat.getVertexSize(element.storageId));
+            glVertexAttribPointer(glslAttr->getLocation(), element.size, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
+            glEnableVertexAttribArray(glslAttr->getLocation());
         }
 
         offset += element.size * sizeof(float);

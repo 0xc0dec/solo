@@ -8,7 +8,7 @@ using namespace solo;
 
 static void rebuildMesh(Mesh *mesh, float *data, unsigned elementCount, unsigned short *indexData, unsigned indexElementCount)
 {
-    mesh->resetVertexData(data, elementCount, false);
+    mesh->resetStorage(0, data, elementCount, false);
     mesh->setPrimitiveType(MeshPrimitiveType::Triangles);
 
     auto part = mesh->getPartCount() > 0 ? mesh->getPart(0) : mesh->addPart(MeshIndexFormat::UnsignedShort);
@@ -40,9 +40,9 @@ shared<Mesh> Mesh::createPrefab(DeviceMode mode, MeshPrefab prefab)
 shared<Mesh> Mesh::createQuadMesh(DeviceMode mode)
 {
     VertexFormat vf({
-        VertexFormatElement(VertexFormatElementSemantics::Position, 3),
-        VertexFormatElement(VertexFormatElementSemantics::Normal, 3),
-        VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2)
+        VertexFormatElement(VertexFormatElementSemantics::Position, 3, 0),
+        VertexFormatElement(VertexFormatElementSemantics::Normal, 3, 0),
+        VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2, 0)
     });
     float data[] = {
         -1, -1, 0,  0, 0, -1,   0, 0,
@@ -61,8 +61,8 @@ shared<Mesh> Mesh::createQuadMesh(DeviceMode mode)
 shared<Mesh> Mesh::createBoxMesh(DeviceMode mode)
 {
     VertexFormat vf({
-        VertexFormatElement(VertexFormatElementSemantics::Position, 3),
-        VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2)
+        VertexFormatElement(VertexFormatElementSemantics::Position, 3, 0),
+        VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2, 0)
     });
     float data[] = {
         -1, -1, 1,  0, 0,
