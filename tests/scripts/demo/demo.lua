@@ -254,7 +254,7 @@ function init()
 end
 
 
-device = solo.Device.create(solo.DeviceCreationArgs(solo.DeviceMode.OpenGL, 800, 600, false))
+device = solo.Device.create(solo.DeviceCreationArgs(solo.DeviceMode.OpenGL, 640, 480, false))
 device:setStartCallback(function()
 	scene = device:getScene()
 	resourceManager = device:getResourceManager()
