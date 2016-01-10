@@ -17,6 +17,7 @@ OpenGLMesh::OpenGLMesh(const VertexFormat &vertexFormat):
             if (!handle)
                 SL_THROW_FMT(EngineException, "Unable to obtain mesh buffer handle");
             handles[el.storageId] = handle;
+            elementCounts[el.storageId] = 0;
         }
     }
 }
@@ -72,7 +73,7 @@ void OpenGLMesh::resetStorage(unsigned storageId, const float *data, unsigned el
     glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize(storageId) * elementCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    elementCounts[storageId] = bufferElementCount;
+    elementCounts[storageId] = elementCount;
 }
 
 
@@ -110,7 +111,7 @@ IndexedMeshPart *OpenGLMesh::getPart(unsigned index) const
 void OpenGLMesh::draw()
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glDrawArrays(convertPrimitiveType(primitiveType), 0, bufferElementCount);
+    glDrawArrays(convertPrimitiveType(primitiveType), 0, elementCounts.begin()->second); // TODO really?
 }
 
 

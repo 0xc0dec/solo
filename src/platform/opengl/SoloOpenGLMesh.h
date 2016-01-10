@@ -35,8 +35,6 @@ namespace solo
         static GLenum convertPrimitiveType(MeshPrimitiveType primitiveType);
         static GLenum convertIndexType(MeshIndexFormat indexFormat);
 
-        GLuint bufferHandle = 0;
-        unsigned bufferElementCount = 0;
         std::unordered_map<unsigned, GLuint> handles;
         std::unordered_map<unsigned, unsigned> elementCounts;
         std::vector<shared<OpenGLIndexedMeshPart>> parts;
