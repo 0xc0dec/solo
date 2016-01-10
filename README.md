@@ -10,7 +10,7 @@ An engine for my personal graphics/gamedev experiments. Not meant for something 
 * Render to texture.
 * Convenient system for applying post-processing effects.
 
-In one picture:
+In one gif:
 
 ![Current progress](/status.gif?raw=true)
 
