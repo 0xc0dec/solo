@@ -47,10 +47,6 @@ namespace solo
 
     inline GLuint OpenGLMesh::getBufferHandle(unsigned storageId) const
     {
-        // TODO either remove this check or add it to the updateStorage method
-        auto it = handles.find(storageId);
-        if (it == handles.end())
-            SL_THROW_FMT(EngineException, "No storage id ", storageId, " found");
-        return it->second;
+        return handles.at(storageId);
     }
 }
