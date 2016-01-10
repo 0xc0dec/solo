@@ -81,7 +81,6 @@ bool BoundingBox::intersectsBoundingBox(const BoundingBox &box) const
 
 bool BoundingBox::intersectsFrustum(const Frustum &frustum) const
 {
-    // The box must either intersect or be in the positive half-space of all six planes of the frustum.
     return getPlaneIntersection(frustum.getNearPlane()) != PlaneIntersection::Back &&
            getPlaneIntersection(frustum.getFarPlane()) != PlaneIntersection::Back &&
            getPlaneIntersection(frustum.getLeftPlane()) != PlaneIntersection::Back &&
@@ -93,11 +92,9 @@ bool BoundingBox::intersectsFrustum(const Frustum &frustum) const
 
 PlaneIntersection BoundingBox::getPlaneIntersection(const Plane &plane) const
 {
-    // Calculate the distance from the center of the box to the plane.
     Vector3 center((min.x + max.x) * 0.5f, (min.y + max.y) * 0.5f, (min.z + max.z) * 0.5f);
     auto distance = plane.getDistanceToPoint(center);
 
-    // Get the extents of the box from its center along each axis.
     auto extentX = (max.x - min.x) * 0.5f;
     auto extentY = (max.y - min.y) * 0.5f;
     auto extentZ = (max.z - min.z) * 0.5f;
@@ -112,8 +109,6 @@ PlaneIntersection BoundingBox::getPlaneIntersection(const Plane &plane) const
 
 float BoundingBox::getRayIntersection(const Ray &ray) const
 {
-    auto dnear = 0.0f;
-    auto dfar = 0.0f;
     auto tmin = 0.0f;
     auto tmax = 0.0f;
 
@@ -131,8 +126,9 @@ float BoundingBox::getRayIntersection(const Ray &ray) const
         tmin = (max.x - origin.x) * div;
         tmax = (min.x - origin.x) * div;
     }
-    dnear = tmin;
-    dfar = tmax;
+
+    auto dnear = tmin;
+    auto dfar = tmax;
 
     // Check if the ray misses the box.
     if (dnear > dfar || dfar < 0.0f)
@@ -188,12 +184,10 @@ float BoundingBox::getRayIntersection(const Ray &ray) const
 
 void BoundingBox::mergeBoundingBox(const BoundingBox &box)
 {
-    // Calculate the new minimum point.
     min.x = std::min(min.x, box.min.x);
     min.y = std::min(min.y, box.min.y);
     min.z = std::min(min.z, box.min.z);
 
-    // Calculate the new maximum point.
     max.x = std::max(max.x, box.max.x);
     max.y = std::max(max.y, box.max.y);
     max.z = std::max(max.z, box.max.z);
@@ -205,12 +199,10 @@ void BoundingBox::mergeBoundingSphere(const BoundingSphere &sphere)
     const auto &center = sphere.center;
     auto radius = sphere.radius;
 
-    // Calculate the new minimum point for the merged bounding box.
     min.x = std::min(min.x, center.x - radius);
     min.y = std::min(min.y, center.y - radius);
     min.z = std::min(min.z, center.z - radius);
 
-    // Calculate the new maximum point for the merged bounding box.
     max.x = std::max(max.x, center.x + radius);
     max.y = std::max(max.y, center.y + radius);
     max.z = std::max(max.z, center.z + radius);
@@ -219,27 +211,21 @@ void BoundingBox::mergeBoundingSphere(const BoundingSphere &sphere)
 
 static void updateMinMax(Vector3 *point, Vector3 *min, Vector3 *max)
 {
-    // Leftmost point.
     if (point->x < min->x)
         min->x = point->x;
 
-    // Rightmost point.
     if (point->x > max->x)
         max->x = point->x;
 
-    // Lowest point.
     if (point->y < min->y)
         min->y = point->y;
 
-    // Highest point.
     if (point->y > max->y)
         max->y = point->y;
 
-    // Farthest point.
     if (point->z < min->z)
         min->z = point->z;
 
-    // Nearest point.
     if (point->z > max->z)
         max->z = point->z;
 }
@@ -247,10 +233,8 @@ static void updateMinMax(Vector3 *point, Vector3 *min, Vector3 *max)
 
 void BoundingBox::transform(const Matrix &matrix)
 {
-    // Calculate the corners.
     auto corners = getCorners();
 
-    // Transform the corners, recalculating the min and max points along the way.
     corners[0] = matrix.transformPoint(corners[0]);
     auto newMin = corners[0];
     auto newMax = corners[0];
