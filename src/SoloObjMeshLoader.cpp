@@ -76,9 +76,7 @@ void parseIndexes(const char **from, const char *to, unsigned **result)
 
 shared<Mesh> ObjMeshLoader::load(const std::string &uri)
 {
-    // Yes, no materials support
-    // Yes, no support for anything other than triangles
-    // Yes, tons of other TODOs... but still what we have is enough for now
+    // TODO this crap could be better...
 
     std::vector<Vector3> inputVertices, vertices;
     std::vector<Vector3> inputNormals, normals;

@@ -31,7 +31,7 @@ function initTextures()
 	demo.textures =
 	{
 		tex1 = loadTexture("../data/freeman1.png"),
-		tex2 = loadTexture("../data/freeman2.png"),
+		tex2 = loadTexture("../data/cobblestone.png"),
 		mainCameraRTT = mainCameraRTT,
 		offscreenCameraRTT = offscreenCameraRTT,
 	}
@@ -110,7 +110,7 @@ function initMeshes()
 	demo.meshes =
 	{
 		axes = resourceManager:getOrLoadMesh("../data/axes.obj"),
-		monkey = resourceManager:getOrLoadMesh("../data/monkey_hires.obj")
+		monkey = resourceManager:getOrLoadMesh("../data/monkey.obj")
 	}
 end
 
