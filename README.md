@@ -11,6 +11,7 @@ An engine for my personal graphics/gamedev experiments. Not meant for something 
 * Convenient system for applying post-processing effects.
 
 In one picture:
+
 ![Current progress](/status.gif?raw=true)
 
 ## Made possible thanks to
