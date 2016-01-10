@@ -24,8 +24,11 @@ MeshRenderer::MeshRenderer(Node node):
 
 void MeshRenderer::render(RenderContext &context)
 {
-    auto partCount = mesh->getPartCount();
-    if (partCount == 0)
+    if (!mesh)
+        return;
+
+    auto indexCount = mesh->getIndexCount();
+    if (indexCount == 0)
     {
         auto material = findMaterial(0);
         if (material)
@@ -39,14 +42,14 @@ void MeshRenderer::render(RenderContext &context)
     }
     else
     {
-        for (unsigned i = 0; i < partCount; ++i)
+        for (unsigned i = 0; i < indexCount; ++i)
         {
             auto material = findMaterial(i);
             if (material)
             {
                 material->bind(context);
                 bindings[i]->bind();
-                mesh->drawPart(i);
+                mesh->drawIndex(i);
                 bindings[i]->unbind();
                 material->unbind(context);
             }
@@ -69,9 +72,9 @@ void MeshRenderer::setMaterial(unsigned index, shared<Material> material)
     if (!mesh)
         SL_THROW_FMT(EngineException, "Renderer has no mesh, setting material has no effect");
 
-    auto partCount = mesh->getPartCount();
-    if (partCount > 0 && index >= partCount)
-        SL_THROW_FMT(EngineException, "Trying to set material with index ", index, ", but mesh has only ", mesh->getPartCount(), " parts");
+    auto indexCount = mesh->getIndexCount();
+    if (indexCount > 0 && index >= indexCount)
+        SL_THROW_FMT(EngineException, "Trying to set material with index ", index, ", but mesh has only ", indexCount, " indexes");
 
     if (!material)
     {

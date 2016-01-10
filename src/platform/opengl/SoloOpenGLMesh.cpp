@@ -1,5 +1,4 @@
 #include "SoloOpenGLMesh.h"
-#include "SoloOpenGLIndexedMeshPart.h"
 
 using namespace solo;
 
@@ -7,12 +6,32 @@ using namespace solo;
 OpenGLMesh::OpenGLMesh(const VertexFormat &vertexFormat):
     Mesh(vertexFormat)
 {
-    for (auto i = 0; i < vertexFormat.getElementCount(); ++i)
+    auto elementCount = vertexFormat.getElementCount();
+    if (!elementCount)
+        return;
+
+    // Ensure there are no "holes" in the storage ids
+    unsigned maxStorageId = 0;
+    std::unordered_set<unsigned> uniqueStorageIds;
+    for (auto i = 0; i < elementCount; ++i)
+    {
+        auto storageId = vertexFormat.getElement(i).storageId;
+        uniqueStorageIds.insert(storageId);
+        if (storageId >= maxStorageId)
+            maxStorageId = storageId;
+    }
+    if (uniqueStorageIds.size() != maxStorageId + 1)
+        SL_THROW_FMT(EngineException, "Vertex format storage ids must consitute a continuous sequence");
+
+    handles.resize(maxStorageId + 1);
+    elementCounts.resize(maxStorageId + 1);
+    
+    for (auto i = 0; i < elementCount; ++i)
     {
         auto el = vertexFormat.getElement(i);
-        if (handles.find(el.storageId) == handles.end())
+        auto handle = handles[el.storageId];
+        if (!handle)
         {
-            GLuint handle = 0;
             glGenBuffers(1, &handle);
             if (!handle)
                 SL_THROW_FMT(EngineException, "Unable to obtain mesh buffer handle");
@@ -25,12 +44,119 @@ OpenGLMesh::OpenGLMesh(const VertexFormat &vertexFormat):
 
 OpenGLMesh::~OpenGLMesh()
 {
-    while (!handles.empty())
+    for (auto i = 0; i < handles.size(); ++i)
     {
-        auto it = handles.begin();
-        auto handle = it->second;
+        auto handle = handles[i];
         glDeleteBuffers(1, &handle);
-        handles.erase(it);
+    }
+    for (auto i = 0; i < indexHandles.size(); ++i)
+    {
+        auto handle = indexHandles[i];
+        glDeleteBuffers(1, &handle);
+    }
+}
+
+
+void OpenGLMesh::resetStorage(unsigned storageId, const float *data, unsigned elementCount, bool dynamic)
+{
+    // No validations intentionally
+    auto handle = handles[storageId];
+    glBindBuffer(GL_ARRAY_BUFFER, handle);
+    glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize(storageId) * elementCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    elementCounts[storageId] = elementCount;
+}
+
+
+void OpenGLMesh::updateStorage(unsigned storageId, const float *data, unsigned elementCount, unsigned updateFromIndex)
+{
+    // No validations intentionally
+    auto handle = handles[storageId];
+    auto vertexSizePerStorage = vertexFormat.getVertexSize(storageId);
+    glBindBuffer(GL_ARRAY_BUFFER, handle);
+    glBufferSubData(GL_ARRAY_BUFFER, updateFromIndex * vertexSizePerStorage, elementCount * vertexSizePerStorage, data);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+
+unsigned OpenGLMesh::addIndex(MeshIndexFormat indexFormat)
+{
+    GLuint handle = 0;
+    glGenBuffers(1, &handle);
+    if (!handle)
+        SL_THROW_FMT(EngineException, "Unable to obtain mesh index handle");
+
+    indexHandles.push_back(handle);
+    indexFormats.push_back(indexFormat);
+    indexPrimitiveTypes.push_back(MeshPrimitiveType::Triangles);
+    indexElementCounts.push_back(0);
+
+    return indexHandles.size() - 1;
+}
+
+
+void OpenGLMesh::removeIndex(unsigned index)
+{
+    auto handle = indexHandles[index];
+    glDeleteBuffers(1, &handle);
+
+    indexHandles.erase(indexHandles.begin() + index);
+    indexFormats.erase(indexFormats.begin() + index);
+    indexPrimitiveTypes.erase(indexPrimitiveTypes.begin() + index);
+    indexElementCounts.erase(indexElementCounts.begin() + index);
+}
+
+
+void OpenGLMesh::resetIndexData(unsigned index, const void *data, unsigned elementCount, bool dynamic)
+{
+    // No validations intentionally
+    auto handle = indexHandles[index];
+    auto format = indexFormats[index];
+    auto elementSize = getIndexElementSize(format);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementSize * elementCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    indexElementCounts[index] = elementCount;
+}
+
+
+void OpenGLMesh::updateIndexData(unsigned index, const void *data, unsigned elementCount, unsigned updateFromIndex)
+{
+    // No validations intentionally
+    auto handle = indexHandles.at(index);
+    auto elementSize = getIndexElementSize(indexFormats[index]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle);
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, updateFromIndex * elementSize, elementCount * elementSize, data);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+
+void OpenGLMesh::draw()
+{
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glDrawArrays(convertPrimitiveType(primitiveType), 0, elementCounts[0]); // TODO really?
+}
+
+
+void OpenGLMesh::drawIndex(unsigned index)
+{
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexHandles[index]);
+    glDrawElements(convertPrimitiveType(indexPrimitiveTypes[index]), indexElementCounts[index], convertIndexType(indexFormats[index]), nullptr);
+}
+
+
+unsigned OpenGLMesh::getIndexElementSize(MeshIndexFormat indexFormat)
+{
+    switch (indexFormat)
+    {
+    case MeshIndexFormat::UnsignedByte:
+        return 1;
+    case MeshIndexFormat::UnsignedShort:
+        return 2;
+    case MeshIndexFormat::UnsignedInt:
+        return 4;
+    default:
+        SL_THROW_FMT(EngineException, "Unrecognized index format");
     }
 }
 
@@ -68,64 +194,4 @@ GLenum OpenGLMesh::convertIndexType(MeshIndexFormat indexFormat)
     default:
         SL_THROW_FMT(EngineException, "Unknown index type");
     }
-}
-
-
-void OpenGLMesh::resetStorage(unsigned storageId, const float *data, unsigned elementCount, bool dynamic)
-{
-    if (!data || !elementCount)
-        SL_THROW_FMT(EngineException, "Unable to reset mesh storage ", storageId, ": empty or no data");
-
-    auto handle = handles.at(storageId);
-    glBindBuffer(GL_ARRAY_BUFFER, handle);
-    glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize(storageId) * elementCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    elementCounts[storageId] = elementCount;
-}
-
-
-void OpenGLMesh::updateStorage(unsigned storageId, const float *data, unsigned elementCount, unsigned updateFromIndex)
-{
-    if (!data || !elementCount)
-        SL_THROW_FMT(EngineException, "Unable to update mesh storage ", storageId, ": empty or no data");
-
-    // This check automatically prevents updating a buffer without any data
-    if (updateFromIndex + elementCount > elementCounts.at(storageId))
-        SL_THROW_FMT(EngineException, "Unable to update mesh storage ", storageId, ": new data out of bounds");
-
-    auto handle = handles.at(storageId);
-    auto vertexSizePerStorage = vertexFormat.getVertexSize(storageId);
-    glBindBuffer(GL_ARRAY_BUFFER, handle);
-    glBufferSubData(GL_ARRAY_BUFFER, updateFromIndex * vertexSizePerStorage, elementCount * vertexSizePerStorage, data);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-
-IndexedMeshPart *OpenGLMesh::addPart(MeshIndexFormat indexFormat)
-{
-    auto part = SL_NEW_SHARED(OpenGLIndexedMeshPart, indexFormat);
-    parts.push_back(part);
-    return part.get();
-}
-
-
-IndexedMeshPart *OpenGLMesh::getPart(unsigned index) const
-{
-    return parts.at(index).get();
-}
-
-
-void OpenGLMesh::draw()
-{
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glDrawArrays(convertPrimitiveType(primitiveType), 0, elementCounts.begin()->second); // TODO really?
-}
-
-
-void OpenGLMesh::drawPart(unsigned partIndex)
-{
-    auto part = parts.at(partIndex);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, part->getBufferHandle());
-    glDrawElements(convertPrimitiveType(part->getPrimitiveType()), part->getElementCount(), convertIndexType(part->getIndexFormat()), nullptr);
 }

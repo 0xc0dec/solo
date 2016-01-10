@@ -27,8 +27,6 @@
 #include "SoloMaterialParameter.h"
 #include "SoloMesh.h"
 #include "SoloLuaMesh.h"
-#include "SoloIndexedMeshPart.h"
-#include "SoloLuaIndexedMeshPart.h"
 #include "SoloRenderContext.h"
 #include "SoloMeshRenderer.h"
 #include "SoloSkyboxRenderer.h"
@@ -396,22 +394,19 @@ void LuaScriptManager::registerApi()
 
     // Mesh
     auto mesh = module.beginClass<Mesh>("Mesh");
-    mesh.addFunction("resetVertexData", &LuaMesh::resetVertexData);
-    mesh.addFunction("updateVertexData", &LuaMesh::updateVertexData);
-    mesh.addFunction("addPart", &LuaMesh::addPart);
-    REGISTER_METHOD(mesh, Mesh, getPartCount);
+    mesh.addFunction("resetStorage", &LuaMesh::resetStorage);
+    mesh.addFunction("updateStorage", &LuaMesh::updateStorage);
+    mesh.addFunction("resetIndexData", &LuaMesh::resetIndexData);
+    mesh.addFunction("updateIndexData", &LuaMesh::updateIndexData);
+    mesh.addFunction("addIndex", &LuaMesh::addIndex);
+    REGISTER_METHOD(mesh, Mesh, removeIndex);
+    REGISTER_METHOD(mesh, Mesh, getIndexCount);
+    REGISTER_METHOD(mesh, Mesh, getIndexPrimitiveType);
+    REGISTER_METHOD(mesh, Mesh, setIndexPrimitiveType);
     REGISTER_METHOD(mesh, Mesh, getVertexFormat);
     REGISTER_METHOD(mesh, Mesh, setPrimitiveType);
     REGISTER_METHOD(mesh, Mesh, getPrimitiveType);
     mesh.endClass();
-
-    // IndexedMeshPart
-    auto meshPart = module.beginClass<IndexedMeshPart>("IndexedMeshPart");
-    meshPart.addFunction("resetIndexData", &LuaIndexedMeshPart::resetIndexData);
-    meshPart.addFunction("updateIndexData", &LuaIndexedMeshPart::updateIndexData);
-    REGISTER_METHOD(meshPart, IndexedMeshPart, getPrimitiveType);
-    REGISTER_METHOD(meshPart, IndexedMeshPart, setPrimitiveType);
-    meshPart.endClass();
 
     // MeshPrimitiveType
     auto meshPrimitiveType = module.beginModule("MeshPrimitiveType");

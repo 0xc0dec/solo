@@ -1,23 +1,34 @@
 #include "SoloLuaMesh.h"
 #include "SoloMesh.h"
-#include "SoloIndexedMeshPart.h"
 
 using namespace solo;
 
 
-IndexedMeshPart *LuaMesh::addPart(Mesh *mesh)
+void LuaMesh::resetIndexData(Mesh *mesh, unsigned index, const std::vector<uint16_t> &data, unsigned elementCount, bool dynamic)
 {
-    return mesh->addPart(MeshIndexFormat::UnsignedShort);
+    mesh->resetIndexData(index, data.data(), elementCount, dynamic);
 }
 
 
-void LuaMesh::resetVertexData(Mesh *mesh, unsigned storageId, const std::vector<float> &data, unsigned elementCount, bool dynamic)
+void LuaMesh::updateIndexData(Mesh *mesh, unsigned index, const std::vector<uint16_t> &data, unsigned elementCount, unsigned updateFromIndex)
+{
+    mesh->updateIndexData(index, data.data(), elementCount, updateFromIndex);
+}
+
+
+unsigned LuaMesh::addIndex(Mesh *mesh)
+{
+    return mesh->addIndex(MeshIndexFormat::UnsignedShort);
+}
+
+
+void LuaMesh::resetStorage(Mesh *mesh, unsigned storageId, const std::vector<float> &data, unsigned elementCount, bool dynamic)
 {
     mesh->resetStorage(storageId, data.data(), elementCount, dynamic);
 }
 
 
-void LuaMesh::updateVertexData(Mesh *mesh, unsigned storageId, const std::vector<float> &data, unsigned elementCount, unsigned updateFromIndex)
+void LuaMesh::updateStorage(Mesh *mesh, unsigned storageId, const std::vector<float> &data, unsigned elementCount, unsigned updateFromIndex)
 {
     mesh->updateStorage(storageId, data.data(), elementCount, updateFromIndex);
 }

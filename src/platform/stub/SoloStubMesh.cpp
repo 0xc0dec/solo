@@ -1,18 +1,18 @@
 #include "SoloStubMesh.h"
-#include "SoloStubIndexedMeshPart.h"
 
 using namespace solo;
 
 
-IndexedMeshPart *StubMesh::addPart(MeshIndexFormat indexFormat)
+unsigned StubMesh::addIndex(MeshIndexFormat indexFormat)
 {
-    auto part = SL_NEW_SHARED(StubIndexedMeshPart, indexFormat);
-    parts.push_back(part);
-    return part.get();
+    indexes.push_back(indexes.size());
+    indexPrimitiveTypes.push_back(MeshPrimitiveType::Triangles);
+    return indexes.size() - 1;
 }
 
 
-IndexedMeshPart *StubMesh::getPart(unsigned index) const
+void StubMesh::removeIndex(unsigned index)
 {
-    return parts[index].get();
+    indexes.erase(indexes.begin() + index);
+    indexPrimitiveTypes.erase(indexPrimitiveTypes.begin() + index);
 }

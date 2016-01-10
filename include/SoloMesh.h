@@ -7,7 +7,6 @@ namespace solo
 {
     enum class DeviceMode;
     enum class MeshIndexFormat;
-    class IndexedMeshPart;
 
     enum class MeshPrimitiveType
     {
@@ -24,6 +23,13 @@ namespace solo
         Cube
     };
 
+    enum class MeshIndexFormat
+    {
+        UnsignedByte,
+        UnsignedShort,
+        UnsignedInt
+    };
+
     class Mesh
     {
     public:
@@ -36,12 +42,18 @@ namespace solo
         virtual void resetStorage(unsigned storageId, const float *data, unsigned elementCount, bool dynamic) = 0;
         virtual void updateStorage(unsigned storageId, const float *data, unsigned elementCount, unsigned updateFromIndex) = 0;
 
-        virtual IndexedMeshPart *addPart(MeshIndexFormat indexFormat) = 0;
-        virtual size_t getPartCount() const = 0;
-        virtual IndexedMeshPart *getPart(unsigned index) const = 0;
+        virtual unsigned addIndex(MeshIndexFormat indexFormat) = 0;
+        virtual void removeIndex(unsigned index) = 0;
+        virtual size_t getIndexCount() const = 0;
+
+        virtual void resetIndexData(unsigned index, const void *data, unsigned elementCount, bool dynamic) = 0;
+        virtual void updateIndexData(unsigned index, const void *data, unsigned elementCount, unsigned updateFromIndex) = 0;
+
+        virtual MeshPrimitiveType getIndexPrimitiveType(unsigned index) = 0;
+        virtual void setIndexPrimitiveType(unsigned index, MeshPrimitiveType primitiveType) = 0;
 
         virtual void draw() = 0;
-        virtual void drawPart(unsigned part) = 0;
+        virtual void drawIndex(unsigned index) = 0;
 
         VertexFormat getVertexFormat() const;
 

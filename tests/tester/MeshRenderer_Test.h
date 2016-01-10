@@ -15,9 +15,9 @@ public:
         renderer = scene->createNode()->addComponent<MeshRenderer>();
         material = resourceManager->getOrCreateMaterial(resourceManager->getOrCreateEffect("1", "2"));
         mesh = resourceManager->getOrCreateMesh(VertexFormat());
-        mesh->addPart(MeshIndexFormat::UnsignedShort);
-        mesh->addPart(MeshIndexFormat::UnsignedShort);
-        mesh->addPart(MeshIndexFormat::UnsignedShort);
+        mesh->addIndex(MeshIndexFormat::UnsignedShort);
+        mesh->addIndex(MeshIndexFormat::UnsignedShort);
+        mesh->addIndex(MeshIndexFormat::UnsignedShort);
 
         test_EnsureNoMaterialsAtFirst();
         test_SetMesh_UnsetMesh_EnsureNoMesh();

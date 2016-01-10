@@ -226,25 +226,13 @@
     <ClInclude Include="..\include\SoloMeshRenderer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloIndexedMeshPart.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLIndexedMeshPart.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\SoloObjMeshLoader.h">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\stub\SoloStubIndexedMeshPart.h">
-      <Filter>src\platform\stub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\platform\stub\SoloStubMeshEffectBinding.h">
       <Filter>src\platform\stub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\platform\scripting\lua\SoloLuaMesh.h">
-      <Filter>src\platform\scripting\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\scripting\lua\SoloLuaIndexedMeshPart.h">
       <Filter>src\platform\scripting\lua</Filter>
     </ClInclude>
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLSurfaceRenderer.h">
@@ -513,9 +501,6 @@
     <ClCompile Include="..\src\SoloMeshRenderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLIndexedMeshPart.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloObjMeshLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -523,9 +508,6 @@
       <Filter>src\platform\stub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\scripting\lua\SoloLuaMesh.cpp">
-      <Filter>src\platform\scripting\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\scripting\lua\SoloLuaIndexedMeshPart.cpp">
       <Filter>src\platform\scripting\lua</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloSurfaceRenderer.cpp">

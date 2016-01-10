@@ -1,6 +1,5 @@
 #include "SoloObjMeshLoader.h"
 #include "SoloMesh.h"
-#include "SoloIndexedMeshPart.h"
 #include "SoloFileSystem.h"
 #include "SoloResourceManager.h"
 #include "SoloVector3.h"
@@ -81,14 +80,14 @@ shared<Mesh> ObjMeshLoader::load(const std::string &uri)
     std::vector<Vector3> inputVertices, vertices;
     std::vector<Vector3> inputNormals, normals;
     std::vector<Vector2> inputUvs, uvs;
-    std::vector<uint16_t> currentPartIndices;
+    std::vector<uint16_t> currentIndices;
     std::unordered_map<std::string, uint16_t> uniqueIndices;
-    std::vector<std::vector<uint16_t>> partIndices;
+    std::vector<std::vector<uint16_t>> allIndices;
 
-    auto finishPart = [&]()
+    auto finishIndex = [&]()
     {
-        partIndices.push_back(std::move(currentPartIndices));
-        currentPartIndices = std::vector<uint16_t>();
+        allIndices.push_back(std::move(currentIndices));
+        currentIndices = std::vector<uint16_t>();
         uniqueIndices.clear();
     };
 
@@ -129,7 +128,7 @@ shared<Mesh> ObjMeshLoader::load(const std::string &uri)
                 auto it = uniqueIndices.find(three);
                 if (it != uniqueIndices.end())
                 {
-                    currentPartIndices.push_back(it->second);
+                    currentIndices.push_back(it->second);
                     from += three.size() + 1;
                 }
                 else
@@ -142,40 +141,43 @@ shared<Mesh> ObjMeshLoader::load(const std::string &uri)
                         normals.push_back(inputNormals[nIdx - 1]);
                     auto newIndex = static_cast<uint16_t>(vertices.size() - 1);
                     uniqueIndices[three] = newIndex;
-                    currentPartIndices.push_back(newIndex);
+                    currentIndices.push_back(newIndex);
                 }
             }
         }
         else if (line[0] == 'o')
         {
-            if (!currentPartIndices.empty())
-                finishPart();
+            if (!currentIndices.empty())
+                finishIndex();
         }
         return true;
     });
 
-    if (!currentPartIndices.empty())
-        finishPart();
+    if (!currentIndices.empty())
+        finishIndex();
 
     auto hasUVs = !uvs.empty();
     auto hasNormals = !normals.empty();
-    std::vector<VertexFormatElement> vertexFormatElements{ VertexFormatElement(VertexFormatElementSemantics::Position, 3, 0) };
+    unsigned elementStorage = 0;
+    std::vector<VertexFormatElement> vertexFormatElements{ VertexFormatElement(VertexFormatElementSemantics::Position, 3, elementStorage++) };
     if (hasUVs)
-        vertexFormatElements.push_back(VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2, 1));
+        vertexFormatElements.push_back(VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2, elementStorage++));
     if (hasNormals)
-        vertexFormatElements.push_back(VertexFormatElement(VertexFormatElementSemantics::Normal, 3, 2));
+        vertexFormatElements.push_back(VertexFormatElement(VertexFormatElementSemantics::Normal, 3, elementStorage));
     auto mesh = resourceManager->getOrCreateMesh(VertexFormat(vertexFormatElements), uri);
-    mesh->resetStorage(0, reinterpret_cast<const float *>(vertices.data()), vertices.size(), false);
-    if (hasUVs)
-        mesh->resetStorage(1, reinterpret_cast<const float *>(uvs.data()), uvs.size(), false);
-    if (hasNormals)
-        mesh->resetStorage(2, reinterpret_cast<const float *>(normals.data()), normals.size(), false);
 
-    for (const auto &indices : partIndices)
+    elementStorage = 0;
+    mesh->resetStorage(elementStorage++, reinterpret_cast<const float *>(vertices.data()), vertices.size(), false);
+    if (hasUVs)
+        mesh->resetStorage(elementStorage++, reinterpret_cast<const float *>(uvs.data()), uvs.size(), false);
+    if (hasNormals)
+        mesh->resetStorage(elementStorage, reinterpret_cast<const float *>(normals.data()), normals.size(), false);
+
+    for (const auto &indices : allIndices)
     {
-        auto part = mesh->addPart(MeshIndexFormat::UnsignedShort);
-        part->setPrimitiveType(MeshPrimitiveType::Triangles);
-        part->resetIndexData(reinterpret_cast<const void *>(indices.data()), indices.size(), false);
+        auto index = mesh->addIndex(MeshIndexFormat::UnsignedShort);
+        mesh->setIndexPrimitiveType(index, MeshPrimitiveType::Triangles);
+        mesh->resetIndexData(index, reinterpret_cast<const void *>(indices.data()), indices.size(), false);
     }
 
     return mesh;

@@ -14,15 +14,15 @@ public:
     {
         test_EmptyMesh_CheckDefaults();
         test_ChangePrimitiveType();
-        test_ChangePartPrimitiveType();
-        test_AddPart_CheckPartCount();
+        test_ChangeIndexPrimitiveType();
+        test_AddIndex_CheckIndexCount();
     }
 
     void test_EmptyMesh_CheckDefaults()
     {
         auto mesh = resourceManager->getOrCreateMesh(VertexFormat());
         assert(mesh->getPrimitiveType() == MeshPrimitiveType::Triangles);
-        assert(mesh->getPartCount() == 0);
+        assert(mesh->getIndexCount() == 0);
         assert(mesh->getVertexFormat().getElementCount() == 0);
     }
 
@@ -33,20 +33,20 @@ public:
         assert(mesh->getPrimitiveType() == MeshPrimitiveType::Points);
     }
 
-    void test_AddPart_CheckPartCount()
+    void test_AddIndex_CheckIndexCount()
     {
         auto mesh = resourceManager->getOrCreateMesh(VertexFormat());
-        mesh->addPart(MeshIndexFormat::UnsignedShort);
-        mesh->addPart(MeshIndexFormat::UnsignedShort);
-        assert(mesh->getPartCount() == 2);
+        mesh->addIndex(MeshIndexFormat::UnsignedShort);
+        mesh->addIndex(MeshIndexFormat::UnsignedShort);
+        assert(mesh->getIndexCount() == 2);
     }
 
-    void test_ChangePartPrimitiveType()
+    void test_ChangeIndexPrimitiveType()
     {
         auto mesh = resourceManager->getOrCreateMesh(VertexFormat());
-        auto part = mesh->addPart(MeshIndexFormat::UnsignedShort);
-        assert(part->getPrimitiveType() == MeshPrimitiveType::Triangles);
-        part->setPrimitiveType(MeshPrimitiveType::Lines);
-        assert(part->getPrimitiveType() == MeshPrimitiveType::Lines);
+        auto index = mesh->addIndex(MeshIndexFormat::UnsignedShort);
+        assert(mesh->getIndexPrimitiveType(index) == MeshPrimitiveType::Triangles);
+        mesh->setIndexPrimitiveType(index, MeshPrimitiveType::Lines);
+        assert(mesh->getIndexPrimitiveType(index) == MeshPrimitiveType::Lines);
     }
 };

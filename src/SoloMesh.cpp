@@ -1,15 +1,8 @@
 #include "SoloDevice.h"
-#include "SoloIndexedMeshPart.h"
 #include "platform/stub/SoloStubMesh.h"
 #include "platform/opengl/SoloOpenGLMesh.h"
 
 using namespace solo;
-
-
-static void rebuildMesh(Mesh *mesh, float *data, unsigned elementCount, unsigned short *indexData, unsigned indexElementCount)
-{
-
-}
 
 
 shared<Mesh> Mesh::create(DeviceMode mode, const VertexFormat &vertexFormat)
@@ -54,11 +47,10 @@ shared<Mesh> Mesh::createQuadMesh(DeviceMode mode)
     auto mesh = create(mode, vf);
 
     mesh->resetStorage(0, data, 4, false);
-    mesh->setPrimitiveType(MeshPrimitiveType::Triangles);
 
-    auto part = mesh->getPartCount() > 0 ? mesh->getPart(0) : mesh->addPart(MeshIndexFormat::UnsignedShort);
-    part->resetIndexData(indices, 6, false);
-    part->setPrimitiveType(MeshPrimitiveType::Triangles);
+    auto index = mesh->getIndexCount() > 0 ? 0 : mesh->addIndex(MeshIndexFormat::UnsignedShort);
+    mesh->resetIndexData(index, indices, 6, false);
+    mesh->setIndexPrimitiveType(index, MeshPrimitiveType::Triangles);
 
     return mesh;
 }
@@ -110,11 +102,10 @@ shared<Mesh> Mesh::createBoxMesh(DeviceMode mode)
 
     mesh->resetStorage(0, vertexData, 24, false);
     mesh->resetStorage(1, texCoordData, 24, false);
-    mesh->setPrimitiveType(MeshPrimitiveType::Triangles);
 
-    auto part = mesh->getPartCount() > 0 ? mesh->getPart(0) : mesh->addPart(MeshIndexFormat::UnsignedShort);
-    part->resetIndexData(indices, 36, false);
-    part->setPrimitiveType(MeshPrimitiveType::Triangles);
+    auto index = mesh->getIndexCount() > 0 ? 0 : mesh->addIndex(MeshIndexFormat::UnsignedShort);
+    mesh->resetIndexData(index, indices, 36, false);
+    mesh->setIndexPrimitiveType(index, MeshPrimitiveType::Triangles);
 
     return mesh;
 }

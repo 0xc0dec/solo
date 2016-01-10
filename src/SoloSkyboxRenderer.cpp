@@ -43,7 +43,7 @@ void SkyboxRenderer::render(RenderContext &context)
 {
     material->bind(context);
     binding->bind();
-    quadMesh->drawPart(0);
+    quadMesh->drawIndex(0);
     binding->unbind();
     material->unbind(context);
 }
