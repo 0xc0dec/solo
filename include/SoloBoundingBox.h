@@ -3,6 +3,7 @@
 #include "SoloBase.h"
 #include "SoloVector3.h"
 #include "SoloPlane.h"
+#include "SoloMath.h"
 
 namespace solo
 {
@@ -44,7 +45,7 @@ namespace solo
 
     inline bool BoundingBox::isEmpty() const
     {
-        return min.x == max.x && min.y == max.y && min.z == max.z;
+        return Math::approxEqual(min.x, max.x) && Math::approxEqual(min.y, max.y) && Math::approxEqual(min.z, max.z);
     }
 
     inline BoundingBox &BoundingBox::operator*=(const Matrix &matrix)
