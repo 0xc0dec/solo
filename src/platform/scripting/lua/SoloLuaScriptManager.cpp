@@ -551,13 +551,13 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(node, Node, getScene);
     REGISTER_METHOD(node, Node, getId);
     REGISTER_METHOD(node, Node, removeAllComponents);
-    node.addFunction("findScript", LuaScriptComponent::getFindScriptFunc(module.state()))
-    .addFunction("addScript", &LuaScriptComponent::addScript)
-    .addFunction("removeScript", &LuaScriptComponent::removeScript)
-    .addFunction("findComponent", &LuaScriptComponent::findComponent)
-    .addFunction("addComponent", &LuaScriptComponent::addComponent)
-    .addFunction("removeComponent", &LuaScriptComponent::removeComponent)
-    .endClass();
+    node.addFunction("findScript", LuaScriptComponent::getFindScriptFunc(module.state()));
+    node.addFunction("addScript", &LuaScriptComponent::addScript);
+    node.addFunction("removeScript", &LuaScriptComponent::removeScript);
+    node.addFunction("findComponent", &LuaScriptComponent::findComponent);
+    node.addFunction("addComponent", &LuaScriptComponent::addComponent);
+    node.addFunction("removeComponent", &LuaScriptComponent::removeComponent);
+    node.endClass();
 
     // Component
     auto component = module.beginClass<Component>("Component");
@@ -797,16 +797,16 @@ void LuaScriptManager::registerApi()
     mouseButton.endModule();
 
     // DeviceCreationArgs
-    module.beginClass<DeviceCreationArgs>("DeviceCreationArgs")
-    .addConstructor(LUA_ARGS(_opt<DeviceMode>, _opt<int>, _opt<int>, _opt<bool>, _opt<std::string>, _opt<int>, _opt<int>))
-    .addVariable("mode", &DeviceCreationArgs::mode, true)
-    .addVariable("bits", &DeviceCreationArgs::bits, true)
-    .addVariable("canvasHeight", &DeviceCreationArgs::canvasHeight, true)
-    .addVariable("canvasWidth", &DeviceCreationArgs::canvasWidth, true)
-    .addVariable("depth", &DeviceCreationArgs::depth, true)
-    .addVariable("fullScreen", &DeviceCreationArgs::fullScreen, true)
-    .addVariable("windowTitle", &DeviceCreationArgs::windowTitle, true)
-    .endClass();
+    auto deviceCreationArgs = module.beginClass<DeviceCreationArgs>("DeviceCreationArgs");
+    deviceCreationArgs.addConstructor(LUA_ARGS(_opt<DeviceMode>, _opt<int>, _opt<int>, _opt<bool>, _opt<std::string>, _opt<int>, _opt<int>));
+    REGISTER_VARIABLE(deviceCreationArgs, DeviceCreationArgs, mode);
+    REGISTER_VARIABLE(deviceCreationArgs, DeviceCreationArgs, bits);
+    REGISTER_VARIABLE(deviceCreationArgs, DeviceCreationArgs, canvasWidth);
+    REGISTER_VARIABLE(deviceCreationArgs, DeviceCreationArgs, canvasHeight);
+    REGISTER_VARIABLE(deviceCreationArgs, DeviceCreationArgs, depth);
+    REGISTER_VARIABLE(deviceCreationArgs, DeviceCreationArgs, fullScreen);
+    REGISTER_VARIABLE(deviceCreationArgs, DeviceCreationArgs, windowTitle);
+    deviceCreationArgs.endClass();
 
     // Device
     auto device = module.beginClass<Device>("Device");
@@ -859,9 +859,9 @@ void LuaScriptManager::registerApi()
     mgr.endClass();
 
     // SurfaceRenderer
-    auto surfaceRenderer = module.beginClass<SurfaceRenderer>("SurfaceRenderer");
-    surfaceRenderer.addFunction("renderSurface", &LuaSurfaceRenderer::renderSurface);
-    surfaceRenderer.endClass();
+    module.beginClass<SurfaceRenderer>("SurfaceRenderer")
+    .addFunction("renderSurface", &LuaSurfaceRenderer::renderSurface)
+    .endClass();
 
     // FileSystem
     auto fs = module.beginClass<FileSystem>("FileSystem");
