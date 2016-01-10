@@ -120,7 +120,7 @@ public:
     void test_LoadMeshWithOverridenUri_CheckUri()
     {
         // TODO probably needs fix
-        auto overridenUri = "customUriForModel";
+        auto overridenUri = "customUriForMesh";
         auto mesh = resourceManager->getOrLoadMesh("/nonsense.obj", overridenUri);
         assert(resourceManager->getOrLoadMesh("/more_nonsense.obj", overridenUri) == mesh);
         assert(resourceManager->findMesh(overridenUri) == mesh);
