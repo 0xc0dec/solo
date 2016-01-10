@@ -4,7 +4,6 @@
 
 namespace solo
 {
-    enum class DeviceMode;
     class Material;
     class RenderTarget;
     class Device;
