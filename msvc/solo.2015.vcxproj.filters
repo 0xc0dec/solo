@@ -175,9 +175,6 @@
     <ClInclude Include="..\src\platform\stub\SoloStubMesh.h">
       <Filter>src\platform\stub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\stub\SoloStubModelLoader.h">
-      <Filter>src\platform\stub</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\platform\stub\SoloStubRenderTarget.h">
       <Filter>src\platform\stub</Filter>
     </ClInclude>
@@ -264,6 +261,9 @@
     </ClInclude>
     <ClInclude Include="..\src\SoloMeshLoader.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\stub\SoloStubMeshLoader.h">
+      <Filter>src\platform\stub</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -477,9 +477,6 @@
     <ClCompile Include="..\src\platform\stub\SoloStubImageLoader.cpp">
       <Filter>src\platform\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\stub\SoloStubModelLoader.cpp">
-      <Filter>src\platform\stub</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\platform\stub\SoloStubResourceManager.cpp">
       <Filter>src\platform\stub</Filter>
     </ClCompile>
@@ -539,6 +536,9 @@
     </ClCompile>
     <ClCompile Include="..\src\platform\scripting\lua\SoloLuaSurfaceRenderer.cpp">
       <Filter>src\platform\scripting\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\stub\SoloStubMeshLoader.cpp">
+      <Filter>src\platform\stub</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

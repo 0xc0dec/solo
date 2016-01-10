@@ -1,4 +1,4 @@
-#include "SoloStubModelLoader.h"
+#include "SoloStubMeshLoader.h"
 #include "SoloResourceManager.h"
 #include "SoloMesh.h"
 

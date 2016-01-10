@@ -1,6 +1,6 @@
 #include "SoloStubResourceManager.h"
 #include "SoloStubImageLoader.h"
-#include "SoloStubModelLoader.h"
+#include "SoloStubMeshLoader.h"
 #include "SoloDevice.h"
 
 using namespace solo;

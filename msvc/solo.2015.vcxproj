@@ -98,7 +98,7 @@
     <ClInclude Include="..\src\platform\stub\SoloStubMaterial.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubMesh.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubMeshEffectBinding.h" />
-    <ClInclude Include="..\src\platform\stub\SoloStubModelLoader.h" />
+    <ClInclude Include="..\src\platform\stub\SoloStubMeshLoader.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubRenderTarget.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubResourceManager.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubSurfaceRenderer.h" />
@@ -133,7 +133,7 @@
     <ClCompile Include="..\src\platform\stub\SoloStubFileSystem.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubImageLoader.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubMesh.cpp" />
-    <ClCompile Include="..\src\platform\stub\SoloStubModelLoader.cpp" />
+    <ClCompile Include="..\src\platform\stub\SoloStubMeshLoader.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubResourceManager.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\SoloMeshEffectBinding.cpp" />
