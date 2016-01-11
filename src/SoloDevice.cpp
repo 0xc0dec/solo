@@ -2,6 +2,7 @@
 #include "SoloFileSystem.h"
 #include "SoloResourceManager.h"
 #include "SoloScene.h"
+#include "SoloLog.h"
 #include "platform/stub/SoloStubDevice.h"
 #include "platform/opengl/SoloSDLOpenGLDevice.h"
 
@@ -19,6 +20,10 @@ shared<Device> Device::create(const DeviceCreationArgs &args)
 Device::Device(const DeviceCreationArgs &args):
     creationArgs(args)
 {
+    logger = Logger::create();
+    if (!args.logFilePath.empty())
+        logger->setTargetFile(args.logFilePath);
+
     fs = FileSystem::create(this);
     resourceManager = ResourceManager::create(this);
     scene = Scene::create(this);

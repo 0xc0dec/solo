@@ -33,6 +33,7 @@
 #include "SoloSpectator.h"
 #include "SoloSurfaceRenderer.h"
 #include "SoloLuaSurfaceRenderer.h"
+#include "SoloLog.h"
 #include <map>
 
 
@@ -793,7 +794,7 @@ void LuaScriptManager::registerApi()
 
     // DeviceCreationArgs
     auto deviceCreationArgs = module.beginClass<DeviceCreationArgs>("DeviceCreationArgs");
-    deviceCreationArgs.addConstructor(LUA_ARGS(_opt<DeviceMode>, _opt<int>, _opt<int>, _opt<bool>, _opt<std::string>, _opt<int>, _opt<int>));
+    deviceCreationArgs.addConstructor(LUA_ARGS(_opt<DeviceMode>, _opt<int>, _opt<int>, _opt<bool>, _opt<std::string>, _opt<int>, _opt<int>, _opt<std::string>));
     REGISTER_VARIABLE(deviceCreationArgs, DeviceCreationArgs, mode);
     REGISTER_VARIABLE(deviceCreationArgs, DeviceCreationArgs, bits);
     REGISTER_VARIABLE(deviceCreationArgs, DeviceCreationArgs, canvasWidth);
@@ -801,6 +802,7 @@ void LuaScriptManager::registerApi()
     REGISTER_VARIABLE(deviceCreationArgs, DeviceCreationArgs, depth);
     REGISTER_VARIABLE(deviceCreationArgs, DeviceCreationArgs, fullScreen);
     REGISTER_VARIABLE(deviceCreationArgs, DeviceCreationArgs, windowTitle);
+    REGISTER_VARIABLE(deviceCreationArgs, DeviceCreationArgs, logFilePath);
     deviceCreationArgs.endClass();
 
     // Device
@@ -820,6 +822,7 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(device, Device, getScene);
     REGISTER_METHOD(device, Device, getResourceManager);
     REGISTER_METHOD(device, Device, getFileSystem);
+    REGISTER_METHOD(device, Device, getLogger);
     REGISTER_METHOD(device, Device, getMode);
     REGISTER_METHOD(device, Device, run);
     REGISTER_METHOD(device, Device, setStartCallback);
@@ -865,6 +868,16 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(fs, FileSystem, readText);
     REGISTER_METHOD(fs, FileSystem, writeLines);
     fs.endClass();
+
+    // Logger
+    auto logger = module.beginClass<Logger>("Logger");
+    REGISTER_METHOD(logger, Logger, setTargetFile);
+    REGISTER_METHOD(logger, Logger, logDebug);
+    REGISTER_METHOD(logger, Logger, logInfo);
+    REGISTER_METHOD(logger, Logger, logWarning);
+    REGISTER_METHOD(logger, Logger, logError);
+    REGISTER_METHOD(logger, Logger, logCritical);
+    logger.endClass();
 
     module.endModule();
 }

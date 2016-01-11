@@ -8,6 +8,7 @@ namespace solo
     class Scene;
     class ResourceManager;
     class FileSystem;
+    class Logger;
 
     enum class KeyCode
     {
@@ -44,6 +45,7 @@ namespace solo
         std::string windowTitle;
         int bits;
         int depth;
+        std::string logFilePath;
 
         DeviceCreationArgs(
             DeviceMode mode = DeviceMode::OpenGL,
@@ -52,14 +54,16 @@ namespace solo
             bool fullScreen = false,
             const std::string &windowTitle = "",
             int bits = 32,
-            int depth = 16) :
+            int depth = 16,
+            const std::string &logFilePath = "") :
             mode(mode),
             canvasWidth(canvasWidth > 0 ? canvasWidth : 1),
             canvasHeight(canvasHeight > 0 ? canvasHeight : 1),
             fullScreen(fullScreen),
             windowTitle(windowTitle),
             bits(bits > 0 ? bits : 32),
-            depth(depth > 0 ? depth : 16)
+            depth(depth > 0 ? depth : 16),
+            logFilePath(logFilePath)
         {
         }
     };
@@ -107,6 +111,7 @@ namespace solo
         Scene *getScene() const;
         FileSystem *getFileSystem() const;
         ResourceManager *getResourceManager() const;
+        Logger *getLogger() const;
 
     protected:
         explicit Device(const DeviceCreationArgs &args);
@@ -122,6 +127,7 @@ namespace solo
         shared<Scene> scene;
         shared<FileSystem> fs;
         shared<ResourceManager> resourceManager;
+        shared<Logger> logger;
 
         // stores what keys were pressed and if it was a repeat
         std::unordered_map<KeyCode, bool> pressedKeys;
@@ -170,6 +176,11 @@ namespace solo
     inline ResourceManager *Device::getResourceManager() const
     {
         return resourceManager.get();
+    }
+
+    inline Logger *Device::getLogger() const
+    {
+        return logger.get();
     }
 
     inline void Device::setStartCallback(std::function<void()> callback)

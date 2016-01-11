@@ -89,10 +89,11 @@ WindowWithContextCreationResult tryCreateOpengGLWindow(bool hidden, int ctxMajor
         flags |= SDL_WINDOW_HIDDEN;
     if (creationArgs.fullScreen)
         flags |= SDL_WINDOW_FULLSCREEN;
-    auto window = SDL_CreateWindow(creationArgs.windowTitle.c_str(),
-                                   SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                   creationArgs.canvasWidth, creationArgs.canvasHeight,
-                                   flags);
+    auto window = SDL_CreateWindow(
+        creationArgs.windowTitle.c_str(),
+        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        creationArgs.canvasWidth, creationArgs.canvasHeight,
+        flags);
 
     if (window)
     {
@@ -108,12 +109,11 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const &args):
     Device(args)
 {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
-        SL_THROW_FMT(EngineException, "Failed to initialize system");
+        SL_THROW_FMT(EngineException, "Failed to initialize device systems");
 
     auto contextVersion = selectContextVersion();
     auto major = std::get<0>(contextVersion);
     auto minor = std::get<1>(contextVersion);
-    SL_LOG_INFO("Using OpenGL context version ", major, ".", minor);
 
     auto windowWithContext = tryCreateOpengGLWindow(false, major, minor, creationArgs);
     if (!windowWithContext.succeeded())
@@ -126,11 +126,13 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const &args):
         SDL_GL_DeleteContext(windowWithContext.context);
         SDL_DestroyWindow(windowWithContext.window);
         SDL_Quit();
-        SL_THROW_FMT(EngineException, "Failed to init OpenGL extensions");
+        SL_THROW_FMT(EngineException, "Failed to initialize OpenGL extensions");
     }
 
     window = windowWithContext.window;
     context = windowWithContext.context;
+
+    logger->logInfo(SL_FMT("Running in OpenGL mode, context version ", major, ".", minor));
 
     SDL_GL_SetSwapInterval(1);
 }

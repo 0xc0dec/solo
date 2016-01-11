@@ -1,34 +1,31 @@
 #pragma once
 
 #include "SoloBase.h"
-
-#define SL_LOG_DEBUG(...) solo::Log(SL_FMT(__VA_ARGS__), solo::LogLevel::Debug);
-#define SL_LOG_INFO(...) solo::Log(SL_FMT(__VA_ARGS__), solo::LogLevel::Info);
-#define SL_LOG_WARN(...) solo::Log(SL_FMT(__VA_ARGS__), solo::LogLevel::Warning);
-#define SL_LOG_ERR(...) solo::Log(SL_FMT(__VA_ARGS__), solo::LogLevel::Error);
-#define SL_LOG_CRITICAL(...) solo::Log(SL_FMT(__VA_ARGS__), solo::LogLevel::Critical);
+#include <fstream>
 
 namespace solo
 {
-    enum class LogLevel
-    {
-        Debug = 0,
-        Info,
-        Warning,
-        Error,
-        Critical
-    };
-
-    class Log
+    class Logger
     {
     public:
-        explicit Log(const std::string &msg, LogLevel level = LogLevel::Info);
-        ~Log();
+        static shared<Logger> create();
+
+        SL_NONCOPYABLE(Logger);
+        ~Logger();
+
+        void setTargetFile(const std::string &path);
+
+        void logDebug(const std::string &msg);
+        void logInfo(const std::string &msg);
+        void logWarning(const std::string &msg);
+        void logError(const std::string &msg);
+        void logCritical(const std::string &msg);
 
     private:
-        LogLevel level;
-        std::string message;
+        Logger() {}
 
-        std::string getLevelString();
+        void log(const std::string &msg, const std::string &level);
+
+        std::ofstream targetFileStream;
     };
 }

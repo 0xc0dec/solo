@@ -1,36 +1,69 @@
-#include <iostream>
 #include "SoloLog.h"
+#include <iostream>
 
 using namespace solo;
 
 
-Log::Log(const std::string &msg, LogLevel level):
-    level(level), message(msg)
+shared<Logger> Logger::create()
 {
+    return SL_NEW_SHARED(Logger);
 }
 
 
-Log::~Log()
+Logger::~Logger()
 {
-    std::cout << SL_FMT("[", getLevelString(), "]	", message) << std::endl;
+    if (targetFileStream.is_open())
+        targetFileStream.close();
 }
 
 
-std::string Log::getLevelString()
+void Logger::setTargetFile(const std::string &path)
 {
-    switch (level)
+    if (targetFileStream.is_open())
+        targetFileStream.close();
+    if (!path.empty())
     {
-    case LogLevel::Debug:
-        return "debug";
-    case LogLevel::Info:
-        return "info";
-    case LogLevel::Warning:
-        return "warn";
-    case LogLevel::Error:
-        return "error";
-    case LogLevel::Critical:
-        return "crit";
-    default:
-        return "";
+        targetFileStream.open(path, std::ios_base::trunc);
+        if (!targetFileStream.is_open())
+            logError(SL_FMT("Unable to open target log file ", path));
     }
+}
+
+
+void Logger::logDebug(const std::string &msg)
+{
+    log(msg, "debug");
+}
+
+
+void Logger::logInfo(const std::string &msg)
+{
+    log(msg, "info");
+}
+
+
+void Logger::logWarning(const std::string &msg)
+{
+    log(msg, "warn");
+}
+
+
+void Logger::logError(const std::string &msg)
+{
+    log(msg, "error");
+}
+
+
+void Logger::logCritical(const std::string &msg)
+{
+    log(msg, "crit");
+}
+
+
+void Logger::log(const std::string &msg, const std::string &level)
+{
+    auto fullMsg = SL_FMT("[", level, "]	", msg);
+    std::cout << fullMsg << std::endl;
+    if (targetFileStream.is_open())
+        targetFileStream << fullMsg << std::endl;
 }

@@ -35,6 +35,8 @@ function initTextures()
 		mainCameraRTT = mainCameraRTT,
 		offscreenCameraRTT = offscreenCameraRTT,
 	}
+
+	logger:logInfo("Initialized textures")
 end
 
 
@@ -44,6 +46,8 @@ function initEffects()
 	{
 		simpleTextureEffect = simpleTextureEffect
 	}
+
+	logger:logInfo("Initialized effects")
 end
 
 
@@ -103,6 +107,8 @@ function initMaterials()
 		textureWithLighting = textureWithLightingMaterial,
 		offscreenCameraRendered = offscreenCameraRenderedMaterial
 	}
+
+	logger:logInfo("Initialized materials")
 end
 
 
@@ -112,6 +118,7 @@ function initMeshes()
 		axes = resourceManager:getOrLoadMesh("../data/axes.obj"),
 		monkey = resourceManager:getOrLoadMesh("../data/monkey.obj")
 	}
+	logger:logInfo("Initialized meshes")
 end
 
 
@@ -127,6 +134,8 @@ function initRenderTargets()
 		offscreenCameraRT = offscreenCameraRT,
 		mainCameraRT = mainCameraRT
 	}
+
+	logger:logInfo("Initialized render targets")
 end
 
 
@@ -144,6 +153,8 @@ function initSkybox()
 	local skybox = scene:createNode()
 	local skyboxRenderer = skybox:addComponent("SkyboxRenderer")
 	skyboxRenderer:setTexture(texSkybox)
+
+	logger:logInfo("Initialized skybox")
 end
 
 
@@ -190,6 +201,8 @@ function initObjects()
 	quadTransform:setLocalPosition(solo.Vector3(5, 2, -5))
 	quadTransform:setLocalScale(solo.Vector3(5, 5 * canvasSize.y / canvasSize.x, 1))
 	quad:addScript(createTargeter(node:findComponent("Transform"))) -- monkey
+
+	logger:logInfo("Initialized objects")
 end
 
 
@@ -239,6 +252,8 @@ function initCameras()
 	offscreenCamera:setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8)
 	offscreenCamera:getRenderTags():remove(RENDER_TARGET_QUAD_TAG)
 	offscreenCameraNode:findComponent("Transform"):setLocalPosition(solo.Vector3(0, 0, 10))
+
+	logger:logInfo("Initialized cameras")
 end
 
 
@@ -254,13 +269,18 @@ function init()
 end
 
 
-device = solo.Device.create(solo.DeviceCreationArgs(solo.DeviceMode.OpenGL, 640, 480, false))
+local args = solo.DeviceCreationArgs(solo.DeviceMode.OpenGL, 640, 480, false, "Solo Tester")
+args.logFilePath = "demo.log"
+
+device = solo.Device.create(args)
+logger = device:getLogger()
+
 device:setStartCallback(function()
 	scene = device:getScene()
 	resourceManager = device:getResourceManager()
 	local _, err = pcall(init)
 	if err then
-		print(err)
+		logger:logCritical(err)
 	end
 end)
 device:run()
