@@ -394,11 +394,11 @@ void LuaScriptManager::registerApi()
 
     // Mesh
     auto mesh = module.beginClass<Mesh>("Mesh");
-    mesh.addFunction("resetStorage", &LuaMesh::resetStorage);
-    mesh.addFunction("updateStorage", &LuaMesh::updateStorage);
-    mesh.addFunction("resetIndexData", &LuaMesh::resetIndexData);
-    mesh.addFunction("updateIndexData", &LuaMesh::updateIndexData);
-    mesh.addFunction("addIndex", &LuaMesh::addIndex);
+    REGISTER_METHOD(mesh, LuaMesh, resetStorage);
+    REGISTER_METHOD(mesh, LuaMesh, updateStorage);
+    REGISTER_METHOD(mesh, LuaMesh, resetIndexData);
+    REGISTER_METHOD(mesh, LuaMesh, updateIndexData);
+    REGISTER_METHOD(mesh, LuaMesh, addIndex);
     REGISTER_METHOD(mesh, Mesh, removeIndex);
     REGISTER_METHOD(mesh, Mesh, getIndexCount);
     REGISTER_METHOD(mesh, Mesh, getIndexPrimitiveType);
@@ -546,12 +546,12 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(node, Node, getScene);
     REGISTER_METHOD(node, Node, getId);
     REGISTER_METHOD(node, Node, removeAllComponents);
+    REGISTER_METHOD(node, LuaScriptComponent, addScript);
+    REGISTER_METHOD(node, LuaScriptComponent, removeScript);
+    REGISTER_METHOD(node, LuaScriptComponent, findComponent);
+    REGISTER_METHOD(node, LuaScriptComponent, addComponent);
+    REGISTER_METHOD(node, LuaScriptComponent, removeComponent);
     node.addFunction("findScript", LuaScriptComponent::getFindScriptFunc(module.state()));
-    node.addFunction("addScript", &LuaScriptComponent::addScript);
-    node.addFunction("removeScript", &LuaScriptComponent::removeScript);
-    node.addFunction("findComponent", &LuaScriptComponent::findComponent);
-    node.addFunction("addComponent", &LuaScriptComponent::addComponent);
-    node.addFunction("removeComponent", &LuaScriptComponent::removeComponent);
     node.endClass();
 
     // Component
@@ -854,9 +854,9 @@ void LuaScriptManager::registerApi()
     mgr.endClass();
 
     // SurfaceRenderer
-    module.beginClass<SurfaceRenderer>("SurfaceRenderer")
-    .addFunction("renderSurface", &LuaSurfaceRenderer::renderSurface)
-    .endClass();
+    auto surfaceRenderer = module.beginClass<SurfaceRenderer>("SurfaceRenderer");
+    REGISTER_METHOD(surfaceRenderer, LuaSurfaceRenderer, renderSurface);
+    surfaceRenderer.endClass();
 
     // FileSystem
     auto fs = module.beginClass<FileSystem>("FileSystem");
