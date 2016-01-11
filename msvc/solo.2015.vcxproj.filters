@@ -187,9 +187,6 @@
     <ClInclude Include="..\include\SoloSpectator.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\stub\SoloStubGraphics.h">
-      <Filter>src\platform\stub</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLBuiltInShaders.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>

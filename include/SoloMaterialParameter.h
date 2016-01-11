@@ -9,8 +9,6 @@
 
 namespace solo
 {
-    class Effect;
-    class Scene;
     class Texture;
     class Material;
     struct RenderContext;

@@ -6,8 +6,6 @@ namespace solo
 {
     class Component;
     class Node;
-    class Camera;
-    class Renderer;
     class Device;
 
     class Scene

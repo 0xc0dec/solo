@@ -5,7 +5,6 @@
 namespace solo
 {
     class SurfaceRenderer;
-    class Material;
 
     class LuaSurfaceRenderer
     {

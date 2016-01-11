@@ -4,8 +4,6 @@
 
 namespace solo
 {
-    enum class DeviceMode;
-
     class EffectVertexAttribute
     {
     public:

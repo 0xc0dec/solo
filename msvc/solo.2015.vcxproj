@@ -89,7 +89,6 @@
     <ClInclude Include="..\src\platform\stub\SoloStubEffect.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubEffectVariable.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubFileSystem.h" />
-    <ClInclude Include="..\src\platform\stub\SoloStubGraphics.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubImageLoader.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubMaterial.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubMesh.h" />

@@ -4,8 +4,6 @@
 
 namespace solo
 {
-    class StubEffectVariable;
-
     class StubEffect: public Effect
     {
     public:
