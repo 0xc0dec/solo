@@ -2,7 +2,7 @@
 #include "SoloFileSystem.h"
 #include "SoloResourceManager.h"
 #include "SoloScene.h"
-#include "SoloLog.h"
+#include "SoloLogger.h"
 #include "platform/stub/SoloStubDevice.h"
 #include "platform/opengl/SoloSDLOpenGLDevice.h"
 

@@ -33,7 +33,7 @@
 #include "SoloSpectator.h"
 #include "SoloSurfaceRenderer.h"
 #include "SoloLuaSurfaceRenderer.h"
-#include "SoloLog.h"
+#include "SoloLogger.h"
 #include <map>
 
 

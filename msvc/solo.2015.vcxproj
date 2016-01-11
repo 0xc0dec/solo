@@ -44,7 +44,7 @@
     <ClInclude Include="..\include\SoloSpectator.h" />
     <ClInclude Include="..\include\SoloSurfaceRenderer.h" />
     <ClInclude Include="..\include\SoloTexture.h" />
-    <ClInclude Include="..\include\SoloLog.h" />
+    <ClInclude Include="..\include\SoloLogger.h" />
     <ClInclude Include="..\include\SoloMaterial.h" />
     <ClInclude Include="..\include\SoloMaterialParameter.h" />
     <ClInclude Include="..\include\SoloMath.h" />
@@ -170,7 +170,7 @@
     <ClCompile Include="..\src\SoloBase.cpp" />
     <ClCompile Include="..\src\SoloDevice.cpp" />
     <ClCompile Include="..\src\SoloFrustum.cpp" />
-    <ClCompile Include="..\src\SoloLog.cpp" />
+    <ClCompile Include="..\src\SoloLogger.cpp" />
     <ClCompile Include="..\src\SoloMaterial.cpp" />
     <ClCompile Include="..\src\SoloMaterialParameter.cpp" />
     <ClCompile Include="..\src\SoloMatrix.cpp" />

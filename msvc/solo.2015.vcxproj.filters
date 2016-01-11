@@ -91,9 +91,6 @@
     <ClInclude Include="..\include\SoloResourceManager.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloLog.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloTexture.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -250,11 +247,11 @@
     <ClInclude Include="..\src\platform\stub\SoloStubMeshLoader.h">
       <Filter>src\platform\stub</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloLogger.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\SoloLog.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloScene.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -518,6 +515,9 @@
     </ClCompile>
     <ClCompile Include="..\src\platform\stub\SoloStubMeshLoader.cpp">
       <Filter>src\platform\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloLogger.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

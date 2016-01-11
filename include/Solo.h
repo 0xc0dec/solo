@@ -17,7 +17,7 @@
 #include "SoloFrustum.h"
 #include "SoloImage.h"
 #include "SoloImageLoader.h"
-#include "SoloLog.h"
+#include "SoloLogger.h"
 #include "SoloMaterial.h"
 #include "SoloMaterialParameter.h"
 #include "SoloMath.h"

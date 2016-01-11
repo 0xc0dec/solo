@@ -1,5 +1,5 @@
 #include "SoloSDLOpenGLDevice.h"
-#include "SoloLog.h"
+#include "SoloLogger.h"
 #include <tuple>
 #include <GL/glew.h>
 

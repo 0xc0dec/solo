@@ -1,4 +1,4 @@
-#include "SoloLog.h"
+#include "SoloLogger.h"
 #include <iostream>
 
 using namespace solo;
