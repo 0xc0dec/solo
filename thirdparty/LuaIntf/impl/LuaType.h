@@ -289,11 +289,7 @@ struct LuaTypeMapping <const char*>
 {
     static void push(lua_State* L, const char* str)
     {
-        if (str != nullptr) {
-            lua_pushstring(L, str);
-        } else {
-            lua_pushnil(L);
-        }
+        lua_pushstring(L, str);
     }
 
     static const char* get(lua_State* L, int index)
@@ -307,9 +303,16 @@ struct LuaTypeMapping <const char*>
     }
 };
 
+//---------------------------------------------------------------------------
+
 template <>
 struct LuaTypeMapping <char*>
-    : LuaTypeMapping <const char*> {};
+{
+    static void push(lua_State* L, const char* str)
+    {
+        lua_pushstring(L, str);
+    }
+};
 
 //---------------------------------------------------------------------------
 
