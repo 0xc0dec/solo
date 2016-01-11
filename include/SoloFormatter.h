@@ -11,17 +11,17 @@ namespace solo
     public:
         std::string operator()() const
         {
-            return _buf.str();
+            return buf.str();
         }
 
         template <class TFirst, class... TRest>
         std::string operator()(TFirst first, TRest... rest)
         {
-            _buf << first;
+            buf << first;
             return operator()(rest...);
         }
 
     private:
-        std::ostringstream _buf;
+        std::ostringstream buf;
     };
 }
