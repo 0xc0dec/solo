@@ -45,10 +45,12 @@ namespace solo
         VertexFormatElement getElement(size_t index) const;
 
         unsigned getVertexSize(unsigned perStorageId) const;
+        unsigned getStorageCount() const;
 
     private:
         std::unordered_map<unsigned, unsigned> sizesPerStorage;
         std::vector<VertexFormatElement> elements;
+        unsigned storageCount = 0;
     };
 
     inline size_t VertexFormat::getElementCount() const
@@ -64,5 +66,10 @@ namespace solo
     inline unsigned VertexFormat::getVertexSize(unsigned perStorageId) const
     {
         return sizesPerStorage.at(perStorageId);
+    }
+
+    inline unsigned VertexFormat::getStorageCount() const
+    {
+        return sizesPerStorage.size();
     }
 }

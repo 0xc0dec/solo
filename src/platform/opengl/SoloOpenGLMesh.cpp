@@ -10,21 +10,8 @@ OpenGLMesh::OpenGLMesh(const VertexFormat &vertexFormat):
     if (!elementCount)
         return;
 
-    // Ensure there are no "holes" in the storage ids
-    unsigned maxStorageId = 0;
-    std::unordered_set<unsigned> uniqueStorageIds;
-    for (auto i = 0; i < elementCount; ++i)
-    {
-        auto storageId = vertexFormat.getElement(i).storageId;
-        uniqueStorageIds.insert(storageId);
-        if (storageId >= maxStorageId)
-            maxStorageId = storageId;
-    }
-    if (uniqueStorageIds.size() != maxStorageId + 1)
-        SL_THROW_FMT(EngineException, "Vertex format storage ids must consitute a continuous sequence");
-
-    handles.resize(maxStorageId + 1);
-    elementCounts.resize(maxStorageId + 1);
+    handles.resize(vertexFormat.getStorageCount());
+    elementCounts.resize(vertexFormat.getStorageCount());
     
     for (auto i = 0; i < elementCount; ++i)
     {
@@ -34,7 +21,7 @@ OpenGLMesh::OpenGLMesh(const VertexFormat &vertexFormat):
         {
             glGenBuffers(1, &handle);
             if (!handle)
-                SL_THROW_FMT(EngineException, "Unable to obtain mesh buffer handle");
+                SL_THROW_FMT(EngineException, "Unable to obtain handle for mesh storage ", el.storageId);
             handles[el.storageId] = handle;
             elementCounts[el.storageId] = 0;
         }
