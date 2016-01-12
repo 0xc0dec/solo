@@ -10,7 +10,7 @@ using namespace solo;
 struct PngReadContext
 {
     std::vector<uint8_t> *bytes;
-    unsigned int offset;
+    size_t offset;
 };
 
 
@@ -74,7 +74,11 @@ shared<Image> PngImageLoader::load(const std::string &uri)
     }
 
     auto stride = png_get_rowbytes(png, info);
-    auto result = SL_NEW_SHARED(Image, { width, height, colorFormat });
+    auto result = SL_NEW_SHARED(Image, {
+        static_cast<int>(width),
+        static_cast<int>(height),
+        colorFormat
+    });
     result->data.resize(stride * height);
     auto rows = png_get_rows(png, info);
     for (unsigned int i = 0; i < height; ++i)

@@ -9,8 +9,8 @@ VertexFormat::VertexFormat(const std::vector<VertexFormatElement> &elements):
     if (elements.empty())
         return;
 
-    unsigned maxStorageId = 0;
-    std::unordered_set<unsigned> uniqueStorageIds;
+    int maxStorageId = 0;
+    std::unordered_set<int> uniqueStorageIds;
     for (const auto &e : elements)
     {
         auto storageId = e.storageId;

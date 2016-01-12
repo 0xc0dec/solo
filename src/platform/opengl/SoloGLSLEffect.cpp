@@ -116,7 +116,7 @@ void GLSLEffect::discoverVariables()
     GLint size;
     GLenum type;
     unsigned samplerIndex = 0;
-    for (size_t i = 0; i < activeUniforms; ++i)
+    for (GLint i = 0; i < activeUniforms; ++i)
     {
         glGetActiveUniform(program, i, nameMaxLength, nullptr, &size, &type, rawName.data());
         rawName[nameMaxLength] = '\0';
@@ -157,7 +157,7 @@ void GLSLEffect::discoverVertexAttributes()
     GLint attribSize;
     GLenum attribType;
     std::vector<GLchar> rawName(nameMaxLength + 1);
-    for (size_t i = 0; i < activeAttributes; ++i)
+    for (GLint i = 0; i < activeAttributes; ++i)
     {
         glGetActiveAttrib(program, i, nameMaxLength, nullptr, &attribSize, &attribType, rawName.data());
         rawName[nameMaxLength] = '\0';

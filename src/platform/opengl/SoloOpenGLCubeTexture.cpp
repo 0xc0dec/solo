@@ -18,7 +18,7 @@ OpenGLCubeTexture::~OpenGLCubeTexture()
 }
 
 
-void OpenGLCubeTexture::setData(CubeTextureFace face, ColorFormat format, const std::vector<uint8_t> &data, unsigned width, unsigned height)
+void OpenGLCubeTexture::setData(CubeTextureFace face, ColorFormat format, const std::vector<uint8_t> &data, int width, int height)
 {
     auto glFace = OpenGLHelper::convertCubeTextureFace(face);
     bind();

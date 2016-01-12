@@ -32,7 +32,7 @@ Vector3 parseVector3(const char *from, const char *to)
         if ((from == to || isspace(c)) && bufIdx > 0)
         {
             buf[bufIdx] = '\0';
-            result[++resultIdx] = atof(buf);
+            result[++resultIdx] = static_cast<float>(atof(buf));
             bufIdx = 0;
             if (resultIdx == 2)
                 break;
@@ -61,7 +61,7 @@ void parseIndexes(const char **from, const char *to, unsigned **result)
             if (bufIdx > 0)
             {
                 buf[bufIdx] = '\0';
-                *result[resultIdx++] = atof(buf);
+                *result[resultIdx++] = atoi(buf);
                 bufIdx = 0;
             }
             else if (resultIdx > 0)
@@ -116,7 +116,7 @@ shared<Mesh> ObjMeshLoader::load(const std::string &uri)
         {
             auto from = line.c_str() + 2;
             auto to = from + lineSize - 3;
-            unsigned spaceIdx = 1;
+            size_t spaceIdx = 1;
             unsigned vIdx, uvIdx, nIdx;
             unsigned *idxs[] = { &vIdx, &uvIdx, &nIdx };
             std::string three;
@@ -167,17 +167,17 @@ shared<Mesh> ObjMeshLoader::load(const std::string &uri)
     auto mesh = resourceManager->getOrCreateMesh(VertexFormat(vertexFormatElements), uri);
 
     elementStorage = 0;
-    mesh->resetStorage(elementStorage++, reinterpret_cast<const float *>(vertices.data()), vertices.size(), false);
+    mesh->resetStorage(elementStorage++, reinterpret_cast<const float *>(vertices.data()), static_cast<int>(vertices.size()), false);
     if (hasUVs)
-        mesh->resetStorage(elementStorage++, reinterpret_cast<const float *>(uvs.data()), uvs.size(), false);
+        mesh->resetStorage(elementStorage++, reinterpret_cast<const float *>(uvs.data()), static_cast<int>(uvs.size()), false);
     if (hasNormals)
-        mesh->resetStorage(elementStorage, reinterpret_cast<const float *>(normals.data()), normals.size(), false);
+        mesh->resetStorage(elementStorage, reinterpret_cast<const float *>(normals.data()), static_cast<int>(normals.size()), false);
 
     for (const auto &indices : allIndices)
     {
         auto index = mesh->addIndex(MeshIndexFormat::UnsignedShort);
         mesh->setIndexPrimitiveType(index, MeshPrimitiveType::Triangles);
-        mesh->resetIndexData(index, reinterpret_cast<const void *>(indices.data()), indices.size(), false);
+        mesh->resetIndexData(index, reinterpret_cast<const void *>(indices.data()), static_cast<int>(indices.size()), false);
     }
 
     return mesh;

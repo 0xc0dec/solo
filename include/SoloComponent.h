@@ -23,8 +23,8 @@ namespace solo
         virtual void render(RenderContext &context) {}
         virtual void onAfterCameraRender() {}
 
-        virtual unsigned getRenderQueue() const;
-        virtual void setRenderQueue(unsigned queue);
+        virtual int getRenderQueue() const;
+        virtual void setRenderQueue(int queue);
 
         Node getNode() const;
 
@@ -41,12 +41,12 @@ namespace solo
         unsigned renderQueue = KnownRenderQueues::NotRendered;
     };
 
-    inline unsigned Component::getRenderQueue() const
+    inline int Component::getRenderQueue() const
     {
         return renderQueue;
     }
 
-    inline void Component::setRenderQueue(unsigned queue)
+    inline void Component::setRenderQueue(int queue)
     {
         renderQueue = queue;
     }

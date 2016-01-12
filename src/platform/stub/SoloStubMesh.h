@@ -9,27 +9,27 @@ namespace solo
     public:
         virtual ~StubMesh() {}
 
-        virtual void resetStorage(unsigned storageId, const float *data, unsigned elementCount, bool dynamic) override {}
-        virtual void updateStorage(unsigned storageId, const float *data, unsigned elementCount, unsigned updateFromIndex) override {}
+        virtual void resetStorage(int storageId, const float *data, int elementCount, bool dynamic) override {}
+        virtual void updateStorage(int storageId, const float *data, int elementCount, int updateFromIndex) override {}
 
-        virtual unsigned addIndex(MeshIndexFormat indexFormat) override;
-        virtual void removeIndex(unsigned index) override;
+        virtual int addIndex(MeshIndexFormat indexFormat) override;
+        virtual void removeIndex(int index) override;
         virtual size_t getIndexCount() const override;
-        virtual void resetIndexData(unsigned index, const void *data, unsigned elementCount, bool dynamic) override {}
-        virtual void updateIndexData(unsigned index, const void *data, unsigned elementCount, unsigned updateFromIndex) override {}
+        virtual void resetIndexData(int index, const void *data, int elementCount, bool dynamic) override {}
+        virtual void updateIndexData(int index, const void *data, int elementCount, int updateFromIndex) override {}
 
-        virtual MeshPrimitiveType getIndexPrimitiveType(unsigned index) override;
-        virtual void setIndexPrimitiveType(unsigned index, MeshPrimitiveType primitiveType) override;
+        virtual MeshPrimitiveType getIndexPrimitiveType(int index) override;
+        virtual void setIndexPrimitiveType(int index, MeshPrimitiveType primitiveType) override;
 
         virtual void draw() override {}
-        virtual void drawIndex(unsigned index) override {}
+        virtual void drawIndex(int index) override {}
 
     private:
         friend class Mesh;
 
         StubMesh(const VertexFormat &format): Mesh(format) {}
 
-        std::vector<unsigned> indexes;
+        std::vector<int> indexes;
         std::vector<MeshPrimitiveType> indexPrimitiveTypes;
     };
 
@@ -38,12 +38,12 @@ namespace solo
         return indexes.size();
     }
 
-    inline MeshPrimitiveType StubMesh::getIndexPrimitiveType(unsigned index)
+    inline MeshPrimitiveType StubMesh::getIndexPrimitiveType(int index)
     {
         return indexPrimitiveTypes[index];
     }
 
-    inline void StubMesh::setIndexPrimitiveType(unsigned index, MeshPrimitiveType primitiveType)
+    inline void StubMesh::setIndexPrimitiveType(int index, MeshPrimitiveType primitiveType)
     {
         indexPrimitiveTypes[index] = primitiveType;
     }

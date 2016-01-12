@@ -24,8 +24,8 @@ namespace solo
     struct VertexFormatElement
     {
         VertexFormatElementSemantics semantics;
-        unsigned size;
-        unsigned storageId;
+        int size;
+        int storageId;
 
         VertexFormatElement(VertexFormatElementSemantics semantics, unsigned size, unsigned storageId):
             semantics(semantics),
@@ -44,13 +44,13 @@ namespace solo
         size_t getElementCount() const;
         VertexFormatElement getElement(size_t index) const;
 
-        unsigned getVertexSize(unsigned perStorageId) const;
-        unsigned getStorageCount() const;
+        int getVertexSize(int perStorageId) const;
+        int getStorageCount() const;
 
     private:
-        std::unordered_map<unsigned, unsigned> sizesPerStorage;
+        std::unordered_map<int, int> sizesPerStorage;
         std::vector<VertexFormatElement> elements;
-        unsigned storageCount = 0;
+        int storageCount = 0;
     };
 
     inline size_t VertexFormat::getElementCount() const
@@ -63,13 +63,13 @@ namespace solo
         return elements[index];
     }
 
-    inline unsigned VertexFormat::getVertexSize(unsigned perStorageId) const
+    inline int VertexFormat::getVertexSize(int perStorageId) const
     {
         return sizesPerStorage.at(perStorageId);
     }
 
-    inline unsigned VertexFormat::getStorageCount() const
+    inline int VertexFormat::getStorageCount() const
     {
-        return sizesPerStorage.size();
+        return static_cast<int>(sizesPerStorage.size());
     }
 }

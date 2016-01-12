@@ -39,21 +39,21 @@ namespace solo
         SL_NONCOPYABLE(Mesh);
         virtual ~Mesh() {}
 
-        virtual void resetStorage(unsigned storageId, const float *data, unsigned elementCount, bool dynamic) = 0;
-        virtual void updateStorage(unsigned storageId, const float *data, unsigned elementCount, unsigned updateFromIndex) = 0;
+        virtual void resetStorage(int storageId, const float *data, int elementCount, bool dynamic) = 0;
+        virtual void updateStorage(int storageId, const float *data, int elementCount, int updateFromIndex) = 0;
 
-        virtual unsigned addIndex(MeshIndexFormat indexFormat) = 0;
-        virtual void removeIndex(unsigned index) = 0;
+        virtual int addIndex(MeshIndexFormat indexFormat) = 0;
+        virtual void removeIndex(int index) = 0;
         virtual size_t getIndexCount() const = 0;
 
-        virtual void resetIndexData(unsigned index, const void *data, unsigned elementCount, bool dynamic) = 0;
-        virtual void updateIndexData(unsigned index, const void *data, unsigned elementCount, unsigned updateFromIndex) = 0;
+        virtual void resetIndexData(int index, const void *data, int elementCount, bool dynamic) = 0;
+        virtual void updateIndexData(int index, const void *data, int elementCount, int updateFromIndex) = 0;
 
-        virtual MeshPrimitiveType getIndexPrimitiveType(unsigned index) = 0;
-        virtual void setIndexPrimitiveType(unsigned index, MeshPrimitiveType primitiveType) = 0;
+        virtual MeshPrimitiveType getIndexPrimitiveType(int index) = 0;
+        virtual void setIndexPrimitiveType(int index, MeshPrimitiveType primitiveType) = 0;
 
         virtual void draw() = 0;
-        virtual void drawIndex(unsigned index) = 0;
+        virtual void drawIndex(int index) = 0;
 
         VertexFormat getVertexFormat() const;
 

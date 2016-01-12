@@ -45,7 +45,7 @@ OpenGLMesh::~OpenGLMesh()
 }
 
 
-void OpenGLMesh::resetStorage(unsigned storageId, const float *data, unsigned elementCount, bool dynamic)
+void OpenGLMesh::resetStorage(int storageId, const float *data, int elementCount, bool dynamic)
 {
     // No validations intentionally
     auto handle = handles[storageId];
@@ -56,7 +56,7 @@ void OpenGLMesh::resetStorage(unsigned storageId, const float *data, unsigned el
 }
 
 
-void OpenGLMesh::updateStorage(unsigned storageId, const float *data, unsigned elementCount, unsigned updateFromIndex)
+void OpenGLMesh::updateStorage(int storageId, const float *data, int elementCount, int updateFromIndex)
 {
     // No validations intentionally
     auto handle = handles[storageId];
@@ -67,7 +67,7 @@ void OpenGLMesh::updateStorage(unsigned storageId, const float *data, unsigned e
 }
 
 
-unsigned OpenGLMesh::addIndex(MeshIndexFormat indexFormat)
+int OpenGLMesh::addIndex(MeshIndexFormat indexFormat)
 {
     GLuint handle = 0;
     glGenBuffers(1, &handle);
@@ -79,11 +79,11 @@ unsigned OpenGLMesh::addIndex(MeshIndexFormat indexFormat)
     indexPrimitiveTypes.push_back(MeshPrimitiveType::Triangles);
     indexElementCounts.push_back(0);
 
-    return indexHandles.size() - 1;
+    return static_cast<int>(indexHandles.size() - 1);
 }
 
 
-void OpenGLMesh::removeIndex(unsigned index)
+void OpenGLMesh::removeIndex(int index)
 {
     auto handle = indexHandles[index];
     glDeleteBuffers(1, &handle);
@@ -95,7 +95,7 @@ void OpenGLMesh::removeIndex(unsigned index)
 }
 
 
-void OpenGLMesh::resetIndexData(unsigned index, const void *data, unsigned elementCount, bool dynamic)
+void OpenGLMesh::resetIndexData(int index, const void *data, int elementCount, bool dynamic)
 {
     // No validations intentionally
     auto handle = indexHandles[index];
@@ -108,7 +108,7 @@ void OpenGLMesh::resetIndexData(unsigned index, const void *data, unsigned eleme
 }
 
 
-void OpenGLMesh::updateIndexData(unsigned index, const void *data, unsigned elementCount, unsigned updateFromIndex)
+void OpenGLMesh::updateIndexData(int index, const void *data, int elementCount, int updateFromIndex)
 {
     // No validations intentionally
     auto handle = indexHandles.at(index);
@@ -126,7 +126,7 @@ void OpenGLMesh::draw()
 }
 
 
-void OpenGLMesh::drawIndex(unsigned index)
+void OpenGLMesh::drawIndex(int index)
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexHandles[index]);
     glDrawElements(OpenGLHelper::convertMeshPrimitiveType(indexPrimitiveTypes[index]),

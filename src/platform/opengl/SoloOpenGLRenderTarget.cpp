@@ -33,7 +33,7 @@ void OpenGLRenderTarget::unbind()
 }
 
 
-void OpenGLRenderTarget::setColorAttachment(size_t index, shared<Texture2D> texture)
+void OpenGLRenderTarget::setColorAttachment(int index, shared<Texture2D> texture)
 {
     if (index > GL_MAX_COLOR_ATTACHMENTS)
         SL_THROW_FMT(EngineException, "Given color attachment index is not supported (max allowed: ", GL_MAX_COLOR_ATTACHMENTS, ")");
@@ -48,8 +48,8 @@ void OpenGLRenderTarget::setColorAttachment(size_t index, shared<Texture2D> text
         if (!colorAttachments.empty())
         {
             auto existingSize = colorAttachments.begin()->second->getSize();
-            if (static_cast<size_t>(textureSize.x) != static_cast<size_t>(existingSize.x) ||
-                    static_cast<size_t>(textureSize.y) != static_cast<size_t>(existingSize.y)) // TODO this could be rewritten with an integer vector
+            if (static_cast<int>(textureSize.x) != static_cast<int>(existingSize.x) ||
+                    static_cast<int>(textureSize.y) != static_cast<int>(existingSize.y)) // TODO this could be rewritten with an integer vector
                 SL_THROW_FMT(EngineException, "The new color attachment size differs from that of already set attachments");
         }
 
@@ -64,7 +64,7 @@ void OpenGLRenderTarget::setColorAttachment(size_t index, shared<Texture2D> text
             if (!depthBufferHandle)
                 SL_THROW_FMT(EngineException, "Could not obtain depth buffer handle");
             glBindRenderbuffer(GL_RENDERBUFFER, depthBufferHandle);
-            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, textureSize.x, textureSize.y);
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, static_cast<int>(textureSize.x), static_cast<int>(textureSize.y));
             glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferHandle);
         }
 
@@ -105,13 +105,13 @@ Vector2 OpenGLRenderTarget::getColorAttachmentSize() const
 }
 
 
-size_t OpenGLRenderTarget::getColorAttachmentCount() const
+int OpenGLRenderTarget::getColorAttachmentCount() const
 {
-    return colorAttachments.size();
+    return static_cast<int>(colorAttachments.size());
 }
 
 
-shared<Texture2D> OpenGLRenderTarget::getColorAttachment(size_t index) const
+shared<Texture2D> OpenGLRenderTarget::getColorAttachment(int index) const
 {
     auto where = colorAttachments.find(index);
     if (where == colorAttachments.end())
