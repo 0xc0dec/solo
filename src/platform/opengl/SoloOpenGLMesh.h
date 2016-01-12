@@ -36,10 +36,6 @@ namespace solo
 
         OpenGLMesh(const VertexFormat &vertexFormat);
 
-        static unsigned OpenGLMesh::getIndexElementSize(MeshIndexFormat indexFormat);
-        static GLenum convertPrimitiveType(MeshPrimitiveType primitiveType);
-        static GLenum convertIndexType(MeshIndexFormat indexFormat);
-
         std::vector<GLuint> indexHandles;
         std::vector<MeshIndexFormat> indexFormats;
         std::vector<MeshPrimitiveType> indexPrimitiveTypes;

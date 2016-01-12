@@ -1,4 +1,5 @@
 #include "SoloOpenGLMesh.h"
+#include "SoloOpenGLHelper.h"
 
 using namespace solo;
 
@@ -99,7 +100,7 @@ void OpenGLMesh::resetIndexData(unsigned index, const void *data, unsigned eleme
     // No validations intentionally
     auto handle = indexHandles[index];
     auto format = indexFormats[index];
-    auto elementSize = getIndexElementSize(format);
+    auto elementSize = OpenGLHelper::getMeshIndexElementSize(format);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementSize * elementCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -111,7 +112,7 @@ void OpenGLMesh::updateIndexData(unsigned index, const void *data, unsigned elem
 {
     // No validations intentionally
     auto handle = indexHandles.at(index);
-    auto elementSize = getIndexElementSize(indexFormats[index]);
+    auto elementSize = OpenGLHelper::getMeshIndexElementSize(indexFormats[index]);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle);
     glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, updateFromIndex * elementSize, elementCount * elementSize, data);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -121,64 +122,13 @@ void OpenGLMesh::updateIndexData(unsigned index, const void *data, unsigned elem
 void OpenGLMesh::draw()
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glDrawArrays(convertPrimitiveType(primitiveType), 0, elementCounts[0]); // TODO really?
+    glDrawArrays(OpenGLHelper::convertMeshPrimitiveType(primitiveType), 0, elementCounts[0]); // TODO really?
 }
 
 
 void OpenGLMesh::drawIndex(unsigned index)
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexHandles[index]);
-    glDrawElements(convertPrimitiveType(indexPrimitiveTypes[index]), indexElementCounts[index], convertIndexType(indexFormats[index]), nullptr);
-}
-
-
-unsigned OpenGLMesh::getIndexElementSize(MeshIndexFormat indexFormat)
-{
-    switch (indexFormat)
-    {
-    case MeshIndexFormat::UnsignedByte:
-        return 1;
-    case MeshIndexFormat::UnsignedShort:
-        return 2;
-    case MeshIndexFormat::UnsignedInt:
-        return 4;
-    default:
-        SL_THROW_FMT(EngineException, "Unrecognized index format");
-    }
-}
-
-
-GLenum OpenGLMesh::convertPrimitiveType(MeshPrimitiveType primitiveType)
-{
-    switch (primitiveType)
-    {
-    case MeshPrimitiveType::Triangles:
-        return GL_TRIANGLES;
-    case MeshPrimitiveType::TriangleStrip:
-        return GL_TRIANGLE_STRIP;
-    case MeshPrimitiveType::Lines:
-        return GL_LINES;
-    case MeshPrimitiveType::LineStrip:
-        return GL_LINE_STRIP;
-    case MeshPrimitiveType::Points:
-        return GL_POINTS;
-    default:
-        SL_THROW_FMT(EngineException, "Unknown primitive type");
-    }
-}
-
-
-GLenum OpenGLMesh::convertIndexType(MeshIndexFormat indexFormat)
-{
-    switch (indexFormat)
-    {
-    case MeshIndexFormat::UnsignedByte:
-        return GL_UNSIGNED_BYTE;
-    case MeshIndexFormat::UnsignedShort:
-        return GL_UNSIGNED_SHORT;
-    case MeshIndexFormat::UnsignedInt:
-        return GL_UNSIGNED_INT;
-    default:
-        SL_THROW_FMT(EngineException, "Unknown index type");
-    }
+    glDrawElements(OpenGLHelper::convertMeshPrimitiveType(indexPrimitiveTypes[index]),
+        indexElementCounts[index], OpenGLHelper::convertMeshIndexType(indexFormats[index]), nullptr);
 }
