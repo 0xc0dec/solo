@@ -4,11 +4,12 @@
 #include "SoloTexture.h"
 #include "SoloMaterial.h"
 #include "SoloMesh.h"
+#include "SoloCubeTexture.h"
 
 using namespace solo;
 
 
-GLenum OpenGLHelper::convertToGLColorFormat(ColorFormat format)
+GLenum OpenGLHelper::convertColorFormat(ColorFormat format)
 {
     switch (format)
     {
@@ -22,7 +23,7 @@ GLenum OpenGLHelper::convertToGLColorFormat(ColorFormat format)
 }
 
 
-GLenum OpenGLHelper::convertToGLWrapMode(TextureWrapping mode)
+GLenum OpenGLHelper::convertTextureWrapping(TextureWrapping mode)
 {
     switch (mode)
     {
@@ -36,7 +37,7 @@ GLenum OpenGLHelper::convertToGLWrapMode(TextureWrapping mode)
 }
 
 
-GLenum OpenGLHelper::convertToGLFilter(TextureFiltering filter)
+GLenum OpenGLHelper::convertTextureFiltering(TextureFiltering filter)
 {
     switch (filter)
     {
@@ -58,7 +59,7 @@ GLenum OpenGLHelper::convertToGLFilter(TextureFiltering filter)
 }
 
 
-GLenum OpenGLHelper::convertToGLDepthFunc(DepthPassFunction func)
+GLenum OpenGLHelper::convertDepthPassFunction(DepthPassFunction func)
 {
     switch (func)
     {
@@ -124,5 +125,27 @@ int OpenGLHelper::getMeshIndexElementSize(MeshIndexFormat indexFormat)
         return 4;
     default:
         SL_THROW_FMT(EngineException, "Unrecognized index format");
+    }
+}
+
+
+GLenum OpenGLHelper::convertCubeTextureFace(CubeTextureFace face)
+{
+    switch (face)
+    {
+    case CubeTextureFace::Front:
+        return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
+    case CubeTextureFace::Back:
+        return GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
+    case CubeTextureFace::Right:
+        return GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
+    case CubeTextureFace::Left:
+        return GL_TEXTURE_CUBE_MAP_POSITIVE_X;
+    case CubeTextureFace::Top:
+        return GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
+    case CubeTextureFace::Bottom:
+        return GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
+    default:
+        SL_THROW_FMT(EngineException, "Unexpected cube texture face ", static_cast<int>(face));
     }
 }

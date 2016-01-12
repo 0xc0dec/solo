@@ -33,7 +33,7 @@ void OpenGLMaterial::applyState()
     else
         glDisable(GL_DEPTH_TEST);
 
-    auto depthFunc = OpenGLHelper::convertToGLDepthFunc(depthPassFunc);
+    auto depthFunc = OpenGLHelper::convertDepthPassFunction(depthPassFunc);
     glDepthFunc(depthFunc);
 
     glDepthMask(depthWrite ? GL_TRUE : GL_FALSE);

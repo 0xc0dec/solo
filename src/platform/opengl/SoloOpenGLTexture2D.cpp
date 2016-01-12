@@ -33,10 +33,10 @@ void OpenGLTexture2D::unbind()
 void OpenGLTexture2D::apply()
 {
     bind();
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, OpenGLHelper::convertToGLFilter(minFiltering));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, OpenGLHelper::convertToGLFilter(magFiltering));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, OpenGLHelper::convertToGLWrapMode(horizontalWrapping));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, OpenGLHelper::convertToGLWrapMode(verticalWrapping));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, OpenGLHelper::convertTextureFiltering(minFiltering));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, OpenGLHelper::convertTextureFiltering(magFiltering));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, OpenGLHelper::convertTextureWrapping(horizontalWrapping));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, OpenGLHelper::convertTextureWrapping(verticalWrapping));
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy);
 }
 
@@ -45,7 +45,7 @@ void OpenGLTexture2D::applyData(ColorFormat format, const std::vector<uint8_t> &
 {
     bind();
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexImage2D(GL_TEXTURE_2D, 0, OpenGLHelper::convertToGLColorFormat(format), width, height, 0, OpenGLHelper::convertToGLColorFormat(format), GL_UNSIGNED_BYTE, data.size() ? data.data() : 0);
+    glTexImage2D(GL_TEXTURE_2D, 0, OpenGLHelper::convertColorFormat(format), width, height, 0, OpenGLHelper::convertColorFormat(format), GL_UNSIGNED_BYTE, data.size() ? data.data() : 0);
     unbind();
 }
 
