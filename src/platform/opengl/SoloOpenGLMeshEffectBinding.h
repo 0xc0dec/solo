@@ -16,7 +16,7 @@ namespace solo
     private:
         friend class MeshEffectBinding;
 
-        OpenGLMeshEffectBinding(Mesh *mesh, Effect *effect);
+        OpenGLMeshEffectBinding(Mesh* mesh, Effect* effect);
 
         GLuint vertexArrayHandle = 0;
     };

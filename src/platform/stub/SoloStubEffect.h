@@ -10,7 +10,7 @@ namespace solo
         virtual void bind() override {}
         virtual void unbind() override {}
 
-        virtual EffectVariable *findVariable(const std::string &name) const override;
+        virtual EffectVariable* findVariable(const std::string& name) const override;
 
     private:
         friend class Effect;

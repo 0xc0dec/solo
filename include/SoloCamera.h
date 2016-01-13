@@ -18,7 +18,7 @@ namespace solo
     class Camera : public ComponentBase<Camera>, protected TransformCallback
     {
     public:
-        static shared<Camera> create(DeviceMode mode, Scene *scene, Node node);
+        static shared<Camera> create(DeviceMode mode, Scene* scene, Node node);
 
         virtual void init() override;
         virtual void terminate() override;
@@ -26,7 +26,7 @@ namespace solo
         void apply();
         void finish();
 
-        BitFlags &getRenderTags();
+        BitFlags& getRenderTags();
 
         shared<RenderTarget> getRenderTarget() const;
         void setRenderTarget(shared<RenderTarget> target);
@@ -59,16 +59,16 @@ namespace solo
         float getAspectRatio() const;
         void setAspectRatio(float ratio);
 
-        const Matrix &getViewMatrix();
-        const Matrix &getInverseViewMatrix();
-        const Matrix &getProjectionMatrix();
-        const Matrix &getViewProjectionMatrix();
-        const Matrix &getInverseViewProjectionMatrix();
+        const Matrix& getViewMatrix();
+        const Matrix& getInverseViewMatrix();
+        const Matrix& getProjectionMatrix();
+        const Matrix& getViewProjectionMatrix();
+        const Matrix& getInverseViewProjectionMatrix();
 
     protected:
-        Camera(Scene *scene, Node node);
+        Camera(Scene* scene, Node node);
 
-        virtual void onTransformChanged(const Transform *transform) override;
+        virtual void onTransformChanged(const Transform* transform) override;
 
         virtual void applyViewport() = 0;
         virtual void applyClearColor() = 0;
@@ -77,9 +77,9 @@ namespace solo
         BitFlags dirtyFlags;
         BitFlags renderTags;
 
-        Scene *scene;
+        Scene* scene;
 
-        Transform *transform = nullptr;
+        Transform* transform = nullptr;
         shared<RenderTarget> renderTarget = nullptr;
 
         bool ortho = false;
@@ -142,7 +142,7 @@ namespace solo
         return aspectRatio;
     }
 
-    inline BitFlags &Camera::getRenderTags()
+    inline BitFlags& Camera::getRenderTags()
     {
         return renderTags;
     }

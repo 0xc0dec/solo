@@ -10,7 +10,7 @@ namespace solo
         virtual void beginUpdate() override;
         virtual void endUpdate() override;
 
-        virtual void setWindowTitle(const std::string &title) override;
+        virtual void setWindowTitle(const std::string& title) override;
         virtual std::string getWindowTitle() const override;
 
         virtual void setCursorCaptured(bool captured) override;
@@ -22,7 +22,7 @@ namespace solo
     private:
         friend class Device;
 
-        explicit StubDevice(const DeviceCreationArgs &args);
+        explicit StubDevice(const DeviceCreationArgs& args);
 
         std::string windowTitle;
     };

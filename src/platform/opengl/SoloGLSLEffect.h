@@ -16,7 +16,7 @@ namespace solo
     private:
         friend class Effect;
 
-        GLSLEffect(const std::string &vsSrc, const std::string &fsSrc);
+        GLSLEffect(const std::string& vsSrc, const std::string& fsSrc);
 
         void deleteShader(GLuint vs);
         void discoverVariables();

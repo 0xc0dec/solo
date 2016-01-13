@@ -13,7 +13,7 @@ namespace solo
         std::string getName() const;
 
     protected:
-        EffectVertexAttribute(const std::string &name): name(name) {}
+        EffectVertexAttribute(const std::string& name): name(name) {}
 
     private:
         std::string name;

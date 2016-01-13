@@ -9,7 +9,7 @@
 using namespace solo;
 
 
-Ray::Ray(const Vector3 &origin, const Vector3 &direction)
+Ray::Ray(const Vector3& origin, const Vector3& direction)
 {
     set(origin, direction);
 }
@@ -21,7 +21,7 @@ Ray::Ray(float originX, float originY, float originZ, float dirX, float dirY, fl
 }
 
 
-void Ray::setOrigin(const Vector3 &origin)
+void Ray::setOrigin(const Vector3& origin)
 {
     this->origin = origin;
 }
@@ -35,7 +35,7 @@ void Ray::setOrigin(float x, float y, float z)
 }
 
 
-void Ray::setDirection(const Vector3 &direction)
+void Ray::setDirection(const Vector3& direction)
 {
     this->direction = direction;
     normalize();
@@ -51,19 +51,19 @@ void Ray::setDirection(float x, float y, float z)
 }
 
 
-float Ray::getIntersection(const BoundingSphere &sphere) const
+float Ray::getIntersection(const BoundingSphere& sphere) const
 {
     return sphere.getRayIntersection(*this);
 }
 
 
-float Ray::getIntersection(const BoundingBox &box) const
+float Ray::getIntersection(const BoundingBox& box) const
 {
     return box.getRayIntersection(*this);
 }
 
 
-float Ray::getIntersection(const Frustum &frustum) const
+float Ray::getIntersection(const Frustum& frustum) const
 {
     auto n = frustum.getNearPlane();
     auto nD = getIntersection(n);
@@ -108,9 +108,9 @@ float Ray::getIntersection(const Frustum &frustum) const
 }
 
 
-float Ray::getIntersection(const Plane &plane) const
+float Ray::getIntersection(const Plane& plane) const
 {
-    const auto &normal = plane.getNormal();
+    const auto& normal = plane.getNormal();
     // If the origin of the ray is on the plane then the distance is zero.
     auto alpha = normal.dot(origin) + plane.getDistance();
     if (Math::approxZero(alpha))
@@ -130,7 +130,7 @@ float Ray::getIntersection(const Plane &plane) const
 }
 
 
-void Ray::set(const Vector3 &origin, const Vector3 &direction)
+void Ray::set(const Vector3& origin, const Vector3& direction)
 {
     this->origin = origin;
     this->direction = direction;
@@ -138,7 +138,7 @@ void Ray::set(const Vector3 &origin, const Vector3 &direction)
 }
 
 
-void Ray::set(const Ray &ray)
+void Ray::set(const Ray& ray)
 {
     origin = ray.origin;
     direction = ray.direction;
@@ -146,7 +146,7 @@ void Ray::set(const Ray &ray)
 }
 
 
-void Ray::transform(const Matrix &matrix)
+void Ray::transform(const Matrix& matrix)
 {
     origin = matrix.transformPoint(origin);
     direction = matrix.transformDirection(direction);

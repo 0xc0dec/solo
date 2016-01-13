@@ -22,7 +22,7 @@ MeshRenderer::MeshRenderer(Node node):
 }
 
 
-void MeshRenderer::render(RenderContext &context)
+void MeshRenderer::render(RenderContext& context)
 {
     if (!mesh)
         return;
@@ -89,7 +89,7 @@ void MeshRenderer::setMaterial(unsigned index, shared<Material> material)
 }
 
 
-Material *MeshRenderer::findMaterial(unsigned index) const
+Material* MeshRenderer::findMaterial(unsigned index) const
 {
     if (materials.find(index) == materials.end())
         return nullptr;

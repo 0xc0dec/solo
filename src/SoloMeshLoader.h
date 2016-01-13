@@ -14,17 +14,17 @@ namespace solo
         SL_NONCOPYABLE(MeshLoader);
         virtual ~MeshLoader() {}
 
-        virtual bool isLoadable(const std::string &uri) = 0;
-        virtual shared<Mesh> load(const std::string &uri) = 0;
+        virtual bool isLoadable(const std::string& uri) = 0;
+        virtual shared<Mesh> load(const std::string& uri) = 0;
 
     protected:
-        MeshLoader(FileSystem *fs, ResourceManager *resourceManager):
+        MeshLoader(FileSystem* fs, ResourceManager* resourceManager):
             fs(fs),
             resourceManager(resourceManager)
         {
         }
 
-        FileSystem *fs;
-        ResourceManager *resourceManager;
+        FileSystem* fs;
+        ResourceManager* resourceManager;
     };
 }

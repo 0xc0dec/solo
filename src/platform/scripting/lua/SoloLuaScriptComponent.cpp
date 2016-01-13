@@ -10,7 +10,7 @@ using namespace solo;
 using namespace LuaIntf;
 
 
-LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef &component) :
+LuaScriptComponent::LuaScriptComponent(const Node& node, LuaRef& component) :
     ComponentBase<LuaScriptComponent>(node),
     component(component)
 {
@@ -19,7 +19,7 @@ LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef &component) :
     initFunc = component.has("init") ? component.get<std::function<void(LuaRef)>>("init") : [](LuaRef) {};
     updateFunc = component.has("update") ? component.get<std::function<void(LuaRef)>>("update") : [](LuaRef) {};
     terminateFunc = component.has("terminate") ? component.get<std::function<void(LuaRef)>>("terminate") : [](LuaRef) {};
-    renderFunc = component.has("render") ? component.get<std::function<void(LuaRef, RenderContext &)>>("render") : [](LuaRef, RenderContext &) {};
+    renderFunc = component.has("render") ? component.get<std::function<void(LuaRef, RenderContext&)>>("render") : [](LuaRef, RenderContext&) {};
     onAfterCameraRenderFunc = component.has("onAfterCameraRender") ? component.get<std::function<void(LuaRef)>>("onAfterCameraRender") : [](LuaRef) {};
     component.set("node", node);
 }
@@ -43,7 +43,7 @@ void LuaScriptComponent::terminate()
 }
 
 
-void LuaScriptComponent::render(RenderContext &context)
+void LuaScriptComponent::render(RenderContext& context)
 {
     renderFunc(component, context);
 }
@@ -61,7 +61,7 @@ size_t LuaScriptComponent::getTypeId()
 }
 
 
-Component *LuaScriptComponent::findComponent(Node *node, const std::string &typeName)
+Component* LuaScriptComponent::findComponent(Node* node, const std::string& typeName)
 {
     if (typeName == "Transform")
         return node->findComponent<Transform>();
@@ -77,29 +77,29 @@ Component *LuaScriptComponent::findComponent(Node *node, const std::string &type
 }
 
 
-std::function<LuaRef(Node *, const std::string &)> LuaScriptComponent::getFindScriptFunc(lua_State *lua)
+std::function<LuaRef(Node*, const std::string&)> LuaScriptComponent::getFindScriptFunc(lua_State* lua)
 {
     return std::bind(&findScript, lua, std::placeholders::_1, std::placeholders::_2);
 }
 
 
-LuaRef LuaScriptComponent::findScript(lua_State *lua, Node *node, const std::string &componentTypeId)
+LuaRef LuaScriptComponent::findScript(lua_State* lua, Node* node, const std::string& componentTypeId)
 {
     auto typeId = getHash(componentTypeId);
     auto component = node->getScene()->findComponent(node->getId(), typeId);
-    auto scriptComponent = dynamic_cast<LuaScriptComponent *>(component);
+    auto scriptComponent = dynamic_cast<LuaScriptComponent*>(component);
     return scriptComponent ? scriptComponent->component : LuaRef(lua, nullptr);
 }
 
 
-void LuaScriptComponent::addScript(Node *node, LuaRef &component)
+void LuaScriptComponent::addScript(Node* node, LuaRef& component)
 {
     auto actualComponent = SL_MAKE_SHARED<LuaScriptComponent>(*node, component);
     node->getScene()->addComponent(node->getId(), actualComponent);
 }
 
 
-Component *LuaScriptComponent::addComponent(Node *node, const std::string &typeName)
+Component* LuaScriptComponent::addComponent(Node* node, const std::string& typeName)
 {
     if (typeName == "Transform")
         return node->addComponent<Transform>();
@@ -115,7 +115,7 @@ Component *LuaScriptComponent::addComponent(Node *node, const std::string &typeN
 }
 
 
-void LuaScriptComponent::removeComponent(Node *node, const std::string &typeName)
+void LuaScriptComponent::removeComponent(Node* node, const std::string& typeName)
 {
     if (typeName == "Transform")
         node->removeComponent<Transform>();
@@ -130,7 +130,7 @@ void LuaScriptComponent::removeComponent(Node *node, const std::string &typeName
 }
 
 
-void LuaScriptComponent::removeScript(Node *node, const std::string &componentTypeId)
+void LuaScriptComponent::removeScript(Node* node, const std::string& componentTypeId)
 {
     auto typeId = getHash(componentTypeId);
     node->getScene()->removeComponent(node->getId(), typeId);

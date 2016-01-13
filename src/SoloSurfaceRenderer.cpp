@@ -6,7 +6,7 @@
 using namespace solo;
 
 
-shared<SurfaceRenderer> SurfaceRenderer::create(Device *device, shared<Material> material)
+shared<SurfaceRenderer> SurfaceRenderer::create(Device* device, shared<Material> material)
 {
     if (device->getMode() == DeviceMode::OpenGL)
         return SL_NEW_SHARED(OpenGLSurfaceRenderer, device, material);

@@ -11,12 +11,12 @@ namespace solo
     class Scene
     {
     public:
-        static shared<Scene> create(Device *device);
+        static shared<Scene> create(Device* device);
 
         SL_NONCOPYABLE(Scene);
         ~Scene();
 
-        Device *getDevice() const;
+        Device* getDevice() const;
 
         shared<Node> createNode();
 
@@ -27,33 +27,33 @@ namespace solo
         void removeAllComponents(size_t nodeId);
         void clear();
 
-        Component *getComponent(size_t nodeId, size_t typeId) const;
-        Component *findComponent(size_t nodeId, size_t typeId) const;
+        Component* getComponent(size_t nodeId, size_t typeId) const;
+        Component* findComponent(size_t nodeId, size_t typeId) const;
 
         void update();
         void render();
 
     private:
-        using ComponentIterationWorker = std::function<void(size_t, Component *)>;
+        using ComponentIterationWorker = std::function<void(size_t, Component*)>;
         using Components = std::unordered_map<size_t, std::unordered_map<size_t, shared<Component>>>;
 
-        explicit Scene(Device *device);
+        explicit Scene(Device* device);
 
         template <class T>
-        void updateRenderQueue(std::list<T> &queue, size_t componentTypeIdFilter);
+        void updateRenderQueue(std::list<T>& queue, size_t componentTypeIdFilter);
 
-        Device *device;
+        Device* device;
         size_t nodeCounter = 0;
         bool cameraCacheDirty = true;
         bool doClear = false;
 
-        std::list<Component *> cameraQueue;
-        std::list<Component *> renderQueue;
+        std::list<Component*> cameraQueue;
+        std::list<Component*> renderQueue;
 
         Components components;
     };
 
-    inline Device *Scene::getDevice() const
+    inline Device* Scene::getDevice() const
     {
         return device;
     }

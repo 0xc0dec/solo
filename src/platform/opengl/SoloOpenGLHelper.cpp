@@ -63,14 +63,22 @@ GLenum OpenGLHelper::convertDepthPassFunction(DepthPassFunction func)
 {
     switch (func)
     {
-    case DepthPassFunction::Never: return GL_NEVER;
-    case DepthPassFunction::Less: return GL_LESS;
-    case DepthPassFunction::Equal: return GL_EQUAL;
-    case DepthPassFunction::LEqual: return GL_LEQUAL;
-    case DepthPassFunction::Greater: return GL_GREATER;
-    case DepthPassFunction::NotEqual: return GL_NOTEQUAL;
-    case DepthPassFunction::GEqual: return GL_GEQUAL;
-    case DepthPassFunction::Always: return GL_ALWAYS;
+    case DepthPassFunction::Never:
+        return GL_NEVER;
+    case DepthPassFunction::Less:
+        return GL_LESS;
+    case DepthPassFunction::Equal:
+        return GL_EQUAL;
+    case DepthPassFunction::LEqual:
+        return GL_LEQUAL;
+    case DepthPassFunction::Greater:
+        return GL_GREATER;
+    case DepthPassFunction::NotEqual:
+        return GL_NOTEQUAL;
+    case DepthPassFunction::GEqual:
+        return GL_GEQUAL;
+    case DepthPassFunction::Always:
+        return GL_ALWAYS;
     default:
         SL_THROW_FMT(EngineException, "Unknown depth pass function");
     }

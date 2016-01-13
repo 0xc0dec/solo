@@ -4,7 +4,7 @@ namespace solo
 {
     struct OpenGLBuiltInShaders
     {
-        static constexpr char *vsSkybox = R"s(
+        static constexpr char* vsSkybox = R"s(
 			#version 330 core
 
 			layout (location = 0) in vec4 position;
@@ -23,7 +23,7 @@ namespace solo
 			}
 		)s";
 
-        static constexpr char *fsSkybox = R"s(
+        static constexpr char* fsSkybox = R"s(
 			#version 330 core
 
 			uniform samplerCube mainTex;

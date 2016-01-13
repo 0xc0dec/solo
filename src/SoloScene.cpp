@@ -169,7 +169,7 @@ void Scene::render()
 
     for (auto cam : cameraQueue)
     {
-        auto camera = dynamic_cast<Camera *>(cam);
+        auto camera = dynamic_cast<Camera*>(cam);
 
         camera->apply();
 

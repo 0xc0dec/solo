@@ -44,25 +44,25 @@ void Transform::init()
 }
 
 
-void Transform::addCallback(TransformCallback *callback)
+void Transform::addCallback(TransformCallback* callback)
 {
     callbacks.push_back(callback);
 }
 
 
-void Transform::removeCallback(TransformCallback *callback)
+void Transform::removeCallback(TransformCallback* callback)
 {
     callbacks.erase(std::remove(callbacks.begin(), callbacks.end(), callback), callbacks.end());
 }
 
 
-void Transform::setParent(Transform *parent)
+void Transform::setParent(Transform* parent)
 {
     if (parent == this || parent == this->parent)
         return;
     if (this->parent)
     {
-        auto &parentChildren = this->parent->children;
+        auto& parentChildren = this->parent->children;
         this->parent->children.erase(std::remove(parentChildren.begin(), parentChildren.end(), this), parentChildren.end());
     }
     this->parent = parent;
@@ -72,13 +72,13 @@ void Transform::setParent(Transform *parent)
 }
 
 
-Transform *Transform::getParent() const
+Transform* Transform::getParent() const
 {
     return parent;
 }
 
 
-Transform *Transform::getChild(size_t index) const
+Transform* Transform::getChild(size_t index) const
 {
     return children[index];
 }
@@ -183,19 +183,19 @@ Matrix Transform::getInverseTransposedWorldMatrix() const
 }
 
 
-Matrix Transform::getWorldViewMatrix(Camera *camera) const
+Matrix Transform::getWorldViewMatrix(Camera* camera) const
 {
     return camera->getViewMatrix() * getWorldMatrix();
 }
 
 
-Matrix Transform::getWorldViewProjectionMatrix(Camera *camera) const
+Matrix Transform::getWorldViewProjectionMatrix(Camera* camera) const
 {
     return camera->getViewProjectionMatrix() * getWorldMatrix();
 }
 
 
-Matrix Transform::getInverseTransposedWorldViewMatrix(Camera *camera) const
+Matrix Transform::getInverseTransposedWorldViewMatrix(Camera* camera) const
 {
     auto result = camera->getViewMatrix() * getWorldMatrix();
     result.invert();
@@ -204,16 +204,16 @@ Matrix Transform::getInverseTransposedWorldViewMatrix(Camera *camera) const
 }
 
 
-void Transform::translateLocal(const Vector3 &translation)
+void Transform::translateLocal(const Vector3& translation)
 {
     localPosition += translation;
     setDirtyWithChildren(DIRTY_BIT_POSITION | DIRTY_BIT_WORLD);
 }
 
 
-void Transform::rotate(const Quaternion &rotation, TransformSpace space)
+void Transform::rotate(const Quaternion& rotation, TransformSpace space)
 {
-    auto normalizedRotation(const_cast<Quaternion &>(rotation));
+    auto normalizedRotation(const_cast<Quaternion&>(rotation));
     normalizedRotation.normalize();
 
     switch (space)
@@ -238,14 +238,14 @@ void Transform::rotate(const Quaternion &rotation, TransformSpace space)
 }
 
 
-void Transform::rotate(const Vector3 &axis, float angleRadians, TransformSpace space)
+void Transform::rotate(const Vector3& axis, float angleRadians, TransformSpace space)
 {
     auto rotation = Quaternion::createFromAxisAngle(axis, angleRadians);
     rotate(rotation, space);
 }
 
 
-void Transform::scaleLocal(const Vector3 &scale)
+void Transform::scaleLocal(const Vector3& scale)
 {
     localScale.x *= scale.x;
     localScale.y *= scale.y;
@@ -254,14 +254,14 @@ void Transform::scaleLocal(const Vector3 &scale)
 }
 
 
-void Transform::setLocalScale(const Vector3 &scale)
+void Transform::setLocalScale(const Vector3& scale)
 {
     localScale = scale;
     setDirtyWithChildren(DIRTY_BIT_SCALE | DIRTY_BIT_WORLD);
 }
 
 
-void Transform::lookAt(const Vector3 &target, const Vector3 &up)
+void Transform::lookAt(const Vector3& target, const Vector3& up)
 {
     auto finalTarget = target;
     auto finalUp = up;
@@ -279,33 +279,33 @@ void Transform::lookAt(const Vector3 &target, const Vector3 &up)
 }
 
 
-Vector3 Transform::transformPoint(const Vector3 &point) const
+Vector3 Transform::transformPoint(const Vector3& point) const
 {
     return getMatrix().transformPoint(point);
 }
 
 
-Vector3 Transform::transformDirection(const Vector3 &direction) const
+Vector3 Transform::transformDirection(const Vector3& direction) const
 {
     return getMatrix().transformDirection(direction);
 }
 
 
-void Transform::setLocalRotation(const Quaternion &rotation)
+void Transform::setLocalRotation(const Quaternion& rotation)
 {
     localRotation = rotation;
     setDirtyWithChildren(DIRTY_BIT_ROTATION | DIRTY_BIT_WORLD);
 }
 
 
-void Transform::setLocalRotation(const Vector3 &axis, float angleRadians)
+void Transform::setLocalRotation(const Vector3& axis, float angleRadians)
 {
     localRotation = Quaternion::createFromAxisAngle(axis, angleRadians);
     setDirtyWithChildren(DIRTY_BIT_ROTATION | DIRTY_BIT_WORLD);
 }
 
 
-void Transform::setLocalPosition(const Vector3 &position)
+void Transform::setLocalPosition(const Vector3& position)
 {
     localPosition = position;
     setDirtyWithChildren(DIRTY_BIT_POSITION | DIRTY_BIT_WORLD);

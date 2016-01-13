@@ -10,7 +10,7 @@ namespace solo
     public:
         virtual ~SDLOpenGLDevice();
 
-        virtual void setWindowTitle(const std::string &title) override;
+        virtual void setWindowTitle(const std::string& title) override;
         virtual std::string getWindowTitle() const override;
 
         virtual void setCursorCaptured(bool captured) override;
@@ -25,21 +25,21 @@ namespace solo
     private:
         friend class Device;
 
-        explicit SDLOpenGLDevice(const DeviceCreationArgs &args);
+        explicit SDLOpenGLDevice(const DeviceCreationArgs& args);
 
         void prepareKeyboardState();
         void prepareMouseState();
 
         void readWindowState();
         void readEvents();
-        void processKeyboardEvent(const SDL_Event &evt);
-        void processMouseEvent(const SDL_Event &evt);
-        void processWindowEvent(const SDL_Event &evt);
+        void processKeyboardEvent(const SDL_Event& evt);
+        void processMouseEvent(const SDL_Event& evt);
+        void processWindowEvent(const SDL_Event& evt);
 
         bool hasMouseFocus = false;
         bool hasKeyboardFocus = false;
 
-        SDL_Window *window = nullptr;
+        SDL_Window* window = nullptr;
         SDL_GLContext context = nullptr;
 
         std::tuple<int, int> selectContextVersion();

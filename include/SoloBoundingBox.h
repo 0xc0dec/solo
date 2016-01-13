@@ -19,27 +19,27 @@ namespace solo
         Vector3 max;
 
         BoundingBox() {}
-        BoundingBox(const Vector3 &min, const Vector3 &max);
+        BoundingBox(const Vector3& min, const Vector3& max);
 
-        static const BoundingBox &empty();
+        static const BoundingBox& empty();
 
         Vector3 getCenter() const;
         std::vector<Vector3> getCorners() const;
 
-        bool intersectsBoundingBox(const BoundingBox &box) const;
-        bool intersectsBoundingSphere(const BoundingSphere &sphere) const;
-        bool intersectsFrustum(const Frustum &frustum) const;
-        float getRayIntersection(const Ray &ray) const;
-        PlaneIntersection getPlaneIntersection(const Plane &plane) const;
+        bool intersectsBoundingBox(const BoundingBox& box) const;
+        bool intersectsBoundingSphere(const BoundingSphere& sphere) const;
+        bool intersectsFrustum(const Frustum& frustum) const;
+        float getRayIntersection(const Ray& ray) const;
+        PlaneIntersection getPlaneIntersection(const Plane& plane) const;
 
         bool isEmpty() const;
 
-        void mergeBoundingSphere(const BoundingSphere &sphere);
-        void mergeBoundingBox(const BoundingBox &box);
+        void mergeBoundingSphere(const BoundingSphere& sphere);
+        void mergeBoundingBox(const BoundingBox& box);
 
-        void transform(const Matrix &matrix);
+        void transform(const Matrix& matrix);
 
-        BoundingBox &operator*=(const Matrix &matrix);
+        BoundingBox& operator*=(const Matrix& matrix);
     };
 
 
@@ -48,15 +48,15 @@ namespace solo
         return Math::approxEqual(min.x, max.x) && Math::approxEqual(min.y, max.y) && Math::approxEqual(min.z, max.z);
     }
 
-    inline BoundingBox &BoundingBox::operator*=(const Matrix &matrix)
+    inline BoundingBox& BoundingBox::operator*=(const Matrix& matrix)
     {
         transform(matrix);
         return *this;
     }
 
-    inline BoundingBox operator*(const Matrix &matrix, const BoundingBox &box)
+    inline BoundingBox operator*(const Matrix& matrix, const BoundingBox& box)
     {
-        auto b(const_cast<BoundingBox &>(box));
+        auto b(const_cast<BoundingBox&>(box));
         b.transform(matrix);
         return b;
     }

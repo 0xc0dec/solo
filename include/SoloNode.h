@@ -14,31 +14,31 @@ namespace solo
     class Node
     {
     public:
-        Node(Scene *scene, size_t nodeId);
+        Node(Scene* scene, size_t nodeId);
 
         size_t getId() const;
-        Scene *getScene() const;
+        Scene* getScene() const;
 
         template <typename T, typename... Args>
-        static T *addComponent(Scene *scene, size_t nodeId, Args... args);
+        static T* addComponent(Scene* scene, size_t nodeId, Args... args);
 
         template <typename T, typename... Args>
-        T *addComponent(Args... args);
+        T* addComponent(Args... args);
 
         template <typename T>
-        static T *getComponent(Scene *scene, size_t nodeId);
+        static T* getComponent(Scene* scene, size_t nodeId);
 
         template <typename T>
-        T *getComponent();
+        T* getComponent();
 
         template <typename T>
-        static T *findComponent(Scene *scene, size_t nodeId);
+        static T* findComponent(Scene* scene, size_t nodeId);
 
         template <typename T>
-        T *findComponent() const;
+        T* findComponent() const;
 
         template <typename T>
-        static void removeComponent(Scene *scene, size_t nodeId);
+        static void removeComponent(Scene* scene, size_t nodeId);
 
         template <typename T>
         void removeComponent();
@@ -46,7 +46,7 @@ namespace solo
         void removeAllComponents();
 
     private:
-        Scene *scene;
+        Scene* scene;
         size_t id;
     };
 
@@ -56,13 +56,13 @@ namespace solo
         return id;
     }
 
-    inline Scene *Node::getScene() const
+    inline Scene* Node::getScene() const
     {
         return scene;
     }
 
     template <typename T, typename... Args>
-    inline T *Node::addComponent(Scene *scene, size_t nodeId, Args... args)
+    inline T* Node::addComponent(Scene* scene, size_t nodeId, Args... args)
     {
         auto cmp = SL_MAKE_SHARED<T>(Node(scene, nodeId), args...);
         auto base = SL_SHARED_STATIC_CAST<Component>(cmp);
@@ -71,41 +71,41 @@ namespace solo
     }
 
     template <typename T, typename... Args>
-    inline T *Node::addComponent(Args... args)
+    inline T* Node::addComponent(Args... args)
     {
         return addComponent<T>(scene, id, args...);
     }
 
     template <typename T>
-    inline T *Node::getComponent(Scene *scene, size_t nodeId)
+    inline T* Node::getComponent(Scene* scene, size_t nodeId)
     {
         auto typeId = T::getId();
         auto cmp = scene->getComponent(nodeId, typeId);
-        return static_cast<T *>(cmp);
+        return static_cast<T*>(cmp);
     }
 
     template <typename T>
-    inline T *Node::getComponent()
+    inline T* Node::getComponent()
     {
         return getComponent<T>(scene, id);
     }
 
     template <typename T>
-    inline T *Node::findComponent(Scene *scene, size_t nodeId)
+    inline T* Node::findComponent(Scene* scene, size_t nodeId)
     {
         auto typeId = T::getId();
         auto cmp = scene->findComponent(nodeId, typeId);
-        return static_cast<T *>(cmp);
+        return static_cast<T*>(cmp);
     }
 
     template <typename T>
-    inline T *Node::findComponent() const
+    inline T* Node::findComponent() const
     {
         return findComponent<T>(scene, id);
     }
 
     template <typename T>
-    inline void Node::removeComponent(Scene *scene, size_t nodeId)
+    inline void Node::removeComponent(Scene* scene, size_t nodeId)
     {
         scene->removeComponent(nodeId, T::getId());
     }
@@ -121,9 +121,9 @@ namespace solo
         scene->removeAllComponents(id);
     }
 
-    template<> Transform *Node::addComponent();
-    template<> Camera *Node::addComponent();
-    template<> MeshRenderer *Node::addComponent();
-    template<> Spectator *Node::addComponent();
-    template<> SkyboxRenderer *Node::addComponent();
+    template<> Transform* Node::addComponent();
+    template<> Camera* Node::addComponent();
+    template<> MeshRenderer* Node::addComponent();
+    template<> Spectator* Node::addComponent();
+    template<> SkyboxRenderer* Node::addComponent();
 }

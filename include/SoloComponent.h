@@ -20,7 +20,7 @@ namespace solo
         virtual void init() {}
         virtual void update() {}
         virtual void terminate() {}
-        virtual void render(RenderContext &context) {}
+        virtual void render(RenderContext& context) {}
         virtual void onAfterCameraRender() {}
 
         virtual int getRenderQueue() const;
@@ -28,10 +28,10 @@ namespace solo
 
         Node getNode() const;
 
-        BitFlags &getTags();
+        BitFlags& getTags();
 
     protected:
-        explicit Component(const Node &node) : node(node)
+        explicit Component(const Node& node) : node(node)
         {
             tags.set(1);
         }
@@ -56,7 +56,7 @@ namespace solo
         return node;
     }
 
-    inline BitFlags &Component::getTags()
+    inline BitFlags& Component::getTags()
     {
         return tags;
     }
@@ -66,7 +66,7 @@ namespace solo
     class ComponentBase: public Component
     {
     public:
-        explicit ComponentBase(const Node &node): Component(node) {}
+        explicit ComponentBase(const Node& node): Component(node) {}
 
         static size_t getId();
         virtual size_t getTypeId() override;

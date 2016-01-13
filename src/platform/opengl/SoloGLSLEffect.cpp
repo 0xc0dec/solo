@@ -58,7 +58,7 @@ static GLint compileShader(GLuint type, std::string src)
 }
 
 
-GLSLEffect::GLSLEffect(const std::string &vsSrc, const std::string &fsSrc)
+GLSLEffect::GLSLEffect(const std::string& vsSrc, const std::string& fsSrc)
 {
     auto vs = compileShader(GL_VERTEX_SHADER, vsSrc);
     auto fs = compileShader(GL_FRAGMENT_SHADER, fsSrc);

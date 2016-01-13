@@ -54,10 +54,10 @@ namespace solo
             int canvasWidth = 800,
             int canvasHeight = 600,
             bool fullScreen = false,
-            const std::string &windowTitle = "",
+            const std::string& windowTitle = "",
             int bits = 32,
             int depth = 16,
-            const std::string &logFilePath = "") :
+            const std::string& logFilePath = "") :
             mode(mode),
             canvasWidth(canvasWidth > 0 ? canvasWidth : 1),
             canvasHeight(canvasHeight > 0 ? canvasHeight : 1),
@@ -73,7 +73,7 @@ namespace solo
     class Device
     {
     public:
-        static shared<Device> create(const DeviceCreationArgs &args);
+        static shared<Device> create(const DeviceCreationArgs& args);
 
         SL_NONCOPYABLE(Device);
         virtual ~Device() {}
@@ -81,7 +81,7 @@ namespace solo
         virtual void beginUpdate() = 0;
         virtual void endUpdate() = 0;
 
-        virtual void setWindowTitle(const std::string &title) = 0;
+        virtual void setWindowTitle(const std::string& title) = 0;
         virtual std::string getWindowTitle() const = 0;
 
         virtual void setCursorCaptured(bool captured) = 0;
@@ -110,13 +110,13 @@ namespace solo
 
         DeviceMode getMode() const;
 
-        Scene *getScene() const;
-        FileSystem *getFileSystem() const;
-        ResourceManager *getResourceManager() const;
-        Logger *getLogger() const;
+        Scene* getScene() const;
+        FileSystem* getFileSystem() const;
+        ResourceManager* getResourceManager() const;
+        Logger* getLogger() const;
 
     protected:
-        explicit Device(const DeviceCreationArgs &args);
+        explicit Device(const DeviceCreationArgs& args);
 
         void updateTime();
 
@@ -165,22 +165,22 @@ namespace solo
         return creationArgs.mode;
     }
 
-    inline Scene *Device::getScene() const
+    inline Scene* Device::getScene() const
     {
         return scene.get();
     }
 
-    inline FileSystem *Device::getFileSystem() const
+    inline FileSystem* Device::getFileSystem() const
     {
         return fs.get();
     }
 
-    inline ResourceManager *Device::getResourceManager() const
+    inline ResourceManager* Device::getResourceManager() const
     {
         return resourceManager.get();
     }
 
-    inline Logger *Device::getLogger() const
+    inline Logger* Device::getLogger() const
     {
         return logger.get();
     }

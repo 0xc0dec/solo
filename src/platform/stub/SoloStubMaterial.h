@@ -12,7 +12,7 @@ namespace solo
     private:
         friend class Material;
 
-        explicit StubMaterial(const shared<Effect> &effect)
+        explicit StubMaterial(const shared<Effect>& effect)
             : Material(effect)
         {
         }

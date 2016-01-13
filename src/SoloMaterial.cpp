@@ -22,7 +22,7 @@ Material::Material(shared<Effect> effect):
 }
 
 
-void Material::bind(RenderContext &context)
+void Material::bind(RenderContext& context)
 {
     applyState();
     if (effect)
@@ -34,14 +34,14 @@ void Material::bind(RenderContext &context)
 }
 
 
-void Material::unbind(RenderContext &context)
+void Material::unbind(RenderContext& context)
 {
     if (effect)
         effect->unbind();
 }
 
 
-MaterialParameter *Material::getParameter(const std::string &name)
+MaterialParameter* Material::getParameter(const std::string& name)
 {
     auto where = parameters.find(name);
     if (where != parameters.end())

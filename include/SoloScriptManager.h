@@ -12,8 +12,8 @@ namespace solo
         SL_NONCOPYABLE(ScriptManager);
         virtual ~ScriptManager() {}
 
-        virtual void execute(const std::string &code) = 0;
-        virtual void executeFile(const std::string &path) = 0;
+        virtual void execute(const std::string& code) = 0;
+        virtual void executeFile(const std::string& path) = 0;
 
     protected:
         ScriptManager() {}

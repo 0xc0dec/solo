@@ -16,7 +16,7 @@ namespace solo
     class Effect
     {
     public:
-        static shared<Effect> create(DeviceMode mode, const std::string &vsSrc, const std::string &fsSrc);
+        static shared<Effect> create(DeviceMode mode, const std::string& vsSrc, const std::string& fsSrc);
         static shared<Effect> createPrefab(DeviceMode mode, EffectPrefab prefab);
 
         SL_NONCOPYABLE(Effect);
@@ -25,8 +25,8 @@ namespace solo
         virtual void bind() = 0;
         virtual void unbind() = 0;
 
-        virtual EffectVariable *findVariable(const std::string &name) const;
-        virtual EffectVertexAttribute *findVertexAttribute(const std::string &name) const;
+        virtual EffectVariable* findVariable(const std::string& name) const;
+        virtual EffectVertexAttribute* findVertexAttribute(const std::string& name) const;
 
     protected:
         Effect() {}

@@ -39,7 +39,7 @@ namespace solo
     {
     public:
         VertexFormat() {}
-        VertexFormat(const std::vector<VertexFormatElement> &elements);
+        VertexFormat(const std::vector<VertexFormatElement>& elements);
 
         size_t getElementCount() const;
         VertexFormatElement getElement(size_t index) const;

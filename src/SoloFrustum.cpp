@@ -12,7 +12,7 @@ Frustum::Frustum()
 }
 
 
-void Frustum::setMatrix(const Matrix &m)
+void Frustum::setMatrix(const Matrix& m)
 {
     this->matrix = m;
     updatePlanes();
@@ -50,7 +50,7 @@ std::vector<Vector3> Frustum::getFarCorners() const
 }
 
 
-bool Frustum::intersectsPoint(const Vector3 &point) const
+bool Frustum::intersectsPoint(const Vector3& point) const
 {
     if (near.getDistanceToPoint(point) <= 0)
         return false;
@@ -69,25 +69,25 @@ bool Frustum::intersectsPoint(const Vector3 &point) const
 }
 
 
-bool Frustum::intersectsBoundingSphere(const BoundingSphere &sphere) const
+bool Frustum::intersectsBoundingSphere(const BoundingSphere& sphere) const
 {
     return sphere.intersectsFrustum(*this);
 }
 
 
-bool Frustum::intersectsBoundingBox(const BoundingBox &box) const
+bool Frustum::intersectsBoundingBox(const BoundingBox& box) const
 {
     return box.intersectsFrustum(*this);
 }
 
 
-PlaneIntersection Frustum::getPlaneIntersection(const Plane &plane) const
+PlaneIntersection Frustum::getPlaneIntersection(const Plane& plane) const
 {
     return plane.getIntersection(*this);
 }
 
 
-float Frustum::intersectsRay(const Ray &ray) const
+float Frustum::intersectsRay(const Ray& ray) const
 {
     return ray.getIntersection(*this);
 }

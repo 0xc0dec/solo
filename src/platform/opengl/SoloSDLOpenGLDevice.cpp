@@ -14,10 +14,10 @@ std::list<std::pair<int, int>> supportedContextVersions =
 
 struct WindowWithContextCreationResult
 {
-    SDL_Window *window;
+    SDL_Window* window;
     SDL_GLContext context;
 
-    WindowWithContextCreationResult(SDL_Window *window, SDL_GLContext context):
+    WindowWithContextCreationResult(SDL_Window* window, SDL_GLContext context):
         window(window), context(context)
     {
     }
@@ -93,10 +93,10 @@ WindowWithContextCreationResult tryCreateOpengGLWindow(bool hidden, int ctxMajor
     if (creationArgs.fullScreen)
         flags |= SDL_WINDOW_FULLSCREEN;
     auto window = SDL_CreateWindow(
-        creationArgs.windowTitle.c_str(),
-        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        creationArgs.canvasWidth, creationArgs.canvasHeight,
-        flags);
+                      creationArgs.windowTitle.c_str(),
+                      SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                      creationArgs.canvasWidth, creationArgs.canvasHeight,
+                      flags);
 
     if (window)
     {
@@ -108,7 +108,7 @@ WindowWithContextCreationResult tryCreateOpengGLWindow(bool hidden, int ctxMajor
 }
 
 
-SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const &args):
+SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
     Device(args)
 {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
@@ -185,7 +185,7 @@ void SDLOpenGLDevice::endUpdate()
 }
 
 
-void SDLOpenGLDevice::setWindowTitle(const std::string &title)
+void SDLOpenGLDevice::setWindowTitle(const std::string& title)
 {
     SDL_SetWindowTitle(window, title.c_str());
 }
@@ -241,7 +241,7 @@ void SDLOpenGLDevice::readWindowState()
 }
 
 
-void SDLOpenGLDevice::processKeyboardEvent(const SDL_Event &evt)
+void SDLOpenGLDevice::processKeyboardEvent(const SDL_Event& evt)
 {
     if (!hasKeyboardFocus)
         return;
@@ -270,7 +270,7 @@ void SDLOpenGLDevice::processKeyboardEvent(const SDL_Event &evt)
 }
 
 
-void SDLOpenGLDevice::processMouseEvent(const SDL_Event &evt)
+void SDLOpenGLDevice::processMouseEvent(const SDL_Event& evt)
 {
     switch (evt.type)
     {
@@ -299,7 +299,7 @@ void SDLOpenGLDevice::processMouseEvent(const SDL_Event &evt)
 }
 
 
-void SDLOpenGLDevice::processWindowEvent(const SDL_Event &evt)
+void SDLOpenGLDevice::processWindowEvent(const SDL_Event& evt)
 {
     switch (evt.window.event)
     {

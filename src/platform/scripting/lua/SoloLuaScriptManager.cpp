@@ -75,13 +75,13 @@ LuaScriptManager::~LuaScriptManager()
 }
 
 
-void LuaScriptManager::execute(const std::string &code)
+void LuaScriptManager::execute(const std::string& code)
 {
     lua.doString(code.c_str());
 }
 
 
-void LuaScriptManager::executeFile(const std::string &path)
+void LuaScriptManager::executeFile(const std::string& path)
 {
     lua.doFile(path.c_str());
 }
@@ -94,7 +94,7 @@ void LuaScriptManager::registerApi()
     // Vector2
     auto vector2 = module.beginClass<Vector2>("Vector2");
     vector2.addConstructor(LUA_ARGS(float, float));
-    REGISTER_STATIC_OVERLOADED_METHOD(vector2, Vector2, dot, "dot", float, , const Vector2 &, const Vector2 &);
+    REGISTER_STATIC_OVERLOADED_METHOD(vector2, Vector2, dot, "dot", float, , const Vector2&, const Vector2&);
     REGISTER_STATIC_METHOD(vector2, Vector2, zero);
     REGISTER_STATIC_METHOD(vector2, Vector2, unit);
     REGISTER_STATIC_METHOD(vector2, Vector2, unitX);
@@ -104,7 +104,7 @@ void LuaScriptManager::registerApi()
     REGISTER_VARIABLE(vector2, Vector2, y);
     REGISTER_METHOD(vector2, Vector2, distance);
     REGISTER_METHOD(vector2, Vector2, distanceSquared);
-    REGISTER_OVERLOADED_METHOD(vector2, Vector2, dot, "dot", float, const, const Vector2 &);
+    REGISTER_OVERLOADED_METHOD(vector2, Vector2, dot, "dot", float, const, const Vector2&);
     REGISTER_METHOD(vector2, Vector2, clamp);
     REGISTER_METHOD(vector2, Vector2, length);
     REGISTER_METHOD(vector2, Vector2, lengthSquared);
@@ -113,17 +113,17 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(vector2, Vector2, normalize);
     REGISTER_METHOD(vector2, Vector2, normalized);
     REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator+, "plusScalar", Vector2, const, float);
-    REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator+, "plusVector2", Vector2, const, const Vector2 &);
-    REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator+=, "addScalar", Vector2 &, , float);
-    REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator+=, "addVector2", Vector2 &, , const Vector2 &);
+    REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator+, "plusVector2", Vector2, const, const Vector2&);
+    REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator+=, "addScalar", Vector2&, , float);
+    REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator+=, "addVector2", Vector2&, , const Vector2&);
     REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator*, "productScalar", Vector2, const, float);
-    REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator*=, "multScalar", Vector2 &, , float);
+    REGISTER_OVERLOADED_METHOD(vector2, Vector2, operator*=, "multScalar", Vector2&, , float);
     vector2.endClass();
 
     // Vector3
     auto vector3 = module.beginClass<Vector3>("Vector3");
     vector3.addConstructor(LUA_ARGS(float, float, float));
-    REGISTER_STATIC_OVERLOADED_METHOD(vector3, Vector3, dot, "dot", float, , const Vector3 &, const Vector3 &);
+    REGISTER_STATIC_OVERLOADED_METHOD(vector3, Vector3, dot, "dot", float, , const Vector3&, const Vector3&);
     REGISTER_VARIABLE(vector3, Vector3, x);
     REGISTER_VARIABLE(vector3, Vector3, y);
     REGISTER_VARIABLE(vector3, Vector3, z);
@@ -134,7 +134,7 @@ void LuaScriptManager::registerApi()
     REGISTER_STATIC_METHOD(vector3, Vector3, unitZ);
     REGISTER_STATIC_METHOD(vector3, Vector3, angle);
     REGISTER_STATIC_METHOD(vector3, Vector3, cross);
-    REGISTER_OVERLOADED_METHOD(vector3, Vector3, dot, "dot", float, const, const Vector3 &);
+    REGISTER_OVERLOADED_METHOD(vector3, Vector3, dot, "dot", float, const, const Vector3&);
     REGISTER_METHOD(vector3, Vector3, distance);
     REGISTER_METHOD(vector3, Vector3, distanceSquared);
     REGISTER_METHOD(vector3, Vector3, clamp);
@@ -146,12 +146,12 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(vector3, Vector3, normalized);
     REGISTER_METHOD(vector3, Vector3, normalized);
     REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+, "plusScalar", Vector3, const, float);
-    REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+=, "addScalar", Vector3 &, , float);
-    REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+, "plusVector3", Vector3, const, const Vector3 &);
-    REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+=, "addVector3", Vector3 &, , const Vector3 &);
+    REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+=, "addScalar", Vector3&, , float);
+    REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+, "plusVector3", Vector3, const, const Vector3&);
+    REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+=, "addVector3", Vector3&, , const Vector3&);
     REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator+, "multScalar", Vector3, const, float);
     REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator*, "productScalar", Vector3, const, float);
-    REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator*=, "multScalar", Vector3 &, , float);
+    REGISTER_OVERLOADED_METHOD(vector3, Vector3, operator*=, "multScalar", Vector3&, , float);
     vector3.endClass();
 
     // Vector4
@@ -168,10 +168,10 @@ void LuaScriptManager::registerApi()
     REGISTER_STATIC_METHOD(vector4, Vector4, unitZ);
     REGISTER_STATIC_METHOD(vector4, Vector4, unitW);
     REGISTER_STATIC_METHOD(vector4, Vector4, angle);
-    REGISTER_STATIC_OVERLOADED_METHOD(vector4, Vector4, dot, "dot", float, , const Vector4 &, const Vector4 &);
+    REGISTER_STATIC_OVERLOADED_METHOD(vector4, Vector4, dot, "dot", float, , const Vector4&, const Vector4&);
     REGISTER_METHOD(vector4, Vector4, distance);
     REGISTER_METHOD(vector4, Vector4, distanceSquared);
-    REGISTER_OVERLOADED_METHOD(vector4, Vector4, dot, "dot", float, const, const Vector4 &);
+    REGISTER_OVERLOADED_METHOD(vector4, Vector4, dot, "dot", float, const, const Vector4&);
     REGISTER_METHOD(vector4, Vector4, clamp);
     REGISTER_METHOD(vector4, Vector4, length);
     REGISTER_METHOD(vector4, Vector4, lengthSquared);
@@ -180,11 +180,11 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(vector4, Vector4, normalize);
     REGISTER_METHOD(vector4, Vector4, normalized);
     REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator+, "plusScalar", Vector4, const, float);
-    REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator+, "plusVector4", Vector4, const, const Vector4 &);
-    REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator+=, "addScalar", Vector4 &, , float);
-    REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator+=, "addVector4", Vector4 &, , const Vector4 &);
+    REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator+, "plusVector4", Vector4, const, const Vector4&);
+    REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator+=, "addScalar", Vector4&, , float);
+    REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator+=, "addVector4", Vector4&, , const Vector4&);
     REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator*, "productScalar", Vector4, const, float);
-    REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator*=, "multScalar", Vector4 &, , float);
+    REGISTER_OVERLOADED_METHOD(vector4, Vector4, operator*=, "multScalar", Vector4&, , float);
     vector4.endClass();
 
     // Quaternion
@@ -217,16 +217,16 @@ void LuaScriptManager::registerApi()
     matrix.addConstructor(LUA_ARGS());
     REGISTER_STATIC_METHOD(matrix, Matrix, identity);
     REGISTER_STATIC_METHOD(matrix, Matrix, zero);
-    REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createLookAt, "createLookAt", Matrix, , const Vector3 &, const Vector3 &, const Vector3 &);
+    REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createLookAt, "createLookAt", Matrix, , const Vector3&, const Vector3&, const Vector3&);
     REGISTER_STATIC_METHOD(matrix, Matrix, createPerspective);
     REGISTER_STATIC_METHOD(matrix, Matrix, createOrthographic);
     REGISTER_STATIC_METHOD(matrix, Matrix, createOrthographicOffCenter);
-    REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createBillboard, "createBillboard", Matrix, , const Vector3 &, const Vector3 &, const Vector3 &);
-    REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createBillboard, "createBillboard2", Matrix, , const Vector3 &, const Vector3 &, const Vector3 &, const Vector3 &);
+    REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createBillboard, "createBillboard", Matrix, , const Vector3&, const Vector3&, const Vector3&);
+    REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createBillboard, "createBillboard2", Matrix, , const Vector3&, const Vector3&, const Vector3&, const Vector3&);
     REGISTER_STATIC_METHOD(matrix, Matrix, createReflection);
     REGISTER_STATIC_METHOD(matrix, Matrix, createScale);
-    REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createRotation, "createRotation", Matrix, , const Quaternion &);
-    REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createRotation, "createRotationAxisAngle", Matrix, , const Vector3 &, float);
+    REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createRotation, "createRotation", Matrix, , const Quaternion&);
+    REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createRotation, "createRotationAxisAngle", Matrix, , const Vector3&, float);
     REGISTER_STATIC_METHOD(matrix, Matrix, createRotationX);
     REGISTER_STATIC_METHOD(matrix, Matrix, createRotationY);
     REGISTER_STATIC_METHOD(matrix, Matrix, createRotationZ);
@@ -244,46 +244,46 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(matrix, Matrix, getBackVector);
     REGISTER_METHOD(matrix, Matrix, invert);
     REGISTER_METHOD(matrix, Matrix, transpose);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, rotate, "rotate", void, , const Quaternion &);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, rotate, "rotateAxisAngle", void, , const Vector3 &, float);
+    REGISTER_OVERLOADED_METHOD(matrix, Matrix, rotate, "rotate", void, , const Quaternion&);
+    REGISTER_OVERLOADED_METHOD(matrix, Matrix, rotate, "rotateAxisAngle", void, , const Vector3&, float);
     REGISTER_METHOD(matrix, Matrix, rotateX);
     REGISTER_METHOD(matrix, Matrix, rotateY);
     REGISTER_METHOD(matrix, Matrix, rotateZ);
     REGISTER_OVERLOADED_METHOD(matrix, Matrix, scale, "scale", void, , float);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, scale, "scale2", void, , const Vector3 &);
+    REGISTER_OVERLOADED_METHOD(matrix, Matrix, scale, "scale2", void, , const Vector3&);
     REGISTER_METHOD(matrix, Matrix, translate);
     REGISTER_METHOD(matrix, Matrix, setIdentity);
     REGISTER_METHOD(matrix, Matrix, setZero);
     REGISTER_METHOD(matrix, Matrix, transformPoint);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, transformDirection, "transformVector3Direction", Vector3, const, const Vector3 &);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, transformDirection, "transformVector4Direction", Vector4, const, const Vector4 &);
+    REGISTER_OVERLOADED_METHOD(matrix, Matrix, transformDirection, "transformVector3Direction", Vector3, const, const Vector3&);
+    REGISTER_OVERLOADED_METHOD(matrix, Matrix, transformDirection, "transformVector4Direction", Vector4, const, const Vector4&);
     REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator+, "plusScalar", Matrix, const, float);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator+, "plusMatrix", Matrix, const, const Matrix &);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator+=, "addScalar", Matrix &, , float);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator+=, "addMatrix", Matrix &, , const Matrix &);
+    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator+, "plusMatrix", Matrix, const, const Matrix&);
+    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator+=, "addScalar", Matrix&, , float);
+    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator+=, "addMatrix", Matrix&, , const Matrix&);
     REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-, "negative", Matrix, const, void);
     REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-, "minusScalar", Matrix, const, float);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-, "minusMatrix", Matrix, const, const Matrix &);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-=, "subtractScalar", Matrix &, , float);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-=, "subtractMatrix", Matrix &, , const Matrix &);
+    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-, "minusMatrix", Matrix, const, const Matrix&);
+    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-=, "subtractScalar", Matrix&, , float);
+    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-=, "subtractMatrix", Matrix&, , const Matrix&);
     REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-, "minusScalar", Matrix, const, float);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-, "minusMatrix", Matrix, const, const Matrix &);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-=, "subtractScalar", Matrix &, , float);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-=, "subtractMatrix", Matrix &, , const Matrix &);
+    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-, "minusMatrix", Matrix, const, const Matrix&);
+    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-=, "subtractScalar", Matrix&, , float);
+    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator-=, "subtractMatrix", Matrix&, , const Matrix&);
     REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator*, "productScalar", Matrix, const, float);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator*, "productMatrix", Matrix, const, const Matrix &);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator*=, "multScalar", Matrix &, , float);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator*=, "multMatrix", Matrix &, , const Matrix &);
+    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator*, "productMatrix", Matrix, const, const Matrix&);
+    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator*=, "multScalar", Matrix&, , float);
+    REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator*=, "multMatrix", Matrix&, , const Matrix&);
     matrix.endClass();
 
     // Ray
     module.beginClass<Ray>("Ray")
-    .addConstructor(LUA_ARGS(const Vector3 &, const Vector3 &))
+    .addConstructor(LUA_ARGS(const Vector3&, const Vector3&))
     .endClass();
 
     // BoundingBox
     auto bb = module.beginClass<BoundingBox>("BoundingBox");
-    bb.addConstructor(LUA_ARGS(const Vector3 &, const Vector3 &));
+    bb.addConstructor(LUA_ARGS(const Vector3&, const Vector3&));
     REGISTER_STATIC_METHOD(bb, BoundingBox, empty);
     REGISTER_METHOD(bb, BoundingBox, getCenter);
     REGISTER_METHOD(bb, BoundingBox, getCorners);
@@ -302,7 +302,7 @@ void LuaScriptManager::registerApi()
 
     // BoundingSphere
     auto bs = module.beginClass<BoundingSphere>("BoundingSphere");
-    bs.addConstructor(LUA_ARGS(const Vector3 &, float));
+    bs.addConstructor(LUA_ARGS(const Vector3&, float));
     REGISTER_STATIC_METHOD(bs, BoundingSphere, empty);
     REGISTER_METHOD(bs, BoundingSphere, intersectsBoundingSphere);
     REGISTER_METHOD(bs, BoundingSphere, intersectsBoundingBox);
@@ -326,7 +326,7 @@ void LuaScriptManager::registerApi()
 
     // Plane
     auto p = module.beginClass<Plane>("Plane");
-    p.addConstructor(LUA_ARGS(const Vector3 &, float));
+    p.addConstructor(LUA_ARGS(const Vector3&, float));
     REGISTER_STATIC_METHOD(p, Plane, intersection);
     REGISTER_METHOD(p, Plane, getNormal);
     REGISTER_METHOD(p, Plane, setNormal);
@@ -452,7 +452,7 @@ void LuaScriptManager::registerApi()
 
     // VertexFormat
     auto vertexFormat = module.beginClass<VertexFormat>("VertexFormat");
-    vertexFormat.addConstructor(LUA_ARGS(const std::vector<VertexFormatElement> &));
+    vertexFormat.addConstructor(LUA_ARGS(const std::vector<VertexFormatElement>&));
     REGISTER_METHOD(vertexFormat, VertexFormat, getVertexSize);
     REGISTER_METHOD(vertexFormat, VertexFormat, getElement);
     REGISTER_METHOD(vertexFormat, VertexFormat, getElementCount);
@@ -605,12 +605,12 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(transform, Transform, getLocalForward);
     REGISTER_METHOD(transform, Transform, getLocalBack);
     REGISTER_METHOD(transform, Transform, translateLocal);
-    REGISTER_OVERLOADED_METHOD(transform, Transform, rotate, "rotate", void, , const Quaternion &, TransformSpace);
-    REGISTER_OVERLOADED_METHOD(transform, Transform, rotate, "rotateAxisAngle", void, , const Vector3 &, float, TransformSpace);
+    REGISTER_OVERLOADED_METHOD(transform, Transform, rotate, "rotate", void, , const Quaternion&, TransformSpace);
+    REGISTER_OVERLOADED_METHOD(transform, Transform, rotate, "rotateAxisAngle", void, , const Vector3&, float, TransformSpace);
     REGISTER_METHOD(transform, Transform, scaleLocal);
     REGISTER_METHOD(transform, Transform, setLocalPosition);
-    REGISTER_OVERLOADED_METHOD(transform, Transform, setLocalRotation, "setLocalRotation", void, , const Quaternion &);
-    REGISTER_OVERLOADED_METHOD(transform, Transform, setLocalRotation, "setLocalRotationAxisAngle", void, , const Vector3 &, float);
+    REGISTER_OVERLOADED_METHOD(transform, Transform, setLocalRotation, "setLocalRotation", void, , const Quaternion&);
+    REGISTER_OVERLOADED_METHOD(transform, Transform, setLocalRotation, "setLocalRotationAxisAngle", void, , const Vector3&, float);
     REGISTER_METHOD(transform, Transform, setLocalScale);
     REGISTER_METHOD(transform, Transform, lookAt);
     REGISTER_METHOD(transform, Transform, getMatrix);
@@ -843,18 +843,18 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(mgr, ResourceManager, findMesh);
     REGISTER_METHOD(mgr, ResourceManager, findRenderTarget);
     REGISTER_METHOD(mgr, ResourceManager, findSurfaceRenderer);
-    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateEffect, LUA_ARGS(const std::string &, const std::string &, _opt<const std::string &>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrCreatePrefabEffect, LUA_ARGS(EffectPrefab, _opt<const std::string &>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateTexture2D, LUA_ARGS(_opt<const std::string &>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateCubeTexture, LUA_ARGS(_opt<const std::string &>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMaterial, LUA_ARGS(shared<Effect>, _opt<const std::string &>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMesh, LUA_ARGS(const VertexFormat &, _opt<const std::string &>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrCreatePrefabMesh, LUA_ARGS(MeshPrefab, _opt<const std::string &>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateRenderTarget, LUA_ARGS(_opt<const std::string &>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateSurfaceRenderer, LUA_ARGS(shared<Material>, _opt<const std::string &>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrLoadTexture2D, LUA_ARGS(const std::string &, _opt<const std::string &>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrLoadCubeTexture, LUA_ARGS(const std::vector<std::string> &, _opt<const std::string &>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrLoadMesh, LUA_ARGS(const std::string &, _opt<const std::string &>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateEffect, LUA_ARGS(const std::string&, const std::string&, _opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrCreatePrefabEffect, LUA_ARGS(EffectPrefab, _opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateTexture2D, LUA_ARGS(_opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateCubeTexture, LUA_ARGS(_opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMaterial, LUA_ARGS(shared<Effect>, _opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMesh, LUA_ARGS(const VertexFormat&, _opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrCreatePrefabMesh, LUA_ARGS(MeshPrefab, _opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateRenderTarget, LUA_ARGS(_opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateSurfaceRenderer, LUA_ARGS(shared<Material>, _opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrLoadTexture2D, LUA_ARGS(const std::string&, _opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrLoadCubeTexture, LUA_ARGS(const std::vector<std::string>&, _opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrLoadMesh, LUA_ARGS(const std::string&, _opt<const std::string&>));
     REGISTER_OVERLOADED_METHOD(mgr, ResourceManager, cleanUnusedResources, "cleanUnusedResources", void, , void);
     mgr.endClass();
 

@@ -44,7 +44,7 @@ Matrix::Matrix(float m11, float m12, float m13, float m14, float m21, float m22,
 }
 
 
-Matrix::Matrix(const Matrix &copy)
+Matrix::Matrix(const Matrix& copy)
 {
     memcpy(m, copy.m, MATRIX_SIZE);
 }
@@ -72,7 +72,7 @@ Matrix Matrix::zero()
 }
 
 
-Matrix Matrix::createLookAt(const Vector3 &eye, const Vector3 &target, const Vector3 &up)
+Matrix Matrix::createLookAt(const Vector3& eye, const Vector3& target, const Vector3& up)
 {
     auto zaxis(target - eye);
     zaxis.normalize();
@@ -137,8 +137,8 @@ Matrix Matrix::createOrthographicOffCenter(float left, float right, float bottom
 }
 
 
-Matrix Matrix::createBillboardHelper(const Vector3 &objectPosition, const Vector3 &cameraPosition,
-                                     const Vector3 &cameraUpVector, const Vector3 *cameraForwardVector)
+Matrix Matrix::createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
+                                     const Vector3& cameraUpVector, const Vector3* cameraForwardVector)
 {
     auto delta = cameraPosition - objectPosition;
     auto isSufficientDelta = !Math::approxZero(delta.lengthSquared());
@@ -171,7 +171,7 @@ Matrix Matrix::createBillboardHelper(const Vector3 &objectPosition, const Vector
 }
 
 
-Matrix Matrix::createReflection(const Plane &plane)
+Matrix Matrix::createReflection(const Plane& plane)
 {
     auto normal(plane.getNormal());
     auto k = -2.0f * plane.getDistance();
@@ -193,7 +193,7 @@ Matrix Matrix::createReflection(const Plane &plane)
 }
 
 
-Matrix Matrix::createScale(const Vector3 &scale)
+Matrix Matrix::createScale(const Vector3& scale)
 {
     Matrix result;
     result.m[0] = scale.x;
@@ -203,7 +203,7 @@ Matrix Matrix::createScale(const Vector3 &scale)
 }
 
 
-Matrix Matrix::createRotation(const Quaternion &q)
+Matrix Matrix::createRotation(const Quaternion& q)
 {
     auto x2 = q.x + q.x;
     auto y2 = q.y + q.y;
@@ -245,7 +245,7 @@ Matrix Matrix::createRotation(const Quaternion &q)
 }
 
 
-Matrix Matrix::createRotation(const Vector3 &axis, float angleRadians)
+Matrix Matrix::createRotation(const Vector3& axis, float angleRadians)
 {
     auto x = axis.x;
     auto y = axis.y;
@@ -351,7 +351,7 @@ Matrix Matrix::createRotationZ(float angleRadians)
 }
 
 
-Matrix Matrix::createTranslation(const Vector3 &translation)
+Matrix Matrix::createTranslation(const Vector3& translation)
 {
     Matrix result;
     result.m[12] = translation.x;
@@ -361,7 +361,7 @@ Matrix Matrix::createTranslation(const Vector3 &translation)
 }
 
 
-bool Matrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translation) const
+bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translation) const
 {
     if (translation)
     {
@@ -565,14 +565,14 @@ bool Matrix::isIdentity() const
 }
 
 
-void Matrix::rotate(const Quaternion &q)
+void Matrix::rotate(const Quaternion& q)
 {
     auto r = createRotation(q);
     *this *= r;
 }
 
 
-void Matrix::rotate(const Vector3 &axis, float angleRadians)
+void Matrix::rotate(const Vector3& axis, float angleRadians)
 {
     auto r = createRotation(axis, angleRadians);
     *this *= r;
@@ -600,7 +600,7 @@ void Matrix::rotateZ(float angleRadians)
 }
 
 
-void Matrix::scale(const Vector3 &s)
+void Matrix::scale(const Vector3& s)
 {
     auto sm = createScale(s);
     *this *= sm;
@@ -619,7 +619,7 @@ void Matrix::setZero()
 }
 
 
-Matrix &Matrix::operator+=(float scalar)
+Matrix& Matrix::operator+=(float scalar)
 {
     m[0] += scalar;
     m[1] += scalar;
@@ -641,7 +641,7 @@ Matrix &Matrix::operator+=(float scalar)
 }
 
 
-Matrix &Matrix::operator+=(const Matrix &other)
+Matrix& Matrix::operator+=(const Matrix& other)
 {
     m[0] += other.m[0];
     m[1] += other.m[1];
@@ -663,7 +663,7 @@ Matrix &Matrix::operator+=(const Matrix &other)
 }
 
 
-Vector3 Matrix::transformPoint(const Vector3 &point) const
+Vector3 Matrix::transformPoint(const Vector3& point) const
 {
     return Vector3(
                point.x * m[0] + point.y * m[4] + point.z * m[8] + m[12],
@@ -673,7 +673,7 @@ Vector3 Matrix::transformPoint(const Vector3 &point) const
 }
 
 
-Vector3 Matrix::transformDirection(const Vector3 &dir) const
+Vector3 Matrix::transformDirection(const Vector3& dir) const
 {
     return Vector3(
                dir.x * m[0] + dir.y * m[4] + dir.z * m[8],
@@ -683,7 +683,7 @@ Vector3 Matrix::transformDirection(const Vector3 &dir) const
 }
 
 
-Vector4 Matrix::transformDirection(const Vector4 &dir) const
+Vector4 Matrix::transformDirection(const Vector4& dir) const
 {
     return Vector4(
                dir.x * m[0] + dir.y * m[4] + dir.z * m[8] + dir.w * m[12],
@@ -694,7 +694,7 @@ Vector4 Matrix::transformDirection(const Vector4 &dir) const
 }
 
 
-void Matrix::translate(const Vector3 &t)
+void Matrix::translate(const Vector3& t)
 {
     auto tm = createTranslation(t);
     *this *= tm;
@@ -714,7 +714,7 @@ void Matrix::transpose()
 }
 
 
-Matrix &Matrix::operator*=(float scalar)
+Matrix& Matrix::operator*=(float scalar)
 {
     m[0] *= scalar;
     m[1] *= scalar;
@@ -736,7 +736,7 @@ Matrix &Matrix::operator*=(float scalar)
 }
 
 
-Matrix &Matrix::operator*=(const Matrix &m2)
+Matrix& Matrix::operator*=(const Matrix& m2)
 {
     float product[16];
 
@@ -766,7 +766,7 @@ Matrix &Matrix::operator*=(const Matrix &m2)
 }
 
 
-Matrix &Matrix::operator-=(float scalar)
+Matrix& Matrix::operator-=(float scalar)
 {
     m[0] -= scalar;
     m[1] -= scalar;
@@ -788,7 +788,7 @@ Matrix &Matrix::operator-=(float scalar)
 }
 
 
-Matrix &Matrix::operator-=(const Matrix &m2)
+Matrix& Matrix::operator-=(const Matrix& m2)
 {
     m[0] -= m2.m[0];
     m[1] -= m2.m[1];

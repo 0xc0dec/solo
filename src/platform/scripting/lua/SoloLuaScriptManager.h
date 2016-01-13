@@ -10,8 +10,8 @@ namespace solo
     public:
         virtual ~LuaScriptManager();
 
-        virtual void execute(const std::string &code) override;
-        virtual void executeFile(const std::string &path) override;
+        virtual void execute(const std::string& code) override;
+        virtual void executeFile(const std::string& path) override;
 
     private:
         friend class ScriptManager;

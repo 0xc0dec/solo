@@ -4,7 +4,7 @@
 using namespace solo;
 
 
-OpenGLMesh::OpenGLMesh(const VertexFormat &vertexFormat):
+OpenGLMesh::OpenGLMesh(const VertexFormat& vertexFormat):
     Mesh(vertexFormat)
 {
     auto elementCount = vertexFormat.getElementCount();
@@ -13,7 +13,7 @@ OpenGLMesh::OpenGLMesh(const VertexFormat &vertexFormat):
 
     handles.resize(vertexFormat.getStorageCount());
     elementCounts.resize(vertexFormat.getStorageCount());
-    
+
     for (auto i = 0; i < elementCount; ++i)
     {
         auto el = vertexFormat.getElement(i);
@@ -45,7 +45,7 @@ OpenGLMesh::~OpenGLMesh()
 }
 
 
-void OpenGLMesh::resetStorage(int storageId, const float *data, int elementCount, bool dynamic)
+void OpenGLMesh::resetStorage(int storageId, const float* data, int elementCount, bool dynamic)
 {
     // No validations intentionally
     auto handle = handles[storageId];
@@ -56,7 +56,7 @@ void OpenGLMesh::resetStorage(int storageId, const float *data, int elementCount
 }
 
 
-void OpenGLMesh::updateStorage(int storageId, const float *data, int elementCount, int updateFromIndex)
+void OpenGLMesh::updateStorage(int storageId, const float* data, int elementCount, int updateFromIndex)
 {
     // No validations intentionally
     auto handle = handles[storageId];
@@ -95,7 +95,7 @@ void OpenGLMesh::removeIndex(int index)
 }
 
 
-void OpenGLMesh::resetIndexData(int index, const void *data, int elementCount, bool dynamic)
+void OpenGLMesh::resetIndexData(int index, const void* data, int elementCount, bool dynamic)
 {
     // No validations intentionally
     auto handle = indexHandles[index];
@@ -108,7 +108,7 @@ void OpenGLMesh::resetIndexData(int index, const void *data, int elementCount, b
 }
 
 
-void OpenGLMesh::updateIndexData(int index, const void *data, int elementCount, int updateFromIndex)
+void OpenGLMesh::updateIndexData(int index, const void* data, int elementCount, int updateFromIndex)
 {
     // No validations intentionally
     auto handle = indexHandles.at(index);
@@ -130,5 +130,5 @@ void OpenGLMesh::drawIndex(int index)
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexHandles[index]);
     glDrawElements(OpenGLHelper::convertMeshPrimitiveType(indexPrimitiveTypes[index]),
-        indexElementCounts[index], OpenGLHelper::convertMeshIndexType(indexFormats[index]), nullptr);
+                   indexElementCounts[index], OpenGLHelper::convertMeshIndexType(indexFormats[index]), nullptr);
 }

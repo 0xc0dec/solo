@@ -16,7 +16,7 @@ namespace solo
     public:
         static shared<SkyboxRenderer> create(Node node);
 
-        virtual void render(RenderContext &context) override;
+        virtual void render(RenderContext& context) override;
 
         void setTexture(shared<CubeTexture> texture);
         shared<CubeTexture> getTexture() const;

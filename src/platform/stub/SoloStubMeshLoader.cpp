@@ -5,19 +5,19 @@
 using namespace solo;
 
 
-StubMeshLoader::StubMeshLoader(FileSystem *fs, ResourceManager *resourceManager)
+StubMeshLoader::StubMeshLoader(FileSystem* fs, ResourceManager* resourceManager)
     : MeshLoader(fs, resourceManager)
 {
 }
 
 
-bool StubMeshLoader::isLoadable(const std::string &uri)
+bool StubMeshLoader::isLoadable(const std::string& uri)
 {
     return true;
 }
 
 
-shared<Mesh> StubMeshLoader::load(const std::string &uri)
+shared<Mesh> StubMeshLoader::load(const std::string& uri)
 {
     return resourceManager->getOrCreateMesh(VertexFormat(), uri);
 }

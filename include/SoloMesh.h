@@ -33,21 +33,21 @@ namespace solo
     class Mesh
     {
     public:
-        static shared<Mesh> create(DeviceMode mode, const VertexFormat &vertexFormat);
+        static shared<Mesh> create(DeviceMode mode, const VertexFormat& vertexFormat);
         static shared<Mesh> createPrefab(DeviceMode mode, MeshPrefab prefab);
 
         SL_NONCOPYABLE(Mesh);
         virtual ~Mesh() {}
 
-        virtual void resetStorage(int storageId, const float *data, int elementCount, bool dynamic) = 0;
-        virtual void updateStorage(int storageId, const float *data, int elementCount, int updateFromIndex) = 0;
+        virtual void resetStorage(int storageId, const float* data, int elementCount, bool dynamic) = 0;
+        virtual void updateStorage(int storageId, const float* data, int elementCount, int updateFromIndex) = 0;
 
         virtual int addIndex(MeshIndexFormat indexFormat) = 0;
         virtual void removeIndex(int index) = 0;
         virtual size_t getIndexCount() const = 0;
 
-        virtual void resetIndexData(int index, const void *data, int elementCount, bool dynamic) = 0;
-        virtual void updateIndexData(int index, const void *data, int elementCount, int updateFromIndex) = 0;
+        virtual void resetIndexData(int index, const void* data, int elementCount, bool dynamic) = 0;
+        virtual void updateIndexData(int index, const void* data, int elementCount, int updateFromIndex) = 0;
 
         virtual MeshPrimitiveType getIndexPrimitiveType(int index) = 0;
         virtual void setIndexPrimitiveType(int index, MeshPrimitiveType primitiveType) = 0;
@@ -61,7 +61,7 @@ namespace solo
         MeshPrimitiveType getPrimitiveType() const;
 
     protected:
-        Mesh(const VertexFormat &vertexFormat): vertexFormat(vertexFormat) {}
+        Mesh(const VertexFormat& vertexFormat): vertexFormat(vertexFormat) {}
 
         static shared<Mesh> createQuadMesh(DeviceMode mode);
         static shared<Mesh> createBoxMesh(DeviceMode mode);

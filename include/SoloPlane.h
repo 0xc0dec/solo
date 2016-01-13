@@ -20,30 +20,30 @@ namespace solo
     struct Plane
     {
         Plane() {}
-        Plane(const Vector3 &normal, float distance);
+        Plane(const Vector3& normal, float distance);
         Plane(float normalX, float normalY, float normalZ, float distance);
 
-        const Vector3 &getNormal() const;
-        void setNormal(const Vector3 &normal);
+        const Vector3& getNormal() const;
+        void setNormal(const Vector3& normal);
 
         float getDistance() const;
         void setDistance(float distance);
 
-        float getDistanceToPoint(const Vector3 &point) const;
+        float getDistanceToPoint(const Vector3& point) const;
 
-        static Vector3 intersection(const Plane &p1, const Plane &p2, const Plane &p3);
+        static Vector3 intersection(const Plane& p1, const Plane& p2, const Plane& p3);
 
-        PlaneIntersection getIntersection(const BoundingSphere &sphere) const;
-        PlaneIntersection getIntersection(const BoundingBox &box) const;
-        PlaneIntersection getIntersection(const Frustum &frustum) const;
-        PlaneIntersection getIntersection(const Plane &plane) const;
-        PlaneIntersection getIntersection(const Ray &ray) const;
+        PlaneIntersection getIntersection(const BoundingSphere& sphere) const;
+        PlaneIntersection getIntersection(const BoundingBox& box) const;
+        PlaneIntersection getIntersection(const Frustum& frustum) const;
+        PlaneIntersection getIntersection(const Plane& plane) const;
+        PlaneIntersection getIntersection(const Ray& ray) const;
 
-        bool isParallel(const Plane &plane) const;
+        bool isParallel(const Plane& plane) const;
 
-        void transform(const Matrix &matrix);
+        void transform(const Matrix& matrix);
 
-        Plane &operator*=(const Matrix &matrix);
+        Plane& operator*=(const Matrix& matrix);
 
     private:
         void normalize();
@@ -52,7 +52,7 @@ namespace solo
         float distance = 0;
     };
 
-    inline const Vector3 &Plane::getNormal() const
+    inline const Vector3& Plane::getNormal() const
     {
         return normal;
     }
@@ -62,15 +62,15 @@ namespace solo
         return distance;
     }
 
-    inline Plane &Plane::operator*=(const Matrix &matrix)
+    inline Plane& Plane::operator*=(const Matrix& matrix)
     {
         transform(matrix);
         return *this;
     }
 
-    inline Plane operator*(const Matrix &matrix, const Plane &plane)
+    inline Plane operator*(const Matrix& matrix, const Plane& plane)
     {
-        auto p(const_cast<Plane &>(plane));
+        auto p(const_cast<Plane&>(plane));
         p.transform(matrix);
         return p;
     }

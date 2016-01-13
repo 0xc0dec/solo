@@ -9,14 +9,14 @@ using namespace solo;
 
 struct PngReadContext
 {
-    std::vector<uint8_t> *bytes;
+    std::vector<uint8_t>* bytes;
     size_t offset;
 };
 
 
 static void readCallback(png_structp png, png_bytep data, png_size_t length)
 {
-    auto context = reinterpret_cast<PngReadContext *>(png_get_io_ptr(png));
+    auto context = reinterpret_cast<PngReadContext*>(png_get_io_ptr(png));
     if (!context)
         png_error(png, "Error reading PNG");
     memcpy(data, context->bytes->data() + context->offset, length);
@@ -24,19 +24,19 @@ static void readCallback(png_structp png, png_bytep data, png_size_t length)
 }
 
 
-PngImageLoader::PngImageLoader(FileSystem *fs, ResourceManager *resourceManager) :
+PngImageLoader::PngImageLoader(FileSystem* fs, ResourceManager* resourceManager) :
     ImageLoader(fs, resourceManager)
 {
 }
 
 
-bool PngImageLoader::isLoadable(const std::string &uri)
+bool PngImageLoader::isLoadable(const std::string& uri)
 {
     return uri.find(".png", uri.size() - 5) != std::string::npos;
 }
 
 
-shared<Image> PngImageLoader::load(const std::string &uri)
+shared<Image> PngImageLoader::load(const std::string& uri)
 {
     auto bytes = fs->readBytes(uri);
     if (bytes.size() < 8 || png_sig_cmp(&bytes[0], 0, 8) != 0)
@@ -74,7 +74,8 @@ shared<Image> PngImageLoader::load(const std::string &uri)
     }
 
     auto stride = png_get_rowbytes(png, info);
-    auto result = SL_NEW_SHARED(Image, {
+    auto result = SL_NEW_SHARED(Image,
+    {
         static_cast<int>(width),
         static_cast<int>(height),
         colorFormat

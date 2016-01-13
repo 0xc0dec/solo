@@ -55,7 +55,7 @@ void OpenGLRenderTarget::setColorAttachment(int index, shared<Texture2D> texture
 
         bind();
 
-        auto textureHandle = static_cast<OpenGLTexture2D *>(texture.get())->getHandle();
+        auto textureHandle = static_cast<OpenGLTexture2D*>(texture.get())->getHandle();
         glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + index, textureHandle, 0);
 
         if (colorAttachments.empty()) // this is the first texture set

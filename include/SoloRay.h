@@ -18,28 +18,28 @@ namespace solo
     struct Ray
     {
         Ray() {}
-        Ray(const Vector3 &origin, const Vector3 &direction);
+        Ray(const Vector3& origin, const Vector3& direction);
         Ray(float originX, float originY, float originZ, float dirX, float dirY, float dirZ);
 
         Vector3 getOrigin() const;
-        void setOrigin(const Vector3 &origin);
+        void setOrigin(const Vector3& origin);
         void setOrigin(float x, float y, float z);
 
         Vector3 getDirection() const;
-        void setDirection(const Vector3 &direction);
+        void setDirection(const Vector3& direction);
         void setDirection(float x, float y, float z);
 
-        float getIntersection(const BoundingSphere &sphere) const;
-        float getIntersection(const BoundingBox &box) const;
-        float getIntersection(const Frustum &frustum) const;
-        float getIntersection(const Plane &plane) const;
+        float getIntersection(const BoundingSphere& sphere) const;
+        float getIntersection(const BoundingBox& box) const;
+        float getIntersection(const Frustum& frustum) const;
+        float getIntersection(const Plane& plane) const;
 
-        void set(const Vector3 &origin, const Vector3 &direction);
-        void set(const Ray &ray);
+        void set(const Vector3& origin, const Vector3& direction);
+        void set(const Ray& ray);
 
-        void transform(const Matrix &matrix);
+        void transform(const Matrix& matrix);
 
-        Ray &operator*=(const Matrix &matrix);
+        Ray& operator*=(const Matrix& matrix);
 
     private:
         void normalize();
@@ -58,15 +58,15 @@ namespace solo
         return direction;
     }
 
-    inline Ray &Ray::operator*=(const Matrix &matrix)
+    inline Ray& Ray::operator*=(const Matrix& matrix)
     {
         transform(matrix);
         return *this;
     }
 
-    inline Ray operator*(const Matrix &matrix, const Ray &ray)
+    inline Ray operator*(const Matrix& matrix, const Ray& ray)
     {
-        auto r(const_cast<Ray &>(ray));
+        auto r(const_cast<Ray&>(ray));
         r.transform(matrix);
         return r;
     }

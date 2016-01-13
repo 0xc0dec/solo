@@ -6,7 +6,7 @@
 using namespace solo;
 
 
-StubResourceManager::StubResourceManager(Device *device):
+StubResourceManager::StubResourceManager(Device* device):
     ResourceManager(device)
 {
     imageLoaders.clear();

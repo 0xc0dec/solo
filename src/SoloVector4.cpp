@@ -64,7 +64,7 @@ bool Vector4::isUnit() const
 }
 
 
-float Vector4::angle(const Vector4 &v1, const Vector4 &v2)
+float Vector4::angle(const Vector4& v1, const Vector4& v2)
 {
     auto dx = v1.w * v2.x - v1.x * v2.w - v1.y * v2.z + v1.z * v2.y;
     auto dy = v1.w * v2.y - v1.y * v2.w - v1.z * v2.x + v1.x * v2.z;
@@ -74,7 +74,7 @@ float Vector4::angle(const Vector4 &v1, const Vector4 &v2)
 }
 
 
-void Vector4::clamp(const Vector4 &min, const Vector4 &max)
+void Vector4::clamp(const Vector4& min, const Vector4& max)
 {
     if (x < min.x)
         x = min.x;
@@ -98,7 +98,7 @@ void Vector4::clamp(const Vector4 &min, const Vector4 &max)
 }
 
 
-float Vector4::distance(const Vector4 &v) const
+float Vector4::distance(const Vector4& v) const
 {
     auto dx = v.x - x;
     auto dy = v.y - y;
@@ -109,7 +109,7 @@ float Vector4::distance(const Vector4 &v) const
 }
 
 
-float Vector4::distanceSquared(const Vector4 &v) const
+float Vector4::distanceSquared(const Vector4& v) const
 {
     auto dx = v.x - x;
     auto dy = v.y - y;
@@ -120,13 +120,13 @@ float Vector4::distanceSquared(const Vector4 &v) const
 }
 
 
-float Vector4::dot(const Vector4 &v) const
+float Vector4::dot(const Vector4& v) const
 {
     return x * v.x + y * v.y + z * v.z + w * v.w;
 }
 
 
-float Vector4::dot(const Vector4 &v1, const Vector4 &v2)
+float Vector4::dot(const Vector4& v1, const Vector4& v2)
 {
     return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
 }

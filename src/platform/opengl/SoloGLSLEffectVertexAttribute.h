@@ -14,7 +14,7 @@ namespace solo
     private:
         friend class GLSLEffect;
 
-        GLSLEffectVertexAttribute(const std::string &name, GLuint location);
+        GLSLEffectVertexAttribute(const std::string& name, GLuint location);
 
         GLuint location = 0;
     };

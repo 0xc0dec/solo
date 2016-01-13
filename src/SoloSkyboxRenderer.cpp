@@ -39,7 +39,7 @@ SkyboxRenderer::SkyboxRenderer(Node node):
 }
 
 
-void SkyboxRenderer::render(RenderContext &context)
+void SkyboxRenderer::render(RenderContext& context)
 {
     material->bind(context);
     binding->bind();

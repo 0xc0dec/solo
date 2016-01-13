@@ -57,7 +57,7 @@ bool Vector3::isUnit() const
 }
 
 
-float Vector3::angle(const Vector3 &v1, const Vector3 &v2)
+float Vector3::angle(const Vector3& v1, const Vector3& v2)
 {
     auto dx = v1.y * v2.z - v1.z * v2.y;
     auto dy = v1.z * v2.x - v1.x * v2.z;
@@ -67,7 +67,7 @@ float Vector3::angle(const Vector3 &v1, const Vector3 &v2)
 }
 
 
-void Vector3::clamp(const Vector3 &min, const Vector3 &max)
+void Vector3::clamp(const Vector3& min, const Vector3& max)
 {
     if (x < min.x)
         x = min.x;
@@ -86,7 +86,7 @@ void Vector3::clamp(const Vector3 &min, const Vector3 &max)
 }
 
 
-Vector3 Vector3::cross(const Vector3 &v1, const Vector3 &v2)
+Vector3 Vector3::cross(const Vector3& v1, const Vector3& v2)
 {
     return Vector3(
                (v1.y * v2.z) - (v1.z * v2.y),
@@ -96,7 +96,7 @@ Vector3 Vector3::cross(const Vector3 &v1, const Vector3 &v2)
 }
 
 
-float Vector3::distance(const Vector3 &v) const
+float Vector3::distance(const Vector3& v) const
 {
     auto dx = v.x - x;
     auto dy = v.y - y;
@@ -106,7 +106,7 @@ float Vector3::distance(const Vector3 &v) const
 }
 
 
-float Vector3::distanceSquared(const Vector3 &v) const
+float Vector3::distanceSquared(const Vector3& v) const
 {
     auto dx = v.x - x;
     auto dy = v.y - y;
@@ -115,13 +115,13 @@ float Vector3::distanceSquared(const Vector3 &v) const
 }
 
 
-float Vector3::dot(const Vector3 &v) const
+float Vector3::dot(const Vector3& v) const
 {
     return x * v.x + y * v.y + z * v.z;
 }
 
 
-float Vector3::dot(const Vector3 &v1, const Vector3 &v2)
+float Vector3::dot(const Vector3& v1, const Vector3& v2)
 {
     return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }

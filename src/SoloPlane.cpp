@@ -9,7 +9,7 @@
 using namespace solo;
 
 
-Plane::Plane(const Vector3 &normal, float distance):
+Plane::Plane(const Vector3& normal, float distance):
     normal(normal),
     distance(distance)
 {
@@ -23,7 +23,7 @@ Plane::Plane(float normalX, float normalY, float normalZ, float distance):
 }
 
 
-void Plane::setNormal(const Vector3 &normal)
+void Plane::setNormal(const Vector3& normal)
 {
     this->normal = normal;
     normalize();
@@ -36,13 +36,13 @@ void Plane::setDistance(float distance)
 }
 
 
-float Plane::getDistanceToPoint(const Vector3 &point) const
+float Plane::getDistanceToPoint(const Vector3& point) const
 {
     return normal.x * point.x + normal.y * point.y + normal.z * point.z + distance;
 }
 
 
-Vector3 Plane::intersection(const Plane &p1, const Plane &p2, const Plane &p3)
+Vector3 Plane::intersection(const Plane& p1, const Plane& p2, const Plane& p3)
 {
     Vector3 result;
 
@@ -93,19 +93,19 @@ Vector3 Plane::intersection(const Plane &p1, const Plane &p2, const Plane &p3)
 }
 
 
-PlaneIntersection Plane::getIntersection(const BoundingSphere &sphere) const
+PlaneIntersection Plane::getIntersection(const BoundingSphere& sphere) const
 {
     return sphere.getPlaneIntersection(*this);
 }
 
 
-PlaneIntersection Plane::getIntersection(const BoundingBox &box) const
+PlaneIntersection Plane::getIntersection(const BoundingBox& box) const
 {
     return box.getPlaneIntersection(*this);
 }
 
 
-PlaneIntersection Plane::getIntersection(const Frustum &frustum) const
+PlaneIntersection Plane::getIntersection(const Frustum& frustum) const
 {
     auto corners = frustum.getCorners();
 
@@ -146,7 +146,7 @@ PlaneIntersection Plane::getIntersection(const Frustum &frustum) const
 }
 
 
-PlaneIntersection Plane::getIntersection(const Plane &plane) const
+PlaneIntersection Plane::getIntersection(const Plane& plane) const
 {
     if (Math::approxEqual(normal.x, plane.normal.x) &&
             Math::approxEqual(normal.y, plane.normal.y) &&
@@ -162,7 +162,7 @@ PlaneIntersection Plane::getIntersection(const Plane &plane) const
 }
 
 
-PlaneIntersection Plane::getIntersection(const Ray &ray) const
+PlaneIntersection Plane::getIntersection(const Ray& ray) const
 {
     auto d = getDistanceToPoint(ray.getOrigin());
 
@@ -181,7 +181,7 @@ PlaneIntersection Plane::getIntersection(const Ray &ray) const
 }
 
 
-bool Plane::isParallel(const Plane &plane) const
+bool Plane::isParallel(const Plane& plane) const
 {
     return Math::approxEqual(normal.y * plane.normal.z, normal.z * plane.normal.y) &&
            Math::approxEqual(normal.z * plane.normal.x, normal.x * plane.normal.z) &&
@@ -189,7 +189,7 @@ bool Plane::isParallel(const Plane &plane) const
 }
 
 
-void Plane::transform(const Matrix &matrix)
+void Plane::transform(const Matrix& matrix)
 {
     auto inverted(matrix);
     if (!inverted.invert())

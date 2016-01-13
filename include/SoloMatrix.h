@@ -20,32 +20,32 @@ namespace solo
                float m21, float m22, float m23, float m24,
                float m31, float m32, float m33, float m34,
                float m41, float m42, float m43, float m44);
-        Matrix(const Matrix &copy);
+        Matrix(const Matrix& copy);
 
         static Matrix identity();
         static Matrix zero();
 
         bool isIdentity() const;
 
-        static Matrix createLookAt(const Vector3 &eyePosition, const Vector3 &targetPosition, const Vector3 &up);
+        static Matrix createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up);
 
         static Matrix createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane);
         static Matrix createOrthographic(float width, float height, float zNearPlane, float zFarPlane);
         static Matrix createOrthographicOffCenter(float left, float right, float bottom, float top, float near, float far);
-        static Matrix createBillboard(const Vector3 &objectPosition, const Vector3 &cameraPosition, const Vector3 &cameraUpVector);
-        static Matrix createBillboard(const Vector3 &objectPosition, const Vector3 &cameraPosition, const Vector3 &cameraUpVector,
-                                      const Vector3 &cameraForwardVector);
+        static Matrix createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition, const Vector3& cameraUpVector);
+        static Matrix createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition, const Vector3& cameraUpVector,
+                                      const Vector3& cameraForwardVector);
 
-        static Matrix createReflection(const Plane &plane);
-        static Matrix createScale(const Vector3 &scale);
-        static Matrix createRotation(const Quaternion &quat);
-        static Matrix createRotation(const Vector3 &axis, float angleRadians);
+        static Matrix createReflection(const Plane& plane);
+        static Matrix createScale(const Vector3& scale);
+        static Matrix createRotation(const Quaternion& quat);
+        static Matrix createRotation(const Vector3& axis, float angleRadians);
         static Matrix createRotationX(float angleRadians);
         static Matrix createRotationY(float angleRadians);
         static Matrix createRotationZ(float angleRadians);
-        static Matrix createTranslation(const Vector3 &translation);
+        static Matrix createTranslation(const Vector3& translation);
 
-        bool decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translation) const;
+        bool decompose(Vector3* scale, Quaternion* rotation, Vector3* translation) const;
 
         float getDeterminant() const;
 
@@ -63,53 +63,53 @@ namespace solo
         bool invert();
         void transpose();
 
-        void rotate(const Quaternion &q);
-        void rotate(const Vector3 &axis, float angleRadians);
+        void rotate(const Quaternion& q);
+        void rotate(const Vector3& axis, float angleRadians);
         void rotateX(float angleRadians);
         void rotateY(float angleRadians);
         void rotateZ(float angleRadians);
 
         void scale(float value);
-        void scale(const Vector3 &s);
+        void scale(const Vector3& s);
 
-        void translate(const Vector3 &t);
+        void translate(const Vector3& t);
 
         void setIdentity();
         void setZero();
 
         inline Matrix operator+(float scalar) const;
-        inline Matrix operator+(const Matrix &m) const;
-        Matrix &operator+=(float scalar);
-        Matrix &operator+=(const Matrix &m);
+        inline Matrix operator+(const Matrix& m) const;
+        Matrix& operator+=(float scalar);
+        Matrix& operator+=(const Matrix& m);
 
         Matrix operator-() const;
         inline Matrix operator-(float scalar) const;
-        inline Matrix operator-(const Matrix &m) const;
-        Matrix &operator-=(float scalar);
-        Matrix &operator-=(const Matrix &m);
+        inline Matrix operator-(const Matrix& m) const;
+        Matrix& operator-=(float scalar);
+        Matrix& operator-=(const Matrix& m);
 
         inline Matrix operator*(float scalar) const;
-        inline Matrix operator*(const Matrix &m) const;
-        Matrix &operator*=(float scalar);
-        Matrix &operator*=(const Matrix &m);
+        inline Matrix operator*(const Matrix& m) const;
+        Matrix& operator*=(float scalar);
+        Matrix& operator*=(const Matrix& m);
 
-        Vector3 transformPoint(const Vector3 &point) const;
+        Vector3 transformPoint(const Vector3& point) const;
 
-        Vector3 transformDirection(const Vector3 &dir) const;
-        Vector4 transformDirection(const Vector4 &dir) const;
+        Vector3 transformDirection(const Vector3& dir) const;
+        Vector4 transformDirection(const Vector4& dir) const;
 
     private:
-        static Matrix createBillboardHelper(const Vector3 &objectPosition, const Vector3 &cameraPosition,
-                                            const Vector3 &cameraUpVector, const Vector3 *cameraForwardVector);
+        static Matrix createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
+                                            const Vector3& cameraUpVector, const Vector3* cameraForwardVector);
     };
 
-    inline Matrix Matrix::createBillboard(const Vector3 &objectPosition, const Vector3 &cameraPosition, const Vector3 &cameraUpVector)
+    inline Matrix Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition, const Vector3& cameraUpVector)
     {
         return createBillboardHelper(objectPosition, cameraPosition, cameraUpVector, nullptr);
     }
 
-    inline Matrix Matrix::createBillboard(const Vector3 &objectPosition, const Vector3 &cameraPosition,
-                                          const Vector3 &cameraUpVector, const Vector3 &cameraForwardVector)
+    inline Matrix Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
+                                          const Vector3& cameraUpVector, const Vector3& cameraForwardVector)
     {
         return createBillboardHelper(objectPosition, cameraPosition, cameraUpVector, &cameraForwardVector);
     }
@@ -121,7 +121,7 @@ namespace solo
         return result;
     }
 
-    inline Matrix Matrix::operator+(const Matrix &m) const
+    inline Matrix Matrix::operator+(const Matrix& m) const
     {
         auto result(*this);
         result += m;
@@ -135,7 +135,7 @@ namespace solo
         return result;
     }
 
-    inline Matrix Matrix::operator-(const Matrix &m) const
+    inline Matrix Matrix::operator-(const Matrix& m) const
     {
         auto result(*this);
         result -= m;
@@ -149,30 +149,30 @@ namespace solo
         return result;
     }
 
-    inline Matrix Matrix::operator*(const Matrix &m) const
+    inline Matrix Matrix::operator*(const Matrix& m) const
     {
         auto result(*this);
         return result *= m;
     }
 
-    inline Vector3 &operator*=(Vector3 &v, const Matrix &m)
+    inline Vector3& operator*=(Vector3& v, const Matrix& m)
     {
         v = m.transformDirection(v);
         return v;
     }
 
-    inline Vector3 operator*(const Matrix &m, const Vector3 &v)
+    inline Vector3 operator*(const Matrix& m, const Vector3& v)
     {
         return m.transformDirection(v);
     }
 
-    inline Vector4 &operator*=(Vector4 &v, const Matrix &m)
+    inline Vector4& operator*=(Vector4& v, const Matrix& m)
     {
         v = m.transformDirection(v);
         return v;
     }
 
-    inline Vector4 operator*(const Matrix &m, const Vector4 &v)
+    inline Vector4 operator*(const Matrix& m, const Vector4& v)
     {
         return m.transformDirection(v);
     }

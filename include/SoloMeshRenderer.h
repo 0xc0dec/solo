@@ -16,12 +16,12 @@ namespace solo
     public:
         static shared<MeshRenderer> create(Node node);
 
-        virtual void render(RenderContext &context) override;
+        virtual void render(RenderContext& context) override;
 
-        Mesh *getMesh() const;
+        Mesh* getMesh() const;
         void setMesh(shared<Mesh> mesh);
 
-        Material *findMaterial(unsigned index) const;
+        Material* findMaterial(unsigned index) const;
         size_t getMaterialCount() const;
 
         void setMaterial(unsigned index, shared<Material> material);
@@ -35,7 +35,7 @@ namespace solo
         std::unordered_map<unsigned, shared<MeshEffectBinding>> bindings;
     };
 
-    inline Mesh *MeshRenderer::getMesh() const
+    inline Mesh* MeshRenderer::getMesh() const
     {
         return mesh.get();
     }

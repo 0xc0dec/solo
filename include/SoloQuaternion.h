@@ -13,10 +13,10 @@ namespace solo
 
         Quaternion() {}
         Quaternion(float x, float y, float z, float w);
-        Quaternion(const Vector3 &axis, float angleRadians);
+        Quaternion(const Vector3& axis, float angleRadians);
 
-        static Quaternion createFromRotationMatrix(const Matrix &m);
-        static Quaternion createFromAxisAngle(const Vector3 &axis, float angleRadians);
+        static Quaternion createFromRotationMatrix(const Matrix& m);
+        static Quaternion createFromAxisAngle(const Vector3& axis, float angleRadians);
 
         static Quaternion identity();
         static Quaternion zero();
@@ -30,20 +30,20 @@ namespace solo
         Quaternion normalized() const;
         void normalize();
 
-        float toAxisAngle(Vector3 &e) const;
+        float toAxisAngle(Vector3& e) const;
 
-        static Quaternion lerp(const Quaternion &q1, const Quaternion &q2, float t);
-        static Quaternion slerp(const Quaternion &q1, const Quaternion &q2, float t);
-        static Quaternion squad(const Quaternion &q1, const Quaternion &q2, const Quaternion &s1, const Quaternion &s2, float t);
+        static Quaternion lerp(const Quaternion& q1, const Quaternion& q2, float t);
+        static Quaternion slerp(const Quaternion& q1, const Quaternion& q2, float t);
+        static Quaternion squad(const Quaternion& q1, const Quaternion& q2, const Quaternion& s1, const Quaternion& s2, float t);
 
-        inline Quaternion operator*(const Quaternion &q) const;
-        Quaternion &operator*=(const Quaternion &q);
+        inline Quaternion operator*(const Quaternion& q) const;
+        Quaternion& operator*=(const Quaternion& q);
 
     private:
-        static Quaternion slerpForSquad(const Quaternion &q1, const Quaternion &q2, float t);
+        static Quaternion slerpForSquad(const Quaternion& q1, const Quaternion& q2, float t);
     };
 
-    inline Quaternion Quaternion::operator*(const Quaternion &q) const
+    inline Quaternion Quaternion::operator*(const Quaternion& q) const
     {
         auto result(*this);
         result *= q;

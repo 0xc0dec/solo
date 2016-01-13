@@ -3,7 +3,7 @@
 using namespace solo;
 
 
-VertexFormat::VertexFormat(const std::vector<VertexFormatElement> &elements):
+VertexFormat::VertexFormat(const std::vector<VertexFormatElement>& elements):
     elements(elements)
 {
     if (elements.empty())
@@ -11,7 +11,7 @@ VertexFormat::VertexFormat(const std::vector<VertexFormatElement> &elements):
 
     int maxStorageId = 0;
     std::unordered_set<int> uniqueStorageIds;
-    for (const auto &e : elements)
+    for (const auto& e : elements)
     {
         auto storageId = e.storageId;
         uniqueStorageIds.insert(storageId);

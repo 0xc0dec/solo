@@ -5,7 +5,7 @@
 using namespace solo;
 
 
-shared<Mesh> Mesh::create(DeviceMode mode, const VertexFormat &vertexFormat)
+shared<Mesh> Mesh::create(DeviceMode mode, const VertexFormat& vertexFormat)
 {
     if (mode == DeviceMode::OpenGL)
         return SL_NEW_SHARED(OpenGLMesh, vertexFormat);

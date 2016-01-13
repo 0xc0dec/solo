@@ -20,7 +20,7 @@ const unsigned DIRTY_BIT_ALL =
     DIRTY_BIT_INV_VIEW_PROJ;
 
 
-shared<Camera> Camera::create(DeviceMode mode, Scene *scene, Node node)
+shared<Camera> Camera::create(DeviceMode mode, Scene* scene, Node node)
 {
     if (mode == DeviceMode::OpenGL)
         return SL_NEW_SHARED(OpenGLCamera, scene, node);
@@ -28,7 +28,7 @@ shared<Camera> Camera::create(DeviceMode mode, Scene *scene, Node node)
 }
 
 
-Camera::Camera(Scene *scene, Node node):
+Camera::Camera(Scene* scene, Node node):
     ComponentBase(node),
     scene(scene)
 {
@@ -47,7 +47,7 @@ void Camera::init()
 }
 
 
-void Camera::onTransformChanged(const Transform *transform)
+void Camera::onTransformChanged(const Transform* transform)
 {
     dirtyFlags.add(DIRTY_BIT_VIEW | DIRTY_BIT_VIEW_PROJ | DIRTY_BIT_INV_VIEW | DIRTY_BIT_INV_VIEW_PROJ);
 }
@@ -117,7 +117,7 @@ void Camera::setNear(float near)
 }
 
 
-const Matrix &Camera::getViewMatrix()
+const Matrix& Camera::getViewMatrix()
 {
     if (dirtyFlags.checkAndRemove(DIRTY_BIT_VIEW))
     {
@@ -128,7 +128,7 @@ const Matrix &Camera::getViewMatrix()
 }
 
 
-const Matrix &Camera::getInverseViewMatrix()
+const Matrix& Camera::getInverseViewMatrix()
 {
     if (dirtyFlags.checkAndRemove(DIRTY_BIT_INV_VIEW))
     {
@@ -139,7 +139,7 @@ const Matrix &Camera::getInverseViewMatrix()
 }
 
 
-const Matrix &Camera::getProjectionMatrix()
+const Matrix& Camera::getProjectionMatrix()
 {
     if (dirtyFlags.checkAndRemove(DIRTY_BIT_PROJ))
     {
@@ -152,7 +152,7 @@ const Matrix &Camera::getProjectionMatrix()
 }
 
 
-const Matrix &Camera::getViewProjectionMatrix()
+const Matrix& Camera::getViewProjectionMatrix()
 {
     if (dirtyFlags.checkAndRemove(DIRTY_BIT_VIEW_PROJ))
         viewProjectionMatrix = getProjectionMatrix() * getViewMatrix();
@@ -160,7 +160,7 @@ const Matrix &Camera::getViewProjectionMatrix()
 }
 
 
-const Matrix &Camera::getInverseViewProjectionMatrix()
+const Matrix& Camera::getInverseViewProjectionMatrix()
 {
     if (dirtyFlags.checkAndRemove(DIRTY_BIT_INV_VIEW_PROJ))
     {

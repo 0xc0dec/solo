@@ -15,6 +15,6 @@ namespace solo
     private:
         friend class MeshEffectBinding;
 
-        StubMeshEffectBinding(Mesh *mesh, Effect *effect) {}
+        StubMeshEffectBinding(Mesh* mesh, Effect* effect) {}
     };
 }

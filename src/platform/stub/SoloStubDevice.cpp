@@ -3,7 +3,7 @@
 using namespace solo;
 
 
-StubDevice::StubDevice(const DeviceCreationArgs &args):
+StubDevice::StubDevice(const DeviceCreationArgs& args):
     Device(args)
 {
 }
@@ -19,7 +19,7 @@ void StubDevice::endUpdate()
 }
 
 
-void StubDevice::setWindowTitle(const std::string &title)
+void StubDevice::setWindowTitle(const std::string& title)
 {
     windowTitle = title;
 }

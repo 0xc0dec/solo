@@ -9,6 +9,6 @@ namespace solo
     class LuaSurfaceRenderer
     {
     public:
-        static void renderSurface(SurfaceRenderer *renderer, LuaIntf::LuaRef target);
+        static void renderSurface(SurfaceRenderer* renderer, LuaIntf::LuaRef target);
     };
 }

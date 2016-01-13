@@ -36,11 +36,11 @@ namespace solo
         SL_NONCOPYABLE(Material);
         virtual ~Material() {}
 
-        void bind(RenderContext &context);
-        void unbind(RenderContext &context);
+        void bind(RenderContext& context);
+        void unbind(RenderContext& context);
 
-        MaterialParameter *getParameter(const std::string &name);
-        Effect *getEffect() const;
+        MaterialParameter* getParameter(const std::string& name);
+        Effect* getEffect() const;
 
         PolygonFace getPolygonFace() const;
         void setPolygonFace(PolygonFace face);
@@ -69,7 +69,7 @@ namespace solo
         std::unordered_map<std::string, shared<MaterialParameter>> parameters;
     };
 
-    inline Effect *Material::getEffect() const
+    inline Effect* Material::getEffect() const
     {
         return effect.get();
     }

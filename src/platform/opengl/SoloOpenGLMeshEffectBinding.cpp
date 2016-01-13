@@ -6,13 +6,13 @@
 using namespace solo;
 
 
-OpenGLMeshEffectBinding::OpenGLMeshEffectBinding(Mesh *mesh, Effect *effect)
+OpenGLMeshEffectBinding::OpenGLMeshEffectBinding(Mesh* mesh, Effect* effect)
 {
     glGenVertexArrays(1, &vertexArrayHandle);
     if (!vertexArrayHandle)
         SL_THROW_FMT(EngineException, "Unable to obtain vertex array handle");
 
-    auto oglMesh = static_cast<OpenGLMesh *>(mesh);
+    auto oglMesh = static_cast<OpenGLMesh*>(mesh);
     glBindVertexArray(vertexArrayHandle);
 
     auto vertexFormat = mesh->getVertexFormat();
@@ -20,7 +20,7 @@ OpenGLMeshEffectBinding::OpenGLMeshEffectBinding(Mesh *mesh, Effect *effect)
     for (auto i = 0; i < vertexFormat.getElementCount(); ++i)
     {
         auto element = vertexFormat.getElement(i);
-        EffectVertexAttribute *attr = nullptr;
+        EffectVertexAttribute* attr = nullptr;
         switch (element.semantics)
         {
         case VertexFormatElementSemantics::Position:
@@ -55,14 +55,14 @@ OpenGLMeshEffectBinding::OpenGLMeshEffectBinding(Mesh *mesh, Effect *effect)
             break;
         }
 
-        auto &offset = offsets[element.storageId];
+        auto& offset = offsets[element.storageId];
 
         if (attr)
         {
             glBindBuffer(GL_ARRAY_BUFFER, oglMesh->getBufferHandle(element.storageId));
-            auto glslAttr = static_cast<GLSLEffectVertexAttribute *>(attr);
+            auto glslAttr = static_cast<GLSLEffectVertexAttribute*>(attr);
             auto stride = static_cast<GLsizei>(vertexFormat.getVertexSize(element.storageId));
-            glVertexAttribPointer(glslAttr->getLocation(), element.size, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void *>(offset));
+            glVertexAttribPointer(glslAttr->getLocation(), element.size, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
             glEnableVertexAttribArray(glslAttr->getLocation());
         }
 

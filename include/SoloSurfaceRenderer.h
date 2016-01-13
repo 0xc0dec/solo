@@ -11,12 +11,12 @@ namespace solo
     class SurfaceRenderer
     {
     public:
-        static shared<SurfaceRenderer> create(Device *device, shared<Material> material);
+        static shared<SurfaceRenderer> create(Device* device, shared<Material> material);
 
         SL_NONCOPYABLE(SurfaceRenderer);
         virtual ~SurfaceRenderer() {}
 
-        virtual void renderSurface(RenderTarget *target) = 0;
+        virtual void renderSurface(RenderTarget* target) = 0;
 
     protected:
         SurfaceRenderer() {}

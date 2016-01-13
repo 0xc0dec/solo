@@ -16,9 +16,9 @@ namespace solo
     private:
         friend class Camera;
 
-        OpenGLCamera(Scene *scene, Node node);
+        OpenGLCamera(Scene* scene, Node node);
 
-        Device *device = nullptr;
+        Device* device = nullptr;
 
         void applyViewport() override;
         void applyClearColor() override;

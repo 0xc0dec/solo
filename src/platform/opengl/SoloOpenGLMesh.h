@@ -14,14 +14,14 @@ namespace solo
     public:
         virtual ~OpenGLMesh();
 
-        virtual void resetStorage(int storageId, const float *data, int elementCount, bool dynamic) override;
-        virtual void updateStorage(int storageId, const float *data, int elementCount, int updateFromIndex) override;
+        virtual void resetStorage(int storageId, const float* data, int elementCount, bool dynamic) override;
+        virtual void updateStorage(int storageId, const float* data, int elementCount, int updateFromIndex) override;
 
         virtual int addIndex(MeshIndexFormat indexFormat) override;
         virtual void removeIndex(int index) override;
         virtual size_t getIndexCount() const override;
-        virtual void resetIndexData(int index, const void *data, int elementCount, bool dynamic) override;
-        virtual void updateIndexData(int index, const void *data, int elementCount, int updateFromIndex) override;
+        virtual void resetIndexData(int index, const void* data, int elementCount, bool dynamic) override;
+        virtual void updateIndexData(int index, const void* data, int elementCount, int updateFromIndex) override;
 
         virtual MeshPrimitiveType getIndexPrimitiveType(int index) override;
         virtual void setIndexPrimitiveType(int index, MeshPrimitiveType primitiveType) override;
@@ -34,7 +34,7 @@ namespace solo
     private:
         friend class Mesh;
 
-        OpenGLMesh(const VertexFormat &vertexFormat);
+        OpenGLMesh(const VertexFormat& vertexFormat);
 
         std::vector<GLuint> indexHandles;
         std::vector<MeshIndexFormat> indexFormats;

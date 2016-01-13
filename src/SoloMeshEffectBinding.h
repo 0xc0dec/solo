@@ -11,7 +11,7 @@ namespace solo
     class MeshEffectBinding
     {
     public:
-        static shared<MeshEffectBinding> create(DeviceMode mode, Mesh *mesh, Effect *effect);
+        static shared<MeshEffectBinding> create(DeviceMode mode, Mesh* mesh, Effect* effect);
 
         SL_NONCOPYABLE(MeshEffectBinding);
         virtual ~MeshEffectBinding() {}

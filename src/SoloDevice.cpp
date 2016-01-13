@@ -9,7 +9,7 @@
 using namespace solo;
 
 
-shared<Device> Device::create(const DeviceCreationArgs &args)
+shared<Device> Device::create(const DeviceCreationArgs& args)
 {
     if (args.mode == DeviceMode::OpenGL)
         return SL_NEW_SHARED(SDLOpenGLDevice, args);
@@ -17,7 +17,7 @@ shared<Device> Device::create(const DeviceCreationArgs &args)
 }
 
 
-Device::Device(const DeviceCreationArgs &args):
+Device::Device(const DeviceCreationArgs& args):
     creationArgs(args)
 {
     logger = Logger::create();

@@ -6,7 +6,7 @@
 using namespace solo;
 
 
-shared<MeshEffectBinding> MeshEffectBinding::create(DeviceMode mode, Mesh *mesh, Effect *effect)
+shared<MeshEffectBinding> MeshEffectBinding::create(DeviceMode mode, Mesh* mesh, Effect* effect)
 {
     if (mode == DeviceMode::OpenGL)
         return SL_NEW_SHARED(OpenGLMeshEffectBinding, mesh, effect);

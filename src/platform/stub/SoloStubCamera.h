@@ -14,7 +14,7 @@ namespace solo
     private:
         friend class Camera;
 
-        StubCamera(Scene *scene, const Node &node):
+        StubCamera(Scene* scene, const Node& node):
             Camera(scene, node)
         {
         }

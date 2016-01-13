@@ -5,7 +5,7 @@
 using namespace solo;
 
 
-OpenGLCamera::OpenGLCamera(Scene *scene, Node node):
+OpenGLCamera::OpenGLCamera(Scene* scene, Node node):
     Camera(scene, node)
 {
 }

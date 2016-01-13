@@ -6,7 +6,7 @@
 using namespace solo;
 
 
-shared<Effect> Effect::create(DeviceMode mode, const std::string &vsSrc, const std::string &fsSrc)
+shared<Effect> Effect::create(DeviceMode mode, const std::string& vsSrc, const std::string& fsSrc)
 {
     if (mode == DeviceMode::OpenGL)
         return SL_NEW_SHARED(GLSLEffect, vsSrc, fsSrc);
@@ -31,7 +31,7 @@ shared<Effect> Effect::createPrefab(DeviceMode mode, EffectPrefab prefab)
 }
 
 
-EffectVariable *Effect::findVariable(const std::string &name) const
+EffectVariable* Effect::findVariable(const std::string& name) const
 {
     auto where = variables.find(name);
     if (where != variables.end())
@@ -40,7 +40,7 @@ EffectVariable *Effect::findVariable(const std::string &name) const
 }
 
 
-EffectVertexAttribute *Effect::findVertexAttribute(const std::string &name) const
+EffectVertexAttribute* Effect::findVertexAttribute(const std::string& name) const
 {
     // TODO eliminate copy-paste from findVariable
     auto where = vertexAttributes.find(name);

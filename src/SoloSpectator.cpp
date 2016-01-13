@@ -5,13 +5,13 @@
 using namespace solo;
 
 
-shared<Spectator> Spectator::create(const Node &node)
+shared<Spectator> Spectator::create(const Node& node)
 {
     return SL_NEW_SHARED(Spectator, node);
 }
 
 
-Spectator::Spectator(const Node &node):
+Spectator::Spectator(const Node& node):
     ComponentBase(node)
 {
     device = node.getScene()->getDevice();

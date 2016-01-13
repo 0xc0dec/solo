@@ -50,14 +50,14 @@ bool Vector2::isUnit() const
 }
 
 
-float Vector2::angle(const Vector2 &v1, const Vector2 &v2)
+float Vector2::angle(const Vector2& v1, const Vector2& v2)
 {
     auto dz = v1.x * v2.y - v1.y * v2.x;
     return atan2f(fabsf(dz) + Math::SMALL_FLOAT2, dot(v1, v2));
 }
 
 
-void Vector2::clamp(const Vector2 &min, const Vector2 &max)
+void Vector2::clamp(const Vector2& min, const Vector2& max)
 {
     if (x < min.x)
         x = min.x;
@@ -71,7 +71,7 @@ void Vector2::clamp(const Vector2 &min, const Vector2 &max)
 }
 
 
-float Vector2::distance(const Vector2 &v) const
+float Vector2::distance(const Vector2& v) const
 {
     auto dx = v.x - x;
     auto dy = v.y - y;
@@ -79,7 +79,7 @@ float Vector2::distance(const Vector2 &v) const
 }
 
 
-float Vector2::distanceSquared(const Vector2 &v) const
+float Vector2::distanceSquared(const Vector2& v) const
 {
     auto dx = v.x - x;
     auto dy = v.y - y;
@@ -87,13 +87,13 @@ float Vector2::distanceSquared(const Vector2 &v) const
 }
 
 
-float Vector2::dot(const Vector2 &v) const
+float Vector2::dot(const Vector2& v) const
 {
     return x * v.x + y * v.y;
 }
 
 
-float Vector2::dot(const Vector2 &v1, const Vector2 &v2)
+float Vector2::dot(const Vector2& v1, const Vector2& v2)
 {
     return v1.x * v2.x + v1.y * v2.y;
 }

@@ -14,17 +14,17 @@ namespace solo
         SL_NONCOPYABLE(ImageLoader);
         virtual ~ImageLoader() {}
 
-        virtual bool isLoadable(const std::string &uri) = 0;
-        virtual shared<Image> load(const std::string &uri) = 0;
+        virtual bool isLoadable(const std::string& uri) = 0;
+        virtual shared<Image> load(const std::string& uri) = 0;
 
     protected:
-        ImageLoader(FileSystem *fs, ResourceManager *resourceManager):
+        ImageLoader(FileSystem* fs, ResourceManager* resourceManager):
             fs(fs),
             resourceManager(resourceManager)
         {
         }
 
-        FileSystem *fs;
-        ResourceManager *resourceManager;
+        FileSystem* fs;
+        ResourceManager* resourceManager;
     };
 }

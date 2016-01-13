@@ -10,13 +10,13 @@
 using namespace solo;
 
 
-Node::Node(Scene *scene, size_t nodeId):
+Node::Node(Scene* scene, size_t nodeId):
     scene(scene), id(nodeId)
 {
 }
 
 
-template<> Transform *Node::addComponent<Transform>()
+template<> Transform* Node::addComponent<Transform>()
 {
     auto transform = Transform::create(*this);
     scene->addComponent(id, transform);
@@ -24,7 +24,7 @@ template<> Transform *Node::addComponent<Transform>()
 }
 
 
-template<> Camera *Node::addComponent<Camera>()
+template<> Camera* Node::addComponent<Camera>()
 {
     auto camera = Camera::create(scene->getDevice()->getMode(), scene, *this);
     scene->addComponent(id, camera);
@@ -32,7 +32,7 @@ template<> Camera *Node::addComponent<Camera>()
 }
 
 
-template<> MeshRenderer *Node::addComponent<MeshRenderer>()
+template<> MeshRenderer* Node::addComponent<MeshRenderer>()
 {
     auto renderer = MeshRenderer::create(*this);
     scene->addComponent(id, renderer);
@@ -40,7 +40,7 @@ template<> MeshRenderer *Node::addComponent<MeshRenderer>()
 }
 
 
-template<> Spectator *Node::addComponent<Spectator>()
+template<> Spectator* Node::addComponent<Spectator>()
 {
     auto spectator = Spectator::create(*this);
     scene->addComponent(id, spectator);
@@ -48,7 +48,7 @@ template<> Spectator *Node::addComponent<Spectator>()
 }
 
 
-template<> SkyboxRenderer *Node::addComponent<SkyboxRenderer>()
+template<> SkyboxRenderer* Node::addComponent<SkyboxRenderer>()
 {
     auto renderer = SkyboxRenderer::create(*this);
     scene->addComponent(id, renderer);

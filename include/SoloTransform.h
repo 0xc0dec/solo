@@ -27,12 +27,12 @@ namespace solo
 
         virtual void init() override;
 
-        void addCallback(TransformCallback *callback);
-        void removeCallback(TransformCallback *callback);
+        void addCallback(TransformCallback* callback);
+        void removeCallback(TransformCallback* callback);
 
-        void setParent(Transform *parent);
-        Transform *getParent() const;
-        Transform *getChild(size_t index) const;
+        void setParent(Transform* parent);
+        Transform* getParent() const;
+        Transform* getChild(size_t index) const;
         size_t getChildrenCount() const;
         void removeChildren();
 
@@ -52,31 +52,31 @@ namespace solo
         Vector3 getLocalForward() const;
         Vector3 getLocalBack() const;
 
-        void translateLocal(const Vector3 &translation);
-        void scaleLocal(const Vector3 &scale);
+        void translateLocal(const Vector3& translation);
+        void scaleLocal(const Vector3& scale);
 
-        void setLocalPosition(const Vector3 &position);
-        void setLocalScale(const Vector3 &scale);
+        void setLocalPosition(const Vector3& position);
+        void setLocalScale(const Vector3& scale);
 
-        void rotate(const Quaternion &rotation, TransformSpace space = TransformSpace::Self);
-        void rotate(const Vector3 &axis, float angleRadians, TransformSpace space = TransformSpace::Self);
+        void rotate(const Quaternion& rotation, TransformSpace space = TransformSpace::Self);
+        void rotate(const Vector3& axis, float angleRadians, TransformSpace space = TransformSpace::Self);
 
-        void setLocalRotation(const Quaternion &rotation);
-        void setLocalRotation(const Vector3 &axis, float angleRadians);
+        void setLocalRotation(const Quaternion& rotation);
+        void setLocalRotation(const Vector3& axis, float angleRadians);
 
         // Target and Up in world coordinates
-        void lookAt(const Vector3 &target, const Vector3 &up);
+        void lookAt(const Vector3& target, const Vector3& up);
 
         Matrix getMatrix() const;
         Matrix getWorldMatrix() const;
 
-        Matrix getWorldViewMatrix(Camera *camera) const;
-        Matrix getWorldViewProjectionMatrix(Camera *camera) const;
-        Matrix getInverseTransposedWorldViewMatrix(Camera *camera) const;
+        Matrix getWorldViewMatrix(Camera* camera) const;
+        Matrix getWorldViewProjectionMatrix(Camera* camera) const;
+        Matrix getInverseTransposedWorldViewMatrix(Camera* camera) const;
         Matrix getInverseTransposedWorldMatrix() const;
 
-        Vector3 transformPoint(const Vector3 &point) const;
-        Vector3 transformDirection(const Vector3 &direction) const;
+        Vector3 transformPoint(const Vector3& point) const;
+        Vector3 transformDirection(const Vector3& direction) const;
 
     private:
         explicit Transform(Node node);
@@ -88,9 +88,9 @@ namespace solo
 
         mutable BitFlags dirtyFlags;
 
-        Transform *parent = nullptr;
-        std::vector<Transform *> children;
-        std::vector<TransformCallback *> callbacks;
+        Transform* parent = nullptr;
+        std::vector<Transform*> children;
+        std::vector<TransformCallback*> callbacks;
 
         Vector3 localPosition;
         Vector3 localScale;
@@ -104,6 +104,6 @@ namespace solo
     {
     public:
         virtual ~TransformCallback() {}
-        virtual void onTransformChanged(const Transform *transform) = 0;
+        virtual void onTransformChanged(const Transform* transform) = 0;
     };
 }

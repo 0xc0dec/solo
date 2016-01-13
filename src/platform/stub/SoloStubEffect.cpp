@@ -10,7 +10,7 @@ StubEffect::StubEffect():
 }
 
 
-EffectVariable *StubEffect::findVariable(const std::string &name) const
+EffectVariable* StubEffect::findVariable(const std::string& name) const
 {
     return variable.get();
 }

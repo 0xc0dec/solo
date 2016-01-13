@@ -7,9 +7,9 @@ namespace solo
     class PngImageLoader : public ImageLoader
     {
     public:
-        PngImageLoader(FileSystem *fs, ResourceManager *resourceManager);
+        PngImageLoader(FileSystem* fs, ResourceManager* resourceManager);
 
-        virtual bool isLoadable(const std::string &uri) override;
-        virtual shared<Image> load(const std::string &uri) override;
+        virtual bool isLoadable(const std::string& uri) override;
+        virtual shared<Image> load(const std::string& uri) override;
     };
 }
