@@ -14,7 +14,7 @@ namespace solo
 
         virtual int addIndex(MeshIndexFormat indexFormat) override;
         virtual void removeIndex(int index) override;
-        virtual size_t getIndexCount() const override;
+        virtual int getIndexCount() const override;
         virtual void resetIndexData(int index, const void* data, int elementCount, bool dynamic) override {}
         virtual void updateIndexData(int index, const void* data, int elementCount, int updateFromIndex) override {}
 
@@ -33,9 +33,9 @@ namespace solo
         std::vector<MeshPrimitiveType> indexPrimitiveTypes;
     };
 
-    inline size_t StubMesh::getIndexCount() const
+    inline int StubMesh::getIndexCount() const
     {
-        return indexes.size();
+        return static_cast<int>(indexes.size());
     }
 
     inline MeshPrimitiveType StubMesh::getIndexPrimitiveType(int index)

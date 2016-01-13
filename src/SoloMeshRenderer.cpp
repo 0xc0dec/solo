@@ -42,7 +42,7 @@ void MeshRenderer::render(RenderContext& context)
     }
     else
     {
-        for (unsigned i = 0; i < indexCount; ++i)
+        for (auto i = 0; i < indexCount; ++i)
         {
             auto material = findMaterial(i);
             if (material)
@@ -67,7 +67,7 @@ void MeshRenderer::setMesh(shared<Mesh> mesh)
 }
 
 
-void MeshRenderer::setMaterial(unsigned index, shared<Material> material)
+void MeshRenderer::setMaterial(int index, shared<Material> material)
 {
     if (!mesh)
         SL_THROW_FMT(EngineException, "Renderer has no mesh, setting material has no effect");
@@ -89,7 +89,7 @@ void MeshRenderer::setMaterial(unsigned index, shared<Material> material)
 }
 
 
-Material* MeshRenderer::findMaterial(unsigned index) const
+Material* MeshRenderer::findMaterial(int index) const
 {
     if (materials.find(index) == materials.end())
         return nullptr;

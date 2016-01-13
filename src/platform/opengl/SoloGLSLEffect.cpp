@@ -115,7 +115,7 @@ void GLSLEffect::discoverVariables()
     std::vector<GLchar> rawName(nameMaxLength + 1);
     GLint size;
     GLenum type;
-    unsigned samplerIndex = 0;
+    int samplerIndex = 0;
     for (GLint i = 0; i < activeUniforms; ++i)
     {
         glGetActiveUniform(program, i, nameMaxLength, nullptr, &size, &type, rawName.data());
@@ -129,7 +129,7 @@ void GLSLEffect::discoverVariables()
             name.erase(bracketIndex);
 
         auto location = glGetUniformLocation(program, rawName.data());
-        unsigned index = 0;
+        int index = 0;
         if (type == GL_SAMPLER_2D || type == GL_SAMPLER_CUBE) // TODO other types of samplers
         {
             index = samplerIndex;

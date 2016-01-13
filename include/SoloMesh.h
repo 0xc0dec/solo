@@ -44,7 +44,7 @@ namespace solo
 
         virtual int addIndex(MeshIndexFormat indexFormat) = 0;
         virtual void removeIndex(int index) = 0;
-        virtual size_t getIndexCount() const = 0;
+        virtual int getIndexCount() const = 0;
 
         virtual void resetIndexData(int index, const void* data, int elementCount, bool dynamic) = 0;
         virtual void updateIndexData(int index, const void* data, int elementCount, int updateFromIndex) = 0;

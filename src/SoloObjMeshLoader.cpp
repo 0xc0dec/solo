@@ -158,7 +158,7 @@ shared<Mesh> ObjMeshLoader::load(const std::string& uri)
 
     auto hasUVs = !uvs.empty();
     auto hasNormals = !normals.empty();
-    unsigned elementStorage = 0;
+    int elementStorage = 0;
     std::vector<VertexFormatElement> vertexFormatElements{ VertexFormatElement(VertexFormatElementSemantics::Position, 3, elementStorage++) };
     if (hasUVs)
         vertexFormatElements.push_back(VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2, elementStorage++));

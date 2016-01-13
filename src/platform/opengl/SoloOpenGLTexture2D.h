@@ -16,7 +16,7 @@ namespace solo
         GLuint getHandle() const;
 
     protected:
-        virtual void applyData(ColorFormat format, const std::vector<uint8_t>& data, unsigned width, unsigned height) override;
+        virtual void applyData(ColorFormat format, const std::vector<uint8_t>& data, int width, int height) override;
 
     private:
         friend class Texture;

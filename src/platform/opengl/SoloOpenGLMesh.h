@@ -19,7 +19,7 @@ namespace solo
 
         virtual int addIndex(MeshIndexFormat indexFormat) override;
         virtual void removeIndex(int index) override;
-        virtual size_t getIndexCount() const override;
+        virtual int getIndexCount() const override;
         virtual void resetIndexData(int index, const void* data, int elementCount, bool dynamic) override;
         virtual void updateIndexData(int index, const void* data, int elementCount, int updateFromIndex) override;
 
@@ -44,9 +44,9 @@ namespace solo
         std::vector<GLuint> elementCounts;
     };
 
-    inline size_t OpenGLMesh::getIndexCount() const
+    inline int OpenGLMesh::getIndexCount() const
     {
-        return indexHandles.size();
+        return static_cast<int>(indexHandles.size());
     }
 
     inline MeshPrimitiveType OpenGLMesh::getIndexPrimitiveType(int index)

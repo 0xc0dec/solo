@@ -27,10 +27,10 @@ namespace solo
     private:
         friend class GLSLEffect;
 
-        GLSLEffectVariable(const std::string& name, GLint location, GLenum type, unsigned index);
+        GLSLEffectVariable(const std::string& name, GLint location, GLenum type, int index);
 
         GLint location = 0;
         GLenum type = 0;
-        unsigned index = 0;
+        int index = 0;
     };
 }

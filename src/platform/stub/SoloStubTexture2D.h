@@ -11,7 +11,7 @@ namespace solo
         virtual void generateMipmaps() override {}
 
     protected:
-        void applyData(ColorFormat format, const std::vector<uint8_t>& data, unsigned width, unsigned height) override {}
+        void applyData(ColorFormat format, const std::vector<uint8_t>& data, int width, int height) override {}
 
     private:
         friend class Texture;

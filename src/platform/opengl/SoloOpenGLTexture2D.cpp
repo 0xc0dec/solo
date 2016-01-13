@@ -41,7 +41,7 @@ void OpenGLTexture2D::apply()
 }
 
 
-void OpenGLTexture2D::applyData(ColorFormat format, const std::vector<uint8_t>& data, unsigned width, unsigned height)
+void OpenGLTexture2D::applyData(ColorFormat format, const std::vector<uint8_t>& data, int width, int height)
 {
     bind();
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);

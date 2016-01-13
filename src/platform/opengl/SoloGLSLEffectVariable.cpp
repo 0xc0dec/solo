@@ -10,7 +10,7 @@
 using namespace solo;
 
 
-GLSLEffectVariable::GLSLEffectVariable(const std::string& name, GLint location, GLenum type, unsigned index):
+GLSLEffectVariable::GLSLEffectVariable(const std::string& name, GLint location, GLenum type, int index):
     EffectVariable(name),
     location(location),
     type(type),

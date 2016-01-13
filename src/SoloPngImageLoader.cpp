@@ -82,7 +82,7 @@ shared<Image> PngImageLoader::load(const std::string& uri)
     });
     result->data.resize(stride * height);
     auto rows = png_get_rows(png, info);
-    for (unsigned int i = 0; i < height; ++i)
+    for (unsigned i = 0; i < height; ++i)
         memcpy(result->data.data() + stride * (height - i - 1), rows[i], stride);
 
     png_destroy_read_struct(&png, &info, nullptr);

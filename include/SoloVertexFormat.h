@@ -27,7 +27,7 @@ namespace solo
         int size;
         int storageId;
 
-        VertexFormatElement(VertexFormatElementSemantics semantics, unsigned size, unsigned storageId):
+        VertexFormatElement(VertexFormatElementSemantics semantics, int size, int storageId):
             semantics(semantics),
             size(size),
             storageId(storageId)

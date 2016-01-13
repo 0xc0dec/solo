@@ -4,9 +4,9 @@ namespace solo
 {
     struct KnownRenderQueues
     {
-        static constexpr unsigned NotRendered = 0;
-        static constexpr unsigned CameraDefault = 100;
-        static constexpr unsigned Skyboxes = 500;
-        static constexpr unsigned OpaqueObjects = 1000;
+        static constexpr int NotRendered = 0;
+        static constexpr int CameraDefault = 100;
+        static constexpr int Skyboxes = 500;
+        static constexpr int OpaqueObjects = 1000;
     };
 }

@@ -9,7 +9,7 @@ namespace solo
     class Texture2D: public Texture
     {
     public:
-        void setData(ColorFormat format, const std::vector<uint8_t>& data, unsigned width, unsigned height);
+        void setData(ColorFormat format, const std::vector<uint8_t>& data, int width, int height);
 
         virtual void generateMipmaps() = 0;
 
@@ -18,7 +18,7 @@ namespace solo
     protected:
         Texture2D() {}
 
-        virtual void applyData(ColorFormat format, const std::vector<uint8_t>& data, unsigned width, unsigned height) = 0;
+        virtual void applyData(ColorFormat format, const std::vector<uint8_t>& data, int width, int height) = 0;
 
     private:
         Vector2 size;

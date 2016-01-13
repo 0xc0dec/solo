@@ -23,8 +23,8 @@ namespace solo
         virtual void render(RenderContext& context) {}
         virtual void onAfterCameraRender() {}
 
-        virtual int getRenderQueue() const;
-        virtual void setRenderQueue(int queue);
+        int getRenderQueue() const;
+        void setRenderQueue(int queue);
 
         Node getNode() const;
 
@@ -38,7 +38,7 @@ namespace solo
 
         Node node;
         BitFlags tags;
-        unsigned renderQueue = KnownRenderQueues::NotRendered;
+        int renderQueue = KnownRenderQueues::NotRendered;
     };
 
     inline int Component::getRenderQueue() const
