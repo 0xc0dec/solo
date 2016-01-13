@@ -20,6 +20,8 @@ namespace solo
         RightArrow,
         UpArrow,
         DownArrow,
+        Backspace,
+        Space
         // ...
     };
 

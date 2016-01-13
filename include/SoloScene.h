@@ -45,6 +45,7 @@ namespace solo
         Device *device;
         size_t nodeCounter = 0;
         bool cameraCacheDirty = true;
+        bool doClear = false;
 
         std::list<Component *> cameraQueue;
         std::list<Component *> renderQueue;

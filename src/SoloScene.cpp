@@ -8,13 +8,13 @@
 using namespace solo;
 
 
-shared<Scene> Scene::create(Device *device)
+shared<Scene> Scene::create(Device* device)
 {
     return SL_NEW_SHARED(Scene, device);
 }
 
 
-Scene::Scene(Device *device) :
+Scene::Scene(Device* device) :
     device(device)
 {
 }
@@ -56,7 +56,7 @@ void Scene::removeComponent(size_t nodeId, size_t typeId)
 {
     if (!findComponent(nodeId, typeId))
         return;
-    auto &nodeComponents = components.at(nodeId);
+    auto& nodeComponents = components.at(nodeId);
     nodeComponents.at(typeId)->terminate();
     nodeComponents.erase(typeId);
     if (nodeComponents.empty())
@@ -70,7 +70,7 @@ void Scene::removeAllComponents(size_t nodeId)
 {
     if (components.find(nodeId) == components.end())
         return;
-    for (auto &cmp : components.at(nodeId))
+    for (auto& cmp : components.at(nodeId))
         cmp.second->terminate();
     components.erase(nodeId);
 }
@@ -78,12 +78,11 @@ void Scene::removeAllComponents(size_t nodeId)
 
 void Scene::clear()
 {
-    while (!components.empty())
-        removeAllComponents(components.begin()->first);
+    doClear = true;
 }
 
 
-Component *Scene::getComponent(size_t nodeId, size_t typeId) const
+Component* Scene::getComponent(size_t nodeId, size_t typeId) const
 {
     auto cmp = findComponent(nodeId, typeId);
     if (!cmp)
@@ -92,7 +91,7 @@ Component *Scene::getComponent(size_t nodeId, size_t typeId) const
 }
 
 
-Component *Scene::findComponent(size_t nodeId, size_t typeId) const
+Component* Scene::findComponent(size_t nodeId, size_t typeId) const
 {
     if (components.find(nodeId) == components.end())
         return nullptr;
@@ -103,14 +102,14 @@ Component *Scene::findComponent(size_t nodeId, size_t typeId) const
 
 
 template <class T>
-void Scene::updateRenderQueue(std::list<T> &queue, size_t cmpTypeIdFilter)
+void Scene::updateRenderQueue(std::list<T>& queue, size_t cmpTypeIdFilter)
 {
     queue.clear();
 
-    for (auto &nodeComponents : components)
+    for (auto& nodeComponents : components)
     {
         auto nodeId = nodeComponents.first;
-        for (auto &pair : nodeComponents.second)
+        for (auto& pair : nodeComponents.second)
         {
             auto component = pair.second.get();
             if (cmpTypeIdFilter > 0 && component->getTypeId() != cmpTypeIdFilter)
@@ -138,15 +137,24 @@ void Scene::updateRenderQueue(std::list<T> &queue, size_t cmpTypeIdFilter)
 
 void Scene::update()
 {
-    for (auto &node : components)
+    if (doClear)
     {
-        for (auto &component : node.second)
-            component.second->update();
+        while (!components.empty())
+            removeAllComponents(components.begin()->first);
+        doClear = false;
+    }
+    else
+    {
+        for (auto& node : components)
+        {
+            for (auto& component : node.second)
+                component.second->update();
+        }
     }
 }
 
 
-bool tagsAreRenderable(const BitFlags &objectTags, const BitFlags &cameraTags)
+bool tagsAreRenderable(const BitFlags& objectTags, const BitFlags& cameraTags)
 {
     auto rawObjectTags = objectTags.getRaw();
     auto rawCameraTags = cameraTags.getRaw();
@@ -183,7 +191,7 @@ void Scene::render()
 
         camera->finish();
 
-        for (auto &pair : components[camera->getNode().getId()])
+        for (auto& pair : components[camera->getNode().getId()])
             pair.second->onAfterCameraRender();
     }
 }

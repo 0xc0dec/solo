@@ -777,6 +777,8 @@ void LuaScriptManager::registerApi()
     REGISTER_MODULE_CONSTANT(keyCode, KeyCode, UpArrow);
     REGISTER_MODULE_CONSTANT(keyCode, KeyCode, DownArrow);
     REGISTER_MODULE_CONSTANT(keyCode, KeyCode, Escape);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, Backspace);
+    REGISTER_MODULE_CONSTANT(keyCode, KeyCode, Space);
     keyCode.endModule();
 
     // MouseButton

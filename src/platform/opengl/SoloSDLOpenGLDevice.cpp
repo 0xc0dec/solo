@@ -65,6 +65,9 @@ std::unordered_map<SDL_Keycode, KeyCode> keymap =
     { SDLK_UP, KeyCode::UpArrow },
     { SDLK_DOWN, KeyCode::DownArrow },
     { SDLK_ESCAPE, KeyCode::Escape },
+
+    { SDLK_SPACE, KeyCode::Space },
+    { SDLK_BACKSPACE, KeyCode::Backspace }
     // TODO
 };
 

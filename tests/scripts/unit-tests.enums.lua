@@ -30,6 +30,8 @@ runTest(function()
 	assert(solo.KeyCode.UpArrow ~= nil)
 	assert(solo.KeyCode.DownArrow ~= nil)
 	assert(solo.KeyCode.Escape ~= nil)
+	assert(solo.KeyCode.Space ~= nil)
+	assert(solo.KeyCode.Backspace ~= nil)
 
 	assert(solo.MouseButton.Left ~= nil)
 	assert(solo.MouseButton.Middle ~= nil)
