@@ -24,7 +24,7 @@ namespace solo
         void addComponentWithTypeId(size_t nodeId, shared<Component> cmp, size_t typeId);
 
         void removeComponent(size_t nodeId, size_t typeId);
-        void removeAllComponents(size_t nodeId);
+        void clearNodeComponents(size_t nodeId);
         void clear();
 
         Component* getComponent(size_t nodeId, size_t typeId) const;

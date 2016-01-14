@@ -46,5 +46,5 @@ runTest(function()
 
 	node:removeScript("TestComponent")
 	node:removeScript("AnotherComponent")
-	node:removeAllComponents()
+	node:clearComponents()
 end, "Node")

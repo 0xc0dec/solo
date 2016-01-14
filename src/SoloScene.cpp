@@ -66,7 +66,7 @@ void Scene::removeComponent(size_t nodeId, size_t typeId)
 }
 
 
-void Scene::removeAllComponents(size_t nodeId)
+void Scene::clearNodeComponents(size_t nodeId)
 {
     if (components.find(nodeId) == components.end())
         return;
@@ -140,7 +140,7 @@ void Scene::update()
     if (doClear)
     {
         while (!components.empty())
-            removeAllComponents(components.begin()->first);
+            clearNodeComponents(components.begin()->first);
         doClear = false;
     }
     else

@@ -546,7 +546,7 @@ void LuaScriptManager::registerApi()
     auto node = module.beginClass<Node>("Node");
     REGISTER_METHOD(node, Node, getScene);
     REGISTER_METHOD(node, Node, getId);
-    REGISTER_METHOD(node, Node, removeAllComponents);
+    REGISTER_METHOD(node, Node, clearComponents);
     REGISTER_METHOD(node, LuaScriptComponent, addScript);
     REGISTER_METHOD(node, LuaScriptComponent, removeScript);
     REGISTER_METHOD(node, LuaScriptComponent, findComponent);
@@ -738,7 +738,7 @@ void LuaScriptManager::registerApi()
     auto scene = module.beginClass<Scene>("Scene");
     REGISTER_METHOD(scene, Scene, getDevice);
     REGISTER_METHOD(scene, Scene, createNode);
-    REGISTER_METHOD(scene, Scene, removeAllComponents);
+    REGISTER_METHOD(scene, Scene, clearNodeComponents);
     REGISTER_METHOD(scene, Scene, clear);
     REGISTER_METHOD(scene, Scene, update);
     REGISTER_METHOD(scene, Scene, render);

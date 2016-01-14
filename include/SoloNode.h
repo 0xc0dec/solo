@@ -43,7 +43,7 @@ namespace solo
         template <typename T>
         void removeComponent();
 
-        void removeAllComponents();
+        void clearComponents();
 
     private:
         Scene* scene;
@@ -116,9 +116,9 @@ namespace solo
         removeComponent<T>(scene, id);
     }
 
-    inline void Node::removeAllComponents()
+    inline void Node::clearComponents()
     {
-        scene->removeAllComponents(id);
+        scene->clearNodeComponents(id);
     }
 
     template<> Transform* Node::addComponent();

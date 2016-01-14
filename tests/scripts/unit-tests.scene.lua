@@ -4,7 +4,7 @@ runTest(function()
 	assert(scene:getDevice())
 	assert(scene:createNode())
 
-	scene:removeAllComponents(123)
+	scene:clearNodeComponents(123)
 	scene:clear()
 	scene:update()
 	scene:render()

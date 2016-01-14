@@ -76,7 +76,7 @@ private:
         node->addComponent<Derived>();
         node->addComponent<A>();
         node->addComponent<B>();
-        node->removeAllComponents();
+        node->clearComponents();
         assert(node->findComponent<Derived>() == nullptr);
         assert(node->findComponent<A>() == nullptr);
         assert(node->findComponent<B>() == nullptr);
