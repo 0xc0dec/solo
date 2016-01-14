@@ -48,7 +48,7 @@ public:
 
     virtual void run() override
     {
-        scene->clear();
+//        scene->clear();
         test_AddComponents_EnsureAdded();
         test_AddDerivedComponent_EnsureFoundAsParentAsWell();
         test_AddComponent_RemoveIt();

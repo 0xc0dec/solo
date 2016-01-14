@@ -34,21 +34,34 @@ namespace solo
         void render();
 
     private:
+        struct ComponentInfo
+        {
+            shared<Component> component;
+            bool removed;
+        };
+
+        using NodeComponentMap = std::unordered_map<int, ComponentInfo>;
+        using AllComponentMap = std::unordered_map<int, NodeComponentMap>;
+
         explicit Scene(Device* device);
 
         template <class T>
         void updateRenderQueue(std::list<T>& queue, size_t componentTypeIdFilter);
 
+        void removeComponent(int nodeId, NodeComponentMap::iterator cmpIt);
+        void updateComponents();
+        void clearRemovedComponents();
+
         Device* device;
         size_t nodeCounter = 0;
         bool cameraCacheDirty = true;
-        bool doClear = false;
+        bool clearAll = false;
 
         std::list<Component*> cameraQueue;
         std::list<Component*> renderQueue;
 
-        // nodeId -> {(componentTypeId, component), (...), ...}
-        std::unordered_map<size_t, std::unordered_map<size_t, shared<Component>>> components;
+        AllComponentMap components;
+        std::unordered_map<int, std::unordered_set<Component*>> componentsForRemoval;
     };
 
     inline Device* Scene::getDevice() const
