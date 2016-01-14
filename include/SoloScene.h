@@ -34,9 +34,6 @@ namespace solo
         void render();
 
     private:
-        using ComponentIterationWorker = std::function<void(size_t, Component*)>;
-        using Components = std::unordered_map<size_t, std::unordered_map<size_t, shared<Component>>>;
-
         explicit Scene(Device* device);
 
         template <class T>
@@ -50,7 +47,7 @@ namespace solo
         std::list<Component*> cameraQueue;
         std::list<Component*> renderQueue;
 
-        Components components;
+        std::unordered_map<size_t, std::unordered_map<size_t, shared<Component>>> components;
     };
 
     inline Device* Scene::getDevice() const
