@@ -47,6 +47,7 @@ namespace solo
         std::list<Component*> cameraQueue;
         std::list<Component*> renderQueue;
 
+        // nodeId -> {(componentTypeId, component), (...), ...}
         std::unordered_map<size_t, std::unordered_map<size_t, shared<Component>>> components;
     };
 

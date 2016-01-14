@@ -191,7 +191,7 @@ void Scene::render()
 
         camera->finish();
 
-        for (auto& pair : components[camera->getNode().getId()])
+        for (auto& pair : components.at(camera->getNode().getId()))
             pair.second->onAfterCameraRender();
     }
 }
