@@ -26,6 +26,4 @@ namespace solo
     // Having this pointer means that the code owns the pointed object (just like, maybe, several other places).
     // Code that works with raw pointers doesn't claim to own the pointed object.
     template <typename T> using shared = std::shared_ptr<T>;
-
-    extern "C" size_t getHash(const std::string& s);
 }
