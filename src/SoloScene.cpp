@@ -1,3 +1,4 @@
+
 #include "SoloScene.h"
 #include "SoloComponent.h"
 #include "SoloRenderContext.h"
@@ -36,13 +37,13 @@ shared<Node> Scene::createNode()
 }
 
 
-void Scene::addComponent(size_t nodeId, shared<Component> cmp)
+void Scene::addComponent(int nodeId, shared<Component> cmp)
 {
     addComponentWithTypeId(nodeId, cmp, cmp->getTypeId());
 }
 
 
-void Scene::addComponentWithTypeId(size_t nodeId, shared<Component> cmp, size_t typeId)
+void Scene::addComponentWithTypeId(int nodeId, shared<Component> cmp, int typeId)
 {
     auto nodeIt = components.find(nodeId);
     if (nodeIt != components.end())
@@ -61,7 +62,7 @@ void Scene::addComponentWithTypeId(size_t nodeId, shared<Component> cmp, size_t 
 }
 
 
-void Scene::removeComponent(size_t nodeId, size_t typeId)
+void Scene::removeComponent(int nodeId, int typeId)
 {
     auto nodeIt = components.find(nodeId);
     if (nodeIt != components.end())
@@ -82,7 +83,7 @@ void Scene::removeComponent(int nodeId, NodeComponentMap::iterator cmpIt)
 }
 
 
-void Scene::clearNodeComponents(size_t nodeId)
+void Scene::clearNodeComponents(int nodeId)
 {
     auto nodeIt = components.find(nodeId);
     if (nodeIt != components.end())
@@ -99,7 +100,7 @@ void Scene::clear()
 }
 
 
-Component* Scene::getComponent(size_t nodeId, size_t typeId) const
+Component* Scene::getComponent(int nodeId, int typeId) const
 {
     auto cmp = findComponent(nodeId, typeId);
     if (!cmp)
@@ -108,7 +109,7 @@ Component* Scene::getComponent(size_t nodeId, size_t typeId) const
 }
 
 
-Component* Scene::findComponent(size_t nodeId, size_t typeId) const
+Component* Scene::findComponent(int nodeId, int typeId) const
 {
     auto nodeIt = components.find(nodeId);
     if (clearAll || nodeIt == components.end())
@@ -124,7 +125,7 @@ Component* Scene::findComponent(size_t nodeId, size_t typeId) const
 
 
 template <class T>
-void Scene::updateRenderQueue(std::list<T>& queue, size_t cmpTypeIdFilter)
+void Scene::updateRenderQueue(std::list<T>& queue, int cmpTypeIdFilter)
 {
     queue.clear();
 

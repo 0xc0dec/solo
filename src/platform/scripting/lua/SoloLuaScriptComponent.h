@@ -1,8 +1,8 @@
 #pragma once
 
+#include "SoloComponent.h"
 #include <functional>
 #include <LuaIntf.h>
-#include "SoloComponent.h"
 
 namespace solo
 {
@@ -17,20 +17,26 @@ namespace solo
         virtual void render(RenderContext& context) override;
         virtual void onAfterCameraRender() override;
 
-        virtual size_t getTypeId() override;
+        virtual int getTypeId() override;
 
-        static Component* findComponent(Node* node, const std::string& typeName);
-        static Component* addComponent(Node* node, const std::string& typeName);
-        static void removeComponent(Node* node, const std::string& typeName);
+        static Component* findComponent(Node* node, const std::string& name);
+        static Component* addComponent(Node* node, const std::string& name);
+        static void removeComponent(Node* node, const std::string& name);
 
         static std::function<LuaIntf::LuaRef(Node*, const std::string&)> getFindScriptFunc(lua_State* lua);
         static void addScript(Node* node, LuaIntf::LuaRef& component);
-        static void removeScript(Node* node, const std::string& componentTypeId);
+        static void removeScript(Node* node, const std::string& name);
 
     private:
-        static LuaIntf::LuaRef findScript(lua_State* lua, Node* node, const std::string& componentTypeId);
+        static LuaIntf::LuaRef findScript(lua_State* lua, Node* node, const std::string& name);
 
-        size_t typeId;
+        static int getOrRegisterComponentTypeId(const std::string& name);
+        static int findComponentTypeId(const std::string& name);
+
+        static int counter;
+        static std::unordered_map<std::string, int> typeIds;
+
+        int typeId;
         LuaIntf::LuaRef component;
         std::function<void(LuaIntf::LuaRef)> initFunc;
         std::function<void(LuaIntf::LuaRef)> updateFunc;

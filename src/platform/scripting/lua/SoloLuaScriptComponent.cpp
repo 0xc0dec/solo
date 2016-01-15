@@ -10,12 +10,16 @@ using namespace solo;
 using namespace LuaIntf;
 
 
+int LuaScriptComponent::counter = 1000000000;
+std::unordered_map<std::string, int> LuaScriptComponent::typeIds;
+
+
 LuaScriptComponent::LuaScriptComponent(const Node& node, LuaRef& component) :
     ComponentBase<LuaScriptComponent>(node),
     component(component)
 {
-    auto typeIdString = component.get<std::string>("typeId");
-    typeId = getHash(typeIdString);
+    auto name = component.get<std::string>("name");
+    typeId = getOrRegisterComponentTypeId(name);
     initFunc = component.has("init") ? component.get<std::function<void(LuaRef)>>("init") : [](LuaRef) {};
     updateFunc = component.has("update") ? component.get<std::function<void(LuaRef)>>("update") : [](LuaRef) {};
     terminateFunc = component.has("terminate") ? component.get<std::function<void(LuaRef)>>("terminate") : [](LuaRef) {};
@@ -55,7 +59,7 @@ void LuaScriptComponent::onAfterCameraRender()
 }
 
 
-size_t LuaScriptComponent::getTypeId()
+int LuaScriptComponent::getTypeId()
 {
     return typeId;
 }
@@ -85,10 +89,32 @@ std::function<LuaRef(Node*, const std::string&)> LuaScriptComponent::getFindScri
 
 LuaRef LuaScriptComponent::findScript(lua_State* lua, Node* node, const std::string& componentTypeId)
 {
-    auto typeId = getHash(componentTypeId);
+    auto typeId = findComponentTypeId(componentTypeId);
+    if (typeId < 0) // TODO not very cool
+        return LuaRef(lua, nullptr);
+
     auto component = node->getScene()->findComponent(node->getId(), typeId);
     auto scriptComponent = dynamic_cast<LuaScriptComponent*>(component);
     return scriptComponent ? scriptComponent->component : LuaRef(lua, nullptr);
+}
+
+
+int LuaScriptComponent::getOrRegisterComponentTypeId(const std::string& typeName)
+{
+    auto typeId = findComponentTypeId(typeName);
+    if (typeId < 0) // TODO not very cool
+    {
+        typeId = counter++;
+        typeIds[typeName] = typeId;
+    }
+    return typeId;
+}
+
+
+int LuaScriptComponent::findComponentTypeId(const std::string& typeName)
+{
+    auto it = typeIds.find(typeName);
+    return it != typeIds.end() ? it->second : -1;
 }
 
 
@@ -132,6 +158,7 @@ void LuaScriptComponent::removeComponent(Node* node, const std::string& typeName
 
 void LuaScriptComponent::removeScript(Node* node, const std::string& componentTypeId)
 {
-    auto typeId = getHash(componentTypeId);
-    node->getScene()->removeComponent(node->getId(), typeId);
+    auto typeId = findComponentTypeId(componentTypeId);
+    if (typeId >= 0) // TODO not very cool
+        node->getScene()->removeComponent(node->getId(), typeId);
 }

@@ -41,8 +41,8 @@ namespace solo
         VertexFormat() {}
         VertexFormat(const std::vector<VertexFormatElement>& elements);
 
-        size_t getElementCount() const;
-        VertexFormatElement getElement(size_t index) const;
+        int getElementCount() const;
+        VertexFormatElement getElement(int index) const;
 
         int getVertexSize(int perStorageId) const;
         int getStorageCount() const;
@@ -53,12 +53,12 @@ namespace solo
         int storageCount = 0;
     };
 
-    inline size_t VertexFormat::getElementCount() const
+    inline int VertexFormat::getElementCount() const
     {
-        return elements.size();
+        return static_cast<int>(elements.size());
     }
 
-    inline VertexFormatElement VertexFormat::getElement(size_t index) const
+    inline VertexFormatElement VertexFormat::getElement(int index) const
     {
         return elements[index];
     }

@@ -16,7 +16,7 @@ OpenGLMeshEffectBinding::OpenGLMeshEffectBinding(Mesh* mesh, Effect* effect)
     glBindVertexArray(vertexArrayHandle);
 
     auto vertexFormat = mesh->getVertexFormat();
-    std::unordered_map<int, size_t> offsets;
+    std::unordered_map<int, int> offsets;
     for (auto i = 0; i < vertexFormat.getElementCount(); ++i)
     {
         auto element = vertexFormat.getElement(i);

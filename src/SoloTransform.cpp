@@ -78,7 +78,7 @@ Transform* Transform::getParent() const
 }
 
 
-Transform* Transform::getChild(size_t index) const
+Transform* Transform::getChild(int index) const
 {
     return children[index];
 }
@@ -94,7 +94,7 @@ void Transform::removeChildren()
 }
 
 
-size_t Transform::getChildrenCount() const
+int Transform::getChildrenCount() const
 {
     return children.size();
 }

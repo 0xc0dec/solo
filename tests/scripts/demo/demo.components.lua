@@ -1,7 +1,7 @@
 function createEscapeWatcher()
 	return
 	{
-		typeId = "EscapeWatcher",
+		name = "EscapeWatcher",
 
 		update = function()
 			if device:isKeyPressed(solo.KeyCode.Escape, true) then
@@ -15,7 +15,7 @@ end
 function createLocalXRotator()
 	return
 	{
-		typeId = "RotatorAroundLocalXAxis",
+		name = "RotatorAroundLocalXAxis",
 
 		init = function(self)
 			self.transform = self.node:findComponent("Transform")
@@ -32,7 +32,7 @@ end
 function createWorldYRotator()
 	return
 	{
-		typeId = "RotatorAroundWorldYAxis",
+		name = "RotatorAroundWorldYAxis",
 
 		init = function(self)
 			self.transform = self.node:findComponent("Transform")
@@ -49,7 +49,7 @@ end
 function createTargeter(target)
 	return
 	{
-		typeId = "Targeter",
+		name = "Targeter",
 
 		init = function(self)
 			self.transform = self.node:findComponent("Transform")
@@ -65,7 +65,7 @@ end
 function createPostProcessor(sourceTexture, shaders)
 	return
 	{
-		typeId = "PostProcessor",
+		name = "PostProcessor",
 
 		init = function(self)
 			self.time = 0

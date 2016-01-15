@@ -18,7 +18,7 @@ runTest(function()
 
 	function create()
 		return {
-			typeId = "TestComponent",
+			name = "TestComponent",
 
 			init = function()
 			end,
@@ -33,15 +33,15 @@ runTest(function()
 
 	local cmp = create()
 	node:addScript(cmp)
-	assert(node:findScript(cmp.typeId) == cmp)
+	assert(node:findScript(cmp.name) == cmp)
 
 	cmp = create()
-	cmp.typeId = "AnotherComponent"
+	cmp.name = "AnotherComponent"
 	node:addScript(cmp)
 	assert(node:findScript("AnotherComponent") == cmp)
 
 	local cmp2 = create()
-	cmp2.typeId = "YetAnotherComponent"
+	cmp2.name = "YetAnotherComponent"
 	node:addScript(cmp2)
 
 	node:removeScript("TestComponent")

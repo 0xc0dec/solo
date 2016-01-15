@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SoloTypeId.h"
 #include "SoloNode.h"
 #include "SoloBitFlags.h"
 #include "SoloRenderQueue.h"
@@ -9,13 +8,28 @@ namespace solo
 {
     struct RenderContext;
 
+    struct ComponentTypeId
+    {
+        template <typename T>
+        static int get()
+        {
+            static const auto id = counter++;
+            return id;
+        }
+
+    private:
+        // TODO Limit to some big number? To prevent from overlapping with the script component ids
+        static int counter;
+    };
+
+
     class Component
     {
     public:
         SL_NONCOPYABLE(Component);
         virtual ~Component() {}
 
-        virtual size_t getTypeId() = 0;
+        virtual int getTypeId() = 0;
 
         virtual void init() {}
         virtual void update() {}
@@ -66,20 +80,21 @@ namespace solo
     class ComponentBase: public Component
     {
     public:
+        static int getId();
+
         explicit ComponentBase(const Node& node): Component(node) {}
 
-        static size_t getId();
-        virtual size_t getTypeId() override;
+        virtual int getTypeId() override;
     };
 
     template <class T>
-    inline size_t ComponentBase<T>::getId()
+    inline int ComponentBase<T>::getId()
     {
-        return TypeId::get<T>();
+        return ComponentTypeId::get<T>();
     }
 
     template <class T>
-    inline size_t ComponentBase<T>::getTypeId()
+    inline int ComponentBase<T>::getTypeId()
     {
         return getId();
     }

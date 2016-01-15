@@ -10,7 +10,7 @@
 using namespace solo;
 
 
-Node::Node(Scene* scene, size_t nodeId):
+Node::Node(Scene* scene, int nodeId):
     scene(scene), id(nodeId)
 {
 }

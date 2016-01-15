@@ -20,15 +20,15 @@ namespace solo
 
         shared<Node> createNode();
 
-        void addComponent(size_t nodeId, shared<Component> cmp);
-        void addComponentWithTypeId(size_t nodeId, shared<Component> cmp, size_t typeId);
+        void addComponent(int nodeId, shared<Component> cmp);
+        void addComponentWithTypeId(int nodeId, shared<Component> cmp, int typeId);
 
-        void removeComponent(size_t nodeId, size_t typeId);
-        void clearNodeComponents(size_t nodeId);
+        void removeComponent(int nodeId, int typeId);
+        void clearNodeComponents(int nodeId);
         void clear();
 
-        Component* getComponent(size_t nodeId, size_t typeId) const;
-        Component* findComponent(size_t nodeId, size_t typeId) const;
+        Component* getComponent(int nodeId, int typeId) const;
+        Component* findComponent(int nodeId, int typeId) const;
 
         void update();
         void render();
@@ -46,14 +46,14 @@ namespace solo
         explicit Scene(Device* device);
 
         template <class T>
-        void updateRenderQueue(std::list<T>& queue, size_t componentTypeIdFilter);
+        void updateRenderQueue(std::list<T>& queue, int componentTypeIdFilter);
 
         void removeComponent(int nodeId, NodeComponentMap::iterator cmpIt);
         void updateComponents();
         void clearRemovedComponents();
 
         Device* device;
-        size_t nodeCounter = 0;
+        int nodeCounter = 0;
         bool cameraCacheDirty = true;
         bool clearAll = false;
 

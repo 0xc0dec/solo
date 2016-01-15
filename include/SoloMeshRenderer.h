@@ -22,7 +22,7 @@ namespace solo
         void setMesh(shared<Mesh> mesh);
 
         Material* findMaterial(int index) const;
-        size_t getMaterialCount() const;
+        int getMaterialCount() const;
 
         void setMaterial(int index, shared<Material> material);
 
@@ -40,8 +40,8 @@ namespace solo
         return mesh.get();
     }
 
-    inline size_t MeshRenderer::getMaterialCount() const
+    inline int MeshRenderer::getMaterialCount() const
     {
-        return materials.size();
+        return static_cast<int>(materials.size());
     }
 }

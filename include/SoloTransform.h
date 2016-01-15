@@ -32,8 +32,8 @@ namespace solo
 
         void setParent(Transform* parent);
         Transform* getParent() const;
-        Transform* getChild(size_t index) const;
-        size_t getChildrenCount() const;
+        Transform* getChild(int index) const;
+        int getChildrenCount() const;
         void removeChildren();
 
         Vector3 getWorldScale() const;

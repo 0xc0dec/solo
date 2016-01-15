@@ -86,6 +86,6 @@ namespace solo
         ResourceMap<RenderTarget> renderTargets;
         ResourceMap<SurfaceRenderer> surfaceRenderers;
 
-        size_t resourceCounter = 0;
+        int resourceCounter = 0;
     };
 }

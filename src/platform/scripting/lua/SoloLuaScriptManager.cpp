@@ -91,6 +91,9 @@ void LuaScriptManager::registerApi()
 {
     auto module = LuaBinding(lua).beginModule("solo");
 
+    // Aux bindings
+    module.beginModule("__components").endModule();
+
     // Vector2
     auto vector2 = module.beginClass<Vector2>("Vector2");
     vector2.addConstructor(LUA_ARGS(float, float));
