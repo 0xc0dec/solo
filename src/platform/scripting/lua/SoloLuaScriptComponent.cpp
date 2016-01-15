@@ -9,8 +9,10 @@
 using namespace solo;
 using namespace LuaIntf;
 
+const int MinComponentTypeId = 1000000000;
+const int UnknownComponentTypeId = 2000000001;
 
-int LuaScriptComponent::counter = 1000000000;
+int LuaScriptComponent::counter = MinComponentTypeId;
 std::unordered_map<std::string, int> LuaScriptComponent::typeIds;
 
 
@@ -90,7 +92,7 @@ std::function<LuaRef(Node*, const std::string&)> LuaScriptComponent::getFindScri
 LuaRef LuaScriptComponent::findScript(lua_State* lua, Node* node, const std::string& componentTypeId)
 {
     auto typeId = findComponentTypeId(componentTypeId);
-    if (typeId < 0) // TODO not very cool
+    if (typeId == UnknownComponentTypeId)
         return LuaRef(lua, nullptr);
 
     auto component = node->getScene()->findComponent(node->getId(), typeId);
@@ -102,7 +104,7 @@ LuaRef LuaScriptComponent::findScript(lua_State* lua, Node* node, const std::str
 int LuaScriptComponent::getOrRegisterComponentTypeId(const std::string& typeName)
 {
     auto typeId = findComponentTypeId(typeName);
-    if (typeId < 0) // TODO not very cool
+    if (typeId == UnknownComponentTypeId)
     {
         typeId = counter++;
         typeIds[typeName] = typeId;
@@ -114,7 +116,7 @@ int LuaScriptComponent::getOrRegisterComponentTypeId(const std::string& typeName
 int LuaScriptComponent::findComponentTypeId(const std::string& typeName)
 {
     auto it = typeIds.find(typeName);
-    return it != typeIds.end() ? it->second : -1;
+    return it != typeIds.end() ? it->second : UnknownComponentTypeId;
 }
 
 
@@ -159,6 +161,6 @@ void LuaScriptComponent::removeComponent(Node* node, const std::string& typeName
 void LuaScriptComponent::removeScript(Node* node, const std::string& componentTypeId)
 {
     auto typeId = findComponentTypeId(componentTypeId);
-    if (typeId >= 0) // TODO not very cool
+    if (typeId != UnknownComponentTypeId)
         node->getScene()->removeComponent(node->getId(), typeId);
 }

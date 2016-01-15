@@ -96,7 +96,7 @@ void Transform::removeChildren()
 
 int Transform::getChildrenCount() const
 {
-    return children.size();
+    return static_cast<int>(children.size());
 }
 
 

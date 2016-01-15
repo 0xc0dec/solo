@@ -18,7 +18,8 @@ namespace solo
         }
 
     private:
-        // TODO Limit to some big number? To prevent from overlapping with the script component ids
+        // TODO Expected to be less than the smallest script component id (which is now 1 000 000 000).
+        // No checks so far since it'll hardly ever reach that limit (yeah, boldly said, but still).
         static int counter;
     };
 
