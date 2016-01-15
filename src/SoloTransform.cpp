@@ -5,17 +5,17 @@
 using namespace solo;
 
 
-const unsigned DIRTY_BIT_POSITION = 1;
-const unsigned DIRTY_BIT_ROTATION = 2;
-const unsigned DIRTY_BIT_SCALE = 4;
-const unsigned DIRTY_BIT_WORLD = 8;
-const unsigned DIRTY_BIT_INSERSE_TRANSPOSED_WORLD = 16;
-const unsigned DIRTY_BIT_ALL =
-    DIRTY_BIT_POSITION |
-    DIRTY_BIT_ROTATION |
-    DIRTY_BIT_SCALE |
-    DIRTY_BIT_WORLD |
-    DIRTY_BIT_INSERSE_TRANSPOSED_WORLD;
+const unsigned DirtyBitPosition = 1;
+const unsigned DirtyBitRotation = 2;
+const unsigned DirtyBitScale = 4;
+const unsigned DirtyBitWorld = 8;
+const unsigned DirtyBitInverseTransposedWorld = 16;
+const unsigned DirtyBitAll =
+    DirtyBitPosition |
+    DirtyBitRotation |
+    DirtyBitScale |
+    DirtyBitWorld |
+    DirtyBitInverseTransposedWorld;
 
 
 Transform::Transform(Node node):
@@ -40,7 +40,7 @@ void Transform::notifyChanged() const
 void Transform::init()
 {
     localScale = Vector3::unit();
-    dirtyFlags.add(DIRTY_BIT_ALL);
+    dirtyFlags.add(DirtyBitAll);
 }
 
 
@@ -68,7 +68,7 @@ void Transform::setParent(Transform* parent)
     this->parent = parent;
     if (parent)
         parent->children.push_back(this);
-    setDirtyWithChildren(DIRTY_BIT_WORLD);
+    setDirtyWithChildren(DirtyBitWorld);
 }
 
 
@@ -132,24 +132,24 @@ Matrix Transform::getMatrix() const
         auto hasScale = !localScale.isUnit();
         auto hasRotation = !localRotation.isIdentity();
 
-        if (hasTranslation || dirtyFlags.isSet(DIRTY_BIT_POSITION))
+        if (hasTranslation || dirtyFlags.isSet(DirtyBitPosition))
         {
             matrix = Matrix::createTranslation(localPosition);
-            if (hasRotation || dirtyFlags.isSet(DIRTY_BIT_ROTATION))
+            if (hasRotation || dirtyFlags.isSet(DirtyBitRotation))
                 matrix.rotate(localRotation);
-            if (hasScale || dirtyFlags.isSet(DIRTY_BIT_SCALE))
+            if (hasScale || dirtyFlags.isSet(DirtyBitScale))
                 matrix.scale(localScale);
         }
-        else if (hasRotation || dirtyFlags.isSet(DIRTY_BIT_ROTATION))
+        else if (hasRotation || dirtyFlags.isSet(DirtyBitRotation))
         {
             matrix = Matrix::createRotation(localRotation);
-            if (hasScale || dirtyFlags.isSet(DIRTY_BIT_SCALE))
+            if (hasScale || dirtyFlags.isSet(DirtyBitScale))
                 matrix.scale(localScale);
         }
-        else if (hasScale || dirtyFlags.isSet(DIRTY_BIT_SCALE))
+        else if (hasScale || dirtyFlags.isSet(DirtyBitScale))
             matrix = Matrix::createScale(localScale);
 
-        dirtyFlags.remove(DIRTY_BIT_ALL);
+        dirtyFlags.remove(DirtyBitAll);
     }
     return matrix;
 }
@@ -157,14 +157,14 @@ Matrix Transform::getMatrix() const
 
 Matrix Transform::getWorldMatrix() const
 {
-    if (dirtyFlags.checkAndRemove(DIRTY_BIT_WORLD))
+    if (dirtyFlags.checkAndRemove(DirtyBitWorld))
     {
         if (parent)
             worldMatrix = parent->getWorldMatrix() * getMatrix();
         else
             worldMatrix = getMatrix();
-        setChildrenDirty(DIRTY_BIT_WORLD);
-        setDirtyWithChildren(DIRTY_BIT_INSERSE_TRANSPOSED_WORLD);
+        setChildrenDirty(DirtyBitWorld);
+        setDirtyWithChildren(DirtyBitInverseTransposedWorld);
     }
     return worldMatrix;
 }
@@ -172,12 +172,12 @@ Matrix Transform::getWorldMatrix() const
 
 Matrix Transform::getInverseTransposedWorldMatrix() const
 {
-    if (dirtyFlags.checkAndRemove(DIRTY_BIT_INSERSE_TRANSPOSED_WORLD) || dirtyFlags.isSet(DIRTY_BIT_WORLD))
+    if (dirtyFlags.checkAndRemove(DirtyBitInverseTransposedWorld) || dirtyFlags.isSet(DirtyBitWorld))
     {
         inverseTransposedWorldMatrix = getWorldMatrix();
         inverseTransposedWorldMatrix.invert();
         inverseTransposedWorldMatrix.transpose();
-        setChildrenDirty(DIRTY_BIT_INSERSE_TRANSPOSED_WORLD);
+        setChildrenDirty(DirtyBitInverseTransposedWorld);
     }
     return inverseTransposedWorldMatrix;
 }
@@ -207,7 +207,7 @@ Matrix Transform::getInverseTransposedWorldViewMatrix(Camera* camera) const
 void Transform::translateLocal(const Vector3& translation)
 {
     localPosition += translation;
-    setDirtyWithChildren(DIRTY_BIT_POSITION | DIRTY_BIT_WORLD);
+    setDirtyWithChildren(DirtyBitPosition | DirtyBitWorld);
 }
 
 
@@ -220,18 +220,18 @@ void Transform::rotate(const Quaternion& rotation, TransformSpace space)
     {
     case TransformSpace::Self:
         localRotation = localRotation * normalizedRotation;
-        setDirtyWithChildren(DIRTY_BIT_ROTATION | DIRTY_BIT_WORLD);
+        setDirtyWithChildren(DirtyBitRotation | DirtyBitWorld);
         break;
     case TransformSpace::Parent:
         localRotation = normalizedRotation * localRotation;
-        setDirtyWithChildren(DIRTY_BIT_ROTATION | DIRTY_BIT_WORLD);
+        setDirtyWithChildren(DirtyBitRotation | DirtyBitWorld);
         break;
     case TransformSpace::World:
         {
             auto inverseWorldRotation = getWorldRotation();
             inverseWorldRotation.inverse();
             localRotation = localRotation * inverseWorldRotation * normalizedRotation * getWorldRotation();
-            setDirtyWithChildren(DIRTY_BIT_ROTATION | DIRTY_BIT_WORLD);
+            setDirtyWithChildren(DirtyBitRotation | DirtyBitWorld);
             break;
         }
     }
@@ -250,14 +250,14 @@ void Transform::scaleLocal(const Vector3& scale)
     localScale.x *= scale.x;
     localScale.y *= scale.y;
     localScale.z *= scale.z;
-    setDirtyWithChildren(DIRTY_BIT_SCALE | DIRTY_BIT_WORLD);
+    setDirtyWithChildren(DirtyBitScale | DirtyBitWorld);
 }
 
 
 void Transform::setLocalScale(const Vector3& scale)
 {
     localScale = scale;
-    setDirtyWithChildren(DIRTY_BIT_SCALE | DIRTY_BIT_WORLD);
+    setDirtyWithChildren(DirtyBitScale | DirtyBitWorld);
 }
 
 
@@ -294,21 +294,21 @@ Vector3 Transform::transformDirection(const Vector3& direction) const
 void Transform::setLocalRotation(const Quaternion& rotation)
 {
     localRotation = rotation;
-    setDirtyWithChildren(DIRTY_BIT_ROTATION | DIRTY_BIT_WORLD);
+    setDirtyWithChildren(DirtyBitRotation | DirtyBitWorld);
 }
 
 
 void Transform::setLocalRotation(const Vector3& axis, float angleRadians)
 {
     localRotation = Quaternion::createFromAxisAngle(axis, angleRadians);
-    setDirtyWithChildren(DIRTY_BIT_ROTATION | DIRTY_BIT_WORLD);
+    setDirtyWithChildren(DirtyBitRotation | DirtyBitWorld);
 }
 
 
 void Transform::setLocalPosition(const Vector3& position)
 {
     localPosition = position;
-    setDirtyWithChildren(DIRTY_BIT_POSITION | DIRTY_BIT_WORLD);
+    setDirtyWithChildren(DirtyBitPosition | DirtyBitWorld);
 }
 
 
