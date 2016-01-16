@@ -16,7 +16,7 @@ int LuaScriptComponent::counter = MinComponentTypeId;
 std::unordered_map<std::string, int> LuaScriptComponent::typeIds;
 
 
-LuaScriptComponent::LuaScriptComponent(const Node& node, LuaRef& component) :
+LuaScriptComponent::LuaScriptComponent(const Node& node, LuaRef component) :
     ComponentBase<LuaScriptComponent>(node),
     component(component)
 {
@@ -120,7 +120,7 @@ int LuaScriptComponent::findComponentTypeId(const std::string& typeName)
 }
 
 
-void LuaScriptComponent::addScript(Node* node, LuaRef& component)
+void LuaScriptComponent::addScript(Node* node, LuaRef component)
 {
     auto actualComponent = SL_MAKE_SHARED<LuaScriptComponent>(*node, component);
     node->getScene()->addComponent(node->getId(), actualComponent);

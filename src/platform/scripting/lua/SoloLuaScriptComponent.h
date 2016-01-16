@@ -9,7 +9,7 @@ namespace solo
     class LuaScriptComponent: public ComponentBase<LuaScriptComponent>
     {
     public:
-        LuaScriptComponent(const Node& node, LuaIntf::LuaRef& component);
+        LuaScriptComponent(const Node& node, LuaIntf::LuaRef component);
 
         virtual void init() override;
         virtual void update() override;
@@ -24,7 +24,7 @@ namespace solo
         static void removeComponent(Node* node, const std::string& name);
 
         static std::function<LuaIntf::LuaRef(Node*, const std::string&)> getFindScriptFunc(lua_State* lua);
-        static void addScript(Node* node, LuaIntf::LuaRef& component);
+        static void addScript(Node* node, LuaIntf::LuaRef component);
         static void removeScript(Node* node, const std::string& name);
 
     private:
