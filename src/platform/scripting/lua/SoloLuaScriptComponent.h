@@ -9,7 +9,7 @@ namespace solo
     class LuaScriptComponent: public ComponentBase<LuaScriptComponent>
     {
     public:
-        LuaScriptComponent(const Node& node, LuaIntf::LuaRef component);
+        LuaScriptComponent(const Node& node, LuaIntf::LuaRef scriptComponent);
 
         virtual void init() override;
         virtual void update() override;
@@ -23,21 +23,12 @@ namespace solo
         static Component* addComponent(Node* node, const std::string& name);
         static void removeComponent(Node* node, const std::string& name);
 
-        static std::function<LuaIntf::LuaRef(Node*, const std::string&)> getFindScriptFunc(lua_State* lua);
-        static void addScript(Node* node, LuaIntf::LuaRef component);
-        static void removeScript(Node* node, const std::string& name);
+        static void addScript(Node* node, LuaIntf::LuaRef scriptComponent);
+        static void removeScript(Node* node, LuaIntf::LuaRef scriptComponent);
 
     private:
-        static LuaIntf::LuaRef findScript(lua_State* lua, Node* node, const std::string& name);
-
-        static int getOrRegisterComponentTypeId(const std::string& name);
-        static int findComponentTypeId(const std::string& name);
-
-        static int counter;
-        static std::unordered_map<std::string, int> typeIds;
-
         int typeId;
-        LuaIntf::LuaRef component;
+        LuaIntf::LuaRef scriptComponent;
         std::function<void(LuaIntf::LuaRef)> initFunc;
         std::function<void(LuaIntf::LuaRef)> updateFunc;
         std::function<void(LuaIntf::LuaRef)> terminateFunc;

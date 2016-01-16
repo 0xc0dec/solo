@@ -9,55 +9,50 @@
 using namespace solo;
 using namespace LuaIntf;
 
-const int MinComponentTypeId = 1000000000;
-const int UnknownComponentTypeId = 2000000001;
-
-int LuaScriptComponent::counter = MinComponentTypeId;
-std::unordered_map<std::string, int> LuaScriptComponent::typeIds;
+const int MinComponentTypeId = 1000000000; // it's expected that normal component ids should stop at this point
 
 
-LuaScriptComponent::LuaScriptComponent(const Node& node, LuaRef component) :
+LuaScriptComponent::LuaScriptComponent(const Node& node, LuaRef scriptComponent) :
     ComponentBase<LuaScriptComponent>(node),
-    component(component)
+    scriptComponent(scriptComponent)
 {
-    auto name = component.get<std::string>("name");
-    typeId = getOrRegisterComponentTypeId(name);
-    initFunc = component.has("init") ? component.get<std::function<void(LuaRef)>>("init") : [](LuaRef) {};
-    updateFunc = component.has("update") ? component.get<std::function<void(LuaRef)>>("update") : [](LuaRef) {};
-    terminateFunc = component.has("terminate") ? component.get<std::function<void(LuaRef)>>("terminate") : [](LuaRef) {};
-    renderFunc = component.has("render") ? component.get<std::function<void(LuaRef, RenderContext&)>>("render") : [](LuaRef, RenderContext&) {};
-    onAfterCameraRenderFunc = component.has("onAfterCameraRender") ? component.get<std::function<void(LuaRef)>>("onAfterCameraRender") : [](LuaRef) {};
-    component.set("node", node);
+    typeId = scriptComponent.get<int>("typeId") + MinComponentTypeId;
+    initFunc = scriptComponent.has("init") ? scriptComponent.get<std::function<void(LuaRef)>>("init") : [](LuaRef) {};
+    updateFunc = scriptComponent.has("update") ? scriptComponent.get<std::function<void(LuaRef)>>("update") : [](LuaRef) {};
+    terminateFunc = scriptComponent.has("terminate") ? scriptComponent.get<std::function<void(LuaRef)>>("terminate") : [](LuaRef) {};
+    renderFunc = scriptComponent.has("render") ? scriptComponent.get<std::function<void(LuaRef, RenderContext&)>>("render") : [](LuaRef, RenderContext&) {};
+    onAfterCameraRenderFunc = scriptComponent.has("onAfterCameraRender") ? scriptComponent.get<std::function<void(LuaRef)>>("onAfterCameraRender") : [](LuaRef) {};
+    scriptComponent.set("node", node);
 }
 
 
 void LuaScriptComponent::init()
 {
-    initFunc(component);
+    initFunc(scriptComponent);
 }
 
 
 void LuaScriptComponent::update()
 {
-    updateFunc(component);
+    updateFunc(scriptComponent);
 }
 
 
 void LuaScriptComponent::terminate()
 {
-    terminateFunc(component);
+    terminateFunc(scriptComponent);
 }
 
 
 void LuaScriptComponent::render(RenderContext& context)
 {
-    renderFunc(component, context);
+    renderFunc(scriptComponent, context);
 }
 
 
 void LuaScriptComponent::onAfterCameraRender()
 {
-    onAfterCameraRenderFunc(component);
+    onAfterCameraRenderFunc(scriptComponent);
 }
 
 
@@ -83,47 +78,17 @@ Component* LuaScriptComponent::findComponent(Node* node, const std::string& type
 }
 
 
-std::function<LuaRef(Node*, const std::string&)> LuaScriptComponent::getFindScriptFunc(lua_State* lua)
+void LuaScriptComponent::addScript(Node* node, LuaRef scriptComponent)
 {
-    return std::bind(&findScript, lua, std::placeholders::_1, std::placeholders::_2);
-}
-
-
-LuaRef LuaScriptComponent::findScript(lua_State* lua, Node* node, const std::string& componentTypeId)
-{
-    auto typeId = findComponentTypeId(componentTypeId);
-    if (typeId == UnknownComponentTypeId)
-        return LuaRef(lua, nullptr);
-
-    auto component = node->getScene()->findComponent(node->getId(), typeId);
-    auto scriptComponent = dynamic_cast<LuaScriptComponent*>(component);
-    return scriptComponent ? scriptComponent->component : LuaRef(lua, nullptr);
-}
-
-
-int LuaScriptComponent::getOrRegisterComponentTypeId(const std::string& typeName)
-{
-    auto typeId = findComponentTypeId(typeName);
-    if (typeId == UnknownComponentTypeId)
-    {
-        typeId = counter++;
-        typeIds[typeName] = typeId;
-    }
-    return typeId;
-}
-
-
-int LuaScriptComponent::findComponentTypeId(const std::string& typeName)
-{
-    auto it = typeIds.find(typeName);
-    return it != typeIds.end() ? it->second : UnknownComponentTypeId;
-}
-
-
-void LuaScriptComponent::addScript(Node* node, LuaRef component)
-{
-    auto actualComponent = SL_MAKE_SHARED<LuaScriptComponent>(*node, component);
+    auto actualComponent = SL_MAKE_SHARED<LuaScriptComponent>(*node, scriptComponent);
     node->getScene()->addComponent(node->getId(), actualComponent);
+}
+
+
+void LuaScriptComponent::removeScript(Node* node, LuaRef scriptComponent)
+{
+    auto typeId = scriptComponent.get<int>("typeId") + MinComponentTypeId;
+    node->getScene()->removeComponent(node->getId(), typeId);
 }
 
 
@@ -155,12 +120,4 @@ void LuaScriptComponent::removeComponent(Node* node, const std::string& typeName
         node->removeComponent<Spectator>();
     if (typeName == "SkyboxRenderer")
         node->removeComponent<SkyboxRenderer>();
-}
-
-
-void LuaScriptComponent::removeScript(Node* node, const std::string& componentTypeId)
-{
-    auto typeId = findComponentTypeId(componentTypeId);
-    if (typeId != UnknownComponentTypeId)
-        node->getScene()->removeComponent(node->getId(), typeId);
 }

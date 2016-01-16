@@ -91,9 +91,6 @@ void LuaScriptManager::registerApi()
 {
     auto module = LuaBinding(lua).beginModule("solo");
 
-    // Aux bindings
-    module.beginModule("__components").endModule();
-
     // Vector2
     auto vector2 = module.beginClass<Vector2>("Vector2");
     vector2.addConstructor(LUA_ARGS(float, float));
@@ -555,7 +552,6 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(node, LuaScriptComponent, findComponent);
     REGISTER_METHOD(node, LuaScriptComponent, addComponent);
     REGISTER_METHOD(node, LuaScriptComponent, removeComponent);
-    node.addFunction("findScript", LuaScriptComponent::getFindScriptFunc(module.state()));
     node.endClass();
 
     // Component
