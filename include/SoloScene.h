@@ -39,12 +39,13 @@ namespace solo
         void updateRenderQueue(std::list<T>& queue, int componentTypeIdFilter);
         
         void updateComponents();
+        void rebuildComponentsToUpdate();
 
         Device* device;
         int nodeCounter = 0;
         bool cameraCacheDirty = true;
         bool clearAll = false;
-        bool componentsToUpdateDirty = true;
+        bool componentsDirty = true;
 
         std::list<Component*> cameraQueue;
         std::list<Component*> renderQueue;

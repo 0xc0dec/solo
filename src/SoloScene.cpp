@@ -48,7 +48,7 @@ void Scene::addComponent(int nodeId, shared<Component> cmp)
     components[nodeId][typeId] = cmp;
     cmp->init();
 
-    componentsToUpdateDirty = true;
+    componentsDirty = true;
     if (typeId == Camera::getId())
         cameraCacheDirty = true;
 }
@@ -70,7 +70,7 @@ void Scene::removeComponent(int nodeId, int typeId)
     cmp->terminate();
     if (typeId == Camera::getId())
         cameraCacheDirty = true;
-    componentsToUpdateDirty = true;
+    componentsDirty = true;
 }
 
 
@@ -132,6 +132,18 @@ void Scene::updateRenderQueue(std::list<T>& queue, int cmpTypeIdFilter)
 }
 
 
+void Scene::update()
+{
+    if (componentsDirty)
+    {
+        rebuildComponentsToUpdate();
+        componentsDirty = false;
+    }
+
+    updateComponents();
+}
+
+
 void Scene::updateComponents()
 {
     // TODO A component added during one of these update() methods
@@ -144,20 +156,14 @@ void Scene::updateComponents()
 }
 
 
-void Scene::update()
+void Scene::rebuildComponentsToUpdate()
 {
-    if (componentsToUpdateDirty)
+    componentsToUpdate.clear(); // TODO maybe overkill
+    for (auto& nodeIt : components)
     {
-        componentsToUpdate.clear(); // TODO maybe overkill
-        for (auto& nodeIt: components)
-        {
-            for (auto& cmpIt: nodeIt.second)
-                componentsToUpdate.push_back(cmpIt.second.get());
-        }
-        componentsToUpdateDirty = false;
+        for (auto& cmpIt : nodeIt.second)
+            componentsToUpdate.push_back(cmpIt.second.get());
     }
-
-    updateComponents();
 }
 
 
