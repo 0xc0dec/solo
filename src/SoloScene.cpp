@@ -67,7 +67,9 @@ void Scene::removeComponent(int nodeId, int typeId)
     nodeIt->second.erase(cmpIt);
     if (nodeIt->second.empty())
         components.erase(nodeIt);
+
     cmp->terminate();
+
     if (typeId == Camera::getId())
         cameraCacheDirty = true;
     componentsDirty = true;
@@ -86,7 +88,7 @@ Component* Scene::getComponent(int nodeId, int typeId) const
 Component* Scene::findComponent(int nodeId, int typeId) const
 {
     auto nodeIt = components.find(nodeId);
-    if (clearAll || nodeIt == components.end())
+    if (nodeIt == components.end())
         return nullptr;
 
     auto& nodeComponents = nodeIt->second;
