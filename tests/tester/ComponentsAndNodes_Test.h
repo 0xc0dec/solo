@@ -193,10 +193,10 @@ private:
                         [&]() { terminate2Called = true; }
                     );
                 }
+                n2->removeComponent<CallbackCaller>();
             },
             [&]() // terminate
             {
-                n2->removeComponent<CallbackCaller>();
                 n3->removeComponent<CallbackCaller>();
             }
         );

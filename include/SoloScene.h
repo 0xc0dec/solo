@@ -50,7 +50,7 @@ namespace solo
         std::list<Component*> renderQueue;
 
         AllComponentMap components;
-        std::vector<Component*> componentsToUpdate;
+        std::vector<shared<Component>> componentsToUpdate;
     };
 
     inline Device* Scene::getDevice() const

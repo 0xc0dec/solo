@@ -164,7 +164,7 @@ void Scene::rebuildComponentsToUpdate()
     for (auto& nodeIt : components)
     {
         for (auto& cmpIt : nodeIt.second)
-            componentsToUpdate.push_back(cmpIt.second.get());
+            componentsToUpdate.push_back(cmpIt.second);
     }
 }
 
