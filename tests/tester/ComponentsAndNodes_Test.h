@@ -24,8 +24,6 @@ public:
 class CallbackCaller: public ComponentBase<CallbackCaller>
 {
 public:
-    bool updateCalled = false;
-
     explicit CallbackCaller(Node node, std::function<void()> initAction, std::function<void()> updateAction, std::function<void()> terminateAction):
         ComponentBase<CallbackCaller>(node),
         initAction(initAction),
@@ -92,7 +90,7 @@ public:
         test_AddAndRemove_FindByBaseId();
         test_RemoveInexistentComponent();
         test_AddDuplicateComponent_EnsureError();
-        test();
+        test_AddOrRemoveComponentsFromWithinCallbackMethods();
     }
 
 private:
@@ -160,7 +158,7 @@ private:
         assert(false);
     }
 
-    void test()
+    void test_AddOrRemoveComponentsFromWithinCallbackMethods()
     {
         auto n1 = scene->createNode();
         auto n2 = scene->createNode();
@@ -170,8 +168,10 @@ private:
         auto init2Called = false;
         auto update1Called = false;
         auto update2Called = false;
+        auto terminate1Called = false;
+        auto terminate2Called = false;
 
-        n1->addComponent<CallbackCaller>(
+        auto cmp = n1->addComponent<CallbackCaller>(
             [&]() // init
             {
                 if (!n2->findComponent<CallbackCaller>())
@@ -179,7 +179,7 @@ private:
                     n2->addComponent<CallbackCaller>(
                         [&]() { init1Called = true; },
                         [&]() { update1Called = true; },
-                        []() {}
+                        [&]() { terminate1Called = true; }
                     );
                 }
             },
@@ -190,13 +190,17 @@ private:
                     n3->addComponent<CallbackCaller>(
                         [&]() { init2Called = true; },
                         [&]() { update2Called = true; },
-                        []() {}
+                        [&]() { terminate2Called = true; }
                     );
                 }
             },
-            []() {} // terminate
+            [&]() // terminate
+            {
+                n2->removeComponent<CallbackCaller>();
+                n3->removeComponent<CallbackCaller>();
+            }
         );
-
+        
         assert(init1Called);
         assert(!init2Called);
         assert(!update1Called);
@@ -209,5 +213,9 @@ private:
 
         scene->update();
         assert(update2Called);
+
+        n1->removeComponent<CallbackCaller>();
+        assert(terminate1Called);
+        assert(terminate2Called);
     }
 };
