@@ -1,6 +1,6 @@
 #include "Materials_Test.h"
 #include "RenderTargets_Test.h"
-#include "Components_Test.h"
+#include "ComponentsAndNodes_Test.h"
 #include "Transform_Test.h"
 #include "Device_Test.h"
 #include "FileSystem_Test.h"

@@ -39,5 +39,4 @@ runTest(function()
 
 	node:removeScript(cmp)
 	node:removeScript(cmp2)
-	node:clearComponents()
 end, "Node")

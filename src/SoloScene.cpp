@@ -23,9 +23,6 @@ Scene::Scene(Device* device) :
 
 Scene::~Scene()
 {
-    // Allow components to do some cleanup work
-    clear();
-    clearRemovedComponents();
 }
 
 
@@ -39,24 +36,19 @@ shared<Node> Scene::createNode()
 
 void Scene::addComponent(int nodeId, shared<Component> cmp)
 {
-    addComponentWithTypeId(nodeId, cmp, cmp->getTypeId());
-}
-
-
-void Scene::addComponentWithTypeId(int nodeId, shared<Component> cmp, int typeId)
-{
+    auto typeId = cmp->getTypeId();
     auto nodeIt = components.find(nodeId);
     if (nodeIt != components.end())
     {
         auto& nodeComponents = nodeIt->second;
-        auto existing = nodeComponents.find(typeId);
-        if (existing != nodeComponents.end() && !existing->second.removed)
+        if (nodeComponents.find(typeId) != nodeComponents.end())
             SL_THROW_FMT(EngineException, "Component ", typeId, " already exists");
     }
 
-    components[nodeId][typeId] = { cmp, false };
+    components[nodeId][typeId] = cmp;
     cmp->init();
 
+    componentsToUpdateDirty = true;
     if (typeId == Camera::getId())
         cameraCacheDirty = true;
 }
@@ -65,38 +57,20 @@ void Scene::addComponentWithTypeId(int nodeId, shared<Component> cmp, int typeId
 void Scene::removeComponent(int nodeId, int typeId)
 {
     auto nodeIt = components.find(nodeId);
-    if (nodeIt != components.end())
-    {
-        auto cmpIt = nodeIt->second.find(typeId);
-        if (cmpIt != nodeIt->second.end())
-            removeComponent(nodeId, cmpIt);
-    }
-}
-
-
-void Scene::removeComponent(int nodeId, NodeComponentMap::iterator cmpIt)
-{
-    if (cmpIt->second.removed)
+    if (nodeIt == components.end())
         return;
-    componentsForRemoval[nodeId].insert(cmpIt->second.component.get());
-    cmpIt->second.removed = true;
-}
-
-
-void Scene::clearNodeComponents(int nodeId)
-{
-    auto nodeIt = components.find(nodeId);
-    if (nodeIt != components.end())
-    {
-        for (auto cmpIt = nodeIt->second.begin(); cmpIt != nodeIt->second.end(); ++cmpIt)
-            removeComponent(nodeId, cmpIt);
-    }
-}
-
-
-void Scene::clear()
-{
-    clearAll = true;
+    auto cmpIt = nodeIt->second.find(typeId);
+    if (cmpIt == nodeIt->second.end())
+        return;
+    
+    auto cmp = cmpIt->second;
+    nodeIt->second.erase(cmpIt);
+    if (nodeIt->second.empty())
+        components.erase(nodeIt);
+    cmp->terminate();
+    if (typeId == Camera::getId())
+        cameraCacheDirty = true;
+    componentsToUpdateDirty = true;
 }
 
 
@@ -117,8 +91,8 @@ Component* Scene::findComponent(int nodeId, int typeId) const
 
     auto& nodeComponents = nodeIt->second;
     auto cmpIt = nodeComponents.find(typeId);
-    if (cmpIt != nodeComponents.end() && !cmpIt->second.removed)
-        return cmpIt->second.component.get();
+    if (cmpIt != nodeComponents.end())
+        return cmpIt->second.get();
 
     return nullptr;
 }
@@ -134,7 +108,7 @@ void Scene::updateRenderQueue(std::list<T>& queue, int cmpTypeIdFilter)
         auto nodeId = nodeComponents.first;
         for (auto& pair : nodeComponents.second)
         {
-            auto component = pair.second.component.get();
+            auto component = pair.second.get();
             if (cmpTypeIdFilter > 0 && component->getTypeId() != cmpTypeIdFilter)
                 continue;
 
@@ -160,58 +134,30 @@ void Scene::updateRenderQueue(std::list<T>& queue, int cmpTypeIdFilter)
 
 void Scene::updateComponents()
 {
-    for (auto& node : components)
-    {
-        for (auto& component : node.second)
-        {
-            // Once clearAll is set to true, we stop updating the rest of the nodes
-            if (!clearAll && !component.second.removed)
-                component.second.component->update();
-        }
-    }
-}
-
-
-void Scene::clearRemovedComponents()
-{
-    if (clearAll)
-    {
-        for (auto& node : components)
-        {
-            for (auto& component : node.second)
-                component.second.component->terminate();
-        }
-        components.clear();
-        clearAll = false;
-    }
-    else
-    {
-        // TODO what if terminate() adds or removes another component?
-        for (auto& node : componentsForRemoval)
-        {
-            for (auto& component : node.second)
-            {
-                component->terminate();
-                if (component->getTypeId() == Camera::getId())
-                    cameraCacheDirty = true;
-
-                auto& nodeComponents = components.at(node.first);
-                nodeComponents.erase(component->getTypeId());
-
-                if (nodeComponents.empty())
-                    components.erase(node.first);
-            }
-        }
-    }
-
-    componentsForRemoval.clear();
+    // TODO A component added during one of these update() methods
+    // will be updated for the first time only on the next call to updateComponents(). That is intended.
+    // TODO It's possible that a component can receive update() after it has been removed.
+    // For example, a component can remove other component during update(), but the component
+    // being removed sits later in this list.
+    for (auto cmp : componentsToUpdate)
+        cmp->update();
 }
 
 
 void Scene::update()
 {
+    if (componentsToUpdateDirty)
+    {
+        componentsToUpdate.clear(); // TODO maybe overkill
+        for (auto& nodeIt: components)
+        {
+            for (auto& cmpIt: nodeIt.second)
+                componentsToUpdate.push_back(cmpIt.second.get());
+        }
+        componentsToUpdateDirty = false;
+    }
+
     updateComponents();
-    clearRemovedComponents();
 }
 
 
@@ -253,7 +199,7 @@ void Scene::render()
         camera->finish();
 
         for (auto& pair : components.at(camera->getNode().getId()))
-            pair.second.component->onAfterCameraRender();
+            pair.second->onAfterCameraRender();
     }
 }
 

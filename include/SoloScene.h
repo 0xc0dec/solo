@@ -21,11 +21,7 @@ namespace solo
         shared<Node> createNode();
 
         void addComponent(int nodeId, shared<Component> cmp);
-        void addComponentWithTypeId(int nodeId, shared<Component> cmp, int typeId);
-
         void removeComponent(int nodeId, int typeId);
-        void clearNodeComponents(int nodeId);
-        void clear();
 
         Component* getComponent(int nodeId, int typeId) const;
         Component* findComponent(int nodeId, int typeId) const;
@@ -34,34 +30,27 @@ namespace solo
         void render();
 
     private:
-        struct ComponentInfo
-        {
-            shared<Component> component;
-            bool removed;
-        };
-
-        using NodeComponentMap = std::unordered_map<int, ComponentInfo>;
+        using NodeComponentMap = std::unordered_map<int, shared<Component>>;
         using AllComponentMap = std::unordered_map<int, NodeComponentMap>;
 
         explicit Scene(Device* device);
 
         template <class T>
         void updateRenderQueue(std::list<T>& queue, int componentTypeIdFilter);
-
-        void removeComponent(int nodeId, NodeComponentMap::iterator cmpIt);
+        
         void updateComponents();
-        void clearRemovedComponents();
 
         Device* device;
         int nodeCounter = 0;
         bool cameraCacheDirty = true;
         bool clearAll = false;
+        bool componentsToUpdateDirty = true;
 
         std::list<Component*> cameraQueue;
         std::list<Component*> renderQueue;
 
         AllComponentMap components;
-        std::unordered_map<int, std::unordered_set<Component*>> componentsForRemoval;
+        std::vector<Component*> componentsToUpdate;
     };
 
     inline Device* Scene::getDevice() const
