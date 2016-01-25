@@ -11,18 +11,18 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/include
-    ${PROJECT_SOURCE_DIR}/external/lua/5.3.1
-    ${PROJECT_SOURCE_DIR}/external/LuaIntf
-    ${PROJECT_SOURCE_DIR}/external/glew/include
-    ${PROJECT_SOURCE_DIR}/external/SDL/2.0.3/include
-    ${PROJECT_SOURCE_DIR}/external/png/include
-    ${PROJECT_SOURCE_DIR}/external/zlib/include)
+    ${PROJECT_SOURCE_DIR}/thirdparty/lua/5.3.1
+    ${PROJECT_SOURCE_DIR}/thirdparty/LuaIntf
+    ${PROJECT_SOURCE_DIR}/thirdparty/glew/include
+    ${PROJECT_SOURCE_DIR}/thirdparty/SDL/2.0.3/include
+    ${PROJECT_SOURCE_DIR}/thirdparty/png/include
+    ${PROJECT_SOURCE_DIR}/thirdparty/zlib/include)
 
-link_directories(${PROJECT_SOURCE_DIR}/external/SDL/2.0.3)
+link_directories(${PROJECT_SOURCE_DIR}/thirdparty/SDL/2.0.3)
 
 # Lua
 
-file(GLOB_RECURSE lua_sources "external/lua/5.3.1/*.c")
+file(GLOB_RECURSE lua_sources "thirdparty/lua/5.3.1/*.c")
 set_source_files_properties(${lua_sources} PROPERTIES LANGUAGE CXX)
 add_library(lua STATIC ${lua_sources})
 
@@ -31,10 +31,12 @@ add_library(lua STATIC ${lua_sources})
 file(GLOB_RECURSE sources
     "src/*.cpp"
     "src/platform/*.cpp"
-    "src/platform/scripting/*.cpp"
-    "external/glew/src/*.c"
-    "external/png/src/*.c"
-    "external/zlib/src/*.c")
+    "src/platform/stub/.cpp"
+    "src/platform/opengl/.cpp"
+    "src/platform/scripting/lua/*.cpp"
+    "thirdparty/glew/src/*.c"
+    "thirdparty/png/src/*.c"
+    "thirdparty/zlib/src/*.c")
 
 find_library(carbon_lib Carbon)
 find_library(iokit_lib IOKit)
