@@ -2,7 +2,7 @@ runTest(function()
 	local vfe = solo.VertexFormatElement(solo.VertexFormatElementSemantics.Position, 3, 1)
 	assert(vfe.size == 3)
 	assert(vfe.semantics == solo.VertexFormatElementSemantics.Position)
-	assert(vfe.storageId == 1)
+	assert(vfe.slot == 1)
 
 	local vf = solo.VertexFormat({
 		vfe,
