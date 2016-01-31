@@ -395,8 +395,8 @@ void LuaScriptManager::registerApi()
 
     // Mesh
     auto mesh = module.beginClass<Mesh>("Mesh");
-    REGISTER_METHOD(mesh, LuaMesh, resetStorage);
-    REGISTER_METHOD(mesh, LuaMesh, updateStorage);
+    REGISTER_METHOD(mesh, LuaMesh, resetData);
+    REGISTER_METHOD(mesh, LuaMesh, updateData);
     REGISTER_METHOD(mesh, LuaMesh, resetIndexData);
     REGISTER_METHOD(mesh, LuaMesh, updateIndexData);
     REGISTER_METHOD(mesh, LuaMesh, addIndex);

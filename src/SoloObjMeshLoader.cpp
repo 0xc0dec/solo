@@ -167,11 +167,11 @@ shared<Mesh> ObjMeshLoader::load(const std::string& uri)
     auto mesh = resourceManager->getOrCreateMesh(VertexFormat(vertexFormatElements), uri);
 
     elementStorage = 0;
-    mesh->resetStorage(elementStorage++, reinterpret_cast<const float*>(vertices.data()), static_cast<int>(vertices.size()), false);
+    mesh->resetData(elementStorage++, reinterpret_cast<const float*>(vertices.data()), static_cast<int>(vertices.size()), false);
     if (hasUVs)
-        mesh->resetStorage(elementStorage++, reinterpret_cast<const float*>(uvs.data()), static_cast<int>(uvs.size()), false);
+        mesh->resetData(elementStorage++, reinterpret_cast<const float*>(uvs.data()), static_cast<int>(uvs.size()), false);
     if (hasNormals)
-        mesh->resetStorage(elementStorage, reinterpret_cast<const float*>(normals.data()), static_cast<int>(normals.size()), false);
+        mesh->resetData(elementStorage, reinterpret_cast<const float*>(normals.data()), static_cast<int>(normals.size()), false);
 
     for (const auto& indices : allIndices)
     {

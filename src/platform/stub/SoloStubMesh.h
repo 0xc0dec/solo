@@ -9,8 +9,8 @@ namespace solo
     public:
         virtual ~StubMesh() {}
 
-        virtual void resetStorage(int storageId, const float* data, int elementCount, bool dynamic) override {}
-        virtual void updateStorage(int storageId, const float* data, int elementCount, int updateFromIndex) override {}
+        virtual void resetData(int storageId, const float* data, int elementCount, bool dynamic) override {}
+        virtual void updateData(int storageId, const float* data, int elementCount, int updateFromIndex) override {}
 
         virtual int addIndex(MeshIndexFormat indexFormat) override;
         virtual void removeIndex(int index) override;

@@ -39,8 +39,8 @@ namespace solo
         SL_NONCOPYABLE(Mesh);
         virtual ~Mesh() {}
 
-        virtual void resetStorage(int storageId, const float* data, int elementCount, bool dynamic) = 0;
-        virtual void updateStorage(int storageId, const float* data, int elementCount, int updateFromIndex) = 0;
+        virtual void resetData(int storageId, const float* data, int elementCount, bool dynamic) = 0;
+        virtual void updateData(int storageId, const float* data, int elementCount, int updateFromIndex) = 0;
 
         virtual int addIndex(MeshIndexFormat indexFormat) = 0;
         virtual void removeIndex(int index) = 0;

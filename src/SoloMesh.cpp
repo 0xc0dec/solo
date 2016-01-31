@@ -46,7 +46,7 @@ shared<Mesh> Mesh::createQuadMesh(DeviceMode mode)
 
     auto mesh = create(mode, vf);
 
-    mesh->resetStorage(0, data, 4, false);
+    mesh->resetData(0, data, 4, false);
 
     auto index = mesh->getIndexCount() > 0 ? 0 : mesh->addIndex(MeshIndexFormat::UnsignedShort);
     mesh->resetIndexData(index, indices, 6, false);
@@ -100,8 +100,8 @@ shared<Mesh> Mesh::createBoxMesh(DeviceMode mode)
 
     auto mesh = create(mode, vf);
 
-    mesh->resetStorage(0, vertexData, 24, false);
-    mesh->resetStorage(1, texCoordData, 24, false);
+    mesh->resetData(0, vertexData, 24, false);
+    mesh->resetData(1, texCoordData, 24, false);
 
     auto index = mesh->getIndexCount() > 0 ? 0 : mesh->addIndex(MeshIndexFormat::UnsignedShort);
     mesh->resetIndexData(index, indices, 36, false);

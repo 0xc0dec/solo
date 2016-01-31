@@ -45,7 +45,7 @@ OpenGLMesh::~OpenGLMesh()
 }
 
 
-void OpenGLMesh::resetStorage(int storageId, const float* data, int elementCount, bool dynamic)
+void OpenGLMesh::resetData(int storageId, const float* data, int elementCount, bool dynamic)
 {
     // No validations intentionally
     auto handle = handles[storageId];
@@ -56,7 +56,7 @@ void OpenGLMesh::resetStorage(int storageId, const float* data, int elementCount
 }
 
 
-void OpenGLMesh::updateStorage(int storageId, const float* data, int elementCount, int updateFromIndex)
+void OpenGLMesh::updateData(int storageId, const float* data, int elementCount, int updateFromIndex)
 {
     // No validations intentionally
     auto handle = handles[storageId];
