@@ -158,20 +158,21 @@ shared<Mesh> ObjMeshLoader::load(const std::string& uri)
 
     auto hasUVs = !uvs.empty();
     auto hasNormals = !normals.empty();
-    int elementStorage = 0;
-    std::vector<VertexFormatElement> vertexFormatElements{ VertexFormatElement(VertexFormatElementSemantics::Position, 3, elementStorage++) };
+    int slot = 0;
+
+    std::vector<VertexFormatElement> vertexFormatElements{ VertexFormatElement(VertexFormatElementSemantics::Position, 3, slot++) };
     if (hasUVs)
-        vertexFormatElements.push_back(VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2, elementStorage++));
+        vertexFormatElements.push_back(VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2, slot++));
     if (hasNormals)
-        vertexFormatElements.push_back(VertexFormatElement(VertexFormatElementSemantics::Normal, 3, elementStorage));
+        vertexFormatElements.push_back(VertexFormatElement(VertexFormatElementSemantics::Normal, 3, slot));
     auto mesh = resourceManager->getOrCreateMesh(VertexFormat(vertexFormatElements), uri);
 
-    elementStorage = 0;
-    mesh->resetData(elementStorage++, reinterpret_cast<const float*>(vertices.data()), static_cast<int>(vertices.size()), false);
+    slot = 0;
+    mesh->resetData(slot++, reinterpret_cast<const float*>(vertices.data()), static_cast<int>(vertices.size()), false);
     if (hasUVs)
-        mesh->resetData(elementStorage++, reinterpret_cast<const float*>(uvs.data()), static_cast<int>(uvs.size()), false);
+        mesh->resetData(slot++, reinterpret_cast<const float*>(uvs.data()), static_cast<int>(uvs.size()), false);
     if (hasNormals)
-        mesh->resetData(elementStorage, reinterpret_cast<const float*>(normals.data()), static_cast<int>(normals.size()), false);
+        mesh->resetData(slot, reinterpret_cast<const float*>(normals.data()), static_cast<int>(normals.size()), false);
 
     for (const auto& indices : allIndices)
     {

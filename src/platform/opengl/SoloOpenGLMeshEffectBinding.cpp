@@ -55,13 +55,13 @@ OpenGLMeshEffectBinding::OpenGLMeshEffectBinding(Mesh* mesh, Effect* effect)
             break;
         }
 
-        auto& offset = offsets[element.storageId];
+        auto& offset = offsets[element.slot];
 
         if (attr)
         {
-            glBindBuffer(GL_ARRAY_BUFFER, oglMesh->getBufferHandle(element.storageId));
+            glBindBuffer(GL_ARRAY_BUFFER, oglMesh->getBufferHandle(element.slot));
             auto glslAttr = static_cast<GLSLEffectVertexAttribute*>(attr);
-            auto stride = static_cast<GLsizei>(vertexFormat.getVertexSize(element.storageId));
+            auto stride = static_cast<GLsizei>(vertexFormat.getVertexSize(element.slot));
             glVertexAttribPointer(glslAttr->getLocation(), element.size, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
             glEnableVertexAttribArray(glslAttr->getLocation());
         }

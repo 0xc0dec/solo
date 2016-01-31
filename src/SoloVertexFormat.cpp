@@ -9,17 +9,17 @@ VertexFormat::VertexFormat(const std::vector<VertexFormatElement>& elements):
     if (elements.empty())
         return;
 
-    int maxStorageId = 0;
-    std::unordered_set<int> uniqueStorageIds;
+    int maxSlot = 0;
+    std::unordered_set<int> uniqueSlots;
     for (const auto& e : elements)
     {
-        auto storageId = e.storageId;
-        uniqueStorageIds.insert(storageId);
-        if (storageId >= maxStorageId)
-            maxStorageId = storageId;
-        sizesPerStorage[e.storageId] += e.size * sizeof(float);
+        auto slot = e.slot;
+        uniqueSlots.insert(slot);
+        if (slot >= maxSlot)
+            maxSlot = slot;
+        sizesPerSlot[e.slot] += e.size * sizeof(float);
     }
 
-    if (uniqueStorageIds.size() != maxStorageId + 1)
-        SL_THROW_FMT(EngineException, "Vertex format storage ids must consitute a continuous sequence");
+    if (uniqueSlots.size() != maxSlot + 1)
+        SL_THROW_FMT(EngineException, "Vertex format slots must consitute a continuous sequence");
 }

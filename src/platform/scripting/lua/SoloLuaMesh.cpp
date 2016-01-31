@@ -22,13 +22,13 @@ int LuaMesh::addIndex(Mesh* mesh)
 }
 
 
-void LuaMesh::resetData(Mesh* mesh, int storageId, const std::vector<float>& data, int elementCount, bool dynamic)
+void LuaMesh::resetData(Mesh* mesh, int slot, const std::vector<float>& data, int elementCount, bool dynamic)
 {
-    mesh->resetData(storageId, data.data(), elementCount, dynamic);
+    mesh->resetData(slot, data.data(), elementCount, dynamic);
 }
 
 
-void LuaMesh::updateData(Mesh* mesh, int storageId, const std::vector<float>& data, int elementCount, int updateFromIndex)
+void LuaMesh::updateData(Mesh* mesh, int slot, const std::vector<float>& data, int elementCount, int updateFromIndex)
 {
-    mesh->updateData(storageId, data.data(), elementCount, updateFromIndex);
+    mesh->updateData(slot, data.data(), elementCount, updateFromIndex);
 }

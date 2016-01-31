@@ -11,20 +11,20 @@ OpenGLMesh::OpenGLMesh(const VertexFormat& vertexFormat):
     if (!elementCount)
         return;
 
-    handles.resize(vertexFormat.getStorageCount());
-    elementCounts.resize(vertexFormat.getStorageCount());
+    handles.resize(vertexFormat.getSlotCount());
+    elementCounts.resize(vertexFormat.getSlotCount());
 
     for (auto i = 0; i < elementCount; ++i)
     {
         auto el = vertexFormat.getElement(i);
-        auto handle = handles[el.storageId];
+        auto handle = handles[el.slot];
         if (!handle)
         {
             glGenBuffers(1, &handle);
             if (!handle)
-                SL_THROW_FMT(EngineException, "Unable to obtain handle for mesh storage ", el.storageId);
-            handles[el.storageId] = handle;
-            elementCounts[el.storageId] = 0;
+                SL_THROW_FMT(EngineException, "Unable to obtain handle for mesh slot ", el.slot);
+            handles[el.slot] = handle;
+            elementCounts[el.slot] = 0;
         }
     }
 }
@@ -45,24 +45,24 @@ OpenGLMesh::~OpenGLMesh()
 }
 
 
-void OpenGLMesh::resetData(int storageId, const float* data, int elementCount, bool dynamic)
+void OpenGLMesh::resetData(int slot, const float* data, int elementCount, bool dynamic)
 {
     // No validations intentionally
-    auto handle = handles[storageId];
+    auto handle = handles[slot];
     glBindBuffer(GL_ARRAY_BUFFER, handle);
-    glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize(storageId) * elementCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize(slot) * elementCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    elementCounts[storageId] = elementCount;
+    elementCounts[slot] = elementCount;
 }
 
 
-void OpenGLMesh::updateData(int storageId, const float* data, int elementCount, int updateFromIndex)
+void OpenGLMesh::updateData(int slot, const float* data, int elementCount, int updateFromIndex)
 {
     // No validations intentionally
-    auto handle = handles[storageId];
-    auto vertexSizePerStorage = vertexFormat.getVertexSize(storageId);
+    auto handle = handles[slot];
+    auto vertexSizePerSlot = vertexFormat.getVertexSize(slot);
     glBindBuffer(GL_ARRAY_BUFFER, handle);
-    glBufferSubData(GL_ARRAY_BUFFER, updateFromIndex * vertexSizePerStorage, elementCount * vertexSizePerStorage, data);
+    glBufferSubData(GL_ARRAY_BUFFER, updateFromIndex * vertexSizePerSlot, elementCount * vertexSizePerSlot, data);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 

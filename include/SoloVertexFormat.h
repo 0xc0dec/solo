@@ -25,12 +25,12 @@ namespace solo
     {
         VertexFormatElementSemantics semantics;
         int size;
-        int storageId;
+        int slot;
 
-        VertexFormatElement(VertexFormatElementSemantics semantics, int size, int storageId):
+        VertexFormatElement(VertexFormatElementSemantics semantics, int size, int slot):
             semantics(semantics),
             size(size),
-            storageId(storageId)
+            slot(slot)
         {
         }
     };
@@ -44,13 +44,13 @@ namespace solo
         int getElementCount() const;
         VertexFormatElement getElement(int index) const;
 
-        int getVertexSize(int perStorageId) const;
-        int getStorageCount() const;
+        int getVertexSize(int slot) const;
+        int getSlotCount() const;
 
     private:
-        std::unordered_map<int, int> sizesPerStorage;
+        std::unordered_map<int, int> sizesPerSlot;
         std::vector<VertexFormatElement> elements;
-        int storageCount = 0;
+        int slotCount = 0;
     };
 
     inline int VertexFormat::getElementCount() const
@@ -63,13 +63,13 @@ namespace solo
         return elements[index];
     }
 
-    inline int VertexFormat::getVertexSize(int perStorageId) const
+    inline int VertexFormat::getVertexSize(int slot) const
     {
-        return sizesPerStorage.at(perStorageId);
+        return sizesPerSlot.at(slot);
     }
 
-    inline int VertexFormat::getStorageCount() const
+    inline int VertexFormat::getSlotCount() const
     {
-        return static_cast<int>(sizesPerStorage.size());
+        return static_cast<int>(sizesPerSlot.size());
     }
 }

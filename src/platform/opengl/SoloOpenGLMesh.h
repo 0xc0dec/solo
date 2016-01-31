@@ -14,8 +14,8 @@ namespace solo
     public:
         virtual ~OpenGLMesh();
 
-        virtual void resetData(int storageId, const float* data, int elementCount, bool dynamic) override;
-        virtual void updateData(int storageId, const float* data, int elementCount, int updateFromIndex) override;
+        virtual void resetData(int slot, const float* data, int elementCount, bool dynamic) override;
+        virtual void updateData(int slot, const float* data, int elementCount, int updateFromIndex) override;
 
         virtual int addIndex(MeshIndexFormat indexFormat) override;
         virtual void removeIndex(int index) override;
@@ -29,7 +29,7 @@ namespace solo
         virtual void draw() override;
         virtual void drawIndex(int index) override;
 
-        GLuint getBufferHandle(int storageId) const;
+        GLuint getBufferHandle(int slot) const;
 
     private:
         friend class Mesh;
@@ -59,8 +59,8 @@ namespace solo
         indexPrimitiveTypes[index] = primitiveType;
     }
 
-    inline GLuint OpenGLMesh::getBufferHandle(int storageId) const
+    inline GLuint OpenGLMesh::getBufferHandle(int slot) const
     {
-        return handles.at(storageId);
+        return handles.at(slot);
     }
 }
