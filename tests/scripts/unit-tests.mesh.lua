@@ -4,8 +4,8 @@ runTest(function()
 	})
 	local m = device:getResourceManager():getOrCreateMesh(vf, "test/mesh")
 
-	m:resetStorage(0, { 1, 2, 3 }, 1, false)
-	m:updateStorage(0, { 2, 3, 4}, 1, 0)
+	m:resetData(0, { 1, 2, 3 }, 1, false)
+	m:updateData(0, { 2, 3, 4}, 1, 0)
 
 	local index = m:addIndex(MeshIndexFormat)
 	assert(m:getIndexCount() == 1)
