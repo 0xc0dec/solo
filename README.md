@@ -1,5 +1,5 @@
 ## WAT?
-An engine for my personal graphics/gamedev experiments. Not meant for something serious, really.
+An engine for my personal graphics/gamedev experiments, not meant for anything serious. Currently works ontop of an OpenGL rendering backend, but is built with extensibility in mind.
 
 ## Features
 * High-level API exposed to both C++ and Lua.
