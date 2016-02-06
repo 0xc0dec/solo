@@ -5,6 +5,7 @@
 #include "SoloFrustum.h"
 #include "SoloRay.h"
 #include <algorithm>
+#include <limits>
 
 using namespace solo;
 
@@ -100,7 +101,7 @@ PlaneIntersection BoundingBox::getPlaneIntersection(const Plane& plane) const
     auto extentZ = (max.z - min.z) * 0.5f;
 
     const auto& planeNormal = plane.getNormal();
-    if (fabsf(distance) <= (fabsf(extentX * planeNormal.x) + fabsf(extentY * planeNormal.y) + fabsf(extentZ * planeNormal.z)))
+    if (fabsf(distance) <= fabsf(extentX * planeNormal.x) + fabsf(extentY * planeNormal.y) + fabsf(extentZ * planeNormal.z))
         return PlaneIntersection::Intersecting;
 
     return distance > 0.0f ? PlaneIntersection::Front : PlaneIntersection::Back;
@@ -209,40 +210,40 @@ void BoundingBox::mergeBoundingSphere(const BoundingSphere& sphere)
 }
 
 
-static void updateMinMax(Vector3* point, Vector3* min, Vector3* max)
+static void updateMinMax(const Vector3& point, Vector3& min, Vector3& max)
 {
-    if (point->x < min->x)
-        min->x = point->x;
+    if (point.x < min.x)
+        min.x = point.x;
 
-    if (point->x > max->x)
-        max->x = point->x;
+    if (point.x > max.x)
+        max.x = point.x;
 
-    if (point->y < min->y)
-        min->y = point->y;
+    if (point.y < min.y)
+        min.y = point.y;
 
-    if (point->y > max->y)
-        max->y = point->y;
+    if (max.y < point.y)
+        max.y = point.y;
 
-    if (point->z < min->z)
-        min->z = point->z;
+    if (min.z > point.z)
+        min.z = point.z;
 
-    if (point->z > max->z)
-        max->z = point->z;
+    if (point.z > max.z)
+        max.z = point.z;
 }
 
 
 void BoundingBox::transform(const Matrix& matrix)
 {
     auto corners = getCorners();
+	auto newMin = Vector3(std::numeric_limits<float>::max());
+	auto newMax = Vector3(std::numeric_limits<float>::min());
 
-    corners[0] = matrix.transformPoint(corners[0]);
-    auto newMin = corners[0];
-    auto newMax = corners[0];
-    for (auto i = 1; i < 8; i++)
+	for (const auto& corner: corners)
     {
-        corners[i] = matrix.transformPoint(corners[i]);
-        updateMinMax(&corners[i], &newMin, &newMax);
+        auto newCorner = matrix.transformPoint(corner);
+        updateMinMax(newCorner, newMin, newMax);
     }
+
     this->min.x = newMin.x;
     this->min.y = newMin.y;
     this->min.z = newMin.z;
