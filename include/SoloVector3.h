@@ -9,6 +9,7 @@ namespace solo
         float z = 0;
 
         Vector3() {}
+		Vector3(float all);
         Vector3(float x, float y, float z);
 
         static Vector3 zero();
