@@ -68,7 +68,7 @@ float Vector3::angle(const Vector3& v1, const Vector3& v2)
     auto dy = v1.z * v2.x - v1.x * v2.z;
     auto dz = v1.x * v2.y - v1.y * v2.x;
 
-    return atan2f(sqrt(dx * dx + dy * dy + dz * dz) + Math::SMALL_FLOAT2, dot(v1, v2));
+    return atan2f(sqrt(dx * dx + dy * dy + dz * dz) + Math::smallFloat2, dot(v1, v2));
 }
 
 
@@ -160,7 +160,7 @@ void Vector3::normalize()
         return;
 
     n = sqrt(n);
-    if (Math::approxZero(n, Math::SMALL_FLOAT2))
+    if (Math::approxZero(n, Math::smallFloat2))
         return;
 
     n = 1.0f / n;

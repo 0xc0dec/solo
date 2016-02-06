@@ -96,7 +96,7 @@ Matrix Matrix::createPerspective(float fieldOfView, float aspectRatio, float zNe
 {
     auto f_n = 1.0f / (zFarPlane - zNearPlane);
     auto theta = Math::degToRad(fieldOfView) * 0.5f;
-    if (Math::approxZero(fmod(theta, Math::PI_OVER_2)))
+    if (Math::approxZero(fmod(theta, Math::piOver2)))
         SL_THROW_FMT(EngineException, "Invalid field of view value ", fieldOfView, " caused attempted tan calculation, which is undefined");
 
     auto divisor = tan(theta);
@@ -401,7 +401,7 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
         return true;
 
     // Scale too close to zero, can't decompose rotation.
-    if (Math::approxZero(scaleX, Math::SMALL_FLOAT3) || Math::approxZero(scaleY, Math::SMALL_FLOAT3) || Math::approxZero(scaleZ, Math::SMALL_FLOAT3))
+    if (Math::approxZero(scaleX, Math::smallFloat3) || Math::approxZero(scaleY, Math::smallFloat3) || Math::approxZero(scaleZ, Math::smallFloat3))
         return false;
 
     float rn;
@@ -425,7 +425,7 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
     // Calculate the rotation from the resulting matrix (axes).
     auto trace = xaxis.x + yaxis.y + zaxis.z + 1.0f;
 
-    if (!Math::approxZero(trace, Math::SMALL_FLOAT3))
+    if (!Math::approxZero(trace, Math::smallFloat3))
     {
         auto s = 0.5f / sqrt(trace);
         rotation->w = 0.25f / s;
@@ -528,7 +528,7 @@ bool Matrix::invert()
     auto det = a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
 
     // Close to zero, can't invert
-    if (Math::approxZero(det, Math::SMALL_FLOAT3))
+    if (Math::approxZero(det, Math::smallFloat3))
         return false;
 
     // Support the case where m == dst
