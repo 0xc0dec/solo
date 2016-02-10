@@ -75,10 +75,10 @@ public:
 };
 
 
-class ComponentsAndNodes_Test : public TestBase
+class Components_Test : public TestBase
 {
 public:
-    ComponentsAndNodes_Test(Device *device): TestBase(device)
+    Components_Test(Device *device): TestBase(device)
     {
     }
 

@@ -1,6 +1,6 @@
 #include "Materials_Test.h"
 #include "RenderTargets_Test.h"
-#include "ComponentsAndNodes_Test.h"
+#include "Components_Test.h"
 #include "Transform_Test.h"
 #include "Device_Test.h"
 #include "FileSystem_Test.h"
@@ -35,7 +35,7 @@ void runCppUnitTests()
     {
         Resources_Test(device.get()).run();
         Device_Test(device.get()).run();
-        ComponentsAndNodes_Test(device.get()).run();
+        Components_Test(device.get()).run();
         Transform_Test(device.get()).run();
         MeshRenderer_Test(device.get()).run();
         BitFlags_Test(device.get()).run();
@@ -71,7 +71,7 @@ int main()
 {
     runCppUnitTests();
     runCppIntegrationTests();
-	runLuaTests("../tests/scripts/unit-tests.lua");
-	runLuaTests("../tests/scripts/demo/demo.lua");
+    runLuaTests("../tests/scripts/unit-tests.lua");
+    runLuaTests("../tests/scripts/demo/demo.lua");
     return 0;
 }
