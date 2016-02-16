@@ -19,7 +19,7 @@ namespace solo
 
     private:
         // TODO Expected to be less than the smallest script component id (which is now 1 000 000 000).
-        // No checks so far since it'll hardly ever reach that limit (yeah, boldly said, but still).
+        // No checks so far since it'll hardly ever reach that limit (boldly said, but still).
         static int counter;
     };
 
