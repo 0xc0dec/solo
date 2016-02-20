@@ -3,8 +3,6 @@
 #include "SoloVector3.h"
 #include "SoloVector4.h"
 
-#define MATRIX_SIZE (sizeof(float) * 16)
-
 namespace solo
 {
     struct Plane;

@@ -3,17 +3,21 @@
 #include "SoloQuaternion.h"
 #include "SoloPlane.h"
 #include "SoloBase.h"
+#include <cstddef>
 
 using namespace solo;
 
 
-static const float MATRIX_IDENTITY[16] =
+static const float identityMatrix[16] =
 {
     1.0f, 0.0f, 0.0f, 0.0f,
     0.0f, 1.0f, 0.0f, 0.0f,
     0.0f, 0.0f, 1.0f, 0.0f,
     0.0f, 0.0f, 0.0f, 1.0f
 };
+
+
+const size_t MatrixSize = sizeof(float) * 16;
 
 
 Matrix::Matrix()
@@ -46,7 +50,7 @@ Matrix::Matrix(float m11, float m12, float m13, float m14, float m21, float m22,
 
 Matrix::Matrix(const Matrix& copy)
 {
-    memcpy(m, copy.m, MATRIX_SIZE);
+    memcpy(m, copy.m, MatrixSize);
 }
 
 
@@ -103,7 +107,7 @@ Matrix Matrix::createPerspective(float fieldOfView, float aspectRatio, float zNe
     auto factor = 1.0f / divisor;
 
     Matrix result;
-    memset(&result.m, 0, MATRIX_SIZE);
+    memset(&result.m, 0, MatrixSize);
     result.m[0] = (1.0f / aspectRatio) * factor;
     result.m[5] = factor;
     result.m[10] = -(zFarPlane + zNearPlane) * f_n;
@@ -125,7 +129,7 @@ Matrix Matrix::createOrthographic(float width, float height, float zNearPlane, f
 Matrix Matrix::createOrthographicOffCenter(float left, float right, float bottom, float top, float near, float far)
 {
     Matrix result;
-    memset(&result.m, 0, MATRIX_SIZE);
+    memset(&result.m, 0, MatrixSize);
     result.m[0] = 2 / (right - left);
     result.m[5] = 2 / (top - bottom);
     result.m[12] = (left + right) / (left - right);
@@ -561,7 +565,7 @@ bool Matrix::invert()
 
 bool Matrix::isIdentity() const
 {
-    return memcmp(m, MATRIX_IDENTITY, MATRIX_SIZE) == 0;
+    return memcmp(m, identityMatrix, MatrixSize) == 0;
 }
 
 
@@ -609,13 +613,13 @@ void Matrix::scale(const Vector3& s)
 
 void Matrix::setIdentity()
 {
-    memcpy(m, MATRIX_IDENTITY, MATRIX_SIZE);
+    memcpy(m, identityMatrix, MatrixSize);
 }
 
 
 void Matrix::setZero()
 {
-    memset(m, 0, MATRIX_SIZE);
+    memset(m, 0, MatrixSize);
 }
 
 
@@ -710,7 +714,7 @@ void Matrix::transpose()
         m[2], m[6], m[10], m[14],
         m[3], m[7], m[11], m[15]
     };
-    memcpy(&m, t, MATRIX_SIZE);
+    memcpy(&m, t, MatrixSize);
 }
 
 
@@ -760,7 +764,7 @@ Matrix& Matrix::operator*=(const Matrix& m2)
     product[14] = m[2] * m2.m[12] + m[6] * m2.m[13] + m[10] * m2.m[14] + m[14] * m2.m[15];
     product[15] = m[3] * m2.m[12] + m[7] * m2.m[13] + m[11] * m2.m[14] + m[15] * m2.m[15];
 
-    memcpy(m, product, MATRIX_SIZE);
+    memcpy(m, product, MatrixSize);
 
     return *this;
 }
