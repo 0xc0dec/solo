@@ -148,9 +148,9 @@ PlaneIntersection Plane::getIntersection(const Frustum& frustum) const
 
 PlaneIntersection Plane::getIntersection(const Plane& plane) const
 {
-    if (Math::approxEqual(normal.x, plane.normal.x) &&
-            Math::approxEqual(normal.y, plane.normal.y) &&
-            Math::approxEqual(normal.z, plane.normal.z) || !isParallel(plane))
+    if ((Math::approxEqual(normal.x, plane.normal.x) &&
+        Math::approxEqual(normal.y, plane.normal.y) &&
+        Math::approxEqual(normal.z, plane.normal.z)) || !isParallel(plane))
         return PlaneIntersection::Intersecting;
 
     // Calculate the point where the given plane's normal vector intersects the given plane
