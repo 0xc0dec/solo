@@ -70,11 +70,11 @@ void MeshRenderer::setMesh(shared<Mesh> mesh)
 void MeshRenderer::setMaterial(int index, shared<Material> material)
 {
     if (!mesh)
-        SL_THROW_FMT(EngineException, "Renderer has no mesh, setting material has no effect");
+        SL_THROW_FMT(InvalidOperationException, "Renderer has no mesh, setting material has no effect");
 
     auto indexCount = mesh->getIndexCount();
     if (indexCount > 0 && index >= indexCount)
-        SL_THROW_FMT(EngineException, "Trying to set material with index ", index, ", but mesh has only ", indexCount, " indexes");
+        SL_THROW_FMT(InvalidOperationException, "Trying to set material with index ", index, ", but mesh has only ", indexCount, " indexes");
 
     if (!material)
     {

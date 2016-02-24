@@ -101,7 +101,7 @@ Matrix Matrix::createPerspective(float fieldOfView, float aspectRatio, float zNe
     auto f_n = 1.0f / (zFarPlane - zNearPlane);
     auto theta = Math::degToRad(fieldOfView) * 0.5f;
     if (Math::approxZero(fmod(theta, Math::piOver2)))
-        SL_THROW_FMT(EngineException, "Invalid field of view value ", fieldOfView, " caused attempted tan calculation, which is undefined");
+        SL_THROW_FMT(InvalidInputException, "Invalid field of view value ", fieldOfView, " caused attempted tan calculation, which is undefined");
 
     auto divisor = tan(theta);
     auto factor = 1.0f / divisor;

@@ -9,7 +9,7 @@ OpenGLRenderTarget::OpenGLRenderTarget():
 {
     glGenFramebuffers(1, &handle);
     if (!handle)
-        SL_THROW_FMT(EngineException, "Failed to obtain render target handle");
+        SL_THROW_FMT(ResourceException, "Failed to obtain render target handle");
 }
 
 
@@ -36,21 +36,23 @@ void OpenGLRenderTarget::unbind()
 void OpenGLRenderTarget::setColorAttachment(int index, shared<Texture2D> texture)
 {
     if (index > GL_MAX_COLOR_ATTACHMENTS)
-        SL_THROW_FMT(EngineException, "Given color attachment index is not supported (max allowed: ", GL_MAX_COLOR_ATTACHMENTS, ")");
+        SL_THROW_FMT(InvalidInputException, "Given color attachment index is not supported (max allowed: ", GL_MAX_COLOR_ATTACHMENTS, ")");
 
     if (texture)
     {
         auto textureSize = texture->getSize();
 
         if (textureSize.x < 1 || textureSize.y < 1)
-            SL_THROW(EngineException, "Color attachment must have non-zero size");
+            SL_THROW(InvalidInputException, "Color attachment must have non-zero size");
 
         if (!colorAttachments.empty())
         {
             auto existingSize = colorAttachments.begin()->second->getSize();
             if (static_cast<int>(textureSize.x) != static_cast<int>(existingSize.x) ||
-                    static_cast<int>(textureSize.y) != static_cast<int>(existingSize.y)) // TODO this could be rewritten with an integer vector
-                SL_THROW_FMT(EngineException, "The new color attachment size differs from that of already set attachments");
+                static_cast<int>(textureSize.y) != static_cast<int>(existingSize.y)) // TODO this could be rewritten with an integer vector
+            {
+                SL_THROW_FMT(InvalidInputException, "The new color attachment size differs from that of already set attachments");
+            }
         }
 
         bind();
@@ -62,7 +64,7 @@ void OpenGLRenderTarget::setColorAttachment(int index, shared<Texture2D> texture
         {
             glGenRenderbuffers(1, &depthBufferHandle);
             if (!depthBufferHandle)
-                SL_THROW_FMT(EngineException, "Could not obtain depth buffer handle");
+                SL_THROW_FMT(ResourceException, "Could not obtain depth buffer handle");
             glBindRenderbuffer(GL_RENDERBUFFER, depthBufferHandle);
             glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, static_cast<int>(textureSize.x), static_cast<int>(textureSize.y));
             glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferHandle);
@@ -115,7 +117,7 @@ shared<Texture2D> OpenGLRenderTarget::getColorAttachment(int index) const
 {
     auto where = colorAttachments.find(index);
     if (where == colorAttachments.end())
-        SL_THROW_FMT(EngineException, "Invalid color attachment index ", index);
+        SL_THROW_FMT(InvalidInputException, "Invalid color attachment index ", index);
     return where->second;
 }
 
@@ -123,5 +125,5 @@ shared<Texture2D> OpenGLRenderTarget::getColorAttachment(int index) const
 void OpenGLRenderTarget::checkStatus()
 {
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-        SL_THROW_FMT(EngineException, "Render target has invalid state");
+        SL_THROW_FMT(InvalidOperationException, "Render target has invalid state");
 }

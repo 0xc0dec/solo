@@ -22,7 +22,7 @@ shared<Mesh> Mesh::createPrefab(DeviceMode mode, MeshPrefab prefab)
     case MeshPrefab::Cube:
         return createBoxMesh(mode);
     default:
-        SL_THROW_FMT(EngineException, "Unknown mesh prefab");
+        SL_THROW_FMT(InvalidInputException, "Unknown mesh prefab");
     }
 }
 

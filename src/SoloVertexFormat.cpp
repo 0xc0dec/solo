@@ -21,5 +21,5 @@ VertexFormat::VertexFormat(const std::vector<VertexFormatElement>& elements):
     }
 
     if (uniqueSlots.size() != maxSlot + 1)
-        SL_THROW_FMT(EngineException, "Vertex format slots must consitute a continuous sequence");
+        SL_THROW_FMT(InvalidInputException, "Vertex format slots must consitute a continuous sequence");
 }

@@ -26,7 +26,7 @@ shared<Effect> Effect::createPrefab(DeviceMode mode, EffectPrefab prefab)
             return create(DeviceMode::Stub, "", "");
         }
     default:
-        SL_THROW_FMT(EngineException, "Unknown effect prefab");
+        SL_THROW_FMT(InvalidInputException, "Unknown effect prefab");
     }
 }
 

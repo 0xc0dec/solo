@@ -18,7 +18,7 @@ GLenum OpenGLHelper::convertColorFormat(ColorFormat format)
     case ColorFormat::RGBA:
         return GL_RGBA;
     default:
-        SL_THROW_FMT(EngineException, "Unexpected texture format ", static_cast<int>(format));
+        SL_THROW_FMT(InvalidInputException, "Unknown texture format ", static_cast<int>(format));
     }
 }
 
@@ -32,7 +32,7 @@ GLenum OpenGLHelper::convertTextureWrapping(TextureWrapping mode)
     case TextureWrapping::Repeat:
         return GL_REPEAT;
     default:
-        SL_THROW_FMT(EngineException, "Unexpected wrap mode ", static_cast<int>(mode));
+        SL_THROW_FMT(InvalidInputException, "Unknown wrap mode ", static_cast<int>(mode));
     }
 }
 
@@ -54,7 +54,7 @@ GLenum OpenGLHelper::convertTextureFiltering(TextureFiltering filter)
     case TextureFiltering::NearestMipmapNearest:
         return GL_NEAREST_MIPMAP_NEAREST;
     default:
-        SL_THROW_FMT(EngineException, "Unexpected texture filter ", static_cast<int>(filter));
+        SL_THROW_FMT(InvalidInputException, "Unknown texture filter ", static_cast<int>(filter));
     }
 }
 
@@ -80,7 +80,7 @@ GLenum OpenGLHelper::convertDepthPassFunction(DepthPassFunction func)
     case DepthPassFunction::Always:
         return GL_ALWAYS;
     default:
-        SL_THROW_FMT(EngineException, "Unknown depth pass function");
+        SL_THROW_FMT(InvalidInputException, "Unknown depth pass function");
     }
 }
 
@@ -100,7 +100,7 @@ GLenum OpenGLHelper::convertMeshPrimitiveType(MeshPrimitiveType type)
     case MeshPrimitiveType::Points:
         return GL_POINTS;
     default:
-        SL_THROW_FMT(EngineException, "Unknown mesh primitive type");
+        SL_THROW_FMT(InvalidInputException, "Unknown mesh primitive type");
     }
 }
 
@@ -116,7 +116,7 @@ GLenum OpenGLHelper::convertMeshIndexType(MeshIndexFormat indexFormat)
     case MeshIndexFormat::UnsignedInt:
         return GL_UNSIGNED_INT;
     default:
-        SL_THROW_FMT(EngineException, "Unknown mesh index type");
+        SL_THROW_FMT(InvalidInputException, "Unknown mesh index type");
     }
 }
 
@@ -132,7 +132,7 @@ int OpenGLHelper::getMeshIndexElementSize(MeshIndexFormat indexFormat)
     case MeshIndexFormat::UnsignedInt:
         return 4;
     default:
-        SL_THROW_FMT(EngineException, "Unrecognized index format");
+        SL_THROW_FMT(InvalidInputException, "Unknown index format");
     }
 }
 
@@ -154,6 +154,6 @@ GLenum OpenGLHelper::convertCubeTextureFace(CubeTextureFace face)
     case CubeTextureFace::Bottom:
         return GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
     default:
-        SL_THROW_FMT(EngineException, "Unexpected cube texture face ", static_cast<int>(face));
+        SL_THROW_FMT(InvalidInputException, "Unknown cube texture face ", static_cast<int>(face));
     }
 }

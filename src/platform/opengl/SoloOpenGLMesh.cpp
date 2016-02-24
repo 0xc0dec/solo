@@ -22,7 +22,7 @@ OpenGLMesh::OpenGLMesh(const VertexFormat& vertexFormat):
         {
             glGenBuffers(1, &handle);
             if (!handle)
-                SL_THROW_FMT(EngineException, "Unable to obtain handle for mesh slot ", el.slot);
+                SL_THROW_FMT(ResourceException, "Unable to obtain handle for mesh slot ", el.slot);
             handles[el.slot] = handle;
             elementCounts[el.slot] = 0;
         }
@@ -72,7 +72,7 @@ int OpenGLMesh::addIndex(MeshIndexFormat indexFormat)
     GLuint handle = 0;
     glGenBuffers(1, &handle);
     if (!handle)
-        SL_THROW_FMT(EngineException, "Unable to obtain mesh index handle");
+        SL_THROW_FMT(ResourceException, "Unable to obtain mesh index handle");
 
     indexHandles.push_back(handle);
     indexFormats.push_back(indexFormat);

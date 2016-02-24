@@ -18,7 +18,7 @@ std::vector<uint8_t> FileSystem::readBytes(const std::string& path)
 {
     std::ifstream file(path, std::ios::binary | std::ios::ate);
     if (!file.is_open())
-        SL_THROW_FMT(EngineException, "Failed to open file '", path, "'");
+        SL_THROW_FMT(IOException, "Failed to open file '", path, "'");
     auto size = file.tellg();
     file.seekg(0, std::ios::beg);
     auto result = std::vector<uint8_t>(size);
@@ -32,7 +32,7 @@ void FileSystem::writeBytes(const std::string& path, const std::vector<uint8_t>&
 {
     std::ofstream file(path, std::ios::binary | std::ios::trunc);
     if (!file.is_open())
-        SL_THROW_FMT(EngineException, "Failed to open file '", path, "'");
+        SL_THROW_FMT(IOException, "Failed to open file '", path, "'");
     file.write(reinterpret_cast<const char*>(&data[0]), data.size());
     file.close();
 }
@@ -62,7 +62,7 @@ void FileSystem::iterateLines(const std::string& path, std::function<bool(const 
 {
     std::ifstream file(path);
     if (!file.is_open())
-        SL_THROW_FMT(EngineException, "Failed to open file '", path, "'");
+        SL_THROW_FMT(IOException, "Failed to open file '", path, "'");
     while (!file.eof())
     {
         std::string line;
@@ -78,7 +78,7 @@ void FileSystem::writeLines(const std::string& path, const std::vector<std::stri
 {
     std::ofstream file(path, std::ios::trunc);
     if (!file.is_open())
-        SL_THROW_FMT(EngineException, "Failed to open file '", path, "'");
+        SL_THROW_FMT(IOException, "Failed to open file '", path, "'");
     for (size_t i = 0; i < lines.size(); ++i)
     {
         file << lines[i];

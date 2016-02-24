@@ -10,7 +10,7 @@ OpenGLMeshEffectBinding::OpenGLMeshEffectBinding(Mesh* mesh, Effect* effect)
 {
     glGenVertexArrays(1, &vertexArrayHandle);
     if (!vertexArrayHandle)
-        SL_THROW_FMT(EngineException, "Unable to obtain vertex array handle");
+        SL_THROW_FMT(ResourceException, "Unable to obtain vertex array handle");
 
     auto oglMesh = static_cast<OpenGLMesh*>(mesh);
     glBindVertexArray(vertexArrayHandle);

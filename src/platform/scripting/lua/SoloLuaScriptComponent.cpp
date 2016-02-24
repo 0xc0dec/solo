@@ -104,7 +104,7 @@ Component* LuaScriptComponent::addComponent(Node* node, const std::string& typeN
         return node->addComponent<Spectator>();
     if (typeName == "SkyboxRenderer")
         return node->addComponent<SkyboxRenderer>();
-    SL_THROW_FMT(EngineException, "Unknown standard component ", typeName);
+    SL_THROW_FMT(InvalidInputException, "Unknown standard component ", typeName);
 }
 
 

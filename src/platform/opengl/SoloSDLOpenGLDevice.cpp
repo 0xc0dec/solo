@@ -112,7 +112,7 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
     Device(args)
 {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
-        SL_THROW_FMT(EngineException, "Failed to initialize device systems");
+        SL_THROW_FMT(InternalException, "Failed to initialize device systems");
 
     auto contextVersion = selectContextVersion();
     auto major = std::get<0>(contextVersion);
@@ -120,7 +120,7 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
 
     auto windowWithContext = tryCreateOpengGLWindow(false, major, minor, creationArgs);
     if (!windowWithContext.succeeded())
-        SL_THROW_FMT(EngineException, "Failed to create window");
+        SL_THROW_FMT(InternalException, "Failed to create window");
 
     glewExperimental = true;
     if (glewInit())
@@ -129,7 +129,7 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
         SDL_GL_DeleteContext(windowWithContext.context);
         SDL_DestroyWindow(windowWithContext.window);
         SDL_Quit();
-        SL_THROW_FMT(EngineException, "Failed to initialize OpenGL extensions");
+        SL_THROW_FMT(InternalException, "Failed to initialize OpenGL extensions");
     }
 
     window = windowWithContext.window;
@@ -155,7 +155,7 @@ std::tuple<int, int> SDLOpenGLDevice::selectContextVersion()
         }
     }
     SDL_Quit();
-    SL_THROW_FMT(EngineException, "No supported OpenGL versions found");
+    SL_THROW_FMT(InternalException, "No supported OpenGL versions found");
 }
 
 

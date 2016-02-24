@@ -42,7 +42,7 @@ void Scene::addComponent(int nodeId, shared<Component> cmp)
     {
         auto& nodeComponents = nodeIt->second;
         if (nodeComponents.find(typeId) != nodeComponents.end())
-            SL_THROW_FMT(EngineException, "Component ", typeId, " already exists");
+            SL_THROW_FMT(InvalidOperationException, "Component ", typeId, " already exists");
     }
 
     components[nodeId][typeId] = cmp;
@@ -80,7 +80,7 @@ Component* Scene::getComponent(int nodeId, int typeId) const
 {
     auto cmp = findComponent(nodeId, typeId);
     if (!cmp)
-        SL_THROW_FMT(EngineException, "Component ", typeId, " not found on node ", nodeId);
+        SL_THROW_FMT(InvalidOperationException, "Component ", typeId, " not found on node ", nodeId);
     return cmp;
 }
 
