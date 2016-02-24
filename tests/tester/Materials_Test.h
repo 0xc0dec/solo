@@ -76,7 +76,7 @@ private:
 		{
 			resourceManager->getOrCreateEffect(vertex, fragment);
 		}
-		catch (EffectCompilationException &e)
+		catch (ResourceException &e)
 		{
 			assert(
 				e.what() == SL_FMT("Failed to compile ", failedShaderTypeName, " shader") ||

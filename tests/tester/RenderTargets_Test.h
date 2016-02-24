@@ -21,7 +21,7 @@ public:
 private:
     void test_GetInexistentColorAttachment_EnsureThrows()
     {
-        assertThrows<EngineException>([&]()
+        assertThrows<InvalidInputException>([&]()
         {
             auto rt = resourceManager->getOrCreateRenderTarget("1");
             rt->getColorAttachment(0);
@@ -49,7 +49,7 @@ private:
         rtt2->setData(ColorFormat::RGB, {}, 16, 16);
 
         rt->setColorAttachment(0, rtt1);
-        assertThrows<EngineException>([&]()
+        assertThrows<InvalidInputException>([&]()
         {
             rt->setColorAttachment(1, rtt2);
         }, "The new color attachment size differs from that of already set attachments");

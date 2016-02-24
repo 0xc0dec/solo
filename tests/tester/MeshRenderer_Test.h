@@ -55,7 +55,7 @@ public:
         renderer->setMaterial(0, material);
         renderer->setMaterial(1, material);
         renderer->setMaterial(2, material);
-        assertThrows<EngineException>([ = ]()
+        assertThrows<InvalidOperationException>([ = ]()
         {
             renderer->setMaterial(3, material);
         });
@@ -81,7 +81,7 @@ public:
         renderer->setMesh(mesh);
         renderer->setMaterial(0, material);
         renderer->setMesh(nullptr);
-        assertThrows<EngineException>([ = ]()
+        assertThrows<InvalidOperationException>([ = ]()
         {
             renderer->setMaterial(0, material);
         });

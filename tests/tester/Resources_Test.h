@@ -97,8 +97,9 @@ public:
 
     void test_LoadCubeTextureWithWrongNumberOfFaces_EnsureFail()
     {
-        assertThrows<EngineException>([ = ] { resourceManager->getOrLoadCubeTexture({ "1", "2" }); },
-                                      "Wrong number of face images for cube texture (2 provided, 6 expected)");
+        assertThrows<InvalidInputException>(
+            [=] { resourceManager->getOrLoadCubeTexture({ "1", "2" }); },
+            "Wrong number of face images for cube texture (2 provided, 6 expected)");
     }
 
     void test_LoadTexture2DWithOverridenUri_CheckUri()
