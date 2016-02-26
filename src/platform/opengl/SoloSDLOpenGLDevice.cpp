@@ -111,7 +111,7 @@ WindowWithContextCreationResult tryCreateOpengGLWindow(bool hidden, int ctxMajor
 SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
     Device(args)
 {
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
         SL_THROW_FMT(InternalException, "Failed to initialize device systems");
 
     auto contextVersion = selectContextVersion();
