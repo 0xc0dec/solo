@@ -163,7 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tests\tester\BitFlags_Test.h" />
-    <ClInclude Include="..\tests\tester\ComponentsAndNodes_Test.h" />
+    <ClInclude Include="..\tests\tester\Components_Test.h" />
     <ClInclude Include="..\tests\tester\Device_Test.h" />
     <ClInclude Include="..\tests\tester\FileSystem_Test.h" />
     <ClInclude Include="..\tests\tester\Materials_Test.h" />
@@ -171,7 +171,6 @@
     <ClInclude Include="..\tests\tester\Mesh_Test.h" />
     <ClInclude Include="..\tests\tester\RenderTargets_Test.h" />
     <ClInclude Include="..\tests\tester\Resources_Test.h" />
-    <ClInclude Include="..\tests\tester\Shaders.h" />
     <ClInclude Include="..\tests\tester\TestBase.h" />
     <ClInclude Include="..\tests\tester\Transform_Test.h" />
   </ItemGroup>
