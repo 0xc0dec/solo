@@ -94,10 +94,10 @@ void Vector3::clamp(const Vector3& min, const Vector3& max)
 Vector3 Vector3::cross(const Vector3& v1, const Vector3& v2)
 {
     return Vector3(
-               (v1.y * v2.z) - (v1.z * v2.y),
-               (v1.z * v2.x) - (v1.x * v2.z),
-               (v1.x * v2.y) - (v1.y * v2.x)
-           );
+        (v1.y * v2.z) - (v1.z * v2.y),
+        (v1.z * v2.x) - (v1.x * v2.z),
+        (v1.x * v2.y) - (v1.y * v2.x)
+    );
 }
 
 
@@ -146,7 +146,7 @@ float Vector3::lengthSquared() const
 
 Vector3 Vector3::normalized() const
 {
-    auto result = *this;
+    auto result(*this);
     result.normalize();
     return result;
 }

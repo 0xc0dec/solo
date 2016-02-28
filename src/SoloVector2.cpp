@@ -5,7 +5,7 @@ using namespace solo;
 
 
 Vector2::Vector2(float x, float y):
-    x{x}, y{y}
+    x(x), y(y)
 {
 }
 
@@ -113,7 +113,7 @@ float Vector2::lengthSquared() const
 
 Vector2 Vector2::normalized() const
 {
-    auto result = *this;
+    auto result(*this);
     result.normalize();
     return result;
 }

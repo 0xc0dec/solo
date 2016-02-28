@@ -146,7 +146,7 @@ float Vector4::lengthSquared() const
 
 Vector4 Vector4::normalized() const
 {
-    Vector4 result;
+    auto result(*this);
     result.normalize();
     return result;
 }
