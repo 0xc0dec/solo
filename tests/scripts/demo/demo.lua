@@ -24,7 +24,7 @@ function initTextures()
 	mainCameraRTT:setWrapping(solo.TextureWrapping.Clamp)
 
 	local offscreenCameraRTT = resourceManager:getOrCreateTexture2D("demo/offscreen-camera-rtt")
-	offscreenCameraRTT:setData(solo.ColorFormat.RGB, {}, canvasSize.x / 8, canvasSize.y / 8)
+	offscreenCameraRTT:setData(solo.ColorFormat.RGB, {}, math.floor(canvasSize.x / 8), math.floor(canvasSize.y / 8))
 	offscreenCameraRTT:setFiltering(solo.TextureFiltering.Nearest)
 	offscreenCameraRTT:setWrapping(solo.TextureWrapping.Clamp)
 
@@ -269,7 +269,7 @@ function init()
 end
 
 
-local args = solo.DeviceCreationArgs(solo.DeviceMode.OpenGL, 640, 480, false, "Solo Tester")
+local args = solo.DeviceCreationArgs(solo.DeviceMode.OpenGL, 1366, 700, false, "Solo Tester")
 args.logFilePath = "demo.log"
 
 device = solo.Device.create(args)
