@@ -264,14 +264,14 @@
     <ClCompile Include="..\src\SoloMaterial.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\glew\src\glew.c">
-      <Filter>src\external\glew</Filter>
+    <ClCompile Include="..\vendor\glew\src\glew.c">
+      <Filter>src\vendor\glew</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\glew\src\glewinfo.c">
-      <Filter>src\external\glew</Filter>
+    <ClCompile Include="..\vendor\glew\src\glewinfo.c">
+      <Filter>src\vendor\glew</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\glew\src\visualinfo.c">
-      <Filter>src\external\glew</Filter>
+    <ClCompile Include="..\vendor\glew\src\visualinfo.c">
+      <Filter>src\vendor\glew</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloVector2.cpp">
       <Filter>src</Filter>
@@ -330,83 +330,83 @@
     <ClCompile Include="..\src\SoloTexture.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\zlib\src\adler32.c">
-      <Filter>src\external\zlib</Filter>
+    <ClCompile Include="..\vendor\zlib\src\adler32.c">
+      <Filter>src\vendor\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\zlib\src\compress.c">
-      <Filter>src\external\zlib</Filter>
+    <ClCompile Include="..\vendor\zlib\src\compress.c">
+      <Filter>src\vendor\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\zlib\src\crc32.c">
-      <Filter>src\external\zlib</Filter>
+    <ClCompile Include="..\vendor\zlib\src\crc32.c">
+      <Filter>src\vendor\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\zlib\src\deflate.c">
-      <Filter>src\external\zlib</Filter>
+    <ClCompile Include="..\vendor\zlib\src\deflate.c">
+      <Filter>src\vendor\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\zlib\src\infback.c">
-      <Filter>src\external\zlib</Filter>
+    <ClCompile Include="..\vendor\zlib\src\infback.c">
+      <Filter>src\vendor\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\zlib\src\inffast.c">
-      <Filter>src\external\zlib</Filter>
+    <ClCompile Include="..\vendor\zlib\src\inffast.c">
+      <Filter>src\vendor\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\zlib\src\inflate.c">
-      <Filter>src\external\zlib</Filter>
+    <ClCompile Include="..\vendor\zlib\src\inflate.c">
+      <Filter>src\vendor\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\zlib\src\inftrees.c">
-      <Filter>src\external\zlib</Filter>
+    <ClCompile Include="..\vendor\zlib\src\inftrees.c">
+      <Filter>src\vendor\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\zlib\src\trees.c">
-      <Filter>src\external\zlib</Filter>
+    <ClCompile Include="..\vendor\zlib\src\trees.c">
+      <Filter>src\vendor\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\zlib\src\uncompr.c">
-      <Filter>src\external\zlib</Filter>
+    <ClCompile Include="..\vendor\zlib\src\uncompr.c">
+      <Filter>src\vendor\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\zlib\src\zutil.c">
-      <Filter>src\external\zlib</Filter>
+    <ClCompile Include="..\vendor\zlib\src\zutil.c">
+      <Filter>src\vendor\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\png\src\png.c">
-      <Filter>src\external\png</Filter>
+    <ClCompile Include="..\vendor\png\src\png.c">
+      <Filter>src\vendor\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\png\src\pngerror.c">
-      <Filter>src\external\png</Filter>
+    <ClCompile Include="..\vendor\png\src\pngerror.c">
+      <Filter>src\vendor\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\png\src\pngget.c">
-      <Filter>src\external\png</Filter>
+    <ClCompile Include="..\vendor\png\src\pngget.c">
+      <Filter>src\vendor\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\png\src\pngmem.c">
-      <Filter>src\external\png</Filter>
+    <ClCompile Include="..\vendor\png\src\pngmem.c">
+      <Filter>src\vendor\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\png\src\pngpread.c">
-      <Filter>src\external\png</Filter>
+    <ClCompile Include="..\vendor\png\src\pngpread.c">
+      <Filter>src\vendor\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\png\src\pngread.c">
-      <Filter>src\external\png</Filter>
+    <ClCompile Include="..\vendor\png\src\pngread.c">
+      <Filter>src\vendor\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\png\src\pngrio.c">
-      <Filter>src\external\png</Filter>
+    <ClCompile Include="..\vendor\png\src\pngrio.c">
+      <Filter>src\vendor\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\png\src\pngrtran.c">
-      <Filter>src\external\png</Filter>
+    <ClCompile Include="..\vendor\png\src\pngrtran.c">
+      <Filter>src\vendor\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\png\src\pngrutil.c">
-      <Filter>src\external\png</Filter>
+    <ClCompile Include="..\vendor\png\src\pngrutil.c">
+      <Filter>src\vendor\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\png\src\pngset.c">
-      <Filter>src\external\png</Filter>
+    <ClCompile Include="..\vendor\png\src\pngset.c">
+      <Filter>src\vendor\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\png\src\pngtrans.c">
-      <Filter>src\external\png</Filter>
+    <ClCompile Include="..\vendor\png\src\pngtrans.c">
+      <Filter>src\vendor\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\png\src\pngwio.c">
-      <Filter>src\external\png</Filter>
+    <ClCompile Include="..\vendor\png\src\pngwio.c">
+      <Filter>src\vendor\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\png\src\pngwrite.c">
-      <Filter>src\external\png</Filter>
+    <ClCompile Include="..\vendor\png\src\pngwrite.c">
+      <Filter>src\vendor\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\png\src\pngwtran.c">
-      <Filter>src\external\png</Filter>
+    <ClCompile Include="..\vendor\png\src\pngwtran.c">
+      <Filter>src\vendor\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\png\src\pngwutil.c">
-      <Filter>src\external\png</Filter>
+    <ClCompile Include="..\vendor\png\src\pngwutil.c">
+      <Filter>src\vendor\png</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloTexture2D.cpp">
       <Filter>src</Filter>
@@ -530,18 +530,6 @@
     <Filter Include="src\platform">
       <UniqueIdentifier>{19865fe9-5ca9-4b65-8e94-a5c33cfc767f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\external">
-      <UniqueIdentifier>{ac6c24da-1afc-4cc5-85d6-9c987812afe7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\external\glew">
-      <UniqueIdentifier>{c71565b1-047c-43cf-ac19-33d2ac0eba05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\external\png">
-      <UniqueIdentifier>{308fcd1a-298e-4726-b0ad-977bc1e9763a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\external\zlib">
-      <UniqueIdentifier>{c75d28c3-b7bf-43af-91dd-132d3fea8685}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\platform\scripting">
       <UniqueIdentifier>{5218c9b5-9e47-4e4c-b2fa-c92321e11046}</UniqueIdentifier>
     </Filter>
@@ -553,6 +541,18 @@
     </Filter>
     <Filter Include="src\platform\scripting\lua">
       <UniqueIdentifier>{f84e4025-c703-41a4-9b96-cb6d0bbb4c60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\vendor">
+      <UniqueIdentifier>{ac6c24da-1afc-4cc5-85d6-9c987812afe7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\vendor\glew">
+      <UniqueIdentifier>{c71565b1-047c-43cf-ac19-33d2ac0eba05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\vendor\png">
+      <UniqueIdentifier>{308fcd1a-298e-4726-b0ad-977bc1e9763a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\vendor\zlib">
+      <UniqueIdentifier>{c75d28c3-b7bf-43af-91dd-132d3fea8685}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
