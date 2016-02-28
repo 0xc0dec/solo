@@ -267,12 +267,6 @@
     <ClCompile Include="..\vendor\glew\src\glew.c">
       <Filter>src\vendor\glew</Filter>
     </ClCompile>
-    <ClCompile Include="..\vendor\glew\src\glewinfo.c">
-      <Filter>src\vendor\glew</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\glew\src\visualinfo.c">
-      <Filter>src\vendor\glew</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloVector2.cpp">
       <Filter>src</Filter>
     </ClCompile>

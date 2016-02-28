@@ -135,8 +135,6 @@
     <ClCompile Include="..\src\SoloSurfaceRenderer.cpp" />
     <ClCompile Include="..\src\SoloVertexFormat.cpp" />
     <ClCompile Include="..\vendor\glew\src\glew.c" />
-    <ClCompile Include="..\vendor\glew\src\glewinfo.c" />
-    <ClCompile Include="..\vendor\glew\src\visualinfo.c" />
     <ClCompile Include="..\vendor\png\src\png.c" />
     <ClCompile Include="..\vendor\png\src\pngerror.c" />
     <ClCompile Include="..\vendor\png\src\pngget.c" />
