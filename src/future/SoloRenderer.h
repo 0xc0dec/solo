@@ -8,6 +8,7 @@ namespace solo
         void createVertexBuffer() {}
         void destroyVertexBuffer() {}
 
+        void setIndexBuffer() {}
         void createDynamicIndexBuffer() {}
         void updateDynamicIndexBuffer() {}
         void destroyDynamicIndexBuffer() {}
@@ -22,6 +23,8 @@ namespace solo
 
         void createProgram() {}
         void destroyProgram() {}
+
+        void setTexture() {}
 
         void create2DTexture() {}
         void update2DTexture() {}
@@ -63,13 +66,10 @@ namespace solo
 
         void setUniform() {}
 
-        void setIndexBuffer() {}
-
         void setVertexBuffer() {}
 
-        void setTexture() {}
-
         void submitForRendering() {}
+        void render() {}
 
         void blit() {}
     };
