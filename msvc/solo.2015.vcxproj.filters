@@ -250,6 +250,12 @@
     <ClInclude Include="..\include\SoloLogger.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\future\SoloRenderer.h">
+      <Filter>src\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\future\SoloRendererContext.h">
+      <Filter>src\future</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloScene.cpp">
@@ -513,6 +519,12 @@
     <ClCompile Include="..\src\SoloLogger.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\future\SoloRenderer.cpp">
+      <Filter>src\future</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\future\SoloRendererContext.cpp">
+      <Filter>src\future</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -547,6 +559,9 @@
     </Filter>
     <Filter Include="src\vendor\zlib">
       <UniqueIdentifier>{c75d28c3-b7bf-43af-91dd-132d3fea8685}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\future">
+      <UniqueIdentifier>{9411e6bb-d202-4d04-9df9-6ce5a8ccffbf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
