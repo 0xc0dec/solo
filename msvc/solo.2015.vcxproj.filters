@@ -259,6 +259,9 @@
     <ClInclude Include="..\src\future\SoloRenderContext.h">
       <Filter>src\future</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloConfig.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloScene.cpp">

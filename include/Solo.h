@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SoloConfig.h"
 #include "SoloBase.h"
 #include "SoloBitFlags.h"
 #include "SoloBoundingBox.h"
