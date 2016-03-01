@@ -23,7 +23,7 @@ namespace solo
     class Transform: public ComponentBase<Transform>
     {
     public:
-        static shared<Transform> create(Node node);
+        explicit Transform(Node node);
 
         virtual void init() override;
 
@@ -79,8 +79,6 @@ namespace solo
         Vector3 transformDirection(const Vector3& direction) const;
 
     private:
-        explicit Transform(Node node);
-
         void setDirtyWithChildren(unsigned flags) const;
         void setChildrenDirty(unsigned flags) const;
 

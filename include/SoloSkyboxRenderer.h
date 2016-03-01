@@ -14,7 +14,7 @@ namespace solo
     class SkyboxRenderer: public ComponentBase<SkyboxRenderer>
     {
     public:
-        static shared<SkyboxRenderer> create(Node node);
+        explicit SkyboxRenderer(Node node);
 
         virtual void render(RenderContext& context) override;
 
@@ -22,8 +22,6 @@ namespace solo
         shared<CubeTexture> getTexture() const;
 
     private:
-        explicit SkyboxRenderer(Node node);
-
         shared<Mesh> quadMesh;
         shared<Material> material;
         shared<CubeTexture> texture;

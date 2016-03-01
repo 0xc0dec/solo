@@ -12,12 +12,6 @@
 using namespace solo;
 
 
-shared<SkyboxRenderer> SkyboxRenderer::create(Node node)
-{
-    return SL_NEW_SHARED(SkyboxRenderer, node);
-}
-
-
 SkyboxRenderer::SkyboxRenderer(Node node):
     ComponentBase(node)
 {

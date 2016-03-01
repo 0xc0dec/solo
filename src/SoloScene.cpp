@@ -9,12 +9,6 @@
 using namespace solo;
 
 
-shared<Scene> Scene::create(Device* device)
-{
-    return SL_NEW_SHARED(Scene, device);
-}
-
-
 Scene::Scene(Device* device) :
     device(device)
 {

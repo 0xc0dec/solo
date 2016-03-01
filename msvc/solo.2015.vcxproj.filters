@@ -253,7 +253,10 @@
     <ClInclude Include="..\src\future\SoloRenderer.h">
       <Filter>src\future</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\future\SoloRendererContext.h">
+    <ClInclude Include="..\src\future\SoloContext.h">
+      <Filter>src\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\future\SoloRenderContext.h">
       <Filter>src\future</Filter>
     </ClInclude>
   </ItemGroup>
@@ -414,9 +417,6 @@
     <ClCompile Include="..\src\SoloRenderTarget.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloScriptManager.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloPngImageLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -522,8 +522,14 @@
     <ClCompile Include="..\src\future\SoloRenderer.cpp">
       <Filter>src\future</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\future\SoloRendererContext.cpp">
+    <ClCompile Include="..\src\future\SoloContext.cpp">
       <Filter>src\future</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\future\SoloRenderContext.cpp">
+      <Filter>src\future</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloScriptManager.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

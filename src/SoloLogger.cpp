@@ -4,12 +4,6 @@
 using namespace solo;
 
 
-shared<Logger> Logger::create()
-{
-    return SL_NEW_SHARED(Logger);
-}
-
-
 Logger::~Logger()
 {
     if (targetFileStream.is_open())

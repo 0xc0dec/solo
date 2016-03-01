@@ -11,10 +11,10 @@ namespace solo
     class Scene
     {
     public:
-        static shared<Scene> create(Device* device);
+        explicit Scene(Device* device);
+        ~Scene();
 
         SL_NONCOPYABLE(Scene);
-        ~Scene();
 
         Device* getDevice() const;
 
@@ -32,9 +32,7 @@ namespace solo
     private:
         using NodeComponentMap = std::unordered_map<int, shared<Component>>;
         using AllComponentMap = std::unordered_map<int, NodeComponentMap>;
-
-        explicit Scene(Device* device);
-
+        
         template <class T>
         void updateRenderQueue(std::list<T>& queue, int componentTypeIdFilter);
         

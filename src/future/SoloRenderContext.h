@@ -2,7 +2,7 @@
 
 namespace solo
 {
-    class RendererContext
+    class RenderContext
     {
         
     };

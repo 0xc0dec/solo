@@ -10,7 +10,7 @@ namespace solo
     class Spectator: public ComponentBase<Spectator>
     {
     public:
-        static shared<Spectator> create(const Node& node);
+        explicit Spectator(const Node& node);
 
         virtual void init() override;
         virtual void update() override;
@@ -25,8 +25,6 @@ namespace solo
         void setVerticalRotationSpeed(float speed);
 
     private:
-        explicit Spectator(const Node& node);
-
         Device* device = nullptr;
         Transform* transform = nullptr;
 

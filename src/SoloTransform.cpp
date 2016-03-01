@@ -24,12 +24,6 @@ Transform::Transform(Node node):
 }
 
 
-shared<Transform> Transform::create(Node node)
-{
-    return SL_NEW_SHARED(Transform, node);
-}
-
-
 void Transform::notifyChanged() const
 {
     for (auto callback : callbacks)

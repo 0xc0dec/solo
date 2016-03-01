@@ -8,10 +8,10 @@ namespace solo
     class Logger
     {
     public:
-        static shared<Logger> create();
+        Logger() {}
+        ~Logger();
 
         SL_NONCOPYABLE(Logger);
-        ~Logger();
 
         void setTargetFile(const std::string& path);
 
@@ -22,8 +22,6 @@ namespace solo
         void logCritical(const std::string& msg);
 
     private:
-        Logger() {}
-
         void log(const std::string& msg, const std::string& level);
 
         std::ofstream targetFileStream;

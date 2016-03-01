@@ -65,8 +65,9 @@
     <ClInclude Include="..\include\SoloVector3.h" />
     <ClInclude Include="..\include\SoloVector4.h" />
     <ClInclude Include="..\include\SoloVertexFormat.h" />
+    <ClInclude Include="..\src\future\SoloContext.h" />
     <ClInclude Include="..\src\future\SoloRenderer.h" />
-    <ClInclude Include="..\src\future\SoloRendererContext.h" />
+    <ClInclude Include="..\src\future\SoloRenderContext.h" />
     <ClInclude Include="..\src\platform\opengl\SoloGLSLEffect.h" />
     <ClInclude Include="..\src\platform\opengl\SoloGLSLEffectVariable.h" />
     <ClInclude Include="..\src\platform\opengl\SoloGLSLEffectVertexAttribute.h" />
@@ -106,8 +107,9 @@
     <ClInclude Include="..\src\SoloPngImageLoader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\future\SoloContext.cpp" />
     <ClCompile Include="..\src\future\SoloRenderer.cpp" />
-    <ClCompile Include="..\src\future\SoloRendererContext.cpp" />
+    <ClCompile Include="..\src\future\SoloRenderContext.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloGLSLEffect.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloGLSLEffectVariable.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloGLSLEffectVertexAttribute.cpp" />
@@ -134,6 +136,7 @@
     <ClCompile Include="..\src\platform\stub\SoloStubResourceManager.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\SoloMeshEffectBinding.cpp" />
+    <ClCompile Include="..\src\SoloScriptManager.cpp" />
     <ClCompile Include="..\src\SoloSkyboxRenderer.cpp" />
     <ClCompile Include="..\src\SoloSpectator.cpp" />
     <ClCompile Include="..\src\SoloSurfaceRenderer.cpp" />
@@ -188,7 +191,6 @@
     <ClCompile Include="..\src\SoloResourceManager.cpp" />
     <ClCompile Include="..\src\SoloScene.cpp" />
     <ClCompile Include="..\src\SoloEffect.cpp" />
-    <ClCompile Include="..\src\SoloScriptManager.cpp" />
     <ClCompile Include="..\src\SoloTexture.cpp" />
     <ClCompile Include="..\src\SoloTexture2D.cpp" />
     <ClCompile Include="..\src\SoloTransform.cpp" />

@@ -14,7 +14,7 @@ namespace solo
     class MeshRenderer: public ComponentBase<MeshRenderer>
     {
     public:
-        static shared<MeshRenderer> create(Node node);
+        explicit MeshRenderer(Node node);
 
         virtual void render(RenderContext& context) override;
 
@@ -27,8 +27,6 @@ namespace solo
         void setMaterial(int index, shared<Material> material);
 
     private:
-        MeshRenderer(Node node);
-
         shared<Mesh> mesh;
         DeviceMode deviceMode;
         std::unordered_map<int, shared<Material>> materials;

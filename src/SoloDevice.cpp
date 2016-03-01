@@ -20,13 +20,13 @@ shared<Device> Device::create(const DeviceCreationArgs& args)
 Device::Device(const DeviceCreationArgs& args):
     creationArgs(args)
 {
-    logger = Logger::create();
+    logger = SL_NEW_SHARED(Logger);
     if (!args.logFilePath.empty())
         logger->setTargetFile(args.logFilePath);
 
     fs = FileSystem::create(this);
     resourceManager = ResourceManager::create(this);
-    scene = Scene::create(this);
+    scene = SL_NEW_SHARED(Scene, this);
 }
 
 

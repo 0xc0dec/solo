@@ -18,7 +18,7 @@ Node::Node(Scene* scene, int nodeId):
 
 template<> Transform* Node::addComponent<Transform>()
 {
-    auto transform = Transform::create(*this);
+    auto transform = SL_NEW_SHARED(Transform, *this);
     scene->addComponent(id, transform);
     return transform.get();
 }
@@ -34,7 +34,7 @@ template<> Camera* Node::addComponent<Camera>()
 
 template<> MeshRenderer* Node::addComponent<MeshRenderer>()
 {
-    auto renderer = MeshRenderer::create(*this);
+    auto renderer = SL_NEW_SHARED(MeshRenderer, *this);
     scene->addComponent(id, renderer);
     return renderer.get();
 }
@@ -42,7 +42,7 @@ template<> MeshRenderer* Node::addComponent<MeshRenderer>()
 
 template<> Spectator* Node::addComponent<Spectator>()
 {
-    auto spectator = Spectator::create(*this);
+    auto spectator = SL_NEW_SHARED(Spectator, *this);
     scene->addComponent(id, spectator);
     return spectator.get();
 }
@@ -50,7 +50,7 @@ template<> Spectator* Node::addComponent<Spectator>()
 
 template<> SkyboxRenderer* Node::addComponent<SkyboxRenderer>()
 {
-    auto renderer = SkyboxRenderer::create(*this);
+    auto renderer = SL_NEW_SHARED(SkyboxRenderer, *this);
     scene->addComponent(id, renderer);
     return renderer.get();
 }

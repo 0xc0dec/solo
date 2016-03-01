@@ -8,12 +8,6 @@
 using namespace solo;
 
 
-shared<MeshRenderer> MeshRenderer::create(Node node)
-{
-    return SL_NEW_SHARED(MeshRenderer, node);
-}
-
-
 MeshRenderer::MeshRenderer(Node node):
     ComponentBase(node),
     deviceMode(node.getScene()->getDevice()->getMode())
