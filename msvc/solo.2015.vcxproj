@@ -103,28 +103,6 @@
     <ClInclude Include="..\src\SoloMeshLoader.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPngImageLoader.h" />
-    <ClInclude Include="..\vendor\bgfx\bgfx.h" />
-    <ClInclude Include="..\vendor\bgfx\bgfxdefines.h" />
-    <ClInclude Include="..\vendor\bgfx\bgfxplatform.h" />
-    <ClInclude Include="..\vendor\bgfx\bgfx_p.h" />
-    <ClInclude Include="..\vendor\bgfx\charset.h" />
-    <ClInclude Include="..\vendor\bgfx\config.h" />
-    <ClInclude Include="..\vendor\bgfx\fs_clear0.bin.h" />
-    <ClInclude Include="..\vendor\bgfx\fs_clear1.bin.h" />
-    <ClInclude Include="..\vendor\bgfx\fs_clear2.bin.h" />
-    <ClInclude Include="..\vendor\bgfx\fs_clear3.bin.h" />
-    <ClInclude Include="..\vendor\bgfx\fs_clear4.bin.h" />
-    <ClInclude Include="..\vendor\bgfx\fs_clear5.bin.h" />
-    <ClInclude Include="..\vendor\bgfx\fs_clear6.bin.h" />
-    <ClInclude Include="..\vendor\bgfx\fs_clear7.bin.h" />
-    <ClInclude Include="..\vendor\bgfx\fs_debugfont.bin.h" />
-    <ClInclude Include="..\vendor\bgfx\glcontext_wgl.h" />
-    <ClInclude Include="..\vendor\bgfx\image.h" />
-    <ClInclude Include="..\vendor\bgfx\renderer_gl.h" />
-    <ClInclude Include="..\vendor\bgfx\topology.h" />
-    <ClInclude Include="..\vendor\bgfx\vertexdecl.h" />
-    <ClInclude Include="..\vendor\bgfx\vs_clear.bin.h" />
-    <ClInclude Include="..\vendor\bgfx\vs_debugfont.bin.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\platform\opengl\SoloGLSLEffect.cpp" />
@@ -158,13 +136,6 @@
     <ClCompile Include="..\src\SoloSpectator.cpp" />
     <ClCompile Include="..\src\SoloSurfaceRenderer.cpp" />
     <ClCompile Include="..\src\SoloVertexFormat.cpp" />
-    <ClCompile Include="..\vendor\bgfx\bgfx.cpp" />
-    <ClCompile Include="..\vendor\bgfx\glcontext_wgl.cpp" />
-    <ClCompile Include="..\vendor\bgfx\image.cpp" />
-    <ClCompile Include="..\vendor\bgfx\renderer_gl.cpp" />
-    <ClCompile Include="..\vendor\bgfx\renderer_null.cpp" />
-    <ClCompile Include="..\vendor\bgfx\topology.cpp" />
-    <ClCompile Include="..\vendor\bgfx\vertexdecl.cpp" />
     <ClCompile Include="..\vendor\glew\src\glew.c" />
     <ClCompile Include="..\vendor\png\src\png.c" />
     <ClCompile Include="..\vendor\png\src\pngerror.c" />
@@ -280,7 +251,7 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\include;$(ProjectDir)..\vendor\SDL\2.0.3\include;$(ProjectDir)..\vendor\png\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\lua\5.3.1\;$(ProjectDir)..\vendor\LuaIntf\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
-    <LibraryPath>$(ProjectDir)..\vendor\SDL\2.0.3\;..\build\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)..\vendor\bgfx\;$(ProjectDir)..\vendor\SDL\2.0.3\;..\build\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\build\</OutDir>
@@ -331,7 +302,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;opengl32.lib;lua.lib;SDL2_release_mt_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;opengl32.lib;lua.lib;SDL2_release_mt_x64.lib;bgfxDebug.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalOptions>/ignore:4006 /ignore:4221 /ignore:4204</AdditionalOptions>
     </Lib>

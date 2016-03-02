@@ -253,72 +253,6 @@
     <ClInclude Include="..\include\SoloConfig.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\bgfx.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\bgfx_p.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\bgfxdefines.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\bgfxplatform.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\config.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\glcontext_wgl.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\image.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\renderer_gl.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\vertexdecl.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\topology.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\charset.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\fs_debugfont.bin.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\vs_debugfont.bin.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\fs_clear0.bin.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\fs_clear1.bin.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\fs_clear2.bin.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\fs_clear3.bin.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\fs_clear4.bin.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\fs_clear5.bin.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\fs_clear6.bin.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\fs_clear7.bin.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vendor\bgfx\vs_clear.bin.h">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloScene.cpp">
@@ -582,27 +516,6 @@
     <ClCompile Include="..\src\SoloScriptManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\vendor\bgfx\bgfx.cpp">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\bgfx\glcontext_wgl.cpp">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\bgfx\image.cpp">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\bgfx\renderer_gl.cpp">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\bgfx\vertexdecl.cpp">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\bgfx\topology.cpp">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\bgfx\renderer_null.cpp">
-      <Filter>src\vendor\bgfx</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -637,9 +550,6 @@
     </Filter>
     <Filter Include="src\vendor\zlib">
       <UniqueIdentifier>{c75d28c3-b7bf-43af-91dd-132d3fea8685}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\vendor\bgfx">
-      <UniqueIdentifier>{01c44af2-a4a3-4019-bbe3-c3e19eec6d36}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

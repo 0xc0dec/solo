@@ -82,7 +82,7 @@ std::unordered_map<Uint8, MouseButton> mouseButtonsMap =
 };
 
 
-WindowWithContextCreationResult tryCreateOpengGLWindow(bool hidden, int ctxMajorVersion, int ctxMinorVersion, DeviceCreationArgs creationArgs)
+WindowWithContextCreationResult tryCreateOpenGLWindow(bool hidden, int ctxMajorVersion, int ctxMinorVersion, DeviceCreationArgs creationArgs)
 {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, ctxMajorVersion);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, ctxMinorVersion);
@@ -121,24 +121,25 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
     auto major = std::get<0>(contextVersion);
     auto minor = std::get<1>(contextVersion);
 
-    auto windowWithContext = tryCreateOpengGLWindow(false, major, minor, creationArgs);
+    auto windowWithContext = tryCreateOpenGLWindow(false, major, minor, creationArgs);
     if (!windowWithContext.succeeded())
         SL_THROW_FMT(InternalException, "Failed to create window");
 
-    glewExperimental = true;
-    if (glewInit())
-    {
-        // TODO this code is repeated a bit in different places - refactor it
-        SDL_GL_DeleteContext(windowWithContext.context);
-        SDL_DestroyWindow(windowWithContext.window);
-        SDL_Quit();
-        SL_THROW_FMT(InternalException, "Failed to initialize OpenGL extensions");
-    }
+//    glewExperimental = true;
+//    if (glewInit())
+//    {
+//        // TODO this code is repeated a bit in different places - refactor it
+//        SDL_GL_DeleteContext(windowWithContext.context);
+//        SDL_DestroyWindow(windowWithContext.window);
+//        SDL_Quit();
+//        SL_THROW_FMT(InternalException, "Failed to initialize OpenGL extensions");
+//    }
 
     window = windowWithContext.window;
     context = windowWithContext.context;
 
     bgfx::sdlSetWindow(window);
+    bgfx::renderFrame();
     bgfx::init(bgfx::RendererType::OpenGL);
 
     logger->logInfo(SL_FMT("Running in OpenGL mode, context version ", major, ".", minor));
@@ -152,7 +153,7 @@ std::tuple<int, int> SDLOpenGLDevice::selectContextVersion()
     for (auto version : supportedContextVersions)
     {
         SDL_GLContext context = nullptr;
-        auto windowWithContext = tryCreateOpengGLWindow(true, version.first, version.second, creationArgs);
+        auto windowWithContext = tryCreateOpenGLWindow(true, version.first, version.second, creationArgs);
         if (windowWithContext.succeeded())
         {
             SDL_GL_DeleteContext(context);
