@@ -8,7 +8,7 @@
 
 #if BGFX_USE_WGL
 
-//#include <wgl/wglext.h>
+#include <gl/wglew.h>
 
 namespace bgfx { namespace gl
 {
