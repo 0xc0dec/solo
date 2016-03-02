@@ -66,9 +66,6 @@
     <ClInclude Include="..\include\SoloVector3.h" />
     <ClInclude Include="..\include\SoloVector4.h" />
     <ClInclude Include="..\include\SoloVertexFormat.h" />
-    <ClInclude Include="..\src\future\SoloContext.h" />
-    <ClInclude Include="..\src\future\SoloRenderer.h" />
-    <ClInclude Include="..\src\future\SoloRenderContext.h" />
     <ClInclude Include="..\src\platform\opengl\SoloGLSLEffect.h" />
     <ClInclude Include="..\src\platform\opengl\SoloGLSLEffectVariable.h" />
     <ClInclude Include="..\src\platform\opengl\SoloGLSLEffectVertexAttribute.h" />
@@ -108,9 +105,6 @@
     <ClInclude Include="..\src\SoloPngImageLoader.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\future\SoloContext.cpp" />
-    <ClCompile Include="..\src\future\SoloRenderer.cpp" />
-    <ClCompile Include="..\src\future\SoloRenderContext.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloGLSLEffect.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloGLSLEffectVariable.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloGLSLEffectVertexAttribute.cpp" />
