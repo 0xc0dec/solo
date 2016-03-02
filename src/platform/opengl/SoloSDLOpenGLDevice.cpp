@@ -2,6 +2,9 @@
 #include "SoloLogger.h"
 #include <tuple>
 #include <GL/glew.h>
+#include <SDL_syswm.h>
+#include <bgfx/bgfxplatform.h>
+#include <bgfx/bgfx.h>
 
 using namespace solo;
 
@@ -134,6 +137,9 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
 
     window = windowWithContext.window;
     context = windowWithContext.context;
+
+    bgfx::sdlSetWindow(window);
+    bgfx::init(bgfx::RendererType::OpenGL);
 
     logger->logInfo(SL_FMT("Running in OpenGL mode, context version ", major, ".", minor));
 

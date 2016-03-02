@@ -162,6 +162,7 @@
     <ClCompile Include="..\vendor\bgfx\glcontext_wgl.cpp" />
     <ClCompile Include="..\vendor\bgfx\image.cpp" />
     <ClCompile Include="..\vendor\bgfx\renderer_gl.cpp" />
+    <ClCompile Include="..\vendor\bgfx\renderer_null.cpp" />
     <ClCompile Include="..\vendor\bgfx\topology.cpp" />
     <ClCompile Include="..\vendor\bgfx\vertexdecl.cpp" />
     <ClCompile Include="..\vendor\glew\src\glew.c" />

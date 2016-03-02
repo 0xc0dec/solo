@@ -600,6 +600,9 @@
     <ClCompile Include="..\vendor\bgfx\topology.cpp">
       <Filter>src\vendor\bgfx</Filter>
     </ClCompile>
+    <ClCompile Include="..\vendor\bgfx\renderer_null.cpp">
+      <Filter>src\vendor\bgfx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
