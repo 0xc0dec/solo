@@ -123,9 +123,8 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
         SL_THROW_FMT(InternalException, "Failed to create window");
 
     glewExperimental = true;
-    if (glewInit())
+    if (glewInit() != GLEW_OK)
     {
-        // TODO this code is repeated a bit in different places - refactor it
         SDL_GL_DeleteContext(windowWithContext.context);
         SDL_DestroyWindow(windowWithContext.window);
         SDL_Quit();
