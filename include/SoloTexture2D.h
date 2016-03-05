@@ -2,23 +2,21 @@
 
 #include "SoloTexture.h"
 #include "SoloVector2.h"
-#include "SoloImage.h"
 
 namespace solo
 {
-    class Texture2D: public Texture
+    class Texture2D final: public Texture
     {
     public:
+        explicit Texture2D(Renderer* renderer);
+
+        virtual void apply() override;
+
         void setData(ColorFormat format, const std::vector<uint8_t>& data, int width, int height);
 
-        virtual void generateMipmaps() = 0;
+        void generateMipmaps() { } // TODO
 
         Vector2 getSize() const;
-
-    protected:
-        Texture2D() {}
-
-        virtual void applyData(ColorFormat format, const std::vector<uint8_t>& data, int width, int height) = 0;
 
     private:
         Vector2 size;

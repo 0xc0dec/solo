@@ -29,8 +29,8 @@ namespace solo
 
         GLuint handle = 0;
         GLuint depthBufferHandle = 0;
-        std::unordered_map<int, shared<Texture2D>> colorAttachments;
-        Vector2 colorAttachmentSize;
         bool anyColorAttachments = false;
+        Vector2 colorAttachmentSize;
+        std::unordered_map<int, shared<Texture2D>> colorAttachments;
     };
 }

@@ -9,6 +9,7 @@
 #include "SoloDevice.h"
 #include "SoloObjMeshLoader.h"
 #include "SoloSurfaceRenderer.h"
+#include "SoloImage.h"
 #include "platform/stub/SoloStubResourceManager.h"
 #include <functional>
 
@@ -100,10 +101,10 @@ shared<Effect> ResourceManager::getOrCreatePrefabEffect(EffectPrefab prefab, con
 shared<Material> ResourceManager::getOrCreateMaterial(shared<Effect> effect, const std::string& uri)
 {
     return getOrCreateResource<Material>(uri, materials, std::bind(&ResourceManager::findMaterial, this, std::placeholders::_1),
-                                         [&]()
-    {
-        return Material::create(device->getMode(), effect);
-    });
+        [&]()
+        {
+            return Material::create(device->getMode(), effect);
+        });
 }
 
 
@@ -118,7 +119,7 @@ shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& imageUr
     {
         if (loader->isLoadable(imageUri))
         {
-            auto result = Texture::create2D(device->getMode());
+            auto result = SL_NEW_SHARED(Texture2D, device->getRenderer());
             auto image = loader->load(imageUri);
             result->setData(image->colorFormat, image->data, image->width, image->height);
             textures2d[textureUri] = result;
@@ -142,7 +143,7 @@ shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std:
     if (existing)
         return existing;
 
-    auto result = Texture::createCube(device->getMode());
+    auto result = SL_NEW_SHARED(CubeTexture, device->getRenderer());
     auto idx = 0;
     for (auto& imageUri : imageUris)
     {
@@ -170,16 +171,16 @@ shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std:
 shared<Texture2D> ResourceManager::getOrCreateTexture2D(const std::string& uri)
 {
     return getOrCreateResource<Texture2D>(uri, textures2d,
-                                          std::bind(&ResourceManager::findTexture2D, this, std::placeholders::_1),
-                                          std::bind(&Texture::create2D, device->getMode()));
+        std::bind(&ResourceManager::findTexture2D, this, std::placeholders::_1),
+        [&]() { return SL_NEW_SHARED(Texture2D, device->getRenderer()); });
 }
 
 
 shared<CubeTexture> ResourceManager::getOrCreateCubeTexture(const std::string& uri)
 {
     return getOrCreateResource<CubeTexture>(uri, cubeTextures,
-                                            std::bind(&ResourceManager::findCubeTexture, this, std::placeholders::_1),
-                                            std::bind(&Texture::createCube, device->getMode()));
+        std::bind(&ResourceManager::findCubeTexture, this, std::placeholders::_1),
+        [&]() { return SL_NEW_SHARED(CubeTexture, device->getRenderer()); });
 }
 
 

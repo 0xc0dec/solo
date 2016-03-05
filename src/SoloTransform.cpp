@@ -10,12 +10,12 @@ const unsigned DirtyBitRotation = 2;
 const unsigned DirtyBitScale = 4;
 const unsigned DirtyBitWorld = 8;
 const unsigned DirtyBitInverseTransposedWorld = 16;
-const unsigned DirtyBitAll =
-    DirtyBitPosition |
-    DirtyBitRotation |
-    DirtyBitScale |
-    DirtyBitWorld |
-    DirtyBitInverseTransposedWorld;
+const unsigned DirtyBitAll = 
+               DirtyBitPosition |
+               DirtyBitRotation |
+               DirtyBitScale |
+               DirtyBitWorld |
+               DirtyBitInverseTransposedWorld;
 
 
 Transform::Transform(Node node):
@@ -212,15 +212,15 @@ void Transform::rotate(const Quaternion& rotation, TransformSpace space)
 
     switch (space)
     {
-    case TransformSpace::Self:
-        localRotation = localRotation * normalizedRotation;
-        setDirtyWithChildren(DirtyBitRotation | DirtyBitWorld);
-        break;
-    case TransformSpace::Parent:
-        localRotation = normalizedRotation * localRotation;
-        setDirtyWithChildren(DirtyBitRotation | DirtyBitWorld);
-        break;
-    case TransformSpace::World:
+        case TransformSpace::Self:
+            localRotation = localRotation * normalizedRotation;
+            setDirtyWithChildren(DirtyBitRotation | DirtyBitWorld);
+            break;
+        case TransformSpace::Parent:
+            localRotation = normalizedRotation * localRotation;
+            setDirtyWithChildren(DirtyBitRotation | DirtyBitWorld);
+            break;
+        case TransformSpace::World:
         {
             auto inverseWorldRotation = getWorldRotation();
             inverseWorldRotation.inverse();

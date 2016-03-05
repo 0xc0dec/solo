@@ -62,15 +62,15 @@ shared<Image> PngImageLoader::load(const std::string& uri)
     ColorFormat colorFormat;
     switch (colorType)
     {
-    case PNG_COLOR_TYPE_RGB:
-        colorFormat = ColorFormat::RGB;
-        break;
-    case PNG_COLOR_TYPE_RGBA:
-        colorFormat = ColorFormat::RGBA;
-        break;
-    default:
-        png_destroy_read_struct(&png, &info, nullptr);
-        SL_THROW_FMT(InvalidOperationException, "Unsupported PNG color type ", colorType);
+        case PNG_COLOR_TYPE_RGB:
+            colorFormat = ColorFormat::RGB;
+            break;
+        case PNG_COLOR_TYPE_RGBA:
+            colorFormat = ColorFormat::RGBA;
+            break;
+        default:
+            png_destroy_read_struct(&png, &info, nullptr);
+            SL_THROW_FMT(InvalidOperationException, "Unsupported PNG color type ", colorType);
     }
 
     auto stride = png_get_rowbytes(png, info);

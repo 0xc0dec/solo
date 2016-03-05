@@ -3,6 +3,7 @@
 #include "SoloResourceManager.h"
 #include "SoloScene.h"
 #include "SoloLogger.h"
+#include "SoloRenderer.h"
 #include "platform/stub/SoloStubDevice.h"
 #include "platform/opengl/SoloSDLOpenGLDevice.h"
 
@@ -24,6 +25,7 @@ Device::Device(const DeviceCreationArgs& args):
     if (!args.logFilePath.empty())
         logger->setTargetFile(args.logFilePath);
 
+    renderer = Renderer::create(args.mode);
     fs = FileSystem::create(this);
     resourceManager = ResourceManager::create(this);
     scene = SL_NEW_SHARED(Scene, this);

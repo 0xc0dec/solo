@@ -1,18 +1,21 @@
 #pragma once
 
 #include "SoloTexture.h"
-#include "SoloImage.h"
 
 namespace solo
 {
     enum class CubeTextureFace;
 
-    class CubeTexture: public Texture
+    class CubeTexture final: public Texture
     {
     public:
-        virtual void setData(CubeTextureFace face, ColorFormat format, const std::vector<uint8_t>& data, int width, int height) = 0;
+        explicit CubeTexture(Renderer* renderer);
 
-        virtual void generateMipmaps() = 0;
+        virtual void apply() override;
+
+        void setData(CubeTextureFace face, ColorFormat format, const std::vector<uint8_t>& data, int width, int height);
+
+        void generateMipmaps() {} // TODO
 
         virtual void setWrapping(TextureWrapping wrapping) override;
 
@@ -20,7 +23,7 @@ namespace solo
         void setDepthWrapping(TextureWrapping depthWrap);
 
     protected:
-        CubeTexture() {}
+        virtual void rebuildFlags() override final;
 
         TextureWrapping depthWrapping = TextureWrapping::Repeat;
     };

@@ -127,9 +127,6 @@
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLCamera.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLCubeTexture.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLHelper.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
@@ -142,16 +139,10 @@
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderTarget.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLTexture2D.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="..\src\platform\stub\SoloStubCamera.h">
-      <Filter>src\platform\stub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\stub\SoloStubCubeTexture.h">
       <Filter>src\platform\stub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\platform\stub\SoloStubDevice.h">
@@ -176,9 +167,6 @@
       <Filter>src\platform\stub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\platform\stub\SoloStubResourceManager.h">
-      <Filter>src\platform\stub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\stub\SoloStubTexture2D.h">
       <Filter>src\platform\stub</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloSpectator.h">
@@ -435,9 +423,6 @@
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLCamera.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLCubeTexture.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLHelper.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
@@ -448,9 +433,6 @@
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderTarget.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLTexture2D.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp">

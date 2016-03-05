@@ -8,6 +8,7 @@ namespace solo
     class Scene;
     class ResourceManager;
     class FileSystem;
+    class Renderer;
     class Logger;
 
     enum class KeyCode
@@ -113,6 +114,7 @@ namespace solo
         Scene* getScene() const;
         FileSystem* getFileSystem() const;
         ResourceManager* getResourceManager() const;
+        Renderer* getRenderer() const;
         Logger* getLogger() const;
 
     protected:
@@ -120,7 +122,6 @@ namespace solo
 
         void updateTime();
 
-        bool shutdown = false;
         DeviceCreationArgs creationArgs;
         std::function<void()> startCallback = [] {};
         std::function<void()> shutdownCallback = [] {};
@@ -129,6 +130,7 @@ namespace solo
         shared<Scene> scene;
         shared<FileSystem> fs;
         shared<ResourceManager> resourceManager;
+        shared<Renderer> renderer;
         shared<Logger> logger;
 
         // stores what keys were pressed and if it was a repeat
@@ -141,6 +143,7 @@ namespace solo
         std::unordered_set<MouseButton> releasedMouseButtons;
 
         bool close = false;
+        bool shutdown = false;
         float lastUpdateTime = 0;
         float timeDelta = 0;
     };
@@ -173,6 +176,11 @@ namespace solo
     inline FileSystem* Device::getFileSystem() const
     {
         return fs.get();
+    }
+
+    inline Renderer* Device::getRenderer() const
+    {
+        return renderer.get();
     }
 
     inline ResourceManager* Device::getResourceManager() const

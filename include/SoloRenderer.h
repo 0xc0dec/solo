@@ -59,12 +59,12 @@ namespace solo
         virtual void destroyTexture(TextureHandle handle) = 0;
 
         virtual void set2DTexture(TextureHandle handle) = 0;
-        virtual void set2DTexture(TextureHandle handle, TextureFlags flags) = 0;
-        virtual void set2DTexture(TextureHandle handle, TextureFlags flags, float anisotropyLevel) = 0;
+        virtual void set2DTexture(TextureHandle handle, int flags) = 0;
+        virtual void set2DTexture(TextureHandle handle, int flags, float anisotropyLevel) = 0;
 
         virtual void setCubeTexture(TextureHandle handle) = 0;
-        virtual void setCubeTexture(TextureHandle handle, TextureFlags flags) = 0;
-        virtual void setCubeTexture(TextureHandle handle, TextureFlags flags, float anisotropyLevel) = 0;
+        virtual void setCubeTexture(TextureHandle handle, int flags) = 0;
+        virtual void setCubeTexture(TextureHandle handle, int flags, float anisotropyLevel) = 0;
 
         virtual void update2DTexture(TextureHandle handle, ColorFormat format, int width, int height, const std::vector<uint8_t>& data) = 0;
         virtual void updateCubeTexture(TextureHandle handle, CubeTextureFace face, ColorFormat format, int width, int height, const std::vector<uint8_t>& data) = 0;

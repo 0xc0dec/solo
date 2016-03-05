@@ -80,7 +80,7 @@ void OpenGLRenderer::bindTexture(GLenum target, TextureHandle handle)
 }
 
 
-void OpenGLRenderer::setTexture(GLenum target, TextureHandle handle, TextureFlags flags)
+void OpenGLRenderer::setTexture(GLenum target, TextureHandle handle, int flags)
 {
     bindTexture(target, handle);
 
@@ -149,13 +149,13 @@ void OpenGLRenderer::set2DTexture(TextureHandle handle)
 }
 
 
-void OpenGLRenderer::set2DTexture(TextureHandle handle, TextureFlags flags)
+void OpenGLRenderer::set2DTexture(TextureHandle handle, int flags)
 {
     setTexture(GL_TEXTURE_2D, handle, flags);
 }
 
 
-void OpenGLRenderer::set2DTexture(TextureHandle handle, TextureFlags flags, float anisotropyLevel)
+void OpenGLRenderer::set2DTexture(TextureHandle handle, int flags, float anisotropyLevel)
 {
     set2DTexture(handle, flags);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
@@ -168,7 +168,7 @@ void OpenGLRenderer::setCubeTexture(TextureHandle handle)
 }
 
 
-void OpenGLRenderer::setCubeTexture(TextureHandle handle, TextureFlags flags)
+void OpenGLRenderer::setCubeTexture(TextureHandle handle, int flags)
 {
     setTexture(GL_TEXTURE_CUBE_MAP, handle, flags);
 
@@ -182,7 +182,7 @@ void OpenGLRenderer::setCubeTexture(TextureHandle handle, TextureFlags flags)
 }
 
 
-void OpenGLRenderer::setCubeTexture(TextureHandle handle, TextureFlags flags, float anisotropyLevel)
+void OpenGLRenderer::setCubeTexture(TextureHandle handle, int flags, float anisotropyLevel)
 {
     setCubeTexture(handle, flags);
     glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SoloBase.h"
+#include "SoloRenderer.h"
 
 namespace solo
 {
@@ -27,40 +28,44 @@ namespace solo
     class Texture
     {
     public:
-        static shared<Texture2D> create2D(DeviceMode mode);
-        static shared<CubeTexture> createCube(DeviceMode mode);
+        Texture(Renderer* renderer);
+        virtual ~Texture();
 
         SL_NONCOPYABLE(Texture);
-        virtual ~Texture() {}
 
         virtual void apply() = 0;
 
         TextureWrapping getHorizontalWrapping() const;
-        void setHorizontalWrapping(TextureWrapping horizontalWrap);
-
         TextureWrapping getVerticalWrapping() const;
-        void setVerticalWrapping(TextureWrapping verticalWrap);
 
         virtual void setWrapping(TextureWrapping wrap);
+        void setHorizontalWrapping(TextureWrapping horizontalWrap);
+        void setVerticalWrapping(TextureWrapping verticalWrap);
 
         TextureFiltering getMinFiltering() const;
-        void setMinFiltering(TextureFiltering filtering);
-
         TextureFiltering getMagFiltering() const;
-        void setMagFiltering(TextureFiltering filtering);
 
         void setFiltering(TextureFiltering filtering);
+        void setMinFiltering(TextureFiltering filtering);
+        void setMagFiltering(TextureFiltering filtering);
 
         float getAnisotropyLevel() const;
         void setAnisotropyLevel(float level);
 
     protected:
-        Texture() {}
+        virtual void rebuildFlags();
+
+        Renderer* renderer;
+        
+        int flags = 0;
+        TextureHandle handle = EmptyTextureHandle;
 
         TextureWrapping horizontalWrapping = TextureWrapping::Repeat;
         TextureWrapping verticalWrapping = TextureWrapping::Repeat;
+        
         TextureFiltering minFiltering = TextureFiltering::Linear;
         TextureFiltering magFiltering = TextureFiltering::Linear;
+
         float anisotropy = 1.0f;
     };
 
@@ -72,6 +77,7 @@ namespace solo
     inline void Texture::setVerticalWrapping(TextureWrapping wrap)
     {
         verticalWrapping = wrap;
+        rebuildFlags();
     }
 
     inline TextureWrapping Texture::getHorizontalWrapping() const
@@ -82,6 +88,7 @@ namespace solo
     inline void Texture::setHorizontalWrapping(TextureWrapping wrap)
     {
         horizontalWrapping = wrap;
+        rebuildFlags();
     }
 
     inline TextureFiltering Texture::getMinFiltering() const
@@ -92,6 +99,7 @@ namespace solo
     inline void Texture::setMinFiltering(TextureFiltering filtering)
     {
         minFiltering = filtering;
+        rebuildFlags();
     }
 
     inline TextureFiltering Texture::getMagFiltering() const
@@ -102,12 +110,14 @@ namespace solo
     inline void Texture::setMagFiltering(TextureFiltering filtering)
     {
         magFiltering = filtering;
+        rebuildFlags();
     }
 
     inline void Texture::setFiltering(TextureFiltering filtering)
     {
         minFiltering = filtering;
         magFiltering = filtering;
+        rebuildFlags();
     }
 
     inline float Texture::getAnisotropyLevel() const
