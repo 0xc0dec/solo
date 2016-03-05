@@ -1,15 +1,10 @@
 #pragma once
 
 #include "SoloBase.h"
+#include "SoloRenderer.h"
 
 namespace solo
 {
-    enum class ColorFormat
-    {
-        RGB,
-        RGBA
-    };
-
     struct Image
     {
         int width;

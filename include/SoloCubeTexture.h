@@ -5,15 +5,7 @@
 
 namespace solo
 {
-    enum class CubeTextureFace
-    {
-        Front = 0,
-        Back = 1,
-        Left = 2,
-        Right = 3,
-        Top = 4,
-        Bottom = 5
-    };
+    enum class CubeTextureFace;
 
     class CubeTexture: public Texture
     {

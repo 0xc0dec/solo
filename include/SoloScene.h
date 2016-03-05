@@ -47,6 +47,7 @@ namespace solo
         std::list<Component*> cameraQueue;
         std::list<Component*> renderQueue;
 
+        // TODO not cache-friendly
         AllComponentMap components;
         std::vector<shared<Component>> componentsToUpdate;
     };

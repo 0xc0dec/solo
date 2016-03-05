@@ -253,6 +253,18 @@
     <ClInclude Include="..\include\SoloConfig.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderer.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\stub\SoloStubRenderer.h">
+      <Filter>src\platform\stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloResourcePool.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloRenderer.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloScene.cpp">
@@ -515,6 +527,12 @@
     </ClCompile>
     <ClCompile Include="..\src\SoloScriptManager.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloRenderer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderer.cpp">
+      <Filter>src\platform\opengl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
