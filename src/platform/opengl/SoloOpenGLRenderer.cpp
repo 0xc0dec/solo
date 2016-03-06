@@ -14,7 +14,7 @@ TextureHandle OpenGLRenderer::createTexture()
 {
     GLuint rawHandle = 0;
     glGenTextures(1, &rawHandle);
-    // TODO validate this new handle
+    SL_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain texture handle")
 
     TextureHandle result;
     result.value = textures.reserveHandle();
@@ -27,7 +27,7 @@ TextureHandle OpenGLRenderer::createTexture()
 
 void OpenGLRenderer::destroyTexture(TextureHandle handle)
 {
-    // TODO validate handle
+    SL_THROW_IF(handle.empty(), InvalidInputException, "Texture handle is empty")
     auto rawHandle = handle.empty() ? 0 : textures.getData(handle.value).rawHandle;
     glDeleteTextures(1, &rawHandle);
     textures.releaseHandle(handle.value);
@@ -36,6 +36,8 @@ void OpenGLRenderer::destroyTexture(TextureHandle handle)
 
 void OpenGLRenderer::update2DTexture(TextureHandle handle, ColorFormat format, int width, int height, const std::vector<uint8_t>& data)
 {
+    SL_THROW_IF(width <= 0 || height <= 0, InvalidInputException, "Invalid texture dimensions")
+
     bindTexture(GL_TEXTURE_2D, handle);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -60,6 +62,8 @@ void OpenGLRenderer::update2DTexture(TextureHandle handle, ColorFormat format, i
 
 void OpenGLRenderer::updateCubeTexture(TextureHandle handle, CubeTextureFace face, ColorFormat format, int width, int height, const std::vector<uint8_t>& data)
 {
+    SL_THROW_IF(width <= 0 || height <= 0, InvalidInputException, "Invalid texture dimensions")
+
     bindTexture(GL_TEXTURE_CUBE_MAP, handle);
 
     auto glFace = OpenGLHelper::convertCubeTextureFace(face);
@@ -83,7 +87,7 @@ void OpenGLRenderer::updateCubeTexture(TextureHandle handle, CubeTextureFace fac
 
 void OpenGLRenderer::bindTexture(GLenum target, TextureHandle handle)
 {
-    // TODO validate handle
+    SL_THROW_IF(handle.empty(), InvalidInputException, "Texture handle is empty")
     auto rawHandle = handle.empty() ? 0 : textures.getData(handle.value).rawHandle;
     glBindTexture(target, rawHandle);
 }
@@ -148,7 +152,7 @@ void OpenGLRenderer::setTexture(GLenum target, TextureHandle handle, int flags)
 
 void OpenGLRenderer::validateFrameBufferAttachments(const std::vector<TextureHandle> attachments)
 {
-    // TODO check that not greater than GL_MAX_COLOR_ATTACHMENTS
+    SL_THROW_IF(attachments.size() > GL_MAX_COLOR_ATTACHMENTS, InvalidInputException, "Too many frame buffer attachments")
 
     auto width = -1, height = -1;
     for (auto i = 0; i < attachments.size(); i++)
@@ -222,6 +226,7 @@ void OpenGLRenderer::setCubeTexture(TextureHandle handle, int flags, float aniso
 
 void OpenGLRenderer::bindFrameBuffer(FrameBufferHandle handle)
 {
+    SL_THROW_IF(handle.empty(), InvalidInputException, "Frame buffer handle is empty")
     auto rawHandle = handle.empty() ? 0 : frameBuffers.getData(handle.value).rawHandle;
     glBindFramebuffer(GL_FRAMEBUFFER, rawHandle);
 }
@@ -231,7 +236,7 @@ FrameBufferHandle OpenGLRenderer::createFrameBuffer()
 {
     GLuint rawHandle = 0;
     glGenFramebuffers(1, &rawHandle);
-    // TODO validate this new handle
+    SL_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain frame buffer handle")
 
     FrameBufferHandle result;
     result.value = frameBuffers.reserveHandle();
@@ -243,7 +248,7 @@ FrameBufferHandle OpenGLRenderer::createFrameBuffer()
 
 void OpenGLRenderer::destroyFrameBuffer(FrameBufferHandle handle)
 {
-    // TODO validate handle
+    SL_THROW_IF(handle.empty(), InvalidInputException, "Frame buffer handle is empty")
     auto rawHandle = handle.empty() ? 0 : frameBuffers.getData(handle.value).rawHandle;
     glDeleteFramebuffers(1, &rawHandle);
     frameBuffers.releaseHandle(handle.value);
@@ -252,15 +257,13 @@ void OpenGLRenderer::destroyFrameBuffer(FrameBufferHandle handle)
 
 void OpenGLRenderer::setFrameBuffer(FrameBufferHandle handle)
 {
-    // TODO validate handle
     bindFrameBuffer(handle);
 }
 
 
 void OpenGLRenderer::updateFrameBuffer(FrameBufferHandle handle, const std::vector<TextureHandle> attachments)
 {
-    // TODO wrap this in a macro
-    validateFrameBufferAttachments(attachments);
+    SL_MAYBE(validateFrameBufferAttachments(attachments))
 
     bindFrameBuffer(handle);
 
@@ -283,15 +286,16 @@ void OpenGLRenderer::updateFrameBuffer(FrameBufferHandle handle, const std::vect
     if (newCount > 0)
     {
         // Re-create the depth buffer
-        glGenRenderbuffers(1, &data.depthBufferHandle);// TODO check this new handle
+        glGenRenderbuffers(1, &data.depthBufferHandle);
+        SL_THROW_IF(!data.depthBufferHandle, InternalException, "Failed to obtain depth buffer handle")
+
         glBindRenderbuffer(GL_RENDERBUFFER, data.depthBufferHandle);
         auto firstAttachmentData = textures.getData(attachments[0].value);
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, firstAttachmentData.width, firstAttachmentData.height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, data.depthBufferHandle);
 
-        // TODO
-//        if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-//            SL_THROW_FMT(InvalidOperationException, "Render target has invalid state");
+        SL_THROW_IF(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE,
+            InternalException, "Render target has invalid state")
     }
 
     bindFrameBuffer(EmptyFrameBufferHandle);

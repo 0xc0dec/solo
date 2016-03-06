@@ -1,9 +1,10 @@
 #pragma once
 
+#include "SoloBase.h"
 #include "SoloRenderer.h"
 #include "../../SoloResourcePool.h"
-#include "SoloConfig.h"
 #include <GL/glew.h>
+
 
 namespace solo
 {
