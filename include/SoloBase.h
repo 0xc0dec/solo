@@ -1,5 +1,7 @@
 #pragma once
 
+#include "SoloFormatter.h"
+#include "SoloException.h"
 #include <memory>
 #include <string>
 #include <functional>
@@ -8,8 +10,7 @@
 #include <map>
 #include <list>
 #include <vector>
-#include "SoloFormatter.h"
-#include "SoloException.h"
+
 
 #define SL_SHARED_STATIC_CAST		std::static_pointer_cast
 #define SL_MAKE_SHARED				std::make_shared

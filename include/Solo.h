@@ -1,12 +1,12 @@
 #pragma once
 
-#include "SoloConfig.h"
 #include "SoloBase.h"
 #include "SoloBitFlags.h"
 #include "SoloBoundingBox.h"
 #include "SoloBoundingSphere.h"
 #include "SoloCamera.h"
 #include "SoloComponent.h"
+#include "SoloConfig.h"
 #include "SoloCubeTexture.h"
 #include "SoloDevice.h"
 #include "SoloEffect.h"
@@ -29,6 +29,7 @@
 #include "SoloPlane.h"
 #include "SoloQuaternion.h"
 #include "SoloRay.h"
+#include "SoloRenderer.h"
 #include "SoloRenderContext.h"
 #include "SoloRenderQueue.h"
 #include "SoloRenderTarget.h"
