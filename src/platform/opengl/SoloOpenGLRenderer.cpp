@@ -37,6 +37,7 @@ void OpenGLRenderer::destroyTexture(TextureHandle handle)
 void OpenGLRenderer::update2DTexture(TextureHandle handle, ColorFormat format, int width, int height, const std::vector<uint8_t>& data)
 {
     SL_THROW_IF(width <= 0 || height <= 0, InvalidInputException, "Invalid texture dimensions")
+    SL_THROW_IF(handle.empty(), InvalidInputException, "Texture handle is empty")
 
     bindTexture(GL_TEXTURE_2D, handle);
 
@@ -63,6 +64,7 @@ void OpenGLRenderer::update2DTexture(TextureHandle handle, ColorFormat format, i
 void OpenGLRenderer::updateCubeTexture(TextureHandle handle, CubeTextureFace face, ColorFormat format, int width, int height, const std::vector<uint8_t>& data)
 {
     SL_THROW_IF(width <= 0 || height <= 0, InvalidInputException, "Invalid texture dimensions")
+    SL_THROW_IF(handle.empty(), InvalidInputException, "Texture handle is empty")
 
     bindTexture(GL_TEXTURE_CUBE_MAP, handle);
 
@@ -96,7 +98,7 @@ void OpenGLRenderer::setTexture(GLenum target, TextureHandle handle, int flags)
 {
     bindTexture(target, handle);
 
-    if (!flags)
+    if (!flags || handle.empty())
         return;
 
     GLenum minFilter = 0;
@@ -206,6 +208,9 @@ void OpenGLRenderer::setCubeTexture(TextureHandle handle, int flags)
 {
     setTexture(GL_TEXTURE_CUBE_MAP, handle, flags);
 
+    if (handle.empty())
+        return;
+
     GLenum wrapR = 0;
     if (flags & DepthWrapClamp)
         wrapR = GL_CLAMP_TO_BORDER;
@@ -219,7 +224,8 @@ void OpenGLRenderer::setCubeTexture(TextureHandle handle, int flags)
 void OpenGLRenderer::setCubeTexture(TextureHandle handle, int flags, float anisotropyLevel)
 {
     setCubeTexture(handle, flags);
-    glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
+    if (!handle.empty())
+        glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
 }
 
 
@@ -261,6 +267,7 @@ void OpenGLRenderer::setFrameBuffer(FrameBufferHandle handle)
 
 void OpenGLRenderer::updateFrameBuffer(FrameBufferHandle handle, const std::vector<TextureHandle> attachments)
 {
+    SL_THROW_IF(handle.empty(), InvalidInputException, "Frame buffer handle is empty")
     SL_MAYBE(validateFrameBufferAttachments(attachments))
 
     bindFrameBuffer(handle);
