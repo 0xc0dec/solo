@@ -87,7 +87,6 @@ void OpenGLRenderer::updateCubeTexture(TextureHandle handle, CubeTextureFace fac
 
 void OpenGLRenderer::bindTexture(GLenum target, TextureHandle handle)
 {
-    SL_THROW_IF(handle.empty(), InvalidInputException, "Texture handle is empty")
     auto rawHandle = handle.empty() ? 0 : textures.getData(handle.value).rawHandle;
     glBindTexture(target, rawHandle);
 }
@@ -226,7 +225,6 @@ void OpenGLRenderer::setCubeTexture(TextureHandle handle, int flags, float aniso
 
 void OpenGLRenderer::bindFrameBuffer(FrameBufferHandle handle)
 {
-    SL_THROW_IF(handle.empty(), InvalidInputException, "Frame buffer handle is empty")
     auto rawHandle = handle.empty() ? 0 : frameBuffers.getData(handle.value).rawHandle;
     glBindFramebuffer(GL_FRAMEBUFFER, rawHandle);
 }
