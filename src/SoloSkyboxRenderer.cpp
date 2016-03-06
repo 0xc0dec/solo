@@ -17,9 +17,8 @@ SkyboxRenderer::SkyboxRenderer(Node node):
 {
     renderQueue = KnownRenderQueues::Skyboxes;
 
-    auto resourceManager = node.getScene()->getDevice()->getResourceManager();
-
-    quadMesh = resourceManager->getOrCreatePrefabMesh(MeshPrefab::Quad, "/solo/internal/skybox-renderer/mesh");
+    auto device = node.getScene()->getDevice();
+    auto resourceManager = device->getResourceManager();
 
     auto effect = resourceManager->getOrCreatePrefabEffect(EffectPrefab::Skybox, "/solo/internal/skybox-renderer/effect");
     material = resourceManager->getOrCreateMaterial(effect);
@@ -29,7 +28,9 @@ SkyboxRenderer::SkyboxRenderer(Node node):
     material->setDepthWriteEnabled(false);
     material->setPolygonFace(PolygonFace::CW);
 
-    binding = MeshEffectBinding::create(node.getScene()->getDevice()->getMode(), quadMesh.get(), material->getEffect());
+    quadMesh = resourceManager->getOrCreatePrefabMesh(MeshPrefab::Quad, "/solo/internal/skybox-renderer/mesh");
+
+    binding = MeshEffectBinding::create(device->getMode(), quadMesh.get(), material->getEffect());
 }
 
 

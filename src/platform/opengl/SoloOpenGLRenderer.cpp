@@ -110,7 +110,7 @@ void OpenGLRenderer::setTexture(GLenum target, TextureHandle handle, int flags)
     else if (flags & MinFilterNearestMipmapNearest)
         minFilter = GL_NEAREST_MIPMAP_NEAREST;
     if (minFilter)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
+        glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minFilter);
 
     GLenum magFilter = 0;
     if (flags & MagFilterLinear)
@@ -126,7 +126,7 @@ void OpenGLRenderer::setTexture(GLenum target, TextureHandle handle, int flags)
     else if (flags & MagFilterNearestMipmapNearest)
         magFilter = GL_NEAREST_MIPMAP_NEAREST;
     if (magFilter)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
+        glTexParameteri(target, GL_TEXTURE_MAG_FILTER, magFilter);
 
     GLenum wrapS = 0;
     if (flags & HorizontalWrapClamp)
@@ -134,7 +134,7 @@ void OpenGLRenderer::setTexture(GLenum target, TextureHandle handle, int flags)
     else if (flags & HorizontalWrapRepeat)
         wrapS = GL_REPEAT;
     if (wrapS)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS);
+        glTexParameteri(target, GL_TEXTURE_WRAP_S, wrapS);
 
     GLenum wrapT = 0;
     if (flags & VerticalWrapClamp)
@@ -142,7 +142,7 @@ void OpenGLRenderer::setTexture(GLenum target, TextureHandle handle, int flags)
     else if (flags & VerticalWrapRepeat)
         wrapT = GL_REPEAT;
     if (wrapT)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT);
+        glTexParameteri(target, GL_TEXTURE_WRAP_T, wrapT);
 }
 
 

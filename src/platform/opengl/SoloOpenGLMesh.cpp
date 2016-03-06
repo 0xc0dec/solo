@@ -47,7 +47,7 @@ OpenGLMesh::~OpenGLMesh()
 
 void OpenGLMesh::resetData(int slot, const float* data, int elementCount, bool dynamic)
 {
-    // No validations intentionally
+    // No validations intentionally TODO add them for debug version
     auto handle = handles[slot];
     glBindBuffer(GL_ARRAY_BUFFER, handle);
     glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize(slot) * elementCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
@@ -130,5 +130,5 @@ void OpenGLMesh::drawIndex(int index)
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexHandles[index]);
     glDrawElements(OpenGLHelper::convertMeshPrimitiveType(indexPrimitiveTypes[index]),
-                   indexElementCounts[index], OpenGLHelper::convertMeshIndexType(indexFormats[index]), nullptr);
+        indexElementCounts[index], OpenGLHelper::convertMeshIndexType(indexFormats[index]), nullptr);
 }
