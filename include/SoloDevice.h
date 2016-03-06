@@ -76,8 +76,8 @@ namespace solo
     public:
         static shared<Device> create(const DeviceCreationArgs& args);
 
-        SL_NONCOPYABLE(Device);
-        virtual ~Device() {}
+        SL_NONCOPYABLE(Device)
+        virtual ~Device();
 
         virtual void beginUpdate() = 0;
         virtual void endUpdate() = 0;

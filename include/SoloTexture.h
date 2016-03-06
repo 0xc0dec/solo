@@ -52,6 +52,8 @@ namespace solo
         float getAnisotropyLevel() const;
         void setAnisotropyLevel(float level);
 
+        TextureHandle getHandle() const; // TODO do the same thing for other similar handle-possessing classes
+
     protected:
         virtual void rebuildFlags();
 
@@ -128,5 +130,10 @@ namespace solo
     inline void Texture::setAnisotropyLevel(float level)
     {
         anisotropy = level;
+    }
+
+    inline TextureHandle Texture::getHandle() const
+    {
+        return handle;
     }
 }

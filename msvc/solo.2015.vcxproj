@@ -77,7 +77,6 @@
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLMesh.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLMeshEffectBinding.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderer.h" />
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderTarget.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLSurfaceRenderer.h" />
     <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h" />
     <ClInclude Include="..\src\platform\scripting\lua\SoloLuaSurfaceRenderer.h" />
@@ -95,7 +94,6 @@
     <ClInclude Include="..\src\platform\stub\SoloStubMeshEffectBinding.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubMeshLoader.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubRenderer.h" />
-    <ClInclude Include="..\src\platform\stub\SoloStubRenderTarget.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubResourceManager.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubSurfaceRenderer.h" />
     <ClInclude Include="..\src\SoloMeshEffectBinding.h" />
@@ -114,7 +112,6 @@
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLMesh.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLMeshEffectBinding.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderer.cpp" />
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderTarget.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLSurfaceRenderer.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp" />
     <ClCompile Include="..\src\platform\scripting\lua\SoloLuaSurfaceRenderer.cpp" />

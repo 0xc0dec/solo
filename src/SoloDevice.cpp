@@ -18,6 +18,15 @@ shared<Device> Device::create(const DeviceCreationArgs& args)
 }
 
 
+Device::~Device()
+{
+    scene.reset();
+    resourceManager.reset();
+    fs.reset();
+    renderer.reset();
+}
+
+
 Device::Device(const DeviceCreationArgs& args):
     creationArgs(args)
 {

@@ -13,45 +13,36 @@ public:
 
     virtual void run() override
     {
-        test_GetInexistentColorAttachment_EnsureThrows();
-        test_SetColorAttachment_EnsureSet();
         test_SetAttachmentsOfDifferentSizes_EnsureThrows();
+        test_SetAttachments_GetSize();
     }
 
 private:
-    void test_GetInexistentColorAttachment_EnsureThrows()
+    void test_SetAttachments_GetSize()
     {
-        assertThrows<InvalidInputException>([&]()
-        {
-            auto rt = resourceManager->getOrCreateRenderTarget("1");
-            rt->getColorAttachment(0);
-        }, "Invalid color attachment index 0");
-    }
+        auto rtt1 = resourceManager->getOrCreateTexture2D("tex1");
+        auto rtt2 = resourceManager->getOrCreateTexture2D("tex2");
+        rtt1->setData(ColorFormat::RGB, {}, 64, 64);
+        rtt2->setData(ColorFormat::RGB, {}, 64, 64);
 
-    void test_SetColorAttachment_EnsureSet()
-    {
         auto rt = resourceManager->getOrCreateRenderTarget("2");
-        assert(rt->getColorAttachmentCount() == 0);
+        rt->setAttachments({ rtt1, rtt2 });
 
-        auto rtt = resourceManager->getOrCreateTexture2D("1");
-        rtt->setData(ColorFormat::RGB, {}, 64, 64);
-        rt->setColorAttachment(0, rtt);
-        assert(rt->getColorAttachmentCount() == 1);
-        assert(rt->getColorAttachment(0) == rtt);
+        auto size = rt->getSize();
+        assert(static_cast<int>(size.x) == 64 && static_cast<int>(size.y) == 64);
     }
 
     void test_SetAttachmentsOfDifferentSizes_EnsureThrows()
     {
         auto rt = resourceManager->getOrCreateRenderTarget("3");
-        auto rtt1 = resourceManager->getOrCreateTexture2D("2");
-        auto rtt2 = resourceManager->getOrCreateTexture2D("3");
+        auto rtt1 = resourceManager->getOrCreateTexture2D("tex3");
+        auto rtt2 = resourceManager->getOrCreateTexture2D("tex4");
         rtt1->setData(ColorFormat::RGB, {}, 64, 64);
         rtt2->setData(ColorFormat::RGB, {}, 16, 16);
 
-        rt->setColorAttachment(0, rtt1);
         assertThrows<InvalidInputException>([&]()
         {
-            rt->setColorAttachment(1, rtt2);
-        }, "The new color attachment size differs from that of already set attachments");
+            rt->setAttachments({ rtt1, rtt2 });
+        }, "Frame buffer attachments must have the same size");
     }
 };

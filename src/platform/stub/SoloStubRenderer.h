@@ -21,6 +21,13 @@ namespace solo
         virtual void update2DTexture(TextureHandle handle, ColorFormat format, int width, int height, const std::vector<uint8_t>& data) override {}
         virtual void updateCubeTexture(TextureHandle handle, CubeTextureFace face, ColorFormat format, int width, int height, const std::vector<uint8_t>& data) override {}
 
+        virtual FrameBufferHandle createFrameBuffer() override final { return EmptyFrameBufferHandle; }
+        virtual void destroyFrameBuffer(FrameBufferHandle handle) override final {}
+
+        virtual void setFrameBuffer(FrameBufferHandle handle) override final {}
+
+        virtual void updateFrameBuffer(FrameBufferHandle handle, const std::vector<TextureHandle> attachments) override final {}
+
     private:
         friend class Renderer;
 

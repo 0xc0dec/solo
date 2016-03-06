@@ -136,9 +136,6 @@
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLMesh.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderTarget.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
@@ -161,9 +158,6 @@
       <Filter>src\platform\stub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\platform\stub\SoloStubMesh.h">
-      <Filter>src\platform\stub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\stub\SoloStubRenderTarget.h">
       <Filter>src\platform\stub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\platform\stub\SoloStubResourceManager.h">
@@ -430,9 +424,6 @@
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLMesh.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderTarget.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp">

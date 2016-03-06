@@ -94,7 +94,7 @@ function createPostProcessor(sourceTexture, shaders)
 			rtt:setWrapping(solo.TextureWrapping.Clamp)
 			self.finalRTT = rtt
 			self.finalRT = resourceManager:getOrCreateRenderTarget("demo/post-processor/rt")
-			self.finalRT:setColorAttachment(0, rtt)
+			self.finalRT:setAttachments({ rtt })
 
 			self.renderer1 = resourceManager:getOrCreateSurfaceRenderer(self.material1)
 			self.renderer2 = resourceManager:getOrCreateSurfaceRenderer(self.material2)

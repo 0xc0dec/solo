@@ -12,8 +12,7 @@ Texture::Texture(Renderer* renderer) :
 
 Texture::~Texture()
 {
-    if (handle != EmptyTextureHandle)
-        renderer->destroyTexture(handle);
+    renderer->destroyTexture(handle);
 }
 
 

@@ -536,10 +536,8 @@ void LuaScriptManager::registerApi()
 
     // RenderTarget
     auto rt = module.beginClass<RenderTarget>("RenderTarget");
-    REGISTER_METHOD(rt, RenderTarget, getColorAttachmentSize);
-    REGISTER_METHOD(rt, RenderTarget, getColorAttachmentCount);
-    REGISTER_METHOD(rt, RenderTarget, getColorAttachment);
-    REGISTER_METHOD(rt, RenderTarget, setColorAttachment);
+    REGISTER_METHOD(rt, RenderTarget, setAttachments);
+    REGISTER_METHOD(rt, RenderTarget, getSize);
     rt.endClass();
 
     // Node

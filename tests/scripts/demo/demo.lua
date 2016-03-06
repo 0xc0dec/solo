@@ -124,10 +124,10 @@ end
 
 function initRenderTargets()
 	local offscreenCameraRT = resourceManager:getOrCreateRenderTarget("demo/offscreen-camera-rt")
-	offscreenCameraRT:setColorAttachment(0, demo.textures.offscreenCameraRTT)
+	offscreenCameraRT:setAttachments({ demo.textures.offscreenCameraRTT })
 
 	local mainCameraRT = resourceManager:getOrCreateRenderTarget("demo/main-camera-rt")
-	mainCameraRT:setColorAttachment(0, demo.textures.mainCameraRTT)
+	mainCameraRT:setAttachments({ demo.textures.mainCameraRTT })
 
 	demo.renderTargets =
 	{

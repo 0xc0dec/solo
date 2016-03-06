@@ -208,32 +208,32 @@ shared<Mesh> ResourceManager::getOrLoadMesh(const std::string& dataUri, const st
 shared<Mesh> ResourceManager::getOrCreateMesh(const VertexFormat& vertexFormat, const std::string& uri)
 {
     return getOrCreateResource<Mesh>(uri, meshes,
-                                     std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
-                                     std::bind(&Mesh::create, device->getMode(), vertexFormat));
+        std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
+        std::bind(&Mesh::create, device->getMode(), vertexFormat));
 }
 
 
 shared<Mesh> ResourceManager::getOrCreatePrefabMesh(MeshPrefab prefab, const std::string& uri)
 {
     return getOrCreateResource<Mesh>(uri, meshes,
-                                     std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
-                                     std::bind(&Mesh::createPrefab, device->getMode(), prefab));
+        std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
+        std::bind(&Mesh::createPrefab, device->getMode(), prefab));
 }
 
 
 shared<RenderTarget> ResourceManager::getOrCreateRenderTarget(const std::string& uri)
 {
     return getOrCreateResource<RenderTarget>(uri, renderTargets,
-            std::bind(&ResourceManager::findRenderTarget, this, std::placeholders::_1),
-            std::bind(&RenderTarget::create, device->getMode()));
+        std::bind(&ResourceManager::findRenderTarget, this, std::placeholders::_1),
+        [&]() { return SL_NEW_SHARED(RenderTarget, device->getRenderer()); });
 }
 
 
 shared<SurfaceRenderer> ResourceManager::getOrCreateSurfaceRenderer(shared<Material> material, const std::string& uri)
 {
     return getOrCreateResource<SurfaceRenderer>(uri, surfaceRenderers,
-            std::bind(&ResourceManager::findSurfaceRenderer, this, std::placeholders::_1),
-            std::bind(&SurfaceRenderer::create, device, material));
+        std::bind(&ResourceManager::findSurfaceRenderer, this, std::placeholders::_1),
+        std::bind(&SurfaceRenderer::create, device, material));
 }
 
 

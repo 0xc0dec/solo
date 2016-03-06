@@ -1,30 +1,37 @@
 #pragma once
 
 #include "SoloBase.h"
+#include "SoloRenderer.h"
 #include "SoloVector2.h"
 
 namespace solo
 {
     class Texture2D;
-    enum class DeviceMode;
 
-    class RenderTarget
+    // TODO rename to RenderBuffer
+    class RenderTarget final
     {
     public:
-        static shared<RenderTarget> create(DeviceMode mode);
+        RenderTarget(Renderer* renderer);
+        ~RenderTarget();
 
-        SL_NONCOPYABLE(RenderTarget);
-        virtual ~RenderTarget() {}
+        SL_NONCOPYABLE(RenderTarget)
 
-        virtual void bind() = 0;
-        virtual void unbind() = 0;
+        void bind();
+        void unbind();
 
-        virtual void setColorAttachment(int index, shared<Texture2D> texture) = 0;
-        virtual Vector2 getColorAttachmentSize() const = 0;
-        virtual int getColorAttachmentCount() const = 0;
-        virtual shared<Texture2D> getColorAttachment(int index) const = 0;
+        void setAttachments(const std::vector<shared<Texture2D>> attachments);
 
-    protected:
-        RenderTarget() {}
+        Vector2 getSize() const;
+
+    private:
+        Renderer* renderer;
+        FrameBufferHandle handle;
+        Vector2 size;
     };
+
+    inline Vector2 RenderTarget::getSize() const
+    {
+        return size;
+    }
 }

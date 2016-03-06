@@ -1,5 +1,6 @@
 #include "SoloOpenGLRenderer.h"
 #include "SoloOpenGLHelper.h"
+#include <algorithm>
 
 using namespace solo;
 
@@ -15,19 +16,21 @@ TextureHandle OpenGLRenderer::createTexture()
     glGenTextures(1, &rawHandle);
     // TODO validate this new handle
 
-    auto handle = textureHandles.reserveHandle();
-    textureHandles.getData(handle) = rawHandle;
+    TextureHandle result;
+    result.value = textures.reserveHandle();
 
-    return handle;
+    textures.getData(result.value).rawHandle = rawHandle;
+
+    return result;
 }
 
 
 void OpenGLRenderer::destroyTexture(TextureHandle handle)
 {
     // TODO validate handle
-    auto rawHandle = handle == EmptyTextureHandle ? 0 : textureHandles.getData(handle);
+    auto rawHandle = handle.empty() ? 0 : textures.getData(handle.value).rawHandle;
     glDeleteTextures(1, &rawHandle);
-    textureHandles.releaseHandle(handle);
+    textures.releaseHandle(handle.value);
 }
 
 
@@ -46,6 +49,10 @@ void OpenGLRenderer::update2DTexture(TextureHandle handle, ColorFormat format, i
         OpenGLHelper::convertColorFormat(format),
         GL_UNSIGNED_BYTE,
         data.size() ? data.data() : 0);
+
+    auto& texData = textures.getData(handle.value);
+    texData.width = width;
+    texData.height = height;
 
     bindTexture(GL_TEXTURE_2D, EmptyTextureHandle);
 }
@@ -68,6 +75,8 @@ void OpenGLRenderer::updateCubeTexture(TextureHandle handle, CubeTextureFace fac
         GL_UNSIGNED_BYTE,
         data.size() ? data.data() : 0);
 
+    // TODO width and height in texture data are not updated intentionally
+
     bindTexture(GL_TEXTURE_CUBE_MAP, EmptyTextureHandle);
 }
 
@@ -75,7 +84,7 @@ void OpenGLRenderer::updateCubeTexture(TextureHandle handle, CubeTextureFace fac
 void OpenGLRenderer::bindTexture(GLenum target, TextureHandle handle)
 {
     // TODO validate handle
-    auto rawHandle = handle == EmptyTextureHandle ? 0 : textureHandles.getData(handle);
+    auto rawHandle = handle.empty() ? 0 : textures.getData(handle.value).rawHandle;
     glBindTexture(target, rawHandle);
 }
 
@@ -137,6 +146,28 @@ void OpenGLRenderer::setTexture(GLenum target, TextureHandle handle, int flags)
 }
 
 
+void OpenGLRenderer::validateFrameBufferAttachments(const std::vector<TextureHandle> attachments)
+{
+    // TODO check that not greater than GL_MAX_COLOR_ATTACHMENTS
+
+    auto width = -1, height = -1;
+    for (auto i = 0; i < attachments.size(); i++)
+    {
+        auto data = textures.getData(attachments[i].value);
+        if (width < 0)
+        {
+            width = data.width;
+            height = data.height;
+        }
+        else
+        {
+            if (data.width != width || data.height != height)
+                SL_THROW(InvalidInputException, "Frame buffer attachments must have the same size");
+        }
+    }
+}
+
+
 OpenGLRenderer::~OpenGLRenderer()
 {
     // TODO free resources
@@ -186,4 +217,82 @@ void OpenGLRenderer::setCubeTexture(TextureHandle handle, int flags, float aniso
 {
     setCubeTexture(handle, flags);
     glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
+}
+
+
+void OpenGLRenderer::bindFrameBuffer(FrameBufferHandle handle)
+{
+    auto rawHandle = handle.empty() ? 0 : frameBuffers.getData(handle.value).rawHandle;
+    glBindFramebuffer(GL_FRAMEBUFFER, rawHandle);
+}
+
+
+FrameBufferHandle OpenGLRenderer::createFrameBuffer()
+{
+    GLuint rawHandle = 0;
+    glGenFramebuffers(1, &rawHandle);
+    // TODO validate this new handle
+
+    FrameBufferHandle result;
+    result.value = frameBuffers.reserveHandle();
+    frameBuffers.getData(result.value).rawHandle = rawHandle;
+
+    return result;
+}
+
+
+void OpenGLRenderer::destroyFrameBuffer(FrameBufferHandle handle)
+{
+    // TODO validate handle
+    auto rawHandle = handle.empty() ? 0 : frameBuffers.getData(handle.value).rawHandle;
+    glDeleteFramebuffers(1, &rawHandle);
+    frameBuffers.releaseHandle(handle.value);
+}
+
+
+void OpenGLRenderer::setFrameBuffer(FrameBufferHandle handle)
+{
+    // TODO validate handle
+    bindFrameBuffer(handle);
+}
+
+
+void OpenGLRenderer::updateFrameBuffer(FrameBufferHandle handle, const std::vector<TextureHandle> attachments)
+{
+    // TODO wrap this in a macro
+    validateFrameBufferAttachments(attachments);
+
+    bindFrameBuffer(handle);
+
+    auto data = frameBuffers.getData(handle.value);
+
+    if (data.depthBufferHandle)
+    {
+        glDeleteRenderbuffers(1, &data.depthBufferHandle);
+        data.depthBufferHandle = 0;
+    }
+
+    auto newCount = attachments.size();
+    auto stepCount = std::max(newCount, static_cast<size_t>(data.attachmentCount));
+    for (auto i = 0; i < stepCount; i++)
+    {
+        auto rawHandle = i < newCount ? textures.getData(attachments[i].value).rawHandle : 0;
+        glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, rawHandle, 0);
+    }
+
+    if (newCount > 0)
+    {
+        // Re-create the depth buffer
+        glGenRenderbuffers(1, &data.depthBufferHandle);// TODO check this new handle
+        glBindRenderbuffer(GL_RENDERBUFFER, data.depthBufferHandle);
+        auto firstAttachmentData = textures.getData(attachments[0].value);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, firstAttachmentData.width, firstAttachmentData.height);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, data.depthBufferHandle);
+
+        // TODO
+//        if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+//            SL_THROW_FMT(InvalidOperationException, "Render target has invalid state");
+    }
+
+    bindFrameBuffer(EmptyFrameBufferHandle);
 }

@@ -29,7 +29,7 @@ void OpenGLSurfaceRenderer::renderSurface(RenderTarget* target)
     if (target)
         target->bind();
 
-    auto viewportSize = target ? target->getColorAttachmentSize() : device->getCanvasSize();
+    auto viewportSize = target ? target->getSize() : device->getCanvasSize();
     glViewport(
         static_cast<GLuint>(0),
         static_cast<GLuint>(0),

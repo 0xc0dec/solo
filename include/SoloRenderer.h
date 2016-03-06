@@ -2,12 +2,27 @@
 
 #include "SoloBase.h"
 
+#define SL_RENDERER_RESOURCE_HANDLE(name) \
+    struct name \
+    { \
+        int value = EmptyHandleValue; \
+        \
+        bool empty() \
+        { \
+            return value == EmptyHandleValue; \
+        } \
+    }; \
+    \
+    const name Empty##name = name();
+
 namespace solo
 {
     enum class DeviceMode;
-    using TextureHandle = int;
 
-    const TextureHandle EmptyTextureHandle = -1;
+    const int EmptyHandleValue = -1;
+
+    SL_RENDERER_RESOURCE_HANDLE(TextureHandle)
+    SL_RENDERER_RESOURCE_HANDLE(FrameBufferHandle)
 
     enum TextureFlags
     {
@@ -52,7 +67,7 @@ namespace solo
     public:
         static shared<Renderer> create(DeviceMode mode);
 
-        SL_NONCOPYABLE(Renderer);
+        SL_NONCOPYABLE(Renderer)
         virtual ~Renderer();
 
         virtual TextureHandle createTexture() = 0;
@@ -66,8 +81,17 @@ namespace solo
         virtual void setCubeTexture(TextureHandle handle, int flags) = 0;
         virtual void setCubeTexture(TextureHandle handle, int flags, float anisotropyLevel) = 0;
 
-        virtual void update2DTexture(TextureHandle handle, ColorFormat format, int width, int height, const std::vector<uint8_t>& data) = 0;
-        virtual void updateCubeTexture(TextureHandle handle, CubeTextureFace face, ColorFormat format, int width, int height, const std::vector<uint8_t>& data) = 0;
+        virtual void update2DTexture(TextureHandle handle, ColorFormat format, int width, int height,
+            const std::vector<uint8_t>& data) = 0;
+        virtual void updateCubeTexture(TextureHandle handle, CubeTextureFace face, ColorFormat format, int width, int height,
+            const std::vector<uint8_t>& data) = 0;
+
+        virtual FrameBufferHandle createFrameBuffer() = 0;
+        virtual void destroyFrameBuffer(FrameBufferHandle handle) = 0;
+
+        virtual void setFrameBuffer(FrameBufferHandle handle) = 0;
+
+        virtual void updateFrameBuffer(FrameBufferHandle handle, const std::vector<TextureHandle> attachments) = 0;
 
     protected:
         Renderer();
