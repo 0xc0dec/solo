@@ -137,8 +137,8 @@ shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std:
         SL_THROW_FMT(InvalidInputException, "Wrong number of face images for cube texture (", imageUris.size(), " provided, 6 expected)");
 
     auto textureUri = uri.empty()
-                      ? imageUris[0] + imageUris[1] + imageUris[2] + imageUris[3] + imageUris[4] + imageUris[5]
-                      : uri;
+        ? imageUris[0] + imageUris[1] + imageUris[2] + imageUris[3] + imageUris[4] + imageUris[5]
+        : uri;
     auto existing = findCubeTexture(textureUri);
     if (existing)
         return existing;

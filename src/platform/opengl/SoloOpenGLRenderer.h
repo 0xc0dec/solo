@@ -2,14 +2,11 @@
 
 #include "SoloRenderer.h"
 #include "../../SoloResourcePool.h"
+#include "SoloConfig.h"
 #include <GL/glew.h>
 
 namespace solo
 {
-    // TODO who knows...
-    const int MaxTextureCount = 65535; // TODO as macroses in "Config.h"
-    const int MaxFrameBufferCount = 1024;
-
     class OpenGLRenderer: public Renderer
     {
     public:
@@ -62,7 +59,7 @@ namespace solo
             int height = 0;
         };
 
-        ResourcePool<TextureData, MaxTextureCount> textures;
-        ResourcePool<FrameBufferData, MaxFrameBufferCount> frameBuffers;
+        ResourcePool<TextureData, SL_MAX_TEXTURES> textures;
+        ResourcePool<FrameBufferData, SL_MAX_FRAME_BUFFERS> frameBuffers;
     };
 }
