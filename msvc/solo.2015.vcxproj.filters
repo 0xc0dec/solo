@@ -232,9 +232,6 @@
     <ClInclude Include="..\include\SoloLogger.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloConfig.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderer.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>

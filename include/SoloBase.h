@@ -10,7 +10,28 @@
 #include <map>
 #include <list>
 #include <vector>
+// TODO make two-line margins everywhere
 
+
+#ifndef NDEBUG
+#   define SL_DEBUG
+#endif
+
+#define SL_MAX_TEXTURES 65536
+#define SL_MAX_FRAME_BUFFERS 1024
+
+#ifdef SL_DEBUG
+#   define SL_THROW_IF(condition, exceptionType, exceptionMessage) \
+        { \
+            if (condition) \
+                SL_THROW_FMT(exceptionType, exceptionMessage); \
+        }
+
+#   define SL_MAYBE(code) code;
+#else
+#   define SL_THROW_IF(condition, exceptionType, exceptionMessage)
+#   define SL_MAYBE(function)
+#endif
 
 #define SL_SHARED_STATIC_CAST		std::static_pointer_cast
 #define SL_MAKE_SHARED				std::make_shared
@@ -21,6 +42,7 @@
     type(type &&other) = delete; \
     type &operator=(const type &other) = delete; \
     type &operator=(type &&other) = delete;
+
 
 namespace solo
 {

@@ -24,7 +24,6 @@
     <ClInclude Include="..\include\SoloBoundingSphere.h" />
     <ClInclude Include="..\include\SoloCamera.h" />
     <ClInclude Include="..\include\SoloComponent.h" />
-    <ClInclude Include="..\include\SoloConfig.h" />
     <ClInclude Include="..\include\SoloDevice.h" />
     <ClInclude Include="..\include\SoloBitFlags.h" />
     <ClInclude Include="..\include\SoloEffect.h" />
