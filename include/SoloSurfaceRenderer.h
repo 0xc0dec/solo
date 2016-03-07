@@ -2,18 +2,19 @@
 
 #include "SoloBase.h"
 
+
 namespace solo
 {
     class Material;
     class FrameBuffer;
     class Device;
 
-    class SurfaceRenderer
+    class SurfaceRenderer // TODO final
     {
     public:
         static shared<SurfaceRenderer> create(Device* device, shared<Material> material);
 
-        SL_NONCOPYABLE(SurfaceRenderer);
+        SL_NONCOPYABLE(SurfaceRenderer)
         virtual ~SurfaceRenderer() {}
 
         virtual void renderSurface(FrameBuffer* target) = 0;

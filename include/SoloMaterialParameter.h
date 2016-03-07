@@ -7,6 +7,7 @@
 #include "SoloVector3.h"
 #include "SoloVector4.h"
 
+
 namespace solo
 {
     class Texture;
@@ -27,10 +28,10 @@ namespace solo
         CameraWorldPosition,
     };
 
-    class MaterialParameter
+    class MaterialParameter final
     {
     public:
-        SL_NONCOPYABLE(MaterialParameter);
+        SL_NONCOPYABLE(MaterialParameter)
 
         void setFloat(float value);
         void setFloatArray(const std::vector<float>& value);

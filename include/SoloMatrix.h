@@ -3,12 +3,13 @@
 #include "SoloVector3.h"
 #include "SoloVector4.h"
 
+
 namespace solo
 {
     struct Plane;
     struct Quaternion;
 
-    struct Matrix
+    struct Matrix final
     {
         // column-major order
         float m[16];

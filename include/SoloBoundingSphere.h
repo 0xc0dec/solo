@@ -4,9 +4,10 @@
 #include "SoloPlane.h"
 #include "SoloMath.h"
 
+
 namespace solo
 {
-    class BoundingSphere
+    class BoundingSphere final
     {
     public:
         Vector3 center;

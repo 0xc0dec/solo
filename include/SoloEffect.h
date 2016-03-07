@@ -2,6 +2,7 @@
 
 #include "SoloBase.h"
 
+
 namespace solo
 {
     class EffectVariable;
@@ -19,7 +20,7 @@ namespace solo
         static shared<Effect> create(DeviceMode mode, const std::string& vsSrc, const std::string& fsSrc);
         static shared<Effect> createPrefab(DeviceMode mode, EffectPrefab prefab);
 
-        SL_NONCOPYABLE(Effect);
+        SL_NONCOPYABLE(Effect)
         virtual ~Effect() {}
 
         virtual void bind() = 0;

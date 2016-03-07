@@ -2,11 +2,12 @@
 
 #include <sstream>
 
+
 #define SL_FMT(...) solo::Formatter()(__VA_ARGS__)
 
 namespace solo
 {
-    class Formatter
+    class Formatter final
     {
     public:
         std::string operator()() const

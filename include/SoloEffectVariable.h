@@ -2,6 +2,7 @@
 
 #include "SoloBase.h"
 
+
 namespace solo
 {
     struct Matrix;
@@ -13,7 +14,7 @@ namespace solo
     class EffectVariable
     {
     public:
-        SL_NONCOPYABLE(EffectVariable);
+        SL_NONCOPYABLE(EffectVariable)
         virtual ~EffectVariable() {}
 
         std::string getName() const;

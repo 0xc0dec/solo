@@ -43,9 +43,6 @@
     <ClInclude Include="..\include\SoloFrustum.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloTypeId.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloFormatter.h">
       <Filter>include</Filter>
     </ClInclude>

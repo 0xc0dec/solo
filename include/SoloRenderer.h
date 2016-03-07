@@ -2,6 +2,7 @@
 
 #include "SoloBase.h"
 
+
 #define SL_RENDERER_RESOURCE_HANDLE(name) \
     struct name \
     { \

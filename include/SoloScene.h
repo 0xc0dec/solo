@@ -2,19 +2,20 @@
 
 #include "SoloBase.h"
 
+
 namespace solo
 {
     class Component;
     class Node;
     class Device;
 
-    class Scene
+    class Scene final
     {
     public:
         explicit Scene(Device* device);
         ~Scene();
 
-        SL_NONCOPYABLE(Scene);
+        SL_NONCOPYABLE(Scene)
 
         Device* getDevice() const;
 

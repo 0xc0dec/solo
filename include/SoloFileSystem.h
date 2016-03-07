@@ -2,6 +2,7 @@
 
 #include "SoloBase.h"
 
+
 namespace solo
 {
     class Device;
@@ -11,7 +12,7 @@ namespace solo
     public:
         static shared<FileSystem> create(Device* device);
 
-        SL_NONCOPYABLE(FileSystem);
+        SL_NONCOPYABLE(FileSystem)
         virtual ~FileSystem() {}
 
         virtual std::vector<uint8_t> readBytes(const std::string& path);

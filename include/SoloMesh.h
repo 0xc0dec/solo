@@ -3,6 +3,7 @@
 #include "SoloBase.h"
 #include "SoloVertexFormat.h"
 
+
 namespace solo
 {
     enum class DeviceMode;
@@ -36,7 +37,7 @@ namespace solo
         static shared<Mesh> create(DeviceMode mode, const VertexFormat& vertexFormat);
         static shared<Mesh> createPrefab(DeviceMode mode, MeshPrefab prefab);
 
-        SL_NONCOPYABLE(Mesh);
+        SL_NONCOPYABLE(Mesh)
         virtual ~Mesh() {}
 
         virtual void resetData(int slot, const float* data, int elementCount, bool dynamic) = 0;

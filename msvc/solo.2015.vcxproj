@@ -61,7 +61,6 @@
     <ClInclude Include="..\include\SoloScene.h" />
     <ClInclude Include="..\include\SoloTexture2D.h" />
     <ClInclude Include="..\include\SoloTransform.h" />
-    <ClInclude Include="..\include\SoloTypeId.h" />
     <ClInclude Include="..\include\SoloVector2.h" />
     <ClInclude Include="..\include\SoloVector3.h" />
     <ClInclude Include="..\include\SoloVector4.h" />

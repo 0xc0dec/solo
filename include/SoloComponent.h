@@ -4,6 +4,7 @@
 #include "SoloBitFlags.h"
 #include "SoloRenderQueue.h"
 
+
 namespace solo
 {
     struct RenderContext;
@@ -27,7 +28,7 @@ namespace solo
     class Component
     {
     public:
-        SL_NONCOPYABLE(Component);
+        SL_NONCOPYABLE(Component)
         virtual ~Component() {}
 
         virtual int getTypeId() = 0;

@@ -2,6 +2,7 @@
 
 #include "SoloBase.h"
 
+
 namespace solo
 {
     enum class VertexFormatElementSemantics
@@ -35,7 +36,7 @@ namespace solo
         }
     };
 
-    class VertexFormat
+    class VertexFormat final
     {
     public:
         VertexFormat() {}

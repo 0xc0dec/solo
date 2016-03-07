@@ -3,6 +3,7 @@
 #include "SoloTexture.h"
 #include "SoloVector2.h"
 
+
 namespace solo
 {
     class Texture2D final: public Texture
@@ -10,7 +11,7 @@ namespace solo
     public:
         explicit Texture2D(Renderer* renderer);
 
-        virtual void apply() override;
+        virtual void apply() override final;
 
         void setData(ColorFormat format, const std::vector<uint8_t>& data, int width, int height);
 

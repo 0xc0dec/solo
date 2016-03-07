@@ -3,6 +3,7 @@
 #include "SoloBase.h"
 #include "SoloRenderer.h"
 
+
 namespace solo
 {
     struct Image

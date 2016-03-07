@@ -4,6 +4,7 @@
 #include "SoloComponent.h"
 #include "SoloNode.h"
 
+
 namespace solo
 {
     class Mesh;
@@ -11,12 +12,12 @@ namespace solo
     class MeshEffectBinding;
     class CubeTexture;
 
-    class SkyboxRenderer: public ComponentBase<SkyboxRenderer>
+    class SkyboxRenderer final: public ComponentBase<SkyboxRenderer>
     {
     public:
         explicit SkyboxRenderer(Node node);
 
-        virtual void render(RenderContext& context) override;
+        virtual void render(RenderContext& context) override final;
 
         void setTexture(shared<CubeTexture> texture);
         shared<CubeTexture> getTexture() const;

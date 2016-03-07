@@ -2,6 +2,7 @@
 
 #include "SoloScene.h"
 
+
 namespace solo
 {
     class Transform;
@@ -11,7 +12,7 @@ namespace solo
     class MeshRenderer;
 
     // A convenient wrapper for working with components. There's no real "Node" in the engine
-    class Node
+    class Node final
     {
     public:
         Node(Scene* scene, int nodeId);

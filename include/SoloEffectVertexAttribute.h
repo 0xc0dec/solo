@@ -2,12 +2,13 @@
 
 #include "SoloBase.h"
 
+
 namespace solo
 {
     class EffectVertexAttribute
     {
     public:
-        SL_NONCOPYABLE(EffectVertexAttribute);
+        SL_NONCOPYABLE(EffectVertexAttribute)
         virtual ~EffectVertexAttribute() {}
 
         std::string getName() const;

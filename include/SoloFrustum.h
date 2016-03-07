@@ -4,6 +4,7 @@
 #include "SoloPlane.h"
 #include "SoloMatrix.h"
 
+
 namespace solo
 {
     struct Vector3;
@@ -11,7 +12,7 @@ namespace solo
     class BoundingBox;
     struct Ray;
 
-    class Frustum
+    class Frustum final
     {
     public:
         Frustum();

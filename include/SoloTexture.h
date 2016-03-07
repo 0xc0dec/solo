@@ -3,6 +3,7 @@
 #include "SoloBase.h"
 #include "SoloRenderer.h"
 
+
 namespace solo
 {
     class Texture2D;
@@ -31,7 +32,7 @@ namespace solo
         Texture(Renderer* renderer);
         virtual ~Texture();
 
-        SL_NONCOPYABLE(Texture);
+        SL_NONCOPYABLE(Texture)
 
         virtual void apply() = 0;
 

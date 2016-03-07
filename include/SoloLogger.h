@@ -3,15 +3,16 @@
 #include "SoloBase.h"
 #include <fstream>
 
+
 namespace solo
 {
-    class Logger
+    class Logger final
     {
     public:
         Logger() {}
         ~Logger();
 
-        SL_NONCOPYABLE(Logger);
+        SL_NONCOPYABLE(Logger)
 
         void setTargetFile(const std::string& path);
 

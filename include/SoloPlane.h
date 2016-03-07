@@ -2,6 +2,7 @@
 
 #include "SoloVector3.h"
 
+
 namespace solo
 {
     class BoundingSphere;
@@ -17,7 +18,7 @@ namespace solo
         Back = -1
     };
 
-    struct Plane
+    struct Plane final
     {
         Plane() {}
         Plane(const Vector3& normal, float distance);

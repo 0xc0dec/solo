@@ -2,6 +2,7 @@
 
 #include "SoloTexture.h"
 
+
 namespace solo
 {
     enum class CubeTextureFace;
@@ -11,13 +12,13 @@ namespace solo
     public:
         explicit CubeTexture(Renderer* renderer);
 
-        virtual void apply() override;
+        virtual void apply() override final;
 
         void setData(CubeTextureFace face, ColorFormat format, const std::vector<uint8_t>& data, int width, int height);
 
         void generateMipmaps() {} // TODO
 
-        virtual void setWrapping(TextureWrapping wrapping) override;
+        virtual void setWrapping(TextureWrapping wrapping) override final;
 
         TextureWrapping getDepthWrapping() const;
         void setDepthWrapping(TextureWrapping depthWrap);

@@ -2,6 +2,7 @@
 
 #include "SoloBase.h"
 
+
 namespace solo
 {
     class ScriptManager
@@ -9,7 +10,7 @@ namespace solo
     public:
         static shared<ScriptManager> create();
 
-        SL_NONCOPYABLE(ScriptManager);
+        SL_NONCOPYABLE(ScriptManager)
         virtual ~ScriptManager() {}
 
         virtual void execute(const std::string& code) = 0;

@@ -20,12 +20,12 @@ namespace solo
         World
     };
 
-    class Transform: public ComponentBase<Transform>
+    class Transform final: public ComponentBase<Transform>
     {
     public:
         explicit Transform(Node node);
 
-        virtual void init() override;
+        virtual void init() override final;
 
         void addCallback(TransformCallback* callback);
         void removeCallback(TransformCallback* callback);

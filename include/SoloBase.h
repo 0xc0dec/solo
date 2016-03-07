@@ -10,7 +10,6 @@
 #include <map>
 #include <list>
 #include <vector>
-// TODO make two-line margins everywhere
 
 
 #ifndef NDEBUG

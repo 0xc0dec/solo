@@ -2,9 +2,10 @@
 
 #include "SoloMatrix.h"
 
+
 namespace solo
 {
-    struct Quaternion
+    struct Quaternion final
     {
         float x = 0;
         float y = 0;

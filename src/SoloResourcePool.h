@@ -2,10 +2,11 @@
 
 #include "SoloBase.h"
 
+
 namespace solo
 {
     template <class T, int capacity>
-    class ResourcePool
+    class ResourcePool final
     {
     public:
         ResourcePool()

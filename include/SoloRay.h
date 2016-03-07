@@ -2,6 +2,7 @@
 
 #include "SoloVector3.h"
 
+
 namespace solo
 {
     class Frustum;
@@ -15,7 +16,7 @@ namespace solo
         None = -1
     };
 
-    struct Ray
+    struct Ray final
     {
         Ray() {}
         Ray(const Vector3& origin, const Vector3& direction);

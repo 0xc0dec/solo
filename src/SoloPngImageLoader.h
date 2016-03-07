@@ -2,6 +2,7 @@
 
 #include "SoloImageLoader.h"
 
+
 namespace solo
 {
     class PngImageLoader : public ImageLoader
@@ -9,7 +10,7 @@ namespace solo
     public:
         PngImageLoader(FileSystem* fs, ResourceManager* resourceManager);
 
-        virtual bool isLoadable(const std::string& uri) override;
-        virtual shared<Image> load(const std::string& uri) override;
+        virtual bool isLoadable(const std::string& uri) override final;
+        virtual shared<Image> load(const std::string& uri) override final;
     };
 }

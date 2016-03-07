@@ -1,4 +1,3 @@
-
 #include "SoloScene.h"
 #include "SoloComponent.h"
 #include "SoloRenderContext.h"

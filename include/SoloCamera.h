@@ -7,6 +7,7 @@
 #include "SoloTransform.h"
 #include "SoloNode.h"
 
+
 namespace solo
 {
     class Transform;
@@ -15,13 +16,13 @@ namespace solo
     class Scene;
     enum class DeviceMode;
 
-    class Camera : public ComponentBase<Camera>, protected TransformCallback
+    class Camera: public ComponentBase<Camera>, protected TransformCallback
     {
     public:
         static shared<Camera> create(DeviceMode mode, Scene* scene, Node node);
 
         virtual void init() override;
-        virtual void terminate() override;
+        virtual void terminate() override final;
 
         void apply();
         void finish();

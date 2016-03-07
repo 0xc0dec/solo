@@ -2,7 +2,7 @@
 
 namespace solo
 {
-    struct Vector4
+    struct Vector4 final
     {
         float x = 0;
         float y = 0;

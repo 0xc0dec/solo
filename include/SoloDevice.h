@@ -3,6 +3,7 @@
 #include "SoloBase.h"
 #include "SoloVector2.h"
 
+
 namespace solo
 {
     class Scene;

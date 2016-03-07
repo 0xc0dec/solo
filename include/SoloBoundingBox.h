@@ -5,6 +5,7 @@
 #include "SoloPlane.h"
 #include "SoloMath.h"
 
+
 namespace solo
 {
     class BoundingSphere;
@@ -12,7 +13,7 @@ namespace solo
     struct Ray;
     struct Matrix;
 
-    class BoundingBox
+    class BoundingBox final
     {
     public:
         Vector3 min;

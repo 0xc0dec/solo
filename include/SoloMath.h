@@ -3,9 +3,10 @@
 #include <cmath>
 #include <cstdlib>
 
+
 namespace solo
 {
-    class Math
+    class Math final
     {
     public:
         static constexpr float smallFloat1 = 0.000001f;

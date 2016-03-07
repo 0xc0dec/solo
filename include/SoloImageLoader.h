@@ -2,6 +2,7 @@
 
 #include "SoloBase.h"
 
+
 namespace solo
 {
     struct Image;
@@ -11,7 +12,7 @@ namespace solo
     class ImageLoader
     {
     public:
-        SL_NONCOPYABLE(ImageLoader);
+        SL_NONCOPYABLE(ImageLoader)
         virtual ~ImageLoader() {}
 
         virtual bool isLoadable(const std::string& uri) = 0;

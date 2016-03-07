@@ -4,6 +4,7 @@
 #include "SoloComponent.h"
 #include "SoloNode.h"
 
+
 namespace solo
 {
     enum class DeviceMode;
@@ -11,12 +12,12 @@ namespace solo
     class Mesh;
     class MeshEffectBinding;
 
-    class MeshRenderer: public ComponentBase<MeshRenderer>
+    class MeshRenderer final: public ComponentBase<MeshRenderer>
     {
     public:
         explicit MeshRenderer(Node node);
 
-        virtual void render(RenderContext& context) override;
+        virtual void render(RenderContext& context) override final;
 
         Mesh* getMesh() const;
         void setMesh(shared<Mesh> mesh);

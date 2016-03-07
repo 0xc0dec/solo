@@ -2,18 +2,19 @@
 
 #include "SoloComponent.h"
 
+
 namespace solo
 {
     class Transform;
     class Device;
 
-    class Spectator: public ComponentBase<Spectator>
+    class Spectator final: public ComponentBase<Spectator>
     {
     public:
         explicit Spectator(const Node& node);
 
-        virtual void init() override;
-        virtual void update() override;
+        virtual void init() override final;
+        virtual void update() override final;
 
         float getMovementSpeed() const;
         void setMovementSpeed(float speed);

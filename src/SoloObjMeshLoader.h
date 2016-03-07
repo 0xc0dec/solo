@@ -2,6 +2,7 @@
 
 #include "SoloMeshLoader.h"
 
+
 namespace solo
 {
     class ObjMeshLoader: public MeshLoader
@@ -9,7 +10,7 @@ namespace solo
     public:
         ObjMeshLoader(FileSystem* fs, ResourceManager* resourceManager);
 
-        virtual bool isLoadable(const std::string& uri) override;
-        virtual shared<Mesh> load(const std::string& uri) override;
+        virtual bool isLoadable(const std::string& uri) override final;
+        virtual shared<Mesh> load(const std::string& uri) override final;
     };
 }
