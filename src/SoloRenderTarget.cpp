@@ -1,36 +1,36 @@
-#include "SoloRenderTarget.h"
+#include "SoloFrameBuffer.h"
 #include "SoloRenderer.h"
 #include "SoloTexture2D.h"
 
 using namespace solo;
 
 
-RenderTarget::RenderTarget(Renderer* renderer):
+FrameBuffer::FrameBuffer(Renderer* renderer):
     renderer(renderer)
 {
     handle = renderer->createFrameBuffer();
 }
 
 
-RenderTarget::~RenderTarget()
+FrameBuffer::~FrameBuffer()
 {
     renderer->destroyFrameBuffer(handle);
 }
 
 
-void RenderTarget::bind()
+void FrameBuffer::bind()
 {
     renderer->setFrameBuffer(handle);
 }
 
 
-void RenderTarget::unbind()
+void FrameBuffer::unbind()
 {
     renderer->setFrameBuffer(EmptyFrameBufferHandle);
 }
 
 
-void RenderTarget::setAttachments(const std::vector<shared<Texture2D>> attachments)
+void FrameBuffer::setAttachments(const std::vector<shared<Texture2D>> attachments)
 {
     // TODO this is quite smelly
     std::vector<TextureHandle> handles;

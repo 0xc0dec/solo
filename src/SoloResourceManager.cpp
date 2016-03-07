@@ -2,7 +2,7 @@
 #include "SoloEffect.h"
 #include "SoloMaterial.h"
 #include "SoloMesh.h"
-#include "SoloRenderTarget.h"
+#include "SoloFrameBuffer.h"
 #include "SoloPngImageLoader.h"
 #include "SoloTexture2D.h"
 #include "SoloCubeTexture.h"
@@ -68,9 +68,9 @@ shared<Mesh> ResourceManager::findMesh(const std::string& uri)
 }
 
 
-shared<RenderTarget> ResourceManager::findRenderTarget(const std::string& uri)
+shared<FrameBuffer> ResourceManager::findFrameBuffer(const std::string& uri)
 {
-    return findResource(uri, renderTargets);
+    return findResource(uri, frameBuffers);
 }
 
 
@@ -221,11 +221,11 @@ shared<Mesh> ResourceManager::getOrCreatePrefabMesh(MeshPrefab prefab, const std
 }
 
 
-shared<RenderTarget> ResourceManager::getOrCreateRenderTarget(const std::string& uri)
+shared<FrameBuffer> ResourceManager::getOrCreateFrameBuffer(const std::string& uri)
 {
-    return getOrCreateResource<RenderTarget>(uri, renderTargets,
-        std::bind(&ResourceManager::findRenderTarget, this, std::placeholders::_1),
-        [&]() { return SL_NEW_SHARED(RenderTarget, device->getRenderer()); });
+    return getOrCreateResource<FrameBuffer>(uri, frameBuffers,
+        std::bind(&ResourceManager::findFrameBuffer, this, std::placeholders::_1),
+        [&]() { return SL_NEW_SHARED(FrameBuffer, device->getRenderer()); });
 }
 
 
@@ -284,7 +284,7 @@ void ResourceManager::cleanUnusedResources()
 {
     // Clean in order of reference hierarchy
     cleanUnusedResources(surfaceRenderers);
-    cleanUnusedResources(renderTargets);
+    cleanUnusedResources(frameBuffers);
     cleanUnusedResources(materials);
     cleanUnusedResources(effects);
     cleanUnusedResources(meshes);

@@ -5,7 +5,7 @@
 namespace solo
 {
     class Material;
-    class RenderTarget;
+    class FrameBuffer;
     class Device;
 
     class SurfaceRenderer
@@ -16,7 +16,7 @@ namespace solo
         SL_NONCOPYABLE(SurfaceRenderer);
         virtual ~SurfaceRenderer() {}
 
-        virtual void renderSurface(RenderTarget* target) = 0;
+        virtual void renderSurface(FrameBuffer* target) = 0;
 
     protected:
         SurfaceRenderer() {}

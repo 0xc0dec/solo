@@ -18,7 +18,7 @@ public:
         test_CreateTexture2D_FindIt();
         test_CreateMaterial_FindIt();
         test_CreateMesh_FindIt();
-        test_CreateRenderTarget_FindIt();
+        test_CreateFrameBuffer_FindIt();
         test_CreateResource_TryToCleanIt_EnsureRemains();
         test_CreateAndForgetResource_CleanIt();
         test_LoadCubeTextureWithWrongNumberOfFaces_EnsureFail();
@@ -32,7 +32,7 @@ public:
         assert(!resourceManager->findEffect("non existent"));
         assert(!resourceManager->findMaterial("non existent"));
         assert(!resourceManager->findMesh("non existent"));
-        assert(!resourceManager->findRenderTarget("non existent"));
+        assert(!resourceManager->findFrameBuffer("non existent"));
         assert(!resourceManager->findTexture2D("non existent"));
     }
 
@@ -71,12 +71,12 @@ public:
         assert(resourceManager->getOrCreateMesh(VertexFormat(), uri) == mesh);
     }
 
-    void test_CreateRenderTarget_FindIt()
+    void test_CreateFrameBuffer_FindIt()
     {
-        auto uri = "rt";
-        auto rt = resourceManager->getOrCreateRenderTarget(uri);
-        assert(resourceManager->findRenderTarget(uri) == rt);
-        assert(resourceManager->getOrCreateRenderTarget(uri) == rt);
+        auto uri = "fb";
+        auto fb = resourceManager->getOrCreateFrameBuffer(uri);
+        assert(resourceManager->findFrameBuffer(uri) == fb);
+        assert(resourceManager->getOrCreateFrameBuffer(uri) == fb);
     }
 
     void test_CreateResource_TryToCleanIt_EnsureRemains()

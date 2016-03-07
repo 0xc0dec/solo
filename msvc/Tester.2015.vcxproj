@@ -169,7 +169,7 @@
     <ClInclude Include="..\tests\tester\Materials_Test.h" />
     <ClInclude Include="..\tests\tester\MeshRenderer_Test.h" />
     <ClInclude Include="..\tests\tester\Mesh_Test.h" />
-    <ClInclude Include="..\tests\tester\RenderTargets_Test.h" />
+    <ClInclude Include="..\tests\tester\FrameBuffer_Test.h" />
     <ClInclude Include="..\tests\tester\Resources_Test.h" />
     <ClInclude Include="..\tests\tester\TestBase.h" />
     <ClInclude Include="..\tests\tester\Transform_Test.h" />

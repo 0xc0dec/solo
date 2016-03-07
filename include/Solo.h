@@ -31,7 +31,7 @@
 #include "SoloRenderer.h"
 #include "SoloRenderContext.h"
 #include "SoloRenderQueue.h"
-#include "SoloRenderTarget.h"
+#include "SoloFrameBuffer.h"
 #include "SoloResourceManager.h"
 #include "SoloScene.h"
 #include "SoloScriptManager.h"

@@ -1,5 +1,5 @@
 #include "Materials_Test.h"
-#include "RenderTargets_Test.h"
+#include "FrameBuffer_Test.h"
 #include "Components_Test.h"
 #include "Transform_Test.h"
 #include "Device_Test.h"
@@ -52,7 +52,7 @@ void runCppIntegrationTests()
     {
         FileSystem_Test(device.get()).run();
         Materials_Test(device.get()).run();
-        RenderTargets_Test(device.get()).run();
+        FrameBuffer_Test(device.get()).run();
         Mesh_Test(device.get()).run();
         device->requestShutdown();
     });

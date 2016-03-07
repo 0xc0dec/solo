@@ -97,9 +97,6 @@
     <ClInclude Include="..\include\SoloTexture2D.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloRenderTarget.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloScriptManager.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -242,6 +239,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloRenderer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloFrameBuffer.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

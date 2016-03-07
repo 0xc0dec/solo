@@ -1,6 +1,6 @@
 #include "SoloNode.h"
 #include "SoloDevice.h"
-#include "SoloRenderTarget.h"
+#include "SoloFrameBuffer.h"
 #include "platform/stub/SoloStubCamera.h"
 #include "platform/opengl/SoloOpenGLCamera.h"
 

@@ -3,7 +3,7 @@
 #include "SoloResourceManager.h"
 #include "SoloMaterial.h"
 #include "SoloMesh.h"
-#include "SoloRenderTarget.h"
+#include "SoloFrameBuffer.h"
 #include "SoloRenderContext.h"
 #include "../../SoloMeshEffectBinding.h"
 #include <GL/glew.h>
@@ -21,7 +21,7 @@ OpenGLSurfaceRenderer::OpenGLSurfaceRenderer(Device* device, shared<Material> ma
 }
 
 
-void OpenGLSurfaceRenderer::renderSurface(RenderTarget* target)
+void OpenGLSurfaceRenderer::renderSurface(FrameBuffer* target)
 {
     auto depthTestEnabled = material->isDepthTestEnabled();
     material->setDepthTestEnabled(false);

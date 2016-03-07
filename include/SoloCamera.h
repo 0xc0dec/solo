@@ -11,7 +11,7 @@ namespace solo
 {
     class Transform;
     class Node;
-    class RenderTarget;
+    class FrameBuffer;
     class Scene;
     enum class DeviceMode;
 
@@ -28,8 +28,8 @@ namespace solo
 
         BitFlags& getRenderTags();
 
-        shared<RenderTarget> getRenderTarget() const;
-        void setRenderTarget(shared<RenderTarget> target);
+        shared<FrameBuffer> getRenderTarget() const;
+        void setRenderTarget(shared<FrameBuffer> target);
 
         Vector4 getClearColor() const;
         void setClearColor(float r, float g, float b, float a);
@@ -80,7 +80,7 @@ namespace solo
         Scene* scene;
 
         Transform* transform = nullptr;
-        shared<RenderTarget> renderTarget = nullptr;
+        shared<FrameBuffer> renderTarget = nullptr;
 
         bool ortho = false;
 
@@ -147,7 +147,7 @@ namespace solo
         return renderTags;
     }
 
-    inline void Camera::setRenderTarget(shared<RenderTarget> target)
+    inline void Camera::setRenderTarget(shared<FrameBuffer> target)
     {
         renderTarget = target;
     }
@@ -157,7 +157,7 @@ namespace solo
         return clearColor;
     }
 
-    inline shared<RenderTarget> Camera::getRenderTarget() const
+    inline shared<FrameBuffer> Camera::getRenderTarget() const
     {
         return renderTarget;
     }

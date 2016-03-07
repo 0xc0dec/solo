@@ -18,7 +18,7 @@
 #include "SoloRay.h"
 #include "SoloTransform.h"
 #include "SoloCamera.h"
-#include "SoloRenderTarget.h"
+#include "SoloFrameBuffer.h"
 #include "SoloEffect.h"
 #include "SoloTexture.h"
 #include "SoloTexture2D.h"
@@ -534,10 +534,10 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(texCube, CubeTexture, setData);
     texCube.endClass();
 
-    // RenderTarget
-    auto rt = module.beginClass<RenderTarget>("RenderTarget");
-    REGISTER_METHOD(rt, RenderTarget, setAttachments);
-    REGISTER_METHOD(rt, RenderTarget, getSize);
+    // FrameBuffer
+    auto rt = module.beginClass<FrameBuffer>("FrameBuffer");
+    REGISTER_METHOD(rt, FrameBuffer, setAttachments);
+    REGISTER_METHOD(rt, FrameBuffer, getSize);
     rt.endClass();
 
     // Node
@@ -833,7 +833,7 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(mgr, ResourceManager, findCubeTexture);
     REGISTER_METHOD(mgr, ResourceManager, findMaterial);
     REGISTER_METHOD(mgr, ResourceManager, findMesh);
-    REGISTER_METHOD(mgr, ResourceManager, findRenderTarget);
+    REGISTER_METHOD(mgr, ResourceManager, findFrameBuffer);
     REGISTER_METHOD(mgr, ResourceManager, findSurfaceRenderer);
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateEffect, LUA_ARGS(const std::string&, const std::string&, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreatePrefabEffect, LUA_ARGS(EffectPrefab, _opt<const std::string&>));
@@ -842,7 +842,7 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMaterial, LUA_ARGS(shared<Effect>, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMesh, LUA_ARGS(const VertexFormat&, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreatePrefabMesh, LUA_ARGS(MeshPrefab, _opt<const std::string&>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateRenderTarget, LUA_ARGS(_opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateFrameBuffer, LUA_ARGS(_opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateSurfaceRenderer, LUA_ARGS(shared<Material>, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadTexture2D, LUA_ARGS(const std::string&, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadCubeTexture, LUA_ARGS(const std::vector<std::string>&, _opt<const std::string&>));

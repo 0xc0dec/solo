@@ -123,10 +123,10 @@ end
 
 
 function initRenderTargets()
-	local offscreenCameraRT = resourceManager:getOrCreateRenderTarget("demo/offscreen-camera-rt")
+	local offscreenCameraRT = resourceManager:getOrCreateFrameBuffer("demo/offscreen-camera-rt")
 	offscreenCameraRT:setAttachments({ demo.textures.offscreenCameraRTT })
 
-	local mainCameraRT = resourceManager:getOrCreateRenderTarget("demo/main-camera-rt")
+	local mainCameraRT = resourceManager:getOrCreateFrameBuffer("demo/main-camera-rt")
 	mainCameraRT:setAttachments({ demo.textures.mainCameraRTT })
 
 	demo.renderTargets =

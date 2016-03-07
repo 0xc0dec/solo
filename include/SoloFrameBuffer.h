@@ -4,18 +4,18 @@
 #include "SoloRenderer.h"
 #include "SoloVector2.h"
 
+
 namespace solo
 {
     class Texture2D;
 
-    // TODO rename to RenderBuffer
-    class RenderTarget final
+    class FrameBuffer final // TODO add final everywhere
     {
     public:
-        RenderTarget(Renderer* renderer);
-        ~RenderTarget();
+        FrameBuffer(Renderer* renderer);
+        ~FrameBuffer();
 
-        SL_NONCOPYABLE(RenderTarget)
+        SL_NONCOPYABLE(FrameBuffer)
 
         void bind();
         void unbind();
@@ -30,7 +30,7 @@ namespace solo
         Vector2 size;
     };
 
-    inline Vector2 RenderTarget::getSize() const
+    inline Vector2 FrameBuffer::getSize() const
     {
         return size;
     }

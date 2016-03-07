@@ -1,6 +1,0 @@
-runTest(function()
-	local rt = device:getResourceManager():getOrCreateRenderTarget("test/uri")
-	local tex = device:getResourceManager():getOrCreateTexture2D("nonesense")
-	rt:setAttachments({ tex, tex })
-	rt:getSize()
-end, "RenderTarget")

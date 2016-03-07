@@ -2,6 +2,7 @@
 
 #include "SoloBase.h"
 
+
 namespace solo
 {
     class Effect;
@@ -9,7 +10,7 @@ namespace solo
     class Mesh;
     class Texture2D;
     class CubeTexture;
-    class RenderTarget;
+    class FrameBuffer;
     class ImageLoader;
     class MeshLoader;
     class Device;
@@ -23,7 +24,7 @@ namespace solo
     public:
         static shared<ResourceManager> create(Device* device);
 
-        SL_NONCOPYABLE(ResourceManager);
+        SL_NONCOPYABLE(ResourceManager)
         ~ResourceManager() {}
 
         shared<Effect> findEffect(const std::string& uri);
@@ -31,7 +32,7 @@ namespace solo
         shared<CubeTexture> findCubeTexture(const std::string& uri);
         shared<Material> findMaterial(const std::string& uri);
         shared<Mesh> findMesh(const std::string& uri);
-        shared<RenderTarget> findRenderTarget(const std::string& uri);
+        shared<FrameBuffer> findFrameBuffer(const std::string& uri);
         shared<SurfaceRenderer> findSurfaceRenderer(const std::string& uri = "");
 
         shared<Effect> getOrCreateEffect(const std::string& vsSrc, const std::string& fsSrc, const std::string& uri = "");
@@ -41,7 +42,7 @@ namespace solo
         shared<Material> getOrCreateMaterial(shared<Effect> effect, const std::string& uri = "");
         shared<Mesh> getOrCreateMesh(const VertexFormat& vertexFormat, const std::string& uri = "");
         shared<Mesh> getOrCreatePrefabMesh(MeshPrefab prefab, const std::string& uri = "");
-        shared<RenderTarget> getOrCreateRenderTarget(const std::string& uri = "");
+        shared<FrameBuffer> getOrCreateFrameBuffer(const std::string& uri = "");
         shared<SurfaceRenderer> getOrCreateSurfaceRenderer(shared<Material> material, const std::string& uri = "");
 
         shared<Texture2D> getOrLoadTexture2D(const std::string& imageUri, const std::string& uri = "");
@@ -66,12 +67,12 @@ namespace solo
 
         template <typename TResource>
         shared<TResource> getOrCreateResource(const std::string& uri, ResourceMap<TResource>& resourceMap,
-                                              std::function<shared<TResource>(const std::basic_string<char>&)> find,
-                                              std::function<shared<TResource>()> create);
+            std::function<shared<TResource>(const std::basic_string<char>&)> find,
+            std::function<shared<TResource>()> create);
 
         template <typename TResource>
         shared<TResource> createResource(const std::string& uri, ResourceMap<TResource>& resourceMap,
-                                         std::function<shared<TResource>()> create);
+            std::function<shared<TResource>()> create);
 
         template <typename TResource>
         shared<TResource> findResource(const std::string& uri, const ResourceMap<TResource>& resourceMap);
@@ -83,7 +84,7 @@ namespace solo
         ResourceMap<Mesh> meshes;
         ResourceMap<Texture2D> textures2d;
         ResourceMap<CubeTexture> cubeTextures;
-        ResourceMap<RenderTarget> renderTargets;
+        ResourceMap<FrameBuffer> frameBuffers;
         ResourceMap<SurfaceRenderer> surfaceRenderers;
 
         int resourceCounter = 0;
