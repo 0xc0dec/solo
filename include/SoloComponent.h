@@ -14,13 +14,14 @@ namespace solo
         template <typename T>
         static int get()
         {
+            // Ids 0..999999999 are reserved for C++ components (including the engine built-ins)
+            // Ids from 1000000000 are meant for the script components
             static const auto id = counter++;
+            SL_THROW_IF(id >= 1000000000, InternalException, "Maximum type id reached")
             return id;
         }
 
     private:
-        // TODO Expected to be less than the smallest script component id (which is now 1 000 000 000).
-        // No checks so far since it'll hardly ever reach that limit (boldly said, but still).
         static int counter;
     };
 
