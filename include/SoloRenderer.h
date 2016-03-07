@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SoloBase.h"
+#include "SoloVertexFormat.h"
 
 
 #define SL_RENDERER_RESOURCE_HANDLE(name) \
@@ -8,7 +9,7 @@
     { \
         int value = EmptyHandleValue; \
         \
-        bool empty() \
+        bool empty() const\
         { \
             return value == EmptyHandleValue; \
         } \
@@ -27,6 +28,7 @@ namespace solo
     SL_RENDERER_RESOURCE_HANDLE(VertexBufferHandle)
     SL_RENDERER_RESOURCE_HANDLE(IndexBufferHandle)
     SL_RENDERER_RESOURCE_HANDLE(ProgramHandle)
+    SL_RENDERER_RESOURCE_HANDLE(VertexObjectHandle)
 
     enum TextureFlags
     {
@@ -48,6 +50,15 @@ namespace solo
         VerticalWrapRepeat = 1 << 15,
         DepthWrapClamp = 1 << 16,
         DepthWrapRepeat = 1 << 17
+    };
+
+    enum class PrimitiveType
+    {
+        Triangles,
+        TriangleStrip,
+        Lines,
+        LineStrip,
+        Points
     };
 
     enum class ColorFormat
@@ -91,6 +102,22 @@ namespace solo
         virtual void destroyFrameBuffer(FrameBufferHandle handle) = 0;
         virtual void setFrameBuffer(FrameBufferHandle handle) = 0;
         virtual void updateFrameBuffer(FrameBufferHandle handle, const std::vector<TextureHandle> attachments) = 0;
+
+        virtual VertexBufferHandle createVertexBuffer(const VertexBufferLayout& layout, const void* data, int vertexCount) = 0;
+        virtual void destroyVertexBuffer(VertexBufferHandle handle) = 0;
+
+        virtual IndexBufferHandle createIndexBuffer(const void* data, int elementSize, int elementCount) = 0;
+        virtual void destroyIndexBuffer(IndexBufferHandle handle) = 0;
+
+        virtual ProgramHandle createProgram(const char* vsSrc, const char* fsSrc) = 0;
+        virtual void destroyProgram(ProgramHandle handle) = 0;
+        virtual void setProgram(ProgramHandle handle) = 0;
+
+        virtual VertexObjectHandle createVertexObject(const VertexBufferHandle* buffers, int bufferCount, ProgramHandle programHandle) = 0;
+        virtual void destroyVertexObject(VertexObjectHandle handle) = 0;
+
+        virtual void renderIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle,
+            const IndexBufferHandle& indexBufferHandle) = 0;
 
     protected:
         Renderer();

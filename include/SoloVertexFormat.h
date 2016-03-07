@@ -108,7 +108,7 @@ namespace solo
         void add(VertexBufferLayoutElementSemantics semantics, int elementCount);
 
         int getElementCount() const;
-        VertexBufferLayoutElement getElement(int index) const;
+        const VertexBufferLayoutElement& getElement(int index) const;
 
         int getSize() const;
 
@@ -122,7 +122,7 @@ namespace solo
         return size;
     }
 
-    inline VertexBufferLayoutElement VertexBufferLayout::getElement(int index) const
+    inline const VertexBufferLayoutElement& VertexBufferLayout::getElement(int index) const
     {
         // TODO validate index
         return elements[index];

@@ -3,12 +3,13 @@
 #include "SoloBase.h"
 #include "SoloRenderer.h"
 #include "SoloResourcePool.h"
-#include "SoloVertexFormat.h"
 #include <GL/glew.h>
 
 
 namespace solo
 {
+    // TODO const *Handle& everywhere
+    // TODO rename "handle" to something more sensible
     class OpenGLRenderer final: public Renderer
     {
     public:
@@ -32,17 +33,21 @@ namespace solo
         virtual void setFrameBuffer(FrameBufferHandle handle) override final;
         virtual void updateFrameBuffer(FrameBufferHandle handle, const std::vector<TextureHandle> attachments) override final;
 
-        VertexBufferHandle createVertexBuffer(const VertexBufferLayout& layout, const void* data, int vertexCount);
-        void destroyVertexBuffer(VertexBufferHandle handle);
+        virtual VertexBufferHandle createVertexBuffer(const VertexBufferLayout& layout, const void* data, int vertexCount) override final;
+        virtual void destroyVertexBuffer(VertexBufferHandle handle) override final;
 
-        IndexBufferHandle createIndexBuffer(const void* data, int elementSize, int elementCount);
-        void destroyIndexBuffer(IndexBufferHandle handle);
+        virtual IndexBufferHandle createIndexBuffer(const void* data, int elementSize, int elementCount) override final;
+        virtual void destroyIndexBuffer(IndexBufferHandle handle) override final;
 
-        ProgramHandle createProgram(const char* vsSrc, const char* fsSrc);
-        void destroyProgram(ProgramHandle handle);
-        void setProgram(ProgramHandle handle);
+        virtual ProgramHandle createProgram(const char* vsSrc, const char* fsSrc) override final;
+        virtual void destroyProgram(ProgramHandle handle) override final;
+        virtual void setProgram(ProgramHandle handle) override final;
 
-        void render();
+        virtual VertexObjectHandle createVertexObject(const VertexBufferHandle* buffers, int bufferCount, ProgramHandle programHandle) override final;
+        virtual void destroyVertexObject(VertexObjectHandle handle) override final;
+
+        virtual void renderIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle,
+            const IndexBufferHandle& indexBufferHandle) override final;
 
     private:
         friend class Renderer;
@@ -53,6 +58,7 @@ namespace solo
         void bindTexture(GLenum target, TextureHandle handle);
         void bindVertexBuffer(VertexBufferHandle handle);
         void bindIndexBuffer(IndexBufferHandle handle);
+        void bindVertexObject(VertexObjectHandle handle);
         void setTexture(GLenum target, TextureHandle handle, int flags);
         void validateFrameBufferAttachments(const std::vector<TextureHandle> attachments);
 
@@ -73,14 +79,21 @@ namespace solo
         struct VertexBufferData
         {
             GLuint rawHandle = 0;
+            VertexBufferLayout layout;
         };
 
         struct IndexBufferData
         {
             GLuint rawHandle = 0;
+            int elementCount = 0;
         };
 
         struct ProgramData
+        {
+            GLuint rawHandle = 0;
+        };
+
+        struct VertexObjectData
         {
             GLuint rawHandle = 0;
         };
@@ -90,5 +103,6 @@ namespace solo
         ResourcePool<VertexBufferData, SL_MAX_VERTEX_BUFFERS> vertexBuffers;
         ResourcePool<IndexBufferData, SL_MAX_INDEX_BUFFERS> indexBuffers;
         ResourcePool<ProgramData, SL_MAX_PROGRAMS> programs;
+        ResourcePool<VertexObjectData, SL_MAX_VERTEX_OBJECTS> vertexObjects;
     };
 }

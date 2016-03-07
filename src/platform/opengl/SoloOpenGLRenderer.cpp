@@ -5,6 +5,110 @@
 using namespace solo;
 
 
+static GLenum convertPrimitiveType(PrimitiveType type)
+{
+    switch (type)
+    {
+        case PrimitiveType::Triangles:
+            return GL_TRIANGLES;
+        case PrimitiveType::TriangleStrip:
+            return GL_TRIANGLE_STRIP;
+        case PrimitiveType::Lines:
+            return GL_LINES;
+        case PrimitiveType::LineStrip:
+            return GL_LINE_STRIP;
+        case PrimitiveType::Points:
+            return GL_POINTS;
+        default:
+            SL_THROW_IF(true, InvalidInputException, "Unknown primitive type")
+    }
+}
+
+
+static GLint createProgram(GLuint vs, GLuint fs)
+{
+    auto program = glCreateProgram();
+    glAttachShader(program, vs);
+    glAttachShader(program, fs);
+    glLinkProgram(program);
+
+    int status;
+    glGetProgramiv(program, GL_LINK_STATUS, &status);
+    if (status == GL_FALSE)
+    {
+        int logLength;
+        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
+        std::vector<GLchar> log(logLength);
+        glGetProgramInfoLog(program, logLength, nullptr, log.data());
+        glDeleteProgram(program);
+        SL_THROW(EffectCompilationException, "Failed to link program", log.data()); // TODO turn into debug-only exception
+    }
+
+    return program;
+}
+
+
+static GLint compileShader(GLuint type, const char* src)
+{
+    // TODO check source
+
+    static std::unordered_map<GLuint, std::string> typeNames =
+    {
+        { GL_VERTEX_SHADER, "vertex" },
+        { GL_FRAGMENT_SHADER, "fragment" }
+    };
+
+    auto shader = glCreateShader(type);
+
+    glShaderSource(shader, 1, &src, nullptr);
+    glCompileShader(shader);
+
+    int status;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+    if (status == GL_FALSE)
+    {
+        int logLength;
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
+        std::vector<GLchar> log(logLength);
+        glGetShaderInfoLog(shader, logLength, nullptr, log.data());
+        glDeleteShader(shader);
+        SL_THROW(EffectCompilationException, SL_FMT("Failed to compile ", typeNames[type], " shader"), log.data()); // TODO turn into debug-only exception
+    }
+
+    return shader;
+}
+
+
+static std::unordered_map<std::string, GLuint> discoverVertexAttributes(GLuint program)
+{
+    std::unordered_map<std::string, GLuint> attributes;
+
+    GLint activeAttributes = 0;
+    glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
+    if (activeAttributes <= 0)
+        return attributes;
+
+    GLint nameMaxLength = 0;
+    glGetProgramiv(program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &nameMaxLength);
+    if (nameMaxLength <= 0)
+        return attributes;
+
+    GLint attribSize;
+    GLenum attribType;
+    std::vector<GLchar> rawName(nameMaxLength + 1);
+    for (GLint i = 0; i < activeAttributes; ++i)
+    {
+        glGetActiveAttrib(program, i, nameMaxLength, nullptr, &attribSize, &attribType, rawName.data());
+        rawName[nameMaxLength] = '\0';
+        auto location = glGetAttribLocation(program, rawName.data());
+        std::string name = rawName.data();
+        attributes[name] = location;
+    }
+
+    return attributes;
+}
+
+
 OpenGLRenderer::OpenGLRenderer()
 {
 }
@@ -142,8 +246,17 @@ void OpenGLRenderer::bindVertexBuffer(VertexBufferHandle handle)
 
 void OpenGLRenderer::bindIndexBuffer(IndexBufferHandle handle)
 {
+    // TODO pass here the value of the handle to eliminate the need to construct the handle
+    // before calling this function. Same for other similar functions
     auto rawHandle = handle.empty() ? 0 : indexBuffers.getData(handle.value).rawHandle;
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rawHandle);
+}
+
+
+void OpenGLRenderer::bindVertexObject(VertexObjectHandle handle)
+{
+    auto rawHandle = handle.empty() ? 0 : vertexObjects.getData(handle.value).rawHandle;
+    glBindVertexArray(rawHandle);
 }
 
 
@@ -363,7 +476,9 @@ VertexBufferHandle OpenGLRenderer::createVertexBuffer(const VertexBufferLayout& 
 
     VertexBufferHandle handle;
     handle.value = vertexBuffers.reserveHandle();
-    vertexBuffers.getData(handle.value).rawHandle = rawHandle;
+    auto& bufferData = vertexBuffers.getData(handle.value);
+    bufferData.rawHandle = rawHandle;
+    bufferData.layout = layout;
 
     bindVertexBuffer(handle);
     glBufferData(GL_ARRAY_BUFFER, layout.getSize() * vertexCount, data, GL_STATIC_DRAW);
@@ -390,7 +505,9 @@ IndexBufferHandle OpenGLRenderer::createIndexBuffer(const void* data, int elemen
 
     IndexBufferHandle handle;
     handle.value = indexBuffers.reserveHandle();
-    indexBuffers.getData(handle.value).rawHandle = rawHandle;
+    auto& bufferData = indexBuffers.getData(handle.value);
+    bufferData.rawHandle = rawHandle;
+    bufferData.elementCount = elementCount;
 
     bindIndexBuffer(handle);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementSize * elementCount, data, GL_STATIC_DRAW);
@@ -406,60 +523,6 @@ void OpenGLRenderer::destroyIndexBuffer(IndexBufferHandle handle)
     auto rawHandle = handle.empty() ? 0 : indexBuffers.getData(handle.value).rawHandle;
     glDeleteBuffers(1, &rawHandle);
     indexBuffers.releaseHandle(handle.value);
-}
-
-
-static GLint compileShader(GLuint type, const char* src)
-{
-    // TODO check source
-
-    static std::unordered_map<GLuint, std::string> typeNames =
-    {
-        { GL_VERTEX_SHADER, "vertex" },
-        { GL_FRAGMENT_SHADER, "fragment" }
-    };
-
-    auto shader = glCreateShader(type);
-
-    glShaderSource(shader, 1, &src, nullptr);
-    glCompileShader(shader);
-
-    int status;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-    if (status == GL_FALSE)
-    {
-        int logLength;
-        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-        std::vector<GLchar> log(logLength);
-        glGetShaderInfoLog(shader, logLength, nullptr, log.data());
-        glDeleteShader(shader);
-        SL_THROW(EffectCompilationException, SL_FMT("Failed to compile ", typeNames[type], " shader"), log.data()); // TODO turn into debug-only exception
-    }
-
-    return shader;
-}
-
-
-static GLint createProgram(GLuint vs, GLuint fs)
-{
-    auto program = glCreateProgram();
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-    glLinkProgram(program);
-
-    int status;
-    glGetProgramiv(program, GL_LINK_STATUS, &status);
-    if (status == GL_FALSE)
-    {
-        int logLength;
-        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
-        std::vector<GLchar> log(logLength);
-        glGetProgramInfoLog(program, logLength, nullptr, log.data());
-        glDeleteProgram(program);
-        SL_THROW(EffectCompilationException, "Failed to link program", log.data()); // TODO turn into debug-only exception
-    }
-
-    return program;
 }
 
 
@@ -498,7 +561,99 @@ void OpenGLRenderer::setProgram(ProgramHandle handle)
 }
 
 
-void OpenGLRenderer::render()
+VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* buffers, int bufferCount, ProgramHandle programHandle)
 {
-    
+    SL_THROW_IF(programHandle.empty(), InvalidInputException, "Program handle is empty")
+    // TODO validate buffers
+
+    auto rawProgramHandle = programs.getData(programHandle.value).rawHandle;
+    auto attributes = discoverVertexAttributes(rawProgramHandle);
+
+    GLuint rawHandle;
+    glGenVertexArrays(1, &rawHandle);
+    SL_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain vertex object handle")
+
+    VertexObjectHandle handle;
+    handle.value = vertexObjects.reserveHandle();
+    vertexObjects.getData(handle.value).rawHandle = rawHandle;
+
+    bindVertexObject(handle);
+
+    auto getAttributeLocation = [&](const char* name, GLint defaultValue)
+    {
+        auto programAttr = attributes.find(name);
+        return programAttr != attributes.end() ? programAttr->second : defaultValue;
+    };
+
+    for (auto i = 0; i < bufferCount; i++)
+    {
+        const auto& bufferHandle = buffers[i];
+        const auto& layout = vertexBuffers.getData(bufferHandle.value).layout;
+        const auto elementCount = layout.getElementCount();
+        int offset = 0;
+        for (auto j = 0; i < elementCount; j++)
+        {
+            auto& el = layout.getElement(j);
+            GLint attrLoc = 0;
+            switch (el.semantics)
+            {
+                case VertexBufferLayoutElementSemantics::Unknown:
+                default: break;
+                case VertexBufferLayoutElementSemantics::Position: attrLoc = getAttributeLocation("position", 0); break;
+                case VertexBufferLayoutElementSemantics::Normal: attrLoc = getAttributeLocation("normal", 1); break;
+                case VertexBufferLayoutElementSemantics::Color: attrLoc = getAttributeLocation("color", 2); break;
+                case VertexBufferLayoutElementSemantics::Tangent: attrLoc = getAttributeLocation("tangent", 3); break;
+                case VertexBufferLayoutElementSemantics::Binormal: attrLoc = getAttributeLocation("binormal", 4); break;
+                case VertexBufferLayoutElementSemantics::TexCoord0:
+                case VertexBufferLayoutElementSemantics::TexCoord1:
+                case VertexBufferLayoutElementSemantics::TexCoord2:
+                case VertexBufferLayoutElementSemantics::TexCoord3:
+                case VertexBufferLayoutElementSemantics::TexCoord4:
+                case VertexBufferLayoutElementSemantics::TexCoord5:
+                case VertexBufferLayoutElementSemantics::TexCoord6:
+                case VertexBufferLayoutElementSemantics::TexCoord7:
+                    auto idx = static_cast<int>(el.semantics) - static_cast<int>(VertexBufferLayoutElementSemantics::TexCoord0);
+                    auto name = "texCoord" + std::to_string(idx);
+                    attrLoc = getAttributeLocation(name.c_str(), 5 + idx);
+                    break;
+            }
+
+            bindVertexBuffer(bufferHandle);
+            const auto stride = layout.getSize();
+            glVertexAttribPointer(attrLoc, el.size, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
+            glEnableVertexAttribArray(attrLoc);
+            bindVertexBuffer(EmptyVertexBufferHandle);
+
+            offset += el.size * sizeof(float);
+        }
+    }
+
+    bindVertexObject(EmptyVertexObjectHandle);
+
+    return handle;
+}
+
+
+void OpenGLRenderer::destroyVertexObject(VertexObjectHandle handle)
+{
+    SL_THROW_IF(handle.empty(), InvalidInputException, "Vertex object handle is empty")
+    auto rawHandle = handle.empty() ? 0 : vertexObjects.getData(handle.value).rawHandle;
+    glDeleteVertexArrays(1, &rawHandle);
+    vertexObjects.releaseHandle(handle.value);
+}
+
+
+void OpenGLRenderer::renderIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, const IndexBufferHandle& indexBufferHandle)
+{
+    SL_THROW_IF(vertexObjectHandle.empty(), InvalidInputException, "Vertex object handle is empty")
+    SL_THROW_IF(indexBufferHandle.empty(), InvalidInputException, "Index buffer handle is empty")
+
+    bindVertexObject(vertexObjectHandle);
+    bindIndexBuffer(indexBufferHandle);
+
+    const auto& ibData = indexBuffers.getData(indexBufferHandle.value);
+    glDrawElements(convertPrimitiveType(primitiveType), ibData.elementCount, GL_UNSIGNED_SHORT, nullptr);
+
+    bindIndexBuffer(EmptyIndexBufferHandle);
+    bindVertexObject(EmptyVertexObjectHandle);
 }
