@@ -17,7 +17,7 @@ namespace solo
 
         int reserveHandle()
         {
-            SL_ASSERT(end < capacity - 1)
+            SL_ASSERT(end < capacity)
             return handles[end++];
         }
 
@@ -32,6 +32,8 @@ namespace solo
                 }
             }
         }
+
+        int 
 
         T& getData(int handle)
         {
