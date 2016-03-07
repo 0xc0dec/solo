@@ -2,21 +2,12 @@
 
 #include "SoloBase.h"
 #include "SoloVertexFormat.h"
+#include "SoloRenderer.h"
 
 
 namespace solo
 {
-    enum class DeviceMode;
-    enum class MeshIndexFormat;
-
-    enum class MeshPrimitiveType
-    {
-        Triangles,
-        TriangleStrip,
-        Lines,
-        LineStrip,
-        Points
-    };
+    class Effect;
 
     enum class MeshPrefab
     {
@@ -24,65 +15,57 @@ namespace solo
         Cube
     };
 
-    enum class MeshIndexFormat
-    {
-        UnsignedByte,
-        UnsignedShort,
-        UnsignedInt
-    };
-
-    class Mesh
+    class Mesh final
     {
     public:
-        static shared<Mesh> create(DeviceMode mode, const VertexFormat& vertexFormat);
-        static shared<Mesh> createPrefab(DeviceMode mode, MeshPrefab prefab);
+        static shared<Mesh> createPrefab(Renderer* renderer, MeshPrefab prefab);
+
+        Mesh(Renderer* renderer);
+        ~Mesh();
 
         SL_NONCOPYABLE(Mesh)
-        virtual ~Mesh() {}
 
-        virtual void resetData(int slot, const float* data, int elementCount, bool dynamic) = 0;
-        virtual void updateData(int slot, const float* data, int elementCount, int updateFromIndex) = 0;
+        int addBuffer(const VertexBufferLayout& layout, const float* data, int elementCount);
+        void removeBuffer(int index);
 
-        virtual int addIndex(MeshIndexFormat indexFormat) = 0;
-        virtual void removeIndex(int index) = 0;
-        virtual int getIndexCount() const = 0;
+        int addIndex(const void* data, int elementCount);
+        void removeIndex(int index);
+        int getIndexCount() const;
 
-        virtual void resetIndexData(int index, const void* data, int elementCount, bool dynamic) = 0;
-        virtual void updateIndexData(int index, const void* data, int elementCount, int updateFromIndex) = 0;
+        void getEffectBinding() {} // TODO
 
-        virtual MeshPrimitiveType getIndexPrimitiveType(int index) = 0;
-        virtual void setIndexPrimitiveType(int index, MeshPrimitiveType primitiveType) = 0;
+        void draw();
+        void drawIndex(int index);
 
-        virtual void draw() = 0;
-        virtual void drawIndex(int index) = 0;
-
-        VertexFormat getVertexFormat() const;
-
-        void setPrimitiveType(MeshPrimitiveType type);
-        MeshPrimitiveType getPrimitiveType() const;
+        void setPrimitiveType(PrimitiveType type);
+        PrimitiveType getPrimitiveType() const;
 
     protected:
-        Mesh(const VertexFormat& vertexFormat): vertexFormat(vertexFormat) {}
+        static shared<Mesh> createQuadMesh(Renderer* renderer);
+        static shared<Mesh> createBoxMesh(Renderer* renderer);
+        void rebuildVertexObject();
 
-        static shared<Mesh> createQuadMesh(DeviceMode mode);
-        static shared<Mesh> createBoxMesh(DeviceMode mode);
+        Renderer* renderer;
 
-        MeshPrimitiveType primitiveType = MeshPrimitiveType::Triangles;
-        VertexFormat vertexFormat;
+        PrimitiveType primitiveType = PrimitiveType::Triangles;
+        std::vector<VertexBufferHandle> vertexBuffers;
+        std::vector<IndexBufferHandle> indexBuffers;
+        std::unordered_map<int, VertexObjectHandle> perEffectVertexObjectHandles;
+        VertexObjectHandle vertexObjectHandle;
     };
 
-    inline VertexFormat Mesh::getVertexFormat() const
-    {
-        return vertexFormat;
-    }
-
-    inline void Mesh::setPrimitiveType(MeshPrimitiveType type)
+    inline void Mesh::setPrimitiveType(PrimitiveType type)
     {
         primitiveType = type;
     }
 
-    inline MeshPrimitiveType Mesh::getPrimitiveType() const
+    inline PrimitiveType Mesh::getPrimitiveType() const
     {
         return primitiveType;
+    }
+
+    inline int Mesh::getIndexCount() const
+    {
+        return indexBuffers.size();
     }
 }

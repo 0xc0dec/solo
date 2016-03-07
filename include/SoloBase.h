@@ -25,7 +25,7 @@
 #define SL_MAX_VERTEX_OBJECTS 1024
 
 #ifdef SL_DEBUG
-// TODO maybe turn into GL_ASSERT
+// TODO maybe turn into GL_ASSERT or rename to SL_DEBUG_THROW
 #   define SL_THROW_IF(condition, exceptionType, exceptionMessage) \
         { \
             if (condition) \

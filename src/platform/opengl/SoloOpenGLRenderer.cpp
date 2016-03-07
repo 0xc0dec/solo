@@ -563,11 +563,14 @@ void OpenGLRenderer::setProgram(ProgramHandle handle)
 
 VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* buffers, int bufferCount, ProgramHandle programHandle)
 {
-    SL_THROW_IF(programHandle.empty(), InvalidInputException, "Program handle is empty")
     // TODO validate buffers
 
-    auto rawProgramHandle = programs.getData(programHandle.value).rawHandle;
-    auto attributes = discoverVertexAttributes(rawProgramHandle);
+    std::unordered_map<std::string, GLuint> attributes;
+    if (!programHandle.empty())
+    {
+        auto rawProgramHandle = programs.getData(programHandle.value).rawHandle;
+        attributes = discoverVertexAttributes(rawProgramHandle);
+    }
 
     GLuint rawHandle;
     glGenVertexArrays(1, &rawHandle);
@@ -597,22 +600,22 @@ VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* 
             GLint attrLoc = 0;
             switch (el.semantics)
             {
-                case VertexBufferLayoutElementSemantics::Unknown:
+                case VertexBufferLayoutSemantics::Unknown:
                 default: break;
-                case VertexBufferLayoutElementSemantics::Position: attrLoc = getAttributeLocation("position", 0); break;
-                case VertexBufferLayoutElementSemantics::Normal: attrLoc = getAttributeLocation("normal", 1); break;
-                case VertexBufferLayoutElementSemantics::Color: attrLoc = getAttributeLocation("color", 2); break;
-                case VertexBufferLayoutElementSemantics::Tangent: attrLoc = getAttributeLocation("tangent", 3); break;
-                case VertexBufferLayoutElementSemantics::Binormal: attrLoc = getAttributeLocation("binormal", 4); break;
-                case VertexBufferLayoutElementSemantics::TexCoord0:
-                case VertexBufferLayoutElementSemantics::TexCoord1:
-                case VertexBufferLayoutElementSemantics::TexCoord2:
-                case VertexBufferLayoutElementSemantics::TexCoord3:
-                case VertexBufferLayoutElementSemantics::TexCoord4:
-                case VertexBufferLayoutElementSemantics::TexCoord5:
-                case VertexBufferLayoutElementSemantics::TexCoord6:
-                case VertexBufferLayoutElementSemantics::TexCoord7:
-                    auto idx = static_cast<int>(el.semantics) - static_cast<int>(VertexBufferLayoutElementSemantics::TexCoord0);
+                case VertexBufferLayoutSemantics::Position: attrLoc = getAttributeLocation("position", 0); break;
+                case VertexBufferLayoutSemantics::Normal: attrLoc = getAttributeLocation("normal", 1); break;
+                case VertexBufferLayoutSemantics::Color: attrLoc = getAttributeLocation("color", 2); break;
+                case VertexBufferLayoutSemantics::Tangent: attrLoc = getAttributeLocation("tangent", 3); break;
+                case VertexBufferLayoutSemantics::Binormal: attrLoc = getAttributeLocation("binormal", 4); break;
+                case VertexBufferLayoutSemantics::TexCoord0:
+                case VertexBufferLayoutSemantics::TexCoord1:
+                case VertexBufferLayoutSemantics::TexCoord2:
+                case VertexBufferLayoutSemantics::TexCoord3:
+                case VertexBufferLayoutSemantics::TexCoord4:
+                case VertexBufferLayoutSemantics::TexCoord5:
+                case VertexBufferLayoutSemantics::TexCoord6:
+                case VertexBufferLayoutSemantics::TexCoord7:
+                    auto idx = static_cast<int>(el.semantics) - static_cast<int>(VertexBufferLayoutSemantics::TexCoord0);
                     auto name = "texCoord" + std::to_string(idx);
                     attrLoc = getAttributeLocation(name.c_str(), 5 + idx);
                     break;
