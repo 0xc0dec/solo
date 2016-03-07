@@ -25,6 +25,8 @@ namespace solo
     SL_RENDERER_RESOURCE_HANDLE(TextureHandle)
     SL_RENDERER_RESOURCE_HANDLE(FrameBufferHandle)
     SL_RENDERER_RESOURCE_HANDLE(VertexBufferHandle)
+    SL_RENDERER_RESOURCE_HANDLE(IndexBufferHandle)
+    SL_RENDERER_RESOURCE_HANDLE(ProgramHandle)
 
     enum TextureFlags
     {
@@ -74,15 +76,12 @@ namespace solo
 
         virtual TextureHandle createTexture() = 0;
         virtual void destroyTexture(TextureHandle handle) = 0;
-
         virtual void set2DTexture(TextureHandle handle) = 0;
         virtual void set2DTexture(TextureHandle handle, int flags) = 0;
         virtual void set2DTexture(TextureHandle handle, int flags, float anisotropyLevel) = 0;
-
         virtual void setCubeTexture(TextureHandle handle) = 0;
         virtual void setCubeTexture(TextureHandle handle, int flags) = 0;
         virtual void setCubeTexture(TextureHandle handle, int flags, float anisotropyLevel) = 0;
-
         virtual void update2DTexture(TextureHandle handle, ColorFormat format, int width, int height,
             const std::vector<uint8_t>& data) = 0;
         virtual void updateCubeTexture(TextureHandle handle, CubeTextureFace face, ColorFormat format, int width, int height,
@@ -90,9 +89,7 @@ namespace solo
 
         virtual FrameBufferHandle createFrameBuffer() = 0;
         virtual void destroyFrameBuffer(FrameBufferHandle handle) = 0;
-
         virtual void setFrameBuffer(FrameBufferHandle handle) = 0;
-
         virtual void updateFrameBuffer(FrameBufferHandle handle, const std::vector<TextureHandle> attachments) = 0;
 
     protected:

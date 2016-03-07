@@ -145,7 +145,7 @@ void GLSLEffect::discoverVariables()
 void GLSLEffect::discoverVertexAttributes()
 {
     GLint activeAttributes = 0;
-    glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &activeAttributes);
+    glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &activeAttributes); // TODO fix enum
     if (activeAttributes <= 0)
         return;
 

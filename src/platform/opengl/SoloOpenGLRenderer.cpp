@@ -13,12 +13,30 @@ OpenGLRenderer::OpenGLRenderer()
 OpenGLRenderer::~OpenGLRenderer()
 {
     // At this point all resources should already have been released
+
+    // TODO DRY? Never heard of it
     while (frameBuffers.getHandleCount() > 0)
     {
         auto handle = frameBuffers.getHandle(0);
         auto data = frameBuffers.getData(handle);
         glDeleteFramebuffers(1, &data.rawHandle);
         frameBuffers.releaseHandle(handle);
+    }
+
+    while (vertexBuffers.getHandleCount() > 0)
+    {
+        auto handle = vertexBuffers.getHandle(0);
+        auto data = vertexBuffers.getData(handle);
+        glDeleteBuffers(1, &data.rawHandle);
+        vertexBuffers.releaseHandle(handle);
+    }
+
+    while (indexBuffers.getHandleCount() > 0)
+    {
+        auto handle = indexBuffers.getHandle(0);
+        auto data = indexBuffers.getData(handle);
+        glDeleteBuffers(1, &data.rawHandle);
+        indexBuffers.releaseHandle(handle);
     }
 
     while (textures.getHandleCount() > 0)
@@ -37,12 +55,12 @@ TextureHandle OpenGLRenderer::createTexture()
     glGenTextures(1, &rawHandle);
     SL_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain texture handle")
 
-    TextureHandle result;
-    result.value = textures.reserveHandle();
+    TextureHandle handle;
+    handle.value = textures.reserveHandle();
 
-    textures.getData(result.value).rawHandle = rawHandle;
+    textures.getData(handle.value).rawHandle = rawHandle;
 
-    return result;
+    return handle;
 }
 
 
@@ -112,6 +130,20 @@ void OpenGLRenderer::bindTexture(GLenum target, TextureHandle handle)
 {
     auto rawHandle = handle.empty() ? 0 : textures.getData(handle.value).rawHandle;
     glBindTexture(target, rawHandle);
+}
+
+
+void OpenGLRenderer::bindVertexBuffer(VertexBufferHandle handle)
+{
+    auto rawHandle = handle.empty() ? 0 : vertexBuffers.getData(handle.value).rawHandle;
+    glBindBuffer(GL_ARRAY_BUFFER, rawHandle);
+}
+
+
+void OpenGLRenderer::bindIndexBuffer(IndexBufferHandle handle)
+{
+    auto rawHandle = handle.empty() ? 0 : indexBuffers.getData(handle.value).rawHandle;
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rawHandle);
 }
 
 
@@ -257,11 +289,11 @@ FrameBufferHandle OpenGLRenderer::createFrameBuffer()
     glGenFramebuffers(1, &rawHandle);
     SL_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain frame buffer handle")
 
-    FrameBufferHandle result;
-    result.value = frameBuffers.reserveHandle();
-    frameBuffers.getData(result.value).rawHandle = rawHandle;
+    FrameBufferHandle handle;
+    handle.value = frameBuffers.reserveHandle();
+    frameBuffers.getData(handle.value).rawHandle = rawHandle;
 
-    return result;
+    return handle;
 }
 
 
@@ -323,18 +355,21 @@ void OpenGLRenderer::updateFrameBuffer(FrameBufferHandle handle, const std::vect
 }
 
 
-VertexBufferHandle OpenGLRenderer::createVertexBuffer()
+VertexBufferHandle OpenGLRenderer::createVertexBuffer(const VertexBufferLayout& layout, const void* data, int vertexCount)
 {
     GLuint rawHandle = 0;
     glGenBuffers(1, &rawHandle);
     SL_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain vertex buffer handle")
 
-    VertexBufferHandle result;
-    result.value = vertexBuffers.reserveHandle();
+    VertexBufferHandle handle;
+    handle.value = vertexBuffers.reserveHandle();
+    vertexBuffers.getData(handle.value).rawHandle = rawHandle;
 
-    vertexBuffers.getData(result.value).rawHandle = rawHandle;
+    bindVertexBuffer(handle);
+    glBufferData(GL_ARRAY_BUFFER, layout.getSize() * vertexCount, data, GL_STATIC_DRAW);
+    bindVertexBuffer(EmptyVertexBufferHandle);
 
-    return result;
+    return handle;
 }
 
 
@@ -344,4 +379,126 @@ void OpenGLRenderer::destroyVertexBuffer(VertexBufferHandle handle)
     auto rawHandle = handle.empty() ? 0 : vertexBuffers.getData(handle.value).rawHandle;
     glDeleteBuffers(1, &rawHandle);
     vertexBuffers.releaseHandle(handle.value);
+}
+
+
+IndexBufferHandle OpenGLRenderer::createIndexBuffer(const void* data, int elementSize, int elementCount)
+{
+    GLuint rawHandle = 0;
+    glGenBuffers(1, &rawHandle);
+    SL_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain index buffer handle")
+
+    IndexBufferHandle handle;
+    handle.value = indexBuffers.reserveHandle();
+    indexBuffers.getData(handle.value).rawHandle = rawHandle;
+
+    bindIndexBuffer(handle);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementSize * elementCount, data, GL_STATIC_DRAW);
+    bindIndexBuffer(EmptyIndexBufferHandle);
+
+    return handle;
+}
+
+
+void OpenGLRenderer::destroyIndexBuffer(IndexBufferHandle handle)
+{
+    SL_THROW_IF(handle.empty(), InvalidInputException, "Index buffer handle is empty")
+    auto rawHandle = handle.empty() ? 0 : indexBuffers.getData(handle.value).rawHandle;
+    glDeleteBuffers(1, &rawHandle);
+    indexBuffers.releaseHandle(handle.value);
+}
+
+
+static GLint compileShader(GLuint type, const char* src)
+{
+    // TODO check source
+
+    static std::unordered_map<GLuint, std::string> typeNames =
+    {
+        { GL_VERTEX_SHADER, "vertex" },
+        { GL_FRAGMENT_SHADER, "fragment" }
+    };
+
+    auto shader = glCreateShader(type);
+
+    glShaderSource(shader, 1, &src, nullptr);
+    glCompileShader(shader);
+
+    int status;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+    if (status == GL_FALSE)
+    {
+        int logLength;
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
+        std::vector<GLchar> log(logLength);
+        glGetShaderInfoLog(shader, logLength, nullptr, log.data());
+        glDeleteShader(shader);
+        SL_THROW(EffectCompilationException, SL_FMT("Failed to compile ", typeNames[type], " shader"), log.data()); // TODO turn into debug-only exception
+    }
+
+    return shader;
+}
+
+
+static GLint createProgram(GLuint vs, GLuint fs)
+{
+    auto program = glCreateProgram();
+    glAttachShader(program, vs);
+    glAttachShader(program, fs);
+    glLinkProgram(program);
+
+    int status;
+    glGetProgramiv(program, GL_LINK_STATUS, &status);
+    if (status == GL_FALSE)
+    {
+        int logLength;
+        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
+        std::vector<GLchar> log(logLength);
+        glGetProgramInfoLog(program, logLength, nullptr, log.data());
+        glDeleteProgram(program);
+        SL_THROW(EffectCompilationException, "Failed to link program", log.data()); // TODO turn into debug-only exception
+    }
+
+    return program;
+}
+
+
+ProgramHandle OpenGLRenderer::createProgram(const char* vsSrc, const char* fsSrc)
+{
+    auto vs = compileShader(GL_VERTEX_SHADER, vsSrc);
+    auto fs = compileShader(GL_FRAGMENT_SHADER, fsSrc);
+    auto program = ::createProgram(vs, fs);
+
+    glDetachShader(program, vs);
+    glDeleteShader(vs);
+    glDetachShader(program, fs);
+    glDeleteShader(fs);
+
+    ProgramHandle handle;
+    handle.value = programs.reserveHandle();
+    programs.getData(handle.value).rawHandle = program;
+
+    return handle;
+}
+
+
+void OpenGLRenderer::destroyProgram(ProgramHandle handle)
+{
+    SL_THROW_IF(handle.empty(), InvalidInputException, "Program handle is empty")
+    auto rawHandle = handle.empty() ? 0 : programs.getData(handle.value).rawHandle;
+    glDeleteProgram(rawHandle);
+    programs.releaseHandle(handle.value);
+}
+
+
+void OpenGLRenderer::setProgram(ProgramHandle handle)
+{
+    auto rawHandle = handle.empty() ? 0 : programs.getData(handle.value).rawHandle;
+    glUseProgram(rawHandle);
+}
+
+
+void OpenGLRenderer::render()
+{
+    
 }
