@@ -24,6 +24,7 @@ namespace solo
 
     SL_RENDERER_RESOURCE_HANDLE(TextureHandle)
     SL_RENDERER_RESOURCE_HANDLE(FrameBufferHandle)
+    SL_RENDERER_RESOURCE_HANDLE(VertexBufferHandle)
 
     enum TextureFlags
     {

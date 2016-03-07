@@ -36,6 +36,9 @@ namespace solo
 
         virtual void updateFrameBuffer(FrameBufferHandle handle, const std::vector<TextureHandle> attachments) override final;
 
+        VertexBufferHandle createVertexBuffer();
+        void destroyVertexBuffer(VertexBufferHandle handle);
+
     private:
         friend class Renderer;
 
@@ -60,7 +63,13 @@ namespace solo
             int height = 0;
         };
 
+        struct VertexBufferData
+        {
+            GLuint rawHandle = 0;
+        };
+
         ResourcePool<TextureData, SL_MAX_TEXTURES> textures;
         ResourcePool<FrameBufferData, SL_MAX_FRAME_BUFFERS> frameBuffers;
+        ResourcePool<VertexBufferData, SL_MAX_VERTEX_BUFFERS> vertexBuffers;
     };
 }

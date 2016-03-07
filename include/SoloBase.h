@@ -17,8 +17,9 @@
 #   define SL_DEBUG
 #endif
 
-#define SL_MAX_TEXTURES 65536
+#define SL_MAX_TEXTURES 1024
 #define SL_MAX_FRAME_BUFFERS 1024
+#define SL_MAX_VERTEX_BUFFERS 1024
 
 #ifdef SL_DEBUG
 // TODO maybe turn into GL_ASSERT

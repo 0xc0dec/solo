@@ -321,3 +321,27 @@ void OpenGLRenderer::updateFrameBuffer(FrameBufferHandle handle, const std::vect
 
     bindFrameBuffer(EmptyFrameBufferHandle);
 }
+
+
+VertexBufferHandle OpenGLRenderer::createVertexBuffer()
+{
+    GLuint rawHandle = 0;
+    glGenBuffers(1, &rawHandle);
+    SL_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain vertex buffer handle")
+
+    VertexBufferHandle result;
+    result.value = vertexBuffers.reserveHandle();
+
+    vertexBuffers.getData(result.value).rawHandle = rawHandle;
+
+    return result;
+}
+
+
+void OpenGLRenderer::destroyVertexBuffer(VertexBufferHandle handle)
+{
+    SL_THROW_IF(handle.empty(), InvalidInputException, "Vertex buffer handle is empty")
+    auto rawHandle = handle.empty() ? 0 : vertexBuffers.getData(handle.value).rawHandle;
+    glDeleteBuffers(1, &rawHandle);
+    vertexBuffers.releaseHandle(handle.value);
+}
