@@ -6,8 +6,7 @@
 class FrameBuffer_Test : public TestBase
 {
 public:
-    FrameBuffer_Test(Device *device):
-        TestBase(device)
+    FrameBuffer_Test(Device *device): TestBase(device)
     {
     }
 

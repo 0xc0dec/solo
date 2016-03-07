@@ -232,13 +232,13 @@
     <ClInclude Include="..\src\platform\stub\SoloStubRenderer.h">
       <Filter>src\platform\stub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloResourcePool.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloRenderer.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloFrameBuffer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloResourcePool.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

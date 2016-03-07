@@ -6,8 +6,7 @@
 class Transform_Test : public TestBase
 {
 public:
-    Transform_Test(Device *device):
-        TestBase(device)
+    Transform_Test(Device *device): TestBase(device)
     {
     }
 

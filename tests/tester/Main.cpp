@@ -8,6 +8,7 @@
 #include "BitFlags_Test.h"
 #include "MeshRenderer_Test.h"
 #include "Mesh_Test.h"
+#include "ResourcePool_Test.h"
 
 using namespace solo;
 
@@ -39,6 +40,7 @@ void runCppUnitTests()
         Transform_Test(device.get()).run();
         MeshRenderer_Test(device.get()).run();
         BitFlags_Test(device.get()).run();
+        ResourcePool_Test(device.get()).run();
         device->requestShutdown();
     });
     device->run();

@@ -12,6 +12,7 @@
     <ClInclude Include="..\tests\tester\TestBase.h" />
     <ClInclude Include="..\tests\tester\Transform_Test.h" />
     <ClInclude Include="..\tests\tester\FrameBuffer_Test.h" />
+    <ClInclude Include="..\tests\tester\ResourcePool_Test.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tests\tester\Main.cpp" />

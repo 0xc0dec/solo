@@ -33,6 +33,7 @@
 #include "SoloRenderContext.h"
 #include "SoloRenderQueue.h"
 #include "SoloResourceManager.h"
+#include "SoloResourcePool.h"
 #include "SoloScene.h"
 #include "SoloScriptManager.h"
 #include "SoloSkyboxRenderer.h"

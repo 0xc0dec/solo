@@ -6,8 +6,7 @@
 class Device_Test : public TestBase
 {
 public:
-    Device_Test(Device *device):
-        TestBase(device)
+    Device_Test(Device *device): TestBase(device)
     {
     }
 

@@ -2,6 +2,7 @@
 
 #include "TestBase.h"
 
+
 class BitFlags_Test : public TestBase
 {
 public:

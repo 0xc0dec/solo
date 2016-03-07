@@ -2,7 +2,7 @@
 
 #include "SoloBase.h"
 #include "SoloRenderer.h"
-#include "../../SoloResourcePool.h"
+#include "SoloResourcePool.h"
 #include <GL/glew.h>
 
 

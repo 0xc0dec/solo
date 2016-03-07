@@ -2,11 +2,11 @@
 
 #include "TestBase.h"
 
+
 class MeshRenderer_Test : public TestBase
 {
 public:
-    MeshRenderer_Test(Device *device) :
-        TestBase(device)
+    MeshRenderer_Test(Device *device): TestBase(device)
     {
     }
 

@@ -38,6 +38,7 @@
     <ClInclude Include="..\include\SoloRenderer.h" />
     <ClInclude Include="..\include\SoloRenderQueue.h" />
     <ClInclude Include="..\include\SoloFrameBuffer.h" />
+    <ClInclude Include="..\include\SoloResourcePool.h" />
     <ClInclude Include="..\include\SoloScriptManager.h" />
     <ClInclude Include="..\include\SoloCubeTexture.h" />
     <ClInclude Include="..\include\SoloImageLoader.h" />
@@ -98,7 +99,6 @@
     <ClInclude Include="..\src\SoloMeshLoader.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPngImageLoader.h" />
-    <ClInclude Include="..\src\SoloResourcePool.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\platform\opengl\SoloGLSLEffect.cpp" />

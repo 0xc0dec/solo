@@ -6,8 +6,7 @@
 class Resources_Test : public TestBase
 {
 public:
-    Resources_Test(Device *device):
-        TestBase(device)
+    Resources_Test(Device *device): TestBase(device)
     {
     }
 

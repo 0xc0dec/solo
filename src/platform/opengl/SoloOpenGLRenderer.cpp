@@ -12,7 +12,22 @@ OpenGLRenderer::OpenGLRenderer()
 
 OpenGLRenderer::~OpenGLRenderer()
 {
-    // TODO free resources
+    // At this point all resources should already have been released
+    while (frameBuffers.getHandleCount() > 0)
+    {
+        auto handle = frameBuffers.getHandle(0);
+        auto data = frameBuffers.getData(handle);
+        glDeleteFramebuffers(1, &data.rawHandle);
+        frameBuffers.releaseHandle(handle);
+    }
+
+    while (textures.getHandleCount() > 0)
+    {
+        auto handle = textures.getHandle(0);
+        auto data = textures.getData(handle);
+        glDeleteTextures(1, &data.rawHandle);
+        textures.releaseHandle(handle);
+    }
 }
 
 
@@ -255,6 +270,7 @@ void OpenGLRenderer::destroyFrameBuffer(FrameBufferHandle handle)
     SL_THROW_IF(handle.empty(), InvalidInputException, "Frame buffer handle is empty")
     auto rawHandle = handle.empty() ? 0 : frameBuffers.getData(handle.value).rawHandle;
     glDeleteFramebuffers(1, &rawHandle);
+    // TODO release depth buffer?
     frameBuffers.releaseHandle(handle.value);
 }
 
