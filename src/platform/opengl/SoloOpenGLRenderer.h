@@ -8,26 +8,26 @@
 
 namespace solo
 {
-    class OpenGLRenderer: public Renderer
+    class OpenGLRenderer final: public Renderer
     {
     public:
         ~OpenGLRenderer();
 
-        virtual TextureHandle createTexture() override;
-        virtual void destroyTexture(TextureHandle handle) override;
+        virtual TextureHandle createTexture() override final;
+        virtual void destroyTexture(TextureHandle handle) override final;
 
-        virtual void set2DTexture(TextureHandle handle) override;
-        virtual void set2DTexture(TextureHandle handle, int flags) override;
-        virtual void set2DTexture(TextureHandle handle, int flags, float anisotropyLevel) override;
+        virtual void set2DTexture(TextureHandle handle) override final;
+        virtual void set2DTexture(TextureHandle handle, int flags) override final;
+        virtual void set2DTexture(TextureHandle handle, int flags, float anisotropyLevel) override final;
 
-        virtual void setCubeTexture(TextureHandle handle) override;
-        virtual void setCubeTexture(TextureHandle handle, int flags) override;
-        virtual void setCubeTexture(TextureHandle handle, int flags, float anisotropyLevel) override;
+        virtual void setCubeTexture(TextureHandle handle) override final;
+        virtual void setCubeTexture(TextureHandle handle, int flags) override final;
+        virtual void setCubeTexture(TextureHandle handle, int flags, float anisotropyLevel) override final;
         
         virtual void update2DTexture(TextureHandle handle, ColorFormat format, int width, int height,
-            const std::vector<uint8_t>& data) override;
+            const std::vector<uint8_t>& data) override final;
         virtual void updateCubeTexture(TextureHandle handle, CubeTextureFace face, ColorFormat format, int width, int height,
-            const std::vector<uint8_t>& data) override;
+            const std::vector<uint8_t>& data) override final;
 
         virtual FrameBufferHandle createFrameBuffer() override final;
         virtual void destroyFrameBuffer(FrameBufferHandle handle) override final;

@@ -10,6 +10,7 @@
 #include <map>
 #include <list>
 #include <vector>
+#include <cassert>
 
 
 #ifndef NDEBUG
@@ -20,15 +21,17 @@
 #define SL_MAX_FRAME_BUFFERS 1024
 
 #ifdef SL_DEBUG
+// TODO maybe turn into GL_ASSERT
 #   define SL_THROW_IF(condition, exceptionType, exceptionMessage) \
         { \
             if (condition) \
                 SL_THROW_FMT(exceptionType, exceptionMessage); \
         }
-
+#   define SL_ASSERT(condition) assert(condition);
 #   define SL_MAYBE(code) code;
 #else
 #   define SL_THROW_IF(condition, exceptionType, exceptionMessage)
+#   define SL_ASSERT(condition, msg)
 #   define SL_MAYBE(function)
 #endif
 

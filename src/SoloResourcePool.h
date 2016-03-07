@@ -17,7 +17,7 @@ namespace solo
 
         int reserveHandle()
         {
-            // TODO check availability
+            SL_ASSERT(end < capacity - 1)
             return handles[end++];
         }
 

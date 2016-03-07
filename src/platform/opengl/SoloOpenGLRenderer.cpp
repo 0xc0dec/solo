@@ -10,6 +10,12 @@ OpenGLRenderer::OpenGLRenderer()
 }
 
 
+OpenGLRenderer::~OpenGLRenderer()
+{
+    // TODO free resources
+}
+
+
 TextureHandle OpenGLRenderer::createTexture()
 {
     GLuint rawHandle = 0;
@@ -170,12 +176,6 @@ void OpenGLRenderer::validateFrameBufferAttachments(const std::vector<TextureHan
                 SL_THROW(InvalidInputException, "Frame buffer attachments must have the same size");
         }
     }
-}
-
-
-OpenGLRenderer::~OpenGLRenderer()
-{
-    // TODO free resources
 }
 
 
