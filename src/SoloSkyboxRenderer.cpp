@@ -30,17 +30,21 @@ SkyboxRenderer::SkyboxRenderer(Node node):
 
     quadMesh = resourceManager->getOrCreatePrefabMesh(MeshPrefab::Quad, "/solo/internal/skybox-renderer/mesh");
 
-    binding = MeshEffectBinding::create(device->getMode(), quadMesh.get(), material->getEffect());
+    binding = quadMesh->createEffectBinding(material->getEffect());
 }
 
 
 void SkyboxRenderer::render(RenderContext& context)
 {
     material->bind(context);
-    binding->bind();
-    quadMesh->drawIndex(0);
-    binding->unbind();
+    quadMesh->drawIndex(0, &binding);
     material->unbind(context);
+}
+
+
+void SkyboxRenderer::terminate()
+{
+    binding.destroy();
 }
 
 

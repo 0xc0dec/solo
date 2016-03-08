@@ -18,7 +18,11 @@ namespace solo
     struct MeshEffectBinding
     {
         VertexObjectHandle vertexObjectHandle;
-        Renderer* renderer;
+        Renderer* renderer = nullptr;
+
+        MeshEffectBinding()
+        {
+        }
 
         MeshEffectBinding(Renderer* renderer, VertexObjectHandle handle):
             vertexObjectHandle(handle),

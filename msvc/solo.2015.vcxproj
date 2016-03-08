@@ -73,8 +73,6 @@
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLCamera.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLHelper.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLMaterial.h" />
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLMesh.h" />
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLMeshEffectBinding.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderer.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLSurfaceRenderer.h" />
     <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h" />
@@ -89,13 +87,10 @@
     <ClInclude Include="..\src\platform\stub\SoloStubFileSystem.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubImageLoader.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubMaterial.h" />
-    <ClInclude Include="..\src\platform\stub\SoloStubMesh.h" />
-    <ClInclude Include="..\src\platform\stub\SoloStubMeshEffectBinding.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubMeshLoader.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubRenderer.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubResourceManager.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubSurfaceRenderer.h" />
-    <ClInclude Include="..\src\SoloMeshEffectBinding.h" />
     <ClInclude Include="..\src\SoloMeshLoader.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPngImageLoader.h" />
@@ -107,8 +102,6 @@
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLCamera.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLHelper.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLMaterial.cpp" />
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLMesh.cpp" />
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLMeshEffectBinding.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderer.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLSurfaceRenderer.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp" />
@@ -120,11 +113,9 @@
     <ClCompile Include="..\src\platform\stub\SoloStubEffect.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubFileSystem.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubImageLoader.cpp" />
-    <ClCompile Include="..\src\platform\stub\SoloStubMesh.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubMeshLoader.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubResourceManager.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
-    <ClCompile Include="..\src\SoloMeshEffectBinding.cpp" />
     <ClCompile Include="..\src\SoloRenderer.cpp" />
     <ClCompile Include="..\src\SoloScriptManager.cpp" />
     <ClCompile Include="..\src\SoloSkyboxRenderer.cpp" />
