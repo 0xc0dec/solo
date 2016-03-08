@@ -17,7 +17,7 @@ namespace solo
 
         int reserveHandle()
         {
-            SL_ASSERT(end < capacity) // TODO THROW_IF?
+            SL_DEBUG_THROW_IF(end >= capacity, InternalException, "Resource pool is full")
             return handles[end++];
         }
 

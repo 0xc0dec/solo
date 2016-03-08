@@ -6,15 +6,16 @@
 using namespace solo;
 
 
-shared<Renderer> Renderer::create(DeviceMode mode)
+shared<Renderer> Renderer::create(Device* device)
 {
-    if (mode == DeviceMode::OpenGL)
-        return SL_NEW_SHARED(OpenGLRenderer);
-    return SL_NEW_SHARED(StubRenderer);
+    if (device->getMode() == DeviceMode::OpenGL)
+        return SL_NEW_SHARED(OpenGLRenderer, device);
+    return SL_NEW_SHARED(StubRenderer, device);
 }
 
 
-Renderer::Renderer()
+Renderer::Renderer(Device* device):
+    device(device)
 {
 }
 

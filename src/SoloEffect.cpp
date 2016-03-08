@@ -1,33 +1,51 @@
+#include "SoloEffect.h"
 #include "SoloDevice.h"
-#include "platform/stub/SoloStubEffect.h"
-#include "platform/opengl/SoloGLSLEffect.h"
 #include "platform/opengl/SoloOpenGLBuiltInShaders.h"
 
 using namespace solo;
 
 
-shared<Effect> Effect::create(DeviceMode mode, const std::string& vsSrc, const std::string& fsSrc)
+Effect::Effect(Renderer* renderer, const std::string& vsSrc, const std::string& fsSrc):
+    renderer(renderer)
 {
-    if (mode == DeviceMode::OpenGL)
-        return SL_NEW_SHARED(GLSLEffect, vsSrc, fsSrc);
-    return SL_NEW_SHARED(StubEffect);
+    handle = renderer->createProgram(vsSrc.c_str(), fsSrc.c_str());
 }
 
 
-shared<Effect> Effect::createPrefab(DeviceMode mode, EffectPrefab prefab)
+Effect::Effect(Renderer* renderer, EffectPrefab prefab):
+    renderer(renderer)
 {
+    auto mode = renderer->getDevice()->getMode();
     switch (prefab)
     {
-    case EffectPrefab::Skybox:
+        case EffectPrefab::Skybox:
         {
             // TODO would be better to remove platform knowledge from here
             if (mode == DeviceMode::OpenGL)
-                return create(mode, OpenGLBuiltInShaders::vsSkybox, OpenGLBuiltInShaders::fsSkybox);
-            return create(DeviceMode::Stub, "", "");
+                handle = renderer->createProgram(OpenGLBuiltInShaders::vsSkybox, OpenGLBuiltInShaders::fsSkybox);
         }
-    default:
-        SL_THROW_FMT(InvalidInputException, "Unknown effect prefab");
+        default:
+            SL_DEBUG_THROW_IF(true, InvalidInputException, "Unknown effect prefab");
     }
+}
+
+
+Effect::~Effect()
+{
+    if (!handle.empty())
+        renderer->destroyProgram(handle);
+}
+
+
+void Effect::bind()
+{
+    renderer->setProgram(handle);
+}
+
+
+void Effect::unbind()
+{
+    renderer->setProgram(EmptyProgramHandle);
 }
 
 
@@ -35,16 +53,6 @@ EffectVariable* Effect::findVariable(const std::string& name) const
 {
     auto where = variables.find(name);
     if (where != variables.end())
-        return where->second.get();
-    return nullptr;
-}
-
-
-EffectVertexAttribute* Effect::findVertexAttribute(const std::string& name) const
-{
-    // TODO eliminate copy-paste from findVariable
-    auto where = vertexAttributes.find(name);
-    if (where != vertexAttributes.end())
         return where->second.get();
     return nullptr;
 }

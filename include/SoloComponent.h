@@ -17,7 +17,7 @@ namespace solo
             // Ids 0..999999999 are reserved for C++ components (including the engine built-ins)
             // Ids from 1000000000 are meant for the script components
             static const auto id = counter++;
-            SL_THROW_IF(id >= 1000000000, InternalException, "Maximum type id reached")
+            SL_DEBUG_THROW_IF(id >= 1000000000, InternalException, "Maximum type id reached")
             return id;
         }
 

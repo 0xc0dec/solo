@@ -47,7 +47,7 @@ int Mesh::addBuffer(const VertexBufferLayout& layout, const float* data, int ver
 
 void Mesh::removeBuffer(int index)
 {
-    SL_THROW_IF(index < 0 || index >= vertexBuffers.size(), InvalidInputException, "Invalid buffer index")
+    SL_DEBUG_THROW_IF(index < 0 || index >= vertexBuffers.size(), InvalidInputException, "Invalid buffer index")
     renderer->destroyVertexBuffer(vertexBuffers[index]);
     vertexBuffers.erase(vertexBuffers.begin() + index);
     vertexCounts.erase(vertexCounts.begin() + index);
@@ -66,7 +66,7 @@ int Mesh::addIndex(const void* data, int elementCount)
 
 void Mesh::removeIndex(int index)
 {
-    SL_THROW_IF(index < 0 || index >= indexBuffers.size(), InvalidInputException, "Invalid index index")
+    SL_DEBUG_THROW_IF(index < 0 || index >= indexBuffers.size(), InvalidInputException, "Invalid index index")
     renderer->destroyIndexBuffer(indexBuffers[index]);
     indexBuffers.erase(indexBuffers.begin() + index);
 }
@@ -95,7 +95,7 @@ void Mesh::recalculateMinVertexCount()
 
 MeshEffectBinding Mesh::createEffectBinding(Effect* effect)
 {
-    SL_THROW_IF(!effect, InvalidInputException, "No effect specified")
+    SL_DEBUG_THROW_IF(!effect, InvalidInputException, "No effect specified")
     const auto vo = renderer->createVertexObject(vertexBuffers.data(), vertexBuffers.size(), effect->getHandle());
     return MeshEffectBinding{ vo };
 }
@@ -111,7 +111,7 @@ void Mesh::draw(MeshEffectBinding* effectBinding = nullptr)
 
 void Mesh::drawIndex(int index, MeshEffectBinding* effectBinding = nullptr)
 {
-    SL_THROW_IF(index < 0 || index >= indexBuffers.size(), InvalidInputException, "Invalid index")
+    SL_DEBUG_THROW_IF(index < 0 || index >= indexBuffers.size(), InvalidInputException, "Invalid index")
     const auto& handle = effectBinding ? effectBinding->vertexObjectHandle : vertexObjectHandle;
     if (!handle.empty())
         renderer->renderIndexedVertexObject(primitiveType, handle, indexBuffers[index]);

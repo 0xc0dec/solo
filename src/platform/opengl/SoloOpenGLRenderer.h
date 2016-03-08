@@ -53,7 +53,7 @@ namespace solo
     private:
         friend class Renderer;
 
-        OpenGLRenderer();
+        explicit OpenGLRenderer(Device* device);
 
         void bindFrameBuffer(FrameBufferHandle handle);
         void bindTexture(GLenum target, TextureHandle handle);

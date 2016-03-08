@@ -19,8 +19,7 @@
 
 namespace solo
 {
-    enum class DeviceMode;
-
+    class Device;
     const int EmptyHandleValue = -1;
 
     SL_RENDERER_RESOURCE_HANDLE(TextureHandle)
@@ -80,10 +79,12 @@ namespace solo
     class Renderer
     {
     public:
-        static shared<Renderer> create(DeviceMode mode);
+        static shared<Renderer> create(Device* device);
 
         SL_NONCOPYABLE(Renderer)
         virtual ~Renderer();
+
+        Device* getDevice() const;
 
         virtual TextureHandle createTexture() = 0;
         virtual void destroyTexture(TextureHandle handle) = 0;
@@ -94,7 +95,7 @@ namespace solo
         virtual void setCubeTexture(TextureHandle handle, int flags) = 0;
         virtual void setCubeTexture(TextureHandle handle, int flags, float anisotropyLevel) = 0;
         virtual void update2DTexture(TextureHandle handle, ColorFormat format, int width, int height,
-            const std::vector<uint8_t>& data) = 0;
+            const std::vector<uint8_t>& data) = 0; // TODO use strict types everywhere
         virtual void updateCubeTexture(TextureHandle handle, CubeTextureFace face, ColorFormat format, int width, int height,
             const std::vector<uint8_t>& data) = 0;
 
@@ -121,6 +122,13 @@ namespace solo
         virtual void renderVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, int vertexCount) = 0;
 
     protected:
-        Renderer();
+        explicit Renderer(Device* device);
+
+        Device* device;
     };
+
+    inline Device* Renderer::getDevice() const
+    {
+        return device;
+    }
 }

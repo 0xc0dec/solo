@@ -75,7 +75,7 @@ namespace solo
 
         MaterialParameter(const std::string& name, Material* material);
 
-        void tryClearOldValue(ValueType newExpectedValue);
+        void clearOldValue(ValueType newType);
 
         Material* material;
 
