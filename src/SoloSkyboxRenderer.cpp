@@ -7,7 +7,6 @@
 #include "SoloResourceManager.h"
 #include "SoloRenderContext.h"
 #include "SoloCubeTexture.h"
-#include "SoloMeshEffectBinding.h"
 
 using namespace solo;
 
