@@ -31,7 +31,7 @@ namespace solo
         shared<Mesh> mesh;
         DeviceMode deviceMode;
         std::unordered_map<int, shared<Material>> materials;
-        std::unordered_map<int, shared<MeshEffectBinding>> bindings;
+        std::unordered_map<int, MeshEffectBinding> bindings;
     };
 
     inline Mesh* MeshRenderer::getMesh() const

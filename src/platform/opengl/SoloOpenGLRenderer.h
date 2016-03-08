@@ -48,6 +48,7 @@ namespace solo
 
         virtual void renderIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle,
             const IndexBufferHandle& indexBufferHandle) override final;
+        virtual void renderVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, int vertexCount) override final;
 
     private:
         friend class Renderer;
@@ -80,6 +81,7 @@ namespace solo
         {
             GLuint rawHandle = 0;
             VertexBufferLayout layout;
+            int vertexCount = 0;
         };
 
         struct IndexBufferData

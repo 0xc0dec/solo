@@ -479,6 +479,7 @@ VertexBufferHandle OpenGLRenderer::createVertexBuffer(const VertexBufferLayout& 
     auto& bufferData = vertexBuffers.getData(handle.value);
     bufferData.rawHandle = rawHandle;
     bufferData.layout = layout;
+    bufferData.vertexCount = vertexCount;
 
     bindVertexBuffer(handle);
     glBufferData(GL_ARRAY_BUFFER, layout.getSize() * vertexCount, data, GL_STATIC_DRAW);
@@ -658,5 +659,14 @@ void OpenGLRenderer::renderIndexedVertexObject(PrimitiveType primitiveType, cons
     glDrawElements(convertPrimitiveType(primitiveType), ibData.elementCount, GL_UNSIGNED_SHORT, nullptr);
 
     bindIndexBuffer(EmptyIndexBufferHandle);
+    bindVertexObject(EmptyVertexObjectHandle);
+}
+
+
+void OpenGLRenderer::renderVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, int vertexCount)
+{
+    SL_THROW_IF(vertexObjectHandle.empty(), InvalidInputException, "Vertex object handle is empty")
+    bindVertexObject(vertexObjectHandle);
+    glDrawArrays(convertPrimitiveType(primitiveType), 0, vertexCount);
     bindVertexObject(EmptyVertexObjectHandle);
 }

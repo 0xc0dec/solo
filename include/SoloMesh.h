@@ -15,6 +15,23 @@ namespace solo
         Cube
     };
 
+    struct MeshEffectBinding
+    {
+        VertexObjectHandle vertexObjectHandle;
+        Renderer* renderer;
+
+        MeshEffectBinding(Renderer* renderer, VertexObjectHandle handle):
+            vertexObjectHandle(handle),
+            renderer(renderer)
+        {
+        }
+
+        void destroy() // TODO switch to RAII instead
+        {
+            renderer->destroyVertexObject(vertexObjectHandle);
+        }
+    };
+
     class Mesh final
     {
     public:
@@ -32,10 +49,10 @@ namespace solo
         void removeIndex(int index);
         int getIndexCount() const;
 
-        void getEffectBinding() {} // TODO
+        MeshEffectBinding createEffectBinding(Effect* effect);
 
-        void draw();
-        void drawIndex(int index);
+        void draw(MeshEffectBinding* effectBinding = nullptr);
+        void drawIndex(int index, MeshEffectBinding* effectBinding = nullptr);
 
         void setPrimitiveType(PrimitiveType type);
         PrimitiveType getPrimitiveType() const;
@@ -44,13 +61,15 @@ namespace solo
         static shared<Mesh> createQuadMesh(Renderer* renderer);
         static shared<Mesh> createBoxMesh(Renderer* renderer);
         void rebuildVertexObject();
+        void recalculateMinVertexCount();
 
         Renderer* renderer;
 
         PrimitiveType primitiveType = PrimitiveType::Triangles;
         std::vector<VertexBufferHandle> vertexBuffers;
         std::vector<IndexBufferHandle> indexBuffers;
-        std::unordered_map<int, VertexObjectHandle> perEffectVertexObjectHandles;
+        std::vector<int> vertexCounts;
+        int minVertexCount = 0;
         VertexObjectHandle vertexObjectHandle;
     };
 

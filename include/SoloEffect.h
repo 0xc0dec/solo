@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SoloBase.h"
+#include "SoloRenderer.h"
 
 
 namespace solo
@@ -22,6 +23,8 @@ namespace solo
 
         SL_NONCOPYABLE(Effect)
         virtual ~Effect() {}
+
+        ProgramHandle getHandle() const { } // TODO
 
         virtual void bind() = 0;
         virtual void unbind() = 0;

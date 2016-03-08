@@ -118,6 +118,7 @@ namespace solo
 
         virtual void renderIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle,
             const IndexBufferHandle& indexBufferHandle) = 0;
+        virtual void renderVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, int vertexCount) = 0;
 
     protected:
         Renderer();

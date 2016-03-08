@@ -2,7 +2,6 @@
 #include "SoloMesh.h"
 #include "SoloMaterial.h"
 #include "SoloRenderContext.h"
-#include "SoloMeshEffectBinding.h"
 #include "SoloDevice.h"
 
 using namespace solo;
@@ -28,9 +27,7 @@ void MeshRenderer::render(RenderContext& context)
         if (material)
         {
             material->bind(context);
-            bindings[0]->bind();
-            mesh->draw();
-            bindings[0]->unbind();
+            mesh->draw(&bindings[0]);
             material->unbind(context);
         }
     }
@@ -42,9 +39,7 @@ void MeshRenderer::render(RenderContext& context)
             if (material)
             {
                 material->bind(context);
-                bindings[i]->bind();
-                mesh->drawIndex(i);
-                bindings[i]->unbind();
+                mesh->drawIndex(i, &bindings[i]);
                 material->unbind(context);
             }
         }
@@ -57,28 +52,34 @@ void MeshRenderer::setMesh(shared<Mesh> mesh)
     this->mesh = mesh;
     // TODO maybe retain one material, if any
     materials.clear();
-    bindings.clear();
+    while (!bindings.empty())
+    {
+        bindings.begin()->second.destroy();
+        bindings.erase(bindings.begin());
+    }
 }
 
 
 void MeshRenderer::setMaterial(int index, shared<Material> material)
 {
-    if (!mesh)
-        SL_THROW_FMT(InvalidOperationException, "Renderer has no mesh, setting material has no effect");
+    // TODO remove such checks. It should be obvious to the user that the index must be valid
+    SL_THROW_IF(!mesh, InvalidOperationException, "Renderer has no mesh, setting material has no effect")
+    SL_MAYBE({
+        auto indexCount = mesh->getIndexCount();
+        if (indexCount > 0 && index >= indexCount)
+            SL_THROW_FMT(InvalidOperationException, "Trying to set material with index ", index, ", but mesh has only ", indexCount, " indexes");
+    })
 
-    auto indexCount = mesh->getIndexCount();
-    if (indexCount > 0 && index >= indexCount)
-        SL_THROW_FMT(InvalidOperationException, "Trying to set material with index ", index, ", but mesh has only ", indexCount, " indexes");
-
-    if (!material)
+    if (material)
     {
-        materials.erase(index);
-        bindings.erase(index);
+        materials[index] = material;
+        bindings[index] = mesh->createEffectBinding(material->getEffect());
     }
     else
     {
-        materials[index] = material;
-        bindings[index] = MeshEffectBinding::create(deviceMode, mesh.get(), material->getEffect());
+        materials.erase(index);
+        bindings[index].destroy();
+        bindings.erase(index);
     }
 }
 

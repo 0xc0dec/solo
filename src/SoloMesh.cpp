@@ -1,5 +1,6 @@
-#include "SoloDevice.h"
-#include "platform/stub/SoloStubMesh.h"
+#include "SoloMesh.h"
+#include "SoloEffect.h"
+#include <algorithm>
 
 using namespace solo;
 
@@ -27,26 +28,19 @@ Mesh::Mesh(Renderer* renderer):
 Mesh::~Mesh()
 {
     while (!vertexBuffers.empty())
-    {
-        const auto& handle = vertexBuffers.back();
-        renderer->destroyVertexBuffer(handle);
-        vertexBuffers.pop_back();
-    }
-
+        removeBuffer(0);
     while (!indexBuffers.empty())
-    {
-        const auto& handle = indexBuffers.back();
-        renderer->destroyIndexBuffer(handle);
-        indexBuffers.pop_back();
-    }
+        removeIndex(0);
 }
 
 
-int Mesh::addBuffer(const VertexBufferLayout& layout, const float* data, int elementCount)
+int Mesh::addBuffer(const VertexBufferLayout& layout, const float* data, int vertexCount)
 {
-    auto handle = renderer->createVertexBuffer(layout, data, elementCount);
+    auto handle = renderer->createVertexBuffer(layout, data, vertexCount);
     vertexBuffers.push_back(handle);
+    vertexCounts.push_back(vertexCount);
     rebuildVertexObject();
+    recalculateMinVertexCount();
     return vertexBuffers.size() - 1;
 }
 
@@ -56,7 +50,9 @@ void Mesh::removeBuffer(int index)
     SL_THROW_IF(index < 0 || index >= vertexBuffers.size(), InvalidInputException, "Invalid buffer index")
     renderer->destroyVertexBuffer(vertexBuffers[index]);
     vertexBuffers.erase(vertexBuffers.begin() + index);
+    vertexCounts.erase(vertexCounts.begin() + index);
     rebuildVertexObject();
+    recalculateMinVertexCount();
 }
 
 
@@ -89,16 +85,36 @@ void Mesh::rebuildVertexObject()
 }
 
 
-void Mesh::draw()
+void Mesh::recalculateMinVertexCount()
 {
-    if (vertexObjectHandle.empty())
-        return;
+    minVertexCount = INT_MAX;
+    for (const auto& count : vertexCounts)
+        minVertexCount = std::min(count, minVertexCount);
 }
 
 
-void Mesh::drawIndex(int index)
+MeshEffectBinding Mesh::createEffectBinding(Effect* effect)
 {
-    
+    SL_THROW_IF(!effect, InvalidInputException, "No effect specified")
+    const auto vo = renderer->createVertexObject(vertexBuffers.data(), vertexBuffers.size(), effect->getHandle());
+    return MeshEffectBinding{ vo };
+}
+
+
+void Mesh::draw(MeshEffectBinding* effectBinding = nullptr)
+{
+    const auto& handle = effectBinding ? effectBinding->vertexObjectHandle : vertexObjectHandle;
+    if (!handle.empty())
+        renderer->renderVertexObject(primitiveType, handle, minVertexCount);
+}
+
+
+void Mesh::drawIndex(int index, MeshEffectBinding* effectBinding = nullptr)
+{
+    SL_THROW_IF(index < 0 || index >= indexBuffers.size(), InvalidInputException, "Invalid index")
+    const auto& handle = effectBinding ? effectBinding->vertexObjectHandle : vertexObjectHandle;
+    if (!handle.empty())
+        renderer->renderIndexedVertexObject(primitiveType, handle, indexBuffers[index]);
 }
 
 
