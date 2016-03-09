@@ -1,12 +1,29 @@
 #pragma once
 
 #include "SoloFormatter.h"
+#include "SoloConfig.h"
 #include <string>
 #include <exception>
 
 
 #define SL_THROW(TExc, ...) throw TExc(__VA_ARGS__)
 #define SL_THROW_FMT(TExc, ...) throw TExc(SL_FMT(__VA_ARGS__))
+
+#ifdef SL_DEBUG
+#   define SL_DEBUG_FMT_THROW_IF(condition, exceptionType, ...) \
+        { \
+            if (condition) \
+                SL_THROW_FMT(exceptionType, __VA_ARGS__); \
+        }
+
+#   define SL_DEBUG_THROW_IF(condition, exceptionType, ...) \
+        { \
+            if (condition) \
+                SL_THROW(exceptionType, __VA_ARGS__); \
+        }
+#else
+#   define SL_DEBUG_FMT_THROW_IF(condition, exceptionType, exceptionMessage) {}
+#endif
 
 #define SL_DEFINE_SIMPLE_EXCEPTION(type) \
     class type: public EngineException \

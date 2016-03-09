@@ -16,6 +16,13 @@ MaterialParameter::MaterialParameter(const std::string& name, Material* material
     material(material),
     name(name)
 {
+    uniformHandle = material->getRenderer()->createUniform(name.c_str(), )
+}
+
+
+MaterialParameter::~MaterialParameter()
+{
+    
 }
 
 
@@ -32,22 +39,6 @@ void MaterialParameter::setFloatArray(const std::vector<float>& value)
     clearOldValue(ValueType::FloatArray);
     floatArrayValue = value;
     type = ValueType::FloatArray;
-}
-
-
-void MaterialParameter::setInt(int value)
-{
-    clearOldValue(ValueType::Int);
-    intValue = value;
-    type = ValueType::Int;
-}
-
-
-void MaterialParameter::setIntArray(const std::vector<int>& value)
-{
-    clearOldValue(ValueType::IntArray);
-    intArrayValue = value;
-    type = ValueType::IntArray;
 }
 
 
@@ -120,14 +111,6 @@ void MaterialParameter::setTexture(const shared<Texture> texture)
     clearOldValue(ValueType::Texture);
     textureValue = texture;
     type = ValueType::Texture;
-}
-
-
-void MaterialParameter::setTextureArray(const std::vector<shared<Texture>>& textures)
-{
-    clearOldValue(ValueType::TextureArray);
-    textureArrayValue = textures;
-    type = ValueType::TextureArray;
 }
 
 

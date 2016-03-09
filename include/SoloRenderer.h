@@ -2,16 +2,17 @@
 
 #include "SoloBase.h"
 #include "SoloVertexFormat.h"
+#include <vector>
 
 
 #define SL_RENDERER_RESOURCE_HANDLE(name) \
     struct name \
     { \
-        int value = EmptyHandleValue; \
+        int value = -1; \
         \
         bool empty() const\
         { \
-            return value == EmptyHandleValue; \
+            return value == -1; \
         } \
     }; \
     \
@@ -20,7 +21,6 @@
 namespace solo
 {
     class Device;
-    const int EmptyHandleValue = -1;
 
     SL_RENDERER_RESOURCE_HANDLE(TextureHandle)
     SL_RENDERER_RESOURCE_HANDLE(FrameBufferHandle)
@@ -28,6 +28,7 @@ namespace solo
     SL_RENDERER_RESOURCE_HANDLE(IndexBufferHandle)
     SL_RENDERER_RESOURCE_HANDLE(ProgramHandle)
     SL_RENDERER_RESOURCE_HANDLE(VertexObjectHandle)
+    SL_RENDERER_RESOURCE_HANDLE(UniformHandle)
 
     enum TextureFlags
     {
@@ -76,6 +77,22 @@ namespace solo
         Bottom = 5
     };
 
+    enum class UniformType
+    {
+        Float,
+        FloatArray,
+        Vector2,
+        Vector2Array,
+        Vector3,
+        Vector3Array,
+        Vector4,
+        Vector4Array,
+        Matrix,
+        MatrixArray,
+        Texture,
+        TextureArray,
+    };
+
     class Renderer
     {
     public:
@@ -120,6 +137,11 @@ namespace solo
         virtual void renderIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle,
             const IndexBufferHandle& indexBufferHandle) = 0;
         virtual void renderVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, int vertexCount) = 0;
+
+        virtual UniformHandle createUniform(const char* name, UniformType type, int componentCount, ProgramHandle program) = 0;
+        virtual void destroyUniform(const UniformHandle& handle) = 0;
+
+        virtual void setUniform(const UniformHandle& handle, const void* value, int count) = 0;
 
     protected:
         explicit Renderer(Device* device);

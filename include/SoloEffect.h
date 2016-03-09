@@ -2,6 +2,7 @@
 
 #include "SoloBase.h"
 #include "SoloRenderer.h"
+#include <unordered_map>
 
 
 namespace solo

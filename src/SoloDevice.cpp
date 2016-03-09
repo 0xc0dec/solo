@@ -34,7 +34,7 @@ Device::Device(const DeviceCreationArgs& args):
     if (!args.logFilePath.empty())
         logger->setTargetFile(args.logFilePath);
 
-    renderer = Renderer::create(args.mode);
+    renderer = Renderer::create(this);
     fs = FileSystem::create(this);
     resourceManager = ResourceManager::create(this);
     scene = SL_NEW_SHARED(Scene, this);

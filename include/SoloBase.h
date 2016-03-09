@@ -1,38 +1,14 @@
 #pragma once
 
+#include "SoloConfig.h"
 #include "SoloFormatter.h"
 #include "SoloException.h"
 #include <memory>
-#include <string>
-#include <functional>
-#include <unordered_map>
-#include <unordered_set>
-#include <map>
-#include <list>
-#include <vector>
-#include <cassert>
 
-
-#ifndef NDEBUG
-#   define SL_DEBUG
-#endif
-
-#define SL_MAX_TEXTURES 1024
-#define SL_MAX_FRAME_BUFFERS 1024
-#define SL_MAX_VERTEX_BUFFERS 1024
-#define SL_MAX_INDEX_BUFFERS 1024
-#define SL_MAX_PROGRAMS 1024
-#define SL_MAX_VERTEX_OBJECTS 1024
 
 #ifdef SL_DEBUG
-#   define SL_DEBUG_THROW_IF(condition, exceptionType, exceptionMessage) \
-        { \
-            if (condition) \
-                SL_THROW_FMT(exceptionType, exceptionMessage); \
-        }
 #   define SL_MAYBE(code) code;
 #else
-#   define SL_DEBUG_THROW_IF(condition, exceptionType, exceptionMessage) {}
 #   define SL_MAYBE(function)
 #endif
 
@@ -45,7 +21,6 @@
     type(type &&other) = delete; \
     type &operator=(const type &other) = delete; \
     type &operator=(type &&other) = delete;
-
 
 namespace solo
 {

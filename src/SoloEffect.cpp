@@ -25,7 +25,7 @@ Effect::Effect(Renderer* renderer, EffectPrefab prefab):
                 handle = renderer->createProgram(OpenGLBuiltInShaders::vsSkybox, OpenGLBuiltInShaders::fsSkybox);
         }
         default:
-            SL_DEBUG_THROW_IF(true, InvalidInputException, "Unknown effect prefab");
+            SL_DEBUG_FMT_THROW_IF(true, InvalidInputException, "Unknown effect prefab");
     }
 }
 

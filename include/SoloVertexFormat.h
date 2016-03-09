@@ -54,7 +54,7 @@ namespace solo
 
     inline const VertexBufferLayoutElement& VertexBufferLayout::getElement(int index) const
     {
-        SL_DEBUG_THROW_IF(index < 0 || index >= elements.size(), InvalidInputException, "Invalid index")
+        SL_DEBUG_FMT_THROW_IF(index < 0 || index >= elements.size(), InvalidInputException, "Invalid index")
         return elements[index];
     }
 
@@ -65,7 +65,7 @@ namespace solo
 
     inline void VertexBufferLayout::add(VertexBufferLayoutSemantics semantics, int elementCount)
     {
-        SL_DEBUG_THROW_IF(elementCount <= 0, InvalidInputException, "Negative element count")
+        SL_DEBUG_FMT_THROW_IF(elementCount <= 0, InvalidInputException, "Negative element count")
         elements.push_back(VertexBufferLayoutElement{ semantics, elementCount });
         this->size += sizeof(float) * elementCount;
     }

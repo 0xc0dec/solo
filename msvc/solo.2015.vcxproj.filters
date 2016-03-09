@@ -226,6 +226,9 @@
     <ClInclude Include="..\include\SoloResourcePool.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloConfig.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloScene.cpp">

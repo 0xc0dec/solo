@@ -4,6 +4,7 @@
 #include "SoloRenderer.h"
 #include "SoloResourcePool.h"
 #include <GL/glew.h>
+#include <vector>
 
 
 namespace solo
@@ -49,6 +50,11 @@ namespace solo
         virtual void renderIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle,
             const IndexBufferHandle& indexBufferHandle) override final;
         virtual void renderVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, int vertexCount) override final;
+
+        virtual UniformHandle createUniform(const char* name, UniformType type, int componentCount, ProgramHandle program) override final;
+        virtual void destroyUniform(const UniformHandle& handle) override final;
+
+        virtual void setUniform(const UniformHandle& handle, const void* value, int count) override final;
 
     private:
         friend class Renderer;
@@ -100,11 +106,20 @@ namespace solo
             GLuint rawHandle = 0;
         };
 
+        struct UniformData
+        {
+            UniformType type = UniformType::Float;
+            GLint location = 0;
+            GLint index = 0;
+            int componentCount = 0;
+        };
+
         ResourcePool<TextureData, SL_MAX_TEXTURES> textures;
         ResourcePool<FrameBufferData, SL_MAX_FRAME_BUFFERS> frameBuffers;
         ResourcePool<VertexBufferData, SL_MAX_VERTEX_BUFFERS> vertexBuffers;
         ResourcePool<IndexBufferData, SL_MAX_INDEX_BUFFERS> indexBuffers;
         ResourcePool<ProgramData, SL_MAX_PROGRAMS> programs;
         ResourcePool<VertexObjectData, SL_MAX_VERTEX_OBJECTS> vertexObjects;
+        ResourcePool<UniformData, SL_MAX_UNIFORMS> uniforms;
     };
 }

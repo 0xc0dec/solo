@@ -6,6 +6,7 @@
 #include "SoloBoundingSphere.h"
 #include "SoloCamera.h"
 #include "SoloComponent.h"
+#include "SoloConfig.h"
 #include "SoloCubeTexture.h"
 #include "SoloDevice.h"
 #include "SoloEffect.h"
