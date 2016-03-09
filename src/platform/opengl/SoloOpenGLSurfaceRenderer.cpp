@@ -5,7 +5,6 @@
 #include "SoloMesh.h"
 #include "SoloFrameBuffer.h"
 #include "SoloRenderContext.h"
-#include "../../SoloMeshEffectBinding.h"
 #include <GL/glew.h>
 
 using namespace solo;

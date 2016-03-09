@@ -45,6 +45,14 @@ namespace solo
             const IndexBufferHandle& indexBufferHandle) override final {}
         virtual void renderVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, int vertexCount) override final {}
 
+        virtual UniformHandle createUniform(const char* name, UniformType type, int componentCount,
+            ProgramHandle program) override final { return EmptyUniformHandle; }
+        virtual void destroyUniform(const UniformHandle& handle) override final {}
+
+        virtual void setUniform(const UniformHandle& handle, const void* value, int count) override final {}
+
+        virtual void setState(int stateFlags) override final {}
+
     private:
         friend class Renderer;
 

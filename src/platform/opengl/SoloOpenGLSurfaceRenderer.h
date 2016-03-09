@@ -2,6 +2,7 @@
 
 #include "SoloSurfaceRenderer.h"
 
+
 namespace solo
 {
     class Device;
