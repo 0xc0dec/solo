@@ -238,5 +238,30 @@ void Material::applyAutoBinding(const ParameterData& data, const RenderContext& 
 
 void Material::applyState()
 {
-    // TODO
+    int flags = 0;
+    
+    if (polygonFace != PolygonFace::All)
+        flags |= CullFace;
+    if (polygonFace == PolygonFace::CCW)
+        flags |= FrontFaceCCW;
+
+    if (depthWrite)
+        flags |= DepthWrite;
+    if (depthTest)
+        flags |= DepthTest;
+
+    switch (depthPassFunc)
+    {
+        case DepthPassFunction::Never: flags |= DepthFuncNever; break;
+        case DepthPassFunction::Less: flags |= DepthFuncLess; break;
+        case DepthPassFunction::Equal: flags |= DepthFuncEqual; break;
+        case DepthPassFunction::LEqual: flags |= DepthFuncLEqual; break;
+        case DepthPassFunction::Greater: flags |= DepthFuncGreater; break;
+        case DepthPassFunction::NotEqual: flags |= DepthFuncNotEqual; break;
+        case DepthPassFunction::GEqual: flags |= DepthFuncGEqual; break;
+        case DepthPassFunction::Always: flags |= DepthFuncAlways; break;
+        default: break;
+    }
+
+    renderer->setState(flags);
 }

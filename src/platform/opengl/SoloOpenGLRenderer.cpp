@@ -813,3 +813,41 @@ void OpenGLRenderer::setUniform(const UniformHandle& handle, const void* value, 
         default: break;
     }
 }
+
+
+void OpenGLRenderer::setState(int stateFlags)
+{
+    if (stateFlags & CullFace)
+        glEnable(GL_CULL_FACE);
+    else
+        glDisable(GL_CULL_FACE);
+
+    glFrontFace(stateFlags & FrontFaceCCW ? GL_CCW : GL_CW);
+
+    if (stateFlags & DepthTest)
+        glEnable(GL_DEPTH_TEST);
+    else
+        glDisable(GL_DEPTH_TEST);
+
+    GLenum depthFunc = 0;
+    if (stateFlags & DepthFuncAlways)
+        depthFunc = GL_ALWAYS;
+    else if (stateFlags & DepthFuncEqual)
+        depthFunc = GL_EQUAL;
+    else if (stateFlags & DepthFuncGEqual)
+        depthFunc = GL_GEQUAL;
+    else if (stateFlags & DepthFuncGreater)
+        depthFunc = GL_GREATER;
+    else if (stateFlags & DepthFuncLEqual)
+        depthFunc = GL_LEQUAL;
+    else if (stateFlags & DepthFuncLess)
+        depthFunc = GL_LESS;
+    else if (stateFlags & DepthFuncNotEqual)
+        depthFunc = GL_NOTEQUAL;
+    else
+        depthFunc = GL_NEVER;
+    
+    glDepthFunc(depthFunc);
+
+    glDepthMask(stateFlags & DepthWrite ? GL_TRUE : GL_FALSE);
+}

@@ -2,6 +2,7 @@
 
 namespace solo
 {
+    // TODO remove with std::bitset
     class BitFlags
     {
     public:

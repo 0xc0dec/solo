@@ -30,7 +30,7 @@ namespace solo
     SL_RENDERER_RESOURCE_HANDLE(VertexObjectHandle)
     SL_RENDERER_RESOURCE_HANDLE(UniformHandle)
 
-    enum TextureFlags
+    enum TextureFlags // TODO these names might cause collisions one day
     {
         MinFilterNearest = 1 << 0,
         MinFilterLinear = 1 << 1,
@@ -50,6 +50,22 @@ namespace solo
         VerticalWrapRepeat = 1 << 15,
         DepthWrapClamp = 1 << 16,
         DepthWrapRepeat = 1 << 17
+    };
+
+    enum StateFlags
+    {
+        CullFace = 1 << 0,
+        FrontFaceCCW = 1 << 1, // if not set then CW
+        DepthTest = 1 << 2,
+        DepthWrite = 1 << 3,
+        DepthFuncNever = 1 << 4,
+        DepthFuncLess = 1 << 5,
+        DepthFuncEqual = 1 << 6,
+        DepthFuncLEqual = 1 << 7,
+        DepthFuncGreater = 1 << 8,
+        DepthFuncNotEqual = 1 << 9,
+        DepthFuncGEqual = 1 << 10,
+        DepthFuncAlways = 1 << 10,
     };
 
     enum class PrimitiveType
@@ -142,6 +158,8 @@ namespace solo
         virtual void destroyUniform(const UniformHandle& handle) = 0;
 
         virtual void setUniform(const UniformHandle& handle, const void* value, int count) = 0;
+
+        virtual void setState(int stateFlags) = 0;
 
     protected:
         explicit Renderer(Device* device);

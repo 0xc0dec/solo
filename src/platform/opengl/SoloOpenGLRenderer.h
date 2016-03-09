@@ -56,6 +56,8 @@ namespace solo
 
         virtual void setUniform(const UniformHandle& handle, const void* value, int count) override final;
 
+        virtual void setState(int stateFlags) override final;
+
     private:
         friend class Renderer;
 
