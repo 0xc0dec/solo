@@ -1,9 +1,30 @@
 #include "SoloOpenGLRenderer.h"
-#include "SoloOpenGLHelper.h"
 #include <algorithm>
 #include <unordered_map>
 
 using namespace solo;
+
+
+static GLenum convertCubeTextureFace(CubeTextureFace face)
+{
+    switch (face)
+    {
+        case CubeTextureFace::Front:
+            return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
+        case CubeTextureFace::Back:
+            return GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
+        case CubeTextureFace::Right:
+            return GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
+        case CubeTextureFace::Left:
+            return GL_TEXTURE_CUBE_MAP_POSITIVE_X;
+        case CubeTextureFace::Top:
+            return GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
+        case CubeTextureFace::Bottom:
+            return GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
+        default:
+            SL_THROW_FMT(InvalidInputException, "Unknown cube texture face ", static_cast<int>(face));
+    }
+}
 
 
 static GLenum convertPrimitiveType(PrimitiveType type)
@@ -22,6 +43,20 @@ static GLenum convertPrimitiveType(PrimitiveType type)
             return GL_POINTS;
         default:
             SL_DEBUG_FMT_THROW_IF(true, InvalidInputException, "Unknown primitive type")
+    }
+}
+
+
+static GLenum convertColorFormat(ColorFormat format)
+{
+    switch (format)
+    {
+        case ColorFormat::RGB:
+            return GL_RGB;
+        case ColorFormat::RGBA:
+            return GL_RGBA;
+        default:
+            SL_THROW_FMT(InvalidInputException, "Unknown texture format ", static_cast<int>(format));
     }
 }
 
@@ -253,11 +288,11 @@ void OpenGLRenderer::update2DTexture(TextureHandle handle, ColorFormat format, i
     glTexImage2D(
         GL_TEXTURE_2D,
         0,
-        OpenGLHelper::convertColorFormat(format),
+        convertColorFormat(format),
         width,
         height,
         0,
-        OpenGLHelper::convertColorFormat(format),
+        convertColorFormat(format),
         GL_UNSIGNED_BYTE,
         data.size() ? data.data() : 0);
 
@@ -276,16 +311,16 @@ void OpenGLRenderer::updateCubeTexture(TextureHandle handle, CubeTextureFace fac
 
     bindTexture(GL_TEXTURE_CUBE_MAP, handle);
 
-    auto glFace = OpenGLHelper::convertCubeTextureFace(face);
+    auto glFace = convertCubeTextureFace(face);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexImage2D(
         glFace,
         0,
-        OpenGLHelper::convertColorFormat(format),
+        convertColorFormat(format),
         width,
         height,
         0,
-        OpenGLHelper::convertColorFormat(format),
+        convertColorFormat(format),
         GL_UNSIGNED_BYTE,
         data.size() ? data.data() : 0);
 

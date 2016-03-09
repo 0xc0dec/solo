@@ -121,9 +121,6 @@
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLCamera.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLHelper.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLMaterial.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
@@ -397,9 +394,6 @@
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLCamera.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLHelper.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLMaterial.cpp">
