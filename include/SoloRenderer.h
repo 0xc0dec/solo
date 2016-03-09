@@ -161,6 +161,10 @@ namespace solo
 
         virtual void setState(int stateFlags) = 0;
 
+        virtual void setViewport(int x, int y, int width, int height) = 0;
+
+        virtual void clear(bool color, bool depth, float r, float g, float b, float a) = 0;
+
     protected:
         explicit Renderer(Device* device);
 

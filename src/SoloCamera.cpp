@@ -1,8 +1,7 @@
+#include "SoloCamera.h"
 #include "SoloNode.h"
 #include "SoloDevice.h"
 #include "SoloFrameBuffer.h"
-#include "platform/stub/SoloStubCamera.h"
-#include "platform/opengl/SoloOpenGLCamera.h"
 
 using namespace solo;
 
@@ -20,17 +19,11 @@ const unsigned DirtyBitAll =
     DirtyBitInverseViewProjection;
 
 
-shared<Camera> Camera::create(DeviceMode mode, Scene* scene, Node node)
-{
-    if (mode == DeviceMode::OpenGL)
-        return SL_NEW_SHARED(OpenGLCamera, scene, node);
-    return SL_NEW_SHARED(StubCamera, scene, node);
-}
-
-
 Camera::Camera(Scene* scene, Node node):
     ComponentBase(node),
-    scene(scene)
+    device(scene->getDevice()),
+    scene(scene),
+    renderer(scene->getDevice()->getRenderer())
 {
     renderQueue = KnownRenderQueues::CameraDefault;
     renderTags.setAll();
@@ -175,9 +168,17 @@ void Camera::apply()
 {
     if (renderTarget)
         renderTarget->bind();
-    applyViewport();
-    applyClearColor();
-    clear();
+
+    if (viewportSet)
+        renderer->setViewport(viewport.x, viewport.y, viewport.z, viewport.w);
+    else
+    {
+        auto size = device->getCanvasSize();
+        renderer->setViewport(0, 0, size.x, size.y);
+    }
+
+    renderer->setState(DepthTest);
+    renderer->clear(true, true, clearColor.x, clearColor.y, clearColor.z, clearColor.w);
 }
 
 

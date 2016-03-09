@@ -53,6 +53,10 @@ namespace solo
 
         virtual void setState(int stateFlags) override final {}
 
+        virtual void setViewport(int x, int y, int width, int height) override final {}
+
+        virtual void clear(bool color, bool depth, float r, float g, float b, float a) override final {}
+
     private:
         friend class Renderer;
 

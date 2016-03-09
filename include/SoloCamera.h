@@ -14,14 +14,15 @@ namespace solo
     class Node;
     class FrameBuffer;
     class Scene;
-    enum class DeviceMode;
+    class Renderer;
+    class Device;
 
     class Camera: public ComponentBase<Camera>, protected TransformCallback
     {
     public:
-        static shared<Camera> create(DeviceMode mode, Scene* scene, Node node);
+        Camera(Scene* scene, Node node);
 
-        virtual void init() override;
+        virtual void init() override final;
         virtual void terminate() override final;
 
         void apply();
@@ -67,8 +68,6 @@ namespace solo
         const Matrix& getInverseViewProjectionMatrix();
 
     protected:
-        Camera(Scene* scene, Node node);
-
         virtual void onTransformChanged(const Transform* transform) override;
 
         virtual void applyViewport() = 0;
@@ -78,7 +77,9 @@ namespace solo
         BitFlags dirtyFlags;
         BitFlags renderTags;
 
+        Device* device;
         Scene* scene;
+        Renderer* renderer;
 
         Transform* transform = nullptr;
         shared<FrameBuffer> renderTarget = nullptr;

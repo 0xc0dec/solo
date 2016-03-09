@@ -886,3 +886,18 @@ void OpenGLRenderer::setState(int stateFlags)
 
     glDepthMask(stateFlags & DepthWrite ? GL_TRUE : GL_FALSE);
 }
+
+
+void OpenGLRenderer::setViewport(int x, int y, int width, int height)
+{
+    glViewport(x, y, width, height);
+}
+
+
+void OpenGLRenderer::clear(bool color, bool depth, float r, float g, float b, float a)
+{
+    if (color)
+        glClearColor(r, g, b, a);
+    GLbitfield flags = (color ? GL_COLOR_BUFFER_BIT : 0) | (depth ? GL_DEPTH_BUFFER_BIT : 0);
+    glClear(flags);
+}
