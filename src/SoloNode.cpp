@@ -26,7 +26,7 @@ template<> Transform* Node::addComponent<Transform>()
 
 template<> Camera* Node::addComponent<Camera>()
 {
-    auto camera = Camera::create(scene->getDevice()->getMode(), scene, *this);
+    auto camera = SL_NEW_SHARED(Camera, scene, *this);
     scene->addComponent(id, camera);
     return camera.get();
 }

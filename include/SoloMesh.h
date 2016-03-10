@@ -41,7 +41,7 @@ namespace solo
     public:
         static shared<Mesh> createPrefab(Renderer* renderer, MeshPrefab prefab);
 
-        Mesh(Renderer* renderer);
+        explicit Mesh(Renderer* renderer);
         ~Mesh();
 
         SL_NONCOPYABLE(Mesh)
@@ -89,6 +89,6 @@ namespace solo
 
     inline int Mesh::getIndexCount() const
     {
-        return indexBuffers.size();
+        return static_cast<int>(indexBuffers.size());
     }
 }

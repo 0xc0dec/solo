@@ -97,11 +97,11 @@ MeshEffectBinding Mesh::createEffectBinding(Effect* effect)
 {
     SL_DEBUG_FMT_THROW_IF(!effect, InvalidInputException, "No effect specified")
     const auto vo = renderer->createVertexObject(vertexBuffers.data(), vertexBuffers.size(), effect->getHandle());
-    return MeshEffectBinding{ vo };
+    return MeshEffectBinding(renderer, vo);
 }
 
 
-void Mesh::draw(MeshEffectBinding* effectBinding = nullptr)
+void Mesh::draw(MeshEffectBinding* effectBinding)
 {
     const auto& handle = effectBinding ? effectBinding->vertexObjectHandle : vertexObjectHandle;
     if (!handle.empty())
@@ -109,7 +109,7 @@ void Mesh::draw(MeshEffectBinding* effectBinding = nullptr)
 }
 
 
-void Mesh::drawIndex(int index, MeshEffectBinding* effectBinding = nullptr)
+void Mesh::drawIndex(int index, MeshEffectBinding* effectBinding)
 {
     SL_DEBUG_FMT_THROW_IF(index < 0 || index >= indexBuffers.size(), InvalidInputException, "Invalid index")
     const auto& handle = effectBinding ? effectBinding->vertexObjectHandle : vertexObjectHandle;

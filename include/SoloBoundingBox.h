@@ -4,6 +4,7 @@
 #include "SoloVector3.h"
 #include "SoloPlane.h"
 #include "SoloMath.h"
+#include <vector>
 
 
 namespace solo

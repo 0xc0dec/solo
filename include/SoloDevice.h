@@ -2,6 +2,9 @@
 
 #include "SoloBase.h"
 #include "SoloVector2.h"
+#include <functional>
+#include <unordered_map>
+#include <unordered_set>
 
 
 namespace solo

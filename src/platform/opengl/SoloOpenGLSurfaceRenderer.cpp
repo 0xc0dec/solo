@@ -1,4 +1,4 @@
-#include "SoloOpenGLSurfaceRenderer.h"
+/*#include "SoloOpenGLSurfaceRenderer.h"
 #include "SoloDevice.h"
 #include "SoloResourceManager.h"
 #include "SoloMaterial.h"
@@ -47,3 +47,4 @@ void OpenGLSurfaceRenderer::renderSurface(FrameBuffer* target)
     if (target)
         target->unbind();
 }
+*/

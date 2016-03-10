@@ -145,7 +145,7 @@ namespace solo
     {
         auto& data = parameters.at(name);
         clearOldValue(data, valueType);
-        data->*field = newValue;
+        data.*field = newValue;
         data.type = valueType;
     }
 

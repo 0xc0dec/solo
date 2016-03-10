@@ -10,7 +10,7 @@ namespace solo
     enum class DeviceMode;
     class Material;
     class Mesh;
-    class MeshEffectBinding;
+    struct MeshEffectBinding;
 
     class MeshRenderer final: public ComponentBase<MeshRenderer>
     {

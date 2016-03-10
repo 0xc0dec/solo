@@ -61,7 +61,7 @@ namespace solo
 
     inline int VertexBufferLayout::getElementCount() const
     {
-        return elements.size();
+        return static_cast<int>(elements.size());
     }
 
     inline void VertexBufferLayout::add(VertexBufferLayoutSemantics semantics, int elementCount)

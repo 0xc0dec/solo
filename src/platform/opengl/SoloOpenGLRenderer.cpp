@@ -695,14 +695,12 @@ VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* 
         const auto& layout = vertexBuffers.getData(bufferHandle.value).layout;
         const auto elementCount = layout.getElementCount();
         int offset = 0;
-        for (auto j = 0; i < elementCount; j++)
+        for (auto j = 0; j < elementCount; j++)
         {
             auto& el = layout.getElement(j);
             GLint attrLoc = 0;
             switch (el.semantics)
             {
-                case VertexBufferLayoutSemantics::Unknown:
-                default: break;
                 case VertexBufferLayoutSemantics::Position: attrLoc = getAttributeLocation("position", 0); break;
                 case VertexBufferLayoutSemantics::Normal: attrLoc = getAttributeLocation("normal", 1); break;
                 case VertexBufferLayoutSemantics::Color: attrLoc = getAttributeLocation("color", 2); break;
@@ -716,10 +714,14 @@ VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* 
                 case VertexBufferLayoutSemantics::TexCoord5:
                 case VertexBufferLayoutSemantics::TexCoord6:
                 case VertexBufferLayoutSemantics::TexCoord7:
+                {
                     auto idx = static_cast<int>(el.semantics) - static_cast<int>(VertexBufferLayoutSemantics::TexCoord0);
                     auto name = "texCoord" + std::to_string(idx);
                     attrLoc = getAttributeLocation(name.c_str(), 5 + idx);
                     break;
+                }
+                case VertexBufferLayoutSemantics::Unknown:
+                default: break;
             }
 
             bindVertexBuffer(bufferHandle);

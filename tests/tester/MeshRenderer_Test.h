@@ -12,19 +12,19 @@ public:
 
     virtual void run() override
     {
-        renderer = scene->createNode()->addComponent<MeshRenderer>();
-        material = resourceManager->getOrCreateMaterial(resourceManager->getOrCreateEffect("1", "2"));
-        mesh = resourceManager->getOrCreateMesh(VertexFormat());
-        mesh->addIndex(MeshIndexFormat::UnsignedShort);
-        mesh->addIndex(MeshIndexFormat::UnsignedShort);
-        mesh->addIndex(MeshIndexFormat::UnsignedShort);
-
-        test_EnsureNoMaterialsAtFirst();
-        test_SetMesh_UnsetMesh_EnsureNoMesh();
-        test_SetMaterialForVariousIndexes();
-        test_SetMaterial_EnsureSetForOneIndex();
-        test_UnsetMesh_SetMaterial_EnsureThrows();
-        test_SetMaterial_UnsetMaterial_EnsureMaterialCountChanges();
+//        renderer = scene->createNode()->addComponent<MeshRenderer>();
+//        material = resourceManager->getOrCreateMaterial(resourceManager->getOrCreateEffect("1", "2"));
+//        mesh = resourceManager->getOrCreateMesh(VertexFormat());
+//        mesh->addIndex(MeshIndexFormat::UnsignedShort);
+//        mesh->addIndex(MeshIndexFormat::UnsignedShort);
+//        mesh->addIndex(MeshIndexFormat::UnsignedShort);
+//
+//        test_EnsureNoMaterialsAtFirst();
+//        test_SetMesh_UnsetMesh_EnsureNoMesh();
+//        test_SetMaterialForVariousIndexes();
+//        test_SetMaterial_EnsureSetForOneIndex();
+//        test_UnsetMesh_SetMaterial_EnsureThrows();
+//        test_SetMaterial_UnsetMaterial_EnsureMaterialCountChanges();
     }
 
     void test_SetMaterial_UnsetMaterial_EnsureMaterialCountChanges()

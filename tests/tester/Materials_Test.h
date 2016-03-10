@@ -38,24 +38,24 @@ public:
 
 	virtual void run() override
 	{
-		test_CreateEffect_FindVariables();
+//		test_CreateEffect_FindVariables();
 		test_CompileEffect_OK();
 		test_CompileEffect_Fail();
 	}
 
-	void test_CreateEffect_FindVariables()
-	{
-		auto effect = resourceManager->getOrCreateEffect(vs, fs);
-		auto var1 = effect->findVariable("testFloat");
-		auto var2 = effect->findVariable("testSampler");
-		auto var3 = effect->findVariable("testArray");
-		assert(var1);
-		assert(var2);
-		assert(var3);
-		assert(var1->getName() == "testFloat");
-		assert(var2->getName() == "testSampler");
-		assert(var3->getName() == "testArray");
-	}
+//	void test_CreateEffect_FindVariables()
+//	{
+//		auto effect = resourceManager->getOrCreateEffect(vs, fs);
+//		auto var1 = effect->findVariable("testFloat");
+//		auto var2 = effect->findVariable("testSampler");
+//		auto var3 = effect->findVariable("testArray");
+//		assert(var1);
+//		assert(var2);
+//		assert(var3);
+//		assert(var1->getName() == "testFloat");
+//		assert(var2->getName() == "testSampler");
+//		assert(var3->getName() == "testArray");
+//	}
 
 	void test_CompileEffect_OK()
 	{

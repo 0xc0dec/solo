@@ -1,14 +1,50 @@
 #include "SoloSurfaceRenderer.h"
+#include "SoloRenderer.h"
+#include "SoloResourceManager.h"
+#include "SoloMesh.h"
+#include "SoloMaterial.h"
 #include "SoloDevice.h"
-#include "platform/opengl/SoloOpenGLSurfaceRenderer.h"
-#include "platform/stub/SoloStubSurfaceRenderer.h"
+#include "SoloFrameBuffer.h"
+#include "SoloRenderContext.h"
 
 using namespace solo;
 
 
-shared<SurfaceRenderer> SurfaceRenderer::create(Device* device, shared<Material> material)
+SurfaceRenderer::SurfaceRenderer(Renderer* renderer, shared<Material> material):
+    renderer(renderer),
+    device(renderer->getDevice()),
+    material(material)
 {
-    if (device->getMode() == DeviceMode::OpenGL)
-        return SL_NEW_SHARED(OpenGLSurfaceRenderer, device, material);
-    return SL_NEW_SHARED(StubSurfaceRenderer);
+    auto resourceManager = device->getResourceManager();
+    mesh = resourceManager->getOrCreatePrefabMesh(MeshPrefab::Quad, "/solo/internal/surface-renderer/mesh");
+    binding = mesh->createEffectBinding(material->getEffect());
+}
+
+
+SurfaceRenderer::~SurfaceRenderer()
+{
+    binding.destroy(); // TODO RAII
+}
+
+
+void SurfaceRenderer::renderSurface(FrameBuffer* target)
+{
+    auto depthTestEnabled = material->isDepthTestEnabled();
+    material->setDepthTestEnabled(false);
+
+    if (target)
+        target->bind();
+
+    auto viewportSize = target ? target->getSize() : device->getCanvasSize();
+    renderer->setViewport(0, 0, viewportSize.x, viewportSize.y);
+
+    RenderContext ctx;
+    material->bind(ctx);
+    mesh->drawIndex(0, &binding);
+    material->unbind(ctx);
+
+    material->setDepthTestEnabled(depthTestEnabled); // TODO really needed?
+
+    if (target)
+        target->unbind();
 }

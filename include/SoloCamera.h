@@ -70,10 +70,6 @@ namespace solo
     protected:
         virtual void onTransformChanged(const Transform* transform) override;
 
-        virtual void applyViewport() = 0;
-        virtual void applyClearColor() = 0;
-        virtual void clear() = 0;
-
         BitFlags dirtyFlags;
         BitFlags renderTags;
 

@@ -47,12 +47,3 @@ void Effect::unbind()
 {
     renderer->setProgram(EmptyProgramHandle);
 }
-
-
-EffectVariable* Effect::findVariable(const std::string& name) const
-{
-    auto where = variables.find(name);
-    if (where != variables.end())
-        return where->second.get();
-    return nullptr;
-}

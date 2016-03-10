@@ -1,6 +1,8 @@
 #pragma once
 
 #include "SoloBase.h"
+#include <unordered_map>
+#include <list>
 
 
 namespace solo

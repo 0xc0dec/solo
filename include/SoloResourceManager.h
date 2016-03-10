@@ -1,6 +1,9 @@
 #pragma once
 
 #include "SoloBase.h"
+#include <vector>
+#include <unordered_map>
+#include <functional>
 
 
 namespace solo
@@ -14,7 +17,6 @@ namespace solo
     class ImageLoader;
     class MeshLoader;
     class Device;
-    class VertexFormat;
     class SurfaceRenderer;
     enum class MeshPrefab;
     enum class EffectPrefab;
@@ -40,7 +42,7 @@ namespace solo
         shared<Texture2D> getOrCreateTexture2D(const std::string& uri = "");
         shared<CubeTexture> getOrCreateCubeTexture(const std::string& uri = "");
         shared<Material> getOrCreateMaterial(shared<Effect> effect, const std::string& uri = "");
-        shared<Mesh> getOrCreateMesh(const VertexFormat& vertexFormat, const std::string& uri = "");
+        shared<Mesh> getOrCreateMesh(const std::string& uri = "");
         shared<Mesh> getOrCreatePrefabMesh(MeshPrefab prefab, const std::string& uri = "");
         shared<FrameBuffer> getOrCreateFrameBuffer(const std::string& uri = "");
         shared<SurfaceRenderer> getOrCreateSurfaceRenderer(shared<Material> material, const std::string& uri = "");

@@ -1,25 +1,31 @@
 #pragma once
 
 #include "SoloBase.h"
+#include "SoloMesh.h"
 
 
 namespace solo
 {
     class Material;
     class FrameBuffer;
+    class Renderer;
     class Device;
 
-    class SurfaceRenderer // TODO final
+    class SurfaceRenderer final
     {
     public:
-        static shared<SurfaceRenderer> create(Device* device, shared<Material> material);
+        SurfaceRenderer(Renderer* renderer, shared<Material> material);
+        ~SurfaceRenderer();
 
         SL_NONCOPYABLE(SurfaceRenderer)
-        virtual ~SurfaceRenderer() {}
 
-        virtual void renderSurface(FrameBuffer* target) = 0;
+        void renderSurface(FrameBuffer* target);
 
-    protected:
-        SurfaceRenderer() {}
+    private:
+        Renderer* renderer;
+        Device* device;
+        shared<Material> material;
+        shared<Mesh> mesh;
+        MeshEffectBinding binding;
     };
 }

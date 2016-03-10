@@ -156,30 +156,29 @@ shared<Mesh> ObjMeshLoader::load(const std::string& uri)
     if (!currentIndices.empty())
         finishIndex();
 
-    auto hasUVs = !uvs.empty();
-    auto hasNormals = !normals.empty();
-    int slot = 0;
+    auto mesh = resourceManager->getOrCreateMesh(uri);
 
-    std::vector<VertexFormatElement> vertexFormatElements{ VertexFormatElement(VertexFormatElementSemantics::Position, 3, slot++) };
-    if (hasUVs)
-        vertexFormatElements.push_back(VertexFormatElement(VertexFormatElementSemantics::TexCoord0, 2, slot++));
-    if (hasNormals)
-        vertexFormatElements.push_back(VertexFormatElement(VertexFormatElementSemantics::Normal, 3, slot));
-    auto mesh = resourceManager->getOrCreateMesh(VertexFormat(vertexFormatElements), uri);
+    VertexBufferLayout positionLayout;
+    positionLayout.add(VertexBufferLayoutSemantics::Position, 3);
+    mesh->addBuffer(positionLayout, reinterpret_cast<const float*>(vertices.data()), static_cast<int>(vertices.size()));
 
-    slot = 0;
-    mesh->resetData(slot++, reinterpret_cast<const float*>(vertices.data()), static_cast<int>(vertices.size()), false);
-    if (hasUVs)
-        mesh->resetData(slot++, reinterpret_cast<const float*>(uvs.data()), static_cast<int>(uvs.size()), false);
-    if (hasNormals)
-        mesh->resetData(slot, reinterpret_cast<const float*>(normals.data()), static_cast<int>(normals.size()), false);
+    if (!uvs.empty())
+    {
+        VertexBufferLayout uvLayout;
+        uvLayout.add(VertexBufferLayoutSemantics::TexCoord0, 2);
+        mesh->addBuffer(uvLayout, reinterpret_cast<const float*>(uvs.data()), static_cast<int>(uvs.size()));
+    }
+    if (!normals.empty())
+    {
+        VertexBufferLayout normalLayout;
+        normalLayout.add(VertexBufferLayoutSemantics::Normal, 3);
+        mesh->addBuffer(normalLayout, reinterpret_cast<const float*>(normals.data()), static_cast<int>(normals.size()));
+    }
 
     for (const auto& indices : allIndices)
-    {
-        auto index = mesh->addIndex(MeshIndexFormat::UnsignedShort);
-        mesh->setIndexPrimitiveType(index, MeshPrimitiveType::Triangles);
-        mesh->resetIndexData(index, reinterpret_cast<const void*>(indices.data()), static_cast<int>(indices.size()), false);
-    }
+        mesh->addIndex(reinterpret_cast<const void*>(indices.data()), static_cast<int>(indices.size()));
+
+    mesh->setPrimitiveType(PrimitiveType::Triangles);
 
     return mesh;
 }

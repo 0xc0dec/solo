@@ -29,8 +29,6 @@ namespace solo
         void bind();
         void unbind();
 
-        EffectVariable* findVariable(const std::string& name) const;
-
     protected:
         Renderer* renderer;
         ProgramHandle handle;

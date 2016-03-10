@@ -82,29 +82,25 @@ shared<SurfaceRenderer> ResourceManager::findSurfaceRenderer(const std::string& 
 
 shared<Effect> ResourceManager::getOrCreateEffect(const std::string& vsSrc, const std::string& fsSrc, const std::string& uri)
 {
-    return getOrCreateResource<Effect>(uri, effects, std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
-                                       [&]()
-    {
-        return Effect::create(device->getMode(), vsSrc, fsSrc);
-    });
+    return getOrCreateResource<Effect>(uri, effects,
+        std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
+        [&]() { return SL_NEW_SHARED(Effect, device->getRenderer(), vsSrc, fsSrc); });
 }
 
 
 shared<Effect> ResourceManager::getOrCreatePrefabEffect(EffectPrefab prefab, const std::string& uri)
 {
     return getOrCreateResource<Effect>(uri, effects,
-                                       std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
-                                       std::bind(&Effect::createPrefab, device->getMode(), prefab));
+        std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
+        [&]() { return SL_NEW_SHARED(Effect, device->getRenderer(), prefab); });
 }
 
 
 shared<Material> ResourceManager::getOrCreateMaterial(shared<Effect> effect, const std::string& uri)
 {
-    return getOrCreateResource<Material>(uri, materials, std::bind(&ResourceManager::findMaterial, this, std::placeholders::_1),
-        [&]()
-        {
-            return Material::create(device->getMode(), effect);
-        });
+    return getOrCreateResource<Material>(uri, materials,
+        std::bind(&ResourceManager::findMaterial, this, std::placeholders::_1),
+        [&]() { return SL_NEW_SHARED(Material, device->getRenderer(), effect); });
 }
 
 
@@ -205,11 +201,11 @@ shared<Mesh> ResourceManager::getOrLoadMesh(const std::string& dataUri, const st
 }
 
 
-shared<Mesh> ResourceManager::getOrCreateMesh(const VertexFormat& vertexFormat, const std::string& uri)
+shared<Mesh> ResourceManager::getOrCreateMesh(const std::string& uri)
 {
     return getOrCreateResource<Mesh>(uri, meshes,
         std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
-        std::bind(&Mesh::create, device->getMode(), vertexFormat));
+        [&]() { return SL_NEW_SHARED(Mesh, device->getRenderer()); });
 }
 
 
@@ -217,7 +213,7 @@ shared<Mesh> ResourceManager::getOrCreatePrefabMesh(MeshPrefab prefab, const std
 {
     return getOrCreateResource<Mesh>(uri, meshes,
         std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
-        std::bind(&Mesh::createPrefab, device->getMode(), prefab));
+        std::bind(&Mesh::createPrefab, device->getRenderer(), prefab));
 }
 
 
@@ -233,7 +229,7 @@ shared<SurfaceRenderer> ResourceManager::getOrCreateSurfaceRenderer(shared<Mater
 {
     return getOrCreateResource<SurfaceRenderer>(uri, surfaceRenderers,
         std::bind(&ResourceManager::findSurfaceRenderer, this, std::placeholders::_1),
-        std::bind(&SurfaceRenderer::create, device, material));
+        [&]() { return SL_NEW_SHARED(SurfaceRenderer, device->getRenderer(), material); });
 }
 
 
