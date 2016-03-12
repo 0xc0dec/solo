@@ -262,9 +262,9 @@ function init()
 	initEffects()
 	initMaterials()
 	initRenderTargets()
-	initMeshes()
+	-- initMeshes()
 	initCameras()
-	initObjects()
+	-- initObjects()
 	initSkybox()
 end
 

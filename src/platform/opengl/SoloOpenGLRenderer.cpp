@@ -885,7 +885,7 @@ void OpenGLRenderer::setState(int stateFlags)
     
     glDepthFunc(depthFunc);
 
-    glDepthMask(stateFlags & DepthWrite ? GL_TRUE : GL_FALSE);
+//    glDepthMask(stateFlags & DepthWrite ? GL_TRUE : GL_FALSE);
 }
 
 

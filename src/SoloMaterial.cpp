@@ -3,6 +3,7 @@
 #include "SoloRenderContext.h"
 #include "SoloTransform.h"
 #include "SoloCamera.h"
+#include "SoloTexture.h"
 
 using namespace solo;
 
@@ -16,79 +17,196 @@ Material::Material(Renderer* renderer, shared<Effect> effect):
 
 Material::~Material()
 {
-    // TODO
+    // TODO destroy stuff
 }
 
 
 void Material::setFloatParameter(const std::string& name, float value)
 {
-    clearAndAssignValue<float>(name, &ParameterData::floatValue, value, ParameterValueType::Float);
+    // TODO extract method
+    auto& data = parameters[name];
+    if (data.type == ParameterValueType::Unknown)
+    {
+        data.handle = renderer->createUniform(name.c_str(), UniformType::Float, 1, effect->getHandle());
+        data.type = ParameterValueType::Float;
+    }
+    data.floatValue = value;
 }
 
 
 void Material::setFloatArrayParameter(const std::string& name, const std::vector<float>& value)
 {
-    clearAndAssignValue<std::vector<float>>(name, &ParameterData::floatArrayValue, value, ParameterValueType::FloatArray);
+    auto& data = parameters[name];
+    if (data.type == ParameterValueType::Unknown)
+    {
+        data.handle = renderer->createUniform(name.c_str(), UniformType::FloatArray, value.size(), effect->getHandle());
+        data.type = ParameterValueType::FloatArray;
+    }
+    data.floatArrayValue = value;
 }
 
 
 void Material::setVector2Parameter(const std::string& name, const Vector2& value)
 {
-    clearAndAssignValue<Vector2>(name, &ParameterData::vector2Value, value, ParameterValueType::Vector2);
+    auto& data = parameters[name];
+    if (data.type == ParameterValueType::Unknown)
+    {
+        data.handle = renderer->createUniform(name.c_str(), UniformType::Vector2, 1, effect->getHandle());
+        data.type = ParameterValueType::Vector2;
+    }
+    data.vector2Value = value;
 }
 
 
 void Material::setVector2ArrayParameter(const std::string& name, const std::vector<Vector2>& value)
 {
-    clearAndAssignValue<std::vector<Vector2>>(name, &ParameterData::vector2ArrayValue, value, ParameterValueType::Vector2Array);
+    auto& data = parameters[name];
+    if (data.type == ParameterValueType::Unknown)
+    {
+        data.handle = renderer->createUniform(name.c_str(), UniformType::Vector2Array, value.size(), effect->getHandle());
+        data.type = ParameterValueType::Vector2Array;
+    }
+    data.vector2ArrayValue = value;
 }
 
 
 void Material::setVector3Parameter(const std::string& name, const Vector3& value)
 {
-    clearAndAssignValue<Vector3>(name, &ParameterData::vector3Value, value, ParameterValueType::Vector3);
+    auto& data = parameters[name];
+    if (data.type == ParameterValueType::Unknown)
+    {
+        data.handle = renderer->createUniform(name.c_str(), UniformType::Vector3, 1, effect->getHandle());
+        data.type = ParameterValueType::Vector3;
+    }
+    data.vector3Value = value;
 }
 
 
 void Material::setVector3ArrayParameter(const std::string& name, const std::vector<Vector3>& value)
 {
-    clearAndAssignValue<std::vector<Vector3>>(name, &ParameterData::vector3ArrayValue, value, ParameterValueType::Vector3Array);
+    auto& data = parameters[name];
+    if (data.type == ParameterValueType::Unknown)
+    {
+        data.handle = renderer->createUniform(name.c_str(), UniformType::Vector3Array, value.size(), effect->getHandle());
+        data.type = ParameterValueType::Vector3Array;
+    }
+    data.vector3ArrayValue = value;
 }
 
 
 void Material::setVector4Parameter(const std::string& name, const Vector4& value)
 {
-    clearAndAssignValue<Vector4>(name, &ParameterData::vector4Value, value, ParameterValueType::Vector4);
+    auto& data = parameters[name];
+    if (data.type == ParameterValueType::Unknown)
+    {
+        data.handle = renderer->createUniform(name.c_str(), UniformType::Vector4, 1, effect->getHandle());
+        data.type = ParameterValueType::Vector4;
+    }
+    data.vector4Value = value;
 }
 
 
 void Material::setVector4ArrayParameter(const std::string& name, const std::vector<Vector4>& value)
 {
-    clearAndAssignValue<std::vector<Vector4>>(name, &ParameterData::vector4ArrayValue, value, ParameterValueType::Vector4Array);
+    auto& data = parameters[name];
+    if (data.type == ParameterValueType::Unknown)
+    {
+        data.handle = renderer->createUniform(name.c_str(), UniformType::Vector4Array, value.size(), effect->getHandle());
+        data.type = ParameterValueType::Vector4Array;
+    }
+    data.vector4ArrayValue = value;
 }
 
 
 void Material::setMatrixParameter(const std::string& name, const Matrix& value)
 {
-    clearAndAssignValue<Matrix>(name, &ParameterData::matrixValue, value, ParameterValueType::Matrix);
+    auto& data = parameters[name];
+    if (data.type == ParameterValueType::Unknown)
+    {
+        data.handle = renderer->createUniform(name.c_str(), UniformType::Matrix, 1, effect->getHandle());
+        data.type = ParameterValueType::Matrix;
+    }
+    data.matrixValue = value;
 }
 
 
 void Material::setMatrixArrayParameter(const std::string& name, const std::vector<Matrix>& value)
 {
-    clearAndAssignValue<std::vector<Matrix>>(name, &ParameterData::matrixArrayValue, value, ParameterValueType::MatrixArray);
+    auto& data = parameters[name];
+    if (data.type == ParameterValueType::Unknown)
+    {
+        data.handle = renderer->createUniform(name.c_str(), UniformType::MatrixArray, value.size(), effect->getHandle());
+        data.type = ParameterValueType::MatrixArray;
+    }
+    data.matrixArrayValue = value;
 }
 
 
 void Material::setTextureParameter(const std::string& name, shared<Texture> value)
 {
-    clearAndAssignValue<shared<Texture>>(name, &ParameterData::textureValue, value, ParameterValueType::Matrix);
+    auto& data = parameters[name];
+    if (data.type == ParameterValueType::Unknown)
+    {
+        data.handle = renderer->createUniform(name.c_str(), UniformType::Texture, 1, effect->getHandle());
+        data.type = ParameterValueType::Texture;
+    }
+    data.textureValue = value;
 }
 
 
 void Material::setParameterAutoBinding(const std::string& name, AutoBinding autoBinding)
 {
-    clearAndAssignValue<AutoBinding>(name, &ParameterData::autoBinding, autoBinding, ParameterValueType::AutoBinding);
+    auto& data = parameters[name];
+    // TODO need moar beautiful here
+    switch (autoBinding)
+    {
+        case AutoBinding::WorldMatrix:
+            if (data.type == ParameterValueType::Unknown)
+                data.handle = renderer->createUniform(name.c_str(), UniformType::Matrix, 1, effect->getHandle());
+            data.type = ParameterValueType::WorldMatrix;
+            break;
+        case AutoBinding::ViewMatrix:
+            if (data.type == ParameterValueType::Unknown)
+                data.handle = renderer->createUniform(name.c_str(), UniformType::Matrix, 1, effect->getHandle());
+            data.type = ParameterValueType::ViewMatrix;
+            break;
+        case AutoBinding::ProjectionMatrix:
+            if (data.type == ParameterValueType::Unknown)
+                data.handle = renderer->createUniform(name.c_str(), UniformType::Matrix, 1, effect->getHandle());
+            data.type = ParameterValueType::ProjectionMatrix;
+            break;
+        case AutoBinding::WorldViewMatrix:
+            if (data.type == ParameterValueType::Unknown)
+                data.handle = renderer->createUniform(name.c_str(), UniformType::Matrix, 1, effect->getHandle());
+            data.type = ParameterValueType::WorldViewMatrix;
+            break;
+        case AutoBinding::ViewProjectionMatrix:
+            if (data.type == ParameterValueType::Unknown)
+                data.handle = renderer->createUniform(name.c_str(), UniformType::Matrix, 1, effect->getHandle());
+            data.type = ParameterValueType::ViewProjectionMatrix;
+            break;
+        case AutoBinding::WorldViewProjectionMatrix:
+            if (data.type == ParameterValueType::Unknown)
+                data.handle = renderer->createUniform(name.c_str(), UniformType::Matrix, 1, effect->getHandle());
+            data.type = ParameterValueType::WorldViewProjectionMatrix;
+            break;
+        case AutoBinding::InverseTransposedWorldMatrix:
+            if (data.type == ParameterValueType::Unknown)
+                data.handle = renderer->createUniform(name.c_str(), UniformType::Matrix, 1, effect->getHandle());
+            data.type = ParameterValueType::InverseTransposedWorldMatrix;
+            break;
+        case AutoBinding::InverseTransposedWorldViewMatrix:
+            if (data.type == ParameterValueType::Unknown)
+                data.handle = renderer->createUniform(name.c_str(), UniformType::Matrix, 1, effect->getHandle());
+            data.type = ParameterValueType::InverseTransposedWorldViewMatrix;
+            break;
+        case AutoBinding::CameraWorldPosition:
+            if (data.type == ParameterValueType::Unknown)
+                data.handle = renderer->createUniform(name.c_str(), UniformType::Vector3, 1, effect->getHandle());
+            data.type = ParameterValueType::CameraWorldPosition;
+            break;
+        default: break;
+    }
 }
 
 
@@ -104,6 +222,7 @@ void Material::bind(RenderContext& context)
     for (const auto& p : parameters)
     {
         const auto& data = p.second;
+
         switch (data.type)
         {
             case ParameterValueType::Float:
@@ -138,10 +257,48 @@ void Material::bind(RenderContext& context)
                 break;
             case ParameterValueType::Texture:
                 renderer->setUniform(data.handle, nullptr, 1);
+                data.textureValue->apply();
                 break;
-            case ParameterValueType::AutoBinding:
-                applyAutoBinding(data, context);
+            case ParameterValueType::WorldMatrix:
+                if (context.nodeTransform)
+                    renderer->setUniform(data.handle, context.nodeTransform->getWorldMatrix().m, 1);
                 break;
+            case ParameterValueType::ViewMatrix:
+                if (context.camera)
+                    renderer->setUniform(data.handle, context.camera->getViewMatrix().m, 1);
+                break;
+            case ParameterValueType::ProjectionMatrix:
+                if (context.camera)
+                    renderer->setUniform(data.handle, context.camera->getProjectionMatrix().m, 1);
+                break;
+            case ParameterValueType::WorldViewMatrix:
+                if (context.nodeTransform && context.camera)
+                    renderer->setUniform(data.handle, context.nodeTransform->getWorldViewMatrix(context.camera).m, 1);
+                break;
+            case ParameterValueType::ViewProjectionMatrix:
+                if (context.camera)
+                    renderer->setUniform(data.handle, context.camera->getViewProjectionMatrix().m, 1);
+                break;
+            case ParameterValueType::WorldViewProjectionMatrix:
+                if (context.nodeTransform && context.camera)
+                    renderer->setUniform(data.handle, context.nodeTransform->getWorldViewProjectionMatrix(context.camera).m, 1);
+                break;
+            case ParameterValueType::InverseTransposedWorldMatrix:
+                if (context.nodeTransform)
+                    renderer->setUniform(data.handle, context.nodeTransform->getInverseTransposedWorldMatrix().m, 1);
+                break;
+            case ParameterValueType::InverseTransposedWorldViewMatrix:
+                if (context.nodeTransform && context.camera)
+                    renderer->setUniform(data.handle, context.nodeTransform->getInverseTransposedWorldViewMatrix(context.camera).m, 1);
+                break;
+            case ParameterValueType::CameraWorldPosition:
+                if (context.cameraTransform)
+                {
+                    auto pos = context.cameraTransform->getWorldPosition();
+                    renderer->setUniform(data.handle, &pos, 1);
+                }
+                break;
+            case ParameterValueType::Unknown:
             default:
                 break;
         }

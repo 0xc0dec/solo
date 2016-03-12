@@ -36,6 +36,7 @@ namespace solo
 
     enum class AutoBinding
     {
+        None,
         WorldMatrix,
         ViewMatrix,
         ProjectionMatrix,
@@ -88,7 +89,8 @@ namespace solo
     private:
         enum class ParameterValueType
         {
-            Float = 0,
+            Unknown = 0,
+            Float,
             FloatArray,
             Vector2,
             Vector2Array,
@@ -99,14 +101,23 @@ namespace solo
             Matrix,
             MatrixArray,
             Texture,
-            AutoBinding
+            // Auto-binding values
+            WorldMatrix,
+            ViewMatrix,
+            ProjectionMatrix,
+            WorldViewMatrix,
+            ViewProjectionMatrix,
+            WorldViewProjectionMatrix,
+            InverseTransposedWorldMatrix,
+            InverseTransposedWorldViewMatrix,
+            CameraWorldPosition
         };
 
         // TODO this is quite ugly and takes too much memory
         struct ParameterData
         {
             UniformHandle handle;
-            ParameterValueType type = ParameterValueType::Float;
+            ParameterValueType type = ParameterValueType::Unknown;
             float floatValue = 0;
             Vector2 vector2Value;
             Vector3 vector3Value;
@@ -124,8 +135,9 @@ namespace solo
         void applyState();
         void clearOldValue(ParameterData& data, ParameterValueType newType);
 
-        template <class FieldType>
-        void clearAndAssignValue(const std::string& name, FieldType ParameterData::*field, const FieldType& newValue, ParameterValueType valueType);
+//        template <class FieldType>
+//        void rebuildParameter(const std::string& name, FieldType ParameterData::*field, const FieldType& newValue,
+//            ParameterValueType valueType, UniformType uniformType);
 
         void applyAutoBinding(const ParameterData& data, const RenderContext& context);
 
@@ -140,14 +152,17 @@ namespace solo
         DepthPassFunction depthPassFunc = DepthPassFunction::Less;
     };
 
-    template <class FieldType>
-    inline void Material::clearAndAssignValue(const std::string& name, FieldType ParameterData::*field, const FieldType& newValue, ParameterValueType valueType)
-    {
-        auto& data = parameters[name];
-        clearOldValue(data, valueType);
-        data.*field = newValue;
-        data.type = valueType;
-    }
+//    template <class FieldType>
+//    inline void Material::rebuildParameter(const std::string& name, FieldType ParameterData::*field,
+//        const FieldType& newValue, ParameterValueType valueType, UniformType uniformType)
+//    {
+//        auto& data = parameters[name];
+//        if (data.handle.empty())
+//            data.handle = renderer->createUniform(name.c_str(), uniformType)
+//        clearOldValue(data, valueType);
+//        data.*field = newValue;
+//        data.type = valueType;
+//    }
 
     inline Effect* Material::getEffect() const
     {

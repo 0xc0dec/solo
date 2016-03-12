@@ -53,7 +53,7 @@ namespace solo
         float getAnisotropyLevel() const;
         void setAnisotropyLevel(float level);
 
-        TextureHandle getHandle() const; // TODO do the same thing for other similar handle-possessing classes
+        TextureHandle getHandle() const;
 
     protected:
         virtual void rebuildFlags();
