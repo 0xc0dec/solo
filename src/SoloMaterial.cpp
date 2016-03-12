@@ -313,37 +313,6 @@ void Material::unbind(RenderContext& context)
 }
 
 
-void Material::clearOldValue(ParameterData& data, ParameterValueType newType)
-{
-    if (newType == data.type)
-        return;
-    switch (newType)
-    {
-        case ParameterValueType::FloatArray:
-            data.floatArrayValue.clear();
-            break;
-        case ParameterValueType::Vector2Array:
-            data.vector2ArrayValue.clear();
-            break;
-        case ParameterValueType::Vector3Array:
-            data.vector3ArrayValue.clear();
-            break;
-        case ParameterValueType::Vector4Array:
-            data.vector4ArrayValue.clear();
-            break;
-        case ParameterValueType::MatrixArray:
-            data.matrixArrayValue.clear();
-            break;
-        case ParameterValueType::Texture:
-            data.textureValue = nullptr;
-            break;
-        default:
-            break;
-    }
-    data.type = ParameterValueType::Float;
-}
-
-
 void Material::applyState()
 {
     int flags = 0;

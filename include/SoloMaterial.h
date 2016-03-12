@@ -133,11 +133,6 @@ namespace solo
         };
 
         void applyState();
-        void clearOldValue(ParameterData& data, ParameterValueType newType);
-
-//        template <class FieldType>
-//        void rebuildParameter(const std::string& name, FieldType ParameterData::*field, const FieldType& newValue,
-//            ParameterValueType valueType, UniformType uniformType);
 
         Renderer* renderer;
         shared<Effect> effect;
@@ -149,18 +144,6 @@ namespace solo
         bool depthTest = true;
         DepthPassFunction depthPassFunc = DepthPassFunction::Less;
     };
-
-//    template <class FieldType>
-//    inline void Material::rebuildParameter(const std::string& name, FieldType ParameterData::*field,
-//        const FieldType& newValue, ParameterValueType valueType, UniformType uniformType)
-//    {
-//        auto& data = parameters[name];
-//        if (data.handle.empty())
-//            data.handle = renderer->createUniform(name.c_str(), uniformType)
-//        clearOldValue(data, valueType);
-//        data.*field = newValue;
-//        data.type = valueType;
-//    }
 
     inline Effect* Material::getEffect() const
     {
