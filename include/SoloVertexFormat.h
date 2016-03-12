@@ -8,20 +8,19 @@ namespace solo
 {
     enum class VertexBufferLayoutSemantics
     {
-        Unknown = 0,
-        Position = 1,
-        Normal = 2,
-        Color = 3,
-        Tangent = 4,
-        Binormal = 5,
-        TexCoord0 = 6,
-        TexCoord1 = 7,
-        TexCoord2 = 8,
-        TexCoord3 = 9,
-        TexCoord4 = 10,
-        TexCoord5 = 11,
-        TexCoord6 = 12,
-        TexCoord7 = 13
+        Position = 0,
+        Normal,
+        Color,
+        Tangent,
+        Binormal,
+        TexCoord0,
+        TexCoord1,
+        TexCoord2,
+        TexCoord3,
+        TexCoord4,
+        TexCoord5,
+        TexCoord6,
+        TexCoord7
     };
 
     struct VertexBufferLayoutElement

@@ -1,24 +1,17 @@
 runTest(function()
-	local vf = solo.VertexFormat({
-		solo.VertexFormatElement(solo.VertexFormatElementSemantics.Position, 3, 0)
-	})
-	local m = device:getResourceManager():getOrCreateMesh(vf, "test/mesh")
+	local m = device:getResourceManager():getOrCreateMesh("test/mesh")
 
-	m:resetData(0, { 1, 2, 3 }, 1, false)
-	m:updateData(0, { 2, 3, 4}, 1, 0)
+	local l = solo.VertexBufferLayout()
+	l:add(solo.VertexBufferLayoutSemantics.Position, 3)
 
-	local index = m:addIndex(MeshIndexFormat)
+	m:addBuffer(l, { 1, 2, 3 }, 1)
+	m:addIndex({ 1 }, 1)
+
 	assert(m:getIndexCount() == 1)
 
-	assert(m:getVertexFormat())
-
-	m:setPrimitiveType(solo.MeshPrimitiveType.Lines)
-	assert(m:getPrimitiveType() == solo.MeshPrimitiveType.Lines)
-
-	m:resetIndexData(0, { 1, 2, 3 }, 1, true)
-	m:updateIndexData(0, { 2, 3, 4}, 1, 0)
-	m:setIndexPrimitiveType(0, solo.MeshPrimitiveType.Lines)
-	assert(m:getIndexPrimitiveType(0) == solo.MeshPrimitiveType.Lines)
-
+	m:removeBuffer(0)
 	m:removeIndex(0)
+
+	m:setPrimitiveType(solo.PrimitiveType.Lines)
+	assert(m:getPrimitiveType() == solo.PrimitiveType.Lines)
 end, "Mesh")

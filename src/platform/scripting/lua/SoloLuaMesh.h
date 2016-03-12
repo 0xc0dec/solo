@@ -9,10 +9,7 @@ namespace solo
     class LuaMesh
     {
     public:
-        static int addIndex(Mesh* mesh);
-        static void resetData(Mesh* mesh, int slot, const std::vector<float>& data, int elementCount, bool dynamic);
-        static void updateData(Mesh* mesh, int slot, const std::vector<float>& data, int elementCount, int updateFromIndex);
-        static void resetIndexData(Mesh* mesh, int index, const std::vector<uint16_t>& data, int elementCount, bool dynamic);
-        static void updateIndexData(Mesh* mesh, int index, const std::vector<uint16_t>& data, int elementCount, int updateFromIndex);
+        static void addBuffer(Mesh* mesh, const VertexBufferLayout& layout, const std::vector<float>& data, int elementCount);
+        static void addIndex(Mesh* mesh, const std::vector<float>& data, int elementCount);
     };
 }

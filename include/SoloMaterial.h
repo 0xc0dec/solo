@@ -143,7 +143,7 @@ namespace solo
     template <class FieldType>
     inline void Material::clearAndAssignValue(const std::string& name, FieldType ParameterData::*field, const FieldType& newValue, ParameterValueType valueType)
     {
-        auto& data = parameters.at(name);
+        auto& data = parameters[name];
         clearOldValue(data, valueType);
         data.*field = newValue;
         data.type = valueType;

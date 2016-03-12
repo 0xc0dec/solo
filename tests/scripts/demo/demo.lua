@@ -55,46 +55,46 @@ function initMaterials()
 	local colorEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsColor)
 	local redMaterial = resourceManager:getOrCreateMaterial(colorEffect)
 	redMaterial:setPolygonFace(solo.PolygonFace.All)
-	redMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding.WorldViewProjectionMatrix)
-	redMaterial:getParameter("color"):setVector4(solo.Vector4(1, 0, 0, 1))
+	redMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
+	redMaterial:setVector4Parameter("color", solo.Vector4(1, 0, 0, 1))
 
 	local greenMaterial = resourceManager:getOrCreateMaterial(colorEffect)
 	greenMaterial:setPolygonFace(solo.PolygonFace.All)
-	greenMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding.WorldViewProjectionMatrix)
-	greenMaterial:getParameter("color"):setVector4(solo.Vector4(0, 1, 0, 1))
+	greenMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
+	greenMaterial:setVector4Parameter("color", solo.Vector4(0, 1, 0, 1))
 
 	local blueMaterial = resourceManager:getOrCreateMaterial(colorEffect)
 	blueMaterial:setPolygonFace(solo.PolygonFace.All)
-	blueMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding.WorldViewProjectionMatrix)
-	blueMaterial:getParameter("color"):setVector4(solo.Vector4(0, 0, 1, 1))
+	blueMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
+	blueMaterial:setVector4Parameter("color", solo.Vector4(0, 0, 1, 1))
 
 	local whiteMaterial = resourceManager:getOrCreateMaterial(colorEffect)
 	whiteMaterial:setPolygonFace(solo.PolygonFace.All)
-	whiteMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding.WorldViewProjectionMatrix)
-	whiteMaterial:getParameter("color"):setVector4(solo.Vector4(1, 1, 1, 1))
+	whiteMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
+	whiteMaterial:setVector4Parameter("color", solo.Vector4(1, 1, 1, 1))
 
 	local simpleTexture = resourceManager:getOrCreateMaterial(demo.effects.simpleTextureEffect)
 	simpleTexture:setPolygonFace(solo.PolygonFace.All)
-	simpleTexture:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding.WorldViewProjectionMatrix)
-	simpleTexture:getParameter("mainTex"):setTexture(demo.textures.tex1)
+	simpleTexture:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
+	simpleTexture:setTextureParameter("mainTex", demo.textures.tex1)
 
 	local checkerEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsChecker)
 	local checkerMaterial = resourceManager:getOrCreateMaterial(checkerEffect)
 	checkerMaterial:setPolygonFace(solo.PolygonFace.All)
-	checkerMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding.WorldViewProjectionMatrix);
-	checkerMaterial:getParameter("color"):setVector4(solo.Vector4(1, 1, 0, 1))
+	checkerMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix);
+	checkerMaterial:setVector4Parameter("color", solo.Vector4(1, 1, 0, 1))
 
 	local texWithLightingEffect = resourceManager:getOrCreateEffect(shaders.vsBasicLighting, shaders.fsTextureWithLighting)
 	local textureWithLightingMaterial = resourceManager:getOrCreateMaterial(texWithLightingEffect)
 	textureWithLightingMaterial:setPolygonFace(solo.PolygonFace.All)
-	textureWithLightingMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding.WorldViewProjectionMatrix)
-	textureWithLightingMaterial:getParameter("normalMatrix"):bindValue(solo.AutoBinding.InverseTransposedWorldMatrix)
-	textureWithLightingMaterial:getParameter("mainTex"):setTexture(demo.textures.tex2)
+	textureWithLightingMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
+	textureWithLightingMaterial:setParameterAutoBinding("normalMatrix", solo.AutoBinding.InverseTransposedWorldMatrix)
+	textureWithLightingMaterial:setTextureParameter("mainTex", demo.textures.tex2)
 
 	local offscreenCameraRenderedMaterial = resourceManager:getOrCreateMaterial(demo.effects.simpleTextureEffect)
 	offscreenCameraRenderedMaterial:setPolygonFace(solo.PolygonFace.All)
-	offscreenCameraRenderedMaterial:getParameter("worldViewProjMatrix"):bindValue(solo.AutoBinding.WorldViewProjectionMatrix)
-	offscreenCameraRenderedMaterial:getParameter("mainTex"):setTexture(demo.textures.offscreenCameraRTT)
+	offscreenCameraRenderedMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
+	offscreenCameraRenderedMaterial:setTextureParameter("mainTex", demo.textures.offscreenCameraRTT)
 
 	demo.materials =
 	{
@@ -123,10 +123,10 @@ end
 
 
 function initRenderTargets()
-	local offscreenCameraRT = resourceManager:getOrCreateFrameBuffer("demo/offscreen-camera-rt")
+	local offscreenCameraRT = resourceManager:getOrCreateFrameBuffer("demo/offscreen-camera-fb")
 	offscreenCameraRT:setAttachments({ demo.textures.offscreenCameraRTT })
 
-	local mainCameraRT = resourceManager:getOrCreateFrameBuffer("demo/main-camera-rt")
+	local mainCameraRT = resourceManager:getOrCreateFrameBuffer("demo/main-camera-fb")
 	mainCameraRT:setAttachments({ demo.textures.mainCameraRTT })
 
 	demo.renderTargets =

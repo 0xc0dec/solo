@@ -46,6 +46,6 @@ dofile("../tests/scripts/tests.transform.lua")
 dofile("../tests/scripts/tests.vector2.lua")
 dofile("../tests/scripts/tests.vector3.lua")
 dofile("../tests/scripts/tests.vector4.lua")
-dofile("../tests/scripts/tests.vertex-format.lua")
+dofile("../tests/scripts/tests.vertex-buffer-layout.lua")
 
 logger:logInfo("Finished tests")

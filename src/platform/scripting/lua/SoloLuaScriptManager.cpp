@@ -365,7 +365,6 @@ void LuaScriptManager::registerApi()
 
     // Effect
     auto effect = module.beginClass<Effect>("Effect");
-    REGISTER_METHOD(effect, Effect, findVariable);
     effect.endClass();
 
     // MeshPrefab
@@ -376,68 +375,55 @@ void LuaScriptManager::registerApi()
 
     // Mesh
     auto mesh = module.beginClass<Mesh>("Mesh");
-    REGISTER_METHOD(mesh, LuaMesh, resetData);
-    REGISTER_METHOD(mesh, LuaMesh, updateData);
-    REGISTER_METHOD(mesh, LuaMesh, resetIndexData);
-    REGISTER_METHOD(mesh, LuaMesh, updateIndexData);
+    REGISTER_METHOD(mesh, LuaMesh, addBuffer);
     REGISTER_METHOD(mesh, LuaMesh, addIndex);
+    REGISTER_METHOD(mesh, Mesh, removeBuffer);
     REGISTER_METHOD(mesh, Mesh, removeIndex);
     REGISTER_METHOD(mesh, Mesh, getIndexCount);
-    REGISTER_METHOD(mesh, Mesh, getIndexPrimitiveType);
-    REGISTER_METHOD(mesh, Mesh, setIndexPrimitiveType);
-    REGISTER_METHOD(mesh, Mesh, getVertexFormat);
-    REGISTER_METHOD(mesh, Mesh, setPrimitiveType);
     REGISTER_METHOD(mesh, Mesh, getPrimitiveType);
+    REGISTER_METHOD(mesh, Mesh, setPrimitiveType);
     mesh.endClass();
 
-    // MeshPrimitiveType
-    auto meshPrimitiveType = module.beginModule("MeshPrimitiveType");
-    REGISTER_MODULE_CONSTANT(meshPrimitiveType, MeshPrimitiveType, Lines);
-    REGISTER_MODULE_CONSTANT(meshPrimitiveType, MeshPrimitiveType, LineStrip);
-    REGISTER_MODULE_CONSTANT(meshPrimitiveType, MeshPrimitiveType, Points);
-    REGISTER_MODULE_CONSTANT(meshPrimitiveType, MeshPrimitiveType, TriangleStrip);
-    REGISTER_MODULE_CONSTANT(meshPrimitiveType, MeshPrimitiveType, Triangles);
+    // PrimitiveType
+    auto meshPrimitiveType = module.beginModule("PrimitiveType");
+    REGISTER_MODULE_CONSTANT(meshPrimitiveType, PrimitiveType, Lines);
+    REGISTER_MODULE_CONSTANT(meshPrimitiveType, PrimitiveType, LineStrip);
+    REGISTER_MODULE_CONSTANT(meshPrimitiveType, PrimitiveType, Points);
+    REGISTER_MODULE_CONSTANT(meshPrimitiveType, PrimitiveType, TriangleStrip);
+    REGISTER_MODULE_CONSTANT(meshPrimitiveType, PrimitiveType, Triangles);
     meshPrimitiveType.endModule();
 
-    // MeshIndexFormat
-    auto meshIndexFormat = module.beginModule("MeshIndexFormat");
-    REGISTER_MODULE_CONSTANT(meshIndexFormat, MeshIndexFormat, UnsignedByte);
-    REGISTER_MODULE_CONSTANT(meshIndexFormat, MeshIndexFormat, UnsignedShort);
-    REGISTER_MODULE_CONSTANT(meshIndexFormat, MeshIndexFormat, UnsignedInt);
-    meshIndexFormat.endModule();
+    // VertexBufferLayout
+    auto vertexBufferLayout = module.beginClass<VertexBufferLayout>("VertexBufferLayout");
+    vertexBufferLayout.addConstructor(LUA_ARGS());
+    REGISTER_METHOD(vertexBufferLayout, VertexBufferLayout, add);
+    REGISTER_METHOD(vertexBufferLayout, VertexBufferLayout, getElement);
+    REGISTER_METHOD(vertexBufferLayout, VertexBufferLayout, getElementCount);
+    REGISTER_METHOD(vertexBufferLayout, VertexBufferLayout, getSize);
+    vertexBufferLayout.endClass();
 
-    // VertexFormatElementSemantics
-    auto vertexFormatElementSemantics = module.beginModule("VertexFormatElementSemantics");
-    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Position);
-    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Normal);
-    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Color);
-    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Tangent);
-    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, Binormal);
-    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord0);
-    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord1);
-    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord2);
-    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord3);
-    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord4);
-    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord5);
-    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord6);
-    REGISTER_MODULE_CONSTANT(vertexFormatElementSemantics, VertexFormatElementSemantics, TexCoord7);
-    vertexFormatElementSemantics.endModule();
+    // VertexBufferLayoutSemantics
+    auto vertexBufferLayoutSemantics = module.beginModule("VertexBufferLayoutSemantics");
+    REGISTER_MODULE_CONSTANT(vertexBufferLayoutSemantics, VertexBufferLayoutSemantics, Position);
+    REGISTER_MODULE_CONSTANT(vertexBufferLayoutSemantics, VertexBufferLayoutSemantics, Normal);
+    REGISTER_MODULE_CONSTANT(vertexBufferLayoutSemantics, VertexBufferLayoutSemantics, Color);
+    REGISTER_MODULE_CONSTANT(vertexBufferLayoutSemantics, VertexBufferLayoutSemantics, Tangent);
+    REGISTER_MODULE_CONSTANT(vertexBufferLayoutSemantics, VertexBufferLayoutSemantics, Binormal);
+    REGISTER_MODULE_CONSTANT(vertexBufferLayoutSemantics, VertexBufferLayoutSemantics, TexCoord0);
+    REGISTER_MODULE_CONSTANT(vertexBufferLayoutSemantics, VertexBufferLayoutSemantics, TexCoord1);
+    REGISTER_MODULE_CONSTANT(vertexBufferLayoutSemantics, VertexBufferLayoutSemantics, TexCoord2);
+    REGISTER_MODULE_CONSTANT(vertexBufferLayoutSemantics, VertexBufferLayoutSemantics, TexCoord3);
+    REGISTER_MODULE_CONSTANT(vertexBufferLayoutSemantics, VertexBufferLayoutSemantics, TexCoord4);
+    REGISTER_MODULE_CONSTANT(vertexBufferLayoutSemantics, VertexBufferLayoutSemantics, TexCoord5);
+    REGISTER_MODULE_CONSTANT(vertexBufferLayoutSemantics, VertexBufferLayoutSemantics, TexCoord6);
+    REGISTER_MODULE_CONSTANT(vertexBufferLayoutSemantics, VertexBufferLayoutSemantics, TexCoord7);
+    vertexBufferLayoutSemantics.endModule();
 
-    // VertexFormatElement
-    auto vertexFormatElement = module.beginClass<VertexFormatElement>("VertexFormatElement");
-    vertexFormatElement.addConstructor(LUA_ARGS(VertexFormatElementSemantics, int, int));
-    REGISTER_VARIABLE(vertexFormatElement, VertexFormatElement, size);
-    REGISTER_VARIABLE(vertexFormatElement, VertexFormatElement, semantics);
-    REGISTER_VARIABLE(vertexFormatElement, VertexFormatElement, slot);
-    vertexFormatElement.endClass();
-
-    // VertexFormat
-    auto vertexFormat = module.beginClass<VertexFormat>("VertexFormat");
-    vertexFormat.addConstructor(LUA_ARGS(const std::vector<VertexFormatElement>&));
-    REGISTER_METHOD(vertexFormat, VertexFormat, getVertexSize);
-    REGISTER_METHOD(vertexFormat, VertexFormat, getElement);
-    REGISTER_METHOD(vertexFormat, VertexFormat, getElementCount);
-    vertexFormat.endClass();
+    // VertexBufferLayoutElement
+    auto vertexBufferLayoutElement = module.beginClass<VertexBufferLayoutElement>("VertexBufferLayoutElement");
+    REGISTER_VARIABLE(vertexBufferLayoutElement, VertexBufferLayoutElement, size);
+    REGISTER_VARIABLE(vertexBufferLayoutElement, VertexBufferLayoutElement, semantics);
+    vertexBufferLayoutElement.endClass();
 
     // ColorFormat
     auto colorFormat = module.beginModule("ColorFormat");
@@ -657,7 +643,18 @@ void LuaScriptManager::registerApi()
 
     // Material
     auto mat = module.beginClass<Material>("Material");
-    REGISTER_METHOD(mat, Material, getParameter);
+    REGISTER_METHOD(mat, Material, setFloatParameter);
+    REGISTER_METHOD(mat, Material, setFloatArrayParameter);
+    REGISTER_METHOD(mat, Material, setVector2Parameter);
+    REGISTER_METHOD(mat, Material, setVector2ArrayParameter);
+    REGISTER_METHOD(mat, Material, setVector3Parameter);
+    REGISTER_METHOD(mat, Material, setVector3ArrayParameter);
+    REGISTER_METHOD(mat, Material, setVector4Parameter);
+    REGISTER_METHOD(mat, Material, setVector4ArrayParameter);
+    REGISTER_METHOD(mat, Material, setMatrixParameter);
+    REGISTER_METHOD(mat, Material, setMatrixArrayParameter);
+    REGISTER_METHOD(mat, Material, setTextureParameter);
+    REGISTER_METHOD(mat, Material, setParameterAutoBinding);
     REGISTER_METHOD(mat, Material, getEffect);
     REGISTER_METHOD(mat, Material, getPolygonFace);
     REGISTER_METHOD(mat, Material, setPolygonFace);
@@ -671,7 +668,6 @@ void LuaScriptManager::registerApi()
 
     // AutoBinding
     auto autoBinding = module.beginModule("AutoBinding");
-    REGISTER_MODULE_CONSTANT(autoBinding, AutoBinding, None);
     REGISTER_MODULE_CONSTANT(autoBinding, AutoBinding, CameraWorldPosition);
     REGISTER_MODULE_CONSTANT(autoBinding, AutoBinding, InverseTransposedWorldMatrix);
     REGISTER_MODULE_CONSTANT(autoBinding, AutoBinding, InverseTransposedWorldViewMatrix);
@@ -682,26 +678,6 @@ void LuaScriptManager::registerApi()
     REGISTER_MODULE_CONSTANT(autoBinding, AutoBinding, WorldViewMatrix);
     REGISTER_MODULE_CONSTANT(autoBinding, AutoBinding, WorldViewProjectionMatrix);
     autoBinding.endModule();
-
-    // MaterialParameter
-    auto mp = module.beginClass<MaterialParameter>("MaterialParameter");
-    REGISTER_METHOD(mp, MaterialParameter, setFloat);
-    REGISTER_METHOD(mp, MaterialParameter, setFloatArray);
-    REGISTER_METHOD(mp, MaterialParameter, setInt);
-    REGISTER_METHOD(mp, MaterialParameter, setIntArray);
-    REGISTER_METHOD(mp, MaterialParameter, setVector2);
-    REGISTER_METHOD(mp, MaterialParameter, setVector2Array);
-    REGISTER_METHOD(mp, MaterialParameter, setVector3);
-    REGISTER_METHOD(mp, MaterialParameter, setVector3Array);
-    REGISTER_METHOD(mp, MaterialParameter, setVector4);
-    REGISTER_METHOD(mp, MaterialParameter, setVector4Array);
-    REGISTER_METHOD(mp, MaterialParameter, setMatrix);
-    REGISTER_METHOD(mp, MaterialParameter, setMatrixArray);
-    REGISTER_METHOD(mp, MaterialParameter, setTexture);
-    REGISTER_METHOD(mp, MaterialParameter, setTextureArray);
-    REGISTER_METHOD(mp, MaterialParameter, setFunction);
-    REGISTER_METHOD(mp, MaterialParameter, bindValue);
-    mp.endClass();
 
     // RenderContext
     auto rc = module.beginClass<RenderContext>("RenderContext");
@@ -821,7 +797,7 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateTexture2D, LUA_ARGS(_opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateCubeTexture, LUA_ARGS(_opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMaterial, LUA_ARGS(shared<Effect>, _opt<const std::string&>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMesh, LUA_ARGS(const VertexFormat&, _opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMesh, LUA_ARGS(_opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreatePrefabMesh, LUA_ARGS(MeshPrefab, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateFrameBuffer, LUA_ARGS(_opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateSurfaceRenderer, LUA_ARGS(shared<Material>, _opt<const std::string&>));

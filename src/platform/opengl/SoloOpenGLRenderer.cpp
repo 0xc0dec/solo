@@ -720,7 +720,6 @@ VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* 
                     attrLoc = getAttributeLocation(name.c_str(), 5 + idx);
                     break;
                 }
-                case VertexBufferLayoutSemantics::Unknown:
                 default: break;
             }
 

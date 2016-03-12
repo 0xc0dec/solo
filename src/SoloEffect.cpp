@@ -23,6 +23,9 @@ Effect::Effect(Renderer* renderer, EffectPrefab prefab):
             // TODO would be better to remove platform knowledge from here
             if (mode == DeviceMode::OpenGL)
                 handle = renderer->createProgram(OpenGLBuiltInShaders::vsSkybox, OpenGLBuiltInShaders::fsSkybox);
+            else
+                handle = EmptyProgramHandle;
+            break;
         }
         default:
             SL_DEBUG_FMT_THROW_IF(true, InvalidInputException, "Unknown effect prefab");

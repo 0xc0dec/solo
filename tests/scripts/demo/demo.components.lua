@@ -76,16 +76,6 @@ function createPostProcessor(sourceTexture, shaders)
 			local effect2 = resourceManager:getOrCreateEffect(shaders.vsPassThrough, shaders.fsPostProcessHalfSaturate)
 			self.material1 = resourceManager:getOrCreateMaterial(effect1, "demo/post-processor/material1")
 			self.material2 = resourceManager:getOrCreateMaterial(effect2, "demo/post-processor/material2")
-			self.material1:getParameter("separator"):setFunction(
-				function (var, renderContext)
-					var:setFloat(self.separator)
-				end
-			)
-			self.material2:getParameter("separator"):setFunction(
-				function (var, renderContext)
-					var:setFloat(1 - self.separator)
-				end
-			)
 
 			local canvasSize = device:getCanvasSize()
 			local rtt = resourceManager:getOrCreateTexture2D("demo/post-processor/rtt")
@@ -93,7 +83,7 @@ function createPostProcessor(sourceTexture, shaders)
 			rtt:setFiltering(solo.TextureFiltering.Nearest)
 			rtt:setWrapping(solo.TextureWrapping.Clamp)
 			self.finalRTT = rtt
-			self.finalRT = resourceManager:getOrCreateFrameBuffer("demo/post-processor/rt")
+			self.finalRT = resourceManager:getOrCreateFrameBuffer("demo/post-processor/fb")
 			self.finalRT:setAttachments({ rtt })
 
 			self.renderer1 = resourceManager:getOrCreateSurfaceRenderer(self.material1)
@@ -103,13 +93,16 @@ function createPostProcessor(sourceTexture, shaders)
 		update = function(self)
 			self.time = self.time + device:getTimeDelta()
 			self.separator = (1 + math.sin(self.time)) / 2
+
+			self.material1:setFloatParameter("separator", self.separator)
+			self.material2:setFloatParameter("separator", 1 - self.separator)
 		end,
 
 		onAfterCameraRender = function(self)
-			self.material1:getParameter("mainTex"):setTexture(self.srcTexture)
+			self.material1:setTextureParameter("mainTex", self.srcTexture)
 			self.renderer1:renderSurface(self.finalRT)
 
-			self.material2:getParameter("mainTex"):setTexture(self.finalRTT)
+			self.material2:setTextureParameter("mainTex", self.finalRTT)
 			self.renderer2:renderSurface()
 		end
 	}

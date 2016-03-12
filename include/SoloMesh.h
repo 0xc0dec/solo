@@ -15,6 +15,7 @@ namespace solo
         Cube
     };
 
+    // TODO remove binding completely
     struct MeshEffectBinding
     {
         VertexObjectHandle vertexObjectHandle;
@@ -39,6 +40,7 @@ namespace solo
     class Mesh final
     {
     public:
+        // TODO make this a simple constructor?
         static shared<Mesh> createPrefab(Renderer* renderer, MeshPrefab prefab);
 
         explicit Mesh(Renderer* renderer);

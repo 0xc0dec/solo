@@ -4,9 +4,9 @@ namespace solo
 {
     struct RenderContext
     {
-        class Camera* camera;
-        class Transform* cameraTransform;
-        class Transform* nodeTransform;
+        class Camera* camera = nullptr;
+        class Transform* cameraTransform = nullptr;
+        class Transform* nodeTransform = nullptr;
         class Scene* scene = nullptr;
     };
 }

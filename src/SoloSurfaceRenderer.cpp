@@ -23,7 +23,7 @@ SurfaceRenderer::SurfaceRenderer(Renderer* renderer, shared<Material> material):
 
 SurfaceRenderer::~SurfaceRenderer()
 {
-    binding.destroy(); // TODO RAII
+    binding.destroy();
 }
 
 
