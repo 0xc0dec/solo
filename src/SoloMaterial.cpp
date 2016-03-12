@@ -1,5 +1,4 @@
 #include "SoloMaterial.h"
-#include "SoloEffect.h"
 #include "SoloRenderContext.h"
 #include "SoloTransform.h"
 #include "SoloCamera.h"
@@ -24,134 +23,67 @@ Material::~Material()
 
 void Material::setFloatParameter(const std::string& name, float value)
 {
-    // TODO extract method
-    auto& data = parameters[name];
-    if (data.type == ParameterValueType::Unknown)
-    {
-        data.handle = renderer->createUniform(name.c_str(), UniformType::Float, 1, effect->getHandle());
-        data.type = ParameterValueType::Float;
-    }
-    data.floatValue = value;
+    setParameter(name, ParameterValueType::Float, UniformType::Float, 1, &ParameterData::floatValue, value);
 }
 
 
 void Material::setFloatArrayParameter(const std::string& name, const std::vector<float>& value)
 {
-    auto& data = parameters[name];
-    if (data.type == ParameterValueType::Unknown)
-    {
-        data.handle = renderer->createUniform(name.c_str(), UniformType::FloatArray, value.size(), effect->getHandle());
-        data.type = ParameterValueType::FloatArray;
-    }
-    data.floatArrayValue = value;
+    setParameter(name, ParameterValueType::FloatArray, UniformType::FloatArray, value.size(), &ParameterData::floatArrayValue, value);
 }
 
 
 void Material::setVector2Parameter(const std::string& name, const Vector2& value)
 {
-    auto& data = parameters[name];
-    if (data.type == ParameterValueType::Unknown)
-    {
-        data.handle = renderer->createUniform(name.c_str(), UniformType::Vector2, 1, effect->getHandle());
-        data.type = ParameterValueType::Vector2;
-    }
-    data.vector2Value = value;
+    setParameter(name, ParameterValueType::Vector2, UniformType::Vector2, 1, &ParameterData::vector2Value, value);
 }
 
 
 void Material::setVector2ArrayParameter(const std::string& name, const std::vector<Vector2>& value)
 {
-    auto& data = parameters[name];
-    if (data.type == ParameterValueType::Unknown)
-    {
-        data.handle = renderer->createUniform(name.c_str(), UniformType::Vector2Array, value.size(), effect->getHandle());
-        data.type = ParameterValueType::Vector2Array;
-    }
-    data.vector2ArrayValue = value;
+    setParameter(name, ParameterValueType::Vector2Array, UniformType::Vector2Array, value.size(), &ParameterData::vector2ArrayValue, value);
 }
 
 
 void Material::setVector3Parameter(const std::string& name, const Vector3& value)
 {
-    auto& data = parameters[name];
-    if (data.type == ParameterValueType::Unknown)
-    {
-        data.handle = renderer->createUniform(name.c_str(), UniformType::Vector3, 1, effect->getHandle());
-        data.type = ParameterValueType::Vector3;
-    }
-    data.vector3Value = value;
+    setParameter(name, ParameterValueType::Vector3, UniformType::Vector3, 1, &ParameterData::vector3Value, value);
 }
 
 
 void Material::setVector3ArrayParameter(const std::string& name, const std::vector<Vector3>& value)
 {
-    auto& data = parameters[name];
-    if (data.type == ParameterValueType::Unknown)
-    {
-        data.handle = renderer->createUniform(name.c_str(), UniformType::Vector3Array, value.size(), effect->getHandle());
-        data.type = ParameterValueType::Vector3Array;
-    }
-    data.vector3ArrayValue = value;
+    setParameter(name, ParameterValueType::Vector3Array, UniformType::Vector3Array, value.size(), &ParameterData::vector3ArrayValue, value);
 }
 
 
 void Material::setVector4Parameter(const std::string& name, const Vector4& value)
 {
-    auto& data = parameters[name];
-    if (data.type == ParameterValueType::Unknown)
-    {
-        data.handle = renderer->createUniform(name.c_str(), UniformType::Vector4, 1, effect->getHandle());
-        data.type = ParameterValueType::Vector4;
-    }
-    data.vector4Value = value;
+    setParameter(name, ParameterValueType::Vector4, UniformType::Vector4, 1, &ParameterData::vector4Value, value);
 }
 
 
 void Material::setVector4ArrayParameter(const std::string& name, const std::vector<Vector4>& value)
 {
-    auto& data = parameters[name];
-    if (data.type == ParameterValueType::Unknown)
-    {
-        data.handle = renderer->createUniform(name.c_str(), UniformType::Vector4Array, value.size(), effect->getHandle());
-        data.type = ParameterValueType::Vector4Array;
-    }
-    data.vector4ArrayValue = value;
+    setParameter(name, ParameterValueType::Vector4Array, UniformType::Vector4Array, value.size(), &ParameterData::vector4ArrayValue, value);
 }
 
 
 void Material::setMatrixParameter(const std::string& name, const Matrix& value)
 {
-    auto& data = parameters[name];
-    if (data.type == ParameterValueType::Unknown)
-    {
-        data.handle = renderer->createUniform(name.c_str(), UniformType::Matrix, 1, effect->getHandle());
-        data.type = ParameterValueType::Matrix;
-    }
-    data.matrixValue = value;
+    setParameter(name, ParameterValueType::Matrix, UniformType::Matrix, 1, &ParameterData::matrixValue, value);
 }
 
 
 void Material::setMatrixArrayParameter(const std::string& name, const std::vector<Matrix>& value)
 {
-    auto& data = parameters[name];
-    if (data.type == ParameterValueType::Unknown)
-    {
-        data.handle = renderer->createUniform(name.c_str(), UniformType::MatrixArray, value.size(), effect->getHandle());
-        data.type = ParameterValueType::MatrixArray;
-    }
-    data.matrixArrayValue = value;
+    setParameter(name, ParameterValueType::MatrixArray, UniformType::MatrixArray, value.size(), &ParameterData::matrixArrayValue, value);
 }
 
 
 void Material::setTextureParameter(const std::string& name, shared<Texture> value)
 {
-    auto& data = parameters[name];
-    if (data.type == ParameterValueType::Unknown)
-    {
-        data.handle = renderer->createUniform(name.c_str(), UniformType::Texture, 1, effect->getHandle());
-        data.type = ParameterValueType::Texture;
-    }
-    data.textureValue = value;
+    setParameter(name, ParameterValueType::Texture, UniformType::Texture, 1, &ParameterData::textureValue, value);
 }
 
 

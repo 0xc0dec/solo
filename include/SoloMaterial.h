@@ -6,6 +6,7 @@
 #include "SoloVector3.h"
 #include "SoloVector4.h"
 #include "SoloMatrix.h"
+#include "SoloEffect.h"
 #include <unordered_map>
 
 
@@ -134,6 +135,10 @@ namespace solo
 
         void applyState();
 
+        template <class T>
+        void setParameter(const std::string& name, ParameterValueType type, UniformType uniformType, uint8_t uniformComponentCount,
+            T ParameterData::*dataField, const T& newValue);
+
         Renderer* renderer;
         shared<Effect> effect;
 
@@ -144,6 +149,19 @@ namespace solo
         bool depthTest = true;
         DepthPassFunction depthPassFunc = DepthPassFunction::Less;
     };
+
+    template <class T>
+    inline void Material::setParameter(const std::string& name, ParameterValueType type, UniformType uniformType, uint8_t uniformComponentCount,
+        T ParameterData::*dataField, const T& newValue)
+    {
+        auto& data = parameters[name];
+        if (data.type == ParameterValueType::Unknown)
+        {
+            data.handle = renderer->createUniform(name.c_str(), uniformType, uniformComponentCount, effect->getHandle());
+            data.type = type;
+        }
+        data.*dataField = newValue;
+    }
 
     inline Effect* Material::getEffect() const
     {
