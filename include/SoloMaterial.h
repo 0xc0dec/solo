@@ -139,15 +139,13 @@ namespace solo
 //        void rebuildParameter(const std::string& name, FieldType ParameterData::*field, const FieldType& newValue,
 //            ParameterValueType valueType, UniformType uniformType);
 
-        void applyAutoBinding(const ParameterData& data, const RenderContext& context);
-
         Renderer* renderer;
         shared<Effect> effect;
 
         std::unordered_map<std::string, ParameterData> parameters;
 
         PolygonFace polygonFace = PolygonFace::CW;
-        bool depthWrite = true;
+        bool depthWrite = true; 
         bool depthTest = true;
         DepthPassFunction depthPassFunc = DepthPassFunction::Less;
     };

@@ -344,55 +344,6 @@ void Material::clearOldValue(ParameterData& data, ParameterValueType newType)
 }
 
 
-void Material::applyAutoBinding(const ParameterData& data, const RenderContext& context)
-{
-    switch (data.autoBinding)
-    {
-        case AutoBinding::WorldMatrix:
-            if (context.nodeTransform)
-                renderer->setUniform(data.handle, context.nodeTransform->getWorldMatrix().m, 1);
-            break;
-
-        case AutoBinding::ViewMatrix:
-            if (context.camera)
-                renderer->setUniform(data.handle, context.camera->getViewMatrix().m, 1);
-            break;
-        case AutoBinding::ProjectionMatrix:
-            if (context.camera)
-                renderer->setUniform(data.handle, context.camera->getProjectionMatrix().m, 1);
-            break;
-        case AutoBinding::WorldViewMatrix:
-            if (context.nodeTransform && context.camera)
-                renderer->setUniform(data.handle, context.nodeTransform->getWorldViewMatrix(context.camera).m, 1);
-            break;
-        case AutoBinding::ViewProjectionMatrix:
-            if (context.camera)
-                renderer->setUniform(data.handle, context.camera->getViewProjectionMatrix().m, 1);
-            break;
-        case AutoBinding::WorldViewProjectionMatrix:
-            if (context.nodeTransform && context.camera)
-                renderer->setUniform(data.handle, context.nodeTransform->getWorldViewProjectionMatrix(context.camera).m, 1);
-            break;
-        case AutoBinding::InverseTransposedWorldMatrix:
-            if (context.nodeTransform)
-                renderer->setUniform(data.handle, context.nodeTransform->getInverseTransposedWorldMatrix().m, 1);
-            break;
-        case AutoBinding::InverseTransposedWorldViewMatrix:
-            if (context.nodeTransform && context.camera)
-                renderer->setUniform(data.handle, context.nodeTransform->getInverseTransposedWorldViewMatrix(context.camera).m, 1);
-            break;
-        case AutoBinding::CameraWorldPosition:
-            if (context.cameraTransform)
-            {
-                auto pos = context.cameraTransform->getWorldPosition();
-                renderer->setUniform(data.handle, &pos, 1);
-            }
-            break;
-        default: break;
-    }
-}
-
-
 void Material::applyState()
 {
     int flags = 0;
