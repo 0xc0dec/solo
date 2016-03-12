@@ -177,7 +177,7 @@ void Camera::apply()
         renderer->setViewport(0, 0, size.x, size.y);
     }
 
-    renderer->setState(DepthTest);
+    renderer->setState(DepthWrite);
     renderer->clear(true, true, clearColor.x, clearColor.y, clearColor.z, clearColor.w);
 }
 
