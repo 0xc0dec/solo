@@ -65,7 +65,7 @@ namespace solo
         DepthFuncGreater = 1 << 8,
         DepthFuncNotEqual = 1 << 9,
         DepthFuncGEqual = 1 << 10,
-        DepthFuncAlways = 1 << 10,
+        DepthFuncAlways = 1 << 11,
     };
 
     enum class PrimitiveType
