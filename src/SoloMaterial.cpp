@@ -17,7 +17,8 @@ Material::Material(Renderer* renderer, shared<Effect> effect):
 
 Material::~Material()
 {
-    // TODO destroy stuff
+    for (const auto& p: parameters)
+        renderer->destroyUniform(p.second.handle);
 }
 
 
