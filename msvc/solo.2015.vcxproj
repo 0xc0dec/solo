@@ -166,7 +166,7 @@
     <ClCompile Include="..\src\SoloPngImageLoader.cpp" />
     <ClCompile Include="..\src\SoloQuaternion.cpp" />
     <ClCompile Include="..\src\SoloRay.cpp" />
-    <ClCompile Include="..\src\SoloRenderTarget.cpp" />
+    <ClCompile Include="..\src\SoloFrameBuffer.cpp" />
     <ClCompile Include="..\src\SoloResourceManager.cpp" />
     <ClCompile Include="..\src\SoloScene.cpp" />
     <ClCompile Include="..\src\SoloEffect.cpp" />

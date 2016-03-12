@@ -381,9 +381,6 @@
     <ClCompile Include="..\src\SoloTexture2D.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloRenderTarget.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloPngImageLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -467,6 +464,9 @@
     </ClCompile>
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderer.cpp">
       <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloFrameBuffer.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
