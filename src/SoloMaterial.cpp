@@ -21,6 +21,19 @@ Material::~Material()
 }
 
 
+Material::ParameterData& Material::initParameter(const std::string& name, ParameterValueType type,
+    UniformType uniformType, uint8_t uniformComponentCount)
+{
+    auto& data = parameters[name];
+    if (data.type == ParameterValueType::Unknown)
+    {
+        data.handle = renderer->createUniform(name.c_str(), uniformType, uniformComponentCount, effect->getHandle());
+        data.type = type;
+    }
+    return data;
+}
+
+
 void Material::setFloatParameter(const std::string& name, float value)
 {
     setParameter(name, ParameterValueType::Float, UniformType::Float, 1, &ParameterData::floatValue, value);
@@ -89,54 +102,34 @@ void Material::setTextureParameter(const std::string& name, shared<Texture> valu
 
 void Material::setParameterAutoBinding(const std::string& name, AutoBinding autoBinding)
 {
-    auto& data = parameters[name];
-    // TODO need moar beautiful here
     switch (autoBinding)
     {
         case AutoBinding::WorldMatrix:
-            if (data.type == ParameterValueType::Unknown)
-                data.handle = renderer->createUniform(name.c_str(), UniformType::Matrix, 1, effect->getHandle());
-            data.type = ParameterValueType::WorldMatrix;
+            initParameter(name, ParameterValueType::WorldMatrix, UniformType::Matrix, 1);
             break;
         case AutoBinding::ViewMatrix:
-            if (data.type == ParameterValueType::Unknown)
-                data.handle = renderer->createUniform(name.c_str(), UniformType::Matrix, 1, effect->getHandle());
-            data.type = ParameterValueType::ViewMatrix;
+            initParameter(name, ParameterValueType::ViewMatrix, UniformType::Matrix, 1);
             break;
         case AutoBinding::ProjectionMatrix:
-            if (data.type == ParameterValueType::Unknown)
-                data.handle = renderer->createUniform(name.c_str(), UniformType::Matrix, 1, effect->getHandle());
-            data.type = ParameterValueType::ProjectionMatrix;
+            initParameter(name, ParameterValueType::ProjectionMatrix, UniformType::Matrix, 1);
             break;
         case AutoBinding::WorldViewMatrix:
-            if (data.type == ParameterValueType::Unknown)
-                data.handle = renderer->createUniform(name.c_str(), UniformType::Matrix, 1, effect->getHandle());
-            data.type = ParameterValueType::WorldViewMatrix;
+            initParameter(name, ParameterValueType::WorldViewMatrix, UniformType::Matrix, 1);
             break;
         case AutoBinding::ViewProjectionMatrix:
-            if (data.type == ParameterValueType::Unknown)
-                data.handle = renderer->createUniform(name.c_str(), UniformType::Matrix, 1, effect->getHandle());
-            data.type = ParameterValueType::ViewProjectionMatrix;
+            initParameter(name, ParameterValueType::ViewProjectionMatrix, UniformType::Matrix, 1);
             break;
         case AutoBinding::WorldViewProjectionMatrix:
-            if (data.type == ParameterValueType::Unknown)
-                data.handle = renderer->createUniform(name.c_str(), UniformType::Matrix, 1, effect->getHandle());
-            data.type = ParameterValueType::WorldViewProjectionMatrix;
+            initParameter(name, ParameterValueType::WorldViewProjectionMatrix, UniformType::Matrix, 1);
             break;
         case AutoBinding::InverseTransposedWorldMatrix:
-            if (data.type == ParameterValueType::Unknown)
-                data.handle = renderer->createUniform(name.c_str(), UniformType::Matrix, 1, effect->getHandle());
-            data.type = ParameterValueType::InverseTransposedWorldMatrix;
+            initParameter(name, ParameterValueType::InverseTransposedWorldMatrix, UniformType::Matrix, 1);
             break;
         case AutoBinding::InverseTransposedWorldViewMatrix:
-            if (data.type == ParameterValueType::Unknown)
-                data.handle = renderer->createUniform(name.c_str(), UniformType::Matrix, 1, effect->getHandle());
-            data.type = ParameterValueType::InverseTransposedWorldViewMatrix;
+            initParameter(name, ParameterValueType::InverseTransposedWorldViewMatrix, UniformType::Matrix, 1);
             break;
         case AutoBinding::CameraWorldPosition:
-            if (data.type == ParameterValueType::Unknown)
-                data.handle = renderer->createUniform(name.c_str(), UniformType::Vector3, 1, effect->getHandle());
-            data.type = ParameterValueType::CameraWorldPosition;
+            initParameter(name, ParameterValueType::CameraWorldPosition, UniformType::Vector3, 1);
             break;
         default: break;
     }

@@ -135,6 +135,8 @@ namespace solo
 
         void applyState();
 
+        ParameterData& initParameter(const std::string& name, ParameterValueType type, UniformType uniformType, uint8_t uniformComponentCount);
+
         template <class T>
         void setParameter(const std::string& name, ParameterValueType type, UniformType uniformType, uint8_t uniformComponentCount,
             T ParameterData::*dataField, const T& newValue);
@@ -154,13 +156,14 @@ namespace solo
     inline void Material::setParameter(const std::string& name, ParameterValueType type, UniformType uniformType, uint8_t uniformComponentCount,
         T ParameterData::*dataField, const T& newValue)
     {
-        auto& data = parameters[name];
-        if (data.type == ParameterValueType::Unknown)
-        {
-            data.handle = renderer->createUniform(name.c_str(), uniformType, uniformComponentCount, effect->getHandle());
-            data.type = type;
-        }
-        data.*dataField = newValue;
+//        auto& data = parameters[name];
+//        if (data.type == ParameterValueType::Unknown)
+//        {
+//            data.handle = renderer->createUniform(name.c_str(), uniformType, uniformComponentCount, effect->getHandle());
+//            data.type = type;
+//        }
+        initParameter(name, type, uniformType, uniformComponentCount).*dataField = newValue;
+//        data.*dataField = newValue;
     }
 
     inline Effect* Material::getEffect() const
