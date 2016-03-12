@@ -115,22 +115,10 @@
     <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\stub\SoloStubCamera.h">
-      <Filter>src\platform\stub</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\platform\stub\SoloStubDevice.h">
       <Filter>src\platform\stub</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\stub\SoloStubEffect.h">
-      <Filter>src\platform\stub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\stub\SoloStubEffectVariable.h">
-      <Filter>src\platform\stub</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\platform\stub\SoloStubImageLoader.h">
-      <Filter>src\platform\stub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\stub\SoloStubMaterial.h">
       <Filter>src\platform\stub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\platform\stub\SoloStubResourceManager.h">
@@ -174,9 +162,6 @@
     </ClInclude>
     <ClInclude Include="..\include\SoloSurfaceRenderer.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\stub\SoloStubSurfaceRenderer.h">
-      <Filter>src\platform\stub</Filter>
     </ClInclude>
     <ClInclude Include="..\src\platform\scripting\lua\SoloLuaSurfaceRenderer.h">
       <Filter>src\platform\scripting\lua</Filter>
@@ -370,9 +355,6 @@
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\stub\SoloStubDevice.cpp">
-      <Filter>src\platform\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\stub\SoloStubEffect.cpp">
       <Filter>src\platform\stub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\stub\SoloStubImageLoader.cpp">
