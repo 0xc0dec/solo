@@ -67,14 +67,8 @@
     <ClInclude Include="..\include\SoloVector3.h" />
     <ClInclude Include="..\include\SoloVector4.h" />
     <ClInclude Include="..\include\SoloVertexFormat.h" />
-    <ClInclude Include="..\src\platform\opengl\SoloGLSLEffect.h" />
-    <ClInclude Include="..\src\platform\opengl\SoloGLSLEffectVariable.h" />
-    <ClInclude Include="..\src\platform\opengl\SoloGLSLEffectVertexAttribute.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLBuiltInShaders.h" />
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLCamera.h" />
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLMaterial.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderer.h" />
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLSurfaceRenderer.h" />
     <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h" />
     <ClInclude Include="..\src\platform\scripting\lua\SoloLuaSurfaceRenderer.h" />
     <ClInclude Include="..\src\platform\scripting\lua\SoloLuaMesh.h" />
@@ -96,13 +90,7 @@
     <ClInclude Include="..\src\SoloPngImageLoader.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\platform\opengl\SoloGLSLEffect.cpp" />
-    <ClCompile Include="..\src\platform\opengl\SoloGLSLEffectVariable.cpp" />
-    <ClCompile Include="..\src\platform\opengl\SoloGLSLEffectVertexAttribute.cpp" />
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLCamera.cpp" />
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLMaterial.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderer.cpp" />
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLSurfaceRenderer.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp" />
     <ClCompile Include="..\src\platform\scripting\lua\SoloLuaSurfaceRenderer.cpp" />
     <ClCompile Include="..\src\platform\scripting\lua\SoloLuaMesh.cpp" />

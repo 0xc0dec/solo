@@ -112,18 +112,6 @@
     <ClInclude Include="..\include\SoloCubeTexture.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\opengl\SoloGLSLEffect.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\opengl\SoloGLSLEffectVariable.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLCamera.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLMaterial.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
@@ -172,9 +160,6 @@
     <ClInclude Include="..\include\SoloEffectVertexAttribute.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\opengl\SoloGLSLEffectVertexAttribute.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloVertexFormat.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -186,9 +171,6 @@
     </ClInclude>
     <ClInclude Include="..\src\platform\scripting\lua\SoloLuaMesh.h">
       <Filter>src\platform\scripting\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLSurfaceRenderer.h">
-      <Filter>src\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloSurfaceRenderer.h">
       <Filter>include</Filter>
@@ -384,18 +366,6 @@
     <ClCompile Include="..\src\SoloPngImageLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\opengl\SoloGLSLEffect.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\opengl\SoloGLSLEffectVariable.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLCamera.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLMaterial.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
@@ -429,9 +399,6 @@
     <ClCompile Include="..\src\platform\stub\SoloStubFileSystem.cpp">
       <Filter>src\platform\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\opengl\SoloGLSLEffectVertexAttribute.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloMeshRenderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -443,9 +410,6 @@
     </ClCompile>
     <ClCompile Include="..\src\SoloSurfaceRenderer.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLSurfaceRenderer.cpp">
-      <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\scripting\lua\SoloLuaSurfaceRenderer.cpp">
       <Filter>src\platform\scripting\lua</Filter>
