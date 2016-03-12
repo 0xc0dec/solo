@@ -18,12 +18,12 @@ end
 function initTextures()
 	local canvasSize = device:getCanvasSize()
 
-	local mainCameraRTT = resourceManager:getOrCreateTexture2D("demo/main-camera-rtt")
+	local mainCameraRTT = resourceManager:getOrCreateTexture2D("/solo/demo/main-camera-rtt")
 	mainCameraRTT:setData(solo.ColorFormat.RGB, {}, canvasSize.x, canvasSize.y)
 	mainCameraRTT:setFiltering(solo.TextureFiltering.Nearest)
 	mainCameraRTT:setWrapping(solo.TextureWrapping.Clamp)
 
-	local offscreenCameraRTT = resourceManager:getOrCreateTexture2D("demo/offscreen-camera-rtt")
+	local offscreenCameraRTT = resourceManager:getOrCreateTexture2D("/solo/demo/offscreen-camera-rtt")
 	offscreenCameraRTT:setData(solo.ColorFormat.RGB, {}, math.floor(canvasSize.x / 8), math.floor(canvasSize.y / 8))
 	offscreenCameraRTT:setFiltering(solo.TextureFiltering.Nearest)
 	offscreenCameraRTT:setWrapping(solo.TextureWrapping.Clamp)
@@ -123,10 +123,10 @@ end
 
 
 function initRenderTargets()
-	local offscreenCameraRT = resourceManager:getOrCreateFrameBuffer("demo/offscreen-camera-fb")
+	local offscreenCameraRT = resourceManager:getOrCreateFrameBuffer("/solo/demo/offscreen-camera-fb")
 	offscreenCameraRT:setAttachments({ demo.textures.offscreenCameraRTT })
 
-	local mainCameraRT = resourceManager:getOrCreateFrameBuffer("demo/main-camera-fb")
+	local mainCameraRT = resourceManager:getOrCreateFrameBuffer("/solo/demo/main-camera-fb")
 	mainCameraRT:setAttachments({ demo.textures.mainCameraRTT })
 
 	demo.renderTargets =
@@ -147,7 +147,7 @@ function initSkybox()
 		"../data/skyboxes/deep-space/right.png",
 		"../data/skyboxes/deep-space/top.png",
 		"../data/skyboxes/deep-space/bottom.png"
-	}, "demo/textures/skybox")
+	}, "/solo/demo/textures/skybox")
 	texSkybox:setWrapping(solo.TextureWrapping.Clamp)
 
 	local skybox = scene:createNode()
@@ -262,9 +262,9 @@ function init()
 	initEffects()
 	initMaterials()
 	initRenderTargets()
-	-- initMeshes()
+	initMeshes()
 	initCameras()
-	-- initObjects()
+	initObjects()
 	initSkybox()
 end
 
