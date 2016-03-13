@@ -329,7 +329,7 @@ void OpenGLRenderer::generateTexture2DMipmaps(const TextureHandle& handle)
     bindTexture(GL_TEXTURE_2D, handle);
     glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
     glGenerateMipmap(GL_TEXTURE_2D);
-    bindTexture(GL_TEXTURE_2D, EmptyTextureHandle); // TODO remove "cleaning up" calls that bind zeros
+    bindTexture(GL_TEXTURE_2D, EmptyTextureHandle);
 }
 
 
@@ -338,7 +338,7 @@ void OpenGLRenderer::generateCubeTextureMipmaps(const TextureHandle& handle)
     bindTexture(GL_TEXTURE_CUBE_MAP, handle);
     glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
     glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
-    bindTexture(GL_TEXTURE_CUBE_MAP, EmptyTextureHandle); // TODO remove "cleaning up" calls that bind zeros
+    bindTexture(GL_TEXTURE_CUBE_MAP, EmptyTextureHandle);
 }
 
 
