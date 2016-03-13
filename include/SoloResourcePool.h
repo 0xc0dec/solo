@@ -5,7 +5,7 @@
 
 namespace solo
 {
-    template <class T, int capacity>
+    template <class T, uint16_t capacity>
     class ResourcePool final
     {
     public:
@@ -15,12 +15,12 @@ namespace solo
                 handles[i] = i;
         }
 
-        int reserveHandle()
+        uint16_t reserveHandle()
         {
             return handles[end++];
         }
 
-        void releaseHandle(int handle)
+        void releaseHandle(uint16_t handle)
         {
             for (auto i = 0; i < end; ++i)
             {
@@ -33,24 +33,24 @@ namespace solo
             }
         }
 
-        int getHandleCount() const
+        uint16_t getHandleCount() const
         {
             return end;
         }
 
-        int getHandle(int handleIndex) const
+        uint16_t getHandle(uint16_t handleIndex) const
         {
             return handles[handleIndex];
         }
 
-        T& getData(int handle)
+        T& getData(uint16_t handle)
         {
             return data[handle];
         }
 
     private:
         T data[capacity];
-        int handles[capacity];
-        int end = 0;
+        uint16_t handles[capacity];
+        uint16_t end = 0;
     };
 }
