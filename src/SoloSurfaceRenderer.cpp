@@ -33,7 +33,11 @@ void SurfaceRenderer::renderSurface(FrameBuffer* target)
 
     RenderContext ctx;
     material->bind(ctx);
-    mesh->drawIndex(0, material->getEffect());
+    if (mesh->getIndexCount() > 0) // TODO remove such checks, introduce the notion of "Mesh part"
+        mesh->drawIndex(0, material->getEffect());
+    else
+        mesh->draw(material->getEffect());
+
     material->unbind(ctx);
 
     material->setDepthTestEnabled(depthTestEnabled); // TODO really needed?

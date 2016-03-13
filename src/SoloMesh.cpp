@@ -127,11 +127,9 @@ shared<Mesh> Mesh::createQuadMesh(Renderer* renderer)
         -1, -1, 0,  0, 0, -1,   0, 0,
         -1, 1, 0,   0, 0, -1,   0, 1,
         1, 1, 0,    0, 0, -1,   1, 1,
+        -1, -1, 0,  0, 0, -1,   0, 0,
+        1, 1, 0,    0, 0, -1,   1, 1,
         1, -1, 0,   0, 0, -1,   1, 0
-    };
-    unsigned short indexData[] =
-    {
-        0, 1, 2, 0, 2, 3
     };
 
     VertexBufferLayout layout;
@@ -140,8 +138,7 @@ shared<Mesh> Mesh::createQuadMesh(Renderer* renderer)
     layout.add(VertexBufferLayoutSemantics::TexCoord0, 2);
 
     auto mesh = SL_NEW_SHARED(Mesh, renderer);
-    mesh->addBuffer(layout, data, 4);
-    mesh->addIndex(indexData, 6);
+    mesh->addBuffer(layout, data, 6);
     mesh->setPrimitiveType(PrimitiveType::Triangles);
 
     return mesh;

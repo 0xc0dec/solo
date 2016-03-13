@@ -33,7 +33,10 @@ SkyboxRenderer::SkyboxRenderer(Node node):
 void SkyboxRenderer::render(RenderContext& context)
 {
     material->bind(context);
-    quadMesh->drawIndex(0, material->getEffect());
+    if (quadMesh->getIndexCount() > 0)
+        quadMesh->drawIndex(0, material->getEffect());
+    else
+        quadMesh->draw(material->getEffect());
     material->unbind(context);
 }
 
