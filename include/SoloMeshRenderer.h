@@ -10,7 +10,6 @@ namespace solo
     enum class DeviceMode;
     class Material;
     class Mesh;
-    struct MeshEffectBinding;
 
     class MeshRenderer final: public ComponentBase<MeshRenderer>
     {
@@ -31,7 +30,6 @@ namespace solo
         shared<Mesh> mesh;
         DeviceMode deviceMode;
         std::unordered_map<int, shared<Material>> materials;
-        std::unordered_map<int, MeshEffectBinding> bindings;
     };
 
     inline Mesh* MeshRenderer::getMesh() const

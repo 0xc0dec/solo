@@ -17,7 +17,6 @@ namespace solo
         explicit SkyboxRenderer(Node node);
 
         virtual void render(RenderContext& context) override final;
-        virtual void terminate() override final;
 
         void setTexture(shared<CubeTexture> texture);
         shared<CubeTexture> getTexture() const;
@@ -26,7 +25,6 @@ namespace solo
         shared<Mesh> quadMesh;
         shared<Material> material;
         shared<CubeTexture> texture;
-        MeshEffectBinding binding;
     };
 
     inline shared<CubeTexture> SkyboxRenderer::getTexture() const

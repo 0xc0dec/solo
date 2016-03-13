@@ -17,13 +17,6 @@ SurfaceRenderer::SurfaceRenderer(Renderer* renderer, shared<Material> material):
 {
     auto resourceManager = device->getResourceManager();
     mesh = resourceManager->getOrCreatePrefabMesh(MeshPrefab::Quad, "/solo/internal/surface-renderer/mesh");
-    binding = mesh->createEffectBinding(material->getEffect());
-}
-
-
-SurfaceRenderer::~SurfaceRenderer()
-{
-    binding.destroy();
 }
 
 
@@ -40,7 +33,7 @@ void SurfaceRenderer::renderSurface(FrameBuffer* target)
 
     RenderContext ctx;
     material->bind(ctx);
-    mesh->drawIndex(0, &binding);
+    mesh->drawIndex(0, material->getEffect());
     material->unbind(ctx);
 
     material->setDepthTestEnabled(depthTestEnabled); // TODO really needed?

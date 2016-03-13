@@ -27,7 +27,7 @@ void MeshRenderer::render(RenderContext& context)
         if (material)
         {
             material->bind(context);
-            mesh->draw(&bindings[0]);
+            mesh->draw(material->getEffect());
             material->unbind(context);
         }
     }
@@ -39,7 +39,7 @@ void MeshRenderer::render(RenderContext& context)
             if (material)
             {
                 material->bind(context);
-                mesh->drawIndex(i, &bindings[i]);
+                mesh->drawIndex(i, material->getEffect());
                 material->unbind(context);
             }
         }
@@ -52,27 +52,15 @@ void MeshRenderer::setMesh(shared<Mesh> mesh)
     this->mesh = mesh;
     // TODO maybe retain one material, if any
     materials.clear();
-    while (!bindings.empty())
-    {
-        bindings.begin()->second.destroy();
-        bindings.erase(bindings.begin());
-    }
 }
 
 
 void MeshRenderer::setMaterial(int index, shared<Material> material)
 {
     if (material)
-    {
         materials[index] = material;
-        bindings[index] = mesh->createEffectBinding(material->getEffect());
-    }
     else
-    {
         materials.erase(index);
-        bindings[index].destroy();
-        bindings.erase(index);
-    }
 }
 
 

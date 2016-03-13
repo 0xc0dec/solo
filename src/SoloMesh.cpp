@@ -83,6 +83,17 @@ void Mesh::rebuildVertexObject()
 }
 
 
+void Mesh::rebuildEffectBinding(Effect* effect)
+{
+    if (effect == lastEffect)
+        return;
+    if (!effectBindingVertexObjectHandle.empty())
+        renderer->destroyVertexObject(effectBindingVertexObjectHandle);
+    effectBindingVertexObjectHandle = renderer->createVertexObject(vertexBuffers.data(), vertexBuffers.size(), effect->getHandle());
+    lastEffect = effect;
+}
+
+
 void Mesh::recalculateMinVertexCount()
 {
     minVertexCount = INT_MAX;
@@ -91,24 +102,19 @@ void Mesh::recalculateMinVertexCount()
 }
 
 
-MeshEffectBinding Mesh::createEffectBinding(Effect* effect)
+void Mesh::draw(Effect* effect)
 {
-    const auto vo = renderer->createVertexObject(vertexBuffers.data(), vertexBuffers.size(), effect->getHandle());
-    return MeshEffectBinding(renderer, vo);
-}
-
-
-void Mesh::draw(MeshEffectBinding* effectBinding)
-{
-    const auto& handle = effectBinding ? effectBinding->vertexObjectHandle : vertexObjectHandle;
+    rebuildEffectBinding(effect);
+    const auto& handle = !effectBindingVertexObjectHandle.empty() ? effectBindingVertexObjectHandle : vertexObjectHandle;
     if (!handle.empty())
         renderer->drawVertexObject(primitiveType, handle, minVertexCount);
 }
 
 
-void Mesh::drawIndex(int index, MeshEffectBinding* effectBinding)
+void Mesh::drawIndex(int index, Effect* effect)
 {
-    const auto& handle = effectBinding ? effectBinding->vertexObjectHandle : vertexObjectHandle;
+    rebuildEffectBinding(effect);
+    const auto& handle = !effectBindingVertexObjectHandle.empty() ? effectBindingVertexObjectHandle : vertexObjectHandle;
     if (!handle.empty())
         renderer->drawIndexedVertexObject(primitiveType, handle, indexBuffers[index]);
 }

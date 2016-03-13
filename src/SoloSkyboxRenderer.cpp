@@ -27,22 +27,14 @@ SkyboxRenderer::SkyboxRenderer(Node node):
     material->setPolygonFace(PolygonFace::CW);
 
     quadMesh = resourceManager->getOrCreatePrefabMesh(MeshPrefab::Quad, "/solo/internal/skybox-renderer/mesh");
-
-    binding = quadMesh->createEffectBinding(material->getEffect());
 }
 
 
 void SkyboxRenderer::render(RenderContext& context)
 {
     material->bind(context);
-    quadMesh->drawIndex(0, &binding);
+    quadMesh->drawIndex(0, material->getEffect());
     material->unbind(context);
-}
-
-
-void SkyboxRenderer::terminate()
-{
-    binding.destroy();
 }
 
 

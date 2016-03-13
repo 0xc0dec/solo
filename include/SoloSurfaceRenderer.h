@@ -15,7 +15,6 @@ namespace solo
     {
     public:
         SurfaceRenderer(Renderer* renderer, shared<Material> material);
-        ~SurfaceRenderer();
 
         SL_NONCOPYABLE(SurfaceRenderer)
 
@@ -26,6 +25,5 @@ namespace solo
         Device* device;
         shared<Material> material;
         shared<Mesh> mesh;
-        MeshEffectBinding binding;
     };
 }
