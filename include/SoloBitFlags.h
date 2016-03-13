@@ -2,29 +2,28 @@
 
 namespace solo
 {
-    // TODO replace with std::bitset
     class BitFlags
     {
     public:
         BitFlags() {}
 
-        unsigned getRaw() const;
+        uint32_t getRaw() const;
 
         bool isEmpty() const;
-        bool checkAndRemove(unsigned flags);
-        bool isSet(unsigned flags) const;
+        bool checkAndRemove(uint32_t flags);
+        bool isSet(uint32_t flags) const;
 
         void setAll();
-        void set(unsigned flags);
-        void add(unsigned flags);
-        void remove(unsigned flags);
+        void set(uint32_t flags);
+        void add(uint32_t flags);
+        void remove(uint32_t flags);
         void clear();
 
     private:
-        unsigned flags = 0;
+        uint32_t flags = 0;
     };
 
-    inline unsigned BitFlags::getRaw() const
+    inline uint32_t BitFlags::getRaw() const
     {
         return flags;
     }
@@ -34,14 +33,14 @@ namespace solo
         return flags == 0;
     }
 
-    inline bool BitFlags::checkAndRemove(unsigned flags)
+    inline bool BitFlags::checkAndRemove(uint32_t flags)
     {
         auto result = isSet(flags);
         remove(flags);
         return result;
     }
 
-    inline bool BitFlags::isSet(unsigned flags) const
+    inline bool BitFlags::isSet(uint32_t flags) const
     {
         return (this->flags & flags) != 0;
     }
@@ -51,17 +50,17 @@ namespace solo
         flags = ~0;
     }
 
-    inline void BitFlags::set(unsigned flags)
+    inline void BitFlags::set(uint32_t flags)
     {
         this->flags = flags;
     }
 
-    inline void BitFlags::add(unsigned flags)
+    inline void BitFlags::add(uint32_t flags)
     {
         this->flags |= flags;
     }
 
-    inline void BitFlags::remove(unsigned flags)
+    inline void BitFlags::remove(uint32_t flags)
     {
         this->flags &= ~flags;
     }
