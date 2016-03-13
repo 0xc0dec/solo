@@ -102,7 +102,7 @@ void Mesh::draw(MeshEffectBinding* effectBinding)
 {
     const auto& handle = effectBinding ? effectBinding->vertexObjectHandle : vertexObjectHandle;
     if (!handle.empty())
-        renderer->renderVertexObject(primitiveType, handle, minVertexCount);
+        renderer->drawVertexObject(primitiveType, handle, minVertexCount);
 }
 
 
@@ -110,7 +110,7 @@ void Mesh::drawIndex(int index, MeshEffectBinding* effectBinding)
 {
     const auto& handle = effectBinding ? effectBinding->vertexObjectHandle : vertexObjectHandle;
     if (!handle.empty())
-        renderer->renderIndexedVertexObject(primitiveType, handle, indexBuffers[index]);
+        renderer->drawIndexedVertexObject(primitiveType, handle, indexBuffers[index]);
 }
 
 

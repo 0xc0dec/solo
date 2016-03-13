@@ -8,11 +8,11 @@
 #define SL_RENDERER_RESOURCE_HANDLE(name) \
     struct name \
     { \
-        int value = -1; \
+        int value = EmptyHandleValue; \
         \
         bool empty() const\
         { \
-            return value == -1; \
+            return value == EmptyHandleValue; \
         } \
     }; \
     \
@@ -21,6 +21,8 @@
 namespace solo
 {
     class Device;
+
+    const uint32_t EmptyHandleValue = -1;
 
     SL_RENDERER_RESOURCE_HANDLE(TextureHandle)
     SL_RENDERER_RESOURCE_HANDLE(FrameBufferHandle)
@@ -135,7 +137,7 @@ namespace solo
         virtual FrameBufferHandle createFrameBuffer() = 0;
         virtual void destroyFrameBuffer(FrameBufferHandle handle) = 0;
         virtual void setFrameBuffer(FrameBufferHandle handle) = 0;
-        virtual void updateFrameBuffer(FrameBufferHandle handle, const std::vector<TextureHandle> attachments) = 0;
+        virtual void updateFrameBuffer(FrameBufferHandle handle, const std::vector<TextureHandle> attachmentHandles) = 0;
 
         virtual VertexBufferHandle createVertexBuffer(const VertexBufferLayout& layout, const void* data, int vertexCount) = 0;
         virtual void destroyVertexBuffer(VertexBufferHandle handle) = 0;
@@ -147,12 +149,12 @@ namespace solo
         virtual void destroyProgram(ProgramHandle handle) = 0;
         virtual void setProgram(ProgramHandle handle) = 0;
 
-        virtual VertexObjectHandle createVertexObject(const VertexBufferHandle* buffers, int bufferCount, ProgramHandle programHandle) = 0;
+        virtual VertexObjectHandle createVertexObject(const VertexBufferHandle* bufferHandles, int bufferCount, ProgramHandle programHandle) = 0;
         virtual void destroyVertexObject(VertexObjectHandle handle) = 0;
 
-        virtual void renderIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle,
+        virtual void drawIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle,
             const IndexBufferHandle& indexBufferHandle) = 0;
-        virtual void renderVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, int vertexCount) = 0;
+        virtual void drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, int vertexCount) = 0;
 
         virtual UniformHandle createUniform(const char* name, UniformType type, int componentCount, ProgramHandle program) = 0;
         virtual void destroyUniform(const UniformHandle& handle) = 0;

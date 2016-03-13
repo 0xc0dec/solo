@@ -338,8 +338,6 @@ void OpenGLRenderer::bindVertexBuffer(VertexBufferHandle handle)
 
 void OpenGLRenderer::bindIndexBuffer(IndexBufferHandle handle)
 {
-    // TODO pass here the value of the handle to eliminate the need to construct the handle
-    // before calling this function. Same for other similar functions
     auto rawHandle = handle.empty() ? 0 : indexBuffers.getData(handle.value).rawHandle;
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rawHandle);
 }
@@ -517,9 +515,9 @@ void OpenGLRenderer::setFrameBuffer(FrameBufferHandle handle)
 }
 
 
-void OpenGLRenderer::updateFrameBuffer(FrameBufferHandle handle, const std::vector<TextureHandle> attachments)
+void OpenGLRenderer::updateFrameBuffer(FrameBufferHandle handle, const std::vector<TextureHandle> attachmentHandles)
 {
-    SL_IN_DEBUG(validateFrameBufferAttachments(attachments));
+    SL_IN_DEBUG(validateFrameBufferAttachments(attachmentHandles));
 
     bindFrameBuffer(handle);
 
@@ -531,11 +529,11 @@ void OpenGLRenderer::updateFrameBuffer(FrameBufferHandle handle, const std::vect
         data.depthBufferHandle = 0;
     }
 
-    auto newCount = attachments.size();
+    auto newCount = attachmentHandles.size();
     auto stepCount = std::max(newCount, static_cast<size_t>(data.attachmentCount));
     for (auto i = 0; i < stepCount; i++)
     {
-        auto rawHandle = i < newCount ? textures.getData(attachments[i].value).rawHandle : 0;
+        auto rawHandle = i < newCount ? textures.getData(attachmentHandles[i].value).rawHandle : 0;
         glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, rawHandle, 0);
     }
 
@@ -546,7 +544,7 @@ void OpenGLRenderer::updateFrameBuffer(FrameBufferHandle handle, const std::vect
         SL_DEBUG_THROW_IF(!data.depthBufferHandle, InternalException, "Failed to obtain depth buffer handle");
 
         glBindRenderbuffer(GL_RENDERBUFFER, data.depthBufferHandle);
-        auto firstAttachmentData = textures.getData(attachments[0].value);
+        auto firstAttachmentData = textures.getData(attachmentHandles[0].value);
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, firstAttachmentData.width, firstAttachmentData.height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, data.depthBufferHandle);
 
@@ -564,16 +562,16 @@ VertexBufferHandle OpenGLRenderer::createVertexBuffer(const VertexBufferLayout& 
     glGenBuffers(1, &rawHandle);
     SL_DEBUG_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain vertex buffer handle");
 
+    glBindBuffer(GL_ARRAY_BUFFER, rawHandle);
+    glBufferData(GL_ARRAY_BUFFER, layout.getSize() * vertexCount, data, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
     VertexBufferHandle handle;
     handle.value = vertexBuffers.reserveHandle();
     auto& bufferData = vertexBuffers.getData(handle.value);
     bufferData.rawHandle = rawHandle;
     bufferData.layout = layout;
     bufferData.vertexCount = vertexCount;
-
-    bindVertexBuffer(handle);
-    glBufferData(GL_ARRAY_BUFFER, layout.getSize() * vertexCount, data, GL_STATIC_DRAW);
-    bindVertexBuffer(EmptyVertexBufferHandle);
 
     return handle;
 }
@@ -593,15 +591,15 @@ IndexBufferHandle OpenGLRenderer::createIndexBuffer(const void* data, int elemen
     glGenBuffers(1, &rawHandle);
     SL_DEBUG_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain index buffer handle");
 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rawHandle);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementSize * elementCount, data, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
     IndexBufferHandle handle;
     handle.value = indexBuffers.reserveHandle();
     auto& bufferData = indexBuffers.getData(handle.value);
     bufferData.rawHandle = rawHandle;
     bufferData.elementCount = elementCount;
-
-    bindIndexBuffer(handle);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementSize * elementCount, data, GL_STATIC_DRAW);
-    bindIndexBuffer(EmptyIndexBufferHandle);
 
     return handle;
 }
@@ -649,7 +647,7 @@ void OpenGLRenderer::setProgram(ProgramHandle handle)
 }
 
 
-VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* buffers, int bufferCount, ProgramHandle programHandle)
+VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* bufferHandles, int bufferCount, ProgramHandle programHandle)
 {
     std::unordered_map<std::string, GLuint> attributes;
     if (!programHandle.empty())
@@ -662,11 +660,7 @@ VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* 
     glGenVertexArrays(1, &rawHandle);
     SL_DEBUG_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain vertex object handle");
 
-    VertexObjectHandle handle;
-    handle.value = vertexObjects.reserveHandle();
-    vertexObjects.getData(handle.value).rawHandle = rawHandle;
-
-    bindVertexObject(handle);
+    glBindVertexArray(rawHandle);
 
     auto getAttributeLocation = [&](const char* name, GLint defaultValue)
     {
@@ -676,7 +670,7 @@ VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* 
 
     for (auto i = 0; i < bufferCount; i++)
     {
-        const auto& bufferHandle = buffers[i];
+        const auto& bufferHandle = bufferHandles[i];
         const auto& layout = vertexBuffers.getData(bufferHandle.value).layout;
         const auto elementCount = layout.getElementCount();
         int offset = 0;
@@ -718,7 +712,11 @@ VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* 
         }
     }
 
-    bindVertexObject(EmptyVertexObjectHandle);
+    glBindVertexArray(0);
+
+    VertexObjectHandle handle;
+    handle.value = vertexObjects.reserveHandle();
+    vertexObjects.getData(handle.value).rawHandle = rawHandle;
 
     return handle;
 }
@@ -732,7 +730,7 @@ void OpenGLRenderer::destroyVertexObject(VertexObjectHandle handle)
 }
 
 
-void OpenGLRenderer::renderIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, const IndexBufferHandle& indexBufferHandle)
+void OpenGLRenderer::drawIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, const IndexBufferHandle& indexBufferHandle)
 {
     bindVertexObject(vertexObjectHandle);
     bindIndexBuffer(indexBufferHandle);
@@ -745,7 +743,7 @@ void OpenGLRenderer::renderIndexedVertexObject(PrimitiveType primitiveType, cons
 }
 
 
-void OpenGLRenderer::renderVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, int vertexCount)
+void OpenGLRenderer::drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, int vertexCount)
 {
     bindVertexObject(vertexObjectHandle);
     glDrawArrays(convertPrimitiveType(primitiveType), 0, vertexCount);

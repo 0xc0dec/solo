@@ -9,8 +9,6 @@
 
 namespace solo
 {
-    // TODO const *Handle& everywhere
-    // TODO rename "handle" to something more sensible
     class OpenGLRenderer final: public Renderer
     {
     public:
@@ -32,7 +30,7 @@ namespace solo
         virtual FrameBufferHandle createFrameBuffer() override final;
         virtual void destroyFrameBuffer(FrameBufferHandle handle) override final;
         virtual void setFrameBuffer(FrameBufferHandle handle) override final;
-        virtual void updateFrameBuffer(FrameBufferHandle handle, const std::vector<TextureHandle> attachments) override final;
+        virtual void updateFrameBuffer(FrameBufferHandle handle, const std::vector<TextureHandle> attachmentHandles) override final;
 
         virtual VertexBufferHandle createVertexBuffer(const VertexBufferLayout& layout, const void* data, int vertexCount) override final;
         virtual void destroyVertexBuffer(VertexBufferHandle handle) override final;
@@ -44,16 +42,11 @@ namespace solo
         virtual void destroyProgram(ProgramHandle handle) override final;
         virtual void setProgram(ProgramHandle handle) override final;
 
-        virtual VertexObjectHandle createVertexObject(const VertexBufferHandle* buffers, int bufferCount, ProgramHandle programHandle) override final;
+        virtual VertexObjectHandle createVertexObject(const VertexBufferHandle* bufferHandles, int bufferCount, ProgramHandle programHandle) override final;
         virtual void destroyVertexObject(VertexObjectHandle handle) override final;
-
-        virtual void renderIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle,
-            const IndexBufferHandle& indexBufferHandle) override final;
-        virtual void renderVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, int vertexCount) override final;
 
         virtual UniformHandle createUniform(const char* name, UniformType type, int componentCount, ProgramHandle program) override final;
         virtual void destroyUniform(const UniformHandle& handle) override final;
-
         virtual void setUniform(const UniformHandle& handle, const void* value, int count) override final;
 
         virtual void setState(int stateFlags) override final;
@@ -61,6 +54,10 @@ namespace solo
         virtual void setViewport(int x, int y, int width, int height) override final;
 
         virtual void clear(bool color, bool depth, float r, float g, float b, float a) override final;
+
+        virtual void drawIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle,
+            const IndexBufferHandle& indexBufferHandle) override final;
+        virtual void drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, int vertexCount) override final;
 
     private:
         friend class Renderer;
