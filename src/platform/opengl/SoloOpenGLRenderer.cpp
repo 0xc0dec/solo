@@ -69,11 +69,11 @@ static GLint linkProgram(GLuint vs, GLuint fs)
     glAttachShader(program, fs);
     glLinkProgram(program);
 
-    int status;
+    GLint status;
     glGetProgramiv(program, GL_LINK_STATUS, &status);
     if (status == GL_FALSE)
     {
-        int logLength;
+        GLint logLength;
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
         std::vector<GLchar> log(logLength);
         glGetProgramInfoLog(program, logLength, nullptr, log.data());
@@ -98,11 +98,11 @@ static GLint compileShader(GLuint type, const char* src)
     glShaderSource(shader, 1, &src, nullptr);
     glCompileShader(shader);
 
-    int status;
+    GLint status;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
     if (status == GL_FALSE)
     {
-        int logLength;
+        GLint logLength;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
         std::vector<GLchar> log(logLength);
         glGetShaderInfoLog(shader, logLength, nullptr, log.data());
@@ -144,7 +144,7 @@ static std::unordered_map<std::string, GLuint> discoverVertexAttributes(GLuint p
 }
 
 
-static bool findUniformInProgram(GLuint program, const char* name, GLint& location, int& index)
+static bool findUniformInProgram(GLuint program, const char* name, GLint& location, int32_t& index)
 {
     GLint activeUniforms;
     glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &activeUniforms);
@@ -173,7 +173,7 @@ static bool findUniformInProgram(GLuint program, const char* name, GLint& locati
         if (bracketIndex != std::string::npos)
             n.erase(bracketIndex);
     
-        int idx = 0;
+        uint32_t idx = 0;
         if (type == GL_SAMPLER_2D || type == GL_SAMPLER_CUBE) // TODO other types of samplers
         {
             idx = samplerIndex;
@@ -275,7 +275,7 @@ void OpenGLRenderer::destroyTexture(const TextureHandle& handle)
 }
 
 
-void OpenGLRenderer::update2DTexture(const TextureHandle& handle, ColorFormat format, int width, int height, const void* data)
+void OpenGLRenderer::update2DTexture(const TextureHandle& handle, ColorFormat format, uint32_t width, uint32_t height, const void* data)
 {
     bindTexture(GL_TEXTURE_2D, handle);
 
@@ -299,7 +299,7 @@ void OpenGLRenderer::update2DTexture(const TextureHandle& handle, ColorFormat fo
 }
 
 
-void OpenGLRenderer::updateCubeTexture(const TextureHandle& handle, CubeTextureFace face, ColorFormat format, int width, int height, const void* data)
+void OpenGLRenderer::updateCubeTexture(const TextureHandle& handle, CubeTextureFace face, ColorFormat format, uint32_t width, uint32_t height, const void* data)
 {
     bindTexture(GL_TEXTURE_CUBE_MAP, handle);
 
@@ -368,7 +368,7 @@ void OpenGLRenderer::bindVertexObject(const VertexObjectHandle& handle)
 }
 
 
-void OpenGLRenderer::setTexture(GLenum target, const TextureHandle& handle, int flags)
+void OpenGLRenderer::setTexture(GLenum target, const TextureHandle& handle, uint32_t flags)
 {
     bindTexture(target, handle);
 
@@ -453,13 +453,13 @@ void OpenGLRenderer::set2DTexture(const TextureHandle& handle)
 }
 
 
-void OpenGLRenderer::set2DTexture(const TextureHandle& handle, int flags)
+void OpenGLRenderer::set2DTexture(const TextureHandle& handle, uint32_t flags)
 {
     setTexture(GL_TEXTURE_2D, handle, flags);
 }
 
 
-void OpenGLRenderer::set2DTexture(const TextureHandle& handle, int flags, float anisotropyLevel)
+void OpenGLRenderer::set2DTexture(const TextureHandle& handle, uint32_t flags, float anisotropyLevel)
 {
     set2DTexture(handle, flags);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
@@ -472,7 +472,7 @@ void OpenGLRenderer::setCubeTexture(const TextureHandle& handle)
 }
 
 
-void OpenGLRenderer::setCubeTexture(const TextureHandle& handle, int flags)
+void OpenGLRenderer::setCubeTexture(const TextureHandle& handle, uint32_t flags)
 {
     setTexture(GL_TEXTURE_CUBE_MAP, handle, flags);
 
@@ -489,7 +489,7 @@ void OpenGLRenderer::setCubeTexture(const TextureHandle& handle, int flags)
 }
 
 
-void OpenGLRenderer::setCubeTexture(const TextureHandle& handle, int flags, float anisotropyLevel)
+void OpenGLRenderer::setCubeTexture(const TextureHandle& handle, uint32_t flags, float anisotropyLevel)
 {
     setCubeTexture(handle, flags);
     if (!handle.empty())
@@ -574,7 +574,7 @@ void OpenGLRenderer::updateFrameBuffer(const FrameBufferHandle& handle, const st
 }
 
 
-VertexBufferHandle OpenGLRenderer::createVertexBuffer(const VertexBufferLayout& layout, const void* data, int vertexCount)
+VertexBufferHandle OpenGLRenderer::createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
 {
     GLuint rawHandle = 0;
     glGenBuffers(1, &rawHandle);
@@ -603,7 +603,7 @@ void OpenGLRenderer::destroyVertexBuffer(const VertexBufferHandle& handle)
 }
 
 
-IndexBufferHandle OpenGLRenderer::createIndexBuffer(const void* data, int elementSize, int elementCount)
+IndexBufferHandle OpenGLRenderer::createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount)
 {
     GLuint rawHandle = 0;
     glGenBuffers(1, &rawHandle);
@@ -665,7 +665,7 @@ void OpenGLRenderer::setProgram(const ProgramHandle& handle)
 }
 
 
-VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* bufferHandles, int bufferCount, ProgramHandle programHandle)
+VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle)
 {
     std::unordered_map<std::string, GLuint> attributes;
     if (!programHandle.empty())
@@ -686,12 +686,12 @@ VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* 
         return programAttr != attributes.end() ? programAttr->second : defaultValue;
     };
 
-    for (auto i = 0; i < bufferCount; i++)
+    for (uint32_t i = 0; i < bufferCount; i++)
     {
         const auto& bufferHandle = bufferHandles[i];
         const auto& layout = vertexBuffers.getData(bufferHandle.value).layout;
         const auto elementCount = layout.getElementCount();
-        int offset = 0;
+        uint32_t offset = 0;
         for (auto j = 0; j < elementCount; j++)
         {
             auto& el = layout.getElement(j);
@@ -712,7 +712,7 @@ VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* 
                 case VertexBufferLayoutSemantics::TexCoord6:
                 case VertexBufferLayoutSemantics::TexCoord7:
                 {
-                    auto idx = static_cast<int>(el.semantics) - static_cast<int>(VertexBufferLayoutSemantics::TexCoord0);
+                    auto idx = static_cast<uint32_t>(el.semantics) - static_cast<uint32_t>(VertexBufferLayoutSemantics::TexCoord0);
                     auto name = "texCoord" + std::to_string(idx);
                     attrLoc = getAttributeLocation(name.c_str(), 5 + idx);
                     break;
@@ -761,7 +761,7 @@ void OpenGLRenderer::drawIndexedVertexObject(PrimitiveType primitiveType, const 
 }
 
 
-void OpenGLRenderer::drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, int vertexCount)
+void OpenGLRenderer::drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, uint32_t vertexCount)
 {
     bindVertexObject(vertexObjectHandle);
     glDrawArrays(convertPrimitiveType(primitiveType), 0, vertexCount);
@@ -769,7 +769,7 @@ void OpenGLRenderer::drawVertexObject(PrimitiveType primitiveType, const VertexO
 }
 
 
-UniformHandle OpenGLRenderer::createUniform(const char* name, UniformType type, int componentCount, ProgramHandle program)
+UniformHandle OpenGLRenderer::createUniform(const char* name, UniformType type, uint32_t componentCount, ProgramHandle program)
 {
     auto rawProgramHandle = programs.getData(program.value).rawHandle;
 
@@ -795,7 +795,7 @@ void OpenGLRenderer::destroyUniform(const UniformHandle& handle)
 }
 
 
-void OpenGLRenderer::setUniform(const UniformHandle& handle, const void* value, int count)
+void OpenGLRenderer::setUniform(const UniformHandle& handle, const void* value, uint32_t count)
 {
     const auto& data = uniforms.getData(handle.value);
     auto floatData = reinterpret_cast<const float*>(value);
@@ -841,7 +841,7 @@ void OpenGLRenderer::setUniform(const UniformHandle& handle, const void* value, 
 }
 
 
-void OpenGLRenderer::setState(int stateFlags)
+void OpenGLRenderer::setState(uint32_t stateFlags)
 {
     if (stateFlags & StateFlags::CullFace)
         glEnable(GL_CULL_FACE);
@@ -879,7 +879,7 @@ void OpenGLRenderer::setState(int stateFlags)
 }
 
 
-void OpenGLRenderer::setViewport(int x, int y, int width, int height)
+void OpenGLRenderer::setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
 {
     glViewport(x, y, width, height);
 }

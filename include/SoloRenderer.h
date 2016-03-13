@@ -8,7 +8,7 @@
 #define SL_RENDERER_RESOURCE_HANDLE(name) \
     struct name \
     { \
-        int value = EmptyHandleValue; \
+        uint32_t value = EmptyHandleValue; \
         \
         bool empty() const\
         { \
@@ -124,14 +124,14 @@ namespace solo
         virtual TextureHandle createTexture() = 0;
         virtual void destroyTexture(const TextureHandle& handle) = 0;
         virtual void set2DTexture(const TextureHandle& handle) = 0;
-        virtual void set2DTexture(const TextureHandle& handle, int flags) = 0;
-        virtual void set2DTexture(const TextureHandle& handle, int flags, float anisotropyLevel) = 0;
+        virtual void set2DTexture(const TextureHandle& handle, uint32_t flags) = 0;
+        virtual void set2DTexture(const TextureHandle& handle, uint32_t flags, float anisotropyLevel) = 0;
         virtual void setCubeTexture(const TextureHandle& handle) = 0;
-        virtual void setCubeTexture(const TextureHandle& handle, int flags) = 0;
-        virtual void setCubeTexture(const TextureHandle& handle, int flags, float anisotropyLevel) = 0;
-        virtual void update2DTexture(const TextureHandle& handle, ColorFormat format, int width, int height, const void* data) = 0;
+        virtual void setCubeTexture(const TextureHandle& handle, uint32_t flags) = 0;
+        virtual void setCubeTexture(const TextureHandle& handle, uint32_t flags, float anisotropyLevel) = 0;
+        virtual void update2DTexture(const TextureHandle& handle, ColorFormat format, uint32_t width, uint32_t height, const void* data) = 0;
         virtual void updateCubeTexture(const TextureHandle& handle, CubeTextureFace face, ColorFormat format,
-            int width, int height, const void* data) = 0;
+            uint32_t width, uint32_t height, const void* data) = 0;
         virtual void generateTexture2DMipmaps(const TextureHandle& handle) = 0;
         virtual void generateCubeTextureMipmaps(const TextureHandle& handle) = 0;
 
@@ -140,32 +140,32 @@ namespace solo
         virtual void setFrameBuffer(const FrameBufferHandle& handle) = 0;
         virtual void updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle> attachmentHandles) = 0;
 
-        virtual VertexBufferHandle createVertexBuffer(const VertexBufferLayout& layout, const void* data, int vertexCount) = 0;
+        virtual VertexBufferHandle createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) = 0;
         virtual void destroyVertexBuffer(const VertexBufferHandle& handle) = 0;
 
-        virtual IndexBufferHandle createIndexBuffer(const void* data, int elementSize, int elementCount) = 0;
+        virtual IndexBufferHandle createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount) = 0;
         virtual void destroyIndexBuffer(const IndexBufferHandle& handle) = 0;
 
         virtual ProgramHandle createProgram(const char* vsSrc, const char* fsSrc) = 0;
         virtual void destroyProgram(const ProgramHandle& handle) = 0;
         virtual void setProgram(const ProgramHandle& handle) = 0;
 
-        virtual VertexObjectHandle createVertexObject(const VertexBufferHandle* bufferHandles, int bufferCount, ProgramHandle programHandle) = 0;
+        virtual VertexObjectHandle createVertexObject(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle) = 0;
         virtual void destroyVertexObject(const VertexObjectHandle& handle) = 0;
 
-        virtual UniformHandle createUniform(const char* name, UniformType type, int componentCount, ProgramHandle program) = 0;
+        virtual UniformHandle createUniform(const char* name, UniformType type, uint32_t componentCount, ProgramHandle program) = 0;
         virtual void destroyUniform(const UniformHandle& handle) = 0;
-        virtual void setUniform(const UniformHandle& handle, const void* value, int count) = 0;
+        virtual void setUniform(const UniformHandle& handle, const void* value, uint32_t count) = 0;
 
-        virtual void setState(int stateFlags) = 0;
+        virtual void setState(uint32_t stateFlags) = 0;
 
-        virtual void setViewport(int x, int y, int width, int height) = 0;
+        virtual void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
 
         virtual void clear(bool color, bool depth, float r, float g, float b, float a) = 0;
 
         virtual void drawIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle,
             const IndexBufferHandle& indexBufferHandle) = 0;
-        virtual void drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, int vertexCount) = 0;
+        virtual void drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, uint32_t vertexCount) = 0;
 
     protected:
         explicit Renderer(Device* device);

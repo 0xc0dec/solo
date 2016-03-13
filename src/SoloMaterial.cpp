@@ -22,7 +22,7 @@ Material::~Material()
 
 
 Material::ParameterData& Material::initParameter(const std::string& name, ParameterValueType type,
-    UniformType uniformType, uint8_t uniformComponentCount)
+    UniformType uniformType, uint32_t uniformComponentCount)
 {
     auto& data = parameters[name];
     if (data.type == ParameterValueType::Unknown)
@@ -42,7 +42,7 @@ void Material::setFloatParameter(const std::string& name, float value)
 
 void Material::setFloatArrayParameter(const std::string& name, const std::vector<float>& value)
 {
-    setParameter(name, ParameterValueType::FloatArray, UniformType::FloatArray, value.size(), &ParameterData::floatArrayValue, value);
+    setParameter(name, ParameterValueType::FloatArray, UniformType::FloatArray, static_cast<uint32_t>(value.size()), &ParameterData::floatArrayValue, value);
 }
 
 
@@ -54,7 +54,7 @@ void Material::setVector2Parameter(const std::string& name, const Vector2& value
 
 void Material::setVector2ArrayParameter(const std::string& name, const std::vector<Vector2>& value)
 {
-    setParameter(name, ParameterValueType::Vector2Array, UniformType::Vector2Array, value.size(), &ParameterData::vector2ArrayValue, value);
+    setParameter(name, ParameterValueType::Vector2Array, UniformType::Vector2Array, static_cast<uint32_t>(value.size()), &ParameterData::vector2ArrayValue, value);
 }
 
 
@@ -66,7 +66,7 @@ void Material::setVector3Parameter(const std::string& name, const Vector3& value
 
 void Material::setVector3ArrayParameter(const std::string& name, const std::vector<Vector3>& value)
 {
-    setParameter(name, ParameterValueType::Vector3Array, UniformType::Vector3Array, value.size(), &ParameterData::vector3ArrayValue, value);
+    setParameter(name, ParameterValueType::Vector3Array, UniformType::Vector3Array, static_cast<uint32_t>(value.size()), &ParameterData::vector3ArrayValue, value);
 }
 
 
@@ -78,7 +78,7 @@ void Material::setVector4Parameter(const std::string& name, const Vector4& value
 
 void Material::setVector4ArrayParameter(const std::string& name, const std::vector<Vector4>& value)
 {
-    setParameter(name, ParameterValueType::Vector4Array, UniformType::Vector4Array, value.size(), &ParameterData::vector4ArrayValue, value);
+    setParameter(name, ParameterValueType::Vector4Array, UniformType::Vector4Array, static_cast<uint32_t>(value.size()), &ParameterData::vector4ArrayValue, value);
 }
 
 
@@ -90,7 +90,7 @@ void Material::setMatrixParameter(const std::string& name, const Matrix& value)
 
 void Material::setMatrixArrayParameter(const std::string& name, const std::vector<Matrix>& value)
 {
-    setParameter(name, ParameterValueType::MatrixArray, UniformType::MatrixArray, value.size(), &ParameterData::matrixArrayValue, value);
+    setParameter(name, ParameterValueType::MatrixArray, UniformType::MatrixArray, static_cast<uint32_t>(value.size()), &ParameterData::matrixArrayValue, value);
 }
 
 

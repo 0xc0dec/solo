@@ -171,11 +171,17 @@ void Camera::apply()
         renderTarget->bind();
 
     if (viewportSet)
-        renderer->setViewport(viewport.x, viewport.y, viewport.z, viewport.w);
+    {
+        renderer->setViewport(
+            static_cast<uint32_t>(viewport.x),
+            static_cast<uint32_t>(viewport.y),
+            static_cast<uint32_t>(viewport.z),
+            static_cast<uint32_t>(viewport.w));
+    }
     else
     {
         auto size = device->getCanvasSize();
-        renderer->setViewport(0, 0, size.x, size.y);
+        renderer->setViewport(0, 0, static_cast<uint32_t>(size.x), static_cast<uint32_t>(size.y));
     }
 
     renderer->setState(static_cast<uint32_t>(StateFlags::DepthWrite));
