@@ -7,9 +7,9 @@
 
 
 #ifdef SL_DEBUG
-#   define SL_MAYBE(code) code;
+#   define SL_IN_DEBUG(code) code
 #else
-#   define SL_MAYBE(function)
+#   define SL_IN_DEBUG(function)
 #endif
 
 #define SL_SHARED_STATIC_CAST		std::static_pointer_cast

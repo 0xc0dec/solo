@@ -529,7 +529,7 @@ void OpenGLRenderer::setFrameBuffer(FrameBufferHandle handle)
 void OpenGLRenderer::updateFrameBuffer(FrameBufferHandle handle, const std::vector<TextureHandle> attachments)
 {
     SL_DEBUG_FMT_THROW_IF(handle.empty(), InvalidInputException, "Frame buffer handle is empty")
-    SL_MAYBE(validateFrameBufferAttachments(attachments))
+    SL_IN_DEBUG(validateFrameBufferAttachments(attachments));
 
     bindFrameBuffer(handle);
 
