@@ -42,7 +42,7 @@ static GLenum convertPrimitiveType(PrimitiveType type)
         case PrimitiveType::Points:
             return GL_POINTS;
         default:
-            SL_DEBUG_THROW_FMT(InvalidInputException, "Unknown primitive type ", static_cast<int32_t>(type));
+            SL_DEBUG_FMT_THROW(InvalidInputException, "Unknown primitive type ", static_cast<int32_t>(type));
             return GL_TRIANGLES; // in Release we just return default value
     }
 }
@@ -57,7 +57,7 @@ static GLenum convertColorFormat(ColorFormat format)
         case ColorFormat::RGBA:
             return GL_RGBA;
         default:
-            SL_DEBUG_THROW_FMT(InvalidInputException, "Unknown texture format ", static_cast<int32_t>(format));
+            SL_DEBUG_FMT_THROW(InvalidInputException, "Unknown texture format ", static_cast<int32_t>(format));
             return GL_RGB; // in Release we just return default value
     }
 }
