@@ -2,6 +2,7 @@
 #include "SoloNode.h"
 #include "SoloDevice.h"
 #include "SoloFrameBuffer.h"
+#include "SoloBitFlags.h"
 
 using namespace solo;
 
@@ -177,7 +178,7 @@ void Camera::apply()
         renderer->setViewport(0, 0, size.x, size.y);
     }
 
-    renderer->setState(DepthWrite);
+    renderer->setState(static_cast<uint32_t>(StateFlags::DepthWrite));
     renderer->clear(true, true, clearColor.x, clearColor.y, clearColor.z, clearColor.w);
 }
 

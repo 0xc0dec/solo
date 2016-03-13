@@ -70,4 +70,25 @@ namespace solo
     {
         flags = 0;
     }
+
+
+    // Enable using enum classes as bit flags
+    template <class T, class TBase = std::underlying_type_t<T>, class = std::enable_if<std::is_enum<T>::value, T>>
+    inline TBase operator |(T a, T b)
+    {
+        return static_cast<TBase>(a) | static_cast<TBase>(b);
+    }
+
+    template <class T, class TBase = std::underlying_type_t<T>, class = std::enable_if<std::is_enum<T>::value, T>>
+    inline TBase operator &(TBase a, T b)
+    {
+        return a & static_cast<TBase>(b);
+    }
+
+    template <class T, class TBase = std::underlying_type_t<T>, class = std::enable_if<std::is_enum<T>::value, T>>
+    inline TBase& operator |=(TBase& a, T b)
+    {
+        a = a | static_cast<TBase>(b);
+        return a;
+    }
 }

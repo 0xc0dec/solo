@@ -30,7 +30,7 @@ namespace solo
     SL_RENDERER_RESOURCE_HANDLE(VertexObjectHandle)
     SL_RENDERER_RESOURCE_HANDLE(UniformHandle)
 
-    enum TextureFlags // TODO these names might cause collisions one day
+    enum class TextureFlags
     {
         MinFilterNearest = 1 << 0,
         MinFilterLinear = 1 << 1,
@@ -52,7 +52,7 @@ namespace solo
         DepthWrapRepeat = 1 << 17
     };
 
-    enum StateFlags
+    enum class StateFlags
     {
         CullFace = 1 << 0,
         FrontFaceCCW = 1 << 1, // if not set then CW

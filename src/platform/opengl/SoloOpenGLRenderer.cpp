@@ -1,4 +1,5 @@
 #include "SoloOpenGLRenderer.h"
+#include "SoloBitFlags.h"
 #include <algorithm>
 #include <unordered_map>
 
@@ -359,49 +360,49 @@ void OpenGLRenderer::setTexture(GLenum target, TextureHandle handle, int flags)
         return;
 
     GLenum minFilter = 0;
-    if (flags & MinFilterLinear)
+    if (flags & TextureFlags::MinFilterLinear)
         minFilter = GL_LINEAR;
-    else if (flags & MinFilterLinearMipmapLinear)
+    else if (flags & TextureFlags::MinFilterLinearMipmapLinear)
         minFilter = GL_LINEAR_MIPMAP_LINEAR;
-    else if (flags & MinFilterLinearMipmapNearest)
+    else if (flags & TextureFlags::MinFilterLinearMipmapNearest)
         minFilter = GL_LINEAR_MIPMAP_NEAREST;
-    else if (flags & MinFilterNearest)
+    else if (flags & TextureFlags::MinFilterNearest)
         minFilter = GL_NEAREST;
-    else if (flags & MinFilterNearestMipmapLinear)
+    else if (flags & TextureFlags::MinFilterNearestMipmapLinear)
         minFilter = GL_NEAREST_MIPMAP_LINEAR;
-    else if (flags & MinFilterNearestMipmapNearest)
+    else if (flags & TextureFlags::MinFilterNearestMipmapNearest)
         minFilter = GL_NEAREST_MIPMAP_NEAREST;
     if (minFilter)
         glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minFilter);
 
     GLenum magFilter = 0;
-    if (flags & MagFilterLinear)
+    if (flags & TextureFlags::MagFilterLinear)
         magFilter = GL_LINEAR;
-    else if (flags & MagFilterLinearMipmapLinear)
+    else if (flags & TextureFlags::MagFilterLinearMipmapLinear)
         magFilter = GL_LINEAR_MIPMAP_LINEAR;
-    else if (flags & MagFilterLinearMipmapNearest)
+    else if (flags & TextureFlags::MagFilterLinearMipmapNearest)
         magFilter = GL_LINEAR_MIPMAP_NEAREST;
-    else if (flags & MagFilterNearest)
+    else if (flags & TextureFlags::MagFilterNearest)
         magFilter = GL_NEAREST;
-    else if (flags & MagFilterNearestMipmapLinear)
+    else if (flags & TextureFlags::MagFilterNearestMipmapLinear)
         magFilter = GL_NEAREST_MIPMAP_LINEAR;
-    else if (flags & MagFilterNearestMipmapNearest)
+    else if (flags & TextureFlags::MagFilterNearestMipmapNearest)
         magFilter = GL_NEAREST_MIPMAP_NEAREST;
     if (magFilter)
         glTexParameteri(target, GL_TEXTURE_MAG_FILTER, magFilter);
 
     GLenum wrapS = 0;
-    if (flags & HorizontalWrapClamp)
+    if (flags & TextureFlags::HorizontalWrapClamp)
         wrapS = GL_CLAMP_TO_BORDER;
-    else if (flags & HorizontalWrapRepeat)
+    else if (flags & TextureFlags::HorizontalWrapRepeat)
         wrapS = GL_REPEAT;
     if (wrapS)
         glTexParameteri(target, GL_TEXTURE_WRAP_S, wrapS);
 
     GLenum wrapT = 0;
-    if (flags & VerticalWrapClamp)
+    if (flags & TextureFlags::VerticalWrapClamp)
         wrapT = GL_CLAMP_TO_BORDER;
-    else if (flags & VerticalWrapRepeat)
+    else if (flags & TextureFlags::VerticalWrapRepeat)
         wrapT = GL_REPEAT;
     if (wrapT)
         glTexParameteri(target, GL_TEXTURE_WRAP_T, wrapT);
@@ -463,9 +464,9 @@ void OpenGLRenderer::setCubeTexture(TextureHandle handle, int flags)
         return;
 
     GLenum wrapR = 0;
-    if (flags & DepthWrapClamp)
+    if (flags & TextureFlags::DepthWrapClamp)
         wrapR = GL_CLAMP_TO_BORDER;
-    else if (flags & DepthWrapRepeat)
+    else if (flags & TextureFlags::DepthWrapRepeat)
         wrapR = GL_REPEAT;
     if (wrapR)
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, wrapR);
@@ -826,39 +827,39 @@ void OpenGLRenderer::setUniform(const UniformHandle& handle, const void* value, 
 
 void OpenGLRenderer::setState(int stateFlags)
 {
-    if (stateFlags & CullFace)
+    if (stateFlags & StateFlags::CullFace)
         glEnable(GL_CULL_FACE);
     else
         glDisable(GL_CULL_FACE);
 
-    glFrontFace(stateFlags & FrontFaceCCW ? GL_CCW : GL_CW);
+    glFrontFace(stateFlags & StateFlags::FrontFaceCCW ? GL_CCW : GL_CW);
 
-    if (stateFlags & DepthTest)
+    if (stateFlags & StateFlags::DepthTest)
         glEnable(GL_DEPTH_TEST);
     else
         glDisable(GL_DEPTH_TEST);
 
     GLenum depthFunc = 0;
-    if (stateFlags & DepthFuncAlways)
+    if (stateFlags & StateFlags::DepthFuncAlways)
         depthFunc = GL_ALWAYS;
-    else if (stateFlags & DepthFuncEqual)
+    else if (stateFlags & StateFlags::DepthFuncEqual)
         depthFunc = GL_EQUAL;
-    else if (stateFlags & DepthFuncGEqual)
+    else if (stateFlags & StateFlags::DepthFuncGEqual)
         depthFunc = GL_GEQUAL;
-    else if (stateFlags & DepthFuncGreater)
+    else if (stateFlags & StateFlags::DepthFuncGreater)
         depthFunc = GL_GREATER;
-    else if (stateFlags & DepthFuncLEqual)
+    else if (stateFlags & StateFlags::DepthFuncLEqual)
         depthFunc = GL_LEQUAL;
-    else if (stateFlags & DepthFuncLess)
+    else if (stateFlags & StateFlags::DepthFuncLess)
         depthFunc = GL_LESS;
-    else if (stateFlags & DepthFuncNotEqual)
+    else if (stateFlags & StateFlags::DepthFuncNotEqual)
         depthFunc = GL_NOTEQUAL;
     else
         depthFunc = GL_NEVER;
     
     glDepthFunc(depthFunc);
 
-    glDepthMask(stateFlags & DepthWrite ? GL_TRUE : GL_FALSE);
+    glDepthMask(stateFlags & StateFlags::DepthWrite ? GL_TRUE : GL_FALSE);
 }
 
 

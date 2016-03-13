@@ -77,5 +77,6 @@ int main()
     runLuaTests("../tests/scripts/tests.lua");
 #endif
     runLuaTests("../tests/scripts/demo/demo.lua");
+
     return 0;
 }

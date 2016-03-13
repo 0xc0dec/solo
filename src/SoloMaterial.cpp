@@ -244,25 +244,25 @@ void Material::applyState()
     int flags = 0;
     
     if (polygonFace != PolygonFace::All)
-        flags |= CullFace;
+        flags |= StateFlags::CullFace;
     if (polygonFace == PolygonFace::CCW)
-        flags |= FrontFaceCCW;
+        flags |= StateFlags::FrontFaceCCW;
 
     if (depthWrite)
-        flags |= DepthWrite;
+        flags |= StateFlags::DepthWrite;
     if (depthTest)
-        flags |= DepthTest;
+        flags |= StateFlags::DepthTest;
 
     switch (depthPassFunc)
     {
-        case DepthPassFunction::Never: flags |= DepthFuncNever; break;
-        case DepthPassFunction::Less: flags |= DepthFuncLess; break;
-        case DepthPassFunction::Equal: flags |= DepthFuncEqual; break;
-        case DepthPassFunction::LEqual: flags |= DepthFuncLEqual; break;
-        case DepthPassFunction::Greater: flags |= DepthFuncGreater; break;
-        case DepthPassFunction::NotEqual: flags |= DepthFuncNotEqual; break;
-        case DepthPassFunction::GEqual: flags |= DepthFuncGEqual; break;
-        case DepthPassFunction::Always: flags |= DepthFuncAlways; break;
+        case DepthPassFunction::Never: flags |= StateFlags::DepthFuncNever; break;
+        case DepthPassFunction::Less: flags |= StateFlags::DepthFuncLess; break;
+        case DepthPassFunction::Equal: flags |= StateFlags::DepthFuncEqual; break;
+        case DepthPassFunction::LEqual: flags |= StateFlags::DepthFuncLEqual; break;
+        case DepthPassFunction::Greater: flags |= StateFlags::DepthFuncGreater; break;
+        case DepthPassFunction::NotEqual: flags |= StateFlags::DepthFuncNotEqual; break;
+        case DepthPassFunction::GEqual: flags |= StateFlags::DepthFuncGEqual; break;
+        case DepthPassFunction::Always: flags |= StateFlags::DepthFuncAlways; break;
         default: break;
     }
 

@@ -1,4 +1,5 @@
 #include "SoloCubeTexture.h"
+#include "SoloBitFlags.h"
 
 using namespace solo;
 
@@ -36,8 +37,8 @@ void CubeTexture::rebuildFlags()
 
     switch (depthWrapping)
     {
-        case TextureWrapping::Clamp: flags |= DepthWrapClamp; break;
-        case TextureWrapping::Repeat: flags |= DepthWrapRepeat; break;
+        case TextureWrapping::Clamp: flags |= TextureFlags::DepthWrapClamp; break;
+        case TextureWrapping::Repeat: flags |= TextureFlags::DepthWrapRepeat; break;
         default: break;
     }
 }

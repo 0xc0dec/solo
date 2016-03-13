@@ -1,4 +1,5 @@
 #include "SoloTexture.h"
+#include "SoloBitFlags.h"
 
 using namespace solo;
 
@@ -30,37 +31,37 @@ void Texture::rebuildFlags()
 
     switch (horizontalWrapping)
     {
-        case TextureWrapping::Clamp: flags |= HorizontalWrapClamp; break;
-        case TextureWrapping::Repeat: flags |= HorizontalWrapRepeat; break;
+        case TextureWrapping::Clamp: flags |= TextureFlags::HorizontalWrapClamp; break;
+        case TextureWrapping::Repeat: flags |= TextureFlags::HorizontalWrapRepeat; break;
         default: break;
     }
 
     switch (verticalWrapping)
     {
-        case TextureWrapping::Clamp: flags |= VerticalWrapClamp; break;
-        case TextureWrapping::Repeat: flags |= VerticalWrapRepeat; break;
+        case TextureWrapping::Clamp: flags |= TextureFlags::VerticalWrapClamp; break;
+        case TextureWrapping::Repeat: flags |= TextureFlags::VerticalWrapRepeat; break;
         default: break;
     }
 
     switch (minFiltering)
     {
-        case TextureFiltering::Nearest: flags |= MinFilterNearest; break;
-        case TextureFiltering::Linear: flags |= MinFilterLinear; break;
-        case TextureFiltering::NearestMipmapNearest: flags |= MinFilterNearestMipmapNearest; break;
-        case TextureFiltering::LinearMipmapNearest: flags |= MinFilterLinearMipmapNearest; break;
-        case TextureFiltering::NearestMipmapLinear: flags |= MinFilterNearestMipmapLinear; break;
-        case TextureFiltering::LinearMipmapLinear: flags |= MinFilterLinearMipmapLinear; break;
+        case TextureFiltering::Nearest: flags |= TextureFlags::MinFilterNearest; break;
+        case TextureFiltering::Linear: flags |= TextureFlags::MinFilterLinear; break;
+        case TextureFiltering::NearestMipmapNearest: flags |= TextureFlags::MinFilterNearestMipmapNearest; break;
+        case TextureFiltering::LinearMipmapNearest: flags |= TextureFlags::MinFilterLinearMipmapNearest; break;
+        case TextureFiltering::NearestMipmapLinear: flags |= TextureFlags::MinFilterNearestMipmapLinear; break;
+        case TextureFiltering::LinearMipmapLinear: flags |= TextureFlags::MinFilterLinearMipmapLinear; break;
         default: break;
     }
 
     switch (magFiltering)
     {
-        case TextureFiltering::Nearest: flags |= MagFilterNearest; break;
-        case TextureFiltering::Linear: flags |= MagFilterLinear; break;
-        case TextureFiltering::NearestMipmapNearest: flags |= MagFilterNearestMipmapNearest; break;
-        case TextureFiltering::LinearMipmapNearest: flags |= MagFilterLinearMipmapNearest; break;
-        case TextureFiltering::NearestMipmapLinear: flags |= MagFilterNearestMipmapLinear; break;
-        case TextureFiltering::LinearMipmapLinear: flags |= MagFilterLinearMipmapLinear; break;
+        case TextureFiltering::Nearest: flags |= TextureFlags::MagFilterNearest; break;
+        case TextureFiltering::Linear: flags |= TextureFlags::MagFilterLinear; break;
+        case TextureFiltering::NearestMipmapNearest: flags |= TextureFlags::MagFilterNearestMipmapNearest; break;
+        case TextureFiltering::LinearMipmapNearest: flags |= TextureFlags::MagFilterLinearMipmapNearest; break;
+        case TextureFiltering::NearestMipmapLinear: flags |= TextureFlags::MagFilterNearestMipmapLinear; break;
+        case TextureFiltering::LinearMipmapLinear: flags |= TextureFlags::MagFilterLinearMipmapLinear; break;
         default: break;
     }
 }
