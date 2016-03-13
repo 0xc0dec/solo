@@ -22,10 +22,8 @@ namespace solo
         virtual void setCubeTexture(TextureHandle handle) override final;
         virtual void setCubeTexture(TextureHandle handle, int flags) override final;
         virtual void setCubeTexture(TextureHandle handle, int flags, float anisotropyLevel) override final;
-        virtual void update2DTexture(TextureHandle handle, ColorFormat format, int width, int height,
-            const std::vector<uint8_t>& data) override final; // TODO change data to void*
-        virtual void updateCubeTexture(TextureHandle handle, CubeTextureFace face, ColorFormat format, int width, int height,
-            const std::vector<uint8_t>& data) override final; // TODO change data to void*
+        virtual void update2DTexture(TextureHandle handle, ColorFormat format, int width, int height, const void* data) override final;
+        virtual void updateCubeTexture(TextureHandle handle, CubeTextureFace face, ColorFormat format, int width, int height, const void* data) override final;
 
         virtual FrameBufferHandle createFrameBuffer() override final;
         virtual void destroyFrameBuffer(FrameBufferHandle handle) override final;

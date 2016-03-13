@@ -275,7 +275,7 @@ void OpenGLRenderer::destroyTexture(TextureHandle handle)
 }
 
 
-void OpenGLRenderer::update2DTexture(TextureHandle handle, ColorFormat format, int width, int height, const std::vector<uint8_t>& data)
+void OpenGLRenderer::update2DTexture(TextureHandle handle, ColorFormat format, int width, int height, const void* data)
 {
     bindTexture(GL_TEXTURE_2D, handle);
 
@@ -289,7 +289,7 @@ void OpenGLRenderer::update2DTexture(TextureHandle handle, ColorFormat format, i
         0,
         convertColorFormat(format),
         GL_UNSIGNED_BYTE,
-        data.size() ? data.data() : 0);
+        data);
 
     auto& texData = textures.getData(handle.value);
     texData.width = width;
@@ -299,7 +299,7 @@ void OpenGLRenderer::update2DTexture(TextureHandle handle, ColorFormat format, i
 }
 
 
-void OpenGLRenderer::updateCubeTexture(TextureHandle handle, CubeTextureFace face, ColorFormat format, int width, int height, const std::vector<uint8_t>& data)
+void OpenGLRenderer::updateCubeTexture(TextureHandle handle, CubeTextureFace face, ColorFormat format, int width, int height, const void* data)
 {
     bindTexture(GL_TEXTURE_CUBE_MAP, handle);
 
@@ -314,7 +314,7 @@ void OpenGLRenderer::updateCubeTexture(TextureHandle handle, CubeTextureFace fac
         0,
         convertColorFormat(format),
         GL_UNSIGNED_BYTE,
-        data.size() ? data.data() : 0);
+        data);
 
     // NB width and height in texture data are not updated intentionally
 

@@ -17,6 +17,6 @@ void Texture2D::apply()
 
 void Texture2D::setData(ColorFormat format, const std::vector<uint8_t>& data, int width, int height)
 {
-    renderer->update2DTexture(handle, format, width, height, data);
+    renderer->update2DTexture(handle, format, width, height, data.data());
     size = { static_cast<float>(width), static_cast<float>(height) };
 }
