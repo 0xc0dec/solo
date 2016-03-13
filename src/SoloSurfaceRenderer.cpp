@@ -22,7 +22,6 @@ SurfaceRenderer::SurfaceRenderer(Renderer* renderer, shared<Material> material):
 
 void SurfaceRenderer::renderSurface(FrameBuffer* target)
 {
-    auto depthTestEnabled = material->isDepthTestEnabled();
     material->setDepthTestEnabled(false);
 
     if (target)
