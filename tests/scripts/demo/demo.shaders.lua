@@ -151,7 +151,7 @@ return
 		void main()
 		{
 			vec4 color = texture(mainTex, uv0);
-			if (uv0.x <= separator)
+			if (uv0.x >= separator)
 				color *= 2;
 			fragColor = color;
 		}

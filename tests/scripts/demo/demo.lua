@@ -149,6 +149,7 @@ function initSkybox()
 		"../data/skyboxes/deep-space/bottom.png"
 	}, "/solo/demo/textures/skybox")
 	texSkybox:setWrapping(solo.TextureWrapping.Clamp)
+	texSkybox:setFiltering(solo.TextureFiltering.Linear)
 
 	local skybox = scene:createNode()
 	local skyboxRenderer = skybox:addComponent("SkyboxRenderer")
