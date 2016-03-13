@@ -44,7 +44,7 @@ Vector3 parseVector3(const char* from, const char* to)
 }
 
 
-void parseIndexes(const char** from, const char* to, unsigned** result)
+void parseIndexes(const char** from, const char* to, uint32_t** result)
 {
     char buf[16];
     size_t bufIdx = 0;
@@ -117,8 +117,8 @@ shared<Mesh> ObjMeshLoader::load(const std::string& uri)
             auto from = line.c_str() + 2;
             auto to = from + lineSize - 3;
             size_t spaceIdx = 1;
-            unsigned vIdx, uvIdx, nIdx;
-            unsigned* idxs[] = { &vIdx, &uvIdx, &nIdx };
+            uint32_t vIdx, uvIdx, nIdx;
+            uint32_t* idxs[] = { &vIdx, &uvIdx, &nIdx };
             std::string three;
             for (auto i = 0; i < 3; ++i)
             {
@@ -160,23 +160,23 @@ shared<Mesh> ObjMeshLoader::load(const std::string& uri)
 
     VertexBufferLayout positionLayout;
     positionLayout.add(VertexBufferLayoutSemantics::Position, 3);
-    mesh->addBuffer(positionLayout, reinterpret_cast<const float*>(vertices.data()), static_cast<int>(vertices.size()));
+    mesh->addBuffer(positionLayout, reinterpret_cast<const float*>(vertices.data()), static_cast<uint32_t>(vertices.size()));
 
     if (!uvs.empty())
     {
         VertexBufferLayout uvLayout;
         uvLayout.add(VertexBufferLayoutSemantics::TexCoord0, 2);
-        mesh->addBuffer(uvLayout, reinterpret_cast<const float*>(uvs.data()), static_cast<int>(uvs.size()));
+        mesh->addBuffer(uvLayout, reinterpret_cast<const float*>(uvs.data()), static_cast<uint32_t>(uvs.size()));
     }
     if (!normals.empty())
     {
         VertexBufferLayout normalLayout;
         normalLayout.add(VertexBufferLayoutSemantics::Normal, 3);
-        mesh->addBuffer(normalLayout, reinterpret_cast<const float*>(normals.data()), static_cast<int>(normals.size()));
+        mesh->addBuffer(normalLayout, reinterpret_cast<const float*>(normals.data()), static_cast<uint32_t>(normals.size()));
     }
 
     for (const auto& indices : allIndices)
-        mesh->addPart(reinterpret_cast<const void*>(indices.data()), static_cast<int>(indices.size()));
+        mesh->addPart(reinterpret_cast<const void*>(indices.data()), static_cast<uint32_t>(indices.size()));
 
     mesh->setPrimitiveType(PrimitiveType::Triangles);
 

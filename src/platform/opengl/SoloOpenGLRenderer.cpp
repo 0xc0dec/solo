@@ -157,7 +157,7 @@ static bool findUniformInProgram(GLuint program, const char* name, GLint& locati
         return false;
     
     std::vector<GLchar> rawName(nameMaxLength + 1);
-    int samplerIndex = 0;
+    uint32_t samplerIndex = 0;
     for (GLint i = 0; i < activeUniforms; ++i)
     {
         GLint size;
@@ -692,7 +692,7 @@ VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* 
         const auto& layout = vertexBuffers.getData(bufferHandle.value).layout;
         const auto elementCount = layout.getElementCount();
         uint32_t offset = 0;
-        for (auto j = 0; j < elementCount; j++)
+        for (uint32_t j = 0; j < elementCount; j++)
         {
             auto& el = layout.getElement(j);
             GLint attrLoc = 0;

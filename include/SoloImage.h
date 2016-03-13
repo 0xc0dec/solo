@@ -8,8 +8,8 @@ namespace solo
 {
     struct Image
     {
-        int width;
-        int height;
+        uint32_t width;
+        uint32_t height;
         ColorFormat colorFormat;
         std::vector<uint8_t> data;
     };

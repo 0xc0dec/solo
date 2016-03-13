@@ -27,7 +27,7 @@ shared<Node> Scene::createNode()
 }
 
 
-void Scene::addComponent(int nodeId, shared<Component> cmp)
+void Scene::addComponent(uint32_t nodeId, shared<Component> cmp)
 {
     auto typeId = cmp->getTypeId();
     auto nodeIt = components.find(nodeId);
@@ -47,7 +47,7 @@ void Scene::addComponent(int nodeId, shared<Component> cmp)
 }
 
 
-void Scene::removeComponent(int nodeId, int typeId)
+void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
 {
     auto nodeIt = components.find(nodeId);
     if (nodeIt == components.end())
@@ -69,7 +69,7 @@ void Scene::removeComponent(int nodeId, int typeId)
 }
 
 
-Component* Scene::getComponent(int nodeId, int typeId) const
+Component* Scene::getComponent(uint32_t nodeId, uint32_t typeId) const
 {
     auto cmp = findComponent(nodeId, typeId);
     if (!cmp)
@@ -78,7 +78,7 @@ Component* Scene::getComponent(int nodeId, int typeId) const
 }
 
 
-Component* Scene::findComponent(int nodeId, int typeId) const
+Component* Scene::findComponent(uint32_t nodeId, uint32_t typeId) const
 {
     auto nodeIt = components.find(nodeId);
     if (nodeIt == components.end())
@@ -94,7 +94,7 @@ Component* Scene::findComponent(int nodeId, int typeId) const
 
 
 template <class T>
-void Scene::updateRenderQueue(std::list<T>& queue, int cmpTypeIdFilter)
+void Scene::updateRenderQueue(std::list<T>& queue, uint32_t cmpTypeIdFilter)
 {
     queue.clear();
 

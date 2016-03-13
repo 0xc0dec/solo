@@ -38,18 +38,18 @@ Mesh::~Mesh()
 }
 
 
-int Mesh::addBuffer(const VertexBufferLayout& layout, const float* data, int vertexCount)
+uint32_t Mesh::addBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount)
 {
     auto handle = renderer->createVertexBuffer(layout, data, vertexCount);
     vertexBuffers.push_back(handle);
     vertexCounts.push_back(vertexCount);
     rebuildVertexObject();
     recalculateMinVertexCount();
-    return vertexBuffers.size() - 1;
+    return static_cast<uint32_t>(vertexBuffers.size() - 1);
 }
 
 
-void Mesh::removeBuffer(int index)
+void Mesh::removeBuffer(uint32_t index)
 {
     renderer->destroyVertexBuffer(vertexBuffers[index]);
     vertexBuffers.erase(vertexBuffers.begin() + index);
@@ -59,15 +59,15 @@ void Mesh::removeBuffer(int index)
 }
 
 
-int Mesh::addPart(const void* data, int elementCount)
+uint32_t Mesh::addPart(const void* data, uint32_t elementCount)
 {
     auto handle = renderer->createIndexBuffer(data, 2, elementCount); // 2 because we currently support only UNSIGNED_SHORT indexes
     indexBuffers.push_back(handle);
-    return indexBuffers.size() - 1;
+    return static_cast<uint32_t>(indexBuffers.size() - 1);
 }
 
 
-void Mesh::removePart(int part)
+void Mesh::removePart(uint32_t part)
 {
     renderer->destroyIndexBuffer(indexBuffers[part]);
     indexBuffers.erase(indexBuffers.begin() + part);
@@ -92,7 +92,7 @@ void Mesh::draw(Effect* effect)
 }
 
 
-void Mesh::drawPart(Effect* effect, uint16_t part)
+void Mesh::drawPart(Effect* effect, uint32_t part)
 {
     rebuildEffectBinding(effect);
     const auto& handle = !effectBindingVertexObjectHandle.empty() ? effectBindingVertexObjectHandle : vertexObjectHandle;
@@ -110,7 +110,7 @@ void Mesh::rebuildVertexObject()
     }
     // Build with default vertex attribute values
     if (!vertexBuffers.empty())
-        vertexObjectHandle = renderer->createVertexObject(vertexBuffers.data(), vertexBuffers.size(), EmptyProgramHandle);
+        vertexObjectHandle = renderer->createVertexObject(vertexBuffers.data(), static_cast<uint32_t>(vertexBuffers.size()), EmptyProgramHandle);
 }
 
 
@@ -120,7 +120,7 @@ void Mesh::rebuildEffectBinding(Effect* effect)
         return;
     if (!effectBindingVertexObjectHandle.empty())
         renderer->destroyVertexObject(effectBindingVertexObjectHandle);
-    effectBindingVertexObjectHandle = renderer->createVertexObject(vertexBuffers.data(), vertexBuffers.size(), effect->getHandle());
+    effectBindingVertexObjectHandle = renderer->createVertexObject(vertexBuffers.data(), static_cast<uint32_t>(vertexBuffers.size()), effect->getHandle());
     lastEffect = effect;
 }
 
@@ -178,7 +178,7 @@ shared<Mesh> Mesh::createBoxMesh(Renderer* renderer)
         0, 0,   0, 1,   1, 1,   1, 0,
         0, 0,   0, 1,   1, 1,   1, 0
     };
-    unsigned short indexData[] =
+    uint16_t indexData[] =
     {
         0, 1, 2,
         0, 2, 3,

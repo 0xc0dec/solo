@@ -32,8 +32,8 @@ namespace solo
 
         void setParent(Transform* parent);
         Transform* getParent() const;
-        Transform* getChild(int index) const;
-        int getChildrenCount() const;
+        Transform* getChild(uint32_t index) const;
+        uint32_t getChildrenCount() const;
         void removeChildren();
 
         Vector3 getWorldScale() const;
@@ -79,8 +79,8 @@ namespace solo
         Vector3 transformDirection(const Vector3& direction) const;
 
     private:
-        void setDirtyWithChildren(unsigned flags) const;
-        void setChildrenDirty(unsigned flags) const;
+        void setDirtyWithChildren(uint32_t flags) const;
+        void setChildrenDirty(uint32_t flags) const;
 
         void notifyChanged() const;
 

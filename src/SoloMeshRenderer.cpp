@@ -32,7 +32,7 @@ void MeshRenderer::render(RenderContext& context)
     }
     else
     {
-        for (auto part = 0; part < partCount; ++part)
+        for (uint32_t part = 0; part < partCount; ++part)
         {
             auto material = getMaterial(part);
             if (material)
@@ -45,7 +45,7 @@ void MeshRenderer::render(RenderContext& context)
 }
 
 
-void MeshRenderer::setMaterial(int index, shared<Material> material)
+void MeshRenderer::setMaterial(uint32_t index, shared<Material> material)
 {
     if (material)
         materials[index] = material;

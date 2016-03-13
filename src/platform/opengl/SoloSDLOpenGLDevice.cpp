@@ -93,10 +93,10 @@ static WindowWithContextCreationResult tryCreateOpengGLWindow(bool hidden, uint3
     if (creationArgs.fullScreen)
         flags |= SDL_WINDOW_FULLSCREEN;
     auto window = SDL_CreateWindow(
-                      creationArgs.windowTitle.c_str(),
-                      SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                      creationArgs.canvasWidth, creationArgs.canvasHeight,
-                      flags);
+        creationArgs.windowTitle.c_str(),
+        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        creationArgs.canvasWidth, creationArgs.canvasHeight,
+        flags);
 
     if (window)
     {

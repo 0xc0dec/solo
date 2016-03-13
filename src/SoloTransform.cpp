@@ -5,12 +5,12 @@
 using namespace solo;
 
 
-const unsigned DirtyBitPosition = 1;
-const unsigned DirtyBitRotation = 2;
-const unsigned DirtyBitScale = 4;
-const unsigned DirtyBitWorld = 8;
-const unsigned DirtyBitInverseTransposedWorld = 16;
-const unsigned DirtyBitAll = 
+const uint32_t DirtyBitPosition = 1;
+const uint32_t DirtyBitRotation = 2;
+const uint32_t DirtyBitScale = 4;
+const uint32_t DirtyBitWorld = 8;
+const uint32_t DirtyBitInverseTransposedWorld = 16;
+const uint32_t DirtyBitAll =
                DirtyBitPosition |
                DirtyBitRotation |
                DirtyBitScale |
@@ -72,7 +72,7 @@ Transform* Transform::getParent() const
 }
 
 
-Transform* Transform::getChild(int index) const
+Transform* Transform::getChild(uint32_t index) const
 {
     return children[index];
 }
@@ -88,9 +88,9 @@ void Transform::removeChildren()
 }
 
 
-int Transform::getChildrenCount() const
+uint32_t Transform::getChildrenCount() const
 {
-    return static_cast<int>(children.size());
+    return static_cast<uint32_t>(children.size());
 }
 
 
@@ -354,7 +354,7 @@ Vector3 Transform::getLocalBack() const
 }
 
 
-void Transform::setDirtyWithChildren(unsigned flags) const
+void Transform::setDirtyWithChildren(uint32_t flags) const
 {
     dirtyFlags.add(flags);
     notifyChanged();
@@ -363,7 +363,7 @@ void Transform::setDirtyWithChildren(unsigned flags) const
 }
 
 
-void Transform::setChildrenDirty(unsigned flags) const
+void Transform::setChildrenDirty(uint32_t flags) const
 {
     for (auto child : children)
         child->setDirtyWithChildren(flags);

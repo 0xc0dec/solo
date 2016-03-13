@@ -27,7 +27,7 @@ namespace solo
         static void removeScript(Node* node, LuaIntf::LuaRef scriptComponent);
 
     private:
-        int typeId;
+        uint32_t typeId;
         LuaIntf::LuaRef scriptComponent;
         std::function<void(LuaIntf::LuaRef)> initFunc;
         std::function<void(LuaIntf::LuaRef)> updateFunc;

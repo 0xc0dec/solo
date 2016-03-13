@@ -78,13 +78,13 @@ shared<Image> PngImageLoader::load(const std::string& uri)
     auto stride = png_get_rowbytes(png, info);
     auto result = SL_NEW_SHARED(Image,
     {
-        static_cast<int>(width),
-        static_cast<int>(height),
+        static_cast<uint32_t>(width),
+        static_cast<uint32_t>(height),
         colorFormat
     });
     result->data.resize(stride * height);
     auto rows = png_get_rows(png, info);
-    for (unsigned i = 0; i < height; ++i)
+    for (uint32_t i = 0; i < height; ++i)
         memcpy(result->data.data() + stride * (height - i - 1), rows[i], stride);
 
     png_destroy_info_struct(png, &info);

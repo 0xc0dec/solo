@@ -25,7 +25,7 @@ namespace solo
     struct VertexBufferLayoutElement
     {
         VertexBufferLayoutSemantics semantics;
-        int size;
+        uint32_t size;
     };
 
     class VertexBufferLayout
@@ -34,34 +34,34 @@ namespace solo
         VertexBufferLayout() {}
         ~VertexBufferLayout() {}
 
-        void add(VertexBufferLayoutSemantics semantics, int elementCount);
+        void add(VertexBufferLayoutSemantics semantics, uint32_t elementCount);
 
-        int getElementCount() const;
-        const VertexBufferLayoutElement& getElement(int index) const;
+        uint32_t getElementCount() const;
+        const VertexBufferLayoutElement& getElement(uint32_t index) const;
 
-        int getSize() const;
+        uint32_t getSize() const;
 
     private:
         std::vector<VertexBufferLayoutElement> elements;
-        int size = 0;
+        uint32_t size = 0;
     };
 
-    inline int VertexBufferLayout::getSize() const
+    inline uint32_t VertexBufferLayout::getSize() const
     {
         return size;
     }
 
-    inline const VertexBufferLayoutElement& VertexBufferLayout::getElement(int index) const
+    inline const VertexBufferLayoutElement& VertexBufferLayout::getElement(uint32_t index) const
     {
         return elements[index];
     }
 
-    inline int VertexBufferLayout::getElementCount() const
+    inline uint32_t VertexBufferLayout::getElementCount() const
     {
-        return static_cast<int>(elements.size());
+        return static_cast<uint32_t>(elements.size());
     }
 
-    inline void VertexBufferLayout::add(VertexBufferLayoutSemantics semantics, int elementCount)
+    inline void VertexBufferLayout::add(VertexBufferLayoutSemantics semantics, uint32_t elementCount)
     {
         elements.push_back(VertexBufferLayoutElement{ semantics, elementCount });
         this->size += sizeof(float) * elementCount;

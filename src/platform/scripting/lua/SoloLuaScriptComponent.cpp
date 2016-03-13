@@ -9,7 +9,7 @@
 using namespace solo;
 using namespace LuaIntf;
 
-const int MinComponentTypeId = 1000000000; // it's expected that normal component ids should stop at this point
+const uint32_t MinComponentTypeId = 1000000000; // it's expected that normal component ids should stop at this point
 
 
 LuaScriptComponent::LuaScriptComponent(const Node& node, LuaRef scriptComponent) :
@@ -87,7 +87,7 @@ void LuaScriptComponent::addScript(Node* node, LuaRef scriptComponent)
 
 void LuaScriptComponent::removeScript(Node* node, LuaRef scriptComponent)
 {
-    auto typeId = scriptComponent.get<int>("typeId") + MinComponentTypeId;
+    auto typeId = scriptComponent.get<uint32_t>("typeId") + MinComponentTypeId;
     node->getScene()->removeComponent(node->getId(), typeId);
 }
 

@@ -4,13 +4,13 @@
 using namespace solo;
 
 
-void LuaMesh::addBuffer(Mesh* mesh, const VertexBufferLayout& layout, const std::vector<float>& data, int elementCount)
+void LuaMesh::addBuffer(Mesh* mesh, const VertexBufferLayout& layout, const std::vector<float>& data, uint32_t elementCount)
 {
     mesh->addBuffer(layout, data.data(), elementCount);
 }
 
 
-void LuaMesh::addPart(Mesh* mesh, const std::vector<float>& data, int elementCount)
+void LuaMesh::addPart(Mesh* mesh, const std::vector<float>& data, uint32_t elementCount)
 {
     mesh->addPart(data.data(), elementCount);
 }

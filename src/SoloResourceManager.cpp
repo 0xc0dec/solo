@@ -146,7 +146,7 @@ shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std:
             if (loader->isLoadable(imageUri))
             {
                 image = loader->load(imageUri);
-                auto face = static_cast<CubeTextureFace>(static_cast<int>(CubeTextureFace::Front) + idx);
+                auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + idx);
                 result->setData(face, image->colorFormat, image->data, image->width, image->height);
                 break;
             }

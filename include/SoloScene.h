@@ -23,27 +23,27 @@ namespace solo
 
         shared<Node> createNode();
 
-        void addComponent(int nodeId, shared<Component> cmp);
-        void removeComponent(int nodeId, int typeId);
+        void addComponent(uint32_t nodeId, shared<Component> cmp);
+        void removeComponent(uint32_t nodeId, uint32_t typeId);
 
-        Component* getComponent(int nodeId, int typeId) const;
-        Component* findComponent(int nodeId, int typeId) const;
+        Component* getComponent(uint32_t nodeId, uint32_t typeId) const;
+        Component* findComponent(uint32_t nodeId, uint32_t typeId) const;
 
         void update();
         void render();
 
     private:
-        using NodeComponentMap = std::unordered_map<int, shared<Component>>;
-        using AllComponentMap = std::unordered_map<int, NodeComponentMap>;
+        using NodeComponentMap = std::unordered_map<uint32_t, shared<Component>>;
+        using AllComponentMap = std::unordered_map<uint32_t, NodeComponentMap>;
         
         template <class T>
-        void updateRenderQueue(std::list<T>& queue, int componentTypeIdFilter);
+        void updateRenderQueue(std::list<T>& queue, uint32_t componentTypeIdFilter);
         
         void updateComponents();
         void rebuildComponentsToUpdate();
 
         Device* device;
-        int nodeCounter = 0;
+        uint32_t nodeCounter = 0;
         bool cameraCacheDirty = true;
         bool componentsDirty = true;
 

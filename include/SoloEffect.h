@@ -2,14 +2,10 @@
 
 #include "SoloBase.h"
 #include "SoloRenderer.h"
-#include <unordered_map>
 
 
 namespace solo
 {
-    class EffectVariable;
-    class EffectVertexAttribute;
-
     enum class EffectPrefab
     {
         Skybox
@@ -31,8 +27,6 @@ namespace solo
     protected:
         Renderer* renderer;
         ProgramHandle handle;
-
-        std::unordered_map<std::string, shared<EffectVariable>> variables;
     };
 
     inline ProgramHandle Effect::getHandle() const

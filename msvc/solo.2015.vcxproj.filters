@@ -73,9 +73,6 @@
     <ClInclude Include="..\include\SoloComponent.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloEffectVariable.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloRenderContext.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -141,9 +138,6 @@
     </ClInclude>
     <ClInclude Include="..\src\platform\stub\SoloStubFileSystem.h">
       <Filter>src\platform\stub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloEffectVertexAttribute.h">
-      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloVertexFormat.h">
       <Filter>include</Filter>

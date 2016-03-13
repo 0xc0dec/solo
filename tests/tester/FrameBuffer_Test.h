@@ -28,7 +28,7 @@ private:
         fb->setAttachments({ t1, t2 });
 
         auto size = fb->getSize();
-        assert(static_cast<int>(size.x) == 64 && static_cast<int>(size.y) == 64);
+        assert(static_cast<uint32_t>(size.x) == 64 && static_cast<uint32_t>(size.y) == 64);
     }
 
     void test_SetAttachmentsOfDifferentSizes_EnsureThrows()

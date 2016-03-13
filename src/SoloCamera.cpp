@@ -7,12 +7,12 @@
 using namespace solo;
 
 
-const unsigned DirtyBitView = 1;
-const unsigned DirtyBitProjection = 2;
-const unsigned DirtyBitViewProjection = 4;
-const unsigned DirtyBitInverseView = 8;
-const unsigned DirtyBitInverseViewProjection = 16;
-const unsigned DirtyBitAll =
+const uint32_t DirtyBitView = 1;
+const uint32_t DirtyBitProjection = 2;
+const uint32_t DirtyBitViewProjection = 4;
+const uint32_t DirtyBitInverseView = 8;
+const uint32_t DirtyBitInverseViewProjection = 16;
+const uint32_t DirtyBitAll =
     DirtyBitView |
     DirtyBitProjection |
     DirtyBitViewProjection |

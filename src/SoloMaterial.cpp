@@ -234,7 +234,7 @@ void Material::bind(RenderContext& context)
 
 void Material::applyState()
 {
-    int flags = 0;
+    uint32_t flags = 0;
     
     if (polygonFace != PolygonFace::All)
         flags |= StateFlags::CullFace;

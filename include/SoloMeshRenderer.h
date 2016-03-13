@@ -21,14 +21,14 @@ namespace solo
         Mesh* getMesh() const;
         void setMesh(shared<Mesh> mesh);
 
-        Material* getMaterial(int index) const;
-        void setMaterial(int index, shared<Material> material);
-        int getMaterialCount() const;
+        Material* getMaterial(uint32_t index) const;
+        void setMaterial(uint32_t index, shared<Material> material);
+        uint32_t getMaterialCount() const;
 
     private:
         shared<Mesh> mesh;
         DeviceMode deviceMode;
-        std::unordered_map<int, shared<Material>> materials;
+        std::unordered_map<uint32_t, shared<Material>> materials;
     };
 
     inline Mesh* MeshRenderer::getMesh() const
@@ -41,13 +41,13 @@ namespace solo
         this->mesh = mesh;
     }
 
-    inline Material* MeshRenderer::getMaterial(int index) const
+    inline Material* MeshRenderer::getMaterial(uint32_t index) const
     {
         return materials.at(index).get();
     }
 
-    inline int MeshRenderer::getMaterialCount() const
+    inline uint32_t MeshRenderer::getMaterialCount() const
     {
-        return static_cast<int>(materials.size());
+        return static_cast<uint32_t>(materials.size());
     }
 }

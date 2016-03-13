@@ -89,6 +89,6 @@ namespace solo
         ResourceMap<FrameBuffer> frameBuffers;
         ResourceMap<SurfaceRenderer> surfaceRenderers;
 
-        int resourceCounter = 0;
+        uint32_t resourceCounter = 0;
     };
 }
