@@ -316,6 +316,8 @@ void OpenGLRenderer::updateCubeTexture(const TextureHandle& handle, CubeTextureF
         GL_UNSIGNED_BYTE,
         data);
 
+
+
     // NB width and height in texture data are not updated intentionally
 
     bindTexture(GL_TEXTURE_CUBE_MAP, EmptyTextureHandle);
@@ -409,7 +411,7 @@ void OpenGLRenderer::setTexture(GLenum target, const TextureHandle& handle, uint
 
     GLenum wrapS = 0;
     if (flags & TextureFlags::HorizontalWrapClamp)
-        wrapS = GL_CLAMP_TO_BORDER;
+        wrapS = GL_CLAMP_TO_EDGE;
     else if (flags & TextureFlags::HorizontalWrapRepeat)
         wrapS = GL_REPEAT;
     if (wrapS)
@@ -417,7 +419,7 @@ void OpenGLRenderer::setTexture(GLenum target, const TextureHandle& handle, uint
 
     GLenum wrapT = 0;
     if (flags & TextureFlags::VerticalWrapClamp)
-        wrapT = GL_CLAMP_TO_BORDER;
+        wrapT = GL_CLAMP_TO_EDGE;
     else if (flags & TextureFlags::VerticalWrapRepeat)
         wrapT = GL_REPEAT;
     if (wrapT)
@@ -481,7 +483,7 @@ void OpenGLRenderer::setCubeTexture(const TextureHandle& handle, uint32_t flags)
 
     GLenum wrapR = 0;
     if (flags & TextureFlags::DepthWrapClamp)
-        wrapR = GL_CLAMP_TO_BORDER;
+        wrapR = GL_CLAMP_TO_EDGE;
     else if (flags & TextureFlags::DepthWrapRepeat)
         wrapR = GL_REPEAT;
     if (wrapR)
