@@ -32,7 +32,7 @@ namespace solo
         virtual FrameBufferHandle createFrameBuffer() override final;
         virtual void destroyFrameBuffer(const FrameBufferHandle& handle) override final;
         virtual void setFrameBuffer(const FrameBufferHandle& handle) override final;
-        virtual void updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle> attachmentHandles) override final; // TODO pointer and count
+        virtual void updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle> attachmentHandles) override final;
 
         virtual VertexBufferHandle createVertexBuffer(const VertexBufferLayout& layout, const void* data, int vertexCount) override final;
         virtual void destroyVertexBuffer(const VertexBufferHandle& handle) override final;

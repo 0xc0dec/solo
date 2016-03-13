@@ -9,7 +9,7 @@ namespace solo
 {
     class Texture2D;
 
-    class FrameBuffer final // TODO add final everywhere
+    class FrameBuffer final
     {
     public:
         FrameBuffer(Renderer* renderer);

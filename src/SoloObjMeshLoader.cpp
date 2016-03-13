@@ -75,7 +75,7 @@ void parseIndexes(const char** from, const char* to, unsigned** result)
 
 shared<Mesh> ObjMeshLoader::load(const std::string& uri)
 {
-    // TODO this crap could be better...
+    // TODO not very fast this is...
 
     std::vector<Vector3> inputVertices, vertices;
     std::vector<Vector3> inputNormals, normals;
