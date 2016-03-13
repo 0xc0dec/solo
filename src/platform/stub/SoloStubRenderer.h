@@ -19,6 +19,8 @@ namespace solo
             const void* data) override final {}
         virtual void updateCubeTexture(const TextureHandle& handle, CubeTextureFace face, ColorFormat format,
             int width, int height, const void* data) override final {}
+        virtual void generateTexture2DMipmaps(const TextureHandle& handle) override final {}
+        virtual void generateCubeTextureMipmaps(const TextureHandle& handle) override final {}
 
         virtual FrameBufferHandle createFrameBuffer() override final { return EmptyFrameBufferHandle; }
         virtual void destroyFrameBuffer(const FrameBufferHandle& handle) override final {}

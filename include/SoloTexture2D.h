@@ -12,10 +12,9 @@ namespace solo
         explicit Texture2D(Renderer* renderer);
 
         virtual void apply() override final;
+        virtual void generateMipmaps() override final;
 
         void setData(ColorFormat format, const std::vector<uint8_t>& data, int width, int height);
-
-        void generateMipmaps() { } // TODO
 
         Vector2 getSize() const;
 

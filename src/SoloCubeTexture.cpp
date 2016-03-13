@@ -16,6 +16,12 @@ void CubeTexture::apply()
 }
 
 
+void CubeTexture::generateMipmaps()
+{
+    renderer->generateCubeTextureMipmaps(handle);
+}
+
+
 void CubeTexture::setData(CubeTextureFace face, ColorFormat format, const std::vector<uint8_t>& data, int width, int height)
 {
     renderer->updateCubeTexture(handle, face, format, width, height, data.data());

@@ -322,35 +322,53 @@ void OpenGLRenderer::updateCubeTexture(const TextureHandle& handle, CubeTextureF
 }
 
 
-void OpenGLRenderer::bindTexture(GLenum target, TextureHandle handle)
+void OpenGLRenderer::generateTexture2DMipmaps(const TextureHandle& handle)
+{
+    bindTexture(GL_TEXTURE_2D, handle);
+    glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    bindTexture(GL_TEXTURE_2D, EmptyTextureHandle); // TODO remove "cleaning up" calls that bind zeros
+}
+
+
+void OpenGLRenderer::generateCubeTextureMipmaps(const TextureHandle& handle)
+{
+    bindTexture(GL_TEXTURE_CUBE_MAP, handle);
+    glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
+    glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+    bindTexture(GL_TEXTURE_CUBE_MAP, EmptyTextureHandle); // TODO remove "cleaning up" calls that bind zeros
+}
+
+
+void OpenGLRenderer::bindTexture(GLenum target, const TextureHandle& handle)
 {
     auto rawHandle = handle.empty() ? 0 : textures.getData(handle.value).rawHandle;
     glBindTexture(target, rawHandle);
 }
 
 
-void OpenGLRenderer::bindVertexBuffer(VertexBufferHandle handle)
+void OpenGLRenderer::bindVertexBuffer(const VertexBufferHandle& handle)
 {
     auto rawHandle = handle.empty() ? 0 : vertexBuffers.getData(handle.value).rawHandle;
     glBindBuffer(GL_ARRAY_BUFFER, rawHandle);
 }
 
 
-void OpenGLRenderer::bindIndexBuffer(IndexBufferHandle handle)
+void OpenGLRenderer::bindIndexBuffer(const IndexBufferHandle& handle)
 {
     auto rawHandle = handle.empty() ? 0 : indexBuffers.getData(handle.value).rawHandle;
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rawHandle);
 }
 
 
-void OpenGLRenderer::bindVertexObject(VertexObjectHandle handle)
+void OpenGLRenderer::bindVertexObject(const VertexObjectHandle& handle)
 {
     auto rawHandle = handle.empty() ? 0 : vertexObjects.getData(handle.value).rawHandle;
     glBindVertexArray(rawHandle);
 }
 
 
-void OpenGLRenderer::setTexture(GLenum target, TextureHandle handle, int flags)
+void OpenGLRenderer::setTexture(GLenum target, const TextureHandle& handle, int flags)
 {
     bindTexture(target, handle);
 
@@ -479,7 +497,7 @@ void OpenGLRenderer::setCubeTexture(const TextureHandle& handle, int flags, floa
 }
 
 
-void OpenGLRenderer::bindFrameBuffer(FrameBufferHandle handle)
+void OpenGLRenderer::bindFrameBuffer(const FrameBufferHandle& handle)
 {
     auto rawHandle = handle.empty() ? 0 : frameBuffers.getData(handle.value).rawHandle;
     glBindFramebuffer(GL_FRAMEBUFFER, rawHandle);

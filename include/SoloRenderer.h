@@ -132,6 +132,8 @@ namespace solo
         virtual void update2DTexture(const TextureHandle& handle, ColorFormat format, int width, int height, const void* data) = 0;
         virtual void updateCubeTexture(const TextureHandle& handle, CubeTextureFace face, ColorFormat format,
             int width, int height, const void* data) = 0;
+        virtual void generateTexture2DMipmaps(const TextureHandle& handle) = 0;
+        virtual void generateCubeTextureMipmaps(const TextureHandle& handle) = 0;
 
         virtual FrameBufferHandle createFrameBuffer() = 0;
         virtual void destroyFrameBuffer(const FrameBufferHandle& handle) = 0;

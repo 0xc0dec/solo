@@ -13,11 +13,10 @@ namespace solo
         explicit CubeTexture(Renderer* renderer);
 
         virtual void apply() override final;
+        virtual void generateMipmaps() override final;
 
         void setData(CubeTextureFace face, ColorFormat format, const std::vector<uint8_t>& data, int width, int height);
-
-        void generateMipmaps() {} // TODO
-
+        
         virtual void setWrapping(TextureWrapping wrapping) override final;
 
         TextureWrapping getDepthWrapping() const;

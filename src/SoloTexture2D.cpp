@@ -15,6 +15,12 @@ void Texture2D::apply()
 }
 
 
+void Texture2D::generateMipmaps()
+{
+    renderer->generateTexture2DMipmaps(handle);
+}
+
+
 void Texture2D::setData(ColorFormat format, const std::vector<uint8_t>& data, int width, int height)
 {
     renderer->update2DTexture(handle, format, width, height, data.data());

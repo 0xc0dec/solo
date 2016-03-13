@@ -9,7 +9,7 @@ local demo = {}
 function loadTexture(path)
 	local texture = resourceManager:getOrLoadTexture2D(path)
 	texture:generateMipmaps()
-	texture:setFiltering(solo.TextureFiltering.Linear)
+	texture:setFiltering(solo.TextureFiltering.LinearMipmapNearest)
 	texture:setAnisotropyLevel(8)
 	return texture
 end

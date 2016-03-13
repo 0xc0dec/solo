@@ -35,6 +35,7 @@ namespace solo
         SL_NONCOPYABLE(Texture)
 
         virtual void apply() = 0;
+        virtual void generateMipmaps() = 0;
 
         TextureWrapping getHorizontalWrapping() const;
         TextureWrapping getVerticalWrapping() const;

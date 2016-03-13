@@ -26,6 +26,8 @@ namespace solo
             const void* data) override final;
         virtual void updateCubeTexture(const TextureHandle& handle, CubeTextureFace face, ColorFormat format,
             int width, int height, const void* data) override final;
+        virtual void generateTexture2DMipmaps(const TextureHandle& handle) override final;
+        virtual void generateCubeTextureMipmaps(const TextureHandle& handle) override final;
 
         virtual FrameBufferHandle createFrameBuffer() override final;
         virtual void destroyFrameBuffer(const FrameBufferHandle& handle) override final;
@@ -61,16 +63,6 @@ namespace solo
 
     private:
         friend class Renderer;
-
-        explicit OpenGLRenderer(Device* device);
-
-        void bindFrameBuffer(FrameBufferHandle handle);
-        void bindTexture(GLenum target, TextureHandle handle);
-        void bindVertexBuffer(VertexBufferHandle handle);
-        void bindIndexBuffer(IndexBufferHandle handle);
-        void bindVertexObject(VertexObjectHandle handle);
-        void setTexture(GLenum target, TextureHandle handle, int flags);
-        void validateFrameBufferAttachments(const std::vector<TextureHandle> attachments);
 
         struct FrameBufferData
         {
@@ -116,6 +108,16 @@ namespace solo
             GLint index = 0;
             int componentCount = 0;
         };
+
+        explicit OpenGLRenderer(Device* device);
+
+        void bindFrameBuffer(const FrameBufferHandle& handle);
+        void bindTexture(GLenum target, const TextureHandle& handle);
+        void bindVertexBuffer(const VertexBufferHandle& handle);
+        void bindIndexBuffer(const IndexBufferHandle& handle);
+        void bindVertexObject(const VertexObjectHandle& handle);
+        void setTexture(GLenum target, const TextureHandle& handle, int flags);
+        void validateFrameBufferAttachments(const std::vector<TextureHandle> attachments);
 
         ResourcePool<TextureData, SL_MAX_TEXTURES> textures;
         ResourcePool<FrameBufferData, SL_MAX_FRAME_BUFFERS> frameBuffers;
