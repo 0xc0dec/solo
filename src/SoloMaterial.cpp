@@ -155,31 +155,31 @@ void Material::bind(RenderContext& context)
                 renderer->setUniform(data.handle, &data.floatValue, 1);
                 break;
             case ParameterValueType::FloatArray:
-                renderer->setUniform(data.handle, data.floatArrayValue.data(), data.floatArrayValue.size());
+                renderer->setUniform(data.handle, data.floatArrayValue.data(), static_cast<uint32_t>(data.floatArrayValue.size()));
                 break;
             case ParameterValueType::Vector2:
                 renderer->setUniform(data.handle, &data.vector2Value, 1);
                 break;
             case ParameterValueType::Vector2Array:
-                renderer->setUniform(data.handle, data.vector2ArrayValue.data(), data.vector2ArrayValue.size());
+                renderer->setUniform(data.handle, data.vector2ArrayValue.data(), static_cast<uint32_t>(data.vector2ArrayValue.size()));
                 break;
             case ParameterValueType::Vector3:
                 renderer->setUniform(data.handle, &data.vector3Value, 1);
                 break;
             case ParameterValueType::Vector3Array:
-                renderer->setUniform(data.handle, data.vector3ArrayValue.data(), data.vector3ArrayValue.size());
+                renderer->setUniform(data.handle, data.vector3ArrayValue.data(), static_cast<uint32_t>(data.vector3ArrayValue.size()));
                 break;
             case ParameterValueType::Vector4:
                 renderer->setUniform(data.handle, &data.vector4Value, 1);
                 break;
             case ParameterValueType::Vector4Array:
-                renderer->setUniform(data.handle, data.vector4ArrayValue.data(), data.vector4ArrayValue.size());
+                renderer->setUniform(data.handle, data.vector4ArrayValue.data(), static_cast<uint32_t>(data.vector4ArrayValue.size()));
                 break;
             case ParameterValueType::Matrix:
                 renderer->setUniform(data.handle, data.matrixValue.m, 1);
                 break;
             case ParameterValueType::MatrixArray:
-                renderer->setUniform(data.handle, data.matrixArrayValue.data(), data.matrixArrayValue.size());
+                renderer->setUniform(data.handle, data.matrixArrayValue.data(), static_cast<uint32_t>(data.matrixArrayValue.size()));
                 break;
             case ParameterValueType::Texture:
                 renderer->setUniform(data.handle, nullptr, 1);

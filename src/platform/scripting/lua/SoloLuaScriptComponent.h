@@ -17,7 +17,7 @@ namespace solo
         virtual void render(RenderContext& context) override;
         virtual void onAfterCameraRender() override;
 
-        virtual int getTypeId() override;
+        virtual uint32_t getTypeId() override;
 
         static Component* findComponent(Node* node, const std::string& name);
         static Component* addComponent(Node* node, const std::string& name);

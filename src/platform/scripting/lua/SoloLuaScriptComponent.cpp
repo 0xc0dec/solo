@@ -16,7 +16,7 @@ LuaScriptComponent::LuaScriptComponent(const Node& node, LuaRef scriptComponent)
     ComponentBase<LuaScriptComponent>(node),
     scriptComponent(scriptComponent)
 {
-    typeId = scriptComponent.get<int>("typeId") + MinComponentTypeId;
+    typeId = scriptComponent.get<uint32_t>("typeId") + MinComponentTypeId;
     initFunc = scriptComponent.has("init") ? scriptComponent.get<std::function<void(LuaRef)>>("init") : [](LuaRef) {};
     updateFunc = scriptComponent.has("update") ? scriptComponent.get<std::function<void(LuaRef)>>("update") : [](LuaRef) {};
     terminateFunc = scriptComponent.has("terminate") ? scriptComponent.get<std::function<void(LuaRef)>>("terminate") : [](LuaRef) {};
@@ -56,7 +56,7 @@ void LuaScriptComponent::onAfterCameraRender()
 }
 
 
-int LuaScriptComponent::getTypeId()
+uint32_t LuaScriptComponent::getTypeId()
 {
     return typeId;
 }

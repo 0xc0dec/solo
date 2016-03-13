@@ -12,7 +12,7 @@ namespace solo
     struct ComponentTypeId
     {
         template <typename T>
-        static int get()
+        static uint32_t get()
         {
             // Ids 0..999999999 are reserved for C++ components (including the engine built-ins)
             // Ids from 1000000000 are meant for the script components
@@ -22,7 +22,7 @@ namespace solo
         }
 
     private:
-        static int counter;
+        static uint32_t counter;
     };
 
 
@@ -32,7 +32,7 @@ namespace solo
         SL_NONCOPYABLE(Component)
         virtual ~Component() {}
 
-        virtual int getTypeId() = 0;
+        virtual uint32_t getTypeId() = 0;
 
         virtual void init() {}
         virtual void update() {}
@@ -40,8 +40,8 @@ namespace solo
         virtual void render(RenderContext& context) {}
         virtual void onAfterCameraRender() {}
 
-        int getRenderQueue() const;
-        void setRenderQueue(int queue);
+        uint32_t getRenderQueue() const;
+        void setRenderQueue(uint32_t queue);
 
         Node getNode() const;
 
@@ -55,15 +55,15 @@ namespace solo
 
         Node node;
         BitFlags tags;
-        int renderQueue = KnownRenderQueues::NotRendered;
+        uint32_t renderQueue = KnownRenderQueues::NotRendered;
     };
 
-    inline int Component::getRenderQueue() const
+    inline uint32_t Component::getRenderQueue() const
     {
         return renderQueue;
     }
 
-    inline void Component::setRenderQueue(int queue)
+    inline void Component::setRenderQueue(uint32_t queue)
     {
         renderQueue = queue;
     }
@@ -83,21 +83,21 @@ namespace solo
     class ComponentBase: public Component
     {
     public:
-        static int getId();
+        static uint32_t getId();
 
         explicit ComponentBase(const Node& node): Component(node) {}
 
-        virtual int getTypeId() override;
+        virtual uint32_t getTypeId() override;
     };
 
     template <class T>
-    inline int ComponentBase<T>::getId()
+    inline uint32_t ComponentBase<T>::getId()
     {
         return ComponentTypeId::get<T>();
     }
 
     template <class T>
-    inline int ComponentBase<T>::getTypeId()
+    inline uint32_t ComponentBase<T>::getTypeId()
     {
         return getId();
     }

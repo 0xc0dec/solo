@@ -3,4 +3,4 @@
 using namespace solo;
 
 
-int ComponentTypeId::counter = 0;
+uint32_t ComponentTypeId::counter = 0;
