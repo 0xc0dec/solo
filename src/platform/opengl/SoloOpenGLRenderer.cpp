@@ -22,7 +22,7 @@ static GLenum convertCubeTextureFace(CubeTextureFace face)
         case CubeTextureFace::Bottom:
             return GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
         default:
-            SL_THROW_FMT(InvalidInputException, "Unknown cube texture face ", static_cast<int>(face));
+            SL_THROW_FMT(InvalidInputException, "Unknown cube texture face ", static_cast<int32_t>(face));
     }
 }
 
@@ -42,7 +42,8 @@ static GLenum convertPrimitiveType(PrimitiveType type)
         case PrimitiveType::Points:
             return GL_POINTS;
         default:
-            SL_DEBUG_FMT_THROW_IF(true, InvalidInputException, "Unknown primitive type")
+            SL_DEBUG_THROW_FMT(InvalidInputException, "Unknown primitive type ", static_cast<int32_t>(type));
+            return GL_TRIANGLES; // in Release we just return default value
     }
 }
 
@@ -56,12 +57,13 @@ static GLenum convertColorFormat(ColorFormat format)
         case ColorFormat::RGBA:
             return GL_RGBA;
         default:
-            SL_THROW_FMT(InvalidInputException, "Unknown texture format ", static_cast<int>(format));
+            SL_DEBUG_THROW_FMT(InvalidInputException, "Unknown texture format ", static_cast<int32_t>(format));
+            return GL_RGB; // in Release we just return default value
     }
 }
 
 
-static GLint createProgram(GLuint vs, GLuint fs)
+static GLint linkProgram(GLuint vs, GLuint fs)
 {
     auto program = glCreateProgram();
     glAttachShader(program, vs);
@@ -77,7 +79,7 @@ static GLint createProgram(GLuint vs, GLuint fs)
         std::vector<GLchar> log(logLength);
         glGetProgramInfoLog(program, logLength, nullptr, log.data());
         glDeleteProgram(program);
-        SL_DEBUG_THROW_IF(true, EffectCompilationException, "Failed to link program", log.data());
+        SL_DEBUG_THROW(EffectCompilationException, "Failed to link program", log.data());
     }
 
     return program;
@@ -86,8 +88,6 @@ static GLint createProgram(GLuint vs, GLuint fs)
 
 static GLint compileShader(GLuint type, const char* src)
 {
-    // TODO check source
-
     static std::unordered_map<GLuint, std::string> typeNames =
     {
         { GL_VERTEX_SHADER, "vertex" },
@@ -108,7 +108,7 @@ static GLint compileShader(GLuint type, const char* src)
         std::vector<GLchar> log(logLength);
         glGetShaderInfoLog(shader, logLength, nullptr, log.data());
         glDeleteShader(shader);
-        SL_DEBUG_THROW_IF(true, EffectCompilationException, SL_FMT("Failed to compile ", typeNames[type], " shader"), log.data());
+        SL_DEBUG_THROW(EffectCompilationException, SL_FMT("Failed to compile ", typeNames[type], " shader"), log.data());
     }
 
     return shader;
@@ -258,7 +258,7 @@ TextureHandle OpenGLRenderer::createTexture()
 {
     GLuint rawHandle = 0;
     glGenTextures(1, &rawHandle);
-    SL_DEBUG_FMT_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain texture handle")
+    SL_DEBUG_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain texture handle");
 
     TextureHandle handle;
     handle.value = textures.reserveHandle();
@@ -270,7 +270,6 @@ TextureHandle OpenGLRenderer::createTexture()
 
 void OpenGLRenderer::destroyTexture(TextureHandle handle)
 {
-    SL_DEBUG_FMT_THROW_IF(handle.empty(), InvalidInputException, "Texture handle is empty")
     auto rawHandle = textures.getData(handle.value).rawHandle;
     glDeleteTextures(1, &rawHandle);
     textures.releaseHandle(handle.value);
@@ -279,9 +278,6 @@ void OpenGLRenderer::destroyTexture(TextureHandle handle)
 
 void OpenGLRenderer::update2DTexture(TextureHandle handle, ColorFormat format, int width, int height, const std::vector<uint8_t>& data)
 {
-    SL_DEBUG_FMT_THROW_IF(width <= 0 || height <= 0, InvalidInputException, "Invalid texture dimensions")
-    SL_DEBUG_FMT_THROW_IF(handle.empty(), InvalidInputException, "Texture handle is empty")
-
     bindTexture(GL_TEXTURE_2D, handle);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -306,9 +302,6 @@ void OpenGLRenderer::update2DTexture(TextureHandle handle, ColorFormat format, i
 
 void OpenGLRenderer::updateCubeTexture(TextureHandle handle, CubeTextureFace face, ColorFormat format, int width, int height, const std::vector<uint8_t>& data)
 {
-    SL_DEBUG_FMT_THROW_IF(width <= 0 || height <= 0, InvalidInputException, "Invalid texture dimensions")
-    SL_DEBUG_FMT_THROW_IF(handle.empty(), InvalidInputException, "Texture handle is empty")
-
     bindTexture(GL_TEXTURE_CUBE_MAP, handle);
 
     auto glFace = convertCubeTextureFace(face);
@@ -324,7 +317,7 @@ void OpenGLRenderer::updateCubeTexture(TextureHandle handle, CubeTextureFace fac
         GL_UNSIGNED_BYTE,
         data.size() ? data.data() : 0);
 
-    // TODO width and height in texture data are not updated intentionally
+    // NB width and height in texture data are not updated intentionally
 
     bindTexture(GL_TEXTURE_CUBE_MAP, EmptyTextureHandle);
 }
@@ -419,7 +412,7 @@ void OpenGLRenderer::setTexture(GLenum target, TextureHandle handle, int flags)
 
 void OpenGLRenderer::validateFrameBufferAttachments(const std::vector<TextureHandle> attachments)
 {
-    SL_DEBUG_FMT_THROW_IF(attachments.size() > GL_MAX_COLOR_ATTACHMENTS, InvalidInputException, "Too many frame buffer attachments")
+    SL_DEBUG_THROW_IF(attachments.size() > GL_MAX_COLOR_ATTACHMENTS, InvalidInputException, "Too many frame buffer attachments");
 
     auto width = -1, height = -1;
     for (auto i = 0; i < attachments.size(); i++)
@@ -432,8 +425,8 @@ void OpenGLRenderer::validateFrameBufferAttachments(const std::vector<TextureHan
         }
         else
         {
-            if (data.width != width || data.height != height)
-                SL_THROW(InvalidInputException, "Frame buffer attachments must have the same size");
+            SL_DEBUG_THROW_IF(data.width != width || data.height != height,
+                InvalidInputException, "Frame buffer attachments must have the same size");
         }
     }
 }
@@ -500,7 +493,7 @@ FrameBufferHandle OpenGLRenderer::createFrameBuffer()
 {
     GLuint rawHandle = 0;
     glGenFramebuffers(1, &rawHandle);
-    SL_DEBUG_FMT_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain frame buffer handle")
+    SL_DEBUG_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain frame buffer handle");
 
     FrameBufferHandle handle;
     handle.value = frameBuffers.reserveHandle();
@@ -512,7 +505,6 @@ FrameBufferHandle OpenGLRenderer::createFrameBuffer()
 
 void OpenGLRenderer::destroyFrameBuffer(FrameBufferHandle handle)
 {
-    SL_DEBUG_FMT_THROW_IF(handle.empty(), InvalidInputException, "Frame buffer handle is empty")
     auto rawHandle = frameBuffers.getData(handle.value).rawHandle;
     glDeleteFramebuffers(1, &rawHandle);
     // TODO release depth buffer?
@@ -528,7 +520,6 @@ void OpenGLRenderer::setFrameBuffer(FrameBufferHandle handle)
 
 void OpenGLRenderer::updateFrameBuffer(FrameBufferHandle handle, const std::vector<TextureHandle> attachments)
 {
-    SL_DEBUG_FMT_THROW_IF(handle.empty(), InvalidInputException, "Frame buffer handle is empty")
     SL_IN_DEBUG(validateFrameBufferAttachments(attachments));
 
     bindFrameBuffer(handle);
@@ -553,15 +544,15 @@ void OpenGLRenderer::updateFrameBuffer(FrameBufferHandle handle, const std::vect
     {
         // Re-create the depth buffer
         glGenRenderbuffers(1, &data.depthBufferHandle);
-        SL_DEBUG_FMT_THROW_IF(!data.depthBufferHandle, InternalException, "Failed to obtain depth buffer handle")
+        SL_DEBUG_THROW_IF(!data.depthBufferHandle, InternalException, "Failed to obtain depth buffer handle");
 
         glBindRenderbuffer(GL_RENDERBUFFER, data.depthBufferHandle);
         auto firstAttachmentData = textures.getData(attachments[0].value);
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, firstAttachmentData.width, firstAttachmentData.height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, data.depthBufferHandle);
 
-        SL_DEBUG_FMT_THROW_IF(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE,
-            InternalException, "Render target has invalid state")
+        SL_DEBUG_THROW_IF(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE,
+            InternalException, "Render target has invalid state");
     }
 
     bindFrameBuffer(EmptyFrameBufferHandle);
@@ -572,7 +563,7 @@ VertexBufferHandle OpenGLRenderer::createVertexBuffer(const VertexBufferLayout& 
 {
     GLuint rawHandle = 0;
     glGenBuffers(1, &rawHandle);
-    SL_DEBUG_FMT_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain vertex buffer handle")
+    SL_DEBUG_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain vertex buffer handle");
 
     VertexBufferHandle handle;
     handle.value = vertexBuffers.reserveHandle();
@@ -591,7 +582,6 @@ VertexBufferHandle OpenGLRenderer::createVertexBuffer(const VertexBufferLayout& 
 
 void OpenGLRenderer::destroyVertexBuffer(VertexBufferHandle handle)
 {
-    SL_DEBUG_FMT_THROW_IF(handle.empty(), InvalidInputException, "Vertex buffer handle is empty")
     auto rawHandle = vertexBuffers.getData(handle.value).rawHandle;
     glDeleteBuffers(1, &rawHandle);
     vertexBuffers.releaseHandle(handle.value);
@@ -602,7 +592,7 @@ IndexBufferHandle OpenGLRenderer::createIndexBuffer(const void* data, int elemen
 {
     GLuint rawHandle = 0;
     glGenBuffers(1, &rawHandle);
-    SL_DEBUG_FMT_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain index buffer handle")
+    SL_DEBUG_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain index buffer handle");
 
     IndexBufferHandle handle;
     handle.value = indexBuffers.reserveHandle();
@@ -620,7 +610,6 @@ IndexBufferHandle OpenGLRenderer::createIndexBuffer(const void* data, int elemen
 
 void OpenGLRenderer::destroyIndexBuffer(IndexBufferHandle handle)
 {
-    SL_DEBUG_FMT_THROW_IF(handle.empty(), InvalidInputException, "Index buffer handle is empty")
     auto rawHandle = indexBuffers.getData(handle.value).rawHandle;
     glDeleteBuffers(1, &rawHandle);
     indexBuffers.releaseHandle(handle.value);
@@ -631,7 +620,7 @@ ProgramHandle OpenGLRenderer::createProgram(const char* vsSrc, const char* fsSrc
 {
     auto vs = compileShader(GL_VERTEX_SHADER, vsSrc);
     auto fs = compileShader(GL_FRAGMENT_SHADER, fsSrc);
-    auto program = ::createProgram(vs, fs);
+    auto program = ::linkProgram(vs, fs);
 
     glDetachShader(program, vs);
     glDeleteShader(vs);
@@ -648,7 +637,6 @@ ProgramHandle OpenGLRenderer::createProgram(const char* vsSrc, const char* fsSrc
 
 void OpenGLRenderer::destroyProgram(ProgramHandle handle)
 {
-    SL_DEBUG_FMT_THROW_IF(handle.empty(), InvalidInputException, "Program handle is empty")
     auto rawHandle = programs.getData(handle.value).rawHandle;
     glDeleteProgram(rawHandle);
     programs.releaseHandle(handle.value);
@@ -664,8 +652,6 @@ void OpenGLRenderer::setProgram(ProgramHandle handle)
 
 VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* buffers, int bufferCount, ProgramHandle programHandle)
 {
-    // TODO validate buffers
-
     std::unordered_map<std::string, GLuint> attributes;
     if (!programHandle.empty())
     {
@@ -675,7 +661,7 @@ VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* 
 
     GLuint rawHandle;
     glGenVertexArrays(1, &rawHandle);
-    SL_DEBUG_FMT_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain vertex object handle")
+    SL_DEBUG_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain vertex object handle");
 
     VertexObjectHandle handle;
     handle.value = vertexObjects.reserveHandle();
@@ -741,7 +727,6 @@ VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* 
 
 void OpenGLRenderer::destroyVertexObject(VertexObjectHandle handle)
 {
-    SL_DEBUG_FMT_THROW_IF(handle.empty(), InvalidInputException, "Vertex object handle is empty")
     auto rawHandle = vertexObjects.getData(handle.value).rawHandle;
     glDeleteVertexArrays(1, &rawHandle);
     vertexObjects.releaseHandle(handle.value);
@@ -750,9 +735,6 @@ void OpenGLRenderer::destroyVertexObject(VertexObjectHandle handle)
 
 void OpenGLRenderer::renderIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, const IndexBufferHandle& indexBufferHandle)
 {
-    SL_DEBUG_FMT_THROW_IF(vertexObjectHandle.empty(), InvalidInputException, "Vertex object handle is empty")
-    SL_DEBUG_FMT_THROW_IF(indexBufferHandle.empty(), InvalidInputException, "Index buffer handle is empty")
-
     bindVertexObject(vertexObjectHandle);
     bindIndexBuffer(indexBufferHandle);
 
@@ -766,7 +748,6 @@ void OpenGLRenderer::renderIndexedVertexObject(PrimitiveType primitiveType, cons
 
 void OpenGLRenderer::renderVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, int vertexCount)
 {
-    SL_DEBUG_FMT_THROW_IF(vertexObjectHandle.empty(), InvalidInputException, "Vertex object handle is empty")
     bindVertexObject(vertexObjectHandle);
     glDrawArrays(convertPrimitiveType(primitiveType), 0, vertexCount);
     bindVertexObject(EmptyVertexObjectHandle);
@@ -775,17 +756,11 @@ void OpenGLRenderer::renderVertexObject(PrimitiveType primitiveType, const Verte
 
 UniformHandle OpenGLRenderer::createUniform(const char* name, UniformType type, int componentCount, ProgramHandle program)
 {
-    // TODO needed?
-    // TODO so something with error handling. This is a mess
-    SL_DEBUG_FMT_THROW_IF(!name, InvalidInputException, "Uniform name is empty")
-    SL_DEBUG_FMT_THROW_IF(!componentCount, InvalidInputException, "Uniform element count is zero")
-    SL_DEBUG_FMT_THROW_IF(program.empty(), InvalidInputException, "Program handle is empty")
-
     auto rawProgramHandle = programs.getData(program.value).rawHandle;
 
     GLint location, index;
-    if (!findUniformInProgram(rawProgramHandle, name, location, index))
-        return UniformHandle(); // TODO or abort()
+    auto found = findUniformInProgram(rawProgramHandle, name, location, index);
+    SL_DEBUG_THROW_IF(!found, InvalidInputException, "Uniform not found in program");
 
     UniformHandle handle;
     handle.value = uniforms.reserveHandle();

@@ -10,22 +10,27 @@
 #define SL_THROW_FMT(TExc, ...) throw TExc(SL_FMT(__VA_ARGS__))
 
 #ifdef SL_DEBUG
+#   define SL_DEBUG_THROW_FMT(TExc, ...) SL_THROW_FMT(TExc, __VA_ARGS__)
+#   define SL_DEBUG_THROW(TExc, ...) SL_THROW(TExc, __VA_ARGS__)
 #   define SL_DEBUG_FMT_THROW_IF(condition, exceptionType, ...) \
-        { \
+        do { \
             if (condition) \
                 SL_THROW_FMT(exceptionType, __VA_ARGS__); \
-        }
+        } while (0)
 
 #   define SL_DEBUG_THROW_IF(condition, exceptionType, ...) \
-        { \
+        do { \
             if (condition) \
                 SL_THROW(exceptionType, __VA_ARGS__); \
-        }
+        } while (0)
 #else
-#   define SL_DEBUG_FMT_THROW_IF(condition, exceptionType, exceptionMessage) {}
+#   define SL_DEBUG_THROW_FMT(TExc, ...)
+#   define SL_DEBUG_THROW(TExc, ...)
+#   define SL_DEBUG_FMT_THROW_IF(condition, exceptionType, ...)
+#   define SL_DEBUG_THROW_IF(condition, exceptionType, ...)
 #endif
 
-#define SL_DEFINE_SIMPLE_EXCEPTION(type) \
+#define SL_SIMPLE_EXCEPTION(type) \
     class type: public EngineException \
     { \
     public: \
@@ -44,11 +49,11 @@ namespace solo
         }
     };
 
-    SL_DEFINE_SIMPLE_EXCEPTION(InternalException)
-    SL_DEFINE_SIMPLE_EXCEPTION(InvalidOperationException)
-    SL_DEFINE_SIMPLE_EXCEPTION(InvalidInputException)
-    SL_DEFINE_SIMPLE_EXCEPTION(IOException)
-    SL_DEFINE_SIMPLE_EXCEPTION(ResourceException)
+    SL_SIMPLE_EXCEPTION(InternalException)
+    SL_SIMPLE_EXCEPTION(InvalidOperationException)
+    SL_SIMPLE_EXCEPTION(InvalidInputException)
+    SL_SIMPLE_EXCEPTION(IOException)
+    SL_SIMPLE_EXCEPTION(ResourceException)
 
     class EffectCompilationException: public ResourceException
     {

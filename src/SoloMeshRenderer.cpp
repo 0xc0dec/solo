@@ -62,14 +62,6 @@ void MeshRenderer::setMesh(shared<Mesh> mesh)
 
 void MeshRenderer::setMaterial(int index, shared<Material> material)
 {
-    // TODO remove such checks. It should be obvious to the user that the index must be valid
-    SL_DEBUG_FMT_THROW_IF(!mesh, InvalidOperationException, "Renderer has no mesh, setting material has no effect")
-    SL_MAYBE({
-        auto indexCount = mesh->getIndexCount();
-        if (indexCount > 0 && index >= indexCount)
-            SL_THROW_FMT(InvalidOperationException, "Trying to set material with index ", index, ", but mesh has only ", indexCount, " indexes");
-    })
-
     if (material)
     {
         materials[index] = material;
