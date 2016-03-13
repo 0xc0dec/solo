@@ -7,14 +7,14 @@
 
 
 #define SL_THROW(TExc, ...) throw TExc(__VA_ARGS__)
-#define SL_THROW_FMT(TExc, ...) throw TExc(SL_FMT(__VA_ARGS__))
+#define SL_FMT_THROW(TExc, ...) throw TExc(SL_FMT(__VA_ARGS__))
 
 #ifdef SL_DEBUG
 #   define SL_DEBUG_FMT_THROW(TExc, ...) SL_THROW_FMT(TExc, __VA_ARGS__)
 #   define SL_DEBUG_FMT_THROW_IF(condition, exceptionType, ...) \
         do { \
             if (condition) \
-                SL_THROW_FMT(exceptionType, __VA_ARGS__); \
+                SL_FMT_THROW(exceptionType, __VA_ARGS__); \
         } while (0)
 
 #   define SL_DEBUG_THROW(TExc, ...) SL_THROW(TExc, __VA_ARGS__)

@@ -123,15 +123,12 @@ shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& imageUr
         }
     }
 
-    SL_THROW_FMT(ResourceException, "No suitable loader found for image ", imageUri);
+    SL_FMT_THROW(ResourceException, "No suitable loader found for image ", imageUri);
 }
 
 
 shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std::string>& imageUris, const std::string& uri)
 {
-    if (imageUris.size() != 6)
-        SL_THROW_FMT(InvalidInputException, "Wrong number of face images for cube texture (", imageUris.size(), " provided, 6 expected)");
-
     auto textureUri = uri.empty()
         ? imageUris[0] + imageUris[1] + imageUris[2] + imageUris[3] + imageUris[4] + imageUris[5]
         : uri;
@@ -155,7 +152,7 @@ shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std:
             }
         }
         if (!image)
-            SL_THROW_FMT(ResourceException, "No suitable loader found for image ", imageUri);
+            SL_FMT_THROW(ResourceException, "No suitable loader found for image ", imageUri);
         idx++;
     }
 
@@ -197,7 +194,7 @@ shared<Mesh> ResourceManager::getOrLoadMesh(const std::string& dataUri, const st
         }
     }
 
-    SL_THROW_FMT(ResourceException, "No suitable loader found for mesh ", dataUri);
+    SL_FMT_THROW(ResourceException, "No suitable loader found for mesh ", dataUri);
 }
 
 

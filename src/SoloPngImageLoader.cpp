@@ -40,7 +40,7 @@ shared<Image> PngImageLoader::load(const std::string& uri)
 {
     auto bytes = fs->readBytes(uri);
     if (bytes.size() < 8 || png_sig_cmp(&bytes[0], 0, 8) != 0)
-        SL_THROW_FMT(InvalidInputException, "Failed to recognize file ", uri, " as PNG image");
+        SL_FMT_THROW(InvalidInputException, "Failed to recognize file ", uri, " as PNG image");
 
     auto png = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
     auto info = png_create_info_struct(png);
@@ -48,7 +48,7 @@ shared<Image> PngImageLoader::load(const std::string& uri)
     {
         png_destroy_info_struct(png, &info);
         png_destroy_read_struct(&png, &info, nullptr);
-        SL_THROW_FMT(InvalidOperationException, "Failed to read PNG file ", uri);
+        SL_FMT_THROW(InvalidOperationException, "Failed to read PNG file ", uri);
     }
 
     std::unique_ptr<PngReadContext> context(new PngReadContext{ &bytes, 8 });
@@ -72,7 +72,7 @@ shared<Image> PngImageLoader::load(const std::string& uri)
         default:
             png_destroy_info_struct(png, &info);
             png_destroy_read_struct(&png, &info, nullptr);
-            SL_THROW_FMT(InvalidInputException, "Unsupported PNG color type ", colorType);
+            SL_FMT_THROW(InvalidInputException, "Unsupported PNG color type ", colorType);
     }
 
     auto stride = png_get_rowbytes(png, info);

@@ -156,8 +156,7 @@ void Ray::transform(const Matrix& matrix)
 
 void Ray::normalize()
 {
-    if (direction.isZero())
-        SL_THROW_FMT(InvalidOperationException, "Invalid ray object: the ray's direction must be non-zero");
+    SL_DEBUG_THROW_IF(direction.isZero(), InvalidOperationException, "Invalid ray object: the ray's direction must be non-zero");
 
     // Normalize the ray's direction vector
     auto normalizeFactor = 1.0f / sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
