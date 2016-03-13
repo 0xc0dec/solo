@@ -40,12 +40,13 @@ shared<Image> PngImageLoader::load(const std::string& uri)
 {
     auto bytes = fs->readBytes(uri);
     if (bytes.size() < 8 || png_sig_cmp(&bytes[0], 0, 8) != 0)
-        SL_THROW_FMT(InvalidOperationException, "Failed to recognize file ", uri, " as PNG image");
+        SL_THROW_FMT(InvalidInputException, "Failed to recognize file ", uri, " as PNG image");
 
     auto png = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
     auto info = png_create_info_struct(png);
     if (setjmp(png_jmpbuf(png)))
     {
+        png_destroy_info_struct(png, &info);
         png_destroy_read_struct(&png, &info, nullptr);
         SL_THROW_FMT(InvalidOperationException, "Failed to read PNG file ", uri);
     }
@@ -69,8 +70,9 @@ shared<Image> PngImageLoader::load(const std::string& uri)
             colorFormat = ColorFormat::RGBA;
             break;
         default:
+            png_destroy_info_struct(png, &info);
             png_destroy_read_struct(&png, &info, nullptr);
-            SL_THROW_FMT(InvalidOperationException, "Unsupported PNG color type ", colorType);
+            SL_THROW_FMT(InvalidInputException, "Unsupported PNG color type ", colorType);
     }
 
     auto stride = png_get_rowbytes(png, info);
@@ -85,6 +87,7 @@ shared<Image> PngImageLoader::load(const std::string& uri)
     for (unsigned i = 0; i < height; ++i)
         memcpy(result->data.data() + stride * (height - i - 1), rows[i], stride);
 
+    png_destroy_info_struct(png, &info);
     png_destroy_read_struct(&png, &info, nullptr);
 
     return result;

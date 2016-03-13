@@ -28,7 +28,7 @@ Effect::Effect(Renderer* renderer, EffectPrefab prefab):
             break;
         }
         default:
-            SL_DEBUG_FMT_THROW_IF(true, InvalidInputException, "Unknown effect prefab");
+            SL_DEBUG_THROW(InvalidInputException, "Unknown effect prefab");
     }
 }
 

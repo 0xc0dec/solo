@@ -22,7 +22,8 @@ static GLenum convertCubeTextureFace(CubeTextureFace face)
         case CubeTextureFace::Bottom:
             return GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
         default:
-            SL_THROW_FMT(InvalidInputException, "Unknown cube texture face ", static_cast<int32_t>(face));
+            SL_DEBUG_FMT_THROW(InvalidInputException, "Unknown cube texture face ", static_cast<int32_t>(face));
+            return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
     }
 }
 
@@ -43,7 +44,7 @@ static GLenum convertPrimitiveType(PrimitiveType type)
             return GL_POINTS;
         default:
             SL_DEBUG_FMT_THROW(InvalidInputException, "Unknown primitive type ", static_cast<int32_t>(type));
-            return GL_TRIANGLES; // in Release we just return default value
+            return GL_TRIANGLES;
     }
 }
 
@@ -58,7 +59,7 @@ static GLenum convertColorFormat(ColorFormat format)
             return GL_RGBA;
         default:
             SL_DEBUG_FMT_THROW(InvalidInputException, "Unknown texture format ", static_cast<int32_t>(format));
-            return GL_RGB; // in Release we just return default value
+            return GL_RGB;
     }
 }
 

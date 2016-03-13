@@ -14,7 +14,7 @@ shared<Mesh> Mesh::createPrefab(Renderer* renderer, MeshPrefab prefab)
         case MeshPrefab::Cube:
             return createBoxMesh(renderer);
         default:
-            SL_THROW_FMT(InvalidInputException, "Unknown mesh prefab");
+            SL_DEBUG_THROW(InvalidInputException, "Unknown mesh prefab");
     }
 }
 
