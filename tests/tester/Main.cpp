@@ -71,9 +71,11 @@ void runLuaTests(const std::string &entryScriptPath)
 
 int main()
 {
+#ifdef SL_DEBUG
     runCppUnitTests();
     runCppIntegrationTests();
     runLuaTests("../tests/scripts/tests.lua");
+#endif
     runLuaTests("../tests/scripts/demo/demo.lua");
     return 0;
 }
