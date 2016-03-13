@@ -267,7 +267,7 @@ TextureHandle OpenGLRenderer::createTexture()
 }
 
 
-void OpenGLRenderer::destroyTexture(TextureHandle handle)
+void OpenGLRenderer::destroyTexture(const TextureHandle& handle)
 {
     auto rawHandle = textures.getData(handle.value).rawHandle;
     glDeleteTextures(1, &rawHandle);
@@ -275,7 +275,7 @@ void OpenGLRenderer::destroyTexture(TextureHandle handle)
 }
 
 
-void OpenGLRenderer::update2DTexture(TextureHandle handle, ColorFormat format, int width, int height, const void* data)
+void OpenGLRenderer::update2DTexture(const TextureHandle& handle, ColorFormat format, int width, int height, const void* data)
 {
     bindTexture(GL_TEXTURE_2D, handle);
 
@@ -299,7 +299,7 @@ void OpenGLRenderer::update2DTexture(TextureHandle handle, ColorFormat format, i
 }
 
 
-void OpenGLRenderer::updateCubeTexture(TextureHandle handle, CubeTextureFace face, ColorFormat format, int width, int height, const void* data)
+void OpenGLRenderer::updateCubeTexture(const TextureHandle& handle, CubeTextureFace face, ColorFormat format, int width, int height, const void* data)
 {
     bindTexture(GL_TEXTURE_CUBE_MAP, handle);
 
@@ -429,32 +429,32 @@ void OpenGLRenderer::validateFrameBufferAttachments(const std::vector<TextureHan
 }
 
 
-void OpenGLRenderer::set2DTexture(TextureHandle handle)
+void OpenGLRenderer::set2DTexture(const TextureHandle& handle)
 {
     bindTexture(GL_TEXTURE_2D, handle);
 }
 
 
-void OpenGLRenderer::set2DTexture(TextureHandle handle, int flags)
+void OpenGLRenderer::set2DTexture(const TextureHandle& handle, int flags)
 {
     setTexture(GL_TEXTURE_2D, handle, flags);
 }
 
 
-void OpenGLRenderer::set2DTexture(TextureHandle handle, int flags, float anisotropyLevel)
+void OpenGLRenderer::set2DTexture(const TextureHandle& handle, int flags, float anisotropyLevel)
 {
     set2DTexture(handle, flags);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
 }
 
 
-void OpenGLRenderer::setCubeTexture(TextureHandle handle)
+void OpenGLRenderer::setCubeTexture(const TextureHandle& handle)
 {
     bindTexture(GL_TEXTURE_CUBE_MAP, handle);
 }
 
 
-void OpenGLRenderer::setCubeTexture(TextureHandle handle, int flags)
+void OpenGLRenderer::setCubeTexture(const TextureHandle& handle, int flags)
 {
     setTexture(GL_TEXTURE_CUBE_MAP, handle, flags);
 
@@ -471,7 +471,7 @@ void OpenGLRenderer::setCubeTexture(TextureHandle handle, int flags)
 }
 
 
-void OpenGLRenderer::setCubeTexture(TextureHandle handle, int flags, float anisotropyLevel)
+void OpenGLRenderer::setCubeTexture(const TextureHandle& handle, int flags, float anisotropyLevel)
 {
     setCubeTexture(handle, flags);
     if (!handle.empty())
@@ -500,7 +500,7 @@ FrameBufferHandle OpenGLRenderer::createFrameBuffer()
 }
 
 
-void OpenGLRenderer::destroyFrameBuffer(FrameBufferHandle handle)
+void OpenGLRenderer::destroyFrameBuffer(const FrameBufferHandle& handle)
 {
     auto rawHandle = frameBuffers.getData(handle.value).rawHandle;
     glDeleteFramebuffers(1, &rawHandle);
@@ -509,13 +509,13 @@ void OpenGLRenderer::destroyFrameBuffer(FrameBufferHandle handle)
 }
 
 
-void OpenGLRenderer::setFrameBuffer(FrameBufferHandle handle)
+void OpenGLRenderer::setFrameBuffer(const FrameBufferHandle& handle)
 {
     bindFrameBuffer(handle);
 }
 
 
-void OpenGLRenderer::updateFrameBuffer(FrameBufferHandle handle, const std::vector<TextureHandle> attachmentHandles)
+void OpenGLRenderer::updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle> attachmentHandles)
 {
     SL_IN_DEBUG(validateFrameBufferAttachments(attachmentHandles));
 
@@ -577,7 +577,7 @@ VertexBufferHandle OpenGLRenderer::createVertexBuffer(const VertexBufferLayout& 
 }
 
 
-void OpenGLRenderer::destroyVertexBuffer(VertexBufferHandle handle)
+void OpenGLRenderer::destroyVertexBuffer(const VertexBufferHandle& handle)
 {
     auto rawHandle = vertexBuffers.getData(handle.value).rawHandle;
     glDeleteBuffers(1, &rawHandle);
@@ -605,7 +605,7 @@ IndexBufferHandle OpenGLRenderer::createIndexBuffer(const void* data, int elemen
 }
 
 
-void OpenGLRenderer::destroyIndexBuffer(IndexBufferHandle handle)
+void OpenGLRenderer::destroyIndexBuffer(const IndexBufferHandle& handle)
 {
     auto rawHandle = indexBuffers.getData(handle.value).rawHandle;
     glDeleteBuffers(1, &rawHandle);
@@ -632,7 +632,7 @@ ProgramHandle OpenGLRenderer::createProgram(const char* vsSrc, const char* fsSrc
 }
 
 
-void OpenGLRenderer::destroyProgram(ProgramHandle handle)
+void OpenGLRenderer::destroyProgram(const ProgramHandle& handle)
 {
     auto rawHandle = programs.getData(handle.value).rawHandle;
     glDeleteProgram(rawHandle);
@@ -640,7 +640,7 @@ void OpenGLRenderer::destroyProgram(ProgramHandle handle)
 }
 
 
-void OpenGLRenderer::setProgram(ProgramHandle handle)
+void OpenGLRenderer::setProgram(const ProgramHandle& handle)
 {
     auto rawHandle = handle.empty() ? 0 : programs.getData(handle.value).rawHandle;
     glUseProgram(rawHandle);
@@ -722,7 +722,7 @@ VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* 
 }
 
 
-void OpenGLRenderer::destroyVertexObject(VertexObjectHandle handle)
+void OpenGLRenderer::destroyVertexObject(const VertexObjectHandle& handle)
 {
     auto rawHandle = vertexObjects.getData(handle.value).rawHandle;
     glDeleteVertexArrays(1, &rawHandle);
@@ -837,7 +837,7 @@ void OpenGLRenderer::setState(int stateFlags)
     else
         glDisable(GL_DEPTH_TEST);
 
-    GLenum depthFunc = 0;
+    GLenum depthFunc;
     if (stateFlags & StateFlags::DepthFuncAlways)
         depthFunc = GL_ALWAYS;
     else if (stateFlags & StateFlags::DepthFuncEqual)
