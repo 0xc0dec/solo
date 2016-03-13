@@ -29,12 +29,12 @@ namespace solo
         int addBuffer(const VertexBufferLayout& layout, const float* data, int elementCount);
         void removeBuffer(int index);
 
-        int addIndex(const void* data, int elementCount);
-        void removeIndex(int index);
-        int getIndexCount() const;
+        int addPart(const void* indexData, int indexElementCount);
+        void removePart(int index);
+        int getPartCount() const;
 
         void draw(Effect* effect);
-        void drawIndex(int index, Effect* effect);
+        void drawPart(Effect* effect, uint16_t part);
 
         void setPrimitiveType(PrimitiveType type);
         PrimitiveType getPrimitiveType() const;
@@ -42,6 +42,7 @@ namespace solo
     protected:
         static shared<Mesh> createQuadMesh(Renderer* renderer);
         static shared<Mesh> createBoxMesh(Renderer* renderer);
+
         void rebuildVertexObject();
         void rebuildEffectBinding(Effect* effect);
         void recalculateMinVertexCount();
@@ -68,7 +69,7 @@ namespace solo
         return primitiveType;
     }
 
-    inline int Mesh::getIndexCount() const
+    inline int Mesh::getPartCount() const
     {
         return static_cast<int>(indexBuffers.size());
     }

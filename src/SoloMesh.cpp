@@ -27,10 +27,14 @@ Mesh::Mesh(Renderer* renderer):
 
 Mesh::~Mesh()
 {
+    if (!vertexObjectHandle.empty())
+        renderer->destroyVertexObject(vertexObjectHandle);
+    if (!effectBindingVertexObjectHandle.empty())
+        renderer->destroyVertexObject(effectBindingVertexObjectHandle);
     while (!vertexBuffers.empty())
         removeBuffer(0);
     while (!indexBuffers.empty())
-        removeIndex(0);
+        removePart(0);
 }
 
 
@@ -55,7 +59,7 @@ void Mesh::removeBuffer(int index)
 }
 
 
-int Mesh::addIndex(const void* data, int elementCount)
+int Mesh::addPart(const void* data, int elementCount)
 {
     auto handle = renderer->createIndexBuffer(data, 2, elementCount); // 2 because we currently support only UNSIGNED_SHORT indexes
     indexBuffers.push_back(handle);
@@ -63,10 +67,37 @@ int Mesh::addIndex(const void* data, int elementCount)
 }
 
 
-void Mesh::removeIndex(int index)
+void Mesh::removePart(int part)
 {
-    renderer->destroyIndexBuffer(indexBuffers[index]);
-    indexBuffers.erase(indexBuffers.begin() + index);
+    renderer->destroyIndexBuffer(indexBuffers[part]);
+    indexBuffers.erase(indexBuffers.begin() + part);
+}
+
+
+void Mesh::draw(Effect* effect)
+{
+    rebuildEffectBinding(effect);
+
+    const auto& voHandle = !effectBindingVertexObjectHandle.empty() ? effectBindingVertexObjectHandle : vertexObjectHandle;
+    if (voHandle.empty())
+        return;
+
+    if (indexBuffers.empty())
+        renderer->drawVertexObject(primitiveType, voHandle, minVertexCount);
+    else
+    {
+        for (auto i = 0; i < indexBuffers.size(); i++)
+            renderer->drawIndexedVertexObject(primitiveType, voHandle, indexBuffers[i]);
+    }
+}
+
+
+void Mesh::drawPart(Effect* effect, uint16_t part)
+{
+    rebuildEffectBinding(effect);
+    const auto& handle = !effectBindingVertexObjectHandle.empty() ? effectBindingVertexObjectHandle : vertexObjectHandle;
+    if (!handle.empty())
+        renderer->drawIndexedVertexObject(primitiveType, handle, indexBuffers[part]);
 }
 
 
@@ -99,24 +130,6 @@ void Mesh::recalculateMinVertexCount()
     minVertexCount = INT_MAX;
     for (const auto& count : vertexCounts)
         minVertexCount = std::min(count, minVertexCount);
-}
-
-
-void Mesh::draw(Effect* effect)
-{
-    rebuildEffectBinding(effect);
-    const auto& handle = !effectBindingVertexObjectHandle.empty() ? effectBindingVertexObjectHandle : vertexObjectHandle;
-    if (!handle.empty())
-        renderer->drawVertexObject(primitiveType, handle, minVertexCount);
-}
-
-
-void Mesh::drawIndex(int index, Effect* effect)
-{
-    rebuildEffectBinding(effect);
-    const auto& handle = !effectBindingVertexObjectHandle.empty() ? effectBindingVertexObjectHandle : vertexObjectHandle;
-    if (!handle.empty())
-        renderer->drawIndexedVertexObject(primitiveType, handle, indexBuffers[index]);
 }
 
 
@@ -190,7 +203,7 @@ shared<Mesh> Mesh::createBoxMesh(Renderer* renderer)
     auto mesh = SL_NEW_SHARED(Mesh, renderer);
     mesh->addBuffer(layout1, positionData, 24);
     mesh->addBuffer(layout2, texCoordData, 24);
-    mesh->addIndex(indexData, 36);
+    mesh->addPart(indexData, 36);
     mesh->setPrimitiveType(PrimitiveType::Triangles);
 
     return mesh;

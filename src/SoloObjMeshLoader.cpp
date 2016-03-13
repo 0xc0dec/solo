@@ -176,7 +176,7 @@ shared<Mesh> ObjMeshLoader::load(const std::string& uri)
     }
 
     for (const auto& indices : allIndices)
-        mesh->addIndex(reinterpret_cast<const void*>(indices.data()), static_cast<int>(indices.size()));
+        mesh->addPart(reinterpret_cast<const void*>(indices.data()), static_cast<int>(indices.size()));
 
     mesh->setPrimitiveType(PrimitiveType::Triangles);
 

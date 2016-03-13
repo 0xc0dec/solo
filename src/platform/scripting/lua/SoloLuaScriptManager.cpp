@@ -376,10 +376,10 @@ void LuaScriptManager::registerApi()
     // Mesh
     auto mesh = module.beginClass<Mesh>("Mesh");
     REGISTER_METHOD(mesh, LuaMesh, addBuffer);
-    REGISTER_METHOD(mesh, LuaMesh, addIndex);
+    REGISTER_METHOD(mesh, LuaMesh, addPart);
     REGISTER_METHOD(mesh, Mesh, removeBuffer);
-    REGISTER_METHOD(mesh, Mesh, removeIndex);
-    REGISTER_METHOD(mesh, Mesh, getIndexCount);
+    REGISTER_METHOD(mesh, Mesh, removePart);
+    REGISTER_METHOD(mesh, Mesh, getPartCount);
     REGISTER_METHOD(mesh, Mesh, getPrimitiveType);
     REGISTER_METHOD(mesh, Mesh, setPrimitiveType);
     mesh.endClass();
@@ -535,7 +535,7 @@ void LuaScriptManager::registerApi()
 
     // MeshRenderer
     auto mr = module.beginExtendClass<MeshRenderer, Component>("MeshRenderer");
-    REGISTER_METHOD(mr, MeshRenderer, findMaterial);
+    REGISTER_METHOD(mr, MeshRenderer, getMaterial);
     REGISTER_METHOD(mr, MeshRenderer, setMaterial);
     REGISTER_METHOD(mr, MeshRenderer, getMaterialCount);
     REGISTER_METHOD(mr, MeshRenderer, getMesh);

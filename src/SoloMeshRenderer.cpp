@@ -20,10 +20,10 @@ void MeshRenderer::render(RenderContext& context)
     if (!mesh)
         return;
 
-    auto indexCount = mesh->getIndexCount();
-    if (indexCount == 0)
+    auto partCount = mesh->getPartCount();
+    if (partCount == 0)
     {
-        auto material = findMaterial(0);
+        auto material = getMaterial(0);
         if (material)
         {
             material->bind(context);
@@ -33,25 +33,17 @@ void MeshRenderer::render(RenderContext& context)
     }
     else
     {
-        for (auto i = 0; i < indexCount; ++i)
+        for (auto part = 0; part < partCount; ++part)
         {
-            auto material = findMaterial(i);
+            auto material = getMaterial(part);
             if (material)
             {
                 material->bind(context);
-                mesh->drawIndex(i, material->getEffect());
+                mesh->drawPart(material->getEffect(), part);
                 material->unbind(context);
             }
         }
     }
-}
-
-
-void MeshRenderer::setMesh(shared<Mesh> mesh)
-{
-    this->mesh = mesh;
-    // TODO maybe retain one material, if any
-    materials.clear();
 }
 
 
@@ -61,12 +53,4 @@ void MeshRenderer::setMaterial(int index, shared<Material> material)
         materials[index] = material;
     else
         materials.erase(index);
-}
-
-
-Material* MeshRenderer::findMaterial(int index) const
-{
-    if (materials.find(index) == materials.end())
-        return nullptr;
-    return materials.at(index).get();
 }

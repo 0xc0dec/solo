@@ -10,7 +10,7 @@ void LuaMesh::addBuffer(Mesh* mesh, const VertexBufferLayout& layout, const std:
 }
 
 
-void LuaMesh::addIndex(Mesh* mesh, const std::vector<float>& data, int elementCount)
+void LuaMesh::addPart(Mesh* mesh, const std::vector<float>& data, int elementCount)
 {
-    mesh->addIndex(data.data(), elementCount);
+    mesh->addPart(data.data(), elementCount);
 }
