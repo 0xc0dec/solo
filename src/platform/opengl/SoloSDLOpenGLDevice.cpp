@@ -6,7 +6,7 @@
 using namespace solo;
 
 
-std::list<std::pair<int, int>> supportedContextVersions =
+std::list<std::pair<uint32_t, uint32_t>> supportedContextVersions =
 {
     { 4, 4 }, { 4, 3 }, { 4, 2 }, { 4, 1 }, { 4, 0 },
 };
@@ -79,7 +79,7 @@ std::unordered_map<Uint8, MouseButton> mouseButtonsMap =
 };
 
 
-WindowWithContextCreationResult tryCreateOpengGLWindow(bool hidden, int ctxMajorVersion, int ctxMinorVersion, DeviceCreationArgs creationArgs)
+static WindowWithContextCreationResult tryCreateOpengGLWindow(bool hidden, uint32_t ctxMajorVersion, uint32_t ctxMinorVersion, DeviceCreationArgs creationArgs)
 {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, ctxMajorVersion);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, ctxMinorVersion);
@@ -87,7 +87,7 @@ WindowWithContextCreationResult tryCreateOpengGLWindow(bool hidden, int ctxMajor
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, creationArgs.depth);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-    auto flags = static_cast<int>(SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
+    auto flags = static_cast<uint32_t>(SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
     if (hidden)
         flags |= SDL_WINDOW_HIDDEN;
     if (creationArgs.fullScreen)
@@ -140,7 +140,7 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
 }
 
 
-std::tuple<int, int> SDLOpenGLDevice::selectContextVersion()
+std::tuple<uint32_t, uint32_t> SDLOpenGLDevice::selectContextVersion()
 {
     for (auto version : supportedContextVersions)
     {
@@ -342,7 +342,7 @@ float SDLOpenGLDevice::getLifetime() const
 
 Vector2 SDLOpenGLDevice::getCanvasSize() const
 {
-    int width, height;
+    int32_t width, height;
     SDL_GL_GetDrawableSize(window, &width, &height);
     return Vector2(static_cast<float>(width), static_cast<float>(height));
 }

@@ -46,22 +46,22 @@ namespace solo
     struct DeviceCreationArgs
     {
         DeviceMode mode;
-        int canvasWidth;
-        int canvasHeight;
+        uint32_t canvasWidth;
+        uint32_t canvasHeight;
         bool fullScreen;
         std::string windowTitle;
-        int bits;
-        int depth;
+        uint32_t bits;
+        uint32_t depth;
         std::string logFilePath;
 
         DeviceCreationArgs(
             DeviceMode mode = DeviceMode::OpenGL,
-            int canvasWidth = 800,
-            int canvasHeight = 600,
+            uint32_t canvasWidth = 800,
+            uint32_t canvasHeight = 600,
             bool fullScreen = false,
             const std::string& windowTitle = "",
-            int bits = 32,
-            int depth = 16,
+            uint32_t bits = 32,
+            uint32_t depth = 16,
             const std::string& logFilePath = "") :
             mode(mode),
             canvasWidth(canvasWidth > 0 ? canvasWidth : 1),
@@ -141,8 +141,8 @@ namespace solo
         std::unordered_map<KeyCode, bool> pressedKeys;
         std::unordered_set<KeyCode> releasedKeys;
 
-        int mouseDeltaX = 0;
-        int mouseDeltaY = 0;
+        int32_t mouseDeltaX = 0;
+        int32_t mouseDeltaY = 0;
         std::unordered_map<MouseButton, bool> pressedMouseButtons;
         std::unordered_set<MouseButton> releasedMouseButtons;
 

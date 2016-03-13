@@ -61,7 +61,7 @@ namespace solo
 
         Renderer* renderer;
         
-        int flags = 0;
+        uint32_t flags = 0;
         TextureHandle handle = EmptyTextureHandle;
 
         TextureWrapping horizontalWrapping = TextureWrapping::Repeat;

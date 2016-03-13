@@ -14,7 +14,7 @@ namespace solo
         virtual void bind() override final;
         virtual void generateMipmaps() override final;
 
-        void setData(ColorFormat format, const std::vector<uint8_t>& data, int width, int height);
+        void setData(ColorFormat format, const std::vector<uint8_t>& data, uint32_t width, uint32_t height);
 
         Vector2 getSize() const;
 
