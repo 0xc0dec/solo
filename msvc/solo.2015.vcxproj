@@ -49,7 +49,6 @@
     <ClInclude Include="..\include\SoloTexture.h" />
     <ClInclude Include="..\include\SoloLogger.h" />
     <ClInclude Include="..\include\SoloMaterial.h" />
-    <ClInclude Include="..\include\SoloMaterialParameter.h" />
     <ClInclude Include="..\include\SoloMath.h" />
     <ClInclude Include="..\include\SoloMatrix.h" />
     <ClInclude Include="..\include\SoloMesh.h" />
@@ -138,7 +137,6 @@
     <ClCompile Include="..\src\SoloFrustum.cpp" />
     <ClCompile Include="..\src\SoloLogger.cpp" />
     <ClCompile Include="..\src\SoloMaterial.cpp" />
-    <ClCompile Include="..\src\SoloMaterialParameter.cpp" />
     <ClCompile Include="..\src\SoloMatrix.cpp" />
     <ClCompile Include="..\src\SoloMesh.cpp" />
     <ClCompile Include="..\src\SoloMeshRenderer.cpp" />

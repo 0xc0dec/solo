@@ -34,9 +34,6 @@ void SurfaceRenderer::renderSurface(FrameBuffer* target)
     RenderContext ctx;
     material->bind(ctx);
     mesh->draw(material->getEffect());
-    material->unbind(ctx);
-
-    material->setDepthTestEnabled(depthTestEnabled); // TODO really needed?
 
     if (target)
         target->unbind();

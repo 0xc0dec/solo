@@ -34,7 +34,6 @@ void SkyboxRenderer::render(RenderContext& context)
 {
     material->bind(context);
     quadMesh->draw(material->getEffect());
-    material->unbind(context);
 }
 
 

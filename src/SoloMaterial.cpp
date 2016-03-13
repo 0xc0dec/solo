@@ -183,7 +183,7 @@ void Material::bind(RenderContext& context)
                 break;
             case ParameterValueType::Texture:
                 renderer->setUniform(data.handle, nullptr, 1);
-                data.textureValue->apply();
+                data.textureValue->bind();
                 break;
             case ParameterValueType::WorldMatrix:
                 if (context.nodeTransform)
@@ -229,13 +229,6 @@ void Material::bind(RenderContext& context)
                 break;
         }
     }
-}
-
-
-void Material::unbind(RenderContext& context)
-{
-    if (effect)
-        effect->unbind();
 }
 
 

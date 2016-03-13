@@ -24,7 +24,6 @@
 #include "SoloTexture2D.h"
 #include "SoloCubeTexture.h"
 #include "SoloMaterial.h"
-#include "SoloMaterialParameter.h"
 #include "SoloMesh.h"
 #include "SoloLuaMesh.h"
 #include "SoloRenderContext.h"

@@ -27,7 +27,6 @@ namespace solo
         ProgramHandle getHandle() const;
 
         void bind();
-        void unbind();
 
     protected:
         Renderer* renderer;

@@ -21,7 +21,6 @@
 #include "SoloImageLoader.h"
 #include "SoloLogger.h"
 #include "SoloMaterial.h"
-#include "SoloMaterialParameter.h"
 #include "SoloMath.h"
 #include "SoloMatrix.h"
 #include "SoloMesh.h"

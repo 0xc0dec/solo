@@ -28,7 +28,6 @@ void MeshRenderer::render(RenderContext& context)
         {
             material->bind(context);
             mesh->draw(material->getEffect());
-            material->unbind(context);
         }
     }
     else
@@ -40,7 +39,6 @@ void MeshRenderer::render(RenderContext& context)
             {
                 material->bind(context);
                 mesh->drawPart(material->getEffect(), part);
-                material->unbind(context);
             }
         }
     }

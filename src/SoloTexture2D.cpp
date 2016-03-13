@@ -9,7 +9,7 @@ Texture2D::Texture2D(Renderer* renderer):
 }
 
 
-void Texture2D::apply()
+void Texture2D::bind()
 {
     renderer->set2DTexture(handle, flags, anisotropy);
 }

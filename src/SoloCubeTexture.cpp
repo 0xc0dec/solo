@@ -10,7 +10,7 @@ CubeTexture::CubeTexture(Renderer* renderer):
 }
 
 
-void CubeTexture::apply()
+void CubeTexture::bind()
 {
     renderer->setCubeTexture(handle, flags, anisotropy);
 }

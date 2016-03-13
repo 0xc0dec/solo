@@ -76,9 +76,6 @@
     <ClInclude Include="..\include\SoloEffectVariable.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloMaterialParameter.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloRenderContext.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -253,9 +250,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloBase.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloMaterialParameter.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloNode.cpp">

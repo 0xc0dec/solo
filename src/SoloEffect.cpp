@@ -44,9 +44,3 @@ void Effect::bind()
 {
     renderer->setProgram(handle);
 }
-
-
-void Effect::unbind()
-{
-    renderer->setProgram(EmptyProgramHandle);
-}
