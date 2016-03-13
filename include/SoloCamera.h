@@ -17,7 +17,7 @@ namespace solo
     class Renderer;
     class Device;
 
-    class Camera: public ComponentBase<Camera>, protected TransformCallback
+    class Camera final: public ComponentBase<Camera>, protected TransformCallback
     {
     public:
         Camera(Scene* scene, Node node);
