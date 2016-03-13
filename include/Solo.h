@@ -36,7 +36,6 @@
 #include "SoloScriptManager.h"
 #include "SoloSkyboxRenderer.h"
 #include "SoloSpectator.h"
-#include "SoloSurfaceRenderer.h"
 #include "SoloTexture.h"
 #include "SoloTexture2D.h"
 #include "SoloTransform.h"

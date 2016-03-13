@@ -1,7 +1,7 @@
 runTest(function()
 	local mgr = device:getResourceManager()
 	local e = mgr:getOrCreateEffect("vs", "fs")
-	local m = mgr:getOrCreateMaterial(e, "test/uri")
+	local m = mgr:getOrCreateMaterial(e)
 
 	assert(m:getEffect())
 

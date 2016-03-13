@@ -13,6 +13,7 @@ namespace solo
     class ResourceManager;
     class FileSystem;
     class Renderer;
+    class Graphics;
     class Logger;
 
     enum class KeyCode
@@ -119,6 +120,7 @@ namespace solo
         FileSystem* getFileSystem() const;
         ResourceManager* getResourceManager() const;
         Renderer* getRenderer() const;
+        Graphics* getGraphics() const;
         Logger* getLogger() const;
 
     protected:
@@ -135,6 +137,7 @@ namespace solo
         shared<FileSystem> fs;
         shared<ResourceManager> resourceManager;
         shared<Renderer> renderer;
+        shared<Graphics> graphics;
         shared<Logger> logger;
 
         // stores what keys were pressed and if it was a repeat
@@ -190,6 +193,11 @@ namespace solo
     inline ResourceManager* Device::getResourceManager() const
     {
         return resourceManager.get();
+    }
+
+    inline Graphics* Device::getGraphics() const
+    {
+        return graphics.get();
     }
 
     inline Logger* Device::getLogger() const

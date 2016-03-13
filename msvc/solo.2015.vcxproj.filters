@@ -151,12 +151,6 @@
     <ClInclude Include="..\src\platform\scripting\lua\SoloLuaMesh.h">
       <Filter>src\platform\scripting\lua</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloSurfaceRenderer.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\scripting\lua\SoloLuaSurfaceRenderer.h">
-      <Filter>src\platform\scripting\lua</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\SoloMeshLoader.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -183,6 +177,12 @@
     </ClInclude>
     <ClInclude Include="..\include\SoloConfig.h">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloGraphics.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\scripting\lua\SoloLuaGraphics.h">
+      <Filter>src\platform\scripting\lua</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -378,12 +378,6 @@
     <ClCompile Include="..\src\platform\scripting\lua\SoloLuaMesh.cpp">
       <Filter>src\platform\scripting\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloSurfaceRenderer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\scripting\lua\SoloLuaSurfaceRenderer.cpp">
-      <Filter>src\platform\scripting\lua</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\platform\stub\SoloStubMeshLoader.cpp">
       <Filter>src\platform\stub</Filter>
     </ClCompile>
@@ -401,6 +395,12 @@
     </ClCompile>
     <ClCompile Include="..\src\SoloFrameBuffer.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloGraphics.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\scripting\lua\SoloLuaGraphics.cpp">
+      <Filter>src\platform\scripting\lua</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

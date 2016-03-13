@@ -30,8 +30,8 @@
 #include "SoloMeshRenderer.h"
 #include "SoloSkyboxRenderer.h"
 #include "SoloSpectator.h"
-#include "SoloSurfaceRenderer.h"
-#include "SoloLuaSurfaceRenderer.h"
+#include "SoloGraphics.h"
+#include "SoloLuaGraphics.h"
 #include "SoloLogger.h"
 #include <map>
 
@@ -774,6 +774,7 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(device, Device, getScene);
     REGISTER_METHOD(device, Device, getResourceManager);
     REGISTER_METHOD(device, Device, getFileSystem);
+    REGISTER_METHOD(device, Device, getGraphics);
     REGISTER_METHOD(device, Device, getLogger);
     REGISTER_METHOD(device, Device, getMode);
     REGISTER_METHOD(device, Device, run);
@@ -784,6 +785,11 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(device, Device, shutdownRequested);
     device.endClass();
 
+    // Graphics
+    auto graphics = module.beginClass<Graphics>("Graphics");
+    REGISTER_METHOD(graphics, LuaGraphics, blit);
+    graphics.endClass();
+
     // ResourceManager
     auto mgr = module.beginClass<ResourceManager>("ResourceManager");
     REGISTER_METHOD(mgr, ResourceManager, findEffect);
@@ -792,7 +798,6 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(mgr, ResourceManager, findMaterial);
     REGISTER_METHOD(mgr, ResourceManager, findMesh);
     REGISTER_METHOD(mgr, ResourceManager, findFrameBuffer);
-    REGISTER_METHOD(mgr, ResourceManager, findSurfaceRenderer);
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateEffect, LUA_ARGS(const std::string&, const std::string&, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreatePrefabEffect, LUA_ARGS(EffectPrefab, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateTexture2D, LUA_ARGS(_opt<const std::string&>));
@@ -801,17 +806,11 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMesh, LUA_ARGS(_opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreatePrefabMesh, LUA_ARGS(MeshPrefab, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateFrameBuffer, LUA_ARGS(_opt<const std::string&>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateSurfaceRenderer, LUA_ARGS(shared<Material>, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadTexture2D, LUA_ARGS(const std::string&, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadCubeTexture, LUA_ARGS(const std::vector<std::string>&, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadMesh, LUA_ARGS(const std::string&, _opt<const std::string&>));
     REGISTER_OVERLOADED_METHOD(mgr, ResourceManager, cleanUnusedResources, "cleanUnusedResources", void, , void);
     mgr.endClass();
-
-    // SurfaceRenderer
-    auto surfaceRenderer = module.beginClass<SurfaceRenderer>("SurfaceRenderer");
-    REGISTER_METHOD(surfaceRenderer, LuaSurfaceRenderer, renderSurface);
-    surfaceRenderer.endClass();
 
     // FileSystem
     auto fs = module.beginClass<FileSystem>("FileSystem");

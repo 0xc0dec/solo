@@ -4,6 +4,7 @@
 #include "SoloScene.h"
 #include "SoloLogger.h"
 #include "SoloRenderer.h"
+#include "SoloGraphics.h"
 #include "platform/stub/SoloStubDevice.h"
 #include "platform/opengl/SoloSDLOpenGLDevice.h"
 
@@ -21,6 +22,7 @@ shared<Device> Device::create(const DeviceCreationArgs& args)
 Device::~Device()
 {
     scene.reset();
+    graphics.reset();
     resourceManager.reset();
     fs.reset();
     renderer.reset();
@@ -37,6 +39,7 @@ Device::Device(const DeviceCreationArgs& args):
     renderer = Renderer::create(this);
     fs = FileSystem::create(this);
     resourceManager = ResourceManager::create(this);
+    graphics = SL_NEW_SHARED(Graphics, this);
     scene = SL_NEW_SHARED(Scene, this);
 }
 

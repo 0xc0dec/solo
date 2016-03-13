@@ -88,17 +88,14 @@ function createPostProcessor(sourceTexture, shaders)
 			self.finalRTT = rtt
 			self.finalFb = resourceManager:getOrCreateFrameBuffer("demo/post-processor/fb")
 			self.finalFb:setAttachments({ rtt })
-
-			self.renderer1 = resourceManager:getOrCreateSurfaceRenderer(self.material1)
-			self.renderer2 = resourceManager:getOrCreateSurfaceRenderer(self.material2)
 		end,
 
 		onAfterCameraRender = function(self)
 			self.material1:setTextureParameter("mainTex", self.srcTexture)
-			self.renderer1:renderSurface(self.finalFb)
+			device:getGraphics():blit(self.material1, self.finalFb)
 
 			self.material2:setTextureParameter("mainTex", self.finalRTT)
-			self.renderer2:renderSurface()
+			device:getGraphics():blit(self.material2, nil)
 		end
 	}
 end

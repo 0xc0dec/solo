@@ -3,7 +3,7 @@ runTest(function()
 	local q = solo.Quaternion()
 	local scene = device:getScene()
 	local c = scene:createNode():addComponent("Camera")
-	local fb = device:getResourceManager():getOrCreateFrameBuffer("abcd")
+	local fb = device:getResourceManager():getOrCreateFrameBuffer()
 
 	assert(c:getClearColor())
 	c:setClearColor(1, 2, 3, 4)

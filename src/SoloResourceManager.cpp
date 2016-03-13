@@ -8,7 +8,6 @@
 #include "SoloCubeTexture.h"
 #include "SoloDevice.h"
 #include "SoloObjMeshLoader.h"
-#include "SoloSurfaceRenderer.h"
 #include "SoloImage.h"
 #include "platform/stub/SoloStubResourceManager.h"
 #include <functional>
@@ -71,12 +70,6 @@ shared<Mesh> ResourceManager::findMesh(const std::string& uri)
 shared<FrameBuffer> ResourceManager::findFrameBuffer(const std::string& uri)
 {
     return findResource(uri, frameBuffers);
-}
-
-
-shared<SurfaceRenderer> ResourceManager::findSurfaceRenderer(const std::string& uri)
-{
-    return findResource(uri, surfaceRenderers);
 }
 
 
@@ -222,14 +215,6 @@ shared<FrameBuffer> ResourceManager::getOrCreateFrameBuffer(const std::string& u
 }
 
 
-shared<SurfaceRenderer> ResourceManager::getOrCreateSurfaceRenderer(shared<Material> material, const std::string& uri)
-{
-    return getOrCreateResource<SurfaceRenderer>(uri, surfaceRenderers,
-        std::bind(&ResourceManager::findSurfaceRenderer, this, std::placeholders::_1),
-        [&]() { return SL_NEW_SHARED(SurfaceRenderer, device->getRenderer(), material); });
-}
-
-
 template <typename TResource>
 shared<TResource> ResourceManager::getOrCreateResource(
     const std::string& uri,
@@ -276,7 +261,6 @@ void ResourceManager::cleanUnusedResources(ResourceMap<TResource>& resources)
 void ResourceManager::cleanUnusedResources()
 {
     // Clean in order of reference hierarchy
-    cleanUnusedResources(surfaceRenderers);
     cleanUnusedResources(frameBuffers);
     cleanUnusedResources(materials);
     cleanUnusedResources(effects);

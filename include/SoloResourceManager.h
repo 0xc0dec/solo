@@ -17,7 +17,6 @@ namespace solo
     class ImageLoader;
     class MeshLoader;
     class Device;
-    class SurfaceRenderer;
     enum class MeshPrefab;
     enum class EffectPrefab;
 
@@ -35,7 +34,6 @@ namespace solo
         shared<Material> findMaterial(const std::string& uri);
         shared<Mesh> findMesh(const std::string& uri);
         shared<FrameBuffer> findFrameBuffer(const std::string& uri);
-        shared<SurfaceRenderer> findSurfaceRenderer(const std::string& uri = "");
 
         shared<Effect> getOrCreateEffect(const std::string& vsSrc, const std::string& fsSrc, const std::string& uri = "");
         shared<Effect> getOrCreatePrefabEffect(EffectPrefab prefab, const std::string& uri = "");
@@ -45,7 +43,6 @@ namespace solo
         shared<Mesh> getOrCreateMesh(const std::string& uri = "");
         shared<Mesh> getOrCreatePrefabMesh(MeshPrefab prefab, const std::string& uri = "");
         shared<FrameBuffer> getOrCreateFrameBuffer(const std::string& uri = "");
-        shared<SurfaceRenderer> getOrCreateSurfaceRenderer(shared<Material> material, const std::string& uri = "");
 
         shared<Texture2D> getOrLoadTexture2D(const std::string& imageUri, const std::string& uri = "");
         shared<CubeTexture> getOrLoadCubeTexture(const std::vector<std::string>& imageUris, const std::string& uri = "");
@@ -87,7 +84,6 @@ namespace solo
         ResourceMap<Texture2D> textures2d;
         ResourceMap<CubeTexture> cubeTextures;
         ResourceMap<FrameBuffer> frameBuffers;
-        ResourceMap<SurfaceRenderer> surfaceRenderers;
 
         uint32_t resourceCounter = 0;
     };

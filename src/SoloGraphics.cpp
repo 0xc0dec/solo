@@ -1,27 +1,27 @@
-#include "SoloSurfaceRenderer.h"
-#include "SoloRenderer.h"
+#include "SoloGraphics.h"
+#include "SoloDevice.h"
 #include "SoloResourceManager.h"
 #include "SoloMesh.h"
 #include "SoloMaterial.h"
-#include "SoloDevice.h"
 #include "SoloFrameBuffer.h"
+#include "SoloDevice.h"
 #include "SoloRenderContext.h"
 
 using namespace solo;
 
 
-SurfaceRenderer::SurfaceRenderer(Renderer* renderer, shared<Material> material):
-    renderer(renderer),
-    device(renderer->getDevice()),
-    material(material)
+Graphics::Graphics(Device* device):
+    device(device),
+    renderer(device->getRenderer())
 {
-    auto resourceManager = device->getResourceManager();
-    mesh = resourceManager->getOrCreatePrefabMesh(MeshPrefab::Quad, "/solo/internal/surface-renderer/mesh");
 }
 
 
-void SurfaceRenderer::renderSurface(FrameBuffer* target)
+void Graphics::blit(Material* material, FrameBuffer* target)
 {
+    if (!quadMesh)
+        quadMesh = device->getResourceManager()->getOrCreatePrefabMesh(MeshPrefab::Quad, "/solo/internal/graphics/quad-mesh");
+
     material->setDepthTestEnabled(false);
 
     if (target)
@@ -32,7 +32,7 @@ void SurfaceRenderer::renderSurface(FrameBuffer* target)
 
     RenderContext ctx;
     material->bind(ctx);
-    mesh->draw(material->getEffect());
+    quadMesh->draw(material->getEffect());
 
     if (target)
         target->unbind();
