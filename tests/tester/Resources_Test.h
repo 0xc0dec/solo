@@ -20,7 +20,6 @@ public:
         test_CreateFrameBuffer_FindIt();
         test_CreateResource_TryToCleanIt_EnsureRemains();
         test_CreateAndForgetResource_CleanIt();
-        test_LoadCubeTextureWithWrongNumberOfFaces_EnsureFail();
         test_LoadTexture2DWithOverridenUri_CheckUri();
         test_LoadCubeTextureWithOverridenUri_CheckUri();
         test_LoadMeshWithOverridenUri_CheckUri();
@@ -92,13 +91,6 @@ public:
         resourceManager->getOrCreateMesh(uri);
         resourceManager->cleanUnusedResources();
         assert(resourceManager->findMesh(uri) == nullptr);
-    }
-
-    void test_LoadCubeTextureWithWrongNumberOfFaces_EnsureFail()
-    {
-        assertThrows<InvalidInputException>(
-            [=] { resourceManager->getOrLoadCubeTexture({ "1", "2" }); },
-            "Wrong number of face images for cube texture (2 provided, 6 expected)");
     }
 
     void test_LoadTexture2DWithOverridenUri_CheckUri()

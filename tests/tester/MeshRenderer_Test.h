@@ -23,7 +23,6 @@ public:
         test_SetMesh_UnsetMesh_EnsureNoMesh();
         test_SetMaterialForVariousIndexes();
         test_SetMaterial_EnsureSetForOneIndex();
-        test_UnsetMesh_SetMaterial_EnsureThrows();
         test_SetMaterial_UnsetMaterial_EnsureMaterialCountChanges();
     }
 
@@ -55,10 +54,6 @@ public:
         renderer->setMaterial(0, material);
         renderer->setMaterial(1, material);
         renderer->setMaterial(2, material);
-        assertThrows<InvalidOperationException>([ = ]()
-        {
-            renderer->setMaterial(3, material);
-        });
     }
 
     void test_EnsureNoMaterialsAtFirst()
@@ -74,17 +69,6 @@ public:
 
         renderer->setMesh(nullptr);
         assert(renderer->getMesh() == nullptr);
-    }
-
-    void test_UnsetMesh_SetMaterial_EnsureThrows()
-    {
-        renderer->setMesh(mesh);
-        renderer->setMaterial(0, material);
-        renderer->setMesh(nullptr);
-        assertThrows<InvalidOperationException>([ = ]()
-        {
-            renderer->setMaterial(0, material);
-        });
     }
 
 private:
