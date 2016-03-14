@@ -25,7 +25,7 @@ namespace solo
         virtual FrameBufferHandle createFrameBuffer() override final { return EmptyFrameBufferHandle; }
         virtual void destroyFrameBuffer(const FrameBufferHandle& handle) override final {}
         virtual void setFrameBuffer(const FrameBufferHandle& handle) override final {}
-        virtual void updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle> attachmentHandles) override final {}
+        virtual void updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle>& attachmentHandles) override final {}
 
         virtual VertexBufferHandle createVertexBuffer(const VertexBufferLayout& layout,
             const void* data, uint32_t vertexCount) override final { return EmptyVertexBufferHandle; }

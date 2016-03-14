@@ -427,7 +427,7 @@ void OpenGLRenderer::setTexture(GLenum target, const TextureHandle& handle, uint
 }
 
 
-void OpenGLRenderer::validateFrameBufferAttachments(const std::vector<TextureHandle> attachments)
+void OpenGLRenderer::validateFrameBufferAttachments(const std::vector<TextureHandle>& attachments)
 {
     SL_DEBUG_THROW_IF(attachments.size() > GL_MAX_COLOR_ATTACHMENTS, InvalidInputException, "Too many frame buffer attachments");
 
@@ -535,7 +535,7 @@ void OpenGLRenderer::setFrameBuffer(const FrameBufferHandle& handle)
 }
 
 
-void OpenGLRenderer::updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle> attachmentHandles)
+void OpenGLRenderer::updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle>& attachmentHandles)
 {
     SL_IN_DEBUG(validateFrameBufferAttachments(attachmentHandles));
 

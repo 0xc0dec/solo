@@ -138,7 +138,7 @@ namespace solo
         virtual FrameBufferHandle createFrameBuffer() = 0;
         virtual void destroyFrameBuffer(const FrameBufferHandle& handle) = 0;
         virtual void setFrameBuffer(const FrameBufferHandle& handle) = 0;
-        virtual void updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle> attachmentHandles) = 0;
+        virtual void updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle>& attachmentHandles) = 0;
 
         virtual VertexBufferHandle createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) = 0;
         virtual void destroyVertexBuffer(const VertexBufferHandle& handle) = 0;

@@ -79,7 +79,8 @@ std::unordered_map<Uint8, MouseButton> mouseButtonsMap =
 };
 
 
-static WindowWithContextCreationResult tryCreateOpengGLWindow(bool hidden, uint32_t ctxMajorVersion, uint32_t ctxMinorVersion, DeviceCreationArgs creationArgs)
+static WindowWithContextCreationResult tryCreateOpengGLWindow(bool hidden, uint32_t ctxMajorVersion, uint32_t ctxMinorVersion,
+    const DeviceCreationArgs& creationArgs)
 {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, ctxMajorVersion);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, ctxMinorVersion);
