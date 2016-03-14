@@ -36,8 +36,7 @@ return
 			float cy = cos(position.y * 32.0 + time * 4.0) * 0.5 + 0.5;
 			vec3 displacement = vec3(sx, cy, sx * cy);
 			vec3 n = normal.xyz * 2.0 - 1.0;
-			vec4 pos = position + n * displacement * vec3(0.06, 0.06, 0.06);
-			pos.w = 1.0;
+			vec4 pos = vec4(position.xyz + n * displacement * 0.06, 1);
 			gl_Position = worldViewProjMatrix * pos;
 			uv0 = texCoord0;
 		}
