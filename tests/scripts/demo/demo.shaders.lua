@@ -18,6 +18,31 @@ return
 		}
 	]],
 
+	vsWavy = [[
+		#version 330 core
+
+		in vec4 position;
+		in vec3 normal;
+		in vec2 texCoord0;
+
+		uniform mat4 worldViewProjMatrix;
+		uniform float time;
+		out vec2 uv0;
+		out vec3 n;
+
+		void main()
+		{
+			float sx = sin(position.x * 32.0 + time * 4.0) * 0.5 + 0.5;
+			float cy = cos(position.y * 32.0 + time * 4.0) * 0.5 + 0.5;
+			vec3 displacement = vec3(sx, cy, sx * cy);
+			vec3 n = normal.xyz * 2.0 - 1.0;
+			vec4 pos = position + n * displacement * vec3(0.06, 0.06, 0.06);
+			pos.w = 1.0;
+			gl_Position = worldViewProjMatrix * pos;
+			uv0 = texCoord0;
+		}
+	]],
+
 	fsColor = [[
 		#version 330 core
 
@@ -73,7 +98,7 @@ return
 		in vec2 texCoord0;
 
 		uniform mat4 worldViewProjMatrix;
-		uniform mat4 normalMatrix;
+		uniform mat4 invTransposedWorldMatrix;
 		out vec2 uv0;
 		out vec3 n;
 
@@ -81,7 +106,7 @@ return
 		{
 			gl_Position = worldViewProjMatrix * position;
 			uv0 = texCoord0;
-			n = normalize((normalMatrix * vec4(normal, 1)).xyz);
+			n = normalize((invTransposedWorldMatrix * vec4(normal, 1)).xyz);
 		}
 	]],
 

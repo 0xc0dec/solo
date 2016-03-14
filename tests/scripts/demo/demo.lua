@@ -40,19 +40,13 @@ function initTextures()
 end
 
 
-function initEffects()
-	local simpleTextureEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsTexture)
-	demo.effects =
-	{
-		simpleTextureEffect = simpleTextureEffect
-	}
-
-	logger:logInfo("Initialized effects")
-end
-
-
 function initMaterials()
+	local simpleTextureEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsTexture)
+	local wavySimpleTextureEffect = resourceManager:getOrCreateEffect(shaders.vsWavy, shaders.fsTexture)
 	local colorEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsColor)
+	local checkerEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsChecker)
+	local texWithLightingEffect = resourceManager:getOrCreateEffect(shaders.vsBasicLighting, shaders.fsTextureWithLighting)
+
 	local redMaterial = resourceManager:getOrCreateMaterial(colorEffect)
 	redMaterial:setPolygonFace(solo.PolygonFace.All)
 	redMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
@@ -73,32 +67,37 @@ function initMaterials()
 	whiteMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
 	whiteMaterial:setVector4Parameter("color", solo.Vector4(1, 1, 1, 1))
 
-	local simpleTexture = resourceManager:getOrCreateMaterial(demo.effects.simpleTextureEffect)
-	simpleTexture:setPolygonFace(solo.PolygonFace.All)
-	simpleTexture:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
-	simpleTexture:setTextureParameter("mainTex", demo.textures.tex1)
+	local simpleTextureMaterial = resourceManager:getOrCreateMaterial(simpleTextureEffect)
+	simpleTextureMaterial:setPolygonFace(solo.PolygonFace.All)
+	simpleTextureMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
+	simpleTextureMaterial:setTextureParameter("mainTex", demo.textures.tex1)
 
-	local checkerEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsChecker)
+	local wavySimpleTextureMaterial = resourceManager:getOrCreateMaterial(wavySimpleTextureEffect)
+	wavySimpleTextureMaterial:setPolygonFace(solo.PolygonFace.CCW)
+	wavySimpleTextureMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
+	wavySimpleTextureMaterial:setTextureParameter("mainTex", demo.textures.tex2)
+	wavySimpleTextureMaterial:setFloatParameter("time", 0)
+
 	local checkerMaterial = resourceManager:getOrCreateMaterial(checkerEffect)
 	checkerMaterial:setPolygonFace(solo.PolygonFace.All)
 	checkerMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix);
 	checkerMaterial:setVector4Parameter("color", solo.Vector4(1, 1, 0, 1))
 
-	local texWithLightingEffect = resourceManager:getOrCreateEffect(shaders.vsBasicLighting, shaders.fsTextureWithLighting)
 	local textureWithLightingMaterial = resourceManager:getOrCreateMaterial(texWithLightingEffect)
 	textureWithLightingMaterial:setPolygonFace(solo.PolygonFace.All)
 	textureWithLightingMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
-	textureWithLightingMaterial:setParameterAutoBinding("normalMatrix", solo.AutoBinding.InverseTransposedWorldMatrix)
+	textureWithLightingMaterial:setParameterAutoBinding("invTransposedWorldMatrix", solo.AutoBinding.InverseTransposedWorldMatrix)
 	textureWithLightingMaterial:setTextureParameter("mainTex", demo.textures.tex2)
 
-	local offscreenCameraRenderedMaterial = resourceManager:getOrCreateMaterial(demo.effects.simpleTextureEffect)
+	local offscreenCameraRenderedMaterial = resourceManager:getOrCreateMaterial(simpleTextureEffect)
 	offscreenCameraRenderedMaterial:setPolygonFace(solo.PolygonFace.All)
 	offscreenCameraRenderedMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
 	offscreenCameraRenderedMaterial:setTextureParameter("mainTex", demo.textures.offscreenCameraRTT)
 
 	demo.materials =
 	{
-		simpleTexture = simpleTexture,
+		simpleTexture = simpleTextureMaterial,
+		wavySimpleTexture = wavySimpleTextureMaterial,
 		red = redMaterial,
 		green = greenMaterial,
 		blue = blueMaterial,
@@ -187,6 +186,14 @@ function initObjects()
 	node:findComponent("Transform"):setLocalPosition(solo.Vector3.zero())
 	node:addScript(createLocalXRotator())
 
+	-- Monkey 2
+	local node = scene:createNode()
+	local renderer = node:addComponent("MeshRenderer")
+	renderer:setMesh(demo.meshes.monkey)
+	renderer:setMaterial(0, demo.materials.wavySimpleTexture)
+	node:findComponent("Transform"):setLocalPosition(solo.Vector3(0, -3, 0))
+	node:addScript(createTimeMaterialUpdater())
+
 	-- RTT quad
 	local parent = scene:createNode()
 	parent:findComponent("Transform"):setLocalPosition(solo.Vector3(-2, 2, -2))
@@ -260,7 +267,6 @@ end
 
 function init()
 	initTextures()
-	initEffects()
 	initMaterials()
 	initRenderTargets()
 	initMeshes()
