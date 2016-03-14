@@ -57,9 +57,8 @@ return
 		{
 			float xfloor = floor(uv0.x / 0.2);
 			float yfloor = floor(uv0.y / 0.2) + 1;
-			if (mod(xfloor, 2) == 0 && mod(yfloor, 2) == 0)
-				fragColor = vec4(0, 0, 0, 1);
-			else if (mod(xfloor, 2) > 0 && mod(yfloor, 2) > 0)
+			float m = mod(xfloor, 2) + mod(yfloor, 2);
+			if (m == 0 || m >= 2)
 				fragColor = vec4(0, 0, 0, 1);
 			else
 				fragColor = color;
