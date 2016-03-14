@@ -65,7 +65,7 @@ private:
 		{
 			assert(
 				e.what() == SL_FMT("Failed to compile ", failedShaderTypeName, " shader") ||
-				e.what() == SL_FMT("Failed to link effect program")
+				e.what() == SL_FMT("Failed to link program")
 			);
 			return;
 		}
