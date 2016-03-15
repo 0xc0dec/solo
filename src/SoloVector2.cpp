@@ -40,13 +40,13 @@ Vector2 Vector2::unitY()
 
 bool Vector2::isZero() const
 {
-    return Math::approxZero(x) && Math::approxZero(y);
+    return Math::approxZero(x, Math::smallFloat1) && Math::approxZero(y, Math::smallFloat1);
 }
 
 
 bool Vector2::isUnit() const
 {
-    return Math::approxEqual(x, 1.0f) && Math::approxEqual(y, 1.0f);
+    return Math::approxEqual(x, 1.0f, Math::smallFloat1) && Math::approxEqual(y, 1.0f, Math::smallFloat1);
 }
 
 
@@ -123,7 +123,7 @@ void Vector2::normalize()
 {
     auto n = x * x + y * y;
     // Already normalized
-    if (Math::approxEqual(n, 1.0f))
+    if (Math::approxEqual(n, 1.0f, Math::smallFloat1))
         return;
 
     n = sqrt(n);

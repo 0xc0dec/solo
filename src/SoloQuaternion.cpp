@@ -32,13 +32,19 @@ Quaternion Quaternion::zero()
 
 bool Quaternion::isIdentity() const
 {
-    return Math::approxZero(x) && Math::approxZero(y) && Math::approxZero(z) && Math::approxEqual(w, 1.0f);
+    return Math::approxZero(x, Math::smallFloat1) &&
+           Math::approxZero(y, Math::smallFloat1) &&
+           Math::approxZero(z, Math::smallFloat1) &&
+           Math::approxEqual(w, 1.0f, Math::smallFloat1);
 }
 
 
 bool Quaternion::isZero() const
 {
-    return Math::approxZero(x) && Math::approxZero(y) && Math::approxZero(z) && Math::approxZero(w);
+    return Math::approxZero(x, Math::smallFloat1) &&
+           Math::approxZero(y, Math::smallFloat1) &&
+           Math::approxZero(z, Math::smallFloat1) &&
+           Math::approxZero(w, Math::smallFloat1);
 }
 
 
@@ -69,7 +75,7 @@ void Quaternion::conjugate()
 bool Quaternion::inverse()
 {
     auto n = x * x + y * y + z * z + w * w;
-    if (Math::approxEqual(n, 1.0f))
+    if (Math::approxEqual(n, 1.0f, Math::smallFloat1))
     {
         x = -x;
         y = -y;
@@ -77,7 +83,7 @@ bool Quaternion::inverse()
         return true;
     }
 
-    if (Math::approxZero(n))
+    if (Math::approxZero(n, Math::smallFloat1))
         return false;
 
     n = 1.0f / n;
@@ -95,11 +101,11 @@ void Quaternion::normalize()
     auto n = x * x + y * y + z * z + w * w;
 
     // Already normalized
-    if (Math::approxEqual(n, 1.0f))
+    if (Math::approxEqual(n, 1.0f, Math::smallFloat1))
         return;
 
     n = sqrt(n);
-    if (Math::approxZero(n))
+    if (Math::approxZero(n, Math::smallFloat1))
         return;
 
     n = 1.0f / n;
@@ -132,10 +138,10 @@ float Quaternion::toAxisAngle(Vector3& axis) const
 
 Quaternion Quaternion::lerp(const Quaternion& q1, const Quaternion& q2, float t)
 {
-    if (Math::approxZero(t))
+    if (Math::approxZero(t, Math::smallFloat1))
         return q1;
 
-    if (Math::approxEqual(t, 1.0f))
+    if (Math::approxEqual(t, 1.0f, Math::smallFloat1))
         return q2;
 
     auto t1 = 1.0f - t;
@@ -151,13 +157,16 @@ Quaternion Quaternion::lerp(const Quaternion& q1, const Quaternion& q2, float t)
 
 Quaternion Quaternion::slerp(const Quaternion& q1, const Quaternion& q2, float t)
 {
-    if (Math::approxZero(t))
+    if (Math::approxZero(t, Math::smallFloat1))
         return q1;
 
-    if (Math::approxEqual(t, 1.0f))
+    if (Math::approxEqual(t, 1.0f, Math::smallFloat1))
         return q2;
 
-    if (Math::approxEqual(q1.x, q2.x) && Math::approxEqual(q1.y, q2.y) && Math::approxEqual(q1.z, q2.z) && Math::approxEqual(q1.w, q2.w))
+    if (Math::approxEqual(q1.x, q2.x, Math::smallFloat1) &&
+        Math::approxEqual(q1.y, q2.y, Math::smallFloat1) &&
+        Math::approxEqual(q1.z, q2.z, Math::smallFloat1) &&
+        Math::approxEqual(q1.w, q2.w, Math::smallFloat1))
         return q1;
 
     float halfY, alpha, beta;
@@ -229,7 +238,7 @@ Quaternion Quaternion::slerpForSquad(const Quaternion& q1, const Quaternion& q2,
 
     auto omega = acos(c);
     auto s = sqrt(1.0f - c * c);
-    if (Math::approxZero(s))
+    if (Math::approxZero(s, Math::smallFloat1))
         return q1;
 
     auto r1 = sin((1 - t) * omega) / s;

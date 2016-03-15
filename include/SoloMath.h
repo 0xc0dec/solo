@@ -15,8 +15,8 @@ namespace solo
         static constexpr float pi = 3.14159265358979323846f;
         static constexpr float piOver2 = 1.57079632679489661923f;
 
-        static bool approxZero(float value, float tolerance = smallFloat1);
-        static bool approxEqual(float first, float second, float tolerance = smallFloat1);
+        static bool approxZero(float value, float tolerance);
+        static bool approxEqual(float first, float second, float tolerance);
 
         static float degToRad(float degrees);
         static float radToDeg(float radians);

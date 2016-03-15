@@ -242,7 +242,7 @@ end
 function initCameras()
 	local mainCameraNode = scene:createNode()
 	local mainCameraTransform = mainCameraNode:findComponent("Transform")
-	mainCameraTransform:setLocalPosition(solo.Vector3(0, 2, 15))
+	mainCameraTransform:setLocalPosition(solo.Vector3(0, 0, 10))
 	mainCameraNode:addComponent("Spectator")
 	mainCameraNode:addScript(createEscapeWatcher())
 	local mainCamera = mainCameraNode:addComponent("Camera")

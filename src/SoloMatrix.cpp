@@ -100,7 +100,7 @@ Matrix Matrix::createPerspective(float fieldOfView, float aspectRatio, float zNe
 {
     auto f_n = 1.0f / (zFarPlane - zNearPlane);
     auto theta = Math::degToRad(fieldOfView) * 0.5f;
-    SL_DEBUG_FMT_THROW_IF(Math::approxZero(fmod(theta, Math::piOver2)),
+    SL_DEBUG_FMT_THROW_IF(Math::approxZero(fmod(theta, Math::piOver2), Math::smallFloat1),
         InvalidInputException, "Invalid field of view value ", fieldOfView, " caused attempted tan calculation, which is undefined");
 
     auto divisor = tan(theta);
@@ -262,7 +262,7 @@ Matrix Matrix::createRotation(const Vector3& axis, float angleRadians)
         // Not normalized
         n = sqrt(n);
         // Prevent divide too close to zero.
-        if (!Math::approxZero(n))
+        if (!Math::approxZero(n, Math::smallFloat1))
         {
             n = 1.0f / n;
             x *= n;
@@ -429,7 +429,7 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
     // Calculate the rotation from the resulting matrix (axes).
     auto trace = xaxis.x + yaxis.y + zaxis.z + 1.0f;
 
-    if (!Math::approxZero(trace, Math::smallFloat3))
+    if (!Math::approxZero(trace, Math::smallFloat1))
     {
         auto s = 0.5f / sqrt(trace);
         rotation->w = 0.25f / s;

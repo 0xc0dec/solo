@@ -54,13 +54,19 @@ Vector4 Vector4::unitW()
 
 bool Vector4::isZero() const
 {
-    return Math::approxZero(x) && Math::approxZero(y) && Math::approxZero(z) && Math::approxZero(w);
+    return Math::approxZero(x, Math::smallFloat1) &&
+           Math::approxZero(y, Math::smallFloat1) &&
+           Math::approxZero(z, Math::smallFloat1) &&
+           Math::approxZero(w, Math::smallFloat1);
 }
 
 
 bool Vector4::isUnit() const
 {
-    return Math::approxEqual(x, 1.0f) && Math::approxEqual(y, 1.0f) && Math::approxEqual(z, 1.0f) && Math::approxEqual(w, 1.0f);
+    return Math::approxEqual(x, 1.0f, Math::smallFloat1) &&
+           Math::approxEqual(y, 1.0f, Math::smallFloat1) &&
+           Math::approxEqual(z, 1.0f, Math::smallFloat1) &&
+           Math::approxEqual(w, 1.0f, Math::smallFloat1);
 }
 
 
@@ -156,11 +162,11 @@ void Vector4::normalize()
 {
     auto n = x * x + y * y + z * z + w * w;
     // Already normalized
-    if (Math::approxEqual(n, 1.0f))
+    if (Math::approxEqual(n, 1.0f, Math::smallFloat1))
         return;
 
     n = sqrt(n);
-    if (Math::approxZero(n, Math::smallFloat2))
+    if (Math::approxZero(n, Math::smallFloat3))
         return;
 
     n = 1.0f / n;

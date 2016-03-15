@@ -32,6 +32,7 @@ namespace solo
 
         float getDistanceToPoint(const Vector3& point) const;
 
+        // TODO rename
         static Vector3 intersection(const Plane& p1, const Plane& p2, const Plane& p3);
 
         PlaneIntersection getIntersection(const BoundingSphere& sphere) const;

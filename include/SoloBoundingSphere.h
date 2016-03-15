@@ -37,7 +37,7 @@ namespace solo
 
     inline bool BoundingSphere::isEmpty() const
     {
-        return Math::approxZero(radius);
+        return Math::approxZero(radius, Math::smallFloat1);
     }
 
     inline BoundingSphere& BoundingSphere::operator*=(const Matrix& matrix)
