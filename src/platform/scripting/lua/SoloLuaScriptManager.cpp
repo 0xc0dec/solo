@@ -220,8 +220,6 @@ void LuaScriptManager::registerApi()
     REGISTER_STATIC_METHOD(matrix, Matrix, createPerspective);
     REGISTER_STATIC_METHOD(matrix, Matrix, createOrthographic);
     REGISTER_STATIC_METHOD(matrix, Matrix, createOrthographicOffCenter);
-    REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createBillboard, "createBillboard", Matrix, , const Vector3&, const Vector3&, const Vector3&);
-    REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createBillboard, "createBillboard2", Matrix, , const Vector3&, const Vector3&, const Vector3&, const Vector3&);
     REGISTER_STATIC_METHOD(matrix, Matrix, createReflection);
     REGISTER_STATIC_METHOD(matrix, Matrix, createScale);
     REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createRotation, "createRotation", Matrix, , const Quaternion&);

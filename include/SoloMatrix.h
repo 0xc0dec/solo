@@ -31,9 +31,6 @@ namespace solo
         static Matrix createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane);
         static Matrix createOrthographic(float width, float height, float zNearPlane, float zFarPlane);
         static Matrix createOrthographicOffCenter(float left, float right, float bottom, float top, float near, float far);
-        static Matrix createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition, const Vector3& cameraUpVector);
-        static Matrix createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition, const Vector3& cameraUpVector,
-                                      const Vector3& cameraForwardVector);
 
         static Matrix createReflection(const Plane& plane);
         static Matrix createScale(const Vector3& scale);
@@ -96,22 +93,7 @@ namespace solo
 
         Vector3 transformDirection(const Vector3& dir) const;
         Vector4 transformDirection(const Vector4& dir) const;
-
-    private:
-        static Matrix createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
-                                            const Vector3& cameraUpVector, const Vector3* cameraForwardVector);
     };
-
-    inline Matrix Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition, const Vector3& cameraUpVector)
-    {
-        return createBillboardHelper(objectPosition, cameraPosition, cameraUpVector, nullptr);
-    }
-
-    inline Matrix Matrix::createBillboard(const Vector3& objectPosition, const Vector3& cameraPosition,
-                                          const Vector3& cameraUpVector, const Vector3& cameraForwardVector)
-    {
-        return createBillboardHelper(objectPosition, cameraPosition, cameraUpVector, &cameraForwardVector);
-    }
 
     inline Matrix Matrix::operator+(float scalar) const
     {

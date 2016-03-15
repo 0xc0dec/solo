@@ -141,40 +141,6 @@ Matrix Matrix::createOrthographicOffCenter(float left, float right, float bottom
 }
 
 
-Matrix Matrix::createBillboardHelper(const Vector3& objectPosition, const Vector3& cameraPosition,
-                                     const Vector3& cameraUpVector, const Vector3* cameraForwardVector)
-{
-    auto delta = cameraPosition - objectPosition;
-    auto isSufficientDelta = !Math::approxZero(delta.lengthSquared());
-
-    Matrix result;
-    result.m[3] = objectPosition.x;
-    result.m[7] = objectPosition.y;
-    result.m[11] = objectPosition.z;
-
-    // As per the contracts for the 2 variants of createBillboard, we need
-    // either a safe default or a sufficient distance between object and camera.
-    if (cameraForwardVector || isSufficientDelta)
-    {
-        auto target = isSufficientDelta ? cameraPosition : (objectPosition - *cameraForwardVector);
-
-        // A billboard is the inverse of a lookAt rotation
-        auto lookAt = createLookAt(objectPosition, target, cameraUpVector);
-        result.m[0] = lookAt.m[0];
-        result.m[1] = lookAt.m[4];
-        result.m[2] = lookAt.m[8];
-        result.m[4] = lookAt.m[1];
-        result.m[5] = lookAt.m[5];
-        result.m[6] = lookAt.m[9];
-        result.m[8] = lookAt.m[2];
-        result.m[9] = lookAt.m[6];
-        result.m[10] = lookAt.m[10];
-    }
-
-    return result;
-}
-
-
 Matrix Matrix::createReflection(const Plane& plane)
 {
     auto normal(plane.getNormal());
