@@ -74,7 +74,7 @@ int main()
 #ifdef SL_DEBUG
     runCppUnitTests();
     runCppIntegrationTests();
-    runLuaTests("../tests/scripts/tests.lua");
+    runLuaTests("../tests/scripts/smoke-tests/tests.lua");
 #endif
     runLuaTests("../tests/scripts/demo/demo.lua");
 

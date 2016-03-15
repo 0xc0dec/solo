@@ -1,5 +1,5 @@
-local shaders = dofile("../tests/scripts/demo/demo.shaders.lua")
-dofile("../tests/scripts/demo/demo.components.lua")
+local shaders = dofile("../tests/scripts/demo/shaders.lua")
+dofile("../tests/scripts/demo/components.lua")
 
 local RENDER_TARGET_QUAD_TAG = 2
 
