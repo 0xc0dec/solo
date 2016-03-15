@@ -371,7 +371,7 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
         return true;
 
     // Scale too close to zero, can't decompose rotation.
-    if (Math::approxZero(scaleX, Math::smallFloat3) || Math::approxZero(scaleY, Math::smallFloat3) || Math::approxZero(scaleZ, Math::smallFloat3))
+    if (scaleX < Math::smallFloat3 || scaleY < Math::smallFloat3 || scaleZ < Math::smallFloat3)
         return false;
 
     float rn;
@@ -395,7 +395,7 @@ bool Matrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translatio
     // Calculate the rotation from the resulting matrix (axes).
     auto trace = xaxis.x + yaxis.y + zaxis.z + 1.0f;
 
-    if (!Math::approxZero(trace, Math::smallFloat1))
+    if (trace > Math::smallFloat1)
     {
         auto s = 0.5f / sqrt(trace);
         rotation->w = 0.25f / s;
