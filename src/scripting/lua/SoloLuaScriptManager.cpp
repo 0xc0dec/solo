@@ -776,9 +776,6 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(device, Device, getLogger);
     REGISTER_METHOD(device, Device, getMode);
     REGISTER_METHOD(device, Device, run);
-    REGISTER_METHOD(device, Device, setStartCallback);
-    REGISTER_METHOD(device, Device, setShutdownCallback);
-    REGISTER_METHOD(device, Device, setShutdownRequestedCallback);
     REGISTER_METHOD(device, Device, requestShutdown);
     REGISTER_METHOD(device, Device, shutdownRequested);
     device.endClass();

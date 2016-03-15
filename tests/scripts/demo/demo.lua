@@ -309,12 +309,10 @@ function run()
 	scene = device:getScene()
 	resourceManager = device:getResourceManager()
 
-	device:setStartCallback(function()
-		local _, err = pcall(init)
-		if err then
-			logger:logCritical(err)
-		end
-	end)
+	local _, err = pcall(init)
+	if err then
+		logger:logCritical(err)
+	end
 
 	device:run()
 end

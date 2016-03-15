@@ -32,33 +32,23 @@ DeviceCreationArgs stubArgs
 void runCppUnitTests()
 {
     auto device = Device::create(stubArgs);
-    device->setStartCallback([&]
-    {
-        Resources_Test(device.get()).run();
-        Device_Test(device.get()).run();
-        Components_Test(device.get()).run();
-        Transform_Test(device.get()).run();
-        MeshRenderer_Test(device.get()).run();
-        BitFlags_Test(device.get()).run();
-        ResourcePool_Test(device.get()).run();
-        device->requestShutdown();
-    });
-    device->run();
+    Resources_Test(device.get()).run();
+    Device_Test(device.get()).run();
+    Components_Test(device.get()).run();
+    Transform_Test(device.get()).run();
+    MeshRenderer_Test(device.get()).run();
+    BitFlags_Test(device.get()).run();
+    ResourcePool_Test(device.get()).run();
 }
 
 
 void runCppIntegrationTests()
 {
     auto device = Device::create(openGlArgs);
-    device->setStartCallback([&]
-    {
-        FileSystem_Test(device.get()).run();
-        Materials_Test(device.get()).run();
-        FrameBuffer_Test(device.get()).run();
-        Mesh_Test(device.get()).run();
-        device->requestShutdown();
-    });
-    device->run();
+    FileSystem_Test(device.get()).run();
+    Materials_Test(device.get()).run();
+    FrameBuffer_Test(device.get()).run();
+    Mesh_Test(device.get()).run();
 }
 
 

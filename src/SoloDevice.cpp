@@ -46,19 +46,15 @@ Device::Device(const DeviceCreationArgs& args):
 
 void Device::run()
 {
-    startCallback();
-
     while (true)
     {
         beginUpdate();
         scene->update();
         scene->render();
         endUpdate();
-        if (shutdown && shutdownRequestedCallback())
+        if (shutdown)
             break;
     }
-
-    shutdownCallback();
 }
 
 

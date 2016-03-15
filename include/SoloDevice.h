@@ -107,10 +107,6 @@ namespace solo
 
         void run();
 
-        void setStartCallback(std::function<void()> callback);
-        void setShutdownCallback(std::function<void()> callback);
-        void setShutdownRequestedCallback(std::function<bool()> callback);
-
         void requestShutdown();
         bool shutdownRequested() const;
 
@@ -129,9 +125,6 @@ namespace solo
         void updateTime();
 
         DeviceCreationArgs creationArgs;
-        std::function<void()> startCallback = [] {};
-        std::function<void()> shutdownCallback = [] {};
-        std::function<bool()> shutdownRequestedCallback = [] { return true; };
 
         shared<Scene> scene;
         shared<FileSystem> fs;
@@ -203,20 +196,5 @@ namespace solo
     inline Logger* Device::getLogger() const
     {
         return logger.get();
-    }
-
-    inline void Device::setStartCallback(std::function<void()> callback)
-    {
-        startCallback = callback;
-    }
-
-    inline void Device::setShutdownCallback(std::function<void()> callback)
-    {
-        shutdownCallback = callback;
-    }
-
-    inline void Device::setShutdownRequestedCallback(std::function<bool()> callback)
-    {
-        shutdownRequestedCallback = callback;
     }
 }

@@ -26,10 +26,6 @@ runTest(function()
 	device:requestShutdown()
 	assert(device:shutdownRequested() ~= nil)
 
-	device:setStartCallback(function() end)
-	device:setShutdownCallback(function() end)
-	device:setShutdownRequestedCallback(function() return true end)
-
 	device:setWindowTitle("Some title")
 	assert(device:getWindowTitle() == "Some title")
 	device:setCursorCaptured()
