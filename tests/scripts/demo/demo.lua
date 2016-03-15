@@ -300,18 +300,24 @@ function init()
 end
 
 
-local args = solo.DeviceCreationArgs(solo.DeviceMode.OpenGL, 1366, 700, false, "Solo Tester")
-args.logFilePath = "demo.log"
+function run()
+	local args = solo.DeviceCreationArgs(solo.DeviceMode.OpenGL, 1366, 700, false, "Solo Tester")
+	args.logFilePath = "demo.log"
 
-device = solo.Device.create(args)
-logger = device:getLogger()
-
-device:setStartCallback(function()
+	device = solo.Device.create(args)
+	logger = device:getLogger()
 	scene = device:getScene()
 	resourceManager = device:getResourceManager()
-	local _, err = pcall(init)
-	if err then
-		logger:logCritical(err)
-	end
-end)
-device:run()
+
+	device:setStartCallback(function()
+		local _, err = pcall(init)
+		if err then
+			logger:logCritical(err)
+		end
+	end)
+
+	device:run()
+end
+
+
+run()
