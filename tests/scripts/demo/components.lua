@@ -72,8 +72,8 @@ function createPostProcessor(sourceTexture, shaders)
 			self.separator = 0.5
 			self.srcTexture = sourceTexture
 
-			local effect1 = resourceManager:getOrCreateEffect(shaders.vsPassThrough, shaders.fsPostProcessHalfGrayscale)
-			local effect2 = resourceManager:getOrCreateEffect(shaders.vsPassThrough, shaders.fsPostProcessHalfSaturate)
+			local effect1 = resourceManager:getOrCreateEffect(shaders.vertex.passThrough, shaders.fragment.postProcessHalfGrayscale)
+			local effect2 = resourceManager:getOrCreateEffect(shaders.vertex.passThrough, shaders.fragment.postProcessHalfSaturate)
 
 			self.material1 = resourceManager:getOrCreateMaterial(effect1, "demo/post-processor/material1")
 			self.material1:setFloatParameter("separator", 0.2)

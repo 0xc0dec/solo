@@ -41,11 +41,11 @@ end
 
 
 function initMaterials()
-	local simpleTextureEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsTexture)
-	local wavySimpleTextureEffect = resourceManager:getOrCreateEffect(shaders.vsWavy, shaders.fsTexture)
-	local colorEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsColor)
-	local checkerEffect = resourceManager:getOrCreateEffect(shaders.vsBasic, shaders.fsChecker)
-	local texWithLightingEffect = resourceManager:getOrCreateEffect(shaders.vsBasicLighting, shaders.fsTextureWithLighting)
+	local simpleTextureEffect = resourceManager:getOrCreateEffect(shaders.vertex.basic, shaders.fragment.texture)
+	local wavySimpleTextureEffect = resourceManager:getOrCreateEffect(shaders.vertex.wavy, shaders.fragment.texture)
+	local colorEffect = resourceManager:getOrCreateEffect(shaders.vertex.basic, shaders.fragment.color)
+	local checkerEffect = resourceManager:getOrCreateEffect(shaders.vertex.basic, shaders.fragment.checker)
+	local texWithLightingEffect = resourceManager:getOrCreateEffect(shaders.vertex.basicLighting, shaders.fragment.textureWithLighting)
 
 	local redMaterial = resourceManager:getOrCreateMaterial(colorEffect)
 	redMaterial:setPolygonFace(solo.PolygonFace.All)
