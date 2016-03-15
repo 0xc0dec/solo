@@ -122,16 +122,16 @@ end
 
 
 function initRenderTargets()
-	local offscreenCameraRT = resourceManager:getOrCreateFrameBuffer("/solo/demo/offscreen-camera-fb")
-	offscreenCameraRT:setAttachments({ demo.textures.offscreenCameraRTT })
+	local offscreenRT = resourceManager:getOrCreateFrameBuffer("/solo/demo/offscreen-camera-fb")
+	offscreenRT:setAttachments({ demo.textures.offscreenCameraRTT })
 
-	local mainCameraRT = resourceManager:getOrCreateFrameBuffer("/solo/demo/main-camera-fb")
-	mainCameraRT:setAttachments({ demo.textures.mainCameraRTT })
+	local mainRT = resourceManager:getOrCreateFrameBuffer("/solo/demo/main-camera-fb")
+	mainRT:setAttachments({ demo.textures.mainCameraRTT })
 
 	demo.renderTargets =
 	{
-		offscreenCameraRT = offscreenCameraRT,
-		mainCameraRT = mainCameraRT
+		offscreenCameraRT = offscreenRT,
+		mainCameraRT = mainRT
 	}
 
 	logger:logInfo("Initialized render targets")
@@ -139,7 +139,7 @@ end
 
 
 function initSkybox()
-	local texSkybox = resourceManager:getOrLoadCubeTexture({
+	local tex = resourceManager:getOrLoadCubeTexture({
 		"../data/skyboxes/deep-space/front.png",
 		"../data/skyboxes/deep-space/back.png",
 		"../data/skyboxes/deep-space/left.png",
@@ -147,54 +147,62 @@ function initSkybox()
 		"../data/skyboxes/deep-space/top.png",
 		"../data/skyboxes/deep-space/bottom.png"
 	}, "/solo/demo/textures/skybox")
-	texSkybox:setWrapping(solo.TextureWrapping.Clamp)
-	texSkybox:setFiltering(solo.TextureFiltering.Linear)
+	tex:setWrapping(solo.TextureWrapping.Clamp)
+	tex:setFiltering(solo.TextureFiltering.Linear)
 
-	local skybox = scene:createNode()
-	local skyboxRenderer = skybox:addComponent("SkyboxRenderer")
-	skyboxRenderer:setTexture(texSkybox)
+	local node = scene:createNode()
+	local renderer = node:addComponent("SkyboxRenderer")
+	renderer:setTexture(tex)
 
 	logger:logInfo("Initialized skybox")
 end
 
 
-function initObjects()
-	local canvasSize = device:getCanvasSize()
-
-	-- Textured quad
-	parent = scene:createNode()
+function initTexturedQuad()
+	local parent = scene:createNode()
 	parent:findComponent("Transform"):setLocalPosition(solo.Vector3(5, 0, 0))
 	parent:addScript(createWorldYRotator())
 	initAxesMesh(parent)
-	quad = createPrefabMeshNode("quad")
+	local quad = createPrefabMeshNode("quad")
 	quad:addScript(createLocalXRotator());
 	quad:findComponent("Transform"):setParent(parent:findComponent("Transform"))
 	quad:findComponent("Transform"):setLocalPosition(solo.Vector3(2, 0, 0))
 	quad:findComponent("MeshRenderer"):setMaterial(0, demo.materials.simpleTexture)
+end
 
-	-- Box
-	node = createPrefabMeshNode("cube")
+
+function initCheckerBox()
+	local node = createPrefabMeshNode("cube")
 	node:findComponent("MeshRenderer"):setMaterial(0, demo.materials.checker)
 	node:findComponent("Transform"):setLocalPosition(solo.Vector3(-5, 0, 0))
 	node:addScript(createWorldYRotator())
+end
 
-	-- Monkey
+
+function initMonkey()
 	local node = scene:createNode()
 	local renderer = node:addComponent("MeshRenderer")
 	renderer:setMesh(demo.meshes.monkey)
 	renderer:setMaterial(0, demo.materials.textureWithLighting)
 	node:findComponent("Transform"):setLocalPosition(solo.Vector3.zero())
 	node:addScript(createLocalXRotator())
+	return node
+end
 
-	-- Monkey 2
+
+function initWavyMonkey()
 	local node = scene:createNode()
 	local renderer = node:addComponent("MeshRenderer")
 	renderer:setMesh(demo.meshes.monkey)
-	renderer:setMaterial(0, demo.materials.wavySimpleTexture)
 	node:findComponent("Transform"):setLocalPosition(solo.Vector3(0, -3, 0))
+	renderer:setMaterial(0, demo.materials.wavySimpleTexture)
 	node:addScript(createTimeMaterialUpdater())
+end
 
-	-- RTT quad
+
+function initMonitorQuad(targetNode)
+	local canvasSize = device:getCanvasSize()
+
 	local parent = scene:createNode()
 	parent:findComponent("Transform"):setLocalPosition(solo.Vector3(-2, 2, -2))
 	parent:addScript(createWorldYRotator())
@@ -204,12 +212,20 @@ function initObjects()
 	local renderer = quad:findComponent("MeshRenderer")
 	renderer:setMaterial(0, demo.materials.offscreenCameraRendered)
 	renderer:getTags():set(RENDER_TARGET_QUAD_TAG)
-	local quadTransform = quad:findComponent("Transform")
-	quadTransform:setParent(parent:findComponent("Transform"))
-	quadTransform:setLocalPosition(solo.Vector3(5, 2, -5))
-	quadTransform:setLocalScale(solo.Vector3(5, 5 * canvasSize.y / canvasSize.x, 1))
-	quad:addScript(createTargeter(node:findComponent("Transform"))) -- monkey
+	local transform = quad:findComponent("Transform")
+	transform:setParent(parent:findComponent("Transform"))
+	transform:setLocalPosition(solo.Vector3(5, 2, -5))
+	transform:setLocalScale(solo.Vector3(5, 5 * canvasSize.y / canvasSize.x, 1))
+	quad:addScript(createTargeter(targetNode:findComponent("Transform"))) -- monkey
+end
 
+
+function initObjects()
+	initTexturedQuad()
+	initCheckerBox()
+	local monkey = initMonkey()
+	initWavyMonkey()
+	initMonitorQuad(monkey)
 	logger:logInfo("Initialized objects")
 end
 
@@ -239,28 +255,36 @@ function createPrefabMeshNode(type)
 end
 
 
-function initCameras()
-	local mainCameraNode = scene:createNode()
-	local mainCameraTransform = mainCameraNode:findComponent("Transform")
-	mainCameraTransform:setLocalPosition(solo.Vector3(0, 0, 10))
-	mainCameraNode:addComponent("Spectator")
-	mainCameraNode:addScript(createEscapeWatcher())
-	local mainCamera = mainCameraNode:addComponent("Camera")
-	mainCamera:setClearColor(0, 0.6, 0.6, 1)
-	mainCamera:setNear(0.05)
-	mainCamera:setRenderTarget(demo.renderTargets.mainCameraRT)
-	mainCameraNode:addScript(createPostProcessor(demo.textures.mainCameraRTT, shaders))
+function initMainCamera()
+	local node = scene:createNode()
+	local t = node:findComponent("Transform")
+	t:setLocalPosition(solo.Vector3(0, 0, 10))
+	node:addComponent("Spectator")
+	node:addScript(createEscapeWatcher())
+	node:addScript(createPostProcessor(demo.textures.mainCameraRTT, shaders))
+	local cam = node:addComponent("Camera")
+	cam:setClearColor(0, 0.6, 0.6, 1)
+	cam:setNear(0.05)
+	cam:setRenderTarget(demo.renderTargets.mainCameraRT)
+end
 
+
+function initOffscreenCamera()
 	local canvasSize = device:getCanvasSize()
-	local offscreenCameraNode = scene:createNode()
-	local offscreenCamera = offscreenCameraNode:addComponent("Camera")
-	offscreenCamera:setClearColor(1, 0, 1, 1)
-	offscreenCamera:setNear(0.05)
-	offscreenCamera:setRenderTarget(demo.renderTargets.offscreenCameraRT)
-	offscreenCamera:setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8)
-	offscreenCamera:getRenderTags():remove(RENDER_TARGET_QUAD_TAG)
-	offscreenCameraNode:findComponent("Transform"):setLocalPosition(solo.Vector3(0, 0, 10))
+	local node = scene:createNode()
+	local cam = node:addComponent("Camera")
+	cam:setClearColor(1, 0, 1, 1)
+	cam:setNear(0.05)
+	cam:setRenderTarget(demo.renderTargets.offscreenCameraRT)
+	cam:setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8)
+	cam:getRenderTags():remove(RENDER_TARGET_QUAD_TAG)
+	node:findComponent("Transform"):setLocalPosition(solo.Vector3(0, 0, 10))
+end
 
+
+function initCameras()
+	initMainCamera()
+	initOffscreenCamera()
 	logger:logInfo("Initialized cameras")
 end
 
