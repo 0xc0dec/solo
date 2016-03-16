@@ -1,15 +1,9 @@
 return {
 	shaders = dofile("../tests/scripts/demos/shaders.lua"),
 	components = dofile("../tests/scripts/demos/components.lua"),
-	renderTargetQuadTag = 2,
+	utils = dofile("../tests/scripts/demos/utils.lua"),
 
-	loadTexture = function(self, path)
-		local texture = self.resourceManager:getOrLoadTexture2D(path)
-		texture:generateMipmaps()
-		texture:setFiltering(solo.TextureFiltering.LinearMipmapNearest)
-		texture:setAnisotropyLevel(8)
-		return texture
-	end,
+	renderTargetQuadTag = 2,
 
 	initTextures = function(self)
 		local canvasSize = self.device:getCanvasSize()
@@ -26,8 +20,8 @@ return {
 
 		self.textures =
 		{
-			tex1 = self:loadTexture("../data/freeman1.png"),
-			tex2 = self:loadTexture("../data/cobblestone.png"),
+			tex1 = self.utils.loadTexture(self.resourceManager, "../data/freeman1.png"),
+			tex2 = self.utils.loadTexture(self.resourceManager, "../data/cobblestone.png"),
 			mainCameraRTT = mainCameraRTT,
 			offscreenCameraRTT = offscreenCameraRTT,
 		}
@@ -244,11 +238,9 @@ return {
 		t:setLocalPosition(solo.Vector3(0, 0, 10))
 		node:addComponent("Spectator")
 		node:addScript(self.components.createEscapeWatcher(self.device))
-		node:addScript(self.components.createPostProcessor(self.device, self.textures.mainCameraRTT, self.shaders))
 		local cam = node:addComponent("Camera")
 		cam:setClearColor(0, 0.6, 0.6, 1)
 		cam:setNear(0.05)
-		cam:setRenderTarget(self.renderTargets.mainCameraRT)
 	end,
 
 	initOffscreenCamera = function(self)

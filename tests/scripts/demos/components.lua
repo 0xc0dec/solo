@@ -44,48 +44,7 @@ return {
 			end
 		}
 	end,
-
-	createPostProcessor = function(device, sourceTexture, shaders)
-		return {
-			typeId = 500,
-
-			init = function(self)
-				self.time = 0
-				self.separator = 0.5
-				self.srcTexture = sourceTexture
-
-				local resourceManager = device:getResourceManager()
-
-				local effect1 = resourceManager:getOrCreateEffect(shaders.vertex.passThrough, shaders.fragment.postProcessHalfGrayscale)
-				local effect2 = resourceManager:getOrCreateEffect(shaders.vertex.passThrough, shaders.fragment.postProcessHalfSaturate)
-
-				self.material1 = resourceManager:getOrCreateMaterial(effect1, "demo/post-processor/material1")
-				self.material1:setFloatParameter("leftSeparator", 0.1)
-				self.material1:setFloatParameter("rightSeparator", 0.3)
-				self.material2 = resourceManager:getOrCreateMaterial(effect2, "demo/post-processor/material2")
-				self.material2:setFloatParameter("leftSeparator", 0.7)
-				self.material2:setFloatParameter("rightSeparator", 0.9)
-
-				local canvasSize = device:getCanvasSize()
-				local rtt = resourceManager:getOrCreateTexture2D("demo/post-processor/rtt")
-				rtt:setData(solo.ColorFormat.RGB, {}, canvasSize.x, canvasSize.y)
-				rtt:setFiltering(solo.TextureFiltering.Nearest)
-				rtt:setWrapping(solo.TextureWrapping.Clamp)
-				self.finalRTT = rtt
-				self.finalFb = resourceManager:getOrCreateFrameBuffer("demo/post-processor/fb")
-				self.finalFb:setAttachments({ rtt })
-			end,
-
-			onAfterCameraRender = function(self)
-				self.material1:setTextureParameter("mainTex", self.srcTexture)
-				device:getGraphics():blit(self.material1, self.finalFb)
-
-				self.material2:setTextureParameter("mainTex", self.finalRTT)
-				device:getGraphics():blit(self.material2, nil)
-			end
-		}
-	end,
-
+	
 	createTimeMaterialUpdater = function(device)
 		return {
 			typeId = 600,
