@@ -9,28 +9,43 @@ return {
 
 			init = function(self)
 				local canvasSize = demo.device:getCanvasSize()
-				local finalFbTex = demo.resMgr:getOrCreateTexture2D("/solo/demo2/post-processor/final-fb-tex")
-				finalFbTex:setData(solo.ColorFormat.RGB, {}, canvasSize.x, canvasSize.y)
-				finalFbTex:setFiltering(solo.TextureFiltering.Nearest)
-				finalFbTex:setWrapping(solo.TextureWrapping.Clamp)
-				self.finalFb = demo.resMgr:getOrCreateFrameBuffer("/solo/demo2/post-processor/final-fb")
-				self.finalFb:setAttachments({ finalFbTex })
+
+				local fb1Tex = demo.resMgr:getOrCreateTexture2D()
+				fb1Tex:setData(solo.ColorFormat.RGB, {}, canvasSize.x, canvasSize.y)
+				fb1Tex:setFiltering(solo.TextureFiltering.Nearest)
+				fb1Tex:setWrapping(solo.TextureWrapping.Clamp)
+				self.fb1 = demo.resMgr:getOrCreateFrameBuffer()
+				self.fb1:setAttachments({ fb1Tex })
+
+				local fb2Tex = demo.resMgr:getOrCreateTexture2D()
+				fb2Tex:setData(solo.ColorFormat.RGB, {}, canvasSize.x, canvasSize.y)
+				fb2Tex:setFiltering(solo.TextureFiltering.Nearest)
+				fb2Tex:setWrapping(solo.TextureWrapping.Clamp)
+				self.fb2 = demo.resMgr:getOrCreateFrameBuffer()
+				self.fb2:setAttachments({ fb2Tex })
 
 				local grayscaleEffect = demo.resMgr:getOrCreateEffect(demo.shaders.vertex.passThrough, demo.shaders.fragment.postProcessHalfGrayscale)
-				self.grayscaleMat = demo.resMgr:getOrCreateMaterial(grayscaleEffect, "/solo/demo2/post-processor/grayscale-mat")
+				self.grayscaleMat = demo.resMgr:getOrCreateMaterial(grayscaleEffect)
 				self.grayscaleMat:setFloatParameter("rightSeparator", 0.2)
-				self.grayscaleMat:setTextureParameter("mainTex", demo.fbTex)
+				self.grayscaleMat:setTextureParameter("mainTex", demo.fbTex) -- rendered from the main camera
 
 				local saturateEffect = demo.resMgr:getOrCreateEffect(demo.shaders.vertex.passThrough, demo.shaders.fragment.postProcessHalfSaturate)
-				self.saturateMat = demo.resMgr:getOrCreateMaterial(saturateEffect, "/solo/demo2/post-processor/saturate-mat")
+				self.saturateMat = demo.resMgr:getOrCreateMaterial(saturateEffect)
 				self.saturateMat:setFloatParameter("leftSeparator", 0.8)
 				self.saturateMat:setFloatParameter("rightSeparator", 1)
-				self.saturateMat:setTextureParameter("mainTex", finalFbTex)
+				self.saturateMat:setTextureParameter("mainTex", fb1Tex) -- rendered with grayscale
+
+				local blurEffect = demo.resMgr:getOrCreateEffect(demo.shaders.vertex.passThrough, demo.shaders.fragment.postProcessBlur)
+				self.blurMat = demo.resMgr:getOrCreateMaterial(blurEffect)
+				self.blurMat:setFloatParameter("leftSeparator", 0.3)
+				self.blurMat:setFloatParameter("rightSeparator", 0.7)
+				self.blurMat:setTextureParameter("mainTex", fb2Tex) -- rendered with saturation
 			end,
 
 			onAfterCameraRender = function(self)
-				demo.device:getGraphics():blit(self.grayscaleMat, self.finalFb)
-				demo.device:getGraphics():blit(self.saturateMat, nil)
+				demo.device:getGraphics():blit(self.grayscaleMat, self.fb1)
+				demo.device:getGraphics():blit(self.saturateMat, self.fb2)
+				demo.device:getGraphics():blit(self.blurMat, nil)
 			end
 		}
 	end,

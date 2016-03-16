@@ -26,7 +26,6 @@ return
 			in vec2 texCoord0;
 
 			out vec2 uv0;
-			out vec3 n;
 
 			void main()
 			{
@@ -181,6 +180,36 @@ return
 				vec4 color = texture(mainTex, uv0);
 				if (uv0.x >= leftSeparator && uv0.x <= rightSeparator)
 					color *= 2;
+				fragColor = color;
+			}
+		]],
+
+		postProcessBlur = [[
+			#version 330 core
+
+			uniform sampler2D mainTex;
+			uniform float leftSeparator;
+			uniform float rightSeparator;
+
+			uniform float offset[5] = float[](0.0, 0.002, 0.004, 0.006, 0.008);
+			uniform float weight[5] = float[](0.2270270270, 0.1945945946, 0.1216216216, 0.0540540541, 0.0162162162);
+
+			in vec2 uv0;
+			out vec4 fragColor;
+
+			void main()
+			{
+				vec4 color = texture(mainTex, uv0);
+				if (uv0.x >= leftSeparator && uv0.x <= rightSeparator)
+				{
+					for (int i = 1; i < 5; i++)
+					{
+						color += (texture(mainTex, uv0 + vec2(0.0, offset[i]))
+							    + texture(mainTex, uv0 - vec2(0.0, offset[i]))
+								+ texture(mainTex, uv0 + vec2(offset[i], 0.0))
+								+ texture(mainTex, uv0 - vec2(offset[i], 0.0))) * weight[i];
+					}
+				}
 				fragColor = color;
 			}
 		]]
