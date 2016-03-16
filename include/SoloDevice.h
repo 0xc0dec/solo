@@ -106,6 +106,7 @@ namespace solo
         bool isMouseButtonReleased(MouseButton button) const;
 
         void run();
+        void reset();
 
         void requestShutdown();
         bool shutdownRequested() const;
@@ -123,6 +124,8 @@ namespace solo
         explicit Device(const DeviceCreationArgs& args);
 
         void updateTime();
+        void startSystems();
+        void stopSystems();
 
         DeviceCreationArgs creationArgs;
 

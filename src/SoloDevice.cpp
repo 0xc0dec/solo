@@ -21,26 +21,14 @@ shared<Device> Device::create(const DeviceCreationArgs& args)
 
 Device::~Device()
 {
-    scene.reset();
-    graphics.reset();
-    resourceManager.reset();
-    fs.reset();
-    renderer.reset();
+    stopSystems();
 }
 
 
 Device::Device(const DeviceCreationArgs& args):
     creationArgs(args)
 {
-    logger = SL_NEW_SHARED(Logger);
-    if (!args.logFilePath.empty())
-        logger->setTargetFile(args.logFilePath);
-
-    renderer = Renderer::create(this);
-    fs = FileSystem::create(this);
-    resourceManager = ResourceManager::create(this);
-    graphics = SL_NEW_SHARED(Graphics, this);
-    scene = SL_NEW_SHARED(Scene, this);
+    startSystems();
 }
 
 
@@ -55,6 +43,14 @@ void Device::run()
         if (shutdown)
             break;
     }
+    shutdown = false;
+}
+
+
+void Device::reset()
+{
+    stopSystems();
+    startSystems();
 }
 
 
@@ -95,4 +91,58 @@ void Device::updateTime()
     auto time = getLifetime();
     timeDelta = time - lastUpdateTime;
     lastUpdateTime = time;
+}
+
+
+void Device::startSystems()
+{
+    logger = SL_NEW_SHARED(Logger);
+    if (!creationArgs.logFilePath.empty())
+        logger->setTargetFile(creationArgs.logFilePath);
+
+    renderer = Renderer::create(this);
+    fs = FileSystem::create(this);
+    resourceManager = ResourceManager::create(this);
+    graphics = SL_NEW_SHARED(Graphics, this);
+    scene = SL_NEW_SHARED(Scene, this);
+}
+
+
+void Device::stopSystems()
+{
+    if (scene)
+    {
+        scene.reset();
+        scene = nullptr;
+    }
+
+    if (graphics)
+    {
+        graphics.reset();
+        graphics = nullptr;
+    }
+
+    if (resourceManager)
+    {
+        resourceManager.reset();
+        resourceManager = nullptr;
+    }
+
+    if (fs)
+    {
+        fs.reset();
+        fs = nullptr;
+    }
+
+    if (renderer)
+    {
+        renderer.reset();
+        renderer = nullptr;
+    }
+
+    if (logger)
+    {
+        logger.reset();
+        logger = nullptr;
+    }
 }
