@@ -1,118 +1,112 @@
-function createEscapeWatcher()
-	return
-	{
-		typeId = 100,
+return {
+	createEscapeWatcher = function(device)
+		return {
+			typeId = 100,
 
-		update = function()
-			if device:isKeyPressed(solo.KeyCode.Escape, true) then
-				device:requestShutdown()
+			update = function()
+				if device:isKeyPressed(solo.KeyCode.Escape, true) then
+					device:requestShutdown()
+				end
 			end
-		end
-	}
-end
+		}
+	end,
 
+	createLocalXRotator = function(device)
+		return {
+			typeId = 200,
 
-function createLocalXRotator()
-	return
-	{
-		typeId = 200,
+			init = function(self)
+				self.transform = self.node:findComponent("Transform")
+			end,
 
-		init = function(self)
-			self.transform = self.node:findComponent("Transform")
-		end,
+			update = function(self)
+				local angle = device:getTimeDelta() * 1.3
+				self.transform:rotateAxisAngle(solo.Vector3.unitX(), angle, solo.TransformSpace.Self)
+			end
+		}
+	end,
 
-		update = function(self)
-			local angle = device:getTimeDelta() * 1.3
-			self.transform:rotateAxisAngle(solo.Vector3.unitX(), angle, solo.TransformSpace.Self)
-		end
-	}
-end
+	createWorldYRotator = function(device)
+		return {
+			typeId = 300,
 
+			init = function(self)
+				self.transform = self.node:findComponent("Transform")
+			end,
 
-function createWorldYRotator()
-	return
-	{
-		typeId = 300,
+			update = function(self)
+				local angle = device:getTimeDelta()
+				self.transform:rotateAxisAngle(solo.Vector3.unitY(), angle, solo.TransformSpace.World)
+			end
+		}
+	end,
 
-		init = function(self)
-			self.transform = self.node:findComponent("Transform")
-		end,
+	createTargeter = function(target)
+		return {
+			typeId = 400,
 
-		update = function(self)
-			local angle = device:getTimeDelta()
-			self.transform:rotateAxisAngle(solo.Vector3.unitY(), angle, solo.TransformSpace.World)
-		end
-	}
-end
+			init = function(self)
+				self.transform = self.node:findComponent("Transform")
+			end,
 
+			update = function(self)
+				self.transform:lookAt(target:getWorldPosition(), solo.Vector3.unitY())
+			end
+		}
+	end,
 
-function createTargeter(target)
-	return
-	{
-		typeId = 400,
+	createPostProcessor = function(device, sourceTexture, shaders)
+		return {
+			typeId = 500,
 
-		init = function(self)
-			self.transform = self.node:findComponent("Transform")
-		end,
+			init = function(self)
+				self.time = 0
+				self.separator = 0.5
+				self.srcTexture = sourceTexture
 
-		update = function(self)
-			self.transform:lookAt(target:getWorldPosition(), solo.Vector3.unitY())
-		end
-	}
-end
+				local resourceManager = device:getResourceManager()
 
+				local effect1 = resourceManager:getOrCreateEffect(shaders.vertex.passThrough, shaders.fragment.postProcessHalfGrayscale)
+				local effect2 = resourceManager:getOrCreateEffect(shaders.vertex.passThrough, shaders.fragment.postProcessHalfSaturate)
 
-function createPostProcessor(sourceTexture, shaders)
-	return
-	{
-		typeId = 500,
+				self.material1 = resourceManager:getOrCreateMaterial(effect1, "demo/post-processor/material1")
+				self.material1:setFloatParameter("separator", 0.2)
+				self.material2 = resourceManager:getOrCreateMaterial(effect2, "demo/post-processor/material2")
+				self.material2:setFloatParameter("separator", 0.8)
 
-		init = function(self)
-			self.time = 0
-			self.separator = 0.5
-			self.srcTexture = sourceTexture
+				local canvasSize = device:getCanvasSize()
+				local rtt = resourceManager:getOrCreateTexture2D("demo/post-processor/rtt")
+				rtt:setData(solo.ColorFormat.RGB, {}, canvasSize.x, canvasSize.y)
+				rtt:setFiltering(solo.TextureFiltering.Nearest)
+				rtt:setWrapping(solo.TextureWrapping.Clamp)
+				self.finalRTT = rtt
+				self.finalFb = resourceManager:getOrCreateFrameBuffer("demo/post-processor/fb")
+				self.finalFb:setAttachments({ rtt })
+			end,
 
-			local effect1 = resourceManager:getOrCreateEffect(shaders.vertex.passThrough, shaders.fragment.postProcessHalfGrayscale)
-			local effect2 = resourceManager:getOrCreateEffect(shaders.vertex.passThrough, shaders.fragment.postProcessHalfSaturate)
+			onAfterCameraRender = function(self)
+				self.material1:setTextureParameter("mainTex", self.srcTexture)
+				device:getGraphics():blit(self.material1, self.finalFb)
 
-			self.material1 = resourceManager:getOrCreateMaterial(effect1, "demo/post-processor/material1")
-			self.material1:setFloatParameter("separator", 0.2)
-			self.material2 = resourceManager:getOrCreateMaterial(effect2, "demo/post-processor/material2")
-			self.material2:setFloatParameter("separator", 0.8)
+				self.material2:setTextureParameter("mainTex", self.finalRTT)
+				device:getGraphics():blit(self.material2, nil)
+			end
+		}
+	end,
 
-			local canvasSize = device:getCanvasSize()
-			local rtt = resourceManager:getOrCreateTexture2D("demo/post-processor/rtt")
-			rtt:setData(solo.ColorFormat.RGB, {}, canvasSize.x, canvasSize.y)
-			rtt:setFiltering(solo.TextureFiltering.Nearest)
-			rtt:setWrapping(solo.TextureWrapping.Clamp)
-			self.finalRTT = rtt
-			self.finalFb = resourceManager:getOrCreateFrameBuffer("demo/post-processor/fb")
-			self.finalFb:setAttachments({ rtt })
-		end,
+	createTimeMaterialUpdater = function(device)
+		return {
+			typeId = 600,
 
-		onAfterCameraRender = function(self)
-			self.material1:setTextureParameter("mainTex", self.srcTexture)
-			device:getGraphics():blit(self.material1, self.finalFb)
+			init = function(self)
+				self.material = self.node:findComponent("MeshRenderer"):getMaterial(0)
+				self.time = 0
+			end,
 
-			self.material2:setTextureParameter("mainTex", self.finalRTT)
-			device:getGraphics():blit(self.material2, nil)
-		end
-	}
-end
-
-
-function createTimeMaterialUpdater()
-	return {
-		typeId = 600,
-
-		init = function(self)
-			self.material = self.node:findComponent("MeshRenderer"):getMaterial(0)
-			self.time = 0
-		end,
-
-		update = function(self)
-			self.time = self.time + device:getTimeDelta()
-			self.material:setFloatParameter("time", self.time)
-		end
-	}
-end
+			update = function(self)
+				self.time = self.time + device:getTimeDelta()
+				self.material:setFloatParameter("time", self.time)
+			end
+		}
+	end
+}
