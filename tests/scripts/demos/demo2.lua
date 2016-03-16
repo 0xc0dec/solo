@@ -1,6 +1,7 @@
 return {
 	shaders = dofile("../tests/scripts/demos/shaders.lua"),
 	createEscapeWatcher = dofile("../tests/scripts/demos/escape-watcher.lua"),
+	utils = dofile("../tests/scripts/demos/utils.lua"),
 
 	createPostProcessor = function(demo)
 		return {
@@ -34,18 +35,10 @@ return {
 		}
 	end,
 
-	loadTexture = function(self, path)
-		local texture = self.resMgr:getOrLoadTexture2D(path)
-		texture:generateMipmaps()
-		texture:setFiltering(solo.TextureFiltering.LinearMipmapNearest)
-		texture:setAnisotropyLevel(8)
-		return texture
-	end,
-
 	initMesh = function(self)
 		local effect = self.resMgr:getOrCreateEffect(self.shaders.vertex.basic, self.shaders.fragment.texture)
 		local mat = self.resMgr:getOrCreateMaterial(effect)
-		local tex = self:loadTexture("../data/cobblestone.png")
+		local tex = self.utils.loadTexture(self.resMgr, "../data/cobblestone.png")
 		mat:setPolygonFace(solo.PolygonFace.All)
 		mat:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
 		mat:setTextureParameter("mainTex", tex)
@@ -58,21 +51,14 @@ return {
 	end,
 
 	initSkybox = function(self)
-		local tex = self.resMgr:getOrLoadCubeTexture({
+		self.utils.createSkybox(self.resMgr, self.scene, {
 			"../data/skyboxes/deep-space/front.png",
 			"../data/skyboxes/deep-space/back.png",
 			"../data/skyboxes/deep-space/left.png",
 			"../data/skyboxes/deep-space/right.png",
 			"../data/skyboxes/deep-space/top.png",
 			"../data/skyboxes/deep-space/bottom.png"
-		}, "/solo/demo2/skybox")
-		tex:setWrapping(solo.TextureWrapping.Clamp)
-		tex:setFiltering(solo.TextureFiltering.Linear)
-
-		local node = self.scene:createNode()
-		local renderer = node:addComponent("SkyboxRenderer")
-		renderer:setTexture(tex)
-
+		})
 		self.logger:logInfo("Initialized skybox")
 	end,
 
