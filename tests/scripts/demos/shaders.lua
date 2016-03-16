@@ -202,7 +202,7 @@ return
 				vec4 color = texture(mainTex, uv0);
 				if (uv0.x >= leftSeparator && uv0.x <= rightSeparator)
 				{
-					for (int i = 1; i < 5; i++)
+					for (int i = 0; i < 5; i++)
 					{
 						color += (texture(mainTex, uv0 + vec2(0.0, offset[i]))
 							    + texture(mainTex, uv0 - vec2(0.0, offset[i]))
