@@ -1,15 +1,5 @@
 return {
-	createEscapeWatcher = function(device)
-		return {
-			typeId = 100,
-
-			update = function()
-				if device:isKeyPressed(solo.KeyCode.Escape, true) then
-					device:requestShutdown()
-				end
-			end
-		}
-	end,
+	createEscapeWatcher = dofile("../tests/scripts/demos/escape-watcher.lua"),
 
 	createLocalXRotator = function(device)
 		return {
@@ -70,9 +60,11 @@ return {
 				local effect2 = resourceManager:getOrCreateEffect(shaders.vertex.passThrough, shaders.fragment.postProcessHalfSaturate)
 
 				self.material1 = resourceManager:getOrCreateMaterial(effect1, "demo/post-processor/material1")
-				self.material1:setFloatParameter("separator", 0.2)
+				self.material1:setFloatParameter("leftSeparator", 0.1)
+				self.material1:setFloatParameter("rightSeparator", 0.3)
 				self.material2 = resourceManager:getOrCreateMaterial(effect2, "demo/post-processor/material2")
-				self.material2:setFloatParameter("separator", 0.8)
+				self.material2:setFloatParameter("leftSeparator", 0.7)
+				self.material2:setFloatParameter("rightSeparator", 0.9)
 
 				local canvasSize = device:getCanvasSize()
 				local rtt = resourceManager:getOrCreateTexture2D("demo/post-processor/rtt")

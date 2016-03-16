@@ -66,7 +66,7 @@ int main()
     runCppIntegrationTests();
     runLuaTests("../tests/scripts/smoke-tests/tests.lua");
 #endif
-    runLuaTests("../tests/scripts/demo/demo.lua");
+    runLuaTests("../tests/scripts/demos/demos.lua");
 
     return 0;
 }
