@@ -11,42 +11,54 @@ return {
 			init = function(self)
 				local canvasSize = demo.device:getCanvasSize()
 
-				local fb1Tex = demo.resMgr:getOrCreateTexture2D()
-				fb1Tex:setData(solo.ColorFormat.RGB, {}, canvasSize.x, canvasSize.y)
-				fb1Tex:setFiltering(solo.TextureFiltering.Nearest)
-				fb1Tex:setWrapping(solo.TextureWrapping.Clamp)
+				self.fbTex1 = demo.resMgr:getOrCreateTexture2D()
+				self.fbTex1:setData(solo.ColorFormat.RGB, {}, canvasSize.x, canvasSize.y)
+				self.fbTex1:setFiltering(solo.TextureFiltering.Nearest)
+				self.fbTex1:setWrapping(solo.TextureWrapping.Clamp)
 				self.fb1 = demo.resMgr:getOrCreateFrameBuffer()
-				self.fb1:setAttachments({ fb1Tex })
+				self.fb1:setAttachments({ self.fbTex1 })
+				demo.camera:setRenderTarget(self.fb1)
 
-				local fb2Tex = demo.resMgr:getOrCreateTexture2D()
-				fb2Tex:setData(solo.ColorFormat.RGB, {}, canvasSize.x, canvasSize.y)
-				fb2Tex:setFiltering(solo.TextureFiltering.Nearest)
-				fb2Tex:setWrapping(solo.TextureWrapping.Clamp)
+				self.fbTex2 = demo.resMgr:getOrCreateTexture2D()
+				self.fbTex2:setData(solo.ColorFormat.RGB, {}, canvasSize.x, canvasSize.y)
+				self.fbTex2:setFiltering(solo.TextureFiltering.Nearest)
+				self.fbTex2:setWrapping(solo.TextureWrapping.Clamp)
 				self.fb2 = demo.resMgr:getOrCreateFrameBuffer()
-				self.fb2:setAttachments({ fb2Tex })
+				self.fb2:setAttachments({ self.fbTex2 })
 
 				local grayscaleEffect = demo.resMgr:getOrCreateEffect(demo.shaders.vertex.passThrough, demo.shaders.fragment.postProcessHalfGrayscale)
 				self.grayscaleMat = demo.resMgr:getOrCreateMaterial(grayscaleEffect)
-				self.grayscaleMat:setFloatParameter("rightSeparator", 0.2)
-				self.grayscaleMat:setTextureParameter("mainTex", demo.fbTex) -- rendered from the main camera
+				self.grayscaleMat:setFloatParameter("rightSeparator", 0.25)
 
 				local saturateEffect = demo.resMgr:getOrCreateEffect(demo.shaders.vertex.passThrough, demo.shaders.fragment.postProcessHalfSaturate)
 				self.saturateMat = demo.resMgr:getOrCreateMaterial(saturateEffect)
-				self.saturateMat:setFloatParameter("leftSeparator", 0.8)
-				self.saturateMat:setFloatParameter("rightSeparator", 1)
-				self.saturateMat:setTextureParameter("mainTex", fb1Tex) -- rendered with grayscale
+				self.saturateMat:setFloatParameter("leftSeparator", 0.25)
+				self.saturateMat:setFloatParameter("rightSeparator", 0.5)
 
-				local blurEffect = demo.resMgr:getOrCreateEffect(demo.shaders.vertex.passThrough, demo.shaders.fragment.postProcessBlur)
-				self.blurMat = demo.resMgr:getOrCreateMaterial(blurEffect)
-				self.blurMat:setFloatParameter("leftSeparator", 0.3)
-				self.blurMat:setFloatParameter("rightSeparator", 0.7)
-				self.blurMat:setTextureParameter("mainTex", fb2Tex) -- rendered with saturation
+				local verticalBlurEffect = demo.resMgr:getOrCreateEffect(demo.shaders.vertex.passThrough, demo.shaders.fragment.postProcessVerticalBlur)
+				self.verticalBlurMat = demo.resMgr:getOrCreateMaterial(verticalBlurEffect)
+				self.verticalBlurMat:setFloatParameter("leftSeparator", 0.5)
+				self.verticalBlurMat:setFloatParameter("rightSeparator", 0.75)
+
+				local horizontalBlurEffect = demo.resMgr:getOrCreateEffect(demo.shaders.vertex.passThrough, demo.shaders.fragment.postProcessHorizontalBlur)
+				self.horizontalBlurMat = demo.resMgr:getOrCreateMaterial(horizontalBlurEffect)
+				self.horizontalBlurMat:setFloatParameter("leftSeparator", 0.5)
+				self.horizontalBlurMat:setFloatParameter("rightSeparator", 0.75)
 			end,
 
 			onAfterCameraRender = function(self)
-				demo.device:getGraphics():blit(self.grayscaleMat, self.fb1)
-				demo.device:getGraphics():blit(self.saturateMat, self.fb2)
-				demo.device:getGraphics():blit(self.blurMat, nil)
+				-- bounce between the two frame buffers
+				self.grayscaleMat:setTextureParameter("mainTex", self.fbTex1)
+				demo.device:getGraphics():blit(self.grayscaleMat, self.fb2)
+
+				self.saturateMat:setTextureParameter("mainTex", self.fbTex2)
+				demo.device:getGraphics():blit(self.saturateMat, self.fb1)
+
+				self.verticalBlurMat:setTextureParameter("mainTex", self.fbTex1)
+				demo.device:getGraphics():blit(self.verticalBlurMat, self.fb2)
+
+				self.horizontalBlurMat:setTextureParameter("mainTex", self.fbTex2)
+				demo.device:getGraphics():blit(self.horizontalBlurMat, nil)
 			end
 		}
 	end,
@@ -80,13 +92,7 @@ return {
 	end,
 
 	initFrameBuffer = function(self)
-		local canvasSize = self.device:getCanvasSize()
-		self.fbTex = self.resMgr:getOrCreateTexture2D("/solo/demo2/fb-tex")
-		self.fbTex:setData(solo.ColorFormat.RGB, {}, canvasSize.x, canvasSize.y)
-		self.fbTex:setFiltering(solo.TextureFiltering.Nearest)
-		self.fbTex:setWrapping(solo.TextureWrapping.Clamp)
-		self.fb = self.resMgr:getOrCreateFrameBuffer("/solo/demo2/fb")
-		self.fb:setAttachments({ self.fbTex })
+
 		self.logger:logInfo("Initialized frame buffer")
 	end,
 
@@ -95,12 +101,11 @@ return {
 		local t = node:findComponent("Transform")
 		t:setLocalPosition(solo.Vector3(0, 0, 10))
 		node:addComponent("Spectator")
+		self.camera = node:addComponent("Camera")
+		self.camera:setClearColor(0, 0.6, 0.6, 1)
+		self.camera:setNear(0.05)
 		node:addScript(self.createEscapeWatcher(self.device))
 		node:addScript(self:createPostProcessor())
-		local cam = node:addComponent("Camera")
-		cam:setClearColor(0, 0.6, 0.6, 1)
-		cam:setNear(0.05)
-		cam:setRenderTarget(self.fb)
 		self.logger:logInfo("Initialized camera")
 	end,
 
