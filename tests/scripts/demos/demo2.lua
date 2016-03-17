@@ -26,11 +26,11 @@ return {
 				self.fb2 = demo.resMgr:getOrCreateFrameBuffer()
 				self.fb2:setAttachments({ self.fbTex2 })
 
-				local grayscaleEffect = demo.resMgr:getOrCreateEffect(demo.shaders.vertex.passThrough, demo.shaders.fragment.postProcessHalfGrayscale)
+				local grayscaleEffect = demo.resMgr:getOrCreateEffect(demo.shaders.vertex.passThrough, demo.shaders.fragment.postProcessGrayscale)
 				self.grayscaleMat = demo.resMgr:getOrCreateMaterial(grayscaleEffect)
 				self.grayscaleMat:setFloatParameter("rightSeparator", 0.25)
 
-				local saturateEffect = demo.resMgr:getOrCreateEffect(demo.shaders.vertex.passThrough, demo.shaders.fragment.postProcessHalfSaturate)
+				local saturateEffect = demo.resMgr:getOrCreateEffect(demo.shaders.vertex.passThrough, demo.shaders.fragment.postProcessSaturate)
 				self.saturateMat = demo.resMgr:getOrCreateMaterial(saturateEffect)
 				self.saturateMat:setFloatParameter("leftSeparator", 0.25)
 				self.saturateMat:setFloatParameter("rightSeparator", 0.5)

@@ -143,7 +143,7 @@ return
 			}
 		]],
 
-		postProcessHalfGrayscale = [[
+		postProcessGrayscale = [[
 			#version 330 core
 
 			uniform sampler2D mainTex;
@@ -165,7 +165,7 @@ return
 			}
 		]],
 
-		postProcessHalfSaturate = [[
+		postProcessSaturate = [[
 			#version 330 core
 
 			uniform sampler2D mainTex;
