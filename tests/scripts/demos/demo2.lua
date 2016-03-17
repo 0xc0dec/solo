@@ -1,6 +1,7 @@
 return {
 	shaders = dofile("../tests/scripts/demos/shaders.lua"),
 	createEscapeWatcher = dofile("../tests/scripts/demos/escape-watcher.lua"),
+	createMaterialTimeUpdater = dofile("../tests/scripts/demos/material-time-updater.lua"),
 	utils = dofile("../tests/scripts/demos/utils.lua"),
 
 	createPostProcessor = function(demo)
@@ -51,9 +52,9 @@ return {
 	end,
 
 	initMesh = function(self)
-		local effect = self.resMgr:getOrCreateEffect(self.shaders.vertex.basic, self.shaders.fragment.texture)
-		local mat = self.resMgr:getOrCreateMaterial(effect)
 		local tex = self.utils.loadTexture(self.resMgr, "../data/cobblestone.png")
+		local effect = self.resMgr:getOrCreateEffect(self.shaders.vertex.wavy, self.shaders.fragment.texture)
+		local mat = self.resMgr:getOrCreateMaterial(effect)
 		mat:setPolygonFace(solo.PolygonFace.All)
 		mat:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
 		mat:setTextureParameter("mainTex", tex)
@@ -62,6 +63,7 @@ return {
 		local renderer = node:addComponent("MeshRenderer")
 		renderer:setMesh(mesh)
 		renderer:setMaterial(0, mat)
+		node:addScript(self.createMaterialTimeUpdater(self.device, "time"))
 		self.logger:logInfo("Initialized mesh")
 	end,
 

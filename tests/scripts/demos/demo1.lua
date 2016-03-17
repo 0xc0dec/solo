@@ -3,7 +3,6 @@ return {
 	createEscapeWatcher = dofile("../tests/scripts/demos/escape-watcher.lua"),
 	createRotator = dofile("../tests/scripts/demos/rotator.lua"),
 	createTargeter = dofile("../tests/scripts/demos/targeter.lua"),
-	createMaterialFloatUpdater = dofile("../tests/scripts/demos/material-float-updater.lua"),
 	utils = dofile("../tests/scripts/demos/utils.lua"),
 
 	renderTargetQuadTag = 2,
@@ -13,7 +12,6 @@ return {
 		local tex2 = self.utils.loadTexture(self.resMgr, "../data/cobblestone.png")
 
 		local simpleTextureEffect = self.resMgr:getOrCreateEffect(self.shaders.vertex.basic, self.shaders.fragment.texture)
-		local wavySimpleTextureEffect = self.resMgr:getOrCreateEffect(self.shaders.vertex.wavy, self.shaders.fragment.texture)
 		local colorEffect = self.resMgr:getOrCreateEffect(self.shaders.vertex.basic, self.shaders.fragment.color)
 		local checkerEffect = self.resMgr:getOrCreateEffect(self.shaders.vertex.basic, self.shaders.fragment.checker)
 		local texWithLightingEffect = self.resMgr:getOrCreateEffect(self.shaders.vertex.basicLighting, self.shaders.fragment.textureWithLighting)
@@ -43,12 +41,6 @@ return {
 		simpleTextureMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
 		simpleTextureMaterial:setTextureParameter("mainTex", tex1)
 
-		local wavySimpleTextureMaterial = self.resMgr:getOrCreateMaterial(wavySimpleTextureEffect)
-		wavySimpleTextureMaterial:setPolygonFace(solo.PolygonFace.CCW)
-		wavySimpleTextureMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
-		wavySimpleTextureMaterial:setTextureParameter("mainTex", tex2)
-		wavySimpleTextureMaterial:setFloatParameter("time", 0)
-
 		local checkerMaterial = self.resMgr:getOrCreateMaterial(checkerEffect)
 		checkerMaterial:setPolygonFace(solo.PolygonFace.All)
 		checkerMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix);
@@ -68,7 +60,6 @@ return {
 		self.materials =
 		{
 			simpleTexture = simpleTextureMaterial,
-			wavySimpleTexture = wavySimpleTextureMaterial,
 			red = redMaterial,
 			green = greenMaterial,
 			blue = blueMaterial,
@@ -131,15 +122,6 @@ return {
 		return node
 	end,
 
-	initWavyMonkey = function(self)
-		local node = self.scene:createNode()
-		local renderer = node:addComponent("MeshRenderer")
-		renderer:setMesh(self.meshes.monkey)
-		node:findComponent("Transform"):setLocalPosition(solo.Vector3(0, -3, 0))
-		renderer:setMaterial(0, self.materials.wavySimpleTexture)
-		node:addScript(self.createMaterialFloatUpdater(self.device, "time"))
-	end,
-
 	initMonitorQuad = function(self, targetNode)
 		local canvasSize = self.device:getCanvasSize()
 
@@ -163,7 +145,6 @@ return {
 		self:initTexturedQuad()
 		self:initCheckerBox()
 		local monkey = self:initMonkey()
-		self:initWavyMonkey()
 		self:initMonitorQuad(monkey)
 		self.logger:logInfo("Initialized objects")
 	end,
