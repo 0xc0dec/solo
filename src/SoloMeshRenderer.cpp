@@ -17,7 +17,7 @@ MeshRenderer::MeshRenderer(Node node):
 
 void MeshRenderer::render(RenderContext& context)
 {
-    if (!mesh)
+    if (!mesh || materials.empty())
         return;
 
     auto partCount = mesh->getPartCount();
