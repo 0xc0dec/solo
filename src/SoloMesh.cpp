@@ -52,6 +52,24 @@ uint32_t Mesh::addBuffer(const VertexBufferLayout& layout, const float* data, ui
 }
 
 
+uint32_t Mesh::addDynamicBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount)
+{
+    auto handle = renderer->createDynamicVertexBuffer(layout, data, vertexCount);
+    vertexBuffers.push_back(handle);
+    vertexCounts.push_back(vertexCount);
+    rebuildVertexObject();
+    recalculateMinVertexCount();
+    return static_cast<uint32_t>(vertexBuffers.size() - 1);
+}
+
+
+void Mesh::updateDynamicBuffer(uint32_t index, uint32_t offset, const float* data, uint32_t vertexCount)
+{
+    const auto& handle = vertexBuffers[index];
+    renderer->updateDynamicVertexBuffer(handle, data, offset, vertexCount);
+}
+
+
 void Mesh::removeBuffer(uint32_t index)
 {
     renderer->destroyVertexBuffer(vertexBuffers[index]);

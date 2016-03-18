@@ -35,6 +35,8 @@ namespace solo
         virtual void updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle>& attachmentHandles) override final;
 
         virtual VertexBufferHandle createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) override final;
+        virtual VertexBufferHandle createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) override final;
+        virtual void updateDynamicVertexBuffer(const VertexBufferHandle& handle, const void* data, uint32_t offset, uint32_t vertexCount) override final;
         virtual void destroyVertexBuffer(const VertexBufferHandle& handle) override final;
 
         virtual IndexBufferHandle createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount) override final;
@@ -87,9 +89,10 @@ namespace solo
 
         struct VertexBufferData
         {
-            GLuint rawHandle = 0;
             VertexBufferLayout layout;
+            GLuint rawHandle = 0;
             uint32_t vertexCount = 0;
+            bool dynamic = false;
         };
 
         struct IndexBufferData
@@ -125,6 +128,7 @@ namespace solo
         void bindVertexObject(const VertexObjectHandle& handle);
         void setTexture(GLenum target, const TextureHandle& handle, uint32_t flags);
         void validateFrameBufferAttachments(const std::vector<TextureHandle>& attachments);
+        VertexBufferHandle createVertexBuffer(bool dynamic, const VertexBufferLayout& layout, const void* data, uint32_t vertexCount);
 
         ResourcePool<TextureData, SL_MAX_TEXTURES> textures;
         ResourcePool<FrameBufferData, SL_MAX_FRAME_BUFFERS> frameBuffers;

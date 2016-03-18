@@ -24,7 +24,9 @@ namespace solo
 
         SL_NONCOPYABLE(Mesh)
 
-        uint32_t addBuffer(const VertexBufferLayout& layout, const float* data, uint32_t elementCount);
+        uint32_t addBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount);
+        uint32_t addDynamicBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount);
+        void updateDynamicBuffer(uint32_t index, uint32_t offset, const float* data, uint32_t vertexCount);
         void removeBuffer(uint32_t index);
 
         uint32_t addPart(const void* indexData, uint32_t indexElementCount);

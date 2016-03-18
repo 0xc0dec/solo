@@ -161,6 +161,8 @@ namespace solo
         virtual void updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle>& attachmentHandles) = 0;
 
         virtual VertexBufferHandle createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) = 0;
+        virtual VertexBufferHandle createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) = 0;
+        virtual void updateDynamicVertexBuffer(const VertexBufferHandle& handle, const void* data, uint32_t offset, uint32_t vertexCount) = 0;
         virtual void destroyVertexBuffer(const VertexBufferHandle& handle) = 0;
 
         virtual IndexBufferHandle createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount) = 0;

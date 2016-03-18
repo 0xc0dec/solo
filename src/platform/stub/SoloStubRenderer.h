@@ -29,6 +29,9 @@ namespace solo
 
         virtual VertexBufferHandle createVertexBuffer(const VertexBufferLayout& layout,
             const void* data, uint32_t vertexCount) override final { return EmptyVertexBufferHandle; }
+        virtual VertexBufferHandle createDynamicVertexBuffer(const VertexBufferLayout& layout,
+            const void* data, uint32_t vertexCount) override final { return EmptyVertexBufferHandle; }
+        virtual void updateDynamicVertexBuffer(const VertexBufferHandle& handle, const void* data, uint32_t offset, uint32_t vertexCount) override final {}
         virtual void destroyVertexBuffer(const VertexBufferHandle& handle) override final {}
 
         virtual IndexBufferHandle createIndexBuffer(const void* data, uint32_t elementSize,

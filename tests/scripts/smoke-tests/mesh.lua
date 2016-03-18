@@ -4,8 +4,11 @@ runTest(function()
 	local l = solo.VertexBufferLayout()
 	l:add(solo.VertexBufferLayoutSemantics.Position, 3)
 
-	m:addBuffer(l, { 1, 2, 3 }, 1)
-	m:addPart({ 1 }, 1)
+	assert(m:addBuffer(l, { 1, 2, 3 }, 1) == 0)
+	assert(m:addDynamicBuffer(l, { 1, 2, 3 }, 1) == 1)
+	assert(m:addPart({ 1 }, 1) == 0)
+
+	m:updateDynamicBuffer(1, 1, { 1, 2 }, 2)
 
 	assert(m:getPartCount() == 1)
 

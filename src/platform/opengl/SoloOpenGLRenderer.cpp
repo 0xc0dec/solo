@@ -598,14 +598,14 @@ void OpenGLRenderer::updateFrameBuffer(const FrameBufferHandle& handle, const st
 }
 
 
-VertexBufferHandle OpenGLRenderer::createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
+VertexBufferHandle OpenGLRenderer::createVertexBuffer(bool dynamic, const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
 {
     GLuint rawHandle = 0;
     glGenBuffers(1, &rawHandle);
     SL_DEBUG_THROW_IF(rawHandle == 0, InternalException, "Failed to obtain vertex buffer handle");
 
     glBindBuffer(GL_ARRAY_BUFFER, rawHandle);
-    glBufferData(GL_ARRAY_BUFFER, layout.getSize() * vertexCount, data, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, layout.getSize() * vertexCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     VertexBufferHandle handle;
@@ -614,8 +614,29 @@ VertexBufferHandle OpenGLRenderer::createVertexBuffer(const VertexBufferLayout& 
     bufferData.rawHandle = rawHandle;
     bufferData.layout = layout;
     bufferData.vertexCount = vertexCount;
+    bufferData.dynamic = dynamic;
 
     return handle;
+}
+
+
+VertexBufferHandle OpenGLRenderer::createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
+{
+    return createVertexBuffer(false, layout, data, vertexCount);
+}
+
+
+VertexBufferHandle OpenGLRenderer::createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
+{
+    return createVertexBuffer(true, layout, data, vertexCount);
+}
+
+
+void OpenGLRenderer::updateDynamicVertexBuffer(const VertexBufferHandle& handle, const void* data, uint32_t offset, uint32_t vertexCount)
+{
+    bindVertexBuffer(handle);
+    glBufferSubData(GL_ARRAY_BUFFER, offset, vertexCount, data);
+    bindVertexBuffer(EmptyVertexBufferHandle);
 }
 
 
