@@ -185,6 +185,7 @@ void Camera::apply()
     }
 
     renderer->setDepthWrite(true);
+    renderer->setDepthTest(true);
     renderer->clear(true, true, clearColor.x, clearColor.y, clearColor.z, clearColor.w);
 }
 

@@ -23,6 +23,8 @@ void Graphics::blit(Material* material, FrameBuffer* target)
         quadMesh = device->getResourceManager()->getOrCreatePrefabMesh(MeshPrefab::Quad, "/solo/internal/graphics/quad-mesh");
 
     material->setDepthTest(false);
+    material->setDepthWrite(false);
+    material->setPolygonFace(PolygonFace::All);
 
     if (target)
         target->bind();
