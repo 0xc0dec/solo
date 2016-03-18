@@ -82,14 +82,14 @@ runTest(function()
 	assert(solo.CubeTextureFace.Top ~= nil)
 	assert(solo.CubeTextureFace.Bottom ~= nil)
 
-	assert(solo.DepthPassFunction.Never ~= nil)
-	assert(solo.DepthPassFunction.Less ~= nil)
-	assert(solo.DepthPassFunction.Equal ~= nil)
-	assert(solo.DepthPassFunction.LEqual ~= nil)
-	assert(solo.DepthPassFunction.Greater ~= nil)
-	assert(solo.DepthPassFunction.NotEqual ~= nil)
-	assert(solo.DepthPassFunction.GEqual ~= nil)
-	assert(solo.DepthPassFunction.Always ~= nil)
+	assert(solo.DepthFunction.Never ~= nil)
+	assert(solo.DepthFunction.Less ~= nil)
+	assert(solo.DepthFunction.Equal ~= nil)
+	assert(solo.DepthFunction.LEqual ~= nil)
+	assert(solo.DepthFunction.Greater ~= nil)
+	assert(solo.DepthFunction.NotEqual ~= nil)
+	assert(solo.DepthFunction.GEqual ~= nil)
+	assert(solo.DepthFunction.Always ~= nil)
 
 	assert(solo.PrimitiveType.Lines ~= nil)
 	assert(solo.PrimitiveType.LineStrip ~= nil)
@@ -115,4 +115,18 @@ runTest(function()
 	assert(solo.MeshPrefab.Cube ~= nil)
 
 	assert(solo.EffectPrefab.Skybox ~= nil)
+
+	assert(solo.BlendFactor.Zero ~= nil);
+	assert(solo.BlendFactor.One ~= nil);
+	assert(solo.BlendFactor.SrcColor ~= nil);
+	assert(solo.BlendFactor.OneMinusSrcColor ~= nil);
+	assert(solo.BlendFactor.DstColor ~= nil);
+	assert(solo.BlendFactor.OneMinusDstColor ~= nil);
+	assert(solo.BlendFactor.SrcAlpha ~= nil);
+	assert(solo.BlendFactor.OneMinusSrcAlpha ~= nil);
+	assert(solo.BlendFactor.DstAlpha ~= nil);
+	assert(solo.BlendFactor.OneMinusDstAlpha ~= nil);
+	assert(solo.BlendFactor.ConstantAlpha ~= nil);
+	assert(solo.BlendFactor.OneMinusConstantAlpha ~= nil);
+	assert(solo.BlendFactor.SrcAlphaSaturate ~= nil);
 end, "Enums")

@@ -626,17 +626,34 @@ void LuaScriptManager::registerApi()
     REGISTER_MODULE_CONSTANT(polygonFace, PolygonFace, CCW);
     polygonFace.endModule();
 
-    // DepthPassFunction
-    auto depthPassFunction = module.beginModule("DepthPassFunction");
-    REGISTER_MODULE_CONSTANT(depthPassFunction, DepthPassFunction, Never);
-    REGISTER_MODULE_CONSTANT(depthPassFunction, DepthPassFunction, Always);
-    REGISTER_MODULE_CONSTANT(depthPassFunction, DepthPassFunction, Equal);
-    REGISTER_MODULE_CONSTANT(depthPassFunction, DepthPassFunction, NotEqual);
-    REGISTER_MODULE_CONSTANT(depthPassFunction, DepthPassFunction, Less);
-    REGISTER_MODULE_CONSTANT(depthPassFunction, DepthPassFunction, LEqual);
-    REGISTER_MODULE_CONSTANT(depthPassFunction, DepthPassFunction, Greater);
-    REGISTER_MODULE_CONSTANT(depthPassFunction, DepthPassFunction, GEqual);
-    depthPassFunction.endModule();
+    // DepthFunction
+    auto depthFunction = module.beginModule("DepthFunction");
+    REGISTER_MODULE_CONSTANT(depthFunction, DepthFunction, Never);
+    REGISTER_MODULE_CONSTANT(depthFunction, DepthFunction, Always);
+    REGISTER_MODULE_CONSTANT(depthFunction, DepthFunction, Equal);
+    REGISTER_MODULE_CONSTANT(depthFunction, DepthFunction, NotEqual);
+    REGISTER_MODULE_CONSTANT(depthFunction, DepthFunction, Less);
+    REGISTER_MODULE_CONSTANT(depthFunction, DepthFunction, LEqual);
+    REGISTER_MODULE_CONSTANT(depthFunction, DepthFunction, Greater);
+    REGISTER_MODULE_CONSTANT(depthFunction, DepthFunction, GEqual);
+    depthFunction.endModule();
+
+    // BlendFactor
+    auto blendFactor = module.beginModule("BlendFactor");
+    REGISTER_MODULE_CONSTANT(blendFactor, BlendFactor, Zero);
+    REGISTER_MODULE_CONSTANT(blendFactor, BlendFactor, One);
+    REGISTER_MODULE_CONSTANT(blendFactor, BlendFactor, SrcColor);
+    REGISTER_MODULE_CONSTANT(blendFactor, BlendFactor, OneMinusSrcColor);
+    REGISTER_MODULE_CONSTANT(blendFactor, BlendFactor, DstColor);
+    REGISTER_MODULE_CONSTANT(blendFactor, BlendFactor, OneMinusDstColor);
+    REGISTER_MODULE_CONSTANT(blendFactor, BlendFactor, SrcAlpha);
+    REGISTER_MODULE_CONSTANT(blendFactor, BlendFactor, OneMinusSrcAlpha);
+    REGISTER_MODULE_CONSTANT(blendFactor, BlendFactor, DstAlpha);
+    REGISTER_MODULE_CONSTANT(blendFactor, BlendFactor, OneMinusDstAlpha);
+    REGISTER_MODULE_CONSTANT(blendFactor, BlendFactor, ConstantAlpha);
+    REGISTER_MODULE_CONSTANT(blendFactor, BlendFactor, OneMinusConstantAlpha);
+    REGISTER_MODULE_CONSTANT(blendFactor, BlendFactor, SrcAlphaSaturate);
+    blendFactor.endModule();
 
     // Material
     auto mat = module.beginClass<Material>("Material");
@@ -653,14 +670,19 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(mat, Material, setTextureParameter);
     REGISTER_METHOD(mat, Material, setParameterAutoBinding);
     REGISTER_METHOD(mat, Material, getEffect);
+    REGISTER_METHOD(mat, Material, isTransparent);
+    REGISTER_METHOD(mat, Material, setTransparent);
+    REGISTER_METHOD(mat, Material, getSrcBlendFactor);
+    REGISTER_METHOD(mat, Material, getDstBlendFactor);
+    REGISTER_METHOD(mat, Material, setBlendFactors);
     REGISTER_METHOD(mat, Material, getPolygonFace);
     REGISTER_METHOD(mat, Material, setPolygonFace);
-    REGISTER_METHOD(mat, Material, isDepthWriteEnabled);
-    REGISTER_METHOD(mat, Material, setDepthWriteEnabled);
-    REGISTER_METHOD(mat, Material, isDepthTestEnabled);
-    REGISTER_METHOD(mat, Material, setDepthTestEnabled);
-    REGISTER_METHOD(mat, Material, getDepthPassFunction);
-    REGISTER_METHOD(mat, Material, setDepthPassFunction);
+    REGISTER_METHOD(mat, Material, getDepthWrite);
+    REGISTER_METHOD(mat, Material, setDepthWrite);
+    REGISTER_METHOD(mat, Material, getDepthTest);
+    REGISTER_METHOD(mat, Material, setDepthTest);
+    REGISTER_METHOD(mat, Material, getDepthFunction);
+    REGISTER_METHOD(mat, Material, setDepthFunction);
     mat.endClass();
 
     // AutoBinding

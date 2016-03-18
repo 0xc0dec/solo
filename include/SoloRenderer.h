@@ -54,20 +54,40 @@ namespace solo
         DepthWrapRepeat = 1 << 17
     };
 
-    enum class StateFlags
+    enum class PolygonFace
     {
-        CullFace = 1 << 0,
-        FrontFaceCCW = 1 << 1, // if not set then CW
-        DepthTest = 1 << 2,
-        DepthWrite = 1 << 3,
-        DepthFuncNever = 1 << 4,
-        DepthFuncLess = 1 << 5,
-        DepthFuncEqual = 1 << 6,
-        DepthFuncLEqual = 1 << 7,
-        DepthFuncGreater = 1 << 8,
-        DepthFuncNotEqual = 1 << 9,
-        DepthFuncGEqual = 1 << 10,
-        DepthFuncAlways = 1 << 11,
+        All = 0,
+        CW,
+        CCW
+    };
+
+    enum class DepthFunction
+    {
+        Never = 0,
+        Less,
+        Equal,
+        LEqual,
+        Greater,
+        NotEqual,
+        GEqual,
+        Always
+    };
+
+    enum class BlendFactor
+    {
+        Zero = 0,
+        One,
+        SrcColor,
+        OneMinusSrcColor,
+        DstColor,
+        OneMinusDstColor,
+        SrcAlpha,
+        OneMinusSrcAlpha,
+        DstAlpha,
+        OneMinusDstAlpha,
+        ConstantAlpha,
+        OneMinusConstantAlpha,
+        SrcAlphaSaturate
     };
 
     enum class PrimitiveType
@@ -157,7 +177,14 @@ namespace solo
         virtual void destroyUniform(const UniformHandle& handle) = 0;
         virtual void setUniform(const UniformHandle& handle, const void* value, uint32_t count) = 0;
 
-        virtual void setState(uint32_t stateFlags) = 0;
+        virtual void setPolygonFace(PolygonFace face) = 0;
+
+        virtual void setBlend(bool enabled) = 0;
+        virtual void setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor) = 0;
+
+        virtual void setDepthWrite(bool enabled) = 0;
+        virtual void setDepthTest(bool enabled) = 0;
+        virtual void setDepthFunction(DepthFunction func) = 0;
 
         virtual void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
 

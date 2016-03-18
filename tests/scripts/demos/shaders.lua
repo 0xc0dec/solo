@@ -105,6 +105,7 @@ return
 			void main()
 			{
 				fragColor = texture(mainTex, uv0);
+				fragColor.a = 0.5;
 			}
 		]],
 

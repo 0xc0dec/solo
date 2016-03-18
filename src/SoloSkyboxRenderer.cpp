@@ -22,8 +22,8 @@ SkyboxRenderer::SkyboxRenderer(Node node):
     material = resourceManager->getOrCreateMaterial(effect);
     material->setParameterAutoBinding("projMatrix", AutoBinding::ProjectionMatrix);
     material->setParameterAutoBinding("worldViewMatrix", AutoBinding::WorldViewMatrix);
-    material->setDepthTestEnabled(true);
-    material->setDepthWriteEnabled(false);
+    material->setDepthTest(true);
+    material->setDepthWrite(false);
     material->setPolygonFace(PolygonFace::CW);
 
     quadMesh = resourceManager->getOrCreatePrefabMesh(MeshPrefab::Quad, "/solo/internal/skybox-renderer/mesh");

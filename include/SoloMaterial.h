@@ -16,25 +16,6 @@ namespace solo
     class Texture;
     struct RenderContext;
 
-    enum class PolygonFace
-    {
-        CW,
-        CCW,
-        All
-    };
-
-    enum class DepthPassFunction
-    {
-        Never,
-        Less,
-        Equal,
-        LEqual,
-        Greater,
-        NotEqual,
-        GEqual,
-        Always
-    };
-
     enum class AutoBinding
     {
         None,
@@ -74,17 +55,23 @@ namespace solo
 
         Effect* getEffect() const;
 
+        bool isTransparent() const;
+        void setTransparent(bool enabled);
+        BlendFactor getSrcBlendFactor() const;
+        BlendFactor getDstBlendFactor() const;
+        void setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor);
+
         PolygonFace getPolygonFace() const;
         void setPolygonFace(PolygonFace face);
 
-        bool isDepthWriteEnabled() const;
-        void setDepthWriteEnabled(bool enabled);
+        bool getDepthWrite() const;
+        void setDepthWrite(bool enabled);
 
-        bool isDepthTestEnabled() const;
-        void setDepthTestEnabled(bool enabled);
+        bool getDepthTest() const;
+        void setDepthTest(bool enabled);
 
-        DepthPassFunction getDepthPassFunction() const;
-        void setDepthPassFunction(DepthPassFunction func);
+        DepthFunction getDepthFunction() const;
+        void setDepthFunction(DepthFunction func);
 
     private:
         enum class ParameterValueType
@@ -148,7 +135,10 @@ namespace solo
         PolygonFace polygonFace = PolygonFace::CW;
         bool depthWrite = true; 
         bool depthTest = true;
-        DepthPassFunction depthPassFunc = DepthPassFunction::Less;
+        bool transparent = false;
+        BlendFactor srcBlendFactor = BlendFactor::SrcAlpha;
+        BlendFactor dstBlendFactor = BlendFactor::OneMinusSrcAlpha;
+        DepthFunction depthFunc = DepthFunction::Less;
     };
 
     template <class T>
@@ -163,6 +153,32 @@ namespace solo
         return effect.get();
     }
 
+    inline bool Material::isTransparent() const
+    {
+        return transparent;
+    }
+
+    inline void Material::setTransparent(bool enabled)
+    {
+        transparent = enabled;
+    }
+
+    inline BlendFactor Material::getSrcBlendFactor() const
+    {
+        return srcBlendFactor;
+    }
+
+    inline BlendFactor Material::getDstBlendFactor() const
+    {
+        return dstBlendFactor;
+    }
+
+    inline void Material::setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor)
+    {
+        srcBlendFactor = srcFactor;
+        dstBlendFactor = dstFactor;
+    }
+
     inline PolygonFace Material::getPolygonFace() const
     {
         return polygonFace;
@@ -173,32 +189,32 @@ namespace solo
         polygonFace = face;
     }
 
-    inline bool Material::isDepthWriteEnabled() const
+    inline bool Material::getDepthWrite() const
     {
         return depthWrite;
     }
 
-    inline void Material::setDepthWriteEnabled(bool enabled)
+    inline void Material::setDepthWrite(bool enabled)
     {
         depthWrite = enabled;
     }
 
-    inline bool Material::isDepthTestEnabled() const
+    inline bool Material::getDepthTest() const
     {
         return depthTest;
     }
 
-    inline void Material::setDepthPassFunction(DepthPassFunction func)
+    inline void Material::setDepthFunction(DepthFunction func)
     {
-        depthPassFunc = func;
+        depthFunc = func;
     }
 
-    inline DepthPassFunction Material::getDepthPassFunction() const
+    inline DepthFunction Material::getDepthFunction() const
     {
-        return depthPassFunc;
+        return depthFunc;
     }
 
-    inline void Material::setDepthTestEnabled(bool enabled)
+    inline void Material::setDepthTest(bool enabled)
     {
         depthTest = enabled;
     }

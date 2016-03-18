@@ -234,30 +234,8 @@ void Material::bind(RenderContext& context)
 
 void Material::applyState()
 {
-    uint32_t flags = 0;
-    
-    if (polygonFace != PolygonFace::All)
-        flags |= StateFlags::CullFace;
-    if (polygonFace == PolygonFace::CCW)
-        flags |= StateFlags::FrontFaceCCW;
-
-    if (depthWrite)
-        flags |= StateFlags::DepthWrite;
-    if (depthTest)
-        flags |= StateFlags::DepthTest;
-
-    switch (depthPassFunc)
-    {
-        case DepthPassFunction::Never: flags |= StateFlags::DepthFuncNever; break;
-        case DepthPassFunction::Less: flags |= StateFlags::DepthFuncLess; break;
-        case DepthPassFunction::Equal: flags |= StateFlags::DepthFuncEqual; break;
-        case DepthPassFunction::LEqual: flags |= StateFlags::DepthFuncLEqual; break;
-        case DepthPassFunction::Greater: flags |= StateFlags::DepthFuncGreater; break;
-        case DepthPassFunction::NotEqual: flags |= StateFlags::DepthFuncNotEqual; break;
-        case DepthPassFunction::GEqual: flags |= StateFlags::DepthFuncGEqual; break;
-        case DepthPassFunction::Always: flags |= StateFlags::DepthFuncAlways; break;
-        default: break;
-    }
-
-    renderer->setState(flags);
+    renderer->setPolygonFace(polygonFace);
+    renderer->setDepthTest(depthTest);
+    renderer->setDepthWrite(depthWrite);
+    renderer->setDepthFunction(depthFunc);
 }

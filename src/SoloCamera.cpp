@@ -184,7 +184,7 @@ void Camera::apply()
         renderer->setViewport(0, 0, static_cast<uint32_t>(size.x), static_cast<uint32_t>(size.y));
     }
 
-    renderer->setState(static_cast<uint32_t>(StateFlags::DepthWrite));
+    renderer->setDepthWrite(true);
     renderer->clear(true, true, clearColor.x, clearColor.y, clearColor.z, clearColor.w);
 }
 

@@ -51,7 +51,14 @@ namespace solo
         virtual void destroyUniform(const UniformHandle& handle) override final;
         virtual void setUniform(const UniformHandle& handle, const void* value, uint32_t count) override final;
 
-        virtual void setState(uint32_t stateFlags) override final;
+        virtual void setPolygonFace(PolygonFace face) override final;
+
+        virtual void setBlend(bool enabled) override final;
+        virtual void setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor) override final;
+
+        virtual void setDepthWrite(bool enabled) override final;
+        virtual void setDepthTest(bool enabled) override final;
+        virtual void setDepthFunction(DepthFunction func) override final;
 
         virtual void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) override final;
 

@@ -5,17 +5,23 @@ runTest(function()
 
 	assert(m:getEffect())
 
+	m:setTransparent(true)
+	assert(m:isTransparent())
+	m:setBlendFactors(solo.BlendFactor.OneMinusSrcColor, solo.BlendFactor.One)
+	assert(m:getSrcBlendFactor() == solo.BlendFactor.OneMinusSrcColor)
+	assert(m:getDstBlendFactor() == solo.BlendFactor.One)
+
 	assert(m:getPolygonFace() == solo.PolygonFace.CW)
 	m:setPolygonFace(solo.PolygonFace.All)
 
-	assert(m:isDepthWriteEnabled() == true)
-	m:setDepthWriteEnabled(false)
+	assert(m:getDepthWrite() == true)
+	m:setDepthWrite(false)
 
-	assert(m:isDepthTestEnabled() == true)
-	m:setDepthTestEnabled(false)
+	assert(m:getDepthTest() == true)
+	m:setDepthTest(false)
 
-	assert(m:getDepthPassFunction() ~= nil)
-	m:setDepthPassFunction(solo.DepthPassFunction.Always)
+	assert(m:getDepthFunction() ~= nil)
+	m:setDepthFunction(solo.DepthFunction.Always)
 
 	local v2 = solo.Vector2.unit()
 	local v3 = solo.Vector3.unit()

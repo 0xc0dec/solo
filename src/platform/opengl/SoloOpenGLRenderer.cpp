@@ -6,6 +6,28 @@
 using namespace solo;
 
 
+static GLenum convertBlendFactor(BlendFactor factor)
+{
+    switch (factor)
+    {
+        case BlendFactor::Zero: return GL_ZERO;
+        case BlendFactor::One: return GL_ONE;
+        case BlendFactor::SrcColor: return GL_SRC_COLOR;
+        case BlendFactor::OneMinusSrcColor: return GL_ONE_MINUS_SRC_COLOR;
+        case BlendFactor::DstColor: return GL_DST_COLOR;
+        case BlendFactor::OneMinusDstColor: return GL_ONE_MINUS_DST_COLOR;
+        case BlendFactor::SrcAlpha: return GL_SRC_ALPHA;
+        case BlendFactor::OneMinusSrcAlpha: return GL_ONE_MINUS_SRC_ALPHA;
+        case BlendFactor::DstAlpha: return GL_DST_ALPHA;
+        case BlendFactor::OneMinusDstAlpha: return GL_ONE_MINUS_DST_ALPHA;
+        case BlendFactor::ConstantAlpha: return GL_CONSTANT_ALPHA;
+        case BlendFactor::OneMinusConstantAlpha: return GL_ONE_MINUS_CONSTANT_ALPHA;
+        case BlendFactor::SrcAlphaSaturate: return GL_SRC_ALPHA_SATURATE;
+        default: return 0;
+    }
+}
+
+
 static GLenum convertCubeTextureFace(CubeTextureFace face)
 {
     switch (face)
@@ -843,41 +865,68 @@ void OpenGLRenderer::setUniform(const UniformHandle& handle, const void* value, 
 }
 
 
-void OpenGLRenderer::setState(uint32_t stateFlags)
+void OpenGLRenderer::setDepthWrite(bool enabled)
 {
-    if (stateFlags & StateFlags::CullFace)
-        glEnable(GL_CULL_FACE);
-    else
-        glDisable(GL_CULL_FACE);
+    enabled ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+}
 
-    glFrontFace(stateFlags & StateFlags::FrontFaceCCW ? GL_CCW : GL_CW);
 
-    if (stateFlags & StateFlags::DepthTest)
-        glEnable(GL_DEPTH_TEST);
-    else
-        glDisable(GL_DEPTH_TEST);
+void OpenGLRenderer::setDepthTest(bool enabled)
+{
+    glDepthMask(enabled ? GL_TRUE : GL_FALSE);
+}
 
-    GLenum depthFunc;
-    if (stateFlags & StateFlags::DepthFuncAlways)
-        depthFunc = GL_ALWAYS;
-    else if (stateFlags & StateFlags::DepthFuncEqual)
-        depthFunc = GL_EQUAL;
-    else if (stateFlags & StateFlags::DepthFuncGEqual)
-        depthFunc = GL_GEQUAL;
-    else if (stateFlags & StateFlags::DepthFuncGreater)
-        depthFunc = GL_GREATER;
-    else if (stateFlags & StateFlags::DepthFuncLEqual)
-        depthFunc = GL_LEQUAL;
-    else if (stateFlags & StateFlags::DepthFuncLess)
-        depthFunc = GL_LESS;
-    else if (stateFlags & StateFlags::DepthFuncNotEqual)
-        depthFunc = GL_NOTEQUAL;
-    else
-        depthFunc = GL_NEVER;
-    
-    glDepthFunc(depthFunc);
 
-    glDepthMask(stateFlags & StateFlags::DepthWrite ? GL_TRUE : GL_FALSE);
+void OpenGLRenderer::setDepthFunction(DepthFunction func)
+{
+    GLenum glfunc = 0;
+    switch (func)
+    {
+        case DepthFunction::Never: glfunc = GL_NEVER; break;
+        case DepthFunction::Less: glfunc = GL_LESS; break;
+        case DepthFunction::Equal: glfunc = GL_EQUAL; break;
+        case DepthFunction::LEqual: glfunc = GL_LEQUAL; break;
+        case DepthFunction::Greater: glfunc = GL_GREATER; break;
+        case DepthFunction::NotEqual: glfunc = GL_NOTEQUAL; break;
+        case DepthFunction::GEqual: glfunc = GL_GEQUAL; break;
+        case DepthFunction::Always: glfunc = GL_ALWAYS; break;
+        default: break;
+    }
+    if (glfunc)
+        glDepthFunc(glfunc);
+}
+
+
+void OpenGLRenderer::setBlend(bool enabled)
+{
+    enabled ? glEnable(GL_BLEND) : glDisable(GL_BLEND);
+}
+
+
+void OpenGLRenderer::setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor)
+{
+    glBlendFunc(convertBlendFactor(srcFactor), convertBlendFactor(dstFactor));
+}
+
+
+void OpenGLRenderer::setPolygonFace(PolygonFace face)
+{
+    switch (face)
+    {
+        case PolygonFace::All:
+            glDisable(GL_CULL_FACE);
+            break;
+        case PolygonFace::CW:
+            glEnable(GL_CULL_FACE);
+            glFrontFace(GL_CW);
+            break;
+        case PolygonFace::CCW:
+            glEnable(GL_CULL_FACE);
+            glFrontFace(GL_CCW);
+            break;
+        default:
+            break;
+    }
 }
 
 

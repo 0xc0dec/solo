@@ -22,7 +22,7 @@ void Graphics::blit(Material* material, FrameBuffer* target)
     if (!quadMesh)
         quadMesh = device->getResourceManager()->getOrCreatePrefabMesh(MeshPrefab::Quad, "/solo/internal/graphics/quad-mesh");
 
-    material->setDepthTestEnabled(false);
+    material->setDepthTest(false);
 
     if (target)
         target->bind();
