@@ -9,8 +9,13 @@ return {
 
 	initMaterials = function(self)
 		local tex1 = self.utils.loadTexture(self.resMgr, "../data/freeman.png")
+		tex1:setWrapping(solo.TextureWrapping.Clamp)
+
 		local tex2 = self.utils.loadTexture(self.resMgr, "../data/cobblestone.png")
+		tex2:setWrapping(solo.TextureWrapping.Clamp)
+
 		local tex3 = self.utils.loadTexture(self.resMgr, "../data/flammable.png")
+		tex3:setWrapping(solo.TextureWrapping.Clamp)
 
 		local simpleTextureEffect = self.resMgr:getOrCreateEffect(self.shaders.vertex.basic, self.shaders.fragment.texture)
 		local colorEffect = self.resMgr:getOrCreateEffect(self.shaders.vertex.basic, self.shaders.fragment.color)
@@ -110,7 +115,9 @@ return {
 		quad:addScript(self.createRotator(self.device, solo.Vector3.unitX(), 1, "local"));
 		quad:findComponent("Transform"):setParent(parent:findComponent("Transform"))
 		quad:findComponent("Transform"):setLocalPosition(solo.Vector3(2, 0, 0))
-		quad:findComponent("MeshRenderer"):setMaterial(0, self.materials.transparentTexture)
+		local renderer = quad:findComponent("MeshRenderer")
+		renderer:setMaterial(0, self.materials.transparentTexture)
+		renderer:setRenderQueue(3000)
 	end,
 
 	initCheckerBox = function(self)
