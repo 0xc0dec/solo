@@ -18,10 +18,8 @@ namespace solo
     class Mesh final
     {
     public:
-        // TODO make this a simple constructor?
-        static shared<Mesh> createPrefab(Renderer* renderer, MeshPrefab prefab);
-
         explicit Mesh(Renderer* renderer);
+        Mesh(Renderer* renderer, MeshPrefab prefab);
         ~Mesh();
 
         SL_NONCOPYABLE(Mesh)
@@ -40,8 +38,8 @@ namespace solo
         PrimitiveType getPrimitiveType() const;
 
     protected:
-        static shared<Mesh> createQuadMesh(Renderer* renderer);
-        static shared<Mesh> createBoxMesh(Renderer* renderer);
+        void initQuadMesh();
+        void initCubeMesh();
 
         void rebuildVertexObject();
         void rebuildEffectBinding(Effect* effect);

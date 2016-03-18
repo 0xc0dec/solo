@@ -203,7 +203,7 @@ shared<Mesh> ResourceManager::getOrCreatePrefabMesh(MeshPrefab prefab, const std
 {
     return getOrCreateResource<Mesh>(uri, meshes,
         std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
-        std::bind(&Mesh::createPrefab, device->getRenderer(), prefab));
+        [&]() { return SL_NEW_SHARED(Mesh, device->getRenderer(), prefab); });
 }
 
 

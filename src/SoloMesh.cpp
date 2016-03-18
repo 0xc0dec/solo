@@ -5,23 +5,26 @@
 using namespace solo;
 
 
-shared<Mesh> Mesh::createPrefab(Renderer* renderer, MeshPrefab prefab)
+Mesh::Mesh(Renderer* renderer):
+    renderer(renderer)
+{
+}
+
+
+Mesh::Mesh(Renderer* renderer, MeshPrefab prefab):
+    renderer(renderer)
 {
     switch (prefab)
     {
         case MeshPrefab::Quad:
-            return createQuadMesh(renderer);
+            initQuadMesh();
+            break;
         case MeshPrefab::Cube:
-            return createBoxMesh(renderer);
+            initCubeMesh();
+            break;
         default:
             SL_DEBUG_THROW(InvalidInputException, "Unknown mesh prefab");
     }
-}
-
-
-Mesh::Mesh(Renderer* renderer):
-    renderer(renderer)
-{
 }
 
 
@@ -133,7 +136,7 @@ void Mesh::recalculateMinVertexCount()
 }
 
 
-shared<Mesh> Mesh::createQuadMesh(Renderer* renderer)
+void Mesh::initQuadMesh()
 {
     float data[] =
     {
@@ -150,15 +153,12 @@ shared<Mesh> Mesh::createQuadMesh(Renderer* renderer)
     layout.add(VertexBufferLayoutSemantics::Normal, 3);
     layout.add(VertexBufferLayoutSemantics::TexCoord0, 2);
 
-    auto mesh = SL_NEW_SHARED(Mesh, renderer);
-    mesh->addBuffer(layout, data, 6);
-    mesh->setPrimitiveType(PrimitiveType::Triangles);
-
-    return mesh;
+    addBuffer(layout, data, 6);
+    setPrimitiveType(PrimitiveType::Triangles);
 }
 
 
-shared<Mesh> Mesh::createBoxMesh(Renderer* renderer)
+void Mesh::initCubeMesh()
 {
     float positionData[] =
     {
@@ -200,11 +200,8 @@ shared<Mesh> Mesh::createBoxMesh(Renderer* renderer)
     VertexBufferLayout layout2;
     layout2.add(VertexBufferLayoutSemantics::TexCoord0, 2);
 
-    auto mesh = SL_NEW_SHARED(Mesh, renderer);
-    mesh->addBuffer(layout1, positionData, 24);
-    mesh->addBuffer(layout2, texCoordData, 24);
-    mesh->addPart(indexData, 36);
-    mesh->setPrimitiveType(PrimitiveType::Triangles);
-
-    return mesh;
+    addBuffer(layout1, positionData, 24);
+    addBuffer(layout2, texCoordData, 24);
+    addPart(indexData, 36);
+    setPrimitiveType(PrimitiveType::Triangles);
 }
