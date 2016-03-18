@@ -8,8 +8,9 @@ return {
 	renderTargetQuadTag = 2,
 
 	initMaterials = function(self)
-		local tex1 = self.utils.loadTexture(self.resMgr, "../data/freeman1.png")
+		local tex1 = self.utils.loadTexture(self.resMgr, "../data/freeman.png")
 		local tex2 = self.utils.loadTexture(self.resMgr, "../data/cobblestone.png")
+		local tex3 = self.utils.loadTexture(self.resMgr, "../data/flammable.png")
 
 		local simpleTextureEffect = self.resMgr:getOrCreateEffect(self.shaders.vertex.basic, self.shaders.fragment.texture)
 		local colorEffect = self.resMgr:getOrCreateEffect(self.shaders.vertex.basic, self.shaders.fragment.color)
@@ -41,6 +42,12 @@ return {
 		simpleTextureMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
 		simpleTextureMaterial:setTextureParameter("mainTex", tex1)
 
+		local transparentTextureMaterial = self.resMgr:getOrCreateMaterial(simpleTextureEffect)
+		transparentTextureMaterial:setPolygonFace(solo.PolygonFace.All)
+		transparentTextureMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
+		transparentTextureMaterial:setTextureParameter("mainTex", tex3)
+		transparentTextureMaterial:setTransparent(true)
+
 		local checkerMaterial = self.resMgr:getOrCreateMaterial(checkerEffect)
 		checkerMaterial:setPolygonFace(solo.PolygonFace.All)
 		checkerMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix);
@@ -60,6 +67,7 @@ return {
 		self.materials =
 		{
 			simpleTexture = simpleTextureMaterial,
+			transparentTexture = transparentTextureMaterial,
 			red = redMaterial,
 			green = greenMaterial,
 			blue = blueMaterial,
@@ -102,7 +110,7 @@ return {
 		quad:addScript(self.createRotator(self.device, solo.Vector3.unitX(), 1, "local"));
 		quad:findComponent("Transform"):setParent(parent:findComponent("Transform"))
 		quad:findComponent("Transform"):setLocalPosition(solo.Vector3(2, 0, 0))
-		quad:findComponent("MeshRenderer"):setMaterial(0, self.materials.simpleTexture)
+		quad:findComponent("MeshRenderer"):setMaterial(0, self.materials.transparentTexture)
 	end,
 
 	initCheckerBox = function(self)

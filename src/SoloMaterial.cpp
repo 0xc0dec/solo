@@ -238,4 +238,6 @@ void Material::applyState()
     renderer->setDepthTest(depthTest);
     renderer->setDepthWrite(depthWrite);
     renderer->setDepthFunction(depthFunc);
+    renderer->setBlend(transparent);
+    renderer->setBlendFactor(srcBlendFactor, dstBlendFactor);
 }

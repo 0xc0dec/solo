@@ -100,7 +100,7 @@ namespace solo
             CameraWorldPosition
         };
 
-        // TODO this is quite ugly and takes too much memory
+        // TODO this is quite ugly and slow
         struct ParameterData
         {
             UniformHandle handle;

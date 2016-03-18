@@ -94,7 +94,7 @@ return
 			}
 		]],
 
-		texture =[[
+		texture = [[
 			#version 330 core
 
 			uniform sampler2D mainTex;
@@ -105,7 +105,6 @@ return
 			void main()
 			{
 				fragColor = texture(mainTex, uv0);
-				fragColor.a = 0.5;
 			}
 		]],
 
