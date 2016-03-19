@@ -1,6 +1,7 @@
 #include "SoloMesh.h"
 #include "SoloEffect.h"
 #include <algorithm>
+#include <limits>
 
 using namespace solo;
 
@@ -148,7 +149,7 @@ void Mesh::rebuildEffectBinding(Effect* effect)
 
 void Mesh::recalculateMinVertexCount()
 {
-    minVertexCount = INT_MAX;
+    minVertexCount = std::numeric_limits<uint32_t>::max();
     for (const auto& count : vertexCounts)
         minVertexCount = std::min(count, minVertexCount);
 }
