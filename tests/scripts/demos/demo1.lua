@@ -7,13 +7,23 @@ return {
 
 	renderTargetQuadTag = 2,
 
-	createDynamicQuadUpdater = function(data, mesh, bufferIndex)
+	createDynamicQuadUpdater = function(device, data, mesh, bufferIndex)
 		return {
 			typeId = 700,
 
+			init = function(self)
+				self.time = 0
+				self.dir = solo.Vector3.unitZ()
+			end,
+
 			update = function(self)
-				data[1] = -0.5
-				mesh:updateDynamicBuffer(bufferIndex, 0, data, 6)
+				self.time = self.time + 2 * device:getTimeDelta()
+				local offset = 0.3 * math.sin(self.time)
+				data[3] = offset
+				data[8] = -offset
+				data[13] = offset
+				data[18] = -offset
+				mesh:updateDynamicVertexBuffer(bufferIndex, 0, data, 4)
 			end
 		}
 	end,
@@ -137,16 +147,21 @@ return {
 		layout:add(solo.VertexBufferLayoutSemantics.TexCoord0, 2)
 
 		local data = {
-			-1, -1, 0,		0, 0,
-			-1,  1, 0,		0, 1,
-		 	1,  1, 0,		1, 1,
-			-1, -1, 0,		0, 0,
-			1,  1, 0,		1, 1,
-			1, -1, 0,		1, 0
+			-1, -1, 0,	0, 0,
+			-1,  1, 0,	0, 1,
+		 	1,  1, 0,	1, 1,
+			1, -1, 0,	1, 0
+		}
+
+		local indices = {
+			0, 1, 2,
+			0, 2, 3
 		}
 
 		local mesh = self.resMgr:getOrCreateMesh()
-		mesh:addDynamicBuffer(layout, data, 6)
+		mesh:addDynamicVertexBuffer(layout, data, 4)
+		mesh:addPart(indices, 6)
+
 		mesh:setPrimitiveType(solo.PrimitiveType.Triangles)
 
 		local node = self.scene:createNode()
@@ -156,7 +171,7 @@ return {
 		renderer:setMesh(mesh)
 		renderer:setMaterial(0, self.materials.simpleTexture)
 
-		node:addScript(self.createDynamicQuadUpdater(data, mesh, 0))
+		node:addScript(self.createDynamicQuadUpdater(self.device, data, mesh, 0))
 	end,
 
 	initCheckerBox = function(self)
@@ -230,7 +245,8 @@ return {
 	initMainCamera = function(self)
 		local node = self.scene:createNode()
 		local t = node:findComponent("Transform")
-		t:setLocalPosition(solo.Vector3(0, 0, 10))
+		t:setLocalPosition(solo.Vector3(0, 5, 10))
+		t:lookAt(solo.Vector3.zero(), solo.Vector3.unitY())
 		node:addComponent("Spectator")
 		node:addScript(self.createEscapeWatcher(self.device))
 		local cam = node:addComponent("Camera")
