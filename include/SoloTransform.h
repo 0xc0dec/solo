@@ -64,7 +64,6 @@ namespace solo
         void setLocalRotation(const Quaternion& rotation);
         void setLocalRotation(const Vector3& axis, float angleRadians);
 
-        // Target and Up in world coordinates
         void lookAt(const Vector3& target, const Vector3& up);
 
         Matrix getMatrix() const;

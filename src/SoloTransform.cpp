@@ -257,18 +257,18 @@ void Transform::setLocalScale(const Vector3& scale)
 
 void Transform::lookAt(const Vector3& target, const Vector3& up)
 {
-    auto finalTarget = target;
-    auto finalUp = up;
+    auto localTarget = target;
+    auto localUp = up;
 
     if (parent)
     {
         auto m(parent->getWorldMatrix());
         m.invert();
-        finalTarget = m.transformPoint(target);
-        finalUp = m.transformDirection(up);
+        localTarget = m.transformPoint(target);
+        localUp = m.transformDirection(up);
     }
 
-    auto lookAtMatrix = Matrix::createLookAt(localPosition, finalTarget, finalUp);
+    auto lookAtMatrix = Matrix::createLookAt(localPosition, localTarget, localUp);
     setLocalRotation(lookAtMatrix.getRotation());
 }
 
