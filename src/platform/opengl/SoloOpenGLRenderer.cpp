@@ -736,6 +736,11 @@ VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* 
         const auto& bufferHandle = bufferHandles[i];
         const auto& layout = vertexBuffers.getData(bufferHandle.value).layout;
         const auto elementCount = layout.getElementCount();
+        if (!elementCount)
+            continue;
+
+        bindVertexBuffer(bufferHandle);
+
         uint32_t offset = 0;
         for (uint32_t j = 0; j < elementCount; j++)
         {
@@ -765,14 +770,14 @@ VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* 
                 default: break;
             }
 
-            bindVertexBuffer(bufferHandle);
             const auto stride = layout.getSize();
             glVertexAttribPointer(attrLoc, el.size, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
             glEnableVertexAttribArray(attrLoc);
-            bindVertexBuffer(EmptyVertexBufferHandle);
-
+            
             offset += el.size * sizeof(float);
         }
+
+        bindVertexBuffer(EmptyVertexBufferHandle);
     }
 
     glBindVertexArray(0);
