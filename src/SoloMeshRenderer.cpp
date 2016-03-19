@@ -11,7 +11,7 @@ MeshRenderer::MeshRenderer(Node node):
     ComponentBase(node),
     deviceMode(node.getScene()->getDevice()->getMode())
 {
-    renderQueue = KnownRenderQueues::OpaqueObjects;
+    renderQueue = KnownRenderQueues::Opaque;
 }
 
 

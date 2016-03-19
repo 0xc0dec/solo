@@ -26,7 +26,7 @@ Camera::Camera(Scene* scene, Node node):
     scene(scene),
     renderer(scene->getDevice()->getRenderer())
 {
-    renderQueue = KnownRenderQueues::CameraDefault;
+    renderQueue = KnownRenderQueues::Camera;
     renderTags.setAll();
 }
 

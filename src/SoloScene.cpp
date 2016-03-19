@@ -94,7 +94,7 @@ Component* Scene::findComponent(uint32_t nodeId, uint32_t typeId) const
 
 
 template <class T>
-void Scene::updateRenderQueue(std::list<T>& queue, uint32_t cmpTypeIdFilter)
+void Scene::updateRenderQueue(std::list<T>& queue, bool cameraQueue)
 {
     queue.clear();
 
@@ -104,7 +104,7 @@ void Scene::updateRenderQueue(std::list<T>& queue, uint32_t cmpTypeIdFilter)
         for (auto& pair : nodeComponents.second)
         {
             auto component = pair.second.get();
-            if (cmpTypeIdFilter > 0 && component->getTypeId() != cmpTypeIdFilter)
+            if (cameraQueue && component->getTypeId() != Camera::getId())
                 continue;
 
             if (component->getRenderQueue() == KnownRenderQueues::NotRendered)
@@ -172,8 +172,8 @@ bool tagsAreRenderable(const BitFlags& objectTags, const BitFlags& cameraTags)
 
 void Scene::render()
 {
-    updateRenderQueue(cameraQueue, Camera::getId());
-    updateRenderQueue(renderQueue, 0);
+    updateRenderQueue(cameraQueue, true);
+    updateRenderQueue(renderQueue, false);
 
     for (auto cam : cameraQueue)
     {

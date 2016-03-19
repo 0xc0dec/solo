@@ -13,7 +13,7 @@ using namespace solo;
 SkyboxRenderer::SkyboxRenderer(Node node):
     ComponentBase(node)
 {
-    renderQueue = KnownRenderQueues::Skyboxes;
+    renderQueue = KnownRenderQueues::Skybox;
 
     auto device = node.getScene()->getDevice();
     auto resourceManager = device->getResourceManager();
