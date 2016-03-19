@@ -7,6 +7,17 @@ return {
 
 	renderTargetQuadTag = 2,
 
+	createDynamicQuadUpdater = function(data, mesh, bufferIndex)
+		return {
+			typeId = 700,
+
+			update = function(self)
+				data[1] = -0.5
+				mesh:updateDynamicBuffer(bufferIndex, 0, data, 6)
+			end
+		}
+	end,
+
 	initMaterials = function(self)
 		local tex1 = self.utils.loadTexture(self.resMgr, "../data/freeman.png")
 		tex1:setWrapping(solo.TextureWrapping.Clamp)
@@ -120,6 +131,34 @@ return {
 		renderer:setRenderQueue(3000)
 	end,
 
+	initDynamicQuad = function(self)
+		local layout = solo.VertexBufferLayout()
+		layout:add(solo.VertexBufferLayoutSemantics.Position, 3)
+		layout:add(solo.VertexBufferLayoutSemantics.TexCoord0, 2)
+
+		local data = {
+			-1, -1, 0,		0, 0,
+			-1,  1, 0,		0, 1,
+		 	1,  1, 0,		1, 1,
+			-1, -1, 0,		0, 0,
+			1,  1, 0,		1, 1,
+			1, -1, 0,		1, 0
+		}
+
+		local mesh = self.resMgr:getOrCreateMesh()
+		mesh:addDynamicBuffer(layout, data, 6)
+		mesh:setPrimitiveType(solo.PrimitiveType.Triangles)
+
+		local node = self.scene:createNode()
+		node:findComponent("Transform"):setLocalPosition(solo.Vector3(0, 0, -5))
+
+		local renderer = node:addComponent("MeshRenderer")
+		renderer:setMesh(mesh)
+		renderer:setMaterial(0, self.materials.simpleTexture)
+
+		node:addScript(self.createDynamicQuadUpdater(data, mesh, 0))
+	end,
+
 	initCheckerBox = function(self)
 		local node = self:createPrefabMeshNode("cube")
 		node:findComponent("MeshRenderer"):setMaterial(0, self.materials.checker)
@@ -161,6 +200,7 @@ return {
 		self:initCheckerBox()
 		local monkey = self:initMonkey()
 		self:initMonitorQuad(monkey)
+		self:initDynamicQuad()
 		self.logger:logInfo("Initialized objects")
 	end,
 
