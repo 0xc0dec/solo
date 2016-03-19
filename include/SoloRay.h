@@ -35,9 +35,6 @@ namespace solo
         float getIntersection(const Frustum& frustum) const;
         float getIntersection(const Plane& plane) const;
 
-        void set(const Vector3& origin, const Vector3& direction);
-        void set(const Ray& ray);
-
         void transform(const Matrix& matrix);
 
         Ray& operator*=(const Matrix& matrix);

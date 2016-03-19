@@ -9,15 +9,19 @@
 using namespace solo;
 
 
-Ray::Ray(const Vector3& origin, const Vector3& direction)
+Ray::Ray(const Vector3& origin, const Vector3& direction):
+    origin(origin),
+    direction(direction)
 {
-    set(origin, direction);
+    normalize();
 }
 
 
-Ray::Ray(float originX, float originY, float originZ, float dirX, float dirY, float dirZ)
+Ray::Ray(float originX, float originY, float originZ, float dirX, float dirY, float dirZ):
+    origin(originX, originY, originZ),
+    direction(dirX, dirY, dirZ)
 {
-    set(Vector3(originX, originY, originZ), Vector3(dirX, dirY, dirZ));
+    normalize();
 }
 
 
@@ -127,22 +131,6 @@ float Ray::getIntersection(const Plane& plane) const
     // the ray getIntersection the plane (if it is negative the plane is behind the ray).
     auto d = -alpha / dot;
     return d < 0.0f ? static_cast<float>(RayIntersection::None) : d;
-}
-
-
-void Ray::set(const Vector3& origin, const Vector3& direction)
-{
-    this->origin = origin;
-    this->direction = direction;
-    normalize();
-}
-
-
-void Ray::set(const Ray& ray)
-{
-    origin = ray.origin;
-    direction = ray.direction;
-    normalize();
 }
 
 
