@@ -14,6 +14,7 @@ function runDemo(path)
 	end)
 	if err then
 		device:getLogger():logCritical(err)
+		return false
 	end
 
 	device:run()
@@ -22,6 +23,8 @@ function runDemo(path)
 	demo = nil
 	device = nil
 	collectgarbage()
+
+	return true
 end
 
 function prompt()
@@ -34,8 +37,7 @@ function prompt()
 	local number = tonumber(io.read())
 	local demoInfo = demos[number]
 	if demoInfo then
-		runDemo(demoInfo[2])
-		return true
+		return runDemo(demoInfo[2])
 	end
 	return false
 end

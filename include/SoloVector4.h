@@ -2,8 +2,9 @@
 
 namespace solo
 {
-    struct Vector4 final
+    class Vector4 final
     {
+    public:
         float x = 0;
         float y = 0;
         float z = 0;

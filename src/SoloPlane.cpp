@@ -42,7 +42,7 @@ float Plane::getDistanceToPoint(const Vector3& point) const
 }
 
 
-Vector3 Plane::intersection(const Plane& p1, const Plane& p2, const Plane& p3)
+Vector3 Plane::getCommonPoint(const Plane& p1, const Plane& p2, const Plane& p3)
 {
     Vector3 result;
 
@@ -93,19 +93,19 @@ Vector3 Plane::intersection(const Plane& p1, const Plane& p2, const Plane& p3)
 }
 
 
-PlaneIntersection Plane::getIntersection(const BoundingSphere& sphere) const
+PlaneIntersection Plane::intersectBoundingSphere(const BoundingSphere& sphere) const
 {
-    return sphere.getPlaneIntersection(*this);
+    return sphere.intersectPlane(*this);
 }
 
 
-PlaneIntersection Plane::getIntersection(const BoundingBox& box) const
+PlaneIntersection Plane::intersectBoundingBox(const BoundingBox& box) const
 {
-    return box.getPlaneIntersection(*this);
+    return box.intersectPlane(*this);
 }
 
 
-PlaneIntersection Plane::getIntersection(const Frustum& frustum) const
+PlaneIntersection Plane::intersectFrustum(const Frustum& frustum) const
 {
     auto corners = frustum.getCorners();
 
@@ -146,7 +146,7 @@ PlaneIntersection Plane::getIntersection(const Frustum& frustum) const
 }
 
 
-PlaneIntersection Plane::getIntersection(const Plane& plane) const
+PlaneIntersection Plane::intersectPlane(const Plane& plane) const
 {
     if ((Math::approxEqual(normal.x, plane.normal.x, Math::smallFloat1) &&
         Math::approxEqual(normal.y, plane.normal.y, Math::smallFloat1) &&
@@ -162,7 +162,7 @@ PlaneIntersection Plane::getIntersection(const Plane& plane) const
 }
 
 
-PlaneIntersection Plane::getIntersection(const Ray& ray) const
+PlaneIntersection Plane::intersectRay(const Ray& ray) const
 {
     auto d = getDistanceToPoint(ray.getOrigin());
 

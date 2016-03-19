@@ -8,10 +8,10 @@
 
 namespace solo
 {
-    struct Vector3;
+    class Vector3;
     class BoundingSphere;
     class BoundingBox;
-    struct Ray;
+    class Ray;
 
     class Frustum final
     {
@@ -35,8 +35,8 @@ namespace solo
         bool intersectsPoint(const Vector3& point) const;
         bool intersectsBoundingSphere(const BoundingSphere& sphere) const;
         bool intersectsBoundingBox(const BoundingBox& box) const;
-        float intersectsRay(const Ray& ray) const;
-        PlaneIntersection getPlaneIntersection(const Plane& plane) const;
+        float hitByRay(const Ray& ray) const;
+        PlaneIntersection intersectPlane(const Plane& plane) const;
 
     private:
         void updatePlanes();

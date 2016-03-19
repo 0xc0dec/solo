@@ -130,15 +130,15 @@ Matrix Transform::getMatrix() const
         {
             matrix = Matrix::createTranslation(localPosition);
             if (hasRotation || dirtyFlags.isSet(DirtyBitRotation))
-                matrix.rotate(localRotation);
+                matrix.rotateByQuaternion(localRotation);
             if (hasScale || dirtyFlags.isSet(DirtyBitScale))
-                matrix.scale(localScale);
+                matrix.scaleByVector(localScale);
         }
         else if (hasRotation || dirtyFlags.isSet(DirtyBitRotation))
         {
-            matrix = Matrix::createRotation(localRotation);
+            matrix = Matrix::createRotationFromQuaternion(localRotation);
             if (hasScale || dirtyFlags.isSet(DirtyBitScale))
-                matrix.scale(localScale);
+                matrix.scaleByVector(localScale);
         }
         else if (hasScale || dirtyFlags.isSet(DirtyBitScale))
             matrix = Matrix::createScale(localScale);

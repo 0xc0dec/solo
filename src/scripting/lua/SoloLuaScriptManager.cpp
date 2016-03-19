@@ -216,14 +216,14 @@ void LuaScriptManager::registerApi()
     matrix.addConstructor(LUA_ARGS());
     REGISTER_STATIC_METHOD(matrix, Matrix, identity);
     REGISTER_STATIC_METHOD(matrix, Matrix, zero);
-    REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createLookAt, "createLookAt", Matrix, , const Vector3&, const Vector3&, const Vector3&);
+    REGISTER_STATIC_METHOD(matrix, Matrix, createLookAt);
     REGISTER_STATIC_METHOD(matrix, Matrix, createPerspective);
     REGISTER_STATIC_METHOD(matrix, Matrix, createOrthographic);
     REGISTER_STATIC_METHOD(matrix, Matrix, createOrthographicOffCenter);
     REGISTER_STATIC_METHOD(matrix, Matrix, createReflection);
     REGISTER_STATIC_METHOD(matrix, Matrix, createScale);
-    REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createRotation, "createRotation", Matrix, , const Quaternion&);
-    REGISTER_STATIC_OVERLOADED_METHOD(matrix, Matrix, createRotation, "createRotationAxisAngle", Matrix, , const Vector3&, float);
+    REGISTER_STATIC_METHOD(matrix, Matrix, createRotationFromQuaternion);
+    REGISTER_STATIC_METHOD(matrix, Matrix, createRotationFromAxisAngle);
     REGISTER_STATIC_METHOD(matrix, Matrix, createRotationX);
     REGISTER_STATIC_METHOD(matrix, Matrix, createRotationY);
     REGISTER_STATIC_METHOD(matrix, Matrix, createRotationZ);
@@ -241,19 +241,18 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(matrix, Matrix, getBackVector);
     REGISTER_METHOD(matrix, Matrix, invert);
     REGISTER_METHOD(matrix, Matrix, transpose);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, rotate, "rotate", void, , const Quaternion&);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, rotate, "rotateAxisAngle", void, , const Vector3&, float);
+    REGISTER_METHOD(matrix, Matrix, rotateByQuaternion);
+    REGISTER_METHOD(matrix, Matrix, rotateByAxisAngle);
     REGISTER_METHOD(matrix, Matrix, rotateX);
     REGISTER_METHOD(matrix, Matrix, rotateY);
     REGISTER_METHOD(matrix, Matrix, rotateZ);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, scale, "scale", void, , float);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, scale, "scale2", void, , const Vector3&);
+    REGISTER_METHOD(matrix, Matrix, scaleByScalar);
+    REGISTER_METHOD(matrix, Matrix, scaleByVector);
     REGISTER_METHOD(matrix, Matrix, translate);
     REGISTER_METHOD(matrix, Matrix, setIdentity);
     REGISTER_METHOD(matrix, Matrix, setZero);
     REGISTER_METHOD(matrix, Matrix, transformPoint);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, transformDirection, "transformVector3Direction", Vector3, const, const Vector3&);
-    REGISTER_OVERLOADED_METHOD(matrix, Matrix, transformDirection, "transformVector4Direction", Vector4, const, const Vector4&);
+    REGISTER_METHOD(matrix, Matrix, transformDirection);
     REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator+, "plusScalar", Matrix, const, float);
     REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator+, "plusMatrix", Matrix, const, const Matrix&);
     REGISTER_OVERLOADED_METHOD(matrix, Matrix, operator+=, "addScalar", Matrix&, , float);
@@ -274,9 +273,17 @@ void LuaScriptManager::registerApi()
     matrix.endClass();
 
     // Ray
-    module.beginClass<Ray>("Ray")
-    .addConstructor(LUA_ARGS(const Vector3&, const Vector3&))
-    .endClass();
+    auto ray = module.beginClass<Ray>("Ray");
+    ray.addConstructor(LUA_ARGS(const Vector3&, const Vector3&));
+    REGISTER_METHOD(ray, Ray, getOrigin);
+    REGISTER_METHOD(ray, Ray, setOrigin);
+    REGISTER_METHOD(ray, Ray, getDirection);
+    REGISTER_METHOD(ray, Ray, setDirection);
+    REGISTER_METHOD(ray, Ray, hitBoundingBox);
+    REGISTER_METHOD(ray, Ray, hitBoundingSphere);
+    REGISTER_METHOD(ray, Ray, hitPlane);
+    REGISTER_METHOD(ray, Ray, transform);
+    ray.endClass();
 
     // BoundingBox
     auto bb = module.beginClass<BoundingBox>("BoundingBox");
@@ -287,8 +294,8 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(bb, BoundingBox, intersectsBoundingBox);
     REGISTER_METHOD(bb, BoundingBox, intersectsBoundingSphere);
     REGISTER_METHOD(bb, BoundingBox, intersectsFrustum);
-    REGISTER_METHOD(bb, BoundingBox, getRayIntersection);
-    REGISTER_METHOD(bb, BoundingBox, getPlaneIntersection);
+    REGISTER_METHOD(bb, BoundingBox, hitByRay);
+    REGISTER_METHOD(bb, BoundingBox, intersectPlane);
     REGISTER_METHOD(bb, BoundingBox, isEmpty);
     REGISTER_METHOD(bb, BoundingBox, mergeBoundingBox);
     REGISTER_METHOD(bb, BoundingBox, mergeBoundingSphere);
@@ -304,8 +311,8 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(bs, BoundingSphere, intersectsBoundingSphere);
     REGISTER_METHOD(bs, BoundingSphere, intersectsBoundingBox);
     REGISTER_METHOD(bs, BoundingSphere, intersectsFrustum);
-    REGISTER_METHOD(bs, BoundingSphere, getRayIntersection);
-    REGISTER_METHOD(bs, BoundingSphere, getPlaneIntersection);
+    REGISTER_METHOD(bs, BoundingSphere, hitByRay);
+    REGISTER_METHOD(bs, BoundingSphere, intersectPlane);
     REGISTER_METHOD(bs, BoundingSphere, isEmpty);
     REGISTER_METHOD(bs, BoundingSphere, mergeBoundingBox);
     REGISTER_METHOD(bs, BoundingSphere, mergeBoundingSphere);
@@ -324,7 +331,7 @@ void LuaScriptManager::registerApi()
     // Plane
     auto p = module.beginClass<Plane>("Plane");
     p.addConstructor(LUA_ARGS(const Vector3&, float));
-    REGISTER_STATIC_METHOD(p, Plane, intersection);
+    REGISTER_STATIC_METHOD(p, Plane, getCommonPoint);
     REGISTER_METHOD(p, Plane, getNormal);
     REGISTER_METHOD(p, Plane, setNormal);
     REGISTER_METHOD(p, Plane, getDistance);
@@ -351,8 +358,8 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(f, Frustum, intersectsPoint);
     REGISTER_METHOD(f, Frustum, intersectsBoundingBox);
     REGISTER_METHOD(f, Frustum, intersectsBoundingSphere);
-    REGISTER_METHOD(f, Frustum, intersectsRay);
-    REGISTER_METHOD(f, Frustum, getPlaneIntersection);
+    REGISTER_METHOD(f, Frustum, hitByRay);
+    REGISTER_METHOD(f, Frustum, intersectPlane);
     f.endClass();
 
     // EffectPrefab

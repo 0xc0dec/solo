@@ -5,39 +5,32 @@
 
 namespace solo
 {
-    class Frustum;
-    struct Plane;
+    class Plane;
     class BoundingSphere;
     class BoundingBox;
-    struct Matrix;
+    class Frustum;
+    class Matrix;
 
-    enum struct RayIntersection
+    class Ray final
     {
-        None = -1
-    };
-
-    struct Ray final
-    {
+    public:
         Ray() {}
         Ray(const Vector3& origin, const Vector3& direction);
         Ray(float originX, float originY, float originZ, float dirX, float dirY, float dirZ);
 
         Vector3 getOrigin() const;
         void setOrigin(const Vector3& origin);
-        void setOrigin(float x, float y, float z);
 
         Vector3 getDirection() const;
         void setDirection(const Vector3& direction);
-        void setDirection(float x, float y, float z);
 
-        float getIntersection(const BoundingSphere& sphere) const;
-        float getIntersection(const BoundingBox& box) const;
-        float getIntersection(const Frustum& frustum) const;
-        float getIntersection(const Plane& plane) const;
+        // These methods return -1 if there's no intersection
+        float hitBoundingSphere(const BoundingSphere& sphere) const;
+        float hitBoundingBox(const BoundingBox& box) const;
+        float hitFrustum(const Frustum& frustum) const;
+        float hitPlane(const Plane& plane) const;
 
         void transform(const Matrix& matrix);
-
-        Ray& operator*=(const Matrix& matrix);
 
     private:
         void normalize();
@@ -54,18 +47,5 @@ namespace solo
     inline Vector3 Ray::getDirection() const
     {
         return direction;
-    }
-
-    inline Ray& Ray::operator*=(const Matrix& matrix)
-    {
-        transform(matrix);
-        return *this;
-    }
-
-    inline Ray operator*(const Matrix& matrix, const Ray& ray)
-    {
-        auto r(const_cast<Ray&>(ray));
-        r.transform(matrix);
-        return r;
     }
 }

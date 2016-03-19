@@ -64,16 +64,16 @@ bool BoundingSphere::intersectsBoundingBox(const BoundingBox& box) const
 
 bool BoundingSphere::intersectsFrustum(const Frustum& frustum) const
 {
-    return getPlaneIntersection(frustum.getNearPlane()) != PlaneIntersection::Back &&
-           getPlaneIntersection(frustum.getFarPlane()) != PlaneIntersection::Back &&
-           getPlaneIntersection(frustum.getLeftPlane()) != PlaneIntersection::Back &&
-           getPlaneIntersection(frustum.getRightPlane()) != PlaneIntersection::Back &&
-           getPlaneIntersection(frustum.getBottomPlane()) != PlaneIntersection::Back &&
-           getPlaneIntersection(frustum.getTopPlane()) != PlaneIntersection::Back;
+    return intersectPlane(frustum.getNearPlane()) != PlaneIntersection::Back &&
+           intersectPlane(frustum.getFarPlane()) != PlaneIntersection::Back &&
+           intersectPlane(frustum.getLeftPlane()) != PlaneIntersection::Back &&
+           intersectPlane(frustum.getRightPlane()) != PlaneIntersection::Back &&
+           intersectPlane(frustum.getBottomPlane()) != PlaneIntersection::Back &&
+           intersectPlane(frustum.getTopPlane()) != PlaneIntersection::Back;
 }
 
 
-PlaneIntersection BoundingSphere::getPlaneIntersection(const Plane& plane) const
+PlaneIntersection BoundingSphere::intersectPlane(const Plane& plane) const
 {
     auto distance = plane.getDistanceToPoint(center);
     if (fabsf(distance) <= radius)
@@ -82,7 +82,7 @@ PlaneIntersection BoundingSphere::getPlaneIntersection(const Plane& plane) const
 }
 
 
-float BoundingSphere::getRayIntersection(const Ray& ray) const
+float BoundingSphere::hitByRay(const Ray& ray) const
 {
     const auto& origin = ray.getOrigin();
     const auto& direction = ray.getDirection();
@@ -100,7 +100,7 @@ float BoundingSphere::getRayIntersection(const Ray& ray) const
     auto discriminant = b * b - 4.0f * c;
 
     if (discriminant < 0.0f)
-        return static_cast<float>(RayIntersection::None);
+        return -1;
 
     auto sqrtDisc = sqrt(discriminant);
     auto t0 = (-b - sqrtDisc) * 0.5f;

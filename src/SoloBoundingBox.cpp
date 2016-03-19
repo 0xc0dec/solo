@@ -82,16 +82,16 @@ bool BoundingBox::intersectsBoundingBox(const BoundingBox& box) const
 
 bool BoundingBox::intersectsFrustum(const Frustum& frustum) const
 {
-    return getPlaneIntersection(frustum.getNearPlane()) != PlaneIntersection::Back &&
-           getPlaneIntersection(frustum.getFarPlane()) != PlaneIntersection::Back &&
-           getPlaneIntersection(frustum.getLeftPlane()) != PlaneIntersection::Back &&
-           getPlaneIntersection(frustum.getRightPlane()) != PlaneIntersection::Back &&
-           getPlaneIntersection(frustum.getBottomPlane()) != PlaneIntersection::Back &&
-           getPlaneIntersection(frustum.getTopPlane()) != PlaneIntersection::Back;
+    return intersectPlane(frustum.getNearPlane()) != PlaneIntersection::Back &&
+           intersectPlane(frustum.getFarPlane()) != PlaneIntersection::Back &&
+           intersectPlane(frustum.getLeftPlane()) != PlaneIntersection::Back &&
+           intersectPlane(frustum.getRightPlane()) != PlaneIntersection::Back &&
+           intersectPlane(frustum.getBottomPlane()) != PlaneIntersection::Back &&
+           intersectPlane(frustum.getTopPlane()) != PlaneIntersection::Back;
 }
 
 
-PlaneIntersection BoundingBox::getPlaneIntersection(const Plane& plane) const
+PlaneIntersection BoundingBox::intersectPlane(const Plane& plane) const
 {
     Vector3 center((min.x + max.x) * 0.5f, (min.y + max.y) * 0.5f, (min.z + max.z) * 0.5f);
     auto distance = plane.getDistanceToPoint(center);
@@ -108,10 +108,10 @@ PlaneIntersection BoundingBox::getPlaneIntersection(const Plane& plane) const
 }
 
 
-float BoundingBox::getRayIntersection(const Ray& ray) const
+float BoundingBox::hitByRay(const Ray& ray) const
 {
-    auto tmin = 0.0f;
-    auto tmax = 0.0f;
+    float tmin;
+    float tmax;
 
     const auto& origin = ray.getOrigin();
     const auto& direction = ray.getDirection();
@@ -133,7 +133,7 @@ float BoundingBox::getRayIntersection(const Ray& ray) const
 
     // Check if the ray misses the box.
     if (dnear > dfar || dfar < 0.0f)
-        return static_cast<float>(RayIntersection::None);
+        return -1;
 
     div = 1.0f / direction.y;
     if (div >= 0.0f)
@@ -147,7 +147,6 @@ float BoundingBox::getRayIntersection(const Ray& ray) const
         tmax = (min.y - origin.y) * div;
     }
 
-    // Update the near and far intersection distances.
     if (tmin > dnear)
         dnear = tmin;
     if (tmax < dfar)
@@ -155,7 +154,7 @@ float BoundingBox::getRayIntersection(const Ray& ray) const
 
     // Check if the ray misses the box.
     if (dnear > dfar || dfar < 0.0f)
-        return static_cast<float>(RayIntersection::None);
+        return -1;
 
     div = 1.0f / direction.z;
     if (div >= 0.0f)
@@ -169,7 +168,6 @@ float BoundingBox::getRayIntersection(const Ray& ray) const
         tmax = (min.z - origin.z) * div;
     }
 
-    // Update the near and far intersection distances.
     if (tmin > dnear)
         dnear = tmin;
     if (tmax < dfar)
@@ -177,7 +175,8 @@ float BoundingBox::getRayIntersection(const Ray& ray) const
 
     // Check if the ray misses the box.
     if (dnear > dfar || dfar < 0.0f)
-        return static_cast<float>(RayIntersection::None);
+        return -1;
+
     // The ray getIntersection the box (and since the direction of a Ray is normalized, dnear is the distance to the ray).
     return dnear;
 }

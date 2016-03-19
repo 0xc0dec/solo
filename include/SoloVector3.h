@@ -2,8 +2,9 @@
 
 namespace solo
 {
-    struct Vector3 final
+    class Vector3 final
     {
+    public:
         float x = 0;
         float y = 0;
         float z = 0;

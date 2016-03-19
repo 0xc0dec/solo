@@ -3,7 +3,6 @@
 #include "SoloQuaternion.h"
 #include "SoloPlane.h"
 #include "SoloBase.h"
-#include <cstddef>
 
 using namespace solo;
 
@@ -173,7 +172,7 @@ Matrix Matrix::createScale(const Vector3& scale)
 }
 
 
-Matrix Matrix::createRotation(const Quaternion& q)
+Matrix Matrix::createRotationFromQuaternion(const Quaternion& q)
 {
     auto x2 = q.x + q.x;
     auto y2 = q.y + q.y;
@@ -215,7 +214,7 @@ Matrix Matrix::createRotation(const Quaternion& q)
 }
 
 
-Matrix Matrix::createRotation(const Vector3& axis, float angleRadians)
+Matrix Matrix::createRotationFromAxisAngle(const Vector3& axis, float angleRadians)
 {
     auto x = axis.x;
     auto y = axis.y;
@@ -535,16 +534,16 @@ bool Matrix::isIdentity() const
 }
 
 
-void Matrix::rotate(const Quaternion& q)
+void Matrix::rotateByQuaternion(const Quaternion& q)
 {
-    auto r = createRotation(q);
+    auto r = createRotationFromQuaternion(q);
     *this *= r;
 }
 
 
-void Matrix::rotate(const Vector3& axis, float angleRadians)
+void Matrix::rotateByAxisAngle(const Vector3& axis, float angleRadians)
 {
-    auto r = createRotation(axis, angleRadians);
+    auto r = createRotationFromAxisAngle(axis, angleRadians);
     *this *= r;
 }
 
@@ -570,7 +569,7 @@ void Matrix::rotateZ(float angleRadians)
 }
 
 
-void Matrix::scale(const Vector3& s)
+void Matrix::scaleByVector(const Vector3& s)
 {
     auto sm = createScale(s);
     *this *= sm;
@@ -649,17 +648,6 @@ Vector3 Matrix::transformDirection(const Vector3& dir) const
                dir.x * m[0] + dir.y * m[4] + dir.z * m[8],
                dir.x * m[1] + dir.y * m[5] + dir.z * m[9],
                dir.x * m[2] + dir.y * m[6] + dir.z * m[10]
-           );
-}
-
-
-Vector4 Matrix::transformDirection(const Vector4& dir) const
-{
-    return Vector4(
-               dir.x * m[0] + dir.y * m[4] + dir.z * m[8] + dir.w * m[12],
-               dir.x * m[1] + dir.y * m[5] + dir.z * m[9] + dir.w * m[13],
-               dir.x * m[2] + dir.y * m[6] + dir.z * m[10] + dir.w * m[14],
-               dir.x * m[3] + dir.y * m[7] + dir.z * m[11] + dir.w * m[15]
            );
 }
 

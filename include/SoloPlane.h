@@ -8,8 +8,8 @@ namespace solo
     class BoundingSphere;
     class BoundingBox;
     class Frustum;
-    struct Ray;
-    struct Matrix;
+    class Ray;
+    class Matrix;
 
     enum class PlaneIntersection
     {
@@ -18,13 +18,14 @@ namespace solo
         Back = -1
     };
 
-    struct Plane final
+    class Plane final
     {
+    public:
         Plane() {}
         Plane(const Vector3& normal, float distance);
         Plane(float normalX, float normalY, float normalZ, float distance);
 
-        const Vector3& getNormal() const;
+        const Vector3& getNormal() const; // TODO return const reference in other similar places
         void setNormal(const Vector3& normal);
 
         float getDistance() const;
@@ -32,20 +33,17 @@ namespace solo
 
         float getDistanceToPoint(const Vector3& point) const;
 
-        // TODO rename
-        static Vector3 intersection(const Plane& p1, const Plane& p2, const Plane& p3);
+        static Vector3 getCommonPoint(const Plane& p1, const Plane& p2, const Plane& p3);
 
-        PlaneIntersection getIntersection(const BoundingSphere& sphere) const;
-        PlaneIntersection getIntersection(const BoundingBox& box) const;
-        PlaneIntersection getIntersection(const Frustum& frustum) const;
-        PlaneIntersection getIntersection(const Plane& plane) const;
-        PlaneIntersection getIntersection(const Ray& ray) const;
+        PlaneIntersection intersectBoundingSphere(const BoundingSphere& sphere) const;
+        PlaneIntersection intersectBoundingBox(const BoundingBox& box) const;
+        PlaneIntersection intersectFrustum(const Frustum& frustum) const;
+        PlaneIntersection intersectPlane(const Plane& plane) const;
+        PlaneIntersection intersectRay(const Ray& ray) const;
 
         bool isParallel(const Plane& plane) const;
 
         void transform(const Matrix& matrix);
-
-        Plane& operator*=(const Matrix& matrix);
 
     private:
         void normalize();
@@ -62,18 +60,5 @@ namespace solo
     inline float Plane::getDistance() const
     {
         return distance;
-    }
-
-    inline Plane& Plane::operator*=(const Matrix& matrix)
-    {
-        transform(matrix);
-        return *this;
-    }
-
-    inline Plane operator*(const Matrix& matrix, const Plane& plane)
-    {
-        auto p(const_cast<Plane&>(plane));
-        p.transform(matrix);
-        return p;
     }
 }

@@ -31,10 +31,10 @@ std::vector<Vector3> Frustum::getCorners() const
 std::vector<Vector3> Frustum::getNearCorners() const
 {
     std::vector<Vector3> result;
-    result.emplace_back(Plane::intersection(near, left, top));
-    result.emplace_back(Plane::intersection(near, left, bottom));
-    result.emplace_back(Plane::intersection(near, right, bottom));
-    result.emplace_back(Plane::intersection(near, right, top));
+    result.emplace_back(Plane::getCommonPoint(near, left, top));
+    result.emplace_back(Plane::getCommonPoint(near, left, bottom));
+    result.emplace_back(Plane::getCommonPoint(near, right, bottom));
+    result.emplace_back(Plane::getCommonPoint(near, right, top));
     return result;
 }
 
@@ -42,10 +42,10 @@ std::vector<Vector3> Frustum::getNearCorners() const
 std::vector<Vector3> Frustum::getFarCorners() const
 {
     std::vector<Vector3> result;
-    result.emplace_back(Plane::intersection(far, right, top));
-    result.emplace_back(Plane::intersection(far, right, bottom));
-    result.emplace_back(Plane::intersection(far, left, bottom));
-    result.emplace_back(Plane::intersection(far, left, top));
+    result.emplace_back(Plane::getCommonPoint(far, right, top));
+    result.emplace_back(Plane::getCommonPoint(far, right, bottom));
+    result.emplace_back(Plane::getCommonPoint(far, left, bottom));
+    result.emplace_back(Plane::getCommonPoint(far, left, top));
     return result;
 }
 
@@ -81,15 +81,15 @@ bool Frustum::intersectsBoundingBox(const BoundingBox& box) const
 }
 
 
-PlaneIntersection Frustum::getPlaneIntersection(const Plane& plane) const
+PlaneIntersection Frustum::intersectPlane(const Plane& plane) const
 {
-    return plane.getIntersection(*this);
+    return plane.intersectFrustum(*this);
 }
 
 
-float Frustum::intersectsRay(const Ray& ray) const
+float Frustum::hitByRay(const Ray& ray) const
 {
-    return ray.getIntersection(*this);
+    return ray.hitFrustum(*this);
 }
 
 

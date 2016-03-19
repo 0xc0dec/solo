@@ -1,7 +1,7 @@
 runTest(function()
 	local p = solo.Plane(solo.Vector3(1, 2, 3), 1)
 	local v = solo.Vector3(1, 2, 3)
-	assert(solo.Plane.intersection(p, p, p))
+	assert(solo.Plane.getCommonPoint(p, p, p))
 	assert(p:getNormal())
 	p:setNormal(solo.Vector3(1, 2, 3))
 	assert(p:getDistance() ~= nil)

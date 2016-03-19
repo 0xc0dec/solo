@@ -6,11 +6,12 @@
 
 namespace solo
 {
-    struct Plane;
-    struct Quaternion;
+    class Plane;
+    class Quaternion;
 
-    struct Matrix final
+    class Matrix final
     {
+    public:
         // column-major order
         float m[16];
 
@@ -27,15 +28,13 @@ namespace solo
         bool isIdentity() const;
 
         static Matrix createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up);
-
         static Matrix createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane);
         static Matrix createOrthographic(float width, float height, float zNearPlane, float zFarPlane);
         static Matrix createOrthographicOffCenter(float left, float right, float bottom, float top, float near, float far);
-
         static Matrix createReflection(const Plane& plane);
         static Matrix createScale(const Vector3& scale);
-        static Matrix createRotation(const Quaternion& quat);
-        static Matrix createRotation(const Vector3& axis, float angleRadians);
+        static Matrix createRotationFromQuaternion(const Quaternion& quat);
+        static Matrix createRotationFromAxisAngle(const Vector3& axis, float angleRadians);
         static Matrix createRotationX(float angleRadians);
         static Matrix createRotationY(float angleRadians);
         static Matrix createRotationZ(float angleRadians);
@@ -59,19 +58,22 @@ namespace solo
         bool invert();
         void transpose();
 
-        void rotate(const Quaternion& q);
-        void rotate(const Vector3& axis, float angleRadians);
+        void rotateByQuaternion(const Quaternion& q);
+        void rotateByAxisAngle(const Vector3& axis, float angleRadians);
         void rotateX(float angleRadians);
         void rotateY(float angleRadians);
         void rotateZ(float angleRadians);
 
-        void scale(float value);
-        void scale(const Vector3& s);
+        void scaleByScalar(float value);
+        void scaleByVector(const Vector3& s);
 
         void translate(const Vector3& t);
 
         void setIdentity();
         void setZero();
+
+        Vector3 transformPoint(const Vector3& point) const;
+        Vector3 transformDirection(const Vector3& dir) const;
 
         inline Matrix operator+(float scalar) const;
         inline Matrix operator+(const Matrix& m) const;
@@ -88,11 +90,6 @@ namespace solo
         inline Matrix operator*(const Matrix& m) const;
         Matrix& operator*=(float scalar);
         Matrix& operator*=(const Matrix& m);
-
-        Vector3 transformPoint(const Vector3& point) const;
-
-        Vector3 transformDirection(const Vector3& dir) const;
-        Vector4 transformDirection(const Vector4& dir) const;
     };
 
     inline Matrix Matrix::operator+(float scalar) const
@@ -147,17 +144,6 @@ namespace solo
         return m.transformDirection(v);
     }
 
-    inline Vector4& operator*=(Vector4& v, const Matrix& m)
-    {
-        v = m.transformDirection(v);
-        return v;
-    }
-
-    inline Vector4 operator*(const Matrix& m, const Vector4& v)
-    {
-        return m.transformDirection(v);
-    }
-
     inline Vector3 Matrix::getUpVector() const
     {
         return Vector3(m[4], m[5], m[6]);
@@ -188,8 +174,8 @@ namespace solo
         return Vector3(m[8], m[9], m[10]);
     }
 
-    inline void Matrix::scale(float value)
+    inline void Matrix::scaleByScalar(float value)
     {
-        scale(Vector3(value, value, value));
+        scaleByVector(Vector3(value, value, value));
     }
 }

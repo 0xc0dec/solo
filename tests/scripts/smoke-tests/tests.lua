@@ -6,14 +6,11 @@ logger = device:getLogger()
 logger:logInfo("Running Lua tests...")
 
 function runTest(test, name)
-	local msg = "Running " .. name .. " tests... "
 	local _, err = select(1, pcall(test))
 	if err then
-		msg = msg .. "\n" .. err
-		logger:logError(msg)
+		logger:logError(name .. ": failed\n" .. err)
 	else
-		msg = msg .. "done"
-		logger:logInfo(msg)
+		logger:logInfo(name .. ": success")
 	end
 end
 
@@ -38,6 +35,7 @@ dofile("../tests/scripts/smoke-tests/mesh.lua")
 dofile("../tests/scripts/smoke-tests/node.lua")
 dofile("../tests/scripts/smoke-tests/plane.lua")
 dofile("../tests/scripts/smoke-tests/quaternion.lua")
+dofile("../tests/scripts/smoke-tests/ray.lua")
 dofile("../tests/scripts/smoke-tests/resource-manager.lua")
 dofile("../tests/scripts/smoke-tests/scene.lua")
 dofile("../tests/scripts/smoke-tests/skybox-renderer.lua")

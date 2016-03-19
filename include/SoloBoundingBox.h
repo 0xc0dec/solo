@@ -10,8 +10,8 @@ namespace solo
 {
     class BoundingSphere;
     class Frustum;
-    struct Ray;
-    struct Matrix;
+    class Ray;
+    class Matrix;
 
     class BoundingBox final
     {
@@ -30,8 +30,8 @@ namespace solo
         bool intersectsBoundingBox(const BoundingBox& box) const;
         bool intersectsBoundingSphere(const BoundingSphere& sphere) const;
         bool intersectsFrustum(const Frustum& frustum) const;
-        float getRayIntersection(const Ray& ray) const;
-        PlaneIntersection getPlaneIntersection(const Plane& plane) const;
+        float hitByRay(const Ray& ray) const;
+        PlaneIntersection intersectPlane(const Plane& plane) const;
 
         bool isEmpty() const;
 
@@ -39,28 +39,12 @@ namespace solo
         void mergeBoundingBox(const BoundingBox& box);
 
         void transform(const Matrix& matrix);
-
-        BoundingBox& operator*=(const Matrix& matrix);
     };
-
 
     inline bool BoundingBox::isEmpty() const
     {
         return Math::approxEqual(min.x, max.x, Math::smallFloat1) &&
                Math::approxEqual(min.y, max.y, Math::smallFloat1) &&
                Math::approxEqual(min.z, max.z, Math::smallFloat1);
-    }
-
-    inline BoundingBox& BoundingBox::operator*=(const Matrix& matrix)
-    {
-        transform(matrix);
-        return *this;
-    }
-
-    inline BoundingBox operator*(const Matrix& matrix, const BoundingBox& box)
-    {
-        auto b(const_cast<BoundingBox&>(box));
-        b.transform(matrix);
-        return b;
     }
 }

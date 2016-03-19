@@ -31,14 +31,6 @@ void Ray::setOrigin(const Vector3& origin)
 }
 
 
-void Ray::setOrigin(float x, float y, float z)
-{
-    origin.x = x;
-    origin.y = y;
-    origin.z = z;
-}
-
-
 void Ray::setDirection(const Vector3& direction)
 {
     this->direction = direction;
@@ -46,59 +38,50 @@ void Ray::setDirection(const Vector3& direction)
 }
 
 
-void Ray::setDirection(float x, float y, float z)
+float Ray::hitBoundingSphere(const BoundingSphere& sphere) const
 {
-    direction.x = x;
-    direction.y = y;
-    direction.z = z;
-    normalize();
+    return sphere.hitByRay(*this);
 }
 
 
-float Ray::getIntersection(const BoundingSphere& sphere) const
+float Ray::hitBoundingBox(const BoundingBox& box) const
 {
-    return sphere.getRayIntersection(*this);
+    return box.hitByRay(*this);
 }
 
 
-float Ray::getIntersection(const BoundingBox& box) const
-{
-    return box.getRayIntersection(*this);
-}
-
-
-float Ray::getIntersection(const Frustum& frustum) const
+float Ray::hitFrustum(const Frustum& frustum) const
 {
     auto n = frustum.getNearPlane();
-    auto nD = getIntersection(n);
+    auto nD = hitPlane(n);
     auto nOD = n.getDistanceToPoint(origin);
 
     auto f = frustum.getFarPlane();
-    auto fD = getIntersection(f);
+    auto fD = hitPlane(f);
     auto fOD = f.getDistanceToPoint(origin);
 
     auto l = frustum.getLeftPlane();
-    auto lD = getIntersection(l);
+    auto lD = hitPlane(l);
     auto lOD = l.getDistanceToPoint(origin);
 
     auto r = frustum.getRightPlane();
-    auto rD = getIntersection(r);
+    auto rD = hitPlane(r);
     auto rOD = r.getDistanceToPoint(origin);
 
     auto b = frustum.getBottomPlane();
-    auto bD = getIntersection(b);
+    auto bD = hitPlane(b);
     auto bOD = b.getDistanceToPoint(origin);
 
     auto t = frustum.getTopPlane();
-    auto tD = getIntersection(t);
+    auto tD = hitPlane(t);
     auto tOD = t.getDistanceToPoint(origin);
 
     // If the ray's origin is in the negative half-space of one of the frustum's planes
     // and it does not intersect that same plane, then it does not intersect the frustum.
     if ((nOD < 0.0f && nD < 0.0f) || (fOD < 0.0f && fD < 0.0f) ||
-            (lOD < 0.0f && lD < 0.0f) || (rOD < 0.0f && rD < 0.0f) ||
-            (bOD < 0.0f && bD < 0.0f) || (tOD < 0.0f && tD < 0.0f))
-        return static_cast<float>(RayIntersection::None);
+        (lOD < 0.0f && lD < 0.0f) || (rOD < 0.0f && rD < 0.0f) ||
+        (bOD < 0.0f && bD < 0.0f) || (tOD < 0.0f && tD < 0.0f))
+        return -1;
 
     // Otherwise, the intersection distance is the minimum positive intersection distance.
     auto d = (nD > 0.0f) ? nD : 0.0f;
@@ -112,25 +95,23 @@ float Ray::getIntersection(const Frustum& frustum) const
 }
 
 
-float Ray::getIntersection(const Plane& plane) const
+float Ray::hitPlane(const Plane& plane) const
 {
     const auto& normal = plane.getNormal();
-    // If the origin of the ray is on the plane then the distance is zero.
+
     auto alpha = normal.dot(origin) + plane.getDistance();
     if (Math::approxZero(alpha, Math::smallFloat1))
         return 0.0f;
 
     auto dot = normal.dot(direction);
 
-    // If the dot product of the plane's normal and this ray's direction is zero,
-    // then the ray is parallel to the plane and does not intersect it.
     if (Math::approxZero(dot, Math::smallFloat1))
-        return static_cast<float>(RayIntersection::None);
+        return -1;
 
     // Calculate the distance along the ray's direction vector to the point where
     // the ray getIntersection the plane (if it is negative the plane is behind the ray).
     auto d = -alpha / dot;
-    return d < 0.0f ? static_cast<float>(RayIntersection::None) : d;
+    return d < 0.0f ? -1 : d;
 }
 
 

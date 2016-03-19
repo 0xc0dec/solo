@@ -21,8 +21,8 @@ namespace solo
         bool intersectsBoundingSphere(const BoundingSphere& sphere) const;
         bool intersectsBoundingBox(const BoundingBox& box) const;
         bool intersectsFrustum(const Frustum& frustum) const;
-        float getRayIntersection(const Ray& ray) const;
-        PlaneIntersection getPlaneIntersection(const Plane& plane) const;
+        float hitByRay(const Ray& ray) const;
+        PlaneIntersection intersectPlane(const Plane& plane) const;
 
         bool isEmpty() const;
 
@@ -30,26 +30,10 @@ namespace solo
         void mergeBoundingBox(const BoundingBox& box);
 
         void transform(const Matrix& matrix);
-
-        inline BoundingSphere& operator*=(const Matrix& matrix);
     };
-
 
     inline bool BoundingSphere::isEmpty() const
     {
         return Math::approxZero(radius, Math::smallFloat1);
-    }
-
-    inline BoundingSphere& BoundingSphere::operator*=(const Matrix& matrix)
-    {
-        transform(matrix);
-        return *this;
-    }
-
-    inline BoundingSphere operator*(const Matrix& matrix, const BoundingSphere& sphere)
-    {
-        auto s(const_cast<BoundingSphere&>(sphere));
-        s.transform(matrix);
-        return s;
     }
 }
