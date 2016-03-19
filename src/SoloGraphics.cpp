@@ -4,7 +4,6 @@
 #include "SoloMesh.h"
 #include "SoloMaterial.h"
 #include "SoloFrameBuffer.h"
-#include "SoloDevice.h"
 #include "SoloRenderContext.h"
 
 using namespace solo;
@@ -32,8 +31,7 @@ void Graphics::blit(Material* material, FrameBuffer* target)
     auto viewportSize = target ? target->getSize() : device->getCanvasSize();
     renderer->setViewport(0, 0, viewportSize.x, viewportSize.y);
 
-    RenderContext ctx;
-    material->bind(ctx);
+    material->bind(RenderContext::empty);
     quadMesh->draw(material->getEffect());
 
     if (target)

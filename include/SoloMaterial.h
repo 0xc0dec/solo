@@ -51,7 +51,7 @@ namespace solo
         void setTextureParameter(const std::string& name, shared<Texture> value);
         void setParameterAutoBinding(const std::string& name, AutoBinding autoBinding);
 
-        void bind(RenderContext& context);
+        void bind(const RenderContext& context);
 
         Effect* getEffect() const;
 

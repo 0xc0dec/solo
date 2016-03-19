@@ -8,5 +8,7 @@ namespace solo
         class Transform* cameraTransform = nullptr;
         class Transform* nodeTransform = nullptr;
         class Scene* scene = nullptr;
+
+        static RenderContext empty;
     };
 }

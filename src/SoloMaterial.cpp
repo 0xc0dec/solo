@@ -136,7 +136,7 @@ void Material::setParameterAutoBinding(const std::string& name, AutoBinding auto
 }
 
 
-void Material::bind(RenderContext& context)
+void Material::bind(const RenderContext& context)
 {
     applyState();
     
