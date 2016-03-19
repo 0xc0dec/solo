@@ -18,12 +18,12 @@ namespace solo
     public:
         Frustum();
 
-        const Plane& getNearPlane() const;
-        const Plane& getFarPlane() const;
-        const Plane& getLeftPlane() const;
-        const Plane& getRightPlane() const;
-        const Plane& getTopPlane() const;
-        const Plane& getBottomPlane() const;
+        Plane getNearPlane() const;
+        Plane getFarPlane() const;
+        Plane getLeftPlane() const;
+        Plane getRightPlane() const;
+        Plane getTopPlane() const;
+        Plane getBottomPlane() const;
 
         Matrix getMatrix() const;
         void setMatrix(const Matrix& m);
@@ -50,32 +50,32 @@ namespace solo
         Matrix matrix;
     };
 
-    inline const Plane& Frustum::getNearPlane() const
+    inline Plane Frustum::getNearPlane() const
     {
         return near;
     }
 
-    inline const Plane& Frustum::getFarPlane() const
+    inline Plane Frustum::getFarPlane() const
     {
         return far;
     }
 
-    inline const Plane& Frustum::getLeftPlane() const
+    inline Plane Frustum::getLeftPlane() const
     {
         return left;
     }
 
-    inline const Plane& Frustum::getRightPlane() const
+    inline Plane Frustum::getRightPlane() const
     {
         return right;
     }
 
-    inline const Plane& Frustum::getBottomPlane() const
+    inline Plane Frustum::getBottomPlane() const
     {
         return bottom;
     }
 
-    inline const Plane& Frustum::getTopPlane() const
+    inline Plane Frustum::getTopPlane() const
     {
         return top;
     }

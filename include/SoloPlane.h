@@ -25,7 +25,7 @@ namespace solo
         Plane(const Vector3& normal, float distance);
         Plane(float normalX, float normalY, float normalZ, float distance);
 
-        const Vector3& getNormal() const; // TODO return const reference in other similar places
+        Vector3 getNormal() const;
         void setNormal(const Vector3& normal);
 
         float getDistance() const;
@@ -52,7 +52,7 @@ namespace solo
         float distance = 0;
     };
 
-    inline const Vector3& Plane::getNormal() const
+    inline Vector3 Plane::getNormal() const
     {
         return normal;
     }
