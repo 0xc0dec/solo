@@ -24,10 +24,10 @@ namespace solo
 
         SL_NONCOPYABLE(Mesh)
 
-        uint32_t addBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount);
-        uint32_t addDynamicBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount);
-        void updateDynamicBuffer(uint32_t index, uint32_t offset, const float* data, uint32_t vertexCount);
-        void removeBuffer(uint32_t index);
+        uint32_t addVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount);
+        uint32_t addDynamicVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount);
+        void updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const float* data, uint32_t vertexCount);
+        void removeVertexBuffer(uint32_t index);
 
         uint32_t addPart(const void* indexData, uint32_t indexElementCount);
         void removePart(uint32_t index);
@@ -54,6 +54,7 @@ namespace solo
         std::vector<VertexBufferHandle> vertexBuffers;
         std::vector<IndexBufferHandle> indexBuffers;
         std::vector<uint32_t> vertexCounts;
+        std::vector<uint32_t> vertexSizes;
         uint32_t minVertexCount = 0;
         VertexObjectHandle vertexObjectHandle;
         VertexObjectHandle effectBindingVertexObjectHandle;

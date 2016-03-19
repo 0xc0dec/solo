@@ -4,15 +4,15 @@ runTest(function()
 	local l = solo.VertexBufferLayout()
 	l:add(solo.VertexBufferLayoutSemantics.Position, 3)
 
-	assert(m:addBuffer(l, { 1, 2, 3 }, 1) == 0)
-	assert(m:addDynamicBuffer(l, { 1, 2, 3 }, 1) == 1)
+	assert(m:addVertexBuffer(l, { 1, 2, 3 }, 1) == 0)
+	assert(m:addDynamicVertexBuffer(l, { 1, 2, 3 }, 1) == 1)
 	assert(m:addPart({ 1 }, 1) == 0)
 
-	m:updateDynamicBuffer(1, 1, { 1, 2 }, 2)
+	m:updateDynamicVertexBuffer(1, 1, { 1, 2 }, 2)
 
 	assert(m:getPartCount() == 1)
 
-	m:removeBuffer(0)
+	m:removeVertexBuffer(0)
 	m:removePart(0)
 
 	m:setPrimitiveType(solo.PrimitiveType.Lines)

@@ -379,11 +379,11 @@ void LuaScriptManager::registerApi()
 
     // Mesh
     auto mesh = module.beginClass<Mesh>("Mesh");
-    REGISTER_METHOD(mesh, LuaMesh, addBuffer);
-    REGISTER_METHOD(mesh, LuaMesh, addDynamicBuffer);
-    REGISTER_METHOD(mesh, LuaMesh, updateDynamicBuffer);
+    REGISTER_METHOD(mesh, LuaMesh, addVertexBuffer);
+    REGISTER_METHOD(mesh, LuaMesh, addDynamicVertexBuffer);
+    REGISTER_METHOD(mesh, LuaMesh, updateDynamicVertexBuffer);
     REGISTER_METHOD(mesh, LuaMesh, addPart);
-    REGISTER_METHOD(mesh, Mesh, removeBuffer);
+    REGISTER_METHOD(mesh, Mesh, removeVertexBuffer);
     REGISTER_METHOD(mesh, Mesh, removePart);
     REGISTER_METHOD(mesh, Mesh, getPartCount);
     REGISTER_METHOD(mesh, Mesh, getPrimitiveType);

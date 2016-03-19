@@ -160,19 +160,19 @@ shared<Mesh> ObjMeshLoader::load(const std::string& uri)
 
     VertexBufferLayout positionLayout;
     positionLayout.add(VertexBufferLayoutSemantics::Position, 3);
-    mesh->addBuffer(positionLayout, reinterpret_cast<const float*>(vertices.data()), static_cast<uint32_t>(vertices.size()));
+    mesh->addVertexBuffer(positionLayout, reinterpret_cast<const float*>(vertices.data()), static_cast<uint32_t>(vertices.size()));
 
     if (!uvs.empty())
     {
         VertexBufferLayout uvLayout;
         uvLayout.add(VertexBufferLayoutSemantics::TexCoord0, 2);
-        mesh->addBuffer(uvLayout, reinterpret_cast<const float*>(uvs.data()), static_cast<uint32_t>(uvs.size()));
+        mesh->addVertexBuffer(uvLayout, reinterpret_cast<const float*>(uvs.data()), static_cast<uint32_t>(uvs.size()));
     }
     if (!normals.empty())
     {
         VertexBufferLayout normalLayout;
         normalLayout.add(VertexBufferLayoutSemantics::Normal, 3);
-        mesh->addBuffer(normalLayout, reinterpret_cast<const float*>(normals.data()), static_cast<uint32_t>(normals.size()));
+        mesh->addVertexBuffer(normalLayout, reinterpret_cast<const float*>(normals.data()), static_cast<uint32_t>(normals.size()));
     }
 
     for (const auto& indices : allIndices)

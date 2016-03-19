@@ -36,46 +36,50 @@ Mesh::~Mesh()
     if (!effectBindingVertexObjectHandle.empty())
         renderer->destroyVertexObject(effectBindingVertexObjectHandle);
     while (!vertexBuffers.empty())
-        removeBuffer(0);
+        removeVertexBuffer(0);
     while (!indexBuffers.empty())
         removePart(0);
 }
 
 
-uint32_t Mesh::addBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount)
+uint32_t Mesh::addVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount)
 {
     auto handle = renderer->createVertexBuffer(layout, data, vertexCount);
     vertexBuffers.push_back(handle);
     vertexCounts.push_back(vertexCount);
+    vertexSizes.push_back(layout.getSize());
     rebuildVertexObject();
     recalculateMinVertexCount();
     return static_cast<uint32_t>(vertexBuffers.size() - 1);
 }
 
 
-uint32_t Mesh::addDynamicBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount)
+uint32_t Mesh::addDynamicVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount)
 {
     auto handle = renderer->createDynamicVertexBuffer(layout, data, vertexCount);
     vertexBuffers.push_back(handle);
     vertexCounts.push_back(vertexCount);
+    vertexSizes.push_back(layout.getSize());
     rebuildVertexObject();
     recalculateMinVertexCount();
     return static_cast<uint32_t>(vertexBuffers.size() - 1);
 }
 
 
-void Mesh::updateDynamicBuffer(uint32_t index, uint32_t offset, const float* data, uint32_t vertexCount)
+void Mesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const float* data, uint32_t vertexCount)
 {
     const auto& handle = vertexBuffers[index];
-    renderer->updateDynamicVertexBuffer(handle, data, offset, vertexCount);
+    auto vertexSize = vertexSizes[index];
+    renderer->updateDynamicVertexBuffer(handle, data, vertexOffset * vertexSize, vertexCount * vertexSize);
 }
 
 
-void Mesh::removeBuffer(uint32_t index)
+void Mesh::removeVertexBuffer(uint32_t index)
 {
     renderer->destroyVertexBuffer(vertexBuffers[index]);
     vertexBuffers.erase(vertexBuffers.begin() + index);
     vertexCounts.erase(vertexCounts.begin() + index);
+    vertexSizes.erase(vertexSizes.begin() + index);
     rebuildVertexObject();
     recalculateMinVertexCount();
 }
@@ -172,7 +176,7 @@ void Mesh::initQuadMesh()
     layout.add(VertexBufferLayoutSemantics::Normal, 3);
     layout.add(VertexBufferLayoutSemantics::TexCoord0, 2);
 
-    addBuffer(layout, data, 6);
+    addVertexBuffer(layout, data, 6);
     setPrimitiveType(PrimitiveType::Triangles);
 }
 
@@ -207,7 +211,7 @@ void Mesh::initCubeMesh()
     VertexBufferLayout layout;
     layout.add(VertexBufferLayoutSemantics::Position, 3);
     layout.add(VertexBufferLayoutSemantics::TexCoord0, 2);
-    addBuffer(layout, positionData, 24);
+    addVertexBuffer(layout, positionData, 24);
     addPart(indexData, 36);
     setPrimitiveType(PrimitiveType::Triangles);
 }

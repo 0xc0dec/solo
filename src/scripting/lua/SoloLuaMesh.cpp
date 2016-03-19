@@ -4,25 +4,25 @@
 using namespace solo;
 
 
-uint32_t LuaMesh::addBuffer(Mesh* mesh, const VertexBufferLayout& layout, const std::vector<float>& data, uint32_t vertexCount)
+uint32_t LuaMesh::addVertexBuffer(Mesh* mesh, const VertexBufferLayout& layout, const std::vector<float>& data, uint32_t vertexCount)
 {
-    return mesh->addBuffer(layout, data.data(), vertexCount);
+    return mesh->addVertexBuffer(layout, data.data(), vertexCount);
 }
 
 
-uint32_t LuaMesh::addDynamicBuffer(Mesh* mesh, const VertexBufferLayout& layout, const std::vector<float>& data, uint32_t vertexCount)
+uint32_t LuaMesh::addDynamicVertexBuffer(Mesh* mesh, const VertexBufferLayout& layout, const std::vector<float>& data, uint32_t vertexCount)
 {
-    return mesh->addDynamicBuffer(layout, data.data(), vertexCount);
+    return mesh->addDynamicVertexBuffer(layout, data.data(), vertexCount);
 }
 
 
-void LuaMesh::updateDynamicBuffer(Mesh* mesh, uint32_t index, uint32_t offset, const std::vector<float>& data, uint32_t vertexCount)
+void LuaMesh::updateDynamicVertexBuffer(Mesh* mesh, uint32_t index, uint32_t vertexOffset, const std::vector<float>& data, uint32_t vertexCount)
 {
-    mesh->updateDynamicBuffer(index, offset, data.data(), vertexCount);
+    mesh->updateDynamicVertexBuffer(index, vertexOffset, data.data(), vertexCount);
 }
 
 
-uint32_t LuaMesh::addPart(Mesh* mesh, const std::vector<float>& data, uint32_t elementCount)
+uint32_t LuaMesh::addPart(Mesh* mesh, const std::vector<uint16_t>& data, uint32_t elementCount)
 {
     return mesh->addPart(data.data(), elementCount);
 }
