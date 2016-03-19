@@ -181,21 +181,12 @@ void Mesh::initCubeMesh()
 {
     float positionData[] =
     {
-        -1, -1, 1,      -1, 1, 1,       1, 1, 1,        1, -1, 1,
-        -1, -1, -1,     -1, 1, -1,      -1, 1, 1,       -1, -1, 1,
-        1, -1, -1,      1, 1, -1,       -1, 1, -1,      -1, -1, -1,
-        1, -1, 1,       1, 1, 1,        1, 1, -1,       1, -1, -1,
-        -1, 1, 1,       -1, 1, -1,      1, 1, -1,       1, 1, 1,
-        -1, -1, -1,     -1, -1, 1,      1, -1, 1,       1, -1, -1,
-    };
-    float texCoordData[] =
-    {
-        0, 0,   0, 1,   1, 1,   1, 0,
-        0, 0,   0, 1,   1, 1,   1, 0,
-        0, 0,   0, 1,   1, 1,   1, 0,
-        0, 0,   0, 1,   1, 1,   1, 0,
-        0, 0,   0, 1,   1, 1,   1, 0,
-        0, 0,   0, 1,   1, 1,   1, 0
+        -1, -1, 1,  0, 0,    -1, 1, 1,  0, 1,     1, 1, 1,   1, 1,     1, -1, 1,   1, 0,
+        -1, -1, -1, 0, 0,    -1, 1, -1, 0, 1,     -1, 1, 1,  1, 1,     -1, -1, 1,  1, 0,
+        1, -1, -1,  0, 0,    1, 1, -1,  0, 1,     -1, 1, -1, 1, 1,     -1, -1, -1, 1, 0,
+        1, -1, 1,   0, 0,    1, 1, 1,   0, 1,     1, 1, -1,  1, 1,     1, -1, -1,  1, 0,
+        -1, 1, 1,   0, 0,    -1, 1, -1, 0, 1,     1, 1, -1,  1, 1,     1, 1, 1,    1, 0,
+        -1, -1, -1, 0, 0,    -1, -1, 1, 0, 1,     1, -1, 1,  1, 1,     1, -1, -1,  1, 0
     };
     uint16_t indexData[] =
     {
@@ -213,14 +204,10 @@ void Mesh::initCubeMesh()
         20, 22, 23
     };
 
-    VertexBufferLayout layout1;
-    layout1.add(VertexBufferLayoutSemantics::Position, 3);
-
-    VertexBufferLayout layout2;
-    layout2.add(VertexBufferLayoutSemantics::TexCoord0, 2);
-
-    addBuffer(layout1, positionData, 24);
-    addBuffer(layout2, texCoordData, 24);
+    VertexBufferLayout layout;
+    layout.add(VertexBufferLayoutSemantics::Position, 3);
+    layout.add(VertexBufferLayoutSemantics::TexCoord0, 2);
+    addBuffer(layout, positionData, 24);
     addPart(indexData, 36);
     setPrimitiveType(PrimitiveType::Triangles);
 }
