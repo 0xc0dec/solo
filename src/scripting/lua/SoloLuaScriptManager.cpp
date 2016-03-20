@@ -60,7 +60,8 @@ using namespace solo;
 using namespace LuaIntf;
 
 
-LuaScriptManager::LuaScriptManager()
+LuaScriptManager::LuaScriptManager(Device* device):
+    ScriptManager(device)
 {
     lua = LuaState::newState();
     lua.openLibs();
@@ -806,7 +807,6 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(device, Device, getMode);
     REGISTER_METHOD(device, Device, run);
     REGISTER_METHOD(device, Device, stopRunning);
-    REGISTER_METHOD(device, Device, shutdown);
     device.endClass();
 
     // Graphics
@@ -853,6 +853,8 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(logger, Logger, logError);
     REGISTER_METHOD(logger, Logger, logCritical);
     logger.endClass();
+
+    module.addVariable("device", &this->device);
 
     module.endModule();
 }

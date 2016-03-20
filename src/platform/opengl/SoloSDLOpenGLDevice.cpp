@@ -162,7 +162,11 @@ std::tuple<uint32_t, uint32_t> SDLOpenGLDevice::selectContextVersion()
 
 SDLOpenGLDevice::~SDLOpenGLDevice()
 {
-    cleanup();
+    if (context)
+        SDL_GL_DeleteContext(context);
+    if (window)
+        SDL_DestroyWindow(window);
+    SDL_Quit();
 }
 
 
@@ -179,22 +183,6 @@ void SDLOpenGLDevice::beginUpdate()
 void SDLOpenGLDevice::endUpdate()
 {
     SDL_GL_SwapWindow(window);
-}
-
-
-void SDLOpenGLDevice::cleanup()
-{
-    if (context)
-    {
-        SDL_GL_DeleteContext(context);
-        context = nullptr;
-    }
-    if (window)
-    {
-        SDL_DestroyWindow(window);
-        window = nullptr;
-    }
-    SDL_Quit();
 }
 
 
@@ -359,11 +347,4 @@ Vector2 SDLOpenGLDevice::getCanvasSize() const
     int32_t width, height;
     SDL_GL_GetDrawableSize(window, &width, &height);
     return Vector2(static_cast<float>(width), static_cast<float>(height));
-}
-
-
-void SDLOpenGLDevice::shutdown()
-{
-    Device::shutdown();
-    cleanup();
 }

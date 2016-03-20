@@ -1,9 +1,4 @@
-local args = solo.DeviceCreationArgs()
-args.mode = solo.DeviceMode.Stub
-args.canvasWidth = 1
-args.canvasHeight = 1
-args.logFilePath = "lua-tests.log"
-device = solo.Device.create(args)
+device = solo.device
 logger = device:getLogger()
 logger:logInfo("Running Lua tests...")
 

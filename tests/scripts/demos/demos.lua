@@ -4,19 +4,11 @@ local demos = {
 }
 
 function runDemo(path)
-	local args = solo.DeviceCreationArgs()
-	args.mode = solo.DeviceMode.OpenGL
-	args.canvasWidth = 1200
-	args.canvasHeight = 600
-	args.fullScreen = false
-	args.windowTitle = "Solo Tester"
-	args.logFilePath = "demo.log"
-
-	local device = solo.Device.create(args)
+	local device = solo.device
 	local demo = dofile(path)
 
 	local _, err = pcall(function()
-		demo:init(device)
+		demo:init()
 	end)
 	if err then
 		device:getLogger():logCritical(err)
@@ -24,11 +16,6 @@ function runDemo(path)
 	end
 
 	device:run()
-
-	demo = nil
-	collectgarbage()
-
-	device:shutdown()
 
 	return true
 end

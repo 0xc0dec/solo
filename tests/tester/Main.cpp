@@ -13,11 +13,30 @@
 using namespace solo;
 
 
-void runCppUnitTests()
+void runInStubEngine(std::function<void(shared<Device>)> run, const std::string& logPath)
 {
     DeviceCreationArgs args;
     args.mode = DeviceMode::Stub;
+    args.logFilePath = logPath;
     auto device = Device::create(args);
+    run(device);
+}
+
+
+void runInRealEngine(std::function<void(shared<Device>)> run, const std::string& logPath)
+{
+    DeviceCreationArgs args;
+    args.mode = DeviceMode::OpenGL;
+    args.canvasWidth = 1200;
+    args.canvasHeight = 600;
+    args.logFilePath = logPath;
+    auto device = Device::create(args);
+    run(device);
+}
+
+
+void runCppUnitTests(shared<Device> device)
+{
     Resources_Test(device.get()).run();
     Device_Test(device.get()).run();
     Components_Test(device.get()).run();
@@ -28,13 +47,8 @@ void runCppUnitTests()
 }
 
 
-void runCppIntegrationTests()
+void runCppIntegrationTests(shared<Device> device)
 {
-    DeviceCreationArgs args;
-    args.mode = DeviceMode::OpenGL;
-    args.canvasWidth = 800;
-    args.canvasHeight = 600;
-    auto device = Device::create(args);
     FileSystem_Test(device.get()).run();
     Materials_Test(device.get()).run();
     FrameBuffer_Test(device.get()).run();
@@ -42,21 +56,43 @@ void runCppIntegrationTests()
 }
 
 
-void runLuaTests(const std::string &entryScriptPath)
+void runLuaUnitTests(shared<Device> device)
 {
-    auto scriptManager = ScriptManager::create();
-    scriptManager->executeFile(entryScriptPath);
+    device->getScriptManager()->executeFile("../tests/scripts/smoke-tests/tests.lua");
+}
+
+
+void runDemos()
+{
+    std::vector<std::string> demoScripts
+    {
+        "../tests/scripts/demos/demo1.lua",
+        "../tests/scripts/demos/demo2.lua"
+    };
+
+    while (true)
+    {
+        int demoNumber;
+        std::cout << "Enter demo number (1.." << demoScripts.size() << "): ";
+        std::cin >> demoNumber;
+        if (demoNumber < 1 || demoNumber > demoScripts.size())
+        {
+            std::cout << "Wrong demo number" << std::endl;
+            break;
+        }
+        runInRealEngine([&](shared<Device> device) { device->getScriptManager()->executeFile(demoScripts[demoNumber - 1]); }, "demo.log");
+    }
 }
 
 
 int main()
 {
 #ifdef SL_DEBUG
-    runCppUnitTests();
-    runCppIntegrationTests();
-    runLuaTests("../tests/scripts/smoke-tests/tests.lua");
+    runInStubEngine(runCppUnitTests, "cpp-unit-tests.log");
+    runInRealEngine(runCppIntegrationTests, "cpp-integration-tests.log");
+    runInStubEngine([](shared<Device> device) { device->getScriptManager()->executeFile("../tests/scripts/smoke-tests/tests.lua"); },
+        "lua-smoke-tests.log");
 #endif
-    runLuaTests("../tests/scripts/demos/demos.lua");
-
+    runDemos();
     return 0;
 }

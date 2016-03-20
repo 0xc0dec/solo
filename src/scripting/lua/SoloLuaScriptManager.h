@@ -16,7 +16,7 @@ namespace solo
     private:
         friend class ScriptManager;
 
-        LuaScriptManager();
+        LuaScriptManager(Device* device);
 
         void registerApi();
 

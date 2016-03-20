@@ -14,6 +14,7 @@ namespace solo
     class Renderer;
     class Graphics;
     class Logger;
+    class ScriptManager;
 
     enum class KeyCode
     {
@@ -80,7 +81,6 @@ namespace solo
 
         void run();
         void stopRunning();
-        virtual void shutdown();
 
         DeviceMode getMode() const;
         Scene* getScene() const;
@@ -88,6 +88,7 @@ namespace solo
         ResourceManager* getResourceManager() const;
         Renderer* getRenderer() const;
         Graphics* getGraphics() const;
+        ScriptManager* getScriptManager() const;
         Logger* getLogger() const;
 
     protected:
@@ -105,6 +106,7 @@ namespace solo
         shared<ResourceManager> resourceManager;
         shared<Renderer> renderer;
         shared<Graphics> graphics;
+        shared<ScriptManager> scriptManager;
         shared<Logger> logger;
 
         std::unordered_map<KeyCode, bool> pressedKeys;
@@ -119,9 +121,6 @@ namespace solo
         bool running = false;
         float lastUpdateTime = 0;
         float timeDelta = 0;
-
-    private:
-        void cleanup();
     };
 
     inline float Device::getTimeDelta() const
@@ -162,6 +161,11 @@ namespace solo
     inline Graphics* Device::getGraphics() const
     {
         return graphics.get();
+    }
+
+    inline ScriptManager* Device::getScriptManager() const
+    {
+        return scriptManager.get();
     }
 
     inline Logger* Device::getLogger() const

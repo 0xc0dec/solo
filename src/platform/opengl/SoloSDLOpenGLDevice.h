@@ -20,8 +20,6 @@ namespace solo
 
         virtual Vector2 getCanvasSize() const override final;
 
-        virtual void shutdown() override final;
-
     private:
         friend class Device;
 
@@ -29,8 +27,6 @@ namespace solo
 
         virtual void beginUpdate() override final;
         virtual void endUpdate() override final;
-
-        void cleanup();
 
         void prepareKeyboardState();
         void prepareMouseState();

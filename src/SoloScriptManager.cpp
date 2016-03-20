@@ -4,7 +4,14 @@
 using namespace solo;
 
 
-shared<ScriptManager> ScriptManager::create()
+shared<ScriptManager> ScriptManager::create(Device* device)
 {
-    return SL_NEW_SHARED(LuaScriptManager);
+    // TODO maybe other implementations some day
+    return SL_NEW_SHARED(LuaScriptManager, device);
+}
+
+
+ScriptManager::ScriptManager(Device* device):
+    device(device)
+{
 }

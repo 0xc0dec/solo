@@ -5,6 +5,7 @@
 #include "SoloLogger.h"
 #include "SoloRenderer.h"
 #include "SoloGraphics.h"
+#include "SoloScriptManager.h"
 #include "platform/stub/SoloStubDevice.h"
 #include "platform/opengl/SoloSDLOpenGLDevice.h"
 
@@ -21,7 +22,28 @@ shared<Device> Device::create(const DeviceCreationArgs& args)
 
 Device::~Device()
 {
-    cleanup();
+    // Keep order!
+
+    if (scene)
+        scene.reset();
+
+    if (scriptManager)
+        scriptManager.reset();
+
+    if (graphics)
+        graphics.reset();
+
+    if (resourceManager)
+        resourceManager.reset();
+
+    if (fs)
+        fs.reset();
+
+    if (renderer)
+        renderer.reset();
+
+    if (logger)
+        logger.reset();
 }
 
 
@@ -37,6 +59,7 @@ Device::Device(const DeviceCreationArgs& args):
     resourceManager = ResourceManager::create(this);
     graphics = SL_NEW_SHARED(Graphics, this);
     scene = SL_NEW_SHARED(Scene, this);
+    scriptManager = ScriptManager::create(this);
 }
 
 
@@ -55,14 +78,6 @@ void Device::run()
         if (!running)
             break;
     }
-}
-
-
-void Device::shutdown()
-{
-    if (running)
-        SL_THROW(InvalidOperationException, "Cannot shut down engine while it is running");
-    cleanup();
 }
 
 
@@ -103,44 +118,4 @@ void Device::updateTime()
     auto time = getLifetime();
     timeDelta = time - lastUpdateTime;
     lastUpdateTime = time;
-}
-
-
-void Device::cleanup()
-{
-    if (scene)
-    {
-        scene.reset();
-        scene = nullptr;
-    }
-
-    if (graphics)
-    {
-        graphics.reset();
-        graphics = nullptr;
-    }
-
-    if (resourceManager)
-    {
-        resourceManager.reset();
-        resourceManager = nullptr;
-    }
-
-    if (fs)
-    {
-        fs.reset();
-        fs = nullptr;
-    }
-
-    if (renderer)
-    {
-        renderer.reset();
-        renderer = nullptr;
-    }
-
-    if (logger)
-    {
-        logger.reset();
-        logger = nullptr;
-    }
 }

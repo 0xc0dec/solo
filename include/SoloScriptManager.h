@@ -5,10 +5,12 @@
 
 namespace solo
 {
+    class Device;
+
     class ScriptManager
     {
     public:
-        static shared<ScriptManager> create();
+        static shared<ScriptManager> create(Device* device);
 
         SL_NONCOPYABLE(ScriptManager)
         virtual ~ScriptManager() {}
@@ -17,6 +19,8 @@ namespace solo
         virtual void executeFile(const std::string& path) = 0;
 
     protected:
-        ScriptManager() {}
+        explicit ScriptManager(Device* device);
+
+        Device* device = nullptr;
     };
 }
