@@ -91,11 +91,6 @@ return {
 		self.logger:logInfo("Initialized skybox")
 	end,
 
-	initFrameBuffer = function(self)
-
-		self.logger:logInfo("Initialized frame buffer")
-	end,
-
 	initCamera = function(self)
 		local node = self.scene:createNode()
 		local t = node:findComponent("Transform")
@@ -114,7 +109,6 @@ return {
 		self.resMgr = device:getResourceManager()
 		self.scene = device:getScene()
 		self.logger = device:getLogger()
-		self:initFrameBuffer()
 		self:initMesh()
 		self:initSkybox()
 		self:initCamera()

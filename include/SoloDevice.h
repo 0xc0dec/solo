@@ -63,18 +63,12 @@ namespace solo
         SL_NONCOPYABLE(Device)
         virtual ~Device();
 
-        virtual void beginUpdate() = 0;
-        virtual void endUpdate() = 0;
-
         virtual void setWindowTitle(const std::string& title) = 0;
         virtual std::string getWindowTitle() const = 0;
 
         virtual void setCursorCaptured(bool captured) = 0;
-
         virtual Vector2 getCanvasSize() const = 0;
-
         virtual float getLifetime() const = 0;
-
         float getTimeDelta() const;
 
         bool isKeyPressed(KeyCode code, bool firstTimeOnly = false) const;
@@ -85,13 +79,10 @@ namespace solo
         bool isMouseButtonReleased(MouseButton button) const;
 
         void run();
-        void reset();
-
-        void requestShutdown();
-        bool shutdownRequested() const;
+        void stopRunning();
+        virtual void shutdown();
 
         DeviceMode getMode() const;
-
         Scene* getScene() const;
         FileSystem* getFileSystem() const;
         ResourceManager* getResourceManager() const;
@@ -102,9 +93,10 @@ namespace solo
     protected:
         explicit Device(const DeviceCreationArgs& args);
 
+        virtual void beginUpdate() = 0;
+        virtual void endUpdate() = 0;
+
         void updateTime();
-        void startSystems();
-        void stopSystems();
 
         DeviceCreationArgs creationArgs;
 
@@ -124,9 +116,12 @@ namespace solo
         std::unordered_set<MouseButton> releasedMouseButtons;
 
         bool close = false;
-        bool shutdown = false;
+        bool running = false;
         float lastUpdateTime = 0;
         float timeDelta = 0;
+
+    private:
+        void cleanup();
     };
 
     inline float Device::getTimeDelta() const
@@ -134,14 +129,9 @@ namespace solo
         return timeDelta;
     }
 
-    inline void Device::requestShutdown()
+    inline void Device::stopRunning()
     {
-        shutdown = true;
-    }
-
-    inline bool Device::shutdownRequested() const
-    {
-        return shutdown;
+        running = false;
     }
 
     inline DeviceMode Device::getMode() const

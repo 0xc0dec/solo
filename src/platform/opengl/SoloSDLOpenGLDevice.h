@@ -6,27 +6,31 @@
 
 namespace solo
 {
-    class SDLOpenGLDevice : public Device
+    class SDLOpenGLDevice final: public Device
     {
     public:
         virtual ~SDLOpenGLDevice();
 
-        virtual void setWindowTitle(const std::string& title) override;
-        virtual std::string getWindowTitle() const override;
+        virtual void setWindowTitle(const std::string& title) override final;
+        virtual std::string getWindowTitle() const override final;
 
-        virtual void setCursorCaptured(bool captured) override;
+        virtual void setCursorCaptured(bool captured) override final;
 
-        virtual float getLifetime() const override;
+        virtual float getLifetime() const override final;
 
-        virtual Vector2 getCanvasSize() const override;
+        virtual Vector2 getCanvasSize() const override final;
 
-        virtual void beginUpdate() override;
-        virtual void endUpdate() override;
+        virtual void shutdown() override final;
 
     private:
         friend class Device;
 
         explicit SDLOpenGLDevice(const DeviceCreationArgs& args);
+
+        virtual void beginUpdate() override final;
+        virtual void endUpdate() override final;
+
+        void cleanup();
 
         void prepareKeyboardState();
         void prepareMouseState();

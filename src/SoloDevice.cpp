@@ -21,36 +21,48 @@ shared<Device> Device::create(const DeviceCreationArgs& args)
 
 Device::~Device()
 {
-    stopSystems();
+    cleanup();
 }
 
 
 Device::Device(const DeviceCreationArgs& args):
     creationArgs(args)
 {
-    startSystems();
+    logger = SL_NEW_SHARED(Logger);
+    if (!creationArgs.logFilePath.empty())
+        logger->setTargetFile(creationArgs.logFilePath);
+
+    renderer = Renderer::create(this);
+    fs = FileSystem::create(this);
+    resourceManager = ResourceManager::create(this);
+    graphics = SL_NEW_SHARED(Graphics, this);
+    scene = SL_NEW_SHARED(Scene, this);
 }
 
 
 void Device::run()
 {
+    // By design you are allowed to call this method again and again
+    // as long as the engine object is alive. Once the engine object has been destroyed (or had it's shutdown()
+    // method called), this method will no longer work, because the object is considered disposed.
+    running = true;
     while (true)
     {
         beginUpdate();
         scene->update();
         scene->render();
         endUpdate();
-        if (shutdown)
+        if (!running)
             break;
     }
-    shutdown = false;
 }
 
 
-void Device::reset()
+void Device::shutdown()
 {
-    stopSystems();
-    startSystems();
+    if (running)
+        SL_THROW(InvalidOperationException, "Cannot shut down engine while it is running");
+    cleanup();
 }
 
 
@@ -94,21 +106,7 @@ void Device::updateTime()
 }
 
 
-void Device::startSystems()
-{
-    logger = SL_NEW_SHARED(Logger);
-    if (!creationArgs.logFilePath.empty())
-        logger->setTargetFile(creationArgs.logFilePath);
-
-    renderer = Renderer::create(this);
-    fs = FileSystem::create(this);
-    resourceManager = ResourceManager::create(this);
-    graphics = SL_NEW_SHARED(Graphics, this);
-    scene = SL_NEW_SHARED(Scene, this);
-}
-
-
-void Device::stopSystems()
+void Device::cleanup()
 {
     if (scene)
     {

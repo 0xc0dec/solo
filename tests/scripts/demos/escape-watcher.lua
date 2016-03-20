@@ -4,7 +4,7 @@ return function(device)
 
 		update = function()
 			if device:isKeyPressed(solo.KeyCode.Escape, true) then
-				device:requestShutdown()
+				device:stopRunning()
 			end
 		end
 	}

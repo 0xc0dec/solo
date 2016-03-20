@@ -14,8 +14,8 @@ runTest(function()
 	assert(device:getFileSystem())
 	assert(device:getGraphics())
 	assert(device:getMode() ~= nil)
-	device:requestShutdown()
-	assert(device:shutdownRequested() ~= nil)
+	device:stopRunning()
+	-- device:shutdown() not called deliberately
 
 	device:setWindowTitle("Some title")
 	assert(device:getWindowTitle() == "Some title")

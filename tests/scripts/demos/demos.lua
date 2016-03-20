@@ -24,11 +24,11 @@ function runDemo(path)
 	end
 
 	device:run()
-	device:reset()
 
 	demo = nil
-	device = nil
 	collectgarbage()
+
+	device:shutdown()
 
 	return true
 end

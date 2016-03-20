@@ -7,9 +7,6 @@ namespace solo
     class StubDevice: public Device
     {
     public:
-        virtual void beginUpdate() override;
-        virtual void endUpdate() override;
-
         virtual void setWindowTitle(const std::string& title) override;
         virtual std::string getWindowTitle() const override;
 
@@ -21,6 +18,9 @@ namespace solo
 
     private:
         friend class Device;
+
+        virtual void beginUpdate() override;
+        virtual void endUpdate() override;
 
         explicit StubDevice(const DeviceCreationArgs& args);
 
