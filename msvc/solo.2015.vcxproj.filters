@@ -726,12 +726,6 @@
     <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsframebuffer.c">
       <Filter>src\vendor\sdl</Filter>
     </ClCompile>
-    <ClCompile Include="..\vendor\SDL\2.0.4\src\haptic\windows\SDL_windowshaptic.c">
-      <Filter>src\vendor\sdl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\windows\SDL_windowsjoystick.c">
-      <Filter>src\vendor\sdl</Filter>
-    </ClCompile>
     <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowskeyboard.c">
       <Filter>src\vendor\sdl</Filter>
     </ClCompile>
@@ -768,12 +762,6 @@
     <ClCompile Include="..\vendor\SDL\2.0.4\src\core\windows\SDL_xinput.c">
       <Filter>src\vendor\sdl</Filter>
     </ClCompile>
-    <ClCompile Include="..\vendor\SDL\2.0.4\src\haptic\windows\SDL_xinputhaptic.c">
-      <Filter>src\vendor\sdl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\windows\SDL_xinputjoystick.c">
-      <Filter>src\vendor\sdl</Filter>
-    </ClCompile>
     <ClCompile Include="..\vendor\SDL\2.0.4\src\render\SDL_yuv_mmx.c">
       <Filter>src\vendor\sdl</Filter>
     </ClCompile>
@@ -781,6 +769,12 @@
       <Filter>src\vendor\sdl</Filter>
     </ClCompile>
     <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\SDL_joystick.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\dummy\SDL_sysjoystick.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\haptic\dummy\SDL_syshaptic.c">
       <Filter>src\vendor\sdl</Filter>
     </ClCompile>
     <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\SDL_gamecontroller.c">
