@@ -13,25 +13,11 @@
 using namespace solo;
 
 
-DeviceCreationArgs openGlArgs
-{
-    DeviceMode::OpenGL,
-    800,
-    600
-};
-
-
-DeviceCreationArgs stubArgs
-{
-    DeviceMode::Stub,
-    1,
-    1
-};
-
-
 void runCppUnitTests()
 {
-    auto device = Device::create(stubArgs);
+    DeviceCreationArgs args;
+    args.mode = DeviceMode::Stub;
+    auto device = Device::create(args);
     Resources_Test(device.get()).run();
     Device_Test(device.get()).run();
     Components_Test(device.get()).run();
@@ -44,7 +30,11 @@ void runCppUnitTests()
 
 void runCppIntegrationTests()
 {
-    auto device = Device::create(openGlArgs);
+    DeviceCreationArgs args;
+    args.mode = DeviceMode::OpenGL;
+    args.canvasWidth = 800;
+    args.canvasHeight = 600;
+    auto device = Device::create(args);
     FileSystem_Test(device.get()).run();
     Materials_Test(device.get()).run();
     FrameBuffer_Test(device.get()).run();

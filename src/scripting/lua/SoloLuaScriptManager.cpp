@@ -773,9 +773,7 @@ void LuaScriptManager::registerApi()
 
     // DeviceCreationArgs
     auto deviceCreationArgs = module.beginClass<DeviceCreationArgs>("DeviceCreationArgs");
-    deviceCreationArgs.addConstructor(LUA_ARGS(
-        _opt<DeviceMode>, _opt<uint32_t>, _opt<uint32_t>, _opt<bool>,
-        _opt<std::string>, _opt<uint32_t>, _opt<uint32_t>, _opt<std::string>));
+    deviceCreationArgs.addConstructor(LUA_ARGS());
     REGISTER_VARIABLE(deviceCreationArgs, DeviceCreationArgs, mode);
     REGISTER_VARIABLE(deviceCreationArgs, DeviceCreationArgs, bits);
     REGISTER_VARIABLE(deviceCreationArgs, DeviceCreationArgs, canvasWidth);

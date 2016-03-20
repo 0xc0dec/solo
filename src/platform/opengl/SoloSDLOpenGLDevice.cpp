@@ -247,25 +247,25 @@ void SDLOpenGLDevice::processKeyboardEvent(const SDL_Event& evt)
         return;
     switch (evt.type)
     {
-    case SDL_KEYUP:
-    case SDL_KEYDOWN:
-        {
-            auto it = keymap.find(evt.key.keysym.sym);
-            if (it == keymap.end())
+        case SDL_KEYUP:
+        case SDL_KEYDOWN:
+            {
+                auto it = keymap.find(evt.key.keysym.sym);
+                if (it == keymap.end())
+                    break;
+                auto code = it->second;
+                if (evt.type == SDL_KEYUP)
+                {
+                    releasedKeys.insert(code);
+                    pressedKeys.erase(code);
+                }
+                else
+                {
+                    pressedKeys[code] = evt.key.repeat == 0;
+                    releasedKeys.erase(code);
+                }
                 break;
-            auto code = it->second;
-            if (evt.type == SDL_KEYUP)
-            {
-                releasedKeys.insert(code);
-                pressedKeys.erase(code);
             }
-            else
-            {
-                pressedKeys[code] = evt.key.repeat == 0;
-                releasedKeys.erase(code);
-            }
-            break;
-        }
     }
 }
 

@@ -1,8 +1,10 @@
-local args = solo.DeviceCreationArgs(solo.DeviceMode.Stub, 1, 1)
+local args = solo.DeviceCreationArgs()
+args.mode = solo.DeviceMode.Stub
+args.canvasWidth = 1
+args.canvasHeight = 1
 args.logFilePath = "lua-tests.log"
 device = solo.Device.create(args)
 logger = device:getLogger()
-
 logger:logInfo("Running Lua tests...")
 
 function runTest(test, name)

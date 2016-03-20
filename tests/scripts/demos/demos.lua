@@ -4,8 +4,14 @@ local demos = {
 }
 
 function runDemo(path)
-	local args = solo.DeviceCreationArgs(solo.DeviceMode.OpenGL, 1366, 700, false, "Solo Tester")
+	local args = solo.DeviceCreationArgs()
+	args.mode = solo.DeviceMode.OpenGL
+	args.canvasWidth = 1366
+	args.canvasHeight = 700
+	args.fullScreen = false
+	args.windowTitle = "Solo Tester"
 	args.logFilePath = "demo.log"
+	
 	local device = solo.Device.create(args)
 	local demo = dofile(path)
 

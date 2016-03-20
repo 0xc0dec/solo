@@ -2,7 +2,6 @@
 
 #include "SoloBase.h"
 #include "SoloVector2.h"
-#include <functional>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -46,34 +45,14 @@ namespace solo
 
     struct DeviceCreationArgs
     {
-        DeviceMode mode;
-        uint32_t canvasWidth;
-        uint32_t canvasHeight;
-        bool fullScreen;
+        DeviceMode mode = DeviceMode::Stub;
+        uint32_t canvasWidth = 800;
+        uint32_t canvasHeight = 600;
+        bool fullScreen = false;
         std::string windowTitle;
-        uint32_t bits;
-        uint32_t depth;
+        uint32_t bits = 32;
+        uint32_t depth = 24;
         std::string logFilePath;
-
-        DeviceCreationArgs(
-            DeviceMode mode = DeviceMode::OpenGL,
-            uint32_t canvasWidth = 800,
-            uint32_t canvasHeight = 600,
-            bool fullScreen = false,
-            const std::string& windowTitle = "",
-            uint32_t bits = 32,
-            uint32_t depth = 16,
-            const std::string& logFilePath = "") :
-            mode(mode),
-            canvasWidth(canvasWidth > 0 ? canvasWidth : 1),
-            canvasHeight(canvasHeight > 0 ? canvasHeight : 1),
-            fullScreen(fullScreen),
-            windowTitle(windowTitle),
-            bits(bits > 0 ? bits : 32),
-            depth(depth > 0 ? depth : 16),
-            logFilePath(logFilePath)
-        {
-        }
     };
 
     class Device
@@ -136,7 +115,6 @@ namespace solo
         shared<Graphics> graphics;
         shared<Logger> logger;
 
-        // stores what keys were pressed and if it was a repeat
         std::unordered_map<KeyCode, bool> pressedKeys;
         std::unordered_set<KeyCode> releasedKeys;
 
