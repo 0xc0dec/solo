@@ -32,10 +32,11 @@ file(GLOB_RECURSE sources
     "src/platform/stub/.cpp"
     "src/platform/opengl/.cpp"
     "src/scripting/lua/*.cpp"
-    "vendor/glew/src/*.c"
-    "vendor/png/src/*.c"
-    "vendor/zlib/src/*.c"
 )
+
+file(GLOB_RECURSE glew_sources "vendor/glew/src/*.c")
+file(GLOB_RECURSE png_sources "vendor/png/src/*.c")
+file(GLOB_RECURSE zlib_sources "vendor/zlib/src/*.c")
 
 file(GLOB sdl_sources
     "vendor/SDL/2.0.4/src/*.c"
@@ -92,7 +93,7 @@ set(frameworks
     ${opengl_lib}
     ${corefoundation_lib})
 
-add_library(solo STATIC ${sdl_sources} ${sources})
+add_library(solo STATIC ${sdl_sources} ${glew_sources} ${png_sources} ${zlib_sources} ${sources})
 target_link_libraries(solo lua ${frameworks})
 
 # Tester
