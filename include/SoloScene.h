@@ -3,6 +3,7 @@
 #include "SoloBase.h"
 #include <unordered_map>
 #include <list>
+#include <vector>
 
 
 namespace solo
