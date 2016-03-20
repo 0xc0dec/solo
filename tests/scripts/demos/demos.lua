@@ -6,12 +6,12 @@ local demos = {
 function runDemo(path)
 	local args = solo.DeviceCreationArgs()
 	args.mode = solo.DeviceMode.OpenGL
-	args.canvasWidth = 1366
-	args.canvasHeight = 700
+	args.canvasWidth = 1200
+	args.canvasHeight = 600
 	args.fullScreen = false
 	args.windowTitle = "Solo Tester"
 	args.logFilePath = "demo.log"
-	
+
 	local device = solo.Device.create(args)
 	local demo = dofile(path)
 
