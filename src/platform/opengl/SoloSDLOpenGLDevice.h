@@ -3,6 +3,7 @@
 #include "SoloDevice.h"
 #include <SDL.h>
 
+
 namespace solo
 {
     class SDLOpenGLDevice : public Device
