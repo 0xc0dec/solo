@@ -39,17 +39,17 @@ function runDemo2()
 
 				local saturateEffect = resMgr:getOrCreateEffect(shaders.vertex.passThrough, shaders.fragment.postProcessSaturate)
 				self.saturateMat = resMgr:getOrCreateMaterial(saturateEffect)
-				self.saturateMat:setFloatParameter("leftSeparator", 0.25)
-				self.saturateMat:setFloatParameter("rightSeparator", 0.5)
+				self.saturateMat:setFloatParameter("leftSeparator", 0.75)
+				self.saturateMat:setFloatParameter("rightSeparator", 1)
 
 				local verticalBlurEffect = resMgr:getOrCreateEffect(shaders.vertex.passThrough, shaders.fragment.postProcessVerticalBlur)
 				self.verticalBlurMat = resMgr:getOrCreateMaterial(verticalBlurEffect)
-				self.verticalBlurMat:setFloatParameter("leftSeparator", 0.5)
+				self.verticalBlurMat:setFloatParameter("leftSeparator", 0.25)
 				self.verticalBlurMat:setFloatParameter("rightSeparator", 0.75)
 
 				local horizontalBlurEffect = resMgr:getOrCreateEffect(shaders.vertex.passThrough, shaders.fragment.postProcessHorizontalBlur)
 				self.horizontalBlurMat = resMgr:getOrCreateMaterial(horizontalBlurEffect)
-				self.horizontalBlurMat:setFloatParameter("leftSeparator", 0.5)
+				self.horizontalBlurMat:setFloatParameter("leftSeparator", 0.25)
 				self.horizontalBlurMat:setFloatParameter("rightSeparator", 0.75)
 			end,
 
