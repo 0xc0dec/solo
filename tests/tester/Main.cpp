@@ -90,8 +90,7 @@ int main()
 #ifdef SL_DEBUG
     runInStubEngine(runCppUnitTests, "cpp-unit-tests.log");
     runInRealEngine(runCppIntegrationTests, "cpp-integration-tests.log");
-    runInStubEngine([](shared<Device> device) { device->getScriptManager()->executeFile("../tests/scripts/smoke-tests/tests.lua"); },
-        "lua-smoke-tests.log");
+    runInStubEngine(runLuaUnitTests, "lua-smoke-tests.log");
 #endif
     runDemos();
     return 0;
