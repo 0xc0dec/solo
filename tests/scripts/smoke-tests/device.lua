@@ -28,4 +28,6 @@ runTest(function()
 	assert(device:isMouseButtonDown(solo.MouseButton.Left) ~= nil)
 	assert(device:isMouseButtonReleased(solo.MouseButton.Left) ~= nil)
 	assert(device:getTimeDelta() ~= nil)
+
+	device:saveScreenshot("abc")
 end, "Device")

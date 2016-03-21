@@ -14,6 +14,8 @@ namespace solo
         virtual void setWindowTitle(const std::string& title) override final;
         virtual std::string getWindowTitle() const override final;
 
+        virtual void saveScreenshot(const std::string& path) override final;
+
         virtual void setCursorCaptured(bool captured) override final;
 
         virtual float getLifetime() const override final;

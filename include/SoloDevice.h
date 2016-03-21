@@ -67,6 +67,8 @@ namespace solo
         virtual void setWindowTitle(const std::string& title) = 0;
         virtual std::string getWindowTitle() const = 0;
 
+        virtual void saveScreenshot(const std::string& path) = 0;
+
         virtual void setCursorCaptured(bool captured) = 0;
         virtual Vector2 getCanvasSize() const = 0;
         virtual float getLifetime() const = 0;

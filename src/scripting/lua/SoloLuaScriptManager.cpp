@@ -807,6 +807,7 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(device, Device, getMode);
     REGISTER_METHOD(device, Device, run);
     REGISTER_METHOD(device, Device, stopRunning);
+    REGISTER_METHOD(device, Device, saveScreenshot);
     device.endClass();
 
     // Graphics

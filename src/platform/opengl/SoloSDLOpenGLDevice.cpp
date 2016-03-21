@@ -3,6 +3,7 @@
 #include <list>
 #include <tuple>
 #include <GL/glew.h>
+#include <SDL_surface.h>
 
 using namespace solo;
 
@@ -195,6 +196,19 @@ void SDLOpenGLDevice::setWindowTitle(const std::string& title)
 std::string SDLOpenGLDevice::getWindowTitle() const
 {
     return std::string(SDL_GetWindowTitle(window));
+}
+
+
+void SDLOpenGLDevice::saveScreenshot(const std::string& path)
+{
+    int32_t width, height;
+    SDL_GetWindowSize(window, &width, &height);
+
+    auto surface = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
+    glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
+    SDL_SaveBMP(surface, path.c_str());
+
+    SDL_FreeSurface(surface);
 }
 
 
