@@ -10,9 +10,10 @@ An engine for my personal graphics/gamedev experiments, not meant for anything s
 * Render to texture.
 * Convenient system for applying post-processing effects.
 
-In one GIF:
+## Screenshots
 
-![Current progress](/status.gif?raw=true)
+![1](/screenshots/screenshot3.png?raw=true)
+![2](/screenshots/screenshot4.png?raw=true)
 
 ## Made possible thanks to
 * GLEW
