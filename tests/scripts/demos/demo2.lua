@@ -9,6 +9,7 @@ function runDemo2()
 	local shaders = dofile("../tests/scripts/demos/shaders.lua")
 	local createEscapeWatcher = dofile("../tests/scripts/demos/escape-watcher.lua")
 	local createMaterialTimeUpdater = dofile("../tests/scripts/demos/material-time-updater.lua")
+	local createScreenshoter = dofile("../tests/scripts/demos/screenshoter.lua")
 	local utils = dofile("../tests/scripts/demos/utils.lua")
 
 	local camera
@@ -108,6 +109,7 @@ function runDemo2()
 		camera:setNear(0.05)
 		node:addScript(createEscapeWatcher(device))
 		node:addScript(createPostProcessor())
+		node:addScript(createScreenshoter(device, "demo2-screenshot.bmp"))
 		logger:logInfo("Initialized camera")
 	end
 
