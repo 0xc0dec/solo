@@ -206,6 +206,20 @@ void SDLOpenGLDevice::saveScreenshot(const std::string& path)
 
     auto surface = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
     glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
+
+    // Flip the image
+    std::vector<uint8_t> buf;
+    buf.reserve(surface->pitch);
+    auto pixels = static_cast<uint8_t*>(surface->pixels);
+    for (uint32_t row = 0; row < height / 2; ++row)
+    {
+        auto row1 = pixels + surface->pitch * row;
+        auto row2 = pixels + surface->pitch * (height - row - 1);
+        memcpy(buf.data(), row1, surface->pitch);
+        memcpy(row1, row2, surface->pitch);
+        memcpy(row2, buf.data(), surface->pitch);
+    }
+
     SDL_SaveBMP(surface, path.c_str());
 
     SDL_FreeSurface(surface);
