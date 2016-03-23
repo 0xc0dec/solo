@@ -69,6 +69,7 @@ namespace solo
 
         std::string generateUri();
         MeshLoader* getMeshLoader(const std::string& uri);
+        ImageLoader* getImageLoader(const std::string& uri);
 
         template <typename TResource>
         static void cleanUnusedResources(ResourceCollection<TResource>& resources);

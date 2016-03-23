@@ -55,6 +55,17 @@ MeshLoader* ResourceManager::getMeshLoader(const std::string& uri)
 }
 
 
+ImageLoader* ResourceManager::getImageLoader(const std::string& uri)
+{
+    for (const auto& l : imageLoaders)
+    {
+        if (l->isLoadable(uri))
+            return l.get();
+    }
+    SL_FMT_THROW(ResourceException, "No suitable loader found for image ", uri);
+}
+
+
 shared<Effect> ResourceManager::findEffect(const std::string& uri)
 {
     return findResource(uri, effects);
@@ -154,33 +165,24 @@ shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& imageUr
 }
 
 
-shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std::string>& imageUris, const std::string& uri)
+shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std::string>& sidesUris, const std::string& uri)
 {
     auto textureUri = uri.empty()
-        ? imageUris[0] + imageUris[1] + imageUris[2] + imageUris[3] + imageUris[4] + imageUris[5]
+        ? sidesUris[0] + sidesUris[1] + sidesUris[2] + sidesUris[3] + sidesUris[4] + sidesUris[5]
         : uri;
     auto existing = findCubeTexture(textureUri);
     if (existing)
         return existing;
 
     auto result = SL_NEW_SHARED(CubeTexture, device->getRenderer());
+    auto loader = getImageLoader(sidesUris[0]);
+
     auto idx = 0;
-    for (auto& imageUri : imageUris)
+    for (const auto& imageUri : sidesUris)
     {
-        shared<Image> image;
-        for (const auto& loader : imageLoaders)
-        {
-            if (loader->isLoadable(imageUri))
-            {
-                image = loader->load(imageUri);
-                auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + idx);
-                result->setData(face, image->colorFormat, image->data, image->width, image->height);
-                break;
-            }
-        }
-        if (!image)
-            SL_FMT_THROW(ResourceException, "No suitable loader found for image ", imageUri);
-        idx++;
+        auto image = loader->load(imageUri);
+        auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + idx++);
+        result->setData(face, image->colorFormat, image->data, image->width, image->height);
     }
 
     cubeTextures[textureUri] = result;
@@ -200,18 +202,7 @@ void ResourceManager::getOrLoadCubeTextureAsync(const std::vector<std::string>& 
         return;
     }
 
-    // TODO avoid copypaste
-    ImageLoader* loader = nullptr;
-    for (const auto& l : imageLoaders)
-    {
-        if (l->isLoadable(sidesUris[0]))
-        {
-            loader = l.get();
-            break;
-        }
-    }
-    if (!loader)
-        return; // TODO
+    auto loader = getImageLoader(sidesUris[0]);
 
     std::vector<async::task<shared<Image>>> imageTasks;
     for (uint32_t i = 0; i < sidesUris.size(); i++)
