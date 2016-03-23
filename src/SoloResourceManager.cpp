@@ -187,6 +187,63 @@ shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std:
     return result;
 }
 
+#include <iostream>
+
+void ResourceManager::getOrLoadCubeTextureAsync(const std::vector<std::string>& imageUris, std::function<void(shared<CubeTexture>)> callback, const std::string& uri)
+{
+    // TODO avoid copypasting
+    auto textureUri = uri.empty()
+        ? imageUris[0] + imageUris[1] + imageUris[2] + imageUris[3] + imageUris[4] + imageUris[5]
+        : uri;
+    auto existing = findCubeTexture(textureUri);
+    if (existing)
+    {
+        callback(existing);
+        return;
+    }
+
+    // TODO avoid copypaste
+    ImageLoader* loader = nullptr;
+    for (const auto& l : imageLoaders)
+    {
+        if (l->isLoadable(imageUris[0]))
+        {
+            loader = l.get();
+            break;
+        }
+    }
+    if (!loader)
+        return; // TODO
+
+    std::vector<async::task<shared<Image>>> imageTasks;
+    for (uint32_t i = 0; i < imageUris.size(); i++)
+    {
+        auto sizeUri = imageUris[i];
+        imageTasks.push_back(async::spawn([=]
+        {
+            return shared<Image>{ loader->load(sizeUri) };
+        }));
+    }
+
+    async::when_all(imageTasks.begin(), imageTasks.end()).then([=] (std::vector<async::task<shared<Image>>> imageTasks) {
+        std::vector<shared<Image>> images;
+        std::transform(imageTasks.begin(), imageTasks.end(), std::back_inserter(images), [](async::task<shared<Image>>& t) { return t.get(); });
+
+        auto lock = this->tasksLock.acquire();
+        this->tasks.push_back(std::bind([=] (const std::vector<shared<Image>>& images)
+        {
+            auto texture = SL_MAKE_SHARED<CubeTexture>(this->device->getRenderer());
+            uint32_t idx = 0;
+            for (const auto& image : images)
+            {
+                auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + idx++);
+                texture->setData(face, image->colorFormat, image->data, image->width, image->height);
+            }
+            callback(texture);
+        }, std::move(images)));
+    });
+}
+
 
 shared<Mesh> ResourceManager::getOrLoadMesh(const std::string& dataUri, const std::string& uri)
 {

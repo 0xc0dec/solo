@@ -17,7 +17,7 @@ bool StubImageLoader::isLoadable(const std::string& uri)
 }
 
 
-shared<Image> StubImageLoader::load(const std::string& uri)
+unique<Image> StubImageLoader::load(const std::string& uri)
 {
-    return SL_NEW_SHARED(Image);
+    return SL_MAKE_UNIQUE<Image>();
 }

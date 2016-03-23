@@ -36,7 +36,7 @@ bool PngImageLoader::isLoadable(const std::string& uri)
 }
 
 
-shared<Image> PngImageLoader::load(const std::string& uri)
+unique<Image> PngImageLoader::load(const std::string& uri)
 {
     auto bytes = fs->readBytes(uri);
     if (bytes.size() < 8 || png_sig_cmp(&bytes[0], 0, 8) != 0)
@@ -76,13 +76,12 @@ shared<Image> PngImageLoader::load(const std::string& uri)
     }
 
     auto stride = png_get_rowbytes(png, info);
-    auto result = SL_NEW_SHARED(Image,
-    {
-        static_cast<uint32_t>(width),
-        static_cast<uint32_t>(height),
-        colorFormat
-    });
+    auto result = SL_MAKE_UNIQUE<Image>();
+    result->width = static_cast<uint32_t>(width);
+    result->height = static_cast<uint32_t>(height);
+    result->colorFormat = colorFormat;
     result->data.resize(stride * height);
+
     auto rows = png_get_rows(png, info);
     for (uint32_t i = 0; i < height; ++i)
         memcpy(result->data.data() + stride * (height - i - 1), rows[i], stride);

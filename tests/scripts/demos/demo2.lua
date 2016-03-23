@@ -103,15 +103,23 @@ function runDemo2()
 	end
 
 	function initSkybox()
-		utils.createSkybox(resMgr, scene, {
+		function callback(texture)
+			texture:setWrapping(solo.TextureWrapping.Clamp)
+			texture:setFiltering(solo.TextureFiltering.Linear)
+			local node = scene:createNode()
+			local renderer = node:addComponent("SkyboxRenderer")
+			renderer:setTexture(texture)
+			logger:logInfo("Initialized skybox")
+		end
+
+		resMgr:getOrLoadCubeTextureAsync({
 			"../data/skyboxes/deep-space/front.png",
 			"../data/skyboxes/deep-space/back.png",
 			"../data/skyboxes/deep-space/left.png",
 			"../data/skyboxes/deep-space/right.png",
 			"../data/skyboxes/deep-space/top.png",
 			"../data/skyboxes/deep-space/bottom.png"
-		})
-		logger:logInfo("Initialized skybox")
+		}, callback)
 	end
 
 	function initCamera()
@@ -128,8 +136,8 @@ function runDemo2()
 		logger:logInfo("Initialized camera")
 	end
 
-	initSkybox()
 	initCamera()
+	initSkybox()
 	initMesh()
 
 	device:run()

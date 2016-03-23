@@ -11,6 +11,6 @@ namespace solo
         PngImageLoader(FileSystem* fs, ResourceManager* resourceManager);
 
         virtual bool isLoadable(const std::string& uri) override final;
-        virtual shared<Image> load(const std::string& uri) override final;
+        virtual unique<Image> load(const std::string& uri) override final;
     };
 }
