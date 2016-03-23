@@ -5,8 +5,6 @@
 #include <vector>
 #include <unordered_map>
 #include <functional>
-#include <thread>
-#include <mutex>
 
 
 namespace solo
@@ -27,7 +25,7 @@ namespace solo
     class ResourceManager
     {
     public:
-        static shared<ResourceManager> create(Device* device, int workersCount);
+        static shared<ResourceManager> create(Device* device);
 
         SL_NONCOPYABLE(ResourceManager)
         ~ResourceManager();
@@ -58,7 +56,7 @@ namespace solo
         void update();
 
     protected:
-        explicit ResourceManager(Device* device, int workersCount);
+        explicit ResourceManager(Device* device);
 
         std::vector<unique<ImageLoader>> imageLoaders;
         std::vector<unique<MeshLoader>> meshLoaders;
@@ -67,8 +65,6 @@ namespace solo
         template <typename TResource> using ResourceCollection = std::unordered_map<std::string, shared<TResource>>;
 
         std::string generateUri();
-        void runWorker();
-        shared<Mesh> processLoadedMeshData(unique<MeshData> data, const std::string& meshUri);
         MeshLoader* getMeshLoader(const std::string& uri);
 
         template <typename TResource>
@@ -97,13 +93,7 @@ namespace solo
 
         uint32_t resourceCounter = 0;
 
-        bool stopWorkers = false;
         SpinLock foregroundTasksLock; // TODO rename to "not lock"
-        std::condition_variable workersSignal;
-        std::mutex workersMutex;
-
-        std::list<unique<class Task>> backgroundTasks;
-        std::list<unique<class Task>> foregroundTasks; // TODO unique_ptr in similar places as well
-        std::vector<std::thread> workers;
+        std::list<std::function<void()>> foregroundTasks;
     };
 }

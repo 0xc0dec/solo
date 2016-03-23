@@ -7,7 +7,7 @@ using namespace solo;
 
 
 StubResourceManager::StubResourceManager(Device* device):
-    ResourceManager(device, 0)
+    ResourceManager(device)
 {
     imageLoaders.clear();
     imageLoaders.push_back(SL_MAKE_UNIQUE<StubImageLoader>(device->getFileSystem(), this));

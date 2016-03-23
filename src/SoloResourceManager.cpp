@@ -9,127 +9,38 @@
 #include "SoloDevice.h"
 #include "SoloObjMeshLoader.h"
 #include "SoloImage.h"
-#include "SoloLogger.h"
 #include "platform/stub/SoloStubResourceManager.h"
 #include <functional>
-
-
-namespace solo
-{
-    class Task
-    {
-    public:
-        virtual ~Task() {}
-        virtual void process() = 0;
-        virtual void finish() = 0;
-    };
-
-    class LoadMeshTask final: public Task
-    {
-    public:
-        using UserCallback = std::function<void(shared<Mesh>)>;
-        using SystemCallback = std::function<shared<Mesh>(unique<MeshData>, const std::string&)>;
-
-        LoadMeshTask(const std::string& dataUri, const std::string& meshUri, MeshLoader* loader,
-            SystemCallback systemCallback, UserCallback userCallback):
-            loader(loader),
-            dataUri(dataUri),
-            meshUri(meshUri),
-            systemCallback(systemCallback),
-            userCallback(userCallback)
-        {
-        }
-
-        virtual void process() override final
-        {
-            meshData = std::move(loader->loadData(dataUri));
-        }
-
-        virtual void finish() override final
-        {
-            auto mesh = systemCallback(std::move(meshData), meshUri);
-            userCallback(mesh);
-        }
-
-    private:
-        MeshLoader* loader;
-        unique<MeshData> meshData;
-        std::string dataUri;
-        std::string meshUri;
-        SystemCallback systemCallback;
-        UserCallback userCallback;
-    };
-}
+#define LIBASYNC_STATIC
+#include <async++.h>
 
 using namespace solo;
 
 
-shared<ResourceManager> ResourceManager::create(Device* device, int workersCount)
+shared<ResourceManager> ResourceManager::create(Device* device)
 {
     if (device->getMode() == DeviceMode::Stub)
         return SL_NEW_SHARED(StubResourceManager, device);
-    return SL_NEW_SHARED(ResourceManager, device, workersCount);
+    return SL_NEW_SHARED(ResourceManager, device);
 }
 
 
-ResourceManager::ResourceManager(Device* device, int workersCount):
+ResourceManager::ResourceManager(Device* device):
     device(device)
 {
     imageLoaders.push_back(SL_MAKE_UNIQUE<PngImageLoader>(device->getFileSystem(), this));
     meshLoaders.push_back(SL_MAKE_UNIQUE<ObjMeshLoader>(device->getFileSystem(), this));
-
-    for (int32_t i = 0; i < workersCount; i++)
-        workers.push_back(std::thread(&ResourceManager::runWorker, this));
 }
 
 
 ResourceManager::~ResourceManager()
 {
-    stopWorkers = true;
-    workersSignal.notify_all();
-    for (auto& t : workers)
-        t.join();
 }
 
 
 std::string ResourceManager::generateUri()
 {
     return std::string("/generated/") + std::to_string(++resourceCounter);
-}
-
-
-void ResourceManager::runWorker()
-{
-    while (true)
-    {
-        unique<Task> task;
-        {
-            std::unique_lock<std::mutex> lock(workersMutex);
-            workersSignal.wait(lock, [&]() { return !backgroundTasks.empty() || stopWorkers; });
-            if (stopWorkers)
-                break;
-            task = std::move(backgroundTasks.front());
-            backgroundTasks.pop_front();
-        }
-        if (!task)
-            continue;
-
-        {
-            auto lock = foregroundTasksLock.lock();
-            task->process();
-            foregroundTasks.push_back(std::move(task));
-        }
-    }
-}
-
-
-shared<Mesh> ResourceManager::processLoadedMeshData(unique<MeshData> data, const std::string& meshUri)
-{
-    // TODO this effectively rewrites anything that might have been put by this uri
-    // while the mesh data has been loading. Probably ok for now
-    auto mesh = SL_MAKE_SHARED<Mesh>(device->getRenderer(), data.get());
-    meshes[meshUri] = mesh;
-    return mesh;
 }
 
 
@@ -302,15 +213,19 @@ void ResourceManager::getOrLoadMeshAsync(const std::string& dataUri, std::functi
     }
 
     auto loader = getMeshLoader(dataUri);
-
-    {
-        std::unique_lock<std::mutex> lock(workersMutex);
-        auto task = SL_MAKE_UNIQUE<LoadMeshTask>(dataUri, meshUri, loader,
-            std::bind(&ResourceManager::processLoadedMeshData, this, std::placeholders::_1, std::placeholders::_2),
-            callback);
-        backgroundTasks.push_back(std::move(task));
-    }
-    workersSignal.notify_all();
+    
+    async::spawn([=] {
+        auto data = loader->loadData(dataUri);
+        shared<MeshData> sharedData{ std::move(data) };
+        auto lock = this->foregroundTasksLock.lock();
+        this->foregroundTasks.push_back([=]()
+        {
+            // This called is later called in the update() method
+            auto mesh = SL_MAKE_SHARED<Mesh>(this->device->getRenderer(), sharedData.get());
+            this->meshes[meshUri] = mesh;
+            callback(mesh);
+        });
+    });
 }
 
 
@@ -400,8 +315,8 @@ void ResourceManager::update()
         auto lt = foregroundTasksLock.lock();
         if (!foregroundTasks.empty())
         {
-            auto task = std::move(foregroundTasks.back());
-            task->finish();
+            auto func = std::move(foregroundTasks.back());
+            func();
             foregroundTasks.pop_back();
         }
     }

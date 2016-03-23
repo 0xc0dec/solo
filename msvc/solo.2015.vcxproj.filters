@@ -783,6 +783,12 @@
     <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\SDL_gamecontroller.c">
       <Filter>src\vendor\sdl</Filter>
     </ClCompile>
+    <ClCompile Include="..\vendor\async++\src\scheduler.cpp">
+      <Filter>src\vendor\async++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\async++\src\threadpool_scheduler.cpp">
+      <Filter>src\vendor\async++</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -820,6 +826,9 @@
     </Filter>
     <Filter Include="src\vendor\sdl">
       <UniqueIdentifier>{34eeae20-bf80-4ab8-8321-a68d67849f4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\vendor\async++">
+      <UniqueIdentifier>{d0af1de6-625d-4405-a5f0-f612925fdddf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
