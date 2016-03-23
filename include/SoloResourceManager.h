@@ -49,7 +49,7 @@ namespace solo
         shared<Texture2D> getOrLoadTexture2D(const std::string& imageUri, const std::string& uri = "");
         
         shared<CubeTexture> getOrLoadCubeTexture(const std::vector<std::string>& imageUris, const std::string& uri = "");
-        void getOrLoadCubeTextureAsync(const std::vector<std::string>& imageUris, std::function<void(shared<CubeTexture>)> callback, const std::string& uri = "");
+        void getOrLoadCubeTextureAsync(const std::vector<std::string>& sidesUris, std::function<void(shared<CubeTexture>)> callback, const std::string& uri = "");
 
         shared<Mesh> getOrLoadMesh(const std::string& dataUri, const std::string& uri = "");
         void getOrLoadMeshAsync(const std::string& dataUri, std::function<void(shared<Mesh>)> callback, const std::string& uri = "");

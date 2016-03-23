@@ -187,13 +187,11 @@ shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std:
     return result;
 }
 
-#include <iostream>
 
-void ResourceManager::getOrLoadCubeTextureAsync(const std::vector<std::string>& imageUris, std::function<void(shared<CubeTexture>)> callback, const std::string& uri)
+void ResourceManager::getOrLoadCubeTextureAsync(const std::vector<std::string>& sidesUris, std::function<void(shared<CubeTexture>)> callback, const std::string& uri)
 {
-    // TODO avoid copypasting
     auto textureUri = uri.empty()
-        ? imageUris[0] + imageUris[1] + imageUris[2] + imageUris[3] + imageUris[4] + imageUris[5]
+        ? sidesUris[0] + sidesUris[1] + sidesUris[2] + sidesUris[3] + sidesUris[4] + sidesUris[5] // TODO avoid copypasting
         : uri;
     auto existing = findCubeTexture(textureUri);
     if (existing)
@@ -206,7 +204,7 @@ void ResourceManager::getOrLoadCubeTextureAsync(const std::vector<std::string>& 
     ImageLoader* loader = nullptr;
     for (const auto& l : imageLoaders)
     {
-        if (l->isLoadable(imageUris[0]))
+        if (l->isLoadable(sidesUris[0]))
         {
             loader = l.get();
             break;
@@ -216,9 +214,9 @@ void ResourceManager::getOrLoadCubeTextureAsync(const std::vector<std::string>& 
         return; // TODO
 
     std::vector<async::task<shared<Image>>> imageTasks;
-    for (uint32_t i = 0; i < imageUris.size(); i++)
+    for (uint32_t i = 0; i < sidesUris.size(); i++)
     {
-        auto sizeUri = imageUris[i];
+        auto sizeUri = sidesUris[i];
         imageTasks.push_back(async::spawn([=]
         {
             return shared<Image>{ loader->load(sizeUri) };
