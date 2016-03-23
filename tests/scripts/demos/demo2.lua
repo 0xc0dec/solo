@@ -13,20 +13,20 @@ function runDemo2()
 	local utils = dofile("../tests/scripts/demos/utils.lua")
 
 	local camera
-
-	function test()
-		return {
-			typeId = 2000,
-
-			update = function()
-				if device:isKeyPressed(solo.KeyCode.T, true) then
-					resMgr:getOrLoadMeshAsync("../data/teapot.obj", function(mesh)
-						print("Loaded")
-					end)
-				end
-			end
-		}
-	end
+	--
+	-- function test()
+	-- 	return {
+	-- 		typeId = 2000,
+	--
+	-- 		update = function()
+	-- 			if device:isKeyPressed(solo.KeyCode.T, true) then
+	-- 				resMgr:getOrLoadMeshAsync("../data/teapot.obj", function(mesh)
+	-- 					print("Loaded")
+	-- 				end)
+	-- 			end
+	-- 		end
+	-- 	}
+	-- end
 
 	function createPostProcessor()
 		return {
@@ -92,13 +92,14 @@ function runDemo2()
 		mat:setPolygonFace(solo.PolygonFace.All)
 		mat:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
 		mat:setTextureParameter("mainTex", tex)
-		local mesh = resMgr:getOrLoadMesh("../data/monkey.obj")
-		local node = scene:createNode()
-		local renderer = node:addComponent("MeshRenderer")
-		renderer:setMesh(mesh)
-		renderer:setMaterial(0, mat)
-		node:addScript(createMaterialTimeUpdater(device, "time"))
-		logger:logInfo("Initialized mesh")
+		resMgr:getOrLoadMeshAsync("../data/monkey.obj", function(mesh)
+			local node = scene:createNode()
+			local renderer = node:addComponent("MeshRenderer")
+			renderer:setMesh(mesh)
+			renderer:setMaterial(0, mat)
+			node:addScript(createMaterialTimeUpdater(device, "time"))
+			logger:logInfo("Initialized mesh")
+		end)
 	end
 
 	function initSkybox()
@@ -124,13 +125,12 @@ function runDemo2()
 		node:addScript(createEscapeWatcher(device))
 		node:addScript(createPostProcessor())
 		node:addScript(createScreenshoter(device, "demo2-screenshot.bmp"))
-		node:addScript(test())
 		logger:logInfo("Initialized camera")
 	end
 
-	initMesh()
 	initSkybox()
 	initCamera()
+	initMesh()
 
 	device:run()
 end

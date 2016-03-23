@@ -16,9 +16,6 @@
 
 namespace solo
 {
-    using LoadMeshUserCallback = std::function<void(shared<Mesh>)>;
-    using LoadMeshSystemCallback = std::function<shared<Mesh>(unique<MeshData>, const std::string&)>;
-
     class Task
     {
     public:
@@ -30,8 +27,11 @@ namespace solo
     class LoadMeshTask final: public Task
     {
     public:
+        using UserCallback = std::function<void(shared<Mesh>)>;
+        using SystemCallback = std::function<shared<Mesh>(unique<MeshData>, const std::string&)>;
+
         LoadMeshTask(const std::string& dataUri, const std::string& meshUri, MeshLoader* loader,
-            LoadMeshSystemCallback systemCallback, LoadMeshUserCallback userCallback):
+            SystemCallback systemCallback, UserCallback userCallback):
             loader(loader),
             dataUri(dataUri),
             meshUri(meshUri),
@@ -56,8 +56,8 @@ namespace solo
         unique<MeshData> meshData;
         std::string dataUri;
         std::string meshUri;
-        LoadMeshSystemCallback systemCallback;
-        LoadMeshUserCallback userCallback;
+        SystemCallback systemCallback;
+        UserCallback userCallback;
     };
 }
 
