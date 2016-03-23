@@ -51,7 +51,6 @@ namespace solo
         shared<Texture2D> getOrLoadTexture2D(const std::string& imageUri, const std::string& uri = "");
         shared<CubeTexture> getOrLoadCubeTexture(const std::vector<std::string>& imageUris, const std::string& uri = "");
         shared<Mesh> getOrLoadMesh(const std::string& dataUri, const std::string& uri = "");
-
         void getOrLoadMeshAsync(const std::string& dataUri, std::function<void(shared<Mesh>)> onDone, const std::string& uri = "");
 
         void cleanUnusedResources();
@@ -61,16 +60,16 @@ namespace solo
     protected:
         explicit ResourceManager(Device* device, int workersCount);
 
-        std::vector<shared<ImageLoader>> imageLoaders;
-        std::vector<shared<MeshLoader>> meshLoaders;
+        std::vector<unique<ImageLoader>> imageLoaders;
+        std::vector<unique<MeshLoader>> meshLoaders;
 
     private:
         template <typename TResource> using ResourceMap = std::unordered_map<std::string, shared<TResource>>;
 
         std::string generateUri();
         void runWorker();
-
-        shared<Mesh> gatherLoadedMeshData(unique<MeshData> data, const std::string& meshUri);
+        shared<Mesh> processLoadedMeshData(unique<MeshData> data, const std::string& meshUri);
+        MeshLoader* getMeshLoader(const std::string& uri);
 
         template <typename TResource>
         static void cleanUnusedResources(ResourceMap<TResource>& resources);

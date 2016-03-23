@@ -25,9 +25,6 @@
 
 namespace solo
 {
-    // The presense of this pointer indicates that the surrounding code owns the pointed object OR shares ownership with others.
-    // Code that works with raw pointers doesn't claim to own the pointed object.
     template <typename T> using shared = std::shared_ptr<T>;
-
     template <typename T> using unique = std::unique_ptr<T>;
 }

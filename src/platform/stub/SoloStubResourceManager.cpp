@@ -10,8 +10,8 @@ StubResourceManager::StubResourceManager(Device* device):
     ResourceManager(device, 0)
 {
     imageLoaders.clear();
-    imageLoaders.push_back(SL_MAKE_SHARED<StubImageLoader>(device->getFileSystem(), this));
+    imageLoaders.push_back(SL_MAKE_UNIQUE<StubImageLoader>(device->getFileSystem(), this));
 
     meshLoaders.clear();
-    meshLoaders.push_back(SL_MAKE_SHARED<StubMeshLoader>(device->getFileSystem(), this));
+    meshLoaders.push_back(SL_MAKE_UNIQUE<StubMeshLoader>(device->getFileSystem(), this));
 }

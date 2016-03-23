@@ -30,7 +30,7 @@ namespace solo
     class LoadMeshTask final: public Task
     {
     public:
-        LoadMeshTask(const std::string& dataUri, const std::string& meshUri, shared<MeshLoader> loader,
+        LoadMeshTask(const std::string& dataUri, const std::string& meshUri, MeshLoader* loader,
             LoadMeshSystemCallback systemCallback, LoadMeshUserCallback userCallback):
             loader(loader),
             dataUri(dataUri),
@@ -52,7 +52,7 @@ namespace solo
         }
 
     private:
-        shared<MeshLoader> loader;
+        MeshLoader* loader;
         unique<MeshData> meshData;
         std::string dataUri;
         std::string meshUri;
@@ -75,10 +75,10 @@ shared<ResourceManager> ResourceManager::create(Device* device, int workersCount
 ResourceManager::ResourceManager(Device* device, int workersCount):
     device(device)
 {
-    imageLoaders.push_back(SL_MAKE_SHARED<PngImageLoader>(device->getFileSystem(), this));
-    meshLoaders.push_back(SL_MAKE_SHARED<ObjMeshLoader>(device->getFileSystem(), this));
+    imageLoaders.push_back(SL_MAKE_UNIQUE<PngImageLoader>(device->getFileSystem(), this));
+    meshLoaders.push_back(SL_MAKE_UNIQUE<ObjMeshLoader>(device->getFileSystem(), this));
 
-    for (uint32_t i = 0; i < workersCount; i++)
+    for (int32_t i = 0; i < workersCount; i++)
         workers.push_back(std::thread(&ResourceManager::runWorker, this));
 }
 
@@ -123,12 +123,24 @@ void ResourceManager::runWorker()
 }
 
 
-shared<Mesh> ResourceManager::gatherLoadedMeshData(unique<MeshData> data, const std::string& meshUri)
+shared<Mesh> ResourceManager::processLoadedMeshData(unique<MeshData> data, const std::string& meshUri)
 {
-    // TODO review
+    // TODO this effectively rewrites anything that might have been put by this uri
+    // while the mesh data has been loading. Probably ok for now
     auto mesh = SL_MAKE_SHARED<Mesh>(device->getRenderer(), data.get());
     meshes[meshUri] = mesh;
     return mesh;
+}
+
+
+MeshLoader* ResourceManager::getMeshLoader(const std::string& uri)
+{
+    for (const auto& loader : meshLoaders)
+    {
+        if (loader->isLoadable(uri))
+            return loader.get();
+    }
+    SL_FMT_THROW(ResourceException, "No suitable loader found for mesh ", uri);
 }
 
 
@@ -215,7 +227,7 @@ shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& imageUr
     if (existing)
         return existing;
 
-    for (auto loader : imageLoaders)
+    for (const auto& loader : imageLoaders)
     {
         if (loader->isLoadable(imageUri))
         {
@@ -245,7 +257,7 @@ shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std:
     for (auto& imageUri : imageUris)
     {
         shared<Image> image;
-        for (auto loader : imageLoaders)
+        for (const auto& loader : imageLoaders)
         {
             if (loader->isLoadable(imageUri))
             {
@@ -272,18 +284,7 @@ shared<Mesh> ResourceManager::getOrLoadMesh(const std::string& dataUri, const st
     if (existing)
         return existing;
 
-    shared<MeshLoader> loader;
-    for (auto l : meshLoaders)
-    {
-        if (l->isLoadable(dataUri))
-        {
-            loader = l;
-            break;
-        }
-    }
-    if (!loader)
-        SL_FMT_THROW(ResourceException, "No suitable loader found for mesh ", dataUri);
-
+    auto loader = getMeshLoader(dataUri);
     auto mesh = loader->load(dataUri);
     meshes[meshUri] = mesh;
     return mesh;
@@ -300,23 +301,12 @@ void ResourceManager::getOrLoadMeshAsync(const std::string& dataUri, std::functi
         return;
     }
 
-    // TODO avoid copy-paste
-    shared<MeshLoader> loader;
-    for (auto l : meshLoaders)
-    {
-        if (l->isLoadable(dataUri))
-        {
-            loader = l;
-            break;
-        }
-    }
-    if (!loader)
-        SL_FMT_THROW(ResourceException, "No suitable loader found for mesh ", dataUri);
+    auto loader = getMeshLoader(dataUri);
 
     {
         std::unique_lock<std::mutex> lock(workersMutex);
         auto task = SL_MAKE_UNIQUE<LoadMeshTask>(dataUri, meshUri, loader,
-            std::bind(&ResourceManager::gatherLoadedMeshData, this, std::placeholders::_1, std::placeholders::_2),
+            std::bind(&ResourceManager::processLoadedMeshData, this, std::placeholders::_1, std::placeholders::_2),
             callback);
         backgroundTasks.push_back(std::move(task));
     }
