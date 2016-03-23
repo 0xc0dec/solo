@@ -58,7 +58,7 @@ void Logger::logCritical(const std::string& msg)
 
 void Logger::log(const std::string& msg, const std::string& level)
 {
-    auto lt = lock.lock();
+    auto lt = lock.acquire();
     auto fullMsg = SL_FMT("[", level, "]	", msg);
     std::cout << fullMsg << std::endl;
     if (file.is_open())

@@ -93,7 +93,7 @@ namespace solo
 
         uint32_t resourceCounter = 0;
 
-        SpinLock foregroundTasksLock; // TODO rename to "not lock"
-        std::list<std::function<void()>> foregroundTasks;
+        SpinLock tasksLock;
+        std::list<std::function<void()>> tasks;
     };
 }

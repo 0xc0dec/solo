@@ -5,7 +5,6 @@
 
 namespace solo
 {
-    // TODO this is not a "lock", a "lock" is rather the "LockToken" below
     class SpinLock
     {
     public:
@@ -30,7 +29,7 @@ namespace solo
             flag.clear(std::memory_order_release);
         }
 
-        LockToken lock()
+        LockToken acquire()
         {
             while (flag.test_and_set(std::memory_order_acquire)) {}
             return LockToken(flag);

@@ -217,8 +217,8 @@ void ResourceManager::getOrLoadMeshAsync(const std::string& dataUri, std::functi
     async::spawn([=] {
         auto data = loader->loadData(dataUri);
         shared<MeshData> sharedData{ std::move(data) };
-        auto lock = this->foregroundTasksLock.lock();
-        this->foregroundTasks.push_back([=]()
+        auto lock = this->tasksLock.acquire();
+        this->tasks.push_back([=]()
         {
             // This called is later called in the update() method
             auto mesh = SL_MAKE_SHARED<Mesh>(this->device->getRenderer(), sharedData.get());
@@ -310,14 +310,14 @@ void ResourceManager::cleanUnusedResources()
 
 void ResourceManager::update()
 {
-    if (!foregroundTasks.empty())
+    if (!tasks.empty())
     {
-        auto lt = foregroundTasksLock.lock();
-        if (!foregroundTasks.empty())
+        auto lt = tasksLock.acquire();
+        if (!tasks.empty())
         {
-            auto func = std::move(foregroundTasks.back());
+            auto func = std::move(tasks.back());
             func();
-            foregroundTasks.pop_back();
+            tasks.pop_back();
         }
     }
 }
