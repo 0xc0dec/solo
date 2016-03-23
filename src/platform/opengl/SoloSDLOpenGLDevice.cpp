@@ -211,7 +211,7 @@ void SDLOpenGLDevice::saveScreenshot(const std::string& path)
     std::vector<uint8_t> buf;
     buf.reserve(surface->pitch);
     auto pixels = static_cast<uint8_t*>(surface->pixels);
-    for (uint32_t row = 0; row < height / 2; ++row)
+    for (int32_t row = 0; row < height / 2; ++row)
     {
         auto row1 = pixels + surface->pitch * row;
         auto row2 = pixels + surface->pitch * (height - row - 1);
@@ -235,9 +235,14 @@ void SDLOpenGLDevice::setCursorCaptured(bool captured)
 void SDLOpenGLDevice::prepareKeyboardState()
 {
     releasedKeys.clear();
-    if (!hasKeyboardFocus)
+    if (hasKeyboardFocus)
     {
-        for (auto pair : pressedKeys)
+        for (auto& pair : pressedKeys)
+            pair.second = false; // not "pressed for the first time" anymore
+    }
+    else
+    {
+        for (const auto& pair : pressedKeys)
             releasedKeys.insert(pair.first);
         pressedKeys.clear();
     }
@@ -290,7 +295,7 @@ void SDLOpenGLDevice::processKeyboardEvent(const SDL_Event& evt)
                 }
                 else
                 {
-                    pressedKeys[code] = evt.key.repeat == 0;
+                    pressedKeys[code] = pressedKeys.find(code) == pressedKeys.end(); // first time?
                     releasedKeys.erase(code);
                 }
                 break;

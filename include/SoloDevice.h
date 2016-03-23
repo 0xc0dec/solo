@@ -74,7 +74,7 @@ namespace solo
         virtual float getLifetime() const = 0;
         float getTimeDelta() const;
 
-        bool isKeyPressed(KeyCode code, bool firstTimeOnly = false) const;
+        bool isKeyPressed(KeyCode code, bool firstTime = false) const;
         bool isKeyReleased(KeyCode code) const;
 
         Vector2 getMouseMotion() const;
@@ -111,6 +111,7 @@ namespace solo
         shared<ScriptManager> scriptManager;
         shared<Logger> logger;
 
+        // key code -> was pressed for the first time
         std::unordered_map<KeyCode, bool> pressedKeys;
         std::unordered_set<KeyCode> releasedKeys;
 

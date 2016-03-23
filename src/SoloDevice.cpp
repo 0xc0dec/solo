@@ -81,10 +81,10 @@ void Device::run()
 }
 
 
-bool Device::isKeyPressed(KeyCode code, bool firstTimeOnly) const
+bool Device::isKeyPressed(KeyCode code, bool firstTime) const
 {
     auto where = pressedKeys.find(code);
-    return where != pressedKeys.end() && (!firstTimeOnly || where->second);
+    return where != pressedKeys.end() && (!firstTime || where->second);
 }
 
 
