@@ -210,7 +210,7 @@ void ResourceManager::getOrLoadCubeTextureAsync(const std::vector<std::string>& 
         auto sizeUri = sidesUris[i];
         imageTasks.push_back(async::spawn([=]
         {
-            return shared<Image>{ loader->load(sizeUri) };
+            return shared<Image>{ loader->load(sizeUri) }; // making it shared simplifies tasks management
         }));
     }
 
