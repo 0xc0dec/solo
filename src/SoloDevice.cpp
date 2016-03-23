@@ -56,7 +56,7 @@ Device::Device(const DeviceCreationArgs& args):
 
     renderer = Renderer::create(this);
     fs = FileSystem::create(this);
-    resourceManager = ResourceManager::create(this);
+    resourceManager = ResourceManager::create(this, 4); // TODO hardcoded
     graphics = SL_NEW_SHARED(Graphics, this);
     scene = SL_NEW_SHARED(Scene, this);
     scriptManager = ScriptManager::create(this);
@@ -71,6 +71,7 @@ void Device::run()
     running = true;
     while (true)
     {
+        resourceManager->update();
         beginUpdate();
         scene->update();
         scene->render();

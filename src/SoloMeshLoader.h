@@ -6,6 +6,7 @@
 namespace solo
 {
     class Mesh;
+    struct MeshData;
     class FileSystem;
     class ResourceManager;
 
@@ -17,6 +18,7 @@ namespace solo
 
         virtual bool isLoadable(const std::string& uri) = 0;
         virtual shared<Mesh> load(const std::string& uri) = 0;
+        virtual unique<MeshData> loadData(const std::string& uri) = 0;
 
     protected:
         MeshLoader(FileSystem* fs, ResourceManager* resourceManager):

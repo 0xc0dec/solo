@@ -29,6 +29,33 @@ Mesh::Mesh(Renderer* renderer, MeshPrefab prefab):
 }
 
 
+Mesh::Mesh(Renderer* renderer, MeshData* data):
+    renderer(renderer)
+{
+    VertexBufferLayout positionLayout;
+    positionLayout.add(VertexBufferLayoutSemantics::Position, 3);
+    addVertexBuffer(positionLayout, reinterpret_cast<const float*>(data->vertices.data()), static_cast<uint32_t>(data->vertices.size()));
+
+    if (!data->uvs.empty())
+    {
+        VertexBufferLayout uvLayout;
+        uvLayout.add(VertexBufferLayoutSemantics::TexCoord0, 2);
+        addVertexBuffer(uvLayout, reinterpret_cast<const float*>(data->uvs.data()), static_cast<uint32_t>(data->uvs.size()));
+    }
+    if (!data->normals.empty())
+    {
+        VertexBufferLayout normalLayout;
+        normalLayout.add(VertexBufferLayoutSemantics::Normal, 3);
+        addVertexBuffer(normalLayout, reinterpret_cast<const float*>(data->normals.data()), static_cast<uint32_t>(data->normals.size()));
+    }
+
+    for (const auto& indices : data->indices)
+        addPart(reinterpret_cast<const void*>(indices.data()), static_cast<uint32_t>(indices.size()));
+
+    setPrimitiveType(PrimitiveType::Triangles);
+}
+
+
 Mesh::~Mesh()
 {
     if (!vertexObjectHandle.empty())

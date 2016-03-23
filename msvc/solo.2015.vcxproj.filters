@@ -184,6 +184,9 @@
     <ClInclude Include="..\src\scripting\lua\SoloLuaScriptManager.h">
       <Filter>src\scripting\lua</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloSpinLock.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloScene.cpp">

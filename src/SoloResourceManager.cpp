@@ -9,31 +9,126 @@
 #include "SoloDevice.h"
 #include "SoloObjMeshLoader.h"
 #include "SoloImage.h"
+#include "SoloLogger.h"
 #include "platform/stub/SoloStubResourceManager.h"
 #include <functional>
+
+
+namespace solo
+{
+    using LoadMeshUserCallback = std::function<void(shared<Mesh>)>;
+    using LoadMeshSystemCallback = std::function<shared<Mesh>(unique<MeshData>, const std::string&)>;
+
+    class Task
+    {
+    public:
+        virtual ~Task() {}
+        virtual void process() = 0;
+        virtual void finish() = 0;
+    };
+
+    class LoadMeshTask final: public Task
+    {
+    public:
+        LoadMeshTask(const std::string& dataUri, const std::string& meshUri, shared<MeshLoader> loader,
+            LoadMeshSystemCallback systemCallback, LoadMeshUserCallback userCallback):
+            loader(loader),
+            dataUri(dataUri),
+            meshUri(meshUri),
+            systemCallback(systemCallback),
+            userCallback(userCallback)
+        {
+        }
+
+        virtual void process() override final
+        {
+            meshData = std::move(loader->loadData(dataUri));
+        }
+
+        virtual void finish() override final
+        {
+            auto mesh = systemCallback(std::move(meshData), meshUri);
+            userCallback(mesh);
+        }
+
+    private:
+        shared<MeshLoader> loader;
+        unique<MeshData> meshData;
+        std::string dataUri;
+        std::string meshUri;
+        LoadMeshSystemCallback systemCallback;
+        LoadMeshUserCallback userCallback;
+    };
+}
 
 using namespace solo;
 
 
-shared<ResourceManager> ResourceManager::create(Device* device)
+shared<ResourceManager> ResourceManager::create(Device* device, int workersCount)
 {
     if (device->getMode() == DeviceMode::Stub)
         return SL_NEW_SHARED(StubResourceManager, device);
-    return SL_NEW_SHARED(ResourceManager, device);
+    return SL_NEW_SHARED(ResourceManager, device, workersCount);
 }
 
 
-ResourceManager::ResourceManager(Device* device):
+ResourceManager::ResourceManager(Device* device, int workersCount):
     device(device)
 {
     imageLoaders.push_back(SL_MAKE_SHARED<PngImageLoader>(device->getFileSystem(), this));
     meshLoaders.push_back(SL_MAKE_SHARED<ObjMeshLoader>(device->getFileSystem(), this));
+
+    for (uint32_t i = 0; i < workersCount; i++)
+        workers.push_back(std::thread(&ResourceManager::runWorker, this));
+}
+
+
+ResourceManager::~ResourceManager()
+{
+    stopWorkers = true;
+    workersSignal.notify_all();
+    for (auto& t : workers)
+        t.join();
 }
 
 
 std::string ResourceManager::generateUri()
 {
-    return std::string("generated/") + std::to_string(++resourceCounter);
+    return std::string("/generated/") + std::to_string(++resourceCounter);
+}
+
+
+void ResourceManager::runWorker()
+{
+    while (true)
+    {
+        unique<Task> task;
+        {
+            std::unique_lock<std::mutex> lock(workersMutex);
+            workersSignal.wait(lock, [&]() { return !backgroundTasks.empty() || stopWorkers; });
+            if (stopWorkers)
+                break;
+            task = std::move(backgroundTasks.front());
+            backgroundTasks.pop_front();
+        }
+        if (!task)
+            continue;
+
+        {
+            auto lock = foregroundTasksLock.lock();
+            task->process();
+            foregroundTasks.push_back(std::move(task));
+        }
+    }
+}
+
+
+shared<Mesh> ResourceManager::gatherLoadedMeshData(unique<MeshData> data, const std::string& meshUri)
+{
+    // TODO review
+    auto mesh = SL_MAKE_SHARED<Mesh>(device->getRenderer(), data.get());
+    meshes[meshUri] = mesh;
+    return mesh;
 }
 
 
@@ -97,6 +192,22 @@ shared<Material> ResourceManager::getOrCreateMaterial(shared<Effect> effect, con
 }
 
 
+shared<Texture2D> ResourceManager::getOrCreateTexture2D(const std::string& uri)
+{
+    return getOrCreateResource<Texture2D>(uri, textures2d,
+        std::bind(&ResourceManager::findTexture2D, this, std::placeholders::_1),
+        [&]() { return SL_NEW_SHARED(Texture2D, device->getRenderer()); });
+}
+
+
+shared<CubeTexture> ResourceManager::getOrCreateCubeTexture(const std::string& uri)
+{
+    return getOrCreateResource<CubeTexture>(uri, cubeTextures,
+        std::bind(&ResourceManager::findCubeTexture, this, std::placeholders::_1),
+        [&]() { return SL_NEW_SHARED(CubeTexture, device->getRenderer()); });
+}
+
+
 shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& imageUri, const std::string& uri)
 {
     auto textureUri = uri.empty() ? imageUri : uri;
@@ -154,22 +265,6 @@ shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std:
 }
 
 
-shared<Texture2D> ResourceManager::getOrCreateTexture2D(const std::string& uri)
-{
-    return getOrCreateResource<Texture2D>(uri, textures2d,
-        std::bind(&ResourceManager::findTexture2D, this, std::placeholders::_1),
-        [&]() { return SL_NEW_SHARED(Texture2D, device->getRenderer()); });
-}
-
-
-shared<CubeTexture> ResourceManager::getOrCreateCubeTexture(const std::string& uri)
-{
-    return getOrCreateResource<CubeTexture>(uri, cubeTextures,
-        std::bind(&ResourceManager::findCubeTexture, this, std::placeholders::_1),
-        [&]() { return SL_NEW_SHARED(CubeTexture, device->getRenderer()); });
-}
-
-
 shared<Mesh> ResourceManager::getOrLoadMesh(const std::string& dataUri, const std::string& uri)
 {
     auto meshUri = uri.empty() ? dataUri : uri;
@@ -177,17 +272,55 @@ shared<Mesh> ResourceManager::getOrLoadMesh(const std::string& dataUri, const st
     if (existing)
         return existing;
 
-    for (auto loader : meshLoaders)
+    shared<MeshLoader> loader;
+    for (auto l : meshLoaders)
     {
-        if (loader->isLoadable(dataUri))
+        if (l->isLoadable(dataUri))
         {
-            auto mesh = loader->load(dataUri);
-            meshes[meshUri] = mesh;
-            return mesh;
+            loader = l;
+            break;
         }
     }
+    if (!loader)
+        SL_FMT_THROW(ResourceException, "No suitable loader found for mesh ", dataUri);
 
-    SL_FMT_THROW(ResourceException, "No suitable loader found for mesh ", dataUri);
+    auto mesh = loader->load(dataUri);
+    meshes[meshUri] = mesh;
+    return mesh;
+}
+
+
+void ResourceManager::getOrLoadMeshAsync(const std::string& dataUri, std::function<void(shared<Mesh>)> callback, const std::string& uri)
+{
+    auto meshUri = uri.empty() ? dataUri : uri;
+    auto existing = findMesh(meshUri);
+    if (existing)
+    {
+        callback(existing);
+        return;
+    }
+
+    // TODO avoid copy-paste
+    shared<MeshLoader> loader;
+    for (auto l : meshLoaders)
+    {
+        if (l->isLoadable(dataUri))
+        {
+            loader = l;
+            break;
+        }
+    }
+    if (!loader)
+        SL_FMT_THROW(ResourceException, "No suitable loader found for mesh ", dataUri);
+
+    {
+        std::unique_lock<std::mutex> lock(workersMutex);
+        auto task = SL_MAKE_UNIQUE<LoadMeshTask>(dataUri, meshUri, loader,
+            std::bind(&ResourceManager::gatherLoadedMeshData, this, std::placeholders::_1, std::placeholders::_2),
+            callback);
+        backgroundTasks.push_back(std::move(task));
+    }
+    workersSignal.notify_all();
 }
 
 
@@ -222,7 +355,7 @@ shared<TResource> ResourceManager::getOrCreateResource(
     std::function<shared<TResource>(const std::basic_string<char>&)> find,
     std::function<shared<TResource>()> create)
 {
-    auto existing = find(uri.empty() ? generateUri() : uri);
+    auto existing = find(uri.empty() ? generateUri() : uri); // TODO use findResource here?
     return existing ? existing : createResource<TResource>(uri, resourceMap, create);
 }
 
@@ -267,4 +400,19 @@ void ResourceManager::cleanUnusedResources()
     cleanUnusedResources(meshes);
     cleanUnusedResources(textures2d);
     cleanUnusedResources(cubeTextures);
+}
+
+
+void ResourceManager::update()
+{
+    if (!foregroundTasks.empty())
+    {
+        auto lt = foregroundTasksLock.lock();
+        if (!foregroundTasks.empty())
+        {
+            auto task = std::move(foregroundTasks.back());
+            task->finish();
+            foregroundTasks.pop_back();
+        }
+    }
 }

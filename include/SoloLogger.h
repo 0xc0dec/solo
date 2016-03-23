@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SoloBase.h"
+#include "SoloSpinLock.h"
 #include <fstream>
 
 
@@ -25,6 +26,7 @@ namespace solo
     private:
         void log(const std::string& msg, const std::string& level);
 
-        std::ofstream targetFileStream;
+        std::ofstream file;
+        SpinLock lock;
     };
 }

@@ -4,7 +4,7 @@
 
 namespace solo
 {
-    class StubResourceManager: public ResourceManager
+    class StubResourceManager final: public ResourceManager
     {
         friend class ResourceManager;
 

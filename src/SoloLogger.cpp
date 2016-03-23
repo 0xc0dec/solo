@@ -6,19 +6,19 @@ using namespace solo;
 
 Logger::~Logger()
 {
-    if (targetFileStream.is_open())
-        targetFileStream.close();
+    if (file.is_open())
+        file.close();
 }
 
 
 void Logger::setTargetFile(const std::string& path)
 {
-    if (targetFileStream.is_open())
-        targetFileStream.close();
+    if (file.is_open())
+        file.close();
     if (!path.empty())
     {
-        targetFileStream.open(path, std::ios_base::trunc);
-        if (!targetFileStream.is_open())
+        file.open(path, std::ios_base::trunc);
+        if (!file.is_open())
             logError(SL_FMT("Unable to open target log file ", path));
     }
 }
@@ -26,7 +26,9 @@ void Logger::setTargetFile(const std::string& path)
 
 void Logger::logDebug(const std::string& msg)
 {
+#ifdef SL_DEBUG
     log(msg, "debug");
+#endif
 }
 
 
@@ -56,8 +58,9 @@ void Logger::logCritical(const std::string& msg)
 
 void Logger::log(const std::string& msg, const std::string& level)
 {
+    auto lt = lock.lock();
     auto fullMsg = SL_FMT("[", level, "]	", msg);
     std::cout << fullMsg << std::endl;
-    if (targetFileStream.is_open())
-        targetFileStream << fullMsg << std::endl;
+    if (file.is_open())
+        file << fullMsg << std::endl;
 }

@@ -3,6 +3,8 @@
 #include "SoloBase.h"
 #include "SoloVertexFormat.h"
 #include "SoloRenderer.h"
+#include "SoloVector2.h"
+#include "SoloVector3.h"
 
 
 namespace solo
@@ -15,11 +17,20 @@ namespace solo
         Cube
     };
 
+    struct MeshData
+    {
+        std::vector<Vector3> vertices;
+        std::vector<Vector2> uvs;
+        std::vector<Vector3> normals;
+        std::vector<std::vector<uint16_t>> indices;
+    };
+
     class Mesh final
     {
     public:
         explicit Mesh(Renderer* renderer);
         Mesh(Renderer* renderer, MeshPrefab prefab);
+        Mesh(Renderer* renderer, MeshData* data);
         ~Mesh();
 
         SL_NONCOPYABLE(Mesh)

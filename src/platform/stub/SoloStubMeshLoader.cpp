@@ -21,3 +21,9 @@ shared<Mesh> StubMeshLoader::load(const std::string& uri)
 {
     return resourceManager->getOrCreateMesh(uri);
 }
+
+
+unique<MeshData> StubMeshLoader::loadData(const std::string& uri)
+{
+    return SL_MAKE_UNIQUE<MeshData>();
+}

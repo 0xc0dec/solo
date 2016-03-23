@@ -14,6 +14,20 @@ function runDemo2()
 
 	local camera
 
+	function test()
+		return {
+			typeId = 2000,
+
+			update = function()
+				if device:isKeyPressed(solo.KeyCode.T, true) then
+					resMgr:getOrLoadMeshAsync("../data/teapot.obj", function(mesh)
+						print("Loaded")
+					end)
+				end
+			end
+		}
+	end
+
 	function createPostProcessor()
 		return {
 			typeId = 1000,
@@ -110,6 +124,7 @@ function runDemo2()
 		node:addScript(createEscapeWatcher(device))
 		node:addScript(createPostProcessor())
 		node:addScript(createScreenshoter(device, "demo2-screenshot.bmp"))
+		node:addScript(test())
 		logger:logInfo("Initialized camera")
 	end
 
