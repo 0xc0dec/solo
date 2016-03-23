@@ -341,7 +341,7 @@ shared<FrameBuffer> ResourceManager::getOrCreateFrameBuffer(const std::string& u
 template <typename TResource>
 shared<TResource> ResourceManager::getOrCreateResource(
     const std::string& uri,
-    ResourceMap<TResource>& resourceMap,
+    ResourceCollection<TResource>& resourceMap,
     std::function<shared<TResource>(const std::basic_string<char>&)> find,
     std::function<shared<TResource>()> create)
 {
@@ -351,7 +351,7 @@ shared<TResource> ResourceManager::getOrCreateResource(
 
 
 template <typename TResource>
-shared<TResource> ResourceManager::createResource(const std::string& uri, ResourceMap<TResource>& resourceMap, std::function<shared<TResource>()> create)
+shared<TResource> ResourceManager::createResource(const std::string& uri, ResourceCollection<TResource>& resourceMap, std::function<shared<TResource>()> create)
 {
     auto result = create();
     resourceMap[uri] = result;
@@ -360,7 +360,7 @@ shared<TResource> ResourceManager::createResource(const std::string& uri, Resour
 
 
 template <typename TResource>
-shared<TResource> ResourceManager::findResource(const std::string& uri, const ResourceMap<TResource>& resourceMap)
+shared<TResource> ResourceManager::findResource(const std::string& uri, const ResourceCollection<TResource>& resourceMap)
 {
     auto existing = resourceMap.find(uri);
     return existing != resourceMap.end() ? existing->second : nullptr;
@@ -368,7 +368,7 @@ shared<TResource> ResourceManager::findResource(const std::string& uri, const Re
 
 
 template <typename TResource>
-void ResourceManager::cleanUnusedResources(ResourceMap<TResource>& resources)
+void ResourceManager::cleanUnusedResources(ResourceCollection<TResource>& resources)
 {
     auto uris = std::unordered_set<std::string>();
     for (auto& it : resources)

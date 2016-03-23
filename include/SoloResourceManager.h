@@ -64,7 +64,7 @@ namespace solo
         std::vector<unique<MeshLoader>> meshLoaders;
 
     private:
-        template <typename TResource> using ResourceMap = std::unordered_map<std::string, shared<TResource>>;
+        template <typename TResource> using ResourceCollection = std::unordered_map<std::string, shared<TResource>>;
 
         std::string generateUri();
         void runWorker();
@@ -72,28 +72,28 @@ namespace solo
         MeshLoader* getMeshLoader(const std::string& uri);
 
         template <typename TResource>
-        static void cleanUnusedResources(ResourceMap<TResource>& resources);
+        static void cleanUnusedResources(ResourceCollection<TResource>& resources);
 
         template <typename TResource>
-        shared<TResource> getOrCreateResource(const std::string& uri, ResourceMap<TResource>& resourceMap,
+        shared<TResource> getOrCreateResource(const std::string& uri, ResourceCollection<TResource>& resourceMap,
             std::function<shared<TResource>(const std::basic_string<char>&)> find,
             std::function<shared<TResource>()> create);
 
         template <typename TResource>
-        shared<TResource> createResource(const std::string& uri, ResourceMap<TResource>& resourceMap,
+        shared<TResource> createResource(const std::string& uri, ResourceCollection<TResource>& resourceMap,
             std::function<shared<TResource>()> create);
 
         template <typename TResource>
-        shared<TResource> findResource(const std::string& uri, const ResourceMap<TResource>& resourceMap);
+        shared<TResource> findResource(const std::string& uri, const ResourceCollection<TResource>& resourceMap);
 
         Device* device = nullptr;
 
-        ResourceMap<Effect> effects;
-        ResourceMap<Material> materials;
-        ResourceMap<Mesh> meshes;
-        ResourceMap<Texture2D> textures2d;
-        ResourceMap<CubeTexture> cubeTextures;
-        ResourceMap<FrameBuffer> frameBuffers;
+        ResourceCollection<Effect> effects;
+        ResourceCollection<Material> materials;
+        ResourceCollection<Mesh> meshes;
+        ResourceCollection<Texture2D> textures2d;
+        ResourceCollection<CubeTexture> cubeTextures;
+        ResourceCollection<FrameBuffer> frameBuffers;
 
         uint32_t resourceCounter = 0;
 
