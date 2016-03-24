@@ -16,7 +16,7 @@ namespace solo
         virtual ~ImageLoader() {}
 
         virtual bool isLoadable(const std::string& uri) = 0;
-        virtual unique<Image> load(const std::string& uri) = 0;
+        virtual uptr<Image> load(const std::string& uri) = 0;
 
     protected:
         ImageLoader(FileSystem* fs, ResourceManager* resourceManager):

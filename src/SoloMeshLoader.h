@@ -17,8 +17,8 @@ namespace solo
         virtual ~MeshLoader() {}
 
         virtual bool isLoadable(const std::string& uri) = 0;
-        virtual shared<Mesh> load(const std::string& uri) = 0;
-        virtual unique<MeshData> loadData(const std::string& uri) = 0;
+        virtual sptr<Mesh> load(const std::string& uri) = 0;
+        virtual uptr<MeshData> loadData(const std::string& uri) = 0;
 
     protected:
         MeshLoader(FileSystem* fs, ResourceManager* resourceManager):

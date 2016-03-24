@@ -827,15 +827,15 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreatePrefabEffect, LUA_ARGS(EffectPrefab, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateTexture2D, LUA_ARGS(_opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateCubeTexture, LUA_ARGS(_opt<const std::string&>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMaterial, LUA_ARGS(shared<Effect>, _opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMaterial, LUA_ARGS(sptr<Effect>, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateMesh, LUA_ARGS(_opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreatePrefabMesh, LUA_ARGS(MeshPrefab, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateFrameBuffer, LUA_ARGS(_opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadTexture2D, LUA_ARGS(const std::string&, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadCubeTexture, LUA_ARGS(const std::vector<std::string>&, _opt<const std::string&>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrLoadCubeTextureAsync, LUA_ARGS(const std::vector<std::string>&, std::function<void(shared<CubeTexture>)>, _opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrLoadCubeTextureAsync, LUA_ARGS(const std::vector<std::string>&, std::function<void(sptr<CubeTexture>)>, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadMesh, LUA_ARGS(const std::string&, _opt<const std::string&>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrLoadMeshAsync, LUA_ARGS(const std::string&, std::function<void(shared<Mesh>)>, _opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrLoadMeshAsync, LUA_ARGS(const std::string&, std::function<void(sptr<Mesh>)>, _opt<const std::string&>));
     REGISTER_OVERLOADED_METHOD(mgr, ResourceManager, cleanUnusedResources, "cleanUnusedResources", void, , void);
     mgr.endClass();
 

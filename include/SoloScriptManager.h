@@ -10,7 +10,7 @@ namespace solo
     class ScriptManager
     {
     public:
-        static shared<ScriptManager> create(Device* device);
+        static sptr<ScriptManager> create(Device* device);
 
         SL_NONCOPYABLE(ScriptManager)
         virtual ~ScriptManager() {}

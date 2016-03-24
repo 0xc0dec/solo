@@ -30,8 +30,8 @@ namespace solo
 
         BitFlags& getRenderTags();
 
-        shared<FrameBuffer> getRenderTarget() const;
-        void setRenderTarget(shared<FrameBuffer> target);
+        sptr<FrameBuffer> getRenderTarget() const;
+        void setRenderTarget(sptr<FrameBuffer> target);
 
         Vector4 getClearColor() const;
         void setClearColor(float r, float g, float b, float a);
@@ -78,7 +78,7 @@ namespace solo
         Renderer* renderer;
 
         Transform* transform = nullptr;
-        shared<FrameBuffer> renderTarget = nullptr;
+        sptr<FrameBuffer> renderTarget = nullptr;
 
         bool ortho = false;
 
@@ -145,7 +145,7 @@ namespace solo
         return renderTags;
     }
 
-    inline void Camera::setRenderTarget(shared<FrameBuffer> target)
+    inline void Camera::setRenderTarget(sptr<FrameBuffer> target)
     {
         renderTarget = target;
     }
@@ -155,7 +155,7 @@ namespace solo
         return clearColor;
     }
 
-    inline shared<FrameBuffer> Camera::getRenderTarget() const
+    inline sptr<FrameBuffer> Camera::getRenderTarget() const
     {
         return renderTarget;
     }

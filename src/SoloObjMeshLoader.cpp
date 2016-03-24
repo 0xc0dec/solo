@@ -71,7 +71,7 @@ void parseIndexes(const char** from, const char* to, uint32_t** result)
 }
 
 
-shared<Mesh> ObjMeshLoader::load(const std::string& uri)
+sptr<Mesh> ObjMeshLoader::load(const std::string& uri)
 {
     // TODO not very fast this is...
 
@@ -182,7 +182,7 @@ shared<Mesh> ObjMeshLoader::load(const std::string& uri)
 }
 
 
-unique<MeshData> ObjMeshLoader::loadData(const std::string& uri)
+uptr<MeshData> ObjMeshLoader::loadData(const std::string& uri)
 {
     // TODO not very fast this is...
 

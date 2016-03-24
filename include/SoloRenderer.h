@@ -134,7 +134,7 @@ namespace solo
     class Renderer
     {
     public:
-        static shared<Renderer> create(Device* device);
+        static sptr<Renderer> create(Device* device);
 
         SL_NONCOPYABLE(Renderer)
         virtual ~Renderer();

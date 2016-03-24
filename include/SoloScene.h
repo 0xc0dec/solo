@@ -22,9 +22,9 @@ namespace solo
 
         Device* getDevice() const;
 
-        shared<Node> createNode();
+        sptr<Node> createNode();
 
-        void addComponent(uint32_t nodeId, shared<Component> cmp);
+        void addComponent(uint32_t nodeId, sptr<Component> cmp);
         void removeComponent(uint32_t nodeId, uint32_t typeId);
 
         Component* getComponent(uint32_t nodeId, uint32_t typeId) const;
@@ -34,7 +34,7 @@ namespace solo
         void render();
 
     private:
-        using NodeComponentMap = std::unordered_map<uint32_t, shared<Component>>;
+        using NodeComponentMap = std::unordered_map<uint32_t, sptr<Component>>;
         using AllComponentMap = std::unordered_map<uint32_t, NodeComponentMap>;
         
         template <class T>
@@ -53,7 +53,7 @@ namespace solo
 
         // TODO not cache-friendly
         AllComponentMap components;
-        std::vector<shared<Component>> componentsToUpdate;
+        std::vector<sptr<Component>> componentsToUpdate;
     };
 
     inline Device* Scene::getDevice() const

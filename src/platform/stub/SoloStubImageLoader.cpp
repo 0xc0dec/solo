@@ -17,7 +17,7 @@ bool StubImageLoader::isLoadable(const std::string& uri)
 }
 
 
-unique<Image> StubImageLoader::load(const std::string& uri)
+uptr<Image> StubImageLoader::load(const std::string& uri)
 {
     return SL_MAKE_UNIQUE<Image>();
 }

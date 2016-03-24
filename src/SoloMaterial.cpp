@@ -7,7 +7,7 @@
 using namespace solo;
 
 
-Material::Material(Renderer* renderer, shared<Effect> effect):
+Material::Material(Renderer* renderer, sptr<Effect> effect):
     renderer(renderer),
     effect(effect)
 {
@@ -94,7 +94,7 @@ void Material::setMatrixArrayParameter(const std::string& name, const std::vecto
 }
 
 
-void Material::setTextureParameter(const std::string& name, shared<Texture> value)
+void Material::setTextureParameter(const std::string& name, sptr<Texture> value)
 {
     setParameter(name, ParameterValueType::Texture, UniformType::Texture, 1, &ParameterData::textureValue, value);
 }

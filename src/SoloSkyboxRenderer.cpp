@@ -37,7 +37,7 @@ void SkyboxRenderer::render(RenderContext& context)
 }
 
 
-void SkyboxRenderer::setTexture(shared<CubeTexture> texture)
+void SkyboxRenderer::setTexture(sptr<CubeTexture> texture)
 {
     this->texture = texture;
     material->setTextureParameter("mainTex", texture);

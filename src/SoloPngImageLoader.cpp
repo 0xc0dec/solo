@@ -36,7 +36,7 @@ bool PngImageLoader::isLoadable(const std::string& uri)
 }
 
 
-unique<Image> PngImageLoader::load(const std::string& uri)
+uptr<Image> PngImageLoader::load(const std::string& uri)
 {
     auto bytes = fs->readBytes(uri);
     if (bytes.size() < 8 || png_sig_cmp(&bytes[0], 0, 8) != 0)

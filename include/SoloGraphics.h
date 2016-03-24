@@ -23,6 +23,6 @@ namespace solo
     private:
         Device* device;
         Renderer* renderer;
-        shared<Mesh> quadMesh;
+        sptr<Mesh> quadMesh;
     };
 }

@@ -59,7 +59,7 @@ namespace solo
     class Device
     {
     public:
-        static shared<Device> create(const DeviceCreationArgs& args);
+        static sptr<Device> create(const DeviceCreationArgs& args);
 
         SL_NONCOPYABLE(Device)
         virtual ~Device();
@@ -103,13 +103,13 @@ namespace solo
 
         DeviceCreationArgs creationArgs;
 
-        shared<Scene> scene;
-        shared<FileSystem> fs;
-        shared<ResourceManager> resourceManager;
-        shared<Renderer> renderer;
-        shared<Graphics> graphics;
-        shared<ScriptManager> scriptManager;
-        shared<Logger> logger;
+        sptr<Scene> scene;
+        sptr<FileSystem> fs;
+        sptr<ResourceManager> resourceManager;
+        sptr<Renderer> renderer;
+        sptr<Graphics> graphics;
+        sptr<ScriptManager> scriptManager;
+        sptr<Logger> logger;
 
         // key code -> was pressed for the first time
         std::unordered_map<KeyCode, bool> pressedKeys;

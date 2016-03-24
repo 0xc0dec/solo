@@ -19,16 +19,16 @@ namespace solo
         virtual void render(RenderContext& context) override final;
 
         Mesh* getMesh() const;
-        void setMesh(shared<Mesh> mesh);
+        void setMesh(sptr<Mesh> mesh);
 
         Material* getMaterial(uint32_t index) const;
-        void setMaterial(uint32_t index, shared<Material> material);
+        void setMaterial(uint32_t index, sptr<Material> material);
         uint32_t getMaterialCount() const;
 
     private:
-        shared<Mesh> mesh;
+        sptr<Mesh> mesh;
         DeviceMode deviceMode;
-        std::unordered_map<uint32_t, shared<Material>> materials;
+        std::unordered_map<uint32_t, sptr<Material>> materials;
     };
 
     inline Mesh* MeshRenderer::getMesh() const
@@ -36,7 +36,7 @@ namespace solo
         return mesh.get();
     }
 
-    inline void MeshRenderer::setMesh(shared<Mesh> mesh)
+    inline void MeshRenderer::setMesh(sptr<Mesh> mesh)
     {
         this->mesh = mesh;
     }

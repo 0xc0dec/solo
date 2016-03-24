@@ -73,6 +73,6 @@ public:
     }
 
 private:
-    shared<Mesh> mesh = nullptr;
-    shared<Material> material = nullptr;
+    sptr<Mesh> mesh = nullptr;
+    sptr<Material> material = nullptr;
 };

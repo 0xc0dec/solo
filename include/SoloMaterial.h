@@ -33,7 +33,7 @@ namespace solo
     class Material final
     {
     public:
-        explicit Material(Renderer* renderer, shared<Effect> effect);
+        explicit Material(Renderer* renderer, sptr<Effect> effect);
         ~Material();
 
         SL_NONCOPYABLE(Material)
@@ -48,7 +48,7 @@ namespace solo
         void setVector4ArrayParameter(const std::string& name, const std::vector<Vector4>& value);
         void setMatrixParameter(const std::string& name, const Matrix& value);
         void setMatrixArrayParameter(const std::string& name, const std::vector<Matrix>& value);
-        void setTextureParameter(const std::string& name, shared<Texture> value);
+        void setTextureParameter(const std::string& name, sptr<Texture> value);
         void setParameterAutoBinding(const std::string& name, AutoBinding autoBinding);
 
         void bind(const RenderContext& context);
@@ -110,7 +110,7 @@ namespace solo
             Vector3 vector3Value;
             Vector4 vector4Value;
             Matrix matrixValue;
-            shared<Texture> textureValue;
+            sptr<Texture> textureValue;
             std::vector<float> floatArrayValue;
             std::vector<Vector2> vector2ArrayValue;
             std::vector<Vector3> vector3ArrayValue;
@@ -128,7 +128,7 @@ namespace solo
             T ParameterData::*dataField, const T& newValue);
 
         Renderer* renderer;
-        shared<Effect> effect;
+        sptr<Effect> effect;
 
         std::unordered_map<std::string, ParameterData> parameters;
 

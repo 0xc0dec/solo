@@ -25,34 +25,34 @@ namespace solo
     class ResourceManager
     {
     public:
-        static shared<ResourceManager> create(Device* device);
+        static sptr<ResourceManager> create(Device* device);
 
         SL_NONCOPYABLE(ResourceManager)
         ~ResourceManager();
 
-        shared<Effect> findEffect(const std::string& uri);
-        shared<Texture2D> findTexture2D(const std::string& uri);
-        shared<CubeTexture> findCubeTexture(const std::string& uri);
-        shared<Material> findMaterial(const std::string& uri);
-        shared<Mesh> findMesh(const std::string& uri);
-        shared<FrameBuffer> findFrameBuffer(const std::string& uri);
+        sptr<Effect> findEffect(const std::string& uri);
+        sptr<Texture2D> findTexture2D(const std::string& uri);
+        sptr<CubeTexture> findCubeTexture(const std::string& uri);
+        sptr<Material> findMaterial(const std::string& uri);
+        sptr<Mesh> findMesh(const std::string& uri);
+        sptr<FrameBuffer> findFrameBuffer(const std::string& uri);
 
-        shared<Effect> getOrCreateEffect(const std::string& vsSrc, const std::string& fsSrc, const std::string& uri = "");
-        shared<Effect> getOrCreatePrefabEffect(EffectPrefab prefab, const std::string& uri = "");
-        shared<Texture2D> getOrCreateTexture2D(const std::string& uri = "");
-        shared<CubeTexture> getOrCreateCubeTexture(const std::string& uri = "");
-        shared<Material> getOrCreateMaterial(shared<Effect> effect, const std::string& uri = "");
-        shared<Mesh> getOrCreateMesh(const std::string& uri = "");
-        shared<Mesh> getOrCreatePrefabMesh(MeshPrefab prefab, const std::string& uri = "");
-        shared<FrameBuffer> getOrCreateFrameBuffer(const std::string& uri = "");
+        sptr<Effect> getOrCreateEffect(const std::string& vsSrc, const std::string& fsSrc, const std::string& uri = "");
+        sptr<Effect> getOrCreatePrefabEffect(EffectPrefab prefab, const std::string& uri = "");
+        sptr<Texture2D> getOrCreateTexture2D(const std::string& uri = "");
+        sptr<CubeTexture> getOrCreateCubeTexture(const std::string& uri = "");
+        sptr<Material> getOrCreateMaterial(sptr<Effect> effect, const std::string& uri = "");
+        sptr<Mesh> getOrCreateMesh(const std::string& uri = "");
+        sptr<Mesh> getOrCreatePrefabMesh(MeshPrefab prefab, const std::string& uri = "");
+        sptr<FrameBuffer> getOrCreateFrameBuffer(const std::string& uri = "");
 
-        shared<Texture2D> getOrLoadTexture2D(const std::string& imageUri, const std::string& uri = "");
+        sptr<Texture2D> getOrLoadTexture2D(const std::string& imageUri, const std::string& uri = "");
         
-        shared<CubeTexture> getOrLoadCubeTexture(const std::vector<std::string>& imageUris, const std::string& uri = "");
-        void getOrLoadCubeTextureAsync(const std::vector<std::string>& sidesUris, std::function<void(shared<CubeTexture>)> callback, const std::string& uri = "");
+        sptr<CubeTexture> getOrLoadCubeTexture(const std::vector<std::string>& imageUris, const std::string& uri = "");
+        void getOrLoadCubeTextureAsync(const std::vector<std::string>& sidesUris, std::function<void(sptr<CubeTexture>)> callback, const std::string& uri = "");
 
-        shared<Mesh> getOrLoadMesh(const std::string& dataUri, const std::string& uri = "");
-        void getOrLoadMeshAsync(const std::string& dataUri, std::function<void(shared<Mesh>)> callback, const std::string& uri = "");
+        sptr<Mesh> getOrLoadMesh(const std::string& dataUri, const std::string& uri = "");
+        void getOrLoadMeshAsync(const std::string& dataUri, std::function<void(sptr<Mesh>)> callback, const std::string& uri = "");
 
         void cleanUnusedResources();
 
@@ -61,11 +61,11 @@ namespace solo
     protected:
         explicit ResourceManager(Device* device);
 
-        std::vector<unique<ImageLoader>> imageLoaders;
-        std::vector<unique<MeshLoader>> meshLoaders;
+        std::vector<uptr<ImageLoader>> imageLoaders;
+        std::vector<uptr<MeshLoader>> meshLoaders;
 
     private:
-        template <typename TResource> using ResourceCollection = std::unordered_map<std::string, shared<TResource>>;
+        template <typename TResource> using ResourceCollection = std::unordered_map<std::string, sptr<TResource>>;
 
         std::string generateUri();
         MeshLoader* getMeshLoader(const std::string& uri);
@@ -75,16 +75,16 @@ namespace solo
         static void cleanUnusedResources(ResourceCollection<TResource>& resources);
 
         template <typename TResource>
-        shared<TResource> getOrCreateResource(const std::string& uri, ResourceCollection<TResource>& resourceMap,
-            std::function<shared<TResource>(const std::basic_string<char>&)> find,
-            std::function<shared<TResource>()> create);
+        sptr<TResource> getOrCreateResource(const std::string& uri, ResourceCollection<TResource>& resourceMap,
+            std::function<sptr<TResource>(const std::basic_string<char>&)> find,
+            std::function<sptr<TResource>()> create);
 
         template <typename TResource>
-        shared<TResource> createResource(const std::string& uri, ResourceCollection<TResource>& resourceMap,
-            std::function<shared<TResource>()> create);
+        sptr<TResource> createResource(const std::string& uri, ResourceCollection<TResource>& resourceMap,
+            std::function<sptr<TResource>()> create);
 
         template <typename TResource>
-        shared<TResource> findResource(const std::string& uri, const ResourceCollection<TResource>& resourceMap);
+        sptr<TResource> findResource(const std::string& uri, const ResourceCollection<TResource>& resourceMap);
 
         Device* device = nullptr;
 

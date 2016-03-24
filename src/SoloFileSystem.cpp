@@ -6,7 +6,7 @@
 using namespace solo;
 
 
-shared<FileSystem> FileSystem::create(Device* device)
+sptr<FileSystem> FileSystem::create(Device* device)
 {
     if (device->getMode() == DeviceMode::Stub)
         return SL_NEW_SHARED(StubFileSystem);

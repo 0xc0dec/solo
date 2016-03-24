@@ -13,7 +13,7 @@
 using namespace solo;
 
 
-void runInStubEngine(std::function<void(shared<Device>)> run, const std::string& logPath)
+void runInStubEngine(std::function<void(sptr<Device>)> run, const std::string& logPath)
 {
     DeviceCreationArgs args;
     args.mode = DeviceMode::Stub;
@@ -23,7 +23,7 @@ void runInStubEngine(std::function<void(shared<Device>)> run, const std::string&
 }
 
 
-void runInRealEngine(std::function<void(shared<Device>)> run, const std::string& logPath)
+void runInRealEngine(std::function<void(sptr<Device>)> run, const std::string& logPath)
 {
     DeviceCreationArgs args;
     args.mode = DeviceMode::OpenGL;
@@ -35,7 +35,7 @@ void runInRealEngine(std::function<void(shared<Device>)> run, const std::string&
 }
 
 
-void runCppUnitTests(shared<Device> device)
+void runCppUnitTests(sptr<Device> device)
 {
     Resources_Test(device.get()).run();
     Device_Test(device.get()).run();
@@ -47,7 +47,7 @@ void runCppUnitTests(shared<Device> device)
 }
 
 
-void runCppIntegrationTests(shared<Device> device)
+void runCppIntegrationTests(sptr<Device> device)
 {
     FileSystem_Test(device.get()).run();
     Materials_Test(device.get()).run();
@@ -56,7 +56,7 @@ void runCppIntegrationTests(shared<Device> device)
 }
 
 
-void runLuaUnitTests(shared<Device> device)
+void runLuaUnitTests(sptr<Device> device)
 {
     device->getScriptManager()->executeFile("../tests/scripts/smoke-tests/tests.lua");
 }
@@ -80,7 +80,7 @@ void runDemos()
             std::cout << "Wrong demo number" << std::endl;
             break;
         }
-        runInRealEngine([&](shared<Device> device) { device->getScriptManager()->executeFile(demoScripts[demoNumber - 1]); }, "demo.log");
+        runInRealEngine([&](sptr<Device> device) { device->getScriptManager()->executeFile(demoScripts[demoNumber - 1]); }, "demo.log");
     }
 }
 

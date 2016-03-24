@@ -19,7 +19,7 @@ Scene::~Scene()
 }
 
 
-shared<Node> Scene::createNode()
+sptr<Node> Scene::createNode()
 {
     auto node = SL_NEW_SHARED(Node, this, nodeCounter++);
     node->addComponent<Transform>();
@@ -27,7 +27,7 @@ shared<Node> Scene::createNode()
 }
 
 
-void Scene::addComponent(uint32_t nodeId, shared<Component> cmp)
+void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
 {
     auto typeId = cmp->getTypeId();
     auto nodeIt = components.find(nodeId);

@@ -17,7 +17,7 @@
 using namespace solo;
 
 
-shared<ResourceManager> ResourceManager::create(Device* device)
+sptr<ResourceManager> ResourceManager::create(Device* device)
 {
     if (device->getMode() == DeviceMode::Stub)
         return SL_NEW_SHARED(StubResourceManager, device);
@@ -66,43 +66,43 @@ ImageLoader* ResourceManager::getImageLoader(const std::string& uri)
 }
 
 
-shared<Effect> ResourceManager::findEffect(const std::string& uri)
+sptr<Effect> ResourceManager::findEffect(const std::string& uri)
 {
     return findResource(uri, effects);
 }
 
 
-shared<Material> ResourceManager::findMaterial(const std::string& uri)
+sptr<Material> ResourceManager::findMaterial(const std::string& uri)
 {
     return findResource(uri, materials);
 }
 
 
-shared<Texture2D> ResourceManager::findTexture2D(const std::string& uri)
+sptr<Texture2D> ResourceManager::findTexture2D(const std::string& uri)
 {
     return findResource(uri, textures2d);
 }
 
 
-shared<CubeTexture> ResourceManager::findCubeTexture(const std::string& uri)
+sptr<CubeTexture> ResourceManager::findCubeTexture(const std::string& uri)
 {
     return findResource(uri, cubeTextures);
 }
 
 
-shared<Mesh> ResourceManager::findMesh(const std::string& uri)
+sptr<Mesh> ResourceManager::findMesh(const std::string& uri)
 {
     return findResource(uri, meshes);
 }
 
 
-shared<FrameBuffer> ResourceManager::findFrameBuffer(const std::string& uri)
+sptr<FrameBuffer> ResourceManager::findFrameBuffer(const std::string& uri)
 {
     return findResource(uri, frameBuffers);
 }
 
 
-shared<Effect> ResourceManager::getOrCreateEffect(const std::string& vsSrc, const std::string& fsSrc, const std::string& uri)
+sptr<Effect> ResourceManager::getOrCreateEffect(const std::string& vsSrc, const std::string& fsSrc, const std::string& uri)
 {
     return getOrCreateResource<Effect>(uri, effects,
         std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
@@ -110,7 +110,7 @@ shared<Effect> ResourceManager::getOrCreateEffect(const std::string& vsSrc, cons
 }
 
 
-shared<Effect> ResourceManager::getOrCreatePrefabEffect(EffectPrefab prefab, const std::string& uri)
+sptr<Effect> ResourceManager::getOrCreatePrefabEffect(EffectPrefab prefab, const std::string& uri)
 {
     return getOrCreateResource<Effect>(uri, effects,
         std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
@@ -118,7 +118,7 @@ shared<Effect> ResourceManager::getOrCreatePrefabEffect(EffectPrefab prefab, con
 }
 
 
-shared<Material> ResourceManager::getOrCreateMaterial(shared<Effect> effect, const std::string& uri)
+sptr<Material> ResourceManager::getOrCreateMaterial(sptr<Effect> effect, const std::string& uri)
 {
     return getOrCreateResource<Material>(uri, materials,
         std::bind(&ResourceManager::findMaterial, this, std::placeholders::_1),
@@ -126,7 +126,7 @@ shared<Material> ResourceManager::getOrCreateMaterial(shared<Effect> effect, con
 }
 
 
-shared<Texture2D> ResourceManager::getOrCreateTexture2D(const std::string& uri)
+sptr<Texture2D> ResourceManager::getOrCreateTexture2D(const std::string& uri)
 {
     return getOrCreateResource<Texture2D>(uri, textures2d,
         std::bind(&ResourceManager::findTexture2D, this, std::placeholders::_1),
@@ -134,7 +134,7 @@ shared<Texture2D> ResourceManager::getOrCreateTexture2D(const std::string& uri)
 }
 
 
-shared<CubeTexture> ResourceManager::getOrCreateCubeTexture(const std::string& uri)
+sptr<CubeTexture> ResourceManager::getOrCreateCubeTexture(const std::string& uri)
 {
     return getOrCreateResource<CubeTexture>(uri, cubeTextures,
         std::bind(&ResourceManager::findCubeTexture, this, std::placeholders::_1),
@@ -142,7 +142,7 @@ shared<CubeTexture> ResourceManager::getOrCreateCubeTexture(const std::string& u
 }
 
 
-shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& imageUri, const std::string& uri)
+sptr<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& imageUri, const std::string& uri)
 {
     auto textureUri = uri.empty() ? imageUri : uri;
     auto existing = findTexture2D(textureUri);
@@ -165,7 +165,7 @@ shared<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& imageUr
 }
 
 
-shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std::string>& sidesUris, const std::string& uri)
+sptr<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std::string>& sidesUris, const std::string& uri)
 {
     auto textureUri = uri.empty()
         ? sidesUris[0] + sidesUris[1] + sidesUris[2] + sidesUris[3] + sidesUris[4] + sidesUris[5]
@@ -190,7 +190,7 @@ shared<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std:
 }
 
 
-void ResourceManager::getOrLoadCubeTextureAsync(const std::vector<std::string>& sidesUris, std::function<void(shared<CubeTexture>)> callback, const std::string& uri)
+void ResourceManager::getOrLoadCubeTextureAsync(const std::vector<std::string>& sidesUris, std::function<void(sptr<CubeTexture>)> callback, const std::string& uri)
 {
     auto textureUri = uri.empty()
         ? sidesUris[0] + sidesUris[1] + sidesUris[2] + sidesUris[3] + sidesUris[4] + sidesUris[5] // TODO avoid copypasting
@@ -204,22 +204,23 @@ void ResourceManager::getOrLoadCubeTextureAsync(const std::vector<std::string>& 
 
     auto loader = getImageLoader(sidesUris[0]);
 
-    std::vector<async::task<shared<Image>>> imageTasks;
+    std::vector<async::task<sptr<Image>>> imageTasks;
     for (uint32_t i = 0; i < sidesUris.size(); i++)
     {
         auto sizeUri = sidesUris[i];
         imageTasks.push_back(async::spawn([=]
         {
-            return shared<Image>{ loader->load(sizeUri) }; // making it shared simplifies tasks management
+            return sptr<Image>{ loader->load(sizeUri) }; // making it shared simplifies tasks management
         }));
     }
 
-    async::when_all(imageTasks.begin(), imageTasks.end()).then([=] (std::vector<async::task<shared<Image>>> imageTasks) {
-        std::vector<shared<Image>> images;
-        std::transform(imageTasks.begin(), imageTasks.end(), std::back_inserter(images), [](async::task<shared<Image>>& t) { return t.get(); });
+    async::when_all(imageTasks.begin(), imageTasks.end()).then([=] (std::vector<async::task<sptr<Image>>> imageTasks)
+    {
+        std::vector<sptr<Image>> images;
+        std::transform(imageTasks.begin(), imageTasks.end(), std::back_inserter(images), [](async::task<sptr<Image>>& t) { return t.get(); });
 
         auto lock = this->tasksLock.acquire();
-        this->tasks.push_back(std::bind([=] (const std::vector<shared<Image>>& images)
+        this->tasks.push_back(std::bind([=] (const std::vector<sptr<Image>>& images)
         {
             auto texture = SL_MAKE_SHARED<CubeTexture>(this->device->getRenderer());
             uint32_t idx = 0;
@@ -234,7 +235,7 @@ void ResourceManager::getOrLoadCubeTextureAsync(const std::vector<std::string>& 
 }
 
 
-shared<Mesh> ResourceManager::getOrLoadMesh(const std::string& dataUri, const std::string& uri)
+sptr<Mesh> ResourceManager::getOrLoadMesh(const std::string& dataUri, const std::string& uri)
 {
     auto meshUri = uri.empty() ? dataUri : uri;
     auto existing = findMesh(meshUri);
@@ -248,7 +249,7 @@ shared<Mesh> ResourceManager::getOrLoadMesh(const std::string& dataUri, const st
 }
 
 
-void ResourceManager::getOrLoadMeshAsync(const std::string& dataUri, std::function<void(shared<Mesh>)> callback, const std::string& uri)
+void ResourceManager::getOrLoadMeshAsync(const std::string& dataUri, std::function<void(sptr<Mesh>)> callback, const std::string& uri)
 {
     auto meshUri = uri.empty() ? dataUri : uri;
     auto existing = findMesh(meshUri);
@@ -262,7 +263,7 @@ void ResourceManager::getOrLoadMeshAsync(const std::string& dataUri, std::functi
     
     async::spawn([=] {
         auto data = loader->loadData(dataUri);
-        shared<MeshData> sharedData{ std::move(data) };
+        sptr<MeshData> sharedData{ std::move(data) };
         auto lock = this->tasksLock.acquire();
         this->tasks.push_back([=]()
         {
@@ -275,7 +276,7 @@ void ResourceManager::getOrLoadMeshAsync(const std::string& dataUri, std::functi
 }
 
 
-shared<Mesh> ResourceManager::getOrCreateMesh(const std::string& uri)
+sptr<Mesh> ResourceManager::getOrCreateMesh(const std::string& uri)
 {
     return getOrCreateResource<Mesh>(uri, meshes,
         std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
@@ -283,7 +284,7 @@ shared<Mesh> ResourceManager::getOrCreateMesh(const std::string& uri)
 }
 
 
-shared<Mesh> ResourceManager::getOrCreatePrefabMesh(MeshPrefab prefab, const std::string& uri)
+sptr<Mesh> ResourceManager::getOrCreatePrefabMesh(MeshPrefab prefab, const std::string& uri)
 {
     return getOrCreateResource<Mesh>(uri, meshes,
         std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
@@ -291,7 +292,7 @@ shared<Mesh> ResourceManager::getOrCreatePrefabMesh(MeshPrefab prefab, const std
 }
 
 
-shared<FrameBuffer> ResourceManager::getOrCreateFrameBuffer(const std::string& uri)
+sptr<FrameBuffer> ResourceManager::getOrCreateFrameBuffer(const std::string& uri)
 {
     return getOrCreateResource<FrameBuffer>(uri, frameBuffers,
         std::bind(&ResourceManager::findFrameBuffer, this, std::placeholders::_1),
@@ -300,11 +301,11 @@ shared<FrameBuffer> ResourceManager::getOrCreateFrameBuffer(const std::string& u
 
 
 template <typename TResource>
-shared<TResource> ResourceManager::getOrCreateResource(
+sptr<TResource> ResourceManager::getOrCreateResource(
     const std::string& uri,
     ResourceCollection<TResource>& resourceMap,
-    std::function<shared<TResource>(const std::basic_string<char>&)> find,
-    std::function<shared<TResource>()> create)
+    std::function<sptr<TResource>(const std::basic_string<char>&)> find,
+    std::function<sptr<TResource>()> create)
 {
     auto existing = find(uri.empty() ? generateUri() : uri); // TODO use findResource here?
     return existing ? existing : createResource<TResource>(uri, resourceMap, create);
@@ -312,7 +313,7 @@ shared<TResource> ResourceManager::getOrCreateResource(
 
 
 template <typename TResource>
-shared<TResource> ResourceManager::createResource(const std::string& uri, ResourceCollection<TResource>& resourceMap, std::function<shared<TResource>()> create)
+sptr<TResource> ResourceManager::createResource(const std::string& uri, ResourceCollection<TResource>& resourceMap, std::function<sptr<TResource>()> create)
 {
     auto result = create();
     resourceMap[uri] = result;
@@ -321,7 +322,7 @@ shared<TResource> ResourceManager::createResource(const std::string& uri, Resour
 
 
 template <typename TResource>
-shared<TResource> ResourceManager::findResource(const std::string& uri, const ResourceCollection<TResource>& resourceMap)
+sptr<TResource> ResourceManager::findResource(const std::string& uri, const ResourceCollection<TResource>& resourceMap)
 {
     auto existing = resourceMap.find(uri);
     return existing != resourceMap.end() ? existing->second : nullptr;

@@ -10,6 +10,6 @@ namespace solo
         StubImageLoader(FileSystem* fs, ResourceManager* resourceManager);
 
         virtual bool isLoadable(const std::string& uri) override;
-        virtual unique<Image> load(const std::string& uri) override;
+        virtual uptr<Image> load(const std::string& uri) override;
     };
 }

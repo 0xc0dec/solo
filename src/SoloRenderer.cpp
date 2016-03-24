@@ -6,7 +6,7 @@
 using namespace solo;
 
 
-shared<Renderer> Renderer::create(Device* device)
+sptr<Renderer> Renderer::create(Device* device)
 {
     if (device->getMode() == DeviceMode::OpenGL)
         return SL_NEW_SHARED(OpenGLRenderer, device);

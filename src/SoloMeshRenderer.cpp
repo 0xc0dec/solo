@@ -45,7 +45,7 @@ void MeshRenderer::render(RenderContext& context)
 }
 
 
-void MeshRenderer::setMaterial(uint32_t index, shared<Material> material)
+void MeshRenderer::setMaterial(uint32_t index, sptr<Material> material)
 {
     if (material)
         materials[index] = material;

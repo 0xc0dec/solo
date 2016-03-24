@@ -12,7 +12,7 @@ namespace solo
     class FileSystem
     {
     public:
-        static shared<FileSystem> create(Device* device);
+        static sptr<FileSystem> create(Device* device);
 
         SL_NONCOPYABLE(FileSystem)
         virtual ~FileSystem() {}

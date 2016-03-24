@@ -18,16 +18,16 @@ namespace solo
 
         virtual void render(RenderContext& context) override final;
 
-        void setTexture(shared<CubeTexture> texture);
-        shared<CubeTexture> getTexture() const;
+        void setTexture(sptr<CubeTexture> texture);
+        sptr<CubeTexture> getTexture() const;
 
     private:
-        shared<Mesh> quadMesh;
-        shared<Material> material;
-        shared<CubeTexture> texture;
+        sptr<Mesh> quadMesh;
+        sptr<Material> material;
+        sptr<CubeTexture> texture;
     };
 
-    inline shared<CubeTexture> SkyboxRenderer::getTexture() const
+    inline sptr<CubeTexture> SkyboxRenderer::getTexture() const
     {
         return texture;
     }
