@@ -818,16 +818,19 @@ void LuaScriptManager::registerApi()
     // AsyncResourceHandle<Mesh>
     auto meshAsyncHandle = module.beginClass<AsyncResourceHandle<Mesh>>("AsyncResourceHandle_Mesh");
     REGISTER_METHOD(meshAsyncHandle, AsyncResourceHandle<Mesh>, done);
+    REGISTER_METHOD(meshAsyncHandle, AsyncResourceHandle<Mesh>, getResult);
     meshAsyncHandle.endClass();
 
     // AsyncResourceHandle<Texture2D>
     auto texture2DAsyncHandle = module.beginClass<AsyncResourceHandle<Texture2D>>("AsyncResourceHandle_Texture2D");
     REGISTER_METHOD(texture2DAsyncHandle, AsyncResourceHandle<Texture2D>, done);
+    REGISTER_METHOD(texture2DAsyncHandle, AsyncResourceHandle<Texture2D>, getResult);
     texture2DAsyncHandle.endClass();
 
     // AsyncResourceHandle<CubeTexture>
     auto cubeTextureAsyncHandle = module.beginClass<AsyncResourceHandle<CubeTexture>>("AsyncResourceHandle_CubeTexture");
     REGISTER_METHOD(cubeTextureAsyncHandle, AsyncResourceHandle<CubeTexture>, done);
+    REGISTER_METHOD(cubeTextureAsyncHandle, AsyncResourceHandle<CubeTexture>, getResult);
     cubeTextureAsyncHandle.endClass();
 
     // ResourceManager

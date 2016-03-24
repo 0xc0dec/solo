@@ -28,6 +28,11 @@ namespace solo
     public:
         using CallbackType = std::function<void(sptr<T>)>;
 
+        sptr<T> getResult()
+        {
+            return result;
+        }
+
         void done(CallbackType callback)
         {
             if (callback && result)
@@ -44,8 +49,8 @@ namespace solo
                 callback(result);
         }
 
-        sptr<T> result;
         CallbackType callback;
+        sptr<T> result;
     };
 
 
