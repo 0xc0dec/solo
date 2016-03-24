@@ -815,6 +815,16 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(graphics, LuaGraphics, blit);
     graphics.endClass();
 
+    // AsyncResourceHandle<Mesh>
+    auto meshAsyncHandle = module.beginClass<AsyncResourceHandle<Mesh>>("AsyncResourceHandle_Mesh");
+    REGISTER_METHOD(meshAsyncHandle, AsyncResourceHandle<Mesh>, done);
+    meshAsyncHandle.endClass();
+
+    // AsyncResourceHandle<CubeTexture>
+    auto cubeTextureAsyncHandle = module.beginClass<AsyncResourceHandle<CubeTexture>>("AsyncResourceHandle_CubeTexture");
+    REGISTER_METHOD(cubeTextureAsyncHandle, AsyncResourceHandle<CubeTexture>, done);
+    cubeTextureAsyncHandle.endClass();
+
     // ResourceManager
     auto mgr = module.beginClass<ResourceManager>("ResourceManager");
     REGISTER_METHOD(mgr, ResourceManager, findEffect);
@@ -833,9 +843,9 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateFrameBuffer, LUA_ARGS(_opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadTexture2D, LUA_ARGS(const std::string&, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadCubeTexture, LUA_ARGS(const std::vector<std::string>&, _opt<const std::string&>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrLoadCubeTextureAsync, LUA_ARGS(const std::vector<std::string>&, std::function<void(sptr<CubeTexture>)>, _opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrLoadCubeTextureAsync, LUA_ARGS(const std::vector<std::string>&, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadMesh, LUA_ARGS(const std::string&, _opt<const std::string&>));
-    REGISTER_METHOD2(mgr, ResourceManager, getOrLoadMeshAsync, LUA_ARGS(const std::string&, std::function<void(sptr<Mesh>)>, _opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrLoadMeshAsync, LUA_ARGS(const std::string&, _opt<const std::string&>));
     REGISTER_OVERLOADED_METHOD(mgr, ResourceManager, cleanUnusedResources, "cleanUnusedResources", void, , void);
     mgr.endClass();
 

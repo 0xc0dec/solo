@@ -92,7 +92,7 @@ function runDemo2()
 		mat:setPolygonFace(solo.PolygonFace.All)
 		mat:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
 		mat:setTextureParameter("mainTex", tex)
-		resMgr:getOrLoadMeshAsync("../data/monkey.obj", function(mesh)
+		resMgr:getOrLoadMeshAsync("../data/monkey.obj"):done(function(mesh)
 			local node = scene:createNode()
 			local renderer = node:addComponent("MeshRenderer")
 			renderer:setMesh(mesh)
@@ -119,7 +119,7 @@ function runDemo2()
 			"../data/skyboxes/deep-space/right.png",
 			"../data/skyboxes/deep-space/top.png",
 			"../data/skyboxes/deep-space/bottom.png"
-		}, callback)
+		}):done(callback)
 	end
 
 	function initCamera()

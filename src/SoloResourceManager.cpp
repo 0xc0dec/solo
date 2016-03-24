@@ -190,16 +190,18 @@ sptr<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std::s
 }
 
 
-void ResourceManager::getOrLoadCubeTextureAsync(const std::vector<std::string>& sidesUris, std::function<void(sptr<CubeTexture>)> callback, const std::string& uri)
+sptr<AsyncResourceHandle<CubeTexture>> ResourceManager::getOrLoadCubeTextureAsync(const std::vector<std::string>& sidesUris, const std::string& uri)
 {
+    auto handle = std::make_shared<AsyncResourceHandle<CubeTexture>>();
+
     auto textureUri = uri.empty()
         ? sidesUris[0] + sidesUris[1] + sidesUris[2] + sidesUris[3] + sidesUris[4] + sidesUris[5] // TODO avoid copypasting
         : uri;
     auto existing = findCubeTexture(textureUri);
     if (existing)
     {
-        callback(existing);
-        return;
+        handle->putResult(existing);
+        return handle;
     }
 
     auto loader = getImageLoader(sidesUris[0]);
@@ -229,9 +231,11 @@ void ResourceManager::getOrLoadCubeTextureAsync(const std::vector<std::string>& 
                 auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + idx++);
                 texture->setData(face, image->colorFormat, image->data, image->width, image->height);
             }
-            callback(texture);
+            handle->putResult(texture);
         }, std::move(images)));
     });
+
+    return handle;
 }
 
 
@@ -249,19 +253,22 @@ sptr<Mesh> ResourceManager::getOrLoadMesh(const std::string& dataUri, const std:
 }
 
 
-void ResourceManager::getOrLoadMeshAsync(const std::string& dataUri, std::function<void(sptr<Mesh>)> callback, const std::string& uri)
+sptr<AsyncResourceHandle<Mesh>> ResourceManager::getOrLoadMeshAsync(const std::string& dataUri, const std::string& uri)
 {
+    auto handle = std::make_shared<AsyncResourceHandle<Mesh>>();
+
     auto meshUri = uri.empty() ? dataUri : uri;
     auto existing = findMesh(meshUri);
     if (existing)
     {
-        callback(existing);
-        return;
+        handle->putResult(existing);
+        return handle;
     }
 
     auto loader = getMeshLoader(dataUri);
-    
-    async::spawn([=] {
+
+    async::spawn([=]
+    {
         auto data = loader->loadData(dataUri);
         sptr<MeshData> sharedData{ std::move(data) };
         auto lock = this->tasksLock.acquire();
@@ -270,9 +277,11 @@ void ResourceManager::getOrLoadMeshAsync(const std::string& dataUri, std::functi
             // This called is later called in the update() method
             auto mesh = std::make_shared<Mesh>(this->device->getRenderer(), sharedData.get());
             this->meshes[meshUri] = mesh;
-            callback(mesh);
+            handle->putResult(mesh);
         });
     });
+
+    return handle;
 }
 
 

@@ -22,6 +22,33 @@ namespace solo
     enum class MeshPrefab;
     enum class EffectPrefab;
 
+    template <class T>
+    class AsyncResourceHandle
+    {
+    public:
+        using CallbackType = std::function<void(sptr<T>)>;
+
+        void done(CallbackType callback)
+        {
+            if (callback && result)
+                callback(result);
+            this->callback = callback;
+        }
+
+    private:
+        friend class ResourceManager;
+
+        void putResult(sptr<T> result)
+        {
+            if (callback)
+                callback(result);
+        }
+
+        sptr<T> result;
+        CallbackType callback;
+    };
+
+
     class ResourceManager
     {
     public:
@@ -49,10 +76,10 @@ namespace solo
         sptr<Texture2D> getOrLoadTexture2D(const std::string& imageUri, const std::string& uri = "");
         
         sptr<CubeTexture> getOrLoadCubeTexture(const std::vector<std::string>& imageUris, const std::string& uri = "");
-        void getOrLoadCubeTextureAsync(const std::vector<std::string>& sidesUris, std::function<void(sptr<CubeTexture>)> callback, const std::string& uri = "");
+        sptr<AsyncResourceHandle<CubeTexture>> getOrLoadCubeTextureAsync(const std::vector<std::string>& sidesUris, const std::string& uri = "");
 
         sptr<Mesh> getOrLoadMesh(const std::string& dataUri, const std::string& uri = "");
-        void getOrLoadMeshAsync(const std::string& dataUri, std::function<void(sptr<Mesh>)> callback, const std::string& uri = "");
+        sptr<AsyncResourceHandle<Mesh>> getOrLoadMeshAsync(const std::string& dataUri, const std::string& uri = "");
 
         void cleanUnusedResources();
 
