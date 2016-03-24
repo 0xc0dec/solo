@@ -820,6 +820,11 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD(meshAsyncHandle, AsyncResourceHandle<Mesh>, done);
     meshAsyncHandle.endClass();
 
+    // AsyncResourceHandle<Texture2D>
+    auto texture2DAsyncHandle = module.beginClass<AsyncResourceHandle<Texture2D>>("AsyncResourceHandle_Texture2D");
+    REGISTER_METHOD(texture2DAsyncHandle, AsyncResourceHandle<Texture2D>, done);
+    texture2DAsyncHandle.endClass();
+
     // AsyncResourceHandle<CubeTexture>
     auto cubeTextureAsyncHandle = module.beginClass<AsyncResourceHandle<CubeTexture>>("AsyncResourceHandle_CubeTexture");
     REGISTER_METHOD(cubeTextureAsyncHandle, AsyncResourceHandle<CubeTexture>, done);
@@ -842,6 +847,7 @@ void LuaScriptManager::registerApi()
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreatePrefabMesh, LUA_ARGS(MeshPrefab, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrCreateFrameBuffer, LUA_ARGS(_opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadTexture2D, LUA_ARGS(const std::string&, _opt<const std::string&>));
+    REGISTER_METHOD2(mgr, ResourceManager, getOrLoadTexture2DAsync, LUA_ARGS(const std::string&, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadCubeTexture, LUA_ARGS(const std::vector<std::string>&, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadCubeTextureAsync, LUA_ARGS(const std::vector<std::string>&, _opt<const std::string&>));
     REGISTER_METHOD2(mgr, ResourceManager, getOrLoadMesh, LUA_ARGS(const std::string&, _opt<const std::string&>));

@@ -74,6 +74,7 @@ namespace solo
         sptr<FrameBuffer> getOrCreateFrameBuffer(const std::string& uri = "");
 
         sptr<Texture2D> getOrLoadTexture2D(const std::string& imageUri, const std::string& uri = "");
+        sptr<AsyncResourceHandle<Texture2D>> getOrLoadTexture2DAsync(const std::string& imageUri, const std::string& uri = "");
         
         sptr<CubeTexture> getOrLoadCubeTexture(const std::vector<std::string>& imageUris, const std::string& uri = "");
         sptr<AsyncResourceHandle<CubeTexture>> getOrLoadCubeTextureAsync(const std::vector<std::string>& sidesUris, const std::string& uri = "");

@@ -165,6 +165,38 @@ sptr<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& imageUri,
 }
 
 
+sptr<AsyncResourceHandle<Texture2D>> ResourceManager::getOrLoadTexture2DAsync(const std::string& imageUri, const std::string& uri)
+{
+    auto handle = std::make_shared<AsyncResourceHandle<Texture2D>>();
+
+    auto textureUri = uri.empty() ? imageUri : uri;
+    auto existing = findTexture2D(textureUri);
+    if (existing)
+    {
+        handle->putResult(existing);
+        return handle;
+    }
+
+    auto loader = getImageLoader(imageUri);
+
+    async::spawn([=]
+    {
+        auto uimage = loader->load(textureUri);
+        sptr<Image> simage { std::move(uimage) };
+        auto lock = this->tasksLock.acquire();
+        this->tasks.push_back([=]()
+        {
+            auto texture = std::make_shared<Texture2D>(this->device->getRenderer());
+            texture->setData(simage->colorFormat, simage->data, simage->width, simage->height);
+            this->textures2d[textureUri] = texture;
+            handle->putResult(texture);
+        });
+    });
+
+    return handle;
+}
+
+
 sptr<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std::string>& sidesUris, const std::string& uri)
 {
     auto textureUri = uri.empty()
