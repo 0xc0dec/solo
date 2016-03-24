@@ -10,23 +10,9 @@ function runDemo2()
 	local createEscapeWatcher = dofile("../tests/scripts/demos/escape-watcher.lua")
 	local createMaterialTimeUpdater = dofile("../tests/scripts/demos/material-time-updater.lua")
 	local createScreenshoter = dofile("../tests/scripts/demos/screenshoter.lua")
-	local utils = dofile("../tests/scripts/demos/utils.lua")
+	local utils = dofile("../tests/scripts/demos/utils.lua")(resMgr, scene)
 
 	local camera
-	--
-	-- function test()
-	-- 	return {
-	-- 		typeId = 2000,
-	--
-	-- 		update = function()
-	-- 			if device:isKeyPressed(solo.KeyCode.T, true) then
-	-- 				resMgr:getOrLoadMeshAsync("../data/teapot.obj", function(mesh)
-	-- 					print("Loaded")
-	-- 				end)
-	-- 			end
-	-- 		end
-	-- 	}
-	-- end
 
 	function createPostProcessor()
 		return {
@@ -86,40 +72,34 @@ function runDemo2()
 	end
 
 	function initMesh()
-		local tex = utils.loadTexture(resMgr, "../data/cobblestone.png")
-		local effect = resMgr:getOrCreateEffect(shaders.vertex.wavy, shaders.fragment.texture)
-		local mat = resMgr:getOrCreateMaterial(effect)
-		mat:setPolygonFace(solo.PolygonFace.All)
-		mat:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
-		mat:setTextureParameter("mainTex", tex)
-		resMgr:getOrLoadMeshAsync("../data/monkey.obj"):done(function(mesh)
-			local node = scene:createNode()
-			local renderer = node:addComponent("MeshRenderer")
-			renderer:setMesh(mesh)
-			renderer:setMaterial(0, mat)
-			node:addScript(createMaterialTimeUpdater(device, "time"))
-			logger:logInfo("Initialized mesh")
+		utils.loadTexture("../data/cobblestone.png", function(tex)
+			local effect = resMgr:getOrCreateEffect(shaders.vertex.wavy, shaders.fragment.texture)
+			local mat = resMgr:getOrCreateMaterial(effect)
+			mat:setPolygonFace(solo.PolygonFace.All)
+			mat:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
+			mat:setTextureParameter("mainTex", tex)
+			resMgr:getOrLoadMeshAsync("../data/monkey.obj"):done(function(mesh)
+				local node = scene:createNode()
+				local renderer = node:addComponent("MeshRenderer")
+				renderer:setMesh(mesh)
+				renderer:setMaterial(0, mat)
+				node:addScript(createMaterialTimeUpdater(device, "time"))
+				logger:logInfo("Initialized mesh")
+			end)
 		end)
 	end
 
 	function initSkybox()
-		function callback(texture)
-			texture:setWrapping(solo.TextureWrapping.Clamp)
-			texture:setFiltering(solo.TextureFiltering.Linear)
-			local node = scene:createNode()
-			local renderer = node:addComponent("SkyboxRenderer")
-			renderer:setTexture(texture)
-			logger:logInfo("Initialized skybox")
-		end
-
-		resMgr:getOrLoadCubeTextureAsync({
+		utils.loadSkybox({
 			"../data/skyboxes/deep-space/front.png",
 			"../data/skyboxes/deep-space/back.png",
 			"../data/skyboxes/deep-space/left.png",
 			"../data/skyboxes/deep-space/right.png",
 			"../data/skyboxes/deep-space/top.png",
 			"../data/skyboxes/deep-space/bottom.png"
-		}):done(callback)
+		}, function()
+			logger:logInfo("Initialized skybox")
+		end)
 	end
 
 	function initCamera()
