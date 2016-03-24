@@ -9,12 +9,13 @@ function runDemo1()
 	local createRotator = dofile("../tests/scripts/demos/rotator.lua")
 	local createTargeter = dofile("../tests/scripts/demos/targeter.lua")
 	local createScreenshoter = dofile("../tests/scripts/demos/screenshoter.lua")
-	local utils = dofile("../tests/scripts/demos/utils.lua")
+	local utils = dofile("../tests/scripts/demos/utils.lua")(resMgr, scene)
 
 	local renderTargetQuadTag = 2
 
 	local canvasSize = device:getCanvasSize()
 
+	local effects
 	local materials
 	local meshes
 	local offscreenCameraTex
@@ -40,78 +41,53 @@ function runDemo1()
 		}
 	end
 
+	function initEffects()
+		effects = {
+			simpleTextureEffect = resMgr:getOrCreateEffect(shaders.vertex.basic, shaders.fragment.texture),
+			colorEffect = resMgr:getOrCreateEffect(shaders.vertex.basic, shaders.fragment.color),
+			checkerEffect = resMgr:getOrCreateEffect(shaders.vertex.basic, shaders.fragment.checker),
+			texWithLightingEffect = resMgr:getOrCreateEffect(shaders.vertex.basicLighting, shaders.fragment.textureWithLighting)
+		}
+	end
+
 	function initMaterials()
-		local tex1 = utils.loadTexture(resMgr, "../data/freeman.png")
-		tex1:setWrapping(solo.TextureWrapping.Clamp)
-
-		local tex2 = utils.loadTexture(resMgr, "../data/cobblestone.png")
-		tex2:setWrapping(solo.TextureWrapping.Clamp)
-
-		local tex3 = utils.loadTexture(resMgr, "../data/flammable.png")
-		tex3:setWrapping(solo.TextureWrapping.Clamp)
-
-		local simpleTextureEffect = resMgr:getOrCreateEffect(shaders.vertex.basic, shaders.fragment.texture)
-		local colorEffect = resMgr:getOrCreateEffect(shaders.vertex.basic, shaders.fragment.color)
-		local checkerEffect = resMgr:getOrCreateEffect(shaders.vertex.basic, shaders.fragment.checker)
-		local texWithLightingEffect = resMgr:getOrCreateEffect(shaders.vertex.basicLighting, shaders.fragment.textureWithLighting)
-
-		local redMaterial = resMgr:getOrCreateMaterial(colorEffect)
+		local redMaterial = resMgr:getOrCreateMaterial(effects.colorEffect)
 		redMaterial:setPolygonFace(solo.PolygonFace.All)
 		redMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
 		redMaterial:setVector4Parameter("color", solo.Vector4(1, 0, 0, 1))
 
-		local greenMaterial = resMgr:getOrCreateMaterial(colorEffect)
+		local greenMaterial = resMgr:getOrCreateMaterial(effects.colorEffect)
 		greenMaterial:setPolygonFace(solo.PolygonFace.All)
 		greenMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
 		greenMaterial:setVector4Parameter("color", solo.Vector4(0, 1, 0, 1))
 
-		local blueMaterial = resMgr:getOrCreateMaterial(colorEffect)
+		local blueMaterial = resMgr:getOrCreateMaterial(effects.colorEffect)
 		blueMaterial:setPolygonFace(solo.PolygonFace.All)
 		blueMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
 		blueMaterial:setVector4Parameter("color", solo.Vector4(0, 0, 1, 1))
 
-		local whiteMaterial = resMgr:getOrCreateMaterial(colorEffect)
+		local whiteMaterial = resMgr:getOrCreateMaterial(effects.colorEffect)
 		whiteMaterial:setPolygonFace(solo.PolygonFace.All)
 		whiteMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
 		whiteMaterial:setVector4Parameter("color", solo.Vector4(1, 1, 1, 1))
 
-		local simpleTextureMaterial = resMgr:getOrCreateMaterial(simpleTextureEffect)
-		simpleTextureMaterial:setPolygonFace(solo.PolygonFace.All)
-		simpleTextureMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
-		simpleTextureMaterial:setTextureParameter("mainTex", tex1)
-
-		local transparentTextureMaterial = resMgr:getOrCreateMaterial(simpleTextureEffect)
-		transparentTextureMaterial:setPolygonFace(solo.PolygonFace.All)
-		transparentTextureMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
-		transparentTextureMaterial:setTextureParameter("mainTex", tex3)
-		transparentTextureMaterial:setTransparent(true)
-
-		local checkerMaterial = resMgr:getOrCreateMaterial(checkerEffect)
+		local checkerMaterial = resMgr:getOrCreateMaterial(effects.checkerEffect)
 		checkerMaterial:setPolygonFace(solo.PolygonFace.All)
 		checkerMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix);
 		checkerMaterial:setVector4Parameter("color", solo.Vector4(1, 1, 0, 1))
 
-		local textureWithLightingMaterial = resMgr:getOrCreateMaterial(texWithLightingEffect)
-		textureWithLightingMaterial:setPolygonFace(solo.PolygonFace.All)
-		textureWithLightingMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
-		textureWithLightingMaterial:setParameterAutoBinding("invTransposedWorldMatrix", solo.AutoBinding.InverseTransposedWorldMatrix)
-		textureWithLightingMaterial:setTextureParameter("mainTex", tex2)
-
-		local offscreenCameraRenderedMaterial = resMgr:getOrCreateMaterial(simpleTextureEffect)
+		local offscreenCameraRenderedMaterial = resMgr:getOrCreateMaterial(effects.simpleTextureEffect)
 		offscreenCameraRenderedMaterial:setPolygonFace(solo.PolygonFace.All)
 		offscreenCameraRenderedMaterial:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
 		offscreenCameraRenderedMaterial:setTextureParameter("mainTex", offscreenCameraTex)
 
 		materials =
 		{
-			simpleTexture = simpleTextureMaterial,
-			transparentTexture = transparentTextureMaterial,
 			red = redMaterial,
 			green = greenMaterial,
 			blue = blueMaterial,
 			white = whiteMaterial,
 			checker = checkerMaterial,
-			textureWithLighting = textureWithLightingMaterial,
 			offscreenCameraRendered = offscreenCameraRenderedMaterial
 		}
 
@@ -128,62 +104,84 @@ function runDemo1()
 	end
 
 	function initSkybox()
-		utils.createSkybox(resMgr, scene, {
+		utils.loadSkybox({
 			"../data/skyboxes/deep-space/front.png",
 			"../data/skyboxes/deep-space/back.png",
 			"../data/skyboxes/deep-space/left.png",
 			"../data/skyboxes/deep-space/right.png",
 			"../data/skyboxes/deep-space/top.png",
 			"../data/skyboxes/deep-space/bottom.png"
-		})
-		logger:logInfo("Initialized skybox")
+		}, function()
+			logger:logInfo("Initialized skybox")
+		end)
 	end
 
-	function initTexturedQuad()
-		local parent = scene:createNode()
-		parent:findComponent("Transform"):setLocalPosition(solo.Vector3(5, 0, 0))
-		parent:addScript(createRotator(device, solo.Vector3.unitY(), 1, "world"))
-		initAxesMesh(parent)
-		local quad = createPrefabMeshNode("quad")
-		quad:addScript(createRotator(device, solo.Vector3.unitX(), 1, "local"));
-		quad:findComponent("Transform"):setParent(parent:findComponent("Transform"))
-		quad:findComponent("Transform"):setLocalPosition(solo.Vector3(2, 0, 0))
-		local renderer = quad:findComponent("MeshRenderer")
-		renderer:setMaterial(0, materials.transparentTexture)
-		renderer:setRenderQueue(3000)
+	function initTransparentQuad()
+		utils.loadTexture("../data/flammable.png", function(tex)
+			tex:setWrapping(solo.TextureWrapping.Clamp)
+
+			local mat = resMgr:getOrCreateMaterial(effects.simpleTextureEffect)
+			mat:setPolygonFace(solo.PolygonFace.All)
+			mat:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
+			mat:setTextureParameter("mainTex", tex)
+			mat:setTransparent(true)
+
+			local parent = scene:createNode()
+			parent:findComponent("Transform"):setLocalPosition(solo.Vector3(5, 0, 0))
+			parent:addScript(createRotator(device, solo.Vector3.unitY(), 1, "world"))
+			initAxesMesh(parent)
+
+			local quad = createPrefabMeshNode("quad")
+			quad:addScript(createRotator(device, solo.Vector3.unitX(), 1, "local"));
+			quad:findComponent("Transform"):setParent(parent:findComponent("Transform"))
+			quad:findComponent("Transform"):setLocalPosition(solo.Vector3(2, 0, 0))
+
+			local renderer = quad:findComponent("MeshRenderer")
+			renderer:setMaterial(0, mat)
+			renderer:setRenderQueue(3000)
+		end)
 	end
 
 	function initDynamicQuad()
-		local layout = solo.VertexBufferLayout()
-		layout:add(solo.VertexBufferLayoutSemantics.Position, 3)
-		layout:add(solo.VertexBufferLayoutSemantics.TexCoord0, 2)
+		utils.loadTexture("../data/freeman.png", function(tex)
+			tex:setWrapping(solo.TextureWrapping.Clamp)
 
-		local data = {
-			-1, -1, 0,	0, 0,
-			-1,  1, 0,	0, 1,
-		 	1,  1, 0,	1, 1,
-			1, -1, 0,	1, 0
-		}
+			local mat = resMgr:getOrCreateMaterial(effects.simpleTextureEffect)
+			mat:setPolygonFace(solo.PolygonFace.All)
+			mat:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
+			mat:setTextureParameter("mainTex", tex)
 
-		local indices = {
-			0, 1, 2,
-			0, 2, 3
-		}
+			local layout = solo.VertexBufferLayout()
+			layout:add(solo.VertexBufferLayoutSemantics.Position, 3)
+			layout:add(solo.VertexBufferLayoutSemantics.TexCoord0, 2)
 
-		local mesh = resMgr:getOrCreateMesh()
-		mesh:addDynamicVertexBuffer(layout, data, 4)
-		mesh:addPart(indices, 6)
+			local data = {
+				-1, -1, 0,	0, 0,
+				-1,  1, 0,	0, 1,
+			 	1,  1, 0,	1, 1,
+				1, -1, 0,	1, 0
+			}
 
-		mesh:setPrimitiveType(solo.PrimitiveType.Triangles)
+			local indices = {
+				0, 1, 2,
+				0, 2, 3
+			}
 
-		local node = scene:createNode()
-		node:findComponent("Transform"):setLocalPosition(solo.Vector3(0, 0, -5))
+			local mesh = resMgr:getOrCreateMesh()
+			mesh:addDynamicVertexBuffer(layout, data, 4)
+			mesh:addPart(indices, 6)
 
-		local renderer = node:addComponent("MeshRenderer")
-		renderer:setMesh(mesh)
-		renderer:setMaterial(0, materials.simpleTexture)
+			mesh:setPrimitiveType(solo.PrimitiveType.Triangles)
 
-		node:addScript(createDynamicQuadUpdater(data, mesh, 0))
+			local node = scene:createNode()
+			node:findComponent("Transform"):setLocalPosition(solo.Vector3(0, 0, -5))
+
+			local renderer = node:addComponent("MeshRenderer")
+			renderer:setMesh(mesh)
+			renderer:setMaterial(0, mat)
+
+			node:addScript(createDynamicQuadUpdater(data, mesh, 0))
+		end)
 	end
 
 	function initCheckerBox()
@@ -194,13 +192,23 @@ function runDemo1()
 	end
 
 	function initMonkey()
-		local node = scene:createNode()
-		local renderer = node:addComponent("MeshRenderer")
-		renderer:setMesh(meshes.monkey)
-		renderer:setMaterial(0, materials.textureWithLighting)
-		node:findComponent("Transform"):setLocalPosition(solo.Vector3.zero())
-		node:addScript(createRotator(device, solo.Vector3.unitX(), 1, "local"))
-		return node
+		utils.loadTexture("../data/cobblestone.png", function(tex)
+			tex:setWrapping(solo.TextureWrapping.Clamp)
+
+			local mat = resMgr:getOrCreateMaterial(effects.texWithLightingEffect)
+			mat:setPolygonFace(solo.PolygonFace.All)
+			mat:setParameterAutoBinding("worldViewProjMatrix", solo.AutoBinding.WorldViewProjectionMatrix)
+			mat:setParameterAutoBinding("invTransposedWorldMatrix", solo.AutoBinding.InverseTransposedWorldMatrix)
+			mat:setTextureParameter("mainTex", tex)
+
+			local node = scene:createNode()
+			local renderer = node:addComponent("MeshRenderer")
+			renderer:setMesh(meshes.monkey)
+			renderer:setMaterial(0, mat)
+			node:findComponent("Transform"):setLocalPosition(solo.Vector3.zero())
+			node:addScript(createRotator(device, solo.Vector3.unitX(), 1, "local"))
+			return node -- TODO
+		end)
 	end
 
 	function initMonitorQuad(targetNode)
@@ -282,19 +290,21 @@ function runDemo1()
 	end
 
 	function initObjects()
-		initTexturedQuad()
+		initTransparentQuad()
 		initCheckerBox()
-		local monkey = initMonkey()
-		initMonitorQuad(monkey)
-		initDynamicQuad()
+		initMonkey()
+		-- local monkey = initMonkey()
+		-- initMonitorQuad(monkey)
+		-- initDynamicQuad()
 		logger:logInfo("Initialized objects")
 	end
 
+	initEffects()
 	initCameras()
 	initMaterials()
 	initMeshes()
 	initObjects()
-	initSkybox()
+	-- initSkybox()
 
 	device:run()
 end
