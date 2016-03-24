@@ -265,7 +265,7 @@ uptr<MeshData> ObjMeshLoader::loadData(const std::string& uri)
     if (!currentIndices.empty())
         finishIndex();
 
-    auto data = SL_MAKE_UNIQUE<MeshData>();
+    auto data = std::make_unique<MeshData>();
     data->vertices = vertices; // TODO avoid assignments
     data->uvs = uvs;
     data->normals = normals;

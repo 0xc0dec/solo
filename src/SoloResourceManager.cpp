@@ -28,8 +28,8 @@ sptr<ResourceManager> ResourceManager::create(Device* device)
 ResourceManager::ResourceManager(Device* device):
     device(device)
 {
-    imageLoaders.push_back(SL_MAKE_UNIQUE<PngImageLoader>(device->getFileSystem(), this));
-    meshLoaders.push_back(SL_MAKE_UNIQUE<ObjMeshLoader>(device->getFileSystem(), this));
+    imageLoaders.push_back(std::make_unique<PngImageLoader>(device->getFileSystem(), this));
+    meshLoaders.push_back(std::make_unique<ObjMeshLoader>(device->getFileSystem(), this));
 }
 
 
@@ -222,7 +222,7 @@ void ResourceManager::getOrLoadCubeTextureAsync(const std::vector<std::string>& 
         auto lock = this->tasksLock.acquire();
         this->tasks.push_back(std::bind([=] (const std::vector<sptr<Image>>& images)
         {
-            auto texture = SL_MAKE_SHARED<CubeTexture>(this->device->getRenderer());
+            auto texture = std::make_shared<CubeTexture>(this->device->getRenderer());
             uint32_t idx = 0;
             for (const auto& image : images)
             {
@@ -268,7 +268,7 @@ void ResourceManager::getOrLoadMeshAsync(const std::string& dataUri, std::functi
         this->tasks.push_back([=]()
         {
             // This called is later called in the update() method
-            auto mesh = SL_MAKE_SHARED<Mesh>(this->device->getRenderer(), sharedData.get());
+            auto mesh = std::make_shared<Mesh>(this->device->getRenderer(), sharedData.get());
             this->meshes[meshUri] = mesh;
             callback(mesh);
         });

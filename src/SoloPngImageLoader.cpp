@@ -76,7 +76,7 @@ uptr<Image> PngImageLoader::load(const std::string& uri)
     }
 
     auto stride = png_get_rowbytes(png, info);
-    auto result = SL_MAKE_UNIQUE<Image>();
+    auto result = std::make_unique<Image>();
     result->width = static_cast<uint32_t>(width);
     result->height = static_cast<uint32_t>(height);
     result->colorFormat = colorFormat;

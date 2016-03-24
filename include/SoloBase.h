@@ -13,8 +13,6 @@
 #endif
 
 #define SL_SHARED_STATIC_CAST		std::static_pointer_cast
-#define SL_MAKE_SHARED				std::make_shared
-#define SL_MAKE_UNIQUE              std::make_unique
 #define SL_NEW_SHARED(type, ...) 	std::shared_ptr<type>(new type(__VA_ARGS__)) // TODO replace with SL_MAKE_SHARED
 
 #define SL_NONCOPYABLE(type) \

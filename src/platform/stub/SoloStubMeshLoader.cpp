@@ -25,5 +25,5 @@ sptr<Mesh> StubMeshLoader::load(const std::string& uri)
 
 uptr<MeshData> StubMeshLoader::loadData(const std::string& uri)
 {
-    return SL_MAKE_UNIQUE<MeshData>();
+    return std::make_unique<MeshData>();
 }

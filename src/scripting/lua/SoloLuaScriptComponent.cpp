@@ -80,7 +80,7 @@ Component* LuaScriptComponent::findComponent(Node* node, const std::string& type
 
 void LuaScriptComponent::addScript(Node* node, LuaRef scriptComponent)
 {
-    auto actualComponent = SL_MAKE_SHARED<LuaScriptComponent>(*node, scriptComponent);
+    auto actualComponent = std::make_shared<LuaScriptComponent>(*node, scriptComponent);
     node->getScene()->addComponent(node->getId(), actualComponent);
 }
 
