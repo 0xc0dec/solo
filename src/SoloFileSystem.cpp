@@ -9,8 +9,8 @@ using namespace solo;
 sptr<FileSystem> FileSystem::create(Device* device)
 {
     if (device->getMode() == DeviceMode::Stub)
-        return SL_NEW_SHARED(StubFileSystem);
-    return SL_NEW_SHARED(FileSystem);
+        return SL_WRAP_SPTR(StubFileSystem);
+    return SL_WRAP_SPTR(FileSystem);
 }
 
 

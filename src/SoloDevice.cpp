@@ -15,8 +15,8 @@ using namespace solo;
 sptr<Device> Device::create(const DeviceCreationArgs& args)
 {
     if (args.mode == DeviceMode::OpenGL)
-        return SL_NEW_SHARED(SDLOpenGLDevice, args);
-    return SL_NEW_SHARED(StubDevice, args);
+        return SL_WRAP_SPTR(SDLOpenGLDevice, args);
+    return SL_WRAP_SPTR(StubDevice, args);
 }
 
 
@@ -50,15 +50,15 @@ Device::~Device()
 Device::Device(const DeviceCreationArgs& args):
     creationArgs(args)
 {
-    logger = SL_NEW_SHARED(Logger);
+    logger = std::make_shared<Logger>();
     if (!creationArgs.logFilePath.empty())
         logger->setTargetFile(creationArgs.logFilePath);
 
     renderer = Renderer::create(this);
     fs = FileSystem::create(this);
     resourceManager = ResourceManager::create(this);
-    graphics = SL_NEW_SHARED(Graphics, this);
-    scene = SL_NEW_SHARED(Scene, this);
+    graphics = std::make_shared<Graphics>(this);
+    scene = std::make_shared<Scene>(this);
     scriptManager = ScriptManager::create(this);
 }
 

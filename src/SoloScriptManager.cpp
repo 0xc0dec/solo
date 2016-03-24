@@ -7,7 +7,7 @@ using namespace solo;
 sptr<ScriptManager> ScriptManager::create(Device* device)
 {
     // TODO maybe other implementations some day
-    return SL_NEW_SHARED(LuaScriptManager, device);
+    return SL_WRAP_SPTR(LuaScriptManager, device);
 }
 
 

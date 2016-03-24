@@ -1,7 +1,6 @@
 #include "SoloNode.h"
 #include "SoloScene.h"
 #include "SoloCamera.h"
-#include "SoloDevice.h"
 #include "SoloMeshRenderer.h"
 #include "SoloSkyboxRenderer.h"
 #include "SoloTransform.h"
@@ -18,7 +17,7 @@ Node::Node(Scene* scene, uint32_t nodeId):
 
 template<> Transform* Node::addComponent<Transform>()
 {
-    auto transform = SL_NEW_SHARED(Transform, *this);
+    auto transform = std::make_shared<Transform>(*this);
     scene->addComponent(id, transform);
     return transform.get();
 }
@@ -26,7 +25,7 @@ template<> Transform* Node::addComponent<Transform>()
 
 template<> Camera* Node::addComponent<Camera>()
 {
-    auto camera = SL_NEW_SHARED(Camera, scene, *this);
+    auto camera = std::make_shared<Camera>(scene, *this);
     scene->addComponent(id, camera);
     return camera.get();
 }
@@ -34,7 +33,7 @@ template<> Camera* Node::addComponent<Camera>()
 
 template<> MeshRenderer* Node::addComponent<MeshRenderer>()
 {
-    auto renderer = SL_NEW_SHARED(MeshRenderer, *this);
+    auto renderer = std::make_shared<MeshRenderer>(*this);
     scene->addComponent(id, renderer);
     return renderer.get();
 }
@@ -42,7 +41,7 @@ template<> MeshRenderer* Node::addComponent<MeshRenderer>()
 
 template<> Spectator* Node::addComponent<Spectator>()
 {
-    auto spectator = SL_NEW_SHARED(Spectator, *this);
+    auto spectator = std::make_shared<Spectator>(*this);
     scene->addComponent(id, spectator);
     return spectator.get();
 }
@@ -50,7 +49,7 @@ template<> Spectator* Node::addComponent<Spectator>()
 
 template<> SkyboxRenderer* Node::addComponent<SkyboxRenderer>()
 {
-    auto renderer = SL_NEW_SHARED(SkyboxRenderer, *this);
+    auto renderer = std::make_shared<SkyboxRenderer>(*this);
     scene->addComponent(id, renderer);
     return renderer.get();
 }

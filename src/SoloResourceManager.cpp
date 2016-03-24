@@ -20,8 +20,8 @@ using namespace solo;
 sptr<ResourceManager> ResourceManager::create(Device* device)
 {
     if (device->getMode() == DeviceMode::Stub)
-        return SL_NEW_SHARED(StubResourceManager, device);
-    return SL_NEW_SHARED(ResourceManager, device);
+        return SL_WRAP_SPTR(StubResourceManager, device);
+    return SL_WRAP_SPTR(ResourceManager, device);
 }
 
 
@@ -106,7 +106,7 @@ sptr<Effect> ResourceManager::getOrCreateEffect(const std::string& vsSrc, const 
 {
     return getOrCreateResource<Effect>(uri, effects,
         std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
-        [&]() { return SL_NEW_SHARED(Effect, device->getRenderer(), vsSrc, fsSrc); });
+        [&]() { return std::make_shared<Effect>(device->getRenderer(), vsSrc, fsSrc); });
 }
 
 
@@ -114,7 +114,7 @@ sptr<Effect> ResourceManager::getOrCreatePrefabEffect(EffectPrefab prefab, const
 {
     return getOrCreateResource<Effect>(uri, effects,
         std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
-        [&]() { return SL_NEW_SHARED(Effect, device->getRenderer(), prefab); });
+        [&]() { return std::make_shared<Effect>(device->getRenderer(), prefab); });
 }
 
 
@@ -122,7 +122,7 @@ sptr<Material> ResourceManager::getOrCreateMaterial(sptr<Effect> effect, const s
 {
     return getOrCreateResource<Material>(uri, materials,
         std::bind(&ResourceManager::findMaterial, this, std::placeholders::_1),
-        [&]() { return SL_NEW_SHARED(Material, device->getRenderer(), effect); });
+        [&]() { return std::make_shared<Material>(device->getRenderer(), effect); });
 }
 
 
@@ -130,7 +130,7 @@ sptr<Texture2D> ResourceManager::getOrCreateTexture2D(const std::string& uri)
 {
     return getOrCreateResource<Texture2D>(uri, textures2d,
         std::bind(&ResourceManager::findTexture2D, this, std::placeholders::_1),
-        [&]() { return SL_NEW_SHARED(Texture2D, device->getRenderer()); });
+        [&]() { return std::make_shared<Texture2D>(device->getRenderer()); });
 }
 
 
@@ -138,7 +138,7 @@ sptr<CubeTexture> ResourceManager::getOrCreateCubeTexture(const std::string& uri
 {
     return getOrCreateResource<CubeTexture>(uri, cubeTextures,
         std::bind(&ResourceManager::findCubeTexture, this, std::placeholders::_1),
-        [&]() { return SL_NEW_SHARED(CubeTexture, device->getRenderer()); });
+        [&]() { return std::make_shared<CubeTexture>(device->getRenderer()); });
 }
 
 
@@ -153,7 +153,7 @@ sptr<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& imageUri,
     {
         if (loader->isLoadable(imageUri))
         {
-            auto result = SL_NEW_SHARED(Texture2D, device->getRenderer());
+            auto result = std::make_shared<Texture2D>(device->getRenderer());
             auto image = loader->load(imageUri);
             result->setData(image->colorFormat, image->data, image->width, image->height);
             textures2d[textureUri] = result;
@@ -174,7 +174,7 @@ sptr<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std::s
     if (existing)
         return existing;
 
-    auto result = SL_NEW_SHARED(CubeTexture, device->getRenderer());
+    auto result = std::make_shared<CubeTexture>(device->getRenderer());
     auto loader = getImageLoader(sidesUris[0]);
 
     auto idx = 0;
@@ -280,7 +280,7 @@ sptr<Mesh> ResourceManager::getOrCreateMesh(const std::string& uri)
 {
     return getOrCreateResource<Mesh>(uri, meshes,
         std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
-        [&]() { return SL_NEW_SHARED(Mesh, device->getRenderer()); });
+        [&]() { return std::make_shared<Mesh>(device->getRenderer()); });
 }
 
 
@@ -288,7 +288,7 @@ sptr<Mesh> ResourceManager::getOrCreatePrefabMesh(MeshPrefab prefab, const std::
 {
     return getOrCreateResource<Mesh>(uri, meshes,
         std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
-        [&]() { return SL_NEW_SHARED(Mesh, device->getRenderer(), prefab); });
+        [&]() { return std::make_shared<Mesh>(device->getRenderer(), prefab); });
 }
 
 
@@ -296,7 +296,7 @@ sptr<FrameBuffer> ResourceManager::getOrCreateFrameBuffer(const std::string& uri
 {
     return getOrCreateResource<FrameBuffer>(uri, frameBuffers,
         std::bind(&ResourceManager::findFrameBuffer, this, std::placeholders::_1),
-        [&]() { return SL_NEW_SHARED(FrameBuffer, device->getRenderer()); });
+        [&]() { return std::make_shared<FrameBuffer>(device->getRenderer()); });
 }
 
 

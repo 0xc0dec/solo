@@ -9,8 +9,8 @@ using namespace solo;
 sptr<Renderer> Renderer::create(Device* device)
 {
     if (device->getMode() == DeviceMode::OpenGL)
-        return SL_NEW_SHARED(OpenGLRenderer, device);
-    return SL_NEW_SHARED(StubRenderer, device);
+        return SL_WRAP_SPTR(OpenGLRenderer, device);
+    return SL_WRAP_SPTR(StubRenderer, device);
 }
 
 

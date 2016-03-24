@@ -3,7 +3,6 @@
 #include "SoloRenderContext.h"
 #include "SoloCamera.h"
 #include "SoloNode.h"
-#include <algorithm>
 
 using namespace solo;
 
@@ -21,7 +20,7 @@ Scene::~Scene()
 
 sptr<Node> Scene::createNode()
 {
-    auto node = SL_NEW_SHARED(Node, this, nodeCounter++);
+    auto node = std::make_shared<Node>(this, nodeCounter++);
     node->addComponent<Transform>();
     return node;
 }
