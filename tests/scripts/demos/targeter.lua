@@ -1,4 +1,4 @@
-return function(target)
+return function(targetPos)
 	return {
 		typeId = 400,
 
@@ -7,7 +7,7 @@ return function(target)
 		end,
 
 		update = function(self)
-			self.transform:lookAt(target:getWorldPosition(), solo.Vector3.unitY())
+			self.transform:lookAt(targetPos, solo.Vector3.unitY())
 		end
 	}
 end

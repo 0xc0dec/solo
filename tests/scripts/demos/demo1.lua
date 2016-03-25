@@ -97,8 +97,7 @@ function runDemo1()
 	function initMeshes()
 		meshes =
 		{
-			axes = resMgr:getOrLoadMesh("../data/axes.obj"),
-			monkey = resMgr:getOrLoadMesh("../data/monkey.obj")
+			axes = resMgr:getOrLoadMesh("../data/axes.obj")
 		}
 		logger:logInfo("Initialized meshes")
 	end
@@ -201,17 +200,18 @@ function runDemo1()
 			mat:setParameterAutoBinding("invTransposedWorldMatrix", solo.AutoBinding.InverseTransposedWorldMatrix)
 			mat:setTextureParameter("mainTex", tex)
 
-			local node = scene:createNode()
-			local renderer = node:addComponent("MeshRenderer")
-			renderer:setMesh(meshes.monkey)
-			renderer:setMaterial(0, mat)
-			node:findComponent("Transform"):setLocalPosition(solo.Vector3.zero())
-			node:addScript(createRotator(device, solo.Vector3.unitX(), 1, "local"))
-			return node -- TODO
+			resMgr:getOrLoadMeshAsync("../data/monkey.obj"):done(function(mesh)
+				local node = scene:createNode()
+				local renderer = node:addComponent("MeshRenderer")
+				renderer:setMesh(mesh)
+				renderer:setMaterial(0, mat)
+				node:findComponent("Transform"):setLocalPosition(solo.Vector3.zero())
+				node:addScript(createRotator(device, solo.Vector3.unitX(), 1, "local"))
+			end)
 		end)
 	end
 
-	function initMonitorQuad(targetNode)
+	function initMonitorQuad(targetPos)
 		local parent = scene:createNode()
 		parent:findComponent("Transform"):setLocalPosition(solo.Vector3(-2, 2, -2))
 		parent:addScript(createRotator(device, solo.Vector3.unitY(), 1, "world"))
@@ -225,7 +225,7 @@ function runDemo1()
 		transform:setParent(parent:findComponent("Transform"))
 		transform:setLocalPosition(solo.Vector3(5, 2, -5))
 		transform:setLocalScale(solo.Vector3(5, 5 * canvasSize.y / canvasSize.x, 1))
-		quad:addScript(createTargeter(targetNode:findComponent("Transform")))
+		quad:addScript(createTargeter(targetPos))
 	end
 
 	function initAxesMesh(node)
@@ -293,9 +293,8 @@ function runDemo1()
 		initTransparentQuad()
 		initCheckerBox()
 		initMonkey()
-		-- local monkey = initMonkey()
-		-- initMonitorQuad(monkey)
-		-- initDynamicQuad()
+		initMonitorQuad(solo.Vector3.zero())
+		initDynamicQuad()
 		logger:logInfo("Initialized objects")
 	end
 
@@ -304,7 +303,7 @@ function runDemo1()
 	initMaterials()
 	initMeshes()
 	initObjects()
-	-- initSkybox()
+	initSkybox()
 
 	device:run()
 end
