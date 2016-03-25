@@ -3,6 +3,7 @@
 #include "SoloScriptManager.h"
 #include <LuaIntf.h>
 
+
 namespace solo
 {
     class LuaScriptManager: public ScriptManager
