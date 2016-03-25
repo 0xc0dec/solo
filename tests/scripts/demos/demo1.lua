@@ -19,6 +19,7 @@ function runDemo1()
 	local materials
 	local meshes
 	local offscreenCameraTex
+	local axesMesh
 
 	function createDynamicQuadUpdater(data, mesh, bufferIndex)
 		return {
@@ -92,14 +93,6 @@ function runDemo1()
 		}
 
 		logger:logInfo("Initialized materials")
-	end
-
-	function initMeshes()
-		meshes =
-		{
-			axes = resMgr:getOrLoadMesh("../data/axes.obj")
-		}
-		logger:logInfo("Initialized meshes")
 	end
 
 	function initSkybox()
@@ -230,7 +223,7 @@ function runDemo1()
 
 	function initAxesMesh(node)
 		local renderer = node:addComponent("MeshRenderer")
-		renderer:setMesh(meshes.axes)
+		renderer:setMesh(axesMesh)
 		renderer:setMaterial(0, materials.blue)
 		renderer:setMaterial(1, materials.green)
 		renderer:setMaterial(2, materials.white)
@@ -290,20 +283,22 @@ function runDemo1()
 	end
 
 	function initObjects()
-		initTransparentQuad()
 		initCheckerBox()
 		initMonkey()
-		initMonitorQuad(solo.Vector3.zero())
 		initDynamicQuad()
-		logger:logInfo("Initialized objects")
+		resMgr:getOrLoadMeshAsync("../data/axes.obj"):done(function(axes)
+			axesMesh = axes
+			initMonitorQuad(solo.Vector3.zero())
+			initTransparentQuad()
+			logger:logInfo("Initialized objects")
+		end)
 	end
 
 	initEffects()
 	initCameras()
 	initMaterials()
-	initMeshes()
-	initObjects()
 	initSkybox()
+	initObjects()
 
 	device:run()
 end
