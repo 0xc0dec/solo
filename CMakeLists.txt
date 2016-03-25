@@ -16,7 +16,8 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/vendor/glew/include
     ${PROJECT_SOURCE_DIR}/vendor/SDL/2.0.4/include
     ${PROJECT_SOURCE_DIR}/vendor/png/include
-    ${PROJECT_SOURCE_DIR}/vendor/zlib/include)
+    ${PROJECT_SOURCE_DIR}/vendor/zlib/include
+    ${PROJECT_SOURCE_DIR}/vendor/async++/include)
 
 # Lua
 
@@ -37,6 +38,7 @@ file(GLOB_RECURSE sources
 file(GLOB_RECURSE glew_sources "vendor/glew/src/*.c")
 file(GLOB_RECURSE png_sources "vendor/png/src/*.c")
 file(GLOB_RECURSE zlib_sources "vendor/zlib/src/*.c")
+file(GLOB_RECURSE asyncpp_sources "vendor/async++/src/*.cpp")
 
 file(GLOB sdl_sources
     "vendor/SDL/2.0.4/src/*.c"
@@ -93,7 +95,7 @@ set(frameworks
     ${opengl_lib}
     ${corefoundation_lib})
 
-add_library(solo STATIC ${sdl_sources} ${glew_sources} ${png_sources} ${zlib_sources} ${sources})
+add_library(solo STATIC ${sdl_sources} ${glew_sources} ${png_sources} ${zlib_sources} ${asyncpp_sources} ${sources})
 target_link_libraries(solo lua ${frameworks})
 
 # Tester

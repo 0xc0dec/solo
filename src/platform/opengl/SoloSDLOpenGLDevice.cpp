@@ -1,6 +1,7 @@
 #include "SoloSDLOpenGLDevice.h"
 #include "SoloLogger.h"
 #include <list>
+#include <vector>
 #include <tuple>
 #include <GL/glew.h>
 #include <SDL_surface.h>

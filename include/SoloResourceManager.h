@@ -3,6 +3,7 @@
 #include "SoloBase.h"
 #include "SoloSpinLock.h"
 #include <vector>
+#include <list>
 #include <unordered_map>
 #include <functional>
 
