@@ -2,6 +2,7 @@
 #include "SoloBitFlags.h"
 #include <algorithm>
 #include <unordered_map>
+#include <functional>
 
 using namespace solo;
 
@@ -220,58 +221,28 @@ OpenGLRenderer::OpenGLRenderer(Device* device) :
 }
 
 
+template <typename TPool, typename TResource>
+void cleanupResourcePool(TPool& pool, std::function<void(const TResource&)> deleteResource)
+{
+    while (pool.getHandleCount() > 0)
+    {
+        auto handle = pool.getHandle(0);
+        auto data = pool.getData(handle);
+        deleteResource(data);
+        pool.releaseHandle(handle);
+    }
+}
+
+
 OpenGLRenderer::~OpenGLRenderer()
 {
-    // At this point all resources should already have been released
-
-    // TODO DRY? Never heard of it
-    while (programs.getHandleCount() > 0)
-    {
-        auto handle = programs.getHandle(0);
-        auto data = programs.getData(handle);
-        glDeleteProgram(data.rawHandle);
-        programs.releaseHandle(handle);
-    }
-
-    while (vertexObjects.getHandleCount() > 0)
-    {
-        auto handle = vertexObjects.getHandle(0);
-        auto data = vertexObjects.getData(handle);
-        glDeleteVertexArrays(1, &data.rawHandle);
-        vertexObjects.releaseHandle(handle);
-    }
-
-    while (frameBuffers.getHandleCount() > 0)
-    {
-        auto handle = frameBuffers.getHandle(0);
-        auto data = frameBuffers.getData(handle);
-        glDeleteFramebuffers(1, &data.rawHandle);
-        frameBuffers.releaseHandle(handle);
-    }
-
-    while (vertexBuffers.getHandleCount() > 0)
-    {
-        auto handle = vertexBuffers.getHandle(0);
-        auto data = vertexBuffers.getData(handle);
-        glDeleteBuffers(1, &data.rawHandle);
-        vertexBuffers.releaseHandle(handle);
-    }
-
-    while (indexBuffers.getHandleCount() > 0)
-    {
-        auto handle = indexBuffers.getHandle(0);
-        auto data = indexBuffers.getData(handle);
-        glDeleteBuffers(1, &data.rawHandle);
-        indexBuffers.releaseHandle(handle);
-    }
-
-    while (textures.getHandleCount() > 0)
-    {
-        auto handle = textures.getHandle(0);
-        auto data = textures.getData(handle);
-        glDeleteTextures(1, &data.rawHandle);
-        textures.releaseHandle(handle);
-    }
+    // All resources at this point should have already been released
+    programs.cleanup([](const ProgramData& data) { glDeleteProgram(data.rawHandle); });
+    vertexObjects.cleanup([](const VertexObjectData& data) { glDeleteVertexArrays(1, &data.rawHandle); });
+    frameBuffers.cleanup([](const FrameBufferData& data) { glDeleteFramebuffers(1, &data.rawHandle); });
+    vertexBuffers.cleanup([](const VertexBufferData& data) { glDeleteBuffers(1, &data.rawHandle); });
+    indexBuffers.cleanup([](const IndexBufferData& data) { glDeleteBuffers(1, &data.rawHandle); });
+    textures.cleanup([](const TextureData& data) { glDeleteTextures(1, &data.rawHandle); });
 }
 
 

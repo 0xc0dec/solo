@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SoloBase.h"
+#include <functional>
 
 
 namespace solo
@@ -46,6 +47,14 @@ namespace solo
         T& getData(uint16_t handle)
         {
             return data[handle];
+        }
+
+        void cleanup(std::function<void(const T&)> deleteResource)
+        {
+            auto handle = getHandle(0);
+            auto data = getData(handle);
+            deleteResource(data);
+            releaseHandle(handle);
         }
 
     private:
