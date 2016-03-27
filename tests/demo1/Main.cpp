@@ -69,12 +69,12 @@ public:
     {
         initEngine();
         initEffects();
-        initMainCamera();
+        initCamera();
         initOffscreenCamera();
         initMaterials();
         initSkybox();
         initCheckerBox();
-        initMonkey();
+        initMesh();
         initDynamicQuad();
         initAxesMesh()->done([&] (sptr<Mesh> mesh)
         {
@@ -132,7 +132,7 @@ public:
         return resMgr->getOrLoadMeshAsync("../data/axes.obj");
     }
 
-    void initMainCamera()
+    void initCamera()
     {
         auto node = scene->createNode();
         auto t = node->getComponent<Transform>();
@@ -223,7 +223,7 @@ public:
         node->addComponent<Rotator>("world", Vector3::unitY());
     }
 
-    void initMonkey()
+    void initMesh()
     {
         resMgr->getOrLoadTexture2DAsync("../data/cobblestone.png")->done([=](sptr<Texture2D> tex)
         {
