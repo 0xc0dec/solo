@@ -1,6 +1,0 @@
-runTest(function()
-	local fb = device:getResourceManager():getOrCreateFrameBuffer("test/uri")
-	local tex = device:getResourceManager():getOrCreateTexture2D("nonesense")
-	fb:setAttachments({ tex, tex })
-	fb:getSize()
-end, "FrameBuffer")

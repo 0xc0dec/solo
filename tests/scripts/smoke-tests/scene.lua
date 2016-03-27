@@ -1,5 +1,0 @@
-runTest(function()
-	local scene = device:getScene()
-	assert(scene:getDevice())
-	assert(scene:createNode())
-end, "Scene")
