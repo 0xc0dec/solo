@@ -6,13 +6,13 @@
 
 namespace solo
 {
-    class LuaScriptManager: public ScriptManager
+    class LuaScriptManager final: public ScriptManager
     {
     public:
         virtual ~LuaScriptManager();
 
-        virtual void execute(const std::string& code) override;
-        virtual void executeFile(const std::string& path) override;
+        virtual void execute(const std::string& code) override final;
+        virtual void executeFile(const std::string& path) override final;
 
     private:
         friend class ScriptManager;
