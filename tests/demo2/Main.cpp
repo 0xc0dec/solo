@@ -22,7 +22,7 @@ public:
         auto canvasSize = node.getScene()->getDevice()->getCanvasSize();
         auto camera = node.getComponent<Camera>();
         fbTex1 = resMgr->getOrCreateTexture2D();
-        fbTex1->setData(ColorFormat::RGB, {}, canvasSize.x, canvasSize.y);
+        fbTex1->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
         fbTex1->setFiltering(TextureFiltering::Nearest);
         fbTex1->setWrapping(TextureWrapping::Clamp);
         fb1 = resMgr->getOrCreateFrameBuffer();
@@ -30,7 +30,7 @@ public:
         camera->setRenderTarget(fb1);
 
         fbTex2 = resMgr->getOrCreateTexture2D();
-        fbTex2->setData(ColorFormat::RGB, {}, canvasSize.x, canvasSize.y);
+        fbTex2->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
         fbTex2->setFiltering(TextureFiltering::Nearest);
         fbTex2->setWrapping(TextureWrapping::Clamp);
         fb2 = resMgr->getOrCreateFrameBuffer();
