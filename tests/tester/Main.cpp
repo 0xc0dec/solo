@@ -58,7 +58,9 @@ void runCppIntegrationTests(sptr<Device> device)
 
 int main()
 {
+#ifdef SL_DEBUG
     runInStubEngine(runCppUnitTests, "cpp-unit-tests.log");
     runInRealEngine(runCppIntegrationTests, "cpp-integration-tests.log");
+#endif
     return 0;
 }
