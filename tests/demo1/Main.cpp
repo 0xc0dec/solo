@@ -1,0 +1,376 @@
+#include "../../include/Solo.h"
+#include "../common/EscapeWatcher.h"
+#include "../common/Screenshoter.h"
+#include "../common/Rotator.h"
+#include "../common/Shaders.h"
+
+using namespace solo;
+
+
+class Targeter: public ComponentBase<Targeter>
+{
+public:
+    explicit Targeter(const Node& node, Vector3 targetPos):
+        ComponentBase<Targeter>(node),
+        targetPos(targetPos)
+    {
+    }
+
+    virtual void init() override final
+    {
+        transform = node.getComponent<Transform>();
+    }
+
+    virtual void update() override final
+    {
+        transform->lookAt(targetPos, Vector3::unitY());
+    }
+
+private:
+    Vector3 targetPos;
+    Transform* transform = nullptr;
+};
+
+
+class DynamicQuadUpdater: public ComponentBase<DynamicQuadUpdater>
+{
+public:
+    explicit DynamicQuadUpdater(const Node& node, std::vector<float> data, sptr<Mesh> mesh):
+        ComponentBase<DynamicQuadUpdater>(node),
+        data(data),
+        device(node.getScene()->getDevice()),
+        mesh(mesh)
+    {
+    }
+
+    virtual void update() override final
+    {
+        time += 2 * device->getTimeDelta();
+        auto offset = 0.3f * sin(time);
+        data[2] = offset;
+        data[7] = -offset;
+        data[12] = offset;
+        data[17] = -offset;
+        mesh->updateDynamicVertexBuffer(0, 0, data.data(), 4);
+    }
+
+private:
+    float time = 0;
+    std::vector<float> data;
+    Device* device;
+    sptr<Mesh> mesh;
+};
+
+
+class Demo
+{
+public:
+    void run()
+    {
+        initEngine();
+        initEffects();
+        initMainCamera();
+        initOffscreenCamera();
+        initMaterials();
+        initSkybox();
+        initCheckerBox();
+        initMonkey();
+        initDynamicQuad();
+        initAxesMesh()->done([&] (sptr<Mesh> mesh)
+        {
+            axesMesh = mesh;
+            initMonitorQuad(Vector3());
+            initTransparentQuad();
+        });
+        device->run();
+    }
+
+    void initEngine()
+    {
+        DeviceCreationArgs args;
+        args.mode = DeviceMode::OpenGL;
+        args.canvasWidth = 1200;
+        args.canvasHeight = 600;
+        args.logFilePath = "demo1.log";
+        device = Device::create(args);
+
+        scene = device->getScene();
+        resMgr = device->getResourceManager();
+        canvasSize = device->getCanvasSize();
+    }
+
+    sptr<Material> createColorMaterial(const Vector4& color)
+    {
+        auto mat = resMgr->getOrCreateMaterial(colorEffect);
+        mat->setPolygonFace(PolygonFace::All);
+        mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
+        mat->setVector4Parameter("color", color);
+        return mat;
+    }
+
+    void initEffects()
+    {
+        simpleTextureEffect = resMgr->getOrCreateEffect(shaders.vertex.basic, shaders.fragment.texture);
+        colorEffect = resMgr->getOrCreateEffect(shaders.vertex.basic, shaders.fragment.color);
+        checkerEffect = resMgr->getOrCreateEffect(shaders.vertex.basic, shaders.fragment.checker);
+        texWithLightingEffect = resMgr->getOrCreateEffect(shaders.vertex.basicLighting, shaders.fragment.textureWithLighting);
+    }
+
+    void loadTexture(const std::string& uri, std::function<void(sptr<Texture2D>)> callback)
+    {
+        resMgr->getOrLoadTexture2DAsync(uri)->done([=](sptr<Texture2D> tex)
+        {
+            tex->generateMipmaps();
+            tex->setFiltering(TextureFiltering::LinearMipmapNearest);
+            tex->setAnisotropyLevel(8);
+            callback(tex);
+        });
+    }
+
+    sptr<AsyncResourceHandle<Mesh>> initAxesMesh()
+    {
+        return resMgr->getOrLoadMeshAsync("../data/axes.obj");
+    }
+
+    void initMainCamera()
+    {
+        auto node = scene->createNode();
+        auto t = node->getComponent<Transform>();
+        t->setLocalPosition(Vector3(0, 5, 10));
+        t->lookAt(Vector3::zero(), Vector3::unitY());
+        node->addComponent<Spectator>();
+        node->addComponent<EscapeWatcher>();
+        node->addComponent<Screenshoter>("demo1-screenshot.bmp");
+        auto cam = node->addComponent<Camera>();
+        cam->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
+        cam->setNear(0.05f);
+    }
+
+    void initOffscreenCamera()
+    {
+        offscreenCameraTex = resMgr->getOrCreateTexture2D();
+        offscreenCameraTex->setData(ColorFormat::RGB, {}, floor(canvasSize.x / 8), floor(canvasSize.y / 8));
+        offscreenCameraTex->setFiltering(TextureFiltering::Nearest);
+        offscreenCameraTex->setWrapping(TextureWrapping::Clamp);
+
+        auto node = scene->createNode();
+        auto cam = node->addComponent<Camera>();
+        cam->setClearColor(1, 0, 1, 1);
+        cam->setNear(0.05f);
+        cam->setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8);
+        cam->getRenderTags().remove(renderTargetQuadTag);
+        node->getComponent<Transform>()->setLocalPosition(Vector3(0, 0, 10));
+
+        auto fb = resMgr->getOrCreateFrameBuffer();
+        fb->setAttachments({ offscreenCameraTex });
+        cam->setRenderTarget(fb);
+    }
+
+    void initMaterials()
+    {
+        redMat = createColorMaterial(Vector4(1, 0, 0, 1));
+        greenMat = createColorMaterial(Vector4(0, 1, 0, 1));
+        blueMat = createColorMaterial(Vector4(0, 0, 1, 1));
+        whiteMat = createColorMaterial(Vector4(1, 1, 1, 1));
+
+        checkerMat = resMgr->getOrCreateMaterial(checkerEffect);
+        checkerMat->setPolygonFace(PolygonFace::All);
+        checkerMat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
+        checkerMat->setVector4Parameter("color", Vector4(1, 1, 0, 1));
+
+        monitorMat = resMgr->getOrCreateMaterial(simpleTextureEffect);
+        monitorMat->setPolygonFace(PolygonFace::All);
+        monitorMat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
+        monitorMat->setTextureParameter("mainTex", offscreenCameraTex);
+    }
+
+    void initSkybox()
+    {
+        resMgr->getOrLoadCubeTextureAsync({
+            "../data/skyboxes/deep-space/front.png",
+            "../data/skyboxes/deep-space/back.png",
+            "../data/skyboxes/deep-space/left.png",
+            "../data/skyboxes/deep-space/right.png",
+            "../data/skyboxes/deep-space/top.png",
+            "../data/skyboxes/deep-space/bottom.png"
+        })->done([=](sptr<CubeTexture> tex)
+        {
+            tex->setWrapping(TextureWrapping::Clamp);
+            tex->setFiltering(TextureFiltering::Linear);
+            auto node = scene->createNode();
+            auto renderer = node->addComponent<SkyboxRenderer>();
+            renderer->setTexture(tex);
+        });
+    }
+
+    sptr<Node> createPrefabMeshNode(const std::string& type)
+    {
+        sptr<Mesh> mesh = nullptr;
+        if (type == "quad")
+            mesh = resMgr->getOrCreatePrefabMesh(MeshPrefab::Quad);
+        else if (type == "cube")
+            mesh = resMgr->getOrCreatePrefabMesh(MeshPrefab::Cube);
+        auto node = scene->createNode();
+        node->addComponent<MeshRenderer>()->setMesh(mesh);
+        return node;
+    };
+
+    void initCheckerBox()
+    {
+        auto node = createPrefabMeshNode("cube");
+        node->getComponent<MeshRenderer>()->setMaterial(0, checkerMat);
+        node->getComponent<Transform>()->setLocalPosition(Vector3(-5, 0, 0));
+        node->addComponent<Rotator>("world", Vector3::unitY());
+    }
+
+    void initMonkey()
+    {
+        resMgr->getOrLoadTexture2DAsync("../data/cobblestone.png")->done([=](sptr<Texture2D> tex)
+        {
+            tex->setWrapping(TextureWrapping::Clamp);
+            tex->generateMipmaps();
+
+            auto mat = resMgr->getOrCreateMaterial(texWithLightingEffect);
+            mat->setPolygonFace(PolygonFace::All);
+            mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
+            mat->setParameterAutoBinding("invTransposedWorldMatrix", AutoBinding::InverseTransposedWorldMatrix);
+            mat->setTextureParameter("mainTex", tex);
+
+            resMgr->getOrLoadMeshAsync("../data/monkey.obj")->done([=](sptr<Mesh> mesh)
+            {
+                auto node = scene->createNode();
+                auto renderer = node->addComponent<MeshRenderer>();
+                renderer->setMesh(mesh);
+                renderer->setMaterial(0, mat);
+                node->getComponent<Transform>()->setLocalPosition(Vector3::zero());
+                node->addComponent<Rotator>("local", Vector3::unitX());
+            });
+        });
+    }
+
+    void initDynamicQuad()
+    {
+        loadTexture("../data/freeman.png", [=](sptr<Texture2D> tex)
+        {
+            tex->setWrapping(TextureWrapping::Clamp);
+
+            auto layout = VertexBufferLayout();
+            layout.add(VertexBufferLayoutSemantics::Position, 3);
+            layout.add(VertexBufferLayoutSemantics::TexCoord0, 2);
+
+            std::vector<float> data =
+            {
+                -1, -1, 0,	0, 0,
+                -1,  1, 0,	0, 1,
+                1,  1, 0,	1, 1,
+                1, -1, 0,	1, 0
+            };
+
+            std::vector<uint16_t> indices = 
+            {
+                0, 1, 2,
+                0, 2, 3
+            };
+
+            auto mesh = resMgr->getOrCreateMesh();
+            mesh->addDynamicVertexBuffer(layout, data.data(), 4);
+            mesh->addPart(indices.data(), 6); // TODO accept uint16_t array explicitly
+            mesh->setPrimitiveType(PrimitiveType::Triangles);
+
+            auto mat = resMgr->getOrCreateMaterial(simpleTextureEffect);
+            mat->setPolygonFace(PolygonFace::All);
+            mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
+            mat->setTextureParameter("mainTex", tex);
+
+            auto node = scene->createNode();
+            node->getComponent<Transform>()->setLocalPosition(Vector3(0, 0, -5));
+            auto renderer = node->addComponent<MeshRenderer>();
+            renderer->setMesh(mesh);
+            renderer->setMaterial(0, mat);
+
+            node->addComponent<DynamicQuadUpdater>(data, mesh);
+        });
+    }
+
+    void attachAxesMesh(sptr<Node> node)
+    {
+        auto renderer = node->addComponent<MeshRenderer>();
+        renderer->setMesh(axesMesh);
+        renderer->setMaterial(0, blueMat);
+        renderer->setMaterial(1, greenMat);
+        renderer->setMaterial(2, whiteMat);
+        renderer->setMaterial(3, redMat);
+    }
+
+    void initMonitorQuad(Vector3 targetPos)
+    {
+        auto parent = scene->createNode();
+        parent->getComponent<Transform>()->setLocalPosition(Vector3(-2, 2, -2));
+        parent->addComponent<Rotator>("world", Vector3::unitY());
+        attachAxesMesh(parent);
+
+        auto quad = createPrefabMeshNode("quad");
+        auto renderer = quad->getComponent<MeshRenderer>();
+        renderer->setMaterial(0, monitorMat);
+        renderer->getTags().set(renderTargetQuadTag);
+        auto transform = quad->getComponent<Transform>();
+        transform->setParent(parent->getComponent<Transform>());
+        transform->setLocalPosition(Vector3(5, 2, -5));
+        transform->setLocalScale(Vector3(5, 5 * canvasSize.y / canvasSize.x, 1));
+        quad->addComponent<Targeter>(targetPos);
+    }
+
+    void initTransparentQuad()
+    {
+        loadTexture("../data/flammable.png", [=](sptr<Texture2D> tex)
+        {
+            tex->setWrapping(TextureWrapping::Clamp);
+
+            auto mat = resMgr->getOrCreateMaterial(simpleTextureEffect);
+            mat->setPolygonFace(PolygonFace::All);
+            mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
+            mat->setTextureParameter("mainTex", tex);
+            mat->setTransparent(true);
+
+            auto parent = scene->createNode();
+            parent->getComponent<Transform>()->setLocalPosition(Vector3(5, 0, 0));
+            parent->addComponent<Rotator>("world", Vector3::unitY());
+            attachAxesMesh(parent);
+
+            auto quad = createPrefabMeshNode("quad");
+            quad->addComponent<Rotator>("local", Vector3::unitX());
+            quad->getComponent<Transform>()->setParent(parent->getComponent<Transform>());
+            quad->getComponent<Transform>()->setLocalPosition(Vector3(2, 0, 0));
+
+            auto renderer = quad->getComponent<MeshRenderer>();
+            renderer->setMaterial(0, mat);
+            renderer->setRenderQueue(3000);
+        });
+    }
+
+private:
+    const int renderTargetQuadTag = 2;
+    Scene* scene = nullptr;
+    ResourceManager* resMgr = nullptr;
+    Vector2 canvasSize;
+    sptr<Device> device = nullptr;
+    sptr<Effect> simpleTextureEffect = nullptr;
+    sptr<Effect> colorEffect = nullptr;
+    sptr<Effect> checkerEffect = nullptr;
+    sptr<Effect> texWithLightingEffect = nullptr;
+    sptr<Mesh> axesMesh = nullptr;
+    sptr<Material> redMat = nullptr;
+    sptr<Material> greenMat = nullptr;
+    sptr<Material> blueMat = nullptr;
+    sptr<Material> whiteMat = nullptr;
+    sptr<Material> checkerMat = nullptr;
+    sptr<Material> monitorMat = nullptr;
+    sptr<Texture2D> offscreenCameraTex = nullptr;
+};
+
+
+int main()
+{
+    Demo().run();
+    return 0;
+}

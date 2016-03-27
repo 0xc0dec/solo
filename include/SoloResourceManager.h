@@ -27,14 +27,12 @@ namespace solo
     class AsyncResourceHandle
     {
     public:
-        using CallbackType = std::function<void(sptr<T>)>;
-
         sptr<T> getResult()
         {
             return result;
         }
 
-        void done(CallbackType callback)
+        void done(std::function<void(sptr<T>)> callback)
         {
             if (callback && result)
                 callback(result);
@@ -50,7 +48,7 @@ namespace solo
                 callback(result);
         }
 
-        CallbackType callback;
+        std::function<void(sptr<T>)> callback;
         sptr<T> result;
     };
 
