@@ -5,7 +5,6 @@
 #include "SoloLogger.h"
 #include "SoloRenderer.h"
 #include "SoloGraphics.h"
-#include "SoloScriptManager.h"
 #include "platform/stub/SoloStubDevice.h"
 #include "platform/opengl/SoloSDLOpenGLDevice.h"
 
@@ -26,9 +25,6 @@ Device::~Device()
 
     if (scene)
         scene.reset();
-
-    if (scriptManager)
-        scriptManager.reset();
 
     if (graphics)
         graphics.reset();
@@ -59,7 +55,6 @@ Device::Device(const DeviceCreationArgs& args):
     resourceManager = ResourceManager::create(this);
     graphics = std::make_shared<Graphics>(this);
     scene = std::make_shared<Scene>(this);
-    scriptManager = ScriptManager::create(this);
 }
 
 

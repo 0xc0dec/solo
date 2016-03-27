@@ -31,7 +31,6 @@
     <ClInclude Include="..\include\SoloRenderQueue.h" />
     <ClInclude Include="..\include\SoloFrameBuffer.h" />
     <ClInclude Include="..\include\SoloResourcePool.h" />
-    <ClInclude Include="..\include\SoloScriptManager.h" />
     <ClInclude Include="..\include\SoloCubeTexture.h" />
     <ClInclude Include="..\include\SoloImageLoader.h" />
     <ClInclude Include="..\include\SoloSkyboxRenderer.h" />
@@ -66,10 +65,6 @@
     <ClInclude Include="..\src\platform\stub\SoloStubMeshLoader.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubRenderer.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubResourceManager.h" />
-    <ClInclude Include="..\src\scripting\lua\SoloLuaGraphics.h" />
-    <ClInclude Include="..\src\scripting\lua\SoloLuaMesh.h" />
-    <ClInclude Include="..\src\scripting\lua\SoloLuaScriptComponent.h" />
-    <ClInclude Include="..\src\scripting\lua\SoloLuaScriptManager.h" />
     <ClInclude Include="..\src\SoloMeshLoader.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPngImageLoader.h" />
@@ -82,14 +77,9 @@
     <ClCompile Include="..\src\platform\stub\SoloStubImageLoader.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubMeshLoader.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubResourceManager.cpp" />
-    <ClCompile Include="..\src\scripting\lua\SoloLuaGraphics.cpp" />
-    <ClCompile Include="..\src\scripting\lua\SoloLuaMesh.cpp" />
-    <ClCompile Include="..\src\scripting\lua\SoloLuaScriptComponent.cpp" />
-    <ClCompile Include="..\src\scripting\lua\SoloLuaScriptManager.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\SoloGraphics.cpp" />
     <ClCompile Include="..\src\SoloRenderer.cpp" />
-    <ClCompile Include="..\src\SoloScriptManager.cpp" />
     <ClCompile Include="..\src\SoloSkyboxRenderer.cpp" />
     <ClCompile Include="..\src\SoloSpectator.cpp" />
     <ClCompile Include="..\vendor\async++\src\scheduler.cpp" />
@@ -307,13 +297,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\lua\5.3.1\;$(ProjectDir)..\vendor\LuaIntf\;$(ProjectDir)..\vendor\async++\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
     <LibraryPath>..\build\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\lua\5.3.1\;$(ProjectDir)..\vendor\LuaIntf\;$(ProjectDir)..\vendor\async++\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
     <LibraryPath>..\build\;$(LibraryPath)</LibraryPath>

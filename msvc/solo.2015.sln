@@ -4,13 +4,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "solo", "solo.2015.vcxproj", "{278CAB21-1CAB-49AD-9959-6F97743501FB}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9BAD40A6-120B-431B-B7A4-7A9624E06368} = {9BAD40A6-120B-431B-B7A4-7A9624E06368}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tester", "Tester.2015.vcxproj", "{58722071-4BF8-42EC-A319-203DB5744A29}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua", "lua.2015.vcxproj", "{9BAD40A6-120B-431B-B7A4-7A9624E06368}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,10 +21,6 @@ Global
 		{58722071-4BF8-42EC-A319-203DB5744A29}.Debug|x64.Build.0 = Debug|x64
 		{58722071-4BF8-42EC-A319-203DB5744A29}.Release|x64.ActiveCfg = Release|x64
 		{58722071-4BF8-42EC-A319-203DB5744A29}.Release|x64.Build.0 = Release|x64
-		{9BAD40A6-120B-431B-B7A4-7A9624E06368}.Debug|x64.ActiveCfg = Debug|x64
-		{9BAD40A6-120B-431B-B7A4-7A9624E06368}.Debug|x64.Build.0 = Debug|x64
-		{9BAD40A6-120B-431B-B7A4-7A9624E06368}.Release|x64.ActiveCfg = Release|x64
-		{9BAD40A6-120B-431B-B7A4-7A9624E06368}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

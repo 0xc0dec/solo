@@ -88,9 +88,6 @@
     <ClInclude Include="..\include\SoloTexture2D.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloScriptManager.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloImage.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -171,18 +168,6 @@
     </ClInclude>
     <ClInclude Include="..\include\SoloGraphics.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\scripting\lua\SoloLuaGraphics.h">
-      <Filter>src\scripting\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\scripting\lua\SoloLuaMesh.h">
-      <Filter>src\scripting\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\scripting\lua\SoloLuaScriptComponent.h">
-      <Filter>src\scripting\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\scripting\lua\SoloLuaScriptManager.h">
-      <Filter>src\scripting\lua</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloSpinLock.h">
       <Filter>include</Filter>
@@ -378,9 +363,6 @@
     <ClCompile Include="..\src\SoloLogger.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloScriptManager.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloRenderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -392,18 +374,6 @@
     </ClCompile>
     <ClCompile Include="..\src\SoloGraphics.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\scripting\lua\SoloLuaGraphics.cpp">
-      <Filter>src\scripting\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\scripting\lua\SoloLuaMesh.cpp">
-      <Filter>src\scripting\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\scripting\lua\SoloLuaScriptComponent.cpp">
-      <Filter>src\scripting\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\scripting\lua\SoloLuaScriptManager.cpp">
-      <Filter>src\scripting\lua</Filter>
     </ClCompile>
     <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\e_atan2.c">
       <Filter>src\vendor\sdl</Filter>
@@ -817,12 +787,6 @@
     </Filter>
     <Filter Include="src\vendor\zlib">
       <UniqueIdentifier>{c75d28c3-b7bf-43af-91dd-132d3fea8685}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\scripting">
-      <UniqueIdentifier>{b188d867-ef49-47a8-8508-2f0b908c509d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\scripting\lua">
-      <UniqueIdentifier>{6e3e7f2f-7582-4b55-adfa-6abde1ea7cea}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\vendor\sdl">
       <UniqueIdentifier>{34eeae20-bf80-4ab8-8321-a68d67849f4b}</UniqueIdentifier>

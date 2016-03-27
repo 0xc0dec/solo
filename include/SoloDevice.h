@@ -14,7 +14,6 @@ namespace solo
     class Renderer;
     class Graphics;
     class Logger;
-    class ScriptManager;
 
     enum class KeyCode
     {
@@ -90,7 +89,6 @@ namespace solo
         ResourceManager* getResourceManager() const;
         Renderer* getRenderer() const;
         Graphics* getGraphics() const;
-        ScriptManager* getScriptManager() const;
         Logger* getLogger() const;
 
     protected:
@@ -108,7 +106,6 @@ namespace solo
         sptr<ResourceManager> resourceManager;
         sptr<Renderer> renderer;
         sptr<Graphics> graphics;
-        sptr<ScriptManager> scriptManager;
         sptr<Logger> logger;
 
         // key code -> was pressed for the first time
@@ -164,11 +161,6 @@ namespace solo
     inline Graphics* Device::getGraphics() const
     {
         return graphics.get();
-    }
-
-    inline ScriptManager* Device::getScriptManager() const
-    {
-        return scriptManager.get();
     }
 
     inline Logger* Device::getLogger() const

@@ -56,32 +56,26 @@ void runCppIntegrationTests(sptr<Device> device)
 }
 
 
-void runLuaUnitTests(sptr<Device> device)
-{
-    device->getScriptManager()->executeFile("../tests/scripts/smoke-tests/tests.lua");
-}
-
-
 void runDemos()
 {
-    std::vector<std::string> demoScripts
-    {
-        "../tests/scripts/demos/demo1.lua",
-        "../tests/scripts/demos/demo2.lua"
-    };
-
-    while (true)
-    {
-        int demoNumber;
-        std::cout << "Enter demo number (1.." << demoScripts.size() << "): ";
-        std::cin >> demoNumber;
-        if (demoNumber < 1 || demoNumber > demoScripts.size())
-        {
-            std::cout << "Wrong demo number" << std::endl;
-            break;
-        }
-        runInRealEngine([&](sptr<Device> device) { device->getScriptManager()->executeFile(demoScripts[demoNumber - 1]); }, "demo.log");
-    }
+//    std::vector<std::string> demoScripts
+//    {
+//        "../tests/scripts/demos/demo1.lua",
+//        "../tests/scripts/demos/demo2.lua"
+//    };
+//
+//    while (true)
+//    {
+//        int demoNumber;
+//        std::cout << "Enter demo number (1.." << demoScripts.size() << "): ";
+//        std::cin >> demoNumber;
+//        if (demoNumber < 1 || demoNumber > demoScripts.size())
+//        {
+//            std::cout << "Wrong demo number" << std::endl;
+//            break;
+//        }
+//        runInRealEngine([&](sptr<Device> device) { device->getScriptManager()->executeFile(demoScripts[demoNumber - 1]); }, "demo.log");
+//    }
 }
 
 
@@ -90,7 +84,6 @@ int main()
 #ifdef SL_DEBUG
     runInStubEngine(runCppUnitTests, "cpp-unit-tests.log");
     runInRealEngine(runCppIntegrationTests, "cpp-integration-tests.log");
-    runInStubEngine(runLuaUnitTests, "lua-smoke-tests.log");
 #endif
     runDemos();
     return 0;
