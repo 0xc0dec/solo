@@ -33,9 +33,9 @@ namespace solo
     class Material final
     {
     public:
-        explicit Material(Renderer* renderer, sptr<Effect> effect);
-        ~Material();
+        static sptr<Material> create(sptr<Effect> effect);
 
+        ~Material();
         SL_NONCOPYABLE(Material)
 
         void setFloatParameter(const std::string& name, float value);
@@ -118,6 +118,8 @@ namespace solo
             std::vector<Matrix> matrixArrayValue;
             AutoBinding autoBinding = AutoBinding::CameraWorldPosition;
         };
+
+        explicit Material(sptr<Effect> effect);
 
         void applyState();
 

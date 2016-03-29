@@ -20,11 +20,10 @@ const uint32_t DirtyBitAll =
     DirtyBitInverseViewProjection;
 
 
-Camera::Camera(Scene* scene, Node node):
+Camera::Camera(Node node):
     ComponentBase(node),
-    device(scene->getDevice()),
-    scene(scene),
-    renderer(scene->getDevice()->getRenderer())
+    device(Device::get()),
+    renderer(Device::get()->getRenderer())
 {
     renderQueue = KnownRenderQueues::Camera;
     renderTags.setAll();
@@ -35,7 +34,7 @@ void Camera::init()
 {
     transform = node.getComponent<Transform>();
     transform->addCallback(this);
-    auto canvasSize = scene->getDevice()->getCanvasSize();
+    auto canvasSize = device->getCanvasSize();
     setAspectRatio(canvasSize.x / canvasSize.y);
     dirtyFlags.add(DirtyBitAll); // arguably
 }

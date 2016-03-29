@@ -49,7 +49,6 @@ namespace solo
         uint32_t id;
     };
 
-
     inline uint32_t Node::getId() const
     {
         return id;

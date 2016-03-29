@@ -7,17 +7,6 @@
 using namespace solo;
 
 
-Scene::Scene(Device* device) :
-    device(device)
-{
-}
-
-
-Scene::~Scene()
-{
-}
-
-
 sptr<Node> Scene::createNode()
 {
     auto node = std::make_shared<Node>(this, nodeCounter++);

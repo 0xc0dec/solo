@@ -1,12 +1,19 @@
 #include "SoloFrameBuffer.h"
 #include "SoloRenderer.h"
 #include "SoloTexture2D.h"
+#include "SoloDevice.h"
 
 using namespace solo;
 
 
-FrameBuffer::FrameBuffer(Renderer* renderer):
-    renderer(renderer)
+sptr<FrameBuffer> FrameBuffer::create()
+{
+    return std::shared_ptr<FrameBuffer>(new FrameBuffer());
+}
+
+
+FrameBuffer::FrameBuffer():
+    renderer(Device::get()->getRenderer())
 {
     handle = renderer->createFrameBuffer();
 }

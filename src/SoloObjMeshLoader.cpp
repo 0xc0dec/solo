@@ -1,15 +1,10 @@
 #include "SoloObjMeshLoader.h"
 #include "SoloMesh.h"
 #include "SoloFileSystem.h"
-#include "SoloResourceManager.h"
+#include "SoloDevice.h"
+#include <unordered_map>
 
 using namespace solo;
-
-
-ObjMeshLoader::ObjMeshLoader(FileSystem* fs, ResourceManager* resourceManager):
-    MeshLoader(fs, resourceManager)
-{
-}
 
 
 bool ObjMeshLoader::isLoadable(const std::string& uri)
@@ -71,117 +66,6 @@ void parseIndexes(const char** from, const char* to, uint32_t** result)
 }
 
 
-sptr<Mesh> ObjMeshLoader::load(const std::string& uri)
-{
-    // TODO not very fast this is...
-
-    std::vector<Vector3> inputVertices, vertices;
-    std::vector<Vector3> inputNormals, normals;
-    std::vector<Vector2> inputUvs, uvs;
-    std::vector<uint16_t> currentIndices;
-    std::unordered_map<std::string, uint16_t> uniqueIndices;
-    std::vector<std::vector<uint16_t>> allIndices;
-
-    auto finishIndex = [&]()
-    {
-        allIndices.push_back(std::move(currentIndices));
-        currentIndices = std::vector<uint16_t>();
-        uniqueIndices.clear();
-    };
-
-    fs->iterateLines(uri, [&](const std::string & line)
-    {
-        auto lineSize = line.size();
-        if (line[0] == 'v')
-        {
-            if (line[1] == 'n')
-            {
-                auto normal = parseVector3(line.c_str() + 3, line.c_str() + lineSize - 3);
-                inputNormals.push_back(normal);
-            }
-            else if (line[1] == 't')
-            {
-                auto uv = parseVector3(line.c_str() + 3, line.c_str() + lineSize - 3);
-                inputUvs.push_back(Vector2(uv.x, uv.y));
-            }
-            else
-            {
-                auto vertex = parseVector3(line.c_str() + 2, line.c_str() + lineSize - 2);
-                inputVertices.push_back(vertex);
-            }
-        }
-        else if (line[0] == 'f')
-        {
-            auto from = line.c_str() + 2;
-            auto to = from + lineSize - 3;
-            size_t spaceIdx = 1;
-            uint32_t vIdx, uvIdx, nIdx;
-            uint32_t* idxs[] = { &vIdx, &uvIdx, &nIdx };
-            std::string three;
-            for (auto i = 0; i < 3; ++i)
-            {
-                auto nextSpaceIdx = line.find(' ', spaceIdx + 1);
-                three.assign(line.substr(spaceIdx + 1, nextSpaceIdx != std::string::npos ? (nextSpaceIdx - spaceIdx - 1) : lineSize - spaceIdx));
-                spaceIdx = nextSpaceIdx;
-                auto it = uniqueIndices.find(three);
-                if (it != uniqueIndices.end())
-                {
-                    currentIndices.push_back(it->second);
-                    from += three.size() + 1;
-                }
-                else
-                {
-                    parseIndexes(&from, to, idxs);
-                    vertices.push_back(inputVertices[vIdx - 1]);
-                    if (idxs[1])
-                        uvs.push_back(inputUvs[uvIdx - 1]);
-                    if (idxs[2])
-                        normals.push_back(inputNormals[nIdx - 1]);
-                    auto newIndex = static_cast<uint16_t>(vertices.size() - 1);
-                    uniqueIndices[three] = newIndex;
-                    currentIndices.push_back(newIndex);
-                }
-            }
-        }
-        else if (line[0] == 'o')
-        {
-            if (!currentIndices.empty())
-                finishIndex();
-        }
-        return true;
-    });
-
-    if (!currentIndices.empty())
-        finishIndex();
-
-    auto mesh = resourceManager->getOrCreateMesh(uri);
-
-    VertexBufferLayout positionLayout;
-    positionLayout.add(VertexBufferLayoutSemantics::Position, 3);
-    mesh->addVertexBuffer(positionLayout, reinterpret_cast<const float*>(vertices.data()), static_cast<uint32_t>(vertices.size()));
-
-    if (!uvs.empty())
-    {
-        VertexBufferLayout uvLayout;
-        uvLayout.add(VertexBufferLayoutSemantics::TexCoord0, 2);
-        mesh->addVertexBuffer(uvLayout, reinterpret_cast<const float*>(uvs.data()), static_cast<uint32_t>(uvs.size()));
-    }
-    if (!normals.empty())
-    {
-        VertexBufferLayout normalLayout;
-        normalLayout.add(VertexBufferLayoutSemantics::Normal, 3);
-        mesh->addVertexBuffer(normalLayout, reinterpret_cast<const float*>(normals.data()), static_cast<uint32_t>(normals.size()));
-    }
-
-    for (const auto& indices : allIndices)
-        mesh->addPart(reinterpret_cast<const void*>(indices.data()), static_cast<uint32_t>(indices.size()));
-
-    mesh->setPrimitiveType(PrimitiveType::Triangles);
-
-    return mesh;
-}
-
-
 uptr<MeshData> ObjMeshLoader::loadData(const std::string& uri)
 {
     // TODO not very fast this is...
@@ -200,7 +84,7 @@ uptr<MeshData> ObjMeshLoader::loadData(const std::string& uri)
         uniqueIndices.clear();
     };
 
-    fs->iterateLines(uri, [&](const std::string & line)
+    Device::get()->getFileSystem()->iterateLines(uri, [&](const std::string & line)
     {
         auto lineSize = line.size();
         if (line[0] == 'v')

@@ -8,7 +8,7 @@ class Rotator: public solo::ComponentBase<Rotator>
 public:
     explicit Rotator(const solo::Node& node, const std::string& space, solo::Vector3 axis):
         ComponentBase<Rotator>(node),
-        device(node.getScene()->getDevice()),
+        device(solo::Device::get()),
         axis(axis),
         space(space)
     {

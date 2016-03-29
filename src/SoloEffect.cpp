@@ -5,17 +5,17 @@
 using namespace solo;
 
 
-Effect::Effect(Renderer* renderer, const std::string& vsSrc, const std::string& fsSrc):
-    renderer(renderer)
+Effect::Effect(const std::string& vsSrc, const std::string& fsSrc):
+    renderer(Device::get()->getRenderer())
 {
     handle = renderer->createProgram(vsSrc.c_str(), fsSrc.c_str());
 }
 
 
-Effect::Effect(Renderer* renderer, EffectPrefab prefab):
-    renderer(renderer)
+Effect::Effect(EffectPrefab prefab):
+    renderer(Device::get()->getRenderer())
 {
-    auto mode = renderer->getDevice()->getMode();
+    auto mode = Device::get()->getMode();
     switch (prefab)
     {
         case EffectPrefab::Skybox:
@@ -30,6 +30,18 @@ Effect::Effect(Renderer* renderer, EffectPrefab prefab):
         default:
             SL_DEBUG_THROW(InvalidInputException, "Unknown effect prefab");
     }
+}
+
+
+sptr<Effect> Effect::create(const std::string& vsSrc, const std::string& fsSrc)
+{
+    return std::unique_ptr<Effect>(new Effect(vsSrc, fsSrc));
+}
+
+
+sptr<Effect> Effect::create(EffectPrefab prefab)
+{
+    return std::unique_ptr<Effect>(new Effect(prefab));
 }
 
 

@@ -2,6 +2,7 @@
 
 #include "SoloFileSystem.h"
 
+
 namespace solo
 {
     class StubFileSystem: public FileSystem

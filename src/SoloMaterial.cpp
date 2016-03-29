@@ -3,14 +3,21 @@
 #include "SoloTransform.h"
 #include "SoloCamera.h"
 #include "SoloTexture.h"
+#include "SoloDevice.h"
 
 using namespace solo;
 
 
-Material::Material(Renderer* renderer, sptr<Effect> effect):
-    renderer(renderer),
+Material::Material(sptr<Effect> effect):
+    renderer(Device::get()->getRenderer()),
     effect(effect)
 {
+}
+
+
+sptr<Material> Material::create(sptr<Effect> effect)
+{
+    return std::shared_ptr<Material>(new Material(effect));
 }
 
 

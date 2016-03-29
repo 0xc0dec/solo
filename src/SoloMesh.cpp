@@ -1,19 +1,38 @@
 #include "SoloMesh.h"
 #include "SoloEffect.h"
+#include "SoloDevice.h"
 #include <algorithm>
 #include <limits>
 
 using namespace solo;
 
 
-Mesh::Mesh(Renderer* renderer):
-    renderer(renderer)
+sptr<Mesh> Mesh::create()
+{
+    return sptr<Mesh>(new Mesh());
+}
+
+
+sptr<Mesh> Mesh::create(MeshPrefab prefab)
+{
+    return sptr<Mesh>(new Mesh(prefab));
+}
+
+
+sptr<Mesh> Mesh::create(MeshData* data)
+{
+    return sptr<Mesh>(new Mesh(data));
+}
+
+
+Mesh::Mesh():
+    renderer(Device::get()->getRenderer())
 {
 }
 
 
-Mesh::Mesh(Renderer* renderer, MeshPrefab prefab):
-    renderer(renderer)
+Mesh::Mesh(MeshPrefab prefab):
+    renderer(Device::get()->getRenderer())
 {
     switch (prefab)
     {
@@ -29,8 +48,8 @@ Mesh::Mesh(Renderer* renderer, MeshPrefab prefab):
 }
 
 
-Mesh::Mesh(Renderer* renderer, MeshData* data):
-    renderer(renderer)
+Mesh::Mesh(MeshData* data):
+    renderer(Device::get()->getRenderer())
 {
     VertexBufferLayout positionLayout;
     positionLayout.add(VertexBufferLayoutSemantics::Position, 3);

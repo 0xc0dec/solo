@@ -12,8 +12,8 @@ public:
 
     virtual void run() override
     {
-        material = resourceManager->getOrCreateMaterial(resourceManager->getOrCreateEffect("1", "2"));
-        mesh = resourceManager->getOrCreateMesh();
+        material = Material::create(Effect::create("1", "2"));
+        mesh = Mesh::create();
         mesh->addPart(nullptr, 0);
         mesh->addPart(nullptr, 0);
         mesh->addPart(nullptr, 0);

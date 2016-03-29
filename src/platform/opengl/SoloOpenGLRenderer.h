@@ -73,6 +73,8 @@ namespace solo
     private:
         friend class Renderer;
 
+        OpenGLRenderer() {}
+
         struct FrameBufferData
         {
             GLuint rawHandle = 0;
@@ -118,8 +120,6 @@ namespace solo
             GLint index = 0;
             uint32_t componentCount = 0;
         };
-
-        explicit OpenGLRenderer(Device* device);
 
         void bindFrameBuffer(const FrameBufferHandle& handle);
         void bindTexture(GLenum target, const TextureHandle& handle);

@@ -10,17 +10,14 @@ namespace solo
 {
     class Component;
     class Node;
-    class Device;
+    class DeviceToken;
 
     class Scene final
     {
     public:
-        explicit Scene(Device* device);
-        ~Scene();
-
+        explicit Scene(const DeviceToken&) {}
+        ~Scene() {}
         SL_NONCOPYABLE(Scene)
-
-        Device* getDevice() const;
 
         sptr<Node> createNode();
 
@@ -36,14 +33,13 @@ namespace solo
     private:
         using NodeComponentMap = std::unordered_map<uint32_t, sptr<Component>>;
         using AllComponentMap = std::unordered_map<uint32_t, NodeComponentMap>;
-        
+
         template <class T>
         void updateRenderQueue(std::list<T>& queue, bool ignoreCamera);
         
         void updateComponents();
         void rebuildComponentsToUpdate();
 
-        Device* device;
         uint32_t nodeCounter = 0;
         bool cameraCacheDirty = true;
         bool componentsDirty = true;
@@ -55,9 +51,4 @@ namespace solo
         AllComponentMap components;
         std::vector<sptr<Component>> componentsToUpdate;
     };
-
-    inline Device* Scene::getDevice() const
-    {
-        return device;
-    }
 }

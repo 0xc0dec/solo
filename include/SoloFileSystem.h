@@ -8,14 +8,15 @@
 namespace solo
 {
     class Device;
+    class DeviceToken;
 
     class FileSystem
     {
     public:
-        static sptr<FileSystem> create(Device* device);
+        static uptr<FileSystem> create(Device* device, const DeviceToken&);
 
-        SL_NONCOPYABLE(FileSystem)
         virtual ~FileSystem() {}
+        SL_NONCOPYABLE(FileSystem)
 
         virtual std::vector<uint8_t> readBytes(const std::string& path);
         virtual void writeBytes(const std::string& path, const std::vector<uint8_t>& data);

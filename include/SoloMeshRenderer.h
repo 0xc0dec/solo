@@ -27,7 +27,6 @@ namespace solo
 
     private:
         sptr<Mesh> mesh;
-        DeviceMode deviceMode;
         std::unordered_map<uint32_t, sptr<Material>> materials;
     };
 

@@ -21,6 +21,7 @@
 namespace solo
 {
     class Device;
+    class DeviceToken;
 
     const uint32_t EmptyHandleValue = -1;
 
@@ -134,12 +135,10 @@ namespace solo
     class Renderer
     {
     public:
-        static sptr<Renderer> create(Device* device);
+        static uptr<Renderer> create(Device* device, const DeviceToken&);
 
         SL_NONCOPYABLE(Renderer)
         virtual ~Renderer();
-
-        Device* getDevice() const;
 
         virtual TextureHandle createTexture() = 0;
         virtual void destroyTexture(const TextureHandle& handle) = 0;
@@ -197,13 +196,6 @@ namespace solo
         virtual void drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, uint32_t vertexCount) = 0;
 
     protected:
-        explicit Renderer(Device* device);
-
-        Device* device;
+        Renderer() {}
     };
-
-    inline Device* Renderer::getDevice() const
-    {
-        return device;
-    }
 }

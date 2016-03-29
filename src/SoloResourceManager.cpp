@@ -1,15 +1,12 @@
 #include "SoloResourceManager.h"
 #include "SoloEffect.h"
-#include "SoloMaterial.h"
 #include "SoloMesh.h"
-#include "SoloFrameBuffer.h"
 #include "SoloPngImageLoader.h"
 #include "SoloTexture2D.h"
 #include "SoloCubeTexture.h"
 #include "SoloDevice.h"
 #include "SoloObjMeshLoader.h"
 #include "SoloImage.h"
-#include "platform/stub/SoloStubResourceManager.h"
 #include <functional>
 #define LIBASYNC_STATIC
 #include <async++.h>
@@ -17,30 +14,15 @@
 using namespace solo;
 
 
-sptr<ResourceManager> ResourceManager::create(Device* device)
+ResourceManager::ResourceManager(const DeviceToken&)
 {
-    if (device->getMode() == DeviceMode::Stub)
-        return SL_WRAP_SPTR(StubResourceManager, device);
-    return SL_WRAP_SPTR(ResourceManager, device);
-}
-
-
-ResourceManager::ResourceManager(Device* device):
-    device(device)
-{
-    imageLoaders.push_back(std::make_unique<PngImageLoader>(device->getFileSystem(), this));
-    meshLoaders.push_back(std::make_unique<ObjMeshLoader>(device->getFileSystem(), this));
+    imageLoaders.push_back(std::make_unique<PngImageLoader>());
+    meshLoaders.push_back(std::make_unique<ObjMeshLoader>());
 }
 
 
 ResourceManager::~ResourceManager()
 {
-}
-
-
-std::string ResourceManager::generateUri()
-{
-    return std::string("/generated/") + std::to_string(++resourceCounter);
 }
 
 
@@ -66,97 +48,15 @@ ImageLoader* ResourceManager::getImageLoader(const std::string& uri)
 }
 
 
-sptr<Effect> ResourceManager::findEffect(const std::string& uri)
+sptr<Texture2D> ResourceManager::loadTexture2D(const std::string& imageUri)
 {
-    return findResource(uri, effects);
-}
-
-
-sptr<Material> ResourceManager::findMaterial(const std::string& uri)
-{
-    return findResource(uri, materials);
-}
-
-
-sptr<Texture2D> ResourceManager::findTexture2D(const std::string& uri)
-{
-    return findResource(uri, textures2d);
-}
-
-
-sptr<CubeTexture> ResourceManager::findCubeTexture(const std::string& uri)
-{
-    return findResource(uri, cubeTextures);
-}
-
-
-sptr<Mesh> ResourceManager::findMesh(const std::string& uri)
-{
-    return findResource(uri, meshes);
-}
-
-
-sptr<FrameBuffer> ResourceManager::findFrameBuffer(const std::string& uri)
-{
-    return findResource(uri, frameBuffers);
-}
-
-
-sptr<Effect> ResourceManager::getOrCreateEffect(const std::string& vsSrc, const std::string& fsSrc, const std::string& uri)
-{
-    return getOrCreateResource<Effect>(uri, effects,
-        std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
-        [&]() { return std::make_shared<Effect>(device->getRenderer(), vsSrc, fsSrc); });
-}
-
-
-sptr<Effect> ResourceManager::getOrCreatePrefabEffect(EffectPrefab prefab, const std::string& uri)
-{
-    return getOrCreateResource<Effect>(uri, effects,
-        std::bind(&ResourceManager::findEffect, this, std::placeholders::_1),
-        [&]() { return std::make_shared<Effect>(device->getRenderer(), prefab); });
-}
-
-
-sptr<Material> ResourceManager::getOrCreateMaterial(sptr<Effect> effect, const std::string& uri)
-{
-    return getOrCreateResource<Material>(uri, materials,
-        std::bind(&ResourceManager::findMaterial, this, std::placeholders::_1),
-        [&]() { return std::make_shared<Material>(device->getRenderer(), effect); });
-}
-
-
-sptr<Texture2D> ResourceManager::getOrCreateTexture2D(const std::string& uri)
-{
-    return getOrCreateResource<Texture2D>(uri, textures2d,
-        std::bind(&ResourceManager::findTexture2D, this, std::placeholders::_1),
-        [&]() { return std::make_shared<Texture2D>(device->getRenderer()); });
-}
-
-
-sptr<CubeTexture> ResourceManager::getOrCreateCubeTexture(const std::string& uri)
-{
-    return getOrCreateResource<CubeTexture>(uri, cubeTextures,
-        std::bind(&ResourceManager::findCubeTexture, this, std::placeholders::_1),
-        [&]() { return std::make_shared<CubeTexture>(device->getRenderer()); });
-}
-
-
-sptr<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& imageUri, const std::string& uri)
-{
-    auto textureUri = uri.empty() ? imageUri : uri;
-    auto existing = findTexture2D(textureUri);
-    if (existing)
-        return existing;
-
     for (const auto& loader : imageLoaders)
     {
         if (loader->isLoadable(imageUri))
         {
-            auto result = std::make_shared<Texture2D>(device->getRenderer());
+            auto result = Texture2D::create();
             auto image = loader->load(imageUri);
             result->setData(image->colorFormat, image->data, image->width, image->height);
-            textures2d[textureUri] = result;
             return result;
         }
     }
@@ -165,30 +65,19 @@ sptr<Texture2D> ResourceManager::getOrLoadTexture2D(const std::string& imageUri,
 }
 
 
-sptr<AsyncResourceHandle<Texture2D>> ResourceManager::getOrLoadTexture2DAsync(const std::string& imageUri, const std::string& uri)
+sptr<AsyncResourceHandle<Texture2D>> ResourceManager::loadTexture2DAsync(const std::string& imageUri)
 {
     auto handle = std::make_shared<AsyncResourceHandle<Texture2D>>();
-
-    auto textureUri = uri.empty() ? imageUri : uri;
-    auto existing = findTexture2D(textureUri);
-    if (existing)
-    {
-        handle->putResult(existing);
-        return handle;
-    }
-
     auto loader = getImageLoader(imageUri);
-
     async::spawn([=]
     {
-        auto uimage = loader->load(textureUri);
+        auto uimage = loader->load(imageUri);
         sptr<Image> simage { std::move(uimage) };
         auto lock = this->tasksLock.acquire();
         this->tasks.push_back([=]()
         {
-            auto texture = std::make_shared<Texture2D>(this->device->getRenderer());
+            auto texture = Texture2D::create();
             texture->setData(simage->colorFormat, simage->data, simage->width, simage->height);
-            this->textures2d[textureUri] = texture;
             handle->putResult(texture);
         });
     });
@@ -197,16 +86,9 @@ sptr<AsyncResourceHandle<Texture2D>> ResourceManager::getOrLoadTexture2DAsync(co
 }
 
 
-sptr<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std::string>& sidesUris, const std::string& uri)
+sptr<CubeTexture> ResourceManager::loadCubeTexture(const std::vector<std::string>& sidesUris)
 {
-    auto textureUri = uri.empty()
-        ? sidesUris[0] + sidesUris[1] + sidesUris[2] + sidesUris[3] + sidesUris[4] + sidesUris[5]
-        : uri;
-    auto existing = findCubeTexture(textureUri);
-    if (existing)
-        return existing;
-
-    auto result = std::make_shared<CubeTexture>(device->getRenderer());
+    auto result = CubeTexture::create();
     auto loader = getImageLoader(sidesUris[0]);
 
     auto idx = 0;
@@ -217,26 +99,15 @@ sptr<CubeTexture> ResourceManager::getOrLoadCubeTexture(const std::vector<std::s
         result->setData(face, image->colorFormat, image->data, image->width, image->height);
     }
 
-    cubeTextures[textureUri] = result;
     return result;
 }
 
 
-sptr<AsyncResourceHandle<CubeTexture>> ResourceManager::getOrLoadCubeTextureAsync(const std::vector<std::string>& sidesUris, const std::string& uri)
+sptr<AsyncResourceHandle<CubeTexture>> ResourceManager::loadCubeTextureAsync(const std::vector<std::string>& sidesUris)
 {
     auto handle = std::make_shared<AsyncResourceHandle<CubeTexture>>();
-
-    auto textureUri = uri.empty()
-        ? sidesUris[0] + sidesUris[1] + sidesUris[2] + sidesUris[3] + sidesUris[4] + sidesUris[5] // TODO avoid copypasting
-        : uri;
-    auto existing = findCubeTexture(textureUri);
-    if (existing)
-    {
-        handle->putResult(existing);
-        return handle;
-    }
-
     auto loader = getImageLoader(sidesUris[0]);
+    auto device = Device::get();
 
     std::vector<async::task<sptr<Image>>> imageTasks;
     for (uint32_t i = 0; i < sidesUris.size(); i++)
@@ -256,7 +127,7 @@ sptr<AsyncResourceHandle<CubeTexture>> ResourceManager::getOrLoadCubeTextureAsyn
         auto lock = this->tasksLock.acquire();
         this->tasks.push_back(std::bind([=] (const std::vector<sptr<Image>>& images)
         {
-            auto texture = std::make_shared<CubeTexture>(this->device->getRenderer());
+            auto texture = CubeTexture::create();
             uint32_t idx = 0;
             for (const auto& image : images)
             {
@@ -271,32 +142,17 @@ sptr<AsyncResourceHandle<CubeTexture>> ResourceManager::getOrLoadCubeTextureAsyn
 }
 
 
-sptr<Mesh> ResourceManager::getOrLoadMesh(const std::string& dataUri, const std::string& uri)
+sptr<Mesh> ResourceManager::loadMesh(const std::string& dataUri)
 {
-    auto meshUri = uri.empty() ? dataUri : uri;
-    auto existing = findMesh(meshUri);
-    if (existing)
-        return existing;
-
     auto loader = getMeshLoader(dataUri);
-    auto mesh = loader->load(dataUri);
-    meshes[meshUri] = mesh;
-    return mesh;
+    auto data = loader->loadData(dataUri);
+    return Mesh::create(data.get());
 }
 
 
-sptr<AsyncResourceHandle<Mesh>> ResourceManager::getOrLoadMeshAsync(const std::string& dataUri, const std::string& uri)
+sptr<AsyncResourceHandle<Mesh>> ResourceManager::loadMeshAsync(const std::string& dataUri)
 {
     auto handle = std::make_shared<AsyncResourceHandle<Mesh>>();
-
-    auto meshUri = uri.empty() ? dataUri : uri;
-    auto existing = findMesh(meshUri);
-    if (existing)
-    {
-        handle->putResult(existing);
-        return handle;
-    }
-
     auto loader = getMeshLoader(dataUri);
 
     async::spawn([=]
@@ -307,92 +163,12 @@ sptr<AsyncResourceHandle<Mesh>> ResourceManager::getOrLoadMeshAsync(const std::s
         this->tasks.push_back([=]()
         {
             // This called is later called in the update() method
-            auto mesh = std::make_shared<Mesh>(this->device->getRenderer(), sharedData.get());
-            this->meshes[meshUri] = mesh;
+            auto mesh = Mesh::create(sharedData.get());
             handle->putResult(mesh);
         });
     });
 
     return handle;
-}
-
-
-sptr<Mesh> ResourceManager::getOrCreateMesh(const std::string& uri)
-{
-    return getOrCreateResource<Mesh>(uri, meshes,
-        std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
-        [&]() { return std::make_shared<Mesh>(device->getRenderer()); });
-}
-
-
-sptr<Mesh> ResourceManager::getOrCreatePrefabMesh(MeshPrefab prefab, const std::string& uri)
-{
-    return getOrCreateResource<Mesh>(uri, meshes,
-        std::bind(&ResourceManager::findMesh, this, std::placeholders::_1),
-        [&]() { return std::make_shared<Mesh>(device->getRenderer(), prefab); });
-}
-
-
-sptr<FrameBuffer> ResourceManager::getOrCreateFrameBuffer(const std::string& uri)
-{
-    return getOrCreateResource<FrameBuffer>(uri, frameBuffers,
-        std::bind(&ResourceManager::findFrameBuffer, this, std::placeholders::_1),
-        [&]() { return std::make_shared<FrameBuffer>(device->getRenderer()); });
-}
-
-
-template <typename TResource>
-sptr<TResource> ResourceManager::getOrCreateResource(
-    const std::string& uri,
-    ResourceCollection<TResource>& resourceMap,
-    std::function<sptr<TResource>(const std::basic_string<char>&)> find,
-    std::function<sptr<TResource>()> create)
-{
-    auto existing = find(uri.empty() ? generateUri() : uri); // TODO use findResource here?
-    return existing ? existing : createResource<TResource>(uri, resourceMap, create);
-}
-
-
-template <typename TResource>
-sptr<TResource> ResourceManager::createResource(const std::string& uri, ResourceCollection<TResource>& resourceMap, std::function<sptr<TResource>()> create)
-{
-    auto result = create();
-    resourceMap[uri] = result;
-    return result;
-}
-
-
-template <typename TResource>
-sptr<TResource> ResourceManager::findResource(const std::string& uri, const ResourceCollection<TResource>& resourceMap)
-{
-    auto existing = resourceMap.find(uri);
-    return existing != resourceMap.end() ? existing->second : nullptr;
-}
-
-
-template <typename TResource>
-void ResourceManager::cleanUnusedResources(ResourceCollection<TResource>& resources)
-{
-    auto uris = std::unordered_set<std::string>();
-    for (auto& it : resources)
-    {
-        if (it.second.use_count() == 1)
-            uris.insert(it.first);
-    }
-    for (auto& uri : uris)
-        resources.erase(uri);
-}
-
-
-void ResourceManager::cleanUnusedResources()
-{
-    // Clean in order of reference hierarchy
-    cleanUnusedResources(frameBuffers);
-    cleanUnusedResources(materials);
-    cleanUnusedResources(effects);
-    cleanUnusedResources(meshes);
-    cleanUnusedResources(textures2d);
-    cleanUnusedResources(cubeTextures);
 }
 
 

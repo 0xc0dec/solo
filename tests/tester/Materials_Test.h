@@ -45,7 +45,7 @@ public:
 
 	void test_CompileEffect_OK()
 	{
-		resourceManager->getOrCreateEffect(vs, fs);
+        Effect::create(vs, fs);
 	}
 
 	void test_CompileEffect_Fail()
@@ -59,7 +59,7 @@ private:
 	{
 		try
 		{
-			resourceManager->getOrCreateEffect(vertex, fragment);
+            Effect::create(vertex, fragment);
 		}
 		catch (ResourceException &e)
 		{

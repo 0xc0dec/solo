@@ -215,12 +215,6 @@ static bool findUniformInProgram(GLuint program, const char* name, GLint& locati
 }
 
 
-OpenGLRenderer::OpenGLRenderer(Device* device) :
-    Renderer(device)
-{
-}
-
-
 template <typename TPool, typename TResource>
 void cleanupResourcePool(TPool& pool, std::function<void(const TResource&)> deleteResource)
 {

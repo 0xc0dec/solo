@@ -19,21 +19,21 @@ public:
 
     void test_EmptyMesh_CheckDefaults()
     {
-        auto mesh = resourceManager->getOrCreateMesh();
+        auto mesh = Mesh::create();
         assert(mesh->getPrimitiveType() == PrimitiveType::Triangles);
         assert(mesh->getPartCount() == 0);
     }
 
     void test_ChangePrimitiveType()
     {
-        auto mesh = resourceManager->getOrCreateMesh();
+        auto mesh = Mesh::create();
         mesh->setPrimitiveType(PrimitiveType::Points);
         assert(mesh->getPrimitiveType() == PrimitiveType::Points);
     }
 
     void test_AddIndex_CheckIndexCount()
     {
-        auto mesh = resourceManager->getOrCreateMesh();
+        auto mesh = Mesh::create();
         mesh->addPart(nullptr, 0);
         mesh->addPart(nullptr, 0);
         assert(mesh->getPartCount() == 2);

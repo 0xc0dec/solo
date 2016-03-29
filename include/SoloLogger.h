@@ -7,12 +7,13 @@
 
 namespace solo
 {
+    class DeviceToken;
+
     class Logger final
     {
     public:
-        Logger() {}
+        explicit Logger(const DeviceToken& t) {}
         ~Logger();
-
         SL_NONCOPYABLE(Logger)
 
         void setTargetFile(const std::string& path);

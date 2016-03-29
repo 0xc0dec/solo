@@ -38,7 +38,7 @@ public:
     explicit DynamicQuadUpdater(const Node& node, std::vector<float> data, sptr<Mesh> mesh):
         ComponentBase<DynamicQuadUpdater>(node),
         data(data),
-        device(node.getScene()->getDevice()),
+        device(solo::Device::get()),
         mesh(mesh)
     {
     }
@@ -92,7 +92,7 @@ public:
         args.canvasWidth = 1200;
         args.canvasHeight = 600;
         args.logFilePath = "demo1.log";
-        device = Device::create(args);
+        device = Device::init(args);
 
         scene = device->getScene();
         resMgr = device->getResourceManager();
@@ -101,7 +101,7 @@ public:
 
     sptr<Material> createColorMaterial(const Vector4& color)
     {
-        auto mat = resMgr->getOrCreateMaterial(colorEffect);
+        auto mat = Material::create(colorEffect);
         mat->setPolygonFace(PolygonFace::All);
         mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
         mat->setVector4Parameter("color", color);
@@ -110,15 +110,15 @@ public:
 
     void initEffects()
     {
-        simpleTextureEffect = resMgr->getOrCreateEffect(shaders.vertex.basic, shaders.fragment.texture);
-        colorEffect = resMgr->getOrCreateEffect(shaders.vertex.basic, shaders.fragment.color);
-        checkerEffect = resMgr->getOrCreateEffect(shaders.vertex.basic, shaders.fragment.checker);
-        texWithLightingEffect = resMgr->getOrCreateEffect(shaders.vertex.basicLighting, shaders.fragment.textureWithLighting);
+        simpleTextureEffect = Effect::create(shaders.vertex.basic, shaders.fragment.texture);
+        colorEffect = Effect::create(shaders.vertex.basic, shaders.fragment.color);
+        checkerEffect = Effect::create(shaders.vertex.basic, shaders.fragment.checker);
+        texWithLightingEffect = Effect::create(shaders.vertex.basicLighting, shaders.fragment.textureWithLighting);
     }
 
     void loadTexture(const std::string& uri, std::function<void(sptr<Texture2D>)> callback)
     {
-        resMgr->getOrLoadTexture2DAsync(uri)->done([=](sptr<Texture2D> tex)
+        resMgr->loadTexture2DAsync(uri)->done([=](sptr<Texture2D> tex)
         {
             tex->generateMipmaps();
             tex->setFiltering(TextureFiltering::LinearMipmapNearest);
@@ -129,7 +129,7 @@ public:
 
     sptr<AsyncResourceHandle<Mesh>> initAxesMesh()
     {
-        return resMgr->getOrLoadMeshAsync("../data/axes.obj");
+        return resMgr->loadMeshAsync("../data/axes.obj");
     }
 
     void initCamera()
@@ -148,7 +148,7 @@ public:
 
     void initOffscreenCamera()
     {
-        offscreenCameraTex = resMgr->getOrCreateTexture2D();
+        offscreenCameraTex = Texture2D::create();
         offscreenCameraTex->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(floor(canvasSize.x / 8.0f)), static_cast<uint32_t>(floor(canvasSize.y / 8.0f)));
         offscreenCameraTex->setFiltering(TextureFiltering::Nearest);
         offscreenCameraTex->setWrapping(TextureWrapping::Clamp);
@@ -161,7 +161,7 @@ public:
         cam->getRenderTags().remove(renderTargetQuadTag);
         node->getComponent<Transform>()->setLocalPosition(Vector3(0, 0, 10));
 
-        auto fb = resMgr->getOrCreateFrameBuffer();
+        auto fb = FrameBuffer::create();
         fb->setAttachments({ offscreenCameraTex });
         cam->setRenderTarget(fb);
     }
@@ -173,12 +173,12 @@ public:
         blueMat = createColorMaterial(Vector4(0, 0, 1, 1));
         whiteMat = createColorMaterial(Vector4(1, 1, 1, 1));
 
-        checkerMat = resMgr->getOrCreateMaterial(checkerEffect);
+        checkerMat = Material::create(checkerEffect);
         checkerMat->setPolygonFace(PolygonFace::All);
         checkerMat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
         checkerMat->setVector4Parameter("color", Vector4(1, 1, 0, 1));
 
-        monitorMat = resMgr->getOrCreateMaterial(simpleTextureEffect);
+        monitorMat = Material::create(simpleTextureEffect);
         monitorMat->setPolygonFace(PolygonFace::All);
         monitorMat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
         monitorMat->setTextureParameter("mainTex", offscreenCameraTex);
@@ -186,7 +186,7 @@ public:
 
     void initSkybox()
     {
-        resMgr->getOrLoadCubeTextureAsync({
+        resMgr->loadCubeTextureAsync({
             "../data/skyboxes/deep-space/front.png",
             "../data/skyboxes/deep-space/back.png",
             "../data/skyboxes/deep-space/left.png",
@@ -207,9 +207,9 @@ public:
     {
         sptr<Mesh> mesh = nullptr;
         if (type == "quad")
-            mesh = resMgr->getOrCreatePrefabMesh(MeshPrefab::Quad);
+            mesh = Mesh::create(MeshPrefab::Quad);
         else if (type == "cube")
-            mesh = resMgr->getOrCreatePrefabMesh(MeshPrefab::Cube);
+            mesh = Mesh::create(MeshPrefab::Cube);
         auto node = scene->createNode();
         node->addComponent<MeshRenderer>()->setMesh(mesh);
         return node;
@@ -225,18 +225,18 @@ public:
 
     void initMesh()
     {
-        resMgr->getOrLoadTexture2DAsync("../data/cobblestone.png")->done([=](sptr<Texture2D> tex)
+        resMgr->loadTexture2DAsync("../data/cobblestone.png")->done([=](sptr<Texture2D> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->generateMipmaps();
 
-            auto mat = resMgr->getOrCreateMaterial(texWithLightingEffect);
+            auto mat = Material::create(texWithLightingEffect);
             mat->setPolygonFace(PolygonFace::All);
             mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
             mat->setParameterAutoBinding("invTransposedWorldMatrix", AutoBinding::InverseTransposedWorldMatrix);
             mat->setTextureParameter("mainTex", tex);
 
-            resMgr->getOrLoadMeshAsync("../data/monkey.obj")->done([=](sptr<Mesh> mesh)
+            resMgr->loadMeshAsync("../data/monkey.obj")->done([=](sptr<Mesh> mesh)
             {
                 auto node = scene->createNode();
                 auto renderer = node->addComponent<MeshRenderer>();
@@ -272,12 +272,12 @@ public:
                 0, 2, 3
             };
 
-            auto mesh = resMgr->getOrCreateMesh();
+            auto mesh = Mesh::create();
             mesh->addDynamicVertexBuffer(layout, data.data(), 4);
             mesh->addPart(indices.data(), 6); // TODO accept uint16_t array explicitly
             mesh->setPrimitiveType(PrimitiveType::Triangles);
 
-            auto mat = resMgr->getOrCreateMaterial(simpleTextureEffect);
+            auto mat = Material::create(simpleTextureEffect);
             mat->setPolygonFace(PolygonFace::All);
             mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
             mat->setTextureParameter("mainTex", tex);
@@ -326,7 +326,7 @@ public:
         {
             tex->setWrapping(TextureWrapping::Clamp);
 
-            auto mat = resMgr->getOrCreateMaterial(simpleTextureEffect);
+            auto mat = Material::create(simpleTextureEffect);
             mat->setPolygonFace(PolygonFace::All);
             mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
             mat->setTextureParameter("mainTex", tex);
@@ -353,7 +353,7 @@ private:
     Scene* scene = nullptr;
     ResourceManager* resMgr = nullptr;
     Vector2 canvasSize;
-    sptr<Device> device = nullptr;
+    Device* device = nullptr;
     sptr<Effect> simpleTextureEffect = nullptr;
     sptr<Effect> colorEffect = nullptr;
     sptr<Effect> checkerEffect = nullptr;

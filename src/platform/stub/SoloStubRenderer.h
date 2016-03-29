@@ -71,8 +71,6 @@ namespace solo
     private:
         friend class Renderer;
 
-        StubRenderer(Device* device): Renderer(device)
-        {
-        }
+        StubRenderer() {}
     };
 }

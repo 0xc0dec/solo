@@ -4,9 +4,9 @@
 using namespace solo;
 
 
-CubeTexture::CubeTexture(Renderer* renderer):
-    Texture(renderer)
+sptr<CubeTexture> CubeTexture::create()
 {
+    return std::shared_ptr<CubeTexture>(new CubeTexture());
 }
 
 

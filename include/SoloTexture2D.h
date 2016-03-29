@@ -9,7 +9,7 @@ namespace solo
     class Texture2D final: public Texture
     {
     public:
-        explicit Texture2D(Renderer* renderer);
+        static sptr<Texture2D> create();
 
         virtual void bind() override final;
         virtual void generateMipmaps() override final;

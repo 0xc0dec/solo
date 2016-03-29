@@ -1,11 +1,12 @@
 #include "SoloTexture.h"
 #include "SoloBitFlags.h"
+#include "SoloDevice.h"
 
 using namespace solo;
 
 
-Texture::Texture(Renderer* renderer) :
-    renderer(renderer)
+Texture::Texture() :
+    renderer(Device::get()->getRenderer())
 {
     handle = renderer->createTexture();
 }

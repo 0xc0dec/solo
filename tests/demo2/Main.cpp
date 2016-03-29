@@ -12,46 +12,47 @@ class PostProcessor: public ComponentBase<PostProcessor>
 public:
     explicit PostProcessor(const Node& node):
         ComponentBase<PostProcessor>(node),
-        resMgr(node.getScene()->getDevice()->getResourceManager()),
-        graphics(node.getScene()->getDevice()->getGraphics())
+        device(Device::get()),
+        resMgr(Device::get()->getResourceManager()),
+        graphics(Device::get()->getGraphics())
     {
     }
 
     virtual void init() override final
     {
-        auto canvasSize = node.getScene()->getDevice()->getCanvasSize();
+        auto canvasSize = device->getCanvasSize();
         auto camera = node.getComponent<Camera>();
-        fbTex1 = resMgr->getOrCreateTexture2D();
+        fbTex1 = Texture2D::create();
         fbTex1->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
         fbTex1->setFiltering(TextureFiltering::Nearest);
         fbTex1->setWrapping(TextureWrapping::Clamp);
-        fb1 = resMgr->getOrCreateFrameBuffer();
+        fb1 = FrameBuffer::create();
         fb1->setAttachments({ fbTex1 });
         camera->setRenderTarget(fb1);
 
-        fbTex2 = resMgr->getOrCreateTexture2D();
+        fbTex2 = Texture2D::create();
         fbTex2->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
         fbTex2->setFiltering(TextureFiltering::Nearest);
         fbTex2->setWrapping(TextureWrapping::Clamp);
-        fb2 = resMgr->getOrCreateFrameBuffer();
+        fb2 = FrameBuffer::create();
         fb2->setAttachments({ fbTex2 });
 
-        auto grayscaleEffect = resMgr->getOrCreateEffect(shaders.vertex.passThrough, shaders.fragment.postProcess.grayscale);
-        grayscaleMat = resMgr->getOrCreateMaterial(grayscaleEffect);
+        auto grayscaleEffect = Effect::create(shaders.vertex.passThrough, shaders.fragment.postProcess.grayscale);
+        grayscaleMat = Material::create(grayscaleEffect);
         grayscaleMat->setFloatParameter("rightSeparator", 0.25f);
 
-        auto saturateEffect = resMgr->getOrCreateEffect(shaders.vertex.passThrough, shaders.fragment.postProcess.saturate);
-        saturateMat = resMgr->getOrCreateMaterial(saturateEffect);
+        auto saturateEffect = Effect::create(shaders.vertex.passThrough, shaders.fragment.postProcess.saturate);
+        saturateMat = Material::create(saturateEffect);
         saturateMat->setFloatParameter("leftSeparator", 0.75f);
         saturateMat->setFloatParameter("rightSeparator", 1.0f);
 
-        auto verticalBlurEffect = resMgr->getOrCreateEffect(shaders.vertex.passThrough, shaders.fragment.postProcess.verticalBlur);
-        verticalBlurMat = resMgr->getOrCreateMaterial(verticalBlurEffect);
+        auto verticalBlurEffect = Effect::create(shaders.vertex.passThrough, shaders.fragment.postProcess.verticalBlur);
+        verticalBlurMat = Material::create(verticalBlurEffect);
         verticalBlurMat->setFloatParameter("leftSeparator", 0.25f);
         verticalBlurMat->setFloatParameter("rightSeparator", 0.75f);
 
-        auto horizontalBlurEffect = resMgr->getOrCreateEffect(shaders.vertex.passThrough, shaders.fragment.postProcess.horizontalBlur);
-        horizontalBlurMat = resMgr->getOrCreateMaterial(horizontalBlurEffect);
+        auto horizontalBlurEffect = Effect::create(shaders.vertex.passThrough, shaders.fragment.postProcess.horizontalBlur);
+        horizontalBlurMat = Material::create(horizontalBlurEffect);
         horizontalBlurMat->setFloatParameter("leftSeparator", 0.25f);
         horizontalBlurMat->setFloatParameter("rightSeparator", 0.75f);
     }
@@ -73,6 +74,7 @@ public:
     }
 
 private:
+    Device* device;
     ResourceManager* resMgr;
     Graphics* graphics;
     sptr<FrameBuffer> fb1 = nullptr;
@@ -105,7 +107,7 @@ public:
         args.canvasWidth = 1200;
         args.canvasHeight = 600;
         args.logFilePath = "demo1.log";
-        device = Device::create(args);
+        device = Device::init(args);
 
         scene = device->getScene();
         resMgr = device->getResourceManager();
@@ -127,7 +129,7 @@ public:
 
     void initSkybox()
     {
-        resMgr->getOrLoadCubeTextureAsync({
+        resMgr->loadCubeTextureAsync({
             "../data/skyboxes/deep-space/front.png",
             "../data/skyboxes/deep-space/back.png",
             "../data/skyboxes/deep-space/left.png",
@@ -146,17 +148,17 @@ public:
 
     void initMesh()
     {
-        resMgr->getOrLoadTexture2DAsync("../data/cobblestone.png")->done([=](sptr<Texture2D> tex)
+        resMgr->loadTexture2DAsync("../data/cobblestone.png")->done([=](sptr<Texture2D> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->generateMipmaps();
-            auto effect = resMgr->getOrCreateEffect(shaders.vertex.wavy, shaders.fragment.texture);
-            auto mat = resMgr->getOrCreateMaterial(effect);
+            auto effect = Effect::create(shaders.vertex.wavy, shaders.fragment.texture);
+            auto mat = Material::create(effect);
             mat->setPolygonFace(PolygonFace::All);
             mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
             mat->setTextureParameter("mainTex", tex);
 
-            resMgr->getOrLoadMeshAsync("../data/monkey.obj")->done([=](sptr<Mesh> mesh)
+            resMgr->loadMeshAsync("../data/monkey.obj")->done([=](sptr<Mesh> mesh)
             {
                 auto node = scene->createNode();
                 auto renderer = node->addComponent<MeshRenderer>();
@@ -171,7 +173,7 @@ public:
 private:
     Scene* scene = nullptr;
     ResourceManager* resMgr = nullptr;
-    sptr<Device> device = nullptr;
+    Device* device = nullptr;
 };
 
 

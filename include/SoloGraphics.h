@@ -6,16 +6,16 @@
 namespace solo
 {
     class Renderer;
-    class Device;
     class Mesh;
     class Material;
     class FrameBuffer;
+    class DeviceToken;
+    class Device;
 
     class Graphics
     {
     public:
-        explicit Graphics(Device* device);
-
+        Graphics(Device* device, const DeviceToken&);
         SL_NONCOPYABLE(Graphics)
 
         void blit(Material* material, FrameBuffer* target);

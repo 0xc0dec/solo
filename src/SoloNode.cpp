@@ -25,7 +25,7 @@ template<> Transform* Node::addComponent<Transform>()
 
 template<> Camera* Node::addComponent<Camera>()
 {
-    auto camera = std::make_shared<Camera>(scene, *this);
+    auto camera = std::make_shared<Camera>(*this);
     scene->addComponent(id, camera);
     return camera.get();
 }

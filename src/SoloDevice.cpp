@@ -11,11 +11,33 @@
 using namespace solo;
 
 
-sptr<Device> Device::create(const DeviceCreationArgs& args)
+uptr<Device> Device::instance = nullptr;
+
+
+Device* Device::init(const DeviceCreationArgs& args)
 {
-    if (args.mode == DeviceMode::OpenGL)
-        return SL_WRAP_SPTR(SDLOpenGLDevice, args);
-    return SL_WRAP_SPTR(StubDevice, args);
+    if (!instance)
+    {
+        if (args.mode == DeviceMode::OpenGL)
+            instance = std::unique_ptr<Device>(new SDLOpenGLDevice(args));
+        else
+            instance = std::unique_ptr<Device>(new StubDevice(args));
+    }
+
+    return instance.get();
+}
+
+
+Device* Device::get()
+{
+    return instance.get();
+}
+
+
+void Device::shutdown()
+{
+    if (instance)
+        instance = nullptr;
 }
 
 
@@ -46,15 +68,15 @@ Device::~Device()
 Device::Device(const DeviceCreationArgs& args):
     creationArgs(args)
 {
-    logger = std::make_shared<Logger>();
-    if (!creationArgs.logFilePath.empty())
-        logger->setTargetFile(creationArgs.logFilePath);
+    logger = std::make_unique<Logger>(DeviceToken());
+    if (!args.logFilePath.empty())
+        logger->setTargetFile(args.logFilePath);
 
-    renderer = Renderer::create(this);
-    fs = FileSystem::create(this);
-    resourceManager = ResourceManager::create(this);
-    graphics = std::make_shared<Graphics>(this);
-    scene = std::make_shared<Scene>(this);
+    renderer = Renderer::create(this, DeviceToken());
+    fs = FileSystem::create(this, DeviceToken());
+    resourceManager = std::make_unique<ResourceManager>(DeviceToken());
+    graphics = std::make_unique<Graphics>(this, DeviceToken());
+    scene = std::make_unique<Scene>(DeviceToken());
 }
 
 
@@ -96,10 +118,10 @@ Vector2 Device::getMouseMotion() const
 }
 
 
-bool Device::isMouseButtonDown(MouseButton button, bool firstTimeOnly) const
+bool Device::isMouseButtonDown(MouseButton button, bool firstTime) const
 {
     auto where = pressedMouseButtons.find(button);
-    return where != pressedMouseButtons.end() && (!firstTimeOnly || where->second);
+    return where != pressedMouseButtons.end() && (!firstTime || where->second);
 }
 
 

@@ -4,7 +4,6 @@
 #include "Transform_Test.h"
 #include "Device_Test.h"
 #include "FileSystem_Test.h"
-#include "Resources_Test.h"
 #include "BitFlags_Test.h"
 #include "MeshRenderer_Test.h"
 #include "Mesh_Test.h"
@@ -13,46 +12,47 @@
 using namespace solo;
 
 
-void runInStubEngine(std::function<void(sptr<Device>)> run, const std::string& logPath)
+void runInStubEngine(std::function<void(Device*)> run, const std::string& logPath)
 {
     DeviceCreationArgs args;
     args.mode = DeviceMode::Stub;
     args.logFilePath = logPath;
-    auto device = Device::create(args);
+    auto device = Device::init(args);
     run(device);
+    Device::shutdown();
 }
 
 
-void runInRealEngine(std::function<void(sptr<Device>)> run, const std::string& logPath)
+void runInRealEngine(std::function<void(Device*)> run, const std::string& logPath)
 {
     DeviceCreationArgs args;
     args.mode = DeviceMode::OpenGL;
     args.canvasWidth = 1200;
     args.canvasHeight = 600;
     args.logFilePath = logPath;
-    auto device = Device::create(args);
+    auto device = Device::init(args);
     run(device);
+    Device::shutdown();
 }
 
 
-void runCppUnitTests(sptr<Device> device)
+void runCppUnitTests(Device* device)
 {
-    Resources_Test(device.get()).run();
-    Device_Test(device.get()).run();
-    Components_Test(device.get()).run();
-    Transform_Test(device.get()).run();
-    MeshRenderer_Test(device.get()).run();
-    BitFlags_Test(device.get()).run();
-    ResourcePool_Test(device.get()).run();
+    Device_Test(device).run();
+    Components_Test(device).run();
+    Transform_Test(device).run();
+    MeshRenderer_Test(device).run();
+    BitFlags_Test(device).run();
+    ResourcePool_Test(device).run();
 }
 
 
-void runCppIntegrationTests(sptr<Device> device)
+void runCppIntegrationTests(Device* device)
 {
-    FileSystem_Test(device.get()).run();
-    Materials_Test(device.get()).run();
-    FrameBuffer_Test(device.get()).run();
-    Mesh_Test(device.get()).run();
+    FileSystem_Test(device).run();
+    Materials_Test(device).run();
+    FrameBuffer_Test(device).run();
+    Mesh_Test(device).run();
 }
 
 

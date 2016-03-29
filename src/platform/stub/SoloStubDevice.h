@@ -21,10 +21,10 @@ namespace solo
     private:
         friend class Device;
 
+        explicit StubDevice(const DeviceCreationArgs& args);
+
         virtual void beginUpdate() override;
         virtual void endUpdate() override;
-
-        explicit StubDevice(const DeviceCreationArgs& args);
 
         std::string windowTitle;
     };

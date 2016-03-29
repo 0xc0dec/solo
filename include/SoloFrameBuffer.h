@@ -12,9 +12,9 @@ namespace solo
     class FrameBuffer final
     {
     public:
-        FrameBuffer(Renderer* renderer);
-        ~FrameBuffer();
+        static sptr<FrameBuffer> create();
 
+        ~FrameBuffer();
         SL_NONCOPYABLE(FrameBuffer)
 
         void bind();
@@ -25,6 +25,8 @@ namespace solo
         Vector2 getSize() const;
 
     private:
+        FrameBuffer();
+
         Renderer* renderer;
         FrameBufferHandle handle;
         Vector2 size;

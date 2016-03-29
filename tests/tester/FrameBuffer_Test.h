@@ -19,12 +19,12 @@ public:
 private:
     void test_SetAttachments_GetSize()
     {
-        auto t1 = resourceManager->getOrCreateTexture2D("tex1");
-        auto t2 = resourceManager->getOrCreateTexture2D("tex2");
+        auto t1 = Texture2D::create();
+        auto t2 = Texture2D::create();
         t1->setData(ColorFormat::RGB, {}, 64, 64);
         t2->setData(ColorFormat::RGB, {}, 64, 64);
 
-        auto fb = resourceManager->getOrCreateFrameBuffer("2");
+        auto fb = FrameBuffer::create();
         fb->setAttachments({ t1, t2 });
 
         auto size = fb->getSize();
@@ -33,9 +33,9 @@ private:
 
     void test_SetAttachmentsOfDifferentSizes_EnsureThrows()
     {
-        auto fb = resourceManager->getOrCreateFrameBuffer("3");
-        auto t1 = resourceManager->getOrCreateTexture2D("tex3");
-        auto t2 = resourceManager->getOrCreateTexture2D("tex4");
+        auto fb = FrameBuffer::create();
+        auto t1 = Texture2D::create();
+        auto t2 = Texture2D::create();
         t1->setData(ColorFormat::RGB, {}, 64, 64);
         t2->setData(ColorFormat::RGB, {}, 16, 16);
 

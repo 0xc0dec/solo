@@ -6,17 +6,11 @@
 using namespace solo;
 
 
-sptr<Renderer> Renderer::create(Device* device)
+uptr<Renderer> Renderer::create(Device* device, const DeviceToken&)
 {
     if (device->getMode() == DeviceMode::OpenGL)
-        return SL_WRAP_SPTR(OpenGLRenderer, device);
-    return SL_WRAP_SPTR(StubRenderer, device);
-}
-
-
-Renderer::Renderer(Device* device):
-    device(device)
-{
+        return std::unique_ptr<OpenGLRenderer>(new OpenGLRenderer());
+    return std::unique_ptr<StubRenderer>(new StubRenderer());
 }
 
 

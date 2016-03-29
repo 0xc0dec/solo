@@ -20,7 +20,7 @@ namespace solo
     class Camera final: public ComponentBase<Camera>, protected TransformCallback
     {
     public:
-        Camera(Scene* scene, Node node);
+        Camera(Node node);
 
         virtual void init() override final;
         virtual void terminate() override final;
@@ -74,7 +74,6 @@ namespace solo
         BitFlags renderTags;
 
         Device* device;
-        Scene* scene;
         Renderer* renderer;
 
         Transform* transform = nullptr;

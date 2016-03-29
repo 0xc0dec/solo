@@ -1,6 +1,5 @@
 #include "SoloGraphics.h"
 #include "SoloDevice.h"
-#include "SoloResourceManager.h"
 #include "SoloMesh.h"
 #include "SoloMaterial.h"
 #include "SoloFrameBuffer.h"
@@ -9,7 +8,7 @@
 using namespace solo;
 
 
-Graphics::Graphics(Device* device):
+Graphics::Graphics(Device* device, const DeviceToken&):
     device(device),
     renderer(device->getRenderer())
 {
@@ -19,7 +18,7 @@ Graphics::Graphics(Device* device):
 void Graphics::blit(Material* material, FrameBuffer* target)
 {
     if (!quadMesh)
-        quadMesh = device->getResourceManager()->getOrCreatePrefabMesh(MeshPrefab::Quad, "/solo/internal/graphics/quad-mesh");
+        quadMesh = Mesh::create(MeshPrefab::Quad);
 
     material->setDepthTest(false);
     material->setDepthWrite(false);

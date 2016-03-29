@@ -29,9 +29,7 @@ namespace solo
     class Texture
     {
     public:
-        Texture(Renderer* renderer);
         virtual ~Texture();
-
         SL_NONCOPYABLE(Texture)
 
         virtual void bind() = 0;
@@ -57,6 +55,8 @@ namespace solo
         TextureHandle getHandle() const;
 
     protected:
+        Texture();
+
         virtual void rebuildFlags();
 
         Renderer* renderer;

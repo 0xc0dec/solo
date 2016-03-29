@@ -1,7 +1,7 @@
 #include "SoloPngImageLoader.h"
 #include "SoloFileSystem.h"
 #include "SoloImage.h"
-#include "SoloResourceManager.h"
+#include "SoloDevice.h"
 #include <png.h>
 
 using namespace solo;
@@ -18,15 +18,9 @@ static void readCallback(png_structp png, png_bytep data, png_size_t length)
 {
     auto context = reinterpret_cast<PngReadContext*>(png_get_io_ptr(png));
     if (!context)
-        png_error(png, "Error reading PNG");
+        png_error(png, "Failed to read PNG");
     memcpy(data, context->bytes->data() + context->offset, length);
     context->offset += length;
-}
-
-
-PngImageLoader::PngImageLoader(FileSystem* fs, ResourceManager* resourceManager) :
-    ImageLoader(fs, resourceManager)
-{
 }
 
 
@@ -38,7 +32,7 @@ bool PngImageLoader::isLoadable(const std::string& uri)
 
 uptr<Image> PngImageLoader::load(const std::string& uri)
 {
-    auto bytes = fs->readBytes(uri);
+    auto bytes = Device::get()->getFileSystem()->readBytes(uri);
     if (bytes.size() < 8 || png_sig_cmp(&bytes[0], 0, 8) != 0)
         SL_FMT_THROW(InvalidInputException, "Failed to recognize file ", uri, " as PNG image");
 

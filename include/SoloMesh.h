@@ -28,11 +28,11 @@ namespace solo
     class Mesh final
     {
     public:
-        explicit Mesh(Renderer* renderer);
-        Mesh(Renderer* renderer, MeshPrefab prefab);
-        Mesh(Renderer* renderer, MeshData* data);
-        ~Mesh();
+        static sptr<Mesh> create();
+        static sptr<Mesh> create(MeshPrefab prefab);
+        static sptr<Mesh> create(MeshData* data);
 
+        ~Mesh();
         SL_NONCOPYABLE(Mesh)
 
         uint32_t addVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount);
@@ -50,7 +50,11 @@ namespace solo
         void setPrimitiveType(PrimitiveType type);
         PrimitiveType getPrimitiveType() const;
 
-    protected:
+    private:
+        Mesh();
+        explicit Mesh(MeshPrefab prefab);
+        explicit Mesh(MeshData* data);
+
         void initQuadMesh();
         void initCubeMesh();
 

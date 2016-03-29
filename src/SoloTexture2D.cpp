@@ -3,9 +3,9 @@
 using namespace solo;
 
 
-Texture2D::Texture2D(Renderer* renderer):
-    Texture(renderer)
+sptr<Texture2D> Texture2D::create()
 {
+    return std::shared_ptr<Texture2D>(new Texture2D());
 }
 
 

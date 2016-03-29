@@ -14,17 +14,20 @@ namespace solo
     class Effect final
     {
     public:
-        Effect(Renderer* renderer, const std::string& vsSrc, const std::string& fsSrc);
-        Effect(Renderer* renderer, EffectPrefab prefab);
-        ~Effect();
+        static sptr<Effect> create(const std::string& vsSrc, const std::string& fsSrc);
+        static sptr<Effect> create(EffectPrefab prefab);
 
+        ~Effect();
         SL_NONCOPYABLE(Effect)
 
         ProgramHandle getHandle() const;
 
         void bind();
 
-    protected:
+    private:
+        Effect(const std::string& vsSrc, const std::string& fsSrc);
+        Effect(EffectPrefab prefab);
+
         Renderer* renderer;
         ProgramHandle handle;
     };

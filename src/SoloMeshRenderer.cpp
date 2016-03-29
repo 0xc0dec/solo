@@ -8,8 +8,7 @@ using namespace solo;
 
 
 MeshRenderer::MeshRenderer(Node node):
-    ComponentBase(node),
-    deviceMode(node.getScene()->getDevice()->getMode())
+    ComponentBase(node)
 {
     renderQueue = KnownRenderQueues::Opaque;
 }

@@ -55,13 +55,21 @@ namespace solo
         std::string logFilePath;
     };
 
+    class DeviceToken
+    {
+        friend class Device;
+        DeviceToken() {}
+    };
+
     class Device
     {
     public:
-        static sptr<Device> create(const DeviceCreationArgs& args);
+        static Device* init(const DeviceCreationArgs& args);
+        static Device* get();
+        static void shutdown();
 
-        SL_NONCOPYABLE(Device)
         virtual ~Device();
+        SL_NONCOPYABLE(Device)
 
         virtual void setWindowTitle(const std::string& title) = 0;
         virtual std::string getWindowTitle() const = 0;
@@ -77,7 +85,7 @@ namespace solo
         bool isKeyReleased(KeyCode code) const;
 
         Vector2 getMouseMotion() const;
-        bool isMouseButtonDown(MouseButton button, bool firstTimeOnly = false) const;
+        bool isMouseButtonDown(MouseButton button, bool firstTime = false) const;
         bool isMouseButtonReleased(MouseButton button) const;
 
         void run();
@@ -101,12 +109,12 @@ namespace solo
 
         DeviceCreationArgs creationArgs;
 
-        sptr<Scene> scene;
-        sptr<FileSystem> fs;
-        sptr<ResourceManager> resourceManager;
-        sptr<Renderer> renderer;
-        sptr<Graphics> graphics;
-        sptr<Logger> logger;
+        uptr<Scene> scene;
+        uptr<FileSystem> fs;
+        uptr<ResourceManager> resourceManager;
+        uptr<Renderer> renderer;
+        uptr<Graphics> graphics;
+        uptr<Logger> logger;
 
         // key code -> was pressed for the first time
         std::unordered_map<KeyCode, bool> pressedKeys;
@@ -121,6 +129,9 @@ namespace solo
         bool running = false;
         float lastUpdateTime = 0;
         float timeDelta = 0;
+
+    private:
+        static uptr<Device> instance;
     };
 
     inline float Device::getTimeDelta() const

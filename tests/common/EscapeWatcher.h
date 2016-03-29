@@ -8,7 +8,7 @@ class EscapeWatcher final: public solo::ComponentBase<EscapeWatcher>
 public:
     explicit EscapeWatcher(const solo::Node& node):
         ComponentBase<EscapeWatcher>(node),
-        device(node.getScene()->getDevice())
+        device(solo::Device::get())
     {
     }
 
