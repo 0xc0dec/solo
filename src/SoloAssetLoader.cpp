@@ -84,9 +84,9 @@ sptr<CubeTexture> AssetLoader::loadCubeTexture(const std::vector<std::string>& s
     auto loader = getImageLoader(sidesPaths[0]);
 
     auto idx = 0;
-    for (const auto& imageUri : sidesPaths)
+    for (const auto& path : sidesPaths)
     {
-        auto image = loader->load(imageUri);
+        auto image = loader->load(path);
         auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + idx++);
         result->setData(face, image->colorFormat, image->data, image->width, image->height);
     }
@@ -104,10 +104,10 @@ sptr<AsyncHandle<CubeTexture>> AssetLoader::loadCubeTextureAsync(const std::vect
     std::vector<async::task<sptr<Image>>> imageTasks;
     for (uint32_t i = 0; i < sidesPaths.size(); i++)
     {
-        auto sizeUri = sidesPaths[i];
+        auto path = sidesPaths[i];
         imageTasks.push_back(async::spawn([=]
         {
-            return sptr<Image>{ loader->load(sizeUri) }; // making it shared simplifies tasks management
+            return sptr<Image>{ loader->load(path) }; // making it shared simplifies tasks management
         }));
     }
 

@@ -53,14 +53,14 @@ namespace solo
         ~AssetLoader();
         SL_NONCOPYABLE(AssetLoader)
 
-        sptr<Texture2D> loadTexture2D(const std::string& imageUri);
-        sptr<AsyncHandle<Texture2D>> loadTexture2DAsync(const std::string& imageUri);
+        sptr<Texture2D> loadTexture2D(const std::string& path);
+        sptr<AsyncHandle<Texture2D>> loadTexture2DAsync(const std::string& path);
         
-        sptr<CubeTexture> loadCubeTexture(const std::vector<std::string>& imageUris);
-        sptr<AsyncHandle<CubeTexture>> loadCubeTextureAsync(const std::vector<std::string>& sidesUris);
+        sptr<CubeTexture> loadCubeTexture(const std::vector<std::string>& sidesPaths);
+        sptr<AsyncHandle<CubeTexture>> loadCubeTextureAsync(const std::vector<std::string>& sidesPaths);
 
-        sptr<Mesh> loadMesh(const std::string& dataUri);
-        sptr<AsyncHandle<Mesh>> loadMeshAsync(const std::string& dataUri);
+        sptr<Mesh> loadMesh(const std::string& path);
+        sptr<AsyncHandle<Mesh>> loadMeshAsync(const std::string& path);
 
         void update();
 
@@ -68,8 +68,8 @@ namespace solo
         std::vector<uptr<ImageLoader>> imageLoaders;
         std::vector<uptr<MeshLoader>> meshLoaders;
 
-        MeshLoader* getMeshLoader(const std::string& uri);
-        ImageLoader* getImageLoader(const std::string& uri);
+        MeshLoader* getMeshLoader(const std::string& path);
+        ImageLoader* getImageLoader(const std::string& path);
 
         SpinLock tasksLock;
         std::list<std::function<void()>> tasks;
