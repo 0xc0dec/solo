@@ -127,7 +127,7 @@ public:
         });
     }
 
-    sptr<AsyncResourceHandle<Mesh>> initAxesMesh()
+    sptr<AsyncHandle<Mesh>> initAxesMesh()
     {
         return asl->loadMeshAsync("../data/axes.obj");
     }

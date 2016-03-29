@@ -25,45 +25,45 @@ AssetLoader::~AssetLoader()
 }
 
 
-MeshLoader* AssetLoader::getMeshLoader(const std::string& uri)
+MeshLoader* AssetLoader::getMeshLoader(const std::string& path)
 {
     for (const auto& loader : meshLoaders)
     {
-        if (loader->isLoadable(uri))
+        if (loader->isLoadable(path))
             return loader.get();
     }
-    SL_FMT_THROW(AssetException, "No suitable loader found for mesh ", uri);
+    SL_FMT_THROW(AssetException, "No suitable loader found for mesh ", path);
 }
 
 
-ImageLoader* AssetLoader::getImageLoader(const std::string& uri)
+ImageLoader* AssetLoader::getImageLoader(const std::string& path)
 {
     for (const auto& l : imageLoaders)
     {
-        if (l->isLoadable(uri))
+        if (l->isLoadable(path))
             return l.get();
     }
-    SL_FMT_THROW(AssetException, "No suitable loader found for image ", uri);
+    SL_FMT_THROW(AssetException, "No suitable loader found for image ", path);
 }
 
 
-sptr<Texture2D> AssetLoader::loadTexture2D(const std::string& imageUri)
+sptr<Texture2D> AssetLoader::loadTexture2D(const std::string& path)
 {
-    auto loader = getImageLoader(imageUri);
-    auto image = loader->load(imageUri);
+    auto loader = getImageLoader(path);
+    auto image = loader->load(path);
     auto result = Texture2D::create();
     result->setData(image->colorFormat, image->data, image->width, image->height);
     return result;
 }
 
 
-sptr<AsyncResourceHandle<Texture2D>> AssetLoader::loadTexture2DAsync(const std::string& imageUri)
+sptr<AsyncHandle<Texture2D>> AssetLoader::loadTexture2DAsync(const std::string& path)
 {
-    auto handle = std::make_shared<AsyncResourceHandle<Texture2D>>();
-    auto loader = getImageLoader(imageUri);
+    auto handle = std::make_shared<AsyncHandle<Texture2D>>();
+    auto loader = getImageLoader(path);
     async::spawn([=]
     {
-        auto uimage = loader->load(imageUri);
+        auto uimage = loader->load(path);
         sptr<Image> simage { std::move(uimage) };
         auto lock = this->tasksLock.acquire();
         this->tasks.push_back([=]()
@@ -78,13 +78,13 @@ sptr<AsyncResourceHandle<Texture2D>> AssetLoader::loadTexture2DAsync(const std::
 }
 
 
-sptr<CubeTexture> AssetLoader::loadCubeTexture(const std::vector<std::string>& sidesUris)
+sptr<CubeTexture> AssetLoader::loadCubeTexture(const std::vector<std::string>& sidesPaths)
 {
     auto result = CubeTexture::create();
-    auto loader = getImageLoader(sidesUris[0]);
+    auto loader = getImageLoader(sidesPaths[0]);
 
     auto idx = 0;
-    for (const auto& imageUri : sidesUris)
+    for (const auto& imageUri : sidesPaths)
     {
         auto image = loader->load(imageUri);
         auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + idx++);
@@ -95,16 +95,16 @@ sptr<CubeTexture> AssetLoader::loadCubeTexture(const std::vector<std::string>& s
 }
 
 
-sptr<AsyncResourceHandle<CubeTexture>> AssetLoader::loadCubeTextureAsync(const std::vector<std::string>& sidesUris)
+sptr<AsyncHandle<CubeTexture>> AssetLoader::loadCubeTextureAsync(const std::vector<std::string>& sidesPaths)
 {
-    auto handle = std::make_shared<AsyncResourceHandle<CubeTexture>>();
-    auto loader = getImageLoader(sidesUris[0]);
+    auto handle = std::make_shared<AsyncHandle<CubeTexture>>();
+    auto loader = getImageLoader(sidesPaths[0]);
     auto device = Device::get();
 
     std::vector<async::task<sptr<Image>>> imageTasks;
-    for (uint32_t i = 0; i < sidesUris.size(); i++)
+    for (uint32_t i = 0; i < sidesPaths.size(); i++)
     {
-        auto sizeUri = sidesUris[i];
+        auto sizeUri = sidesPaths[i];
         imageTasks.push_back(async::spawn([=]
         {
             return sptr<Image>{ loader->load(sizeUri) }; // making it shared simplifies tasks management
@@ -134,22 +134,22 @@ sptr<AsyncResourceHandle<CubeTexture>> AssetLoader::loadCubeTextureAsync(const s
 }
 
 
-sptr<Mesh> AssetLoader::loadMesh(const std::string& dataUri)
+sptr<Mesh> AssetLoader::loadMesh(const std::string& path)
 {
-    auto loader = getMeshLoader(dataUri);
-    auto data = loader->loadData(dataUri);
+    auto loader = getMeshLoader(path);
+    auto data = loader->loadData(path);
     return Mesh::create(data.get());
 }
 
 
-sptr<AsyncResourceHandle<Mesh>> AssetLoader::loadMeshAsync(const std::string& dataUri)
+sptr<AsyncHandle<Mesh>> AssetLoader::loadMeshAsync(const std::string& path)
 {
-    auto handle = std::make_shared<AsyncResourceHandle<Mesh>>();
-    auto loader = getMeshLoader(dataUri);
+    auto handle = std::make_shared<AsyncHandle<Mesh>>();
+    auto loader = getMeshLoader(path);
 
     async::spawn([=]
     {
-        auto data = loader->loadData(dataUri);
+        auto data = loader->loadData(path);
         sptr<MeshData> sharedData{ std::move(data) };
         auto lock = this->tasksLock.acquire();
         this->tasks.push_back([=]()

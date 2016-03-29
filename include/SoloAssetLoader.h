@@ -17,7 +17,7 @@ namespace solo
     class MeshLoader;
 
     template <class T>
-    class AsyncResourceHandle
+    class AsyncHandle
     {
     public:
         sptr<T> getResult()
@@ -54,13 +54,13 @@ namespace solo
         SL_NONCOPYABLE(AssetLoader)
 
         sptr<Texture2D> loadTexture2D(const std::string& imageUri);
-        sptr<AsyncResourceHandle<Texture2D>> loadTexture2DAsync(const std::string& imageUri);
+        sptr<AsyncHandle<Texture2D>> loadTexture2DAsync(const std::string& imageUri);
         
         sptr<CubeTexture> loadCubeTexture(const std::vector<std::string>& imageUris);
-        sptr<AsyncResourceHandle<CubeTexture>> loadCubeTextureAsync(const std::vector<std::string>& sidesUris);
+        sptr<AsyncHandle<CubeTexture>> loadCubeTextureAsync(const std::vector<std::string>& sidesUris);
 
         sptr<Mesh> loadMesh(const std::string& dataUri);
-        sptr<AsyncResourceHandle<Mesh>> loadMeshAsync(const std::string& dataUri);
+        sptr<AsyncHandle<Mesh>> loadMeshAsync(const std::string& dataUri);
 
         void update();
 
