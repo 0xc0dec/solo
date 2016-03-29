@@ -53,14 +53,15 @@ namespace solo
     SL_SIMPLE_EXCEPTION(InvalidOperationException)
     SL_SIMPLE_EXCEPTION(InvalidInputException)
     SL_SIMPLE_EXCEPTION(IOException)
-    SL_SIMPLE_EXCEPTION(ResourceException)
+    SL_SIMPLE_EXCEPTION(AssetException)
 
-    class EffectCompilationException: public ResourceException
+    class EffectCompilationException: public AssetException
     {
     public:
         std::string log;
 
-        EffectCompilationException(const std::string& message, const std::string& log) : ResourceException(message), log(log)
+        EffectCompilationException(const std::string& message, const std::string& log):
+            AssetException(message), log(log)
         {
         }
     };

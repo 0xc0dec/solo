@@ -9,7 +9,7 @@
 namespace solo
 {
     class Scene;
-    class ResourceManager;
+    class AssetLoader;
     class FileSystem;
     class Renderer;
     class Graphics;
@@ -94,7 +94,7 @@ namespace solo
         DeviceMode getMode() const;
         Scene* getScene() const;
         FileSystem* getFileSystem() const;
-        ResourceManager* getResourceManager() const;
+        AssetLoader* getAssetLoader() const;
         Renderer* getRenderer() const;
         Graphics* getGraphics() const;
         Logger* getLogger() const;
@@ -111,7 +111,7 @@ namespace solo
 
         uptr<Scene> scene;
         uptr<FileSystem> fs;
-        uptr<ResourceManager> resourceManager;
+        uptr<AssetLoader> assetLoader;
         uptr<Renderer> renderer;
         uptr<Graphics> graphics;
         uptr<Logger> logger;
@@ -164,9 +164,9 @@ namespace solo
         return renderer.get();
     }
 
-    inline ResourceManager* Device::getResourceManager() const
+    inline AssetLoader* Device::getAssetLoader() const
     {
-        return resourceManager.get();
+        return assetLoader.get();
     }
 
     inline Graphics* Device::getGraphics() const

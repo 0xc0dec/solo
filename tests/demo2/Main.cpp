@@ -13,7 +13,7 @@ public:
     explicit PostProcessor(const Node& node):
         ComponentBase<PostProcessor>(node),
         device(Device::get()),
-        resMgr(Device::get()->getResourceManager()),
+        asl(Device::get()->getAssetLoader()),
         graphics(Device::get()->getGraphics())
     {
     }
@@ -75,7 +75,7 @@ public:
 
 private:
     Device* device;
-    ResourceManager* resMgr;
+    AssetLoader* asl;
     Graphics* graphics;
     sptr<FrameBuffer> fb1 = nullptr;
     sptr<FrameBuffer> fb2 = nullptr;
@@ -110,7 +110,7 @@ public:
         device = Device::init(args);
 
         scene = device->getScene();
-        resMgr = device->getResourceManager();
+        asl = device->getAssetLoader();
     }
 
     void initCamera()
@@ -129,7 +129,7 @@ public:
 
     void initSkybox()
     {
-        resMgr->loadCubeTextureAsync({
+        asl->loadCubeTextureAsync({
             "../data/skyboxes/deep-space/front.png",
             "../data/skyboxes/deep-space/back.png",
             "../data/skyboxes/deep-space/left.png",
@@ -148,7 +148,7 @@ public:
 
     void initMesh()
     {
-        resMgr->loadTexture2DAsync("../data/cobblestone.png")->done([=](sptr<Texture2D> tex)
+        asl->loadTexture2DAsync("../data/cobblestone.png")->done([=](sptr<Texture2D> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->generateMipmaps();
@@ -158,7 +158,7 @@ public:
             mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
             mat->setTextureParameter("mainTex", tex);
 
-            resMgr->loadMeshAsync("../data/monkey.obj")->done([=](sptr<Mesh> mesh)
+            asl->loadMeshAsync("../data/monkey.obj")->done([=](sptr<Mesh> mesh)
             {
                 auto node = scene->createNode();
                 auto renderer = node->addComponent<MeshRenderer>();
@@ -172,7 +172,7 @@ public:
 
 private:
     Scene* scene = nullptr;
-    ResourceManager* resMgr = nullptr;
+    AssetLoader* asl = nullptr;
     Device* device = nullptr;
 };
 

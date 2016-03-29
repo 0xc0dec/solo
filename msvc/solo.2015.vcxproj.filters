@@ -79,9 +79,6 @@
     <ClInclude Include="..\include\SoloNode.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloResourceManager.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloTexture.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -107,12 +104,6 @@
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="..\src\platform\stub\SoloStubDevice.h">
-      <Filter>src\platform\stub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\stub\SoloStubImageLoader.h">
-      <Filter>src\platform\stub</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\stub\SoloStubResourceManager.h">
       <Filter>src\platform\stub</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloSpectator.h">
@@ -142,9 +133,6 @@
     <ClInclude Include="..\src\SoloMeshLoader.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\stub\SoloStubMeshLoader.h">
-      <Filter>src\platform\stub</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloLogger.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -170,6 +158,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloSpinLock.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloAssetLoader.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
@@ -235,9 +226,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloNode.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloResourceManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloTexture.cpp">
@@ -333,12 +321,6 @@
     <ClCompile Include="..\src\platform\stub\SoloStubDevice.cpp">
       <Filter>src\platform\stub</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\stub\SoloStubImageLoader.cpp">
-      <Filter>src\platform\stub</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\stub\SoloStubResourceManager.cpp">
-      <Filter>src\platform\stub</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloSpectator.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -356,9 +338,6 @@
     </ClCompile>
     <ClCompile Include="..\src\SoloObjMeshLoader.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\stub\SoloStubMeshLoader.cpp">
-      <Filter>src\platform\stub</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloLogger.cpp">
       <Filter>src</Filter>
@@ -758,6 +737,9 @@
     </ClCompile>
     <ClCompile Include="..\vendor\async++\src\threadpool_scheduler.cpp">
       <Filter>src\vendor\async++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloAssetLoader.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

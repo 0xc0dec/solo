@@ -1,6 +1,6 @@
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
-#include "SoloResourceManager.h"
+#include "SoloAssetLoader.h"
 #include "SoloScene.h"
 #include "SoloLogger.h"
 #include "SoloRenderer.h"
@@ -51,8 +51,8 @@ Device::~Device()
     if (graphics)
         graphics.reset();
 
-    if (resourceManager)
-        resourceManager.reset();
+    if (assetLoader)
+        assetLoader.reset();
 
     if (fs)
         fs.reset();
@@ -74,7 +74,7 @@ Device::Device(const DeviceCreationArgs& args):
 
     renderer = Renderer::create(this, DeviceToken());
     fs = FileSystem::create(this, DeviceToken());
-    resourceManager = std::make_unique<ResourceManager>(DeviceToken());
+    assetLoader = std::make_unique<AssetLoader>(DeviceToken());
     graphics = std::make_unique<Graphics>(this, DeviceToken());
     scene = std::make_unique<Scene>(DeviceToken());
 }
@@ -88,7 +88,7 @@ void Device::run()
     running = true;
     while (true)
     {
-        resourceManager->update();
+        assetLoader->update();
         beginUpdate();
         scene->update();
         scene->render();

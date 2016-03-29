@@ -48,7 +48,7 @@
     <ClInclude Include="..\include\SoloQuaternion.h" />
     <ClInclude Include="..\include\SoloRay.h" />
     <ClInclude Include="..\include\SoloRenderContext.h" />
-    <ClInclude Include="..\include\SoloResourceManager.h" />
+    <ClInclude Include="..\include\SoloAssetLoader.h" />
     <ClInclude Include="..\include\SoloScene.h" />
     <ClInclude Include="..\include\SoloTexture2D.h" />
     <ClInclude Include="..\include\SoloTransform.h" />
@@ -61,10 +61,7 @@
     <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubDevice.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubFileSystem.h" />
-    <ClInclude Include="..\src\platform\stub\SoloStubImageLoader.h" />
-    <ClInclude Include="..\src\platform\stub\SoloStubMeshLoader.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubRenderer.h" />
-    <ClInclude Include="..\src\platform\stub\SoloStubResourceManager.h" />
     <ClInclude Include="..\src\SoloMeshLoader.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPngImageLoader.h" />
@@ -74,9 +71,6 @@
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubDevice.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubFileSystem.cpp" />
-    <ClCompile Include="..\src\platform\stub\SoloStubImageLoader.cpp" />
-    <ClCompile Include="..\src\platform\stub\SoloStubMeshLoader.cpp" />
-    <ClCompile Include="..\src\platform\stub\SoloStubResourceManager.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\SoloGraphics.cpp" />
     <ClCompile Include="..\src\SoloRenderer.cpp" />
@@ -256,7 +250,7 @@
     <ClCompile Include="..\src\SoloQuaternion.cpp" />
     <ClCompile Include="..\src\SoloRay.cpp" />
     <ClCompile Include="..\src\SoloFrameBuffer.cpp" />
-    <ClCompile Include="..\src\SoloResourceManager.cpp" />
+    <ClCompile Include="..\src\SoloAssetLoader.cpp" />
     <ClCompile Include="..\src\SoloScene.cpp" />
     <ClCompile Include="..\src\SoloEffect.cpp" />
     <ClCompile Include="..\src\SoloTexture.cpp" />

@@ -1,5 +1,4 @@
-#include "SoloResourceManager.h"
-#include "SoloEffect.h"
+#include "SoloAssetLoader.h"
 #include "SoloMesh.h"
 #include "SoloPngImageLoader.h"
 #include "SoloTexture2D.h"
@@ -14,58 +13,51 @@
 using namespace solo;
 
 
-ResourceManager::ResourceManager(const DeviceToken&)
+AssetLoader::AssetLoader(const DeviceToken&)
 {
     imageLoaders.push_back(std::make_unique<PngImageLoader>());
     meshLoaders.push_back(std::make_unique<ObjMeshLoader>());
 }
 
 
-ResourceManager::~ResourceManager()
+AssetLoader::~AssetLoader()
 {
 }
 
 
-MeshLoader* ResourceManager::getMeshLoader(const std::string& uri)
+MeshLoader* AssetLoader::getMeshLoader(const std::string& uri)
 {
     for (const auto& loader : meshLoaders)
     {
         if (loader->isLoadable(uri))
             return loader.get();
     }
-    SL_FMT_THROW(ResourceException, "No suitable loader found for mesh ", uri);
+    SL_FMT_THROW(AssetException, "No suitable loader found for mesh ", uri);
 }
 
 
-ImageLoader* ResourceManager::getImageLoader(const std::string& uri)
+ImageLoader* AssetLoader::getImageLoader(const std::string& uri)
 {
     for (const auto& l : imageLoaders)
     {
         if (l->isLoadable(uri))
             return l.get();
     }
-    SL_FMT_THROW(ResourceException, "No suitable loader found for image ", uri);
+    SL_FMT_THROW(AssetException, "No suitable loader found for image ", uri);
 }
 
 
-sptr<Texture2D> ResourceManager::loadTexture2D(const std::string& imageUri)
+sptr<Texture2D> AssetLoader::loadTexture2D(const std::string& imageUri)
 {
-    for (const auto& loader : imageLoaders)
-    {
-        if (loader->isLoadable(imageUri))
-        {
-            auto result = Texture2D::create();
-            auto image = loader->load(imageUri);
-            result->setData(image->colorFormat, image->data, image->width, image->height);
-            return result;
-        }
-    }
-
-    SL_FMT_THROW(ResourceException, "No suitable loader found for image ", imageUri);
+    auto loader = getImageLoader(imageUri);
+    auto image = loader->load(imageUri);
+    auto result = Texture2D::create();
+    result->setData(image->colorFormat, image->data, image->width, image->height);
+    return result;
 }
 
 
-sptr<AsyncResourceHandle<Texture2D>> ResourceManager::loadTexture2DAsync(const std::string& imageUri)
+sptr<AsyncResourceHandle<Texture2D>> AssetLoader::loadTexture2DAsync(const std::string& imageUri)
 {
     auto handle = std::make_shared<AsyncResourceHandle<Texture2D>>();
     auto loader = getImageLoader(imageUri);
@@ -86,7 +78,7 @@ sptr<AsyncResourceHandle<Texture2D>> ResourceManager::loadTexture2DAsync(const s
 }
 
 
-sptr<CubeTexture> ResourceManager::loadCubeTexture(const std::vector<std::string>& sidesUris)
+sptr<CubeTexture> AssetLoader::loadCubeTexture(const std::vector<std::string>& sidesUris)
 {
     auto result = CubeTexture::create();
     auto loader = getImageLoader(sidesUris[0]);
@@ -103,7 +95,7 @@ sptr<CubeTexture> ResourceManager::loadCubeTexture(const std::vector<std::string
 }
 
 
-sptr<AsyncResourceHandle<CubeTexture>> ResourceManager::loadCubeTextureAsync(const std::vector<std::string>& sidesUris)
+sptr<AsyncResourceHandle<CubeTexture>> AssetLoader::loadCubeTextureAsync(const std::vector<std::string>& sidesUris)
 {
     auto handle = std::make_shared<AsyncResourceHandle<CubeTexture>>();
     auto loader = getImageLoader(sidesUris[0]);
@@ -142,7 +134,7 @@ sptr<AsyncResourceHandle<CubeTexture>> ResourceManager::loadCubeTextureAsync(con
 }
 
 
-sptr<Mesh> ResourceManager::loadMesh(const std::string& dataUri)
+sptr<Mesh> AssetLoader::loadMesh(const std::string& dataUri)
 {
     auto loader = getMeshLoader(dataUri);
     auto data = loader->loadData(dataUri);
@@ -150,7 +142,7 @@ sptr<Mesh> ResourceManager::loadMesh(const std::string& dataUri)
 }
 
 
-sptr<AsyncResourceHandle<Mesh>> ResourceManager::loadMeshAsync(const std::string& dataUri)
+sptr<AsyncResourceHandle<Mesh>> AssetLoader::loadMeshAsync(const std::string& dataUri)
 {
     auto handle = std::make_shared<AsyncResourceHandle<Mesh>>();
     auto loader = getMeshLoader(dataUri);
@@ -172,7 +164,7 @@ sptr<AsyncResourceHandle<Mesh>> ResourceManager::loadMeshAsync(const std::string
 }
 
 
-void ResourceManager::update()
+void AssetLoader::update()
 {
     if (!tasks.empty())
     {

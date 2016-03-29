@@ -15,7 +15,6 @@ public:
     TestBase(Device *device) :
         device(device),
         scene(device->getScene()),
-        resourceManager(device->getResourceManager()),
         fileSystem(device->getFileSystem())
     {
     }
@@ -46,6 +45,5 @@ protected:
 
     Device *device;
     Scene *scene;
-    ResourceManager *resourceManager;
     FileSystem *fileSystem;
 };

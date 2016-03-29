@@ -33,7 +33,7 @@ namespace solo
         }
 
     private:
-        friend class ResourceManager;
+        friend class AssetLoader;
 
         void putResult(sptr<T> result)
         {
@@ -46,12 +46,12 @@ namespace solo
     };
 
 
-    class ResourceManager
+    class AssetLoader
     {
     public:
-        ResourceManager(const DeviceToken&);
-        ~ResourceManager();
-        SL_NONCOPYABLE(ResourceManager)
+        AssetLoader(const DeviceToken&);
+        ~AssetLoader();
+        SL_NONCOPYABLE(AssetLoader)
 
         sptr<Texture2D> loadTexture2D(const std::string& imageUri);
         sptr<AsyncResourceHandle<Texture2D>> loadTexture2DAsync(const std::string& imageUri);
