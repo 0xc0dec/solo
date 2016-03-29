@@ -5,7 +5,7 @@ using namespace solo;
 
 sptr<Texture2D> Texture2D::create()
 {
-    return std::shared_ptr<Texture2D>(new Texture2D());
+    return std::make_shared<Texture2D>();
 }
 
 
