@@ -8,6 +8,7 @@
 #include "SoloQuaternion.h"
 #include "SoloNode.h"
 
+
 namespace solo
 {
     class Camera;
