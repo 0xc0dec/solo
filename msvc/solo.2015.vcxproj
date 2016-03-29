@@ -309,7 +309,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_WINDOWS;WIN32;BUILD_WINDOWS;HAVE_LIBC;GLEW_STATIC;SDL_HAPTIC_DISABLED;SDL_JOYSTICK_DISABLED;SL_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <FloatingPointModel>Fast</FloatingPointModel>
       <ProgramDataBaseFileName>$(OutDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <TreatWarningAsError>false</TreatWarningAsError>
@@ -335,7 +335,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_WINDOWS;WIN32;BUILD_WINDOWS;HAVE_LIBC;GLEW_STATIC;SDL_HAPTIC_DISABLED;SDL_JOYSTICK_DISABLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <FloatingPointModel>Fast</FloatingPointModel>
       <ProgramDataBaseFileName>$(OutDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <TreatWarningAsError>false</TreatWarningAsError>
