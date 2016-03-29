@@ -7,7 +7,6 @@
 
 namespace solo
 {
-    enum class DeviceMode;
     class Material;
     class Mesh;
 

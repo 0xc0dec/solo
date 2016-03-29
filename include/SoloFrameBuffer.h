@@ -20,7 +20,7 @@ namespace solo
         void bind();
         void unbind();
 
-        void setAttachments(const std::vector<sptr<Texture2D>> attachments);
+        void setAttachments(const std::vector<sptr<Texture2D>>& attachments);
 
         Vector2 getSize() const;
 

@@ -13,7 +13,6 @@ namespace solo
     class Transform;
     class Node;
     class FrameBuffer;
-    class Scene;
     class Renderer;
     class Device;
 

@@ -37,7 +37,7 @@ void FrameBuffer::unbind()
 }
 
 
-void FrameBuffer::setAttachments(const std::vector<sptr<Texture2D>> attachments)
+void FrameBuffer::setAttachments(const std::vector<sptr<Texture2D>>& attachments)
 {
     // TODO this is quite smelly
     std::vector<TextureHandle> handles;
