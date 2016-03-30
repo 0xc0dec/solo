@@ -22,7 +22,7 @@ namespace solo
 
         ProgramHandle getHandle() const;
 
-        void bind();
+        void apply();
 
     private:
         Effect(const std::string& vsSrc, const std::string& fsSrc);

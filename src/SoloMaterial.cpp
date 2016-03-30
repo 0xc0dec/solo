@@ -143,14 +143,14 @@ void Material::setParameterAutoBinding(const std::string& name, AutoBinding auto
 }
 
 
-void Material::bind(const RenderContext& context)
+void Material::apply(const RenderContext& context)
 {
     applyState();
     
     if (!effect)
         return;
 
-    effect->bind();
+    effect->apply();
 
     for (const auto& p : parameters)
     {

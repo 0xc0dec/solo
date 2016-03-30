@@ -52,7 +52,7 @@ Effect::~Effect()
 }
 
 
-void Effect::bind()
+void Effect::apply()
 {
     renderer->setProgram(handle);
 }

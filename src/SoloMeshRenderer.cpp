@@ -25,7 +25,7 @@ void MeshRenderer::render(RenderContext& context)
         auto material = getMaterial(0);
         if (material)
         {
-            material->bind(context);
+            material->apply(context);
             mesh->draw(material->getEffect());
         }
     }
@@ -36,7 +36,7 @@ void MeshRenderer::render(RenderContext& context)
             auto material = getMaterial(part);
             if (material)
             {
-                material->bind(context);
+                material->apply(context);
                 mesh->drawPart(material->getEffect(), part);
             }
         }

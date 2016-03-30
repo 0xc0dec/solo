@@ -51,7 +51,7 @@ namespace solo
         void setTextureParameter(const std::string& name, sptr<Texture> value);
         void setParameterAutoBinding(const std::string& name, AutoBinding autoBinding);
 
-        void bind(const RenderContext& context);
+        void apply(const RenderContext& context);
 
         Effect* getEffect() const;
 

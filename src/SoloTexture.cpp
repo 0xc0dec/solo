@@ -14,8 +14,6 @@ Texture::Texture() :
 
 Texture::~Texture()
 {
-    // TODO sometimes crashes here with access violation after exiting the demo
-    // Maybe this is due to some leftover after smoke tests
     renderer->destroyTexture(handle);
 }
 
