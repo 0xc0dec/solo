@@ -147,11 +147,10 @@ Quaternion Quaternion::lerp(const Quaternion& q1, const Quaternion& q2, float t)
     auto t1 = 1.0f - t;
 
     return Quaternion(
-               t1 * q1.x + t * q2.x,
-               t1 * q1.y + t * q2.y,
-               t1 * q1.z + t * q2.z,
-               t1 * q1.w + t * q2.w
-           );
+        t1 * q1.x + t * q2.x,
+        t1 * q1.y + t * q2.y,
+        t1 * q1.z + t * q2.z,
+        t1 * q1.w + t * q2.w);
 }
 
 
@@ -169,36 +168,30 @@ Quaternion Quaternion::slerp(const Quaternion& q1, const Quaternion& q2, float t
         Math::approxEqual(q1.w, q2.w, Math::smallFloat1))
         return q1;
 
-    float halfY, alpha, beta;
-    float u, f1, f2a, f2b;
-    float ratio1, ratio2;
-    float halfSecHalfTheta, versHalfTheta;
-    float sqNotU, sqU;
-
     auto cosTheta = q1.w * q2.w + q1.x * q2.x + q1.y * q2.y + q1.z * q2.z;
 
-    alpha = cosTheta >= 0 ? 1.0f : -1.0f;
-    halfY = 1.0f + alpha * cosTheta;
+    auto alpha = cosTheta >= 0 ? 1.0f : -1.0f;
+    auto halfY = 1.0f + alpha * cosTheta;
 
-    f2b = t - 0.5f;
-    u = f2b >= 0 ? f2b : -f2b;
-    f2a = u - f2b;
+    auto f2b = t - 0.5f;
+    auto u = f2b >= 0 ? f2b : -f2b;
+    auto f2a = u - f2b;
     f2b += u;
     u += u;
-    f1 = 1.0f - u;
+    auto f1 = 1.0f - u;
 
-    halfSecHalfTheta = 1.09f - (0.476537f - 0.0903321f * halfY) * halfY;
+    auto halfSecHalfTheta = 1.09f - (0.476537f - 0.0903321f * halfY) * halfY;
     halfSecHalfTheta *= 1.5f - halfY * halfSecHalfTheta * halfSecHalfTheta;
-    versHalfTheta = 1.0f - halfY * halfSecHalfTheta;
+    auto versHalfTheta = 1.0f - halfY * halfSecHalfTheta;
 
-    sqNotU = f1 * f1;
-    ratio2 = 0.0000440917108f * versHalfTheta;
-    ratio1 = -0.00158730159f + (sqNotU - 16.0f) * ratio2;
+    auto sqNotU = f1 * f1;
+    auto ratio2 = 0.0000440917108f * versHalfTheta;
+    auto ratio1 = -0.00158730159f + (sqNotU - 16.0f) * ratio2;
     ratio1 = 0.0333333333f + ratio1 * (sqNotU - 9.0f) * versHalfTheta;
     ratio1 = -0.333333333f + ratio1 * (sqNotU - 4.0f) * versHalfTheta;
     ratio1 = 1.0f + ratio1 * (sqNotU - 1.0f) * versHalfTheta;
 
-    sqU = u * u;
+    auto sqU = u * u;
     ratio2 = -0.00158730159f + (sqU - 16.0f) * ratio2;
     ratio2 = 0.0333333333f + ratio2 * (sqU - 9.0f) * versHalfTheta;
     ratio2 = -0.333333333f + ratio2 * (sqU - 4.0f) * versHalfTheta;
@@ -208,7 +201,7 @@ Quaternion Quaternion::slerp(const Quaternion& q1, const Quaternion& q2, float t
     f2a *= ratio2;
     f2b *= ratio2;
     alpha *= f1 + f2a;
-    beta = f1 + f2b;
+    auto beta = f1 + f2b;
 
     auto w = alpha * q1.w + beta * q2.w;
     auto x = alpha * q1.x + beta * q2.x;
@@ -244,11 +237,10 @@ Quaternion Quaternion::slerpForSquad(const Quaternion& q1, const Quaternion& q2,
     auto r1 = sin((1 - t) * omega) / s;
     auto r2 = sin(t * omega) / s;
     return Quaternion(
-               q1.x * r1 + q2.x * r2,
-               q1.y * r1 + q2.y * r2,
-               q1.z * r1 + q2.z * r2,
-               q1.w * r1 + q2.w * r2
-           );
+        q1.x * r1 + q2.x * r2,
+        q1.y * r1 + q2.y * r2,
+        q1.z * r1 + q2.z * r2,
+        q1.w * r1 + q2.w * r2);
 }
 
 
