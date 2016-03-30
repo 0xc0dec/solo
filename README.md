@@ -15,6 +15,7 @@ An engine for my personal graphics/gamedev experiments, not meant for anything s
 ![2](/screenshots/screenshot4.png?raw=true)
 
 ## Made possible thanks to
+* async++
 * GLEW
 * Lua
 * lua-intf
