@@ -129,7 +129,7 @@ public:
 
     sptr<AsyncHandle<Mesh>> initAxesMesh()
     {
-        return asl->loadMeshAsync("../data/axes.obj");
+        return asl->loadMeshAsync("../assets/axes.obj");
     }
 
     void initCamera()
@@ -187,12 +187,12 @@ public:
     void initSkybox()
     {
         asl->loadCubeTextureAsync({
-            "../data/skyboxes/deep-space/front.png",
-            "../data/skyboxes/deep-space/back.png",
-            "../data/skyboxes/deep-space/left.png",
-            "../data/skyboxes/deep-space/right.png",
-            "../data/skyboxes/deep-space/top.png",
-            "../data/skyboxes/deep-space/bottom.png"
+            "../assets/skyboxes/deep-space/front.png",
+            "../assets/skyboxes/deep-space/back.png",
+            "../assets/skyboxes/deep-space/left.png",
+            "../assets/skyboxes/deep-space/right.png",
+            "../assets/skyboxes/deep-space/top.png",
+            "../assets/skyboxes/deep-space/bottom.png"
         })->done([=](sptr<CubeTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
@@ -225,7 +225,7 @@ public:
 
     void initMesh()
     {
-        asl->loadTexture2DAsync("../data/cobblestone.png")->done([=](sptr<Texture2D> tex)
+        asl->loadTexture2DAsync("../assets/cobblestone.png")->done([=](sptr<Texture2D> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->generateMipmaps();
@@ -236,7 +236,7 @@ public:
             mat->setParameterAutoBinding("invTransposedWorldMatrix", AutoBinding::InverseTransposedWorldMatrix);
             mat->setTextureParameter("mainTex", tex);
 
-            asl->loadMeshAsync("../data/monkey.obj")->done([=](sptr<Mesh> mesh)
+            asl->loadMeshAsync("../assets/monkey.obj")->done([=](sptr<Mesh> mesh)
             {
                 auto node = scene->createNode();
                 auto renderer = node->addComponent<MeshRenderer>();
@@ -250,7 +250,7 @@ public:
 
     void initDynamicQuad()
     {
-        loadTexture("../data/freeman.png", [=](sptr<Texture2D> tex)
+        loadTexture("../assets/freeman.png", [=](sptr<Texture2D> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
 
@@ -322,7 +322,7 @@ public:
 
     void initTransparentQuad()
     {
-        loadTexture("../data/flammable.png", [=](sptr<Texture2D> tex)
+        loadTexture("../assets/flammable.png", [=](sptr<Texture2D> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
 
