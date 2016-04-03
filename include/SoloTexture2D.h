@@ -16,13 +16,13 @@ namespace solo
 
         void setData(ColorFormat format, const std::vector<uint8_t>& data, uint32_t width, uint32_t height);
 
-        Vector2 getSize() const;
+        auto getSize() const -> Vector2;
 
     private:
         Vector2 size;
     };
 
-    inline Vector2 Texture2D::getSize() const
+    inline auto Texture2D::getSize() const -> Vector2
     {
         return size;
     }

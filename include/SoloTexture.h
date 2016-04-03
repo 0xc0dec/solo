@@ -35,24 +35,24 @@ namespace solo
         virtual void bind() = 0;
         virtual void generateMipmaps() = 0;
 
-        TextureWrapping getHorizontalWrapping() const;
-        TextureWrapping getVerticalWrapping() const;
+        auto getHorizontalWrapping() const -> TextureWrapping;
+        auto getVerticalWrapping() const -> TextureWrapping;
 
         virtual void setWrapping(TextureWrapping wrap);
         void setHorizontalWrapping(TextureWrapping horizontalWrap);
         void setVerticalWrapping(TextureWrapping verticalWrap);
 
-        TextureFiltering getMinFiltering() const;
-        TextureFiltering getMagFiltering() const;
+        auto getMinFiltering() const -> TextureFiltering;
+        auto getMagFiltering() const -> TextureFiltering;
 
         void setFiltering(TextureFiltering filtering);
         void setMinFiltering(TextureFiltering filtering);
         void setMagFiltering(TextureFiltering filtering);
 
-        float getAnisotropyLevel() const;
+        auto getAnisotropyLevel() const -> float;
         void setAnisotropyLevel(float level);
 
-        TextureHandle getHandle() const;
+        auto getHandle() const -> TextureHandle;
 
     protected:
         Texture();
@@ -73,7 +73,7 @@ namespace solo
         float anisotropy = 1.0f;
     };
 
-    inline TextureWrapping Texture::getVerticalWrapping() const
+    inline auto Texture::getVerticalWrapping() const -> TextureWrapping
     {
         return verticalWrapping;
     }
@@ -84,7 +84,7 @@ namespace solo
         rebuildFlags();
     }
 
-    inline TextureWrapping Texture::getHorizontalWrapping() const
+    inline auto Texture::getHorizontalWrapping() const -> TextureWrapping
     {
         return horizontalWrapping;
     }
@@ -95,7 +95,7 @@ namespace solo
         rebuildFlags();
     }
 
-    inline TextureFiltering Texture::getMinFiltering() const
+    inline auto Texture::getMinFiltering() const -> TextureFiltering
     {
         return minFiltering;
     }
@@ -106,7 +106,7 @@ namespace solo
         rebuildFlags();
     }
 
-    inline TextureFiltering Texture::getMagFiltering() const
+    inline auto Texture::getMagFiltering() const -> TextureFiltering
     {
         return magFiltering;
     }
@@ -124,7 +124,7 @@ namespace solo
         rebuildFlags();
     }
 
-    inline float Texture::getAnisotropyLevel() const
+    inline auto Texture::getAnisotropyLevel() const -> float
     {
         return anisotropy;
     }
@@ -134,7 +134,7 @@ namespace solo
         anisotropy = level;
     }
 
-    inline TextureHandle Texture::getHandle() const
+    inline auto Texture::getHandle() const -> TextureHandle
     {
         return handle;
     }
