@@ -130,9 +130,6 @@
     <ClInclude Include="..\src\SoloObjMeshLoader.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloMeshLoader.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloLogger.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -161,6 +158,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloAssetLoader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloMeshLoader.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

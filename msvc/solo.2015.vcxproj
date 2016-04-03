@@ -27,6 +27,7 @@
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\include\SoloGraphics.h" />
     <ClInclude Include="..\include\SoloImage.h" />
+    <ClInclude Include="..\include\SoloMeshLoader.h" />
     <ClInclude Include="..\include\SoloRenderer.h" />
     <ClInclude Include="..\include\SoloRenderQueue.h" />
     <ClInclude Include="..\include\SoloFrameBuffer.h" />
@@ -62,7 +63,6 @@
     <ClInclude Include="..\src\platform\stub\SoloStubDevice.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubFileSystem.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubRenderer.h" />
-    <ClInclude Include="..\src\SoloMeshLoader.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPngImageLoader.h" />
   </ItemGroup>
