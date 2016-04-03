@@ -6,7 +6,7 @@
 using namespace solo;
 
 
-sptr<FrameBuffer> FrameBuffer::create()
+auto FrameBuffer::create() -> sptr<FrameBuffer>
 {
     return std::shared_ptr<FrameBuffer>(new FrameBuffer());
 }

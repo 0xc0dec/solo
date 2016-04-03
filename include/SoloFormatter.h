@@ -10,13 +10,13 @@ namespace solo
     class Formatter final
     {
     public:
-        std::string operator()() const
+        auto operator()() const
         {
             return buf.str();
         }
 
         template <class TFirst, class... TRest>
-        std::string operator()(TFirst first, TRest... rest)
+        auto operator()(TFirst first, TRest... rest)
         {
             buf << first;
             return operator()(rest...);

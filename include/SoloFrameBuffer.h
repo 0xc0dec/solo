@@ -12,7 +12,7 @@ namespace solo
     class FrameBuffer final
     {
     public:
-        static sptr<FrameBuffer> create();
+        static auto create() -> sptr<FrameBuffer>;
 
         ~FrameBuffer();
         SL_NONCOPYABLE(FrameBuffer)
@@ -22,7 +22,7 @@ namespace solo
 
         void setAttachments(const std::vector<sptr<Texture2D>>& attachments);
 
-        Vector2 getSize() const;
+        auto getSize() const -> Vector2;
 
     private:
         FrameBuffer();
@@ -32,7 +32,7 @@ namespace solo
         Vector2 size;
     };
 
-    inline Vector2 FrameBuffer::getSize() const
+    inline auto FrameBuffer::getSize() const -> Vector2
     {
         return size;
     }
