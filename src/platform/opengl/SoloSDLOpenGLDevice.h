@@ -12,15 +12,15 @@ namespace solo
         virtual ~SDLOpenGLDevice();
 
         virtual void setWindowTitle(const std::string& title) override final;
-        virtual std::string getWindowTitle() const override final;
+        virtual auto getWindowTitle() const -> std::string override final;
 
         virtual void saveScreenshot(const std::string& path) override final;
 
         virtual void setCursorCaptured(bool captured) override final;
 
-        virtual float getLifetime() const override final;
+        virtual auto getLifetime() const -> float override final;
 
-        virtual Vector2 getCanvasSize() const override final;
+        virtual auto getCanvasSize() const -> Vector2 override final;
 
     private:
         friend class Device;
@@ -45,6 +45,6 @@ namespace solo
         SDL_Window* window = nullptr;
         SDL_GLContext context = nullptr;
 
-        std::tuple<uint32_t, uint32_t> selectContextVersion();
+        auto selectContextVersion() -> std::tuple<uint32_t, uint32_t>;
     };
 }

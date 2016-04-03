@@ -82,8 +82,8 @@ std::unordered_map<Uint8, MouseButton> mouseButtonsMap =
 };
 
 
-static WindowWithContextCreationResult tryCreateOpengGLWindow(bool hidden, uint32_t ctxMajorVersion, uint32_t ctxMinorVersion,
-    const DeviceCreationArgs& creationArgs)
+static auto tryCreateOpengGLWindow(bool hidden, uint32_t ctxMajorVersion, uint32_t ctxMinorVersion, const DeviceCreationArgs& creationArgs)
+    -> WindowWithContextCreationResult
 {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, ctxMajorVersion);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, ctxMinorVersion);
@@ -144,7 +144,7 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
 }
 
 
-std::tuple<uint32_t, uint32_t> SDLOpenGLDevice::selectContextVersion()
+auto SDLOpenGLDevice::selectContextVersion() -> std::tuple<uint32_t, uint32_t>
 {
     for (auto version : supportedContextVersions)
     {
@@ -194,7 +194,7 @@ void SDLOpenGLDevice::setWindowTitle(const std::string& title)
 }
 
 
-std::string SDLOpenGLDevice::getWindowTitle() const
+auto SDLOpenGLDevice::getWindowTitle() const -> std::string
 {
     return std::string(SDL_GetWindowTitle(window));
 }
@@ -370,13 +370,13 @@ void SDLOpenGLDevice::readEvents()
 }
 
 
-float SDLOpenGLDevice::getLifetime() const
+auto SDLOpenGLDevice::getLifetime() const -> float
 {
     return SDL_GetTicks() / 1000.0f;
 }
 
 
-Vector2 SDLOpenGLDevice::getCanvasSize() const
+auto SDLOpenGLDevice::getCanvasSize() const -> Vector2
 {
     int32_t width, height;
     SDL_GL_GetDrawableSize(window, &width, &height);
