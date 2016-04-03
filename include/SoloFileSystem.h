@@ -13,16 +13,16 @@ namespace solo
     class FileSystem
     {
     public:
-        static uptr<FileSystem> create(Device* device, const DeviceToken&);
+        static auto create(Device* device, const DeviceToken&) -> uptr<FileSystem>;
 
         virtual ~FileSystem() {}
         SL_NONCOPYABLE(FileSystem)
 
-        virtual std::vector<uint8_t> readBytes(const std::string& path);
+        virtual auto readBytes(const std::string& path) -> std::vector<uint8_t>;
         virtual void writeBytes(const std::string& path, const std::vector<uint8_t>& data);
 
-        virtual std::string readText(const std::string& path);
-        virtual std::vector<std::string> readLines(const std::string& path);
+        virtual auto readText(const std::string& path) -> std::string;
+        virtual auto readLines(const std::string& path) -> std::vector<std::string>;
         virtual void iterateLines(const std::string& path, std::function<bool(const std::string&)> process);
         virtual void writeLines(const std::string& path, const std::vector<std::string>& lines);
 

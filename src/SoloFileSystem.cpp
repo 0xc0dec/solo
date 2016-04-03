@@ -6,7 +6,7 @@
 using namespace solo;
 
 
-uptr<FileSystem> FileSystem::create(Device* device, const DeviceToken&)
+auto FileSystem::create(Device* device, const DeviceToken&) -> uptr<FileSystem>
 {
     if (device->getMode() == DeviceMode::Stub)
         return std::unique_ptr<StubFileSystem>(new StubFileSystem());
@@ -14,7 +14,7 @@ uptr<FileSystem> FileSystem::create(Device* device, const DeviceToken&)
 }
 
 
-std::vector<uint8_t> FileSystem::readBytes(const std::string& path)
+auto FileSystem::readBytes(const std::string& path) -> std::vector<uint8_t>
 {
     std::ifstream file(path, std::ios::binary | std::ios::ate);
     if (!file.is_open())
@@ -38,7 +38,7 @@ void FileSystem::writeBytes(const std::string& path, const std::vector<uint8_t>&
 }
 
 
-std::string FileSystem::readText(const std::string& path)
+auto FileSystem::readText(const std::string& path) -> std::string
 {
     std::ifstream f(path);
     auto result = std::string(std::istreambuf_iterator<char>(f), std::istreambuf_iterator<char>());
@@ -46,7 +46,7 @@ std::string FileSystem::readText(const std::string& path)
 }
 
 
-std::vector<std::string> FileSystem::readLines(const std::string& path)
+auto FileSystem::readLines(const std::string& path) -> std::vector<std::string>
 {
     std::vector<std::string> result;
     iterateLines(path, [&](const std::string & s)

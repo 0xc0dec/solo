@@ -14,13 +14,13 @@ namespace solo
     class Effect final
     {
     public:
-        static sptr<Effect> create(const std::string& vsSrc, const std::string& fsSrc);
-        static sptr<Effect> create(EffectPrefab prefab);
+        static auto create(const std::string& vsSrc, const std::string& fsSrc) -> sptr<Effect>;
+        static auto create(EffectPrefab prefab) -> sptr<Effect>;
 
         ~Effect();
         SL_NONCOPYABLE(Effect)
 
-        ProgramHandle getHandle() const;
+        auto getHandle() const ->ProgramHandle;
 
         void apply();
 
@@ -32,7 +32,7 @@ namespace solo
         ProgramHandle handle;
     };
 
-    inline ProgramHandle Effect::getHandle() const
+    inline auto Effect::getHandle() const -> ProgramHandle
     {
         return handle;
     }
