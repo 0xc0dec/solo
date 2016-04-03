@@ -14,7 +14,7 @@ BoundingSphere::BoundingSphere(const Vector3& center, float radius):
 }
 
 
-const BoundingSphere& BoundingSphere::empty()
+auto BoundingSphere::empty() -> const BoundingSphere&
 {
     static BoundingSphere s;
     return s;
@@ -73,7 +73,7 @@ bool BoundingSphere::intersectsFrustum(const Frustum& frustum) const
 }
 
 
-PlaneIntersection BoundingSphere::intersectPlane(const Plane& plane) const
+auto BoundingSphere::intersectPlane(const Plane& plane) const -> PlaneIntersection
 {
     auto distance = plane.getDistanceToPoint(center);
     if (fabsf(distance) <= radius)
@@ -82,7 +82,7 @@ PlaneIntersection BoundingSphere::intersectPlane(const Plane& plane) const
 }
 
 
-float BoundingSphere::hitByRay(const Ray& ray) const
+auto BoundingSphere::hitByRay(const Ray& ray) const -> float
 {
     const auto& origin = ray.getOrigin();
     const auto& direction = ray.getDirection();

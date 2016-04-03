@@ -13,7 +13,7 @@ namespace solo
         Vector3 center;
         float radius = 0;
 
-        static const BoundingSphere& empty();
+        static auto empty() -> const BoundingSphere&;
 
         BoundingSphere() {}
         BoundingSphere(const Vector3& center, float radius);
@@ -21,8 +21,8 @@ namespace solo
         bool intersectsBoundingSphere(const BoundingSphere& sphere) const;
         bool intersectsBoundingBox(const BoundingBox& box) const;
         bool intersectsFrustum(const Frustum& frustum) const;
-        float hitByRay(const Ray& ray) const;
-        PlaneIntersection intersectPlane(const Plane& plane) const;
+        auto hitByRay(const Ray& ray) const -> float;
+        auto intersectPlane(const Plane& plane) const ->PlaneIntersection;
 
         bool isEmpty() const;
 
