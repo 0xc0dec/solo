@@ -17,29 +17,29 @@ namespace solo
     public:
         Node(Scene* scene, uint32_t nodeId);
 
-        uint32_t getId() const;
-        Scene* getScene() const;
+        auto getId() const -> uint32_t;
+        auto getScene() const -> Scene*;
+
+        template <typename T>
+        static auto findComponent(Scene* scene, uint32_t nodeId)->T*;
+
+        template <typename T>
+        static auto getComponent(Scene* scene, uint32_t nodeId)->T*;
 
         template <typename T, typename... Args>
-        static T* addComponent(Scene* scene, uint32_t nodeId, Args... args);
-
-        template <typename T, typename... Args>
-        T* addComponent(Args... args);
-
-        template <typename T>
-        static T* getComponent(Scene* scene, uint32_t nodeId);
-
-        template <typename T>
-        T* getComponent();
-
-        template <typename T>
-        static T* findComponent(Scene* scene, uint32_t nodeId);
-
-        template <typename T>
-        T* findComponent() const;
+        static auto addComponent(Scene* scene, uint32_t nodeId, Args... args) -> T*;
 
         template <typename T>
         static void removeComponent(Scene* scene, uint32_t nodeId);
+
+        template <typename T>
+        auto findComponent() const->T*;
+
+        template <typename T>
+        auto getComponent() -> T*;
+
+        template <typename T, typename... Args>
+        auto addComponent(Args... args)->T*;
 
         template <typename T>
         void removeComponent();
@@ -49,18 +49,18 @@ namespace solo
         uint32_t id;
     };
 
-    inline uint32_t Node::getId() const
+    inline auto Node::getId() const -> uint32_t
     {
         return id;
     }
 
-    inline Scene* Node::getScene() const
+    inline auto Node::getScene() const -> Scene*
     {
         return scene;
     }
 
     template <typename T, typename... Args>
-    inline T* Node::addComponent(Scene* scene, uint32_t nodeId, Args... args)
+    inline auto Node::addComponent(Scene* scene, uint32_t nodeId, Args... args) -> T*
     {
         auto cmp = std::make_shared<T>(Node(scene, nodeId), args...);
         auto base = SL_SHARED_STATIC_CAST<Component>(cmp);
@@ -69,13 +69,13 @@ namespace solo
     }
 
     template <typename T, typename... Args>
-    inline T* Node::addComponent(Args... args)
+    inline auto Node::addComponent(Args... args) -> T*
     {
         return addComponent<T>(scene, id, args...);
     }
 
     template <typename T>
-    inline T* Node::getComponent(Scene* scene, uint32_t nodeId)
+    inline auto Node::getComponent(Scene* scene, uint32_t nodeId) -> T*
     {
         auto typeId = T::getId();
         auto cmp = scene->getComponent(nodeId, typeId);
@@ -83,13 +83,13 @@ namespace solo
     }
 
     template <typename T>
-    inline T* Node::getComponent()
+    inline auto Node::getComponent() -> T*
     {
         return getComponent<T>(scene, id);
     }
 
     template <typename T>
-    inline T* Node::findComponent(Scene* scene, uint32_t nodeId)
+    inline auto Node::findComponent(Scene* scene, uint32_t nodeId) -> T*
     {
         auto typeId = T::getId();
         auto cmp = scene->findComponent(nodeId, typeId);
@@ -97,7 +97,7 @@ namespace solo
     }
 
     template <typename T>
-    inline T* Node::findComponent() const
+    inline auto Node::findComponent() const -> T*
     {
         return findComponent<T>(scene, id);
     }
@@ -114,9 +114,9 @@ namespace solo
         removeComponent<T>(scene, id);
     }
 
-    template<> Transform* Node::addComponent();
-    template<> Camera* Node::addComponent();
-    template<> MeshRenderer* Node::addComponent();
-    template<> Spectator* Node::addComponent();
-    template<> SkyboxRenderer* Node::addComponent();
+    template<> auto Node::addComponent() -> Transform*;
+    template<> auto Node::addComponent() -> Camera*;
+    template<> auto Node::addComponent() -> MeshRenderer*;
+    template<> auto Node::addComponent() -> Spectator*;
+    template<> auto Node::addComponent() -> SkyboxRenderer*;
 }
