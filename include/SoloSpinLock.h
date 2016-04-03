@@ -29,7 +29,7 @@ namespace solo
             flag.clear(std::memory_order_release);
         }
 
-        LockToken acquire()
+        auto acquire()
         {
             while (flag.test_and_set(std::memory_order_acquire)) {}
             return LockToken(flag);
