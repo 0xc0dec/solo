@@ -8,15 +8,15 @@ namespace solo
     {
     public:
         virtual void setWindowTitle(const std::string& title) override;
-        virtual std::string getWindowTitle() const override;
+        virtual auto getWindowTitle() const -> std::string override;
 
         virtual void saveScreenshot(const std::string& path) override {}
 
         virtual void setCursorCaptured(bool captured) override;
 
-        virtual Vector2 getCanvasSize() const override;
+        virtual auto getCanvasSize() const -> Vector2 override;
 
-        virtual float getLifetime() const override;
+        virtual auto getLifetime() const -> float override;
 
     private:
         friend class Device;

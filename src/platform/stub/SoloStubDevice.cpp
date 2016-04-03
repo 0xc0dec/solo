@@ -25,7 +25,7 @@ void StubDevice::setWindowTitle(const std::string& title)
 }
 
 
-std::string StubDevice::getWindowTitle() const
+auto StubDevice::getWindowTitle() const -> std::string
 {
     return windowTitle;
 }
@@ -36,13 +36,13 @@ void StubDevice::setCursorCaptured(bool captured)
 }
 
 
-Vector2 StubDevice::getCanvasSize() const
+auto StubDevice::getCanvasSize() const -> Vector2
 {
     return Vector2(0, 0);
 }
 
 
-float StubDevice::getLifetime() const
+auto StubDevice::getLifetime() const -> float
 {
     return 0;
 }

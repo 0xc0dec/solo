@@ -7,7 +7,7 @@ namespace solo
     class StubRenderer final : public Renderer
     {
     public:
-        virtual TextureHandle createTexture() override final { return EmptyTextureHandle; }
+        virtual auto createTexture() -> TextureHandle override final { return EmptyTextureHandle; }
         virtual void destroyTexture(const TextureHandle& handle) override final {}
         virtual void set2DTexture(const TextureHandle& handle) override final {}
         virtual void set2DTexture(const TextureHandle& handle, uint32_t flags) override final {}
@@ -22,32 +22,32 @@ namespace solo
         virtual void generateTexture2DMipmaps(const TextureHandle& handle) override final {}
         virtual void generateCubeTextureMipmaps(const TextureHandle& handle) override final {}
 
-        virtual FrameBufferHandle createFrameBuffer() override final { return EmptyFrameBufferHandle; }
+        virtual auto createFrameBuffer() -> FrameBufferHandle override final { return EmptyFrameBufferHandle; }
         virtual void destroyFrameBuffer(const FrameBufferHandle& handle) override final {}
         virtual void setFrameBuffer(const FrameBufferHandle& handle) override final {}
         virtual void updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle>& attachmentHandles) override final {}
 
-        virtual VertexBufferHandle createVertexBuffer(const VertexBufferLayout& layout,
-            const void* data, uint32_t vertexCount) override final { return EmptyVertexBufferHandle; }
-        virtual VertexBufferHandle createDynamicVertexBuffer(const VertexBufferLayout& layout,
-            const void* data, uint32_t vertexCount) override final { return EmptyVertexBufferHandle; }
+        virtual auto createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
+            -> VertexBufferHandle override final { return EmptyVertexBufferHandle; }
+        virtual auto createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
+            -> VertexBufferHandle override final { return EmptyVertexBufferHandle; }
         virtual void updateDynamicVertexBuffer(const VertexBufferHandle& handle, const void* data, uint32_t offset, uint32_t vertexCount) override final {}
         virtual void destroyVertexBuffer(const VertexBufferHandle& handle) override final {}
 
-        virtual IndexBufferHandle createIndexBuffer(const void* data, uint32_t elementSize,
-            uint32_t elementCount) override final { return EmptyIndexBufferHandle; }
+        virtual auto createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount)
+            -> IndexBufferHandle override final { return EmptyIndexBufferHandle; }
         virtual void destroyIndexBuffer(const IndexBufferHandle& handle) override final {}
 
-        virtual ProgramHandle createProgram(const char* vsSrc, const char* fsSrc) override final { return EmptyProgramHandle; }
+        virtual auto createProgram(const char* vsSrc, const char* fsSrc) -> ProgramHandle override final { return EmptyProgramHandle; }
         virtual void destroyProgram(const ProgramHandle& handle) override final {}
         virtual void setProgram(const ProgramHandle& handle) override final {}
 
-        virtual VertexObjectHandle createVertexObject(const VertexBufferHandle* bufferHandles,
-            uint32_t bufferCount, ProgramHandle programHandle) override final { return EmptyVertexObjectHandle; }
+        virtual auto createVertexObject(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle)
+            -> VertexObjectHandle override final { return EmptyVertexObjectHandle; }
         virtual void destroyVertexObject(const VertexObjectHandle& handle) override final {}
 
-        virtual UniformHandle createUniform(const char* name, UniformType type,
-            uint32_t componentCount, ProgramHandle program) override final { return EmptyUniformHandle; }
+        virtual auto createUniform(const char* name, UniformType type, uint32_t componentCount, ProgramHandle program)
+            -> UniformHandle override final { return EmptyUniformHandle; }
         virtual void destroyUniform(const UniformHandle& handle) override final {}
         virtual void setUniform(const UniformHandle& handle, const void* value, uint32_t count) override final {}
 
