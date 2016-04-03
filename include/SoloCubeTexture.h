@@ -10,7 +10,7 @@ namespace solo
     class CubeTexture final: public Texture
     {
     public:
-        static sptr<CubeTexture> create();
+        static auto create() -> sptr<CubeTexture>;
 
         virtual void bind() override final;
         virtual void generateMipmaps() override final;
@@ -19,7 +19,7 @@ namespace solo
         
         virtual void setWrapping(TextureWrapping wrapping) override final;
 
-        TextureWrapping getDepthWrapping() const;
+        auto getDepthWrapping() const -> TextureWrapping;
         void setDepthWrapping(TextureWrapping depthWrap);
 
     protected:
@@ -30,7 +30,7 @@ namespace solo
         TextureWrapping depthWrapping = TextureWrapping::Repeat;
     };
 
-    inline TextureWrapping CubeTexture::getDepthWrapping() const
+    inline auto CubeTexture::getDepthWrapping() const -> TextureWrapping
     {
         return depthWrapping;
     }

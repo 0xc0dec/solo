@@ -4,7 +4,7 @@
 using namespace solo;
 
 
-sptr<CubeTexture> CubeTexture::create()
+auto CubeTexture::create() -> sptr<CubeTexture>
 {
     return std::shared_ptr<CubeTexture>(new CubeTexture());
 }
