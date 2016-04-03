@@ -14,7 +14,7 @@ namespace solo
     public:
         ~OpenGLRenderer();
 
-        virtual TextureHandle createTexture() override final;
+        virtual auto createTexture() -> TextureHandle override final;
         virtual void destroyTexture(const TextureHandle& handle) override final;
         virtual void set2DTexture(const TextureHandle& handle) override final;
         virtual void set2DTexture(const TextureHandle& handle, uint32_t flags) override final;
@@ -29,27 +29,31 @@ namespace solo
         virtual void generateTexture2DMipmaps(const TextureHandle& handle) override final;
         virtual void generateCubeTextureMipmaps(const TextureHandle& handle) override final;
 
-        virtual FrameBufferHandle createFrameBuffer() override final;
+        virtual auto createFrameBuffer() -> FrameBufferHandle override final;
         virtual void destroyFrameBuffer(const FrameBufferHandle& handle) override final;
         virtual void setFrameBuffer(const FrameBufferHandle& handle) override final;
         virtual void updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle>& attachmentHandles) override final;
 
-        virtual VertexBufferHandle createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) override final;
-        virtual VertexBufferHandle createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) override final;
+        virtual auto createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
+            -> VertexBufferHandle override final;
+        virtual auto createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
+            -> VertexBufferHandle override final;
         virtual void updateDynamicVertexBuffer(const VertexBufferHandle& handle, const void* data, uint32_t offset, uint32_t vertexCount) override final;
         virtual void destroyVertexBuffer(const VertexBufferHandle& handle) override final;
 
-        virtual IndexBufferHandle createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount) override final;
+        virtual auto createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount) -> IndexBufferHandle override final;
         virtual void destroyIndexBuffer(const IndexBufferHandle& handle) override final;
 
-        virtual ProgramHandle createProgram(const char* vsSrc, const char* fsSrc) override final;
+        virtual auto createProgram(const char* vsSrc, const char* fsSrc) -> ProgramHandle override final;
         virtual void destroyProgram(const ProgramHandle& handle) override final;
         virtual void setProgram(const ProgramHandle& handle) override final;
 
-        virtual VertexObjectHandle createVertexObject(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle) override final;
+        virtual auto createVertexObject(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle)
+            -> VertexObjectHandle override final;
         virtual void destroyVertexObject(const VertexObjectHandle& handle) override final;
 
-        virtual UniformHandle createUniform(const char* name, UniformType type, uint32_t componentCount, ProgramHandle program) override final;
+        virtual auto createUniform(const char* name, UniformType type, uint32_t componentCount, ProgramHandle program)
+            -> UniformHandle override final;
         virtual void destroyUniform(const UniformHandle& handle) override final;
         virtual void setUniform(const UniformHandle& handle, const void* value, uint32_t count) override final;
 
@@ -128,7 +132,7 @@ namespace solo
         void bindVertexObject(const VertexObjectHandle& handle);
         void setTexture(GLenum target, const TextureHandle& handle, uint32_t flags);
         void validateFrameBufferAttachments(const std::vector<TextureHandle>& attachments);
-        VertexBufferHandle createVertexBuffer(bool dynamic, const VertexBufferLayout& layout, const void* data, uint32_t vertexCount);
+        auto createVertexBuffer(bool dynamic, const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> VertexBufferHandle;
 
         ResourcePool<TextureData, SL_MAX_TEXTURES> textures;
         ResourcePool<FrameBufferData, SL_MAX_FRAME_BUFFERS> frameBuffers;

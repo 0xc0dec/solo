@@ -7,7 +7,7 @@
 using namespace solo;
 
 
-static GLenum convertBlendFactor(BlendFactor factor)
+static auto convertBlendFactor(BlendFactor factor) -> GLenum
 {
     switch (factor)
     {
@@ -29,7 +29,7 @@ static GLenum convertBlendFactor(BlendFactor factor)
 }
 
 
-static GLenum convertCubeTextureFace(CubeTextureFace face)
+static auto convertCubeTextureFace(CubeTextureFace face) -> GLenum
 {
     switch (face)
     {
@@ -51,7 +51,7 @@ static GLenum convertCubeTextureFace(CubeTextureFace face)
 }
 
 
-static GLenum convertPrimitiveType(PrimitiveType type)
+static auto convertPrimitiveType(PrimitiveType type) -> GLenum
 {
     switch (type)
     {
@@ -71,7 +71,7 @@ static GLenum convertPrimitiveType(PrimitiveType type)
 }
 
 
-static GLenum convertColorFormat(ColorFormat format)
+static auto convertColorFormat(ColorFormat format) -> GLenum
 {
     switch (format)
     {
@@ -85,7 +85,7 @@ static GLenum convertColorFormat(ColorFormat format)
 }
 
 
-static GLint linkProgram(GLuint vs, GLuint fs)
+static auto linkProgram(GLuint vs, GLuint fs) -> GLint
 {
     auto program = glCreateProgram();
     glAttachShader(program, vs);
@@ -108,7 +108,7 @@ static GLint linkProgram(GLuint vs, GLuint fs)
 }
 
 
-static GLint compileShader(GLuint type, const char* src)
+static auto compileShader(GLuint type, const char* src) -> GLint
 {
     static std::unordered_map<GLuint, std::string> typeNames =
     {
@@ -137,7 +137,7 @@ static GLint compileShader(GLuint type, const char* src)
 }
 
 
-static std::unordered_map<std::string, GLuint> discoverVertexAttributes(GLuint program)
+static auto discoverVertexAttributes(GLuint program) -> std::unordered_map<std::string, GLuint>
 {
     std::unordered_map<std::string, GLuint> attributes;
 
@@ -240,7 +240,7 @@ OpenGLRenderer::~OpenGLRenderer()
 }
 
 
-TextureHandle OpenGLRenderer::createTexture()
+auto OpenGLRenderer::createTexture() -> TextureHandle
 {
     GLuint rawHandle = 0;
     glGenTextures(1, &rawHandle);
@@ -493,7 +493,7 @@ void OpenGLRenderer::bindFrameBuffer(const FrameBufferHandle& handle)
 }
 
 
-FrameBufferHandle OpenGLRenderer::createFrameBuffer()
+auto OpenGLRenderer::createFrameBuffer() -> FrameBufferHandle
 {
     GLuint rawHandle = 0;
     glGenFramebuffers(1, &rawHandle);
@@ -563,7 +563,7 @@ void OpenGLRenderer::updateFrameBuffer(const FrameBufferHandle& handle, const st
 }
 
 
-VertexBufferHandle OpenGLRenderer::createVertexBuffer(bool dynamic, const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
+auto OpenGLRenderer::createVertexBuffer(bool dynamic, const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> VertexBufferHandle
 {
     GLuint rawHandle = 0;
     glGenBuffers(1, &rawHandle);
@@ -585,13 +585,13 @@ VertexBufferHandle OpenGLRenderer::createVertexBuffer(bool dynamic, const Vertex
 }
 
 
-VertexBufferHandle OpenGLRenderer::createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
+auto OpenGLRenderer::createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> VertexBufferHandle
 {
     return createVertexBuffer(false, layout, data, vertexCount);
 }
 
 
-VertexBufferHandle OpenGLRenderer::createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
+auto OpenGLRenderer::createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> VertexBufferHandle
 {
     return createVertexBuffer(true, layout, data, vertexCount);
 }
@@ -613,7 +613,7 @@ void OpenGLRenderer::destroyVertexBuffer(const VertexBufferHandle& handle)
 }
 
 
-IndexBufferHandle OpenGLRenderer::createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount)
+auto OpenGLRenderer::createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount) -> IndexBufferHandle
 {
     GLuint rawHandle = 0;
     glGenBuffers(1, &rawHandle);
@@ -641,7 +641,7 @@ void OpenGLRenderer::destroyIndexBuffer(const IndexBufferHandle& handle)
 }
 
 
-ProgramHandle OpenGLRenderer::createProgram(const char* vsSrc, const char* fsSrc)
+auto OpenGLRenderer::createProgram(const char* vsSrc, const char* fsSrc) -> ProgramHandle
 {
     auto vs = compileShader(GL_VERTEX_SHADER, vsSrc);
     auto fs = compileShader(GL_FRAGMENT_SHADER, fsSrc);
@@ -675,7 +675,7 @@ void OpenGLRenderer::setProgram(const ProgramHandle& handle)
 }
 
 
-VertexObjectHandle OpenGLRenderer::createVertexObject(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle)
+auto OpenGLRenderer::createVertexObject(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle) -> VertexObjectHandle
 {
     std::unordered_map<std::string, GLuint> attributes;
     if (!programHandle.empty())
@@ -784,7 +784,7 @@ void OpenGLRenderer::drawVertexObject(PrimitiveType primitiveType, const VertexO
 }
 
 
-UniformHandle OpenGLRenderer::createUniform(const char* name, UniformType type, uint32_t componentCount, ProgramHandle program)
+auto OpenGLRenderer::createUniform(const char* name, UniformType type, uint32_t componentCount, ProgramHandle program) -> UniformHandle
 {
     auto rawProgramHandle = programs.getData(program.value).rawHandle;
 
