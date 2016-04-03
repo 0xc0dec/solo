@@ -7,7 +7,7 @@ namespace solo
     public:
         BitFlags() {}
 
-        uint32_t getRaw() const;
+        auto getRaw() const -> uint32_t;
 
         bool isEmpty() const;
         bool checkAndRemove(uint32_t flags);
@@ -23,7 +23,7 @@ namespace solo
         uint32_t flags = 0;
     };
 
-    inline uint32_t BitFlags::getRaw() const
+    inline auto BitFlags::getRaw() const -> uint32_t
     {
         return flags;
     }
@@ -73,19 +73,19 @@ namespace solo
 
     // Enable using enum classes as bit flags
     template <class T, class TBase = std::underlying_type_t<T>, class = std::enable_if<std::is_enum<T>::value, T>>
-    inline TBase operator |(T a, T b)
+    inline auto operator |(T a, T b) -> TBase
     {
         return static_cast<TBase>(a) | static_cast<TBase>(b);
     }
 
     template <class T, class TBase = std::underlying_type_t<T>, class = std::enable_if<std::is_enum<T>::value, T>>
-    inline TBase operator &(TBase a, T b)
+    inline auto operator &(TBase a, T b) -> TBase
     {
         return a & static_cast<TBase>(b);
     }
 
     template <class T, class TBase = std::underlying_type_t<T>, class = std::enable_if<std::is_enum<T>::value, T>>
-    inline TBase& operator |=(TBase& a, T b)
+    inline auto operator |=(TBase& a, T b) -> TBase&
     {
         a = a | static_cast<TBase>(b);
         return a;
