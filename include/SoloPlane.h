@@ -25,21 +25,21 @@ namespace solo
         Plane(const Vector3& normal, float distance);
         Plane(float normalX, float normalY, float normalZ, float distance);
 
-        Vector3 getNormal() const;
+        auto getNormal() const -> Vector3;
         void setNormal(const Vector3& normal);
 
-        float getDistance() const;
+        auto getDistance() const -> float;
         void setDistance(float distance);
 
-        float getDistanceToPoint(const Vector3& point) const;
+        auto getDistanceToPoint(const Vector3& point) const -> float;
 
-        static Vector3 getCommonPoint(const Plane& p1, const Plane& p2, const Plane& p3);
+        static auto getCommonPoint(const Plane& p1, const Plane& p2, const Plane& p3) -> Vector3;
 
-        PlaneIntersection intersectBoundingSphere(const BoundingSphere& sphere) const;
-        PlaneIntersection intersectBoundingBox(const BoundingBox& box) const;
-        PlaneIntersection intersectFrustum(const Frustum& frustum) const;
-        PlaneIntersection intersectPlane(const Plane& plane) const;
-        PlaneIntersection intersectRay(const Ray& ray) const;
+        auto intersectBoundingSphere(const BoundingSphere& sphere) const -> PlaneIntersection;
+        auto intersectBoundingBox(const BoundingBox& box) const -> PlaneIntersection;
+        auto intersectFrustum(const Frustum& frustum) const -> PlaneIntersection;
+        auto intersectPlane(const Plane& plane) const -> PlaneIntersection;
+        auto intersectRay(const Ray& ray) const -> PlaneIntersection;
 
         bool isParallel(const Plane& plane) const;
 
@@ -52,12 +52,12 @@ namespace solo
         float distance = 0;
     };
 
-    inline Vector3 Plane::getNormal() const
+    inline auto Plane::getNormal() const -> Vector3
     {
         return normal;
     }
 
-    inline float Plane::getDistance() const
+    inline auto Plane::getDistance() const -> float
     {
         return distance;
     }

@@ -36,13 +36,13 @@ void Plane::setDistance(float distance)
 }
 
 
-float Plane::getDistanceToPoint(const Vector3& point) const
+auto Plane::getDistanceToPoint(const Vector3& point) const -> float
 {
     return normal.x * point.x + normal.y * point.y + normal.z * point.z + distance;
 }
 
 
-Vector3 Plane::getCommonPoint(const Plane& p1, const Plane& p2, const Plane& p3)
+auto Plane::getCommonPoint(const Plane& p1, const Plane& p2, const Plane& p3) -> Vector3
 {
     Vector3 result;
 
@@ -93,19 +93,19 @@ Vector3 Plane::getCommonPoint(const Plane& p1, const Plane& p2, const Plane& p3)
 }
 
 
-PlaneIntersection Plane::intersectBoundingSphere(const BoundingSphere& sphere) const
+auto Plane::intersectBoundingSphere(const BoundingSphere& sphere) const -> PlaneIntersection
 {
     return sphere.intersectPlane(*this);
 }
 
 
-PlaneIntersection Plane::intersectBoundingBox(const BoundingBox& box) const
+auto Plane::intersectBoundingBox(const BoundingBox& box) const -> PlaneIntersection
 {
     return box.intersectPlane(*this);
 }
 
 
-PlaneIntersection Plane::intersectFrustum(const Frustum& frustum) const
+auto Plane::intersectFrustum(const Frustum& frustum) const -> PlaneIntersection
 {
     auto corners = frustum.getCorners();
 
@@ -131,13 +131,15 @@ PlaneIntersection Plane::intersectFrustum(const Frustum& frustum) const
     if (d < 0.0f)
     {
         if (getDistanceToPoint(corners[1]) >= 0.0f ||
-                getDistanceToPoint(corners[2]) >= 0.0f ||
-                getDistanceToPoint(corners[3]) >= 0.0f ||
-                getDistanceToPoint(corners[4]) >= 0.0f ||
-                getDistanceToPoint(corners[5]) >= 0.0f ||
-                getDistanceToPoint(corners[6]) >= 0.0f ||
-                getDistanceToPoint(corners[7]) >= 0.0f)
+            getDistanceToPoint(corners[2]) >= 0.0f ||
+            getDistanceToPoint(corners[3]) >= 0.0f ||
+            getDistanceToPoint(corners[4]) >= 0.0f ||
+            getDistanceToPoint(corners[5]) >= 0.0f ||
+            getDistanceToPoint(corners[6]) >= 0.0f ||
+            getDistanceToPoint(corners[7]) >= 0.0f)
+        {
             return PlaneIntersection::Intersecting;
+        }
 
         return PlaneIntersection::Back;
     }
@@ -146,7 +148,7 @@ PlaneIntersection Plane::intersectFrustum(const Frustum& frustum) const
 }
 
 
-PlaneIntersection Plane::intersectPlane(const Plane& plane) const
+auto Plane::intersectPlane(const Plane& plane) const -> PlaneIntersection
 {
     if ((Math::approxEqual(normal.x, plane.normal.x, Math::smallFloat1) &&
         Math::approxEqual(normal.y, plane.normal.y, Math::smallFloat1) &&
@@ -162,7 +164,7 @@ PlaneIntersection Plane::intersectPlane(const Plane& plane) const
 }
 
 
-PlaneIntersection Plane::intersectRay(const Ray& ray) const
+auto Plane::intersectRay(const Ray& ray) const -> PlaneIntersection
 {
     auto d = getDistanceToPoint(ray.getOrigin());
 

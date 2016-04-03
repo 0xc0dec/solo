@@ -33,7 +33,7 @@ namespace solo
     class Material final
     {
     public:
-        static auto create(sptr<Effect> effect) -> sptr<Material>;
+        static auto create(sptr<Effect> effect) -> sptr<Material>; 
 
         ~Material();
         SL_NONCOPYABLE(Material)
