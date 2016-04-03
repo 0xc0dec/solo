@@ -18,17 +18,17 @@ namespace solo
         Ray(const Vector3& origin, const Vector3& direction);
         Ray(float originX, float originY, float originZ, float dirX, float dirY, float dirZ);
 
-        Vector3 getOrigin() const;
+        auto getOrigin() const -> Vector3;
         void setOrigin(const Vector3& origin);
 
-        Vector3 getDirection() const;
+        auto getDirection() const -> Vector3;
         void setDirection(const Vector3& direction);
 
         // These methods return -1 if there's no intersection
-        float hitBoundingSphere(const BoundingSphere& sphere) const;
-        float hitBoundingBox(const BoundingBox& box) const;
-        float hitFrustum(const Frustum& frustum) const;
-        float hitPlane(const Plane& plane) const;
+        auto hitBoundingSphere(const BoundingSphere& sphere) const -> float;
+        auto hitBoundingBox(const BoundingBox& box) const -> float;
+        auto hitFrustum(const Frustum& frustum) const -> float;
+        auto hitPlane(const Plane& plane) const -> float;
 
         void transform(const Matrix& matrix);
 
@@ -39,12 +39,12 @@ namespace solo
         Vector3 direction { 0, 0, 1 };
     };
 
-    inline Vector3 Ray::getOrigin() const
+    inline auto Ray::getOrigin() const -> Vector3
     {
         return origin;
     }
 
-    inline Vector3 Ray::getDirection() const
+    inline auto Ray::getDirection() const -> Vector3
     {
         return direction;
     }

@@ -38,19 +38,19 @@ void Ray::setDirection(const Vector3& direction)
 }
 
 
-float Ray::hitBoundingSphere(const BoundingSphere& sphere) const
+auto Ray::hitBoundingSphere(const BoundingSphere& sphere) const -> float
 {
     return sphere.hitByRay(*this);
 }
 
 
-float Ray::hitBoundingBox(const BoundingBox& box) const
+auto Ray::hitBoundingBox(const BoundingBox& box) const -> float
 {
     return box.hitByRay(*this);
 }
 
 
-float Ray::hitFrustum(const Frustum& frustum) const
+auto Ray::hitFrustum(const Frustum& frustum) const -> float
 {
     auto n = frustum.getNearPlane();
     auto nD = hitPlane(n);
@@ -95,7 +95,7 @@ float Ray::hitFrustum(const Frustum& frustum) const
 }
 
 
-float Ray::hitPlane(const Plane& plane) const
+auto Ray::hitPlane(const Plane& plane) const -> float
 {
     const auto& normal = plane.getNormal();
 
