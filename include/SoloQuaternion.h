@@ -17,11 +17,11 @@ namespace solo
         Quaternion(float x, float y, float z, float w);
         Quaternion(const Vector3& axis, float angleRadians);
 
-        static Quaternion createFromRotationMatrix(const Matrix& m);
-        static Quaternion createFromAxisAngle(const Vector3& axis, float angleRadians);
+        static auto createFromRotationMatrix(const Matrix& m) -> Quaternion;
+        static auto createFromAxisAngle(const Vector3& axis, float angleRadians) -> Quaternion;
 
-        static Quaternion identity();
-        static Quaternion zero();
+        static auto identity() -> Quaternion;
+        static auto zero() -> Quaternion;
 
         bool isIdentity() const;
         bool isZero() const;
@@ -29,23 +29,23 @@ namespace solo
         void conjugate();
         bool inverse();
 
-        Quaternion normalized() const;
+        auto normalized() const -> Quaternion;
         void normalize();
 
-        float toAxisAngle(Vector3& e) const;
+        auto toAxisAngle(Vector3& e) const -> float;
 
-        static Quaternion lerp(const Quaternion& q1, const Quaternion& q2, float t);
-        static Quaternion slerp(const Quaternion& q1, const Quaternion& q2, float t);
-        static Quaternion squad(const Quaternion& q1, const Quaternion& q2, const Quaternion& s1, const Quaternion& s2, float t);
+        static auto lerp(const Quaternion& q1, const Quaternion& q2, float t) -> Quaternion;
+        static auto slerp(const Quaternion& q1, const Quaternion& q2, float t) -> Quaternion;
+        static auto squad(const Quaternion& q1, const Quaternion& q2, const Quaternion& s1, const Quaternion& s2, float t) -> Quaternion;
 
-        inline Quaternion operator*(const Quaternion& q) const;
-        Quaternion& operator*=(const Quaternion& q);
+        auto operator*(const Quaternion& q) const -> Quaternion;
+        auto operator*=(const Quaternion& q) -> Quaternion&;
 
     private:
-        static Quaternion slerpForSquad(const Quaternion& q1, const Quaternion& q2, float t);
+        static auto slerpForSquad(const Quaternion& q1, const Quaternion& q2, float t) -> Quaternion;
     };
 
-    inline Quaternion Quaternion::operator*(const Quaternion& q) const
+    inline auto Quaternion::operator*(const Quaternion& q) const -> Quaternion
     {
         auto result(*this);
         result *= q;

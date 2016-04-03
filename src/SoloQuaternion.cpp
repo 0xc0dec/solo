@@ -16,14 +16,14 @@ Quaternion::Quaternion(const Vector3& axis, float angleRadians)
 }
 
 
-Quaternion Quaternion::identity()
+auto Quaternion::identity() -> Quaternion
 {
     static Quaternion value(0.0f, 0.0f, 0.0f, 1.0f);
     return value;
 }
 
 
-Quaternion Quaternion::zero()
+auto Quaternion::zero() -> Quaternion
 {
     static Quaternion value(0.0f, 0.0f, 0.0f, 0.0f);
     return value;
@@ -48,13 +48,13 @@ bool Quaternion::isZero() const
 }
 
 
-Quaternion Quaternion::createFromRotationMatrix(const Matrix& m)
+auto Quaternion::createFromRotationMatrix(const Matrix& m) -> Quaternion
 {
     return m.getRotation(); // TODO remove
 }
 
 
-Quaternion Quaternion::createFromAxisAngle(const Vector3& axis, float angleRadians)
+auto Quaternion::createFromAxisAngle(const Vector3& axis, float angleRadians) -> Quaternion
 {
     auto halfAngle = angleRadians * 0.5f;
     auto sinHalfAngle = sinf(halfAngle);
@@ -116,7 +116,7 @@ void Quaternion::normalize()
 }
 
 
-Quaternion Quaternion::normalized() const
+auto Quaternion::normalized() const -> Quaternion
 {
     auto result(*this);
     result.normalize();
@@ -124,7 +124,7 @@ Quaternion Quaternion::normalized() const
 }
 
 
-float Quaternion::toAxisAngle(Vector3& axis) const
+auto Quaternion::toAxisAngle(Vector3& axis) const -> float
 {
     Quaternion q(x, y, z, w);
     q.normalize();
@@ -136,7 +136,7 @@ float Quaternion::toAxisAngle(Vector3& axis) const
 }
 
 
-Quaternion Quaternion::lerp(const Quaternion& q1, const Quaternion& q2, float t)
+auto Quaternion::lerp(const Quaternion& q1, const Quaternion& q2, float t) -> Quaternion
 {
     if (Math::approxZero(t, Math::smallFloat1))
         return q1;
@@ -154,7 +154,7 @@ Quaternion Quaternion::lerp(const Quaternion& q1, const Quaternion& q2, float t)
 }
 
 
-Quaternion Quaternion::slerp(const Quaternion& q1, const Quaternion& q2, float t)
+auto Quaternion::slerp(const Quaternion& q1, const Quaternion& q2, float t) -> Quaternion
 {
     if (Math::approxZero(t, Math::smallFloat1))
         return q1;
@@ -214,7 +214,7 @@ Quaternion Quaternion::slerp(const Quaternion& q1, const Quaternion& q2, float t
 }
 
 
-Quaternion Quaternion::squad(const Quaternion& q1, const Quaternion& q2, const Quaternion& s1, const Quaternion& s2, float t)
+auto Quaternion::squad(const Quaternion& q1, const Quaternion& q2, const Quaternion& s1, const Quaternion& s2, float t) -> Quaternion
 {
     auto q = slerpForSquad(q1, q2, t);
     auto s = slerpForSquad(s1, s2, t);
@@ -222,7 +222,7 @@ Quaternion Quaternion::squad(const Quaternion& q1, const Quaternion& q2, const Q
 }
 
 
-Quaternion Quaternion::slerpForSquad(const Quaternion& q1, const Quaternion& q2, float t)
+auto Quaternion::slerpForSquad(const Quaternion& q1, const Quaternion& q2, float t) -> Quaternion
 {
     auto c = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
 
@@ -244,7 +244,7 @@ Quaternion Quaternion::slerpForSquad(const Quaternion& q1, const Quaternion& q2,
 }
 
 
-Quaternion& Quaternion::operator*=(const Quaternion& q)
+auto Quaternion::operator*=(const Quaternion& q) -> Quaternion&
 {
     auto newX = w * q.x + x * q.w + y * q.z - z * q.y;
     auto newY = w * q.y - x * q.z + y * q.w + z * q.x;
