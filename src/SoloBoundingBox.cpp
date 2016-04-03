@@ -17,14 +17,14 @@ BoundingBox::BoundingBox(const Vector3& min, const Vector3& max):
 }
 
 
-const BoundingBox& BoundingBox::empty()
+auto BoundingBox::empty() -> const BoundingBox&
 {
     static BoundingBox b;
     return b;
 }
 
 
-std::vector<Vector3> BoundingBox::getCorners() const
+auto BoundingBox::getCorners() const -> std::vector<Vector3>
 {
     return
     {
@@ -57,7 +57,7 @@ std::vector<Vector3> BoundingBox::getCorners() const
 }
 
 
-Vector3 BoundingBox::getCenter() const
+auto BoundingBox::getCenter() const -> Vector3
 {
     auto center = max - min;
     center *= 0.5f;
@@ -91,7 +91,7 @@ bool BoundingBox::intersectsFrustum(const Frustum& frustum) const
 }
 
 
-PlaneIntersection BoundingBox::intersectPlane(const Plane& plane) const
+auto BoundingBox::intersectPlane(const Plane& plane) const -> PlaneIntersection
 {
     Vector3 center((min.x + max.x) * 0.5f, (min.y + max.y) * 0.5f, (min.z + max.z) * 0.5f);
     auto distance = plane.getDistanceToPoint(center);
@@ -108,7 +108,7 @@ PlaneIntersection BoundingBox::intersectPlane(const Plane& plane) const
 }
 
 
-float BoundingBox::hitByRay(const Ray& ray) const
+auto BoundingBox::hitByRay(const Ray& ray) const -> float
 {
     float tmin;
     float tmax;
