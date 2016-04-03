@@ -7,7 +7,7 @@
 using namespace solo;
 
 
-sptr<Node> Scene::createNode()
+auto Scene::createNode() -> sptr<Node>
 {
     auto node = std::make_shared<Node>(this, nodeCounter++);
     node->addComponent<Transform>();
@@ -57,7 +57,7 @@ void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
 }
 
 
-Component* Scene::getComponent(uint32_t nodeId, uint32_t typeId) const
+auto Scene::getComponent(uint32_t nodeId, uint32_t typeId) const -> Component*
 {
     auto cmp = findComponent(nodeId, typeId);
     if (!cmp)
@@ -66,7 +66,7 @@ Component* Scene::getComponent(uint32_t nodeId, uint32_t typeId) const
 }
 
 
-Component* Scene::findComponent(uint32_t nodeId, uint32_t typeId) const
+auto Scene::findComponent(uint32_t nodeId, uint32_t typeId) const -> Component*
 {
     auto nodeIt = components.find(nodeId);
     if (nodeIt == components.end())
