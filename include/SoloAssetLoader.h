@@ -20,7 +20,7 @@ namespace solo
     class AsyncHandle
     {
     public:
-        sptr<T> getResult()
+        auto getResult()
         {
             return result;
         }
@@ -53,14 +53,14 @@ namespace solo
         ~AssetLoader();
         SL_NONCOPYABLE(AssetLoader)
 
-        sptr<Texture2D> loadTexture2D(const std::string& path);
-        sptr<AsyncHandle<Texture2D>> loadTexture2DAsync(const std::string& path);
+        auto loadTexture2D(const std::string& path) -> sptr<Texture2D>;
+        auto loadTexture2DAsync(const std::string& path) -> sptr<AsyncHandle<Texture2D>>;
         
-        sptr<CubeTexture> loadCubeTexture(const std::vector<std::string>& sidesPaths);
-        sptr<AsyncHandle<CubeTexture>> loadCubeTextureAsync(const std::vector<std::string>& sidesPaths);
+        auto loadCubeTexture(const std::vector<std::string>& sidesPaths) -> sptr<CubeTexture>;
+        auto loadCubeTextureAsync(const std::vector<std::string>& sidesPaths) -> sptr<AsyncHandle<CubeTexture>>;
 
-        sptr<Mesh> loadMesh(const std::string& path);
-        sptr<AsyncHandle<Mesh>> loadMeshAsync(const std::string& path);
+        auto loadMesh(const std::string& path) -> sptr<Mesh>;
+        auto loadMeshAsync(const std::string& path) -> sptr<AsyncHandle<Mesh>>;
 
         void update();
 
@@ -68,8 +68,8 @@ namespace solo
         std::vector<uptr<ImageLoader>> imageLoaders;
         std::vector<uptr<MeshLoader>> meshLoaders;
 
-        MeshLoader* getMeshLoader(const std::string& path);
-        ImageLoader* getImageLoader(const std::string& path);
+        auto getMeshLoader(const std::string& path) -> MeshLoader*;
+        auto getImageLoader(const std::string& path) -> ImageLoader*;
 
         SpinLock tasksLock;
         std::list<std::function<void()>> tasks;

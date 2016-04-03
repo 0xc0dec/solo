@@ -25,7 +25,7 @@ AssetLoader::~AssetLoader()
 }
 
 
-MeshLoader* AssetLoader::getMeshLoader(const std::string& path)
+auto AssetLoader::getMeshLoader(const std::string& path) -> MeshLoader*
 {
     for (const auto& loader : meshLoaders)
     {
@@ -36,7 +36,7 @@ MeshLoader* AssetLoader::getMeshLoader(const std::string& path)
 }
 
 
-ImageLoader* AssetLoader::getImageLoader(const std::string& path)
+auto AssetLoader::getImageLoader(const std::string& path) -> ImageLoader*
 {
     for (const auto& l : imageLoaders)
     {
@@ -47,7 +47,7 @@ ImageLoader* AssetLoader::getImageLoader(const std::string& path)
 }
 
 
-sptr<Texture2D> AssetLoader::loadTexture2D(const std::string& path)
+auto AssetLoader::loadTexture2D(const std::string& path) -> sptr<Texture2D>
 {
     auto loader = getImageLoader(path);
     auto image = loader->load(path);
@@ -57,7 +57,7 @@ sptr<Texture2D> AssetLoader::loadTexture2D(const std::string& path)
 }
 
 
-sptr<AsyncHandle<Texture2D>> AssetLoader::loadTexture2DAsync(const std::string& path)
+auto AssetLoader::loadTexture2DAsync(const std::string& path) -> sptr<AsyncHandle<Texture2D>>
 {
     auto handle = std::make_shared<AsyncHandle<Texture2D>>();
     auto loader = getImageLoader(path);
@@ -78,7 +78,7 @@ sptr<AsyncHandle<Texture2D>> AssetLoader::loadTexture2DAsync(const std::string& 
 }
 
 
-sptr<CubeTexture> AssetLoader::loadCubeTexture(const std::vector<std::string>& sidesPaths)
+auto AssetLoader::loadCubeTexture(const std::vector<std::string>& sidesPaths) -> sptr<CubeTexture>
 {
     auto result = CubeTexture::create();
     auto loader = getImageLoader(sidesPaths[0]);
@@ -95,7 +95,7 @@ sptr<CubeTexture> AssetLoader::loadCubeTexture(const std::vector<std::string>& s
 }
 
 
-sptr<AsyncHandle<CubeTexture>> AssetLoader::loadCubeTextureAsync(const std::vector<std::string>& sidesPaths)
+auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string>& sidesPaths) -> sptr<AsyncHandle<CubeTexture>>
 {
     auto handle = std::make_shared<AsyncHandle<CubeTexture>>();
     auto loader = getImageLoader(sidesPaths[0]);
@@ -134,7 +134,7 @@ sptr<AsyncHandle<CubeTexture>> AssetLoader::loadCubeTextureAsync(const std::vect
 }
 
 
-sptr<Mesh> AssetLoader::loadMesh(const std::string& path)
+auto AssetLoader::loadMesh(const std::string& path) -> sptr<Mesh>
 {
     auto loader = getMeshLoader(path);
     auto data = loader->loadData(path);
@@ -142,7 +142,7 @@ sptr<Mesh> AssetLoader::loadMesh(const std::string& path)
 }
 
 
-sptr<AsyncHandle<Mesh>> AssetLoader::loadMeshAsync(const std::string& path)
+auto AssetLoader::loadMeshAsync(const std::string& path) -> sptr<AsyncHandle<Mesh>>
 {
     auto handle = std::make_shared<AsyncHandle<Mesh>>();
     auto loader = getMeshLoader(path);
