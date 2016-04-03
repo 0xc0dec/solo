@@ -19,7 +19,7 @@ namespace solo
         virtual void render(RenderContext& context) override final;
 
         void setTexture(sptr<CubeTexture> texture);
-        sptr<CubeTexture> getTexture() const;
+        auto getTexture() const -> sptr<CubeTexture>;
 
     private:
         sptr<Mesh> quadMesh;
@@ -27,7 +27,7 @@ namespace solo
         sptr<CubeTexture> texture;
     };
 
-    inline sptr<CubeTexture> SkyboxRenderer::getTexture() const
+    inline auto SkyboxRenderer::getTexture() const -> sptr<CubeTexture>
     {
         return texture;
     }
