@@ -16,13 +16,13 @@ namespace solo
         virtual void init() override final;
         virtual void update() override final;
 
-        float getMovementSpeed() const;
+        auto getMovementSpeed() const -> float;
         void setMovementSpeed(float speed);
 
-        float getHorizontalRotationSpeed() const;
+        auto getHorizontalRotationSpeed() const -> float;
         void setHorizontalRotationSpeed(float speed);
 
-        float getVerticalRotationSpeed() const;
+        auto getVerticalRotationSpeed() const -> float;
         void setVerticalRotationSpeed(float speed);
 
     private:
@@ -34,7 +34,7 @@ namespace solo
         float movementSpeed = 10;
     };
 
-    inline float Spectator::getHorizontalRotationSpeed() const
+    inline auto Spectator::getHorizontalRotationSpeed() const -> float
     {
         return horizontalRotationSpeed;
     }
@@ -44,7 +44,7 @@ namespace solo
         horizontalRotationSpeed = speed;
     }
 
-    inline float Spectator::getVerticalRotationSpeed() const
+    inline auto Spectator::getVerticalRotationSpeed() const -> float
     {
         return verticalRotationSpeed;
     }
@@ -54,7 +54,7 @@ namespace solo
         verticalRotationSpeed = speed;
     }
 
-    inline float Spectator::getMovementSpeed() const
+    inline auto Spectator::getMovementSpeed() const -> float
     {
         return movementSpeed;
     }
