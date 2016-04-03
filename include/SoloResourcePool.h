@@ -16,7 +16,7 @@ namespace solo
                 handles[i] = i;
         }
 
-        uint16_t reserveHandle()
+        auto reserveHandle()
         {
             return handles[end++];
         }
@@ -34,17 +34,17 @@ namespace solo
             }
         }
 
-        uint16_t getHandleCount() const
+        auto getHandleCount() const
         {
             return end;
         }
 
-        uint16_t getHandle(uint16_t handleIndex) const
+        auto getHandle(uint16_t handleIndex) const
         {
             return handles[handleIndex];
         }
 
-        T& getData(uint16_t handle)
+        auto& getData(uint16_t handle)
         {
             return data[handle];
         }
