@@ -30,7 +30,7 @@ bool PngImageLoader::isLoadable(const std::string& uri)
 }
 
 
-uptr<Image> PngImageLoader::load(const std::string& uri)
+auto PngImageLoader::load(const std::string& uri) -> uptr<Image>
 {
     auto bytes = Device::get()->getFileSystem()->readBytes(uri);
     if (bytes.size() < 8 || png_sig_cmp(&bytes[0], 0, 8) != 0)
