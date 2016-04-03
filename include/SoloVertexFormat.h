@@ -36,27 +36,27 @@ namespace solo
 
         void add(VertexBufferLayoutSemantics semantics, uint32_t elementCount);
 
-        uint32_t getElementCount() const;
-        const VertexBufferLayoutElement& getElement(uint32_t index) const;
+        auto getElementCount() const -> uint32_t;
+        auto getElement(uint32_t index) const -> const VertexBufferLayoutElement&;
 
-        uint32_t getSize() const;
+        auto getSize() const -> uint32_t;
 
     private:
         std::vector<VertexBufferLayoutElement> elements;
         uint32_t size = 0;
     };
 
-    inline uint32_t VertexBufferLayout::getSize() const
+    inline auto VertexBufferLayout::getSize() const -> uint32_t
     {
         return size;
     }
 
-    inline const VertexBufferLayoutElement& VertexBufferLayout::getElement(uint32_t index) const
+    inline auto VertexBufferLayout::getElement(uint32_t index) const -> const VertexBufferLayoutElement&
     {
         return elements[index];
     }
 
-    inline uint32_t VertexBufferLayout::getElementCount() const
+    inline auto VertexBufferLayout::getElementCount() const -> uint32_t
     {
         return static_cast<uint32_t>(elements.size());
     }
