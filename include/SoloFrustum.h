@@ -18,25 +18,25 @@ namespace solo
     public:
         Frustum();
 
-        Plane getNearPlane() const;
-        Plane getFarPlane() const;
-        Plane getLeftPlane() const;
-        Plane getRightPlane() const;
-        Plane getTopPlane() const;
-        Plane getBottomPlane() const;
+        auto getNearPlane() const -> Plane;
+        auto getFarPlane() const -> Plane;
+        auto getLeftPlane() const -> Plane;
+        auto getRightPlane() const -> Plane;
+        auto getTopPlane() const -> Plane;
+        auto getBottomPlane() const -> Plane;
 
-        Matrix getMatrix() const;
+        auto getMatrix() const -> Matrix;
         void setMatrix(const Matrix& m);
 
-        std::vector<Vector3> getCorners() const;
-        std::vector<Vector3> getNearCorners() const;
-        std::vector<Vector3> getFarCorners() const;
+        auto getCorners() const -> std::vector<Vector3>;
+        auto getNearCorners() const -> std::vector<Vector3>;
+        auto getFarCorners() const -> std::vector<Vector3>;
 
         bool intersectsPoint(const Vector3& point) const;
         bool intersectsBoundingSphere(const BoundingSphere& sphere) const;
         bool intersectsBoundingBox(const BoundingBox& box) const;
-        float hitByRay(const Ray& ray) const;
-        PlaneIntersection intersectPlane(const Plane& plane) const;
+        auto hitByRay(const Ray& ray) const -> float;
+        auto intersectPlane(const Plane& plane) const -> PlaneIntersection;
 
     private:
         void updatePlanes();
@@ -50,37 +50,37 @@ namespace solo
         Matrix matrix;
     };
 
-    inline Plane Frustum::getNearPlane() const
+    inline auto Frustum::getNearPlane() const -> Plane
     {
         return near;
     }
 
-    inline Plane Frustum::getFarPlane() const
+    inline auto Frustum::getFarPlane() const -> Plane
     {
         return far;
     }
 
-    inline Plane Frustum::getLeftPlane() const
+    inline auto Frustum::getLeftPlane() const -> Plane
     {
         return left;
     }
 
-    inline Plane Frustum::getRightPlane() const
+    inline auto Frustum::getRightPlane() const -> Plane
     {
         return right;
     }
 
-    inline Plane Frustum::getBottomPlane() const
+    inline auto Frustum::getBottomPlane() const -> Plane
     {
         return bottom;
     }
 
-    inline Plane Frustum::getTopPlane() const
+    inline auto Frustum::getTopPlane() const -> Plane
     {
         return top;
     }
 
-    inline Matrix Frustum::getMatrix() const
+    inline auto Frustum::getMatrix() const -> Matrix
     {
         return matrix;
     }
