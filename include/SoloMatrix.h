@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SoloVector3.h"
-#include "SoloVector4.h"
 
 
 namespace solo
@@ -22,38 +21,38 @@ namespace solo
                float m41, float m42, float m43, float m44);
         Matrix(const Matrix& copy);
 
-        static Matrix identity();
-        static Matrix zero();
+        static auto identity() -> Matrix;
+        static auto zero() -> Matrix;
 
         bool isIdentity() const;
 
-        static Matrix createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up);
-        static Matrix createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane);
-        static Matrix createOrthographic(float width, float height, float zNearPlane, float zFarPlane);
-        static Matrix createOrthographicOffCenter(float left, float right, float bottom, float top, float near, float far);
-        static Matrix createReflection(const Plane& plane);
-        static Matrix createScale(const Vector3& scale);
-        static Matrix createRotationFromQuaternion(const Quaternion& quat);
-        static Matrix createRotationFromAxisAngle(const Vector3& axis, float angleRadians);
-        static Matrix createRotationX(float angleRadians);
-        static Matrix createRotationY(float angleRadians);
-        static Matrix createRotationZ(float angleRadians);
-        static Matrix createTranslation(const Vector3& translation);
+        static auto createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up) -> Matrix;
+        static auto createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane) -> Matrix;
+        static auto createOrthographic(float width, float height, float zNearPlane, float zFarPlane) -> Matrix;
+        static auto createOrthographicOffCenter(float left, float right, float bottom, float top, float near, float far) -> Matrix;
+        static auto createReflection(const Plane& plane) -> Matrix;
+        static auto createScale(const Vector3& scale) -> Matrix;
+        static auto createRotationFromQuaternion(const Quaternion& quat) -> Matrix;
+        static auto createRotationFromAxisAngle(const Vector3& axis, float angleRadians) -> Matrix;
+        static auto createRotationX(float angleRadians) -> Matrix;
+        static auto createRotationY(float angleRadians) -> Matrix;
+        static auto createRotationZ(float angleRadians) -> Matrix;
+        static auto createTranslation(const Vector3& translation) -> Matrix;
 
         bool decompose(Vector3* scale, Quaternion* rotation, Vector3* translation) const;
 
-        float getDeterminant() const;
+        auto getDeterminant() const -> float;
 
-        Vector3 getScale() const;
-        Quaternion getRotation() const;
-        Vector3 getTranslation() const;
+        auto getScale() const -> Vector3;
+        auto getRotation() const -> Quaternion;
+        auto getTranslation() const -> Vector3;
 
-        Vector3 getUpVector() const;
-        Vector3 getDownVector() const;
-        Vector3 getLeftVector() const;
-        Vector3 getRightVector() const;
-        Vector3 getForwardVector() const;
-        Vector3 getBackVector() const;
+        auto getUpVector() const -> Vector3;
+        auto getDownVector() const -> Vector3;
+        auto getLeftVector() const -> Vector3;
+        auto getRightVector() const -> Vector3;
+        auto getForwardVector() const -> Vector3;
+        auto getBackVector() const -> Vector3;
 
         bool invert();
         void transpose();
@@ -72,104 +71,104 @@ namespace solo
         void setIdentity();
         void setZero();
 
-        Vector3 transformPoint(const Vector3& point) const;
-        Vector3 transformDirection(const Vector3& dir) const;
+        auto transformPoint(const Vector3& point) const -> Vector3;
+        auto transformDirection(const Vector3& dir) const -> Vector3;
 
-        inline Matrix operator+(float scalar) const;
-        inline Matrix operator+(const Matrix& m) const;
-        Matrix& operator+=(float scalar);
-        Matrix& operator+=(const Matrix& m);
+        auto operator+(float scalar) const -> Matrix;
+        auto operator+(const Matrix& m) const -> Matrix;
+        auto operator+=(float scalar) -> Matrix&;
+        auto operator+=(const Matrix& m) -> Matrix&;
 
-        Matrix operator-() const;
-        inline Matrix operator-(float scalar) const;
-        inline Matrix operator-(const Matrix& m) const;
-        Matrix& operator-=(float scalar);
-        Matrix& operator-=(const Matrix& m);
+        auto operator-() const -> Matrix;
+        auto operator-(float scalar) const -> Matrix;
+        auto operator-(const Matrix& m) const -> Matrix;
+        auto operator-=(float scalar) -> Matrix&;
+        auto operator-=(const Matrix& m) -> Matrix&;
 
-        inline Matrix operator*(float scalar) const;
-        inline Matrix operator*(const Matrix& m) const;
-        Matrix& operator*=(float scalar);
-        Matrix& operator*=(const Matrix& m);
+        auto operator*(float scalar) const -> Matrix;
+        auto operator*(const Matrix& m) const -> Matrix;
+        auto operator*=(float scalar) -> Matrix&;
+        auto operator*=(const Matrix& m) -> Matrix&;
     };
 
-    inline Matrix Matrix::operator+(float scalar) const
+    inline auto Matrix::operator+(float scalar) const -> Matrix
     {
         auto result(*this);
         result += scalar;
         return result;
     }
 
-    inline Matrix Matrix::operator+(const Matrix& m) const
+    inline auto Matrix::operator+(const Matrix& m) const -> Matrix
     {
         auto result(*this);
         result += m;
         return result;
     }
 
-    inline Matrix Matrix::operator-(float scalar) const
+    inline auto Matrix::operator-(float scalar) const -> Matrix
     {
         auto result(*this);
         result -= scalar;
         return result;
     }
 
-    inline Matrix Matrix::operator-(const Matrix& m) const
+    inline auto Matrix::operator-(const Matrix& m) const -> Matrix
     {
         auto result(*this);
         result -= m;
         return result;
     }
 
-    Matrix Matrix::operator*(float scalar) const
+    inline auto Matrix::operator*(float scalar) const -> Matrix
     {
         auto result(*this);
         result *= scalar;
         return result;
     }
 
-    inline Matrix Matrix::operator*(const Matrix& m) const
+    inline auto Matrix::operator*(const Matrix& m) const -> Matrix
     {
         auto result(*this);
         return result *= m;
     }
 
-    inline Vector3& operator*=(Vector3& v, const Matrix& m)
+    inline auto operator*=(Vector3& v, const Matrix& m) -> Vector3&
     {
         v = m.transformDirection(v);
         return v;
     }
 
-    inline Vector3 operator*(const Matrix& m, const Vector3& v)
+    inline auto operator*(const Matrix& m, const Vector3& v) -> Vector3
     {
         return m.transformDirection(v);
     }
 
-    inline Vector3 Matrix::getUpVector() const
+    inline auto Matrix::getUpVector() const -> Vector3
     {
         return Vector3(m[4], m[5], m[6]);
     }
 
-    inline Vector3 Matrix::getDownVector() const
+    inline auto Matrix::getDownVector() const -> Vector3
     {
         return Vector3(-m[4], -m[5], -m[6]);
     }
 
-    inline Vector3 Matrix::getLeftVector() const
+    inline auto Matrix::getLeftVector() const -> Vector3
     {
         return Vector3(-m[0], -m[1], -m[2]);
     }
 
-    inline Vector3 Matrix::getRightVector() const
+    inline auto Matrix::getRightVector() const -> Vector3
     {
         return Vector3(m[0], m[1], m[2]);
     }
 
-    inline Vector3 Matrix::getForwardVector() const
+    inline auto Matrix::getForwardVector() const -> Vector3
     {
         return Vector3(-m[8], -m[9], -m[10]);
     }
 
-    inline Vector3 Matrix::getBackVector() const
+    inline auto Matrix::getBackVector() const -> Vector3
     {
         return Vector3(m[8], m[9], m[10]);
     }

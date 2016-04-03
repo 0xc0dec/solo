@@ -18,13 +18,13 @@ namespace solo
         static bool approxZero(float value, float tolerance);
         static bool approxEqual(float first, float second, float tolerance);
 
-        static float degToRad(float degrees);
-        static float radToDeg(float radians);
+        static auto degToRad(float degrees) -> float;
+        static auto radToDeg(float radians) -> float;
 
-        static float getRandomAroundZero();
-        static float getRandom01();
+        static auto getRandomAroundZero() -> float;
+        static auto getRandom01() -> float;
 
-        static float clamp(float x, float lo, float hi);
+        static auto clamp(float x, float lo, float hi) -> float;
     };
 
     inline bool Math::approxZero(float value, float tolerance)
@@ -37,27 +37,27 @@ namespace solo
         return fabs(first - second) <= tolerance;
     }
 
-    inline float Math::degToRad(float degrees)
+    inline auto Math::degToRad(float degrees) -> float
     {
         return degrees * 0.0174532925f;
     }
 
-    inline float Math::radToDeg(float radians)
+    inline auto Math::radToDeg(float radians) -> float
     {
         return radians * 57.29577951f;
     }
 
-    inline float Math::getRandomAroundZero()
+    inline auto Math::getRandomAroundZero() -> float
     {
         return 2.0f * (static_cast<float>(rand()) / RAND_MAX) - 1.0f;
     }
 
-    inline float Math::getRandom01()
+    inline auto Math::getRandom01() -> float
     {
         return static_cast<float>(rand()) / RAND_MAX;
     }
 
-    inline float Math::clamp(float x, float lo, float hi)
+    inline auto Math::clamp(float x, float lo, float hi) -> float
     {
         return (x < lo) ? lo : ((x > hi) ? hi : x);
     }
