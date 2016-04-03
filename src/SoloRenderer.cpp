@@ -6,7 +6,7 @@
 using namespace solo;
 
 
-uptr<Renderer> Renderer::create(Device* device, const DeviceToken&)
+auto Renderer::create(Device* device, const DeviceToken&) -> uptr<Renderer>
 {
     if (device->getMode() == DeviceMode::OpenGL)
         return std::unique_ptr<OpenGLRenderer>(new OpenGLRenderer());

@@ -135,12 +135,12 @@ namespace solo
     class Renderer
     {
     public:
-        static uptr<Renderer> create(Device* device, const DeviceToken&);
+        static auto create(Device* device, const DeviceToken&) -> uptr<Renderer>;
 
         SL_NONCOPYABLE(Renderer)
         virtual ~Renderer();
 
-        virtual TextureHandle createTexture() = 0;
+        virtual auto createTexture() -> TextureHandle = 0;
         virtual void destroyTexture(const TextureHandle& handle) = 0;
         virtual void set2DTexture(const TextureHandle& handle) = 0;
         virtual void set2DTexture(const TextureHandle& handle, uint32_t flags) = 0;
@@ -154,27 +154,27 @@ namespace solo
         virtual void generateTexture2DMipmaps(const TextureHandle& handle) = 0;
         virtual void generateCubeTextureMipmaps(const TextureHandle& handle) = 0;
 
-        virtual FrameBufferHandle createFrameBuffer() = 0;
+        virtual auto createFrameBuffer() -> FrameBufferHandle = 0;
         virtual void destroyFrameBuffer(const FrameBufferHandle& handle) = 0;
         virtual void setFrameBuffer(const FrameBufferHandle& handle) = 0;
         virtual void updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle>& attachmentHandles) = 0;
 
-        virtual VertexBufferHandle createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) = 0;
-        virtual VertexBufferHandle createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) = 0;
+        virtual auto createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> VertexBufferHandle = 0;
+        virtual auto createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> VertexBufferHandle = 0;
         virtual void updateDynamicVertexBuffer(const VertexBufferHandle& handle, const void* data, uint32_t offset, uint32_t vertexCount) = 0;
         virtual void destroyVertexBuffer(const VertexBufferHandle& handle) = 0;
 
-        virtual IndexBufferHandle createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount) = 0;
+        virtual auto createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount) -> IndexBufferHandle = 0;
         virtual void destroyIndexBuffer(const IndexBufferHandle& handle) = 0;
 
-        virtual ProgramHandle createProgram(const char* vsSrc, const char* fsSrc) = 0;
+        virtual auto createProgram(const char* vsSrc, const char* fsSrc) -> ProgramHandle = 0;
         virtual void destroyProgram(const ProgramHandle& handle) = 0;
         virtual void setProgram(const ProgramHandle& handle) = 0;
 
-        virtual VertexObjectHandle createVertexObject(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle) = 0;
+        virtual auto createVertexObject(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle) -> VertexObjectHandle = 0;
         virtual void destroyVertexObject(const VertexObjectHandle& handle) = 0;
 
-        virtual UniformHandle createUniform(const char* name, UniformType type, uint32_t componentCount, ProgramHandle program) = 0;
+        virtual auto createUniform(const char* name, UniformType type, uint32_t componentCount, ProgramHandle program) -> UniformHandle = 0;
         virtual void destroyUniform(const UniformHandle& handle) = 0;
         virtual void setUniform(const UniformHandle& handle, const void* value, uint32_t count) = 0;
 
