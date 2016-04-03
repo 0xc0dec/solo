@@ -32,26 +32,26 @@ namespace solo
         void removeCallback(TransformCallback* callback);
 
         void setParent(Transform* parent);
-        Transform* getParent() const;
-        Transform* getChild(uint32_t index) const;
-        uint32_t getChildrenCount() const;
+        auto getParent() const -> Transform*;
+        auto getChild(uint32_t index) const -> Transform*;
+        auto getChildrenCount() const -> uint32_t;
         void removeChildren();
 
-        Vector3 getWorldScale() const;
-        Vector3 getLocalScale() const;
+        auto getWorldScale() const -> Vector3;
+        auto getLocalScale() const -> Vector3;
 
-        Quaternion getWorldRotation() const;
-        Quaternion getLocalRotation() const;
+        auto getWorldRotation() const -> Quaternion;
+        auto getLocalRotation() const -> Quaternion;
 
-        Vector3 getWorldPosition() const;
-        Vector3 getLocalPosition() const;
+        auto getWorldPosition() const -> Vector3;
+        auto getLocalPosition() const -> Vector3;
 
-        Vector3 getLocalUp() const;
-        Vector3 getLocalDown() const;
-        Vector3 getLocalLeft() const;
-        Vector3 getLocalRight() const;
-        Vector3 getLocalForward() const;
-        Vector3 getLocalBack() const;
+        auto getLocalUp() const -> Vector3;
+        auto getLocalDown() const -> Vector3;
+        auto getLocalLeft() const -> Vector3;
+        auto getLocalRight() const -> Vector3;
+        auto getLocalForward() const -> Vector3;
+        auto getLocalBack() const -> Vector3;
 
         void translateLocal(const Vector3& translation);
         void scaleLocal(const Vector3& scale);
@@ -67,16 +67,16 @@ namespace solo
 
         void lookAt(const Vector3& target, const Vector3& up);
 
-        Matrix getMatrix() const;
-        Matrix getWorldMatrix() const;
+        auto getMatrix() const -> Matrix;
+        auto getWorldMatrix() const -> Matrix;
 
-        Matrix getWorldViewMatrix(Camera* camera) const;
-        Matrix getWorldViewProjectionMatrix(Camera* camera) const;
-        Matrix getInverseTransposedWorldViewMatrix(Camera* camera) const;
-        Matrix getInverseTransposedWorldMatrix() const;
+        auto getWorldViewMatrix(Camera* camera) const -> Matrix;
+        auto getWorldViewProjectionMatrix(Camera* camera) const -> Matrix;
+        auto getInverseTransposedWorldViewMatrix(Camera* camera) const -> Matrix;
+        auto getInverseTransposedWorldMatrix() const -> Matrix;
 
-        Vector3 transformPoint(const Vector3& point) const;
-        Vector3 transformDirection(const Vector3& direction) const;
+        auto transformPoint(const Vector3& point) const -> Vector3;
+        auto transformDirection(const Vector3& direction) const -> Vector3;
 
     private:
         void setDirtyWithChildren(uint32_t flags) const;

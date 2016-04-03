@@ -66,13 +66,13 @@ void Transform::setParent(Transform* parent)
 }
 
 
-Transform* Transform::getParent() const
+auto Transform::getParent() const -> Transform*
 {
     return parent;
 }
 
 
-Transform* Transform::getChild(uint32_t index) const
+auto Transform::getChild(uint32_t index) const -> Transform*
 {
     return children[index];
 }
@@ -88,37 +88,37 @@ void Transform::removeChildren()
 }
 
 
-uint32_t Transform::getChildrenCount() const
+auto Transform::getChildrenCount() const -> uint32_t
 {
     return static_cast<uint32_t>(children.size());
 }
 
 
-Vector3 Transform::getLocalScale() const
+auto Transform::getLocalScale() const -> Vector3
 {
     return localScale;
 }
 
 
-Quaternion Transform::getWorldRotation() const
+auto Transform::getWorldRotation() const -> Quaternion
 {
     return getWorldMatrix().getRotation();
 }
 
 
-Vector3 Transform::getWorldScale() const
+auto Transform::getWorldScale() const -> Vector3
 {
     return getWorldMatrix().getScale();
 }
 
 
-Quaternion Transform::getLocalRotation() const
+auto Transform::getLocalRotation() const -> Quaternion
 {
     return getMatrix().getRotation();
 }
 
 
-Matrix Transform::getMatrix() const
+auto Transform::getMatrix() const -> Matrix
 {
     if (!dirtyFlags.isEmpty())
     {
@@ -149,7 +149,7 @@ Matrix Transform::getMatrix() const
 }
 
 
-Matrix Transform::getWorldMatrix() const
+auto Transform::getWorldMatrix() const -> Matrix
 {
     if (dirtyFlags.checkAndRemove(DirtyBitWorld))
     {
@@ -164,7 +164,7 @@ Matrix Transform::getWorldMatrix() const
 }
 
 
-Matrix Transform::getInverseTransposedWorldMatrix() const
+auto Transform::getInverseTransposedWorldMatrix() const -> Matrix
 {
     if (dirtyFlags.checkAndRemove(DirtyBitInverseTransposedWorld) || dirtyFlags.isSet(DirtyBitWorld))
     {
@@ -177,19 +177,19 @@ Matrix Transform::getInverseTransposedWorldMatrix() const
 }
 
 
-Matrix Transform::getWorldViewMatrix(Camera* camera) const
+auto Transform::getWorldViewMatrix(Camera* camera) const -> Matrix
 {
     return camera->getViewMatrix() * getWorldMatrix();
 }
 
 
-Matrix Transform::getWorldViewProjectionMatrix(Camera* camera) const
+auto Transform::getWorldViewProjectionMatrix(Camera* camera) const -> Matrix
 {
     return camera->getViewProjectionMatrix() * getWorldMatrix();
 }
 
 
-Matrix Transform::getInverseTransposedWorldViewMatrix(Camera* camera) const
+auto Transform::getInverseTransposedWorldViewMatrix(Camera* camera) const -> Matrix
 {
     auto result = camera->getViewMatrix() * getWorldMatrix();
     result.invert();
@@ -273,13 +273,13 @@ void Transform::lookAt(const Vector3& target, const Vector3& up)
 }
 
 
-Vector3 Transform::transformPoint(const Vector3& point) const
+auto Transform::transformPoint(const Vector3& point) const -> Vector3
 {
     return getMatrix().transformPoint(point);
 }
 
 
-Vector3 Transform::transformDirection(const Vector3& direction) const
+auto Transform::transformDirection(const Vector3& direction) const -> Vector3
 {
     return getMatrix().transformDirection(direction);
 }
@@ -306,49 +306,49 @@ void Transform::setLocalPosition(const Vector3& position)
 }
 
 
-Vector3 Transform::getLocalPosition() const
+auto Transform::getLocalPosition() const -> Vector3
 {
     return localPosition;
 }
 
 
-Vector3 Transform::getWorldPosition() const
+auto Transform::getWorldPosition() const -> Vector3
 {
     return getWorldMatrix().getTranslation();
 }
 
 
-Vector3 Transform::getLocalUp() const
+auto Transform::getLocalUp() const -> Vector3
 {
     return getMatrix().getUpVector();
 }
 
 
-Vector3 Transform::getLocalDown() const
+auto Transform::getLocalDown() const -> Vector3
 {
     return getMatrix().getDownVector();
 }
 
 
-Vector3 Transform::getLocalLeft() const
+auto Transform::getLocalLeft() const -> Vector3
 {
     return getMatrix().getLeftVector();
 }
 
 
-Vector3 Transform::getLocalRight() const
+auto Transform::getLocalRight() const -> Vector3
 {
     return getMatrix().getRightVector();
 }
 
 
-Vector3 Transform::getLocalForward() const
+auto Transform::getLocalForward() const -> Vector3
 {
     return getMatrix().getForwardVector();
 }
 
 
-Vector3 Transform::getLocalBack() const
+auto Transform::getLocalBack() const -> Vector3
 {
     return getMatrix().getBackVector();
 }
