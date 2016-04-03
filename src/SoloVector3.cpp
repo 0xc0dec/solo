@@ -15,35 +15,35 @@ Vector3::Vector3(float x, float y, float z):
 }
 
 
-Vector3 Vector3::zero()
+auto Vector3::zero() -> Vector3
 {
     static Vector3 value(0.0f, 0.0f, 0.0f);
     return value;
 }
 
 
-Vector3 Vector3::unit()
+auto Vector3::unit() -> Vector3
 {
     static Vector3 value(1.0f, 1.0f, 1.0f);
     return value;
 }
 
 
-Vector3 Vector3::unitX()
+auto Vector3::unitX() -> Vector3
 {
     static Vector3 value(1.0f, 0.0f, 0.0f);
     return value;
 }
 
 
-Vector3 Vector3::unitY()
+auto Vector3::unitY() -> Vector3
 {
     static Vector3 value(0.0f, 1.0f, 0.0f);
     return value;
 }
 
 
-Vector3 Vector3::unitZ()
+auto Vector3::unitZ() -> Vector3
 {
     static Vector3 value(0.0f, 0.0f, 1.0f);
     return value;
@@ -66,7 +66,7 @@ bool Vector3::isUnit() const
 }
 
 
-float Vector3::angle(const Vector3& v1, const Vector3& v2)
+auto Vector3::angle(const Vector3& v1, const Vector3& v2) -> float
 {
     auto dx = v1.y * v2.z - v1.z * v2.y;
     auto dy = v1.z * v2.x - v1.x * v2.z;
@@ -95,7 +95,7 @@ void Vector3::clamp(const Vector3& min, const Vector3& max)
 }
 
 
-Vector3 Vector3::cross(const Vector3& v1, const Vector3& v2)
+auto Vector3::cross(const Vector3& v1, const Vector3& v2) -> Vector3
 {
     return Vector3(
         (v1.y * v2.z) - (v1.z * v2.y),
@@ -105,7 +105,7 @@ Vector3 Vector3::cross(const Vector3& v1, const Vector3& v2)
 }
 
 
-float Vector3::distance(const Vector3& v) const
+auto Vector3::distance(const Vector3& v) const -> float
 {
     auto dx = v.x - x;
     auto dy = v.y - y;
@@ -115,7 +115,7 @@ float Vector3::distance(const Vector3& v) const
 }
 
 
-float Vector3::distanceSquared(const Vector3& v) const
+auto Vector3::distanceSquared(const Vector3& v) const -> float
 {
     auto dx = v.x - x;
     auto dy = v.y - y;
@@ -124,31 +124,31 @@ float Vector3::distanceSquared(const Vector3& v) const
 }
 
 
-float Vector3::dot(const Vector3& v) const
+auto Vector3::dot(const Vector3& v) const -> float
 {
     return x * v.x + y * v.y + z * v.z;
 }
 
 
-float Vector3::dot(const Vector3& v1, const Vector3& v2)
+auto Vector3::dot(const Vector3& v1, const Vector3& v2) -> float
 {
     return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
 
 
-float Vector3::length() const
+auto Vector3::length() const -> float
 {
     return sqrt(x * x + y * y + z * z);
 }
 
 
-float Vector3::lengthSquared() const
+auto Vector3::lengthSquared() const -> float
 {
     return x * x + y * y + z * z;
 }
 
 
-Vector3 Vector3::normalized() const
+auto Vector3::normalized() const -> Vector3
 {
     auto result(*this);
     result.normalize();

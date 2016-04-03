@@ -13,50 +13,50 @@ namespace solo
 		Vector3(float all);
         Vector3(float x, float y, float z);
 
-        static Vector3 zero();
-        static Vector3 unit();
-        static Vector3 unitX();
-        static Vector3 unitY();
-        static Vector3 unitZ();
+        static auto zero() -> Vector3;
+        static auto unit() -> Vector3;
+        static auto unitX() -> Vector3;
+        static auto unitY() -> Vector3;
+        static auto unitZ() -> Vector3;
 
         bool isZero() const;
         bool isUnit() const;
 
         // in radians
-        static float angle(const Vector3& v1, const Vector3& v2);
+        static auto angle(const Vector3& v1, const Vector3& v2) -> float;
 
         void clamp(const Vector3& min, const Vector3& max);
 
-        static Vector3 cross(const Vector3& v1, const Vector3& v2);
+        static auto cross(const Vector3& v1, const Vector3& v2) -> Vector3;
 
-        float distance(const Vector3& v) const;
-        float distanceSquared(const Vector3& v) const;
+        auto distance(const Vector3& v) const -> float;
+        auto distanceSquared(const Vector3& v) const -> float;
 
-        float dot(const Vector3& v) const;
-        static float dot(const Vector3& v1, const Vector3& v2);
+        auto dot(const Vector3& v) const -> float;
+        static auto dot(const Vector3& v1, const Vector3& v2) -> float;
 
-        float length() const;
-        float lengthSquared() const;
+        auto length() const -> float;
+        auto lengthSquared() const -> float;
 
-        Vector3 normalized() const;
+        auto normalized() const -> Vector3;
         void normalize();
 
-        Vector3 operator+(float scalar) const;
-        Vector3 operator+(const Vector3& v) const;
-        Vector3& operator+=(const Vector3& v);
-        Vector3& operator+=(float scalar);
+        auto operator+(float scalar) const -> Vector3;
+        auto operator+(const Vector3& v) const -> Vector3;
+        auto operator+=(const Vector3& v) -> Vector3&;
+        auto operator+=(float scalar) -> Vector3&;
 
-        Vector3 operator-() const;
-        Vector3 operator-(float scalar) const;
-        Vector3 operator-(const Vector3& v) const;
-        Vector3& operator-=(float scalar);
-        Vector3& operator-=(const Vector3& v);
+        auto operator-() const -> Vector3;
+        auto operator-(float scalar) const -> Vector3;
+        auto operator-(const Vector3& v) const -> Vector3;
+        auto operator-=(float scalar) -> Vector3&;
+        auto operator-=(const Vector3& v) -> Vector3&;
 
-        Vector3 operator*(float scalar) const;
-        Vector3& operator*=(float scalar);
+        auto operator*(float scalar) const -> Vector3;
+        auto operator*=(float scalar) -> Vector3&;
 
-        Vector3 operator/(float scalar) const;
-        Vector3& operator/=(float scalar);
+        auto operator/(float scalar) const -> Vector3;
+        auto operator/=(float scalar) -> Vector3&;
 
         bool operator<(const Vector3& v) const;
 
@@ -65,26 +65,26 @@ namespace solo
     };
 
 
-    inline Vector3 Vector3::operator+(const Vector3& v) const
+    inline auto Vector3::operator+(const Vector3& v) const -> Vector3
     {
         auto result(*this);
         result += v;
         return result;
     }
 
-    inline Vector3 Vector3::operator+(float scalar) const
+    inline auto Vector3::operator+(float scalar) const -> Vector3
     {
         auto result(*this);
         result += scalar;
         return result;
     }
 
-    inline Vector3 operator+(float scalar, const Vector3& v)
+    inline auto operator+(float scalar, const Vector3& v) -> Vector3
     {
         return Vector3(v.x + scalar, v.y + scalar, v.z + scalar);
     }
 
-    inline Vector3& Vector3::operator+=(const Vector3& v)
+    inline auto Vector3::operator+=(const Vector3& v) -> Vector3&
     {
         x += v.x;
         y += v.y;
@@ -92,7 +92,7 @@ namespace solo
         return *this;
     }
 
-    inline Vector3& Vector3::operator+=(float scalar)
+    inline auto Vector3::operator+=(float scalar) -> Vector3&
     {
         x += scalar;
         y += scalar;
@@ -100,7 +100,7 @@ namespace solo
         return *this;
     }
 
-    inline Vector3 Vector3::operator-() const
+    inline auto Vector3::operator-() const -> Vector3
     {
         Vector3 result;
         result.x = -x;
@@ -109,21 +109,21 @@ namespace solo
         return result;
     }
 
-    inline Vector3 Vector3::operator-(float scalar) const
+    inline auto Vector3::operator-(float scalar) const -> Vector3
     {
         auto result(*this);
         result -= scalar;
         return result;
     }
 
-    inline Vector3 Vector3::operator-(const Vector3& v) const
+    inline auto Vector3::operator-(const Vector3& v) const -> Vector3
     {
         auto result(*this);
         result -= v;
         return result;
     }
 
-    inline Vector3& Vector3::operator-=(const Vector3& v)
+    inline auto Vector3::operator-=(const Vector3& v) -> Vector3&
     {
         x -= v.x;
         y -= v.y;
@@ -131,7 +131,7 @@ namespace solo
         return *this;
     }
 
-    inline Vector3& Vector3::operator-=(float scalar)
+    inline auto Vector3::operator-=(float scalar) -> Vector3&
     {
         x -= scalar;
         y -= scalar;
@@ -139,19 +139,19 @@ namespace solo
         return *this;
     }
 
-    inline Vector3 Vector3::operator*(float scalar) const
+    inline auto Vector3::operator*(float scalar) const -> Vector3
     {
         auto result(*this);
         result *= scalar;
         return result;
     }
 
-    inline Vector3 operator*(float scalar, const Vector3& v)
+    inline auto operator*(float scalar, const Vector3& v) -> Vector3
     {
         return Vector3(v.x * scalar, v.y * scalar, v.z * scalar);
     }
 
-    inline Vector3& Vector3::operator*=(float scalar)
+    inline auto Vector3::operator*=(float scalar) -> Vector3&
     {
         x *= scalar;
         y *= scalar;
@@ -159,12 +159,12 @@ namespace solo
         return *this;
     }
 
-    inline Vector3 Vector3::operator/(const float scalar) const
+    inline auto Vector3::operator/(const float scalar) const -> Vector3
     {
         return Vector3(this->x / scalar, this->y / scalar, this->z / scalar);
     }
 
-    inline Vector3& Vector3::operator/=(float scalar)
+    inline auto Vector3::operator/=(float scalar) -> Vector3&
     {
         x /= scalar;
         y /= scalar;
