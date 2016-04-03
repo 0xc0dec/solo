@@ -17,19 +17,19 @@ namespace solo
 
         virtual void render(RenderContext& context) override final;
 
-        Mesh* getMesh() const;
+        auto getMesh() const -> Mesh*;
         void setMesh(sptr<Mesh> mesh);
 
-        Material* getMaterial(uint32_t index) const;
+        auto getMaterial(uint32_t index) const -> Material*;
         void setMaterial(uint32_t index, sptr<Material> material);
-        uint32_t getMaterialCount() const;
+        auto getMaterialCount() const -> uint32_t;
 
     private:
         sptr<Mesh> mesh;
         std::unordered_map<uint32_t, sptr<Material>> materials;
     };
 
-    inline Mesh* MeshRenderer::getMesh() const
+    inline auto MeshRenderer::getMesh() const -> Mesh*
     {
         return mesh.get();
     }
@@ -39,12 +39,12 @@ namespace solo
         this->mesh = mesh;
     }
 
-    inline Material* MeshRenderer::getMaterial(uint32_t index) const
+    inline auto MeshRenderer::getMaterial(uint32_t index) const -> Material*
     {
         return materials.at(index).get();
     }
 
-    inline uint32_t MeshRenderer::getMaterialCount() const
+    inline auto MeshRenderer::getMaterialCount() const -> uint32_t
     {
         return static_cast<uint32_t>(materials.size());
     }

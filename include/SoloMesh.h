@@ -28,27 +28,27 @@ namespace solo
     class Mesh final
     {
     public:
-        static sptr<Mesh> create();
-        static sptr<Mesh> create(MeshPrefab prefab);
-        static sptr<Mesh> create(MeshData* data);
+        static auto create() -> sptr<Mesh>;
+        static auto create(MeshPrefab prefab) -> sptr<Mesh>;
+        static auto create(MeshData* data) -> sptr<Mesh>;
 
         ~Mesh();
         SL_NONCOPYABLE(Mesh)
 
-        uint32_t addVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount);
-        uint32_t addDynamicVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount);
+        auto addVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount) -> uint32_t;
+        auto addDynamicVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount) -> uint32_t;
         void updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const float* data, uint32_t vertexCount);
         void removeVertexBuffer(uint32_t index);
 
-        uint32_t addPart(const void* indexData, uint32_t indexElementCount);
+        auto addPart(const void* indexData, uint32_t indexElementCount) -> uint32_t;
         void removePart(uint32_t index);
-        uint32_t getPartCount() const;
+        auto getPartCount() const -> uint32_t;
 
         void draw(Effect* effect);
         void drawPart(Effect* effect, uint32_t part);
 
         void setPrimitiveType(PrimitiveType type);
-        PrimitiveType getPrimitiveType() const;
+        auto getPrimitiveType() const -> PrimitiveType;
 
     private:
         Mesh();
@@ -80,12 +80,12 @@ namespace solo
         primitiveType = type;
     }
 
-    inline PrimitiveType Mesh::getPrimitiveType() const
+    inline auto Mesh::getPrimitiveType() const -> PrimitiveType
     {
         return primitiveType;
     }
 
-    inline uint32_t Mesh::getPartCount() const
+    inline auto Mesh::getPartCount() const -> uint32_t
     {
         return static_cast<uint32_t>(indexBuffers.size());
     }
