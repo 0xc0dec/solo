@@ -27,44 +27,44 @@ namespace solo
         void apply();
         void finish();
 
-        BitFlags& getRenderTags();
+        auto getRenderTags() -> BitFlags&;
 
-        sptr<FrameBuffer> getRenderTarget() const;
+        auto getRenderTarget() const ->sptr<FrameBuffer>;
         void setRenderTarget(sptr<FrameBuffer> target);
 
-        Vector4 getClearColor() const;
+        auto getClearColor() const -> Vector4;
         void setClearColor(float r, float g, float b, float a);
 
-        Vector4 getViewport() const;
+        auto getViewport() const -> Vector4;
         void setViewport(float left, float top, float width, float height);
         void resetViewport();
 
         bool isPerspective() const;
         void setPerspective(bool perspective);
 
-        float getNear() const;
+        auto getNear() const -> float;
         void setNear(float near);
 
-        float getFar() const;
+        auto getFar() const -> float;
         void setFar(float far);
 
-        float getFOV() const;
+        auto getFOV() const -> float;
         void setFOV(float fov);
 
-        float getWidth() const;
+        auto getWidth() const -> float;
         void setWidth(float width);
 
-        float getHeight() const;
+        auto getHeight() const -> float;
         void setHeight(float height);
 
-        float getAspectRatio() const;
+        auto getAspectRatio() const -> float;
         void setAspectRatio(float ratio);
 
-        const Matrix& getViewMatrix();
-        const Matrix& getInverseViewMatrix();
-        const Matrix& getProjectionMatrix();
-        const Matrix& getViewProjectionMatrix();
-        const Matrix& getInverseViewProjectionMatrix();
+        auto getViewMatrix() -> const Matrix&;
+        auto getInverseViewMatrix() -> const Matrix&;
+        auto getProjectionMatrix() -> const Matrix&;
+        auto getViewProjectionMatrix() -> const Matrix&;
+        auto getInverseViewProjectionMatrix() -> const Matrix&;
 
     protected:
         virtual void onTransformChanged(const Transform* transform) override;
@@ -108,37 +108,37 @@ namespace solo
         return !ortho;
     }
 
-    inline float Camera::getNear() const
+    inline auto Camera::getNear() const -> float
     {
         return nearClip;
     }
 
-    inline float Camera::getFar() const
+    inline auto Camera::getFar() const -> float
     {
         return farClip;
     }
 
-    inline float Camera::getFOV() const
+    inline auto Camera::getFOV() const -> float
     {
         return fov;
     }
 
-    inline float Camera::getWidth() const
+    inline auto Camera::getWidth() const -> float
     {
         return width;
     }
 
-    inline float Camera::getHeight() const
+    inline auto Camera::getHeight() const -> float
     {
         return height;
     }
 
-    inline float Camera::getAspectRatio() const
+    inline auto Camera::getAspectRatio() const -> float
     {
         return aspectRatio;
     }
 
-    inline BitFlags& Camera::getRenderTags()
+    inline auto Camera::getRenderTags() -> BitFlags&
     {
         return renderTags;
     }
@@ -148,12 +148,12 @@ namespace solo
         renderTarget = target;
     }
 
-    inline Vector4 Camera::getClearColor() const
+    inline auto Camera::getClearColor() const -> Vector4
     {
         return clearColor;
     }
 
-    inline sptr<FrameBuffer> Camera::getRenderTarget() const
+    inline auto Camera::getRenderTarget() const -> sptr<FrameBuffer>
     {
         return renderTarget;
     }

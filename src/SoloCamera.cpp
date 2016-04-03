@@ -53,7 +53,7 @@ void Camera::setViewport(float left, float top, float width, float height)
 }
 
 
-Vector4 Camera::getViewport() const
+auto Camera::getViewport() const -> Vector4
 {
     if (viewportSet)
         return viewport;
@@ -110,7 +110,7 @@ void Camera::setNear(float near)
 }
 
 
-const Matrix& Camera::getViewMatrix()
+auto Camera::getViewMatrix() -> const Matrix&
 {
     if (dirtyFlags.checkAndRemove(DirtyBitView))
     {
@@ -121,7 +121,7 @@ const Matrix& Camera::getViewMatrix()
 }
 
 
-const Matrix& Camera::getInverseViewMatrix()
+auto Camera::getInverseViewMatrix() -> const Matrix&
 {
     if (dirtyFlags.checkAndRemove(DirtyBitInverseView))
     {
@@ -132,7 +132,7 @@ const Matrix& Camera::getInverseViewMatrix()
 }
 
 
-const Matrix& Camera::getProjectionMatrix()
+auto Camera::getProjectionMatrix() -> const Matrix&
 {
     if (dirtyFlags.checkAndRemove(DirtyBitProjection))
     {
@@ -145,7 +145,7 @@ const Matrix& Camera::getProjectionMatrix()
 }
 
 
-const Matrix& Camera::getViewProjectionMatrix()
+auto Camera::getViewProjectionMatrix() -> const Matrix&
 {
     if (dirtyFlags.checkAndRemove(DirtyBitViewProjection))
         viewProjectionMatrix = getProjectionMatrix() * getViewMatrix();
@@ -153,7 +153,7 @@ const Matrix& Camera::getViewProjectionMatrix()
 }
 
 
-const Matrix& Camera::getInverseViewProjectionMatrix()
+auto Camera::getInverseViewProjectionMatrix() -> const Matrix&
 {
     if (dirtyFlags.checkAndRemove(DirtyBitInverseViewProjection))
     {
