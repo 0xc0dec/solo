@@ -64,40 +64,40 @@ namespace solo
     class Device
     {
     public:
-        static Device* init(const DeviceCreationArgs& args);
-        static Device* get();
+        static auto init(const DeviceCreationArgs& args) -> Device*;
+        static auto get() -> Device*;
         static void shutdown();
 
         virtual ~Device();
         SL_NONCOPYABLE(Device)
 
         virtual void setWindowTitle(const std::string& title) = 0;
-        virtual std::string getWindowTitle() const = 0;
+        virtual auto getWindowTitle() const -> std::string = 0;
 
         virtual void saveScreenshot(const std::string& path) = 0;
 
         virtual void setCursorCaptured(bool captured) = 0;
-        virtual Vector2 getCanvasSize() const = 0;
-        virtual float getLifetime() const = 0;
-        float getTimeDelta() const;
+        virtual auto getCanvasSize() const -> Vector2 = 0;
+        virtual auto getLifetime() const -> float = 0;
+        auto getTimeDelta() const -> float;
 
         bool isKeyPressed(KeyCode code, bool firstTime = false) const;
         bool isKeyReleased(KeyCode code) const;
 
-        Vector2 getMouseMotion() const;
+        auto getMouseMotion() const -> Vector2;
         bool isMouseButtonDown(MouseButton button, bool firstTime = false) const;
         bool isMouseButtonReleased(MouseButton button) const;
 
         void run();
         void stopRunning();
 
-        DeviceMode getMode() const;
-        Scene* getScene() const;
-        FileSystem* getFileSystem() const;
-        AssetLoader* getAssetLoader() const;
-        Renderer* getRenderer() const;
-        Graphics* getGraphics() const;
-        Logger* getLogger() const;
+        auto getMode() const -> DeviceMode;
+        auto getScene() const -> Scene*;
+        auto getFileSystem() const -> FileSystem*;
+        auto getAssetLoader() const -> AssetLoader*;
+        auto getRenderer() const -> Renderer*;
+        auto getGraphics() const -> Graphics*;
+        auto getLogger() const -> Logger*;
 
     protected:
         explicit Device(const DeviceCreationArgs& args);
@@ -134,7 +134,7 @@ namespace solo
         static uptr<Device> instance;
     };
 
-    inline float Device::getTimeDelta() const
+    inline auto Device::getTimeDelta() const -> float
     {
         return timeDelta;
     }
@@ -144,37 +144,37 @@ namespace solo
         running = false;
     }
 
-    inline DeviceMode Device::getMode() const
+    inline auto Device::getMode() const -> DeviceMode
     {
         return creationArgs.mode;
     }
 
-    inline Scene* Device::getScene() const
+    inline auto Device::getScene() const -> Scene*
     {
         return scene.get();
     }
 
-    inline FileSystem* Device::getFileSystem() const
+    inline auto Device::getFileSystem() const -> FileSystem*
     {
         return fs.get();
     }
 
-    inline Renderer* Device::getRenderer() const
+    inline auto Device::getRenderer() const -> Renderer*
     {
         return renderer.get();
     }
 
-    inline AssetLoader* Device::getAssetLoader() const
+    inline auto Device::getAssetLoader() const -> AssetLoader*
     {
         return assetLoader.get();
     }
 
-    inline Graphics* Device::getGraphics() const
+    inline auto Device::getGraphics() const -> Graphics*
     {
         return graphics.get();
     }
 
-    inline Logger* Device::getLogger() const
+    inline auto Device::getLogger() const -> Logger*
     {
         return logger.get();
     }

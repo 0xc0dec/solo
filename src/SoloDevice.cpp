@@ -14,7 +14,7 @@ using namespace solo;
 uptr<Device> Device::instance = nullptr;
 
 
-Device* Device::init(const DeviceCreationArgs& args)
+auto Device::init(const DeviceCreationArgs& args) -> Device*
 {
     if (!instance)
     {
@@ -28,7 +28,7 @@ Device* Device::init(const DeviceCreationArgs& args)
 }
 
 
-Device* Device::get()
+auto Device::get() -> Device*
 {
     return instance.get();
 }
@@ -112,7 +112,7 @@ bool Device::isKeyReleased(KeyCode code) const
 }
 
 
-Vector2 Device::getMouseMotion() const
+auto Device::getMouseMotion() const -> Vector2
 {
     return Vector2(static_cast<float>(mouseDeltaX), static_cast<float>(mouseDeltaY));
 }
