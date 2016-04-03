@@ -11,47 +11,47 @@ namespace solo
         Vector2() {}
         Vector2(float x, float y);
 
-        static Vector2 zero();
-        static Vector2 unit();
-        static Vector2 unitX();
-        static Vector2 unitY();
+        static auto zero() -> Vector2;
+        static auto unit() -> Vector2;
+        static auto unitX() -> Vector2;
+        static auto unitY() -> Vector2;
 
         bool isZero() const;
         bool isUnit() const;
 
         // in radians
-        static float angle(const Vector2& v1, const Vector2& v2);
+        static auto angle(const Vector2& v1, const Vector2& v2) -> float;
 
         void clamp(const Vector2& min, const Vector2& max);
 
-        float distance(const Vector2& v) const;
-        float distanceSquared(const Vector2& v) const;
+        auto distance(const Vector2& v) const -> float;
+        auto distanceSquared(const Vector2& v) const -> float;
 
-        float dot(const Vector2& v) const;
-        static float dot(const Vector2& v1, const Vector2& v2);
+        auto dot(const Vector2& v) const -> float;
+        static auto dot(const Vector2& v1, const Vector2& v2) -> float;
 
-        float length() const;
-        float lengthSquared() const;
+        auto length() const -> float;
+        auto lengthSquared() const -> float;
 
-        Vector2 normalized() const;
+        auto normalized() const -> Vector2;
         void normalize();
 
-        Vector2 operator+(float scalar) const;
-        Vector2 operator+(const Vector2& v) const;
-        Vector2& operator+=(float scalar);
-        Vector2& operator+=(const Vector2& v);
+        auto operator+(float scalar) const -> Vector2;
+        auto operator+(const Vector2& v) const -> Vector2;
+        auto operator+=(float scalar) -> Vector2&;
+        auto operator+=(const Vector2& v) -> Vector2&;
 
-        Vector2 operator-() const;
-        Vector2 operator-(float scalar) const;
-        Vector2 operator-(const Vector2& v) const;
-        Vector2& operator-=(float scalar);
-        Vector2& operator-=(const Vector2& v);
+        auto operator-() const -> Vector2;
+        auto operator-(float scalar) const -> Vector2;
+        auto operator-(const Vector2& v) const -> Vector2;
+        auto operator-=(float scalar) -> Vector2&;
+        auto operator-=(const Vector2& v) -> Vector2&;
 
-        Vector2 operator*(float scalar) const;
-        Vector2& operator*=(float scalar);
+        auto operator*(float scalar) const -> Vector2;
+        auto operator*=(float scalar) -> Vector2&;
 
-        Vector2 operator/(float scalar) const;
-        Vector2& operator/=(float scalar);
+        auto operator/(float scalar) const -> Vector2;
+        auto operator/=(float scalar) -> Vector2&;
 
         bool operator<(const Vector2& v) const;
 
@@ -59,40 +59,40 @@ namespace solo
         bool operator!=(const Vector2& v) const;
     };
 
-    inline Vector2 Vector2::operator+(float scalar) const
+    inline auto Vector2::operator+(float scalar) const -> Vector2
     {
         auto result(*this);
         result += scalar;
         return result;
     }
 
-    inline Vector2 Vector2::operator+(const Vector2& v) const
+    inline auto Vector2::operator+(const Vector2& v) const -> Vector2
     {
         auto result(*this);
         result += v;
         return result;
     }
 
-    inline Vector2 operator+(float scalar, const Vector2& v)
+    inline auto operator+(float scalar, const Vector2& v) -> Vector2
     {
         return Vector2(v.x + scalar, v.y + scalar);
     }
 
-    inline Vector2& Vector2::operator+=(float scalar)
+    inline auto Vector2::operator+=(float scalar) -> Vector2&
     {
         x += scalar;
         y += scalar;
         return *this;
     }
 
-    inline Vector2& Vector2::operator+=(const Vector2& v)
+    inline auto Vector2::operator+=(const Vector2& v) -> Vector2&
     {
         x += v.x;
         y += v.y;
         return *this;
     }
 
-    inline Vector2 Vector2::operator-() const
+    inline auto Vector2::operator-() const -> Vector2
     {
         auto result(*this);
         result.x = -result.x;
@@ -100,61 +100,61 @@ namespace solo
         return result;
     }
 
-    inline Vector2 Vector2::operator-(float scalar) const
+    inline auto Vector2::operator-(float scalar) const -> Vector2
     {
         auto result(*this);
         result -= scalar;
         return result;
     }
 
-    inline Vector2 Vector2::operator-(const Vector2& v) const
+    inline auto Vector2::operator-(const Vector2& v) const -> Vector2
     {
         auto result(*this);
         result -= v;
         return result;
     }
 
-    inline Vector2& Vector2::operator-=(float scalar)
+    inline auto Vector2::operator-=(float scalar) -> Vector2&
     {
         x -= scalar;
         y -= scalar;
         return *this;
     }
 
-    inline Vector2& Vector2::operator-=(const Vector2& v)
+    inline auto Vector2::operator-=(const Vector2& v) -> Vector2&
     {
         x -= v.x;
         y -= v.y;
         return *this;
     }
 
-    inline Vector2 Vector2::operator*(float scalar) const
+    inline auto Vector2::operator*(float scalar) const -> Vector2
     {
         auto result(*this);
         result *= scalar;
         return result;
     }
 
-    inline Vector2 operator*(float scalar, const Vector2& v)
+    inline auto operator*(float scalar, const Vector2& v) -> Vector2
     {
         return Vector2(v.x * scalar, v.y * scalar);
     }
 
-    inline Vector2& Vector2::operator*=(float scalar)
+    inline auto Vector2::operator*=(float scalar) -> Vector2&
     {
         this->x *= scalar;
         this->y *= scalar;
         return *this;
     }
 
-    inline Vector2 Vector2::operator/(const float scalar) const
+    inline auto Vector2::operator/(const float scalar) const -> Vector2
     {
         Vector2 result;
         result /= scalar;
         return result;
     }
 
-    inline Vector2& Vector2::operator/=(float scalar)
+    inline auto Vector2::operator/=(float scalar) -> Vector2&
     {
         x /= scalar;
         y /= scalar;

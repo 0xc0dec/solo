@@ -10,28 +10,28 @@ Vector2::Vector2(float x, float y):
 }
 
 
-Vector2 Vector2::zero()
+auto Vector2::zero() -> Vector2
 {
     static Vector2 value(0.0f, 0.0f);
     return value;
 }
 
 
-Vector2 Vector2::unit()
+auto Vector2::unit() -> Vector2
 {
     static Vector2 value(1.0f, 1.0f);
     return value;
 }
 
 
-Vector2 Vector2::unitX()
+auto Vector2::unitX() -> Vector2
 {
     static Vector2 value(1.0f, 0.0f);
     return value;
 }
 
 
-Vector2 Vector2::unitY()
+auto Vector2::unitY() -> Vector2
 {
     static Vector2 value(0.0f, 1.0f);
     return value;
@@ -50,7 +50,7 @@ bool Vector2::isUnit() const
 }
 
 
-float Vector2::angle(const Vector2& v1, const Vector2& v2)
+auto Vector2::angle(const Vector2& v1, const Vector2& v2) -> float
 {
     auto dz = v1.x * v2.y - v1.y * v2.x;
     return atan2f(fabsf(dz) + Math::smallFloat2, dot(v1, v2));
@@ -71,7 +71,7 @@ void Vector2::clamp(const Vector2& min, const Vector2& max)
 }
 
 
-float Vector2::distance(const Vector2& v) const
+auto Vector2::distance(const Vector2& v) const -> float
 {
     auto dx = v.x - x;
     auto dy = v.y - y;
@@ -79,7 +79,7 @@ float Vector2::distance(const Vector2& v) const
 }
 
 
-float Vector2::distanceSquared(const Vector2& v) const
+auto Vector2::distanceSquared(const Vector2& v) const -> float
 {
     auto dx = v.x - x;
     auto dy = v.y - y;
@@ -87,31 +87,31 @@ float Vector2::distanceSquared(const Vector2& v) const
 }
 
 
-float Vector2::dot(const Vector2& v) const
+auto Vector2::dot(const Vector2& v) const -> float
 {
     return x * v.x + y * v.y;
 }
 
 
-float Vector2::dot(const Vector2& v1, const Vector2& v2)
+auto Vector2::dot(const Vector2& v1, const Vector2& v2) -> float
 {
     return v1.x * v2.x + v1.y * v2.y;
 }
 
 
-float Vector2::length() const
+auto Vector2::length() const -> float
 {
     return sqrt(x * x + y * y);
 }
 
 
-float Vector2::lengthSquared() const
+auto Vector2::lengthSquared() const -> float
 {
     return x * x + y * y;
 }
 
 
-Vector2 Vector2::normalized() const
+auto Vector2::normalized() const -> Vector2
 {
     auto result(*this);
     result.normalize();
