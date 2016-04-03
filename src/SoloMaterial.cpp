@@ -15,7 +15,7 @@ Material::Material(sptr<Effect> effect):
 }
 
 
-sptr<Material> Material::create(sptr<Effect> effect)
+auto Material::create(sptr<Effect> effect) -> sptr<Material>
 {
     return std::shared_ptr<Material>(new Material(effect));
 }

@@ -33,7 +33,7 @@ namespace solo
     class Material final
     {
     public:
-        static sptr<Material> create(sptr<Effect> effect);
+        static auto create(sptr<Effect> effect) -> sptr<Material>;
 
         ~Material();
         SL_NONCOPYABLE(Material)
@@ -53,15 +53,15 @@ namespace solo
 
         void apply(const RenderContext& context);
 
-        Effect* getEffect() const;
+        auto getEffect() const -> Effect*;
 
         bool isTransparent() const;
         void setTransparent(bool enabled);
-        BlendFactor getSrcBlendFactor() const;
-        BlendFactor getDstBlendFactor() const;
+        auto getSrcBlendFactor() const -> BlendFactor;
+        auto getDstBlendFactor() const -> BlendFactor;
         void setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor);
 
-        PolygonFace getPolygonFace() const;
+        auto getPolygonFace() const -> PolygonFace;
         void setPolygonFace(PolygonFace face);
 
         bool getDepthWrite() const;
@@ -70,7 +70,7 @@ namespace solo
         bool getDepthTest() const;
         void setDepthTest(bool enabled);
 
-        DepthFunction getDepthFunction() const;
+        auto getDepthFunction() const -> DepthFunction;
         void setDepthFunction(DepthFunction func);
 
     private:
@@ -123,7 +123,8 @@ namespace solo
 
         void applyState();
 
-        ParameterData& initParameter(const std::string& name, ParameterValueType type, UniformType uniformType, uint32_t uniformComponentCount);
+        auto initParameter(const std::string& name, ParameterValueType type, UniformType uniformType, uint32_t uniformComponentCount)
+            -> ParameterData&;
 
         template <class T>
         void setParameter(const std::string& name, ParameterValueType type, UniformType uniformType, uint32_t uniformComponentCount,
@@ -150,7 +151,7 @@ namespace solo
         initParameter(name, type, uniformType, uniformComponentCount).*dataField = newValue;
     }
 
-    inline Effect* Material::getEffect() const
+    inline auto Material::getEffect() const -> Effect*
     {
         return effect.get();
     }
@@ -165,12 +166,12 @@ namespace solo
         transparent = enabled;
     }
 
-    inline BlendFactor Material::getSrcBlendFactor() const
+    inline auto Material::getSrcBlendFactor() const -> BlendFactor
     {
         return srcBlendFactor;
     }
 
-    inline BlendFactor Material::getDstBlendFactor() const
+    inline auto Material::getDstBlendFactor() const -> BlendFactor
     {
         return dstBlendFactor;
     }
@@ -181,7 +182,7 @@ namespace solo
         dstBlendFactor = dstFactor;
     }
 
-    inline PolygonFace Material::getPolygonFace() const
+    inline auto Material::getPolygonFace() const -> PolygonFace
     {
         return polygonFace;
     }
@@ -211,7 +212,7 @@ namespace solo
         depthFunc = func;
     }
 
-    inline DepthFunction Material::getDepthFunction() const
+    inline auto Material::getDepthFunction() const -> DepthFunction
     {
         return depthFunc;
     }
