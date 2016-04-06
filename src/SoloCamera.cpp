@@ -2,7 +2,6 @@
 #include "SoloNode.h"
 #include "SoloDevice.h"
 #include "SoloFrameBuffer.h"
-#include "SoloBitFlags.h"
 
 using namespace solo;
 
@@ -13,20 +12,21 @@ const uint32_t DirtyBitViewProjection = 4;
 const uint32_t DirtyBitInverseView = 8;
 const uint32_t DirtyBitInverseViewProjection = 16;
 const uint32_t DirtyBitAll =
-    DirtyBitView |
-    DirtyBitProjection |
-    DirtyBitViewProjection |
-    DirtyBitInverseView |
-    DirtyBitInverseViewProjection;
+               DirtyBitView |
+               DirtyBitProjection |
+               DirtyBitViewProjection |
+               DirtyBitInverseView |
+               DirtyBitInverseViewProjection;
 
 
 Camera::Camera(Node node):
     ComponentBase(node),
+    dirtyFlags(~0),
+    renderTags(~0),
     device(Device::get()),
     renderer(Device::get()->getRenderer())
 {
     renderQueue = KnownRenderQueues::Camera;
-    renderTags.setAll();
 }
 
 
@@ -36,13 +36,12 @@ void Camera::init()
     transform->addCallback(this);
     auto canvasSize = device->getCanvasSize();
     setAspectRatio(canvasSize.x / canvasSize.y);
-    dirtyFlags.add(DirtyBitAll); // arguably
 }
 
 
 void Camera::onTransformChanged(const Transform* transform)
 {
-    dirtyFlags.add(DirtyBitView | DirtyBitViewProjection | DirtyBitInverseView | DirtyBitInverseViewProjection);
+    dirtyFlags |= DirtyBitView | DirtyBitViewProjection | DirtyBitInverseView | DirtyBitInverseViewProjection;
 }
 
 
@@ -64,58 +63,59 @@ auto Camera::getViewport() const -> Vector4
 void Camera::setPerspective(bool perspective)
 {
     ortho = !perspective;
-    dirtyFlags.add(DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection);
+    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection;
 }
 
 
 void Camera::setFOV(float fov)
 {
     this->fov = fov;
-    dirtyFlags.add(DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection);
+    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection;
 }
 
 
 void Camera::setWidth(float width)
 {
     this->width = width;
-    dirtyFlags.add(DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection);
+    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection;
 }
 
 
 void Camera::setHeight(float height)
 {
     this->height = height;
-    dirtyFlags.add(DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection);
+    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection;
 }
 
 
 void Camera::setAspectRatio(float ratio)
 {
     aspectRatio = ratio;
-    dirtyFlags.add(DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection);
+    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection;
 }
 
 
 void Camera::setFar(float far)
 {
     this->farClip = far;
-    dirtyFlags.add(DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection);
+    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection;
 }
 
 
 void Camera::setNear(float near)
 {
     this->nearClip = near;
-    dirtyFlags.add(DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection);
+    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection;
 }
 
 
 auto Camera::getViewMatrix() -> const Matrix&
 {
-    if (dirtyFlags.checkAndRemove(DirtyBitView))
+    if (dirtyFlags & DirtyBitView)
     {
         viewMatrix = transform->getWorldMatrix();
         viewMatrix.invert();
+        dirtyFlags &= ~DirtyBitView;
     }
     return viewMatrix;
 }
@@ -123,10 +123,11 @@ auto Camera::getViewMatrix() -> const Matrix&
 
 auto Camera::getInverseViewMatrix() -> const Matrix&
 {
-    if (dirtyFlags.checkAndRemove(DirtyBitInverseView))
+    if (dirtyFlags & DirtyBitInverseView)
     {
         inverseViewMatrix = getViewMatrix();
         inverseViewMatrix.invert();
+        dirtyFlags &= ~DirtyBitInverseView;
     }
     return inverseViewMatrix;
 }
@@ -134,12 +135,13 @@ auto Camera::getInverseViewMatrix() -> const Matrix&
 
 auto Camera::getProjectionMatrix() -> const Matrix&
 {
-    if (dirtyFlags.checkAndRemove(DirtyBitProjection))
+    if (dirtyFlags & DirtyBitProjection)
     {
         if (ortho)
             projectionMatrix = Matrix::createOrthographic(width, height, nearClip, farClip);
         else
             projectionMatrix = Matrix::createPerspective(fov, aspectRatio, nearClip, farClip);
+        dirtyFlags &= ~DirtyBitProjection;
     }
     return projectionMatrix;
 }
@@ -147,18 +149,22 @@ auto Camera::getProjectionMatrix() -> const Matrix&
 
 auto Camera::getViewProjectionMatrix() -> const Matrix&
 {
-    if (dirtyFlags.checkAndRemove(DirtyBitViewProjection))
+    if (dirtyFlags & DirtyBitViewProjection)
+    {
         viewProjectionMatrix = getProjectionMatrix() * getViewMatrix();
+        dirtyFlags &= ~DirtyBitViewProjection;
+    }
     return viewProjectionMatrix;
 }
 
 
 auto Camera::getInverseViewProjectionMatrix() -> const Matrix&
 {
-    if (dirtyFlags.checkAndRemove(DirtyBitInverseViewProjection))
+    if (dirtyFlags & DirtyBitInverseViewProjection)
     {
         inverseViewProjectionMatrix = getViewProjectionMatrix();
         inverseViewProjectionMatrix.invert();
+        dirtyFlags &= ~DirtyBitInverseViewProjection;
     }
     return inverseViewProjectionMatrix;
 }

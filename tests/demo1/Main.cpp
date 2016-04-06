@@ -158,7 +158,7 @@ public:
         cam->setClearColor(1, 0, 1, 1);
         cam->setNear(0.05f);
         cam->setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8);
-        cam->getRenderTags().remove(renderTargetQuadTag);
+        cam->getRenderTags() = ~renderTargetQuadTag;
         node->getComponent<Transform>()->setLocalPosition(Vector3(0, 0, 10));
 
         auto fb = FrameBuffer::create();
@@ -312,7 +312,7 @@ public:
         auto quad = createPrefabMeshNode("quad");
         auto renderer = quad->getComponent<MeshRenderer>();
         renderer->setMaterial(0, monitorMat);
-        renderer->getTags().set(renderTargetQuadTag);
+        renderer->getTags() = renderTargetQuadTag;
         auto transform = quad->getComponent<Transform>();
         transform->setParent(parent->getComponent<Transform>());
         transform->setLocalPosition(Vector3(5, 2, -5));

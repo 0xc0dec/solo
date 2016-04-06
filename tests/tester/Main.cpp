@@ -4,7 +4,6 @@
 #include "Transform_Test.h"
 #include "Device_Test.h"
 #include "FileSystem_Test.h"
-#include "BitFlags_Test.h"
 #include "MeshRenderer_Test.h"
 #include "Mesh_Test.h"
 #include "ResourcePool_Test.h"
@@ -42,7 +41,6 @@ void runCppUnitTests(Device* device)
     Components_Test(device).run();
     Transform_Test(device).run();
     MeshRenderer_Test(device).run();
-    BitFlags_Test(device).run();
     ResourcePool_Test(device).run();
 }
 

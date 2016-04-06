@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SoloNode.h"
-#include "SoloBitFlags.h"
 #include "SoloRenderQueue.h"
 
 
@@ -42,16 +41,15 @@ namespace solo
 
         auto getNode() const -> Node;
 
-        auto getTags() -> BitFlags&;
+        auto getTags() -> uint32_t&;
 
     protected:
-        explicit Component(const Node& node) : node(node)
+        explicit Component(const Node& node): node(node)
         {
-            tags.set(1);
         }
 
         Node node;
-        BitFlags tags;
+        uint32_t tags = 1;
         uint32_t renderQueue = KnownRenderQueues::NotRendered;
     };
 
@@ -70,7 +68,7 @@ namespace solo
         return node;
     }
 
-    inline auto Component::getTags() -> BitFlags&
+    inline auto Component::getTags() -> uint32_t&
     {
         return tags;
     }

@@ -2,7 +2,6 @@
 
 #include "SoloComponent.h"
 #include "SoloVector4.h"
-#include "SoloBitFlags.h"
 #include "SoloMatrix.h"
 #include "SoloTransform.h"
 #include "SoloNode.h"
@@ -27,7 +26,7 @@ namespace solo
         void apply();
         void finish();
 
-        auto getRenderTags() -> BitFlags&;
+        auto getRenderTags() -> uint32_t&;
 
         auto getRenderTarget() const ->sptr<FrameBuffer>;
         void setRenderTarget(sptr<FrameBuffer> target);
@@ -69,8 +68,8 @@ namespace solo
     protected:
         virtual void onTransformChanged(const Transform* transform) override;
 
-        BitFlags dirtyFlags;
-        BitFlags renderTags;
+        uint32_t dirtyFlags;
+        uint32_t renderTags;
 
         Device* device;
         Renderer* renderer;
@@ -138,7 +137,7 @@ namespace solo
         return aspectRatio;
     }
 
-    inline auto Camera::getRenderTags() -> BitFlags&
+    inline auto Camera::getRenderTags() -> uint32_t&
     {
         return renderTags;
     }

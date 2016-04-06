@@ -2,7 +2,6 @@
 
 #include "SoloBase.h"
 #include "SoloComponent.h"
-#include "SoloBitFlags.h"
 #include "SoloMatrix.h"
 #include "SoloVector3.h"
 #include "SoloQuaternion.h"
@@ -84,7 +83,7 @@ namespace solo
 
         void notifyChanged() const;
 
-        mutable BitFlags dirtyFlags;
+        mutable uint32_t dirtyFlags;
 
         Transform* parent = nullptr;
         std::vector<Transform*> children;

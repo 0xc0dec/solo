@@ -150,14 +150,6 @@ void Scene::rebuildComponentsToUpdate()
 }
 
 
-bool tagsAreRenderable(const BitFlags& objectTags, const BitFlags& cameraTags)
-{
-    auto rawObjectTags = objectTags.getRaw();
-    auto rawCameraTags = cameraTags.getRaw();
-    return (rawObjectTags & rawCameraTags) != 0;
-}
-
-
 void Scene::render()
 {
     updateRenderQueue(cameraQueue, true);
@@ -177,7 +169,7 @@ void Scene::render()
 
         for (auto cmp : renderQueue)
         {
-            if (tagsAreRenderable(cmp->getTags(), renderTags))
+            if (cmp->getTags() & renderTags)
             {
                 auto transform = Node::findComponent<Transform>(this, cmp->getNode().getId()); // TODO can be cached
                 context.nodeTransform = transform;

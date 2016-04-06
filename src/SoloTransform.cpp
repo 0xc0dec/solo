@@ -19,7 +19,8 @@ const uint32_t DirtyBitAll =
 
 
 Transform::Transform(Node node):
-    ComponentBase(node)
+    ComponentBase(node),
+    dirtyFlags(~0)
 {
 }
 
@@ -34,7 +35,6 @@ void Transform::notifyChanged() const
 void Transform::init()
 {
     localScale = Vector3::unit();
-    dirtyFlags.add(DirtyBitAll);
 }
 
 
@@ -120,30 +120,30 @@ auto Transform::getLocalRotation() const -> Quaternion
 
 auto Transform::getMatrix() const -> Matrix
 {
-    if (!dirtyFlags.isEmpty())
+    if (dirtyFlags)
     {
         auto hasTranslation = !localPosition.isZero();
         auto hasScale = !localScale.isUnit();
         auto hasRotation = !localRotation.isIdentity();
 
-        if (hasTranslation || dirtyFlags.isSet(DirtyBitPosition))
+        if (hasTranslation || dirtyFlags & DirtyBitPosition)
         {
             matrix = Matrix::createTranslation(localPosition);
-            if (hasRotation || dirtyFlags.isSet(DirtyBitRotation))
+            if (hasRotation || dirtyFlags & DirtyBitRotation)
                 matrix.rotateByQuaternion(localRotation);
-            if (hasScale || dirtyFlags.isSet(DirtyBitScale))
+            if (hasScale || dirtyFlags & DirtyBitScale)
                 matrix.scaleByVector(localScale);
         }
-        else if (hasRotation || dirtyFlags.isSet(DirtyBitRotation))
+        else if (hasRotation || dirtyFlags & DirtyBitRotation)
         {
             matrix = Matrix::createRotationFromQuaternion(localRotation);
-            if (hasScale || dirtyFlags.isSet(DirtyBitScale))
+            if (hasScale || dirtyFlags & DirtyBitScale)
                 matrix.scaleByVector(localScale);
         }
-        else if (hasScale || dirtyFlags.isSet(DirtyBitScale))
+        else if (hasScale || dirtyFlags & DirtyBitScale)
             matrix = Matrix::createScale(localScale);
 
-        dirtyFlags.remove(DirtyBitAll);
+        dirtyFlags = 0;
     }
     return matrix;
 }
@@ -151,12 +151,13 @@ auto Transform::getMatrix() const -> Matrix
 
 auto Transform::getWorldMatrix() const -> Matrix
 {
-    if (dirtyFlags.checkAndRemove(DirtyBitWorld))
+    if (dirtyFlags & DirtyBitWorld)
     {
         if (parent)
             worldMatrix = parent->getWorldMatrix() * getMatrix();
         else
             worldMatrix = getMatrix();
+        dirtyFlags &= ~DirtyBitWorld;
         setChildrenDirty(DirtyBitWorld);
         setDirtyWithChildren(DirtyBitInverseTransposedWorld);
     }
@@ -166,11 +167,12 @@ auto Transform::getWorldMatrix() const -> Matrix
 
 auto Transform::getInverseTransposedWorldMatrix() const -> Matrix
 {
-    if (dirtyFlags.checkAndRemove(DirtyBitInverseTransposedWorld) || dirtyFlags.isSet(DirtyBitWorld))
+    if (dirtyFlags & DirtyBitInverseTransposedWorld || dirtyFlags & DirtyBitWorld)
     {
         inverseTransposedWorldMatrix = getWorldMatrix();
         inverseTransposedWorldMatrix.invert();
         inverseTransposedWorldMatrix.transpose();
+        dirtyFlags &= ~DirtyBitInverseTransposedWorld;
         setChildrenDirty(DirtyBitInverseTransposedWorld);
     }
     return inverseTransposedWorldMatrix;
@@ -356,7 +358,7 @@ auto Transform::getLocalBack() const -> Vector3
 
 void Transform::setDirtyWithChildren(uint32_t flags) const
 {
-    dirtyFlags.add(flags);
+    dirtyFlags |= flags;
     notifyChanged();
     for (auto child : children)
         child->setDirtyWithChildren(flags);
