@@ -68,8 +68,8 @@ namespace solo
     protected:
         virtual void onTransformChanged(const Transform* transform) override;
 
-        uint32_t dirtyFlags;
-        uint32_t renderTags;
+        uint32_t dirtyFlags = ~0;
+        uint32_t renderTags = ~0;
 
         Device* device;
         Renderer* renderer;

@@ -21,8 +21,6 @@ const uint32_t DirtyBitAll =
 
 Camera::Camera(Node node):
     ComponentBase(node),
-    dirtyFlags(~0),
-    renderTags(~0),
     device(Device::get()),
     renderer(Device::get()->getRenderer())
 {
