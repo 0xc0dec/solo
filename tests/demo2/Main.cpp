@@ -13,7 +13,7 @@ public:
     explicit PostProcessor(const Node& node):
         ComponentBase<PostProcessor>(node),
         device(Device::get()),
-        asl(Device::get()->getAssetLoader()),
+        loader(Device::get()->getAssetLoader()),
         graphics(Device::get()->getGraphics())
     {
     }
@@ -75,7 +75,7 @@ public:
 
 private:
     Device* device;
-    AssetLoader* asl;
+    AssetLoader* loader;
     Graphics* graphics;
     sptr<FrameBuffer> fb1 = nullptr;
     sptr<FrameBuffer> fb2 = nullptr;
@@ -110,7 +110,7 @@ public:
         device = Device::init(args);
 
         scene = device->getScene();
-        asl = device->getAssetLoader();
+        loader = device->getAssetLoader();
     }
 
     void initCamera()
@@ -129,7 +129,7 @@ public:
 
     void initSkybox()
     {
-        asl->loadCubeTextureAsync({
+        loader->loadCubeTextureAsync({
             "../assets/skyboxes/deep-space/front.png",
             "../assets/skyboxes/deep-space/back.png",
             "../assets/skyboxes/deep-space/left.png",
@@ -148,7 +148,7 @@ public:
 
     void initMesh()
     {
-        asl->loadTexture2DAsync("../assets/cobblestone.png")->done([=](sptr<Texture2D> tex)
+        loader->loadTexture2DAsync("../assets/cobblestone.png")->done([=](sptr<Texture2D> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->generateMipmaps();
@@ -158,7 +158,7 @@ public:
             mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
             mat->setTextureParameter("mainTex", tex);
 
-            asl->loadMeshAsync("../assets/monkey.obj")->done([=](sptr<Mesh> mesh)
+            loader->loadMeshAsync("../assets/monkey.obj")->done([=](sptr<Mesh> mesh)
             {
                 auto node = scene->createNode();
                 auto renderer = node->addComponent<MeshRenderer>();
@@ -172,7 +172,7 @@ public:
 
 private:
     Scene* scene = nullptr;
-    AssetLoader* asl = nullptr;
+    AssetLoader* loader = nullptr;
     Device* device = nullptr;
 };
 

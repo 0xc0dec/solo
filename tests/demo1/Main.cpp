@@ -95,7 +95,7 @@ public:
         device = Device::init(args);
 
         scene = device->getScene();
-        asl = device->getAssetLoader();
+        loader = device->getAssetLoader();
         canvasSize = device->getCanvasSize();
     }
 
@@ -118,7 +118,7 @@ public:
 
     void loadTexture(const std::string& uri, std::function<void(sptr<Texture2D>)> callback)
     {
-        asl->loadTexture2DAsync(uri)->done([=](sptr<Texture2D> tex)
+        loader->loadTexture2DAsync(uri)->done([=](sptr<Texture2D> tex)
         {
             tex->generateMipmaps();
             tex->setFiltering(TextureFiltering::LinearMipmapNearest);
@@ -129,7 +129,7 @@ public:
 
     sptr<AsyncHandle<Mesh>> initAxesMesh()
     {
-        return asl->loadMeshAsync("../assets/axes.obj");
+        return loader->loadMeshAsync("../assets/axes.obj");
     }
 
     void initCamera()
@@ -186,7 +186,7 @@ public:
 
     void initSkybox()
     {
-        asl->loadCubeTextureAsync({
+        loader->loadCubeTextureAsync({
             "../assets/skyboxes/deep-space/front.png",
             "../assets/skyboxes/deep-space/back.png",
             "../assets/skyboxes/deep-space/left.png",
@@ -225,7 +225,7 @@ public:
 
     void initMesh()
     {
-        asl->loadTexture2DAsync("../assets/cobblestone.png")->done([=](sptr<Texture2D> tex)
+        loader->loadTexture2DAsync("../assets/cobblestone.png")->done([=](sptr<Texture2D> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->generateMipmaps();
@@ -236,7 +236,7 @@ public:
             mat->setParameterAutoBinding("invTransposedWorldMatrix", AutoBinding::InverseTransposedWorldMatrix);
             mat->setTextureParameter("mainTex", tex);
 
-            asl->loadMeshAsync("../assets/monkey.obj")->done([=](sptr<Mesh> mesh)
+            loader->loadMeshAsync("../assets/monkey.obj")->done([=](sptr<Mesh> mesh)
             {
                 auto node = scene->createNode();
                 auto renderer = node->addComponent<MeshRenderer>();
@@ -351,7 +351,7 @@ public:
 private:
     const int renderTargetQuadTag = 2;
     Scene* scene = nullptr;
-    AssetLoader* asl = nullptr;
+    AssetLoader* loader = nullptr;
     Vector2 canvasSize;
     Device* device = nullptr;
     sptr<Effect> simpleTextureEffect = nullptr;
