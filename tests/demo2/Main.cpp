@@ -106,7 +106,7 @@ public:
         args.mode = DeviceMode::OpenGL;
         args.canvasWidth = 1200;
         args.canvasHeight = 600;
-        args.logFilePath = "demo1.log";
+        args.logFilePath = "demo2.log";
         device = Device::init(args);
 
         scene = device->getScene();
