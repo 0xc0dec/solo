@@ -149,7 +149,7 @@ namespace solo
 
     inline auto Vector2::operator/(const float scalar) const -> Vector2
     {
-        Vector2 result;
+        auto result(*this);
         result /= scalar;
         return result;
     }
