@@ -9,6 +9,7 @@ Texture::Texture() :
     renderer(Device::get()->getRenderer())
 {
     handle = renderer->createTexture();
+    rebuildFlags(); // yes, virtual call
 }
 
 

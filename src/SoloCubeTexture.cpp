@@ -10,6 +10,12 @@ auto CubeTexture::create() -> sptr<CubeTexture>
 }
 
 
+CubeTexture::CubeTexture()
+{
+    rebuildFlags();
+}
+
+
 void CubeTexture::bind()
 {
     renderer->setCubeTexture(handle, flags, anisotropy);

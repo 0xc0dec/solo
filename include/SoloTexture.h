@@ -12,13 +12,13 @@ namespace solo
 
     enum class TextureWrapping
     {
-        Clamp,
+        Clamp = 0,
         Repeat
     };
 
     enum class TextureFiltering
     {
-        Nearest,
+        Nearest = 0,
         Linear,
         NearestMipmapNearest,
         LinearMipmapNearest,
@@ -64,8 +64,8 @@ namespace solo
         uint32_t flags = 0;
         TextureHandle handle = EmptyTextureHandle;
 
-        TextureWrapping horizontalWrapping = TextureWrapping::Repeat;
-        TextureWrapping verticalWrapping = TextureWrapping::Repeat;
+        TextureWrapping horizontalWrapping = TextureWrapping::Clamp;
+        TextureWrapping verticalWrapping = TextureWrapping::Clamp;
         
         TextureFiltering minFiltering = TextureFiltering::Linear;
         TextureFiltering magFiltering = TextureFiltering::Linear;

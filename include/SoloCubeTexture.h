@@ -23,7 +23,7 @@ namespace solo
         void setDepthWrapping(TextureWrapping depthWrap);
 
     protected:
-        CubeTexture() {}
+        CubeTexture();
 
         virtual void rebuildFlags() override final;
 
