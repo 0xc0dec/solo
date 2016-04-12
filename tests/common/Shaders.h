@@ -245,6 +245,66 @@ static struct
 					    fragColor = texture(mainTex, uv0);
 			    }
             )";
+
+            const char* stitches = R"(
+                #version 330 core
+
+                uniform sampler2D mainTex;
+/*
+                uniform sampler2D stitchesTex;
+                uniform vec2 stitchesCount;
+                uniform vec2 resolution;
+*/
+
+                in vec2 uv0;
+                out vec4 fragColor;
+
+                void main()
+                {
+/*
+                    vec4 c1 = texture(stitchesTex, uv0) + vec4(resolution.xy, 1, 1) + vec4(stitchesCount.xy, 1, 1);
+                    vec2 colorBlock = floor(uv0 * resolution);
+                    vec2 stitchUV = vec2(
+                        fract(stitchesCount.x * (uv0.x + pow(colorBlock.x, 2.0) / resolution.x * 2.0)),
+                        fract(stitchesCount.y * uv0.y)
+                    );
+*/
+                    vec4 color = texture(mainTex, uv0);
+/*
+                    vec4 newColor = texture(stitchesTex, stitchUV);
+                    vec4 prevColor = texture(mainTex, vec2(uv0.x, uv0.y + 1.0 / resolution.y));
+
+                                    if (stitchUV.y > 0.5)
+                    {
+                        newColor *= color;
+                        vec2 topStitchUV = fract(vec2(stitchesCount.x * (uv0.x + pow(colorBlock.y + 1.0, 2.0) / resolution.x * 2),
+                            stitchesCount.y * uv0.y - 0.5));
+                        vec4 otherStitch = texture(stitchesTex, topStitchUV) * prevColor;
+                        
+                        if (otherStitch.a > 0.05)
+                        {
+                            newColor = mix(newColor, otherStitch, 1.0 - newColor.a);
+                        }
+                    }
+                    else
+                    {
+                        stitchUV = vec2(fract(stitchesCount.x * (uv0.x + pow(colorBlock.y + 1.0, 2.0) / resolution.x * 2.0)),
+                            fract(stitchesCount.y * uv0.y));
+                        newColor = texture(stitchesTex, stitchUV);
+                        newColor *= prevColor;
+                        vec2 bottomStitchUV = vec2(fract(stitchesCount.x * (uv0.x + pow(colorBlock.y, 2.0) / resolution.x * 2.0)),
+                            fract(stitchesCount.y * uv0.y + 0.5));
+                        vec4 otherStitch = texture(stitchesTex, bottomStitchUV) * color;
+                        
+                        if (otherStitch.a > 0.7)
+                        {
+                            newColor = mix(otherStitch, newColor, 1.0 - prevColor.a);
+                        }
+                    }
+*/
+                    fragColor = color;// + c1 * 0.001; //texture(mainTex, uv0) + c1 * 0.01;
+                }
+            )";
         } postProcess;
     } fragment;
 } shaders;

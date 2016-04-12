@@ -38,8 +38,8 @@ public:
         fb2->setAttachments({ fbTex2 });
 
         auto grayscaleEffect = Effect::create(shaders.vertex.passThrough, shaders.fragment.postProcess.grayscale);
-        grayscaleMat = Material::create(grayscaleEffect);
-        grayscaleMat->setFloatParameter("rightSeparator", 0.25f);
+        material = Material::create(grayscaleEffect);
+        material->setFloatParameter("rightSeparator", 0.25f);
 
         auto saturateEffect = Effect::create(shaders.vertex.passThrough, shaders.fragment.postProcess.saturate);
         saturateMat = Material::create(saturateEffect);
@@ -60,8 +60,8 @@ public:
     virtual void onAfterCameraRender() override final
     {
         // bounce between the two frame buffers
-        grayscaleMat->setTextureParameter("mainTex", fbTex1);
-        graphics->blit(grayscaleMat.get(), fb2.get());
+        material->setTextureParameter("mainTex", fbTex1);
+        graphics->blit(material.get(), fb2.get());
 
         saturateMat->setTextureParameter("mainTex", fbTex2);
         graphics->blit(saturateMat.get(), fb1.get());
@@ -81,7 +81,7 @@ private:
     sptr<FrameBuffer> fb2 = nullptr;
     sptr<Texture2D> fbTex1 = nullptr;
     sptr<Texture2D> fbTex2 = nullptr;
-    sptr<Material> grayscaleMat = nullptr;
+    sptr<Material> material = nullptr;
     sptr<Material> saturateMat = nullptr;
     sptr<Material> verticalBlurMat = nullptr;
     sptr<Material> horizontalBlurMat = nullptr;

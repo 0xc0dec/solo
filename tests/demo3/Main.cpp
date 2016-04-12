@@ -20,36 +20,55 @@ public:
 
     virtual void init() override final
     {
-        auto imageSize = device->getCanvasSize() / 8;
+        const float stitchWidth = 30;
+
+        stitchesTex = loader->loadTexture2D("../assets/stitches.png");
+
+        auto canvasSize = device->getCanvasSize();
+        auto stitchesTexSize = stitchesTex->getSize();
+
+        auto resolution = Vector2(
+            Math::clamp(static_cast<int>(canvasSize.x / stitchWidth) * 2, 1, 2048),
+            Math::clamp(static_cast<int>(canvasSize.y / stitchesTexSize.y) * 2, 1, 2048)
+        );
+
+        auto stitchesCount = Vector2(
+            resolution.x * stitchWidth / (2 * stitchesTexSize.x),
+            resolution.y / 2
+        );
 
         auto camera = node.getComponent<Camera>();
         fbTex1 = Texture2D::create();
-        fbTex1->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(imageSize.x), static_cast<uint32_t>(imageSize.y));
+        fbTex1->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(resolution.x), static_cast<uint32_t>(resolution.y));
         fbTex1->setFiltering(TextureFiltering::Nearest);
         fbTex1->setWrapping(TextureWrapping::Clamp);
         fb1 = FrameBuffer::create();
         fb1->setAttachments({ fbTex1 });
-        camera->setViewport(0, 0, imageSize.x, imageSize.y);
+        camera->setViewport(0, 0, resolution.x, resolution.y);
         camera->setRenderTarget(fb1);
 
-        auto grayscaleEffect = Effect::create(shaders.vertex.passThrough, shaders.fragment.postProcess.grayscale);
-        grayscaleMat = Material::create(grayscaleEffect);
-        grayscaleMat->setFloatParameter("rightSeparator", 0.25f);
+        auto effect = Effect::create(shaders.vertex.passThrough, shaders.fragment.postProcess.stitches);
+        material = Material::create(effect);
+//        material->setTextureParameter("stitchesTex", stitchesTex);
+//        material->setVector2Parameter("stitchesCount", stitchesCount);
+//        material->setVector2Parameter("resolution", resolution);
     }
 
     virtual void onAfterCameraRender() override final
     {
-        grayscaleMat->setTextureParameter("mainTex", fbTex1);
-        graphics->blit(grayscaleMat.get(), nullptr);
+        material->setTextureParameter("mainTex", stitchesTex);
+//        material->setTextureParameter("stitchesTex", fbTex1);
+        graphics->blit(material.get(), nullptr);
     }
 
 private:
     Device* device;
     AssetLoader* loader;
     Graphics* graphics;
-    sptr<FrameBuffer> fb1 = nullptr;
-    sptr<Texture2D> fbTex1 = nullptr;
-    sptr<Material> grayscaleMat = nullptr;
+    sptr<Texture2D> stitchesTex;
+    sptr<FrameBuffer> fb1;
+    sptr<Texture2D> fbTex1;
+    sptr<Material> material;
 };
 
 
