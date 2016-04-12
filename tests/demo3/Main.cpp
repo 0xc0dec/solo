@@ -20,57 +20,27 @@ public:
 
     virtual void init() override final
     {
-        auto canvasSize = device->getCanvasSize();
+        auto imageSize = device->getCanvasSize() / 8;
+
         auto camera = node.getComponent<Camera>();
         fbTex1 = Texture2D::create();
-        fbTex1->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
+        fbTex1->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(imageSize.x), static_cast<uint32_t>(imageSize.y));
         fbTex1->setFiltering(TextureFiltering::Nearest);
         fbTex1->setWrapping(TextureWrapping::Clamp);
         fb1 = FrameBuffer::create();
         fb1->setAttachments({ fbTex1 });
+        camera->setViewport(0, 0, imageSize.x, imageSize.y);
         camera->setRenderTarget(fb1);
-
-        fbTex2 = Texture2D::create();
-        fbTex2->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
-        fbTex2->setFiltering(TextureFiltering::Nearest);
-        fbTex2->setWrapping(TextureWrapping::Clamp);
-        fb2 = FrameBuffer::create();
-        fb2->setAttachments({ fbTex2 });
 
         auto grayscaleEffect = Effect::create(shaders.vertex.passThrough, shaders.fragment.postProcess.grayscale);
         grayscaleMat = Material::create(grayscaleEffect);
         grayscaleMat->setFloatParameter("rightSeparator", 0.25f);
-
-        auto saturateEffect = Effect::create(shaders.vertex.passThrough, shaders.fragment.postProcess.saturate);
-        saturateMat = Material::create(saturateEffect);
-        saturateMat->setFloatParameter("leftSeparator", 0.75f);
-        saturateMat->setFloatParameter("rightSeparator", 1.0f);
-
-        auto verticalBlurEffect = Effect::create(shaders.vertex.passThrough, shaders.fragment.postProcess.verticalBlur);
-        verticalBlurMat = Material::create(verticalBlurEffect);
-        verticalBlurMat->setFloatParameter("leftSeparator", 0.25f);
-        verticalBlurMat->setFloatParameter("rightSeparator", 0.75f);
-
-        auto horizontalBlurEffect = Effect::create(shaders.vertex.passThrough, shaders.fragment.postProcess.horizontalBlur);
-        horizontalBlurMat = Material::create(horizontalBlurEffect);
-        horizontalBlurMat->setFloatParameter("leftSeparator", 0.25f);
-        horizontalBlurMat->setFloatParameter("rightSeparator", 0.75f);
     }
 
     virtual void onAfterCameraRender() override final
     {
-        // bounce between the two frame buffers
         grayscaleMat->setTextureParameter("mainTex", fbTex1);
-        graphics->blit(grayscaleMat.get(), fb2.get());
-
-        saturateMat->setTextureParameter("mainTex", fbTex2);
-        graphics->blit(saturateMat.get(), fb1.get());
-
-        verticalBlurMat->setTextureParameter("mainTex", fbTex1);
-        graphics->blit(verticalBlurMat.get(), fb2.get());
-
-        horizontalBlurMat->setTextureParameter("mainTex", fbTex2);
-        graphics->blit(horizontalBlurMat.get(), nullptr);
+        graphics->blit(grayscaleMat.get(), nullptr);
     }
 
 private:
@@ -78,13 +48,8 @@ private:
     AssetLoader* loader;
     Graphics* graphics;
     sptr<FrameBuffer> fb1 = nullptr;
-    sptr<FrameBuffer> fb2 = nullptr;
     sptr<Texture2D> fbTex1 = nullptr;
-    sptr<Texture2D> fbTex2 = nullptr;
     sptr<Material> grayscaleMat = nullptr;
-    sptr<Material> saturateMat = nullptr;
-    sptr<Material> verticalBlurMat = nullptr;
-    sptr<Material> horizontalBlurMat = nullptr;
 };
 
 
@@ -106,7 +71,7 @@ public:
         args.mode = DeviceMode::OpenGL;
         args.canvasWidth = 1200;
         args.canvasHeight = 600;
-        args.logFilePath = "demo1.log";
+        args.logFilePath = "demo3.log";
         device = Device::init(args);
 
         scene = device->getScene();
@@ -124,7 +89,7 @@ public:
         node->addComponent<Spectator>();
         node->addComponent<EscapeWatcher>();
         node->addComponent<PostProcessor>();
-        node->addComponent<Screenshoter>("demo2-screenshot.bmp");
+        node->addComponent<Screenshoter>("demo3-screenshot.bmp");
     }
 
     void initSkybox()
