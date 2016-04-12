@@ -8,7 +8,7 @@ namespace solo
     class ObjMeshLoader final: public MeshLoader
     {
     public:
-        virtual bool isLoadable(const std::string& uri) override final;
-        virtual auto loadData(const std::string& uri) ->uptr<MeshData> override final;
+        virtual bool isLoadable(const std::string& path) override final;
+        virtual auto loadData(const std::string& path) ->uptr<MeshData> override final;
     };
 }

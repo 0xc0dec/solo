@@ -7,9 +7,9 @@
 using namespace solo;
 
 
-bool ObjMeshLoader::isLoadable(const std::string& uri)
+bool ObjMeshLoader::isLoadable(const std::string& path)
 {
-    return uri.find(".obj", uri.size() - 5) != std::string::npos;
+    return path.find(".obj", path.size() - 5) != std::string::npos;
 }
 
 
@@ -66,7 +66,7 @@ void parseIndexes(const char** from, const char* to, uint32_t** result)
 }
 
 
-uptr<MeshData> ObjMeshLoader::loadData(const std::string& uri)
+uptr<MeshData> ObjMeshLoader::loadData(const std::string& path)
 {
     // TODO not very fast this is...
 
@@ -84,7 +84,7 @@ uptr<MeshData> ObjMeshLoader::loadData(const std::string& uri)
         uniqueIndices.clear();
     };
 
-    Device::get()->getFileSystem()->iterateLines(uri, [&](const std::string & line)
+    Device::get()->getFileSystem()->iterateLines(path, [&](const std::string & line)
     {
         auto lineSize = line.size();
         if (line[0] == 'v')

@@ -14,7 +14,7 @@ namespace solo
         virtual ~ImageLoader() {}
         SL_NONCOPYABLE(ImageLoader)
 
-        virtual bool isLoadable(const std::string& uri) = 0;
-        virtual auto load(const std::string& uri) -> uptr<Image> = 0;
+        virtual bool isLoadable(const std::string& path) = 0;
+        virtual auto load(const std::string& path) -> uptr<Image> = 0;
     };
 }

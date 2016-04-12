@@ -14,7 +14,7 @@ namespace solo
         virtual ~MeshLoader() {}
         SL_NONCOPYABLE(MeshLoader);
 
-        virtual bool isLoadable(const std::string& uri) = 0;
-        virtual uptr<MeshData> loadData(const std::string& uri) = 0;
+        virtual bool isLoadable(const std::string& path) = 0;
+        virtual uptr<MeshData> loadData(const std::string& path) = 0;
     };
 }

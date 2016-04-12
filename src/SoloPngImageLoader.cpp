@@ -24,17 +24,17 @@ static void readCallback(png_structp png, png_bytep data, png_size_t length)
 }
 
 
-bool PngImageLoader::isLoadable(const std::string& uri)
+bool PngImageLoader::isLoadable(const std::string& path)
 {
-    return uri.find(".png", uri.size() - 5) != std::string::npos;
+    return path.find(".png", path.size() - 5) != std::string::npos;
 }
 
 
-auto PngImageLoader::load(const std::string& uri) -> uptr<Image>
+auto PngImageLoader::load(const std::string& path) -> uptr<Image>
 {
-    auto bytes = Device::get()->getFileSystem()->readBytes(uri);
+    auto bytes = Device::get()->getFileSystem()->readBytes(path);
     if (bytes.size() < 8 || png_sig_cmp(&bytes[0], 0, 8) != 0)
-        SL_FMT_THROW(InvalidInputException, "Failed to recognize file ", uri, " as PNG image");
+        SL_FMT_THROW(InvalidInputException, "Failed to recognize file ", path, " as PNG image");
 
     auto png = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
     auto info = png_create_info_struct(png);
@@ -42,7 +42,7 @@ auto PngImageLoader::load(const std::string& uri) -> uptr<Image>
     {
         png_destroy_info_struct(png, &info);
         png_destroy_read_struct(&png, &info, nullptr);
-        SL_FMT_THROW(InvalidOperationException, "Failed to read PNG file ", uri);
+        SL_FMT_THROW(InvalidOperationException, "Failed to read PNG file ", path);
     }
 
     std::unique_ptr<PngReadContext> context(new PngReadContext{ &bytes, 8 });

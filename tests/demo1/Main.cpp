@@ -116,9 +116,9 @@ public:
         texWithLightingEffect = Effect::create(shaders.vertex.basicLighting, shaders.fragment.textureWithLighting);
     }
 
-    void loadTexture(const std::string& uri, std::function<void(sptr<Texture2D>)> callback)
+    void loadTexture(const std::string& path, std::function<void(sptr<Texture2D>)> callback)
     {
-        loader->loadTexture2DAsync(uri)->done([=](sptr<Texture2D> tex)
+        loader->loadTexture2DAsync(path)->done([=](sptr<Texture2D> tex)
         {
             tex->generateMipmaps();
             tex->setFiltering(TextureFiltering::LinearMipmapNearest);
