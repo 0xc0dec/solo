@@ -23,6 +23,7 @@ public:
         const float stitchWidth = 30;
 
         stitchesTex = loader->loadTexture2D("../assets/stitches.png");
+        stitchesTex->setFiltering(TextureFiltering::Nearest);
 
         auto canvasSize = device->getCanvasSize();
         auto stitchesTexSize = stitchesTex->getSize();
@@ -49,14 +50,15 @@ public:
 
         auto effect = Effect::create(shaders.vertex.passThrough, shaders.fragment.postProcess.stitches);
         material = Material::create(effect);
-//        material->setTextureParameter("stitchesTex", stitchesTex);
-//        material->setVector2Parameter("stitchesCount", stitchesCount);
-//        material->setVector2Parameter("resolution", resolution);
+        material->setTextureParameter("mainTex", fbTex1);
+        material->setTextureParameter("stitchesTex", stitchesTex);
+        material->setVector2Parameter("stitchesCount", stitchesCount);
+        material->setVector2Parameter("resolution", resolution);
     }
 
     virtual void onAfterCameraRender() override final
     {
-        material->setTextureParameter("mainTex", stitchesTex);
+//        material->setTextureParameter("mainTex", stitchesTex);
 //        material->setTextureParameter("stitchesTex", fbTex1);
         graphics->blit(material.get(), nullptr);
     }
