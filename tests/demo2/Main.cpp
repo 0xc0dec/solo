@@ -22,12 +22,12 @@ public:
     {
         auto canvasSize = device->getCanvasSize();
         auto camera = node.getComponent<Camera>();
-        fbTex1 = Texture2D::create();
-        fbTex1->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
-        fbTex1->setFiltering(TextureFiltering::Nearest);
-        fbTex1->setWrapping(TextureWrapping::Clamp);
+        fbTex = Texture2D::create();
+        fbTex->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
+        fbTex->setFiltering(TextureFiltering::Nearest);
+        fbTex->setWrapping(TextureWrapping::Clamp);
         fb1 = FrameBuffer::create();
-        fb1->setAttachments({ fbTex1 });
+        fb1->setAttachments({ fbTex });
         camera->setRenderTarget(fb1);
 
         fbTex2 = Texture2D::create();
@@ -60,13 +60,13 @@ public:
     virtual void onAfterCameraRender() override final
     {
         // bounce between the two frame buffers
-        material->setTextureParameter("mainTex", fbTex1);
+        material->setTextureParameter("mainTex", fbTex);
         graphics->blit(material.get(), fb2.get());
 
         saturateMat->setTextureParameter("mainTex", fbTex2);
         graphics->blit(saturateMat.get(), fb1.get());
 
-        verticalBlurMat->setTextureParameter("mainTex", fbTex1);
+        verticalBlurMat->setTextureParameter("mainTex", fbTex);
         graphics->blit(verticalBlurMat.get(), fb2.get());
 
         horizontalBlurMat->setTextureParameter("mainTex", fbTex2);
@@ -79,7 +79,7 @@ private:
     Graphics* graphics;
     sptr<FrameBuffer> fb1 = nullptr;
     sptr<FrameBuffer> fb2 = nullptr;
-    sptr<Texture2D> fbTex1 = nullptr;
+    sptr<Texture2D> fbTex = nullptr;
     sptr<Texture2D> fbTex2 = nullptr;
     sptr<Material> material = nullptr;
     sptr<Material> saturateMat = nullptr;

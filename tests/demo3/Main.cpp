@@ -39,18 +39,18 @@ public:
         );
 
         auto camera = node.getComponent<Camera>();
-        fbTex1 = Texture2D::create();
-        fbTex1->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(resolution.x), static_cast<uint32_t>(resolution.y));
-        fbTex1->setFiltering(TextureFiltering::Nearest);
-        fbTex1->setWrapping(TextureWrapping::Clamp);
+        fbTex = Texture2D::create();
+        fbTex->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(resolution.x), static_cast<uint32_t>(resolution.y));
+        fbTex->setFiltering(TextureFiltering::Nearest);
+        fbTex->setWrapping(TextureWrapping::Clamp);
         fb1 = FrameBuffer::create();
-        fb1->setAttachments({ fbTex1 });
+        fb1->setAttachments({ fbTex });
         camera->setViewport(0, 0, resolution.x, resolution.y);
         camera->setRenderTarget(fb1);
 
         auto effect = Effect::create(shaders.vertex.passThrough, shaders.fragment.postProcess.stitches);
         material = Material::create(effect);
-        material->setTextureParameter("mainTex", fbTex1);
+        material->setTextureParameter("mainTex", fbTex);
         material->setTextureParameter("stitchesTex", stitchesTex);
         material->setVector2Parameter("stitchesCount", stitchesCount);
         material->setVector2Parameter("resolution", resolution);
@@ -58,8 +58,6 @@ public:
 
     virtual void onAfterCameraRender() override final
     {
-//        material->setTextureParameter("mainTex", stitchesTex);
-//        material->setTextureParameter("stitchesTex", fbTex1);
         graphics->blit(material.get(), nullptr);
     }
 
@@ -69,7 +67,7 @@ private:
     Graphics* graphics;
     sptr<Texture2D> stitchesTex;
     sptr<FrameBuffer> fb1;
-    sptr<Texture2D> fbTex1;
+    sptr<Texture2D> fbTex;
     sptr<Material> material;
 };
 
@@ -151,7 +149,6 @@ public:
                 renderer->setMesh(mesh);
                 renderer->setMaterial(0, mat);
                 node->getComponent<Transform>()->setLocalPosition(Vector3::zero());
-                node->addComponent<Rotator>("local", Vector3::unitX());
             });
         });
     }
