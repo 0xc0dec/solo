@@ -261,14 +261,14 @@ static struct
                 {
                     vec2 colorBlock = floor(uv0 * resolution);
                     vec2 stitchUV = fract(vec2(
-                        stitchesCount.x * (uv0.x + pow(colorBlock.x, 2.0) / resolution.x * 2.0),
+                        stitchesCount.x * (uv0.x + pow(colorBlock.y, 2.0) / resolution.x * 2.0),
                         stitchesCount.y * uv0.y));
 
                     vec4 color = texture(mainTex, uv0);
                     vec4 prevColor = texture(mainTex, vec2(uv0.x, uv0.y + 1.0 / resolution.y));
                     
                     float otherStitchUvX = stitchesCount.x * (uv0.x + pow(colorBlock.y + 1.0, 2.0) / resolution.x * 2.0);
-                    if (stitchUV.y > 0.55)
+                    if (stitchUV.y > 0.5)
                     {
                         fragColor = texture(stitchesTex, stitchUV) * color;
                         vec2 topStitchUV = fract(vec2(otherStitchUvX, stitchesCount.y * uv0.y - 0.5));
@@ -276,11 +276,10 @@ static struct
                         if (topStitchColor.a > 0.05)
                             fragColor = mix(fragColor, topStitchColor, 1.0 - fragColor.a);
                     }
-                    else if (stitchUV.y <= 0.5)
+                    else
                     {
                         stitchUV = fract(vec2(otherStitchUvX, stitchesCount.y * uv0.y));
                         fragColor = texture(stitchesTex, stitchUV) * prevColor;
-
                         vec2 bottomStitchUV = fract(vec2(
                             stitchesCount.x * (uv0.x + pow(colorBlock.y, 2.0) / resolution.x * 2.0),
                             stitchesCount.y * uv0.y + 0.5));
@@ -288,8 +287,8 @@ static struct
                         if (bottomStitchColor.a > 0.7)
                             fragColor = mix(bottomStitchColor, fragColor, 1.0 - prevColor.a);
                     }
-                    else
-                        fragColor = vec4(1, 0, 0, 1);
+
+                    fragColor = mix(vec4(0, 0, 0, 1), fragColor, fragColor.a);
                 }
             )";
         } postProcess;
