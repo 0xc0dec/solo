@@ -265,19 +265,19 @@ static struct
 
                     float stitchUvX = fract(stitchesCount.x * (uv0.x + pow(colorBlock.y, 2.0) / resolution.x * 2.0));
                     float stitchUvY = fract(stitchesCount.y * uv0.y);
-                    float otherStitchUvX = fract(stitchesCount.x * (uv0.x + pow(colorBlock.y + 1.0, 2.0) / resolution.x * 2.0));
+                    float nextStitchUvX = fract(stitchesCount.x * (uv0.x + pow(colorBlock.y + 1.0, 2.0) / resolution.x * 2.0));
                     if (stitchUvY > 0.5)
                     {
                         vec2 stitchUV = vec2(stitchUvX, stitchUvY);
                         fragColor = texture(stitchesTex, stitchUV) * color;
-                        vec2 topStitchUV = vec2(otherStitchUvX, fract(stitchUvY - 0.5));
+                        vec2 topStitchUV = vec2(nextStitchUvX, fract(stitchUvY - 0.5));
                         vec4 topStitchColor = texture(stitchesTex, topStitchUV) * prevColor;
                         if (topStitchColor.a > 0.05)
                             fragColor = mix(fragColor, topStitchColor, 1.0 - fragColor.a);
                     }
                     else
                     {
-                        vec2 stitchUV = vec2(otherStitchUvX, stitchUvY);
+                        vec2 stitchUV = vec2(nextStitchUvX, stitchUvY);
                         fragColor = texture(stitchesTex, stitchUV) * prevColor;
                         vec2 bottomStitchUV = vec2(stitchUvX, fract(stitchUvY + 0.5));
                         vec4 bottomStitchColor = texture(stitchesTex, bottomStitchUV) * color;
