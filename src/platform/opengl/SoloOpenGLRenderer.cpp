@@ -690,10 +690,10 @@ auto OpenGLRenderer::createVertexObject(const VertexBufferHandle* bufferHandles,
 
     glBindVertexArray(rawHandle);
 
-    auto getAttributeLocation = [&](const char* name, GLint defaultValue)
+    auto findAttributeLocation = [&](const char* name)
     {
         auto programAttr = attributes.find(name);
-        return programAttr != attributes.end() ? programAttr->second : defaultValue;
+        return programAttr != attributes.end() ? programAttr->second : -1;
     };
 
     for (uint32_t i = 0; i < bufferCount; i++)
@@ -713,11 +713,11 @@ auto OpenGLRenderer::createVertexObject(const VertexBufferHandle* bufferHandles,
             GLint attrLoc = 0;
             switch (el.semantics)
             {
-                case VertexBufferLayoutSemantics::Position: attrLoc = getAttributeLocation("position", 0); break;
-                case VertexBufferLayoutSemantics::Normal: attrLoc = getAttributeLocation("normal", 1); break;
-                case VertexBufferLayoutSemantics::Color: attrLoc = getAttributeLocation("color", 2); break;
-                case VertexBufferLayoutSemantics::Tangent: attrLoc = getAttributeLocation("tangent", 3); break;
-                case VertexBufferLayoutSemantics::Binormal: attrLoc = getAttributeLocation("binormal", 4); break;
+                case VertexBufferLayoutSemantics::Position: attrLoc = findAttributeLocation("position"); break;
+                case VertexBufferLayoutSemantics::Normal: attrLoc = findAttributeLocation("normal"); break;
+                case VertexBufferLayoutSemantics::Color: attrLoc = findAttributeLocation("color"); break;
+                case VertexBufferLayoutSemantics::Tangent: attrLoc = findAttributeLocation("tangent"); break;
+                case VertexBufferLayoutSemantics::Binormal: attrLoc = findAttributeLocation("binormal"); break;
                 case VertexBufferLayoutSemantics::TexCoord0:
                 case VertexBufferLayoutSemantics::TexCoord1:
                 case VertexBufferLayoutSemantics::TexCoord2:
@@ -729,16 +729,18 @@ auto OpenGLRenderer::createVertexObject(const VertexBufferHandle* bufferHandles,
                 {
                     auto idx = static_cast<uint32_t>(el.semantics) - static_cast<uint32_t>(VertexBufferLayoutSemantics::TexCoord0);
                     auto name = "texCoord" + std::to_string(idx);
-                    attrLoc = getAttributeLocation(name.c_str(), 5 + idx);
+                    attrLoc = findAttributeLocation(name.c_str());
                     break;
                 }
                 default: break;
             }
 
+            if (attrLoc < 0)
+                continue;
+
             const auto stride = layout.getSize();
             glVertexAttribPointer(attrLoc, el.size, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
             glEnableVertexAttribArray(attrLoc);
-            
             offset += el.size * sizeof(float);
         }
 
