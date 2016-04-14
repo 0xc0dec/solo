@@ -107,7 +107,7 @@ public:
         cam->setNear(0.05f);
         node->addComponent<Spectator>();
         node->addComponent<EscapeWatcher>();
-//        node->addComponent<PostProcessor>();
+        node->addComponent<PostProcessor>();
         node->addComponent<Screenshoter>("demo3-screenshot.bmp");
     }
 
