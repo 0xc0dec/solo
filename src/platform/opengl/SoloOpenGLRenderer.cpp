@@ -735,12 +735,13 @@ auto OpenGLRenderer::createVertexObject(const VertexBufferHandle* bufferHandles,
                 default: break;
             }
 
-            if (attrLoc < 0)
-                continue;
+            if (attrLoc >= 0)
+            {
+                const auto stride = layout.getSize();
+                glVertexAttribPointer(attrLoc, el.size, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
+                glEnableVertexAttribArray(attrLoc);
+            }
 
-            const auto stride = layout.getSize();
-            glVertexAttribPointer(attrLoc, el.size, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
-            glEnableVertexAttribArray(attrLoc);
             offset += el.size * sizeof(float);
         }
 
