@@ -107,7 +107,7 @@ public:
         cam->setNear(0.05f);
         node->addComponent<Spectator>();
         node->addComponent<EscapeWatcher>();
-        node->addComponent<PostProcessor>();
+//        node->addComponent<PostProcessor>();
         node->addComponent<Screenshoter>("demo3-screenshot.bmp");
     }
 
@@ -136,7 +136,7 @@ public:
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->generateMipmaps();
-            auto effect = Effect::create(commonShaders.vertex.wavy, commonShaders.fragment.texture);
+            auto effect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.texture);
             auto mat = Material::create(effect);
             mat->setPolygonFace(PolygonFace::All);
             mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);

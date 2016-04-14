@@ -154,7 +154,7 @@ auto AssetLoader::loadMeshAsync(const std::string& path) -> sptr<AsyncHandle<Mes
         auto lock = this->tasksLock.acquire();
         this->tasks.push_back([=]()
         {
-            // This called is later called in the update() method
+            // This is later called in the update() method
             auto mesh = Mesh::create(sharedData.get());
             handle->putResult(mesh);
         });

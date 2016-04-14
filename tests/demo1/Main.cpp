@@ -3,6 +3,7 @@
 #include "../common/Screenshoter.h"
 #include "../common/Rotator.h"
 #include "../common/Shaders.h"
+#include "Shaders.h"
 
 using namespace solo;
 
@@ -111,9 +112,9 @@ public:
     void initEffects()
     {
         simpleTextureEffect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.texture);
-        colorEffect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.color);
-        checkerEffect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.checker);
-        texWithLightingEffect = Effect::create(commonShaders.vertex.basicLighting, commonShaders.fragment.textureWithLighting);
+        colorEffect = Effect::create(commonShaders.vertex.basic, fsColor);
+        checkerEffect = Effect::create(commonShaders.vertex.basic, fsChecker);
+        texWithLightingEffect = Effect::create(vsBasicLighting, fsTextureWithLighting);
     }
 
     void loadTexture(const std::string& path, std::function<void(sptr<Texture2D>)> callback)
