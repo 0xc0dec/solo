@@ -13,6 +13,7 @@ An engine for my personal graphics/gamedev experiments, not meant for anything s
 
 ![1](/screenshots/screenshot3.png?raw=true)
 ![2](/screenshots/screenshot4.png?raw=true)
+![3](/screenshots/screenshot5.png?raw=true)
 
 ## Made possible thanks to
 * async++
