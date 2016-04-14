@@ -1,8 +1,8 @@
 #include "../../include/Solo.h"
 #include "../common/EscapeWatcher.h"
 #include "../common/Screenshoter.h"
-#include "../common/Rotator.h"
 #include "../common/Shaders.h"
+#include "Shaders.h"
 
 using namespace solo;
 
@@ -22,19 +22,19 @@ public:
     {
         const float stitchWidth = 30;
 
-        stitchesTex = loader->loadTexture2D("../assets/stitches.png");
-        stitchesTex->setFiltering(TextureFiltering::Nearest);
+        stitchTex = loader->loadTexture2D("../assets/stitches.png");
+        stitchTex->setFiltering(TextureFiltering::Nearest);
 
         auto canvasSize = device->getCanvasSize();
-        auto stitchesTexSize = stitchesTex->getSize();
+        auto stitchTexSize = stitchTex->getSize();
 
         auto resolution = Vector2(
             Math::clamp(static_cast<int>(canvasSize.x / stitchWidth) * 2, 1, 2048),
-            Math::clamp(static_cast<int>(canvasSize.y / stitchesTexSize.y) * 2, 1, 2048)
+            Math::clamp(static_cast<int>(canvasSize.y / stitchTexSize.y) * 2, 1, 2048)
         );
 
-        auto stitchesCount = Vector2(
-            resolution.x * stitchWidth / (2 * stitchesTexSize.x),
+        auto stitchCount = Vector2(
+            resolution.x * stitchWidth / (2 * stitchTexSize.x),
             resolution.y / 2
         );
 
@@ -48,11 +48,11 @@ public:
         camera->setViewport(0, 0, resolution.x, resolution.y);
         camera->setRenderTarget(fb1);
 
-        auto effect = Effect::create(shaders.vertex.passThrough, shaders.fragment.postProcess.stitches);
+        auto effect = Effect::create(commonShaders.vertex.passThrough, fsStitches);
         material = Material::create(effect);
         material->setTextureParameter("mainTex", fbTex);
-        material->setTextureParameter("stitchesTex", stitchesTex);
-        material->setVector2Parameter("stitchesCount", stitchesCount);
+        material->setTextureParameter("stitchTex", stitchTex);
+        material->setVector2Parameter("stitchCount", stitchCount);
         material->setVector2Parameter("resolution", resolution);
     }
 
@@ -65,7 +65,7 @@ private:
     Device* device;
     AssetLoader* loader;
     Graphics* graphics;
-    sptr<Texture2D> stitchesTex;
+    sptr<Texture2D> stitchTex;
     sptr<FrameBuffer> fb1;
     sptr<Texture2D> fbTex;
     sptr<Material> material;
@@ -136,7 +136,7 @@ public:
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->generateMipmaps();
-            auto effect = Effect::create(shaders.vertex.wavy, shaders.fragment.texture);
+            auto effect = Effect::create(commonShaders.vertex.wavy, commonShaders.fragment.texture);
             auto mat = Material::create(effect);
             mat->setPolygonFace(PolygonFace::All);
             mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);

@@ -110,10 +110,10 @@ public:
 
     void initEffects()
     {
-        simpleTextureEffect = Effect::create(shaders.vertex.basic, shaders.fragment.texture);
-        colorEffect = Effect::create(shaders.vertex.basic, shaders.fragment.color);
-        checkerEffect = Effect::create(shaders.vertex.basic, shaders.fragment.checker);
-        texWithLightingEffect = Effect::create(shaders.vertex.basicLighting, shaders.fragment.textureWithLighting);
+        simpleTextureEffect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.texture);
+        colorEffect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.color);
+        checkerEffect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.checker);
+        texWithLightingEffect = Effect::create(commonShaders.vertex.basicLighting, commonShaders.fragment.textureWithLighting);
     }
 
     void loadTexture(const std::string& path, std::function<void(sptr<Texture2D>)> callback)
