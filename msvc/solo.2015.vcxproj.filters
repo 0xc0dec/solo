@@ -163,6 +163,12 @@
     <ClInclude Include="..\include\SoloMeshLoader.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloRadian.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloDegree.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloScene.cpp">
@@ -739,6 +745,12 @@
       <Filter>src\vendor\async++</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloAssetLoader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloRadian.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloDegree.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

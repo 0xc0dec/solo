@@ -17,6 +17,7 @@
     <ClInclude Include="..\include\SoloCamera.h" />
     <ClInclude Include="..\include\SoloComponent.h" />
     <ClInclude Include="..\include\SoloConfig.h" />
+    <ClInclude Include="..\include\SoloDegree.h" />
     <ClInclude Include="..\include\SoloDevice.h" />
     <ClInclude Include="..\include\SoloBitFlags.h" />
     <ClInclude Include="..\include\SoloEffect.h" />
@@ -28,6 +29,7 @@
     <ClInclude Include="..\include\SoloGraphics.h" />
     <ClInclude Include="..\include\SoloImage.h" />
     <ClInclude Include="..\include\SoloMeshLoader.h" />
+    <ClInclude Include="..\include\SoloRadian.h" />
     <ClInclude Include="..\include\SoloRenderer.h" />
     <ClInclude Include="..\include\SoloRenderQueue.h" />
     <ClInclude Include="..\include\SoloFrameBuffer.h" />
@@ -72,7 +74,9 @@
     <ClCompile Include="..\src\platform\stub\SoloStubDevice.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubFileSystem.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
+    <ClCompile Include="..\src\SoloDegree.cpp" />
     <ClCompile Include="..\src\SoloGraphics.cpp" />
+    <ClCompile Include="..\src\SoloRadian.cpp" />
     <ClCompile Include="..\src\SoloRenderer.cpp" />
     <ClCompile Include="..\src\SoloSkyboxRenderer.cpp" />
     <ClCompile Include="..\src\SoloSpectator.cpp" />
