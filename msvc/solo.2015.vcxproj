@@ -29,6 +29,7 @@
     <ClInclude Include="..\include\SoloGraphics.h" />
     <ClInclude Include="..\include\SoloImage.h" />
     <ClInclude Include="..\include\SoloMeshLoader.h" />
+    <ClInclude Include="..\include\SoloPhysics.h" />
     <ClInclude Include="..\include\SoloRadian.h" />
     <ClInclude Include="..\include\SoloRenderer.h" />
     <ClInclude Include="..\include\SoloRenderQueue.h" />
@@ -65,6 +66,7 @@
     <ClInclude Include="..\src\platform\stub\SoloStubDevice.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubFileSystem.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubRenderer.h" />
+    <ClInclude Include="..\src\SoloBulletPhysics.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPngImageLoader.h" />
   </ItemGroup>
@@ -73,9 +75,11 @@
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubDevice.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubFileSystem.cpp" />
+    <ClCompile Include="..\src\SoloBulletPhysics.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\SoloDegree.cpp" />
     <ClCompile Include="..\src\SoloGraphics.cpp" />
+    <ClCompile Include="..\src\SoloPhysics.cpp" />
     <ClCompile Include="..\src\SoloRadian.cpp" />
     <ClCompile Include="..\src\SoloRenderer.cpp" />
     <ClCompile Include="..\src\SoloSkyboxRenderer.cpp" />

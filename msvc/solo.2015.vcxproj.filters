@@ -169,6 +169,12 @@
     <ClInclude Include="..\include\SoloDegree.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloPhysics.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloBulletPhysics.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloScene.cpp">
@@ -1137,29 +1143,11 @@
     <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\Vehicle\btWheelInfo.cpp">
       <Filter>src\vendor\bullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\vendor\bullet\2.83.7\BulletSoftBody\btDefaultSoftBodySolver.cpp">
-      <Filter>src\vendor\bullet</Filter>
+    <ClCompile Include="..\src\SoloPhysics.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\vendor\bullet\2.83.7\BulletSoftBody\btSoftBody.cpp">
-      <Filter>src\vendor\bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\bullet\2.83.7\BulletSoftBody\btSoftBodyConcaveCollisionAlgorithm.cpp">
-      <Filter>src\vendor\bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\bullet\2.83.7\BulletSoftBody\btSoftBodyHelpers.cpp">
-      <Filter>src\vendor\bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\bullet\2.83.7\BulletSoftBody\btSoftBodyRigidBodyCollisionConfiguration.cpp">
-      <Filter>src\vendor\bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\bullet\2.83.7\BulletSoftBody\btSoftRigidCollisionAlgorithm.cpp">
-      <Filter>src\vendor\bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\bullet\2.83.7\BulletSoftBody\btSoftRigidDynamicsWorld.cpp">
-      <Filter>src\vendor\bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\bullet\2.83.7\BulletSoftBody\btSoftSoftCollisionAlgorithm.cpp">
-      <Filter>src\vendor\bullet</Filter>
+    <ClCompile Include="..\src\SoloBulletPhysics.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
