@@ -5,6 +5,7 @@
 #include "SoloLogger.h"
 #include "SoloRenderer.h"
 #include "SoloGraphics.h"
+#include "SoloPhysics.h"
 #include "platform/stub/SoloStubDevice.h"
 #include "platform/opengl/SoloSDLOpenGLDevice.h"
 
@@ -57,6 +58,9 @@ Device::~Device()
     if (fs)
         fs.reset();
 
+    if (physics)
+        physics.reset();
+
     if (renderer)
         renderer.reset();
 
@@ -72,11 +76,13 @@ Device::Device(const DeviceCreationArgs& args):
     if (!args.logFilePath.empty())
         logger->setTargetFile(args.logFilePath);
 
-    renderer = Renderer::create(this, DeviceToken());
-    fs = FileSystem::create(this, DeviceToken());
-    assetLoader = std::make_unique<AssetLoader>(DeviceToken());
-    graphics = std::make_unique<Graphics>(this, DeviceToken());
-    scene = std::make_unique<Scene>(DeviceToken());
+    auto token = DeviceToken();
+    renderer = Renderer::create(this, token);
+    physics = Physics::create(this, token);
+    fs = FileSystem::create(this, token);
+    assetLoader = std::make_unique<AssetLoader>(token);
+    graphics = std::make_unique<Graphics>(this, token);
+    scene = std::make_unique<Scene>(token);
 }
 
 

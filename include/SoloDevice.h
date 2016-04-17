@@ -13,6 +13,7 @@ namespace solo
     class FileSystem;
     class Renderer;
     class Graphics;
+    class Physics;
     class Logger;
 
     enum class KeyCode
@@ -97,6 +98,7 @@ namespace solo
         auto getAssetLoader() const -> AssetLoader*;
         auto getRenderer() const -> Renderer*;
         auto getGraphics() const -> Graphics*;
+        auto getPhysics() const -> Physics*;
         auto getLogger() const -> Logger*;
 
     protected:
@@ -114,6 +116,7 @@ namespace solo
         uptr<AssetLoader> assetLoader;
         uptr<Renderer> renderer;
         uptr<Graphics> graphics;
+        uptr<Physics> physics;
         uptr<Logger> logger;
 
         // key code -> was pressed for the first time
@@ -172,6 +175,11 @@ namespace solo
     inline auto Device::getGraphics() const -> Graphics*
     {
         return graphics.get();
+    }
+
+    inline auto Device::getPhysics() const -> Physics*
+    {
+        return physics.get();
     }
 
     inline auto Device::getLogger() const -> Logger*
