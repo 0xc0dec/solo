@@ -28,7 +28,10 @@ void Graphics::blit(Material* material, FrameBuffer* target)
         target->bind();
 
     auto viewportSize = target ? target->getSize() : device->getCanvasSize();
-    renderer->setViewport(0, 0, viewportSize.x, viewportSize.y);
+    renderer->setViewport(static_cast<uint32_t>(0),
+                          static_cast<uint32_t>(0),
+                          static_cast<uint32_t>(viewportSize.x),
+                          static_cast<uint32_t>(viewportSize.y));
 
     material->apply(RenderContext::empty);
     quadMesh->draw(material->getEffect());
