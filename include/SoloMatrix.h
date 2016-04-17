@@ -7,6 +7,7 @@ namespace solo
 {
     class Plane;
     class Quaternion;
+    struct Radian;
 
     class Matrix final
     {
@@ -33,10 +34,10 @@ namespace solo
         static auto createReflection(const Plane& plane) -> Matrix;
         static auto createScale(const Vector3& scale) -> Matrix;
         static auto createRotationFromQuaternion(const Quaternion& quat) -> Matrix;
-        static auto createRotationFromAxisAngle(const Vector3& axis, float angleRadians) -> Matrix;
-        static auto createRotationX(float angleRadians) -> Matrix;
-        static auto createRotationY(float angleRadians) -> Matrix;
-        static auto createRotationZ(float angleRadians) -> Matrix;
+        static auto createRotationFromAxisAngle(const Vector3& axis, const Radian& angle) -> Matrix;
+        static auto createRotationX(const Radian& angle) -> Matrix;
+        static auto createRotationY(const Radian& angle) -> Matrix;
+        static auto createRotationZ(const Radian& angle) -> Matrix;
         static auto createTranslation(const Vector3& translation) -> Matrix;
 
         bool decompose(Vector3* scale, Quaternion* rotation, Vector3* translation) const;
@@ -58,10 +59,10 @@ namespace solo
         void transpose();
 
         void rotateByQuaternion(const Quaternion& q);
-        void rotateByAxisAngle(const Vector3& axis, float angleRadians);
-        void rotateX(float angleRadians);
-        void rotateY(float angleRadians);
-        void rotateZ(float angleRadians);
+        void rotateByAxisAngle(const Vector3& axis, const Radian& angle);
+        void rotateX(const Radian& angle);
+        void rotateY(const Radian& angle);
+        void rotateZ(const Radian& angle);
 
         void scaleByScalar(float value);
         void scaleByVector(const Vector3& s);

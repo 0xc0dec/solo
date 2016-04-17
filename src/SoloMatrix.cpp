@@ -3,6 +3,7 @@
 #include "SoloQuaternion.h"
 #include "SoloPlane.h"
 #include "SoloBase.h"
+#include "SoloRadian.h"
 
 using namespace solo;
 
@@ -215,7 +216,7 @@ auto Matrix::createRotationFromQuaternion(const Quaternion& q) -> Matrix
 }
 
 
-auto Matrix::createRotationFromAxisAngle(const Vector3& axis, float angleRadians) -> Matrix
+auto Matrix::createRotationFromAxisAngle(const Vector3& axis, const Radian& angle) -> Matrix
 {
     auto x = axis.x;
     auto y = axis.y;
@@ -237,8 +238,8 @@ auto Matrix::createRotationFromAxisAngle(const Vector3& axis, float angleRadians
         }
     }
 
-    auto c = cos(angleRadians);
-    auto s = sin(angleRadians);
+    auto c = cos(angle.getRawRadians());
+    auto s = sin(angle.getRawRadians());
 
     auto t = 1.0f - c;
     auto tx = t * x;
@@ -277,10 +278,10 @@ auto Matrix::createRotationFromAxisAngle(const Vector3& axis, float angleRadians
 }
 
 
-auto Matrix::createRotationX(float angleRadians) -> Matrix
+auto Matrix::createRotationX(const Radian& angle) -> Matrix
 {
-    auto c = cos(angleRadians);
-    auto s = sin(angleRadians);
+    auto c = cos(angle.getRawRadians());
+    auto s = sin(angle.getRawRadians());
 
     Matrix result;
     result.m[5] = c;
@@ -291,10 +292,10 @@ auto Matrix::createRotationX(float angleRadians) -> Matrix
 }
 
 
-auto Matrix::createRotationY(float angleRadians) -> Matrix
+auto Matrix::createRotationY(const Radian& angle) -> Matrix
 {
-    auto c = cos(angleRadians);
-    auto s = sin(angleRadians);
+    auto c = cos(angle.getRawRadians());
+    auto s = sin(angle.getRawRadians());
 
     Matrix result;
 
@@ -307,10 +308,10 @@ auto Matrix::createRotationY(float angleRadians) -> Matrix
 }
 
 
-auto Matrix::createRotationZ(float angleRadians) -> Matrix
+auto Matrix::createRotationZ(const Radian& angle) -> Matrix
 {
-    auto c = cos(angleRadians);
-    auto s = sin(angleRadians);
+    auto c = cos(angle.getRawRadians());
+    auto s = sin(angle.getRawRadians());
 
     Matrix result;
     result.m[0] = c;
@@ -542,30 +543,30 @@ void Matrix::rotateByQuaternion(const Quaternion& q)
 }
 
 
-void Matrix::rotateByAxisAngle(const Vector3& axis, float angleRadians)
+void Matrix::rotateByAxisAngle(const Vector3& axis, const Radian& angle)
 {
-    auto r = createRotationFromAxisAngle(axis, angleRadians);
+    auto r = createRotationFromAxisAngle(axis, angle);
     *this *= r;
 }
 
 
-void Matrix::rotateX(float angleRadians)
+void Matrix::rotateX(const Radian& angle)
 {
-    auto r = createRotationX(angleRadians);
+    auto r = createRotationX(angle);
     *this *= r;
 }
 
 
-void Matrix::rotateY(float angleRadians)
+void Matrix::rotateY(const Radian& angle)
 {
-    auto r = createRotationY(angleRadians);
+    auto r = createRotationY(angle);
     *this *= r;
 }
 
 
-void Matrix::rotateZ(float angleRadians)
+void Matrix::rotateZ(const Radian& angle)
 {
-    auto r = createRotationZ(angleRadians);
+    auto r = createRotationZ(angle);
     *this *= r;
 }
 
