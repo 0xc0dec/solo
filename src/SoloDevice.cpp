@@ -96,6 +96,7 @@ void Device::run()
     {
         assetLoader->update();
         beginUpdate();
+        physics->update();
         scene->update();
         scene->render();
         endUpdate();

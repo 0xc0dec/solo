@@ -16,6 +16,8 @@ namespace solo
         virtual ~Physics() {}
         SL_NONCOPYABLE(Physics)
 
+        virtual void update() = 0;
+
     protected:
         Physics(Device* device, const DeviceToken&);
 
