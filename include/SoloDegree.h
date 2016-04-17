@@ -14,8 +14,8 @@ namespace solo
         auto operator=(const Degree& d) -> Degree&;
         auto operator=(const Radian& r) -> Degree&;
 
-        auto valueDegrees() const -> float;
-        auto valueRadians() const -> float;
+        auto getRawDegrees() const -> float;
+        auto getRawRadians() const -> float;
 
         auto operator+(const Degree& d) const -> Degree;
         auto operator+(const Radian& r) -> Degree;
@@ -59,7 +59,7 @@ namespace solo
         return *this;
     }
 
-    inline auto Degree::valueDegrees() const -> float
+    inline auto Degree::getRawDegrees() const -> float
     {
         return raw;
     }
