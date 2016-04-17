@@ -5,6 +5,8 @@
 
 namespace solo
 {
+    struct Radian;
+
     class Quaternion final
     {
     public:
@@ -15,10 +17,10 @@ namespace solo
 
         Quaternion() {}
         Quaternion(float x, float y, float z, float w);
-        Quaternion(const Vector3& axis, float angleRadians);
+        Quaternion(const Vector3& axis, const Radian& angle);
 
         static auto createFromRotationMatrix(const Matrix& m) -> Quaternion;
-        static auto createFromAxisAngle(const Vector3& axis, float angleRadians) -> Quaternion;
+        static auto createFromAxisAngle(const Vector3& axis, const Radian& angle) -> Quaternion;
 
         static auto identity() -> Quaternion;
         static auto zero() -> Quaternion;
@@ -32,7 +34,7 @@ namespace solo
         auto normalized() const -> Quaternion;
         void normalize();
 
-        auto toAxisAngle(Vector3& e) const -> float;
+        auto toAxisAngle(Vector3& e) const -> Radian;
 
         static auto lerp(const Quaternion& q1, const Quaternion& q2, float t) -> Quaternion;
         static auto slerp(const Quaternion& q1, const Quaternion& q2, float t) -> Quaternion;

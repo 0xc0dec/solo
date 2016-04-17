@@ -234,9 +234,9 @@ void Transform::rotate(const Quaternion& rotation, TransformSpace space)
 }
 
 
-void Transform::rotate(const Vector3& axis, float angleRadians, TransformSpace space)
+void Transform::rotate(const Vector3& axis, const Radian& angle, TransformSpace space)
 {
-    auto rotation = Quaternion::createFromAxisAngle(axis, angleRadians);
+    auto rotation = Quaternion::createFromAxisAngle(axis, angle);
     rotate(rotation, space);
 }
 
@@ -294,9 +294,9 @@ void Transform::setLocalRotation(const Quaternion& rotation)
 }
 
 
-void Transform::setLocalRotation(const Vector3& axis, float angleRadians)
+void Transform::setLocalRotation(const Vector3& axis, const Radian& angle)
 {
-    localRotation = Quaternion::createFromAxisAngle(axis, angleRadians);
+    localRotation = Quaternion::createFromAxisAngle(axis, angle);
     setDirtyWithChildren(DirtyBitRotation | DirtyBitWorld);
 }
 

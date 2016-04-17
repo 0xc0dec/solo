@@ -1,6 +1,7 @@
 #include "SoloSpectator.h"
 #include "SoloTransform.h"
 #include "SoloDevice.h"
+#include "SoloRadian.h"
 
 using namespace solo;
 
@@ -31,9 +32,9 @@ void Spectator::update()
     if (device->isMouseButtonDown(MouseButton::Left, false))
     {
         if (mouseMotion.x != 0)
-            transform->rotate(Vector3::unitY(), verticalRotationSpeed * dt * -mouseMotion.x, TransformSpace::World);
+            transform->rotate(Vector3::unitY(), Radian(verticalRotationSpeed * dt * -mouseMotion.x), TransformSpace::World);
         if (mouseMotion.y != 0)
-            transform->rotate(Vector3::unitX(), horizontalRotationSpeed * dt * -mouseMotion.y, TransformSpace::Self);
+            transform->rotate(Vector3::unitX(), Radian(horizontalRotationSpeed * dt * -mouseMotion.y), TransformSpace::Self);
     }
 
     auto movement = Vector3::zero();

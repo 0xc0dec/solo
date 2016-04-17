@@ -25,7 +25,7 @@ public:
         auto rotationSpace = solo::TransformSpace::World;
         if (space == "local")
             rotationSpace = solo::TransformSpace::Self;
-        transform->rotate(axis, angle, rotationSpace);
+        transform->rotate(axis, solo::Radian(angle), rotationSpace);
     }
 
 private:

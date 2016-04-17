@@ -1,5 +1,6 @@
 #include "SoloQuaternion.h"
 #include "SoloMath.h"
+#include "SoloRadian.h"
 
 using namespace solo;
 
@@ -10,9 +11,9 @@ Quaternion::Quaternion(float x, float y, float z, float w):
 }
 
 
-Quaternion::Quaternion(const Vector3& axis, float angleRadians)
+Quaternion::Quaternion(const Vector3& axis, const Radian& angle)
 {
-    *this = createFromAxisAngle(axis, angleRadians);
+    *this = createFromAxisAngle(axis, angle);
 }
 
 
@@ -54,9 +55,9 @@ auto Quaternion::createFromRotationMatrix(const Matrix& m) -> Quaternion
 }
 
 
-auto Quaternion::createFromAxisAngle(const Vector3& axis, float angleRadians) -> Quaternion
+auto Quaternion::createFromAxisAngle(const Vector3& axis, const Radian& angle) -> Quaternion
 {
-    auto halfAngle = angleRadians * 0.5f;
+    auto halfAngle = angle.getRawRadians() * 0.5f;
     auto sinHalfAngle = sinf(halfAngle);
     auto normal(const_cast<Vector3&>(axis));
     normal.normalize();
@@ -124,7 +125,7 @@ auto Quaternion::normalized() const -> Quaternion
 }
 
 
-auto Quaternion::toAxisAngle(Vector3& axis) const -> float
+auto Quaternion::toAxisAngle(Vector3& axis) const -> Radian
 {
     Quaternion q(x, y, z, w);
     q.normalize();
@@ -132,7 +133,7 @@ auto Quaternion::toAxisAngle(Vector3& axis) const -> float
     axis.y = q.y;
     axis.z = q.z;
     axis.normalize();
-    return 2.0f * acos(q.w);
+    return Radian(2.0f * acos(q.w));
 }
 
 

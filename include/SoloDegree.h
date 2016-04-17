@@ -32,12 +32,12 @@ namespace solo
         auto operator/(float f) const -> Degree;
         auto operator/=(float f) -> Degree&;
 
-        bool operator< (const Degree& d) const;
+        bool operator<(const Degree& d) const;
         bool operator<=(const Degree& d) const;
         bool operator==(const Degree& d) const;
         bool operator!=(const Degree& d) const;
         bool operator>=(const Degree& d) const;
-        bool operator> (const Degree& d) const;
+        bool operator>(const Degree& d) const;
 
     private:
         float raw;
