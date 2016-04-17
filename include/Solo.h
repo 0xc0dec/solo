@@ -28,6 +28,7 @@
 #include "SoloMeshLoader.h"
 #include "SoloMeshRenderer.h"
 #include "SoloNode.h"
+#include "SoloPhysics.h"
 #include "SoloPlane.h"
 #include "SoloQuaternion.h"
 #include "SoloRadian.h"
