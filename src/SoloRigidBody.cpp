@@ -4,9 +4,9 @@
 using namespace solo;
 
 
-uptr<RigidBody> RigidBody::create(Node node)
+uptr<RigidBody> RigidBody::create(Node node, const RigidBodyConstructionParameters& parameters)
 {
-    return std::unique_ptr<RigidBody>(new BulletRigidBody(node));
+    return std::unique_ptr<RigidBody>(new BulletRigidBody(node, parameters));
 }
 
 
