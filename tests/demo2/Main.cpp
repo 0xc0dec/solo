@@ -8,11 +8,11 @@
 using namespace solo;
 
 
-class PostProcessor final: public ComponentBase<PostProcessor>
+class PostProcessor1 final: public ComponentBase<PostProcessor1>
 {
 public:
-    explicit PostProcessor(const Node& node):
-        ComponentBase<PostProcessor>(node),
+    explicit PostProcessor1(const Node& node):
+        ComponentBase<PostProcessor1>(node),
         device(Device::get()),
         loader(Device::get()->getAssetLoader()),
         graphics(Device::get()->getGraphics())
@@ -179,21 +179,21 @@ public:
     {
         if (device->isKeyPressed(KeyCode::Digit1, true))
         {
-            if (node.findComponent<PostProcessor>())
+            if (node.findComponent<PostProcessor1>())
                 return;
             node.removeComponent<PostProcessor2>();
-            node.addComponent<PostProcessor>();
+            node.addComponent<PostProcessor1>();
         }
         if (device->isKeyPressed(KeyCode::Digit2, true))
         {
             if (node.findComponent<PostProcessor2>())
                 return;
-            node.removeComponent<PostProcessor>();
+            node.removeComponent<PostProcessor1>();
             node.addComponent<PostProcessor2>();
         }
         if (device->isKeyPressed(KeyCode::Digit3, true))
         {
-            node.removeComponent<PostProcessor>();
+            node.removeComponent<PostProcessor1>();
             node.removeComponent<PostProcessor2>();
         }
     }

@@ -2,74 +2,8 @@
 #include "../common/EscapeWatcher.h"
 #include "../common/Screenshoter.h"
 #include "../common/Shaders.h"
-#include "Shaders.h"
 
 using namespace solo;
-
-
-class PostProcessor: public ComponentBase<PostProcessor>
-{
-public:
-    explicit PostProcessor(const Node& node):
-        ComponentBase<PostProcessor>(node),
-        device(Device::get()),
-        loader(Device::get()->getAssetLoader()),
-        graphics(Device::get()->getGraphics())
-    {
-    }
-
-    virtual void init() override final
-    {
-        const float stitchWidth = 30;
-
-        stitchTex = loader->loadTexture2D("../assets/stitches.png");
-        stitchTex->setFiltering(TextureFiltering::Nearest);
-
-        auto canvasSize = device->getCanvasSize();
-        auto stitchTexSize = stitchTex->getSize();
-
-        auto resolution = Vector2(
-            Math::clamp(static_cast<int>(canvasSize.x / stitchWidth) * 2, 1, 2048),
-            Math::clamp(static_cast<int>(canvasSize.y / stitchTexSize.y) * 2, 1, 2048)
-        );
-
-        auto stitchCount = Vector2(
-            resolution.x * stitchWidth / (2 * stitchTexSize.x),
-            resolution.y / 2
-        );
-
-        auto camera = node.getComponent<Camera>();
-        fbTex = Texture2D::create();
-        fbTex->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(resolution.x), static_cast<uint32_t>(resolution.y));
-        fbTex->setFiltering(TextureFiltering::Nearest);
-        fbTex->setWrapping(TextureWrapping::Clamp);
-        fb1 = FrameBuffer::create();
-        fb1->setAttachments({ fbTex });
-        camera->setViewport(0, 0, resolution.x, resolution.y);
-        camera->setRenderTarget(fb1);
-
-        auto effect = Effect::create(commonShaders.vertex.passThrough, fsStitches);
-        material = Material::create(effect);
-        material->setTextureParameter("mainTex", fbTex);
-        material->setTextureParameter("stitchTex", stitchTex);
-        material->setVector2Parameter("stitchCount", stitchCount);
-        material->setVector2Parameter("resolution", resolution);
-    }
-
-    virtual void onAfterCameraRender() override final
-    {
-        graphics->blit(material.get(), nullptr);
-    }
-
-private:
-    Device* device;
-    AssetLoader* loader;
-    Graphics* graphics;
-    sptr<Texture2D> stitchTex;
-    sptr<FrameBuffer> fb1;
-    sptr<Texture2D> fbTex;
-    sptr<Material> material;
-};
 
 
 class Demo
@@ -107,7 +41,6 @@ public:
         cam->setNear(0.05f);
         node->addComponent<Spectator>();
         node->addComponent<EscapeWatcher>();
-        node->addComponent<PostProcessor>();
         node->addComponent<Screenshoter>("demo3-screenshot.bmp");
     }
 

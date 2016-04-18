@@ -165,9 +165,6 @@
   <ItemGroup>
     <ClCompile Include="..\tests\demo3\Main.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\tests\demo3\Shaders.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
