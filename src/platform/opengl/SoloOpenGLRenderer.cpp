@@ -809,7 +809,7 @@ auto OpenGLRenderer::createUniform(const char* name, UniformType type, uint32_t 
 
 void OpenGLRenderer::destroyUniform(const UniformHandle& handle)
 {
-    programs.releaseHandle(handle.value);
+    uniforms.releaseHandle(handle.value);
 }
 
 
