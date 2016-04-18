@@ -14,9 +14,39 @@ public:
     {
         test_ReserveRelease_HandleCount();
         test_HandleReuse();
+        test_ReserveRelease_CheckDataPersists();
     }
 
 private:
+    void test_ReserveRelease_CheckDataPersists()
+    {
+        ResourcePool<int, 10> pool;
+
+        auto h1 = pool.reserveHandle();
+        auto h2 = pool.reserveHandle();
+        auto h3 = pool.reserveHandle();
+        auto h4 = pool.reserveHandle();
+        auto h5 = pool.reserveHandle();
+
+        pool.getData(h1) = 100;
+        pool.getData(h2) = 200;
+        pool.getData(h3) = 300;
+        pool.getData(h4) = 400;
+        pool.getData(h5) = 500;
+
+        pool.releaseHandle(h1);
+        pool.releaseHandle(h2);
+        pool.releaseHandle(h5);
+        pool.releaseHandle(h4);
+
+        h1 = pool.reserveHandle();
+        h2 = pool.reserveHandle();
+        h4 = pool.reserveHandle();
+        h5 = pool.reserveHandle();
+
+        assert(pool.getData(h3) == 300);
+    }
+
     void test_ReserveRelease_HandleCount()
     {
         ResourcePool<int, 5> pool;
