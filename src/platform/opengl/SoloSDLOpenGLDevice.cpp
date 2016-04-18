@@ -34,6 +34,17 @@ struct WindowWithContextCreationResult
 
 std::unordered_map<SDL_Keycode, KeyCode> keymap =
 {
+    { SDLK_0, KeyCode::Digit0 },
+    { SDLK_1, KeyCode::Digit1 },
+    { SDLK_2, KeyCode::Digit2 },
+    { SDLK_3, KeyCode::Digit3 },
+    { SDLK_4, KeyCode::Digit4 },
+    { SDLK_5, KeyCode::Digit5 },
+    { SDLK_6, KeyCode::Digit6 },
+    { SDLK_7, KeyCode::Digit7 },
+    { SDLK_8, KeyCode::Digit8 },
+    { SDLK_9, KeyCode::Digit9 },
+
     { SDLK_q, KeyCode::Q },
     { SDLK_w, KeyCode::W },
     { SDLK_e, KeyCode::E },
