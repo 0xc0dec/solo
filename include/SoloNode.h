@@ -10,6 +10,7 @@ namespace solo
     class SkyboxRenderer;
     class Spectator;
     class MeshRenderer;
+    class RigidBody;
 
     // A convenient wrapper for working with components. There's no real "Node" in the engine
     class Node final
@@ -119,4 +120,5 @@ namespace solo
     template<> auto Node::addComponent() -> MeshRenderer*;
     template<> auto Node::addComponent() -> Spectator*;
     template<> auto Node::addComponent() -> SkyboxRenderer*;
+    template<> auto Node::addComponent() -> RigidBody*;
 }

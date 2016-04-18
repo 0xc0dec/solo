@@ -5,6 +5,7 @@
 #include "SoloSkyboxRenderer.h"
 #include "SoloTransform.h"
 #include "SoloSpectator.h"
+#include "SoloRigidBody.h"
 
 using namespace solo;
 
@@ -57,4 +58,13 @@ auto Node::addComponent<SkyboxRenderer>() -> SkyboxRenderer*
     auto renderer = std::make_shared<SkyboxRenderer>(*this);
     scene->addComponent(id, renderer);
     return renderer.get();
+}
+
+
+template<>
+auto Node::addComponent<RigidBody>() -> RigidBody*
+{
+    auto body = std::shared_ptr<RigidBody>(RigidBody::create(*this));
+    scene->addComponent(id, body);
+    return body.get();
 }

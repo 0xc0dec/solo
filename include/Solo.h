@@ -38,6 +38,7 @@
 #include "SoloRenderQueue.h"
 #include "SoloAssetLoader.h"
 #include "SoloResourcePool.h"
+#include "SoloRigidBody.h"
 #include "SoloScene.h"
 #include "SoloSkyboxRenderer.h"
 #include "SoloSpectator.h"
