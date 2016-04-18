@@ -19,3 +19,9 @@ void BulletPhysics::update()
 {
     world->stepSimulation(device->getTimeDelta(), 7); // 7 is debatable, but good enough. See docs
 }
+
+
+void BulletPhysics::setGravity(const Vector3& gravity)
+{
+    world->setGravity(btVector3(gravity.x, gravity.y, gravity.z));
+}

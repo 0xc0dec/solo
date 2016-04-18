@@ -11,6 +11,8 @@ namespace solo
     public:
         virtual void update() override final;
 
+        virtual void setGravity(const Vector3& gravity) override final;
+
     private:
         friend class Physics;
 
