@@ -62,9 +62,9 @@ auto Node::addComponent<SkyboxRenderer>() -> SkyboxRenderer*
 
 
 template<>
-auto Node::addComponent<RigidBody>() -> RigidBody*
+auto Node::addComponent<RigidBody>(const RigidBodyConstructionParameters& parameters) -> RigidBody*
 {
-    auto body = std::shared_ptr<RigidBody>(RigidBody::create(*this));
+    auto body = std::shared_ptr<RigidBody>(RigidBody::create(*this, parameters));
     scene->addComponent(id, body);
     return body.get();
 }
