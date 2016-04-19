@@ -8,7 +8,7 @@
 using namespace solo;
 
 
-SkyboxRenderer::SkyboxRenderer(Node node):
+SkyboxRenderer::SkyboxRenderer(const Node& node):
     ComponentBase(node)
 {
     renderQueue = KnownRenderQueues::Skybox;

@@ -2,12 +2,11 @@
 #include "SoloMesh.h"
 #include "SoloMaterial.h"
 #include "SoloRenderContext.h"
-#include "SoloDevice.h"
 
 using namespace solo;
 
 
-MeshRenderer::MeshRenderer(Node node):
+MeshRenderer::MeshRenderer(const Node& node):
     ComponentBase(node)
 {
     renderQueue = KnownRenderQueues::Opaque;

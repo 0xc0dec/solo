@@ -18,7 +18,7 @@ namespace solo
     class Camera final: public ComponentBase<Camera>, protected TransformCallback
     {
     public:
-        Camera(Node node);
+        Camera(const Node& node);
 
         virtual void init() override final;
         virtual void terminate() override final;

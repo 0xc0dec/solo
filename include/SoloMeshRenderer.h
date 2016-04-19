@@ -13,7 +13,7 @@ namespace solo
     class MeshRenderer final: public ComponentBase<MeshRenderer>
     {
     public:
-        explicit MeshRenderer(Node node);
+        explicit MeshRenderer(const Node& node);
 
         virtual void render(RenderContext& context) override final;
 

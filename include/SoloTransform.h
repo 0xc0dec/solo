@@ -24,7 +24,7 @@ namespace solo
     class Transform final: public ComponentBase<Transform>
     {
     public:
-        explicit Transform(Node node);
+        explicit Transform(const Node& node);
 
         virtual void init() override final;
 

@@ -6,7 +6,7 @@
 class A : public ComponentBase<A>
 {
 public:
-    explicit A(Node node): ComponentBase<A>(node)
+    explicit A(const Node& node): ComponentBase<A>(node)
     {
     }
 };
@@ -15,7 +15,7 @@ public:
 class B: public ComponentBase<B>
 {
 public:
-    explicit B(Node node): ComponentBase<B>(node)
+    explicit B(const Node& node): ComponentBase<B>(node)
     {
     }
 };
@@ -24,7 +24,7 @@ public:
 class CallbackCaller: public ComponentBase<CallbackCaller>
 {
 public:
-    explicit CallbackCaller(Node node, std::function<void()> initAction, std::function<void()> updateAction, std::function<void()> terminateAction):
+    explicit CallbackCaller(const Node& node, std::function<void()> initAction, std::function<void()> updateAction, std::function<void()> terminateAction):
         ComponentBase<CallbackCaller>(node),
         initAction(initAction),
         updateAction(updateAction),
@@ -60,7 +60,7 @@ private:
 class Base : public ComponentBase<Base>
 {
 public:
-    explicit Base(Node node): ComponentBase<Base>(node)
+    explicit Base(const Node& node): ComponentBase<Base>(node)
     {
     }
 };
@@ -69,7 +69,7 @@ public:
 class Derived : public Base
 {
 public:
-    Derived(Node node): Base(node)
+    Derived(const Node& node): Base(node)
     {
     }
 };

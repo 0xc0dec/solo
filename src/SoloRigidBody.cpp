@@ -11,13 +11,13 @@ public:
 private:
     friend class RigidBody;
 
-    BulletRigidBody(Node node, const RigidBodyConstructionParameters& parameters);
+    BulletRigidBody(const Node& node, const RigidBodyConstructionParameters& parameters);
 
     uptr<btRigidBody> body;
 };
 
 
-BulletRigidBody::BulletRigidBody(Node node, const RigidBodyConstructionParameters& parameters) :
+BulletRigidBody::BulletRigidBody(const Node& node, const RigidBodyConstructionParameters& parameters) :
     RigidBody(node)
 {
     btRigidBody::btRigidBodyConstructionInfo info(parameters.mass, nullptr, nullptr/*, TODO */);
@@ -30,13 +30,13 @@ BulletRigidBody::BulletRigidBody(Node node, const RigidBodyConstructionParameter
 }
 
 
-uptr<RigidBody> RigidBody::create(Node node, const RigidBodyConstructionParameters& parameters)
+uptr<RigidBody> RigidBody::create(const Node& node, const RigidBodyConstructionParameters& parameters)
 {
     return std::unique_ptr<RigidBody>(new BulletRigidBody(node, parameters));
 }
 
 
-RigidBody::RigidBody(Node node):
+RigidBody::RigidBody(const Node& node):
     ComponentBase<RigidBody>(node)
 {
 }

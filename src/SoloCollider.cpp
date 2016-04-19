@@ -3,7 +3,7 @@
 using namespace solo;
 
 
-Collider::Collider(Node node):
+Collider::Collider(const Node& node):
     ComponentBase(node)
 {
 }

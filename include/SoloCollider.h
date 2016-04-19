@@ -10,6 +10,6 @@ namespace solo
     public:
 
     protected:
-        Collider(Node node);
+        Collider(const Node& node);
     };
 }

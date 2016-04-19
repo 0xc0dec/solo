@@ -18,7 +18,7 @@ const uint32_t DirtyBitAll =
                DirtyBitInverseTransposedWorld;
 
 
-Transform::Transform(Node node):
+Transform::Transform(const Node& node):
     ComponentBase(node),
     dirtyFlags(~0)
 {

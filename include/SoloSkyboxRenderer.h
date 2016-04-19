@@ -14,7 +14,7 @@ namespace solo
     class SkyboxRenderer final: public ComponentBase<SkyboxRenderer>
     {
     public:
-        explicit SkyboxRenderer(Node node);
+        explicit SkyboxRenderer(const Node& node);
 
         virtual void render(RenderContext& context) override final;
 

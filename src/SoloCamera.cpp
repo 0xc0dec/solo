@@ -19,7 +19,7 @@ const uint32_t DirtyBitAll =
                DirtyBitInverseViewProjection;
 
 
-Camera::Camera(Node node):
+Camera::Camera(const Node& node):
     ComponentBase(node),
     device(Device::get()),
     renderer(Device::get()->getRenderer())
