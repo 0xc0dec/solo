@@ -14,7 +14,9 @@
     <ClInclude Include="..\include\SoloBase.h" />
     <ClInclude Include="..\include\SoloBoundingBox.h" />
     <ClInclude Include="..\include\SoloBoundingSphere.h" />
+    <ClInclude Include="..\include\SoloBoxCollider.h" />
     <ClInclude Include="..\include\SoloCamera.h" />
+    <ClInclude Include="..\include\SoloCollider.h" />
     <ClInclude Include="..\include\SoloComponent.h" />
     <ClInclude Include="..\include\SoloConfig.h" />
     <ClInclude Include="..\include\SoloDegree.h" />
@@ -77,8 +79,10 @@
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubDevice.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubFileSystem.cpp" />
+    <ClCompile Include="..\src\SoloBoxCollider.cpp" />
     <ClCompile Include="..\src\SoloBulletPhysics.cpp" />
     <ClCompile Include="..\src\SoloBulletRigidBody.cpp" />
+    <ClCompile Include="..\src\SoloCollider.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\SoloDegree.cpp" />
     <ClCompile Include="..\src\SoloGraphics.cpp" />

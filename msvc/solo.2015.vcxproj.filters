@@ -181,6 +181,12 @@
     <ClInclude Include="..\include\SoloRigidBody.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloCollider.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloBoxCollider.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloScene.cpp">
@@ -1159,6 +1165,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloBulletRigidBody.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloCollider.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloBoxCollider.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
