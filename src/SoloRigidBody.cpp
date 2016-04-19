@@ -30,7 +30,7 @@ BulletRigidBody::BulletRigidBody(const Node& node, const RigidBodyConstructionPa
 }
 
 
-uptr<RigidBody> RigidBody::create(const Node& node, const RigidBodyConstructionParameters& parameters)
+auto RigidBody::create(const Node& node, const RigidBodyConstructionParameters& parameters) -> uptr<RigidBody>
 {
     return std::unique_ptr<RigidBody>(new BulletRigidBody(node, parameters));
 }

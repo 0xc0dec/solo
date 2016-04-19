@@ -21,7 +21,7 @@ namespace solo
     class RigidBody: public ComponentBase<RigidBody>
     {
     public:
-        static uptr<RigidBody> create(const Node& node, const RigidBodyConstructionParameters& parameters);
+        static auto create(const Node& node, const RigidBodyConstructionParameters& parameters) -> uptr<RigidBody>;
 
     protected:
         RigidBody(const Node& node);
