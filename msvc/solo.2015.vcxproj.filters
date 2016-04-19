@@ -172,12 +172,6 @@
     <ClInclude Include="..\include\SoloPhysics.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloBulletPhysics.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloBulletRigidBody.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloRigidBody.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -1158,13 +1152,7 @@
     <ClCompile Include="..\src\SoloPhysics.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloBulletPhysics.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloRigidBody.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloBulletRigidBody.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloCollider.cpp">

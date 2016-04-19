@@ -69,8 +69,6 @@
     <ClInclude Include="..\src\platform\stub\SoloStubDevice.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubFileSystem.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubRenderer.h" />
-    <ClInclude Include="..\src\SoloBulletPhysics.h" />
-    <ClInclude Include="..\src\SoloBulletRigidBody.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPngImageLoader.h" />
   </ItemGroup>
@@ -80,8 +78,6 @@
     <ClCompile Include="..\src\platform\stub\SoloStubDevice.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubFileSystem.cpp" />
     <ClCompile Include="..\src\SoloBoxCollider.cpp" />
-    <ClCompile Include="..\src\SoloBulletPhysics.cpp" />
-    <ClCompile Include="..\src\SoloBulletRigidBody.cpp" />
     <ClCompile Include="..\src\SoloCollider.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\SoloDegree.cpp" />
