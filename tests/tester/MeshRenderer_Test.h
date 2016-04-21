@@ -19,32 +19,24 @@ public:
         mesh->addPart(nullptr, 0);
 
         test_EnsureNoMaterialsAtFirst();
-        test_SetMesh_UnsetMesh_EnsureNoMesh();
+        test_NoMeshAfterSetUnset();
         test_SetMaterialForVariousIndexes();
-        test_SetMaterial_CheckCount();
-        test_SetMaterial_UnsetMaterial_EnsureMaterialCountChanges();
+        test_MaterialCountChanges();
     }
 
 private:
-    void test_SetMaterial_UnsetMaterial_EnsureMaterialCountChanges()
+    void test_MaterialCountChanges()
     {
         auto renderer = scene->createNode()->addComponent<MeshRenderer>();
         renderer->setMesh(mesh);
         renderer->setMaterial(0, material);
         renderer->setMaterial(1, material);
         assert(renderer->getMaterialCount() == 2);
+        assert(renderer->getMaterial(0) == material.get());
+        assert(renderer->getMaterial(1) == material.get());
         renderer->setMaterial(0, nullptr);
         assert(renderer->getMaterialCount() == 1);
         assert(renderer->getMaterial(1) == material.get());
-    }
-
-    void test_SetMaterial_CheckCount()
-    {
-        auto renderer = scene->createNode()->addComponent<MeshRenderer>();
-        renderer->setMesh(mesh);
-        renderer->setMaterial(0, material);
-        assert(renderer->getMaterial(0) == material.get());
-        assert(renderer->getMaterialCount() == 1);
     }
 
     void test_SetMaterialForVariousIndexes()
@@ -62,7 +54,7 @@ private:
         assert(renderer->getMaterialCount() == 0);
     }
 
-    void test_SetMesh_UnsetMesh_EnsureNoMesh()
+    void test_NoMeshAfterSetUnset()
     {
         auto renderer = scene->createNode()->addComponent<MeshRenderer>();
         renderer->setMesh(mesh);
