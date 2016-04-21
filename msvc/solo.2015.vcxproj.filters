@@ -181,6 +181,15 @@
     <ClInclude Include="..\include\SoloBoxCollider.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\SoloBulletPhysics.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloBulletBoxCollider.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloBulletRigidBody.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloScene.cpp">
@@ -1149,16 +1158,16 @@
     <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\Vehicle\btWheelInfo.cpp">
       <Filter>src\vendor\bullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloPhysics.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloRigidBody.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloCollider.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloBoxCollider.cpp">
+    <ClCompile Include="..\src\SoloBulletPhysics.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloBulletBoxCollider.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloBulletRigidBody.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
