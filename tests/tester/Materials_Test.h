@@ -39,17 +39,17 @@ public:
 
 	virtual void run() override final
 	{
-		test_CompileEffect_OK();
-		test_CompileEffect_Fail();
+		test_NormalEffectCompilation();
+		test_FailedEffectCompilation();
 	}
 
 private:
-    void test_CompileEffect_OK()
+    void test_NormalEffectCompilation()
     {
         Effect::create(vs, fs);
     }
 
-    void test_CompileEffect_Fail()
+    void test_FailedEffectCompilation()
     {
         testFailedCompilation("sdfsdf", fs, "vertex");
         testFailedCompilation(vs, "sdfsdf", "fragment");

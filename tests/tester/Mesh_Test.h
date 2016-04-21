@@ -12,13 +12,13 @@ public:
 
     virtual void run() override final
     {
-        test_EmptyMesh_CheckDefaults();
+        test_Defaults();
         test_ChangePrimitiveType();
-        test_AddIndex_CheckIndexCount();
+        test_IndexCount();
     }
 
 private:
-    void test_EmptyMesh_CheckDefaults()
+    void test_Defaults()
     {
         auto mesh = Mesh::create();
         assert(mesh->getPrimitiveType() == PrimitiveType::Triangles);
@@ -32,7 +32,7 @@ private:
         assert(mesh->getPrimitiveType() == PrimitiveType::Points);
     }
 
-    void test_AddIndex_CheckIndexCount()
+    void test_IndexCount()
     {
         auto mesh = Mesh::create();
         mesh->addPart(nullptr, 0);

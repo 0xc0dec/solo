@@ -14,11 +14,11 @@ public:
     {
         test_ReserveRelease_HandleCount();
         test_HandleReuse();
-        test_ReserveRelease_CheckDataPersists();
+        test_ReserveRelease_DataPersistence();
     }
 
 private:
-    void test_ReserveRelease_CheckDataPersists()
+    void test_ReserveRelease_DataPersistence()
     {
         ResourcePool<int, 10> pool;
 

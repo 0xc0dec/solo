@@ -12,13 +12,13 @@ public:
 
     virtual void run() override final
     {
-        test_WriteBytes_ReadBytes();
-        test_WriteLines_ReadLines();
-        test_WriteLines_ReadText();
+        test_BytesReading();
+        test_LinesReading();
+        test_TextReading();
     }
 
 private:
-    void test_WriteLines_ReadText()
+    void test_TextReading()
     {
         std::vector<std::string> lines =
         {
@@ -33,7 +33,7 @@ private:
         assert(text == expected);
     }
 
-    void test_WriteBytes_ReadBytes()
+    void test_BytesReading()
     {
         std::vector<uint8_t> data = { 0x01, 0x02, 0x03, 0x04 };
         fileSystem->writeBytes("temp.bin", data);
@@ -45,7 +45,7 @@ private:
         assert(readData[3] == data[3]);
     }
 
-    void test_WriteLines_ReadLines()
+    void test_LinesReading()
     {
         std::vector<std::string> lines =
         {

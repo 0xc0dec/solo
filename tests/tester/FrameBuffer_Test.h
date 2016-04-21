@@ -12,12 +12,12 @@ public:
 
     virtual void run() override final
     {
-        test_SetAttachmentsOfDifferentSizes_EnsureThrows();
-        test_SetAttachments_GetSize();
+        test_AttachmentsOfDifferentSizes();
+        test_GetSize();
     }
 
 private:
-    void test_SetAttachments_GetSize()
+    void test_GetSize()
     {
         auto t1 = Texture2D::create();
         auto t2 = Texture2D::create();
@@ -31,7 +31,7 @@ private:
         assert(static_cast<uint32_t>(size.x) == 64 && static_cast<uint32_t>(size.y) == 64);
     }
 
-    void test_SetAttachmentsOfDifferentSizes_EnsureThrows()
+    void test_AttachmentsOfDifferentSizes()
     {
         auto fb = FrameBuffer::create();
         auto t1 = Texture2D::create();
