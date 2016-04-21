@@ -13,6 +13,8 @@ namespace solo
 
         virtual void setGravity(const Vector3& gravity) override final;
 
+        auto getWorld() const -> btDiscreteDynamicsWorld*;
+
     private:
         friend class Physics;
 

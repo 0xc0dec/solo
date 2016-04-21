@@ -27,6 +27,12 @@ void BulletPhysics::setGravity(const Vector3& gravity)
 }
 
 
+auto BulletPhysics::getWorld() const -> btDiscreteDynamicsWorld*
+{
+    return world.get();
+}
+
+
 auto Physics::create(Device* device, const DeviceToken& deviceToken) -> uptr<Physics>
 {
     return std::unique_ptr<BulletPhysics>(new BulletPhysics(device, deviceToken));
