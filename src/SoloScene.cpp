@@ -18,13 +18,17 @@ auto Scene::createNode() -> sptr<Node>
 void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
 {
     auto typeId = cmp->getTypeId();
-    auto nodeIt = components.find(nodeId);
-    if (nodeIt != components.end())
+
+    SL_IN_DEBUG(
     {
-        auto& nodeComponents = nodeIt->second;
-        if (nodeComponents.find(typeId) != nodeComponents.end())
-            SL_FMT_THROW(InvalidOperationException, "Component ", typeId, " already exists");
-    }
+        auto nodeIt = components.find(nodeId);
+        if (nodeIt != components.end())
+        {
+            auto& nodeComponents = nodeIt->second;
+            if (nodeComponents.find(typeId) != nodeComponents.end())
+                SL_FMT_THROW(InvalidOperationException, "Component ", typeId, " already exists");
+        }
+    })
 
     components[nodeId][typeId] = cmp;
     cmp->init();
