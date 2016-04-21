@@ -33,6 +33,9 @@ void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
     components[nodeId][typeId] = cmp;
     cmp->init();
 
+    for (const auto& a : components.at(nodeId))
+        a.second->onComponentAdded(cmp.get());
+
     componentsDirty = true;
     if (typeId == Camera::getId())
         cameraCacheDirty = true;
@@ -50,10 +53,15 @@ void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
     
     auto cmp = cmpIt->second;
     nodeIt->second.erase(cmpIt);
+    cmp->terminate();
+
     if (nodeIt->second.empty())
         components.erase(nodeIt);
-
-    cmp->terminate();
+    else
+    {
+        for (const auto& otherCmp : nodeIt->second)
+            otherCmp.second->onComponentRemoved(cmp.get());
+    }
 
     if (typeId == Camera::getId())
         cameraCacheDirty = true;
@@ -63,6 +71,7 @@ void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
 
 auto Scene::getComponent(uint32_t nodeId, uint32_t typeId) const -> Component*
 {
+    // TODO remove this method completely?
     auto cmp = findComponent(nodeId, typeId);
     if (!cmp)
         SL_FMT_THROW(InvalidOperationException, "Component ", typeId, " not found on node ", nodeId);

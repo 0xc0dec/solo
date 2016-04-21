@@ -34,7 +34,10 @@ namespace solo
         virtual void update() {}
         virtual void terminate() {}
         virtual void render(RenderContext& context) {}
+
         virtual void onAfterCameraRender() {}
+        virtual void onComponentAdded(Component* cmp) {}
+        virtual void onComponentRemoved(Component* cmp) {}
 
         auto getRenderQueue() const -> uint32_t;
         void setRenderQueue(uint32_t queue);
