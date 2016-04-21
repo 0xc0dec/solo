@@ -3,7 +3,7 @@
 #include "TestBase.h"
 
 
-class A : public ComponentBase<A>
+class A final: public ComponentBase<A>
 {
 public:
     explicit A(const Node& node): ComponentBase<A>(node)
@@ -12,7 +12,7 @@ public:
 };
 
 
-class B: public ComponentBase<B>
+class B final: public ComponentBase<B>
 {
 public:
     explicit B(const Node& node): ComponentBase<B>(node)
@@ -21,7 +21,29 @@ public:
 };
 
 
-class CallbackCaller: public ComponentBase<CallbackCaller>
+class C final: public ComponentBase<C>
+{
+public:
+    Component* addedCmp = nullptr;
+    Component* removedCmp = nullptr;
+
+    explicit C(const Node& node) : ComponentBase<C>(node)
+    {
+    }
+
+    virtual void onComponentAdded(Component* cmp) override final
+    {
+        addedCmp = cmp;
+    }
+
+    virtual void onComponentRemoved(Component* cmp) override final
+    {
+        removedCmp = cmp;
+    }
+};
+
+
+class CallbackCaller final: public ComponentBase<CallbackCaller>
 {
 public:
     explicit CallbackCaller(const Node& node, std::function<void()> initAction, std::function<void()> updateAction, std::function<void()> terminateAction):
@@ -32,19 +54,19 @@ public:
     {
     }
 
-    virtual void init() override
+    virtual void init() override final
     {
         if (initAction)
             initAction();
     }
 
-    virtual void update() override
+    virtual void update() override final
     {
         if (updateAction)
             updateAction();
     }
 
-    virtual void terminate() override
+    virtual void terminate() override final
     {
         if (terminateAction)
             terminateAction();
@@ -57,7 +79,7 @@ private:
 };
 
 
-class Base : public ComponentBase<Base>
+class Base: public ComponentBase<Base>
 {
 public:
     explicit Base(const Node& node): ComponentBase<Base>(node)
@@ -66,23 +88,23 @@ public:
 };
 
 
-class Derived : public Base
+class Derived final: public Base
 {
 public:
-    Derived(const Node& node): Base(node)
+    explicit Derived(const Node& node): Base(node)
     {
     }
 };
 
 
-class Components_Test : public TestBase
+class Components_Test final: public TestBase
 {
 public:
     Components_Test(Device *device): TestBase(device)
     {
     }
 
-    virtual void run() override
+    virtual void run() override final
     {
         test_AddComponents();
         test_AddDerivedComponent_EnsureFoundAsParent();
@@ -91,6 +113,7 @@ public:
         test_RemoveInexistentComponent();
         test_AddDuplicateComponent_EnsureError();
         test_AddOrRemoveComponentsFromWithinCallbackMethods();
+        test_AddOrRemoveComponents_EnsureAddedRemovedEventsCalled();
     }
 
 private:
@@ -103,6 +126,24 @@ private:
         assert(b);
         assert(a->getTypeId() == A::getId());
         assert(b->getTypeId() == B::getId());
+    }
+
+    void test_AddOrRemoveComponents_EnsureAddedRemovedEventsCalled()
+    {
+        auto node = scene->createNode();
+        auto c = node->addComponent<C>();
+
+        auto a = node->addComponent<A>();
+        assert(c->addedCmp == a);
+
+        auto b = node->addComponent<B>();
+        assert(c->addedCmp == b);
+
+        node->removeComponent<A>();
+        assert(c->removedCmp == a);
+
+        node->removeComponent<B>();
+        assert(c->removedCmp == b);
     }
 
     void test_AddComponent_Remove()
