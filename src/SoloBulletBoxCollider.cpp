@@ -12,7 +12,7 @@ BulletBoxCollider::BulletBoxCollider(const Node& node, const Vector3& halfExtent
 
 auto BoxCollider::create(const Node& node, const Vector3& size) -> uptr<BoxCollider>
 {
-    return std::make_unique<BulletBoxCollider>(node, size);
+    return std::unique_ptr<BulletBoxCollider>(new BulletBoxCollider(node, size));
 }
 
 
