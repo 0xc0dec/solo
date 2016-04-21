@@ -3,14 +3,14 @@
 #include "TestBase.h"
 
 
-class FrameBuffer_Test : public TestBase
+class FrameBuffer_Test final: public TestBase
 {
 public:
     FrameBuffer_Test(Device *device): TestBase(device)
     {
     }
 
-    virtual void run() override
+    virtual void run() override final
     {
         test_SetAttachmentsOfDifferentSizes_EnsureThrows();
         test_SetAttachments_GetSize();

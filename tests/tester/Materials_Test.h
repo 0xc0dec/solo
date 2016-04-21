@@ -30,31 +30,31 @@ const char *fs = R"s(
 )s";
 
 
-class Materials_Test : public TestBase
+class Materials_Test final: public TestBase
 {
 public:
 	Materials_Test(Device* device): TestBase(device)
 	{
 	}
 
-	virtual void run() override
+	virtual void run() override final
 	{
 		test_CompileEffect_OK();
 		test_CompileEffect_Fail();
 	}
 
-	void test_CompileEffect_OK()
-	{
-        Effect::create(vs, fs);
-	}
-
-	void test_CompileEffect_Fail()
-	{
-		testFailedCompilation("sdfsdf", fs, "vertex");
-		testFailedCompilation(vs, "sdfsdf", "fragment");
-	}
-
 private:
+    void test_CompileEffect_OK()
+    {
+        Effect::create(vs, fs);
+    }
+
+    void test_CompileEffect_Fail()
+    {
+        testFailedCompilation("sdfsdf", fs, "vertex");
+        testFailedCompilation(vs, "sdfsdf", "fragment");
+    }
+
 	void testFailedCompilation(const std::string& vertex, const std::string& fragment, const std::string& failedShaderTypeName)
 	{
 		try

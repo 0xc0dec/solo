@@ -3,7 +3,7 @@
 #include "TestBase.h"
 
 
-class ResourcePool_Test: TestBase
+class ResourcePool_Test final: TestBase
 {
 public:
     explicit ResourcePool_Test(Device *device): TestBase(device)

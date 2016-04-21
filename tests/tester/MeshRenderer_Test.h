@@ -3,14 +3,14 @@
 #include "TestBase.h"
 
 
-class MeshRenderer_Test : public TestBase
+class MeshRenderer_Test final: public TestBase
 {
 public:
     MeshRenderer_Test(Device *device): TestBase(device)
     {
     }
 
-    virtual void run() override
+    virtual void run() override final
     {
         material = Material::create(Effect::create("1", "2"));
         mesh = Mesh::create();
@@ -25,6 +25,7 @@ public:
         test_SetMaterial_UnsetMaterial_EnsureMaterialCountChanges();
     }
 
+private:
     void test_SetMaterial_UnsetMaterial_EnsureMaterialCountChanges()
     {
         auto renderer = scene->createNode()->addComponent<MeshRenderer>();

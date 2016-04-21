@@ -3,20 +3,21 @@
 #include "TestBase.h"
 
 
-class Mesh_Test: public TestBase
+class Mesh_Test final: public TestBase
 {
 public:
     explicit Mesh_Test(Device *device): TestBase(device)
     {
     }
 
-    virtual void run() override
+    virtual void run() override final
     {
         test_EmptyMesh_CheckDefaults();
         test_ChangePrimitiveType();
         test_AddIndex_CheckIndexCount();
     }
 
+private:
     void test_EmptyMesh_CheckDefaults()
     {
         auto mesh = Mesh::create();

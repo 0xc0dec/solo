@@ -3,19 +3,20 @@
 #include "TestBase.h"
 
 
-class Transform_Test : public TestBase
+class Transform_Test final: public TestBase
 {
 public:
     Transform_Test(Device *device): TestBase(device)
     {
     }
 
-    virtual void run() override
+    virtual void run() override final
     {
         test_GetTransformComponent();
         test_ChildrenManipulation();
     }
 
+private:
     void test_GetTransformComponent()
     {
         auto node = scene->createNode();

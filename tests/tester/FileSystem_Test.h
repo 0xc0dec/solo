@@ -3,20 +3,21 @@
 #include "TestBase.h"
 
 
-class FileSystem_Test : public TestBase
+class FileSystem_Test final: public TestBase
 {
 public:
     FileSystem_Test(Device *device): TestBase(device)
     {
     }
 
-    virtual void run() override
+    virtual void run() override final
     {
         test_WriteBytes_ReadBytes();
         test_WriteLines_ReadLines();
         test_WriteLines_ReadText();
     }
 
+private:
     void test_WriteLines_ReadText()
     {
         std::vector<std::string> lines =

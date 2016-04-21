@@ -3,18 +3,19 @@
 #include "TestBase.h"
 
 
-class Device_Test : public TestBase
+class Device_Test final: public TestBase
 {
 public:
     Device_Test(Device *device): TestBase(device)
     {
     }
 
-    virtual void run() override
+    virtual void run() override final
     {
         test_SetWindowTitle_GetWindowTitle();
     }
 
+private:
     void test_SetWindowTitle_GetWindowTitle()
     {
         device->setWindowTitle("Test window");
