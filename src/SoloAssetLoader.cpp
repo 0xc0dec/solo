@@ -88,7 +88,7 @@ auto AssetLoader::loadCubeTexture(const std::vector<std::string>& sidesPaths) ->
     {
         auto image = loader->load(path);
         auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + idx++);
-        result->setData(face, image->colorFormat, image->data, image->width, image->height);
+        result->setData(face, image->colorFormat, image->data.data(), image->width, image->height);
     }
 
     return result;
@@ -99,7 +99,6 @@ auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string>& sidesPath
 {
     auto handle = std::make_shared<AsyncHandle<CubeTexture>>();
     auto loader = getImageLoader(sidesPaths[0]);
-    auto device = Device::get();
 
     std::vector<async::task<sptr<Image>>> imageTasks;
     for (uint32_t i = 0; i < sidesPaths.size(); i++)
@@ -124,7 +123,7 @@ auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string>& sidesPath
             for (const auto& image : images)
             {
                 auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + idx++);
-                texture->setData(face, image->colorFormat, image->data, image->width, image->height);
+                texture->setData(face, image->colorFormat, image->data.data(), image->width, image->height);
             }
             handle->putResult(texture);
         }, std::move(images)));
