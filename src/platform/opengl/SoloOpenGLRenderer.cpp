@@ -71,14 +71,35 @@ static auto convertPrimitiveType(PrimitiveType type) -> GLenum
 }
 
 
-static auto convertColorFormat(ColorFormat format) -> GLenum
+static auto convertToTextureFormat(TextureFormat format) -> GLenum
 {
     switch (format)
     {
-        case ColorFormat::RGB:
+        case TextureFormat::Red:
+            return GL_RED;
+        case TextureFormat::RGB:
             return GL_RGB;
-        case ColorFormat::RGBA:
+        case TextureFormat::RGBA:
             return GL_RGBA;
+        case TextureFormat::Alpha:
+            return GL_ALPHA;
+        default:
+            SL_FMT_THROW(InvalidInputException, "Unknown texture format ", static_cast<int32_t>(format));
+    }
+}
+
+
+static auto convertToInternalTextureFormat(TextureFormat format) -> GLenum
+{
+    switch (format)
+    {
+        case TextureFormat::Red:
+        case TextureFormat::RGB:
+            return GL_RGB;
+        case TextureFormat::RGBA:
+            return GL_RGBA;
+        case TextureFormat::Alpha:
+            return GL_ALPHA;
         default:
             SL_FMT_THROW(InvalidInputException, "Unknown texture format ", static_cast<int32_t>(format));
     }
@@ -262,21 +283,14 @@ void OpenGLRenderer::destroyTexture(const TextureHandle& handle)
 }
 
 
-void OpenGLRenderer::update2DTexture(const TextureHandle& handle, ColorFormat format, uint32_t width, uint32_t height, const void* data)
+void OpenGLRenderer::update2DTexture(const TextureHandle& handle, TextureFormat format, uint32_t width, uint32_t height, const void* data)
 {
     bindTexture(GL_TEXTURE_2D, handle);
 
+    auto internalFormat = convertToInternalTextureFormat(format);
+    auto fmt = convertToTextureFormat(format);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexImage2D(
-        GL_TEXTURE_2D,
-        0,
-        convertColorFormat(format),
-        width,
-        height,
-        0,
-        convertColorFormat(format),
-        GL_UNSIGNED_BYTE,
-        data);
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, fmt, GL_UNSIGNED_BYTE, data);
 
     auto& texData = textures.getData(handle.value);
     texData.width = width;
@@ -286,24 +300,15 @@ void OpenGLRenderer::update2DTexture(const TextureHandle& handle, ColorFormat fo
 }
 
 
-void OpenGLRenderer::updateCubeTexture(const TextureHandle& handle, CubeTextureFace face, ColorFormat format, uint32_t width, uint32_t height, const void* data)
+void OpenGLRenderer::updateCubeTexture(const TextureHandle& handle, CubeTextureFace face, TextureFormat format, uint32_t width, uint32_t height, const void* data)
 {
     bindTexture(GL_TEXTURE_CUBE_MAP, handle);
 
     auto glFace = convertCubeTextureFace(face);
+    auto internalFormat = convertToInternalTextureFormat(format);
+    auto fmt = convertToTextureFormat(format);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexImage2D(
-        glFace,
-        0,
-        convertColorFormat(format),
-        width,
-        height,
-        0,
-        convertColorFormat(format),
-        GL_UNSIGNED_BYTE,
-        data);
-
-
+    glTexImage2D(glFace, 0, internalFormat, width, height, 0, fmt, GL_UNSIGNED_BYTE, data);
 
     // NB width and height in texture data are not updated intentionally
 

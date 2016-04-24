@@ -52,7 +52,7 @@ auto AssetLoader::loadTexture2D(const std::string& path) -> sptr<Texture2D>
     auto loader = getImageLoader(path);
     auto image = loader->load(path);
     auto result = Texture2D::create();
-    result->setData(image->colorFormat, image->data, image->width, image->height);
+    result->setData(image->colorFormat, image->data.data(), image->width, image->height);
     return result;
 }
 
@@ -69,7 +69,7 @@ auto AssetLoader::loadTexture2DAsync(const std::string& path) -> sptr<AsyncHandl
         this->tasks.push_back([=]()
         {
             auto texture = Texture2D::create();
-            texture->setData(simage->colorFormat, simage->data, simage->width, simage->height);
+            texture->setData(simage->colorFormat, simage->data.data(), simage->width, simage->height);
             handle->putResult(texture);
         });
     });

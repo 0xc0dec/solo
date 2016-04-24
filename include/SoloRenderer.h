@@ -100,10 +100,12 @@ namespace solo
         Points
     };
 
-    enum class ColorFormat
+    enum class TextureFormat
     {
+        Red,
         RGB,
-        RGBA
+        RGBA,
+        Alpha
     };
 
     enum class CubeTextureFace
@@ -148,8 +150,8 @@ namespace solo
         virtual void setCubeTexture(const TextureHandle& handle) = 0;
         virtual void setCubeTexture(const TextureHandle& handle, uint32_t flags) = 0;
         virtual void setCubeTexture(const TextureHandle& handle, uint32_t flags, float anisotropyLevel) = 0;
-        virtual void update2DTexture(const TextureHandle& handle, ColorFormat format, uint32_t width, uint32_t height, const void* data) = 0;
-        virtual void updateCubeTexture(const TextureHandle& handle, CubeTextureFace face, ColorFormat format,
+        virtual void update2DTexture(const TextureHandle& handle, TextureFormat format, uint32_t width, uint32_t height, const void* data) = 0;
+        virtual void updateCubeTexture(const TextureHandle& handle, CubeTextureFace face, TextureFormat format,
             uint32_t width, uint32_t height, const void* data) = 0;
         virtual void generateTexture2DMipmaps(const TextureHandle& handle) = 0;
         virtual void generateCubeTextureMipmaps(const TextureHandle& handle) = 0;

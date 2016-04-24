@@ -21,8 +21,8 @@ void Texture2D::generateMipmaps()
 }
 
 
-void Texture2D::setData(ColorFormat format, const std::vector<uint8_t>& data, uint32_t width, uint32_t height)
+void Texture2D::setData(TextureFormat format, const uint8_t* data, uint32_t width, uint32_t height)
 {
-    renderer->update2DTexture(handle, format, width, height, data.data());
+    renderer->update2DTexture(handle, format, width, height, data);
     size = { static_cast<float>(width), static_cast<float>(height) };
 }

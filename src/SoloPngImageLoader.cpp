@@ -54,14 +54,14 @@ auto PngImageLoader::load(const std::string& path) -> uptr<Image>
     auto height = png_get_image_height(png, info);
     auto colorType = png_get_color_type(png, info);
 
-    ColorFormat colorFormat;
+    TextureFormat colorFormat;
     switch (colorType)
     {
         case PNG_COLOR_TYPE_RGB:
-            colorFormat = ColorFormat::RGB;
+            colorFormat = TextureFormat::RGB;
             break;
         case PNG_COLOR_TYPE_RGBA:
-            colorFormat = ColorFormat::RGBA;
+            colorFormat = TextureFormat::RGBA;
             break;
         default:
             png_destroy_info_struct(png, &info);

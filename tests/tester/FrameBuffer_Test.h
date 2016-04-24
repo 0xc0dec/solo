@@ -21,8 +21,8 @@ private:
     {
         auto t1 = Texture2D::create();
         auto t2 = Texture2D::create();
-        t1->setData(ColorFormat::RGB, {}, 64, 64);
-        t2->setData(ColorFormat::RGB, {}, 64, 64);
+        t1->setData(TextureFormat::RGB, {}, 64, 64);
+        t2->setData(TextureFormat::RGB, {}, 64, 64);
 
         auto fb = FrameBuffer::create();
         fb->setAttachments({ t1, t2 });
@@ -36,8 +36,8 @@ private:
         auto fb = FrameBuffer::create();
         auto t1 = Texture2D::create();
         auto t2 = Texture2D::create();
-        t1->setData(ColorFormat::RGB, {}, 64, 64);
-        t2->setData(ColorFormat::RGB, {}, 16, 16);
+        t1->setData(TextureFormat::RGB, {}, 64, 64);
+        t2->setData(TextureFormat::RGB, {}, 16, 16);
 
         assertThrows<InvalidInputException>([&]()
         {

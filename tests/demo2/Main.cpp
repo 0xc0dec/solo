@@ -25,7 +25,7 @@ public:
 
         auto camera = node.getComponent<Camera>();
         fbTex = Texture2D::create();
-        fbTex->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
+        fbTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
         fbTex->setFiltering(TextureFiltering::Nearest);
         fbTex->setWrapping(TextureWrapping::Clamp);
         fb1 = FrameBuffer::create();
@@ -33,7 +33,7 @@ public:
         camera->setRenderTarget(fb1);
 
         fbTex2 = Texture2D::create();
-        fbTex2->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
+        fbTex2->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
         fbTex2->setFiltering(TextureFiltering::Nearest);
         fbTex2->setWrapping(TextureWrapping::Clamp);
         fb2 = FrameBuffer::create();
@@ -126,7 +126,7 @@ public:
 
         auto camera = node.getComponent<Camera>();
         fbTex = Texture2D::create();
-        fbTex->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(resolution.x), static_cast<uint32_t>(resolution.y));
+        fbTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(resolution.x), static_cast<uint32_t>(resolution.y));
         fbTex->setFiltering(TextureFiltering::Nearest);
         fbTex->setWrapping(TextureWrapping::Clamp);
         fb1 = FrameBuffer::create();

@@ -10,7 +10,7 @@ namespace solo
     {
         uint32_t width;
         uint32_t height;
-        ColorFormat colorFormat;
+        TextureFormat colorFormat;
         std::vector<uint8_t> data;
     };
 }

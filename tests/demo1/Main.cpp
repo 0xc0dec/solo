@@ -150,7 +150,7 @@ public:
     void initOffscreenCamera()
     {
         offscreenCameraTex = Texture2D::create();
-        offscreenCameraTex->setData(ColorFormat::RGB, {}, static_cast<uint32_t>(floor(canvasSize.x / 8.0f)), static_cast<uint32_t>(floor(canvasSize.y / 8.0f)));
+        offscreenCameraTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(floor(canvasSize.x / 8.0f)), static_cast<uint32_t>(floor(canvasSize.y / 8.0f)));
         offscreenCameraTex->setFiltering(TextureFiltering::Nearest);
         offscreenCameraTex->setWrapping(TextureWrapping::Clamp);
 
