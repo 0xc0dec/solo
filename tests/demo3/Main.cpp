@@ -24,6 +24,22 @@ const char* fsFont = R"(
 	}
 )";
 
+const char* fsFontAtlas = R"(
+    #version 330 core
+
+    uniform sampler2D mainTex;
+
+    in vec2 uv0;
+	out vec4 fragColor;
+
+    void main()
+	{
+        vec2 uv = vec2(uv0.x, 1 - uv0.y);
+        vec4 c = texture(mainTex, uv);
+		fragColor = vec4(c.r, c.r, c.r, c.r);
+	}
+)";
+
 
 class Demo
 {
@@ -142,7 +158,8 @@ public:
         stbtt_PackBegin(&context, pixels.get(), textureWidth, textureHeight, 0, 1, nullptr);
         stbtt_PackSetOversampling(&context, 2, 2);
 
-        charInfo = std::make_unique<stbtt_packedchar[]>(charCount);
+        auto abc = new stbtt_packedchar[charCount];
+        charInfo = std::unique_ptr<stbtt_packedchar[]>(abc);
 
         auto fontBytes = Device::get()->getFileSystem()->readBytes("c:/windows/fonts/arialbd.ttf");
         stbtt_PackFontRange(&context, fontBytes.data(), 0, fontSize, firstChar, charCount, charInfo.get());
@@ -169,7 +186,7 @@ public:
         uint16_t lastIndex = 0;
         for (auto c: text)
         {
-            stbtt_GetPackedQuad(charInfo.get(), textureWidth, textureHeight, c - firstChar, &xpos, &ypos, &quad, 0);
+            stbtt_GetPackedQuad(charInfo.get(), textureWidth, textureHeight, c - firstChar, &xpos, &ypos, &quad, 1);
             auto xmin = quad.x0;
             auto xmax = quad.x0 + (quad.x1 - quad.x0) * 1;
             auto ymin = quad.y1;
@@ -210,26 +227,38 @@ public:
     {
         const int textureWidth = 1024;
         const int textureHeight = 1024;
-        const int lineHeight = 60;
-//        auto fontTexture = renderTextToTexture("Hello, world!", textureWidth, textureHeight, lineHeight);
-        auto fontTexture = renderFontAtlas('a', 26, textureWidth, textureHeight, lineHeight);
-        auto mesh = createFontMesh("test", textureWidth, textureHeight);
+        const int lineHeight = 30;
+        auto fontTexture = renderFontAtlas(' ', '~' - ' ', textureWidth, textureHeight, lineHeight);
+        auto fontEffect = Effect::create(commonShaders.vertex.basic, fsFont);
+        auto fontMaterial = Material::create(fontEffect);
+        fontMaterial->setPolygonFace(PolygonFace::All);
+        fontMaterial->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
+        fontMaterial->setTextureParameter("mainTex", fontTexture);
+        fontMaterial->setTransparent(true);
 
-//        auto mesh = Mesh::create(MeshPrefab::Quad);
-        auto effect = Effect::create(commonShaders.vertex.basic, fsFont);
-        auto mat = Material::create(effect);
-        mat->setPolygonFace(PolygonFace::All);
-        mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
-        mat->setTextureParameter("mainTex", fontTexture);
-        mat->setTransparent(true);
+        auto fontAtlasEffect = Effect::create(commonShaders.vertex.basic, fsFontAtlas);
+        auto fontAtlasMaterial = Material::create(fontAtlasEffect);
+        fontAtlasMaterial->setPolygonFace(PolygonFace::All);
+        fontAtlasMaterial->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
+        fontAtlasMaterial->setTextureParameter("mainTex", fontTexture);
+        fontAtlasMaterial->setTransparent(true);
 
-        auto node = scene->createNode();
-        auto renderer = node->addComponent<MeshRenderer>();
-        renderer->setMesh(mesh);
-        renderer->setMaterial(0, mat);
-        auto t = node->getComponent<Transform>();
-        t->setLocalPosition(Vector3(0, 5, 0));
-        t->setLocalScale(Vector3(0.05, 0.05, 1));
+        auto textMesh = createFontMesh("Hello, world!", textureWidth, textureHeight);
+        auto textNode = scene->createNode();
+        auto renderer = textNode->addComponent<MeshRenderer>();
+        renderer->setMesh(textMesh);
+        renderer->setMaterial(0, fontMaterial);
+        auto transform = textNode->getComponent<Transform>();
+        transform->setLocalPosition(Vector3(0, 3, 0));
+        transform->setLocalScale(Vector3(0.05, 0.05, 1));
+
+        auto quad = Mesh::create(MeshPrefab::Quad);
+        auto textAtlasNode = scene->createNode();
+        renderer = textAtlasNode->addComponent<MeshRenderer>();
+        renderer->setMesh(quad);
+        renderer->setMaterial(0, fontAtlasMaterial);
+        transform = textAtlasNode->getComponent<Transform>();
+        transform->setLocalPosition(Vector3(0, -3, 0));
     }
 
     void initMesh()
