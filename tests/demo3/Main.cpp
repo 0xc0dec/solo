@@ -173,12 +173,12 @@ public:
             auto xmin = quad.x0;
             auto xmax = quad.x0 + (quad.x1 - quad.x0) * 1;
             auto ymin = quad.y1;
-            auto ymax = quad.y1 + (quad.y0 - quad.y1) * 1;
+            auto ymax = quad.y1 + (quad.y1 - quad.y0) * 1;
 
-            vertices.emplace_back(xmin, ymax, 0);
             vertices.emplace_back(xmin, ymin, 0);
-            vertices.emplace_back(xmax, ymin, 0);
+            vertices.emplace_back(xmin, ymax, 0);
             vertices.emplace_back(xmax, ymax, 0);
+            vertices.emplace_back(xmax, ymin, 0);
             uvs.emplace_back(quad.s0, quad.t1);
             uvs.emplace_back(quad.s0, quad.t0);
             uvs.emplace_back(quad.s1, quad.t0);
