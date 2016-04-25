@@ -188,9 +188,9 @@ public:
         {
             stbtt_GetPackedQuad(charInfo.get(), textureWidth, textureHeight, c - firstChar, &xpos, &ypos, &quad, 1);
             auto xmin = quad.x0;
-            auto xmax = quad.x0 + (quad.x1 - quad.x0) * 1;
-            auto ymin = quad.y1;
-            auto ymax = quad.y1 + (quad.y1 - quad.y0) * 1;
+            auto xmax = quad.x1;
+            auto ymin = -quad.y1;
+            auto ymax = -quad.y0;
 
             vertices.emplace_back(xmin, ymin, 0);
             vertices.emplace_back(xmin, ymax, 0);
