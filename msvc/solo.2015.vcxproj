@@ -25,6 +25,7 @@
     <ClInclude Include="..\include\SoloEffect.h" />
     <ClInclude Include="..\include\SoloException.h" />
     <ClInclude Include="..\include\SoloFileSystem.h" />
+    <ClInclude Include="..\include\SoloFont.h" />
     <ClInclude Include="..\include\SoloFormatter.h" />
     <ClInclude Include="..\include\SoloFrustum.h" />
     <ClInclude Include="..\include\Solo.h" />
@@ -74,6 +75,7 @@
     <ClInclude Include="..\src\SoloBulletRigidBody.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPngImageLoader.h" />
+    <ClInclude Include="..\src\SoloTrueTypeFont.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderer.cpp" />
@@ -91,6 +93,7 @@
     <ClCompile Include="..\src\SoloBulletRigidBody.cpp" />
     <ClCompile Include="..\src\SoloSkyboxRenderer.cpp" />
     <ClCompile Include="..\src\SoloSpectator.cpp" />
+    <ClCompile Include="..\src\SoloTrueTypeFont.cpp" />
     <ClCompile Include="..\vendor\async++\src\scheduler.cpp" />
     <ClCompile Include="..\vendor\async++\src\threadpool_scheduler.cpp" />
     <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btAxisSweep3.cpp" />

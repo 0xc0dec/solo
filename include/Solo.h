@@ -14,6 +14,7 @@
 #include "SoloEffect.h"
 #include "SoloException.h"
 #include "SoloFileSystem.h"
+#include "SoloFont.h"
 #include "SoloFormatter.h"
 #include "SoloFrameBuffer.h"
 #include "SoloFrustum.h"

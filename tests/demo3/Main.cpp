@@ -3,8 +3,8 @@
 #include "../common/Screenshoter.h"
 #include "../common/Shaders.h"
 
-#define STB_TRUETYPE_IMPLEMENTATION
-#include "../../vendor/stb/truetype/1.11/stb_truetype.h"
+//#define STB_TRUETYPE_IMPLEMENTATION
+//#include "../../vendor/stb/truetype/1.11/stb_truetype.h"
 
 using namespace solo;
 
@@ -99,107 +99,103 @@ public:
         });
     }
 
-    sptr<Texture2D> renderTextToTexture(const std::string& text, uint32_t textureWidth, uint32_t textureHeight, uint32_t lineHeight)
+//    sptr<Texture2D> renderTextToTexture(const std::string& text, uint32_t textureWidth, uint32_t textureHeight, uint32_t lineHeight)
+//    {
+//        auto fontBytes = Device::get()->getFileSystem()->readBytes("c:/windows/fonts/arialbd.ttf");
+//
+//        stbtt_fontinfo font;
+//        stbtt_InitFont(&font, fontBytes.data(), 0);
+//
+//        auto scale = stbtt_ScaleForPixelHeight(&font, lineHeight);
+//
+//        int ascent, descent, lineGap, x = 0;
+//        stbtt_GetFontVMetrics(&font, &ascent, &descent, &lineGap);
+//
+//        ascent *= scale;
+//        descent *= scale;
+//
+//        auto pixels = std::make_unique<uint8_t[]>(textureWidth * textureHeight);
+//
+//        for (int i = 0; i < text.size(); ++i)
+//        {
+//            /* get bounding box for character (may be offset to account for chars that dip above or below the line */
+//            int c_x1, c_y1, c_x2, c_y2;
+//            stbtt_GetCodepointBitmapBox(&font, text[i], scale, scale, &c_x1, &c_y1, &c_x2, &c_y2);
+//
+//            /* compute y (different characters have different heights */
+//            int y = ascent + c_y1;
+//
+//            /* render character (stride and offset is important here) */
+//            int byteOffset = x + (y  * textureWidth);
+//            stbtt_MakeCodepointBitmap(&font, pixels.get() + byteOffset, c_x2 - c_x1, c_y2 - c_y1, textureWidth, scale, scale, text[i]);
+//
+//            /* how wide is this character */
+//            int ax;
+//            stbtt_GetCodepointHMetrics(&font, text[i], &ax, nullptr);
+//            x += ax * scale;
+//
+//            /* add kerning */
+//            int kern;
+//            kern = stbtt_GetCodepointKernAdvance(&font, text[i], text[i + 1]);
+//            x += kern * scale;
+//        }
+//
+//        auto fontTexture = Texture2D::create();
+//        fontTexture->setFiltering(TextureFiltering::Nearest);
+//        fontTexture->setData(TextureFormat::Red, pixels.get(), textureWidth, textureHeight);
+//        
+//        return fontTexture;
+//    }
+
+//    uptr<stbtt_packedchar[]> charInfo;
+//    uint32_t firstChar;
+//
+//    sptr<Texture2D> renderFontAtlas(uint32_t firstChar, uint32_t charCount, uint32_t textureWidth, uint32_t textureHeight, float fontSize)
+//    {
+//        stbtt_pack_context context;
+//
+//        auto pixels = std::make_unique<uint8_t[]>(textureWidth * textureHeight);
+//        stbtt_PackBegin(&context, pixels.get(), textureWidth, textureHeight, 0, 1, nullptr);
+//        stbtt_PackSetOversampling(&context, 2, 2);
+//
+//        auto abc = new stbtt_packedchar[charCount];
+//        charInfo = std::unique_ptr<stbtt_packedchar[]>(abc);
+//
+//        auto fontBytes = Device::get()->getFileSystem()->readBytes("c:/windows/fonts/arialbd.ttf");
+//        stbtt_PackFontRange(&context, fontBytes.data(), 0, fontSize, firstChar, charCount, charInfo.get());
+//        stbtt_PackEnd(&context);
+//
+//        auto fontTexture = Texture2D::create();
+//        fontTexture->setFiltering(TextureFiltering::Linear);
+//        fontTexture->setData(TextureFormat::Red, pixels.get(), textureWidth, textureHeight);
+//
+//        this->firstChar = firstChar;
+//
+//        return fontTexture;
+//    }
+
+    sptr<Mesh> createFontMesh(const std::string& text, sptr<Font> font)
     {
-        auto fontBytes = Device::get()->getFileSystem()->readBytes("c:/windows/fonts/arialbd.ttf");
-
-        stbtt_fontinfo font;
-        stbtt_InitFont(&font, fontBytes.data(), 0);
-
-        auto scale = stbtt_ScaleForPixelHeight(&font, lineHeight);
-
-        int ascent, descent, lineGap, x = 0;
-        stbtt_GetFontVMetrics(&font, &ascent, &descent, &lineGap);
-
-        ascent *= scale;
-        descent *= scale;
-
-        auto pixels = std::make_unique<uint8_t[]>(textureWidth * textureHeight);
-
-        for (int i = 0; i < text.size(); ++i)
-        {
-            /* get bounding box for character (may be offset to account for chars that dip above or below the line */
-            int c_x1, c_y1, c_x2, c_y2;
-            stbtt_GetCodepointBitmapBox(&font, text[i], scale, scale, &c_x1, &c_y1, &c_x2, &c_y2);
-
-            /* compute y (different characters have different heights */
-            int y = ascent + c_y1;
-
-            /* render character (stride and offset is important here) */
-            int byteOffset = x + (y  * textureWidth);
-            stbtt_MakeCodepointBitmap(&font, pixels.get() + byteOffset, c_x2 - c_x1, c_y2 - c_y1, textureWidth, scale, scale, text[i]);
-
-            /* how wide is this character */
-            int ax;
-            stbtt_GetCodepointHMetrics(&font, text[i], &ax, nullptr);
-            x += ax * scale;
-
-            /* add kerning */
-            int kern;
-            kern = stbtt_GetCodepointKernAdvance(&font, text[i], text[i + 1]);
-            x += kern * scale;
-        }
-
-        auto fontTexture = Texture2D::create();
-        fontTexture->setFiltering(TextureFiltering::Nearest);
-        fontTexture->setData(TextureFormat::Red, pixels.get(), textureWidth, textureHeight);
-        
-        return fontTexture;
-    }
-
-    uptr<stbtt_packedchar[]> charInfo;
-    uint32_t firstChar;
-
-    sptr<Texture2D> renderFontAtlas(uint32_t firstChar, uint32_t charCount, uint32_t textureWidth, uint32_t textureHeight, float fontSize)
-    {
-        stbtt_pack_context context;
-
-        auto pixels = std::make_unique<uint8_t[]>(textureWidth * textureHeight);
-        stbtt_PackBegin(&context, pixels.get(), textureWidth, textureHeight, 0, 1, nullptr);
-        stbtt_PackSetOversampling(&context, 2, 2);
-
-        auto abc = new stbtt_packedchar[charCount];
-        charInfo = std::unique_ptr<stbtt_packedchar[]>(abc);
-
-        auto fontBytes = Device::get()->getFileSystem()->readBytes("c:/windows/fonts/arialbd.ttf");
-        stbtt_PackFontRange(&context, fontBytes.data(), 0, fontSize, firstChar, charCount, charInfo.get());
-        stbtt_PackEnd(&context);
-
-        auto fontTexture = Texture2D::create();
-        fontTexture->setFiltering(TextureFiltering::Linear);
-        fontTexture->setData(TextureFormat::Red, pixels.get(), textureWidth, textureHeight);
-
-        this->firstChar = firstChar;
-
-        return fontTexture;
-    }
-
-    sptr<Mesh> createFontMesh(const std::string& text, uint32_t textureWidth, uint32_t textureHeight)
-    {
-        float xpos = 0, ypos = 0;
-        stbtt_aligned_quad quad;
-
         std::vector<Vector3> vertices;
         std::vector<Vector2> uvs;
         std::vector<uint16_t> indexes;
 
         uint16_t lastIndex = 0;
+        float offsetX = 0, offsetY = 0;
         for (auto c: text)
         {
-            stbtt_GetPackedQuad(charInfo.get(), textureWidth, textureHeight, c - firstChar, &xpos, &ypos, &quad, 1);
-            auto xmin = quad.x0;
-            auto xmax = quad.x1;
-            auto ymin = -quad.y1;
-            auto ymax = -quad.y0;
+            auto glyphInfo = font->getGlyphInfo(c, offsetX, offsetY);
+            offsetX = glyphInfo.offsetX;
+            offsetY = glyphInfo.offsetY;
 
-            vertices.emplace_back(xmin, ymin, 0);
-            vertices.emplace_back(xmin, ymax, 0);
-            vertices.emplace_back(xmax, ymax, 0);
-            vertices.emplace_back(xmax, ymin, 0);
-            uvs.emplace_back(quad.s0, quad.t1);
-            uvs.emplace_back(quad.s0, quad.t0);
-            uvs.emplace_back(quad.s1, quad.t0);
-            uvs.emplace_back(quad.s1, quad.t1);
+            vertices.emplace_back(glyphInfo.position[0]);
+            vertices.emplace_back(glyphInfo.position[1]);
+            vertices.emplace_back(glyphInfo.position[2]);
+            vertices.emplace_back(glyphInfo.position[3]);
+            uvs.emplace_back(glyphInfo.uv[0]);
+            uvs.emplace_back(glyphInfo.uv[1]);
+            uvs.emplace_back(glyphInfo.uv[2]);
+            uvs.emplace_back(glyphInfo.uv[3]);
             indexes.push_back(lastIndex);
             indexes.push_back(lastIndex + 1);
             indexes.push_back(lastIndex + 2);
@@ -227,30 +223,31 @@ public:
     {
         const int textureWidth = 1024;
         const int textureHeight = 1024;
-        const int lineHeight = 30;
-        auto fontTexture = renderFontAtlas(' ', '~' - ' ', textureWidth, textureHeight, lineHeight);
+        const int lineHeight = 60;
+        auto fontData = Device::get()->getFileSystem()->readBytes("c:/windows/fonts/arialbd.ttf");
+        auto font = Font::create(fontData.data(), lineHeight, textureWidth, textureHeight, ' ', '~' - ' ');
         auto fontEffect = Effect::create(commonShaders.vertex.basic, fsFont);
         auto fontMaterial = Material::create(fontEffect);
         fontMaterial->setPolygonFace(PolygonFace::All);
         fontMaterial->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
-        fontMaterial->setTextureParameter("mainTex", fontTexture);
+        fontMaterial->setTextureParameter("mainTex", font->getAtlas());
         fontMaterial->setTransparent(true);
 
         auto fontAtlasEffect = Effect::create(commonShaders.vertex.basic, fsFontAtlas);
         auto fontAtlasMaterial = Material::create(fontAtlasEffect);
         fontAtlasMaterial->setPolygonFace(PolygonFace::All);
         fontAtlasMaterial->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
-        fontAtlasMaterial->setTextureParameter("mainTex", fontTexture);
+        fontAtlasMaterial->setTextureParameter("mainTex", font->getAtlas());
         fontAtlasMaterial->setTransparent(true);
 
-        auto textMesh = createFontMesh("Hello, world!", textureWidth, textureHeight);
+        auto textMesh = createFontMesh("Hello, world!", font);
         auto textNode = scene->createNode();
         auto renderer = textNode->addComponent<MeshRenderer>();
         renderer->setMesh(textMesh);
         renderer->setMaterial(0, fontMaterial);
         auto transform = textNode->getComponent<Transform>();
         transform->setLocalPosition(Vector3(0, 3, 0));
-        transform->setLocalScale(Vector3(0.05, 0.05, 1));
+        transform->setLocalScale(Vector3(0.02, 0.02, 1));
 
         auto quad = Mesh::create(MeshPrefab::Quad);
         auto textAtlasNode = scene->createNode();
