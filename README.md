@@ -8,12 +8,14 @@ An engine for my personal graphics/gamedev experiments, not meant for anything s
 * Asynchronous asset loading.
 * Render to texture.
 * Convenient system for applying post-processing effects.
+* Basic text rendering.
 
 ## Screenshots
 
 ![1](/screenshots/screenshot3.png?raw=true)
 ![2](/screenshots/screenshot4.png?raw=true)
 ![3](/screenshots/screenshot5.png?raw=true)
+![4](/screenshots/screenshot6.png?raw=true)
 
 ## Made possible thanks to
 * async++
