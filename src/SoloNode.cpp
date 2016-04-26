@@ -6,6 +6,7 @@
 #include "SoloTransform.h"
 #include "SoloSpectator.h"
 #include "SoloRigidBody.h"
+#include "SoloFontRenderer.h"
 
 using namespace solo;
 
@@ -56,6 +57,15 @@ template<>
 auto Node::addComponent<SkyboxRenderer>() -> SkyboxRenderer*
 {
     auto renderer = std::make_shared<SkyboxRenderer>(*this);
+    scene->addComponent(id, renderer);
+    return renderer.get();
+}
+
+
+template<>
+auto Node::addComponent<FontRenderer>() -> FontRenderer*
+{
+    auto renderer = std::make_shared<FontRenderer>(*this);
     scene->addComponent(id, renderer);
     return renderer.get();
 }

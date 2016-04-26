@@ -11,6 +11,7 @@ namespace solo
     class Spectator;
     class MeshRenderer;
     class RigidBody;
+    class FontRenderer;
     struct RigidBodyConstructionParameters;
 
     // A convenient wrapper for working with components. There's no real "Node" in the engine
@@ -121,5 +122,6 @@ namespace solo
     template<> auto Node::addComponent() -> MeshRenderer*;
     template<> auto Node::addComponent() -> Spectator*;
     template<> auto Node::addComponent() -> SkyboxRenderer*;
+    template<> auto Node::addComponent() -> FontRenderer*;
     template<> auto Node::addComponent(const RigidBodyConstructionParameters& parameters) -> RigidBody*;
 }
