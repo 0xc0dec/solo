@@ -24,5 +24,5 @@ An engine for my personal graphics/gamedev experiments, not meant for anything s
 * lua-intf
 * png
 * SDL
-* zlib
 * stb_truetype
+* zlib
