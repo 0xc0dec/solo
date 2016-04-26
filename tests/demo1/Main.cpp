@@ -345,7 +345,7 @@ public:
 
             auto renderer = quad->getComponent<MeshRenderer>();
             renderer->setMaterial(0, mat);
-            renderer->setRenderQueue(3000);
+            renderer->setRenderQueue(KnownRenderQueues::Transparent);
         });
     }
 
