@@ -35,6 +35,7 @@ namespace solo
         ~Mesh();
         SL_NONCOPYABLE(Mesh)
 
+        // TODO versions with std::vectors to avoid numerous reinterpret_casts
         auto addVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount) -> uint32_t;
         auto addDynamicVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount) -> uint32_t;
         void updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const float* data, uint32_t vertexCount);

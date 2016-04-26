@@ -26,6 +26,7 @@
     <ClInclude Include="..\include\SoloException.h" />
     <ClInclude Include="..\include\SoloFileSystem.h" />
     <ClInclude Include="..\include\SoloFont.h" />
+    <ClInclude Include="..\include\SoloFontRenderer.h" />
     <ClInclude Include="..\include\SoloFormatter.h" />
     <ClInclude Include="..\include\SoloFrustum.h" />
     <ClInclude Include="..\include\Solo.h" />
@@ -86,6 +87,7 @@
     <ClCompile Include="..\src\SoloCollider.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\SoloDegree.cpp" />
+    <ClCompile Include="..\src\SoloFontRenderer.cpp" />
     <ClCompile Include="..\src\SoloGraphics.cpp" />
     <ClCompile Include="..\src\SoloBulletPhysics.cpp" />
     <ClCompile Include="..\src\SoloRadian.cpp" />
