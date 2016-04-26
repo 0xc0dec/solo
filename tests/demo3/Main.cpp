@@ -2,43 +2,44 @@
 #include "../common/EscapeWatcher.h"
 #include "../common/Screenshoter.h"
 #include "../common/Shaders.h"
-
-//#define STB_TRUETYPE_IMPLEMENTATION
-//#include "../../vendor/stb/truetype/1.11/stb_truetype.h"
+#include <chrono>
+#include <iomanip>
 
 using namespace solo;
 
 
-const char* fsFont = R"(
-    #version 330 core
+class Text final: public ComponentBase<Text>
+{
+public:
+    explicit Text(const Node& node): ComponentBase<Text>(node)
+    {
+    }
 
-    uniform sampler2D mainTex;
+    virtual void init() override final
+    {
+        const int textureWidth = 1024;
+        const int textureHeight = 1024;
+        const int lineHeight = 60;
 
-    in vec2 uv0;
-	out vec4 fragColor;
+        auto fontData = Device::get()->getFileSystem()->readBytes("c:/windows/fonts/calibri.ttf");
+        auto font = Font::create(fontData.data(), lineHeight, textureWidth, textureHeight, ' ', '~' - ' ');
 
-    void main()
-	{
-        vec4 c = texture(mainTex, uv0);
-		fragColor = vec4(c.r, c.r, c.r, c.r);
-	}
-)";
+        renderer = node.addComponent<FontRenderer>();
+        renderer->setFont(font);
+    }
 
-const char* fsFontAtlas = R"(
-    #version 330 core
+    virtual void update() override final
+    {
+        auto nowTimePoint = std::chrono::system_clock::now();
+        auto now = std::chrono::system_clock::to_time_t(nowTimePoint);
+        std::stringstream ss;
+        ss << "Now: " << std::put_time(std::localtime(&now), "%Y-%m-%d %X");
+        renderer->setText(ss.str());
+    }
 
-    uniform sampler2D mainTex;
-
-    in vec2 uv0;
-	out vec4 fragColor;
-
-    void main()
-	{
-        vec2 uv = vec2(uv0.x, 1 - uv0.y);
-        vec4 c = texture(mainTex, uv);
-		fragColor = vec4(c.r, c.r, c.r, c.r);
-	}
-)";
+private:
+    FontRenderer* renderer = nullptr;
+};
 
 
 class Demo
@@ -50,7 +51,7 @@ public:
         initCamera();
         initSkybox();
         initMesh();
-        initFontQuad();
+        initText();
         device->run();
     }
 
@@ -147,115 +148,13 @@ public:
 //        return fontTexture;
 //    }
 
-//    uptr<stbtt_packedchar[]> charInfo;
-//    uint32_t firstChar;
-//
-//    sptr<Texture2D> renderFontAtlas(uint32_t firstChar, uint32_t charCount, uint32_t textureWidth, uint32_t textureHeight, float fontSize)
-//    {
-//        stbtt_pack_context context;
-//
-//        auto pixels = std::make_unique<uint8_t[]>(textureWidth * textureHeight);
-//        stbtt_PackBegin(&context, pixels.get(), textureWidth, textureHeight, 0, 1, nullptr);
-//        stbtt_PackSetOversampling(&context, 2, 2);
-//
-//        auto abc = new stbtt_packedchar[charCount];
-//        charInfo = std::unique_ptr<stbtt_packedchar[]>(abc);
-//
-//        auto fontBytes = Device::get()->getFileSystem()->readBytes("c:/windows/fonts/arialbd.ttf");
-//        stbtt_PackFontRange(&context, fontBytes.data(), 0, fontSize, firstChar, charCount, charInfo.get());
-//        stbtt_PackEnd(&context);
-//
-//        auto fontTexture = Texture2D::create();
-//        fontTexture->setFiltering(TextureFiltering::Linear);
-//        fontTexture->setData(TextureFormat::Red, pixels.get(), textureWidth, textureHeight);
-//
-//        this->firstChar = firstChar;
-//
-//        return fontTexture;
-//    }
-
-    sptr<Mesh> createFontMesh(const std::string& text, sptr<Font> font)
+    void initText()
     {
-        std::vector<Vector3> vertices;
-        std::vector<Vector2> uvs;
-        std::vector<uint16_t> indexes;
-
-        uint16_t lastIndex = 0;
-        float offsetX = 0, offsetY = 0;
-        for (auto c: text)
-        {
-            auto glyphInfo = font->getGlyphInfo(c, offsetX, offsetY);
-            offsetX = glyphInfo.offsetX;
-            offsetY = glyphInfo.offsetY;
-
-            vertices.emplace_back(glyphInfo.position[0]);
-            vertices.emplace_back(glyphInfo.position[1]);
-            vertices.emplace_back(glyphInfo.position[2]);
-            vertices.emplace_back(glyphInfo.position[3]);
-            uvs.emplace_back(glyphInfo.uv[0]);
-            uvs.emplace_back(glyphInfo.uv[1]);
-            uvs.emplace_back(glyphInfo.uv[2]);
-            uvs.emplace_back(glyphInfo.uv[3]);
-            indexes.push_back(lastIndex);
-            indexes.push_back(lastIndex + 1);
-            indexes.push_back(lastIndex + 2);
-            indexes.push_back(lastIndex);
-            indexes.push_back(lastIndex + 2);
-            indexes.push_back(lastIndex + 3);
-
-            lastIndex += 4;
-        }
-
-        VertexBufferLayout layout1, layout2;
-        layout1.add(VertexBufferLayoutSemantics::Position, 3);
-        layout2.add(VertexBufferLayoutSemantics::TexCoord0, 2);
-
-        auto mesh = Mesh::create();
-        mesh->addVertexBuffer(layout1, reinterpret_cast<const float*>(vertices.data()), static_cast<uint32_t>(vertices.size()));
-        mesh->addVertexBuffer(layout2, reinterpret_cast<const float*>(uvs.data()), static_cast<uint32_t>(uvs.size()));
-        mesh->addPart(reinterpret_cast<const void*>(indexes.data()), static_cast<uint32_t>(indexes.size()));
-        mesh->setPrimitiveType(PrimitiveType::Triangles);
-
-        return mesh;
-    }
-
-    void initFontQuad()
-    {
-        const int textureWidth = 1024;
-        const int textureHeight = 1024;
-        const int lineHeight = 60;
-        auto fontData = Device::get()->getFileSystem()->readBytes("c:/windows/fonts/arialbd.ttf");
-        auto font = Font::create(fontData.data(), lineHeight, textureWidth, textureHeight, ' ', '~' - ' ');
-        auto fontEffect = Effect::create(commonShaders.vertex.basic, fsFont);
-        auto fontMaterial = Material::create(fontEffect);
-        fontMaterial->setPolygonFace(PolygonFace::All);
-        fontMaterial->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
-        fontMaterial->setTextureParameter("mainTex", font->getAtlas());
-        fontMaterial->setTransparent(true);
-
-        auto fontAtlasEffect = Effect::create(commonShaders.vertex.basic, fsFontAtlas);
-        auto fontAtlasMaterial = Material::create(fontAtlasEffect);
-        fontAtlasMaterial->setPolygonFace(PolygonFace::All);
-        fontAtlasMaterial->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
-        fontAtlasMaterial->setTextureParameter("mainTex", font->getAtlas());
-        fontAtlasMaterial->setTransparent(true);
-
-        auto textMesh = createFontMesh("Hello, world!", font);
         auto textNode = scene->createNode();
-        auto renderer = textNode->addComponent<MeshRenderer>();
-        renderer->setMesh(textMesh);
-        renderer->setMaterial(0, fontMaterial);
+        textNode->addComponent<Text>();
         auto transform = textNode->getComponent<Transform>();
         transform->setLocalPosition(Vector3(0, 3, 0));
-        transform->setLocalScale(Vector3(0.02, 0.02, 1));
-
-        auto quad = Mesh::create(MeshPrefab::Quad);
-        auto textAtlasNode = scene->createNode();
-        renderer = textAtlasNode->addComponent<MeshRenderer>();
-        renderer->setMesh(quad);
-        renderer->setMaterial(0, fontAtlasMaterial);
-        transform = textAtlasNode->getComponent<Transform>();
-        transform->setLocalPosition(Vector3(0, -3, 0));
+        transform->setLocalScale(Vector3(0.02f, 0.02f, 1));
     }
 
     void initMesh()
