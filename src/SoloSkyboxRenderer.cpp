@@ -4,6 +4,8 @@
 #include "SoloEffect.h"
 #include "SoloRenderContext.h"
 #include "SoloCubeTexture.h"
+#include "SoloDevice.h"
+#include "SoloEffectRepository.h"
 
 using namespace solo;
 
@@ -13,7 +15,7 @@ SkyboxRenderer::SkyboxRenderer(const Node& node):
 {
     renderQueue = KnownRenderQueues::Skybox;
 
-    auto effect = Effect::create(EffectPrefab::Skybox);
+    auto effect = Device::get()->getEffectRepository()->getDefaultSkyboxEffect();
     material = Material::create(effect);
     material->setParameterAutoBinding("projMatrix", AutoBinding::ProjectionMatrix);
     material->setParameterAutoBinding("worldViewMatrix", AutoBinding::WorldViewMatrix);

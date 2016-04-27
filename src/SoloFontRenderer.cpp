@@ -1,58 +1,25 @@
 #include "SoloFontRenderer.h"
 #include "SoloMesh.h"
 #include "SoloFont.h"
-#include "SoloEffect.h"
 #include "SoloMaterial.h"
 #include "SoloRenderQueue.h"
+#include "SoloDevice.h"
+#include "SoloEffectRepository.h"
 #include "SoloTexture2D.h"
 
 using namespace solo;
 
 
-// TODO built-in shader
-static const char* vs = R"(
-    #version 330 core
-
-    in vec4 position;
-	in vec2 texCoord0;
-
-    uniform mat4 worldViewProjMatrix;
-	out vec2 uv0;
-
-    void main()
-	{
-		gl_Position = worldViewProjMatrix * position;
-		uv0 = texCoord0;
-	}
-)";
-
-// TODO built-in shader
-static const char* fs = R"(
-    #version 330 core
-
-    uniform sampler2D mainTex;
-
-    in vec2 uv0;
-	out vec4 fragColor;
-
-    void main()
-	{
-        vec4 c = texture(mainTex, uv0);
-		fragColor = vec4(c.r, c.r, c.r, c.r);
-	}
-)";
-
-
 FontRenderer::FontRenderer(const Node& node):
     ComponentBase(node)
 {
-    renderQueue = KnownRenderQueues::Transparent;
-
-    auto effect = Effect::create(vs, fs);
+    auto effect = Device::get()->getEffectRepository()->getDefaultFontEffect();
     material = Material::create(effect);
     material->setPolygonFace(PolygonFace::All);
     material->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
     material->setTransparent(true);
+
+    renderQueue = KnownRenderQueues::Transparent;
 }
 
 

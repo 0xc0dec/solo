@@ -6,6 +6,7 @@
 #include "SoloRenderer.h"
 #include "SoloGraphics.h"
 #include "SoloPhysics.h"
+#include "SoloEffectRepository.h"
 #include "platform/stub/SoloStubDevice.h"
 #include "platform/opengl/SoloSDLOpenGLDevice.h"
 
@@ -52,6 +53,9 @@ Device::~Device()
     if (graphics)
         graphics.reset();
 
+    if (effectRepository)
+        effectRepository.reset();
+
     if (assetLoader)
         assetLoader.reset();
 
@@ -81,6 +85,7 @@ Device::Device(const DeviceCreationArgs& args):
     physics = Physics::create(this, token);
     fs = FileSystem::create(this, token);
     assetLoader = std::make_unique<AssetLoader>(token);
+    effectRepository = EffectRepository::create(token);
     graphics = std::make_unique<Graphics>(this, token);
     scene = std::make_unique<Scene>(token);
 }

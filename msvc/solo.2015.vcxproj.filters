@@ -109,9 +109,6 @@
     <ClInclude Include="..\include\SoloSpectator.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLBuiltInShaders.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloSkyboxRenderer.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -198,6 +195,12 @@
     </ClInclude>
     <ClInclude Include="..\include\SoloFontRenderer.h">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloEffectRepository.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLEffectRepository.h">
+      <Filter>src\platform\opengl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1184,6 +1187,12 @@
     </ClCompile>
     <ClCompile Include="..\src\SoloFontRenderer.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloEffectRepository.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLEffectRepository.cpp">
+      <Filter>src\platform\opengl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

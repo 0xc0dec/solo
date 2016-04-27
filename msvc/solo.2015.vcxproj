@@ -23,6 +23,7 @@
     <ClInclude Include="..\include\SoloDevice.h" />
     <ClInclude Include="..\include\SoloBitFlags.h" />
     <ClInclude Include="..\include\SoloEffect.h" />
+    <ClInclude Include="..\include\SoloEffectRepository.h" />
     <ClInclude Include="..\include\SoloException.h" />
     <ClInclude Include="..\include\SoloFileSystem.h" />
     <ClInclude Include="..\include\SoloFont.h" />
@@ -65,7 +66,7 @@
     <ClInclude Include="..\include\SoloVector3.h" />
     <ClInclude Include="..\include\SoloVector4.h" />
     <ClInclude Include="..\include\SoloVertexFormat.h" />
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLBuiltInShaders.h" />
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLEffectRepository.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderer.h" />
     <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubDevice.h" />
@@ -79,6 +80,7 @@
     <ClInclude Include="..\src\SoloTrueTypeFont.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLEffectRepository.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderer.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubDevice.cpp" />
@@ -87,6 +89,7 @@
     <ClCompile Include="..\src\SoloCollider.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\SoloDegree.cpp" />
+    <ClCompile Include="..\src\SoloEffectRepository.cpp" />
     <ClCompile Include="..\src\SoloFontRenderer.cpp" />
     <ClCompile Include="..\src\SoloGraphics.cpp" />
     <ClCompile Include="..\src\SoloBulletPhysics.cpp" />

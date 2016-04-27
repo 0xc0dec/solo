@@ -14,6 +14,7 @@ namespace solo
     class Renderer;
     class Graphics;
     class Physics;
+    class EffectRepository;
     class Logger;
 
     enum class KeyCode
@@ -100,6 +101,7 @@ namespace solo
         auto getRenderer() const -> Renderer*;
         auto getGraphics() const -> Graphics*;
         auto getPhysics() const -> Physics*;
+        auto getEffectRepository() const -> EffectRepository*;
         auto getLogger() const -> Logger*;
 
     protected:
@@ -118,6 +120,7 @@ namespace solo
         uptr<Renderer> renderer;
         uptr<Graphics> graphics;
         uptr<Physics> physics;
+        uptr<EffectRepository> effectRepository;
         uptr<Logger> logger;
 
         // key code -> was pressed for the first time
@@ -181,6 +184,11 @@ namespace solo
     inline auto Device::getPhysics() const -> Physics*
     {
         return physics.get();
+    }
+
+    inline auto Device::getEffectRepository() const -> EffectRepository*
+    {
+        return effectRepository.get();
     }
 
     inline auto Device::getLogger() const -> Logger*
