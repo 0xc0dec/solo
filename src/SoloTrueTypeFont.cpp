@@ -13,9 +13,10 @@ TrueTypeFont::TrueTypeFont(uint8_t* fontData, uint32_t size, uint32_t atlasWidth
     
     auto pixels = std::make_unique<uint8_t[]>(atlasWidth * atlasHeight);
 
-    // TODO check errors
     stbtt_pack_context context;
-    stbtt_PackBegin(&context, pixels.get(), atlasWidth, atlasHeight, 0, 1, nullptr);
+    auto ret = stbtt_PackBegin(&context, pixels.get(), atlasWidth, atlasHeight, 0, 1, nullptr);
+    SL_DEBUG_THROW_IF(!ret, InvalidOperationException, "Failed to initialize font");
+
     stbtt_PackSetOversampling(&context, 2, 2); // TODO parameters
     stbtt_PackFontRange(&context, fontData, 0, size, firstChar, charCount, charInfo.get());
     stbtt_PackEnd(&context);
@@ -32,7 +33,6 @@ auto TrueTypeFont::getGlyphInfo(uint32_t character, float offsetX, float offsetY
     stbtt_aligned_quad quad;
     auto atlasSize = atlas->getSize();
 
-    // TODO check errors
     stbtt_GetPackedQuad(charInfo.get(), atlasSize.x, atlasSize.y, character - firstChar, &offsetX, &offsetY, &quad, 1);
     auto xmin = quad.x0;
     auto xmax = quad.x1;
