@@ -66,7 +66,7 @@ namespace solo
     inline auto Node::addComponent(Scene* scene, uint32_t nodeId, Args... args) -> T*
     {
         auto cmp = std::make_shared<T>(Node(scene, nodeId), args...);
-        auto base = SL_SHARED_STATIC_CAST<Component>(cmp);
+        auto base = std::static_pointer_cast<Component>(cmp);
         scene->addComponent(nodeId, base);
         return cmp.get();
     }

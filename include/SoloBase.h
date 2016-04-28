@@ -12,9 +12,6 @@
 #   define SL_IN_DEBUG(function)
 #endif
 
-#define SL_SHARED_STATIC_CAST		std::static_pointer_cast
-#define SL_WRAP_SPTR(type, ...) 	std::shared_ptr<type>(new type(__VA_ARGS__))
-
 #define SL_NONCOPYABLE(type) \
     type(const type &other) = delete; \
     type(type &&other) = delete; \
