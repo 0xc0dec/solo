@@ -69,9 +69,11 @@
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLEffectRepository.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderer.h" />
     <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h" />
+    <ClInclude Include="..\src\platform\sdl\SoloSDLDevice.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubDevice.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubFileSystem.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubRenderer.h" />
+    <ClInclude Include="..\src\platform\vulkan\SoloSDLVulkanDevice.h" />
     <ClInclude Include="..\src\SoloBulletBoxCollider.h" />
     <ClInclude Include="..\src\SoloBulletPhysics.h" />
     <ClInclude Include="..\src\SoloBulletRigidBody.h" />
@@ -83,8 +85,10 @@
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLEffectRepository.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderer.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp" />
+    <ClCompile Include="..\src\platform\sdl\SoloSDLDevice.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubDevice.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubFileSystem.cpp" />
+    <ClCompile Include="..\src\platform\vulkan\SoloSDLVulkanDevice.cpp" />
     <ClCompile Include="..\src\SoloBulletBoxCollider.cpp" />
     <ClCompile Include="..\src\SoloCollider.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
@@ -442,16 +446,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(ProjectDir)..\vendor\vulkan\include\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
-    <LibraryPath>..\build\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)..\build\;$(ProjectDir)..\vendor\vulkan\lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(ProjectDir)..\vendor\vulkan\include\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
-    <LibraryPath>..\build\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)..\build\;$(ProjectDir)..\vendor\vulkan\lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -472,7 +476,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;opengl32.lib;lua.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;opengl32.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalOptions>/ignore:4006 /ignore:4221 /ignore:4204 /ignore:4217</AdditionalOptions>
     </Lib>
@@ -502,7 +506,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;opengl32.lib;lua.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;opengl32.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalOptions>/ignore:4006 /ignore:4221 /ignore:4204 /ignore:4217</AdditionalOptions>
     </Lib>
