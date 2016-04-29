@@ -9,6 +9,7 @@
 #include "SoloEffectRepository.h"
 #include "platform/stub/SoloStubDevice.h"
 #include "platform/opengl/SoloSDLOpenGLDevice.h"
+#include "platform/vulkan/SoloSDLVulkanDevice.h"
 
 using namespace solo;
 
@@ -20,10 +21,18 @@ auto Device::init(const DeviceCreationArgs& args) -> Device*
 {
     if (!instance)
     {
-        if (args.mode == DeviceMode::OpenGL)
-            instance = std::unique_ptr<Device>(new SDLOpenGLDevice(args));
-        else
-            instance = std::unique_ptr<Device>(new StubDevice(args));
+        switch (args.mode)
+        {
+            case DeviceMode::OpenGL:
+                instance = std::unique_ptr<Device>(new SDLOpenGLDevice(args));
+                break;
+            case DeviceMode::Vulkan:
+                instance = std::unique_ptr<Device>(new SDLVulkanDevice(args));
+                break;
+            default:
+                instance = std::unique_ptr<Device>(new StubDevice(args));
+                break;
+        }
     }
 
     return instance.get();

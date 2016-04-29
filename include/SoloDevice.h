@@ -43,7 +43,8 @@ namespace solo
     enum class DeviceMode
     {
         Stub,
-        OpenGL
+        OpenGL,
+        Vulkan
     };
 
     struct DeviceCreationArgs
