@@ -1,24 +1,16 @@
 #pragma once
 
-#include "SoloDevice.h"
-#include <SDL.h>
+#include "../sdl/SoloSDLDevice.h"
 
 
 namespace solo
 {
-    class SDLOpenGLDevice final: public Device
+    class SDLOpenGLDevice final: public SDLDevice
     {
     public:
         virtual ~SDLOpenGLDevice();
 
-        virtual void setWindowTitle(const std::string& title) override final;
-        virtual auto getWindowTitle() const -> std::string override final;
-
         virtual void saveScreenshot(const std::string& path) override final;
-
-        virtual void setCursorCaptured(bool captured) override final;
-
-        virtual auto getLifetime() const -> float override final;
 
         virtual auto getCanvasSize() const -> Vector2 override final;
 
@@ -27,22 +19,8 @@ namespace solo
 
         explicit SDLOpenGLDevice(const DeviceCreationArgs& args);
 
-        virtual void beginUpdate() override final;
         virtual void endUpdate() override final;
 
-        void prepareKeyboardState();
-        void prepareMouseState();
-
-        void readWindowState();
-        void readEvents();
-        void processKeyboardEvent(const SDL_Event& evt);
-        void processMouseEvent(const SDL_Event& evt);
-        void processWindowEvent(const SDL_Event& evt);
-
-        bool hasMouseFocus = false;
-        bool hasKeyboardFocus = false;
-
-        SDL_Window* window = nullptr;
         SDL_GLContext context = nullptr;
 
         auto selectContextVersion() -> std::tuple<uint32_t, uint32_t>;
