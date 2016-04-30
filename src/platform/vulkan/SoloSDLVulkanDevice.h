@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../sdl/SoloSDLDevice.h"
+#define VK_USE_PLATFORM_WIN32_KHR
 #include <vulkan.h>
 
 
@@ -20,12 +21,19 @@ namespace solo
 
         explicit SDLVulkanDevice(const DeviceCreationArgs& args);
 
-        VkInstance instance;
-        VkPhysicalDevice physicalDevice;
+        bool selectDepthFormat();
+
+        VkInstance instance = nullptr;
+        VkPhysicalDevice physicalDevice = nullptr;
+        VkDevice device = nullptr;
+        VkQueue queue = nullptr;
         VkPhysicalDeviceProperties deviceProperties;
         VkPhysicalDeviceFeatures deviceFeatures;
         VkPhysicalDeviceMemoryProperties deviceMemoryProperties;
-        VkDevice device;
-        VkQueue queue;
+        VkFormat depthFormat;
+        VkSemaphore presentCompleteSem;
+        VkSemaphore renderCompleteSem;
+        VkPipelineStageFlags submitPipelineStages = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
+        VkSubmitInfo submitInfo;
     };
 }
