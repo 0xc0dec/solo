@@ -10,7 +10,7 @@ namespace solo
     public:
         ~VulkanRenderer();
 
-        virtual auto createTexture()->TextureHandle override final;
+        virtual auto createTexture() -> TextureHandle override final;
         virtual void destroyTexture(const TextureHandle& handle) override final;
         virtual void set2DTexture(const TextureHandle& handle) override final;
         virtual void set2DTexture(const TextureHandle& handle, uint32_t flags) override final;
@@ -25,31 +25,31 @@ namespace solo
         virtual void generateTexture2DMipmaps(const TextureHandle& handle) override final;
         virtual void generateCubeTextureMipmaps(const TextureHandle& handle) override final;
 
-        virtual auto createFrameBuffer()->FrameBufferHandle override final;
+        virtual auto createFrameBuffer() -> FrameBufferHandle override final;
         virtual void destroyFrameBuffer(const FrameBufferHandle& handle) override final;
         virtual void setFrameBuffer(const FrameBufferHandle& handle) override final;
         virtual void updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle>& attachmentHandles) override final;
 
         virtual auto createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
-            ->VertexBufferHandle override final;
+            -> VertexBufferHandle override final;
         virtual auto createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
-            ->VertexBufferHandle override final;
+            -> VertexBufferHandle override final;
         virtual void updateDynamicVertexBuffer(const VertexBufferHandle& handle, const void* data, uint32_t offset, uint32_t vertexCount) override final;
         virtual void destroyVertexBuffer(const VertexBufferHandle& handle) override final;
 
-        virtual auto createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount)->IndexBufferHandle override final;
+        virtual auto createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount) -> IndexBufferHandle override final;
         virtual void destroyIndexBuffer(const IndexBufferHandle& handle) override final;
 
-        virtual auto createProgram(const char* vsSrc, const char* fsSrc)->ProgramHandle override final;
+        virtual auto createProgram(const char* vsSrc, const char* fsSrc) -> ProgramHandle override final;
         virtual void destroyProgram(const ProgramHandle& handle) override final;
         virtual void setProgram(const ProgramHandle& handle) override final;
 
         virtual auto createVertexObject(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle)
-            ->VertexObjectHandle override final;
+            -> VertexObjectHandle override final;
         virtual void destroyVertexObject(const VertexObjectHandle& handle) override final;
 
         virtual auto createUniform(const char* name, UniformType type, uint32_t componentCount, ProgramHandle program)
-            ->UniformHandle override final;
+            -> UniformHandle override final;
         virtual void destroyUniform(const UniformHandle& handle) override final;
         virtual void setUniform(const UniformHandle& handle, const void* value, uint32_t count) override final;
 
