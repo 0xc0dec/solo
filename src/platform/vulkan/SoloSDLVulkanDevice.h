@@ -10,6 +10,8 @@ namespace solo
     class SDLVulkanDevice final: public SDLDevice
     {
     public:
+        virtual ~SDLVulkanDevice();
+
         virtual void saveScreenshot(const std::string& path) override final;
         virtual auto getCanvasSize() const -> Vector2 override final;
 

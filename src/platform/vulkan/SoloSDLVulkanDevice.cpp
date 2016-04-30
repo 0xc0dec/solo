@@ -10,6 +10,18 @@ const char* Name = "SoloVulkanDevice";
 SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
     SDLDevice(args)
 {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
+        SL_THROW(InternalException, "Failed to initialize device systems");
+
+    uint32_t windowFlags = SDL_WINDOW_ALLOW_HIGHDPI;
+    if (args.fullScreen)
+        windowFlags |= SDL_WINDOW_FULLSCREEN;
+    window = SDL_CreateWindow(
+        creationArgs.windowTitle.c_str(),
+        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        creationArgs.canvasWidth, creationArgs.canvasHeight,
+        windowFlags);
+
     VkApplicationInfo appInfo = {};
     appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
     appInfo.pApplicationName = Name;
@@ -106,6 +118,14 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
 }
 
 
+SDLVulkanDevice::~SDLVulkanDevice()
+{
+    if (window)
+        SDL_DestroyWindow(window);
+    SDL_Quit();
+}
+
+
 bool SDLVulkanDevice::selectDepthFormat()
 {
     std::vector<VkFormat> formats =
@@ -140,11 +160,10 @@ void SDLVulkanDevice::saveScreenshot(const std::string& path)
 
 auto SDLVulkanDevice::getCanvasSize() const -> Vector2
 {
-    return Vector2(); // TODO
+    return Vector2();
 }
 
 
 void SDLVulkanDevice::endUpdate()
 {
-
 }
