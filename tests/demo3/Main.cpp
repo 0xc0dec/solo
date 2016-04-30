@@ -33,7 +33,7 @@ public:
         auto nowTimePoint = std::chrono::system_clock::now();
         auto now = std::chrono::system_clock::to_time_t(nowTimePoint);
         std::stringstream ss;
-        ss << "Now: " << std::put_time(std::localtime(&now), "%Y-%m-%d %X");
+        ss << "Now: " << std::put_time(std::localtime(&now), "%X");
         renderer->setText(ss.str());
     }
 
@@ -153,7 +153,7 @@ public:
         auto textNode = scene->createNode();
         textNode->addComponent<Text>();
         auto transform = textNode->getComponent<Transform>();
-        transform->setLocalPosition(Vector3(0, 3, 0));
+        transform->setLocalPosition(Vector3(-3.5f, 2, 0));
         transform->setLocalScale(Vector3(0.02f, 0.02f, 1));
     }
 
