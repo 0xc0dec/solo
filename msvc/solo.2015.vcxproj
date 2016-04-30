@@ -74,6 +74,7 @@
     <ClInclude Include="..\src\platform\stub\SoloStubFileSystem.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubRenderer.h" />
     <ClInclude Include="..\src\platform\vulkan\SoloSDLVulkanDevice.h" />
+    <ClInclude Include="..\src\platform\vulkan\SoloVulkanRenderer.h" />
     <ClInclude Include="..\src\SoloBulletBoxCollider.h" />
     <ClInclude Include="..\src\SoloBulletPhysics.h" />
     <ClInclude Include="..\src\SoloBulletRigidBody.h" />
@@ -89,6 +90,7 @@
     <ClCompile Include="..\src\platform\stub\SoloStubDevice.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubFileSystem.cpp" />
     <ClCompile Include="..\src\platform\vulkan\SoloSDLVulkanDevice.cpp" />
+    <ClCompile Include="..\src\platform\vulkan\SoloVulkanRenderer.cpp" />
     <ClCompile Include="..\src\SoloBulletBoxCollider.cpp" />
     <ClCompile Include="..\src\SoloCollider.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
