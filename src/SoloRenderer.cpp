@@ -12,8 +12,3 @@ auto Renderer::create(Device* device, const DeviceToken&) -> uptr<Renderer>
         return std::unique_ptr<OpenGLRenderer>(new OpenGLRenderer());
     return std::unique_ptr<StubRenderer>(new StubRenderer());
 }
-
-
-Renderer::~Renderer()
-{
-}

@@ -140,7 +140,7 @@ namespace solo
         static auto create(Device* device, const DeviceToken&) -> uptr<Renderer>;
 
         SL_NONCOPYABLE(Renderer)
-        virtual ~Renderer();
+        virtual ~Renderer() {}
 
         virtual auto createTexture() -> TextureHandle = 0;
         virtual void destroyTexture(const TextureHandle& handle) = 0;
