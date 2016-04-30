@@ -8,7 +8,7 @@
 using namespace solo;
 
 
-static const float identityMatrix[16] =
+static const float IdentityMatrix[16] =
 {
     1.0f, 0.0f, 0.0f, 0.0f,
     0.0f, 1.0f, 0.0f, 0.0f,
@@ -532,7 +532,7 @@ bool Matrix::invert()
 
 bool Matrix::isIdentity() const
 {
-    return memcmp(m, identityMatrix, MatrixSize) == 0;
+    return memcmp(m, IdentityMatrix, MatrixSize) == 0;
 }
 
 
@@ -580,7 +580,7 @@ void Matrix::scaleByVector(const Vector3& s)
 
 void Matrix::setIdentity()
 {
-    memcpy(m, identityMatrix, MatrixSize);
+    memcpy(m, IdentityMatrix, MatrixSize);
 }
 
 
