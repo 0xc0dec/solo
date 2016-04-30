@@ -50,10 +50,10 @@ bool Vector2::isUnit() const
 }
 
 
-auto Vector2::angle(const Vector2& v1, const Vector2& v2) -> float
+auto Vector2::angle(const Vector2& v1, const Vector2& v2) -> Radian
 {
     auto dz = v1.x * v2.y - v1.y * v2.x;
-    return atan2f(fabsf(dz) + Math::smallFloat2, dot(v1, v2));
+    return Radian(atan2f(fabsf(dz) + Math::smallFloat2, dot(v1, v2)));
 }
 
 

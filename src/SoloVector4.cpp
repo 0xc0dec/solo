@@ -70,13 +70,13 @@ bool Vector4::isUnit() const
 }
 
 
-auto Vector4::angle(const Vector4& v1, const Vector4& v2) -> float
+auto Vector4::angle(const Vector4& v1, const Vector4& v2) -> Radian
 {
     auto dx = v1.w * v2.x - v1.x * v2.w - v1.y * v2.z + v1.z * v2.y;
     auto dy = v1.w * v2.y - v1.y * v2.w - v1.z * v2.x + v1.x * v2.z;
     auto dz = v1.w * v2.z - v1.z * v2.w - v1.x * v2.y + v1.y * v2.x;
 
-    return atan2f(sqrt(dx * dx + dy * dy + dz * dz) + Math::smallFloat2, dot(v1, v2));
+    return Radian(atan2f(sqrt(dx * dx + dy * dy + dz * dz) + Math::smallFloat2, dot(v1, v2)));
 }
 
 

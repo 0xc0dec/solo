@@ -1,5 +1,8 @@
 #pragma once
 
+#include "SoloRadian.h"
+
+
 namespace solo
 {
     class Vector4 final
@@ -23,8 +26,7 @@ namespace solo
         bool isZero() const;
         bool isUnit() const;
 
-        // in radians
-        static auto angle(const Vector4& v1, const Vector4& v2) -> float;
+        static auto angle(const Vector4& v1, const Vector4& v2) -> Radian;
 
         void clamp(const Vector4& min, const Vector4& max);
 

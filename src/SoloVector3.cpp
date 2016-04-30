@@ -66,13 +66,13 @@ bool Vector3::isUnit() const
 }
 
 
-auto Vector3::angle(const Vector3& v1, const Vector3& v2) -> float
+auto Vector3::angle(const Vector3& v1, const Vector3& v2) -> Radian
 {
     auto dx = v1.y * v2.z - v1.z * v2.y;
     auto dy = v1.z * v2.x - v1.x * v2.z;
     auto dz = v1.x * v2.y - v1.y * v2.x;
 
-    return atan2f(sqrt(dx * dx + dy * dy + dz * dz) + Math::smallFloat2, dot(v1, v2));
+    return Radian(atan2f(sqrt(dx * dx + dy * dy + dz * dz) + Math::smallFloat2, dot(v1, v2)));
 }
 
 
