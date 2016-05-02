@@ -85,14 +85,14 @@ void FontRenderer::rebuildMesh()
         offsetX = glyphInfo.offsetX;
         offsetY = glyphInfo.offsetY;
 
-        vertices.emplace_back(glyphInfo.position[0]);
-        vertices.emplace_back(glyphInfo.position[1]);
-        vertices.emplace_back(glyphInfo.position[2]);
-        vertices.emplace_back(glyphInfo.position[3]);
-        uvs.emplace_back(glyphInfo.uv[0]);
-        uvs.emplace_back(glyphInfo.uv[1]);
-        uvs.emplace_back(glyphInfo.uv[2]);
-        uvs.emplace_back(glyphInfo.uv[3]);
+        vertices.emplace_back(glyphInfo.positions[0]);
+        vertices.emplace_back(glyphInfo.positions[1]);
+        vertices.emplace_back(glyphInfo.positions[2]);
+        vertices.emplace_back(glyphInfo.positions[3]);
+        uvs.emplace_back(glyphInfo.uvs[0]);
+        uvs.emplace_back(glyphInfo.uvs[1]);
+        uvs.emplace_back(glyphInfo.uvs[2]);
+        uvs.emplace_back(glyphInfo.uvs[3]);
         indexes.push_back(lastIndex);
         indexes.push_back(lastIndex + 1);
         indexes.push_back(lastIndex + 2);
@@ -127,14 +127,14 @@ void FontRenderer::updateMesh()
         offsetX = glyphInfo.offsetX;
         offsetY = glyphInfo.offsetY;
 
-        vertices.emplace_back(glyphInfo.position[0]);
-        vertices.emplace_back(glyphInfo.position[1]);
-        vertices.emplace_back(glyphInfo.position[2]);
-        vertices.emplace_back(glyphInfo.position[3]);
-        uvs.emplace_back(glyphInfo.uv[0]);
-        uvs.emplace_back(glyphInfo.uv[1]);
-        uvs.emplace_back(glyphInfo.uv[2]);
-        uvs.emplace_back(glyphInfo.uv[3]);
+        vertices.emplace_back(glyphInfo.positions[0]);
+        vertices.emplace_back(glyphInfo.positions[1]);
+        vertices.emplace_back(glyphInfo.positions[2]);
+        vertices.emplace_back(glyphInfo.positions[3]);
+        uvs.emplace_back(glyphInfo.uvs[0]);
+        uvs.emplace_back(glyphInfo.uvs[1]);
+        uvs.emplace_back(glyphInfo.uvs[2]);
+        uvs.emplace_back(glyphInfo.uvs[3]);
     }
 
     mesh->updateDynamicVertexBuffer(0, 0, reinterpret_cast<const float*>(vertices.data()), static_cast<uint32_t>(vertices.size()));

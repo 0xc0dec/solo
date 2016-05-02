@@ -11,8 +11,8 @@ namespace solo
 
     struct GlyphInfo
     {
-        Vector3 position[4];
-        Vector2 uv[4];
+        Vector3 positions[4];
+        Vector2 uvs[4];
         float offsetX, offsetY;
     };
 
