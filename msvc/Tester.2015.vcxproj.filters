@@ -13,6 +13,6 @@
     <ClInclude Include="..\tests\tester\ResourcePool_Test.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\tests\tester\Main.cpp" />
+    <ClCompile Include="..\tests\tester\Tester.cpp" />
   </ItemGroup>
 </Project>

@@ -163,7 +163,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\tests\demo2\Main.cpp" />
+    <ClCompile Include="..\tests\demo2\Demo2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tests\demo2\Shaders.h" />

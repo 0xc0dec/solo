@@ -175,7 +175,7 @@
     <ClInclude Include="..\tests\tester\Transform_Test.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\tests\tester\Main.cpp" />
+    <ClCompile Include="..\tests\tester\Tester.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
