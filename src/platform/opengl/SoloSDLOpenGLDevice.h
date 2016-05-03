@@ -22,7 +22,5 @@ namespace solo
         virtual void endUpdate() override final;
 
         SDL_GLContext context = nullptr;
-
-        auto selectContextVersion() -> std::tuple<uint32_t, uint32_t>;
     };
 }
