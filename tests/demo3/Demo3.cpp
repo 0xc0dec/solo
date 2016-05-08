@@ -100,54 +100,6 @@ public:
         });
     }
 
-//    sptr<Texture2D> renderTextToTexture(const std::string& text, uint32_t textureWidth, uint32_t textureHeight, uint32_t lineHeight)
-//    {
-//        auto fontBytes = Device::get()->getFileSystem()->readBytes("c:/windows/fonts/arialbd.ttf");
-//
-//        stbtt_fontinfo font;
-//        stbtt_InitFont(&font, fontBytes.data(), 0);
-//
-//        auto scale = stbtt_ScaleForPixelHeight(&font, lineHeight);
-//
-//        int ascent, descent, lineGap, x = 0;
-//        stbtt_GetFontVMetrics(&font, &ascent, &descent, &lineGap);
-//
-//        ascent *= scale;
-//        descent *= scale;
-//
-//        auto pixels = std::make_unique<uint8_t[]>(textureWidth * textureHeight);
-//
-//        for (int i = 0; i < text.size(); ++i)
-//        {
-//            /* get bounding box for character (may be offset to account for chars that dip above or below the line */
-//            int c_x1, c_y1, c_x2, c_y2;
-//            stbtt_GetCodepointBitmapBox(&font, text[i], scale, scale, &c_x1, &c_y1, &c_x2, &c_y2);
-//
-//            /* compute y (different characters have different heights */
-//            int y = ascent + c_y1;
-//
-//            /* render character (stride and offset is important here) */
-//            int byteOffset = x + (y  * textureWidth);
-//            stbtt_MakeCodepointBitmap(&font, pixels.get() + byteOffset, c_x2 - c_x1, c_y2 - c_y1, textureWidth, scale, scale, text[i]);
-//
-//            /* how wide is this character */
-//            int ax;
-//            stbtt_GetCodepointHMetrics(&font, text[i], &ax, nullptr);
-//            x += ax * scale;
-//
-//            /* add kerning */
-//            int kern;
-//            kern = stbtt_GetCodepointKernAdvance(&font, text[i], text[i + 1]);
-//            x += kern * scale;
-//        }
-//
-//        auto fontTexture = Texture2D::create();
-//        fontTexture->setFiltering(TextureFiltering::Nearest);
-//        fontTexture->setData(TextureFormat::Red, pixels.get(), textureWidth, textureHeight);
-//        
-//        return fontTexture;
-//    }
-
     void initText()
     {
         auto textNode = scene->createNode();
