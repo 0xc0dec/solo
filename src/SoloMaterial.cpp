@@ -17,7 +17,7 @@ Material::Material(sptr<Effect> effect):
     renderer(Device::get()->getRenderer()),
     effect(effect)
 {
-}
+} 
 
 
 void Material::setParameter(const std::string& name, MaterialParameterType type, const void* value)

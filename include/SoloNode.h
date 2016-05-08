@@ -24,10 +24,10 @@ namespace solo
         auto getScene() const -> Scene*;
 
         template <typename T>
-        static auto findComponent(Scene* scene, uint32_t nodeId)->T*;
+        static auto findComponent(Scene* scene, uint32_t nodeId) -> T*;
 
         template <typename T>
-        static auto getComponent(Scene* scene, uint32_t nodeId)->T*;
+        static auto getComponent(Scene* scene, uint32_t nodeId) -> T*;
 
         template <typename T, typename... Args>
         static auto addComponent(Scene* scene, uint32_t nodeId, Args... args) -> T*;
@@ -36,13 +36,13 @@ namespace solo
         static void removeComponent(Scene* scene, uint32_t nodeId);
 
         template <typename T>
-        auto findComponent() const->T*;
+        auto findComponent() const -> T*;
 
         template <typename T>
         auto getComponent() -> T*;
 
         template <typename T, typename... Args>
-        auto addComponent(Args... args)->T*;
+        auto addComponent(Args... args) -> T*;
 
         template <typename T>
         void removeComponent();

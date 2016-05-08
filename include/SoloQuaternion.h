@@ -19,7 +19,6 @@ namespace solo
         Quaternion(float x, float y, float z, float w);
         Quaternion(const Vector3& axis, const Radian& angle);
 
-        static auto createFromRotationMatrix(const Matrix& m) -> Quaternion;
         static auto createFromAxisAngle(const Vector3& axis, const Radian& angle) -> Quaternion;
 
         static auto identity() -> Quaternion;

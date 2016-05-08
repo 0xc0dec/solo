@@ -49,12 +49,6 @@ bool Quaternion::isZero() const
 }
 
 
-auto Quaternion::createFromRotationMatrix(const Matrix& m) -> Quaternion
-{
-    return m.getRotation(); // TODO remove
-}
-
-
 auto Quaternion::createFromAxisAngle(const Vector3& axis, const Radian& angle) -> Quaternion
 {
     auto halfAngle = angle.getRawRadians() * 0.5f;
