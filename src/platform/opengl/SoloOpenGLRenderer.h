@@ -52,8 +52,7 @@ namespace solo
             -> VertexObjectHandle override final;
         virtual void destroyVertexObject(const VertexObjectHandle& handle) override final;
 
-        virtual auto createUniform(const char* name, UniformType type, uint32_t componentCount, ProgramHandle program)
-            -> UniformHandle override final; // TODO remove "componentCount"
+        virtual auto createUniform(const char* name, UniformType type, ProgramHandle program) -> UniformHandle override final;
         virtual void destroyUniform(const UniformHandle& handle) override final;
         virtual void setUniform(const UniformHandle& handle, const void* value, uint32_t count) override final;
 
@@ -122,7 +121,6 @@ namespace solo
             UniformType type = UniformType::Float;
             GLint location = 0;
             GLint index = 0;
-            uint32_t componentCount = 0;
         };
 
         void bindFrameBuffer(const FrameBufferHandle& handle);

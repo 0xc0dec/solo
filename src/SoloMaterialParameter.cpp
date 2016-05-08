@@ -212,7 +212,7 @@ MaterialParameter::MaterialParameter(Renderer* renderer, Effect* effect, Materia
     type(type),
     renderer(renderer)
 {
-    handle = renderer->createUniform(name, getUniformType(type), 0 /* TODO */, effect->getHandle());
+    handle = renderer->createUniform(name, getUniformType(type), effect->getHandle());
 }
 
 

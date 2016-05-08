@@ -155,7 +155,7 @@ void VulkanRenderer::destroyVertexObject(const VertexObjectHandle& handle)
 }
 
 
-auto VulkanRenderer::createUniform(const char* name, UniformType type, uint32_t componentCount, ProgramHandle program) -> UniformHandle
+auto VulkanRenderer::createUniform(const char* name, UniformType type, ProgramHandle program) -> UniformHandle
 {
     return EmptyUniformHandle;
 }

@@ -792,7 +792,7 @@ void OpenGLRenderer::drawVertexObject(PrimitiveType primitiveType, const VertexO
 }
 
 
-auto OpenGLRenderer::createUniform(const char* name, UniformType type, uint32_t componentCount, ProgramHandle program) -> UniformHandle
+auto OpenGLRenderer::createUniform(const char* name, UniformType type, ProgramHandle program) -> UniformHandle
 {
     auto rawProgramHandle = programs.getData(program.value).rawHandle;
 
@@ -806,7 +806,6 @@ auto OpenGLRenderer::createUniform(const char* name, UniformType type, uint32_t 
     data.type = type;
     data.index = index;
     data.location = location;
-    data.componentCount = componentCount;
 
     return handle;
 }
