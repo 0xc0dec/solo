@@ -78,6 +78,7 @@
     <ClInclude Include="..\src\SoloBulletBoxCollider.h" />
     <ClInclude Include="..\src\SoloBulletPhysics.h" />
     <ClInclude Include="..\src\SoloBulletRigidBody.h" />
+    <ClInclude Include="..\src\SoloMaterialParameter.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPngImageLoader.h" />
     <ClInclude Include="..\src\SoloTrueTypeFont.h" />
@@ -99,6 +100,7 @@
     <ClCompile Include="..\src\SoloFontRenderer.cpp" />
     <ClCompile Include="..\src\SoloGraphics.cpp" />
     <ClCompile Include="..\src\SoloBulletPhysics.cpp" />
+    <ClCompile Include="..\src\SoloMaterialParameter.cpp" />
     <ClCompile Include="..\src\SoloRadian.cpp" />
     <ClCompile Include="..\src\SoloRenderer.cpp" />
     <ClCompile Include="..\src\SoloBulletRigidBody.cpp" />

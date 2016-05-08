@@ -1,9 +1,8 @@
 #include "SoloMaterial.h"
 #include "SoloRenderContext.h"
-#include "SoloTransform.h"
-#include "SoloCamera.h"
 #include "SoloTexture.h"
 #include "SoloDevice.h"
+#include "SoloMaterialParameter.h"
 
 using namespace solo;
 
@@ -21,89 +20,78 @@ Material::Material(sptr<Effect> effect):
 }
 
 
-Material::~Material()
+void Material::setParameter(const std::string& name, MaterialParameterType type, const void* value)
 {
-    for (const auto& p: parameters)
-        renderer->destroyUniform(p.second.handle);
-}
-
-
-auto Material::initParameter(const std::string& name, ParameterValueType type, UniformType uniformType,
-    uint32_t uniformComponentCount) -> ParameterData&
-{
-    auto& data = parameters[name];
-    if (data.type == ParameterValueType::Unknown)
-    {
-        data.handle = renderer->createUniform(name.c_str(), uniformType, uniformComponentCount, effect->getHandle());
-        data.type = type;
-    }
-    return data;
+    auto where = parameters.find(name);
+    if (where == parameters.end() || where->second->getType() != type)
+        parameters[name] = MaterialParameter::create(renderer, effect.get(), type, name.c_str());
+    parameters.at(name)->setValue(value);
 }
 
 
 void Material::setFloatParameter(const std::string& name, float value)
 {
-    setParameter(name, ParameterValueType::Float, UniformType::Float, 1, &ParameterData::floatValue, value);
+    setParameter(name, MaterialParameterType::Float, &value);
 }
 
 
 void Material::setFloatArrayParameter(const std::string& name, const std::vector<float>& value)
 {
-    setParameter(name, ParameterValueType::FloatArray, UniformType::FloatArray, static_cast<uint32_t>(value.size()), &ParameterData::floatArrayValue, value);
+    setParameter(name, MaterialParameterType::FloatArray, &value);
 }
 
 
 void Material::setVector2Parameter(const std::string& name, const Vector2& value)
 {
-    setParameter(name, ParameterValueType::Vector2, UniformType::Vector2, 1, &ParameterData::vector2Value, value);
+    setParameter(name, MaterialParameterType::Vector2, &value);
 }
 
 
 void Material::setVector2ArrayParameter(const std::string& name, const std::vector<Vector2>& value)
 {
-    setParameter(name, ParameterValueType::Vector2Array, UniformType::Vector2Array, static_cast<uint32_t>(value.size()), &ParameterData::vector2ArrayValue, value);
+    setParameter(name, MaterialParameterType::Vector2Array, &value);
 }
 
 
 void Material::setVector3Parameter(const std::string& name, const Vector3& value)
 {
-    setParameter(name, ParameterValueType::Vector3, UniformType::Vector3, 1, &ParameterData::vector3Value, value);
+    setParameter(name, MaterialParameterType::Vector3, &value);
 }
 
 
 void Material::setVector3ArrayParameter(const std::string& name, const std::vector<Vector3>& value)
 {
-    setParameter(name, ParameterValueType::Vector3Array, UniformType::Vector3Array, static_cast<uint32_t>(value.size()), &ParameterData::vector3ArrayValue, value);
+    setParameter(name, MaterialParameterType::Vector3Array, &value);
 }
 
 
 void Material::setVector4Parameter(const std::string& name, const Vector4& value)
 {
-    setParameter(name, ParameterValueType::Vector4, UniformType::Vector4, 1, &ParameterData::vector4Value, value);
+    setParameter(name, MaterialParameterType::Vector4, &value);
 }
 
 
 void Material::setVector4ArrayParameter(const std::string& name, const std::vector<Vector4>& value)
 {
-    setParameter(name, ParameterValueType::Vector4Array, UniformType::Vector4Array, static_cast<uint32_t>(value.size()), &ParameterData::vector4ArrayValue, value);
+    setParameter(name, MaterialParameterType::Vector4Array, &value);
 }
 
 
 void Material::setMatrixParameter(const std::string& name, const Matrix& value)
 {
-    setParameter(name, ParameterValueType::Matrix, UniformType::Matrix, 1, &ParameterData::matrixValue, value);
+    setParameter(name, MaterialParameterType::Matrix, &value);
 }
 
 
 void Material::setMatrixArrayParameter(const std::string& name, const std::vector<Matrix>& value)
 {
-    setParameter(name, ParameterValueType::MatrixArray, UniformType::MatrixArray, static_cast<uint32_t>(value.size()), &ParameterData::matrixArrayValue, value);
+    setParameter(name, MaterialParameterType::MatrixArray, &value);
 }
 
 
 void Material::setTextureParameter(const std::string& name, sptr<Texture> value)
 {
-    setParameter(name, ParameterValueType::Texture, UniformType::Texture, 1, &ParameterData::textureValue, value);
+    setParameter(name, MaterialParameterType::Texture, &value);
 }
 
 
@@ -112,33 +100,33 @@ void Material::setParameterAutoBinding(const std::string& name, AutoBinding auto
     switch (autoBinding)
     {
         case AutoBinding::WorldMatrix:
-            initParameter(name, ParameterValueType::WorldMatrix, UniformType::Matrix, 1);
+            setParameter(name, MaterialParameterType::WorldMatrix, nullptr);
             break;
         case AutoBinding::ViewMatrix:
-            initParameter(name, ParameterValueType::ViewMatrix, UniformType::Matrix, 1);
+            setParameter(name, MaterialParameterType::ViewMatrix, nullptr);
             break;
         case AutoBinding::ProjectionMatrix:
-            initParameter(name, ParameterValueType::ProjectionMatrix, UniformType::Matrix, 1);
+            setParameter(name, MaterialParameterType::ProjectionMatrix, nullptr);
             break;
         case AutoBinding::WorldViewMatrix:
-            initParameter(name, ParameterValueType::WorldViewMatrix, UniformType::Matrix, 1);
+            setParameter(name, MaterialParameterType::WorldViewMatrix, nullptr);
             break;
         case AutoBinding::ViewProjectionMatrix:
-            initParameter(name, ParameterValueType::ViewProjectionMatrix, UniformType::Matrix, 1);
+            setParameter(name, MaterialParameterType::ViewProjectionMatrix, nullptr);
             break;
         case AutoBinding::WorldViewProjectionMatrix:
-            initParameter(name, ParameterValueType::WorldViewProjectionMatrix, UniformType::Matrix, 1);
+            setParameter(name, MaterialParameterType::WorldViewProjectionMatrix, nullptr);
             break;
         case AutoBinding::InverseTransposedWorldMatrix:
-            initParameter(name, ParameterValueType::InverseTransposedWorldMatrix, UniformType::Matrix, 1);
+            setParameter(name, MaterialParameterType::InverseTransposedWorldMatrix, nullptr);
             break;
         case AutoBinding::InverseTransposedWorldViewMatrix:
-            initParameter(name, ParameterValueType::InverseTransposedWorldViewMatrix, UniformType::Matrix, 1);
+            setParameter(name, MaterialParameterType::InverseTransposedWorldViewMatrix, nullptr);
             break;
         case AutoBinding::CameraWorldPosition:
-            initParameter(name, ParameterValueType::CameraWorldPosition, UniformType::Vector3, 1);
+            setParameter(name, MaterialParameterType::CameraWorldPosition, nullptr);
             break;
-        default: break;
+        default: break; // TODO debug throw
     }
 }
 
@@ -147,94 +135,11 @@ void Material::apply(const RenderContext& context)
 {
     applyState();
     
-    if (!effect)
-        return;
-
-    effect->apply();
-
-    for (const auto& p : parameters)
+    if (effect)
     {
-        const auto& data = p.second;
-
-        switch (data.type)
-        {
-            case ParameterValueType::Float:
-                renderer->setUniform(data.handle, &data.floatValue, 1);
-                break;
-            case ParameterValueType::FloatArray:
-                renderer->setUniform(data.handle, data.floatArrayValue.data(), static_cast<uint32_t>(data.floatArrayValue.size()));
-                break;
-            case ParameterValueType::Vector2:
-                renderer->setUniform(data.handle, &data.vector2Value, 1);
-                break;
-            case ParameterValueType::Vector2Array:
-                renderer->setUniform(data.handle, data.vector2ArrayValue.data(), static_cast<uint32_t>(data.vector2ArrayValue.size()));
-                break;
-            case ParameterValueType::Vector3:
-                renderer->setUniform(data.handle, &data.vector3Value, 1);
-                break;
-            case ParameterValueType::Vector3Array:
-                renderer->setUniform(data.handle, data.vector3ArrayValue.data(), static_cast<uint32_t>(data.vector3ArrayValue.size()));
-                break;
-            case ParameterValueType::Vector4:
-                renderer->setUniform(data.handle, &data.vector4Value, 1);
-                break;
-            case ParameterValueType::Vector4Array:
-                renderer->setUniform(data.handle, data.vector4ArrayValue.data(), static_cast<uint32_t>(data.vector4ArrayValue.size()));
-                break;
-            case ParameterValueType::Matrix:
-                renderer->setUniform(data.handle, data.matrixValue.m, 1);
-                break;
-            case ParameterValueType::MatrixArray:
-                renderer->setUniform(data.handle, data.matrixArrayValue.data(), static_cast<uint32_t>(data.matrixArrayValue.size()));
-                break;
-            case ParameterValueType::Texture:
-                renderer->setUniform(data.handle, nullptr, 1);
-                data.textureValue->bind();
-                break;
-            case ParameterValueType::WorldMatrix:
-                if (context.nodeTransform)
-                    renderer->setUniform(data.handle, context.nodeTransform->getWorldMatrix().m, 1);
-                break;
-            case ParameterValueType::ViewMatrix:
-                if (context.camera)
-                    renderer->setUniform(data.handle, context.camera->getViewMatrix().m, 1);
-                break;
-            case ParameterValueType::ProjectionMatrix:
-                if (context.camera)
-                    renderer->setUniform(data.handle, context.camera->getProjectionMatrix().m, 1);
-                break;
-            case ParameterValueType::WorldViewMatrix:
-                if (context.nodeTransform && context.camera)
-                    renderer->setUniform(data.handle, context.nodeTransform->getWorldViewMatrix(context.camera).m, 1);
-                break;
-            case ParameterValueType::ViewProjectionMatrix:
-                if (context.camera)
-                    renderer->setUniform(data.handle, context.camera->getViewProjectionMatrix().m, 1);
-                break;
-            case ParameterValueType::WorldViewProjectionMatrix:
-                if (context.nodeTransform && context.camera)
-                    renderer->setUniform(data.handle, context.nodeTransform->getWorldViewProjectionMatrix(context.camera).m, 1);
-                break;
-            case ParameterValueType::InverseTransposedWorldMatrix:
-                if (context.nodeTransform)
-                    renderer->setUniform(data.handle, context.nodeTransform->getInverseTransposedWorldMatrix().m, 1);
-                break;
-            case ParameterValueType::InverseTransposedWorldViewMatrix:
-                if (context.nodeTransform && context.camera)
-                    renderer->setUniform(data.handle, context.nodeTransform->getInverseTransposedWorldViewMatrix(context.camera).m, 1);
-                break;
-            case ParameterValueType::CameraWorldPosition:
-                if (context.cameraTransform)
-                {
-                    auto pos = context.cameraTransform->getWorldPosition();
-                    renderer->setUniform(data.handle, &pos, 1);
-                }
-                break;
-            case ParameterValueType::Unknown:
-            default:
-                break;
-        }
+        effect->apply();
+        for (auto& p : parameters)
+            p.second->apply(context);
     }
 }
 

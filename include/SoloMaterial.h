@@ -14,7 +14,9 @@ namespace solo
 {
     class Effect;
     class Texture;
+    class MaterialParameter;
     struct RenderContext;
+    enum class MaterialParameterType;
 
     enum class AutoBinding
     {
@@ -35,7 +37,7 @@ namespace solo
     public:
         static auto create(sptr<Effect> effect) -> sptr<Material>; 
 
-        ~Material();
+        ~Material() {}
         SL_NONCOPYABLE(Material)
 
         void setFloatParameter(const std::string& name, float value);
@@ -122,18 +124,12 @@ namespace solo
         explicit Material(sptr<Effect> effect);
 
         void applyState();
-
-        auto initParameter(const std::string& name, ParameterValueType type, UniformType uniformType, uint32_t uniformComponentCount)
-            -> ParameterData&;
-
-        template <class T>
-        void setParameter(const std::string& name, ParameterValueType type, UniformType uniformType, uint32_t uniformComponentCount,
-            T ParameterData::*dataField, const T& newValue);
+        void setParameter(const std::string& name, MaterialParameterType type, const void* value);
 
         Renderer* renderer;
         sptr<Effect> effect;
 
-        std::unordered_map<std::string, ParameterData> parameters;
+        std::unordered_map<std::string, sptr<MaterialParameter>> parameters;
 
         PolygonFace polygonFace = PolygonFace::CW;
         bool depthWrite = true; 
@@ -143,13 +139,6 @@ namespace solo
         BlendFactor dstBlendFactor = BlendFactor::OneMinusSrcAlpha;
         DepthFunction depthFunc = DepthFunction::Less;
     };
-
-    template <class T>
-    inline void Material::setParameter(const std::string& name, ParameterValueType type, UniformType uniformType, uint32_t uniformComponentCount,
-        T ParameterData::*dataField, const T& newValue)
-    {
-        initParameter(name, type, uniformType, uniformComponentCount).*dataField = newValue;
-    }
 
     inline auto Material::getEffect() const -> Effect*
     {
