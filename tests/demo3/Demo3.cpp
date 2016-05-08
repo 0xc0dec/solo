@@ -22,7 +22,7 @@ public:
         const int lineHeight = 60;
 
         auto fontData = Device::get()->getFileSystem()->readBytes("c:/windows/fonts/calibri.ttf");
-        auto font = Font::create(fontData.data(), lineHeight, textureWidth, textureHeight, ' ', '~' - ' ');
+        auto font = Font::create(fontData.data(), lineHeight, textureWidth, textureHeight, ' ', '~' - ' ', 2, 2);
 
         renderer = node.addComponent<FontRenderer>();
         renderer->setFont(font);

@@ -275,7 +275,7 @@ public:
 
             auto mesh = Mesh::create();
             mesh->addDynamicVertexBuffer(layout, data.data(), 4);
-            mesh->addPart(indices.data(), 6); // TODO accept uint16_t array explicitly
+            mesh->addPart(indices.data(), 6);
             mesh->setPrimitiveType(PrimitiveType::Triangles);
 
             auto mat = Material::create(simpleTextureEffect);

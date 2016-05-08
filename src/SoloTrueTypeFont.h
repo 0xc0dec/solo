@@ -14,7 +14,8 @@ namespace solo
     private:
         friend class Font;
 
-        TrueTypeFont(uint8_t* fontData, uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight, uint32_t firstChar, uint32_t charCount);
+        TrueTypeFont(uint8_t* fontData, uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight,
+            uint32_t firstChar, uint32_t charCount, uint32_t oversampleX, uint32_t oversampleY);
 
         uint32_t firstChar;
         uptr<stbtt_packedchar[]> charInfo;
