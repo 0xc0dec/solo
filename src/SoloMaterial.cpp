@@ -8,16 +8,16 @@
 using namespace solo;
 
 
+auto Material::create(sptr<Effect> effect) -> sptr<Material>
+{
+    return std::shared_ptr<Material>(new Material(effect));
+}
+
+
 Material::Material(sptr<Effect> effect):
     renderer(Device::get()->getRenderer()),
     effect(effect)
 {
-}
-
-
-auto Material::create(sptr<Effect> effect) -> sptr<Material>
-{
-    return std::shared_ptr<Material>(new Material(effect));
 }
 
 
@@ -28,8 +28,8 @@ Material::~Material()
 }
 
 
-Material::ParameterData& Material::initParameter(const std::string& name, ParameterValueType type,
-    UniformType uniformType, uint32_t uniformComponentCount)
+auto Material::initParameter(const std::string& name, ParameterValueType type, UniformType uniformType,
+    uint32_t uniformComponentCount) -> ParameterData&
 {
     auto& data = parameters[name];
     if (data.type == ParameterValueType::Unknown)
