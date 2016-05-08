@@ -196,6 +196,14 @@ auto MaterialParameter::create(Renderer* renderer, Effect* effect, MaterialParam
 }
 
 
+MaterialParameter::MaterialParameter(Renderer* renderer, Effect* effect, MaterialParameterType type, const char* name):
+    type(type),
+    renderer(renderer)
+{
+    handle = renderer->createUniform(name, getUniformType(type), effect->getHandle());
+}
+
+
 MaterialParameter::~MaterialParameter()
 {
     renderer->destroyUniform(handle);
@@ -205,14 +213,6 @@ MaterialParameter::~MaterialParameter()
 auto MaterialParameter::getType() const -> MaterialParameterType
 {
     return type;
-}
-
-
-MaterialParameter::MaterialParameter(Renderer* renderer, Effect* effect, MaterialParameterType type, const char* name):
-    type(type),
-    renderer(renderer)
-{
-    handle = renderer->createUniform(name, getUniformType(type), effect->getHandle());
 }
 
 
