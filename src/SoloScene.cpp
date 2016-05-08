@@ -69,16 +69,6 @@ void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
 }
 
 
-auto Scene::getComponent(uint32_t nodeId, uint32_t typeId) const -> Component*
-{
-    // TODO remove this method completely?
-    auto cmp = findComponent(nodeId, typeId);
-    if (!cmp)
-        SL_FMT_THROW(InvalidOperationException, "Component ", typeId, " not found on node ", nodeId);
-    return cmp;
-}
-
-
 auto Scene::findComponent(uint32_t nodeId, uint32_t typeId) const -> Component*
 {
     auto nodeIt = components.find(nodeId);

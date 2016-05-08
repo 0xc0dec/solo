@@ -21,11 +21,9 @@ namespace solo
 
         auto createNode() -> sptr<Node>;
 
+        auto findComponent(uint32_t nodeId, uint32_t typeId) const -> Component*;
         void addComponent(uint32_t nodeId, sptr<Component> cmp);
         void removeComponent(uint32_t nodeId, uint32_t typeId);
-
-        auto getComponent(uint32_t nodeId, uint32_t typeId) const -> Component*;
-        auto findComponent(uint32_t nodeId, uint32_t typeId) const -> Component*;
 
         void update();
         void render();

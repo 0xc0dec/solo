@@ -81,7 +81,9 @@ namespace solo
     inline auto Node::getComponent(Scene* scene, uint32_t nodeId) -> T*
     {
         auto typeId = T::getId();
-        auto cmp = scene->getComponent(nodeId, typeId);
+        auto cmp = scene->findComponent(nodeId, typeId);
+        if (!cmp)
+            SL_FMT_THROW(InvalidOperationException, "Component ", typeId, " not found on node ", nodeId);
         return static_cast<T*>(cmp);
     }
 
