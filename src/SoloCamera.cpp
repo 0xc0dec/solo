@@ -11,12 +11,6 @@ const uint32_t DirtyBitProjection = 2;
 const uint32_t DirtyBitViewProjection = 4;
 const uint32_t DirtyBitInverseView = 8;
 const uint32_t DirtyBitInverseViewProjection = 16;
-const uint32_t DirtyBitAll =
-               DirtyBitView |
-               DirtyBitProjection |
-               DirtyBitViewProjection |
-               DirtyBitInverseView |
-               DirtyBitInverseViewProjection;
 
 
 Camera::Camera(const Node& node):
