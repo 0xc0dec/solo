@@ -76,51 +76,6 @@ namespace solo
         void setDepthFunction(DepthFunction func);
 
     private:
-        enum class ParameterValueType
-        {
-            Unknown = 0,
-            Float,
-            FloatArray,
-            Vector2,
-            Vector2Array,
-            Vector3,
-            Vector3Array,
-            Vector4,
-            Vector4Array,
-            Matrix,
-            MatrixArray,
-            Texture,
-            // Auto-binding values
-            WorldMatrix,
-            ViewMatrix,
-            ProjectionMatrix,
-            WorldViewMatrix,
-            ViewProjectionMatrix,
-            WorldViewProjectionMatrix,
-            InverseTransposedWorldMatrix,
-            InverseTransposedWorldViewMatrix,
-            CameraWorldPosition
-        };
-
-        // TODO this is quite ugly and slow
-        struct ParameterData
-        {
-            UniformHandle handle;
-            ParameterValueType type = ParameterValueType::Unknown;
-            float floatValue = 0;
-            Vector2 vector2Value;
-            Vector3 vector3Value;
-            Vector4 vector4Value;
-            Matrix matrixValue;
-            sptr<Texture> textureValue;
-            std::vector<float> floatArrayValue;
-            std::vector<Vector2> vector2ArrayValue;
-            std::vector<Vector3> vector3ArrayValue;
-            std::vector<Vector4> vector4ArrayValue;
-            std::vector<Matrix> matrixArrayValue;
-            AutoBinding autoBinding = AutoBinding::CameraWorldPosition;
-        };
-
         explicit Material(sptr<Effect> effect);
 
         void applyState();

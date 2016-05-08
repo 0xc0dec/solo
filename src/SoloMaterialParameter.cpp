@@ -13,17 +13,18 @@
 using namespace solo;
 
 
-class FloatMaterialParameter final: public MaterialParameter
+template <class T, MaterialParameterType Type>
+class ValueMaterialParameter final: public MaterialParameter
 {
 public:
-    FloatMaterialParameter(Renderer* renderer, Effect* effect, const char* name):
-        MaterialParameter(renderer, effect, MaterialParameterType::Float, name)
+    ValueMaterialParameter(Renderer* renderer, Effect* effect, const char* name):
+        MaterialParameter(renderer, effect, Type, name)
     {
     }
 
     virtual void setValue(const void* value) override final
     {
-        this->value = *reinterpret_cast<const float*>(value);
+        this->value = *reinterpret_cast<const T*>(value);
     }
 
     virtual void apply(const RenderContext& context) override final
@@ -32,214 +33,31 @@ public:
     }
 
 private:
-    float value = 0; // TODO store as void*
+    T value;
 };
 
 
-class FloatArrayMaterialParameter final : public MaterialParameter
+template <class T, MaterialParameterType Type>
+class ValueArrayMaterialParameter final: public MaterialParameter
 {
 public:
-    FloatArrayMaterialParameter(Renderer* renderer, Effect* effect, const char* name):
-        MaterialParameter(renderer, effect, MaterialParameterType::FloatArray, name)
+    ValueArrayMaterialParameter(Renderer* renderer, Effect* effect, const char* name) :
+        MaterialParameter(renderer, effect, Type, name) 
     {
     }
 
     virtual void setValue(const void* value) override final
     {
-        this->value = *reinterpret_cast<const std::vector<float>*>(value);
+        this->value = *reinterpret_cast<const std::vector<T>*>(value);
     }
 
     virtual void apply(const RenderContext& context) override final
     {
-        renderer->setUniform(handle, value.data(), value.size());
+        renderer->setUniform(handle, value.data(), static_cast<uint32_t>(value.size()));
     }
 
 private:
-    std::vector<float> value;
-};
-
-
-class Vector2MaterialParameter final : public MaterialParameter
-{
-public:
-    Vector2MaterialParameter(Renderer* renderer, Effect* effect, const char* name):
-        MaterialParameter(renderer, effect, MaterialParameterType::Vector2, name)
-    {
-    }
-
-    virtual void setValue(const void* value) override final
-    {
-        this->value = *reinterpret_cast<const Vector2*>(value);
-    }
-
-    virtual void apply(const RenderContext& context) override final
-    {
-        renderer->setUniform(handle, &value, 1);
-    }
-
-private:
-    Vector2 value;
-};
-
-
-class Vector2ArrayMaterialParameter final : public MaterialParameter
-{
-public:
-    Vector2ArrayMaterialParameter(Renderer* renderer, Effect* effect, const char* name):
-        MaterialParameter(renderer, effect, MaterialParameterType::Vector2Array, name)
-    {
-    }
-
-    virtual void setValue(const void* value) override final
-    {
-        this->value = *reinterpret_cast<const std::vector<Vector2>*>(value);
-    }
-
-    virtual void apply(const RenderContext& context) override final
-    {
-        renderer->setUniform(handle, &value, value.size());
-    }
-
-private:
-    std::vector<Vector2> value;
-};
-
-
-class Vector3MaterialParameter final : public MaterialParameter
-{
-public:
-    Vector3MaterialParameter(Renderer* renderer, Effect* effect, const char* name):
-        MaterialParameter(renderer, effect, MaterialParameterType::Vector3, name)
-    {
-    }
-
-    virtual void setValue(const void* value) override final
-    {
-        this->value = *reinterpret_cast<const Vector3*>(value);
-    }
-
-    virtual void apply(const RenderContext& context) override final
-    {
-        renderer->setUniform(handle, &value, 1);
-    }
-
-private:
-    Vector3 value;
-};
-
-
-class Vector3ArrayMaterialParameter final : public MaterialParameter
-{
-public:
-    Vector3ArrayMaterialParameter(Renderer* renderer, Effect* effect, const char* name):
-        MaterialParameter(renderer, effect, MaterialParameterType::Vector3Array, name)
-    {
-    }
-
-    virtual void setValue(const void* value) override final
-    {
-        this->value = *reinterpret_cast<const std::vector<Vector3>*>(value);
-    }
-
-    virtual void apply(const RenderContext& context) override final
-    {
-        renderer->setUniform(handle, &value, value.size());
-    }
-
-private:
-    std::vector<Vector3> value;
-};
-
-
-class Vector4MaterialParameter final : public MaterialParameter
-{
-public:
-    Vector4MaterialParameter(Renderer* renderer, Effect* effect, const char* name):
-        MaterialParameter(renderer, effect, MaterialParameterType::Vector4, name)
-    {
-    }
-
-    virtual void setValue(const void* value) override final
-    {
-        this->value = *reinterpret_cast<const Vector4*>(value);
-    }
-
-    virtual void apply(const RenderContext& context) override final
-    {
-        renderer->setUniform(handle, &value, 1);
-    }
-
-private:
-    Vector4 value;
-};
-
-
-class Vector4ArrayMaterialParameter final : public MaterialParameter
-{
-public:
-    Vector4ArrayMaterialParameter(Renderer* renderer, Effect* effect, const char* name):
-        MaterialParameter(renderer, effect, MaterialParameterType::Vector4Array, name)
-    {
-    }
-
-    virtual void setValue(const void* value) override final
-    {
-        this->value = *reinterpret_cast<const std::vector<Vector4>*>(value);
-    }
-
-    virtual void apply(const RenderContext& context) override final
-    {
-        renderer->setUniform(handle, &value, value.size());
-    }
-
-private:
-    std::vector<Vector4> value;
-};
-
-
-class MatrixMaterialParameter final : public MaterialParameter
-{
-public:
-    MatrixMaterialParameter(Renderer* renderer, Effect* effect, const char* name):
-        MaterialParameter(renderer, effect, MaterialParameterType::Matrix, name)
-    {
-    }
-
-    virtual void setValue(const void* value) override final
-    {
-        this->value = *reinterpret_cast<const Matrix*>(value);
-    }
-
-    virtual void apply(const RenderContext& context) override final
-    {
-        renderer->setUniform(handle, &value, 1);
-    }
-
-private:
-    Matrix value;
-};
-
-
-class MatrixArrayMaterialParameter final : public MaterialParameter
-{
-public:
-    MatrixArrayMaterialParameter(Renderer* renderer, Effect* effect, const char* name):
-        MaterialParameter(renderer, effect, MaterialParameterType::MatrixArray, name)
-    {
-    }
-
-    virtual void setValue(const void* value) override final
-    {
-        this->value = *reinterpret_cast<const std::vector<Matrix>*>(value);
-    }
-
-    virtual void apply(const RenderContext& context) override final
-    {
-        renderer->setUniform(handle, &value, value.size());
-    }
-
-private:
-    std::vector<Matrix> value;
+    std::vector<T> value;
 };
 
 
@@ -333,17 +151,34 @@ auto MaterialParameter::create(Renderer* renderer, Effect* effect, MaterialParam
 {
     switch (type)
     {
-        case MaterialParameterType::Float:        return std::make_unique<FloatMaterialParameter>(renderer, effect, name);
-        case MaterialParameterType::FloatArray:   return std::make_unique<FloatArrayMaterialParameter>(renderer, effect, name);
-        case MaterialParameterType::Vector2:      return std::make_unique<Vector2MaterialParameter>(renderer, effect, name);
-        case MaterialParameterType::Vector2Array: return std::make_unique<Vector2ArrayMaterialParameter>(renderer, effect, name);
-        case MaterialParameterType::Vector3:      return std::make_unique<Vector3MaterialParameter>(renderer, effect, name);
-        case MaterialParameterType::Vector3Array: return std::make_unique<Vector3ArrayMaterialParameter>(renderer, effect, name);
-        case MaterialParameterType::Vector4:      return std::make_unique<Vector4MaterialParameter>(renderer, effect, name);
-        case MaterialParameterType::Vector4Array: return std::make_unique<Vector4ArrayMaterialParameter>(renderer, effect, name);
-        case MaterialParameterType::Matrix:       return std::make_unique<MatrixMaterialParameter>(renderer, effect, name);
-        case MaterialParameterType::MatrixArray:  return std::make_unique<MatrixArrayMaterialParameter>(renderer, effect, name);
-        case MaterialParameterType::Texture:      return std::make_unique<TextureMaterialParameter>(renderer, effect, name);
+        case MaterialParameterType::Float:
+            return std::make_unique<ValueMaterialParameter<float, MaterialParameterType::Float>>(renderer, effect, name);
+        case MaterialParameterType::FloatArray:
+            return std::make_unique<ValueArrayMaterialParameter<float, MaterialParameterType::FloatArray>>(renderer, effect, name);
+
+        case MaterialParameterType::Vector2:
+            return std::make_unique<ValueMaterialParameter<Vector2, MaterialParameterType::Vector2>>(renderer, effect, name);
+        case MaterialParameterType::Vector2Array:
+            return std::make_unique<ValueArrayMaterialParameter<Vector2, MaterialParameterType::Vector2Array>>(renderer, effect, name);
+
+        case MaterialParameterType::Vector3:
+            return std::make_unique<ValueMaterialParameter<Vector3, MaterialParameterType::Vector3>>(renderer, effect, name);
+        case MaterialParameterType::Vector3Array:
+            return std::make_unique<ValueArrayMaterialParameter<Vector3, MaterialParameterType::Vector3Array>>(renderer, effect, name);
+
+        case MaterialParameterType::Vector4:
+            return std::make_unique<ValueMaterialParameter<Vector4, MaterialParameterType::Vector4>>(renderer, effect, name);
+        case MaterialParameterType::Vector4Array:
+            return std::make_unique<ValueArrayMaterialParameter<Vector4, MaterialParameterType::Vector4Array>>(renderer, effect, name);
+
+        case MaterialParameterType::Matrix:
+            return std::make_unique<ValueMaterialParameter<Matrix, MaterialParameterType::Matrix>>(renderer, effect, name);
+        case MaterialParameterType::MatrixArray:
+            return std::make_unique<ValueArrayMaterialParameter<Matrix, MaterialParameterType::MatrixArray>>(renderer, effect, name);
+
+        case MaterialParameterType::Texture:
+            return std::make_unique<TextureMaterialParameter>(renderer, effect, name);
+
         case MaterialParameterType::WorldMatrix: 
         case MaterialParameterType::ViewMatrix: 
         case MaterialParameterType::ProjectionMatrix: 
@@ -354,6 +189,7 @@ auto MaterialParameter::create(Renderer* renderer, Effect* effect, MaterialParam
         case MaterialParameterType::InverseTransposedWorldViewMatrix: 
         case MaterialParameterType::CameraWorldPosition:
             return std::make_unique<AutoBindingMaterialParameter>(renderer, effect, type, name);
+
         default:
             SL_THROW(InvalidInputException, "Unknown material parameter type");
     }
