@@ -104,7 +104,7 @@ public:
     {
         auto mat = Material::create(colorEffect);
         mat->setPolygonFace(PolygonFace::All);
-        mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
+        mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
         mat->setVector4Parameter("color", color);
         return mat;
     }
@@ -176,12 +176,12 @@ public:
 
         checkerMat = Material::create(checkerEffect);
         checkerMat->setPolygonFace(PolygonFace::All);
-        checkerMat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
+        checkerMat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
         checkerMat->setVector4Parameter("color", Vector4(1, 1, 0, 1));
 
         monitorMat = Material::create(simpleTextureEffect);
         monitorMat->setPolygonFace(PolygonFace::All);
-        monitorMat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
+        monitorMat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
         monitorMat->setTextureParameter("mainTex", offscreenCameraTex);
     }
 
@@ -233,8 +233,8 @@ public:
 
             auto mat = Material::create(texWithLightingEffect);
             mat->setPolygonFace(PolygonFace::All);
-            mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
-            mat->setParameterAutoBinding("invTransposedWorldMatrix", AutoBinding::InverseTransposedWorldMatrix);
+            mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
+            mat->bindInverseTransposedWorldMatrixParameter("invTransposedWorldMatrix");
             mat->setTextureParameter("mainTex", tex);
 
             loader->loadMeshAsync("../assets/monkey.obj")->done([=](sptr<Mesh> mesh)
@@ -280,7 +280,7 @@ public:
 
             auto mat = Material::create(simpleTextureEffect);
             mat->setPolygonFace(PolygonFace::All);
-            mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
+            mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
             mat->setTextureParameter("mainTex", tex);
 
             auto node = scene->createNode();
@@ -329,7 +329,7 @@ public:
 
             auto mat = Material::create(simpleTextureEffect);
             mat->setPolygonFace(PolygonFace::All);
-            mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
+            mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
             mat->setTextureParameter("mainTex", tex);
             mat->setTransparent(true);
 

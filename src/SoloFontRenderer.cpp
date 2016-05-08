@@ -16,7 +16,7 @@ FontRenderer::FontRenderer(const Node& node):
     auto effect = Device::get()->getEffectRepository()->getDefaultFontEffect();
     material = Material::create(effect);
     material->setPolygonFace(PolygonFace::All);
-    material->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
+    material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
     material->setTransparent(true);
 
     renderQueue = KnownRenderQueues::Transparent;

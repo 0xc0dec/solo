@@ -166,7 +166,7 @@ public:
             auto effect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.texture);
             auto mat = Material::create(effect);
             mat->setPolygonFace(PolygonFace::All);
-            mat->setParameterAutoBinding("worldViewProjMatrix", AutoBinding::WorldViewProjectionMatrix);
+            mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
             mat->setTextureParameter("mainTex", tex);
 
             loader->loadMeshAsync("../assets/monkey.obj")->done([=](sptr<Mesh> mesh)

@@ -95,39 +95,57 @@ void Material::setTextureParameter(const std::string& name, sptr<Texture> value)
 }
 
 
-void Material::setParameterAutoBinding(const std::string& name, AutoBinding autoBinding)
+void Material::bindWorldMatrixParameter(const std::string& name)
 {
-    switch (autoBinding)
-    {
-        case AutoBinding::WorldMatrix:
-            setParameter(name, MaterialParameterType::WorldMatrix, nullptr);
-            break;
-        case AutoBinding::ViewMatrix:
-            setParameter(name, MaterialParameterType::ViewMatrix, nullptr);
-            break;
-        case AutoBinding::ProjectionMatrix:
-            setParameter(name, MaterialParameterType::ProjectionMatrix, nullptr);
-            break;
-        case AutoBinding::WorldViewMatrix:
-            setParameter(name, MaterialParameterType::WorldViewMatrix, nullptr);
-            break;
-        case AutoBinding::ViewProjectionMatrix:
-            setParameter(name, MaterialParameterType::ViewProjectionMatrix, nullptr);
-            break;
-        case AutoBinding::WorldViewProjectionMatrix:
-            setParameter(name, MaterialParameterType::WorldViewProjectionMatrix, nullptr);
-            break;
-        case AutoBinding::InverseTransposedWorldMatrix:
-            setParameter(name, MaterialParameterType::InverseTransposedWorldMatrix, nullptr);
-            break;
-        case AutoBinding::InverseTransposedWorldViewMatrix:
-            setParameter(name, MaterialParameterType::InverseTransposedWorldViewMatrix, nullptr);
-            break;
-        case AutoBinding::CameraWorldPosition:
-            setParameter(name, MaterialParameterType::CameraWorldPosition, nullptr);
-            break;
-        default: break; // TODO debug throw
-    }
+    setParameter(name, MaterialParameterType::WorldMatrix, nullptr);
+}
+
+
+void Material::bindViewMatrixParameter(const std::string& name)
+{
+    setParameter(name, MaterialParameterType::ViewMatrix, nullptr);
+}
+
+
+void Material::bindProjectionMatrixParameter(const std::string& name)
+{
+    setParameter(name, MaterialParameterType::ProjectionMatrix, nullptr);
+}
+
+
+void Material::bindWorldViewMatrixParameter(const std::string& name)
+{
+    setParameter(name, MaterialParameterType::WorldViewMatrix, nullptr);
+}
+
+
+void Material::bindViewProjectionMatrixParameter(const std::string& name)
+{
+    setParameter(name, MaterialParameterType::ViewProjectionMatrix, nullptr);
+}
+
+
+void Material::bindWorldViewProjectionMatrixParameter(const std::string& name)
+{
+    setParameter(name, MaterialParameterType::WorldViewProjectionMatrix, nullptr);
+}
+
+
+void Material::bindInverseTransposedWorldMatrixParameter(const std::string& name)
+{
+    setParameter(name, MaterialParameterType::InverseTransposedWorldMatrix, nullptr);
+}
+
+
+void Material::bindInverseTransposedWorldViewMatrixParameter(const std::string& name)
+{
+    setParameter(name, MaterialParameterType::InverseTransposedWorldViewMatrix, nullptr);
+}
+
+
+void Material::bindCameraWorldPositionParameter(const std::string& name)
+{
+    setParameter(name, MaterialParameterType::CameraWorldPosition, nullptr);
 }
 
 

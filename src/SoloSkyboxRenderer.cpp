@@ -1,7 +1,6 @@
 #include "SoloSkyboxRenderer.h"
 #include "SoloMesh.h"
 #include "SoloMaterial.h"
-#include "SoloEffect.h"
 #include "SoloRenderContext.h"
 #include "SoloCubeTexture.h"
 #include "SoloDevice.h"
@@ -17,8 +16,8 @@ SkyboxRenderer::SkyboxRenderer(const Node& node):
 
     auto effect = Device::get()->getEffectRepository()->getDefaultSkyboxEffect();
     material = Material::create(effect);
-    material->setParameterAutoBinding("projMatrix", AutoBinding::ProjectionMatrix);
-    material->setParameterAutoBinding("worldViewMatrix", AutoBinding::WorldViewMatrix);
+    material->bindProjectionMatrixParameter("projMatrix");
+    material->bindWorldViewMatrixParameter("worldViewMatrix");
     material->setDepthTest(true);
     material->setDepthWrite(false);
     material->setPolygonFace(PolygonFace::CW);

@@ -18,20 +18,6 @@ namespace solo
     struct RenderContext;
     enum class MaterialParameterType;
 
-    enum class AutoBinding
-    {
-        None,
-        WorldMatrix,
-        ViewMatrix,
-        ProjectionMatrix,
-        WorldViewMatrix,
-        ViewProjectionMatrix,
-        WorldViewProjectionMatrix,
-        InverseTransposedWorldMatrix,
-        InverseTransposedWorldViewMatrix,
-        CameraWorldPosition
-    };
-
     class Material final
     {
     public:
@@ -51,7 +37,15 @@ namespace solo
         void setMatrixParameter(const std::string& name, const Matrix& value);
         void setMatrixArrayParameter(const std::string& name, const std::vector<Matrix>& value);
         void setTextureParameter(const std::string& name, sptr<Texture> value);
-        void setParameterAutoBinding(const std::string& name, AutoBinding autoBinding);
+        void bindWorldMatrixParameter(const std::string& name);
+        void bindViewMatrixParameter(const std::string& name);
+        void bindProjectionMatrixParameter(const std::string& name);
+        void bindWorldViewMatrixParameter(const std::string& name);
+        void bindViewProjectionMatrixParameter(const std::string& name);
+        void bindWorldViewProjectionMatrixParameter(const std::string& name);
+        void bindInverseTransposedWorldMatrixParameter(const std::string& name);
+        void bindInverseTransposedWorldViewMatrixParameter(const std::string& name);
+        void bindCameraWorldPositionParameter(const std::string& name);
 
         void apply(const RenderContext& context);
 
