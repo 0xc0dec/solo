@@ -53,6 +53,7 @@ namespace solo
 
         bool isTransparent() const;
         void setTransparent(bool enabled);
+
         auto getSrcBlendFactor() const -> BlendFactor;
         auto getDstBlendFactor() const -> BlendFactor;
         void setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor);
