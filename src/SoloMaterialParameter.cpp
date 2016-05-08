@@ -13,12 +13,12 @@
 using namespace solo;
 
 
-template <class T, MaterialParameterType Type>
+template <class T>
 class ValueMaterialParameter final: public MaterialParameter
 {
 public:
-    ValueMaterialParameter(Renderer* renderer, Effect* effect, const char* name):
-        MaterialParameter(renderer, effect, Type, name)
+    ValueMaterialParameter(Renderer* renderer, Effect* effect, MaterialParameterType type, const char* name):
+        MaterialParameter(renderer, effect, type, name)
     {
     }
 
@@ -37,12 +37,12 @@ private:
 };
 
 
-template <class T, MaterialParameterType Type>
+template <class T>
 class ValueArrayMaterialParameter final: public MaterialParameter
 {
 public:
-    ValueArrayMaterialParameter(Renderer* renderer, Effect* effect, const char* name) :
-        MaterialParameter(renderer, effect, Type, name) 
+    ValueArrayMaterialParameter(Renderer* renderer, Effect* effect, MaterialParameterType type, const char* name) :
+        MaterialParameter(renderer, effect, type, name) 
     {
     }
 
@@ -152,29 +152,29 @@ auto MaterialParameter::create(Renderer* renderer, Effect* effect, MaterialParam
     switch (type)
     {
         case MaterialParameterType::Float:
-            return std::make_unique<ValueMaterialParameter<float, MaterialParameterType::Float>>(renderer, effect, name);
+            return std::make_unique<ValueMaterialParameter<float>>(renderer, effect, MaterialParameterType::Float, name);
         case MaterialParameterType::FloatArray:
-            return std::make_unique<ValueArrayMaterialParameter<float, MaterialParameterType::FloatArray>>(renderer, effect, name);
+            return std::make_unique<ValueArrayMaterialParameter<float>>(renderer, effect, MaterialParameterType::FloatArray, name);
 
         case MaterialParameterType::Vector2:
-            return std::make_unique<ValueMaterialParameter<Vector2, MaterialParameterType::Vector2>>(renderer, effect, name);
+            return std::make_unique<ValueMaterialParameter<Vector2>>(renderer, effect, MaterialParameterType::Vector2, name);
         case MaterialParameterType::Vector2Array:
-            return std::make_unique<ValueArrayMaterialParameter<Vector2, MaterialParameterType::Vector2Array>>(renderer, effect, name);
+            return std::make_unique<ValueArrayMaterialParameter<Vector2>>(renderer, effect, MaterialParameterType::Vector2Array, name);
 
         case MaterialParameterType::Vector3:
-            return std::make_unique<ValueMaterialParameter<Vector3, MaterialParameterType::Vector3>>(renderer, effect, name);
+            return std::make_unique<ValueMaterialParameter<Vector3>>(renderer, effect, MaterialParameterType::Vector3, name);
         case MaterialParameterType::Vector3Array:
-            return std::make_unique<ValueArrayMaterialParameter<Vector3, MaterialParameterType::Vector3Array>>(renderer, effect, name);
+            return std::make_unique<ValueArrayMaterialParameter<Vector3>>(renderer, effect, MaterialParameterType::Vector3Array, name);
 
         case MaterialParameterType::Vector4:
-            return std::make_unique<ValueMaterialParameter<Vector4, MaterialParameterType::Vector4>>(renderer, effect, name);
+            return std::make_unique<ValueMaterialParameter<Vector4>>(renderer, effect, MaterialParameterType::Vector4, name);
         case MaterialParameterType::Vector4Array:
-            return std::make_unique<ValueArrayMaterialParameter<Vector4, MaterialParameterType::Vector4Array>>(renderer, effect, name);
+            return std::make_unique<ValueArrayMaterialParameter<Vector4>>(renderer, effect, MaterialParameterType::Vector4Array, name);
 
         case MaterialParameterType::Matrix:
-            return std::make_unique<ValueMaterialParameter<Matrix, MaterialParameterType::Matrix>>(renderer, effect, name);
+            return std::make_unique<ValueMaterialParameter<Matrix>>(renderer, effect, MaterialParameterType::Matrix, name);
         case MaterialParameterType::MatrixArray:
-            return std::make_unique<ValueArrayMaterialParameter<Matrix, MaterialParameterType::MatrixArray>>(renderer, effect, name);
+            return std::make_unique<ValueArrayMaterialParameter<Matrix>>(renderer, effect, MaterialParameterType::MatrixArray, name);
 
         case MaterialParameterType::Texture:
             return std::make_unique<TextureMaterialParameter>(renderer, effect, name);
