@@ -92,6 +92,10 @@ void Scene::updateRenderQueue(std::list<T>& queue, bool cameraQueue)
     for (auto& nodeComponents : components)
     {
         auto nodeId = nodeComponents.first;
+
+        if (!Node::findComponent<Transform>(this, nodeId))
+            continue;
+
         for (auto& pair : nodeComponents.second)
         {
             auto component = pair.second.get();
@@ -99,10 +103,6 @@ void Scene::updateRenderQueue(std::list<T>& queue, bool cameraQueue)
                 continue;
 
             if (component->getRenderQueue() == KnownRenderQueues::NotRendered)
-                continue;
-
-            auto transform = Node::findComponent<Transform>(this, nodeId);
-            if (!transform) // TODO save this transform for later use
                 continue;
 
             for (auto it = queue.begin();; ++it)
