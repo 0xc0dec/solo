@@ -68,18 +68,19 @@ void parseIndexes(const char** from, const char* to, uint32_t** result)
 
 uptr<MeshData> ObjMeshLoader::loadData(const std::string& path)
 {
-    // TODO not very fast this is...
+    // TODO speed up and make more intelligent
 
-    std::vector<Vector3> inputVertices, vertices;
-    std::vector<Vector3> inputNormals, normals;
-    std::vector<Vector2> inputUvs, uvs;
+    auto data = std::make_unique<MeshData>();
+
+    std::vector<Vector3> inputVertices;
+    std::vector<Vector3> inputNormals;
+    std::vector<Vector2> inputUvs;
     std::vector<uint16_t> currentIndices;
     std::unordered_map<std::string, uint16_t> uniqueIndices;
-    std::vector<std::vector<uint16_t>> allIndices;
 
     auto finishIndex = [&]()
     {
-        allIndices.push_back(std::move(currentIndices));
+        data->indices.push_back(std::move(currentIndices));
         currentIndices = std::vector<uint16_t>();
         uniqueIndices.clear();
     };
@@ -127,12 +128,12 @@ uptr<MeshData> ObjMeshLoader::loadData(const std::string& path)
                 else
                 {
                     parseIndexes(&from, to, idxs);
-                    vertices.push_back(inputVertices[vIdx - 1]);
+                    data->vertices.push_back(inputVertices[vIdx - 1]);
                     if (idxs[1])
-                        uvs.push_back(inputUvs[uvIdx - 1]);
+                        data->uvs.push_back(inputUvs[uvIdx - 1]);
                     if (idxs[2])
-                        normals.push_back(inputNormals[nIdx - 1]);
-                    auto newIndex = static_cast<uint16_t>(vertices.size() - 1);
+                        data->normals.push_back(inputNormals[nIdx - 1]);
+                    auto newIndex = static_cast<uint16_t>(data->vertices.size() - 1);
                     uniqueIndices[three] = newIndex;
                     currentIndices.push_back(newIndex);
                 }
@@ -149,10 +150,5 @@ uptr<MeshData> ObjMeshLoader::loadData(const std::string& path)
     if (!currentIndices.empty())
         finishIndex();
 
-    auto data = std::make_unique<MeshData>();
-    data->vertices = vertices; // TODO avoid assignments
-    data->uvs = uvs;
-    data->normals = normals;
-    data->indices = allIndices;
     return data;
 }
