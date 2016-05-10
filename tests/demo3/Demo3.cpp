@@ -128,6 +128,7 @@ public:
                 renderer->setMesh(mesh);
                 renderer->setMaterial(0, mat);
                 node->getComponent<Transform>()->setLocalPosition(Vector3::zero());
+                node->addComponent<RigidBody>(RigidBodyConstructionParameters());
             });
         });
     }

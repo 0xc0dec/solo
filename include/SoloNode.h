@@ -39,7 +39,7 @@ namespace solo
         auto findComponent() const -> T*;
 
         template <typename T>
-        auto getComponent() -> T*;
+        auto getComponent() const -> T*;
 
         template <typename T, typename... Args>
         auto addComponent(Args... args) -> T*;
@@ -88,7 +88,7 @@ namespace solo
     }
 
     template <typename T>
-    inline auto Node::getComponent() -> T*
+    inline auto Node::getComponent() const -> T*
     {
         return getComponent<T>(scene, id);
     }

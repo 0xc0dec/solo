@@ -72,7 +72,7 @@ auto Node::addComponent<FontRenderer>() -> FontRenderer*
 
 
 template<>
-auto Node::addComponent<RigidBody>(const RigidBodyConstructionParameters& parameters) -> RigidBody*
+auto Node::addComponent<RigidBody, const RigidBodyConstructionParameters&>(const RigidBodyConstructionParameters& parameters) -> RigidBody*
 {
     auto body = std::shared_ptr<RigidBody>(RigidBody::create(*this, parameters));
     scene->addComponent(id, body);
