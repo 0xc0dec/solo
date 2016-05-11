@@ -12,6 +12,7 @@
 #include "SoloDegree.h"
 #include "SoloDevice.h"
 #include "SoloEffect.h"
+#include "SoloEffectRepository.h"
 #include "SoloException.h"
 #include "SoloFileSystem.h"
 #include "SoloFont.h"
