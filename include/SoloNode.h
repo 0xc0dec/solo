@@ -119,11 +119,5 @@ namespace solo
         removeComponent<T>(scene, id);
     }
 
-    template<> auto Node::addComponent() -> Transform*;
-    template<> auto Node::addComponent() -> Camera*;
-    template<> auto Node::addComponent() -> MeshRenderer*;
-    template<> auto Node::addComponent() -> Spectator*;
-    template<> auto Node::addComponent() -> SkyboxRenderer*;
-    template<> auto Node::addComponent() -> FontRenderer*;
     template<> auto Node::addComponent(const RigidBodyConstructionParameters& parameters) -> RigidBody*;
 }
