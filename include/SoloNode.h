@@ -30,7 +30,7 @@ namespace solo
         static auto getComponent(Scene* scene, uint32_t nodeId) -> T*;
 
         template <typename T, typename... Args>
-        static auto addComponent(Scene* scene, uint32_t nodeId, Args... args) -> T*;
+        static auto addComponent(Scene* scene, uint32_t nodeId, Args&&... args) -> T*;
 
         template <typename T>
         static void removeComponent(Scene* scene, uint32_t nodeId);
@@ -42,7 +42,7 @@ namespace solo
         auto getComponent() const -> T*;
 
         template <typename T, typename... Args>
-        auto addComponent(Args... args) -> T*;
+        auto addComponent(Args&&... args) -> T*;
 
         template <typename T>
         void removeComponent();
@@ -63,18 +63,18 @@ namespace solo
     }
 
     template <typename T, typename... Args>
-    inline auto Node::addComponent(Scene* scene, uint32_t nodeId, Args... args) -> T*
+    inline auto Node::addComponent(Scene* scene, uint32_t nodeId, Args&&... args) -> T*
     {
-        auto cmp = std::make_shared<T>(Node(scene, nodeId), args...);
+        auto cmp = std::make_shared<T>(Node(scene, nodeId), std::forward<Args>(args)...);
         auto base = std::static_pointer_cast<Component>(cmp);
         scene->addComponent(nodeId, base);
         return cmp.get();
     }
 
     template <typename T, typename... Args>
-    inline auto Node::addComponent(Args... args) -> T*
+    inline auto Node::addComponent(Args&&... args) -> T*
     {
-        return addComponent<T>(scene, id, args...);
+        return addComponent<T>(scene, id, std::forward<Args>(args)...);
     }
 
     template <typename T>
@@ -119,5 +119,5 @@ namespace solo
         removeComponent<T>(scene, id);
     }
 
-    template<> auto Node::addComponent(const RigidBodyConstructionParameters& parameters) -> RigidBody*;
+//    template<> auto Node::addComponent(const RigidBodyConstructionParameters& parameters) -> RigidBody*;
 }
