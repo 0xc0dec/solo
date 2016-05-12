@@ -5,14 +5,9 @@
 
 namespace solo
 {
-    class Transform;
-    class Camera;
-    class SkyboxRenderer;
-    class Spectator;
-    class MeshRenderer;
-    class RigidBody;
-    class FontRenderer;
+    struct SpecificDefaultComponent;
     struct RigidBodyConstructionParameters;
+    class RigidBody;
 
     // A convenient wrapper for working with components. There's no real "Node" in the engine
     class Node final
@@ -41,8 +36,12 @@ namespace solo
         template <typename T>
         auto getComponent() const -> T*;
 
-        template <typename T, typename... Args>
+        template <typename T, typename... Args, typename = typename std::enable_if<!std::is_assignable<SpecificDefaultComponent, T>::value>::type>
         auto addComponent(Args&&... args) -> T*;
+
+        template <typename T>
+        auto addComponent(const RigidBodyConstructionParameters& params,
+            typename std::enable_if<std::is_same<RigidBody, T>::value>::type* = nullptr) -> T*;
 
         template <typename T>
         void removeComponent();
@@ -71,7 +70,7 @@ namespace solo
         return cmp.get();
     }
 
-    template <typename T, typename... Args>
+    template <typename T, typename... Args, typename>
     inline auto Node::addComponent(Args&&... args) -> T*
     {
         return addComponent<T>(scene, id, std::forward<Args>(args)...);
@@ -118,6 +117,4 @@ namespace solo
     {
         removeComponent<T>(scene, id);
     }
-
-//    template<> auto Node::addComponent(const RigidBodyConstructionParameters& parameters) -> RigidBody*;
 }

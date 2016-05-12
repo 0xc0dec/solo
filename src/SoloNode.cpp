@@ -11,10 +11,11 @@ Node::Node(Scene* scene, uint32_t nodeId):
 }
 
 
-template<>
-auto Node::addComponent<RigidBody, const RigidBodyConstructionParameters&>(const RigidBodyConstructionParameters& parameters) -> RigidBody*
+template <>
+auto Node::addComponent(const RigidBodyConstructionParameters& params,
+    std::enable_if<std::is_same<RigidBody, RigidBody>::value>::type*) -> RigidBody*
 {
-    auto body = std::shared_ptr<RigidBody>(RigidBody::create(*this, parameters));
+    auto body = std::shared_ptr<RigidBody>(RigidBody::create(*this, params));
     scene->addComponent(id, body);
     return body.get();
 }

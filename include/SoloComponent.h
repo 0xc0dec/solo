@@ -8,6 +8,9 @@ namespace solo
 {
     struct RenderContext;
 
+    struct SpecificDefaultComponent {};
+
+
     struct ComponentTypeId
     {
         template <typename T>
