@@ -24,13 +24,13 @@ auto Device::init(const DeviceCreationArgs& args) -> Device*
         switch (args.mode)
         {
             case DeviceMode::OpenGL:
-                instance = std::unique_ptr<Device>(new SDLOpenGLDevice(args));
+                instance = std::make_unique<SDLOpenGLDevice>(args);
                 break;
             case DeviceMode::Vulkan:
-                instance = std::unique_ptr<Device>(new SDLVulkanDevice(args));
+                instance = std::make_unique<SDLVulkanDevice>(args);
                 break;
             default:
-                instance = std::unique_ptr<Device>(new StubDevice(args));
+                instance = std::make_unique<StubDevice>(args);
                 break;
         }
     }

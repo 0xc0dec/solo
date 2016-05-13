@@ -8,6 +8,7 @@ namespace solo
     class SDLOpenGLDevice final: public SDLDevice
     {
     public:
+        explicit SDLOpenGLDevice(const DeviceCreationArgs& args);
         virtual ~SDLOpenGLDevice();
 
         virtual void saveScreenshot(const std::string& path) override final;
@@ -15,10 +16,6 @@ namespace solo
         virtual auto getCanvasSize() const -> Vector2 override final;
 
     private:
-        friend class Device;
-
-        explicit SDLOpenGLDevice(const DeviceCreationArgs& args);
-
         virtual void endUpdate() override final;
 
         SDL_GLContext context = nullptr;

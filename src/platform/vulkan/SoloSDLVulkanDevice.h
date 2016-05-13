@@ -10,6 +10,7 @@ namespace solo
     class SDLVulkanDevice final: public SDLDevice
     {
     public:
+        explicit SDLVulkanDevice(const DeviceCreationArgs& args);
         virtual ~SDLVulkanDevice();
 
         virtual void saveScreenshot(const std::string& path) override final;
@@ -19,10 +20,6 @@ namespace solo
         virtual void endUpdate() override final;
 
     private:
-        friend class Device;
-
-        explicit SDLVulkanDevice(const DeviceCreationArgs& args);
-
         bool selectDepthFormat();
 
         VkInstance instance = nullptr;
