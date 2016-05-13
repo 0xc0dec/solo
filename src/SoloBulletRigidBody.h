@@ -11,12 +11,9 @@ namespace solo
     class BulletRigidBody final : public RigidBody
     {
     public:
-
-    private:
-        friend class RigidBody;
-
         BulletRigidBody(const Node& node, const RigidBodyConstructionParameters& parameters);
 
+    private:
         virtual void onComponentAdded(Component* cmp) override final;
         virtual void onComponentRemoved(Component* cmp) override final;
 

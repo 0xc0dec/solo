@@ -35,7 +35,7 @@ auto BulletPhysics::getWorld() const -> btDiscreteDynamicsWorld*
 
 auto Physics::create(Device* device, const DeviceToken& deviceToken) -> uptr<Physics>
 {
-    return std::unique_ptr<BulletPhysics>(new BulletPhysics(device, deviceToken));
+    return std::make_unique<BulletPhysics>(device, deviceToken);
 }
 
 

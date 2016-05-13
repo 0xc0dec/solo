@@ -49,7 +49,7 @@ void BulletRigidBody::syncTransform()
 
 auto RigidBody::create(const Node& node, const RigidBodyConstructionParameters& parameters) -> uptr<RigidBody>
 {
-    return std::unique_ptr<RigidBody>(new BulletRigidBody(node, parameters));
+    return std::make_unique<BulletRigidBody>(node, parameters);
 }
 
 

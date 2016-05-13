@@ -16,10 +16,5 @@ namespace solo
         virtual auto readLines(const std::string& path) -> std::vector<std::string> override;
         virtual void iterateLines(const std::string& path, std::function<bool(const std::string&)> process) override;
         virtual void writeLines(const std::string& path, const std::vector<std::string>& lines) override;
-
-    private:
-        friend class FileSystem;
-
-        StubFileSystem() {}
     };
 }
