@@ -8,14 +8,12 @@ namespace solo
     class OpenGLEffectRepository final: public EffectRepository
     {
     public:
+        OpenGLEffectRepository() {}
+
         virtual auto getDefaultSkyboxEffect() -> sptr<Effect> override final;
         virtual auto getDefaultFontEffect() -> sptr<Effect> override final;
 
     private:
-        friend class EffectRepository;
-
-        OpenGLEffectRepository() {}
-
         sptr<Effect> fontEffect;
         sptr<Effect> skyboxEffect;
     };
