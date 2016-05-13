@@ -12,6 +12,7 @@ namespace solo
     class OpenGLRenderer final: public Renderer
     {
     public:
+        OpenGLRenderer() {}
         ~OpenGLRenderer();
 
         virtual auto createTexture() -> TextureHandle override final;
@@ -74,10 +75,6 @@ namespace solo
         virtual void drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, uint32_t vertexCount) override final;
 
     private:
-        friend class Renderer;
-
-        OpenGLRenderer() {}
-
         struct FrameBufferData
         {
             GLuint rawHandle = 0;

@@ -8,6 +8,7 @@ namespace solo
     class VulkanRenderer final: public Renderer
     {
     public:
+        VulkanRenderer();
         ~VulkanRenderer();
 
         virtual auto createTexture() -> TextureHandle override final;
@@ -68,10 +69,5 @@ namespace solo
         virtual void drawIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle,
             const IndexBufferHandle& indexBufferHandle) override final;
         virtual void drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, uint32_t vertexCount) override final;
-
-    private:
-        friend class Renderer;
-
-        VulkanRenderer();
     };
 }

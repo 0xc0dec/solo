@@ -12,10 +12,10 @@ auto Renderer::create(Device* device, const DeviceToken&) -> uptr<Renderer>
     switch (device->getMode())
     {
         case DeviceMode::OpenGL:
-            return std::unique_ptr<OpenGLRenderer>(new OpenGLRenderer());
+            return std::make_unique<OpenGLRenderer>();
         case DeviceMode::Vulkan:
-            return std::unique_ptr<VulkanRenderer>(new VulkanRenderer());
+            return std::make_unique<VulkanRenderer>();
         default:
-            return std::unique_ptr<StubRenderer>(new StubRenderer());
+            return std::make_unique<StubRenderer>();
     }
 }
