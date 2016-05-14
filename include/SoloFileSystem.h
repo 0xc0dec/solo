@@ -13,7 +13,7 @@ namespace solo
     class FileSystem
     {
     public:
-        static auto create(Device* device, const DeviceToken&) -> uptr<FileSystem>;
+        static auto create(Device* device, const DeviceToken&) -> sptr<FileSystem>;
 
         virtual ~FileSystem() {}
         SL_NONCOPYABLE(FileSystem)

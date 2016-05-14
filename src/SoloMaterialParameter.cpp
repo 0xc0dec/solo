@@ -147,37 +147,37 @@ public:
 };
 
 
-auto MaterialParameter::create(Renderer* renderer, Effect* effect, MaterialParameterType type, const char* name) -> uptr<MaterialParameter>
+auto MaterialParameter::create(Renderer* renderer, Effect* effect, MaterialParameterType type, const char* name) -> sptr<MaterialParameter>
 {
     switch (type)
     {
         case MaterialParameterType::Float:
-            return std::make_unique<ValueMaterialParameter<float>>(renderer, effect, MaterialParameterType::Float, name);
+            return std::make_shared<ValueMaterialParameter<float>>(renderer, effect, MaterialParameterType::Float, name);
         case MaterialParameterType::FloatArray:
-            return std::make_unique<ValueArrayMaterialParameter<float>>(renderer, effect, MaterialParameterType::FloatArray, name);
+            return std::make_shared<ValueArrayMaterialParameter<float>>(renderer, effect, MaterialParameterType::FloatArray, name);
 
         case MaterialParameterType::Vector2:
-            return std::make_unique<ValueMaterialParameter<Vector2>>(renderer, effect, MaterialParameterType::Vector2, name);
+            return std::make_shared<ValueMaterialParameter<Vector2>>(renderer, effect, MaterialParameterType::Vector2, name);
         case MaterialParameterType::Vector2Array:
-            return std::make_unique<ValueArrayMaterialParameter<Vector2>>(renderer, effect, MaterialParameterType::Vector2Array, name);
+            return std::make_shared<ValueArrayMaterialParameter<Vector2>>(renderer, effect, MaterialParameterType::Vector2Array, name);
 
         case MaterialParameterType::Vector3:
-            return std::make_unique<ValueMaterialParameter<Vector3>>(renderer, effect, MaterialParameterType::Vector3, name);
+            return std::make_shared<ValueMaterialParameter<Vector3>>(renderer, effect, MaterialParameterType::Vector3, name);
         case MaterialParameterType::Vector3Array:
-            return std::make_unique<ValueArrayMaterialParameter<Vector3>>(renderer, effect, MaterialParameterType::Vector3Array, name);
+            return std::make_shared<ValueArrayMaterialParameter<Vector3>>(renderer, effect, MaterialParameterType::Vector3Array, name);
 
         case MaterialParameterType::Vector4:
-            return std::make_unique<ValueMaterialParameter<Vector4>>(renderer, effect, MaterialParameterType::Vector4, name);
+            return std::make_shared<ValueMaterialParameter<Vector4>>(renderer, effect, MaterialParameterType::Vector4, name);
         case MaterialParameterType::Vector4Array:
-            return std::make_unique<ValueArrayMaterialParameter<Vector4>>(renderer, effect, MaterialParameterType::Vector4Array, name);
+            return std::make_shared<ValueArrayMaterialParameter<Vector4>>(renderer, effect, MaterialParameterType::Vector4Array, name);
 
         case MaterialParameterType::Matrix:
-            return std::make_unique<ValueMaterialParameter<Matrix>>(renderer, effect, MaterialParameterType::Matrix, name);
+            return std::make_shared<ValueMaterialParameter<Matrix>>(renderer, effect, MaterialParameterType::Matrix, name);
         case MaterialParameterType::MatrixArray:
-            return std::make_unique<ValueArrayMaterialParameter<Matrix>>(renderer, effect, MaterialParameterType::MatrixArray, name);
+            return std::make_shared<ValueArrayMaterialParameter<Matrix>>(renderer, effect, MaterialParameterType::MatrixArray, name);
 
         case MaterialParameterType::Texture:
-            return std::make_unique<TextureMaterialParameter>(renderer, effect, name);
+            return std::make_shared<TextureMaterialParameter>(renderer, effect, name);
 
         case MaterialParameterType::WorldMatrix: 
         case MaterialParameterType::ViewMatrix: 
@@ -188,7 +188,7 @@ auto MaterialParameter::create(Renderer* renderer, Effect* effect, MaterialParam
         case MaterialParameterType::InverseTransposedWorldMatrix: 
         case MaterialParameterType::InverseTransposedWorldViewMatrix: 
         case MaterialParameterType::CameraWorldPosition:
-            return std::make_unique<AutoBindingMaterialParameter>(renderer, effect, type, name);
+            return std::make_shared<AutoBindingMaterialParameter>(renderer, effect, type, name);
 
         default:
             SL_THROW(InvalidInputException, "Unknown material parameter type");

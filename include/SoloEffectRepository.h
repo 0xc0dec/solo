@@ -12,7 +12,7 @@ namespace solo
     class EffectRepository
     {
     public:
-        static auto create(const DeviceToken&) -> uptr<EffectRepository>;
+        static auto create(const DeviceToken&) -> sptr<EffectRepository>;
 
         virtual ~EffectRepository() {}
         SL_NONCOPYABLE(EffectRepository)

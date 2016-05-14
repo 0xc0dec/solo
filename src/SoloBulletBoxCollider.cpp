@@ -10,9 +10,9 @@ BulletBoxCollider::BulletBoxCollider(const Node& node, const Vector3& halfExtent
 }
 
 
-auto BoxCollider::create(const Node& node, const Vector3& size) -> uptr<BoxCollider>
+auto BoxCollider::create(const Node& node, const Vector3& size) -> sptr<BoxCollider>
 {
-    return std::make_unique<BulletBoxCollider>(node, size);
+    return std::make_shared<BulletBoxCollider>(node, size);
 }
 
 

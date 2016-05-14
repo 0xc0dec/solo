@@ -38,7 +38,7 @@ namespace solo
     class MaterialParameter
     {
     public:
-        static auto create(Renderer* renderer, Effect* effect, MaterialParameterType type, const char* name) -> uptr<MaterialParameter>;
+        static auto create(Renderer* renderer, Effect* effect, MaterialParameterType type, const char* name) -> sptr<MaterialParameter>;
 
         virtual ~MaterialParameter();
         SL_NONCOPYABLE(MaterialParameter)

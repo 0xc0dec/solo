@@ -47,9 +47,9 @@ void BulletRigidBody::syncTransform()
 }
 
 
-auto RigidBody::create(const Node& node, const RigidBodyConstructionParameters& parameters) -> uptr<RigidBody>
+auto RigidBody::create(const Node& node, const RigidBodyConstructionParameters& parameters) -> sptr<RigidBody>
 {
-    return std::make_unique<BulletRigidBody>(node, parameters);
+    return std::make_shared<BulletRigidBody>(node, parameters);
 }
 
 

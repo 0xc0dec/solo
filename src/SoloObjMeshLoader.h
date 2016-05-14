@@ -9,6 +9,6 @@ namespace solo
     {
     public:
         virtual bool isLoadable(const std::string& path) override final;
-        virtual auto loadData(const std::string& path) ->uptr<MeshData> override final;
+        virtual auto loadData(const std::string& path) -> sptr<MeshData> override final;
     };
 }

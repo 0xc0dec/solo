@@ -115,14 +115,14 @@ namespace solo
 
         DeviceCreationArgs creationArgs;
 
-        uptr<Scene> scene;
-        uptr<FileSystem> fs;
-        uptr<AssetLoader> assetLoader;
-        uptr<Renderer> renderer;
-        uptr<Graphics> graphics;
-        uptr<Physics> physics;
-        uptr<EffectRepository> effectRepository;
-        uptr<Logger> logger;
+        sptr<Scene> scene;
+        sptr<FileSystem> fs;
+        sptr<AssetLoader> assetLoader;
+        sptr<Renderer> renderer;
+        sptr<Graphics> graphics;
+        sptr<Physics> physics;
+        sptr<EffectRepository> effectRepository;
+        sptr<Logger> logger;
 
         // key code -> was pressed for the first time
         std::unordered_map<KeyCode, bool> pressedKeys;

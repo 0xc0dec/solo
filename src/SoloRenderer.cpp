@@ -7,15 +7,15 @@
 using namespace solo;
 
 
-auto Renderer::create(Device* device, const DeviceToken&) -> uptr<Renderer>
+auto Renderer::create(Device* device, const DeviceToken&) -> sptr<Renderer>
 {
     switch (device->getMode())
     {
         case DeviceMode::OpenGL:
-            return std::make_unique<OpenGLRenderer>();
+            return std::make_shared<OpenGLRenderer>();
         case DeviceMode::Vulkan:
-            return std::make_unique<VulkanRenderer>();
+            return std::make_shared<VulkanRenderer>();
         default:
-            return std::make_unique<StubRenderer>();
+            return std::make_shared<StubRenderer>();
     }
 }

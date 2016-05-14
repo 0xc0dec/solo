@@ -12,7 +12,7 @@ namespace solo
     class Physics
     {
     public:
-        static auto create(Device* device, const DeviceToken& deviceToken) -> uptr<Physics>;
+        static auto create(Device* device, const DeviceToken& deviceToken) -> sptr<Physics>;
 
         virtual ~Physics() {}
         SL_NONCOPYABLE(Physics)

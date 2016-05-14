@@ -66,11 +66,11 @@ void parseIndexes(const char** from, const char* to, uint32_t** result)
 }
 
 
-uptr<MeshData> ObjMeshLoader::loadData(const std::string& path)
+auto ObjMeshLoader::loadData(const std::string& path) -> sptr<MeshData>
 {
     // TODO speed up and make more intelligent
 
-    auto data = std::make_unique<MeshData>();
+    auto data = std::make_shared<MeshData>();
 
     std::vector<Vector3> inputVertices;
     std::vector<Vector3> inputNormals;

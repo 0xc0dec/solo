@@ -30,7 +30,7 @@ bool PngImageLoader::isLoadable(const std::string& path)
 }
 
 
-auto PngImageLoader::load(const std::string& path) -> uptr<Image>
+auto PngImageLoader::load(const std::string& path) -> sptr<Image>
 {
     auto bytes = Device::get()->getFileSystem()->readBytes(path);
     if (bytes.size() < 8 || png_sig_cmp(&bytes[0], 0, 8) != 0)
@@ -70,7 +70,7 @@ auto PngImageLoader::load(const std::string& path) -> uptr<Image>
     }
 
     auto stride = png_get_rowbytes(png, info);
-    auto result = std::make_unique<Image>();
+    auto result = std::make_shared<Image>();
     result->width = static_cast<uint32_t>(width);
     result->height = static_cast<uint32_t>(height);
     result->colorFormat = colorFormat;

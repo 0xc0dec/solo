@@ -137,7 +137,7 @@ namespace solo
     class Renderer
     {
     public:
-        static auto create(Device* device, const DeviceToken&) -> uptr<Renderer>;
+        static auto create(Device* device, const DeviceToken&) -> sptr<Renderer>;
 
         SL_NONCOPYABLE(Renderer)
         virtual ~Renderer() {}

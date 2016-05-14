@@ -6,10 +6,10 @@
 using namespace solo;
 
 
-auto FileSystem::create(Device* device, const DeviceToken&) -> uptr<FileSystem>
+auto FileSystem::create(Device* device, const DeviceToken&) -> sptr<FileSystem>
 {
     if (device->getMode() == DeviceMode::Stub)
-        return std::unique_ptr<StubFileSystem>(new StubFileSystem());
+        return std::make_shared<StubFileSystem>();
     return std::unique_ptr<FileSystem>(new FileSystem());
 }
 
