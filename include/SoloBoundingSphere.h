@@ -22,7 +22,7 @@ namespace solo
         bool intersectsBoundingBox(const BoundingBox& box) const;
         bool intersectsFrustum(const Frustum& frustum) const;
         auto hitByRay(const Ray& ray) const -> float;
-        auto intersectPlane(const Plane& plane) const ->PlaneIntersection;
+        auto intersectPlane(const Plane& plane) const -> PlaneIntersection;
 
         bool isEmpty() const;
 

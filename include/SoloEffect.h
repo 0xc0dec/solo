@@ -14,7 +14,7 @@ namespace solo
         ~Effect();
         SL_NONCOPYABLE(Effect)
 
-        auto getHandle() const ->ProgramHandle;
+        auto getHandle() const -> ProgramHandle;
 
         void apply();
 

@@ -8,7 +8,7 @@ namespace solo
     class StubFileSystem: public FileSystem
     {
     public:
-        virtual auto readBytes(const std::string& path) ->std::vector<uint8_t> override;
+        virtual auto readBytes(const std::string& path) -> std::vector<uint8_t> override;
         virtual void writeBytes(const std::string& path, const std::vector<uint8_t>& data) override;
 
         virtual auto readText(const std::string& path) -> std::string override;

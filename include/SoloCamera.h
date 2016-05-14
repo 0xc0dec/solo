@@ -28,7 +28,7 @@ namespace solo
 
         auto getRenderTags() -> uint32_t&;
 
-        auto getRenderTarget() const ->sptr<FrameBuffer>;
+        auto getRenderTarget() const -> sptr<FrameBuffer>;
         void setRenderTarget(sptr<FrameBuffer> target);
 
         auto getClearColor() const -> Vector4;
