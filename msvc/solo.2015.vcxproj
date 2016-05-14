@@ -60,7 +60,7 @@
     <ClInclude Include="..\include\SoloRenderContext.h" />
     <ClInclude Include="..\include\SoloAssetLoader.h" />
     <ClInclude Include="..\include\SoloScene.h" />
-    <ClInclude Include="..\include\SoloTexture2D.h" />
+    <ClInclude Include="..\include\SoloRectTexture.h" />
     <ClInclude Include="..\include\SoloTransform.h" />
     <ClInclude Include="..\include\SoloVector2.h" />
     <ClInclude Include="..\include\SoloVector3.h" />
@@ -413,7 +413,7 @@
     <ClCompile Include="..\src\SoloScene.cpp" />
     <ClCompile Include="..\src\SoloEffect.cpp" />
     <ClCompile Include="..\src\SoloTexture.cpp" />
-    <ClCompile Include="..\src\SoloTexture2D.cpp" />
+    <ClCompile Include="..\src\SoloRectTexture.cpp" />
     <ClCompile Include="..\src\SoloTransform.cpp" />
     <ClCompile Include="..\src\SoloVector2.cpp" />
     <ClCompile Include="..\src\SoloVector3.cpp" />

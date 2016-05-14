@@ -1,6 +1,6 @@
 #include "SoloFrameBuffer.h"
 #include "SoloRenderer.h"
-#include "SoloTexture2D.h"
+#include "SoloRectTexture.h"
 #include "SoloDevice.h"
 
 using namespace solo;
@@ -37,7 +37,7 @@ void FrameBuffer::unbind()
 }
 
 
-void FrameBuffer::setAttachments(const std::vector<sptr<Texture2D>>& attachments)
+void FrameBuffer::setAttachments(const std::vector<sptr<RectTexture>>& attachments)
 {
     // TODO this is quite smelly
     std::vector<TextureHandle> handles;

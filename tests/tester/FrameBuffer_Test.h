@@ -19,8 +19,8 @@ public:
 private:
     void test_GetSize()
     {
-        auto t1 = Texture2D::create();
-        auto t2 = Texture2D::create();
+        auto t1 = RectTexture::create();
+        auto t2 = RectTexture::create();
         t1->setData(TextureFormat::RGB, {}, 64, 64);
         t2->setData(TextureFormat::RGB, {}, 64, 64);
 
@@ -34,8 +34,8 @@ private:
     void test_AttachmentsOfDifferentSizes()
     {
         auto fb = FrameBuffer::create();
-        auto t1 = Texture2D::create();
-        auto t2 = Texture2D::create();
+        auto t1 = RectTexture::create();
+        auto t2 = RectTexture::create();
         t1->setData(TextureFormat::RGB, {}, 64, 64);
         t2->setData(TextureFormat::RGB, {}, 16, 16);
 

@@ -1,5 +1,5 @@
 #include "SoloTrueTypeFont.h"
-#include "SoloTexture2D.h"
+#include "SoloRectTexture.h"
 #define STB_TRUETYPE_IMPLEMENTATION
 #include <stb_truetype.h>
 
@@ -22,7 +22,7 @@ TrueTypeFont::TrueTypeFont(uint8_t* fontData, uint32_t size, uint32_t atlasWidth
     stbtt_PackFontRange(&context, fontData, 0, static_cast<float>(size), firstChar, charCount, charInfo.get());
     stbtt_PackEnd(&context);
 
-    atlas = Texture2D::create();
+    atlas = RectTexture::create();
     atlas->setFiltering(TextureFiltering::Linear);
     atlas->setData(TextureFormat::Red, pixels.get(), atlasWidth, atlasHeight);
     atlas->generateMipmaps();

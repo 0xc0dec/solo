@@ -7,7 +7,7 @@
 
 namespace solo
 {
-    class Texture2D;
+    class RectTexture;
 
     class FrameBuffer final
     {
@@ -20,7 +20,7 @@ namespace solo
         void bind();
         void unbind();
 
-        void setAttachments(const std::vector<sptr<Texture2D>>& attachments);
+        void setAttachments(const std::vector<sptr<RectTexture>>& attachments);
 
         auto getSize() const -> Vector2;
 

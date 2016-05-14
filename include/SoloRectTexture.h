@@ -6,10 +6,10 @@
 
 namespace solo
 {
-    class Texture2D final: public Texture
+    class RectTexture final: public Texture
     {
     public:
-        static sptr<Texture2D> create();
+        static sptr<RectTexture> create();
 
         virtual void bind() override final;
         virtual void generateMipmaps() override final;
@@ -22,7 +22,7 @@ namespace solo
         Vector2 size;
     };
 
-    inline auto Texture2D::getSize() const -> Vector2
+    inline auto RectTexture::getSize() const -> Vector2
     {
         return size;
     }

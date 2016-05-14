@@ -7,7 +7,7 @@
 
 namespace solo
 {
-    class Texture2D;
+    class RectTexture;
 
     struct GlyphInfo
     {
@@ -25,17 +25,17 @@ namespace solo
         virtual ~Font() {}
         SL_NONCOPYABLE(Font)
 
-        auto getAtlas() const -> sptr<Texture2D>;
+        auto getAtlas() const -> sptr<RectTexture>;
 
         virtual auto getGlyphInfo(uint32_t character, float offsetX, float offsetY) -> GlyphInfo = 0;
 
     protected:
         Font() {}
 
-        sptr<Texture2D> atlas;
+        sptr<RectTexture> atlas;
     };
 
-    inline auto Font::getAtlas() const -> sptr<Texture2D>
+    inline auto Font::getAtlas() const -> sptr<RectTexture>
     {
         return atlas;
     }

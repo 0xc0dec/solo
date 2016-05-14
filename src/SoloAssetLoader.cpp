@@ -1,7 +1,7 @@
 #include "SoloAssetLoader.h"
 #include "SoloMesh.h"
 #include "SoloPngImageLoader.h"
-#include "SoloTexture2D.h"
+#include "SoloRectTexture.h"
 #include "SoloCubeTexture.h"
 #include "SoloDevice.h"
 #include "SoloObjMeshLoader.h"
@@ -47,19 +47,19 @@ auto AssetLoader::getImageLoader(const std::string& path) -> ImageLoader*
 }
 
 
-auto AssetLoader::loadTexture2D(const std::string& path) -> sptr<Texture2D>
+auto AssetLoader::loadRectTexture(const std::string& path) -> sptr<RectTexture>
 {
     auto loader = getImageLoader(path);
     auto image = loader->load(path);
-    auto result = Texture2D::create();
+    auto result = RectTexture::create();
     result->setData(image->colorFormat, image->data.data(), image->width, image->height);
     return result;
 }
 
 
-auto AssetLoader::loadTexture2DAsync(const std::string& path) -> sptr<AsyncHandle<Texture2D>>
+auto AssetLoader::loadRectTextureAsync(const std::string& path) -> sptr<AsyncHandle<RectTexture>>
 {
-    auto handle = std::make_shared<AsyncHandle<Texture2D>>();
+    auto handle = std::make_shared<AsyncHandle<RectTexture>>();
     auto loader = getImageLoader(path);
     async::spawn([=]
     {
@@ -68,7 +68,7 @@ auto AssetLoader::loadTexture2DAsync(const std::string& path) -> sptr<AsyncHandl
         auto lock = this->tasksLock.acquire();
         this->tasks.push_back([=]()
         {
-            auto texture = Texture2D::create();
+            auto texture = RectTexture::create();
             texture->setData(simage->colorFormat, simage->data.data(), simage->width, simage->height);
             handle->putResult(texture);
         });

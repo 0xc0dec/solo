@@ -11,7 +11,7 @@ namespace solo
 {
     class DeviceToken;
     class Mesh;
-    class Texture2D;
+    class RectTexture;
     class CubeTexture;
     class ImageLoader;
     class MeshLoader;
@@ -53,8 +53,8 @@ namespace solo
         ~AssetLoader();
         SL_NONCOPYABLE(AssetLoader)
 
-        auto loadTexture2D(const std::string& path) -> sptr<Texture2D>;
-        auto loadTexture2DAsync(const std::string& path) -> sptr<AsyncHandle<Texture2D>>;
+        auto loadRectTexture(const std::string& path) -> sptr<RectTexture>;
+        auto loadRectTextureAsync(const std::string& path) -> sptr<AsyncHandle<RectTexture>>;
         
         auto loadCubeTexture(const std::vector<std::string>& sidesPaths) -> sptr<CubeTexture>;
         auto loadCubeTextureAsync(const std::vector<std::string>& sidesPaths) -> sptr<AsyncHandle<CubeTexture>>;

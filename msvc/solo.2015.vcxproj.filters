@@ -82,9 +82,6 @@
     <ClInclude Include="..\include\SoloTexture.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloTexture2D.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloImage.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -213,6 +210,9 @@
     </ClInclude>
     <ClInclude Include="..\src\SoloMaterialParameter.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloRectTexture.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -359,9 +359,6 @@
     </ClCompile>
     <ClCompile Include="..\vendor\png\src\pngwutil.c">
       <Filter>src\vendor\png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloTexture2D.cpp">
-      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloPngImageLoader.cpp">
       <Filter>src</Filter>
@@ -1216,6 +1213,9 @@
       <Filter>src\platform\vulkan</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloMaterialParameter.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloRectTexture.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

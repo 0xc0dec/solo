@@ -64,7 +64,7 @@ void VulkanRenderer::updateCubeTexture(const TextureHandle& handle, CubeTextureF
 }
 
 
-void VulkanRenderer::generateTexture2DMipmaps(const TextureHandle& handle)
+void VulkanRenderer::generateRectTextureMipmaps(const TextureHandle& handle)
 {
 }
 

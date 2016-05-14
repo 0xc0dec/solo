@@ -47,7 +47,7 @@
 #include "SoloSpectator.h"
 #include "SoloSpinLock.h"
 #include "SoloTexture.h"
-#include "SoloTexture2D.h"
+#include "SoloRectTexture.h"
 #include "SoloTransform.h"
 #include "SoloVector2.h"
 #include "SoloVector3.h"

@@ -27,7 +27,7 @@ namespace solo
             const void* data) override final;
         virtual void updateCubeTexture(const TextureHandle& handle, CubeTextureFace face, TextureFormat format,
             uint32_t width, uint32_t height, const void* data) override final;
-        virtual void generateTexture2DMipmaps(const TextureHandle& handle) override final;
+        virtual void generateRectTextureMipmaps(const TextureHandle& handle) override final;
         virtual void generateCubeTextureMipmaps(const TextureHandle& handle) override final;
 
         virtual auto createFrameBuffer() -> FrameBufferHandle override final;

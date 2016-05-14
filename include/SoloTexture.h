@@ -6,7 +6,7 @@
 
 namespace solo
 {
-    class Texture2D;
+    class RectTexture;
     class CubeTexture;
     enum class DeviceMode;
 

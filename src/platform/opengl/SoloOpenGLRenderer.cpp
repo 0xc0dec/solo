@@ -316,7 +316,7 @@ void OpenGLRenderer::updateCubeTexture(const TextureHandle& handle, CubeTextureF
 }
 
 
-void OpenGLRenderer::generateTexture2DMipmaps(const TextureHandle& handle)
+void OpenGLRenderer::generateRectTextureMipmaps(const TextureHandle& handle)
 {
     bindTexture(GL_TEXTURE_2D, handle);
     glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);

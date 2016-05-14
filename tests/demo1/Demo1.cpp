@@ -117,9 +117,9 @@ public:
         texWithLightingEffect = Effect::create(vsBasicLighting, fsTextureWithLighting);
     }
 
-    void loadTexture(const std::string& path, std::function<void(sptr<Texture2D>)> callback)
+    void loadTexture(const std::string& path, std::function<void(sptr<RectTexture>)> callback)
     {
-        loader->loadTexture2DAsync(path)->done([=](sptr<Texture2D> tex)
+        loader->loadRectTextureAsync(path)->done([=](sptr<RectTexture> tex)
         {
             tex->generateMipmaps();
             tex->setFiltering(TextureFiltering::LinearMipmapNearest);
@@ -149,7 +149,7 @@ public:
 
     void initOffscreenCamera()
     {
-        offscreenCameraTex = Texture2D::create();
+        offscreenCameraTex = RectTexture::create();
         offscreenCameraTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(floor(canvasSize.x / 8.0f)), static_cast<uint32_t>(floor(canvasSize.y / 8.0f)));
         offscreenCameraTex->setFiltering(TextureFiltering::Nearest);
         offscreenCameraTex->setWrapping(TextureWrapping::Clamp);
@@ -226,7 +226,7 @@ public:
 
     void initMesh()
     {
-        loader->loadTexture2DAsync("../assets/cobblestone.png")->done([=](sptr<Texture2D> tex)
+        loader->loadRectTextureAsync("../assets/cobblestone.png")->done([=](sptr<RectTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->generateMipmaps();
@@ -251,7 +251,7 @@ public:
 
     void initDynamicQuad()
     {
-        loadTexture("../assets/freeman.png", [=](sptr<Texture2D> tex)
+        loadTexture("../assets/freeman.png", [=](sptr<RectTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
 
@@ -323,7 +323,7 @@ public:
 
     void initTransparentQuad()
     {
-        loadTexture("../assets/flammable.png", [=](sptr<Texture2D> tex)
+        loadTexture("../assets/flammable.png", [=](sptr<RectTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
 
@@ -366,7 +366,7 @@ private:
     sptr<Material> whiteMat = nullptr;
     sptr<Material> checkerMat = nullptr;
     sptr<Material> monitorMat = nullptr;
-    sptr<Texture2D> offscreenCameraTex = nullptr;
+    sptr<RectTexture> offscreenCameraTex = nullptr;
 };
 
 

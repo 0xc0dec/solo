@@ -24,7 +24,7 @@ public:
         auto canvasSize = device->getCanvasSize();
 
         auto camera = node.getComponent<Camera>();
-        fbTex = Texture2D::create();
+        fbTex = RectTexture::create();
         fbTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
         fbTex->setFiltering(TextureFiltering::Nearest);
         fbTex->setWrapping(TextureWrapping::Clamp);
@@ -32,7 +32,7 @@ public:
         fb1->setAttachments({ fbTex });
         camera->setRenderTarget(fb1);
 
-        fbTex2 = Texture2D::create();
+        fbTex2 = RectTexture::create();
         fbTex2->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
         fbTex2->setFiltering(TextureFiltering::Nearest);
         fbTex2->setWrapping(TextureWrapping::Clamp);
@@ -86,8 +86,8 @@ private:
     Graphics* graphics;
     sptr<FrameBuffer> fb1 = nullptr;
     sptr<FrameBuffer> fb2 = nullptr;
-    sptr<Texture2D> fbTex = nullptr;
-    sptr<Texture2D> fbTex2 = nullptr;
+    sptr<RectTexture> fbTex = nullptr;
+    sptr<RectTexture> fbTex2 = nullptr;
     sptr<Material> grayscaleMat = nullptr;
     sptr<Material> saturateMat = nullptr;
     sptr<Material> verticalBlurMat = nullptr;
@@ -110,7 +110,7 @@ public:
     {
         const float stitchWidth = 30;
 
-        stitchTex = loader->loadTexture2D("../assets/stitches.png");
+        stitchTex = loader->loadRectTexture("../assets/stitches.png");
         stitchTex->setFiltering(TextureFiltering::Nearest);
 
         auto canvasSize = device->getCanvasSize();
@@ -125,7 +125,7 @@ public:
             resolution.y / 2);
 
         auto camera = node.getComponent<Camera>();
-        fbTex = Texture2D::create();
+        fbTex = RectTexture::create();
         fbTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(resolution.x), static_cast<uint32_t>(resolution.y));
         fbTex->setFiltering(TextureFiltering::Nearest);
         fbTex->setWrapping(TextureWrapping::Clamp);
@@ -159,9 +159,9 @@ private:
     Device* device;
     AssetLoader* loader;
     Graphics* graphics;
-    sptr<Texture2D> stitchTex;
+    sptr<RectTexture> stitchTex;
     sptr<FrameBuffer> fb1;
-    sptr<Texture2D> fbTex;
+    sptr<RectTexture> fbTex;
     sptr<Material> material;
 };
 
@@ -265,7 +265,7 @@ public:
 
     void initMesh()
     {
-        loader->loadTexture2DAsync("../assets/cobblestone.png")->done([=](sptr<Texture2D> tex)
+        loader->loadRectTextureAsync("../assets/cobblestone.png")->done([=](sptr<RectTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->generateMipmaps();

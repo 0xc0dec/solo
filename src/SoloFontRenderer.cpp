@@ -5,7 +5,7 @@
 #include "SoloRenderQueue.h"
 #include "SoloDevice.h"
 #include "SoloEffectRepository.h"
-#include "SoloTexture2D.h"
+#include "SoloRectTexture.h"
 
 using namespace solo;
 
