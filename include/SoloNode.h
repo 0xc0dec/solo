@@ -40,8 +40,7 @@ namespace solo
         auto addComponent(Args&&... args) -> T*;
 
         template <typename T>
-        auto addComponent(const RigidBodyConstructionParameters& params,
-            typename std::enable_if<std::is_same<RigidBody, T>::value>::type* = nullptr) -> T*;
+        auto addComponent(const RigidBodyConstructionParameters& params, typename std::enable_if<std::is_same<RigidBody, T>::value>::type* = nullptr) -> T*;
 
         template <typename T>
         void removeComponent();

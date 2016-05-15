@@ -3,13 +3,15 @@
 #include "SoloBulletPhysics.h"
 #include "SoloTransform.h"
 #include "SoloCollider.h"
+#include "SoloBulletCollider.h"
 #include "SoloNode.h"
 
 using namespace solo;
 
 
 BulletRigidBody::BulletRigidBody(const Node& node, const RigidBodyConstructionParameters& parameters) :
-    RigidBody(node)
+    RigidBody(node),
+    mass(parameters.mass)
 {
     world = static_cast<BulletPhysics*>(Device::get()->getPhysics())->getWorld();
     transformCmp = node.getComponent<Transform>();
@@ -24,23 +26,35 @@ BulletRigidBody::BulletRigidBody(const Node& node, const RigidBodyConstructionPa
     info.m_angularDamping = parameters.angularDamping;
 
     body = std::make_unique<btRigidBody>(info);
-    world->addRigidBody(body.get());
 }
 
 
-void BulletRigidBody::onComponentAdded(Component* cmp)
+BulletRigidBody::~BulletRigidBody()
 {
-    if (cmp->getTypeId() != Collider::getId())
-        return;
-    collider = static_cast<Collider*>(cmp);
+    world->removeRigidBody(body.get());
 }
 
 
-void BulletRigidBody::onComponentRemoved(Component* cmp)
+void BulletRigidBody::setCollider(sptr<Collider> newCollider)
 {
-    if (cmp->getTypeId() != Collider::getId())
-        return;
-    collider = nullptr;
+    if (newCollider)
+    {
+        collider = newCollider;
+
+        auto shape = std::dynamic_pointer_cast<BulletCollider>(collider)->getShape();
+        btVector3 inertia;
+        shape->calculateLocalInertia(mass, inertia);
+
+        body->setCollisionShape(shape);
+        body->setMassProps(mass, inertia);
+
+        world->addRigidBody(body.get());
+    }
+    else
+    {
+        world->removeRigidBody(body.get());
+        collider = nullptr;
+    }
 }
 
 

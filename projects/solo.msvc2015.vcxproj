@@ -94,7 +94,6 @@
     <ClCompile Include="..\src\platform\vulkan\SoloSDLVulkanDevice.cpp" />
     <ClCompile Include="..\src\platform\vulkan\SoloVulkanRenderer.cpp" />
     <ClCompile Include="..\src\SoloBulletBoxCollider.cpp" />
-    <ClCompile Include="..\src\SoloCollider.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\SoloDegree.cpp" />
     <ClCompile Include="..\src\SoloEffectRepository.cpp" />

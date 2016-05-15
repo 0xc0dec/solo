@@ -6,6 +6,8 @@
 
 namespace solo
 {
+    class Collider;
+
     struct RigidBodyConstructionParameters
     {
         float mass = 0;
@@ -23,7 +25,9 @@ namespace solo
     public:
         static auto create(const Node& node, const RigidBodyConstructionParameters& parameters) -> sptr<RigidBody>;
 
+        virtual void setCollider(sptr<Collider> collider) = 0;
+
     protected:
-        RigidBody(const Node& node);
+        explicit RigidBody(const Node& node);
     };
 }

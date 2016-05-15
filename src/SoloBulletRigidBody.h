@@ -8,20 +8,21 @@ namespace solo
 {
     class Transform;
     class Collider;
+    class BulletCollider;
 
     class BulletRigidBody final : public RigidBody
     {
     public:
         BulletRigidBody(const Node& node, const RigidBodyConstructionParameters& parameters);
+        ~BulletRigidBody();
+
+        virtual void setCollider(sptr<Collider> collider) override final;
 
     private:
-        virtual void onComponentAdded(Component* cmp) override final;
-        virtual void onComponentRemoved(Component* cmp) override final;
-
         void syncTransform();
 
-        Collider* collider = nullptr;
-
+        float mass = 0;
+        sptr<Collider> collider;
         Transform* transformCmp;
         btDiscreteDynamicsWorld* world;
         btTransform transform;

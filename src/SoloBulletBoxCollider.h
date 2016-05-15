@@ -11,7 +11,7 @@ namespace solo
     class BulletBoxCollider final: public BulletCollider, public BoxCollider
     {
     public:
-        BulletBoxCollider(const Node& node, const Vector3& halfExtents);
+        explicit BulletBoxCollider(const Vector3& halfExtents);
 
         virtual auto getShape() -> btCollisionShape* override final;
 

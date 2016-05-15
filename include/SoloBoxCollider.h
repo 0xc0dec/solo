@@ -10,9 +10,9 @@ namespace solo
     class BoxCollider: public Collider
     {
     public:
-        static auto create(const Node& node, const Vector3& size) -> sptr<BoxCollider>;
+        static auto create(const Vector3& size) -> sptr<BoxCollider>;
 
     protected:
-        explicit BoxCollider(const Node& node);
+        BoxCollider() {}
     };
 }

@@ -5,11 +5,13 @@
 
 namespace solo
 {
-    class Collider: public ComponentBase<Collider>
+    class Collider
     {
     public:
+        virtual ~Collider() {}
+        SL_NONCOPYABLE(Collider)
 
     protected:
-        Collider(const Node& node);
+        Collider() {}
     };
 }

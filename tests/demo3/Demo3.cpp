@@ -129,9 +129,13 @@ public:
                 renderer->setMaterial(0, mat);
                 node->getComponent<Transform>()->setLocalPosition(Vector3::zero());
 
+                // TODO move this to a separate demo
                 auto rigidBodyParams = RigidBodyConstructionParameters();
-                rigidBodyParams.mass = 1;
-                node->addComponent<RigidBody>(rigidBodyParams);
+                rigidBodyParams.mass = 10;
+                rigidBodyParams.restitution = 0.1f;
+                rigidBodyParams.friction = 0.1f;
+                auto rigidBody = node->addComponent<RigidBody>(rigidBodyParams);
+                rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
             });
         });
     }
