@@ -1,4 +1,5 @@
 #include "SoloBulletBoxCollider.h"
+#include "SoloVector3.h"
 
 using namespace solo;
 

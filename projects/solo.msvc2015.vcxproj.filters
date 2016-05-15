@@ -214,6 +214,9 @@
     <ClInclude Include="..\include\SoloRectTexture.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\SoloBulletCollider.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloScene.cpp">
@@ -1179,9 +1182,6 @@
     <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\Vehicle\btWheelInfo.cpp">
       <Filter>src\vendor\bullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloCollider.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloBulletPhysics.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -1216,6 +1216,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloRectTexture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloCollider.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -7,6 +7,7 @@
 namespace solo
 {
     class Transform;
+    class Collider;
 
     class BulletRigidBody final : public RigidBody
     {
@@ -18,6 +19,8 @@ namespace solo
         virtual void onComponentRemoved(Component* cmp) override final;
 
         void syncTransform();
+
+        Collider* collider = nullptr;
 
         Transform* transformCmp;
         btDiscreteDynamicsWorld* world;

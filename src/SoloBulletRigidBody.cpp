@@ -2,6 +2,7 @@
 #include "SoloDevice.h"
 #include "SoloBulletPhysics.h"
 #include "SoloTransform.h"
+#include "SoloCollider.h"
 #include "SoloNode.h"
 
 using namespace solo;
@@ -29,12 +30,17 @@ BulletRigidBody::BulletRigidBody(const Node& node, const RigidBodyConstructionPa
 
 void BulletRigidBody::onComponentAdded(Component* cmp)
 {
+    if (cmp->getTypeId() != Collider::getId())
+        return;
+    collider = static_cast<Collider*>(cmp);
 }
 
 
 void BulletRigidBody::onComponentRemoved(Component* cmp)
 {
-
+    if (cmp->getTypeId() != Collider::getId())
+        return;
+    collider = nullptr;
 }
 
 

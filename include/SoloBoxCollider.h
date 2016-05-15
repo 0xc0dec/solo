@@ -1,11 +1,12 @@
 #pragma once
 
 #include "SoloCollider.h"
-#include "SoloVector3.h"
 
 
 namespace solo
 {
+    class Vector3;
+
     class BoxCollider: public Collider
     {
     public:

@@ -1,17 +1,26 @@
 #pragma once
 
+#include "SoloBulletCollider.h"
 #include "SoloBoxCollider.h"
-#include <btBulletCollisionCommon.h>
 
 
 namespace solo
 {
-    class BulletBoxCollider : public BoxCollider
+    class Vector3;
+
+    class BulletBoxCollider final: public BulletCollider, public BoxCollider
     {
     public:
         BulletBoxCollider(const Node& node, const Vector3& halfExtents);
 
+        virtual auto getShape() -> btCollisionShape* override final;
+
     private:
         uptr<btBoxShape> shape;
     };
+
+    inline auto BulletBoxCollider::getShape() -> btCollisionShape*
+    {
+        return shape.get();
+    }
 }
