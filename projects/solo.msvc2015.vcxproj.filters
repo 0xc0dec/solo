@@ -1,0 +1,1266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="..\include\Solo.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloException.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloVector2.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloMath.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloBase.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloVector3.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloMatrix.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloVector4.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloQuaternion.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloPlane.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloBoundingSphere.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloBoundingBox.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloRay.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloFrustum.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloFormatter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloCamera.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloDevice.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloEffect.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloFileSystem.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloMaterial.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloMesh.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloScene.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloTransform.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloComponent.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloRenderContext.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloNode.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloTexture.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloImage.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloImageLoader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloPngImageLoader.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloBitFlags.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloCubeTexture.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\stub\SoloStubDevice.h">
+      <Filter>src\platform\stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloSpectator.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloSkyboxRenderer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloRenderQueue.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\stub\SoloStubFileSystem.h">
+      <Filter>src\platform\stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloVertexFormat.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloMeshRenderer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloObjMeshLoader.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloLogger.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderer.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\stub\SoloStubRenderer.h">
+      <Filter>src\platform\stub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloRenderer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloFrameBuffer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloResourcePool.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloConfig.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloGraphics.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloSpinLock.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloAssetLoader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloMeshLoader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloRadian.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloDegree.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloPhysics.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloRigidBody.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloCollider.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloBoxCollider.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloBulletPhysics.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloBulletBoxCollider.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloBulletRigidBody.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloFont.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloTrueTypeFont.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloFontRenderer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloEffectRepository.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLEffectRepository.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\vulkan\SoloSDLVulkanDevice.h">
+      <Filter>src\platform\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\sdl\SoloSDLDevice.h">
+      <Filter>src\platform\sdl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\vulkan\SoloVulkanRenderer.h">
+      <Filter>src\platform\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SoloMaterialParameter.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloRectTexture.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\SoloScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloDevice.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloFileSystem.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloMaterial.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\glew\src\glew.c">
+      <Filter>src\vendor\glew</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloVector2.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloVector3.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloVector4.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloMatrix.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloPlane.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloBoundingSphere.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloBoundingBox.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloRay.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloFrustum.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloTransform.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloCamera.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloEffect.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloQuaternion.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloBase.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloNode.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloTexture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\src\adler32.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\src\compress.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\src\crc32.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\src\deflate.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\src\infback.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\src\inffast.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\src\inflate.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\src\inftrees.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\src\trees.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\src\uncompr.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\src\zutil.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\src\png.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\src\pngerror.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\src\pngget.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\src\pngmem.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\src\pngpread.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\src\pngread.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\src\pngrio.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\src\pngrtran.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\src\pngrutil.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\src\pngset.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\src\pngtrans.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\src\pngwio.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\src\pngwrite.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\src\pngwtran.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\src\pngwutil.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloPngImageLoader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp">
+      <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\stub\SoloStubDevice.cpp">
+      <Filter>src\platform\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloSpectator.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloCubeTexture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloSkyboxRenderer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\stub\SoloStubFileSystem.cpp">
+      <Filter>src\platform\stub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloMeshRenderer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloObjMeshLoader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloLogger.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloRenderer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderer.cpp">
+      <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloFrameBuffer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloGraphics.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\e_atan2.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\e_log.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\e_pow.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\e_rem_pio2.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\e_sqrt.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\k_cos.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\k_rem_pio2.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\k_sin.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\k_tan.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\s_atan.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\s_copysign.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\s_cos.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\s_fabs.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\s_floor.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\s_scalbn.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\s_sin.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\s_tan.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\SDL.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\SDL_assert.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\atomic\SDL_atomic.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\SDL_audio.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\SDL_audiocvt.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\SDL_audiodev.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\SDL_audiotypecvt.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\software\SDL_blendfillrect.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\software\SDL_blendline.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\software\SDL_blendpoint.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_blit.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_blit_0.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_blit_1.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_blit_A.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_blit_auto.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_blit_copy.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_blit_N.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_blit_slow.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_bmp.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_clipboard.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\events\SDL_clipboardevents.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\cpuinfo\SDL_cpuinfo.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\SDL_d3dmath.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\haptic\windows\SDL_dinputhaptic.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\windows\SDL_dinputjoystick.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\directsound\SDL_directsound.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\disk\SDL_diskaudio.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\software\SDL_drawline.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\software\SDL_drawpoint.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\events\SDL_dropevents.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\dummy\SDL_dummyaudio.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\dynapi\SDL_dynapi.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_egl.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\SDL_error.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\events\SDL_events.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_fillrect.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\events\SDL_gesture.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\stdlib\SDL_getenv.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\haptic\SDL_haptic.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\SDL_hints.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\stdlib\SDL_iconv.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\events\SDL_keyboard.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\SDL_log.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\stdlib\SDL_malloc.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\SDL_mixer.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\windows\SDL_mmjoystick.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\events\SDL_mouse.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\dummy\SDL_nullevents.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\dummy\SDL_nullframebuffer.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\dummy\SDL_nullvideo.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_pixels.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\power\SDL_power.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\stdlib\SDL_qsort.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\events\SDL_quit.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_rect.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\SDL_render.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\direct3d\SDL_render_d3d.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\direct3d11\SDL_render_d3d11.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\opengl\SDL_render_gl.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\opengles2\SDL_render_gles2.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\software\SDL_render_sw.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_RLEaccel.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\software\SDL_rotate.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\file\SDL_rwops.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\opengl\SDL_shaders_gl.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\opengles2\SDL_shaders_gles2.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_shape.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\atomic\SDL_spinlock.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\stdlib\SDL_stdlib.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_stretch.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\stdlib\SDL_string.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_surface.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\thread\generic\SDL_syscond.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\filesystem\windows\SDL_sysfilesystem.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\loadso\windows\SDL_sysloadso.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\thread\windows\SDL_sysmutex.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\power\windows\SDL_syspower.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\thread\windows\SDL_syssem.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\thread\windows\SDL_systhread.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\timer\windows\SDL_systimer.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\thread\windows\SDL_systls.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\thread\SDL_thread.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\timer\SDL_timer.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\events\SDL_touch.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_video.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\SDL_wave.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\events\SDL_windowevents.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\core\windows\SDL_windows.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsclipboard.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsevents.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsframebuffer.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowskeyboard.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsmessagebox.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsmodes.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsmouse.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsopengl.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsopengles.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsshape.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsvideo.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowswindow.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\winmm\SDL_winmm.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\xaudio2\SDL_xaudio2.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\core\windows\SDL_xinput.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\SDL_yuv_mmx.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\SDL_yuv_sw.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\SDL_joystick.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\dummy\SDL_sysjoystick.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\haptic\dummy\SDL_syshaptic.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\SDL_gamecontroller.c">
+      <Filter>src\vendor\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\async++\src\scheduler.cpp">
+      <Filter>src\vendor\async++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\async++\src\threadpool_scheduler.cpp">
+      <Filter>src\vendor\async++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloAssetLoader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloRadian.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloDegree.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btAlignedAllocator.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btConvexHull.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btConvexHullComputer.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btGeometryUtil.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btPolarDecomposition.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btQuickprof.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btSerializer.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btVector3.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btAxisSweep3.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btBroadphaseProxy.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btCollisionAlgorithm.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btDbvt.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btDbvtBroadphase.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btDispatcher.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btMultiSapBroadphase.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btOverlappingPairCache.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btQuantizedBvh.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btSimpleBroadphase.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btActivatingCollisionAlgorithm.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btBox2dBox2dCollisionAlgorithm.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btBoxBoxCollisionAlgorithm.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btBoxBoxDetector.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btCollisionDispatcher.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btCollisionObject.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btCollisionWorld.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btCollisionWorldImporter.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btCompoundCollisionAlgorithm.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btCompoundCompoundCollisionAlgorithm.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btConvex2dConvex2dAlgorithm.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btConvexConcaveCollisionAlgorithm.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btConvexConvexAlgorithm.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btConvexPlaneCollisionAlgorithm.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btDefaultCollisionConfiguration.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btEmptyCollisionAlgorithm.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btGhostObject.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btHashedSimplePairCache.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btInternalEdgeUtility.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btManifoldResult.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btSimulationIslandManager.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btSphereBoxCollisionAlgorithm.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btSphereSphereCollisionAlgorithm.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btSphereTriangleCollisionAlgorithm.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btUnionFind.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\SphereTriangleDetector.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btBox2dShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btBoxShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btBvhTriangleMeshShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btCapsuleShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btCollisionShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btCompoundShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btConcaveShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btConeShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btConvex2dShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btConvexHullShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btConvexInternalShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btConvexPointCloudShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btConvexPolyhedron.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btConvexShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btConvexTriangleMeshShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btCylinderShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btEmptyShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btHeightfieldTerrainShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btMinkowskiSumShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btMultimaterialTriangleMeshShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btMultiSphereShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btOptimizedBvh.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btPolyhedralConvexShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btScaledBvhTriangleMeshShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btShapeHull.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btSphereShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btStaticPlaneShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btStridingMeshInterface.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btTetrahedronShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btTriangleBuffer.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btTriangleCallback.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btTriangleIndexVertexArray.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btTriangleIndexVertexMaterialArray.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btTriangleMesh.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btTriangleMeshShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btUniformScalingShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\btContactProcessing.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\btGenericPoolAllocator.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\btGImpactBvh.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\btGImpactCollisionAlgorithm.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\btGImpactQuantizedBvh.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\btGImpactShape.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\btTriangleShapeEx.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\gim_box_set.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\gim_contact.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\gim_memory.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\gim_tri_collision.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btContinuousConvexCollision.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btConvexCast.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btGjkConvexCast.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btGjkEpa2.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btGjkEpaPenetrationDepthSolver.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btGjkPairDetector.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btMinkowskiPenetrationDepthSolver.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btPersistentManifold.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btPolyhedralContactClipping.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btRaycastCallback.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btSubSimplexConvexCast.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btVoronoiSimplexSolver.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\Character\btKinematicCharacterController.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btConeTwistConstraint.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btContactConstraint.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btFixedConstraint.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btGearConstraint.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btGeneric6DofConstraint.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btGeneric6DofSpring2Constraint.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btGeneric6DofSpringConstraint.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btHinge2Constraint.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btHingeConstraint.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btNNCGConstraintSolver.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btPoint2PointConstraint.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btSequentialImpulseConstraintSolver.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btSliderConstraint.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btSolve2LinearConstraint.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btTypedConstraint.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btUniversalConstraint.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\Dynamics\btDiscreteDynamicsWorld.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\Dynamics\btRigidBody.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\Dynamics\btSimpleDynamicsWorld.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\MLCPSolvers\btDantzigLCP.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\MLCPSolvers\btLemkeAlgorithm.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\MLCPSolvers\btMLCPSolver.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\Vehicle\btRaycastVehicle.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\Vehicle\btWheelInfo.cpp">
+      <Filter>src\vendor\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloCollider.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloBulletPhysics.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloBulletBoxCollider.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloBulletRigidBody.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloTrueTypeFont.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloFontRenderer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloEffectRepository.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLEffectRepository.cpp">
+      <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\vulkan\SoloSDLVulkanDevice.cpp">
+      <Filter>src\platform\vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\sdl\SoloSDLDevice.cpp">
+      <Filter>src\platform\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\vulkan\SoloVulkanRenderer.cpp">
+      <Filter>src\platform\vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloMaterialParameter.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloRectTexture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{518ca716-5190-408d-b9a3-f5f373d3f8fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{51a992ed-ff70-41ea-960d-564482663af1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\platform">
+      <UniqueIdentifier>{19865fe9-5ca9-4b65-8e94-a5c33cfc767f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\platform\opengl">
+      <UniqueIdentifier>{f14878d2-f3e0-46aa-8dde-49cd0692f7f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\platform\stub">
+      <UniqueIdentifier>{a2160cc5-f9a6-47d6-b537-be79b1e819d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\vendor">
+      <UniqueIdentifier>{ac6c24da-1afc-4cc5-85d6-9c987812afe7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\vendor\glew">
+      <UniqueIdentifier>{c71565b1-047c-43cf-ac19-33d2ac0eba05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\vendor\png">
+      <UniqueIdentifier>{308fcd1a-298e-4726-b0ad-977bc1e9763a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\vendor\zlib">
+      <UniqueIdentifier>{c75d28c3-b7bf-43af-91dd-132d3fea8685}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\vendor\sdl">
+      <UniqueIdentifier>{34eeae20-bf80-4ab8-8321-a68d67849f4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\vendor\async++">
+      <UniqueIdentifier>{d0af1de6-625d-4405-a5f0-f612925fdddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\vendor\bullet">
+      <UniqueIdentifier>{ea4b40ac-b3f9-4388-8133-e6765a17d367}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\platform\vulkan">
+      <UniqueIdentifier>{757821b3-192d-4eaa-aeeb-76d749cad396}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\platform\sdl">
+      <UniqueIdentifier>{b38df00b-fb0f-438f-98a3-7abc58dff698}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
