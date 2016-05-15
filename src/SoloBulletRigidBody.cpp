@@ -16,8 +16,13 @@ BulletRigidBody::BulletRigidBody(const Node& node, const RigidBodyConstructionPa
     world = static_cast<BulletPhysics*>(Device::get()->getPhysics())->getWorld();
     transformCmp = node.getComponent<Transform>();
 
+    // TODO move to a method
+    auto worldPos = transformCmp->getWorldPosition();
+    auto rot = transformCmp->getWorldRotation();
+    btTransform transform;
+    transform.setOrigin(btVector3(worldPos.x, worldPos.y, worldPos.z));
+    transform.setRotation(btQuaternion(rot.x, rot.y, rot.z, rot.w));
     motionState = std::make_unique<btDefaultMotionState>(transform);
-    syncTransform();
 
     btRigidBody::btRigidBodyConstructionInfo info(parameters.mass, motionState.get(), nullptr);
     info.m_friction = parameters.friction;
@@ -58,12 +63,14 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
 }
 
 
-void BulletRigidBody::syncTransform()
+void BulletRigidBody::update() // TODO this should be done before update
 {
-    auto worldPos = transformCmp->getWorldPosition();
-    auto rot = transformCmp->getWorldRotation();
-    transform.setOrigin(btVector3(worldPos.x, worldPos.y, worldPos.z));
-    transform.setRotation(btQuaternion(rot.x, rot.y, rot.z, rot.w));
+    btTransform transform;
+    motionState->getWorldTransform(transform);
+    auto origin = transform.getOrigin();
+    auto rotation = transform.getRotation();
+    transformCmp->setWorldPosition(Vector3(origin.x(), origin.y(), origin.z()));
+    transformCmp->setLocalRotation(Quaternion(rotation.x(), rotation.y(), rotation.z(), rotation.w()));
 }
 
 

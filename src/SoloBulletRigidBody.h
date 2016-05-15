@@ -18,14 +18,13 @@ namespace solo
 
         virtual void setCollider(sptr<Collider> collider) override final;
 
-    private:
-        void syncTransform();
+        virtual void update() override final;
 
+    private:
         float mass = 0;
         sptr<Collider> collider;
         Transform* transformCmp;
         btDiscreteDynamicsWorld* world;
-        btTransform transform;
         uptr<btMotionState> motionState;
         uptr<btRigidBody> body;
     };

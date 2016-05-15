@@ -39,6 +39,7 @@ namespace solo
         template <typename T, typename... Args, typename = typename std::enable_if<!std::is_assignable<SpecificDefaultComponent, T>::value>::type>
         auto addComponent(Args&&... args) -> T*;
 
+        // TODO remove this knowledge from Node
         template <typename T>
         auto addComponent(const RigidBodyConstructionParameters& params, typename std::enable_if<std::is_same<RigidBody, T>::value>::type* = nullptr) -> T*;
 

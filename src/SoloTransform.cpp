@@ -257,6 +257,18 @@ void Transform::setLocalScale(const Vector3& scale)
 }
 
 
+void Transform::setWorldPosition(const Vector3& position)
+{
+    setLocalPosition(position); // TODO !!!
+}
+
+
+void Transform::setWorldRotation(const Quaternion& rotation)
+{
+    setLocalRotation(rotation); // TODO !!!
+}
+
+
 void Transform::lookAt(const Vector3& target, const Vector3& up)
 {
     auto localTarget = target;
