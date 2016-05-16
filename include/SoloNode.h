@@ -36,12 +36,8 @@ namespace solo
         template <typename T>
         auto getComponent() const -> T*;
 
-        template <typename T, typename... Args, typename = typename std::enable_if<!std::is_assignable<SpecificDefaultComponent, T>::value>::type>
+        template <typename T, typename... Args>
         auto addComponent(Args&&... args) -> T*;
-
-        // TODO remove this knowledge from Node
-        template <typename T>
-        auto addComponent(const RigidBodyConstructionParameters& params, typename std::enable_if<std::is_same<RigidBody, T>::value>::type* = nullptr) -> T*;
 
         template <typename T>
         void removeComponent();
@@ -49,6 +45,21 @@ namespace solo
     private:
         Scene* scene;
         uint32_t id;
+    };
+
+    // Helper needed for making addComponent work with any kind of default components
+    // (which require passing some parameters - simply specializing addComponent of Node doesn't work)
+    template <class T>
+    struct NodeHelper
+    {
+        template <class... Args>
+        static auto addComponent(Scene* scene, uint32_t nodeId, Args&&... args) -> T*
+        {
+            auto cmp = std::make_shared<T>(Node(scene, nodeId), std::forward<Args>(args)...);
+            auto base = std::static_pointer_cast<Component>(cmp);
+            scene->addComponent(nodeId, base);
+            return cmp.get();
+        }
     };
 
     inline auto Node::getId() const -> uint32_t
@@ -64,13 +75,10 @@ namespace solo
     template <typename T, typename... Args>
     inline auto Node::addComponent(Scene* scene, uint32_t nodeId, Args&&... args) -> T*
     {
-        auto cmp = std::make_shared<T>(Node(scene, nodeId), std::forward<Args>(args)...);
-        auto base = std::static_pointer_cast<Component>(cmp);
-        scene->addComponent(nodeId, base);
-        return cmp.get();
+        return NodeHelper<T>::addComponent(scene, nodeId, std::forward<Args>(args)...);
     }
 
-    template <typename T, typename... Args, typename>
+    template <typename T, typename... Args>
     inline auto Node::addComponent(Args&&... args) -> T*
     {
         return addComponent<T>(scene, id, std::forward<Args>(args)...);

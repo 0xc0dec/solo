@@ -30,4 +30,13 @@ namespace solo
     protected:
         explicit RigidBody(const Node& node);
     };
+
+    template <>
+    template <class... Args>
+    auto NodeHelper<RigidBody>::addComponent(Scene* scene, uint32_t nodeId, Args&&... args) -> RigidBody*
+    {
+        auto body = std::shared_ptr<RigidBody>(RigidBody::create(Node(scene, nodeId), std::forward<Args>(args)...));
+        scene->addComponent(nodeId, body);
+        return body.get();
+    }
 }
