@@ -6,8 +6,6 @@
 namespace solo
 {
     struct SpecificDefaultComponent;
-    struct RigidBodyConstructionParameters;
-    class RigidBody;
 
     // A convenient wrapper for working with components. There's no real "Node" in the engine
     class Node final
