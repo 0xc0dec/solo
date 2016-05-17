@@ -176,6 +176,11 @@ void VulkanRenderer::setFaceCull(FaceCull cull)
 }
 
 
+void VulkanRenderer::setPolygonMode(PolygonMode mode)
+{
+}
+
+
 void VulkanRenderer::setBlend(bool enabled)
 {
 }

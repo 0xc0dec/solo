@@ -928,6 +928,27 @@ void OpenGLRenderer::setFaceCull(FaceCull cull)
 }
 
 
+void OpenGLRenderer::setPolygonMode(PolygonMode mode)
+{
+    GLenum glMode;
+    switch (mode)
+    {
+        case PolygonMode::Triangle:
+            glMode = GL_FILL;
+            break;
+        case PolygonMode::Wireframe:
+            glMode = GL_LINE;
+            break;
+        case PolygonMode::Points:
+            glMode = GL_POINT;
+            break;
+        default: return;
+    }
+
+    glPolygonMode(GL_FRONT_AND_BACK, glMode);
+}
+
+
 void OpenGLRenderer::setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
 {
     glViewport(x, y, width, height);

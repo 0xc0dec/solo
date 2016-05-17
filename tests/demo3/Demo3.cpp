@@ -118,6 +118,7 @@ public:
             auto effect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.texture);
             auto mat = Material::create(effect);
             mat->setFaceCull(FaceCull::All);
+            mat->setPolygonMode(PolygonMode::Wireframe);
             mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
             mat->setTextureParameter("mainTex", tex);
 

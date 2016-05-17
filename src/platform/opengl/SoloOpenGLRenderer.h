@@ -59,6 +59,8 @@ namespace solo
 
         virtual void setFaceCull(FaceCull face) override final;
 
+        virtual void setPolygonMode(PolygonMode mode) override final;
+
         virtual void setBlend(bool enabled) override final;
         virtual void setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor) override final;
 

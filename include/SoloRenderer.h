@@ -62,6 +62,13 @@ namespace solo
         CCW
     };
 
+    enum class PolygonMode
+    {
+        Triangle,
+        Wireframe,
+        Points
+    };
+
     enum class DepthFunction
     {
         Never = 0,
@@ -181,6 +188,8 @@ namespace solo
         virtual void setUniform(const UniformHandle& handle, const void* value, uint32_t count) = 0;
 
         virtual void setFaceCull(FaceCull cull) = 0;
+
+        virtual void setPolygonMode(PolygonMode mode) = 0;
 
         virtual void setBlend(bool enabled) = 0;
         virtual void setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor) = 0;

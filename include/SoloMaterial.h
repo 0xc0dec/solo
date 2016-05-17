@@ -51,6 +51,9 @@ namespace solo
 
         auto getEffect() const -> Effect*;
 
+        auto getPolygonMode() const -> PolygonMode;
+        void setPolygonMode(PolygonMode mode);
+
         bool isTransparent() const;
         void setTransparent(bool enabled);
 
@@ -82,6 +85,7 @@ namespace solo
         std::unordered_map<std::string, sptr<MaterialParameter>> parameters;
 
         FaceCull faceCull = FaceCull::CW;
+        PolygonMode polygonMode = PolygonMode::Triangle;
         bool depthWrite = true; 
         bool depthTest = true;
         bool transparent = false;
@@ -93,6 +97,16 @@ namespace solo
     inline auto Material::getEffect() const -> Effect*
     {
         return effect.get();
+    }
+
+    inline auto Material::getPolygonMode() const -> PolygonMode
+    {
+        return polygonMode;
+    }
+
+    inline void Material::setPolygonMode(PolygonMode mode)
+    {
+        polygonMode = mode;
     }
 
     inline bool Material::isTransparent() const
