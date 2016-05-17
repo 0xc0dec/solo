@@ -9,20 +9,41 @@
 using namespace solo;
 
 
+class MotionState final: public btMotionState
+{
+public:
+    explicit MotionState(Transform* transform): transform(transform)
+    {
+    }
+
+    virtual void getWorldTransform(btTransform& worldTransform) const override final
+    {
+        auto worldPos = transform->getWorldPosition();
+        auto rotation = transform->getWorldRotation();
+        worldTransform.setOrigin(btVector3(worldPos.x, worldPos.y, worldPos.z));
+        worldTransform.setRotation(btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w));
+    }
+
+    virtual void setWorldTransform(const btTransform& worldTransform) override final
+    {
+        auto origin = worldTransform.getOrigin();
+        auto rotation = worldTransform.getRotation();
+        transform->setWorldPosition(Vector3(origin.x(), origin.y(), origin.z()));
+        transform->setLocalRotation(Quaternion(rotation.x(), rotation.y(), rotation.z(), rotation.w()));
+    }
+
+private:
+    Transform* transform;
+};
+
+
 BulletRigidBody::BulletRigidBody(const Node& node, const RigidBodyConstructionParameters& parameters) :
     RigidBody(node),
     mass(parameters.mass)
 {
     world = static_cast<BulletPhysics*>(Device::get()->getPhysics())->getWorld();
     transformCmp = node.getComponent<Transform>();
-
-    // TODO move to a method
-    auto worldPos = transformCmp->getWorldPosition();
-    auto rot = transformCmp->getWorldRotation();
-    btTransform transform;
-    transform.setOrigin(btVector3(worldPos.x, worldPos.y, worldPos.z));
-    transform.setRotation(btQuaternion(rot.x, rot.y, rot.z, rot.w));
-    motionState = std::make_unique<btDefaultMotionState>(transform);
+    motionState = std::make_unique<MotionState>(transformCmp);
 
     btRigidBody::btRigidBodyConstructionInfo info(parameters.mass, motionState.get(), nullptr);
     info.m_friction = parameters.friction;
@@ -60,17 +81,6 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
         world->removeRigidBody(body.get());
         collider = nullptr;
     }
-}
-
-
-void BulletRigidBody::update() // TODO this should be done before update
-{
-    btTransform transform;
-    motionState->getWorldTransform(transform);
-    auto origin = transform.getOrigin();
-    auto rotation = transform.getRotation();
-    transformCmp->setWorldPosition(Vector3(origin.x(), origin.y(), origin.z()));
-    transformCmp->setLocalRotation(Quaternion(rotation.x(), rotation.y(), rotation.z(), rotation.w()));
 }
 
 

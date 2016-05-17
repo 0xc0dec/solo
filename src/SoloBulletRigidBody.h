@@ -18,8 +18,6 @@ namespace solo
 
         virtual void setCollider(sptr<Collider> collider) override final;
 
-        virtual void update() override final;
-
     private:
         float mass = 0;
         sptr<Collider> collider;
