@@ -164,7 +164,7 @@ void Material::apply(const RenderContext& context)
 
 void Material::applyState()
 {
-    renderer->setPolygonFace(polygonFace);
+    renderer->setFaceCull(faceCull);
     renderer->setDepthTest(depthTest);
     renderer->setDepthWrite(depthWrite);
     renderer->setDepthFunction(depthFunc);

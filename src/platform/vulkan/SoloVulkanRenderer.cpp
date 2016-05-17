@@ -171,7 +171,7 @@ void VulkanRenderer::setUniform(const UniformHandle& handle, const void* value, 
 }
 
 
-void VulkanRenderer::setPolygonFace(PolygonFace face)
+void VulkanRenderer::setFaceCull(FaceCull cull)
 {
 }
 

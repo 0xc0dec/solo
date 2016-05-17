@@ -907,18 +907,18 @@ void OpenGLRenderer::setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor
 }
 
 
-void OpenGLRenderer::setPolygonFace(PolygonFace face)
+void OpenGLRenderer::setFaceCull(FaceCull cull)
 {
-    switch (face)
+    switch (cull)
     {
-        case PolygonFace::All:
+        case FaceCull::All:
             glDisable(GL_CULL_FACE);
             break;
-        case PolygonFace::CW:
+        case FaceCull::CW:
             glEnable(GL_CULL_FACE);
             glFrontFace(GL_CW);
             break;
-        case PolygonFace::CCW:
+        case FaceCull::CCW:
             glEnable(GL_CULL_FACE);
             glFrontFace(GL_CCW);
             break;

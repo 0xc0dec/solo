@@ -15,7 +15,7 @@ FontRenderer::FontRenderer(const Node& node):
 {
     auto effect = Device::get()->getEffectRepository()->getDefaultFontEffect();
     material = Material::create(effect);
-    material->setPolygonFace(PolygonFace::All);
+    material->setFaceCull(FaceCull::All);
     material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
     material->setTransparent(true);
 

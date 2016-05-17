@@ -103,7 +103,7 @@ public:
     sptr<Material> createColorMaterial(const Vector4& color)
     {
         auto mat = Material::create(colorEffect);
-        mat->setPolygonFace(PolygonFace::All);
+        mat->setFaceCull(FaceCull::All);
         mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
         mat->setVector4Parameter("color", color);
         return mat;
@@ -175,12 +175,12 @@ public:
         whiteMat = createColorMaterial(Vector4(1, 1, 1, 1));
 
         checkerMat = Material::create(checkerEffect);
-        checkerMat->setPolygonFace(PolygonFace::All);
+        checkerMat->setFaceCull(FaceCull::All);
         checkerMat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
         checkerMat->setVector4Parameter("color", Vector4(1, 1, 0, 1));
 
         monitorMat = Material::create(simpleTextureEffect);
-        monitorMat->setPolygonFace(PolygonFace::All);
+        monitorMat->setFaceCull(FaceCull::All);
         monitorMat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
         monitorMat->setTextureParameter("mainTex", offscreenCameraTex);
     }
@@ -232,7 +232,7 @@ public:
             tex->generateMipmaps();
 
             auto mat = Material::create(texWithLightingEffect);
-            mat->setPolygonFace(PolygonFace::All);
+            mat->setFaceCull(FaceCull::All);
             mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
             mat->bindInverseTransposedWorldMatrixParameter("invTransposedWorldMatrix");
             mat->setTextureParameter("mainTex", tex);
@@ -279,7 +279,7 @@ public:
             mesh->setPrimitiveType(PrimitiveType::Triangles);
 
             auto mat = Material::create(simpleTextureEffect);
-            mat->setPolygonFace(PolygonFace::All);
+            mat->setFaceCull(FaceCull::All);
             mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
             mat->setTextureParameter("mainTex", tex);
 
@@ -328,7 +328,7 @@ public:
             tex->setWrapping(TextureWrapping::Clamp);
 
             auto mat = Material::create(simpleTextureEffect);
-            mat->setPolygonFace(PolygonFace::All);
+            mat->setFaceCull(FaceCull::All);
             mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
             mat->setTextureParameter("mainTex", tex);
             mat->setTransparent(true);

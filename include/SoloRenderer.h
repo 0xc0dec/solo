@@ -55,7 +55,7 @@ namespace solo
         DepthWrapRepeat = 1 << 17
     };
 
-    enum class PolygonFace
+    enum class FaceCull
     {
         All = 0,
         CW,
@@ -180,7 +180,7 @@ namespace solo
         virtual void destroyUniform(const UniformHandle& handle) = 0;
         virtual void setUniform(const UniformHandle& handle, const void* value, uint32_t count) = 0;
 
-        virtual void setPolygonFace(PolygonFace face) = 0;
+        virtual void setFaceCull(FaceCull cull) = 0;
 
         virtual void setBlend(bool enabled) = 0;
         virtual void setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor) = 0;

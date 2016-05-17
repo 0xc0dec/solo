@@ -58,8 +58,8 @@ namespace solo
         auto getDstBlendFactor() const -> BlendFactor;
         void setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor);
 
-        auto getPolygonFace() const -> PolygonFace;
-        void setPolygonFace(PolygonFace face);
+        auto getFaceCull() const -> FaceCull;
+        void setFaceCull(FaceCull face);
 
         bool getDepthWrite() const;
         void setDepthWrite(bool enabled);
@@ -81,7 +81,7 @@ namespace solo
 
         std::unordered_map<std::string, sptr<MaterialParameter>> parameters;
 
-        PolygonFace polygonFace = PolygonFace::CW;
+        FaceCull faceCull = FaceCull::CW;
         bool depthWrite = true; 
         bool depthTest = true;
         bool transparent = false;
@@ -121,14 +121,14 @@ namespace solo
         dstBlendFactor = dstFactor;
     }
 
-    inline auto Material::getPolygonFace() const -> PolygonFace
+    inline auto Material::getFaceCull() const -> FaceCull
     {
-        return polygonFace;
+        return faceCull;
     }
 
-    inline void Material::setPolygonFace(PolygonFace face)
+    inline void Material::setFaceCull(FaceCull face)
     {
-        polygonFace = face;
+        faceCull = face;
     }
 
     inline bool Material::getDepthWrite() const

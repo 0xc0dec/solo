@@ -22,7 +22,7 @@ void Graphics::blit(Material* material, FrameBuffer* target)
 
     material->setDepthTest(false);
     material->setDepthWrite(false);
-    material->setPolygonFace(PolygonFace::All);
+    material->setFaceCull(FaceCull::All);
 
     if (target)
         target->bind();

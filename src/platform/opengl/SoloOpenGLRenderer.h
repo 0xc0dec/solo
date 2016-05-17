@@ -57,7 +57,7 @@ namespace solo
         virtual void destroyUniform(const UniformHandle& handle) override final;
         virtual void setUniform(const UniformHandle& handle, const void* value, uint32_t count) override final;
 
-        virtual void setPolygonFace(PolygonFace face) override final;
+        virtual void setFaceCull(FaceCull face) override final;
 
         virtual void setBlend(bool enabled) override final;
         virtual void setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor) override final;

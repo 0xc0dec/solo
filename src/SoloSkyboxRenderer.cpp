@@ -20,7 +20,7 @@ SkyboxRenderer::SkyboxRenderer(const Node& node):
     material->bindWorldViewMatrixParameter("worldViewMatrix");
     material->setDepthTest(true);
     material->setDepthWrite(false);
-    material->setPolygonFace(PolygonFace::CW);
+    material->setFaceCull(FaceCull::CW);
 
     quadMesh = Mesh::create(MeshPrefab::Quad);
 }

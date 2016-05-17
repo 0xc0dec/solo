@@ -271,7 +271,7 @@ public:
             tex->generateMipmaps();
             auto effect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.texture);
             auto mat = Material::create(effect);
-            mat->setPolygonFace(PolygonFace::All);
+            mat->setFaceCull(FaceCull::All);
             mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
             mat->setTextureParameter("mainTex", tex);
 
