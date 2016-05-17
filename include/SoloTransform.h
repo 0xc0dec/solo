@@ -59,9 +59,6 @@ namespace solo
         void setLocalPosition(const Vector3& position);
         void setLocalScale(const Vector3& scale);
 
-        void setWorldPosition(const Vector3& position);
-        void setWorldRotation(const Quaternion& rotation);
-
         void rotate(const Quaternion& rotation, TransformSpace space = TransformSpace::Self);
         void rotate(const Vector3& axis, const Radian& angle, TransformSpace space = TransformSpace::Self);
 
