@@ -28,7 +28,8 @@ public:
     {
         auto origin = worldTransform.getOrigin();
         auto rotation = worldTransform.getRotation();
-        transform->setWorldPosition(Vector3(origin.x(), origin.y(), origin.z()));
+        SL_DEBUG_THROW_IF(transform->getParent(), InvalidOperationException, "Transform should not have parents when a rigid body is attached");
+        transform->setLocalPosition(Vector3(origin.x(), origin.y(), origin.z()));
         transform->setLocalRotation(Quaternion(rotation.x(), rotation.y(), rotation.z(), rotation.w()));
     }
 
