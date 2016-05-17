@@ -82,6 +82,7 @@ namespace solo
         void setDirtyWithChildren(uint32_t flags) const;
         void setChildrenDirty(uint32_t flags) const;
 
+        // TODO pass dirty flags to listeners
         void notifyChanged() const;
 
         mutable uint32_t dirtyFlags;
