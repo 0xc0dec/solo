@@ -216,6 +216,7 @@ public:
         device->run();
     }
 
+private:
     void initEngine()
     {
         DeviceCreationArgs args;
@@ -287,7 +288,6 @@ public:
         });
     }
 
-private:
     Scene* scene = nullptr;
     AssetLoader* loader = nullptr;
     Device* device = nullptr;

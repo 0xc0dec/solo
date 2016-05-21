@@ -53,6 +53,7 @@ public:
         device->run();
     }
 
+private:
     void initEngine()
     {
         DeviceCreationArgs args;
@@ -107,7 +108,6 @@ public:
         transform->setLocalScale(Vector3(0.02f, 0.02f, 1));
     }
 
-private:
     Scene* scene = nullptr;
     AssetLoader* loader = nullptr;
     Device* device = nullptr;
