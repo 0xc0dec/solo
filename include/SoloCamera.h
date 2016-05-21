@@ -66,7 +66,7 @@ namespace solo
         auto getInverseViewProjectionMatrix() -> const Matrix&;
 
     protected:
-        virtual void onTransformChanged(const Transform* transform) override;
+        virtual void onTransformChanged(const Transform*, uint32_t) override;
 
         uint32_t dirtyFlags = ~0;
         uint32_t renderTags = ~0;

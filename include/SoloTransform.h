@@ -21,6 +21,17 @@ namespace solo
         World
     };
 
+    // NB Using struct with consts instead of class enums
+    // due to easier work with them as bit flags
+    struct DirtyFlags
+    {
+        static const uint32_t Position = 1;
+        static const uint32_t Rotation = 2;
+        static const uint32_t Scale = 3;
+        static const uint32_t World = 8;
+        static const uint32_t InverseTransposedWorld = 16;
+    };
+
     class Transform final: public ComponentBase<Transform>
     {
     public:
@@ -82,8 +93,7 @@ namespace solo
         void setDirtyWithChildren(uint32_t flags) const;
         void setChildrenDirty(uint32_t flags) const;
 
-        // TODO pass dirty flags to listeners
-        void notifyChanged() const;
+        void notifyChanged(uint32_t dirtyFlags) const;
 
         mutable uint32_t dirtyFlags;
 
@@ -103,6 +113,6 @@ namespace solo
     {
     public:
         virtual ~TransformCallback() {}
-        virtual void onTransformChanged(const Transform* transform) = 0;
+        virtual void onTransformChanged(const Transform* transform, uint32_t dirtyFlags) = 0;
     };
 }

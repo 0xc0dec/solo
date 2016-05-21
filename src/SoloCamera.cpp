@@ -31,9 +31,9 @@ void Camera::init()
 }
 
 
-void Camera::onTransformChanged(const Transform* transform)
+void Camera::onTransformChanged(const Transform*, uint32_t)
 {
-    dirtyFlags |= DirtyBitView | DirtyBitViewProjection | DirtyBitInverseView | DirtyBitInverseViewProjection;
+    this->dirtyFlags |= DirtyBitView | DirtyBitViewProjection | DirtyBitInverseView | DirtyBitInverseViewProjection;
 }
 
 
