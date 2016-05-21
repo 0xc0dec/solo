@@ -34,7 +34,6 @@ public:
             spawn();
     }
 
-
 private:
     void spawn()
     {
