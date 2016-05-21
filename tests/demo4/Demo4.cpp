@@ -6,15 +6,75 @@
 using namespace solo;
 
 
+class Spawner final: public ComponentBase<Spawner>
+{
+public:
+    explicit Spawner(const Node& node, sptr<Mesh> cubeMesh):
+        ComponentBase<Spawner>(node),
+        device(Device::get()),
+        scene(Device::get()->getScene()),
+        transform(node.getComponent<Transform>()),
+        mesh(cubeMesh)
+    {
+    }
+
+    virtual void init() override final
+    {
+        auto effect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.color);
+        material = Material::create(effect);
+        material->setFaceCull(FaceCull::All);
+        material->setPolygonMode(PolygonMode::Wireframe);
+        material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
+        material->setVector4Parameter("color", Vector4(1, 1, 0, 1));
+    }
+
+    virtual void update() override final
+    {
+        if (Device::get()->isMouseButtonDown(MouseButton::Right, true))
+            spawn();
+    }
+
+
+private:
+    void spawn()
+    {
+        auto initialPos = transform->getLocalPosition() + transform->getLocalForward() * 2;
+        auto initialRotation = transform->getLocalRotation();
+
+        auto node = scene->createNode();
+        auto renderer = node->addComponent<MeshRenderer>();
+        renderer->setMesh(mesh);
+        renderer->setMaterial(0, material);
+        auto t = node->getComponent<Transform>();
+        t->setLocalScale(Vector3(0.3f, 0.3f, 0.3f));
+        t->setLocalPosition(initialPos);
+        t->setLocalRotation(initialRotation);
+
+        auto rigidBodyParams = RigidBodyConstructionParameters();
+        rigidBodyParams.mass = 10;
+        rigidBodyParams.restitution = 0.01f;
+        rigidBodyParams.friction = 0.01f;
+        auto rigidBody = node->addComponent<RigidBody>(rigidBodyParams);
+        rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
+    }
+
+    Device* device;
+    Scene* scene;
+    Transform* transform;
+    sptr<Material> material;
+    sptr<Mesh> mesh;
+};
+
+
 class Demo
 {
 public:
     void run()
     {
         initEngine();
+        initObjects();
         initCamera();
         initSkybox();
-        initObjects();
         device->run();
     }
 
@@ -43,6 +103,7 @@ public:
         node->addComponent<Spectator>();
         node->addComponent<EscapeWatcher>();
         node->addComponent<Screenshoter>("demo3-screenshot.bmp");
+        node->addComponent<Spawner>(cubeMesh);
     }
 
     void initSkybox()
@@ -70,38 +131,23 @@ public:
         tex->setWrapping(TextureWrapping::Clamp);
         tex->generateMipmaps();
 
-        cubeMaterial = Material::create(Effect::create(commonShaders.vertex.basic, commonShaders.fragment.texture));
-        cubeMaterial->setFaceCull(FaceCull::All);
-        cubeMaterial->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
-        cubeMaterial->setTextureParameter("mainTex", tex);
+        auto mat = Material::create(Effect::create(commonShaders.vertex.basic, commonShaders.fragment.texture));
+        mat->setFaceCull(FaceCull::All);
+        mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
+        mat->setTextureParameter("mainTex", tex);
 
         cubeMesh = Mesh::create(MeshPrefab::Cube);
 
-        // Falling cube
+        // Floor
         auto node = scene->createNode();
+        node->getComponent<Transform>()->setLocalScale(Vector3(10, 0.1f, 10));
         auto renderer = node->addComponent<MeshRenderer>();
         renderer->setMesh(cubeMesh);
-        renderer->setMaterial(0, cubeMaterial);
-        node->getComponent<Transform>()->setLocalPosition(Vector3(1.5f, 10, 1));
-        node->getComponent<Transform>()->setLocalRotation(Vector3::unit(), Degree(45));
+        renderer->setMaterial(0, mat);
 
         auto rigidBodyParams = RigidBodyConstructionParameters();
-        rigidBodyParams.mass = 10;
-        rigidBodyParams.restitution = 0.01f;
-        rigidBodyParams.friction = 0.01f;
-        auto rigidBody = node->addComponent<RigidBody>(rigidBodyParams);
-        rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
-
-        // Floor
-        node = scene->createNode();
-        node->getComponent<Transform>()->setLocalScale(Vector3(10, 0.1f, 10));
-        renderer = node->addComponent<MeshRenderer>();
-        renderer->setMesh(cubeMesh);
-        renderer->setMaterial(0, cubeMaterial);
-
-        rigidBodyParams = RigidBodyConstructionParameters();
         rigidBodyParams.mass = 0;
-        rigidBody = node->addComponent<RigidBody>(rigidBodyParams);
+        auto rigidBody = node->addComponent<RigidBody>(rigidBodyParams);
         rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
     }
 
@@ -109,7 +155,6 @@ private:
     Scene* scene = nullptr;
     AssetLoader* loader = nullptr;
     Device* device = nullptr;
-    sptr<Material> cubeMaterial;
     sptr<Mesh> cubeMesh;
 };
 
