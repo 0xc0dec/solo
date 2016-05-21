@@ -23,7 +23,7 @@ namespace solo
 
     // NB Using struct with consts instead of class enums
     // due to easier work with them as bit flags
-    struct DirtyFlags
+    struct TransformDirtyFlags
     {
         static const uint32_t Position = 1;
         static const uint32_t Rotation = 2;
