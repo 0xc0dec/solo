@@ -2,7 +2,6 @@
 
 #include "SoloAssetLoader.h"
 #include "SoloBase.h"
-#include "SoloBitFlags.h"
 #include "SoloBoundingBox.h"
 #include "SoloBoundingSphere.h"
 #include "SoloBoxCollider.h"

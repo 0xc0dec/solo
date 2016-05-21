@@ -1,5 +1,4 @@
 #include "SoloCubeTexture.h"
-#include "SoloBitFlags.h"
 
 using namespace solo;
 

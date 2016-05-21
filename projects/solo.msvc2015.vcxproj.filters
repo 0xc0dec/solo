@@ -91,9 +91,6 @@
     <ClInclude Include="..\src\SoloPngImageLoader.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloBitFlags.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloCubeTexture.h">
       <Filter>include</Filter>
     </ClInclude>

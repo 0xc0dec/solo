@@ -21,7 +21,6 @@
     <ClInclude Include="..\include\SoloConfig.h" />
     <ClInclude Include="..\include\SoloDegree.h" />
     <ClInclude Include="..\include\SoloDevice.h" />
-    <ClInclude Include="..\include\SoloBitFlags.h" />
     <ClInclude Include="..\include\SoloEffect.h" />
     <ClInclude Include="..\include\SoloEffectRepository.h" />
     <ClInclude Include="..\include\SoloException.h" />
