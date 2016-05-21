@@ -20,8 +20,8 @@ public:
     {
         auto worldPos = transform->getWorldPosition();
         auto rotation = transform->getWorldRotation();
-        worldTransform.setOrigin(btVector3(worldPos.x, worldPos.y, worldPos.z));
-        worldTransform.setRotation(btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w));
+        worldTransform.setOrigin(SL_TOBTVEC3(worldPos));
+        worldTransform.setRotation(SL_TOBTQTRN(rotation));
     }
 
     virtual void setWorldTransform(const btTransform& worldTransform) override final
@@ -29,8 +29,8 @@ public:
         auto origin = worldTransform.getOrigin();
         auto rotation = worldTransform.getRotation();
         SL_DEBUG_THROW_IF(transform->getParent(), InvalidOperationException, "Transform should not have parents when a rigid body is attached");
-        transform->setLocalPosition(Vector3(origin.x(), origin.y(), origin.z()));
-        transform->setLocalRotation(Quaternion(rotation.x(), rotation.y(), rotation.z(), rotation.w()));
+        transform->setLocalPosition(SL_FROMBTVEC3(origin));
+        transform->setLocalRotation(SL_FROMBTQTRN(rotation));
     }
 
 private:

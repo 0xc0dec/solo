@@ -1,5 +1,6 @@
 #include "SoloBulletPhysics.h"
 #include "SoloDevice.h"
+#include "SoloBulletCommon.h"
 
 using namespace solo;
 
@@ -24,7 +25,7 @@ void BulletPhysics::update()
 
 void BulletPhysics::setGravity(const Vector3& gravity)
 {
-    world->setGravity(btVector3(gravity.x, gravity.y, gravity.z));
+    world->setGravity(SL_TOBTVEC3(gravity));
 }
 
 

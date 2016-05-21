@@ -76,6 +76,7 @@
     <ClInclude Include="..\src\platform\vulkan\SoloVulkanRenderer.h" />
     <ClInclude Include="..\src\SoloBulletBoxCollider.h" />
     <ClInclude Include="..\src\SoloBulletCollider.h" />
+    <ClInclude Include="..\src\SoloBulletCommon.h" />
     <ClInclude Include="..\src\SoloBulletPhysics.h" />
     <ClInclude Include="..\src\SoloBulletRigidBody.h" />
     <ClInclude Include="..\src\SoloMaterialParameter.h" />
