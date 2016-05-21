@@ -2,6 +2,7 @@
 
 #include "SoloComponent.h"
 #include "SoloVector3.h"
+#include "SoloTransform.h"
 
 
 namespace solo
@@ -20,7 +21,7 @@ namespace solo
         Vector3 angularFactor;
     };
 
-    class RigidBody: public ComponentBase<RigidBody>
+    class RigidBody: public ComponentBase<RigidBody>, public TransformCallback
     {
     public:
         static auto create(const Node& node, const RigidBodyConstructionParameters& parameters) -> sptr<RigidBody>;

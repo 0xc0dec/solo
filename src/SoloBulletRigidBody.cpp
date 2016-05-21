@@ -5,6 +5,7 @@
 #include "SoloCollider.h"
 #include "SoloBulletCollider.h"
 #include "SoloNode.h"
+#include "SoloBulletCommon.h"
 
 using namespace solo;
 
@@ -40,7 +41,8 @@ private:
 
 BulletRigidBody::BulletRigidBody(const Node& node, const RigidBodyConstructionParameters& parameters) :
     RigidBody(node),
-    mass(parameters.mass)
+    mass(parameters.mass),
+    shape(nullptr)
 {
     world = static_cast<BulletPhysics*>(Device::get()->getPhysics())->getWorld();
     transformCmp = node.getComponent<Transform>();
@@ -66,11 +68,12 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
 {
     if (newCollider)
     {
-        collider = newCollider;
+        collider = newCollider; // store ownership
+        shape = std::dynamic_pointer_cast<BulletCollider>(collider)->getShape();
 
-        auto shape = std::dynamic_pointer_cast<BulletCollider>(collider)->getShape();
         btVector3 inertia;
         shape->calculateLocalInertia(mass, inertia);
+        syncScale();
 
         body->setCollisionShape(shape);
         body->setMassProps(mass, inertia);
@@ -81,7 +84,22 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
     {
         world->removeRigidBody(body.get());
         collider = nullptr;
+        shape = nullptr;
     }
+}
+
+
+void BulletRigidBody::onTransformChanged(const Transform* transform, uint32_t dirtyFlags)
+{
+    if (shape && dirtyFlags | TransformDirtyFlags::Scale)
+        syncScale();
+}
+
+
+void BulletRigidBody::syncScale()
+{
+    auto scale = transformCmp->getLocalScale();
+    shape->setLocalScaling(SL_TOBTVEC3(scale));
 }
 
 

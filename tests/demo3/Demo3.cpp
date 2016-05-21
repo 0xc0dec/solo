@@ -133,9 +133,21 @@ public:
                 // TODO move this to a separate demo
                 auto rigidBodyParams = RigidBodyConstructionParameters();
                 rigidBodyParams.mass = 10;
-                rigidBodyParams.restitution = 0.1f;
-                rigidBodyParams.friction = 0.1f;
+                rigidBodyParams.restitution = 0.01f;
+                rigidBodyParams.friction = 0.01f;
                 auto rigidBody = node->addComponent<RigidBody>(rigidBodyParams);
+                rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
+
+                node = scene->createNode();
+                renderer = node->addComponent<MeshRenderer>();
+                renderer->setMesh(mesh);
+                renderer->setMaterial(0, mat);
+                node->getComponent<Transform>()->setLocalPosition(Vector3(-1.5f, -5, 0));
+
+                // TODO move this to a separate demo
+                rigidBodyParams = RigidBodyConstructionParameters();
+                rigidBodyParams.mass = 0;
+                rigidBody = node->addComponent<RigidBody>(rigidBodyParams);
                 rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
             });
         });
