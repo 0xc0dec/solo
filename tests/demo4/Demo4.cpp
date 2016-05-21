@@ -2,44 +2,8 @@
 #include "../common/EscapeWatcher.h"
 #include "../common/Screenshoter.h"
 #include "../common/Shaders.h"
-#include <chrono>
-#include <iomanip>
 
 using namespace solo;
-
-
-class Text final: public ComponentBase<Text>
-{
-public:
-    explicit Text(const Node& node): ComponentBase<Text>(node)
-    {
-    }
-
-    virtual void init() override final
-    {
-        const int textureWidth = 1024;
-        const int textureHeight = 1024;
-        const int lineHeight = 60;
-
-        auto fontData = Device::get()->getFileSystem()->readBytes("c:/windows/fonts/calibri.ttf");
-        auto font = Font::create(fontData.data(), lineHeight, textureWidth, textureHeight, ' ', '~' - ' ', 2, 2);
-
-        renderer = node.addComponent<FontRenderer>();
-        renderer->setFont(font);
-    }
-
-    virtual void update() override final
-    {
-        auto nowTimePoint = std::chrono::system_clock::now();
-        auto now = std::chrono::system_clock::to_time_t(nowTimePoint);
-        std::stringstream ss;
-        ss << "Now: " << std::put_time(std::localtime(&now), "%X");
-        renderer->setText(ss.str());
-    }
-
-private:
-    FontRenderer* renderer = nullptr;
-};
 
 
 class Demo
@@ -50,7 +14,7 @@ public:
         initEngine();
         initCamera();
         initSkybox();
-        initMesh();
+        initObjects();
         device->run();
     }
 
@@ -100,53 +64,53 @@ public:
         });
     }
 
-    void initMesh()
+    void initObjects()
     {
-        loader->loadRectTextureAsync("../assets/cobblestone.png")->done([=](sptr<RectTexture> tex)
-        {
-            tex->setWrapping(TextureWrapping::Clamp);
-            tex->generateMipmaps();
-            auto effect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.texture);
-            auto mat = Material::create(effect);
-            mat->setFaceCull(FaceCull::All);
-            mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
-            mat->setTextureParameter("mainTex", tex);
+        auto tex = loader->loadRectTexture("../assets/cobblestone.png");
+        tex->setWrapping(TextureWrapping::Clamp);
+        tex->generateMipmaps();
 
-            auto mesh = Mesh::create(MeshPrefab::Cube);
+        cubeMaterial = Material::create(Effect::create(commonShaders.vertex.basic, commonShaders.fragment.texture));
+        cubeMaterial->setFaceCull(FaceCull::All);
+        cubeMaterial->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
+        cubeMaterial->setTextureParameter("mainTex", tex);
 
-            // Falling cube
-            auto node = scene->createNode();
-            auto renderer = node->addComponent<MeshRenderer>();
-            renderer->setMesh(mesh);
-            renderer->setMaterial(0, mat);
-            node->getComponent<Transform>()->setLocalPosition(Vector3(1.5f, 10, 1));
-            node->getComponent<Transform>()->setLocalRotation(Vector3::unit(), Degree(45));
+        cubeMesh = Mesh::create(MeshPrefab::Cube);
 
-            auto rigidBodyParams = RigidBodyConstructionParameters();
-            rigidBodyParams.mass = 10;
-            rigidBodyParams.restitution = 0.01f;
-            rigidBodyParams.friction = 0.01f;
-            auto rigidBody = node->addComponent<RigidBody>(rigidBodyParams);
-            rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
+        // Falling cube
+        auto node = scene->createNode();
+        auto renderer = node->addComponent<MeshRenderer>();
+        renderer->setMesh(cubeMesh);
+        renderer->setMaterial(0, cubeMaterial);
+        node->getComponent<Transform>()->setLocalPosition(Vector3(1.5f, 10, 1));
+        node->getComponent<Transform>()->setLocalRotation(Vector3::unit(), Degree(45));
 
-            // Floor
-            node = scene->createNode();
-            node->getComponent<Transform>()->setLocalScale(Vector3(10, 0.1f, 10));
-            renderer = node->addComponent<MeshRenderer>();
-            renderer->setMesh(mesh);
-            renderer->setMaterial(0, mat);
+        auto rigidBodyParams = RigidBodyConstructionParameters();
+        rigidBodyParams.mass = 10;
+        rigidBodyParams.restitution = 0.01f;
+        rigidBodyParams.friction = 0.01f;
+        auto rigidBody = node->addComponent<RigidBody>(rigidBodyParams);
+        rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
 
-            rigidBodyParams = RigidBodyConstructionParameters();
-            rigidBodyParams.mass = 0;
-            rigidBody = node->addComponent<RigidBody>(rigidBodyParams);
-            rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
-        });
+        // Floor
+        node = scene->createNode();
+        node->getComponent<Transform>()->setLocalScale(Vector3(10, 0.1f, 10));
+        renderer = node->addComponent<MeshRenderer>();
+        renderer->setMesh(cubeMesh);
+        renderer->setMaterial(0, cubeMaterial);
+
+        rigidBodyParams = RigidBodyConstructionParameters();
+        rigidBodyParams.mass = 0;
+        rigidBody = node->addComponent<RigidBody>(rigidBodyParams);
+        rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
     }
 
 private:
     Scene* scene = nullptr;
     AssetLoader* loader = nullptr;
     Device* device = nullptr;
+    sptr<Material> cubeMaterial;
+    sptr<Mesh> cubeMesh;
 };
 
 
