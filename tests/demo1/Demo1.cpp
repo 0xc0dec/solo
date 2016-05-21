@@ -86,6 +86,7 @@ public:
         device->run();
     }
 
+private:
     void initEngine()
     {
         DeviceCreationArgs args;
@@ -112,7 +113,7 @@ public:
     void initEffects()
     {
         simpleTextureEffect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.texture);
-        colorEffect = Effect::create(commonShaders.vertex.basic, fsColor);
+        colorEffect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.color);
         checkerEffect = Effect::create(commonShaders.vertex.basic, fsChecker);
         texWithLightingEffect = Effect::create(vsBasicLighting, fsTextureWithLighting);
     }
@@ -150,7 +151,8 @@ public:
     void initOffscreenCamera()
     {
         offscreenCameraTex = RectTexture::create();
-        offscreenCameraTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(floor(canvasSize.x / 8.0f)), static_cast<uint32_t>(floor(canvasSize.y / 8.0f)));
+        offscreenCameraTex->setData(TextureFormat::RGB, {},
+            static_cast<uint32_t>(floor(canvasSize.x / 8.0f)), static_cast<uint32_t>(floor(canvasSize.y / 8.0f)));
         offscreenCameraTex->setFiltering(TextureFiltering::Nearest);
         offscreenCameraTex->setWrapping(TextureWrapping::Clamp);
 
@@ -349,7 +351,6 @@ public:
         });
     }
 
-private:
     const int renderTargetQuadTag = 2;
     Scene* scene = nullptr;
     AssetLoader* loader = nullptr;

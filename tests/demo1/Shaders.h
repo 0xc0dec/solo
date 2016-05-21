@@ -20,20 +20,6 @@ const char* vsBasicLighting = R"(
 	}
 )";
 
-const char* fsColor = R"(
-    #version 330 core
-
-    uniform vec4 color;
-
-    in vec2 uv0;
-	out vec4 fragColor;
-
-    void main()
-	{
-		fragColor = color;
-	}
-)";
-
 static const char* fsChecker = R"(
     #version 330 core
 
