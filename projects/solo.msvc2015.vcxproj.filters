@@ -172,15 +172,6 @@
     <ClInclude Include="..\include\SoloBoxCollider.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloBulletPhysics.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloBulletBoxCollider.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SoloBulletRigidBody.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloFont.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -211,11 +202,20 @@
     <ClInclude Include="..\include\SoloRectTexture.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloBulletCollider.h">
-      <Filter>src</Filter>
+    <ClInclude Include="..\src\platform\bullet\SoloBulletBoxCollider.h">
+      <Filter>src\platform\bullet</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloBulletCommon.h">
-      <Filter>src</Filter>
+    <ClInclude Include="..\src\platform\bullet\SoloBulletCollider.h">
+      <Filter>src\platform\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\bullet\SoloBulletCommon.h">
+      <Filter>src\platform\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\bullet\SoloBulletPhysics.h">
+      <Filter>src\platform\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\bullet\SoloBulletRigidBody.h">
+      <Filter>src\platform\bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1182,15 +1182,6 @@
     <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\Vehicle\btWheelInfo.cpp">
       <Filter>src\vendor\bullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloBulletPhysics.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloBulletBoxCollider.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SoloBulletRigidBody.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloTrueTypeFont.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -1216,6 +1207,24 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloRectTexture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\bullet\SoloBulletBoxCollider.cpp">
+      <Filter>src\platform\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\bullet\SoloBulletPhysics.cpp">
+      <Filter>src\platform\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\bullet\SoloBulletRigidBody.cpp">
+      <Filter>src\platform\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloBoxCollider.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloPhysics.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloRigidBody.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1261,6 +1270,9 @@
     </Filter>
     <Filter Include="src\platform\sdl">
       <UniqueIdentifier>{b38df00b-fb0f-438f-98a3-7abc58dff698}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\platform\bullet">
+      <UniqueIdentifier>{fbe98db1-e9c5-496b-bbf0-8fcc359cccf8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

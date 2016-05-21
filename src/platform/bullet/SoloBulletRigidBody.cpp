@@ -101,15 +101,3 @@ void BulletRigidBody::syncScale()
     auto scale = transformCmp->getLocalScale();
     shape->setLocalScaling(SL_TOBTVEC3(scale));
 }
-
-
-auto RigidBody::create(const Node& node, const RigidBodyConstructionParameters& parameters) -> sptr<RigidBody>
-{
-    return std::make_shared<BulletRigidBody>(node, parameters);
-}
-
-
-RigidBody::RigidBody(const Node& node):
-    ComponentBase<RigidBody>(node)
-{
-}

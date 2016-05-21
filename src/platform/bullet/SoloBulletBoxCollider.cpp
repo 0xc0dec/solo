@@ -9,9 +9,3 @@ BulletBoxCollider::BulletBoxCollider(const Vector3& halfExtents)
 {
     shape = std::make_unique<btBoxShape>(SL_TOBTVEC3(halfExtents));
 }
-
-
-auto BoxCollider::create(const Vector3& size) -> sptr<BoxCollider>
-{
-    return std::make_shared<BulletBoxCollider>(size);
-}

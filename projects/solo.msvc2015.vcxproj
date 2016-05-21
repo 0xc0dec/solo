@@ -65,6 +65,11 @@
     <ClInclude Include="..\include\SoloVector3.h" />
     <ClInclude Include="..\include\SoloVector4.h" />
     <ClInclude Include="..\include\SoloVertexFormat.h" />
+    <ClInclude Include="..\src\platform\bullet\SoloBulletBoxCollider.h" />
+    <ClInclude Include="..\src\platform\bullet\SoloBulletCollider.h" />
+    <ClInclude Include="..\src\platform\bullet\SoloBulletCommon.h" />
+    <ClInclude Include="..\src\platform\bullet\SoloBulletPhysics.h" />
+    <ClInclude Include="..\src\platform\bullet\SoloBulletRigidBody.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLEffectRepository.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderer.h" />
     <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h" />
@@ -74,17 +79,15 @@
     <ClInclude Include="..\src\platform\stub\SoloStubRenderer.h" />
     <ClInclude Include="..\src\platform\vulkan\SoloSDLVulkanDevice.h" />
     <ClInclude Include="..\src\platform\vulkan\SoloVulkanRenderer.h" />
-    <ClInclude Include="..\src\SoloBulletBoxCollider.h" />
-    <ClInclude Include="..\src\SoloBulletCollider.h" />
-    <ClInclude Include="..\src\SoloBulletCommon.h" />
-    <ClInclude Include="..\src\SoloBulletPhysics.h" />
-    <ClInclude Include="..\src\SoloBulletRigidBody.h" />
     <ClInclude Include="..\src\SoloMaterialParameter.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPngImageLoader.h" />
     <ClInclude Include="..\src\SoloTrueTypeFont.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\platform\bullet\SoloBulletBoxCollider.cpp" />
+    <ClCompile Include="..\src\platform\bullet\SoloBulletPhysics.cpp" />
+    <ClCompile Include="..\src\platform\bullet\SoloBulletRigidBody.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLEffectRepository.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderer.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp" />
@@ -93,17 +96,17 @@
     <ClCompile Include="..\src\platform\stub\SoloStubFileSystem.cpp" />
     <ClCompile Include="..\src\platform\vulkan\SoloSDLVulkanDevice.cpp" />
     <ClCompile Include="..\src\platform\vulkan\SoloVulkanRenderer.cpp" />
-    <ClCompile Include="..\src\SoloBulletBoxCollider.cpp" />
+    <ClCompile Include="..\src\SoloBoxCollider.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\SoloDegree.cpp" />
     <ClCompile Include="..\src\SoloEffectRepository.cpp" />
     <ClCompile Include="..\src\SoloFontRenderer.cpp" />
     <ClCompile Include="..\src\SoloGraphics.cpp" />
-    <ClCompile Include="..\src\SoloBulletPhysics.cpp" />
     <ClCompile Include="..\src\SoloMaterialParameter.cpp" />
+    <ClCompile Include="..\src\SoloPhysics.cpp" />
     <ClCompile Include="..\src\SoloRadian.cpp" />
     <ClCompile Include="..\src\SoloRenderer.cpp" />
-    <ClCompile Include="..\src\SoloBulletRigidBody.cpp" />
+    <ClCompile Include="..\src\SoloRigidBody.cpp" />
     <ClCompile Include="..\src\SoloSkyboxRenderer.cpp" />
     <ClCompile Include="..\src\SoloSpectator.cpp" />
     <ClCompile Include="..\src\SoloTrueTypeFont.cpp" />

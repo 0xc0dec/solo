@@ -33,15 +33,3 @@ auto BulletPhysics::getWorld() const -> btDiscreteDynamicsWorld*
 {
     return world.get();
 }
-
-
-auto Physics::create(Device* device, const DeviceToken& deviceToken) -> sptr<Physics>
-{
-    return std::make_shared<BulletPhysics>(device, deviceToken);
-}
-
-
-Physics::Physics(Device* device, const DeviceToken&):
-    device(device)
-{
-}
