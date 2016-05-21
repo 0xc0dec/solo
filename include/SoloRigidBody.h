@@ -20,7 +20,7 @@ namespace solo
         Vector3 angularFactor;
     };
 
-    class RigidBody: public ComponentBase<RigidBody>, public SpecificDefaultComponent
+    class RigidBody: public ComponentBase<RigidBody>
     {
     public:
         static auto create(const Node& node, const RigidBodyConstructionParameters& parameters) -> sptr<RigidBody>;
