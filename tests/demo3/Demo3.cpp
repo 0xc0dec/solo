@@ -49,7 +49,6 @@ public:
         initEngine();
         initCamera();
         initSkybox();
-//        initMesh();
         initText();
         device->run();
     }
@@ -107,50 +106,6 @@ public:
         transform->setLocalPosition(Vector3(-3.5f, 0, 0));
         transform->setLocalScale(Vector3(0.02f, 0.02f, 1));
     }
-
-//    void initMesh()
-//    {
-//        loader->loadRectTextureAsync("../assets/cobblestone.png")->done([=](sptr<RectTexture> tex)
-//        {
-//            tex->setWrapping(TextureWrapping::Clamp);
-//            tex->generateMipmaps();
-//            auto effect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.texture);
-//            auto mat = Material::create(effect);
-//            mat->setFaceCull(FaceCull::All);
-//            mat->setPolygonMode(PolygonMode::Wireframe);
-//            mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
-//            mat->setTextureParameter("mainTex", tex);
-//
-//            loader->loadMeshAsync("../assets/monkey.obj")->done([=](sptr<Mesh> mesh)
-//            {
-//                auto node = scene->createNode();
-//                auto renderer = node->addComponent<MeshRenderer>();
-//                renderer->setMesh(mesh);
-//                renderer->setMaterial(0, mat);
-//                node->getComponent<Transform>()->setLocalPosition(Vector3::zero());
-//
-//                // TODO move this to a separate demo
-//                auto rigidBodyParams = RigidBodyConstructionParameters();
-//                rigidBodyParams.mass = 10;
-//                rigidBodyParams.restitution = 0.01f;
-//                rigidBodyParams.friction = 0.01f;
-//                auto rigidBody = node->addComponent<RigidBody>(rigidBodyParams);
-//                rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
-//
-//                node = scene->createNode();
-//                renderer = node->addComponent<MeshRenderer>();
-//                renderer->setMesh(mesh);
-//                renderer->setMaterial(0, mat);
-//                node->getComponent<Transform>()->setLocalPosition(Vector3(-1.5f, -5, 0));
-//
-//                // TODO move this to a separate demo
-//                rigidBodyParams = RigidBodyConstructionParameters();
-//                rigidBodyParams.mass = 0;
-//                rigidBody = node->addComponent<RigidBody>(rigidBodyParams);
-//                rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
-//            });
-//        });
-//    }
 
 private:
     Scene* scene = nullptr;
