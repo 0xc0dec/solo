@@ -9,6 +9,7 @@ An engine for my personal graphics/gamedev experiments, not meant for anything s
 * Render to texture.
 * Convenient system for applying post-processing effects.
 * Basic text rendering.
+* Basic physics.
 
 ## Screenshots
 
