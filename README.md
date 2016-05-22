@@ -20,6 +20,7 @@ An engine for my personal graphics/gamedev experiments, not meant for anything s
 
 ## Made possible thanks to
 * async++
+* Bullet
 * GLEW
 * Lua
 * lua-intf
