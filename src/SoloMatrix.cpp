@@ -97,6 +97,7 @@ auto Matrix::createLookAt(const Vector3& eye, const Vector3& target, const Vecto
 }
 
 
+// TODO fov in Radians
 auto Matrix::createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane) -> Matrix
 {
     auto f_n = 1.0f / (zFarPlane - zNearPlane);
