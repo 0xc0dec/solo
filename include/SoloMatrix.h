@@ -28,7 +28,7 @@ namespace solo
         bool isIdentity() const;
 
         static auto createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up) -> Matrix;
-        static auto createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane) -> Matrix;
+        static auto createPerspective(const Radian& fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane) -> Matrix;
         static auto createOrthographic(float width, float height, float zNearPlane, float zFarPlane) -> Matrix;
         static auto createOrthographicOffCenter(float left, float right, float bottom, float top, float near, float far) -> Matrix;
         static auto createReflection(const Plane& plane) -> Matrix;

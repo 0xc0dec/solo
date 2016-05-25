@@ -97,13 +97,12 @@ auto Matrix::createLookAt(const Vector3& eye, const Vector3& target, const Vecto
 }
 
 
-// TODO fov in Radians
-auto Matrix::createPerspective(float fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane) -> Matrix
+auto Matrix::createPerspective(const Radian& fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane) -> Matrix
 {
     auto f_n = 1.0f / (zFarPlane - zNearPlane);
-    auto theta = Math::degToRad(fieldOfView) * 0.5f;
+    auto theta = fieldOfView.getRawRadians() * 0.5f;
     SL_DEBUG_FMT_THROW_IF(Math::approxZero(fmod(theta, Math::piOver2), Math::smallFloat1),
-        InvalidInputException, "Invalid field of view value ", fieldOfView, " caused attempted tan calculation, which is undefined");
+        InvalidInputException, "Invalid field of view value ", fieldOfView.getRawDegrees(), " caused attempted tan calculation, which is undefined");
 
     auto divisor = tan(theta);
     auto factor = 1.0f / divisor;

@@ -2,6 +2,8 @@
 #include "SoloNode.h"
 #include "SoloDevice.h"
 #include "SoloFrameBuffer.h"
+#include "SoloRadian.h"
+#include "SoloDegree.h"
 
 using namespace solo;
 
@@ -16,7 +18,8 @@ const uint32_t DirtyBitInverseViewProjection = 16;
 Camera::Camera(const Node& node):
     ComponentBase(node),
     device(Device::get()),
-    renderer(Device::get()->getRenderer())
+    renderer(Device::get()->getRenderer()),
+    fov(Degree(60))
 {
     renderQueue = KnownRenderQueues::Camera;
 }
@@ -59,7 +62,7 @@ void Camera::setPerspective(bool perspective)
 }
 
 
-void Camera::setFOV(float fov)
+void Camera::setFOV(const Radian& fov)
 {
     this->fov = fov;
     dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection;

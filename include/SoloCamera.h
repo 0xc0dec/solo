@@ -14,6 +14,7 @@ namespace solo
     class FrameBuffer;
     class Renderer;
     class Device;
+    struct Radian;
 
     class Camera final: public ComponentBase<Camera>, protected TransformCallback
     {
@@ -47,8 +48,8 @@ namespace solo
         auto getFar() const -> float;
         void setFar(float far);
 
-        auto getFOV() const -> float;
-        void setFOV(float fov);
+        auto getFOV() const -> Radian;
+        void setFOV(const Radian& fov);
 
         auto getWidth() const -> float;
         void setWidth(float width);
@@ -83,7 +84,7 @@ namespace solo
         bool viewportSet = false;
 
         Vector4 clearColor{ 0, 0, 0, 1 };
-        float fov = 60;
+        Radian fov;
         float nearClip = 1;
         float farClip = 100;
         float width = 1;
@@ -117,7 +118,7 @@ namespace solo
         return farClip;
     }
 
-    inline auto Camera::getFOV() const -> float
+    inline auto Camera::getFOV() const -> Radian
     {
         return fov;
     }
