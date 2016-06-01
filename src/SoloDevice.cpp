@@ -14,7 +14,60 @@
 using namespace solo;
 
 
+// The whole system is made as singleton for the sake of coding convenience.
+// For instance, to make resource creation look like Resource::create(args)
+// instead of device->getResourceManager()->createResource(args)
 uptr<Device> Device::instance = nullptr;
+
+
+auto DeviceCreationArgs::withMode(DeviceMode mode) -> DeviceCreationArgs&
+{
+    this->mode = mode;
+    return *this;
+}
+
+
+auto DeviceCreationArgs::withDimensions(uint32_t canvasWidth, uint32_t canvasHeight) -> DeviceCreationArgs&
+{
+    this->canvasWidth = canvasWidth;
+    this->canvasHeight = canvasHeight;
+    return *this;
+}
+
+
+auto DeviceCreationArgs::withFullScreen(bool fullScreen) -> DeviceCreationArgs&
+{
+    this->fullScreen = fullScreen;
+    return *this;
+}
+
+
+auto DeviceCreationArgs::withWindowTitle(const std::string& title) -> DeviceCreationArgs&
+{
+    windowTitle = title;
+    return *this;
+}
+
+
+auto DeviceCreationArgs::withBitsPerPixel(uint32_t bits) -> DeviceCreationArgs&
+{
+    this->bits = bits;
+    return *this;
+}
+
+
+auto DeviceCreationArgs::withDepthBits(uint32_t depthBits) -> DeviceCreationArgs&
+{
+    this->depth = depthBits;
+    return *this;
+}
+
+
+auto DeviceCreationArgs::withLogPath(const std::string& logPath) -> DeviceCreationArgs&
+{
+    this->logFilePath = logPath;
+    return *this;
+}
 
 
 auto Device::init(const DeviceCreationArgs& args) -> Device*

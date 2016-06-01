@@ -217,6 +217,9 @@
     <ClInclude Include="..\src\platform\bullet\SoloBulletRigidBody.h">
       <Filter>src\platform\bullet</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloDeviceCreationArgs.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloScene.cpp">

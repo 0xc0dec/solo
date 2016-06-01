@@ -2,6 +2,7 @@
 
 #include "SoloBase.h"
 #include "SoloVector2.h"
+#include "SoloDeviceCreationArgs.h"
 #include <unordered_map>
 #include <unordered_set>
 
@@ -45,18 +46,6 @@ namespace solo
         Stub,
         OpenGL,
         Vulkan
-    };
-
-    struct DeviceCreationArgs
-    {
-        DeviceMode mode = DeviceMode::Stub;
-        uint32_t canvasWidth = 800;
-        uint32_t canvasHeight = 600;
-        bool fullScreen = false;
-        std::string windowTitle;
-        uint32_t bits = 32;
-        uint32_t depth = 24;
-        std::string logFilePath;
     };
 
     class DeviceToken
