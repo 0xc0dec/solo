@@ -51,14 +51,14 @@ auto DeviceCreationArgs::withWindowTitle(const std::string& title) -> DeviceCrea
 
 auto DeviceCreationArgs::withBitsPerPixel(uint32_t bits) -> DeviceCreationArgs&
 {
-    this->bits = bits;
+    this->pixelBits = bits;
     return *this;
 }
 
 
 auto DeviceCreationArgs::withDepthBits(uint32_t depthBits) -> DeviceCreationArgs&
 {
-    this->depth = depthBits;
+    this->depthBits = depthBits;
     return *this;
 }
 

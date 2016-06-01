@@ -15,8 +15,8 @@ namespace solo
         uint32_t canvasHeight = 600;
         bool fullScreen = false;
         std::string windowTitle;
-        uint32_t bits = 32;
-        uint32_t depth = 24;
+        uint32_t pixelBits = 32; // TODO fix: this is not used
+        uint32_t depthBits = 24;
         std::string logFilePath;
 
         auto withMode(DeviceMode mode) -> DeviceCreationArgs&;

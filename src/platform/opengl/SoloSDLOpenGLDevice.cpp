@@ -14,7 +14,7 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
         SL_THROW(InternalException, "Failed to initialize device systems");
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, creationArgs.depth);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, creationArgs.depthBits);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
     auto flags = static_cast<uint32_t>(SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
