@@ -56,13 +56,7 @@ public:
 private:
     void initEngine()
     {
-        DeviceCreationArgs args;
-        args.mode = DeviceMode::OpenGL;
-        args.canvasWidth = 1200;
-        args.canvasHeight = 600;
-        args.logFilePath = "demo3.log";
-        device = Device::init(args);
-
+        device = Device::init(DeviceCreationArgs().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogPath("demo3.log"));
         scene = device->getScene();
         loader = device->getAssetLoader();
     }
