@@ -15,7 +15,10 @@ namespace solo
         uint32_t canvasHeight = 600;
         bool fullScreen = false;
         std::string windowTitle;
-        uint32_t pixelBits = 32; // TODO fix: this is not used
+        uint32_t redBits = 5;
+        uint32_t greenBits = 5;
+        uint32_t blueBits = 5;
+        uint32_t alphaBits = 0;
         uint32_t depthBits = 24;
         std::string logFilePath;
 
@@ -23,7 +26,7 @@ namespace solo
         auto withDimensions(uint32_t canvasWidth, uint32_t canvasHeight) -> DeviceCreationArgs&;
         auto withFullScreen(bool fullScreen) -> DeviceCreationArgs&;
         auto withWindowTitle(const std::string& title) -> DeviceCreationArgs&;
-        auto withBitsPerPixel(uint32_t bits) -> DeviceCreationArgs&;
+        auto withColorBits(uint32_t redBits, uint32_t greenBits, uint32_t blueBits, uint32_t alphaBits) -> DeviceCreationArgs&;
         auto withDepthBits(uint32_t depthBits) -> DeviceCreationArgs&;
         auto withLogPath(const std::string& logPath) -> DeviceCreationArgs&;
     };

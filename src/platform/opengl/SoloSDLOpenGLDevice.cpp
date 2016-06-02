@@ -14,6 +14,10 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
         SL_THROW(InternalException, "Failed to initialize device systems");
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, creationArgs.redBits);
+    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, creationArgs.greenBits);
+    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, creationArgs.blueBits);
+    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, creationArgs.alphaBits);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, creationArgs.depthBits);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 

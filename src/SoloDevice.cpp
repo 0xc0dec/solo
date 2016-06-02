@@ -49,9 +49,12 @@ auto DeviceCreationArgs::withWindowTitle(const std::string& title) -> DeviceCrea
 }
 
 
-auto DeviceCreationArgs::withBitsPerPixel(uint32_t bits) -> DeviceCreationArgs&
+auto DeviceCreationArgs::withColorBits(uint32_t redBits, uint32_t greenBits, uint32_t blueBits, uint32_t alphaBits) -> DeviceCreationArgs&
 {
-    this->pixelBits = bits;
+    this->redBits = redBits;
+    this->greenBits = greenBits;
+    this->blueBits = blueBits;
+    this->alphaBits = alphaBits;
     return *this;
 }
 
