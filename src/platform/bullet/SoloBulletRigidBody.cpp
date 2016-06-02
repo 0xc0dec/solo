@@ -55,6 +55,7 @@ BulletRigidBody::BulletRigidBody(const Node& node, const RigidBodyConstructionPa
     info.m_angularDamping = parameters.angularDamping;
 
     body = std::make_unique<btRigidBody>(info);
+    body->setUserPointer(this);
 }
 
 

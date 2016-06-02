@@ -57,6 +57,7 @@ namespace solo
         auto getWorldPosition() const -> Vector3;
         auto getLocalPosition() const -> Vector3;
 
+        // TODO world* versions
         auto getLocalUp() const -> Vector3;
         auto getLocalDown() const -> Vector3;
         auto getLocalLeft() const -> Vector3;

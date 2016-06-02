@@ -29,6 +29,25 @@ void BulletPhysics::setGravity(const Vector3& gravity)
 }
 
 
+auto BulletPhysics::castRay(const Vector3& from, const Vector3& to) -> RaycastResult
+{
+    auto btFrom = SL_TOBTVEC3(from);
+    auto btTo = SL_TOBTVEC3(to);
+    btCollisionWorld::ClosestRayResultCallback callback(btFrom, btTo);
+    world->rayTest(btFrom, btTo, callback);
+
+    RaycastResult result;
+    auto rigidBody = dynamic_cast<const btRigidBody*>(callback.m_collisionObject);
+    result.anyHit = rigidBody != nullptr;
+    if (result.anyHit)
+    {
+        result.rigidBody = static_cast<RigidBody*>(rigidBody->getUserPointer());
+        // TODO
+    }
+    return result;
+}
+
+
 auto BulletPhysics::getWorld() const -> btDiscreteDynamicsWorld*
 {
     return world.get();

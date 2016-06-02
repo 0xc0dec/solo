@@ -8,6 +8,13 @@ namespace solo
 {
     class Device;
     class DeviceToken;
+    class RigidBody;
+
+    struct RaycastResult
+    {
+        bool anyHit = false;
+        RigidBody* rigidBody = nullptr;
+    };
 
     class Physics
     {
@@ -20,6 +27,8 @@ namespace solo
         virtual void update() = 0;
 
         virtual void setGravity(const Vector3& gravity) = 0;
+
+        virtual auto castRay(const Vector3& from, const Vector3& to) -> RaycastResult = 0;
 
     protected:
         Physics(Device* device, const DeviceToken&);
