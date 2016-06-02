@@ -22,8 +22,6 @@ An engine for my personal graphics/gamedev experiments, not meant for anything s
 * async++
 * Bullet
 * GLEW
-* Lua
-* lua-intf
 * png
 * SDL
 * stb_truetype
