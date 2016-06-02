@@ -82,9 +82,11 @@ auto Device::init(const DeviceCreationArgs& args) -> Device*
             case DeviceMode::OpenGL:
                 instance = std::make_unique<SDLOpenGLDevice>(args);
                 break;
+#if 0
             case DeviceMode::Vulkan:
                 instance = std::make_unique<SDLVulkanDevice>(args);
                 break;
+#endif
             default:
                 instance = std::make_unique<StubDevice>(args);
                 break;

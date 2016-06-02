@@ -13,8 +13,10 @@ auto Renderer::create(Device* device, const DeviceToken&) -> sptr<Renderer>
     {
         case DeviceMode::OpenGL:
             return std::make_shared<OpenGLRenderer>();
+#if 0
         case DeviceMode::Vulkan:
             return std::make_shared<VulkanRenderer>();
+#endif
         default:
             return std::make_shared<StubRenderer>();
     }
