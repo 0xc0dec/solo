@@ -9,20 +9,20 @@ namespace solo
     public:
         explicit StubDevice(const DeviceCreationArgs& args);
 
-        virtual void setWindowTitle(const std::string& title) override;
-        virtual auto getWindowTitle() const -> std::string override;
+        void setWindowTitle(const std::string& title) override;
+        auto getWindowTitle() const -> std::string override;
 
-        virtual void saveScreenshot(const std::string& path) override {}
+        void saveScreenshot(const std::string& path) override {}
 
-        virtual void setCursorCaptured(bool captured) override;
+        void setCursorCaptured(bool captured) override;
 
-        virtual auto getCanvasSize() const -> Vector2 override;
+        auto getCanvasSize() const -> Vector2 override;
 
-        virtual auto getLifetime() const -> float override;
+        auto getLifetime() const -> float override;
 
     private:
-        virtual void beginUpdate() override;
-        virtual void endUpdate() override;
+        void beginUpdate() override;
+        void endUpdate() override;
 
         std::string windowTitle;
     };

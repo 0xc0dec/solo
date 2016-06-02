@@ -12,9 +12,9 @@ namespace solo
     public:
         static auto create() -> sptr<CubeTexture>;
 
-        virtual void bind() override final;
-        virtual void generateMipmaps() override final;
-        virtual void setWrapping(TextureWrapping wrapping) override final;
+        void bind() override final;
+        void generateMipmaps() override final;
+        void setWrapping(TextureWrapping wrapping) override final;
 
         auto getDepthWrapping() const -> TextureWrapping;
         void setDepthWrapping(TextureWrapping depthWrap);
@@ -24,7 +24,7 @@ namespace solo
     protected:
         CubeTexture();
 
-        virtual void rebuildFlags() override final;
+        void rebuildFlags() override final;
 
         TextureWrapping depthWrapping = TextureWrapping::Repeat;
     };

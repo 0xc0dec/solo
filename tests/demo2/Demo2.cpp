@@ -19,7 +19,7 @@ public:
     {
     }
 
-    virtual void init() override final
+    void init() override final
     {
         auto canvasSize = device->getCanvasSize();
 
@@ -59,12 +59,12 @@ public:
         horizontalBlurMat->setFloatParameter("rightSeparator", 0.75f);
     }
 
-    virtual void terminate() override final
+    void terminate() override final
     {
         node.getComponent<Camera>()->setRenderTarget(nullptr);
     }
 
-    virtual void onAfterCameraRender() override final
+    void onAfterCameraRender() override final
     {
         // bounce between the two frame buffers
         grayscaleMat->setTextureParameter("mainTex", fbTex);
@@ -106,7 +106,7 @@ public:
     {
     }
 
-    virtual void init() override final
+    void init() override final
     {
         const float stitchWidth = 30;
 
@@ -142,7 +142,7 @@ public:
         material->setVector2Parameter("resolution", resolution);
     }
 
-    virtual void terminate() override final
+    void terminate() override final
     {
         auto canvasSize = device->getCanvasSize();
         auto camera = node.getComponent<Camera>();
@@ -150,7 +150,7 @@ public:
         camera->setViewport(0, 0, canvasSize.x, canvasSize.y);
     }
 
-    virtual void onAfterCameraRender() override final
+    void onAfterCameraRender() override final
     {
         graphics->blit(material.get(), nullptr);
     }
@@ -175,7 +175,7 @@ public:
     {
     }
 
-    virtual void update() override final
+    void update() override final
     {
         if (device->isKeyPressed(KeyCode::Digit1, true))
         {

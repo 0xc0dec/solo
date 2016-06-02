@@ -17,7 +17,7 @@ public:
     {
     }
 
-    virtual void getWorldTransform(btTransform& worldTransform) const override final
+    void getWorldTransform(btTransform& worldTransform) const override final
     {
         auto worldPos = transform->getWorldPosition();
         auto rotation = transform->getWorldRotation();
@@ -25,7 +25,7 @@ public:
         worldTransform.setRotation(SL_TOBTQTRN(rotation));
     }
 
-    virtual void setWorldTransform(const btTransform& worldTransform) override final
+    void setWorldTransform(const btTransform& worldTransform) override final
     {
         auto origin = worldTransform.getOrigin();
         auto rotation = worldTransform.getRotation();

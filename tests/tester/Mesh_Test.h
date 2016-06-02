@@ -10,7 +10,7 @@ public:
     {
     }
 
-    virtual void run() override final
+    void run() override final
     {
         test_Defaults();
         test_ChangePrimitiveType();

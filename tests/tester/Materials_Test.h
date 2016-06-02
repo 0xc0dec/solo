@@ -37,7 +37,7 @@ public:
 	{
 	}
 
-	virtual void run() override final
+	void run() override final
 	{
 		test_NormalEffectCompilation();
 		test_FailedEffectCompilation();

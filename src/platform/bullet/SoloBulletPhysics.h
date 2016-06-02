@@ -11,9 +11,9 @@ namespace solo
     public:
         BulletPhysics(Device* device, const DeviceToken& deviceToken);
 
-        virtual void update() override final;
+        void update() override final;
 
-        virtual void setGravity(const Vector3& gravity) override final;
+        void setGravity(const Vector3& gravity) override final;
 
         auto getWorld() const -> btDiscreteDynamicsWorld*;
 

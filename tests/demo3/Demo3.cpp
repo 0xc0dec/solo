@@ -14,7 +14,7 @@ public:
     {
     }
 
-    virtual void init() override final
+    void init() override final
     {
         const int textureWidth = 1024;
         const int textureHeight = 1024;
@@ -27,7 +27,7 @@ public:
         renderer->setFont(font);
     }
 
-    virtual void update() override final
+    void update() override final
     {
         auto nowTimePoint = std::chrono::system_clock::now();
         auto now = std::chrono::system_clock::to_time_t(nowTimePoint);

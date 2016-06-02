@@ -10,7 +10,7 @@ public:
     {
     }
 
-    virtual void run() override final
+    void run() override final
     {
         material = Material::create(Effect::create("1", "2"));
         mesh = Mesh::create();

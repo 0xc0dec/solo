@@ -85,7 +85,7 @@ namespace solo
 
         explicit ComponentBase(const Node& node): Component(node) {}
 
-        virtual auto getTypeId() -> uint32_t override;
+        auto getTypeId() -> uint32_t override;
     };
 
     template <class T>

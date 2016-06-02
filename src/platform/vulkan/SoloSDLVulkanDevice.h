@@ -13,11 +13,11 @@ namespace solo
         explicit SDLVulkanDevice(const DeviceCreationArgs& args);
         virtual ~SDLVulkanDevice();
 
-        virtual void saveScreenshot(const std::string& path) override final;
-        virtual auto getCanvasSize() const -> Vector2 override final;
+        void saveScreenshot(const std::string& path) override final;
+        auto getCanvasSize() const -> Vector2 override final;
 
     protected:
-        virtual void endUpdate() override final;
+        void endUpdate() override final;
 
     private:
         bool selectDepthFormat();

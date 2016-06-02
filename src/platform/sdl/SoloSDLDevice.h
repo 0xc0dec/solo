@@ -9,17 +9,17 @@ namespace solo
     class SDLDevice: public Device
     {
     public:
-        virtual auto getWindowTitle() const->std::string override final;
-        virtual void setWindowTitle(const std::string& title) override final;
+        auto getWindowTitle() const->std::string override final;
+        void setWindowTitle(const std::string& title) override final;
 
-        virtual void setCursorCaptured(bool captured) override final;
+        void setCursorCaptured(bool captured) override final;
 
-        virtual auto getLifetime() const -> float override final;
+        auto getLifetime() const -> float override final;
 
     protected:
         explicit SDLDevice(const DeviceCreationArgs& args);
 
-        virtual void beginUpdate() override final;
+        void beginUpdate() override final;
 
         SDL_Window* window = nullptr;
 
@@ -29,7 +29,6 @@ namespace solo
     private:
         void prepareKeyboardState();
         void prepareMouseState();
-
         void readWindowState();
         void readEvents();
         void processKeyboardEvent(const SDL_Event& evt);

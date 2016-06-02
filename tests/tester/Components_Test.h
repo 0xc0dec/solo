@@ -31,12 +31,12 @@ public:
     {
     }
 
-    virtual void onComponentAdded(Component* cmp) override final
+    void onComponentAdded(Component* cmp) override final
     {
         addedCmp = cmp;
     }
 
-    virtual void onComponentRemoved(Component* cmp) override final
+    void onComponentRemoved(Component* cmp) override final
     {
         removedCmp = cmp;
     }
@@ -54,19 +54,19 @@ public:
     {
     }
 
-    virtual void init() override final
+    void init() override final
     {
         if (initAction)
             initAction();
     }
 
-    virtual void update() override final
+    void update() override final
     {
         if (updateAction)
             updateAction();
     }
 
-    virtual void terminate() override final
+    void terminate() override final
     {
         if (terminateAction)
             terminateAction();
@@ -104,7 +104,7 @@ public:
     {
     }
 
-    virtual void run() override final
+    void run() override final
     {
         test_AddComponents();
         test_AddDerivedComponent_EnsureFoundAsParent();

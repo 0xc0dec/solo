@@ -10,8 +10,8 @@ namespace solo
     public:
         OpenGLEffectRepository() {}
 
-        virtual auto getDefaultSkyboxEffect() -> sptr<Effect> override final;
-        virtual auto getDefaultFontEffect() -> sptr<Effect> override final;
+        auto getDefaultSkyboxEffect() -> sptr<Effect> override final;
+        auto getDefaultFontEffect() -> sptr<Effect> override final;
 
     private:
         sptr<Effect> fontEffect;

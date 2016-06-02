@@ -13,7 +13,7 @@ namespace solo
     public:
         explicit BulletBoxCollider(const Vector3& halfExtents);
 
-        virtual auto getShape() -> btCollisionShape* override final;
+        auto getShape() -> btCollisionShape* override final;
 
     private:
         uptr<btBoxShape> shape;

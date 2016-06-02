@@ -10,7 +10,7 @@ public:
     {
     }
 
-    virtual void run() override final
+    void run() override final
     {
         test_BytesReading();
         test_LinesReading();

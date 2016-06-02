@@ -16,9 +16,9 @@ namespace solo
         BulletRigidBody(const Node& node, const RigidBodyConstructionParameters& parameters);
         virtual ~BulletRigidBody();
 
-        virtual void setCollider(sptr<Collider> collider) override final;
+        void setCollider(sptr<Collider> collider) override final;
 
-        virtual void onTransformChanged(const Transform* transform, uint32_t dirtyFlags) override final;
+        void onTransformChanged(const Transform* transform, uint32_t dirtyFlags) override final;
 
     private:
         void syncScale();

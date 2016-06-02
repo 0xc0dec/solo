@@ -11,12 +11,12 @@ namespace solo
         explicit SDLOpenGLDevice(const DeviceCreationArgs& args);
         virtual ~SDLOpenGLDevice();
 
-        virtual void saveScreenshot(const std::string& path) override final;
+        void saveScreenshot(const std::string& path) override final;
 
-        virtual auto getCanvasSize() const -> Vector2 override final;
+        auto getCanvasSize() const -> Vector2 override final;
 
     private:
-        virtual void endUpdate() override final;
+        void endUpdate() override final;
 
         SDL_GLContext context = nullptr;
     };

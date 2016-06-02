@@ -11,8 +11,8 @@ namespace solo
     public:
         static sptr<RectTexture> create();
 
-        virtual void bind() override final;
-        virtual void generateMipmaps() override final;
+        void bind() override final;
+        void generateMipmaps() override final;
 
         void setData(TextureFormat format, const uint8_t* data, uint32_t width, uint32_t height);
 

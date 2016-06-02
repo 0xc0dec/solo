@@ -18,7 +18,7 @@ public:
     {
     }
 
-    virtual void init() override final
+    void init() override final
     {
         auto effect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.color);
         material = Material::create(effect);
@@ -28,7 +28,7 @@ public:
         material->setVector4Parameter("color", Vector4(1, 1, 0, 1));
     }
 
-    virtual void update() override final
+    void update() override final
     {
         if (Device::get()->isMouseButtonDown(MouseButton::Right, true))
             spawn();

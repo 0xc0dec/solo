@@ -17,12 +17,12 @@ public:
     {
     }
 
-    virtual void init() override final
+    void init() override final
     {
         transform = node.getComponent<Transform>();
     }
 
-    virtual void update() override final
+    void update() override final
     {
         transform->lookAt(targetPos, Vector3::unitY());
     }
@@ -44,7 +44,7 @@ public:
     {
     }
 
-    virtual void update() override final
+    void update() override final
     {
         time += 2 * device->getTimeDelta();
         auto offset = 0.3f * sin(time);

@@ -16,7 +16,7 @@ namespace solo
     public:
         explicit SkyboxRenderer(const Node& node);
 
-        virtual void render(RenderContext& context) override final;
+        void render(RenderContext& context) override final;
 
         void setTexture(sptr<CubeTexture> texture);
         auto getTexture() const -> sptr<CubeTexture>;

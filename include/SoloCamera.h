@@ -21,8 +21,8 @@ namespace solo
     public:
         explicit Camera(const Node& node);
 
-        virtual void init() override final;
-        virtual void terminate() override final;
+        void init() override final;
+        void terminate() override final;
 
         void apply();
         void finish();
@@ -67,7 +67,7 @@ namespace solo
         auto getInverseViewProjectionMatrix() -> const Matrix&;
 
     protected:
-        virtual void onTransformChanged(const Transform*, uint32_t) override;
+        void onTransformChanged(const Transform*, uint32_t) override;
 
         uint32_t dirtyFlags = ~0;
         uint32_t renderTags = ~0;

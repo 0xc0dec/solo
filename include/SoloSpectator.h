@@ -13,8 +13,8 @@ namespace solo
     public:
         explicit Spectator(const Node& node);
 
-        virtual void init() override final;
-        virtual void update() override final;
+        void init() override final;
+        void update() override final;
 
         auto getMovementSpeed() const -> float;
         void setMovementSpeed(float speed);

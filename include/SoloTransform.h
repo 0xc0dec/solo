@@ -37,7 +37,7 @@ namespace solo
     public:
         explicit Transform(const Node& node);
 
-        virtual void init() override final;
+        void init() override final;
 
         void addCallback(TransformCallback* callback);
         void removeCallback(TransformCallback* callback);

@@ -10,7 +10,7 @@ public:
     {
     }
 
-    virtual void run() override final
+    void run() override final
     {
         test_ReserveRelease_HandleCount();
         test_HandleReuse();

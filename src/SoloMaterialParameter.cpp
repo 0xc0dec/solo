@@ -22,12 +22,12 @@ public:
     {
     }
 
-    virtual void setValue(const void* value) override final
+    void setValue(const void* value) override final
     {
         this->value = *reinterpret_cast<const T*>(value);
     }
 
-    virtual void apply(const RenderContext& context) override final
+    void apply(const RenderContext& context) override final
     {
         renderer->setUniform(handle, &value, 1);
     }
@@ -46,12 +46,12 @@ public:
     {
     }
 
-    virtual void setValue(const void* value) override final
+    void setValue(const void* value) override final
     {
         this->value = *reinterpret_cast<const std::vector<T>*>(value);
     }
 
-    virtual void apply(const RenderContext& context) override final
+    void apply(const RenderContext& context) override final
     {
         renderer->setUniform(handle, value.data(), static_cast<uint32_t>(value.size()));
     }
@@ -69,12 +69,12 @@ public:
     {
     }
 
-    virtual void setValue(const void* value) override final
+    void setValue(const void* value) override final
     {
         this->value = *reinterpret_cast<const sptr<Texture>*>(value);
     }
 
-    virtual void apply(const RenderContext& context) override final
+    void apply(const RenderContext& context) override final
     {
         renderer->setUniform(handle, nullptr, 1);
         value->bind();
@@ -93,11 +93,11 @@ public:
     {
     }
 
-    virtual void setValue(const void* value) override final
+    void setValue(const void* value) override final
     {
     }
 
-    virtual void apply(const RenderContext& context) override final
+    void apply(const RenderContext& context) override final
     {
         switch (type)
         {
