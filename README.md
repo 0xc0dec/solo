@@ -1,5 +1,5 @@
 ## About
-An engine for my personal graphics/gamedev experiments, not meant for anything serious. Currently works on top of an OpenGL rendering backend, but isn't tightly coupled to it, so another backend might be introduced in future.
+An engine for my personal graphics/gamedev experiments. Currently uses OpenGL as a rendering backend, additional backends may be introduced in the future.
 
 ## Features
 * Object hierarchies/scene graph.
