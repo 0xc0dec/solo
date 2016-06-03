@@ -29,20 +29,39 @@ void BulletPhysics::setGravity(const Vector3& gravity)
 }
 
 
-auto BulletPhysics::castRay(const Vector3& from, const Vector3& to) -> RaycastResult
+// TODO split into two methods
+auto BulletPhysics::castRay(const Vector3& from, const Vector3& to, bool onlyFirstHit) -> std::vector<RaycastResult>
 {
     auto btFrom = SL_TOBTVEC3(from);
     auto btTo = SL_TOBTVEC3(to);
-    btCollisionWorld::ClosestRayResultCallback callback(btFrom, btTo);
-    world->rayTest(btFrom, btTo, callback);
 
-    RaycastResult result;
-    auto rigidBody = dynamic_cast<const btRigidBody*>(callback.m_collisionObject);
-    result.anyHit = rigidBody != nullptr;
-    if (result.anyHit)
+    if (onlyFirstHit)
     {
-        result.rigidBody = static_cast<RigidBody*>(rigidBody->getUserPointer());
-        // TODO
+        btCollisionWorld::ClosestRayResultCallback callback(btFrom, btTo);
+        world->rayTest(btFrom, btTo, callback);
+        if (!callback.hasHit())
+            return {};
+        auto body = dynamic_cast<const btRigidBody*>(callback.m_collisionObject);
+        if (!body)
+            return {};
+        auto rigidBody = static_cast<RigidBody*>(body->getUserPointer());
+        return { RaycastResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld), SL_FROMBTVEC3(callback.m_hitNormalWorld)) };
+    }
+
+    btCollisionWorld::AllHitsRayResultCallback callback(btFrom, btTo);
+    world->rayTest(btFrom, btTo, callback);
+    auto size = callback.m_collisionObjects.size();
+    if (size == 0)
+        return {};
+
+    auto result = std::vector<RaycastResult>();
+    for (size_t i = 0; i < size; i++)
+    {
+        auto body = dynamic_cast<const btRigidBody*>(callback.m_collisionObject);
+        if (!body)
+            continue;
+        auto rigidBody = static_cast<RigidBody*>(body->getUserPointer());
+        result.push_back(RaycastResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld[i]), SL_FROMBTVEC3(callback.m_hitNormalWorld[i])));
     }
     return result;
 }

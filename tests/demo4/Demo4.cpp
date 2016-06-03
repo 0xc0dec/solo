@@ -9,20 +9,27 @@ using namespace solo;
 class SpawnedObject: public ComponentBase<SpawnedObject>
 {
 public:
-    explicit SpawnedObject(const Node& node, sptr<Material> material, sptr<Mesh> mesh,
+    explicit SpawnedObject(const Node& node, sptr<Effect> effect, sptr<Mesh> mesh,
         const Vector3& initialPos, const Quaternion& initialRotation):
         ComponentBase<SpawnedObject>(node),
+        device(Device::get()),
         scene(node.getScene()),
         initialPos(initialPos),
         initialRotation(initialRotation),
-        material(material),
         mesh(mesh)
     {
+        material = Material::create(effect);
+        material->setFaceCull(FaceCull::All);
+        material->setPolygonMode(PolygonMode::Wireframe);
+        material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
+        material->setVector4Parameter("color", Vector4(1, 1, 0, 1));
     }
 
-    void setColor(const Vector4& color)
+    void setActive()
     {
-        material->setVector4Parameter("color", color);
+        setColor(Vector4(1, 0, 0, 1));
+        active = true;
+        activeTimer = 0;
     }
 
     void init() override
@@ -43,12 +50,32 @@ public:
         rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
     }
 
+    void update() override
+    {
+        if (!active)
+            return;
+        activeTimer += device->getTimeDelta();
+        if (activeTimer >= 0.2f)
+        {
+            setColor(Vector4(1, 1, 0, 1));
+            active = false;
+        }
+    }
+
 private:
+    void setColor(const Vector4& color)
+    {
+        material->setVector4Parameter("color", color);
+    }
+
+    Device* device;
     Scene* scene;
     Vector3 initialPos;
     Quaternion initialRotation;
     sptr<Material> material;
     sptr<Mesh> mesh;
+    bool active = false;
+    float activeTimer = 0;
 };
 
 
@@ -68,19 +95,17 @@ public:
 
     void update() override
     {
-        auto result = physics->castRay(
+        auto hitResults = physics->castRay(
             transform->getWorldPosition(),
-            transform->getWorldPosition() + transform->getLocalForward() * 100);
+            transform->getWorldPosition() + transform->getLocalForward() * 100,
+            false);
 
-        auto obj = result.rigidBody ? result.rigidBody->getNode().findComponent<SpawnedObject>() : nullptr;
-        if (obj == prevObj)
-            return;
-
-        if (prevObj)
-            prevObj->setColor(normalColor);
-        if (obj)
-            obj->setColor(activeColor);
-        prevObj = obj;
+        for (const auto& result : hitResults)
+        {
+            auto obj = result.body->getNode().findComponent<SpawnedObject>();
+            if (obj)
+                obj->setActive();
+        }
     }
 
 private:
@@ -88,7 +113,6 @@ private:
     Vector4 activeColor = Vector4(1, 0, 0, 1);
     Physics* physics = nullptr;
     Transform* transform = nullptr;
-    SpawnedObject* prevObj = nullptr;
 };
 
 
@@ -106,12 +130,7 @@ public:
 
     void init() override final
     {
-        auto effect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.color);
-        material = Material::create(effect);
-        material->setFaceCull(FaceCull::All);
-        material->setPolygonMode(PolygonMode::Wireframe);
-        material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
-        material->setVector4Parameter("color", Vector4(1, 1, 0, 1));
+        effect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.color);
     }
 
     void update() override final
@@ -125,7 +144,7 @@ private:
     {
         auto initialPos = transform->getLocalPosition() + transform->getLocalForward() * 2;
         auto initialRotation = transform->getLocalRotation();
-        scene->createNode()->addComponent<SpawnedObject>(material, mesh, initialPos, initialRotation);
+        scene->createNode()->addComponent<SpawnedObject>(effect, mesh, initialPos, initialRotation);
     }
 
     Device* device;
@@ -133,6 +152,7 @@ private:
     Transform* transform;
     sptr<Material> material;
     sptr<Mesh> mesh;
+    sptr<Effect> effect;
 };
 
 

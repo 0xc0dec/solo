@@ -2,6 +2,7 @@
 
 #include "SoloBase.h"
 #include "SoloVector3.h"
+#include <vector>
 
 
 namespace solo
@@ -12,8 +13,14 @@ namespace solo
 
     struct RaycastResult
     {
-        bool anyHit = false;
-        RigidBody* rigidBody = nullptr;
+        RigidBody* body;
+        Vector3 point;
+        Vector3 normal;
+
+        RaycastResult(RigidBody* body = nullptr, const Vector3& point = Vector3::zero(), const Vector3& normal = Vector3::zero()):
+            body(body), point(point), normal(normal)
+        {
+        }
     };
 
     class Physics
@@ -28,7 +35,7 @@ namespace solo
 
         virtual void setGravity(const Vector3& gravity) = 0;
 
-        virtual auto castRay(const Vector3& from, const Vector3& to) -> RaycastResult = 0;
+        virtual auto castRay(const Vector3& from, const Vector3& to, bool onlyFirstHit) -> std::vector<RaycastResult> = 0;
 
     protected:
         Physics(Device* device, const DeviceToken&);
