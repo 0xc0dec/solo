@@ -35,7 +35,8 @@ namespace solo
 
         virtual void setGravity(const Vector3& gravity) = 0;
 
-        virtual auto castRay(const Vector3& from, const Vector3& to, bool onlyFirstHit) -> std::vector<RaycastResult> = 0;
+        virtual auto castRay(const Vector3& from, const Vector3& to) -> RaycastResult = 0;
+        virtual auto castRayAll(const Vector3& from, const Vector3& to) -> std::vector<RaycastResult> = 0;
 
     protected:
         Physics(Device* device, const DeviceToken&);

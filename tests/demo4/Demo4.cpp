@@ -95,10 +95,9 @@ public:
 
     void update() override
     {
-        auto hitResults = physics->castRay(
+        auto hitResults = physics->castRayAll(
             transform->getWorldPosition(),
-            transform->getWorldPosition() + transform->getLocalForward() * 100,
-            false);
+            transform->getWorldPosition() + transform->getLocalForward() * 100);
 
         for (const auto& result : hitResults)
         {

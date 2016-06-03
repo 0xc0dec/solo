@@ -29,24 +29,29 @@ void BulletPhysics::setGravity(const Vector3& gravity)
 }
 
 
-// TODO split into two methods
-auto BulletPhysics::castRay(const Vector3& from, const Vector3& to, bool onlyFirstHit) -> std::vector<RaycastResult>
+auto BulletPhysics::castRay(const Vector3& from, const Vector3& to) -> RaycastResult
 {
     auto btFrom = SL_TOBTVEC3(from);
     auto btTo = SL_TOBTVEC3(to);
 
-    if (onlyFirstHit)
-    {
-        btCollisionWorld::ClosestRayResultCallback callback(btFrom, btTo);
-        world->rayTest(btFrom, btTo, callback);
-        if (!callback.hasHit())
-            return {};
-        auto body = dynamic_cast<const btRigidBody*>(callback.m_collisionObject);
-        if (!body)
-            return {};
-        auto rigidBody = static_cast<RigidBody*>(body->getUserPointer());
-        return { RaycastResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld), SL_FROMBTVEC3(callback.m_hitNormalWorld)) };
-    }
+    btCollisionWorld::ClosestRayResultCallback callback(btFrom, btTo);
+    world->rayTest(btFrom, btTo, callback);
+    if (!callback.hasHit())
+        return {};
+
+    auto body = dynamic_cast<const btRigidBody*>(callback.m_collisionObject);
+    if (!body)
+        return {};
+
+    auto rigidBody = static_cast<RigidBody*>(body->getUserPointer());
+    return { RaycastResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld), SL_FROMBTVEC3(callback.m_hitNormalWorld)) };
+}
+
+
+auto BulletPhysics::castRayAll(const Vector3& from, const Vector3& to) -> std::vector<RaycastResult>
+{
+    auto btFrom = SL_TOBTVEC3(from);
+    auto btTo = SL_TOBTVEC3(to);
 
     btCollisionWorld::AllHitsRayResultCallback callback(btFrom, btTo);
     world->rayTest(btFrom, btTo, callback);
@@ -63,6 +68,7 @@ auto BulletPhysics::castRay(const Vector3& from, const Vector3& to, bool onlyFir
         auto rigidBody = static_cast<RigidBody*>(body->getUserPointer());
         result.push_back(RaycastResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld[i]), SL_FROMBTVEC3(callback.m_hitNormalWorld[i])));
     }
+
     return result;
 }
 
