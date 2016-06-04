@@ -63,13 +63,12 @@ auto AssetLoader::loadRectTextureAsync(const std::string& path) -> sptr<AsyncHan
     auto loader = getImageLoader(path);
     async::spawn([=]
     {
-        auto uimage = loader->load(path);
-        sptr<Image> simage { std::move(uimage) };
+        auto image = loader->load(path);
         auto lock = this->tasksLock.acquire();
         this->tasks.push_back([=]()
         {
             auto texture = RectTexture::create();
-            texture->setData(simage->colorFormat, simage->data.data(), simage->width, simage->height);
+            texture->setData(image->colorFormat, image->data.data(), image->width, image->height);
             handle->putResult(texture);
         });
     });
@@ -149,12 +148,11 @@ auto AssetLoader::loadMeshAsync(const std::string& path) -> sptr<AsyncHandle<Mes
     async::spawn([=]
     {
         auto data = loader->loadData(path);
-        sptr<MeshData> sharedData{ std::move(data) };
         auto lock = this->tasksLock.acquire();
         this->tasks.push_back([=]()
         {
             // This is later called in the update() method
-            auto mesh = Mesh::create(sharedData.get());
+            auto mesh = Mesh::create(data.get());
             handle->putResult(mesh);
         });
     });
