@@ -11,35 +11,37 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/include
-    ${PROJECT_SOURCE_DIR}/vendor/lua/5.3.1
-    ${PROJECT_SOURCE_DIR}/vendor/LuaIntf
     ${PROJECT_SOURCE_DIR}/vendor/glew/include
     ${PROJECT_SOURCE_DIR}/vendor/SDL/2.0.4/include
     ${PROJECT_SOURCE_DIR}/vendor/png/include
     ${PROJECT_SOURCE_DIR}/vendor/zlib/include
-    ${PROJECT_SOURCE_DIR}/vendor/async++/include)
-
-# Lua
-
-file(GLOB_RECURSE lua_sources "vendor/lua/5.3.1/*.c")
-set_source_files_properties(${lua_sources} PROPERTIES LANGUAGE CXX)
-add_library(lua STATIC ${lua_sources})
+    ${PROJECT_SOURCE_DIR}/vendor/async++/include
+    ${PROJECT_SOURCE_DIR}/vendor/bullet/2.83.7
+    ${PROJECT_SOURCE_DIR}/vendor/stb/truetype/1.11
+)
 
 # Engine
 
 file(GLOB_RECURSE sources
     "src/*.cpp"
-    "src/platform/*.cpp"
     "src/platform/stub/.cpp"
+    "src/platform/sdl/.cpp"
     "src/platform/opengl/.cpp"
-    "src/scripting/lua/*.cpp"
+    "src/platform/bullet/.cpp"
 )
 
 file(GLOB_RECURSE glew_sources "vendor/glew/src/*.c")
 file(GLOB_RECURSE png_sources "vendor/png/src/*.c")
 file(GLOB_RECURSE zlib_sources "vendor/zlib/src/*.c")
 file(GLOB_RECURSE asyncpp_sources "vendor/async++/src/*.cpp")
-
+file(GLOB_RECURSE bullet_sources
+    "vendor/bullet/2.83.7/BulletCollision/*.cpp"
+    "vendor/bullet/2.83.7/BulletDynamics/ConstraintSolver/*.cpp"
+    "vendor/bullet/2.83.7/BulletDynamics/Dynamics/*.cpp"
+    "vendor/bullet/2.83.7/BulletDynamics/MLCPSolvers/*.cpp"
+    "vendor/bullet/2.83.7/BulletDynamics/Vehicle/*.cpp"
+    "vendor/bullet/2.83.7/LinearMath/*.cpp"
+)
 file(GLOB sdl_sources
     "vendor/SDL/2.0.4/src/*.c"
     "vendor/SDL/2.0.4/src/atomic/*.c"
@@ -95,11 +97,34 @@ set(frameworks
     ${opengl_lib}
     ${corefoundation_lib})
 
-add_library(solo STATIC ${sdl_sources} ${glew_sources} ${png_sources} ${zlib_sources} ${asyncpp_sources} ${sources})
-target_link_libraries(solo lua ${frameworks})
+add_library(solo STATIC
+        ${sdl_sources}
+        ${glew_sources}
+        ${png_sources}
+        ${zlib_sources}
+        ${asyncpp_sources}
+        ${bullet_sources}
+        ${sources})
+target_link_libraries(solo ${frameworks})
 
-# Tester
+# Tests
 
 file(GLOB_RECURSE tester_sources "tests/tester/*.cpp")
 add_executable(Tester ${tester_sources} tests)
 target_link_libraries(Tester LINK_PUBLIC solo)
+
+file(GLOB_RECURSE demo1_sources "tests/demo1/*.cpp")
+add_executable(Demo1 ${demo1_sources} tests)
+target_link_libraries(Demo1 LINK_PUBLIC solo)
+
+file(GLOB_RECURSE demo2_sources "tests/demo2/*.cpp")
+add_executable(Demo2 ${demo2_sources} tests)
+target_link_libraries(Demo2 LINK_PUBLIC solo)
+
+file(GLOB_RECURSE demo3_sources "tests/demo3/*.cpp")
+add_executable(Demo3 ${demo3_sources} tests)
+target_link_libraries(Demo3 LINK_PUBLIC solo)
+
+file(GLOB_RECURSE demo4_sources "tests/demo4/*.cpp")
+add_executable(Demo4 ${demo4_sources} tests)
+target_link_libraries(Demo4 LINK_PUBLIC solo)
