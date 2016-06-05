@@ -134,7 +134,7 @@ public:
 
     void update() override final
     {
-        if (Device::get()->isMouseButtonDown(MouseButton::Right, true))
+        if (device->isKeyPressed(KeyCode::Space, true))
             spawn();
     }
 
