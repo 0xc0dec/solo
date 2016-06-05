@@ -14,4 +14,3 @@ build*
 blend1
 .gitignore~
 ..gitignore.un~
-*.obj
