@@ -105,14 +105,15 @@ auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string>& sidesPath
         auto path = sidesPaths[i];
         imageTasks.push_back(async::spawn([=]
         {
-            return sptr<Image>{ loader->load(path) }; // making it shared simplifies tasks management
+            return loader->load(path);
         }));
     }
 
     async::when_all(imageTasks.begin(), imageTasks.end()).then([=] (std::vector<async::task<sptr<Image>>> imageTasks)
     {
         std::vector<sptr<Image>> images;
-        std::transform(imageTasks.begin(), imageTasks.end(), std::back_inserter(images), [](async::task<sptr<Image>>& t) { return t.get(); });
+        std::transform(imageTasks.begin(), imageTasks.end(), std::back_inserter(images),
+                       [](async::task<sptr<Image>>& t) { return t.get(); });
 
         auto lock = this->tasksLock.acquire();
         this->tasks.push_back(std::bind([=] (const std::vector<sptr<Image>>& images)
