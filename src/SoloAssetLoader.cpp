@@ -64,7 +64,7 @@ auto AssetLoader::loadRectTextureAsync(const std::string& path) -> sptr<AsyncHan
     async::spawn([=]
     {
         auto image = loader->load(path);
-        auto lock = this->tasksLock.acquire();
+        volatile auto lock = this->tasksLock.acquire();
         this->tasks.push_back([=]()
         {
             auto texture = RectTexture::create();
@@ -115,7 +115,7 @@ auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string>& sidesPath
         std::transform(imageTasks.begin(), imageTasks.end(), std::back_inserter(images),
                        [](async::task<sptr<Image>>& t) { return t.get(); });
 
-        auto lock = this->tasksLock.acquire();
+        volatile auto lock = this->tasksLock.acquire();
         this->tasks.push_back(std::bind([=] (const std::vector<sptr<Image>>& images)
         {
             auto texture = CubeTexture::create();
@@ -149,7 +149,7 @@ auto AssetLoader::loadMeshAsync(const std::string& path) -> sptr<AsyncHandle<Mes
     async::spawn([=]
     {
         auto data = loader->loadData(path);
-        auto lock = this->tasksLock.acquire();
+        volatile auto lock = this->tasksLock.acquire();
         this->tasks.push_back([=]()
         {
             // This is later called in the update() method
@@ -166,7 +166,7 @@ void AssetLoader::update()
 {
     if (!tasks.empty())
     {
-        auto lt = tasksLock.acquire();
+        volatile auto lt = tasksLock.acquire();
         if (!tasks.empty())
         {
             auto func = std::move(tasks.back());
