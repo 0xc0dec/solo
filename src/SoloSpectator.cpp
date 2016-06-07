@@ -3,6 +3,8 @@
 #include "SoloDevice.h"
 #include "SoloRadian.h"
 
+#include <iostream>
+
 using namespace solo;
 
 
@@ -34,7 +36,22 @@ void Spectator::update()
         if (mouseMotion.x != 0)
             transform->rotate(Vector3::unitY(), Radian(verticalRotationSpeed * dt * -mouseMotion.x), TransformSpace::World);
         if (mouseMotion.y != 0)
-            transform->rotate(Vector3::unitX(), Radian(horizontalRotationSpeed * dt * -mouseMotion.y), TransformSpace::Self);
+        {
+            auto angleToUp = Vector3::angle(transform->getLocalForward(), Vector3::unitY()).getRawRadians();
+            auto delta = horizontalRotationSpeed * dt * -mouseMotion.y;
+            if (delta > 0)
+            {
+                if (angleToUp - delta <= 0.1f)
+                    delta = angleToUp - 0.1f;
+            }
+            else
+            {
+                if (angleToUp - delta >= 3.04f)
+                    delta = angleToUp - 3.04f;
+            }
+
+            transform->rotate(Vector3::unitX(), Radian(delta), TransformSpace::Self);
+        }
     }
 
     auto movement = Vector3::zero();
