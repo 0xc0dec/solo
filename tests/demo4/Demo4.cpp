@@ -44,8 +44,10 @@ public:
 
         auto rigidBodyParams = RigidBodyConstructionParameters();
         rigidBodyParams.mass = 10;
-        rigidBodyParams.restitution = 0.01f;
-        rigidBodyParams.friction = 0.01f;
+        rigidBodyParams.restitution = 0.5f;
+        rigidBodyParams.friction = 0.1f;
+        rigidBodyParams.linearDamping = 0.1f;
+        rigidBodyParams.angularDamping = 0.1f;
         auto rigidBody = node.addComponent<RigidBody>(rigidBodyParams);
         rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
     }
