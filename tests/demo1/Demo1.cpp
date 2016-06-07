@@ -47,7 +47,7 @@ public:
     void update() override final
     {
         time += 2 * device->getTimeDelta();
-        auto offset = 0.3f * sin(time);
+        auto offset = 0.3f * sinf(time);
         data[2] = offset;
         data[7] = -offset;
         data[12] = offset;
