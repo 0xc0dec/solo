@@ -52,7 +52,15 @@ static std::unordered_map<SDL_Keycode, KeyCode> keymap =
     { SDLK_ESCAPE, KeyCode::Escape },
 
     { SDLK_SPACE, KeyCode::Space },
-    { SDLK_BACKSPACE, KeyCode::Backspace }
+    { SDLK_BACKSPACE, KeyCode::Backspace },
+    { SDLK_RETURN, KeyCode::Return },
+
+    { SDLK_LSHIFT, KeyCode::LeftShift },
+    { SDLK_LALT, KeyCode::LeftAlt },
+    { SDLK_LCTRL, KeyCode::LeftCtrl },
+    { SDLK_RSHIFT, KeyCode::RightShift },
+    { SDLK_RALT, KeyCode::RightAlt },
+    { SDLK_RCTRL, KeyCode::RightCtrl }
     // TODO
 };
 
