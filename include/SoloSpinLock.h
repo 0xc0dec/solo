@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SoloBase.h"
 #include <atomic>
 
 
@@ -11,6 +12,8 @@ namespace solo
         class LockToken
         {
         public:
+            SL_NONCOPYABLE(LockToken)
+
             LockToken(std::atomic_flag& flag) : flagRef(flag)
             {
             }
@@ -29,6 +32,7 @@ namespace solo
             flag.clear(std::memory_order_release);
         }
 
+        // TODO do this in constructor and remove LockToken?
         auto acquire()
         {
             while (flag.test_and_set(std::memory_order_acquire)) {}
