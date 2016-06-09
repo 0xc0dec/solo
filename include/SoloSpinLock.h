@@ -12,8 +12,6 @@ namespace solo
         class LockToken
         {
         public:
-            SL_NONCOPYABLE(LockToken)
-
             LockToken(std::atomic_flag& flag) : flagRef(flag)
             {
             }
@@ -21,6 +19,7 @@ namespace solo
             ~LockToken()
             {
                 flagRef.clear();
+
             }
 
         private:

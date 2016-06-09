@@ -101,7 +101,7 @@ auto Transform::getWorldScale() const -> Vector3
 
 auto Transform::getLocalRotation() const -> Quaternion
 {
-    return getMatrix().getRotation();
+    return localRotation;
 }
 
 
