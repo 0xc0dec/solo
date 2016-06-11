@@ -110,23 +110,23 @@ target_link_libraries(solo ${frameworks})
 # Tests
 
 file(GLOB_RECURSE tester_sources "tests/tester/*.cpp")
-add_executable(Tester ${tester_sources} tests)
+add_executable(Tester ${tester_sources})
 target_link_libraries(Tester LINK_PUBLIC solo)
 
 # Demos
 
 file(GLOB_RECURSE demo1_sources "demos/demo1/*.cpp")
-add_executable(Demo1 ${demo1_sources} demos)
+add_executable(Demo1 ${demo1_sources})
 target_link_libraries(Demo1 LINK_PUBLIC solo)
 
 file(GLOB_RECURSE demo2_sources "demos/demo2/*.cpp")
-add_executable(Demo2 ${demo2_sources} demos)
+add_executable(Demo2 ${demo2_sources})
 target_link_libraries(Demo2 LINK_PUBLIC solo)
 
 file(GLOB_RECURSE demo3_sources "demos/demo3/*.cpp")
-add_executable(Demo3 ${demo3_sources} demos)
+add_executable(Demo3 ${demo3_sources})
 target_link_libraries(Demo3 LINK_PUBLIC solo)
 
 file(GLOB_RECURSE demo4_sources "demos/demo4/*.cpp")
-add_executable(Demo4 ${demo4_sources} demos)
+add_executable(Demo4 ${demo4_sources})
 target_link_libraries(Demo4 LINK_PUBLIC solo)
