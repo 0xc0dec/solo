@@ -77,13 +77,13 @@ auto AssetLoader::loadRectTextureAsync(const std::string& path) -> sptr<AsyncHan
 }
 
 
-auto AssetLoader::loadCubeTexture(const std::vector<std::string>& sidesPaths) -> sptr<CubeTexture>
+auto AssetLoader::loadCubeTexture(const std::vector<std::string>& sidePaths) -> sptr<CubeTexture>
 {
     auto result = CubeTexture::create();
-    auto loader = getImageLoader(sidesPaths[0]);
+    auto loader = getImageLoader(sidePaths[0]);
 
     auto idx = 0;
-    for (const auto& path : sidesPaths)
+    for (const auto& path : sidePaths)
     {
         auto image = loader->load(path);
         auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + idx++);
@@ -94,15 +94,15 @@ auto AssetLoader::loadCubeTexture(const std::vector<std::string>& sidesPaths) ->
 }
 
 
-auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string>& sidesPaths) -> sptr<AsyncHandle<CubeTexture>>
+auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string>& sidePaths) -> sptr<AsyncHandle<CubeTexture>>
 {
     auto handle = std::make_shared<AsyncHandle<CubeTexture>>();
-    auto loader = getImageLoader(sidesPaths[0]);
+    auto loader = getImageLoader(sidePaths[0]);
 
     std::vector<async::task<sptr<Image>>> imageTasks;
-    for (uint32_t i = 0; i < sidesPaths.size(); i++)
+    for (uint32_t i = 0; i < sidePaths.size(); i++)
     {
-        auto path = sidesPaths[i];
+        auto path = sidePaths[i];
         imageTasks.push_back(async::spawn([=]
         {
             return loader->load(path);
