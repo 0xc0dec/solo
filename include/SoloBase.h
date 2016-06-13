@@ -18,6 +18,21 @@
     type &operator=(const type &other) = delete; \
     type &operator=(type &&other) = delete;
 
+#define SL_FLUENT_DTO(dtoType, fields) \
+    struct dtoType \
+    { \
+        typedef dtoType DtoType; \
+        fields \
+    };
+
+#define SL_FLUENT_DTO_FIELD(fieldType, fieldName, setterMethodName, defaultValue) \
+    fieldType fieldName defaultValue; \
+    auto setterMethodName(fieldType fieldName) -> DtoType& \
+    { \
+        this->fieldName = fieldName; \
+        return *this; \
+    }
+
 namespace solo
 {
     template <typename T> using sptr = std::shared_ptr<T>;
