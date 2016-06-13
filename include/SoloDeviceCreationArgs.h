@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SoloBase.h"
 #include <string>
 
 
@@ -7,27 +8,24 @@ namespace solo
 {
     enum class DeviceMode;
 
-    class DeviceCreationArgs
-    {
-    public:
-        DeviceMode mode;
-        uint32_t canvasWidth = 800;
-        uint32_t canvasHeight = 600;
-        bool fullScreen = false;
-        std::string windowTitle;
-        uint32_t redBits = 5;
-        uint32_t greenBits = 5;
-        uint32_t blueBits = 5;
-        uint32_t alphaBits = 0;
-        uint32_t depthBits = 24;
-        std::string logFilePath;
+    SL_FLUENT_DTO(DeviceCreationArgs,
+        SL_FLUENT_DTO_FIELD(DeviceMode, mode, withMode, )
+        SL_FLUENT_DTO_FIELD(uint32_t, canvasWidth, withCanvasWidth, = 800)
+        SL_FLUENT_DTO_FIELD(uint32_t, canvasHeight, withCanvasHeight, = 600)
+        SL_FLUENT_DTO_FIELD(uint32_t, fullScreen, withFullScreen, = false)
+        SL_FLUENT_DTO_FIELD(std::string, windowTitle, withWindowTitle, )
+        SL_FLUENT_DTO_FIELD(uint32_t, redBits, withRedBits, = 5)
+        SL_FLUENT_DTO_FIELD(uint32_t, greenBits, withGreenBits, = 5)
+        SL_FLUENT_DTO_FIELD(uint32_t, blueBits, withBlueBits, = 5)
+        SL_FLUENT_DTO_FIELD(uint32_t, alphaBits, withAlphaBits, = 0)
+        SL_FLUENT_DTO_FIELD(uint32_t, depthBits, withDepthBits, = 24)
+        SL_FLUENT_DTO_FIELD(std::string, logFilePath, withLogFilePath, )
 
-        auto withMode(DeviceMode mode) -> DeviceCreationArgs&;
-        auto withDimensions(uint32_t canvasWidth, uint32_t canvasHeight) -> DeviceCreationArgs&;
-        auto withFullScreen(bool fullScreen) -> DeviceCreationArgs&;
-        auto withWindowTitle(const std::string& title) -> DeviceCreationArgs&;
-        auto withColorBits(uint32_t redBits, uint32_t greenBits, uint32_t blueBits, uint32_t alphaBits) -> DeviceCreationArgs&;
-        auto withDepthBits(uint32_t depthBits) -> DeviceCreationArgs&;
-        auto withLogPath(const std::string& logPath) -> DeviceCreationArgs&;
-    };
+        auto withDimensions(uint32_t canvasWidth, uint32_t canvasHeight) -> DeviceCreationArgs&
+        {
+            this->canvasWidth = canvasWidth;
+            this->canvasHeight = canvasHeight;
+            return *this;
+        }
+    )
 }

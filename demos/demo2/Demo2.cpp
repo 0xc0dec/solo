@@ -219,7 +219,7 @@ public:
 private:
     void initEngine()
     {
-        device = Device::init(DeviceCreationArgs().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogPath("demo2.log"));
+        device = Device::init(DeviceCreationArgs().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo2.log"));
         scene = device->getScene();
         loader = device->getAssetLoader();
     }

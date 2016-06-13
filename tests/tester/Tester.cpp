@@ -13,7 +13,7 @@ using namespace solo;
 
 void runInStubEngine(std::function<void(Device*)> run, const std::string& logPath)
 {
-    auto device = Device::init(DeviceCreationArgs().withMode(DeviceMode::Stub).withLogPath(logPath));
+    auto device = Device::init(DeviceCreationArgs().withMode(DeviceMode::Stub).withLogFilePath(logPath));
     run(device);
     Device::shutdown();
 }
@@ -21,7 +21,7 @@ void runInStubEngine(std::function<void(Device*)> run, const std::string& logPat
 
 void runInRealEngine(std::function<void(Device*)> run, const std::string& logPath)
 {
-    auto device = Device::init(DeviceCreationArgs().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogPath(logPath));
+    auto device = Device::init(DeviceCreationArgs().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath(logPath));
     run(device);
     Device::shutdown();
 }

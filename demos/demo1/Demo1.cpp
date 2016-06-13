@@ -89,7 +89,7 @@ public:
 private:
     void initEngine()
     {
-        device = Device::init(DeviceCreationArgs().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogPath("demo1.log"));
+        device = Device::init(DeviceCreationArgs().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo1.log"));
         scene = device->getScene();
         loader = device->getAssetLoader();
         canvasSize = device->getCanvasSize();
