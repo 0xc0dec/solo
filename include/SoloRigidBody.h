@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SoloBase.h"
 #include "SoloComponent.h"
 #include "SoloVector3.h"
 #include "SoloTransform.h"
@@ -9,17 +10,16 @@ namespace solo
 {
     class Collider;
 
-    struct RigidBodyConstructionParameters
-    {
-        float mass = 0;
-        float friction = 0;
-        float restitution = 0;
-        float linearDamping;
-        float angularDamping;
-        bool kinematic = false;
-        Vector3 linearFactor;
-        Vector3 angularFactor;
-    };
+    SL_FLUENT_DTO(RigidBodyConstructionParameters,
+        SL_FLUENT_DTO_FIELD(float, mass, withMass, = 0)
+        SL_FLUENT_DTO_FIELD(float, friction, withFriction, = 0)
+        SL_FLUENT_DTO_FIELD(float, restitution, withRestitution, = 0)
+        SL_FLUENT_DTO_FIELD(float, linearDamping, withLinearDamping, = 0)
+        SL_FLUENT_DTO_FIELD(float, angularDamping, withAngularDamping, = 0)
+        SL_FLUENT_DTO_FIELD(bool, kinematic, withKinematic, = false)
+        SL_FLUENT_DTO_FIELD(Vector3, linearFactor, withLinearFactor, = Vector3())
+        SL_FLUENT_DTO_FIELD(Vector3, angularFactor, withAngularFactor, = Vector3())
+    )
 
     class RigidBody: public ComponentBase<RigidBody>, public TransformCallback
     {
