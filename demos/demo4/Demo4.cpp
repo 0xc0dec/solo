@@ -42,13 +42,11 @@ public:
         t->setLocalPosition(initialPos);
         t->setLocalRotation(initialRotation);
 
-        auto rigidBodyParams = RigidBodyConstructionParameters();
-        rigidBodyParams.mass = 50;
-        rigidBodyParams.restitution = 0.5f;
-        rigidBodyParams.friction = 0.2f;
-        rigidBodyParams.linearDamping = 0.1f;
-        rigidBodyParams.angularDamping = 0.1f;
-        auto rigidBody = node.addComponent<RigidBody>(rigidBodyParams);
+        auto rigidBody = node.addComponent<RigidBody>(
+            RigidBodyConstructionParameters()
+            .withMass(50).withRestitution(0.5f).withFriction(0.2f)
+            .withLinearDamping(0.1f).withAngularDamping(0.1f)
+        );
         rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
     }
 
@@ -231,10 +229,7 @@ public:
         renderer->setMesh(cubeMesh);
         renderer->setMaterial(0, mat);
 
-        auto rigidBodyParams = RigidBodyConstructionParameters();
-        rigidBodyParams.mass = 0;
-        rigidBodyParams.friction = 0.5f;
-        auto rigidBody = node->addComponent<RigidBody>(rigidBodyParams);
+        auto rigidBody = node->addComponent<RigidBody>(RigidBodyConstructionParameters().withMass(0).withFriction(0.5f));
         rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
     }
 
