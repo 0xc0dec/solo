@@ -20,59 +20,6 @@ using namespace solo;
 uptr<Device> Device::instance = nullptr;
 
 
-auto DeviceCreationArgs::withMode(DeviceMode mode) -> DeviceCreationArgs&
-{
-    this->mode = mode;
-    return *this;
-}
-
-
-auto DeviceCreationArgs::withDimensions(uint32_t canvasWidth, uint32_t canvasHeight) -> DeviceCreationArgs&
-{
-    this->canvasWidth = canvasWidth;
-    this->canvasHeight = canvasHeight;
-    return *this;
-}
-
-
-auto DeviceCreationArgs::withFullScreen(bool fullScreen) -> DeviceCreationArgs&
-{
-    this->fullScreen = fullScreen;
-    return *this;
-}
-
-
-auto DeviceCreationArgs::withWindowTitle(const std::string& title) -> DeviceCreationArgs&
-{
-    windowTitle = title;
-    return *this;
-}
-
-
-auto DeviceCreationArgs::withColorBits(uint32_t redBits, uint32_t greenBits, uint32_t blueBits, uint32_t alphaBits) -> DeviceCreationArgs&
-{
-    this->redBits = redBits;
-    this->greenBits = greenBits;
-    this->blueBits = blueBits;
-    this->alphaBits = alphaBits;
-    return *this;
-}
-
-
-auto DeviceCreationArgs::withDepthBits(uint32_t depthBits) -> DeviceCreationArgs&
-{
-    this->depthBits = depthBits;
-    return *this;
-}
-
-
-auto DeviceCreationArgs::withLogPath(const std::string& logPath) -> DeviceCreationArgs&
-{
-    this->logFilePath = logPath;
-    return *this;
-}
-
-
 auto Device::init(const DeviceCreationArgs& args) -> Device*
 {
     if (!instance)
