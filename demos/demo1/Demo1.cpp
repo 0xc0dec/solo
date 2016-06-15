@@ -233,7 +233,7 @@ private:
             mat->bindInverseTransposedWorldMatrixParameter("invTransposedWorldMatrix");
             mat->setTextureParameter("mainTex", tex);
 
-            loader->loadMeshAsync("../assets/monkey.obj")->done([=](sptr<Mesh> mesh)
+            loader->loadMeshAsync("../assets/monkey_hires.obj")->done([=](sptr<Mesh> mesh)
             {
                 auto node = scene->createNode();
                 auto renderer = node->addComponent<MeshRenderer>();
