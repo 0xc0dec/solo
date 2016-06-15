@@ -60,8 +60,7 @@ namespace solo
     enum class DeviceMode
     {
         Stub,
-        OpenGL,
-        Vulkan
+        OpenGL
     };
 
     class DeviceToken

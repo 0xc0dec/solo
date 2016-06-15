@@ -187,14 +187,8 @@
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLEffectRepository.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\vulkan\SoloSDLVulkanDevice.h">
-      <Filter>src\platform\vulkan</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\platform\sdl\SoloSDLDevice.h">
       <Filter>src\platform\sdl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\vulkan\SoloVulkanRenderer.h">
-      <Filter>src\platform\vulkan</Filter>
     </ClInclude>
     <ClInclude Include="..\src\SoloMaterialParameter.h">
       <Filter>src</Filter>
@@ -1197,14 +1191,8 @@
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLEffectRepository.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\vulkan\SoloSDLVulkanDevice.cpp">
-      <Filter>src\platform\vulkan</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\platform\sdl\SoloSDLDevice.cpp">
       <Filter>src\platform\sdl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\vulkan\SoloVulkanRenderer.cpp">
-      <Filter>src\platform\vulkan</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SoloMaterialParameter.cpp">
       <Filter>src</Filter>
@@ -1267,9 +1255,6 @@
     </Filter>
     <Filter Include="src\vendor\bullet">
       <UniqueIdentifier>{ea4b40ac-b3f9-4388-8133-e6765a17d367}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\platform\vulkan">
-      <UniqueIdentifier>{757821b3-192d-4eaa-aeeb-76d749cad396}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\platform\sdl">
       <UniqueIdentifier>{b38df00b-fb0f-438f-98a3-7abc58dff698}</UniqueIdentifier>

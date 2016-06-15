@@ -78,8 +78,6 @@
     <ClInclude Include="..\src\platform\stub\SoloStubDevice.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubFileSystem.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubRenderer.h" />
-    <ClInclude Include="..\src\platform\vulkan\SoloSDLVulkanDevice.h" />
-    <ClInclude Include="..\src\platform\vulkan\SoloVulkanRenderer.h" />
     <ClInclude Include="..\src\SoloMaterialParameter.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\SoloPngImageLoader.h" />
@@ -95,8 +93,6 @@
     <ClCompile Include="..\src\platform\sdl\SoloSDLDevice.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubDevice.cpp" />
     <ClCompile Include="..\src\platform\stub\SoloStubFileSystem.cpp" />
-    <ClCompile Include="..\src\platform\vulkan\SoloSDLVulkanDevice.cpp" />
-    <ClCompile Include="..\src\platform\vulkan\SoloVulkanRenderer.cpp" />
     <ClCompile Include="..\src\SoloBoxCollider.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\SoloDegree.cpp" />
@@ -454,13 +450,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(ProjectDir)..\vendor\vulkan\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
     <LibraryPath>$(ProjectDir)..\build\;$(ProjectDir)..\vendor\vulkan\lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(ProjectDir)..\vendor\vulkan\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
     <LibraryPath>$(ProjectDir)..\build\;$(ProjectDir)..\vendor\vulkan\lib\;$(LibraryPath)</LibraryPath>
