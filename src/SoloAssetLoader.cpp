@@ -68,6 +68,9 @@ auto AssetLoader::loadRectTextureAsync(const std::string& path) -> sptr<AsyncHan
         this->tasks.push_back([=]()
         {
             auto texture = RectTexture::create();
+            // TODO this actually blocks and causes main thread/FPS stall. So we've offloaded
+            // only part of the blocking task into another thread. Other similar places
+            // have the same problem
             texture->setData(image->format, image->data.data(), image->width, image->height);
             handle->putResult(texture);
         });
