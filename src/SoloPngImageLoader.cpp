@@ -14,7 +14,7 @@ struct PngReadContext
 };
 
 
-static void readCallback(png_structp png, png_bytep data, png_size_t length)
+static void callback(png_structp png, png_bytep data, png_size_t length)
 {
     auto context = reinterpret_cast<PngReadContext*>(png_get_io_ptr(png));
     if (!context)
@@ -46,7 +46,7 @@ auto PngImageLoader::load(const std::string& path) -> sptr<Image>
     }
 
     std::unique_ptr<PngReadContext> context(new PngReadContext{ &bytes, 8 });
-    png_set_read_fn(png, reinterpret_cast<png_voidp>(context.get()), readCallback);
+    png_set_read_fn(png, reinterpret_cast<png_voidp>(context.get()), callback);
     png_set_sig_bytes(png, 8);
     png_read_png(png, info, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND, nullptr);
 
@@ -73,7 +73,7 @@ auto PngImageLoader::load(const std::string& path) -> sptr<Image>
     auto result = std::make_shared<Image>();
     result->width = static_cast<uint32_t>(width);
     result->height = static_cast<uint32_t>(height);
-    result->colorFormat = colorFormat;
+    result->format = colorFormat;
     result->data.resize(stride * height);
 
     auto rows = png_get_rows(png, info);

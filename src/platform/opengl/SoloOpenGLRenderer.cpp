@@ -6,7 +6,7 @@
 using namespace solo;
 
 
-static auto convertBlendFactor(BlendFactor factor) -> GLenum
+static auto toGLBlendFactor(BlendFactor factor) -> GLenum
 {
     switch (factor)
     {
@@ -28,7 +28,7 @@ static auto convertBlendFactor(BlendFactor factor) -> GLenum
 }
 
 
-static auto convertCubeTextureFace(CubeTextureFace face) -> GLenum
+static auto toGLCubeTextureFace(CubeTextureFace face) -> GLenum
 {
     switch (face)
     {
@@ -50,7 +50,7 @@ static auto convertCubeTextureFace(CubeTextureFace face) -> GLenum
 }
 
 
-static auto convertPrimitiveType(PrimitiveType type) -> GLenum
+static auto toGLPrimitiveType(PrimitiveType type) -> GLenum
 {
     switch (type)
     {
@@ -70,7 +70,7 @@ static auto convertPrimitiveType(PrimitiveType type) -> GLenum
 }
 
 
-static auto convertToTextureFormat(TextureFormat format) -> GLenum
+static auto toTextureFormat(TextureFormat format) -> GLenum
 {
     switch (format)
     {
@@ -88,7 +88,7 @@ static auto convertToTextureFormat(TextureFormat format) -> GLenum
 }
 
 
-static auto convertToInternalTextureFormat(TextureFormat format) -> GLenum
+static auto toInternalTextureFormat(TextureFormat format) -> GLenum
 {
     switch (format)
     {
@@ -286,8 +286,8 @@ void OpenGLRenderer::update2DTexture(const TextureHandle& handle, TextureFormat 
 {
     bindTexture(GL_TEXTURE_2D, handle);
 
-    auto internalFormat = convertToInternalTextureFormat(format);
-    auto fmt = convertToTextureFormat(format);
+    auto internalFormat = toInternalTextureFormat(format);
+    auto fmt = toTextureFormat(format);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, fmt, GL_UNSIGNED_BYTE, data);
 
@@ -303,9 +303,9 @@ void OpenGLRenderer::updateCubeTexture(const TextureHandle& handle, CubeTextureF
 {
     bindTexture(GL_TEXTURE_CUBE_MAP, handle);
 
-    auto glFace = convertCubeTextureFace(face);
-    auto internalFormat = convertToInternalTextureFormat(format);
-    auto fmt = convertToTextureFormat(format);
+    auto glFace = toGLCubeTextureFace(face);
+    auto internalFormat = toInternalTextureFormat(format);
+    auto fmt = toTextureFormat(format);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexImage2D(glFace, 0, internalFormat, width, height, 0, fmt, GL_UNSIGNED_BYTE, data);
 
@@ -776,7 +776,7 @@ void OpenGLRenderer::drawIndexedVertexObject(PrimitiveType primitiveType, const 
     bindIndexBuffer(indexBufferHandle);
 
     const auto& ibData = indexBuffers.getData(indexBufferHandle.value);
-    glDrawElements(convertPrimitiveType(primitiveType), ibData.elementCount, GL_UNSIGNED_SHORT, nullptr);
+    glDrawElements(toGLPrimitiveType(primitiveType), ibData.elementCount, GL_UNSIGNED_SHORT, nullptr);
 
     bindIndexBuffer(EmptyIndexBufferHandle);
     bindVertexObject(EmptyVertexObjectHandle);
@@ -786,7 +786,7 @@ void OpenGLRenderer::drawIndexedVertexObject(PrimitiveType primitiveType, const 
 void OpenGLRenderer::drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, uint32_t vertexCount)
 {
     bindVertexObject(vertexObjectHandle);
-    glDrawArrays(convertPrimitiveType(primitiveType), 0, vertexCount);
+    glDrawArrays(toGLPrimitiveType(primitiveType), 0, vertexCount);
     bindVertexObject(EmptyVertexObjectHandle);
 }
 
@@ -902,7 +902,7 @@ void OpenGLRenderer::setBlend(bool enabled)
 
 void OpenGLRenderer::setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor)
 {
-    glBlendFunc(convertBlendFactor(srcFactor), convertBlendFactor(dstFactor));
+    glBlendFunc(toGLBlendFactor(srcFactor), toGLBlendFactor(dstFactor));
 }
 
 

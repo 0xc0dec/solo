@@ -52,7 +52,7 @@ auto AssetLoader::loadRectTexture(const std::string& path) -> sptr<RectTexture>
     auto loader = getImageLoader(path);
     auto image = loader->load(path);
     auto result = RectTexture::create();
-    result->setData(image->colorFormat, image->data.data(), image->width, image->height);
+    result->setData(image->format, image->data.data(), image->width, image->height);
     return result;
 }
 
@@ -68,7 +68,7 @@ auto AssetLoader::loadRectTextureAsync(const std::string& path) -> sptr<AsyncHan
         this->tasks.push_back([=]()
         {
             auto texture = RectTexture::create();
-            texture->setData(image->colorFormat, image->data.data(), image->width, image->height);
+            texture->setData(image->format, image->data.data(), image->width, image->height);
             handle->putResult(texture);
         });
     });
@@ -87,7 +87,7 @@ auto AssetLoader::loadCubeTexture(const std::vector<std::string>& sidePaths) -> 
     {
         auto image = loader->load(path);
         auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + idx++);
-        result->setData(face, image->colorFormat, image->data.data(), image->width, image->height);
+        result->setData(face, image->format, image->data.data(), image->width, image->height);
     }
 
     return result;
@@ -123,7 +123,7 @@ auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string>& sidePaths
             for (const auto& image : images)
             {
                 auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + idx++);
-                texture->setData(face, image->colorFormat, image->data.data(), image->width, image->height);
+                texture->setData(face, image->format, image->data.data(), image->width, image->height);
             }
             handle->putResult(texture);
         }, std::move(images)));
