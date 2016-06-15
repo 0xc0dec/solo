@@ -167,10 +167,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\tests\demo1\Demo1.cpp" />
+    <ClCompile Include="..\demos\demo1\Demo1.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\tests\demo1\Shaders.h" />
+    <ClInclude Include="..\demos\demo1\Shaders.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
