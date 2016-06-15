@@ -6,19 +6,19 @@ using namespace solo;
 
 
 Radian::Radian(const Degree& d):
-    raw(d.getRawRadians())
+    raw(d.toRawRadian())
 {
 }
 
 
 auto Radian::operator=(const Degree& d) -> Radian&
 {
-    raw = d.getRawRadians();
+    raw = d.toRawRadian();
     return *this;
 }
 
 
-auto Radian::getRawDegrees() const -> float
+auto Radian::toRawDegree() const -> float
 {
     return Math::radToDeg(raw);
 }
@@ -26,25 +26,25 @@ auto Radian::getRawDegrees() const -> float
 
 auto Radian::operator+(const Degree& d) const -> Radian
 {
-    return Radian(raw + d.getRawRadians());
+    return Radian(raw + d.toRawRadian());
 }
 
 
 auto Radian::operator+=(const Degree& d) -> Radian&
 {
-    raw += d.getRawRadians();
+    raw += d.toRawRadian();
     return *this;
 }
 
 
 auto Radian::operator-(const Degree& d) const -> Radian
 {
-    return Radian(raw - d.getRawRadians());
+    return Radian(raw - d.toRawRadian());
 }
 
 
 auto Radian::operator-=(const Degree& d) -> Radian&
 {
-    raw -= d.getRawRadians();
+    raw -= d.toRawRadian();
     return *this;
 }

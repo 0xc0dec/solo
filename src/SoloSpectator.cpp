@@ -37,7 +37,7 @@ void Spectator::update()
             transform->rotate(Vector3::unitY(), Radian(verticalRotationSpeed * dt * -mouseMotion.x), TransformSpace::World);
         if (mouseMotion.y != 0)
         {
-            auto angleToUp = Vector3::angle(transform->getLocalForward(), Vector3::unitY()).getRawRadians();
+            auto angleToUp = Vector3::angle(transform->getLocalForward(), Vector3::unitY()).toRawRadian();
             auto delta = horizontalRotationSpeed * dt * -mouseMotion.y;
             if (delta > 0)
             {

@@ -14,8 +14,8 @@ namespace solo
         auto operator=(const Radian& r) -> Radian&;
         auto operator=(const Degree& d) -> Radian&;
 
-        auto getRawDegrees() const -> float;
-        auto getRawRadians() const -> float;
+        auto toRawDegree() const -> float;
+        auto toRawRadian() const -> float;
 
         auto operator+(const Radian& r) const -> Radian;
         auto operator+(const Degree& d) const -> Radian;
@@ -59,7 +59,7 @@ namespace solo
         return *this;
     }
 
-    inline auto Radian::getRawRadians() const -> float
+    inline auto Radian::toRawRadian() const -> float
     {
         return raw;
     }

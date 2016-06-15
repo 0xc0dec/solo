@@ -51,7 +51,7 @@ bool Quaternion::isZero() const
 
 auto Quaternion::createFromAxisAngle(const Vector3& axis, const Radian& angle) -> Quaternion
 {
-    auto halfAngle = angle.getRawRadians() * 0.5f;
+    auto halfAngle = angle.toRawRadian() * 0.5f;
     auto sinHalfAngle = sinf(halfAngle);
     auto normal(const_cast<Vector3&>(axis));
     normal.normalize();

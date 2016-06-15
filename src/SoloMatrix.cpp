@@ -100,9 +100,9 @@ auto Matrix::createLookAt(const Vector3& eye, const Vector3& target, const Vecto
 auto Matrix::createPerspective(const Radian& fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane) -> Matrix
 {
     auto f_n = 1.0f / (zFarPlane - zNearPlane);
-    auto theta = fieldOfView.getRawRadians() * 0.5f;
+    auto theta = fieldOfView.toRawRadian() * 0.5f;
     SL_DEBUG_FMT_THROW_IF(Math::approxZero(fmod(theta, Math::piOver2), Math::smallFloat1),
-        InvalidInputException, "Invalid field of view value ", fieldOfView.getRawDegrees(), " caused attempted tan calculation, which is undefined");
+        InvalidInputException, "Invalid field of view value ", fieldOfView.toRawDegree(), " caused attempted tan calculation, which is undefined");
 
     auto divisor = tan(theta);
     auto factor = 1.0f / divisor;
@@ -238,8 +238,8 @@ auto Matrix::createRotationFromAxisAngle(const Vector3& axis, const Radian& angl
         }
     }
 
-    auto c = cos(angle.getRawRadians());
-    auto s = sin(angle.getRawRadians());
+    auto c = cos(angle.toRawRadian());
+    auto s = sin(angle.toRawRadian());
 
     auto t = 1.0f - c;
     auto tx = t * x;
@@ -280,8 +280,8 @@ auto Matrix::createRotationFromAxisAngle(const Vector3& axis, const Radian& angl
 
 auto Matrix::createRotationX(const Radian& angle) -> Matrix
 {
-    auto c = cos(angle.getRawRadians());
-    auto s = sin(angle.getRawRadians());
+    auto c = cos(angle.toRawRadian());
+    auto s = sin(angle.toRawRadian());
 
     Matrix result;
     result.m[5] = c;
@@ -294,8 +294,8 @@ auto Matrix::createRotationX(const Radian& angle) -> Matrix
 
 auto Matrix::createRotationY(const Radian& angle) -> Matrix
 {
-    auto c = cos(angle.getRawRadians());
-    auto s = sin(angle.getRawRadians());
+    auto c = cos(angle.toRawRadian());
+    auto s = sin(angle.toRawRadian());
 
     Matrix result;
 
@@ -310,8 +310,8 @@ auto Matrix::createRotationY(const Radian& angle) -> Matrix
 
 auto Matrix::createRotationZ(const Radian& angle) -> Matrix
 {
-    auto c = cos(angle.getRawRadians());
-    auto s = sin(angle.getRawRadians());
+    auto c = cos(angle.toRawRadian());
+    auto s = sin(angle.toRawRadian());
 
     Matrix result;
     result.m[0] = c;
