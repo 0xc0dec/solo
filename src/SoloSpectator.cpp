@@ -3,8 +3,6 @@
 #include "SoloDevice.h"
 #include "SoloRadian.h"
 
-#include <iostream>
-
 using namespace solo;
 
 
@@ -55,12 +53,18 @@ void Spectator::update()
     }
 
     auto movement = Vector3::zero();
-    if (device->isKeyPressed(KeyCode::W, false)) movement += transform->getLocalForward();
-    if (device->isKeyPressed(KeyCode::S, false)) movement += transform->getLocalBack();
-    if (device->isKeyPressed(KeyCode::A, false)) movement += transform->getLocalLeft();
-    if (device->isKeyPressed(KeyCode::D, false)) movement += transform->getLocalRight();
-    if (device->isKeyPressed(KeyCode::Q, false)) movement += transform->getLocalDown();
-    if (device->isKeyPressed(KeyCode::E, false)) movement += transform->getLocalUp();
+    if (device->isKeyPressed(KeyCode::W, false))
+        movement += transform->getLocalForward();
+    if (device->isKeyPressed(KeyCode::S, false))
+        movement += transform->getLocalBack();
+    if (device->isKeyPressed(KeyCode::A, false))
+        movement += transform->getLocalLeft();
+    if (device->isKeyPressed(KeyCode::D, false))
+        movement += transform->getLocalRight();
+    if (device->isKeyPressed(KeyCode::Q, false))
+        movement += transform->getLocalDown();
+    if (device->isKeyPressed(KeyCode::E, false))
+        movement += transform->getLocalUp();
     movement.normalize();
     movement *= dt * movementSpeed;
 
