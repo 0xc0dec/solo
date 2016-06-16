@@ -72,7 +72,7 @@ auto AssetLoader::loadRectTextureAsync(const std::string& path) -> sptr<AsyncHan
             // only part of the blocking task into another thread. Other similar places
             // have the same problem
             texture->setData(image->format, image->data.data(), image->width, image->height);
-            handle->putResult(texture);
+            handle->finish(texture);
         });
     });
 
@@ -128,7 +128,7 @@ auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string>& sidePaths
                 auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + idx++);
                 texture->setData(face, image->format, image->data.data(), image->width, image->height);
             }
-            handle->putResult(texture);
+            handle->finish(texture);
         }, std::move(images)));
     });
 
@@ -157,7 +157,7 @@ auto AssetLoader::loadMeshAsync(const std::string& path) -> sptr<AsyncHandle<Mes
         {
             // This is later called in the update() method
             auto mesh = Mesh::create(data.get());
-            handle->putResult(mesh);
+            handle->finish(mesh);
         });
     });
 

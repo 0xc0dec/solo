@@ -35,7 +35,7 @@ namespace solo
     private:
         friend class AssetLoader;
 
-        void putResult(sptr<T> result)
+        void finish(sptr<T> result)
         {
             if (callback)
                 callback(result);
