@@ -146,23 +146,23 @@ auto Transform::getWorldMatrix() const -> Matrix
             worldMatrix = getMatrix();
         dirtyFlags &= ~TransformDirtyFlags::World;
         setChildrenDirty(TransformDirtyFlags::World);
-        setDirtyWithChildren(TransformDirtyFlags::InverseTransposedWorld);
+        setDirtyWithChildren(TransformDirtyFlags::InvTransposedWorld);
     }
     return worldMatrix;
 }
 
 
-auto Transform::getInverseTransposedWorldMatrix() const -> Matrix
+auto Transform::getInvTransposedWorldMatrix() const -> Matrix
 {
-    if (dirtyFlags & TransformDirtyFlags::InverseTransposedWorld || dirtyFlags & TransformDirtyFlags::World)
+    if (dirtyFlags & TransformDirtyFlags::InvTransposedWorld || dirtyFlags & TransformDirtyFlags::World)
     {
-        inverseTransposedWorldMatrix = getWorldMatrix();
-        inverseTransposedWorldMatrix.invert();
-        inverseTransposedWorldMatrix.transpose();
-        dirtyFlags &= ~TransformDirtyFlags::InverseTransposedWorld;
-        setChildrenDirty(TransformDirtyFlags::InverseTransposedWorld);
+        invTransposedWorldMatrix = getWorldMatrix();
+        invTransposedWorldMatrix.invert();
+        invTransposedWorldMatrix.transpose();
+        dirtyFlags &= ~TransformDirtyFlags::InvTransposedWorld;
+        setChildrenDirty(TransformDirtyFlags::InvTransposedWorld);
     }
-    return inverseTransposedWorldMatrix;
+    return invTransposedWorldMatrix;
 }
 
 
@@ -178,7 +178,7 @@ auto Transform::getWorldViewProjectionMatrix(Camera* camera) const -> Matrix
 }
 
 
-auto Transform::getInverseTransposedWorldViewMatrix(Camera* camera) const -> Matrix
+auto Transform::getInvTransposedWorldViewMatrix(Camera* camera) const -> Matrix
 {
     auto result = camera->getViewMatrix() * getWorldMatrix();
     result.invert();
@@ -211,9 +211,9 @@ void Transform::rotate(const Quaternion& rotation, TransformSpace space)
             break;
         case TransformSpace::World:
         {
-            auto inverseWorldRotation = getWorldRotation();
-            inverseWorldRotation.inverse();
-            localRotation = localRotation * inverseWorldRotation * normalizedRotation * getWorldRotation();
+            auto invWorldRotation = getWorldRotation();
+            invWorldRotation.inverse();
+            localRotation = localRotation * invWorldRotation * normalizedRotation * getWorldRotation();
             setDirtyWithChildren(TransformDirtyFlags::Rotation | TransformDirtyFlags::World);
             break;
         }

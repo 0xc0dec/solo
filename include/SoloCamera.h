@@ -61,10 +61,10 @@ namespace solo
         void setAspectRatio(float ratio);
 
         auto getViewMatrix() -> const Matrix&;
-        auto getInverseViewMatrix() -> const Matrix&;
+        auto getInvViewMatrix() -> const Matrix&;
         auto getProjectionMatrix() -> const Matrix&;
         auto getViewProjectionMatrix() -> const Matrix&;
-        auto getInverseViewProjectionMatrix() -> const Matrix&;
+        auto getInvViewProjectionMatrix() -> const Matrix&;
 
     protected:
         void onTransformChanged(const Transform*, uint32_t) override;
@@ -94,8 +94,8 @@ namespace solo
         Matrix viewMatrix;
         Matrix projectionMatrix;
         Matrix viewProjectionMatrix;
-        Matrix inverseViewMatrix;
-        Matrix inverseViewProjectionMatrix;
+        Matrix invViewMatrix;
+        Matrix invViewProjectionMatrix;
     };
 
     inline void Camera::setClearColor(float r, float g, float b, float a)

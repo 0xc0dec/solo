@@ -230,7 +230,7 @@ private:
             auto mat = Material::create(texWithLightingEffect);
             mat->setFaceCull(FaceCull::All);
             mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
-            mat->bindInverseTransposedWorldMatrixParameter("invTransposedWorldMatrix");
+            mat->bindInvTransposedWorldMatrixParameter("invTransposedWorldMatrix");
             mat->setTextureParameter("mainTex", tex);
 
             loader->loadMeshAsync("../assets/monkey_hires.obj")->done([=](sptr<Mesh> mesh)

@@ -127,11 +127,11 @@ public:
                 break;
             case MaterialParameterType::InverseTransposedWorldMatrix:
                 if (context.nodeTransform)
-                    renderer->setUniform(handle, context.nodeTransform->getInverseTransposedWorldMatrix().m, 1);
+                    renderer->setUniform(handle, context.nodeTransform->getInvTransposedWorldMatrix().m, 1);
                 break;
             case MaterialParameterType::InverseTransposedWorldViewMatrix:
                 if (context.nodeTransform && context.camera)
-                    renderer->setUniform(handle, context.nodeTransform->getInverseTransposedWorldViewMatrix(context.camera).m, 1);
+                    renderer->setUniform(handle, context.nodeTransform->getInvTransposedWorldViewMatrix(context.camera).m, 1);
                 break;
             case MaterialParameterType::CameraWorldPosition:
                 if (context.cameraTransform)

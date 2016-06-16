@@ -29,7 +29,7 @@ namespace solo
         static const uint32_t Rotation = 2;
         static const uint32_t Scale = 3;
         static const uint32_t World = 8;
-        static const uint32_t InverseTransposedWorld = 16;
+        static const uint32_t InvTransposedWorld = 16;
     };
 
     class Transform final: public ComponentBase<Transform>
@@ -84,8 +84,8 @@ namespace solo
 
         auto getWorldViewMatrix(Camera* camera) const -> Matrix;
         auto getWorldViewProjectionMatrix(Camera* camera) const -> Matrix;
-        auto getInverseTransposedWorldViewMatrix(Camera* camera) const -> Matrix;
-        auto getInverseTransposedWorldMatrix() const -> Matrix;
+        auto getInvTransposedWorldViewMatrix(Camera* camera) const -> Matrix;
+        auto getInvTransposedWorldMatrix() const -> Matrix;
 
         auto transformPoint(const Vector3& point) const -> Vector3;
         auto transformDirection(const Vector3& direction) const -> Vector3;
@@ -107,7 +107,7 @@ namespace solo
         Quaternion localRotation;
         mutable Matrix matrix;
         mutable Matrix worldMatrix;
-        mutable Matrix inverseTransposedWorldMatrix;
+        mutable Matrix invTransposedWorldMatrix;
     };
 
     class TransformCallback

@@ -131,13 +131,13 @@ void Material::bindWorldViewProjectionMatrixParameter(const std::string& name)
 }
 
 
-void Material::bindInverseTransposedWorldMatrixParameter(const std::string& name)
+void Material::bindInvTransposedWorldMatrixParameter(const std::string& name)
 {
     setParameter(name, MaterialParameterType::InverseTransposedWorldMatrix, nullptr);
 }
 
 
-void Material::bindInverseTransposedWorldViewMatrixParameter(const std::string& name)
+void Material::bindInvTransposedWorldViewMatrixParameter(const std::string& name)
 {
     setParameter(name, MaterialParameterType::InverseTransposedWorldViewMatrix, nullptr);
 }

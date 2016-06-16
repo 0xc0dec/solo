@@ -11,8 +11,8 @@ using namespace solo;
 const uint32_t DirtyBitView = 1;
 const uint32_t DirtyBitProjection = 2;
 const uint32_t DirtyBitViewProjection = 4;
-const uint32_t DirtyBitInverseView = 8;
-const uint32_t DirtyBitInverseViewProjection = 16;
+const uint32_t DirtyBitInvView = 8;
+const uint32_t DirtyBitInvViewProjection = 16;
 
 
 Camera::Camera(const Node& node):
@@ -36,7 +36,7 @@ void Camera::init()
 
 void Camera::onTransformChanged(const Transform*, uint32_t)
 {
-    this->dirtyFlags |= DirtyBitView | DirtyBitViewProjection | DirtyBitInverseView | DirtyBitInverseViewProjection;
+    this->dirtyFlags |= DirtyBitView | DirtyBitViewProjection | DirtyBitInvView | DirtyBitInvViewProjection;
 }
 
 
@@ -58,49 +58,49 @@ auto Camera::getViewport() const -> Vector4
 void Camera::setPerspective(bool perspective)
 {
     ortho = !perspective;
-    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection;
+    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInvViewProjection;
 }
 
 
 void Camera::setFOV(const Radian& fov)
 {
     this->fov = fov;
-    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection;
+    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInvViewProjection;
 }
 
 
 void Camera::setWidth(float width)
 {
     this->width = width;
-    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection;
+    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInvViewProjection;
 }
 
 
 void Camera::setHeight(float height)
 {
     this->height = height;
-    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection;
+    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInvViewProjection;
 }
 
 
 void Camera::setAspectRatio(float ratio)
 {
     aspectRatio = ratio;
-    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection;
+    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInvViewProjection;
 }
 
 
 void Camera::setFar(float far)
 {
     this->farClip = far;
-    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection;
+    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInvViewProjection;
 }
 
 
 void Camera::setNear(float near)
 {
     this->nearClip = near;
-    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInverseViewProjection;
+    dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInvViewProjection;
 }
 
 
@@ -116,15 +116,15 @@ auto Camera::getViewMatrix() -> const Matrix&
 }
 
 
-auto Camera::getInverseViewMatrix() -> const Matrix&
+auto Camera::getInvViewMatrix() -> const Matrix&
 {
-    if (dirtyFlags & DirtyBitInverseView)
+    if (dirtyFlags & DirtyBitInvView)
     {
-        inverseViewMatrix = getViewMatrix();
-        inverseViewMatrix.invert();
-        dirtyFlags &= ~DirtyBitInverseView;
+        invViewMatrix = getViewMatrix();
+        invViewMatrix.invert();
+        dirtyFlags &= ~DirtyBitInvView;
     }
-    return inverseViewMatrix;
+    return invViewMatrix;
 }
 
 
@@ -153,15 +153,15 @@ auto Camera::getViewProjectionMatrix() -> const Matrix&
 }
 
 
-auto Camera::getInverseViewProjectionMatrix() -> const Matrix&
+auto Camera::getInvViewProjectionMatrix() -> const Matrix&
 {
-    if (dirtyFlags & DirtyBitInverseViewProjection)
+    if (dirtyFlags & DirtyBitInvViewProjection)
     {
-        inverseViewProjectionMatrix = getViewProjectionMatrix();
-        inverseViewProjectionMatrix.invert();
-        dirtyFlags &= ~DirtyBitInverseViewProjection;
+        invViewProjectionMatrix = getViewProjectionMatrix();
+        invViewProjectionMatrix.invert();
+        dirtyFlags &= ~DirtyBitInvViewProjection;
     }
-    return inverseViewProjectionMatrix;
+    return invViewProjectionMatrix;
 }
 
 

@@ -43,8 +43,8 @@ namespace solo
         void bindWorldViewMatrixParameter(const std::string& name);
         void bindViewProjectionMatrixParameter(const std::string& name);
         void bindWorldViewProjectionMatrixParameter(const std::string& name);
-        void bindInverseTransposedWorldMatrixParameter(const std::string& name);
-        void bindInverseTransposedWorldViewMatrixParameter(const std::string& name);
+        void bindInvTransposedWorldMatrixParameter(const std::string& name);
+        void bindInvTransposedWorldViewMatrixParameter(const std::string& name);
         void bindCameraWorldPositionParameter(const std::string& name);
 
         void apply(const RenderContext& context);
