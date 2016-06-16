@@ -88,7 +88,7 @@ Device::Device(const DeviceCreationArgs& args):
     if (!args.logFilePath.empty())
         logger->setTargetFile(args.logFilePath);
 
-    auto token = DeviceToken();
+    DeviceToken token;
     renderer = Renderer::create(this, token);
     physics = Physics::create(this, token);
     fs = FileSystem::create(this, token);
@@ -107,8 +107,8 @@ void Device::run()
     running = true;
     while (true)
     {
-        assetLoader->update();
         beginUpdate();
+        assetLoader->update();
         physics->update();
         scene->update();
         scene->render();
