@@ -3,6 +3,7 @@
 #include "SoloVector3.h"
 
 
+// TODO consider moving all transformation-related methods to the Transform class
 namespace solo
 {
     class Plane;
