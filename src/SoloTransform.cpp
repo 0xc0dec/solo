@@ -53,18 +53,6 @@ void Transform::setParent(Transform* parent)
 }
 
 
-auto Transform::getParent() const -> Transform*
-{
-    return parent;
-}
-
-
-auto Transform::getChild(uint32_t index) const -> Transform*
-{
-    return children[index];
-}
-
-
 void Transform::removeChildren()
 {
     while (!children.empty())
@@ -72,36 +60,6 @@ void Transform::removeChildren()
         auto child = *children.begin();
         child->setParent(nullptr);
     }
-}
-
-
-auto Transform::getChildrenCount() const -> uint32_t
-{
-    return static_cast<uint32_t>(children.size());
-}
-
-
-auto Transform::getLocalScale() const -> Vector3
-{
-    return localScale;
-}
-
-
-auto Transform::getWorldRotation() const -> Quaternion
-{
-    return getWorldMatrix().getRotation();
-}
-
-
-auto Transform::getWorldScale() const -> Vector3
-{
-    return getWorldMatrix().getScale();
-}
-
-
-auto Transform::getLocalRotation() const -> Quaternion
-{
-    return localRotation;
 }
 
 
@@ -292,54 +250,6 @@ void Transform::setLocalPosition(const Vector3& position)
 {
     localPosition = position;
     setDirtyWithChildren(TransformDirtyFlags::Position | TransformDirtyFlags::World);
-}
-
-
-auto Transform::getLocalPosition() const -> Vector3
-{
-    return localPosition;
-}
-
-
-auto Transform::getWorldPosition() const -> Vector3
-{
-    return getWorldMatrix().getTranslation();
-}
-
-
-auto Transform::getLocalUp() const -> Vector3
-{
-    return getMatrix().getUpVector();
-}
-
-
-auto Transform::getLocalDown() const -> Vector3
-{
-    return getMatrix().getDownVector();
-}
-
-
-auto Transform::getLocalLeft() const -> Vector3
-{
-    return getMatrix().getLeftVector();
-}
-
-
-auto Transform::getLocalRight() const -> Vector3
-{
-    return getMatrix().getRightVector();
-}
-
-
-auto Transform::getLocalForward() const -> Vector3
-{
-    return getMatrix().getForwardVector();
-}
-
-
-auto Transform::getLocalBack() const -> Vector3
-{
-    return getMatrix().getBackVector();
 }
 
 

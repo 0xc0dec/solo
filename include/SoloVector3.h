@@ -66,7 +66,6 @@ namespace solo
         bool operator!=(const Vector3& v) const;
     };
 
-
     inline auto Vector3::operator+(const Vector3& v) const -> Vector3
     {
         auto result(*this);

@@ -3,10 +3,10 @@
 #include "TestBase.h"
 
 
-class Transform_Test final: public TestBase
+class Transform_Test final : public TestBase
 {
 public:
-    Transform_Test(Device *device): TestBase(device)
+    Transform_Test(Device *device) : TestBase(device)
     {
     }
 
