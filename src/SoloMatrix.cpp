@@ -27,7 +27,7 @@ Matrix::Matrix()
 
 
 Matrix::Matrix(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24,
-               float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44)
+    float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44)
 {
     m[0] = m11;
     m[1] = m21;
@@ -591,6 +591,7 @@ void Matrix::setZero()
 
 
 auto Matrix::operator+=(float scalar) -> Matrix&
+
 {
     m[0] += scalar;
     m[1] += scalar;
@@ -613,6 +614,7 @@ auto Matrix::operator+=(float scalar) -> Matrix&
 
 
 auto Matrix::operator+=(const Matrix& other) -> Matrix&
+
 {
     m[0] += other.m[0];
     m[1] += other.m[1];
@@ -637,20 +639,20 @@ auto Matrix::operator+=(const Matrix& other) -> Matrix&
 auto Matrix::transformPoint(const Vector3& point) const -> Vector3
 {
     return Vector3(
-               point.x * m[0] + point.y * m[4] + point.z * m[8] + m[12],
-               point.x * m[1] + point.y * m[5] + point.z * m[9] + m[13],
-               point.x * m[2] + point.y * m[6] + point.z * m[10] + m[14]
-           );
+        point.x * m[0] + point.y * m[4] + point.z * m[8] + m[12],
+        point.x * m[1] + point.y * m[5] + point.z * m[9] + m[13],
+        point.x * m[2] + point.y * m[6] + point.z * m[10] + m[14]
+    );
 }
 
 
 auto Matrix::transformDirection(const Vector3& dir) const -> Vector3
 {
     return Vector3(
-               dir.x * m[0] + dir.y * m[4] + dir.z * m[8],
-               dir.x * m[1] + dir.y * m[5] + dir.z * m[9],
-               dir.x * m[2] + dir.y * m[6] + dir.z * m[10]
-           );
+        dir.x * m[0] + dir.y * m[4] + dir.z * m[8],
+        dir.x * m[1] + dir.y * m[5] + dir.z * m[9],
+        dir.x * m[2] + dir.y * m[6] + dir.z * m[10]
+    );
 }
 
 
@@ -664,17 +666,18 @@ void Matrix::translate(const Vector3& t)
 void Matrix::transpose()
 {
     float t[16] =
-    {
-        m[0], m[4], m[8], m[12],
-        m[1], m[5], m[9], m[13],
-        m[2], m[6], m[10], m[14],
-        m[3], m[7], m[11], m[15]
-    };
+        {
+            m[0], m[4], m[8], m[12],
+            m[1], m[5], m[9], m[13],
+            m[2], m[6], m[10], m[14],
+            m[3], m[7], m[11], m[15]
+        };
     memcpy(&m, t, MatrixSize);
 }
 
 
 auto Matrix::operator*=(float scalar) -> Matrix&
+
 {
     m[0] *= scalar;
     m[1] *= scalar;
@@ -697,6 +700,7 @@ auto Matrix::operator*=(float scalar) -> Matrix&
 
 
 auto Matrix::operator*=(const Matrix& m2) -> Matrix&
+
 {
     float product[16];
 
@@ -727,6 +731,7 @@ auto Matrix::operator*=(const Matrix& m2) -> Matrix&
 
 
 auto Matrix::operator-=(float scalar) -> Matrix&
+
 {
     m[0] -= scalar;
     m[1] -= scalar;
@@ -749,6 +754,7 @@ auto Matrix::operator-=(float scalar) -> Matrix&
 
 
 auto Matrix::operator-=(const Matrix& m2) -> Matrix&
+
 {
     m[0] -= m2.m[0];
     m[1] -= m2.m[1];
@@ -791,3 +797,4 @@ auto Matrix::operator-() const -> Matrix
     result.m[15] = -m[15];
     return result;
 }
+
