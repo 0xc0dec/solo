@@ -237,7 +237,7 @@
     <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btQuickprof.cpp" />
     <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btSerializer.cpp" />
     <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btVector3.cpp" />
-    <ClCompile Include="..\vendor\glew\src\glew.c" />
+    <ClCompile Include="..\vendor\glew\1.13\src\glew.c" />
     <ClCompile Include="..\vendor\png\src\png.c" />
     <ClCompile Include="..\vendor\png\src\pngerror.c" />
     <ClCompile Include="..\vendor\png\src\pngget.c" />
@@ -450,13 +450,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
     <LibraryPath>$(ProjectDir)..\build\;$(ProjectDir)..\vendor\vulkan\lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
     <LibraryPath>$(ProjectDir)..\build\;$(ProjectDir)..\vendor\vulkan\lib\;$(LibraryPath)</LibraryPath>

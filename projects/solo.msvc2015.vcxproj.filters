@@ -228,9 +228,6 @@
     <ClCompile Include="..\src\SoloMaterial.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\vendor\glew\src\glew.c">
-      <Filter>src\vendor\glew</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloVector2.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -1217,6 +1214,9 @@
     </ClCompile>
     <ClCompile Include="..\src\SoloRigidBody.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\glew\1.13\src\glew.c">
+      <Filter>src\vendor\glew</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
