@@ -312,51 +312,6 @@
     <ClCompile Include="..\vendor\zlib\src\zutil.c">
       <Filter>src\vendor\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\vendor\png\src\png.c">
-      <Filter>src\vendor\png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\src\pngerror.c">
-      <Filter>src\vendor\png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\src\pngget.c">
-      <Filter>src\vendor\png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\src\pngmem.c">
-      <Filter>src\vendor\png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\src\pngpread.c">
-      <Filter>src\vendor\png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\src\pngread.c">
-      <Filter>src\vendor\png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\src\pngrio.c">
-      <Filter>src\vendor\png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\src\pngrtran.c">
-      <Filter>src\vendor\png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\src\pngrutil.c">
-      <Filter>src\vendor\png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\src\pngset.c">
-      <Filter>src\vendor\png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\src\pngtrans.c">
-      <Filter>src\vendor\png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\src\pngwio.c">
-      <Filter>src\vendor\png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\src\pngwrite.c">
-      <Filter>src\vendor\png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\src\pngwtran.c">
-      <Filter>src\vendor\png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\src\pngwutil.c">
-      <Filter>src\vendor\png</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloPngImageLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -1217,6 +1172,51 @@
     </ClCompile>
     <ClCompile Include="..\vendor\glew\1.13\src\glew.c">
       <Filter>src\vendor\glew</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\1.6.16\src\png.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngerror.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngget.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngmem.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngpread.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngread.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngrio.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngrtran.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngrutil.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngset.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngtrans.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngwio.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngwrite.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngwtran.c">
+      <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngwutil.c">
+      <Filter>src\vendor\png</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
