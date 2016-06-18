@@ -279,39 +279,6 @@
     <ClCompile Include="..\src\SoloTexture.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\vendor\zlib\src\adler32.c">
-      <Filter>src\vendor\zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\src\compress.c">
-      <Filter>src\vendor\zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\src\crc32.c">
-      <Filter>src\vendor\zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\src\deflate.c">
-      <Filter>src\vendor\zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\src\infback.c">
-      <Filter>src\vendor\zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\src\inffast.c">
-      <Filter>src\vendor\zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\src\inflate.c">
-      <Filter>src\vendor\zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\src\inftrees.c">
-      <Filter>src\vendor\zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\src\trees.c">
-      <Filter>src\vendor\zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\src\uncompr.c">
-      <Filter>src\vendor\zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\src\zutil.c">
-      <Filter>src\vendor\zlib</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloPngImageLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -1217,6 +1184,39 @@
     </ClCompile>
     <ClCompile Include="..\vendor\png\1.6.16\src\pngwutil.c">
       <Filter>src\vendor\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\adler32.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\compress.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\crc32.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\deflate.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\infback.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\inffast.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\inflate.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\inftrees.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\trees.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\uncompr.c">
+      <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\zutil.c">
+      <Filter>src\vendor\zlib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -257,17 +257,6 @@
     <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\dummy\SDL_sysjoystick.c" />
     <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\SDL_gamecontroller.c" />
     <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\SDL_joystick.c" />
-    <ClCompile Include="..\vendor\zlib\src\adler32.c" />
-    <ClCompile Include="..\vendor\zlib\src\compress.c" />
-    <ClCompile Include="..\vendor\zlib\src\crc32.c" />
-    <ClCompile Include="..\vendor\zlib\src\deflate.c" />
-    <ClCompile Include="..\vendor\zlib\src\infback.c" />
-    <ClCompile Include="..\vendor\zlib\src\inffast.c" />
-    <ClCompile Include="..\vendor\zlib\src\inflate.c" />
-    <ClCompile Include="..\vendor\zlib\src\inftrees.c" />
-    <ClCompile Include="..\vendor\zlib\src\trees.c" />
-    <ClCompile Include="..\vendor\zlib\src\uncompr.c" />
-    <ClCompile Include="..\vendor\zlib\src\zutil.c" />
     <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\e_atan2.c" />
     <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\e_log.c" />
     <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\e_pow.c" />
@@ -418,6 +407,17 @@
     <ClCompile Include="..\src\SoloVector2.cpp" />
     <ClCompile Include="..\src\SoloVector3.cpp" />
     <ClCompile Include="..\src\SoloVector4.cpp" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\adler32.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\compress.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\crc32.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\deflate.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\infback.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\inffast.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\inflate.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\inftrees.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\trees.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\uncompr.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\zutil.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{278CAB21-1CAB-49AD-9959-6F97743501FB}</ProjectGuid>
@@ -450,13 +450,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\1.6.16\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\1.6.16\include;$(ProjectDir)..\vendor\zlib\1.2.8\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
     <LibraryPath>$(ProjectDir)..\build\;$(ProjectDir)..\vendor\vulkan\lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\1.6.16\include;$(ProjectDir)..\vendor\zlib\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\1.6.16\include;$(ProjectDir)..\vendor\zlib\1.2.8\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
     <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
     <LibraryPath>$(ProjectDir)..\build\;$(ProjectDir)..\vendor\vulkan\lib\;$(LibraryPath)</LibraryPath>
