@@ -46,7 +46,7 @@ namespace solo
         auto getParent() const -> Transform*;
         auto getChild(uint32_t index) const -> Transform*;
         auto getChildrenCount() const -> uint32_t;
-        void removeChildren();
+        void removeChildren(); // TODO rename
 
         auto getWorldScale() const -> Vector3;
         auto getLocalScale() const -> Vector3;
@@ -235,4 +235,3 @@ namespace solo
         virtual void onTransformChanged(const Transform* transform, uint32_t dirtyFlags) = 0;
     };
 }
-
