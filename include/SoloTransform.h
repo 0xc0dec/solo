@@ -46,7 +46,7 @@ namespace solo
         auto getParent() const -> Transform*;
         auto getChild(uint32_t index) const -> Transform*;
         auto getChildrenCount() const -> uint32_t;
-        void removeChildren(); // TODO rename
+        void clearChildren();
 
         auto getWorldScale() const -> Vector3;
         auto getLocalScale() const -> Vector3;
@@ -228,9 +228,7 @@ namespace solo
     class TransformCallback
     {
     public:
-        virtual ~TransformCallback()
-        {
-        }
+        virtual ~TransformCallback() {}
 
         virtual void onTransformChanged(const Transform* transform, uint32_t dirtyFlags) = 0;
     };

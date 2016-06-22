@@ -53,7 +53,7 @@ void Transform::setParent(Transform* parent)
 }
 
 
-void Transform::removeChildren()
+void Transform::clearChildren()
 {
     while (!children.empty())
     {
