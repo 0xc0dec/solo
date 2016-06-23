@@ -66,6 +66,7 @@ auto Transform::getMatrix() const -> Matrix
 {
     if (dirtyFlags)
     {
+        // TODO simplify
         auto hasTranslation = !localPosition.isZero();
         auto hasScale = !localScale.isUnit();
         auto hasRotation = !localRotation.isIdentity();
