@@ -106,7 +106,7 @@ namespace solo
 
         void notifyChanged(uint32_t dirtyFlags) const;
 
-        mutable uint32_t dirtyFlags;
+        mutable uint32_t dirtyFlags = ~0;
 
         Transform* parent = nullptr;
         std::vector<Transform*> children;

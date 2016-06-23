@@ -6,8 +6,7 @@ using namespace solo;
 
 
 Transform::Transform(const Node& node):
-    ComponentBase(node),
-    dirtyFlags(~0)
+    ComponentBase(node)
 {
 }
 
