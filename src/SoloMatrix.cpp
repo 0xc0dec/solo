@@ -97,10 +97,11 @@ auto Matrix::createLookAt(const Vector3& eye, const Vector3& target, const Vecto
 }
 
 
-auto Matrix::createPerspective(const Radian& fieldOfView, float aspectRatio, float zNearPlane, float zFarPlane) -> Matrix
+auto Matrix::createPerspective(const Radian& fieldOfView, float aspectRatio, float znear, float zfar) -> Matrix
 {
-    auto f_n = 1.0f / (zFarPlane - zNearPlane);
+    auto f_n = 1.0f / (zfar - znear);
     auto theta = fieldOfView.toRawRadian() * 0.5f;
+    // TODO asserts instead?
     SL_DEBUG_FMT_THROW_IF(Math::approxZero(fmod(theta, Math::piOver2), Math::smallFloat1),
         InvalidInputException, "Invalid field of view value ", fieldOfView.toRawDegree(), " caused attempted tan calculation, which is undefined");
 
@@ -111,24 +112,22 @@ auto Matrix::createPerspective(const Radian& fieldOfView, float aspectRatio, flo
     memset(&result.m, 0, MatrixSize);
     result.m[0] = (1.0f / aspectRatio) * factor;
     result.m[5] = factor;
-    result.m[10] = -(zFarPlane + zNearPlane) * f_n;
+    result.m[10] = -(zfar + znear) * f_n;
     result.m[11] = -1.0f;
-    result.m[14] = -2.0f * zFarPlane * zNearPlane * f_n;
+    result.m[14] = -2.0f * zfar * znear * f_n;
 
     return result;
 }
 
 
-auto Matrix::createOrthographic(float width, float height, float zNearPlane, float zFarPlane) -> Matrix
+auto Matrix::createOrthographic(float width, float height, float near, float far) -> Matrix
 {
     auto halfWidth = width / 2.0f;
     auto halfHeight = height / 2.0f;
-    return createOrthographicOffCenter(-halfWidth, halfWidth, -halfHeight, halfHeight, zNearPlane, zFarPlane);
-}
-
-
-auto Matrix::createOrthographicOffCenter(float left, float right, float bottom, float top, float near, float far) -> Matrix
-{
+    auto left = -halfWidth;
+    auto right = halfWidth;
+    auto top = halfHeight;
+    auto bottom = -halfHeight;
     Matrix result;
     memset(&result.m, 0, MatrixSize);
     result.m[0] = 2 / (right - left);
@@ -228,7 +227,7 @@ auto Matrix::createRotationFromAxisAngle(const Vector3& axis, const Radian& angl
     {
         // Not normalized
         n = sqrt(n);
-        // Prevent divide too close to zero.
+        // Prevent division too close to zero.
         if (!Math::approxZero(n, Math::smallFloat1))
         {
             n = 1.0f / n;
