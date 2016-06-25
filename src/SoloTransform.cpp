@@ -66,26 +66,21 @@ auto Transform::getMatrix() const -> Matrix
 {
     if (dirtyFlags)
     {
-        // TODO simplify
-        auto hasTranslation = !localPosition.isZero();
-        auto hasScale = !localScale.isUnit();
-        auto hasRotation = !localRotation.isIdentity();
-
-        if (hasTranslation || dirtyFlags & TransformDirtyFlags::Position)
+        if (dirtyFlags & TransformDirtyFlags::Position || !localPosition.isZero())
         {
             matrix = Matrix::createTranslation(localPosition);
-            if (hasRotation || dirtyFlags & TransformDirtyFlags::Rotation)
+            if (dirtyFlags & TransformDirtyFlags::Rotation || !localRotation.isIdentity())
                 matrix.rotateByQuaternion(localRotation);
-            if (hasScale || dirtyFlags & TransformDirtyFlags::Scale)
+            if (dirtyFlags & TransformDirtyFlags::Scale || !localScale.isUnit())
                 matrix.scaleByVector(localScale);
         }
-        else if (hasRotation || dirtyFlags & TransformDirtyFlags::Rotation)
+        else if (dirtyFlags & TransformDirtyFlags::Rotation || !localRotation.isIdentity())
         {
             matrix = Matrix::createRotationFromQuaternion(localRotation);
-            if (hasScale || dirtyFlags & TransformDirtyFlags::Scale)
+            if (dirtyFlags & TransformDirtyFlags::Scale || !localScale.isUnit())
                 matrix.scaleByVector(localScale);
         }
-        else if (hasScale || dirtyFlags & TransformDirtyFlags::Scale)
+        else if (dirtyFlags & TransformDirtyFlags::Scale || !localScale.isUnit())
             matrix = Matrix::createScale(localScale);
 
         dirtyFlags = 0;
