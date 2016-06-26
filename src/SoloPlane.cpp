@@ -1,6 +1,5 @@
 #include "SoloPlane.h"
 #include "SoloMath.h"
-#include "SoloMatrix.h"
 #include "SoloBoundingSphere.h"
 #include "SoloBoundingBox.h"
 #include "SoloFrustum.h"
@@ -188,28 +187,6 @@ bool Plane::isParallel(const Plane& plane) const
     return Math::approxEqual(normal.y * plane.normal.z, normal.z * plane.normal.y, Math::smallFloat1) &&
            Math::approxEqual(normal.z * plane.normal.x, normal.x * plane.normal.z, Math::smallFloat1) &&
            Math::approxEqual(normal.x * plane.normal.y, normal.y * plane.normal.x, Math::smallFloat1);
-}
-
-
-void Plane::transform(const Matrix& matrix)
-{
-    auto inverted(matrix);
-    if (!inverted.invert())
-        return;
-
-    // Treat the plane as a four-tuple and multiply by the inverse transpose of the matrix to get the transformed plane.
-    // Then we normalize the plane by dividing both the normal and the distance by the length of the normal.
-    auto nx = normal.x * inverted.m[0] + normal.y * inverted.m[1] + normal.z * inverted.m[2] + distance * inverted.m[3];
-    auto ny = normal.x * inverted.m[4] + normal.y * inverted.m[5] + normal.z * inverted.m[6] + distance * inverted.m[7];
-    auto nz = normal.x * inverted.m[8] + normal.y * inverted.m[9] + normal.z * inverted.m[10] + distance * inverted.m[11];
-    auto d = normal.x * inverted.m[12] + normal.y * inverted.m[13] + normal.z * inverted.m[14] + distance * inverted.m[15];
-    auto divisor = sqrt(nx * nx + ny * ny + nz * nz);
-    auto factor = 1.0f / divisor;
-
-    normal.x = nx * factor;
-    normal.y = ny * factor;
-    normal.z = nz * factor;
-    distance = d * factor;
 }
 
 

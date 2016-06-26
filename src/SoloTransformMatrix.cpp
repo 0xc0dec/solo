@@ -3,6 +3,10 @@
 #include "SoloMath.h"
 #include "SoloPlane.h"
 #include "SoloQuaternion.h"
+#include "SoloBoundingBox.h"
+#include "SoloBoundingSphere.h"
+#include "SoloRay.h"
+#include <algorithm>
 
 using namespace solo;
 
@@ -13,13 +17,13 @@ TransformMatrix::TransformMatrix()
 
 
 TransformMatrix::TransformMatrix(const TransformMatrix& other):
-    matrix(other.matrix)
+    Matrix(other)
 {
 }
 
 
 TransformMatrix::TransformMatrix(const Matrix& m):
-    matrix(m)
+    Matrix(m)
 {
 }
 
@@ -305,16 +309,16 @@ auto TransformMatrix::getTranslation() const -> Vector3
 
 void TransformMatrix::scaleByVector(const Vector3& s)
 {
-    matrix *= createScale(s).matrix;
+    *this *= createScale(s);
 }
 
 
 auto TransformMatrix::transformPoint(const Vector3& point) const -> Vector3
 {
     return Vector3(
-        point.x * matrix.m[0] + point.y * matrix.m[4] + point.z * matrix.m[8] + matrix.m[12],
-        point.x * matrix.m[1] + point.y * matrix.m[5] + point.z * matrix.m[9] + matrix.m[13],
-        point.x * matrix.m[2] + point.y * matrix.m[6] + point.z * matrix.m[10] + matrix.m[14]
+        point.x * m[0] + point.y * m[4] + point.z * m[8] + m[12],
+        point.x * m[1] + point.y * m[5] + point.z * m[9] + m[13],
+        point.x * m[2] + point.y * m[6] + point.z * m[10] + m[14]
     );
 }
 
@@ -322,16 +326,101 @@ auto TransformMatrix::transformPoint(const Vector3& point) const -> Vector3
 auto TransformMatrix::transformDirection(const Vector3& dir) const -> Vector3
 {
     return Vector3(
-        dir.x * matrix.m[0] + dir.y * matrix.m[4] + dir.z * matrix.m[8],
-        dir.x * matrix.m[1] + dir.y * matrix.m[5] + dir.z * matrix.m[9],
-        dir.x * matrix.m[2] + dir.y * matrix.m[6] + dir.z * matrix.m[10]
+        dir.x * m[0] + dir.y * m[4] + dir.z * m[8],
+        dir.x * m[1] + dir.y * m[5] + dir.z * m[9],
+        dir.x * m[2] + dir.y * m[6] + dir.z * m[10]
     );
 }
 
 
 void TransformMatrix::translate(const Vector3& t)
 {
-    matrix *= createTranslation(t).matrix;
+    *this *= createTranslation(t);
+}
+
+
+static void updateBounds(const Vector3& point, Vector3& min, Vector3& max)
+{
+    if (point.x < min.x)
+        min.x = point.x;
+
+    if (point.x > max.x)
+        max.x = point.x;
+
+    if (point.y < min.y)
+        min.y = point.y;
+
+    if (max.y < point.y)
+        max.y = point.y;
+
+    if (min.z > point.z)
+        min.z = point.z;
+
+    if (point.z > max.z)
+        max.z = point.z;
+}
+
+
+auto TransformMatrix::transformBoundingBox(const BoundingBox& box) -> BoundingBox
+{
+    auto corners = box.getCorners();
+	auto newMin = Vector3(std::numeric_limits<float>::max());
+	auto newMax = Vector3(std::numeric_limits<float>::min());
+
+	for (const auto& corner: corners)
+    {
+        auto newCorner = transformPoint(corner);
+        updateBounds(newCorner, newMin, newMax);
+    }
+
+    return BoundingBox(
+        Vector3(newMin.x, newMin.y, newMin.z),
+        Vector3(newMax.x, newMax.y, newMax.z));
+}
+
+
+auto TransformMatrix::transformBoundingSphere(const BoundingSphere& sphere) -> BoundingSphere
+{
+    auto scale = getScale();
+    auto r = sphere.radius * scale.x;
+    r = std::max(r, sphere.radius * scale.y);
+    r = std::max(r, sphere.radius * scale.z);
+    return BoundingSphere(transformPoint(sphere.center), r);
+}
+
+
+auto TransformMatrix::transformPlane(const Plane& plane) -> Plane
+{
+    auto inverted(*this);
+    if (!inverted.invert())
+        return plane;
+
+    auto normal = plane.getNormal();
+    auto distance = plane.getDistance();
+
+    // Treat the plane as a four-tuple and multiply by the inverse transpose of the matrix to get the transformed plane.
+    // Then we normalize the plane by dividing both the normal and the distance by the length of the normal.
+    auto nx = normal.x * inverted.m[0] + normal.y * inverted.m[1] + normal.z * inverted.m[2] + distance * inverted.m[3];
+    auto ny = normal.x * inverted.m[4] + normal.y * inverted.m[5] + normal.z * inverted.m[6] + distance * inverted.m[7];
+    auto nz = normal.x * inverted.m[8] + normal.y * inverted.m[9] + normal.z * inverted.m[10] + distance * inverted.m[11];
+    auto d = normal.x * inverted.m[12] + normal.y * inverted.m[13] + normal.z * inverted.m[14] + distance * inverted.m[15];
+    auto divisor = sqrt(nx * nx + ny * ny + nz * nz);
+    auto factor = 1.0f / divisor;
+
+    normal.x = nx * factor;
+    normal.y = ny * factor;
+    normal.z = nz * factor;
+
+    return Plane(normal, d * factor);
+}
+
+
+auto TransformMatrix::transformRay(const Ray& ray) -> Ray
+{
+    auto origin = transformPoint(ray.getOrigin());
+    auto direction = transformDirection(ray.getDirection());
+    direction.normalize();
+    return Ray(origin, direction);
 }
 
 
@@ -339,28 +428,26 @@ bool TransformMatrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* t
 {
     if (translation)
     {
-        translation->x = matrix.m[12];
-        translation->y = matrix.m[13];
-        translation->z = matrix.m[14];
+        translation->x = m[12];
+        translation->y = m[13];
+        translation->z = m[14];
     }
 
     if (scale == nullptr && rotation == nullptr)
         return true;
 
-    // Extract the scale.
-    // This is simply the length of each axis (row/column) in the matrix.
-    Vector3 xaxis(matrix.m[0], matrix.m[1], matrix.m[2]);
+    Vector3 xaxis(m[0], m[1], m[2]);
     auto scaleX = xaxis.length();
 
-    Vector3 yaxis(matrix.m[4], matrix.m[5], matrix.m[6]);
+    Vector3 yaxis(m[4], m[5], m[6]);
     auto scaleY = yaxis.length();
 
-    Vector3 zaxis(matrix.m[8], matrix.m[9], matrix.m[10]);
+    Vector3 zaxis(m[8], m[9], m[10]);
     auto scaleZ = zaxis.length();
 
     // Determine if we have a negative scale (true if determinant is less than zero).
     // In this case, we simply negate a single axis of the scale.
-    auto det = matrix.getDeterminant();
+    auto det = getDeterminant();
     if (det < 0)
         scaleZ = -scaleZ;
 

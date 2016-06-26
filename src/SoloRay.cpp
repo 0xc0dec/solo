@@ -2,8 +2,8 @@
 #include "SoloMath.h"
 #include "SoloBoundingSphere.h"
 #include "SoloBoundingBox.h"
-#include "SoloMatrix.h"
 #include "SoloFrustum.h"
+#include "SoloBase.h"
 #include <algorithm>
 
 using namespace solo;
@@ -112,14 +112,6 @@ auto Ray::hitPlane(const Plane& plane) const -> float
     // the ray getIntersection the plane (if it is negative the plane is behind the ray).
     auto d = -alpha / dot;
     return d < 0.0f ? -1 : d;
-}
-
-
-void Ray::transform(const Matrix& matrix)
-{
-    origin = matrix.transformPoint(origin);
-    direction = matrix.transformDirection(direction);
-    direction.normalize();
 }
 
 

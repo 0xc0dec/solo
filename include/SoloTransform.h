@@ -2,7 +2,7 @@
 
 #include "SoloBase.h"
 #include "SoloComponent.h"
-#include "SoloMatrix.h"
+#include "SoloTransformMatrix.h"
 #include "SoloVector3.h"
 #include "SoloQuaternion.h"
 #include "SoloNode.h"
@@ -89,13 +89,13 @@ namespace solo
 
         void lookAt(const Vector3& target, const Vector3& up);
 
-        auto getMatrix() const -> Matrix;
-        auto getWorldMatrix() const -> Matrix;
+        auto getMatrix() const -> TransformMatrix;
+        auto getWorldMatrix() const -> TransformMatrix;
 
-        auto getWorldViewMatrix(Camera* camera) const -> Matrix;
-        auto getWorldViewProjectionMatrix(Camera* camera) const -> Matrix;
-        auto getInvTransposedWorldViewMatrix(Camera* camera) const -> Matrix;
-        auto getInvTransposedWorldMatrix() const -> Matrix;
+        auto getWorldViewMatrix(Camera* camera) const -> TransformMatrix;
+        auto getWorldViewProjectionMatrix(Camera* camera) const -> TransformMatrix;
+        auto getInvTransposedWorldViewMatrix(Camera* camera) const -> TransformMatrix;
+        auto getInvTransposedWorldMatrix() const -> TransformMatrix;
 
         auto transformPoint(const Vector3& point) const -> Vector3;
         auto transformDirection(const Vector3& direction) const -> Vector3;
@@ -115,9 +115,9 @@ namespace solo
         Vector3 localPosition;
         Vector3 localScale;
         Quaternion localRotation;
-        mutable Matrix matrix;
-        mutable Matrix worldMatrix;
-        mutable Matrix invTransposedWorldMatrix;
+        mutable TransformMatrix matrix;
+        mutable TransformMatrix worldMatrix;
+        mutable TransformMatrix invTransposedWorldMatrix;
     };
 
     inline auto Transform::getLocalPosition() const -> Vector3

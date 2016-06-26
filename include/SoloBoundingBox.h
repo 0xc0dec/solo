@@ -37,8 +37,6 @@ namespace solo
 
         void mergeBoundingSphere(const BoundingSphere& sphere);
         void mergeBoundingBox(const BoundingBox& box);
-
-        void transform(const Matrix& matrix);
     };
 
     inline bool BoundingBox::isEmpty() const

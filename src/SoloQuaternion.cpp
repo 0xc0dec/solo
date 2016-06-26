@@ -1,6 +1,7 @@
 #include "SoloQuaternion.h"
 #include "SoloMath.h"
 #include "SoloRadian.h"
+#include "SoloVector3.h"
 
 using namespace solo;
 

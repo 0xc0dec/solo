@@ -9,7 +9,7 @@ namespace solo
     class Quaternion;
     struct Radian;
 
-    class Matrix final
+    class Matrix
     {
     public:
         static const size_t Size = sizeof(float) * 16;

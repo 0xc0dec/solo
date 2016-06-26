@@ -9,7 +9,6 @@ namespace solo
     class BoundingBox;
     class Frustum;
     class Ray;
-    class Matrix;
 
     enum class PlaneIntersection
     {
@@ -42,8 +41,6 @@ namespace solo
         auto intersectRay(const Ray& ray) const -> PlaneIntersection;
 
         bool isParallel(const Plane& plane) const;
-
-        void transform(const Matrix& matrix);
 
     private:
         void normalize();

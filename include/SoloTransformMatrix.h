@@ -5,16 +5,17 @@
 
 namespace solo
 {
-    class Matrix;
+    class BoundingBox;
+    class BoundingSphere;
+    class Plane;
+    class Ray;
 
-    class TransformMatrix
+    class TransformMatrix final: public Matrix
     {
     public:
-        Matrix matrix;
-
         TransformMatrix();
         TransformMatrix(const TransformMatrix& other);
-        explicit TransformMatrix(const Matrix& m);
+        TransformMatrix(const Matrix& other);
 
         static auto createLookAt(const Vector3& eye, const Vector3& target, const Vector3& up) -> TransformMatrix;
         static auto createPerspective(const Radian& fieldOfView, float aspectRatio, float znear, float zfar) -> TransformMatrix;
@@ -52,38 +53,42 @@ namespace solo
 
         auto transformPoint(const Vector3& point) const -> Vector3;
         auto transformDirection(const Vector3& dir) const -> Vector3;
+        auto transformBoundingBox(const BoundingBox& box) -> BoundingBox;
+        auto transformBoundingSphere(const BoundingSphere& sphere) -> BoundingSphere;
+        auto transformPlane(const Plane& plane) -> Plane;
+        auto transformRay(const Ray& ray) -> Ray;
 
         bool decompose(Vector3* scale, Quaternion* rotation, Vector3* translation) const;
     };
 
     inline auto TransformMatrix::getUpVector() const -> Vector3
     {
-        return Vector3(matrix.m[4], matrix.m[5], matrix.m[6]);
+        return Vector3(m[4], m[5], m[6]);
     }
 
     inline auto TransformMatrix::getDownVector() const -> Vector3
     {
-        return Vector3(-matrix.m[4], -matrix.m[5], -matrix.m[6]);
+        return Vector3(-m[4], -m[5], -m[6]);
     }
 
     inline auto TransformMatrix::getLeftVector() const -> Vector3
     {
-        return Vector3(-matrix.m[0], -matrix.m[1], -matrix.m[2]);
+        return Vector3(-m[0], -m[1], -m[2]);
     }
 
     inline auto TransformMatrix::getRightVector() const -> Vector3
     {
-        return Vector3(matrix.m[0], matrix.m[1], matrix.m[2]);
+        return Vector3(m[0], m[1], m[2]);
     }
 
     inline auto TransformMatrix::getForwardVector() const -> Vector3
     {
-        return Vector3(-matrix.m[8], -matrix.m[9], -matrix.m[10]);
+        return Vector3(-m[8], -m[9], -m[10]);
     }
 
     inline auto TransformMatrix::getBackVector() const -> Vector3
     {
-        return Vector3(matrix.m[8], matrix.m[9], matrix.m[10]);
+        return Vector3(m[8], m[9], m[10]);
     }
 
     inline void TransformMatrix::scaleByScalar(float value)
@@ -93,26 +98,26 @@ namespace solo
 
     inline void TransformMatrix::rotateByQuaternion(const Quaternion& q)
     {
-        matrix *= createRotationFromQuaternion(q).matrix;
+        *this *= createRotationFromQuaternion(q);
     }
 
     inline void TransformMatrix::rotateByAxisAngle(const Vector3& axis, const Radian& angle)
     {
-        matrix *= createRotationFromAxisAngle(axis, angle).matrix;
+        *this *= createRotationFromAxisAngle(axis, angle);
     }
 
     inline void TransformMatrix::rotateX(const Radian& angle)
     {
-        matrix *= createRotationX(angle).matrix;
+        *this *= createRotationX(angle);
     }
 
     inline void TransformMatrix::rotateY(const Radian& angle)
     {
-        matrix *= createRotationY(angle).matrix;
+        *this *= createRotationY(angle);
     }
 
     inline void TransformMatrix::rotateZ(const Radian& angle)
     {
-        matrix *= createRotationZ(angle).matrix;
+        *this *= createRotationZ(angle);
     }
 }

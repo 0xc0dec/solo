@@ -2,7 +2,6 @@
 #include "SoloBoundingBox.h"
 #include "SoloRay.h"
 #include "SoloFrustum.h"
-#include <algorithm>
 
 using namespace solo;
 
@@ -195,15 +194,4 @@ void BoundingSphere::mergeBoundingBox(const BoundingBox& box)
     center.y = v1y;
     center.z = v1z;
     radius = r;
-}
-
-
-void BoundingSphere::transform(const Matrix& matrix)
-{
-    auto scale = matrix.getScale();
-    auto r = radius * scale.x;
-    r = std::max(r, radius * scale.y);
-    r = std::max(r, radius * scale.z);
-    radius = r;
-    center = matrix.transformPoint(center);
 }

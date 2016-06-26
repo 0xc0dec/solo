@@ -62,13 +62,13 @@ void Transform::clearChildren()
 }
 
 
-auto Transform::getMatrix() const -> Matrix
+auto Transform::getMatrix() const -> TransformMatrix
 {
     if (dirtyFlags)
     {
         if (dirtyFlags & TransformDirtyFlags::Position || !localPosition.isZero())
         {
-            matrix = Matrix::createTranslation(localPosition);
+            matrix = TransformMatrix::createTranslation(localPosition);
             if (dirtyFlags & TransformDirtyFlags::Rotation || !localRotation.isIdentity())
                 matrix.rotateByQuaternion(localRotation);
             if (dirtyFlags & TransformDirtyFlags::Scale || !localScale.isUnit())
@@ -76,12 +76,12 @@ auto Transform::getMatrix() const -> Matrix
         }
         else if (dirtyFlags & TransformDirtyFlags::Rotation || !localRotation.isIdentity())
         {
-            matrix = Matrix::createRotationFromQuaternion(localRotation);
+            matrix = TransformMatrix::createRotationFromQuaternion(localRotation);
             if (dirtyFlags & TransformDirtyFlags::Scale || !localScale.isUnit())
                 matrix.scaleByVector(localScale);
         }
         else if (dirtyFlags & TransformDirtyFlags::Scale || !localScale.isUnit())
-            matrix = Matrix::createScale(localScale);
+            matrix = TransformMatrix::createScale(localScale);
 
         dirtyFlags = 0;
     }
@@ -89,7 +89,7 @@ auto Transform::getMatrix() const -> Matrix
 }
 
 
-auto Transform::getWorldMatrix() const -> Matrix
+auto Transform::getWorldMatrix() const -> TransformMatrix
 {
     if (dirtyFlags & TransformDirtyFlags::World)
     {
@@ -105,7 +105,7 @@ auto Transform::getWorldMatrix() const -> Matrix
 }
 
 
-auto Transform::getInvTransposedWorldMatrix() const -> Matrix
+auto Transform::getInvTransposedWorldMatrix() const -> TransformMatrix
 {
     if (dirtyFlags & TransformDirtyFlags::InvTransposedWorld || dirtyFlags & TransformDirtyFlags::World)
     {
@@ -119,19 +119,19 @@ auto Transform::getInvTransposedWorldMatrix() const -> Matrix
 }
 
 
-auto Transform::getWorldViewMatrix(Camera* camera) const -> Matrix
+auto Transform::getWorldViewMatrix(Camera* camera) const -> TransformMatrix
 {
     return camera->getViewMatrix() * getWorldMatrix();
 }
 
 
-auto Transform::getWorldViewProjectionMatrix(Camera* camera) const -> Matrix
+auto Transform::getWorldViewProjectionMatrix(Camera* camera) const -> TransformMatrix
 {
     return camera->getViewProjectionMatrix() * getWorldMatrix();
 }
 
 
-auto Transform::getInvTransposedWorldViewMatrix(Camera* camera) const -> Matrix
+auto Transform::getInvTransposedWorldViewMatrix(Camera* camera) const -> TransformMatrix
 {
     auto result = camera->getViewMatrix() * getWorldMatrix();
     result.invert();
@@ -210,7 +210,7 @@ void Transform::lookAt(const Vector3& target, const Vector3& up)
         localUp = m.transformDirection(up);
     }
 
-    auto lookAtMatrix = Matrix::createLookAt(localPosition, localTarget, localUp);
+    auto lookAtMatrix = TransformMatrix::createLookAt(localPosition, localTarget, localUp);
     setLocalRotation(lookAtMatrix.getRotation());
 }
 

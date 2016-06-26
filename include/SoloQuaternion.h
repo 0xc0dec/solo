@@ -1,11 +1,9 @@
 #pragma once
 
-#include "SoloMatrix.h"
-
-
 namespace solo
 {
     struct Radian;
+    class Vector3;
 
     class Quaternion final
     {

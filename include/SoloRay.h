@@ -9,7 +9,6 @@ namespace solo
     class BoundingSphere;
     class BoundingBox;
     class Frustum;
-    class Matrix;
 
     class Ray final
     {
@@ -29,8 +28,6 @@ namespace solo
         auto hitBoundingBox(const BoundingBox& box) const -> float;
         auto hitFrustum(const Frustum& frustum) const -> float;
         auto hitPlane(const Plane& plane) const -> float;
-
-        void transform(const Matrix& matrix);
 
     private:
         void normalize();

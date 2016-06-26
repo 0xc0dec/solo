@@ -2,7 +2,7 @@
 
 #include "SoloComponent.h"
 #include "SoloVector4.h"
-#include "SoloMatrix.h"
+#include "SoloTransformMatrix.h"
 #include "SoloTransform.h"
 #include "SoloNode.h"
 
@@ -60,11 +60,11 @@ namespace solo
         auto getAspectRatio() const -> float;
         void setAspectRatio(float ratio);
 
-        auto getViewMatrix() -> const Matrix&;
-        auto getInvViewMatrix() -> const Matrix&;
-        auto getProjectionMatrix() -> const Matrix&;
-        auto getViewProjectionMatrix() -> const Matrix&;
-        auto getInvViewProjectionMatrix() -> const Matrix&;
+        auto getViewMatrix() -> const TransformMatrix&;
+        auto getInvViewMatrix() -> const TransformMatrix&;
+        auto getProjectionMatrix() -> const TransformMatrix&;
+        auto getViewProjectionMatrix() -> const TransformMatrix&;
+        auto getInvViewProjectionMatrix() -> const TransformMatrix&;
 
     protected:
         void onTransformChanged(const Transform*, uint32_t) override;
@@ -91,11 +91,11 @@ namespace solo
         float height = 1;
         float aspectRatio = 1;
 
-        Matrix viewMatrix;
-        Matrix projectionMatrix;
-        Matrix viewProjectionMatrix;
-        Matrix invViewMatrix;
-        Matrix invViewProjectionMatrix;
+        TransformMatrix viewMatrix;
+        TransformMatrix projectionMatrix;
+        TransformMatrix viewProjectionMatrix;
+        TransformMatrix invViewMatrix;
+        TransformMatrix invViewProjectionMatrix;
     };
 
     inline void Camera::setClearColor(float r, float g, float b, float a)
