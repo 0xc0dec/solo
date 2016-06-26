@@ -12,6 +12,8 @@ namespace solo
     class Matrix final
     {
     public:
+        static const size_t Size = sizeof(float) * 16;
+
         // column-major order
         float m[16];
 
@@ -26,53 +28,11 @@ namespace solo
         static auto zero() -> Matrix;
 
         bool isIdentity() const;
-
-        static auto createLookAt(const Vector3& eye, const Vector3& target, const Vector3& up) -> Matrix;
-        static auto createPerspective(const Radian& fieldOfView, float aspectRatio, float znear, float zfar) -> Matrix;
-        static auto createOrthographic(float width, float height, float near, float far) -> Matrix;
-        static auto createReflection(const Plane& plane) -> Matrix;
-        static auto createScale(const Vector3& scale) -> Matrix;
-        static auto createRotationFromQuaternion(const Quaternion& quat) -> Matrix;
-        static auto createRotationFromAxisAngle(const Vector3& axis, const Radian& angle) -> Matrix;
-        static auto createRotationX(const Radian& angle) -> Matrix;
-        static auto createRotationY(const Radian& angle) -> Matrix;
-        static auto createRotationZ(const Radian& angle) -> Matrix;
-        static auto createTranslation(const Vector3& translation) -> Matrix;
-
-        bool decompose(Vector3* scale, Quaternion* rotation, Vector3* translation) const;
-
         auto getDeterminant() const -> float;
-
-        auto getScale() const -> Vector3;
-        auto getRotation() const -> Quaternion;
-        auto getTranslation() const -> Vector3;
-
-        auto getUpVector() const -> Vector3;
-        auto getDownVector() const -> Vector3;
-        auto getLeftVector() const -> Vector3;
-        auto getRightVector() const -> Vector3;
-        auto getForwardVector() const -> Vector3;
-        auto getBackVector() const -> Vector3;
-
         bool invert();
         void transpose();
-
-        void rotateByQuaternion(const Quaternion& q);
-        void rotateByAxisAngle(const Vector3& axis, const Radian& angle);
-        void rotateX(const Radian& angle);
-        void rotateY(const Radian& angle);
-        void rotateZ(const Radian& angle);
-
-        void scaleByScalar(float value);
-        void scaleByVector(const Vector3& s);
-
-        void translate(const Vector3& t);
-
         void setIdentity();
         void setZero();
-
-        auto transformPoint(const Vector3& point) const -> Vector3;
-        auto transformDirection(const Vector3& dir) const -> Vector3;
 
         auto operator+(float scalar) const -> Matrix;
         auto operator+(const Matrix& m) const -> Matrix;
@@ -134,47 +94,20 @@ namespace solo
 
     inline auto operator*=(Vector3& v, const Matrix& m) -> Vector3&
     {
-        v = m.transformDirection(v);
+        v = Vector3(
+            v.x * m.m[0] + v.y * m.m[4] + v.z * m.m[8],
+            v.x * m.m[1] + v.y * m.m[5] + v.z * m.m[9],
+            v.x * m.m[2] + v.y * m.m[6] + v.z * m.m[10]
+        );
         return v;
     }
 
     inline auto operator*(const Matrix& m, const Vector3& v) -> Vector3
     {
-        return m.transformDirection(v);
-    }
-
-    inline auto Matrix::getUpVector() const -> Vector3
-    {
-        return Vector3(m[4], m[5], m[6]);
-    }
-
-    inline auto Matrix::getDownVector() const -> Vector3
-    {
-        return Vector3(-m[4], -m[5], -m[6]);
-    }
-
-    inline auto Matrix::getLeftVector() const -> Vector3
-    {
-        return Vector3(-m[0], -m[1], -m[2]);
-    }
-
-    inline auto Matrix::getRightVector() const -> Vector3
-    {
-        return Vector3(m[0], m[1], m[2]);
-    }
-
-    inline auto Matrix::getForwardVector() const -> Vector3
-    {
-        return Vector3(-m[8], -m[9], -m[10]);
-    }
-
-    inline auto Matrix::getBackVector() const -> Vector3
-    {
-        return Vector3(m[8], m[9], m[10]);
-    }
-
-    inline void Matrix::scaleByScalar(float value)
-    {
-        scaleByVector(Vector3(value, value, value));
+        return Vector3(
+            v.x * m.m[0] + v.y * m.m[4] + v.z * m.m[8],
+            v.x * m.m[1] + v.y * m.m[5] + v.z * m.m[9],
+            v.x * m.m[2] + v.y * m.m[6] + v.z * m.m[10]
+        );
     }
 }

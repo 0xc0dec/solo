@@ -62,6 +62,7 @@
     <ClInclude Include="..\include\SoloScene.h" />
     <ClInclude Include="..\include\SoloRectTexture.h" />
     <ClInclude Include="..\include\SoloTransform.h" />
+    <ClInclude Include="..\include\SoloTransformMatrix.h" />
     <ClInclude Include="..\include\SoloVector2.h" />
     <ClInclude Include="..\include\SoloVector3.h" />
     <ClInclude Include="..\include\SoloVector4.h" />
@@ -106,6 +107,7 @@
     <ClCompile Include="..\src\SoloRigidBody.cpp" />
     <ClCompile Include="..\src\SoloSkyboxRenderer.cpp" />
     <ClCompile Include="..\src\SoloSpectator.cpp" />
+    <ClCompile Include="..\src\SoloTransformMatrix.cpp" />
     <ClCompile Include="..\src\SoloTrueTypeFont.cpp" />
     <ClCompile Include="..\vendor\async++\src\scheduler.cpp" />
     <ClCompile Include="..\vendor\async++\src\threadpool_scheduler.cpp" />

@@ -214,6 +214,9 @@
     <ClInclude Include="..\include\SoloDeviceCreationArgs.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloTransformMatrix.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloScene.cpp">
@@ -1217,6 +1220,9 @@
     </ClCompile>
     <ClCompile Include="..\vendor\zlib\1.2.8\src\zutil.c">
       <Filter>src\vendor\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SoloTransformMatrix.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
