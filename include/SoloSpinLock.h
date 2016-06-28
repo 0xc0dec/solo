@@ -12,18 +12,17 @@ namespace solo
         class LockToken
         {
         public:
-            LockToken(std::atomic_flag& flag) : flagRef(flag)
+            LockToken(std::atomic_flag& flag) : flag(flag)
             {
             }
 
             ~LockToken()
             {
-                flagRef.clear();
-
+                flag.clear();
             }
 
         private:
-            std::atomic_flag& flagRef;
+            std::atomic_flag& flag;
         };
 
         ~SpinLock()
@@ -31,7 +30,6 @@ namespace solo
             flag.clear(std::memory_order_release);
         }
 
-        // TODO do this in constructor and remove LockToken?
         auto acquire()
         {
             while (flag.test_and_set(std::memory_order_acquire)) {}
