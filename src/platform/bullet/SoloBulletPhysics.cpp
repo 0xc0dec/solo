@@ -62,7 +62,7 @@ auto BulletPhysics::castRayAll(const Vector3& from, const Vector3& to) -> std::v
     auto result = std::vector<RaycastResult>();
     for (size_t i = 0; i < size; i++)
     {
-        auto body = dynamic_cast<const btRigidBody*>(callback.m_collisionObject);
+        auto body = dynamic_cast<const btRigidBody*>(callback.m_collisionObjects[i]);
         if (!body)
             continue;
         auto rigidBody = static_cast<RigidBody*>(body->getUserPointer());
