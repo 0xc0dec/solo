@@ -183,7 +183,7 @@ namespace solo
         virtual auto createVertexObject(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle) -> VertexObjectHandle = 0;
         virtual void destroyVertexObject(const VertexObjectHandle& handle) = 0;
 
-        virtual auto createUniform(const char* name, UniformType type, ProgramHandle program) -> UniformHandle = 0;
+        virtual auto createUniform(const char* name, UniformType type, ProgramHandle programHandle) -> UniformHandle = 0;
         virtual void destroyUniform(const UniformHandle& handle) = 0;
         virtual void setUniform(const UniformHandle& handle, const void* value, uint32_t count) = 0;
 

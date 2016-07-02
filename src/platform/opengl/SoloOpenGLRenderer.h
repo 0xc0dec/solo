@@ -53,7 +53,7 @@ namespace solo
             -> VertexObjectHandle override final;
         void destroyVertexObject(const VertexObjectHandle& handle) override final;
 
-        auto createUniform(const char* name, UniformType type, ProgramHandle program) -> UniformHandle override final;
+        auto createUniform(const char* name, UniformType type, ProgramHandle programHandle) -> UniformHandle override final;
         void destroyUniform(const UniformHandle& handle) override final;
         void setUniform(const UniformHandle& handle, const void* value, uint32_t count) override final;
 

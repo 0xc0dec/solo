@@ -791,9 +791,9 @@ void OpenGLRenderer::drawVertexObject(PrimitiveType primitiveType, const VertexO
 }
 
 
-auto OpenGLRenderer::createUniform(const char* name, UniformType type, ProgramHandle program) -> UniformHandle
+auto OpenGLRenderer::createUniform(const char* name, UniformType type, ProgramHandle programHandle) -> UniformHandle
 {
-    auto rawProgramHandle = programs.getData(program.value).rawHandle;
+    auto rawProgramHandle = programs.getData(programHandle.value).rawHandle;
 
     GLint location, index;
     auto found = findUniformInProgram(rawProgramHandle, name, location, index);
