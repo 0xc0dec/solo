@@ -39,7 +39,6 @@ void FrameBuffer::unbind()
 
 void FrameBuffer::setAttachments(const std::vector<sptr<RectTexture>>& attachments)
 {
-    // TODO this is quite smelly
     std::vector<TextureHandle> handles;
     handles.reserve(attachments.size());
 
