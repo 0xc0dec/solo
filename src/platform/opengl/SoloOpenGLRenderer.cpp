@@ -541,8 +541,8 @@ void OpenGLRenderer::updateFrameBuffer(const FrameBufferHandle& handle, const st
     }
 
     auto newCount = attachmentHandles.size();
-    auto stepCount = std::max(newCount, static_cast<size_t>(data.attachmentCount));
-    for (auto i = 0; i < stepCount; i++)
+    auto maxCount = std::max(newCount, static_cast<size_t>(data.attachmentCount));
+    for (auto i = 0; i < maxCount; i++)
     {
         auto rawHandle = i < newCount ? textures.getData(attachmentHandles[i].value).rawHandle : 0;
         glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, rawHandle, 0);
