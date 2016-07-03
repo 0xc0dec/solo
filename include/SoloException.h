@@ -6,6 +6,7 @@
 #include <exception>
 
 
+// TODO replace with asserts
 #define SL_THROW(TExc, ...) throw TExc(__VA_ARGS__)
 #define SL_FMT_THROW(TExc, ...) throw TExc(SL_FMT(__VA_ARGS__))
 
