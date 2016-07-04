@@ -32,7 +32,7 @@ auto AssetLoader::getMeshLoader(const std::string& path) -> MeshLoader*
         if (loader->isLoadable(path))
             return loader.get();
     }
-    SL_FMT_THROW(AssetException, "No suitable loader found for mesh ", path);
+    SL_FMT_EXCEPTION(AssetException, "No suitable loader found for mesh ", path);
 }
 
 
@@ -43,7 +43,7 @@ auto AssetLoader::getImageLoader(const std::string& path) -> ImageLoader*
         if (l->isLoadable(path))
             return l.get();
     }
-    SL_FMT_THROW(AssetException, "No suitable loader found for image ", path);
+    SL_FMT_EXCEPTION(AssetException, "No suitable loader found for image ", path);
 }
 
 

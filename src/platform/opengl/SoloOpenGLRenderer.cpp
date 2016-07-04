@@ -127,7 +127,7 @@ static auto linkProgram(GLuint vs, GLuint fs) -> GLint
         std::vector<GLchar> log(logLength);
         glGetProgramInfoLog(program, logLength, nullptr, log.data());
         glDeleteProgram(program);
-        SL_THROW(EffectCompilationException, "Failed to link program", log.data());
+        SL_EXCEPTION(EffectCompilationException, "Failed to link program", log.data());
     }
 
     return program;
@@ -156,7 +156,7 @@ static auto compileShader(GLuint type, const char* src) -> GLint
         std::vector<GLchar> log(logLength);
         glGetShaderInfoLog(shader, logLength, nullptr, log.data());
         glDeleteShader(shader);
-        SL_THROW(EffectCompilationException, SL_FMT("Failed to compile ", typeNames[type], " shader"), log.data());
+        SL_EXCEPTION(EffectCompilationException, SL_FMT("Failed to compile ", typeNames[type], " shader"), log.data());
     }
 
     return shader;
@@ -270,7 +270,7 @@ auto OpenGLRenderer::createTexture() -> TextureHandle
 {
     GLuint rawHandle = 0;
     glGenTextures(1, &rawHandle);
-    SL_THROW_IF(!rawHandle, InternalException, "Failed to obtain texture handle");
+    SL_EXCEPTION_IF(!rawHandle, InternalException, "Failed to obtain texture handle");
 
     TextureHandle handle;
     handle.value = textures.reserveHandle();
@@ -504,7 +504,7 @@ auto OpenGLRenderer::createFrameBuffer() -> FrameBufferHandle
 {
     GLuint rawHandle = 0;
     glGenFramebuffers(1, &rawHandle);
-    SL_THROW_IF(!rawHandle, InternalException, "Failed to obtain frame buffer handle");
+    SL_EXCEPTION_IF(!rawHandle, InternalException, "Failed to obtain frame buffer handle");
 
     FrameBufferHandle handle;
     handle.value = frameBuffers.reserveHandle();
@@ -555,14 +555,14 @@ void OpenGLRenderer::updateFrameBuffer(const FrameBufferHandle& handle, const st
     {
         // Re-create the depth buffer
         glGenRenderbuffers(1, &data.depthBufferHandle);
-        SL_THROW_IF(!data.depthBufferHandle, InternalException, "Failed to obtain depth buffer handle");
+        SL_EXCEPTION_IF(!data.depthBufferHandle, InternalException, "Failed to obtain depth buffer handle");
 
         glBindRenderbuffer(GL_RENDERBUFFER, data.depthBufferHandle);
         auto firstAttachmentData = textures.getData(attachmentHandles[0].value);
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, firstAttachmentData.width, firstAttachmentData.height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, data.depthBufferHandle);
 
-        SL_THROW_IF(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE, InternalException, "Render target has invalid state");
+        SL_EXCEPTION_IF(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE, InternalException, "Render target has invalid state");
     }
 
     bindFrameBuffer(EmptyFrameBufferHandle);
@@ -573,7 +573,7 @@ auto OpenGLRenderer::createVertexBuffer(bool dynamic, const VertexBufferLayout& 
 {
     GLuint rawHandle = 0;
     glGenBuffers(1, &rawHandle);
-    SL_THROW_IF(!rawHandle, InternalException, "Failed to obtain vertex buffer handle");
+    SL_EXCEPTION_IF(!rawHandle, InternalException, "Failed to obtain vertex buffer handle");
 
     glBindBuffer(GL_ARRAY_BUFFER, rawHandle);
     glBufferData(GL_ARRAY_BUFFER, layout.getSize() * vertexCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
@@ -623,7 +623,7 @@ auto OpenGLRenderer::createIndexBuffer(const void* data, uint32_t elementSize, u
 {
     GLuint rawHandle = 0;
     glGenBuffers(1, &rawHandle);
-    SL_THROW_IF(!rawHandle, InternalException, "Failed to obtain index buffer handle");
+    SL_EXCEPTION_IF(!rawHandle, InternalException, "Failed to obtain index buffer handle");
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rawHandle);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementSize * elementCount, data, GL_STATIC_DRAW);
@@ -692,7 +692,7 @@ auto OpenGLRenderer::createVertexObject(const VertexBufferHandle* bufferHandles,
 
     GLuint rawHandle;
     glGenVertexArrays(1, &rawHandle);
-    SL_THROW_IF(!rawHandle, InternalException, "Failed to obtain vertex object handle");
+    SL_EXCEPTION_IF(!rawHandle, InternalException, "Failed to obtain vertex object handle");
 
     glBindVertexArray(rawHandle);
 

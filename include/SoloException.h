@@ -8,13 +8,13 @@
 
 
 #define SL_ASSERT(condition) assert(condition)
-#define SL_THROW(TExc, ...) throw TExc(__VA_ARGS__)
-#define SL_FMT_THROW(TExc, ...) throw TExc(SL_FMT(__VA_ARGS__))
+#define SL_EXCEPTION(TExc, ...) throw TExc(__VA_ARGS__)
+#define SL_FMT_EXCEPTION(TExc, ...) throw TExc(SL_FMT(__VA_ARGS__))
 
-#define SL_THROW_IF(condition, exceptionType, ...) \
+#define SL_EXCEPTION_IF(condition, exceptionType, ...) \
     do { \
         if (condition) \
-            SL_THROW(exceptionType, __VA_ARGS__); \
+            SL_EXCEPTION(exceptionType, __VA_ARGS__); \
     } while (0)
 
 #define SL_SIMPLE_EXCEPTION(type) \

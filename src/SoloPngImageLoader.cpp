@@ -34,7 +34,7 @@ auto PngImageLoader::load(const std::string& path) -> sptr<Image>
 {
     auto bytes = Device::get()->getFileSystem()->readBytes(path);
     if (bytes.size() < 8 || png_sig_cmp(&bytes[0], 0, 8) != 0)
-        SL_FMT_THROW(InvalidInputException, "Failed to recognize file ", path, " as PNG image");
+        SL_FMT_EXCEPTION(InvalidInputException, "Failed to recognize file ", path, " as PNG image");
 
     auto png = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
     auto info = png_create_info_struct(png);
@@ -42,7 +42,7 @@ auto PngImageLoader::load(const std::string& path) -> sptr<Image>
     {
         png_destroy_info_struct(png, &info);
         png_destroy_read_struct(&png, &info, nullptr);
-        SL_FMT_THROW(IOException, "Failed to read file as PNG image: ", path);
+        SL_FMT_EXCEPTION(IOException, "Failed to read file as PNG image: ", path);
     }
 
     std::unique_ptr<PngReadContext> context(new PngReadContext{ &bytes, 8 });
@@ -66,7 +66,7 @@ auto PngImageLoader::load(const std::string& path) -> sptr<Image>
         default:
             png_destroy_info_struct(png, &info);
             png_destroy_read_struct(&png, &info, nullptr);
-            SL_FMT_THROW(InvalidInputException, "Unsupported PNG color type ", colorType);
+            SL_FMT_EXCEPTION(InvalidInputException, "Unsupported PNG color type ", colorType);
     }
 
     auto stride = png_get_rowbytes(png, info);
