@@ -12,7 +12,6 @@ public:
 
     void run() override final
     {
-        test_AttachmentsOfDifferentSizes();
         test_GetSize();
     }
 
@@ -29,19 +28,5 @@ private:
 
         auto size = fb->getSize();
         assert(static_cast<uint32_t>(size.x) == 64 && static_cast<uint32_t>(size.y) == 64);
-    }
-
-    void test_AttachmentsOfDifferentSizes()
-    {
-        auto fb = FrameBuffer::create();
-        auto t1 = RectTexture::create();
-        auto t2 = RectTexture::create();
-        t1->setData(TextureFormat::RGB, {}, 64, 64);
-        t2->setData(TextureFormat::RGB, {}, 16, 16);
-
-        assertThrows<InvalidInputException>([&]()
-        {
-            fb->setAttachments({ t1, t2 });
-        }, "Frame buffer attachments must have the same size");
     }
 };

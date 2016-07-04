@@ -111,7 +111,6 @@ public:
         test_AddComponent_Remove();
         test_AddAndRemove_FindByBaseId();
         test_RemoveInexistentComponent();
-        test_AddDuplicateComponent_EnsureError();
         test_AddOrRemoveComponentsFromWithinCallbackMethods();
         test_AddOrRemoveComponents_EnsureAddedRemovedEventsCalled();
     }
@@ -181,22 +180,6 @@ private:
         assert(base->getTypeId() == Derived::getId());
         assert(base->getTypeId() == Base::getId());
         assert(derived->getTypeId() == base->getTypeId());
-    }
-
-    void test_AddDuplicateComponent_EnsureError()
-    {
-        auto node = scene->createNode();
-        node->addComponent<Base>();
-        try
-        {
-            node->addComponent<Derived>();
-        }
-        catch (const EngineException &e)
-        {
-            assert(std::string(e.what()).find("already exists") != std::string::npos);
-            return;
-        }
-        assert(false);
     }
 
     void test_AddOrRemoveComponentsFromWithinCallbackMethods()
