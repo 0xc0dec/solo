@@ -117,7 +117,7 @@ auto Ray::hitPlane(const Plane& plane) const -> float
 
 void Ray::normalize()
 {
-    SL_DEBUG_THROW_IF(direction.isZero(), InvalidOperationException, "Invalid ray object: the ray's direction must be non-zero");
+    SL_ASSERT(!direction.isZero());
 
     // Normalize the ray's direction vector
     auto normalizeFactor = 1.0f / sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);

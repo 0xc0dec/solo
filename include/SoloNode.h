@@ -19,9 +19,6 @@ namespace solo
         template <typename T>
         static auto findComponent(Scene* scene, uint32_t nodeId) -> T*;
 
-        template <typename T>
-        static auto getComponent(Scene* scene, uint32_t nodeId) -> T*;
-
         template <typename T, typename... Args>
         static auto addComponent(Scene* scene, uint32_t nodeId, Args&&... args) -> T*;
 
@@ -30,9 +27,6 @@ namespace solo
 
         template <typename T>
         auto findComponent() const -> T*;
-
-        template <typename T>
-        auto getComponent() const -> T*;
 
         template <typename T, typename... Args>
         auto addComponent(Args&&... args) -> T*;
@@ -80,22 +74,6 @@ namespace solo
     inline auto Node::addComponent(Args&&... args) -> T*
     {
         return addComponent<T>(scene, id, std::forward<Args>(args)...);
-    }
-
-    template <typename T>
-    inline auto Node::getComponent(Scene* scene, uint32_t nodeId) -> T*
-    {
-        auto typeId = T::getId();
-        auto cmp = scene->findComponent(nodeId, typeId);
-        if (!cmp)
-            SL_FMT_THROW(InvalidOperationException, "Component ", typeId, " not found on node ", nodeId);
-        return static_cast<T*>(cmp);
-    }
-
-    template <typename T>
-    inline auto Node::getComponent() const -> T*
-    {
-        return getComponent<T>(scene, id);
     }
 
     template <typename T>

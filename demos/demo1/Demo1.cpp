@@ -19,7 +19,7 @@ public:
 
     void init() override final
     {
-        transform = node.getComponent<Transform>();
+        transform = node.findComponent<Transform>();
     }
 
     void update() override final
@@ -131,7 +131,7 @@ private:
     void initCamera()
     {
         auto node = scene->createNode();
-        auto t = node->getComponent<Transform>();
+        auto t = node->findComponent<Transform>();
         t->setLocalPosition(Vector3(0, 5, 10));
         t->lookAt(Vector3::zero(), Vector3::unitY());
         node->addComponent<Spectator>();
@@ -156,7 +156,7 @@ private:
         cam->setNear(0.05f);
         cam->setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8);
         cam->getRenderTags() = ~renderTargetQuadTag;
-        node->getComponent<Transform>()->setLocalPosition(Vector3(0, 0, 10));
+        node->findComponent<Transform>()->setLocalPosition(Vector3(0, 0, 10));
 
         auto fb = FrameBuffer::create();
         fb->setAttachments({ offscreenCameraTex });
@@ -215,8 +215,8 @@ private:
     void initCheckerBox()
     {
         auto node = createPrefabMeshNode("cube");
-        node->getComponent<MeshRenderer>()->setMaterial(0, checkerMat);
-        node->getComponent<Transform>()->setLocalPosition(Vector3(-5, 0, 0));
+        node->findComponent<MeshRenderer>()->setMaterial(0, checkerMat);
+        node->findComponent<Transform>()->setLocalPosition(Vector3(-5, 0, 0));
         node->addComponent<Rotator>("world", Vector3::unitY());
     }
 
@@ -239,7 +239,7 @@ private:
                 auto renderer = node->addComponent<MeshRenderer>();
                 renderer->setMesh(mesh);
                 renderer->setMaterial(0, mat);
-                node->getComponent<Transform>()->setLocalPosition(Vector3::zero());
+                node->findComponent<Transform>()->setLocalPosition(Vector3::zero());
                 node->addComponent<Rotator>("local", Vector3::unitX());
             });
         });
@@ -280,7 +280,7 @@ private:
             mat->setTextureParameter("mainTex", tex);
 
             auto node = scene->createNode();
-            node->getComponent<Transform>()->setLocalPosition(Vector3(0, 0, -5));
+            node->findComponent<Transform>()->setLocalPosition(Vector3(0, 0, -5));
             auto renderer = node->addComponent<MeshRenderer>();
             renderer->setMesh(mesh);
             renderer->setMaterial(0, mat);
@@ -302,16 +302,16 @@ private:
     void initMonitorQuad(Vector3 targetPos)
     {
         auto parent = scene->createNode();
-        parent->getComponent<Transform>()->setLocalPosition(Vector3(-2, 2, -2));
+        parent->findComponent<Transform>()->setLocalPosition(Vector3(-2, 2, -2));
         parent->addComponent<Rotator>("world", Vector3::unitY());
         attachAxesMesh(parent);
 
         auto quad = createPrefabMeshNode("quad");
-        auto renderer = quad->getComponent<MeshRenderer>();
+        auto renderer = quad->findComponent<MeshRenderer>();
         renderer->setMaterial(0, monitorMat);
         renderer->getTags() = renderTargetQuadTag;
-        auto transform = quad->getComponent<Transform>();
-        transform->setParent(parent->getComponent<Transform>());
+        auto transform = quad->findComponent<Transform>();
+        transform->setParent(parent->findComponent<Transform>());
         transform->setLocalPosition(Vector3(5, 2, -5));
         transform->setLocalScale(Vector3(5, 5 * canvasSize.y / canvasSize.x, 1));
         quad->addComponent<Targeter>(targetPos);
@@ -330,16 +330,16 @@ private:
             mat->setTransparent(true);
 
             auto parent = scene->createNode();
-            parent->getComponent<Transform>()->setLocalPosition(Vector3(5, 0, 0));
+            parent->findComponent<Transform>()->setLocalPosition(Vector3(5, 0, 0));
             parent->addComponent<Rotator>("world", Vector3::unitY());
             attachAxesMesh(parent);
 
             auto quad = createPrefabMeshNode("quad");
             quad->addComponent<Rotator>("local", Vector3::unitX());
-            quad->getComponent<Transform>()->setParent(parent->getComponent<Transform>());
-            quad->getComponent<Transform>()->setLocalPosition(Vector3(2, 0, 0));
+            quad->findComponent<Transform>()->setParent(parent->findComponent<Transform>());
+            quad->findComponent<Transform>()->setLocalPosition(Vector3(2, 0, 0));
 
-            auto renderer = quad->getComponent<MeshRenderer>();
+            auto renderer = quad->findComponent<MeshRenderer>();
             renderer->setMaterial(0, mat);
             renderer->setRenderQueue(KnownRenderQueues::Transparent);
         });

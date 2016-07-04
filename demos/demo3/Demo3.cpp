@@ -64,7 +64,7 @@ private:
     void initCamera()
     {
         auto node = scene->createNode();
-        auto t = node->getComponent<Transform>();
+        auto t = node->findComponent<Transform>();
         t->setLocalPosition(Vector3(0, 0, 5));
         auto cam = node->addComponent<Camera>();
         cam->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
@@ -97,7 +97,7 @@ private:
     {
         auto textNode = scene->createNode();
         textNode->addComponent<Text>();
-        auto transform = textNode->getComponent<Transform>();
+        auto transform = textNode->findComponent<Transform>();
         transform->setLocalPosition(Vector3(-3.5f, 0, 0));
         transform->setLocalScale(Vector3(0.02f, 0.02f, 1));
     }

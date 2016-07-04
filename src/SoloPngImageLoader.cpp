@@ -24,7 +24,7 @@ static void callback(png_structp png, png_bytep data, png_size_t length)
 }
 
 
-bool PngImageLoader::isLoadable(const std::string& path)
+bool PngImageLoader::isLoadable(const std::string& path) const
 {
     return path.find(".png", path.size() - 5) != std::string::npos;
 }
@@ -42,7 +42,7 @@ auto PngImageLoader::load(const std::string& path) -> sptr<Image>
     {
         png_destroy_info_struct(png, &info);
         png_destroy_read_struct(&png, &info, nullptr);
-        SL_FMT_THROW(InvalidOperationException, "Failed to read PNG file ", path);
+        SL_FMT_THROW(IOException, "Failed to read file as PNG image: ", path);
     }
 
     std::unique_ptr<PngReadContext> context(new PngReadContext{ &bytes, 8 });

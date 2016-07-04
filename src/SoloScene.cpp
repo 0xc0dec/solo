@@ -25,8 +25,7 @@ void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
         if (nodeIt != components.end())
         {
             auto& nodeComponents = nodeIt->second;
-            if (nodeComponents.find(typeId) != nodeComponents.end())
-                SL_FMT_THROW(InvalidOperationException, "Component ", typeId, " already exists");
+            SL_ASSERT(nodeComponents.find(typeId) == nodeComponents.end());
         }
     })
 

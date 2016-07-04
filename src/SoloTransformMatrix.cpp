@@ -53,9 +53,7 @@ auto TransformMatrix::createPerspective(const Radian& fieldOfView, float aspectR
 {
     auto f_n = 1.0f / (zfar - znear);
     auto theta = fieldOfView.toRawRadian() * 0.5f;
-    // TODO asserts instead?
-    SL_DEBUG_FMT_THROW_IF(Math::approxZero(fmod(theta, Math::piOver2), Math::smallFloat1),
-        InvalidInputException, "Invalid field of view value ", fieldOfView.toRawDegree(), " caused attempted tan calculation, which is undefined");
+    SL_ASSERT(!Math::approxZero(fmod(theta, Math::piOver2), Math::smallFloat1));
 
     auto divisor = tan(theta);
     auto factor = 1.0f / divisor;

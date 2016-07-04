@@ -27,7 +27,7 @@ Camera::Camera(const Node& node):
 
 void Camera::init()
 {
-    transform = node.getComponent<Transform>();
+    transform = node.findComponent<Transform>();
     transform->addCallback(this);
     auto canvasSize = device->getCanvasSize();
     setAspectRatio(canvasSize.x / canvasSize.y);

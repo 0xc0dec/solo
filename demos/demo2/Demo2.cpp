@@ -23,7 +23,7 @@ public:
     {
         auto canvasSize = device->getCanvasSize();
 
-        auto camera = node.getComponent<Camera>();
+        auto camera = node.findComponent<Camera>();
         fbTex = RectTexture::create();
         fbTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
         fbTex->setFiltering(TextureFiltering::Nearest);
@@ -61,7 +61,7 @@ public:
 
     void terminate() override final
     {
-        node.getComponent<Camera>()->setRenderTarget(nullptr);
+        node.findComponent<Camera>()->setRenderTarget(nullptr);
     }
 
     void onAfterCameraRender() override final
@@ -124,7 +124,7 @@ public:
             resolution.x * stitchWidth / (2 * stitchTexSize.x),
             resolution.y / 2);
 
-        auto camera = node.getComponent<Camera>();
+        auto camera = node.findComponent<Camera>();
         fbTex = RectTexture::create();
         fbTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(resolution.x), static_cast<uint32_t>(resolution.y));
         fbTex->setFiltering(TextureFiltering::Nearest);
@@ -145,7 +145,7 @@ public:
     void terminate() override final
     {
         auto canvasSize = device->getCanvasSize();
-        auto camera = node.getComponent<Camera>();
+        auto camera = node.findComponent<Camera>();
         camera->setRenderTarget(nullptr);
         camera->setViewport(0, 0, canvasSize.x, canvasSize.y);
     }
@@ -227,7 +227,7 @@ private:
     void initCamera()
     {
         auto node = scene->createNode();
-        auto t = node->getComponent<Transform>();
+        auto t = node->findComponent<Transform>();
         t->setLocalPosition(Vector3(0, 0, 5));
         auto cam = node->addComponent<Camera>();
         cam->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
@@ -276,7 +276,7 @@ private:
                 auto renderer = node->addComponent<MeshRenderer>();
                 renderer->setMesh(mesh);
                 renderer->setMaterial(0, mat);
-                node->getComponent<Transform>()->setLocalPosition(Vector3::zero());
+                node->findComponent<Transform>()->setLocalPosition(Vector3::zero());
                 node->addComponent<Rotator>("local", Vector3::unitX());
             });
         });

@@ -15,7 +15,7 @@ Spectator::Spectator(const Node& node):
 
 void Spectator::init()
 {
-    transform = node.getComponent<Transform>();
+    transform = node.findComponent<Transform>();
 }
 
 

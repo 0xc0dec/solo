@@ -16,7 +16,7 @@ public:
 
     virtual void init() override final
     {
-        transform = node.getComponent<solo::Transform>();
+        transform = node.findComponent<solo::Transform>();
     }
 
     virtual void update() override final

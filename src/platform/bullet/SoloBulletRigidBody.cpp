@@ -27,11 +27,9 @@ public:
 
     void setWorldTransform(const btTransform& worldTransform) override final
     {
-        auto origin = worldTransform.getOrigin();
-        auto rotation = worldTransform.getRotation();
-        SL_DEBUG_THROW_IF(transform->getParent(), InvalidOperationException, "Transform should not have parents when a rigid body is attached");
-        transform->setLocalPosition(SL_FROMBTVEC3(origin));
-        transform->setLocalRotation(SL_FROMBTQTRN(rotation));
+        SL_ASSERT(!transform->getParent());
+        transform->setLocalPosition(SL_FROMBTVEC3(worldTransform.getOrigin()));
+        transform->setLocalRotation(SL_FROMBTQTRN(worldTransform.getRotation()));
     }
 
 private:
@@ -45,7 +43,7 @@ BulletRigidBody::BulletRigidBody(const Node& node, const RigidBodyConstructionPa
     shape(nullptr)
 {
     world = static_cast<BulletPhysics*>(Device::get()->getPhysics())->getWorld();
-    transformCmp = node.getComponent<Transform>();
+    transformCmp = node.findComponent<Transform>();
     motionState = std::make_unique<MotionState>(transformCmp);
 
     btRigidBody::btRigidBodyConstructionInfo info(parameters.mass, motionState.get(), nullptr);

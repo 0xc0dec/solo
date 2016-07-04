@@ -43,7 +43,8 @@ Mesh::Mesh(MeshPrefab prefab):
             initCubeMesh();
             break;
         default:
-            SL_DEBUG_THROW(InvalidInputException, "Unknown mesh prefab");
+            SL_ASSERT(false);
+            break;
     }
 }
 

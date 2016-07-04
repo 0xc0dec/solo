@@ -191,7 +191,8 @@ auto MaterialParameter::create(Renderer* renderer, Effect* effect, MaterialParam
             return std::make_shared<AutoBindingMaterialParameter>(renderer, effect, type, name);
 
         default:
-            SL_THROW(InvalidInputException, "Unknown material parameter type");
+            SL_ASSERT(false);
+            return nullptr;
     }
 }
 
@@ -242,6 +243,7 @@ auto MaterialParameter::getUniformType(MaterialParameterType type) -> UniformTyp
         case MaterialParameterType::InverseTransposedWorldViewMatrix:
             return UniformType::Matrix;
         default:
-            SL_THROW(InvalidInputException, "Material type parameter not convertible to uniform type");
+            SL_ASSERT(false);
+            return UniformType::Float;
     }
 }

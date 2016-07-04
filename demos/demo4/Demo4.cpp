@@ -37,7 +37,7 @@ public:
         auto renderer = node.addComponent<MeshRenderer>();
         renderer->setMesh(mesh);
         renderer->setMaterial(0, material);
-        auto t = node.getComponent<Transform>();
+        auto t = node.findComponent<Transform>();
         t->setLocalScale(Vector3(0.3f, 0.3f, 0.3f));
         t->setLocalPosition(initialPos);
         t->setLocalRotation(initialRotation);
@@ -90,7 +90,7 @@ public:
 
     void init() override
     {
-        transform = node.getComponent<Transform>();
+        transform = node.findComponent<Transform>();
     }
 
     void update() override
@@ -122,7 +122,7 @@ public:
         ComponentBase<Spawner>(node),
         device(Device::get()),
         scene(Device::get()->getScene()),
-        transform(node.getComponent<Transform>()),
+        transform(node.findComponent<Transform>()),
         mesh(cubeMesh)
     {
     }
@@ -177,7 +177,7 @@ public:
     void initCamera()
     {
         auto node = scene->createNode();
-        auto t = node->getComponent<Transform>();
+        auto t = node->findComponent<Transform>();
         t->setLocalPosition(Vector3(10, 10, 10));
         t->lookAt(Vector3::zero(), Vector3::unitY());
         auto cam = node->addComponent<Camera>();
@@ -224,7 +224,7 @@ public:
 
         // Floor
         auto node = scene->createNode();
-        node->getComponent<Transform>()->setLocalScale(Vector3(10, 0.1f, 10));
+        node->findComponent<Transform>()->setLocalScale(Vector3(10, 0.1f, 10));
         auto renderer = node->addComponent<MeshRenderer>();
         renderer->setMesh(cubeMesh);
         renderer->setMaterial(0, mat);

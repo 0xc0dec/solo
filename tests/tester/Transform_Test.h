@@ -20,15 +20,15 @@ private:
     void test_GetTransformComponent()
     {
         auto node = scene->createNode();
-        auto transform = node->getComponent<Transform>();
+        auto transform = node->findComponent<Transform>();
         assert(transform);
     }
 
     void test_ChildrenManipulation()
     {
-        auto t1 = scene->createNode()->getComponent<Transform>();
-        auto t2 = scene->createNode()->getComponent<Transform>();
-        auto t3 = scene->createNode()->getComponent<Transform>();
+        auto t1 = scene->createNode()->findComponent<Transform>();
+        auto t2 = scene->createNode()->findComponent<Transform>();
+        auto t3 = scene->createNode()->findComponent<Transform>();
 
         assert(t1->getChildrenCount() == 0);
 

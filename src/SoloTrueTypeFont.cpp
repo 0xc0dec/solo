@@ -16,7 +16,7 @@ TrueTypeFont::TrueTypeFont(uint8_t* fontData, uint32_t size, uint32_t atlasWidth
 
     stbtt_pack_context context;
     auto ret = stbtt_PackBegin(&context, pixels.get(), atlasWidth, atlasHeight, 0, 1, nullptr);
-    SL_DEBUG_THROW_IF(!ret, InvalidOperationException, "Failed to initialize font");
+    SL_ASSERT(ret);
 
     stbtt_PackSetOversampling(&context, oversampleX, oversampleY);
     stbtt_PackFontRange(&context, fontData, 0, static_cast<float>(size), firstChar, charCount, charInfo.get());
