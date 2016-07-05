@@ -3,8 +3,6 @@
 #include "SoloMaterial.h"
 #include "SoloRenderContext.h"
 #include "SoloCubeTexture.h"
-#include "SoloDevice.h"
-#include "SoloEffectRepository.h"
 
 using namespace solo;
 
@@ -14,7 +12,7 @@ SkyboxRenderer::SkyboxRenderer(const Node& node):
 {
     renderQueue = KnownRenderQueues::Skybox;
 
-    auto effect = Device::get()->getEffectRepository()->getDefaultSkyboxEffect();
+    auto effect = Effect::getPrefabInstance(EffectPrefab::Skybox);
     material = Material::create(effect);
     material->bindProjectionMatrixParameter("projMatrix");
     material->bindWorldViewMatrixParameter("worldViewMatrix");

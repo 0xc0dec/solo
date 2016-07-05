@@ -181,12 +181,6 @@
     <ClInclude Include="..\include\SoloFontRenderer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloEffectRepository.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLEffectRepository.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\platform\sdl\SoloSDLDevice.h">
       <Filter>src\platform\sdl</Filter>
     </ClInclude>
@@ -216,6 +210,9 @@
     </ClInclude>
     <ClInclude Include="..\include\SoloTransformMatrix.h">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLPrefabShaders.h">
+      <Filter>src\platform\opengl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1107,12 +1104,6 @@
     <ClCompile Include="..\src\SoloFontRenderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloEffectRepository.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLEffectRepository.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\platform\sdl\SoloSDLDevice.cpp">
       <Filter>src\platform\sdl</Filter>
     </ClCompile>
@@ -1223,6 +1214,9 @@
     </ClCompile>
     <ClCompile Include="..\src\SoloTransformMatrix.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLPrefabShaders.cpp">
+      <Filter>src\platform\opengl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

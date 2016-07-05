@@ -3,8 +3,6 @@
 #include "SoloFont.h"
 #include "SoloMaterial.h"
 #include "SoloRenderQueue.h"
-#include "SoloDevice.h"
-#include "SoloEffectRepository.h"
 #include "SoloRectTexture.h"
 
 using namespace solo;
@@ -13,7 +11,7 @@ using namespace solo;
 FontRenderer::FontRenderer(const Node& node):
     ComponentBase(node)
 {
-    auto effect = Device::get()->getEffectRepository()->getDefaultFontEffect();
+    auto effect = Effect::getPrefabInstance(EffectPrefab::Font);
     material = Material::create(effect);
     material->setFaceCull(FaceCull::All);
     material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");

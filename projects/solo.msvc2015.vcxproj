@@ -23,7 +23,6 @@
     <ClInclude Include="..\include\SoloDevice.h" />
     <ClInclude Include="..\include\SoloDeviceCreationArgs.h" />
     <ClInclude Include="..\include\SoloEffect.h" />
-    <ClInclude Include="..\include\SoloEffectRepository.h" />
     <ClInclude Include="..\include\SoloException.h" />
     <ClInclude Include="..\include\SoloFileSystem.h" />
     <ClInclude Include="..\include\SoloFont.h" />
@@ -72,7 +71,7 @@
     <ClInclude Include="..\src\platform\bullet\SoloBulletCommon.h" />
     <ClInclude Include="..\src\platform\bullet\SoloBulletPhysics.h" />
     <ClInclude Include="..\src\platform\bullet\SoloBulletRigidBody.h" />
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLEffectRepository.h" />
+    <ClInclude Include="..\src\platform\opengl\SoloOpenGLPrefabShaders.h" />
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderer.h" />
     <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h" />
     <ClInclude Include="..\src\platform\sdl\SoloSDLDevice.h" />
@@ -88,7 +87,7 @@
     <ClCompile Include="..\src\platform\bullet\SoloBulletBoxCollider.cpp" />
     <ClCompile Include="..\src\platform\bullet\SoloBulletPhysics.cpp" />
     <ClCompile Include="..\src\platform\bullet\SoloBulletRigidBody.cpp" />
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLEffectRepository.cpp" />
+    <ClCompile Include="..\src\platform\opengl\SoloOpenGLPrefabShaders.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderer.cpp" />
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp" />
     <ClCompile Include="..\src\platform\sdl\SoloSDLDevice.cpp" />
@@ -97,7 +96,6 @@
     <ClCompile Include="..\src\SoloBoxCollider.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\SoloDegree.cpp" />
-    <ClCompile Include="..\src\SoloEffectRepository.cpp" />
     <ClCompile Include="..\src\SoloFontRenderer.cpp" />
     <ClCompile Include="..\src\SoloGraphics.cpp" />
     <ClCompile Include="..\src\SoloMaterialParameter.cpp" />
