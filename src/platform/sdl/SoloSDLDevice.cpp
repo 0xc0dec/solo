@@ -136,12 +136,12 @@ void SDLDevice::prepareMouseState()
     releasedMouseButtons.clear();
     if (hasMouseFocus)
     {
-        for (auto pair : pressedMouseButtons)
+        for (const auto& pair : pressedMouseButtons)
             pressedMouseButtons[pair.first] = false;
     }
     else
     {
-        for (auto pair : pressedMouseButtons)
+        for (const auto& pair : pressedMouseButtons)
             releasedMouseButtons.insert(pair.first);
         pressedMouseButtons.clear();
     }
