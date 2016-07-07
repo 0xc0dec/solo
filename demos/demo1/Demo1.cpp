@@ -39,7 +39,7 @@ public:
     explicit DynamicQuadUpdater(const Node& node, std::vector<float> data, sptr<Mesh> mesh):
         ComponentBase<DynamicQuadUpdater>(node),
         data(data),
-        device(solo::Device::get()),
+        device(Device::get()),
         mesh(mesh)
     {
     }
@@ -207,6 +207,7 @@ private:
             mesh = Mesh::create(MeshPrefab::Quad);
         else if (type == "cube")
             mesh = Mesh::create(MeshPrefab::Cube);
+        assert(mesh != nullptr);
         auto node = scene->createNode();
         node->addComponent<MeshRenderer>()->setMesh(mesh);
         return node;
