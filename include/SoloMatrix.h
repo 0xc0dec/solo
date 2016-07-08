@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SoloVector3.h"
+#include <stddef.h> // for size_t
 
 
 namespace solo
