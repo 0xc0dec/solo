@@ -11,10 +11,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/include
-    ${PROJECT_SOURCE_DIR}/vendor/glew/include
+    ${PROJECT_SOURCE_DIR}/vendor/glew/1.13/include
     ${PROJECT_SOURCE_DIR}/vendor/SDL/2.0.4/include
-    ${PROJECT_SOURCE_DIR}/vendor/png/include
-    ${PROJECT_SOURCE_DIR}/vendor/zlib/include
+    ${PROJECT_SOURCE_DIR}/vendor/png/1.6.16/include
+    ${PROJECT_SOURCE_DIR}/vendor/zlib/1.2.8/include
     ${PROJECT_SOURCE_DIR}/vendor/async++/include
     ${PROJECT_SOURCE_DIR}/vendor/bullet/2.83.7
     ${PROJECT_SOURCE_DIR}/vendor/stb/truetype/1.11
@@ -30,9 +30,9 @@ file(GLOB_RECURSE sources
     "src/platform/bullet/.cpp"
 )
 
-file(GLOB_RECURSE glew_sources "vendor/glew/src/*.c")
-file(GLOB_RECURSE png_sources "vendor/png/src/*.c")
-file(GLOB_RECURSE zlib_sources "vendor/zlib/src/*.c")
+file(GLOB_RECURSE glew_sources "vendor/glew/1.13/src/*.c")
+file(GLOB_RECURSE png_sources "vendor/png/1.6.16/src/*.c")
+file(GLOB_RECURSE zlib_sources "vendor/zlib/1.2.8/src/*.c")
 file(GLOB_RECURSE asyncpp_sources "vendor/async++/src/*.cpp")
 file(GLOB_RECURSE bullet_sources
     "vendor/bullet/2.83.7/BulletCollision/*.cpp"
