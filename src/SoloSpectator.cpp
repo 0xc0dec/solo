@@ -24,12 +24,12 @@ void Spectator::update()
     auto mouseMotion = device->getMouseMotion();
     auto dt = device->getTimeDelta();
 
-    if (device->isMouseButtonDown(MouseButton::Left, true))
+    if (device->isMouseButtonDown(MouseButton::Right, true))
         device->setCursorCaptured(true);
-    if (device->isMouseButtonReleased(MouseButton::Left))
+    if (device->isMouseButtonReleased(MouseButton::Right))
         device->setCursorCaptured(false);
 
-    if (device->isMouseButtonDown(MouseButton::Left, false))
+    if (device->isMouseButtonDown(MouseButton::Right, false))
     {
         if (mouseMotion.x != 0)
             transform->rotate(Vector3::unitY(), Radian(verticalRotationSpeed * dt * -mouseMotion.x), TransformSpace::World);
