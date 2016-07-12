@@ -22,13 +22,13 @@ namespace solo
         TexCoord7
     };
 
-    struct VertexBufferLayoutElement
+    struct VertexBufferLayoutElement final
     {
         VertexBufferLayoutSemantics semantics;
         uint32_t size;
     };
 
-    class VertexBufferLayout
+    class VertexBufferLayout final
     {
     public:
         VertexBufferLayout() {}
