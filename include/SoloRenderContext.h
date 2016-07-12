@@ -2,7 +2,7 @@
 
 namespace solo
 {
-    struct RenderContext
+    struct RenderContext final
     {
         class Camera* camera = nullptr;
         class Transform* cameraTransform = nullptr;

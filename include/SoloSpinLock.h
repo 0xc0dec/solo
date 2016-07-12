@@ -6,10 +6,10 @@
 
 namespace solo
 {
-    class SpinLock
+    class SpinLock final
     {
     public:
-        class LockToken
+        class LockToken final
         {
         public:
             LockToken(std::atomic_flag& flag) : flag(flag)

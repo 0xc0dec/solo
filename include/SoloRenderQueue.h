@@ -2,7 +2,7 @@
 
 namespace solo
 {
-    struct KnownRenderQueues
+    struct KnownRenderQueues final
     {
         static constexpr uint32_t NotRendered = 0;
         static constexpr uint32_t Camera = 100;
