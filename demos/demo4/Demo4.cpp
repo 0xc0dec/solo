@@ -6,7 +6,7 @@
 using namespace solo;
 
 
-class SpawnedObject: public ComponentBase<SpawnedObject>
+class SpawnedObject final: public ComponentBase<SpawnedObject>
 {
 public:
     explicit SpawnedObject(const Node& node, sptr<Effect> effect, sptr<Mesh> mesh,
@@ -32,7 +32,7 @@ public:
         activeTimer = 0;
     }
 
-    void init() override
+    void init() override final
     {
         auto renderer = node.addComponent<MeshRenderer>();
         renderer->setMesh(mesh);
@@ -50,7 +50,7 @@ public:
         rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
     }
 
-    void update() override
+    void update() override final
     {
         if (!active)
             return;
@@ -88,12 +88,12 @@ public:
     {
     }
 
-    void init() override
+    void init() override final
     {
         transform = node.findComponent<Transform>();
     }
 
-    void update() override
+    void update() override final
     {
         auto hitResults = physics->castRayAll(
             transform->getWorldPosition(),

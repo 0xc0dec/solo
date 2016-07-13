@@ -3,7 +3,7 @@
 #include "../../include/Solo.h"
 
 
-class Rotator: public solo::ComponentBase<Rotator>
+class Rotator final: public solo::ComponentBase<Rotator>
 {
 public:
     explicit Rotator(const solo::Node& node, const std::string& space, solo::Vector3 axis):

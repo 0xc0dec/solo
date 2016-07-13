@@ -19,7 +19,7 @@
     type &operator=(type &&other) = delete;
 
 #define SL_FLUENT_DTO(dtoType, fields) \
-    struct dtoType \
+    struct dtoType final \
     { \
         typedef dtoType DtoType; \
         fields \

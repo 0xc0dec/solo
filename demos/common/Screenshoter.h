@@ -3,7 +3,7 @@
 #include "../../include/Solo.h"
 
 
-class Screenshoter: public solo::ComponentBase<Screenshoter>
+class Screenshoter final: public solo::ComponentBase<Screenshoter>
 {
 public:
     explicit Screenshoter(const solo::Node& node, const std::string& path):
