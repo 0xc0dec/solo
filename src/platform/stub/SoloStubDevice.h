@@ -4,25 +4,25 @@
 
 namespace solo
 {
-    class StubDevice: public Device
+    class StubDevice final: public Device
     {
     public:
         explicit StubDevice(const DeviceCreationArgs& args);
 
-        void setWindowTitle(const std::string& title) override;
-        auto getWindowTitle() const -> std::string override;
+        void setWindowTitle(const std::string& title) override final;
+        auto getWindowTitle() const -> std::string override final;
 
-        void saveScreenshot(const std::string& path) override {}
+        void saveScreenshot(const std::string& path) override final {}
 
-        void setCursorCaptured(bool captured) override;
+        void setCursorCaptured(bool captured) override final;
 
-        auto getCanvasSize() const -> Vector2 override;
+        auto getCanvasSize() const -> Vector2 override final;
 
-        auto getLifetime() const -> float override;
+        auto getLifetime() const -> float override final;
 
     private:
-        void beginUpdate() override;
-        void endUpdate() override;
+        void beginUpdate() override final;
+        void endUpdate() override final;
 
         std::string windowTitle;
     };
