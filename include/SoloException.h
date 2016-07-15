@@ -17,8 +17,8 @@
             SL_EXCEPTION(exceptionType, __VA_ARGS__); \
     } while (0)
 
-#define SL_SIMPLE_EXCEPTION(type) \
-    class type: public EngineException \
+#define SL_SIMPLE_EXCEPTION(type, final_) \
+    class type final_: public EngineException \
     { \
     public: \
         explicit type(const std::string& msg) : EngineException(msg) \
@@ -36,12 +36,12 @@ namespace solo
         }
     };
 
-    SL_SIMPLE_EXCEPTION(InternalException)
-    SL_SIMPLE_EXCEPTION(InvalidInputException)
-    SL_SIMPLE_EXCEPTION(IOException)
-    SL_SIMPLE_EXCEPTION(AssetException)
+    SL_SIMPLE_EXCEPTION(InternalException, final)
+    SL_SIMPLE_EXCEPTION(InvalidInputException, final)
+    SL_SIMPLE_EXCEPTION(IOException, final)
+    SL_SIMPLE_EXCEPTION(AssetException, )
 
-    class EffectCompilationException: public AssetException
+    class EffectCompilationException final: public AssetException
     {
     public:
         std::string log;
