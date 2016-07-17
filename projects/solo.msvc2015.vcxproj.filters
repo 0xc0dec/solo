@@ -214,6 +214,9 @@
     <ClInclude Include="..\include\SoloCommon.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\platform\vulkan\SoloVulkanRenderer.h">
+      <Filter>src\platform\vulkan</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloScene.cpp">
@@ -1218,6 +1221,9 @@
     <ClCompile Include="..\src\platform\opengl\SoloOpenGLPrefabShaders.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\platform\vulkan\SoloVulkanRenderer.cpp">
+      <Filter>src\platform\vulkan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -1261,6 +1267,9 @@
     </Filter>
     <Filter Include="src\platform\bullet">
       <UniqueIdentifier>{fbe98db1-e9c5-496b-bbf0-8fcc359cccf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\platform\vulkan">
+      <UniqueIdentifier>{93074499-f6f5-4cfe-ae6d-9a14af1b7d09}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
