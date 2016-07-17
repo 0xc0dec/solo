@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SoloBase.h"
+#include "SoloCommon.h"
 #include "SoloRenderer.h"
 #include "SoloVector2.h"
 

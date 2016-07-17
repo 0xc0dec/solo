@@ -3,7 +3,7 @@
 #include "SoloBoundingSphere.h"
 #include "SoloBoundingBox.h"
 #include "SoloFrustum.h"
-#include "SoloBase.h"
+#include "SoloCommon.h"
 #include <algorithm>
 
 using namespace solo;

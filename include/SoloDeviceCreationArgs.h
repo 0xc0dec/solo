@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SoloBase.h"
+#include "SoloCommon.h"
 #include <string>
 
 

@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\SoloBase.h" />
+    <ClInclude Include="..\include\SoloCommon.h" />
     <ClInclude Include="..\include\SoloBoundingBox.h" />
     <ClInclude Include="..\include\SoloBoundingSphere.h" />
     <ClInclude Include="..\include\SoloBoxCollider.h" />

@@ -1,5 +1,5 @@
 #include "SoloTransformMatrix.h"
-#include "SoloBase.h"
+#include "SoloCommon.h"
 #include "SoloMath.h"
 #include "SoloPlane.h"
 #include "SoloQuaternion.h"

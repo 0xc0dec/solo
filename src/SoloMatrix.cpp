@@ -1,6 +1,6 @@
 #include "SoloMatrix.h"
 #include "SoloMath.h"
-#include "SoloBase.h"
+#include "SoloCommon.h"
 
 using namespace solo;
 

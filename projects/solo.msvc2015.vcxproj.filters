@@ -13,9 +13,6 @@
     <ClInclude Include="..\include\SoloMath.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloBase.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloVector3.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -213,6 +210,9 @@
     </ClInclude>
     <ClInclude Include="..\src\platform\opengl\SoloOpenGLPrefabShaders.h">
       <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SoloCommon.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

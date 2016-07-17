@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SoloBase.h"
+#include "SoloCommon.h"
 #include "SoloVector2.h"
 #include "SoloDeviceCreationArgs.h"
 #include <unordered_map>

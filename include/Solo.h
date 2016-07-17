@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SoloAssetLoader.h"
-#include "SoloBase.h"
+#include "SoloCommon.h"
 #include "SoloBoundingBox.h"
 #include "SoloBoundingSphere.h"
 #include "SoloBoxCollider.h"
