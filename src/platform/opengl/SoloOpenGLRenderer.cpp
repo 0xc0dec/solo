@@ -3,6 +3,8 @@
 #include <unordered_map>
 #include <functional>
 
+#ifdef SL_OPENGL_RENDERER
+
 using namespace solo;
 
 
@@ -962,3 +964,7 @@ void OpenGLRenderer::clear(bool color, bool depth, float r, float g, float b, fl
     GLbitfield flags = (color ? GL_COLOR_BUFFER_BIT : 0) | (depth ? GL_DEPTH_BUFFER_BIT : 0);
     glClear(flags);
 }
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif

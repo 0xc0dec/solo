@@ -6,6 +6,7 @@
 #include <GL/glew.h>
 #include <vector>
 
+#ifdef SL_OPENGL_RENDERER
 
 namespace solo
 {
@@ -140,3 +141,7 @@ namespace solo
         ResourcePool<UniformData, SL_MAX_UNIFORMS> uniforms;
     };
 }
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif
