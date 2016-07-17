@@ -27,9 +27,11 @@ auto Device::init(const DeviceCreationArgs& args) -> Device*
             case DeviceMode::OpenGL:
                 instance = std::make_unique<SDLOpenGLDevice>(args);
                 break;
-            default:
+            case DeviceMode::Stub:
                 instance = std::make_unique<StubDevice>(args);
                 break;
+            default:
+                SL_ASSERT(false);
         }
     }
 
