@@ -2,6 +2,7 @@
 
 #include "../sdl/SoloSDLDevice.h"
 
+#ifdef SL_OPENGL_RENDERER
 
 namespace solo
 {
@@ -21,3 +22,7 @@ namespace solo
         SDL_GLContext context = nullptr;
     };
 }
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif

@@ -1,5 +1,7 @@
 #include "SoloOpenGLPrefabShaders.h"
 
+#ifdef SL_OPENGL_RENDERER
+
 using namespace solo;
 
 
@@ -69,3 +71,7 @@ const char* OpenGLPrefabShaders::Fragment::font = R"(
 		fragColor = vec4(c.r, c.r, c.r, c.r);
 	}
 )";
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif
