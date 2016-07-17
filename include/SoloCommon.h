@@ -6,6 +6,22 @@
 #include <memory>
 
 
+#if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS)
+#   define SL_WINDOWS
+#elif defined(__APPLE__) || defined(__MACH__)
+#   define SL_MACOS
+#elif defined(__linux__)
+#   define SL_LINUX
+#endif
+
+#if defined(SL_WINDOWS) || defined(SL_MACOS) || defined(SL_LINUX)
+#   define SL_OPENGL_RENDERER
+#endif
+
+#if defined(SL_WINDOWS) || defined(SL_LINUX)
+#   define SL_VULKAN_RENDERER
+#endif
+
 #ifdef SL_DEBUG
 #   define SL_IN_DEBUG(code) code
 #else
