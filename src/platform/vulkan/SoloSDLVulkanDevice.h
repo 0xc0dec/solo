@@ -1,16 +1,17 @@
 #pragma once
 
 #include "SoloCommon.h"
-#include <vulkan.h>
+#include "../sdl/SoloSDLDevice.h"
 
 #ifdef SL_VULKAN_RENDERER
 
 namespace solo
 {
-    class VulkanRenderer final
+    class SDLVulkanDevice: public SDLDevice
     {
     public:
-        
+        explicit SDLVulkanDevice(const DeviceCreationArgs& args);
+
     private:
     };
 }
