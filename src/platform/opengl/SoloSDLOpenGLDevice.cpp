@@ -13,7 +13,7 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
     SDLDevice(args)
 {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
-        SL_EXCEPTION(InternalException, "Failed to initialize device systems");
+        SL_EXCEPTION(InternalException, "Failed to initialize SDL");
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, creationArgs.redBits);
@@ -30,11 +30,11 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
     window = SDL_CreateWindow(creationArgs.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         creationArgs.canvasWidth, creationArgs.canvasHeight, flags);
     if (!window)
-        SL_EXCEPTION(InternalException, "Failed to create window");
+        SL_EXCEPTION(InternalException, "Failed to create SDL window");
 
     context = SDL_GL_CreateContext(window);
     if (!context)
-        SL_EXCEPTION(InternalException, "Failed to create OpengGL context");
+        SL_EXCEPTION(InternalException, "Failed to create OpenGL context");
 
     glewExperimental = true;
     if (glewInit() != GLEW_OK)
