@@ -2,10 +2,10 @@
 
 #include <SDL_syswm.h>
 #ifdef SL_WINDOWS
-#   include <winuser.h>
+#   include <windows.h>
 #endif
 
-#ifdef SL_OPENGL_RENDERER
+#ifdef SL_VULKAN_RENDERER
 
 using namespace solo;
 
