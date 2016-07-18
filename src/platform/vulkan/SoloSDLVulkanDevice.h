@@ -2,6 +2,8 @@
 
 #include "SoloCommon.h"
 #include "../sdl/SoloSDLDevice.h"
+#define VK_USE_PLATFORM_WIN32_KHR 
+#include <vulkan.h>
 
 #ifdef SL_VULKAN_RENDERER
 
@@ -13,6 +15,7 @@ namespace solo
         explicit SDLVulkanDevice(const DeviceCreationArgs& args);
 
     private:
+        VkInstance instance;
     };
 }
 
