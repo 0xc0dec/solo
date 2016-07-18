@@ -13,8 +13,8 @@ using namespace solo;
 SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
     SDLDevice(args)
 {
-    auto init = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);
-    SL_ASSERT(init >= 0);
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
+        SL_EXCEPTION(InternalException, "Failed to initialize SDL");
 
     auto flags = static_cast<uint32_t>(SDL_WINDOW_ALLOW_HIGHDPI);
     if (creationArgs.fullScreen)
@@ -22,7 +22,8 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
 
     window = SDL_CreateWindow(creationArgs.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         creationArgs.canvasWidth, creationArgs.canvasHeight, flags);
-    SL_ASSERT(window);
+    if (!window)
+        SL_EXCEPTION(InternalException, "Failed to create window");
 
     SDL_SysWMinfo wmInfo;
     SDL_VERSION(&wmInfo.version);
@@ -55,8 +56,8 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
 		instanceCreateInfo.ppEnabledExtensionNames = enabledExtensions.data();
 	}
 
-    auto created = vkCreateInstance(&instanceCreateInfo, nullptr, &instance);
-    SL_ASSERT(created);
+    if (vkCreateInstance(&instanceCreateInfo, nullptr, &instance) != VK_SUCCESS)
+        SL_EXCEPTION(InternalException, "Failed to initialize Vulkan");
 }
 
 
