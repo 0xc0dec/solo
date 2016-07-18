@@ -30,7 +30,7 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
     window = SDL_CreateWindow(creationArgs.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         creationArgs.canvasWidth, creationArgs.canvasHeight, flags);
     if (!window)
-        SL_EXCEPTION(InternalException, "Failed to create SDL window");
+        SL_EXCEPTION(InternalException, "Failed to create window");
 
     context = SDL_GL_CreateContext(window);
     if (!context)
