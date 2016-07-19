@@ -19,7 +19,7 @@ An engine/framework for my personal graphics/gamedev experiments.
 ![3](/screenshots/screenshot5.png?raw=true)
 ![4](/screenshots/screenshot6.png?raw=true)
 
-## Made possible thanks to
+## Dependencies
 * async++
 * Bullet
 * GLEW
