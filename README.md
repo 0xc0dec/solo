@@ -10,6 +10,7 @@ An engine/framework for my personal graphics/gamedev experiments.
 * Convenient system for applying post-processing effects.
 * Basic text rendering.
 * Basic physics.
+* OpenGL rendering backend.
 
 ## Screenshots
 
