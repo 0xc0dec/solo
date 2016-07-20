@@ -16,6 +16,26 @@
 using namespace solo;
 
 
+uint32_t getQueueFamilyIndex(VkPhysicalDevice device)
+{
+	uint32_t count;
+	vkGetPhysicalDeviceQueueFamilyProperties(device, &count, nullptr);
+    SL_EXCEPTION_IF(count <= 0, InternalException, "Failed to get count of graphics queues");
+
+    std::vector<VkQueueFamilyProperties> queueProps;
+	queueProps.resize(count);
+	vkGetPhysicalDeviceQueueFamilyProperties(device, &count, queueProps.data());
+
+    for (auto index = 0; index < count; index++)
+	{
+        if (queueProps[index].queueFlags & VK_QUEUE_GRAPHICS_BIT)
+            return index;
+	}
+
+    SL_EXCEPTION(InternalException, "Failed to detect graphics queue index");
+}
+
+
 SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
     SDLDevice(args)
 {
@@ -66,9 +86,15 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
 
 	uint32_t gpuCount = 0;
     SL_CHECK_VK_CALL(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr), "Failed to get GPU count");
+
+    SL_EXCEPTION_IF(gpuCount == 0, InternalException, "No GPU found");
 	
 	std::vector<VkPhysicalDevice> physicalDevices(gpuCount);
 	SL_CHECK_VK_CALL(vkEnumeratePhysicalDevices(instance, &gpuCount, physicalDevices.data()), "Failed to enumerate devices");
+
+    auto device = physicalDevices[0]; // TODO at least for now
+
+    auto graphicsQueueIndex = getQueueFamilyIndex(device);
 }
 
 
