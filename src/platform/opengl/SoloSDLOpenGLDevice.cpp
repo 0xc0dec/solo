@@ -16,19 +16,19 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
         SL_EXCEPTION(InternalException, "Failed to initialize SDL");
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, creationArgs.redBits);
-    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, creationArgs.greenBits);
-    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, creationArgs.blueBits);
-    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, creationArgs.alphaBits);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, creationArgs.depthBits);
+    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, args.redBits);
+    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, args.greenBits);
+    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, args.blueBits);
+    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, args.alphaBits);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, args.depthBits);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
     auto flags = static_cast<uint32_t>(SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
-    if (creationArgs.fullScreen)
+    if (args.fullScreen)
         flags |= SDL_WINDOW_FULLSCREEN;
 
-    window = SDL_CreateWindow(creationArgs.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        creationArgs.canvasWidth, creationArgs.canvasHeight, flags);
+    window = SDL_CreateWindow(args.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        args.canvasWidth, args.canvasHeight, flags);
     if (!window)
         SL_EXCEPTION(InternalException, "Failed to create window");
 

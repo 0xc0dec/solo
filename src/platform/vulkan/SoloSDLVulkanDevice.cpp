@@ -43,11 +43,11 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
         SL_EXCEPTION(InternalException, "Failed to initialize SDL");
 
     auto flags = static_cast<uint32_t>(SDL_WINDOW_ALLOW_HIGHDPI);
-    if (creationArgs.fullScreen)
+    if (args.fullScreen)
         flags |= SDL_WINDOW_FULLSCREEN;
 
-    window = SDL_CreateWindow(creationArgs.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        creationArgs.canvasWidth, creationArgs.canvasHeight, flags);
+    window = SDL_CreateWindow(args.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        args.canvasWidth, args.canvasHeight, flags);
     if (!window)
         SL_EXCEPTION(InternalException, "Failed to create window");
 
