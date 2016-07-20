@@ -7,6 +7,12 @@
 
 #ifdef SL_VULKAN_RENDERER
 
+#define SL_CHECK_VK_CALL(call, message) \
+    do { \
+        if (call != VK_SUCCESS) \
+            SL_EXCEPTION(InternalException, message); \
+    } while (0)
+
 using namespace solo;
 
 
@@ -56,16 +62,13 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
 		instanceCreateInfo.ppEnabledExtensionNames = enabledExtensions.data();
 	}
 
-    if (vkCreateInstance(&instanceCreateInfo, nullptr, &instance) != VK_SUCCESS)
-        SL_EXCEPTION(InternalException, "Failed to initialize Vulkan");
+    SL_CHECK_VK_CALL(vkCreateInstance(&instanceCreateInfo, nullptr, &instance), "Failed to initialize Vulkan");
 
 	uint32_t gpuCount = 0;
-	if (vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr) != VK_SUCCESS)
-        SL_EXCEPTION(InternalException, "Failed to get GPU count");
+    SL_CHECK_VK_CALL(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr), "Failed to get GPU count");
 	
 	std::vector<VkPhysicalDevice> physicalDevices(gpuCount);
-	if (vkEnumeratePhysicalDevices(instance, &gpuCount, physicalDevices.data()) != VK_SUCCESS)
-        SL_EXCEPTION(InternalException, "Failed to enumerate devices");
+	SL_CHECK_VK_CALL(vkEnumeratePhysicalDevices(instance, &gpuCount, physicalDevices.data()), "Failed to enumerate devices");
 }
 
 
