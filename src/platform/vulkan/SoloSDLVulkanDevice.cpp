@@ -58,6 +58,14 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
 
     if (vkCreateInstance(&instanceCreateInfo, nullptr, &instance) != VK_SUCCESS)
         SL_EXCEPTION(InternalException, "Failed to initialize Vulkan");
+
+	uint32_t gpuCount = 0;
+	if (vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr) != VK_SUCCESS)
+        SL_EXCEPTION(InternalException, "Failed to get GPU count");
+	
+	std::vector<VkPhysicalDevice> physicalDevices(gpuCount);
+	if (vkEnumeratePhysicalDevices(instance, &gpuCount, physicalDevices.data()) != VK_SUCCESS)
+        SL_EXCEPTION(InternalException, "Failed to enumerate devices");
 }
 
 
