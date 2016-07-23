@@ -15,7 +15,18 @@ namespace solo
         explicit SDLVulkanDevice(const DeviceCreationArgs& args);
 
     private:
-        VkInstance instance;
+        VkInstance instance = nullptr;
+        VkDevice device = nullptr;
+        VkQueue graphicsQueue = nullptr;
+        VkPhysicalDevice physicalDevice = nullptr;
+        VkPhysicalDeviceProperties physicalDeviceProperties;
+        VkPhysicalDeviceFeatures physicalDeviceFeatures;
+        VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties;
+        VkFormat depthFormat = VK_FORMAT_UNDEFINED;
+        VkSemaphore presentCompleteSem = nullptr;
+        VkSemaphore renderCompleteSem = nullptr;
+        VkSubmitInfo submitInfo;
+        VkPipelineStageFlags submitPipelineStages = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
     };
 }
 

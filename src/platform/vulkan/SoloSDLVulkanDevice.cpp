@@ -36,6 +36,32 @@ uint32_t getQueueFamilyIndex(VkPhysicalDevice device)
 }
 
 
+VkFormat getSupportedDepthFormat(VkPhysicalDevice physicalDevice)
+{
+	// Since all depth formats may be optional, we need to find a suitable depth format to use
+	// Start with the highest precision packed format
+	std::vector<VkFormat> depthFormats =
+    {
+		VK_FORMAT_D32_SFLOAT_S8_UINT, 
+		VK_FORMAT_D32_SFLOAT,
+		VK_FORMAT_D24_UNORM_S8_UINT, 
+		VK_FORMAT_D16_UNORM_S8_UINT, 
+		VK_FORMAT_D16_UNORM 
+	};
+
+	for (auto& format : depthFormats)
+	{
+		VkFormatProperties formatProps;
+		vkGetPhysicalDeviceFormatProperties(physicalDevice, format, &formatProps);
+		// Format must support depth stencil attachment for optimal tiling
+		if (formatProps.optimalTilingFeatures & VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT)
+            return format;
+	}
+
+    SL_EXCEPTION(InternalException, "Could not detect suitable depth format");
+}
+
+
 SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
     SDLDevice(args)
 {
@@ -92,9 +118,56 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
 	std::vector<VkPhysicalDevice> physicalDevices(gpuCount);
 	SL_CHECK_VK_CALL(vkEnumeratePhysicalDevices(instance, &gpuCount, physicalDevices.data()), "Failed to enumerate devices");
 
-    auto device = physicalDevices[0]; // TODO at least for now
+    physicalDevice = physicalDevices[0]; // TODO at least for now
 
-    auto graphicsQueueIndex = getQueueFamilyIndex(device);
+    auto graphicsQueueIndex = getQueueFamilyIndex(physicalDevice);
+    vkGetDeviceQueue(device, graphicsQueueIndex, 0, &graphicsQueue);
+
+    std::vector<float> queuePriorities = { 0.0f };
+	std::vector<VkDeviceQueueCreateInfo> queueCreateInfos = {};
+	queueCreateInfos.resize(1);
+	queueCreateInfos[0].sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+	queueCreateInfos[0].queueFamilyIndex = graphicsQueueIndex;
+	queueCreateInfos[0].queueCount = 1;
+	queueCreateInfos[0].pQueuePriorities = queuePriorities.data();
+
+	vkGetPhysicalDeviceProperties(physicalDevice, &physicalDeviceProperties);
+	vkGetPhysicalDeviceFeatures(physicalDevice, &physicalDeviceFeatures);
+	vkGetPhysicalDeviceMemoryProperties(physicalDevice, &physicalDeviceMemoryProperties);
+
+    std::vector<const char*> deviceExtensions;
+    deviceExtensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
+
+    VkDeviceCreateInfo deviceCreateInfo = {};
+    std::vector<VkPhysicalDeviceFeatures> enabledFeatures = {};
+	deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+	deviceCreateInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfos.size());;
+	deviceCreateInfo.pQueueCreateInfos = queueCreateInfos.data();
+	deviceCreateInfo.pEnabledFeatures = enabledFeatures.data();
+    deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
+    deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
+
+    SL_CHECK_VK_CALL(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &device), "Failed to create logical device");
+
+    depthFormat = getSupportedDepthFormat(physicalDevice);
+
+    // TODO swap chain initialization here
+
+    VkSemaphoreCreateInfo semaphoreCreateInfo = {};
+	semaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+	semaphoreCreateInfo.pNext = nullptr;
+	semaphoreCreateInfo.flags = 0;
+
+    SL_CHECK_VK_CALL(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, &presentCompleteSem), "Failed to create present semaphore");
+    SL_CHECK_VK_CALL(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, &renderCompleteSem), "Failed to create render semaphore");
+
+    submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+	submitInfo.pNext = nullptr;
+    submitInfo.pWaitDstStageMask = &submitPipelineStages;
+	submitInfo.waitSemaphoreCount = 1;
+	submitInfo.pWaitSemaphores = &presentCompleteSem;
+	submitInfo.signalSemaphoreCount = 1;
+	submitInfo.pSignalSemaphores = &renderCompleteSem;
 }
 
 
