@@ -27,11 +27,11 @@ uint32_t getQueueIndex(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface)
 	vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &count, queueProps.data());
 
     std::vector<VkBool32> presentSupported(count);
-    for (auto i = 0; i < count; i++)
+    for (uint32_t i = 0; i < count; i++)
         vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, i, surface, &presentSupported[i]);
 
     // TODO support for separate rendering and presenting queues
-    for (auto i = 0; i < count; i++)
+    for (uint32_t i = 0; i < count; i++)
 	{
         if (queueProps[i].queueFlags & VK_QUEUE_GRAPHICS_BIT && presentSupported[i] == VK_TRUE)
             return i;
