@@ -56,7 +56,7 @@ public:
 private:
     void initEngine()
     {
-        device = Device::init(DeviceCreationArgs().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo3.log"));
+        device = Device::init(DeviceCreationArgs().withMode(DeviceMode::Vulkan).withDimensions(1200, 600).withLogFilePath("demo3.log"));
         scene = device->getScene();
         loader = device->getAssetLoader();
     }
