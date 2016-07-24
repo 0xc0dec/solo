@@ -124,7 +124,6 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
 
 	uint32_t gpuCount = 0;
     SL_CHECK_VK_CALL(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr), "Failed to get GPU count");
-
     SL_EXCEPTION_IF(gpuCount == 0, InternalException, "No GPU found");
 	
 	std::vector<VkPhysicalDevice> physicalDevices(gpuCount);
@@ -135,7 +134,6 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
 	vkGetPhysicalDeviceFeatures(physicalDevice, &physicalDeviceFeatures);
 	vkGetPhysicalDeviceMemoryProperties(physicalDevice, &physicalDeviceMemoryProperties);
 
-    // Surface
 #ifdef SL_WINDOWS
     SDL_SysWMinfo wmInfo;
     SDL_VERSION(&wmInfo.version);
@@ -184,8 +182,6 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
 
     depthFormat = getSupportedDepthFormat(physicalDevice);
 
-    // TODO swap chain initialization here
-
     VkSemaphoreCreateInfo semaphoreCreateInfo = {};
 	semaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
 	semaphoreCreateInfo.pNext = nullptr;
@@ -201,21 +197,6 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
 	submitInfo.pWaitSemaphores = &presentCompleteSem;
 	submitInfo.signalSemaphoreCount = 1;
 	submitInfo.pSignalSemaphores = &renderCompleteSem;
-
-    // TODO uncomment if normal prototypes from vk header don't work
-//    auto pvkGetPhysicalDeviceSurfaceSupportKHR = reinterpret_cast<PFN_vkGetPhysicalDeviceSurfaceSupportKHR>(
-//        vkGetInstanceProcAddr(instance, "vkGetPhysicalDeviceSurfaceSupportKHR"));
-//    auto pvkGetPhysicalDeviceSurfaceCapabilitiesKHR = reinterpret_cast<PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR>(
-//        vkGetInstanceProcAddr(instance, "vkGetPhysicalDeviceSurfaceCapabilitiesKHR"));
-//    auto pvkGetPhysicalDeviceSurfaceFormatsKHR = reinterpret_cast<PFN_vkGetPhysicalDeviceSurfaceFormatsKHR>(
-//        vkGetInstanceProcAddr(instance, "vkGetPhysicalDeviceSurfaceFormatsKHR"));
-//    auto pvkGetPhysicalDeviceSurfacePresentModesKHR = reinterpret_cast<PFN_vkGetPhysicalDeviceSurfacePresentModesKHR>(
-//        vkGetInstanceProcAddr(instance, "vkGetPhysicalDeviceSurfacePresentModesKHR"));
-//    auto pvkCreateSwapchainKHR = reinterpret_cast<PFN_vkCreateSwapchainKHR>(vkGetDeviceProcAddr(device, "vkCreateSwapchainKHR"));
-//    auto pvkDestroySwapchainKHR = reinterpret_cast<PFN_vkDestroySwapchainKHR>(vkGetDeviceProcAddr(device, "vkDestroySwapchainKHR"));
-//    auto pvkGetSwapchainImagesKHR = reinterpret_cast<PFN_vkGetSwapchainImagesKHR>(vkGetDeviceProcAddr(device, "vkGetSwapchainImagesKHR"));
-//    auto pvkAcquireNextImageKHR = reinterpret_cast<PFN_vkAcquireNextImageKHR>(vkGetDeviceProcAddr(device, "vkAcquireNextImageKHR"));
-//    auto pvkQueuePresentKHR = reinterpret_cast<PFN_vkQueuePresentKHR>(vkGetDeviceProcAddr(device, "vkQueuePresentKHR"));
 }
 
 
