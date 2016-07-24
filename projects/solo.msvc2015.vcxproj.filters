@@ -220,6 +220,9 @@
     <ClInclude Include="..\src\platform\vulkan\SoloSDLVulkanDevice.h">
       <Filter>src\platform\vulkan</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\platform\vulkan\SoloVulkan.h">
+      <Filter>src\platform\vulkan</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloScene.cpp">

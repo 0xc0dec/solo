@@ -79,6 +79,7 @@
     <ClInclude Include="..\src\platform\stub\SoloStubFileSystem.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubRenderer.h" />
     <ClInclude Include="..\src\platform\vulkan\SoloSDLVulkanDevice.h" />
+    <ClInclude Include="..\src\platform\vulkan\SoloVulkan.h" />
     <ClInclude Include="..\src\platform\vulkan\SoloVulkanRenderer.h" />
     <ClInclude Include="..\src\SoloMaterialParameter.h" />
     <ClInclude Include="..\src\SoloObjMeshLoader.h" />
