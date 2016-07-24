@@ -1,9 +1,15 @@
 #include "SoloVulkanRenderer.h"
-
-using namespace solo;
+#include "SoloSDLVulkanDevice.h"
 
 #ifdef SL_VULKAN_RENDERER
 
+using namespace solo;
+
+
+VulkanRenderer::VulkanRenderer(Device* device)
+{
+    auto vulkanDevice = dynamic_cast<SDLVulkanDevice*>(device);
+}
 
 
 #else
