@@ -2,10 +2,13 @@
 
 #include "SoloCommon.h"
 #include "../sdl/SoloSDLDevice.h"
-#define VK_USE_PLATFORM_WIN32_KHR 
-#include <vulkan.h>
 
 #ifdef SL_VULKAN_RENDERER
+
+#ifdef SL_WINDOWS
+#   define VK_USE_PLATFORM_WIN32_KHR 
+#endif
+#include <vulkan.h>
 
 namespace solo
 {
