@@ -9,10 +9,16 @@
 
 namespace solo
 {
-    class SDLVulkanDevice: public SDLDevice
+    class SDLVulkanDevice final: public SDLDevice
     {
     public:
         explicit SDLVulkanDevice(const DeviceCreationArgs& args);
+
+        void saveScreenshot(const std::string& path) override final;
+        auto getCanvasSize() const -> Vector2 override final;
+
+    protected:
+        void endUpdate() override final;
 
     private:
         VkInstance instance = nullptr;

@@ -218,6 +218,22 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
 //    auto pvkQueuePresentKHR = reinterpret_cast<PFN_vkQueuePresentKHR>(vkGetDeviceProcAddr(device, "vkQueuePresentKHR"));
 
 
+void SDLVulkanDevice::saveScreenshot(const std::string& path)
+{
+    // TODO
+}
+
+
+auto SDLVulkanDevice::getCanvasSize() const -> Vector2
+{
+    // TODO
+    return Vector2();
+}
+
+
+void SDLVulkanDevice::endUpdate()
+{
+    // TODO
 }
 
 
