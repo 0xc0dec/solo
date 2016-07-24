@@ -14,3 +14,5 @@ build*
 blend1
 .gitignore~
 ..gitignore.un~
+*VC.db
+*VC.opendb
