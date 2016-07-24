@@ -156,9 +156,7 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
     colorFormat = std::get<0>(surfaceFormats);
     colorSpace = std::get<1>(surfaceFormats);
 
-    // Queue
     auto queueIndex = getQueueIndex(physicalDevice, surface);
-    vkGetDeviceQueue(device, queueIndex, 0, &graphicsQueue);
 
     std::vector<float> queuePriorities = { 0.0f };
 	std::vector<VkDeviceQueueCreateInfo> queueCreateInfos = {};
@@ -181,6 +179,8 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
     deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
 
     SL_CHECK_VK_CALL(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &device), "Failed to create logical device");
+
+    vkGetDeviceQueue(device, queueIndex, 0, &graphicsQueue);
 
     depthFormat = getSupportedDepthFormat(physicalDevice);
 
@@ -216,6 +216,7 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
 //    auto pvkGetSwapchainImagesKHR = reinterpret_cast<PFN_vkGetSwapchainImagesKHR>(vkGetDeviceProcAddr(device, "vkGetSwapchainImagesKHR"));
 //    auto pvkAcquireNextImageKHR = reinterpret_cast<PFN_vkAcquireNextImageKHR>(vkGetDeviceProcAddr(device, "vkAcquireNextImageKHR"));
 //    auto pvkQueuePresentKHR = reinterpret_cast<PFN_vkQueuePresentKHR>(vkGetDeviceProcAddr(device, "vkQueuePresentKHR"));
+}
 
 
 void SDLVulkanDevice::saveScreenshot(const std::string& path)
