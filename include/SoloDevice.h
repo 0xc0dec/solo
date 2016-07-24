@@ -73,7 +73,7 @@ namespace solo
     {
     public:
         static auto init(const DeviceCreationArgs& args) -> Device*;
-        static auto get() -> Device*;
+        static auto get() -> Device*; // TODO reduce usages of this and prefer DI as much as possible
         static void shutdown();
 
         virtual ~Device();
