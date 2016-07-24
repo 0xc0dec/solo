@@ -178,7 +178,7 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
 
     SL_CHECK_VK_CALL(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &device), "Failed to create logical device");
 
-    vkGetDeviceQueue(device, queueIndex, 0, &graphicsQueue);
+    vkGetDeviceQueue(device, queueIndex, 0, &queue);
 
     depthFormat = getSupportedDepthFormat(physicalDevice);
 

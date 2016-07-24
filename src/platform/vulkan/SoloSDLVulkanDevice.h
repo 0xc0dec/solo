@@ -26,7 +26,7 @@ namespace solo
     private:
         VkInstance instance = nullptr;
         VkDevice device = nullptr;
-        VkQueue graphicsQueue = nullptr;
+        VkQueue queue = nullptr;
         VkSurfaceKHR surface = nullptr;
         VkFormat colorFormat = VK_FORMAT_UNDEFINED;
         VkColorSpaceKHR colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
