@@ -8,6 +8,7 @@
 #include "SoloPhysics.h"
 #include "platform/stub/SoloStubDevice.h"
 #include "platform/opengl/SoloSDLOpenGLDevice.h"
+#include "platform/vulkan/SoloSDLVulkanDevice.h"
 
 using namespace solo;
 
@@ -26,6 +27,9 @@ auto Device::init(const DeviceCreationArgs& args) -> Device*
         {
             case DeviceMode::OpenGL:
                 instance = std::make_unique<SDLOpenGLDevice>(args);
+                break;
+            case DeviceMode::Vulkan:
+                instance = std::make_unique<SDLVulkanDevice>(args);
                 break;
             case DeviceMode::Stub:
                 instance = std::make_unique<StubDevice>(args);
