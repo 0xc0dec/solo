@@ -16,23 +16,28 @@
 using namespace solo;
 
 
-uint32_t getQueueFamilyIndex(VkPhysicalDevice device)
+uint32_t getQueueIndex(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface)
 {
 	uint32_t count;
-	vkGetPhysicalDeviceQueueFamilyProperties(device, &count, nullptr);
+	vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &count, nullptr);
     SL_EXCEPTION_IF(count <= 0, InternalException, "Failed to get count of graphics queues");
 
     std::vector<VkQueueFamilyProperties> queueProps;
 	queueProps.resize(count);
-	vkGetPhysicalDeviceQueueFamilyProperties(device, &count, queueProps.data());
+	vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &count, queueProps.data());
 
-    for (auto index = 0; index < count; index++)
+    std::vector<VkBool32> presentSupported(count);
+    for (auto i = 0; i < count; i++)
+        vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, i, surface, &presentSupported[i]);
+
+    // TODO support for separate rendering and presenting queues
+    for (auto i = 0; i < count; i++)
 	{
-        if (queueProps[index].queueFlags & VK_QUEUE_GRAPHICS_BIT)
-            return index;
+        if (queueProps[i].queueFlags & VK_QUEUE_GRAPHICS_BIT && presentSupported[i] == VK_TRUE)
+            return i;
 	}
 
-    SL_EXCEPTION(InternalException, "Failed to detect graphics queue index");
+    SL_EXCEPTION(InternalException, "Failed to detect queue index");
 }
 
 
@@ -62,6 +67,20 @@ VkFormat getSupportedDepthFormat(VkPhysicalDevice physicalDevice)
 }
 
 
+std::tuple<VkFormat, VkColorSpaceKHR> getSurfaceFormats(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface)
+{
+    uint32_t count;
+    SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, surface, &count, nullptr), "Failed to get surface format count");
+
+    std::vector<VkSurfaceFormatKHR> formats(count);
+    SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, surface, &count, formats.data()), "Failed to get surface formats");
+
+    if (count == 1 && formats[0].format == VK_FORMAT_UNDEFINED)
+        return std::make_tuple(VK_FORMAT_B8G8R8A8_UNORM, formats[0].colorSpace);
+    return std::make_tuple(formats[0].format, formats[0].colorSpace);
+}
+
+
 SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
     SDLDevice(args)
 {
@@ -77,14 +96,7 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
     if (!window)
         SL_EXCEPTION(InternalException, "Failed to create window");
 
-    SDL_SysWMinfo wmInfo;
-    SDL_VERSION(&wmInfo.version);
-    SDL_GetWindowWMInfo(window, &wmInfo);
-
-#ifdef SL_WINDOWS
-    auto hwnd = wmInfo.info.win.window;
-    auto hinstance = GetWindowLongPtr(hwnd, GWLP_HINSTANCE);
-#endif
+    // Vulkan init
 
     VkApplicationInfo appInfo{};
     appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -119,21 +131,42 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
 	SL_CHECK_VK_CALL(vkEnumeratePhysicalDevices(instance, &gpuCount, physicalDevices.data()), "Failed to enumerate devices");
 
     physicalDevice = physicalDevices[0]; // TODO at least for now
+    vkGetPhysicalDeviceProperties(physicalDevice, &physicalDeviceProperties);
+	vkGetPhysicalDeviceFeatures(physicalDevice, &physicalDeviceFeatures);
+	vkGetPhysicalDeviceMemoryProperties(physicalDevice, &physicalDeviceMemoryProperties);
 
-    auto graphicsQueueIndex = getQueueFamilyIndex(physicalDevice);
-    vkGetDeviceQueue(device, graphicsQueueIndex, 0, &graphicsQueue);
+    // Surface
+#ifdef SL_WINDOWS
+    SDL_SysWMinfo wmInfo;
+    SDL_VERSION(&wmInfo.version);
+    SDL_GetWindowWMInfo(window, &wmInfo);
+
+    auto hwnd = wmInfo.info.win.window;
+    auto hinstance = reinterpret_cast<HINSTANCE>(GetWindowLongPtr(hwnd, GWLP_HINSTANCE));
+
+    VkWin32SurfaceCreateInfoKHR surfaceCreateInfo = {};
+	surfaceCreateInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+	surfaceCreateInfo.hinstance = hinstance;
+	surfaceCreateInfo.hwnd = hwnd;
+
+    SL_CHECK_VK_CALL(vkCreateWin32SurfaceKHR(instance, &surfaceCreateInfo, nullptr, &surface), "Failed to create rendering surface");
+#endif
+
+    auto surfaceFormats = getSurfaceFormats(physicalDevice, surface);
+    colorFormat = std::get<0>(surfaceFormats);
+    colorSpace = std::get<1>(surfaceFormats);
+
+    // Queue
+    auto queueIndex = getQueueIndex(physicalDevice, surface);
+    vkGetDeviceQueue(device, queueIndex, 0, &graphicsQueue);
 
     std::vector<float> queuePriorities = { 0.0f };
 	std::vector<VkDeviceQueueCreateInfo> queueCreateInfos = {};
 	queueCreateInfos.resize(1);
 	queueCreateInfos[0].sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-	queueCreateInfos[0].queueFamilyIndex = graphicsQueueIndex;
+	queueCreateInfos[0].queueFamilyIndex = queueIndex;
 	queueCreateInfos[0].queueCount = 1;
 	queueCreateInfos[0].pQueuePriorities = queuePriorities.data();
-
-	vkGetPhysicalDeviceProperties(physicalDevice, &physicalDeviceProperties);
-	vkGetPhysicalDeviceFeatures(physicalDevice, &physicalDeviceFeatures);
-	vkGetPhysicalDeviceMemoryProperties(physicalDevice, &physicalDeviceMemoryProperties);
 
     std::vector<const char*> deviceExtensions;
     deviceExtensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
@@ -183,6 +216,8 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
 //    auto pvkGetSwapchainImagesKHR = reinterpret_cast<PFN_vkGetSwapchainImagesKHR>(vkGetDeviceProcAddr(device, "vkGetSwapchainImagesKHR"));
 //    auto pvkAcquireNextImageKHR = reinterpret_cast<PFN_vkAcquireNextImageKHR>(vkGetDeviceProcAddr(device, "vkAcquireNextImageKHR"));
 //    auto pvkQueuePresentKHR = reinterpret_cast<PFN_vkQueuePresentKHR>(vkGetDeviceProcAddr(device, "vkQueuePresentKHR"));
+
+
 }
 
 
