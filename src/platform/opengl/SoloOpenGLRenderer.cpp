@@ -3,7 +3,6 @@
 #include "SoloLogger.h"
 #include <algorithm>
 #include <unordered_map>
-#include <functional>
 
 #ifdef SL_OPENGL_RENDERER
 
@@ -242,19 +241,6 @@ static bool findUniformInProgram(GLuint program, const char* name, GLint& locati
     }
 
     return false;
-}
-
-
-template <typename TPool, typename TResource>
-void cleanupResourcePool(TPool& pool, std::function<void(const TResource&)> deleteResource)
-{
-    while (pool.getHandleCount() > 0)
-    {
-        auto handle = pool.getHandle(0);
-        auto data = pool.getData(handle);
-        deleteResource(data);
-        pool.releaseHandle(handle);
-    }
 }
 
 
