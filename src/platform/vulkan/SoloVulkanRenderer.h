@@ -1,9 +1,10 @@
 #pragma once
 
 #include "SoloRenderer.h"
-#include <vulkan.h>
 
 #ifdef SL_VULKAN_RENDERER
+
+#include "SoloVulkan.h"
 
 namespace solo
 {
@@ -77,6 +78,19 @@ namespace solo
         void drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, uint32_t vertexCount) override final {}
 
     private:
+        VkPhysicalDevice physicalDevice = nullptr;
+        VkDevice device = nullptr;
+        VkQueue queue = nullptr;
+        VkFormat colorFormat = VK_FORMAT_UNDEFINED;
+        VkColorSpaceKHR colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
+        VkPhysicalDeviceProperties physicalDeviceProperties;
+        VkPhysicalDeviceFeatures physicalDeviceFeatures;
+        VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties;
+        VkFormat depthFormat = VK_FORMAT_UNDEFINED;
+        VkSemaphore presentCompleteSem = nullptr;
+        VkSemaphore renderCompleteSem = nullptr;
+        VkSubmitInfo submitInfo;
+        VkPipelineStageFlags submitPipelineStages = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
     };
 }
 

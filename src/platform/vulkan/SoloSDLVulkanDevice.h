@@ -1,14 +1,10 @@
 #pragma once
 
-#include "SoloCommon.h"
 #include "../sdl/SoloSDLDevice.h"
 
 #ifdef SL_VULKAN_RENDERER
 
-#ifdef SL_WINDOWS
-#   define VK_USE_PLATFORM_WIN32_KHR 
-#endif
-#include <vulkan.h>
+#include "SoloVulkan.h"
 
 namespace solo
 {
@@ -20,26 +16,26 @@ namespace solo
         void saveScreenshot(const std::string& path) override final;
         auto getCanvasSize() const -> Vector2 override final;
 
+        auto getVulkanInstance() const -> VkInstance;
+        auto getVulkanSurface() const -> VkSurfaceKHR;
+
     protected:
         void endUpdate() override final;
 
     private:
         VkInstance instance = nullptr;
-        VkDevice device = nullptr;
-        VkQueue queue = nullptr;
         VkSurfaceKHR surface = nullptr;
-        VkFormat colorFormat = VK_FORMAT_UNDEFINED;
-        VkColorSpaceKHR colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
-        VkPhysicalDevice physicalDevice = nullptr;
-        VkPhysicalDeviceProperties physicalDeviceProperties;
-        VkPhysicalDeviceFeatures physicalDeviceFeatures;
-        VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties;
-        VkFormat depthFormat = VK_FORMAT_UNDEFINED;
-        VkSemaphore presentCompleteSem = nullptr;
-        VkSemaphore renderCompleteSem = nullptr;
-        VkSubmitInfo submitInfo;
-        VkPipelineStageFlags submitPipelineStages = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
     };
+
+    inline auto SDLVulkanDevice::getVulkanInstance() const -> VkInstance
+    {
+        return instance;
+    }
+
+    inline auto SDLVulkanDevice::getVulkanSurface() const -> VkSurfaceKHR
+    {
+        return surface;
+    }
 }
 
 #else
