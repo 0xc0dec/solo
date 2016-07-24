@@ -1,4 +1,6 @@
 #include "SoloOpenGLRenderer.h"
+#include "SoloDevice.h"
+#include "SoloLogger.h"
 #include <algorithm>
 #include <unordered_map>
 #include <functional>
@@ -253,6 +255,15 @@ void cleanupResourcePool(TPool& pool, std::function<void(const TResource&)> dele
         deleteResource(data);
         pool.releaseHandle(handle);
     }
+}
+
+
+OpenGLRenderer::OpenGLRenderer(Device* device)
+{
+    GLint major, minor;
+    glGetIntegerv(GL_MAJOR_VERSION, &major);
+    glGetIntegerv(GL_MINOR_VERSION, &minor);
+    device->getLogger()->logInfo(SL_FMT("Running in OpenGL ", major, ".", minor, " mode"));
 }
 
 

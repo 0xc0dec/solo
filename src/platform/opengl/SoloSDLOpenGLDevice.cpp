@@ -45,12 +45,6 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
         SL_EXCEPTION(InternalException, "Failed to initialize OpenGL extensions");
     }
 
-    GLint major, minor;
-    glGetIntegerv(GL_MAJOR_VERSION, &major);
-    glGetIntegerv(GL_MINOR_VERSION, &minor);
-
-    logger->logInfo(SL_FMT("Running in OpenGL ", major, ".", minor, " mode"));
-
     SDL_GL_SetSwapInterval(1);
 }
 

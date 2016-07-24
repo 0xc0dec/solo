@@ -10,10 +10,12 @@
 
 namespace solo
 {
+    class Device;
+
     class OpenGLRenderer final: public Renderer
     {
     public:
-        OpenGLRenderer() {}
+        OpenGLRenderer(Device* device);
         ~OpenGLRenderer();
 
         auto createTexture() -> TextureHandle override final;
