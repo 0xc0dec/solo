@@ -1,5 +1,4 @@
 #include "SoloSDLOpenGLDevice.h"
-#include "SoloLogger.h"
 #include <vector>
 #include <GL/glew.h>
 #include <SDL_surface.h>
@@ -12,9 +11,6 @@ using namespace solo;
 SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
     SDLDevice(args)
 {
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
-        SL_EXCEPTION(InternalException, "Failed to initialize SDL");
-
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, args.redBits);
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, args.greenBits);
@@ -55,7 +51,6 @@ SDLOpenGLDevice::~SDLOpenGLDevice()
         SDL_GL_DeleteContext(context);
     if (window)
         SDL_DestroyWindow(window);
-    SDL_Quit();
 }
 
 

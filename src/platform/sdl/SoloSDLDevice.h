@@ -9,6 +9,8 @@ namespace solo
     class SDLDevice: public Device
     {
     public:
+        virtual ~SDLDevice();
+
         auto getWindowTitle() const->std::string override final;
         void setWindowTitle(const std::string& title) override final;
 
