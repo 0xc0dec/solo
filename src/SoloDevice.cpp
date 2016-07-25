@@ -13,9 +13,8 @@
 using namespace solo;
 
 
-// The whole system is made as singleton for the sake of coding convenience.
-// For instance, to make resource creation look like Resource::create(args)
-// instead of device->getResourceManager()->createResource(args)
+// Made as a singleton for the sake of convenience.
+// Instanticated when run() is called and resets when it exists
 uptr<Device> Device::instance = nullptr;
 
 
@@ -77,11 +76,12 @@ uptr<Device> Device::createInstance(const DeviceCreationArgs& args)
 
 void Device::init()
 {
-    logger = std::make_unique<Logger>(DeviceToken());
+    DeviceToken token;
+
+    logger = std::make_unique<Logger>(token);
     if (!creationArgs.logFilePath.empty())
         instance->logger->setTargetFile(creationArgs.logFilePath);
-
-    DeviceToken token;
+    
     renderer = Renderer::create(this, token);
     physics = Physics::create(this, token);
     fs = FileSystem::create(this, token);

@@ -80,7 +80,7 @@ namespace solo
     class Device
     {
     public:
-        static auto get() -> Device*; // TODO reduce usages of this and prefer DI as much as possible
+        static auto get() -> Device*;
         static void run(const DeviceCreationArgs& args, sptr<DeviceCallback> callback);
 
         virtual ~Device();
