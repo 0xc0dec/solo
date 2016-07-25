@@ -161,8 +161,8 @@ public:
     void onStarted() override final
     {
         connect();
-        auto mesh = initObjects();
-        initCamera(mesh);
+        initObjects();
+        initCamera();
         initSkybox();
     }
 
@@ -174,7 +174,7 @@ private:
         loader = device->getAssetLoader();
     }
 
-    void initCamera(sptr<Mesh> cubeMesh)
+    void initCamera()
     {
         auto node = scene->createNode();
         auto t = node->findComponent<Transform>();
@@ -209,7 +209,7 @@ private:
         });
     }
 
-    sptr<Mesh> initObjects()
+    void initObjects()
     {
         auto tex = loader->loadRectTexture("../assets/cobblestone.png");
         tex->setWrapping(TextureWrapping::Clamp);
@@ -220,7 +220,7 @@ private:
         mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
         mat->setTextureParameter("mainTex", tex);
 
-        auto cubeMesh = Mesh::create(MeshPrefab::Cube);
+        cubeMesh = Mesh::create(MeshPrefab::Cube);
 
         // Floor
         auto node = scene->createNode();
@@ -231,13 +231,12 @@ private:
 
         auto rigidBody = node->addComponent<RigidBody>(RigidBodyConstructionParameters().withMass(0).withFriction(0.5f));
         rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
-
-        return cubeMesh;
     }
 
     Scene* scene = nullptr;
     AssetLoader* loader = nullptr;
     Device* device = nullptr;
+    sptr<Mesh> cubeMesh;
 };
 
 
