@@ -139,6 +139,12 @@ VulkanRenderer::VulkanRenderer(Device* device)
 }
 
 
+VulkanRenderer::~VulkanRenderer()
+{
+    // TODO
+}
+
+
 #else
 #   error Vulkan renderer is not supported on this platform
 #endif

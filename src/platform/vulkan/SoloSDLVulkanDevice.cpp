@@ -64,6 +64,12 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
 }
 
 
+SDLVulkanDevice::~SDLVulkanDevice()
+{
+    // TODO
+}
+
+
 void SDLVulkanDevice::saveScreenshot(const std::string& path)
 {
     // TODO

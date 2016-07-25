@@ -12,6 +12,7 @@ namespace solo
     {
     public:
         explicit SDLVulkanDevice(const DeviceCreationArgs& args);
+        ~SDLVulkanDevice();
 
         void saveScreenshot(const std::string& path) override final;
         auto getCanvasSize() const -> Vector2 override final;

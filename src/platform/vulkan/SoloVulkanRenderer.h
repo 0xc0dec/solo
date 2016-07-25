@@ -14,6 +14,7 @@ namespace solo
     {
     public:
         explicit VulkanRenderer(Device* device);
+        ~VulkanRenderer();
 
         auto createTexture() -> TextureHandle override final { return EmptyTextureHandle; }
         void destroyTexture(const TextureHandle& handle) override final {}
