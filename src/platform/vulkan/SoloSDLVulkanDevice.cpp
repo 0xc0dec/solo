@@ -13,9 +13,6 @@ using namespace solo;
 SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
     SDLDevice(args)
 {
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
-        SL_EXCEPTION(InternalException, "Failed to initialize SDL");
-
     auto flags = static_cast<uint32_t>(SDL_WINDOW_ALLOW_HIGHDPI);
     if (args.fullScreen)
         flags |= SDL_WINDOW_FULLSCREEN;
