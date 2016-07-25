@@ -5,9 +5,6 @@
 using namespace solo;
 
 
-std::unordered_map<EffectPrefab, sptr<Effect>> Effect::prefabs;
-
-
 Effect::Effect(const std::string& vsSrc, const std::string& fsSrc):
     renderer(Device::get()->getRenderer())
 {
@@ -41,14 +38,6 @@ auto Effect::create(EffectPrefab prefab) -> sptr<Effect>
             break;
     }
     return nullptr;
-}
-
-
-auto Effect::getPrefabInstance(EffectPrefab prefab) -> sptr<Effect>
-{
-    if (prefabs.find(prefab) == prefabs.end())
-        return prefabs[prefab] = create(prefab);
-    return prefabs.at(prefab);
 }
 
 

@@ -63,10 +63,10 @@ private:
 };
 
 
-class Demo
+class Demo: public DeviceCallback
 {
 public:
-    void run()
+    void onStarted() override final
     {
         initEngine();
         initEffects();
@@ -83,13 +83,12 @@ public:
             initMonitorQuad(Vector3());
             initTransparentQuad();
         });
-        device->run();
     }
 
 private:
     void initEngine()
     {
-        device = Device::init(DeviceCreationArgs().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo1.log"));
+        device = Device::get();
         scene = device->getScene();
         loader = device->getAssetLoader();
         canvasSize = device->getCanvasSize();
@@ -368,6 +367,9 @@ private:
 
 int main()
 {
-    Demo().run();
+    Device::run(
+        DeviceCreationArgs().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo1.log"),
+        std::make_unique<Demo>()
+    );
     return 0;
 }

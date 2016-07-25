@@ -41,22 +41,21 @@ private:
 };
 
 
-class Demo
+class Demo final: public DeviceCallback
 {
 public:
-    void run()
+    void onStarted() override final
     {
         initEngine();
         initCamera();
         initSkybox();
         initText();
-        device->run();
     }
 
 private:
     void initEngine()
     {
-        device = Device::init(DeviceCreationArgs().withMode(DeviceMode::Vulkan).withDimensions(1200, 600).withLogFilePath("demo3.log"));
+        device = Device::get();
         scene = device->getScene();
         loader = device->getAssetLoader();
     }
@@ -110,6 +109,9 @@ private:
 
 int main()
 {
-    Demo().run();
+    Device::run(
+        DeviceCreationArgs().withMode(DeviceMode::Vulkan).withDimensions(1200, 600).withLogFilePath("demo3.log"),
+        std::make_unique<Demo>()
+    );
     return 0;
 }

@@ -13,17 +13,19 @@ using namespace solo;
 
 void runInStubEngine(std::function<void(Device*)> run, const std::string& logPath)
 {
-    auto device = Device::init(DeviceCreationArgs().withMode(DeviceMode::Stub).withLogFilePath(logPath));
-    run(device);
-    Device::shutdown();
+//    Device::run(
+//        DeviceCreationArgs().withMode(DeviceMode::Stub).withLogFilePath(logPath),
+//        [&]() { run(Device::get()); Device::get()->stopRunning(); }
+//    );
 }
 
 
 void runInRealEngine(std::function<void(Device*)> run, const std::string& logPath)
 {
-    auto device = Device::init(DeviceCreationArgs().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath(logPath));
-    run(device);
-    Device::shutdown();
+//    Device::run(
+//        DeviceCreationArgs().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath(logPath),
+//        [&]() { run(Device::get()); Device::get()->stopRunning(); }
+//    );
 }
 
 

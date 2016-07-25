@@ -11,7 +11,7 @@ using namespace solo;
 FontRenderer::FontRenderer(const Node& node):
     ComponentBase(node)
 {
-    auto effect = Effect::getPrefabInstance(EffectPrefab::Font);
+    auto effect = Effect::create(EffectPrefab::Font);
     material = Material::create(effect);
     material->setFaceCull(FaceCull::All);
     material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");

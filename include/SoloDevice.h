@@ -69,12 +69,19 @@ namespace solo
         DeviceToken() {}
     };
 
+    class DeviceCallback
+    {
+    public:
+        virtual ~DeviceCallback() {}
+
+        virtual void onStarted() = 0;
+    };
+
     class Device
     {
     public:
-        static auto init(const DeviceCreationArgs& args) -> Device*;
         static auto get() -> Device*; // TODO reduce usages of this and prefer DI as much as possible
-        static void shutdown();
+        static void run(const DeviceCreationArgs& args, sptr<DeviceCallback> callback);
 
         virtual ~Device();
         SL_NONCOPYABLE(Device)
@@ -97,7 +104,6 @@ namespace solo
         bool isMouseButtonDown(MouseButton button, bool firstTime = false) const;
         bool isMouseButtonReleased(MouseButton button) const;
 
-        void run();
         void stopRunning();
 
         auto getMode() const -> DeviceMode;
@@ -136,12 +142,15 @@ namespace solo
         std::unordered_map<MouseButton, bool> pressedMouseButtons;
         std::unordered_set<MouseButton> releasedMouseButtons;
 
-        bool close = false;
-        bool running = false;
+        bool running = true;
         float lastUpdateTime = 0;
         float timeDelta = 0;
 
     private:
+        static uptr<Device> createInstance(const DeviceCreationArgs& args);
+        void init();
+        void run();
+
         static uptr<Device> instance;
     };
 

@@ -19,40 +19,9 @@ using namespace solo;
 uptr<Device> Device::instance = nullptr;
 
 
-auto Device::init(const DeviceCreationArgs& args) -> Device*
-{
-    if (!instance)
-    {
-        switch (args.mode)
-        {
-            case DeviceMode::OpenGL:
-                instance = std::make_unique<SDLOpenGLDevice>(args);
-                break;
-            case DeviceMode::Vulkan:
-                instance = std::make_unique<SDLVulkanDevice>(args);
-                break;
-            case DeviceMode::Stub:
-                instance = std::make_unique<StubDevice>(args);
-                break;
-            default:
-                SL_ASSERT(false);
-        }
-    }
-
-    return instance.get();
-}
-
-
 auto Device::get() -> Device*
 {
     return instance.get();
-}
-
-
-void Device::shutdown()
-{
-    if (instance)
-        instance = nullptr;
 }
 
 
@@ -86,9 +55,31 @@ Device::~Device()
 Device::Device(const DeviceCreationArgs& args):
     creationArgs(args)
 {
+}
+
+
+uptr<Device> Device::createInstance(const DeviceCreationArgs& args)
+{
+    switch (args.mode)
+    {
+        case DeviceMode::OpenGL:
+            return std::make_unique<SDLOpenGLDevice>(args);
+        case DeviceMode::Vulkan:
+            return std::make_unique<SDLVulkanDevice>(args);
+        case DeviceMode::Stub:
+            return std::make_unique<StubDevice>(args);
+        default:
+            SL_ASSERT(false);
+            return nullptr;
+    }
+}
+
+
+void Device::init()
+{
     logger = std::make_unique<Logger>(DeviceToken());
-    if (!args.logFilePath.empty())
-        logger->setTargetFile(args.logFilePath);
+    if (!creationArgs.logFilePath.empty())
+        instance->logger->setTargetFile(creationArgs.logFilePath);
 
     DeviceToken token;
     renderer = Renderer::create(this, token);
@@ -102,11 +93,7 @@ Device::Device(const DeviceCreationArgs& args):
 
 void Device::run()
 {
-    // By design you are allowed to call this method again and again
-    // as long as the engine object is alive. Once the engine object has been destroyed (or had it's shutdown()
-    // method called), this method will no longer work, because the object is considered disposed.
-    running = true;
-    while (true)
+    do
     {
         beginUpdate();
         assetLoader->update();
@@ -114,9 +101,22 @@ void Device::run()
         scene->update();
         scene->render();
         endUpdate();
-        if (!running)
-            break;
-    }
+    } while (running);
+}
+
+
+void Device::run(const DeviceCreationArgs& args, sptr<DeviceCallback> callback)
+{
+    SL_ASSERT(!instance);
+    instance = createInstance(args);
+    instance->init();
+
+    callback->onStarted();
+    instance->run();
+    callback.reset();
+
+    instance.reset();
+    instance = nullptr;
 }
 
 

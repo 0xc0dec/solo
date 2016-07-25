@@ -12,7 +12,7 @@ SkyboxRenderer::SkyboxRenderer(const Node& node):
 {
     renderQueue = KnownRenderQueues::Skybox;
 
-    auto effect = Effect::getPrefabInstance(EffectPrefab::Skybox);
+    auto effect = Effect::create(EffectPrefab::Skybox);
     material = Material::create(effect);
     material->bindProjectionMatrixParameter("projMatrix");
     material->bindWorldViewMatrixParameter("worldViewMatrix");

@@ -155,26 +155,26 @@ private:
 };
 
 
-class Demo
+class Demo final: public DeviceCallback
 {
 public:
-    void run()
+    void onStarted() override final
     {
-        initEngine();
-        initObjects();
-        initCamera();
+        connect();
+        auto mesh = initObjects();
+        initCamera(mesh);
         initSkybox();
-        device->run();
     }
 
-    void initEngine()
+private:
+    void connect()
     {
-        device = Device::init(DeviceCreationArgs().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo4.log"));
+        device = Device::get();
         scene = device->getScene();
         loader = device->getAssetLoader();
     }
 
-    void initCamera()
+    void initCamera(sptr<Mesh> cubeMesh)
     {
         auto node = scene->createNode();
         auto t = node->findComponent<Transform>();
@@ -209,7 +209,7 @@ public:
         });
     }
 
-    void initObjects()
+    sptr<Mesh> initObjects()
     {
         auto tex = loader->loadRectTexture("../assets/cobblestone.png");
         tex->setWrapping(TextureWrapping::Clamp);
@@ -220,7 +220,7 @@ public:
         mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
         mat->setTextureParameter("mainTex", tex);
 
-        cubeMesh = Mesh::create(MeshPrefab::Cube);
+        auto cubeMesh = Mesh::create(MeshPrefab::Cube);
 
         // Floor
         auto node = scene->createNode();
@@ -231,18 +231,21 @@ public:
 
         auto rigidBody = node->addComponent<RigidBody>(RigidBodyConstructionParameters().withMass(0).withFriction(0.5f));
         rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
+
+        return cubeMesh;
     }
 
-private:
     Scene* scene = nullptr;
     AssetLoader* loader = nullptr;
     Device* device = nullptr;
-    sptr<Mesh> cubeMesh;
 };
 
 
 int main()
 {
-    Demo().run();
+    Device::run(
+        DeviceCreationArgs().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo4.log"),
+        std::make_unique<Demo>()
+    );
     return 0;
 }
