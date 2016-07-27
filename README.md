@@ -1,5 +1,5 @@
 ## About
-An engine/framework for my personal graphics/gamedev experiments.
+A framework for my personal graphics/gamedev experiments.
 
 ## Features
 * Object hierarchies/scene graph.
