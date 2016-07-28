@@ -79,6 +79,8 @@ namespace solo
         void drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, uint32_t vertexCount) override final {}
 
     private:
+        void createDevice(uint32_t queueIndex);
+
         VkPhysicalDevice physicalDevice = nullptr;
         VkDevice device = nullptr;
         VkQueue queue = nullptr;

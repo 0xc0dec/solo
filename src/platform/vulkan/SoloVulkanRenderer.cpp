@@ -71,6 +71,32 @@ uint32_t getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface)
 }
 
 
+void VulkanRenderer::createDevice(uint32_t queueIndex)
+{
+    std::vector<float> queuePriorities = { 0.0f };
+    std::vector<VkDeviceQueueCreateInfo> queueCreateInfos = {};
+	queueCreateInfos.resize(1);
+	queueCreateInfos[0].sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+	queueCreateInfos[0].queueFamilyIndex = queueIndex;
+	queueCreateInfos[0].queueCount = 1;
+	queueCreateInfos[0].pQueuePriorities = queuePriorities.data();
+
+    std::vector<const char*> deviceExtensions;
+    deviceExtensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
+
+    VkDeviceCreateInfo deviceCreateInfo = {};
+    std::vector<VkPhysicalDeviceFeatures> enabledFeatures = {};
+	deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+	deviceCreateInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfos.size());
+	deviceCreateInfo.pQueueCreateInfos = queueCreateInfos.data();
+	deviceCreateInfo.pEnabledFeatures = enabledFeatures.data();
+    deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
+    deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
+
+    SL_CHECK_VK_CALL(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &device), "Failed to create logical device");
+}
+
+
 VulkanRenderer::VulkanRenderer(Device* engineDevice)
 {
     auto vulkanDevice = dynamic_cast<SDLVulkanDevice*>(engineDevice);
@@ -95,27 +121,28 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice)
 
     auto queueIndex = getQueueIndex(physicalDevice, surface);
 
-    std::vector<float> queuePriorities = { 0.0f };
-	std::vector<VkDeviceQueueCreateInfo> queueCreateInfos = {};
-	queueCreateInfos.resize(1);
-	queueCreateInfos[0].sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-	queueCreateInfos[0].queueFamilyIndex = queueIndex;
-	queueCreateInfos[0].queueCount = 1;
-	queueCreateInfos[0].pQueuePriorities = queuePriorities.data();
-
-    std::vector<const char*> deviceExtensions;
-    deviceExtensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
-
-    VkDeviceCreateInfo deviceCreateInfo = {};
-    std::vector<VkPhysicalDeviceFeatures> enabledFeatures = {};
-	deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-	deviceCreateInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfos.size());
-	deviceCreateInfo.pQueueCreateInfos = queueCreateInfos.data();
-	deviceCreateInfo.pEnabledFeatures = enabledFeatures.data();
-    deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
-    deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
-
-    SL_CHECK_VK_CALL(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &device), "Failed to create logical device");
+//    std::vector<float> queuePriorities = { 0.0f };
+//	std::vector<VkDeviceQueueCreateInfo> queueCreateInfos = {};
+//	queueCreateInfos.resize(1);
+//	queueCreateInfos[0].sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+//	queueCreateInfos[0].queueFamilyIndex = queueIndex;
+//	queueCreateInfos[0].queueCount = 1;
+//	queueCreateInfos[0].pQueuePriorities = queuePriorities.data();
+//
+//    std::vector<const char*> deviceExtensions;
+//    deviceExtensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
+//
+//    VkDeviceCreateInfo deviceCreateInfo = {};
+//    std::vector<VkPhysicalDeviceFeatures> enabledFeatures = {};
+//	deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+//	deviceCreateInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfos.size());
+//	deviceCreateInfo.pQueueCreateInfos = queueCreateInfos.data();
+//	deviceCreateInfo.pEnabledFeatures = enabledFeatures.data();
+//    deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
+//    deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
+//
+//    SL_CHECK_VK_CALL(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &device), "Failed to create logical device");
+    createDevice(queueIndex);
 
     vkGetDeviceQueue(device, queueIndex, 0, &queue);
 
