@@ -93,7 +93,7 @@ void VulkanRenderer::createDevice(uint32_t queueIndex)
     deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
     deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
 
-    SL_CHECK_VK_CALL(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &device), "Failed to create logical device");
+    SL_CHECK_VK_CALL(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &logicalDevice), "Failed to create logical device");
 }
 
 
@@ -120,16 +120,62 @@ void VulkanRenderer::createSemaphores()
 	semaphoreCreateInfo.pNext = nullptr;
 	semaphoreCreateInfo.flags = 0;
 
-    SL_CHECK_VK_CALL(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, &presentCompleteSem), "Failed to create present semaphore");
-    SL_CHECK_VK_CALL(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, &renderCompleteSem), "Failed to create render semaphore");
+    SL_CHECK_VK_CALL(vkCreateSemaphore(logicalDevice, &semaphoreCreateInfo, nullptr, &presentCompleteSem), "Failed to create present semaphore");
+    SL_CHECK_VK_CALL(vkCreateSemaphore(logicalDevice, &semaphoreCreateInfo, nullptr, &renderCompleteSem), "Failed to create render semaphore");
 }
 
 
-VulkanRenderer::VulkanRenderer(Device* engineDevice)
+void VulkanRenderer::createCommandPool(uint32_t queueIndex)
 {
-    auto vulkanDevice = dynamic_cast<SDLVulkanDevice*>(engineDevice);
-    auto instance = vulkanDevice->getVulkanInstance();
-    auto surface = vulkanDevice->getVulkanSurface();
+    VkCommandPoolCreateInfo poolInfo = {};
+	poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+	poolInfo.queueFamilyIndex = queueIndex;
+	poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+    SL_CHECK_VK_CALL(vkCreateCommandPool(logicalDevice, &poolInfo, nullptr, &commandPool), "Failed to create command pool");
+}
+
+
+void VulkanRenderer::createSwapchain(VkSurfaceKHR surface)
+{
+	VkSurfaceCapabilitiesKHR capabilities;
+	SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, &capabilities),
+        "Failed to obtain surface capabilities");
+
+    uint32_t presentModeCount;
+    SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, nullptr),
+        "Failed to obtain surface present modes counts");
+    SL_EXCEPTION_IF(presentModeCount == 0, InternalException, "No surface present modes detected");
+
+    std::vector<VkPresentModeKHR> presentModes;
+    SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, presentModes.data()),
+        "Failed to obtain surface present modes");
+
+    VkExtent2D extent = {};
+    if (capabilities.currentExtent.width == -1)
+    {
+        // Surface extent not defined - select based on device canvas size
+        auto deviceCanvasSize = device->getCanvasSize();
+        canvasWidth = deviceCanvasSize.x;
+        canvasHeight = deviceCanvasSize.y;
+    }
+    else
+    {
+        canvasWidth = capabilities.currentExtent.width;
+        canvasHeight = capabilities.currentExtent.height;
+    }
+
+    // Select present mode
+    auto presentMode = VK_PRESENT_MODE_FIFO_KHR;
+
+    // TODO
+}
+
+
+VulkanRenderer::VulkanRenderer(Device* engineDevice):
+    device(dynamic_cast<SDLVulkanDevice*>(engineDevice))
+{
+    auto instance = device->getVulkanInstance();
+    auto surface = device->getVulkanSurface();
 
     detectPhysicalDevice(instance);
 
@@ -141,7 +187,7 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice)
 
     createDevice(queueIndex);
 
-    vkGetDeviceQueue(device, queueIndex, 0, &queue);
+    vkGetDeviceQueue(logicalDevice, queueIndex, 0, &queue);
 
     depthFormat = getDepthFormat(physicalDevice);
 
@@ -155,11 +201,7 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice)
 	submitInfo.signalSemaphoreCount = 1;
 	submitInfo.pSignalSemaphores = &renderCompleteSem;
 
-    VkCommandPoolCreateInfo poolInfo = {};
-	poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-	poolInfo.queueFamilyIndex = queueIndex;
-	poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
-    SL_CHECK_VK_CALL(vkCreateCommandPool(device, &poolInfo, nullptr, &commandPool), "Failed to create command pool");
+    createCommandPool(queueIndex);
 }
 
 

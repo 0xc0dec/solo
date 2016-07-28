@@ -9,6 +9,7 @@
 namespace solo
 {
     class Device;
+    class SDLVulkanDevice;
 
     class VulkanRenderer final: public Renderer
     {
@@ -82,9 +83,14 @@ namespace solo
         void createDevice(uint32_t queueIndex);
         void detectPhysicalDevice(VkInstance instance);
         void createSemaphores();
+        void createCommandPool(uint32_t queueIndex);
+        void createSwapchain(VkSurfaceKHR surface);
 
+        SDLVulkanDevice* device = nullptr;
+        uint32_t canvasWidth = 0;
+        uint32_t canvasHeight = 0;
         VkPhysicalDevice physicalDevice = nullptr;
-        VkDevice device = nullptr;
+        VkDevice logicalDevice = nullptr;
         VkQueue queue = nullptr;
         VkFormat colorFormat = VK_FORMAT_UNDEFINED;
         VkColorSpaceKHR colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
