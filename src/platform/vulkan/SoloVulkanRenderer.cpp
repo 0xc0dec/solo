@@ -113,6 +113,18 @@ void VulkanRenderer::detectPhysicalDevice(VkInstance instance)
 }
 
 
+void VulkanRenderer::createSemaphores()
+{
+    VkSemaphoreCreateInfo semaphoreCreateInfo = {};
+	semaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+	semaphoreCreateInfo.pNext = nullptr;
+	semaphoreCreateInfo.flags = 0;
+
+    SL_CHECK_VK_CALL(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, &presentCompleteSem), "Failed to create present semaphore");
+    SL_CHECK_VK_CALL(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, &renderCompleteSem), "Failed to create render semaphore");
+}
+
+
 VulkanRenderer::VulkanRenderer(Device* engineDevice)
 {
     auto vulkanDevice = dynamic_cast<SDLVulkanDevice*>(engineDevice);
@@ -133,13 +145,7 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice)
 
     depthFormat = getDepthFormat(physicalDevice);
 
-    VkSemaphoreCreateInfo semaphoreCreateInfo = {};
-	semaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-	semaphoreCreateInfo.pNext = nullptr;
-	semaphoreCreateInfo.flags = 0;
-
-    SL_CHECK_VK_CALL(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, &presentCompleteSem), "Failed to create present semaphore");
-    SL_CHECK_VK_CALL(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, &renderCompleteSem), "Failed to create render semaphore");
+    createSemaphores();
 
     submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 	submitInfo.pNext = nullptr;

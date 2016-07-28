@@ -81,6 +81,7 @@ namespace solo
     private:
         void createDevice(uint32_t queueIndex);
         void detectPhysicalDevice(VkInstance instance);
+        void createSemaphores();
 
         VkPhysicalDevice physicalDevice = nullptr;
         VkDevice device = nullptr;
