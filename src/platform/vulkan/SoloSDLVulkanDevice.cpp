@@ -66,7 +66,8 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
 
 SDLVulkanDevice::~SDLVulkanDevice()
 {
-    // TODO
+    vkDestroySurfaceKHR(instance, surface, nullptr);
+    vkDestroyInstance(instance, nullptr);
 }
 
 
