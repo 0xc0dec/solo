@@ -84,6 +84,7 @@ namespace solo
         VkQueue queue = nullptr;
         VkFormat colorFormat = VK_FORMAT_UNDEFINED;
         VkColorSpaceKHR colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
+        VkCommandPool commandPool = nullptr;
         VkPhysicalDeviceProperties physicalDeviceProperties;
         VkPhysicalDeviceFeatures physicalDeviceFeatures;
         VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties;

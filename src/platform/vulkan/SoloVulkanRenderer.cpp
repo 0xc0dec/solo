@@ -71,9 +71,9 @@ uint32_t getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface)
 }
 
 
-VulkanRenderer::VulkanRenderer(Device* device)
+VulkanRenderer::VulkanRenderer(Device* engineDevice)
 {
-    auto vulkanDevice = dynamic_cast<SDLVulkanDevice*>(device);
+    auto vulkanDevice = dynamic_cast<SDLVulkanDevice*>(engineDevice);
     auto instance = vulkanDevice->getVulkanInstance();
     auto surface = vulkanDevice->getVulkanSurface();
 
@@ -115,9 +115,9 @@ VulkanRenderer::VulkanRenderer(Device* device)
     deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
     deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
 
-    SL_CHECK_VK_CALL(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &this->device), "Failed to create logical device");
+    SL_CHECK_VK_CALL(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &device), "Failed to create logical device");
 
-    vkGetDeviceQueue(this->device, queueIndex, 0, &queue);
+    vkGetDeviceQueue(device, queueIndex, 0, &queue);
 
     depthFormat = getDepthFormat(physicalDevice);
 
@@ -126,8 +126,8 @@ VulkanRenderer::VulkanRenderer(Device* device)
 	semaphoreCreateInfo.pNext = nullptr;
 	semaphoreCreateInfo.flags = 0;
 
-    SL_CHECK_VK_CALL(vkCreateSemaphore(this->device, &semaphoreCreateInfo, nullptr, &presentCompleteSem), "Failed to create present semaphore");
-    SL_CHECK_VK_CALL(vkCreateSemaphore(this->device, &semaphoreCreateInfo, nullptr, &renderCompleteSem), "Failed to create render semaphore");
+    SL_CHECK_VK_CALL(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, &presentCompleteSem), "Failed to create present semaphore");
+    SL_CHECK_VK_CALL(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, &renderCompleteSem), "Failed to create render semaphore");
 
     submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 	submitInfo.pNext = nullptr;
@@ -136,6 +136,12 @@ VulkanRenderer::VulkanRenderer(Device* device)
 	submitInfo.pWaitSemaphores = &presentCompleteSem;
 	submitInfo.signalSemaphoreCount = 1;
 	submitInfo.pSignalSemaphores = &renderCompleteSem;
+
+    VkCommandPoolCreateInfo poolInfo = {};
+	poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+	poolInfo.queueFamilyIndex = queueIndex;
+	poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+    SL_CHECK_VK_CALL(vkCreateCommandPool(device, &poolInfo, nullptr, &commandPool), "Failed to create command pool");
 }
 
 
