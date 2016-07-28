@@ -80,6 +80,7 @@ namespace solo
 
     private:
         void createDevice(uint32_t queueIndex);
+        void detectPhysicalDevice(VkInstance instance);
 
         VkPhysicalDevice physicalDevice = nullptr;
         VkDevice device = nullptr;

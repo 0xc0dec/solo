@@ -97,12 +97,8 @@ void VulkanRenderer::createDevice(uint32_t queueIndex)
 }
 
 
-VulkanRenderer::VulkanRenderer(Device* engineDevice)
+void VulkanRenderer::detectPhysicalDevice(VkInstance instance)
 {
-    auto vulkanDevice = dynamic_cast<SDLVulkanDevice*>(engineDevice);
-    auto instance = vulkanDevice->getVulkanInstance();
-    auto surface = vulkanDevice->getVulkanSurface();
-
     uint32_t gpuCount = 0;
     SL_CHECK_VK_CALL(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr), "Failed to get GPU count");
     SL_EXCEPTION_IF(gpuCount == 0, InternalException, "No GPU found");
@@ -114,6 +110,16 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice)
     vkGetPhysicalDeviceProperties(physicalDevice, &physicalDeviceProperties);
 	vkGetPhysicalDeviceFeatures(physicalDevice, &physicalDeviceFeatures);
 	vkGetPhysicalDeviceMemoryProperties(physicalDevice, &physicalDeviceMemoryProperties);
+}
+
+
+VulkanRenderer::VulkanRenderer(Device* engineDevice)
+{
+    auto vulkanDevice = dynamic_cast<SDLVulkanDevice*>(engineDevice);
+    auto instance = vulkanDevice->getVulkanInstance();
+    auto surface = vulkanDevice->getVulkanSurface();
+
+    detectPhysicalDevice(instance);
 
     auto surfaceFormats = getSurfaceFormats(physicalDevice, surface);
     colorFormat = std::get<0>(surfaceFormats);
@@ -121,27 +127,6 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice)
 
     auto queueIndex = getQueueIndex(physicalDevice, surface);
 
-//    std::vector<float> queuePriorities = { 0.0f };
-//	std::vector<VkDeviceQueueCreateInfo> queueCreateInfos = {};
-//	queueCreateInfos.resize(1);
-//	queueCreateInfos[0].sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-//	queueCreateInfos[0].queueFamilyIndex = queueIndex;
-//	queueCreateInfos[0].queueCount = 1;
-//	queueCreateInfos[0].pQueuePriorities = queuePriorities.data();
-//
-//    std::vector<const char*> deviceExtensions;
-//    deviceExtensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
-//
-//    VkDeviceCreateInfo deviceCreateInfo = {};
-//    std::vector<VkPhysicalDeviceFeatures> enabledFeatures = {};
-//	deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-//	deviceCreateInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfos.size());
-//	deviceCreateInfo.pQueueCreateInfos = queueCreateInfos.data();
-//	deviceCreateInfo.pEnabledFeatures = enabledFeatures.data();
-//    deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
-//    deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
-//
-//    SL_CHECK_VK_CALL(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &device), "Failed to create logical device");
     createDevice(queueIndex);
 
     vkGetDeviceQueue(device, queueIndex, 0, &queue);
