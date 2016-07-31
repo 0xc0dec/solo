@@ -86,12 +86,21 @@ namespace solo
             VkImageView imageView = nullptr;
         };
 
+        struct 
+	    {
+		    VkImage image;
+		    VkDeviceMemory mem;
+		    VkImageView view;
+	    } depthStencil;
+
         void initPhysicalDevice(VkInstance instance);
         void initLogicalDevice(uint32_t queueIndex);
         void initSemaphores();
         void initCommandPool(uint32_t queueIndex);
         void initSwapchain(VkSurfaceKHR surface, bool vsync);
         void initCommandBuffers();
+        void initDepthStencil();
+        int32_t findMemoryType(uint32_t typeBits, VkMemoryPropertyFlags properties);
 
         SDLVulkanDevice* device = nullptr;
         uint32_t canvasWidth = 0;

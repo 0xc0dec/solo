@@ -313,6 +313,63 @@ void VulkanRenderer::initCommandBuffers()
 }
 
 
+void VulkanRenderer::initDepthStencil()
+{
+    VkImageCreateInfo image = {};
+	image.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+	image.pNext = nullptr;
+	image.imageType = VK_IMAGE_TYPE_2D;
+	image.format = depthFormat;
+	image.extent = { canvasWidth, canvasHeight, 1 };
+	image.mipLevels = 1;
+	image.arrayLayers = 1;
+	image.samples = VK_SAMPLE_COUNT_1_BIT;
+	image.tiling = VK_IMAGE_TILING_OPTIMAL;
+	image.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
+	image.flags = 0;
+
+    VkMemoryAllocateInfo alloc = {};
+	alloc.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+	alloc.pNext = nullptr;
+	alloc.allocationSize = 0;
+	alloc.memoryTypeIndex = 0;
+
+    VkImageViewCreateInfo depthStencilView = {};
+	depthStencilView.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+	depthStencilView.pNext = nullptr;
+	depthStencilView.viewType = VK_IMAGE_VIEW_TYPE_2D;
+	depthStencilView.format = depthFormat;
+	depthStencilView.flags = 0;
+	depthStencilView.subresourceRange = {};
+	depthStencilView.subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT;
+	depthStencilView.subresourceRange.baseMipLevel = 0;
+	depthStencilView.subresourceRange.levelCount = 1;
+	depthStencilView.subresourceRange.baseArrayLayer = 0;
+	depthStencilView.subresourceRange.layerCount = 1;
+
+    VkMemoryRequirements memReqs;
+
+	SL_CHECK_VK_CALL(vkCreateImage(logicalDevice, &image, nullptr, &depthStencil.image));
+	vkGetImageMemoryRequirements(logicalDevice, depthStencil.image, &memReqs);
+
+    auto memTypeIndex = findMemoryType(memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+    SL_EXCEPTION_IF(memTypeIndex < 0, InternalException);
+
+	alloc.allocationSize = memReqs.size;
+    alloc.memoryTypeIndex = memTypeIndex;
+	SL_CHECK_VK_CALL(vkAllocateMemory(logicalDevice, &alloc, nullptr, &depthStencil.mem));
+
+    // TODO
+}
+
+
+int32_t VulkanRenderer::findMemoryType(uint32_t typeBits, VkMemoryPropertyFlags properties)
+{
+    return -1;
+    // TODO
+}
+
+
 VulkanRenderer::VulkanRenderer(Device* engineDevice):
     device(dynamic_cast<SDLVulkanDevice*>(engineDevice))
 {
