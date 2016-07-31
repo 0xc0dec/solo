@@ -80,11 +80,17 @@ namespace solo
         void drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, uint32_t vertexCount) override final {}
 
     private:
+        struct SwapchainBuffer
+        {
+            VkImage image = nullptr;
+            VkImageView imageView = nullptr;
+        };
+
         void createDevice(uint32_t queueIndex);
         void detectPhysicalDevice(VkInstance instance);
         void createSemaphores();
         void createCommandPool(uint32_t queueIndex);
-        void createSwapchain(VkSurfaceKHR surface);
+        void createSwapchain(VkSurfaceKHR surface, bool vsync);
 
         SDLVulkanDevice* device = nullptr;
         uint32_t canvasWidth = 0;
@@ -92,6 +98,8 @@ namespace solo
         VkPhysicalDevice physicalDevice = nullptr;
         VkDevice logicalDevice = nullptr;
         VkQueue queue = nullptr;
+        VkSwapchainKHR swapchain = nullptr;
+        std::vector<SwapchainBuffer> swapchainBuffers;
         VkFormat colorFormat = VK_FORMAT_UNDEFINED;
         VkColorSpaceKHR colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
         VkCommandPool commandPool = nullptr;

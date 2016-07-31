@@ -135,7 +135,7 @@ void VulkanRenderer::createCommandPool(uint32_t queueIndex)
 }
 
 
-void VulkanRenderer::createSwapchain(VkSurfaceKHR surface)
+void VulkanRenderer::createSwapchain(VkSurfaceKHR surface, bool vsync)
 {
 	VkSurfaceCapabilitiesKHR capabilities;
 	SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, &capabilities),
@@ -147,6 +147,7 @@ void VulkanRenderer::createSwapchain(VkSurfaceKHR surface)
     SL_EXCEPTION_IF(presentModeCount == 0, InternalException, "No surface present modes detected");
 
     std::vector<VkPresentModeKHR> presentModes;
+    presentModes.resize(presentModeCount);
     SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, presentModes.data()),
         "Failed to obtain surface present modes");
 
@@ -165,9 +166,86 @@ void VulkanRenderer::createSwapchain(VkSurfaceKHR surface)
     }
 
     // Select present mode
-    auto presentMode = VK_PRESENT_MODE_FIFO_KHR;
+    auto presentMode = VK_PRESENT_MODE_FIFO_KHR; // "vsync"
 
-    // TODO
+    if (!vsync)
+    {
+        for (const auto mode: presentModes)
+        {
+            if (mode == VK_PRESENT_MODE_IMMEDIATE_KHR)
+                presentMode = mode;
+            if (mode == VK_PRESENT_MODE_MAILBOX_KHR)
+            {
+                presentMode = mode;
+                break;
+            }
+        }
+    }
+
+    VkSurfaceTransformFlagsKHR transformFlags;
+    if (capabilities.supportedTransforms & VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR)
+        transformFlags = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR;
+    else
+        transformFlags = capabilities.currentTransform;
+
+    auto requestedImageCount = capabilities.minImageCount + 1;
+    if (capabilities.maxImageCount > 0 && requestedImageCount > capabilities.maxImageCount)
+        requestedImageCount = capabilities.maxImageCount;
+
+    VkSwapchainCreateInfoKHR swapchainInfo = {};
+	swapchainInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+	swapchainInfo.pNext = nullptr;
+	swapchainInfo.surface = surface;
+	swapchainInfo.minImageCount = requestedImageCount;
+	swapchainInfo.imageFormat = colorFormat;
+	swapchainInfo.imageColorSpace = colorSpace;
+	swapchainInfo.imageExtent = { canvasWidth, canvasHeight };
+	swapchainInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+	swapchainInfo.preTransform = static_cast<VkSurfaceTransformFlagBitsKHR>(transformFlags);
+	swapchainInfo.imageArrayLayers = 1;
+	swapchainInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+	swapchainInfo.queueFamilyIndexCount = 0;
+	swapchainInfo.pQueueFamilyIndices = nullptr;
+	swapchainInfo.presentMode = presentMode;
+	swapchainInfo.oldSwapchain = nullptr; // TODO
+	swapchainInfo.clipped = VK_TRUE;
+	swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+    SL_CHECK_VK_CALL(vkCreateSwapchainKHR(logicalDevice, &swapchainInfo, nullptr, &swapchain), "Failed to create swapchain");
+    
+    uint32_t imageCount = 0;
+    SL_CHECK_VK_CALL(vkGetSwapchainImagesKHR(logicalDevice, swapchain, &imageCount, nullptr), "Failed to obtain swapchain image count");
+
+    std::vector<VkImage> images;
+    images.resize(imageCount);
+    SL_CHECK_VK_CALL(vkGetSwapchainImagesKHR(logicalDevice, swapchain, &imageCount, images.data()), "Failed to obtain swapchain images");
+
+    swapchainBuffers.resize(imageCount);
+    for (uint32_t i = 0; i < imageCount; i++)
+    {
+        VkImageViewCreateInfo imageInfo = {};
+		imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+		imageInfo.pNext = nullptr;
+		imageInfo.format = colorFormat;
+		imageInfo.components = {
+			VK_COMPONENT_SWIZZLE_R,
+			VK_COMPONENT_SWIZZLE_G,
+			VK_COMPONENT_SWIZZLE_B,
+			VK_COMPONENT_SWIZZLE_A
+		};
+		imageInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		imageInfo.subresourceRange.baseMipLevel = 0;
+		imageInfo.subresourceRange.levelCount = 1;
+		imageInfo.subresourceRange.baseArrayLayer = 0;
+		imageInfo.subresourceRange.layerCount = 1;
+		imageInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+		imageInfo.flags = 0;
+        imageInfo.image = images[i];
+
+        swapchainBuffers[i].image = images[i];
+
+        SL_CHECK_VK_CALL(vkCreateImageView(logicalDevice, &imageInfo, nullptr, &swapchainBuffers[i].imageView),
+            SL_FMT("Failed to create image view for swapchain buffer ", i));
+    }
 }
 
 
@@ -202,6 +280,7 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
 	submitInfo.pSignalSemaphores = &renderCompleteSem;
 
     createCommandPool(queueIndex);
+    createSwapchain(surface, false); // TODO vsync
 }
 
 
