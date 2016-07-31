@@ -19,6 +19,7 @@ namespace solo
         SL_FLUENT_DTO_FIELD(uint32_t, blueBits, withBlueBits, = 5)
         SL_FLUENT_DTO_FIELD(uint32_t, alphaBits, withAlphaBits, = 0)
         SL_FLUENT_DTO_FIELD(uint32_t, depthBits, withDepthBits, = 24)
+        SL_FLUENT_DTO_FIELD(bool, vsync, withVsync, = false)
         SL_FLUENT_DTO_FIELD(std::string, logFilePath, withLogFilePath, )
 
         auto withDimensions(uint32_t canvasWidth, uint32_t canvasHeight) -> DeviceSetup&
