@@ -86,13 +86,15 @@ namespace solo
         virtual ~Device();
         SL_NONCOPYABLE(Device)
 
-        virtual void setWindowTitle(const std::string& title) = 0;
         virtual auto getWindowTitle() const -> std::string = 0;
+        virtual void setWindowTitle(const std::string& title) = 0;
+
+        virtual auto getCanvasSize() const -> Vector2 = 0;
 
         virtual void saveScreenshot(const std::string& path) = 0;
 
         virtual void setCursorCaptured(bool captured) = 0;
-        virtual auto getCanvasSize() const -> Vector2 = 0;
+
         virtual auto getLifetime() const -> float = 0;
 
         auto getTimeDelta() const -> float;
