@@ -86,11 +86,12 @@ namespace solo
             VkImageView imageView = nullptr;
         };
 
-        void createDevice(uint32_t queueIndex);
-        void detectPhysicalDevice(VkInstance instance);
-        void createSemaphores();
-        void createCommandPool(uint32_t queueIndex);
-        void createSwapchain(VkSurfaceKHR surface, bool vsync);
+        void initPhysicalDevice(VkInstance instance);
+        void initLogicalDevice(uint32_t queueIndex);
+        void initSemaphores();
+        void initCommandPool(uint32_t queueIndex);
+        void initSwapchain(VkSurfaceKHR surface, bool vsync);
+        void initCommandBuffers();
 
         SDLVulkanDevice* device = nullptr;
         uint32_t canvasWidth = 0;
@@ -100,6 +101,9 @@ namespace solo
         VkQueue queue = nullptr;
         VkSwapchainKHR swapchain = nullptr;
         std::vector<SwapchainBuffer> swapchainBuffers;
+        std::vector<VkCommandBuffer> drawCmdBuffers;
+        std::vector<VkCommandBuffer> prePresentCmdBuffers;
+        std::vector<VkCommandBuffer> postPresentCmdBuffers;
         VkFormat colorFormat = VK_FORMAT_UNDEFINED;
         VkColorSpaceKHR colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
         VkCommandPool commandPool = nullptr;

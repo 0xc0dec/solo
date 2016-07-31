@@ -71,7 +71,7 @@ uint32_t getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface)
 }
 
 
-void VulkanRenderer::createDevice(uint32_t queueIndex)
+void VulkanRenderer::initLogicalDevice(uint32_t queueIndex)
 {
     std::vector<float> queuePriorities = { 0.0f };
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfos = {};
@@ -97,7 +97,7 @@ void VulkanRenderer::createDevice(uint32_t queueIndex)
 }
 
 
-void VulkanRenderer::detectPhysicalDevice(VkInstance instance)
+void VulkanRenderer::initPhysicalDevice(VkInstance instance)
 {
     uint32_t gpuCount = 0;
     SL_CHECK_VK_CALL(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr), "Failed to get GPU count");
@@ -113,7 +113,7 @@ void VulkanRenderer::detectPhysicalDevice(VkInstance instance)
 }
 
 
-void VulkanRenderer::createSemaphores()
+void VulkanRenderer::initSemaphores()
 {
     VkSemaphoreCreateInfo semaphoreCreateInfo = {};
 	semaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
@@ -125,7 +125,7 @@ void VulkanRenderer::createSemaphores()
 }
 
 
-void VulkanRenderer::createCommandPool(uint32_t queueIndex)
+void VulkanRenderer::initCommandPool(uint32_t queueIndex)
 {
     VkCommandPoolCreateInfo poolInfo = {};
 	poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
@@ -135,7 +135,7 @@ void VulkanRenderer::createCommandPool(uint32_t queueIndex)
 }
 
 
-void VulkanRenderer::createSwapchain(VkSurfaceKHR surface, bool vsync)
+void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync)
 {
 	VkSurfaceCapabilitiesKHR capabilities;
 	SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, &capabilities),
@@ -151,7 +151,6 @@ void VulkanRenderer::createSwapchain(VkSurfaceKHR surface, bool vsync)
     SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, presentModes.data()),
         "Failed to obtain surface present modes");
 
-    VkExtent2D extent = {};
     if (capabilities.currentExtent.width == -1)
     {
         // Surface extent not defined - select based on device canvas size
@@ -249,13 +248,85 @@ void VulkanRenderer::createSwapchain(VkSurfaceKHR surface, bool vsync)
 }
 
 
+void VulkanRenderer::initCommandBuffers()
+{
+    auto count = swapchainBuffers.size();
+
+    drawCmdBuffers.resize(count);
+    prePresentCmdBuffers.resize(count);
+    postPresentCmdBuffers.resize(count);
+
+    VkCommandBufferAllocateInfo commandBufferAllocateInfo = {};
+	commandBufferAllocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+	commandBufferAllocateInfo.commandPool = commandPool;
+	commandBufferAllocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+	commandBufferAllocateInfo.commandBufferCount = count;
+
+    SL_CHECK_VK_CALL(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, drawCmdBuffers.data()),
+        "Failed to allocate command buffers");
+    SL_CHECK_VK_CALL(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, prePresentCmdBuffers.data()),
+        "Failed to allocate command buffers");
+    SL_CHECK_VK_CALL(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, postPresentCmdBuffers.data()),
+        "Failed to allocate command buffers");
+
+    VkCommandBufferBeginInfo beginInfo = {};
+	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+	beginInfo.pNext = nullptr;
+
+    for (uint32_t i = 0; i < count; i++)
+    {
+        // Transform the image back to a color attachment that our render pass can write to
+
+        SL_CHECK_VK_CALL(vkBeginCommandBuffer(postPresentCmdBuffers[i], &beginInfo), "");
+
+        VkImageMemoryBarrier postPresentBarrier = {};
+	    postPresentBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	    postPresentBarrier.pNext = nullptr;
+	    postPresentBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+	    postPresentBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        postPresentBarrier.srcAccessMask = 0;
+		postPresentBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+		postPresentBarrier.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+		postPresentBarrier.newLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+		postPresentBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+		postPresentBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+		postPresentBarrier.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+		postPresentBarrier.image = swapchainBuffers[i].image;
+
+        vkCmdPipelineBarrier(postPresentCmdBuffers[i], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
+			0, 0, nullptr, 0, nullptr, 1, &postPresentBarrier);
+        SL_CHECK_VK_CALL(vkEndCommandBuffer(postPresentCmdBuffers[i]), "");
+
+        // Transforms the (framebuffer) image layout from color attachment to present(khr) for presenting to the swap chain
+
+        SL_CHECK_VK_CALL(vkBeginCommandBuffer(prePresentCmdBuffers[i], &beginInfo), "");
+        VkImageMemoryBarrier prePresentBarrier = {};
+	    prePresentBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	    prePresentBarrier.pNext = nullptr;
+	    prePresentBarrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+		prePresentBarrier.dstAccessMask = VK_ACCESS_MEMORY_READ_BIT;
+		prePresentBarrier.oldLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+		prePresentBarrier.newLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+		prePresentBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+		prePresentBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+		prePresentBarrier.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+		prePresentBarrier.image = swapchainBuffers[i].image;
+
+        vkCmdPipelineBarrier(prePresentCmdBuffers[i], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
+			0, 0, nullptr, 0, nullptr, 1, &prePresentBarrier);
+
+        SL_CHECK_VK_CALL(vkEndCommandBuffer(prePresentCmdBuffers[i]), "");
+    }
+}
+
+
 VulkanRenderer::VulkanRenderer(Device* engineDevice):
     device(dynamic_cast<SDLVulkanDevice*>(engineDevice))
 {
     auto instance = device->getVulkanInstance();
     auto surface = device->getVulkanSurface();
 
-    detectPhysicalDevice(instance);
+    initPhysicalDevice(instance);
 
     auto surfaceFormats = getSurfaceFormats(physicalDevice, surface);
     colorFormat = std::get<0>(surfaceFormats);
@@ -263,13 +334,13 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
 
     auto queueIndex = getQueueIndex(physicalDevice, surface);
 
-    createDevice(queueIndex);
+    initLogicalDevice(queueIndex);
 
     vkGetDeviceQueue(logicalDevice, queueIndex, 0, &queue);
 
     depthFormat = getDepthFormat(physicalDevice);
 
-    createSemaphores();
+    initSemaphores();
 
     submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 	submitInfo.pNext = nullptr;
@@ -279,8 +350,9 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
 	submitInfo.signalSemaphoreCount = 1;
 	submitInfo.pSignalSemaphores = &renderCompleteSem;
 
-    createCommandPool(queueIndex);
-    createSwapchain(surface, false); // TODO vsync
+    initCommandPool(queueIndex);
+    initSwapchain(surface, device->getSetup().vsync);
+    initCommandBuffers();
 }
 
 
