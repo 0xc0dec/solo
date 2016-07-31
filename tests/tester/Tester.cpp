@@ -32,7 +32,7 @@ private:
 void runInStubEngine(std::function<void(Device*)> run, const std::string& logPath)
 {
     Device::run(
-        DeviceCreationArgs().withMode(DeviceMode::Stub).withLogFilePath(logPath),
+        DeviceSetup().withMode(DeviceMode::Stub).withLogFilePath(logPath),
         std::make_unique<Callback>(run)
     );
 }
@@ -41,7 +41,7 @@ void runInStubEngine(std::function<void(Device*)> run, const std::string& logPat
 void runInRealEngine(std::function<void(Device*)> run, const std::string& logPath)
 {
     Device::run(
-        DeviceCreationArgs().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath(logPath),
+        DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath(logPath),
         std::make_unique<Callback>(run)
     );
 }

@@ -4,8 +4,8 @@
 using namespace solo;
 
 
-SDLDevice::SDLDevice(const DeviceCreationArgs& args):
-    Device(args)
+SDLDevice::SDLDevice(const DeviceSetup& setup):
+    Device(setup)
 {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) < 0)
         SL_EXCEPTION(InternalException, "Failed to initialize SDL");

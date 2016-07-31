@@ -51,22 +51,22 @@ Device::~Device()
 }
 
 
-Device::Device(const DeviceCreationArgs& args):
-    creationArgs(args)
+Device::Device(const DeviceSetup& setup):
+    setup(setup)
 {
 }
 
 
-uptr<Device> Device::createInstance(const DeviceCreationArgs& args)
+uptr<Device> Device::createInstance(const DeviceSetup& setup)
 {
-    switch (args.mode)
+    switch (setup.mode)
     {
         case DeviceMode::OpenGL:
-            return std::make_unique<SDLOpenGLDevice>(args);
+            return std::make_unique<SDLOpenGLDevice>(setup);
         case DeviceMode::Vulkan:
-            return std::make_unique<SDLVulkanDevice>(args);
+            return std::make_unique<SDLVulkanDevice>(setup);
         case DeviceMode::Stub:
-            return std::make_unique<StubDevice>(args);
+            return std::make_unique<StubDevice>(setup);
         default:
             SL_ASSERT(false);
             return nullptr;
@@ -79,8 +79,8 @@ void Device::init()
     DeviceToken token;
 
     logger = std::make_unique<Logger>(token);
-    if (!creationArgs.logFilePath.empty())
-        instance->logger->setTargetFile(creationArgs.logFilePath);
+    if (!setup.logFilePath.empty())
+        instance->logger->setTargetFile(setup.logFilePath);
     
     renderer = Renderer::create(this, token);
     physics = Physics::create(this, token);
@@ -105,10 +105,10 @@ void Device::run()
 }
 
 
-void Device::run(const DeviceCreationArgs& args, sptr<DeviceCallback> callback)
+void Device::run(const DeviceSetup& setup, sptr<DeviceCallback> callback)
 {
     SL_ASSERT(!instance);
-    instance = createInstance(args);
+    instance = createInstance(setup);
     instance->init();
 
     callback->onStarted();

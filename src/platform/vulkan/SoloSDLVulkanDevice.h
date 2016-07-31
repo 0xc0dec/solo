@@ -11,7 +11,7 @@ namespace solo
     class SDLVulkanDevice final: public SDLDevice
     {
     public:
-        explicit SDLVulkanDevice(const DeviceCreationArgs& args);
+        explicit SDLVulkanDevice(const DeviceSetup& setup);
         ~SDLVulkanDevice();
 
         void saveScreenshot(const std::string& path) override final;

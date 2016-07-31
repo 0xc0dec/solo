@@ -10,15 +10,15 @@
 using namespace solo;
 
 
-SDLVulkanDevice::SDLVulkanDevice(const DeviceCreationArgs& args):
-    SDLDevice(args)
+SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup& setup):
+    SDLDevice(setup)
 {
     auto flags = static_cast<uint32_t>(SDL_WINDOW_ALLOW_HIGHDPI);
-    if (args.fullScreen)
+    if (setup.fullScreen)
         flags |= SDL_WINDOW_FULLSCREEN;
 
-    window = SDL_CreateWindow(args.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        args.canvasWidth, args.canvasHeight, flags);
+    window = SDL_CreateWindow(setup.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        setup.canvasWidth, setup.canvasHeight, flags);
     if (!window)
         SL_EXCEPTION(InternalException, "Failed to create window");
 

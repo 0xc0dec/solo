@@ -8,23 +8,23 @@
 using namespace solo;
 
 
-SDLOpenGLDevice::SDLOpenGLDevice(DeviceCreationArgs const& args):
-    SDLDevice(args)
+SDLOpenGLDevice::SDLOpenGLDevice(DeviceSetup const& setup):
+    SDLDevice(setup)
 {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, args.redBits);
-    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, args.greenBits);
-    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, args.blueBits);
-    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, args.alphaBits);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, args.depthBits);
+    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, setup.redBits);
+    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, setup.greenBits);
+    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, setup.blueBits);
+    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, setup.alphaBits);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, setup.depthBits);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
     auto flags = static_cast<uint32_t>(SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
-    if (args.fullScreen)
+    if (setup.fullScreen)
         flags |= SDL_WINDOW_FULLSCREEN;
 
-    window = SDL_CreateWindow(args.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        args.canvasWidth, args.canvasHeight, flags);
+    window = SDL_CreateWindow(setup.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        setup.canvasWidth, setup.canvasHeight, flags);
     if (!window)
         SL_EXCEPTION(InternalException, "Failed to create window");
 

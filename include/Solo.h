@@ -12,7 +12,7 @@
 #include "SoloCubeTexture.h"
 #include "SoloDegree.h"
 #include "SoloDevice.h"
-#include "SoloDeviceCreationArgs.h"
+#include "SoloDeviceSetup.h"
 #include "SoloEffect.h"
 #include "SoloException.h"
 #include "SoloFileSystem.h"

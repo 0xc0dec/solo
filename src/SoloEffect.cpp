@@ -21,7 +21,7 @@ auto Effect::create(const std::string& vsSrc, const std::string& fsSrc) -> sptr<
 // TODO not an elegant one. Wrote this instead of an "EffectRepository" to avoid too many "entities"
 auto Effect::create(EffectPrefab prefab) -> sptr<Effect>
 {
-    switch (Device::get()->getMode())
+    switch (Device::get()->getSetup().mode)
     {
         case DeviceMode::Stub:
             return std::shared_ptr<Effect>(new Effect("", ""));

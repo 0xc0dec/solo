@@ -7,7 +7,7 @@ namespace solo
     class StubDevice final: public Device
     {
     public:
-        explicit StubDevice(const DeviceCreationArgs& args);
+        explicit StubDevice(const DeviceSetup& setup);
 
         void setWindowTitle(const std::string& title) override final;
         auto getWindowTitle() const -> std::string override final;

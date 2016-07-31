@@ -243,7 +243,7 @@ private:
 int main()
 {
     Device::run(
-        DeviceCreationArgs().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo4.log"),
+        DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo4.log"),
         std::make_unique<Demo>()
     );
     return 0;

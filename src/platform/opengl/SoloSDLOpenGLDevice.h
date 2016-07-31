@@ -9,7 +9,7 @@ namespace solo
     class SDLOpenGLDevice final: public SDLDevice
     {
     public:
-        explicit SDLOpenGLDevice(const DeviceCreationArgs& args);
+        explicit SDLOpenGLDevice(const DeviceSetup& setup);
         virtual ~SDLOpenGLDevice();
 
         void saveScreenshot(const std::string& path) override final;

@@ -8,7 +8,7 @@ using namespace solo;
 
 auto FileSystem::create(Device* device, const DeviceToken&) -> sptr<FileSystem>
 {
-    if (device->getMode() == DeviceMode::Stub)
+    if (device->getSetup().mode == DeviceMode::Stub)
         return std::make_shared<StubFileSystem>();
     return std::unique_ptr<FileSystem>(new FileSystem());
 }

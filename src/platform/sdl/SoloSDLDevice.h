@@ -19,7 +19,7 @@ namespace solo
         auto getLifetime() const -> float override final;
 
     protected:
-        explicit SDLDevice(const DeviceCreationArgs& args);
+        explicit SDLDevice(const DeviceSetup& setup);
 
         void beginUpdate() override final;
 

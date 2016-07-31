@@ -2,7 +2,7 @@
 
 #include "SoloCommon.h"
 #include "SoloVector2.h"
-#include "SoloDeviceCreationArgs.h"
+#include "SoloDeviceSetup.h"
 #include <unordered_map>
 #include <unordered_set>
 
@@ -81,7 +81,7 @@ namespace solo
     {
     public:
         static auto get() -> Device*;
-        static void run(const DeviceCreationArgs& args, sptr<DeviceCallback> callback);
+        static void run(const DeviceSetup &setup, sptr<DeviceCallback> callback);
 
         virtual ~Device();
         SL_NONCOPYABLE(Device)
@@ -106,8 +106,7 @@ namespace solo
 
         void stopRunning();
 
-        auto getMode() const -> DeviceMode;
-        auto getCreationArgs() const -> DeviceCreationArgs;
+        auto getSetup() const -> DeviceSetup;
 
         auto getScene() const -> Scene*;
         auto getFileSystem() const -> FileSystem*;
@@ -118,14 +117,14 @@ namespace solo
         auto getLogger() const -> Logger*;
 
     protected:
-        explicit Device(const DeviceCreationArgs& args);
+        explicit Device(const DeviceSetup& setup);
 
         virtual void beginUpdate() = 0;
         virtual void endUpdate() = 0;
 
         void updateTime();
 
-        DeviceCreationArgs creationArgs;
+        DeviceSetup setup;
 
         sptr<Scene> scene;
         sptr<FileSystem> fs;
@@ -149,7 +148,7 @@ namespace solo
         float timeDelta = 0;
 
     private:
-        static uptr<Device> createInstance(const DeviceCreationArgs& args);
+        static uptr<Device> createInstance(const DeviceSetup& setup);
         void init();
         void run();
 
@@ -164,11 +163,6 @@ namespace solo
     inline void Device::stopRunning()
     {
         running = false;
-    }
-
-    inline auto Device::getMode() const -> DeviceMode
-    {
-        return creationArgs.mode;
     }
 
     inline auto Device::getScene() const -> Scene*
@@ -206,8 +200,8 @@ namespace solo
         return logger.get();
     }
 
-    inline auto Device::getCreationArgs() const -> DeviceCreationArgs
+    inline auto Device::getSetup() const -> DeviceSetup
     {
-        return creationArgs;
+        return setup;
     }
 }

@@ -3,8 +3,8 @@
 using namespace solo;
 
 
-StubDevice::StubDevice(const DeviceCreationArgs& args):
-    Device(args)
+StubDevice::StubDevice(const DeviceSetup& setup):
+    Device(setup)
 {
 }
 

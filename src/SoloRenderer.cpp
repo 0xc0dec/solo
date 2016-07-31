@@ -9,7 +9,7 @@ using namespace solo;
 
 auto Renderer::create(Device* device, const DeviceToken&) -> sptr<Renderer>
 {
-    switch (device->getMode())
+    switch (device->getSetup().mode)
     {
         case DeviceMode::OpenGL:
             return std::make_shared<OpenGLRenderer>(device);
