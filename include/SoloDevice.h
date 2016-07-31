@@ -107,6 +107,8 @@ namespace solo
         void stopRunning();
 
         auto getMode() const -> DeviceMode;
+        auto getCreationArgs() const -> DeviceCreationArgs;
+
         auto getScene() const -> Scene*;
         auto getFileSystem() const -> FileSystem*;
         auto getAssetLoader() const -> AssetLoader*;
@@ -202,5 +204,10 @@ namespace solo
     inline auto Device::getLogger() const -> Logger*
     {
         return logger.get();
+    }
+
+    inline auto Device::getCreationArgs() const -> DeviceCreationArgs
+    {
+        return creationArgs;
     }
 }
