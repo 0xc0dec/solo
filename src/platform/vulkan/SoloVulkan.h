@@ -7,7 +7,7 @@
 #endif
 #include <vulkan.h>
 
-#define SL_CHECK_VK_CALL(call, ...) \
+#define SL_CHECK_VK_RESULT(call, ...) \
     do { \
         if (call != VK_SUCCESS) \
             SL_EXCEPTION(InternalException, __VA_ARGS__); \
