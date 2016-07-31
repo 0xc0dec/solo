@@ -21,6 +21,10 @@
     class type final_: public EngineException \
     { \
     public: \
+        type() : EngineException("") \
+        { \
+        } \
+        \
         explicit type(const std::string& msg) : EngineException(msg) \
         { \
         } \
@@ -31,7 +35,11 @@ namespace solo
     class EngineException: public std::runtime_error
     {
     public:
-        explicit EngineException(const std::string& msg) : std::runtime_error(msg)
+        EngineException(): std::runtime_error("")
+        {
+        }
+
+        explicit EngineException(const std::string& msg): std::runtime_error(msg)
         {
         }
     };

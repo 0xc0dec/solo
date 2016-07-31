@@ -35,10 +35,10 @@ VkFormat getDepthFormat(VkPhysicalDevice device)
 std::tuple<VkFormat, VkColorSpaceKHR> getSurfaceFormats(VkPhysicalDevice device, VkSurfaceKHR surface)
 {
     uint32_t count;
-    SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, nullptr), "Failed to get surface format count");
+    SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, nullptr));
 
     std::vector<VkSurfaceFormatKHR> formats(count);
-    SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, formats.data()), "Failed to get surface formats");
+    SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, formats.data()));
 
     if (count == 1 && formats[0].format == VK_FORMAT_UNDEFINED)
         return std::make_tuple(VK_FORMAT_B8G8R8A8_UNORM, formats[0].colorSpace);
@@ -50,7 +50,7 @@ uint32_t getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface)
 {
 	uint32_t count;
 	vkGetPhysicalDeviceQueueFamilyProperties(device, &count, nullptr);
-    SL_EXCEPTION_IF(count <= 0, InternalException, "Failed to get count of graphics queues");
+    SL_EXCEPTION_IF(count <= 0, InternalException);
 
     std::vector<VkQueueFamilyProperties> queueProps;
 	queueProps.resize(count);
@@ -67,7 +67,7 @@ uint32_t getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface)
             return i;
 	}
 
-    SL_EXCEPTION(InternalException, "Failed to detect queue index");
+    SL_EXCEPTION(InternalException);
 }
 
 
@@ -93,18 +93,18 @@ void VulkanRenderer::initLogicalDevice(uint32_t queueIndex)
     deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
     deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
 
-    SL_CHECK_VK_CALL(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &logicalDevice), "Failed to create logical device");
+    SL_CHECK_VK_CALL(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &logicalDevice));
 }
 
 
 void VulkanRenderer::initPhysicalDevice(VkInstance instance)
 {
     uint32_t gpuCount = 0;
-    SL_CHECK_VK_CALL(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr), "Failed to get GPU count");
+    SL_CHECK_VK_CALL(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr));
     SL_EXCEPTION_IF(gpuCount == 0, InternalException, "No GPU found");
 	
 	std::vector<VkPhysicalDevice> physicalDevices(gpuCount);
-	SL_CHECK_VK_CALL(vkEnumeratePhysicalDevices(instance, &gpuCount, physicalDevices.data()), "Failed to enumerate devices");
+	SL_CHECK_VK_CALL(vkEnumeratePhysicalDevices(instance, &gpuCount, physicalDevices.data()));
 
     physicalDevice = physicalDevices[0]; // TODO at least for now
     vkGetPhysicalDeviceProperties(physicalDevice, &physicalDeviceProperties);
@@ -120,8 +120,8 @@ void VulkanRenderer::initSemaphores()
 	semaphoreCreateInfo.pNext = nullptr;
 	semaphoreCreateInfo.flags = 0;
 
-    SL_CHECK_VK_CALL(vkCreateSemaphore(logicalDevice, &semaphoreCreateInfo, nullptr, &presentCompleteSem), "Failed to create present semaphore");
-    SL_CHECK_VK_CALL(vkCreateSemaphore(logicalDevice, &semaphoreCreateInfo, nullptr, &renderCompleteSem), "Failed to create render semaphore");
+    SL_CHECK_VK_CALL(vkCreateSemaphore(logicalDevice, &semaphoreCreateInfo, nullptr, &presentCompleteSem));
+    SL_CHECK_VK_CALL(vkCreateSemaphore(logicalDevice, &semaphoreCreateInfo, nullptr, &renderCompleteSem));
 }
 
 
@@ -131,25 +131,22 @@ void VulkanRenderer::initCommandPool(uint32_t queueIndex)
 	poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
 	poolInfo.queueFamilyIndex = queueIndex;
 	poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
-    SL_CHECK_VK_CALL(vkCreateCommandPool(logicalDevice, &poolInfo, nullptr, &commandPool), "Failed to create command pool");
+    SL_CHECK_VK_CALL(vkCreateCommandPool(logicalDevice, &poolInfo, nullptr, &commandPool));
 }
 
 
 void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync)
 {
 	VkSurfaceCapabilitiesKHR capabilities;
-	SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, &capabilities),
-        "Failed to obtain surface capabilities");
+	SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, &capabilities));
 
     uint32_t presentModeCount;
-    SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, nullptr),
-        "Failed to obtain surface present modes counts");
+    SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, nullptr));
     SL_EXCEPTION_IF(presentModeCount == 0, InternalException, "No surface present modes detected");
 
     std::vector<VkPresentModeKHR> presentModes;
     presentModes.resize(presentModeCount);
-    SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, presentModes.data()),
-        "Failed to obtain surface present modes");
+    SL_CHECK_VK_CALL(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, presentModes.data()));
 
     if (capabilities.currentExtent.width == -1)
     {
@@ -209,14 +206,14 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync)
 	swapchainInfo.oldSwapchain = nullptr; // TODO
 	swapchainInfo.clipped = VK_TRUE;
 	swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-    SL_CHECK_VK_CALL(vkCreateSwapchainKHR(logicalDevice, &swapchainInfo, nullptr, &swapchain), "Failed to create swapchain");
+    SL_CHECK_VK_CALL(vkCreateSwapchainKHR(logicalDevice, &swapchainInfo, nullptr, &swapchain));
     
     uint32_t imageCount = 0;
-    SL_CHECK_VK_CALL(vkGetSwapchainImagesKHR(logicalDevice, swapchain, &imageCount, nullptr), "Failed to obtain swapchain image count");
+    SL_CHECK_VK_CALL(vkGetSwapchainImagesKHR(logicalDevice, swapchain, &imageCount, nullptr));
 
     std::vector<VkImage> images;
     images.resize(imageCount);
-    SL_CHECK_VK_CALL(vkGetSwapchainImagesKHR(logicalDevice, swapchain, &imageCount, images.data()), "Failed to obtain swapchain images");
+    SL_CHECK_VK_CALL(vkGetSwapchainImagesKHR(logicalDevice, swapchain, &imageCount, images.data()));
 
     swapchainBuffers.resize(imageCount);
     for (uint32_t i = 0; i < imageCount; i++)
@@ -242,8 +239,7 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync)
 
         swapchainBuffers[i].image = images[i];
 
-        SL_CHECK_VK_CALL(vkCreateImageView(logicalDevice, &imageInfo, nullptr, &swapchainBuffers[i].imageView),
-            SL_FMT("Failed to create image view for swapchain buffer ", i));
+        SL_CHECK_VK_CALL(vkCreateImageView(logicalDevice, &imageInfo, nullptr, &swapchainBuffers[i].imageView));
     }
 }
 
@@ -262,12 +258,9 @@ void VulkanRenderer::initCommandBuffers()
 	commandBufferAllocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 	commandBufferAllocateInfo.commandBufferCount = count;
 
-    SL_CHECK_VK_CALL(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, drawCmdBuffers.data()),
-        "Failed to allocate command buffers");
-    SL_CHECK_VK_CALL(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, prePresentCmdBuffers.data()),
-        "Failed to allocate command buffers");
-    SL_CHECK_VK_CALL(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, postPresentCmdBuffers.data()),
-        "Failed to allocate command buffers");
+    SL_CHECK_VK_CALL(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, drawCmdBuffers.data()));
+    SL_CHECK_VK_CALL(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, prePresentCmdBuffers.data()));
+    SL_CHECK_VK_CALL(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, postPresentCmdBuffers.data()));
 
     VkCommandBufferBeginInfo beginInfo = {};
 	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -277,7 +270,7 @@ void VulkanRenderer::initCommandBuffers()
     {
         // Transform the image back to a color attachment that our render pass can write to
 
-        SL_CHECK_VK_CALL(vkBeginCommandBuffer(postPresentCmdBuffers[i], &beginInfo), "");
+        SL_CHECK_VK_CALL(vkBeginCommandBuffer(postPresentCmdBuffers[i], &beginInfo));
 
         VkImageMemoryBarrier postPresentBarrier = {};
 	    postPresentBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -295,11 +288,11 @@ void VulkanRenderer::initCommandBuffers()
 
         vkCmdPipelineBarrier(postPresentCmdBuffers[i], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
 			0, 0, nullptr, 0, nullptr, 1, &postPresentBarrier);
-        SL_CHECK_VK_CALL(vkEndCommandBuffer(postPresentCmdBuffers[i]), "");
+        SL_CHECK_VK_CALL(vkEndCommandBuffer(postPresentCmdBuffers[i]));
 
         // Transforms the (framebuffer) image layout from color attachment to present(khr) for presenting to the swap chain
 
-        SL_CHECK_VK_CALL(vkBeginCommandBuffer(prePresentCmdBuffers[i], &beginInfo), "");
+        SL_CHECK_VK_CALL(vkBeginCommandBuffer(prePresentCmdBuffers[i], &beginInfo));
         VkImageMemoryBarrier prePresentBarrier = {};
 	    prePresentBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
 	    prePresentBarrier.pNext = nullptr;
@@ -315,7 +308,7 @@ void VulkanRenderer::initCommandBuffers()
         vkCmdPipelineBarrier(prePresentCmdBuffers[i], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
 			0, 0, nullptr, 0, nullptr, 1, &prePresentBarrier);
 
-        SL_CHECK_VK_CALL(vkEndCommandBuffer(prePresentCmdBuffers[i]), "");
+        SL_CHECK_VK_CALL(vkEndCommandBuffer(prePresentCmdBuffers[i]));
     }
 }
 
