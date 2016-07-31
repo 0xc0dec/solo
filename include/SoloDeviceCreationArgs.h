@@ -8,6 +8,7 @@ namespace solo
 {
     enum class DeviceMode;
 
+    // TODO rename to DeviceSetup
     SL_FLUENT_DTO(DeviceCreationArgs,
         SL_FLUENT_DTO_FIELD(DeviceMode, mode, withMode, )
         SL_FLUENT_DTO_FIELD(uint32_t, canvasWidth, withCanvasWidth, = 800)
