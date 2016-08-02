@@ -428,8 +428,16 @@ void VulkanRenderer::initRenderPass()
 
 int32_t VulkanRenderer::findMemoryType(uint32_t typeBits, VkMemoryPropertyFlags properties)
 {
+    for (uint32_t i = 0; i < physicalDeviceMemoryProperties.memoryTypeCount; i++)
+	{
+		if ((typeBits & 1) == 1)
+		{
+			if ((physicalDeviceMemoryProperties.memoryTypes[i].propertyFlags & properties) == properties)
+				return i;
+		}
+		typeBits >>= 1;
+	}
     return -1;
-    // TODO
 }
 
 
