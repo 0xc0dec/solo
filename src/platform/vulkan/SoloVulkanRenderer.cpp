@@ -371,6 +371,89 @@ int32_t VulkanRenderer::findMemoryType(uint32_t typeBits, VkMemoryPropertyFlags 
 }
 
 
+void VulkanRenderer::setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask,
+    VkImageLayout oldLayout, VkImageLayout newLayout, VkImageSubresourceRange subresourceRange)
+{
+    VkImageMemoryBarrier imageMemoryBarrier = {};
+	imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	imageMemoryBarrier.pNext = nullptr;
+	imageMemoryBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+	imageMemoryBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+    imageMemoryBarrier.oldLayout = oldLayout;
+	imageMemoryBarrier.newLayout = newLayout;
+	imageMemoryBarrier.image = image;
+	imageMemoryBarrier.subresourceRange = subresourceRange;
+
+    switch (oldLayout)
+	{
+	    case VK_IMAGE_LAYOUT_UNDEFINED:
+			    imageMemoryBarrier.srcAccessMask = 0;
+			    break;
+	    case VK_IMAGE_LAYOUT_PREINITIALIZED:
+			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT;
+			    break;
+	    case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
+			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+			    break;
+	    case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
+			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+			    break;
+	    case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
+			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+			    break;
+	    case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
+			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+			    break;
+	    case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
+			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
+			    break;
+        default:
+            SL_ASSERT(false);
+	}
+
+    switch (newLayout)
+	{
+	    case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
+		    imageMemoryBarrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+		    break;
+	    case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
+		    imageMemoryBarrier.srcAccessMask = imageMemoryBarrier.srcAccessMask | VK_ACCESS_TRANSFER_READ_BIT;
+		    imageMemoryBarrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+		    break;
+	    case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
+		    imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+		    imageMemoryBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+		    break;
+	    case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
+		    imageMemoryBarrier.dstAccessMask = imageMemoryBarrier.dstAccessMask | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+		    break;
+	    case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
+		    if (imageMemoryBarrier.srcAccessMask == 0)
+			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
+		    imageMemoryBarrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+		    break;
+        default:
+            SL_ASSERT(false);
+	}
+
+    VkPipelineStageFlags srcStageFlags = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+	VkPipelineStageFlags destStageFlags = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+
+    vkCmdPipelineBarrier(cmdbuffer, srcStageFlags, destStageFlags, 0, 0, nullptr, 0, nullptr, 1, &imageMemoryBarrier);
+}
+
+
+void VulkanRenderer::setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask, VkImageLayout oldLayout, VkImageLayout newLayout)
+{
+    VkImageSubresourceRange subresourceRange = {};
+	subresourceRange.aspectMask = aspectMask;
+	subresourceRange.baseMipLevel = 0;
+	subresourceRange.levelCount = 1;
+	subresourceRange.layerCount = 1;
+    setImageLayout(cmdbuffer, image, aspectMask, oldLayout, newLayout, subresourceRange);
+}
+
+
 VulkanRenderer::VulkanRenderer(Device* engineDevice):
     device(dynamic_cast<SDLVulkanDevice*>(engineDevice))
 {

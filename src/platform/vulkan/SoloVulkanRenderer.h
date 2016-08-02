@@ -102,6 +102,11 @@ namespace solo
         void initDepthStencil();
         int32_t findMemoryType(uint32_t typeBits, VkMemoryPropertyFlags properties);
 
+        void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask,
+            VkImageLayout oldLayout, VkImageLayout newLayout, VkImageSubresourceRange subresourceRange);
+        void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask,
+            VkImageLayout oldLayout, VkImageLayout newLayout);
+
         SDLVulkanDevice* device = nullptr;
         uint32_t canvasWidth = 0;
         uint32_t canvasHeight = 0;
