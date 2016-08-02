@@ -100,6 +100,7 @@ namespace solo
         void initSwapchain(VkSurfaceKHR surface, bool vsync);
         void initCommandBuffers();
         void initDepthStencil();
+        void initRenderPass();
         int32_t findMemoryType(uint32_t typeBits, VkMemoryPropertyFlags properties);
 
         VkCommandBuffer createCommandBuffer();
@@ -127,6 +128,7 @@ namespace solo
         VkColorSpaceKHR colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
         VkCommandPool commandPool = nullptr;
         VkCommandBuffer setupCmdBuffer = nullptr;
+        VkRenderPass renderPass = nullptr;
         VkPhysicalDeviceProperties physicalDeviceProperties;
         VkPhysicalDeviceFeatures physicalDeviceFeatures;
         VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties;
