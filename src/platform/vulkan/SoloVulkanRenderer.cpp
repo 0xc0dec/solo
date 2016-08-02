@@ -595,12 +595,13 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
 	submitInfo.signalSemaphoreCount = 1;
 	submitInfo.pSignalSemaphores = &renderCompleteSem;
 
-    setupCmdBuffer = createCommandBuffer();
-    beginCommandBuffer(setupCmdBuffer);
-
     initCommandPool(queueIndex);
     initSwapchain(surface, device->getSetup().vsync);
     initCommandBuffers();
+
+    setupCmdBuffer = createCommandBuffer();
+    beginCommandBuffer(setupCmdBuffer);
+
     initDepthStencil();
     initRenderPass();
 
