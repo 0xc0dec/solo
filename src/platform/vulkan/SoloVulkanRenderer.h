@@ -103,7 +103,8 @@ namespace solo
         int32_t findMemoryType(uint32_t typeBits, VkMemoryPropertyFlags properties);
 
         VkCommandBuffer createCommandBuffer();
-        void beginCommandBuffer(VkCommandBuffer cmdBuffer);
+        void destroyCommandBuffer(VkCommandBuffer buffer);
+        void beginCommandBuffer(VkCommandBuffer buffer);
         void flushCommandBuffer(VkCommandBuffer buffer);
 
         void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask,

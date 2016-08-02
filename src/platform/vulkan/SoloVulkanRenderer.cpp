@@ -258,7 +258,6 @@ void VulkanRenderer::initCommandBuffers()
 	commandBufferAllocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 	commandBufferAllocateInfo.commandBufferCount = count;
 
-    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, &setupCmdBuffer));
     SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, drawCmdBuffers.data()));
     SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, prePresentCmdBuffers.data()));
     SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, postPresentCmdBuffers.data()));
@@ -335,21 +334,20 @@ void VulkanRenderer::initDepthStencil()
 	alloc.allocationSize = 0;
 	alloc.memoryTypeIndex = 0;
 
-    VkImageViewCreateInfo depthStencilView = {};
-	depthStencilView.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-	depthStencilView.pNext = nullptr;
-	depthStencilView.viewType = VK_IMAGE_VIEW_TYPE_2D;
-	depthStencilView.format = depthFormat;
-	depthStencilView.flags = 0;
-	depthStencilView.subresourceRange = {};
-	depthStencilView.subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT;
-	depthStencilView.subresourceRange.baseMipLevel = 0;
-	depthStencilView.subresourceRange.levelCount = 1;
-	depthStencilView.subresourceRange.baseArrayLayer = 0;
-	depthStencilView.subresourceRange.layerCount = 1;
+    VkImageViewCreateInfo createInfo = {};
+	createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+	createInfo.pNext = nullptr;
+	createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+	createInfo.format = depthFormat;
+	createInfo.flags = 0;
+	createInfo.subresourceRange = {};
+	createInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT;
+	createInfo.subresourceRange.baseMipLevel = 0;
+	createInfo.subresourceRange.levelCount = 1;
+	createInfo.subresourceRange.baseArrayLayer = 0;
+	createInfo.subresourceRange.layerCount = 1;
 
     VkMemoryRequirements memReqs;
-
 	SL_CHECK_VK_RESULT(vkCreateImage(logicalDevice, &image, nullptr, &depthStencil.image));
 	vkGetImageMemoryRequirements(logicalDevice, depthStencil.image, &memReqs);
 
@@ -362,7 +360,11 @@ void VulkanRenderer::initDepthStencil()
 
     SL_CHECK_VK_RESULT(vkBindImageMemory(logicalDevice, depthStencil.image, depthStencil.mem, 0));
     
-//    setImageLayout(setup)
+    setImageLayout(setupCmdBuffer, depthStencil.image, VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT,
+        VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
+
+    createInfo.image = depthStencil.image;
+    vkCreateImageView(logicalDevice, &createInfo, nullptr, &depthStencil.view);
 }
 
 
@@ -388,11 +390,17 @@ VkCommandBuffer VulkanRenderer::createCommandBuffer()
 }
 
 
-void VulkanRenderer::beginCommandBuffer(VkCommandBuffer cmdBuffer)
+void VulkanRenderer::destroyCommandBuffer(VkCommandBuffer buffer)
+{
+    vkFreeCommandBuffers(logicalDevice, commandPool, 1, &buffer);
+}
+
+
+void VulkanRenderer::beginCommandBuffer(VkCommandBuffer buffer)
 {
     VkCommandBufferBeginInfo beginInfo = {};
 	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-    vkBeginCommandBuffer(cmdBuffer, &beginInfo);
+    vkBeginCommandBuffer(buffer, &beginInfo);
 }
 
 
@@ -523,9 +531,16 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
 	submitInfo.signalSemaphoreCount = 1;
 	submitInfo.pSignalSemaphores = &renderCompleteSem;
 
+    setupCmdBuffer = createCommandBuffer();
+    beginCommandBuffer(setupCmdBuffer);
+
     initCommandPool(queueIndex);
     initSwapchain(surface, device->getSetup().vsync);
     initCommandBuffers();
+    initDepthStencil();
+
+    flushCommandBuffer(setupCmdBuffer);
+    destroyCommandBuffer(setupCmdBuffer);
 }
 
 
