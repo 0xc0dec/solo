@@ -359,7 +359,8 @@ void VulkanRenderer::initDepthStencil()
     alloc.memoryTypeIndex = memTypeIndex;
 	SL_CHECK_VK_RESULT(vkAllocateMemory(logicalDevice, &alloc, nullptr, &depthStencil.mem));
 
-    // TODO
+    SL_CHECK_VK_RESULT(vkBindImageMemory(logicalDevice, depthStencil.image, depthStencil.mem, 0));
+    // TODO setImageLayout
 }
 
 
