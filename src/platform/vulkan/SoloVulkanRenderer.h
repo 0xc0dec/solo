@@ -102,6 +102,10 @@ namespace solo
         void initDepthStencil();
         int32_t findMemoryType(uint32_t typeBits, VkMemoryPropertyFlags properties);
 
+        VkCommandBuffer createCommandBuffer();
+        void beginCommandBuffer(VkCommandBuffer cmdBuffer);
+        void flushCommandBuffer(VkCommandBuffer buffer);
+
         void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask,
             VkImageLayout oldLayout, VkImageLayout newLayout, VkImageSubresourceRange subresourceRange);
         void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask,
@@ -121,6 +125,7 @@ namespace solo
         VkFormat colorFormat = VK_FORMAT_UNDEFINED;
         VkColorSpaceKHR colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
         VkCommandPool commandPool = nullptr;
+        VkCommandBuffer setupCmdBuffer = nullptr;
         VkPhysicalDeviceProperties physicalDeviceProperties;
         VkPhysicalDeviceFeatures physicalDeviceFeatures;
         VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties;

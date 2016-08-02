@@ -258,6 +258,7 @@ void VulkanRenderer::initCommandBuffers()
 	commandBufferAllocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 	commandBufferAllocateInfo.commandBufferCount = count;
 
+    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, &setupCmdBuffer));
     SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, drawCmdBuffers.data()));
     SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, prePresentCmdBuffers.data()));
     SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, postPresentCmdBuffers.data()));
@@ -360,7 +361,8 @@ void VulkanRenderer::initDepthStencil()
 	SL_CHECK_VK_RESULT(vkAllocateMemory(logicalDevice, &alloc, nullptr, &depthStencil.mem));
 
     SL_CHECK_VK_RESULT(vkBindImageMemory(logicalDevice, depthStencil.image, depthStencil.mem, 0));
-    // TODO setImageLayout
+    
+//    setImageLayout(setup)
 }
 
 
@@ -368,6 +370,43 @@ int32_t VulkanRenderer::findMemoryType(uint32_t typeBits, VkMemoryPropertyFlags 
 {
     return -1;
     // TODO
+}
+
+
+VkCommandBuffer VulkanRenderer::createCommandBuffer()
+{
+    VkCommandBufferAllocateInfo allocateInfo = {};
+	allocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+	allocateInfo.commandPool = commandPool;
+	allocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+	allocateInfo.commandBufferCount = 1;
+
+    VkCommandBuffer result = nullptr;
+    vkAllocateCommandBuffers(logicalDevice, &allocateInfo, &result);
+
+    return result;
+}
+
+
+void VulkanRenderer::beginCommandBuffer(VkCommandBuffer cmdBuffer)
+{
+    VkCommandBufferBeginInfo beginInfo = {};
+	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+    vkBeginCommandBuffer(cmdBuffer, &beginInfo);
+}
+
+
+void VulkanRenderer::flushCommandBuffer(VkCommandBuffer buffer)
+{
+    vkEndCommandBuffer(buffer);
+
+    VkSubmitInfo submitInfo = {};
+	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+	submitInfo.commandBufferCount = 1;
+	submitInfo.pCommandBuffers = &buffer;
+
+    vkQueueSubmit(queue, 1, &submitInfo, nullptr);
+	vkQueueWaitIdle(queue);
 }
 
 
