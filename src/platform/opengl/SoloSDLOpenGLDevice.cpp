@@ -25,12 +25,7 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceSetup const& setup):
 
     window = SDL_CreateWindow(setup.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         setup.canvasWidth, setup.canvasHeight, flags);
-    if (!window)
-        SL_EXCEPTION(InternalException, "Failed to create window");
-
     context = SDL_GL_CreateContext(window);
-    if (!context)
-        SL_EXCEPTION(InternalException, "Failed to create OpenGL context");
 
     glewExperimental = true;
     if (glewInit() != GLEW_OK)
@@ -38,7 +33,6 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceSetup const& setup):
         SDL_GL_DeleteContext(context);
         SDL_DestroyWindow(window);
         SDL_Quit();
-        SL_EXCEPTION(InternalException, "Failed to initialize OpenGL extensions");
     }
 
     SDL_GL_SetSwapInterval(1);
