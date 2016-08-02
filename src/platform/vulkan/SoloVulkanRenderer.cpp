@@ -260,15 +260,11 @@ void VulkanRenderer::initCommandBuffers()
     vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, prePresentCmdBuffers.data());
     vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, postPresentCmdBuffers.data());
 
-    VkCommandBufferBeginInfo beginInfo = {};
-	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-	beginInfo.pNext = nullptr;
-
     for (uint32_t i = 0; i < count; i++)
     {
         // Transform the image back to a color attachment that our render pass can write to
 
-        vkBeginCommandBuffer(postPresentCmdBuffers[i], &beginInfo);
+        beginCommandBuffer(postPresentCmdBuffers[i]);
 
         VkImageMemoryBarrier postPresentBarrier = {};
 	    postPresentBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -286,11 +282,11 @@ void VulkanRenderer::initCommandBuffers()
 
         vkCmdPipelineBarrier(postPresentCmdBuffers[i], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
 			0, 0, nullptr, 0, nullptr, 1, &postPresentBarrier);
-        vkEndCommandBuffer(postPresentCmdBuffers[i]);
+        flushCommandBuffer(postPresentCmdBuffers[i]);
 
         // Transforms the (framebuffer) image layout from color attachment to present(khr) for presenting to the swap chain
 
-        vkBeginCommandBuffer(prePresentCmdBuffers[i], &beginInfo);
+        beginCommandBuffer(prePresentCmdBuffers[i]);
         VkImageMemoryBarrier prePresentBarrier = {};
 	    prePresentBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
 	    prePresentBarrier.pNext = nullptr;
@@ -306,7 +302,7 @@ void VulkanRenderer::initCommandBuffers()
         vkCmdPipelineBarrier(prePresentCmdBuffers[i], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
 			0, 0, nullptr, 0, nullptr, 1, &prePresentBarrier);
 
-        vkEndCommandBuffer(prePresentCmdBuffers[i]);
+        flushCommandBuffer(prePresentCmdBuffers[i]);
     }
 }
 
