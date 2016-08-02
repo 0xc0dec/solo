@@ -35,10 +35,10 @@ VkFormat getDepthFormat(VkPhysicalDevice device)
 std::tuple<VkFormat, VkColorSpaceKHR> getSurfaceFormats(VkPhysicalDevice device, VkSurfaceKHR surface)
 {
     uint32_t count;
-    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, nullptr));
+    vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, nullptr);
 
     std::vector<VkSurfaceFormatKHR> formats(count);
-    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, formats.data()));
+    vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, formats.data());
 
     if (count == 1 && formats[0].format == VK_FORMAT_UNDEFINED)
         return std::make_tuple(VK_FORMAT_B8G8R8A8_UNORM, formats[0].colorSpace);
@@ -93,18 +93,17 @@ void VulkanRenderer::initLogicalDevice(uint32_t queueIndex)
     deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
     deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
 
-    SL_CHECK_VK_RESULT(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &logicalDevice));
+    vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &logicalDevice);
 }
 
 
 void VulkanRenderer::initPhysicalDevice(VkInstance instance)
 {
     uint32_t gpuCount = 0;
-    SL_CHECK_VK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr));
-    SL_EXCEPTION_IF(gpuCount == 0, InternalException, "No GPU found");
+    vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr);
 	
 	std::vector<VkPhysicalDevice> physicalDevices(gpuCount);
-	SL_CHECK_VK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, physicalDevices.data()));
+	vkEnumeratePhysicalDevices(instance, &gpuCount, physicalDevices.data());
 
     physicalDevice = physicalDevices[0]; // TODO at least for now
     vkGetPhysicalDeviceProperties(physicalDevice, &physicalDeviceProperties);
@@ -120,8 +119,8 @@ void VulkanRenderer::initSemaphores()
 	semaphoreCreateInfo.pNext = nullptr;
 	semaphoreCreateInfo.flags = 0;
 
-    SL_CHECK_VK_RESULT(vkCreateSemaphore(logicalDevice, &semaphoreCreateInfo, nullptr, &presentCompleteSem));
-    SL_CHECK_VK_RESULT(vkCreateSemaphore(logicalDevice, &semaphoreCreateInfo, nullptr, &renderCompleteSem));
+    vkCreateSemaphore(logicalDevice, &semaphoreCreateInfo, nullptr, &presentCompleteSem);
+    vkCreateSemaphore(logicalDevice, &semaphoreCreateInfo, nullptr, &renderCompleteSem);
 }
 
 
@@ -131,22 +130,21 @@ void VulkanRenderer::initCommandPool(uint32_t queueIndex)
 	poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
 	poolInfo.queueFamilyIndex = queueIndex;
 	poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
-    SL_CHECK_VK_RESULT(vkCreateCommandPool(logicalDevice, &poolInfo, nullptr, &commandPool));
+    vkCreateCommandPool(logicalDevice, &poolInfo, nullptr, &commandPool);
 }
 
 
 void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync)
 {
 	VkSurfaceCapabilitiesKHR capabilities;
-	SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, &capabilities));
+	vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, &capabilities);
 
     uint32_t presentModeCount;
-    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, nullptr));
-    SL_EXCEPTION_IF(presentModeCount == 0, InternalException, "No surface present modes detected");
+    vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, nullptr);
 
     std::vector<VkPresentModeKHR> presentModes;
     presentModes.resize(presentModeCount);
-    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, presentModes.data()));
+    vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, presentModes.data());
 
     if (capabilities.currentExtent.width == -1)
     {
@@ -206,14 +204,14 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync)
 	swapchainInfo.oldSwapchain = nullptr; // TODO
 	swapchainInfo.clipped = VK_TRUE;
 	swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-    SL_CHECK_VK_RESULT(vkCreateSwapchainKHR(logicalDevice, &swapchainInfo, nullptr, &swapchain));
+    vkCreateSwapchainKHR(logicalDevice, &swapchainInfo, nullptr, &swapchain);
     
     uint32_t imageCount = 0;
-    SL_CHECK_VK_RESULT(vkGetSwapchainImagesKHR(logicalDevice, swapchain, &imageCount, nullptr));
+    vkGetSwapchainImagesKHR(logicalDevice, swapchain, &imageCount, nullptr);
 
     std::vector<VkImage> images;
     images.resize(imageCount);
-    SL_CHECK_VK_RESULT(vkGetSwapchainImagesKHR(logicalDevice, swapchain, &imageCount, images.data()));
+    vkGetSwapchainImagesKHR(logicalDevice, swapchain, &imageCount, images.data());
 
     swapchainBuffers.resize(imageCount);
     for (uint32_t i = 0; i < imageCount; i++)
@@ -239,7 +237,7 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync)
 
         swapchainBuffers[i].image = images[i];
 
-        SL_CHECK_VK_RESULT(vkCreateImageView(logicalDevice, &imageInfo, nullptr, &swapchainBuffers[i].imageView));
+        vkCreateImageView(logicalDevice, &imageInfo, nullptr, &swapchainBuffers[i].imageView);
     }
 }
 
@@ -258,9 +256,9 @@ void VulkanRenderer::initCommandBuffers()
 	commandBufferAllocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 	commandBufferAllocateInfo.commandBufferCount = count;
 
-    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, drawCmdBuffers.data()));
-    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, prePresentCmdBuffers.data()));
-    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, postPresentCmdBuffers.data()));
+    vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, drawCmdBuffers.data());
+    vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, prePresentCmdBuffers.data());
+    vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, postPresentCmdBuffers.data());
 
     VkCommandBufferBeginInfo beginInfo = {};
 	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -270,7 +268,7 @@ void VulkanRenderer::initCommandBuffers()
     {
         // Transform the image back to a color attachment that our render pass can write to
 
-        SL_CHECK_VK_RESULT(vkBeginCommandBuffer(postPresentCmdBuffers[i], &beginInfo));
+        vkBeginCommandBuffer(postPresentCmdBuffers[i], &beginInfo);
 
         VkImageMemoryBarrier postPresentBarrier = {};
 	    postPresentBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -288,11 +286,11 @@ void VulkanRenderer::initCommandBuffers()
 
         vkCmdPipelineBarrier(postPresentCmdBuffers[i], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
 			0, 0, nullptr, 0, nullptr, 1, &postPresentBarrier);
-        SL_CHECK_VK_RESULT(vkEndCommandBuffer(postPresentCmdBuffers[i]));
+        vkEndCommandBuffer(postPresentCmdBuffers[i]);
 
         // Transforms the (framebuffer) image layout from color attachment to present(khr) for presenting to the swap chain
 
-        SL_CHECK_VK_RESULT(vkBeginCommandBuffer(prePresentCmdBuffers[i], &beginInfo));
+        vkBeginCommandBuffer(prePresentCmdBuffers[i], &beginInfo);
         VkImageMemoryBarrier prePresentBarrier = {};
 	    prePresentBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
 	    prePresentBarrier.pNext = nullptr;
@@ -308,7 +306,7 @@ void VulkanRenderer::initCommandBuffers()
         vkCmdPipelineBarrier(prePresentCmdBuffers[i], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
 			0, 0, nullptr, 0, nullptr, 1, &prePresentBarrier);
 
-        SL_CHECK_VK_RESULT(vkEndCommandBuffer(prePresentCmdBuffers[i]));
+        vkEndCommandBuffer(prePresentCmdBuffers[i]);
     }
 }
 
@@ -348,7 +346,7 @@ void VulkanRenderer::initDepthStencil()
 	createInfo.subresourceRange.layerCount = 1;
 
     VkMemoryRequirements memReqs;
-	SL_CHECK_VK_RESULT(vkCreateImage(logicalDevice, &image, nullptr, &depthStencil.image));
+	vkCreateImage(logicalDevice, &image, nullptr, &depthStencil.image);
 	vkGetImageMemoryRequirements(logicalDevice, depthStencil.image, &memReqs);
 
     auto memTypeIndex = findMemoryType(memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
@@ -356,9 +354,9 @@ void VulkanRenderer::initDepthStencil()
 
 	alloc.allocationSize = memReqs.size;
     alloc.memoryTypeIndex = memTypeIndex;
-	SL_CHECK_VK_RESULT(vkAllocateMemory(logicalDevice, &alloc, nullptr, &depthStencil.mem));
+	vkAllocateMemory(logicalDevice, &alloc, nullptr, &depthStencil.mem);
 
-    SL_CHECK_VK_RESULT(vkBindImageMemory(logicalDevice, depthStencil.image, depthStencil.mem, 0));
+    vkBindImageMemory(logicalDevice, depthStencil.image, depthStencil.mem, 0);
     
     setImageLayout(setupCmdBuffer, depthStencil.image, VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT,
         VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);

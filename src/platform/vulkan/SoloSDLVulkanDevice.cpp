@@ -44,7 +44,7 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup& setup):
 		instanceCreateInfo.ppEnabledExtensionNames = enabledExtensions.data();
 	}
 
-    SL_CHECK_VK_RESULT(vkCreateInstance(&instanceCreateInfo, nullptr, &instance));
+    vkCreateInstance(&instanceCreateInfo, nullptr, &instance);
 
 #ifdef SL_WINDOWS
     SDL_SysWMinfo wmInfo;
@@ -59,7 +59,7 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup& setup):
 	surfaceCreateInfo.hinstance = hinstance;
 	surfaceCreateInfo.hwnd = hwnd;
 
-    SL_CHECK_VK_RESULT(vkCreateWin32SurfaceKHR(instance, &surfaceCreateInfo, nullptr, &surface));
+    vkCreateWin32SurfaceKHR(instance, &surfaceCreateInfo, nullptr, &surface);
 #endif
 }
 
