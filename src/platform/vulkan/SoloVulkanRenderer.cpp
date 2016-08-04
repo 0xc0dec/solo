@@ -28,7 +28,7 @@ VkFormat getDepthFormat(VkPhysicalDevice device)
             return format;
 	}
 
-    SL_EXCEPTION(InternalException, "Could not detect suitable depth format");
+    return VK_FORMAT_UNDEFINED;
 }
 
 
@@ -550,7 +550,8 @@ void VulkanRenderer::setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, Vk
 }
 
 
-void VulkanRenderer::setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask, VkImageLayout oldLayout, VkImageLayout newLayout)
+void VulkanRenderer::setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask,
+    VkImageLayout oldLayout, VkImageLayout newLayout)
 {
     VkImageSubresourceRange subresourceRange = {};
 	subresourceRange.aspectMask = aspectMask;
