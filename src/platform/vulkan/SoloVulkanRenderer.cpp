@@ -50,7 +50,6 @@ uint32_t getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface)
 {
 	uint32_t count;
 	vkGetPhysicalDeviceQueueFamilyProperties(device, &count, nullptr);
-    SL_EXCEPTION_IF(count <= 0, InternalException);
 
     std::vector<VkQueueFamilyProperties> queueProps;
 	queueProps.resize(count);
@@ -67,7 +66,9 @@ uint32_t getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface)
             return i;
 	}
 
-    SL_EXCEPTION(InternalException);
+    SL_ASSERT(false);
+
+    return 0;
 }
 
 
