@@ -67,7 +67,6 @@ uint32_t getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface)
 	}
 
     SL_ASSERT(false);
-
     return 0;
 }
 
