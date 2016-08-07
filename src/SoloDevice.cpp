@@ -68,7 +68,7 @@ uptr<Device> Device::createInstance(const DeviceSetup& setup)
         case DeviceMode::Stub:
             return std::make_unique<StubDevice>(setup);
         default:
-            SL_ASSERT(false);
+            SL_ERR("Unknown device mode");
             return nullptr;
     }
 }
@@ -107,7 +107,7 @@ void Device::run()
 
 void Device::run(const DeviceSetup& setup, sptr<DeviceCallback> callback)
 {
-    SL_ASSERT(!instance);
+    SL_ERR_IF(instance, "Device instance is already running");
     instance = createInstance(setup);
     instance->init();
 

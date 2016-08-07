@@ -19,8 +19,7 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup& setup):
 
     window = SDL_CreateWindow(setup.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         setup.canvasWidth, setup.canvasHeight, flags);
-    if (!window)
-        SL_EXCEPTION(InternalException, "Failed to create window");
+    SL_ERR_IF(!window, "Failed to create window");
 
     VkApplicationInfo appInfo = {};
     appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;

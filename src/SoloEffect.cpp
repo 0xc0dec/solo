@@ -28,13 +28,17 @@ auto Effect::create(EffectPrefab prefab) -> sptr<Effect>
         case DeviceMode::OpenGL:
             switch (prefab)
             {
-                case EffectPrefab::Skybox: return std::shared_ptr<Effect>(new Effect(OpenGLPrefabShaders::Vertex::skybox, OpenGLPrefabShaders::Fragment::skybox));
-                case EffectPrefab::Font: return std::shared_ptr<Effect>(new Effect(OpenGLPrefabShaders::Vertex::simple, OpenGLPrefabShaders::Fragment::font));
-                default: SL_ASSERT(false); break;
+                case EffectPrefab::Skybox:
+                    return std::shared_ptr<Effect>(new Effect(OpenGLPrefabShaders::Vertex::skybox, OpenGLPrefabShaders::Fragment::skybox));
+                case EffectPrefab::Font:
+                    return std::shared_ptr<Effect>(new Effect(OpenGLPrefabShaders::Vertex::simple, OpenGLPrefabShaders::Fragment::font));
+                default:
+                    SL_ERR("Unknown effect prefab");
+                    break;
             }
             break;
         default:
-            SL_ASSERT(false);
+            SL_ERR("Unknown device mode");
             break;
     }
     return nullptr;

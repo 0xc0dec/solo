@@ -43,7 +43,7 @@ Mesh::Mesh(MeshPrefab prefab):
             initCubeMesh();
             break;
         default:
-            SL_ASSERT(false);
+            SL_ERR("Unknown mesh prefab type");
             break;
     }
 }

@@ -61,7 +61,7 @@ private:
 		{
             Effect::create(vertex, fragment);
 		}
-		catch (AssetException &e)
+		catch (EngineException &e)
 		{
 			assert(
 				e.what() == SL_FMT("Failed to compile ", failedShaderTypeName, " shader") ||

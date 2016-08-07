@@ -25,9 +25,9 @@ void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
         if (nodeIt != components.end())
         {
             auto& nodeComponents = nodeIt->second;
-            SL_ASSERT(nodeComponents.find(typeId) == nodeComponents.end());
+            SL_ERR_IF(nodeComponents.find(typeId) != nodeComponents.end(), "Node already contains component with same id")
         }
-    })
+    });
 
     components[nodeId][typeId] = cmp;
     cmp->init();

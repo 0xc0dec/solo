@@ -23,23 +23,24 @@
 #endif
 
 
-#ifdef SL_DEBUG
-#   define SL_DBG_BLOCK(code) code
-#   define SL_ASSERT(condition) assert(condition)
-#   define SL_EXCEPTION(TExc, ...) throw TExc(__VA_ARGS__)
-#   define SL_FMT_EXCEPTION(TExc, ...) throw TExc(SL_FMT(__VA_ARGS__))
+#define SL_MACRO_BLOCK(code) do { code; } while (false);
+#define SL_EMPTY_MACRO_BLOCK() do {} while (false);
 
-#   define SL_EXCEPTION_IF(condition, exceptionType, ...) \
-        do { \
-            if (condition) \
-                SL_EXCEPTION(exceptionType, __VA_ARGS__); \
-        } while (0)
+/*
+    Note
+    Currently all error checks have the same priority. For instance, the same macro is used for places where only assert() is necessary.
+    All checks are disabled in release build. Later they should probably get their respective "severity" level,
+    making it possible to disable checks granularly.
+*/
+
+#ifdef SL_DEBUG
+#   define SL_DBG_BLOCK(code) SL_MACRO_BLOCK(code)
+#   define SL_ERR(...) SL_MACRO_BLOCK(throw EngineException(__VA_ARGS__))
+#   define SL_ERR_IF(condition, ...) SL_MACRO_BLOCK(if (condition) throw EngineException(__VA_ARGS__))
 #else
-#   define SL_DBG_BLOCK(code)
-#   define SL_ASSERT(condition)
-#   define SL_EXCEPTION(TExc, ...)
-#   define SL_FMT_EXCEPTION(TExc, ...)
-#   define SL_EXCEPTION_IF(condition, exceptionType, ...)
+#   define SL_DBG_BLOCK(code) SL_EMPTY_MACRO_BLOCK()
+#   define SL_ERR(...) SL_EMPTY_MACRO_BLOCK()
+#   define SL_ERR_IF(condition, ...) SL_EMPTY_MACRO_BLOCK()
 #endif
 
 
@@ -87,6 +88,8 @@ namespace solo
     class EngineException: public std::runtime_error
     {
     public:
+        std::string info = "";
+
         EngineException(): std::runtime_error("")
         {
         }
@@ -94,20 +97,10 @@ namespace solo
         explicit EngineException(const std::string& msg): std::runtime_error(msg)
         {
         }
-    };
 
-    SL_SIMPLE_EXCEPTION(InternalException, final)
-    SL_SIMPLE_EXCEPTION(InvalidInputException, final)
-    SL_SIMPLE_EXCEPTION(IOException, final)
-    SL_SIMPLE_EXCEPTION(AssetException, )
-
-    class EffectCompilationException final: public AssetException
-    {
-    public:
-        std::string log;
-
-        EffectCompilationException(const std::string& message, const std::string& log):
-            AssetException(message), log(log)
+        EngineException(const std::string& msg, const std::string& info):
+            std::runtime_error(msg),
+            info(info)
         {
         }
     };

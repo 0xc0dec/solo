@@ -66,7 +66,7 @@ uint32_t getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface)
             return i;
 	}
 
-    SL_ASSERT(false);
+    SL_ERR("Count not find queue index");
     return 0;
 }
 
@@ -346,7 +346,7 @@ void VulkanRenderer::initDepthStencil()
 	vkGetImageMemoryRequirements(logicalDevice, depthStencil.image, &memReqs);
 
     auto memTypeIndex = findMemoryType(memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-    SL_EXCEPTION_IF(memTypeIndex < 0, InternalException);
+    SL_ERR_IF(memTypeIndex < 0);
 
 	alloc.allocationSize = memReqs.size;
     alloc.memoryTypeIndex = memTypeIndex;
@@ -515,7 +515,8 @@ void VulkanRenderer::setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, Vk
 			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
 			    break;
         default:
-            SL_ASSERT(false);
+            SL_ERR("Unknown old image layout");
+            break;
 	}
 
     switch (newLayout)
@@ -540,7 +541,8 @@ void VulkanRenderer::setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, Vk
 		    imageMemoryBarrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
 		    break;
         default:
-            SL_ASSERT(false);
+            SL_ERR("Unknown new image layout");
+            break;
 	}
 
     VkPipelineStageFlags srcStageFlags = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
