@@ -23,7 +23,6 @@
     <ClInclude Include="..\include\SoloDevice.h" />
     <ClInclude Include="..\include\SoloDeviceSetup.h" />
     <ClInclude Include="..\include\SoloEffect.h" />
-    <ClInclude Include="..\include\SoloException.h" />
     <ClInclude Include="..\include\SoloFileSystem.h" />
     <ClInclude Include="..\include\SoloFont.h" />
     <ClInclude Include="..\include\SoloFontRenderer.h" />

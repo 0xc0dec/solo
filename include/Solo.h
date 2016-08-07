@@ -14,7 +14,6 @@
 #include "SoloDevice.h"
 #include "SoloDeviceSetup.h"
 #include "SoloEffect.h"
-#include "SoloException.h"
 #include "SoloFileSystem.h"
 #include "SoloFont.h"
 #include "SoloFontRenderer.h"

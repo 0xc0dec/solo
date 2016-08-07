@@ -4,9 +4,6 @@
     <ClInclude Include="..\include\Solo.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloException.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloVector2.h">
       <Filter>include</Filter>
     </ClInclude>
