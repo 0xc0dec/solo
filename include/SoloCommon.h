@@ -25,19 +25,23 @@
 
 #ifdef SL_DEBUG
 #   define SL_IN_DEBUG(code) code
+#   define SL_ASSERT(condition) assert(condition)
+#   define SL_EXCEPTION(TExc, ...) throw TExc(__VA_ARGS__)
+#   define SL_FMT_EXCEPTION(TExc, ...) throw TExc(SL_FMT(__VA_ARGS__))
+
+#   define SL_EXCEPTION_IF(condition, exceptionType, ...) \
+        do { \
+            if (condition) \
+                SL_EXCEPTION(exceptionType, __VA_ARGS__); \
+        } while (0)
 #else
 #   define SL_IN_DEBUG(code)
+#   define SL_ASSERT(condition)
+#   define SL_EXCEPTION(TExc, ...)
+#   define SL_FMT_EXCEPTION(TExc, ...)
+#   define SL_EXCEPTION_IF(condition, exceptionType, ...)
 #endif
 
-#define SL_ASSERT(condition) assert(condition)
-#define SL_EXCEPTION(TExc, ...) throw TExc(__VA_ARGS__)
-#define SL_FMT_EXCEPTION(TExc, ...) throw TExc(SL_FMT(__VA_ARGS__))
-
-#define SL_EXCEPTION_IF(condition, exceptionType, ...) \
-    do { \
-        if (condition) \
-            SL_EXCEPTION(exceptionType, __VA_ARGS__); \
-    } while (0)
 
 #define SL_SIMPLE_EXCEPTION(type, final_) \
     class type final_: public EngineException \
