@@ -19,7 +19,7 @@ void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
 {
     auto typeId = cmp->getTypeId();
 
-    SL_IN_DEBUG(
+    SL_DBG_BLOCK(
     {
         auto nodeIt = components.find(nodeId);
         if (nodeIt != components.end())

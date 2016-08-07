@@ -530,7 +530,7 @@ void OpenGLRenderer::setFrameBuffer(const FrameBufferHandle& handle)
 
 void OpenGLRenderer::updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle>& attachmentHandles)
 {
-    SL_IN_DEBUG(validateFrameBufferAttachments(attachmentHandles));
+    SL_DBG_BLOCK(validateFrameBufferAttachments(attachmentHandles));
 
     bindFrameBuffer(handle);
 
