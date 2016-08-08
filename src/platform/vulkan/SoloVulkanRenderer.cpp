@@ -242,6 +242,14 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync)
 }
 
 
+void VulkanRenderer::cleanupSwapchain()
+{
+    for (const auto& buf: swapchainBuffers)
+        vkDestroyImageView(logicalDevice, buf.imageView, nullptr);
+    vkDestroySwapchainKHR(logicalDevice, swapchain, nullptr);
+}
+
+
 void VulkanRenderer::initCommandBuffers()
 {
     auto count = swapchainBuffers.size();
@@ -611,7 +619,7 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
 
 VulkanRenderer::~VulkanRenderer()
 {
-    // TODO
+    cleanupSwapchain();
 }
 
 

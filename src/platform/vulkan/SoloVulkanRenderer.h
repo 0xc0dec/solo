@@ -98,6 +98,7 @@ namespace solo
         void initSemaphores();
         void initCommandPool(uint32_t queueIndex);
         void initSwapchain(VkSurfaceKHR surface, bool vsync);
+        void cleanupSwapchain();
         void initCommandBuffers();
         void initDepthStencil();
         void initRenderPass();
