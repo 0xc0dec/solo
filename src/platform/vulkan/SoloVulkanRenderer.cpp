@@ -623,6 +623,43 @@ VulkanRenderer::~VulkanRenderer()
 }
 
 
+void VulkanRenderer::beginFrame()
+{
+    SL_CHECK_VK_RESULT(vkAcquireNextImageKHR(logicalDevice, swapchain, UINT64_MAX, presentCompleteSem, nullptr, &currentBuffer));
+
+    VkSubmitInfo submitInfo = {};
+	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+	submitInfo.pNext = nullptr;
+    submitInfo.commandBufferCount = 1;
+	submitInfo.pCommandBuffers = &postPresentCmdBuffers[currentBuffer];
+
+    SL_CHECK_VK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, nullptr));
+}
+
+
+void VulkanRenderer::endFrame()
+{
+    VkSubmitInfo submitInfo = {};
+	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+	submitInfo.pNext = nullptr;
+    submitInfo.commandBufferCount = 1;
+	submitInfo.pCommandBuffers = &prePresentCmdBuffers[currentBuffer];
+    SL_CHECK_VK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, nullptr));
+
+    VkPresentInfoKHR presentInfo = {};
+	presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+	presentInfo.pNext = nullptr;
+	presentInfo.swapchainCount = 1;
+	presentInfo.pSwapchains = &swapchain;
+	presentInfo.pImageIndices = &currentBuffer;
+    presentInfo.pWaitSemaphores = &renderCompleteSem;
+    presentInfo.waitSemaphoreCount = 1;
+    SL_CHECK_VK_RESULT(vkQueuePresentKHR(queue, &presentInfo));
+
+    SL_CHECK_VK_RESULT(vkQueueWaitIdle(queue));
+}
+
+
 #else
 #   error Vulkan renderer is not supported on this platform
 #endif

@@ -98,8 +98,10 @@ void Device::run()
         beginUpdate();
         assetLoader->update();
         physics->update();
+        renderer->beginFrame();
         scene->update();
         scene->render();
+        renderer->endFrame();
         endUpdate();
     } while (running);
 }

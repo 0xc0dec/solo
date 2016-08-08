@@ -7,6 +7,9 @@ namespace solo
     class StubRenderer final : public Renderer
     {
     public:
+        void beginFrame() override final {}
+        void endFrame() override final {}
+
         auto createTexture() -> TextureHandle override final { return EmptyTextureHandle; }
         void destroyTexture(const TextureHandle& handle) override final {}
         void set2DTexture(const TextureHandle& handle) override final {}

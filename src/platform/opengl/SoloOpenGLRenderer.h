@@ -18,6 +18,9 @@ namespace solo
         OpenGLRenderer(Device* device);
         ~OpenGLRenderer();
 
+        void beginFrame() override final {}
+        void endFrame() override final {}
+
         auto createTexture() -> TextureHandle override final;
         void destroyTexture(const TextureHandle& handle) override final;
         void set2DTexture(const TextureHandle& handle) override final;

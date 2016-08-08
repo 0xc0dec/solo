@@ -17,6 +17,9 @@ namespace solo
         explicit VulkanRenderer(Device* device);
         ~VulkanRenderer();
 
+        void beginFrame() override final;
+        void endFrame() override final;
+
         auto createTexture() -> TextureHandle override final { return EmptyTextureHandle; }
         void destroyTexture(const TextureHandle& handle) override final {}
         void set2DTexture(const TextureHandle& handle) override final {}
@@ -137,6 +140,7 @@ namespace solo
         VkSemaphore presentCompleteSem = nullptr;
         VkSemaphore renderCompleteSem = nullptr;
         VkSubmitInfo submitInfo;
+	    uint32_t currentBuffer = 0;
         VkPipelineStageFlags submitPipelineStages = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
     };
 }

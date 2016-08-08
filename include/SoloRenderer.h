@@ -149,6 +149,9 @@ namespace solo
         SL_NONCOPYABLE(Renderer)
         virtual ~Renderer() {}
 
+        virtual void beginFrame() = 0;
+        virtual void endFrame() = 0;
+
         virtual auto createTexture() -> TextureHandle = 0;
         virtual void destroyTexture(const TextureHandle& handle) = 0;
         virtual void set2DTexture(const TextureHandle& handle) = 0;
