@@ -8,7 +8,7 @@
 #include <vulkan.h>
 
 #ifdef SL_ERR_CHECK
-#   define SL_CHECK_VK_RESULT(result, ...) SL_DBG_BLOCK(if (result != VK_SUCCESS) SL_ERR(__VA_ARGS__))
+#   define SL_CHECK_VK_RESULT(vkCall, ...) SL_DBG_BLOCK(if (vkCall != VK_SUCCESS) SL_ERR(__VA_ARGS__))
 #else
-#   define SL_CHECK_VK_RESULT(result)
+#   define SL_CHECK_VK_RESULT(vkCall) vkCall
 #endif
