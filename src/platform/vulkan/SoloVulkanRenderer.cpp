@@ -150,8 +150,8 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync)
     {
         // Surface extent not defined - select based on device canvas size
         auto deviceCanvasSize = device->getCanvasSize();
-        canvasWidth = deviceCanvasSize.x;
-        canvasHeight = deviceCanvasSize.y;
+        canvasWidth = static_cast<uint32_t>(deviceCanvasSize.x);
+        canvasHeight = static_cast<uint32_t>(deviceCanvasSize.y);
     }
     else
     {
@@ -220,7 +220,8 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync)
 		imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
 		imageInfo.pNext = nullptr;
 		imageInfo.format = colorFormat;
-		imageInfo.components = {
+		imageInfo.components = 
+        {
 			VK_COMPONENT_SWIZZLE_R,
 			VK_COMPONENT_SWIZZLE_G,
 			VK_COMPONENT_SWIZZLE_B,
