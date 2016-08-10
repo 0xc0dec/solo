@@ -18,10 +18,9 @@ namespace solo
         void setCubeTexture(const TextureHandle& handle) override final {}
         void setCubeTexture(const TextureHandle& handle, uint32_t flags) override final {}
         void setCubeTexture(const TextureHandle& handle, uint32_t flags, float anisotropyLevel) override final {}
-        void update2DTexture(const TextureHandle& handle, TextureFormat format, uint32_t width, uint32_t height,
-            const void* data) override final {}
-        void updateCubeTexture(const TextureHandle& handle, CubeTextureFace face, TextureFormat format,
-            uint32_t width, uint32_t height, const void* data) override final {}
+        void update2DTexture(const TextureHandle& handle, TextureFormat format, uint32_t width, uint32_t height, const void* data) override final {}
+        void updateCubeTexture(const TextureHandle& handle, CubeTextureFace face, TextureFormat format, uint32_t width,
+            uint32_t height, const void* data) override final {}
         void generateRectTextureMipmaps(const TextureHandle& handle) override final {}
         void generateCubeTextureMipmaps(const TextureHandle& handle) override final {}
 
