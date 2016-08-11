@@ -303,9 +303,6 @@
     <ClCompile Include="..\src\SoloSkyboxRenderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\stub\SoloStubFileSystem.cpp">
-      <Filter>src\platform\stub</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloMeshRenderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
