@@ -294,9 +294,6 @@
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\stub\SoloStubDevice.cpp">
-      <Filter>src\platform\stub</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SoloSpectator.cpp">
       <Filter>src</Filter>
     </ClCompile>
