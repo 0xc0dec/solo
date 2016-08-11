@@ -44,5 +44,5 @@ auto StubDevice::getCanvasSize() const -> Vector2
 
 auto StubDevice::getLifetime() const -> float
 {
-    return 0;
+    
 }
