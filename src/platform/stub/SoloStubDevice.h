@@ -9,16 +9,12 @@ namespace solo
     public:
         explicit StubDevice(const DeviceSetup& setup);
 
-        void setWindowTitle(const std::string& title) override final { windowTitle = title; }
-        auto getWindowTitle() const -> std::string override final { return windowTitle; }
-
+        void setWindowTitle(const std::string& title) override final;
+        auto getWindowTitle() const -> std::string override final;
         void saveScreenshot(const std::string& path) override final {}
-
-        void setCursorCaptured(bool captured) override final;
-
-        auto getCanvasSize() const -> Vector2 override final { return Vector2(0, 0); }
-
-        auto getLifetime() const -> float override final { return 0; }
+        void setCursorCaptured(bool captured) override final {}
+        auto getCanvasSize() const -> Vector2 override final;
+        auto getLifetime() const -> float override final;
 
     private:
         void beginUpdate() override final;
@@ -26,4 +22,24 @@ namespace solo
 
         std::string windowTitle;
     };
+
+    inline void StubDevice::setWindowTitle(const std::string& title)
+    {
+        windowTitle = title;
+    }
+
+    inline auto StubDevice::getWindowTitle() const -> std::string
+    {
+        return windowTitle;
+    }
+
+    inline auto StubDevice::getCanvasSize() const -> Vector2
+    {
+        return Vector2(0, 0);
+    }
+
+    inline auto StubDevice::getLifetime() const -> float 
+    {
+        return 0;
+    }
 }
