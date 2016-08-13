@@ -28,7 +28,7 @@ auto Frustum::getCorners() const -> std::vector<Vector3>
 }
 
 
-std::vector<Vector3> Frustum::getNearCorners() const
+auto Frustum::getNearCorners() const -> std::vector<Vector3>
 {
     std::vector<Vector3> result;
     result.emplace_back(Plane::getCommonPoint(near, left, top));
@@ -39,7 +39,7 @@ std::vector<Vector3> Frustum::getNearCorners() const
 }
 
 
-std::vector<Vector3> Frustum::getFarCorners() const
+auto Frustum::getFarCorners() const -> std::vector<Vector3>
 {
     std::vector<Vector3> result;
     result.emplace_back(Plane::getCommonPoint(far, right, top));
@@ -81,13 +81,13 @@ bool Frustum::intersectsBoundingBox(const BoundingBox& box) const
 }
 
 
-PlaneIntersection Frustum::intersectPlane(const Plane& plane) const
+auto Frustum::intersectPlane(const Plane& plane) const -> PlaneIntersection
 {
     return plane.intersectFrustum(*this);
 }
 
 
-float Frustum::hitByRay(const Ray& ray) const
+auto Frustum::hitByRay(const Ray& ray) const -> float
 {
     return ray.hitFrustum(*this);
 }
