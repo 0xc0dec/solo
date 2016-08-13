@@ -19,7 +19,7 @@ void Frustum::setMatrix(const Matrix& m)
 }
 
 
-std::vector<Vector3> Frustum::getCorners() const
+auto Frustum::getCorners() const -> std::vector<Vector3>
 {
     auto near = getNearCorners();
     auto far = getFarCorners();
