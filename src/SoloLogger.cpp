@@ -18,8 +18,7 @@ void Logger::setTargetFile(const std::string& path)
     if (!path.empty())
     {
         file.open(path, std::ios_base::trunc);
-        if (!file.is_open())
-            logError(SL_FMT("Unable to open target log file ", path));
+        SL_ERR_IF(!file.is_open(), SL_FMT("Unable to open target log file ", path));
     }
 }
 
