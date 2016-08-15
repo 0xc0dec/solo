@@ -371,7 +371,7 @@ void VulkanRenderer::initDepthStencil()
 }
 
 
-void VulkanRenderer::initRenderPass()
+VkRenderPass createRenderPass(VkDevice logicalDevice, VkFormat colorFormat, VkFormat depthFormat)
 {
     VkAttachmentDescription attachments[2] = {};
 
@@ -425,7 +425,10 @@ void VulkanRenderer::initRenderPass()
 	renderPassInfo.dependencyCount = 0;
 	renderPassInfo.pDependencies = nullptr;
 
+    VkRenderPass renderPass = nullptr;
     SL_CHECK_VK_RESULT(vkCreateRenderPass(logicalDevice, &renderPassInfo, nullptr, &renderPass));
+
+    return renderPass;
 }
 
 
@@ -611,7 +614,7 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
     beginCommandBuffer(setupCmdBuffer);
 
     initDepthStencil();
-    initRenderPass();
+    renderPass = createRenderPass(logicalDevice, colorFormat, depthFormat);
 
     flushCommandBuffer(setupCmdBuffer);
     destroyCommandBuffer(setupCmdBuffer);

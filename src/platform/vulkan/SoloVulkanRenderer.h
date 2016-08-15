@@ -87,6 +87,7 @@ namespace solo
         {
             VkImage image = nullptr;
             VkImageView imageView = nullptr;
+            VkFramebuffer framebuffer = nullptr;
         };
 
         struct 
@@ -104,7 +105,6 @@ namespace solo
         void cleanupSwapchain();
         void initCommandBuffers();
         void initDepthStencil();
-        void initRenderPass();
         int32_t findMemoryType(uint32_t typeBits, VkMemoryPropertyFlags properties);
 
         VkCommandBuffer createCommandBuffer();
