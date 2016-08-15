@@ -8,6 +8,22 @@ using namespace solo;
 // TODO perhaps rename all "Framebuffer" to "FrameBuffer"
 
 
+VkShaderModule createShader(VkDevice logicalDevice, const std::vector<uint8_t>& data)
+{
+    VkShaderModuleCreateInfo shaderModuleInfo {};
+    shaderModuleInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+    shaderModuleInfo.pNext = nullptr;
+    shaderModuleInfo.flags = 0;
+    shaderModuleInfo.codeSize = data.size();
+    shaderModuleInfo.pCode = reinterpret_cast<const uint32_t*>(data.data());
+
+    VkShaderModule module = nullptr;
+    SL_CHECK_VK_RESULT(vkCreateShaderModule(logicalDevice, &shaderModuleInfo, nullptr, &module));
+
+    return module;
+}
+
+
 void beginCommandBuffer(VkCommandBuffer buffer)
 {
     VkCommandBufferBeginInfo beginInfo = {};
