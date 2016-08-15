@@ -25,9 +25,7 @@ void Logger::setTargetFile(const std::string& path)
 
 void Logger::logDebug(const std::string& msg)
 {
-#ifdef SL_DEBUG
     log(msg, "debug");
-#endif
 }
 
 
