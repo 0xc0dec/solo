@@ -90,12 +90,12 @@ namespace solo
             VkFramebuffer framebuffer = nullptr;
         };
 
-        struct 
-	    {
-		    VkImage image;
+        struct DepthStencil
+        {
+            VkImage image;
 		    VkDeviceMemory mem;
 		    VkImageView view;
-	    } depthStencil;
+        } depthStencil;
 
         void initPhysicalDevice(VkInstance instance);
         void initLogicalDevice(uint32_t queueIndex);
@@ -104,18 +104,13 @@ namespace solo
         void initSwapchain(VkSurfaceKHR surface, bool vsync);
         void cleanupSwapchain();
         void initCommandBuffers();
-        void initDepthStencil();
-        int32_t findMemoryType(uint32_t typeBits, VkMemoryPropertyFlags properties);
+        static DepthStencil createDepthStencil(VkDevice logicalDevice, VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties,
+            VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight);
 
         VkCommandBuffer createCommandBuffer();
         void destroyCommandBuffer(VkCommandBuffer buffer);
         void beginCommandBuffer(VkCommandBuffer buffer);
         void flushCommandBuffer(VkCommandBuffer buffer);
-
-        void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask,
-            VkImageLayout oldLayout, VkImageLayout newLayout, VkImageSubresourceRange subresourceRange);
-        void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask,
-            VkImageLayout oldLayout, VkImageLayout newLayout);
 
         SDLVulkanDevice* device = nullptr;
         uint32_t canvasWidth = 0;
