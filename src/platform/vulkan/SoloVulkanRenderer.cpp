@@ -5,6 +5,8 @@
 
 using namespace solo;
 
+// TODO perhaps rename all "Framebuffer" to "FrameBuffer"
+
 
 void beginCommandBuffer(VkCommandBuffer buffer)
 {
