@@ -268,6 +268,104 @@ void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags
 }
 
 
+VkRenderPass createRenderPass(VkDevice logicalDevice, VkFormat colorFormat, VkFormat depthFormat)
+{
+    VkAttachmentDescription attachments[2] = {};
+
+    // Color attachment
+	attachments[0].format = colorFormat;
+	attachments[0].samples = VK_SAMPLE_COUNT_1_BIT;
+	attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+	attachments[0].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+	attachments[0].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+	attachments[0].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+	attachments[0].initialLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+	attachments[0].finalLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+	// Depth attachment
+	attachments[1].format = depthFormat;
+	attachments[1].samples = VK_SAMPLE_COUNT_1_BIT;
+	attachments[1].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+	attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+	attachments[1].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+	attachments[1].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+	attachments[1].initialLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+	attachments[1].finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+
+    VkAttachmentReference colorReference = {};
+	colorReference.attachment = 0;
+	colorReference.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+	VkAttachmentReference depthReference = {};
+	depthReference.attachment = 1;
+	depthReference.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+
+    VkSubpassDescription subpass = {};
+	subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+	subpass.flags = 0;
+	subpass.inputAttachmentCount = 0;
+	subpass.pInputAttachments = nullptr;
+	subpass.colorAttachmentCount = 1;
+	subpass.pColorAttachments = &colorReference;
+	subpass.pResolveAttachments = nullptr;
+	subpass.pDepthStencilAttachment = &depthReference;
+	subpass.preserveAttachmentCount = 0;
+	subpass.pPreserveAttachments = nullptr;
+
+	VkRenderPassCreateInfo renderPassInfo = {};
+	renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+	renderPassInfo.pNext = nullptr;
+	renderPassInfo.attachmentCount = 2;
+	renderPassInfo.pAttachments = attachments;
+	renderPassInfo.subpassCount = 1;
+	renderPassInfo.pSubpasses = &subpass;
+	renderPassInfo.dependencyCount = 0;
+	renderPassInfo.pDependencies = nullptr;
+
+    VkRenderPass renderPass = nullptr;
+    SL_CHECK_VK_RESULT(vkCreateRenderPass(logicalDevice, &renderPassInfo, nullptr, &renderPass));
+
+    return renderPass;
+}
+
+
+VkCommandBuffer createCommandBuffer(VkDevice logicalDevice, VkCommandPool commandPool)
+{
+    VkCommandBufferAllocateInfo allocateInfo = {};
+	allocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+	allocateInfo.commandPool = commandPool;
+	allocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+	allocateInfo.commandBufferCount = 1;
+
+    VkCommandBuffer result = nullptr;
+    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &allocateInfo, &result));
+
+    return result;
+}
+
+
+VkFramebuffer createFramebuffer(VkDevice logicalDevice, VkImageView colorAttachment, VkImageView depthAttachment,
+    VkRenderPass renderPass, uint32_t width, uint32_t height)
+{
+    VkImageView attachments[] = { colorAttachment, depthAttachment };
+
+    VkFramebufferCreateInfo createInfo = {};
+	createInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+	createInfo.pNext = nullptr;
+	createInfo.renderPass = renderPass;
+	createInfo.attachmentCount = 2;
+	createInfo.pAttachments = attachments;
+	createInfo.width = width;
+	createInfo.height = height;
+	createInfo.layers = 1;
+
+    VkFramebuffer framebuffer = nullptr;
+    SL_CHECK_VK_RESULT(vkCreateFramebuffer(logicalDevice, &createInfo, nullptr, &framebuffer));
+
+    return framebuffer;
+}
+
+
 void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync)
 {
 	VkSurfaceCapabilitiesKHR capabilities;
@@ -450,6 +548,14 @@ void VulkanRenderer::initCommandBuffers()
 }
 
 
+void VulkanRenderer::initFramebuffers()
+{
+    framebuffers.resize(swapchainBuffers.size());
+    for (auto i = 0; i < swapchainBuffers.size(); i++)
+        framebuffers[i] = createFramebuffer(logicalDevice, swapchainBuffers[i].imageView, depthStencil.view, renderPass, canvasWidth, canvasHeight);
+}
+
+
 VulkanRenderer::DepthStencil VulkanRenderer::createDepthStencil(VkDevice logicalDevice, VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties,
     VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight)
 {
@@ -509,82 +615,6 @@ VulkanRenderer::DepthStencil VulkanRenderer::createDepthStencil(VkDevice logical
 }
 
 
-VkRenderPass createRenderPass(VkDevice logicalDevice, VkFormat colorFormat, VkFormat depthFormat)
-{
-    VkAttachmentDescription attachments[2] = {};
-
-    // Color attachment
-	attachments[0].format = colorFormat;
-	attachments[0].samples = VK_SAMPLE_COUNT_1_BIT;
-	attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-	attachments[0].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-	attachments[0].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-	attachments[0].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-	attachments[0].initialLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-	attachments[0].finalLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-	// Depth attachment
-	attachments[1].format = depthFormat;
-	attachments[1].samples = VK_SAMPLE_COUNT_1_BIT;
-	attachments[1].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-	attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-	attachments[1].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-	attachments[1].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-	attachments[1].initialLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-	attachments[1].finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-
-    VkAttachmentReference colorReference = {};
-	colorReference.attachment = 0;
-	colorReference.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-	VkAttachmentReference depthReference = {};
-	depthReference.attachment = 1;
-	depthReference.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-
-    VkSubpassDescription subpass = {};
-	subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
-	subpass.flags = 0;
-	subpass.inputAttachmentCount = 0;
-	subpass.pInputAttachments = nullptr;
-	subpass.colorAttachmentCount = 1;
-	subpass.pColorAttachments = &colorReference;
-	subpass.pResolveAttachments = nullptr;
-	subpass.pDepthStencilAttachment = &depthReference;
-	subpass.preserveAttachmentCount = 0;
-	subpass.pPreserveAttachments = nullptr;
-
-	VkRenderPassCreateInfo renderPassInfo = {};
-	renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-	renderPassInfo.pNext = nullptr;
-	renderPassInfo.attachmentCount = 2;
-	renderPassInfo.pAttachments = attachments;
-	renderPassInfo.subpassCount = 1;
-	renderPassInfo.pSubpasses = &subpass;
-	renderPassInfo.dependencyCount = 0;
-	renderPassInfo.pDependencies = nullptr;
-
-    VkRenderPass renderPass = nullptr;
-    SL_CHECK_VK_RESULT(vkCreateRenderPass(logicalDevice, &renderPassInfo, nullptr, &renderPass));
-
-    return renderPass;
-}
-
-
-VkCommandBuffer createCommandBuffer(VkDevice logicalDevice, VkCommandPool commandPool)
-{
-    VkCommandBufferAllocateInfo allocateInfo = {};
-	allocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-	allocateInfo.commandPool = commandPool;
-	allocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-	allocateInfo.commandBufferCount = 1;
-
-    VkCommandBuffer result = nullptr;
-    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &allocateInfo, &result));
-
-    return result;
-}
-
-
 VulkanRenderer::VulkanRenderer(Device* engineDevice):
     device(dynamic_cast<SDLVulkanDevice*>(engineDevice))
 {
@@ -628,6 +658,7 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
 
     depthStencil = createDepthStencil(logicalDevice, physicalDeviceMemoryProperties, setupCmdBuffer, depthFormat, canvasWidth, canvasHeight);
     renderPass = createRenderPass(logicalDevice, colorFormat, depthFormat);
+    initFramebuffers();
 
     flushCommandBuffer(queue, setupCmdBuffer);
     destroyCommandBuffer(logicalDevice, commandPool, setupCmdBuffer);

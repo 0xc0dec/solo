@@ -87,7 +87,6 @@ namespace solo
         {
             VkImage image = nullptr;
             VkImageView imageView = nullptr;
-            VkFramebuffer framebuffer = nullptr;
         };
 
         struct DepthStencil
@@ -97,11 +96,13 @@ namespace solo
 		    VkImageView view;
         } depthStencil;
 
+        static DepthStencil createDepthStencil(VkDevice logicalDevice, VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties,
+            VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight);
+
         void initSwapchain(VkSurfaceKHR surface, bool vsync);
         void cleanupSwapchain();
         void initCommandBuffers();
-        static DepthStencil createDepthStencil(VkDevice logicalDevice, VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties,
-            VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight);
+        void initFramebuffers();
 
         SDLVulkanDevice* device = nullptr;
         uint32_t canvasWidth = 0;
@@ -114,6 +115,7 @@ namespace solo
         std::vector<VkCommandBuffer> drawCmdBuffers;
         std::vector<VkCommandBuffer> prePresentCmdBuffers;
         std::vector<VkCommandBuffer> postPresentCmdBuffers;
+        std::vector<VkFramebuffer> framebuffers;
         VkFormat colorFormat = VK_FORMAT_UNDEFINED;
         VkColorSpaceKHR colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
         VkCommandPool commandPool = nullptr;
