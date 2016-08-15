@@ -97,20 +97,11 @@ namespace solo
 		    VkImageView view;
         } depthStencil;
 
-        void initPhysicalDevice(VkInstance instance);
-        void initLogicalDevice(uint32_t queueIndex);
-        void initSemaphores();
-        void initCommandPool(uint32_t queueIndex);
         void initSwapchain(VkSurfaceKHR surface, bool vsync);
         void cleanupSwapchain();
         void initCommandBuffers();
         static DepthStencil createDepthStencil(VkDevice logicalDevice, VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties,
             VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight);
-
-        VkCommandBuffer createCommandBuffer();
-        void destroyCommandBuffer(VkCommandBuffer buffer);
-        void beginCommandBuffer(VkCommandBuffer buffer);
-        void flushCommandBuffer(VkCommandBuffer buffer);
 
         SDLVulkanDevice* device = nullptr;
         uint32_t canvasWidth = 0;

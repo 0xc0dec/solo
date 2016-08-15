@@ -6,6 +6,34 @@
 using namespace solo;
 
 
+void beginCommandBuffer(VkCommandBuffer buffer)
+{
+    VkCommandBufferBeginInfo beginInfo = {};
+	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+    SL_CHECK_VK_RESULT(vkBeginCommandBuffer(buffer, &beginInfo));
+}
+
+
+void destroyCommandBuffer(VkDevice logicalDevice, VkCommandPool commandPool, VkCommandBuffer buffer)
+{
+    vkFreeCommandBuffers(logicalDevice, commandPool, 1, &buffer);
+}
+
+
+void flushCommandBuffer(VkQueue queue, VkCommandBuffer buffer)
+{
+    SL_CHECK_VK_RESULT(vkEndCommandBuffer(buffer));
+
+    VkSubmitInfo submitInfo = {};
+	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+	submitInfo.commandBufferCount = 1;
+	submitInfo.pCommandBuffers = &buffer;
+
+    SL_CHECK_VK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, nullptr));
+	SL_CHECK_VK_RESULT(vkQueueWaitIdle(queue));
+}
+
+
 int32_t findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, uint32_t typeBits, VkMemoryPropertyFlags properties)
 {
     for (uint32_t i = 0; i < physicalDeviceMemoryProperties.memoryTypeCount; i++)
@@ -86,7 +114,7 @@ uint32_t getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface)
 }
 
 
-void VulkanRenderer::initLogicalDevice(uint32_t queueIndex)
+VkDevice createLogicalDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex)
 {
     std::vector<float> queuePriorities = { 0.0f };
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfos = {};
@@ -108,11 +136,14 @@ void VulkanRenderer::initLogicalDevice(uint32_t queueIndex)
     deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
     deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
 
+    VkDevice logicalDevice = nullptr;
     SL_CHECK_VK_RESULT(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &logicalDevice));
+
+    return logicalDevice;
 }
 
 
-void VulkanRenderer::initPhysicalDevice(VkInstance instance)
+VkPhysicalDevice createPhysicalDevice(VkInstance instance)
 {
     uint32_t gpuCount = 0;
     SL_CHECK_VK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr));
@@ -120,32 +151,120 @@ void VulkanRenderer::initPhysicalDevice(VkInstance instance)
 	std::vector<VkPhysicalDevice> physicalDevices(gpuCount);
 	SL_CHECK_VK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, physicalDevices.data()));
 
-    physicalDevice = physicalDevices[0]; // TODO at least for now
-    vkGetPhysicalDeviceProperties(physicalDevice, &physicalDeviceProperties);
-	vkGetPhysicalDeviceFeatures(physicalDevice, &physicalDeviceFeatures);
-	vkGetPhysicalDeviceMemoryProperties(physicalDevice, &physicalDeviceMemoryProperties);
+    return physicalDevices[0]; // TODO at least for now
 }
 
 
-void VulkanRenderer::initSemaphores()
+VkSemaphore createSemaphore(VkDevice logicalDevice)
 {
     VkSemaphoreCreateInfo semaphoreCreateInfo = {};
 	semaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
 	semaphoreCreateInfo.pNext = nullptr;
 	semaphoreCreateInfo.flags = 0;
 
-    SL_CHECK_VK_RESULT(vkCreateSemaphore(logicalDevice, &semaphoreCreateInfo, nullptr, &presentCompleteSem));
-    SL_CHECK_VK_RESULT(vkCreateSemaphore(logicalDevice, &semaphoreCreateInfo, nullptr, &renderCompleteSem));
+    VkSemaphore semaphore = nullptr;
+    SL_CHECK_VK_RESULT(vkCreateSemaphore(logicalDevice, &semaphoreCreateInfo, nullptr, &semaphore));
+
+    return semaphore;
 }
 
 
-void VulkanRenderer::initCommandPool(uint32_t queueIndex)
+VkCommandPool createCommandPool(VkDevice logicalDevice, uint32_t queueIndex)
 {
     VkCommandPoolCreateInfo poolInfo = {};
 	poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
 	poolInfo.queueFamilyIndex = queueIndex;
 	poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+
+    VkCommandPool commandPool = nullptr;
     SL_CHECK_VK_RESULT(vkCreateCommandPool(logicalDevice, &poolInfo, nullptr, &commandPool));
+
+    return commandPool;
+}
+
+
+void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask,
+    VkImageLayout oldLayout, VkImageLayout newLayout, VkImageSubresourceRange subresourceRange)
+{
+    VkImageMemoryBarrier imageMemoryBarrier = {};
+	imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	imageMemoryBarrier.pNext = nullptr;
+	imageMemoryBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+	imageMemoryBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+    imageMemoryBarrier.oldLayout = oldLayout;
+	imageMemoryBarrier.newLayout = newLayout;
+	imageMemoryBarrier.image = image;
+	imageMemoryBarrier.subresourceRange = subresourceRange;
+
+    switch (oldLayout)
+	{
+	    case VK_IMAGE_LAYOUT_UNDEFINED:
+			    imageMemoryBarrier.srcAccessMask = 0;
+			    break;
+	    case VK_IMAGE_LAYOUT_PREINITIALIZED:
+			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT;
+			    break;
+	    case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
+			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+			    break;
+	    case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
+			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+			    break;
+	    case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
+			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+			    break;
+	    case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
+			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+			    break;
+	    case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
+			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
+			    break;
+        default:
+            SL_ERR("Unknown old image layout");
+            break;
+	}
+
+    switch (newLayout)
+	{
+	    case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
+		    imageMemoryBarrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+		    break;
+	    case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
+		    imageMemoryBarrier.srcAccessMask = imageMemoryBarrier.srcAccessMask | VK_ACCESS_TRANSFER_READ_BIT;
+		    imageMemoryBarrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+		    break;
+	    case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
+		    imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+		    imageMemoryBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+		    break;
+	    case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
+		    imageMemoryBarrier.dstAccessMask = imageMemoryBarrier.dstAccessMask | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+		    break;
+	    case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
+		    if (imageMemoryBarrier.srcAccessMask == 0)
+			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
+		    imageMemoryBarrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+		    break;
+        default:
+            SL_ERR("Unknown new image layout");
+            break;
+	}
+
+    VkPipelineStageFlags srcStageFlags = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+	VkPipelineStageFlags destStageFlags = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+
+    vkCmdPipelineBarrier(cmdbuffer, srcStageFlags, destStageFlags, 0, 0, nullptr, 0, nullptr, 1, &imageMemoryBarrier);
+}
+
+
+void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask, VkImageLayout oldLayout, VkImageLayout newLayout)
+{
+    VkImageSubresourceRange subresourceRange = {};
+	subresourceRange.aspectMask = aspectMask;
+	subresourceRange.baseMipLevel = 0;
+	subresourceRange.levelCount = 1;
+	subresourceRange.layerCount = 1;
+    setImageLayout(cmdbuffer, image, aspectMask, oldLayout, newLayout, subresourceRange);
 }
 
 
@@ -306,7 +425,7 @@ void VulkanRenderer::initCommandBuffers()
 
         vkCmdPipelineBarrier(postPresentCmdBuffers[i], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
 			0, 0, nullptr, 0, nullptr, 1, &postPresentBarrier);
-        flushCommandBuffer(postPresentCmdBuffers[i]);
+        flushCommandBuffer(queue, postPresentCmdBuffers[i]);
 
         // Transforms the (framebuffer) image layout from color attachment to present(khr) for presenting to the swap chain
 
@@ -326,93 +445,8 @@ void VulkanRenderer::initCommandBuffers()
         vkCmdPipelineBarrier(prePresentCmdBuffers[i], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
 			0, 0, nullptr, 0, nullptr, 1, &prePresentBarrier);
 
-        flushCommandBuffer(prePresentCmdBuffers[i]);
+        flushCommandBuffer(queue, prePresentCmdBuffers[i]);
     }
-}
-
-
-void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask,
-    VkImageLayout oldLayout, VkImageLayout newLayout, VkImageSubresourceRange subresourceRange)
-{
-    VkImageMemoryBarrier imageMemoryBarrier = {};
-	imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-	imageMemoryBarrier.pNext = nullptr;
-	imageMemoryBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-	imageMemoryBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-    imageMemoryBarrier.oldLayout = oldLayout;
-	imageMemoryBarrier.newLayout = newLayout;
-	imageMemoryBarrier.image = image;
-	imageMemoryBarrier.subresourceRange = subresourceRange;
-
-    switch (oldLayout)
-	{
-	    case VK_IMAGE_LAYOUT_UNDEFINED:
-			    imageMemoryBarrier.srcAccessMask = 0;
-			    break;
-	    case VK_IMAGE_LAYOUT_PREINITIALIZED:
-			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT;
-			    break;
-	    case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
-			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-			    break;
-	    case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
-			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
-			    break;
-	    case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
-			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-			    break;
-	    case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
-			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-			    break;
-	    case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
-			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
-			    break;
-        default:
-            SL_ERR("Unknown old image layout");
-            break;
-	}
-
-    switch (newLayout)
-	{
-	    case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
-		    imageMemoryBarrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-		    break;
-	    case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
-		    imageMemoryBarrier.srcAccessMask = imageMemoryBarrier.srcAccessMask | VK_ACCESS_TRANSFER_READ_BIT;
-		    imageMemoryBarrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-		    break;
-	    case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
-		    imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-		    imageMemoryBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-		    break;
-	    case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
-		    imageMemoryBarrier.dstAccessMask = imageMemoryBarrier.dstAccessMask | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
-		    break;
-	    case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
-		    if (imageMemoryBarrier.srcAccessMask == 0)
-			    imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
-		    imageMemoryBarrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
-		    break;
-        default:
-            SL_ERR("Unknown new image layout");
-            break;
-	}
-
-    VkPipelineStageFlags srcStageFlags = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-	VkPipelineStageFlags destStageFlags = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-
-    vkCmdPipelineBarrier(cmdbuffer, srcStageFlags, destStageFlags, 0, 0, nullptr, 0, nullptr, 1, &imageMemoryBarrier);
-}
-
-
-void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask, VkImageLayout oldLayout, VkImageLayout newLayout)
-{
-    VkImageSubresourceRange subresourceRange = {};
-	subresourceRange.aspectMask = aspectMask;
-	subresourceRange.baseMipLevel = 0;
-	subresourceRange.levelCount = 1;
-	subresourceRange.layerCount = 1;
-    setImageLayout(cmdbuffer, image, aspectMask, oldLayout, newLayout, subresourceRange);
 }
 
 
@@ -536,7 +570,7 @@ VkRenderPass createRenderPass(VkDevice logicalDevice, VkFormat colorFormat, VkFo
 }
 
 
-VkCommandBuffer VulkanRenderer::createCommandBuffer()
+VkCommandBuffer createCommandBuffer(VkDevice logicalDevice, VkCommandPool commandPool)
 {
     VkCommandBufferAllocateInfo allocateInfo = {};
 	allocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
@@ -551,41 +585,16 @@ VkCommandBuffer VulkanRenderer::createCommandBuffer()
 }
 
 
-void VulkanRenderer::destroyCommandBuffer(VkCommandBuffer buffer)
-{
-    vkFreeCommandBuffers(logicalDevice, commandPool, 1, &buffer);
-}
-
-
-void VulkanRenderer::beginCommandBuffer(VkCommandBuffer buffer)
-{
-    VkCommandBufferBeginInfo beginInfo = {};
-	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-    SL_CHECK_VK_RESULT(vkBeginCommandBuffer(buffer, &beginInfo));
-}
-
-
-void VulkanRenderer::flushCommandBuffer(VkCommandBuffer buffer)
-{
-    SL_CHECK_VK_RESULT(vkEndCommandBuffer(buffer));
-
-    VkSubmitInfo submitInfo = {};
-	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-	submitInfo.commandBufferCount = 1;
-	submitInfo.pCommandBuffers = &buffer;
-
-    SL_CHECK_VK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, nullptr));
-	SL_CHECK_VK_RESULT(vkQueueWaitIdle(queue));
-}
-
-
 VulkanRenderer::VulkanRenderer(Device* engineDevice):
     device(dynamic_cast<SDLVulkanDevice*>(engineDevice))
 {
     auto instance = device->getVulkanInstance();
     auto surface = device->getVulkanSurface();
 
-    initPhysicalDevice(instance);
+    physicalDevice = createPhysicalDevice(instance);
+    vkGetPhysicalDeviceProperties(physicalDevice, &physicalDeviceProperties);
+	vkGetPhysicalDeviceFeatures(physicalDevice, &physicalDeviceFeatures);
+	vkGetPhysicalDeviceMemoryProperties(physicalDevice, &physicalDeviceMemoryProperties);
 
     auto surfaceFormats = getSurfaceFormats(physicalDevice, surface);
     colorFormat = std::get<0>(surfaceFormats);
@@ -593,13 +602,14 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
 
     auto queueIndex = getQueueIndex(physicalDevice, surface);
 
-    initLogicalDevice(queueIndex);
+    logicalDevice = createLogicalDevice(physicalDevice, queueIndex);
 
     vkGetDeviceQueue(logicalDevice, queueIndex, 0, &queue);
 
     depthFormat = getDepthFormat(physicalDevice);
 
-    initSemaphores();
+    presentCompleteSem = createSemaphore(logicalDevice);
+    renderCompleteSem = createSemaphore(logicalDevice);
 
     submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 	submitInfo.pNext = nullptr;
@@ -609,18 +619,18 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
 	submitInfo.signalSemaphoreCount = 1;
 	submitInfo.pSignalSemaphores = &renderCompleteSem;
 
-    initCommandPool(queueIndex);
+    commandPool = createCommandPool(logicalDevice, queueIndex);
     initSwapchain(surface, device->getSetup().vsync);
     initCommandBuffers();
 
-    setupCmdBuffer = createCommandBuffer();
+    setupCmdBuffer = createCommandBuffer(logicalDevice, commandPool);
     beginCommandBuffer(setupCmdBuffer);
 
     depthStencil = createDepthStencil(logicalDevice, physicalDeviceMemoryProperties, setupCmdBuffer, depthFormat, canvasWidth, canvasHeight);
     renderPass = createRenderPass(logicalDevice, colorFormat, depthFormat);
 
-    flushCommandBuffer(setupCmdBuffer);
-    destroyCommandBuffer(setupCmdBuffer);
+    flushCommandBuffer(queue, setupCmdBuffer);
+    destroyCommandBuffer(logicalDevice, commandPool, setupCmdBuffer);
 }
 
 
