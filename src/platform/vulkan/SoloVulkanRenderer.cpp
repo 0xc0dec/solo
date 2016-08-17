@@ -1,5 +1,6 @@
 #include "SoloVulkanRenderer.h"
 #include "SoloSDLVulkanDevice.h"
+#include "SoloFileSystem.h" // TODO remove?
 
 #ifdef SL_VULKAN_RENDERER
 
@@ -641,14 +642,136 @@ void VulkanRenderer::initFrameBuffers()
 }
 
 
+// TODO remove these
+static bool initialized = false;
+struct Vertex { float position[2]; float color[3]; };
+
+
 void VulkanRenderer::test_init()
 {
     buildDrawCommandBuffers();
+
+    VkPipelineLayoutCreateInfo pipelineLayoutInfo {};
+    pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+    pipelineLayoutInfo.pNext = nullptr;
+    pipelineLayoutInfo.flags = 0;
+    pipelineLayoutInfo.setLayoutCount = 0;
+    pipelineLayoutInfo.pSetLayouts = nullptr;
+    pipelineLayoutInfo.pushConstantRangeCount = 0;
+    pipelineLayoutInfo.pPushConstantRanges = nullptr;
+
+    VkPipelineLayout pipelineLayout;
+    SL_CHECK_VK_RESULT(vkCreatePipelineLayout(logicalDevice, &pipelineLayoutInfo, nullptr, &pipelineLayout));
+
+    auto vertexShader = createShader(logicalDevice, Device::get()->getFileSystem()->readBytes("triangle.vert.spv"));
+    auto fragmentShader = createShader(logicalDevice, Device::get()->getFileSystem()->readBytes("triangle.frag.spv"));
+
+    VkPipelineShaderStageCreateInfo vertexShaderStage {};
+    vertexShaderStage.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+    vertexShaderStage.pNext = nullptr;
+    vertexShaderStage.flags = 0;
+    vertexShaderStage.stage = VK_SHADER_STAGE_VERTEX_BIT;
+    vertexShaderStage.module = vertexShader;
+    vertexShaderStage.pName = "main";
+    vertexShaderStage.pSpecializationInfo = nullptr;
+
+    VkPipelineShaderStageCreateInfo fragmentShaderStage {};
+    fragmentShaderStage.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+    fragmentShaderStage.pNext = nullptr;
+    fragmentShaderStage.flags = 0;
+    fragmentShaderStage.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
+    fragmentShaderStage.module = fragmentShader;
+    fragmentShaderStage.pName = "main";
+    fragmentShaderStage.pSpecializationInfo = nullptr;
+
+    std::vector<VkPipelineShaderStageCreateInfo> shaderStageStates = { vertexShaderStage, fragmentShaderStage };
+
+    VkVertexInputBindingDescription vertexInputBindingDesc {};
+    vertexInputBindingDesc.binding = 0;
+    vertexInputBindingDesc.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+    vertexInputBindingDesc.stride = sizeof(Vertex);
+    std::vector<VkVertexInputBindingDescription> inputBindingDescriptions = { vertexInputBindingDesc };
+
+    const uint32_t positionLocation = 0;
+	const uint32_t colorLocation = 1;
+
+    VkVertexInputAttributeDescription positionInputAttrDesc {};
+    positionInputAttrDesc.location = positionLocation;
+    positionInputAttrDesc.binding = 0;
+    positionInputAttrDesc.format = VK_FORMAT_R32G32_SFLOAT;
+    positionInputAttrDesc.offset = offsetof(Vertex, position);
+
+    VkVertexInputAttributeDescription colorInputAttrDesc {};
+    colorInputAttrDesc.location = colorLocation;
+    colorInputAttrDesc.binding = 0;
+    colorInputAttrDesc.format = VK_FORMAT_R32G32_SFLOAT;
+    colorInputAttrDesc.offset = offsetof(Vertex, color);
+
+    std::vector<VkVertexInputAttributeDescription> inputAttributeDescriptions =
+        { positionInputAttrDesc, colorInputAttrDesc };
+
+    VkPipelineVertexInputStateCreateInfo vertexInputState {};
+    vertexInputState.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+    vertexInputState.pNext = nullptr;
+    vertexInputState.flags = 0;
+    vertexInputState.vertexBindingDescriptionCount = static_cast<uint32_t>(inputBindingDescriptions.size());
+    vertexInputState.pVertexBindingDescriptions = inputBindingDescriptions.data();
+    vertexInputState.vertexAttributeDescriptionCount = static_cast<uint32_t>(inputAttributeDescriptions.size());
+    vertexInputState.pVertexAttributeDescriptions = inputAttributeDescriptions.data();
+
+    VkPipelineInputAssemblyStateCreateInfo inputAssemblyState {};
+    inputAssemblyState.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
+    inputAssemblyState.pNext = nullptr;
+    inputAssemblyState.flags = 0;
+    inputAssemblyState.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+    inputAssemblyState.primitiveRestartEnable = VK_FALSE;
+
+    VkPipelineViewportStateCreateInfo viewportState {};
+    viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+    viewportState.pNext = nullptr;
+    viewportState.flags = 0;
+    viewportState.viewportCount = 1;
+    viewportState.pViewports = nullptr;
+    viewportState.scissorCount = 1;
+    viewportState.pScissors = nullptr;
+
+    VkPipelineRasterizationStateCreateInfo rasterizationState {};
+    rasterizationState.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+    rasterizationState.pNext = nullptr;
+    rasterizationState.flags = 0;
+    rasterizationState.depthClampEnable = false;
+    rasterizationState.rasterizerDiscardEnable = false;
+    rasterizationState.polygonMode = VK_POLYGON_MODE_FILL;
+    rasterizationState.cullMode = VK_CULL_MODE_BACK_BIT;
+    rasterizationState.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
+    rasterizationState.depthBiasEnable = false;
+    rasterizationState.depthBiasClamp = 0;
+    rasterizationState.depthBiasConstantFactor = 0;
+    rasterizationState.depthBiasClamp = 0;
+    rasterizationState.depthBiasSlopeFactor = 0;
+    rasterizationState.lineWidth = 0;
+
+    VkPipelineMultisampleStateCreateInfo multisampleState {};
+    multisampleState.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+    multisampleState.pNext = nullptr;
+    multisampleState.flags = 0;
+    multisampleState.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
+    multisampleState.sampleShadingEnable = false;
+    multisampleState.minSampleShading = 0;
+    multisampleState.pSampleMask = nullptr;
+    multisampleState.alphaToCoverageEnable = false;
+    multisampleState.alphaToOneEnable = false;
 }
 
 
 void VulkanRenderer::test_draw()
 {
+    if (!initialized)
+    {
+        test_init();
+        initialized = true;
+    }
+
     VkSubmitInfo submitInfo = {};
 	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 	submitInfo.pNext = nullptr;
@@ -766,8 +889,6 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
 
     flushCommandBuffer(queue, setupCmdBuffer);
     ::destroyCommandBuffers(logicalDevice, commandPool, &setupCmdBuffer, 1);
-
-    test_init();
 }
 
 
