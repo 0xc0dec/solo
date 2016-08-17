@@ -103,6 +103,7 @@ namespace solo
         void cleanupSwapchain();
 
         void initCommandBuffers();
+        void initPresentationCommandBuffers();
         void destroyCommandBuffers();
 
         void initFrameBuffers();

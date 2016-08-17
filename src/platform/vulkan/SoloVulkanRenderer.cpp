@@ -519,7 +519,13 @@ void VulkanRenderer::initCommandBuffers()
     SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, prePresentCmdBuffers.data()));
     SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, postPresentCmdBuffers.data()));
 
-    for (uint32_t i = 0; i < count; i++)
+    initPresentationCommandBuffers();
+}
+
+
+void VulkanRenderer::initPresentationCommandBuffers()
+{
+    for (uint32_t i = 0; i < swapchainBuffers.size(); i++)
     {
         // Transform the image back to a color attachment that our render pass can write to
 
