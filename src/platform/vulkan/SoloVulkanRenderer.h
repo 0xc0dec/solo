@@ -104,9 +104,13 @@ namespace solo
 
         void initCommandBuffers();
         void initPresentationCommandBuffers();
+        void buildDrawCommandBuffers();
         void destroyCommandBuffers();
 
         void initFrameBuffers();
+
+        void test_init();
+        void test_draw();
 
         SDLVulkanDevice* device = nullptr;
         uint32_t canvasWidth = 0;

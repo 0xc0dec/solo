@@ -572,6 +572,59 @@ void VulkanRenderer::initPresentationCommandBuffers()
 }
 
 
+void VulkanRenderer::buildDrawCommandBuffers()
+{
+    VkCommandBufferBeginInfo cmdBufferBeginInfo = {};
+	cmdBufferBeginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+	cmdBufferBeginInfo.pNext = nullptr;
+
+    VkClearValue clearValues[2];
+	clearValues[0].color = { { 0.0f, 0.8f, 0.8f, 1.0f} };
+	clearValues[1].depthStencil = { 1.0f, 0 };
+
+    VkRenderPassBeginInfo renderPassBeginInfo = {};
+	renderPassBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+	renderPassBeginInfo.pNext = nullptr;
+    renderPassBeginInfo.renderPass = renderPass;
+	renderPassBeginInfo.renderArea.offset.x = 0;
+	renderPassBeginInfo.renderArea.offset.y = 0;
+	renderPassBeginInfo.renderArea.extent.width = canvasWidth;
+	renderPassBeginInfo.renderArea.extent.height = canvasHeight;
+	renderPassBeginInfo.clearValueCount = 2;
+	renderPassBeginInfo.pClearValues = clearValues;
+
+    VkViewport viewport = {};
+	viewport.width = canvasWidth;
+	viewport.height = canvasHeight;
+	viewport.minDepth = 0;
+	viewport.maxDepth = 1;
+
+    VkRect2D scissor = {};
+	scissor.extent.width = canvasWidth;
+	scissor.extent.height = canvasHeight;
+	scissor.offset.x = 0;
+	scissor.offset.y = 0;
+
+    for (int32_t i = 0; i < drawCmdBuffers.size(); ++i)
+	{
+		renderPassBeginInfo.framebuffer = frameBuffers[i];
+
+		SL_CHECK_VK_RESULT(vkBeginCommandBuffer(drawCmdBuffers[i], &cmdBufferBeginInfo));
+
+		vkCmdBeginRenderPass(drawCmdBuffers[i], &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
+
+		vkCmdSetViewport(drawCmdBuffers[i], 0, 1, &viewport);
+		vkCmdSetScissor(drawCmdBuffers[i], 0, 1, &scissor);
+
+        // TODO scene rendering here
+
+		vkCmdEndRenderPass(drawCmdBuffers[i]);
+
+		SL_CHECK_VK_RESULT(vkEndCommandBuffer(drawCmdBuffers[i]));
+	}
+}
+
+
 void VulkanRenderer::destroyCommandBuffers()
 {
     ::destroyCommandBuffers(logicalDevice, commandPool, drawCmdBuffers.data(), drawCmdBuffers.size());
@@ -585,6 +638,24 @@ void VulkanRenderer::initFrameBuffers()
     frameBuffers.resize(swapchainBuffers.size());
     for (auto i = 0; i < swapchainBuffers.size(); i++)
         frameBuffers[i] = ::createFrameBuffer(logicalDevice, swapchainBuffers[i].imageView, depthStencil.view, renderPass, canvasWidth, canvasHeight);
+}
+
+
+void VulkanRenderer::test_init()
+{
+    buildDrawCommandBuffers();
+}
+
+
+void VulkanRenderer::test_draw()
+{
+    VkSubmitInfo submitInfo = {};
+	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+	submitInfo.pNext = nullptr;
+    submitInfo.commandBufferCount = 1;
+	submitInfo.pCommandBuffers = &drawCmdBuffers[currentBuffer];
+
+    SL_CHECK_VK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, nullptr));
 }
 
 
@@ -695,6 +766,8 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
 
     flushCommandBuffer(queue, setupCmdBuffer);
     ::destroyCommandBuffers(logicalDevice, commandPool, &setupCmdBuffer, 1);
+
+    test_init();
 }
 
 
@@ -716,6 +789,8 @@ void VulkanRenderer::beginFrame()
 	submitInfo.pCommandBuffers = &postPresentCmdBuffers[currentBuffer];
 
     SL_CHECK_VK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, nullptr));
+
+    test_draw();
 }
 
 
