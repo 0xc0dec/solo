@@ -588,7 +588,8 @@ void VulkanRenderer::initFrameBuffers()
 }
 
 
-VulkanRenderer::DepthStencil VulkanRenderer::createDepthStencil(VkDevice logicalDevice, VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties,
+VulkanRenderer::DepthStencil VulkanRenderer::createDepthStencil(
+    VkDevice logicalDevice, VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties,
     VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight)
 {
     VkImageCreateInfo image = {};
