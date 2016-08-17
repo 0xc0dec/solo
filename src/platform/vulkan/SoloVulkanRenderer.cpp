@@ -362,7 +362,7 @@ VkCommandBuffer createCommandBuffer(VkDevice logicalDevice, VkCommandPool comman
 }
 
 
-VkFramebuffer createFramebuffer(VkDevice logicalDevice, VkImageView colorAttachment, VkImageView depthAttachment,
+VkFramebuffer createFrameBuffer(VkDevice logicalDevice, VkImageView colorAttachment, VkImageView depthAttachment,
     VkRenderPass renderPass, uint32_t width, uint32_t height)
 {
     VkImageView attachments[] = { colorAttachment, depthAttachment };
@@ -377,10 +377,10 @@ VkFramebuffer createFramebuffer(VkDevice logicalDevice, VkImageView colorAttachm
 	createInfo.height = height;
 	createInfo.layers = 1;
 
-    VkFramebuffer framebuffer = nullptr;
-    SL_CHECK_VK_RESULT(vkCreateFramebuffer(logicalDevice, &createInfo, nullptr, &framebuffer));
+    VkFramebuffer frameBuffer = nullptr;
+    SL_CHECK_VK_RESULT(vkCreateFramebuffer(logicalDevice, &createInfo, nullptr, &frameBuffer));
 
-    return framebuffer;
+    return frameBuffer;
 }
 
 
@@ -566,11 +566,11 @@ void VulkanRenderer::initCommandBuffers()
 }
 
 
-void VulkanRenderer::initFramebuffers()
+void VulkanRenderer::initFrameBuffers()
 {
-    framebuffers.resize(swapchainBuffers.size());
+    frameBuffers.resize(swapchainBuffers.size());
     for (auto i = 0; i < swapchainBuffers.size(); i++)
-        framebuffers[i] = createFramebuffer(logicalDevice, swapchainBuffers[i].imageView, depthStencil.view, renderPass, canvasWidth, canvasHeight);
+        frameBuffers[i] = ::createFrameBuffer(logicalDevice, swapchainBuffers[i].imageView, depthStencil.view, renderPass, canvasWidth, canvasHeight);
 }
 
 
@@ -676,7 +676,7 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
 
     depthStencil = createDepthStencil(logicalDevice, physicalDeviceMemoryProperties, setupCmdBuffer, depthFormat, canvasWidth, canvasHeight);
     renderPass = createRenderPass(logicalDevice, colorFormat, depthFormat);
-    initFramebuffers();
+    initFrameBuffers();
 
     flushCommandBuffer(queue, setupCmdBuffer);
     destroyCommandBuffer(logicalDevice, commandPool, setupCmdBuffer);

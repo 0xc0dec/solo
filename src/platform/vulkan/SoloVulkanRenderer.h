@@ -102,7 +102,7 @@ namespace solo
         void initSwapchain(VkSurfaceKHR surface, bool vsync);
         void cleanupSwapchain();
         void initCommandBuffers();
-        void initFramebuffers();
+        void initFrameBuffers();
 
         SDLVulkanDevice* device = nullptr;
         uint32_t canvasWidth = 0;
@@ -115,7 +115,7 @@ namespace solo
         std::vector<VkCommandBuffer> drawCmdBuffers;
         std::vector<VkCommandBuffer> prePresentCmdBuffers;
         std::vector<VkCommandBuffer> postPresentCmdBuffers;
-        std::vector<VkFramebuffer> framebuffers;
+        std::vector<VkFramebuffer> frameBuffers;
         VkFormat colorFormat = VK_FORMAT_UNDEFINED;
         VkColorSpaceKHR colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
         VkCommandPool commandPool = nullptr;
