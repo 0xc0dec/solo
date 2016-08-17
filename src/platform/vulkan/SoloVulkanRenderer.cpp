@@ -773,6 +773,7 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
 
 VulkanRenderer::~VulkanRenderer()
 {
+    // TODO clean lots of other stuff
     destroyCommandBuffers();
     cleanupSwapchain();
 }
