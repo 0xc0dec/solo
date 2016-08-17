@@ -32,9 +32,9 @@ void beginCommandBuffer(VkCommandBuffer buffer)
 }
 
 
-void destroyCommandBuffer(VkDevice logicalDevice, VkCommandPool commandPool, VkCommandBuffer buffer)
+void destroyCommandBuffers(VkDevice logicalDevice, VkCommandPool commandPool, VkCommandBuffer* buffers, uint32_t count)
 {
-    vkFreeCommandBuffers(logicalDevice, commandPool, 1, &buffer);
+    vkFreeCommandBuffers(logicalDevice, commandPool, count, buffers);
 }
 
 
@@ -566,6 +566,14 @@ void VulkanRenderer::initCommandBuffers()
 }
 
 
+void VulkanRenderer::destroyCommandBuffers()
+{
+    ::destroyCommandBuffers(logicalDevice, commandPool, drawCmdBuffers.data(), drawCmdBuffers.size());
+    ::destroyCommandBuffers(logicalDevice, commandPool, prePresentCmdBuffers.data(), prePresentCmdBuffers.size());
+    ::destroyCommandBuffers(logicalDevice, commandPool, postPresentCmdBuffers.data(), postPresentCmdBuffers.size());
+}
+
+
 void VulkanRenderer::initFrameBuffers()
 {
     frameBuffers.resize(swapchainBuffers.size());
@@ -679,12 +687,13 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
     initFrameBuffers();
 
     flushCommandBuffer(queue, setupCmdBuffer);
-    destroyCommandBuffer(logicalDevice, commandPool, setupCmdBuffer);
+    ::destroyCommandBuffers(logicalDevice, commandPool, &setupCmdBuffer, 1);
 }
 
 
 VulkanRenderer::~VulkanRenderer()
 {
+    destroyCommandBuffers();
     cleanupSwapchain();
 }
 

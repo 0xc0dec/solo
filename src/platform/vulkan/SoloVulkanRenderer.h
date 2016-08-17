@@ -101,7 +101,10 @@ namespace solo
 
         void initSwapchain(VkSurfaceKHR surface, bool vsync);
         void cleanupSwapchain();
+
         void initCommandBuffers();
+        void destroyCommandBuffers();
+
         void initFrameBuffers();
 
         SDLVulkanDevice* device = nullptr;
