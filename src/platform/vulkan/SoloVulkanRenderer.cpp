@@ -646,7 +646,6 @@ void VulkanRenderer::initFrameBuffers()
 static bool initialized = false;
 struct Vertex { float position[2]; float color[3]; };
 
-
 void VulkanRenderer::test_init()
 {
     buildDrawCommandBuffers();
