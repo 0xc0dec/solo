@@ -776,6 +776,19 @@ void VulkanRenderer::test_init()
     blendAttachmentState.alphaBlendOp = VK_BLEND_OP_ADD;
     blendAttachmentState.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
         VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+
+    VkPipelineColorBlendStateCreateInfo colorBlendState {};
+    colorBlendState.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+    colorBlendState.pNext = nullptr;
+    colorBlendState.flags = 0;
+    colorBlendState.logicOpEnable = VK_FALSE;
+    colorBlendState.logicOp = VK_LOGIC_OP_COPY;
+    colorBlendState.attachmentCount = 1;
+    colorBlendState.pAttachments = &blendAttachmentState;
+    colorBlendState.blendConstants[0] = 0;
+    colorBlendState.blendConstants[1] = 0;
+    colorBlendState.blendConstants[2] = 0;
+    colorBlendState.blendConstants[3] = 0;
 }
 
 
