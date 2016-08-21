@@ -790,7 +790,13 @@ void VulkanRenderer::test_init()
     colorBlendState.blendConstants[2] = 0;
     colorBlendState.blendConstants[3] = 0;
 
-
+    std::vector<VkDynamicState> dynamicStates = { VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR };
+    VkPipelineDynamicStateCreateInfo dynamicState {};
+    dynamicState.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+    dynamicState.pNext = nullptr;
+    dynamicState.flags = 0;
+    dynamicState.dynamicStateCount = static_cast<uint32_t>(dynamicStates.size());
+    dynamicState.pDynamicStates = dynamicStates.data();
 }
 
 
