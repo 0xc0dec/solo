@@ -797,6 +797,27 @@ void VulkanRenderer::test_init()
     dynamicState.flags = 0;
     dynamicState.dynamicStateCount = static_cast<uint32_t>(dynamicStates.size());
     dynamicState.pDynamicStates = dynamicStates.data();
+
+    VkGraphicsPipelineCreateInfo pipelineInfo {};
+    pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+    pipelineInfo.pNext = nullptr;
+    pipelineInfo.flags = 0;
+    pipelineInfo.stageCount = static_cast<uint32_t>(shaderStageStates.size());
+    pipelineInfo.pStages = shaderStageStates.data();
+    pipelineInfo.pVertexInputState = &vertexInputState;
+    pipelineInfo.pInputAssemblyState = &inputAssemblyState;
+    pipelineInfo.pTessellationState = nullptr;
+    pipelineInfo.pViewportState = &viewportState;
+    pipelineInfo.pRasterizationState = &rasterizationState;
+    pipelineInfo.pMultisampleState = &multisampleState;
+    pipelineInfo.pDepthStencilState = nullptr;
+    pipelineInfo.pColorBlendState = &colorBlendState;
+    pipelineInfo.pDynamicState = &dynamicState;
+    pipelineInfo.layout = pipelineLayout;
+    pipelineInfo.renderPass = renderPass;
+    pipelineInfo.subpass = 0;
+    pipelineInfo.basePipelineHandle = nullptr;
+    pipelineInfo.basePipelineIndex = -1;
 }
 
 
