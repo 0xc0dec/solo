@@ -765,6 +765,17 @@ void VulkanRenderer::test_init()
     multisampleState.pSampleMask = nullptr;
     multisampleState.alphaToCoverageEnable = false;
     multisampleState.alphaToOneEnable = false;
+
+    VkPipelineColorBlendAttachmentState blendAttachmentState {};
+    blendAttachmentState.blendEnable = VK_FALSE;
+    blendAttachmentState.srcColorBlendFactor = VK_BLEND_FACTOR_ZERO;
+    blendAttachmentState.dstColorBlendFactor = VK_BLEND_FACTOR_ZERO;
+    blendAttachmentState.colorBlendOp = VK_BLEND_OP_ADD;
+    blendAttachmentState.srcAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
+    blendAttachmentState.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
+    blendAttachmentState.alphaBlendOp = VK_BLEND_OP_ADD;
+    blendAttachmentState.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
+        VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
 }
 
 
