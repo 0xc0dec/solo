@@ -644,6 +644,7 @@ void VulkanRenderer::initFrameBuffers()
 
 // TODO remove these
 static bool initialized = false;
+VkPipeline pipeline = nullptr;
 struct Vertex
 {
     float position[2];
@@ -818,6 +819,8 @@ void VulkanRenderer::test_init()
     pipelineInfo.subpass = 0;
     pipelineInfo.basePipelineHandle = nullptr;
     pipelineInfo.basePipelineIndex = -1;
+
+    SL_CHECK_VK_RESULT(vkCreateGraphicsPipelines(logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline));
 }
 
 
