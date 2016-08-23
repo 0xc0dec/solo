@@ -712,8 +712,7 @@ void VulkanRenderer::test_init()
     colorInputAttrDesc.format = VK_FORMAT_R32G32_SFLOAT;
     colorInputAttrDesc.offset = offsetof(Vertex, color);
 
-    std::vector<VkVertexInputAttributeDescription> inputAttributeDescriptions =
-        { positionInputAttrDesc, colorInputAttrDesc };
+    std::vector<VkVertexInputAttributeDescription> inputAttributeDescriptions = { positionInputAttrDesc, colorInputAttrDesc };
 
     VkPipelineVertexInputStateCreateInfo vertexInputState {};
     vertexInputState.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
