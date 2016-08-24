@@ -652,6 +652,99 @@ struct Vertex
 };
 
 
+enum class ResourceType
+{
+    Buffer,
+    Image
+};
+
+
+template <ResourceType resourceType, class T>
+VkMemoryRequirements getMemoryRequirements(VkDevice device, T resource);
+
+
+template<>
+VkMemoryRequirements getMemoryRequirements<ResourceType::Buffer>(VkDevice device, VkBuffer buffer)
+{
+	VkMemoryRequirements memoryRequirements;
+	vkGetBufferMemoryRequirements(device, buffer, &memoryRequirements);
+	return memoryRequirements;
+}
+
+
+template<>
+VkMemoryRequirements getMemoryRequirements<ResourceType::Image>( VkDevice device, VkImage image )
+{
+	VkMemoryRequirements memoryRequirements;
+	vkGetImageMemoryRequirements(device, image, &memoryRequirements);
+	return memoryRequirements;
+}
+
+
+template <ResourceType resourceType, class T>
+void bindMemory(VkDevice device, T buffer, VkDeviceMemory memory, VkDeviceSize offset);
+
+
+template<>
+void bindMemory<ResourceType::Buffer>(VkDevice device, VkBuffer buffer, VkDeviceMemory memory, VkDeviceSize offset)
+{
+	SL_CHECK_VK_RESULT(vkBindBufferMemory(device, buffer, memory, offset));
+}
+
+
+template<>
+void bindMemory<ResourceType::Image>(VkDevice device, VkImage image, VkDeviceMemory memory, VkDeviceSize offset)
+{
+	SL_CHECK_VK_RESULT(vkBindImageMemory(device, image, memory, offset));
+}
+
+
+template <ResourceType TResource, class T>
+VkDeviceMemory initMemory(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties,
+	T resource, VkMemoryPropertyFlags requiredFlags, VkMemoryPropertyFlags desiredFlags)
+{
+	VkMemoryRequirements memoryRequirements = getMemoryRequirements<TResource>(device, resource);
+
+	uint32_t memoryType = 0;
+	bool found = false;
+
+	for (uint32_t i = 0; i < 32; ++i)
+    {
+		if (memoryRequirements.memoryTypeBits & 0x1)
+        {
+			if ((physicalDeviceMemoryProperties.memoryTypes[i].propertyFlags & requiredFlags) == requiredFlags)
+            {
+				if (!found)
+                {
+					memoryType = i;
+					found = true;
+				}
+				else if (/*found &&*/ (physicalDeviceMemoryProperties.memoryTypes[i].propertyFlags & desiredFlags) == desiredFlags)
+					memoryType = i;
+			}
+		}
+
+		memoryRequirements.memoryTypeBits >>= 1;
+	}
+
+	if (!found)
+        throw "Can't find compatible mappable memory for the resource";
+
+    VkMemoryAllocateInfo memoryInfo {};
+    memoryInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+    memoryInfo.pNext = nullptr;
+    memoryInfo.allocationSize = memoryRequirements.size;
+    memoryInfo.memoryTypeIndex = memoryType;
+
+	VkDeviceMemory memory;
+	SL_CHECK_VK_RESULT(vkAllocateMemory(device, &memoryInfo, nullptr, &memory));
+
+	bindMemory<TResource>(device, resource, memory, 0 /*offset*/);
+
+	return memory;
+}
+
+
 void VulkanRenderer::test_init()
 {
     buildDrawCommandBuffers();
@@ -820,6 +913,27 @@ void VulkanRenderer::test_init()
     pipelineInfo.basePipelineIndex = -1;
 
     SL_CHECK_VK_RESULT(vkCreateGraphicsPipelines(logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline));
+
+    const float triangleSize = 1.6f;
+    std::vector<Vertex> triangle =
+    {
+		{ /*rb*/ {  0.5f * triangleSize,  sqrtf( 3.0f ) * 0.25f * triangleSize }, /*R*/{ 1.0f, 0.0f, 0.0f }},
+		{ /* t*/ {                 0.0f, -sqrtf( 3.0f ) * 0.25f * triangleSize }, /*G*/{ 0.0f, 1.0f, 0.0f }},
+		{ /*lb*/ { -0.5f * triangleSize,  sqrtf( 3.0f ) * 0.25f * triangleSize }, /*B*/{ 0.0f, 0.0f, 1.0f }}
+	};
+
+    VkBufferCreateInfo bufferInfo {};
+    bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+    bufferInfo.pNext = nullptr;
+    bufferInfo.flags = 0;
+    bufferInfo.size = sizeof(decltype(triangle)::value_type) * triangle.size();
+    bufferInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+    bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    bufferInfo.queueFamilyIndexCount = 0;
+    bufferInfo.pQueueFamilyIndices = nullptr;
+
+    VkBuffer buffer;
+    SL_CHECK_VK_RESULT(vkCreateBuffer(logicalDevice, &bufferInfo, nullptr, &buffer));
 }
 
 
