@@ -745,6 +745,21 @@ VkDeviceMemory initMemory(VkDevice device, VkPhysicalDeviceMemoryProperties phys
 }
 
 
+void setMemoryData(VkDevice device, VkDeviceMemory memory, void *begin, size_t size)
+{
+	void *data;
+	SL_CHECK_VK_RESULT(vkMapMemory(device, memory, 0 /*offset*/, VK_WHOLE_SIZE, 0 /*flags - reserved*/, &data));
+	memcpy(data, begin, size);
+	vkUnmapMemory(device, memory);
+}
+
+
+void setVertexData(VkDevice device, VkDeviceMemory memory, std::vector<Vertex> vertices)
+{
+	setMemoryData(device, memory, vertices.data(), sizeof(decltype(vertices)::value_type) * vertices.size());
+}
+
+
 void VulkanRenderer::test_init()
 {
     buildDrawCommandBuffers();
@@ -934,6 +949,35 @@ void VulkanRenderer::test_init()
 
     VkBuffer buffer;
     SL_CHECK_VK_RESULT(vkCreateBuffer(logicalDevice, &bufferInfo, nullptr, &buffer));
+
+    auto vertexBufferMemory = initMemory<ResourceType::Buffer>(logicalDevice, physicalDeviceMemoryProperties, buffer,
+		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+
+    setVertexData(logicalDevice, vertexBufferMemory, triangle);
+
+    // Record command buffers
+    for (const auto& buf: drawCmdBuffers)
+    {   
+        VkCommandBufferBeginInfo commandBufferInfo {};
+        commandBufferInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+        commandBufferInfo.pNext = nullptr;
+        commandBufferInfo.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
+        commandBufferInfo.pInheritanceInfo = nullptr;
+
+	    SL_CHECK_VK_RESULT(vkBeginCommandBuffer(buf, &commandBufferInfo));
+
+        VkRenderPassBeginInfo renderPassInfo {};
+        renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
+		    nullptr, // pNext
+		    renderPass,
+		    framebuffer,
+		    {{0,0}, {width,height}}, //render area - offset plus extent
+		    1, // clear value count
+		    &clearValue
+	    };
+
+        SL_CHECK_VK_RESULT(vkEndCommandBuffer(buf));
+    }
 }
 
 
