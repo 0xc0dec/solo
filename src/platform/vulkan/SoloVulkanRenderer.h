@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SoloRenderer.h"
+#include <functional>
 
 #ifdef SL_VULKAN_RENDERER
 
@@ -104,7 +105,7 @@ namespace solo
 
         void initCommandBuffers();
         void initPresentationCommandBuffers();
-        void buildDrawCommandBuffers();
+        void buildDrawCommandBuffers(std::function<void(VkCommandBuffer)> meat /* TODO removeme */);
         void destroyCommandBuffers();
 
         void initFrameBuffers();

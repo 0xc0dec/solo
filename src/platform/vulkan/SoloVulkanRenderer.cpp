@@ -573,7 +573,7 @@ void VulkanRenderer::initPresentationCommandBuffers()
 }
 
 
-void VulkanRenderer::buildDrawCommandBuffers()
+void VulkanRenderer::buildDrawCommandBuffers(std::function<void(VkCommandBuffer)> meat /* TODO removeme */)
 {
     VkCommandBufferBeginInfo cmdBufferBeginInfo = {};
     cmdBufferBeginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -617,6 +617,7 @@ void VulkanRenderer::buildDrawCommandBuffers()
         vkCmdSetViewport(drawCmdBuffers[i], 0, 1, &viewport);
         vkCmdSetScissor(drawCmdBuffers[i], 0, 1, &scissor);
 
+        meat(drawCmdBuffers[i]);
         // TODO scene rendering here
 
         vkCmdEndRenderPass(drawCmdBuffers[i]);
@@ -762,8 +763,6 @@ void setVertexData(VkDevice device, VkDeviceMemory memory, std::vector<Vertex> v
 
 void VulkanRenderer::test_init()
 {
-    buildDrawCommandBuffers();
-
     VkPipelineLayoutCreateInfo pipelineLayoutInfo {};
     pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
     pipelineLayoutInfo.pNext = nullptr;
@@ -947,37 +946,23 @@ void VulkanRenderer::test_init()
     bufferInfo.queueFamilyIndexCount = 0;
     bufferInfo.pQueueFamilyIndices = nullptr;
 
-    VkBuffer buffer;
-    SL_CHECK_VK_RESULT(vkCreateBuffer(logicalDevice, &bufferInfo, nullptr, &buffer));
+    VkBuffer vertexBuffer;
+    SL_CHECK_VK_RESULT(vkCreateBuffer(logicalDevice, &bufferInfo, nullptr, &vertexBuffer));
 
-    auto vertexBufferMemory = initMemory<ResourceType::Buffer>(logicalDevice, physicalDeviceMemoryProperties, buffer,
+    auto vertexBufferMemory = initMemory<ResourceType::Buffer>(logicalDevice, physicalDeviceMemoryProperties, vertexBuffer,
 		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
     setVertexData(logicalDevice, vertexBufferMemory, triangle);
 
-    // Record command buffers
-    for (const auto& buf: drawCmdBuffers)
-    {   
-        VkCommandBufferBeginInfo commandBufferInfo {};
-        commandBufferInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-        commandBufferInfo.pNext = nullptr;
-        commandBufferInfo.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
-        commandBufferInfo.pInheritanceInfo = nullptr;
+    buildDrawCommandBuffers([&](VkCommandBuffer buf)
+    {
+        vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline);
 
-	    SL_CHECK_VK_RESULT(vkBeginCommandBuffer(buf, &commandBufferInfo));
+        VkDeviceSize offsets[] = {0};
+	    vkCmdBindVertexBuffers(buf, 0, 1 /* binding count */, &vertexBuffer, offsets);
 
-        VkRenderPassBeginInfo renderPassInfo {};
-        renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
-		    nullptr, // pNext
-		    renderPass,
-		    framebuffer,
-		    {{0,0}, {width,height}}, //render area - offset plus extent
-		    1, // clear value count
-		    &clearValue
-	    };
-
-        SL_CHECK_VK_RESULT(vkEndCommandBuffer(buf));
-    }
+        vkCmdDraw(buf, static_cast<uint32_t>(triangle.size()), 1 /* instance count */, 0 /* first vertex */, 0 /* first instance */);
+    });
 }
 
 
