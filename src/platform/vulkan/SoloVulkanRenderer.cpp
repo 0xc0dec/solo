@@ -782,8 +782,8 @@ auto createRasterizationStateInfo(bool depthClamp, bool discardEnabled, VkCullMo
     info.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
     info.pNext = nullptr;
     info.flags = 0;
-    info.depthClampEnable = false;
-    info.rasterizerDiscardEnable = false;
+    info.depthClampEnable = depthClamp;
+    info.rasterizerDiscardEnable = discardEnabled;
     info.polygonMode = VK_POLYGON_MODE_FILL;
     info.cullMode = cullMode;
     info.frontFace = frontFace;
