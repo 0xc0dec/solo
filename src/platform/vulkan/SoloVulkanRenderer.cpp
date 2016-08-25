@@ -6,8 +6,6 @@
 
 using namespace solo;
 
-// TODO perhaps rename all "Framebuffer" to "FrameBuffer"
-
 
 VkShaderModule createShader(VkDevice logicalDevice, const std::vector<uint8_t>& data)
 {
