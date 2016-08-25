@@ -95,6 +95,7 @@
     <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp" />
     <ClCompile Include="..\src\platform\sdl\SoloSDLDevice.cpp" />
     <ClCompile Include="..\src\platform\vulkan\SoloSDLVulkanDevice.cpp" />
+    <ClCompile Include="..\src\platform\vulkan\SoloVulkan.cpp" />
     <ClCompile Include="..\src\platform\vulkan\SoloVulkanRenderer.cpp" />
     <ClCompile Include="..\src\SoloBoxCollider.cpp" />
     <ClCompile Include="..\src\SoloCubeTexture.cpp" />
