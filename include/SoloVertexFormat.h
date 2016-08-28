@@ -34,7 +34,7 @@ namespace solo
         VertexBufferLayout() {}
         ~VertexBufferLayout() {}
 
-        void add(VertexBufferLayoutSemantics semantics, uint32_t elementCount);
+        void add(VertexBufferLayoutSemantics semantics, uint32_t size);
 
         auto getElementCount() const -> uint32_t;
         auto getElement(uint32_t index) const -> const VertexBufferLayoutElement&;
@@ -61,9 +61,9 @@ namespace solo
         return static_cast<uint32_t>(elements.size());
     }
 
-    inline void VertexBufferLayout::add(VertexBufferLayoutSemantics semantics, uint32_t elementCount)
+    inline void VertexBufferLayout::add(VertexBufferLayoutSemantics semantics, uint32_t size)
     {
-        elements.push_back(VertexBufferLayoutElement{ semantics, elementCount });
-        this->size += sizeof(float) * elementCount;
+        elements.push_back(VertexBufferLayoutElement{ semantics, size });
+        this->size += sizeof(float) * size;
     }
 }

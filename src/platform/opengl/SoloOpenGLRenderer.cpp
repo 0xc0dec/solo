@@ -680,7 +680,8 @@ void OpenGLRenderer::setProgram(const ProgramHandle& handle)
 }
 
 
-auto OpenGLRenderer::createVertexProgramBinding(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle) -> VertexProgramBindingHandle
+auto OpenGLRenderer::createVertexProgramBinding(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle)
+    -> VertexProgramBindingHandle
 {
     GLuint rawHandle;
     glGenVertexArrays(1, &rawHandle);
