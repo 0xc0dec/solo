@@ -111,6 +111,17 @@ void Mesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, cons
 }
 
 
+auto Mesh::addVertexBuffer(VertexBufferHandle bufferHandle, const VertexBufferLayout& layout, uint32_t vertexCount) -> uint32_t
+{
+    vertexBuffers.push_back(bufferHandle);
+    vertexCounts.push_back(vertexCount);
+    vertexSizes.push_back(layout.getSize());
+    rebuildVertexObject();
+    recalculateMinVertexCount();
+    return static_cast<uint32_t>(vertexBuffers.size() - 1);
+}
+
+
 void Mesh::removeVertexBuffer(uint32_t index)
 {
     renderer->destroyVertexBuffer(vertexBuffers[index]);
@@ -251,15 +262,4 @@ void Mesh::initCubeMesh()
     addVertexBuffer(layout, positionData, 24);
     addPart(indexData, 36);
     setPrimitiveType(PrimitiveType::Triangles);
-}
-
-
-auto Mesh::addVertexBuffer(VertexBufferHandle bufferHandle, const VertexBufferLayout& layout, uint32_t vertexCount) -> uint32_t
-{
-    vertexBuffers.push_back(bufferHandle);
-    vertexCounts.push_back(vertexCount);
-    vertexSizes.push_back(layout.getSize());
-    rebuildVertexObject();
-    recalculateMinVertexCount();
-    return static_cast<uint32_t>(vertexBuffers.size() - 1);
 }
