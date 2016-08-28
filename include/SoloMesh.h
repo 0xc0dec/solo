@@ -58,6 +58,8 @@ namespace solo
         void initQuadMesh();
         void initCubeMesh();
 
+        auto addVertexBuffer(VertexBufferHandle bufferHandle, const VertexBufferLayout& layout, uint32_t vertexCount) -> uint32_t;
+
         void rebuildVertexObject();
         void rebuildEffectBinding(Effect* effect);
         void recalculateMinVertexCount();

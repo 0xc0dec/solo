@@ -92,24 +92,14 @@ Mesh::~Mesh()
 uint32_t Mesh::addVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount)
 {
     auto handle = renderer->createVertexBuffer(layout, data, vertexCount);
-    vertexBuffers.push_back(handle);
-    vertexCounts.push_back(vertexCount);
-    vertexSizes.push_back(layout.getSize());
-    rebuildVertexObject();
-    recalculateMinVertexCount();
-    return static_cast<uint32_t>(vertexBuffers.size() - 1);
+    return addVertexBuffer(handle, layout, vertexCount);
 }
 
 
 uint32_t Mesh::addDynamicVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount)
 {
     auto handle = renderer->createDynamicVertexBuffer(layout, data, vertexCount);
-    vertexBuffers.push_back(handle);
-    vertexCounts.push_back(vertexCount);
-    vertexSizes.push_back(layout.getSize());
-    rebuildVertexObject();
-    recalculateMinVertexCount();
-    return static_cast<uint32_t>(vertexBuffers.size() - 1);
+    return addVertexBuffer(handle, layout, vertexCount);
 }
 
 
@@ -261,4 +251,15 @@ void Mesh::initCubeMesh()
     addVertexBuffer(layout, positionData, 24);
     addPart(indexData, 36);
     setPrimitiveType(PrimitiveType::Triangles);
+}
+
+
+auto Mesh::addVertexBuffer(VertexBufferHandle bufferHandle, const VertexBufferLayout& layout, uint32_t vertexCount) -> uint32_t
+{
+    vertexBuffers.push_back(bufferHandle);
+    vertexCounts.push_back(vertexCount);
+    vertexSizes.push_back(layout.getSize());
+    rebuildVertexObject();
+    recalculateMinVertexCount();
+    return static_cast<uint32_t>(vertexBuffers.size() - 1);
 }
