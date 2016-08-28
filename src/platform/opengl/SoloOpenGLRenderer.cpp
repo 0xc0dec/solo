@@ -707,6 +707,8 @@ auto OpenGLRenderer::createVertexProgramBinding(const VertexBufferHandle* buffer
 
         bindVertexBuffer(bufferHandle);
 
+        // TODO investigate this - remove by-name lookup and rely on layout locations only
+
         uint32_t offset = 0;
         for (uint32_t j = 0; j < elementCount; j++)
         {
