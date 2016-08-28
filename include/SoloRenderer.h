@@ -30,7 +30,7 @@ namespace solo
     SL_RENDERER_RESOURCE_HANDLE(VertexBufferHandle)
     SL_RENDERER_RESOURCE_HANDLE(IndexBufferHandle)
     SL_RENDERER_RESOURCE_HANDLE(ProgramHandle)
-    SL_RENDERER_RESOURCE_HANDLE(VertexObjectHandle)
+    SL_RENDERER_RESOURCE_HANDLE(VertexProgramBindingHandle)
     SL_RENDERER_RESOURCE_HANDLE(UniformHandle)
 
     struct TextureFlags
@@ -183,8 +183,9 @@ namespace solo
         virtual void destroyProgram(const ProgramHandle& handle) = 0;
         virtual void setProgram(const ProgramHandle& handle) = 0;
 
-        virtual auto createVertexObject(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle) -> VertexObjectHandle = 0;
-        virtual void destroyVertexObject(const VertexObjectHandle& handle) = 0;
+        virtual auto createVertexProgramBinding(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle)
+            -> VertexProgramBindingHandle = 0;
+        virtual void destroyVertexProgramBinding(const VertexProgramBindingHandle& handle) = 0;
 
         virtual auto createUniform(const char* name, UniformType type, ProgramHandle programHandle) -> UniformHandle = 0;
         virtual void destroyUniform(const UniformHandle& handle) = 0;
@@ -205,9 +206,9 @@ namespace solo
 
         virtual void clear(bool color, bool depth, float r, float g, float b, float a) = 0;
 
-        virtual void drawIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle,
+        virtual void drawIndexed(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle,
             const IndexBufferHandle& indexBufferHandle) = 0;
-        virtual void drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, uint32_t vertexCount) = 0;
+        virtual void draw(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle, uint32_t vertexCount) = 0;
 
     protected:
         Renderer() {}

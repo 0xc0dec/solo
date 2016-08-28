@@ -257,7 +257,7 @@ OpenGLRenderer::~OpenGLRenderer()
 {
     // All resources at this point should have already been released
     programs.cleanup([](const Program& program) { glDeleteProgram(program.rawHandle); });
-    vertexObjects.cleanup([](const VertexObject& vo) { glDeleteVertexArrays(1, &vo.rawHandle); });
+    vertexProgramBindings.cleanup([](const VertexProgramBinding& vo) { glDeleteVertexArrays(1, &vo.rawHandle); });
     frameBuffers.cleanup([](const FrameBuffer& buf) { glDeleteFramebuffers(1, &buf.rawHandle); });
     vertexBuffers.cleanup([](const VertexBuffer& buf) { glDeleteBuffers(1, &buf.rawHandle); });
     indexBuffers.cleanup([](const IndexBuffer& buf) { glDeleteBuffers(1, &buf.rawHandle); });
@@ -359,9 +359,9 @@ void OpenGLRenderer::bindIndexBuffer(const IndexBufferHandle& handle)
 }
 
 
-void OpenGLRenderer::bindVertexObject(const VertexObjectHandle& handle)
+void OpenGLRenderer::bindVertexProgramBinding(const VertexProgramBindingHandle& handle)
 {
-    auto rawHandle = handle.empty() ? 0 : vertexObjects.getData(handle.value).rawHandle;
+    auto rawHandle = handle.empty() ? 0 : vertexProgramBindings.getData(handle.value).rawHandle;
     glBindVertexArray(rawHandle);
 }
 
@@ -680,7 +680,7 @@ void OpenGLRenderer::setProgram(const ProgramHandle& handle)
 }
 
 
-auto OpenGLRenderer::createVertexObject(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle) -> VertexObjectHandle
+auto OpenGLRenderer::createVertexProgramBinding(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle) -> VertexProgramBindingHandle
 {
     GLuint rawHandle;
     glGenVertexArrays(1, &rawHandle);
@@ -750,40 +750,41 @@ auto OpenGLRenderer::createVertexObject(const VertexBufferHandle* bufferHandles,
 
     glBindVertexArray(0);
 
-    VertexObjectHandle handle;
-    handle.value = vertexObjects.reserveHandle();
-    vertexObjects.getData(handle.value).rawHandle = rawHandle;
+    VertexProgramBindingHandle handle;
+    handle.value = vertexProgramBindings.reserveHandle();
+    vertexProgramBindings.getData(handle.value).rawHandle = rawHandle;
 
     return handle;
 }
 
 
-void OpenGLRenderer::destroyVertexObject(const VertexObjectHandle& handle)
+void OpenGLRenderer::destroyVertexProgramBinding(const VertexProgramBindingHandle& handle)
 {
-    auto rawHandle = vertexObjects.getData(handle.value).rawHandle;
+    auto rawHandle = vertexProgramBindings.getData(handle.value).rawHandle;
     glDeleteVertexArrays(1, &rawHandle);
-    vertexObjects.releaseHandle(handle.value);
+    vertexProgramBindings.releaseHandle(handle.value);
 }
 
 
-void OpenGLRenderer::drawIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, const IndexBufferHandle& indexBufferHandle)
+void OpenGLRenderer::drawIndexed(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle,
+    const IndexBufferHandle& indexBufferHandle)
 {
-    bindVertexObject(vertexObjectHandle);
+    bindVertexProgramBinding(bindingHandle);
     bindIndexBuffer(indexBufferHandle);
 
     const auto& indexBuffer = indexBuffers.getData(indexBufferHandle.value);
     glDrawElements(toGLPrimitiveType(primitiveType), indexBuffer.elementCount, GL_UNSIGNED_SHORT, nullptr);
 
     bindIndexBuffer(EmptyIndexBufferHandle);
-    bindVertexObject(EmptyVertexObjectHandle);
+    bindVertexProgramBinding(EmptyVertexProgramBindingHandle);
 }
 
 
-void OpenGLRenderer::drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, uint32_t vertexCount)
+void OpenGLRenderer::draw(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle, uint32_t vertexCount)
 {
-    bindVertexObject(vertexObjectHandle);
+    bindVertexProgramBinding(bindingHandle);
     glDrawArrays(toGLPrimitiveType(primitiveType), 0, vertexCount);
-    bindVertexObject(EmptyVertexObjectHandle);
+    bindVertexProgramBinding(EmptyVertexProgramBindingHandle);
 }
 
 

@@ -55,9 +55,9 @@ namespace solo
         void destroyProgram(const ProgramHandle& handle) override final;
         void setProgram(const ProgramHandle& handle) override final;
 
-        auto createVertexObject(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle)
-            -> VertexObjectHandle override final;
-        void destroyVertexObject(const VertexObjectHandle& handle) override final;
+        auto createVertexProgramBinding(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle)
+            -> VertexProgramBindingHandle override final;
+        void destroyVertexProgramBinding(const VertexProgramBindingHandle& handle) override final;
 
         auto createUniform(const char* name, UniformType type, ProgramHandle programHandle) -> UniformHandle override final;
         void destroyUniform(const UniformHandle& handle) override final;
@@ -78,9 +78,9 @@ namespace solo
 
         void clear(bool color, bool depth, float r, float g, float b, float a) override final;
 
-        void drawIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle,
+        void drawIndexed(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle,
             const IndexBufferHandle& indexBufferHandle) override final;
-        void drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, uint32_t vertexCount) override final;
+        void draw(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle, uint32_t vertexCount) override final;
 
     private:
         struct FrameBuffer
@@ -116,7 +116,7 @@ namespace solo
             GLuint rawHandle = 0;
         };
 
-        struct VertexObject
+        struct VertexProgramBinding
         {
             GLuint rawHandle = 0;
         };
@@ -132,7 +132,7 @@ namespace solo
         void bindTexture(GLenum target, const TextureHandle& handle);
         void bindVertexBuffer(const VertexBufferHandle& handle);
         void bindIndexBuffer(const IndexBufferHandle& handle);
-        void bindVertexObject(const VertexObjectHandle& handle);
+        void bindVertexProgramBinding(const VertexProgramBindingHandle& handle);
         void setTexture(GLenum target, const TextureHandle& handle, uint32_t flags);
         void validateFrameBufferAttachments(const std::vector<TextureHandle>& attachments);
         auto createVertexBuffer(bool dynamic, const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> VertexBufferHandle;
@@ -142,7 +142,7 @@ namespace solo
         ResourcePool<VertexBuffer, SL_MAX_VERTEX_BUFFERS> vertexBuffers;
         ResourcePool<IndexBuffer, SL_MAX_INDEX_BUFFERS> indexBuffers;
         ResourcePool<Program, SL_MAX_PROGRAMS> programs;
-        ResourcePool<VertexObject, SL_MAX_VERTEX_OBJECTS> vertexObjects;
+        ResourcePool<VertexProgramBinding, SL_MAX_VERTEX_OBJECTS> vertexProgramBindings;
         ResourcePool<Uniform, SL_MAX_UNIFORMS> uniforms;
     };
 }

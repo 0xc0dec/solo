@@ -44,9 +44,9 @@ namespace solo
         void destroyProgram(const ProgramHandle& handle) override final {}
         void setProgram(const ProgramHandle& handle) override final {}
 
-        auto createVertexObject(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle)
-            -> VertexObjectHandle override final { return EmptyVertexObjectHandle; }
-        void destroyVertexObject(const VertexObjectHandle& handle) override final {}
+        auto createVertexProgramBinding(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle)
+            -> VertexProgramBindingHandle override final { return EmptyVertexProgramBindingHandle; }
+        void destroyVertexProgramBinding(const VertexProgramBindingHandle& handle) override final {}
 
         auto createUniform(const char* name, UniformType type, ProgramHandle programHandle)
             -> UniformHandle override final { return EmptyUniformHandle; }
@@ -68,8 +68,8 @@ namespace solo
 
         void clear(bool color, bool depth, float r, float g, float b, float a) override final {}
 
-        void drawIndexedVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle,
+        void drawIndexed(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle,
             const IndexBufferHandle& indexBufferHandle) override final {}
-        void drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, uint32_t vertexCount) override final {}
+        void draw(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle, uint32_t vertexCount) override final {}
     };
 }

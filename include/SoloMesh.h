@@ -72,7 +72,7 @@ namespace solo
         std::vector<uint32_t> vertexCounts;
         std::vector<uint32_t> vertexSizes;
         uint32_t minVertexCount = 0;
-        VertexObjectHandle vertexObject;
+        VertexProgramBindingHandle programBinding;
     };
 
     inline void Mesh::setPrimitiveType(PrimitiveType type)
