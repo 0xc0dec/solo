@@ -412,11 +412,11 @@ VkDeviceMemory initMemory(VkDevice device, VkPhysicalDeviceMemoryProperties phys
 }
 
 
-void setMemoryData(VkDevice device, VkDeviceMemory memory, void* begin, size_t size)
+void setMemoryData(VkDevice device, VkDeviceMemory memory, void* src, size_t size)
 {
 	void* data = nullptr;
 	SL_CHECK_VK_RESULT(vkMapMemory(device, memory, 0, VK_WHOLE_SIZE, 0, &data));
-	memcpy(data, begin, size);
+	memcpy(data, src, size);
 	vkUnmapMemory(device, memory);
 }
 
