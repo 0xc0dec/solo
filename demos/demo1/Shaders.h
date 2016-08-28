@@ -3,9 +3,9 @@
 const char* vsBasicLighting = R"(
     #version 330 core
 
-    in vec4 position;
-	in vec3 normal;
-	in vec2 texCoord0;
+    layout (location = 0) in vec4 position;
+	layout (location = 1) in vec3 normal;
+	layout (location = 2) in vec2 texCoord0;
 
     uniform mat4 worldViewProjMatrix;
 	uniform mat4 invTransposedWorldMatrix;
@@ -23,8 +23,9 @@ const char* vsBasicLighting = R"(
 static const char* fsChecker = R"(
     #version 330 core
 
+    uniform vec4 color;
+
     in vec2 uv0;
-	uniform vec4 color;
 	out vec4 fragColor;
 
     void main()

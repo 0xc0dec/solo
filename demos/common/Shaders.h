@@ -5,8 +5,8 @@ static struct
         const char* basic = R"(
             #version 330 core
 
-			in vec4 position;
-			in vec2 texCoord0;
+			layout (location = 0) in vec4 position;
+			layout (location = 1) in vec2 texCoord0;
 
 			uniform mat4 worldViewProjMatrix;
 			out vec2 uv0;
@@ -21,8 +21,8 @@ static struct
         const char* passThrough = R"(
             #version 330 core
 
-			in vec4 position;
-			in vec2 texCoord0;
+			layout (location = 0) in vec4 position;
+			layout (location = 1) in vec2 texCoord0;
 
 			out vec2 uv0;
 
