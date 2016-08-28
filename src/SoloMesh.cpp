@@ -78,10 +78,8 @@ Mesh::Mesh(MeshData* data):
 
 Mesh::~Mesh()
 {
-    if (!vertexObjectHandle.empty())
-        renderer->destroyVertexObject(vertexObjectHandle);
-    if (!effectBindingVertexObjectHandle.empty())
-        renderer->destroyVertexObject(effectBindingVertexObjectHandle);
+    if (!voHandle.empty())
+        renderer->destroyVertexObject(voHandle);
     while (!vertexBuffers.empty())
         removeVertexBuffer(0);
     while (!indexBuffers.empty())
@@ -150,10 +148,6 @@ void Mesh::draw(Effect* effect)
 {
     rebuildEffectBinding(effect);
 
-    const auto& voHandle = !effectBindingVertexObjectHandle.empty() ? effectBindingVertexObjectHandle : vertexObjectHandle;
-    if (voHandle.empty())
-        return;
-
     if (indexBuffers.empty())
         renderer->drawVertexObject(primitiveType, voHandle, minVertexCount);
     else
@@ -167,9 +161,8 @@ void Mesh::draw(Effect* effect)
 void Mesh::drawPart(Effect* effect, uint32_t part)
 {
     rebuildEffectBinding(effect);
-    const auto& handle = !effectBindingVertexObjectHandle.empty() ? effectBindingVertexObjectHandle : vertexObjectHandle;
-    if (!handle.empty())
-        renderer->drawIndexedVertexObject(primitiveType, handle, indexBuffers[part]);
+    if (!voHandle.empty())
+        renderer->drawIndexedVertexObject(primitiveType, voHandle, indexBuffers[part]);
 }
 
 
@@ -177,9 +170,9 @@ void Mesh::rebuildEffectBinding(Effect* effect)
 {
     if (effect == lastEffect)
         return;
-    if (!effectBindingVertexObjectHandle.empty())
-        renderer->destroyVertexObject(effectBindingVertexObjectHandle);
-    effectBindingVertexObjectHandle = renderer->createVertexObject(vertexBuffers.data(), static_cast<uint32_t>(vertexBuffers.size()), effect->getHandle());
+    if (!voHandle.empty())
+        renderer->destroyVertexObject(voHandle);
+    voHandle = renderer->createVertexObject(vertexBuffers.data(), static_cast<uint32_t>(vertexBuffers.size()), effect->getHandle());
     lastEffect = effect;
 }
 
