@@ -256,12 +256,12 @@ OpenGLRenderer::OpenGLRenderer(Device* device)
 OpenGLRenderer::~OpenGLRenderer()
 {
     // All resources at this point should have already been released
-    programs.cleanup([](const ProgramData& data) { glDeleteProgram(data.rawHandle); });
-    vertexObjects.cleanup([](const VertexObjectData& data) { glDeleteVertexArrays(1, &data.rawHandle); });
-    frameBuffers.cleanup([](const FrameBufferData& data) { glDeleteFramebuffers(1, &data.rawHandle); });
-    vertexBuffers.cleanup([](const VertexBufferData& data) { glDeleteBuffers(1, &data.rawHandle); });
-    indexBuffers.cleanup([](const IndexBufferData& data) { glDeleteBuffers(1, &data.rawHandle); });
-    textures.cleanup([](const TextureData& data) { glDeleteTextures(1, &data.rawHandle); });
+    programs.cleanup([](const Program& program) { glDeleteProgram(program.rawHandle); });
+    vertexObjects.cleanup([](const VertexObject& vo) { glDeleteVertexArrays(1, &vo.rawHandle); });
+    frameBuffers.cleanup([](const FrameBuffer& buf) { glDeleteFramebuffers(1, &buf.rawHandle); });
+    vertexBuffers.cleanup([](const VertexBuffer& buf) { glDeleteBuffers(1, &buf.rawHandle); });
+    indexBuffers.cleanup([](const IndexBuffer& buf) { glDeleteBuffers(1, &buf.rawHandle); });
+    textures.cleanup([](const Texture& tex) { glDeleteTextures(1, &tex.rawHandle); });
 }
 
 
@@ -296,9 +296,9 @@ void OpenGLRenderer::update2DTexture(const TextureHandle& handle, TextureFormat 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, fmt, GL_UNSIGNED_BYTE, data);
 
-    auto& texData = textures.getData(handle.value);
-    texData.width = width;
-    texData.height = height;
+    auto& texture = textures.getData(handle.value);
+    texture.width = width;
+    texture.height = height;
 
     bindTexture(GL_TEXTURE_2D, EmptyTextureHandle);
 }
@@ -430,14 +430,14 @@ void OpenGLRenderer::validateFrameBufferAttachments(const std::vector<TextureHan
     auto width = -1, height = -1;
     for (auto i = 0; i < attachments.size(); i++)
     {
-        auto data = textures.getData(attachments[i].value);
+        auto texture = textures.getData(attachments[i].value);
         if (width < 0)
         {
-            width = data.width;
-            height = data.height;
+            width = texture.width;
+            height = texture.height;
         }
         else
-            SL_ERR_IF(data.width != width || data.height != height, "Attachment sizes do not match")
+            SL_ERR_IF(texture.width != width || texture.height != height, "Attachment sizes do not match")
     }
 }
 
@@ -534,16 +534,16 @@ void OpenGLRenderer::updateFrameBuffer(const FrameBufferHandle& handle, const st
 
     bindFrameBuffer(handle);
 
-    auto data = frameBuffers.getData(handle.value);
+    auto frameBuffer = frameBuffers.getData(handle.value);
 
-    if (data.depthBufferHandle)
+    if (frameBuffer.depthBufferHandle)
     {
-        glDeleteRenderbuffers(1, &data.depthBufferHandle);
-        data.depthBufferHandle = 0;
+        glDeleteRenderbuffers(1, &frameBuffer.depthBufferHandle);
+        frameBuffer.depthBufferHandle = 0;
     }
 
     auto newCount = attachmentHandles.size();
-    auto maxCount = std::max(newCount, static_cast<size_t>(data.attachmentCount));
+    auto maxCount = std::max(newCount, static_cast<size_t>(frameBuffer.attachmentCount));
     for (auto i = 0; i < maxCount; i++)
     {
         auto rawHandle = i < newCount ? textures.getData(attachmentHandles[i].value).rawHandle : 0;
@@ -553,13 +553,13 @@ void OpenGLRenderer::updateFrameBuffer(const FrameBufferHandle& handle, const st
     if (newCount > 0)
     {
         // Re-create the depth buffer
-        glGenRenderbuffers(1, &data.depthBufferHandle);
-        SL_ERR_IF(!data.depthBufferHandle, "Failed to obtain depth buffer handle");
+        glGenRenderbuffers(1, &frameBuffer.depthBufferHandle);
+        SL_ERR_IF(!frameBuffer.depthBufferHandle, "Failed to obtain depth buffer handle");
 
-        glBindRenderbuffer(GL_RENDERBUFFER, data.depthBufferHandle);
-        auto firstAttachmentData = textures.getData(attachmentHandles[0].value);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, firstAttachmentData.width, firstAttachmentData.height);
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, data.depthBufferHandle);
+        glBindRenderbuffer(GL_RENDERBUFFER, frameBuffer.depthBufferHandle);
+        auto firstAttachment = textures.getData(attachmentHandles[0].value);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, firstAttachment.width, firstAttachment.height);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, frameBuffer.depthBufferHandle);
 
         SL_ERR_IF(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE, "Render target has invalid state");
     }
@@ -580,11 +580,11 @@ auto OpenGLRenderer::createVertexBuffer(bool dynamic, const VertexBufferLayout& 
 
     VertexBufferHandle handle;
     handle.value = vertexBuffers.reserveHandle();
-    auto& bufferData = vertexBuffers.getData(handle.value);
-    bufferData.rawHandle = rawHandle;
-    bufferData.layout = layout;
-    bufferData.vertexCount = vertexCount;
-    bufferData.dynamic = dynamic;
+    auto& vertexBuffer = vertexBuffers.getData(handle.value);
+    vertexBuffer.rawHandle = rawHandle;
+    vertexBuffer.layout = layout;
+    vertexBuffer.vertexCount = vertexCount;
+    vertexBuffer.dynamic = dynamic;
 
     return handle;
 }
@@ -630,9 +630,9 @@ auto OpenGLRenderer::createIndexBuffer(const void* data, uint32_t elementSize, u
 
     IndexBufferHandle handle;
     handle.value = indexBuffers.reserveHandle();
-    auto& bufferData = indexBuffers.getData(handle.value);
-    bufferData.rawHandle = rawHandle;
-    bufferData.elementCount = elementCount;
+    auto& indexBuffer = indexBuffers.getData(handle.value);
+    indexBuffer.rawHandle = rawHandle;
+    indexBuffer.elementCount = elementCount;
 
     return handle;
 }
@@ -771,8 +771,8 @@ void OpenGLRenderer::drawIndexedVertexObject(PrimitiveType primitiveType, const 
     bindVertexObject(vertexObjectHandle);
     bindIndexBuffer(indexBufferHandle);
 
-    const auto& ibData = indexBuffers.getData(indexBufferHandle.value);
-    glDrawElements(toGLPrimitiveType(primitiveType), ibData.elementCount, GL_UNSIGNED_SHORT, nullptr);
+    const auto& indexBuffer = indexBuffers.getData(indexBufferHandle.value);
+    glDrawElements(toGLPrimitiveType(primitiveType), indexBuffer.elementCount, GL_UNSIGNED_SHORT, nullptr);
 
     bindIndexBuffer(EmptyIndexBufferHandle);
     bindVertexObject(EmptyVertexObjectHandle);
@@ -797,10 +797,10 @@ auto OpenGLRenderer::createUniform(const char* name, UniformType type, ProgramHa
 
     UniformHandle handle;
     handle.value = uniforms.reserveHandle();
-    auto& data = uniforms.getData(handle.value);
-    data.type = type;
-    data.index = index;
-    data.location = location;
+    auto& uniform = uniforms.getData(handle.value);
+    uniform.type = type;
+    uniform.index = index;
+    uniform.location = location;
 
     return handle;
 }
@@ -814,43 +814,43 @@ void OpenGLRenderer::destroyUniform(const UniformHandle& handle)
 
 void OpenGLRenderer::setUniform(const UniformHandle& handle, const void* value, uint32_t count)
 {
-    const auto& data = uniforms.getData(handle.value);
+    const auto& uniform = uniforms.getData(handle.value);
     auto floatData = reinterpret_cast<const float*>(value);
-    switch (data.type)
+    switch (uniform.type)
     {
         case UniformType::Float:
-            glUniform1f(data.location, *floatData);
+            glUniform1f(uniform.location, *floatData);
             break;
         case UniformType::FloatArray:
-            glUniform1fv(data.location, static_cast<GLsizei>(count), floatData);
+            glUniform1fv(uniform.location, static_cast<GLsizei>(count), floatData);
             break;
         case UniformType::Vector2:
-            glUniform2f(data.location, floatData[0], floatData[1]);
+            glUniform2f(uniform.location, floatData[0], floatData[1]);
             break;
         case UniformType::Vector2Array:
-            glUniform2fv(data.location, static_cast<GLsizei>(count), floatData);
+            glUniform2fv(uniform.location, static_cast<GLsizei>(count), floatData);
             break;
         case UniformType::Vector3:
-            glUniform3f(data.location, floatData[0], floatData[1], floatData[2]);
+            glUniform3f(uniform.location, floatData[0], floatData[1], floatData[2]);
             break;
         case UniformType::Vector3Array:
-            glUniform3fv(data.location, static_cast<GLsizei>(count), floatData);
+            glUniform3fv(uniform.location, static_cast<GLsizei>(count), floatData);
             break;
         case UniformType::Vector4:
-            glUniform4f(data.location, floatData[0], floatData[1], floatData[2], floatData[3]);
+            glUniform4f(uniform.location, floatData[0], floatData[1], floatData[2], floatData[3]);
             break;
         case UniformType::Vector4Array:
-            glUniform4fv(data.location, static_cast<GLsizei>(count), floatData);
+            glUniform4fv(uniform.location, static_cast<GLsizei>(count), floatData);
             break;
         case UniformType::Matrix:
-            glUniformMatrix4fv(data.location, 1, GL_FALSE, floatData);
+            glUniformMatrix4fv(uniform.location, 1, GL_FALSE, floatData);
             break;
         case UniformType::MatrixArray:
-            glUniformMatrix4fv(data.location, static_cast<GLsizei>(count), GL_FALSE, floatData);
+            glUniformMatrix4fv(uniform.location, static_cast<GLsizei>(count), GL_FALSE, floatData);
             break;
         case UniformType::Texture:
-            glActiveTexture(GL_TEXTURE0 + data.index);
-            glUniform1i(data.location, data.index);
+            glActiveTexture(GL_TEXTURE0 + uniform.index);
+            glUniform1i(uniform.location, uniform.index);
             break;
         case UniformType::TextureArray: break; // TODO
         default: break;

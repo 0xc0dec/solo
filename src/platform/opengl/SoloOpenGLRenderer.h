@@ -83,21 +83,21 @@ namespace solo
         void drawVertexObject(PrimitiveType primitiveType, const VertexObjectHandle& vertexObjectHandle, uint32_t vertexCount) override final;
 
     private:
-        struct FrameBufferData
+        struct FrameBuffer
         {
             GLuint rawHandle = 0;
             GLuint depthBufferHandle = 0;
             uint32_t attachmentCount = 0;
         };
 
-        struct TextureData
+        struct Texture
         {
             GLuint rawHandle = 0;
             uint32_t width = 0;
             uint32_t height = 0;
         };
 
-        struct VertexBufferData
+        struct VertexBuffer
         {
             VertexBufferLayout layout;
             GLuint rawHandle = 0;
@@ -105,23 +105,23 @@ namespace solo
             bool dynamic = false;
         };
 
-        struct IndexBufferData
+        struct IndexBuffer
         {
             GLuint rawHandle = 0;
             uint32_t elementCount = 0;
         };
 
-        struct ProgramData
+        struct Program
         {
             GLuint rawHandle = 0;
         };
 
-        struct VertexObjectData
+        struct VertexObject
         {
             GLuint rawHandle = 0;
         };
 
-        struct UniformData
+        struct Uniform
         {
             UniformType type = UniformType::Float;
             GLint location = 0;
@@ -137,13 +137,13 @@ namespace solo
         void validateFrameBufferAttachments(const std::vector<TextureHandle>& attachments);
         auto createVertexBuffer(bool dynamic, const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> VertexBufferHandle;
 
-        ResourcePool<TextureData, SL_MAX_TEXTURES> textures;
-        ResourcePool<FrameBufferData, SL_MAX_FRAME_BUFFERS> frameBuffers;
-        ResourcePool<VertexBufferData, SL_MAX_VERTEX_BUFFERS> vertexBuffers;
-        ResourcePool<IndexBufferData, SL_MAX_INDEX_BUFFERS> indexBuffers;
-        ResourcePool<ProgramData, SL_MAX_PROGRAMS> programs;
-        ResourcePool<VertexObjectData, SL_MAX_VERTEX_OBJECTS> vertexObjects;
-        ResourcePool<UniformData, SL_MAX_UNIFORMS> uniforms;
+        ResourcePool<Texture, SL_MAX_TEXTURES> textures;
+        ResourcePool<FrameBuffer, SL_MAX_FRAME_BUFFERS> frameBuffers;
+        ResourcePool<VertexBuffer, SL_MAX_VERTEX_BUFFERS> vertexBuffers;
+        ResourcePool<IndexBuffer, SL_MAX_INDEX_BUFFERS> indexBuffers;
+        ResourcePool<Program, SL_MAX_PROGRAMS> programs;
+        ResourcePool<VertexObject, SL_MAX_VERTEX_OBJECTS> vertexObjects;
+        ResourcePool<Uniform, SL_MAX_UNIFORMS> uniforms;
     };
 }
 
