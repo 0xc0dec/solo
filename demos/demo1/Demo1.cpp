@@ -199,13 +199,9 @@ private:
         });
     }
 
-    sptr<Node> createPrefabMeshNode(const std::string& type)
+    sptr<Node> createPrefabMeshNode(MeshPrefab prefab)
     {
-        sptr<Mesh> mesh = nullptr;
-        if (type == "quad")
-            mesh = Mesh::create(MeshPrefab::Quad);
-        else if (type == "cube")
-            mesh = Mesh::create(MeshPrefab::Cube);
+        auto mesh = Mesh::create(prefab);
         assert(mesh != nullptr);
         auto node = scene->createNode();
         node->addComponent<MeshRenderer>()->setMesh(mesh);
@@ -214,7 +210,7 @@ private:
 
     void initCheckerBox()
     {
-        auto node = createPrefabMeshNode("cube");
+        auto node = createPrefabMeshNode(MeshPrefab::Cube);
         node->findComponent<MeshRenderer>()->setMaterial(0, checkerMat);
         node->findComponent<Transform>()->setLocalPosition(Vector3(-5, 0, 0));
         node->addComponent<Rotator>("world", Vector3::unitY());
@@ -306,7 +302,7 @@ private:
         parent->addComponent<Rotator>("world", Vector3::unitY());
         attachAxesMesh(parent);
 
-        auto quad = createPrefabMeshNode("quad");
+        auto quad = createPrefabMeshNode(MeshPrefab::Quad);
         auto renderer = quad->findComponent<MeshRenderer>();
         renderer->setMaterial(0, monitorMat);
         renderer->getTags() = renderTargetQuadTag;
@@ -334,7 +330,7 @@ private:
             parent->addComponent<Rotator>("world", Vector3::unitY());
             attachAxesMesh(parent);
 
-            auto quad = createPrefabMeshNode("quad");
+            auto quad = createPrefabMeshNode(MeshPrefab::Quad);
             quad->addComponent<Rotator>("local", Vector3::unitX());
             quad->findComponent<Transform>()->setParent(parent->findComponent<Transform>());
             quad->findComponent<Transform>()->setLocalPosition(Vector3(2, 0, 0));
