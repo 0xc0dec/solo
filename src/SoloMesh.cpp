@@ -116,7 +116,6 @@ auto Mesh::addVertexBuffer(VertexBufferHandle bufferHandle, const VertexBufferLa
     vertexBuffers.push_back(bufferHandle);
     vertexCounts.push_back(vertexCount);
     vertexSizes.push_back(layout.getSize());
-    rebuildVertexObject();
     recalculateMinVertexCount();
     return static_cast<uint32_t>(vertexBuffers.size() - 1);
 }
@@ -128,7 +127,6 @@ void Mesh::removeVertexBuffer(uint32_t index)
     vertexBuffers.erase(vertexBuffers.begin() + index);
     vertexCounts.erase(vertexCounts.begin() + index);
     vertexSizes.erase(vertexSizes.begin() + index);
-    rebuildVertexObject();
     recalculateMinVertexCount();
 }
 
@@ -172,19 +170,6 @@ void Mesh::drawPart(Effect* effect, uint32_t part)
     const auto& handle = !effectBindingVertexObjectHandle.empty() ? effectBindingVertexObjectHandle : vertexObjectHandle;
     if (!handle.empty())
         renderer->drawIndexedVertexObject(primitiveType, handle, indexBuffers[part]);
-}
-
-
-void Mesh::rebuildVertexObject()
-{
-    if (!vertexObjectHandle.empty())
-    {
-        renderer->destroyVertexObject(vertexObjectHandle);
-        vertexObjectHandle = EmptyVertexObjectHandle;
-    }
-    // Build with default vertex attribute values
-    if (!vertexBuffers.empty())
-        vertexObjectHandle = renderer->createVertexObject(vertexBuffers.data(), static_cast<uint32_t>(vertexBuffers.size()), EmptyProgramHandle);
 }
 
 

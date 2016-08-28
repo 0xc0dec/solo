@@ -682,18 +682,13 @@ void OpenGLRenderer::setProgram(const ProgramHandle& handle)
 
 auto OpenGLRenderer::createVertexObject(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle) -> VertexObjectHandle
 {
-    std::unordered_map<std::string, GLuint> attributes;
-    if (!programHandle.empty())
-    {
-        auto rawProgramHandle = programs.getData(programHandle.value).rawHandle;
-        attributes = discoverVertexAttributes(rawProgramHandle);
-    }
-
     GLuint rawHandle;
     glGenVertexArrays(1, &rawHandle);
     SL_ERR_IF(!rawHandle, "Failed to obtain vertex object handle");
 
     glBindVertexArray(rawHandle);
+
+    auto attributes = discoverVertexAttributes(programs.getData(programHandle.value).rawHandle);
 
     auto findAttributeLocation = [&](const char* name)
     {
