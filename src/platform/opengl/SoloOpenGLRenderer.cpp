@@ -713,7 +713,7 @@ auto OpenGLRenderer::createVertexProgramBinding(const VertexBufferHandle* buffer
         for (uint32_t j = 0; j < elementCount; j++)
         {
             auto& el = layout.getElement(j);
-            GLint attrLoc = 0;
+            auto attrLoc = 0;
             switch (el.semantics)
             {
                 case VertexBufferLayoutSemantics::Position: attrLoc = findAttributeLocation("position"); break;
