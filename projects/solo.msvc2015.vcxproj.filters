@@ -223,6 +223,9 @@
     <ClInclude Include="..\include\SoloDeviceSetup.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\platform\vulkan\SoloVulkanMaterial.h">
+      <Filter>src\platform\vulkan</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SoloScene.cpp">
@@ -1228,6 +1231,9 @@
       <Filter>src\platform\vulkan</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\vulkan\SoloVulkan.cpp">
+      <Filter>src\platform\vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\vulkan\SoloVulkanMaterial.cpp">
       <Filter>src\platform\vulkan</Filter>
     </ClCompile>
   </ItemGroup>
