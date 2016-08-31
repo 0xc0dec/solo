@@ -671,9 +671,9 @@ void VulkanRenderer::test_init()
         vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline);
 
         VkDeviceSize offsets[] = {0};
-	    vkCmdBindVertexBuffers(buf, 0, 1 /* binding count */, &vertexBuffer, offsets);
+	    vkCmdBindVertexBuffers(buf, 0, 1, &vertexBuffer, offsets);
 
-        vkCmdDraw(buf, static_cast<uint32_t>(triangle.size()), 1 /* instance count */, 0 /* first vertex */, 0 /* first instance */);
+        vkCmdDraw(buf, static_cast<uint32_t>(triangle.size()), 1, 0, 0);
     });
 }
 
