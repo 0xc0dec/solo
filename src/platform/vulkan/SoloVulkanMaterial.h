@@ -12,7 +12,11 @@ namespace solo
         SL_NONCOPYABLE(VulkanMaterial)
         VulkanMaterial(VkDevice device);
 
+        void rebuild();
+
     private:
         static VkDescriptorPool descPool;
+
+        VkDevice device = nullptr;
     };
 }

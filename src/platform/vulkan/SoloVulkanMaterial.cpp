@@ -1,5 +1,6 @@
 #include "SoloVulkanMaterial.h"
 #include <tuple>
+#include <array>
 
 using namespace solo;
 
@@ -27,7 +28,8 @@ VkDescriptorPool createDescriptorPool(VkDevice device, const std::vector<std::tu
 }
 
 
-VulkanMaterial::VulkanMaterial(VkDevice device)
+VulkanMaterial::VulkanMaterial(VkDevice device):
+    device(device)
 {
     if (descPool == nullptr)
     {
@@ -37,4 +39,51 @@ VulkanMaterial::VulkanMaterial(VkDevice device)
             { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1024 } // TODO to config
         });
     }
+}
+
+
+void VulkanMaterial::rebuild()
+{
+    VkDescriptorSetLayoutBinding setLayoutBinding1 {};
+	setLayoutBinding1.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+	setLayoutBinding1.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+	setLayoutBinding1.binding = 0;
+	setLayoutBinding1.descriptorCount = 1;
+
+    VkDescriptorSetLayoutBinding setLayoutBinding2 {};
+	setLayoutBinding2.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+	setLayoutBinding2.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+	setLayoutBinding2.binding = 0;
+	setLayoutBinding2.descriptorCount = 1;
+
+    std::vector<VkDescriptorSetLayoutBinding> setLayoutBindings = { setLayoutBinding1 };
+
+    VkDescriptorSetLayoutCreateInfo descSetLayoutCreateInfo {};
+	descSetLayoutCreateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	descSetLayoutCreateInfo.pNext = nullptr;
+	descSetLayoutCreateInfo.pBindings = setLayoutBindings.data();
+	descSetLayoutCreateInfo.bindingCount = setLayoutBindings.size();
+
+    VkDescriptorSetLayout descSetLayout1;
+    SL_CHECK_VK_RESULT(vkCreateDescriptorSetLayout(device, &descSetLayoutCreateInfo, nullptr, &descSetLayout1));
+
+    VkDescriptorSetLayout descSetLayout2;
+    SL_CHECK_VK_RESULT(vkCreateDescriptorSetLayout(device, &descSetLayoutCreateInfo, nullptr, &descSetLayout2));
+
+    VkPushConstantRange pushConstantRange = {};
+	pushConstantRange.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
+	pushConstantRange.offset = sizeof(int); // TODO !!! int is just a placeholder
+	pushConstantRange.size = 0;
+
+    std::array<VkDescriptorSetLayout, 2> setLayouts = { descSetLayout1, descSetLayout2 };
+    VkPipelineLayoutCreateInfo pipelineLayoutCreateInfo = {};
+	pipelineLayoutCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+	pipelineLayoutCreateInfo.pNext = nullptr;
+	pipelineLayoutCreateInfo.setLayoutCount = 2;
+	pipelineLayoutCreateInfo.pSetLayouts = setLayouts.data();
+    pipelineLayoutCreateInfo.pushConstantRangeCount = 1;
+    pipelineLayoutCreateInfo.pPushConstantRanges = &pushConstantRange;
+
+    VkPipelineLayout pipelineLayout;
+    SL_CHECK_VK_RESULT(vkCreatePipelineLayout(device, &pipelineLayoutCreateInfo, nullptr, &pipelineLayout));
 }
