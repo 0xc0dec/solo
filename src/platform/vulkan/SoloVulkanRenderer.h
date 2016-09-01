@@ -1,3 +1,5 @@
+// Note: this file is a total hackery and a work-in-progress, so avoid reading this
+
 #pragma once
 
 #include "SoloRenderer.h"

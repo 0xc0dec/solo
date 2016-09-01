@@ -1,3 +1,5 @@
+// Note: this file is a total hackery and a work-in-progress, so avoid reading this
+
 #include "SoloVulkanMaterial.h"
 #include <tuple>
 #include <array>
