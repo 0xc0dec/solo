@@ -2,15 +2,14 @@
 A framework for my personal graphics/gamedev experiments.
 
 ## Features
-* Object hierarchies/scene graph.
-* Component system: scenes consist of nodes, nodes hold any number of components. Components implement all in-game logic and allow building flexible and modular architecture. Inspired by Unity.
+* Unity-inspired component system.
 * OBJ meshes and PNG textures loading.
 * Asynchronous asset loading.
 * Render to texture.
-* Convenient system for applying post-processing effects.
+* System for applying post-processing effects.
 * Basic text rendering.
 * Basic physics.
-* OpenGL rendering backend.
+* OpenGL graphics backend.
 
 ## Screenshots
 
