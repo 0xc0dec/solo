@@ -66,10 +66,8 @@ void VulkanMaterial::rebuild()
 	descSetLayoutCreateInfo.pBindings = setLayoutBindings.data();
 	descSetLayoutCreateInfo.bindingCount = setLayoutBindings.size();
 
-    VkDescriptorSetLayout descSetLayout1;
+    VkDescriptorSetLayout descSetLayout1, descSetLayout2;
     SL_CHECK_VK_RESULT(vkCreateDescriptorSetLayout(device, &descSetLayoutCreateInfo, nullptr, &descSetLayout1));
-
-    VkDescriptorSetLayout descSetLayout2;
     SL_CHECK_VK_RESULT(vkCreateDescriptorSetLayout(device, &descSetLayoutCreateInfo, nullptr, &descSetLayout2));
 
     VkPushConstantRange pushConstantRange = {};
