@@ -214,7 +214,7 @@ void VulkanRenderer::initPresentationCommandBuffers()
 
         vkCmdPipelineBarrier(postPresentCmdBuffers[i], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
             0, 0, nullptr, 0, nullptr, 1, &postPresentBarrier);
-        VulkanHelper::flushCommandBuffer(queue, postPresentCmdBuffers[i]);
+        VulkanHelper::submitCommandBuffer(queue, postPresentCmdBuffers[i]);
 
         // Transforms the (framebuffer) image layout from color attachment to present(khr) for presenting to the swap chain
 
@@ -234,7 +234,7 @@ void VulkanRenderer::initPresentationCommandBuffers()
         vkCmdPipelineBarrier(prePresentCmdBuffers[i], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
             0, 0, nullptr, 0, nullptr, 1, &prePresentBarrier);
 
-        VulkanHelper::flushCommandBuffer(queue, prePresentCmdBuffers[i]);
+        VulkanHelper::submitCommandBuffer(queue, prePresentCmdBuffers[i]);
     }
 }
 
@@ -801,7 +801,7 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
     renderPass = VulkanHelper::createRenderPass(logicalDevice, colorFormat, depthFormat);
     initFrameBuffers();
 
-    VulkanHelper::flushCommandBuffer(queue, setupCmdBuffer);
+    VulkanHelper::submitCommandBuffer(queue, setupCmdBuffer);
     ::destroyCommandBuffers(logicalDevice, commandPool, &setupCmdBuffer, 1);
 }
 

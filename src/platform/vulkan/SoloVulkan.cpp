@@ -299,7 +299,7 @@ auto VulkanHelper::createCommandBuffer(VkDevice logicalDevice, VkCommandPool com
 }
 
 
-void VulkanHelper::flushCommandBuffer(VkQueue queue, VkCommandBuffer buffer)
+void VulkanHelper::submitCommandBuffer(VkQueue queue, VkCommandBuffer buffer)
 {
     SL_CHECK_VK_RESULT(vkEndCommandBuffer(buffer));
 

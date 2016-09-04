@@ -41,7 +41,7 @@ namespace solo
         static auto createCommandPool(VkDevice logicalDevice, uint32_t queueIndex) -> VkCommandPool;
 
         static auto createCommandBuffer(VkDevice logicalDevice, VkCommandPool commandPool) -> VkCommandBuffer;
-        static void flushCommandBuffer(VkQueue queue, VkCommandBuffer buffer);
+        static void submitCommandBuffer(VkQueue queue, VkCommandBuffer buffer);
 
         static auto getDepthFormat(VkPhysicalDevice device) -> VkFormat;
     };
