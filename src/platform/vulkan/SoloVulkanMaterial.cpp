@@ -86,4 +86,30 @@ void VulkanMaterial::rebuild()
 
     VkPipelineLayout pipelineLayout;
     SL_CHECK_VK_RESULT(vkCreatePipelineLayout(device, &pipelineLayoutCreateInfo, nullptr, &pipelineLayout));
+
+    VkDescriptorSetAllocateInfo descriptorSetAllocateInfo {};
+	descriptorSetAllocateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+	descriptorSetAllocateInfo.pNext = nullptr;
+	descriptorSetAllocateInfo.descriptorPool = descPool;
+	descriptorSetAllocateInfo.pSetLayouts = &descSetLayout1;
+	descriptorSetAllocateInfo.descriptorSetCount = 1;
+
+    // Desc set and write desc set
+
+    VkDescriptorSet descSet;
+    SL_CHECK_VK_RESULT(vkAllocateDescriptorSets(device, &descriptorSetAllocateInfo, &descSet));
+
+    VkDescriptorImageInfo descImgInfo;
+
+    VkWriteDescriptorSet writeDescriptorSet {};
+	writeDescriptorSet.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+	writeDescriptorSet.pNext = nullptr;
+	writeDescriptorSet.dstSet = descSet;
+	writeDescriptorSet.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER; // TODO
+	writeDescriptorSet.dstBinding = 0;
+	writeDescriptorSet.pImageInfo = &descImgInfo;
+	writeDescriptorSet.descriptorCount = 1;
+
+    VkWriteDescriptorSet writeDescSet;
+    vkUpdateDescriptorSets(device, 1, &writeDescSet, 0, nullptr);
 }
