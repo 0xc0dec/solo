@@ -430,82 +430,19 @@ void setVertexData(VkDevice device, VkDeviceMemory memory, std::vector<Vertex> v
 
 void VulkanRenderer::test_init()
 {
-//    VkPipelineLayoutCreateInfo pipelineLayoutInfo {};
-//    pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-//    pipelineLayoutInfo.pNext = nullptr;
-//    pipelineLayoutInfo.flags = 0;
-//    pipelineLayoutInfo.setLayoutCount = 0;
-//    pipelineLayoutInfo.pSetLayouts = nullptr;
-//    pipelineLayoutInfo.pushConstantRangeCount = 0;
-//    pipelineLayoutInfo.pPushConstantRanges = nullptr;
-//
-//    VkPipelineLayout pipelineLayout;
-//    SL_CHECK_VK_RESULT(vkCreatePipelineLayout(logicalDevice, &pipelineLayoutInfo, nullptr, &pipelineLayout));
-
     auto vertexShader = VulkanHelper::createShader(logicalDevice, Device::get()->getFileSystem()->readBytes("triangle.vert.spv"));
-//    auto vertexShaderStageInfo = createShaderStageInfo(true, vertexShader, "main");
     auto fragmentShader = VulkanHelper::createShader(logicalDevice, Device::get()->getFileSystem()->readBytes("triangle.frag.spv"));
-//    auto fragmentShaderStageInfo = createShaderStageInfo(false, fragmentShader, "main");
 
     VulkanPipeline pipeline(logicalDevice, renderPass);
     pipeline.setVertexShader(vertexShader, "main");
     pipeline.setFragmentShader(fragmentShader, "main");
 
-//    std::vector<VkPipelineShaderStageCreateInfo> shaderStageStates = { vertexShaderStageInfo, fragmentShaderStageInfo };
-
-//    VkVertexInputBindingDescription vertexInputBindingDesc {};
-//    vertexInputBindingDesc.binding = 0;
-//    vertexInputBindingDesc.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
-//    vertexInputBindingDesc.stride = sizeof(Vertex);
-//    std::vector<VkVertexInputBindingDescription> inputBindingDescriptions = { vertexInputBindingDesc };
-
     pipeline.setVertexSize(sizeof(Vertex));
-
-//    const uint32_t positionLocation = 0;
-//    const uint32_t colorLocation = 1;
-//
-//    VkVertexInputAttributeDescription positionInputAttrDesc {};
-//    positionInputAttrDesc.location = positionLocation;
-//    positionInputAttrDesc.binding = 0;
-//    positionInputAttrDesc.format = VK_FORMAT_R32G32_SFLOAT;
-//    positionInputAttrDesc.offset = offsetof(Vertex, position);
-//
-//    VkVertexInputAttributeDescription colorInputAttrDesc {};
-//    colorInputAttrDesc.location = colorLocation;
-//    colorInputAttrDesc.binding = 0;
-//    colorInputAttrDesc.format = VK_FORMAT_R32G32_SFLOAT;
-//    colorInputAttrDesc.offset = offsetof(Vertex, color);
-
-//    std::vector<VkVertexInputAttributeDescription> inputAttributeDescriptions = { positionInputAttrDesc, colorInputAttrDesc };
-//
-//    VkPipelineVertexInputStateCreateInfo vertexInputState {};
-//    vertexInputState.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-//    vertexInputState.pNext = nullptr;
-//    vertexInputState.flags = 0;
-//    vertexInputState.vertexBindingDescriptionCount = static_cast<uint32_t>(inputBindingDescriptions.size());
-//    vertexInputState.pVertexBindingDescriptions = inputBindingDescriptions.data();
-//    vertexInputState.vertexAttributeDescriptionCount = static_cast<uint32_t>(inputAttributeDescriptions.size());
-//    vertexInputState.pVertexAttributeDescriptions = inputAttributeDescriptions.data();
 
     pipeline.setVertexAttribute(0, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, position));
     pipeline.setVertexAttribute(1, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, color));
 
-//    VkPipelineInputAssemblyStateCreateInfo inputAssemblyState {};
-//    inputAssemblyState.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
-//    inputAssemblyState.pNext = nullptr;
-//    inputAssemblyState.flags = 0;
-//    inputAssemblyState.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
-//    inputAssemblyState.primitiveRestartEnable = VK_FALSE;
     pipeline.setTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
-
-//    VkPipelineViewportStateCreateInfo viewportState {};
-//    viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-//    viewportState.pNext = nullptr;
-//    viewportState.flags = 0;
-//    viewportState.viewportCount = 1;
-//    viewportState.pViewports = nullptr;
-//    viewportState.scissorCount = 1;
-//    viewportState.pScissors = nullptr;
 
     pipeline.setCullMode(VK_CULL_MODE_BACK_BIT);
     pipeline.setFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE);
@@ -515,27 +452,6 @@ void VulkanRenderer::test_init()
     pipeline.setColorWriteMask(VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT);
 
     pipeline.rebuild();
-
-//    auto rasterizationState = createRasterizationStateInfo(false, false, VK_CULL_MODE_BACK_BIT, VK_FRONT_FACE_COUNTER_CLOCKWISE);
-//    auto multisampleState = createMultisampleStateInfo(VK_SAMPLE_COUNT_1_BIT);
-//    auto blendAttachmentState = createBlendAttachmentState(false,
-//        VK_BLEND_FACTOR_ZERO, VK_BLEND_FACTOR_ZERO, VK_BLEND_OP_ADD,
-//        VK_BLEND_FACTOR_ZERO, VK_BLEND_FACTOR_ZERO, VK_BLEND_OP_ADD,
-//        VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT);
-//    auto colorBlendState = createColorBlendStateInfo(&blendAttachmentState, false, VK_LOGIC_OP_COPY);
-
-//    std::vector<VkDynamicState> dynamicStates = { VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR };
-//    VkPipelineDynamicStateCreateInfo dynamicState {};
-//    dynamicState.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
-//    dynamicState.pNext = nullptr;
-//    dynamicState.flags = 0;
-//    dynamicState.dynamicStateCount = static_cast<uint32_t>(dynamicStates.size());
-//    dynamicState.pDynamicStates = dynamicStates.data();
-//
-//    auto pipeline = createGraphicsPipeline(logicalDevice,
-//        static_cast<uint32_t>(shaderStageStates.size()), shaderStageStates.data(),
-//        &vertexInputState, &inputAssemblyState, &viewportState, &rasterizationState, &multisampleState,
-//        &colorBlendState, &dynamicState, pipelineLayout, renderPass);
 
     const auto triangleSize = 1.6f;
     std::vector<Vertex> triangle =
