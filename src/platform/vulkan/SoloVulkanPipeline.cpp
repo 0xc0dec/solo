@@ -55,11 +55,53 @@ auto createMultisampleStateInfo(VkSampleCountFlagBits rasterizationSampleCount) 
 }
 
 
-VulkanPipeline::VulkanPipeline(VkDevice device):
-    device(device)
+auto createBlendAttachmentState(bool blendEnabled, VkBlendFactor srcColorBlendFactor, VkBlendFactor dstColorBlendFactor,
+    VkBlendOp colorBlendOp, VkBlendFactor srcAlphaBlendFactor, VkBlendFactor dstAlphaBlendFactor, VkBlendOp alphaBlendOp,
+    VkColorComponentFlags colorWriteMask) -> VkPipelineColorBlendAttachmentState
+{
+    VkPipelineColorBlendAttachmentState state {};
+    state.blendEnable = blendEnabled ? VK_TRUE : VK_FALSE;
+    state.srcColorBlendFactor = srcColorBlendFactor;
+    state.dstColorBlendFactor = dstColorBlendFactor;
+    state.colorBlendOp = colorBlendOp;
+    state.srcAlphaBlendFactor = srcAlphaBlendFactor;
+    state.dstAlphaBlendFactor = dstAlphaBlendFactor;
+    state.alphaBlendOp = alphaBlendOp;
+    state.colorWriteMask = colorWriteMask;
+    return state;
+}
+
+
+auto createColorBlendStateInfo(VkPipelineColorBlendAttachmentState* blendAttachments, bool logicOpEnabled, VkLogicOp logicOp)
+    -> VkPipelineColorBlendStateCreateInfo
+{
+    VkPipelineColorBlendStateCreateInfo info {};
+    info.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+    info.pNext = nullptr;
+    info.flags = 0;
+    info.logicOpEnable = logicOpEnabled ? VK_TRUE : VK_FALSE;
+    info.logicOp = logicOp;
+    info.attachmentCount = 1;
+    info.pAttachments = blendAttachments;
+    info.blendConstants[0] = 0;
+    info.blendConstants[1] = 0;
+    info.blendConstants[2] = 0;
+    info.blendConstants[3] = 0;
+    return info;
+}
+
+
+VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass):
+    device(device),
+    renderPass(renderPass)
 {
     rasterState = createRasterizationStateInfo(false, false, VK_CULL_MODE_BACK_BIT, VK_FRONT_FACE_COUNTER_CLOCKWISE);
     multisampleState = createMultisampleStateInfo(VK_SAMPLE_COUNT_1_BIT);
+    blendAttachmentState = createBlendAttachmentState(false,
+        VK_BLEND_FACTOR_ZERO, VK_BLEND_FACTOR_ZERO, VK_BLEND_OP_ADD,
+        VK_BLEND_FACTOR_ZERO, VK_BLEND_FACTOR_ZERO, VK_BLEND_OP_ADD,
+        VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT);
+    colorBlendState = createColorBlendStateInfo(&blendAttachmentState, false, VK_LOGIC_OP_COPY);
 }
 
 
@@ -118,12 +160,10 @@ void VulkanPipeline::rebuild()
     if (fragmentShader)
         shaderStageStates.push_back(fragmentShaderStageInfo);
 
-    const uint32_t TODO_vertexSize = 123;
-
-    VkVertexInputBindingDescription vertexInputBindingDesc {};
+    VkVertexInputBindingDescription vertexInputBindingDesc {}; // TODO other bindings
     vertexInputBindingDesc.binding = 0;
     vertexInputBindingDesc.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
-    vertexInputBindingDesc.stride = TODO_vertexSize;
+    vertexInputBindingDesc.stride = vertexSize;
     std::vector<VkVertexInputBindingDescription> inputBindingDescriptions = { vertexInputBindingDesc };
 
     VkPipelineVertexInputStateCreateInfo vertexInputState {};
@@ -151,5 +191,34 @@ void VulkanPipeline::rebuild()
     viewportState.scissorCount = 1;
     viewportState.pScissors = nullptr;
 
-    // TODO continue
+    std::vector<VkDynamicState> dynamicStates = { VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR };
+    VkPipelineDynamicStateCreateInfo dynamicState {};
+    dynamicState.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+    dynamicState.pNext = nullptr;
+    dynamicState.flags = 0;
+    dynamicState.dynamicStateCount = static_cast<uint32_t>(dynamicStates.size());
+    dynamicState.pDynamicStates = dynamicStates.data();
+
+    VkGraphicsPipelineCreateInfo pipelineInfo {};
+    pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+    pipelineInfo.pNext = nullptr;
+    pipelineInfo.flags = 0;
+    pipelineInfo.stageCount = shaderStageStates.size();
+    pipelineInfo.pStages = shaderStageStates.data();
+    pipelineInfo.pVertexInputState = &vertexInputState;
+    pipelineInfo.pInputAssemblyState = &inputAssemblyState;
+    pipelineInfo.pTessellationState = nullptr;
+    pipelineInfo.pViewportState = &viewportState;
+    pipelineInfo.pRasterizationState = &rasterState;
+    pipelineInfo.pMultisampleState = &multisampleState;
+    pipelineInfo.pDepthStencilState = nullptr;
+    pipelineInfo.pColorBlendState = &colorBlendState;
+    pipelineInfo.pDynamicState = &dynamicState;
+    pipelineInfo.layout = layout;
+    pipelineInfo.renderPass = renderPass;
+    pipelineInfo.subpass = 0;
+    pipelineInfo.basePipelineHandle = nullptr;
+    pipelineInfo.basePipelineIndex = -1;
+
+    SL_CHECK_VK_RESULT(vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline));
 }
