@@ -477,7 +477,14 @@ void VulkanRenderer::test_init()
     auto vertexBufferMemory = initMemory<ResourceType::Buffer>(logicalDevice, physicalDeviceMemoryProperties, vertexBuffer,
 		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
+    std::vector<Vertex> triangle2 =
+    {
+		{ /*rb*/ {  0.3f * triangleSize,  sqrtf(3.0f) * 0.25f * triangleSize }, /*R*/{ 1.0f, 0.0f, 0.0f }},
+		{ /* t*/ {                 0.0f, -sqrtf(3.0f) * 0.25f * triangleSize }, /*G*/{ 0.0f, 1.0f, 0.0f }},
+		{ /*lb*/ { -0.5f * triangleSize,  sqrtf(3.0f) * 0.25f * triangleSize }, /*B*/{ 0.0f, 0.0f, 1.0f }}
+	};
     setVertexData(logicalDevice, vertexBufferMemory, triangle);
+    setVertexData(logicalDevice, vertexBufferMemory, triangle2);
 
     buildDrawCommandBuffers([&](VkCommandBuffer buf)
     {
