@@ -134,29 +134,29 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync)
     swapchainBuffers.resize(imageCount);
     for (uint32_t i = 0; i < imageCount; i++)
     {
-        VkImageViewCreateInfo imageInfo = {};
-        imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-        imageInfo.pNext = nullptr;
-        imageInfo.format = colorFormat;
-        imageInfo.components = 
+        VkImageViewCreateInfo imageViewInfo = {};
+        imageViewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+        imageViewInfo.pNext = nullptr;
+        imageViewInfo.format = colorFormat;
+        imageViewInfo.components = 
         {
             VK_COMPONENT_SWIZZLE_R,
             VK_COMPONENT_SWIZZLE_G,
             VK_COMPONENT_SWIZZLE_B,
             VK_COMPONENT_SWIZZLE_A
         };
-        imageInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-        imageInfo.subresourceRange.baseMipLevel = 0;
-        imageInfo.subresourceRange.levelCount = 1;
-        imageInfo.subresourceRange.baseArrayLayer = 0;
-        imageInfo.subresourceRange.layerCount = 1;
-        imageInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-        imageInfo.flags = 0;
-        imageInfo.image = images[i];
+        imageViewInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        imageViewInfo.subresourceRange.baseMipLevel = 0;
+        imageViewInfo.subresourceRange.levelCount = 1;
+        imageViewInfo.subresourceRange.baseArrayLayer = 0;
+        imageViewInfo.subresourceRange.layerCount = 1;
+        imageViewInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+        imageViewInfo.flags = 0;
+        imageViewInfo.image = images[i];
 
         swapchainBuffers[i].image = images[i];
 
-        SL_CHECK_VK_RESULT(vkCreateImageView(logicalDevice, &imageInfo, nullptr, &swapchainBuffers[i].imageView));
+        SL_CHECK_VK_RESULT(vkCreateImageView(logicalDevice, &imageViewInfo, nullptr, &swapchainBuffers[i].imageView));
     }
 }
 
