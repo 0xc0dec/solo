@@ -1,5 +1,6 @@
 #pragma once
 
+// TODO add "GL" to names
 #define SL_MAX_TEXTURES 1024
 #define SL_MAX_FRAME_BUFFERS 1024
 #define SL_MAX_VERTEX_BUFFERS 1024
