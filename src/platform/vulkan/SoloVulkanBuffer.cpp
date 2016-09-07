@@ -3,8 +3,39 @@
 using namespace solo;
 
 
-VulkanBuffer::VulkanBuffer(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps, VkDeviceSize size,
-    VkBufferUsageFlags usage, VkMemoryPropertyFlags properties)
+VulkanBuffer::VulkanBuffer(VulkanBuffer&& other):
+    device(other.device),
+    buffer(other.buffer),
+    deviceMemory(other.deviceMemory)
+{
+    other.device = nullptr;
+    other.deviceMemory = nullptr;
+    other.buffer = nullptr;
+}
+
+
+VulkanBuffer& VulkanBuffer::operator=(VulkanBuffer&& other)
+{
+    device = other.device;
+    deviceMemory = other.deviceMemory;
+    buffer = other.buffer;
+
+    other.device = nullptr;
+    other.deviceMemory = nullptr;
+    other.buffer = nullptr;
+
+    return *this;
+}
+
+
+VulkanBuffer::~VulkanBuffer()
+{
+    cleanup();
+}
+
+
+VulkanBuffer VulkanBuffer::create(VkDevice device, void* data, VkDeviceSize size, VkBufferUsageFlags usage,
+    VkMemoryPropertyFlags properties, VkPhysicalDeviceMemoryProperties memProps)
 {
     VkBufferCreateInfo bufferInfo {};
     bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
@@ -15,6 +46,7 @@ VulkanBuffer::VulkanBuffer(VkDevice device, VkPhysicalDeviceMemoryProperties phy
     bufferInfo.queueFamilyIndexCount = 0;
     bufferInfo.pQueueFamilyIndices = nullptr;
 
+    VkBuffer buffer = nullptr;
     SL_CHECK_VK_RESULT(vkCreateBuffer(device, &bufferInfo, nullptr, &buffer));
 
     VkMemoryRequirements memReqs;
@@ -23,19 +55,47 @@ VulkanBuffer::VulkanBuffer(VkDevice device, VkPhysicalDeviceMemoryProperties phy
     VkMemoryAllocateInfo memAllocInfo {};
     memAllocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
     memAllocInfo.allocationSize = memReqs.size;
-    memAllocInfo.memoryTypeIndex = VulkanHelper::findMemoryType(physicalDeviceMemProps, memReqs.memoryTypeBits, properties);
+    memAllocInfo.memoryTypeIndex = VulkanHelper::findMemoryType(memProps, memReqs.memoryTypeBits, properties);
 
-    SL_CHECK_VK_RESULT(vkAllocateMemory(device, &memAllocInfo, nullptr, &deviceMemory));
+    VkDeviceMemory memory = nullptr;
+    SL_CHECK_VK_RESULT(vkAllocateMemory(device, &memAllocInfo, nullptr, &memory));
+
+    SL_CHECK_VK_RESULT(vkBindBufferMemory(device, buffer, memory, 0));
+
+    void* ptr = nullptr;
+	SL_CHECK_VK_RESULT(vkMapMemory(device, memory, 0, VK_WHOLE_SIZE, 0, &data));
+	memcpy(ptr, data, size);
+	vkUnmapMemory(device, memory);
+
+    return VulkanBuffer(device, buffer, memory);
 }
 
 
-VulkanBuffer::~VulkanBuffer()
+VulkanBuffer::VulkanBuffer(VkDevice device, VkBuffer buffer, VkDeviceMemory memory):
+    device(device),
+    buffer(buffer),
+    deviceMemory(memory)
+{
+}
+
+
+void VulkanBuffer::updateData(void* dataUpdate)
 {
     // TODO
 }
 
 
-void VulkanBuffer::setData(void* data, uint32_t size, VkCommandPool cmdPool)
+void VulkanBuffer::cleanup()
 {
+    if (deviceMemory)
+    {
+        vkFreeMemory(device, deviceMemory, nullptr);
+        deviceMemory = nullptr;
+    }
 
+    if (buffer)
+    {
+        vkDestroyBuffer(device, buffer, nullptr);
+        buffer = nullptr;
+    }
 }

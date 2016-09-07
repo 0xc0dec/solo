@@ -8,16 +8,32 @@ namespace solo
     class VulkanBuffer
     {
     public:
-        VulkanBuffer(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps, VkDeviceSize size,
-            VkBufferUsageFlags usage, VkMemoryPropertyFlags properties);
+        static VulkanBuffer create(VkDevice device, void* data, VkDeviceSize size, VkBufferUsageFlags usage,
+            VkMemoryPropertyFlags properties, VkPhysicalDeviceMemoryProperties memProps);
+
+        VulkanBuffer(VulkanBuffer &&other);
+        VulkanBuffer(const VulkanBuffer &other) = delete;
+
         ~VulkanBuffer();
 
-        SL_NONCOPYABLE(VulkanBuffer)
+        VulkanBuffer &operator=(const VulkanBuffer &other) = delete;
+        VulkanBuffer &operator=(VulkanBuffer &&other);
 
-        void setData(void* data, uint32_t size, VkCommandPool cmdPool);
+        VkBuffer& getHandle();
+        void updateData(void* dataUpdate);
 
     private:
+        VulkanBuffer(VkDevice device, VkBuffer buffer, VkDeviceMemory memory);
+        
+        void cleanup();
+
+        VkDevice device = nullptr;
         VkBuffer buffer = nullptr;
         VkDeviceMemory deviceMemory = nullptr;
     };
+
+    inline VkBuffer& VulkanBuffer::getHandle()
+    {
+        return buffer;
+    }
 }

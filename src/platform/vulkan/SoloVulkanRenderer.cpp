@@ -2,6 +2,7 @@
 
 #include "SoloVulkanRenderer.h"
 #include "SoloVulkanPipeline.h"
+#include "SoloVulkanBuffer.h"
 #include "SoloSDLVulkanDevice.h"
 #include "SoloFileSystem.h" // TODO remove?
 
@@ -461,21 +462,21 @@ void VulkanRenderer::test_init()
 		{ /*lb*/ { -0.5f * triangleSize,  sqrtf( 3.0f ) * 0.25f * triangleSize }, /*B*/{ 0.0f, 0.0f, 1.0f }}
 	};
 
-    VkBufferCreateInfo bufferInfo {};
-    bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-    bufferInfo.pNext = nullptr;
-    bufferInfo.flags = 0;
-    bufferInfo.size = sizeof(decltype(triangle)::value_type) * triangle.size();
-    bufferInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
-    bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-    bufferInfo.queueFamilyIndexCount = 0;
-    bufferInfo.pQueueFamilyIndices = nullptr;
+//    VkBufferCreateInfo bufferInfo {};
+//    bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+//    bufferInfo.pNext = nullptr;
+//    bufferInfo.flags = 0;
+//    bufferInfo.size = sizeof(decltype(triangle)::value_type) * triangle.size();
+//    bufferInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+//    bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+//    bufferInfo.queueFamilyIndexCount = 0;
+//    bufferInfo.pQueueFamilyIndices = nullptr;
 
-    VkBuffer vertexBuffer;
-    SL_CHECK_VK_RESULT(vkCreateBuffer(logicalDevice, &bufferInfo, nullptr, &vertexBuffer));
-
-    auto vertexBufferMemory = initMemory<ResourceType::Buffer>(logicalDevice, physicalDeviceMemoryProperties, vertexBuffer,
-		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+//    VkBuffer vertexBuffer;
+//    SL_CHECK_VK_RESULT(vkCreateBuffer(logicalDevice, &bufferInfo, nullptr, &vertexBuffer));
+//
+//    auto vertexBufferMemory = initMemory<ResourceType::Buffer>(logicalDevice, physicalDeviceMemoryProperties, vertexBuffer,
+//		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
     std::vector<Vertex> triangle2 =
     {
@@ -483,15 +484,19 @@ void VulkanRenderer::test_init()
 		{ /* t*/ {                 0.0f, -sqrtf(3.0f) * 0.25f * triangleSize }, /*G*/{ 0.0f, 1.0f, 0.0f }},
 		{ /*lb*/ { -0.5f * triangleSize,  sqrtf(3.0f) * 0.25f * triangleSize }, /*B*/{ 0.0f, 0.0f, 1.0f }}
 	};
-    setVertexData(logicalDevice, vertexBufferMemory, triangle);
-    setVertexData(logicalDevice, vertexBufferMemory, triangle2);
+//    setVertexData(logicalDevice, vertexBufferMemory, triangle);
+//    setVertexData(logicalDevice, vertexBufferMemory, triangle2);
+    auto vertexBuffer = VulkanBuffer::create(logicalDevice, triangle.data(), sizeof(decltype(triangle)::value_type) * triangle.size(),
+        VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+        physicalDeviceMemoryProperties);
 
     buildDrawCommandBuffers([&](VkCommandBuffer buf)
     {
         vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline.getHandle());
 
         VkDeviceSize offsets[] = {0};
-	    vkCmdBindVertexBuffers(buf, 0, 1, &vertexBuffer, offsets);
+        auto& buffer = vertexBuffer.getHandle();
+	    vkCmdBindVertexBuffers(buf, 0, 1, &buffer, offsets);
 
         vkCmdDraw(buf, static_cast<uint32_t>(triangle.size()), 1, 0, 0);
     });
