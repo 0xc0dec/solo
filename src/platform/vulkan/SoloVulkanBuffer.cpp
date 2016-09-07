@@ -63,7 +63,7 @@ VulkanBuffer VulkanBuffer::create(VkDevice device, void* data, VkDeviceSize size
     SL_CHECK_VK_RESULT(vkBindBufferMemory(device, buffer, memory, 0));
 
     void* ptr = nullptr;
-	SL_CHECK_VK_RESULT(vkMapMemory(device, memory, 0, VK_WHOLE_SIZE, 0, &data));
+	SL_CHECK_VK_RESULT(vkMapMemory(device, memory, 0, VK_WHOLE_SIZE, 0, &ptr));
 	memcpy(ptr, data, size);
 	vkUnmapMemory(device, memory);
 
