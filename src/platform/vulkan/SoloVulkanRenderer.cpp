@@ -360,9 +360,11 @@ void VulkanRenderer::test_init()
 		{ /* t*/ {                 0.0f, -sqrtf(3.0f) * 0.25f * triangleSize }, /*G*/{ 0.0f, 1.0f, 0.0f }},
 		{ /*lb*/ { -0.5f * triangleSize,  sqrtf(3.0f) * 0.25f * triangleSize }, /*B*/{ 0.0f, 0.0f, 1.0f }}
 	};
+
     auto vertexBuffer = VulkanBuffer::create(logicalDevice, triangle.data(), sizeof(decltype(triangle)::value_type) * triangle.size(),
         VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
         physicalDeviceMemoryProperties);
+    vertexBuffer.updateData(triangle2.data());
 
     buildDrawCommandBuffers([&](VkCommandBuffer buf)
     {

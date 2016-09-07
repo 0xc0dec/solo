@@ -6,23 +6,27 @@ using namespace solo;
 VulkanBuffer::VulkanBuffer(VulkanBuffer&& other):
     device(other.device),
     buffer(other.buffer),
-    deviceMemory(other.deviceMemory)
+    memory(other.memory),
+    size(other.size)
 {
     other.device = nullptr;
-    other.deviceMemory = nullptr;
+    other.memory = nullptr;
     other.buffer = nullptr;
+    other.size = 0;
 }
 
 
 VulkanBuffer& VulkanBuffer::operator=(VulkanBuffer&& other)
 {
     device = other.device;
-    deviceMemory = other.deviceMemory;
+    memory = other.memory;
     buffer = other.buffer;
+    size = other.size;
 
     other.device = nullptr;
-    other.deviceMemory = nullptr;
+    other.memory = nullptr;
     other.buffer = nullptr;
+    other.size = 0;
 
     return *this;
 }
@@ -67,30 +71,35 @@ VulkanBuffer VulkanBuffer::create(VkDevice device, void* data, VkDeviceSize size
 	memcpy(ptr, data, size);
 	vkUnmapMemory(device, memory);
 
-    return VulkanBuffer(device, buffer, memory);
+    return VulkanBuffer(device, buffer, memory, size);
 }
 
 
-VulkanBuffer::VulkanBuffer(VkDevice device, VkBuffer buffer, VkDeviceMemory memory):
+VulkanBuffer::VulkanBuffer(VkDevice device, VkBuffer buffer, VkDeviceMemory memory, VkDeviceSize size):
     device(device),
     buffer(buffer),
-    deviceMemory(memory)
+    memory(memory),
+    size(size)
 {
 }
 
 
 void VulkanBuffer::updateData(void* dataUpdate)
 {
-    // TODO
+    // TODO use command buffer
+    void* ptr = nullptr;
+	SL_CHECK_VK_RESULT(vkMapMemory(device, memory, 0, VK_WHOLE_SIZE, 0, &ptr));
+	memcpy(ptr, dataUpdate, size);
+	vkUnmapMemory(device, memory);
 }
 
 
 void VulkanBuffer::cleanup()
 {
-    if (deviceMemory)
+    if (memory)
     {
-        vkFreeMemory(device, deviceMemory, nullptr);
-        deviceMemory = nullptr;
+        vkFreeMemory(device, memory, nullptr);
+        memory = nullptr;
     }
 
     if (buffer)

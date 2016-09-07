@@ -23,13 +23,14 @@ namespace solo
         void updateData(void* dataUpdate);
 
     private:
-        VulkanBuffer(VkDevice device, VkBuffer buffer, VkDeviceMemory memory);
+        VulkanBuffer(VkDevice device, VkBuffer buffer, VkDeviceMemory memory, VkDeviceSize size);
         
         void cleanup();
 
         VkDevice device = nullptr;
         VkBuffer buffer = nullptr;
-        VkDeviceMemory deviceMemory = nullptr;
+        VkDeviceMemory memory = nullptr;
+        VkDeviceSize size = 0;
     };
 
     inline VkBuffer& VulkanBuffer::getHandle()
