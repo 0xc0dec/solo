@@ -376,6 +376,8 @@ void VulkanRenderer::test_init()
 
         vkCmdDraw(buf, static_cast<uint32_t>(triangle.size()), 1, 0, 0);
     });
+
+    // TODO the vertex buffer is being destroyed here but still it works, wtf...
 }
 
 
