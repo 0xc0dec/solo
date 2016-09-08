@@ -37,6 +37,8 @@ namespace solo
 
         void rebuild();
 
+        void bind(VkCommandBuffer cmdBuf);
+
     private:
         VkDevice device = nullptr;
         VkRenderPass renderPass = nullptr;

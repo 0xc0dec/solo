@@ -377,7 +377,7 @@ void VulkanRenderer::test_init()
 
     buildDrawCommandBuffers([&](VkCommandBuffer buf)
     {
-        vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline.getHandle());
+        pipeline.bind(buf);
 
         VkDeviceSize offsets[] = {0};
         auto& buffer = vertexBuffer.getHandle();

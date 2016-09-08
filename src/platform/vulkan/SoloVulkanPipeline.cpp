@@ -249,3 +249,9 @@ void VulkanPipeline::rebuild()
 
     SL_CHECK_VK_RESULT(vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline));
 }
+
+
+void VulkanPipeline::bind(VkCommandBuffer cmdBuf)
+{
+    vkCmdBindPipeline(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline);
+}
