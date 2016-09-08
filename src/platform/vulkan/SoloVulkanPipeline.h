@@ -18,6 +18,9 @@ namespace solo
         void setFragmentShader(VkShaderModule shader, const char* entryPoint);
 
         void setVertexAttribute(uint32_t location, uint32_t binding, VkFormat format, uint32_t offset);
+        void resetVertexAttributes();
+
+        void setDescriptorSet(/* TODO */);
 
         void setVertexSize(uint32_t size);
 
@@ -45,6 +48,7 @@ namespace solo
         VkPipelineShaderStageCreateInfo fragmentShaderStageInfo;
 
         std::vector<VkVertexInputAttributeDescription> vertexAttrs;
+        std::vector<VkDescriptorSetLayout> descSetLayouts;
 
         uint32_t vertexSize = 0;
         VkPrimitiveTopology topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;

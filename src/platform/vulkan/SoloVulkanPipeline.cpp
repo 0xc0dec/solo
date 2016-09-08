@@ -139,6 +139,34 @@ void VulkanPipeline::setVertexAttribute(uint32_t location, uint32_t binding, VkF
 }
 
 
+void VulkanPipeline::resetVertexAttributes()
+{
+    vertexAttrs.clear();
+}
+
+
+void VulkanPipeline::setDescriptorSet(/* TODO */)
+{
+    // TODO todo todo...
+    VkDescriptorSetLayoutBinding binding {};
+	binding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+	binding.stageFlags = VK_SHADER_STAGE_ALL_GRAPHICS;
+	binding.binding = 0;
+	binding.descriptorCount = 1;
+
+    VkDescriptorSetLayoutCreateInfo layoutCreateInfo {};
+	layoutCreateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	layoutCreateInfo.pNext = nullptr;
+	layoutCreateInfo.pBindings = &binding;
+	layoutCreateInfo.bindingCount = 1;
+
+    VkDescriptorSetLayout descSetLayout = nullptr;
+    SL_CHECK_VK_RESULT(vkCreateDescriptorSetLayout(device, &layoutCreateInfo, nullptr, &descSetLayout));
+
+    descSetLayouts.push_back(descSetLayout);
+}
+
+
 void VulkanPipeline::rebuild()
 {
     // TODO descriptor sets and write sets
@@ -146,8 +174,8 @@ void VulkanPipeline::rebuild()
     pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
     pipelineLayoutInfo.pNext = nullptr;
     pipelineLayoutInfo.flags = 0;
-    pipelineLayoutInfo.setLayoutCount = 0;
-    pipelineLayoutInfo.pSetLayouts = nullptr;
+    pipelineLayoutInfo.setLayoutCount = descSetLayouts.size();
+    pipelineLayoutInfo.pSetLayouts = descSetLayouts.data();
     pipelineLayoutInfo.pushConstantRangeCount = 0;
     pipelineLayoutInfo.pPushConstantRanges = nullptr;
 
@@ -164,14 +192,13 @@ void VulkanPipeline::rebuild()
     vertexInputBindingDesc.binding = 0;
     vertexInputBindingDesc.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
     vertexInputBindingDesc.stride = vertexSize;
-    std::vector<VkVertexInputBindingDescription> inputBindingDescriptions = { vertexInputBindingDesc };
 
     VkPipelineVertexInputStateCreateInfo vertexInputState {};
     vertexInputState.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
     vertexInputState.pNext = nullptr;
     vertexInputState.flags = 0;
-    vertexInputState.vertexBindingDescriptionCount = static_cast<uint32_t>(inputBindingDescriptions.size());
-    vertexInputState.pVertexBindingDescriptions = inputBindingDescriptions.data();
+    vertexInputState.vertexBindingDescriptionCount = 1;
+    vertexInputState.pVertexBindingDescriptions = &vertexInputBindingDesc;
     vertexInputState.vertexAttributeDescriptionCount = static_cast<uint32_t>(vertexAttrs.size());
     vertexInputState.pVertexAttributeDescriptions = vertexAttrs.data();
 
