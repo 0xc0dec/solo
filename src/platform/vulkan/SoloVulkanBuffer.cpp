@@ -79,11 +79,11 @@ VulkanBuffer::VulkanBuffer(VkDevice device, VkBuffer buffer, VkDeviceMemory memo
 }
 
 
-void VulkanBuffer::update(void* dataUpdate)
+void VulkanBuffer::update(void* newData)
 {
     void* ptr = nullptr;
 	SL_CHECK_VK_RESULT(vkMapMemory(device, memory, 0, VK_WHOLE_SIZE, 0, &ptr));
-	memcpy(ptr, dataUpdate, size);
+	memcpy(ptr, newData, size);
 	vkUnmapMemory(device, memory);
 }
 

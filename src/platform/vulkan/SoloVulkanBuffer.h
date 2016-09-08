@@ -21,7 +21,7 @@ namespace solo
 
         VkBuffer& getHandle();
 
-        void update(void* dataUpdate);
+        void update(void* newData);
         void transferTo(const VulkanBuffer& other, VkQueue queue, VkCommandPool cmdPool);
 
     private:
