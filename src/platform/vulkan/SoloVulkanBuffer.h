@@ -11,6 +11,7 @@ namespace solo
         static VulkanBuffer create(VkDevice device, VkDeviceSize size, VkBufferUsageFlags usage,
             VkMemoryPropertyFlags properties, VkPhysicalDeviceMemoryProperties memProps);
 
+        VulkanBuffer() {}
         VulkanBuffer(VulkanBuffer &&other);
         VulkanBuffer(const VulkanBuffer &other) = delete;
 

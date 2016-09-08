@@ -314,6 +314,8 @@ void VulkanRenderer::initFrameBuffers()
 // TODO remove these
 static bool initialized = false;
 VkPipeline pipeline = nullptr;
+VulkanBuffer vertexBuffer;
+
 struct Vertex
 {
     float position[2];
@@ -368,7 +370,7 @@ void VulkanRenderer::test_init()
     stagingBuffer.update(triangle1.data());
     stagingBuffer.update(triangle2.data()); // just smoke testing
 
-    auto vertexBuffer = VulkanBuffer::create(logicalDevice, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
+    vertexBuffer = VulkanBuffer::create(logicalDevice, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
         VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
         physicalDeviceMemoryProperties);
     stagingBuffer.transferTo(vertexBuffer, queue, commandPool);
