@@ -347,7 +347,7 @@ void VulkanRenderer::test_init()
     pipeline.rebuild();
 
     const auto triangleSize = 1.6f;
-    std::vector<Vertex> triangle =
+    std::vector<Vertex> triangle1 =
     {
 		{ /*rb*/ {  0.5f * triangleSize,  sqrtf( 3.0f ) * 0.25f * triangleSize }, /*R*/{ 1.0f, 0.0f, 0.0f }},
 		{ /* t*/ {                 0.0f, -sqrtf( 3.0f ) * 0.25f * triangleSize }, /*G*/{ 0.0f, 1.0f, 0.0f }},
@@ -361,10 +361,17 @@ void VulkanRenderer::test_init()
 		{ /*lb*/ { -0.5f * triangleSize,  sqrtf(3.0f) * 0.25f * triangleSize }, /*B*/{ 0.0f, 0.0f, 1.0f }}
 	};
 
-    auto vertexBuffer = VulkanBuffer::create(logicalDevice, triangle.data(), sizeof(decltype(triangle)::value_type) * triangle.size(),
-        VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+    auto stagingBuffer = VulkanBuffer::create(logicalDevice, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
+        VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
         physicalDeviceMemoryProperties);
-    vertexBuffer.updateData(triangle2.data());
+    stagingBuffer.update(triangle2.data());
+    stagingBuffer.update(triangle1.data());
+    stagingBuffer.update(triangle2.data()); // just smoke testing
+
+    auto vertexBuffer = VulkanBuffer::create(logicalDevice, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
+        VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+        physicalDeviceMemoryProperties);
+    stagingBuffer.transferTo(vertexBuffer, queue, commandPool);
 
     buildDrawCommandBuffers([&](VkCommandBuffer buf)
     {
@@ -374,7 +381,7 @@ void VulkanRenderer::test_init()
         auto& buffer = vertexBuffer.getHandle();
 	    vkCmdBindVertexBuffers(buf, 0, 1, &buffer, offsets);
 
-        vkCmdDraw(buf, static_cast<uint32_t>(triangle.size()), 1, 0, 0);
+        vkCmdDraw(buf, static_cast<uint32_t>(triangle1.size()), 1, 0, 0);
     });
 
     // TODO the vertex buffer is being destroyed here but still it works, wtf...

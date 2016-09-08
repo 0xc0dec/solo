@@ -38,7 +38,7 @@ VulkanBuffer::~VulkanBuffer()
 }
 
 
-VulkanBuffer VulkanBuffer::create(VkDevice device, void* data, VkDeviceSize size, VkBufferUsageFlags usage,
+VulkanBuffer VulkanBuffer::create(VkDevice device, VkDeviceSize size, VkBufferUsageFlags usage,
     VkMemoryPropertyFlags properties, VkPhysicalDeviceMemoryProperties memProps)
 {
     VkBufferCreateInfo bufferInfo {};
@@ -50,28 +50,23 @@ VulkanBuffer VulkanBuffer::create(VkDevice device, void* data, VkDeviceSize size
     bufferInfo.queueFamilyIndexCount = 0;
     bufferInfo.pQueueFamilyIndices = nullptr;
 
-    VkBuffer buffer = nullptr;
-    SL_CHECK_VK_RESULT(vkCreateBuffer(device, &bufferInfo, nullptr, &buffer));
+    VkBuffer handle = nullptr;
+    SL_CHECK_VK_RESULT(vkCreateBuffer(device, &bufferInfo, nullptr, &handle));
 
     VkMemoryRequirements memReqs;
-    vkGetBufferMemoryRequirements(device, buffer, &memReqs);
+    vkGetBufferMemoryRequirements(device, handle, &memReqs);
 
-    VkMemoryAllocateInfo memAllocInfo {};
-    memAllocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-    memAllocInfo.allocationSize = memReqs.size;
-    memAllocInfo.memoryTypeIndex = VulkanHelper::findMemoryType(memProps, memReqs.memoryTypeBits, properties);
+    VkMemoryAllocateInfo allocInfo {};
+    allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+    allocInfo.allocationSize = memReqs.size;
+    allocInfo.memoryTypeIndex = VulkanHelper::findMemoryType(memProps, memReqs.memoryTypeBits, properties);
 
     VkDeviceMemory memory = nullptr;
-    SL_CHECK_VK_RESULT(vkAllocateMemory(device, &memAllocInfo, nullptr, &memory));
+    SL_CHECK_VK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, &memory));
 
-    SL_CHECK_VK_RESULT(vkBindBufferMemory(device, buffer, memory, 0));
+    SL_CHECK_VK_RESULT(vkBindBufferMemory(device, handle, memory, 0));
 
-    void* ptr = nullptr;
-	SL_CHECK_VK_RESULT(vkMapMemory(device, memory, 0, VK_WHOLE_SIZE, 0, &ptr));
-	memcpy(ptr, data, size);
-	vkUnmapMemory(device, memory);
-
-    return VulkanBuffer(device, buffer, memory, size);
+    return VulkanBuffer(device, handle, memory, size);
 }
 
 
@@ -84,13 +79,47 @@ VulkanBuffer::VulkanBuffer(VkDevice device, VkBuffer buffer, VkDeviceMemory memo
 }
 
 
-void VulkanBuffer::updateData(void* dataUpdate)
+void VulkanBuffer::update(void* dataUpdate)
 {
-    // TODO use command buffer
     void* ptr = nullptr;
 	SL_CHECK_VK_RESULT(vkMapMemory(device, memory, 0, VK_WHOLE_SIZE, 0, &ptr));
 	memcpy(ptr, dataUpdate, size);
 	vkUnmapMemory(device, memory);
+}
+
+
+void VulkanBuffer::transferTo(const VulkanBuffer& dst, VkQueue queue, VkCommandPool cmdPool)
+{
+    VkCommandBufferAllocateInfo allocInfo {};
+    allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    allocInfo.commandPool = cmdPool;
+    allocInfo.commandBufferCount = 1;
+
+    VkCommandBuffer cmdBuf;
+    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &allocInfo, &cmdBuf));
+
+    VkCommandBufferBeginInfo beginInfo {};
+    beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+    beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+
+    SL_CHECK_VK_RESULT(vkBeginCommandBuffer(cmdBuf, &beginInfo));
+
+    VkBufferCopy copyRegion {};
+    copyRegion.size = dst.size;
+    vkCmdCopyBuffer(cmdBuf, buffer, dst.buffer, 1, &copyRegion);
+
+    SL_CHECK_VK_RESULT(vkEndCommandBuffer(cmdBuf));
+
+    VkSubmitInfo submitInfo = {};
+    submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    submitInfo.commandBufferCount = 1;
+    submitInfo.pCommandBuffers = &cmdBuf;
+
+    SL_CHECK_VK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, nullptr));
+    SL_CHECK_VK_RESULT(vkQueueWaitIdle(queue));
+
+    vkFreeCommandBuffers(device, cmdPool, 1, &cmdBuf);
 }
 
 

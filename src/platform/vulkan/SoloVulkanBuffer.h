@@ -8,7 +8,7 @@ namespace solo
     class VulkanBuffer
     {
     public:
-        static VulkanBuffer create(VkDevice device, void* data, VkDeviceSize size, VkBufferUsageFlags usage,
+        static VulkanBuffer create(VkDevice device, VkDeviceSize size, VkBufferUsageFlags usage,
             VkMemoryPropertyFlags properties, VkPhysicalDeviceMemoryProperties memProps);
 
         VulkanBuffer(VulkanBuffer &&other);
@@ -20,7 +20,9 @@ namespace solo
         VulkanBuffer &operator=(VulkanBuffer &&other);
 
         VkBuffer& getHandle();
-        void updateData(void* dataUpdate);
+
+        void update(void* dataUpdate);
+        void transferTo(const VulkanBuffer& other, VkQueue queue, VkCommandPool cmdPool);
 
     private:
         VulkanBuffer(VkDevice device, VkBuffer buffer, VkDeviceMemory memory, VkDeviceSize size);
