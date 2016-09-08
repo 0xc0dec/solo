@@ -20,8 +20,6 @@ namespace solo
         void setVertexAttribute(uint32_t location, uint32_t binding, VkFormat format, uint32_t offset);
         void resetVertexAttributes();
 
-        void setDescriptorSet(/* TODO */);
-
         void setVertexSize(uint32_t size);
 
         void setTopology(VkPrimitiveTopology topology);
@@ -34,6 +32,8 @@ namespace solo
         void setColorBlend(VkBlendFactor srcFactor, VkBlendFactor dstFactor, VkBlendOp operation);
         void setAlphaBlend(VkBlendFactor srcFactor, VkBlendFactor dstFactor, VkBlendOp operation);
         void setColorWriteMask(VkColorComponentFlags mask);
+
+        void setDescriptorSetLayouts(VkDescriptorSetLayout* layouts, uint32_t count);
 
         void rebuild();
 

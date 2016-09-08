@@ -3,6 +3,58 @@
 using namespace solo;
 
 
+class TODODescSetLayout
+{
+public:
+    TODODescSetLayout()
+    {
+        
+    }
+
+    ~TODODescSetLayout()
+    {
+        
+    }
+
+    VkDescriptorSetLayout getHandle() const
+    {
+        return layout;
+    }
+
+    void setBinding(uint32_t binding, VkDescriptorType descriptorType, uint32_t descriptorCount, VkShaderStageFlagBits stageFlags)
+    {
+        if (binding >= bindings.size())
+            bindings.resize(binding + 1);
+        bindings[binding].binding = binding;
+        bindings[binding].descriptorType = descriptorType;
+        bindings[binding].descriptorCount = descriptorCount;
+        bindings[binding].stageFlags = stageFlags;
+        bindings[binding].pImmutableSamplers = nullptr;
+    }
+
+    void resetBindings()
+    {
+        bindings.clear();
+    }
+
+    void rebuild()
+    {
+        VkDescriptorSetLayoutCreateInfo layoutInfo {};
+        layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+        layoutInfo.bindingCount = bindings.size();
+        layoutInfo.pBindings = bindings.data();
+
+        SL_CHECK_VK_RESULT(vkCreateDescriptorSetLayout(device, &layoutInfo, nullptr, &layout));
+    }
+
+private:
+    std::vector<VkDescriptorSetLayoutBinding> bindings;
+
+    VkDevice device = nullptr;
+    VkDescriptorSetLayout layout = nullptr;
+};
+
+
 auto createShaderStageInfo(bool vertex, VkShaderModule shader, const char* entryPoint) -> VkPipelineShaderStageCreateInfo
 {
     VkPipelineShaderStageCreateInfo info {};
@@ -130,7 +182,7 @@ void VulkanPipeline::setFragmentShader(VkShaderModule shader, const char* entryP
 
 void VulkanPipeline::setVertexAttribute(uint32_t location, uint32_t binding, VkFormat format, uint32_t offset)
 {
-    if (vertexAttrs.size() <= location)
+    if (location >= vertexAttrs.size())
         vertexAttrs.resize(location + 1);
     vertexAttrs[location].location = location;
     vertexAttrs[location].binding = binding;
@@ -145,25 +197,11 @@ void VulkanPipeline::resetVertexAttributes()
 }
 
 
-void VulkanPipeline::setDescriptorSet(/* TODO */)
+void VulkanPipeline::setDescriptorSetLayouts(VkDescriptorSetLayout* layouts, uint32_t count)
 {
-    // TODO todo todo...
-    VkDescriptorSetLayoutBinding binding {};
-	binding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-	binding.stageFlags = VK_SHADER_STAGE_ALL_GRAPHICS;
-	binding.binding = 0;
-	binding.descriptorCount = 1;
-
-    VkDescriptorSetLayoutCreateInfo layoutCreateInfo {};
-	layoutCreateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	layoutCreateInfo.pNext = nullptr;
-	layoutCreateInfo.pBindings = &binding;
-	layoutCreateInfo.bindingCount = 1;
-
-    VkDescriptorSetLayout descSetLayout = nullptr;
-    SL_CHECK_VK_RESULT(vkCreateDescriptorSetLayout(device, &layoutCreateInfo, nullptr, &descSetLayout));
-
-    descSetLayouts.push_back(descSetLayout);
+    descSetLayouts.resize(count);
+    for (auto i = 0; i < count; i++)
+        descSetLayouts[i] = layouts[i];
 }
 
 
