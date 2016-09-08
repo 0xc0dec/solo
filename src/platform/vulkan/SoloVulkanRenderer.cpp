@@ -19,9 +19,9 @@ void beginCommandBuffer(VkCommandBuffer buffer)
 }
 
 
-void destroyCommandBuffers(VkDevice logicalDevice, VkCommandPool commandPool, VkCommandBuffer* buffers, uint32_t count)
+void destroyCommandBuffers(VkDevice device, VkCommandPool commandPool, VkCommandBuffer* buffers, uint32_t count)
 {
-    vkFreeCommandBuffers(logicalDevice, commandPool, count, buffers);
+    vkFreeCommandBuffers(device, commandPool, count, buffers);
 }
 
 
@@ -39,7 +39,7 @@ std::tuple<VkFormat, VkColorSpaceKHR> getSurfaceFormats(VkPhysicalDevice device,
 }
 
 
-VkSemaphore createSemaphore(VkDevice logicalDevice)
+VkSemaphore createSemaphore(VkDevice device)
 {
     VkSemaphoreCreateInfo semaphoreCreateInfo = {};
     semaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
@@ -47,7 +47,7 @@ VkSemaphore createSemaphore(VkDevice logicalDevice)
     semaphoreCreateInfo.flags = 0;
 
     VkSemaphore semaphore = nullptr;
-    SL_CHECK_VK_RESULT(vkCreateSemaphore(logicalDevice, &semaphoreCreateInfo, nullptr, &semaphore));
+    SL_CHECK_VK_RESULT(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, &semaphore));
 
     return semaphore;
 }
@@ -68,7 +68,7 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync)
     if (capabilities.currentExtent.width == -1)
     {
         // Surface extent not defined - select based on device canvas size
-        auto deviceCanvasSize = device->getCanvasSize();
+        auto deviceCanvasSize = engineDevice->getCanvasSize();
         canvasWidth = static_cast<uint32_t>(deviceCanvasSize.x);
         canvasHeight = static_cast<uint32_t>(deviceCanvasSize.y);
     }
@@ -123,14 +123,14 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync)
     swapchainInfo.oldSwapchain = nullptr; // TODO
     swapchainInfo.clipped = VK_TRUE;
     swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-    vkCreateSwapchainKHR(logicalDevice, &swapchainInfo, nullptr, &swapchain);
+    vkCreateSwapchainKHR(device, &swapchainInfo, nullptr, &swapchain);
     
     uint32_t imageCount = 0;
-    SL_CHECK_VK_RESULT(vkGetSwapchainImagesKHR(logicalDevice, swapchain, &imageCount, nullptr));
+    SL_CHECK_VK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, nullptr));
 
     std::vector<VkImage> images;
     images.resize(imageCount);
-    SL_CHECK_VK_RESULT(vkGetSwapchainImagesKHR(logicalDevice, swapchain, &imageCount, images.data()));
+    SL_CHECK_VK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, images.data()));
 
     swapchainBuffers.resize(imageCount);
     for (uint32_t i = 0; i < imageCount; i++)
@@ -157,7 +157,7 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync)
 
         swapchainBuffers[i].image = images[i];
 
-        SL_CHECK_VK_RESULT(vkCreateImageView(logicalDevice, &imageViewInfo, nullptr, &swapchainBuffers[i].imageView));
+        SL_CHECK_VK_RESULT(vkCreateImageView(device, &imageViewInfo, nullptr, &swapchainBuffers[i].imageView));
     }
 }
 
@@ -165,8 +165,8 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync)
 void VulkanRenderer::cleanupSwapchain()
 {
     for (const auto& buf: swapchainBuffers)
-        vkDestroyImageView(logicalDevice, buf.imageView, nullptr);
-    vkDestroySwapchainKHR(logicalDevice, swapchain, nullptr);
+        vkDestroyImageView(device, buf.imageView, nullptr);
+    vkDestroySwapchainKHR(device, swapchain, nullptr);
 }
 
 
@@ -184,9 +184,9 @@ void VulkanRenderer::initCommandBuffers()
     commandBufferAllocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
     commandBufferAllocateInfo.commandBufferCount = count;
 
-    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, drawCmdBuffers.data()));
-    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, prePresentCmdBuffers.data()));
-    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &commandBufferAllocateInfo, postPresentCmdBuffers.data()));
+    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &commandBufferAllocateInfo, drawCmdBuffers.data()));
+    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &commandBufferAllocateInfo, prePresentCmdBuffers.data()));
+    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &commandBufferAllocateInfo, postPresentCmdBuffers.data()));
 
     initPresentationCommandBuffers();
 }
@@ -297,9 +297,9 @@ void VulkanRenderer::buildDrawCommandBuffers(std::function<void(VkCommandBuffer)
 
 void VulkanRenderer::destroyCommandBuffers()
 {
-    ::destroyCommandBuffers(logicalDevice, commandPool, drawCmdBuffers.data(), drawCmdBuffers.size());
-    ::destroyCommandBuffers(logicalDevice, commandPool, prePresentCmdBuffers.data(), prePresentCmdBuffers.size());
-    ::destroyCommandBuffers(logicalDevice, commandPool, postPresentCmdBuffers.data(), postPresentCmdBuffers.size());
+    ::destroyCommandBuffers(device, commandPool, drawCmdBuffers.data(), drawCmdBuffers.size());
+    ::destroyCommandBuffers(device, commandPool, prePresentCmdBuffers.data(), prePresentCmdBuffers.size());
+    ::destroyCommandBuffers(device, commandPool, postPresentCmdBuffers.data(), postPresentCmdBuffers.size());
 }
 
 
@@ -307,7 +307,7 @@ void VulkanRenderer::initFrameBuffers()
 {
     frameBuffers.resize(swapchainBuffers.size());
     for (auto i = 0; i < swapchainBuffers.size(); i++)
-        frameBuffers[i] = VulkanHelper::createFrameBuffer(logicalDevice, swapchainBuffers[i].imageView, depthStencil.view, renderPass, canvasWidth, canvasHeight);
+        frameBuffers[i] = VulkanHelper::createFrameBuffer(device, swapchainBuffers[i].imageView, depthStencil.view, renderPass, canvasWidth, canvasHeight);
 }
 
 
@@ -325,10 +325,10 @@ struct Vertex
 
 void VulkanRenderer::test_init()
 {
-    auto vertexShader = VulkanHelper::createShader(logicalDevice, Device::get()->getFileSystem()->readBytes("triangle.vert.spv"));
-    auto fragmentShader = VulkanHelper::createShader(logicalDevice, Device::get()->getFileSystem()->readBytes("triangle.frag.spv"));
+    auto vertexShader = VulkanHelper::createShader(device, Device::get()->getFileSystem()->readBytes("triangle.vert.spv"));
+    auto fragmentShader = VulkanHelper::createShader(device, Device::get()->getFileSystem()->readBytes("triangle.frag.spv"));
 
-    VulkanPipeline pipeline(logicalDevice, renderPass);
+    VulkanPipeline pipeline(device, renderPass);
     pipeline.setVertexShader(vertexShader, "main");
     pipeline.setFragmentShader(fragmentShader, "main");
 
@@ -363,14 +363,14 @@ void VulkanRenderer::test_init()
 		{ /*lb*/ { -0.5f * triangleSize,  sqrtf(3.0f) * 0.25f * triangleSize }, /*B*/{ 0.0f, 0.0f, 1.0f }}
 	};
 
-    auto stagingBuffer = VulkanBuffer::create(logicalDevice, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
+    auto stagingBuffer = VulkanBuffer::create(device, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
         VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
         physicalDeviceMemoryProperties);
     stagingBuffer.update(triangle2.data());
     stagingBuffer.update(triangle1.data());
-    stagingBuffer.update(triangle2.data()); // just smoke testing
+    stagingBuffer.update(triangle2.data()); // just smoking
 
-    vertexBuffer = VulkanBuffer::create(logicalDevice, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
+    vertexBuffer = VulkanBuffer::create(device, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
         VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
         physicalDeviceMemoryProperties);
     stagingBuffer.transferTo(vertexBuffer, queue, commandPool);
@@ -409,7 +409,7 @@ void VulkanRenderer::test_draw()
 
 
 VulkanRenderer::DepthStencil VulkanRenderer::createDepthStencil(
-    VkDevice logicalDevice, VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties,
+    VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties,
     VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight)
 {
     VkImageCreateInfo image = {};
@@ -447,32 +447,32 @@ VulkanRenderer::DepthStencil VulkanRenderer::createDepthStencil(
     DepthStencil depthStencil {};
 
     VkMemoryRequirements memReqs;
-    SL_CHECK_VK_RESULT(vkCreateImage(logicalDevice, &image, nullptr, &depthStencil.image));
-    vkGetImageMemoryRequirements(logicalDevice, depthStencil.image, &memReqs);
+    SL_CHECK_VK_RESULT(vkCreateImage(device, &image, nullptr, &depthStencil.image));
+    vkGetImageMemoryRequirements(device, depthStencil.image, &memReqs);
 
     auto memTypeIndex = VulkanHelper::findMemoryType(physicalDeviceMemoryProperties, memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
     SL_ERR_IF(memTypeIndex < 0);
 
     alloc.allocationSize = memReqs.size;
     alloc.memoryTypeIndex = memTypeIndex;
-    SL_CHECK_VK_RESULT(vkAllocateMemory(logicalDevice, &alloc, nullptr, &depthStencil.mem));
-    SL_CHECK_VK_RESULT(vkBindImageMemory(logicalDevice, depthStencil.image, depthStencil.mem, 0));
+    SL_CHECK_VK_RESULT(vkAllocateMemory(device, &alloc, nullptr, &depthStencil.mem));
+    SL_CHECK_VK_RESULT(vkBindImageMemory(device, depthStencil.image, depthStencil.mem, 0));
     
     VulkanHelper::setImageLayout(cmdBuffer, depthStencil.image, VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT,
         VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
 
     createInfo.image = depthStencil.image;
-    SL_CHECK_VK_RESULT(vkCreateImageView(logicalDevice, &createInfo, nullptr, &depthStencil.view));
+    SL_CHECK_VK_RESULT(vkCreateImageView(device, &createInfo, nullptr, &depthStencil.view));
 
     return depthStencil;
 }
 
 
 VulkanRenderer::VulkanRenderer(Device* engineDevice):
-    device(dynamic_cast<SDLVulkanDevice*>(engineDevice))
+    engineDevice(dynamic_cast<SDLVulkanDevice*>(engineDevice))
 {
-    auto instance = device->getVulkanInstance();
-    auto surface = device->getVulkanSurface();
+    auto instance = this->engineDevice->getVulkanInstance();
+    auto surface = this->engineDevice->getVulkanSurface();
 
     physicalDevice = VulkanHelper::createPhysicalDevice(instance);
     vkGetPhysicalDeviceProperties(physicalDevice, &physicalDeviceProperties);
@@ -485,14 +485,14 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
 
     auto queueIndex = VulkanHelper::getQueueIndex(physicalDevice, surface);
 
-    logicalDevice = VulkanHelper::createLogicalDevice(physicalDevice, queueIndex);
+    device = VulkanHelper::createDevice(physicalDevice, queueIndex);
 
-    vkGetDeviceQueue(logicalDevice, queueIndex, 0, &queue);
+    vkGetDeviceQueue(device, queueIndex, 0, &queue);
 
     depthFormat = VulkanHelper::getDepthFormat(physicalDevice);
 
-    presentCompleteSem = createSemaphore(logicalDevice);
-    renderCompleteSem = createSemaphore(logicalDevice);
+    presentCompleteSem = createSemaphore(device);
+    renderCompleteSem = createSemaphore(device);
 
     submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
     submitInfo.pNext = nullptr;
@@ -502,19 +502,19 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
     submitInfo.signalSemaphoreCount = 1;
     submitInfo.pSignalSemaphores = &renderCompleteSem;
 
-    commandPool = VulkanHelper::createCommandPool(logicalDevice, queueIndex);
-    initSwapchain(surface, device->getSetup().vsync);
+    commandPool = VulkanHelper::createCommandPool(device, queueIndex);
+    initSwapchain(surface, engineDevice->getSetup().vsync);
     initCommandBuffers();
 
-    setupCmdBuffer = VulkanHelper::createCommandBuffer(logicalDevice, commandPool);
+    setupCmdBuffer = VulkanHelper::createCommandBuffer(device, commandPool);
     beginCommandBuffer(setupCmdBuffer);
 
-    depthStencil = createDepthStencil(logicalDevice, physicalDeviceMemoryProperties, setupCmdBuffer, depthFormat, canvasWidth, canvasHeight);
-    renderPass = VulkanHelper::createRenderPass(logicalDevice, colorFormat, depthFormat);
+    depthStencil = createDepthStencil(device, physicalDeviceMemoryProperties, setupCmdBuffer, depthFormat, canvasWidth, canvasHeight);
+    renderPass = VulkanHelper::createRenderPass(device, colorFormat, depthFormat);
     initFrameBuffers();
 
     VulkanHelper::submitCommandBuffer(queue, setupCmdBuffer);
-    ::destroyCommandBuffers(logicalDevice, commandPool, &setupCmdBuffer, 1);
+    ::destroyCommandBuffers(device, commandPool, &setupCmdBuffer, 1);
 }
 
 
@@ -528,7 +528,7 @@ VulkanRenderer::~VulkanRenderer()
 
 void VulkanRenderer::beginFrame()
 {
-    SL_CHECK_VK_RESULT(vkAcquireNextImageKHR(logicalDevice, swapchain, UINT64_MAX, presentCompleteSem, nullptr, &currentBuffer));
+    SL_CHECK_VK_RESULT(vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, presentCompleteSem, nullptr, &currentBuffer));
 
     VkSubmitInfo submitInfo = {};
     submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;

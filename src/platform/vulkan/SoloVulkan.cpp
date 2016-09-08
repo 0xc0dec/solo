@@ -35,7 +35,7 @@ auto VulkanHelper::findMemoryType(VkPhysicalDeviceMemoryProperties physicalDevic
 }
 
 
-auto VulkanHelper::createLogicalDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -> VkDevice
+auto VulkanHelper::createDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -> VkDevice
 {
     std::vector<float> queuePriorities = { 0.0f };
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfos = {};

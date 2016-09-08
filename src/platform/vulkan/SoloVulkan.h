@@ -23,7 +23,7 @@ namespace solo
         static auto findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties,
             uint32_t typeBits, VkMemoryPropertyFlags properties) -> int32_t;
 
-        static auto createLogicalDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -> VkDevice;
+        static auto createDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -> VkDevice;
         static auto createPhysicalDevice(VkInstance instance) -> VkPhysicalDevice;
 
         static auto getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> uint32_t;

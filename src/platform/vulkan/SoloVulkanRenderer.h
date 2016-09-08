@@ -115,11 +115,11 @@ namespace solo
         void test_init();
         void test_draw();
 
-        SDLVulkanDevice* device = nullptr;
+        SDLVulkanDevice* engineDevice = nullptr;
         uint32_t canvasWidth = 0;
         uint32_t canvasHeight = 0;
         VkPhysicalDevice physicalDevice = nullptr;
-        VkDevice logicalDevice = nullptr;
+        VkDevice device = nullptr;
         VkQueue queue = nullptr;
         VkSwapchainKHR swapchain = nullptr;
         std::vector<SwapchainBuffer> swapchainBuffers;
