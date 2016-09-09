@@ -3,22 +3,12 @@
 using namespace solo;
 
 
-class TODODescSetLayout
+class DescriptorSetLayoutBuilder
 {
 public:
-    TODODescSetLayout()
+    explicit DescriptorSetLayoutBuilder(VkDevice device):
+        device(device)
     {
-        
-    }
-
-    ~TODODescSetLayout()
-    {
-        
-    }
-
-    VkDescriptorSetLayout getHandle() const
-    {
-        return layout;
     }
 
     void setBinding(uint32_t binding, VkDescriptorType descriptorType, uint32_t descriptorCount, VkShaderStageFlagBits stageFlags)
@@ -32,26 +22,21 @@ public:
         bindings[binding].pImmutableSamplers = nullptr;
     }
 
-    void resetBindings()
-    {
-        bindings.clear();
-    }
-
-    void rebuild()
+    VkDescriptorSetLayout rebuild()
     {
         VkDescriptorSetLayoutCreateInfo layoutInfo {};
         layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
         layoutInfo.bindingCount = bindings.size();
         layoutInfo.pBindings = bindings.data();
 
-        SL_CHECK_VK_RESULT(vkCreateDescriptorSetLayout(device, &layoutInfo, nullptr, &layout));
+        VkDescriptorSetLayout result;
+        SL_CHECK_VK_RESULT(vkCreateDescriptorSetLayout(device, &layoutInfo, nullptr, &result));
+        return result;
     }
 
 private:
-    std::vector<VkDescriptorSetLayoutBinding> bindings;
-
     VkDevice device = nullptr;
-    VkDescriptorSetLayout layout = nullptr;
+    std::vector<VkDescriptorSetLayoutBinding> bindings;
 };
 
 
