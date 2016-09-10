@@ -363,14 +363,14 @@ void VulkanRenderer::test_init()
 		{ /*lb*/ { -0.5f * triangleSize,  sqrtf(3.0f) * 0.25f * triangleSize }, /*B*/{ 0.0f, 0.0f, 1.0f }}
 	};
 
-    auto stagingBuffer = VulkanBuffer::create(device, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
+    auto stagingBuffer = VulkanBuffer(device, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
         VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
         physicalDeviceMemoryProperties);
     stagingBuffer.update(triangle2.data());
     stagingBuffer.update(triangle1.data());
     stagingBuffer.update(triangle2.data()); // just smoking
 
-    vertexBuffer = VulkanBuffer::create(device, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
+    vertexBuffer = VulkanBuffer(device, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
         VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
         physicalDeviceMemoryProperties);
     stagingBuffer.transferTo(vertexBuffer, queue, commandPool);

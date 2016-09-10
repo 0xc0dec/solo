@@ -3,6 +3,7 @@
 #include "SoloCommon.h"
 #include <vector>
 
+
 #ifdef SL_WINDOWS
 #   define VK_USE_PLATFORM_WIN32_KHR 
 #endif
@@ -14,11 +15,25 @@
 #   define SL_CHECK_VK_RESULT(vkCall) vkCall
 #endif
 
+
 namespace solo
 {
     struct VulkanHelper
     {
         static auto createShader(VkDevice logicalDevice, const std::vector<uint8_t>& data) -> VkShaderModule;
+        static auto createShaderStageInfo(bool vertex, VkShaderModule shader, const char* entryPoint) -> VkPipelineShaderStageCreateInfo;
+
+        static auto createRasterizationStateInfo(bool depthClamp, bool discardEnabled, VkCullModeFlags cullMode, VkFrontFace frontFace)
+            -> VkPipelineRasterizationStateCreateInfo;
+
+        static auto createMultisampleStateInfo(VkSampleCountFlagBits rasterizationSampleCount) -> VkPipelineMultisampleStateCreateInfo;
+
+        static auto createBlendAttachmentState(bool blendEnabled, VkBlendFactor srcColorBlendFactor, VkBlendFactor dstColorBlendFactor,
+            VkBlendOp colorBlendOp, VkBlendFactor srcAlphaBlendFactor, VkBlendFactor dstAlphaBlendFactor, VkBlendOp alphaBlendOp,
+            VkColorComponentFlags colorWriteMask) -> VkPipelineColorBlendAttachmentState;
+
+        static auto createColorBlendStateInfo(VkPipelineColorBlendAttachmentState* blendAttachments, bool logicOpEnabled, VkLogicOp logicOp)
+            -> VkPipelineColorBlendStateCreateInfo;
 
         static auto findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties,
             uint32_t typeBits, VkMemoryPropertyFlags properties) -> int32_t;
@@ -59,7 +74,7 @@ namespace solo
         ~VulkanDescriptorPool();
 
         auto operator=(const VulkanDescriptorPool& other) -> VulkanDescriptorPool& = delete;
-        auto operator=(VulkanDescriptorPool& other) -> VulkanDescriptorPool&;
+        auto operator=(VulkanDescriptorPool&& other) -> VulkanDescriptorPool&;
 
         auto allocateSet(VkDescriptorSetLayout layout) const -> VkDescriptorSet;
 

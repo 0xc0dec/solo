@@ -19,6 +19,94 @@ auto VulkanHelper::createShader(VkDevice device, const std::vector<uint8_t>& dat
 }
 
 
+auto VulkanHelper::createShaderStageInfo(bool vertex, VkShaderModule shader, const char* entryPoint) -> VkPipelineShaderStageCreateInfo
+{
+    VkPipelineShaderStageCreateInfo info {};
+    info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+    info.pNext = nullptr;
+    info.flags = 0;
+    info.stage = vertex ? VK_SHADER_STAGE_VERTEX_BIT : VK_SHADER_STAGE_FRAGMENT_BIT;
+    info.module = shader;
+    info.pName = entryPoint;
+    info.pSpecializationInfo = nullptr;
+    return info;
+}
+
+
+auto VulkanHelper::createRasterizationStateInfo(bool depthClamp, bool discardEnabled, VkCullModeFlags cullMode, VkFrontFace frontFace)
+    -> VkPipelineRasterizationStateCreateInfo
+{
+    VkPipelineRasterizationStateCreateInfo info {};
+    info.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+    info.pNext = nullptr;
+    info.flags = 0;
+    info.depthClampEnable = depthClamp;
+    info.rasterizerDiscardEnable = discardEnabled;
+    info.polygonMode = VK_POLYGON_MODE_FILL;
+    info.cullMode = cullMode;
+    info.frontFace = frontFace;
+    info.depthBiasEnable = false;
+    info.depthBiasClamp = 0;
+    info.depthBiasConstantFactor = 0;
+    info.depthBiasClamp = 0;
+    info.depthBiasSlopeFactor = 0;
+    info.lineWidth = 0;
+    return info;
+}
+
+
+auto VulkanHelper::createMultisampleStateInfo(VkSampleCountFlagBits rasterizationSampleCount) -> VkPipelineMultisampleStateCreateInfo
+{
+    VkPipelineMultisampleStateCreateInfo info {};
+    info.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+    info.pNext = nullptr;
+    info.flags = 0;
+    info.rasterizationSamples = rasterizationSampleCount;
+    info.sampleShadingEnable = false;
+    info.minSampleShading = 0;
+    info.pSampleMask = nullptr;
+    info.alphaToCoverageEnable = false;
+    info.alphaToOneEnable = false;
+    return info;
+}
+
+
+auto VulkanHelper::createBlendAttachmentState(bool blendEnabled, VkBlendFactor srcColorBlendFactor, VkBlendFactor dstColorBlendFactor,
+    VkBlendOp colorBlendOp, VkBlendFactor srcAlphaBlendFactor, VkBlendFactor dstAlphaBlendFactor, VkBlendOp alphaBlendOp,
+    VkColorComponentFlags colorWriteMask) -> VkPipelineColorBlendAttachmentState
+{
+    VkPipelineColorBlendAttachmentState state {};
+    state.blendEnable = blendEnabled ? VK_TRUE : VK_FALSE;
+    state.srcColorBlendFactor = srcColorBlendFactor;
+    state.dstColorBlendFactor = dstColorBlendFactor;
+    state.colorBlendOp = colorBlendOp;
+    state.srcAlphaBlendFactor = srcAlphaBlendFactor;
+    state.dstAlphaBlendFactor = dstAlphaBlendFactor;
+    state.alphaBlendOp = alphaBlendOp;
+    state.colorWriteMask = colorWriteMask;
+    return state;
+}
+
+
+auto VulkanHelper::createColorBlendStateInfo(VkPipelineColorBlendAttachmentState* blendAttachments, bool logicOpEnabled, VkLogicOp logicOp)
+    -> VkPipelineColorBlendStateCreateInfo
+{
+    VkPipelineColorBlendStateCreateInfo info {};
+    info.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+    info.pNext = nullptr;
+    info.flags = 0;
+    info.logicOpEnable = logicOpEnabled ? VK_TRUE : VK_FALSE;
+    info.logicOp = logicOp;
+    info.attachmentCount = 1;
+    info.pAttachments = blendAttachments;
+    info.blendConstants[0] = 0;
+    info.blendConstants[1] = 0;
+    info.blendConstants[2] = 0;
+    info.blendConstants[3] = 0;
+    return info;
+}
+
+
 auto VulkanHelper::findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, uint32_t typeBits,
     VkMemoryPropertyFlags properties) -> int32_t
 {
@@ -372,7 +460,7 @@ VulkanDescriptorPool::~VulkanDescriptorPool()
 }
 
 
-auto VulkanDescriptorPool::operator=(VulkanDescriptorPool& other) -> VulkanDescriptorPool&
+auto VulkanDescriptorPool::operator=(VulkanDescriptorPool&& other) -> VulkanDescriptorPool&
 {
     device = std::move(other.device);
     pool = std::move(other.pool);

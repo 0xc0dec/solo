@@ -3,6 +3,34 @@
 using namespace solo;
 
 
+VulkanBuffer::VulkanBuffer(VkDevice device, VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties,
+    VkPhysicalDeviceMemoryProperties memProps)
+{
+    VkBufferCreateInfo bufferInfo {};
+    bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+    bufferInfo.size = size;
+    bufferInfo.usage = usage;
+    bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    bufferInfo.flags = 0;
+    bufferInfo.queueFamilyIndexCount = 0;
+    bufferInfo.pQueueFamilyIndices = nullptr;
+
+    SL_CHECK_VK_RESULT(vkCreateBuffer(device, &bufferInfo, nullptr, &buffer));
+
+    VkMemoryRequirements memReqs;
+    vkGetBufferMemoryRequirements(device, buffer, &memReqs);
+
+    VkMemoryAllocateInfo allocInfo {};
+    allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+    allocInfo.allocationSize = memReqs.size;
+    allocInfo.memoryTypeIndex = VulkanHelper::findMemoryType(memProps, memReqs.memoryTypeBits, properties);
+
+    SL_CHECK_VK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, &memory));
+
+    SL_CHECK_VK_RESULT(vkBindBufferMemory(device, buffer, memory, 0));
+}
+
+
 VulkanBuffer::VulkanBuffer(VulkanBuffer&& other):
     device(other.device),
     buffer(other.buffer),
@@ -35,47 +63,6 @@ VulkanBuffer& VulkanBuffer::operator=(VulkanBuffer&& other)
 VulkanBuffer::~VulkanBuffer()
 {
     cleanup();
-}
-
-
-VulkanBuffer VulkanBuffer::create(VkDevice device, VkDeviceSize size, VkBufferUsageFlags usage,
-    VkMemoryPropertyFlags properties, VkPhysicalDeviceMemoryProperties memProps)
-{
-    VkBufferCreateInfo bufferInfo {};
-    bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-    bufferInfo.size = size;
-    bufferInfo.usage = usage;
-    bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-    bufferInfo.flags = 0;
-    bufferInfo.queueFamilyIndexCount = 0;
-    bufferInfo.pQueueFamilyIndices = nullptr;
-
-    VkBuffer handle = nullptr;
-    SL_CHECK_VK_RESULT(vkCreateBuffer(device, &bufferInfo, nullptr, &handle));
-
-    VkMemoryRequirements memReqs;
-    vkGetBufferMemoryRequirements(device, handle, &memReqs);
-
-    VkMemoryAllocateInfo allocInfo {};
-    allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-    allocInfo.allocationSize = memReqs.size;
-    allocInfo.memoryTypeIndex = VulkanHelper::findMemoryType(memProps, memReqs.memoryTypeBits, properties);
-
-    VkDeviceMemory memory = nullptr;
-    SL_CHECK_VK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, &memory));
-
-    SL_CHECK_VK_RESULT(vkBindBufferMemory(device, handle, memory, 0));
-
-    return VulkanBuffer(device, handle, memory, size);
-}
-
-
-VulkanBuffer::VulkanBuffer(VkDevice device, VkBuffer buffer, VkDeviceMemory memory, VkDeviceSize size):
-    device(device),
-    buffer(buffer),
-    memory(memory),
-    size(size)
-{
 }
 
 
