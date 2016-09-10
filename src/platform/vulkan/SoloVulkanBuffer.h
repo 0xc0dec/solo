@@ -9,8 +9,8 @@ namespace solo
     {
     public:
         VulkanBuffer() {}
-        VulkanBuffer(VkDevice device, VkDeviceSize size, VkBufferUsageFlags usage,
-            VkMemoryPropertyFlags properties, VkPhysicalDeviceMemoryProperties memProps);
+        VulkanBuffer(VkDevice device, VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties,
+            VkPhysicalDeviceMemoryProperties memProps);
         VulkanBuffer(VulkanBuffer&& other);
         VulkanBuffer(const VulkanBuffer& other) = delete;
 

@@ -252,7 +252,7 @@ void VulkanRenderer::buildDrawCommandBuffers(std::function<void(VkCommandBuffer)
     cmdBufferBeginInfo.pNext = nullptr;
 
     VkClearValue clearValues[2];
-    clearValues[0].color = { { 0.0f, 0.8f, 0.8f, 1.0f} };
+    clearValues[0].color = { { 0.1f, 0.1f, 0.1f, 1.0f} };
     clearValues[1].depthStencil = { 1.0f, 0 };
 
     VkRenderPassBeginInfo renderPassBeginInfo = {};
@@ -319,6 +319,7 @@ void VulkanRenderer::initFrameBuffers()
 static bool initialized = false;
 VkPipeline pipeline = nullptr;
 VulkanBuffer vertexBuffer;
+VulkanBuffer uniformBuffer;
 
 struct Vertex
 {
@@ -326,15 +327,27 @@ struct Vertex
     Vector3 color;
 };
 
+VulkanDescriptorPool descriptorPool;
+VkDescriptorSetLayout descSetLayout;
+
 
 void VulkanRenderer::test_init()
 {
     auto vertexShader = VulkanHelper::createShader(device, Device::get()->getFileSystem()->readBytes("../assets/triangle.vert.spv"));
     auto fragmentShader = VulkanHelper::createShader(device, Device::get()->getFileSystem()->readBytes("../assets/triangle.frag.spv"));
 
+    VulkanDescriptorSetLayoutBuilder builder(device);
+    builder.setBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
+    descSetLayout = builder.build();
+
+    descriptorPool = VulkanDescriptorPool(device, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 1);
+    auto descriptorSet = descriptorPool.allocateSet(descSetLayout);
+
     VulkanPipeline pipeline(device, renderPass);
     pipeline.setVertexShader(vertexShader, "main");
     pipeline.setFragmentShader(fragmentShader, "main");
+
+    pipeline.setDescriptorSetLayouts(&descSetLayout, 1);
 
     pipeline.setVertexSize(sizeof(Vertex));
 
@@ -369,23 +382,48 @@ void VulkanRenderer::test_init()
 
     auto stagingBuffer = VulkanBuffer(device, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
         VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-        physicalDeviceMemoryProperties);
+        physicalDeviceMemProps);
     stagingBuffer.update(triangle2.data());
     stagingBuffer.update(triangle1.data());
     stagingBuffer.update(triangle2.data()); // just smoking
 
     vertexBuffer = VulkanBuffer(device, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
         VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-        physicalDeviceMemoryProperties);
+        physicalDeviceMemProps);
     stagingBuffer.transferTo(vertexBuffer, queue, commandPool);
+
+    auto uniformColor = Vector4(0, 0.2f, 0.8f, 1);
+    uniformBuffer = VulkanBuffer(device, sizeof(Vector4), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, physicalDeviceMemProps);
+    uniformBuffer.update(&uniformColor);
+
+    VkDescriptorBufferInfo uboInfo {};
+    uboInfo.buffer = uniformBuffer.getHandle();
+    uboInfo.offset = 0;
+    uboInfo.range = sizeof(Vector3);
+
+    VkWriteDescriptorSet descriptorWrite = {};
+    descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+    descriptorWrite.dstSet = descriptorSet;
+    descriptorWrite.dstBinding = 0;
+    descriptorWrite.dstArrayElement = 0;
+    descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    descriptorWrite.descriptorCount = 1;
+    descriptorWrite.pBufferInfo = &uboInfo;
+    descriptorWrite.pImageInfo = nullptr; // Optional
+    descriptorWrite.pTexelBufferView = nullptr; // Optional
+
+    vkUpdateDescriptorSets(device, 1, &descriptorWrite, 0, nullptr);
 
     buildDrawCommandBuffers([&](VkCommandBuffer buf)
     {
         pipeline.bind(buf);
 
-        VkDeviceSize offsets[] = {0};
+        VkDeviceSize offset = 0;
         auto& buffer = vertexBuffer.getHandle();
-	    vkCmdBindVertexBuffers(buf, 0, 1, &buffer, offsets);
+	    vkCmdBindVertexBuffers(buf, 0, 1, &buffer, &offset);
+
+        vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline.getLayoutHandle(), 0, 1, &descriptorSet, 0, nullptr);
 
         vkCmdDraw(buf, static_cast<uint32_t>(triangle1.size()), 1, 0, 0);
     });
@@ -481,7 +519,7 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
     physicalDevice = VulkanHelper::createPhysicalDevice(instance);
     vkGetPhysicalDeviceProperties(physicalDevice, &physicalDeviceProperties);
     vkGetPhysicalDeviceFeatures(physicalDevice, &physicalDeviceFeatures);
-    vkGetPhysicalDeviceMemoryProperties(physicalDevice, &physicalDeviceMemoryProperties);
+    vkGetPhysicalDeviceMemoryProperties(physicalDevice, &physicalDeviceMemProps);
 
     auto surfaceFormats = getSurfaceFormats(physicalDevice, surface);
     colorFormat = std::get<0>(surfaceFormats);
@@ -513,7 +551,7 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
     setupCmdBuffer = VulkanHelper::createCommandBuffer(device, commandPool);
     beginCommandBuffer(setupCmdBuffer);
 
-    depthStencil = createDepthStencil(device, physicalDeviceMemoryProperties, setupCmdBuffer, depthFormat, canvasWidth, canvasHeight);
+    depthStencil = createDepthStencil(device, physicalDeviceMemProps, setupCmdBuffer, depthFormat, canvasWidth, canvasHeight);
     renderPass = VulkanHelper::createRenderPass(device, colorFormat, depthFormat);
     initFrameBuffers();
 

@@ -79,6 +79,8 @@ namespace solo
         auto allocateSet(VkDescriptorSetLayout layout) const -> VkDescriptorSet;
 
     private:
+        void cleanup();
+
         VkDevice device = nullptr;
         VkDescriptorPool pool = nullptr;
     };

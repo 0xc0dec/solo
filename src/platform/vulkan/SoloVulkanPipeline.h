@@ -13,6 +13,7 @@ namespace solo
         SL_NONCOPYABLE(VulkanPipeline)
 
         VkPipeline getHandle() const;
+        VkPipelineLayout getLayoutHandle() const;
 
         void setVertexShader(VkShaderModule shader, const char* entryPoint);
         void setFragmentShader(VkShaderModule shader, const char* entryPoint);
@@ -43,6 +44,7 @@ namespace solo
         VkDevice device = nullptr;
         VkRenderPass renderPass = nullptr;
         VkPipeline pipeline = nullptr;
+        VkPipelineLayout layout = nullptr;
 
         VkShaderModule vertexShader = nullptr;
         VkShaderModule fragmentShader = nullptr;
@@ -64,6 +66,11 @@ namespace solo
     inline VkPipeline VulkanPipeline::getHandle() const
     {
         return pipeline;
+    }
+
+    inline VkPipelineLayout VulkanPipeline::getLayoutHandle() const
+    {
+        return layout;
     }
 
     inline void VulkanPipeline::setTopology(VkPrimitiveTopology topology)

@@ -455,17 +455,19 @@ VulkanDescriptorPool::VulkanDescriptorPool(VulkanDescriptorPool&& other):
 
 VulkanDescriptorPool::~VulkanDescriptorPool()
 {
-    if (pool)
-        vkDestroyDescriptorPool(device, pool, nullptr);
+    cleanup();
 }
 
 
 auto VulkanDescriptorPool::operator=(VulkanDescriptorPool&& other) -> VulkanDescriptorPool&
 {
+    cleanup();
+
     device = std::move(other.device);
     pool = std::move(other.pool);
     other.device = nullptr;
     other.pool = nullptr;
+
     return *this;
 }
 
@@ -482,6 +484,13 @@ auto VulkanDescriptorPool::allocateSet(VkDescriptorSetLayout layout) const -> Vk
     SL_CHECK_VK_RESULT(vkAllocateDescriptorSets(device, &allocInfo, &set));
 
     return set;
+}
+
+
+void VulkanDescriptorPool::cleanup()
+{
+    if (pool)
+        vkDestroyDescriptorPool(device, pool, nullptr);
 }
 
 
@@ -502,6 +511,7 @@ void VulkanDescriptorSetLayoutBuilder::setBinding(uint32_t binding, VkDescriptor
     bindings[binding].stageFlags = stageFlags;
     bindings[binding].pImmutableSamplers = nullptr;
 }
+
 
 auto VulkanDescriptorSetLayoutBuilder::build() -> VkDescriptorSetLayout
 {

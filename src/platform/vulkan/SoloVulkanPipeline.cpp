@@ -67,7 +67,8 @@ void VulkanPipeline::setDescriptorSetLayouts(VkDescriptorSetLayout* layouts, uin
 
 void VulkanPipeline::rebuild()
 {
-    // TODO descriptor sets and write sets
+    // TODO destroy old stuff!
+
     VkPipelineLayoutCreateInfo pipelineLayoutInfo {};
     pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
     pipelineLayoutInfo.pNext = nullptr;
@@ -77,7 +78,6 @@ void VulkanPipeline::rebuild()
     pipelineLayoutInfo.pushConstantRangeCount = 0;
     pipelineLayoutInfo.pPushConstantRanges = nullptr;
 
-    VkPipelineLayout layout;
     SL_CHECK_VK_RESULT(vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, &layout));
 
     std::vector<VkPipelineShaderStageCreateInfo> shaderStageStates;

@@ -134,7 +134,7 @@ namespace solo
         VkRenderPass renderPass = nullptr;
         VkPhysicalDeviceProperties physicalDeviceProperties;
         VkPhysicalDeviceFeatures physicalDeviceFeatures;
-        VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties;
+        VkPhysicalDeviceMemoryProperties physicalDeviceMemProps;
         VkFormat depthFormat = VK_FORMAT_UNDEFINED;
         VkSemaphore presentCompleteSem = nullptr;
         VkSemaphore renderCompleteSem = nullptr;
