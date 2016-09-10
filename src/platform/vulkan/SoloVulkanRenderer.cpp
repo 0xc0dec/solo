@@ -4,7 +4,11 @@
 #include "SoloVulkanPipeline.h"
 #include "SoloVulkanBuffer.h"
 #include "SoloSDLVulkanDevice.h"
-#include "SoloFileSystem.h" // TODO remove?
+ // TODO remove these?
+#include "SoloVector2.h"
+#include "SoloVector3.h"
+#include "SoloVector4.h"
+#include "SoloFileSystem.h"
 
 #ifdef SL_VULKAN_RENDERER
 
@@ -318,15 +322,15 @@ VulkanBuffer vertexBuffer;
 
 struct Vertex
 {
-    float position[2];
-    float color[3];
+    Vector2 position;
+    Vector3 color;
 };
 
 
 void VulkanRenderer::test_init()
 {
-    auto vertexShader = VulkanHelper::createShader(device, Device::get()->getFileSystem()->readBytes("triangle.vert.spv"));
-    auto fragmentShader = VulkanHelper::createShader(device, Device::get()->getFileSystem()->readBytes("triangle.frag.spv"));
+    auto vertexShader = VulkanHelper::createShader(device, Device::get()->getFileSystem()->readBytes("../assets/triangle.vert.spv"));
+    auto fragmentShader = VulkanHelper::createShader(device, Device::get()->getFileSystem()->readBytes("../assets/triangle.frag.spv"));
 
     VulkanPipeline pipeline(device, renderPass);
     pipeline.setVertexShader(vertexShader, "main");
@@ -351,16 +355,16 @@ void VulkanRenderer::test_init()
     const auto triangleSize = 1.6f;
     std::vector<Vertex> triangle1 =
     {
-		{ /*rb*/ {  0.5f * triangleSize,  sqrtf( 3.0f ) * 0.25f * triangleSize }, /*R*/{ 1.0f, 0.0f, 0.0f }},
-		{ /* t*/ {                 0.0f, -sqrtf( 3.0f ) * 0.25f * triangleSize }, /*G*/{ 0.0f, 1.0f, 0.0f }},
-		{ /*lb*/ { -0.5f * triangleSize,  sqrtf( 3.0f ) * 0.25f * triangleSize }, /*B*/{ 0.0f, 0.0f, 1.0f }}
+		{ Vector2(0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(1.0f, 0.0f, 0.0f) },
+		{ Vector2(0.0f, -sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 1.0f, 0.0f) },
+		{ Vector2(-0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 0.0f, 1.0f) }
 	};
 
     std::vector<Vertex> triangle2 =
     {
-		{ /*rb*/ {  0.3f * triangleSize,  sqrtf(3.0f) * 0.25f * triangleSize }, /*R*/{ 1.0f, 0.0f, 0.0f }},
-		{ /* t*/ {                 0.0f, -sqrtf(3.0f) * 0.25f * triangleSize }, /*G*/{ 0.0f, 1.0f, 0.0f }},
-		{ /*lb*/ { -0.5f * triangleSize,  sqrtf(3.0f) * 0.25f * triangleSize }, /*B*/{ 0.0f, 0.0f, 1.0f }}
+		{ Vector2(0.3f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(1.0f, 0.0f, 0.0f) },
+		{ Vector2(0.0f, -sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 1.0f, 0.0f) },
+		{ Vector2(-0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 0.0f, 1.0f) }
 	};
 
     auto stagingBuffer = VulkanBuffer(device, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
