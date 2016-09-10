@@ -337,3 +337,92 @@ auto VulkanHelper::getDepthFormat(VkPhysicalDevice device) -> VkFormat
 
     return VK_FORMAT_UNDEFINED;
 }
+
+
+VulkanDescriptorPool::VulkanDescriptorPool(VkDevice device, VkDescriptorType type, uint32_t descriptorCount, uint32_t maxSetCount):
+    device(device)
+{
+    VkDescriptorPoolSize poolSize {};
+    poolSize.type = type;
+    poolSize.descriptorCount = descriptorCount;
+
+    VkDescriptorPoolCreateInfo poolInfo {};
+    poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+    poolInfo.poolSizeCount = 1;
+    poolInfo.pPoolSizes = &poolSize;
+    poolInfo.maxSets = maxSetCount;
+
+    SL_CHECK_VK_RESULT(vkCreateDescriptorPool(device, &poolInfo, nullptr, &pool));
+}
+
+
+VulkanDescriptorPool::VulkanDescriptorPool(VulkanDescriptorPool&& other):
+    device(std::move(other.device)),
+    pool(std::move(other.pool))
+{
+    other.device = nullptr;
+    other.pool = nullptr;
+}
+
+
+VulkanDescriptorPool::~VulkanDescriptorPool()
+{
+    if (pool)
+        vkDestroyDescriptorPool(device, pool, nullptr);
+}
+
+
+auto VulkanDescriptorPool::operator=(VulkanDescriptorPool& other) -> VulkanDescriptorPool&
+{
+    device = std::move(other.device);
+    pool = std::move(other.pool);
+    other.device = nullptr;
+    other.pool = nullptr;
+    return *this;
+}
+
+
+auto VulkanDescriptorPool::allocateSet(VkDescriptorSetLayout layout) const -> VkDescriptorSet
+{
+    VkDescriptorSetAllocateInfo allocInfo {};
+    allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+    allocInfo.descriptorPool = pool;
+    allocInfo.descriptorSetCount = 1;
+    allocInfo.pSetLayouts = &layout;
+
+    VkDescriptorSet set = nullptr;
+    SL_CHECK_VK_RESULT(vkAllocateDescriptorSets(device, &allocInfo, &set));
+
+    return set;
+}
+
+
+VulkanDescriptorSetLayoutBuilder::VulkanDescriptorSetLayoutBuilder(VkDevice device):
+    device(device)
+{
+}
+
+
+void VulkanDescriptorSetLayoutBuilder::setBinding(uint32_t binding, VkDescriptorType descriptorType, uint32_t descriptorCount,
+    VkShaderStageFlagBits stageFlags)
+{
+    if (binding >= bindings.size())
+        bindings.resize(binding + 1);
+    bindings[binding].binding = binding;
+    bindings[binding].descriptorType = descriptorType;
+    bindings[binding].descriptorCount = descriptorCount;
+    bindings[binding].stageFlags = stageFlags;
+    bindings[binding].pImmutableSamplers = nullptr;
+}
+
+auto VulkanDescriptorSetLayoutBuilder::build() -> VkDescriptorSetLayout
+{
+    VkDescriptorSetLayoutCreateInfo layoutInfo {};
+    layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+    layoutInfo.bindingCount = bindings.size();
+    layoutInfo.pBindings = bindings.data();
+
+    VkDescriptorSetLayout result;
+    SL_CHECK_VK_RESULT(vkCreateDescriptorSetLayout(device, &layoutInfo, nullptr, &result));
+    return result;
+}
