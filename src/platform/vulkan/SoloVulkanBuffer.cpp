@@ -4,7 +4,9 @@ using namespace solo;
 
 
 VulkanBuffer::VulkanBuffer(VkDevice device, VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties,
-    VkPhysicalDeviceMemoryProperties memProps)
+    VkPhysicalDeviceMemoryProperties memProps):
+    device(device),
+    size(size)
 {
     VkBufferCreateInfo bufferInfo {};
     bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
