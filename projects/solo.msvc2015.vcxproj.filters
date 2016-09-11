@@ -169,9 +169,6 @@
     <ClInclude Include="..\include\SoloFont.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\solo\SoloTrueTypeFont.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloFontRenderer.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -234,6 +231,9 @@
     </ClInclude>
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanDescriptorPool.h">
       <Filter>src\platform\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\SoloTrueTypeFont.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
