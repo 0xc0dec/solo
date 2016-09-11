@@ -78,7 +78,7 @@ namespace solo
 
     enum class DeviceMode
     {
-        Stub,
+        Null,
         OpenGL,
         Vulkan
     };

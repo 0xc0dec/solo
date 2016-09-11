@@ -43,7 +43,7 @@ auto Effect::create(EffectPrefab prefab) -> sptr<Effect>
 {
     switch (Device::get()->getSetup().mode)
     {
-        case DeviceMode::Stub:
+        case DeviceMode::Null:
             return std::shared_ptr<Effect>(new Effect("", ""));
         case DeviceMode::OpenGL:
             switch (prefab)

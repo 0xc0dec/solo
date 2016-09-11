@@ -49,10 +49,10 @@ private:
 };
 
 
-void runInStubEngine(std::function<void(Device*)> run, const std::string& logPath)
+void runInNullEngine(std::function<void(Device*)> run, const std::string& logPath)
 {
     Device::run(
-        DeviceSetup().withMode(DeviceMode::Stub).withLogFilePath(logPath),
+        DeviceSetup().withMode(DeviceMode::Null).withLogFilePath(logPath),
         std::make_unique<Callback>(run)
     );
 }
@@ -89,7 +89,7 @@ void runCppIntegrationTests(Device* device)
 int main()
 {
 #ifdef SL_DEBUG
-    runInStubEngine(runCppUnitTests, "cpp-unit-tests.log");
+    runInNullEngine(runCppUnitTests, "cpp-unit-tests.log");
     runInRealEngine(runCppIntegrationTests, "cpp-integration-tests.log");
 #endif
     return 0;

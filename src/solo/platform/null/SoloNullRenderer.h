@@ -24,7 +24,7 @@
 
 namespace solo
 {
-    class StubRenderer final : public Renderer
+    class NullRenderer final : public Renderer
     {
     public:
         void beginFrame() override final {}

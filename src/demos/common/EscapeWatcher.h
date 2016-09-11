@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include "../../include/Solo.h"
+#include "../../../include/Solo.h"
 
 
 class EscapeWatcher final: public solo::ComponentBase<EscapeWatcher>

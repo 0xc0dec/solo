@@ -70,14 +70,14 @@
     <ClInclude Include="..\src\solo\platform\bullet\SoloBulletCommon.h" />
     <ClInclude Include="..\src\solo\platform\bullet\SoloBulletPhysics.h" />
     <ClInclude Include="..\src\solo\platform\bullet\SoloBulletRigidBody.h" />
+    <ClInclude Include="..\src\solo\platform\null\SoloNullDevice.h" />
+    <ClInclude Include="..\src\solo\platform\null\SoloNullFileSystem.h" />
+    <ClInclude Include="..\src\solo\platform\null\SoloNullRenderer.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLPrefabShaders.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLRenderer.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloSDLOpenGLDevice.h" />
     <ClInclude Include="..\src\solo\platform\sdl\SoloSDLDevice.h" />
     <ClInclude Include="..\src\solo\platform\sdl\SoloSDLInputMaps.h" />
-    <ClInclude Include="..\src\solo\platform\stub\SoloStubDevice.h" />
-    <ClInclude Include="..\src\solo\platform\stub\SoloStubFileSystem.h" />
-    <ClInclude Include="..\src\solo\platform\stub\SoloStubRenderer.h" />
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanDescriptorPool.h" />
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanDescriptorSetLayoutBuilder.h" />
     <ClInclude Include="..\src\solo\platform\vulkan\SoloSDLVulkanDevice.h" />

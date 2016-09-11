@@ -91,9 +91,6 @@
     <ClInclude Include="..\src\solo\platform\opengl\SoloSDLOpenGLDevice.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\platform\stub\SoloStubDevice.h">
-      <Filter>src\platform\stub</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloSpectator.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -102,9 +99,6 @@
     </ClInclude>
     <ClInclude Include="..\include\SoloRenderQueue.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\stub\SoloStubFileSystem.h">
-      <Filter>src\platform\stub</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloVertexFormat.h">
       <Filter>include</Filter>
@@ -120,9 +114,6 @@
     </ClInclude>
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLRenderer.h">
       <Filter>src\platform\opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\stub\SoloStubRenderer.h">
-      <Filter>src\platform\stub</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloRenderer.h">
       <Filter>include</Filter>
@@ -234,6 +225,15 @@
     </ClInclude>
     <ClInclude Include="..\src\solo\SoloTrueTypeFont.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\null\SoloNullDevice.h">
+      <Filter>src\platform\null</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\null\SoloNullFileSystem.h">
+      <Filter>src\platform\null</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\null\SoloNullRenderer.h">
+      <Filter>src\platform\null</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1268,9 +1268,6 @@
     <Filter Include="src\platform\opengl">
       <UniqueIdentifier>{f14878d2-f3e0-46aa-8dde-49cd0692f7f9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\platform\stub">
-      <UniqueIdentifier>{a2160cc5-f9a6-47d6-b537-be79b1e819d7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\vendor">
       <UniqueIdentifier>{ac6c24da-1afc-4cc5-85d6-9c987812afe7}</UniqueIdentifier>
     </Filter>
@@ -1300,6 +1297,9 @@
     </Filter>
     <Filter Include="src\platform\vulkan">
       <UniqueIdentifier>{93074499-f6f5-4cfe-ae6d-9a14af1b7d09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\platform\null">
+      <UniqueIdentifier>{a2160cc5-f9a6-47d6-b537-be79b1e819d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

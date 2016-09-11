@@ -20,7 +20,7 @@
 
 #include "SoloFileSystem.h"
 #include "SoloDevice.h"
-#include "platform/stub/SoloStubFileSystem.h"
+#include "platform/null/SoloNullFileSystem.h"
 #include <fstream>
 
 using namespace solo;
@@ -28,8 +28,8 @@ using namespace solo;
 
 auto FileSystem::create(Device* device, const DeviceToken&) -> sptr<FileSystem>
 {
-    if (device->getSetup().mode == DeviceMode::Stub)
-        return std::make_shared<StubFileSystem>();
+    if (device->getSetup().mode == DeviceMode::Null)
+        return std::make_shared<NullFileSystem>();
     return std::unique_ptr<FileSystem>(new FileSystem());
 }
 

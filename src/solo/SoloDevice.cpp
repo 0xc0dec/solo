@@ -26,7 +26,7 @@
 #include "SoloRenderer.h"
 #include "SoloGraphics.h"
 #include "SoloPhysics.h"
-#include "platform/stub/SoloStubDevice.h"
+#include "platform/null/SoloNullDevice.h"
 #include "platform/opengl/SoloSDLOpenGLDevice.h"
 #include "platform/vulkan/SoloSDLVulkanDevice.h"
 
@@ -85,8 +85,8 @@ uptr<Device> Device::createInstance(const DeviceSetup& setup)
             return std::make_unique<SDLOpenGLDevice>(setup);
         case DeviceMode::Vulkan:
             return std::make_unique<SDLVulkanDevice>(setup);
-        case DeviceMode::Stub:
-            return std::make_unique<StubDevice>(setup);
+        case DeviceMode::Null:
+            return std::make_unique<NullDevice>(setup);
         default:
             SL_ERR("Unknown device mode");
             return nullptr;

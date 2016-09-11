@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include "../../include/Solo.h"
+#include "../../../include/Solo.h"
 
 
 class Rotator final: public solo::ComponentBase<Rotator>

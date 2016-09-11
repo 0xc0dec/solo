@@ -25,7 +25,7 @@
 
 namespace solo
 {
-    class StubFileSystem final: public FileSystem
+    class NullFileSystem final: public FileSystem
     {
     public:
         auto readBytes(const std::string& path) -> std::vector<uint8_t> override final;
@@ -36,30 +36,30 @@ namespace solo
         void writeLines(const std::string& path, const std::vector<std::string>& lines) override final;
     };
 
-    inline auto StubFileSystem::readBytes(const std::string& path) -> std::vector<uint8_t>
+    inline auto NullFileSystem::readBytes(const std::string& path) -> std::vector<uint8_t>
     {
         return {};
     }
 
-    inline void StubFileSystem::writeBytes(const std::string& path, const std::vector<uint8_t>& data)
+    inline void NullFileSystem::writeBytes(const std::string& path, const std::vector<uint8_t>& data)
     {
     }
 
-    inline auto StubFileSystem::readText(const std::string& path) -> std::string
+    inline auto NullFileSystem::readText(const std::string& path) -> std::string
     {
         return "";
     }
 
-    inline auto StubFileSystem::readLines(const std::string& path) -> std::vector<std::string>
+    inline auto NullFileSystem::readLines(const std::string& path) -> std::vector<std::string>
     {
         return {};
     }
 
-    inline void StubFileSystem::iterateLines(const std::string& path, std::function<bool(const std::string&)> process)
+    inline void NullFileSystem::iterateLines(const std::string& path, std::function<bool(const std::string&)> process)
     {
     }
 
-    inline void StubFileSystem::writeLines(const std::string& path, const std::vector<std::string>& lines)
+    inline void NullFileSystem::writeLines(const std::string& path, const std::vector<std::string>& lines)
     {
     }
 }
