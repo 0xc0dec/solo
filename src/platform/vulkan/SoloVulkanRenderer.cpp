@@ -450,7 +450,7 @@ void VulkanRenderer::test_draw()
 
 
 VulkanRenderer::DepthStencil VulkanRenderer::createDepthStencil(
-    VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties,
+    VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
     VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight)
 {
     VkImageCreateInfo image = {};
@@ -491,7 +491,7 @@ VulkanRenderer::DepthStencil VulkanRenderer::createDepthStencil(
     SL_CHECK_VK_RESULT(vkCreateImage(device, &image, nullptr, &depthStencil.image));
     vkGetImageMemoryRequirements(device, depthStencil.image, &memReqs);
 
-    auto memTypeIndex = VulkanHelper::findMemoryType(physicalDeviceMemoryProperties, memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+    auto memTypeIndex = VulkanHelper::findMemoryType(physicalDeviceMemProps, memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
     SL_ERR_IF(memTypeIndex < 0);
 
     alloc.allocationSize = memReqs.size;
@@ -499,6 +499,7 @@ VulkanRenderer::DepthStencil VulkanRenderer::createDepthStencil(
     SL_CHECK_VK_RESULT(vkAllocateMemory(device, &alloc, nullptr, &depthStencil.mem));
     SL_CHECK_VK_RESULT(vkBindImageMemory(device, depthStencil.image, depthStencil.mem, 0));
     
+    // TODO this doesn't seem to have any effect
     VulkanHelper::setImageLayout(cmdBuffer, depthStencil.image, VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT,
         VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
 
@@ -516,7 +517,7 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
     auto surface = this->engineDevice->getVulkanSurface();
 
     physicalDevice = VulkanHelper::createPhysicalDevice(instance);
-    vkGetPhysicalDeviceProperties(physicalDevice, &physicalDeviceProperties);
+    vkGetPhysicalDeviceProperties(physicalDevice, &physicalDeviceProps);
     vkGetPhysicalDeviceFeatures(physicalDevice, &physicalDeviceFeatures);
     vkGetPhysicalDeviceMemoryProperties(physicalDevice, &physicalDeviceMemProps);
 
@@ -534,14 +535,6 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice):
 
     presentCompleteSem = createSemaphore(device);
     renderCompleteSem = createSemaphore(device);
-
-    submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-    submitInfo.pNext = nullptr;
-    submitInfo.pWaitDstStageMask = &submitPipelineStages;
-    submitInfo.waitSemaphoreCount = 1;
-    submitInfo.pWaitSemaphores = &presentCompleteSem;
-    submitInfo.signalSemaphoreCount = 1;
-    submitInfo.pSignalSemaphores = &renderCompleteSem;
 
     commandPool = VulkanHelper::createCommandPool(device, queueIndex);
     initSwapchain(surface, engineDevice->getSetup().vsync);

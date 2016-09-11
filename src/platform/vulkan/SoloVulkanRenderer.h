@@ -132,13 +132,12 @@ namespace solo
         VkCommandPool commandPool = nullptr;
         VkCommandBuffer setupCmdBuffer = nullptr;
         VkRenderPass renderPass = nullptr;
-        VkPhysicalDeviceProperties physicalDeviceProperties;
+        VkPhysicalDeviceProperties physicalDeviceProps;
         VkPhysicalDeviceFeatures physicalDeviceFeatures;
         VkPhysicalDeviceMemoryProperties physicalDeviceMemProps;
         VkFormat depthFormat = VK_FORMAT_UNDEFINED;
         VkSemaphore presentCompleteSem = nullptr;
         VkSemaphore renderCompleteSem = nullptr;
-        VkSubmitInfo submitInfo;
 	    uint32_t currentBuffer = 0;
         VkPipelineStageFlags submitPipelineStages = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
     };
