@@ -3,6 +3,8 @@
 #include "SoloVulkanRenderer.h"
 #include "SoloVulkanPipeline.h"
 #include "SoloVulkanBuffer.h"
+#include "SoloVulkanDescriptorPool.h"
+#include "SoloVulkanDescriptorSetLayoutBuilder.h"
 #include "SoloSDLVulkanDevice.h"
  // TODO remove these?
 #include "SoloVector2.h"
@@ -186,7 +188,7 @@ void VulkanRenderer::initCommandBuffers()
     commandBufferAllocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
     commandBufferAllocateInfo.commandPool = commandPool;
     commandBufferAllocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-    commandBufferAllocateInfo.commandBufferCount = count;
+    commandBufferAllocateInfo.commandBufferCount = static_cast<uint32_t>(count);
 
     SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &commandBufferAllocateInfo, drawCmdBuffers.data()));
     SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &commandBufferAllocateInfo, prePresentCmdBuffers.data()));
@@ -245,7 +247,7 @@ void VulkanRenderer::initPresentationCommandBuffers()
 }
 
 
-void VulkanRenderer::buildDrawCommandBuffers(std::function<void(VkCommandBuffer)> meat /* TODO removeme */)
+void VulkanRenderer::recordDrawCommandBuffers(std::function<void(VkCommandBuffer)> meat /* TODO removeme */)
 {
     VkCommandBufferBeginInfo cmdBufferBeginInfo = {};
     cmdBufferBeginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -267,8 +269,8 @@ void VulkanRenderer::buildDrawCommandBuffers(std::function<void(VkCommandBuffer)
     renderPassBeginInfo.pClearValues = clearValues;
 
     VkViewport viewport = {};
-    viewport.width = canvasWidth;
-    viewport.height = canvasHeight;
+    viewport.width = static_cast<float>(canvasWidth);
+    viewport.height = static_cast<float>(canvasHeight);
     viewport.minDepth = 0;
     viewport.maxDepth = 1;
 
@@ -290,7 +292,6 @@ void VulkanRenderer::buildDrawCommandBuffers(std::function<void(VkCommandBuffer)
         vkCmdSetScissor(drawCmdBuffers[i], 0, 1, &scissor);
 
         meat(drawCmdBuffers[i]);
-        // TODO scene rendering here
 
         vkCmdEndRenderPass(drawCmdBuffers[i]);
 
@@ -301,9 +302,9 @@ void VulkanRenderer::buildDrawCommandBuffers(std::function<void(VkCommandBuffer)
 
 void VulkanRenderer::destroyCommandBuffers()
 {
-    ::destroyCommandBuffers(device, commandPool, drawCmdBuffers.data(), drawCmdBuffers.size());
-    ::destroyCommandBuffers(device, commandPool, prePresentCmdBuffers.data(), prePresentCmdBuffers.size());
-    ::destroyCommandBuffers(device, commandPool, postPresentCmdBuffers.data(), postPresentCmdBuffers.size());
+    ::destroyCommandBuffers(device, commandPool, drawCmdBuffers.data(), static_cast<uint32_t>(drawCmdBuffers.size()));
+    ::destroyCommandBuffers(device, commandPool, prePresentCmdBuffers.data(), static_cast<uint32_t>(prePresentCmdBuffers.size()));
+    ::destroyCommandBuffers(device, commandPool, postPresentCmdBuffers.data(), static_cast<uint32_t>(postPresentCmdBuffers.size()));
 }
 
 
@@ -415,7 +416,7 @@ void VulkanRenderer::test_init()
 
     vkUpdateDescriptorSets(device, 1, &descriptorWrite, 0, nullptr);
 
-    buildDrawCommandBuffers([&](VkCommandBuffer buf)
+    recordDrawCommandBuffers([&](VkCommandBuffer buf)
     {
         pipeline.bind(buf);
 
@@ -427,8 +428,6 @@ void VulkanRenderer::test_init()
 
         vkCmdDraw(buf, static_cast<uint32_t>(triangle1.size()), 1, 0, 0);
     });
-
-    // TODO the vertex buffer is being destroyed here but still it works, wtf...
 }
 
 

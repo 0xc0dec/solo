@@ -78,6 +78,8 @@
     <ClInclude Include="..\src\platform\stub\SoloStubDevice.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubFileSystem.h" />
     <ClInclude Include="..\src\platform\stub\SoloStubRenderer.h" />
+    <ClInclude Include="..\src\platform\vulkan\SoloVulkanDescriptorPool.h" />
+    <ClInclude Include="..\src\platform\vulkan\SoloVulkanDescriptorSetLayoutBuilder.h" />
     <ClInclude Include="..\src\platform\vulkan\SoloSDLVulkanDevice.h" />
     <ClInclude Include="..\src\platform\vulkan\SoloVulkan.h" />
     <ClInclude Include="..\src\platform\vulkan\SoloVulkanBuffer.h" />
@@ -101,6 +103,8 @@
     <ClCompile Include="..\src\platform\vulkan\SoloSDLVulkanDevice.cpp" />
     <ClCompile Include="..\src\platform\vulkan\SoloVulkan.cpp" />
     <ClCompile Include="..\src\platform\vulkan\SoloVulkanBuffer.cpp" />
+    <ClCompile Include="..\src\platform\vulkan\SoloVulkanDescriptorPool.cpp" />
+    <ClCompile Include="..\src\platform\vulkan\SoloVulkanDescriptorSetLayoutBuilder.cpp" />
     <ClCompile Include="..\src\platform\vulkan\SoloVulkanMaterial.cpp" />
     <ClCompile Include="..\src\platform\vulkan\SoloVulkanPipeline.cpp" />
     <ClCompile Include="..\src\platform\vulkan\SoloVulkanRenderer.cpp" />

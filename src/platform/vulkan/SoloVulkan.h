@@ -60,45 +60,4 @@ namespace solo
 
         static auto getDepthFormat(VkPhysicalDevice device) -> VkFormat;
     };
-
-
-    // TODO currently supports pools that allocate only one predefined type of sets
-    class VulkanDescriptorPool
-    {
-    public:
-        VulkanDescriptorPool() {}
-        VulkanDescriptorPool(VkDevice device, VkDescriptorType type, uint32_t descriptorCount, uint32_t maxSetCount);
-        VulkanDescriptorPool(const VulkanDescriptorPool& other) = delete;
-        VulkanDescriptorPool(VulkanDescriptorPool&& other);
-
-        ~VulkanDescriptorPool();
-
-        auto operator=(const VulkanDescriptorPool& other) -> VulkanDescriptorPool& = delete;
-        auto operator=(VulkanDescriptorPool&& other) -> VulkanDescriptorPool&;
-
-        auto allocateSet(VkDescriptorSetLayout layout) const -> VkDescriptorSet;
-
-    private:
-        void cleanup();
-
-        VkDevice device = nullptr;
-        VkDescriptorPool pool = nullptr;
-    };
-
-
-    class VulkanDescriptorSetLayoutBuilder
-    {
-    public:
-        explicit VulkanDescriptorSetLayoutBuilder(VkDevice device);
-
-        // TODO other rule-of-five stuff
-
-        void setBinding(uint32_t binding, VkDescriptorType descriptorType, uint32_t descriptorCount, VkShaderStageFlagBits stageFlags);
-
-        auto build() -> VkDescriptorSetLayout;
-
-    private:
-        VkDevice device = nullptr;
-        std::vector<VkDescriptorSetLayoutBinding> bindings;
-    };
 }

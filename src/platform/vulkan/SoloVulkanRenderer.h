@@ -107,7 +107,7 @@ namespace solo
 
         void initCommandBuffers();
         void initPresentationCommandBuffers();
-        void buildDrawCommandBuffers(std::function<void(VkCommandBuffer)> meat /* TODO removeme */);
+        void recordDrawCommandBuffers(std::function<void(VkCommandBuffer)> meat /* TODO removeme */);
         void destroyCommandBuffers();
 
         void initFrameBuffers();
