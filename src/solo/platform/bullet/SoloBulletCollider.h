@@ -29,8 +29,9 @@ namespace solo
     class BulletCollider
     {
     public:
-        virtual ~BulletCollider() {}
         SL_NONCOPYABLE(BulletCollider)
+
+        virtual ~BulletCollider() {}
 
         virtual auto getShape() -> btCollisionShape* = 0;
 

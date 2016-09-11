@@ -43,8 +43,8 @@ namespace solo
     public:
         static auto create(sptr<Effect> effect) -> sptr<Material>; 
 
-        ~Material() {}
         SL_NONCOPYABLE(Material)
+        ~Material() {}
 
         void setFloatParameter(const std::string& name, float value);
         void setFloatArrayParameter(const std::string& name, const std::vector<float>& value);

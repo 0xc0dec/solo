@@ -49,8 +49,8 @@ namespace solo
     class Texture
     {
     public:
-        virtual ~Texture();
         SL_NONCOPYABLE(Texture)
+        virtual ~Texture();
 
         virtual void bind() = 0;
         virtual void generateMipmaps() = 0;

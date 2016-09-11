@@ -69,9 +69,10 @@ namespace solo
     class AssetLoader
     {
     public:
+        SL_NONCOPYABLE(AssetLoader)
+
         explicit AssetLoader(const DeviceToken&);
         ~AssetLoader();
-        SL_NONCOPYABLE(AssetLoader)
 
         auto loadRectTexture(const std::string& path) -> sptr<RectTexture>;
         auto loadRectTextureAsync(const std::string& path) -> sptr<AsyncHandle<RectTexture>>;

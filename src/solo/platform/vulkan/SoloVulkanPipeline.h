@@ -30,9 +30,9 @@ namespace solo
     class VulkanPipeline
     {
     public:
+        SL_NONCOPYABLE(VulkanPipeline)
         VulkanPipeline(VkDevice device, VkRenderPass renderPass);
         ~VulkanPipeline();
-        SL_NONCOPYABLE(VulkanPipeline)
 
         VkPipeline getHandle() const;
         VkPipelineLayout getLayoutHandle() const;

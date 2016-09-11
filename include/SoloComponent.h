@@ -46,6 +46,7 @@ namespace solo
     {
     public:
         SL_NONCOPYABLE(Component)
+
         virtual ~Component() {}
 
         virtual auto getTypeId() -> uint32_t = 0;

@@ -34,8 +34,8 @@ namespace solo
     public:
         static auto create() -> sptr<FrameBuffer>;
 
-        ~FrameBuffer();
         SL_NONCOPYABLE(FrameBuffer)
+        ~FrameBuffer();
 
         void bind();
         void unbind();

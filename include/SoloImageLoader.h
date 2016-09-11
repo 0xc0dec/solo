@@ -30,8 +30,8 @@ namespace solo
     class ImageLoader
     {
     public:
-        virtual ~ImageLoader() {}
         SL_NONCOPYABLE(ImageLoader)
+        virtual ~ImageLoader() {}
 
         virtual bool isLoadable(const std::string& path) const = 0;
         virtual auto load(const std::string& path) -> sptr<Image> = 0;

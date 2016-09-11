@@ -35,8 +35,8 @@ namespace solo
     public:
         static auto create(Device* device, const DeviceToken&) -> sptr<FileSystem>;
 
-        virtual ~FileSystem() {}
         SL_NONCOPYABLE(FileSystem)
+        virtual ~FileSystem() {}
 
         virtual auto readBytes(const std::string& path) -> std::vector<uint8_t>;
         virtual void writeBytes(const std::string& path, const std::vector<uint8_t>& data);

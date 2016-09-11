@@ -28,8 +28,9 @@ namespace solo
     class Collider
     {
     public:
-        virtual ~Collider() {}
         SL_NONCOPYABLE(Collider)
+
+        virtual ~Collider() {}
 
     protected:
         Collider() {}

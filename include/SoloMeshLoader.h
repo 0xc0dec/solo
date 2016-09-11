@@ -30,9 +30,9 @@ namespace solo
     class MeshLoader
     {
     public:
+        SL_NONCOPYABLE(MeshLoader)
         MeshLoader() {}
         virtual ~MeshLoader() {}
-        SL_NONCOPYABLE(MeshLoader)
 
         virtual bool isLoadable(const std::string& path) = 0;
         virtual auto loadData(const std::string& path) -> sptr<MeshData> = 0;

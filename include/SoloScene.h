@@ -35,9 +35,9 @@ namespace solo
     class Scene final
     {
     public:
+        SL_NONCOPYABLE(Scene)
         explicit Scene(const DeviceToken&) {}
         ~Scene() {}
-        SL_NONCOPYABLE(Scene)
 
         auto createNode() -> sptr<Node>;
 
