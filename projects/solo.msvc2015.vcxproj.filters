@@ -82,16 +82,16 @@
     <ClInclude Include="..\include\SoloImageLoader.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloPngImageLoader.h">
+    <ClInclude Include="..\src\solo\SoloPngImageLoader.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloCubeTexture.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\opengl\SoloSDLOpenGLDevice.h">
+    <ClInclude Include="..\src\solo\platform\opengl\SoloSDLOpenGLDevice.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\stub\SoloStubDevice.h">
+    <ClInclude Include="..\src\solo\platform\stub\SoloStubDevice.h">
       <Filter>src\platform\stub</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloSpectator.h">
@@ -103,7 +103,7 @@
     <ClInclude Include="..\include\SoloRenderQueue.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\stub\SoloStubFileSystem.h">
+    <ClInclude Include="..\src\solo\platform\stub\SoloStubFileSystem.h">
       <Filter>src\platform\stub</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloVertexFormat.h">
@@ -112,16 +112,16 @@
     <ClInclude Include="..\include\SoloMeshRenderer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloObjMeshLoader.h">
+    <ClInclude Include="..\src\solo\SoloObjMeshLoader.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloLogger.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLRenderer.h">
+    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLRenderer.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\stub\SoloStubRenderer.h">
+    <ClInclude Include="..\src\solo\platform\stub\SoloStubRenderer.h">
       <Filter>src\platform\stub</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloRenderer.h">
@@ -169,171 +169,171 @@
     <ClInclude Include="..\include\SoloFont.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloTrueTypeFont.h">
+    <ClInclude Include="..\src\solo\solo\SoloTrueTypeFont.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloFontRenderer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\sdl\SoloSDLDevice.h">
+    <ClInclude Include="..\src\solo\platform\sdl\SoloSDLDevice.h">
       <Filter>src\platform\sdl</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SoloMaterialParameter.h">
+    <ClInclude Include="..\src\solo\SoloMaterialParameter.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloRectTexture.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\bullet\SoloBulletBoxCollider.h">
+    <ClInclude Include="..\src\solo\platform\bullet\SoloBulletBoxCollider.h">
       <Filter>src\platform\bullet</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\bullet\SoloBulletCollider.h">
+    <ClInclude Include="..\src\solo\platform\bullet\SoloBulletCollider.h">
       <Filter>src\platform\bullet</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\bullet\SoloBulletCommon.h">
+    <ClInclude Include="..\src\solo\platform\bullet\SoloBulletCommon.h">
       <Filter>src\platform\bullet</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\bullet\SoloBulletPhysics.h">
+    <ClInclude Include="..\src\solo\platform\bullet\SoloBulletPhysics.h">
       <Filter>src\platform\bullet</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\bullet\SoloBulletRigidBody.h">
+    <ClInclude Include="..\src\solo\platform\bullet\SoloBulletRigidBody.h">
       <Filter>src\platform\bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloTransformMatrix.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\opengl\SoloOpenGLPrefabShaders.h">
+    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLPrefabShaders.h">
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloCommon.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\vulkan\SoloVulkanRenderer.h">
+    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanRenderer.h">
       <Filter>src\platform\vulkan</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\vulkan\SoloSDLVulkanDevice.h">
+    <ClInclude Include="..\src\solo\platform\vulkan\SoloSDLVulkanDevice.h">
       <Filter>src\platform\vulkan</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\vulkan\SoloVulkan.h">
+    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkan.h">
       <Filter>src\platform\vulkan</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\sdl\SoloSDLInputMaps.h">
+    <ClInclude Include="..\src\solo\platform\sdl\SoloSDLInputMaps.h">
       <Filter>src\platform\sdl</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloDeviceSetup.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\vulkan\SoloVulkanPipeline.h">
+    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanPipeline.h">
       <Filter>src\platform\vulkan</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\vulkan\SoloVulkanBuffer.h">
+    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanBuffer.h">
       <Filter>src\platform\vulkan</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\vulkan\SoloVulkanDescriptorSetLayoutBuilder.h">
+    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanDescriptorSetLayoutBuilder.h">
       <Filter>src\platform\vulkan</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\platform\vulkan\SoloVulkanDescriptorPool.h">
+    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanDescriptorPool.h">
       <Filter>src\platform\vulkan</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\SoloScene.cpp">
+    <ClCompile Include="..\src\solo\SoloScene.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloDevice.cpp">
+    <ClCompile Include="..\src\solo\SoloDevice.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloFileSystem.cpp">
+    <ClCompile Include="..\src\solo\SoloFileSystem.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloMaterial.cpp">
+    <ClCompile Include="..\src\solo\SoloMaterial.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloVector2.cpp">
+    <ClCompile Include="..\src\solo\SoloVector2.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloVector3.cpp">
+    <ClCompile Include="..\src\solo\SoloVector3.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloVector4.cpp">
+    <ClCompile Include="..\src\solo\SoloVector4.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloMatrix.cpp">
+    <ClCompile Include="..\src\solo\SoloMatrix.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloPlane.cpp">
+    <ClCompile Include="..\src\solo\SoloPlane.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloBoundingSphere.cpp">
+    <ClCompile Include="..\src\solo\SoloBoundingSphere.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloBoundingBox.cpp">
+    <ClCompile Include="..\src\solo\SoloBoundingBox.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloRay.cpp">
+    <ClCompile Include="..\src\solo\SoloRay.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloFrustum.cpp">
+    <ClCompile Include="..\src\solo\SoloFrustum.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloTransform.cpp">
+    <ClCompile Include="..\src\solo\SoloTransform.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloCamera.cpp">
+    <ClCompile Include="..\src\solo\SoloCamera.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloEffect.cpp">
+    <ClCompile Include="..\src\solo\SoloEffect.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloMesh.cpp">
+    <ClCompile Include="..\src\solo\SoloMesh.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloQuaternion.cpp">
+    <ClCompile Include="..\src\solo\SoloQuaternion.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloBase.cpp">
+    <ClCompile Include="..\src\solo\SoloBase.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloNode.cpp">
+    <ClCompile Include="..\src\solo\SoloNode.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloTexture.cpp">
+    <ClCompile Include="..\src\solo\SoloTexture.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloPngImageLoader.cpp">
+    <ClCompile Include="..\src\solo\SoloPngImageLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\opengl\SoloSDLOpenGLDevice.cpp">
+    <ClCompile Include="..\src\solo\platform\opengl\SoloSDLOpenGLDevice.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloSpectator.cpp">
+    <ClCompile Include="..\src\solo\SoloSpectator.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloCubeTexture.cpp">
+    <ClCompile Include="..\src\solo\SoloCubeTexture.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloSkyboxRenderer.cpp">
+    <ClCompile Include="..\src\solo\SoloSkyboxRenderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloMeshRenderer.cpp">
+    <ClCompile Include="..\src\solo\SoloMeshRenderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloObjMeshLoader.cpp">
+    <ClCompile Include="..\src\solo\SoloObjMeshLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloLogger.cpp">
+    <ClCompile Include="..\src\solo\SoloLogger.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloRenderer.cpp">
+    <ClCompile Include="..\src\solo\SoloRenderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLRenderer.cpp">
+    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLRenderer.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloFrameBuffer.cpp">
+    <ClCompile Include="..\src\solo\SoloFrameBuffer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloGraphics.cpp">
+    <ClCompile Include="..\src\solo\SoloGraphics.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\e_atan2.c">
@@ -720,13 +720,13 @@
     <ClCompile Include="..\vendor\async++\src\threadpool_scheduler.cpp">
       <Filter>src\vendor\async++</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloAssetLoader.cpp">
+    <ClCompile Include="..\src\solo\SoloAssetLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloRadian.cpp">
+    <ClCompile Include="..\src\solo\SoloRadian.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloDegree.cpp">
+    <ClCompile Include="..\src\solo\SoloDegree.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btAlignedAllocator.cpp">
@@ -1113,37 +1113,37 @@
     <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\Vehicle\btWheelInfo.cpp">
       <Filter>src\vendor\bullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloTrueTypeFont.cpp">
+    <ClCompile Include="..\src\solo\SoloTrueTypeFont.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloFontRenderer.cpp">
+    <ClCompile Include="..\src\solo\SoloFontRenderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\sdl\SoloSDLDevice.cpp">
+    <ClCompile Include="..\src\solo\platform\sdl\SoloSDLDevice.cpp">
       <Filter>src\platform\sdl</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloMaterialParameter.cpp">
+    <ClCompile Include="..\src\solo\SoloMaterialParameter.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloRectTexture.cpp">
+    <ClCompile Include="..\src\solo\SoloRectTexture.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\bullet\SoloBulletBoxCollider.cpp">
+    <ClCompile Include="..\src\solo\platform\bullet\SoloBulletBoxCollider.cpp">
       <Filter>src\platform\bullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\bullet\SoloBulletPhysics.cpp">
+    <ClCompile Include="..\src\solo\platform\bullet\SoloBulletPhysics.cpp">
       <Filter>src\platform\bullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\bullet\SoloBulletRigidBody.cpp">
+    <ClCompile Include="..\src\solo\platform\bullet\SoloBulletRigidBody.cpp">
       <Filter>src\platform\bullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloBoxCollider.cpp">
+    <ClCompile Include="..\src\solo\SoloBoxCollider.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloPhysics.cpp">
+    <ClCompile Include="..\src\solo\SoloPhysics.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloRigidBody.cpp">
+    <ClCompile Include="..\src\solo\SoloRigidBody.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\vendor\glew\1.13\src\glew.c">
@@ -1227,31 +1227,31 @@
     <ClCompile Include="..\vendor\zlib\1.2.8\src\zutil.c">
       <Filter>src\vendor\zlib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SoloTransformMatrix.cpp">
+    <ClCompile Include="..\src\solo\SoloTransformMatrix.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\opengl\SoloOpenGLPrefabShaders.cpp">
+    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLPrefabShaders.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\vulkan\SoloVulkanRenderer.cpp">
+    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanRenderer.cpp">
       <Filter>src\platform\vulkan</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\vulkan\SoloSDLVulkanDevice.cpp">
+    <ClCompile Include="..\src\solo\platform\vulkan\SoloSDLVulkanDevice.cpp">
       <Filter>src\platform\vulkan</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\vulkan\SoloVulkan.cpp">
+    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkan.cpp">
       <Filter>src\platform\vulkan</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\vulkan\SoloVulkanPipeline.cpp">
+    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanPipeline.cpp">
       <Filter>src\platform\vulkan</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\vulkan\SoloVulkanBuffer.cpp">
+    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanBuffer.cpp">
       <Filter>src\platform\vulkan</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\vulkan\SoloVulkanDescriptorSetLayoutBuilder.cpp">
+    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanDescriptorSetLayoutBuilder.cpp">
       <Filter>src\platform\vulkan</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\vulkan\SoloVulkanDescriptorPool.cpp">
+    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanDescriptorPool.cpp">
       <Filter>src\platform\vulkan</Filter>
     </ClCompile>
   </ItemGroup>
