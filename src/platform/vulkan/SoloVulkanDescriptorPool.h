@@ -1,3 +1,5 @@
+// Note: this file is a total hackery and a work-in-progress, so avoid reading to stay sane
+
 #pragma once
 
 #include "SoloVulkan.h"

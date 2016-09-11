@@ -1,4 +1,4 @@
-// Note: this file is a total hackery and a work-in-progress, so avoid reading this
+// Note: this file is a total hackery and a work-in-progress, so avoid reading to stay sane
 
 #include "SoloVulkanRenderer.h"
 #include "SoloVulkanPipeline.h"
