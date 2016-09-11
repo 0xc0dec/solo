@@ -45,7 +45,7 @@ namespace solo
     class Component
     {
     public:
-        SL_NONCOPYABLE(Component)
+        SL_DISABLE_COPY_AND_MOVE(Component)
 
         virtual ~Component() {}
 

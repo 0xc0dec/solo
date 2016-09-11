@@ -30,7 +30,7 @@ namespace solo
     class VulkanPipeline
     {
     public:
-        SL_NONCOPYABLE(VulkanPipeline)
+        SL_DISABLE_COPY_AND_MOVE(VulkanPipeline)
         VulkanPipeline(VkDevice device, VkRenderPass renderPass);
         ~VulkanPipeline();
 

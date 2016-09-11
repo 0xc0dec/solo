@@ -166,7 +166,7 @@ namespace solo
     public:
         static auto create(Device* device, const DeviceToken&) -> sptr<Renderer>;
 
-        SL_NONCOPYABLE(Renderer)
+        SL_DISABLE_COPY_AND_MOVE(Renderer)
         virtual ~Renderer() {}
 
         virtual void beginFrame() = 0;

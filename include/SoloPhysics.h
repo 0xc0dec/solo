@@ -48,7 +48,7 @@ namespace solo
     public:
         static auto create(Device* device, const DeviceToken& deviceToken) -> sptr<Physics>;
 
-        SL_NONCOPYABLE(Physics)
+        SL_DISABLE_COPY_AND_MOVE(Physics)
         virtual ~Physics() {}
 
         virtual void update() = 0;

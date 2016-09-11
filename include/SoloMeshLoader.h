@@ -30,7 +30,7 @@ namespace solo
     class MeshLoader
     {
     public:
-        SL_NONCOPYABLE(MeshLoader)
+        SL_DISABLE_COPY_AND_MOVE(MeshLoader)
         MeshLoader() {}
         virtual ~MeshLoader() {}
 

@@ -43,7 +43,7 @@ namespace solo
     public:
         static auto create(sptr<Effect> effect) -> sptr<Material>; 
 
-        SL_NONCOPYABLE(Material)
+        SL_DISABLE_COPY_AND_MOVE(Material)
         ~Material() {}
 
         void setFloatParameter(const std::string& name, float value);

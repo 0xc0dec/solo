@@ -32,7 +32,7 @@ namespace solo
     class Logger final
     {
     public:
-        SL_NONCOPYABLE(Logger)
+        SL_DISABLE_COPY_AND_MOVE(Logger)
         explicit Logger(const DeviceToken& t) {}
         ~Logger();
 

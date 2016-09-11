@@ -52,7 +52,7 @@ namespace solo
         static auto create(MeshPrefab prefab) -> sptr<Mesh>;
         static auto create(MeshData* data) -> sptr<Mesh>;
 
-        SL_NONCOPYABLE(Mesh)
+        SL_DISABLE_COPY_AND_MOVE(Mesh)
         ~Mesh();
 
         auto addVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount) -> uint32_t;

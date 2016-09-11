@@ -28,7 +28,7 @@ namespace solo
     class Collider
     {
     public:
-        SL_NONCOPYABLE(Collider)
+        SL_DISABLE_COPY_AND_MOVE(Collider)
 
         virtual ~Collider() {}
 

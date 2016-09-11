@@ -69,7 +69,7 @@ namespace solo
     class AssetLoader
     {
     public:
-        SL_NONCOPYABLE(AssetLoader)
+        SL_DISABLE_COPY_AND_MOVE(AssetLoader)
 
         explicit AssetLoader(const DeviceToken&);
         ~AssetLoader();

@@ -35,7 +35,7 @@ namespace solo
     class Scene final
     {
     public:
-        SL_NONCOPYABLE(Scene)
+        SL_DISABLE_COPY_AND_MOVE(Scene)
         explicit Scene(const DeviceToken&) {}
         ~Scene() {}
 

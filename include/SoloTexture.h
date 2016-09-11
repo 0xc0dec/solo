@@ -49,7 +49,7 @@ namespace solo
     class Texture
     {
     public:
-        SL_NONCOPYABLE(Texture)
+        SL_DISABLE_COPY_AND_MOVE(Texture)
         virtual ~Texture();
 
         virtual void bind() = 0;

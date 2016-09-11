@@ -35,7 +35,7 @@ namespace solo
     class Graphics
     {
     public:
-        SL_NONCOPYABLE(Graphics)
+        SL_DISABLE_COPY_AND_MOVE(Graphics)
         Graphics(Device* device, const DeviceToken&);
 
         void blit(Material* material, FrameBuffer* target);

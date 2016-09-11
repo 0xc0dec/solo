@@ -82,7 +82,7 @@
     };
 
 
-#define SL_NONCOPYABLE(type) \
+#define SL_DISABLE_COPY_AND_MOVE(type) \
     type(const type &other) = delete; \
     type(type &&other) = delete; \
     type &operator=(const type &other) = delete; \

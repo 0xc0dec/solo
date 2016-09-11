@@ -103,7 +103,7 @@ namespace solo
         static auto get() -> Device*;
         static void run(const DeviceSetup &setup, sptr<DeviceCallback> callback);
 
-        SL_NONCOPYABLE(Device)
+        SL_DISABLE_COPY_AND_MOVE(Device)
         virtual ~Device();
 
         virtual auto getWindowTitle() const -> std::string = 0;

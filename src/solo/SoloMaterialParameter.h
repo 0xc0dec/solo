@@ -60,7 +60,7 @@ namespace solo
     public:
         static auto create(Renderer* renderer, Effect* effect, MaterialParameterType type, const char* name) -> sptr<MaterialParameter>;
 
-        SL_NONCOPYABLE(MaterialParameter)
+        SL_DISABLE_COPY_AND_MOVE(MaterialParameter)
         virtual ~MaterialParameter();
 
         auto getType() const -> MaterialParameterType;

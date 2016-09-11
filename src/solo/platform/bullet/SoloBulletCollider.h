@@ -29,7 +29,7 @@ namespace solo
     class BulletCollider
     {
     public:
-        SL_NONCOPYABLE(BulletCollider)
+        SL_DISABLE_COPY_AND_MOVE(BulletCollider)
 
         virtual ~BulletCollider() {}
 
