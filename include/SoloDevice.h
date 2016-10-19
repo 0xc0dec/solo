@@ -79,8 +79,7 @@ namespace solo
     enum class DeviceMode
     {
         Null,
-        OpenGL,
-        Vulkan
+        OpenGL
     };
 
     class DeviceToken

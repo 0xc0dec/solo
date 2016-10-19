@@ -38,10 +38,6 @@
 #   define SL_OPENGL_RENDERER
 #endif
 
-#if defined(SL_WINDOWS)
-#   define SL_VULKAN_RENDERER
-#endif
-
 
 #define SL_MACRO_BLOCK(code) do { code; } while (false);
 #define SL_EMPTY_MACRO_BLOCK() do {} while (false);
