@@ -1,0 +1,397 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\vendor\async++\src\scheduler.cpp" />
+    <ClCompile Include="..\vendor\async++\src\threadpool_scheduler.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btAxisSweep3.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btBroadphaseProxy.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btCollisionAlgorithm.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btDbvt.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btDbvtBroadphase.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btDispatcher.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btMultiSapBroadphase.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btOverlappingPairCache.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btQuantizedBvh.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\BroadphaseCollision\btSimpleBroadphase.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btActivatingCollisionAlgorithm.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btBox2dBox2dCollisionAlgorithm.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btBoxBoxCollisionAlgorithm.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btBoxBoxDetector.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btCollisionDispatcher.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btCollisionObject.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btCollisionWorld.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btCollisionWorldImporter.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btCompoundCollisionAlgorithm.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btCompoundCompoundCollisionAlgorithm.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btConvex2dConvex2dAlgorithm.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btConvexConcaveCollisionAlgorithm.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btConvexConvexAlgorithm.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btConvexPlaneCollisionAlgorithm.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btDefaultCollisionConfiguration.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btEmptyCollisionAlgorithm.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btGhostObject.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btHashedSimplePairCache.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btInternalEdgeUtility.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btManifoldResult.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btSimulationIslandManager.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btSphereBoxCollisionAlgorithm.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btSphereSphereCollisionAlgorithm.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btSphereTriangleCollisionAlgorithm.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\btUnionFind.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionDispatch\SphereTriangleDetector.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btBox2dShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btBoxShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btBvhTriangleMeshShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btCapsuleShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btCollisionShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btCompoundShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btConcaveShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btConeShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btConvex2dShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btConvexHullShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btConvexInternalShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btConvexPointCloudShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btConvexPolyhedron.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btConvexShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btConvexTriangleMeshShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btCylinderShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btEmptyShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btHeightfieldTerrainShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btMinkowskiSumShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btMultimaterialTriangleMeshShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btMultiSphereShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btOptimizedBvh.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btPolyhedralConvexShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btScaledBvhTriangleMeshShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btShapeHull.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btSphereShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btStaticPlaneShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btStridingMeshInterface.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btTetrahedronShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btTriangleBuffer.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btTriangleCallback.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btTriangleIndexVertexArray.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btTriangleIndexVertexMaterialArray.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btTriangleMesh.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btTriangleMeshShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\CollisionShapes\btUniformScalingShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\btContactProcessing.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\btGenericPoolAllocator.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\btGImpactBvh.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\btGImpactCollisionAlgorithm.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\btGImpactQuantizedBvh.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\btGImpactShape.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\btTriangleShapeEx.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\gim_box_set.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\gim_contact.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\gim_memory.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\Gimpact\gim_tri_collision.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btContinuousConvexCollision.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btConvexCast.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btGjkConvexCast.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btGjkEpa2.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btGjkEpaPenetrationDepthSolver.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btGjkPairDetector.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btMinkowskiPenetrationDepthSolver.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btPersistentManifold.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btPolyhedralContactClipping.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btRaycastCallback.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btSubSimplexConvexCast.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletCollision\NarrowPhaseCollision\btVoronoiSimplexSolver.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\Character\btKinematicCharacterController.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btConeTwistConstraint.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btContactConstraint.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btFixedConstraint.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btGearConstraint.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btGeneric6DofConstraint.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btGeneric6DofSpring2Constraint.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btGeneric6DofSpringConstraint.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btHinge2Constraint.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btHingeConstraint.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btNNCGConstraintSolver.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btPoint2PointConstraint.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btSequentialImpulseConstraintSolver.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btSliderConstraint.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btSolve2LinearConstraint.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btTypedConstraint.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\ConstraintSolver\btUniversalConstraint.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\Dynamics\btDiscreteDynamicsWorld.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\Dynamics\btRigidBody.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\Dynamics\btSimpleDynamicsWorld.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\MLCPSolvers\btDantzigLCP.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\MLCPSolvers\btLemkeAlgorithm.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\MLCPSolvers\btMLCPSolver.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\Vehicle\btRaycastVehicle.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\BulletDynamics\Vehicle\btWheelInfo.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btAlignedAllocator.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btConvexHull.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btConvexHullComputer.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btGeometryUtil.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btPolarDecomposition.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btQuickprof.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btSerializer.cpp" />
+    <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btVector3.cpp" />
+    <ClCompile Include="..\vendor\glew\1.13\src\glew.c" />
+    <ClCompile Include="..\vendor\png\1.6.16\src\png.c" />
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngerror.c" />
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngget.c" />
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngmem.c" />
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngpread.c" />
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngread.c" />
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngrio.c" />
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngrtran.c" />
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngrutil.c" />
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngset.c" />
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngtrans.c" />
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngwio.c" />
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngwrite.c" />
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngwtran.c" />
+    <ClCompile Include="..\vendor\png\1.6.16\src\pngwutil.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\haptic\dummy\SDL_syshaptic.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\dummy\SDL_sysjoystick.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\SDL_gamecontroller.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\SDL_joystick.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\e_atan2.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\e_log.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\e_pow.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\e_rem_pio2.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\e_sqrt.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\k_cos.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\k_rem_pio2.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\k_sin.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\k_tan.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\s_atan.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\s_copysign.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\s_cos.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\s_fabs.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\s_floor.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\s_scalbn.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\s_sin.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\libm\s_tan.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\SDL.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\SDL_assert.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\atomic\SDL_atomic.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\SDL_audio.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\SDL_audiocvt.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\SDL_audiodev.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\SDL_audiotypecvt.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\software\SDL_blendfillrect.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\software\SDL_blendline.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\software\SDL_blendpoint.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_blit.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_blit_0.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_blit_1.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_blit_A.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_blit_auto.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_blit_copy.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_blit_N.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_blit_slow.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_bmp.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_clipboard.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\events\SDL_clipboardevents.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\cpuinfo\SDL_cpuinfo.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\SDL_d3dmath.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\haptic\windows\SDL_dinputhaptic.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\windows\SDL_dinputjoystick.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\directsound\SDL_directsound.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\disk\SDL_diskaudio.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\software\SDL_drawline.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\software\SDL_drawpoint.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\events\SDL_dropevents.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\dummy\SDL_dummyaudio.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\dynapi\SDL_dynapi.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_egl.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\SDL_error.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\events\SDL_events.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_fillrect.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\events\SDL_gesture.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\stdlib\SDL_getenv.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\haptic\SDL_haptic.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\SDL_hints.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\stdlib\SDL_iconv.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\events\SDL_keyboard.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\SDL_log.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\stdlib\SDL_malloc.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\SDL_mixer.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\windows\SDL_mmjoystick.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\events\SDL_mouse.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\dummy\SDL_nullevents.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\dummy\SDL_nullframebuffer.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\dummy\SDL_nullvideo.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_pixels.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\power\SDL_power.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\stdlib\SDL_qsort.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\events\SDL_quit.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_rect.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\SDL_render.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\direct3d\SDL_render_d3d.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\direct3d11\SDL_render_d3d11.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\opengl\SDL_render_gl.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\opengles2\SDL_render_gles2.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\software\SDL_render_sw.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_RLEaccel.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\software\SDL_rotate.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\file\SDL_rwops.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\opengl\SDL_shaders_gl.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\opengles2\SDL_shaders_gles2.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_shape.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\atomic\SDL_spinlock.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\stdlib\SDL_stdlib.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_stretch.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\stdlib\SDL_string.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_surface.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\thread\generic\SDL_syscond.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\filesystem\windows\SDL_sysfilesystem.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\loadso\windows\SDL_sysloadso.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\thread\windows\SDL_sysmutex.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\power\windows\SDL_syspower.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\thread\windows\SDL_syssem.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\thread\windows\SDL_systhread.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\timer\windows\SDL_systimer.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\thread\windows\SDL_systls.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\thread\SDL_thread.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\timer\SDL_timer.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\events\SDL_touch.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\SDL_video.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\SDL_wave.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\events\SDL_windowevents.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\core\windows\SDL_windows.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsclipboard.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsevents.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsframebuffer.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowskeyboard.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsmessagebox.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsmodes.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsmouse.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsopengl.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsopengles.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsshape.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowsvideo.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\video\windows\SDL_windowswindow.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\winmm\SDL_winmm.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\audio\xaudio2\SDL_xaudio2.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\core\windows\SDL_xinput.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\SDL_yuv_mmx.c" />
+    <ClCompile Include="..\vendor\SDL\2.0.4\src\render\SDL_yuv_sw.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\adler32.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\compress.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\crc32.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\deflate.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\infback.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\inffast.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\inflate.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\inftrees.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\trees.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\uncompr.c" />
+    <ClCompile Include="..\vendor\zlib\1.2.8\src\zutil.c" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{085AFD38-02E2-4DF4-B3F4-2F28708CFDD1}</ProjectGuid>
+    <RootNamespace>solovendor</RootNamespace>
+    <ProjectName>Solo.vendor</ProjectName>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\1.6.16\include;$(ProjectDir)..\vendor\zlib\1.2.8\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(IncludePath)</IncludePath>
+    <OutDir>$(ProjectDir)..\build\</OutDir>
+    <IntDir>$(ProjectDir)..\build\tmp\solo-vendor\</IntDir>
+    <LibraryPath>$(ProjectDir)..\build\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\1.6.16\include;$(ProjectDir)..\vendor\zlib\1.2.8\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(IncludePath)</IncludePath>
+    <OutDir>$(ProjectDir)..\build\</OutDir>
+    <IntDir>$(ProjectDir)..\build\tmp\solo-vendor\</IntDir>
+    <LibraryPath>$(ProjectDir)..\build\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;BUILD_WINDOWS;HAVE_LIBC;GLEW_STATIC;SDL_HAPTIC_DISABLED;SDL_JOYSTICK_DISABLED;SL_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <ProgramDataBaseFileName>$(OutDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <AdditionalOptions>/bigobj /wd4503 %(AdditionalOptions)</AdditionalOptions>
+      <CompileAs>Default</CompileAs>
+      <PreprocessToFile>false</PreprocessToFile>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <AdditionalOptions>/ignore:4006 /ignore:4221 /ignore:4204 /ignore:4217</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;BUILD_WINDOWS;HAVE_LIBC;GLEW_STATIC;SDL_HAPTIC_DISABLED;SDL_JOYSTICK_DISABLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <ProgramDataBaseFileName>$(OutDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <AdditionalOptions>/bigobj /wd4503 %(AdditionalOptions)</AdditionalOptions>
+      <CompileAs>Default</CompileAs>
+      <PreprocessToFile>false</PreprocessToFile>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <AdditionalOptions>/ignore:4006 /ignore:4221 /ignore:4204 /ignore:4217</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
