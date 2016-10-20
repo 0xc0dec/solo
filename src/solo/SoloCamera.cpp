@@ -185,7 +185,7 @@ auto Camera::getInvViewProjectionMatrix() -> const TransformMatrix&
 }
 
 
-void Camera::apply()
+void Camera::apply() const
 {
     if (renderTarget)
         renderTarget->bind();
@@ -210,7 +210,7 @@ void Camera::apply()
 }
 
 
-void Camera::finish()
+void Camera::finish() const
 {
     if (renderTarget)
         renderTarget->unbind();

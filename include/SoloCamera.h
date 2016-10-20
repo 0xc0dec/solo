@@ -44,8 +44,8 @@ namespace solo
         void init() override final;
         void terminate() override final;
 
-        void apply();
-        void finish();
+        void apply() const;
+        void finish() const;
 
         auto getRenderTags() -> uint32_t&;
 
