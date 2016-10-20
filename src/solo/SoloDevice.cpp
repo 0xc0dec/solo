@@ -33,7 +33,7 @@ using namespace solo;
 
 
 // Made as a singleton for the sake of convenience.
-// Instanticated when run() is called and resets when it exists
+// Instantiated when run() is called and resets when it exists
 uptr<Device> Device::instance = nullptr;
 
 
