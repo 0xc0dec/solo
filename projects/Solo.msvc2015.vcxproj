@@ -70,9 +70,11 @@
     <ClInclude Include="..\src\solo\platform\bullet\SoloBulletCommon.h" />
     <ClInclude Include="..\src\solo\platform\bullet\SoloBulletPhysics.h" />
     <ClInclude Include="..\src\solo\platform\bullet\SoloBulletRigidBody.h" />
+    <ClInclude Include="..\src\solo\platform\null\SoloNullCamera.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullDevice.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullFileSystem.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullRenderer.h" />
+    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLCamera.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLPrefabShaders.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLRenderer.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloSDLOpenGLDevice.h" />
@@ -87,6 +89,7 @@
     <ClCompile Include="..\src\solo\platform\bullet\SoloBulletBoxCollider.cpp" />
     <ClCompile Include="..\src\solo\platform\bullet\SoloBulletPhysics.cpp" />
     <ClCompile Include="..\src\solo\platform\bullet\SoloBulletRigidBody.cpp" />
+    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLCamera.cpp" />
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLPrefabShaders.cpp" />
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLRenderer.cpp" />
     <ClCompile Include="..\src\solo\platform\opengl\SoloSDLOpenGLDevice.cpp" />

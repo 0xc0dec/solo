@@ -35,7 +35,7 @@ namespace solo
     class OpenGLRenderer final: public Renderer
     {
     public:
-        OpenGLRenderer(Device* device);
+        explicit OpenGLRenderer(Device* device);
         ~OpenGLRenderer();
 
         void beginFrame() override final {}

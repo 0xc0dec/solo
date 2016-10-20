@@ -24,6 +24,9 @@
 #include "SoloFrameBuffer.h"
 #include "SoloRadian.h"
 #include "SoloDegree.h"
+#include "SoloScene.h"
+#include "platform/opengl/SoloOpenGLCamera.h"
+#include "platform/null/SoloNullCamera.h"
 
 using namespace solo;
 
@@ -33,6 +36,18 @@ const uint32_t DirtyBitProjection = 2;
 const uint32_t DirtyBitViewProjection = 4;
 const uint32_t DirtyBitInvView = 8;
 const uint32_t DirtyBitInvViewProjection = 16;
+
+
+auto Camera::create(const Node& node) -> sptr<Camera>
+{
+    switch (Device::get()->getSetup().mode)
+    {
+        case DeviceMode::OpenGL:
+            return std::make_shared<OpenGLCamera>(node);
+        default:
+            return std::make_shared<NullCamera>(node);
+    }
+}
 
 
 Camera::Camera(const Node& node):

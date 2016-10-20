@@ -36,10 +36,10 @@ namespace solo
     class Device;
     struct Radian;
 
-    class Camera final: public ComponentBase<Camera>, protected TransformCallback
+    class Camera: public ComponentBase<Camera>, protected TransformCallback
     {
     public:
-        explicit Camera(const Node& node);
+        static auto create(const Node& node) -> sptr<Camera>;
 
         void init() override final;
         void terminate() override final;
@@ -87,6 +87,8 @@ namespace solo
         auto getInvViewProjectionMatrix() -> const TransformMatrix&;
 
     protected:
+        explicit Camera(const Node& node);
+
         void onTransformChanged(const Transform*, uint32_t) override;
 
         uint32_t dirtyFlags = ~0;
@@ -98,9 +100,8 @@ namespace solo
         Transform* transform = nullptr;
         sptr<FrameBuffer> renderTarget = nullptr;
 
-        bool ortho = false;
-
         Vector4 viewport;
+        bool ortho = false;
         bool viewportSet = false;
 
         Vector4 clearColor{ 0, 0, 0, 1 };
@@ -117,6 +118,15 @@ namespace solo
         TransformMatrix invViewMatrix;
         TransformMatrix invViewProjectionMatrix;
     };
+
+    template <>
+    template <class... Args>
+    auto NodeHelper<Camera>::addComponent(Scene* scene, uint32_t nodeId, Args&&... args) -> Camera*
+    {
+        auto body = std::shared_ptr<Camera>(Camera::create(Node(scene, nodeId), std::forward<Args>(args)...));
+        scene->addComponent(nodeId, body);
+        return body.get();
+    }
 
     inline void Camera::setClearColor(float r, float g, float b, float a)
     {

@@ -25,8 +25,6 @@
 
 namespace solo
 {
-    struct SpecificDefaultComponent;
-
     // A convenient wrapper for working with components. There's no real "Node" in the engine
     class Node final
     {
@@ -85,19 +83,19 @@ namespace solo
     }
 
     template <typename T, typename... Args>
-    inline auto Node::addComponent(Scene* scene, uint32_t nodeId, Args&&... args) -> T*
+    auto Node::addComponent(Scene* scene, uint32_t nodeId, Args&&... args) -> T*
     {
         return NodeHelper<T>::addComponent(scene, nodeId, std::forward<Args>(args)...);
     }
 
     template <typename T, typename... Args>
-    inline auto Node::addComponent(Args&&... args) -> T*
+    auto Node::addComponent(Args&&... args) -> T*
     {
         return addComponent<T>(scene, id, std::forward<Args>(args)...);
     }
 
     template <typename T>
-    inline auto Node::findComponent(Scene* scene, uint32_t nodeId) -> T*
+    auto Node::findComponent(Scene* scene, uint32_t nodeId) -> T*
     {
         auto typeId = T::getId();
         auto cmp = scene->findComponent(nodeId, typeId);
@@ -105,19 +103,19 @@ namespace solo
     }
 
     template <typename T>
-    inline auto Node::findComponent() const -> T*
+    auto Node::findComponent() const -> T*
     {
         return findComponent<T>(scene, id);
     }
 
     template <typename T>
-    inline void Node::removeComponent(Scene* scene, uint32_t nodeId)
+    void Node::removeComponent(Scene* scene, uint32_t nodeId)
     {
         scene->removeComponent(nodeId, T::getId());
     }
 
     template <typename T>
-    inline void Node::removeComponent()
+    void Node::removeComponent()
     {
         removeComponent<T>(scene, id);
     }

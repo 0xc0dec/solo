@@ -110,13 +110,13 @@ namespace solo
     };
 
     template <class T>
-    inline auto ComponentBase<T>::getId() -> uint32_t
+    auto ComponentBase<T>::getId() -> uint32_t
     {
         return ComponentTypeId::get<T>();
     }
 
     template <class T>
-    inline auto ComponentBase<T>::getTypeId() -> uint32_t
+    auto ComponentBase<T>::getTypeId() -> uint32_t
     {
         return getId();
     }
