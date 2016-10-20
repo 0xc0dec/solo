@@ -89,13 +89,16 @@ namespace solo
     protected:
         explicit Camera(const Node& node);
 
+        virtual void applyViewport(float x, float y, float width, float height) const = 0;
+        virtual void applyDepthState(bool test, bool write) const = 0;
+        virtual void clear(bool color, bool depth, float r, float g, float b, float a) const = 0;
+
         void onTransformChanged(const Transform*, uint32_t) override;
 
         uint32_t dirtyFlags = ~0;
         uint32_t renderTags = ~0;
 
         Device* device;
-        Renderer* renderer;
 
         Transform* transform = nullptr;
         sptr<FrameBuffer> renderTarget = nullptr;
