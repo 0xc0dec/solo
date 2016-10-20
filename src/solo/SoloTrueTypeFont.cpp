@@ -80,5 +80,5 @@ auto Font::create(uint8_t* fontData, uint32_t size, uint32_t atlasWidth, uint32_
     uint32_t firstChar, uint32_t charCount, uint32_t oversampleX, uint32_t oversampleY) -> sptr<Font>
 {
     // TODO if constructors throws...
-    return std::unique_ptr<Font>(new TrueTypeFont(fontData, size, atlasWidth, atlasHeight, firstChar, charCount, oversampleX, oversampleY));
+    return std::make_unique<TrueTypeFont>(fontData, size, atlasWidth, atlasHeight, firstChar, charCount, oversampleX, oversampleY);
 }
