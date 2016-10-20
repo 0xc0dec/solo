@@ -51,9 +51,6 @@ namespace solo
     class VertexBufferLayout final
     {
     public:
-        VertexBufferLayout() {}
-        ~VertexBufferLayout() {}
-
         void add(VertexBufferLayoutSemantics semantics, uint32_t size);
 
         auto getElementCount() const -> uint32_t;
