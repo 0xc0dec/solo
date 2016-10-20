@@ -54,11 +54,11 @@
 #endif
 
 #ifdef SL_ERR_CHECK
-#   define SL_DBG_BLOCK(code) SL_MACRO_BLOCK(code)
+#   define SL_BLOCK(code) SL_MACRO_BLOCK(code)
 #   define SL_ERR(...) SL_MACRO_BLOCK(throw EngineException(__VA_ARGS__))
 #   define SL_ERR_IF(condition, ...) SL_MACRO_BLOCK(if (condition) throw EngineException(__VA_ARGS__))
 #else
-#   define SL_DBG_BLOCK(code) SL_EMPTY_MACRO_BLOCK()
+#   define SL_BLOCK(code) SL_EMPTY_MACRO_BLOCK()
 #   define SL_ERR(...) SL_EMPTY_MACRO_BLOCK()
 #   define SL_ERR_IF(condition, ...) SL_EMPTY_MACRO_BLOCK()
 #endif
