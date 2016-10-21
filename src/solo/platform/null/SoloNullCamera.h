@@ -10,5 +10,10 @@ namespace solo
         explicit NullCamera(const Node& node): Camera(node)
         {
         }
+
+    protected:
+        void applyImpl() const override 
+        {
+        }
     };
 }
