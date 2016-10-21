@@ -220,6 +220,18 @@
     <ClInclude Include="..\src\solo\platform\null\SoloNullCamera.h">
       <Filter>src\platform\null</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLMaterial.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\null\SoloNullMaterial.h">
+      <Filter>src\platform\null</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLMaterialParameter.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\null\SoloNullMaterialParameter.h">
+      <Filter>src\platform\null</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\SoloScene.cpp">
@@ -370,6 +382,12 @@
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLCamera.cpp">
+      <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLMaterial.cpp">
+      <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLMaterialParameter.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
   </ItemGroup>

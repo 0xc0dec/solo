@@ -23,18 +23,25 @@
 #include "SoloTexture.h"
 #include "SoloDevice.h"
 #include "SoloMaterialParameter.h"
+#include "platform/opengl/SoloOpenGLMaterial.h"
+#include "platform/null/SoloNullMaterial.h"
 
 using namespace solo;
 
 
 auto Material::create(sptr<Effect> effect) -> sptr<Material>
 {
-    return std::shared_ptr<Material>(new Material(effect));
+    switch (Device::get()->getSetup().mode)
+    {
+        case DeviceMode::OpenGL:
+            return std::make_shared<OpenGLMaterial>(effect);
+        default:
+            return std::make_shared<NullMaterial>(effect);
+    }
 }
 
 
 Material::Material(sptr<Effect> effect):
-    renderer(Device::get()->getRenderer()),
     effect(effect)
 {
 } 
@@ -44,7 +51,7 @@ void Material::setParameter(const std::string& name, MaterialParameterType type,
 {
     auto where = parameters.find(name);
     if (where == parameters.end() || where->second->getType() != type)
-        parameters[name] = MaterialParameter::create(renderer, effect.get(), type, name.c_str());
+        parameters[name] = MaterialParameter::create(effect.get(), type, name.c_str());
     parameters.at(name)->setValue(value);
 }
 
@@ -179,16 +186,4 @@ void Material::apply(const RenderContext& context)
         for (auto& p : parameters)
             p.second->apply(context);
     }
-}
-
-
-void Material::applyState()
-{
-    renderer->setFaceCull(faceCull);
-    renderer->setPolygonMode(polygonMode);
-    renderer->setDepthTest(depthTest);
-    renderer->setDepthWrite(depthWrite);
-    renderer->setDepthFunction(depthFunc);
-    renderer->setBlend(transparent);
-    renderer->setBlendFactor(srcBlendFactor, dstBlendFactor);
 }

@@ -21,14 +21,12 @@
 #pragma once
 
 #include "SoloCommon.h"
-#include "SoloRenderer.h"
 
 
 namespace solo
 {
     class Effect;
     struct RenderContext;
-    enum class UniformType;
 
     enum class MaterialParameterType
     {
@@ -58,10 +56,10 @@ namespace solo
     class MaterialParameter
     {
     public:
-        static auto create(Renderer* renderer, Effect* effect, MaterialParameterType type, const char* name) -> sptr<MaterialParameter>;
+        static auto create(Effect* effect, MaterialParameterType type, const char* name) -> sptr<MaterialParameter>;
 
         SL_DISABLE_COPY_AND_MOVE(MaterialParameter)
-        virtual ~MaterialParameter();
+        virtual ~MaterialParameter() {}
 
         auto getType() const -> MaterialParameterType;
 
@@ -69,12 +67,13 @@ namespace solo
         virtual void apply(const RenderContext& context) = 0;
 
     protected:
-        explicit MaterialParameter(Renderer* renderer, Effect* effect, MaterialParameterType type, const char* name);
-
-        static auto getUniformType(MaterialParameterType type) -> UniformType;
+        MaterialParameter(MaterialParameterType type);
 
         MaterialParameterType type;
-        UniformHandle handle = EmptyUniformHandle;
-        Renderer* renderer = nullptr;
     };
+
+    inline auto MaterialParameter::getType() const -> MaterialParameterType
+    {
+        return type;
+    }
 }

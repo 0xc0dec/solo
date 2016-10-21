@@ -38,13 +38,13 @@ namespace solo
     struct RenderContext;
     enum class MaterialParameterType;
 
-    class Material final
+    class Material
     {
     public:
         static auto create(sptr<Effect> effect) -> sptr<Material>; 
 
         SL_DISABLE_COPY_AND_MOVE(Material)
-        ~Material() {}
+        virtual ~Material() {}
 
         void setFloatParameter(const std::string& name, float value);
         void setFloatArrayParameter(const std::string& name, const std::vector<float>& value);
@@ -93,13 +93,12 @@ namespace solo
         auto getDepthFunction() const -> DepthFunction;
         void setDepthFunction(DepthFunction func);
 
-    private:
+    protected:
         explicit Material(sptr<Effect> effect);
 
-        void applyState();
+        virtual void applyState() = 0;
         void setParameter(const std::string& name, MaterialParameterType type, const void* value);
 
-        Renderer* renderer;
         sptr<Effect> effect;
 
         std::unordered_map<std::string, sptr<MaterialParameter>> parameters;

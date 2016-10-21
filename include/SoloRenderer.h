@@ -211,17 +211,6 @@ namespace solo
         virtual void destroyUniform(const UniformHandle& handle) = 0;
         virtual void setUniform(const UniformHandle& handle, const void* value, uint32_t count) = 0;
 
-        virtual void setFaceCull(FaceCull cull) = 0;
-
-        virtual void setPolygonMode(PolygonMode mode) = 0;
-
-        virtual void setBlend(bool enabled) = 0;
-        virtual void setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor) = 0;
-
-        virtual void setDepthWrite(bool enabled) = 0;
-        virtual void setDepthTest(bool enabled) = 0;
-        virtual void setDepthFunction(DepthFunction func) = 0;
-
         virtual void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
 
         virtual void clear(bool color, bool depth, float r, float g, float b, float a) = 0;

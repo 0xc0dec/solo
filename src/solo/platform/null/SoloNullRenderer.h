@@ -73,17 +73,6 @@ namespace solo
         void destroyUniform(const UniformHandle& handle) override final {}
         void setUniform(const UniformHandle& handle, const void* value, uint32_t count) override final {}
 
-        void setFaceCull(FaceCull cull) override final {}
-
-        void setPolygonMode(PolygonMode mode) override final {}
-
-        void setBlend(bool enabled) override final {}
-        void setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor) override final {}
-
-        void setDepthWrite(bool enabled) override final {}
-        void setDepthTest(bool enabled) override final {}
-        void setDepthFunction(DepthFunction func) override final {}
-
         void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) override final {}
 
         void clear(bool color, bool depth, float r, float g, float b, float a) override final {}
