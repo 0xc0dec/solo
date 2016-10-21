@@ -53,7 +53,6 @@ auto Camera::create(const Node& node) -> sptr<Camera>
 Camera::Camera(const Node& node):
     ComponentBase(node),
     device(Device::get()),
-    renderer(Device::get()->getRenderer()),
     fov(Degree(60))
 {
     renderQueue = KnownRenderQueues::Camera;
@@ -84,9 +83,7 @@ void Camera::setViewport(float left, float top, float width, float height)
 
 auto Camera::getViewport() const -> Vector4
 {
-    if (viewportSet)
-        return viewport;
-    return Vector4();
+    return viewportSet ? viewport : Vector4();
 }
 
 
@@ -204,24 +201,7 @@ void Camera::apply() const
 {
     if (renderTarget)
         renderTarget->bind();
-
-    if (viewportSet)
-    {
-        renderer->setViewport(
-            static_cast<uint32_t>(viewport.x),
-            static_cast<uint32_t>(viewport.y),
-            static_cast<uint32_t>(viewport.z),
-            static_cast<uint32_t>(viewport.w));
-    }
-    else
-    {
-        auto size = device->getCanvasSize();
-        renderer->setViewport(0, 0, static_cast<uint32_t>(size.x), static_cast<uint32_t>(size.y));
-    }
-
-    renderer->setDepthWrite(true);
-    renderer->setDepthTest(true);
-    renderer->clear(true, true, clearColor.x, clearColor.y, clearColor.z, clearColor.w);
+    applyImpl();
 }
 
 

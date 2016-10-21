@@ -89,13 +89,14 @@ namespace solo
     protected:
         explicit Camera(const Node& node);
 
+        virtual void applyImpl() const = 0;
+
         void onTransformChanged(const Transform*, uint32_t) override;
 
         uint32_t dirtyFlags = ~0;
         uint32_t renderTags = ~0;
 
         Device* device;
-        Renderer* renderer;
 
         Transform* transform = nullptr;
         sptr<FrameBuffer> renderTarget = nullptr;
