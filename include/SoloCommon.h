@@ -92,9 +92,9 @@
         fields \
     };
 
-#define SL_FLUENT_DTO_FIELD(fieldType, fieldName, setterMethodName, defaultValue) \
+#define SL_FLUENT_DTO_FIELD(fieldType, paramType, fieldName, setterMethodName, defaultValue) \
     fieldType fieldName defaultValue; \
-    auto setterMethodName(fieldType fieldName) -> DtoType& \
+    auto setterMethodName(paramType fieldName) -> DtoType& \
     { \
         this->fieldName = fieldName; \
         return *this; \
