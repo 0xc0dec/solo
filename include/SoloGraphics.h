@@ -25,8 +25,6 @@
 
 namespace solo
 {
-    class Renderer;
-    class Mesh;
     class Material;
     class FrameBuffer;
     class DeviceToken;
@@ -35,14 +33,14 @@ namespace solo
     class Graphics
     {
     public:
+        static auto create(Device* device, const DeviceToken& token) -> sptr<Graphics>;
+
         SL_DISABLE_COPY_AND_MOVE(Graphics)
-        Graphics(Device* device, const DeviceToken&);
+        virtual ~Graphics() {}
 
-        void blit(Material* material, FrameBuffer* target);
+        virtual void blit(Material* material, FrameBuffer* target) = 0;
 
-    private:
-        Device* device;
-        Renderer* renderer;
-        sptr<Mesh> quadMesh;
+    protected:
+        explicit Graphics(const DeviceToken&) {}
     };
 }

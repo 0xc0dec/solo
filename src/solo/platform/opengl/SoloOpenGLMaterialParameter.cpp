@@ -140,7 +140,7 @@ void OpenGLMaterialParameter::setValue(const void* value)
             break;
 
         default:
-            SL_ERR("Unknown material parameter type");
+            break;
     }
 }
 
