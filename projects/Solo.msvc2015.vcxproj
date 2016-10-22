@@ -74,6 +74,7 @@
     <ClInclude Include="..\src\solo\platform\null\SoloNullCubeTexture.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullDevice.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullFileSystem.h" />
+    <ClInclude Include="..\src\solo\platform\null\SoloNullFrameBuffer.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullGraphics.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullMaterial.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullMaterialParameter.h" />
@@ -81,6 +82,7 @@
     <ClInclude Include="..\src\solo\platform\null\SoloNullRenderer.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLCamera.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLCubeTexture.h" />
+    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLFrameBuffer.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLGraphics.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLMaterial.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLMaterialParameter.h" />
@@ -99,6 +101,7 @@
     <ClCompile Include="..\src\solo\platform\bullet\SoloBulletBoxCollider.cpp" />
     <ClCompile Include="..\src\solo\platform\bullet\SoloBulletPhysics.cpp" />
     <ClCompile Include="..\src\solo\platform\bullet\SoloBulletRigidBody.cpp" />
+    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLFrameBuffer.cpp" />
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLRectTexture.cpp" />
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLCamera.cpp" />
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLCubeTexture.cpp" />
@@ -185,13 +188,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\1.6.16\include;$(ProjectDir)..\vendor\zlib\1.2.8\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(ProjectDir)..\src\solo\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
-    <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
+    <IntDir>$(ProjectDir)..\build\tmp\Solo\</IntDir>
     <LibraryPath>$(ProjectDir)..\build\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\1.6.16\include;$(ProjectDir)..\vendor\zlib\1.2.8\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\async++\include;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(ProjectDir)..\src\solo\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
-    <IntDir>$(ProjectDir)..\build\tmp\solo\</IntDir>
+    <IntDir>$(ProjectDir)..\build\tmp\Solo\</IntDir>
     <LibraryPath>$(ProjectDir)..\build\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

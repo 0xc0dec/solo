@@ -34,7 +34,7 @@ auto CubeTexture::create() -> sptr<CubeTexture>
         case DeviceMode::OpenGL:
             return std::make_shared<OpenGLCubeTexture>(device);
         default:
-            return std::make_shared<NullCubeTexture>(device);
+            return std::make_shared<NullCubeTexture>();
     }
 }
 

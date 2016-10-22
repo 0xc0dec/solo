@@ -30,26 +30,24 @@ namespace solo
     class Device;
     class RectTexture;
 
-    class FrameBuffer final
+    class FrameBuffer
     {
     public:
         static auto create() -> sptr<FrameBuffer>;
 
         SL_DISABLE_COPY_AND_MOVE(FrameBuffer)
-        ~FrameBuffer();
+        virtual ~FrameBuffer() {}
 
-        void bind();
-        void unbind();
+        virtual void bind() = 0;
+        virtual void unbind() = 0;
 
-        void setAttachments(const std::vector<sptr<RectTexture>>& attachments);
+        virtual void setAttachments(const std::vector<sptr<RectTexture>>& attachments) = 0;
 
         auto getSize() const -> Vector2;
 
-    private:
-        explicit FrameBuffer(Device* device);
+    protected:
+        FrameBuffer() {}
 
-        Renderer* renderer;
-        FrameBufferHandle handle;
         Vector2 size;
     };
 

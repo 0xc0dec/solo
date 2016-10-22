@@ -17,8 +17,15 @@ namespace solo
         void generateMipmaps() override final;
         void setData(TextureFormat format, const uint8_t* data, uint32_t width, uint32_t height) override final;
 
+        auto getHandle() const -> TextureHandle;
+
     private:
         OpenGLRenderer* renderer = nullptr;
         TextureHandle handle = EmptyTextureHandle;
     };
+
+    inline auto OpenGLRectTexture::getHandle() const -> TextureHandle
+    {
+        return handle;
+    }
 }
