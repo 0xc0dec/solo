@@ -28,6 +28,7 @@
 
 namespace solo
 {
+    class Device;
     class Component;
     class Node;
     class DeviceToken;
@@ -36,8 +37,11 @@ namespace solo
     {
     public:
         SL_DISABLE_COPY_AND_MOVE(Scene)
-        explicit Scene(const DeviceToken&) {}
+
+        explicit Scene(Device* device, const DeviceToken&);
         ~Scene() {}
+
+        auto getDevice() const -> Device*;
 
         auto createNode() -> sptr<Node>;
 
@@ -58,6 +62,8 @@ namespace solo
         void updateComponents();
         void rebuildComponentsToUpdate();
 
+        Device* device = nullptr;
+
         uint32_t nodeCounter = 0;
         bool cameraCacheDirty = true;
         bool componentsDirty = true;
@@ -69,4 +75,9 @@ namespace solo
         AllComponentMap components;
         std::vector<sptr<Component>> componentsToUpdate;
     };
+
+    inline auto Scene::getDevice() const -> Device*
+    {
+        return device;
+    }
 }

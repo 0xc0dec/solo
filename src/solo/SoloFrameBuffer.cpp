@@ -28,12 +28,12 @@ using namespace solo;
 
 auto FrameBuffer::create() -> sptr<FrameBuffer>
 {
-    return std::shared_ptr<FrameBuffer>(new FrameBuffer());
+    return std::shared_ptr<FrameBuffer>(new FrameBuffer(Device::get()));
 }
 
 
-FrameBuffer::FrameBuffer():
-    renderer(Device::get()->getRenderer())
+FrameBuffer::FrameBuffer(Device* device):
+    renderer(device->getRenderer())
 {
     handle = renderer->createFrameBuffer();
 }

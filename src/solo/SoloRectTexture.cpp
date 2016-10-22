@@ -19,13 +19,20 @@
 */
 
 #include "SoloRectTexture.h"
+#include "SoloDevice.h"
 
 using namespace solo;
 
 
 sptr<RectTexture> RectTexture::create()
 {
-    return std::make_shared<RectTexture>();
+    return std::shared_ptr<RectTexture>(new RectTexture(Device::get()));
+}
+
+
+RectTexture::RectTexture(Device* device):
+    Texture(device)
+{
 }
 
 

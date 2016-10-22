@@ -27,6 +27,12 @@
 using namespace solo;
 
 
+Scene::Scene(Device* device, const DeviceToken&):
+    device(device)
+{
+}
+
+
 auto Scene::createNode() -> sptr<Node>
 {
     auto node = std::make_shared<Node>(this, nodeCounter++);

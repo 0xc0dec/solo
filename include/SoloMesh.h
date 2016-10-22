@@ -30,6 +30,7 @@
 namespace solo
 {
     class Effect;
+    class Device;
 
     enum class MeshPrefab
     {
@@ -71,9 +72,9 @@ namespace solo
         auto getPrimitiveType() const -> PrimitiveType;
 
     private:
-        Mesh();
-        explicit Mesh(MeshPrefab prefab);
-        explicit Mesh(MeshData* data);
+        Mesh(Device* device);
+        explicit Mesh(Device* device, MeshPrefab prefab);
+        explicit Mesh(Device* device, MeshData* data);
 
         void initQuadMesh();
         void initCubeMesh();

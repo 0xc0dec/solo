@@ -211,8 +211,6 @@ namespace solo
         virtual void destroyUniform(const UniformHandle& handle) = 0;
         virtual void setUniform(const UniformHandle& handle, const void* value, uint32_t count) = 0;
 
-        virtual void clear(bool color, bool depth, float r, float g, float b, float a) = 0;
-
         virtual void drawIndexed(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle,
             const IndexBufferHandle& indexBufferHandle) = 0;
         virtual void draw(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle, uint32_t vertexCount) = 0;

@@ -25,33 +25,27 @@
 using namespace solo;
 
 
-Effect::Effect(const std::string& vsSrc, const std::string& fsSrc):
-    renderer(Device::get()->getRenderer())
-{
-    handle = renderer->createProgram(vsSrc.c_str(), fsSrc.c_str());
-}
-
-
 auto Effect::create(const std::string& vsSrc, const std::string& fsSrc) -> sptr<Effect>
 {
-    return std::shared_ptr<Effect>(new Effect(vsSrc, fsSrc));
+    return std::shared_ptr<Effect>(new Effect(Device::get(), vsSrc, fsSrc));
 }
 
 
 // TODO not an elegant one. Wrote this instead of an "EffectRepository" to avoid too many "entities"
 auto Effect::create(EffectPrefab prefab) -> sptr<Effect>
 {
-    switch (Device::get()->getSetup().mode)
+    auto device = Device::get();
+    switch (device->getSetup().mode)
     {
         case DeviceMode::Null:
-            return std::shared_ptr<Effect>(new Effect("", ""));
+            return std::shared_ptr<Effect>(new Effect(device, "", ""));
         case DeviceMode::OpenGL:
             switch (prefab)
             {
                 case EffectPrefab::Skybox:
-                    return std::shared_ptr<Effect>(new Effect(OpenGLPrefabShaders::Vertex::skybox, OpenGLPrefabShaders::Fragment::skybox));
+                    return std::shared_ptr<Effect>(new Effect(device, OpenGLPrefabShaders::Vertex::skybox, OpenGLPrefabShaders::Fragment::skybox));
                 case EffectPrefab::Font:
-                    return std::shared_ptr<Effect>(new Effect(OpenGLPrefabShaders::Vertex::simple, OpenGLPrefabShaders::Fragment::font));
+                    return std::shared_ptr<Effect>(new Effect(device, OpenGLPrefabShaders::Vertex::simple, OpenGLPrefabShaders::Fragment::font));
                 default:
                     SL_ERR("Unknown effect prefab");
                     break;
@@ -62,6 +56,13 @@ auto Effect::create(EffectPrefab prefab) -> sptr<Effect>
             break;
     }
     return nullptr;
+}
+
+
+Effect::Effect(Device* device, const std::string& vsSrc, const std::string& fsSrc):
+    renderer(device->getRenderer())
+{
+    handle = renderer->createProgram(vsSrc.c_str(), fsSrc.c_str());
 }
 
 

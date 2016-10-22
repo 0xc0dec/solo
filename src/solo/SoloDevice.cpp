@@ -102,9 +102,9 @@ void Device::init()
     renderer = Renderer::create(this, token);
     physics = Physics::create(this, token);
     fs = FileSystem::create(this, token);
-    assetLoader = std::make_unique<AssetLoader>(token);
+    assetLoader = std::make_unique<AssetLoader>(this, token);
     graphics = Graphics::create(this, token);
-    scene = std::make_unique<Scene>(token);
+    scene = std::make_unique<Scene>(this, token);
 }
 
 

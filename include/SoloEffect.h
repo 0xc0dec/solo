@@ -26,6 +26,8 @@
 
 namespace solo
 {
+    class Device;
+
     enum class EffectPrefab
     {
         Skybox,
@@ -46,7 +48,7 @@ namespace solo
         void apply();
 
     private:
-        Effect(const std::string& vsSrc, const std::string& fsSrc);
+        Effect(Device* device, const std::string& vsSrc, const std::string& fsSrc);
 
         Renderer* renderer;
         ProgramHandle handle;

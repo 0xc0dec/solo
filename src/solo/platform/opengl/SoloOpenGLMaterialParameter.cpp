@@ -103,11 +103,11 @@ private:
 };
 
 
-OpenGLMaterialParameter::OpenGLMaterialParameter(Effect* effect, MaterialParameterType type, const char* name):
+OpenGLMaterialParameter::OpenGLMaterialParameter(Renderer* renderer, Effect* effect, MaterialParameterType type, const char* name):
     MaterialParameter(type)
 {
-    renderer = dynamic_cast<OpenGLRenderer*>(Device::get()->getRenderer());
-    handle = renderer->createUniform(name, getUniformType(type), effect->getHandle());
+    this->renderer = dynamic_cast<OpenGLRenderer*>(renderer);
+    handle = this->renderer->createUniform(name, getUniformType(type), effect->getHandle());
 }
 
 

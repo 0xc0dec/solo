@@ -96,7 +96,7 @@ namespace solo
 
         void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height);
 
-        void clear(bool color, bool depth, float r, float g, float b, float a) override final;
+        void clear(bool color, bool depth, float r, float g, float b, float a);
 
         void drawIndexed(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle,
             const IndexBufferHandle& indexBufferHandle) override final;

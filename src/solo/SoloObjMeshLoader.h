@@ -25,10 +25,18 @@
 
 namespace solo
 {
+    class Device;
+    class FileSystem;
+
     class ObjMeshLoader final: public MeshLoader
     {
     public:
-        bool isLoadable(const std::string& path) override final;
-        auto loadData(const std::string& path) -> sptr<MeshData> override final;
+        explicit ObjMeshLoader(Device* device);
+
+        bool isLoadable(const std::string& path) const override final;
+        auto loadData(const std::string& path) const -> sptr<MeshData> override final;
+
+    private:
+        FileSystem* fs = nullptr;
     };
 }

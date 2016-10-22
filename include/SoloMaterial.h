@@ -32,6 +32,7 @@
 
 namespace solo
 {
+    class Device;
     class Effect;
     class Texture;
     class MaterialParameter;
@@ -94,11 +95,12 @@ namespace solo
         void setDepthFunction(DepthFunction func);
 
     protected:
-        explicit Material(sptr<Effect> effect);
+        explicit Material(Device* device, sptr<Effect> effect);
 
         virtual void applyState() = 0;
         void setParameter(const std::string& name, MaterialParameterType type, const void* value);
 
+        Device* device = nullptr;
         sptr<Effect> effect;
 
         std::unordered_map<std::string, sptr<MaterialParameter>> parameters;

@@ -57,12 +57,12 @@ private:
 };
 
 
-BulletRigidBody::BulletRigidBody(const Node& node, const RigidBodyConstructionParameters& parameters) :
+BulletRigidBody::BulletRigidBody(const Node& node, const RigidBodyConstructionParameters& parameters):
     RigidBody(node),
     mass(parameters.mass),
     shape(nullptr)
 {
-    world = static_cast<BulletPhysics*>(Device::get()->getPhysics())->getWorld();
+    world = static_cast<BulletPhysics*>(node.getScene()->getDevice()->getPhysics())->getWorld();
     transformCmp = node.findComponent<Transform>();
     motionState = std::make_unique<MotionState>(transformCmp);
 

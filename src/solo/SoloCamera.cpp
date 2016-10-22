@@ -40,7 +40,7 @@ const uint32_t DirtyBitInvViewProjection = 16;
 
 auto Camera::create(const Node& node) -> sptr<Camera>
 {
-    switch (Device::get()->getSetup().mode)
+    switch (node.getScene()->getDevice()->getSetup().mode)
     {
         case DeviceMode::OpenGL:
             return std::make_shared<OpenGLCamera>(node);
@@ -52,7 +52,7 @@ auto Camera::create(const Node& node) -> sptr<Camera>
 
 Camera::Camera(const Node& node):
     ComponentBase(node),
-    device(Device::get()),
+    device(node.getScene()->getDevice()),
     fov(Degree(60))
 {
     renderQueue = KnownRenderQueues::Camera;

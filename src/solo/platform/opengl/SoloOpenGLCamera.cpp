@@ -28,7 +28,7 @@ using namespace solo;
 OpenGLCamera::OpenGLCamera(const Node& node):
     Camera(node)
 {
-    renderer = dynamic_cast<OpenGLRenderer*>(Device::get()->getRenderer());
+    renderer = dynamic_cast<OpenGLRenderer*>(node.getScene()->getDevice()->getRenderer());
 }
 
 

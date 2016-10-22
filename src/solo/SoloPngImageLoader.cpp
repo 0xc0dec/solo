@@ -44,6 +44,12 @@ static void callback(png_structp png, png_bytep data, png_size_t length)
 }
 
 
+PngImageLoader::PngImageLoader(Device* device):
+    fs(device->getFileSystem())
+{
+}
+
+
 bool PngImageLoader::isLoadable(const std::string& path) const
 {
     return path.find(".png", path.size() - 5) != std::string::npos;
@@ -52,7 +58,7 @@ bool PngImageLoader::isLoadable(const std::string& path) const
 
 auto PngImageLoader::load(const std::string& path) -> sptr<Image>
 {
-    auto bytes = Device::get()->getFileSystem()->readBytes(path);
+    auto bytes = fs->readBytes(path);
     SL_ERR_IF(bytes.size() < 8 || png_sig_cmp(&bytes[0], 0, 8) != 0, SL_FMT("Failed to recognize file '", path, "' as PNG image"));
 
     auto png = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);

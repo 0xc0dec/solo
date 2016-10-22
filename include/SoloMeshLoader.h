@@ -31,10 +31,13 @@ namespace solo
     {
     public:
         SL_DISABLE_COPY_AND_MOVE(MeshLoader)
-        MeshLoader() {}
+        
         virtual ~MeshLoader() {}
 
-        virtual bool isLoadable(const std::string& path) = 0;
-        virtual auto loadData(const std::string& path) -> sptr<MeshData> = 0;
+        virtual bool isLoadable(const std::string& path) const = 0;
+        virtual auto loadData(const std::string& path) const -> sptr<MeshData> = 0;
+
+    protected:
+        MeshLoader() {}
     };
 }

@@ -19,17 +19,19 @@
 */
 
 #include "SoloCubeTexture.h"
+#include "SoloDevice.h"
 
 using namespace solo;
 
 
 auto CubeTexture::create() -> sptr<CubeTexture>
 {
-    return std::shared_ptr<CubeTexture>(new CubeTexture());
+    return std::shared_ptr<CubeTexture>(new CubeTexture(Device::get()));
 }
 
 
-CubeTexture::CubeTexture()
+CubeTexture::CubeTexture(Device* device):  
+    Texture(device)
 {
     rebuildFlags();
 }

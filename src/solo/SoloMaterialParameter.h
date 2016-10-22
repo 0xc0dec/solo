@@ -26,6 +26,7 @@
 namespace solo
 {
     class Effect;
+    class Device;
     struct RenderContext;
 
     enum class MaterialParameterType
@@ -56,7 +57,7 @@ namespace solo
     class MaterialParameter
     {
     public:
-        static auto create(Effect* effect, MaterialParameterType type, const char* name) -> sptr<MaterialParameter>;
+        static auto create(Device *device, Effect* effect, MaterialParameterType type, const char* name) -> sptr<MaterialParameter>;
 
         SL_DISABLE_COPY_AND_MOVE(MaterialParameter)
         virtual ~MaterialParameter() {}

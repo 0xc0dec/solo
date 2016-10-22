@@ -27,12 +27,13 @@
 namespace solo
 {
     class Texture;
+    class Renderer;
     class MaterialParameterValue;
 
     class OpenGLMaterialParameter final: public MaterialParameter
     {
     public:
-        OpenGLMaterialParameter(Effect* effect, MaterialParameterType type, const char* name);
+        OpenGLMaterialParameter(Renderer* renderer, Effect* effect, MaterialParameterType type, const char* name);
         ~OpenGLMaterialParameter();
 
         void setValue(const void* value) override final;

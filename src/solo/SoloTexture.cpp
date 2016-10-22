@@ -24,8 +24,8 @@
 using namespace solo;
 
 
-Texture::Texture() :
-    renderer(Device::get()->getRenderer())
+Texture::Texture(Device* device):
+    renderer(device->getRenderer())
 {
     handle = renderer->createTexture();
     rebuildFlags(); // yes, virtual call

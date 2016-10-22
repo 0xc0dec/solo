@@ -26,6 +26,8 @@
 
 namespace solo
 {
+    class Device;
+
     class RectTexture final: public Texture
     {
     public:
@@ -39,6 +41,8 @@ namespace solo
         auto getSize() const -> Vector2;
 
     private:
+        explicit RectTexture(Device* device);
+
         Vector2 size;
     };
 

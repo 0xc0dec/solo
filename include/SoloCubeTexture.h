@@ -25,6 +25,7 @@
 
 namespace solo
 {
+    class Device;
     enum class CubeTextureFace;
 
     class CubeTexture final: public Texture
@@ -42,7 +43,7 @@ namespace solo
         void setData(CubeTextureFace face, TextureFormat format, const uint8_t* data, uint32_t width, uint32_t height);
 
     protected:
-        CubeTexture();
+        explicit CubeTexture(Device* device);
 
         void rebuildFlags() override final;
 

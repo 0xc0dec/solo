@@ -28,6 +28,7 @@ namespace solo
 {
     class RectTexture;
     class CubeTexture;
+    class Device;
     enum class DeviceMode;
 
     enum class TextureWrapping
@@ -75,11 +76,11 @@ namespace solo
         auto getHandle() const -> TextureHandle;
 
     protected:
-        Texture();
+        explicit Texture(Device* device);
 
         virtual void rebuildFlags();
 
-        Renderer* renderer;
+        Renderer* renderer = nullptr;
         
         uint32_t flags = 0;
         TextureHandle handle = EmptyTextureHandle;

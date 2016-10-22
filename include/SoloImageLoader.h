@@ -31,6 +31,7 @@ namespace solo
     {
     public:
         SL_DISABLE_COPY_AND_MOVE(ImageLoader)
+        
         virtual ~ImageLoader() {}
 
         virtual bool isLoadable(const std::string& path) const = 0;

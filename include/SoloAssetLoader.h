@@ -29,6 +29,7 @@
 
 namespace solo
 {
+    class Device;
     class DeviceToken;
     class Mesh;
     class RectTexture;
@@ -71,8 +72,8 @@ namespace solo
     public:
         SL_DISABLE_COPY_AND_MOVE(AssetLoader)
 
-        explicit AssetLoader(const DeviceToken&);
-        ~AssetLoader();
+        explicit AssetLoader(Device* device, const DeviceToken&);
+        ~AssetLoader() {}
 
         auto loadRectTexture(const std::string& path) -> sptr<RectTexture>;
         auto loadRectTextureAsync(const std::string& path) -> sptr<AsyncHandle<RectTexture>>;
@@ -86,8 +87,8 @@ namespace solo
         void update();
 
     private:
-        std::vector<uptr<ImageLoader>> imageLoaders;
-        std::vector<uptr<MeshLoader>> meshLoaders;
+        std::vector<sptr<ImageLoader>> imageLoaders;
+        std::vector<sptr<MeshLoader>> meshLoaders;
 
         auto getMeshLoader(const std::string& path) -> MeshLoader*;
         auto getImageLoader(const std::string& path) -> ImageLoader*;

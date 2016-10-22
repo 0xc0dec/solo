@@ -31,17 +31,19 @@ using namespace solo;
 
 auto Material::create(sptr<Effect> effect) -> sptr<Material>
 {
-    switch (Device::get()->getSetup().mode)
+    auto device = Device::get();
+    switch (device->getSetup().mode)
     {
         case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLMaterial>(effect);
+            return std::make_shared<OpenGLMaterial>(device, effect);
         default:
-            return std::make_shared<NullMaterial>(effect);
+            return std::make_shared<NullMaterial>(device, effect);
     }
 }
 
 
-Material::Material(sptr<Effect> effect):
+Material::Material(Device* device, sptr<Effect> effect):
+    device(device),
     effect(effect)
 {
 } 
@@ -51,7 +53,7 @@ void Material::setParameter(const std::string& name, MaterialParameterType type,
 {
     auto where = parameters.find(name);
     if (where == parameters.end() || where->second->getType() != type)
-        parameters[name] = MaterialParameter::create(effect.get(), type, name.c_str());
+        parameters[name] = MaterialParameter::create(device, effect.get(), type, name.c_str());
     parameters.at(name)->setValue(value);
 }
 

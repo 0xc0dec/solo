@@ -27,6 +27,7 @@
 
 namespace solo
 {
+    class Device;
     class RectTexture;
 
     class FrameBuffer final
@@ -45,7 +46,7 @@ namespace solo
         auto getSize() const -> Vector2;
 
     private:
-        FrameBuffer();
+        explicit FrameBuffer(Device* device);
 
         Renderer* renderer;
         FrameBufferHandle handle;

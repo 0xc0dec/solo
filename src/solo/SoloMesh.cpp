@@ -29,30 +29,30 @@ using namespace solo;
 
 sptr<Mesh> Mesh::create()
 {
-    return sptr<Mesh>(new Mesh());
+    return sptr<Mesh>(new Mesh(Device::get()));
 }
 
 
 sptr<Mesh> Mesh::create(MeshPrefab prefab)
 {
-    return sptr<Mesh>(new Mesh(prefab));
+    return sptr<Mesh>(new Mesh(Device::get(), prefab));
 }
 
 
 sptr<Mesh> Mesh::create(MeshData* data)
 {
-    return sptr<Mesh>(new Mesh(data));
+    return sptr<Mesh>(new Mesh(Device::get(), data));
 }
 
 
-Mesh::Mesh():
-    renderer(Device::get()->getRenderer())
+Mesh::Mesh(Device* device):
+    renderer(device->getRenderer())
 {
 }
 
 
-Mesh::Mesh(MeshPrefab prefab):
-    renderer(Device::get()->getRenderer())
+Mesh::Mesh(Device* device, MeshPrefab prefab):
+    renderer(device->getRenderer())
 {
     switch (prefab)
     {
@@ -69,8 +69,8 @@ Mesh::Mesh(MeshPrefab prefab):
 }
 
 
-Mesh::Mesh(MeshData* data):
-    renderer(Device::get()->getRenderer())
+Mesh::Mesh(Device* device, MeshData* data):
+    renderer(device->getRenderer())
 {
     VertexBufferLayout positionLayout;
     positionLayout.add(VertexBufferLayoutSemantics::Position, 3);
