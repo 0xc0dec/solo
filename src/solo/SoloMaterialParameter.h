@@ -67,7 +67,7 @@ namespace solo
         virtual void apply(const RenderContext& context) = 0;
 
     protected:
-        MaterialParameter(MaterialParameterType type);
+        explicit MaterialParameter(MaterialParameterType type);
 
         MaterialParameterType type;
     };
