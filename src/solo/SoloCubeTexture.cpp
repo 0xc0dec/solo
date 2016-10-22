@@ -20,38 +20,28 @@
 
 #include "SoloCubeTexture.h"
 #include "SoloDevice.h"
+#include "platform/opengl/SoloOpenGLCubeTexture.h"
+#include "platform/null/SoloNullCubeTexture.h"
 
 using namespace solo;
 
 
 auto CubeTexture::create() -> sptr<CubeTexture>
 {
-    return std::shared_ptr<CubeTexture>(new CubeTexture(Device::get()));
+    auto device = Device::get();
+    switch (device->getSetup().mode)
+    {
+        case DeviceMode::OpenGL:
+            return std::make_shared<OpenGLCubeTexture>(device);
+        default:
+            return std::make_shared<NullCubeTexture>(device);
+    }
 }
 
 
-CubeTexture::CubeTexture(Device* device):  
-    Texture(device)
+CubeTexture::CubeTexture()
 {
     rebuildFlags();
-}
-
-
-void CubeTexture::bind()
-{
-    renderer->setCubeTexture(handle, flags, anisotropy);
-}
-
-
-void CubeTexture::generateMipmaps()
-{
-    renderer->generateCubeTextureMipmaps(handle);
-}
-
-
-void CubeTexture::setData(CubeTextureFace face, TextureFormat format, const uint8_t* data, uint32_t width, uint32_t height)
-{
-    renderer->updateCubeTexture(handle, face, format, width, height, data);
 }
 
 

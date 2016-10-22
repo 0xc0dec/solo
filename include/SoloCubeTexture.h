@@ -25,25 +25,22 @@
 
 namespace solo
 {
-    class Device;
     enum class CubeTextureFace;
 
-    class CubeTexture final: public Texture
+    class CubeTexture: public Texture
     {
     public:
         static auto create() -> sptr<CubeTexture>;
 
-        void bind() override final;
-        void generateMipmaps() override final;
+        virtual void setData(CubeTextureFace face, TextureFormat format, const uint8_t* data, uint32_t width, uint32_t height) = 0;
+
         void setWrapping(TextureWrapping wrapping) override final;
 
         auto getDepthWrapping() const -> TextureWrapping;
         void setDepthWrapping(TextureWrapping depthWrap);
 
-        void setData(CubeTextureFace face, TextureFormat format, const uint8_t* data, uint32_t width, uint32_t height);
-
     protected:
-        explicit CubeTexture(Device* device);
+        CubeTexture();
 
         void rebuildFlags() override final;
 

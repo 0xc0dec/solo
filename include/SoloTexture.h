@@ -28,8 +28,6 @@ namespace solo
 {
     class RectTexture;
     class CubeTexture;
-    class Device;
-    enum class DeviceMode;
 
     enum class TextureWrapping
     {
@@ -51,7 +49,7 @@ namespace solo
     {
     public:
         SL_DISABLE_COPY_AND_MOVE(Texture)
-        virtual ~Texture();
+        virtual ~Texture() {}
 
         virtual void bind() = 0;
         virtual void generateMipmaps() = 0;
@@ -73,18 +71,13 @@ namespace solo
         auto getAnisotropyLevel() const -> float;
         void setAnisotropyLevel(float level);
 
-        auto getHandle() const -> TextureHandle;
-
     protected:
-        explicit Texture(Device* device);
+        Texture();
 
         virtual void rebuildFlags();
-
-        Renderer* renderer = nullptr;
         
         uint32_t flags = 0;
-        TextureHandle handle = EmptyTextureHandle;
-
+        
         TextureWrapping horizontalWrapping = TextureWrapping::Clamp;
         TextureWrapping verticalWrapping = TextureWrapping::Clamp;
         
@@ -153,10 +146,5 @@ namespace solo
     inline void Texture::setAnisotropyLevel(float level)
     {
         anisotropy = level;
-    }
-
-    inline auto Texture::getHandle() const -> TextureHandle
-    {
-        return handle;
     }
 }

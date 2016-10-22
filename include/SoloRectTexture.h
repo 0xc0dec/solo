@@ -28,21 +28,16 @@ namespace solo
 {
     class Device;
 
-    class RectTexture final: public Texture
+    class RectTexture: public Texture
     {
     public:
         static sptr<RectTexture> create();
 
-        void bind() override final;
-        void generateMipmaps() override final;
-
-        void setData(TextureFormat format, const uint8_t* data, uint32_t width, uint32_t height);
+        virtual void setData(TextureFormat format, const uint8_t* data, uint32_t width, uint32_t height) = 0;
 
         auto getSize() const -> Vector2;
 
-    private:
-        explicit RectTexture(Device* device);
-
+    protected:
         Vector2 size;
     };
 

@@ -19,22 +19,13 @@
 */
 
 #include "SoloTexture.h"
-#include "SoloDevice.h"
 
 using namespace solo;
 
 
-Texture::Texture(Device* device):
-    renderer(device->getRenderer())
+Texture::Texture()
 {
-    handle = renderer->createTexture();
     rebuildFlags(); // yes, virtual call
-}
-
-
-Texture::~Texture()
-{
-    renderer->destroyTexture(handle);
 }
 
 
