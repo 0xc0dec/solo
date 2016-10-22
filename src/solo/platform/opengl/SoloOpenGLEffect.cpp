@@ -18,35 +18,43 @@
     3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "SoloEffect.h"
+#include "SoloOpenGLEffect.h"
 #include "SoloDevice.h"
-#include "platform/opengl/SoloOpenGLEffect.h"
-#include "platform/null/SoloNullEffect.h"
+#include "SoloOpenGLPrefabShaders.h"
 
 using namespace solo;
 
 
-auto Effect::create(const std::string& vsSrc, const std::string& fsSrc) -> sptr<Effect>
+auto OpenGLEffect::create(EffectPrefab prefab) -> sptr<OpenGLEffect>
 {
     auto device = Device::get();
-    switch (device->getSetup().mode)
+    switch (prefab)
     {
-        case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLEffect>(device, vsSrc, fsSrc);
+        case EffectPrefab::Skybox:
+            return std::make_shared<OpenGLEffect>(device, OpenGLPrefabShaders::Vertex::skybox, OpenGLPrefabShaders::Fragment::skybox);
+        case EffectPrefab::Font:
+            return std::make_shared<OpenGLEffect>(device, OpenGLPrefabShaders::Vertex::simple, OpenGLPrefabShaders::Fragment::font);
         default:
-            return std::make_shared<NullEffect>();
+            SL_ERR("Unknown effect prefab");
+            break;
     }
 }
 
 
-auto Effect::create(EffectPrefab prefab) -> sptr<Effect>
+OpenGLEffect::OpenGLEffect(Device* device, const std::string& vsSrc, const std::string& fsSrc)
 {
-    auto device = Device::get();
-    switch (device->getSetup().mode)
-    {
-        case DeviceMode::OpenGL:
-            return OpenGLEffect::create(prefab);
-        default:
-            return std::make_shared<NullEffect>();
-    }
+    renderer = dynamic_cast<OpenGLRenderer*>(device->getRenderer());
+    handle = renderer->createProgram(vsSrc.c_str(), fsSrc.c_str());
+}
+
+
+OpenGLEffect::~OpenGLEffect()
+{
+    renderer->destroyProgram(handle);
+}
+
+
+void OpenGLEffect::apply()
+{
+    renderer->setProgram(handle);
 }

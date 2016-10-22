@@ -20,29 +20,14 @@
 
 #pragma once
 
-#include "SoloCommon.h"
+#include "SoloEffect.h"
 
 
 namespace solo
 {
-    enum class EffectPrefab
-    {
-        Skybox,
-        Font
-    };
-
-    class Effect
+    class NullEffect final: public Effect
     {
     public:
-        static auto create(const std::string& vsSrc, const std::string& fsSrc) -> sptr<Effect>;
-        static auto create(EffectPrefab prefab) -> sptr<Effect>;
-
-        SL_DISABLE_COPY_AND_MOVE(Effect)
-        virtual ~Effect() {}
-
-        virtual void apply() = 0;
-
-    protected:
-        Effect() {}
+        void apply() override final {}
     };
 }

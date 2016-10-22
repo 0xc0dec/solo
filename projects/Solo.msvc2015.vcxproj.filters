@@ -256,6 +256,12 @@
     <ClInclude Include="..\src\solo\platform\null\SoloNullFrameBuffer.h">
       <Filter>src\platform\null</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLEffect.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\null\SoloNullEffect.h">
+      <Filter>src\platform\null</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\SoloScene.cpp">
@@ -424,6 +430,9 @@
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLFrameBuffer.cpp">
+      <Filter>src\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLEffect.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
   </ItemGroup>

@@ -20,29 +20,31 @@
 
 #pragma once
 
-#include "SoloCommon.h"
+#include "SoloEffect.h"
+#include "SoloOpenGLRenderer.h"
 
 
 namespace solo
 {
-    enum class EffectPrefab
-    {
-        Skybox,
-        Font
-    };
-
-    class Effect
+    class OpenGLEffect final: public Effect
     {
     public:
-        static auto create(const std::string& vsSrc, const std::string& fsSrc) -> sptr<Effect>;
-        static auto create(EffectPrefab prefab) -> sptr<Effect>;
+        static auto create(EffectPrefab prefab) -> sptr<OpenGLEffect>;
 
-        SL_DISABLE_COPY_AND_MOVE(Effect)
-        virtual ~Effect() {}
+        OpenGLEffect(Device* device, const std::string& vsSrc, const std::string& fsSrc);
+        ~OpenGLEffect();
 
-        virtual void apply() = 0;
+        auto getHandle() const -> ProgramHandle;
 
-    protected:
-        Effect() {}
+        void apply() override final;
+
+    private:
+        OpenGLRenderer* renderer = nullptr;
+        ProgramHandle handle;
     };
+
+    inline auto OpenGLEffect::getHandle() const -> ProgramHandle
+    {
+        return handle;
+    }
 }

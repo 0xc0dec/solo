@@ -73,6 +73,7 @@
     <ClInclude Include="..\src\solo\platform\null\SoloNullCamera.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullCubeTexture.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullDevice.h" />
+    <ClInclude Include="..\src\solo\platform\null\SoloNullEffect.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullFileSystem.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullFrameBuffer.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullGraphics.h" />
@@ -82,6 +83,7 @@
     <ClInclude Include="..\src\solo\platform\null\SoloNullRenderer.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLCamera.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLCubeTexture.h" />
+    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLEffect.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLFrameBuffer.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLGraphics.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLMaterial.h" />
@@ -101,6 +103,7 @@
     <ClCompile Include="..\src\solo\platform\bullet\SoloBulletBoxCollider.cpp" />
     <ClCompile Include="..\src\solo\platform\bullet\SoloBulletPhysics.cpp" />
     <ClCompile Include="..\src\solo\platform\bullet\SoloBulletRigidBody.cpp" />
+    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLEffect.cpp" />
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLFrameBuffer.cpp" />
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLRectTexture.cpp" />
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLCamera.cpp" />

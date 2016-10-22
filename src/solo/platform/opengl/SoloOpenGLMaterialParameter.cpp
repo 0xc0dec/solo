@@ -30,6 +30,7 @@
 #include "SoloRenderContext.h"
 #include "SoloTransform.h"
 #include "SoloCamera.h"
+#include "SoloOpenGLEffect.h"
 
 
 namespace solo
@@ -107,7 +108,7 @@ OpenGLMaterialParameter::OpenGLMaterialParameter(Renderer* renderer, Effect* eff
     MaterialParameter(type)
 {
     this->renderer = dynamic_cast<OpenGLRenderer*>(renderer);
-    handle = this->renderer->createUniform(name, getUniformType(type), effect->getHandle());
+    handle = this->renderer->createUniform(name, getUniformType(type), dynamic_cast<OpenGLEffect*>(effect)->getHandle());
 }
 
 
