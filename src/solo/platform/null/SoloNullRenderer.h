@@ -63,10 +63,9 @@ namespace solo
             -> VertexProgramBindingHandle override final { return EmptyVertexProgramBindingHandle; }
         void destroyVertexProgramBinding(const VertexProgramBindingHandle& handle) override final {}
 
-        auto createUniform(const char* name, UniformType type, ProgramHandle programHandle)
-            -> UniformHandle override final { return EmptyUniformHandle; }
-        void destroyUniform(const UniformHandle& handle) override final {}
-        void setUniform(const UniformHandle& handle, const void* value, uint32_t count) override final {}
+        auto createUniform(const char* name, UniformType type, ProgramHandle programHandle) -> UniformHandle { return EmptyUniformHandle; }
+        void destroyUniform(const UniformHandle& handle) {}
+        void setUniform(const UniformHandle& handle, const void* value, uint32_t count) {}
 
         void drawIndexed(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle,
             const IndexBufferHandle& indexBufferHandle) override final {}
