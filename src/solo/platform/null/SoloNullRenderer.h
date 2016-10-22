@@ -44,11 +44,6 @@ namespace solo
         void generateRectTextureMipmaps(const TextureHandle& handle) override final {}
         void generateCubeTextureMipmaps(const TextureHandle& handle) override final {}
 
-        auto createFrameBuffer() -> FrameBufferHandle override final { return EmptyFrameBufferHandle; }
-        void destroyFrameBuffer(const FrameBufferHandle& handle) override final {}
-        void setFrameBuffer(const FrameBufferHandle& handle) override final {}
-        void updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle>& attachmentHandles) override final {}
-
         auto createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
             -> VertexBufferHandle override final { return EmptyVertexBufferHandle; }
         auto createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)

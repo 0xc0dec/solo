@@ -186,11 +186,6 @@ namespace solo
         virtual void generateRectTextureMipmaps(const TextureHandle& handle) = 0;
         virtual void generateCubeTextureMipmaps(const TextureHandle& handle) = 0;
 
-        virtual auto createFrameBuffer() -> FrameBufferHandle = 0;
-        virtual void destroyFrameBuffer(const FrameBufferHandle& handle) = 0;
-        virtual void setFrameBuffer(const FrameBufferHandle& handle) = 0;
-        virtual void updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle>& attachmentHandles) = 0;
-
         virtual auto createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> VertexBufferHandle = 0;
         virtual auto createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> VertexBufferHandle = 0;
         virtual void updateDynamicVertexBuffer(const VertexBufferHandle& handle, const void* data, uint32_t offset, uint32_t vertexCount) = 0;
