@@ -110,7 +110,7 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
 
 void BulletRigidBody::onTransformChanged(const Transform* transform, uint32_t dirtyFlags)
 {
-    if (shape && dirtyFlags | TransformDirtyFlags::Scale)
+    if (shape && (dirtyFlags | TransformDirtyFlags::Scale))
         syncScale();
 }
 
