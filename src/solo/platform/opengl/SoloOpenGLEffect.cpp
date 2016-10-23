@@ -22,6 +22,8 @@
 #include "SoloDevice.h"
 #include "SoloOpenGLPrefabShaders.h"
 
+#ifdef SL_OPENGL_RENDERER
+
 using namespace solo;
 
 
@@ -58,3 +60,7 @@ void OpenGLEffect::apply()
 {
     renderer->setProgram(handle);
 }
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif

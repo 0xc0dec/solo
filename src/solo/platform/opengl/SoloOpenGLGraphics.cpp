@@ -26,6 +26,8 @@
 #include "SoloDevice.h"
 #include "platform/opengl/SoloOpenGLRenderer.h"
 
+#ifdef SL_OPENGL_RENDERER
+
 using namespace solo;
 
 
@@ -61,3 +63,7 @@ void OpenGLGraphics::blit(Material* material, FrameBuffer* target)
     if (target)
         target->unbind();
 }
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif

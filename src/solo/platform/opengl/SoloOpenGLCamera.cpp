@@ -22,6 +22,8 @@
 #include "SoloDevice.h"
 #include "SoloOpenGLRenderer.h"
 
+#ifdef SL_OPENGL_RENDERER
+
 using namespace solo;
 
 
@@ -52,3 +54,7 @@ void OpenGLCamera::applyImpl() const
     renderer->setDepthTest(true);
     renderer->clear(true, true, clearColor.x, clearColor.y, clearColor.z, clearColor.w);
 }
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif

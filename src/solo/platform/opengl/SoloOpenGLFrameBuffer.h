@@ -23,6 +23,7 @@
 #include "SoloFrameBuffer.h"
 #include "SoloOpenGLRenderer.h"
 
+#ifdef SL_OPENGL_RENDERER
 
 namespace solo
 {
@@ -44,3 +45,7 @@ namespace solo
         FrameBufferHandle handle = EmptyFrameBufferHandle;
     };
 }
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif

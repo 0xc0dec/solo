@@ -22,6 +22,7 @@
 
 #include "SoloGraphics.h"
 
+#ifdef SL_OPENGL_RENDERER
 
 namespace solo
 {
@@ -41,3 +42,7 @@ namespace solo
         sptr<Mesh> quadMesh;
     };
 }
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif

@@ -24,6 +24,7 @@
 #include <algorithm>
 #include <unordered_map>
 
+
 #ifdef SL_OPENGL_RENDERER
 
 using namespace solo;

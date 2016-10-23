@@ -22,6 +22,8 @@
 #include "SoloOpenGLRenderer.h"
 #include "SoloDevice.h"
 
+#ifdef SL_OPENGL_RENDERER
+
 using namespace solo;
 
 
@@ -49,3 +51,7 @@ void OpenGLRectTexture::setData(TextureFormat format, const uint8_t* data, uint3
     renderer->update2DTexture(handle, format, width, height, data);
     size = { static_cast<float>(width), static_cast<float>(height) };
 }
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif

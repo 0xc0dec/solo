@@ -23,6 +23,7 @@
 #include "SoloMesh.h"
 #include "SoloOpenGLRenderer.h"
 
+#ifdef SL_OPENGL_RENDERER
 
 namespace solo
 {
@@ -84,3 +85,7 @@ namespace solo
         return static_cast<uint32_t>(indexBuffers.size());
     }
 }
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif

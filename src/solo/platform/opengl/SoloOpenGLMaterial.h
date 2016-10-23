@@ -22,6 +22,7 @@
 
 #include "SoloMaterial.h"
 
+#ifdef SL_OPENGL_RENDERER
 
 namespace solo
 {
@@ -39,3 +40,7 @@ namespace solo
         OpenGLRenderer* renderer = nullptr;
     };
 }
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif

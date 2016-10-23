@@ -23,6 +23,8 @@
 #include "SoloRectTexture.h"
 
 
+#ifdef SL_OPENGL_RENDERER
+
 namespace solo
 {
     class OpenGLRenderer;
@@ -49,3 +51,7 @@ namespace solo
         return handle;
     }
 }
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif

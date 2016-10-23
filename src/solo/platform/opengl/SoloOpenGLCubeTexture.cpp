@@ -21,6 +21,8 @@
 #include "SoloOpenGLCubeTexture.h"
 #include "SoloDevice.h"
 
+#ifdef SL_OPENGL_RENDERER
+
 using namespace solo;
 
 
@@ -53,3 +55,7 @@ void OpenGLCubeTexture::setData(CubeTextureFace face, TextureFormat format, cons
 {
     renderer->updateCubeTexture(handle, face, format, width, height, data);
 }
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif

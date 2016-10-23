@@ -22,6 +22,8 @@
 #include "SoloDevice.h"
 #include "SoloOpenGLRenderer.h"
 
+#ifdef SL_OPENGL_RENDERER
+
 using namespace solo;
 
 
@@ -42,3 +44,7 @@ void OpenGLMaterial::applyState()
     renderer->setBlend(transparent);
     renderer->setBlendFactor(srcBlendFactor, dstBlendFactor);
 }
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif

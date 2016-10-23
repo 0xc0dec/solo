@@ -32,6 +32,8 @@
 #include "SoloCamera.h"
 #include "SoloOpenGLEffect.h"
 
+#ifdef SL_OPENGL_RENDERER
+
 
 namespace solo
 {
@@ -262,3 +264,7 @@ auto OpenGLMaterialParameter::getUniformType(MaterialParameterType type) -> Unif
             return UniformType::Float;
     }
 }
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif

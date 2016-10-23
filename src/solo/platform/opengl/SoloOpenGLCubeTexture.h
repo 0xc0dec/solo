@@ -23,6 +23,7 @@
 #include "SoloCubeTexture.h"
 #include "SoloOpenGLRenderer.h"
 
+#ifdef SL_OPENGL_RENDERER
 
 namespace solo
 {
@@ -42,3 +43,7 @@ namespace solo
         TextureHandle handle = EmptyTextureHandle;
     };
 }
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif

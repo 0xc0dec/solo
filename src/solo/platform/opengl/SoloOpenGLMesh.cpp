@@ -23,6 +23,8 @@
 #include "SoloOpenGLEffect.h"
 #include <algorithm>
 
+#ifdef SL_OPENGL_RENDERER
+
 using namespace solo;
 
 
@@ -184,3 +186,7 @@ void OpenGLMesh::drawPart(Effect* effect, uint32_t part)
     if (!programBinding.empty())
         renderer->drawIndexed(primitiveType, programBinding, indexBuffers[part]);
 }
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif

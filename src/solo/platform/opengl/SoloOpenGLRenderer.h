@@ -26,6 +26,7 @@
 #include <GL/glew.h>
 #include <vector>
 
+
 #ifdef SL_OPENGL_RENDERER
 
 namespace solo
@@ -95,8 +96,7 @@ namespace solo
 
         void clear(bool color, bool depth, float r, float g, float b, float a);
 
-        void drawIndexed(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle,
-            const IndexBufferHandle& indexBufferHandle);
+        void drawIndexed(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle, const IndexBufferHandle& indexBufferHandle);
         void draw(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle, uint32_t vertexCount);
 
     private:

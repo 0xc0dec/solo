@@ -23,6 +23,8 @@
 #include "SoloRectTexture.h"
 #include "SoloOpenGLRectTexture.h"
 
+#ifdef SL_OPENGL_RENDERER
+
 using namespace solo;
 
 
@@ -66,3 +68,7 @@ void OpenGLFrameBuffer::setAttachments(const std::vector<sptr<RectTexture>>& att
     else
         size = Vector2();
 }
+
+#else
+#   error OpenGL renderer is not supported on this platform
+#endif
