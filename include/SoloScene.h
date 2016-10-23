@@ -41,7 +41,7 @@ namespace solo
         explicit Scene(Device* device, const DeviceToken&);
         ~Scene() {}
 
-        auto getDevice() const -> Device*;
+        auto getDevice() const -> Device*; // TODO add same method to other subsystems
 
         auto createNode() -> sptr<Node>;
 
