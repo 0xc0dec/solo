@@ -37,7 +37,6 @@
     <ClInclude Include="..\include\SoloRenderer.h" />
     <ClInclude Include="..\include\SoloRenderQueue.h" />
     <ClInclude Include="..\include\SoloFrameBuffer.h" />
-    <ClInclude Include="..\include\SoloResourcePool.h" />
     <ClInclude Include="..\include\SoloCubeTexture.h" />
     <ClInclude Include="..\include\SoloImageLoader.h" />
     <ClInclude Include="..\include\SoloRigidBody.h" />

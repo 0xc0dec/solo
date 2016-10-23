@@ -26,7 +26,6 @@
 #include "FileSystem_Test.h"
 #include "MeshRenderer_Test.h"
 #include "Mesh_Test.h"
-#include "ResourcePool_Test.h"
 
 using namespace solo;
 

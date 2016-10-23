@@ -170,7 +170,6 @@
     <ClInclude Include="..\src\tests\tester\MeshRenderer_Test.h" />
     <ClInclude Include="..\src\tests\tester\Mesh_Test.h" />
     <ClInclude Include="..\src\tests\tester\FrameBuffer_Test.h" />
-    <ClInclude Include="..\src\tests\tester\ResourcePool_Test.h" />
     <ClInclude Include="..\src\tests\tester\TestBase.h" />
     <ClInclude Include="..\src\tests\tester\Transform_Test.h" />
   </ItemGroup>

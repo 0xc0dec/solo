@@ -21,12 +21,12 @@
 #pragma once
 
 #include "SoloAssetLoader.h"
-#include "SoloCommon.h"
 #include "SoloBoundingBox.h"
 #include "SoloBoundingSphere.h"
 #include "SoloBoxCollider.h"
 #include "SoloCamera.h"
 #include "SoloCollider.h"
+#include "SoloCommon.h"
 #include "SoloComponent.h"
 #include "SoloConfig.h"
 #include "SoloCubeTexture.h"
@@ -60,8 +60,6 @@
 #include "SoloRenderContext.h"
 #include "SoloRenderer.h"
 #include "SoloRenderQueue.h"
-#include "SoloAssetLoader.h"
-#include "SoloResourcePool.h"
 #include "SoloRigidBody.h"
 #include "SoloScene.h"
 #include "SoloSkyboxRenderer.h"
