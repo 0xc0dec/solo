@@ -41,43 +41,40 @@ namespace solo
         void beginFrame() override final {}
         void endFrame() override final {}
 
-        auto createTexture() -> TextureHandle override final;
-        void destroyTexture(const TextureHandle& handle) override final;
-        void set2DTexture(const TextureHandle& handle) override final;
-        void set2DTexture(const TextureHandle& handle, uint32_t flags) override final;
-        void set2DTexture(const TextureHandle& handle, uint32_t flags, float anisotropyLevel) override final;
-        void setCubeTexture(const TextureHandle& handle) override final;
-        void setCubeTexture(const TextureHandle& handle, uint32_t flags) override final;
-        void setCubeTexture(const TextureHandle& handle, uint32_t flags, float anisotropyLevel) override final;
-        void update2DTexture(const TextureHandle& handle, TextureFormat format, uint32_t width, uint32_t height,
-            const void* data) override final;
+        auto createTexture() -> TextureHandle;
+        void destroyTexture(const TextureHandle& handle);
+        void set2DTexture(const TextureHandle& handle);
+        void set2DTexture(const TextureHandle& handle, uint32_t flags);
+        void set2DTexture(const TextureHandle& handle, uint32_t flags, float anisotropyLevel);
+        void setCubeTexture(const TextureHandle& handle);
+        void setCubeTexture(const TextureHandle& handle, uint32_t flags);
+        void setCubeTexture(const TextureHandle& handle, uint32_t flags, float anisotropyLevel);
+        void update2DTexture(const TextureHandle& handle, TextureFormat format, uint32_t width, uint32_t height, const void* data);
         void updateCubeTexture(const TextureHandle& handle, CubeTextureFace face, TextureFormat format,
-            uint32_t width, uint32_t height, const void* data) override final;
-        void generateRectTextureMipmaps(const TextureHandle& handle) override final;
-        void generateCubeTextureMipmaps(const TextureHandle& handle) override final;
+            uint32_t width, uint32_t height, const void* data);
+        void generateRectTextureMipmaps(const TextureHandle& handle);
+        void generateCubeTextureMipmaps(const TextureHandle& handle);
 
         auto createFrameBuffer() -> FrameBufferHandle;
         void destroyFrameBuffer(const FrameBufferHandle& handle);
         void setFrameBuffer(const FrameBufferHandle& handle);
         void updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle>& attachmentHandles);
 
-        auto createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
-            -> VertexBufferHandle override final;
-        auto createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
-            -> VertexBufferHandle override final;
-        void updateDynamicVertexBuffer(const VertexBufferHandle& handle, const void* data, uint32_t offset, uint32_t vertexCount) override final;
-        void destroyVertexBuffer(const VertexBufferHandle& handle) override final;
+        auto createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> VertexBufferHandle;
+        auto createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> VertexBufferHandle;
+        void updateDynamicVertexBuffer(const VertexBufferHandle& handle, const void* data, uint32_t offset, uint32_t vertexCount);
+        void destroyVertexBuffer(const VertexBufferHandle& handle);
 
-        auto createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount) -> IndexBufferHandle override final;
-        void destroyIndexBuffer(const IndexBufferHandle& handle) override final;
+        auto createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount) -> IndexBufferHandle;
+        void destroyIndexBuffer(const IndexBufferHandle& handle);
 
-        auto createProgram(const char* vsSrc, const char* fsSrc) -> ProgramHandle override final;
-        void destroyProgram(const ProgramHandle& handle) override final;
-        void setProgram(const ProgramHandle& handle) override final;
+        auto createProgram(const char* vsSrc, const char* fsSrc) -> ProgramHandle;
+        void destroyProgram(const ProgramHandle& handle);
+        void setProgram(const ProgramHandle& handle);
 
         auto createVertexProgramBinding(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle)
-            -> VertexProgramBindingHandle override final;
-        void destroyVertexProgramBinding(const VertexProgramBindingHandle& handle) override final;
+            -> VertexProgramBindingHandle;
+        void destroyVertexProgramBinding(const VertexProgramBindingHandle& handle);
 
         auto createUniform(const char* name, UniformType type, ProgramHandle programHandle) -> UniformHandle;
         void destroyUniform(const UniformHandle& handle);
@@ -99,8 +96,8 @@ namespace solo
         void clear(bool color, bool depth, float r, float g, float b, float a);
 
         void drawIndexed(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle,
-            const IndexBufferHandle& indexBufferHandle) override final;
-        void draw(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle, uint32_t vertexCount) override final;
+            const IndexBufferHandle& indexBufferHandle);
+        void draw(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle, uint32_t vertexCount);
 
     private:
         struct FrameBuffer

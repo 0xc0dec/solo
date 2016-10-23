@@ -29,46 +29,5 @@ namespace solo
     public:
         void beginFrame() override final {}
         void endFrame() override final {}
-
-        auto createTexture() -> TextureHandle override final { return EmptyTextureHandle; }
-        void destroyTexture(const TextureHandle& handle) override final {}
-        void set2DTexture(const TextureHandle& handle) override final {}
-        void set2DTexture(const TextureHandle& handle, uint32_t flags) override final {}
-        void set2DTexture(const TextureHandle& handle, uint32_t flags, float anisotropyLevel) override final {}
-        void setCubeTexture(const TextureHandle& handle) override final {}
-        void setCubeTexture(const TextureHandle& handle, uint32_t flags) override final {}
-        void setCubeTexture(const TextureHandle& handle, uint32_t flags, float anisotropyLevel) override final {}
-        void update2DTexture(const TextureHandle& handle, TextureFormat format, uint32_t width, uint32_t height, const void* data) override final {}
-        void updateCubeTexture(const TextureHandle& handle, CubeTextureFace face, TextureFormat format, uint32_t width,
-            uint32_t height, const void* data) override final {}
-        void generateRectTextureMipmaps(const TextureHandle& handle) override final {}
-        void generateCubeTextureMipmaps(const TextureHandle& handle) override final {}
-
-        auto createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
-            -> VertexBufferHandle override final { return EmptyVertexBufferHandle; }
-        auto createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount)
-            -> VertexBufferHandle override final { return EmptyVertexBufferHandle; }
-        void updateDynamicVertexBuffer(const VertexBufferHandle& handle, const void* data, uint32_t offset, uint32_t vertexCount) override final {}
-        void destroyVertexBuffer(const VertexBufferHandle& handle) override final {}
-
-        auto createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount)
-            -> IndexBufferHandle override final { return EmptyIndexBufferHandle; }
-        void destroyIndexBuffer(const IndexBufferHandle& handle) override final {}
-
-        auto createProgram(const char* vsSrc, const char* fsSrc) -> ProgramHandle override final { return EmptyProgramHandle; }
-        void destroyProgram(const ProgramHandle& handle) override final {}
-        void setProgram(const ProgramHandle& handle) override final {}
-
-        auto createVertexProgramBinding(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle)
-            -> VertexProgramBindingHandle override final { return EmptyVertexProgramBindingHandle; }
-        void destroyVertexProgramBinding(const VertexProgramBindingHandle& handle) override final {}
-
-        auto createUniform(const char* name, UniformType type, ProgramHandle programHandle) -> UniformHandle { return EmptyUniformHandle; }
-        void destroyUniform(const UniformHandle& handle) {}
-        void setUniform(const UniformHandle& handle, const void* value, uint32_t count) {}
-
-        void drawIndexed(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle,
-            const IndexBufferHandle& indexBufferHandle) override final {}
-        void draw(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle, uint32_t vertexCount) override final {}
     };
 }
