@@ -45,11 +45,11 @@ namespace solo
     // due to easier work with them as bit flags
     struct TransformDirtyFlags final
     {
-        static const uint32_t Position = 1;
-        static const uint32_t Rotation = 2;
-        static const uint32_t Scale = 3;
-        static const uint32_t World = 8;
-        static const uint32_t InvTransposedWorld = 16;
+        static const uint32_t Position = 1 << 0;
+        static const uint32_t Rotation = 1 << 1;
+        static const uint32_t Scale = 1 << 2;
+        static const uint32_t World = 1 << 3;
+        static const uint32_t InvTransposedWorld = 1 << 4;
     };
 
     class Transform final: public ComponentBase<Transform>
