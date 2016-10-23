@@ -251,11 +251,14 @@ private:
         auto cam = node->addComponent<Camera>();
         cam->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
         cam->setNear(0.05f);
-        node->addComponent<Spectator>();
         node->addComponent<EscapeWatcher>();
         node->addComponent<PostProcessor2>();
         node->addComponent<ModeSwitcher>(device);
         node->addComponent<Screenshoter>("demo2-screenshot.bmp");
+
+        auto spectator = node->addComponent<Spectator>();
+        spectator->setVerticalRotationSpeed(1);
+        spectator->setHorizontalRotationSpeed(1);
     }
 
     void initSkybox()

@@ -104,7 +104,7 @@ class Targeter final: public ComponentBase<Targeter>
 public:
     explicit Targeter(const Node& node):
         ComponentBase<Targeter>(node),
-        physics(Device::get()->getPhysics())
+        physics(Device::get()->getPhysics()) // TODO replace with node.getScene()->getDevice()...
     {
     }
 
@@ -200,14 +200,19 @@ private:
         auto t = node->findComponent<Transform>();
         t->setLocalPosition(Vector3(10, 10, 10));
         t->lookAt(Vector3::zero(), Vector3::unitY());
+
         auto cam = node->addComponent<Camera>();
         cam->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
         cam->setNear(0.05f);
-        node->addComponent<Spectator>();
+
         node->addComponent<EscapeWatcher>();
         node->addComponent<Screenshoter>("demo3-screenshot.bmp");
         node->addComponent<Spawner>(cubeMesh);
         node->addComponent<Targeter>();
+
+        auto spectator = node->addComponent<Spectator>();
+        spectator->setVerticalRotationSpeed(1);
+        spectator->setHorizontalRotationSpeed(1);
     }
 
     void initSkybox()
