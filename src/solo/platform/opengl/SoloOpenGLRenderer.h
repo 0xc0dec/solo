@@ -23,11 +23,11 @@
 #include "SoloCommon.h"
 #include "SoloRenderer.h"
 #include "SoloResourcePool.h"
-#include <GL/glew.h>
 #include <vector>
 
-
 #ifdef SL_OPENGL_RENDERER
+
+#include <GL/glew.h>
 
 namespace solo
 {
