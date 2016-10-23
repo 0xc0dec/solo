@@ -72,7 +72,6 @@ void runCppUnitTests(Device* device)
     Components_Test(device).run();
     Transform_Test(device).run();
     MeshRenderer_Test(device).run();
-    ResourcePool_Test(device).run();
 }
 
 
