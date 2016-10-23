@@ -23,6 +23,7 @@
 #include "SoloCommon.h"
 #include "SoloRenderer.h"
 #include "SoloResourcePool.h"
+#include "SoloVertexFormat.h"
 #include <vector>
 
 #ifdef SL_OPENGL_RENDERER
