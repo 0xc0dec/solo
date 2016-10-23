@@ -46,7 +46,7 @@ namespace solo
         std::vector<std::vector<uint16_t>> indices;
     };
 
-    class Mesh final
+    class Mesh
     {
     public:
         static auto create() -> sptr<Mesh>;
@@ -54,60 +54,27 @@ namespace solo
         static auto create(MeshData* data) -> sptr<Mesh>;
 
         SL_DISABLE_COPY_AND_MOVE(Mesh)
-        ~Mesh();
+        virtual ~Mesh() {}
 
-        auto addVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount) -> uint32_t;
-        auto addDynamicVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount) -> uint32_t;
-        void updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const float* data, uint32_t vertexCount);
-        void removeVertexBuffer(uint32_t index);
+        virtual auto addVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount) -> uint32_t = 0;
+        virtual auto addDynamicVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount) -> uint32_t = 0;
+        virtual void updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const float* data, uint32_t vertexCount) = 0;
+        virtual void removeVertexBuffer(uint32_t index) = 0;
 
-        auto addPart(const void* indexData, uint32_t indexElementCount) -> uint32_t;
-        void removePart(uint32_t index);
-        auto getPartCount() const -> uint32_t;
+        virtual auto addPart(const void* indexData, uint32_t indexElementCount) -> uint32_t = 0;
+        virtual void removePart(uint32_t index) = 0;
+        virtual auto getPartCount() const -> uint32_t = 0;
 
-        void draw(Effect* effect);
-        void drawPart(Effect* effect, uint32_t part);
+        virtual void draw(Effect* effect) = 0;
+        virtual void drawPart(Effect* effect, uint32_t part) = 0;
 
-        void setPrimitiveType(PrimitiveType type);
-        auto getPrimitiveType() const -> PrimitiveType;
+        virtual auto getPrimitiveType() const -> PrimitiveType = 0;
+        virtual void setPrimitiveType(PrimitiveType type) = 0;
 
-    private:
-        Mesh(Device* device);
-        explicit Mesh(Device* device, MeshPrefab prefab);
-        explicit Mesh(Device* device, MeshData* data);
+    protected:
+        Mesh() {}
 
         void initQuadMesh();
         void initCubeMesh();
-
-        auto addVertexBuffer(VertexBufferHandle bufferHandle, const VertexBufferLayout& layout, uint32_t vertexCount) -> uint32_t;
-
-        void rebuildEffectBinding(Effect* effect);
-        void recalculateMinVertexCount();
-
-        Renderer* renderer;
-        Effect* lastEffect = nullptr;
-
-        PrimitiveType primitiveType = PrimitiveType::Triangles;
-        std::vector<VertexBufferHandle> vertexBuffers;
-        std::vector<IndexBufferHandle> indexBuffers;
-        std::vector<uint32_t> vertexCounts;
-        std::vector<uint32_t> vertexSizes;
-        uint32_t minVertexCount = 0;
-        VertexProgramBindingHandle programBinding = EmptyVertexProgramBindingHandle;
     };
-
-    inline void Mesh::setPrimitiveType(PrimitiveType type)
-    {
-        primitiveType = type;
-    }
-
-    inline auto Mesh::getPrimitiveType() const -> PrimitiveType
-    {
-        return primitiveType;
-    }
-
-    inline auto Mesh::getPartCount() const -> uint32_t
-    {
-        return static_cast<uint32_t>(indexBuffers.size());
-    }
 }
