@@ -32,7 +32,7 @@ public:
     explicit SpawnedObject(const Node& node, sptr<Effect> effect, sptr<Mesh> mesh,
         const Vector3& initialPos, const Quaternion& initialRotation):
         ComponentBase<SpawnedObject>(node),
-        device(Device::get()),
+        device(node.getScene()->getDevice()),
         scene(node.getScene()),
         initialPos(initialPos),
         initialRotation(initialRotation),
@@ -104,7 +104,7 @@ class Targeter final: public ComponentBase<Targeter>
 public:
     explicit Targeter(const Node& node):
         ComponentBase<Targeter>(node),
-        physics(Device::get()->getPhysics()) // TODO replace with node.getScene()->getDevice()...
+        physics(node.getScene()->getDevice()->getPhysics())
     {
     }
 
@@ -140,8 +140,8 @@ class Spawner final: public ComponentBase<Spawner>
 public:
     explicit Spawner(const Node& node, sptr<Mesh> cubeMesh):
         ComponentBase<Spawner>(node),
-        device(Device::get()),
-        scene(Device::get()->getScene()),
+        device(node.getScene()->getDevice()),
+        scene(device->getScene()),
         transform(node.findComponent<Transform>()),
         mesh(cubeMesh)
     {

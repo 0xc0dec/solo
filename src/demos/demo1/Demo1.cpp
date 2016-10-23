@@ -59,7 +59,7 @@ public:
     explicit DynamicQuadUpdater(const Node& node, std::vector<float> data, sptr<Mesh> mesh):
         ComponentBase<DynamicQuadUpdater>(node),
         data(data),
-        device(Device::get()),
+        device(node.getScene()->getDevice()),
         mesh(mesh)
     {
     }

@@ -30,7 +30,9 @@ using namespace solo;
 class Text final: public ComponentBase<Text>
 {
 public:
-    explicit Text(const Node& node): ComponentBase<Text>(node)
+    explicit Text(const Node& node):
+        ComponentBase<Text>(node),
+        device(node.getScene()->getDevice())
     {
     }
 
@@ -40,7 +42,7 @@ public:
         const int textureHeight = 1024;
         const int lineHeight = 60;
 
-        auto fontData = Device::get()->getFileSystem()->readBytes("c:/windows/fonts/calibri.ttf");
+        auto fontData = device->getFileSystem()->readBytes("c:/windows/fonts/calibri.ttf");
         auto font = Font::create(fontData.data(), lineHeight, textureWidth, textureHeight, ' ', '~' - ' ', 2, 2);
 
         renderer = node.addComponent<FontRenderer>();
@@ -57,6 +59,7 @@ public:
     }
 
 private:
+    Device* device = nullptr;
     FontRenderer* renderer = nullptr;
 };
 

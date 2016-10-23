@@ -33,9 +33,9 @@ class PostProcessor1 final: public ComponentBase<PostProcessor1>
 public:
     explicit PostProcessor1(const Node& node):
         ComponentBase<PostProcessor1>(node),
-        device(Device::get()),
-        loader(Device::get()->getAssetLoader()),
-        graphics(Device::get()->getGraphics())
+        device(node.getScene()->getDevice()),
+        loader(device->getAssetLoader()),
+        graphics(device->getGraphics())
     {
     }
 
@@ -121,8 +121,8 @@ public:
     explicit PostProcessor2(const Node& node) :
         ComponentBase<PostProcessor2>(node),
         device(Device::get()),
-        loader(Device::get()->getAssetLoader()),
-        graphics(Device::get()->getGraphics())
+        loader(device->getAssetLoader()),
+        graphics(device->getGraphics())
     {
     }
 
