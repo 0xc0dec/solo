@@ -21,13 +21,13 @@
 #pragma once
 
 #include "SoloRectTexture.h"
+#include "SoloOpenGLRenderer.h"
 
 
 #ifdef SL_OPENGL_RENDERER
 
 namespace solo
 {
-    class OpenGLRenderer;
     class Device;
 
     class OpenGLRectTexture final: public RectTexture
@@ -39,14 +39,14 @@ namespace solo
         void generateMipmaps() override final;
         void setData(TextureFormat format, const uint8_t* data, uint32_t width, uint32_t height) override final;
 
-        auto getHandle() const -> TextureHandle;
+        auto getHandle() const -> uint32_t;
 
     private:
         OpenGLRenderer* renderer = nullptr;
-        TextureHandle handle = EmptyTextureHandle;
+        uint32_t handle = EmptyHandle;
     };
 
-    inline auto OpenGLRectTexture::getHandle() const -> TextureHandle
+    inline auto OpenGLRectTexture::getHandle() const -> uint32_t
     {
         return handle;
     }

@@ -36,16 +36,16 @@ namespace solo
         OpenGLEffect(Device* device, const std::string& vsSrc, const std::string& fsSrc);
         ~OpenGLEffect();
 
-        auto getHandle() const -> ProgramHandle;
+        auto getHandle() const -> uint32_t;
 
         void apply() override final;
 
     private:
         OpenGLRenderer* renderer = nullptr;
-        ProgramHandle handle;
+        uint32_t handle = EmptyHandle;
     };
 
-    inline auto OpenGLEffect::getHandle() const -> ProgramHandle
+    inline auto OpenGLEffect::getHandle() const -> uint32_t
     {
         return handle;
     }

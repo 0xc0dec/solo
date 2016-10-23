@@ -82,7 +82,7 @@ OpenGLMesh::OpenGLMesh(Device* device, MeshPrefab prefab):
 
 OpenGLMesh::~OpenGLMesh()
 {
-    if (!programBinding.empty())
+    if (programBinding != EmptyHandle)
         renderer->destroyVertexProgramBinding(programBinding);
     while (!vertexBuffers.empty())
         removeVertexBuffer(0);
@@ -91,7 +91,7 @@ OpenGLMesh::~OpenGLMesh()
 }
 
 
-auto OpenGLMesh::addVertexBuffer(VertexBufferHandle bufferHandle, const VertexBufferLayout& layout, uint32_t vertexCount) -> uint32_t
+auto OpenGLMesh::addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout& layout, uint32_t vertexCount) -> uint32_t
 {
     vertexBuffers.push_back(bufferHandle);
     vertexCounts.push_back(vertexCount);
@@ -105,7 +105,7 @@ void OpenGLMesh::rebuildEffectBinding(Effect* effect)
 {
     if (effect == lastEffect)
         return;
-    if (!programBinding.empty())
+    if (programBinding != EmptyHandle)
         renderer->destroyVertexProgramBinding(programBinding);
     lastEffect = dynamic_cast<OpenGLEffect*>(effect);
     programBinding = renderer->createVertexProgramBinding(vertexBuffers.data(), static_cast<uint32_t>(vertexBuffers.size()), lastEffect->getHandle());
@@ -184,7 +184,7 @@ void OpenGLMesh::draw(Effect* effect)
 void OpenGLMesh::drawPart(Effect* effect, uint32_t part)
 {
     rebuildEffectBinding(effect);
-    if (!programBinding.empty())
+    if (programBinding != EmptyHandle)
         renderer->drawIndexed(primitiveType, programBinding, indexBuffers[part]);
 }
 

@@ -41,7 +41,7 @@ namespace solo
 
     private:
         OpenGLRenderer* renderer = nullptr;
-        TextureHandle handle = EmptyTextureHandle;
+        uint32_t handle = EmptyHandle;
     };
 }
 

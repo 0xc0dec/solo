@@ -45,7 +45,7 @@ namespace solo
         static auto getUniformType(MaterialParameterType type) -> UniformType;
 
         OpenGLRenderer* renderer = nullptr;
-        UniformHandle handle = EmptyUniformHandle;
+        uint32_t handle = EmptyHandle;
 
         uptr<MaterialParameterValue> value;
         uint32_t count = 0;

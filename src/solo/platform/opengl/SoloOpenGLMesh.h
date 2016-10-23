@@ -54,7 +54,7 @@ namespace solo
         void setPrimitiveType(PrimitiveType type) override final;
 
     private:
-        auto addVertexBuffer(VertexBufferHandle bufferHandle, const VertexBufferLayout& layout, uint32_t vertexCount) -> uint32_t;
+        auto addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout& layout, uint32_t vertexCount) -> uint32_t;
 
         void rebuildEffectBinding(Effect* effect);
         void recalculateMinVertexCount();
@@ -63,12 +63,12 @@ namespace solo
         OpenGLEffect* lastEffect = nullptr;
 
         PrimitiveType primitiveType = PrimitiveType::Triangles;
-        std::vector<VertexBufferHandle> vertexBuffers;
-        std::vector<IndexBufferHandle> indexBuffers;
+        std::vector<uint32_t> vertexBuffers;
+        std::vector<uint32_t> indexBuffers;
         std::vector<uint32_t> vertexCounts;
         std::vector<uint32_t> vertexSizes;
         uint32_t minVertexCount = 0;
-        VertexProgramBindingHandle programBinding = EmptyVertexProgramBindingHandle;
+        uint32_t programBinding = EmptyHandle;
     };
 
     inline void OpenGLMesh::setPrimitiveType(PrimitiveType type)

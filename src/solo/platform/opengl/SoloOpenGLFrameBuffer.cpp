@@ -50,13 +50,13 @@ void OpenGLFrameBuffer::bind()
 
 void OpenGLFrameBuffer::unbind()
 {
-    renderer->setFrameBuffer(EmptyFrameBufferHandle);
+    renderer->setFrameBuffer(EmptyHandle);
 }
 
 
 void OpenGLFrameBuffer::setAttachments(const std::vector<sptr<RectTexture>>& attachments)
 {
-    std::vector<TextureHandle> handles;
+    std::vector<uint32_t> handles;
     handles.reserve(attachments.size());
 
     for (const auto& tex : attachments)

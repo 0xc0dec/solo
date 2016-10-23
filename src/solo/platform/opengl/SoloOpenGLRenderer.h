@@ -34,6 +34,8 @@ namespace solo
 {
     class Device;
 
+    constexpr uint32_t EmptyHandle = std::numeric_limits<uint32_t>::max();
+
     class OpenGLRenderer final: public Renderer
     {
     public:
@@ -43,44 +45,43 @@ namespace solo
         void beginFrame() override final {}
         void endFrame() override final {}
 
-        auto createTexture() -> TextureHandle;
-        void destroyTexture(const TextureHandle& handle);
-        void set2DTexture(const TextureHandle& handle);
-        void set2DTexture(const TextureHandle& handle, uint32_t flags);
-        void set2DTexture(const TextureHandle& handle, uint32_t flags, float anisotropyLevel);
-        void setCubeTexture(const TextureHandle& handle);
-        void setCubeTexture(const TextureHandle& handle, uint32_t flags);
-        void setCubeTexture(const TextureHandle& handle, uint32_t flags, float anisotropyLevel);
-        void update2DTexture(const TextureHandle& handle, TextureFormat format, uint32_t width, uint32_t height, const void* data);
-        void updateCubeTexture(const TextureHandle& handle, CubeTextureFace face, TextureFormat format,
+        auto createTexture() -> uint32_t;
+        void destroyTexture(uint32_t handle);
+        void set2DTexture(uint32_t handle);
+        void set2DTexture(uint32_t handle, uint32_t flags);
+        void set2DTexture(uint32_t handle, uint32_t flags, float anisotropyLevel);
+        void setCubeTexture(uint32_t handle);
+        void setCubeTexture(uint32_t handle, uint32_t flags);
+        void setCubeTexture(uint32_t handle, uint32_t flags, float anisotropyLevel);
+        void update2DTexture(uint32_t handle, TextureFormat format, uint32_t width, uint32_t height, const void* data);
+        void updateCubeTexture(uint32_t handle, CubeTextureFace face, TextureFormat format,
             uint32_t width, uint32_t height, const void* data);
-        void generateRectTextureMipmaps(const TextureHandle& handle);
-        void generateCubeTextureMipmaps(const TextureHandle& handle);
+        void generateRectTextureMipmaps(uint32_t handle);
+        void generateCubeTextureMipmaps(uint32_t handle);
 
-        auto createFrameBuffer() -> FrameBufferHandle;
-        void destroyFrameBuffer(const FrameBufferHandle& handle);
-        void setFrameBuffer(const FrameBufferHandle& handle);
-        void updateFrameBuffer(const FrameBufferHandle& handle, const std::vector<TextureHandle>& attachmentHandles);
+        auto createFrameBuffer() -> uint32_t;
+        void destroyFrameBuffer(uint32_t handle);
+        void setFrameBuffer(uint32_t handle);
+        void updateFrameBuffer(uint32_t handle, const std::vector<uint32_t>& attachmentHandles);
 
-        auto createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> VertexBufferHandle;
-        auto createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> VertexBufferHandle;
-        void updateDynamicVertexBuffer(const VertexBufferHandle& handle, const void* data, uint32_t offset, uint32_t vertexCount);
-        void destroyVertexBuffer(const VertexBufferHandle& handle);
+        auto createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> uint32_t;
+        auto createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> uint32_t;
+        void updateDynamicVertexBuffer(uint32_t handle, const void* data, uint32_t offset, uint32_t vertexCount);
+        void destroyVertexBuffer(uint32_t handle);
 
-        auto createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount) -> IndexBufferHandle;
-        void destroyIndexBuffer(const IndexBufferHandle& handle);
+        auto createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount) -> uint32_t;
+        void destroyIndexBuffer(uint32_t handle);
 
-        auto createProgram(const char* vsSrc, const char* fsSrc) -> ProgramHandle;
-        void destroyProgram(const ProgramHandle& handle);
-        void setProgram(const ProgramHandle& handle);
+        auto createProgram(const char* vsSrc, const char* fsSrc) -> uint32_t;
+        void destroyProgram(uint32_t handle);
+        void setProgram(uint32_t handle);
 
-        auto createVertexProgramBinding(const VertexBufferHandle* bufferHandles, uint32_t bufferCount, ProgramHandle programHandle)
-            -> VertexProgramBindingHandle;
-        void destroyVertexProgramBinding(const VertexProgramBindingHandle& handle);
+        auto createVertexProgramBinding(const uint32_t* bufferHandles, uint32_t bufferCount, uint32_t programHandle) -> uint32_t;
+        void destroyVertexProgramBinding(uint32_t handle);
 
-        auto createUniform(const char* name, UniformType type, ProgramHandle programHandle) -> UniformHandle;
-        void destroyUniform(const UniformHandle& handle);
-        void setUniform(const UniformHandle& handle, const void* value, uint32_t count);
+        auto createUniform(const char* name, UniformType type, uint32_t programHandle) -> uint32_t;
+        void destroyUniform(uint32_t handle);
+        void setUniform(uint32_t handle, const void* value, uint32_t count);
 
         void setFaceCull(FaceCull face);
 
@@ -97,8 +98,8 @@ namespace solo
 
         void clear(bool color, bool depth, float r, float g, float b, float a);
 
-        void drawIndexed(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle, const IndexBufferHandle& indexBufferHandle);
-        void draw(PrimitiveType primitiveType, const VertexProgramBindingHandle& bindingHandle, uint32_t vertexCount);
+        void drawIndexed(PrimitiveType primitiveType, uint32_t bindingHandle, uint32_t indexBufferHandle);
+        void draw(PrimitiveType primitiveType, uint32_t bindingHandle, uint32_t vertexCount);
 
     private:
         struct FrameBuffer
@@ -146,14 +147,14 @@ namespace solo
             GLint index = 0;
         };
 
-        void bindFrameBuffer(const FrameBufferHandle& handle);
-        void bindTexture(GLenum target, const TextureHandle& handle);
-        void bindVertexBuffer(const VertexBufferHandle& handle);
-        void bindIndexBuffer(const IndexBufferHandle& handle);
-        void bindVertexProgramBinding(const VertexProgramBindingHandle& handle);
-        void setTexture(GLenum target, const TextureHandle& handle, uint32_t flags);
-        void validateFrameBufferAttachments(const std::vector<TextureHandle>& attachments);
-        auto createVertexBuffer(bool dynamic, const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> VertexBufferHandle;
+        void bindFrameBuffer(uint32_t handle);
+        void bindTexture(GLenum target, uint32_t handle);
+        void bindVertexBuffer(uint32_t handle);
+        void bindIndexBuffer(uint32_t handle);
+        void bindVertexProgramBinding(uint32_t handle);
+        void setTexture(GLenum target, uint32_t handle, uint32_t flags);
+        void validateFrameBufferAttachments(const std::vector<uint32_t>& attachments);
+        auto createVertexBuffer(bool dynamic, const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> uint32_t;
 
         ResourcePool<Texture, SL_MAX_TEXTURES> textures;
         ResourcePool<FrameBuffer, SL_MAX_FRAME_BUFFERS> frameBuffers;

@@ -43,7 +43,7 @@ namespace solo
 
     private:
         OpenGLRenderer* renderer = nullptr;
-        FrameBufferHandle handle = EmptyFrameBufferHandle;
+        uint32_t handle = EmptyHandle;
     };
 }
 

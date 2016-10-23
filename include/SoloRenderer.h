@@ -23,34 +23,10 @@
 #include "SoloCommon.h"
 #include <vector>
 
-
-#define SL_RENDERER_RESOURCE_HANDLE(name) \
-    struct name \
-    { \
-        uint32_t value = EmptyHandleValue; \
-        \
-        bool empty() const\
-        { \
-            return value == EmptyHandleValue; \
-        } \
-    }; \
-    \
-    const name Empty##name = name();
-
 namespace solo
 {
     class Device;
     class DeviceToken;
-
-    const uint32_t EmptyHandleValue = -1;
-
-    SL_RENDERER_RESOURCE_HANDLE(TextureHandle)
-    SL_RENDERER_RESOURCE_HANDLE(FrameBufferHandle)
-    SL_RENDERER_RESOURCE_HANDLE(VertexBufferHandle)
-    SL_RENDERER_RESOURCE_HANDLE(IndexBufferHandle)
-    SL_RENDERER_RESOURCE_HANDLE(ProgramHandle)
-    SL_RENDERER_RESOURCE_HANDLE(VertexProgramBindingHandle)
-    SL_RENDERER_RESOURCE_HANDLE(UniformHandle)
 
     struct TextureFlags
     {

@@ -19,7 +19,6 @@
 */
 
 #include "SoloOpenGLRectTexture.h"
-#include "SoloOpenGLRenderer.h"
 #include "SoloDevice.h"
 
 

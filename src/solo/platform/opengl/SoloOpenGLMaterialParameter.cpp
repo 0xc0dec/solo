@@ -41,7 +41,7 @@ namespace solo
     {
     public:
         virtual ~MaterialParameterValue() {}
-        virtual void apply(OpenGLRenderer* renderer, UniformHandle handle) = 0;
+        virtual void apply(OpenGLRenderer* renderer, uint32_t handle) = 0;
     };
 }
 
@@ -58,7 +58,7 @@ public:
         this->value = *reinterpret_cast<const T*>(value);
     }
 
-    void apply(OpenGLRenderer* renderer, UniformHandle handle) override final
+    void apply(OpenGLRenderer* renderer, uint32_t handle) override final
     {
         renderer->setUniform(handle, &value, 1);
     }
@@ -77,7 +77,7 @@ public:
         this->value = *reinterpret_cast<const std::vector<T>*>(value);
     }
 
-    void apply(OpenGLRenderer* renderer, UniformHandle handle) override final
+    void apply(OpenGLRenderer* renderer, uint32_t handle) override final
     {
         renderer->setUniform(handle, value.data(), static_cast<uint32_t>(value.size()));
     }
@@ -95,7 +95,7 @@ public:
         this->value = *reinterpret_cast<const sptr<Texture>*>(value);
     }
 
-    void apply(OpenGLRenderer* renderer, UniformHandle handle) override final
+    void apply(OpenGLRenderer* renderer, uint32_t handle) override final
     {
         renderer->setUniform(handle, nullptr, 1);
         value->bind();
