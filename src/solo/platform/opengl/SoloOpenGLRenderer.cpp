@@ -277,12 +277,27 @@ OpenGLRenderer::OpenGLRenderer(Device* device)
 OpenGLRenderer::~OpenGLRenderer()
 {
     // All resources at this point should have already been released
-    programs.cleanup([](const Program& program) { glDeleteProgram(program.rawHandle); });
-    vertexProgramBindings.cleanup([](const VertexProgramBinding& vo) { glDeleteVertexArrays(1, &vo.rawHandle); });
-    frameBuffers.cleanup([](const FrameBuffer& buf) { glDeleteFramebuffers(1, &buf.rawHandle); });
-    vertexBuffers.cleanup([](const VertexBuffer& buf) { glDeleteBuffers(1, &buf.rawHandle); });
-    indexBuffers.cleanup([](const IndexBuffer& buf) { glDeleteBuffers(1, &buf.rawHandle); });
-    textures.cleanup([](const Texture& tex) { glDeleteTextures(1, &tex.rawHandle); });
+
+    while (!uniforms.empty())
+        destroyUniform(uniforms.begin()->first);
+    
+    while (!vertexProgramBindings.empty())
+        destroyVertexProgramBinding(vertexProgramBindings.begin()->first);
+
+    while (!programs.empty())
+        destroyProgram(programs.begin()->first);
+
+    while (!indexBuffers.empty())
+        destroyIndexBuffer(indexBuffers.begin()->first);
+
+    while (!vertexBuffers.empty())
+        destroyVertexBuffer(vertexBuffers.begin()->first);
+
+    while (!frameBuffers.empty())
+        destroyFrameBuffer(frameBuffers.begin()->first);
+
+    while (!textures.empty())
+        destroyTexture(textures.begin()->first);
 }
 
 
@@ -292,8 +307,8 @@ auto OpenGLRenderer::createTexture() -> uint32_t
     glGenTextures(1, &rawHandle);
     SL_ERR_IF(!rawHandle, "Failed to obtain texture handle");
 
-    auto handle = textures.reserveHandle();
-    textures.getData(handle).rawHandle = rawHandle;
+    auto handle = textureCounter++;
+    textures[handle].rawHandle = rawHandle;
 
     return handle;
 }
@@ -301,9 +316,9 @@ auto OpenGLRenderer::createTexture() -> uint32_t
 
 void OpenGLRenderer::destroyTexture(uint32_t handle)
 {
-    auto rawHandle = textures.getData(handle).rawHandle;
+    auto rawHandle = textures.at(handle).rawHandle;
     glDeleteTextures(1, &rawHandle);
-    textures.releaseHandle(handle);
+    textures.erase(handle);
 }
 
 
@@ -316,7 +331,7 @@ void OpenGLRenderer::update2DTexture(uint32_t handle, TextureFormat format, uint
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, fmt, GL_UNSIGNED_BYTE, data);
 
-    auto& texture = textures.getData(handle);
+    auto& texture = textures.at(handle);
     texture.width = width;
     texture.height = height;
 
@@ -360,28 +375,28 @@ void OpenGLRenderer::generateCubeTextureMipmaps(uint32_t handle)
 
 void OpenGLRenderer::bindTexture(GLenum target, uint32_t handle)
 {
-    auto rawHandle = handle == EmptyHandle ? 0 : textures.getData(handle).rawHandle;
+    auto rawHandle = handle == EmptyHandle ? 0 : textures.at(handle).rawHandle;
     glBindTexture(target, rawHandle);
 }
 
 
 void OpenGLRenderer::bindVertexBuffer(uint32_t handle)
 {
-    auto rawHandle = handle == EmptyHandle ? 0 : vertexBuffers.getData(handle).rawHandle;
+    auto rawHandle = handle == EmptyHandle ? 0 : vertexBuffers.at(handle).rawHandle;
     glBindBuffer(GL_ARRAY_BUFFER, rawHandle);
 }
 
 
 void OpenGLRenderer::bindIndexBuffer(uint32_t handle)
 {
-    auto rawHandle = handle == EmptyHandle ? 0 : indexBuffers.getData(handle).rawHandle;
+    auto rawHandle = handle == EmptyHandle ? 0 : indexBuffers.at(handle).rawHandle;
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rawHandle);
 }
 
 
 void OpenGLRenderer::bindVertexProgramBinding(uint32_t handle)
 {
-    auto rawHandle = handle == EmptyHandle ? 0 : vertexProgramBindings.getData(handle).rawHandle;
+    auto rawHandle = handle == EmptyHandle ? 0 : vertexProgramBindings.at(handle);
     glBindVertexArray(rawHandle);
 }
 
@@ -450,7 +465,7 @@ void OpenGLRenderer::validateFrameBufferAttachments(const std::vector<uint32_t>&
     auto width = -1, height = -1;
     for (auto i = 0; i < attachments.size(); i++)
     {
-        auto texture = textures.getData(attachments[i]);
+        auto texture = textures.at(attachments[i]);
         if (width < 0)
         {
             width = texture.width;
@@ -514,7 +529,7 @@ void OpenGLRenderer::setCubeTexture(uint32_t handle, uint32_t flags, float aniso
 
 void OpenGLRenderer::bindFrameBuffer(uint32_t handle)
 {
-    auto rawHandle = handle == EmptyHandle ? 0 : frameBuffers.getData(handle).rawHandle;
+    auto rawHandle = handle == EmptyHandle ? 0 : frameBuffers.at(handle).rawHandle;
     glBindFramebuffer(GL_FRAMEBUFFER, rawHandle);
 }
 
@@ -525,19 +540,18 @@ auto OpenGLRenderer::createFrameBuffer() -> uint32_t
     glGenFramebuffers(1, &rawHandle);
     SL_ERR_IF(!rawHandle, "Failed to obtain frame buffer handle");
 
-    auto handle = frameBuffers.reserveHandle();
-    frameBuffers.getData(handle).rawHandle = rawHandle;
-
+    auto handle = frameBufferCounter++;
+    frameBuffers[handle].rawHandle = rawHandle;
     return handle;
 }
 
 
 void OpenGLRenderer::destroyFrameBuffer(uint32_t handle)
 {
-    auto rawHandle = frameBuffers.getData(handle).rawHandle;
+    auto rawHandle = frameBuffers.at(handle).rawHandle;
     glDeleteFramebuffers(1, &rawHandle);
     // TODO release depth buffer?
-    frameBuffers.releaseHandle(handle);
+    frameBuffers.erase(handle);
 }
 
 
@@ -553,7 +567,7 @@ void OpenGLRenderer::updateFrameBuffer(uint32_t handle, const std::vector<uint32
 
     bindFrameBuffer(handle);
 
-    auto frameBuffer = frameBuffers.getData(handle);
+    auto frameBuffer = frameBuffers.at(handle);
 
     if (frameBuffer.depthBufferHandle)
     {
@@ -565,7 +579,7 @@ void OpenGLRenderer::updateFrameBuffer(uint32_t handle, const std::vector<uint32
     auto maxCount = std::max(newCount, static_cast<size_t>(frameBuffer.attachmentCount));
     for (auto i = 0; i < maxCount; i++)
     {
-        auto rawHandle = i < newCount ? textures.getData(attachmentHandles[i]).rawHandle : 0;
+        auto rawHandle = i < newCount ? textures.at(attachmentHandles[i]).rawHandle : 0;
         glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, rawHandle, 0);
     }
 
@@ -576,7 +590,7 @@ void OpenGLRenderer::updateFrameBuffer(uint32_t handle, const std::vector<uint32
         SL_ERR_IF(!frameBuffer.depthBufferHandle, "Failed to obtain depth buffer handle");
 
         glBindRenderbuffer(GL_RENDERBUFFER, frameBuffer.depthBufferHandle);
-        auto firstAttachment = textures.getData(attachmentHandles[0]);
+        auto firstAttachment = textures.at(attachmentHandles[0]);
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, firstAttachment.width, firstAttachment.height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, frameBuffer.depthBufferHandle);
 
@@ -597,8 +611,8 @@ auto OpenGLRenderer::createVertexBuffer(bool dynamic, const VertexBufferLayout& 
     glBufferData(GL_ARRAY_BUFFER, layout.getSize() * vertexCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    auto handle = vertexBuffers.reserveHandle();
-    auto& vertexBuffer = vertexBuffers.getData(handle);
+    auto handle = vertexBufferCounter++;
+    auto& vertexBuffer = vertexBuffers[handle];
     vertexBuffer.rawHandle = rawHandle;
     vertexBuffer.layout = layout;
     vertexBuffer.vertexCount = vertexCount;
@@ -630,9 +644,9 @@ void OpenGLRenderer::updateDynamicVertexBuffer(uint32_t handle, const void* data
 
 void OpenGLRenderer::destroyVertexBuffer(uint32_t handle)
 {
-    auto rawHandle = vertexBuffers.getData(handle).rawHandle;
+    auto rawHandle = vertexBuffers.at(handle).rawHandle;
     glDeleteBuffers(1, &rawHandle);
-    vertexBuffers.releaseHandle(handle);
+    vertexBuffers.erase(handle);
 }
 
 
@@ -646,8 +660,8 @@ auto OpenGLRenderer::createIndexBuffer(const void* data, uint32_t elementSize, u
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementSize * elementCount, data, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    auto handle = indexBuffers.reserveHandle();
-    auto& indexBuffer = indexBuffers.getData(handle);
+    auto handle = indexBufferCounter++;
+    auto& indexBuffer = indexBuffers[handle];
     indexBuffer.rawHandle = rawHandle;
     indexBuffer.elementCount = elementCount;
 
@@ -657,9 +671,9 @@ auto OpenGLRenderer::createIndexBuffer(const void* data, uint32_t elementSize, u
 
 void OpenGLRenderer::destroyIndexBuffer(uint32_t handle)
 {
-    auto rawHandle = indexBuffers.getData(handle).rawHandle;
+    auto rawHandle = indexBuffers.at(handle).rawHandle;
     glDeleteBuffers(1, &rawHandle);
-    indexBuffers.releaseHandle(handle);
+    indexBuffers.erase(handle);
 }
 
 
@@ -674,8 +688,8 @@ auto OpenGLRenderer::createProgram(const char* vsSrc, const char* fsSrc) -> uint
     glDetachShader(program, fs);
     glDeleteShader(fs);
 
-    auto handle = programs.reserveHandle();
-    programs.getData(handle).rawHandle = program;
+    auto handle = programCounter++;
+    programs[handle] = program;
 
     return handle;
 }
@@ -683,15 +697,15 @@ auto OpenGLRenderer::createProgram(const char* vsSrc, const char* fsSrc) -> uint
 
 void OpenGLRenderer::destroyProgram(uint32_t handle)
 {
-    auto rawHandle = programs.getData(handle).rawHandle;
+    auto rawHandle = programs.at(handle);
     glDeleteProgram(rawHandle);
-    programs.releaseHandle(handle);
+    programs.erase(handle);
 }
 
 
 void OpenGLRenderer::setProgram(uint32_t handle)
 {
-    auto rawHandle = handle == EmptyHandle ? 0 : programs.getData(handle).rawHandle;
+    auto rawHandle = handle == EmptyHandle ? 0 : programs.at(handle);
     glUseProgram(rawHandle);
 }
 
@@ -704,7 +718,7 @@ auto OpenGLRenderer::createVertexProgramBinding(const uint32_t* bufferHandles, u
 
     glBindVertexArray(rawHandle);
 
-    auto attributes = discoverVertexAttributes(programs.getData(programHandle).rawHandle);
+    auto attributes = discoverVertexAttributes(programs.at(programHandle));
 
     auto findAttributeLocation = [&](const char* name)
     {
@@ -715,7 +729,7 @@ auto OpenGLRenderer::createVertexProgramBinding(const uint32_t* bufferHandles, u
     for (uint32_t i = 0; i < bufferCount; i++)
     {
         const auto& bufferHandle = bufferHandles[i];
-        const auto& layout = vertexBuffers.getData(bufferHandle).layout;
+        const auto& layout = vertexBuffers.at(bufferHandle).layout;
         const auto elementCount = layout.getElementCount();
         if (!elementCount)
             continue;
@@ -768,8 +782,8 @@ auto OpenGLRenderer::createVertexProgramBinding(const uint32_t* bufferHandles, u
 
     glBindVertexArray(0);
 
-    auto handle = vertexProgramBindings.reserveHandle();
-    vertexProgramBindings.getData(handle).rawHandle = rawHandle;
+    auto handle = vertexProgramBindingCounter++;
+    vertexProgramBindings[handle] = rawHandle;
 
     return handle;
 }
@@ -777,9 +791,9 @@ auto OpenGLRenderer::createVertexProgramBinding(const uint32_t* bufferHandles, u
 
 void OpenGLRenderer::destroyVertexProgramBinding(uint32_t handle)
 {
-    auto rawHandle = vertexProgramBindings.getData(handle).rawHandle;
+    auto rawHandle = vertexProgramBindings.at(handle);
     glDeleteVertexArrays(1, &rawHandle);
-    vertexProgramBindings.releaseHandle(handle);
+    vertexProgramBindings.erase(handle);
 }
 
 
@@ -788,7 +802,7 @@ void OpenGLRenderer::drawIndexed(PrimitiveType primitiveType, uint32_t bindingHa
     bindVertexProgramBinding(bindingHandle);
     bindIndexBuffer(indexBufferHandle);
 
-    const auto& indexBuffer = indexBuffers.getData(indexBufferHandle);
+    const auto& indexBuffer = indexBuffers.at(indexBufferHandle);
     glDrawElements(toGLPrimitiveType(primitiveType), indexBuffer.elementCount, GL_UNSIGNED_SHORT, nullptr);
 
     bindIndexBuffer(EmptyHandle);
@@ -806,14 +820,14 @@ void OpenGLRenderer::draw(PrimitiveType primitiveType, uint32_t bindingHandle, u
 
 auto OpenGLRenderer::createUniform(const char* name, UniformType type, uint32_t programHandle) -> uint32_t
 {
-    auto rawProgramHandle = programs.getData(programHandle).rawHandle;
+    auto rawProgramHandle = programs.at(programHandle);
 
     GLint location, index;
     auto found = findUniformInProgram(rawProgramHandle, name, location, index);
     SL_ERR_IF(!found, SL_FMT("Could not find uniform '", name, "'"));
 
-    auto handle = uniforms.reserveHandle();
-    auto& uniform = uniforms.getData(handle);
+    auto handle = uniformCounter++;
+    auto& uniform = uniforms[handle];
     uniform.type = type;
     uniform.index = index;
     uniform.location = location;
@@ -824,13 +838,13 @@ auto OpenGLRenderer::createUniform(const char* name, UniformType type, uint32_t 
 
 void OpenGLRenderer::destroyUniform(uint32_t handle)
 {
-    uniforms.releaseHandle(handle);
+    uniforms.erase(handle);
 }
 
 
 void OpenGLRenderer::setUniform(uint32_t handle, const void* value, uint32_t count)
 {
-    const auto& uniform = uniforms.getData(handle);
+    const auto& uniform = uniforms.at(handle);
     auto floatData = reinterpret_cast<const float*>(value);
     switch (uniform.type)
     {

@@ -153,9 +153,13 @@ private:
         auto t = node->findComponent<Transform>();
         t->setLocalPosition(Vector3(0, 5, 10));
         t->lookAt(Vector3::zero(), Vector3::unitY());
-        node->addComponent<Spectator>();
         node->addComponent<EscapeWatcher>();
         node->addComponent<Screenshoter>("demo1-screenshot.bmp");
+
+        auto spectator = node->addComponent<Spectator>();
+        spectator->setVerticalRotationSpeed(1);
+        spectator->setHorizontalRotationSpeed(1);
+
         auto cam = node->addComponent<Camera>();
         cam->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
         cam->setNear(0.05f);

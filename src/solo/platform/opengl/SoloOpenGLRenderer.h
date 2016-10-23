@@ -25,6 +25,7 @@
 #include "SoloResourcePool.h"
 #include "SoloVertexFormat.h"
 #include <vector>
+#include <unordered_map>
 
 #ifdef SL_OPENGL_RENDERER
 
@@ -54,8 +55,7 @@ namespace solo
         void setCubeTexture(uint32_t handle, uint32_t flags);
         void setCubeTexture(uint32_t handle, uint32_t flags, float anisotropyLevel);
         void update2DTexture(uint32_t handle, TextureFormat format, uint32_t width, uint32_t height, const void* data);
-        void updateCubeTexture(uint32_t handle, CubeTextureFace face, TextureFormat format,
-            uint32_t width, uint32_t height, const void* data);
+        void updateCubeTexture(uint32_t handle, CubeTextureFace face, TextureFormat format, uint32_t width, uint32_t height, const void* data);
         void generateRectTextureMipmaps(uint32_t handle);
         void generateCubeTextureMipmaps(uint32_t handle);
 
@@ -130,16 +130,6 @@ namespace solo
             uint32_t elementCount = 0;
         };
 
-        struct Program
-        {
-            GLuint rawHandle = 0;
-        };
-
-        struct VertexProgramBinding
-        {
-            GLuint rawHandle = 0;
-        };
-
         struct Uniform
         {
             UniformType type = UniformType::Float;
@@ -156,13 +146,24 @@ namespace solo
         void validateFrameBufferAttachments(const std::vector<uint32_t>& attachments);
         auto createVertexBuffer(bool dynamic, const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> uint32_t;
 
-        ResourcePool<Texture, SL_MAX_TEXTURES> textures;
-        ResourcePool<FrameBuffer, SL_MAX_FRAME_BUFFERS> frameBuffers;
-        ResourcePool<VertexBuffer, SL_MAX_VERTEX_BUFFERS> vertexBuffers;
-        ResourcePool<IndexBuffer, SL_MAX_INDEX_BUFFERS> indexBuffers;
-        ResourcePool<Program, SL_MAX_PROGRAMS> programs;
-        ResourcePool<VertexProgramBinding, SL_MAX_VERTEX_OBJECTS> vertexProgramBindings;
-        ResourcePool<Uniform, SL_MAX_UNIFORMS> uniforms;
+        // Counters for assigning unique resource ids.
+        // Released ids do not get reused, so this effectively limits the total
+        // number of resource allocations during the program lifetime. That's how it is for now.
+        uint32_t textureCounter = 0;
+        uint32_t frameBufferCounter = 0;
+        uint32_t vertexBufferCounter = 0;
+        uint32_t indexBufferCounter = 0;
+        uint32_t programCounter = 0;
+        uint32_t vertexProgramBindingCounter = 0;
+        uint32_t uniformCounter = 0;
+
+        std::unordered_map<uint32_t, Texture> textures;
+        std::unordered_map<uint32_t, FrameBuffer> frameBuffers;
+        std::unordered_map<uint32_t, VertexBuffer> vertexBuffers;
+        std::unordered_map<uint32_t, IndexBuffer> indexBuffers;
+        std::unordered_map<uint32_t, GLuint> programs;
+        std::unordered_map<uint32_t, GLuint> vertexProgramBindings;
+        std::unordered_map<uint32_t, Uniform> uniforms;
     };
 }
 
