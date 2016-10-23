@@ -22,6 +22,7 @@
 
 #include "SoloCamera.h"
 
+
 #ifdef SL_OPENGL_RENDERER
 
 namespace solo

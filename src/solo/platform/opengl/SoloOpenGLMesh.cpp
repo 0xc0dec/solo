@@ -23,6 +23,7 @@
 #include "SoloOpenGLEffect.h"
 #include <algorithm>
 
+
 #ifdef SL_OPENGL_RENDERER
 
 using namespace solo;

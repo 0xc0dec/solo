@@ -32,8 +32,8 @@
 #include "SoloCamera.h"
 #include "SoloOpenGLEffect.h"
 
-#ifdef SL_OPENGL_RENDERER
 
+#ifdef SL_OPENGL_RENDERER
 
 namespace solo
 {

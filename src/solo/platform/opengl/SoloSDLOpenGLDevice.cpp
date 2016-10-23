@@ -23,6 +23,7 @@
 #include <GL/glew.h>
 #include <SDL_surface.h>
 
+
 #ifdef SL_OPENGL_RENDERER
 
 using namespace solo;

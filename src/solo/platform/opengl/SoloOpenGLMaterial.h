@@ -22,6 +22,7 @@
 
 #include "SoloMaterial.h"
 
+
 #ifdef SL_OPENGL_RENDERER
 
 namespace solo

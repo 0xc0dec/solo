@@ -26,6 +26,7 @@
 #include "SoloDevice.h"
 #include "platform/opengl/SoloOpenGLRenderer.h"
 
+
 #ifdef SL_OPENGL_RENDERER
 
 using namespace solo;

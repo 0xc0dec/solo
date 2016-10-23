@@ -22,6 +22,7 @@
 #include "SoloDevice.h"
 #include "SoloOpenGLPrefabShaders.h"
 
+
 #ifdef SL_OPENGL_RENDERER
 
 using namespace solo;

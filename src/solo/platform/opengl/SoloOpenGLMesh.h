@@ -23,6 +23,7 @@
 #include "SoloMesh.h"
 #include "SoloOpenGLRenderer.h"
 
+
 #ifdef SL_OPENGL_RENDERER
 
 namespace solo
