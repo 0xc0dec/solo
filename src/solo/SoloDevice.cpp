@@ -28,6 +28,7 @@
 #include "SoloPhysics.h"
 #include "platform/null/SoloNullDevice.h"
 #include "platform/opengl/SoloSDLOpenGLDevice.h"
+#include "platform/vulkan/SoloSDLVulkanDevice.h"
 
 using namespace solo;
 
@@ -82,6 +83,8 @@ uptr<Device> Device::createInstance(const DeviceSetup& setup)
     {
         case DeviceMode::OpenGL:
             return std::make_unique<SDLOpenGLDevice>(setup);
+        case DeviceMode::Vulkan:
+            return std::make_unique<SDLVulkanDevice>(setup);
         case DeviceMode::Null:
             return std::make_unique<NullDevice>(setup);
         default:

@@ -34,8 +34,13 @@
 #   define SL_LINUX
 #endif
 
+
 #if defined(SL_WINDOWS) || defined(SL_MACOS)
 #   define SL_OPENGL_RENDERER
+#endif
+
+#ifdef SL_WINDOWS
+#   define SL_VULKAN_RENDERER
 #endif
 
 

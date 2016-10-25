@@ -265,6 +265,9 @@
     <ClInclude Include="..\src\solo\platform\null\SoloNullMesh.h">
       <Filter>src\platform\null</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\platform\vulkan\SoloSDLVulkanDevice.h">
+      <Filter>src\platform\vulkan</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\SoloScene.cpp">
@@ -441,6 +444,9 @@
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLMesh.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\solo\platform\vulkan\SoloSDLVulkanDevice.cpp">
+      <Filter>src\platform\vulkan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -463,6 +469,9 @@
     </Filter>
     <Filter Include="src\platform\null">
       <UniqueIdentifier>{a2160cc5-f9a6-47d6-b537-be79b1e819d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\platform\vulkan">
+      <UniqueIdentifier>{922994a2-1ba2-4c0e-bb85-b3e9b991e6dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
