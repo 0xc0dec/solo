@@ -18,7 +18,6 @@
     <ClInclude Include="..\include\SoloCamera.h" />
     <ClInclude Include="..\include\SoloCollider.h" />
     <ClInclude Include="..\include\SoloComponent.h" />
-    <ClInclude Include="..\include\SoloConfig.h" />
     <ClInclude Include="..\include\SoloDegree.h" />
     <ClInclude Include="..\include\SoloDevice.h" />
     <ClInclude Include="..\include\SoloDeviceSetup.h" />

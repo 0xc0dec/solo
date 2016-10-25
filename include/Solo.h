@@ -28,7 +28,6 @@
 #include "SoloCollider.h"
 #include "SoloCommon.h"
 #include "SoloComponent.h"
-#include "SoloConfig.h"
 #include "SoloCubeTexture.h"
 #include "SoloDegree.h"
 #include "SoloDevice.h"

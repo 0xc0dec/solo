@@ -20,10 +20,8 @@
 
 #pragma once
 
-#include "SoloConfig.h"
 #include "SoloFormatter.h"
 #include <memory>
-#include <cassert>
 
 
 #if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS)
