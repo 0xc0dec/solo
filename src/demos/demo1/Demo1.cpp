@@ -24,6 +24,7 @@
 #include "../common/Rotator.h"
 #include "../common/Shaders.h"
 #include "Shaders.h"
+#include <cassert>
 
 using namespace solo;
 
