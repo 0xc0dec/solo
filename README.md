@@ -9,7 +9,7 @@ A framework for my personal graphics/gamedev experiments.
 * Workflow for applying post-processing effects.
 * Basic text rendering.
 * Basic physics.
-* OpenGL graphics backend.
+* Current rendering backend is OpenGL-based, Vulkan is coming.
 
 ## Screenshots
 
