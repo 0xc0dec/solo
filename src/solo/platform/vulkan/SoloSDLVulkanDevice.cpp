@@ -20,6 +20,8 @@
 
 #include "SoloSDLVulkanDevice.h"
 
+#ifdef SL_VULKAN_RENDERER
+
 #include <SDL_syswm.h>
 #ifdef SL_WINDOWS
 #   include <windows.h>
@@ -104,3 +106,8 @@ void SDLVulkanDevice::saveScreenshot(const std::string& path)
 void SDLVulkanDevice::endUpdate()
 {
 }
+
+
+#else
+#   error Vulkan renderer is not supported on this platform
+#endif
