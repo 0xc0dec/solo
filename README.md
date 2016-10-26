@@ -27,7 +27,7 @@ A framework for my personal graphics/gamedev experiments.
 * stb_truetype
 * zlib
 
-## License: zlib
+## Zlib license
 
 This software is provided 'as-is', without any express or implied
 warranty.  In no event will the authors be held liable for any damages
