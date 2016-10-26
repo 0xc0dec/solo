@@ -21,6 +21,7 @@
 #include "SoloRenderer.h"
 #include "SoloDevice.h"
 #include "platform/opengl/SoloOpenGLRenderer.h"
+#include "platform/vulkan/SoloVulkanRenderer.h"
 #include "platform/null/SoloNullRenderer.h"
 
 using namespace solo;
@@ -32,6 +33,8 @@ auto Renderer::create(Device* device, const DeviceToken&) -> sptr<Renderer>
     {
         case DeviceMode::OpenGL:
             return std::make_shared<OpenGLRenderer>(device);
+        case DeviceMode::Vulkan:
+            return std::make_shared<VulkanRenderer>();
         default:
             return std::make_shared<NullRenderer>();
     }

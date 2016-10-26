@@ -268,6 +268,9 @@
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkan.h">
       <Filter>src\platform\vulkan</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanRenderer.h">
+      <Filter>src\platform\vulkan</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\SoloScene.cpp">
@@ -445,6 +448,9 @@
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\platform\vulkan\SoloSDLVulkanDevice.cpp">
+      <Filter>src\platform\vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanRenderer.cpp">
       <Filter>src\platform\vulkan</Filter>
     </ClCompile>
   </ItemGroup>
