@@ -71,7 +71,7 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup& setup):
     auto hwnd = wmInfo.info.win.window;
     auto hinstance = reinterpret_cast<HINSTANCE>(GetWindowLongPtr(hwnd, GWLP_HINSTANCE));
 
-    VkWin32SurfaceCreateInfoKHR surfaceCreateInfo = {};
+    VkWin32SurfaceCreateInfoKHR surfaceCreateInfo {};
 	surfaceCreateInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
 	surfaceCreateInfo.hinstance = hinstance;
 	surfaceCreateInfo.hwnd = hwnd;
