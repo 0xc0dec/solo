@@ -95,6 +95,7 @@
     <ClInclude Include="..\src\solo\platform\sdl\SoloSDLDevice.h" />
     <ClInclude Include="..\src\solo\platform\sdl\SoloSDLInputMaps.h" />
     <ClInclude Include="..\src\solo\platform\vulkan\SoloSDLVulkanDevice.h" />
+    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkan.h" />
     <ClInclude Include="..\src\solo\SoloMaterialParameter.h" />
     <ClInclude Include="..\src\solo\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\solo\SoloPngImageLoader.h" />

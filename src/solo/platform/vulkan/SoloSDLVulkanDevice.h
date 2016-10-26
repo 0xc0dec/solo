@@ -24,18 +24,26 @@
 
 #ifdef SL_VULKAN_RENDERER
 
+#include "SoloVulkan.h"
+
 namespace solo
 {
     class SDLVulkanDevice final: public SDLDevice
     {
     public:
         explicit SDLVulkanDevice(const DeviceSetup& setup);
+        ~SDLVulkanDevice();
 
         auto getCanvasSize() const -> Vector2 override final;
+
         void saveScreenshot(const std::string& path) override final;
 
     protected:
         void endUpdate() override final;
+
+    private:
+        VkInstance instance = nullptr;
+        VkSurfaceKHR surface = nullptr;
     };
 }
 
