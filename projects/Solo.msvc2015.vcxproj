@@ -120,6 +120,7 @@
     <ClCompile Include="..\src\solo\platform\opengl\SoloSDLOpenGLDevice.cpp" />
     <ClCompile Include="..\src\solo\platform\sdl\SoloSDLDevice.cpp" />
     <ClCompile Include="..\src\solo\platform\vulkan\SoloSDLVulkanDevice.cpp" />
+    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkan.cpp" />
     <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanRenderer.cpp" />
     <ClCompile Include="..\src\solo\SoloBoxCollider.cpp" />
     <ClCompile Include="..\src\solo\SoloCubeTexture.cpp" />

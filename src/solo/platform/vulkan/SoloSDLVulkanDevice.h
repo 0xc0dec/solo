@@ -38,6 +38,9 @@ namespace solo
 
         void saveScreenshot(const std::string& path) override final;
 
+        auto getVkInstance() const -> VkInstance;
+        auto getVkSurface() const -> VkSurfaceKHR;
+
     protected:
         void endUpdate() override final;
 
@@ -45,6 +48,16 @@ namespace solo
         VkInstance instance = nullptr;
         VkSurfaceKHR surface = nullptr;
     };
+
+    inline auto SDLVulkanDevice::getVkInstance() const -> VkInstance
+    {
+        return instance;
+    }
+
+    inline auto SDLVulkanDevice::getVkSurface() const -> VkSurfaceKHR
+    {
+        return surface;
+    }
 }
 
 #else

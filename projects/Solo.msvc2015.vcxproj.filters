@@ -453,6 +453,9 @@
     <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanRenderer.cpp">
       <Filter>src\platform\vulkan</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkan.cpp">
+      <Filter>src\platform\vulkan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
