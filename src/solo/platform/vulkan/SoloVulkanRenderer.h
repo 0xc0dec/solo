@@ -9,6 +9,7 @@
 namespace solo
 {
     class Device;
+    class Vector2;
 
     class VulkanRenderer final: public Renderer
     {
@@ -20,6 +21,16 @@ namespace solo
         void endFrame() override final;
 
     private:
+        struct SwapchainBuffer
+        {
+            VkImage image = nullptr;
+            VkImageView imageView = nullptr;
+        };
+
+        void initSwapchain(VkSurfaceKHR surface, bool vsync, const Vector2& deviceCanvasSize);
+
+        uint32_t canvasWidth = 1;
+        uint32_t canvasHeight = 1;
         VkDevice device = nullptr;
         VkPhysicalDevice physicalDevice = nullptr;
         VkQueue queue = nullptr;
@@ -32,6 +43,8 @@ namespace solo
         VkSemaphore presentCompleteSem = nullptr;
         VkSemaphore renderCompleteSem = nullptr;
         VkCommandPool commandPool = nullptr;
+        VkSwapchainKHR swapchain = nullptr;
+        std::vector<SwapchainBuffer> swapchainBuffers;
     };
 }
 
