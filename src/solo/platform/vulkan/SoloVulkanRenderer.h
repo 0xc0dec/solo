@@ -28,6 +28,9 @@ namespace solo
         };
 
         void initSwapchain(VkSurfaceKHR surface, bool vsync, const Vector2& deviceCanvasSize);
+        void initCommandBuffers();
+        void initPresentationCommandBuffers();
+        void beginCommandBuffer(VkCommandBuffer buffer);
 
         uint32_t canvasWidth = 1;
         uint32_t canvasHeight = 1;
@@ -45,6 +48,9 @@ namespace solo
         VkCommandPool commandPool = nullptr;
         VkSwapchainKHR swapchain = nullptr;
         std::vector<SwapchainBuffer> swapchainBuffers;
+        std::vector<VkCommandBuffer> drawCmdBuffers;
+        std::vector<VkCommandBuffer> prePresentCmdBuffers;
+        std::vector<VkCommandBuffer> postPresentCmdBuffers;
     };
 }
 

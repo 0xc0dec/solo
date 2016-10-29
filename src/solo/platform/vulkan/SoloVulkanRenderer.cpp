@@ -63,9 +63,9 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice)
     commandPool = vk::createCommandPool(device, queueIndex);
 
     initSwapchain(surface, engineDevice->getSetup().vsync, engineDevice->getCanvasSize());
-    /*initCommandBuffers();
+    initCommandBuffers();
 
-    setupCmdBuffer = VulkanHelper::createCommandBuffer(device, commandPool);
+    /*setupCmdBuffer = VulkanHelper::createCommandBuffer(device, commandPool);
     beginCommandBuffer(setupCmdBuffer);
 
     depthStencil = createDepthStencil(device, physicalDeviceMemProps, setupCmdBuffer, depthFormat, canvasWidth, canvasHeight);
@@ -207,6 +207,85 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync, const Vecto
 
         SL_CHECK_VK_RESULT(vkCreateImageView(device, &imageViewInfo, nullptr, &swapchainBuffers[i].imageView));
     }
+}
+
+
+void VulkanRenderer::initCommandBuffers()
+{
+    auto count = swapchainBuffers.size();
+
+    drawCmdBuffers.resize(count);
+    prePresentCmdBuffers.resize(count);
+    postPresentCmdBuffers.resize(count);
+
+    VkCommandBufferAllocateInfo commandBufferAllocateInfo = {};
+    commandBufferAllocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    commandBufferAllocateInfo.commandPool = commandPool;
+    commandBufferAllocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    commandBufferAllocateInfo.commandBufferCount = static_cast<uint32_t>(count);
+
+    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &commandBufferAllocateInfo, drawCmdBuffers.data()));
+    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &commandBufferAllocateInfo, prePresentCmdBuffers.data()));
+    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &commandBufferAllocateInfo, postPresentCmdBuffers.data()));
+
+    initPresentationCommandBuffers();
+}
+
+
+void VulkanRenderer::initPresentationCommandBuffers()
+{
+    for (uint32_t i = 0; i < swapchainBuffers.size(); i++)
+    {
+        // Transform the image back to a color attachment that our render pass can write to
+
+        beginCommandBuffer(postPresentCmdBuffers[i]);
+
+        VkImageMemoryBarrier postPresentBarrier = {};
+        postPresentBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+        postPresentBarrier.pNext = nullptr;
+        postPresentBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        postPresentBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        postPresentBarrier.srcAccessMask = 0;
+        postPresentBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+        postPresentBarrier.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        postPresentBarrier.newLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+        postPresentBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        postPresentBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        postPresentBarrier.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+        postPresentBarrier.image = swapchainBuffers[i].image;
+
+        vkCmdPipelineBarrier(postPresentCmdBuffers[i], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
+            0, 0, nullptr, 0, nullptr, 1, &postPresentBarrier);
+        vk::submitCommandBuffer(queue, postPresentCmdBuffers[i]);
+
+        // Transforms the (framebuffer) image layout from color attachment to present(khr) for presenting to the swap chain
+
+        beginCommandBuffer(prePresentCmdBuffers[i]);
+        VkImageMemoryBarrier prePresentBarrier = {};
+        prePresentBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+        prePresentBarrier.pNext = nullptr;
+        prePresentBarrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+        prePresentBarrier.dstAccessMask = VK_ACCESS_MEMORY_READ_BIT;
+        prePresentBarrier.oldLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+        prePresentBarrier.newLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+        prePresentBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        prePresentBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        prePresentBarrier.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+        prePresentBarrier.image = swapchainBuffers[i].image;
+
+        vkCmdPipelineBarrier(prePresentCmdBuffers[i], VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
+            0, 0, nullptr, 0, nullptr, 1, &prePresentBarrier);
+
+        vk::submitCommandBuffer(queue, prePresentCmdBuffers[i]);
+    }
+}
+
+
+void VulkanRenderer::beginCommandBuffer(VkCommandBuffer buffer)
+{
+    VkCommandBufferBeginInfo beginInfo = {};
+    beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+    SL_CHECK_VK_RESULT(vkBeginCommandBuffer(buffer, &beginInfo));
 }
 
 

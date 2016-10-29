@@ -113,6 +113,20 @@ auto vk::createCommandPool(VkDevice logicalDevice, uint32_t queueIndex) -> VkCom
 }
 
 
+void vk::submitCommandBuffer(VkQueue queue, VkCommandBuffer buffer)
+{
+    SL_CHECK_VK_RESULT(vkEndCommandBuffer(buffer));
+
+    VkSubmitInfo submitInfo = {};
+    submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    submitInfo.commandBufferCount = 1;
+    submitInfo.pCommandBuffers = &buffer;
+
+    SL_CHECK_VK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, nullptr));
+    SL_CHECK_VK_RESULT(vkQueueWaitIdle(queue));
+}
+
+
 #else
 #   error Vulkan renderer is not supported on this platform
 #endif

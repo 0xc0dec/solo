@@ -24,6 +24,7 @@ namespace solo
         auto getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> uint32_t;
         auto getDepthFormat(VkPhysicalDevice device) -> VkFormat;
         auto createCommandPool(VkDevice logicalDevice, uint32_t queueIndex) -> VkCommandPool;
+        void submitCommandBuffer(VkQueue queue, VkCommandBuffer buffer);
     }
 }
 
