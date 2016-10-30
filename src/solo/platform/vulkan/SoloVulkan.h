@@ -25,6 +25,13 @@ namespace solo
         auto getDepthFormat(VkPhysicalDevice device) -> VkFormat;
         auto createCommandPool(VkDevice logicalDevice, uint32_t queueIndex) -> VkCommandPool;
         void submitCommandBuffer(VkQueue queue, VkCommandBuffer buffer);
+        auto createCommandBuffer(VkDevice logicalDevice, VkCommandPool commandPool) -> VkCommandBuffer;
+        auto findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, uint32_t typeBits,
+            VkMemoryPropertyFlags properties) -> int32_t;
+        void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageLayout oldLayout,
+            VkImageLayout newLayout, VkImageSubresourceRange subresourceRange);
+        void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask,
+            VkImageLayout oldLayout, VkImageLayout newLayout);
     }
 }
 

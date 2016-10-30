@@ -35,6 +35,66 @@ VkSemaphore createSemaphore(VkDevice device)
 }
 
 
+auto VulkanRenderer::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
+    VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil
+{
+    VkImageCreateInfo image = {};
+    image.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+    image.pNext = nullptr;
+    image.imageType = VK_IMAGE_TYPE_2D;
+    image.format = depthFormat;
+    image.extent = { canvasWidth, canvasHeight, 1 };
+    image.mipLevels = 1;
+    image.arrayLayers = 1;
+    image.samples = VK_SAMPLE_COUNT_1_BIT;
+    image.tiling = VK_IMAGE_TILING_OPTIMAL;
+    image.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
+    image.flags = 0;
+
+    VkMemoryAllocateInfo alloc = {};
+    alloc.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+    alloc.pNext = nullptr;
+    alloc.allocationSize = 0;
+    alloc.memoryTypeIndex = 0;
+
+    VkImageViewCreateInfo createInfo = {};
+    createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+    createInfo.pNext = nullptr;
+    createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+    createInfo.format = depthFormat;
+    createInfo.flags = 0;
+    createInfo.subresourceRange = {};
+    createInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT;
+    createInfo.subresourceRange.baseMipLevel = 0;
+    createInfo.subresourceRange.levelCount = 1;
+    createInfo.subresourceRange.baseArrayLayer = 0;
+    createInfo.subresourceRange.layerCount = 1;
+
+    DepthStencil depthStencil {};
+
+    VkMemoryRequirements memReqs;
+    SL_CHECK_VK_RESULT(vkCreateImage(device, &image, nullptr, &depthStencil.image));
+    vkGetImageMemoryRequirements(device, depthStencil.image, &memReqs);
+
+    auto memTypeIndex = vk::findMemoryType(physicalDeviceMemProps, memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+    SL_ERR_IF(memTypeIndex < 0);
+
+    alloc.allocationSize = memReqs.size;
+    alloc.memoryTypeIndex = memTypeIndex;
+    SL_CHECK_VK_RESULT(vkAllocateMemory(device, &alloc, nullptr, &depthStencil.mem));
+    SL_CHECK_VK_RESULT(vkBindImageMemory(device, depthStencil.image, depthStencil.mem, 0));
+    
+    // TODO has any effect?
+    vk::setImageLayout(cmdBuffer, depthStencil.image, VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT,
+        VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
+
+    createInfo.image = depthStencil.image;
+    SL_CHECK_VK_RESULT(vkCreateImageView(device, &createInfo, nullptr, &depthStencil.view));
+
+    return depthStencil;
+}
+
+
 VulkanRenderer::VulkanRenderer(Device* engineDevice)
 {
     auto vulkanDevice = dynamic_cast<SDLVulkanDevice*>(engineDevice);
@@ -65,11 +125,11 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice)
     initSwapchain(surface, engineDevice->getSetup().vsync, engineDevice->getCanvasSize());
     initCommandBuffers();
 
-    /*setupCmdBuffer = VulkanHelper::createCommandBuffer(device, commandPool);
-    beginCommandBuffer(setupCmdBuffer);
+    auto setupCmdBuf = vk::createCommandBuffer(device, commandPool);
+    beginCommandBuffer(setupCmdBuf);
 
-    depthStencil = createDepthStencil(device, physicalDeviceMemProps, setupCmdBuffer, depthFormat, canvasWidth, canvasHeight);
-    renderPass = VulkanHelper::createRenderPass(device, colorFormat, depthFormat);
+    depthStencil = createDepthStencil(device, memProperties, setupCmdBuf, depthFormat, canvasWidth, canvasHeight);
+    /*renderPass = VulkanHelper::createRenderPass(device, colorFormat, depthFormat);
     initFrameBuffers();
 
     VulkanHelper::submitCommandBuffer(queue, setupCmdBuffer);

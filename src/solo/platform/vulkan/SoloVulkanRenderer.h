@@ -27,10 +27,19 @@ namespace solo
             VkImageView imageView = nullptr;
         };
 
+        struct DepthStencil
+        {
+            VkImage image;
+		    VkDeviceMemory mem;
+		    VkImageView view;
+        } depthStencil;
+
         void initSwapchain(VkSurfaceKHR surface, bool vsync, const Vector2& deviceCanvasSize);
         void initCommandBuffers();
         void initPresentationCommandBuffers();
         void beginCommandBuffer(VkCommandBuffer buffer);
+        auto createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
+            VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil;
 
         uint32_t canvasWidth = 1;
         uint32_t canvasHeight = 1;
