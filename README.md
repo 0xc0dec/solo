@@ -19,10 +19,10 @@ A framework for my personal graphics/gamedev experiments.
 ![4](/screenshots/screenshot6.png?raw=true)
 
 ## Dependencies
-* async++
-* Bullet
-* GLEW
-* png
-* SDL
-* stb_truetype
-* zlib
+* async++ (MIT license)
+* Bullet (zlib license)
+* GLEW (MIT/modified BSD license)
+* png (libpng license)
+* SDL (zlib license)
+* stb_truetype (public domain (?))
+* zlib (zlib license)
