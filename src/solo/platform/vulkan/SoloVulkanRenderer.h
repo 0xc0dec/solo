@@ -56,6 +56,7 @@ namespace solo
         VkSemaphore renderCompleteSem = nullptr;
         VkCommandPool commandPool = nullptr;
         VkSwapchainKHR swapchain = nullptr;
+        VkRenderPass renderPass = nullptr;
         std::vector<SwapchainBuffer> swapchainBuffers;
         std::vector<VkCommandBuffer> drawCmdBuffers;
         std::vector<VkCommandBuffer> prePresentCmdBuffers;

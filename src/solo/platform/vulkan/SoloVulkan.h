@@ -32,6 +32,7 @@ namespace solo
             VkImageLayout newLayout, VkImageSubresourceRange subresourceRange);
         void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask,
             VkImageLayout oldLayout, VkImageLayout newLayout);
+        auto createRenderPass(VkDevice device, VkFormat colorFormat, VkFormat depthFormat) -> VkRenderPass;
     }
 }
 

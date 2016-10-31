@@ -129,7 +129,7 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice)
     beginCommandBuffer(setupCmdBuf);
 
     depthStencil = createDepthStencil(device, memProperties, setupCmdBuf, depthFormat, canvasWidth, canvasHeight);
-    /*renderPass = VulkanHelper::createRenderPass(device, colorFormat, depthFormat);
+    renderPass = vk::createRenderPass(device, colorFormat, depthFormat);
     initFrameBuffers();
 
     VulkanHelper::submitCommandBuffer(queue, setupCmdBuffer);
