@@ -95,6 +95,14 @@ auto VulkanRenderer::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryP
 }
 
 
+void VulkanRenderer::initFrameBuffers()
+{
+    frameBuffers.resize(swapchainBuffers.size());
+    for (auto i = 0; i < swapchainBuffers.size(); i++)
+        frameBuffers[i] = vk::createFrameBuffer(device, swapchainBuffers[i].imageView, depthStencil.view, renderPass, canvasWidth, canvasHeight);
+}
+
+
 VulkanRenderer::VulkanRenderer(Device* engineDevice)
 {
     auto vulkanDevice = dynamic_cast<SDLVulkanDevice*>(engineDevice);
@@ -132,8 +140,8 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice)
     renderPass = vk::createRenderPass(device, colorFormat, depthFormat);
     initFrameBuffers();
 
-    VulkanHelper::submitCommandBuffer(queue, setupCmdBuffer);
-    ::destroyCommandBuffers(device, commandPool, &setupCmdBuffer, 1);*/
+    vk::submitCommandBuffer(queue, setupCmdBuf);
+    vk::destroyCommandBuffers(device, commandPool, &setupCmdBuf, 1);
 }
 
 

@@ -40,6 +40,7 @@ namespace solo
         void beginCommandBuffer(VkCommandBuffer buffer);
         auto createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
             VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil;
+        void initFrameBuffers();
 
         uint32_t canvasWidth = 1;
         uint32_t canvasHeight = 1;
@@ -61,6 +62,7 @@ namespace solo
         std::vector<VkCommandBuffer> drawCmdBuffers;
         std::vector<VkCommandBuffer> prePresentCmdBuffers;
         std::vector<VkCommandBuffer> postPresentCmdBuffers;
+        std::vector<VkFramebuffer> frameBuffers;
     };
 }
 

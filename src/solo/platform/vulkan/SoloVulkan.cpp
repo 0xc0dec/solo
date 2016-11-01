@@ -142,6 +142,12 @@ auto vk::createCommandBuffer(VkDevice logicalDevice, VkCommandPool commandPool) 
 }
 
 
+void vk::destroyCommandBuffers(VkDevice device, VkCommandPool commandPool, VkCommandBuffer* buffers, uint32_t count)
+{
+    vkFreeCommandBuffers(device, commandPool, count, buffers);
+}
+
+
 auto vk::findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, uint32_t typeBits,
     VkMemoryPropertyFlags properties) -> int32_t
 {
@@ -302,6 +308,28 @@ auto vk::createRenderPass(VkDevice device, VkFormat colorFormat, VkFormat depthF
     SL_CHECK_VK_RESULT(vkCreateRenderPass(device, &renderPassInfo, nullptr, &renderPass));
 
     return renderPass;
+}
+
+
+auto vk::createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImageView depthAttachment,
+    VkRenderPass renderPass, uint32_t width, uint32_t height) -> VkFramebuffer
+{
+    VkImageView attachments[] = { colorAttachment, depthAttachment };
+
+    VkFramebufferCreateInfo createInfo = {};
+    createInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+    createInfo.pNext = nullptr;
+    createInfo.renderPass = renderPass;
+    createInfo.attachmentCount = 2;
+    createInfo.pAttachments = attachments;
+    createInfo.width = width;
+    createInfo.height = height;
+    createInfo.layers = 1;
+
+    VkFramebuffer frameBuffer = nullptr;
+    SL_CHECK_VK_RESULT(vkCreateFramebuffer(device, &createInfo, nullptr, &frameBuffer));
+
+    return frameBuffer;
 }
 
 

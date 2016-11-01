@@ -26,6 +26,7 @@ namespace solo
         auto createCommandPool(VkDevice logicalDevice, uint32_t queueIndex) -> VkCommandPool;
         void submitCommandBuffer(VkQueue queue, VkCommandBuffer buffer);
         auto createCommandBuffer(VkDevice logicalDevice, VkCommandPool commandPool) -> VkCommandBuffer;
+        void destroyCommandBuffers(VkDevice device, VkCommandPool commandPool, VkCommandBuffer* buffers, uint32_t count);
         auto findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, uint32_t typeBits,
             VkMemoryPropertyFlags properties) -> int32_t;
         void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageLayout oldLayout,
@@ -33,6 +34,8 @@ namespace solo
         void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask,
             VkImageLayout oldLayout, VkImageLayout newLayout);
         auto createRenderPass(VkDevice device, VkFormat colorFormat, VkFormat depthFormat) -> VkRenderPass;
+        auto createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImageView depthAttachment,
+            VkRenderPass renderPass, uint32_t width, uint32_t height) -> VkFramebuffer;
     }
 }
 
