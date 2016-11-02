@@ -63,6 +63,7 @@ namespace solo
         std::vector<VkCommandBuffer> prePresentCmdBuffers;
         std::vector<VkCommandBuffer> postPresentCmdBuffers;
         std::vector<VkFramebuffer> frameBuffers;
+        uint32_t currentBuffer = 0;
     };
 }
 
