@@ -168,6 +168,9 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice)
 
 VulkanRenderer::~VulkanRenderer()
 {
+    for (size_t i = 0; i < swapchainBuffers.size(); ++i)
+        vkDestroyImageView(device, swapchainBuffers[i].imageView, nullptr);
+
     if (presentCompleteSem)
         vkDestroySemaphore(device, presentCompleteSem, nullptr);
     if (renderCompleteSem)
@@ -203,19 +206,18 @@ VulkanRenderer::~VulkanRenderer()
 
 void VulkanRenderer::beginFrame()
 {
+    SL_CHECK_VK_RESULT(vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, presentCompleteSem, nullptr, &currentBuffer));
 }
 
 
 void VulkanRenderer::endFrame()
 {
-    SL_CHECK_VK_RESULT(vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, presentCompleteSem, nullptr, &currentBuffer));
-
     SL_CHECK_VK_RESULT(vkWaitForFences(device, 1, &fences[currentBuffer], VK_TRUE, UINT64_MAX));
     SL_CHECK_VK_RESULT(vkResetFences(device, 1, &fences[currentBuffer]));
 
     VkPipelineStageFlags waitStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
 
-    VkSubmitInfo submitInfo = {};
+    VkSubmitInfo submitInfo {};
 	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 	submitInfo.pWaitDstStageMask = &waitStageMask;
 	submitInfo.pWaitSemaphores = &presentCompleteSem;
