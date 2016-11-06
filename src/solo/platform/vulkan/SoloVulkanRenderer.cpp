@@ -20,6 +20,7 @@
 
 #include "SoloVulkanRenderer.h"
 #include "SoloSDLVulkanDevice.h"
+#include "SoloVulkanPipeline.h"
 #include "SoloVector2.h"
 
 #ifdef SL_VULKAN_RENDERER
@@ -166,6 +167,11 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice)
 }
 
 
+// TODO just for testing
+static VulkanPipeline *pipeline;
+static bool init = false;
+
+
 VulkanRenderer::~VulkanRenderer()
 {
     for (size_t i = 0; i < swapchainBuffers.size(); ++i)
@@ -206,6 +212,14 @@ VulkanRenderer::~VulkanRenderer()
 
 void VulkanRenderer::beginFrame()
 {
+    // TODO just for testing
+    if (!init)
+    {
+        pipeline = new VulkanPipeline(device, renderPass);
+        pipeline->rebuild();
+        init = true;
+    }
+
     SL_CHECK_VK_RESULT(vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, presentCompleteSem, nullptr, &currentBuffer));
 }
 

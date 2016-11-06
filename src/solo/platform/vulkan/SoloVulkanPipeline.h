@@ -17,11 +17,11 @@ namespace solo
         void setVertexShader(VkShaderModule shader, const char* entryPoint);
         void setFragmentShader(VkShaderModule shader, const char* entryPoint);
 
+        void rebuild();
         void bind(VkCommandBuffer cmdBuf);
 
     private:
         void cleanup();
-        void rebuild();
 
         VkDevice device = nullptr;
         VkRenderPass renderPass = nullptr;
