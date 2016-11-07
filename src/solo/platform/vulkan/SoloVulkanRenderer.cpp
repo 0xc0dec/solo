@@ -28,34 +28,6 @@
 using namespace solo;
 
 
-std::tuple<VkFormat, VkColorSpaceKHR> getSurfaceFormats(VkPhysicalDevice device, VkSurfaceKHR surface)
-{
-    uint32_t count;
-    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, nullptr));
-
-    std::vector<VkSurfaceFormatKHR> formats(count);
-    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, formats.data()));
-
-    if (count == 1 && formats[0].format == VK_FORMAT_UNDEFINED)
-        return std::make_tuple(VK_FORMAT_B8G8R8A8_UNORM, formats[0].colorSpace);
-    return std::make_tuple(formats[0].format, formats[0].colorSpace);
-}
-
-
-VkSemaphore createSemaphore(VkDevice device)
-{
-    VkSemaphoreCreateInfo semaphoreCreateInfo = {};
-    semaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-    semaphoreCreateInfo.pNext = nullptr;
-    semaphoreCreateInfo.flags = 0;
-
-    VkSemaphore semaphore = nullptr;
-    SL_CHECK_VK_RESULT(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, &semaphore));
-
-    return semaphore;
-}
-
-
 auto VulkanRenderer::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
     VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil
 {
@@ -135,7 +107,7 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice)
     vkGetPhysicalDeviceFeatures(physicalDevice, &features);
     vkGetPhysicalDeviceMemoryProperties(physicalDevice, &memProperties);
 
-    auto surfaceFormats = getSurfaceFormats(physicalDevice, surface);
+    auto surfaceFormats = vk::getSurfaceFormats(physicalDevice, surface);
     colorFormat = std::get<0>(surfaceFormats);
     colorSpace = std::get<1>(surfaceFormats);
 
@@ -146,8 +118,8 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice)
 
     depthFormat = vk::getDepthFormat(physicalDevice);
 
-    presentCompleteSem = createSemaphore(device);
-    renderCompleteSem = createSemaphore(device);
+    presentCompleteSem = vk::createSemaphore(device);
+    renderCompleteSem = vk::createSemaphore(device);
 
     commandPool = vk::createCommandPool(device, queueIndex);
 
@@ -167,13 +139,16 @@ VulkanRenderer::VulkanRenderer(Device* engineDevice)
 }
 
 
-// TODO just for testing
+// TODO this is only for testing
 static VulkanPipeline *pipeline;
 static bool init = false;
 
 
 VulkanRenderer::~VulkanRenderer()
 {
+    // TODO this is only for testing
+    delete pipeline;
+
     for (size_t i = 0; i < swapchainBuffers.size(); ++i)
         vkDestroyImageView(device, swapchainBuffers[i].imageView, nullptr);
 
@@ -212,7 +187,7 @@ VulkanRenderer::~VulkanRenderer()
 
 void VulkanRenderer::beginFrame()
 {
-    // TODO just for testing
+    // TODO this is only for testing
     if (!init)
     {
         pipeline = new VulkanPipeline(device, renderPass);

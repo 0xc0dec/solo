@@ -40,6 +40,8 @@ namespace solo
     namespace vk
     {
         auto createDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -> VkDevice;
+        auto getSurfaceFormats(VkPhysicalDevice device, VkSurfaceKHR surface) -> std::tuple<VkFormat, VkColorSpaceKHR>;
+        auto createSemaphore(VkDevice device) -> VkSemaphore;
         auto getPhysicalDevice(VkInstance instance) -> VkPhysicalDevice;
         auto getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> uint32_t;
         auto getDepthFormat(VkPhysicalDevice device) -> VkFormat;

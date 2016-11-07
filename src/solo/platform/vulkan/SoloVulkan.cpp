@@ -20,6 +20,7 @@
 
 #include "SoloVulkan.h"
 #include <vector>
+#include <tuple>
 
 
 #ifdef SL_VULKAN_RENDERER
@@ -53,6 +54,34 @@ auto vk::createDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -> V
     SL_CHECK_VK_RESULT(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &result));
 
     return result;
+}
+
+
+VkSemaphore vk::createSemaphore(VkDevice device)
+{
+    VkSemaphoreCreateInfo semaphoreCreateInfo = {};
+    semaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+    semaphoreCreateInfo.pNext = nullptr;
+    semaphoreCreateInfo.flags = 0;
+
+    VkSemaphore semaphore = nullptr;
+    SL_CHECK_VK_RESULT(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, &semaphore));
+
+    return semaphore;
+}
+
+
+auto vk::getSurfaceFormats(VkPhysicalDevice device, VkSurfaceKHR surface) -> std::tuple<VkFormat, VkColorSpaceKHR>
+{
+    uint32_t count;
+    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, nullptr));
+
+    std::vector<VkSurfaceFormatKHR> formats(count);
+    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, formats.data()));
+
+    if (count == 1 && formats[0].format == VK_FORMAT_UNDEFINED)
+        return std::make_tuple(VK_FORMAT_B8G8R8A8_UNORM, formats[0].colorSpace);
+    return std::make_tuple(formats[0].format, formats[0].colorSpace);
 }
 
 
