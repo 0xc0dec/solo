@@ -52,18 +52,18 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup& setup):
     enabledExtensions.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
 #endif
 
-    VkInstanceCreateInfo instanceCreateInfo {};
-	instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-	instanceCreateInfo.pNext = nullptr;
-	instanceCreateInfo.pApplicationInfo = &appInfo;
+    VkInstanceCreateInfo instanceInfo {};
+	instanceInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+	instanceInfo.pNext = nullptr;
+	instanceInfo.pApplicationInfo = &appInfo;
 
     if (enabledExtensions.size() > 0)
 	{
-		instanceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(enabledExtensions.size());
-		instanceCreateInfo.ppEnabledExtensionNames = enabledExtensions.data();
+		instanceInfo.enabledExtensionCount = static_cast<uint32_t>(enabledExtensions.size());
+		instanceInfo.ppEnabledExtensionNames = enabledExtensions.data();
 	}
 
-    SL_CHECK_VK_RESULT(vkCreateInstance(&instanceCreateInfo, nullptr, &instance));
+    SL_CHECK_VK_RESULT(vkCreateInstance(&instanceInfo, nullptr, &instance));
 
 #ifdef SL_WINDOWS
     SDL_SysWMinfo wmInfo;
