@@ -3,7 +3,9 @@
 using namespace solo;
 
 
-VulkanPipeline::VulkanPipeline()
+VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass):
+    device(device),
+    renderPass(renderPass)
 {
     rasterState.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
     rasterState.pNext = nullptr;
@@ -50,6 +52,22 @@ VulkanPipeline::VulkanPipeline()
     colorBlendState.blendConstants[1] = 0;
     colorBlendState.blendConstants[2] = 0;
     colorBlendState.blendConstants[3] = 0;
+
+    vertexShaderStage.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+    vertexShaderStage.pNext = nullptr;
+    vertexShaderStage.flags = 0;
+    vertexShaderStage.stage = VK_SHADER_STAGE_VERTEX_BIT;
+    vertexShaderStage.module = nullptr;
+    vertexShaderStage.pName = nullptr;
+    vertexShaderStage.pSpecializationInfo = nullptr;
+
+    fragmentShaderStage.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+    fragmentShaderStage.pNext = nullptr;
+    fragmentShaderStage.flags = 0;
+    fragmentShaderStage.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
+    fragmentShaderStage.module = nullptr;
+    fragmentShaderStage.pName = nullptr;
+    fragmentShaderStage.pSpecializationInfo = nullptr;
 }
 
 
@@ -60,11 +78,32 @@ VulkanPipeline::~VulkanPipeline()
 }
 
 
+void VulkanPipeline::setVertexShader(VkShaderModule shader, const char* entryPoint)
+{
+    vertexShaderStage.module = shader;
+    vertexShaderStage.pName = entryPoint;
+}
+
+
+void VulkanPipeline::setFragmentShader(VkShaderModule shader, const char* entryPoint)
+{
+    fragmentShaderStage.module = shader;
+    fragmentShaderStage.pName = entryPoint;
+}
+
+
+void VulkanPipeline::bind(VkCommandBuffer cmdBuf)
+{
+    vkCmdBindPipeline(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline);
+}
+
+
 void VulkanPipeline::cleanup()
 {
+    if (pipeline)
+        vkDestroyPipeline(device, pipeline, nullptr);
     if (layout)
         vkDestroyPipelineLayout(device, layout, nullptr);
-
 }
 
 
@@ -121,6 +160,12 @@ void VulkanPipeline::rebuild()
     dynamicState.dynamicStateCount = static_cast<uint32_t>(dynamicStates.size());
     dynamicState.pDynamicStates = dynamicStates.data();
 
+    std::vector<VkPipelineShaderStageCreateInfo> shaderStageStates;
+    if (vertexShaderStage.module)
+        shaderStageStates.push_back(vertexShaderStage);
+    if (fragmentShaderStage.module)
+        shaderStageStates.push_back(fragmentShaderStage);
+
     VkGraphicsPipelineCreateInfo pipelineInfo {};
     pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
     pipelineInfo.pNext = nullptr;
@@ -141,4 +186,6 @@ void VulkanPipeline::rebuild()
     pipelineInfo.subpass = 0;
     pipelineInfo.basePipelineHandle = nullptr;
     pipelineInfo.basePipelineIndex = -1;
+
+    SL_CHECK_VK_RESULT(vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline));
 }

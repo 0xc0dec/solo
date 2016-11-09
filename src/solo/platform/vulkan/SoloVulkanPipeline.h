@@ -11,8 +11,13 @@ namespace solo
     public:
         SL_DISABLE_COPY_AND_MOVE(VulkanPipeline)
 
-        VulkanPipeline();
+        VulkanPipeline(VkDevice device, VkRenderPass renderPass);
         ~VulkanPipeline();
+
+        void setVertexShader(VkShaderModule shader, const char* entryPoint);
+        void setFragmentShader(VkShaderModule shader, const char* entryPoint);
+
+        void bind(VkCommandBuffer cmdBuf);
 
     private:
         void cleanup();
@@ -22,6 +27,8 @@ namespace solo
         VkRenderPass renderPass = nullptr;
         VkPipeline pipeline = nullptr;
         VkPipelineLayout layout = nullptr;
+        VkPipelineShaderStageCreateInfo vertexShaderStage;
+        VkPipelineShaderStageCreateInfo fragmentShaderStage;
 
         std::vector<VkVertexInputAttributeDescription> vertexAttrs;
         std::vector<VkDescriptorSetLayout> descSetLayouts;
