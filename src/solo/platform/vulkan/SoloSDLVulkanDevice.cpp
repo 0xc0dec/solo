@@ -30,6 +30,13 @@
 using namespace solo;
 
 
+static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
+    uint64_t obj, size_t location, int32_t code, const char* layerPrefix, const char* msg, void* userData)
+{
+    return VK_FALSE;
+}
+
+
 SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup& setup):
     SDLDevice(setup)
 {
@@ -52,12 +59,25 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup& setup):
     enabledExtensions.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
 #endif
 
+    std::vector<const char*> enabledLayers;
+
+#ifdef SL_DEBUG
+    enabledLayers.push_back("VK_LAYER_LUNARG_standard_validation");
+    enabledExtensions.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
+#endif
+
     VkInstanceCreateInfo instanceInfo {};
 	instanceInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 	instanceInfo.pNext = nullptr;
 	instanceInfo.pApplicationInfo = &appInfo;
 
-    if (enabledExtensions.size() > 0)
+    if (!enabledLayers.empty())
+    {
+        instanceInfo.enabledLayerCount = enabledLayers.size();
+        instanceInfo.ppEnabledLayerNames = enabledLayers.data();
+    }
+
+    if (!enabledExtensions.empty())
 	{
 		instanceInfo.enabledExtensionCount = static_cast<uint32_t>(enabledExtensions.size());
 		instanceInfo.ppEnabledExtensionNames = enabledExtensions.data();
