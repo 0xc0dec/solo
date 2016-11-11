@@ -50,7 +50,7 @@ void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
         auto nodeIt = components.find(nodeId);
         if (nodeIt != components.end())
         {
-            auto& nodeComponents = nodeIt->second;
+            const auto& nodeComponents = nodeIt->second;
             SL_ERR_IF(nodeComponents.find(typeId) != nodeComponents.end(), "Node already contains component with same id")
         }
     });
@@ -100,7 +100,7 @@ auto Scene::findComponent(uint32_t nodeId, uint32_t typeId) const -> Component*
     if (nodeIt == components.end())
         return nullptr;
 
-    auto& nodeComponents = nodeIt->second;
+    const auto& nodeComponents = nodeIt->second;
     auto cmpIt = nodeComponents.find(typeId);
     if (cmpIt != nodeComponents.end())
         return cmpIt->second.get();
@@ -114,14 +114,14 @@ void Scene::updateRenderQueue(std::list<T>& queue, bool cameraQueue)
 {
     queue.clear();
 
-    for (auto& nodeComponents : components)
+    for (const auto& nodeComponents : components)
     {
         auto nodeId = nodeComponents.first;
 
         if (!Node::findComponent<Transform>(this, nodeId))
             continue;
 
-        for (auto& pair : nodeComponents.second)
+        for (const auto& pair : nodeComponents.second)
         {
             auto component = pair.second.get();
             if (cameraQueue && component->getTypeId() != Camera::getId())
@@ -170,9 +170,9 @@ void Scene::updateComponents()
 void Scene::rebuildComponentsToUpdate()
 {
     componentsToUpdate.clear(); // TODO maybe overkill
-    for (auto& nodeIt : components)
+    for (const auto& nodeIt : components)
     {
-        for (auto& cmpIt : nodeIt.second)
+        for (const auto& cmpIt : nodeIt.second)
             componentsToUpdate.push_back(cmpIt.second);
     }
 }
@@ -207,7 +207,7 @@ void Scene::render()
 
         camera->finish();
 
-        for (auto& pair : components.at(camera->getNode().getId()))
+        for (const auto& pair : components.at(camera->getNode().getId()))
             pair.second->onAfterCameraRender();
     }
 }
