@@ -24,6 +24,7 @@
 #include <unordered_map>
 #include <list>
 #include <vector>
+#include <functional>
 
 
 namespace solo
@@ -53,11 +54,10 @@ namespace solo
         void render();
 
     private:
-        using NodeComponentMap = std::unordered_map<uint32_t, sptr<Component>>;
-        using AllComponentMap = std::unordered_map<uint32_t, NodeComponentMap>;
+        using NodeComponents = std::unordered_map<uint32_t, sptr<Component>>;
+        using NodesWithComponents = std::unordered_map<uint32_t, NodeComponents>;
 
-        template <class T>
-        void rebuildRenderQueue(std::list<T>& queue, bool ignoreCamera);
+        void rebuildRenderQueue(std::list<Component*>& queue, std::function<bool(Component*)> ignoreComponent);
         
         void updateComponents();
         void rebuildComponentsToUpdate();
@@ -72,7 +72,7 @@ namespace solo
         std::list<Component*> renderQueue;
 
         // TODO not cache-friendly
-        AllComponentMap components;
+        NodesWithComponents nodes;
         std::vector<sptr<Component>> componentsToUpdate;
     };
 

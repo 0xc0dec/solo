@@ -47,18 +47,18 @@ void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
 
     SL_BLOCK(
     {
-        auto nodeIt = components.find(nodeId);
-        if (nodeIt != components.end())
+        auto node = nodes.find(nodeId);
+        if (node != nodes.end())
         {
-            const auto& nodeComponents = nodeIt->second;
+            const auto& nodeComponents = node->second;
             SL_ERR_IF(nodeComponents.find(typeId) != nodeComponents.end(), "Node already contains component with same id")
         }
     });
 
-    components[nodeId][typeId] = cmp;
+    nodes[nodeId][typeId] = cmp;
     cmp->init();
 
-    for (const auto& a : components.at(nodeId))
+    for (const auto& a : nodes.at(nodeId))
         a.second->onComponentAdded(cmp.get());
 
     componentsDirty = true;
@@ -69,22 +69,23 @@ void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
 
 void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
 {
-    auto nodeIt = components.find(nodeId);
-    if (nodeIt == components.end())
+    auto node = nodes.find(nodeId);
+    if (node == nodes.end())
         return;
-    auto cmpIt = nodeIt->second.find(typeId);
-    if (cmpIt == nodeIt->second.end())
+
+    auto cmpIt = node->second.find(typeId);
+    if (cmpIt == node->second.end())
         return;
     
     auto cmp = cmpIt->second;
-    nodeIt->second.erase(cmpIt);
+    node->second.erase(cmpIt);
     cmp->terminate();
 
-    if (nodeIt->second.empty())
-        components.erase(nodeIt);
+    if (node->second.empty())
+        nodes.erase(node);
     else
     {
-        for (const auto& otherCmp : nodeIt->second)
+        for (const auto& otherCmp : node->second)
             otherCmp.second->onComponentRemoved(cmp.get());
     }
 
@@ -96,11 +97,11 @@ void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
 
 auto Scene::findComponent(uint32_t nodeId, uint32_t typeId) const -> Component*
 {
-    auto nodeIt = components.find(nodeId);
-    if (nodeIt == components.end())
+    auto node = nodes.find(nodeId);
+    if (node == nodes.end())
         return nullptr;
 
-    const auto& nodeComponents = nodeIt->second;
+    const auto& nodeComponents = node->second;
     auto cmpIt = nodeComponents.find(typeId);
     if (cmpIt != nodeComponents.end())
         return cmpIt->second.get();
@@ -109,32 +110,31 @@ auto Scene::findComponent(uint32_t nodeId, uint32_t typeId) const -> Component*
 }
 
 
-template <class T>
-void Scene::rebuildRenderQueue(std::list<T>& queue, bool cameraQueue)
+void Scene::rebuildRenderQueue(std::list<Component*>& queue, std::function<bool(Component*)> ignoreComponent)
 {
     queue.clear();
 
-    for (const auto& nodeComponents : components)
+    for (const auto& node : nodes)
     {
-        auto nodeId = nodeComponents.first;
+        auto nodeId = node.first;
 
         if (!Node::findComponent<Transform>(this, nodeId))
             continue;
 
-        for (const auto& pair : nodeComponents.second)
+        for (const auto& components : node.second)
         {
-            auto component = pair.second.get();
-            if (cameraQueue && component->getTypeId() != Camera::getId())
+            auto cmp = components.second.get();
+            if (ignoreComponent(cmp))
                 continue;
 
-            if (component->getRenderQueue() == KnownRenderQueues::NotRendered)
+            if (cmp->getRenderQueue() == KnownRenderQueues::NotRendered)
                 continue;
 
             for (auto it = queue.begin();; ++it)
             {
-                if (it == queue.end() || component->getRenderQueue() < (*it)->getRenderQueue())
+                if (it == queue.end() || cmp->getRenderQueue() < (*it)->getRenderQueue())
                 {
-                    queue.insert(it, component);
+                    queue.insert(it, cmp);
                     break;
                 }
             }
@@ -170,18 +170,21 @@ void Scene::updateComponents()
 void Scene::rebuildComponentsToUpdate()
 {
     componentsToUpdate.clear(); // TODO maybe overkill
-    for (const auto& nodeIt : components)
+    for (const auto& node : nodes)
     {
-        for (const auto& cmpIt : nodeIt.second)
-            componentsToUpdate.push_back(cmpIt.second);
+        for (const auto& cmp : node.second)
+            componentsToUpdate.push_back(cmp.second);
     }
 }
 
 
 void Scene::render()
 {
-    rebuildRenderQueue(cameraQueue, true);
-    rebuildRenderQueue(renderQueue, false);
+    static auto ignoreNonCameras = [](Component* cmp) { return cmp->getTypeId() != Camera::getId(); };
+    static auto ignoreNone = [](Component* cmp) { return false; };
+
+    rebuildRenderQueue(cameraQueue, ignoreNonCameras);
+    rebuildRenderQueue(renderQueue, ignoreNone);
 
     for (auto cam : cameraQueue)
     {
@@ -207,7 +210,7 @@ void Scene::render()
 
         camera->finish();
 
-        for (const auto& pair : components.at(camera->getNode().getId()))
+        for (const auto& pair : nodes.at(camera->getNode().getId()))
             pair.second->onAfterCameraRender();
     }
 }
