@@ -57,7 +57,7 @@ namespace solo
         using AllComponentMap = std::unordered_map<uint32_t, NodeComponentMap>;
 
         template <class T>
-        void updateRenderQueue(std::list<T>& queue, bool ignoreCamera);
+        void rebuildRenderQueue(std::list<T>& queue, bool ignoreCamera);
         
         void updateComponents();
         void rebuildComponentsToUpdate();

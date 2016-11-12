@@ -110,7 +110,7 @@ auto Scene::findComponent(uint32_t nodeId, uint32_t typeId) const -> Component*
 
 
 template <class T>
-void Scene::updateRenderQueue(std::list<T>& queue, bool cameraQueue)
+void Scene::rebuildRenderQueue(std::list<T>& queue, bool cameraQueue)
 {
     queue.clear();
 
@@ -180,8 +180,8 @@ void Scene::rebuildComponentsToUpdate()
 
 void Scene::render()
 {
-    updateRenderQueue(cameraQueue, true);
-    updateRenderQueue(renderQueue, false);
+    rebuildRenderQueue(cameraQueue, true);
+    rebuildRenderQueue(renderQueue, false);
 
     for (auto cam : cameraQueue)
     {
