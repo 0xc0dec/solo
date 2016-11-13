@@ -79,7 +79,7 @@ auto TransformMatrix::createPerspective(const Radian& fieldOfView, float aspectR
     auto factor = 1.0f / divisor;
 
     Matrix result;
-    memset(&result.m, 0, Matrix::Size);
+    memset(&result.m, 0, size());
     result.m[0] = (1.0f / aspectRatio) * factor;
     result.m[5] = factor;
     result.m[10] = -(zfar + znear) * f_n;
@@ -99,7 +99,7 @@ auto TransformMatrix::createOrthographic(float width, float height, float near, 
     auto top = halfHeight;
     auto bottom = -halfHeight;
     Matrix result;
-    memset(&result.m, 0, Matrix::Size);
+    memset(&result.m, 0, size());
     result.m[0] = 2 / (right - left);
     result.m[5] = 2 / (top - bottom);
     result.m[12] = (left + right) / (left - right);

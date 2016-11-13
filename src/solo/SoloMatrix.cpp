@@ -55,7 +55,7 @@ Matrix::Matrix(
 
 Matrix::Matrix(const Matrix& copy)
 {
-    memcpy(m, copy.m, Size);
+    memcpy(m, copy.m, size());
 }
 
 
@@ -151,19 +151,19 @@ bool Matrix::invert()
 
 bool Matrix::isIdentity() const
 {
-    return memcmp(m, IdentityMatrix, Size) == 0;
+    return memcmp(m, IdentityMatrix, size()) == 0;
 }
 
 
-void Matrix::setIdentity()
+void Matrix::makeIdentity()
 {
-    memcpy(m, IdentityMatrix, Size);
+    memcpy(m, IdentityMatrix, size());
 }
 
 
-void Matrix::setZero()
+void Matrix::makeZero()
 {
-    memset(m, 0, Size);
+    memset(m, 0, size());
 }
 
 
@@ -222,7 +222,7 @@ void Matrix::transpose()
             m[2], m[6], m[10], m[14],
             m[3], m[7], m[11], m[15]
         };
-    memcpy(&m, t, Size);
+    memcpy(&m, t, size());
 }
 
 
@@ -274,7 +274,7 @@ auto Matrix::operator*=(const Matrix& m2) -> Matrix&
     product[14] = m[2] * m2.m[12] + m[6] * m2.m[13] + m[10] * m2.m[14] + m[14] * m2.m[15];
     product[15] = m[3] * m2.m[12] + m[7] * m2.m[13] + m[11] * m2.m[14] + m[15] * m2.m[15];
 
-    memcpy(m, product, Size);
+    memcpy(m, product, size());
 
     return *this;
 }

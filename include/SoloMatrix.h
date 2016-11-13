@@ -33,8 +33,6 @@ namespace solo
     class Matrix
     {
     public:
-        static const size_t Size = sizeof(float) * 16;
-
         // column-major order
         float m[16];
 
@@ -48,12 +46,14 @@ namespace solo
         static auto identity() -> Matrix;
         static auto zero() -> Matrix;
 
+        static auto size() -> size_t;
+
         bool isIdentity() const;
         auto getDeterminant() const -> float;
         bool invert();
         void transpose();
-        void setIdentity();
-        void setZero();
+        void makeIdentity();
+        void makeZero();
 
         auto operator+(float scalar) const -> Matrix;
         auto operator+(const Matrix& m) const -> Matrix;
@@ -71,6 +71,11 @@ namespace solo
         auto operator*=(float scalar) -> Matrix&;
         auto operator*=(const Matrix& m) -> Matrix&;
     };
+
+    inline auto Matrix::size() -> size_t
+    {
+        return sizeof(float) * 16;
+    }
 
     inline auto Matrix::operator+(float scalar) const -> Matrix
     {
