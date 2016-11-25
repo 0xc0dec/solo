@@ -40,7 +40,7 @@ auto Degree::operator=(const Radian &r) -> Degree &
 
 auto Degree::toRawRadian() const -> float
 {
-    return Math::degToRad(raw);
+    return math::degToRad(raw);
 }
 
 

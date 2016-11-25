@@ -137,8 +137,8 @@ public:
         auto stitchTexSize = stitchTex->getSize();
 
         auto resolution = Vector2(
-                              Math::clamp(static_cast<int>(canvasSize.x / stitchWidth) * 2, 1, 2048),
-                              Math::clamp(static_cast<int>(canvasSize.y / stitchTexSize.y) * 2, 1, 2048));
+                              math::clamp(static_cast<int>(canvasSize.x / stitchWidth) * 2, 1, 2048),
+                              math::clamp(static_cast<int>(canvasSize.y / stitchTexSize.y) * 2, 1, 2048));
 
         auto stitchCount = Vector2(
                                resolution.x * stitchWidth / (2 * stitchTexSize.x),

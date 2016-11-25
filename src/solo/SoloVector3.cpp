@@ -72,17 +72,17 @@ auto Vector3::unitZ() -> Vector3
 
 bool Vector3::isZero() const
 {
-    return Math::approxZero(x, Math::epsilon1) &&
-           Math::approxZero(y, Math::epsilon1) &&
-           Math::approxZero(z, Math::epsilon1);
+    return math::approxZero(x, math::epsilon1) &&
+           math::approxZero(y, math::epsilon1) &&
+           math::approxZero(z, math::epsilon1);
 }
 
 
 bool Vector3::isUnit() const
 {
-    return Math::approxEqual(x, 1.0f, Math::epsilon1) &&
-           Math::approxEqual(y, 1.0f, Math::epsilon1) &&
-           Math::approxEqual(z, 1.0f, Math::epsilon1);
+    return math::approxEqual(x, 1.0f, math::epsilon1) &&
+           math::approxEqual(y, 1.0f, math::epsilon1) &&
+           math::approxEqual(z, 1.0f, math::epsilon1);
 }
 
 
@@ -92,7 +92,7 @@ auto Vector3::angle(const Vector3 &v1, const Vector3 &v2) -> Radian
     auto dy = v1.z * v2.x - v1.x * v2.z;
     auto dz = v1.x * v2.y - v1.y * v2.x;
 
-    return Radian(atan2f(sqrt(dx * dx + dy * dy + dz * dz) + Math::epsilon2, dot(v1, v2)));
+    return Radian(atan2f(sqrt(dx * dx + dy * dy + dz * dz) + math::epsilon2, dot(v1, v2)));
 }
 
 
@@ -180,11 +180,11 @@ void Vector3::normalize()
 {
     auto n = x * x + y * y + z * z;
     // Already normalized
-    if (Math::approxEqual(n, 1.0f, Math::epsilon1))
+    if (math::approxEqual(n, 1.0f, math::epsilon1))
         return;
 
     n = sqrt(n);
-    if (Math::approxZero(n, Math::epsilon3))
+    if (math::approxZero(n, math::epsilon3))
         return;
 
     n = 1.0f / n;

@@ -120,12 +120,12 @@ auto Ray::hitPlane(const Plane &plane) const -> float
     const auto &normal = plane.getNormal();
 
     auto alpha = normal.dot(origin) + plane.getDistance();
-    if (Math::approxZero(alpha, Math::epsilon1))
+    if (math::approxZero(alpha, math::epsilon1))
         return 0.0f;
 
     auto dot = normal.dot(direction);
 
-    if (Math::approxZero(dot, Math::epsilon1))
+    if (math::approxZero(dot, math::epsilon1))
         return -1;
 
     // Calculate the distance along the ray's direction vector to the point where
@@ -141,7 +141,7 @@ void Ray::normalize()
 
     // Normalize the ray's direction vector
     auto normalizeFactor = 1.0f / sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
-    if (!Math::approxEqual(normalizeFactor, 1.0f, Math::epsilon1))
+    if (!math::approxEqual(normalizeFactor, 1.0f, math::epsilon1))
     {
         direction.x *= normalizeFactor;
         direction.y *= normalizeFactor;

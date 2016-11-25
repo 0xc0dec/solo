@@ -26,9 +26,8 @@
 
 namespace solo
 {
-    class Math final
+    namespace math
     {
-    public:
         static constexpr float epsilon1 = 0.000001f;
         static constexpr float epsilon2 = 1.0e-37f;
         static constexpr float epsilon3 = 2e-37f;
@@ -45,39 +44,39 @@ namespace solo
         static auto rnd01() -> float;
 
         static auto clamp(float x, float lo, float hi) -> float;
-    };
+    }
 
-    inline bool Math::approxZero(float value, float epsilon)
+    inline bool math::approxZero(float value, float epsilon)
     {
         return fabs(value) <= epsilon;
     }
 
-    inline bool Math::approxEqual(float first, float second, float epsilon)
+    inline bool math::approxEqual(float first, float second, float epsilon)
     {
         return fabs(first - second) <= epsilon;
     }
 
-    inline auto Math::degToRad(float degrees) -> float
+    inline auto math::degToRad(float degrees) -> float
     {
         return degrees * 0.0174532925f;
     }
 
-    inline auto Math::radToDeg(float radians) -> float
+    inline auto math::radToDeg(float radians) -> float
     {
         return radians * 57.29577951f;
     }
 
-    inline auto Math::rndAroundZero() -> float
+    inline auto math::rndAroundZero() -> float
     {
         return 2.0f * (static_cast<float>(rand()) / RAND_MAX) - 1.0f;
     }
 
-    inline auto Math::rnd01() -> float
+    inline auto math::rnd01() -> float
     {
         return static_cast<float>(rand()) / RAND_MAX;
     }
 
-    inline auto Math::clamp(float x, float lo, float hi) -> float
+    inline auto math::clamp(float x, float lo, float hi) -> float
     {
         return (x < lo) ? lo : ((x > hi) ? hi : x);
     }
