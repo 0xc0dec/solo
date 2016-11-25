@@ -74,19 +74,19 @@ auto Vector4::unitW() -> Vector4
 
 bool Vector4::isZero() const
 {
-    return math::approxZero(x, math::epsilon1) &&
-           math::approxZero(y, math::epsilon1) &&
-           math::approxZero(z, math::epsilon1) &&
-           math::approxZero(w, math::epsilon1);
+    return math::isZero(x, math::epsilon1) &&
+           math::isZero(y, math::epsilon1) &&
+           math::isZero(z, math::epsilon1) &&
+           math::isZero(w, math::epsilon1);
 }
 
 
 bool Vector4::isUnit() const
 {
-    return math::approxEqual(x, 1.0f, math::epsilon1) &&
-           math::approxEqual(y, 1.0f, math::epsilon1) &&
-           math::approxEqual(z, 1.0f, math::epsilon1) &&
-           math::approxEqual(w, 1.0f, math::epsilon1);
+    return math::areEqual(x, 1.0f, math::epsilon1) &&
+           math::areEqual(y, 1.0f, math::epsilon1) &&
+           math::areEqual(z, 1.0f, math::epsilon1) &&
+           math::areEqual(w, 1.0f, math::epsilon1);
 }
 
 
@@ -182,11 +182,11 @@ void Vector4::normalize()
 {
     auto n = x * x + y * y + z * z + w * w;
     // Already normalized
-    if (math::approxEqual(n, 1.0f, math::epsilon1))
+    if (math::areEqual(n, 1.0f, math::epsilon1))
         return;
 
     n = sqrt(n);
-    if (math::approxZero(n, math::epsilon3))
+    if (math::isZero(n, math::epsilon3))
         return;
 
     n = 1.0f / n;

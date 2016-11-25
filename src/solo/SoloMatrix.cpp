@@ -130,7 +130,7 @@ bool Matrix::invert()
     auto det = a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
 
     // Close to zero, can't invert
-    if (math::approxZero(det, math::epsilon3))
+    if (math::isZero(det, math::epsilon3))
         return false;
 
     // Support the case where m == dst

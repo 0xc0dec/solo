@@ -73,7 +73,7 @@ auto TransformMatrix::createPerspective(const Radian &fieldOfView, float aspectR
 {
     auto f_n = 1.0f / (zfar - znear);
     auto theta = fieldOfView.toRawRadian() * 0.5f;
-    SL_ERR_IF(math::approxZero(fmod(theta, math::piOver2), math::epsilon1))
+    SL_ERR_IF(math::isZero(fmod(theta, math::piOver2), math::epsilon1))
 
     auto divisor = tan(theta);
     auto factor = 1.0f / divisor;
@@ -198,7 +198,7 @@ auto TransformMatrix::createRotationFromAxisAngle(const Vector3 &axis, const Rad
         // Not normalized
         n = sqrt(n);
         // Prevent division too close to zero.
-        if (!math::approxZero(n, math::epsilon1))
+        if (!math::isZero(n, math::epsilon1))
         {
             n = 1.0f / n;
             x *= n;

@@ -33,8 +33,8 @@ namespace solo
         static constexpr float pi = 3.14159265358979323846f;
         static constexpr float piOver2 = 1.57079632679489661923f;
 
-        static bool approxZero(float value, float epsilon);
-        static bool approxEqual(float first, float second, float epsilon);
+        static bool isZero(float value, float epsilon);
+        static bool areEqual(float first, float second, float epsilon);
 
         static auto degToRad(float degrees) -> float;
         static auto radToDeg(float radians) -> float;
@@ -42,12 +42,12 @@ namespace solo
         static auto clamp(float x, float lo, float hi) -> float;
     }
 
-    inline bool math::approxZero(float value, float epsilon)
+    inline bool math::isZero(float value, float epsilon)
     {
         return fabs(value) <= epsilon;
     }
 
-    inline bool math::approxEqual(float first, float second, float epsilon)
+    inline bool math::areEqual(float first, float second, float epsilon)
     {
         return fabs(first - second) <= epsilon;
     }
