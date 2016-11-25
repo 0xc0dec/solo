@@ -73,7 +73,7 @@ auto Plane::getCommonPoint(const Plane &p1, const Plane &p2, const Plane &p3) ->
     p3.normal.x * (p1.normal.y * p2.normal.z - p1.normal.z * p2.normal.y);
 
     // If the determinant is zero, then the planes do not all intersect
-    if (Math::approxZero(det, Math::smallFloat1))
+    if (Math::approxZero(det, Math::epsilon1))
         return result;
 
     // Create 3 points, one on each plane
@@ -167,9 +167,9 @@ auto Plane::intersectFrustum(const Frustum &frustum) const -> PlaneIntersection
 
 auto Plane::intersectPlane(const Plane &plane) const -> PlaneIntersection
 {
-    if ((Math::approxEqual(normal.x, plane.normal.x, Math::smallFloat1) &&
-            Math::approxEqual(normal.y, plane.normal.y, Math::smallFloat1) &&
-            Math::approxEqual(normal.z, plane.normal.z, Math::smallFloat1)) || !isParallel(plane))
+    if ((Math::approxEqual(normal.x, plane.normal.x, Math::epsilon1) &&
+            Math::approxEqual(normal.y, plane.normal.y, Math::epsilon1) &&
+            Math::approxEqual(normal.z, plane.normal.z, Math::epsilon1)) || !isParallel(plane))
         return PlaneIntersection::Intersecting;
 
     // Calculate the point where the given plane's normal vector intersects the given plane
@@ -186,7 +186,7 @@ auto Plane::intersectRay(const Ray &ray) const -> PlaneIntersection
     auto d = getDistanceToPoint(ray.getOrigin());
 
     // If the origin of the ray lies in the plane, then it getIntersection.
-    if (Math::approxZero(d, Math::smallFloat1))
+    if (Math::approxZero(d, Math::epsilon1))
         return PlaneIntersection::Intersecting;
 
     auto rayDirection = ray.getDirection();
@@ -202,9 +202,9 @@ auto Plane::intersectRay(const Ray &ray) const -> PlaneIntersection
 
 bool Plane::isParallel(const Plane &plane) const
 {
-    return Math::approxEqual(normal.y * plane.normal.z, normal.z * plane.normal.y, Math::smallFloat1) &&
-           Math::approxEqual(normal.z * plane.normal.x, normal.x * plane.normal.z, Math::smallFloat1) &&
-           Math::approxEqual(normal.x * plane.normal.y, normal.y * plane.normal.x, Math::smallFloat1);
+    return Math::approxEqual(normal.y * plane.normal.z, normal.z * plane.normal.y, Math::epsilon1) &&
+           Math::approxEqual(normal.z * plane.normal.x, normal.x * plane.normal.z, Math::epsilon1) &&
+           Math::approxEqual(normal.x * plane.normal.y, normal.y * plane.normal.x, Math::epsilon1);
 }
 
 
@@ -216,7 +216,7 @@ void Plane::normalize()
     // Normalize the plane's normal
     auto normalizeFactor = 1.0f / sqrt(normal.x * normal.x + normal.y * normal.y + normal.z * normal.z);
 
-    if (!Math::approxEqual(normalizeFactor, 1.0f, Math::smallFloat1))
+    if (!Math::approxEqual(normalizeFactor, 1.0f, Math::epsilon1))
     {
         normal.x *= normalizeFactor;
         normal.y *= normalizeFactor;

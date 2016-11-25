@@ -29,32 +29,32 @@ namespace solo
     class Math final
     {
     public:
-        static constexpr float smallFloat1 = 0.000001f;
-        static constexpr float smallFloat2 = 1.0e-37f;
-        static constexpr float smallFloat3 = 2e-37f;
+        static constexpr float epsilon1 = 0.000001f;
+        static constexpr float epsilon2 = 1.0e-37f;
+        static constexpr float epsilon3 = 2e-37f;
         static constexpr float pi = 3.14159265358979323846f;
         static constexpr float piOver2 = 1.57079632679489661923f;
 
-        static bool approxZero(float value, float tolerance);
-        static bool approxEqual(float first, float second, float tolerance);
+        static bool approxZero(float value, float epsilon);
+        static bool approxEqual(float first, float second, float epsilon);
 
         static auto degToRad(float degrees) -> float;
         static auto radToDeg(float radians) -> float;
 
-        static auto getRandomAroundZero() -> float;
-        static auto getRandom01() -> float;
+        static auto rndAroundZero() -> float;
+        static auto rnd01() -> float;
 
         static auto clamp(float x, float lo, float hi) -> float;
     };
 
-    inline bool Math::approxZero(float value, float tolerance)
+    inline bool Math::approxZero(float value, float epsilon)
     {
-        return fabs(value) <= tolerance;
+        return fabs(value) <= epsilon;
     }
 
-    inline bool Math::approxEqual(float first, float second, float tolerance)
+    inline bool Math::approxEqual(float first, float second, float epsilon)
     {
-        return fabs(first - second) <= tolerance;
+        return fabs(first - second) <= epsilon;
     }
 
     inline auto Math::degToRad(float degrees) -> float
@@ -67,12 +67,12 @@ namespace solo
         return radians * 57.29577951f;
     }
 
-    inline auto Math::getRandomAroundZero() -> float
+    inline auto Math::rndAroundZero() -> float
     {
         return 2.0f * (static_cast<float>(rand()) / RAND_MAX) - 1.0f;
     }
 
-    inline auto Math::getRandom01() -> float
+    inline auto Math::rnd01() -> float
     {
         return static_cast<float>(rand()) / RAND_MAX;
     }

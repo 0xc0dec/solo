@@ -73,7 +73,7 @@ auto TransformMatrix::createPerspective(const Radian &fieldOfView, float aspectR
 {
     auto f_n = 1.0f / (zfar - znear);
     auto theta = fieldOfView.toRawRadian() * 0.5f;
-    SL_ERR_IF(Math::approxZero(fmod(theta, Math::piOver2), Math::smallFloat1))
+    SL_ERR_IF(Math::approxZero(fmod(theta, Math::piOver2), Math::epsilon1))
 
     auto divisor = tan(theta);
     auto factor = 1.0f / divisor;
@@ -198,7 +198,7 @@ auto TransformMatrix::createRotationFromAxisAngle(const Vector3 &axis, const Rad
         // Not normalized
         n = sqrt(n);
         // Prevent division too close to zero.
-        if (!Math::approxZero(n, Math::smallFloat1))
+        if (!Math::approxZero(n, Math::epsilon1))
         {
             n = 1.0f / n;
             x *= n;
@@ -480,7 +480,7 @@ bool TransformMatrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *t
         return true;
 
     // Scale too close to zero, can't decompose rotation.
-    if (scaleX < Math::smallFloat3 || scaleY < Math::smallFloat3 || scaleZ < Math::smallFloat3)
+    if (scaleX < Math::epsilon3 || scaleY < Math::epsilon3 || scaleZ < Math::epsilon3)
         return false;
 
     float rn;
@@ -504,7 +504,7 @@ bool TransformMatrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *t
     // Calculate the rotation from the resulting matrix (axes).
     auto trace = xaxis.x + yaxis.y + zaxis.z + 1.0f;
 
-    if (trace > Math::smallFloat1)
+    if (trace > Math::epsilon1)
     {
         auto s = 0.5f / sqrt(trace);
         rotation->w = 0.25f / s;

@@ -60,20 +60,20 @@ auto Vector2::unitY() -> Vector2
 
 bool Vector2::isZero() const
 {
-    return Math::approxZero(x, Math::smallFloat1) && Math::approxZero(y, Math::smallFloat1);
+    return Math::approxZero(x, Math::epsilon1) && Math::approxZero(y, Math::epsilon1);
 }
 
 
 bool Vector2::isUnit() const
 {
-    return Math::approxEqual(x, 1.0f, Math::smallFloat1) && Math::approxEqual(y, 1.0f, Math::smallFloat1);
+    return Math::approxEqual(x, 1.0f, Math::epsilon1) && Math::approxEqual(y, 1.0f, Math::epsilon1);
 }
 
 
 auto Vector2::angle(const Vector2 &v1, const Vector2 &v2) -> Radian
 {
     auto dz = v1.x * v2.y - v1.y * v2.x;
-    return Radian(atan2f(fabsf(dz) + Math::smallFloat2, dot(v1, v2)));
+    return Radian(atan2f(fabsf(dz) + Math::epsilon2, dot(v1, v2)));
 }
 
 
@@ -143,11 +143,11 @@ void Vector2::normalize()
 {
     auto n = x * x + y * y;
     // Already normalized
-    if (Math::approxEqual(n, 1.0f, Math::smallFloat1))
+    if (Math::approxEqual(n, 1.0f, Math::epsilon1))
         return;
 
     n = sqrt(n);
-    if (Math::approxZero(n, Math::smallFloat2))
+    if (Math::approxZero(n, Math::epsilon2))
         return;
 
     n = 1.0f / n;

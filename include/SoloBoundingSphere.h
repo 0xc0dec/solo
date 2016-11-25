@@ -52,6 +52,6 @@ namespace solo
 
     inline bool BoundingSphere::isEmpty() const
     {
-        return Math::approxZero(radius, Math::smallFloat1);
+        return Math::approxZero(radius, Math::epsilon1);
     }
 }

@@ -61,8 +61,8 @@ namespace solo
 
     inline bool BoundingBox::isEmpty() const
     {
-        return Math::approxEqual(min.x, max.x, Math::smallFloat1) &&
-               Math::approxEqual(min.y, max.y, Math::smallFloat1) &&
-               Math::approxEqual(min.z, max.z, Math::smallFloat1);
+        return Math::approxEqual(min.x, max.x, Math::epsilon1) &&
+               Math::approxEqual(min.y, max.y, Math::epsilon1) &&
+               Math::approxEqual(min.z, max.z, Math::epsilon1);
     }
 }
