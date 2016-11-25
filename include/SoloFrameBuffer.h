@@ -41,7 +41,7 @@ namespace solo
         virtual void bind() = 0;
         virtual void unbind() = 0;
 
-        virtual void setAttachments(const std::vector<sptr<RectTexture>>& attachments) = 0;
+        virtual void setAttachments(const std::vector<sptr<RectTexture>> &attachments) = 0;
 
         auto getSize() const -> Vector2;
 

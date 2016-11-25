@@ -34,7 +34,7 @@ namespace solo
     class Effect
     {
     public:
-        static auto create(const std::string& vsSrc, const std::string& fsSrc) -> sptr<Effect>;
+        static auto create(const std::string &vsSrc, const std::string &fsSrc) -> sptr<Effect>;
         static auto create(EffectPrefab prefab) -> sptr<Effect>;
 
         SL_DISABLE_COPY_AND_MOVE(Effect)

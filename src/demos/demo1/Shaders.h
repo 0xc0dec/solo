@@ -20,7 +20,7 @@
 
 #pragma once
 
-const char* vsBasicLighting = R"(
+const char *vsBasicLighting = R"(
     #version 330 core
 
     layout (location = 0) in vec4 position;

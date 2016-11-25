@@ -28,7 +28,7 @@
 using namespace solo;
 
 
-FontRenderer::FontRenderer(const Node& node):
+FontRenderer::FontRenderer(const Node &node):
     ComponentBase(node)
 {
     auto effect = Effect::create(EffectPrefab::Font);
@@ -41,7 +41,7 @@ FontRenderer::FontRenderer(const Node& node):
 }
 
 
-void FontRenderer::render(RenderContext& context)
+void FontRenderer::render(RenderContext &context)
 {
     if (!mesh)
         return;
@@ -68,11 +68,11 @@ void FontRenderer::setFont(sptr<Font> newFont)
 }
 
 
-void FontRenderer::setText(const std::string& newText)
+void FontRenderer::setText(const std::string &newText)
 {
     if (newText == text)
         return;
-    
+
     auto oldLength = text.size();
     auto newLength = newText.size();
     text = newText;
@@ -126,9 +126,9 @@ void FontRenderer::rebuildMesh()
     layout2.add(VertexBufferLayoutSemantics::TexCoord0, 2);
 
     mesh = Mesh::create();
-    mesh->addDynamicVertexBuffer(layout1, reinterpret_cast<const float*>(vertices.data()), static_cast<uint32_t>(vertices.size()));
-    mesh->addDynamicVertexBuffer(layout2, reinterpret_cast<const float*>(uvs.data()), static_cast<uint32_t>(uvs.size()));
-    mesh->addPart(reinterpret_cast<const void*>(indexes.data()), static_cast<uint32_t>(indexes.size()));
+    mesh->addDynamicVertexBuffer(layout1, reinterpret_cast<const float *>(vertices.data()), static_cast<uint32_t>(vertices.size()));
+    mesh->addDynamicVertexBuffer(layout2, reinterpret_cast<const float *>(uvs.data()), static_cast<uint32_t>(uvs.size()));
+    mesh->addPart(reinterpret_cast<const void *>(indexes.data()), static_cast<uint32_t>(indexes.size()));
     mesh->setPrimitiveType(PrimitiveType::Triangles);
 }
 
@@ -155,6 +155,6 @@ void FontRenderer::updateMesh()
         uvs.emplace_back(glyphInfo.uvs[3]);
     }
 
-    mesh->updateDynamicVertexBuffer(0, 0, reinterpret_cast<const float*>(vertices.data()), static_cast<uint32_t>(vertices.size()));
-    mesh->updateDynamicVertexBuffer(1, 0, reinterpret_cast<const float*>(uvs.data()), static_cast<uint32_t>(uvs.size()));
+    mesh->updateDynamicVertexBuffer(0, 0, reinterpret_cast<const float *>(vertices.data()), static_cast<uint32_t>(vertices.size()));
+    mesh->updateDynamicVertexBuffer(1, 0, reinterpret_cast<const float *>(uvs.data()), static_cast<uint32_t>(uvs.size()));
 }

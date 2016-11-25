@@ -26,12 +26,12 @@
 using namespace solo;
 
 
-TrueTypeFont::TrueTypeFont(uint8_t* fontData, uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight,
-    uint32_t firstChar, uint32_t charCount, uint32_t oversampleX, uint32_t oversampleY):
+TrueTypeFont::TrueTypeFont(uint8_t *fontData, uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight,
+                           uint32_t firstChar, uint32_t charCount, uint32_t oversampleX, uint32_t oversampleY):
     firstChar(firstChar)
 {
     charInfo = std::make_unique<stbtt_packedchar[]>(charCount);
-    
+
     auto pixels = std::make_unique<uint8_t[]>(atlasWidth * atlasHeight);
 
     stbtt_pack_context context;
@@ -55,7 +55,7 @@ auto TrueTypeFont::getGlyphInfo(uint32_t character, float offsetX, float offsetY
     auto atlasSize = atlas->getSize();
 
     stbtt_GetPackedQuad(charInfo.get(), static_cast<uint32_t>(atlasSize.x), static_cast<uint32_t>(atlasSize.y),
-        character - firstChar, &offsetX, &offsetY, &quad, 1);
+    character - firstChar, &offsetX, &offsetY, &quad, 1);
     auto xmin = quad.x0;
     auto xmax = quad.x1;
     auto ymin = -quad.y1;
@@ -76,8 +76,8 @@ auto TrueTypeFont::getGlyphInfo(uint32_t character, float offsetX, float offsetY
 }
 
 
-auto Font::create(uint8_t* fontData, uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight,
-    uint32_t firstChar, uint32_t charCount, uint32_t oversampleX, uint32_t oversampleY) -> sptr<Font>
+auto Font::create(uint8_t *fontData, uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight,
+                  uint32_t firstChar, uint32_t charCount, uint32_t oversampleX, uint32_t oversampleY) -> sptr<Font>
 {
     // TODO if constructors throws...
     return std::make_unique<TrueTypeFont>(fontData, size, atlasWidth, atlasHeight, firstChar, charCount, oversampleX, oversampleY);

@@ -32,7 +32,7 @@ using namespace solo;
 class Targeter: public ComponentBase<Targeter>
 {
 public:
-    explicit Targeter(const Node& node, Vector3 targetPos):
+    explicit Targeter(const Node &node, Vector3 targetPos):
         ComponentBase<Targeter>(node),
         targetPos(targetPos)
     {
@@ -50,14 +50,14 @@ public:
 
 private:
     Vector3 targetPos;
-    Transform* transform = nullptr;
+    Transform *transform = nullptr;
 };
 
 
 class DynamicQuadUpdater: public ComponentBase<DynamicQuadUpdater>
 {
 public:
-    explicit DynamicQuadUpdater(const Node& node, std::vector<float> data, sptr<Mesh> mesh):
+    explicit DynamicQuadUpdater(const Node &node, std::vector<float> data, sptr<Mesh> mesh):
         ComponentBase<DynamicQuadUpdater>(node),
         data(data),
         device(node.getScene()->getDevice()),
@@ -79,7 +79,7 @@ public:
 private:
     float time = 0;
     std::vector<float> data;
-    Device* device;
+    Device *device;
     sptr<Mesh> mesh;
 };
 
@@ -115,7 +115,7 @@ private:
         canvasSize = device->getCanvasSize();
     }
 
-    sptr<Material> createColorMaterial(const Vector4& color)
+    sptr<Material> createColorMaterial(const Vector4 &color)
     {
         auto mat = Material::create(colorEffect);
         mat->setFaceCull(FaceCull::All);
@@ -132,9 +132,9 @@ private:
         texWithLightingEffect = Effect::create(vsBasicLighting, fsTextureWithLighting);
     }
 
-    void loadTexture(const std::string& path, std::function<void(sptr<RectTexture>)> callback)
+    void loadTexture(const std::string &path, std::function<void(sptr<RectTexture>)> callback)
     {
-        loader->loadRectTextureAsync(path)->done([=](sptr<RectTexture> tex)
+        loader->loadRectTextureAsync(path)->done([ = ](sptr<RectTexture> tex)
         {
             tex->generateMipmaps();
             tex->setFiltering(TextureFiltering::LinearMipmapNearest);
@@ -170,7 +170,7 @@ private:
     {
         offscreenCameraTex = RectTexture::create();
         offscreenCameraTex->setData(TextureFormat::RGB, {},
-            static_cast<uint32_t>(floor(canvasSize.x / 8.0f)), static_cast<uint32_t>(floor(canvasSize.y / 8.0f)));
+                                    static_cast<uint32_t>(floor(canvasSize.x / 8.0f)), static_cast<uint32_t>(floor(canvasSize.y / 8.0f)));
         offscreenCameraTex->setFiltering(TextureFiltering::Nearest);
         offscreenCameraTex->setWrapping(TextureWrapping::Clamp);
 
@@ -207,14 +207,15 @@ private:
 
     void initSkybox()
     {
-        loader->loadCubeTextureAsync({
+        loader->loadCubeTextureAsync(
+        {
             "../assets/skyboxes/deep-space/front.png",
             "../assets/skyboxes/deep-space/back.png",
             "../assets/skyboxes/deep-space/left.png",
             "../assets/skyboxes/deep-space/right.png",
             "../assets/skyboxes/deep-space/top.png",
             "../assets/skyboxes/deep-space/bottom.png"
-        })->done([=](sptr<CubeTexture> tex)
+        })->done([ = ](sptr<CubeTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->setFiltering(TextureFiltering::Linear);
@@ -243,7 +244,7 @@ private:
 
     void initMesh()
     {
-        loader->loadRectTextureAsync("../assets/cobblestone.png")->done([=](sptr<RectTexture> tex)
+        loader->loadRectTextureAsync("../assets/cobblestone.png")->done([ = ](sptr<RectTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->generateMipmaps();
@@ -254,7 +255,7 @@ private:
             mat->bindInvTransposedWorldMatrixParameter("invTransposedWorldMatrix");
             mat->setTextureParameter("mainTex", tex);
 
-            loader->loadMeshAsync("../assets/monkey_hires.obj")->done([=](sptr<Mesh> mesh)
+            loader->loadMeshAsync("../assets/monkey_hires.obj")->done([ = ](sptr<Mesh> mesh)
             {
                 auto node = scene->createNode();
                 auto renderer = node->addComponent<MeshRenderer>();
@@ -268,7 +269,7 @@ private:
 
     void initDynamicQuad()
     {
-        loadTexture("../assets/freeman.png", [=](sptr<RectTexture> tex)
+        loadTexture("../assets/freeman.png", [ = ](sptr<RectTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
 
@@ -284,7 +285,7 @@ private:
                 1, -1, 0,	1, 0
             };
 
-            std::vector<uint16_t> indices = 
+            std::vector<uint16_t> indices =
             {
                 0, 1, 2,
                 0, 2, 3
@@ -340,7 +341,7 @@ private:
 
     void initTransparentQuad()
     {
-        loadTexture("../assets/flammable.png", [=](sptr<RectTexture> tex)
+        loadTexture("../assets/flammable.png", [ = ](sptr<RectTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
 
@@ -367,10 +368,10 @@ private:
     }
 
     const int renderTargetQuadTag = 2;
-    Scene* scene = nullptr;
-    AssetLoader* loader = nullptr;
+    Scene *scene = nullptr;
+    AssetLoader *loader = nullptr;
     Vector2 canvasSize;
-    Device* device = nullptr;
+    Device *device = nullptr;
     sptr<Effect> simpleTextureEffect = nullptr;
     sptr<Effect> colorEffect = nullptr;
     sptr<Effect> checkerEffect = nullptr;

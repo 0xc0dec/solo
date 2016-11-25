@@ -33,20 +33,20 @@ auto OpenGLEffect::create(EffectPrefab prefab) -> sptr<OpenGLEffect>
     auto device = Device::get();
     switch (prefab)
     {
-        case EffectPrefab::Skybox:
-            return std::make_shared<OpenGLEffect>(device, OpenGLPrefabShaders::Vertex::skybox, OpenGLPrefabShaders::Fragment::skybox);
-        case EffectPrefab::Font:
-            return std::make_shared<OpenGLEffect>(device, OpenGLPrefabShaders::Vertex::simple, OpenGLPrefabShaders::Fragment::font);
-        default:
-            SL_ERR("Unknown effect prefab");
-            break;
+    case EffectPrefab::Skybox:
+        return std::make_shared<OpenGLEffect>(device, OpenGLPrefabShaders::Vertex::skybox, OpenGLPrefabShaders::Fragment::skybox);
+    case EffectPrefab::Font:
+        return std::make_shared<OpenGLEffect>(device, OpenGLPrefabShaders::Vertex::simple, OpenGLPrefabShaders::Fragment::font);
+    default:
+        SL_ERR("Unknown effect prefab");
+        break;
     }
 }
 
 
-OpenGLEffect::OpenGLEffect(Device* device, const std::string& vsSrc, const std::string& fsSrc)
+OpenGLEffect::OpenGLEffect(Device *device, const std::string &vsSrc, const std::string &fsSrc)
 {
-    renderer = dynamic_cast<OpenGLRenderer*>(device->getRenderer());
+    renderer = dynamic_cast<OpenGLRenderer *>(device->getRenderer());
     handle = renderer->createProgram(vsSrc.c_str(), fsSrc.c_str());
 }
 

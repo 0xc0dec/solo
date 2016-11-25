@@ -22,7 +22,7 @@ static struct
 {
     struct
     {
-        const char* basic = R"(
+        const char *basic = R"(
             #version 330 core
 
 			layout (location = 0) in vec4 position;
@@ -38,7 +38,7 @@ static struct
 			}
         )";
 
-        const char* passThrough = R"(
+        const char *passThrough = R"(
             #version 330 core
 
 			layout (location = 0) in vec4 position;
@@ -56,7 +56,7 @@ static struct
 
     struct
     {
-        const char* texture = R"(
+        const char *texture = R"(
             #version 330 core
 
 			uniform sampler2D mainTex;
@@ -70,7 +70,7 @@ static struct
 			}
         )";
 
-        const char* color = R"(
+        const char *color = R"(
             #version 330 core
 
             uniform vec4 color;

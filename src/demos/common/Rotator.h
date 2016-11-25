@@ -26,7 +26,7 @@
 class Rotator final: public solo::ComponentBase<Rotator>
 {
 public:
-    explicit Rotator(const solo::Node& node, const std::string& space, solo::Vector3 axis):
+    explicit Rotator(const solo::Node &node, const std::string &space, solo::Vector3 axis):
         ComponentBase<Rotator>(node),
         device(solo::Device::get()),
         axis(axis),
@@ -49,8 +49,8 @@ public:
     }
 
 private:
-    solo::Transform* transform = nullptr;
-    solo::Device* device;
+    solo::Transform *transform = nullptr;
+    solo::Device *device;
     solo::Vector3 axis;
     std::string space;
 };

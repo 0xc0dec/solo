@@ -31,30 +31,30 @@ namespace solo
     class Collider;
 
     SL_FLUENT_DTO(RigidBodyConstructionParameters,
-        SL_FLUENT_DTO_FIELD(float, float, mass, withMass, = 0)
-        SL_FLUENT_DTO_FIELD(float, float, friction, withFriction, = 0)
-        SL_FLUENT_DTO_FIELD(float, float, restitution, withRestitution, = 0)
-        SL_FLUENT_DTO_FIELD(float, float, linearDamping, withLinearDamping, = 0)
-        SL_FLUENT_DTO_FIELD(float, float, angularDamping, withAngularDamping, = 0)
-        SL_FLUENT_DTO_FIELD(bool, bool, kinematic, withKinematic, = false)
-        SL_FLUENT_DTO_FIELD(Vector3, Vector3, linearFactor, withLinearFactor, = Vector3())
-        SL_FLUENT_DTO_FIELD(Vector3, Vector3, angularFactor, withAngularFactor, = Vector3())
-    )
+                  SL_FLUENT_DTO_FIELD(float, float, mass, withMass, = 0)
+                  SL_FLUENT_DTO_FIELD(float, float, friction, withFriction, = 0)
+                  SL_FLUENT_DTO_FIELD(float, float, restitution, withRestitution, = 0)
+                  SL_FLUENT_DTO_FIELD(float, float, linearDamping, withLinearDamping, = 0)
+                  SL_FLUENT_DTO_FIELD(float, float, angularDamping, withAngularDamping, = 0)
+                  SL_FLUENT_DTO_FIELD(bool, bool, kinematic, withKinematic, = false)
+                  SL_FLUENT_DTO_FIELD(Vector3, Vector3, linearFactor, withLinearFactor, = Vector3())
+                  SL_FLUENT_DTO_FIELD(Vector3, Vector3, angularFactor, withAngularFactor, = Vector3())
+                 )
 
     class RigidBody: public ComponentBase<RigidBody>, public TransformCallback
     {
     public:
-        static auto create(const Node& node, const RigidBodyConstructionParameters& parameters) -> sptr<RigidBody>;
+        static auto create(const Node &node, const RigidBodyConstructionParameters &parameters) -> sptr<RigidBody>;
 
         virtual void setCollider(sptr<Collider> collider) = 0;
 
     protected:
-        explicit RigidBody(const Node& node);
+        explicit RigidBody(const Node &node);
     };
 
     template <>
     template <class... Args>
-    auto NodeHelper<RigidBody>::addComponent(Scene* scene, uint32_t nodeId, Args&&... args) -> RigidBody*
+    auto NodeHelper<RigidBody>::addComponent(Scene *scene, uint32_t nodeId, Args &&... args) -> RigidBody *
     {
         auto body = std::shared_ptr<RigidBody>(RigidBody::create(Node(scene, nodeId), std::forward<Args>(args)...));
         scene->addComponent(nodeId, body);

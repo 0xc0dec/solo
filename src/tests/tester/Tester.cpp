@@ -33,7 +33,7 @@ using namespace solo;
 class Callback final: public DeviceCallback
 {
 public:
-    Callback(std::function<void(Device*)> run): run(run)
+    Callback(std::function<void(Device *)> run): run(run)
     {
     }
 
@@ -44,11 +44,11 @@ public:
     }
 
 private:
-    std::function<void(Device*)> run;
+    std::function<void(Device *)> run;
 };
 
 
-void runInNullEngine(std::function<void(Device*)> run, const std::string& logPath)
+void runInNullEngine(std::function<void(Device *)> run, const std::string &logPath)
 {
     Device::run(
         DeviceSetup().withMode(DeviceMode::Null).withLogFilePath(logPath),
@@ -57,7 +57,7 @@ void runInNullEngine(std::function<void(Device*)> run, const std::string& logPat
 }
 
 
-void runInRealEngine(std::function<void(Device*)> run, const std::string& logPath)
+void runInRealEngine(std::function<void(Device *)> run, const std::string &logPath)
 {
     Device::run(
         DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath(logPath),
@@ -66,7 +66,7 @@ void runInRealEngine(std::function<void(Device*)> run, const std::string& logPat
 }
 
 
-void runCppUnitTests(Device* device)
+void runCppUnitTests(Device *device)
 {
     Device_Test(device).run();
     Components_Test(device).run();
@@ -75,7 +75,7 @@ void runCppUnitTests(Device* device)
 }
 
 
-void runCppIntegrationTests(Device* device)
+void runCppIntegrationTests(Device *device)
 {
     FileSystem_Test(device).run();
     Materials_Test(device).run();

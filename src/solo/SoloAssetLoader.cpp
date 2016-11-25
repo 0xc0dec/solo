@@ -33,16 +33,16 @@
 using namespace solo;
 
 
-AssetLoader::AssetLoader(Device* device, const DeviceToken&)
+AssetLoader::AssetLoader(Device *device, const DeviceToken &)
 {
     imageLoaders.push_back(std::make_unique<PngImageLoader>(device));
     meshLoaders.push_back(std::make_unique<ObjMeshLoader>(device));
 }
 
 
-auto AssetLoader::getMeshLoader(const std::string& path) -> MeshLoader*
+auto AssetLoader::getMeshLoader(const std::string &path) -> MeshLoader *
 {
-    for (const auto& loader : meshLoaders)
+    for (const auto &loader : meshLoaders)
     {
         if (loader->isLoadable(path))
             return loader.get();
@@ -52,9 +52,9 @@ auto AssetLoader::getMeshLoader(const std::string& path) -> MeshLoader*
 }
 
 
-auto AssetLoader::getImageLoader(const std::string& path) -> ImageLoader*
+auto AssetLoader::getImageLoader(const std::string &path) -> ImageLoader *
 {
-    for (const auto& l : imageLoaders)
+    for (const auto &l : imageLoaders)
     {
         if (l->isLoadable(path))
             return l.get();
@@ -64,7 +64,7 @@ auto AssetLoader::getImageLoader(const std::string& path) -> ImageLoader*
 }
 
 
-auto AssetLoader::loadRectTexture(const std::string& path) -> sptr<RectTexture>
+auto AssetLoader::loadRectTexture(const std::string &path) -> sptr<RectTexture>
 {
     auto loader = getImageLoader(path);
     auto image = loader->load(path);
@@ -74,15 +74,15 @@ auto AssetLoader::loadRectTexture(const std::string& path) -> sptr<RectTexture>
 }
 
 
-auto AssetLoader::loadRectTextureAsync(const std::string& path) -> sptr<AsyncHandle<RectTexture>>
+auto AssetLoader::loadRectTextureAsync(const std::string &path) -> sptr<AsyncHandle<RectTexture>>
 {
     auto handle = std::make_shared<AsyncHandle<RectTexture>>();
     auto loader = getImageLoader(path);
-    async::spawn([=]
+    async::spawn([ = ]
     {
         auto image = loader->load(path);
         volatile auto lock = this->tasksLock.acquire();
-        this->tasks.push_back([=]()
+        this->tasks.push_back([ = ]()
         {
             auto texture = RectTexture::create();
             // TODO this actually blocks and causes main thread/FPS stall. So we've offloaded
@@ -97,13 +97,13 @@ auto AssetLoader::loadRectTextureAsync(const std::string& path) -> sptr<AsyncHan
 }
 
 
-auto AssetLoader::loadCubeTexture(const std::vector<std::string>& sidePaths) -> sptr<CubeTexture>
+auto AssetLoader::loadCubeTexture(const std::vector<std::string> &sidePaths) -> sptr<CubeTexture>
 {
     auto result = CubeTexture::create();
     auto loader = getImageLoader(sidePaths[0]);
 
     auto idx = 0;
-    for (const auto& path : sidePaths)
+    for (const auto &path : sidePaths)
     {
         auto image = loader->load(path);
         auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + idx++);
@@ -114,7 +114,7 @@ auto AssetLoader::loadCubeTexture(const std::vector<std::string>& sidePaths) -> 
 }
 
 
-auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string>& sidePaths) -> sptr<AsyncHandle<CubeTexture>>
+auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string> &sidePaths) -> sptr<AsyncHandle<CubeTexture>>
 {
     auto handle = std::make_shared<AsyncHandle<CubeTexture>>();
     auto loader = getImageLoader(sidePaths[0]);
@@ -123,24 +123,27 @@ auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string>& sidePaths
     for (uint32_t i = 0; i < sidePaths.size(); i++)
     {
         auto path = sidePaths[i];
-        imageTasks.push_back(async::spawn([=]
+        imageTasks.push_back(async::spawn([ = ]
         {
             return loader->load(path);
         }));
     }
 
-    async::when_all(imageTasks.begin(), imageTasks.end()).then([=] (std::vector<async::task<sptr<Image>>> imageTasks)
+    async::when_all(imageTasks.begin(), imageTasks.end()).then([ = ] (std::vector<async::task<sptr<Image>>> imageTasks)
     {
         std::vector<sptr<Image>> images;
         std::transform(imageTasks.begin(), imageTasks.end(), std::back_inserter(images),
-                       [](async::task<sptr<Image>>& t) { return t.get(); });
+                       [](async::task<sptr<Image>> &t)
+        {
+            return t.get();
+        });
 
         volatile auto lock = this->tasksLock.acquire();
-        this->tasks.push_back(std::bind([=] (const std::vector<sptr<Image>>& images)
+        this->tasks.push_back(std::bind([ = ] (const std::vector<sptr<Image>> &images)
         {
             auto texture = CubeTexture::create();
             uint32_t idx = 0;
-            for (const auto& image : images)
+            for (const auto &image : images)
             {
                 auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + idx++);
                 texture->setData(face, image->format, image->data.data(), image->width, image->height);
@@ -153,7 +156,7 @@ auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string>& sidePaths
 }
 
 
-auto AssetLoader::loadMesh(const std::string& path) -> sptr<Mesh>
+auto AssetLoader::loadMesh(const std::string &path) -> sptr<Mesh>
 {
     auto loader = getMeshLoader(path);
     auto data = loader->loadData(path);
@@ -161,16 +164,16 @@ auto AssetLoader::loadMesh(const std::string& path) -> sptr<Mesh>
 }
 
 
-auto AssetLoader::loadMeshAsync(const std::string& path) -> sptr<AsyncHandle<Mesh>>
+auto AssetLoader::loadMeshAsync(const std::string &path) -> sptr<AsyncHandle<Mesh>>
 {
     auto handle = std::make_shared<AsyncHandle<Mesh>>();
     auto loader = getMeshLoader(path);
 
-    async::spawn([=]
+    async::spawn([ = ]
     {
         auto data = loader->loadData(path);
         volatile auto lock = this->tasksLock.acquire();
-        this->tasks.push_back([=]()
+        this->tasks.push_back([ = ]()
         {
             // This is later called in the update() method
             auto mesh = Mesh::create(data.get());

@@ -32,11 +32,11 @@ namespace solo
         {
         }
 
-        void setValue(const void* value) override final
+        void setValue(const void *value) override final
         {
         }
 
-        void apply(const RenderContext& context) override final
+        void apply(const RenderContext &context) override final
         {
         }
     };

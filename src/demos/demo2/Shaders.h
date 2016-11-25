@@ -21,7 +21,7 @@
 #pragma once
 
 
-static const char* fsGrayscale = R"(
+static const char *fsGrayscale = R"(
     #version 330 core
 
     uniform sampler2D mainTex;

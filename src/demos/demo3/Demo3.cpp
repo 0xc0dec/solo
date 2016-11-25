@@ -30,7 +30,7 @@ using namespace solo;
 class Text final: public ComponentBase<Text>
 {
 public:
-    explicit Text(const Node& node):
+    explicit Text(const Node &node):
         ComponentBase<Text>(node),
         device(node.getScene()->getDevice())
     {
@@ -59,8 +59,8 @@ public:
     }
 
 private:
-    Device* device = nullptr;
-    FontRenderer* renderer = nullptr;
+    Device *device = nullptr;
+    FontRenderer *renderer = nullptr;
 };
 
 
@@ -101,14 +101,15 @@ private:
 
     void initSkybox()
     {
-        loader->loadCubeTextureAsync({
+        loader->loadCubeTextureAsync(
+        {
             "../assets/skyboxes/deep-space/front.png",
             "../assets/skyboxes/deep-space/back.png",
             "../assets/skyboxes/deep-space/left.png",
             "../assets/skyboxes/deep-space/right.png",
             "../assets/skyboxes/deep-space/top.png",
             "../assets/skyboxes/deep-space/bottom.png"
-        })->done([=](sptr<CubeTexture> tex)
+        })->done([ = ](sptr<CubeTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->setFiltering(TextureFiltering::Linear);
@@ -127,9 +128,9 @@ private:
         transform->setLocalScale(Vector3(0.02f, 0.02f, 1));
     }
 
-    Scene* scene = nullptr;
-    AssetLoader* loader = nullptr;
-    Device* device = nullptr;
+    Scene *scene = nullptr;
+    AssetLoader *loader = nullptr;
+    Device *device = nullptr;
 };
 
 

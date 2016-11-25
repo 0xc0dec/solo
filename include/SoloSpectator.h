@@ -31,7 +31,7 @@ namespace solo
     class Spectator final: public ComponentBase<Spectator>
     {
     public:
-        explicit Spectator(const Node& node);
+        explicit Spectator(const Node &node);
 
         void init() override final;
         void update() override final;
@@ -46,8 +46,8 @@ namespace solo
         void setVerticalRotationSpeed(float speed);
 
     private:
-        Device* device = nullptr;
-        Transform* transform = nullptr;
+        Device *device = nullptr;
+        Transform *transform = nullptr;
 
         float horizontalRotationSpeed = 0.5f;
         float verticalRotationSpeed = 0.5f;

@@ -33,12 +33,12 @@ namespace solo
     class OpenGLMaterial final: public Material
     {
     public:
-        explicit OpenGLMaterial(Device* device, sptr<Effect> effect);
+        explicit OpenGLMaterial(Device *device, sptr<Effect> effect);
 
     protected:
         void applyState() override final;
 
-        OpenGLRenderer* renderer = nullptr;
+        OpenGLRenderer *renderer = nullptr;
     };
 }
 

@@ -117,11 +117,11 @@ namespace solo
         {
         }
 
-        explicit EngineException(const std::string& msg): std::runtime_error(msg)
+        explicit EngineException(const std::string &msg): std::runtime_error(msg)
         {
         }
 
-        EngineException(const std::string& msg, const std::string& info):
+        EngineException(const std::string &msg, const std::string &info):
             std::runtime_error(msg),
             info(info)
         {

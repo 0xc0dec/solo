@@ -31,13 +31,13 @@ using namespace solo;
 
 
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
-    uint64_t obj, size_t location, int32_t code, const char* layerPrefix, const char* msg, void* userData)
+        uint64_t obj, size_t location, int32_t code, const char *layerPrefix, const char *msg, void *userData)
 {
     return VK_FALSE;
 }
 
 
-SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup& setup):
+SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
     SDLDevice(setup)
 {
     auto flags = static_cast<uint32_t>(SDL_WINDOW_ALLOW_HIGHDPI);
@@ -45,21 +45,21 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup& setup):
         flags |= SDL_WINDOW_FULLSCREEN;
 
     window = SDL_CreateWindow(setup.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        setup.canvasWidth, setup.canvasHeight, flags);
+                              setup.canvasWidth, setup.canvasHeight, flags);
     SL_ERR_IF(!window, "Failed to create window");
 
     VkApplicationInfo appInfo {};
     appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-	appInfo.pApplicationName = "";
-	appInfo.pEngineName = "";
-	appInfo.apiVersion = VK_API_VERSION_1_0;
+    appInfo.pApplicationName = "";
+    appInfo.pEngineName = "";
+    appInfo.apiVersion = VK_API_VERSION_1_0;
 
-    std::vector<const char*> enabledExtensions = { VK_KHR_SURFACE_EXTENSION_NAME };
+    std::vector<const char *> enabledExtensions = { VK_KHR_SURFACE_EXTENSION_NAME };
 #ifdef SL_WINDOWS
     enabledExtensions.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
 #endif
 
-    std::vector<const char*> enabledLayers;
+    std::vector<const char *> enabledLayers;
 
 #ifdef SL_DEBUG
     enabledLayers.push_back("VK_LAYER_LUNARG_standard_validation");
@@ -67,9 +67,9 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup& setup):
 #endif
 
     VkInstanceCreateInfo instanceInfo {};
-	instanceInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-	instanceInfo.pNext = nullptr;
-	instanceInfo.pApplicationInfo = &appInfo;
+    instanceInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+    instanceInfo.pNext = nullptr;
+    instanceInfo.pApplicationInfo = &appInfo;
 
     if (!enabledLayers.empty())
     {
@@ -78,10 +78,10 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup& setup):
     }
 
     if (!enabledExtensions.empty())
-	{
-		instanceInfo.enabledExtensionCount = static_cast<uint32_t>(enabledExtensions.size());
-		instanceInfo.ppEnabledExtensionNames = enabledExtensions.data();
-	}
+    {
+        instanceInfo.enabledExtensionCount = static_cast<uint32_t>(enabledExtensions.size());
+        instanceInfo.ppEnabledExtensionNames = enabledExtensions.data();
+    }
 
     SL_CHECK_VK_RESULT(vkCreateInstance(&instanceInfo, nullptr, &instance));
 
@@ -94,9 +94,9 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup& setup):
     auto hinstance = reinterpret_cast<HINSTANCE>(GetWindowLongPtr(hwnd, GWLP_HINSTANCE));
 
     VkWin32SurfaceCreateInfoKHR surfaceCreateInfo {};
-	surfaceCreateInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
-	surfaceCreateInfo.hinstance = hinstance;
-	surfaceCreateInfo.hwnd = hwnd;
+    surfaceCreateInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+    surfaceCreateInfo.hinstance = hinstance;
+    surfaceCreateInfo.hwnd = hwnd;
 
     SL_CHECK_VK_RESULT(vkCreateWin32SurfaceKHR(instance, &surfaceCreateInfo, nullptr, &surface));
 #endif
@@ -118,7 +118,7 @@ auto SDLVulkanDevice::getCanvasSize() const -> Vector2
 }
 
 
-void SDLVulkanDevice::saveScreenshot(const std::string& path)
+void SDLVulkanDevice::saveScreenshot(const std::string &path)
 {
 }
 

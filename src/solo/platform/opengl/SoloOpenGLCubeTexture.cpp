@@ -27,9 +27,9 @@
 using namespace solo;
 
 
-OpenGLCubeTexture::OpenGLCubeTexture(Device* device)
+OpenGLCubeTexture::OpenGLCubeTexture(Device *device)
 {
-    renderer = dynamic_cast<OpenGLRenderer*>(device->getRenderer());
+    renderer = dynamic_cast<OpenGLRenderer *>(device->getRenderer());
     handle = renderer->createTexture();
 }
 
@@ -52,7 +52,7 @@ void OpenGLCubeTexture::generateMipmaps()
 }
 
 
-void OpenGLCubeTexture::setData(CubeTextureFace face, TextureFormat format, const uint8_t* data, uint32_t width, uint32_t height)
+void OpenGLCubeTexture::setData(CubeTextureFace face, TextureFormat format, const uint8_t *data, uint32_t width, uint32_t height)
 {
     renderer->updateCubeTexture(handle, face, format, width, height, data);
 }

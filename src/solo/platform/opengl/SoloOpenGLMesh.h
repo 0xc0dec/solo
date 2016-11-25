@@ -33,34 +33,34 @@ namespace solo
     class OpenGLMesh final: public Mesh
     {
     public:
-        explicit OpenGLMesh(Device* device);
-        OpenGLMesh(Device* device, MeshData* data);
-        OpenGLMesh(Device* device, MeshPrefab prefab);
+        explicit OpenGLMesh(Device *device);
+        OpenGLMesh(Device *device, MeshData *data);
+        OpenGLMesh(Device *device, MeshPrefab prefab);
         ~OpenGLMesh();
 
-        auto addVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount) -> uint32_t override final;
-        auto addDynamicVertexBuffer(const VertexBufferLayout& layout, const float* data, uint32_t vertexCount) -> uint32_t override final;
-        void updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const float* data, uint32_t vertexCount) override final;
+        auto addVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount) -> uint32_t override final;
+        auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount) -> uint32_t override final;
+        void updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const float *data, uint32_t vertexCount) override final;
         void removeVertexBuffer(uint32_t index) override final;
 
-        auto addPart(const void* indexData, uint32_t indexElementCount) -> uint32_t override final;
+        auto addPart(const void *indexData, uint32_t indexElementCount) -> uint32_t override final;
         void removePart(uint32_t index) override final;
         auto getPartCount() const -> uint32_t override final;
 
-        void draw(Effect* effect) override final;
-        void drawPart(Effect* effect, uint32_t part) override final;
+        void draw(Effect *effect) override final;
+        void drawPart(Effect *effect, uint32_t part) override final;
 
         auto getPrimitiveType() const -> PrimitiveType override final;
         void setPrimitiveType(PrimitiveType type) override final;
 
     private:
-        auto addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout& layout, uint32_t vertexCount) -> uint32_t;
+        auto addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout &layout, uint32_t vertexCount) -> uint32_t;
 
-        void rebuildEffectBinding(Effect* effect);
+        void rebuildEffectBinding(Effect *effect);
         void recalculateMinVertexCount();
 
-        OpenGLRenderer* renderer = nullptr;
-        OpenGLEffect* lastEffect = nullptr;
+        OpenGLRenderer *renderer = nullptr;
+        OpenGLEffect *lastEffect = nullptr;
 
         PrimitiveType primitiveType = PrimitiveType::Triangles;
         std::vector<uint32_t> vertexBuffers;

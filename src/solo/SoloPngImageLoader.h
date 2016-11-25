@@ -31,12 +31,12 @@ namespace solo
     class PngImageLoader final: public ImageLoader
     {
     public:
-        explicit PngImageLoader(Device* device);
+        explicit PngImageLoader(Device *device);
 
-        bool isLoadable(const std::string& path) const override final;
-        auto load(const std::string& path) -> sptr<Image> override final;
+        bool isLoadable(const std::string &path) const override final;
+        auto load(const std::string &path) -> sptr<Image> override final;
 
     private:
-        FileSystem* fs = nullptr;
+        FileSystem *fs = nullptr;
     };
 }

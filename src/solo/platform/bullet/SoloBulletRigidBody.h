@@ -33,21 +33,21 @@ namespace solo
     class BulletRigidBody final : public RigidBody
     {
     public:
-        BulletRigidBody(const Node& node, const RigidBodyConstructionParameters& parameters);
+        BulletRigidBody(const Node &node, const RigidBodyConstructionParameters &parameters);
         virtual ~BulletRigidBody();
 
         void setCollider(sptr<Collider> collider) override final;
 
-        void onTransformChanged(const Transform* transform, uint32_t dirtyFlags) override final;
+        void onTransformChanged(const Transform *transform, uint32_t dirtyFlags) override final;
 
     private:
         void syncScale();
 
         float mass = 0;
         sptr<Collider> collider;
-        btCollisionShape* shape;
-        Transform* transformCmp;
-        btDiscreteDynamicsWorld* world;
+        btCollisionShape *shape;
+        Transform *transformCmp;
+        btDiscreteDynamicsWorld *world;
         uptr<btMotionState> motionState;
         uptr<btRigidBody> body;
     };

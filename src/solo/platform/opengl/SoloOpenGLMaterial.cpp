@@ -28,10 +28,10 @@
 using namespace solo;
 
 
-OpenGLMaterial::OpenGLMaterial(Device* device, sptr<Effect> effect):
+OpenGLMaterial::OpenGLMaterial(Device *device, sptr<Effect> effect):
     Material(device, effect)
 {
-    renderer = dynamic_cast<OpenGLRenderer*>(device->getRenderer());
+    renderer = dynamic_cast<OpenGLRenderer *>(device->getRenderer());
 }
 
 

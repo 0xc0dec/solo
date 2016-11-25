@@ -27,9 +27,9 @@
 using namespace solo;
 
 
-OpenGLRectTexture::OpenGLRectTexture(Device* device)
+OpenGLRectTexture::OpenGLRectTexture(Device *device)
 {
-    renderer = dynamic_cast<OpenGLRenderer*>(device->getRenderer());
+    renderer = dynamic_cast<OpenGLRenderer *>(device->getRenderer());
     handle = renderer->createTexture();
 }
 
@@ -46,7 +46,7 @@ void OpenGLRectTexture::generateMipmaps()
 }
 
 
-void OpenGLRectTexture::setData(TextureFormat format, const uint8_t* data, uint32_t width, uint32_t height)
+void OpenGLRectTexture::setData(TextureFormat format, const uint8_t *data, uint32_t width, uint32_t height)
 {
     renderer->update2DTexture(handle, format, width, height, data);
     size = { static_cast<float>(width), static_cast<float>(height) };

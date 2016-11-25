@@ -35,16 +35,16 @@ namespace solo
     class OpenGLMaterialParameter final: public MaterialParameter
     {
     public:
-        OpenGLMaterialParameter(Renderer* renderer, Effect* effect, MaterialParameterType type, const char* name);
+        OpenGLMaterialParameter(Renderer *renderer, Effect *effect, MaterialParameterType type, const char *name);
         ~OpenGLMaterialParameter();
 
-        void setValue(const void* value) override final;
-        void apply(const RenderContext& context) override final;
+        void setValue(const void *value) override final;
+        void apply(const RenderContext &context) override final;
 
     private:
         static auto getUniformType(MaterialParameterType type) -> UniformType;
 
-        OpenGLRenderer* renderer = nullptr;
+        OpenGLRenderer *renderer = nullptr;
         uint32_t handle = EmptyHandle;
 
         uptr<MaterialParameterValue> value;

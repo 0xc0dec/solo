@@ -42,33 +42,33 @@ namespace solo
     class Material
     {
     public:
-        static auto create(sptr<Effect> effect) -> sptr<Material>; 
+        static auto create(sptr<Effect> effect) -> sptr<Material>;
 
         SL_DISABLE_COPY_AND_MOVE(Material)
         virtual ~Material() {}
 
-        void setFloatParameter(const std::string& name, float value);
-        void setFloatArrayParameter(const std::string& name, const std::vector<float>& value);
-        void setVector2Parameter(const std::string& name, const Vector2& value);
-        void setVector2ArrayParameter(const std::string& name, const std::vector<Vector2>& value);
-        void setVector3Parameter(const std::string& name, const Vector3& value);
-        void setVector3ArrayParameter(const std::string& name, const std::vector<Vector3>& value);
-        void setVector4Parameter(const std::string& name, const Vector4& value);
-        void setVector4ArrayParameter(const std::string& name, const std::vector<Vector4>& value);
-        void setMatrixParameter(const std::string& name, const Matrix& value);
-        void setMatrixArrayParameter(const std::string& name, const std::vector<Matrix>& value);
-        void setTextureParameter(const std::string& name, sptr<Texture> value);
-        void bindWorldMatrixParameter(const std::string& name);
-        void bindViewMatrixParameter(const std::string& name);
-        void bindProjectionMatrixParameter(const std::string& name);
-        void bindWorldViewMatrixParameter(const std::string& name);
-        void bindViewProjectionMatrixParameter(const std::string& name);
-        void bindWorldViewProjectionMatrixParameter(const std::string& name);
-        void bindInvTransposedWorldMatrixParameter(const std::string& name);
-        void bindInvTransposedWorldViewMatrixParameter(const std::string& name);
-        void bindCameraWorldPositionParameter(const std::string& name);
+        void setFloatParameter(const std::string &name, float value);
+        void setFloatArrayParameter(const std::string &name, const std::vector<float> &value);
+        void setVector2Parameter(const std::string &name, const Vector2 &value);
+        void setVector2ArrayParameter(const std::string &name, const std::vector<Vector2> &value);
+        void setVector3Parameter(const std::string &name, const Vector3 &value);
+        void setVector3ArrayParameter(const std::string &name, const std::vector<Vector3> &value);
+        void setVector4Parameter(const std::string &name, const Vector4 &value);
+        void setVector4ArrayParameter(const std::string &name, const std::vector<Vector4> &value);
+        void setMatrixParameter(const std::string &name, const Matrix &value);
+        void setMatrixArrayParameter(const std::string &name, const std::vector<Matrix> &value);
+        void setTextureParameter(const std::string &name, sptr<Texture> value);
+        void bindWorldMatrixParameter(const std::string &name);
+        void bindViewMatrixParameter(const std::string &name);
+        void bindProjectionMatrixParameter(const std::string &name);
+        void bindWorldViewMatrixParameter(const std::string &name);
+        void bindViewProjectionMatrixParameter(const std::string &name);
+        void bindWorldViewProjectionMatrixParameter(const std::string &name);
+        void bindInvTransposedWorldMatrixParameter(const std::string &name);
+        void bindInvTransposedWorldViewMatrixParameter(const std::string &name);
+        void bindCameraWorldPositionParameter(const std::string &name);
 
-        void apply(const RenderContext& context);
+        void apply(const RenderContext &context);
 
         auto getEffect() const -> Effect*;
 
@@ -95,19 +95,19 @@ namespace solo
         void setDepthFunction(DepthFunction func);
 
     protected:
-        explicit Material(Device* device, sptr<Effect> effect);
+        explicit Material(Device *device, sptr<Effect> effect);
 
         virtual void applyState() = 0;
-        void setParameter(const std::string& name, MaterialParameterType type, const void* value);
+        void setParameter(const std::string &name, MaterialParameterType type, const void *value);
 
-        Device* device = nullptr;
+        Device *device = nullptr;
         sptr<Effect> effect;
 
         std::unordered_map<std::string, sptr<MaterialParameter>> parameters;
 
         FaceCull faceCull = FaceCull::CW;
         PolygonMode polygonMode = PolygonMode::Triangle;
-        bool depthWrite = true; 
+        bool depthWrite = true;
         bool depthTest = true;
         bool transparent = false;
         BlendFactor srcBlendFactor = BlendFactor::SrcAlpha;
@@ -115,7 +115,7 @@ namespace solo
         DepthFunction depthFunc = DepthFunction::Less;
     };
 
-    inline auto Material::getEffect() const -> Effect*
+    inline auto Material::getEffect() const -> Effect *
     {
         return effect.get();
     }

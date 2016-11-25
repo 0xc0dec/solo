@@ -34,7 +34,7 @@ namespace solo
     class VulkanRenderer final: public Renderer
     {
     public:
-        explicit VulkanRenderer(Device* device);
+        explicit VulkanRenderer(Device *device);
         ~VulkanRenderer();
 
         void beginFrame() override final;
@@ -50,17 +50,17 @@ namespace solo
         struct DepthStencil
         {
             VkImage image;
-		    VkDeviceMemory mem;
-		    VkImageView view;
+            VkDeviceMemory mem;
+            VkImageView view;
         } depthStencil;
 
-        void initSwapchain(VkSurfaceKHR surface, bool vsync, const Vector2& deviceCanvasSize);
+        void initSwapchain(VkSurfaceKHR surface, bool vsync, const Vector2 &deviceCanvasSize);
         void destroySwapchain();
         void initCommandBuffers();
         void initFences();
         void beginCommandBuffer(VkCommandBuffer buffer);
         auto createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
-            VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil;
+                                VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil;
         void initFrameBuffers();
 
         uint32_t canvasWidth = 1;

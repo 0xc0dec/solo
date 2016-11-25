@@ -14,8 +14,8 @@ namespace solo
         VulkanPipeline(VkDevice device, VkRenderPass renderPass);
         ~VulkanPipeline();
 
-        void setVertexShader(VkShaderModule shader, const char* entryPoint);
-        void setFragmentShader(VkShaderModule shader, const char* entryPoint);
+        void setVertexShader(VkShaderModule shader, const char *entryPoint);
+        void setFragmentShader(VkShaderModule shader, const char *entryPoint);
 
         void rebuild();
         void bind(VkCommandBuffer cmdBuf);

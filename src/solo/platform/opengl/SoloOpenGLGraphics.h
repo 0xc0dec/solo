@@ -33,13 +33,13 @@ namespace solo
     class OpenGLGraphics final: public Graphics
     {
     public:
-        OpenGLGraphics(Device* device, const DeviceToken& token);
+        OpenGLGraphics(Device *device, const DeviceToken &token);
 
-        void blit(Material* material, FrameBuffer* target) override final;
+        void blit(Material *material, FrameBuffer *target) override final;
 
     private:
-        Device* device = nullptr;
-        OpenGLRenderer* renderer = nullptr;
+        Device *device = nullptr;
+        OpenGLRenderer *renderer = nullptr;
         sptr<Mesh> quadMesh;
     };
 }

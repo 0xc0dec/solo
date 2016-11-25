@@ -40,23 +40,23 @@ namespace solo
         Vector3 max;
 
         BoundingBox() {}
-        BoundingBox(const Vector3& min, const Vector3& max);
+        BoundingBox(const Vector3 &min, const Vector3 &max);
 
         static auto empty() -> const BoundingBox&;
 
         auto getCenter() const -> Vector3;
         auto getCorners() const -> std::vector<Vector3>;
 
-        bool intersectsBoundingBox(const BoundingBox& box) const;
-        bool intersectsBoundingSphere(const BoundingSphere& sphere) const;
-        bool intersectsFrustum(const Frustum& frustum) const;
-        auto hitByRay(const Ray& ray) const -> float;
-        auto intersectPlane(const Plane& plane) const -> PlaneIntersection;
+        bool intersectsBoundingBox(const BoundingBox &box) const;
+        bool intersectsBoundingSphere(const BoundingSphere &sphere) const;
+        bool intersectsFrustum(const Frustum &frustum) const;
+        auto hitByRay(const Ray &ray) const -> float;
+        auto intersectPlane(const Plane &plane) const -> PlaneIntersection;
 
         bool isEmpty() const;
 
-        void mergeBoundingSphere(const BoundingSphere& sphere);
-        void mergeBoundingBox(const BoundingBox& box);
+        void mergeBoundingSphere(const BoundingSphere &sphere);
+        void mergeBoundingBox(const BoundingBox &box);
     };
 
     inline bool BoundingBox::isEmpty() const

@@ -35,9 +35,9 @@ namespace solo
 
         Quaternion() {}
         Quaternion(float x, float y, float z, float w);
-        Quaternion(const Vector3& axis, const Radian& angle);
+        Quaternion(const Vector3 &axis, const Radian &angle);
 
-        static auto createFromAxisAngle(const Vector3& axis, const Radian& angle) -> Quaternion;
+        static auto createFromAxisAngle(const Vector3 &axis, const Radian &angle) -> Quaternion;
 
         static auto identity() -> Quaternion;
         static auto zero() -> Quaternion;
@@ -51,20 +51,20 @@ namespace solo
         auto normalized() const -> Quaternion;
         void normalize();
 
-        auto toAxisAngle(Vector3& e) const -> Radian;
+        auto toAxisAngle(Vector3 &e) const -> Radian;
 
-        static auto lerp(const Quaternion& q1, const Quaternion& q2, float t) -> Quaternion;
-        static auto slerp(const Quaternion& q1, const Quaternion& q2, float t) -> Quaternion;
-        static auto squad(const Quaternion& q1, const Quaternion& q2, const Quaternion& s1, const Quaternion& s2, float t) -> Quaternion;
+        static auto lerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion;
+        static auto slerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion;
+        static auto squad(const Quaternion &q1, const Quaternion &q2, const Quaternion &s1, const Quaternion &s2, float t) -> Quaternion;
 
-        auto operator*(const Quaternion& q) const -> Quaternion;
-        auto operator*=(const Quaternion& q) -> Quaternion&;
+        auto operator*(const Quaternion &q) const -> Quaternion;
+        auto operator*=(const Quaternion &q) -> Quaternion&;
 
     private:
-        static auto slerpForSquad(const Quaternion& q1, const Quaternion& q2, float t) -> Quaternion;
+        static auto slerpForSquad(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion;
     };
 
-    inline auto Quaternion::operator*(const Quaternion& q) const -> Quaternion
+    inline auto Quaternion::operator*(const Quaternion &q) const -> Quaternion
     {
         auto result(*this);
         result *= q;

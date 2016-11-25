@@ -29,8 +29,8 @@ using namespace solo;
 class SpawnedObject final: public ComponentBase<SpawnedObject>
 {
 public:
-    explicit SpawnedObject(const Node& node, sptr<Effect> effect, sptr<Mesh> mesh,
-        const Vector3& initialPos, const Quaternion& initialRotation):
+    explicit SpawnedObject(const Node &node, sptr<Effect> effect, sptr<Mesh> mesh,
+                           const Vector3 &initialPos, const Quaternion &initialRotation):
         ComponentBase<SpawnedObject>(node),
         device(node.getScene()->getDevice()),
         scene(node.getScene()),
@@ -63,10 +63,10 @@ public:
         t->setLocalRotation(initialRotation);
 
         auto rigidBody = node.addComponent<RigidBody>(
-            RigidBodyConstructionParameters()
-            .withMass(50).withRestitution(0.5f).withFriction(0.2f)
-            .withLinearDamping(0.1f).withAngularDamping(0.1f)
-        );
+                             RigidBodyConstructionParameters()
+                             .withMass(50).withRestitution(0.5f).withFriction(0.2f)
+                             .withLinearDamping(0.1f).withAngularDamping(0.1f)
+                         );
         rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
     }
 
@@ -83,13 +83,13 @@ public:
     }
 
 private:
-    void setColor(const Vector4& color)
+    void setColor(const Vector4 &color)
     {
         material->setVector4Parameter("color", color);
     }
 
-    Device* device;
-    Scene* scene;
+    Device *device;
+    Scene *scene;
     Vector3 initialPos;
     Quaternion initialRotation;
     sptr<Material> material;
@@ -102,7 +102,7 @@ private:
 class Targeter final: public ComponentBase<Targeter>
 {
 public:
-    explicit Targeter(const Node& node):
+    explicit Targeter(const Node &node):
         ComponentBase<Targeter>(node),
         physics(node.getScene()->getDevice()->getPhysics())
     {
@@ -116,10 +116,10 @@ public:
     void update() override final
     {
         auto hitResults = physics->castRayAll(
-            transform->getWorldPosition(),
-            transform->getWorldPosition() + transform->getLocalForward() * 100);
+                              transform->getWorldPosition(),
+                              transform->getWorldPosition() + transform->getLocalForward() * 100);
 
-        for (const auto& result : hitResults)
+        for (const auto &result : hitResults)
         {
             auto obj = result.body->getNode().findComponent<SpawnedObject>();
             if (obj)
@@ -130,15 +130,15 @@ public:
 private:
     Vector4 normalColor = Vector4(1, 1, 0, 1);
     Vector4 activeColor = Vector4(1, 0, 0, 1);
-    Physics* physics = nullptr;
-    Transform* transform = nullptr;
+    Physics *physics = nullptr;
+    Transform *transform = nullptr;
 };
 
 
 class Spawner final: public ComponentBase<Spawner>
 {
 public:
-    explicit Spawner(const Node& node, sptr<Mesh> cubeMesh):
+    explicit Spawner(const Node &node, sptr<Mesh> cubeMesh):
         ComponentBase<Spawner>(node),
         device(node.getScene()->getDevice()),
         scene(device->getScene()),
@@ -166,9 +166,9 @@ private:
         scene->createNode()->addComponent<SpawnedObject>(effect, mesh, initialPos, initialRotation);
     }
 
-    Device* device;
-    Scene* scene;
-    Transform* transform;
+    Device *device;
+    Scene *scene;
+    Transform *transform;
     sptr<Material> material;
     sptr<Mesh> mesh;
     sptr<Effect> effect;
@@ -217,14 +217,15 @@ private:
 
     void initSkybox()
     {
-        loader->loadCubeTextureAsync({
+        loader->loadCubeTextureAsync(
+        {
             "../assets/skyboxes/deep-space/front.png",
             "../assets/skyboxes/deep-space/back.png",
             "../assets/skyboxes/deep-space/left.png",
             "../assets/skyboxes/deep-space/right.png",
             "../assets/skyboxes/deep-space/top.png",
             "../assets/skyboxes/deep-space/bottom.png"
-        })->done([=](sptr<CubeTexture> tex)
+        })->done([ = ](sptr<CubeTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->setFiltering(TextureFiltering::Linear);
@@ -258,9 +259,9 @@ private:
         rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
     }
 
-    Scene* scene = nullptr;
-    AssetLoader* loader = nullptr;
-    Device* device = nullptr;
+    Scene *scene = nullptr;
+    AssetLoader *loader = nullptr;
+    Device *device = nullptr;
     sptr<Mesh> cubeMesh;
 };
 

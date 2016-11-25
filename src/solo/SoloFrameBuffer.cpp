@@ -33,9 +33,9 @@ auto FrameBuffer::create() -> sptr<FrameBuffer>
     auto device = Device::get();
     switch (device->getSetup().mode)
     {
-        case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLFrameBuffer>(device);
-        default:
-            return std::make_shared<NullFrameBuffer>();
+    case DeviceMode::OpenGL:
+        return std::make_shared<OpenGLFrameBuffer>(device);
+    default:
+        return std::make_shared<NullFrameBuffer>();
     }
 }

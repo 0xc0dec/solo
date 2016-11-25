@@ -27,11 +27,11 @@ namespace solo
     class NullDevice final: public Device
     {
     public:
-        explicit NullDevice(const DeviceSetup& setup): Device(setup) {}
+        explicit NullDevice(const DeviceSetup &setup): Device(setup) {}
 
-        void setWindowTitle(const std::string& title) override final;
+        void setWindowTitle(const std::string &title) override final;
         auto getWindowTitle() const -> std::string override final;
-        void saveScreenshot(const std::string& path) override final {}
+        void saveScreenshot(const std::string &path) override final {}
         void setCursorCaptured(bool captured) override final {}
         auto getCanvasSize() const -> Vector2 override final;
         auto getLifetime() const -> float override final;
@@ -43,7 +43,7 @@ namespace solo
         std::string windowTitle;
     };
 
-    inline void NullDevice::setWindowTitle(const std::string& title)
+    inline void NullDevice::setWindowTitle(const std::string &title)
     {
         windowTitle = title;
     }
@@ -58,7 +58,7 @@ namespace solo
         return Vector2(0, 0);
     }
 
-    inline auto NullDevice::getLifetime() const -> float 
+    inline auto NullDevice::getLifetime() const -> float
     {
         return 0;
     }

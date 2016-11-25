@@ -26,7 +26,7 @@
 using namespace solo;
 
 
-const char* OpenGLPrefabShaders::Vertex::skybox = R"(
+const char *OpenGLPrefabShaders::Vertex::skybox = R"(
     #version 330 core
 
     layout (location = 0) in vec4 position;

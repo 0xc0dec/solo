@@ -38,19 +38,19 @@ const uint32_t DirtyBitInvView = 8;
 const uint32_t DirtyBitInvViewProjection = 16;
 
 
-auto Camera::create(const Node& node) -> sptr<Camera>
+auto Camera::create(const Node &node) -> sptr<Camera>
 {
     switch (node.getScene()->getDevice()->getSetup().mode)
     {
-        case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLCamera>(node);
-        default:
-            return std::make_shared<NullCamera>(node);
+    case DeviceMode::OpenGL:
+        return std::make_shared<OpenGLCamera>(node);
+    default:
+        return std::make_shared<NullCamera>(node);
     }
 }
 
 
-Camera::Camera(const Node& node):
+Camera::Camera(const Node &node):
     ComponentBase(node),
     device(node.getScene()->getDevice()),
     fov(Degree(60))
@@ -68,7 +68,7 @@ void Camera::init()
 }
 
 
-void Camera::onTransformChanged(const Transform*, uint32_t)
+void Camera::onTransformChanged(const Transform *, uint32_t)
 {
     this->dirtyFlags |= DirtyBitView | DirtyBitViewProjection | DirtyBitInvView | DirtyBitInvViewProjection;
 }
@@ -94,7 +94,7 @@ void Camera::setPerspective(bool perspective)
 }
 
 
-void Camera::setFOV(const Radian& fov)
+void Camera::setFOV(const Radian &fov)
 {
     this->fov = fov;
     dirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInvViewProjection;
@@ -136,7 +136,7 @@ void Camera::setNear(float near)
 }
 
 
-auto Camera::getViewMatrix() -> const TransformMatrix&
+auto Camera::getViewMatrix() -> const TransformMatrix &
 {
     if (dirtyFlags & DirtyBitView)
     {
@@ -148,7 +148,7 @@ auto Camera::getViewMatrix() -> const TransformMatrix&
 }
 
 
-auto Camera::getInvViewMatrix() -> const TransformMatrix&
+auto Camera::getInvViewMatrix() -> const TransformMatrix &
 {
     if (dirtyFlags & DirtyBitInvView)
     {
@@ -160,7 +160,7 @@ auto Camera::getInvViewMatrix() -> const TransformMatrix&
 }
 
 
-auto Camera::getProjectionMatrix() -> const TransformMatrix&
+auto Camera::getProjectionMatrix() -> const TransformMatrix &
 {
     if (dirtyFlags & DirtyBitProjection)
     {
@@ -174,7 +174,7 @@ auto Camera::getProjectionMatrix() -> const TransformMatrix&
 }
 
 
-auto Camera::getViewProjectionMatrix() -> const TransformMatrix&
+auto Camera::getViewProjectionMatrix() -> const TransformMatrix &
 {
     if (dirtyFlags & DirtyBitViewProjection)
     {
@@ -185,7 +185,7 @@ auto Camera::getViewProjectionMatrix() -> const TransformMatrix&
 }
 
 
-auto Camera::getInvViewProjectionMatrix() -> const TransformMatrix&
+auto Camera::getInvViewProjectionMatrix() -> const TransformMatrix &
 {
     if (dirtyFlags & DirtyBitInvViewProjection)
     {

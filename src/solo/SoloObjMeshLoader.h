@@ -31,12 +31,12 @@ namespace solo
     class ObjMeshLoader final: public MeshLoader
     {
     public:
-        explicit ObjMeshLoader(Device* device);
+        explicit ObjMeshLoader(Device *device);
 
-        bool isLoadable(const std::string& path) const override final;
-        auto loadData(const std::string& path) const -> sptr<MeshData> override final;
+        bool isLoadable(const std::string &path) const override final;
+        auto loadData(const std::string &path) const -> sptr<MeshData> override final;
 
     private:
-        FileSystem* fs = nullptr;
+        FileSystem *fs = nullptr;
     };
 }

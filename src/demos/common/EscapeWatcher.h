@@ -26,7 +26,7 @@
 class EscapeWatcher final: public solo::ComponentBase<EscapeWatcher>
 {
 public:
-    explicit EscapeWatcher(const solo::Node& node):
+    explicit EscapeWatcher(const solo::Node &node):
         ComponentBase<EscapeWatcher>(node),
         device(solo::Device::get())
     {
@@ -39,5 +39,5 @@ public:
     }
 
 private:
-    solo::Device* device;
+    solo::Device *device;
 };

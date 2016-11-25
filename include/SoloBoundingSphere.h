@@ -36,18 +36,18 @@ namespace solo
         static auto empty() -> const BoundingSphere&;
 
         BoundingSphere() {}
-        BoundingSphere(const Vector3& center, float radius);
+        BoundingSphere(const Vector3 &center, float radius);
 
-        bool intersectsBoundingSphere(const BoundingSphere& sphere) const;
-        bool intersectsBoundingBox(const BoundingBox& box) const;
-        bool intersectsFrustum(const Frustum& frustum) const;
-        auto hitByRay(const Ray& ray) const -> float;
-        auto intersectPlane(const Plane& plane) const -> PlaneIntersection;
+        bool intersectsBoundingSphere(const BoundingSphere &sphere) const;
+        bool intersectsBoundingBox(const BoundingBox &box) const;
+        bool intersectsFrustum(const Frustum &frustum) const;
+        auto hitByRay(const Ray &ray) const -> float;
+        auto intersectPlane(const Plane &plane) const -> PlaneIntersection;
 
         bool isEmpty() const;
 
-        void mergeBoundingSphere(const BoundingSphere& sphere);
-        void mergeBoundingBox(const BoundingBox& box);
+        void mergeBoundingSphere(const BoundingSphere &sphere);
+        void mergeBoundingBox(const BoundingBox &box);
     };
 
     inline bool BoundingSphere::isEmpty() const

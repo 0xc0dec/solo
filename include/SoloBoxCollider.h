@@ -30,7 +30,7 @@ namespace solo
     class BoxCollider: public Collider
     {
     public:
-        static auto create(const Vector3& size) -> sptr<BoxCollider>;
+        static auto create(const Vector3 &size) -> sptr<BoxCollider>;
 
     protected:
         BoxCollider() {}

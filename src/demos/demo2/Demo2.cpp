@@ -31,7 +31,7 @@ using namespace solo;
 class PostProcessor1 final: public ComponentBase<PostProcessor1>
 {
 public:
-    explicit PostProcessor1(const Node& node):
+    explicit PostProcessor1(const Node &node):
         ComponentBase<PostProcessor1>(node),
         device(node.getScene()->getDevice()),
         loader(device->getAssetLoader()),
@@ -101,9 +101,9 @@ public:
     }
 
 private:
-    Device* device;
-    AssetLoader* loader;
-    Graphics* graphics;
+    Device *device;
+    AssetLoader *loader;
+    Graphics *graphics;
     sptr<FrameBuffer> fb1 = nullptr;
     sptr<FrameBuffer> fb2 = nullptr;
     sptr<RectTexture> fbTex = nullptr;
@@ -118,7 +118,7 @@ private:
 class PostProcessor2 final: public ComponentBase<PostProcessor2>
 {
 public:
-    explicit PostProcessor2(const Node& node) :
+    explicit PostProcessor2(const Node &node) :
         ComponentBase<PostProcessor2>(node),
         device(Device::get()),
         loader(device->getAssetLoader()),
@@ -137,12 +137,12 @@ public:
         auto stitchTexSize = stitchTex->getSize();
 
         auto resolution = Vector2(
-            Math::clamp(static_cast<int>(canvasSize.x / stitchWidth) * 2, 1, 2048),
-            Math::clamp(static_cast<int>(canvasSize.y / stitchTexSize.y) * 2, 1, 2048));
+                              Math::clamp(static_cast<int>(canvasSize.x / stitchWidth) * 2, 1, 2048),
+                              Math::clamp(static_cast<int>(canvasSize.y / stitchTexSize.y) * 2, 1, 2048));
 
         auto stitchCount = Vector2(
-            resolution.x * stitchWidth / (2 * stitchTexSize.x),
-            resolution.y / 2);
+                               resolution.x * stitchWidth / (2 * stitchTexSize.x),
+                               resolution.y / 2);
 
         auto camera = node.findComponent<Camera>();
         fbTex = RectTexture::create();
@@ -176,9 +176,9 @@ public:
     }
 
 private:
-    Device* device;
-    AssetLoader* loader;
-    Graphics* graphics;
+    Device *device;
+    AssetLoader *loader;
+    Graphics *graphics;
     sptr<RectTexture> stitchTex;
     sptr<FrameBuffer> fb1;
     sptr<RectTexture> fbTex;
@@ -189,7 +189,7 @@ private:
 class ModeSwitcher final: public ComponentBase<ModeSwitcher>
 {
 public:
-    explicit ModeSwitcher(const Node& node, Device* device):
+    explicit ModeSwitcher(const Node &node, Device *device):
         ComponentBase<ModeSwitcher>(node),
         device(device)
     {
@@ -219,7 +219,7 @@ public:
     }
 
 private:
-    Device* device;
+    Device *device;
 };
 
 
@@ -263,14 +263,15 @@ private:
 
     void initSkybox()
     {
-        loader->loadCubeTextureAsync({
+        loader->loadCubeTextureAsync(
+        {
             "../assets/skyboxes/deep-space/front.png",
             "../assets/skyboxes/deep-space/back.png",
             "../assets/skyboxes/deep-space/left.png",
             "../assets/skyboxes/deep-space/right.png",
             "../assets/skyboxes/deep-space/top.png",
             "../assets/skyboxes/deep-space/bottom.png"
-        })->done([=](sptr<CubeTexture> tex)
+        })->done([ = ](sptr<CubeTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->setFiltering(TextureFiltering::Linear);
@@ -282,7 +283,7 @@ private:
 
     void initMesh()
     {
-        loader->loadRectTextureAsync("../assets/cobblestone.png")->done([=](sptr<RectTexture> tex)
+        loader->loadRectTextureAsync("../assets/cobblestone.png")->done([ = ](sptr<RectTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->generateMipmaps();
@@ -292,7 +293,7 @@ private:
             mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
             mat->setTextureParameter("mainTex", tex);
 
-            loader->loadMeshAsync("../assets/monkey.obj")->done([=](sptr<Mesh> mesh)
+            loader->loadMeshAsync("../assets/monkey.obj")->done([ = ](sptr<Mesh> mesh)
             {
                 auto node = scene->createNode();
                 auto renderer = node->addComponent<MeshRenderer>();
@@ -304,9 +305,9 @@ private:
         });
     }
 
-    Scene* scene = nullptr;
-    AssetLoader* loader = nullptr;
-    Device* device = nullptr;
+    Scene *scene = nullptr;
+    AssetLoader *loader = nullptr;
+    Device *device = nullptr;
 };
 
 

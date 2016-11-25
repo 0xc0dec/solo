@@ -58,8 +58,8 @@ private:
         spectator->setHorizontalRotationSpeed(1);
     }
 
-    Scene* scene = nullptr;
-    Device* device = nullptr;
+    Scene *scene = nullptr;
+    Device *device = nullptr;
 };
 
 

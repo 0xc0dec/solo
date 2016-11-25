@@ -26,13 +26,13 @@
 using namespace solo;
 
 
-auto Graphics::create(Device* device, const DeviceToken& token) -> sptr<Graphics>
+auto Graphics::create(Device *device, const DeviceToken &token) -> sptr<Graphics>
 {
     switch (device->getSetup().mode)
     {
-        case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLGraphics>(device, token);
-        default:
-            return std::make_shared<NullGraphics>(token);
+    case DeviceMode::OpenGL:
+        return std::make_shared<OpenGLGraphics>(device, token);
+    default:
+        return std::make_shared<NullGraphics>(token);
     }
 }

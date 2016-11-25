@@ -68,7 +68,7 @@ namespace solo
         return size;
     }
 
-    inline auto VertexBufferLayout::getElement(uint32_t index) const -> const VertexBufferLayoutElement&
+    inline auto VertexBufferLayout::getElement(uint32_t index) const -> const VertexBufferLayoutElement &
     {
         return elements[index];
     }

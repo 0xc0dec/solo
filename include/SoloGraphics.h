@@ -33,14 +33,14 @@ namespace solo
     class Graphics
     {
     public:
-        static auto create(Device* device, const DeviceToken& token) -> sptr<Graphics>;
+        static auto create(Device *device, const DeviceToken &token) -> sptr<Graphics>;
 
         SL_DISABLE_COPY_AND_MOVE(Graphics)
         virtual ~Graphics() {}
 
-        virtual void blit(Material* material, FrameBuffer* target) = 0;
+        virtual void blit(Material *material, FrameBuffer *target) = 0;
 
     protected:
-        explicit Graphics(const DeviceToken&) {}
+        explicit Graphics(const DeviceToken &) {}
     };
 }

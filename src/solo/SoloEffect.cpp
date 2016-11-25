@@ -26,15 +26,15 @@
 using namespace solo;
 
 
-auto Effect::create(const std::string& vsSrc, const std::string& fsSrc) -> sptr<Effect>
+auto Effect::create(const std::string &vsSrc, const std::string &fsSrc) -> sptr<Effect>
 {
     auto device = Device::get();
     switch (device->getSetup().mode)
     {
-        case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLEffect>(device, vsSrc, fsSrc);
-        default:
-            return std::make_shared<NullEffect>();
+    case DeviceMode::OpenGL:
+        return std::make_shared<OpenGLEffect>(device, vsSrc, fsSrc);
+    default:
+        return std::make_shared<NullEffect>();
     }
 }
 
@@ -44,9 +44,9 @@ auto Effect::create(EffectPrefab prefab) -> sptr<Effect>
     auto device = Device::get();
     switch (device->getSetup().mode)
     {
-        case DeviceMode::OpenGL:
-            return OpenGLEffect::create(prefab);
-        default:
-            return std::make_shared<NullEffect>();
+    case DeviceMode::OpenGL:
+        return OpenGLEffect::create(prefab);
+    default:
+        return std::make_shared<NullEffect>();
     }
 }

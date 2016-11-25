@@ -29,9 +29,9 @@
 using namespace solo;
 
 
-OpenGLFrameBuffer::OpenGLFrameBuffer(Device* device)
+OpenGLFrameBuffer::OpenGLFrameBuffer(Device *device)
 {
-    renderer = dynamic_cast<OpenGLRenderer*>(device->getRenderer());
+    renderer = dynamic_cast<OpenGLRenderer *>(device->getRenderer());
     handle = renderer->createFrameBuffer();
 }
 
@@ -54,16 +54,16 @@ void OpenGLFrameBuffer::unbind()
 }
 
 
-void OpenGLFrameBuffer::setAttachments(const std::vector<sptr<RectTexture>>& attachments)
+void OpenGLFrameBuffer::setAttachments(const std::vector<sptr<RectTexture>> &attachments)
 {
     std::vector<uint32_t> handles;
     handles.reserve(attachments.size());
 
-    for (const auto& tex : attachments)
+    for (const auto &tex : attachments)
         handles.push_back(std::dynamic_pointer_cast<OpenGLRectTexture>(tex)->getHandle());
 
     renderer->updateFrameBuffer(handle, handles);
-    
+
     if (!attachments.empty())
         size = (*attachments.begin())->getSize();
     else

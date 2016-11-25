@@ -72,17 +72,17 @@ namespace solo
     public:
         SL_DISABLE_COPY_AND_MOVE(AssetLoader)
 
-        explicit AssetLoader(Device* device, const DeviceToken&);
+        explicit AssetLoader(Device *device, const DeviceToken &);
         ~AssetLoader() {}
 
-        auto loadRectTexture(const std::string& path) -> sptr<RectTexture>;
-        auto loadRectTextureAsync(const std::string& path) -> sptr<AsyncHandle<RectTexture>>;
-        
-        auto loadCubeTexture(const std::vector<std::string>& sidePaths) -> sptr<CubeTexture>;
-        auto loadCubeTextureAsync(const std::vector<std::string>& sidePaths) -> sptr<AsyncHandle<CubeTexture>>;
+        auto loadRectTexture(const std::string &path) -> sptr<RectTexture>;
+        auto loadRectTextureAsync(const std::string &path) -> sptr<AsyncHandle<RectTexture>>;
 
-        auto loadMesh(const std::string& path) -> sptr<Mesh>;
-        auto loadMeshAsync(const std::string& path) -> sptr<AsyncHandle<Mesh>>;
+        auto loadCubeTexture(const std::vector<std::string> &sidePaths) -> sptr<CubeTexture>;
+        auto loadCubeTextureAsync(const std::vector<std::string> &sidePaths) -> sptr<AsyncHandle<CubeTexture>>;
+
+        auto loadMesh(const std::string &path) -> sptr<Mesh>;
+        auto loadMeshAsync(const std::string &path) -> sptr<AsyncHandle<Mesh>>;
 
         void update();
 
@@ -90,8 +90,8 @@ namespace solo
         std::vector<sptr<ImageLoader>> imageLoaders;
         std::vector<sptr<MeshLoader>> meshLoaders;
 
-        auto getMeshLoader(const std::string& path) -> MeshLoader*;
-        auto getImageLoader(const std::string& path) -> ImageLoader*;
+        auto getMeshLoader(const std::string &path) -> MeshLoader*;
+        auto getImageLoader(const std::string &path) -> ImageLoader*;
 
         SpinLock tasksLock;
         std::list<std::function<void()>> tasks;

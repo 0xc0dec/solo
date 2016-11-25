@@ -90,7 +90,7 @@ bool Vector4::isUnit() const
 }
 
 
-auto Vector4::angle(const Vector4& v1, const Vector4& v2) -> Radian
+auto Vector4::angle(const Vector4 &v1, const Vector4 &v2) -> Radian
 {
     auto dx = v1.w * v2.x - v1.x * v2.w - v1.y * v2.z + v1.z * v2.y;
     auto dy = v1.w * v2.y - v1.y * v2.w - v1.z * v2.x + v1.x * v2.z;
@@ -100,7 +100,7 @@ auto Vector4::angle(const Vector4& v1, const Vector4& v2) -> Radian
 }
 
 
-void Vector4::clamp(const Vector4& min, const Vector4& max)
+void Vector4::clamp(const Vector4 &min, const Vector4 &max)
 {
     if (x < min.x)
         x = min.x;
@@ -124,7 +124,7 @@ void Vector4::clamp(const Vector4& min, const Vector4& max)
 }
 
 
-auto Vector4::distance(const Vector4& v) const -> float
+auto Vector4::distance(const Vector4 &v) const -> float
 {
     auto dx = v.x - x;
     auto dy = v.y - y;
@@ -135,7 +135,7 @@ auto Vector4::distance(const Vector4& v) const -> float
 }
 
 
-auto Vector4::distanceSquared(const Vector4& v) const -> float
+auto Vector4::distanceSquared(const Vector4 &v) const -> float
 {
     auto dx = v.x - x;
     auto dy = v.y - y;
@@ -146,13 +146,13 @@ auto Vector4::distanceSquared(const Vector4& v) const -> float
 }
 
 
-auto Vector4::dot(const Vector4& v) const -> float
+auto Vector4::dot(const Vector4 &v) const -> float
 {
     return x * v.x + y * v.y + z * v.z + w * v.w;
 }
 
 
-auto Vector4::dot(const Vector4& v1, const Vector4& v2) -> float
+auto Vector4::dot(const Vector4 &v1, const Vector4 &v2) -> float
 {
     return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
 }

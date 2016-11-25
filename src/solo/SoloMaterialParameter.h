@@ -57,15 +57,15 @@ namespace solo
     class MaterialParameter
     {
     public:
-        static auto create(Device *device, Effect* effect, MaterialParameterType type, const char* name) -> sptr<MaterialParameter>;
+        static auto create(Device *device, Effect *effect, MaterialParameterType type, const char *name) -> sptr<MaterialParameter>;
 
         SL_DISABLE_COPY_AND_MOVE(MaterialParameter)
         virtual ~MaterialParameter() {}
 
         auto getType() const -> MaterialParameterType;
 
-        virtual void setValue(const void* value) = 0;
-        virtual void apply(const RenderContext& context) = 0;
+        virtual void setValue(const void *value) = 0;
+        virtual void apply(const RenderContext &context) = 0;
 
     protected:
         explicit MaterialParameter(MaterialParameterType type);

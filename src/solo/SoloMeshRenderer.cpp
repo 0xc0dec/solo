@@ -26,14 +26,14 @@
 using namespace solo;
 
 
-MeshRenderer::MeshRenderer(const Node& node):
+MeshRenderer::MeshRenderer(const Node &node):
     ComponentBase(node)
 {
     renderQueue = KnownRenderQueues::Opaque;
 }
 
 
-void MeshRenderer::render(RenderContext& context)
+void MeshRenderer::render(RenderContext &context)
 {
     if (!mesh || materials.empty())
         return;

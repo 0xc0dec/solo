@@ -25,7 +25,7 @@
 using namespace solo;
 
 
-BulletPhysics::BulletPhysics(Device* device, const DeviceToken& deviceToken) :
+BulletPhysics::BulletPhysics(Device *device, const DeviceToken &deviceToken) :
     Physics(device, deviceToken)
 {
     broadPhase = std::make_unique<btDbvtBroadphase>();
@@ -43,13 +43,13 @@ void BulletPhysics::update()
 }
 
 
-void BulletPhysics::setGravity(const Vector3& gravity)
+void BulletPhysics::setGravity(const Vector3 &gravity)
 {
     world->setGravity(SL_TOBTVEC3(gravity));
 }
 
 
-auto BulletPhysics::castRay(const Vector3& from, const Vector3& to) -> RaycastResult
+auto BulletPhysics::castRay(const Vector3 &from, const Vector3 &to) -> RaycastResult
 {
     auto btFrom = SL_TOBTVEC3(from);
     auto btTo = SL_TOBTVEC3(to);
@@ -59,16 +59,16 @@ auto BulletPhysics::castRay(const Vector3& from, const Vector3& to) -> RaycastRe
     if (!callback.hasHit())
         return {};
 
-    auto body = dynamic_cast<const btRigidBody*>(callback.m_collisionObject);
+    auto body = dynamic_cast<const btRigidBody *>(callback.m_collisionObject);
     if (!body)
         return {};
 
-    auto rigidBody = static_cast<RigidBody*>(body->getUserPointer());
+    auto rigidBody = static_cast<RigidBody *>(body->getUserPointer());
     return { RaycastResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld), SL_FROMBTVEC3(callback.m_hitNormalWorld)) };
 }
 
 
-auto BulletPhysics::castRayAll(const Vector3& from, const Vector3& to) -> std::vector<RaycastResult>
+auto BulletPhysics::castRayAll(const Vector3 &from, const Vector3 &to) -> std::vector<RaycastResult>
 {
     auto btFrom = SL_TOBTVEC3(from);
     auto btTo = SL_TOBTVEC3(to);
@@ -82,10 +82,10 @@ auto BulletPhysics::castRayAll(const Vector3& from, const Vector3& to) -> std::v
     auto result = std::vector<RaycastResult>();
     for (size_t i = 0; i < size; i++)
     {
-        auto body = dynamic_cast<const btRigidBody*>(callback.m_collisionObjects[i]);
+        auto body = dynamic_cast<const btRigidBody *>(callback.m_collisionObjects[i]);
         if (!body)
             continue;
-        auto rigidBody = static_cast<RigidBody*>(body->getUserPointer());
+        auto rigidBody = static_cast<RigidBody *>(body->getUserPointer());
         result.push_back(RaycastResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld[i]), SL_FROMBTVEC3(callback.m_hitNormalWorld[i])));
     }
 
@@ -93,7 +93,7 @@ auto BulletPhysics::castRayAll(const Vector3& from, const Vector3& to) -> std::v
 }
 
 
-auto BulletPhysics::getWorld() const -> btDiscreteDynamicsWorld*
+auto BulletPhysics::getWorld() const -> btDiscreteDynamicsWorld *
 {
     return world.get();
 }

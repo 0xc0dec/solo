@@ -27,19 +27,19 @@
 using namespace solo;
 
 
-ObjMeshLoader::ObjMeshLoader(Device* device):
+ObjMeshLoader::ObjMeshLoader(Device *device):
     fs(device->getFileSystem())
 {
 }
 
 
-bool ObjMeshLoader::isLoadable(const std::string& path) const
+bool ObjMeshLoader::isLoadable(const std::string &path) const
 {
     return path.find(".obj", path.size() - 5) != std::string::npos;
 }
 
 
-Vector3 parseVector3(const char* from, const char* to)
+Vector3 parseVector3(const char *from, const char *to)
 {
     char buf[16];
     float result[3];
@@ -63,7 +63,7 @@ Vector3 parseVector3(const char* from, const char* to)
 }
 
 
-void parseIndexes(const char** from, const char* to, uint32_t** result)
+void parseIndexes(const char **from, const char *to, uint32_t **result)
 {
     char buf[16];
     size_t bufIdx = 0;
@@ -92,7 +92,7 @@ void parseIndexes(const char** from, const char* to, uint32_t** result)
 }
 
 
-auto ObjMeshLoader::loadData(const std::string& path) const -> sptr<MeshData>
+auto ObjMeshLoader::loadData(const std::string &path) const -> sptr<MeshData>
 {
     // TODO speed up and make more intelligent
 
@@ -138,7 +138,7 @@ auto ObjMeshLoader::loadData(const std::string& path) const -> sptr<MeshData>
             auto to = from + lineSize - 3;
             size_t spaceIdx = 1;
             uint32_t vIdx, uvIdx, nIdx;
-            uint32_t* idxs[] = { &vIdx, &uvIdx, &nIdx };
+            uint32_t *idxs[] = { &vIdx, &uvIdx, &nIdx };
             std::string three;
             for (auto i = 0; i < 3; ++i)
             {

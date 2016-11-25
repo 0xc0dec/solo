@@ -26,7 +26,7 @@
 using namespace solo;
 
 
-Spectator::Spectator(const Node& node):
+Spectator::Spectator(const Node &node):
     ComponentBase(node),
     device(node.getScene()->getDevice())
 {

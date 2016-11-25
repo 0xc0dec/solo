@@ -31,11 +31,11 @@ namespace solo
     {
     public:
         SL_DISABLE_COPY_AND_MOVE(ImageLoader)
-        
+
         virtual ~ImageLoader() {}
 
-        virtual bool isLoadable(const std::string& path) const = 0;
-        virtual auto load(const std::string& path) -> sptr<Image> = 0;
+        virtual bool isLoadable(const std::string &path) const = 0;
+        virtual auto load(const std::string &path) -> sptr<Image> = 0;
 
     protected:
         ImageLoader() {}

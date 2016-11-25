@@ -27,7 +27,7 @@ namespace solo
     class NullMaterial final: public Material
     {
     public:
-        explicit NullMaterial(Device* device, const sptr<Effect>& effect):
+        explicit NullMaterial(Device *device, const sptr<Effect> &effect):
             Material(device, effect)
         {
         }

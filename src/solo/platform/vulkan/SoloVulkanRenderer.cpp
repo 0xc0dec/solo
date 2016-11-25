@@ -29,7 +29,7 @@ using namespace solo;
 
 
 auto VulkanRenderer::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
-    VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil
+                                        VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil
 {
     VkImageCreateInfo image {};
     image.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
@@ -76,10 +76,10 @@ auto VulkanRenderer::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryP
     alloc.memoryTypeIndex = memTypeIndex;
     SL_CHECK_VK_RESULT(vkAllocateMemory(device, &alloc, nullptr, &depthStencil.mem));
     SL_CHECK_VK_RESULT(vkBindImageMemory(device, depthStencil.image, depthStencil.mem, 0));
-    
+
     // TODO has any effect?
     vk::setImageLayout(cmdBuffer, depthStencil.image, VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT,
-        VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
+                       VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
 
     createInfo.image = depthStencil.image;
     SL_CHECK_VK_RESULT(vkCreateImageView(device, &createInfo, nullptr, &depthStencil.view));
@@ -96,9 +96,9 @@ void VulkanRenderer::initFrameBuffers()
 }
 
 
-VulkanRenderer::VulkanRenderer(Device* engineDevice)
+VulkanRenderer::VulkanRenderer(Device *engineDevice)
 {
-    auto vulkanDevice = dynamic_cast<SDLVulkanDevice*>(engineDevice);
+    auto vulkanDevice = dynamic_cast<SDLVulkanDevice *>(engineDevice);
     auto instance = vulkanDevice->getVkInstance();
     auto surface = vulkanDevice->getVkSurface();
 
@@ -157,7 +157,7 @@ VulkanRenderer::~VulkanRenderer()
     if (renderCompleteSem)
         vkDestroySemaphore(device, renderCompleteSem, nullptr);
 
-    for (auto& fence : fences)
+    for (auto &fence : fences)
         vkDestroyFence(device, fence, nullptr);
 
     destroySwapchain();
@@ -207,16 +207,16 @@ void VulkanRenderer::endFrame()
     VkPipelineStageFlags waitStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
 
     VkSubmitInfo submitInfo {};
-	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-	submitInfo.pWaitDstStageMask = &waitStageMask;
-	submitInfo.pWaitSemaphores = &presentCompleteSem;
-	submitInfo.waitSemaphoreCount = 1;
-	submitInfo.pSignalSemaphores = &renderCompleteSem;
-	submitInfo.signalSemaphoreCount = 1;
-	submitInfo.pCommandBuffers = &drawCmdBuffers[currentBuffer];
-	submitInfo.commandBufferCount = 1;
+    submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    submitInfo.pWaitDstStageMask = &waitStageMask;
+    submitInfo.pWaitSemaphores = &presentCompleteSem;
+    submitInfo.waitSemaphoreCount = 1;
+    submitInfo.pSignalSemaphores = &renderCompleteSem;
+    submitInfo.signalSemaphoreCount = 1;
+    submitInfo.pCommandBuffers = &drawCmdBuffers[currentBuffer];
+    submitInfo.commandBufferCount = 1;
 
-	SL_CHECK_VK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, fences[currentBuffer]));
+    SL_CHECK_VK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, fences[currentBuffer]));
 
     VkPresentInfoKHR presentInfo {};
     presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
@@ -232,7 +232,7 @@ void VulkanRenderer::endFrame()
 }
 
 
-void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync, const Vector2& deviceCanvasSize)
+void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync, const Vector2 &deviceCanvasSize)
 {
     VkSurfaceCapabilitiesKHR capabilities;
     SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, &capabilities));
@@ -261,7 +261,7 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync, const Vecto
 
     if (!vsync)
     {
-        for (const auto mode: presentModes)
+        for (const auto mode : presentModes)
         {
             if (mode == VK_PRESENT_MODE_IMMEDIATE_KHR)
                 presentMode = mode;
@@ -302,7 +302,7 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync, const Vecto
     swapchainInfo.clipped = VK_TRUE;
     swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
     vkCreateSwapchainKHR(device, &swapchainInfo, nullptr, &swapchain);
-    
+
     uint32_t imageCount = 0;
     SL_CHECK_VK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, nullptr));
 
@@ -317,7 +317,7 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync, const Vecto
         imageViewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
         imageViewInfo.pNext = nullptr;
         imageViewInfo.format = colorFormat;
-        imageViewInfo.components = 
+        imageViewInfo.components =
         {
             VK_COMPONENT_SWIZZLE_R,
             VK_COMPONENT_SWIZZLE_G,
@@ -342,7 +342,7 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync, const Vecto
 
 void VulkanRenderer::destroySwapchain()
 {
-    for (auto& buf : swapchainBuffers)
+    for (auto &buf : swapchainBuffers)
         vkDestroyImageView(device, buf.imageView, nullptr);
 }
 
@@ -366,11 +366,11 @@ void VulkanRenderer::initCommandBuffers()
 void VulkanRenderer::initFences()
 {
     VkFenceCreateInfo info {};
-	info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
-	info.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+    info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+    info.flags = VK_FENCE_CREATE_SIGNALED_BIT;
 
     fences.resize(drawCmdBuffers.size());
-    for (auto& fence : fences)
+    for (auto &fence : fences)
         SL_CHECK_VK_RESULT(vkCreateFence(device, &info, nullptr, &fence));
 }
 

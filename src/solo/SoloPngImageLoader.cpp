@@ -29,14 +29,14 @@ using namespace solo;
 
 struct PngReadContext
 {
-    std::vector<uint8_t>* bytes;
+    std::vector<uint8_t> *bytes;
     size_t offset;
 };
 
 
 static void callback(png_structp png, png_bytep data, png_size_t length)
 {
-    auto context = reinterpret_cast<PngReadContext*>(png_get_io_ptr(png));
+    auto context = reinterpret_cast<PngReadContext *>(png_get_io_ptr(png));
     if (!context)
         png_error(png, "Failed to read PNG");
     memcpy(data, context->bytes->data() + context->offset, length);
@@ -44,19 +44,19 @@ static void callback(png_structp png, png_bytep data, png_size_t length)
 }
 
 
-PngImageLoader::PngImageLoader(Device* device):
+PngImageLoader::PngImageLoader(Device *device):
     fs(device->getFileSystem())
 {
 }
 
 
-bool PngImageLoader::isLoadable(const std::string& path) const
+bool PngImageLoader::isLoadable(const std::string &path) const
 {
     return path.find(".png", path.size() - 5) != std::string::npos;
 }
 
 
-auto PngImageLoader::load(const std::string& path) -> sptr<Image>
+auto PngImageLoader::load(const std::string &path) -> sptr<Image>
 {
     auto bytes = fs->readBytes(path);
     SL_ERR_IF(bytes.size() < 8 || png_sig_cmp(&bytes[0], 0, 8) != 0, SL_FMT("Failed to recognize file '", path, "' as PNG image"));
@@ -82,16 +82,16 @@ auto PngImageLoader::load(const std::string& path) -> sptr<Image>
     TextureFormat colorFormat;
     switch (colorType)
     {
-        case PNG_COLOR_TYPE_RGB:
-            colorFormat = TextureFormat::RGB;
-            break;
-        case PNG_COLOR_TYPE_RGBA:
-            colorFormat = TextureFormat::RGBA;
-            break;
-        default:
-            png_destroy_info_struct(png, &info);
-            png_destroy_read_struct(&png, &info, nullptr);
-            SL_ERR(SL_FMT("Unsupported PNG color type ", colorType));
+    case PNG_COLOR_TYPE_RGB:
+        colorFormat = TextureFormat::RGB;
+        break;
+    case PNG_COLOR_TYPE_RGBA:
+        colorFormat = TextureFormat::RGBA;
+        break;
+    default:
+        png_destroy_info_struct(png, &info);
+        png_destroy_read_struct(&png, &info, nullptr);
+        SL_ERR(SL_FMT("Unsupported PNG color type ", colorType));
     }
 
     auto stride = png_get_rowbytes(png, info);

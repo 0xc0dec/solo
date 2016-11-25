@@ -26,7 +26,7 @@
 class A final: public ComponentBase<A>
 {
 public:
-    explicit A(const Node& node): ComponentBase<A>(node)
+    explicit A(const Node &node): ComponentBase<A>(node)
     {
     }
 };
@@ -35,7 +35,7 @@ public:
 class B final: public ComponentBase<B>
 {
 public:
-    explicit B(const Node& node): ComponentBase<B>(node)
+    explicit B(const Node &node): ComponentBase<B>(node)
     {
     }
 };
@@ -44,19 +44,19 @@ public:
 class C final: public ComponentBase<C>
 {
 public:
-    Component* addedCmp = nullptr;
-    Component* removedCmp = nullptr;
+    Component *addedCmp = nullptr;
+    Component *removedCmp = nullptr;
 
-    explicit C(const Node& node) : ComponentBase<C>(node)
+    explicit C(const Node &node) : ComponentBase<C>(node)
     {
     }
 
-    void onComponentAdded(Component* cmp) override final
+    void onComponentAdded(Component *cmp) override final
     {
         addedCmp = cmp;
     }
 
-    void onComponentRemoved(Component* cmp) override final
+    void onComponentRemoved(Component *cmp) override final
     {
         removedCmp = cmp;
     }
@@ -66,7 +66,7 @@ public:
 class CallbackCaller final: public ComponentBase<CallbackCaller>
 {
 public:
-    explicit CallbackCaller(const Node& node, std::function<void()> initAction, std::function<void()> updateAction, std::function<void()> terminateAction):
+    explicit CallbackCaller(const Node &node, std::function<void()> initAction, std::function<void()> updateAction, std::function<void()> terminateAction):
         ComponentBase<CallbackCaller>(node),
         initAction(initAction),
         updateAction(updateAction),
@@ -102,7 +102,7 @@ private:
 class Base: public ComponentBase<Base>
 {
 public:
-    explicit Base(const Node& node): ComponentBase<Base>(node)
+    explicit Base(const Node &node): ComponentBase<Base>(node)
     {
     }
 };
@@ -111,7 +111,7 @@ public:
 class Derived final: public Base
 {
 public:
-    explicit Derived(const Node& node): Base(node)
+    explicit Derived(const Node &node): Base(node)
     {
     }
 };
@@ -216,35 +216,53 @@ private:
         auto terminate2Called = false;
 
         auto cmp = n1->addComponent<CallbackCaller>(
-            [&]() // init
+                       [&]() // init
+        {
+            if (!n2->findComponent<CallbackCaller>())
             {
-                if (!n2->findComponent<CallbackCaller>())
+                n2->addComponent<CallbackCaller>(
+                    [&]()
                 {
-                    n2->addComponent<CallbackCaller>(
-                        [&]() { init1Called = true; },
-                        [&]() { update1Called = true; },
-                        [&]() { terminate1Called = true; }
-                    );
-                }
-            },
-            [&]() // update
-            {
-                if (!n3->findComponent<CallbackCaller>())
+                    init1Called = true;
+                },
+                [&]()
                 {
-                    n3->addComponent<CallbackCaller>(
-                        [&]() { init2Called = true; },
-                        [&]() { update2Called = true; },
-                        [&]() { terminate2Called = true; }
-                    );
+                    update1Called = true;
+                },
+                [&]()
+                {
+                    terminate1Called = true;
                 }
-                n2->removeComponent<CallbackCaller>();
-            },
-            [&]() // terminate
-            {
-                n3->removeComponent<CallbackCaller>();
+                );
             }
-        );
-        
+        },
+        [&]() // update
+        {
+            if (!n3->findComponent<CallbackCaller>())
+            {
+                n3->addComponent<CallbackCaller>(
+                    [&]()
+                {
+                    init2Called = true;
+                },
+                [&]()
+                {
+                    update2Called = true;
+                },
+                [&]()
+                {
+                    terminate2Called = true;
+                }
+                );
+            }
+            n2->removeComponent<CallbackCaller>();
+        },
+        [&]() // terminate
+        {
+            n3->removeComponent<CallbackCaller>();
+        }
+                   );
+
         assert(init1Called);
         assert(!init2Called);
         assert(!update1Called);

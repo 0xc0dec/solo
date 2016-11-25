@@ -26,21 +26,21 @@
 using namespace solo;
 
 
-BoundingSphere::BoundingSphere(const Vector3& center, float radius):
+BoundingSphere::BoundingSphere(const Vector3 &center, float radius):
     center(center),
     radius(radius)
 {
 }
 
 
-auto BoundingSphere::empty() -> const BoundingSphere&
+auto BoundingSphere::empty() -> const BoundingSphere &
 {
     static BoundingSphere s;
     return s;
 }
 
 
-bool BoundingSphere::intersectsBoundingSphere(const BoundingSphere& sphere) const
+bool BoundingSphere::intersectsBoundingSphere(const BoundingSphere &sphere) const
 {
     auto vx = sphere.center.x - center.x;
     auto vy = sphere.center.y - center.y;
@@ -49,14 +49,14 @@ bool BoundingSphere::intersectsBoundingSphere(const BoundingSphere& sphere) cons
 }
 
 
-bool BoundingSphere::intersectsBoundingBox(const BoundingBox& box) const
+bool BoundingSphere::intersectsBoundingBox(const BoundingBox &box) const
 {
     auto cpX = center.x;
     auto cpY = center.y;
     auto cpZ = center.z;
 
-    const auto& boxMin = box.min;
-    const auto& boxMax = box.max;
+    const auto &boxMin = box.min;
+    const auto &boxMax = box.max;
 
     if (center.x < boxMin.x)
         cpX = boxMin.x;
@@ -81,7 +81,7 @@ bool BoundingSphere::intersectsBoundingBox(const BoundingBox& box) const
 }
 
 
-bool BoundingSphere::intersectsFrustum(const Frustum& frustum) const
+bool BoundingSphere::intersectsFrustum(const Frustum &frustum) const
 {
     return intersectPlane(frustum.getNearPlane()) != PlaneIntersection::Back &&
            intersectPlane(frustum.getFarPlane()) != PlaneIntersection::Back &&
@@ -92,7 +92,7 @@ bool BoundingSphere::intersectsFrustum(const Frustum& frustum) const
 }
 
 
-auto BoundingSphere::intersectPlane(const Plane& plane) const -> PlaneIntersection
+auto BoundingSphere::intersectPlane(const Plane &plane) const -> PlaneIntersection
 {
     auto distance = plane.getDistanceToPoint(center);
     if (fabsf(distance) <= radius)
@@ -101,10 +101,10 @@ auto BoundingSphere::intersectPlane(const Plane& plane) const -> PlaneIntersecti
 }
 
 
-auto BoundingSphere::hitByRay(const Ray& ray) const -> float
+auto BoundingSphere::hitByRay(const Ray &ray) const -> float
 {
-    const auto& origin = ray.getOrigin();
-    const auto& direction = ray.getDirection();
+    const auto &origin = ray.getOrigin();
+    const auto &direction = ray.getDirection();
 
     auto vx = origin.x - center.x;
     auto vy = origin.y - center.y;
@@ -128,7 +128,7 @@ auto BoundingSphere::hitByRay(const Ray& ray) const -> float
 }
 
 
-void BoundingSphere::mergeBoundingSphere(const BoundingSphere& sphere)
+void BoundingSphere::mergeBoundingSphere(const BoundingSphere &sphere)
 {
     if (sphere.isEmpty())
         return;
@@ -166,13 +166,13 @@ void BoundingSphere::mergeBoundingSphere(const BoundingSphere& sphere)
 }
 
 
-void BoundingSphere::mergeBoundingBox(const BoundingBox& box)
+void BoundingSphere::mergeBoundingBox(const BoundingBox &box)
 {
     if (box.isEmpty())
         return;
 
-    const auto& min = box.min;
-    const auto& max = box.max;
+    const auto &min = box.min;
+    const auto &max = box.max;
 
     auto v1x = min.x - center.x;
     auto v1y = min.y - center.y;

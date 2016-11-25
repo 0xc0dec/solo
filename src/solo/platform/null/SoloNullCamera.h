@@ -27,12 +27,12 @@ namespace solo
     class NullCamera final: public Camera
     {
     public:
-        explicit NullCamera(const Node& node): Camera(node)
+        explicit NullCamera(const Node &node): Camera(node)
         {
         }
 
     protected:
-        void applyImpl() const override 
+        void applyImpl() const override
         {
         }
     };

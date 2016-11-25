@@ -34,22 +34,35 @@ static auto toGLBlendFactor(BlendFactor factor) -> GLenum
 {
     switch (factor)
     {
-        case BlendFactor::Zero: return GL_ZERO;
-        case BlendFactor::One: return GL_ONE;
-        case BlendFactor::SrcColor: return GL_SRC_COLOR;
-        case BlendFactor::OneMinusSrcColor: return GL_ONE_MINUS_SRC_COLOR;
-        case BlendFactor::DstColor: return GL_DST_COLOR;
-        case BlendFactor::OneMinusDstColor: return GL_ONE_MINUS_DST_COLOR;
-        case BlendFactor::SrcAlpha: return GL_SRC_ALPHA;
-        case BlendFactor::OneMinusSrcAlpha: return GL_ONE_MINUS_SRC_ALPHA;
-        case BlendFactor::DstAlpha: return GL_DST_ALPHA;
-        case BlendFactor::OneMinusDstAlpha: return GL_ONE_MINUS_DST_ALPHA;
-        case BlendFactor::ConstantAlpha: return GL_CONSTANT_ALPHA;
-        case BlendFactor::OneMinusConstantAlpha: return GL_ONE_MINUS_CONSTANT_ALPHA;
-        case BlendFactor::SrcAlphaSaturate: return GL_SRC_ALPHA_SATURATE;
-        default:
-            SL_ERR("Unknown blend factor");
-            return 0;
+    case BlendFactor::Zero:
+        return GL_ZERO;
+    case BlendFactor::One:
+        return GL_ONE;
+    case BlendFactor::SrcColor:
+        return GL_SRC_COLOR;
+    case BlendFactor::OneMinusSrcColor:
+        return GL_ONE_MINUS_SRC_COLOR;
+    case BlendFactor::DstColor:
+        return GL_DST_COLOR;
+    case BlendFactor::OneMinusDstColor:
+        return GL_ONE_MINUS_DST_COLOR;
+    case BlendFactor::SrcAlpha:
+        return GL_SRC_ALPHA;
+    case BlendFactor::OneMinusSrcAlpha:
+        return GL_ONE_MINUS_SRC_ALPHA;
+    case BlendFactor::DstAlpha:
+        return GL_DST_ALPHA;
+    case BlendFactor::OneMinusDstAlpha:
+        return GL_ONE_MINUS_DST_ALPHA;
+    case BlendFactor::ConstantAlpha:
+        return GL_CONSTANT_ALPHA;
+    case BlendFactor::OneMinusConstantAlpha:
+        return GL_ONE_MINUS_CONSTANT_ALPHA;
+    case BlendFactor::SrcAlphaSaturate:
+        return GL_SRC_ALPHA_SATURATE;
+    default:
+        SL_ERR("Unknown blend factor");
+        return 0;
     }
 }
 
@@ -58,21 +71,21 @@ static auto toGLCubeTextureFace(CubeTextureFace face) -> GLenum
 {
     switch (face)
     {
-        case CubeTextureFace::Front:
-            return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
-        case CubeTextureFace::Back:
-            return GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
-        case CubeTextureFace::Right:
-            return GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
-        case CubeTextureFace::Left:
-            return GL_TEXTURE_CUBE_MAP_POSITIVE_X;
-        case CubeTextureFace::Top:
-            return GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
-        case CubeTextureFace::Bottom:
-            return GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
-        default:
-            SL_ERR("Unknown cube texture face");
-            return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
+    case CubeTextureFace::Front:
+        return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
+    case CubeTextureFace::Back:
+        return GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
+    case CubeTextureFace::Right:
+        return GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
+    case CubeTextureFace::Left:
+        return GL_TEXTURE_CUBE_MAP_POSITIVE_X;
+    case CubeTextureFace::Top:
+        return GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
+    case CubeTextureFace::Bottom:
+        return GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
+    default:
+        SL_ERR("Unknown cube texture face");
+        return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
     }
 }
 
@@ -81,19 +94,19 @@ static auto toGLPrimitiveType(PrimitiveType type) -> GLenum
 {
     switch (type)
     {
-        case PrimitiveType::Triangles:
-            return GL_TRIANGLES;
-        case PrimitiveType::TriangleStrip:
-            return GL_TRIANGLE_STRIP;
-        case PrimitiveType::Lines:
-            return GL_LINES;
-        case PrimitiveType::LineStrip:
-            return GL_LINE_STRIP;
-        case PrimitiveType::Points:
-            return GL_POINTS;
-        default:
-            SL_ERR("Unknown primitive type");
-            return GL_TRIANGLES;
+    case PrimitiveType::Triangles:
+        return GL_TRIANGLES;
+    case PrimitiveType::TriangleStrip:
+        return GL_TRIANGLE_STRIP;
+    case PrimitiveType::Lines:
+        return GL_LINES;
+    case PrimitiveType::LineStrip:
+        return GL_LINE_STRIP;
+    case PrimitiveType::Points:
+        return GL_POINTS;
+    default:
+        SL_ERR("Unknown primitive type");
+        return GL_TRIANGLES;
     }
 }
 
@@ -102,17 +115,17 @@ static auto toTextureFormat(TextureFormat format) -> GLenum
 {
     switch (format)
     {
-        case TextureFormat::Red:
-            return GL_RED;
-        case TextureFormat::RGB:
-            return GL_RGB;
-        case TextureFormat::RGBA:
-            return GL_RGBA;
-        case TextureFormat::Alpha:
-            return GL_ALPHA;
-        default:
-            SL_ERR("Unknown texture format");
-            return GL_RED;
+    case TextureFormat::Red:
+        return GL_RED;
+    case TextureFormat::RGB:
+        return GL_RGB;
+    case TextureFormat::RGBA:
+        return GL_RGBA;
+    case TextureFormat::Alpha:
+        return GL_ALPHA;
+    default:
+        SL_ERR("Unknown texture format");
+        return GL_RED;
     }
 }
 
@@ -121,16 +134,16 @@ static auto toInternalTextureFormat(TextureFormat format) -> GLenum
 {
     switch (format)
     {
-        case TextureFormat::Red:
-        case TextureFormat::RGB:
-            return GL_RGB;
-        case TextureFormat::RGBA:
-            return GL_RGBA;
-        case TextureFormat::Alpha:
-            return GL_ALPHA;
-        default:
-            SL_ERR("Unknown texture format");
-            return GL_RGB;
+    case TextureFormat::Red:
+    case TextureFormat::RGB:
+        return GL_RGB;
+    case TextureFormat::RGBA:
+        return GL_RGBA;
+    case TextureFormat::Alpha:
+        return GL_ALPHA;
+    default:
+        SL_ERR("Unknown texture format");
+        return GL_RGB;
     }
 }
 
@@ -158,7 +171,7 @@ static auto linkProgram(GLuint vs, GLuint fs) -> GLint
 }
 
 
-static auto compileShader(GLuint type, const char* src) -> GLint
+static auto compileShader(GLuint type, const char *src) -> GLint
 {
     static std::unordered_map<GLuint, std::string> typeNames =
     {
@@ -217,18 +230,18 @@ static auto discoverVertexAttributes(GLuint program) -> std::unordered_map<std::
 }
 
 
-static bool findUniformInProgram(GLuint program, const char* name, GLint& location, int32_t& index)
+static bool findUniformInProgram(GLuint program, const char *name, GLint &location, int32_t &index)
 {
     GLint activeUniforms;
     glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &activeUniforms);
     if (activeUniforms <= 0)
         return false;
-    
+
     GLint nameMaxLength;
     glGetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &nameMaxLength);
     if (nameMaxLength <= 0)
         return false;
-    
+
     std::vector<GLchar> rawName(nameMaxLength + 1);
     uint32_t samplerIndex = 0;
     for (GLint i = 0; i < activeUniforms; ++i)
@@ -239,13 +252,13 @@ static bool findUniformInProgram(GLuint program, const char* name, GLint& locati
         glGetActiveUniform(program, i, nameMaxLength, nullptr, &size, &type, rawName.data());
         rawName[nameMaxLength] = '\0';
         std::string n = rawName.data();
-    
+
         // Strip away possible square brackets for array uniforms,
         // they are sometimes present on some platforms
         auto bracketIndex = n.find('[');
         if (bracketIndex != std::string::npos)
             n.erase(bracketIndex);
-    
+
         uint32_t idx = 0;
         if (type == GL_SAMPLER_2D || type == GL_SAMPLER_CUBE) // TODO other types of samplers
         {
@@ -265,7 +278,7 @@ static bool findUniformInProgram(GLuint program, const char* name, GLint& locati
 }
 
 
-OpenGLRenderer::OpenGLRenderer(Device* device)
+OpenGLRenderer::OpenGLRenderer(Device *device)
 {
     GLint major, minor;
     glGetIntegerv(GL_MAJOR_VERSION, &major);
@@ -280,7 +293,7 @@ OpenGLRenderer::~OpenGLRenderer()
 
     while (!uniforms.empty())
         destroyUniform(uniforms.begin()->first);
-    
+
     while (!vertexProgramBindings.empty())
         destroyVertexProgramBinding(vertexProgramBindings.begin()->first);
 
@@ -322,7 +335,7 @@ void OpenGLRenderer::destroyTexture(uint32_t handle)
 }
 
 
-void OpenGLRenderer::update2DTexture(uint32_t handle, TextureFormat format, uint32_t width, uint32_t height, const void* data)
+void OpenGLRenderer::update2DTexture(uint32_t handle, TextureFormat format, uint32_t width, uint32_t height, const void *data)
 {
     bindTexture(GL_TEXTURE_2D, handle);
 
@@ -331,7 +344,7 @@ void OpenGLRenderer::update2DTexture(uint32_t handle, TextureFormat format, uint
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, fmt, GL_UNSIGNED_BYTE, data);
 
-    auto& texture = textures.at(handle);
+    auto &texture = textures.at(handle);
     texture.width = width;
     texture.height = height;
 
@@ -339,7 +352,7 @@ void OpenGLRenderer::update2DTexture(uint32_t handle, TextureFormat format, uint
 }
 
 
-void OpenGLRenderer::updateCubeTexture(uint32_t handle, CubeTextureFace face, TextureFormat format, uint32_t width, uint32_t height, const void* data)
+void OpenGLRenderer::updateCubeTexture(uint32_t handle, CubeTextureFace face, TextureFormat format, uint32_t width, uint32_t height, const void *data)
 {
     bindTexture(GL_TEXTURE_CUBE_MAP, handle);
 
@@ -458,7 +471,7 @@ void OpenGLRenderer::setTexture(GLenum target, uint32_t handle, uint32_t flags)
 }
 
 
-void OpenGLRenderer::validateFrameBufferAttachments(const std::vector<uint32_t>& attachments)
+void OpenGLRenderer::validateFrameBufferAttachments(const std::vector<uint32_t> &attachments)
 {
     SL_ERR_IF(attachments.size() > GL_MAX_COLOR_ATTACHMENTS, "Too many attachments");
 
@@ -473,7 +486,7 @@ void OpenGLRenderer::validateFrameBufferAttachments(const std::vector<uint32_t>&
         }
         else
             SL_ERR_IF(texture.width != width || texture.height != height, "Attachment sizes do not match")
-    }
+        }
 }
 
 
@@ -561,7 +574,7 @@ void OpenGLRenderer::setFrameBuffer(uint32_t handle)
 }
 
 
-void OpenGLRenderer::updateFrameBuffer(uint32_t handle, const std::vector<uint32_t>& attachmentHandles)
+void OpenGLRenderer::updateFrameBuffer(uint32_t handle, const std::vector<uint32_t> &attachmentHandles)
 {
     SL_BLOCK(validateFrameBufferAttachments(attachmentHandles));
 
@@ -601,7 +614,7 @@ void OpenGLRenderer::updateFrameBuffer(uint32_t handle, const std::vector<uint32
 }
 
 
-auto OpenGLRenderer::createVertexBuffer(bool dynamic, const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> uint32_t
+auto OpenGLRenderer::createVertexBuffer(bool dynamic, const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
 {
     GLuint rawHandle = 0;
     glGenBuffers(1, &rawHandle);
@@ -612,7 +625,7 @@ auto OpenGLRenderer::createVertexBuffer(bool dynamic, const VertexBufferLayout& 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     auto handle = vertexBufferCounter++;
-    auto& vertexBuffer = vertexBuffers[handle];
+    auto &vertexBuffer = vertexBuffers[handle];
     vertexBuffer.rawHandle = rawHandle;
     vertexBuffer.layout = layout;
     vertexBuffer.vertexCount = vertexCount;
@@ -622,19 +635,19 @@ auto OpenGLRenderer::createVertexBuffer(bool dynamic, const VertexBufferLayout& 
 }
 
 
-auto OpenGLRenderer::createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> uint32_t
+auto OpenGLRenderer::createVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
 {
     return createVertexBuffer(false, layout, data, vertexCount);
 }
 
 
-auto OpenGLRenderer::createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> uint32_t
+auto OpenGLRenderer::createDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
 {
     return createVertexBuffer(true, layout, data, vertexCount);
 }
 
 
-void OpenGLRenderer::updateDynamicVertexBuffer(uint32_t handle, const void* data, uint32_t offset, uint32_t vertexCount)
+void OpenGLRenderer::updateDynamicVertexBuffer(uint32_t handle, const void *data, uint32_t offset, uint32_t vertexCount)
 {
     bindVertexBuffer(handle);
     glBufferSubData(GL_ARRAY_BUFFER, offset, vertexCount, data);
@@ -650,7 +663,7 @@ void OpenGLRenderer::destroyVertexBuffer(uint32_t handle)
 }
 
 
-auto OpenGLRenderer::createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount) -> uint32_t
+auto OpenGLRenderer::createIndexBuffer(const void *data, uint32_t elementSize, uint32_t elementCount) -> uint32_t
 {
     GLuint rawHandle = 0;
     glGenBuffers(1, &rawHandle);
@@ -661,7 +674,7 @@ auto OpenGLRenderer::createIndexBuffer(const void* data, uint32_t elementSize, u
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     auto handle = indexBufferCounter++;
-    auto& indexBuffer = indexBuffers[handle];
+    auto &indexBuffer = indexBuffers[handle];
     indexBuffer.rawHandle = rawHandle;
     indexBuffer.elementCount = elementCount;
 
@@ -677,7 +690,7 @@ void OpenGLRenderer::destroyIndexBuffer(uint32_t handle)
 }
 
 
-auto OpenGLRenderer::createProgram(const char* vsSrc, const char* fsSrc) -> uint32_t
+auto OpenGLRenderer::createProgram(const char *vsSrc, const char *fsSrc) -> uint32_t
 {
     auto vs = compileShader(GL_VERTEX_SHADER, vsSrc);
     auto fs = compileShader(GL_FRAGMENT_SHADER, fsSrc);
@@ -710,7 +723,7 @@ void OpenGLRenderer::setProgram(uint32_t handle)
 }
 
 
-auto OpenGLRenderer::createVertexProgramBinding(const uint32_t* bufferHandles, uint32_t bufferCount, uint32_t programHandle) -> uint32_t
+auto OpenGLRenderer::createVertexProgramBinding(const uint32_t *bufferHandles, uint32_t bufferCount, uint32_t programHandle) -> uint32_t
 {
     GLuint rawHandle;
     glGenVertexArrays(1, &rawHandle);
@@ -720,7 +733,7 @@ auto OpenGLRenderer::createVertexProgramBinding(const uint32_t* bufferHandles, u
 
     auto attributes = discoverVertexAttributes(programs.at(programHandle));
 
-    auto findAttributeLocation = [&](const char* name)
+    auto findAttributeLocation = [&](const char *name)
     {
         auto programAttr = attributes.find(name);
         return programAttr != attributes.end() ? programAttr->second : -1;
@@ -728,8 +741,8 @@ auto OpenGLRenderer::createVertexProgramBinding(const uint32_t* bufferHandles, u
 
     for (uint32_t i = 0; i < bufferCount; i++)
     {
-        const auto& bufferHandle = bufferHandles[i];
-        const auto& layout = vertexBuffers.at(bufferHandle).layout;
+        const auto &bufferHandle = bufferHandles[i];
+        const auto &layout = vertexBuffers.at(bufferHandle).layout;
         const auto elementCount = layout.getElementCount();
         if (!elementCount)
             continue;
@@ -741,36 +754,47 @@ auto OpenGLRenderer::createVertexProgramBinding(const uint32_t* bufferHandles, u
         uint32_t offset = 0;
         for (uint32_t j = 0; j < elementCount; j++)
         {
-            auto& el = layout.getElement(j);
+            auto &el = layout.getElement(j);
             auto attrLoc = 0;
             switch (el.semantics)
             {
-                case VertexBufferLayoutSemantics::Position: attrLoc = findAttributeLocation("position"); break;
-                case VertexBufferLayoutSemantics::Normal: attrLoc = findAttributeLocation("normal"); break;
-                case VertexBufferLayoutSemantics::Color: attrLoc = findAttributeLocation("color"); break;
-                case VertexBufferLayoutSemantics::Tangent: attrLoc = findAttributeLocation("tangent"); break;
-                case VertexBufferLayoutSemantics::Binormal: attrLoc = findAttributeLocation("binormal"); break;
-                case VertexBufferLayoutSemantics::TexCoord0:
-                case VertexBufferLayoutSemantics::TexCoord1:
-                case VertexBufferLayoutSemantics::TexCoord2:
-                case VertexBufferLayoutSemantics::TexCoord3:
-                case VertexBufferLayoutSemantics::TexCoord4:
-                case VertexBufferLayoutSemantics::TexCoord5:
-                case VertexBufferLayoutSemantics::TexCoord6:
-                case VertexBufferLayoutSemantics::TexCoord7:
+            case VertexBufferLayoutSemantics::Position:
+                attrLoc = findAttributeLocation("position");
+                break;
+            case VertexBufferLayoutSemantics::Normal:
+                attrLoc = findAttributeLocation("normal");
+                break;
+            case VertexBufferLayoutSemantics::Color:
+                attrLoc = findAttributeLocation("color");
+                break;
+            case VertexBufferLayoutSemantics::Tangent:
+                attrLoc = findAttributeLocation("tangent");
+                break;
+            case VertexBufferLayoutSemantics::Binormal:
+                attrLoc = findAttributeLocation("binormal");
+                break;
+            case VertexBufferLayoutSemantics::TexCoord0:
+            case VertexBufferLayoutSemantics::TexCoord1:
+            case VertexBufferLayoutSemantics::TexCoord2:
+            case VertexBufferLayoutSemantics::TexCoord3:
+            case VertexBufferLayoutSemantics::TexCoord4:
+            case VertexBufferLayoutSemantics::TexCoord5:
+            case VertexBufferLayoutSemantics::TexCoord6:
+            case VertexBufferLayoutSemantics::TexCoord7:
                 {
                     auto idx = static_cast<uint32_t>(el.semantics) - static_cast<uint32_t>(VertexBufferLayoutSemantics::TexCoord0);
                     auto name = "texCoord" + std::to_string(idx);
                     attrLoc = findAttributeLocation(name.c_str());
                     break;
                 }
-                default: break;
+            default:
+                break;
             }
 
             if (attrLoc >= 0)
             {
                 const auto stride = layout.getSize();
-                glVertexAttribPointer(attrLoc, el.size, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(offset));
+                glVertexAttribPointer(attrLoc, el.size, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void *>(offset));
                 glEnableVertexAttribArray(attrLoc);
             }
 
@@ -802,7 +826,7 @@ void OpenGLRenderer::drawIndexed(PrimitiveType primitiveType, uint32_t bindingHa
     bindVertexProgramBinding(bindingHandle);
     bindIndexBuffer(indexBufferHandle);
 
-    const auto& indexBuffer = indexBuffers.at(indexBufferHandle);
+    const auto &indexBuffer = indexBuffers.at(indexBufferHandle);
     glDrawElements(toGLPrimitiveType(primitiveType), indexBuffer.elementCount, GL_UNSIGNED_SHORT, nullptr);
 
     bindIndexBuffer(EmptyHandle);
@@ -818,7 +842,7 @@ void OpenGLRenderer::draw(PrimitiveType primitiveType, uint32_t bindingHandle, u
 }
 
 
-auto OpenGLRenderer::createUniform(const char* name, UniformType type, uint32_t programHandle) -> uint32_t
+auto OpenGLRenderer::createUniform(const char *name, UniformType type, uint32_t programHandle) -> uint32_t
 {
     auto rawProgramHandle = programs.at(programHandle);
 
@@ -827,7 +851,7 @@ auto OpenGLRenderer::createUniform(const char* name, UniformType type, uint32_t 
     SL_ERR_IF(!found, SL_FMT("Could not find uniform '", name, "'"));
 
     auto handle = uniformCounter++;
-    auto& uniform = uniforms[handle];
+    auto &uniform = uniforms[handle];
     uniform.type = type;
     uniform.index = index;
     uniform.location = location;
@@ -842,48 +866,50 @@ void OpenGLRenderer::destroyUniform(uint32_t handle)
 }
 
 
-void OpenGLRenderer::setUniform(uint32_t handle, const void* value, uint32_t count)
+void OpenGLRenderer::setUniform(uint32_t handle, const void *value, uint32_t count)
 {
-    const auto& uniform = uniforms.at(handle);
-    auto floatData = reinterpret_cast<const float*>(value);
+    const auto &uniform = uniforms.at(handle);
+    auto floatData = reinterpret_cast<const float *>(value);
     switch (uniform.type)
     {
-        case UniformType::Float:
-            glUniform1f(uniform.location, *floatData);
-            break;
-        case UniformType::FloatArray:
-            glUniform1fv(uniform.location, static_cast<GLsizei>(count), floatData);
-            break;
-        case UniformType::Vector2:
-            glUniform2f(uniform.location, floatData[0], floatData[1]);
-            break;
-        case UniformType::Vector2Array:
-            glUniform2fv(uniform.location, static_cast<GLsizei>(count), floatData);
-            break;
-        case UniformType::Vector3:
-            glUniform3f(uniform.location, floatData[0], floatData[1], floatData[2]);
-            break;
-        case UniformType::Vector3Array:
-            glUniform3fv(uniform.location, static_cast<GLsizei>(count), floatData);
-            break;
-        case UniformType::Vector4:
-            glUniform4f(uniform.location, floatData[0], floatData[1], floatData[2], floatData[3]);
-            break;
-        case UniformType::Vector4Array:
-            glUniform4fv(uniform.location, static_cast<GLsizei>(count), floatData);
-            break;
-        case UniformType::Matrix:
-            glUniformMatrix4fv(uniform.location, 1, GL_FALSE, floatData);
-            break;
-        case UniformType::MatrixArray:
-            glUniformMatrix4fv(uniform.location, static_cast<GLsizei>(count), GL_FALSE, floatData);
-            break;
-        case UniformType::Texture:
-            glActiveTexture(GL_TEXTURE0 + uniform.index);
-            glUniform1i(uniform.location, uniform.index);
-            break;
-        case UniformType::TextureArray: break; // TODO
-        default: break;
+    case UniformType::Float:
+        glUniform1f(uniform.location, *floatData);
+        break;
+    case UniformType::FloatArray:
+        glUniform1fv(uniform.location, static_cast<GLsizei>(count), floatData);
+        break;
+    case UniformType::Vector2:
+        glUniform2f(uniform.location, floatData[0], floatData[1]);
+        break;
+    case UniformType::Vector2Array:
+        glUniform2fv(uniform.location, static_cast<GLsizei>(count), floatData);
+        break;
+    case UniformType::Vector3:
+        glUniform3f(uniform.location, floatData[0], floatData[1], floatData[2]);
+        break;
+    case UniformType::Vector3Array:
+        glUniform3fv(uniform.location, static_cast<GLsizei>(count), floatData);
+        break;
+    case UniformType::Vector4:
+        glUniform4f(uniform.location, floatData[0], floatData[1], floatData[2], floatData[3]);
+        break;
+    case UniformType::Vector4Array:
+        glUniform4fv(uniform.location, static_cast<GLsizei>(count), floatData);
+        break;
+    case UniformType::Matrix:
+        glUniformMatrix4fv(uniform.location, 1, GL_FALSE, floatData);
+        break;
+    case UniformType::MatrixArray:
+        glUniformMatrix4fv(uniform.location, static_cast<GLsizei>(count), GL_FALSE, floatData);
+        break;
+    case UniformType::Texture:
+        glActiveTexture(GL_TEXTURE0 + uniform.index);
+        glUniform1i(uniform.location, uniform.index);
+        break;
+    case UniformType::TextureArray:
+        break; // TODO
+    default:
+        break;
     }
 }
 
@@ -905,15 +931,32 @@ void OpenGLRenderer::setDepthFunction(DepthFunction func)
     GLenum glfunc = 0;
     switch (func)
     {
-        case DepthFunction::Never: glfunc = GL_NEVER; break;
-        case DepthFunction::Less: glfunc = GL_LESS; break;
-        case DepthFunction::Equal: glfunc = GL_EQUAL; break;
-        case DepthFunction::LEqual: glfunc = GL_LEQUAL; break;
-        case DepthFunction::Greater: glfunc = GL_GREATER; break;
-        case DepthFunction::NotEqual: glfunc = GL_NOTEQUAL; break;
-        case DepthFunction::GEqual: glfunc = GL_GEQUAL; break;
-        case DepthFunction::Always: glfunc = GL_ALWAYS; break;
-        default: break;
+    case DepthFunction::Never:
+        glfunc = GL_NEVER;
+        break;
+    case DepthFunction::Less:
+        glfunc = GL_LESS;
+        break;
+    case DepthFunction::Equal:
+        glfunc = GL_EQUAL;
+        break;
+    case DepthFunction::LEqual:
+        glfunc = GL_LEQUAL;
+        break;
+    case DepthFunction::Greater:
+        glfunc = GL_GREATER;
+        break;
+    case DepthFunction::NotEqual:
+        glfunc = GL_NOTEQUAL;
+        break;
+    case DepthFunction::GEqual:
+        glfunc = GL_GEQUAL;
+        break;
+    case DepthFunction::Always:
+        glfunc = GL_ALWAYS;
+        break;
+    default:
+        break;
     }
     if (glfunc)
         glDepthFunc(glfunc);
@@ -936,19 +979,19 @@ void OpenGLRenderer::setFaceCull(FaceCull cull)
 {
     switch (cull)
     {
-        case FaceCull::All:
-            glDisable(GL_CULL_FACE);
-            break;
-        case FaceCull::CW:
-            glEnable(GL_CULL_FACE);
-            glFrontFace(GL_CW);
-            break;
-        case FaceCull::CCW:
-            glEnable(GL_CULL_FACE);
-            glFrontFace(GL_CCW);
-            break;
-        default:
-            break;
+    case FaceCull::All:
+        glDisable(GL_CULL_FACE);
+        break;
+    case FaceCull::CW:
+        glEnable(GL_CULL_FACE);
+        glFrontFace(GL_CW);
+        break;
+    case FaceCull::CCW:
+        glEnable(GL_CULL_FACE);
+        glFrontFace(GL_CCW);
+        break;
+    default:
+        break;
     }
 }
 
@@ -958,16 +1001,17 @@ void OpenGLRenderer::setPolygonMode(PolygonMode mode)
     GLenum glMode;
     switch (mode)
     {
-        case PolygonMode::Triangle:
-            glMode = GL_FILL;
-            break;
-        case PolygonMode::Wireframe:
-            glMode = GL_LINE;
-            break;
-        case PolygonMode::Points:
-            glMode = GL_POINT;
-            break;
-        default: return;
+    case PolygonMode::Triangle:
+        glMode = GL_FILL;
+        break;
+    case PolygonMode::Wireframe:
+        glMode = GL_LINE;
+        break;
+    case PolygonMode::Points:
+        glMode = GL_POINT;
+        break;
+    default:
+        return;
     }
 
     glPolygonMode(GL_FRONT_AND_BACK, glMode);

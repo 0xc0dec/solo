@@ -29,7 +29,7 @@
 using namespace solo;
 
 
-Ray::Ray(const Vector3& origin, const Vector3& direction):
+Ray::Ray(const Vector3 &origin, const Vector3 &direction):
     origin(origin),
     direction(direction)
 {
@@ -45,32 +45,32 @@ Ray::Ray(float originX, float originY, float originZ, float dirX, float dirY, fl
 }
 
 
-void Ray::setOrigin(const Vector3& origin)
+void Ray::setOrigin(const Vector3 &origin)
 {
     this->origin = origin;
 }
 
 
-void Ray::setDirection(const Vector3& direction)
+void Ray::setDirection(const Vector3 &direction)
 {
     this->direction = direction;
     normalize();
 }
 
 
-auto Ray::hitBoundingSphere(const BoundingSphere& sphere) const -> float
+auto Ray::hitBoundingSphere(const BoundingSphere &sphere) const -> float
 {
     return sphere.hitByRay(*this);
 }
 
 
-auto Ray::hitBoundingBox(const BoundingBox& box) const -> float
+auto Ray::hitBoundingBox(const BoundingBox &box) const -> float
 {
     return box.hitByRay(*this);
 }
 
 
-auto Ray::hitFrustum(const Frustum& frustum) const -> float
+auto Ray::hitFrustum(const Frustum &frustum) const -> float
 {
     auto n = frustum.getNearPlane();
     auto nD = hitPlane(n);
@@ -99,8 +99,8 @@ auto Ray::hitFrustum(const Frustum& frustum) const -> float
     // If the ray's origin is in the negative half-space of one of the frustum's planes
     // and it does not intersect that same plane, then it does not intersect the frustum.
     if ((nOD < 0.0f && nD < 0.0f) || (fOD < 0.0f && fD < 0.0f) ||
-        (lOD < 0.0f && lD < 0.0f) || (rOD < 0.0f && rD < 0.0f) ||
-        (bOD < 0.0f && bD < 0.0f) || (tOD < 0.0f && tD < 0.0f))
+            (lOD < 0.0f && lD < 0.0f) || (rOD < 0.0f && rD < 0.0f) ||
+            (bOD < 0.0f && bD < 0.0f) || (tOD < 0.0f && tD < 0.0f))
         return -1;
 
     // Otherwise, the intersection distance is the minimum positive intersection distance.
@@ -115,9 +115,9 @@ auto Ray::hitFrustum(const Frustum& frustum) const -> float
 }
 
 
-auto Ray::hitPlane(const Plane& plane) const -> float
+auto Ray::hitPlane(const Plane &plane) const -> float
 {
-    const auto& normal = plane.getNormal();
+    const auto &normal = plane.getNormal();
 
     auto alpha = normal.dot(origin) + plane.getDistance();
     if (Math::approxZero(alpha, Math::smallFloat1))

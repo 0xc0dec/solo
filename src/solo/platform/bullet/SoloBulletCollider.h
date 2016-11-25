@@ -33,7 +33,7 @@ namespace solo
 
         virtual ~BulletCollider() {}
 
-        virtual auto getShape() -> btCollisionShape* = 0;
+        virtual auto getShape() -> btCollisionShape * = 0;
 
     protected:
         BulletCollider() {}

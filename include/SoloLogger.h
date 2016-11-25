@@ -33,19 +33,19 @@ namespace solo
     {
     public:
         SL_DISABLE_COPY_AND_MOVE(Logger)
-        explicit Logger(const DeviceToken& t) {}
+        explicit Logger(const DeviceToken &t) {}
         ~Logger();
 
-        void setTargetFile(const std::string& path);
+        void setTargetFile(const std::string &path);
 
-        void logDebug(const std::string& msg);
-        void logInfo(const std::string& msg);
-        void logWarning(const std::string& msg);
-        void logError(const std::string& msg);
-        void logCritical(const std::string& msg);
+        void logDebug(const std::string &msg);
+        void logInfo(const std::string &msg);
+        void logWarning(const std::string &msg);
+        void logError(const std::string &msg);
+        void logCritical(const std::string &msg);
 
     private:
-        void log(const std::string& msg, const std::string& level);
+        void log(const std::string &msg, const std::string &level);
 
         std::ofstream file;
         SpinLock lock;

@@ -78,14 +78,14 @@ VulkanPipeline::~VulkanPipeline()
 }
 
 
-void VulkanPipeline::setVertexShader(VkShaderModule shader, const char* entryPoint)
+void VulkanPipeline::setVertexShader(VkShaderModule shader, const char *entryPoint)
 {
     vertexShaderStage.module = shader;
     vertexShaderStage.pName = entryPoint;
 }
 
 
-void VulkanPipeline::setFragmentShader(VkShaderModule shader, const char* entryPoint)
+void VulkanPipeline::setFragmentShader(VkShaderModule shader, const char *entryPoint)
 {
     fragmentShaderStage.module = shader;
     fragmentShaderStage.pName = entryPoint;

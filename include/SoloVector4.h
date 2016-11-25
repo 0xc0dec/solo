@@ -46,15 +46,15 @@ namespace solo
         bool isZero() const;
         bool isUnit() const;
 
-        static auto angle(const Vector4& v1, const Vector4& v2) -> Radian;
+        static auto angle(const Vector4 &v1, const Vector4 &v2) -> Radian;
 
-        void clamp(const Vector4& min, const Vector4& max);
+        void clamp(const Vector4 &min, const Vector4 &max);
 
-        auto distance(const Vector4& v) const -> float;
-        auto distanceSquared(const Vector4& v) const -> float;
+        auto distance(const Vector4 &v) const -> float;
+        auto distanceSquared(const Vector4 &v) const -> float;
 
-        auto dot(const Vector4& v) const -> float;
-        static auto dot(const Vector4& v1, const Vector4& v2) -> float;
+        auto dot(const Vector4 &v) const -> float;
+        static auto dot(const Vector4 &v1, const Vector4 &v2) -> float;
 
         auto length() const -> float;
         auto lengthSquared() const -> float;
@@ -63,15 +63,15 @@ namespace solo
         void normalize();
 
         auto operator+(float scalar) const -> Vector4;
-        auto operator+(const Vector4& v) const -> Vector4;
+        auto operator+(const Vector4 &v) const -> Vector4;
         auto operator+=(float scalar) -> Vector4&;
-        auto operator+=(const Vector4& v) -> Vector4&;
+        auto operator+=(const Vector4 &v) -> Vector4&;
 
         auto operator-() const -> Vector4;
         auto operator-(float scalar) const -> Vector4;
-        auto operator-(const Vector4& v) const -> Vector4;
+        auto operator-(const Vector4 &v) const -> Vector4;
         auto operator-=(float scalar)  -> Vector4&;
-        auto operator-=(const Vector4& v) -> Vector4&;
+        auto operator-=(const Vector4 &v) -> Vector4&;
 
         auto operator*(float x) const -> Vector4;
         auto operator*=(float x) -> Vector4&;
@@ -79,10 +79,10 @@ namespace solo
         auto operator/(float x) const -> Vector4;
         auto operator/=(float x) -> Vector4&;
 
-        bool operator<(const Vector4& v) const;
+        bool operator<(const Vector4 &v) const;
 
-        bool operator==(const Vector4& v) const;
-        bool operator!=(const Vector4& v) const;
+        bool operator==(const Vector4 &v) const;
+        bool operator!=(const Vector4 &v) const;
     };
 
     inline auto Vector4::operator+(float scalar) const -> Vector4
@@ -92,19 +92,19 @@ namespace solo
         return result;
     }
 
-    inline auto Vector4::operator+(const Vector4& v) const -> Vector4
+    inline auto Vector4::operator+(const Vector4 &v) const -> Vector4
     {
         auto result(*this);
         result += v;
         return result;
     }
 
-    inline auto operator+(float scalar, const Vector4& v) -> Vector4
+    inline auto operator+(float scalar, const Vector4 &v) -> Vector4
     {
         return Vector4(v.x + scalar, v.y + scalar, v.z + scalar, v.w + scalar);
     }
 
-    inline auto Vector4::operator+=(const Vector4& v) -> Vector4&
+    inline auto Vector4::operator+=(const Vector4 &v) -> Vector4 &
     {
         x += v.x;
         y += v.y;
@@ -113,7 +113,7 @@ namespace solo
         return *this;
     }
 
-    inline auto Vector4::operator+=(float scalar) -> Vector4&
+    inline auto Vector4::operator+=(float scalar) -> Vector4 &
     {
         x += scalar;
         y += scalar;
@@ -139,14 +139,14 @@ namespace solo
         return result;
     }
 
-    inline auto Vector4::operator-(const Vector4& v) const -> Vector4
+    inline auto Vector4::operator-(const Vector4 &v) const -> Vector4
     {
         auto result(*this);
         result -= v;
         return result;
     }
 
-    inline auto Vector4::operator-=(float scalar) -> Vector4&
+    inline auto Vector4::operator-=(float scalar) -> Vector4 &
     {
         x -= scalar;
         y -= scalar;
@@ -155,7 +155,7 @@ namespace solo
         return *this;
     }
 
-    inline auto Vector4::operator-=(const Vector4& v) -> Vector4&
+    inline auto Vector4::operator-=(const Vector4 &v) -> Vector4 &
     {
         x -= v.x;
         y -= v.y;
@@ -171,12 +171,12 @@ namespace solo
         return result;
     }
 
-    inline auto operator*(float scalar, const Vector4& v) -> Vector4
+    inline auto operator*(float scalar, const Vector4 &v) -> Vector4
     {
         return Vector4(v.x * scalar, v.y * scalar, v.z * scalar, v.w * scalar);
     }
 
-    inline auto Vector4::operator*=(float scalar) -> Vector4&
+    inline auto Vector4::operator*=(float scalar) -> Vector4 &
     {
         x *= scalar;
         y *= scalar;
@@ -190,7 +190,7 @@ namespace solo
         return Vector4(this->x / scalar, this->y / scalar, this->z / scalar, this->w / scalar);
     }
 
-    inline auto Vector4::operator/=(const float scalar) -> Vector4&
+    inline auto Vector4::operator/=(const float scalar) -> Vector4 &
     {
         x /= scalar;
         y /= scalar;
@@ -199,7 +199,7 @@ namespace solo
         return *this;
     }
 
-    inline bool Vector4::operator<(const Vector4& v) const
+    inline bool Vector4::operator<(const Vector4 &v) const
     {
         if (x == v.x)
         {
@@ -214,12 +214,12 @@ namespace solo
         return x < v.x;
     }
 
-    inline bool Vector4::operator==(const Vector4& v) const
+    inline bool Vector4::operator==(const Vector4 &v) const
     {
         return x == v.x && y == v.y && z == v.z && w == v.w;
     }
 
-    inline bool Vector4::operator!=(const Vector4& v) const
+    inline bool Vector4::operator!=(const Vector4 &v) const
     {
         return x != v.x || y != v.y || z != v.z || w != v.w;
     }

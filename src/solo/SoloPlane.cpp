@@ -28,7 +28,7 @@
 using namespace solo;
 
 
-Plane::Plane(const Vector3& normal, float distance):
+Plane::Plane(const Vector3 &normal, float distance):
     normal(normal),
     distance(distance)
 {
@@ -42,7 +42,7 @@ Plane::Plane(float normalX, float normalY, float normalZ, float distance):
 }
 
 
-void Plane::setNormal(const Vector3& normal)
+void Plane::setNormal(const Vector3 &normal)
 {
     this->normal = normal;
     normalize();
@@ -55,22 +55,22 @@ void Plane::setDistance(float distance)
 }
 
 
-auto Plane::getDistanceToPoint(const Vector3& point) const -> float
+auto Plane::getDistanceToPoint(const Vector3 &point) const -> float
 {
     return normal.x * point.x + normal.y * point.y + normal.z * point.z + distance;
 }
 
 
-auto Plane::getCommonPoint(const Plane& p1, const Plane& p2, const Plane& p3) -> Vector3
+auto Plane::getCommonPoint(const Plane &p1, const Plane &p2, const Plane &p3) -> Vector3
 {
     Vector3 result;
 
     // The planes' normals must be all normalized (which we guarantee in the Plane class).
     // Calculate the determinant of the matrix (i.e | n1 n2 n3 |).
     auto det =
-        p1.normal.x * (p2.normal.y * p3.normal.z - p2.normal.z * p3.normal.y) -
-        p2.normal.x * (p1.normal.y * p3.normal.z - p1.normal.z * p3.normal.y) +
-        p3.normal.x * (p1.normal.y * p2.normal.z - p1.normal.z * p2.normal.y);
+    p1.normal.x * (p2.normal.y * p3.normal.z - p2.normal.z * p3.normal.y) -
+    p2.normal.x * (p1.normal.y * p3.normal.z - p1.normal.z * p3.normal.y) +
+    p3.normal.x * (p1.normal.y * p2.normal.z - p1.normal.z * p2.normal.y);
 
     // If the determinant is zero, then the planes do not all intersect
     if (Math::approxZero(det, Math::smallFloat1))
@@ -112,19 +112,19 @@ auto Plane::getCommonPoint(const Plane& p1, const Plane& p2, const Plane& p3) ->
 }
 
 
-auto Plane::intersectBoundingSphere(const BoundingSphere& sphere) const -> PlaneIntersection
+auto Plane::intersectBoundingSphere(const BoundingSphere &sphere) const -> PlaneIntersection
 {
     return sphere.intersectPlane(*this);
 }
 
 
-auto Plane::intersectBoundingBox(const BoundingBox& box) const -> PlaneIntersection
+auto Plane::intersectBoundingBox(const BoundingBox &box) const -> PlaneIntersection
 {
     return box.intersectPlane(*this);
 }
 
 
-auto Plane::intersectFrustum(const Frustum& frustum) const -> PlaneIntersection
+auto Plane::intersectFrustum(const Frustum &frustum) const -> PlaneIntersection
 {
     auto corners = frustum.getCorners();
 
@@ -150,15 +150,13 @@ auto Plane::intersectFrustum(const Frustum& frustum) const -> PlaneIntersection
     if (d < 0.0f)
     {
         if (getDistanceToPoint(corners[1]) >= 0.0f ||
-            getDistanceToPoint(corners[2]) >= 0.0f ||
-            getDistanceToPoint(corners[3]) >= 0.0f ||
-            getDistanceToPoint(corners[4]) >= 0.0f ||
-            getDistanceToPoint(corners[5]) >= 0.0f ||
-            getDistanceToPoint(corners[6]) >= 0.0f ||
-            getDistanceToPoint(corners[7]) >= 0.0f)
-        {
+                getDistanceToPoint(corners[2]) >= 0.0f ||
+                getDistanceToPoint(corners[3]) >= 0.0f ||
+                getDistanceToPoint(corners[4]) >= 0.0f ||
+                getDistanceToPoint(corners[5]) >= 0.0f ||
+                getDistanceToPoint(corners[6]) >= 0.0f ||
+                getDistanceToPoint(corners[7]) >= 0.0f)
             return PlaneIntersection::Intersecting;
-        }
 
         return PlaneIntersection::Back;
     }
@@ -167,11 +165,11 @@ auto Plane::intersectFrustum(const Frustum& frustum) const -> PlaneIntersection
 }
 
 
-auto Plane::intersectPlane(const Plane& plane) const -> PlaneIntersection
+auto Plane::intersectPlane(const Plane &plane) const -> PlaneIntersection
 {
     if ((Math::approxEqual(normal.x, plane.normal.x, Math::smallFloat1) &&
-        Math::approxEqual(normal.y, plane.normal.y, Math::smallFloat1) &&
-        Math::approxEqual(normal.z, plane.normal.z, Math::smallFloat1)) || !isParallel(plane))
+            Math::approxEqual(normal.y, plane.normal.y, Math::smallFloat1) &&
+            Math::approxEqual(normal.z, plane.normal.z, Math::smallFloat1)) || !isParallel(plane))
         return PlaneIntersection::Intersecting;
 
     // Calculate the point where the given plane's normal vector intersects the given plane
@@ -183,7 +181,7 @@ auto Plane::intersectPlane(const Plane& plane) const -> PlaneIntersection
 }
 
 
-auto Plane::intersectRay(const Ray& ray) const -> PlaneIntersection
+auto Plane::intersectRay(const Ray &ray) const -> PlaneIntersection
 {
     auto d = getDistanceToPoint(ray.getOrigin());
 
@@ -202,7 +200,7 @@ auto Plane::intersectRay(const Ray& ray) const -> PlaneIntersection
 }
 
 
-bool Plane::isParallel(const Plane& plane) const
+bool Plane::isParallel(const Plane &plane) const
 {
     return Math::approxEqual(normal.y * plane.normal.z, normal.z * plane.normal.y, Math::smallFloat1) &&
            Math::approxEqual(normal.z * plane.normal.x, normal.x * plane.normal.z, Math::smallFloat1) &&

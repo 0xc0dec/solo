@@ -26,7 +26,7 @@
 class Screenshoter final: public solo::ComponentBase<Screenshoter>
 {
 public:
-    explicit Screenshoter(const solo::Node& node, const std::string& path):
+    explicit Screenshoter(const solo::Node &node, const std::string &path):
         ComponentBase<Screenshoter>(node),
         device(solo::Device::get()),
         path(path)
@@ -40,6 +40,6 @@ public:
     }
 
 private:
-    solo::Device* device;
+    solo::Device *device;
     std::string path;
 };

@@ -32,15 +32,15 @@
 using namespace solo;
 
 
-OpenGLGraphics::OpenGLGraphics(Device* device, const DeviceToken& token):
+OpenGLGraphics::OpenGLGraphics(Device *device, const DeviceToken &token):
     Graphics(token),
     device(device)
 {
-    renderer = dynamic_cast<OpenGLRenderer*>(device->getRenderer());
+    renderer = dynamic_cast<OpenGLRenderer *>(device->getRenderer());
 }
 
 
-void OpenGLGraphics::blit(Material* material, FrameBuffer* target)
+void OpenGLGraphics::blit(Material *material, FrameBuffer *target)
 {
     if (!quadMesh)
         quadMesh = Mesh::create(MeshPrefab::Quad);

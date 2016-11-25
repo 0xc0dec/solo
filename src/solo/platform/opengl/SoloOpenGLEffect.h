@@ -33,7 +33,7 @@ namespace solo
     public:
         static auto create(EffectPrefab prefab) -> sptr<OpenGLEffect>;
 
-        OpenGLEffect(Device* device, const std::string& vsSrc, const std::string& fsSrc);
+        OpenGLEffect(Device *device, const std::string &vsSrc, const std::string &fsSrc);
         ~OpenGLEffect();
 
         auto getHandle() const -> uint32_t;
@@ -41,7 +41,7 @@ namespace solo
         void apply() override final;
 
     private:
-        OpenGLRenderer* renderer = nullptr;
+        OpenGLRenderer *renderer = nullptr;
         uint32_t handle = EmptyHandle;
     };
 

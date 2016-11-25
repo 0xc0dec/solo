@@ -32,7 +32,7 @@ Quaternion::Quaternion(float x, float y, float z, float w):
 }
 
 
-Quaternion::Quaternion(const Vector3& axis, const Radian& angle)
+Quaternion::Quaternion(const Vector3 &axis, const Radian &angle)
 {
     *this = createFromAxisAngle(axis, angle);
 }
@@ -70,11 +70,11 @@ bool Quaternion::isZero() const
 }
 
 
-auto Quaternion::createFromAxisAngle(const Vector3& axis, const Radian& angle) -> Quaternion
+auto Quaternion::createFromAxisAngle(const Vector3 &axis, const Radian &angle) -> Quaternion
 {
     auto halfAngle = angle.toRawRadian() * 0.5f;
     auto sinHalfAngle = sinf(halfAngle);
-    auto normal(const_cast<Vector3&>(axis));
+    auto normal(const_cast<Vector3 &>(axis));
     normal.normalize();
     return Quaternion(normal.x * sinHalfAngle, normal.y * sinHalfAngle, normal.z * sinHalfAngle, cosf(halfAngle));
 }
@@ -140,7 +140,7 @@ auto Quaternion::normalized() const -> Quaternion
 }
 
 
-auto Quaternion::toAxisAngle(Vector3& axis) const -> Radian
+auto Quaternion::toAxisAngle(Vector3 &axis) const -> Radian
 {
     Quaternion q(x, y, z, w);
     q.normalize();
@@ -152,7 +152,7 @@ auto Quaternion::toAxisAngle(Vector3& axis) const -> Radian
 }
 
 
-auto Quaternion::lerp(const Quaternion& q1, const Quaternion& q2, float t) -> Quaternion
+auto Quaternion::lerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion
 {
     if (Math::approxZero(t, Math::smallFloat1))
         return q1;
@@ -170,7 +170,7 @@ auto Quaternion::lerp(const Quaternion& q1, const Quaternion& q2, float t) -> Qu
 }
 
 
-auto Quaternion::slerp(const Quaternion& q1, const Quaternion& q2, float t) -> Quaternion
+auto Quaternion::slerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion
 {
     if (Math::approxZero(t, Math::smallFloat1))
         return q1;
@@ -179,9 +179,9 @@ auto Quaternion::slerp(const Quaternion& q1, const Quaternion& q2, float t) -> Q
         return q2;
 
     if (Math::approxEqual(q1.x, q2.x, Math::smallFloat1) &&
-        Math::approxEqual(q1.y, q2.y, Math::smallFloat1) &&
-        Math::approxEqual(q1.z, q2.z, Math::smallFloat1) &&
-        Math::approxEqual(q1.w, q2.w, Math::smallFloat1))
+    Math::approxEqual(q1.y, q2.y, Math::smallFloat1) &&
+    Math::approxEqual(q1.z, q2.z, Math::smallFloat1) &&
+    Math::approxEqual(q1.w, q2.w, Math::smallFloat1))
         return q1;
 
     auto cosTheta = q1.w * q2.w + q1.x * q2.x + q1.y * q2.y + q1.z * q2.z;
@@ -230,7 +230,7 @@ auto Quaternion::slerp(const Quaternion& q1, const Quaternion& q2, float t) -> Q
 }
 
 
-auto Quaternion::squad(const Quaternion& q1, const Quaternion& q2, const Quaternion& s1, const Quaternion& s2, float t) -> Quaternion
+auto Quaternion::squad(const Quaternion &q1, const Quaternion &q2, const Quaternion &s1, const Quaternion &s2, float t) -> Quaternion
 {
     auto q = slerpForSquad(q1, q2, t);
     auto s = slerpForSquad(s1, s2, t);
@@ -238,7 +238,7 @@ auto Quaternion::squad(const Quaternion& q1, const Quaternion& q2, const Quatern
 }
 
 
-auto Quaternion::slerpForSquad(const Quaternion& q1, const Quaternion& q2, float t) -> Quaternion
+auto Quaternion::slerpForSquad(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion
 {
     auto c = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
 
@@ -260,7 +260,7 @@ auto Quaternion::slerpForSquad(const Quaternion& q1, const Quaternion& q2, float
 }
 
 
-auto Quaternion::operator*=(const Quaternion& q) -> Quaternion&
+auto Quaternion::operator*=(const Quaternion &q) -> Quaternion &
 {
     auto newX = w * q.x + x * q.w + y * q.z - z * q.y;
     auto newY = w * q.y - x * q.z + y * q.w + z * q.x;

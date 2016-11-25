@@ -31,9 +31,9 @@ sptr<RectTexture> RectTexture::create()
     auto device = Device::get();
     switch (device->getSetup().mode)
     {
-        case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLRectTexture>(device);
-        default:
-            return std::make_shared<NullRectTexture>();
+    case DeviceMode::OpenGL:
+        return std::make_shared<OpenGLRectTexture>(device);
+    default:
+        return std::make_shared<NullRectTexture>();
     }
 }

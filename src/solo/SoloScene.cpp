@@ -27,7 +27,7 @@
 using namespace solo;
 
 
-Scene::Scene(Device* device, const DeviceToken&):
+Scene::Scene(Device *device, const DeviceToken &):
     device(device)
 {
 }
@@ -50,7 +50,7 @@ void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
         auto node = nodes.find(nodeId);
         if (node != nodes.end())
         {
-            const auto& nodeComponents = node->second;
+            const auto &nodeComponents = node->second;
             SL_ERR_IF(nodeComponents.find(typeId) != nodeComponents.end(), "Node already contains component with same id")
         }
     });
@@ -58,7 +58,7 @@ void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
     nodes[nodeId][typeId] = cmp;
     cmp->init();
 
-    for (const auto& a : nodes.at(nodeId))
+    for (const auto &a : nodes.at(nodeId))
         a.second->onComponentAdded(cmp.get());
 
     componentsDirty = true;
@@ -76,7 +76,7 @@ void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
     auto cmpIt = node->second.find(typeId);
     if (cmpIt == node->second.end())
         return;
-    
+
     auto cmp = cmpIt->second;
     node->second.erase(cmpIt);
     cmp->terminate();
@@ -85,7 +85,7 @@ void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
         nodes.erase(node);
     else
     {
-        for (const auto& otherCmp : node->second)
+        for (const auto &otherCmp : node->second)
             otherCmp.second->onComponentRemoved(cmp.get());
     }
 
@@ -95,13 +95,13 @@ void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
 }
 
 
-auto Scene::findComponent(uint32_t nodeId, uint32_t typeId) const -> Component*
+auto Scene::findComponent(uint32_t nodeId, uint32_t typeId) const -> Component *
 {
     auto node = nodes.find(nodeId);
     if (node == nodes.end())
         return nullptr;
 
-    const auto& nodeComponents = node->second;
+    const auto &nodeComponents = node->second;
     auto cmpIt = nodeComponents.find(typeId);
     if (cmpIt != nodeComponents.end())
         return cmpIt->second.get();
@@ -110,18 +110,18 @@ auto Scene::findComponent(uint32_t nodeId, uint32_t typeId) const -> Component*
 }
 
 
-void Scene::rebuildRenderQueue(std::list<Component*>& queue, std::function<bool(Component*)> ignoreComponent)
+void Scene::rebuildRenderQueue(std::list<Component *> &queue, std::function<bool(Component *)> ignoreComponent)
 {
     queue.clear();
 
-    for (const auto& node : nodes)
+    for (const auto &node : nodes)
     {
         auto nodeId = node.first;
 
         if (!Node::findComponent<Transform>(this, nodeId))
             continue;
 
-        for (const auto& components : node.second)
+        for (const auto &components : node.second)
         {
             auto cmp = components.second.get();
             if (ignoreComponent(cmp))
@@ -170,9 +170,9 @@ void Scene::updateComponents()
 void Scene::rebuildComponentsToUpdate()
 {
     componentsToUpdate.clear(); // TODO maybe overkill
-    for (const auto& node : nodes)
+    for (const auto &node : nodes)
     {
-        for (const auto& cmp : node.second)
+        for (const auto &cmp : node.second)
             componentsToUpdate.push_back(cmp.second);
     }
 }
@@ -180,15 +180,21 @@ void Scene::rebuildComponentsToUpdate()
 
 void Scene::render()
 {
-    static auto ignoreNonCameras = [](Component* cmp) { return cmp->getTypeId() != Camera::getId(); };
-    static auto ignoreNone = [](Component* cmp) { return false; };
+    static auto ignoreNonCameras = [](Component * cmp)
+    {
+        return cmp->getTypeId() != Camera::getId();
+    };
+    static auto ignoreNone = [](Component * cmp)
+    {
+        return false;
+    };
 
     rebuildRenderQueue(cameraQueue, ignoreNonCameras);
     rebuildRenderQueue(renderQueue, ignoreNone);
 
     for (auto cam : cameraQueue)
     {
-        auto camera = dynamic_cast<Camera*>(cam);
+        auto camera = dynamic_cast<Camera *>(cam);
 
         camera->apply();
 
@@ -210,7 +216,7 @@ void Scene::render()
 
         camera->finish();
 
-        for (const auto& pair : nodes.at(camera->getNode().getId()))
+        for (const auto &pair : nodes.at(camera->getNode().getId()))
             pair.second->onAfterCameraRender();
     }
 }

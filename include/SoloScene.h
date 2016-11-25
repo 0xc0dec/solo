@@ -39,7 +39,7 @@ namespace solo
     public:
         SL_DISABLE_COPY_AND_MOVE(Scene)
 
-        explicit Scene(Device* device, const DeviceToken&);
+        explicit Scene(Device *device, const DeviceToken &);
         ~Scene() {}
 
         auto getDevice() const -> Device*;
@@ -57,26 +57,26 @@ namespace solo
         using NodeComponents = std::unordered_map<uint32_t, sptr<Component>>;
         using NodesWithComponents = std::unordered_map<uint32_t, NodeComponents>;
 
-        void rebuildRenderQueue(std::list<Component*>& queue, std::function<bool(Component*)> ignoreComponent);
-        
+        void rebuildRenderQueue(std::list<Component *> &queue, std::function<bool(Component *)> ignoreComponent);
+
         void updateComponents();
         void rebuildComponentsToUpdate();
 
-        Device* device = nullptr;
+        Device *device = nullptr;
 
         uint32_t nodeCounter = 0;
         bool cameraCacheDirty = true;
         bool componentsDirty = true;
 
-        std::list<Component*> cameraQueue;
-        std::list<Component*> renderQueue;
+        std::list<Component *> cameraQueue;
+        std::list<Component *> renderQueue;
 
         // TODO not cache-friendly
         NodesWithComponents nodes;
         std::vector<sptr<Component>> componentsToUpdate;
     };
 
-    inline auto Scene::getDevice() const -> Device*
+    inline auto Scene::getDevice() const -> Device *
     {
         return device;
     }

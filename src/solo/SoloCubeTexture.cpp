@@ -31,10 +31,10 @@ auto CubeTexture::create() -> sptr<CubeTexture>
     auto device = Device::get();
     switch (device->getSetup().mode)
     {
-        case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLCubeTexture>(device);
-        default:
-            return std::make_shared<NullCubeTexture>();
+    case DeviceMode::OpenGL:
+        return std::make_shared<OpenGLCubeTexture>(device);
+    default:
+        return std::make_shared<NullCubeTexture>();
     }
 }
 
@@ -60,8 +60,13 @@ void CubeTexture::rebuildFlags()
 
     switch (depthWrapping)
     {
-        case TextureWrapping::Clamp: flags |= TextureFlags::DepthWrapClamp; break;
-        case TextureWrapping::Repeat: flags |= TextureFlags::DepthWrapRepeat; break;
-        default: break;
+    case TextureWrapping::Clamp:
+        flags |= TextureFlags::DepthWrapClamp;
+        break;
+    case TextureWrapping::Repeat:
+        flags |= TextureFlags::DepthWrapRepeat;
+        break;
+    default:
+        break;
     }
 }

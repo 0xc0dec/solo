@@ -32,7 +32,7 @@ namespace solo
         class LockToken final
         {
         public:
-            LockToken(std::atomic_flag& flag) : flag(flag)
+            LockToken(std::atomic_flag &flag) : flag(flag)
             {
             }
 
@@ -42,7 +42,7 @@ namespace solo
             }
 
         private:
-            std::atomic_flag& flag;
+            std::atomic_flag &flag;
         };
 
         ~SpinLock()

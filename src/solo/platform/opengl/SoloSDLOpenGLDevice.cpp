@@ -29,7 +29,7 @@
 using namespace solo;
 
 
-SDLOpenGLDevice::SDLOpenGLDevice(DeviceSetup const& setup):
+SDLOpenGLDevice::SDLOpenGLDevice(DeviceSetup const &setup):
     SDLDevice(setup)
 {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -45,7 +45,7 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceSetup const& setup):
         flags |= SDL_WINDOW_FULLSCREEN;
 
     window = SDL_CreateWindow(setup.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        setup.canvasWidth, setup.canvasHeight, flags);
+                              setup.canvasWidth, setup.canvasHeight, flags);
     context = SDL_GL_CreateContext(window);
 
     glewExperimental = true;
@@ -75,7 +75,7 @@ void SDLOpenGLDevice::endUpdate()
 }
 
 
-void SDLOpenGLDevice::saveScreenshot(const std::string& path)
+void SDLOpenGLDevice::saveScreenshot(const std::string &path)
 {
     int32_t width, height;
     SDL_GetWindowSize(window, &width, &height);
@@ -86,7 +86,7 @@ void SDLOpenGLDevice::saveScreenshot(const std::string& path)
     // Flip the image
     std::vector<uint8_t> buf;
     buf.reserve(surface->pitch);
-    auto pixels = static_cast<uint8_t*>(surface->pixels);
+    auto pixels = static_cast<uint8_t *>(surface->pixels);
     for (int32_t row = 0; row < height / 2; ++row)
     {
         auto row1 = pixels + surface->pitch * row;

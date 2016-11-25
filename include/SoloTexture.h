@@ -75,12 +75,12 @@ namespace solo
         Texture();
 
         virtual void rebuildFlags();
-        
+
         uint32_t flags = 0;
-        
+
         TextureWrapping horizontalWrapping = TextureWrapping::Clamp;
         TextureWrapping verticalWrapping = TextureWrapping::Clamp;
-        
+
         TextureFiltering minFiltering = TextureFiltering::Linear;
         TextureFiltering magFiltering = TextureFiltering::Linear;
 

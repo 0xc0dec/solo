@@ -33,9 +33,9 @@ namespace solo
     class MeshRenderer final: public ComponentBase<MeshRenderer>
     {
     public:
-        explicit MeshRenderer(const Node& node);
+        explicit MeshRenderer(const Node &node);
 
-        void render(RenderContext& context) override final;
+        void render(RenderContext &context) override final;
 
         auto getMesh() const -> Mesh*;
         void setMesh(sptr<Mesh> mesh);
@@ -49,7 +49,7 @@ namespace solo
         std::unordered_map<uint32_t, sptr<Material>> materials;
     };
 
-    inline auto MeshRenderer::getMesh() const -> Mesh*
+    inline auto MeshRenderer::getMesh() const -> Mesh *
     {
         return mesh.get();
     }
@@ -59,7 +59,7 @@ namespace solo
         this->mesh = mesh;
     }
 
-    inline auto MeshRenderer::getMaterial(uint32_t index) const -> Material*
+    inline auto MeshRenderer::getMaterial(uint32_t index) const -> Material *
     {
         return materials.at(index).get();
     }

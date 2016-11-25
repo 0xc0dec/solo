@@ -36,19 +36,19 @@ TransformMatrix::TransformMatrix()
 }
 
 
-TransformMatrix::TransformMatrix(const TransformMatrix& other):
+TransformMatrix::TransformMatrix(const TransformMatrix &other):
     Matrix(other)
 {
 }
 
 
-TransformMatrix::TransformMatrix(const Matrix& m):
+TransformMatrix::TransformMatrix(const Matrix &m):
     Matrix(m)
 {
 }
 
 
-auto TransformMatrix::createLookAt(const Vector3& eye, const Vector3& target, const Vector3& up) -> TransformMatrix
+auto TransformMatrix::createLookAt(const Vector3 &eye, const Vector3 &target, const Vector3 &up) -> TransformMatrix
 {
     auto zaxis(eye - target);
     zaxis.normalize();
@@ -69,7 +69,7 @@ auto TransformMatrix::createLookAt(const Vector3& eye, const Vector3& target, co
 }
 
 
-auto TransformMatrix::createPerspective(const Radian& fieldOfView, float aspectRatio, float znear, float zfar) -> TransformMatrix
+auto TransformMatrix::createPerspective(const Radian &fieldOfView, float aspectRatio, float znear, float zfar) -> TransformMatrix
 {
     auto f_n = 1.0f / (zfar - znear);
     auto theta = fieldOfView.toRawRadian() * 0.5f;
@@ -111,7 +111,7 @@ auto TransformMatrix::createOrthographic(float width, float height, float near, 
 }
 
 
-auto TransformMatrix::createReflection(const Plane& plane) -> TransformMatrix
+auto TransformMatrix::createReflection(const Plane &plane) -> TransformMatrix
 {
     auto normal(plane.getNormal());
     auto k = -2.0f * plane.getDistance();
@@ -133,7 +133,7 @@ auto TransformMatrix::createReflection(const Plane& plane) -> TransformMatrix
 }
 
 
-auto TransformMatrix::createScale(const Vector3& scale) -> TransformMatrix
+auto TransformMatrix::createScale(const Vector3 &scale) -> TransformMatrix
 {
     Matrix result;
     result.m[0] = scale.x;
@@ -143,7 +143,7 @@ auto TransformMatrix::createScale(const Vector3& scale) -> TransformMatrix
 }
 
 
-auto TransformMatrix::createRotationFromQuaternion(const Quaternion& q) -> TransformMatrix
+auto TransformMatrix::createRotationFromQuaternion(const Quaternion &q) -> TransformMatrix
 {
     auto x2 = q.x + q.x;
     auto y2 = q.y + q.y;
@@ -185,7 +185,7 @@ auto TransformMatrix::createRotationFromQuaternion(const Quaternion& q) -> Trans
 }
 
 
-auto TransformMatrix::createRotationFromAxisAngle(const Vector3& axis, const Radian& angle) -> TransformMatrix
+auto TransformMatrix::createRotationFromAxisAngle(const Vector3 &axis, const Radian &angle) -> TransformMatrix
 {
     auto x = axis.x;
     auto y = axis.y;
@@ -247,7 +247,7 @@ auto TransformMatrix::createRotationFromAxisAngle(const Vector3& axis, const Rad
 }
 
 
-auto TransformMatrix::createRotationX(const Radian& angle) -> TransformMatrix
+auto TransformMatrix::createRotationX(const Radian &angle) -> TransformMatrix
 {
     auto c = cos(angle.toRawRadian());
     auto s = sin(angle.toRawRadian());
@@ -261,7 +261,7 @@ auto TransformMatrix::createRotationX(const Radian& angle) -> TransformMatrix
 }
 
 
-auto TransformMatrix::createRotationY(const Radian& angle) -> TransformMatrix
+auto TransformMatrix::createRotationY(const Radian &angle) -> TransformMatrix
 {
     auto c = cos(angle.toRawRadian());
     auto s = sin(angle.toRawRadian());
@@ -277,7 +277,7 @@ auto TransformMatrix::createRotationY(const Radian& angle) -> TransformMatrix
 }
 
 
-auto TransformMatrix::createRotationZ(const Radian& angle) -> TransformMatrix
+auto TransformMatrix::createRotationZ(const Radian &angle) -> TransformMatrix
 {
     auto c = cos(angle.toRawRadian());
     auto s = sin(angle.toRawRadian());
@@ -291,7 +291,7 @@ auto TransformMatrix::createRotationZ(const Radian& angle) -> TransformMatrix
 }
 
 
-auto TransformMatrix::createTranslation(const Vector3& translation) -> TransformMatrix
+auto TransformMatrix::createTranslation(const Vector3 &translation) -> TransformMatrix
 {
     Matrix result;
     result.m[12] = translation.x;
@@ -325,39 +325,39 @@ auto TransformMatrix::getTranslation() const -> Vector3
 }
 
 
-void TransformMatrix::scaleByVector(const Vector3& s)
+void TransformMatrix::scaleByVector(const Vector3 &s)
 {
     *this *= createScale(s);
 }
 
 
-auto TransformMatrix::transformPoint(const Vector3& point) const -> Vector3
+auto TransformMatrix::transformPoint(const Vector3 &point) const -> Vector3
 {
     return Vector3(
-        point.x * m[0] + point.y * m[4] + point.z * m[8] + m[12],
-        point.x * m[1] + point.y * m[5] + point.z * m[9] + m[13],
-        point.x * m[2] + point.y * m[6] + point.z * m[10] + m[14]
-    );
+               point.x * m[0] + point.y * m[4] + point.z * m[8] + m[12],
+               point.x * m[1] + point.y * m[5] + point.z * m[9] + m[13],
+               point.x * m[2] + point.y * m[6] + point.z * m[10] + m[14]
+           );
 }
 
 
-auto TransformMatrix::transformDirection(const Vector3& dir) const -> Vector3
+auto TransformMatrix::transformDirection(const Vector3 &dir) const -> Vector3
 {
     return Vector3(
-        dir.x * m[0] + dir.y * m[4] + dir.z * m[8],
-        dir.x * m[1] + dir.y * m[5] + dir.z * m[9],
-        dir.x * m[2] + dir.y * m[6] + dir.z * m[10]
-    );
+               dir.x * m[0] + dir.y * m[4] + dir.z * m[8],
+               dir.x * m[1] + dir.y * m[5] + dir.z * m[9],
+               dir.x * m[2] + dir.y * m[6] + dir.z * m[10]
+           );
 }
 
 
-void TransformMatrix::translate(const Vector3& t)
+void TransformMatrix::translate(const Vector3 &t)
 {
     *this *= createTranslation(t);
 }
 
 
-static void updateBounds(const Vector3& point, Vector3& min, Vector3& max)
+static void updateBounds(const Vector3 &point, Vector3 &min, Vector3 &max)
 {
     if (point.x < min.x)
         min.x = point.x;
@@ -379,13 +379,13 @@ static void updateBounds(const Vector3& point, Vector3& min, Vector3& max)
 }
 
 
-auto TransformMatrix::transformBoundingBox(const BoundingBox& box) -> BoundingBox
+auto TransformMatrix::transformBoundingBox(const BoundingBox &box) -> BoundingBox
 {
     auto corners = box.getCorners();
-	auto newMin = Vector3(std::numeric_limits<float>::max());
-	auto newMax = Vector3(std::numeric_limits<float>::min());
+    auto newMin = Vector3(std::numeric_limits<float>::max());
+    auto newMax = Vector3(std::numeric_limits<float>::min());
 
-	for (const auto& corner: corners)
+    for (const auto &corner : corners)
     {
         auto newCorner = transformPoint(corner);
         updateBounds(newCorner, newMin, newMax);
@@ -397,7 +397,7 @@ auto TransformMatrix::transformBoundingBox(const BoundingBox& box) -> BoundingBo
 }
 
 
-auto TransformMatrix::transformBoundingSphere(const BoundingSphere& sphere) -> BoundingSphere
+auto TransformMatrix::transformBoundingSphere(const BoundingSphere &sphere) -> BoundingSphere
 {
     auto scale = getScale();
     auto r = sphere.radius * scale.x;
@@ -407,7 +407,7 @@ auto TransformMatrix::transformBoundingSphere(const BoundingSphere& sphere) -> B
 }
 
 
-auto TransformMatrix::transformPlane(const Plane& plane) -> Plane
+auto TransformMatrix::transformPlane(const Plane &plane) -> Plane
 {
     auto inverted(*this);
     if (!inverted.invert())
@@ -433,7 +433,7 @@ auto TransformMatrix::transformPlane(const Plane& plane) -> Plane
 }
 
 
-auto TransformMatrix::transformRay(const Ray& ray) -> Ray
+auto TransformMatrix::transformRay(const Ray &ray) -> Ray
 {
     auto origin = transformPoint(ray.getOrigin());
     auto direction = transformDirection(ray.getDirection());
@@ -442,7 +442,7 @@ auto TransformMatrix::transformRay(const Ray& ray) -> Ray
 }
 
 
-bool TransformMatrix::decompose(Vector3* scale, Quaternion* rotation, Vector3* translation) const
+bool TransformMatrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translation) const
 {
     if (translation)
     {

@@ -25,7 +25,7 @@ using namespace solo;
 
 
 Vector3::Vector3(float all):
-	x(all), y(all), z(all)
+    x(all), y(all), z(all)
 {
 }
 
@@ -86,7 +86,7 @@ bool Vector3::isUnit() const
 }
 
 
-auto Vector3::angle(const Vector3& v1, const Vector3& v2) -> Radian
+auto Vector3::angle(const Vector3 &v1, const Vector3 &v2) -> Radian
 {
     auto dx = v1.y * v2.z - v1.z * v2.y;
     auto dy = v1.z * v2.x - v1.x * v2.z;
@@ -96,7 +96,7 @@ auto Vector3::angle(const Vector3& v1, const Vector3& v2) -> Radian
 }
 
 
-void Vector3::clamp(const Vector3& min, const Vector3& max)
+void Vector3::clamp(const Vector3 &min, const Vector3 &max)
 {
     if (x < min.x)
         x = min.x;
@@ -115,7 +115,7 @@ void Vector3::clamp(const Vector3& min, const Vector3& max)
 }
 
 
-auto Vector3::cross(const Vector3& v1, const Vector3& v2) -> Vector3
+auto Vector3::cross(const Vector3 &v1, const Vector3 &v2) -> Vector3
 {
     return Vector3(
         (v1.y * v2.z) - (v1.z * v2.y),
@@ -125,7 +125,7 @@ auto Vector3::cross(const Vector3& v1, const Vector3& v2) -> Vector3
 }
 
 
-auto Vector3::distance(const Vector3& v) const -> float
+auto Vector3::distance(const Vector3 &v) const -> float
 {
     auto dx = v.x - x;
     auto dy = v.y - y;
@@ -135,7 +135,7 @@ auto Vector3::distance(const Vector3& v) const -> float
 }
 
 
-auto Vector3::distanceSquared(const Vector3& v) const -> float
+auto Vector3::distanceSquared(const Vector3 &v) const -> float
 {
     auto dx = v.x - x;
     auto dy = v.y - y;
@@ -144,13 +144,13 @@ auto Vector3::distanceSquared(const Vector3& v) const -> float
 }
 
 
-auto Vector3::dot(const Vector3& v) const -> float
+auto Vector3::dot(const Vector3 &v) const -> float
 {
     return x * v.x + y * v.y + z * v.z;
 }
 
 
-auto Vector3::dot(const Vector3& v1, const Vector3& v2) -> float
+auto Vector3::dot(const Vector3 &v1, const Vector3 &v2) -> float
 {
     return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }

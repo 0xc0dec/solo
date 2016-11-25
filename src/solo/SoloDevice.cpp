@@ -38,7 +38,7 @@ using namespace solo;
 uptr<Device> Device::instance = nullptr;
 
 
-auto Device::get() -> Device*
+auto Device::get() -> Device *
 {
     return instance.get();
 }
@@ -71,25 +71,25 @@ Device::~Device()
 }
 
 
-Device::Device(const DeviceSetup& setup):
+Device::Device(const DeviceSetup &setup):
     setup(setup)
 {
 }
 
 
-uptr<Device> Device::createInstance(const DeviceSetup& setup)
+uptr<Device> Device::createInstance(const DeviceSetup &setup)
 {
     switch (setup.mode)
     {
-        case DeviceMode::OpenGL:
-            return std::make_unique<SDLOpenGLDevice>(setup);
-        case DeviceMode::Vulkan:
-            return std::make_unique<SDLVulkanDevice>(setup);
-        case DeviceMode::Null:
-            return std::make_unique<NullDevice>(setup);
-        default:
-            SL_ERR("Unknown device mode");
-            return nullptr;
+    case DeviceMode::OpenGL:
+        return std::make_unique<SDLOpenGLDevice>(setup);
+    case DeviceMode::Vulkan:
+        return std::make_unique<SDLVulkanDevice>(setup);
+    case DeviceMode::Null:
+        return std::make_unique<NullDevice>(setup);
+    default:
+        SL_ERR("Unknown device mode");
+        return nullptr;
     }
 }
 
@@ -101,7 +101,7 @@ void Device::init()
     logger = std::make_unique<Logger>(token);
     if (!setup.logFilePath.empty())
         instance->logger->setTargetFile(setup.logFilePath);
-    
+
     renderer = Renderer::create(this, token);
     physics = Physics::create(this, token);
     fs = FileSystem::create(this, token);
@@ -123,11 +123,12 @@ void Device::run()
         scene->render();
         renderer->endFrame();
         endUpdate();
-    } while (running);
+    }
+    while (running);
 }
 
 
-void Device::run(const DeviceSetup& setup, sptr<DeviceCallback> callback)
+void Device::run(const DeviceSetup &setup, sptr<DeviceCallback> callback)
 {
     SL_ERR_IF(instance, "Device instance is already running");
     instance = createInstance(setup);

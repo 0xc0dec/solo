@@ -33,11 +33,11 @@ namespace solo
 
     struct RaycastResult
     {
-        RigidBody* body;
+        RigidBody *body;
         Vector3 point;
         Vector3 normal;
 
-        RaycastResult(RigidBody* body = nullptr, const Vector3& point = Vector3::zero(), const Vector3& normal = Vector3::zero()):
+        RaycastResult(RigidBody *body = nullptr, const Vector3 &point = Vector3::zero(), const Vector3 &normal = Vector3::zero()):
             body(body), point(point), normal(normal)
         {
         }
@@ -46,21 +46,21 @@ namespace solo
     class Physics
     {
     public:
-        static auto create(Device* device, const DeviceToken& deviceToken) -> sptr<Physics>;
+        static auto create(Device *device, const DeviceToken &deviceToken) -> sptr<Physics>;
 
         SL_DISABLE_COPY_AND_MOVE(Physics)
         virtual ~Physics() {}
 
         virtual void update() = 0;
 
-        virtual void setGravity(const Vector3& gravity) = 0;
+        virtual void setGravity(const Vector3 &gravity) = 0;
 
-        virtual auto castRay(const Vector3& from, const Vector3& to) -> RaycastResult = 0;
-        virtual auto castRayAll(const Vector3& from, const Vector3& to) -> std::vector<RaycastResult> = 0;
+        virtual auto castRay(const Vector3 &from, const Vector3 &to) -> RaycastResult = 0;
+        virtual auto castRayAll(const Vector3 &from, const Vector3 &to) -> std::vector<RaycastResult> = 0;
 
     protected:
-        Physics(Device* device, const DeviceToken&);
+        Physics(Device *device, const DeviceToken &);
 
-        Device* device;
+        Device *device;
     };
 }

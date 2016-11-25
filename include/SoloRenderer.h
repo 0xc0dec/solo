@@ -139,7 +139,7 @@ namespace solo
     class Renderer
     {
     public:
-        static auto create(Device* device, const DeviceToken&) -> sptr<Renderer>;
+        static auto create(Device *device, const DeviceToken &) -> sptr<Renderer>;
 
         SL_DISABLE_COPY_AND_MOVE(Renderer)
         virtual ~Renderer() {}

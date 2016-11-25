@@ -27,7 +27,7 @@
 using namespace solo;
 
 
-SkyboxRenderer::SkyboxRenderer(const Node& node):
+SkyboxRenderer::SkyboxRenderer(const Node &node):
     ComponentBase(node)
 {
     renderQueue = KnownRenderQueues::Skybox;
@@ -44,7 +44,7 @@ SkyboxRenderer::SkyboxRenderer(const Node& node):
 }
 
 
-void SkyboxRenderer::render(RenderContext& context)
+void SkyboxRenderer::render(RenderContext &context)
 {
     material->apply(context);
     quadMesh->draw(material->getEffect());

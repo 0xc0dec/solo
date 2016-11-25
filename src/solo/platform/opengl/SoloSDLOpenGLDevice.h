@@ -30,10 +30,10 @@ namespace solo
     class SDLOpenGLDevice final: public SDLDevice
     {
     public:
-        explicit SDLOpenGLDevice(const DeviceSetup& setup);
+        explicit SDLOpenGLDevice(const DeviceSetup &setup);
         virtual ~SDLOpenGLDevice();
 
-        void saveScreenshot(const std::string& path) override final;
+        void saveScreenshot(const std::string &path) override final;
 
         auto getCanvasSize() const -> Vector2 override final;
 

@@ -39,7 +39,7 @@ namespace solo
     class Camera: public ComponentBase<Camera>, protected TransformCallback
     {
     public:
-        static auto create(const Node& node) -> sptr<Camera>;
+        static auto create(const Node &node) -> sptr<Camera>;
 
         void init() override final;
         void terminate() override final;
@@ -69,7 +69,7 @@ namespace solo
         void setFar(float far);
 
         auto getFOV() const -> Radian;
-        void setFOV(const Radian& fov);
+        void setFOV(const Radian &fov);
 
         auto getWidth() const -> float;
         void setWidth(float width);
@@ -87,18 +87,18 @@ namespace solo
         auto getInvViewProjectionMatrix() -> const TransformMatrix&;
 
     protected:
-        explicit Camera(const Node& node);
+        explicit Camera(const Node &node);
 
         virtual void applyImpl() const = 0;
 
-        void onTransformChanged(const Transform*, uint32_t) override;
+        void onTransformChanged(const Transform *, uint32_t) override;
 
         uint32_t dirtyFlags = ~0;
         uint32_t renderTags = ~0;
 
-        Device* device;
+        Device *device;
 
-        Transform* transform = nullptr;
+        Transform *transform = nullptr;
         sptr<FrameBuffer> renderTarget = nullptr;
 
         Vector4 viewport;
@@ -122,7 +122,7 @@ namespace solo
 
     template <>
     template <class... Args>
-    auto NodeHelper<Camera>::addComponent(Scene* scene, uint32_t nodeId, Args&&... args) -> Camera*
+    auto NodeHelper<Camera>::addComponent(Scene *scene, uint32_t nodeId, Args &&... args) -> Camera *
     {
         auto body = std::shared_ptr<Camera>(Camera::create(Node(scene, nodeId), std::forward<Args>(args)...));
         scene->addComponent(nodeId, body);
@@ -169,7 +169,7 @@ namespace solo
         return aspectRatio;
     }
 
-    inline auto Camera::getRenderTags() -> uint32_t&
+    inline auto Camera::getRenderTags() -> uint32_t &
     {
         return renderTags;
     }

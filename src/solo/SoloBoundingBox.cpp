@@ -28,14 +28,14 @@
 using namespace solo;
 
 
-BoundingBox::BoundingBox(const Vector3& min, const Vector3& max):
+BoundingBox::BoundingBox(const Vector3 &min, const Vector3 &max):
     min(min),
     max(max)
 {
 }
 
 
-auto BoundingBox::empty() -> const BoundingBox&
+auto BoundingBox::empty() -> const BoundingBox &
 {
     static BoundingBox b;
     return b;
@@ -84,13 +84,13 @@ auto BoundingBox::getCenter() const -> Vector3
 }
 
 
-bool BoundingBox::intersectsBoundingSphere(const BoundingSphere& sphere) const
+bool BoundingBox::intersectsBoundingSphere(const BoundingSphere &sphere) const
 {
     return sphere.intersectsBoundingBox(*this);
 }
 
 
-bool BoundingBox::intersectsBoundingBox(const BoundingBox& box) const
+bool BoundingBox::intersectsBoundingBox(const BoundingBox &box) const
 {
     return ((min.x >= box.min.x && min.x <= box.max.x) || (box.min.x >= min.x && box.min.x <= max.x)) &&
            ((min.y >= box.min.y && min.y <= box.max.y) || (box.min.y >= min.y && box.min.y <= max.y)) &&
@@ -98,7 +98,7 @@ bool BoundingBox::intersectsBoundingBox(const BoundingBox& box) const
 }
 
 
-bool BoundingBox::intersectsFrustum(const Frustum& frustum) const
+bool BoundingBox::intersectsFrustum(const Frustum &frustum) const
 {
     return intersectPlane(frustum.getNearPlane()) != PlaneIntersection::Back &&
            intersectPlane(frustum.getFarPlane()) != PlaneIntersection::Back &&
@@ -109,7 +109,7 @@ bool BoundingBox::intersectsFrustum(const Frustum& frustum) const
 }
 
 
-auto BoundingBox::intersectPlane(const Plane& plane) const -> PlaneIntersection
+auto BoundingBox::intersectPlane(const Plane &plane) const -> PlaneIntersection
 {
     Vector3 center((min.x + max.x) * 0.5f, (min.y + max.y) * 0.5f, (min.z + max.z) * 0.5f);
     auto distance = plane.getDistanceToPoint(center);
@@ -118,7 +118,7 @@ auto BoundingBox::intersectPlane(const Plane& plane) const -> PlaneIntersection
     auto extentY = (max.y - min.y) * 0.5f;
     auto extentZ = (max.z - min.z) * 0.5f;
 
-    const auto& planeNormal = plane.getNormal();
+    const auto &planeNormal = plane.getNormal();
     if (fabsf(distance) <= fabsf(extentX * planeNormal.x) + fabsf(extentY * planeNormal.y) + fabsf(extentZ * planeNormal.z))
         return PlaneIntersection::Intersecting;
 
@@ -126,13 +126,13 @@ auto BoundingBox::intersectPlane(const Plane& plane) const -> PlaneIntersection
 }
 
 
-auto BoundingBox::hitByRay(const Ray& ray) const -> float
+auto BoundingBox::hitByRay(const Ray &ray) const -> float
 {
     float tmin;
     float tmax;
 
-    const auto& origin = ray.getOrigin();
-    const auto& direction = ray.getDirection();
+    const auto &origin = ray.getOrigin();
+    const auto &direction = ray.getDirection();
 
     auto div = 1.0f / direction.x;
     if (div >= 0.0f)
@@ -200,7 +200,7 @@ auto BoundingBox::hitByRay(const Ray& ray) const -> float
 }
 
 
-void BoundingBox::mergeBoundingBox(const BoundingBox& box)
+void BoundingBox::mergeBoundingBox(const BoundingBox &box)
 {
     min.x = std::min(min.x, box.min.x);
     min.y = std::min(min.y, box.min.y);
@@ -212,9 +212,9 @@ void BoundingBox::mergeBoundingBox(const BoundingBox& box)
 }
 
 
-void BoundingBox::mergeBoundingSphere(const BoundingSphere& sphere)
+void BoundingBox::mergeBoundingSphere(const BoundingSphere &sphere)
 {
-    const auto& center = sphere.center;
+    const auto &center = sphere.center;
     auto radius = sphere.radius;
 
     min.x = std::min(min.x, center.x - radius);

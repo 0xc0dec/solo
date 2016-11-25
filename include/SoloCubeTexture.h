@@ -32,7 +32,7 @@ namespace solo
     public:
         static auto create() -> sptr<CubeTexture>;
 
-        virtual void setData(CubeTextureFace face, TextureFormat format, const uint8_t* data, uint32_t width, uint32_t height) = 0;
+        virtual void setData(CubeTextureFace face, TextureFormat format, const uint8_t *data, uint32_t width, uint32_t height) = 0;
 
         void setWrapping(TextureWrapping wrapping) override final;
 

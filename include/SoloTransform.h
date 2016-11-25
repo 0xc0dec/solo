@@ -55,14 +55,14 @@ namespace solo
     class Transform final: public ComponentBase<Transform>
     {
     public:
-        explicit Transform(const Node& node);
+        explicit Transform(const Node &node);
 
         void init() override final;
 
-        void addCallback(TransformCallback* callback);
-        void removeCallback(TransformCallback* callback);
+        void addCallback(TransformCallback *callback);
+        void removeCallback(TransformCallback *callback);
 
-        void setParent(Transform* parent);
+        void setParent(Transform *parent);
         auto getParent() const -> Transform*;
         auto getChild(uint32_t index) const -> Transform*;
         auto getChildrenCount() const -> uint32_t;
@@ -95,30 +95,30 @@ namespace solo
         auto getWorldBack() const -> Vector3;
         auto getLocalBack() const -> Vector3;
 
-        void translateLocal(const Vector3& translation);
-        void scaleLocal(const Vector3& scale);
+        void translateLocal(const Vector3 &translation);
+        void scaleLocal(const Vector3 &scale);
 
-        void setLocalPosition(const Vector3& position);
-        void setLocalScale(const Vector3& scale);
+        void setLocalPosition(const Vector3 &position);
+        void setLocalScale(const Vector3 &scale);
 
-        void rotate(const Quaternion& rotation, TransformSpace space = TransformSpace::Self);
-        void rotate(const Vector3& axis, const Radian& angle, TransformSpace space = TransformSpace::Self);
+        void rotate(const Quaternion &rotation, TransformSpace space = TransformSpace::Self);
+        void rotate(const Vector3 &axis, const Radian &angle, TransformSpace space = TransformSpace::Self);
 
-        void setLocalRotation(const Quaternion& rotation);
-        void setLocalRotation(const Vector3& axis, const Radian& angle);
+        void setLocalRotation(const Quaternion &rotation);
+        void setLocalRotation(const Vector3 &axis, const Radian &angle);
 
-        void lookAt(const Vector3& target, const Vector3& up);
+        void lookAt(const Vector3 &target, const Vector3 &up);
 
         auto getMatrix() const -> TransformMatrix;
         auto getWorldMatrix() const -> TransformMatrix;
 
-        auto getWorldViewMatrix(Camera* camera) const -> TransformMatrix;
-        auto getWorldViewProjectionMatrix(Camera* camera) const -> TransformMatrix;
-        auto getInvTransposedWorldViewMatrix(Camera* camera) const -> TransformMatrix;
+        auto getWorldViewMatrix(Camera *camera) const -> TransformMatrix;
+        auto getWorldViewProjectionMatrix(Camera *camera) const -> TransformMatrix;
+        auto getInvTransposedWorldViewMatrix(Camera *camera) const -> TransformMatrix;
         auto getInvTransposedWorldMatrix() const -> TransformMatrix;
 
-        auto transformPoint(const Vector3& point) const -> Vector3;
-        auto transformDirection(const Vector3& direction) const -> Vector3;
+        auto transformPoint(const Vector3 &point) const -> Vector3;
+        auto transformDirection(const Vector3 &direction) const -> Vector3;
 
     private:
         void setDirtyWithChildren(uint32_t flags) const;
@@ -128,9 +128,9 @@ namespace solo
 
         mutable uint32_t dirtyFlags = ~0;
 
-        Transform* parent = nullptr;
-        std::vector<Transform*> children;
-        std::vector<TransformCallback*> callbacks;
+        Transform *parent = nullptr;
+        std::vector<Transform *> children;
+        std::vector<TransformCallback *> callbacks;
 
         Vector3 localPosition;
         Vector3 localScale;
@@ -235,12 +235,12 @@ namespace solo
         return localRotation;
     }
 
-    inline auto Transform::getParent() const -> Transform*
+    inline auto Transform::getParent() const -> Transform *
     {
         return parent;
     }
 
-    inline auto Transform::getChild(uint32_t index) const -> Transform*
+    inline auto Transform::getChild(uint32_t index) const -> Transform *
     {
         return children[index];
     }
@@ -250,6 +250,6 @@ namespace solo
     public:
         virtual ~TransformCallback() {}
 
-        virtual void onTransformChanged(const Transform* transform, uint32_t dirtyFlags) = 0;
+        virtual void onTransformChanged(const Transform *transform, uint32_t dirtyFlags) = 0;
     };
 }

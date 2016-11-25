@@ -26,7 +26,7 @@
 using namespace solo;
 
 
-auto FileSystem::create(Device* device, const DeviceToken&) -> sptr<FileSystem>
+auto FileSystem::create(Device *device, const DeviceToken &) -> sptr<FileSystem>
 {
     if (device->getSetup().mode == DeviceMode::Null)
         return std::make_shared<NullFileSystem>();
@@ -34,29 +34,29 @@ auto FileSystem::create(Device* device, const DeviceToken&) -> sptr<FileSystem>
 }
 
 
-auto FileSystem::readBytes(const std::string& path) -> std::vector<uint8_t>
+auto FileSystem::readBytes(const std::string &path) -> std::vector<uint8_t>
 {
     std::ifstream file(path, std::ios::binary | std::ios::ate);
     SL_ERR_IF(!file.is_open(), SL_FMT("Failed to open file '", path, "'"));
     auto size = file.tellg();
     file.seekg(0, std::ios::beg);
     auto result = std::vector<uint8_t>(size);
-    file.read(reinterpret_cast<char*>(&result[0]), size);
+    file.read(reinterpret_cast<char *>(&result[0]), size);
     file.close();
     return result;
 }
 
 
-void FileSystem::writeBytes(const std::string& path, const std::vector<uint8_t>& data)
+void FileSystem::writeBytes(const std::string &path, const std::vector<uint8_t> &data)
 {
     std::ofstream file(path, std::ios::binary | std::ios::trunc);
     SL_ERR_IF(!file.is_open(), SL_FMT("Failed to open file '", path, "'"));
-    file.write(reinterpret_cast<const char*>(&data[0]), data.size());
+    file.write(reinterpret_cast<const char *>(&data[0]), data.size());
     file.close();
 }
 
 
-auto FileSystem::readText(const std::string& path) -> std::string
+auto FileSystem::readText(const std::string &path) -> std::string
 {
     std::ifstream f(path);
     auto result = std::string(std::istreambuf_iterator<char>(f), std::istreambuf_iterator<char>());
@@ -64,7 +64,7 @@ auto FileSystem::readText(const std::string& path) -> std::string
 }
 
 
-auto FileSystem::readLines(const std::string& path) -> std::vector<std::string>
+auto FileSystem::readLines(const std::string &path) -> std::vector<std::string>
 {
     std::vector<std::string> result;
     iterateLines(path, [&](const std::string & s)
@@ -76,7 +76,7 @@ auto FileSystem::readLines(const std::string& path) -> std::vector<std::string>
 }
 
 
-void FileSystem::iterateLines(const std::string& path, std::function<bool(const std::string&)> process)
+void FileSystem::iterateLines(const std::string &path, std::function<bool(const std::string &)> process)
 {
     std::ifstream file(path);
     SL_ERR_IF(!file.is_open(), SL_FMT("Failed to open file '", path, "'"));
@@ -91,7 +91,7 @@ void FileSystem::iterateLines(const std::string& path, std::function<bool(const 
 }
 
 
-void FileSystem::writeLines(const std::string& path, const std::vector<std::string>& lines)
+void FileSystem::writeLines(const std::string &path, const std::vector<std::string> &lines)
 {
     std::ofstream file(path, std::ios::trunc);
     SL_ERR_IF(!file.is_open(), SL_FMT("Failed to open file '", path, "'"));

@@ -33,16 +33,16 @@ namespace solo
     class OpenGLRectTexture final: public RectTexture
     {
     public:
-        explicit OpenGLRectTexture(Device* device);
+        explicit OpenGLRectTexture(Device *device);
 
         void bind() override final;
         void generateMipmaps() override final;
-        void setData(TextureFormat format, const uint8_t* data, uint32_t width, uint32_t height) override final;
+        void setData(TextureFormat format, const uint8_t *data, uint32_t width, uint32_t height) override final;
 
         auto getHandle() const -> uint32_t;
 
     private:
-        OpenGLRenderer* renderer = nullptr;
+        OpenGLRenderer *renderer = nullptr;
         uint32_t handle = EmptyHandle;
     };
 

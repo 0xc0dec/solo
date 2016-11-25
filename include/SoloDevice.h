@@ -107,11 +107,11 @@ namespace solo
         virtual ~Device();
 
         virtual auto getWindowTitle() const -> std::string = 0;
-        virtual void setWindowTitle(const std::string& title) = 0;
+        virtual void setWindowTitle(const std::string &title) = 0;
 
         virtual auto getCanvasSize() const -> Vector2 = 0;
 
-        virtual void saveScreenshot(const std::string& path) = 0;
+        virtual void saveScreenshot(const std::string &path) = 0;
 
         virtual void setCursorCaptured(bool captured) = 0;
 
@@ -139,7 +139,7 @@ namespace solo
         auto getLogger() const -> Logger*;
 
     protected:
-        explicit Device(const DeviceSetup& setup);
+        explicit Device(const DeviceSetup &setup);
 
         virtual void beginUpdate() = 0;
         virtual void endUpdate() = 0;
@@ -170,7 +170,7 @@ namespace solo
         float timeDelta = 0;
 
     private:
-        static uptr<Device> createInstance(const DeviceSetup& setup);
+        static uptr<Device> createInstance(const DeviceSetup &setup);
         void init();
         void run();
 
@@ -187,37 +187,37 @@ namespace solo
         running = false;
     }
 
-    inline auto Device::getScene() const -> Scene*
+    inline auto Device::getScene() const -> Scene *
     {
         return scene.get();
     }
 
-    inline auto Device::getFileSystem() const -> FileSystem*
+    inline auto Device::getFileSystem() const -> FileSystem *
     {
         return fs.get();
     }
 
-    inline auto Device::getRenderer() const -> Renderer*
+    inline auto Device::getRenderer() const -> Renderer *
     {
         return renderer.get();
     }
 
-    inline auto Device::getAssetLoader() const -> AssetLoader*
+    inline auto Device::getAssetLoader() const -> AssetLoader *
     {
         return assetLoader.get();
     }
 
-    inline auto Device::getGraphics() const -> Graphics*
+    inline auto Device::getGraphics() const -> Graphics *
     {
         return graphics.get();
     }
 
-    inline auto Device::getPhysics() const -> Physics*
+    inline auto Device::getPhysics() const -> Physics *
     {
         return physics.get();
     }
 
-    inline auto Device::getLogger() const -> Logger*
+    inline auto Device::getLogger() const -> Logger *
     {
         return logger.get();
     }

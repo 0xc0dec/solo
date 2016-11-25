@@ -39,7 +39,7 @@ namespace solo
     class OpenGLRenderer final: public Renderer
     {
     public:
-        explicit OpenGLRenderer(Device* device);
+        explicit OpenGLRenderer(Device *device);
         ~OpenGLRenderer();
 
         void beginFrame() override final {}
@@ -53,34 +53,34 @@ namespace solo
         void setCubeTexture(uint32_t handle);
         void setCubeTexture(uint32_t handle, uint32_t flags);
         void setCubeTexture(uint32_t handle, uint32_t flags, float anisotropyLevel);
-        void update2DTexture(uint32_t handle, TextureFormat format, uint32_t width, uint32_t height, const void* data);
-        void updateCubeTexture(uint32_t handle, CubeTextureFace face, TextureFormat format, uint32_t width, uint32_t height, const void* data);
+        void update2DTexture(uint32_t handle, TextureFormat format, uint32_t width, uint32_t height, const void *data);
+        void updateCubeTexture(uint32_t handle, CubeTextureFace face, TextureFormat format, uint32_t width, uint32_t height, const void *data);
         void generateRectTextureMipmaps(uint32_t handle);
         void generateCubeTextureMipmaps(uint32_t handle);
 
         auto createFrameBuffer() -> uint32_t;
         void destroyFrameBuffer(uint32_t handle);
         void setFrameBuffer(uint32_t handle);
-        void updateFrameBuffer(uint32_t handle, const std::vector<uint32_t>& attachmentHandles);
+        void updateFrameBuffer(uint32_t handle, const std::vector<uint32_t> &attachmentHandles);
 
-        auto createVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> uint32_t;
-        auto createDynamicVertexBuffer(const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> uint32_t;
-        void updateDynamicVertexBuffer(uint32_t handle, const void* data, uint32_t offset, uint32_t vertexCount);
+        auto createVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t;
+        auto createDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t;
+        void updateDynamicVertexBuffer(uint32_t handle, const void *data, uint32_t offset, uint32_t vertexCount);
         void destroyVertexBuffer(uint32_t handle);
 
-        auto createIndexBuffer(const void* data, uint32_t elementSize, uint32_t elementCount) -> uint32_t;
+        auto createIndexBuffer(const void *data, uint32_t elementSize, uint32_t elementCount) -> uint32_t;
         void destroyIndexBuffer(uint32_t handle);
 
-        auto createProgram(const char* vsSrc, const char* fsSrc) -> uint32_t;
+        auto createProgram(const char *vsSrc, const char *fsSrc) -> uint32_t;
         void destroyProgram(uint32_t handle);
         void setProgram(uint32_t handle);
 
-        auto createVertexProgramBinding(const uint32_t* bufferHandles, uint32_t bufferCount, uint32_t programHandle) -> uint32_t;
+        auto createVertexProgramBinding(const uint32_t *bufferHandles, uint32_t bufferCount, uint32_t programHandle) -> uint32_t;
         void destroyVertexProgramBinding(uint32_t handle);
 
-        auto createUniform(const char* name, UniformType type, uint32_t programHandle) -> uint32_t;
+        auto createUniform(const char *name, UniformType type, uint32_t programHandle) -> uint32_t;
         void destroyUniform(uint32_t handle);
-        void setUniform(uint32_t handle, const void* value, uint32_t count);
+        void setUniform(uint32_t handle, const void *value, uint32_t count);
 
         void setFaceCull(FaceCull face);
 
@@ -142,8 +142,8 @@ namespace solo
         void bindIndexBuffer(uint32_t handle);
         void bindVertexProgramBinding(uint32_t handle);
         void setTexture(GLenum target, uint32_t handle, uint32_t flags);
-        void validateFrameBufferAttachments(const std::vector<uint32_t>& attachments);
-        auto createVertexBuffer(bool dynamic, const VertexBufferLayout& layout, const void* data, uint32_t vertexCount) -> uint32_t;
+        void validateFrameBufferAttachments(const std::vector<uint32_t> &attachments);
+        auto createVertexBuffer(bool dynamic, const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t;
 
         // Counters for assigning unique resource ids.
         // Released ids do not get reused, so this effectively limits the total

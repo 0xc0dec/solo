@@ -38,7 +38,7 @@ auto vk::createDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -> V
     queueCreateInfos[0].queueCount = 1;
     queueCreateInfos[0].pQueuePriorities = queuePriorities.data();
 
-    std::vector<const char*> deviceExtensions;
+    std::vector<const char *> deviceExtensions;
     deviceExtensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
 
     VkDeviceCreateInfo deviceCreateInfo {};
@@ -89,7 +89,7 @@ auto vk::getPhysicalDevice(VkInstance instance) -> VkPhysicalDevice
 {
     uint32_t gpuCount = 0;
     SL_CHECK_VK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr));
-    
+
     std::vector<VkPhysicalDevice> physicalDevices(gpuCount);
     SL_CHECK_VK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, physicalDevices.data()));
 
@@ -128,14 +128,14 @@ auto vk::getDepthFormat(VkPhysicalDevice device) -> VkFormat
     // Start with the highest precision packed format
     std::vector<VkFormat> depthFormats =
     {
-        VK_FORMAT_D32_SFLOAT_S8_UINT, 
+        VK_FORMAT_D32_SFLOAT_S8_UINT,
         VK_FORMAT_D32_SFLOAT,
-        VK_FORMAT_D24_UNORM_S8_UINT, 
-        VK_FORMAT_D16_UNORM_S8_UINT, 
-        VK_FORMAT_D16_UNORM 
+        VK_FORMAT_D24_UNORM_S8_UINT,
+        VK_FORMAT_D16_UNORM_S8_UINT,
+        VK_FORMAT_D16_UNORM
     };
 
-    for (auto& format : depthFormats)
+    for (auto &format : depthFormats)
     {
         VkFormatProperties formatProps;
         vkGetPhysicalDeviceFormatProperties(device, format, &formatProps);
@@ -191,14 +191,14 @@ auto vk::createCommandBuffer(VkDevice logicalDevice, VkCommandPool commandPool) 
 }
 
 
-void vk::destroyCommandBuffers(VkDevice device, VkCommandPool commandPool, VkCommandBuffer* buffers, uint32_t count)
+void vk::destroyCommandBuffers(VkDevice device, VkCommandPool commandPool, VkCommandBuffer *buffers, uint32_t count)
 {
     vkFreeCommandBuffers(device, commandPool, count, buffers);
 }
 
 
 auto vk::findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, uint32_t typeBits,
-    VkMemoryPropertyFlags properties) -> int32_t
+                        VkMemoryPropertyFlags properties) -> int32_t
 {
     for (uint32_t i = 0; i < physicalDeviceMemoryProperties.memoryTypeCount; i++)
     {
@@ -214,7 +214,7 @@ auto vk::findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryPro
 
 
 void vk::setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageLayout oldLayout,
-    VkImageLayout newLayout, VkImageSubresourceRange subresourceRange)
+                        VkImageLayout newLayout, VkImageSubresourceRange subresourceRange)
 {
     VkImageMemoryBarrier imageMemoryBarrier = {};
     imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -228,56 +228,56 @@ void vk::setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageLayout 
 
     switch (oldLayout)
     {
-        case VK_IMAGE_LAYOUT_UNDEFINED:
-                imageMemoryBarrier.srcAccessMask = 0;
-                break;
-        case VK_IMAGE_LAYOUT_PREINITIALIZED:
-                imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT;
-                break;
-        case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
-                imageMemoryBarrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-                break;
-        case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
-                imageMemoryBarrier.srcAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
-                break;
-        case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
-                imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-                break;
-        case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
-                imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-                break;
-        case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
-                imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
-                break;
-        default:
-            SL_ERR("Unknown old image layout");
-            break;
+    case VK_IMAGE_LAYOUT_UNDEFINED:
+        imageMemoryBarrier.srcAccessMask = 0;
+        break;
+    case VK_IMAGE_LAYOUT_PREINITIALIZED:
+        imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT;
+        break;
+    case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
+        imageMemoryBarrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+        break;
+    case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
+        imageMemoryBarrier.srcAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+        break;
+    case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
+        imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+        break;
+    case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
+        imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+        break;
+    case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
+        imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
+        break;
+    default:
+        SL_ERR("Unknown old image layout");
+        break;
     }
 
     switch (newLayout)
     {
-        case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
-            imageMemoryBarrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-            break;
-        case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
-            imageMemoryBarrier.srcAccessMask = imageMemoryBarrier.srcAccessMask | VK_ACCESS_TRANSFER_READ_BIT;
-            imageMemoryBarrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-            break;
-        case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
-            imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-            imageMemoryBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-            break;
-        case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
-            imageMemoryBarrier.dstAccessMask = imageMemoryBarrier.dstAccessMask | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
-            break;
-        case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
-            if (imageMemoryBarrier.srcAccessMask == 0)
-                imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
-            imageMemoryBarrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
-            break;
-        default:
-            SL_ERR("Unknown new image layout");
-            break;
+    case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
+        imageMemoryBarrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+        break;
+    case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
+        imageMemoryBarrier.srcAccessMask = imageMemoryBarrier.srcAccessMask | VK_ACCESS_TRANSFER_READ_BIT;
+        imageMemoryBarrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+        break;
+    case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
+        imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+        imageMemoryBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+        break;
+    case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
+        imageMemoryBarrier.dstAccessMask = imageMemoryBarrier.dstAccessMask | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+        break;
+    case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
+        if (imageMemoryBarrier.srcAccessMask == 0)
+            imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
+        imageMemoryBarrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+        break;
+    default:
+        SL_ERR("Unknown new image layout");
+        break;
     }
 
     VkPipelineStageFlags srcStageFlags = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
@@ -288,7 +288,7 @@ void vk::setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageLayout 
 
 
 void vk::setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask,
-    VkImageLayout oldLayout, VkImageLayout newLayout)
+                        VkImageLayout oldLayout, VkImageLayout newLayout)
 {
     VkImageSubresourceRange subresourceRange = {};
     subresourceRange.aspectMask = aspectMask;
@@ -361,7 +361,7 @@ auto vk::createRenderPass(VkDevice device, VkFormat colorFormat, VkFormat depthF
 
 
 auto vk::createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImageView depthAttachment,
-    VkRenderPass renderPass, uint32_t width, uint32_t height) -> VkFramebuffer
+                           VkRenderPass renderPass, uint32_t width, uint32_t height) -> VkFramebuffer
 {
     VkImageView attachments[] = { colorAttachment, depthAttachment };
 

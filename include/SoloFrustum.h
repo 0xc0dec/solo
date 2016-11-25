@@ -45,17 +45,17 @@ namespace solo
         auto getBottomPlane() const -> Plane;
 
         auto getMatrix() const -> Matrix;
-        void setMatrix(const Matrix& m);
+        void setMatrix(const Matrix &m);
 
         auto getCorners() const -> std::vector<Vector3>;
         auto getNearCorners() const -> std::vector<Vector3>;
         auto getFarCorners() const -> std::vector<Vector3>;
 
-        bool intersectsPoint(const Vector3& point) const;
-        bool intersectsBoundingSphere(const BoundingSphere& sphere) const;
-        bool intersectsBoundingBox(const BoundingBox& box) const;
-        auto hitByRay(const Ray& ray) const -> float;
-        auto intersectPlane(const Plane& plane) const -> PlaneIntersection;
+        bool intersectsPoint(const Vector3 &point) const;
+        bool intersectsBoundingSphere(const BoundingSphere &sphere) const;
+        bool intersectsBoundingBox(const BoundingBox &box) const;
+        auto hitByRay(const Ray &ray) const -> float;
+        auto intersectPlane(const Plane &plane) const -> PlaneIntersection;
 
     private:
         void updatePlanes();

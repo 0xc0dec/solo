@@ -46,14 +46,26 @@ Matrix::Matrix(
     float m31, float m32, float m33, float m34,
     float m41, float m42, float m43, float m44)
 {
-    m[0] = m11; m[1] = m21; m[2] = m31; m[3] = m41;
-    m[4] = m12; m[5] = m22; m[6] = m32; m[7] = m42;
-    m[8] = m13; m[9] = m23; m[10] = m33; m[11] = m43;
-    m[12] = m14; m[13] = m24; m[14] = m34; m[15] = m44;
+    m[0] = m11;
+    m[1] = m21;
+    m[2] = m31;
+    m[3] = m41;
+    m[4] = m12;
+    m[5] = m22;
+    m[6] = m32;
+    m[7] = m42;
+    m[8] = m13;
+    m[9] = m23;
+    m[10] = m33;
+    m[11] = m43;
+    m[12] = m14;
+    m[13] = m24;
+    m[14] = m34;
+    m[15] = m44;
 }
 
 
-Matrix::Matrix(const Matrix& copy)
+Matrix::Matrix(const Matrix &copy)
 {
     memcpy(m, copy.m, size());
 }
@@ -167,7 +179,7 @@ void Matrix::makeZero()
 }
 
 
-auto Matrix::operator+=(float scalar) -> Matrix&
+auto Matrix::operator+=(float scalar) -> Matrix &
 
 {
     m[0] += scalar;
@@ -190,7 +202,7 @@ auto Matrix::operator+=(float scalar) -> Matrix&
 }
 
 
-auto Matrix::operator+=(const Matrix& other) -> Matrix&
+auto Matrix::operator+=(const Matrix &other) -> Matrix &
 
 {
     m[0] += other.m[0];
@@ -216,17 +228,17 @@ auto Matrix::operator+=(const Matrix& other) -> Matrix&
 void Matrix::transpose()
 {
     float t[16] =
-        {
-            m[0], m[4], m[8], m[12],
-            m[1], m[5], m[9], m[13],
-            m[2], m[6], m[10], m[14],
-            m[3], m[7], m[11], m[15]
-        };
+    {
+        m[0], m[4], m[8], m[12],
+        m[1], m[5], m[9], m[13],
+        m[2], m[6], m[10], m[14],
+        m[3], m[7], m[11], m[15]
+    };
     memcpy(&m, t, size());
 }
 
 
-auto Matrix::operator*=(float scalar) -> Matrix&
+auto Matrix::operator*=(float scalar) -> Matrix &
 
 {
     m[0] *= scalar;
@@ -249,7 +261,7 @@ auto Matrix::operator*=(float scalar) -> Matrix&
 }
 
 
-auto Matrix::operator*=(const Matrix& m2) -> Matrix&
+auto Matrix::operator*=(const Matrix &m2) -> Matrix &
 
 {
     float product[16];
@@ -280,7 +292,7 @@ auto Matrix::operator*=(const Matrix& m2) -> Matrix&
 }
 
 
-auto Matrix::operator-=(float scalar) -> Matrix&
+auto Matrix::operator-=(float scalar) -> Matrix &
 
 {
     m[0] -= scalar;
@@ -303,7 +315,7 @@ auto Matrix::operator-=(float scalar) -> Matrix&
 }
 
 
-auto Matrix::operator-=(const Matrix& m2) -> Matrix&
+auto Matrix::operator-=(const Matrix &m2) -> Matrix &
 
 {
     m[0] -= m2.m[0];

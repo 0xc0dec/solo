@@ -31,12 +31,12 @@ namespace solo
     class SDLVulkanDevice final: public SDLDevice
     {
     public:
-        explicit SDLVulkanDevice(const DeviceSetup& setup);
+        explicit SDLVulkanDevice(const DeviceSetup &setup);
         ~SDLVulkanDevice();
 
         auto getCanvasSize() const -> Vector2 override final;
 
-        void saveScreenshot(const std::string& path) override final;
+        void saveScreenshot(const std::string &path) override final;
 
         auto getVkInstance() const -> VkInstance;
         auto getVkSurface() const -> VkSurfaceKHR;

@@ -33,11 +33,11 @@ using namespace solo;
 class MotionState final: public btMotionState
 {
 public:
-    explicit MotionState(Transform* transform): transform(transform)
+    explicit MotionState(Transform *transform): transform(transform)
     {
     }
 
-    void getWorldTransform(btTransform& worldTransform) const override final
+    void getWorldTransform(btTransform &worldTransform) const override final
     {
         auto worldPos = transform->getWorldPosition();
         auto rotation = transform->getWorldRotation();
@@ -45,7 +45,7 @@ public:
         worldTransform.setRotation(SL_TOBTQTRN(rotation));
     }
 
-    void setWorldTransform(const btTransform& worldTransform) override final
+    void setWorldTransform(const btTransform &worldTransform) override final
     {
         SL_ERR_IF(transform->getParent())
         transform->setLocalPosition(SL_FROMBTVEC3(worldTransform.getOrigin()));
@@ -53,16 +53,16 @@ public:
     }
 
 private:
-    Transform* transform;
+    Transform *transform;
 };
 
 
-BulletRigidBody::BulletRigidBody(const Node& node, const RigidBodyConstructionParameters& parameters):
+BulletRigidBody::BulletRigidBody(const Node &node, const RigidBodyConstructionParameters &parameters):
     RigidBody(node),
     mass(parameters.mass),
     shape(nullptr)
 {
-    world = static_cast<BulletPhysics*>(node.getScene()->getDevice()->getPhysics())->getWorld();
+    world = static_cast<BulletPhysics *>(node.getScene()->getDevice()->getPhysics())->getWorld();
     transformCmp = node.findComponent<Transform>();
     motionState = std::make_unique<MotionState>(transformCmp);
 
@@ -108,7 +108,7 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
 }
 
 
-void BulletRigidBody::onTransformChanged(const Transform* transform, uint32_t dirtyFlags)
+void BulletRigidBody::onTransformChanged(const Transform *transform, uint32_t dirtyFlags)
 {
     if (shape && dirtyFlags | TransformDirtyFlags::Scale)
         syncScale();

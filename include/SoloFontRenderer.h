@@ -34,12 +34,12 @@ namespace solo
     class FontRenderer final: public ComponentBase<FontRenderer>
     {
     public:
-        explicit FontRenderer(const Node& node);
+        explicit FontRenderer(const Node &node);
 
-        void render(RenderContext& context) override final;
+        void render(RenderContext &context) override final;
 
         void setFont(sptr<Font> font);
-        void setText(const std::string& text);
+        void setText(const std::string &text);
 
     private:
         void rebuildMesh();

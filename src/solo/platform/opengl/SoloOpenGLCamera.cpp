@@ -28,10 +28,10 @@
 using namespace solo;
 
 
-OpenGLCamera::OpenGLCamera(const Node& node):
+OpenGLCamera::OpenGLCamera(const Node &node):
     Camera(node)
 {
-    renderer = dynamic_cast<OpenGLRenderer*>(node.getScene()->getDevice()->getRenderer());
+    renderer = dynamic_cast<OpenGLRenderer *>(node.getScene()->getDevice()->getRenderer());
 }
 
 

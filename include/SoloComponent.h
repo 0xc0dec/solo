@@ -54,11 +54,11 @@ namespace solo
         virtual void init() {}
         virtual void update() {}
         virtual void terminate() {}
-        virtual void render(RenderContext& context) {}
+        virtual void render(RenderContext &context) {}
 
         virtual void onAfterCameraRender() {}
-        virtual void onComponentAdded(Component* cmp) {}
-        virtual void onComponentRemoved(Component* cmp) {}
+        virtual void onComponentAdded(Component *cmp) {}
+        virtual void onComponentRemoved(Component *cmp) {}
 
         auto getRenderQueue() const -> uint32_t;
         void setRenderQueue(uint32_t queue);
@@ -68,7 +68,7 @@ namespace solo
         auto getTags() -> uint32_t&;
 
     protected:
-        explicit Component(const Node& node): node(node)
+        explicit Component(const Node &node): node(node)
         {
         }
 
@@ -92,7 +92,7 @@ namespace solo
         return node;
     }
 
-    inline auto Component::getTags() -> uint32_t&
+    inline auto Component::getTags() -> uint32_t &
     {
         return tags;
     }
@@ -104,7 +104,7 @@ namespace solo
     public:
         static auto getId() -> uint32_t;
 
-        explicit ComponentBase(const Node& node): Component(node) {}
+        explicit ComponentBase(const Node &node): Component(node) {}
 
         auto getTypeId() -> uint32_t override;
     };

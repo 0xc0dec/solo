@@ -25,13 +25,13 @@
 using namespace solo;
 
 
-Radian::Radian(const Degree& d):
+Radian::Radian(const Degree &d):
     raw(d.toRawRadian())
 {
 }
 
 
-auto Radian::operator=(const Degree& d) -> Radian&
+auto Radian::operator=(const Degree &d) -> Radian &
 {
     raw = d.toRawRadian();
     return *this;
@@ -44,26 +44,26 @@ auto Radian::toRawDegree() const -> float
 }
 
 
-auto Radian::operator+(const Degree& d) const -> Radian
+auto Radian::operator+(const Degree &d) const -> Radian
 {
     return Radian(raw + d.toRawRadian());
 }
 
 
-auto Radian::operator+=(const Degree& d) -> Radian&
+auto Radian::operator+=(const Degree &d) -> Radian &
 {
     raw += d.toRawRadian();
     return *this;
 }
 
 
-auto Radian::operator-(const Degree& d) const -> Radian
+auto Radian::operator-(const Degree &d) const -> Radian
 {
     return Radian(raw - d.toRawRadian());
 }
 
 
-auto Radian::operator-=(const Degree& d) -> Radian&
+auto Radian::operator-=(const Degree &d) -> Radian &
 {
     raw -= d.toRawRadian();
     return *this;

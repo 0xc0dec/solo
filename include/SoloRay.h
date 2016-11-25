@@ -34,20 +34,20 @@ namespace solo
     {
     public:
         Ray() {}
-        Ray(const Vector3& origin, const Vector3& direction);
+        Ray(const Vector3 &origin, const Vector3 &direction);
         Ray(float originX, float originY, float originZ, float dirX, float dirY, float dirZ);
 
         auto getOrigin() const -> Vector3;
-        void setOrigin(const Vector3& origin);
+        void setOrigin(const Vector3 &origin);
 
         auto getDirection() const -> Vector3;
-        void setDirection(const Vector3& direction);
+        void setDirection(const Vector3 &direction);
 
         // These methods return -1 if there's no intersection
-        auto hitBoundingSphere(const BoundingSphere& sphere) const -> float;
-        auto hitBoundingBox(const BoundingBox& box) const -> float;
-        auto hitFrustum(const Frustum& frustum) const -> float;
-        auto hitPlane(const Plane& plane) const -> float;
+        auto hitBoundingSphere(const BoundingSphere &sphere) const -> float;
+        auto hitBoundingBox(const BoundingBox &box) const -> float;
+        auto hitFrustum(const Frustum &frustum) const -> float;
+        auto hitPlane(const Plane &plane) const -> float;
 
     private:
         void normalize();

@@ -27,14 +27,14 @@
 using namespace solo;
 
 
-auto MaterialParameter::create(Device *device, Effect* effect, MaterialParameterType type, const char* name) -> sptr<MaterialParameter>
+auto MaterialParameter::create(Device *device, Effect *effect, MaterialParameterType type, const char *name) -> sptr<MaterialParameter>
 {
     switch (device->getSetup().mode)
     {
-        case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLMaterialParameter>(device->getRenderer(), effect, type, name);
-        default:
-            return std::make_shared<NullMaterialParameter>(type);
+    case DeviceMode::OpenGL:
+        return std::make_shared<OpenGLMaterialParameter>(device->getRenderer(), effect, type, name);
+    default:
+        return std::make_shared<NullMaterialParameter>(type);
     }
 }
 
