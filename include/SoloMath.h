@@ -40,9 +40,6 @@ namespace solo
         static auto degToRad(float degrees) -> float;
         static auto radToDeg(float radians) -> float;
 
-        static auto rndAroundZero() -> float;
-        static auto rnd01() -> float;
-
         static auto clamp(float x, float lo, float hi) -> float;
     }
 
@@ -64,16 +61,6 @@ namespace solo
     inline auto math::radToDeg(float radians) -> float
     {
         return radians * 57.29577951f;
-    }
-
-    inline auto math::rndAroundZero() -> float
-    {
-        return 2.0f * (static_cast<float>(rand()) / RAND_MAX) - 1.0f;
-    }
-
-    inline auto math::rnd01() -> float
-    {
-        return static_cast<float>(rand()) / RAND_MAX;
     }
 
     inline auto math::clamp(float x, float lo, float hi) -> float
