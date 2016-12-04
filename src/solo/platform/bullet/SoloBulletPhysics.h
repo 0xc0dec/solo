@@ -29,7 +29,7 @@ namespace solo
     class BulletPhysics final : public Physics
     {
     public:
-        BulletPhysics(Device *device, const DeviceToken &deviceToken);
+        BulletPhysics(Device *device, const FriendToken<Device> &deviceToken);
 
         void update() override final;
 

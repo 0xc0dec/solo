@@ -33,7 +33,7 @@
 using namespace solo;
 
 
-AssetLoader::AssetLoader(Device *device, const DeviceToken &)
+AssetLoader::AssetLoader(Device *device, const FriendToken<Device> &)
 {
     imageLoaders.push_back(std::make_unique<PngImageLoader>(device));
     meshLoaders.push_back(std::make_unique<ObjMeshLoader>(device));

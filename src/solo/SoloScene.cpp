@@ -27,7 +27,7 @@
 using namespace solo;
 
 
-Scene::Scene(Device *device, const DeviceToken &):
+Scene::Scene(Device *device, const FriendToken<Device> &):
     device(device)
 {
 }

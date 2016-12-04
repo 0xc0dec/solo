@@ -27,13 +27,12 @@ namespace solo
 {
     class Material;
     class FrameBuffer;
-    class DeviceToken;
     class Device;
 
     class Graphics
     {
     public:
-        static auto create(Device *device, const DeviceToken &token) -> sptr<Graphics>;
+        static auto create(Device *device, const FriendToken<Device> &token) -> sptr<Graphics>;
 
         SL_DISABLE_COPY_AND_MOVE(Graphics)
         virtual ~Graphics() {}
@@ -41,6 +40,6 @@ namespace solo
         virtual void blit(Material *material, FrameBuffer *target) = 0;
 
     protected:
-        explicit Graphics(const DeviceToken &) {}
+        explicit Graphics(const FriendToken<Device> &) {}
     };
 }

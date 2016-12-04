@@ -96,7 +96,7 @@ uptr<Device> Device::createInstance(const DeviceSetup &setup)
 
 void Device::init()
 {
-    DeviceToken token;
+    FriendToken<Device> token;
 
     logger = std::make_unique<Logger>(token);
     if (!setup.logFilePath.empty())

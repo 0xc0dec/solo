@@ -28,7 +28,6 @@
 namespace solo
 {
     class Device;
-    class DeviceToken;
     class RigidBody;
 
     struct RaycastResult
@@ -46,7 +45,7 @@ namespace solo
     class Physics
     {
     public:
-        static auto create(Device *device, const DeviceToken &deviceToken) -> sptr<Physics>;
+        static auto create(Device *device, const FriendToken<Device> &deviceToken) -> sptr<Physics>;
 
         SL_DISABLE_COPY_AND_MOVE(Physics)
         virtual ~Physics() {}
@@ -59,7 +58,7 @@ namespace solo
         virtual auto castRayAll(const Vector3 &from, const Vector3 &to) -> std::vector<RaycastResult> = 0;
 
     protected:
-        Physics(Device *device, const DeviceToken &);
+        Physics(Device *device, const FriendToken<Device> &);
 
         Device *device;
     };

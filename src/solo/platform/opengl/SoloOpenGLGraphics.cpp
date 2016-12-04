@@ -32,7 +32,7 @@
 using namespace solo;
 
 
-OpenGLGraphics::OpenGLGraphics(Device *device, const DeviceToken &token):
+OpenGLGraphics::OpenGLGraphics(Device *device, const FriendToken<Device> &token):
     Graphics(token),
     device(device)
 {

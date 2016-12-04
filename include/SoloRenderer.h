@@ -26,7 +26,6 @@
 namespace solo
 {
     class Device;
-    class DeviceToken;
 
     struct TextureFlags
     {
@@ -139,7 +138,7 @@ namespace solo
     class Renderer
     {
     public:
-        static auto create(Device *device, const DeviceToken &) -> sptr<Renderer>;
+        static auto create(Device *device, const FriendToken<Device> &) -> sptr<Renderer>;
 
         SL_DISABLE_COPY_AND_MOVE(Renderer)
         virtual ~Renderer() {}

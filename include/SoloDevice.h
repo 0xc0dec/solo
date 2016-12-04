@@ -83,12 +83,6 @@ namespace solo
         Vulkan
     };
 
-    class DeviceToken
-    {
-        friend class Device;
-        DeviceToken() {}
-    };
-
     class DeviceCallback
     {
     public:

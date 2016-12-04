@@ -30,7 +30,6 @@
 namespace solo
 {
     class Device;
-    class DeviceToken;
     class Mesh;
     class RectTexture;
     class CubeTexture;
@@ -72,7 +71,7 @@ namespace solo
     public:
         SL_DISABLE_COPY_AND_MOVE(AssetLoader)
 
-        explicit AssetLoader(Device *device, const DeviceToken &);
+        explicit AssetLoader(Device *device, const FriendToken<Device> &);
         ~AssetLoader() {}
 
         auto loadRectTexture(const std::string &path) -> sptr<RectTexture>;

@@ -27,13 +27,13 @@
 
 namespace solo
 {
-    class DeviceToken;
+    class Device;
 
     class Logger final
     {
     public:
         SL_DISABLE_COPY_AND_MOVE(Logger)
-        explicit Logger(const DeviceToken &t) {}
+        explicit Logger(const FriendToken<Device> &) {}
         ~Logger();
 
         void setTargetFile(const std::string &path);

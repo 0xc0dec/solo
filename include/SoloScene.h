@@ -32,14 +32,13 @@ namespace solo
     class Device;
     class Component;
     class Node;
-    class DeviceToken;
 
     class Scene final
     {
     public:
         SL_DISABLE_COPY_AND_MOVE(Scene)
 
-        explicit Scene(Device *device, const DeviceToken &);
+        explicit Scene(Device *device, const FriendToken<Device> &);
         ~Scene() {}
 
         auto getDevice() const -> Device*;

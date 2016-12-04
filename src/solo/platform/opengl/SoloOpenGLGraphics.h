@@ -33,7 +33,7 @@ namespace solo
     class OpenGLGraphics final: public Graphics
     {
     public:
-        OpenGLGraphics(Device *device, const DeviceToken &token);
+        OpenGLGraphics(Device *device, const FriendToken<Device> &token);
 
         void blit(Material *material, FrameBuffer *target) override final;
 

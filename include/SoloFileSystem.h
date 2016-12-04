@@ -28,12 +28,11 @@
 namespace solo
 {
     class Device;
-    class DeviceToken;
 
     class FileSystem
     {
     public:
-        static auto create(Device *device, const DeviceToken &) -> sptr<FileSystem>;
+        static auto create(Device *device, const FriendToken<Device> &) -> sptr<FileSystem>;
 
         SL_DISABLE_COPY_AND_MOVE(FileSystem)
         virtual ~FileSystem() {}

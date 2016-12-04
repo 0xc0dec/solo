@@ -127,4 +127,11 @@ namespace solo
         {
         }
     };
+
+    template <class T>
+    class FriendToken
+    {
+        friend T;
+        FriendToken() {}
+    };
 }

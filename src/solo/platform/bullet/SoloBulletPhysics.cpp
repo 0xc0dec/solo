@@ -25,7 +25,7 @@
 using namespace solo;
 
 
-BulletPhysics::BulletPhysics(Device *device, const DeviceToken &deviceToken) :
+BulletPhysics::BulletPhysics(Device *device, const FriendToken<Device> &deviceToken) :
     Physics(device, deviceToken)
 {
     broadPhase = std::make_unique<btDbvtBroadphase>();
