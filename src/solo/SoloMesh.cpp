@@ -33,10 +33,10 @@ sptr<Mesh> Mesh::create()
     auto device = Device::get();
     switch (device->getSetup().mode)
     {
-    case DeviceMode::OpenGL:
-        return std::make_shared<OpenGLMesh>(device);
-    default:
-        return std::make_shared<NullMesh>();
+        case DeviceMode::OpenGL:
+            return std::make_shared<OpenGLMesh>(device);
+        default:
+            return std::make_shared<NullMesh>();
     }
 }
 
@@ -46,10 +46,10 @@ sptr<Mesh> Mesh::create(MeshPrefab prefab)
     auto device = Device::get();
     switch (device->getSetup().mode)
     {
-    case DeviceMode::OpenGL:
-        return std::make_shared<OpenGLMesh>(device, prefab);
-    default:
-        return std::make_shared<NullMesh>();
+        case DeviceMode::OpenGL:
+            return std::make_shared<OpenGLMesh>(device, prefab);
+        default:
+            return std::make_shared<NullMesh>();
     }
 }
 
@@ -59,10 +59,10 @@ sptr<Mesh> Mesh::create(MeshData *data)
     auto device = Device::get();
     switch (device->getSetup().mode)
     {
-    case DeviceMode::OpenGL:
-        return std::make_shared<OpenGLMesh>(device, data);
-    default:
-        return std::make_shared<NullMesh>();
+        case DeviceMode::OpenGL:
+            return std::make_shared<OpenGLMesh>(device, data);
+        default:
+            return std::make_shared<NullMesh>();
     }
 }
 

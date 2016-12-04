@@ -31,10 +31,10 @@ auto CubeTexture::create() -> sptr<CubeTexture>
     auto device = Device::get();
     switch (device->getSetup().mode)
     {
-    case DeviceMode::OpenGL:
-        return std::make_shared<OpenGLCubeTexture>(device);
-    default:
-        return std::make_shared<NullCubeTexture>();
+        case DeviceMode::OpenGL:
+            return std::make_shared<OpenGLCubeTexture>(device);
+        default:
+            return std::make_shared<NullCubeTexture>();
     }
 }
 

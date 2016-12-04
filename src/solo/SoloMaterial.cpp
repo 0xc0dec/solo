@@ -34,10 +34,10 @@ auto Material::create(sptr<Effect> effect) -> sptr<Material>
     auto device = Device::get();
     switch (device->getSetup().mode)
     {
-    case DeviceMode::OpenGL:
-        return std::make_shared<OpenGLMaterial>(device, effect);
-    default:
-        return std::make_shared<NullMaterial>(device, effect);
+        case DeviceMode::OpenGL:
+            return std::make_shared<OpenGLMaterial>(device, effect);
+        default:
+            return std::make_shared<NullMaterial>(device, effect);
     }
 }
 
