@@ -24,20 +24,20 @@ const char *vsBasicLighting = R"(
     #version 330 core
 
     layout (location = 0) in vec4 position;
-	layout (location = 1) in vec3 normal;
-	layout (location = 2) in vec2 texCoord0;
+    layout (location = 1) in vec3 normal;
+    layout (location = 2) in vec2 texCoord0;
 
     uniform mat4 worldViewProjMatrix;
-	uniform mat4 invTransposedWorldMatrix;
-	out vec2 uv0;
-	out vec3 n;
+    uniform mat4 invTransposedWorldMatrix;
+    out vec2 uv0;
+    out vec3 n;
 
     void main()
-	{
-		gl_Position = worldViewProjMatrix * position;
-		uv0 = texCoord0;
-		n = normalize((invTransposedWorldMatrix * vec4(normal, 1)).xyz);
-	}
+    {
+        gl_Position = worldViewProjMatrix * position;
+        uv0 = texCoord0;
+        n = normalize((invTransposedWorldMatrix * vec4(normal, 1)).xyz);
+    }
 )";
 
 static const char* fsChecker = R"(
@@ -46,18 +46,18 @@ static const char* fsChecker = R"(
     uniform vec4 color;
 
     in vec2 uv0;
-	out vec4 fragColor;
+    out vec4 fragColor;
 
     void main()
-	{
-		float xfloor = floor(uv0.x / 0.2);
-		float yfloor = floor(uv0.y / 0.2) + 1;
-		float m = mod(xfloor, 2) + mod(yfloor, 2);
-		if (m == 0 || m >= 2)
-			fragColor = vec4(0, 0, 0, 1);
-		else
-			fragColor = color;
-	}
+    {
+        float xfloor = floor(uv0.x / 0.2);
+        float yfloor = floor(uv0.y / 0.2) + 1;
+        float m = mod(xfloor, 2) + mod(yfloor, 2);
+        if (m == 0 || m >= 2)
+            fragColor = vec4(0, 0, 0, 1);
+        else
+            fragColor = color;
+    }
 )";
 
 static const char* fsTextureWithLighting = R"(
@@ -66,12 +66,12 @@ static const char* fsTextureWithLighting = R"(
     uniform sampler2D mainTex;
 
     in vec2 uv0;
-	in vec3 n;
-	out vec4 fragColor;
+    in vec3 n;
+    out vec4 fragColor;
 
     void main()
-	{
-		vec4 color = texture(mainTex, uv0);
-		fragColor = color * dot(vec3(1, 1, 1), n) / (length(vec3(1, 1, 1)) * length(n));
-	}
+    {
+        vec4 color = texture(mainTex, uv0);
+        fragColor = color * dot(vec3(1, 1, 1), n) / (length(vec3(1, 1, 1)) * length(n));
+    }
 )";
