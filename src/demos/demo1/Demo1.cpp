@@ -56,10 +56,10 @@ private:
 class DynamicQuadUpdater: public ComponentBase<DynamicQuadUpdater>
 {
 public:
-    explicit DynamicQuadUpdater(const Node &node, std::vector<float> data, sptr<Mesh> mesh):
+    explicit DynamicQuadUpdater(const Node &node, Device *device, std::vector<float> data, sptr<Mesh> mesh):
         ComponentBase<DynamicQuadUpdater>(node),
         data(data),
-        device(node.getScene()->getDevice()),
+        device(device),
         mesh(mesh)
     {
     }
@@ -296,7 +296,7 @@ private:
             renderer->setMesh(mesh);
             renderer->setMaterial(0, mat);
 
-            node->addComponent<DynamicQuadUpdater>(data, mesh);
+            node->addComponent<DynamicQuadUpdater>(device, data, mesh);
         });
     }
 
