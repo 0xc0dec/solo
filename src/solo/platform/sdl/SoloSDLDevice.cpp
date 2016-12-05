@@ -63,6 +63,8 @@ auto SDLDevice::getLifetime() const -> float
 
 void SDLDevice::beginUpdate()
 {
+    windowCloseRequested = false;
+    quitRequested = false;
     readWindowState();
     prepareMouseState();
     prepareKeyboardState();
@@ -120,8 +122,8 @@ void SDLDevice::processKeyboardEvent(const SDL_Event &evt)
         return;
     switch (evt.type)
     {
-    case SDL_KEYUP:
-    case SDL_KEYDOWN:
+        case SDL_KEYUP:
+        case SDL_KEYDOWN:
         {
             auto it = keymap.find(evt.key.keysym.sym);
             if (it == keymap.end())
@@ -139,6 +141,8 @@ void SDLDevice::processKeyboardEvent(const SDL_Event &evt)
             }
             break;
         }
+        default:
+            break;
     }
 }
 
@@ -147,18 +151,18 @@ void SDLDevice::processMouseEvent(const SDL_Event &evt)
 {
     switch (evt.type)
     {
-    case SDL_MOUSEMOTION:
-        mouseDeltaX = evt.motion.xrel;
-        mouseDeltaY = evt.motion.yrel;
-        break;
-    case SDL_MOUSEBUTTONDOWN:
+        case SDL_MOUSEMOTION:
+            mouseDeltaX = evt.motion.xrel;
+            mouseDeltaY = evt.motion.yrel;
+            break;
+        case SDL_MOUSEBUTTONDOWN:
         {
             auto button = mouseButtonsMap[evt.button.button];
             pressedMouseButtons[button] = true; // pressed for the first time
             releasedMouseButtons.erase(button);
             break;
         }
-    case SDL_MOUSEBUTTONUP:
+        case SDL_MOUSEBUTTONUP:
         {
             auto button = mouseButtonsMap[evt.button.button];
             if (pressedMouseButtons.find(button) != pressedMouseButtons.end())
@@ -168,6 +172,8 @@ void SDLDevice::processMouseEvent(const SDL_Event &evt)
             }
             break;
         }
+        default:
+            break;
     }
 }
 
@@ -176,9 +182,11 @@ void SDLDevice::processWindowEvent(const SDL_Event &evt)
 {
     switch (evt.window.event)
     {
-    case SDL_WINDOWEVENT_CLOSE:
-        stopRunning();
-        break;
+        case SDL_WINDOWEVENT_CLOSE:
+            windowCloseRequested = true;
+            break;
+        default:
+            break;
     }
 }
 
@@ -191,12 +199,14 @@ void SDLDevice::readEvents()
     {
         switch (evt.type)
         {
-        case SDL_QUIT:
-            stopRunning();
-            break;
-        case SDL_WINDOWEVENT:
-            processWindowEvent(evt);
-            break;
+            case SDL_QUIT:
+                quitRequested = true;
+                break;
+            case SDL_WINDOWEVENT:
+                processWindowEvent(evt);
+                break;
+            default:
+                break;
         }
         if (!firstTime)
         {

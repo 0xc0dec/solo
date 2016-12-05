@@ -19,7 +19,6 @@
 */
 
 #include "../../../include/Solo.h"
-#include "../common/EscapeWatcher.h"
 #include "../common/Screenshoter.h"
 #include "../common/Rotator.h"
 #include "../common/Shaders.h"
@@ -84,12 +83,11 @@ private:
 };
 
 
-class Demo: public DeviceCallback
+class Demo
 {
 public:
-    void onStarted() override final
+    Demo(Device *device): device(device), scene(device->getScene()), loader(device->getAssetLoader()), canvasSize(device->getCanvasSize())
     {
-        initEngine();
         initEffects();
         initCamera();
         initOffscreenCamera();
@@ -107,14 +105,6 @@ public:
     }
 
 private:
-    void initEngine()
-    {
-        device = Device::get();
-        scene = device->getScene();
-        loader = device->getAssetLoader();
-        canvasSize = device->getCanvasSize();
-    }
-
     sptr<Material> createColorMaterial(const Vector4 &color)
     {
         auto mat = Material::create(colorEffect);
@@ -154,7 +144,6 @@ private:
         auto t = node->findComponent<Transform>();
         t->setLocalPosition(Vector3(0, 5, 10));
         t->lookAt(Vector3::zero(), Vector3::unitY());
-        node->addComponent<EscapeWatcher>();
         node->addComponent<Screenshoter>("demo1-screenshot.bmp");
 
         auto spectator = node->addComponent<Spectator>();
@@ -368,10 +357,10 @@ private:
     }
 
     const int renderTargetQuadTag = 2;
+    Device *device = nullptr;
     Scene *scene = nullptr;
     AssetLoader *loader = nullptr;
     Vector2 canvasSize;
-    Device *device = nullptr;
     sptr<Effect> simpleTextureEffect = nullptr;
     sptr<Effect> colorEffect = nullptr;
     sptr<Effect> checkerEffect = nullptr;
@@ -389,9 +378,9 @@ private:
 
 int main()
 {
-    Device::run(
-        DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo1.log"),
-        std::make_unique<Demo>()
-    );
+    auto device = Device::create(DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo1.log"));
+    Demo(device.get());
+    while (!device->isQuitRequested() && device->isWindowCloseRequested() && !device->isKeyPressed(KeyCode::Escape, true))
+        device->update();
     return 0;
 }

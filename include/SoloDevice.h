@@ -112,6 +112,9 @@ namespace solo
 
         auto getTimeDelta() const -> float;
 
+        bool isWindowCloseRequested() const;
+        bool isQuitRequested() const;
+
         bool isKeyPressed(KeyCode code, bool firstTime = false) const;
         bool isKeyReleased(KeyCode code) const;
 
@@ -120,7 +123,6 @@ namespace solo
         bool isMouseButtonReleased(MouseButton button) const;
 
         void update();
-        void stopRunning();
 
         auto getSetup() const -> DeviceSetup;
 
@@ -158,19 +160,26 @@ namespace solo
         std::unordered_map<MouseButton, bool> pressedMouseButtons;
         std::unordered_set<MouseButton> releasedMouseButtons;
 
-        bool running = true;
         float lastUpdateTime = 0;
         float timeDelta = 0;
+
+        bool windowCloseRequested = false;
+        bool quitRequested = false;
     };
+
+    inline bool Device::isWindowCloseRequested() const
+    {
+        return windowCloseRequested;
+    }
+
+    inline bool Device::isQuitRequested() const
+    {
+        return quitRequested;
+    }
 
     inline auto Device::getTimeDelta() const -> float
     {
         return timeDelta;
-    }
-
-    inline void Device::stopRunning()
-    {
-        running = false;
     }
 
     inline auto Device::getScene() const -> Scene *
