@@ -64,25 +64,20 @@ private:
 };
 
 
-class Demo final: public DeviceCallback
+class Demo final
 {
 public:
-    void onStarted() override final
+    explicit Demo(Device *device):
+        device(device),
+        scene(device->getScene()),
+        loader(device->getAssetLoader())
     {
-        initEngine();
         initCamera();
         initSkybox();
         initText();
     }
 
 private:
-    void initEngine()
-    {
-        device = Device::get();
-        scene = device->getScene();
-        loader = device->getAssetLoader();
-    }
-
     void initCamera()
     {
         auto node = scene->createNode();
@@ -128,17 +123,17 @@ private:
         transform->setLocalScale(Vector3(0.02f, 0.02f, 1));
     }
 
+    Device *device = nullptr;
     Scene *scene = nullptr;
     AssetLoader *loader = nullptr;
-    Device *device = nullptr;
 };
 
 
 int main()
 {
-    Device::run(
-        DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo3.log"),
-        std::make_unique<Demo>()
-    );
+    auto device = Device::create(DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo3.log"));
+    Demo(device.get());
+    while (!device->isQuitRequested() && device->isWindowCloseRequested() && !device->isKeyPressed(KeyCode::Escape, true))
+        device->update();
     return 0;
 }

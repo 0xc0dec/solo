@@ -31,9 +31,9 @@ using namespace solo;
 class PostProcessor1 final: public ComponentBase<PostProcessor1>
 {
 public:
-    explicit PostProcessor1(const Node &node, Device *device):
+    explicit PostProcessor1(const Node &node):
         ComponentBase<PostProcessor1>(node),
-        device(device),
+        device(node.getScene()->getDevice()),
         loader(device->getAssetLoader()),
         graphics(device->getGraphics())
     {
@@ -118,9 +118,9 @@ private:
 class PostProcessor2 final: public ComponentBase<PostProcessor2>
 {
 public:
-    explicit PostProcessor2(const Node &node, Device *device) :
+    explicit PostProcessor2(const Node &node) :
         ComponentBase<PostProcessor2>(node),
-        device(device),
+        device(node.getScene()->getDevice()),
         loader(device->getAssetLoader()),
         graphics(device->getGraphics())
     {
@@ -189,9 +189,9 @@ private:
 class ModeSwitcher final: public ComponentBase<ModeSwitcher>
 {
 public:
-    explicit ModeSwitcher(const Node &node, Device *device):
+    explicit ModeSwitcher(const Node &node):
         ComponentBase<ModeSwitcher>(node),
-        device(device)
+        device(node.getScene()->getDevice())
     {
     }
 
@@ -202,14 +202,14 @@ public:
             if (node.findComponent<PostProcessor1>())
                 return;
             node.removeComponent<PostProcessor2>();
-            node.addComponent<PostProcessor1>(device);
+            node.addComponent<PostProcessor1>();
         }
         if (device->isKeyPressed(KeyCode::Digit2, true))
         {
             if (node.findComponent<PostProcessor2>())
                 return;
             node.removeComponent<PostProcessor1>();
-            node.addComponent<PostProcessor2>(device);
+            node.addComponent<PostProcessor2>();
         }
         if (device->isKeyPressed(KeyCode::Digit3, true))
         {
