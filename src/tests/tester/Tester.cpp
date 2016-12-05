@@ -30,39 +30,19 @@
 using namespace solo;
 
 
-class Callback final: public DeviceCallback
-{
-public:
-    Callback(std::function<void(Device *)> run): run(run)
-    {
-    }
-
-    void onStarted() override final
-    {
-        run(Device::get());
-        Device::get()->stopRunning();
-    }
-
-private:
-    std::function<void(Device *)> run;
-};
-
-
 void runInNullEngine(std::function<void(Device *)> run, const std::string &logPath)
 {
-    Device::run(
-        DeviceSetup().withMode(DeviceMode::Null).withLogFilePath(logPath),
-        std::make_unique<Callback>(run)
-    );
+    auto device = Device::create(DeviceSetup().withMode(DeviceMode::Null).withLogFilePath(logPath));
+    run(device.get());
+    device->update();
 }
 
 
 void runInRealEngine(std::function<void(Device *)> run, const std::string &logPath)
 {
-    Device::run(
-        DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath(logPath),
-        std::make_unique<Callback>(run)
-    );
+    auto device = Device::create(DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath(logPath));
+    run(device.get());
+    device->update();
 }
 
 

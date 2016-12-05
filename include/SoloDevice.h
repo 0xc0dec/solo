@@ -94,8 +94,7 @@ namespace solo
     class Device
     {
     public:
-        static auto get() -> Device*;
-        static void run(const DeviceSetup &setup, sptr<DeviceCallback> callback);
+        static auto create(const DeviceSetup &setup) -> uptr<Device>;
 
         SL_DISABLE_COPY_AND_MOVE(Device)
         virtual ~Device();
@@ -120,6 +119,7 @@ namespace solo
         bool isMouseButtonDown(MouseButton button, bool firstTime = false) const;
         bool isMouseButtonReleased(MouseButton button) const;
 
+        void update();
         void stopRunning();
 
         auto getSetup() const -> DeviceSetup;
@@ -135,10 +135,9 @@ namespace solo
     protected:
         explicit Device(const DeviceSetup &setup);
 
+        void updateTime();
         virtual void beginUpdate() = 0;
         virtual void endUpdate() = 0;
-
-        void updateTime();
 
         DeviceSetup setup;
 
@@ -162,13 +161,6 @@ namespace solo
         bool running = true;
         float lastUpdateTime = 0;
         float timeDelta = 0;
-
-    private:
-        static uptr<Device> createInstance(const DeviceSetup &setup);
-        void init();
-        void run();
-
-        static uptr<Device> instance;
     };
 
     inline auto Device::getTimeDelta() const -> float

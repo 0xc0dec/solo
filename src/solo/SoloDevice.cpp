@@ -33,14 +33,20 @@
 using namespace solo;
 
 
-// Made as a singleton for the sake of convenience.
-// Instantiated when run() is called and resets when it exists
-uptr<Device> Device::instance = nullptr;
-
-
-auto Device::get() -> Device *
+auto Device::create(const DeviceSetup &setup) -> uptr<Device>
 {
-    return instance.get();
+    switch (setup.mode)
+    {
+        case DeviceMode::OpenGL:
+            return std::make_unique<SDLOpenGLDevice>(setup);
+        case DeviceMode::Vulkan:
+            return std::make_unique<SDLVulkanDevice>(setup);
+        case DeviceMode::Null:
+            return std::make_unique<NullDevice>(setup);
+        default:
+            SL_ERR("Unknown device mode");
+            return nullptr;
+    }
 }
 
 
@@ -74,33 +80,11 @@ Device::~Device()
 Device::Device(const DeviceSetup &setup):
     setup(setup)
 {
-}
-
-
-uptr<Device> Device::createInstance(const DeviceSetup &setup)
-{
-    switch (setup.mode)
-    {
-    case DeviceMode::OpenGL:
-        return std::make_unique<SDLOpenGLDevice>(setup);
-    case DeviceMode::Vulkan:
-        return std::make_unique<SDLVulkanDevice>(setup);
-    case DeviceMode::Null:
-        return std::make_unique<NullDevice>(setup);
-    default:
-        SL_ERR("Unknown device mode");
-        return nullptr;
-    }
-}
-
-
-void Device::init()
-{
     FriendToken<Device> token;
 
     logger = std::make_unique<Logger>(token);
     if (!setup.logFilePath.empty())
-        instance->logger->setTargetFile(setup.logFilePath);
+        logger->setTargetFile(setup.logFilePath);
 
     renderer = Renderer::create(this, token);
     physics = Physics::create(this, token);
@@ -108,38 +92,6 @@ void Device::init()
     assetLoader = std::make_unique<AssetLoader>(this, token);
     graphics = Graphics::create(this, token);
     scene = std::make_unique<Scene>(this, token);
-}
-
-
-void Device::run()
-{
-    do
-    {
-        beginUpdate();
-        assetLoader->update();
-        physics->update();
-        renderer->beginFrame();
-        scene->update();
-        scene->render();
-        renderer->endFrame();
-        endUpdate();
-    }
-    while (running);
-}
-
-
-void Device::run(const DeviceSetup &setup, sptr<DeviceCallback> callback)
-{
-    SL_ERR_IF(instance, "Device instance is already running");
-    instance = createInstance(setup);
-    instance->init();
-
-    callback->onStarted();
-    instance->run();
-    callback.reset();
-
-    instance.reset();
-    instance = nullptr;
 }
 
 
@@ -172,6 +124,19 @@ bool Device::isMouseButtonDown(MouseButton button, bool firstTime) const
 bool Device::isMouseButtonReleased(MouseButton button) const
 {
     return releasedMouseButtons.find(button) != releasedMouseButtons.end();
+}
+
+
+void Device::update()
+{
+    beginUpdate();
+    assetLoader->update();
+    physics->update();
+    renderer->beginFrame();
+    scene->update();
+    scene->render();
+    renderer->endFrame();
+    endUpdate();
 }
 
 
