@@ -31,9 +31,9 @@ using namespace solo;
 class PostProcessor1 final: public ComponentBase<PostProcessor1>
 {
 public:
-    explicit PostProcessor1(const Node &node):
+    explicit PostProcessor1(const Node &node, Device *device):
         ComponentBase<PostProcessor1>(node),
-        device(node.getScene()->getDevice()),
+        device(device),
         loader(device->getAssetLoader()),
         graphics(device->getGraphics())
     {
@@ -118,9 +118,9 @@ private:
 class PostProcessor2 final: public ComponentBase<PostProcessor2>
 {
 public:
-    explicit PostProcessor2(const Node &node) :
+    explicit PostProcessor2(const Node &node, Device *device) :
         ComponentBase<PostProcessor2>(node),
-        device(Device::get()),
+        device(device),
         loader(device->getAssetLoader()),
         graphics(device->getGraphics())
     {
@@ -202,14 +202,14 @@ public:
             if (node.findComponent<PostProcessor1>())
                 return;
             node.removeComponent<PostProcessor2>();
-            node.addComponent<PostProcessor1>();
+            node.addComponent<PostProcessor1>(device);
         }
         if (device->isKeyPressed(KeyCode::Digit2, true))
         {
             if (node.findComponent<PostProcessor2>())
                 return;
             node.removeComponent<PostProcessor1>();
-            node.addComponent<PostProcessor2>();
+            node.addComponent<PostProcessor2>(device);
         }
         if (device->isKeyPressed(KeyCode::Digit3, true))
         {
@@ -223,12 +223,14 @@ private:
 };
 
 
-class Demo final: public DeviceCallback
+class Demo final
 {
 public:
-    void onStarted() override final
+    explicit Demo(Device *device):
+        device(device),
+        scene(device->getScene()),
+        loader(device->getAssetLoader())
     {
-        initEngine();
         initCamera();
         initSkybox();
         initMesh();
@@ -236,13 +238,6 @@ public:
     }
 
 private:
-    void initEngine()
-    {
-        device = Device::get();
-        scene = device->getScene();
-        loader = device->getAssetLoader();
-    }
-
     void initCamera()
     {
         auto node = scene->createNode();
@@ -305,17 +300,17 @@ private:
         });
     }
 
+    Device *device = nullptr;
     Scene *scene = nullptr;
     AssetLoader *loader = nullptr;
-    Device *device = nullptr;
 };
 
 
 int main()
 {
-    Device::run(
-        DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo2.log"),
-        std::make_unique<Demo>()
-    );
+    auto device = Device::create(DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo2.log"));
+    Demo(device.get());
+    while (!device->isQuitRequested() && device->isWindowCloseRequested() && !device->isKeyPressed(KeyCode::Escape, true))
+        device->update();
     return 0;
 }
