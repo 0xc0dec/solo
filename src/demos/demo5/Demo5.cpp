@@ -24,22 +24,17 @@
 using namespace solo;
 
 
-class Demo final: public DeviceCallback
+class Demo final
 {
 public:
-    void onStarted() override final
+    explicit Demo(Device* device):
+        device(device),
+        scene(device->getScene())
     {
-        connect();
         initCamera();
     }
 
 private:
-    void connect()
-    {
-        device = Device::get();
-        scene = device->getScene();
-    }
-
     void initCamera()
     {
         auto node = scene->createNode();
@@ -58,16 +53,16 @@ private:
         spectator->setHorizontalRotationSpeed(1);
     }
 
-    Scene *scene = nullptr;
     Device *device = nullptr;
+    Scene *scene = nullptr;
 };
 
 
 int main()
 {
-    Device::run(
-        DeviceSetup().withMode(DeviceMode::Vulkan).withDimensions(1200, 600).withLogFilePath("demo5.log"),
-        std::make_unique<Demo>()
-    );
+    auto device = Device::create(DeviceSetup().withMode(DeviceMode::Vulkan).withDimensions(1200, 600).withLogFilePath("demo5.log"));
+    Demo(device.get());
+    while (!device->isQuitRequested() && device->isWindowCloseRequested() && !device->isKeyPressed(KeyCode::Escape, true))
+        device->update();
     return 0;
 }
