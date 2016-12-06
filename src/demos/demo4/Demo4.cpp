@@ -19,7 +19,6 @@
 */
 
 #include "../../../include/Solo.h"
-#include "../common/EscapeWatcher.h"
 #include "../common/Screenshoter.h"
 #include "../common/Shaders.h"
 
@@ -200,7 +199,6 @@ private:
         cam->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
         cam->setNear(0.05f);
 
-        node->addComponent<EscapeWatcher>();
         node->addComponent<Screenshoter>("demo3-screenshot.bmp");
         node->addComponent<Spawner>(cubeMesh);
         node->addComponent<Targeter>();

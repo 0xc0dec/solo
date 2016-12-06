@@ -19,7 +19,6 @@
 */
 
 #include "../../../include/Solo.h"
-#include "../common/EscapeWatcher.h"
 #include "../common/Screenshoter.h"
 #include "../common/Rotator.h"
 #include "../common/Shaders.h"
@@ -246,7 +245,6 @@ private:
         auto cam = node->addComponent<Camera>();
         cam->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
         cam->setNear(0.05f);
-        node->addComponent<EscapeWatcher>();
         node->addComponent<PostProcessor2>();
         node->addComponent<ModeSwitcher>(device);
         node->addComponent<Screenshoter>("demo2-screenshot.bmp");

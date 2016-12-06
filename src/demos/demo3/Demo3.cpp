@@ -19,7 +19,6 @@
 */
 
 #include "../../../include/Solo.h"
-#include "../common/EscapeWatcher.h"
 #include "../common/Screenshoter.h"
 #include <chrono>
 #include <iomanip>
@@ -86,7 +85,6 @@ private:
         auto cam = node->addComponent<Camera>();
         cam->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
         cam->setNear(0.05f);
-        node->addComponent<EscapeWatcher>();
         node->addComponent<Screenshoter>("demo3-screenshot.bmp");
 
         auto spectator = node->addComponent<Spectator>();

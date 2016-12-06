@@ -19,7 +19,6 @@
 */
 
 #include "../../../include/Solo.h"
-#include "../common/EscapeWatcher.h"
 
 using namespace solo;
 
@@ -45,8 +44,6 @@ private:
         auto cam = node->addComponent<Camera>();
         cam->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
         cam->setNear(0.05f);
-
-        node->addComponent<EscapeWatcher>();
 
         auto spectator = node->addComponent<Spectator>();
         spectator->setVerticalRotationSpeed(1);
