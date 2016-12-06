@@ -30,7 +30,7 @@ class SpawnedObject final: public ComponentBase<SpawnedObject>
 {
 public:
     explicit SpawnedObject(const Node &node, sptr<Effect> effect, sptr<Mesh> mesh,
-                           const Vector3 &initialPos, const Quaternion &initialRotation):
+        const Vector3 &initialPos, const Quaternion &initialRotation):
         ComponentBase<SpawnedObject>(node),
         device(node.getScene()->getDevice()),
         scene(node.getScene()),
@@ -116,8 +116,8 @@ public:
     void update() override final
     {
         auto hitResults = physics->castRayAll(
-                              transform->getWorldPosition(),
-                              transform->getWorldPosition() + transform->getLocalForward() * 100);
+            transform->getWorldPosition(),
+            transform->getWorldPosition() + transform->getLocalForward() * 100);
 
         for (const auto &result : hitResults)
         {
@@ -175,25 +175,20 @@ private:
 };
 
 
-class Demo final: public DeviceCallback
+class Demo final
 {
 public:
-    void onStarted() override final
+    explicit Demo(Device* device):
+        device(device),
+        scene(device->getScene()),
+        loader(device->getAssetLoader())
     {
-        connect();
         initObjects();
         initCamera();
         initSkybox();
     }
 
 private:
-    void connect()
-    {
-        device = Device::get();
-        scene = device->getScene();
-        loader = device->getAssetLoader();
-    }
-
     void initCamera()
     {
         auto node = scene->createNode();
@@ -259,18 +254,18 @@ private:
         rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
     }
 
+    Device *device = nullptr;
     Scene *scene = nullptr;
     AssetLoader *loader = nullptr;
-    Device *device = nullptr;
     sptr<Mesh> cubeMesh;
 };
 
 
 int main()
 {
-    Device::run(
-        DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo4.log"),
-        std::make_unique<Demo>()
-    );
+    auto device = Device::create(DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo4.log"));
+    Demo(device.get());
+    while (!device->isQuitRequested() && device->isWindowCloseRequested() && !device->isKeyPressed(KeyCode::Escape, true))
+        device->update();
     return 0;
 }
