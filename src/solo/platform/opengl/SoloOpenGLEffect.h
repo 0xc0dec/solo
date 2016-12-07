@@ -28,10 +28,12 @@
 
 namespace solo
 {
+    class Device;
+
     class OpenGLEffect final: public Effect
     {
     public:
-        static auto create(EffectPrefab prefab) -> sptr<OpenGLEffect>;
+        static auto create(Device *device, EffectPrefab prefab) -> sptr<OpenGLEffect>;
 
         OpenGLEffect(Device *device, const std::string &vsSrc, const std::string &fsSrc);
         ~OpenGLEffect();

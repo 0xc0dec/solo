@@ -66,7 +66,7 @@ public:
 private:
     void test_NormalEffectCompilation()
     {
-        Effect::create(vs, fs);
+        Effect::create(device, vs, fs);
     }
 
     void test_FailedEffectCompilation()
@@ -79,7 +79,7 @@ private:
     {
         try
         {
-            Effect::create(vertex, fragment);
+            Effect::create(device, vertex, fragment);
         }
         catch (EngineException &e)
         {

@@ -32,7 +32,7 @@ public:
 
     void run() override final
     {
-        material = Material::create(Effect::create("1", "2"));
+        material = Material::create(Effect::create(device, "1", "2"));
         mesh = Mesh::create();
         mesh->addPart(nullptr, 0);
         mesh->addPart(nullptr, 0);

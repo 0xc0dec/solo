@@ -28,9 +28,8 @@
 using namespace solo;
 
 
-auto OpenGLEffect::create(EffectPrefab prefab) -> sptr<OpenGLEffect>
+auto OpenGLEffect::create(Device *device, EffectPrefab prefab) -> sptr<OpenGLEffect>
 {
-    auto device = Device::get();
     switch (prefab)
     {
         case EffectPrefab::Skybox:

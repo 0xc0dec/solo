@@ -116,15 +116,15 @@ private:
 
     void initEffects()
     {
-        simpleTextureEffect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.texture);
-        colorEffect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.color);
-        checkerEffect = Effect::create(commonShaders.vertex.basic, fsChecker);
-        texWithLightingEffect = Effect::create(vsBasicLighting, fsTextureWithLighting);
+        simpleTextureEffect = Effect::create(device, commonShaders.vertex.basic, commonShaders.fragment.texture);
+        colorEffect = Effect::create(device, commonShaders.vertex.basic, commonShaders.fragment.color);
+        checkerEffect = Effect::create(device, commonShaders.vertex.basic, fsChecker);
+        texWithLightingEffect = Effect::create(device, vsBasicLighting, fsTextureWithLighting);
     }
 
     void loadTexture(const std::string &path, std::function<void(sptr<RectTexture>)> callback)
     {
-        loader->loadRectTextureAsync(path)->done([ = ](sptr<RectTexture> tex)
+        loader->loadRectTextureAsync(path)->done([=](sptr<RectTexture> tex)
         {
             tex->generateMipmaps();
             tex->setFiltering(TextureFiltering::LinearMipmapNearest);

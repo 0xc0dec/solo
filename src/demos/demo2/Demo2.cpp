@@ -58,21 +58,21 @@ public:
         fb2 = FrameBuffer::create();
         fb2->setAttachments({ fbTex2 });
 
-        auto grayscaleEffect = Effect::create(commonShaders.vertex.passThrough, fsGrayscale);
+        auto grayscaleEffect = Effect::create(device, commonShaders.vertex.passThrough, fsGrayscale);
         grayscaleMat = Material::create(grayscaleEffect);
         grayscaleMat->setFloatParameter("rightSeparator", 0.25f);
 
-        auto saturateEffect = Effect::create(commonShaders.vertex.passThrough, fsSaturate);
+        auto saturateEffect = Effect::create(device, commonShaders.vertex.passThrough, fsSaturate);
         saturateMat = Material::create(saturateEffect);
         saturateMat->setFloatParameter("leftSeparator", 0.75f);
         saturateMat->setFloatParameter("rightSeparator", 1.0f);
 
-        auto verticalBlurEffect = Effect::create(commonShaders.vertex.passThrough, fsVerticalBlur);
+        auto verticalBlurEffect = Effect::create(device, commonShaders.vertex.passThrough, fsVerticalBlur);
         verticalBlurMat = Material::create(verticalBlurEffect);
         verticalBlurMat->setFloatParameter("leftSeparator", 0.25f);
         verticalBlurMat->setFloatParameter("rightSeparator", 0.75f);
 
-        auto horizontalBlurEffect = Effect::create(commonShaders.vertex.passThrough, fsHorizontalBlur);
+        auto horizontalBlurEffect = Effect::create(device, commonShaders.vertex.passThrough, fsHorizontalBlur);
         horizontalBlurMat = Material::create(horizontalBlurEffect);
         horizontalBlurMat->setFloatParameter("leftSeparator", 0.25f);
         horizontalBlurMat->setFloatParameter("rightSeparator", 0.75f);
@@ -153,7 +153,7 @@ public:
         camera->setViewport(0, 0, resolution.x, resolution.y);
         camera->setRenderTarget(fb1);
 
-        auto effect = Effect::create(commonShaders.vertex.passThrough, fsStitches);
+        auto effect = Effect::create(device, commonShaders.vertex.passThrough, fsStitches);
         material = Material::create(effect);
         material->setTextureParameter("mainTex", fbTex);
         material->setTextureParameter("stitchTex", stitchTex);
@@ -280,7 +280,7 @@ private:
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->generateMipmaps();
-            auto effect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.texture);
+            auto effect = Effect::create(device, commonShaders.vertex.basic, commonShaders.fragment.texture);
             auto mat = Material::create(effect);
             mat->setFaceCull(FaceCull::All);
             mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");

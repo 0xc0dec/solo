@@ -26,9 +26,8 @@
 using namespace solo;
 
 
-auto Effect::create(const std::string &vsSrc, const std::string &fsSrc) -> sptr<Effect>
+auto Effect::create(Device *device, const std::string &vsSrc, const std::string &fsSrc) -> sptr<Effect>
 {
-    auto device = Device::get();
     switch (device->getSetup().mode)
     {
         case DeviceMode::OpenGL:
@@ -39,13 +38,12 @@ auto Effect::create(const std::string &vsSrc, const std::string &fsSrc) -> sptr<
 }
 
 
-auto Effect::create(EffectPrefab prefab) -> sptr<Effect>
+auto Effect::create(Device *device, EffectPrefab prefab) -> sptr<Effect>
 {
-    auto device = Device::get();
     switch (device->getSetup().mode)
     {
         case DeviceMode::OpenGL:
-            return OpenGLEffect::create(prefab);
+            return OpenGLEffect::create(device, prefab);
         default:
             return std::make_shared<NullEffect>();
     }

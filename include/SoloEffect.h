@@ -25,6 +25,8 @@
 
 namespace solo
 {
+    class Device;
+
     enum class EffectPrefab
     {
         Skybox,
@@ -34,8 +36,8 @@ namespace solo
     class Effect
     {
     public:
-        static auto create(const std::string &vsSrc, const std::string &fsSrc) -> sptr<Effect>;
-        static auto create(EffectPrefab prefab) -> sptr<Effect>;
+        static auto create(Device *device, const std::string &vsSrc, const std::string &fsSrc) -> sptr<Effect>;
+        static auto create(Device *device, EffectPrefab prefab) -> sptr<Effect>;
 
         SL_DISABLE_COPY_AND_MOVE(Effect)
         virtual ~Effect() {}

@@ -148,7 +148,7 @@ public:
 
     void init() override final
     {
-        effect = Effect::create(commonShaders.vertex.basic, commonShaders.fragment.color);
+        effect = Effect::create(device, commonShaders.vertex.basic, commonShaders.fragment.color);
     }
 
     void update() override final
@@ -218,7 +218,7 @@ private:
             "../assets/skyboxes/deep-space/right.png",
             "../assets/skyboxes/deep-space/top.png",
             "../assets/skyboxes/deep-space/bottom.png"
-        })->done([ = ](sptr<CubeTexture> tex)
+        })->done([=](sptr<CubeTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->setFiltering(TextureFiltering::Linear);
@@ -234,7 +234,7 @@ private:
         tex->setWrapping(TextureWrapping::Clamp);
         tex->generateMipmaps();
 
-        auto mat = Material::create(Effect::create(commonShaders.vertex.basic, commonShaders.fragment.texture));
+        auto mat = Material::create(Effect::create(device, commonShaders.vertex.basic, commonShaders.fragment.texture));
         mat->setFaceCull(FaceCull::All);
         mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
         mat->setTextureParameter("mainTex", tex);
