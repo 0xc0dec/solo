@@ -171,7 +171,7 @@ private:
         cam->getRenderTags() = ~renderTargetQuadTag;
         node->findComponent<Transform>()->setLocalPosition(Vector3(0, 0, 10));
 
-        auto fb = FrameBuffer::create();
+        auto fb = FrameBuffer::create(device);
         fb->setAttachments({ offscreenCameraTex });
         cam->setRenderTarget(fb);
     }

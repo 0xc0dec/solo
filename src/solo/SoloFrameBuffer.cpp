@@ -19,8 +19,6 @@
 */
 
 #include "SoloFrameBuffer.h"
-#include "SoloRenderer.h"
-#include "SoloRectTexture.h"
 #include "SoloDevice.h"
 #include "platform/opengl/SoloOpenGLFrameBuffer.h"
 #include "platform/null/SoloNullFrameBuffer.h"
@@ -28,9 +26,8 @@
 using namespace solo;
 
 
-auto FrameBuffer::create() -> sptr<FrameBuffer>
+auto FrameBuffer::create(Device *device) -> sptr<FrameBuffer>
 {
-    auto device = Device::get();
     switch (device->getSetup().mode)
     {
         case DeviceMode::OpenGL:

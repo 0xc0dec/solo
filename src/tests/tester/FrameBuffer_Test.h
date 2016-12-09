@@ -43,7 +43,7 @@ private:
         t1->setData(TextureFormat::RGB, {}, 64, 64);
         t2->setData(TextureFormat::RGB, {}, 64, 64);
 
-        auto fb = FrameBuffer::create();
+        auto fb = FrameBuffer::create(device);
         fb->setAttachments({ t1, t2 });
 
         auto size = fb->getSize();

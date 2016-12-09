@@ -47,7 +47,7 @@ public:
         fbTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
         fbTex->setFiltering(TextureFiltering::Nearest);
         fbTex->setWrapping(TextureWrapping::Clamp);
-        fb1 = FrameBuffer::create();
+        fb1 = FrameBuffer::create(device);
         fb1->setAttachments({ fbTex });
         camera->setRenderTarget(fb1);
 
@@ -55,7 +55,7 @@ public:
         fbTex2->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
         fbTex2->setFiltering(TextureFiltering::Nearest);
         fbTex2->setWrapping(TextureWrapping::Clamp);
-        fb2 = FrameBuffer::create();
+        fb2 = FrameBuffer::create(device);
         fb2->setAttachments({ fbTex2 });
 
         auto grayscaleEffect = Effect::create(device, commonShaders.vertex.passThrough, fsGrayscale);
@@ -136,19 +136,19 @@ public:
         auto stitchTexSize = stitchTex->getSize();
 
         auto resolution = Vector2(
-                              math::clamp(static_cast<int>(canvasSize.x / stitchWidth) * 2, 1, 2048),
-                              math::clamp(static_cast<int>(canvasSize.y / stitchTexSize.y) * 2, 1, 2048));
+            math::clamp(static_cast<int>(canvasSize.x / stitchWidth) * 2, 1, 2048),
+            math::clamp(static_cast<int>(canvasSize.y / stitchTexSize.y) * 2, 1, 2048));
 
         auto stitchCount = Vector2(
-                               resolution.x * stitchWidth / (2 * stitchTexSize.x),
-                               resolution.y / 2);
+            resolution.x * stitchWidth / (2 * stitchTexSize.x),
+            resolution.y / 2);
 
         auto camera = node.findComponent<Camera>();
         fbTex = RectTexture::create();
         fbTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(resolution.x), static_cast<uint32_t>(resolution.y));
         fbTex->setFiltering(TextureFiltering::Nearest);
         fbTex->setWrapping(TextureWrapping::Clamp);
-        fb1 = FrameBuffer::create();
+        fb1 = FrameBuffer::create(device);
         fb1->setAttachments({ fbTex });
         camera->setViewport(0, 0, resolution.x, resolution.y);
         camera->setRenderTarget(fb1);

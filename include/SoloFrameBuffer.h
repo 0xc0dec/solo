@@ -21,9 +21,8 @@
 #pragma once
 
 #include "SoloCommon.h"
-#include "SoloRenderer.h"
 #include "SoloVector2.h"
-
+#include <vector>
 
 namespace solo
 {
@@ -33,7 +32,7 @@ namespace solo
     class FrameBuffer
     {
     public:
-        static auto create() -> sptr<FrameBuffer>;
+        static auto create(Device *device) -> sptr<FrameBuffer>;
 
         SL_DISABLE_COPY_AND_MOVE(FrameBuffer)
         virtual ~FrameBuffer() {}
