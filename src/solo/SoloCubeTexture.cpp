@@ -26,9 +26,8 @@
 using namespace solo;
 
 
-auto CubeTexture::create() -> sptr<CubeTexture>
+auto CubeTexture::create(Device *device) -> sptr<CubeTexture>
 {
-    auto device = Device::get();
     switch (device->getSetup().mode)
     {
         case DeviceMode::OpenGL:

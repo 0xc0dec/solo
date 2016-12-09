@@ -33,7 +33,8 @@
 using namespace solo;
 
 
-AssetLoader::AssetLoader(Device *device, const FriendToken<Device> &)
+AssetLoader::AssetLoader(Device *device, const FriendToken<Device> &):
+    device(device)
 {
     imageLoaders.push_back(std::make_unique<PngImageLoader>(device));
     meshLoaders.push_back(std::make_unique<ObjMeshLoader>(device));
@@ -99,7 +100,7 @@ auto AssetLoader::loadRectTextureAsync(const std::string &path) -> sptr<AsyncHan
 
 auto AssetLoader::loadCubeTexture(const std::vector<std::string> &sidePaths) -> sptr<CubeTexture>
 {
-    auto result = CubeTexture::create();
+    auto result = CubeTexture::create(device);
     auto loader = getImageLoader(sidePaths[0]);
 
     auto idx = 0;
@@ -139,9 +140,9 @@ auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string> &sidePaths
         });
 
         volatile auto lock = this->tasksLock.acquire();
-        this->tasks.push_back(std::bind([ = ] (const std::vector<sptr<Image>> &images)
+        this->tasks.push_back(std::bind([=] (const std::vector<sptr<Image>> &images)
         {
-            auto texture = CubeTexture::create();
+            auto texture = CubeTexture::create(device);
             uint32_t idx = 0;
             for (const auto &image : images)
             {

@@ -86,6 +86,8 @@ namespace solo
         void update();
 
     private:
+        Device *device = nullptr;
+
         std::vector<sptr<ImageLoader>> imageLoaders;
         std::vector<sptr<MeshLoader>> meshLoaders;
 
