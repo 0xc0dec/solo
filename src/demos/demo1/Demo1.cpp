@@ -107,7 +107,7 @@ public:
 private:
     sptr<Material> createColorMaterial(const Vector4 &color)
     {
-        auto mat = Material::create(colorEffect);
+        auto mat = Material::create(device, colorEffect);
         mat->setFaceCull(FaceCull::All);
         mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
         mat->setVector4Parameter("color", color);
@@ -183,12 +183,12 @@ private:
         blueMat = createColorMaterial(Vector4(0, 0, 1, 1));
         whiteMat = createColorMaterial(Vector4(1, 1, 1, 1));
 
-        checkerMat = Material::create(checkerEffect);
+        checkerMat = Material::create(device, checkerEffect);
         checkerMat->setFaceCull(FaceCull::All);
         checkerMat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
         checkerMat->setVector4Parameter("color", Vector4(1, 1, 0, 1));
 
-        monitorMat = Material::create(simpleTextureEffect);
+        monitorMat = Material::create(device, simpleTextureEffect);
         monitorMat->setFaceCull(FaceCull::All);
         monitorMat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
         monitorMat->setTextureParameter("mainTex", offscreenCameraTex);
@@ -238,7 +238,7 @@ private:
             tex->setWrapping(TextureWrapping::Clamp);
             tex->generateMipmaps();
 
-            auto mat = Material::create(texWithLightingEffect);
+            auto mat = Material::create(device, texWithLightingEffect);
             mat->setFaceCull(FaceCull::All);
             mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
             mat->bindInvTransposedWorldMatrixParameter("invTransposedWorldMatrix");
@@ -285,7 +285,7 @@ private:
             mesh->addPart(indices.data(), 6);
             mesh->setPrimitiveType(PrimitiveType::Triangles);
 
-            auto mat = Material::create(simpleTextureEffect);
+            auto mat = Material::create(device, simpleTextureEffect);
             mat->setFaceCull(FaceCull::All);
             mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
             mat->setTextureParameter("mainTex", tex);
@@ -334,7 +334,7 @@ private:
         {
             tex->setWrapping(TextureWrapping::Clamp);
 
-            auto mat = Material::create(simpleTextureEffect);
+            auto mat = Material::create(device, simpleTextureEffect);
             mat->setFaceCull(FaceCull::All);
             mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
             mat->setTextureParameter("mainTex", tex);

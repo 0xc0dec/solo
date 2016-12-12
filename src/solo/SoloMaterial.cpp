@@ -29,9 +29,8 @@
 using namespace solo;
 
 
-auto Material::create(sptr<Effect> effect) -> sptr<Material>
+auto Material::create(Device *device, sptr<Effect> effect) -> sptr<Material>
 {
-    auto device = Device::get();
     switch (device->getSetup().mode)
     {
         case DeviceMode::OpenGL:

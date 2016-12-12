@@ -37,7 +37,7 @@ public:
         initialRotation(initialRotation),
         mesh(mesh)
     {
-        material = Material::create(effect);
+        material = Material::create(device, effect);
         material->setFaceCull(FaceCull::All);
         material->setPolygonMode(PolygonMode::Wireframe);
         material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
@@ -234,7 +234,7 @@ private:
         tex->setWrapping(TextureWrapping::Clamp);
         tex->generateMipmaps();
 
-        auto mat = Material::create(Effect::create(device, commonShaders.vertex.basic, commonShaders.fragment.texture));
+        auto mat = Material::create(device, Effect::create(device, commonShaders.vertex.basic, commonShaders.fragment.texture));
         mat->setFaceCull(FaceCull::All);
         mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
         mat->setTextureParameter("mainTex", tex);

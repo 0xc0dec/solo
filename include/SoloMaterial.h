@@ -42,7 +42,7 @@ namespace solo
     class Material
     {
     public:
-        static auto create(sptr<Effect> effect) -> sptr<Material>;
+        static auto create(Device *device, sptr<Effect> effect) -> sptr<Material>;
 
         SL_DISABLE_COPY_AND_MOVE(Material)
         virtual ~Material() {}

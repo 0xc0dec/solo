@@ -33,7 +33,7 @@ SkyboxRenderer::SkyboxRenderer(const Node &node):
     renderQueue = KnownRenderQueues::Skybox;
 
     auto effect = Effect::create(node.getScene()->getDevice(), EffectPrefab::Skybox);
-    material = Material::create(effect);
+    material = Material::create(node.getScene()->getDevice(), effect);
     material->bindProjectionMatrixParameter("projMatrix");
     material->bindWorldViewMatrixParameter("worldViewMatrix");
     material->setDepthTest(true);

@@ -32,7 +32,7 @@ FontRenderer::FontRenderer(const Node &node):
     ComponentBase(node)
 {
     auto effect = Effect::create(node.getScene()->getDevice(), EffectPrefab::Font);
-    material = Material::create(effect);
+    material = Material::create(node.getScene()->getDevice(), effect);
     material->setFaceCull(FaceCull::All);
     material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
     material->setTransparent(true);
