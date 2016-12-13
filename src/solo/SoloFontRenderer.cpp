@@ -125,7 +125,7 @@ void FontRenderer::rebuildMesh()
     layout1.add(VertexBufferLayoutSemantics::Position, 3);
     layout2.add(VertexBufferLayoutSemantics::TexCoord0, 2);
 
-    mesh = Mesh::create();
+    mesh = Mesh::create(node.getScene()->getDevice());
     mesh->addDynamicVertexBuffer(layout1, reinterpret_cast<const float *>(vertices.data()), static_cast<uint32_t>(vertices.size()));
     mesh->addDynamicVertexBuffer(layout2, reinterpret_cast<const float *>(uvs.data()), static_cast<uint32_t>(uvs.size()));
     mesh->addPart(reinterpret_cast<const void *>(indexes.data()), static_cast<uint32_t>(indexes.size()));

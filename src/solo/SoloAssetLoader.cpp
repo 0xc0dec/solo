@@ -161,7 +161,7 @@ auto AssetLoader::loadMesh(const std::string &path) -> sptr<Mesh>
 {
     auto loader = getMeshLoader(path);
     auto data = loader->loadData(path);
-    return Mesh::create(data.get());
+    return Mesh::create(device, data.get());
 }
 
 
@@ -177,7 +177,7 @@ auto AssetLoader::loadMeshAsync(const std::string &path) -> sptr<AsyncHandle<Mes
         this->tasks.push_back([ = ]()
         {
             // This is later called in the update() method
-            auto mesh = Mesh::create(data.get());
+            auto mesh = Mesh::create(device, data.get());
             handle->finish(mesh);
         });
     });

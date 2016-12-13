@@ -216,7 +216,7 @@ private:
 
     sptr<Node> createPrefabMeshNode(MeshPrefab prefab)
     {
-        auto mesh = Mesh::create(prefab);
+        auto mesh = Mesh::create(device, prefab);
         assert(mesh != nullptr);
         auto node = scene->createNode();
         node->addComponent<MeshRenderer>()->setMesh(mesh);
@@ -280,7 +280,7 @@ private:
                 0, 2, 3
             };
 
-            auto mesh = Mesh::create();
+            auto mesh = Mesh::create(device);
             mesh->addDynamicVertexBuffer(layout, data.data(), 4);
             mesh->addPart(indices.data(), 6);
             mesh->setPrimitiveType(PrimitiveType::Triangles);

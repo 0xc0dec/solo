@@ -49,9 +49,9 @@ namespace solo
     class Mesh
     {
     public:
-        static auto create() -> sptr<Mesh>;
-        static auto create(MeshPrefab prefab) -> sptr<Mesh>;
-        static auto create(MeshData *data) -> sptr<Mesh>;
+        static auto create(Device *device) -> sptr<Mesh>;
+        static auto create(Device *device, MeshPrefab prefab) -> sptr<Mesh>;
+        static auto create(Device *device, MeshData *data) -> sptr<Mesh>;
 
         SL_DISABLE_COPY_AND_MOVE(Mesh)
         virtual ~Mesh() {}

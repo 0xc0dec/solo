@@ -239,7 +239,7 @@ private:
         mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
         mat->setTextureParameter("mainTex", tex);
 
-        cubeMesh = Mesh::create(MeshPrefab::Cube);
+        cubeMesh = Mesh::create(device, MeshPrefab::Cube);
 
         // Floor
         auto node = scene->createNode();

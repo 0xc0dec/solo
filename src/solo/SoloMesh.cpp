@@ -28,9 +28,8 @@
 using namespace solo;
 
 
-sptr<Mesh> Mesh::create()
+sptr<Mesh> Mesh::create(Device *device)
 {
-    auto device = Device::get();
     switch (device->getSetup().mode)
     {
         case DeviceMode::OpenGL:
@@ -41,9 +40,8 @@ sptr<Mesh> Mesh::create()
 }
 
 
-sptr<Mesh> Mesh::create(MeshPrefab prefab)
+sptr<Mesh> Mesh::create(Device *device, MeshPrefab prefab)
 {
-    auto device = Device::get();
     switch (device->getSetup().mode)
     {
         case DeviceMode::OpenGL:
@@ -54,9 +52,8 @@ sptr<Mesh> Mesh::create(MeshPrefab prefab)
 }
 
 
-sptr<Mesh> Mesh::create(MeshData *data)
+sptr<Mesh> Mesh::create(Device *device, MeshData *data)
 {
-    auto device = Device::get();
     switch (device->getSetup().mode)
     {
         case DeviceMode::OpenGL:

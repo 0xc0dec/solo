@@ -43,7 +43,7 @@ OpenGLGraphics::OpenGLGraphics(Device *device, const FriendToken<Device> &token)
 void OpenGLGraphics::blit(Material *material, FrameBuffer *target)
 {
     if (!quadMesh)
-        quadMesh = Mesh::create(MeshPrefab::Quad);
+        quadMesh = Mesh::create(device, MeshPrefab::Quad);
 
     material->setDepthTest(false);
     material->setDepthWrite(false);
