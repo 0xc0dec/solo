@@ -26,9 +26,8 @@
 using namespace solo;
 
 
-sptr<RectTexture> RectTexture::create()
+sptr<RectTexture> RectTexture::create(Device *device)
 {
-    auto device = Device::get();
     switch (device->getSetup().mode)
     {
         case DeviceMode::OpenGL:

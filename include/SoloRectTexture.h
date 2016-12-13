@@ -23,7 +23,6 @@
 #include "SoloTexture.h"
 #include "SoloVector2.h"
 
-
 namespace solo
 {
     class Device;
@@ -31,7 +30,7 @@ namespace solo
     class RectTexture: public Texture
     {
     public:
-        static sptr<RectTexture> create();
+        static sptr<RectTexture> create(Device *device);
 
         virtual void setData(TextureFormat format, const uint8_t *data, uint32_t width, uint32_t height) = 0;
 

@@ -157,9 +157,9 @@ private:
 
     void initOffscreenCamera()
     {
-        offscreenCameraTex = RectTexture::create();
+        offscreenCameraTex = RectTexture::create(device);
         offscreenCameraTex->setData(TextureFormat::RGB, {},
-                                    static_cast<uint32_t>(floor(canvasSize.x / 8.0f)), static_cast<uint32_t>(floor(canvasSize.y / 8.0f)));
+            static_cast<uint32_t>(floor(canvasSize.x / 8.0f)), static_cast<uint32_t>(floor(canvasSize.y / 8.0f)));
         offscreenCameraTex->setFiltering(TextureFiltering::Nearest);
         offscreenCameraTex->setWrapping(TextureWrapping::Clamp);
 

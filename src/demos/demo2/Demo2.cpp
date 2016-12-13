@@ -43,7 +43,7 @@ public:
         auto canvasSize = device->getCanvasSize();
 
         auto camera = node.findComponent<Camera>();
-        fbTex = RectTexture::create();
+        fbTex = RectTexture::create(device);
         fbTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
         fbTex->setFiltering(TextureFiltering::Nearest);
         fbTex->setWrapping(TextureWrapping::Clamp);
@@ -51,7 +51,7 @@ public:
         fb1->setAttachments({ fbTex });
         camera->setRenderTarget(fb1);
 
-        fbTex2 = RectTexture::create();
+        fbTex2 = RectTexture::create(device);
         fbTex2->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
         fbTex2->setFiltering(TextureFiltering::Nearest);
         fbTex2->setWrapping(TextureWrapping::Clamp);
@@ -144,7 +144,7 @@ public:
             resolution.y / 2);
 
         auto camera = node.findComponent<Camera>();
-        fbTex = RectTexture::create();
+        fbTex = RectTexture::create(device);
         fbTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(resolution.x), static_cast<uint32_t>(resolution.y));
         fbTex->setFiltering(TextureFiltering::Nearest);
         fbTex->setWrapping(TextureWrapping::Clamp);

@@ -69,7 +69,7 @@ auto AssetLoader::loadRectTexture(const std::string &path) -> sptr<RectTexture>
 {
     auto loader = getImageLoader(path);
     auto image = loader->load(path);
-    auto result = RectTexture::create();
+    auto result = RectTexture::create(device);
     result->setData(image->format, image->data.data(), image->width, image->height);
     return result;
 }
@@ -85,7 +85,7 @@ auto AssetLoader::loadRectTextureAsync(const std::string &path) -> sptr<AsyncHan
         volatile auto lock = this->tasksLock.acquire();
         this->tasks.push_back([ = ]()
         {
-            auto texture = RectTexture::create();
+            auto texture = RectTexture::create(device);
             // TODO this actually blocks and causes main thread/FPS stall. So we've offloaded
             // only part of the blocking task into another thread. Other similar places
             // have the same problem

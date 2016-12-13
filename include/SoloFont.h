@@ -28,6 +28,7 @@
 namespace solo
 {
     class RectTexture;
+    class Device;
 
     struct GlyphInfo
     {
@@ -39,7 +40,7 @@ namespace solo
     class Font
     {
     public:
-        static auto create(uint8_t *fontData, uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight,
+        static auto create(Device *device, uint8_t *fontData, uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight,
                            uint32_t firstChar, uint32_t charCount, uint32_t oversampleX, uint32_t oversampleY) -> sptr<Font>;
 
         SL_DISABLE_COPY_AND_MOVE(Font)

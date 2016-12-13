@@ -38,8 +38,8 @@ public:
 private:
     void test_GetSize()
     {
-        auto t1 = RectTexture::create();
-        auto t2 = RectTexture::create();
+        auto t1 = RectTexture::create(device);
+        auto t2 = RectTexture::create(device);
         t1->setData(TextureFormat::RGB, {}, 64, 64);
         t2->setData(TextureFormat::RGB, {}, 64, 64);
 
