@@ -206,11 +206,7 @@ void Scene::render()
         for (auto cmp : renderQueue)
         {
             if (cmp->getTags() & renderTags)
-            {
-                auto transform = Node::findComponent<Transform>(this, cmp->getNode().getId()); // TODO can be cached
-                context.nodeTransform = transform;
                 cmp->render(context);
-            }
         }
 
         camera->finish();

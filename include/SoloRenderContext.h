@@ -26,7 +26,6 @@ namespace solo
     {
         class Camera *camera = nullptr;
         class Transform *cameraTransform = nullptr;
-        class Transform *nodeTransform = nullptr;
 
         static RenderContext empty;
     };
