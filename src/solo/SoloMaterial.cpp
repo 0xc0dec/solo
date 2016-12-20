@@ -19,7 +19,6 @@
 */
 
 #include "SoloMaterial.h"
-#include "SoloRenderContext.h"
 #include "SoloTexture.h"
 #include "SoloDevice.h"
 #include "SoloMaterialParameter.h"
@@ -177,7 +176,7 @@ void Material::bindCameraWorldPositionParameter(const std::string &name)
 }
 
 
-void Material::apply(const RenderContext &context)
+void Material::apply(Camera *camera, Transform *cameraTransform, Transform *nodeTransform)
 {
     applyState();
 
@@ -185,6 +184,6 @@ void Material::apply(const RenderContext &context)
     {
         effect->apply();
         for (auto &p : parameters)
-            p.second->apply(context);
+            p.second->apply(camera, cameraTransform, nodeTransform);
     }
 }

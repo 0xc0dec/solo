@@ -23,6 +23,8 @@
 #include "SoloFont.h"
 #include "SoloMaterial.h"
 #include "SoloRenderQueue.h"
+#include "SoloRenderContext.h"
+#include "SoloTransform.h"
 #include "SoloRectTexture.h"
 
 using namespace solo;
@@ -31,6 +33,8 @@ using namespace solo;
 FontRenderer::FontRenderer(const Node &node):
     ComponentBase(node)
 {
+    transform = node.findComponent<Transform>();
+
     auto effect = Effect::create(node.getScene()->getDevice(), EffectPrefab::Font);
     material = Material::create(node.getScene()->getDevice(), effect);
     material->setFaceCull(FaceCull::All);
@@ -45,7 +49,7 @@ void FontRenderer::render(RenderContext &context)
 {
     if (!mesh)
         return;
-    material->apply(context);
+    material->apply(context.camera, context.cameraTransform, transform);
     mesh->draw(material->getEffect());
 }
 

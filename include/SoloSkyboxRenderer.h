@@ -30,6 +30,7 @@ namespace solo
 {
     class Material;
     class CubeTexture;
+    class Transform;
 
     class SkyboxRenderer final: public ComponentBase<SkyboxRenderer>
     {
@@ -42,6 +43,7 @@ namespace solo
         auto getTexture() const -> sptr<CubeTexture>;
 
     private:
+        Transform *transform = nullptr;
         sptr<Mesh> quadMesh;
         sptr<Material> material;
         sptr<CubeTexture> texture;

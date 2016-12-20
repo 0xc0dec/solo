@@ -36,7 +36,8 @@ namespace solo
     class Effect;
     class Texture;
     class MaterialParameter;
-    struct RenderContext;
+    class Camera;
+    class Transform;
     enum class MaterialParameterType;
 
     class Material
@@ -68,7 +69,7 @@ namespace solo
         void bindInvTransposedWorldViewMatrixParameter(const std::string &name);
         void bindCameraWorldPositionParameter(const std::string &name);
 
-        void apply(const RenderContext &context);
+        void apply(Camera *camera, Transform *cameraTransform, Transform *nodeTransform);
 
         auto getEffect() const -> Effect*;
 

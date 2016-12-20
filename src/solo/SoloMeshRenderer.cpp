@@ -22,6 +22,7 @@
 #include "SoloMesh.h"
 #include "SoloMaterial.h"
 #include "SoloRenderContext.h"
+#include "SoloTransform.h"
 
 using namespace solo;
 
@@ -30,6 +31,7 @@ MeshRenderer::MeshRenderer(const Node &node):
     ComponentBase(node)
 {
     renderQueue = KnownRenderQueues::Opaque;
+    transform = node.findComponent<Transform>();
 }
 
 
@@ -44,7 +46,7 @@ void MeshRenderer::render(RenderContext &context)
         auto material = getMaterial(0);
         if (material)
         {
-            material->apply(context);
+            material->apply(context.camera, context.cameraTransform, transform);
             mesh->draw(material->getEffect());
         }
     }
@@ -55,7 +57,7 @@ void MeshRenderer::render(RenderContext &context)
             auto material = getMaterial(part);
             if (material)
             {
-                material->apply(context);
+                material->apply(context.camera, context.cameraTransform, transform);
                 mesh->drawPart(material->getEffect(), part);
             }
         }

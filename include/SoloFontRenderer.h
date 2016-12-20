@@ -30,6 +30,7 @@ namespace solo
     class Font;
     class Mesh;
     class Material;
+    class Transform;
 
     class FontRenderer final: public ComponentBase<FontRenderer>
     {
@@ -45,6 +46,7 @@ namespace solo
         void rebuildMesh();
         void updateMesh();
 
+        Transform *transform = nullptr;
         sptr<Font> font;
         sptr<Mesh> mesh;
         sptr<Material> material;

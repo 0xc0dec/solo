@@ -27,7 +27,6 @@
 #include "SoloTexture.h"
 #include "SoloMatrix.h"
 #include "SoloOpenGLRenderer.h"
-#include "SoloRenderContext.h"
 #include "SoloTransform.h"
 #include "SoloCamera.h"
 #include "SoloOpenGLEffect.h"
@@ -170,7 +169,7 @@ void OpenGLMaterialParameter::setValue(const void *value)
 }
 
 
-void OpenGLMaterialParameter::apply(const RenderContext &context)
+void OpenGLMaterialParameter::apply(Camera *camera, Transform *cameraTransform, Transform *nodeTransform)
 {
     switch (type)
     {
@@ -190,41 +189,41 @@ void OpenGLMaterialParameter::apply(const RenderContext &context)
         break;
 
     case MaterialParameterType::WorldMatrix:
-        if (context.nodeTransform)
-            renderer->setUniform(handle, context.nodeTransform->getWorldMatrix().m, 1);
+        if (nodeTransform)
+            renderer->setUniform(handle, nodeTransform->getWorldMatrix().m, 1);
         break;
     case MaterialParameterType::ViewMatrix:
-        if (context.camera)
-            renderer->setUniform(handle, context.camera->getViewMatrix().m, 1);
+        if (camera)
+            renderer->setUniform(handle, camera->getViewMatrix().m, 1);
         break;
     case MaterialParameterType::ProjectionMatrix:
-        if (context.camera)
-            renderer->setUniform(handle, context.camera->getProjectionMatrix().m, 1);
+        if (camera)
+            renderer->setUniform(handle, camera->getProjectionMatrix().m, 1);
         break;
     case MaterialParameterType::WorldViewMatrix:
-        if (context.nodeTransform && context.camera)
-            renderer->setUniform(handle, context.nodeTransform->getWorldViewMatrix(context.camera).m, 1);
+        if (nodeTransform && camera)
+            renderer->setUniform(handle, nodeTransform->getWorldViewMatrix(camera).m, 1);
         break;
     case MaterialParameterType::ViewProjectionMatrix:
-        if (context.camera)
-            renderer->setUniform(handle, context.camera->getViewProjectionMatrix().m, 1);
+        if (camera)
+            renderer->setUniform(handle, camera->getViewProjectionMatrix().m, 1);
         break;
     case MaterialParameterType::WorldViewProjectionMatrix:
-        if (context.nodeTransform && context.camera)
-            renderer->setUniform(handle, context.nodeTransform->getWorldViewProjectionMatrix(context.camera).m, 1);
+        if (nodeTransform && camera)
+            renderer->setUniform(handle, nodeTransform->getWorldViewProjectionMatrix(camera).m, 1);
         break;
     case MaterialParameterType::InverseTransposedWorldMatrix:
-        if (context.nodeTransform)
-            renderer->setUniform(handle, context.nodeTransform->getInvTransposedWorldMatrix().m, 1);
+        if (nodeTransform)
+            renderer->setUniform(handle, nodeTransform->getInvTransposedWorldMatrix().m, 1);
         break;
     case MaterialParameterType::InverseTransposedWorldViewMatrix:
-        if (context.nodeTransform && context.camera)
-            renderer->setUniform(handle, context.nodeTransform->getInvTransposedWorldViewMatrix(context.camera).m, 1);
+        if (nodeTransform && camera)
+            renderer->setUniform(handle, nodeTransform->getInvTransposedWorldViewMatrix(camera).m, 1);
         break;
     case MaterialParameterType::CameraWorldPosition:
-        if (context.cameraTransform)
+        if (cameraTransform)
         {
-            auto pos = context.cameraTransform->getWorldPosition();
+            auto pos = cameraTransform->getWorldPosition();
             renderer->setUniform(handle, &pos, 1);
         }
         break;

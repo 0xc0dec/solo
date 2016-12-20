@@ -23,6 +23,7 @@
 #include "SoloMaterial.h"
 #include "SoloRenderContext.h"
 #include "SoloCubeTexture.h"
+#include "SoloTransform.h"
 
 using namespace solo;
 
@@ -31,6 +32,7 @@ SkyboxRenderer::SkyboxRenderer(const Node &node):
     ComponentBase(node)
 {
     renderQueue = KnownRenderQueues::Skybox;
+    transform = node.findComponent<Transform>();
 
     auto effect = Effect::create(node.getScene()->getDevice(), EffectPrefab::Skybox);
     material = Material::create(node.getScene()->getDevice(), effect);
@@ -46,7 +48,7 @@ SkyboxRenderer::SkyboxRenderer(const Node &node):
 
 void SkyboxRenderer::render(RenderContext &context)
 {
-    material->apply(context);
+    material->apply(context.camera, context.cameraTransform, transform);
     quadMesh->draw(material->getEffect());
 }
 

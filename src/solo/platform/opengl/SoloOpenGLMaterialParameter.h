@@ -39,7 +39,7 @@ namespace solo
         ~OpenGLMaterialParameter();
 
         void setValue(const void *value) override final;
-        void apply(const RenderContext &context) override final;
+        void apply(Camera *camera, Transform *cameraTransform, Transform *nodeTransform) override final;
 
     private:
         static auto getUniformType(MaterialParameterType type) -> UniformType;

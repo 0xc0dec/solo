@@ -27,7 +27,8 @@ namespace solo
 {
     class Effect;
     class Device;
-    struct RenderContext;
+    class Camera;
+    class Transform;
 
     enum class MaterialParameterType
     {
@@ -65,7 +66,7 @@ namespace solo
         auto getType() const -> MaterialParameterType;
 
         virtual void setValue(const void *value) = 0;
-        virtual void apply(const RenderContext &context) = 0;
+        virtual void apply(Camera *camera, Transform *cameraTransform, Transform *nodeTransform) = 0;
 
     protected:
         explicit MaterialParameter(MaterialParameterType type);
