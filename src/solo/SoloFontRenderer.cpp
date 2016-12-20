@@ -45,7 +45,7 @@ FontRenderer::FontRenderer(const Node &node):
 }
 
 
-void FontRenderer::render(RenderContext &context)
+void FontRenderer::render(const RenderContext &context)
 {
     if (!mesh)
         return;

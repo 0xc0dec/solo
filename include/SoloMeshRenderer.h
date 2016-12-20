@@ -36,7 +36,7 @@ namespace solo
     public:
         explicit MeshRenderer(const Node &node);
 
-        void render(RenderContext &context) override final;
+        void render(const RenderContext &context) override final;
 
         auto getMesh() const -> Mesh*;
         void setMesh(sptr<Mesh> mesh);

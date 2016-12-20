@@ -35,7 +35,7 @@ MeshRenderer::MeshRenderer(const Node &node):
 }
 
 
-void MeshRenderer::render(RenderContext &context)
+void MeshRenderer::render(const RenderContext &context)
 {
     if (!mesh || materials.empty())
         return;
