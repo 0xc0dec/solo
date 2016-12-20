@@ -199,7 +199,6 @@ void Scene::render()
         camera->apply();
 
         RenderContext context;
-        context.scene = this;
         context.camera = camera;
 
         auto renderTags = camera->getRenderTags();
