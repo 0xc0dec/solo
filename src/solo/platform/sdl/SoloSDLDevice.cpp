@@ -61,7 +61,7 @@ auto SDLDevice::getLifetime() const -> float
 }
 
 
-void SDLDevice::beginUpdate()
+void SDLDevice::prepareUpdate()
 {
     windowCloseRequested = false;
     quitRequested = false;

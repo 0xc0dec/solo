@@ -129,14 +129,14 @@ bool Device::isMouseButtonReleased(MouseButton button) const
 
 void Device::update()
 {
-    beginUpdate();
+    prepareUpdate();
     assetLoader->update();
     physics->update();
     renderer->beginFrame();
     scene->update();
     scene->render();
     renderer->endFrame();
-    endUpdate();
+    finishUpdate();
 }
 
 

@@ -138,8 +138,8 @@ namespace solo
         explicit Device(const DeviceSetup &setup);
 
         void updateTime();
-        virtual void beginUpdate() = 0;
-        virtual void endUpdate() = 0;
+        virtual void prepareUpdate() = 0;
+        virtual void finishUpdate() = 0;
 
         DeviceSetup setup;
 
