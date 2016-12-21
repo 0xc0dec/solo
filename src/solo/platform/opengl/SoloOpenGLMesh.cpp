@@ -67,15 +67,15 @@ OpenGLMesh::OpenGLMesh(Device *device, MeshPrefab prefab):
 {
     switch (prefab)
     {
-    case MeshPrefab::Quad:
-        initQuadMesh();
-        break;
-    case MeshPrefab::Cube:
-        initCubeMesh();
-        break;
-    default:
-        SL_ERR("Unknown mesh prefab type");
-        break;
+        case MeshPrefab::Quad:
+            initQuadMesh();
+            break;
+        case MeshPrefab::Cube:
+            initCubeMesh();
+            break;
+        default:
+            SL_ERR("Unknown mesh prefab type");
+            break;
     }
 }
 

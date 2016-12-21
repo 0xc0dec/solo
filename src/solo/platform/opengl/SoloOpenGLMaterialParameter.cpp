@@ -124,47 +124,47 @@ void OpenGLMaterialParameter::setValue(const void *value)
     // TODO reuse value if type is the same
     switch (type)
     {
-    case MaterialParameterType::Float:
-        this->value = std::make_unique<ScalarValue<float>>(value);
-        break;
-    case MaterialParameterType::FloatArray:
-        this->value = std::make_unique<ArrayValue<float>>(value);
-        break;
+        case MaterialParameterType::Float:
+            this->value = std::make_unique<ScalarValue<float>>(value);
+            break;
+        case MaterialParameterType::FloatArray:
+            this->value = std::make_unique<ArrayValue<float>>(value);
+            break;
 
-    case MaterialParameterType::Vector2:
-        this->value = std::make_unique<ScalarValue<Vector2>>(value);
-        break;
-    case MaterialParameterType::Vector2Array:
-        this->value = std::make_unique<ArrayValue<Vector2>>(value);
-        break;
+        case MaterialParameterType::Vector2:
+            this->value = std::make_unique<ScalarValue<Vector2>>(value);
+            break;
+        case MaterialParameterType::Vector2Array:
+            this->value = std::make_unique<ArrayValue<Vector2>>(value);
+            break;
 
-    case MaterialParameterType::Vector3:
-        this->value = std::make_unique<ScalarValue<Vector3>>(value);
-        break;
-    case MaterialParameterType::Vector3Array:
-        this->value = std::make_unique<ArrayValue<Vector3>>(value);
-        break;
+        case MaterialParameterType::Vector3:
+            this->value = std::make_unique<ScalarValue<Vector3>>(value);
+            break;
+        case MaterialParameterType::Vector3Array:
+            this->value = std::make_unique<ArrayValue<Vector3>>(value);
+            break;
 
-    case MaterialParameterType::Vector4:
-        this->value = std::make_unique<ScalarValue<Vector4>>(value);
-        break;
-    case MaterialParameterType::Vector4Array:
-        this->value = std::make_unique<ArrayValue<Vector4>>(value);
-        break;
+        case MaterialParameterType::Vector4:
+            this->value = std::make_unique<ScalarValue<Vector4>>(value);
+            break;
+        case MaterialParameterType::Vector4Array:
+            this->value = std::make_unique<ArrayValue<Vector4>>(value);
+            break;
 
-    case MaterialParameterType::Matrix:
-        this->value = std::make_unique<ScalarValue<Matrix>>(value);
-        break;
-    case MaterialParameterType::MatrixArray:
-        this->value = std::make_unique<ArrayValue<Matrix>>(value);
-        break;
+        case MaterialParameterType::Matrix:
+            this->value = std::make_unique<ScalarValue<Matrix>>(value);
+            break;
+        case MaterialParameterType::MatrixArray:
+            this->value = std::make_unique<ArrayValue<Matrix>>(value);
+            break;
 
-    case MaterialParameterType::Texture:
-        this->value = std::make_unique<TextureValue>(value);
-        break;
+        case MaterialParameterType::Texture:
+            this->value = std::make_unique<TextureValue>(value);
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -173,62 +173,62 @@ void OpenGLMaterialParameter::apply(Camera *camera, Transform *cameraTransform, 
 {
     switch (type)
     {
-    case MaterialParameterType::Float:
-    case MaterialParameterType::FloatArray:
-    case MaterialParameterType::Vector2:
-    case MaterialParameterType::Vector2Array:
-    case MaterialParameterType::Vector3:
-    case MaterialParameterType::Vector3Array:
-    case MaterialParameterType::Vector4:
-    case MaterialParameterType::Vector4Array:
-    case MaterialParameterType::Matrix:
-    case MaterialParameterType::MatrixArray:
-    case MaterialParameterType::Texture:
-        if (value)
-            value->apply(renderer, handle);
-        break;
+        case MaterialParameterType::Float:
+        case MaterialParameterType::FloatArray:
+        case MaterialParameterType::Vector2:
+        case MaterialParameterType::Vector2Array:
+        case MaterialParameterType::Vector3:
+        case MaterialParameterType::Vector3Array:
+        case MaterialParameterType::Vector4:
+        case MaterialParameterType::Vector4Array:
+        case MaterialParameterType::Matrix:
+        case MaterialParameterType::MatrixArray:
+        case MaterialParameterType::Texture:
+            if (value)
+                value->apply(renderer, handle);
+            break;
 
-    case MaterialParameterType::WorldMatrix:
-        if (nodeTransform)
-            renderer->setUniform(handle, nodeTransform->getWorldMatrix().m, 1);
-        break;
-    case MaterialParameterType::ViewMatrix:
-        if (camera)
-            renderer->setUniform(handle, camera->getViewMatrix().m, 1);
-        break;
-    case MaterialParameterType::ProjectionMatrix:
-        if (camera)
-            renderer->setUniform(handle, camera->getProjectionMatrix().m, 1);
-        break;
-    case MaterialParameterType::WorldViewMatrix:
-        if (nodeTransform && camera)
-            renderer->setUniform(handle, nodeTransform->getWorldViewMatrix(camera).m, 1);
-        break;
-    case MaterialParameterType::ViewProjectionMatrix:
-        if (camera)
-            renderer->setUniform(handle, camera->getViewProjectionMatrix().m, 1);
-        break;
-    case MaterialParameterType::WorldViewProjectionMatrix:
-        if (nodeTransform && camera)
-            renderer->setUniform(handle, nodeTransform->getWorldViewProjectionMatrix(camera).m, 1);
-        break;
-    case MaterialParameterType::InverseTransposedWorldMatrix:
-        if (nodeTransform)
-            renderer->setUniform(handle, nodeTransform->getInvTransposedWorldMatrix().m, 1);
-        break;
-    case MaterialParameterType::InverseTransposedWorldViewMatrix:
-        if (nodeTransform && camera)
-            renderer->setUniform(handle, nodeTransform->getInvTransposedWorldViewMatrix(camera).m, 1);
-        break;
-    case MaterialParameterType::CameraWorldPosition:
-        if (cameraTransform)
-        {
-            auto pos = cameraTransform->getWorldPosition();
-            renderer->setUniform(handle, &pos, 1);
-        }
-        break;
-    default:
-        break;
+        case MaterialParameterType::WorldMatrix:
+            if (nodeTransform)
+                renderer->setUniform(handle, nodeTransform->getWorldMatrix().m, 1);
+            break;
+        case MaterialParameterType::ViewMatrix:
+            if (camera)
+                renderer->setUniform(handle, camera->getViewMatrix().m, 1);
+            break;
+        case MaterialParameterType::ProjectionMatrix:
+            if (camera)
+                renderer->setUniform(handle, camera->getProjectionMatrix().m, 1);
+            break;
+        case MaterialParameterType::WorldViewMatrix:
+            if (nodeTransform && camera)
+                renderer->setUniform(handle, nodeTransform->getWorldViewMatrix(camera).m, 1);
+            break;
+        case MaterialParameterType::ViewProjectionMatrix:
+            if (camera)
+                renderer->setUniform(handle, camera->getViewProjectionMatrix().m, 1);
+            break;
+        case MaterialParameterType::WorldViewProjectionMatrix:
+            if (nodeTransform && camera)
+                renderer->setUniform(handle, nodeTransform->getWorldViewProjectionMatrix(camera).m, 1);
+            break;
+        case MaterialParameterType::InverseTransposedWorldMatrix:
+            if (nodeTransform)
+                renderer->setUniform(handle, nodeTransform->getInvTransposedWorldMatrix().m, 1);
+            break;
+        case MaterialParameterType::InverseTransposedWorldViewMatrix:
+            if (nodeTransform && camera)
+                renderer->setUniform(handle, nodeTransform->getInvTransposedWorldViewMatrix(camera).m, 1);
+            break;
+        case MaterialParameterType::CameraWorldPosition:
+            if (cameraTransform)
+            {
+                auto pos = cameraTransform->getWorldPosition();
+                renderer->setUniform(handle, &pos, 1);
+            }
+            break;
+        default:
+            break;
     }
 }
 
@@ -237,43 +237,43 @@ auto OpenGLMaterialParameter::getUniformType(MaterialParameterType type) -> Unif
 {
     switch (type)
     {
-    case MaterialParameterType::Float:
-        return UniformType::Float;
-    case MaterialParameterType::FloatArray:
-        return UniformType::FloatArray;
-    case MaterialParameterType::Vector2:
-        return UniformType::Vector2;
-    case MaterialParameterType::Vector2Array:
-        return UniformType::Vector2Array;
-    case MaterialParameterType::Vector3:
-        return UniformType::Vector3;
-    case MaterialParameterType::Vector3Array:
-        return UniformType::Vector3Array;
-    case MaterialParameterType::Vector4:
-        return UniformType::Vector4;
-    case MaterialParameterType::Vector4Array:
-        return UniformType::Vector4Array;
-    case MaterialParameterType::Matrix:
-        return UniformType::Matrix;
-    case MaterialParameterType::MatrixArray:
-        return UniformType::MatrixArray;
-    case MaterialParameterType::Texture:
-        return UniformType::Texture;
-    case MaterialParameterType::WorldMatrix:
-        return UniformType::TextureArray;
-    case MaterialParameterType::CameraWorldPosition:
-        return UniformType::Vector3;
-    case MaterialParameterType::ViewMatrix:
-    case MaterialParameterType::ProjectionMatrix:
-    case MaterialParameterType::WorldViewMatrix:
-    case MaterialParameterType::ViewProjectionMatrix:
-    case MaterialParameterType::WorldViewProjectionMatrix:
-    case MaterialParameterType::InverseTransposedWorldMatrix:
-    case MaterialParameterType::InverseTransposedWorldViewMatrix:
-        return UniformType::Matrix;
-    default:
-        SL_ERR("Unknown material parameter type");
-        return UniformType::Float;
+        case MaterialParameterType::Float:
+            return UniformType::Float;
+        case MaterialParameterType::FloatArray:
+            return UniformType::FloatArray;
+        case MaterialParameterType::Vector2:
+            return UniformType::Vector2;
+        case MaterialParameterType::Vector2Array:
+            return UniformType::Vector2Array;
+        case MaterialParameterType::Vector3:
+            return UniformType::Vector3;
+        case MaterialParameterType::Vector3Array:
+            return UniformType::Vector3Array;
+        case MaterialParameterType::Vector4:
+            return UniformType::Vector4;
+        case MaterialParameterType::Vector4Array:
+            return UniformType::Vector4Array;
+        case MaterialParameterType::Matrix:
+            return UniformType::Matrix;
+        case MaterialParameterType::MatrixArray:
+            return UniformType::MatrixArray;
+        case MaterialParameterType::Texture:
+            return UniformType::Texture;
+        case MaterialParameterType::WorldMatrix:
+            return UniformType::TextureArray;
+        case MaterialParameterType::CameraWorldPosition:
+            return UniformType::Vector3;
+        case MaterialParameterType::ViewMatrix:
+        case MaterialParameterType::ProjectionMatrix:
+        case MaterialParameterType::WorldViewMatrix:
+        case MaterialParameterType::ViewProjectionMatrix:
+        case MaterialParameterType::WorldViewProjectionMatrix:
+        case MaterialParameterType::InverseTransposedWorldMatrix:
+        case MaterialParameterType::InverseTransposedWorldViewMatrix:
+            return UniformType::Matrix;
+        default:
+            SL_ERR("Unknown material parameter type");
+            return UniformType::Float;
     }
 }
 

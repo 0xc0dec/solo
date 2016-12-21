@@ -31,10 +31,10 @@ auto MaterialParameter::create(Device *device, Effect *effect, MaterialParameter
 {
     switch (device->getSetup().mode)
     {
-    case DeviceMode::OpenGL:
-        return std::make_shared<OpenGLMaterialParameter>(device->getRenderer(), effect, type, name);
-    default:
-        return std::make_shared<NullMaterialParameter>(type);
+        case DeviceMode::OpenGL:
+            return std::make_shared<OpenGLMaterialParameter>(device->getRenderer(), effect, type, name);
+        default:
+            return std::make_shared<NullMaterialParameter>(type);
     }
 }
 

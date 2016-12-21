@@ -59,13 +59,13 @@ void CubeTexture::rebuildFlags()
 
     switch (depthWrapping)
     {
-    case TextureWrapping::Clamp:
-        flags |= TextureFlags::DepthWrapClamp;
-        break;
-    case TextureWrapping::Repeat:
-        flags |= TextureFlags::DepthWrapRepeat;
-        break;
-    default:
-        break;
+        case TextureWrapping::Clamp:
+            flags |= TextureFlags::DepthWrapClamp;
+            break;
+        case TextureWrapping::Repeat:
+            flags |= TextureFlags::DepthWrapRepeat;
+            break;
+        default:
+            break;
     }
 }

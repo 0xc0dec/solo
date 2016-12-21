@@ -174,21 +174,21 @@ void Transform::rotate(const Quaternion &rotation, TransformSpace space)
 
     switch (space)
     {
-    case TransformSpace::Self:
-        localRotation = localRotation * normalizedRotation;
-        break;
-    case TransformSpace::Parent:
-        localRotation = normalizedRotation * localRotation;
-        break;
-    case TransformSpace::World:
+        case TransformSpace::Self:
+            localRotation = localRotation * normalizedRotation;
+            break;
+        case TransformSpace::Parent:
+            localRotation = normalizedRotation * localRotation;
+            break;
+        case TransformSpace::World:
         {
             auto invWorldRotation = getWorldRotation();
             invWorldRotation.inverse();
             localRotation = localRotation * invWorldRotation * normalizedRotation * getWorldRotation();
             break;
         }
-    default:
-        break;
+        default:
+            break;
     }
 
     setDirtyWithChildren(TransformDirtyFlags::Rotation | TransformDirtyFlags::World | TransformDirtyFlags::InvTransposedWorld);

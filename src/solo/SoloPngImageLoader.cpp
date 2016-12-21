@@ -82,16 +82,16 @@ auto PngImageLoader::load(const std::string &path) -> sptr<Image>
     TextureFormat colorFormat;
     switch (colorType)
     {
-    case PNG_COLOR_TYPE_RGB:
-        colorFormat = TextureFormat::RGB;
-        break;
-    case PNG_COLOR_TYPE_RGBA:
-        colorFormat = TextureFormat::RGBA;
-        break;
-    default:
-        png_destroy_info_struct(png, &info);
-        png_destroy_read_struct(&png, &info, nullptr);
-        SL_ERR(SL_FMT("Unsupported PNG color type ", colorType));
+        case PNG_COLOR_TYPE_RGB:
+            colorFormat = TextureFormat::RGB;
+            break;
+        case PNG_COLOR_TYPE_RGBA:
+            colorFormat = TextureFormat::RGBA;
+            break;
+        default:
+            png_destroy_info_struct(png, &info);
+            png_destroy_read_struct(&png, &info, nullptr);
+            SL_ERR(SL_FMT("Unsupported PNG color type ", colorType));
     }
 
     auto stride = png_get_rowbytes(png, info);

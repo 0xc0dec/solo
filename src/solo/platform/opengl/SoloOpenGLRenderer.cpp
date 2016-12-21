@@ -34,35 +34,35 @@ static auto toGLBlendFactor(BlendFactor factor) -> GLenum
 {
     switch (factor)
     {
-    case BlendFactor::Zero:
-        return GL_ZERO;
-    case BlendFactor::One:
-        return GL_ONE;
-    case BlendFactor::SrcColor:
-        return GL_SRC_COLOR;
-    case BlendFactor::OneMinusSrcColor:
-        return GL_ONE_MINUS_SRC_COLOR;
-    case BlendFactor::DstColor:
-        return GL_DST_COLOR;
-    case BlendFactor::OneMinusDstColor:
-        return GL_ONE_MINUS_DST_COLOR;
-    case BlendFactor::SrcAlpha:
-        return GL_SRC_ALPHA;
-    case BlendFactor::OneMinusSrcAlpha:
-        return GL_ONE_MINUS_SRC_ALPHA;
-    case BlendFactor::DstAlpha:
-        return GL_DST_ALPHA;
-    case BlendFactor::OneMinusDstAlpha:
-        return GL_ONE_MINUS_DST_ALPHA;
-    case BlendFactor::ConstantAlpha:
-        return GL_CONSTANT_ALPHA;
-    case BlendFactor::OneMinusConstantAlpha:
-        return GL_ONE_MINUS_CONSTANT_ALPHA;
-    case BlendFactor::SrcAlphaSaturate:
-        return GL_SRC_ALPHA_SATURATE;
-    default:
-        SL_ERR("Unknown blend factor");
-        return 0;
+        case BlendFactor::Zero:
+            return GL_ZERO;
+        case BlendFactor::One:
+            return GL_ONE;
+        case BlendFactor::SrcColor:
+            return GL_SRC_COLOR;
+        case BlendFactor::OneMinusSrcColor:
+            return GL_ONE_MINUS_SRC_COLOR;
+        case BlendFactor::DstColor:
+            return GL_DST_COLOR;
+        case BlendFactor::OneMinusDstColor:
+            return GL_ONE_MINUS_DST_COLOR;
+        case BlendFactor::SrcAlpha:
+            return GL_SRC_ALPHA;
+        case BlendFactor::OneMinusSrcAlpha:
+            return GL_ONE_MINUS_SRC_ALPHA;
+        case BlendFactor::DstAlpha:
+            return GL_DST_ALPHA;
+        case BlendFactor::OneMinusDstAlpha:
+            return GL_ONE_MINUS_DST_ALPHA;
+        case BlendFactor::ConstantAlpha:
+            return GL_CONSTANT_ALPHA;
+        case BlendFactor::OneMinusConstantAlpha:
+            return GL_ONE_MINUS_CONSTANT_ALPHA;
+        case BlendFactor::SrcAlphaSaturate:
+            return GL_SRC_ALPHA_SATURATE;
+        default:
+            SL_ERR("Unknown blend factor");
+            return 0;
     }
 }
 
@@ -71,21 +71,21 @@ static auto toGLCubeTextureFace(CubeTextureFace face) -> GLenum
 {
     switch (face)
     {
-    case CubeTextureFace::Front:
-        return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
-    case CubeTextureFace::Back:
-        return GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
-    case CubeTextureFace::Right:
-        return GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
-    case CubeTextureFace::Left:
-        return GL_TEXTURE_CUBE_MAP_POSITIVE_X;
-    case CubeTextureFace::Top:
-        return GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
-    case CubeTextureFace::Bottom:
-        return GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
-    default:
-        SL_ERR("Unknown cube texture face");
-        return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
+        case CubeTextureFace::Front:
+            return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
+        case CubeTextureFace::Back:
+            return GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
+        case CubeTextureFace::Right:
+            return GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
+        case CubeTextureFace::Left:
+            return GL_TEXTURE_CUBE_MAP_POSITIVE_X;
+        case CubeTextureFace::Top:
+            return GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
+        case CubeTextureFace::Bottom:
+            return GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
+        default:
+            SL_ERR("Unknown cube texture face");
+            return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
     }
 }
 
@@ -94,19 +94,19 @@ static auto toGLPrimitiveType(PrimitiveType type) -> GLenum
 {
     switch (type)
     {
-    case PrimitiveType::Triangles:
-        return GL_TRIANGLES;
-    case PrimitiveType::TriangleStrip:
-        return GL_TRIANGLE_STRIP;
-    case PrimitiveType::Lines:
-        return GL_LINES;
-    case PrimitiveType::LineStrip:
-        return GL_LINE_STRIP;
-    case PrimitiveType::Points:
-        return GL_POINTS;
-    default:
-        SL_ERR("Unknown primitive type");
-        return GL_TRIANGLES;
+        case PrimitiveType::Triangles:
+            return GL_TRIANGLES;
+        case PrimitiveType::TriangleStrip:
+            return GL_TRIANGLE_STRIP;
+        case PrimitiveType::Lines:
+            return GL_LINES;
+        case PrimitiveType::LineStrip:
+            return GL_LINE_STRIP;
+        case PrimitiveType::Points:
+            return GL_POINTS;
+        default:
+            SL_ERR("Unknown primitive type");
+            return GL_TRIANGLES;
     }
 }
 
@@ -115,17 +115,17 @@ static auto toTextureFormat(TextureFormat format) -> GLenum
 {
     switch (format)
     {
-    case TextureFormat::Red:
-        return GL_RED;
-    case TextureFormat::RGB:
-        return GL_RGB;
-    case TextureFormat::RGBA:
-        return GL_RGBA;
-    case TextureFormat::Alpha:
-        return GL_ALPHA;
-    default:
-        SL_ERR("Unknown texture format");
-        return GL_RED;
+        case TextureFormat::Red:
+            return GL_RED;
+        case TextureFormat::RGB:
+            return GL_RGB;
+        case TextureFormat::RGBA:
+            return GL_RGBA;
+        case TextureFormat::Alpha:
+            return GL_ALPHA;
+        default:
+            SL_ERR("Unknown texture format");
+            return GL_RED;
     }
 }
 
@@ -134,16 +134,16 @@ static auto toInternalTextureFormat(TextureFormat format) -> GLenum
 {
     switch (format)
     {
-    case TextureFormat::Red:
-    case TextureFormat::RGB:
-        return GL_RGB;
-    case TextureFormat::RGBA:
-        return GL_RGBA;
-    case TextureFormat::Alpha:
-        return GL_ALPHA;
-    default:
-        SL_ERR("Unknown texture format");
-        return GL_RGB;
+        case TextureFormat::Red:
+        case TextureFormat::RGB:
+            return GL_RGB;
+        case TextureFormat::RGBA:
+            return GL_RGBA;
+        case TextureFormat::Alpha:
+            return GL_ALPHA;
+        default:
+            SL_ERR("Unknown texture format");
+            return GL_RGB;
     }
 }
 
