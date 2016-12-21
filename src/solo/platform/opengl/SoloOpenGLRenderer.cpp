@@ -576,7 +576,7 @@ void OpenGLRenderer::setFrameBuffer(uint32_t handle)
 
 void OpenGLRenderer::updateFrameBuffer(uint32_t handle, const std::vector<uint32_t> &attachmentHandles)
 {
-    SL_BLOCK(validateFrameBufferAttachments(attachmentHandles));
+    SL_ERR_CHECK_BLOCK(validateFrameBufferAttachments(attachmentHandles));
 
     bindFrameBuffer(handle);
 

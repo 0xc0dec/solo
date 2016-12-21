@@ -57,36 +57,20 @@
 #endif
 
 #ifdef SL_ERR_CHECK
-#   define SL_BLOCK(code) SL_MACRO_BLOCK(code)
+#   define SL_ERR_CHECK_BLOCK(code) SL_MACRO_BLOCK(code)
 #   define SL_ERR(...) SL_MACRO_BLOCK(throw EngineException(__VA_ARGS__))
 #   define SL_ERR_IF(condition, ...) SL_MACRO_BLOCK(if (condition) throw EngineException(__VA_ARGS__))
 #else
-#   define SL_BLOCK(code) SL_EMPTY_MACRO_BLOCK()
+#   define SL_ERR_CHECK_BLOCK(code) SL_EMPTY_MACRO_BLOCK()
 #   define SL_ERR(...) SL_EMPTY_MACRO_BLOCK()
 #   define SL_ERR_IF(condition, ...) SL_EMPTY_MACRO_BLOCK()
 #endif
-
-
-#define SL_SIMPLE_EXCEPTION(type, final_) \
-    class type final_: public EngineException \
-    { \
-    public: \
-        type() : EngineException("") \
-        { \
-        } \
-        \
-        explicit type(const std::string& msg) : EngineException(msg) \
-        { \
-        } \
-    };
-
 
 #define SL_DISABLE_COPY_AND_MOVE(type) \
     type(const type &other) = delete; \
     type(type &&other) = delete; \
     type &operator=(const type &other) = delete; \
     type &operator=(type &&other) = delete;
-
 
 #define SL_FLUENT_DTO(dtoType, fields) \
     struct dtoType final \

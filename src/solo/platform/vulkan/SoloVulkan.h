@@ -30,7 +30,7 @@
 #include <vulkan.h>
 
 #ifdef SL_ERR_CHECK
-#   define SL_CHECK_VK_RESULT(vkCall, ...) SL_BLOCK(if (vkCall != VK_SUCCESS) SL_ERR(__VA_ARGS__))
+#   define SL_CHECK_VK_RESULT(vkCall, ...) SL_ERR_CHECK_BLOCK(if (vkCall != VK_SUCCESS) SL_ERR(__VA_ARGS__))
 #else
 #   define SL_CHECK_VK_RESULT(vkCall) vkCall
 #endif
