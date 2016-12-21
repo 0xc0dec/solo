@@ -25,8 +25,5 @@ namespace solo
     struct RenderContext final
     {
         class Camera *camera = nullptr;
-        class Transform *cameraTransform = nullptr;
-
-        static RenderContext empty;
     };
 }

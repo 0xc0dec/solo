@@ -48,7 +48,7 @@ SkyboxRenderer::SkyboxRenderer(const Node &node):
 
 void SkyboxRenderer::render(const RenderContext &context)
 {
-    material->apply(context.camera, context.cameraTransform, transform);
+    material->apply(context.camera, nullptr, transform);
     quadMesh->draw(material->getEffect());
 }
 
