@@ -180,14 +180,8 @@ void Scene::rebuildComponentsToUpdate()
 
 void Scene::render()
 {
-    static auto ignoreNonCameras = [](Component * cmp)
-    {
-        return cmp->getTypeId() != Camera::getId();
-    };
-    static auto ignoreNone = [](Component * cmp)
-    {
-        return false;
-    };
+    static auto ignoreNonCameras = [](Component * cmp) { return cmp->getTypeId() != Camera::getId(); };
+    static auto ignoreNone = [](Component * cmp) { return false; };
 
     rebuildRenderQueue(cameraQueue, ignoreNonCameras);
     rebuildRenderQueue(renderQueue, ignoreNone);
