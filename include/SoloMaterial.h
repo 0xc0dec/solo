@@ -69,7 +69,7 @@ namespace solo
         void bindInvTransposedWorldViewMatrixParameter(const std::string &name);
         void bindCameraWorldPositionParameter(const std::string &name);
 
-        void apply(Camera *camera, Transform *cameraTransform, Transform *nodeTransform);
+        void apply(Camera *camera, Transform *nodeTransform);
 
         auto getEffect() const -> Effect*;
 

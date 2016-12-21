@@ -55,7 +55,7 @@ void OpenGLGraphics::blit(Material *material, FrameBuffer *target)
     renderer->setViewport(static_cast<uint32_t>(0), static_cast<uint32_t>(0),
         static_cast<uint32_t>(viewportSize.x), static_cast<uint32_t>(viewportSize.y));
 
-    material->apply(nullptr, nullptr, nullptr);
+    material->apply(nullptr, nullptr);
     quadMesh->draw(material->getEffect());
 
     if (target)

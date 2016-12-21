@@ -169,7 +169,7 @@ void OpenGLMaterialParameter::setValue(const void *value)
 }
 
 
-void OpenGLMaterialParameter::apply(Camera *camera, Transform *cameraTransform, Transform *nodeTransform)
+void OpenGLMaterialParameter::apply(Camera *camera, Transform *nodeTransform)
 {
     switch (type)
     {
@@ -221,9 +221,9 @@ void OpenGLMaterialParameter::apply(Camera *camera, Transform *cameraTransform, 
                 renderer->setUniform(handle, nodeTransform->getInvTransposedWorldViewMatrix(camera).m, 1);
             break;
         case MaterialParameterType::CameraWorldPosition:
-            if (cameraTransform)
+            if (camera)
             {
-                auto pos = cameraTransform->getWorldPosition();
+                auto pos = camera->getTransform()->getWorldPosition();
                 renderer->setUniform(handle, &pos, 1);
             }
             break;

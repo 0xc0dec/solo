@@ -176,7 +176,7 @@ void Material::bindCameraWorldPositionParameter(const std::string &name)
 }
 
 
-void Material::apply(Camera *camera, Transform *cameraTransform, Transform *nodeTransform)
+void Material::apply(Camera *camera, Transform *nodeTransform)
 {
     applyState();
 
@@ -184,6 +184,6 @@ void Material::apply(Camera *camera, Transform *cameraTransform, Transform *node
     {
         effect->apply();
         for (auto &p : parameters)
-            p.second->apply(camera, cameraTransform, nodeTransform);
+            p.second->apply(camera, nodeTransform);
     }
 }

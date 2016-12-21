@@ -46,7 +46,7 @@ void MeshRenderer::render(const RenderContext &context)
         auto material = getMaterial(0);
         if (material)
         {
-            material->apply(context.camera, nullptr, transform);
+            material->apply(context.camera, transform);
             mesh->draw(material->getEffect());
         }
     }
@@ -57,7 +57,7 @@ void MeshRenderer::render(const RenderContext &context)
             auto material = getMaterial(part);
             if (material)
             {
-                material->apply(context.camera, nullptr, transform);
+                material->apply(context.camera, transform);
                 mesh->drawPart(material->getEffect(), part);
             }
         }

@@ -66,7 +66,7 @@ namespace solo
         auto getType() const -> MaterialParameterType;
 
         virtual void setValue(const void *value) = 0;
-        virtual void apply(Camera *camera, Transform *cameraTransform, Transform *nodeTransform) = 0;
+        virtual void apply(Camera *camera, Transform *nodeTransform) = 0;
 
     protected:
         explicit MaterialParameter(MaterialParameterType type);

@@ -47,6 +47,8 @@ namespace solo
         void apply() const;
         void finish() const;
 
+        auto getTransform() const -> Transform*;
+
         auto getRenderTags() -> uint32_t&;
 
         auto getRenderTarget() const -> sptr<FrameBuffer>;
@@ -197,5 +199,10 @@ namespace solo
     inline void Camera::resetViewport()
     {
         viewportSet = false;
+    }
+
+    inline auto Camera::getTransform() const -> Transform*
+    {
+        return transform;
     }
 }

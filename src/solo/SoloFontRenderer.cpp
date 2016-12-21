@@ -49,7 +49,7 @@ void FontRenderer::render(const RenderContext &context)
 {
     if (!mesh)
         return;
-    material->apply(context.camera, nullptr, transform);
+    material->apply(context.camera, transform);
     mesh->draw(material->getEffect());
 }
 
