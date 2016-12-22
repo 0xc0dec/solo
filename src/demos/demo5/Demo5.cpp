@@ -60,6 +60,9 @@ int main()
     auto device = Device::create(DeviceSetup().withMode(DeviceMode::Vulkan).withDimensions(1200, 600).withLogFilePath("demo5.log"));
     Demo demo(device.get());
     while (!device->isQuitRequested() && !device->isWindowCloseRequested() && !device->isKeyPressed(KeyCode::Escape, true))
-        device->update();
+    {
+        device->beginUpdate();
+        device->endUpdate();
+    }
     return 0;
 }
