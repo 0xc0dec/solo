@@ -311,6 +311,11 @@ int main()
     while (!device->isQuitRequested() && !device->isWindowCloseRequested() && !device->isKeyPressed(KeyCode::Escape, true))
     {
         device->beginUpdate();
+        device->getAssetLoader()->update();
+        device->getRenderer()->beginFrame();
+        device->getScene()->update();
+        device->getScene()->render();
+        device->getRenderer()->beginFrame();
         device->endUpdate();
     }
     return 0;
