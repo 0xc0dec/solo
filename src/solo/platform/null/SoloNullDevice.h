@@ -37,8 +37,8 @@ namespace solo
         auto getLifetime() const -> float override final;
 
     private:
-        void prepareUpdate() override final {}
-        void finishUpdate() override final {}
+        void beginUpdate() override final {}
+        void endUpdate() override final {}
 
         std::string windowTitle;
     };

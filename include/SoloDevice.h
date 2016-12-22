@@ -122,7 +122,8 @@ namespace solo
         bool isMouseButtonDown(MouseButton button, bool firstTime = false) const;
         bool isMouseButtonReleased(MouseButton button) const;
 
-        void update();
+        virtual void beginUpdate() = 0;
+        virtual void endUpdate() = 0;
 
         auto getSetup() const -> DeviceSetup;
 
@@ -138,8 +139,6 @@ namespace solo
         explicit Device(const DeviceSetup &setup);
 
         void updateTime();
-        virtual void prepareUpdate() = 0;
-        virtual void finishUpdate() = 0;
 
         DeviceSetup setup;
 

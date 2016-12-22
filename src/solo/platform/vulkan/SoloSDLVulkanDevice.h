@@ -42,7 +42,7 @@ namespace solo
         auto getVkSurface() const -> VkSurfaceKHR;
 
     protected:
-        void finishUpdate() override final;
+        void endUpdate() override final;
 
     private:
         VkInstance instance = nullptr;

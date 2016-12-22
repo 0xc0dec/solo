@@ -38,7 +38,7 @@ namespace solo
         auto getCanvasSize() const -> Vector2 override final;
 
     private:
-        void finishUpdate() override final;
+        void endUpdate() override final;
 
         SDL_GLContext context = nullptr;
     };

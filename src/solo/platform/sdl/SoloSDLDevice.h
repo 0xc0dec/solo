@@ -41,7 +41,7 @@ namespace solo
     protected:
         explicit SDLDevice(const DeviceSetup &setup);
 
-        void prepareUpdate() override final;
+        void beginUpdate() override final;
 
         SDL_Window *window = nullptr;
 

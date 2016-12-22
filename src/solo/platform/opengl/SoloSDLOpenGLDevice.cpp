@@ -69,7 +69,7 @@ SDLOpenGLDevice::~SDLOpenGLDevice()
 }
 
 
-void SDLOpenGLDevice::finishUpdate()
+void SDLOpenGLDevice::endUpdate()
 {
     SDL_GL_SwapWindow(window);
 }

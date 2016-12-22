@@ -127,19 +127,6 @@ bool Device::isMouseButtonReleased(MouseButton button) const
 }
 
 
-void Device::update()
-{
-    prepareUpdate();
-    assetLoader->update();
-    physics->update();
-    renderer->beginFrame();
-    scene->update();
-    scene->render();
-    renderer->endFrame();
-    finishUpdate();
-}
-
-
 void Device::updateTime()
 {
     auto time = getLifetime();

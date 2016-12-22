@@ -123,7 +123,7 @@ void SDLVulkanDevice::saveScreenshot(const std::string &path)
 }
 
 
-void SDLVulkanDevice::finishUpdate()
+void SDLVulkanDevice::endUpdate()
 {
 }
 
