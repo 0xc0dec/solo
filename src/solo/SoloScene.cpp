@@ -69,6 +69,8 @@ void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
 
 void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
 {
+    SL_ERR_IF(typeId == Transform::getId(), "Transform component cannot be removed from a node"); // to simplify things
+
     auto node = nodes.find(nodeId);
     if (node == nodes.end())
         return;
