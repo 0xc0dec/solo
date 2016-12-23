@@ -45,7 +45,7 @@ public:
 
 protected:
     template <typename T>
-    void assertThrows(std::function<void(void)> code, const std::string &expectedMsg = "")
+    void assertThrows(std::function<void(void)> code, const std::string &expectedMsg = "") const
     {
         try
         {

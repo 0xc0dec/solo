@@ -32,12 +32,19 @@ public:
 
     void run() override final
     {
-        test_GetTransformComponent();
+        test_TransformRemovalForbidden();
+        test_TransformAddedByDefault();
         test_ChildrenManipulation();
     }
 
 private:
-    void test_GetTransformComponent()
+    void test_TransformRemovalForbidden()
+    {
+        auto node = scene->createNode();
+        assertThrows<EngineException>([&]() { node->removeComponent<Transform>(); }, "Transform component cannot be removed from a node");
+    }
+
+    void test_TransformAddedByDefault()
     {
         auto node = scene->createNode();
         auto transform = node->findComponent<Transform>();
