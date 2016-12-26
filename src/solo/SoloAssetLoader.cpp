@@ -79,11 +79,11 @@ auto AssetLoader::loadRectTextureAsync(const std::string &path) -> sptr<AsyncHan
 {
     auto handle = std::make_shared<AsyncHandle<RectTexture>>();
     auto loader = getImageLoader(path);
-    async::spawn([ = ]
+    async::spawn([=]
     {
         auto image = loader->load(path);
         volatile auto lock = this->tasksLock.acquire();
-        this->tasks.push_back([ = ]()
+        this->tasks.push_back([=]()
         {
             auto texture = RectTexture::create(device);
             // TODO this actually blocks and causes main thread/FPS stall. So we've offloaded
@@ -124,13 +124,13 @@ auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string> &sidePaths
     for (uint32_t i = 0; i < sidePaths.size(); i++)
     {
         auto path = sidePaths[i];
-        imageTasks.push_back(async::spawn([ = ]
+        imageTasks.push_back(async::spawn([=]
         {
             return loader->load(path);
         }));
     }
 
-    async::when_all(imageTasks.begin(), imageTasks.end()).then([ = ] (std::vector<async::task<sptr<Image>>> imageTasks)
+    async::when_all(imageTasks.begin(), imageTasks.end()).then([=] (std::vector<async::task<sptr<Image>>> imageTasks)
     {
         std::vector<sptr<Image>> images;
         std::transform(imageTasks.begin(), imageTasks.end(), std::back_inserter(images),
@@ -170,11 +170,11 @@ auto AssetLoader::loadMeshAsync(const std::string &path) -> sptr<AsyncHandle<Mes
     auto handle = std::make_shared<AsyncHandle<Mesh>>();
     auto loader = getMeshLoader(path);
 
-    async::spawn([ = ]
+    async::spawn([=]
     {
         auto data = loader->loadData(path);
         volatile auto lock = this->tasksLock.acquire();
-        this->tasks.push_back([ = ]()
+        this->tasks.push_back([=]()
         {
             // This is later called in the update() method
             auto mesh = Mesh::create(device, data.get());

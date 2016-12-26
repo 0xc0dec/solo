@@ -262,7 +262,7 @@ private:
             "../assets/skyboxes/deep-space/right.png",
             "../assets/skyboxes/deep-space/top.png",
             "../assets/skyboxes/deep-space/bottom.png"
-        })->done([ = ](sptr<CubeTexture> tex)
+        })->done([=](sptr<CubeTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->setFiltering(TextureFiltering::Linear);
@@ -291,7 +291,7 @@ private:
 
     void initMesh()
     {
-        loader->loadRectTextureAsync("../assets/cobblestone.png")->done([ = ](sptr<RectTexture> tex)
+        loader->loadRectTextureAsync("../assets/cobblestone.png")->done([=](sptr<RectTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->generateMipmaps();
@@ -302,7 +302,7 @@ private:
             mat->bindInvTransposedWorldMatrixParameter("invTransposedWorldMatrix");
             mat->setTextureParameter("mainTex", tex);
 
-            loader->loadMeshAsync("../assets/monkey_hires.obj")->done([ = ](sptr<Mesh> mesh)
+            loader->loadMeshAsync("../assets/monkey_hires.obj")->done([=](sptr<Mesh> mesh)
             {
                 auto node = scene->createNode();
                 auto renderer = node->addComponent<MeshRenderer>();
@@ -316,7 +316,7 @@ private:
 
     void initDynamicQuad()
     {
-        loadTexture("../assets/freeman.png", [ = ](sptr<RectTexture> tex)
+        loadTexture("../assets/freeman.png", [=](sptr<RectTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
 
@@ -387,7 +387,7 @@ private:
 
     void initTransparentQuad()
     {
-        loadTexture("../assets/flammable.png", [ = ](sptr<RectTexture> tex)
+        loadTexture("../assets/flammable.png", [=](sptr<RectTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
 

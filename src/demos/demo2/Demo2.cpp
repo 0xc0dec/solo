@@ -264,7 +264,7 @@ private:
             "../assets/skyboxes/deep-space/right.png",
             "../assets/skyboxes/deep-space/top.png",
             "../assets/skyboxes/deep-space/bottom.png"
-        })->done([ = ](sptr<CubeTexture> tex)
+        })->done([=](sptr<CubeTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->setFiltering(TextureFiltering::Linear);
@@ -276,7 +276,7 @@ private:
 
     void initMesh()
     {
-        loader->loadRectTextureAsync("../assets/cobblestone.png")->done([ = ](sptr<RectTexture> tex)
+        loader->loadRectTextureAsync("../assets/cobblestone.png")->done([=](sptr<RectTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->generateMipmaps();
@@ -286,7 +286,7 @@ private:
             mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
             mat->setTextureParameter("mainTex", tex);
 
-            loader->loadMeshAsync("../assets/monkey.obj")->done([ = ](sptr<Mesh> mesh)
+            loader->loadMeshAsync("../assets/monkey.obj")->done([=](sptr<Mesh> mesh)
             {
                 auto node = scene->createNode();
                 auto renderer = node->addComponent<MeshRenderer>();
