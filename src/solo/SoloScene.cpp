@@ -97,6 +97,18 @@ void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
 }
 
 
+void Scene::visit(std::function<void(Component*)> accept)
+{
+    // TODO clear list of added/deleted components
+    for (const auto &node: nodes)
+    {
+        for (const auto &cmp : node.second)
+            accept(cmp.second.get());
+    }
+    // TODO apply added/deleted components
+}
+
+
 auto Scene::findComponent(uint32_t nodeId, uint32_t typeId) const -> Component *
 {
     auto node = nodes.find(nodeId);

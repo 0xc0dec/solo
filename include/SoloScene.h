@@ -49,6 +49,8 @@ namespace solo
         void addComponent(uint32_t nodeId, sptr<Component> cmp);
         void removeComponent(uint32_t nodeId, uint32_t typeId);
 
+        void visit(std::function<void(Component*)> acceptComponent);
+
         void update();
         void render();
 
