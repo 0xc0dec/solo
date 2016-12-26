@@ -86,7 +86,9 @@ private:
 class Demo
 {
 public:
-    Demo(Device *device): device(device), scene(device->getScene()), loader(device->getAssetLoader()), canvasSize(device->getCanvasSize())
+    Demo(Device *device):
+        device(device), scene(device->getScene()),
+        loader(device->getAssetLoader()), canvasSize(device->getCanvasSize())
     {
         initEffects();
         initCamera();
@@ -104,8 +106,65 @@ public:
         });
     }
 
+    void update()
+    {
+        scene->visit([](Component *cmp)
+        {
+            cmp->update();
+        });
+    }
+
+    void render()
+    {
+        renderOffscreenCamera();
+        renderMainCamera();
+    }
+
 private:
-    sptr<Material> createColorMaterial(const Vector4 &color)
+    void renderOffscreenCamera()
+    {
+        offscreenCamera->apply();
+        RenderContext ctx; // TODO this is ugly
+        ctx.camera = offscreenCamera;
+
+        if (skybox)
+            skybox->render(ctx);
+
+        scene->visit([=](Component *cmp)
+        {
+            if (cmp != monitorQuad && cmp != skybox && cmp != transparentQuad)
+                cmp->render(ctx);
+        });
+
+        if (transparentQuad)
+            transparentQuad->render(ctx);
+
+        offscreenCamera->finish();
+    }
+
+    void renderMainCamera()
+    {
+        RenderContext ctx;
+        ctx.camera = mainCamera;
+        
+        mainCamera->apply();
+
+        if (skybox)
+            skybox->render(ctx);
+
+        scene->visit([=](Component *cmp)
+        {
+            if (cmp != skybox && cmp != transparentQuad)
+                cmp->render(ctx);
+        });
+
+        if (transparentQuad)
+            transparentQuad->render(ctx);
+
+        mainCamera->finish();
+    }
+
+    auto createColorMaterial(const Vector4 &color) -> sptr<Material>
     {
         auto mat = Material::create(device, colorEffect);
         mat->setFaceCull(FaceCull::All);
@@ -133,7 +192,7 @@ private:
         });
     }
 
-    sptr<AsyncHandle<Mesh>> initAxesMesh()
+    auto initAxesMesh() -> sptr<AsyncHandle<Mesh>>
     {
         return loader->loadMeshAsync("../assets/axes.obj");
     }
@@ -150,9 +209,9 @@ private:
         spectator->setVerticalRotationSpeed(1);
         spectator->setHorizontalRotationSpeed(1);
 
-        auto cam = node->addComponent<Camera>();
-        cam->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
-        cam->setNear(0.05f);
+        mainCamera = node->addComponent<Camera>();
+        mainCamera->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
+        mainCamera->setNear(0.05f);
     }
 
     void initOffscreenCamera()
@@ -164,16 +223,15 @@ private:
         offscreenCameraTex->setWrapping(TextureWrapping::Clamp);
 
         auto node = scene->createNode();
-        auto cam = node->addComponent<Camera>();
-        cam->setClearColor(1, 0, 1, 1);
-        cam->setNear(0.05f);
-        cam->setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8);
-        cam->getRenderTags() = ~renderTargetQuadTag;
+        offscreenCamera = node->addComponent<Camera>();
+        offscreenCamera->setClearColor(1, 0, 1, 1);
+        offscreenCamera->setNear(0.05f);
+        offscreenCamera->setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8);
         node->findComponent<Transform>()->setLocalPosition(Vector3(0, 0, 10));
 
         auto fb = FrameBuffer::create(device);
         fb->setAttachments({ offscreenCameraTex });
-        cam->setRenderTarget(fb);
+        offscreenCamera->setRenderTarget(fb);
     }
 
     void initMaterials()
@@ -209,12 +267,12 @@ private:
             tex->setWrapping(TextureWrapping::Clamp);
             tex->setFiltering(TextureFiltering::Linear);
             auto node = scene->createNode();
-            auto renderer = node->addComponent<SkyboxRenderer>();
-            renderer->setTexture(tex);
+            skybox = node->addComponent<SkyboxRenderer>();
+            skybox->setTexture(tex);
         });
     }
 
-    sptr<Node> createPrefabMeshNode(MeshPrefab prefab)
+    auto createPrefabMeshNode(MeshPrefab prefab) -> sptr<Node>
     {
         auto mesh = Mesh::create(device, prefab);
         assert(mesh != nullptr);
@@ -318,14 +376,13 @@ private:
         attachAxesMesh(parent);
 
         auto quad = createPrefabMeshNode(MeshPrefab::Quad);
-        auto renderer = quad->findComponent<MeshRenderer>();
-        renderer->setMaterial(0, monitorMat);
-        renderer->getTags() = renderTargetQuadTag;
         auto transform = quad->findComponent<Transform>();
         transform->setParent(parent->findComponent<Transform>());
         transform->setLocalPosition(Vector3(5, 2, -5));
         transform->setLocalScale(Vector3(5, 5 * canvasSize.y / canvasSize.x, 1));
         quad->addComponent<Targeter>(targetPos);
+        monitorQuad = quad->findComponent<MeshRenderer>();
+        monitorQuad->setMaterial(0, monitorMat);
     }
 
     void initTransparentQuad()
@@ -350,9 +407,9 @@ private:
             quad->findComponent<Transform>()->setParent(parent->findComponent<Transform>());
             quad->findComponent<Transform>()->setLocalPosition(Vector3(2, 0, 0));
 
-            auto renderer = quad->findComponent<MeshRenderer>();
-            renderer->setMaterial(0, mat);
-            renderer->setRenderQueue(KnownRenderQueues::Transparent);
+            transparentQuad = quad->findComponent<MeshRenderer>();
+            transparentQuad->setMaterial(0, mat);
+            transparentQuad->setRenderQueue(KnownRenderQueues::Transparent);
         });
     }
 
@@ -361,6 +418,11 @@ private:
     Scene *scene = nullptr;
     AssetLoader *loader = nullptr;
     Vector2 canvasSize;
+    Camera *mainCamera = nullptr;
+    Camera *offscreenCamera = nullptr;
+    MeshRenderer *monitorQuad = nullptr;
+    SkyboxRenderer *skybox = nullptr;
+    MeshRenderer *transparentQuad = nullptr;
     sptr<Effect> simpleTextureEffect = nullptr;
     sptr<Effect> colorEffect = nullptr;
     sptr<Effect> checkerEffect = nullptr;
@@ -385,8 +447,10 @@ int main()
         device->beginUpdate();
         device->getAssetLoader()->update();
         device->getRenderer()->beginFrame();
-        device->getScene()->update();
-        device->getScene()->render();
+
+        demo.update();
+        demo.render();
+
         device->getRenderer()->beginFrame();
         device->endUpdate();
     }
