@@ -171,7 +171,7 @@ namespace solo
         return aspectRatio;
     }
 
-    inline auto Camera::getRenderTags() -> uint32_t &
+    inline auto Camera::getRenderTags() -> uint32_t & // TODO remove
     {
         return renderTags;
     }
