@@ -116,13 +116,6 @@ public:
 
     void render()
     {
-        renderOffscreenCamera();
-        renderMainCamera();
-    }
-
-private:
-    void renderOffscreenCamera()
-    {
         offscreenCamera->apply([&](const RenderContext& ctx)
         {
             if (skybox)
@@ -137,10 +130,7 @@ private:
             if (transparentQuad)
                 transparentQuad->render(ctx);
         });
-    }
 
-    void renderMainCamera()
-    {
         mainCamera->apply([&](const RenderContext& ctx)
         {
             if (skybox)
@@ -157,6 +147,7 @@ private:
         });
     }
 
+private:
     auto createColorMaterial(const Vector4 &color) -> sptr<Material>
     {
         auto mat = Material::create(device, colorEffect);
