@@ -444,7 +444,7 @@ int main()
         demo.update();
         demo.render();
 
-        device->getRenderer()->beginFrame();
+        device->getRenderer()->endFrame();
         device->endUpdate();
     }
     return 0;
