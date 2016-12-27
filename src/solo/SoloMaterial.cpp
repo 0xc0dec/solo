@@ -176,7 +176,7 @@ void Material::bindCameraWorldPositionParameter(const std::string &name)
 }
 
 
-void Material::apply(Camera *camera, Transform *nodeTransform)
+void Material::apply(const Camera *camera, Transform *nodeTransform)
 {
     applyState();
 

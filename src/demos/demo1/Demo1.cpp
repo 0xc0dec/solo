@@ -123,45 +123,38 @@ public:
 private:
     void renderOffscreenCamera()
     {
-        offscreenCamera->apply();
-        RenderContext ctx; // TODO this is ugly
-        ctx.camera = offscreenCamera;
-
-        if (skybox)
-            skybox->render(ctx);
-
-        scene->visit([=](Component *cmp)
+        offscreenCamera->apply([&](const RenderContext& ctx)
         {
-            if (cmp != monitorQuad && cmp != skybox && cmp != transparentQuad)
-                cmp->render(ctx);
+            if (skybox)
+                skybox->render(ctx);
+
+            scene->visit([=](Component *cmp)
+            {
+                if (cmp != monitorQuad && cmp != skybox && cmp != transparentQuad)
+                    cmp->render(ctx);
+            });
+
+            if (transparentQuad)
+                transparentQuad->render(ctx);
         });
-
-        if (transparentQuad)
-            transparentQuad->render(ctx);
-
-        offscreenCamera->finish();
     }
 
     void renderMainCamera()
     {
-        RenderContext ctx;
-        ctx.camera = mainCamera;
-        
-        mainCamera->apply();
-
-        if (skybox)
-            skybox->render(ctx);
-
-        scene->visit([=](Component *cmp)
+        mainCamera->apply([&](const RenderContext& ctx)
         {
-            if (cmp != skybox && cmp != transparentQuad)
-                cmp->render(ctx);
+            if (skybox)
+                skybox->render(ctx);
+
+            scene->visit([=](Component *cmp)
+            {
+                if (cmp != skybox && cmp != transparentQuad)
+                    cmp->render(ctx);
+            });
+
+            if (transparentQuad)
+                transparentQuad->render(ctx);
         });
-
-        if (transparentQuad)
-            transparentQuad->render(ctx);
-
-        mainCamera->finish();
     }
 
     auto createColorMaterial(const Vector4 &color) -> sptr<Material>

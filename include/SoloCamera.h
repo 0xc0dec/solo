@@ -25,6 +25,7 @@
 #include "SoloTransformMatrix.h"
 #include "SoloTransform.h"
 #include "SoloNode.h"
+#include <functional>
 
 
 namespace solo
@@ -34,6 +35,7 @@ namespace solo
     class FrameBuffer;
     class Renderer;
     class Device;
+    struct RenderContext;
     struct Radian;
 
     class Camera: public ComponentBase<Camera>, protected TransformCallback
@@ -44,8 +46,7 @@ namespace solo
         void init() override final;
         void terminate() override final;
 
-        void apply() const;
-        void finish() const;
+        void apply(std::function<void(const RenderContext&)> render) const;
 
         auto getTransform() const -> Transform*;
 
@@ -82,11 +83,11 @@ namespace solo
         auto getAspectRatio() const -> float;
         void setAspectRatio(float ratio);
 
-        auto getViewMatrix() -> const TransformMatrix&;
-        auto getInvViewMatrix() -> const TransformMatrix&;
-        auto getProjectionMatrix() -> const TransformMatrix&;
-        auto getViewProjectionMatrix() -> const TransformMatrix&;
-        auto getInvViewProjectionMatrix() -> const TransformMatrix&;
+        auto getViewMatrix() const -> const TransformMatrix&;
+        auto getInvViewMatrix() const -> const TransformMatrix&;
+        auto getProjectionMatrix() const -> const TransformMatrix&;
+        auto getViewProjectionMatrix() const -> const TransformMatrix&;
+        auto getInvViewProjectionMatrix() const -> const TransformMatrix&;
 
     protected:
         explicit Camera(const Node &node);
@@ -95,7 +96,7 @@ namespace solo
 
         void onTransformChanged(const Transform *, uint32_t) override;
 
-        uint32_t dirtyFlags = ~0;
+        mutable uint32_t dirtyFlags = ~0;
         uint32_t renderTags = ~0;
 
         Device *device = nullptr;
@@ -115,11 +116,11 @@ namespace solo
         float height = 1;
         float aspectRatio = 1;
 
-        TransformMatrix viewMatrix;
-        TransformMatrix projectionMatrix;
-        TransformMatrix viewProjectionMatrix;
-        TransformMatrix invViewMatrix;
-        TransformMatrix invViewProjectionMatrix;
+        mutable TransformMatrix viewMatrix;
+        mutable TransformMatrix projectionMatrix;
+        mutable TransformMatrix viewProjectionMatrix;
+        mutable TransformMatrix invViewMatrix;
+        mutable TransformMatrix invViewProjectionMatrix;
     };
 
     template <>

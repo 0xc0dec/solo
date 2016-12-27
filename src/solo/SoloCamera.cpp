@@ -25,6 +25,7 @@
 #include "SoloRadian.h"
 #include "SoloDegree.h"
 #include "SoloScene.h"
+#include "SoloRenderContext.h"
 #include "platform/opengl/SoloOpenGLCamera.h"
 #include "platform/null/SoloNullCamera.h"
 
@@ -136,7 +137,7 @@ void Camera::setNear(float near)
 }
 
 
-auto Camera::getViewMatrix() -> const TransformMatrix &
+auto Camera::getViewMatrix() const -> const TransformMatrix &
 {
     if (dirtyFlags & dirtyBitView)
     {
@@ -148,7 +149,7 @@ auto Camera::getViewMatrix() -> const TransformMatrix &
 }
 
 
-auto Camera::getInvViewMatrix() -> const TransformMatrix &
+auto Camera::getInvViewMatrix() const -> const TransformMatrix &
 {
     if (dirtyFlags & dirtyBitInvView)
     {
@@ -160,7 +161,7 @@ auto Camera::getInvViewMatrix() -> const TransformMatrix &
 }
 
 
-auto Camera::getProjectionMatrix() -> const TransformMatrix &
+auto Camera::getProjectionMatrix() const -> const TransformMatrix &
 {
     if (dirtyFlags & dirtyBitProjection)
     {
@@ -174,7 +175,7 @@ auto Camera::getProjectionMatrix() -> const TransformMatrix &
 }
 
 
-auto Camera::getViewProjectionMatrix() -> const TransformMatrix &
+auto Camera::getViewProjectionMatrix() const -> const TransformMatrix &
 {
     if (dirtyFlags & dirtyBitViewProjection)
     {
@@ -185,7 +186,7 @@ auto Camera::getViewProjectionMatrix() -> const TransformMatrix &
 }
 
 
-auto Camera::getInvViewProjectionMatrix() -> const TransformMatrix &
+auto Camera::getInvViewProjectionMatrix() const -> const TransformMatrix &
 {
     if (dirtyFlags & dirtyBitInvViewProjection)
     {
@@ -197,16 +198,17 @@ auto Camera::getInvViewProjectionMatrix() -> const TransformMatrix &
 }
 
 
-void Camera::apply() const
+void Camera::apply(std::function<void(const RenderContext&)> render) const
 {
     if (renderTarget)
         renderTarget->bind();
+    
     applyImpl();
-}
 
+    RenderContext ctx;
+    ctx.camera = this;
+    render(ctx);
 
-void Camera::finish() const
-{
     if (renderTarget)
         renderTarget->unbind();
 }

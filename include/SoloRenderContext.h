@@ -24,6 +24,6 @@ namespace solo
 {
     struct RenderContext final
     {
-        class Camera *camera = nullptr;
+        class Camera const *camera = nullptr;
     };
 }

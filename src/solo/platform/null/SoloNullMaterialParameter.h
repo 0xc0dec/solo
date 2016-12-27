@@ -36,7 +36,7 @@ namespace solo
         {
         }
 
-        void apply(Camera *camera, Transform *nodeTransform) override final
+        void apply(const Camera *camera, Transform *nodeTransform) override final
         {
         }
     };

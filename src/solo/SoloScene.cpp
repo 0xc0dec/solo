@@ -204,7 +204,7 @@ void Scene::render()
     {
         auto camera = dynamic_cast<Camera *>(cam);
 
-        camera->apply();
+        camera->apply([](const RenderContext&) {});
 
         RenderContext context;
         context.camera = camera;
@@ -216,8 +216,6 @@ void Scene::render()
             if (cmp->getTags() & renderTags)
                 cmp->render(context);
         }
-
-        camera->finish();
 
         for (const auto &pair : nodes.at(camera->getNode().getId()))
             pair.second->onAfterCameraRender();

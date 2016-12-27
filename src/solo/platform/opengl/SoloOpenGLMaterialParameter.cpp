@@ -169,7 +169,7 @@ void OpenGLMaterialParameter::setValue(const void *value)
 }
 
 
-void OpenGLMaterialParameter::apply(Camera *camera, Transform *nodeTransform)
+void OpenGLMaterialParameter::apply(const Camera *camera, Transform *nodeTransform)
 {
     switch (type)
     {

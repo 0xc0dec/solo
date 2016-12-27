@@ -139,19 +139,19 @@ auto Transform::getInvTransposedWorldMatrix() const -> TransformMatrix
 }
 
 
-auto Transform::getWorldViewMatrix(Camera *camera) const -> TransformMatrix
+auto Transform::getWorldViewMatrix(const Camera *camera) const -> TransformMatrix
 {
     return camera->getViewMatrix() * getWorldMatrix();
 }
 
 
-auto Transform::getWorldViewProjectionMatrix(Camera *camera) const -> TransformMatrix
+auto Transform::getWorldViewProjectionMatrix(const Camera *camera) const -> TransformMatrix
 {
     return camera->getViewProjectionMatrix() * getWorldMatrix();
 }
 
 
-auto Transform::getInvTransposedWorldViewMatrix(Camera *camera) const -> TransformMatrix
+auto Transform::getInvTransposedWorldViewMatrix(const Camera *camera) const -> TransformMatrix
 {
     auto result = camera->getViewMatrix() * getWorldMatrix();
     result.invert();

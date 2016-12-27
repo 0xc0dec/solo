@@ -112,9 +112,9 @@ namespace solo
         auto getMatrix() const -> TransformMatrix;
         auto getWorldMatrix() const -> TransformMatrix;
 
-        auto getWorldViewMatrix(Camera *camera) const -> TransformMatrix;
-        auto getWorldViewProjectionMatrix(Camera *camera) const -> TransformMatrix;
-        auto getInvTransposedWorldViewMatrix(Camera *camera) const -> TransformMatrix;
+        auto getWorldViewMatrix(const Camera *camera) const -> TransformMatrix;
+        auto getWorldViewProjectionMatrix(const Camera *camera) const -> TransformMatrix;
+        auto getInvTransposedWorldViewMatrix(const Camera *camera) const -> TransformMatrix;
         auto getInvTransposedWorldMatrix() const -> TransformMatrix;
 
         auto transformPoint(const Vector3 &point) const -> Vector3;
