@@ -22,7 +22,6 @@
 #include "SoloMesh.h"
 #include "SoloFont.h"
 #include "SoloMaterial.h"
-#include "SoloRenderQueue.h"
 #include "SoloRenderContext.h"
 #include "SoloTransform.h"
 #include "SoloRectTexture.h"
@@ -40,8 +39,6 @@ FontRenderer::FontRenderer(const Node &node):
     material->setFaceCull(FaceCull::All);
     material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
     material->setTransparent(true);
-
-    renderQueue = KnownRenderQueues::Transparent;
 }
 
 

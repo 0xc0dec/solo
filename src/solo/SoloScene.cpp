@@ -20,8 +20,7 @@
 
 #include "SoloScene.h"
 #include "SoloComponent.h"
-#include "SoloRenderContext.h"
-#include "SoloCamera.h"
+#include "SoloTransform.h"
 #include "SoloNode.h"
 
 using namespace solo;
@@ -60,10 +59,6 @@ void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
 
     for (const auto &a : nodes.at(nodeId))
         a.second->onComponentAdded(cmp.get());
-
-    componentsDirty = true;
-    if (typeId == Camera::getId())
-        cameraCacheDirty = true;
 }
 
 
@@ -90,10 +85,6 @@ void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
         for (const auto &otherCmp : node->second)
             otherCmp.second->onComponentRemoved(cmp.get());
     }
-
-    if (typeId == Camera::getId())
-        cameraCacheDirty = true;
-    componentsDirty = true;
 }
 
 
@@ -122,103 +113,3 @@ auto Scene::findComponent(uint32_t nodeId, uint32_t typeId) const -> Component *
 
     return nullptr;
 }
-
-
-void Scene::rebuildRenderQueue(std::list<Component *> &queue, std::function<bool(Component *)> ignoreComponent)
-{
-    queue.clear();
-
-    for (const auto &node : nodes)
-    {
-        auto nodeId = node.first;
-
-        if (!Node::findComponent<Transform>(this, nodeId))
-            continue;
-
-        for (const auto &components : node.second)
-        {
-            auto cmp = components.second.get();
-            if (ignoreComponent(cmp))
-                continue;
-
-            if (cmp->getRenderQueue() == KnownRenderQueues::NotRendered)
-                continue;
-
-            for (auto it = queue.begin();; ++it)
-            {
-                if (it == queue.end() || cmp->getRenderQueue() < (*it)->getRenderQueue())
-                {
-                    queue.insert(it, cmp);
-                    break;
-                }
-            }
-        }
-    }
-}
-
-
-void Scene::update()
-{
-    if (componentsDirty)
-    {
-        rebuildComponentsToUpdate();
-        componentsDirty = false;
-    }
-
-    updateComponents();
-}
-
-
-void Scene::updateComponents()
-{
-    // TODO A component added during one of these update() methods
-    // will be updated for the first time only on the next call to updateComponents(). That is intended.
-    // TODO It's possible that a component can receive update() after it has been removed.
-    // For example, a component can remove other component during update(), but the component
-    // being removed sits later in this list.
-    for (auto cmp : componentsToUpdate)
-        cmp->update();
-}
-
-
-void Scene::rebuildComponentsToUpdate()
-{
-    componentsToUpdate.clear(); // TODO maybe overkill
-    for (const auto &node : nodes)
-    {
-        for (const auto &cmp : node.second)
-            componentsToUpdate.push_back(cmp.second);
-    }
-}
-
-
-void Scene::render()
-{
-    static auto ignoreNonCameras = [](Component * cmp) { return cmp->getTypeId() != Camera::getId(); };
-    static auto ignoreNone = [](Component * cmp) { return false; };
-
-    rebuildRenderQueue(cameraQueue, ignoreNonCameras);
-    rebuildRenderQueue(renderQueue, ignoreNone);
-
-    for (auto cam : cameraQueue)
-    {
-        auto camera = dynamic_cast<Camera *>(cam);
-
-        camera->apply([](const RenderContext&) {});
-
-        RenderContext context;
-        context.camera = camera;
-
-        auto renderTags = camera->getRenderTags();
-
-        for (auto cmp : renderQueue)
-        {
-            if (cmp->getTags() & renderTags)
-                cmp->render(context);
-        }
-
-        for (const auto &pair : nodes.at(camera->getNode().getId()))
-            pair.second->onAfterCameraRender();
-    }
-}
-

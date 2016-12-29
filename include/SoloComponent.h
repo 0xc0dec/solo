@@ -21,7 +21,6 @@
 #pragma once
 
 #include "SoloNode.h"
-#include "SoloRenderQueue.h"
 
 
 namespace solo
@@ -60,12 +59,9 @@ namespace solo
         virtual void onComponentAdded(Component *cmp) {}
         virtual void onComponentRemoved(Component *cmp) {}
 
-        auto getRenderQueue() const -> uint32_t;
-        void setRenderQueue(uint32_t queue);
-
         auto getNode() const -> Node;
 
-        auto getTags() -> uint32_t&;
+        auto getTags() -> uint32_t&; // TODO remove?
 
     protected:
         explicit Component(const Node &node): node(node)
@@ -74,18 +70,7 @@ namespace solo
 
         Node node;
         uint32_t tags = 1;
-        uint32_t renderQueue = KnownRenderQueues::NotRendered;
     };
-
-    inline auto Component::getRenderQueue() const -> uint32_t
-    {
-        return renderQueue;
-    }
-
-    inline void Component::setRenderQueue(uint32_t queue)
-    {
-        renderQueue = queue;
-    }
 
     inline auto Component::getNode() const -> Node
     {

@@ -58,7 +58,6 @@
 #include "SoloRectTexture.h"
 #include "SoloRenderContext.h"
 #include "SoloRenderer.h"
-#include "SoloRenderQueue.h"
 #include "SoloRigidBody.h"
 #include "SoloScene.h"
 #include "SoloSkyboxRenderer.h"

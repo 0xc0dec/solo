@@ -51,30 +51,16 @@ namespace solo
 
         void visit(std::function<void(Component*)> acceptComponent);
 
-        void update();
-        void render();
-
     private:
         using NodeComponents = std::unordered_map<uint32_t, sptr<Component>>;
         using NodesWithComponents = std::unordered_map<uint32_t, NodeComponents>;
 
-        void rebuildRenderQueue(std::list<Component *> &queue, std::function<bool(Component *)> ignoreComponent);
-
-        void updateComponents();
-        void rebuildComponentsToUpdate();
-
         Device *device = nullptr;
 
         uint32_t nodeCounter = 0;
-        bool cameraCacheDirty = true;
-        bool componentsDirty = true;
-
-        std::list<Component *> cameraQueue;
-        std::list<Component *> renderQueue;
 
         // TODO not cache-friendly
         NodesWithComponents nodes;
-        std::vector<sptr<Component>> componentsToUpdate;
     };
 
     inline auto Scene::getDevice() const -> Device *

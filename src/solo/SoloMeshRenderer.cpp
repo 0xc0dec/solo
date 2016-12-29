@@ -30,7 +30,6 @@ using namespace solo;
 MeshRenderer::MeshRenderer(const Node &node):
     ComponentBase(node)
 {
-    renderQueue = KnownRenderQueues::Opaque;
     transform = node.findComponent<Transform>();
 }
 

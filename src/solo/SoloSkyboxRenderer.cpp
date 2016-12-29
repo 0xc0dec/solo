@@ -31,7 +31,6 @@ using namespace solo;
 SkyboxRenderer::SkyboxRenderer(const Node &node):
     ComponentBase(node)
 {
-    renderQueue = KnownRenderQueues::Skybox;
     transform = node.findComponent<Transform>();
 
     auto effect = Effect::create(node.getScene()->getDevice(), EffectPrefab::Skybox);

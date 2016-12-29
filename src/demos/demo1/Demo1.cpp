@@ -393,7 +393,6 @@ private:
 
             transparentQuad = quad->findComponent<MeshRenderer>();
             transparentQuad->setMaterial(0, mat);
-            transparentQuad->setRenderQueue(KnownRenderQueues::Transparent);
         });
     }
 

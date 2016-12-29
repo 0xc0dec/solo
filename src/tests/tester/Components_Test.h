@@ -216,52 +216,52 @@ private:
         auto terminate2Called = false;
 
         auto cmp = n1->addComponent<CallbackCaller>(
-                       [&]() // init
-        {
-            if (!n2->findComponent<CallbackCaller>())
+            [&]() // init
             {
-                n2->addComponent<CallbackCaller>(
+                if (!n2->findComponent<CallbackCaller>())
+                {
+                    n2->addComponent<CallbackCaller>(
+                        [&]()
+                    {
+                        init1Called = true;
+                    },
                     [&]()
-                {
-                    init1Called = true;
-                },
-                [&]()
-                {
-                    update1Called = true;
-                },
-                [&]()
-                {
-                    terminate1Called = true;
+                    {
+                        update1Called = true;
+                    },
+                    [&]()
+                    {
+                        terminate1Called = true;
+                    }
+                    );
                 }
-                );
-            }
-        },
-        [&]() // update
-        {
-            if (!n3->findComponent<CallbackCaller>())
+            },
+            [&]() // update
             {
-                n3->addComponent<CallbackCaller>(
+                if (!n3->findComponent<CallbackCaller>())
+                {
+                    n3->addComponent<CallbackCaller>(
                     [&]()
-                {
-                    init2Called = true;
-                },
-                [&]()
-                {
-                    update2Called = true;
-                },
-                [&]()
-                {
-                    terminate2Called = true;
+                    {
+                        init2Called = true;
+                    },
+                    [&]()
+                    {
+                        update2Called = true;
+                    },
+                    [&]()
+                    {
+                        terminate2Called = true;
+                    }
+                    );
                 }
-                );
+                n2->removeComponent<CallbackCaller>();
+            },
+            [&]() // terminate
+            {
+                n3->removeComponent<CallbackCaller>();
             }
-            n2->removeComponent<CallbackCaller>();
-        },
-        [&]() // terminate
-        {
-            n3->removeComponent<CallbackCaller>();
-        }
-                   );
+        );
 
         assert(init1Called);
         assert(!init2Called);

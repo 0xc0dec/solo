@@ -56,7 +56,6 @@ Camera::Camera(const Node &node):
     device(node.getScene()->getDevice()),
     fov(Degree(60))
 {
-    renderQueue = KnownRenderQueues::Camera;
 }
 
 

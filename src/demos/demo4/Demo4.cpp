@@ -269,9 +269,7 @@ int main()
         device->getAssetLoader()->update();
         device->getPhysics()->update();
         device->getRenderer()->beginFrame();
-        device->getScene()->update();
-        device->getScene()->render();
-        device->getRenderer()->beginFrame();
+        device->getRenderer()->endFrame();
         device->endUpdate();
     }
     return 0;
