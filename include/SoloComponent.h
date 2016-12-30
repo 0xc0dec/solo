@@ -50,9 +50,12 @@ namespace solo
 
         virtual auto getTypeId() -> uint32_t = 0;
 
+        // Called when the component is added to the scene
         virtual void init() {}
-        virtual void update() {}
+        // Called when the component is removed from the scene
         virtual void terminate() {}
+        
+        virtual void update() {}
         virtual void render(const RenderContext &context) {}
 
         virtual void onAfterCameraRender() {}
@@ -61,7 +64,7 @@ namespace solo
 
         auto getNode() const -> Node;
 
-        auto getTags() -> uint32_t&; // TODO remove?
+        auto getTags() -> uint32_t&;
 
     protected:
         explicit Component(const Node &node): node(node)
