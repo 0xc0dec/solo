@@ -239,7 +239,7 @@ private:
             auto node = scene->createNode();
             auto skybox = node->addComponent<SkyboxRenderer>();
             skybox->setTexture(tex);
-            skybox->getTags() = skyboxTag;
+            skybox->setTags(skyboxTag);
         });
     }
 
@@ -353,7 +353,7 @@ private:
         quad->addComponent<Targeter>(targetPos);
         auto monitorQuad = quad->findComponent<MeshRenderer>();
         monitorQuad->setMaterial(0, monitorMat);
-        monitorQuad->getTags() = monitorQuadTag;
+        monitorQuad->setTags(monitorQuadTag);
     }
 
     void initTransparentQuad()
@@ -380,7 +380,7 @@ private:
 
             auto transparentQuad = quad->findComponent<MeshRenderer>();
             transparentQuad->setMaterial(0, mat);
-            transparentQuad->getTags() = transparentTag;
+            transparentQuad->setTags(transparentTag);
         });
     }
 
