@@ -94,11 +94,20 @@ void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
 // All changes will be seen only on the next iteration.
 void Scene::visit(std::function<void(Component*)> accept)
 {
+    return visit(~0, accept);
+}
+
+
+void Scene::visit(uint32_t tagMask, std::function<void(Component*)> accept)
+{
     auto copy = nodes;
     for (const auto &node: copy)
     {
         for (const auto &cmp : node.second)
-            accept(cmp.second.get());
+        {
+            if (cmp.second->getTags() & tagMask) // i.e. component contains any tag from the mask
+                accept(cmp.second.get());
+        }
     }
 }
 

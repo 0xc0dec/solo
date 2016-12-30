@@ -49,7 +49,8 @@ namespace solo
         void addComponent(uint32_t nodeId, sptr<Component> cmp);
         void removeComponent(uint32_t nodeId, uint32_t typeId);
 
-        void visit(std::function<void(Component*)> acceptComponent);
+        void visit(std::function<void(Component*)> accept);
+        void visit(uint32_t tagMask, std::function<void(Component*)> accept);
 
     private:
         using NodeComponents = std::unordered_map<uint32_t, sptr<Component>>;
