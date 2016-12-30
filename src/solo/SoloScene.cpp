@@ -88,15 +88,18 @@ void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
 }
 
 
+// TODO Make this more optimal.
+// Currently this is the simplest way of making addComponent/removeComponent work from within visit().
+// During the visit() call we keep iterating over the old version of nodes, so iterators stay valid.
+// All changes will be seen only on the next iteration.
 void Scene::visit(std::function<void(Component*)> accept)
 {
-    // TODO clear list of added/deleted components
-    for (const auto &node: nodes)
+    auto copy = nodes;
+    for (const auto &node: copy)
     {
         for (const auto &cmp : node.second)
             accept(cmp.second.get());
     }
-    // TODO apply added/deleted components
 }
 
 

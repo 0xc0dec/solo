@@ -56,10 +56,7 @@ namespace solo
         using NodesWithComponents = std::unordered_map<uint32_t, NodeComponents>;
 
         Device *device = nullptr;
-
         uint32_t nodeCounter = 0;
-
-        // TODO not cache-friendly
         NodesWithComponents nodes;
     };
 
