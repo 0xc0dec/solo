@@ -64,7 +64,7 @@ namespace solo
 
         auto getNode() const -> Node;
 
-        auto getTags() -> uint32_t&;
+        auto getTags() -> uint32_t&; // TODO to get/set
 
     protected:
         explicit Component(const Node &node): node(node)

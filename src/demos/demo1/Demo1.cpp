@@ -108,46 +108,32 @@ public:
 
     void update()
     {
-        scene->visit([](Component *cmp)
-        {
-            cmp->update();
-        });
+        scene->visit([](Component *cmp) { cmp->update(); });
     }
 
     void render()
     {
         offscreenCamera->apply([&](const RenderContext& ctx)
         {
-            if (skybox)
-                skybox->render(ctx);
-
-            scene->visit([=](Component *cmp)
-            {
-                if (cmp != monitorQuad && cmp != skybox && cmp != transparentQuad)
-                    cmp->render(ctx);
-            });
-
-            if (transparentQuad)
-                transparentQuad->render(ctx);
+            renderByTags(skyboxTag, ctx);
+            renderByTags(~(skyboxTag | monitorQuadTag | transparentTag), ctx);
+            renderByTags(transparentTag, ctx);
         });
 
         mainCamera->apply([&](const RenderContext& ctx)
         {
-            if (skybox)
-                skybox->render(ctx);
-
-            scene->visit([=](Component *cmp)
-            {
-                if (cmp != skybox && cmp != transparentQuad)
-                    cmp->render(ctx);
-            });
-
-            if (transparentQuad)
-                transparentQuad->render(ctx);
+            renderByTags(skyboxTag, ctx);
+            renderByTags(~(skyboxTag | transparentTag), ctx);
+            renderByTags(transparentTag, ctx);
         });
     }
 
 private:
+    void renderByTags(uint32_t tags, const RenderContext &ctx)
+    {
+        scene->visit(tags, [=](Component *cmp) { cmp->render(ctx); });
+    }
+
     auto createColorMaterial(const Vector4 &color) -> sptr<Material>
     {
         auto mat = Material::create(device, colorEffect);
@@ -251,15 +237,15 @@ private:
             tex->setWrapping(TextureWrapping::Clamp);
             tex->setFiltering(TextureFiltering::Linear);
             auto node = scene->createNode();
-            skybox = node->addComponent<SkyboxRenderer>();
+            auto skybox = node->addComponent<SkyboxRenderer>();
             skybox->setTexture(tex);
+            skybox->getTags() = skyboxTag;
         });
     }
 
     auto createPrefabMeshNode(MeshPrefab prefab) -> sptr<Node>
     {
         auto mesh = Mesh::create(device, prefab);
-        assert(mesh != nullptr);
         auto node = scene->createNode();
         node->addComponent<MeshRenderer>()->setMesh(mesh);
         return node;
@@ -365,8 +351,9 @@ private:
         transform->setLocalPosition(Vector3(5, 2, -5));
         transform->setLocalScale(Vector3(5, 5 * canvasSize.y / canvasSize.x, 1));
         quad->addComponent<Targeter>(targetPos);
-        monitorQuad = quad->findComponent<MeshRenderer>();
+        auto monitorQuad = quad->findComponent<MeshRenderer>();
         monitorQuad->setMaterial(0, monitorMat);
+        monitorQuad->getTags() = monitorQuadTag;
     }
 
     void initTransparentQuad()
@@ -391,21 +378,21 @@ private:
             quad->findComponent<Transform>()->setParent(parent->findComponent<Transform>());
             quad->findComponent<Transform>()->setLocalPosition(Vector3(2, 0, 0));
 
-            transparentQuad = quad->findComponent<MeshRenderer>();
+            auto transparentQuad = quad->findComponent<MeshRenderer>();
             transparentQuad->setMaterial(0, mat);
+            transparentQuad->getTags() = transparentTag;
         });
     }
 
-    const int renderTargetQuadTag = 2;
+    const uint32_t skyboxTag = 1 << 1;
+    const uint32_t transparentTag = 1 << 2;
+    const uint32_t monitorQuadTag = 1 << 3;
     Device *device = nullptr;
     Scene *scene = nullptr;
     AssetLoader *loader = nullptr;
     Vector2 canvasSize;
     Camera *mainCamera = nullptr;
     Camera *offscreenCamera = nullptr;
-    MeshRenderer *monitorQuad = nullptr;
-    SkyboxRenderer *skybox = nullptr;
-    MeshRenderer *transparentQuad = nullptr;
     sptr<Effect> simpleTextureEffect = nullptr;
     sptr<Effect> colorEffect = nullptr;
     sptr<Effect> checkerEffect = nullptr;
