@@ -76,15 +76,34 @@ public:
         initText();
     }
 
+    void update()
+    {
+        scene->visit([](Component *cmp) { cmp->update(); });
+    }
+
+    void render()
+    {
+        camera->apply([&](const RenderContext& ctx)
+        {
+            renderByTags(skyboxTag, ctx);
+            renderByTags(~skyboxTag, ctx);
+        });
+    }
+
 private:
+    void renderByTags(uint32_t tags, const RenderContext &ctx)
+    {
+        scene->visit(tags, [=](Component *cmp) { cmp->render(ctx); });
+    }
+
     void initCamera()
     {
         auto node = scene->createNode();
         auto t = node->findComponent<Transform>();
         t->setLocalPosition(Vector3(0, 0, 5));
-        auto cam = node->addComponent<Camera>();
-        cam->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
-        cam->setNear(0.05f);
+        camera = node->addComponent<Camera>();
+        camera->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
+        camera->setNear(0.05f);
         node->addComponent<Screenshoter>("demo3-screenshot.bmp");
 
         auto spectator = node->addComponent<Spectator>();
@@ -109,6 +128,7 @@ private:
             auto node = scene->createNode();
             auto renderer = node->addComponent<SkyboxRenderer>();
             renderer->setTexture(tex);
+            renderer->setTags(skyboxTag);
         });
     }
 
@@ -121,9 +141,12 @@ private:
         transform->setLocalScale(Vector3(0.02f, 0.02f, 1));
     }
 
+    const uint32_t skyboxTag = 1 << 2;
+
     Device *device = nullptr;
     Scene *scene = nullptr;
     AssetLoader *loader = nullptr;
+    Camera *camera = nullptr;
 };
 
 
@@ -136,6 +159,10 @@ int main()
         device->beginUpdate();
         device->getAssetLoader()->update();
         device->getRenderer()->beginFrame();
+
+        demo.update();
+        demo.render();
+
         device->getRenderer()->endFrame();
         device->endUpdate();
     }
