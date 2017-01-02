@@ -315,7 +315,7 @@ private:
 
 int main()
 {
-    auto device = Device::create(DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo2.log"));
+    auto device = Device::create(DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo2.log").withWindowTitle("Demo 2"));
     Demo demo(device.get());
     while (!device->isQuitRequested() && !device->isWindowCloseRequested() && !device->isKeyPressed(KeyCode::Escape, true))
     {
