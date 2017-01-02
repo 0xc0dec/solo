@@ -87,8 +87,8 @@ private:
         material->setVector4Parameter("color", color);
     }
 
-    Device *device;
-    Scene *scene;
+    Device *device = nullptr;
+    Scene *scene = nullptr;
     Vector3 initialPos;
     Quaternion initialRotation;
     sptr<Material> material;
@@ -165,9 +165,9 @@ private:
         scene->createNode()->addComponent<SpawnedObject>(effect, mesh, initialPos, initialRotation);
     }
 
-    Device *device;
-    Scene *scene;
-    Transform *transform;
+    Device *device = nullptr;
+    Scene *scene = nullptr;
+    Transform *transform = nullptr;
     sptr<Material> material;
     sptr<Mesh> mesh;
     sptr<Effect> effect;
@@ -187,7 +187,26 @@ public:
         initSkybox();
     }
 
+    void update()
+    {
+        scene->visit([](Component *cmp) { cmp->update(); });
+    }
+
+    void render()
+    {
+        camera->apply([&](const RenderContext& ctx)
+        {
+            renderByTags(skyboxTag, ctx);
+            renderByTags(~skyboxTag, ctx);
+        });
+    }
+
 private:
+    void renderByTags(uint32_t tags, const RenderContext &ctx)
+    {
+        scene->visit(tags, [=](Component *cmp) { cmp->render(ctx); });
+    }
+
     void initCamera()
     {
         auto node = scene->createNode();
@@ -195,9 +214,9 @@ private:
         t->setLocalPosition(Vector3(10, 10, 10));
         t->lookAt(Vector3::zero(), Vector3::unitY());
 
-        auto cam = node->addComponent<Camera>();
-        cam->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
-        cam->setNear(0.05f);
+        camera = node->addComponent<Camera>();
+        camera->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
+        camera->setNear(0.05f);
 
         node->addComponent<Screenshoter>("demo3-screenshot.bmp");
         node->addComponent<Spawner>(cubeMesh);
@@ -225,6 +244,7 @@ private:
             auto node = scene->createNode();
             auto renderer = node->addComponent<SkyboxRenderer>();
             renderer->setTexture(tex);
+            renderer->setTags(skyboxTag);
         });
     }
 
@@ -252,9 +272,12 @@ private:
         rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
     }
 
+    const uint32_t skyboxTag = 1 << 2;
+
     Device *device = nullptr;
     Scene *scene = nullptr;
     AssetLoader *loader = nullptr;
+    Camera *camera = nullptr;
     sptr<Mesh> cubeMesh;
 };
 
@@ -269,6 +292,10 @@ int main()
         device->getAssetLoader()->update();
         device->getPhysics()->update();
         device->getRenderer()->beginFrame();
+
+        demo.update();
+        demo.render();
+
         device->getRenderer()->endFrame();
         device->endUpdate();
     }
