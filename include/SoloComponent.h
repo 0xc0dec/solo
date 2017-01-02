@@ -58,7 +58,6 @@ namespace solo
         virtual void update() {}
         virtual void render(const RenderContext &context) {}
 
-        virtual void onAfterCameraRender() {}
         virtual void onComponentAdded(Component *cmp) {}
         virtual void onComponentRemoved(Component *cmp) {}
 

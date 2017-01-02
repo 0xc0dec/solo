@@ -27,22 +27,15 @@
 using namespace solo;
 
 
-class PostProcessor1 final: public ComponentBase<PostProcessor1>
+class PostProcessor1 final
 {
 public:
-    explicit PostProcessor1(const Node &node):
-        ComponentBase<PostProcessor1>(node),
-        device(node.getScene()->getDevice()),
-        loader(device->getAssetLoader()),
-        graphics(device->getGraphics())
-    {
-    }
-
-    void init() override final
+    PostProcessor1(Device *device, Camera *camera):
+        graphics(device->getGraphics()),
+        camera(camera)
     {
         auto canvasSize = device->getCanvasSize();
 
-        auto camera = node.findComponent<Camera>();
         fbTex = RectTexture::create(device);
         fbTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
         fbTex->setFiltering(TextureFiltering::Nearest);
@@ -78,12 +71,12 @@ public:
         horizontalBlurMat->setFloatParameter("rightSeparator", 0.75f);
     }
 
-    void terminate() override final
+    ~PostProcessor1()
     {
-        node.findComponent<Camera>()->setRenderTarget(nullptr);
+        camera->setRenderTarget(nullptr);
     }
 
-    void onAfterCameraRender() override final
+    void apply() const
     {
         // bounce between the two frame buffers
         grayscaleMat->setTextureParameter("mainTex", fbTex);
@@ -100,9 +93,8 @@ public:
     }
 
 private:
-    Device *device;
-    AssetLoader *loader;
-    Graphics *graphics;
+    Graphics *graphics = nullptr;
+    Camera *camera = nullptr;
     sptr<FrameBuffer> fb1 = nullptr;
     sptr<FrameBuffer> fb2 = nullptr;
     sptr<RectTexture> fbTex = nullptr;
@@ -114,18 +106,14 @@ private:
 };
 
 
-class PostProcessor2 final: public ComponentBase<PostProcessor2>
+class PostProcessor2 final
 {
 public:
-    explicit PostProcessor2(const Node &node) :
-        ComponentBase<PostProcessor2>(node),
-        device(node.getScene()->getDevice()),
+    PostProcessor2(Device *device, Camera *camera):
+        device(device),
         loader(device->getAssetLoader()),
-        graphics(device->getGraphics())
-    {
-    }
-
-    void init() override final
+        graphics(device->getGraphics()),
+        camera(camera)
     {
         const float stitchWidth = 30;
 
@@ -143,7 +131,6 @@ public:
             resolution.x * stitchWidth / (2 * stitchTexSize.x),
             resolution.y / 2);
 
-        auto camera = node.findComponent<Camera>();
         fbTex = RectTexture::create(device);
         fbTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(resolution.x), static_cast<uint32_t>(resolution.y));
         fbTex->setFiltering(TextureFiltering::Nearest);
@@ -161,64 +148,27 @@ public:
         material->setVector2Parameter("resolution", resolution);
     }
 
-    void terminate() override final
+    ~PostProcessor2()
     {
         auto canvasSize = device->getCanvasSize();
-        auto camera = node.findComponent<Camera>();
         camera->setRenderTarget(nullptr);
         camera->setViewport(0, 0, canvasSize.x, canvasSize.y);
     }
-
-    void onAfterCameraRender() override final
+    
+    void apply() const
     {
         graphics->blit(material.get(), nullptr);
     }
 
 private:
-    Device *device;
-    AssetLoader *loader;
-    Graphics *graphics;
+    Device *device = nullptr;
+    AssetLoader *loader = nullptr;
+    Graphics *graphics = nullptr;
+    Camera *camera = nullptr;
     sptr<RectTexture> stitchTex;
     sptr<FrameBuffer> fb1;
     sptr<RectTexture> fbTex;
     sptr<Material> material;
-};
-
-
-class ModeSwitcher final: public ComponentBase<ModeSwitcher>
-{
-public:
-    explicit ModeSwitcher(const Node &node):
-        ComponentBase<ModeSwitcher>(node),
-        device(node.getScene()->getDevice())
-    {
-    }
-
-    void update() override final
-    {
-        if (device->isKeyPressed(KeyCode::Digit1, true))
-        {
-            if (node.findComponent<PostProcessor1>())
-                return;
-            node.removeComponent<PostProcessor2>();
-            node.addComponent<PostProcessor1>();
-        }
-        if (device->isKeyPressed(KeyCode::Digit2, true))
-        {
-            if (node.findComponent<PostProcessor2>())
-                return;
-            node.removeComponent<PostProcessor1>();
-            node.addComponent<PostProcessor2>();
-        }
-        if (device->isKeyPressed(KeyCode::Digit3, true))
-        {
-            node.removeComponent<PostProcessor1>();
-            node.removeComponent<PostProcessor2>();
-        }
-    }
-
-private:
-    Device *device;
 };
 
 
@@ -236,22 +186,75 @@ public:
         device->getLogger()->logInfo("Press keys 1..3 to switch between modes");
     }
 
+    void update()
+    {
+        scene->visit([](Component *cmp) { cmp->update(); });
+        switchPostProcessors();
+    }
+
+    void render()
+    {
+        camera->apply([&](const RenderContext &ctx)
+        {
+            renderByTags(skyboxTag, ctx);
+            renderByTags(~skyboxTag, ctx);
+        });
+
+        if (pp1)
+            pp1->apply();
+        else if (pp2)
+            pp2->apply();
+    }
+
 private:
+    void switchPostProcessors()
+    {
+        if (device->isKeyPressed(KeyCode::Digit1, true))
+        {
+            if (!pp1)
+            {
+                pp2 = nullptr;
+                pp1 = std::make_unique<PostProcessor1>(device, camera);
+            }
+        }
+        if (device->isKeyPressed(KeyCode::Digit2, true))
+        {
+            if (!pp2)
+            {
+                pp1 = nullptr;
+                pp2 = std::make_unique<PostProcessor2>(device, camera);
+            }
+        }
+        if (device->isKeyPressed(KeyCode::Digit3, true))
+        {
+            pp1 = nullptr;
+            pp2 = nullptr;
+        }
+    }
+
+    void renderByTags(uint32_t tags, const RenderContext &ctx)
+    {
+        scene->visit(tags, [=](Component *cmp) { cmp->render(ctx); });
+    }
+
     void initCamera()
     {
         auto node = scene->createNode();
+        
+        camera = node->addComponent<Camera>();
+        camera->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
+        camera->setNear(0.05f);
+        
         auto t = node->findComponent<Transform>();
         t->setLocalPosition(Vector3(0, 0, 5));
-        auto cam = node->addComponent<Camera>();
-        cam->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
-        cam->setNear(0.05f);
-        node->addComponent<PostProcessor2>();
-        node->addComponent<ModeSwitcher>();
+        
         node->addComponent<Screenshoter>("demo2-screenshot.bmp");
-
+        
         auto spectator = node->addComponent<Spectator>();
         spectator->setVerticalRotationSpeed(1);
         spectator->setHorizontalRotationSpeed(1);
+
+        pp1 = std::make_unique<PostProcessor1>(device, camera);
     }
 
     void initSkybox()
@@ -271,6 +274,7 @@ private:
             auto node = scene->createNode();
             auto renderer = node->addComponent<SkyboxRenderer>();
             renderer->setTexture(tex);
+            renderer->setTags(skyboxTag);
         });
     }
 
@@ -298,9 +302,14 @@ private:
         });
     }
 
+    const uint32_t skyboxTag = 1 << 1;
+
+    uptr<PostProcessor1> pp1;
+    uptr<PostProcessor2> pp2;
     Device *device = nullptr;
     Scene *scene = nullptr;
     AssetLoader *loader = nullptr;
+    Camera *camera = nullptr;
 };
 
 
@@ -313,6 +322,10 @@ int main()
         device->beginUpdate();
         device->getAssetLoader()->update();
         device->getRenderer()->beginFrame();
+
+        demo.update();
+        demo.render();
+
         device->getRenderer()->endFrame();
         device->endUpdate();
     }
