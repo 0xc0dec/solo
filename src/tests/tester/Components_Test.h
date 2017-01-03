@@ -63,42 +63,6 @@ public:
 };
 
 
-class CallbackCaller final: public ComponentBase<CallbackCaller>
-{
-public:
-    explicit CallbackCaller(const Node &node, std::function<void()> initAction, std::function<void()> updateAction, std::function<void()> terminateAction):
-        ComponentBase<CallbackCaller>(node),
-        initAction(initAction),
-        updateAction(updateAction),
-        terminateAction(terminateAction)
-    {
-    }
-
-    void init() override final
-    {
-        if (initAction)
-            initAction();
-    }
-
-    void update() override final
-    {
-        if (updateAction)
-            updateAction();
-    }
-
-    void terminate() override final
-    {
-        if (terminateAction)
-            terminateAction();
-    }
-
-private:
-    std::function<void()> initAction;
-    std::function<void()> updateAction;
-    std::function<void()> terminateAction;
-};
-
-
 class Base: public ComponentBase<Base>
 {
 public:
@@ -131,7 +95,6 @@ public:
         test_AddComponent_Remove();
         test_AddAndRemove_FindByBaseId();
         test_RemoveInexistentComponent();
-        test_AddOrRemoveComponentsFromWithinCallbackMethods();
         test_AddOrRemoveComponents_EnsureAddedRemovedEventsCalled();
     }
 
@@ -200,84 +163,5 @@ private:
         assert(base->getTypeId() == Derived::getId());
         assert(base->getTypeId() == Base::getId());
         assert(derived->getTypeId() == base->getTypeId());
-    }
-
-    void test_AddOrRemoveComponentsFromWithinCallbackMethods()
-    {
-        auto n1 = scene->createNode();
-        auto n2 = scene->createNode();
-        auto n3 = scene->createNode();
-
-        auto init1Called = false;
-        auto init2Called = false;
-        auto update1Called = false;
-        auto update2Called = false;
-        auto terminate1Called = false;
-        auto terminate2Called = false;
-
-        auto cmp = n1->addComponent<CallbackCaller>(
-            [&]() // init
-            {
-                if (!n2->findComponent<CallbackCaller>())
-                {
-                    n2->addComponent<CallbackCaller>(
-                        [&]()
-                    {
-                        init1Called = true;
-                    },
-                    [&]()
-                    {
-                        update1Called = true;
-                    },
-                    [&]()
-                    {
-                        terminate1Called = true;
-                    }
-                    );
-                }
-            },
-            [&]() // update
-            {
-                if (!n3->findComponent<CallbackCaller>())
-                {
-                    n3->addComponent<CallbackCaller>(
-                    [&]()
-                    {
-                        init2Called = true;
-                    },
-                    [&]()
-                    {
-                        update2Called = true;
-                    },
-                    [&]()
-                    {
-                        terminate2Called = true;
-                    }
-                    );
-                }
-                n2->removeComponent<CallbackCaller>();
-            },
-            [&]() // terminate
-            {
-                n3->removeComponent<CallbackCaller>();
-            }
-        );
-
-        assert(init1Called);
-        assert(!init2Called);
-        assert(!update1Called);
-        assert(!update2Called);
-
-        scene->update();
-        assert(update1Called);
-        assert(init2Called);
-        assert(!update2Called);
-
-        scene->update();
-        assert(update2Called);
-
-        n1->removeComponent<CallbackCaller>();
-        assert(terminate1Called);
-        assert(terminate2Called);
     }
 };
