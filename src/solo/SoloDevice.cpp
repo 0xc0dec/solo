@@ -35,18 +35,28 @@ using namespace solo;
 
 auto Device::create(const DeviceSetup &setup) -> uptr<Device>
 {
+    uptr<Device> device = nullptr;
+    
     switch (setup.mode)
     {
         case DeviceMode::OpenGL:
-            return std::make_unique<SDLOpenGLDevice>(setup);
+            device = std::make_unique<SDLOpenGLDevice>(setup);
+            break;
         case DeviceMode::Vulkan:
-            return std::make_unique<SDLVulkanDevice>(setup);
+            device = std::make_unique<SDLVulkanDevice>(setup);
+            break;
         case DeviceMode::Null:
-            return std::make_unique<NullDevice>(setup);
+            device = std::make_unique<NullDevice>(setup);
+            break;
         default:
             SL_ERR("Unknown device mode");
-            return nullptr;
+            break;
     }
+
+    if (device)
+        device->initSubsystems();
+    
+    return device;
 }
 
 
@@ -79,6 +89,11 @@ Device::~Device()
 
 Device::Device(const DeviceSetup &setup):
     setup(setup)
+{
+}
+
+
+void Device::initSubsystems()
 {
     FriendToken<Device> token;
 
