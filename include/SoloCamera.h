@@ -50,8 +50,6 @@ namespace solo
 
         auto getTransform() const -> Transform*;
 
-        auto getRenderTags() -> uint32_t&;
-
         auto getRenderTarget() const -> sptr<FrameBuffer>;
         void setRenderTarget(sptr<FrameBuffer> target);
 
@@ -97,7 +95,6 @@ namespace solo
         void onTransformChanged(const Transform *, uint32_t) override;
 
         mutable uint32_t dirtyFlags = ~0;
-        uint32_t renderTags = ~0;
 
         Device *device = nullptr;
 
@@ -170,11 +167,6 @@ namespace solo
     inline auto Camera::getAspectRatio() const -> float
     {
         return aspectRatio;
-    }
-
-    inline auto Camera::getRenderTags() -> uint32_t & // TODO remove
-    {
-        return renderTags;
     }
 
     inline void Camera::setRenderTarget(sptr<FrameBuffer> target)
