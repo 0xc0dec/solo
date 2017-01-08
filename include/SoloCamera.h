@@ -46,7 +46,8 @@ namespace solo
         void init() override final;
         void terminate() override final;
 
-        void apply(std::function<void(const RenderContext&)> render) const; // TODO specify render target to add more "functional" flavor
+        // TODO perhaps specify render target to add more "functional" flavor
+        void apply(std::function<void(const RenderContext&)> render) const;
 
         auto getTransform() const -> Transform*;
 
