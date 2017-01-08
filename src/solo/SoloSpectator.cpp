@@ -52,11 +52,11 @@ void Spectator::update()
     if (device->isMouseButtonDown(MouseButton::Right, false))
     {
         if (mouseMotion.x != 0)
-            transform->rotate(Vector3::unitY(), Radian(verticalRotationSpeed * dt * -mouseMotion.x), TransformSpace::World);
+            transform->rotate(Vector3::unitY(), Radian(vRotSpeed * dt * -mouseMotion.x), TransformSpace::World);
         if (mouseMotion.y != 0)
         {
             auto angleToUp = Vector3::angle(transform->getLocalForward(), Vector3::unitY()).toRawRadian();
-            auto delta = horizontalRotationSpeed * dt * -mouseMotion.y;
+            auto delta = hRotSpeed * dt * -mouseMotion.y;
             if (delta > 0)
             {
                 if (angleToUp - delta <= 0.1f)

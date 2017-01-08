@@ -49,29 +49,29 @@ namespace solo
         Device *device = nullptr;
         Transform *transform = nullptr;
 
-        float horizontalRotationSpeed = 0.5f;
-        float verticalRotationSpeed = 0.5f;
+        float hRotSpeed = 0.5f;
+        float vRotSpeed = 0.5f;
         float movementSpeed = 10;
     };
 
     inline auto Spectator::getHorizontalRotationSpeed() const -> float
     {
-        return horizontalRotationSpeed;
+        return hRotSpeed;
     }
 
     inline void Spectator::setHorizontalRotationSpeed(float speed)
     {
-        horizontalRotationSpeed = speed;
+        hRotSpeed = speed;
     }
 
     inline auto Spectator::getVerticalRotationSpeed() const -> float
     {
-        return verticalRotationSpeed;
+        return vRotSpeed;
     }
 
     inline void Spectator::setVerticalRotationSpeed(float speed)
     {
-        verticalRotationSpeed = speed;
+        vRotSpeed = speed;
     }
 
     inline auto Spectator::getMovementSpeed() const -> float
