@@ -61,12 +61,13 @@ int main()
     Demo demo(device.get());
     while (!device->isQuitRequested() && !device->isWindowCloseRequested() && !device->isKeyPressed(KeyCode::Escape, true))
     {
-        device->beginUpdate();
-        device->getAssetLoader()->update();
-        device->getRenderer()->renderFrame([&]()
+        device->update([&]()
         {
+            device->getAssetLoader()->update();
+            device->getRenderer()->renderFrame([&]()
+            {
+            });
         });
-        device->endUpdate();
     }
     return 0;
 }

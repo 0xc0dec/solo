@@ -34,8 +34,6 @@ void runInNullEngine(std::function<void(Device *)> run, const std::string &logPa
 {
     auto device = Device::create(DeviceSetup().withMode(DeviceMode::Null).withLogFilePath(logPath));
     run(device.get());
-    device->beginUpdate();
-    device->endUpdate();
 }
 
 
@@ -43,8 +41,6 @@ void runInRealEngine(std::function<void(Device *)> run, const std::string &logPa
 {
     auto device = Device::create(DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath(logPath));
     run(device.get());
-    device->beginUpdate();
-    device->endUpdate();
 }
 
 

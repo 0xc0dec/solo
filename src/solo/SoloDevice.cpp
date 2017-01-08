@@ -142,6 +142,14 @@ bool Device::isMouseButtonReleased(MouseButton button) const
 }
 
 
+void Device::update(std::function<void()> update)
+{
+    beginUpdate();
+    update();
+    endUpdate();
+}
+
+
 void Device::updateTime()
 {
     auto time = getLifetime();

@@ -319,14 +319,15 @@ int main()
     Demo demo(device.get());
     while (!device->isQuitRequested() && !device->isWindowCloseRequested() && !device->isKeyPressed(KeyCode::Escape, true))
     {
-        device->beginUpdate();
-        device->getAssetLoader()->update();
-        device->getRenderer()->renderFrame([&]()
+        device->update([&]()
         {
-            demo.update();
-            demo.render();
+            device->getAssetLoader()->update();
+            device->getRenderer()->renderFrame([&]()
+            {
+                demo.update();
+                demo.render();
+            });
         });
-        device->endUpdate();
     }
     return 0;
 }

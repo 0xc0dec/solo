@@ -25,6 +25,7 @@
 #include "SoloDeviceSetup.h"
 #include <unordered_map>
 #include <unordered_set>
+#include <functional>
 
 
 namespace solo
@@ -122,8 +123,7 @@ namespace solo
         bool isMouseButtonDown(MouseButton button, bool firstTime = false) const;
         bool isMouseButtonReleased(MouseButton button) const;
 
-        virtual void beginUpdate() = 0;
-        virtual void endUpdate() = 0;
+        void update(std::function<void()> update);
 
         auto getSetup() const -> DeviceSetup;
 
@@ -137,6 +137,9 @@ namespace solo
 
     protected:
         explicit Device(const DeviceSetup &setup);
+
+        virtual void beginUpdate() = 0;
+        virtual void endUpdate() = 0;
 
         void initSubsystems();
         void updateTime();
