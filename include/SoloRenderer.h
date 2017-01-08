@@ -22,6 +22,8 @@
 
 #include "SoloCommon.h"
 #include <vector>
+#include <functional>
+
 
 namespace solo
 {
@@ -143,10 +145,12 @@ namespace solo
         SL_DISABLE_COPY_AND_MOVE(Renderer)
         virtual ~Renderer() {}
 
-        virtual void beginFrame() = 0;
-        virtual void endFrame() = 0;
+        void renderFrame(std::function<void()> render);
 
     protected:
         Renderer() {}
+
+        virtual void beginFrame() = 0;
+        virtual void endFrame() = 0;
     };
 }

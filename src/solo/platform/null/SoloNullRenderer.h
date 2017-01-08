@@ -26,7 +26,7 @@ namespace solo
 {
     class NullRenderer final : public Renderer
     {
-    public:
+    protected:
         void beginFrame() override final {}
         void endFrame() override final {}
     };

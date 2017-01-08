@@ -39,3 +39,11 @@ auto Renderer::create(Device *device, const FriendToken<Device> &) -> sptr<Rende
             return std::make_shared<NullRenderer>();
     }
 }
+
+
+void Renderer::renderFrame(std::function<void()> render)
+{
+    beginFrame();
+    render();
+    endFrame();
+}

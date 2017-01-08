@@ -42,9 +42,6 @@ namespace solo
         explicit OpenGLRenderer(Device *device);
         ~OpenGLRenderer();
 
-        void beginFrame() override final {}
-        void endFrame() override final {}
-
         auto createTexture() -> uint32_t;
         void destroyTexture(uint32_t handle);
         void set2DTexture(uint32_t handle);
@@ -99,6 +96,10 @@ namespace solo
 
         void drawIndexed(PrimitiveType primitiveType, uint32_t bindingHandle, uint32_t indexBufferHandle);
         void draw(PrimitiveType primitiveType, uint32_t bindingHandle, uint32_t vertexCount);
+
+    protected:
+        void beginFrame() override final {}
+        void endFrame() override final {}
 
     private:
         struct FrameBuffer

@@ -158,12 +158,11 @@ int main()
     {
         device->beginUpdate();
         device->getAssetLoader()->update();
-        device->getRenderer()->beginFrame();
-
-        demo.update();
-        demo.render();
-
-        device->getRenderer()->endFrame();
+        device->getRenderer()->renderFrame([&]()
+        {
+            demo.update();
+            demo.render();
+        });
         device->endUpdate();
     }
     return 0;

@@ -37,6 +37,7 @@ namespace solo
         explicit VulkanRenderer(Device *device);
         ~VulkanRenderer();
 
+    protected:
         void beginFrame() override final;
         void endFrame() override final;
 
@@ -60,7 +61,7 @@ namespace solo
         void initFences();
         void beginCommandBuffer(VkCommandBuffer buffer);
         auto createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
-                                VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil;
+            VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil;
         void initFrameBuffers();
 
         uint32_t canvasWidth = 1;

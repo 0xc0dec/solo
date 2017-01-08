@@ -63,8 +63,9 @@ int main()
     {
         device->beginUpdate();
         device->getAssetLoader()->update();
-        device->getRenderer()->beginFrame();
-        device->getRenderer()->endFrame();
+        device->getRenderer()->renderFrame([&]()
+        {
+        });
         device->endUpdate();
     }
     return 0;
