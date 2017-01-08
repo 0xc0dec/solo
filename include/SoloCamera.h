@@ -96,7 +96,7 @@ namespace solo
         uint32_t dirtyFlags = ~0;
         uint32_t renderTags = ~0;
 
-        Device *device;
+        Device *device = nullptr;
 
         Transform *transform = nullptr;
         sptr<FrameBuffer> renderTarget = nullptr;
