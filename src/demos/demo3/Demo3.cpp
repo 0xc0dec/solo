@@ -106,9 +106,7 @@ private:
         camera->setNear(0.05f);
         node->addComponent<Screenshoter>("demo3-screenshot.bmp");
 
-        auto spectator = node->addComponent<Spectator>();
-        spectator->setVerticalRotationSpeed(1);
-        spectator->setHorizontalRotationSpeed(1);
+        node->addComponent<Spectator>();
     }
 
     void initSkybox()

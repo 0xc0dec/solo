@@ -175,9 +175,7 @@ private:
         t->lookAt(Vector3::zero(), Vector3::unitY());
         node->addComponent<Screenshoter>("demo1-screenshot.bmp");
 
-        auto spectator = node->addComponent<Spectator>();
-        spectator->setVerticalRotationSpeed(1);
-        spectator->setHorizontalRotationSpeed(1);
+        node->addComponent<Spectator>();
 
         mainCamera = node->addComponent<Camera>();
         mainCamera->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);

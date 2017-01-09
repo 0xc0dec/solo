@@ -45,9 +45,7 @@ private:
         cam->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
         cam->setNear(0.05f);
 
-        auto spectator = node->addComponent<Spectator>();
-        spectator->setVerticalRotationSpeed(1);
-        spectator->setHorizontalRotationSpeed(1);
+        node->addComponent<Spectator>();
     }
 
     Device *device = nullptr;

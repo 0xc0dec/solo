@@ -250,9 +250,7 @@ private:
         
         node->addComponent<Screenshoter>("demo2-screenshot.bmp");
         
-        auto spectator = node->addComponent<Spectator>();
-        spectator->setVerticalRotationSpeed(1);
-        spectator->setHorizontalRotationSpeed(1);
+        node->addComponent<Spectator>();
 
         pp1 = std::make_unique<PostProcessor1>(device, camera);
     }

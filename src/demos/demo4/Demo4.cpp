@@ -222,9 +222,7 @@ private:
         node->addComponent<Spawner>(cubeMesh);
         node->addComponent<Targeter>();
 
-        auto spectator = node->addComponent<Spectator>();
-        spectator->setVerticalRotationSpeed(1);
-        spectator->setHorizontalRotationSpeed(1);
+        node->addComponent<Spectator>();
     }
 
     void initSkybox()
