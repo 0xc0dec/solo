@@ -22,6 +22,7 @@
 #include "SoloTransform.h"
 #include "SoloDevice.h"
 #include "SoloRadian.h"
+#include "SoloMath.h"
 
 using namespace solo;
 
@@ -52,11 +53,12 @@ void Spectator::update()
     if (device->isMouseButtonDown(MouseButton::Right, false))
     {
         if (mouseMotion.x != 0)
-            transform->rotate(Vector3::unitY(), Radian(vRotSpeed * dt * -mouseMotion.x), TransformSpace::World);
+            vertAngleRemaining += mouseSensitivity * -mouseMotion.x;
+
         if (mouseMotion.y != 0)
         {
             auto angleToUp = Vector3::angle(transform->getLocalForward(), Vector3::unitY()).toRawRadian();
-            auto delta = hRotSpeed * dt * -mouseMotion.y;
+            auto delta = mouseSensitivity * -mouseMotion.y;
             if (delta > 0)
             {
                 if (angleToUp - delta <= 0.1f)
@@ -68,8 +70,25 @@ void Spectator::update()
                     delta = angleToUp - 3.04f;
             }
 
+            horAngleRemaining += delta;
+        }
+
+        if (!math::areEqual(vertAngleRemaining, 0, math::epsilon1))
+        {
+            auto delta = updateRemaningAngle(vertAngleRemaining, dt);
+            transform->rotate(Vector3::unitY(), Radian(delta), TransformSpace::World);
+        }
+
+        if (!math::areEqual(horAngleRemaining, 0, math::epsilon1))
+        {
+            auto delta = updateRemaningAngle(horAngleRemaining, dt);
             transform->rotate(Vector3::unitX(), Radian(delta), TransformSpace::Self);
         }
+    }
+    else
+    {
+        horAngleRemaining = 0;
+        vertAngleRemaining = 0;
     }
 
     auto movement = Vector3::zero();
@@ -89,4 +108,15 @@ void Spectator::update()
     movement *= dt * movementSpeed;
 
     transform->translateLocal(movement);
+}
+
+
+auto Spectator::updateRemaningAngle(float& angle, float dt) -> float
+{
+    auto delta = rotationAcceleration * dt * angle;
+    if (abs(delta) >= abs(angle))
+        angle = 0;
+    else
+        angle -= delta;
+    return delta;
 }

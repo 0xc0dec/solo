@@ -39,39 +39,34 @@ namespace solo
         auto getMovementSpeed() const -> float;
         void setMovementSpeed(float speed);
 
-        auto getHorizontalRotationSpeed() const -> float;
-        void setHorizontalRotationSpeed(float speed);
+        auto getMouseSensitivity() const -> float;
+        void setMouseSensitivity(float sensitivity);
 
-        auto getVerticalRotationSpeed() const -> float;
-        void setVerticalRotationSpeed(float speed);
+        auto getRotationAcceleration() const -> float;
+        void setRotationAcceleration(float acceleration);
 
     private:
+        auto updateRemaningAngle(float &angle, float dt) -> float;
+
         Device *device = nullptr;
         Transform *transform = nullptr;
 
-        float hRotSpeed = 0.5f;
-        float vRotSpeed = 0.5f;
+        float mouseSensitivity = 0.02f;
+        float rotationAcceleration = 20;
         float movementSpeed = 10;
+
+        float horAngleRemaining = 0;
+        float vertAngleRemaining = 0;
     };
 
-    inline auto Spectator::getHorizontalRotationSpeed() const -> float
+    inline auto Spectator::getMouseSensitivity() const -> float
     {
-        return hRotSpeed;
+        return mouseSensitivity;
     }
 
-    inline void Spectator::setHorizontalRotationSpeed(float speed)
+    inline void Spectator::setMouseSensitivity(float sensitivity)
     {
-        hRotSpeed = speed;
-    }
-
-    inline auto Spectator::getVerticalRotationSpeed() const -> float
-    {
-        return vRotSpeed;
-    }
-
-    inline void Spectator::setVerticalRotationSpeed(float speed)
-    {
-        vRotSpeed = speed;
+        mouseSensitivity = sensitivity;
     }
 
     inline auto Spectator::getMovementSpeed() const -> float
@@ -82,5 +77,15 @@ namespace solo
     inline void Spectator::setMovementSpeed(float speed)
     {
         movementSpeed = speed;
+    }
+
+    inline auto Spectator::getRotationAcceleration() const -> float
+    {
+        return rotationAcceleration;
+    }
+
+    inline void Spectator::setRotationAcceleration(float acceleration)
+    {
+        rotationAcceleration = acceleration; 
     }
 }
