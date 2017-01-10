@@ -46,17 +46,12 @@ namespace solo
         void setRotationAcceleration(float acceleration);
 
     private:
-        auto updateRemaningAngle(float &angle, float dt) -> float;
-
         Device *device = nullptr;
         Transform *transform = nullptr;
 
-        float mouseSensitivity = 0.002f;
+        float mouseSensitivity = 0.08f;
         float rotationAcceleration = 20;
         float movementSpeed = 10;
-
-        float horAngleRemaining = 0;
-        float vertAngleRemaining = 0;
     };
 
     inline auto Spectator::getMouseSensitivity() const -> float
