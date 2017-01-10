@@ -51,7 +51,7 @@ namespace solo
         Device *device = nullptr;
         Transform *transform = nullptr;
 
-        float mouseSensitivity = 0.02f;
+        float mouseSensitivity = 0.002f;
         float rotationAcceleration = 20;
         float movementSpeed = 10;
 
