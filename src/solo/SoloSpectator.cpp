@@ -22,7 +22,6 @@
 #include "SoloTransform.h"
 #include "SoloDevice.h"
 #include "SoloRadian.h"
-#include "SoloMath.h"
 
 using namespace solo;
 
