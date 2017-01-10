@@ -152,8 +152,8 @@ void SDLDevice::processMouseEvent(const SDL_Event &evt)
     switch (evt.type)
     {
         case SDL_MOUSEMOTION:
-            mouseDeltaX = evt.motion.xrel;
-            mouseDeltaY = evt.motion.yrel;
+            mouseDeltaX += evt.motion.xrel;
+            mouseDeltaY += evt.motion.yrel;
             break;
         case SDL_MOUSEBUTTONDOWN:
         {
