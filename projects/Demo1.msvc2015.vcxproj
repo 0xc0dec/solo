@@ -170,6 +170,7 @@
     <ClCompile Include="..\src\demos\demo1\Demo1.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\demos\common\DemoBase.h" />
     <ClInclude Include="..\src\demos\demo1\Shaders.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

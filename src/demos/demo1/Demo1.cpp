@@ -18,7 +18,7 @@
     3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "../../../include/Solo.h"
+#include "../common/DemoBase.h"
 #include "../common/Screenshoter.h"
 #include "../common/Rotator.h"
 #include "../common/Shaders.h"
@@ -82,12 +82,10 @@ private:
 };
 
 
-class Demo
+class Demo final: public DemoBase
 {
 public:
-    Demo(Device *device):
-        device(device), scene(device->getScene()),
-        loader(device->getAssetLoader()), canvasSize(device->getCanvasSize())
+    Demo(Device *device): DemoBase(device)
     {
         initEffects();
         initCamera();
@@ -105,12 +103,8 @@ public:
         });
     }
 
-    void update()
-    {
-        scene->visit([](Component *cmp) { cmp->update(); });
-    }
-
-    void render()
+private:
+    void render() override final
     {
         offscreenCamera->apply([&](const RenderContext& ctx)
         {
@@ -125,12 +119,6 @@ public:
             renderByTags(~(skyboxTag | transparentTag), ctx);
             renderByTags(transparentTag, ctx);
         });
-    }
-
-private:
-    void renderByTags(uint32_t tags, const RenderContext &ctx)
-    {
-        scene->visit(tags, [=](Component *cmp) { cmp->render(ctx); });
     }
 
     auto createColorMaterial(const Vector4 &color) -> sptr<Material>
@@ -384,10 +372,6 @@ private:
     const uint32_t skyboxTag = 1 << 1;
     const uint32_t transparentTag = 1 << 2;
     const uint32_t monitorQuadTag = 1 << 3;
-    Device *device = nullptr;
-    Scene *scene = nullptr;
-    AssetLoader *loader = nullptr;
-    Vector2 canvasSize;
     Camera *mainCamera = nullptr;
     Camera *offscreenCamera = nullptr;
     sptr<Effect> simpleTextureEffect = nullptr;
@@ -407,19 +391,11 @@ private:
 
 int main()
 {
-    auto device = Device::create(DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo1.log").withWindowTitle("Demo 1"));
-    Demo demo(device.get());
-    while (!device->isQuitRequested() && !device->isWindowCloseRequested() && !device->isKeyPressed(KeyCode::Escape, true))
-    {
-        device->update([&]()
-        {
-            device->getAssetLoader()->update();
-            device->getRenderer()->renderFrame([&]()
-            {
-                demo.update();
-                demo.render();
-            });
-        });
-    }
+    auto device = Device::create(DeviceSetup()
+        .withMode(DeviceMode::OpenGL)
+        .withDimensions(1200, 600)
+        .withLogFilePath("demo1.log")
+        .withWindowTitle("Demo 1"));
+    Demo(device.get()).run();
     return 0;
 }
