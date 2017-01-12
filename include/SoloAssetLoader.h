@@ -65,6 +65,7 @@ namespace solo
         sptr<T> result;
     };
 
+    struct TaskHolder;
 
     class AssetLoader
     {
@@ -91,10 +92,12 @@ namespace solo
         std::vector<sptr<ImageLoader>> imageLoaders;
         std::vector<sptr<MeshLoader>> meshLoaders;
 
+        SpinLock lock;
+        std::list<std::function<void()>> tasks;
+
+        sptr<TaskHolder> taskHolder;
+
         auto getMeshLoader(const std::string &path) -> MeshLoader*;
         auto getImageLoader(const std::string &path) -> ImageLoader*;
-
-        SpinLock tasksLock;
-        std::list<std::function<void()>> tasks;
     };
 }

@@ -30,12 +30,22 @@
 #define LIBASYNC_STATIC
 #include <async++.h>
 
+
+namespace solo
+{
+    struct TaskHolder
+    {
+        std::vector<async::task<std::function<void()>>> tasks;
+    };
+}
+
 using namespace solo;
 
 
 AssetLoader::AssetLoader(Device *device, const FriendToken<Device> &):
     device(device)
 {
+    taskHolder = std::make_unique<TaskHolder>();
     imageLoaders.push_back(std::make_unique<PngImageLoader>(device));
     meshLoaders.push_back(std::make_unique<ObjMeshLoader>(device));
 }
@@ -79,11 +89,11 @@ auto AssetLoader::loadRectTextureAsync(const std::string &path) -> sptr<AsyncHan
 {
     auto handle = std::make_shared<AsyncHandle<RectTexture>>();
     auto loader = getImageLoader(path);
-    async::spawn([=]
+
+    taskHolder->tasks.push_back(async::spawn([=]
     {
         auto image = loader->load(path);
-        volatile auto lock = this->tasksLock.acquire();
-        this->tasks.push_back([=]()
+        return std::function<void(void)>([=]
         {
             auto texture = RectTexture::create(device);
             // TODO this actually blocks and causes main thread/FPS stall. So we've offloaded
@@ -92,7 +102,7 @@ auto AssetLoader::loadRectTextureAsync(const std::string &path) -> sptr<AsyncHan
             texture->setData(image->format, image->data.data(), image->width, image->height);
             handle->finish(texture);
         });
-    });
+    }));
 
     return handle;
 }
@@ -130,28 +140,26 @@ auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string> &sidePaths
         }));
     }
 
-    async::when_all(imageTasks.begin(), imageTasks.end()).then([=] (std::vector<async::task<sptr<Image>>> imageTasks)
-    {
-        std::vector<sptr<Image>> images;
-        std::transform(imageTasks.begin(), imageTasks.end(), std::back_inserter(images),
-                       [](async::task<sptr<Image>> &t)
+    async::when_all(imageTasks.begin(), imageTasks.end())
+        .then([=] (std::vector<async::task<sptr<Image>>> imageTasks)
         {
-            return t.get();
-        });
+            std::vector<sptr<Image>> images;
+            std::transform(imageTasks.begin(), imageTasks.end(), std::back_inserter(images),
+                [](async::task<sptr<Image>> &t) { return t.get(); });
 
-        volatile auto lock = this->tasksLock.acquire();
-        this->tasks.push_back(std::bind([=] (const std::vector<sptr<Image>> &images)
-        {
-            auto texture = CubeTexture::create(device);
-            uint32_t idx = 0;
-            for (const auto &image : images)
+            volatile auto lock = this->lock.acquire();
+            this->tasks.push_back(std::bind([=] (const std::vector<sptr<Image>> &images)
             {
-                auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + idx++);
-                texture->setData(face, image->format, image->data.data(), image->width, image->height);
-            }
-            handle->finish(texture);
-        }, std::move(images)));
-    });
+                auto texture = CubeTexture::create(device);
+                uint32_t idx = 0;
+                for (const auto &image : images)
+                {
+                    auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + idx++);
+                    texture->setData(face, image->format, image->data.data(), image->width, image->height);
+                }
+                handle->finish(texture);
+            }, std::move(images)));
+        });
 
     return handle;
 }
@@ -170,17 +178,15 @@ auto AssetLoader::loadMeshAsync(const std::string &path) -> sptr<AsyncHandle<Mes
     auto handle = std::make_shared<AsyncHandle<Mesh>>();
     auto loader = getMeshLoader(path);
 
-    async::spawn([=]
+    taskHolder->tasks.push_back(async::spawn([=]
     {
         auto data = loader->loadData(path);
-        volatile auto lock = this->tasksLock.acquire();
-        this->tasks.push_back([=]()
+        return std::function<void(void)>([=]
         {
-            // This is later called in the update() method
             auto mesh = Mesh::create(device, data.get());
             handle->finish(mesh);
         });
-    });
+    }));
 
     return handle;
 }
@@ -188,10 +194,31 @@ auto AssetLoader::loadMeshAsync(const std::string &path) -> sptr<AsyncHandle<Mes
 
 void AssetLoader::update()
 {
+    while (true)
+    {
+        auto removed = false;
+
+        for (auto it = taskHolder->tasks.begin(); it != taskHolder->tasks.end(); ++it)
+        {
+            if (it->ready())
+            {
+                auto result = it->get();
+                // TODO process exception as well
+                result();
+                taskHolder->tasks.erase(it);
+                removed = true;
+                break;
+            }
+        }
+        
+        if (!removed)
+            break;
+    }
+
     if (!tasks.empty())
     {
-        volatile auto lt = tasksLock.acquire();
-        if (!tasks.empty())
+        volatile auto lt = lock.acquire();
+        while (!tasks.empty())
         {
             auto func = std::move(tasks.back());
             func();
