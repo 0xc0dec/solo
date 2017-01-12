@@ -41,7 +41,7 @@ private:
     void test_TransformRemovalForbidden()
     {
         auto node = scene->createNode();
-        assertThrows<EngineException>([&]() { node->removeComponent<Transform>(); }, "Transform component cannot be removed from a node");
+        assertThrows<EngineException>([&] { node->removeComponent<Transform>(); }, "Transform component cannot be removed from a node");
     }
 
     void test_TransformAddedByDefault()

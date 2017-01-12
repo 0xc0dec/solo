@@ -104,7 +104,7 @@ auto ObjMeshLoader::loadData(const std::string &path) const -> sptr<MeshData>
     std::vector<uint16_t> currentIndices;
     std::unordered_map<std::string, uint16_t> uniqueIndices;
 
-    auto finishIndex = [&]()
+    auto finishIndex = [&]
     {
         data->indices.push_back(std::move(currentIndices));
         currentIndices = std::vector<uint16_t>();

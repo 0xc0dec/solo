@@ -154,10 +154,10 @@ int main()
     Demo demo(device.get());
     while (!device->isQuitRequested() && !device->isWindowCloseRequested() && !device->isKeyPressed(KeyCode::Escape, true))
     {
-        device->update([&]()
+        device->update([&]
         {
             device->getAssetLoader()->update();
-            device->getRenderer()->renderFrame([&]()
+            device->getRenderer()->renderFrame([&]
             {
                 demo.update();
                 demo.render();

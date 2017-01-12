@@ -32,7 +32,7 @@ namespace solo
         class LockToken final
         {
         public:
-            LockToken(std::atomic_flag &flag) : flag(flag)
+            explicit LockToken(std::atomic_flag &flag) : flag(flag)
             {
             }
 
