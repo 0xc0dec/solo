@@ -63,7 +63,7 @@ namespace solo
         sptr<T> result;
     };
 
-    struct TaskHolder;
+    struct AssetLoaderImpl;
 
     class AssetLoader
     {
@@ -85,14 +85,6 @@ namespace solo
         void update();
 
     private:
-        Device *device = nullptr;
-
-        std::vector<sptr<ImageLoader>> imageLoaders;
-        std::vector<sptr<MeshLoader>> meshLoaders;
-
-        sptr<TaskHolder> taskHolder;
-
-        auto getMeshLoader(const std::string &path) -> MeshLoader*;
-        auto getImageLoader(const std::string &path) -> ImageLoader*;
+        sptr<AssetLoaderImpl> impl;
     };
 }

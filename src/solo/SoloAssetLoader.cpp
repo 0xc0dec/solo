@@ -33,53 +33,60 @@
 
 namespace solo
 {
-    struct TaskHolder
+    struct AssetLoaderImpl
     {
+        Device *device = nullptr;
+
+        std::vector<sptr<ImageLoader>> imageLoaders;
+        std::vector<sptr<MeshLoader>> meshLoaders;
+
         std::vector<async::task<std::function<void()>>> tasks;
+
+        explicit AssetLoaderImpl(Device *device):
+            device(device)
+        {
+            imageLoaders.push_back(std::make_unique<PngImageLoader>(device));
+            meshLoaders.push_back(std::make_unique<ObjMeshLoader>(device));
+        }
+
+        auto getMeshLoader(const std::string &path) -> MeshLoader*
+        {
+            for (const auto &loader : meshLoaders)
+            {
+                if (loader->isLoadable(path))
+                    return loader.get();
+            }
+            SL_ERR(SL_FMT("No suitable loader found for mesh '", path, "'"));
+            return nullptr;
+        }
+
+        auto getImageLoader(const std::string &path) -> ImageLoader*
+        {
+            for (const auto &l : imageLoaders)
+            {
+                if (l->isLoadable(path))
+                    return l.get();
+            }
+            SL_ERR(SL_FMT("No suitable loader found for image '", path, "'"));
+            return nullptr;
+        }
     };
 }
 
 using namespace solo;
 
 
-AssetLoader::AssetLoader(Device *device, const FriendToken<Device> &):
-    device(device)
+AssetLoader::AssetLoader(Device *device, const FriendToken<Device> &)
 {
-    taskHolder = std::make_unique<TaskHolder>();
-    imageLoaders.push_back(std::make_unique<PngImageLoader>(device));
-    meshLoaders.push_back(std::make_unique<ObjMeshLoader>(device));
-}
-
-
-auto AssetLoader::getMeshLoader(const std::string &path) -> MeshLoader*
-{
-    for (const auto &loader : meshLoaders)
-    {
-        if (loader->isLoadable(path))
-            return loader.get();
-    }
-    SL_ERR(SL_FMT("No suitable loader found for mesh '", path, "'"));
-    return nullptr;
-}
-
-
-auto AssetLoader::getImageLoader(const std::string &path) -> ImageLoader*
-{
-    for (const auto &l : imageLoaders)
-    {
-        if (l->isLoadable(path))
-            return l.get();
-    }
-    SL_ERR(SL_FMT("No suitable loader found for image '", path, "'"));
-    return nullptr;
+    impl = std::make_unique<AssetLoaderImpl>(device);
 }
 
 
 auto AssetLoader::loadRectTexture(const std::string &path) -> sptr<RectTexture>
 {
-    auto loader = getImageLoader(path);
+    auto loader = impl->getImageLoader(path);
     auto image = loader->load(path);
-    auto result = RectTexture::create(device);
+    auto result = RectTexture::create(impl->device);
     result->setData(image->format, image->data.data(), image->width, image->height);
     return result;
 }
@@ -88,14 +95,14 @@ auto AssetLoader::loadRectTexture(const std::string &path) -> sptr<RectTexture>
 auto AssetLoader::loadRectTextureAsync(const std::string &path) -> sptr<AsyncHandle<RectTexture>>
 {
     auto handle = std::make_shared<AsyncHandle<RectTexture>>();
-    auto loader = getImageLoader(path);
+    auto loader = impl->getImageLoader(path);
 
-    taskHolder->tasks.push_back(async::spawn([=]
+    impl->tasks.push_back(async::spawn([=]
     {
         auto image = loader->load(path);
         return std::function<void(void)>([=]
         {
-            auto texture = RectTexture::create(device);
+            auto texture = RectTexture::create(impl->device);
             // TODO this actually blocks and causes main thread/FPS stall. So we've offloaded
             // only part of the blocking task into another thread. Other similar places
             // have the same problem
@@ -110,8 +117,8 @@ auto AssetLoader::loadRectTextureAsync(const std::string &path) -> sptr<AsyncHan
 
 auto AssetLoader::loadCubeTexture(const std::vector<std::string> &sidePaths) -> sptr<CubeTexture>
 {
-    auto result = CubeTexture::create(device);
-    auto loader = getImageLoader(sidePaths[0]);
+    auto result = CubeTexture::create(impl->device);
+    auto loader = impl->getImageLoader(sidePaths[0]);
 
     auto idx = 0;
     for (const auto &path : sidePaths)
@@ -128,7 +135,7 @@ auto AssetLoader::loadCubeTexture(const std::vector<std::string> &sidePaths) -> 
 auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string> &sidePaths) -> sptr<AsyncHandle<CubeTexture>>
 {
     auto handle = std::make_shared<AsyncHandle<CubeTexture>>();
-    auto loader = getImageLoader(sidePaths[0]);
+    auto loader = impl->getImageLoader(sidePaths[0]);
 
     std::vector<async::task<sptr<Image>>> imageTasks;
     for (uint32_t i = 0; i < sidePaths.size(); i++)
@@ -146,7 +153,7 @@ auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string> &sidePaths
 
             return std::function<void(void)>(std::bind([=] (const std::vector<sptr<Image>> &images)
             {
-                auto texture = CubeTexture::create(device);
+                auto texture = CubeTexture::create(impl->device);
                 uint32_t idx = 0;
                 for (const auto &image : images)
                 {
@@ -157,7 +164,7 @@ auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string> &sidePaths
             }, std::move(images)));
         });
 
-    taskHolder->tasks.push_back(std::move(all));
+    impl->tasks.push_back(std::move(all));
 
     return handle;
 }
@@ -165,23 +172,23 @@ auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string> &sidePaths
 
 auto AssetLoader::loadMesh(const std::string &path) -> sptr<Mesh>
 {
-    auto loader = getMeshLoader(path);
+    auto loader = impl->getMeshLoader(path);
     auto data = loader->loadData(path);
-    return Mesh::create(device, data.get());
+    return Mesh::create(impl->device, data.get());
 }
 
 
 auto AssetLoader::loadMeshAsync(const std::string &path) -> sptr<AsyncHandle<Mesh>>
 {
     auto handle = std::make_shared<AsyncHandle<Mesh>>();
-    auto loader = getMeshLoader(path);
+    auto loader = impl->getMeshLoader(path);
 
-    taskHolder->tasks.push_back(async::spawn([=]
+    impl->tasks.push_back(async::spawn([=]
     {
         auto data = loader->loadData(path);
         return std::function<void(void)>([=]
         {
-            auto mesh = Mesh::create(device, data.get());
+            auto mesh = Mesh::create(impl->device, data.get());
             handle->finish(mesh);
         });
     }));
@@ -196,14 +203,14 @@ void AssetLoader::update()
     {
         auto removed = false;
 
-        for (auto it = taskHolder->tasks.begin(); it != taskHolder->tasks.end(); ++it)
+        for (auto it = impl->tasks.begin(); it != impl->tasks.end(); ++it)
         {
             if (it->ready())
             {
                 auto result = it->get();
                 // TODO process exception as well
                 result();
-                taskHolder->tasks.erase(it);
+                impl->tasks.erase(it);
                 removed = true;
                 break;
             }
