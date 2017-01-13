@@ -51,7 +51,7 @@ AssetLoader::AssetLoader(Device *device, const FriendToken<Device> &):
 }
 
 
-auto AssetLoader::getMeshLoader(const std::string &path) -> MeshLoader *
+auto AssetLoader::getMeshLoader(const std::string &path) -> MeshLoader*
 {
     for (const auto &loader : meshLoaders)
     {
@@ -63,7 +63,7 @@ auto AssetLoader::getMeshLoader(const std::string &path) -> MeshLoader *
 }
 
 
-auto AssetLoader::getImageLoader(const std::string &path) -> ImageLoader *
+auto AssetLoader::getImageLoader(const std::string &path) -> ImageLoader*
 {
     for (const auto &l : imageLoaders)
     {
@@ -134,21 +134,17 @@ auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string> &sidePaths
     for (uint32_t i = 0; i < sidePaths.size(); i++)
     {
         auto path = sidePaths[i];
-        imageTasks.push_back(async::spawn([=]
-        {
-            return loader->load(path);
-        }));
+        imageTasks.push_back(async::spawn([=] { return loader->load(path); }));
     }
 
-    async::when_all(imageTasks.begin(), imageTasks.end())
+    auto all = async::when_all(imageTasks.begin(), imageTasks.end())
         .then([=] (std::vector<async::task<sptr<Image>>> imageTasks)
         {
             std::vector<sptr<Image>> images;
             std::transform(imageTasks.begin(), imageTasks.end(), std::back_inserter(images),
                 [](async::task<sptr<Image>> &t) { return t.get(); });
 
-            volatile auto lock = this->lock.acquire();
-            this->tasks.push_back(std::bind([=] (const std::vector<sptr<Image>> &images)
+            return std::function<void(void)>(std::bind([=] (const std::vector<sptr<Image>> &images)
             {
                 auto texture = CubeTexture::create(device);
                 uint32_t idx = 0;
@@ -160,6 +156,8 @@ auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string> &sidePaths
                 handle->finish(texture);
             }, std::move(images)));
         });
+
+    taskHolder->tasks.push_back(std::move(all));
 
     return handle;
 }
@@ -213,16 +211,5 @@ void AssetLoader::update()
         
         if (!removed)
             break;
-    }
-
-    if (!tasks.empty())
-    {
-        volatile auto lt = lock.acquire();
-        while (!tasks.empty())
-        {
-            auto func = std::move(tasks.back());
-            func();
-            tasks.pop_back();
-        }
     }
 }

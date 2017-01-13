@@ -92,9 +92,6 @@ namespace solo
         std::vector<sptr<ImageLoader>> imageLoaders;
         std::vector<sptr<MeshLoader>> meshLoaders;
 
-        SpinLock lock;
-        std::list<std::function<void()>> tasks;
-
         sptr<TaskHolder> taskHolder;
 
         auto getMeshLoader(const std::string &path) -> MeshLoader*;
