@@ -46,6 +46,4 @@ void OpenGLMaterial::applyState()
     renderer->setBlendFactor(srcBlendFactor, dstBlendFactor);
 }
 
-#else
-#   error OpenGL renderer is not supported on this platform
 #endif

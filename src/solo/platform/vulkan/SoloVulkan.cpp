@@ -381,7 +381,4 @@ auto vk::createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImage
     return frameBuffer;
 }
 
-
-#else
-#   error Vulkan renderer is not supported on this platform
 #endif

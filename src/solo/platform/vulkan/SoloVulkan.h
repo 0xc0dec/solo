@@ -61,6 +61,4 @@ namespace solo
     }
 }
 
-#else
-#   error Vulkan renderer is not supported on this platform
 #endif

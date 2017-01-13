@@ -2,6 +2,8 @@
 
 using namespace solo;
 
+#ifdef SL_VULKAN_RENDERER
+
 
 VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass):
     device(device),
@@ -189,3 +191,5 @@ void VulkanPipeline::rebuild()
 
     SL_CHECK_VK_RESULT(vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline));
 }
+
+#endif

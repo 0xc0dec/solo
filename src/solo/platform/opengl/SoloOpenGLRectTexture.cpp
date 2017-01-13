@@ -52,6 +52,4 @@ void OpenGLRectTexture::setData(TextureFormat format, const uint8_t *data, uint3
     size = { static_cast<float>(width), static_cast<float>(height) };
 }
 
-#else
-#   error OpenGL renderer is not supported on this platform
 #endif

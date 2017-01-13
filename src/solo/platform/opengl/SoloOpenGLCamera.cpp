@@ -56,6 +56,4 @@ void OpenGLCamera::applyImpl() const
     renderer->clear(true, true, clearColor.x, clearColor.y, clearColor.z, clearColor.w);
 }
 
-#else
-#   error OpenGL renderer is not supported on this platform
 #endif

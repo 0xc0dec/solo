@@ -109,6 +109,4 @@ auto SDLOpenGLDevice::getCanvasSize() const -> Vector2
     return Vector2(static_cast<float>(width), static_cast<float>(height));
 }
 
-#else
-#   error OpenGL renderer is not supported on this platform
 #endif

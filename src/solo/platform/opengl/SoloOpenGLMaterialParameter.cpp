@@ -277,6 +277,4 @@ auto OpenGLMaterialParameter::getUniformType(MaterialParameterType type) -> Unif
     }
 }
 
-#else
-#   error OpenGL renderer is not supported on this platform
 #endif

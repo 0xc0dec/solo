@@ -382,7 +382,4 @@ void VulkanRenderer::beginCommandBuffer(VkCommandBuffer buffer)
     SL_CHECK_VK_RESULT(vkBeginCommandBuffer(buffer, &beginInfo));
 }
 
-
-#else
-#   error Vulkan renderer is not supported on this platform
 #endif

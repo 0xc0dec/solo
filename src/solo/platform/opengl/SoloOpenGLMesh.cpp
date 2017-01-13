@@ -188,6 +188,4 @@ void OpenGLMesh::drawPart(Effect *effect, uint32_t part)
         renderer->drawIndexed(primitiveType, programBinding, indexBuffers[part]);
 }
 
-#else
-#   error OpenGL renderer is not supported on this platform
 #endif

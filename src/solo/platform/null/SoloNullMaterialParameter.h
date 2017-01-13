@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include "SoloMaterialParameter.h"
+#include "../../SoloMaterialParameter.h"
 
 
 namespace solo

@@ -52,6 +52,4 @@ namespace solo
     }
 }
 
-#else
-#   error OpenGL renderer is not supported on this platform
 #endif

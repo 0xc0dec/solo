@@ -4,6 +4,8 @@
 #include "SoloVulkan.h"
 #include <vector>
 
+#ifdef SL_VULKAN_RENDERER
+
 namespace solo
 {
     class VulkanPipeline
@@ -41,3 +43,5 @@ namespace solo
         VkPipelineColorBlendStateCreateInfo colorBlendState;
     };
 }
+
+#endif

@@ -128,6 +128,4 @@ void SDLVulkanDevice::endUpdate()
 }
 
 
-#else
-#   error Vulkan renderer is not supported on this platform
 #endif

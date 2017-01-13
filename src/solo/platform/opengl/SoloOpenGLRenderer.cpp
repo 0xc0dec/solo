@@ -1032,6 +1032,4 @@ void OpenGLRenderer::clear(bool color, bool depth, float r, float g, float b, fl
     glClear(flags);
 }
 
-#else
-#   error OpenGL renderer is not supported on this platform
 #endif

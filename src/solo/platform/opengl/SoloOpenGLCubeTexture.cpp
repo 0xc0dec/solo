@@ -57,6 +57,4 @@ void OpenGLCubeTexture::setData(CubeTextureFace face, TextureFormat format, cons
     renderer->updateCubeTexture(handle, face, format, width, height, data);
 }
 
-#else
-#   error OpenGL renderer is not supported on this platform
 #endif

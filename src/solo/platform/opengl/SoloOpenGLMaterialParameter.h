@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include "SoloMaterialParameter.h"
+#include "../../SoloMaterialParameter.h"
 #include "SoloOpenGLRenderer.h"
 
 
@@ -52,6 +52,4 @@ namespace solo
     };
 }
 
-#else
-#   error OpenGL renderer is not supported on this platform
 #endif

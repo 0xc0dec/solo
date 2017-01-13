@@ -70,6 +70,4 @@ void OpenGLFrameBuffer::setAttachments(const std::vector<sptr<RectTexture>> &att
         size = Vector2();
 }
 
-#else
-#   error OpenGL renderer is not supported on this platform
 #endif

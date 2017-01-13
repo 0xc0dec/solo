@@ -23,11 +23,11 @@ include_directories(
 # Engine
 
 file(GLOB_RECURSE sources
-    "src/*.cpp"
-    "src/platform/stub/.cpp"
-    "src/platform/sdl/.cpp"
-    "src/platform/opengl/.cpp"
-    "src/platform/bullet/.cpp"
+    "src/solo/*.cpp"
+    "src/solo/platform/null/.cpp"
+    "src/solo/platform/sdl/.cpp"
+    "src/solo/platform/opengl/.cpp"
+    "src/solo/platform/bullet/.cpp"
 )
 
 file(GLOB_RECURSE glew_sources "vendor/glew/1.13/src/*.c")
@@ -109,24 +109,24 @@ target_link_libraries(solo ${frameworks})
 
 # Tests
 
-file(GLOB_RECURSE tester_sources "tests/tester/*.cpp")
+file(GLOB_RECURSE tester_sources "src/tests/tester/*.cpp")
 add_executable(Tester ${tester_sources})
 target_link_libraries(Tester LINK_PUBLIC solo)
 
 # Demos
 
-file(GLOB_RECURSE demo1_sources "demos/demo1/*.cpp")
+file(GLOB_RECURSE demo1_sources "src/demos/demo1/*.cpp")
 add_executable(Demo1 ${demo1_sources})
 target_link_libraries(Demo1 LINK_PUBLIC solo)
 
-file(GLOB_RECURSE demo2_sources "demos/demo2/*.cpp")
+file(GLOB_RECURSE demo2_sources "src/demos/demo2/*.cpp")
 add_executable(Demo2 ${demo2_sources})
 target_link_libraries(Demo2 LINK_PUBLIC solo)
 
-file(GLOB_RECURSE demo3_sources "demos/demo3/*.cpp")
+file(GLOB_RECURSE demo3_sources "src/demos/demo3/*.cpp")
 add_executable(Demo3 ${demo3_sources})
 target_link_libraries(Demo3 LINK_PUBLIC solo)
 
-file(GLOB_RECURSE demo4_sources "demos/demo4/*.cpp")
+file(GLOB_RECURSE demo4_sources "src/demos/demo4/*.cpp")
 add_executable(Demo4 ${demo4_sources})
 target_link_libraries(Demo4 LINK_PUBLIC solo)

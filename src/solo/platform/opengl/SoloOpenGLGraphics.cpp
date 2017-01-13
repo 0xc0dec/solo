@@ -19,11 +19,11 @@
 */
 
 #include "SoloOpenGLGraphics.h"
+#include "SoloOpenGLRenderer.h"
 #include "SoloMesh.h"
 #include "SoloMaterial.h"
 #include "SoloFrameBuffer.h"
 #include "SoloDevice.h"
-#include "platform/opengl/SoloOpenGLRenderer.h"
 
 
 #ifdef SL_OPENGL_RENDERER
@@ -62,6 +62,4 @@ void OpenGLGraphics::blit(Material *material, FrameBuffer *target)
         target->unbind();
 }
 
-#else
-#   error OpenGL renderer is not supported on this platform
 #endif
