@@ -208,9 +208,8 @@ void AssetLoader::update()
             if (it->ready())
             {
                 auto result = it->get();
-                // TODO process exception as well
-                result();
                 impl->tasks.erase(it);
+                result();
                 removed = true;
                 break;
             }
