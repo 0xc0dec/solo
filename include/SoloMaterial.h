@@ -43,9 +43,10 @@ namespace solo
     class Material
     {
     public:
+        SL_DISABLE_COPY_AND_MOVE(Material)
+
         static auto create(Device *device, sptr<Effect> effect) -> sptr<Material>;
 
-        SL_DISABLE_COPY_AND_MOVE(Material)
         virtual ~Material() {}
 
         void setFloatParameter(const std::string &name, float value);

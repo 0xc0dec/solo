@@ -49,11 +49,12 @@ namespace solo
     class Mesh
     {
     public:
+        SL_DISABLE_COPY_AND_MOVE(Mesh)
+
         static auto create(Device *device) -> sptr<Mesh>;
         static auto create(Device *device, MeshPrefab prefab) -> sptr<Mesh>;
         static auto create(Device *device, MeshData *data) -> sptr<Mesh>;
 
-        SL_DISABLE_COPY_AND_MOVE(Mesh)
         virtual ~Mesh() {}
 
         virtual auto addVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount) -> uint32_t = 0;

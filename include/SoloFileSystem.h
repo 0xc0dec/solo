@@ -32,9 +32,10 @@ namespace solo
     class FileSystem
     {
     public:
+        SL_DISABLE_COPY_AND_MOVE(FileSystem)
+
         static auto create(Device *device, const FriendToken<Device> &) -> sptr<FileSystem>;
 
-        SL_DISABLE_COPY_AND_MOVE(FileSystem)
         virtual ~FileSystem() {}
 
         virtual auto readBytes(const std::string &path) -> std::vector<uint8_t>;

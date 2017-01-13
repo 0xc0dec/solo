@@ -140,9 +140,10 @@ namespace solo
     class Renderer
     {
     public:
+        SL_DISABLE_COPY_AND_MOVE(Renderer)
+
         static auto create(Device *device, const FriendToken<Device> &) -> sptr<Renderer>;
 
-        SL_DISABLE_COPY_AND_MOVE(Renderer)
         virtual ~Renderer() {}
 
         void renderFrame(std::function<void()> render);

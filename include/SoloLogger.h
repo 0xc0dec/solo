@@ -33,6 +33,7 @@ namespace solo
     {
     public:
         SL_DISABLE_COPY_AND_MOVE(Logger)
+
         explicit Logger(const FriendToken<Device> &) {}
         ~Logger();
 

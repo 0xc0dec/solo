@@ -45,9 +45,10 @@ namespace solo
     class Physics
     {
     public:
+        SL_DISABLE_COPY_AND_MOVE(Physics)
+
         static auto create(Device *device, const FriendToken<Device> &deviceToken) -> sptr<Physics>;
 
-        SL_DISABLE_COPY_AND_MOVE(Physics)
         virtual ~Physics() {}
 
         virtual void update() = 0;

@@ -32,9 +32,10 @@ namespace solo
     class FrameBuffer
     {
     public:
+        SL_DISABLE_COPY_AND_MOVE(FrameBuffer)
+
         static auto create(Device *device) -> sptr<FrameBuffer>;
 
-        SL_DISABLE_COPY_AND_MOVE(FrameBuffer)
         virtual ~FrameBuffer() {}
 
         virtual void bind() = 0;

@@ -95,9 +95,10 @@ namespace solo
     class Device
     {
     public:
+        SL_DISABLE_COPY_AND_MOVE(Device)
+
         static auto create(const DeviceSetup &setup) -> uptr<Device>;
 
-        SL_DISABLE_COPY_AND_MOVE(Device)
         virtual ~Device();
 
         virtual auto getWindowTitle() const -> std::string = 0;

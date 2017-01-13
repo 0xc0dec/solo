@@ -32,9 +32,10 @@ namespace solo
     class Graphics
     {
     public:
+        SL_DISABLE_COPY_AND_MOVE(Graphics)
+
         static auto create(Device *device, const FriendToken<Device> &token) -> sptr<Graphics>;
 
-        SL_DISABLE_COPY_AND_MOVE(Graphics)
         virtual ~Graphics() {}
 
         virtual void blit(Material *material, FrameBuffer *target) = 0;
