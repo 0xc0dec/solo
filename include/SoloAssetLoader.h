@@ -21,9 +21,7 @@
 #pragma once
 
 #include "SoloCommon.h"
-#include "SoloSpinLock.h"
 #include <vector>
-#include <list>
 #include <functional>
 
 
