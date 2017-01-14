@@ -18,7 +18,7 @@
     3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "../../../include/Solo.h"
+#include "../common/DemoBase.h"
 #include "../common/Screenshoter.h"
 #include <chrono>
 #include <iomanip>
@@ -41,7 +41,7 @@ public:
         const int textureHeight = 1024;
         const int lineHeight = 60;
 
-        auto fontData = device->getFileSystem()->readBytes("c:/windows/fonts/calibri.ttf");
+        auto fontData = device->getFileSystem()->readBytes("../assets/aller.ttf");
         auto font = Font::create(device, fontData.data(), lineHeight, textureWidth, textureHeight, ' ', '~' - ' ', 2, 2);
 
         renderer = node.addComponent<FontRenderer>();
@@ -63,37 +63,24 @@ private:
 };
 
 
-class Demo final
+class Demo final: public DemoBase
 {
 public:
-    explicit Demo(Device *device):
-        device(device),
-        scene(device->getScene()),
-        loader(device->getAssetLoader())
+    explicit Demo(Device *device): DemoBase(device)
     {
         initCamera();
         initSkybox();
         initText();
     }
 
-    void update()
-    {
-        scene->visit([](Component *cmp) { cmp->update(); });
-    }
-
-    void render()
+private:
+    void render() override final
     {
         camera->apply([&](const RenderContext& ctx)
         {
             renderByTags(skyboxTag, ctx);
             renderByTags(~skyboxTag, ctx);
         });
-    }
-
-private:
-    void renderByTags(uint32_t tags, const RenderContext &ctx)
-    {
-        scene->visit(tags, [=](Component *cmp) { cmp->render(ctx); });
     }
 
     void initCamera()
@@ -141,28 +128,17 @@ private:
 
     const uint32_t skyboxTag = 1 << 2;
 
-    Device *device = nullptr;
-    Scene *scene = nullptr;
-    AssetLoader *loader = nullptr;
     Camera *camera = nullptr;
 };
 
 
 int main()
 {
-    auto device = Device::create(DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo3.log").withWindowTitle("Demo 3"));
-    Demo demo(device.get());
-    while (!device->isQuitRequested() && !device->isWindowCloseRequested() && !device->isKeyPressed(KeyCode::Escape, true))
-    {
-        device->update([&]
-        {
-            device->getAssetLoader()->update();
-            device->getRenderer()->renderFrame([&]
-            {
-                demo.update();
-                demo.render();
-            });
-        });
-    }
+    auto device = Device::create(DeviceSetup()
+        .withMode(DeviceMode::OpenGL)
+        .withDimensions(1200, 600)
+        .withLogFilePath("demo3.log")
+        .withWindowTitle("Demo 3"));
+    Demo(device.get()).run();
     return 0;
 }
