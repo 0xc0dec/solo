@@ -62,7 +62,7 @@ protected:
 
     virtual void render() = 0;
 
-    void update()
+    virtual void update()
     {
         scene->visit([](Component *cmp) { cmp->update(); });
     }

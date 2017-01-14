@@ -18,7 +18,7 @@
     3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "../../../include/Solo.h"
+#include "../common/DemoBase.h"
 #include "../common/Screenshoter.h"
 #include "../common/Rotator.h"
 #include "../common/Shaders.h"
@@ -172,13 +172,10 @@ private:
 };
 
 
-class Demo final
+class Demo final: public DemoBase
 {
 public:
-    explicit Demo(Device *device):
-        device(device),
-        scene(device->getScene()),
-        loader(device->getAssetLoader())
+    explicit Demo(Device *device): DemoBase(device)
     {
         initCamera();
         initSkybox();
@@ -186,13 +183,14 @@ public:
         device->getLogger()->logInfo("Press keys 1..3 to switch between modes");
     }
 
-    void update()
+private:
+    void update() override final
     {
-        scene->visit([](Component *cmp) { cmp->update(); });
+        DemoBase::update();
         switchPostProcessors();
     }
 
-    void render()
+    void render() override final
     {
         camera->apply([&](const RenderContext &ctx)
         {
@@ -206,7 +204,6 @@ public:
             pp2->apply();
     }
 
-private:
     void switchPostProcessors()
     {
         if (device->isKeyPressed(KeyCode::Digit1, true))
@@ -230,11 +227,6 @@ private:
             pp1 = nullptr;
             pp2 = nullptr;
         }
-    }
-
-    void renderByTags(uint32_t tags, const RenderContext &ctx)
-    {
-        scene->visit(tags, [=](Component *cmp) { cmp->render(ctx); });
     }
 
     void initCamera()
@@ -304,28 +296,17 @@ private:
 
     uptr<PostProcessor1> pp1;
     uptr<PostProcessor2> pp2;
-    Device *device = nullptr;
-    Scene *scene = nullptr;
-    AssetLoader *loader = nullptr;
     Camera *camera = nullptr;
 };
 
 
 int main()
 {
-    auto device = Device::create(DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo2.log").withWindowTitle("Demo 2"));
-    Demo demo(device.get());
-    while (!device->isQuitRequested() && !device->isWindowCloseRequested() && !device->isKeyPressed(KeyCode::Escape, true))
-    {
-        device->update([&]
-        {
-            device->getAssetLoader()->update();
-            device->getRenderer()->renderFrame([&]
-            {
-                demo.update();
-                demo.render();
-            });
-        });
-    }
+    auto device = Device::create(DeviceSetup()
+        .withMode(DeviceMode::OpenGL)
+        .withDimensions(1200, 600)
+        .withLogFilePath("demo2.log")
+        .withWindowTitle("Demo 2"));
+    Demo(device.get()).run();
     return 0;
 }
