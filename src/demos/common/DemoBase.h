@@ -45,6 +45,7 @@ public:
             device->update([&]
             {
                 device->getAssetLoader()->update();
+                device->getPhysics()->update();
                 device->getRenderer()->renderFrame([&]
                 {
                     update();

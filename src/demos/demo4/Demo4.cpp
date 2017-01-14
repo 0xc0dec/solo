@@ -18,7 +18,7 @@
     3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "../../../include/Solo.h"
+#include "../common/DemoBase.h"
 #include "../common/Screenshoter.h"
 #include "../common/Shaders.h"
 
@@ -174,37 +174,24 @@ private:
 };
 
 
-class Demo final
+class Demo final: public DemoBase
 {
 public:
-    explicit Demo(Device* device):
-        device(device),
-        scene(device->getScene()),
-        loader(device->getAssetLoader())
+    explicit Demo(Device* device): DemoBase(device)
     {
         initObjects();
         initCamera();
         initSkybox();
     }
 
-    void update()
-    {
-        scene->visit([](Component *cmp) { cmp->update(); });
-    }
-
-    void render()
+private:
+    void render() override final
     {
         camera->apply([&](const RenderContext& ctx)
         {
             renderByTags(skyboxTag, ctx);
             renderByTags(~skyboxTag, ctx);
         });
-    }
-
-private:
-    void renderByTags(uint32_t tags, const RenderContext &ctx)
-    {
-        scene->visit(tags, [=](Component *cmp) { cmp->render(ctx); });
     }
 
     void initCamera()
@@ -272,9 +259,6 @@ private:
 
     const uint32_t skyboxTag = 1 << 2;
 
-    Device *device = nullptr;
-    Scene *scene = nullptr;
-    AssetLoader *loader = nullptr;
     Camera *camera = nullptr;
     sptr<Mesh> cubeMesh;
 };
@@ -282,20 +266,11 @@ private:
 
 int main()
 {
-    auto device = Device::create(DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath("demo4.log").withWindowTitle("Demo 4"));
-    Demo demo(device.get());
-    while (!device->isQuitRequested() && !device->isWindowCloseRequested() && !device->isKeyPressed(KeyCode::Escape, true))
-    {
-        device->update([&]
-        {
-            device->getAssetLoader()->update();
-            device->getPhysics()->update();
-            device->getRenderer()->renderFrame([&]
-            {
-                demo.update();
-                demo.render();
-            });
-        });
-    }
+    auto device = Device::create(DeviceSetup()
+        .withMode(DeviceMode::OpenGL)
+        .withDimensions(1200, 600)
+        .withLogFilePath("demo4.log")
+        .withWindowTitle("Demo 4"));
+    Demo(device.get()).run();
     return 0;
 }
