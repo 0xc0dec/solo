@@ -31,6 +31,10 @@ public:
         initCamera();
     }
 
+    void render() override final
+    {
+    }
+
 private:
     void initCamera()
     {
