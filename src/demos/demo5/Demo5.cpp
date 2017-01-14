@@ -18,17 +18,15 @@
     3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "../../../include/Solo.h"
+#include "../common/DemoBase.h"
 
 using namespace solo;
 
 
-class Demo final
+class Demo final: public DemoBase
 {
 public:
-    explicit Demo(Device* device):
-        device(device),
-        scene(device->getScene())
+    explicit Demo(Device* device): DemoBase(device)
     {
         initCamera();
     }
@@ -47,25 +45,16 @@ private:
 
         node->addComponent<Spectator>();
     }
-
-    Device *device = nullptr;
-    Scene *scene = nullptr;
 };
 
 
 int main()
 {
-    auto device = Device::create(DeviceSetup().withMode(DeviceMode::Vulkan).withDimensions(1200, 600).withLogFilePath("demo5.log").withWindowTitle("Demo 5"));
-    Demo demo(device.get());
-    while (!device->isQuitRequested() && !device->isWindowCloseRequested() && !device->isKeyPressed(KeyCode::Escape, true))
-    {
-        device->update([&]
-        {
-            device->getAssetLoader()->update();
-            device->getRenderer()->renderFrame([&]
-            {
-            });
-        });
-    }
+    auto device = Device::create(DeviceSetup()
+        .withMode(DeviceMode::Vulkan)
+        .withDimensions(1200, 600)
+        .withLogFilePath("demo5.log")
+        .withWindowTitle("Demo 5"));
+    Demo(device.get()).run();
     return 0;
 }
