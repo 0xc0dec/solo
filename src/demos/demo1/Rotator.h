@@ -34,12 +34,12 @@ public:
     {
     }
 
-    virtual void init() override final
+    void init() override final
     {
         transform = node.findComponent<solo::Transform>();
     }
 
-    virtual void update() override final
+    void update() override final
     {
         auto angle = device->getTimeDelta();
         auto rotationSpace = solo::TransformSpace::World;

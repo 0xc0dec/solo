@@ -20,8 +20,8 @@
 
 #include "../common/DemoBase.h"
 #include "../common/Screenshoter.h"
-#include "../common/Rotator.h"
 #include "../common/Shaders.h"
+#include "Rotator.h"
 #include "DynamicQuadUpdater.h"
 #include "Targeter.h"
 #include "CurrentTimeText.h"
