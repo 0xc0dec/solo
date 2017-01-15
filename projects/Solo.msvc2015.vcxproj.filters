@@ -118,9 +118,6 @@
     <ClInclude Include="..\include\SoloFrameBuffer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloGraphics.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloSpinLock.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -221,12 +218,6 @@
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="..\src\solo\platform\null\SoloNullMaterialParameter.h">
-      <Filter>src\platform\null</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLGraphics.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\null\SoloNullGraphics.h">
       <Filter>src\platform\null</Filter>
     </ClInclude>
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLCubeTexture.h">
@@ -369,9 +360,6 @@
     <ClCompile Include="..\src\solo\SoloFrameBuffer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\SoloGraphics.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\solo\SoloAssetLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -427,9 +415,6 @@
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLMaterialParameter.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLGraphics.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLCubeTexture.cpp">

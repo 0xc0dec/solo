@@ -24,7 +24,6 @@
 #include "SoloScene.h"
 #include "SoloLogger.h"
 #include "SoloRenderer.h"
-#include "SoloGraphics.h"
 #include "SoloPhysics.h"
 #include "platform/null/SoloNullDevice.h"
 #include "platform/opengl/SoloSDLOpenGLDevice.h"
@@ -69,9 +68,6 @@ Device::~Device()
     if (scene)
         scene.reset();
 
-    if (graphics)
-        graphics.reset();
-
     if (assetLoader)
         assetLoader.reset();
 
@@ -107,7 +103,6 @@ void Device::initSubsystems()
     physics = Physics::create(this, token);
     fs = FileSystem::create(this, token);
     assetLoader = std::make_unique<AssetLoader>(this, token);
-    graphics = Graphics::create(this, token);
     scene = std::make_unique<Scene>(this, token);
 }
 

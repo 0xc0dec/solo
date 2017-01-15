@@ -39,7 +39,6 @@
 #include "SoloFormatter.h"
 #include "SoloFrameBuffer.h"
 #include "SoloFrustum.h"
-#include "SoloGraphics.h"
 #include "SoloImage.h"
 #include "SoloImageLoader.h"
 #include "SoloLogger.h"

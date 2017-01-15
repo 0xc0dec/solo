@@ -34,7 +34,6 @@ namespace solo
     class AssetLoader;
     class FileSystem;
     class Renderer;
-    class Graphics;
     class Physics;
     class Logger;
 
@@ -132,7 +131,6 @@ namespace solo
         auto getFileSystem() const -> FileSystem*;
         auto getAssetLoader() const -> AssetLoader*;
         auto getRenderer() const -> Renderer*;
-        auto getGraphics() const -> Graphics*;
         auto getPhysics() const -> Physics*;
         auto getLogger() const -> Logger*;
 
@@ -151,7 +149,6 @@ namespace solo
         sptr<FileSystem> fs;
         sptr<AssetLoader> assetLoader;
         sptr<Renderer> renderer;
-        sptr<Graphics> graphics;
         sptr<Physics> physics;
         sptr<Logger> logger;
 
@@ -204,11 +201,6 @@ namespace solo
     inline auto Device::getAssetLoader() const -> AssetLoader *
     {
         return assetLoader.get();
-    }
-
-    inline auto Device::getGraphics() const -> Graphics *
-    {
-        return graphics.get();
     }
 
     inline auto Device::getPhysics() const -> Physics *
