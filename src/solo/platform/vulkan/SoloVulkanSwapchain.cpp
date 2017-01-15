@@ -57,7 +57,7 @@ VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevic
     if (capabilities.maxImageCount > 0 && requestedImageCount > capabilities.maxImageCount)
         requestedImageCount = capabilities.maxImageCount;
 
-    VkSwapchainCreateInfoKHR swapchainInfo = {};
+    VkSwapchainCreateInfoKHR swapchainInfo{};
     swapchainInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
     swapchainInfo.pNext = nullptr;
     swapchainInfo.surface = surface;
@@ -87,7 +87,7 @@ VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevic
     buffers.resize(imageCount);
     for (uint32_t i = 0; i < imageCount; i++)
     {
-        VkImageViewCreateInfo imageViewInfo = {};
+        VkImageViewCreateInfo imageViewInfo{};
         imageViewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
         imageViewInfo.pNext = nullptr;
         imageViewInfo.format = colorFormat;
@@ -129,7 +129,7 @@ void VulkanSwapchain::acquireNextImage(VkSemaphore presentCompleteSem, uint32_t 
 
 void VulkanSwapchain::present(VkQueue queue, uint32_t imageIndex, VkSemaphore waitSem) const
 {
-    VkPresentInfoKHR presentInfo;
+    VkPresentInfoKHR presentInfo{};
 	presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 	presentInfo.pNext = nullptr;
 	presentInfo.swapchainCount = 1;

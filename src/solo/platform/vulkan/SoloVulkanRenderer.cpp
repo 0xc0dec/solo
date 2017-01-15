@@ -33,7 +33,7 @@ using namespace solo;
 auto VulkanRenderer::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
     VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil
 {
-    VkImageCreateInfo imageInfo {};
+    VkImageCreateInfo imageInfo{};
     imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
     imageInfo.pNext = nullptr;
     imageInfo.imageType = VK_IMAGE_TYPE_2D;
@@ -46,13 +46,13 @@ auto VulkanRenderer::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryP
     imageInfo.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
     imageInfo.flags = 0;
 
-    VkMemoryAllocateInfo allocInfo {};
+    VkMemoryAllocateInfo allocInfo{};
     allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
     allocInfo.pNext = nullptr;
     allocInfo.allocationSize = 0;
     allocInfo.memoryTypeIndex = 0;
 
-    VkImageViewCreateInfo viewInfo {};
+    VkImageViewCreateInfo viewInfo{};
     viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
     viewInfo.pNext = nullptr;
     viewInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
@@ -121,21 +121,16 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice)
     vkGetDeviceQueue(device, queueIndex, 0, &queue);
 
     depthFormat = vk::getDepthFormat(physicalDevice);
-
     presentCompleteSem = vk::createSemaphore(device);
     renderCompleteSem = vk::createSemaphore(device);
-
     commandPool = vk::createCommandPool(device, queueIndex);
-
     swapchain = std::make_shared<VulkanSwapchain>(device, physicalDevice, surface, engineDevice->getSetup().vsync,
         engineDevice->getCanvasSize(), colorFormat, colorSpace);
-    initCommandBuffers();
-
     depthStencil = createDepthStencil(device, memProperties, depthFormat, canvasWidth, canvasHeight);
-
     renderPass = vk::createRenderPass(device, colorFormat, depthFormat);
 
     initFrameBuffers();
+    initCommandBuffers();
 }
 
 
@@ -146,8 +141,6 @@ static bool init = false;
 
 VulkanRenderer::~VulkanRenderer()
 {
-    vkDeviceWaitIdle(device);
-
     // TODO this is only for testing
     delete pipeline;
 
@@ -203,7 +196,7 @@ void VulkanRenderer::endFrame()
 {
     VkPipelineStageFlags submitPipelineStages = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
 
-    VkSubmitInfo submitInfo;
+    VkSubmitInfo submitInfo{};
 	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
     submitInfo.pWaitDstStageMask = &submitPipelineStages;
 	submitInfo.waitSemaphoreCount = 1;
@@ -222,23 +215,61 @@ void VulkanRenderer::endFrame()
 
 void VulkanRenderer::initCommandBuffers()
 {
+    static VkClearColorValue defaultClearColor = {{0.025f, 0.025f, 0.025f, 1.0f}};
+
     auto count = swapchain->getImageCount();
 
     drawCmdBuffers.resize(count);
 
-    VkCommandBufferAllocateInfo allocInfo = {};
+    VkCommandBufferAllocateInfo allocInfo{};
     allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
     allocInfo.commandPool = commandPool;
     allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
     allocInfo.commandBufferCount = static_cast<uint32_t>(count);
 
     SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &allocInfo, drawCmdBuffers.data()));
+
+    // TODO this is only for testing
+    for (size_t i = 0; i < drawCmdBuffers.size(); i++)
+    {
+        VkClearValue clearValues[2];
+		clearValues[0].color = defaultClearColor;
+        clearValues[1].depthStencil = {1.0f, 0};
+
+        VkRenderPassBeginInfo renderPassBeginInfo;
+        renderPassBeginInfo.renderPass = renderPass;
+		renderPassBeginInfo.renderArea.offset.x = 0;
+		renderPassBeginInfo.renderArea.offset.y = 0;
+		renderPassBeginInfo.renderArea.extent.width = canvasWidth;
+		renderPassBeginInfo.renderArea.extent.height = canvasHeight;
+		renderPassBeginInfo.clearValueCount = 2;
+		renderPassBeginInfo.pClearValues = clearValues;
+        renderPassBeginInfo.framebuffer = frameBuffers[i];
+
+        VkViewport viewport {};
+		viewport.width = canvasWidth;
+		viewport.height = canvasHeight;
+		viewport.minDepth = 0;
+		viewport.maxDepth = 1;
+
+        auto buf = drawCmdBuffers[i];
+
+        beginCommandBuffer(buf);
+
+        vkCmdBeginRenderPass(buf, &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
+
+        vkCmdSetViewport(drawCmdBuffers[i], 0, 1, &viewport);
+
+        vkCmdEndRenderPass(buf);
+
+        SL_CHECK_VK_RESULT(vkEndCommandBuffer(buf));
+    }
 }
 
 
 void VulkanRenderer::beginCommandBuffer(VkCommandBuffer buffer)
 {
-    VkCommandBufferBeginInfo beginInfo = {};
+    VkCommandBufferBeginInfo beginInfo{};
     beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
     SL_CHECK_VK_RESULT(vkBeginCommandBuffer(buffer, &beginInfo));
 }

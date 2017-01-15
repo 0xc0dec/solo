@@ -113,7 +113,7 @@ void VulkanPipeline::rebuild()
 {
     cleanup();
 
-    VkPipelineLayoutCreateInfo pipelineLayoutInfo {};
+    VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
     pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
     pipelineLayoutInfo.pNext = nullptr;
     pipelineLayoutInfo.flags = 0;
@@ -124,12 +124,12 @@ void VulkanPipeline::rebuild()
 
     SL_CHECK_VK_RESULT(vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, &layout));
 
-    VkVertexInputBindingDescription vertexInputBindingDesc {}; // TODO other bindings
+    VkVertexInputBindingDescription vertexInputBindingDesc{}; // TODO other bindings
     vertexInputBindingDesc.binding = 0;
     vertexInputBindingDesc.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
     vertexInputBindingDesc.stride = vertexSize;
 
-    VkPipelineVertexInputStateCreateInfo vertexInputState {};
+    VkPipelineVertexInputStateCreateInfo vertexInputState{};
     vertexInputState.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
     vertexInputState.pNext = nullptr;
     vertexInputState.flags = 0;
@@ -138,14 +138,14 @@ void VulkanPipeline::rebuild()
     vertexInputState.vertexAttributeDescriptionCount = static_cast<uint32_t>(vertexAttrs.size());
     vertexInputState.pVertexAttributeDescriptions = vertexAttrs.data();
 
-    VkPipelineInputAssemblyStateCreateInfo inputAssemblyState {};
+    VkPipelineInputAssemblyStateCreateInfo inputAssemblyState{};
     inputAssemblyState.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
     inputAssemblyState.pNext = nullptr;
     inputAssemblyState.flags = 0;
     inputAssemblyState.topology = topology;
     inputAssemblyState.primitiveRestartEnable = VK_FALSE;
 
-    VkPipelineViewportStateCreateInfo viewportState {};
+    VkPipelineViewportStateCreateInfo viewportState{};
     viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
     viewportState.pNext = nullptr;
     viewportState.flags = 0;
@@ -155,7 +155,7 @@ void VulkanPipeline::rebuild()
     viewportState.pScissors = nullptr;
 
     std::vector<VkDynamicState> dynamicStates = {VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR};
-    VkPipelineDynamicStateCreateInfo dynamicState {};
+    VkPipelineDynamicStateCreateInfo dynamicState{};
     dynamicState.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
     dynamicState.pNext = nullptr;
     dynamicState.flags = 0;
@@ -168,7 +168,7 @@ void VulkanPipeline::rebuild()
     if (fragmentShaderStage.module)
         shaderStageStates.push_back(fragmentShaderStage);
 
-    VkGraphicsPipelineCreateInfo pipelineInfo {};
+    VkGraphicsPipelineCreateInfo pipelineInfo{};
     pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
     pipelineInfo.pNext = nullptr;
     pipelineInfo.flags = 0;

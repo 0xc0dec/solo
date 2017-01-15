@@ -29,18 +29,18 @@ namespace solo
         VkRenderPass renderPass = nullptr;
         VkPipeline pipeline = nullptr;
         VkPipelineLayout layout = nullptr;
-        VkPipelineShaderStageCreateInfo vertexShaderStage;
-        VkPipelineShaderStageCreateInfo fragmentShaderStage;
+        VkPipelineShaderStageCreateInfo vertexShaderStage{};
+        VkPipelineShaderStageCreateInfo fragmentShaderStage{};
 
         std::vector<VkVertexInputAttributeDescription> vertexAttrs;
         std::vector<VkDescriptorSetLayout> descSetLayouts;
         uint32_t vertexSize = 0;
         VkPrimitiveTopology topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
 
-        VkPipelineRasterizationStateCreateInfo rasterState;
-        VkPipelineMultisampleStateCreateInfo multisampleState;
-        VkPipelineColorBlendAttachmentState blendAttachmentState;
-        VkPipelineColorBlendStateCreateInfo colorBlendState;
+        VkPipelineRasterizationStateCreateInfo rasterState{};
+        VkPipelineMultisampleStateCreateInfo multisampleState{};
+        VkPipelineColorBlendAttachmentState blendAttachmentState{};
+        VkPipelineColorBlendStateCreateInfo colorBlendState{};
     };
 }
 
