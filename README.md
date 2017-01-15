@@ -1,5 +1,5 @@
 ## About
-A framework for my personal graphics/gamedev experiments.
+A playground for my graphics/gamedev experiments.
 
 ## Features
 * Unity-inspired component system.
