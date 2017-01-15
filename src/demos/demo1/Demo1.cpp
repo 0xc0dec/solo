@@ -28,6 +28,7 @@
 #include "PostProcessor1.h"
 #include "PostProcessor2.h"
 #include "Shaders.h"
+#include <future>
 
 using namespace solo;
 
@@ -81,7 +82,7 @@ private:
         switchPostProcessors();
     }
 
-    auto createColorMaterial(const Vector4 &color) -> sptr<Material>
+    auto createColorMaterial(const Vector4 &color) const -> sptr<Material>
     {
         auto mat = Material::create(device, colorEffect);
         mat->setFaceCull(FaceCull::All);
@@ -111,7 +112,7 @@ private:
         });
     }
 
-    auto initAxesMesh() -> sptr<AsyncHandle<Mesh>>
+    auto initAxesMesh() const -> sptr<AsyncHandle<Mesh>>
     {
         return loader->loadMeshAsync("../assets/axes.obj");
     }
@@ -141,11 +142,12 @@ private:
         offscreenCameraTex->setWrapping(TextureWrapping::Clamp);
 
         auto node = scene->createNode();
+        node->findComponent<Transform>()->setLocalPosition({0, 0, 10});
+
         offscreenCamera = node->addComponent<Camera>();
         offscreenCamera->setClearColor(1, 0, 1, 1);
         offscreenCamera->setNear(0.05f);
         offscreenCamera->setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8);
-        node->findComponent<Transform>()->setLocalPosition({0, 0, 10});
 
         auto fb = FrameBuffer::create(device);
         fb->setAttachments({offscreenCameraTex});
@@ -167,13 +169,13 @@ private:
             tex->setWrapping(TextureWrapping::Clamp);
             tex->setFiltering(TextureFiltering::Linear);
             auto node = scene->createNode();
-            auto skybox = node->addComponent<SkyboxRenderer>();
-            skybox->setTexture(tex);
-            skybox->setTags(skyboxTag);
+            auto renderer = node->addComponent<SkyboxRenderer>();
+            renderer->setTexture(tex);
+            renderer->setTags(skyboxTag);
         });
     }
 
-    auto createPrefabMeshNode(MeshPrefab prefab) -> sptr<Node>
+    auto createPrefabMeshNode(MeshPrefab prefab) const -> sptr<Node>
     {
         auto mesh = Mesh::create(device, prefab);
         auto node = scene->createNode();
@@ -181,7 +183,7 @@ private:
         return node;
     };
 
-    void initCheckerBox()
+    void initCheckerBox() const
     {
         auto effect = Effect::create(device, commonShaders.vertex.basic, fsChecker);
 
@@ -198,7 +200,7 @@ private:
 
     void initMonkeyMesh()
     {
-        loader->loadRectTextureAsync("../assets/cobblestone.png")->done([=](sptr<RectTexture> tex)
+        loadTexture("../assets/cobblestone.png", [=](sptr<RectTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->generateMipmaps();
@@ -267,7 +269,7 @@ private:
         });
     }
 
-    void attachAxesMesh(sptr<Node> node, sptr<Mesh> axesMesh)
+    void attachAxesMesh(sptr<Node> node, sptr<Mesh> axesMesh) const
     {
         auto renderer = node->addComponent<MeshRenderer>();
         renderer->setMesh(axesMesh);
@@ -277,7 +279,7 @@ private:
         renderer->setMaterial(3, redMat);
     }
 
-    void initMonitorQuad(Vector3 targetPos, sptr<Mesh> axesMesh)
+    void initMonitorQuad(Vector3 targetPos, sptr<Mesh> axesMesh) const
     {
         auto material = Material::create(device, simpleTextureEffect);
         material->setFaceCull(FaceCull::All);
@@ -289,15 +291,17 @@ private:
         parent->addComponent<Rotator>("world", Vector3::unitY());
         attachAxesMesh(parent, axesMesh);
 
-        auto quad = createPrefabMeshNode(MeshPrefab::Quad);
-        auto transform = quad->findComponent<Transform>();
+        auto node = createPrefabMeshNode(MeshPrefab::Quad);
+        node->addComponent<Targeter>(targetPos);
+
+        auto transform = node->findComponent<Transform>();
         transform->setParent(parent->findComponent<Transform>());
         transform->setLocalPosition({5, 2, -5});
         transform->setLocalScale({5, 5 * canvasSize.y / canvasSize.x, 1});
-        quad->addComponent<Targeter>(targetPos);
-        auto monitorQuad = quad->findComponent<MeshRenderer>();
-        monitorQuad->setMaterial(0, material);
-        monitorQuad->setTags(monitorQuadTag);
+        
+        auto renderer = node->findComponent<MeshRenderer>();
+        renderer->setMaterial(0, material);
+        renderer->setTags(monitorQuadTag);
     }
 
     void initTransparentQuad(sptr<Mesh> axesMesh)
@@ -306,31 +310,31 @@ private:
         {
             tex->setWrapping(TextureWrapping::Clamp);
 
-            auto mat = Material::create(device, simpleTextureEffect);
-            mat->setFaceCull(FaceCull::All);
-            mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
-            mat->setTextureParameter("mainTex", tex);
-            mat->setBlend(true);
-            mat->setDepthTest(true);
-            mat->setDepthWrite(false);
+            auto material = Material::create(device, simpleTextureEffect);
+            material->setFaceCull(FaceCull::All);
+            material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
+            material->setTextureParameter("mainTex", tex);
+            material->setBlend(true);
+            material->setDepthTest(true);
+            material->setDepthWrite(false);
 
             auto parent = scene->createNode();
             parent->findComponent<Transform>()->setLocalPosition({5, 0, 0});
             parent->addComponent<Rotator>("world", Vector3::unitY());
             attachAxesMesh(parent, axesMesh);
 
-            auto quad = createPrefabMeshNode(MeshPrefab::Quad);
-            quad->addComponent<Rotator>("local", Vector3::unitX());
-            quad->findComponent<Transform>()->setParent(parent->findComponent<Transform>());
-            quad->findComponent<Transform>()->setLocalPosition({2, 0, 0});
+            auto node = createPrefabMeshNode(MeshPrefab::Quad);
+            node->addComponent<Rotator>("local", Vector3::unitX());
+            node->findComponent<Transform>()->setParent(parent->findComponent<Transform>());
+            node->findComponent<Transform>()->setLocalPosition({2, 0, 0});
 
-            auto transparentQuad = quad->findComponent<MeshRenderer>();
-            transparentQuad->setMaterial(0, mat);
-            transparentQuad->setTags(transparentTag);
+            auto renderer = node->findComponent<MeshRenderer>();
+            renderer->setMaterial(0, material);
+            renderer->setTags(transparentTag);
         });
     }
 
-    void initCurrentTimeLabel()
+    void initCurrentTimeLabel() const
     {
         auto node = scene->createNode();
         node->addComponent<CurrentTimeText>();
