@@ -99,10 +99,10 @@ private:
     {
         simpleTextureEffect = Effect::create(device, vsBasic, fsTexture);
         colorEffect = Effect::create(device, vsBasic, fsColor);
-        redMat = createColorMaterial(Vector4(1, 0, 0, 1));
-        greenMat = createColorMaterial(Vector4(0, 1, 0, 1));
-        blueMat = createColorMaterial(Vector4(0, 0, 1, 1));
-        whiteMat = createColorMaterial(Vector4(1, 1, 1, 1));
+        redMat = createColorMaterial({1, 0, 0, 1});
+        greenMat = createColorMaterial({0, 1, 0, 1});
+        blueMat = createColorMaterial({0, 0, 1, 1});
+        whiteMat = createColorMaterial({1, 1, 1, 1});
         cubeMesh = Mesh::create(device, MeshPrefab::Cube);
         quadMesh = Mesh::create(device, MeshPrefab::Quad);
     }
@@ -185,7 +185,7 @@ private:
         auto material = Material::create(device, effect);
         material->setFaceCull(FaceCull::All);
         material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
-        material->setVector4Parameter("color", Vector4(1, 1, 0, 1));
+        material->setVector4Parameter("color", {1, 1, 0, 1});
 
         auto node = scene->createNode();
         node->addComponent<MeshRenderer>()->setMesh(cubeMesh);

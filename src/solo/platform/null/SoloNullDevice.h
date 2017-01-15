@@ -55,7 +55,7 @@ namespace solo
 
     inline auto NullDevice::getCanvasSize() const -> Vector2
     {
-        return Vector2(0, 0);
+        return {0, 0};
     }
 
     inline auto NullDevice::getLifetime() const -> float

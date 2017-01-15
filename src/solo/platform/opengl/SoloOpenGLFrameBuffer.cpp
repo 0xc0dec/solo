@@ -67,7 +67,7 @@ void OpenGLFrameBuffer::setAttachments(const std::vector<sptr<RectTexture>> &att
     if (!attachments.empty())
         size = (*attachments.begin())->getSize();
     else
-        size = Vector2();
+        size = {};
 }
 
 #endif

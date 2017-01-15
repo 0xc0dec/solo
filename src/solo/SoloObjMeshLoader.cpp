@@ -124,7 +124,7 @@ auto ObjMeshLoader::loadData(const std::string &path) const -> sptr<MeshData>
             else if (line[1] == 't')
             {
                 auto uv = parseVector3(line.c_str() + 3, line.c_str() + lineSize - 3);
-                inputUvs.push_back(Vector2(uv.x, uv.y));
+                inputUvs.push_back({uv.x, uv.y});
             }
             else
             {

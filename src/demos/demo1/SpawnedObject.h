@@ -41,12 +41,12 @@ public:
         material->setFaceCull(FaceCull::All);
         material->setPolygonMode(PolygonMode::Wireframe);
         material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
-        material->setVector4Parameter("color", Vector4(1, 1, 0, 1));
+        material->setVector4Parameter("color", {1, 1, 0, 1});
     }
 
     void setActive()
     {
-        setColor(Vector4(1, 0, 0, 1));
+        setColor({1, 0, 0, 1});
         active = true;
         activeTimer = 0;
     }
@@ -75,7 +75,7 @@ public:
         activeTimer += device->getTimeDelta();
         if (activeTimer >= 0.2f)
         {
-            setColor(Vector4(1, 1, 0, 1));
+            setColor({1, 1, 0, 1});
             active = false;
         }
     }

@@ -114,7 +114,7 @@ SDLVulkanDevice::~SDLVulkanDevice()
 
 auto SDLVulkanDevice::getCanvasSize() const -> Vector2
 {
-    return Vector2();
+    return {};
 }
 
 

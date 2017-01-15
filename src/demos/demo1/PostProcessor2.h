@@ -41,9 +41,9 @@ public:
 
         auto stitchTexSize = stitchTex->getSize();
 
-        offscreenRes = Vector2(
+        offscreenRes = {
             math::clamp(static_cast<int>(canvasSize.x / stitchWidth) * 2, 1, 2048),
-            math::clamp(static_cast<int>(canvasSize.y / stitchTexSize.y) * 2, 1, 2048));
+            math::clamp(static_cast<int>(canvasSize.y / stitchTexSize.y) * 2, 1, 2048)};
 
         auto stitchCount = Vector2(
             offscreenRes.x * stitchWidth / (2 * stitchTexSize.x),
@@ -75,7 +75,7 @@ public:
     
     void apply() const
     {
-        renderStep(material, fbTex, nullptr, Vector4(0, 0, canvasSize.x, canvasSize.y));
+        renderStep(material, fbTex, nullptr, {0, 0, canvasSize.x, canvasSize.y});
 
         camera->setViewport(0, 0, offscreenRes.x, offscreenRes.y);
         camera->setRenderTarget(fb1);

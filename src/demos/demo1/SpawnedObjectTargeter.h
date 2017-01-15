@@ -55,8 +55,8 @@ public:
     }
 
 private:
-    Vector4 normalColor = Vector4(1, 1, 0, 1);
-    Vector4 activeColor = Vector4(1, 0, 0, 1);
+    Vector4 normalColor{1, 1, 0, 1};
+    Vector4 activeColor{1, 0, 0, 1};
     Physics *physics = nullptr;
     Transform *transform = nullptr;
 };

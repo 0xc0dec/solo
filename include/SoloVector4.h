@@ -101,7 +101,7 @@ namespace solo
 
     inline auto operator+(float scalar, const Vector4 &v) -> Vector4
     {
-        return Vector4(v.x + scalar, v.y + scalar, v.z + scalar, v.w + scalar);
+        return {v.x + scalar, v.y + scalar, v.z + scalar, v.w + scalar};
     }
 
     inline auto Vector4::operator+=(const Vector4 &v) -> Vector4 &
@@ -173,7 +173,7 @@ namespace solo
 
     inline auto operator*(float scalar, const Vector4 &v) -> Vector4
     {
-        return Vector4(v.x * scalar, v.y * scalar, v.z * scalar, v.w * scalar);
+        return {v.x * scalar, v.y * scalar, v.z * scalar, v.w * scalar};
     }
 
     inline auto Vector4::operator*=(float scalar) -> Vector4 &
@@ -187,7 +187,7 @@ namespace solo
 
     inline auto Vector4::operator/(const float scalar) const -> Vector4
     {
-        return Vector4(this->x / scalar, this->y / scalar, this->z / scalar, this->w / scalar);
+        return {this->x / scalar, this->y / scalar, this->z / scalar, this->w / scalar};
     }
 
     inline auto Vector4::operator/=(const float scalar) -> Vector4 &

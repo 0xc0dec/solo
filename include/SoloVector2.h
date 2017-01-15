@@ -96,7 +96,7 @@ namespace solo
 
     inline auto operator+(float scalar, const Vector2 &v) -> Vector2
     {
-        return Vector2(v.x + scalar, v.y + scalar);
+        return {v.x + scalar, v.y + scalar};
     }
 
     inline auto Vector2::operator+=(float scalar) -> Vector2 &
@@ -158,7 +158,7 @@ namespace solo
 
     inline auto operator*(float scalar, const Vector2 &v) -> Vector2
     {
-        return Vector2(v.x * scalar, v.y * scalar);
+        return {v.x * scalar, v.y * scalar};
     }
 
     inline auto Vector2::operator*=(float scalar) -> Vector2 &

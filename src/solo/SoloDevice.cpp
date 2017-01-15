@@ -98,7 +98,7 @@ bool Device::isKeyReleased(KeyCode code) const
 
 auto Device::getMouseMotion() const -> Vector2
 {
-    return Vector2(static_cast<float>(mouseDeltaX), static_cast<float>(mouseDeltaY));
+    return {static_cast<float>(mouseDeltaX), static_cast<float>(mouseDeltaY)};
 }
 
 
