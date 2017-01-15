@@ -54,17 +54,19 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
     appInfo.pEngineName = "";
     appInfo.apiVersion = VK_API_VERSION_1_0;
 
-    std::vector<const char *> enabledExtensions = {VK_KHR_SURFACE_EXTENSION_NAME};
+    std::vector<const char *> enabledExtensions {
+        VK_KHR_SURFACE_EXTENSION_NAME,
 #ifdef SL_WINDOWS
-    enabledExtensions.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
+        VK_KHR_WIN32_SURFACE_EXTENSION_NAME
 #endif
+    };
 
-    std::vector<const char *> enabledLayers;
-
+    std::vector<const char *> enabledLayers {
 #ifdef SL_DEBUG
-    enabledLayers.push_back("VK_LAYER_LUNARG_standard_validation");
-    enabledExtensions.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
+        "VK_LAYER_LUNARG_standard_validation",
+        VK_EXT_DEBUG_REPORT_EXTENSION_NAME
 #endif
+    };
 
     VkInstanceCreateInfo instanceInfo {};
     instanceInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
