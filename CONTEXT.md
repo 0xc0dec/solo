@@ -1,2 +1,2 @@
 # TODO
-* Vulkan backend.
+* Vulkan backend: fix various crashes, see the bak version for reference.
