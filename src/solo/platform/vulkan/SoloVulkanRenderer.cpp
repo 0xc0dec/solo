@@ -31,60 +31,56 @@ using namespace solo;
 
 
 auto VulkanRenderer::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
-                                        VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil
+    VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil
 {
-    VkImageCreateInfo image {};
-    image.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
-    image.pNext = nullptr;
-    image.imageType = VK_IMAGE_TYPE_2D;
-    image.format = depthFormat;
-    image.extent = {canvasWidth, canvasHeight, 1};
-    image.mipLevels = 1;
-    image.arrayLayers = 1;
-    image.samples = VK_SAMPLE_COUNT_1_BIT;
-    image.tiling = VK_IMAGE_TILING_OPTIMAL;
-    image.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
-    image.flags = 0;
+    VkImageCreateInfo imageInfo {};
+    imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+    imageInfo.pNext = nullptr;
+    imageInfo.imageType = VK_IMAGE_TYPE_2D;
+    imageInfo.format = depthFormat;
+    imageInfo.extent = {canvasWidth, canvasHeight, 1};
+    imageInfo.mipLevels = 1;
+    imageInfo.arrayLayers = 1;
+    imageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
+    imageInfo.tiling = VK_IMAGE_TILING_OPTIMAL;
+    imageInfo.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
+    imageInfo.flags = 0;
 
-    VkMemoryAllocateInfo alloc {};
-    alloc.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-    alloc.pNext = nullptr;
-    alloc.allocationSize = 0;
-    alloc.memoryTypeIndex = 0;
+    VkMemoryAllocateInfo allocInfo {};
+    allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+    allocInfo.pNext = nullptr;
+    allocInfo.allocationSize = 0;
+    allocInfo.memoryTypeIndex = 0;
 
-    VkImageViewCreateInfo createInfo {};
-    createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-    createInfo.pNext = nullptr;
-    createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-    createInfo.format = depthFormat;
-    createInfo.flags = 0;
-    createInfo.subresourceRange = {};
-    createInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT;
-    createInfo.subresourceRange.baseMipLevel = 0;
-    createInfo.subresourceRange.levelCount = 1;
-    createInfo.subresourceRange.baseArrayLayer = 0;
-    createInfo.subresourceRange.layerCount = 1;
+    VkImageViewCreateInfo viewInfo {};
+    viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+    viewInfo.pNext = nullptr;
+    viewInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+    viewInfo.format = depthFormat;
+    viewInfo.flags = 0;
+    viewInfo.subresourceRange = {};
+    viewInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT;
+    viewInfo.subresourceRange.baseMipLevel = 0;
+    viewInfo.subresourceRange.levelCount = 1;
+    viewInfo.subresourceRange.baseArrayLayer = 0;
+    viewInfo.subresourceRange.layerCount = 1;
 
-    DepthStencil depthStencil {};
+    DepthStencil depthStencil;
 
     VkMemoryRequirements memReqs;
-    SL_CHECK_VK_RESULT(vkCreateImage(device, &image, nullptr, &depthStencil.image));
+    SL_CHECK_VK_RESULT(vkCreateImage(device, &imageInfo, nullptr, &depthStencil.image));
     vkGetImageMemoryRequirements(device, depthStencil.image, &memReqs);
 
     auto memTypeIndex = vk::findMemoryType(physicalDeviceMemProps, memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
     SL_ERR_IF(memTypeIndex < 0);
 
-    alloc.allocationSize = memReqs.size;
-    alloc.memoryTypeIndex = memTypeIndex;
-    SL_CHECK_VK_RESULT(vkAllocateMemory(device, &alloc, nullptr, &depthStencil.mem));
+    allocInfo.allocationSize = memReqs.size;
+    allocInfo.memoryTypeIndex = memTypeIndex;
+    SL_CHECK_VK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, &depthStencil.mem));
     SL_CHECK_VK_RESULT(vkBindImageMemory(device, depthStencil.image, depthStencil.mem, 0));
 
-    // TODO has any effect?
-    vk::setImageLayout(cmdBuffer, depthStencil.image, VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT,
-                       VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
-
-    createInfo.image = depthStencil.image;
-    SL_CHECK_VK_RESULT(vkCreateImageView(device, &createInfo, nullptr, &depthStencil.view));
+    viewInfo.image = depthStencil.image;
+    SL_CHECK_VK_RESULT(vkCreateImageView(device, &viewInfo, nullptr, &depthStencil.view));
 
     return depthStencil;
 }
@@ -134,15 +130,11 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice)
     initCommandBuffers();
     initFences();
 
-    auto setupCmdBuf = vk::createCommandBuffer(device, commandPool);
-    beginCommandBuffer(setupCmdBuf);
+    depthStencil = createDepthStencil(device, memProperties, depthFormat, canvasWidth, canvasHeight);
 
-    depthStencil = createDepthStencil(device, memProperties, setupCmdBuf, depthFormat, canvasWidth, canvasHeight);
     renderPass = vk::createRenderPass(device, colorFormat, depthFormat);
-    initFrameBuffers();
 
-    vk::submitCommandBuffer(queue, setupCmdBuf);
-    vk::destroyCommandBuffers(device, commandPool, &setupCmdBuf, 1);
+    initFrameBuffers();
 }
 
 
@@ -364,13 +356,13 @@ void VulkanRenderer::initCommandBuffers()
 
     drawCmdBuffers.resize(count);
 
-    VkCommandBufferAllocateInfo commandBufferAllocateInfo = {};
-    commandBufferAllocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-    commandBufferAllocateInfo.commandPool = commandPool;
-    commandBufferAllocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-    commandBufferAllocateInfo.commandBufferCount = static_cast<uint32_t>(count);
+    VkCommandBufferAllocateInfo allocInfo = {};
+    allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    allocInfo.commandPool = commandPool;
+    allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    allocInfo.commandBufferCount = static_cast<uint32_t>(count);
 
-    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &commandBufferAllocateInfo, drawCmdBuffers.data()));
+    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &allocInfo, drawCmdBuffers.data()));
 }
 
 

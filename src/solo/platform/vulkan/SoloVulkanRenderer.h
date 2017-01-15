@@ -55,15 +55,6 @@ namespace solo
             VkImageView view;
         } depthStencil;
 
-        void initSwapchain(VkSurfaceKHR surface, bool vsync, const Vector2 &deviceCanvasSize);
-        void destroySwapchain();
-        void initCommandBuffers();
-        void initFences();
-        void beginCommandBuffer(VkCommandBuffer buffer);
-        auto createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
-            VkCommandBuffer cmdBuffer, VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil;
-        void initFrameBuffers();
-
         uint32_t canvasWidth = 1;
         uint32_t canvasHeight = 1;
         VkDevice device = nullptr;
@@ -85,6 +76,17 @@ namespace solo
         std::vector<VkCommandBuffer> drawCmdBuffers;
         std::vector<VkFramebuffer> frameBuffers;
         uint32_t currentBuffer = 0;
+
+        static auto createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
+            VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil;
+
+        void initSwapchain(VkSurfaceKHR surface, bool vsync, const Vector2 &deviceCanvasSize);
+        void destroySwapchain();
+        void initCommandBuffers();
+        void initFences();
+        void beginCommandBuffer(VkCommandBuffer buffer);
+        
+        void initFrameBuffers();
     };
 }
 
