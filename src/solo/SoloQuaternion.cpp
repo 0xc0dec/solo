@@ -76,7 +76,7 @@ auto Quaternion::createFromAxisAngle(const Vector3 &axis, const Radian &angle) -
     auto sinHalfAngle = sinf(halfAngle);
     auto normal(const_cast<Vector3 &>(axis));
     normal.normalize();
-    return Quaternion(normal.x * sinHalfAngle, normal.y * sinHalfAngle, normal.z * sinHalfAngle, cosf(halfAngle));
+    return {normal.x * sinHalfAngle, normal.y * sinHalfAngle, normal.z * sinHalfAngle, cosf(halfAngle)};
 }
 
 
@@ -162,11 +162,12 @@ auto Quaternion::lerp(const Quaternion &q1, const Quaternion &q2, float t) -> Qu
 
     auto t1 = 1.0f - t;
 
-    return Quaternion(
+    return {
         t1 * q1.x + t * q2.x,
         t1 * q1.y + t * q2.y,
         t1 * q1.z + t * q2.z,
-        t1 * q1.w + t * q2.w);
+        t1 * q1.w + t * q2.w
+    };
 }
 
 
@@ -226,7 +227,7 @@ auto Quaternion::slerp(const Quaternion &q1, const Quaternion &q2, float t) -> Q
 
     // Quaternion length correction, if needed
     f1 = 1.5f - 0.5f * (w * w + x * x + y * y + z * z);
-    return Quaternion(w * f1, x * f1, y * f1, z * f1);
+    return {w * f1, x * f1, y * f1, z * f1};
 }
 
 
@@ -252,11 +253,12 @@ auto Quaternion::slerpForSquad(const Quaternion &q1, const Quaternion &q2, float
 
     auto r1 = sin((1 - t) * omega) / s;
     auto r2 = sin(t * omega) / s;
-    return Quaternion(
+    return {
         q1.x * r1 + q2.x * r2,
         q1.y * r1 + q2.y * r2,
         q1.z * r1 + q2.z * r2,
-        q1.w * r1 + q2.w * r2);
+        q1.w * r1 + q2.w * r2
+    };
 }
 
 

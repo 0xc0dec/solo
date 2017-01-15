@@ -115,10 +115,10 @@ auto Frustum::hitByRay(const Ray &ray) const -> float
 
 void Frustum::updatePlanes()
 {
-    near = Plane({matrix.m[3] + matrix.m[2], matrix.m[7] + matrix.m[6], matrix.m[11] + matrix.m[10]}, matrix.m[15] + matrix.m[14]);
-    far = Plane({matrix.m[3] - matrix.m[2], matrix.m[7] - matrix.m[6], matrix.m[11] - matrix.m[10]}, matrix.m[15] - matrix.m[14]);
-    bottom = Plane({matrix.m[3] + matrix.m[1], matrix.m[7] + matrix.m[5], matrix.m[11] + matrix.m[9]}, matrix.m[15] + matrix.m[13]);
-    top = Plane({matrix.m[3] - matrix.m[1], matrix.m[7] - matrix.m[5], matrix.m[11] - matrix.m[9]}, matrix.m[15] - matrix.m[13]);
-    left = Plane({matrix.m[3] + matrix.m[0], matrix.m[7] + matrix.m[4], matrix.m[11] + matrix.m[8]}, matrix.m[15] + matrix.m[12]);
-    right = Plane({matrix.m[3] - matrix.m[0], matrix.m[7] - matrix.m[4], matrix.m[11] - matrix.m[8]}, matrix.m[15] - matrix.m[12]);
+    near = {{matrix.m[3] + matrix.m[2], matrix.m[7] + matrix.m[6], matrix.m[11] + matrix.m[10]}, matrix.m[15] + matrix.m[14]};
+    far = {{matrix.m[3] - matrix.m[2], matrix.m[7] - matrix.m[6], matrix.m[11] - matrix.m[10]}, matrix.m[15] - matrix.m[14]};
+    bottom = {{matrix.m[3] + matrix.m[1], matrix.m[7] + matrix.m[5], matrix.m[11] + matrix.m[9]}, matrix.m[15] + matrix.m[13]};
+    top = {{matrix.m[3] - matrix.m[1], matrix.m[7] - matrix.m[5], matrix.m[11] - matrix.m[9]}, matrix.m[15] - matrix.m[13]};
+    left = {{matrix.m[3] + matrix.m[0], matrix.m[7] + matrix.m[4], matrix.m[11] + matrix.m[8]}, matrix.m[15] + matrix.m[12]};
+    right = {{matrix.m[3] - matrix.m[0], matrix.m[7] - matrix.m[4], matrix.m[11] - matrix.m[8]}, matrix.m[15] - matrix.m[12]};
 }
