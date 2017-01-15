@@ -162,6 +162,17 @@ typedef struct VkLayerDispatchTable_ {
     PFN_vkGetSwapchainImagesKHR GetSwapchainImagesKHR;
     PFN_vkAcquireNextImageKHR AcquireNextImageKHR;
     PFN_vkQueuePresentKHR QueuePresentKHR;
+    PFN_vkCmdDrawIndirectCountAMD CmdDrawIndirectCountAMD;
+    PFN_vkCmdDrawIndexedIndirectCountAMD CmdDrawIndexedIndirectCountAMD;
+#ifdef VK_USE_PLATFORM_WIN32_KHR
+    PFN_vkGetMemoryWin32HandleNV GetMemoryWin32HandleNV;
+#endif
+    PFN_vkCreateSharedSwapchainsKHR CreateSharedSwapchainsKHR;
+    PFN_vkDebugMarkerSetObjectTagEXT DebugMarkerSetObjectTagEXT;
+    PFN_vkDebugMarkerSetObjectNameEXT DebugMarkerSetObjectNameEXT;
+    PFN_vkCmdDebugMarkerBeginEXT CmdDebugMarkerBeginEXT;
+    PFN_vkCmdDebugMarkerEndEXT CmdDebugMarkerEndEXT;
+    PFN_vkCmdDebugMarkerInsertEXT CmdDebugMarkerInsertEXT;
 } VkLayerDispatchTable;
 
 typedef struct VkLayerInstanceDispatchTable_ {
@@ -232,24 +243,9 @@ typedef struct VkLayerInstanceDispatchTable_ {
         GetDisplayPlaneCapabilitiesKHR;
     PFN_vkCreateDisplayPlaneSurfaceKHR
         CreateDisplayPlaneSurfaceKHR;
+    PFN_vkGetPhysicalDeviceExternalImageFormatPropertiesNV
+        GetPhysicalDeviceExternalImageFormatPropertiesNV;
 } VkLayerInstanceDispatchTable;
-
-// LL node for tree of dbg callback functions
-typedef struct VkLayerDbgFunctionNode_ {
-    VkDebugReportCallbackEXT msgCallback;
-    PFN_vkDebugReportCallbackEXT pfnMsgCallback;
-    VkFlags msgFlags;
-    void *pUserData;
-    struct VkLayerDbgFunctionNode_ *pNext;
-} VkLayerDbgFunctionNode;
-
-typedef enum VkLayerDbgAction_ {
-    VK_DBG_LAYER_ACTION_IGNORE = 0x0,
-    VK_DBG_LAYER_ACTION_CALLBACK = 0x1,
-    VK_DBG_LAYER_ACTION_LOG_MSG = 0x2,
-    VK_DBG_LAYER_ACTION_BREAK = 0x4,
-    VK_DBG_LAYER_ACTION_DEBUG_OUTPUT = 0x8,
-} VkLayerDbgAction;
 
 // ------------------------------------------------------------------------------------------------
 // CreateInstance and CreateDevice support structures
