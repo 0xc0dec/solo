@@ -98,7 +98,7 @@ namespace solo
 
         static auto create(const DeviceSetup &setup) -> uptr<Device>;
 
-        virtual ~Device();
+        virtual ~Device() {}
 
         virtual auto getWindowTitle() const -> std::string = 0;
         virtual void setWindowTitle(const std::string &title) = 0;
@@ -145,12 +145,13 @@ namespace solo
 
         DeviceSetup setup;
 
-        sptr<Scene> scene;
-        sptr<FileSystem> fs;
-        sptr<AssetLoader> assetLoader;
+        // Keep order of these fields - matters during destruction
+        sptr<Logger> logger;
         sptr<Renderer> renderer;
         sptr<Physics> physics;
-        sptr<Logger> logger;
+        sptr<FileSystem> fs;
+        sptr<AssetLoader> assetLoader;
+        sptr<Scene> scene;
 
         // key code -> was pressed for the first time
         std::unordered_map<KeyCode, bool> pressedKeys;

@@ -61,30 +61,6 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device>
 }
 
 
-Device::~Device()
-{
-    // Keep order!
-
-    if (scene)
-        scene.reset();
-
-    if (assetLoader)
-        assetLoader.reset();
-
-    if (fs)
-        fs.reset();
-
-    if (physics)
-        physics.reset();
-
-    if (renderer)
-        renderer.reset();
-
-    if (logger)
-        logger.reset();
-}
-
-
 Device::Device(const DeviceSetup &setup):
     setup(setup)
 {
