@@ -72,7 +72,6 @@ namespace solo
         VkSwapchainKHR swapchain = nullptr;
         VkRenderPass renderPass = nullptr;
         std::vector<SwapchainBuffer> swapchainBuffers;
-        std::vector<VkFence> fences;
         std::vector<VkCommandBuffer> drawCmdBuffers;
         std::vector<VkFramebuffer> frameBuffers;
         uint32_t currentBuffer = 0;
@@ -83,7 +82,6 @@ namespace solo
         void initSwapchain(VkSurfaceKHR surface, bool vsync, const Vector2 &deviceCanvasSize);
         void destroySwapchain();
         void initCommandBuffers();
-        void initFences();
         void beginCommandBuffer(VkCommandBuffer buffer);
         
         void initFrameBuffers();

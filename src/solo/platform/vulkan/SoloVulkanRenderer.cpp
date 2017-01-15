@@ -128,7 +128,6 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice)
 
     initSwapchain(surface, engineDevice->getSetup().vsync, engineDevice->getCanvasSize());
     initCommandBuffers();
-    initFences();
 
     depthStencil = createDepthStencil(device, memProperties, depthFormat, canvasWidth, canvasHeight);
 
@@ -145,6 +144,8 @@ static bool init = false;
 
 VulkanRenderer::~VulkanRenderer()
 {
+    vkDeviceWaitIdle(device);
+
     // TODO this is only for testing
     delete pipeline;
 
@@ -155,9 +156,6 @@ VulkanRenderer::~VulkanRenderer()
         vkDestroySemaphore(device, presentCompleteSem, nullptr);
     if (renderCompleteSem)
         vkDestroySemaphore(device, renderCompleteSem, nullptr);
-
-    for (auto &fence : fences)
-        vkDestroyFence(device, fence, nullptr);
 
     destroySwapchain();
 
@@ -204,24 +202,7 @@ void VulkanRenderer::beginFrame()
 
 void VulkanRenderer::endFrame()
 {
-    SL_CHECK_VK_RESULT(vkWaitForFences(device, 1, &fences[currentBuffer], VK_TRUE, UINT64_MAX));
-    SL_CHECK_VK_RESULT(vkResetFences(device, 1, &fences[currentBuffer]));
-
-    VkPipelineStageFlags waitStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-
-    VkSubmitInfo submitInfo {};
-    submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-    submitInfo.pWaitDstStageMask = &waitStageMask;
-    submitInfo.pWaitSemaphores = &presentCompleteSem;
-    submitInfo.waitSemaphoreCount = 1;
-    submitInfo.pSignalSemaphores = &renderCompleteSem;
-    submitInfo.signalSemaphoreCount = 1;
-    submitInfo.pCommandBuffers = &drawCmdBuffers[currentBuffer];
-    submitInfo.commandBufferCount = 1;
-
-    SL_CHECK_VK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, fences[currentBuffer]));
-
-    VkPresentInfoKHR presentInfo {};
+    VkPresentInfoKHR presentInfo;
     presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
     presentInfo.pNext = nullptr;
     presentInfo.swapchainCount = 1;
@@ -363,18 +344,6 @@ void VulkanRenderer::initCommandBuffers()
     allocInfo.commandBufferCount = static_cast<uint32_t>(count);
 
     SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &allocInfo, drawCmdBuffers.data()));
-}
-
-
-void VulkanRenderer::initFences()
-{
-    VkFenceCreateInfo info {};
-    info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
-    info.flags = VK_FENCE_CREATE_SIGNALED_BIT;
-
-    fences.resize(drawCmdBuffers.size());
-    for (auto &fence : fences)
-        SL_CHECK_VK_RESULT(vkCreateFence(device, &info, nullptr, &fence));
 }
 
 
