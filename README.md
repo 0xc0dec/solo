@@ -6,9 +6,8 @@ A framework for my personal graphics/gamedev experiments.
 * OBJ meshes and PNG textures loading.
 * Asynchronous asset loading.
 * Render to texture.
-* Workflow for applying post-processing effects.
-* Basic text rendering.
-* Basic physics.
+* Text rendering.
+* Physics.
 * OpenGL-based rendering, Vulkan is coming.
 
 ## Screenshots
