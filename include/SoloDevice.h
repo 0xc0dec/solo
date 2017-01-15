@@ -83,14 +83,6 @@ namespace solo
         Vulkan
     };
 
-    class DeviceCallback
-    {
-    public:
-        virtual ~DeviceCallback() {}
-
-        virtual void onStarted() = 0;
-    };
-
     class Device
     {
     public:
