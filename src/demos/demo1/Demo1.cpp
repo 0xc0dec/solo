@@ -43,10 +43,14 @@ public:
         initOffscreenCamera();
         initSkybox();
         initCheckerBox();
-        initMonkeyMesh();
         initDynamicQuad();
         initCurrentTimeLabel();
-        initAxesMesh()->done([&] (sptr<Mesh> mesh)
+        loadTexture("../assets/cobblestone.png", [&] (sptr<Texture> texture)
+        {
+            initMonkeyHead(texture);
+            initFloor(texture);
+        });
+        loader->loadMeshAsync("../assets/axes.obj")->done([&] (sptr<Mesh> mesh)
         {
             initMonitorQuad({}, mesh);
             initTransparentQuad(mesh);
@@ -110,11 +114,6 @@ private:
             tex->setAnisotropyLevel(8);
             callback(tex);
         });
-    }
-
-    auto initAxesMesh() const -> sptr<AsyncHandle<Mesh>>
-    {
-        return loader->loadMeshAsync("../assets/axes.obj");
     }
 
     void initCamera()
@@ -198,31 +197,47 @@ private:
         node->addComponent<Rotator>("world", Vector3::unitY());
     }
 
-    void initMonkeyMesh()
+    void initMonkeyHead(sptr<Texture> texture)
     {
-        loadTexture("../assets/cobblestone.png", [=](sptr<RectTexture> tex)
+        auto effect = Effect::create(device, vsBasicLighting, fsTextureWithLighting);
+
+        auto material = Material::create(device, effect);
+        material->setFaceCull(FaceCull::All);
+        material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
+        material->bindInvTransposedWorldMatrixParameter("invTransposedWorldMatrix");
+        material->setTextureParameter("mainTex", texture);
+
+        loader->loadMeshAsync("../assets/monkey_hires.obj")->done([=](sptr<Mesh> mesh)
         {
-            tex->setWrapping(TextureWrapping::Clamp);
-            tex->generateMipmaps();
-
-            auto effect = Effect::create(device, vsBasicLighting, fsTextureWithLighting);
-
-            auto material = Material::create(device, effect);
-            material->setFaceCull(FaceCull::All);
-            material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
-            material->bindInvTransposedWorldMatrixParameter("invTransposedWorldMatrix");
-            material->setTextureParameter("mainTex", tex);
-
-            loader->loadMeshAsync("../assets/monkey_hires.obj")->done([=](sptr<Mesh> mesh)
-            {
-                auto node = scene->createNode();
-                auto renderer = node->addComponent<MeshRenderer>();
-                renderer->setMesh(mesh);
-                renderer->setMaterial(0, material);
-                node->findComponent<Transform>()->setLocalPosition({});
-                node->addComponent<Rotator>("local", Vector3::unitX());
-            });
+            auto node = scene->createNode();
+            auto renderer = node->addComponent<MeshRenderer>();
+            renderer->setMesh(mesh);
+            renderer->setMaterial(0, material);
+            node->findComponent<Transform>()->setLocalPosition({});
+            node->addComponent<Rotator>("local", Vector3::unitX());
         });
+    }
+
+    void initFloor(sptr<Texture> texture) const
+    {
+        auto mesh = Mesh::create(device, MeshPrefab::Cube);
+
+        auto material = Material::create(device, simpleTextureEffect);
+        material->setFaceCull(FaceCull::All);
+        material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
+        material->setTextureParameter("mainTex", texture);
+
+        auto node = scene->createNode();
+        
+        node->findComponent<Transform>()->setLocalScale({10, 0.1f, 10});
+        node->findComponent<Transform>()->setLocalPosition({0, -2, 0});
+
+        auto renderer = node->addComponent<MeshRenderer>();
+        renderer->setMesh(mesh);
+        renderer->setMaterial(0, material);
+
+        auto rigidBody = node->addComponent<RigidBody>(RigidBodyConstructionParameters().withMass(0).withFriction(0.5f));
+        rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
     }
 
     void initDynamicQuad()
@@ -254,16 +269,16 @@ private:
             mesh->addPart(indices.data(), 6);
             mesh->setPrimitiveType(PrimitiveType::Triangles);
 
-            auto mat = Material::create(device, simpleTextureEffect);
-            mat->setFaceCull(FaceCull::All);
-            mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
-            mat->setTextureParameter("mainTex", tex);
+            auto material = Material::create(device, simpleTextureEffect);
+            material->setFaceCull(FaceCull::All);
+            material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
+            material->setTextureParameter("mainTex", tex);
 
             auto node = scene->createNode();
             node->findComponent<Transform>()->setLocalPosition({0, 0, -5});
             auto renderer = node->addComponent<MeshRenderer>();
             renderer->setMesh(mesh);
-            renderer->setMaterial(0, mat);
+            renderer->setMaterial(0, material);
 
             node->addComponent<DynamicQuadUpdater>(data, mesh);
         });
