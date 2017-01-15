@@ -173,6 +173,9 @@
     <ClInclude Include="..\src\demos\common\DemoBase.h" />
     <ClInclude Include="..\src\demos\demo1\CurrentTimeText.h" />
     <ClInclude Include="..\src\demos\demo1\DynamicQuadUpdater.h" />
+    <ClInclude Include="..\src\demos\demo1\PostProcessor1.h" />
+    <ClInclude Include="..\src\demos\demo1\PostProcessor2.h" />
+    <ClInclude Include="..\src\demos\demo1\PostProcessorBase.h" />
     <ClInclude Include="..\src\demos\demo1\Shaders.h" />
     <ClInclude Include="..\src\demos\demo1\Targeter.h" />
   </ItemGroup>

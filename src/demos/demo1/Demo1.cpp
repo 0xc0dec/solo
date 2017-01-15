@@ -25,6 +25,8 @@
 #include "DynamicQuadUpdater.h"
 #include "Targeter.h"
 #include "CurrentTimeText.h"
+#include "PostProcessor1.h"
+#include "PostProcessor2.h"
 #include "Shaders.h"
 
 using namespace solo;
@@ -58,16 +60,27 @@ private:
         offscreenCamera->render([&](const RenderContext& ctx)
         {
             renderByTags(skyboxTag, ctx);
-            renderByTags(~(skyboxTag | monitorQuadTag | transparentTag), ctx);
+            renderByTags(~(skyboxTag | monitorQuadTag | transparentTag | postProcessorTag), ctx);
             renderByTags(transparentTag, ctx);
         });
 
         mainCamera->render([&](const RenderContext& ctx)
         {
             renderByTags(skyboxTag, ctx);
-            renderByTags(~(skyboxTag | transparentTag), ctx);
+            renderByTags(~(skyboxTag | transparentTag | postProcessorTag), ctx);
             renderByTags(transparentTag, ctx);
         });
+
+        if (pp1)
+            pp1->apply();
+        else if (pp2)
+            pp2->apply();
+    }
+
+    void update() override final
+    {
+        DemoBase::update();
+        switchPostProcessors();
     }
 
     auto createColorMaterial(const Vector4 &color) -> sptr<Material>
@@ -329,9 +342,35 @@ private:
         node->findComponent<Transform>()->setLocalPosition({-3, 0, 4});
     }
 
+    void switchPostProcessors()
+    {
+        if (device->isKeyPressed(KeyCode::Digit1, true))
+        {
+            if (!pp1)
+            {
+                pp2 = nullptr;
+                pp1 = std::make_unique<PostProcessor1>(device, mainCamera, postProcessorTag);
+            }
+        }
+        if (device->isKeyPressed(KeyCode::Digit2, true))
+        {
+            if (!pp2)
+            {
+                pp1 = nullptr;
+                pp2 = std::make_unique<PostProcessor2>(device, mainCamera, postProcessorTag);
+            }
+        }
+        if (device->isKeyPressed(KeyCode::Digit3, true))
+        {
+            pp1 = nullptr;
+            pp2 = nullptr;
+        }
+    }
+
     const uint32_t skyboxTag = 1 << 1;
     const uint32_t transparentTag = 1 << 2;
     const uint32_t monitorQuadTag = 1 << 3;
+    const uint32_t postProcessorTag = 1 << 4;
     Camera *mainCamera = nullptr;
     Camera *offscreenCamera = nullptr;
     sptr<Effect> simpleTextureEffect = nullptr;
@@ -346,6 +385,8 @@ private:
     sptr<Material> checkerMat = nullptr;
     sptr<Material> monitorMat = nullptr;
     sptr<RectTexture> offscreenCameraTex = nullptr;
+    uptr<PostProcessor1> pp1;
+    uptr<PostProcessor2> pp2;
 };
 
 
