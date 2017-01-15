@@ -149,15 +149,12 @@ VulkanRenderer::~VulkanRenderer()
     // TODO this is only for testing
     delete pipeline;
 
-    for (size_t i = 0; i < swapchainBuffers.size(); ++i)
-        vkDestroyImageView(device, swapchainBuffers[i].imageView, nullptr);
+    destroySwapchain();
 
     if (presentCompleteSem)
         vkDestroySemaphore(device, presentCompleteSem, nullptr);
     if (renderCompleteSem)
         vkDestroySemaphore(device, renderCompleteSem, nullptr);
-
-    destroySwapchain();
 
     vkFreeCommandBuffers(device, commandPool, drawCmdBuffers.size(), drawCmdBuffers.data());
 

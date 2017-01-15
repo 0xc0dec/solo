@@ -306,6 +306,7 @@ auto vk::createRenderPass(VkDevice device, VkFormat colorFormat, VkFormat depthF
 
     // Color attachment
     attachments[0].format = colorFormat;
+    attachments[0].flags = 0;
     attachments[0].samples = VK_SAMPLE_COUNT_1_BIT;
     attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
     attachments[0].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
@@ -316,6 +317,7 @@ auto vk::createRenderPass(VkDevice device, VkFormat colorFormat, VkFormat depthF
 
     // Depth attachment
     attachments[1].format = depthFormat;
+    attachments[1].flags = 0;
     attachments[1].samples = VK_SAMPLE_COUNT_1_BIT;
     attachments[1].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
     attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
@@ -365,6 +367,7 @@ auto vk::createRenderPass(VkDevice device, VkFormat colorFormat, VkFormat depthF
 
     VkRenderPassCreateInfo renderPassInfo;
     renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+    renderPassInfo.flags = 0;
     renderPassInfo.pNext = nullptr;
     renderPassInfo.attachmentCount = attachments.size();
     renderPassInfo.pAttachments = attachments.data();

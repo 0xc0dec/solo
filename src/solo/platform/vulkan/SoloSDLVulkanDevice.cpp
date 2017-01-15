@@ -104,6 +104,8 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
 
     VkWin32SurfaceCreateInfoKHR surfaceInfo;
     surfaceInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+    surfaceInfo.flags = 0;
+    surfaceInfo.pNext = nullptr;
     surfaceInfo.hinstance = hinstance;
     surfaceInfo.hwnd = hwnd;
 
