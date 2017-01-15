@@ -24,6 +24,7 @@
 #include "../common/Shaders.h"
 #include "DynamicQuadUpdater.h"
 #include "Targeter.h"
+#include "CurrentTimeText.h"
 #include "Shaders.h"
 
 using namespace solo;
@@ -42,6 +43,7 @@ public:
         initCheckerBox();
         initMesh();
         initDynamicQuad();
+        initCurrentTimeLabel();
         initAxesMesh()->done([&] (sptr<Mesh> mesh)
         {
             axesMesh = mesh;
@@ -298,7 +300,9 @@ private:
             mat->setFaceCull(FaceCull::All);
             mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
             mat->setTextureParameter("mainTex", tex);
-            mat->setTransparent(true);
+            mat->setBlend(true);
+            mat->setDepthTest(true);
+            mat->setDepthWrite(false);
 
             auto parent = scene->createNode();
             parent->findComponent<Transform>()->setLocalPosition(Vector3(5, 0, 0));
@@ -314,6 +318,15 @@ private:
             transparentQuad->setMaterial(0, mat);
             transparentQuad->setTags(transparentTag);
         });
+    }
+
+    void initCurrentTimeLabel()
+    {
+        auto node = scene->createNode();
+        node->addComponent<CurrentTimeText>();
+        node->findComponent<FontRenderer>()->setTags(transparentTag);
+        node->findComponent<Transform>()->setLocalScale({0.02f, 0.02f, 1});
+        node->findComponent<Transform>()->setLocalPosition({-2, 0, 4});
     }
 
     const uint32_t skyboxTag = 1 << 1;

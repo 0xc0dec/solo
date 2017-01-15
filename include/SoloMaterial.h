@@ -77,8 +77,8 @@ namespace solo
         auto getPolygonMode() const -> PolygonMode;
         void setPolygonMode(PolygonMode mode);
 
-        bool isTransparent() const;
-        void setTransparent(bool enabled);
+        bool getBlend() const;
+        void setBlend(bool enabled);
 
         auto getSrcBlendFactor() const -> BlendFactor;
         auto getDstBlendFactor() const -> BlendFactor;
@@ -111,7 +111,7 @@ namespace solo
         PolygonMode polygonMode = PolygonMode::Triangle;
         bool depthWrite = true;
         bool depthTest = true;
-        bool transparent = false;
+        bool blend = false;
         BlendFactor srcBlendFactor = BlendFactor::SrcAlpha;
         BlendFactor dstBlendFactor = BlendFactor::OneMinusSrcAlpha;
         DepthFunction depthFunc = DepthFunction::Less;
@@ -132,14 +132,14 @@ namespace solo
         polygonMode = mode;
     }
 
-    inline bool Material::isTransparent() const
+    inline bool Material::getBlend() const
     {
-        return transparent;
+        return blend;
     }
 
-    inline void Material::setTransparent(bool enabled)
+    inline void Material::setBlend(bool enabled)
     {
-        transparent = enabled;
+        blend = enabled;
     }
 
     inline auto Material::getSrcBlendFactor() const -> BlendFactor

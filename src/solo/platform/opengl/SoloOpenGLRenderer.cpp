@@ -916,13 +916,13 @@ void OpenGLRenderer::setUniform(uint32_t handle, const void *value, uint32_t cou
 
 void OpenGLRenderer::setDepthWrite(bool enabled)
 {
-    enabled ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+    glDepthMask(enabled ? GL_TRUE : GL_FALSE);
 }
 
 
 void OpenGLRenderer::setDepthTest(bool enabled)
 {
-    glDepthMask(enabled ? GL_TRUE : GL_FALSE);
+    enabled ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
 }
 
 

@@ -20,47 +20,8 @@
 
 #include "../common/DemoBase.h"
 #include "../common/Screenshoter.h"
-#include <chrono>
-#include <iomanip>
 
 using namespace solo;
-
-
-class Text final: public ComponentBase<Text>
-{
-public:
-    explicit Text(const Node &node):
-        ComponentBase<Text>(node),
-        device(node.getScene()->getDevice())
-    {
-    }
-
-    void init() override final
-    {
-        const int textureWidth = 1024;
-        const int textureHeight = 1024;
-        const int lineHeight = 60;
-
-        auto fontData = device->getFileSystem()->readBytes("../assets/aller.ttf");
-        auto font = Font::create(device, fontData.data(), lineHeight, textureWidth, textureHeight, ' ', '~' - ' ', 2, 2);
-
-        renderer = node.addComponent<FontRenderer>();
-        renderer->setFont(font);
-    }
-
-    void update() override final
-    {
-        auto nowTimePoint = std::chrono::system_clock::now();
-        auto now = std::chrono::system_clock::to_time_t(nowTimePoint);
-        std::stringstream ss;
-        ss << "Now: " << std::put_time(std::localtime(&now), "%X");
-        renderer->setText(ss.str());
-    }
-
-private:
-    Device *device = nullptr;
-    FontRenderer *renderer = nullptr;
-};
 
 
 class Demo final: public DemoBase
@@ -120,7 +81,7 @@ private:
     void initText()
     {
         auto textNode = scene->createNode();
-        textNode->addComponent<Text>();
+//        textNode->addComponent<Text>();
         auto transform = textNode->findComponent<Transform>();
         transform->setLocalPosition(Vector3(-3.5f, 0, 0));
         transform->setLocalScale(Vector3(0.02f, 0.02f, 1));

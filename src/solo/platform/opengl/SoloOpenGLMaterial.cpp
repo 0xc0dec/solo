@@ -42,7 +42,7 @@ void OpenGLMaterial::applyState()
     renderer->setDepthTest(depthTest);
     renderer->setDepthWrite(depthWrite);
     renderer->setDepthFunction(depthFunc);
-    renderer->setBlend(transparent);
+    renderer->setBlend(blend);
     renderer->setBlendFactor(srcBlendFactor, dstBlendFactor);
 }
 

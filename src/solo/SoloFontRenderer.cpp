@@ -38,7 +38,9 @@ FontRenderer::FontRenderer(const Node &node):
     material = Material::create(node.getScene()->getDevice(), effect);
     material->setFaceCull(FaceCull::All);
     material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
-    material->setTransparent(true);
+    material->setBlend(true);
+    material->setDepthTest(true);
+    material->setDepthWrite(false);
 }
 
 
