@@ -20,6 +20,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Solo.vendor", "Solo.vendor.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demo5", "Demo5.msvc2015.vcxproj", "{40E64E42-215E-4CBD-B01A-78C4F92220C8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DemoCommon", "DemoCommon", "{E1C0ED1D-EB82-4E84-8F12-E437DCDC122B}"
+	ProjectSection(SolutionItems) = preProject
+		..\src\demos\common\DemoBase.h = ..\src\demos\common\DemoBase.h
+		..\src\demos\common\Rotator.h = ..\src\demos\common\Rotator.h
+		..\src\demos\common\Screenshoter.h = ..\src\demos\common\Screenshoter.h
+		..\src\demos\common\Shaders.h = ..\src\demos\common\Shaders.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

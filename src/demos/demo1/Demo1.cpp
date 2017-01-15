@@ -326,7 +326,7 @@ private:
         node->addComponent<CurrentTimeText>();
         node->findComponent<FontRenderer>()->setTags(transparentTag);
         node->findComponent<Transform>()->setLocalScale({0.02f, 0.02f, 1});
-        node->findComponent<Transform>()->setLocalPosition({-2, 0, 4});
+        node->findComponent<Transform>()->setLocalPosition({-3, 0, 4});
     }
 
     const uint32_t skyboxTag = 1 << 1;
