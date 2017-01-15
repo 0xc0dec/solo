@@ -28,7 +28,6 @@
 #include "PostProcessor1.h"
 #include "PostProcessor2.h"
 #include "Shaders.h"
-#include <future>
 
 using namespace solo;
 
@@ -103,6 +102,8 @@ private:
         greenMat = createColorMaterial(Vector4(0, 1, 0, 1));
         blueMat = createColorMaterial(Vector4(0, 0, 1, 1));
         whiteMat = createColorMaterial(Vector4(1, 1, 1, 1));
+        cubeMesh = Mesh::create(device, MeshPrefab::Cube);
+        quadMesh = Mesh::create(device, MeshPrefab::Quad);
     }
 
     void loadTexture(const std::string &path, std::function<void(sptr<RectTexture>)> callback)
@@ -174,14 +175,6 @@ private:
         });
     }
 
-    auto createPrefabMeshNode(MeshPrefab prefab) const -> sptr<Node>
-    {
-        auto mesh = Mesh::create(device, prefab);
-        auto node = scene->createNode();
-        node->addComponent<MeshRenderer>()->setMesh(mesh);
-        return node;
-    };
-
     void initCheckerBox() const
     {
         auto effect = Effect::create(device, commonShaders.vertex.basic, fsChecker);
@@ -191,7 +184,8 @@ private:
         material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
         material->setVector4Parameter("color", Vector4(1, 1, 0, 1));
 
-        auto node = createPrefabMeshNode(MeshPrefab::Cube);
+        auto node = scene->createNode();
+        node->addComponent<MeshRenderer>()->setMesh(cubeMesh);
         node->findComponent<MeshRenderer>()->setMaterial(0, material);
         node->findComponent<Transform>()->setLocalPosition({-5, 0, 0});
         node->addComponent<Rotator>("world", Vector3::unitY());
@@ -220,8 +214,6 @@ private:
 
     void initFloor(sptr<Texture> texture) const
     {
-        auto mesh = Mesh::create(device, MeshPrefab::Cube);
-
         auto material = Material::create(device, simpleTextureEffect);
         material->setFaceCull(FaceCull::All);
         material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
@@ -233,7 +225,7 @@ private:
         node->findComponent<Transform>()->setLocalPosition({0, -2, 0});
 
         auto renderer = node->addComponent<MeshRenderer>();
-        renderer->setMesh(mesh);
+        renderer->setMesh(cubeMesh);
         renderer->setMaterial(0, material);
 
         auto rigidBody = node->addComponent<RigidBody>(RigidBodyConstructionParameters().withMass(0).withFriction(0.5f));
@@ -306,7 +298,7 @@ private:
         parent->addComponent<Rotator>("world", Vector3::unitY());
         attachAxesMesh(parent, axesMesh);
 
-        auto node = createPrefabMeshNode(MeshPrefab::Quad);
+        auto node = scene->createNode();
         node->addComponent<Targeter>(targetPos);
 
         auto transform = node->findComponent<Transform>();
@@ -314,7 +306,8 @@ private:
         transform->setLocalPosition({5, 2, -5});
         transform->setLocalScale({5, 5 * canvasSize.y / canvasSize.x, 1});
         
-        auto renderer = node->findComponent<MeshRenderer>();
+        auto renderer = node->addComponent<MeshRenderer>();
+        renderer->setMesh(quadMesh);
         renderer->setMaterial(0, material);
         renderer->setTags(monitorQuadTag);
     }
@@ -338,12 +331,13 @@ private:
             parent->addComponent<Rotator>("world", Vector3::unitY());
             attachAxesMesh(parent, axesMesh);
 
-            auto node = createPrefabMeshNode(MeshPrefab::Quad);
+            auto node = scene->createNode();
             node->addComponent<Rotator>("local", Vector3::unitX());
             node->findComponent<Transform>()->setParent(parent->findComponent<Transform>());
             node->findComponent<Transform>()->setLocalPosition({2, 0, 0});
 
-            auto renderer = node->findComponent<MeshRenderer>();
+            auto renderer = node->addComponent<MeshRenderer>();
+            renderer->setMesh(quadMesh);
             renderer->setMaterial(0, material);
             renderer->setTags(transparentTag);
         });
@@ -389,13 +383,15 @@ private:
     const uint32_t postProcessorTag = 1 << 4;
     Camera *mainCamera = nullptr;
     Camera *offscreenCamera = nullptr;
-    sptr<Effect> simpleTextureEffect = nullptr;
-    sptr<Effect> colorEffect = nullptr;
-    sptr<Material> redMat = nullptr;
-    sptr<Material> greenMat = nullptr;
-    sptr<Material> blueMat = nullptr;
-    sptr<Material> whiteMat = nullptr;
-    sptr<RectTexture> offscreenCameraTex = nullptr;
+    sptr<Effect> simpleTextureEffect;
+    sptr<Effect> colorEffect;
+    sptr<Material> redMat;
+    sptr<Material> greenMat;
+    sptr<Material> blueMat;
+    sptr<Material> whiteMat;
+    sptr<RectTexture> offscreenCameraTex;
+    sptr<Mesh> cubeMesh;
+    sptr<Mesh> quadMesh;
     uptr<PostProcessor1> pp1;
     uptr<PostProcessor2> pp2;
 };
