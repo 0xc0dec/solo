@@ -171,7 +171,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\demos\common\DemoBase.h" />
+    <ClInclude Include="..\src\demos\demo1\DynamicQuadUpdater.h" />
     <ClInclude Include="..\src\demos\demo1\Shaders.h" />
+    <ClInclude Include="..\src\demos\demo1\Targeter.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

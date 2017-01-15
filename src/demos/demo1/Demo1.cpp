@@ -22,64 +22,11 @@
 #include "../common/Screenshoter.h"
 #include "../common/Rotator.h"
 #include "../common/Shaders.h"
+#include "DynamicQuadUpdater.h"
+#include "Targeter.h"
 #include "Shaders.h"
 
 using namespace solo;
-
-
-class Targeter: public ComponentBase<Targeter>
-{
-public:
-    explicit Targeter(const Node &node, Vector3 targetPos):
-        ComponentBase<Targeter>(node),
-        targetPos(targetPos)
-    {
-    }
-
-    void init() override final
-    {
-        transform = node.findComponent<Transform>();
-    }
-
-    void update() override final
-    {
-        transform->lookAt(targetPos, Vector3::unitY());
-    }
-
-private:
-    Vector3 targetPos;
-    Transform *transform = nullptr;
-};
-
-
-class DynamicQuadUpdater: public ComponentBase<DynamicQuadUpdater>
-{
-public:
-    explicit DynamicQuadUpdater(const Node &node, std::vector<float> data, sptr<Mesh> mesh):
-        ComponentBase<DynamicQuadUpdater>(node),
-        device(node.getScene()->getDevice()),
-        data(data),
-        mesh(mesh)
-    {
-    }
-
-    void update() override final
-    {
-        time += 2 * device->getTimeDelta();
-        auto offset = 0.3f * sinf(time);
-        data[2] = offset;
-        data[7] = -offset;
-        data[12] = offset;
-        data[17] = -offset;
-        mesh->updateDynamicVertexBuffer(0, 0, data.data(), 4);
-    }
-
-private:
-    float time = 0;
-    Device *device;
-    std::vector<float> data;
-    sptr<Mesh> mesh;
-};
 
 
 class Demo final: public DemoBase
