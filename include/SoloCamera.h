@@ -55,7 +55,7 @@ namespace solo
         void setRenderTarget(sptr<FrameBuffer> target);
 
         auto getClearColor() const -> Vector4;
-        void setClearColor(float r, float g, float b, float a);
+        void setClearColor(float r, float g, float b, float a); // TODO accept vector
 
         bool getClearColorFlag() const;
         void setClearColorFlag(bool clear);
@@ -65,7 +65,7 @@ namespace solo
 
         auto getViewport() const -> Vector4;
         // Pass -1 values to reset viewport to default
-        void setViewport(float left, float top, float width, float height);
+        void setViewport(float left, float top, float width, float height); // TODO accept vector
 
         bool isPerspective() const;
         void setPerspective(bool perspective);

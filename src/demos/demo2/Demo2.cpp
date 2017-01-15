@@ -33,22 +33,29 @@ public:
 
     void render() override final
     {
+        camera->render([&] (const RenderContext &ctx)
+        {
+            
+        });
     }
 
 private:
     void initCamera()
     {
         auto node = scene->createNode();
-        auto t = node->findComponent<Transform>();
-        t->setLocalPosition({10, 10, 10});
-        t->lookAt({}, Vector3::unitY());
+        
+        auto transform = node->findComponent<Transform>();
+        transform->setLocalPosition({10, 10, 10});
+        transform->lookAt({}, Vector3::unitY());
 
-        auto cam = node->addComponent<Camera>();
-        cam->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
-        cam->setNear(0.05f);
+        camera = node->addComponent<Camera>();
+        camera->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
+        camera->setNear(0.05f);
 
         node->addComponent<Spectator>();
     }
+
+    Camera *camera = nullptr;
 };
 
 
