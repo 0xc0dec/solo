@@ -30,7 +30,7 @@ using namespace solo;
 
 auto vk::createDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -> VkDevice
 {
-    std::vector<float> queuePriorities = { 0.0f };
+    std::vector<float> queuePriorities = {0.0f};
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfos {};
     queueCreateInfos.resize(1);
     queueCreateInfos[0].sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
@@ -363,7 +363,7 @@ auto vk::createRenderPass(VkDevice device, VkFormat colorFormat, VkFormat depthF
 auto vk::createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImageView depthAttachment,
                            VkRenderPass renderPass, uint32_t width, uint32_t height) -> VkFramebuffer
 {
-    VkImageView attachments[] = { colorAttachment, depthAttachment };
+    VkImageView attachments[] = {colorAttachment, depthAttachment};
 
     VkFramebufferCreateInfo createInfo = {};
     createInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;

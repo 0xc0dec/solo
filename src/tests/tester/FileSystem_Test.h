@@ -55,7 +55,7 @@ private:
 
     void test_BytesReading()
     {
-        std::vector<uint8_t> data = { 0x01, 0x02, 0x03, 0x04 };
+        std::vector<uint8_t> data = {0x01, 0x02, 0x03, 0x04};
         fileSystem->writeBytes("temp.bin", data);
         auto readData = fileSystem->readBytes("temp.bin");
         assert(readData.size() == data.size());

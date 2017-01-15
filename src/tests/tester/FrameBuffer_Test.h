@@ -44,7 +44,7 @@ private:
         t2->setData(TextureFormat::RGB, {}, 64, 64);
 
         auto fb = FrameBuffer::create(device);
-        fb->setAttachments({ t1, t2 });
+        fb->setAttachments({t1, t2});
 
         auto size = fb->getSize();
         assert(static_cast<uint32_t>(size.x) == 64 && static_cast<uint32_t>(size.y) == 64);

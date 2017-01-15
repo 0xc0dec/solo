@@ -80,7 +80,7 @@ namespace solo
 
     inline void VertexBufferLayout::add(VertexBufferLayoutSemantics semantics, uint32_t size)
     {
-        elements.push_back(VertexBufferLayoutElement{ semantics, size });
+        elements.push_back(VertexBufferLayoutElement{semantics, size});
         this->size += sizeof(float) * size;
     }
 }

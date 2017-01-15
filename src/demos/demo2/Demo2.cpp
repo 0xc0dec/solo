@@ -41,7 +41,7 @@ public:
         fbTex->setFiltering(TextureFiltering::Nearest);
         fbTex->setWrapping(TextureWrapping::Clamp);
         fb1 = FrameBuffer::create(device);
-        fb1->setAttachments({ fbTex });
+        fb1->setAttachments({fbTex});
         camera->setRenderTarget(fb1);
 
         fbTex2 = RectTexture::create(device);
@@ -49,7 +49,7 @@ public:
         fbTex2->setFiltering(TextureFiltering::Nearest);
         fbTex2->setWrapping(TextureWrapping::Clamp);
         fb2 = FrameBuffer::create(device);
-        fb2->setAttachments({ fbTex2 });
+        fb2->setAttachments({fbTex2});
 
         auto grayscaleEffect = Effect::create(device, commonShaders.vertex.passThrough, fsGrayscale);
         grayscaleMat = Material::create(device, grayscaleEffect);
@@ -136,7 +136,7 @@ public:
         fbTex->setFiltering(TextureFiltering::Nearest);
         fbTex->setWrapping(TextureWrapping::Clamp);
         fb1 = FrameBuffer::create(device);
-        fb1->setAttachments({ fbTex });
+        fb1->setAttachments({fbTex});
         camera->setViewport(0, 0, resolution.x, resolution.y);
         camera->setRenderTarget(fb1);
 

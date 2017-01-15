@@ -54,7 +54,7 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
     appInfo.pEngineName = "";
     appInfo.apiVersion = VK_API_VERSION_1_0;
 
-    std::vector<const char *> enabledExtensions = { VK_KHR_SURFACE_EXTENSION_NAME };
+    std::vector<const char *> enabledExtensions = {VK_KHR_SURFACE_EXTENSION_NAME};
 #ifdef SL_WINDOWS
     enabledExtensions.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
 #endif

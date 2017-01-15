@@ -70,7 +70,7 @@ auto PngImageLoader::load(const std::string &path) -> sptr<Image>
         SL_ERR(SL_FMT("Failed to read file '", path, "' as PNG image"));
     }
 
-    std::unique_ptr<PngReadContext> context(new PngReadContext{ &bytes, 8 });
+    std::unique_ptr<PngReadContext> context(new PngReadContext{&bytes, 8});
     png_set_read_fn(png, reinterpret_cast<png_voidp>(context.get()), callback);
     png_set_sig_bytes(png, 8);
     png_read_png(png, info, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND, nullptr);

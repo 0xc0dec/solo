@@ -74,19 +74,6 @@ void Camera::onTransformChanged(const Transform *, uint32_t)
 }
 
 
-void Camera::setViewport(float left, float top, float width, float height)
-{
-    viewport = Vector4(left, top, width, height);
-    viewportSet = true;
-}
-
-
-auto Camera::getViewport() const -> Vector4
-{
-    return viewportSet ? viewport : Vector4();
-}
-
-
 void Camera::setPerspective(bool perspective)
 {
     ortho = !perspective;

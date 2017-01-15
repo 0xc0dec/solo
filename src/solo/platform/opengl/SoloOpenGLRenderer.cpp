@@ -175,8 +175,8 @@ static auto compileShader(GLuint type, const char *src) -> GLint
 {
     static std::unordered_map<GLuint, std::string> typeNames =
     {
-        { GL_VERTEX_SHADER, "vertex" },
-        { GL_FRAGMENT_SHADER, "fragment" }
+        {GL_VERTEX_SHADER, "vertex"},
+        {GL_FRAGMENT_SHADER, "fragment"}
     };
 
     auto shader = glCreateShader(type);

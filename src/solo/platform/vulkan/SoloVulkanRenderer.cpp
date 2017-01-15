@@ -36,7 +36,7 @@ auto VulkanRenderer::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryP
     image.pNext = nullptr;
     image.imageType = VK_IMAGE_TYPE_2D;
     image.format = depthFormat;
-    image.extent = { canvasWidth, canvasHeight, 1 };
+    image.extent = {canvasWidth, canvasHeight, 1};
     image.mipLevels = 1;
     image.arrayLayers = 1;
     image.samples = VK_SAMPLE_COUNT_1_BIT;
@@ -290,7 +290,7 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync, const Vecto
     swapchainInfo.minImageCount = requestedImageCount;
     swapchainInfo.imageFormat = colorFormat;
     swapchainInfo.imageColorSpace = colorSpace;
-    swapchainInfo.imageExtent = { canvasWidth, canvasHeight };
+    swapchainInfo.imageExtent = {canvasWidth, canvasHeight};
     swapchainInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
     swapchainInfo.preTransform = static_cast<VkSurfaceTransformFlagBitsKHR>(transformFlags);
     swapchainInfo.imageArrayLayers = 1;

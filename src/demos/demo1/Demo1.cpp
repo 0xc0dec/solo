@@ -185,7 +185,7 @@ private:
         node->findComponent<Transform>()->setLocalPosition(Vector3(0, 0, 10));
 
         auto fb = FrameBuffer::create(device);
-        fb->setAttachments({ offscreenCameraTex });
+        fb->setAttachments({offscreenCameraTex});
         offscreenCamera->setRenderTarget(fb);
     }
 

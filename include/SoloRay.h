@@ -52,8 +52,8 @@ namespace solo
     private:
         void normalize();
 
-        Vector3 origin { 0, 0, 0 };
-        Vector3 direction { 0, 0, 1 };
+        Vector3 origin{0, 0, 0};
+        Vector3 direction{0, 0, 1};
     };
 
     inline auto Ray::getOrigin() const -> Vector3

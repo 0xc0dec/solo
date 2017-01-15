@@ -64,7 +64,7 @@ namespace solo
     private:
         void normalize();
 
-        Vector3 normal { 0, 1, 0 };
+        Vector3 normal{0, 1, 0};
         float distance = 0;
     };
 

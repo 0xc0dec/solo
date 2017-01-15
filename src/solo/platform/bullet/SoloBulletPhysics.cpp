@@ -64,7 +64,7 @@ auto BulletPhysics::castRay(const Vector3 &from, const Vector3 &to) -> RaycastRe
         return {};
 
     auto rigidBody = static_cast<RigidBody *>(body->getUserPointer());
-    return { RaycastResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld), SL_FROMBTVEC3(callback.m_hitNormalWorld)) };
+    return {RaycastResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld), SL_FROMBTVEC3(callback.m_hitNormalWorld))};
 }
 
 

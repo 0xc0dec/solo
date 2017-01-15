@@ -58,8 +58,8 @@ namespace solo
         void setClearColor(float r, float g, float b, float a);
 
         auto getViewport() const -> Vector4;
+        // Pass -1 values to reset viewport to default
         void setViewport(float left, float top, float width, float height);
-        void resetViewport();
 
         bool isPerspective() const;
         void setPerspective(bool perspective);
@@ -102,11 +102,10 @@ namespace solo
         Transform *transform = nullptr;
         sptr<FrameBuffer> renderTarget = nullptr;
 
-        Vector4 viewport;
+        Vector4 viewport{-1, -1, -1, -1};
         bool ortho = false;
-        bool viewportSet = false;
 
-        Vector4 clearColor{ 0, 0, 0, 1 };
+        Vector4 clearColor{0, 0, 0, 1};
         Radian fov;
         float nearClip = 1;
         float farClip = 100;
@@ -190,9 +189,14 @@ namespace solo
         transform->removeCallback(this);
     }
 
-    inline void Camera::resetViewport()
+    inline auto Camera::getViewport() const -> Vector4
     {
-        viewportSet = false;
+        return viewport;
+    }
+
+    inline void Camera::setViewport(float left, float top, float width, float height)
+    {
+        viewport = Vector4(left, top, width, height);
     }
 
     inline auto Camera::getTransform() const -> Transform*

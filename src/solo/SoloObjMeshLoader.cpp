@@ -138,7 +138,7 @@ auto ObjMeshLoader::loadData(const std::string &path) const -> sptr<MeshData>
             auto to = from + lineSize - 3;
             size_t spaceIdx = 1;
             uint32_t vIdx, uvIdx, nIdx;
-            uint32_t *idxs[] = { &vIdx, &uvIdx, &nIdx };
+            uint32_t *idxs[] = {&vIdx, &uvIdx, &nIdx};
             std::string three;
             for (auto i = 0; i < 3; ++i)
             {

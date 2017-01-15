@@ -37,7 +37,7 @@ OpenGLCamera::OpenGLCamera(const Node &node):
 
 void OpenGLCamera::applyImpl() const
 {
-    if (viewportSet)
+    if (viewport.x >= 0 && viewport.y >= 0 && viewport.z >= 0 && viewport.w >= 0)
     {
         renderer->setViewport(
             static_cast<uint32_t>(viewport.x),
