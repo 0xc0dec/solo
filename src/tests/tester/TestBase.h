@@ -21,7 +21,6 @@
 #pragma once
 
 #include <Solo.h>
-#include <iostream>
 #include <cassert>
 
 #define LOG(msg) std::cout << msg << std::endl;
