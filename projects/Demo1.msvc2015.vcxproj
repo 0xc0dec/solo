@@ -177,6 +177,9 @@
     <ClInclude Include="..\src\demos\demo1\PostProcessor2.h" />
     <ClInclude Include="..\src\demos\demo1\PostProcessorBase.h" />
     <ClInclude Include="..\src\demos\demo1\Shaders.h" />
+    <ClInclude Include="..\src\demos\demo1\SpawnedObject.h" />
+    <ClInclude Include="..\src\demos\demo1\SpawnedObjectTargeter.h" />
+    <ClInclude Include="..\src\demos\demo1\Spawner.h" />
     <ClInclude Include="..\src\demos\demo1\Targeter.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

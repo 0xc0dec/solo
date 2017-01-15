@@ -35,15 +35,14 @@ using namespace solo;
 class Demo final: public DemoBase
 {
 public:
-    Demo(Device *device): DemoBase(device)
+    explicit Demo(Device *device): DemoBase(device)
     {
-        initEffects();
+        initCommonAssets();
         initCamera();
         initOffscreenCamera();
-        initMaterials();
         initSkybox();
         initCheckerBox();
-        initMesh();
+        initMonkeyMesh();
         initDynamicQuad();
         initCurrentTimeLabel();
         initAxesMesh()->done([&] (sptr<Mesh> mesh)
@@ -92,12 +91,14 @@ private:
         return mat;
     }
 
-    void initEffects()
+    void initCommonAssets()
     {
         simpleTextureEffect = Effect::create(device, commonShaders.vertex.basic, commonShaders.fragment.texture);
         colorEffect = Effect::create(device, commonShaders.vertex.basic, commonShaders.fragment.color);
-        checkerEffect = Effect::create(device, commonShaders.vertex.basic, fsChecker);
-        texWithLightingEffect = Effect::create(device, vsBasicLighting, fsTextureWithLighting);
+        redMat = createColorMaterial(Vector4(1, 0, 0, 1));
+        greenMat = createColorMaterial(Vector4(0, 1, 0, 1));
+        blueMat = createColorMaterial(Vector4(0, 0, 1, 1));
+        whiteMat = createColorMaterial(Vector4(1, 1, 1, 1));
     }
 
     void loadTexture(const std::string &path, std::function<void(sptr<RectTexture>)> callback)
@@ -119,11 +120,12 @@ private:
     void initCamera()
     {
         auto node = scene->createNode();
+        
         auto t = node->findComponent<Transform>();
         t->setLocalPosition({0, 5, 10});
         t->lookAt({}, Vector3::unitY());
-        node->addComponent<Screenshoter>("demo1-screenshot.bmp");
-
+        
+        node->addComponent<Screenshoter>("demo1.bmp");
         node->addComponent<Spectator>();
 
         mainCamera = node->addComponent<Camera>();
@@ -149,24 +151,6 @@ private:
         auto fb = FrameBuffer::create(device);
         fb->setAttachments({offscreenCameraTex});
         offscreenCamera->setRenderTarget(fb);
-    }
-
-    void initMaterials()
-    {
-        redMat = createColorMaterial(Vector4(1, 0, 0, 1));
-        greenMat = createColorMaterial(Vector4(0, 1, 0, 1));
-        blueMat = createColorMaterial(Vector4(0, 0, 1, 1));
-        whiteMat = createColorMaterial(Vector4(1, 1, 1, 1));
-
-        checkerMat = Material::create(device, checkerEffect);
-        checkerMat->setFaceCull(FaceCull::All);
-        checkerMat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
-        checkerMat->setVector4Parameter("color", Vector4(1, 1, 0, 1));
-
-        monitorMat = Material::create(device, simpleTextureEffect);
-        monitorMat->setFaceCull(FaceCull::All);
-        monitorMat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
-        monitorMat->setTextureParameter("mainTex", offscreenCameraTex);
     }
 
     void initSkybox()
@@ -200,31 +184,40 @@ private:
 
     void initCheckerBox()
     {
+        auto effect = Effect::create(device, commonShaders.vertex.basic, fsChecker);
+
+        auto material = Material::create(device, effect);
+        material->setFaceCull(FaceCull::All);
+        material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
+        material->setVector4Parameter("color", Vector4(1, 1, 0, 1));
+
         auto node = createPrefabMeshNode(MeshPrefab::Cube);
-        node->findComponent<MeshRenderer>()->setMaterial(0, checkerMat);
+        node->findComponent<MeshRenderer>()->setMaterial(0, material);
         node->findComponent<Transform>()->setLocalPosition({-5, 0, 0});
         node->addComponent<Rotator>("world", Vector3::unitY());
     }
 
-    void initMesh()
+    void initMonkeyMesh()
     {
         loader->loadRectTextureAsync("../assets/cobblestone.png")->done([=](sptr<RectTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
             tex->generateMipmaps();
 
-            auto mat = Material::create(device, texWithLightingEffect);
-            mat->setFaceCull(FaceCull::All);
-            mat->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
-            mat->bindInvTransposedWorldMatrixParameter("invTransposedWorldMatrix");
-            mat->setTextureParameter("mainTex", tex);
+            auto effect = Effect::create(device, vsBasicLighting, fsTextureWithLighting);
+
+            auto material = Material::create(device, effect);
+            material->setFaceCull(FaceCull::All);
+            material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
+            material->bindInvTransposedWorldMatrixParameter("invTransposedWorldMatrix");
+            material->setTextureParameter("mainTex", tex);
 
             loader->loadMeshAsync("../assets/monkey_hires.obj")->done([=](sptr<Mesh> mesh)
             {
                 auto node = scene->createNode();
                 auto renderer = node->addComponent<MeshRenderer>();
                 renderer->setMesh(mesh);
-                renderer->setMaterial(0, mat);
+                renderer->setMaterial(0, material);
                 node->findComponent<Transform>()->setLocalPosition({});
                 node->addComponent<Rotator>("local", Vector3::unitX());
             });
@@ -287,6 +280,11 @@ private:
 
     void initMonitorQuad(Vector3 targetPos)
     {
+        auto material = Material::create(device, simpleTextureEffect);
+        material->setFaceCull(FaceCull::All);
+        material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
+        material->setTextureParameter("mainTex", offscreenCameraTex);
+
         auto parent = scene->createNode();
         parent->findComponent<Transform>()->setLocalPosition({-2, 2, -2});
         parent->addComponent<Rotator>("world", Vector3::unitY());
@@ -299,7 +297,7 @@ private:
         transform->setLocalScale({5, 5 * canvasSize.y / canvasSize.x, 1});
         quad->addComponent<Targeter>(targetPos);
         auto monitorQuad = quad->findComponent<MeshRenderer>();
-        monitorQuad->setMaterial(0, monitorMat);
+        monitorQuad->setMaterial(0, material);
         monitorQuad->setTags(monitorQuadTag);
     }
 
@@ -375,15 +373,11 @@ private:
     Camera *offscreenCamera = nullptr;
     sptr<Effect> simpleTextureEffect = nullptr;
     sptr<Effect> colorEffect = nullptr;
-    sptr<Effect> checkerEffect = nullptr;
-    sptr<Effect> texWithLightingEffect = nullptr;
     sptr<Mesh> axesMesh = nullptr;
     sptr<Material> redMat = nullptr;
     sptr<Material> greenMat = nullptr;
     sptr<Material> blueMat = nullptr;
     sptr<Material> whiteMat = nullptr;
-    sptr<Material> checkerMat = nullptr;
-    sptr<Material> monitorMat = nullptr;
     sptr<RectTexture> offscreenCameraTex = nullptr;
     uptr<PostProcessor1> pp1;
     uptr<PostProcessor2> pp2;
