@@ -47,9 +47,8 @@ public:
         initCurrentTimeLabel();
         initAxesMesh()->done([&] (sptr<Mesh> mesh)
         {
-            axesMesh = mesh;
-            initMonitorQuad({});
-            initTransparentQuad();
+            initMonitorQuad({}, mesh);
+            initTransparentQuad(mesh);
         });
     }
 
@@ -268,7 +267,7 @@ private:
         });
     }
 
-    void attachAxesMesh(sptr<Node> node)
+    void attachAxesMesh(sptr<Node> node, sptr<Mesh> axesMesh)
     {
         auto renderer = node->addComponent<MeshRenderer>();
         renderer->setMesh(axesMesh);
@@ -278,7 +277,7 @@ private:
         renderer->setMaterial(3, redMat);
     }
 
-    void initMonitorQuad(Vector3 targetPos)
+    void initMonitorQuad(Vector3 targetPos, sptr<Mesh> axesMesh)
     {
         auto material = Material::create(device, simpleTextureEffect);
         material->setFaceCull(FaceCull::All);
@@ -288,7 +287,7 @@ private:
         auto parent = scene->createNode();
         parent->findComponent<Transform>()->setLocalPosition({-2, 2, -2});
         parent->addComponent<Rotator>("world", Vector3::unitY());
-        attachAxesMesh(parent);
+        attachAxesMesh(parent, axesMesh);
 
         auto quad = createPrefabMeshNode(MeshPrefab::Quad);
         auto transform = quad->findComponent<Transform>();
@@ -301,7 +300,7 @@ private:
         monitorQuad->setTags(monitorQuadTag);
     }
 
-    void initTransparentQuad()
+    void initTransparentQuad(sptr<Mesh> axesMesh)
     {
         loadTexture("../assets/flammable.png", [=](sptr<RectTexture> tex)
         {
@@ -318,7 +317,7 @@ private:
             auto parent = scene->createNode();
             parent->findComponent<Transform>()->setLocalPosition({5, 0, 0});
             parent->addComponent<Rotator>("world", Vector3::unitY());
-            attachAxesMesh(parent);
+            attachAxesMesh(parent, axesMesh);
 
             auto quad = createPrefabMeshNode(MeshPrefab::Quad);
             quad->addComponent<Rotator>("local", Vector3::unitX());
@@ -373,7 +372,6 @@ private:
     Camera *offscreenCamera = nullptr;
     sptr<Effect> simpleTextureEffect = nullptr;
     sptr<Effect> colorEffect = nullptr;
-    sptr<Mesh> axesMesh = nullptr;
     sptr<Material> redMat = nullptr;
     sptr<Material> greenMat = nullptr;
     sptr<Material> blueMat = nullptr;
