@@ -228,7 +228,7 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync, const Vecto
     presentModes.resize(presentModeCount);
     SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, presentModes.data()));
 
-    if (capabilities.currentExtent.width == -1)
+    if (capabilities.currentExtent.width == static_cast<uint32_t>(-1))
     {
         // Surface extent not defined - select based on device canvas size
         canvasWidth = static_cast<uint32_t>(deviceCanvasSize.x);
@@ -240,7 +240,6 @@ void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync, const Vecto
         canvasHeight = capabilities.currentExtent.height;
     }
 
-    // Select present mode
     auto presentMode = VK_PRESENT_MODE_FIFO_KHR; // "vsync"
 
     if (!vsync)
