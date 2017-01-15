@@ -30,7 +30,7 @@
 using namespace solo;
 
 
-static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
+static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
         uint64_t obj, size_t location, int32_t code, const char *layerPrefix, const char *msg, void *userData)
 {
     return VK_FALSE;
@@ -45,7 +45,7 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
         flags |= SDL_WINDOW_FULLSCREEN;
 
     window = SDL_CreateWindow(setup.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                              setup.canvasWidth, setup.canvasHeight, flags);
+        setup.canvasWidth, setup.canvasHeight, flags);
     SL_ERR_IF(!window, "Failed to create window");
 
     VkApplicationInfo appInfo {};
@@ -54,17 +54,19 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
     appInfo.pEngineName = "";
     appInfo.apiVersion = VK_API_VERSION_1_0;
 
-    std::vector<const char *> enabledExtensions {
+    std::vector<const char *> enabledExtensions{
         VK_KHR_SURFACE_EXTENSION_NAME,
 #ifdef SL_WINDOWS
-        VK_KHR_WIN32_SURFACE_EXTENSION_NAME
+        VK_KHR_WIN32_SURFACE_EXTENSION_NAME,
+#endif
+#ifdef SL_DEBUG
+        VK_EXT_DEBUG_REPORT_EXTENSION_NAME
 #endif
     };
 
-    std::vector<const char *> enabledLayers {
+    std::vector<const char *> enabledLayers{
 #ifdef SL_DEBUG
         "VK_LAYER_LUNARG_standard_validation",
-        VK_EXT_DEBUG_REPORT_EXTENSION_NAME
 #endif
     };
 
@@ -86,6 +88,16 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
     }
 
     SL_CHECK_VK_RESULT(vkCreateInstance(&instanceInfo, nullptr, &instance));
+
+    VkDebugReportCallbackCreateInfoEXT createInfo;
+    createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
+    createInfo.flags = VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT;
+    createInfo.pfnCallback = debugCallbackFunc;
+
+    auto vkCreateDebugReportCallbackEXT = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT"));
+    SL_ERR_IF(!vkCreateDebugReportCallbackEXT, "Failed to load pointer to vkCreateDebugReportCallbackEXT");
+
+    SL_CHECK_VK_RESULT(vkCreateDebugReportCallbackEXT(instance, &createInfo, nullptr, &debugCallback));
 
 #ifdef SL_WINDOWS
     SDL_SysWMinfo wmInfo;
