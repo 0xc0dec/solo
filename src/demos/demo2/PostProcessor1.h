@@ -31,7 +31,7 @@ class PostProcessor1 final
 {
 public:
     PostProcessor1(Device *device, Camera *camera, uint32_t tag):
-        mainCamera(camera)
+        camera(camera)
     {
         auto canvasSize = device->getCanvasSize();
 
@@ -84,13 +84,13 @@ public:
         quadRenderer->setTags(tag);
         quadRenderer->setMesh(Mesh::create(device, MeshPrefab::Quad));
 
-        mainCamera->setRenderTarget(fb1);
+        camera->setRenderTarget(fb1);
     }
 
     ~PostProcessor1()
     {
-        mainCamera->getNode().removeComponent<MeshRenderer>();
-        mainCamera->setRenderTarget(nullptr);
+        camera->getNode().removeComponent<MeshRenderer>();
+        camera->setRenderTarget(nullptr);
     }
 
     void apply() const
@@ -100,7 +100,7 @@ public:
         renderStep(verticalBlurMat , fbTex1, fb2);
         renderStep(horizontalBlurMat, fbTex2, nullptr);
 
-        mainCamera->setRenderTarget(fb1);
+        camera->setRenderTarget(fb1);
     }
 
 private:
@@ -108,12 +108,12 @@ private:
     {
         mat->setTextureParameter("mainTex", inputTexture);
         quadRenderer->setMaterial(0, mat);
-        mainCamera->setRenderTarget(target);
-        mainCamera->render([=](const RenderContext &ctx) { quadRenderer->render(ctx);});
+        camera->setRenderTarget(target);
+        camera->render([=](const RenderContext &ctx) { quadRenderer->render(ctx);});
     }
 
     MeshRenderer *quadRenderer = nullptr;
-    Camera *mainCamera = nullptr;
+    Camera *camera = nullptr;
     sptr<FrameBuffer> fb1 = nullptr;
     sptr<FrameBuffer> fb2 = nullptr;
     sptr<RectTexture> fbTex1 = nullptr;
