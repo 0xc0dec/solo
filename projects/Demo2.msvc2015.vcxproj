@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{40E64E42-215E-4CBD-B01A-78C4F92220C8}</ProjectGuid>
-    <RootNamespace>Demo5</RootNamespace>
-    <ProjectName>Demo5</ProjectName>
+    <RootNamespace>Demo2</RootNamespace>
+    <ProjectName>Demo2</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -68,7 +68,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)..\build\</OutDir>
-    <IntDir>$(SolutionDir)..\build\tmp\Demo5\</IntDir>
+    <IntDir>$(SolutionDir)..\build\tmp\Demo2\</IntDir>
     <LibraryPath>..\build;$(LibraryPath)</LibraryPath>
     <IncludePath>$(ProjectDir)..\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
@@ -76,17 +76,17 @@
     <LibraryPath>..\build;$(LibraryPath)</LibraryPath>
     <IncludePath>$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
-    <IntDir>$(ProjectDir)..\build\tmp\Demo5\</IntDir>
+    <IntDir>$(ProjectDir)..\build\tmp\Demo2\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\build\</OutDir>
-    <IntDir>$(SolutionDir)..\build\tmp\Demo5\</IntDir>
+    <IntDir>$(SolutionDir)..\build\tmp\Demo2\</IntDir>
     <LibraryPath>..\build;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LibraryPath>..\build;$(LibraryPath)</LibraryPath>
     <OutDir>$(ProjectDir)..\build\</OutDir>
-    <IntDir>$(ProjectDir)..\build\tmp\Demo5\</IntDir>
+    <IntDir>$(ProjectDir)..\build\tmp\Demo2\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -167,7 +167,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\demos\demo5\Demo5.cpp" />
+    <ClCompile Include="..\src\demos\demo2\Demo2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
