@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include "../../../include/Solo.h"
+#include <Solo.h>
 #include <chrono>
 #include <iomanip>
 

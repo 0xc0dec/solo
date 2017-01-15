@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include "../../../include/Solo.h" // TODO add include directory in proj settings
+#include <Solo.h>
 #include "SpawnedObject.h"
 
 using namespace solo;

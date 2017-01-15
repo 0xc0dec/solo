@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include "../../../include/Solo.h"
+#include <Solo.h>
 
 
 class Screenshoter final: public solo::ComponentBase<Screenshoter>
@@ -33,7 +33,7 @@ public:
     {
     }
 
-    virtual void update() override final
+    void update() override final
     {
         if (device->isKeyPressed(solo::KeyCode::P, true))
             device->saveScreenshot(path);

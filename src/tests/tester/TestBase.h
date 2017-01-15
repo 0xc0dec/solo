@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include "../../../include/solo.h"
+#include <Solo.h>
 #include <iostream>
 #include <cassert>
 
