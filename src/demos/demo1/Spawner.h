@@ -30,12 +30,12 @@ using namespace solo;
 class Spawner final: public ComponentBase<Spawner>
 {
 public:
-    explicit Spawner(const Node &node, sptr<Mesh> cubeMesh):
+    explicit Spawner(const Node &node, sptr<Mesh> mesh):
         ComponentBase<Spawner>(node),
         device(node.getScene()->getDevice()),
         scene(device->getScene()),
         transform(node.findComponent<Transform>()),
-        mesh(cubeMesh)
+        mesh(mesh)
     {
     }
 

@@ -27,6 +27,8 @@
 #include "CurrentTimeText.h"
 #include "PostProcessor1.h"
 #include "PostProcessor2.h"
+#include "SpawnedObjectTargeter.h"
+#include "Spawner.h"
 #include "Shaders.h"
 
 using namespace solo;
@@ -127,6 +129,8 @@ private:
         
         node->addComponent<Screenshoter>("demo1.bmp");
         node->addComponent<Spectator>();
+        node->addComponent<SpawnedObjectTargeter>();
+        node->addComponent<Spawner>(cubeMesh);
 
         mainCamera = node->addComponent<Camera>();
         mainCamera->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
