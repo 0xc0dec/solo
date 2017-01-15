@@ -22,6 +22,8 @@
 #include "SoloSDLVulkanDevice.h"
 #include "SoloVulkanPipeline.h"
 #include "SoloVector2.h"
+// TODO remove
+#include "SoloFileSystem.h"
 
 #ifdef SL_VULKAN_RENDERER
 
@@ -96,9 +98,14 @@ void VulkanRenderer::initFrameBuffers()
 }
 
 
+// TODO this is only for testing
+static SDLVulkanDevice *vulkanDevice = nullptr;
+
+
 VulkanRenderer::VulkanRenderer(Device *engineDevice)
 {
-    auto vulkanDevice = dynamic_cast<SDLVulkanDevice *>(engineDevice);
+    vulkanDevice = dynamic_cast<SDLVulkanDevice*>(engineDevice);
+
     auto instance = vulkanDevice->getVkInstance();
     auto surface = vulkanDevice->getVkSurface();
 
@@ -140,7 +147,7 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice)
 
 
 // TODO this is only for testing
-static VulkanPipeline *pipeline;
+static VulkanPipeline *pipeline = nullptr;
 static bool init = false;
 
 
@@ -191,6 +198,10 @@ void VulkanRenderer::beginFrame()
     if (!init)
     {
         pipeline = new VulkanPipeline(device, renderPass);
+        auto vertShader = vk::createShader(device, vulkanDevice->getFileSystem()->readBytes("../assets/triangle.vert.spv"));
+        auto fragShader = vk::createShader(device, vulkanDevice->getFileSystem()->readBytes("../assets/triangle.frag.spv"));
+        pipeline->setVertexShader(vertShader, "main");
+        pipeline->setFragmentShader(fragShader, "main");
         pipeline->rebuild();
         init = true;
     }

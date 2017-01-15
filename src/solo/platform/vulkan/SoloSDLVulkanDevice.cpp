@@ -33,6 +33,7 @@ using namespace solo;
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
         uint64_t obj, size_t location, int32_t code, const char *layerPrefix, const char *msg, void *userData)
 {
+    // TODO do something here
     return VK_FALSE;
 }
 
@@ -89,15 +90,9 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
 
     SL_CHECK_VK_RESULT(vkCreateInstance(&instanceInfo, nullptr, &instance));
 
-    VkDebugReportCallbackCreateInfoEXT createInfo;
-    createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
-    createInfo.flags = VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT;
-    createInfo.pfnCallback = debugCallbackFunc;
-
-    auto vkCreateDebugReportCallbackEXT = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT"));
-    SL_ERR_IF(!vkCreateDebugReportCallbackEXT, "Failed to load pointer to vkCreateDebugReportCallbackEXT");
-
-    SL_CHECK_VK_RESULT(vkCreateDebugReportCallbackEXT(instance, &createInfo, nullptr, &debugCallback));
+#ifdef SL_DEBUG
+    initDebugCallback();
+#endif
 
 #ifdef SL_WINDOWS
     SDL_SysWMinfo wmInfo;
@@ -107,12 +102,12 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
     auto hwnd = wmInfo.info.win.window;
     auto hinstance = reinterpret_cast<HINSTANCE>(GetWindowLongPtr(hwnd, GWLP_HINSTANCE));
 
-    VkWin32SurfaceCreateInfoKHR surfaceCreateInfo {};
-    surfaceCreateInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
-    surfaceCreateInfo.hinstance = hinstance;
-    surfaceCreateInfo.hwnd = hwnd;
+    VkWin32SurfaceCreateInfoKHR surfaceInfo;
+    surfaceInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+    surfaceInfo.hinstance = hinstance;
+    surfaceInfo.hwnd = hwnd;
 
-    SL_CHECK_VK_RESULT(vkCreateWin32SurfaceKHR(instance, &surfaceCreateInfo, nullptr, &surface));
+    SL_CHECK_VK_RESULT(vkCreateWin32SurfaceKHR(instance, &surfaceInfo, nullptr, &surface));
 #endif
 }
 
@@ -139,6 +134,20 @@ void SDLVulkanDevice::saveScreenshot(const std::string &path)
 
 void SDLVulkanDevice::endUpdate()
 {
+}
+
+
+void SDLVulkanDevice::initDebugCallback()
+{
+    VkDebugReportCallbackCreateInfoEXT createInfo;
+    createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
+    createInfo.flags = VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT;
+    createInfo.pfnCallback = debugCallbackFunc;
+
+    auto vkCreateDebugReportCallbackEXT = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT"));
+    SL_ERR_IF(!vkCreateDebugReportCallbackEXT, "Failed to load pointer to vkCreateDebugReportCallbackEXT");
+
+    SL_CHECK_VK_RESULT(vkCreateDebugReportCallbackEXT(instance, &createInfo, nullptr, &debugCallback));
 }
 
 

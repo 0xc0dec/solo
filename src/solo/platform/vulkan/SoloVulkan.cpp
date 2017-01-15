@@ -381,4 +381,20 @@ auto vk::createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImage
     return frameBuffer;
 }
 
+
+auto vk::createShader(VkDevice device, const std::vector<uint8_t>& data) -> VkShaderModule
+{
+    VkShaderModuleCreateInfo shaderModuleInfo {};
+    shaderModuleInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+    shaderModuleInfo.pNext = nullptr;
+    shaderModuleInfo.flags = 0;
+    shaderModuleInfo.codeSize = data.size();
+    shaderModuleInfo.pCode = reinterpret_cast<const uint32_t*>(data.data());
+
+    VkShaderModule module = nullptr;
+    SL_CHECK_VK_RESULT(vkCreateShaderModule(device, &shaderModuleInfo, nullptr, &module));
+
+    return module;
+}
+
 #endif

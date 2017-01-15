@@ -21,6 +21,7 @@
 #pragma once
 
 #include "SoloCommon.h"
+#include <vector>
 
 #ifdef SL_VULKAN_RENDERER
 
@@ -58,6 +59,7 @@ namespace solo
         auto createRenderPass(VkDevice device, VkFormat colorFormat, VkFormat depthFormat) -> VkRenderPass;
         auto createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImageView depthAttachment,
                                VkRenderPass renderPass, uint32_t width, uint32_t height) -> VkFramebuffer;
+        auto createShader(VkDevice logicalDevice, const std::vector<uint8_t>& data) -> VkShaderModule;
     }
 }
 
