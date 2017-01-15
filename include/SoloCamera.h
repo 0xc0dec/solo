@@ -47,7 +47,7 @@ namespace solo
         void terminate() override final;
 
         // TODO perhaps specify render target to add more "functional" flavor
-        void apply(std::function<void(const RenderContext&)> render) const; // TODO rename to render
+        void render(std::function<void(const RenderContext&)> render) const;
 
         auto getTransform() const -> Transform*;
 
@@ -97,7 +97,7 @@ namespace solo
     protected:
         explicit Camera(const Node &node);
 
-        virtual void applyImpl() const = 0;
+        virtual void renderImpl() const = 0;
 
         void onTransformChanged(const Transform *, uint32_t) override;
 

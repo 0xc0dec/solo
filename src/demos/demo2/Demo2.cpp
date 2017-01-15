@@ -48,7 +48,7 @@ private:
 
     void render() override final
     {
-        camera->apply([&](const RenderContext &ctx)
+        camera->render([&](const RenderContext &ctx)
         {
             renderByTags(skyboxTag, ctx);
             renderByTags(~(skyboxTag | postProcessorTag), ctx);

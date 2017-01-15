@@ -184,12 +184,12 @@ auto Camera::getInvViewProjectionMatrix() const -> const TransformMatrix &
 }
 
 
-void Camera::apply(std::function<void(const RenderContext&)> render) const
+void Camera::render(std::function<void(const RenderContext&)> render) const
 {
     if (renderTarget)
         renderTarget->bind();
     
-    applyImpl();
+    renderImpl();
 
     RenderContext ctx;
     ctx.camera = this;

@@ -109,7 +109,7 @@ private:
         mat->setTextureParameter("mainTex", inputTexture);
         quadRenderer->setMaterial(0, mat);
         mainCamera->setRenderTarget(target);
-        mainCamera->apply([=](const RenderContext &ctx) { quadRenderer->render(ctx);});
+        mainCamera->render([=](const RenderContext &ctx) { quadRenderer->render(ctx);});
     }
 
     MeshRenderer *quadRenderer = nullptr;

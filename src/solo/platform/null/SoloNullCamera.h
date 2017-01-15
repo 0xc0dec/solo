@@ -32,7 +32,7 @@ namespace solo
         }
 
     protected:
-        void applyImpl() const override
+        void renderImpl() const override
         {
         }
     };

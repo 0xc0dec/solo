@@ -35,7 +35,7 @@ namespace solo
         explicit OpenGLCamera(const Node &node);
 
     private:
-        void applyImpl() const override final;
+        void renderImpl() const override final;
 
         OpenGLRenderer *renderer = nullptr;
     };

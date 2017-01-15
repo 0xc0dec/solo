@@ -35,7 +35,7 @@ OpenGLCamera::OpenGLCamera(const Node &node):
 }
 
 
-void OpenGLCamera::applyImpl() const
+void OpenGLCamera::renderImpl() const
 {
     if (viewport.x >= 0 && viewport.y >= 0 && viewport.z >= 0 && viewport.w >= 0)
     {

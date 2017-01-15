@@ -106,14 +106,14 @@ public:
 private:
     void render() override final
     {
-        offscreenCamera->apply([&](const RenderContext& ctx)
+        offscreenCamera->render([&](const RenderContext& ctx)
         {
             renderByTags(skyboxTag, ctx);
             renderByTags(~(skyboxTag | monitorQuadTag | transparentTag), ctx);
             renderByTags(transparentTag, ctx);
         });
 
-        mainCamera->apply([&](const RenderContext& ctx)
+        mainCamera->render([&](const RenderContext& ctx)
         {
             renderByTags(skyboxTag, ctx);
             renderByTags(~(skyboxTag | transparentTag), ctx);
