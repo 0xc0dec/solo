@@ -20,10 +20,9 @@
 
 #include "../common/DemoBase.h"
 #include "../common/Screenshoter.h"
-#include "../common/Shaders.h"
 #include "Rotator.h"
 #include "DynamicQuadUpdater.h"
-#include "Targeter.h"
+#include "LookAt.h"
 #include "CurrentTimeText.h"
 #include "PostProcessor1.h"
 #include "PostProcessor2.h"
@@ -98,8 +97,8 @@ private:
 
     void initCommonAssets()
     {
-        simpleTextureEffect = Effect::create(device, commonShaders.vertex.basic, commonShaders.fragment.texture);
-        colorEffect = Effect::create(device, commonShaders.vertex.basic, commonShaders.fragment.color);
+        simpleTextureEffect = Effect::create(device, vsBasic, fsTexture);
+        colorEffect = Effect::create(device, vsBasic, fsColor);
         redMat = createColorMaterial(Vector4(1, 0, 0, 1));
         greenMat = createColorMaterial(Vector4(0, 1, 0, 1));
         blueMat = createColorMaterial(Vector4(0, 0, 1, 1));
@@ -181,7 +180,7 @@ private:
 
     void initCheckerBox() const
     {
-        auto effect = Effect::create(device, commonShaders.vertex.basic, fsChecker);
+        auto effect = Effect::create(device, vsBasic, fsChecker);
 
         auto material = Material::create(device, effect);
         material->setFaceCull(FaceCull::All);
@@ -303,7 +302,7 @@ private:
         attachAxesMesh(parent, axesMesh);
 
         auto node = scene->createNode();
-        node->addComponent<Targeter>(targetPos);
+        node->addComponent<LookAt>(targetPos);
 
         auto transform = node->findComponent<Transform>();
         transform->setParent(parent->findComponent<Transform>());

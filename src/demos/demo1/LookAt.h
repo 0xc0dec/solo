@@ -25,11 +25,11 @@
 using namespace solo;
 
 
-class Targeter: public ComponentBase<Targeter>
+class LookAt: public ComponentBase<LookAt>
 {
 public:
-    explicit Targeter(const Node &node, Vector3 targetPos):
-        ComponentBase<Targeter>(node),
+    explicit LookAt(const Node &node, Vector3 targetPos):
+        ComponentBase<LookAt>(node),
         targetPos(targetPos)
     {
     }

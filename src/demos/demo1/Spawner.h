@@ -21,7 +21,7 @@
 #pragma once
 
 #include "../../../include/Solo.h" // TODO add include directory in proj settings
-#include "../common/Shaders.h"
+#include "Shaders.h"
 #include "SpawnedObject.h"
 
 using namespace solo;
@@ -41,7 +41,7 @@ public:
 
     void init() override final
     {
-        effect = Effect::create(device, commonShaders.vertex.basic, commonShaders.fragment.color);
+        effect = Effect::create(device, vsBasic, fsColor);
     }
 
     void update() override final

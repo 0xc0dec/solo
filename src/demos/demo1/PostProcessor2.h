@@ -21,7 +21,6 @@
 #pragma once
 
 #include "PostProcessorBase.h"
-#include "../common/Shaders.h"
 #include "Shaders.h"
 
 using namespace solo;
@@ -57,7 +56,7 @@ public:
         fb1 = FrameBuffer::create(device);
         fb1->setAttachments({fbTex});
 
-        auto effect = Effect::create(device, commonShaders.vertex.passThrough, fsStitches);
+        auto effect = Effect::create(device, vsPassThrough, fsStitches);
         material = Material::create(device, effect);
         material->setTextureParameter("mainTex", fbTex);
         material->setTextureParameter("stitchTex", stitchTex);

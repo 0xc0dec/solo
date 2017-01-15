@@ -21,6 +21,38 @@
 #pragma once
 
 
+const char *vsBasic = R"(
+    #version 330 core
+
+	layout (location = 0) in vec4 position;
+	layout (location = 1) in vec2 texCoord0;
+
+	uniform mat4 worldViewProjMatrix;
+	out vec2 uv0;
+
+	void main()
+	{
+		gl_Position = worldViewProjMatrix * position;
+		uv0 = texCoord0;
+	}
+)";
+
+const char *vsPassThrough = R"(
+    #version 330 core
+
+	layout (location = 0) in vec4 position;
+	layout (location = 1) in vec2 texCoord0;
+
+	out vec2 uv0;
+
+	void main()
+	{
+		gl_Position = position;
+		uv0 = texCoord0;
+	}
+)";
+
+
 const char *vsBasicLighting = R"(
     #version 330 core
 
@@ -41,7 +73,7 @@ const char *vsBasicLighting = R"(
     }
 )";
 
-static const char* fsChecker = R"(
+const char *fsChecker = R"(
     #version 330 core
 
     uniform vec4 color;
@@ -61,7 +93,7 @@ static const char* fsChecker = R"(
     }
 )";
 
-static const char* fsTextureWithLighting = R"(
+const char *fsTextureWithLighting = R"(
     #version 330 core
 
     uniform sampler2D mainTex;
@@ -77,7 +109,7 @@ static const char* fsTextureWithLighting = R"(
     }
 )";
 
-static const char *fsGrayscale = R"(
+const char *fsGrayscale = R"(
     #version 330 core
 
     uniform sampler2D mainTex;
@@ -99,7 +131,7 @@ static const char *fsGrayscale = R"(
     }
 )";
 
-static const char* fsSaturate = R"(
+const char *fsSaturate = R"(
     #version 330 core
 
     uniform sampler2D mainTex;
@@ -118,7 +150,7 @@ static const char* fsSaturate = R"(
     }
 )";
 
-static const char* fsVerticalBlur = R"(
+const char *fsVerticalBlur = R"(
     #version 330 core
 
     uniform sampler2D mainTex;
@@ -147,7 +179,7 @@ static const char* fsVerticalBlur = R"(
     }
 )";
 
-static const char* fsHorizontalBlur = R"(
+const char *fsHorizontalBlur = R"(
     #version 330 core
 
     uniform sampler2D mainTex;
@@ -176,7 +208,35 @@ static const char* fsHorizontalBlur = R"(
     }
 )";
 
-static const char* fsStitches = R"(
+const char *fsTexture = R"(
+    #version 330 core
+
+	uniform sampler2D mainTex;
+
+	in vec2 uv0;
+	out vec4 fragColor;
+
+	void main()
+	{
+		fragColor = texture(mainTex, uv0);
+	}
+)";
+
+const char *fsColor = R"(
+    #version 330 core
+
+    uniform vec4 color;
+
+    in vec2 uv0;
+	out vec4 fragColor;
+
+    void main()
+	{
+		fragColor = color;
+	}
+)";
+
+const char *fsStitches = R"(
     #version 330 core
 
     uniform sampler2D mainTex;

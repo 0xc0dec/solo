@@ -21,7 +21,6 @@
 #pragma once
 
 #include "PostProcessorBase.h"
-#include "../common/Shaders.h"
 #include "Shaders.h"
 
 using namespace solo;
@@ -49,14 +48,14 @@ public:
         fb2 = FrameBuffer::create(device);
         fb2->setAttachments({fbTex2});
 
-        auto grayscaleEffect = Effect::create(device, commonShaders.vertex.passThrough, fsGrayscale);
+        auto grayscaleEffect = Effect::create(device, vsPassThrough, fsGrayscale);
         grayscaleMat = Material::create(device, grayscaleEffect);
         grayscaleMat->setDepthTest(false);
         grayscaleMat->setDepthWrite(false);
         grayscaleMat->setFaceCull(FaceCull::All);
         grayscaleMat->setFloatParameter("rightSeparator", 0.25f);
 
-        auto saturateEffect = Effect::create(device, commonShaders.vertex.passThrough, fsSaturate);
+        auto saturateEffect = Effect::create(device, vsPassThrough, fsSaturate);
         saturateMat = Material::create(device, saturateEffect);
         saturateMat->setDepthTest(false);
         saturateMat->setDepthWrite(false);
@@ -64,7 +63,7 @@ public:
         saturateMat->setFloatParameter("leftSeparator", 0.75f);
         saturateMat->setFloatParameter("rightSeparator", 1.0f);
 
-        auto verticalBlurEffect = Effect::create(device, commonShaders.vertex.passThrough, fsVerticalBlur);
+        auto verticalBlurEffect = Effect::create(device, vsPassThrough, fsVerticalBlur);
         verticalBlurMat = Material::create(device, verticalBlurEffect);
         verticalBlurMat->setDepthTest(false);
         verticalBlurMat->setDepthWrite(false);
@@ -72,7 +71,7 @@ public:
         verticalBlurMat->setFloatParameter("leftSeparator", 0.25f);
         verticalBlurMat->setFloatParameter("rightSeparator", 0.75f);
 
-        auto horizontalBlurEffect = Effect::create(device, commonShaders.vertex.passThrough, fsHorizontalBlur);
+        auto horizontalBlurEffect = Effect::create(device, vsPassThrough, fsHorizontalBlur);
         horizontalBlurMat = Material::create(device, horizontalBlurEffect);
         horizontalBlurMat->setDepthTest(false);
         horizontalBlurMat->setDepthWrite(false);

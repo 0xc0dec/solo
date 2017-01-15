@@ -181,7 +181,7 @@
     <ClInclude Include="..\src\demos\demo1\SpawnedObject.h" />
     <ClInclude Include="..\src\demos\demo1\SpawnedObjectTargeter.h" />
     <ClInclude Include="..\src\demos\demo1\Spawner.h" />
-    <ClInclude Include="..\src\demos\demo1\Targeter.h" />
+    <ClInclude Include="..\src\demos\demo1\LookAt.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
