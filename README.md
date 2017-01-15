@@ -14,6 +14,7 @@ A framework for my personal graphics/gamedev experiments.
 ## Screenshots
 
 ![1](/screenshots/screenshot7.png?raw=true)
+![1](/screenshots/screenshot8.png?raw=true)
 
 ## Dependencies
 * async++ (MIT license)
