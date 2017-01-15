@@ -22,154 +22,10 @@
 #include "../common/Screenshoter.h"
 #include "../common/Rotator.h"
 #include "../common/Shaders.h"
-#include "Shaders.h"
+#include "PostProcessor1.h"
+#include "PostProcessor2.h"
 
 using namespace solo;
-
-
-class PostProcessor1 final
-{
-public:
-    PostProcessor1(Device *device, Camera *camera):
-        graphics(device->getGraphics()),
-        camera(camera)
-    {
-        auto canvasSize = device->getCanvasSize();
-
-        fbTex = RectTexture::create(device);
-        fbTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
-        fbTex->setFiltering(TextureFiltering::Nearest);
-        fbTex->setWrapping(TextureWrapping::Clamp);
-        fb1 = FrameBuffer::create(device);
-        fb1->setAttachments({fbTex});
-        camera->setRenderTarget(fb1);
-
-        fbTex2 = RectTexture::create(device);
-        fbTex2->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(canvasSize.x), static_cast<uint32_t>(canvasSize.y));
-        fbTex2->setFiltering(TextureFiltering::Nearest);
-        fbTex2->setWrapping(TextureWrapping::Clamp);
-        fb2 = FrameBuffer::create(device);
-        fb2->setAttachments({fbTex2});
-
-        auto grayscaleEffect = Effect::create(device, commonShaders.vertex.passThrough, fsGrayscale);
-        grayscaleMat = Material::create(device, grayscaleEffect);
-        grayscaleMat->setFloatParameter("rightSeparator", 0.25f);
-
-        auto saturateEffect = Effect::create(device, commonShaders.vertex.passThrough, fsSaturate);
-        saturateMat = Material::create(device, saturateEffect);
-        saturateMat->setFloatParameter("leftSeparator", 0.75f);
-        saturateMat->setFloatParameter("rightSeparator", 1.0f);
-
-        auto verticalBlurEffect = Effect::create(device, commonShaders.vertex.passThrough, fsVerticalBlur);
-        verticalBlurMat = Material::create(device, verticalBlurEffect);
-        verticalBlurMat->setFloatParameter("leftSeparator", 0.25f);
-        verticalBlurMat->setFloatParameter("rightSeparator", 0.75f);
-
-        auto horizontalBlurEffect = Effect::create(device, commonShaders.vertex.passThrough, fsHorizontalBlur);
-        horizontalBlurMat = Material::create(device, horizontalBlurEffect);
-        horizontalBlurMat->setFloatParameter("leftSeparator", 0.25f);
-        horizontalBlurMat->setFloatParameter("rightSeparator", 0.75f);
-    }
-
-    ~PostProcessor1()
-    {
-        camera->setRenderTarget(nullptr);
-    }
-
-    void apply() const
-    {
-        // bounce between the two frame buffers
-        grayscaleMat->setTextureParameter("mainTex", fbTex);
-        graphics->blit(grayscaleMat.get(), fb2.get());
-
-        saturateMat->setTextureParameter("mainTex", fbTex2);
-        graphics->blit(saturateMat.get(), fb1.get());
-
-        verticalBlurMat->setTextureParameter("mainTex", fbTex);
-        graphics->blit(verticalBlurMat.get(), fb2.get());
-
-        horizontalBlurMat->setTextureParameter("mainTex", fbTex2);
-        graphics->blit(horizontalBlurMat.get(), nullptr);
-    }
-
-private:
-    Graphics *graphics = nullptr;
-    Camera *camera = nullptr;
-    sptr<FrameBuffer> fb1 = nullptr;
-    sptr<FrameBuffer> fb2 = nullptr;
-    sptr<RectTexture> fbTex = nullptr;
-    sptr<RectTexture> fbTex2 = nullptr;
-    sptr<Material> grayscaleMat = nullptr;
-    sptr<Material> saturateMat = nullptr;
-    sptr<Material> verticalBlurMat = nullptr;
-    sptr<Material> horizontalBlurMat = nullptr;
-};
-
-
-class PostProcessor2 final
-{
-public:
-    PostProcessor2(Device *device, Camera *camera):
-        device(device),
-        loader(device->getAssetLoader()),
-        graphics(device->getGraphics()),
-        camera(camera)
-    {
-        const float stitchWidth = 30;
-
-        stitchTex = loader->loadRectTexture("../assets/stitches.png");
-        stitchTex->setFiltering(TextureFiltering::Nearest);
-
-        auto canvasSize = device->getCanvasSize();
-        auto stitchTexSize = stitchTex->getSize();
-
-        auto resolution = Vector2(
-            math::clamp(static_cast<int>(canvasSize.x / stitchWidth) * 2, 1, 2048),
-            math::clamp(static_cast<int>(canvasSize.y / stitchTexSize.y) * 2, 1, 2048));
-
-        auto stitchCount = Vector2(
-            resolution.x * stitchWidth / (2 * stitchTexSize.x),
-            resolution.y / 2);
-
-        fbTex = RectTexture::create(device);
-        fbTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(resolution.x), static_cast<uint32_t>(resolution.y));
-        fbTex->setFiltering(TextureFiltering::Nearest);
-        fbTex->setWrapping(TextureWrapping::Clamp);
-        fb1 = FrameBuffer::create(device);
-        fb1->setAttachments({fbTex});
-        camera->setViewport(0, 0, resolution.x, resolution.y);
-        camera->setRenderTarget(fb1);
-
-        auto effect = Effect::create(device, commonShaders.vertex.passThrough, fsStitches);
-        material = Material::create(device, effect);
-        material->setTextureParameter("mainTex", fbTex);
-        material->setTextureParameter("stitchTex", stitchTex);
-        material->setVector2Parameter("stitchCount", stitchCount);
-        material->setVector2Parameter("resolution", resolution);
-    }
-
-    ~PostProcessor2()
-    {
-        auto canvasSize = device->getCanvasSize();
-        camera->setRenderTarget(nullptr);
-        camera->setViewport(0, 0, canvasSize.x, canvasSize.y);
-    }
-    
-    void apply() const
-    {
-        graphics->blit(material.get(), nullptr);
-    }
-
-private:
-    Device *device = nullptr;
-    AssetLoader *loader = nullptr;
-    Graphics *graphics = nullptr;
-    Camera *camera = nullptr;
-    sptr<RectTexture> stitchTex;
-    sptr<FrameBuffer> fb1;
-    sptr<RectTexture> fbTex;
-    sptr<Material> material;
-};
 
 
 class Demo final: public DemoBase
@@ -195,7 +51,7 @@ private:
         camera->apply([&](const RenderContext &ctx)
         {
             renderByTags(skyboxTag, ctx);
-            renderByTags(~skyboxTag, ctx);
+            renderByTags(~(skyboxTag | postProcessorTag), ctx);
         });
 
         if (pp1)
@@ -211,7 +67,7 @@ private:
             if (!pp1)
             {
                 pp2 = nullptr;
-                pp1 = std::make_unique<PostProcessor1>(device, camera);
+                pp1 = std::make_unique<PostProcessor1>(device, camera, postProcessorTag);
             }
         }
         if (device->isKeyPressed(KeyCode::Digit2, true))
@@ -237,14 +93,12 @@ private:
         camera->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
         camera->setNear(0.05f);
         
-        auto t = node->findComponent<Transform>();
-        t->setLocalPosition(Vector3(0, 0, 5));
+        node->findComponent<Transform>()->setLocalPosition(Vector3(0, 0, 5));
         
         node->addComponent<Screenshoter>("demo2-screenshot.bmp");
-        
         node->addComponent<Spectator>();
 
-        pp1 = std::make_unique<PostProcessor1>(device, camera);
+        pp1 = std::make_unique<PostProcessor1>(device, camera, postProcessorTag);
     }
 
     void initSkybox()
@@ -293,6 +147,7 @@ private:
     }
 
     const uint32_t skyboxTag = 1 << 1;
+    const uint32_t postProcessorTag = 1 << 2;
 
     uptr<PostProcessor1> pp1;
     uptr<PostProcessor2> pp2;

@@ -47,7 +47,7 @@ namespace solo
         void terminate() override final;
 
         // TODO perhaps specify render target to add more "functional" flavor
-        void apply(std::function<void(const RenderContext&)> render) const;
+        void apply(std::function<void(const RenderContext&)> render) const; // TODO rename to render
 
         auto getTransform() const -> Transform*;
 
@@ -102,10 +102,15 @@ namespace solo
         Transform *transform = nullptr;
         sptr<FrameBuffer> renderTarget = nullptr;
 
-        Vector4 viewport{-1, -1, -1, -1};
-        bool ortho = false;
+        struct
+        {
+            bool color = false;
+            bool depth = true;
+        } clear;
 
+        Vector4 viewport{-1, -1, -1, -1};
         Vector4 clearColor{0, 0, 0, 1};
+        bool ortho = false;
         Radian fov;
         float nearClip = 1;
         float farClip = 100;

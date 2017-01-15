@@ -53,7 +53,7 @@ void OpenGLCamera::applyImpl() const
 
     renderer->setDepthWrite(true);
     renderer->setDepthTest(true);
-    renderer->clear(true, true, clearColor.x, clearColor.y, clearColor.z, clearColor.w);
+    renderer->clear(clear.color, clear.depth, clearColor.x, clearColor.y, clearColor.z, clearColor.w);
 }
 
 #endif

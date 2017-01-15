@@ -33,15 +33,17 @@ SkyboxRenderer::SkyboxRenderer(const Node &node):
 {
     transform = node.findComponent<Transform>();
 
-    auto effect = Effect::create(node.getScene()->getDevice(), EffectPrefab::Skybox);
-    material = Material::create(node.getScene()->getDevice(), effect);
+    auto device = node.getScene()->getDevice();
+
+    auto effect = Effect::create(device, EffectPrefab::Skybox);
+    material = Material::create(device, effect);
     material->bindProjectionMatrixParameter("projMatrix");
     material->bindWorldViewMatrixParameter("worldViewMatrix");
     material->setDepthTest(true);
     material->setDepthWrite(false);
     material->setFaceCull(FaceCull::CW);
 
-    quadMesh = Mesh::create(node.getScene()->getDevice(), MeshPrefab::Quad);
+    quadMesh = Mesh::create(device, MeshPrefab::Quad);
 }
 
 
