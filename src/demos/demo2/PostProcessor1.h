@@ -20,18 +20,18 @@
 
 #pragma once
 
-#include "../../../include/Solo.h"
+#include "PostProcessorBase.h"
 #include "../common/Shaders.h"
 #include "Shaders.h"
 
 using namespace solo;
 
 
-class PostProcessor1 final
+class PostProcessor1 final: public PostProcessorBase
 {
 public:
     PostProcessor1(Device *device, Camera *camera, uint32_t tag):
-        camera(camera)
+        PostProcessorBase(device, camera, tag)
     {
         auto canvasSize = device->getCanvasSize();
 
@@ -80,40 +80,27 @@ public:
         horizontalBlurMat->setFloatParameter("leftSeparator", 0.25f);
         horizontalBlurMat->setFloatParameter("rightSeparator", 0.75f);
 
-        quadRenderer = camera->getNode().addComponent<MeshRenderer>();
-        quadRenderer->setTags(tag);
-        quadRenderer->setMesh(Mesh::create(device, MeshPrefab::Quad));
-
         camera->setRenderTarget(fb1);
     }
 
     ~PostProcessor1()
     {
-        camera->getNode().removeComponent<MeshRenderer>();
         camera->setRenderTarget(nullptr);
     }
 
     void apply() const
     {
-        renderStep(grayscaleMat, fbTex1, fb2);
-        renderStep(saturateMat, fbTex2, fb1);
-        renderStep(verticalBlurMat , fbTex1, fb2);
-        renderStep(horizontalBlurMat, fbTex2, nullptr);
+        static const Vector4 viewport{-1, -1, -1, -1};
+
+        renderStep(grayscaleMat, fbTex1, fb2, viewport);
+        renderStep(saturateMat, fbTex2, fb1, viewport);
+        renderStep(verticalBlurMat , fbTex1, fb2, viewport);
+        renderStep(horizontalBlurMat, fbTex2, nullptr, viewport);
 
         camera->setRenderTarget(fb1);
     }
 
 private:
-    void renderStep(sptr<Material> mat, sptr<Texture> inputTexture, sptr<FrameBuffer> target) const
-    {
-        mat->setTextureParameter("mainTex", inputTexture);
-        quadRenderer->setMaterial(0, mat);
-        camera->setRenderTarget(target);
-        camera->render([=](const RenderContext &ctx) { quadRenderer->render(ctx);});
-    }
-
-    MeshRenderer *quadRenderer = nullptr;
-    Camera *camera = nullptr;
     sptr<FrameBuffer> fb1 = nullptr;
     sptr<FrameBuffer> fb2 = nullptr;
     sptr<RectTexture> fbTex1 = nullptr;

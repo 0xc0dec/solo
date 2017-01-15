@@ -20,72 +20,71 @@
 
 #pragma once
 
-#include "../../../include/Solo.h"
+#include "PostProcessorBase.h"
 #include "../common/Shaders.h"
 #include "Shaders.h"
 
 using namespace solo;
 
 
-class PostProcessor2 final
+class PostProcessor2 final: public PostProcessorBase
 {
 public:
-    PostProcessor2(Device *device, Camera *camera):
-        device(device),
-        loader(device->getAssetLoader()),
-        graphics(device->getGraphics()),
-        camera(camera)
+    PostProcessor2(Device *device, Camera *camera, uint32_t tag):
+        PostProcessorBase(device, camera, tag)
     {
         const float stitchWidth = 30;
+
+        canvasSize = device->getCanvasSize();
 
         stitchTex = loader->loadRectTexture("../assets/stitches.png");
         stitchTex->setFiltering(TextureFiltering::Nearest);
 
-        auto canvasSize = device->getCanvasSize();
         auto stitchTexSize = stitchTex->getSize();
 
-        auto resolution = Vector2(
+        offscreenRes = Vector2(
             math::clamp(static_cast<int>(canvasSize.x / stitchWidth) * 2, 1, 2048),
             math::clamp(static_cast<int>(canvasSize.y / stitchTexSize.y) * 2, 1, 2048));
 
         auto stitchCount = Vector2(
-            resolution.x * stitchWidth / (2 * stitchTexSize.x),
-            resolution.y / 2);
+            offscreenRes.x * stitchWidth / (2 * stitchTexSize.x),
+            offscreenRes.y / 2);
 
         fbTex = RectTexture::create(device);
-        fbTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(resolution.x), static_cast<uint32_t>(resolution.y));
+        fbTex->setData(TextureFormat::RGB, {}, static_cast<uint32_t>(offscreenRes.x), static_cast<uint32_t>(offscreenRes.y));
         fbTex->setFiltering(TextureFiltering::Nearest);
         fbTex->setWrapping(TextureWrapping::Clamp);
         fb1 = FrameBuffer::create(device);
         fb1->setAttachments({fbTex});
-        camera->setViewport(0, 0, resolution.x, resolution.y);
-        camera->setRenderTarget(fb1);
 
         auto effect = Effect::create(device, commonShaders.vertex.passThrough, fsStitches);
         material = Material::create(device, effect);
         material->setTextureParameter("mainTex", fbTex);
         material->setTextureParameter("stitchTex", stitchTex);
         material->setVector2Parameter("stitchCount", stitchCount);
-        material->setVector2Parameter("resolution", resolution);
+        material->setVector2Parameter("resolution", offscreenRes);
+
+        camera->setViewport(0, 0, offscreenRes.x, offscreenRes.y);
+        camera->setRenderTarget(fb1);
     }
 
     ~PostProcessor2()
     {
-        auto canvasSize = device->getCanvasSize();
         camera->setRenderTarget(nullptr);
         camera->setViewport(0, 0, canvasSize.x, canvasSize.y);
     }
     
     void apply() const
     {
-        graphics->blit(material.get(), nullptr);
+        renderStep(material, fbTex, nullptr, Vector4(0, 0, canvasSize.x, canvasSize.y));
+
+        camera->setViewport(0, 0, offscreenRes.x, offscreenRes.y);
+        camera->setRenderTarget(fb1);
     }
 
 private:
-    Device *device = nullptr;
-    AssetLoader *loader = nullptr;
-    Graphics *graphics = nullptr;
-    Camera *camera = nullptr;
+    Vector2 offscreenRes;
+    Vector2 canvasSize;
     sptr<RectTexture> stitchTex;
     sptr<FrameBuffer> fb1;
     sptr<RectTexture> fbTex;

@@ -75,7 +75,7 @@ private:
             if (!pp2)
             {
                 pp1 = nullptr;
-                pp2 = std::make_unique<PostProcessor2>(device, camera);
+                pp2 = std::make_unique<PostProcessor2>(device, camera, postProcessorTag);
             }
         }
         if (device->isKeyPressed(KeyCode::Digit3, true))
