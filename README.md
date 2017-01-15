@@ -2,13 +2,13 @@
 A playground for my graphics/gamedev experiments.
 
 ## Features
-* Unity-inspired component system.
-* OBJ meshes and PNG textures loading.
-* Asynchronous asset loading.
-* Render to texture.
-* Text rendering.
-* Physics.
-* OpenGL-based rendering, Vulkan is coming.
+* Unity-inspired component system
+* OBJ meshes and PNG textures loading
+* Asynchronous asset loading
+* Render to texture
+* Text rendering
+* Physics
+* OpenGL-based rendering, Vulkan is coming
 
 ## Screenshots
 
