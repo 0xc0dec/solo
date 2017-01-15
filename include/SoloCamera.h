@@ -57,6 +57,12 @@ namespace solo
         auto getClearColor() const -> Vector4;
         void setClearColor(float r, float g, float b, float a);
 
+        bool getClearColorFlag() const;
+        void setClearColorFlag(bool clear);
+
+        bool getClearDepthFlag() const;
+        void setClearDepthFlag(bool clear);
+
         auto getViewport() const -> Vector4;
         // Pass -1 values to reset viewport to default
         void setViewport(float left, float top, float width, float height);
@@ -104,7 +110,7 @@ namespace solo
 
         struct
         {
-            bool color = false;
+            bool color = true;
             bool depth = true;
         } clear;
 
@@ -207,5 +213,25 @@ namespace solo
     inline auto Camera::getTransform() const -> Transform*
     {
         return transform;
+    }
+
+    inline bool Camera::getClearColorFlag() const
+    {
+        return clear.color;
+    }
+
+    inline void Camera::setClearColorFlag(bool clear)
+    {
+        this->clear.color = clear;
+    }
+
+    inline bool Camera::getClearDepthFlag() const
+    {
+        return clear.depth;
+    }
+
+    inline void Camera::setClearDepthFlag(bool clear)
+    {
+        this->clear.depth = clear;
     }
 }
