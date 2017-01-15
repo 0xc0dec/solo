@@ -73,7 +73,7 @@ void Spectator::update()
         }
     }
 
-    auto movement = Vector3::zero();
+    auto movement = Vector3();
     if (device->isKeyPressed(KeyCode::W, false))
         movement += transform->getLocalForward();
     if (device->isKeyPressed(KeyCode::S, false))

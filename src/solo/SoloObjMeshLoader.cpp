@@ -59,7 +59,7 @@ Vector3 parseVector3(const char *from, const char *to)
         else
             buf[bufIdx++] = c;
     }
-    return Vector3(result[0], result[1], result[2]);
+    return {result[0], result[1], result[2]};
 }
 
 

@@ -40,8 +40,8 @@ private:
     {
         auto node = scene->createNode();
         auto t = node->findComponent<Transform>();
-        t->setLocalPosition(Vector3(10, 10, 10));
-        t->lookAt(Vector3::zero(), Vector3::unitY());
+        t->setLocalPosition({10, 10, 10});
+        t->lookAt({}, Vector3::unitY());
 
         auto cam = node->addComponent<Camera>();
         cam->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);

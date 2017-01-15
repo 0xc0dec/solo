@@ -57,15 +57,14 @@ public:
         renderer->setMesh(mesh);
         renderer->setMaterial(0, material);
         auto t = node.findComponent<Transform>();
-        t->setLocalScale(Vector3(0.3f, 0.3f, 0.3f));
+        t->setLocalScale({0.3f, 0.3f, 0.3f});
         t->setLocalPosition(initialPos);
         t->setLocalRotation(initialRotation);
 
         auto rigidBody = node.addComponent<RigidBody>(
-                             RigidBodyConstructionParameters()
-                             .withMass(50).withRestitution(0.5f).withFriction(0.2f)
-                             .withLinearDamping(0.1f).withAngularDamping(0.1f)
-                         );
+            RigidBodyConstructionParameters()
+            .withMass(50).withRestitution(0.5f).withFriction(0.2f)
+            .withLinearDamping(0.1f).withAngularDamping(0.1f));
         rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
     }
 
@@ -198,8 +197,8 @@ private:
     {
         auto node = scene->createNode();
         auto t = node->findComponent<Transform>();
-        t->setLocalPosition(Vector3(10, 10, 10));
-        t->lookAt(Vector3::zero(), Vector3::unitY());
+        t->setLocalPosition({10, 10, 10});
+        t->lookAt({}, Vector3::unitY());
 
         camera = node->addComponent<Camera>();
         camera->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
@@ -248,7 +247,7 @@ private:
 
         // Floor
         auto node = scene->createNode();
-        node->findComponent<Transform>()->setLocalScale(Vector3(10, 0.1f, 10));
+        node->findComponent<Transform>()->setLocalScale({10, 0.1f, 10});
         auto renderer = node->addComponent<MeshRenderer>();
         renderer->setMesh(cubeMesh);
         renderer->setMaterial(0, mat);

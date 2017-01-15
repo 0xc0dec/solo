@@ -36,7 +36,6 @@ namespace solo
         Vector3(float all);
         Vector3(float x, float y, float z);
 
-        static auto zero() -> Vector3;
         static auto unit() -> Vector3;
         static auto unitX() -> Vector3;
         static auto unitY() -> Vector3;
@@ -102,7 +101,7 @@ namespace solo
 
     inline auto operator+(float scalar, const Vector3 &v) -> Vector3
     {
-        return Vector3(v.x + scalar, v.y + scalar, v.z + scalar);
+        return {v.x + scalar, v.y + scalar, v.z + scalar};
     }
 
     inline auto Vector3::operator+=(const Vector3 &v) -> Vector3 &
@@ -169,7 +168,7 @@ namespace solo
 
     inline auto operator*(float scalar, const Vector3 &v) -> Vector3
     {
-        return Vector3(v.x * scalar, v.y * scalar, v.z * scalar);
+        return {v.x * scalar, v.y * scalar, v.z * scalar};
     }
 
     inline auto Vector3::operator*=(float scalar) -> Vector3 &
@@ -182,7 +181,7 @@ namespace solo
 
     inline auto Vector3::operator/(const float scalar) const -> Vector3
     {
-        return Vector3(this->x / scalar, this->y / scalar, this->z / scalar);
+        return {this->x / scalar, this->y / scalar, this->z / scalar};
     }
 
     inline auto Vector3::operator/=(float scalar) -> Vector3 &

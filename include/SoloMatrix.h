@@ -130,10 +130,10 @@ namespace solo
 
     inline auto operator*(const Matrix &m, const Vector3 &v) -> Vector3
     {
-        return Vector3(
+        return{
             v.x *m.m[0] + v.y *m.m[4] + v.z *m.m[8],
             v.x *m.m[1] + v.y *m.m[5] + v.z *m.m[9],
             v.x *m.m[2] + v.y *m.m[6] + v.z *m.m[10]
-        );
+        };
     }
 }

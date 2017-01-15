@@ -333,21 +333,21 @@ void TransformMatrix::scaleByVector(const Vector3 &s)
 
 auto TransformMatrix::transformPoint(const Vector3 &point) const -> Vector3
 {
-    return Vector3(
-               point.x * m[0] + point.y * m[4] + point.z * m[8] + m[12],
-               point.x * m[1] + point.y * m[5] + point.z * m[9] + m[13],
-               point.x * m[2] + point.y * m[6] + point.z * m[10] + m[14]
-           );
+    return {
+        point.x * m[0] + point.y * m[4] + point.z * m[8] + m[12],
+        point.x * m[1] + point.y * m[5] + point.z * m[9] + m[13],
+        point.x * m[2] + point.y * m[6] + point.z * m[10] + m[14]
+    };
 }
 
 
 auto TransformMatrix::transformDirection(const Vector3 &dir) const -> Vector3
 {
-    return Vector3(
-               dir.x * m[0] + dir.y * m[4] + dir.z * m[8],
-               dir.x * m[1] + dir.y * m[5] + dir.z * m[9],
-               dir.x * m[2] + dir.y * m[6] + dir.z * m[10]
-           );
+    return{
+        dir.x * m[0] + dir.y * m[4] + dir.z * m[8],
+        dir.x * m[1] + dir.y * m[5] + dir.z * m[9],
+        dir.x * m[2] + dir.y * m[6] + dir.z * m[10]
+    };
 }
 
 
@@ -391,9 +391,7 @@ auto TransformMatrix::transformBoundingBox(const BoundingBox &box) -> BoundingBo
         updateBounds(newCorner, newMin, newMax);
     }
 
-    return BoundingBox(
-        Vector3(newMin.x, newMin.y, newMin.z),
-        Vector3(newMax.x, newMax.y, newMax.z));
+    return {{newMin.x, newMin.y, newMin.z}, {newMax.x, newMax.y, newMax.z}};
 }
 
 
@@ -403,7 +401,7 @@ auto TransformMatrix::transformBoundingSphere(const BoundingSphere &sphere) -> B
     auto r = sphere.radius * scale.x;
     r = std::max(r, sphere.radius * scale.y);
     r = std::max(r, sphere.radius * scale.z);
-    return BoundingSphere(transformPoint(sphere.center), r);
+    return {transformPoint(sphere.center), r};
 }
 
 
@@ -429,7 +427,7 @@ auto TransformMatrix::transformPlane(const Plane &plane) -> Plane
     normal.y = ny * factor;
     normal.z = nz * factor;
 
-    return Plane(normal, d * factor);
+    return {normal, d * factor};
 }
 
 
@@ -438,7 +436,7 @@ auto TransformMatrix::transformRay(const Ray &ray) -> Ray
     auto origin = transformPoint(ray.getOrigin());
     auto direction = transformDirection(ray.getDirection());
     direction.normalize();
-    return Ray(origin, direction);
+    return {origin, direction};
 }
 
 

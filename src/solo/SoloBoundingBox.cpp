@@ -48,29 +48,29 @@ auto BoundingBox::getCorners() const -> std::vector<Vector3>
     {
         // Near face, specified counter-clockwise looking towards the origin from the positive z-axis.
         // Left-top-front
-        Vector3(min.x, max.y, max.z),
+        {min.x, max.y, max.z},
 
         // Left-bottom-front
-        Vector3(min.x, min.y, max.z),
+        {min.x, min.y, max.z},
 
         // Right-bottom-front
-        Vector3(max.x, min.y, max.z),
+        {max.x, min.y, max.z},
 
         // Right-top-front
-        Vector3(max.x, max.y, max.z),
+        {max.x, max.y, max.z},
 
         // Far face, specified counter-clockwise looking towards the origin from the negative z-axis.
         // Right-top-back.
-        Vector3(max.x, max.y, min.z),
+        {max.x, max.y, min.z},
 
         // Right-bottom-back
-        Vector3(max.x, min.y, min.z),
+        {max.x, min.y, min.z},
 
         // Left-bottom-back
-        Vector3(min.x, min.y, min.z),
+        {min.x, min.y, min.z},
 
         // Left-top-back
-        Vector3(min.x, max.y, min.z)
+        {min.x, max.y, min.z}
     };
 }
 

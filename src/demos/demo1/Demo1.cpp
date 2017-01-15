@@ -49,7 +49,7 @@ public:
         initAxesMesh()->done([&] (sptr<Mesh> mesh)
         {
             axesMesh = mesh;
-            initMonitorQuad(Vector3());
+            initMonitorQuad({});
             initTransparentQuad();
         });
     }
@@ -120,8 +120,8 @@ private:
     {
         auto node = scene->createNode();
         auto t = node->findComponent<Transform>();
-        t->setLocalPosition(Vector3(0, 5, 10));
-        t->lookAt(Vector3::zero(), Vector3::unitY());
+        t->setLocalPosition({0, 5, 10});
+        t->lookAt({}, Vector3::unitY());
         node->addComponent<Screenshoter>("demo1-screenshot.bmp");
 
         node->addComponent<Spectator>();
@@ -144,7 +144,7 @@ private:
         offscreenCamera->setClearColor(1, 0, 1, 1);
         offscreenCamera->setNear(0.05f);
         offscreenCamera->setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8);
-        node->findComponent<Transform>()->setLocalPosition(Vector3(0, 0, 10));
+        node->findComponent<Transform>()->setLocalPosition({0, 0, 10});
 
         auto fb = FrameBuffer::create(device);
         fb->setAttachments({offscreenCameraTex});
@@ -202,7 +202,7 @@ private:
     {
         auto node = createPrefabMeshNode(MeshPrefab::Cube);
         node->findComponent<MeshRenderer>()->setMaterial(0, checkerMat);
-        node->findComponent<Transform>()->setLocalPosition(Vector3(-5, 0, 0));
+        node->findComponent<Transform>()->setLocalPosition({-5, 0, 0});
         node->addComponent<Rotator>("world", Vector3::unitY());
     }
 
@@ -225,7 +225,7 @@ private:
                 auto renderer = node->addComponent<MeshRenderer>();
                 renderer->setMesh(mesh);
                 renderer->setMaterial(0, mat);
-                node->findComponent<Transform>()->setLocalPosition(Vector3::zero());
+                node->findComponent<Transform>()->setLocalPosition({});
                 node->addComponent<Rotator>("local", Vector3::unitX());
             });
         });
@@ -266,7 +266,7 @@ private:
             mat->setTextureParameter("mainTex", tex);
 
             auto node = scene->createNode();
-            node->findComponent<Transform>()->setLocalPosition(Vector3(0, 0, -5));
+            node->findComponent<Transform>()->setLocalPosition({0, 0, -5});
             auto renderer = node->addComponent<MeshRenderer>();
             renderer->setMesh(mesh);
             renderer->setMaterial(0, mat);
@@ -288,15 +288,15 @@ private:
     void initMonitorQuad(Vector3 targetPos)
     {
         auto parent = scene->createNode();
-        parent->findComponent<Transform>()->setLocalPosition(Vector3(-2, 2, -2));
+        parent->findComponent<Transform>()->setLocalPosition({-2, 2, -2});
         parent->addComponent<Rotator>("world", Vector3::unitY());
         attachAxesMesh(parent);
 
         auto quad = createPrefabMeshNode(MeshPrefab::Quad);
         auto transform = quad->findComponent<Transform>();
         transform->setParent(parent->findComponent<Transform>());
-        transform->setLocalPosition(Vector3(5, 2, -5));
-        transform->setLocalScale(Vector3(5, 5 * canvasSize.y / canvasSize.x, 1));
+        transform->setLocalPosition({5, 2, -5});
+        transform->setLocalScale({5, 5 * canvasSize.y / canvasSize.x, 1});
         quad->addComponent<Targeter>(targetPos);
         auto monitorQuad = quad->findComponent<MeshRenderer>();
         monitorQuad->setMaterial(0, monitorMat);
@@ -318,14 +318,14 @@ private:
             mat->setDepthWrite(false);
 
             auto parent = scene->createNode();
-            parent->findComponent<Transform>()->setLocalPosition(Vector3(5, 0, 0));
+            parent->findComponent<Transform>()->setLocalPosition({5, 0, 0});
             parent->addComponent<Rotator>("world", Vector3::unitY());
             attachAxesMesh(parent);
 
             auto quad = createPrefabMeshNode(MeshPrefab::Quad);
             quad->addComponent<Rotator>("local", Vector3::unitX());
             quad->findComponent<Transform>()->setParent(parent->findComponent<Transform>());
-            quad->findComponent<Transform>()->setLocalPosition(Vector3(2, 0, 0));
+            quad->findComponent<Transform>()->setLocalPosition({2, 0, 0});
 
             auto transparentQuad = quad->findComponent<MeshRenderer>();
             transparentQuad->setMaterial(0, mat);

@@ -36,7 +36,7 @@ namespace solo
         Vector3 point;
         Vector3 normal;
 
-        RaycastResult(RigidBody *body = nullptr, const Vector3 &point = Vector3::zero(), const Vector3 &normal = Vector3::zero()):
+        RaycastResult(RigidBody *body = nullptr, const Vector3 &point = Vector3(), const Vector3 &normal = Vector3()):
             body(body), point(point), normal(normal)
         {
         }

@@ -35,13 +35,6 @@ Vector3::Vector3(float x, float y, float z):
 }
 
 
-auto Vector3::zero() -> Vector3
-{
-    static Vector3 value(0.0f, 0.0f, 0.0f);
-    return value;
-}
-
-
 auto Vector3::unit() -> Vector3
 {
     static Vector3 value(1.0f, 1.0f, 1.0f);

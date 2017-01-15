@@ -83,37 +83,37 @@ namespace solo
 
     inline auto TransformMatrix::getUpVector() const -> Vector3
     {
-        return Vector3(m[4], m[5], m[6]);
+        return {m[4], m[5], m[6]};
     }
 
     inline auto TransformMatrix::getDownVector() const -> Vector3
     {
-        return Vector3(-m[4], -m[5], -m[6]);
+        return {-m[4], -m[5], -m[6]};
     }
 
     inline auto TransformMatrix::getLeftVector() const -> Vector3
     {
-        return Vector3(-m[0], -m[1], -m[2]);
+        return {-m[0], -m[1], -m[2]};
     }
 
     inline auto TransformMatrix::getRightVector() const -> Vector3
     {
-        return Vector3(m[0], m[1], m[2]);
+        return {m[0], m[1], m[2]};
     }
 
     inline auto TransformMatrix::getForwardVector() const -> Vector3
     {
-        return Vector3(-m[8], -m[9], -m[10]);
+        return {-m[8], -m[9], -m[10]};
     }
 
     inline auto TransformMatrix::getBackVector() const -> Vector3
     {
-        return Vector3(m[8], m[9], m[10]);
+        return {m[8], m[9], m[10]};
     }
 
     inline void TransformMatrix::scaleByScalar(float value)
     {
-        scaleByVector(Vector3(value, value, value));
+        scaleByVector({value, value, value});
     }
 
     inline void TransformMatrix::rotateByQuaternion(const Quaternion &q)
