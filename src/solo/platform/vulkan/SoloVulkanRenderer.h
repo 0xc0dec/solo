@@ -30,6 +30,7 @@ namespace solo
 {
     class Device;
     class Vector2;
+    class VulkanSwapchain;
 
     class VulkanRenderer final: public Renderer
     {
@@ -42,12 +43,6 @@ namespace solo
         void endFrame() override final;
 
     private:
-        struct SwapchainBuffer
-        {
-            VkImage image = nullptr;
-            VkImageView imageView = nullptr;
-        };
-
         struct DepthStencil
         {
             VkImage image;
@@ -69,18 +64,16 @@ namespace solo
         VkSemaphore presentCompleteSem = nullptr;
         VkSemaphore renderCompleteSem = nullptr;
         VkCommandPool commandPool = nullptr;
-        VkSwapchainKHR swapchain = nullptr;
         VkRenderPass renderPass = nullptr;
-        std::vector<SwapchainBuffer> swapchainBuffers;
         std::vector<VkCommandBuffer> drawCmdBuffers;
         std::vector<VkFramebuffer> frameBuffers;
         uint32_t currentBuffer = 0;
 
+        sptr<VulkanSwapchain> swapchain;
+
         static auto createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
             VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil;
 
-        void initSwapchain(VkSurfaceKHR surface, bool vsync, const Vector2 &deviceCanvasSize);
-        void destroySwapchain();
         void initCommandBuffers();
         void beginCommandBuffer(VkCommandBuffer buffer);
         
