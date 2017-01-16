@@ -135,14 +135,14 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice)
 
 
 // TODO this is only for testing
-static VulkanPipeline *pipeline = nullptr;
+//static VulkanPipeline *pipeline = nullptr;
 static bool init = false;
 
 
 VulkanRenderer::~VulkanRenderer()
 {
     // TODO this is only for testing
-    delete pipeline;
+//    delete pipeline;
 
     swapchain.reset();
 
@@ -179,16 +179,16 @@ void VulkanRenderer::beginFrame()
     // TODO this is only for testing
     if (!init)
     {
-        pipeline = new VulkanPipeline(device, renderPass);
-        auto vertShader = vk::createShader(device, vulkanDevice->getFileSystem()->readBytes("../assets/triangle.vert.spv"));
-        auto fragShader = vk::createShader(device, vulkanDevice->getFileSystem()->readBytes("../assets/triangle.frag.spv"));
-        pipeline->setVertexShader(vertShader, "main");
-        pipeline->setFragmentShader(fragShader, "main");
-        pipeline->rebuild();
+//        pipeline = new VulkanPipeline(device, renderPass);
+//        auto vertShader = vk::createShader(device, vulkanDevice->getFileSystem()->readBytes("../assets/triangle.vert.spv"));
+//        auto fragShader = vk::createShader(device, vulkanDevice->getFileSystem()->readBytes("../assets/triangle.frag.spv"));
+//        pipeline->setVertexShader(vertShader, "main");
+//        pipeline->setFragmentShader(fragShader, "main");
+//        pipeline->rebuild();
         init = true;
     }
 
-    swapchain->acquireNextImage(presentCompleteSem, currentBuffer);
+    currentBuffer = swapchain->acquireNextImage(presentCompleteSem);
 }
 
 
@@ -236,7 +236,9 @@ void VulkanRenderer::initCommandBuffers()
 		clearValues[0].color = defaultClearColor;
         clearValues[1].depthStencil = {1.0f, 0};
 
-        VkRenderPassBeginInfo renderPassBeginInfo;
+        VkRenderPassBeginInfo renderPassBeginInfo{};
+        renderPassBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+        renderPassBeginInfo.pNext = nullptr;
         renderPassBeginInfo.renderPass = renderPass;
 		renderPassBeginInfo.renderArea.offset.x = 0;
 		renderPassBeginInfo.renderArea.offset.y = 0;

@@ -121,9 +121,11 @@ VulkanSwapchain::~VulkanSwapchain()
 }
 
 
-void VulkanSwapchain::acquireNextImage(VkSemaphore presentCompleteSem, uint32_t index) const
+auto VulkanSwapchain::acquireNextImage(VkSemaphore presentCompleteSem) const -> uint32_t
 {
+    uint32_t index = 0;
     SL_CHECK_VK_RESULT(vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, presentCompleteSem, nullptr, &index));
+    return index;
 }
 
 

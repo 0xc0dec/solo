@@ -40,7 +40,7 @@ namespace solo
         auto getImageCount() const -> uint32_t;
         auto getImageView(uint32_t index) const -> VkImageView;
 
-        void acquireNextImage(VkSemaphore presentCompleteSem, uint32_t imageIndex) const;
+        auto acquireNextImage(VkSemaphore presentCompleteSem) const -> uint32_t;
         void present(VkQueue queue, uint32_t imageIndex, VkSemaphore waitSem) const;
 
     private:
