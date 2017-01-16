@@ -60,8 +60,6 @@ namespace solo
         void destroyCommandBuffers(VkDevice device, VkCommandPool commandPool, VkCommandBuffer *buffers, uint32_t count);
         auto findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, uint32_t typeBits,
             VkMemoryPropertyFlags properties) -> int32_t;
-        void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageLayout oldLayout,
-            VkImageLayout newLayout, VkImageSubresourceRange subresourceRange);
         auto createRenderPass(VkDevice device, VkFormat colorFormat, VkFormat depthFormat) -> VkRenderPass;
         auto createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImageView depthAttachment,
             VkRenderPass renderPass, uint32_t width, uint32_t height) -> VkFramebuffer;
