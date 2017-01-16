@@ -40,6 +40,13 @@ namespace solo
 {
     namespace vk
     {
+        struct DepthStencil
+        {
+            VkImage image;
+            VkDeviceMemory mem;
+            VkImageView view;
+        };
+
         auto createDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -> VkDevice;
         auto getSurfaceFormats(VkPhysicalDevice device, VkSurfaceKHR surface) -> std::tuple<VkFormat, VkColorSpaceKHR>;
         auto createSemaphore(VkDevice device) -> VkSemaphore;
@@ -62,6 +69,8 @@ namespace solo
         auto createShader(VkDevice device, const std::vector<uint8_t>& data) -> VkShaderModule;
         auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEXT callbackFunc) -> VkDebugReportCallbackEXT;
         void destroyDebugCallback(VkInstance instance, VkDebugReportCallbackEXT callback);
+        auto createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
+            VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil;
     }
 }
 

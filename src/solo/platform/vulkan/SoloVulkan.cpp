@@ -445,4 +445,59 @@ void vk::destroyDebugCallback(VkInstance instance, VkDebugReportCallbackEXT call
     destroy(instance, callback, nullptr);
 }
 
+auto vk::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
+    VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil
+{
+    VkImageCreateInfo imageInfo{};
+    imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+    imageInfo.pNext = nullptr;
+    imageInfo.imageType = VK_IMAGE_TYPE_2D;
+    imageInfo.format = depthFormat;
+    imageInfo.extent = {canvasWidth, canvasHeight, 1};
+    imageInfo.mipLevels = 1;
+    imageInfo.arrayLayers = 1;
+    imageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
+    imageInfo.tiling = VK_IMAGE_TILING_OPTIMAL;
+    imageInfo.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
+    imageInfo.flags = 0;
+
+    VkMemoryAllocateInfo allocInfo{};
+    allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+    allocInfo.pNext = nullptr;
+    allocInfo.allocationSize = 0;
+    allocInfo.memoryTypeIndex = 0;
+
+    VkImageViewCreateInfo viewInfo{};
+    viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+    viewInfo.pNext = nullptr;
+    viewInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+    viewInfo.format = depthFormat;
+    viewInfo.flags = 0;
+    viewInfo.subresourceRange = {};
+    viewInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT;
+    viewInfo.subresourceRange.baseMipLevel = 0;
+    viewInfo.subresourceRange.levelCount = 1;
+    viewInfo.subresourceRange.baseArrayLayer = 0;
+    viewInfo.subresourceRange.layerCount = 1;
+
+    vk::DepthStencil depthStencil;
+
+    VkMemoryRequirements memReqs;
+    SL_CHECK_VK_RESULT(vkCreateImage(device, &imageInfo, nullptr, &depthStencil.image));
+    vkGetImageMemoryRequirements(device, depthStencil.image, &memReqs);
+
+    auto memTypeIndex = vk::findMemoryType(physicalDeviceMemProps, memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+    SL_ERR_IF(memTypeIndex < 0);
+
+    allocInfo.allocationSize = memReqs.size;
+    allocInfo.memoryTypeIndex = memTypeIndex;
+    SL_CHECK_VK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, &depthStencil.mem));
+    SL_CHECK_VK_RESULT(vkBindImageMemory(device, depthStencil.image, depthStencil.mem, 0));
+
+    viewInfo.image = depthStencil.image;
+    SL_CHECK_VK_RESULT(vkCreateImageView(device, &viewInfo, nullptr, &depthStencil.view));
+
+    return depthStencil;
+}
+
 #endif

@@ -43,13 +43,6 @@ namespace solo
         void endFrame() override final;
 
     private:
-        struct DepthStencil
-        {
-            VkImage image;
-            VkDeviceMemory mem;
-            VkImageView view;
-        } depthStencil;
-
         uint32_t canvasWidth = 1;
         uint32_t canvasHeight = 1;
         VkDevice device = nullptr;
@@ -65,14 +58,12 @@ namespace solo
         VkSemaphore renderCompleteSem = nullptr;
         VkCommandPool commandPool = nullptr;
         VkRenderPass renderPass = nullptr;
+        vk::DepthStencil depthStencil;
         std::vector<VkCommandBuffer> drawCmdBuffers;
         std::vector<VkFramebuffer> frameBuffers;
         uint32_t currentBuffer = 0;
 
         sptr<VulkanSwapchain> swapchain;
-
-        static auto createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
-            VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil;
 
         void initCommandBuffers();
         void initFrameBuffers();
