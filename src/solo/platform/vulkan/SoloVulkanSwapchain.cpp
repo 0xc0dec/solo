@@ -75,7 +75,7 @@ VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevic
     swapchainInfo.oldSwapchain = nullptr; // TODO
     swapchainInfo.clipped = VK_TRUE;
     swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-    vkCreateSwapchainKHR(device, &swapchainInfo, nullptr, &swapchain);
+    SL_CHECK_VK_RESULT(vkCreateSwapchainKHR(device, &swapchainInfo, nullptr, &swapchain));
 
     uint32_t imageCount = 0;
     SL_CHECK_VK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, nullptr));
@@ -118,6 +118,7 @@ VulkanSwapchain::~VulkanSwapchain()
 {
     for (auto &buf : buffers)
         vkDestroyImageView(device, buf.imageView, nullptr);
+    vkDestroySwapchainKHR(device, swapchain, nullptr);
 }
 
 
