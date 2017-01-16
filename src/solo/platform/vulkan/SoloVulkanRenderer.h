@@ -59,14 +59,13 @@ namespace solo
         VkCommandPool commandPool = nullptr;
         VkRenderPass renderPass = nullptr;
         vk::DepthStencil depthStencil;
-        std::vector<VkCommandBuffer> drawCmdBuffers;
+        std::vector<VkCommandBuffer> renderCmdBuffers;
         std::vector<VkFramebuffer> frameBuffers;
         uint32_t currentBuffer = 0;
 
         sptr<VulkanSwapchain> swapchain;
 
-        void initCommandBuffers();
-        void initFrameBuffers();
+        void buildCommandBuffers();
     };
 }
 

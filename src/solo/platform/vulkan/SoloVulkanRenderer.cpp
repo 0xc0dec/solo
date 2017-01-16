@@ -28,12 +28,30 @@
 using namespace solo;
 
 
-void VulkanRenderer::initFrameBuffers()
+static auto createFrameBuffers(VkDevice device, VulkanSwapchain *swapchain, VkImageView depthStencilView,
+    VkRenderPass renderPass, uint32_t width, uint32_t height) -> std::vector<VkFramebuffer>
 {
     auto count = swapchain->getImageCount();
-    frameBuffers.resize(count);
+    std::vector<VkFramebuffer> buffers(count);
     for (auto i = 0; i < count; i++)
-        frameBuffers[i] = vk::createFrameBuffer(device, swapchain->getImageView(i), depthStencil.view, renderPass, canvasWidth, canvasHeight);
+        buffers[i] = vk::createFrameBuffer(device, swapchain->getImageView(i), depthStencilView, renderPass, width, height);
+    return std::move(buffers);
+}
+
+
+static auto createRenderCmdBuffers(uint32_t count, VkDevice device, VkCommandPool commandPool) -> std::vector<VkCommandBuffer>
+{
+    std::vector<VkCommandBuffer> buffers(count);
+
+    VkCommandBufferAllocateInfo allocInfo{};
+    allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    allocInfo.commandPool = commandPool;
+    allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    allocInfo.commandBufferCount = static_cast<uint32_t>(count);
+
+    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &allocInfo, buffers.data()));
+
+    return std::move(buffers);
 }
 
 
@@ -73,15 +91,20 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     depthStencil = vk::createDepthStencil(device, memProperties, depthFormat, canvasWidth, canvasHeight);
     renderPass = vk::createRenderPass(device, colorFormat, depthFormat);
 
-    // TODO init command buffers here
+    frameBuffers = createFrameBuffers(device, swapchain.get(), depthStencil.view, renderPass, canvasWidth, canvasHeight);
+    renderCmdBuffers = createRenderCmdBuffers(swapchain->getImageCount(), device, commandPool);
+
+    // TODO remove
+    buildCommandBuffers();
 }
 
 
 VulkanRenderer::~VulkanRenderer()
 {
-    // TODO this is only for testing
-//    delete pipeline;
-    vkFreeCommandBuffers(device, commandPool, drawCmdBuffers.size(), drawCmdBuffers.data());
+    vkFreeCommandBuffers(device, commandPool, renderCmdBuffers.size(), renderCmdBuffers.data());
+
+    for (size_t i = 0; i < frameBuffers.size(); ++i)
+        vkDestroyFramebuffer(device, frameBuffers[i], nullptr);
 
     // Render pass
     vkDestroyRenderPass(device, renderPass, nullptr);
@@ -103,29 +126,12 @@ VulkanRenderer::~VulkanRenderer()
     vkDestroySemaphore(device, presentCompleteSem, nullptr);
     vkDestroySemaphore(device, renderCompleteSem, nullptr);
 
-    for (size_t i = 0; i < frameBuffers.size(); ++i)
-        vkDestroyFramebuffer(device, frameBuffers[i], nullptr);
-
     vkDestroyDevice(device, nullptr);
 }
 
 
 void VulkanRenderer::beginFrame()
 {
-    // TODO only for testing
-    if (!pipeline)
-    {
-        /*pipeline = new VulkanPipeline(device, renderPass);
-        auto vertShader = vk::createShader(device, vulkanDevice->getFileSystem()->readBytes("../assets/triangle.vert.spv"));
-        auto fragShader = vk::createShader(device, vulkanDevice->getFileSystem()->readBytes("../assets/triangle.frag.spv"));
-        pipeline->setVertexShader(vertShader, "main");
-        pipeline->setFragmentShader(fragShader, "main");
-        pipeline->rebuild();*/
-
-        initFrameBuffers();
-        initCommandBuffers();
-    }
-
     currentBuffer = swapchain->acquireNextImage(presentCompleteSem);
 }
 
@@ -142,30 +148,19 @@ void VulkanRenderer::endFrame()
 	submitInfo.signalSemaphoreCount = 1;
 	submitInfo.pSignalSemaphores = &renderCompleteSem;
     submitInfo.commandBufferCount = 1;
-	submitInfo.pCommandBuffers = &drawCmdBuffers[currentBuffer];
+	submitInfo.pCommandBuffers = &renderCmdBuffers[currentBuffer];
 
     SL_CHECK_VK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, VK_NULL_HANDLE));
 
     swapchain->present(queue, currentBuffer, renderCompleteSem);
+
     SL_CHECK_VK_RESULT(vkQueueWaitIdle(queue));
 }
 
 
-void VulkanRenderer::initCommandBuffers()
+void VulkanRenderer::buildCommandBuffers()
 {
     static VkClearColorValue defaultClearColor = {{0.5f, 0.1f, 0.1f, 1.0f}};
-
-    auto count = swapchain->getImageCount();
-
-    drawCmdBuffers.resize(count);
-
-    VkCommandBufferAllocateInfo allocInfo{};
-    allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-    allocInfo.commandPool = commandPool;
-    allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-    allocInfo.commandBufferCount = static_cast<uint32_t>(count);
-
-    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &allocInfo, drawCmdBuffers.data()));
 
     // Build
 
@@ -197,16 +192,16 @@ void VulkanRenderer::initCommandBuffers()
 	renderPassBeginInfo.pClearValues = clearValues;
 
     // TODO this is only for testing
-    for (size_t i = 0; i < drawCmdBuffers.size(); i++)
+    for (size_t i = 0; i < renderCmdBuffers.size(); i++)
     {
         renderPassBeginInfo.framebuffer = frameBuffers[i];
 
-        vk::recordCommandBuffer(drawCmdBuffers[i], [=](VkCommandBuffer buf)
+        vk::recordCommandBuffer(renderCmdBuffers[i], [=](VkCommandBuffer buf)
         {
             vkCmdBeginRenderPass(buf, &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
 
-            vkCmdSetViewport(drawCmdBuffers[i], 0, 1, &viewport);
-            vkCmdSetScissor(drawCmdBuffers[i], 0, 1, &scissor);
+            vkCmdSetViewport(renderCmdBuffers[i], 0, 1, &viewport);
+            vkCmdSetScissor(renderCmdBuffers[i], 0, 1, &scissor);
 
             vkCmdEndRenderPass(buf);
         });
