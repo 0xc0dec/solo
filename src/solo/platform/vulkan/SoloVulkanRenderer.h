@@ -43,8 +43,8 @@ namespace solo
         void endFrame() override final;
 
     private:
-        uint32_t canvasWidth = 1;
-        uint32_t canvasHeight = 1;
+        uint32_t canvasWidth = 0;
+        uint32_t canvasHeight = 0;
         VkDevice device = nullptr;
         VkPhysicalDevice physicalDevice = nullptr;
         VkQueue queue = nullptr;
