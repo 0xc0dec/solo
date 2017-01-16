@@ -20,23 +20,10 @@
 
 #include "SoloVulkanRenderer.h"
 #include "SoloSDLVulkanDevice.h"
-#include "SoloVulkanPipeline.h"
-#include "SoloVulkanSwapchain.h"
 
 #ifdef SL_VULKAN_RENDERER
 
 using namespace solo;
-
-
-static auto createFrameBuffers(VkDevice device, VulkanSwapchain *swapchain, VkImageView depthStencilView,
-    VkRenderPass renderPass, uint32_t width, uint32_t height) -> std::vector<VkFramebuffer>
-{
-    auto count = swapchain->getImageCount();
-    std::vector<VkFramebuffer> buffers(count);
-    for (auto i = 0; i < count; i++)
-        buffers[i] = vk::createFrameBuffer(device, swapchain->getImageView(i), depthStencilView, renderPass, width, height);
-    return std::move(buffers);
-}
 
 
 static auto createRenderCmdBuffers(uint32_t count, VkDevice device, VkCommandPool commandPool) -> std::vector<VkCommandBuffer>
@@ -53,10 +40,6 @@ static auto createRenderCmdBuffers(uint32_t count, VkDevice device, VkCommandPoo
 
     return std::move(buffers);
 }
-
-
-// TODO this is only for testing
-static VulkanPipeline *pipeline = nullptr;
 
 
 VulkanRenderer::VulkanRenderer(Device *engineDevice):
@@ -86,13 +69,13 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     presentCompleteSem = vk::createSemaphore(device);
     renderCompleteSem = vk::createSemaphore(device);
     commandPool = vk::createCommandPool(device, queueIndex);
-    swapchain = std::make_shared<VulkanSwapchain>(device, physicalDevice, surface, engineDevice->getSetup().vsync,
-        Vector2(canvasWidth, canvasHeight), colorFormat, colorSpace);
     depthStencil = vk::createDepthStencil(device, memProperties, depthFormat, canvasWidth, canvasHeight);
     renderPass = vk::createRenderPass(device, colorFormat, depthFormat);
-
-    frameBuffers = createFrameBuffers(device, swapchain.get(), depthStencil.view, renderPass, canvasWidth, canvasHeight);
-    renderCmdBuffers = createRenderCmdBuffers(swapchain->getImageCount(), device, commandPool);
+    
+    initSwapchain(surface, engineDevice->getSetup().vsync);
+    initFrameBuffers();
+    
+    renderCmdBuffers = createRenderCmdBuffers(swapchainBuffers.size(), device, commandPool);
 
     // TODO remove
     buildCommandBuffers();
@@ -106,6 +89,10 @@ VulkanRenderer::~VulkanRenderer()
     for (size_t i = 0; i < frameBuffers.size(); ++i)
         vkDestroyFramebuffer(device, frameBuffers[i], nullptr);
 
+    for (auto &buf : swapchainBuffers)
+        vkDestroyImageView(device, buf.imageView, nullptr);
+    vkDestroySwapchainKHR(device, swapchain, nullptr);
+
     // Render pass
     vkDestroyRenderPass(device, renderPass, nullptr);
 
@@ -116,9 +103,6 @@ VulkanRenderer::~VulkanRenderer()
         vkDestroyImage(device, depthStencil.image, nullptr);
     if (depthStencil.mem)
         vkFreeMemory(device, depthStencil.mem, nullptr);
-
-    // Swapchain
-    swapchain.reset();
 
     // Command pool
     vkDestroyCommandPool(device, commandPool, nullptr);
@@ -132,7 +116,7 @@ VulkanRenderer::~VulkanRenderer()
 
 void VulkanRenderer::beginFrame()
 {
-    currentBuffer = swapchain->acquireNextImage(presentCompleteSem);
+    SL_CHECK_VK_RESULT(vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, presentCompleteSem, nullptr, &currentBuffer));
 }
 
 
@@ -149,12 +133,132 @@ void VulkanRenderer::endFrame()
 	submitInfo.pSignalSemaphores = &renderCompleteSem;
     submitInfo.commandBufferCount = 1;
 	submitInfo.pCommandBuffers = &renderCmdBuffers[currentBuffer];
-
     SL_CHECK_VK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, VK_NULL_HANDLE));
 
-    swapchain->present(queue, currentBuffer, renderCompleteSem);
+    VkPresentInfoKHR presentInfo{};
+	presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+	presentInfo.pNext = nullptr;
+	presentInfo.swapchainCount = 1;
+	presentInfo.pSwapchains = &swapchain;
+	presentInfo.pImageIndices = &currentBuffer;
+	presentInfo.pWaitSemaphores = &renderCompleteSem;
+	presentInfo.waitSemaphoreCount = 1;
+    SL_CHECK_VK_RESULT(vkQueuePresentKHR(queue, &presentInfo));
 
     SL_CHECK_VK_RESULT(vkQueueWaitIdle(queue));
+}
+
+
+void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync)
+{
+    VkSurfaceCapabilitiesKHR capabilities;
+    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, &capabilities));
+
+    uint32_t presentModeCount;
+    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, nullptr));
+
+    std::vector<VkPresentModeKHR> presentModes(presentModeCount);
+    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, presentModes.data()));
+
+    auto width = static_cast<uint32_t>(this->canvasWidth);
+    auto height = static_cast<uint32_t>(this->canvasHeight);
+    if (capabilities.currentExtent.width != static_cast<uint32_t>(-1))
+    {
+        width = capabilities.currentExtent.width;
+        height = capabilities.currentExtent.height;
+    }
+
+    auto presentMode = VK_PRESENT_MODE_FIFO_KHR; // "vsync"
+
+    if (!vsync)
+    {
+        for (const auto mode : presentModes)
+        {
+            if (mode == VK_PRESENT_MODE_IMMEDIATE_KHR)
+                presentMode = mode;
+            if (mode == VK_PRESENT_MODE_MAILBOX_KHR)
+            {
+                presentMode = mode;
+                break;
+            }
+        }
+    }
+
+    VkSurfaceTransformFlagsKHR transformFlags;
+    if (capabilities.supportedTransforms & VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR)
+        transformFlags = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR;
+    else
+        transformFlags = capabilities.currentTransform;
+
+    auto requestedImageCount = capabilities.minImageCount + 1;
+    if (capabilities.maxImageCount > 0 && requestedImageCount > capabilities.maxImageCount)
+        requestedImageCount = capabilities.maxImageCount;
+
+    VkSwapchainCreateInfoKHR swapchainInfo{};
+    swapchainInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+    swapchainInfo.pNext = nullptr;
+    swapchainInfo.surface = surface;
+    swapchainInfo.minImageCount = requestedImageCount;
+    swapchainInfo.imageFormat = colorFormat;
+    swapchainInfo.imageColorSpace = colorSpace;
+    swapchainInfo.imageExtent = {width, height};
+    swapchainInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+    swapchainInfo.preTransform = static_cast<VkSurfaceTransformFlagBitsKHR>(transformFlags);
+    swapchainInfo.imageArrayLayers = 1;
+    swapchainInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    swapchainInfo.queueFamilyIndexCount = 0;
+    swapchainInfo.pQueueFamilyIndices = nullptr;
+    swapchainInfo.presentMode = presentMode;
+    swapchainInfo.oldSwapchain = nullptr; // TODO
+    swapchainInfo.clipped = VK_TRUE;
+    swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+
+    SL_CHECK_VK_RESULT(vkCreateSwapchainKHR(device, &swapchainInfo, nullptr, &swapchain));
+
+    uint32_t imageCount = 0;
+    SL_CHECK_VK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, nullptr));
+
+    std::vector<VkImage> images;
+    images.resize(imageCount);
+    SL_CHECK_VK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, images.data()));
+
+    swapchainBuffers.resize(imageCount);
+
+    for (uint32_t i = 0; i < imageCount; i++)
+    {
+        VkImageViewCreateInfo imageViewInfo{};
+        imageViewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+        imageViewInfo.pNext = nullptr;
+        imageViewInfo.format = colorFormat;
+        imageViewInfo.components =
+        {
+            VK_COMPONENT_SWIZZLE_R,
+            VK_COMPONENT_SWIZZLE_G,
+            VK_COMPONENT_SWIZZLE_B,
+            VK_COMPONENT_SWIZZLE_A
+        };
+        imageViewInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        imageViewInfo.subresourceRange.baseMipLevel = 0;
+        imageViewInfo.subresourceRange.levelCount = 1;
+        imageViewInfo.subresourceRange.baseArrayLayer = 0;
+        imageViewInfo.subresourceRange.layerCount = 1;
+        imageViewInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+        imageViewInfo.flags = 0;
+        imageViewInfo.image = images[i];
+
+        swapchainBuffers[i].image = images[i];
+
+        SL_CHECK_VK_RESULT(vkCreateImageView(device, &imageViewInfo, nullptr, &swapchainBuffers[i].imageView));
+    }
+}
+
+
+void VulkanRenderer::initFrameBuffers()
+{
+    auto count = swapchainBuffers.size();
+    frameBuffers.resize(count);
+    for (auto i = 0; i < count; i++)
+        frameBuffers[i] = vk::createFrameBuffer(device, swapchainBuffers[i].imageView, depthStencil.view, renderPass, canvasWidth, canvasHeight);
 }
 
 

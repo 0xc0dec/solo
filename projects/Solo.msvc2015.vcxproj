@@ -94,7 +94,6 @@
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkan.h" />
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanPipeline.h" />
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanRenderer.h" />
-    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanSwapchain.h" />
     <ClInclude Include="..\src\solo\SoloMaterialParameter.h" />
     <ClInclude Include="..\src\solo\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\solo\SoloPngImageLoader.h" />
@@ -120,7 +119,6 @@
     <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkan.cpp" />
     <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanPipeline.cpp" />
     <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanRenderer.cpp" />
-    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanSwapchain.cpp" />
     <ClCompile Include="..\src\solo\SoloBoxCollider.cpp" />
     <ClCompile Include="..\src\solo\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\solo\SoloDegree.cpp" />

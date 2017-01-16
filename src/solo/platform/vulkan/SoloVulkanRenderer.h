@@ -30,7 +30,6 @@ namespace solo
 {
     class Device;
     class Vector2;
-    class VulkanSwapchain;
 
     class VulkanRenderer final: public Renderer
     {
@@ -43,6 +42,12 @@ namespace solo
         void endFrame() override final;
 
     private:
+        struct SwapchainBuffer
+        {
+            VkImage image = nullptr;
+            VkImageView imageView = nullptr;
+        };
+
         uint32_t canvasWidth = 0;
         uint32_t canvasHeight = 0;
         VkDevice device = nullptr;
@@ -58,13 +63,15 @@ namespace solo
         VkSemaphore renderCompleteSem = nullptr;
         VkCommandPool commandPool = nullptr;
         VkRenderPass renderPass = nullptr;
+        VkSwapchainKHR swapchain = nullptr;
+        std::vector<SwapchainBuffer> swapchainBuffers;
         vk::DepthStencil depthStencil;
         std::vector<VkCommandBuffer> renderCmdBuffers;
         std::vector<VkFramebuffer> frameBuffers;
         uint32_t currentBuffer = 0;
 
-        sptr<VulkanSwapchain> swapchain;
-
+        void initSwapchain(VkSurfaceKHR surface, bool vsync);
+        void initFrameBuffers();
         void buildCommandBuffers();
     };
 }
