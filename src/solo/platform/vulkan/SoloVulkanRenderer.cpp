@@ -47,6 +47,8 @@ static VulkanPipeline *pipeline = nullptr;
 VulkanRenderer::VulkanRenderer(Device *engineDevice)
 {
     vulkanDevice = dynamic_cast<SDLVulkanDevice*>(engineDevice);
+    canvasWidth = engineDevice->getSetup().canvasWidth;
+    canvasHeight = engineDevice->getSetup().canvasHeight;
 
     auto instance = vulkanDevice->getVkInstance();
     auto surface = vulkanDevice->getVkSurface();
@@ -154,7 +156,7 @@ void VulkanRenderer::endFrame()
 
 void VulkanRenderer::initCommandBuffers()
 {
-    static VkClearColorValue defaultClearColor = {{0.025f, 0.025f, 0.025f, 1.0f}};
+    static VkClearColorValue defaultClearColor = {{0.5f, 0.1f, 0.1f, 1.0f}};
 
     auto count = swapchain->getImageCount();
 
@@ -167,6 +169,8 @@ void VulkanRenderer::initCommandBuffers()
     allocInfo.commandBufferCount = static_cast<uint32_t>(count);
 
     SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &allocInfo, drawCmdBuffers.data()));
+
+    // Build
 
     VkViewport viewport {};
 	viewport.width = canvasWidth;

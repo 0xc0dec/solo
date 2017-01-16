@@ -388,7 +388,7 @@ auto vk::createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImage
 {
     std::array<VkImageView, 2> attachments = {colorAttachment, depthAttachment};
 
-    VkFramebufferCreateInfo createInfo = {};
+    VkFramebufferCreateInfo createInfo{};
     createInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
     createInfo.pNext = nullptr;
     createInfo.renderPass = renderPass;
@@ -480,13 +480,13 @@ auto vk::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties ph
     viewInfo.subresourceRange.baseArrayLayer = 0;
     viewInfo.subresourceRange.layerCount = 1;
 
-    vk::DepthStencil depthStencil;
+    DepthStencil depthStencil;
 
     VkMemoryRequirements memReqs;
     SL_CHECK_VK_RESULT(vkCreateImage(device, &imageInfo, nullptr, &depthStencil.image));
     vkGetImageMemoryRequirements(device, depthStencil.image, &memReqs);
 
-    auto memTypeIndex = vk::findMemoryType(physicalDeviceMemProps, memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+    auto memTypeIndex = findMemoryType(physicalDeviceMemProps, memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
     SL_ERR_IF(memTypeIndex < 0);
 
     allocInfo.allocationSize = memReqs.size;

@@ -15,8 +15,7 @@ VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevic
     uint32_t presentModeCount;
     SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, nullptr));
 
-    std::vector<VkPresentModeKHR> presentModes;
-    presentModes.resize(presentModeCount);
+    std::vector<VkPresentModeKHR> presentModes(presentModeCount);
     SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, presentModes.data()));
 
     if (capabilities.currentExtent.width == static_cast<uint32_t>(-1))
