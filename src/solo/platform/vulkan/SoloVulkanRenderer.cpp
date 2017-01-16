@@ -200,22 +200,17 @@ void VulkanRenderer::initCommandBuffers()
     {
         renderPassBeginInfo.framebuffer = frameBuffers[i];
 
-        auto buf = drawCmdBuffers[i];
+        vk::recordCommandBuffer(drawCmdBuffers[i], [=](VkCommandBuffer buf)
+        {
+            vkCmdBeginRenderPass(buf, &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
 
-        VkCommandBufferBeginInfo beginInfo{};
-        beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-        SL_CHECK_VK_RESULT(vkBeginCommandBuffer(buf, &beginInfo));
+            vkCmdSetViewport(drawCmdBuffers[i], 0, 1, &viewport);
+            vkCmdSetScissor(drawCmdBuffers[i], 0, 1, &scissor);
 
-        vkCmdBeginRenderPass(buf, &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
+            pipeline->bind(buf);
 
-        vkCmdSetViewport(drawCmdBuffers[i], 0, 1, &viewport);
-        vkCmdSetScissor(drawCmdBuffers[i], 0, 1, &scissor);
-
-        pipeline->bind(buf);
-
-        vkCmdEndRenderPass(buf);
-
-        SL_CHECK_VK_RESULT(vkEndCommandBuffer(buf));
+            vkCmdEndRenderPass(buf);
+        });
     }
 }
 

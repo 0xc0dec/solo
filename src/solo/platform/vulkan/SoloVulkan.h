@@ -22,6 +22,7 @@
 
 #include "SoloCommon.h"
 #include <vector>
+#include <functional>
 
 #ifdef SL_VULKAN_RENDERER
 
@@ -71,6 +72,7 @@ namespace solo
         void destroyDebugCallback(VkInstance instance, VkDebugReportCallbackEXT callback);
         auto createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
             VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil;
+        void recordCommandBuffer(VkCommandBuffer buffer, std::function<void(VkCommandBuffer)> action);
     }
 }
 
