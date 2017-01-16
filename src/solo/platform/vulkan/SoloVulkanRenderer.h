@@ -75,8 +75,6 @@ namespace solo
             VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil;
 
         void initCommandBuffers();
-        void beginCommandBuffer(VkCommandBuffer buffer);
-        
         void initFrameBuffers();
     };
 }

@@ -135,14 +135,14 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice)
 
 
 // TODO this is only for testing
-//static VulkanPipeline *pipeline = nullptr;
+static VulkanPipeline *pipeline = nullptr;
 static bool init = false;
 
 
 VulkanRenderer::~VulkanRenderer()
 {
     // TODO this is only for testing
-//    delete pipeline;
+    delete pipeline;
 
     swapchain.reset();
 
@@ -179,12 +179,12 @@ void VulkanRenderer::beginFrame()
     // TODO this is only for testing
     if (!init)
     {
-//        pipeline = new VulkanPipeline(device, renderPass);
-//        auto vertShader = vk::createShader(device, vulkanDevice->getFileSystem()->readBytes("../assets/triangle.vert.spv"));
-//        auto fragShader = vk::createShader(device, vulkanDevice->getFileSystem()->readBytes("../assets/triangle.frag.spv"));
-//        pipeline->setVertexShader(vertShader, "main");
-//        pipeline->setFragmentShader(fragShader, "main");
-//        pipeline->rebuild();
+        pipeline = new VulkanPipeline(device, renderPass);
+        auto vertShader = vk::createShader(device, vulkanDevice->getFileSystem()->readBytes("../assets/triangle.vert.spv"));
+        auto fragShader = vk::createShader(device, vulkanDevice->getFileSystem()->readBytes("../assets/triangle.frag.spv"));
+        pipeline->setVertexShader(vertShader, "main");
+        pipeline->setFragmentShader(fragShader, "main");
+        pipeline->rebuild();
         init = true;
     }
 
@@ -229,51 +229,53 @@ void VulkanRenderer::initCommandBuffers()
 
     SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &allocInfo, drawCmdBuffers.data()));
 
+    VkViewport viewport {};
+	viewport.width = canvasWidth;
+	viewport.height = canvasHeight;
+	viewport.minDepth = 0;
+	viewport.maxDepth = 1;
+
+    VkRect2D scissor {};
+    scissor.extent.width = canvasWidth;
+    scissor.extent.height = canvasHeight;
+    scissor.offset.x = 0;
+    scissor.offset.y = 0;
+
+    VkClearValue clearValues[2];
+	clearValues[0].color = defaultClearColor;
+    clearValues[1].depthStencil = {1.0f, 0};
+
+    VkRenderPassBeginInfo renderPassBeginInfo{};
+    renderPassBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+    renderPassBeginInfo.pNext = nullptr;
+    renderPassBeginInfo.renderPass = renderPass;
+	renderPassBeginInfo.renderArea.offset.x = 0;
+	renderPassBeginInfo.renderArea.offset.y = 0;
+	renderPassBeginInfo.renderArea.extent.width = canvasWidth;
+	renderPassBeginInfo.renderArea.extent.height = canvasHeight;
+	renderPassBeginInfo.clearValueCount = 2;
+	renderPassBeginInfo.pClearValues = clearValues;
+
     // TODO this is only for testing
     for (size_t i = 0; i < drawCmdBuffers.size(); i++)
     {
-        VkClearValue clearValues[2];
-		clearValues[0].color = defaultClearColor;
-        clearValues[1].depthStencil = {1.0f, 0};
-
-        VkRenderPassBeginInfo renderPassBeginInfo{};
-        renderPassBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-        renderPassBeginInfo.pNext = nullptr;
-        renderPassBeginInfo.renderPass = renderPass;
-		renderPassBeginInfo.renderArea.offset.x = 0;
-		renderPassBeginInfo.renderArea.offset.y = 0;
-		renderPassBeginInfo.renderArea.extent.width = canvasWidth;
-		renderPassBeginInfo.renderArea.extent.height = canvasHeight;
-		renderPassBeginInfo.clearValueCount = 2;
-		renderPassBeginInfo.pClearValues = clearValues;
         renderPassBeginInfo.framebuffer = frameBuffers[i];
-
-        VkViewport viewport {};
-		viewport.width = canvasWidth;
-		viewport.height = canvasHeight;
-		viewport.minDepth = 0;
-		viewport.maxDepth = 1;
 
         auto buf = drawCmdBuffers[i];
 
-        beginCommandBuffer(buf);
+        VkCommandBufferBeginInfo beginInfo{};
+        beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+        SL_CHECK_VK_RESULT(vkBeginCommandBuffer(buf, &beginInfo));
 
         vkCmdBeginRenderPass(buf, &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
 
         vkCmdSetViewport(drawCmdBuffers[i], 0, 1, &viewport);
+        vkCmdSetScissor(drawCmdBuffers[i], 0, 1, &scissor);
 
         vkCmdEndRenderPass(buf);
 
         SL_CHECK_VK_RESULT(vkEndCommandBuffer(buf));
     }
-}
-
-
-void VulkanRenderer::beginCommandBuffer(VkCommandBuffer buffer)
-{
-    VkCommandBufferBeginInfo beginInfo{};
-    beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-    SL_CHECK_VK_RESULT(vkBeginCommandBuffer(buffer, &beginInfo));
 }
 
 #endif
