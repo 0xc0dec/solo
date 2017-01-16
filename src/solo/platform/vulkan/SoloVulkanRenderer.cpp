@@ -41,6 +41,7 @@ void VulkanRenderer::initFrameBuffers()
 
 // TODO this is only for testing
 static SDLVulkanDevice *vulkanDevice = nullptr;
+static VulkanPipeline *pipeline = nullptr;
 
 
 VulkanRenderer::VulkanRenderer(Device *engineDevice)
@@ -72,15 +73,7 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice)
         engineDevice->getCanvasSize(), colorFormat, colorSpace);
     depthStencil = vk::createDepthStencil(device, memProperties, depthFormat, canvasWidth, canvasHeight);
     renderPass = vk::createRenderPass(device, colorFormat, depthFormat);
-
-    initFrameBuffers();
-    initCommandBuffers();
 }
-
-
-// TODO this is only for testing
-static VulkanPipeline *pipeline = nullptr;
-static bool init = false;
 
 
 VulkanRenderer::~VulkanRenderer()
@@ -120,8 +113,8 @@ VulkanRenderer::~VulkanRenderer()
 
 void VulkanRenderer::beginFrame()
 {
-    // TODO this is only for testing
-    if (!init)
+    // TODO only for testing
+    if (!pipeline)
     {
         pipeline = new VulkanPipeline(device, renderPass);
         auto vertShader = vk::createShader(device, vulkanDevice->getFileSystem()->readBytes("../assets/triangle.vert.spv"));
@@ -129,7 +122,9 @@ void VulkanRenderer::beginFrame()
         pipeline->setVertexShader(vertShader, "main");
         pipeline->setFragmentShader(fragShader, "main");
         pipeline->rebuild();
-        init = true;
+
+        initFrameBuffers();
+        initCommandBuffers();
     }
 
     currentBuffer = swapchain->acquireNextImage(presentCompleteSem);
@@ -215,6 +210,8 @@ void VulkanRenderer::initCommandBuffers()
 
         vkCmdSetViewport(drawCmdBuffers[i], 0, 1, &viewport);
         vkCmdSetScissor(drawCmdBuffers[i], 0, 1, &scissor);
+
+        pipeline->bind(buf);
 
         vkCmdEndRenderPass(buf);
 
