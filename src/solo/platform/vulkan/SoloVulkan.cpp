@@ -288,18 +288,6 @@ void vk::setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageLayout 
 }
 
 
-void vk::setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask,
-                        VkImageLayout oldLayout, VkImageLayout newLayout)
-{
-    VkImageSubresourceRange subresourceRange = {};
-    subresourceRange.aspectMask = aspectMask;
-    subresourceRange.baseMipLevel = 0;
-    subresourceRange.levelCount = 1;
-    subresourceRange.layerCount = 1;
-    setImageLayout(cmdbuffer, image, oldLayout, newLayout, subresourceRange);
-}
-
-
 auto vk::createRenderPass(VkDevice device, VkFormat colorFormat, VkFormat depthFormat) -> VkRenderPass
 {
     std::array<VkAttachmentDescription, 2> attachments;
