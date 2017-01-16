@@ -51,15 +51,17 @@ namespace solo
         auto createCommandBuffer(VkDevice logicalDevice, VkCommandPool commandPool) -> VkCommandBuffer;
         void destroyCommandBuffers(VkDevice device, VkCommandPool commandPool, VkCommandBuffer *buffers, uint32_t count);
         auto findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, uint32_t typeBits,
-                            VkMemoryPropertyFlags properties) -> int32_t;
+            VkMemoryPropertyFlags properties) -> int32_t;
         void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageLayout oldLayout,
-                            VkImageLayout newLayout, VkImageSubresourceRange subresourceRange);
+            VkImageLayout newLayout, VkImageSubresourceRange subresourceRange);
         void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageAspectFlags aspectMask,
-                            VkImageLayout oldLayout, VkImageLayout newLayout);
+            VkImageLayout oldLayout, VkImageLayout newLayout);
         auto createRenderPass(VkDevice device, VkFormat colorFormat, VkFormat depthFormat) -> VkRenderPass;
         auto createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImageView depthAttachment,
-                               VkRenderPass renderPass, uint32_t width, uint32_t height) -> VkFramebuffer;
-        auto createShader(VkDevice logicalDevice, const std::vector<uint8_t>& data) -> VkShaderModule;
+            VkRenderPass renderPass, uint32_t width, uint32_t height) -> VkFramebuffer;
+        auto createShader(VkDevice device, const std::vector<uint8_t>& data) -> VkShaderModule;
+        auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEXT callbackFunc) -> VkDebugReportCallbackEXT;
+        void destroyDebugCallback(VkInstance instance, VkDebugReportCallbackEXT callback);
     }
 }
 

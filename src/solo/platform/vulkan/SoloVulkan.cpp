@@ -420,4 +420,29 @@ auto vk::createShader(VkDevice device, const std::vector<uint8_t>& data) -> VkSh
     return module;
 }
 
+
+auto vk::createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEXT callbackFunc) -> VkDebugReportCallbackEXT
+{
+    VkDebugReportCallbackCreateInfoEXT createInfo;
+    createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
+    createInfo.flags = VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT;
+    createInfo.pfnCallback = callbackFunc;
+
+    auto create = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT"));
+    SL_ERR_IF(!create, "Failed to load pointer to vkCreateDebugReportCallbackEXT");
+
+    VkDebugReportCallbackEXT result = nullptr;
+    SL_CHECK_VK_RESULT(create(instance, &createInfo, nullptr, &result));
+
+    return result;
+}
+
+
+void vk::destroyDebugCallback(VkInstance instance, VkDebugReportCallbackEXT callback)
+{
+    auto destroy = reinterpret_cast<PFN_vkDestroyDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkDestroyDebugReportCallbackEXT"));
+    SL_ERR_IF(!destroy, "Failed to load pointer to vkDestroyDebugReportCallbackEXT");
+    destroy(instance, callback, nullptr);
+}
+
 #endif

@@ -48,8 +48,6 @@ namespace solo
         VkInstance instance = nullptr;
         VkSurfaceKHR surface = nullptr;
         VkDebugReportCallbackEXT debugCallback = nullptr;
-
-        void initDebugCallback();
     };
 
     inline auto SDLVulkanDevice::getVkInstance() const -> VkInstance

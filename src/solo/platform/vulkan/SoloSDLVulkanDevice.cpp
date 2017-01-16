@@ -91,7 +91,7 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
     SL_CHECK_VK_RESULT(vkCreateInstance(&instanceInfo, nullptr, &instance));
 
 #ifdef SL_DEBUG
-    initDebugCallback();
+    debugCallback = vk::createDebugCallback(instance, debugCallbackFunc);
 #endif
 
 #ifdef SL_WINDOWS
@@ -116,6 +116,12 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
 
 SDLVulkanDevice::~SDLVulkanDevice()
 {
+    // Otherwise it would be destroyed later - not good
+    renderer.reset();
+
+    if (debugCallback)
+        vk::destroyDebugCallback(instance, debugCallback);
+
     if (surface)
         vkDestroySurfaceKHR(instance, surface, nullptr);
     if (instance)
@@ -136,20 +142,6 @@ void SDLVulkanDevice::saveScreenshot(const std::string &path)
 
 void SDLVulkanDevice::endUpdate()
 {
-}
-
-
-void SDLVulkanDevice::initDebugCallback()
-{
-    VkDebugReportCallbackCreateInfoEXT createInfo;
-    createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
-    createInfo.flags = VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT;
-    createInfo.pfnCallback = debugCallbackFunc;
-
-    auto vkCreateDebugReportCallbackEXT = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT"));
-    SL_ERR_IF(!vkCreateDebugReportCallbackEXT, "Failed to load pointer to vkCreateDebugReportCallbackEXT");
-
-    SL_CHECK_VK_RESULT(vkCreateDebugReportCallbackEXT(instance, &createInfo, nullptr, &debugCallback));
 }
 
 
