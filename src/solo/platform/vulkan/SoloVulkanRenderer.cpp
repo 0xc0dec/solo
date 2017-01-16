@@ -46,7 +46,6 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     canvasHeight(engineDevice->getSetup().canvasHeight)
 {
     auto vulkanDevice = dynamic_cast<SDLVulkanDevice*>(engineDevice);
-
     auto instance = vulkanDevice->getVkInstance();
     auto surface = vulkanDevice->getVkSurface();
 
@@ -60,6 +59,7 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     colorSpace = std::get<1>(surfaceFormats);
 
     auto queueIndex = vk::getQueueIndex(physicalDevice, surface);
+
     device = vk::createDevice(physicalDevice, queueIndex);
 
     vkGetDeviceQueue(device, queueIndex, 0, &queue);
@@ -69,32 +69,24 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     renderCompleteSem = vk::createSemaphore(device);
     commandPool = vk::createCommandPool(device, queueIndex);
     swapchain = std::make_shared<VulkanSwapchain>(device, physicalDevice, surface, engineDevice->getSetup().vsync,
-        engineDevice->getCanvasSize(), colorFormat, colorSpace);
+        Vector2(canvasWidth, canvasHeight), colorFormat, colorSpace);
     depthStencil = vk::createDepthStencil(device, memProperties, depthFormat, canvasWidth, canvasHeight);
     renderPass = vk::createRenderPass(device, colorFormat, depthFormat);
+
+    // TODO init command buffers here
 }
 
 
 VulkanRenderer::~VulkanRenderer()
 {
     // TODO this is only for testing
-    delete pipeline;
-
-    swapchain.reset();
-
-    if (presentCompleteSem)
-        vkDestroySemaphore(device, presentCompleteSem, nullptr);
-    if (renderCompleteSem)
-        vkDestroySemaphore(device, renderCompleteSem, nullptr);
-
+//    delete pipeline;
     vkFreeCommandBuffers(device, commandPool, drawCmdBuffers.size(), drawCmdBuffers.data());
 
-    if (renderPass)
-        vkDestroyRenderPass(device, renderPass, nullptr);
+    // Render pass
+    vkDestroyRenderPass(device, renderPass, nullptr);
 
-    for (size_t i = 0; i < frameBuffers.size(); ++i)
-        vkDestroyFramebuffer(device, frameBuffers[i], nullptr);
-
+    // Depth stencil
     if (depthStencil.view)
         vkDestroyImageView(device, depthStencil.view, nullptr);
     if (depthStencil.image)
@@ -102,11 +94,19 @@ VulkanRenderer::~VulkanRenderer()
     if (depthStencil.mem)
         vkFreeMemory(device, depthStencil.mem, nullptr);
 
-    if (commandPool)
-        vkDestroyCommandPool(device, commandPool, nullptr);
+    // Swapchain
+    swapchain.reset();
 
-    if (device)
-        vkDestroyDevice(device, nullptr);
+    // Command pool
+    vkDestroyCommandPool(device, commandPool, nullptr);
+
+    vkDestroySemaphore(device, presentCompleteSem, nullptr);
+    vkDestroySemaphore(device, renderCompleteSem, nullptr);
+
+    for (size_t i = 0; i < frameBuffers.size(); ++i)
+        vkDestroyFramebuffer(device, frameBuffers[i], nullptr);
+
+    vkDestroyDevice(device, nullptr);
 }
 
 

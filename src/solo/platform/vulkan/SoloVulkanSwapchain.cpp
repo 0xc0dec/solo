@@ -6,7 +6,7 @@ using namespace solo;
 
 
 VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface,
-    bool vsync, const Vector2 &deviceCanvasSize, VkFormat colorFormat, VkColorSpaceKHR colorSpace):
+    bool vsync, const Vector2 &canvasSize, VkFormat colorFormat, VkColorSpaceKHR colorSpace):
     device(device)
 {
     VkSurfaceCapabilitiesKHR capabilities;
@@ -21,13 +21,13 @@ VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevic
     if (capabilities.currentExtent.width == static_cast<uint32_t>(-1))
     {
         // Surface extent not defined - select based on device canvas size
-        canvasWidth = static_cast<uint32_t>(deviceCanvasSize.x);
-        canvasHeight = static_cast<uint32_t>(deviceCanvasSize.y);
+        this->canvasWidth = static_cast<uint32_t>(canvasSize.x);
+        this->canvasHeight = static_cast<uint32_t>(canvasSize.y);
     }
     else
     {
-        canvasWidth = capabilities.currentExtent.width;
-        canvasHeight = capabilities.currentExtent.height;
+        this->canvasWidth = capabilities.currentExtent.width;
+        this->canvasHeight = capabilities.currentExtent.height;
     }
 
     auto presentMode = VK_PRESENT_MODE_FIFO_KHR; // "vsync"
@@ -63,7 +63,7 @@ VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevic
     swapchainInfo.minImageCount = requestedImageCount;
     swapchainInfo.imageFormat = colorFormat;
     swapchainInfo.imageColorSpace = colorSpace;
-    swapchainInfo.imageExtent = {canvasWidth, canvasHeight};
+    swapchainInfo.imageExtent = {this->canvasWidth, this->canvasHeight};
     swapchainInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
     swapchainInfo.preTransform = static_cast<VkSurfaceTransformFlagBitsKHR>(transformFlags);
     swapchainInfo.imageArrayLayers = 1;

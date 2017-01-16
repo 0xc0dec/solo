@@ -34,7 +34,7 @@ namespace solo
         SL_DISABLE_COPY_AND_MOVE(VulkanSwapchain)
 
         VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface,
-            bool vsync, const Vector2 &deviceCanvasSize, VkFormat colorFormat, VkColorSpaceKHR colorSpace);
+            bool vsync, const Vector2 &canvasSize, VkFormat colorFormat, VkColorSpaceKHR colorSpace);
         ~VulkanSwapchain();
 
         auto getImageCount() const -> uint32_t;
