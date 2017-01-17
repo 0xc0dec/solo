@@ -56,7 +56,7 @@ namespace solo
         auto getDepthFormat(VkPhysicalDevice device) -> VkFormat;
         auto createCommandPool(VkDevice logicalDevice, uint32_t queueIndex) -> VkCommandPool;
         void submitCommandBuffer(VkQueue queue, VkCommandBuffer buffer);
-        auto createCommandBuffer(VkDevice logicalDevice, VkCommandPool commandPool) -> VkCommandBuffer;
+        void createCommandBuffers(VkDevice logicalDevice, VkCommandPool commandPool, uint32_t count, VkCommandBuffer *result);
         void destroyCommandBuffers(VkDevice device, VkCommandPool commandPool, VkCommandBuffer *buffers, uint32_t count);
         auto findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, uint32_t typeBits,
             VkMemoryPropertyFlags properties) -> int32_t;

@@ -26,22 +26,6 @@
 using namespace solo;
 
 
-static auto createRenderCmdBuffers(uint32_t count, VkDevice device, VkCommandPool commandPool) -> std::vector<VkCommandBuffer>
-{
-    std::vector<VkCommandBuffer> buffers(count);
-
-    VkCommandBufferAllocateInfo allocInfo{};
-    allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-    allocInfo.commandPool = commandPool;
-    allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-    allocInfo.commandBufferCount = static_cast<uint32_t>(count);
-
-    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &allocInfo, buffers.data()));
-
-    return buffers;
-}
-
-
 VulkanRenderer::VulkanRenderer(Device *engineDevice):
     canvasWidth(engineDevice->getSetup().canvasWidth),
     canvasHeight(engineDevice->getSetup().canvasHeight)
@@ -75,7 +59,8 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     initSwapchain(surface, engineDevice->getSetup().vsync);
     initFrameBuffers();
     
-    renderCmdBuffers = createRenderCmdBuffers(swapchainBuffers.size(), device, commandPool);
+    renderCmdBuffers.resize(swapchainBuffers.size());
+    vk::createCommandBuffers(device, commandPool, swapchainBuffers.size(), renderCmdBuffers.data());
 
     // TODO remove
     buildCommandBuffers();
