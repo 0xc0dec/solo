@@ -72,9 +72,9 @@ namespace solo
 
         void initSwapchain(VkSurfaceKHR surface, bool vsync);
         void initFrameBuffers();
-        void initTest();
+        void initTest(Device *engineDevice);
         void renderTest();
-        void buildCommandBuffers();
+        void recordCommandBuffers(std::function<void(VkCommandBuffer)> commands);
     };
 }
 

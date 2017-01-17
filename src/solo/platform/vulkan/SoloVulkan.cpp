@@ -356,6 +356,7 @@ void vk::destroyDebugCallback(VkInstance instance, VkDebugReportCallbackEXT call
     destroy(instance, callback, nullptr);
 }
 
+
 auto vk::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
     VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil
 {
@@ -411,6 +412,7 @@ auto vk::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties ph
     return depthStencil;
 }
 
+
 void vk::recordCommandBuffer(VkCommandBuffer buffer, std::function<void(VkCommandBuffer)> action)
 {
     VkCommandBufferBeginInfo beginInfo {};
@@ -419,5 +421,94 @@ void vk::recordCommandBuffer(VkCommandBuffer buffer, std::function<void(VkComman
     action(buffer);
     SL_CHECK_VK_RESULT(vkEndCommandBuffer(buffer));
 }
+
+
+auto vk::createRasterizationStateInfo(bool depthClamp, bool discardEnabled, VkCullModeFlags cullMode, VkFrontFace frontFace)
+    -> VkPipelineRasterizationStateCreateInfo
+{
+    VkPipelineRasterizationStateCreateInfo info {};
+    info.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+    info.pNext = nullptr;
+    info.flags = 0;
+    info.depthClampEnable = depthClamp;
+    info.rasterizerDiscardEnable = discardEnabled;
+    info.polygonMode = VK_POLYGON_MODE_FILL;
+    info.cullMode = cullMode;
+    info.frontFace = frontFace;
+    info.depthBiasEnable = false;
+    info.depthBiasClamp = 0;
+    info.depthBiasConstantFactor = 0;
+    info.depthBiasClamp = 0;
+    info.depthBiasSlopeFactor = 0;
+    info.lineWidth = 0;
+    return info;
+}
+
+
+auto vk::createMultisampleStateInfo(VkSampleCountFlagBits rasterizationSampleCount) -> VkPipelineMultisampleStateCreateInfo
+{
+    VkPipelineMultisampleStateCreateInfo info {};
+    info.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+    info.pNext = nullptr;
+    info.flags = 0;
+    info.rasterizationSamples = rasterizationSampleCount;
+    info.sampleShadingEnable = false;
+    info.minSampleShading = 0;
+    info.pSampleMask = nullptr;
+    info.alphaToCoverageEnable = false;
+    info.alphaToOneEnable = false;
+    return info;
+}
+
+
+auto vk::createBlendAttachmentState(bool blendEnabled, VkBlendFactor srcColorBlendFactor, VkBlendFactor dstColorBlendFactor,
+    VkBlendOp colorBlendOp, VkBlendFactor srcAlphaBlendFactor, VkBlendFactor dstAlphaBlendFactor, VkBlendOp alphaBlendOp,
+    VkColorComponentFlags colorWriteMask) -> VkPipelineColorBlendAttachmentState
+{
+    VkPipelineColorBlendAttachmentState state {};
+    state.blendEnable = blendEnabled ? VK_TRUE : VK_FALSE;
+    state.srcColorBlendFactor = srcColorBlendFactor;
+    state.dstColorBlendFactor = dstColorBlendFactor;
+    state.colorBlendOp = colorBlendOp;
+    state.srcAlphaBlendFactor = srcAlphaBlendFactor;
+    state.dstAlphaBlendFactor = dstAlphaBlendFactor;
+    state.alphaBlendOp = alphaBlendOp;
+    state.colorWriteMask = colorWriteMask;
+    return state;
+}
+
+
+auto vk::createColorBlendStateInfo(VkPipelineColorBlendAttachmentState* blendAttachments, bool logicOpEnabled, VkLogicOp logicOp)
+    -> VkPipelineColorBlendStateCreateInfo
+{
+    VkPipelineColorBlendStateCreateInfo info {};
+    info.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+    info.pNext = nullptr;
+    info.flags = 0;
+    info.logicOpEnable = logicOpEnabled ? VK_TRUE : VK_FALSE;
+    info.logicOp = logicOp;
+    info.attachmentCount = 1;
+    info.pAttachments = blendAttachments;
+    info.blendConstants[0] = 0;
+    info.blendConstants[1] = 0;
+    info.blendConstants[2] = 0;
+    info.blendConstants[3] = 0;
+    return info;
+}
+
+
+auto vk::createShaderStageInfo(bool vertex, VkShaderModule shader, const char* entryPoint) -> VkPipelineShaderStageCreateInfo
+{
+    VkPipelineShaderStageCreateInfo info{};
+    info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+    info.pNext = nullptr;
+    info.flags = 0;
+    info.stage = vertex ? VK_SHADER_STAGE_VERTEX_BIT : VK_SHADER_STAGE_FRAGMENT_BIT;
+    info.module = shader;
+    info.pName = entryPoint;
+    info.pSpecializationInfo = nullptr;
+    return info;
+}
+
 
 #endif

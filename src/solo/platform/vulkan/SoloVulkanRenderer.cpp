@@ -20,18 +20,30 @@
 
 #include "SoloVulkanRenderer.h"
 #include "SoloSDLVulkanDevice.h"
+#include "SoloVulkanDescriptorSetLayoutBuilder.h"
+#include "SoloVulkanDescriptorPool.h"
+#include "SoloVulkanPipeline.h"
+#include "SoloVulkanBuffer.h"
 // TODO remove?
 #include "SoloVector3.h"
+#include "SoloVector4.h"
+#include "SoloFileSystem.h"
+
 
 #ifdef SL_VULKAN_RENDERER
 
 using namespace solo;
+
+// TODO remove
+Device *engineDevice = nullptr;
 
 
 VulkanRenderer::VulkanRenderer(Device *engineDevice):
     canvasWidth(engineDevice->getSetup().canvasWidth),
     canvasHeight(engineDevice->getSetup().canvasHeight)
 {
+    ::engineDevice = engineDevice; // TODO remove
+
     auto vulkanDevice = dynamic_cast<SDLVulkanDevice*>(engineDevice);
     auto instance = vulkanDevice->getVkInstance();
     auto surface = vulkanDevice->getVkSurface();
@@ -63,9 +75,6 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     
     renderCmdBuffers.resize(swapchainBuffers.size());
     vk::createCommandBuffers(device, commandPool, swapchainBuffers.size(), renderCmdBuffers.data());
-
-    // TODO remove
-    buildCommandBuffers();
 }
 
 
@@ -101,8 +110,20 @@ VulkanRenderer::~VulkanRenderer()
 }
 
 
-void VulkanRenderer::beginFrame()
+// TODO remove
+bool initialized = false;
+
+
+void VulkanRenderer::
+beginFrame()
 {
+    // TODO remove
+    if (!initialized)
+    {
+        initTest(engineDevice);
+        initialized = true;
+    }
+
     SL_CHECK_VK_RESULT(vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, presentCompleteSem, nullptr, &currentBuffer));
 }
 
@@ -249,8 +270,116 @@ void VulkanRenderer::initFrameBuffers()
 }
 
 
-void VulkanRenderer::initTest()
+// TODO Remove after testing
+struct Vertex
 {
+    Vector2 position;
+    Vector3 color;
+};
+
+VulkanDescriptorPool descriptorPool;
+VkDescriptorSetLayout descSetLayout;
+VulkanBuffer vertexBuffer;
+VulkanBuffer uniformBuffer;
+VkPipeline pipeline = nullptr;
+
+
+void VulkanRenderer::initTest(Device *engineDevice)
+{
+    VulkanDescriptorSetLayoutBuilder builder(device);
+    builder.setBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
+    descSetLayout = builder.build();
+
+    descriptorPool = VulkanDescriptorPool(device, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 1);
+    auto descriptorSet = descriptorPool.allocateSet(descSetLayout);
+
+    auto vertexShader = vk::createShader(device, engineDevice->getFileSystem()->readBytes("../assets/triangle.vert.spv"));
+    auto fragmentShader = vk::createShader(device, engineDevice->getFileSystem()->readBytes("../assets/triangle.frag.spv"));
+
+    VulkanPipeline pipeline(device, renderPass);
+    pipeline.setVertexShader(vertexShader, "main");
+    pipeline.setFragmentShader(fragmentShader, "main");
+
+    pipeline.setDescriptorSetLayouts(&descSetLayout, 1);
+
+    pipeline.setVertexSize(sizeof(Vertex));
+
+    pipeline.setVertexAttribute(0, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, position));
+    pipeline.setVertexAttribute(1, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, color));
+
+    pipeline.setTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
+
+    pipeline.setCullMode(VK_CULL_MODE_BACK_BIT);
+    pipeline.setFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE);
+    pipeline.setRasterizationSampleCount(VK_SAMPLE_COUNT_1_BIT);
+    pipeline.setColorBlend(VK_BLEND_FACTOR_ZERO, VK_BLEND_FACTOR_ZERO, VK_BLEND_OP_ADD);
+    pipeline.setAlphaBlend(VK_BLEND_FACTOR_ZERO, VK_BLEND_FACTOR_ZERO, VK_BLEND_OP_ADD);
+    pipeline.setColorWriteMask(VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT);
+
+    pipeline.rebuild();
+
+    const auto triangleSize = 1.6f;
+    std::vector<Vertex> triangle1 =
+    {
+		{ Vector2(0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(1.0f, 0.0f, 0.0f) },
+		{ Vector2(0.0f, -sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 1.0f, 0.0f) },
+		{ Vector2(-0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 0.0f, 1.0f) }
+	};
+
+    std::vector<Vertex> triangle2 =
+    {
+		{ Vector2(0.3f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(1.0f, 0.0f, 0.0f) },
+		{ Vector2(0.0f, -sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 1.0f, 0.0f) },
+		{ Vector2(-0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 0.0f, 1.0f) }
+	};
+
+    auto stagingBuffer = VulkanBuffer(device, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
+        VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+        memProperties);
+    stagingBuffer.update(triangle2.data());
+    stagingBuffer.update(triangle1.data());
+    stagingBuffer.update(triangle2.data()); // just smoking
+
+    vertexBuffer = VulkanBuffer(device, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
+        VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+        memProperties);
+    stagingBuffer.transferTo(vertexBuffer, queue, commandPool);
+
+    auto uniformColor = Vector4(0, 0.2f, 0.8f, 1);
+    uniformBuffer = VulkanBuffer(device, sizeof(Vector4), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, memProperties);
+    uniformBuffer.update(&uniformColor);
+
+    VkDescriptorBufferInfo uboInfo {};
+    uboInfo.buffer = uniformBuffer.getHandle();
+    uboInfo.offset = 0;
+    uboInfo.range = sizeof(Vector3);
+
+    VkWriteDescriptorSet descriptorWrite = {};
+    descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+    descriptorWrite.dstSet = descriptorSet;
+    descriptorWrite.dstBinding = 0;
+    descriptorWrite.dstArrayElement = 0;
+    descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    descriptorWrite.descriptorCount = 1;
+    descriptorWrite.pBufferInfo = &uboInfo;
+    descriptorWrite.pImageInfo = nullptr; // Optional
+    descriptorWrite.pTexelBufferView = nullptr; // Optional
+
+    vkUpdateDescriptorSets(device, 1, &descriptorWrite, 0, nullptr);
+
+    recordCommandBuffers([&](VkCommandBuffer buf)
+    {
+        pipeline.bind(buf);
+
+        VkDeviceSize offset = 0;
+        auto& buffer = vertexBuffer.getHandle();
+	    vkCmdBindVertexBuffers(buf, 0, 1, &buffer, &offset);
+
+        vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline.getLayoutHandle(), 0, 1, &descriptorSet, 0, nullptr);
+
+        vkCmdDraw(buf, static_cast<uint32_t>(triangle1.size()), 1, 0, 0);
+    });
 }
 
 
@@ -259,7 +388,7 @@ void VulkanRenderer::renderTest()
 }
 
 
-void VulkanRenderer::buildCommandBuffers()
+void VulkanRenderer::recordCommandBuffers(std::function<void(VkCommandBuffer)> commands)
 {
     static VkClearColorValue defaultClearColor = {{0.5f, 0.1f, 0.1f, 1.0f}};
 
@@ -303,6 +432,8 @@ void VulkanRenderer::buildCommandBuffers()
 
             vkCmdSetViewport(renderCmdBuffers[i], 0, 1, &viewport);
             vkCmdSetScissor(renderCmdBuffers[i], 0, 1, &scissor);
+
+            commands(buf);
 
             vkCmdEndRenderPass(buf);
         });
