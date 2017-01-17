@@ -20,6 +20,8 @@
 
 #include "SoloVulkanRenderer.h"
 #include "SoloSDLVulkanDevice.h"
+// TODO remove?
+#include "SoloVector3.h"
 
 #ifdef SL_VULKAN_RENDERER
 
@@ -244,6 +246,100 @@ void VulkanRenderer::initFrameBuffers()
     frameBuffers.resize(count);
     for (auto i = 0; i < count; i++)
         frameBuffers[i] = vk::createFrameBuffer(device, swapchainBuffers[i].imageView, depthStencil.view, renderPass, canvasWidth, canvasHeight);
+}
+
+
+void VulkanRenderer::initTest()
+{
+    struct {
+		VkDeviceMemory memory;															// Handle to the device memory for this buffer
+		VkBuffer buffer;																// Handle to the Vulkan buffer object that the memory is bound to
+		VkPipelineVertexInputStateCreateInfo inputState;
+		VkVertexInputBindingDescription inputBinding;
+		std::vector<VkVertexInputAttributeDescription> inputAttributes;
+	} vertices;
+
+    struct Vertex
+    {
+        Vector3 position;
+        Vector3 color;
+    };
+
+    vertices.inputBinding.binding = 0;
+    vertices.inputBinding.stride = sizeof(Vector3);
+    vertices.inputBinding.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+
+    // Inpute attribute binding describe shader attribute locations and memory layouts
+	// These match the following shader layout (see triangle.vert):
+	//	layout (location = 0) in vec3 inPos;
+	//	layout (location = 1) in vec3 inColor;
+	vertices.inputAttributes.resize(2);
+	
+    // Attribute location 0: Position
+	vertices.inputAttributes[0].binding = 0;
+	vertices.inputAttributes[0].location = 0;
+	vertices.inputAttributes[0].format = VK_FORMAT_R32G32B32_SFLOAT;
+	vertices.inputAttributes[0].offset = offsetof(Vertex, position);
+
+	// Attribute location 1: Color
+	vertices.inputAttributes[1].binding = 0;
+	vertices.inputAttributes[1].location = 1;
+	vertices.inputAttributes[1].format = VK_FORMAT_R32G32B32_SFLOAT;
+	vertices.inputAttributes[1].offset = offsetof(Vertex, color);
+
+	// Assign to the vertex input state used for pipeline creation
+	vertices.inputState.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+	vertices.inputState.pNext = nullptr;
+	vertices.inputState.flags = 0;
+	vertices.inputState.vertexBindingDescriptionCount = 1;
+	vertices.inputState.pVertexBindingDescriptions = &vertices.inputBinding;
+	vertices.inputState.vertexAttributeDescriptionCount = static_cast<uint32_t>(vertices.inputAttributes.size());
+	vertices.inputState.pVertexAttributeDescriptions = vertices.inputAttributes.data();
+
+
+    // Uniform buffers
+
+    // Prepare and initialize a uniform buffer block containing shader uniforms
+	// Single uniforms like in OpenGL are no longer present in Vulkan. All Shader uniforms are passed via uniform buffer blocks
+	VkMemoryRequirements memReqs;
+
+	// Vertex shader uniform buffer block
+	VkBufferCreateInfo bufferInfo{};
+	VkMemoryAllocateInfo allocInfo{};
+	allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+	allocInfo.pNext = nullptr;
+	allocInfo.allocationSize = 0;
+	allocInfo.memoryTypeIndex = 0;
+
+	bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+	bufferInfo.size = sizeof(uboVS);
+	// This buffer will be used as a uniform buffer
+	bufferInfo.usage = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
+
+	// Create a new buffer
+	VK_CHECK_RESULT(vkCreateBuffer(device, &bufferInfo, nullptr, &uniformBufferVS.buffer));
+	// Get memory requirements including size, alignment and memory type 
+	vkGetBufferMemoryRequirements(device, uniformBufferVS.buffer, &memReqs);
+	allocInfo.allocationSize = memReqs.size;
+	// Get the memory type index that supports host visibile memory access
+	// Most implementations offer multiple memory types and selecting the correct one to allocate memory from is crucial
+	// We also want the buffer to be host coherent so we don't have to flush (or sync after every update.
+	// Note: This may affect performance so you might not want to do this in a real world application that updates buffers on a regular base
+	allocInfo.memoryTypeIndex = getMemoryTypeIndex(memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+	// Allocate memory for the uniform buffer
+	VK_CHECK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, &(uniformBufferVS.memory)));
+	// Bind memory to buffer
+	VK_CHECK_RESULT(vkBindBufferMemory(device, uniformBufferVS.buffer, uniformBufferVS.memory, 0));
+		
+	// Store information in the uniform's descriptor that is used by the descriptor set
+	uniformBufferVS.descriptor.buffer = uniformBufferVS.buffer;
+	uniformBufferVS.descriptor.offset = 0;
+	uniformBufferVS.descriptor.range = sizeof(uboVS);
+}
+
+
+void VulkanRenderer::renderTest()
+{
 }
 
 

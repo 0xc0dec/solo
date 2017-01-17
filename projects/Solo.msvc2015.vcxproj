@@ -92,6 +92,7 @@
     <ClInclude Include="..\src\solo\platform\sdl\SoloSDLInputMaps.h" />
     <ClInclude Include="..\src\solo\platform\vulkan\SoloSDLVulkanDevice.h" />
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkan.h" />
+    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanBuffer.h" />
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanPipeline.h" />
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanRenderer.h" />
     <ClInclude Include="..\src\solo\SoloMaterialParameter.h" />
@@ -117,6 +118,7 @@
     <ClCompile Include="..\src\solo\platform\sdl\SoloSDLDevice.cpp" />
     <ClCompile Include="..\src\solo\platform\vulkan\SoloSDLVulkanDevice.cpp" />
     <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkan.cpp" />
+    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanBuffer.cpp" />
     <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanPipeline.cpp" />
     <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanRenderer.cpp" />
     <ClCompile Include="..\src\solo\SoloBoxCollider.cpp" />
