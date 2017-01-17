@@ -38,7 +38,7 @@ static auto createRenderCmdBuffers(uint32_t count, VkDevice device, VkCommandPoo
 
     SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(device, &allocInfo, buffers.data()));
 
-    return std::move(buffers);
+    return buffers;
 }
 
 
