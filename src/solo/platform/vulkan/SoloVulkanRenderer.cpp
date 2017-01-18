@@ -71,9 +71,8 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     depthStencil = vk::createDepthStencil(device, memProperties, depthFormat, canvasWidth, canvasHeight);
     renderPass = vk::createRenderPass(device, colorFormat, depthFormat);
     
-    swapchain = std::make_shared<VulkanSwapchain>(device, physicalDevice, surface, this->canvasWidth, this->canvasHeight,
-        engineDevice->getSetup().vsync, colorFormat, colorSpace);
-    initFrameBuffers();
+    swapchain = std::make_shared<VulkanSwapchain>(device, physicalDevice, surface, renderPass, depthStencil.view,
+        this->canvasWidth, this->canvasHeight, engineDevice->getSetup().vsync, colorFormat, colorSpace);
     
     renderCmdBuffers.resize(swapchain->getSegmentCount());
     vk::createCommandBuffers(device, commandPool, swapchain->getSegmentCount(), renderCmdBuffers.data());
@@ -83,9 +82,6 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
 VulkanRenderer::~VulkanRenderer()
 {
     vkFreeCommandBuffers(device, commandPool, renderCmdBuffers.size(), renderCmdBuffers.data());
-
-    for (size_t i = 0; i < frameBuffers.size(); ++i)
-        vkDestroyFramebuffer(device, frameBuffers[i], nullptr);
 
     swapchain.reset();
 
@@ -153,15 +149,6 @@ void VulkanRenderer::endFrame()
     SL_CHECK_VK_RESULT(vkQueuePresentKHR(queue, &presentInfo));
 
     SL_CHECK_VK_RESULT(vkQueueWaitIdle(queue));
-}
-
-
-void VulkanRenderer::initFrameBuffers()
-{
-    auto count = swapchain->getSegmentCount();
-    frameBuffers.resize(count);
-    for (auto i = 0; i < count; i++)
-        frameBuffers[i] = vk::createFrameBuffer(device, swapchain->getImageView(i), depthStencil.view, renderPass, canvasWidth, canvasHeight);
 }
 
 
@@ -319,7 +306,7 @@ void VulkanRenderer::recordCommandBuffers(std::function<void(VkCommandBuffer)> c
     // TODO this is only for testing
     for (size_t i = 0; i < renderCmdBuffers.size(); i++)
     {
-        renderPassBeginInfo.framebuffer = frameBuffers[i];
+        renderPassBeginInfo.framebuffer = swapchain->getFramebuffer(i);
 
         vk::recordCommandBuffer(renderCmdBuffers[i], [=](VkCommandBuffer buf)
         {

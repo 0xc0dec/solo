@@ -25,8 +25,8 @@
 using namespace solo;
 
 
-VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface,
-    uint32_t width, uint32_t height, bool vsync, VkFormat colorFormat, VkColorSpaceKHR colorSpace):
+VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, VkRenderPass renderPass,
+    VkImageView depthStencilView, uint32_t width, uint32_t height, bool vsync, VkFormat colorFormat, VkColorSpaceKHR colorSpace):
     device(device)
 {
     VkSurfaceCapabilitiesKHR capabilities;
@@ -98,7 +98,7 @@ VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevic
     images.resize(imageCount);
     SL_CHECK_VK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, images.data()));
 
-    buffers.resize(imageCount);
+    steps.resize(imageCount);
 
     for (uint32_t i = 0; i < imageCount; i++)
     {
@@ -122,17 +122,22 @@ VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevic
         imageViewInfo.flags = 0;
         imageViewInfo.image = images[i];
 
-        buffers[i].image = images[i];
+        steps[i].image = images[i];
 
-        SL_CHECK_VK_RESULT(vkCreateImageView(device, &imageViewInfo, nullptr, &buffers[i].imageView));
+        SL_CHECK_VK_RESULT(vkCreateImageView(device, &imageViewInfo, nullptr, &steps[i].imageView));
+
+        steps[i].framebuffer = vk::createFrameBuffer(device, steps[i].imageView, depthStencilView, renderPass, width, height);
     }
 }
 
 
 VulkanSwapchain::~VulkanSwapchain()
 {
-    for (auto &buf : buffers)
-        vkDestroyImageView(device, buf.imageView, nullptr);
+    for (auto &step : steps)
+    {
+        vkDestroyFramebuffer(device, step.framebuffer, nullptr);
+        vkDestroyImageView(device, step.imageView, nullptr);
+    }
     vkDestroySwapchainKHR(device, swapchain, nullptr);
 }
 

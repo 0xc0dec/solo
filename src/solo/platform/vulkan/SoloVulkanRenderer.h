@@ -61,12 +61,10 @@ namespace solo
         VkRenderPass renderPass = nullptr;
         vk::DepthStencil depthStencil;
         std::vector<VkCommandBuffer> renderCmdBuffers;
-        std::vector<VkFramebuffer> frameBuffers;
         uint32_t currentBuffer = 0;
 
         sptr<VulkanSwapchain> swapchain;
 
-        void initFrameBuffers();
         void initTest(Device *engineDevice);
         void renderTest();
         void recordCommandBuffers(std::function<void(VkCommandBuffer)> commands);

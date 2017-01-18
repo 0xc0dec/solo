@@ -34,26 +34,28 @@ namespace solo
     public:
         SL_DISABLE_COPY_AND_MOVE(VulkanSwapchain)
 
-        VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface,
-            uint32_t width, uint32_t height, bool vsync, VkFormat colorFormat, VkColorSpaceKHR colorSpace);
+            VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, VkRenderPass renderPass,
+                VkImageView depthStencilView, uint32_t width, uint32_t height, bool vsync, VkFormat colorFormat, VkColorSpaceKHR colorSpace);
         ~VulkanSwapchain();
 
-        auto getHandle() const -> VkSwapchainKHR const&;
-        auto getSegmentCount() const -> uint32_t;
-        auto getImageView(uint32_t idx) -> VkImageView;
+        auto getHandle() const->VkSwapchainKHR const&;
+        auto getSegmentCount() const->uint32_t;
+        auto getImageView(uint32_t idx)->VkImageView;
+        auto getFramebuffer(uint32_t idx) const->VkFramebuffer;
 
-        auto getNextImageIndex(VkSemaphore semaphore) const -> uint32_t;
+        auto getNextImageIndex(VkSemaphore semaphore) const->uint32_t;
 
     private:
-        struct SwapchainBuffer
+        struct SwapchainStep
         {
             VkImage image = nullptr;
             VkImageView imageView = nullptr;
+            VkFramebuffer framebuffer = nullptr;
         };
 
         VkDevice device = nullptr;
         VkSwapchainKHR swapchain = nullptr;
-        std::vector<SwapchainBuffer> buffers;
+        std::vector<SwapchainStep> steps;
     };
 
     inline auto VulkanSwapchain::getHandle() const -> VkSwapchainKHR const&
@@ -63,12 +65,17 @@ namespace solo
 
     inline auto VulkanSwapchain::getSegmentCount() const -> uint32_t
     {
-        return buffers.size();
+        return steps.size();
     }
 
     inline auto VulkanSwapchain::getImageView(uint32_t idx) -> VkImageView
     {
-        return buffers[idx].imageView;
+        return steps[idx].imageView;
+    }
+
+    inline auto VulkanSwapchain::getFramebuffer(uint32_t idx) const->VkFramebuffer
+    {
+        return steps[idx].framebuffer;
     }
 }
 
