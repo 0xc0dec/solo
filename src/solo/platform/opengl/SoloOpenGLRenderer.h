@@ -21,14 +21,14 @@
 #pragma once
 
 #include "SoloCommon.h"
-#include "SoloRenderer.h"
-#include "SoloVertexFormat.h"
-#include <vector>
-#include <unordered_map>
 
 #ifdef SL_OPENGL_RENDERER
 
+#include "SoloRenderer.h"
+#include "SoloVertexFormat.h"
 #include <GL/glew.h>
+#include <vector>
+#include <unordered_map>
 
 namespace solo
 {

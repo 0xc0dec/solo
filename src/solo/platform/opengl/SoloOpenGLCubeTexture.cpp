@@ -18,11 +18,12 @@
     3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "SoloOpenGLCubeTexture.h"
-#include "SoloDevice.h"
-
+#include "SoloCommon.h"
 
 #ifdef SL_OPENGL_RENDERER
+
+#include "SoloOpenGLCubeTexture.h"
+#include "SoloDevice.h"
 
 using namespace solo;
 

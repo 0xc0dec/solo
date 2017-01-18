@@ -19,11 +19,11 @@
 */
 
 #include "SoloOpenGLMaterial.h"
-#include "SoloDevice.h"
-#include "SoloOpenGLRenderer.h"
-
 
 #ifdef SL_OPENGL_RENDERER
+
+#include "SoloDevice.h"
+#include "SoloOpenGLRenderer.h"
 
 using namespace solo;
 

@@ -20,6 +20,8 @@
 
 #include "SoloVulkanDescriptorPool.h"
 
+#ifdef SL_VULKAN_RENDERER
+
 using namespace solo;
 
 
@@ -89,3 +91,5 @@ void VulkanDescriptorPool::cleanup()
         vkDestroyDescriptorPool(device, pool, nullptr);
     pool = nullptr;
 }
+
+#endif

@@ -18,8 +18,11 @@
     3. This notice may not be removed or altered from any source distribution.
 */
 
+#include "SoloCommon.h"
+
+#ifdef SL_OPENGL_RENDERER
+
 #include "SoloOpenGLMaterialParameter.h"
-#include "SoloDevice.h"
 #include "SoloEffect.h"
 #include "SoloVector2.h"
 #include "SoloVector3.h"
@@ -30,9 +33,6 @@
 #include "SoloTransform.h"
 #include "SoloCamera.h"
 #include "SoloOpenGLEffect.h"
-
-
-#ifdef SL_OPENGL_RENDERER
 
 namespace solo
 {

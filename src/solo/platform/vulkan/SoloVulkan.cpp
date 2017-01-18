@@ -19,15 +19,14 @@
 */
 
 #include "SoloVulkan.h"
+
+#ifdef SL_VULKAN_RENDERER
+
 #include <vector>
 #include <array>
 #include <tuple>
 
-
-#ifdef SL_VULKAN_RENDERER
-
 using namespace solo;
-
 
     
 auto vk::createDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -> VkDevice

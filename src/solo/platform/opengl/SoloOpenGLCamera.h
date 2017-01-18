@@ -20,10 +20,11 @@
 
 #pragma once
 
-#include "SoloCamera.h"
-
+#include "SoloCommon.h"
 
 #ifdef SL_OPENGL_RENDERER
+
+#include "SoloCamera.h"
 
 namespace solo
 {

@@ -20,6 +20,8 @@
 
 #include "SoloVulkanPipeline.h"
 
+#ifdef SL_VULKAN_RENDERER
+
 using namespace solo;
 
 
@@ -173,3 +175,5 @@ void VulkanPipeline::bind(VkCommandBuffer cmdBuf)
 {
     vkCmdBindPipeline(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline);
 }
+
+#endif

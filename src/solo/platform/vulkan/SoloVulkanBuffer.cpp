@@ -22,6 +22,8 @@
 
 #include "SoloVulkanBuffer.h"
 
+#ifdef SL_VULKAN_RENDERER
+
 using namespace solo;
 
 
@@ -148,3 +150,5 @@ void VulkanBuffer::cleanup()
         buffer = nullptr;
     }
 }
+
+#endif

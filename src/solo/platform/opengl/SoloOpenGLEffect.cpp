@@ -19,11 +19,11 @@
 */
 
 #include "SoloOpenGLEffect.h"
-#include "SoloDevice.h"
-#include "SoloOpenGLPrefabShaders.h"
-
 
 #ifdef SL_OPENGL_RENDERER
+
+#include "SoloDevice.h"
+#include "SoloOpenGLPrefabShaders.h"
 
 using namespace solo;
 

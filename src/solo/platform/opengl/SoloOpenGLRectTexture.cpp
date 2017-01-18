@@ -19,10 +19,10 @@
 */
 
 #include "SoloOpenGLRectTexture.h"
-#include "SoloDevice.h"
-
 
 #ifdef SL_OPENGL_RENDERER
+
+#include "SoloDevice.h"
 
 using namespace solo;
 

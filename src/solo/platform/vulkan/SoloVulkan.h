@@ -21,10 +21,11 @@
 #pragma once
 
 #include "SoloCommon.h"
-#include <vector>
-#include <functional>
 
 #ifdef SL_VULKAN_RENDERER
+
+#include <vector>
+#include <functional>
 
 #ifdef SL_WINDOWS
 #   define VK_USE_PLATFORM_WIN32_KHR

@@ -20,6 +20,8 @@
 
 #include "SoloVulkanDescriptorSetLayoutBuilder.h"
 
+#ifdef SL_VULKAN_RENDERER
+
 using namespace solo;
 
 
@@ -53,3 +55,5 @@ auto VulkanDescriptorSetLayoutBuilder::build() -> VkDescriptorSetLayout
     SL_CHECK_VK_RESULT(vkCreateDescriptorSetLayout(device, &layoutInfo, nullptr, &result));
     return result;
 }
+
+#endif

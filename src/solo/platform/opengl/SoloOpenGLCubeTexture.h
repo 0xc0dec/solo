@@ -20,11 +20,12 @@
 
 #pragma once
 
-#include "SoloCubeTexture.h"
-#include "SoloOpenGLRenderer.h"
-
+#include "SoloCommon.h"
 
 #ifdef SL_OPENGL_RENDERER
+
+#include "SoloCubeTexture.h"
+#include "SoloOpenGLRenderer.h"
 
 namespace solo
 {

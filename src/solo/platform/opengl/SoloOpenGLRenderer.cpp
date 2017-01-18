@@ -19,13 +19,13 @@
 */
 
 #include "SoloOpenGLRenderer.h"
+
+#ifdef SL_OPENGL_RENDERER
+
 #include "SoloDevice.h"
 #include "SoloLogger.h"
 #include <algorithm>
 #include <unordered_map>
-
-
-#ifdef SL_OPENGL_RENDERER
 
 using namespace solo;
 

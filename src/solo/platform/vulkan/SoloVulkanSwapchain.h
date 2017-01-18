@@ -25,41 +25,52 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloVulkan.h"
+#include <vector>
 
 namespace solo
 {
-    class VulkanBuffer
+    class VulkanSwapchain
     {
     public:
-        VulkanBuffer() {}
-        VulkanBuffer(VkDevice device, VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties,
-            VkPhysicalDeviceMemoryProperties memProps);
-        VulkanBuffer(VulkanBuffer&& other) noexcept;
-        VulkanBuffer(const VulkanBuffer& other) = delete;
+        SL_DISABLE_COPY_AND_MOVE(VulkanSwapchain)
 
-        ~VulkanBuffer();
+        VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface,
+            uint32_t width, uint32_t height, bool vsync, VkFormat colorFormat, VkColorSpaceKHR colorSpace);
+        ~VulkanSwapchain();
 
-        auto operator=(const VulkanBuffer& other) -> VulkanBuffer& = delete;
-        auto operator=(VulkanBuffer&& other) noexcept -> VulkanBuffer&;
+        auto getHandle() const -> VkSwapchainKHR const&;
+        auto getSegmentCount() const -> uint32_t;
+        auto getImageView(uint32_t idx) -> VkImageView;
 
-        auto getHandle() -> VkBuffer&;
-
-        void update(void* newData) const;
-        void transferTo(const VulkanBuffer& other, VkQueue queue, VkCommandPool cmdPool) const;
+        auto getNextImageIndex(VkSemaphore semaphore) const -> uint32_t;
 
     private:
-        void cleanup();
+        struct SwapchainBuffer
+        {
+            VkImage image = nullptr;
+            VkImageView imageView = nullptr;
+        };
 
         VkDevice device = nullptr;
-        VkBuffer buffer = nullptr;
-        VkDeviceMemory memory = nullptr;
-        VkDeviceSize size = 0;
+        VkSwapchainKHR swapchain = nullptr;
+        std::vector<SwapchainBuffer> buffers;
     };
 
-    inline auto VulkanBuffer::getHandle() -> VkBuffer&
+    inline auto VulkanSwapchain::getHandle() const -> VkSwapchainKHR const&
     {
-        return buffer;
+        return swapchain;
+    }
+
+    inline auto VulkanSwapchain::getSegmentCount() const -> uint32_t
+    {
+        return buffers.size();
+    }
+
+    inline auto VulkanSwapchain::getImageView(uint32_t idx) -> VkImageView
+    {
+        return buffers[idx].imageView;
     }
 }
+
 
 #endif

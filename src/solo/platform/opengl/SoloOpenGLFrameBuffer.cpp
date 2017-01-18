@@ -19,12 +19,12 @@
 */
 
 #include "SoloOpenGLFrameBuffer.h"
+
+#ifdef SL_OPENGL_RENDERER
+
 #include "SoloDevice.h"
 #include "SoloRectTexture.h"
 #include "SoloOpenGLRectTexture.h"
-
-
-#ifdef SL_OPENGL_RENDERER
 
 using namespace solo;
 

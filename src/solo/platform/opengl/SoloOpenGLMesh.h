@@ -20,11 +20,12 @@
 
 #pragma once
 
-#include "SoloMesh.h"
-#include "SoloOpenGLRenderer.h"
-
+#include "SoloCommon.h"
 
 #ifdef SL_OPENGL_RENDERER
+
+#include "SoloMesh.h"
+#include "SoloOpenGLRenderer.h"
 
 namespace solo
 {

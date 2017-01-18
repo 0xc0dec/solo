@@ -20,6 +20,10 @@
 
 #pragma once
 
+#include "SoloCommon.h"
+
+#ifdef SL_VULKAN_RENDERER
+
 #include "SoloVulkan.h"
 
 namespace solo
@@ -40,3 +44,5 @@ namespace solo
         std::vector<VkDescriptorSetLayoutBinding> bindings;
     };
 }
+
+#endif

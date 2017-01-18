@@ -18,13 +18,14 @@
     3. This notice may not be removed or altered from any source distribution.
 */
 
+#include "SoloCommon.h"
+
+#ifdef SL_OPENGL_RENDERER
+
 #include "SoloOpenGLMesh.h"
 #include "SoloDevice.h"
 #include "SoloOpenGLEffect.h"
 #include <algorithm>
-
-
-#ifdef SL_OPENGL_RENDERER
 
 using namespace solo;
 

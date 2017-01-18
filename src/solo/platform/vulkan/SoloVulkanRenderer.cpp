@@ -19,18 +19,19 @@
 */
 
 #include "SoloVulkanRenderer.h"
+
+#ifdef SL_VULKAN_RENDERER
+
 #include "SoloSDLVulkanDevice.h"
 #include "SoloVulkanDescriptorSetLayoutBuilder.h"
 #include "SoloVulkanDescriptorPool.h"
 #include "SoloVulkanPipeline.h"
 #include "SoloVulkanBuffer.h"
+#include "SoloVulkanSwapchain.h"
 // TODO remove?
 #include "SoloVector3.h"
 #include "SoloVector4.h"
 #include "SoloFileSystem.h"
-
-
-#ifdef SL_VULKAN_RENDERER
 
 using namespace solo;
 
@@ -70,11 +71,12 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     depthStencil = vk::createDepthStencil(device, memProperties, depthFormat, canvasWidth, canvasHeight);
     renderPass = vk::createRenderPass(device, colorFormat, depthFormat);
     
-    initSwapchain(surface, engineDevice->getSetup().vsync);
+    swapchain = std::make_shared<VulkanSwapchain>(device, physicalDevice, surface, this->canvasWidth, this->canvasHeight,
+        engineDevice->getSetup().vsync, colorFormat, colorSpace);
     initFrameBuffers();
     
-    renderCmdBuffers.resize(swapchainBuffers.size());
-    vk::createCommandBuffers(device, commandPool, swapchainBuffers.size(), renderCmdBuffers.data());
+    renderCmdBuffers.resize(swapchain->getSegmentCount());
+    vk::createCommandBuffers(device, commandPool, swapchain->getSegmentCount(), renderCmdBuffers.data());
 }
 
 
@@ -85,9 +87,7 @@ VulkanRenderer::~VulkanRenderer()
     for (size_t i = 0; i < frameBuffers.size(); ++i)
         vkDestroyFramebuffer(device, frameBuffers[i], nullptr);
 
-    for (auto &buf : swapchainBuffers)
-        vkDestroyImageView(device, buf.imageView, nullptr);
-    vkDestroySwapchainKHR(device, swapchain, nullptr);
+    swapchain.reset();
 
     // Render pass
     vkDestroyRenderPass(device, renderPass, nullptr);
@@ -114,8 +114,7 @@ VulkanRenderer::~VulkanRenderer()
 bool initialized = false;
 
 
-void VulkanRenderer::
-beginFrame()
+void VulkanRenderer::beginFrame()
 {
     // TODO remove
     if (!initialized)
@@ -124,7 +123,7 @@ beginFrame()
         initialized = true;
     }
 
-    SL_CHECK_VK_RESULT(vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, presentCompleteSem, nullptr, &currentBuffer));
+    currentBuffer = swapchain->getNextImageIndex(presentCompleteSem);
 }
 
 
@@ -147,7 +146,7 @@ void VulkanRenderer::endFrame()
 	presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 	presentInfo.pNext = nullptr;
 	presentInfo.swapchainCount = 1;
-	presentInfo.pSwapchains = &swapchain;
+	presentInfo.pSwapchains = &swapchain->getHandle();
 	presentInfo.pImageIndices = &currentBuffer;
 	presentInfo.pWaitSemaphores = &renderCompleteSem;
 	presentInfo.waitSemaphoreCount = 1;
@@ -157,116 +156,12 @@ void VulkanRenderer::endFrame()
 }
 
 
-void VulkanRenderer::initSwapchain(VkSurfaceKHR surface, bool vsync)
-{
-    VkSurfaceCapabilitiesKHR capabilities;
-    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, &capabilities));
-
-    uint32_t presentModeCount;
-    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, nullptr));
-
-    std::vector<VkPresentModeKHR> presentModes(presentModeCount);
-    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, presentModes.data()));
-
-    auto width = static_cast<uint32_t>(this->canvasWidth);
-    auto height = static_cast<uint32_t>(this->canvasHeight);
-    if (capabilities.currentExtent.width != static_cast<uint32_t>(-1))
-    {
-        width = capabilities.currentExtent.width;
-        height = capabilities.currentExtent.height;
-    }
-
-    auto presentMode = VK_PRESENT_MODE_FIFO_KHR; // "vsync"
-
-    if (!vsync)
-    {
-        for (const auto mode : presentModes)
-        {
-            if (mode == VK_PRESENT_MODE_IMMEDIATE_KHR)
-                presentMode = mode;
-            if (mode == VK_PRESENT_MODE_MAILBOX_KHR)
-            {
-                presentMode = mode;
-                break;
-            }
-        }
-    }
-
-    VkSurfaceTransformFlagsKHR transformFlags;
-    if (capabilities.supportedTransforms & VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR)
-        transformFlags = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR;
-    else
-        transformFlags = capabilities.currentTransform;
-
-    auto requestedImageCount = capabilities.minImageCount + 1;
-    if (capabilities.maxImageCount > 0 && requestedImageCount > capabilities.maxImageCount)
-        requestedImageCount = capabilities.maxImageCount;
-
-    VkSwapchainCreateInfoKHR swapchainInfo{};
-    swapchainInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-    swapchainInfo.pNext = nullptr;
-    swapchainInfo.surface = surface;
-    swapchainInfo.minImageCount = requestedImageCount;
-    swapchainInfo.imageFormat = colorFormat;
-    swapchainInfo.imageColorSpace = colorSpace;
-    swapchainInfo.imageExtent = {width, height};
-    swapchainInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
-    swapchainInfo.preTransform = static_cast<VkSurfaceTransformFlagBitsKHR>(transformFlags);
-    swapchainInfo.imageArrayLayers = 1;
-    swapchainInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
-    swapchainInfo.queueFamilyIndexCount = 0;
-    swapchainInfo.pQueueFamilyIndices = nullptr;
-    swapchainInfo.presentMode = presentMode;
-    swapchainInfo.oldSwapchain = nullptr; // TODO
-    swapchainInfo.clipped = VK_TRUE;
-    swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-
-    SL_CHECK_VK_RESULT(vkCreateSwapchainKHR(device, &swapchainInfo, nullptr, &swapchain));
-
-    uint32_t imageCount = 0;
-    SL_CHECK_VK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, nullptr));
-
-    std::vector<VkImage> images;
-    images.resize(imageCount);
-    SL_CHECK_VK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, images.data()));
-
-    swapchainBuffers.resize(imageCount);
-
-    for (uint32_t i = 0; i < imageCount; i++)
-    {
-        VkImageViewCreateInfo imageViewInfo{};
-        imageViewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-        imageViewInfo.pNext = nullptr;
-        imageViewInfo.format = colorFormat;
-        imageViewInfo.components =
-        {
-            VK_COMPONENT_SWIZZLE_R,
-            VK_COMPONENT_SWIZZLE_G,
-            VK_COMPONENT_SWIZZLE_B,
-            VK_COMPONENT_SWIZZLE_A
-        };
-        imageViewInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-        imageViewInfo.subresourceRange.baseMipLevel = 0;
-        imageViewInfo.subresourceRange.levelCount = 1;
-        imageViewInfo.subresourceRange.baseArrayLayer = 0;
-        imageViewInfo.subresourceRange.layerCount = 1;
-        imageViewInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-        imageViewInfo.flags = 0;
-        imageViewInfo.image = images[i];
-
-        swapchainBuffers[i].image = images[i];
-
-        SL_CHECK_VK_RESULT(vkCreateImageView(device, &imageViewInfo, nullptr, &swapchainBuffers[i].imageView));
-    }
-}
-
-
 void VulkanRenderer::initFrameBuffers()
 {
-    auto count = swapchainBuffers.size();
+    auto count = swapchain->getSegmentCount();
     frameBuffers.resize(count);
     for (auto i = 0; i < count; i++)
-        frameBuffers[i] = vk::createFrameBuffer(device, swapchainBuffers[i].imageView, depthStencil.view, renderPass, canvasWidth, canvasHeight);
+        frameBuffers[i] = vk::createFrameBuffer(device, swapchain->getImageView(i), depthStencil.view, renderPass, canvasWidth, canvasHeight);
 }
 
 
@@ -345,7 +240,7 @@ void VulkanRenderer::initTest(Device *engineDevice)
         memProperties);
     stagingBuffer.transferTo(vertexBuffer, queue, commandPool);
 
-    auto uniformColor = Vector4(0, 0.2f, 0.8f, 1);
+    auto uniformColor = Vector4(1, 1, 0, 1);
     uniformBuffer = VulkanBuffer(device, sizeof(Vector4), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
         VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, memProperties);
     uniformBuffer.update(&uniformColor);
@@ -390,7 +285,7 @@ void VulkanRenderer::renderTest()
 
 void VulkanRenderer::recordCommandBuffers(std::function<void(VkCommandBuffer)> commands)
 {
-    static VkClearColorValue defaultClearColor = {{0.5f, 0.1f, 0.1f, 1.0f}};
+    static VkClearColorValue defaultClearColor = {{0.0f, 0.5f, 0.5f, 1.0f}};
 
     // Build
 

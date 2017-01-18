@@ -20,10 +20,11 @@
 
 #pragma once
 
-#include "../sdl/SoloSDLDevice.h"
+#include "SoloCommon.h"
 
 #ifdef SL_VULKAN_RENDERER
 
+#include "../sdl/SoloSDLDevice.h"
 #include "SoloVulkan.h"
 
 namespace solo

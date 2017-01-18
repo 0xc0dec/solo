@@ -20,10 +20,11 @@
 
 #pragma once
 
-#include "SoloMaterial.h"
-
+#include "SoloCommon.h"
 
 #ifdef SL_OPENGL_RENDERER
+
+#include "SoloMaterial.h"
 
 namespace solo
 {
