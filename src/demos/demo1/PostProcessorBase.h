@@ -48,7 +48,7 @@ protected:
     {
         mat->setTextureParameter("mainTex", inputTexture);
         quadRenderer->setMaterial(0, mat);
-        camera->setViewport(viewport.x, viewport.y, viewport.z, viewport.w);
+        camera->setViewport({viewport.x, viewport.y, viewport.z, viewport.w});
         camera->setRenderTarget(target);
         camera->render([=](const RenderContext &ctx) { quadRenderer->render(ctx);});
     }

@@ -49,7 +49,7 @@ private:
         transform->lookAt({}, Vector3::unitY());
 
         camera = node->addComponent<Camera>();
-        camera->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
+        camera->setClearColor({0.0f, 0.6f, 0.6f, 1.0f});
         camera->setNear(0.05f);
 
         node->addComponent<Spectator>();

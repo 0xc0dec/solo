@@ -132,7 +132,7 @@ private:
         node->addComponent<Spawner>(cubeMesh);
 
         mainCamera = node->addComponent<Camera>();
-        mainCamera->setClearColor(0.0f, 0.6f, 0.6f, 1.0f);
+        mainCamera->setClearColor({0.0f, 0.6f, 0.6f, 1.0f});
         mainCamera->setNear(0.05f);
     }
 
@@ -148,9 +148,9 @@ private:
         node->findComponent<Transform>()->setLocalPosition({0, 0, 10});
 
         offscreenCamera = node->addComponent<Camera>();
-        offscreenCamera->setClearColor(1, 0, 1, 1);
+        offscreenCamera->setClearColor({1, 0, 1, 1});
         offscreenCamera->setNear(0.05f);
-        offscreenCamera->setViewport(0, 0, canvasSize.x / 8, canvasSize.y / 8);
+        offscreenCamera->setViewport({0, 0, canvasSize.x / 8, canvasSize.y / 8});
 
         auto fb = FrameBuffer::create(device);
         fb->setAttachments({offscreenCameraTex});

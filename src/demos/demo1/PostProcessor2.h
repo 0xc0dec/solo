@@ -63,21 +63,21 @@ public:
         material->setVector2Parameter("stitchCount", stitchCount);
         material->setVector2Parameter("resolution", offscreenRes);
 
-        camera->setViewport(0, 0, offscreenRes.x, offscreenRes.y);
+        camera->setViewport({0, 0, offscreenRes.x, offscreenRes.y});
         camera->setRenderTarget(fb1);
     }
 
     ~PostProcessor2()
     {
         camera->setRenderTarget(nullptr);
-        camera->setViewport(0, 0, canvasSize.x, canvasSize.y);
+        camera->setViewport({0, 0, canvasSize.x, canvasSize.y});
     }
     
     void apply() const
     {
         renderStep(material, fbTex, nullptr, {0, 0, canvasSize.x, canvasSize.y});
 
-        camera->setViewport(0, 0, offscreenRes.x, offscreenRes.y);
+        camera->setViewport({0, 0, offscreenRes.x, offscreenRes.y});
         camera->setRenderTarget(fb1);
     }
 

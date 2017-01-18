@@ -55,7 +55,7 @@ namespace solo
         void setRenderTarget(sptr<FrameBuffer> target);
 
         auto getClearColor() const -> Vector4;
-        void setClearColor(float r, float g, float b, float a); // TODO accept vector
+        void setClearColor(const Vector4 &color);
 
         bool getClearColorFlag() const;
         void setClearColorFlag(bool clear);
@@ -65,7 +65,7 @@ namespace solo
 
         auto getViewport() const -> Vector4;
         // Pass -1 values to reset viewport to default
-        void setViewport(float left, float top, float width, float height); // TODO accept vector
+        void setViewport(const Vector4 &rect);
 
         bool isPerspective() const;
         void setPerspective(bool perspective);
@@ -140,9 +140,9 @@ namespace solo
         return body.get();
     }
 
-    inline void Camera::setClearColor(float r, float g, float b, float a)
+    inline void Camera::setClearColor(const Vector4& color)
     {
-        clearColor = Vector4(r, g, b, a);
+        clearColor = color;
     }
 
     inline bool Camera::isPerspective() const
@@ -205,9 +205,9 @@ namespace solo
         return viewport;
     }
 
-    inline void Camera::setViewport(float left, float top, float width, float height)
+    inline void Camera::setViewport(const Vector4 &rect)
     {
-        viewport = Vector4(left, top, width, height);
+        viewport = rect;
     }
 
     inline auto Camera::getTransform() const -> Transform*
