@@ -29,14 +29,15 @@ namespace solo
     {
     public:
         SL_DISABLE_COPY_AND_MOVE(VulkanPipeline)
+
         VulkanPipeline(VkDevice device, VkRenderPass renderPass);
         ~VulkanPipeline();
 
         VkPipeline getHandle() const;
         VkPipelineLayout getLayoutHandle() const;
 
-        void setVertexShader(VkShaderModule shader, const char* entryPoint);
-        void setFragmentShader(VkShaderModule shader, const char* entryPoint);
+        void setVertexShader(VkShaderModule shader, const char *entryPoint);
+        void setFragmentShader(VkShaderModule shader, const char *entryPoint);
 
         void setVertexAttribute(uint32_t location, uint32_t binding, VkFormat format, uint32_t offset);
         void resetVertexAttributes();
