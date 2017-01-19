@@ -41,7 +41,8 @@ Device *engineDevice = nullptr;
 
 VulkanRenderer::VulkanRenderer(Device *engineDevice):
     canvasWidth(engineDevice->getSetup().canvasWidth),
-    canvasHeight(engineDevice->getSetup().canvasHeight)
+    canvasHeight(engineDevice->getSetup().canvasHeight),
+    clearColor(0, 0, 0, 1)
 {
     ::engineDevice = engineDevice; // TODO remove
 
@@ -106,6 +107,13 @@ VulkanRenderer::~VulkanRenderer()
 }
 
 
+void VulkanRenderer::setClearColor(const Vector4& color)
+{
+    clearColor = color;
+    dirty = true;
+}
+
+
 // TODO remove
 bool initialized = false;
 
@@ -115,8 +123,14 @@ void VulkanRenderer::beginFrame()
     // TODO remove
     if (!initialized)
     {
-        initTest(engineDevice);
+//        initTest(engineDevice);
         initialized = true;
+    }
+
+    if (dirty)
+    {
+        updateRenderCmdBuffers();
+        dirty = false;
     }
 
     currentBuffer = swapchain->getNextImageIndex(presentCompleteSem);
@@ -250,46 +264,37 @@ void VulkanRenderer::initTest(Device *engineDevice)
 
     vkUpdateDescriptorSets(device, 1, &descriptorWrite, 0, nullptr);
 
-    recordCommandBuffers([&](VkCommandBuffer buf)
-    {
-        pipeline.bind(buf);
-
-        VkDeviceSize offset = 0;
-        auto& buffer = vertexBuffer.getHandle();
-	    vkCmdBindVertexBuffers(buf, 0, 1, &buffer, &offset);
-
-        vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline.getLayoutHandle(), 0, 1, &descriptorSet, 0, nullptr);
-
-        vkCmdDraw(buf, static_cast<uint32_t>(triangle1.size()), 1, 0, 0);
-    });
+//    recordCommandBuffers([&](VkCommandBuffer buf)
+//    {
+//        pipeline.bind(buf);
+//
+//        VkDeviceSize offset = 0;
+//        auto& buffer = vertexBuffer.getHandle();
+//	    vkCmdBindVertexBuffers(buf, 0, 1, &buffer, &offset);
+//
+//        vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline.getLayoutHandle(), 0, 1, &descriptorSet, 0, nullptr);
+//
+//        vkCmdDraw(buf, static_cast<uint32_t>(triangle1.size()), 1, 0, 0);
+//    });
 }
 
 
-void VulkanRenderer::renderTest()
+void VulkanRenderer::updateRenderCmdBuffers()
 {
-}
-
-
-void VulkanRenderer::recordCommandBuffers(std::function<void(VkCommandBuffer)> commands)
-{
-    static VkClearColorValue defaultClearColor = {{0.0f, 0.5f, 0.5f, 1.0f}};
-
-    // Build
-
-    VkViewport viewport {};
+    VkViewport viewport{};
 	viewport.width = canvasWidth;
 	viewport.height = canvasHeight;
 	viewport.minDepth = 0;
 	viewport.maxDepth = 1;
 
-    VkRect2D scissor {};
+    VkRect2D scissor{};
     scissor.extent.width = canvasWidth;
     scissor.extent.height = canvasHeight;
     scissor.offset.x = 0;
     scissor.offset.y = 0;
 
     VkClearValue clearValues[2];
-	clearValues[0].color = defaultClearColor;
+    clearValues[0].color = {clearColor.x, clearColor.y, clearColor.z, clearColor.w};
     clearValues[1].depthStencil = {1.0f, 0};
 
     VkRenderPassBeginInfo renderPassBeginInfo{};
@@ -303,7 +308,6 @@ void VulkanRenderer::recordCommandBuffers(std::function<void(VkCommandBuffer)> c
 	renderPassBeginInfo.clearValueCount = 2;
 	renderPassBeginInfo.pClearValues = clearValues;
 
-    // TODO this is only for testing
     for (size_t i = 0; i < renderCmdBuffers.size(); i++)
     {
         renderPassBeginInfo.framebuffer = swapchain->getFramebuffer(i);
@@ -314,8 +318,6 @@ void VulkanRenderer::recordCommandBuffers(std::function<void(VkCommandBuffer)> c
 
             vkCmdSetViewport(renderCmdBuffers[i], 0, 1, &viewport);
             vkCmdSetScissor(renderCmdBuffers[i], 0, 1, &scissor);
-
-            commands(buf);
 
             vkCmdEndRenderPass(buf);
         });

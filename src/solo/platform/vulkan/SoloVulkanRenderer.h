@@ -26,6 +26,7 @@
 
 #include "SoloRenderer.h"
 #include "SoloVulkan.h"
+#include "SoloVector4.h"
 
 namespace solo
 {
@@ -38,6 +39,8 @@ namespace solo
     public:
         explicit VulkanRenderer(Device *device);
         ~VulkanRenderer();
+
+        void setClearColor(const Vector4 &color);
 
     protected:
         void beginFrame() override final;
@@ -64,10 +67,13 @@ namespace solo
         uint32_t currentBuffer = 0;
 
         sptr<VulkanSwapchain> swapchain;
+        
+        bool dirty = true;
+        Vector4 clearColor;
 
         void initTest(Device *engineDevice);
-        void renderTest();
-        void recordCommandBuffers(std::function<void(VkCommandBuffer)> commands);
+
+        void updateRenderCmdBuffers();
     };
 }
 
