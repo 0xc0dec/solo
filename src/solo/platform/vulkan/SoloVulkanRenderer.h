@@ -50,10 +50,13 @@ namespace solo
         uint32_t canvasWidth = 0;
         uint32_t canvasHeight = 0;
         
-        VkPhysicalDevice physicalDevice = nullptr;
-        VkPhysicalDeviceFeatures features;
-        VkPhysicalDeviceProperties properties;
-        VkPhysicalDeviceMemoryProperties memProperties;
+        struct
+        {
+            VkPhysicalDevice device = nullptr;
+            VkPhysicalDeviceFeatures features;
+            VkPhysicalDeviceProperties properties;
+            VkPhysicalDeviceMemoryProperties memProperties;
+        } physicalDevice;
 
         VkDevice device = nullptr;
         VkQueue queue = nullptr;

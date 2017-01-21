@@ -69,7 +69,6 @@ namespace solo
         void destroyDebugCallback(VkInstance instance, VkDebugReportCallbackEXT callback);
         auto createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
             VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil;
-        void recordCommandBuffer(VkCommandBuffer buffer, std::function<void(VkCommandBuffer)> action);
         auto createRasterizationStateInfo(bool depthClamp, bool discardEnabled, VkCullModeFlags cullMode, VkFrontFace frontFace)
             -> VkPipelineRasterizationStateCreateInfo;
         auto createMultisampleStateInfo(VkSampleCountFlagBits rasterizationSampleCount) -> VkPipelineMultisampleStateCreateInfo;

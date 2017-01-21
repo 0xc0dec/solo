@@ -411,17 +411,6 @@ auto vk::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties ph
 }
 
 
-void vk::recordCommandBuffer(VkCommandBuffer buffer, std::function<void(VkCommandBuffer)> action)
-{
-    VkCommandBufferBeginInfo beginInfo {};
-    beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-
-    SL_CHECK_VK_RESULT(vkBeginCommandBuffer(buffer, &beginInfo));
-    action(buffer);
-    SL_CHECK_VK_RESULT(vkEndCommandBuffer(buffer));
-}
-
-
 auto vk::createRasterizationStateInfo(bool depthClamp, bool discardEnabled, VkCullModeFlags cullMode, VkFrontFace frontFace)
     -> VkPipelineRasterizationStateCreateInfo
 {

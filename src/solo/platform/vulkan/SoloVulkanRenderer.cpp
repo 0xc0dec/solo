@@ -49,29 +49,29 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     auto instance = vulkanDevice->getVkInstance();
     auto surface = vulkanDevice->getVkSurface();
 
-    physicalDevice = vk::getPhysicalDevice(instance);
-    vkGetPhysicalDeviceProperties(physicalDevice, &properties);
-    vkGetPhysicalDeviceFeatures(physicalDevice, &features);
-    vkGetPhysicalDeviceMemoryProperties(physicalDevice, &memProperties);
+    physicalDevice.device = vk::getPhysicalDevice(instance);
+    vkGetPhysicalDeviceProperties(physicalDevice.device, &physicalDevice.properties);
+    vkGetPhysicalDeviceFeatures(physicalDevice.device, &physicalDevice.features);
+    vkGetPhysicalDeviceMemoryProperties(physicalDevice.device, &physicalDevice.memProperties);
 
-    auto surfaceFormats = vk::getSurfaceFormats(physicalDevice, surface);
+    auto surfaceFormats = vk::getSurfaceFormats(physicalDevice.device, surface);
     colorFormat = std::get<0>(surfaceFormats);
     colorSpace = std::get<1>(surfaceFormats);
 
-    auto queueIndex = vk::getQueueIndex(physicalDevice, surface);
+    auto queueIndex = vk::getQueueIndex(physicalDevice.device, surface);
 
-    device = vk::createDevice(physicalDevice, queueIndex);
+    device = vk::createDevice(physicalDevice.device, queueIndex);
 
     vkGetDeviceQueue(device, queueIndex, 0, &queue);
 
-    depthFormat = vk::getDepthFormat(physicalDevice);
+    depthFormat = vk::getDepthFormat(physicalDevice.device);
     semaphores.presentComplete = vk::createSemaphore(device);
     semaphores.renderComplete = vk::createSemaphore(device);
     commandPool = vk::createCommandPool(device, queueIndex);
-    depthStencil = vk::createDepthStencil(device, memProperties, depthFormat, canvasWidth, canvasHeight);
+    depthStencil = vk::createDepthStencil(device, physicalDevice.memProperties, depthFormat, canvasWidth, canvasHeight);
     renderPass = vk::createRenderPass(device, colorFormat, depthFormat);
     
-    swapchain = std::make_shared<VulkanSwapchain>(device, physicalDevice, surface, renderPass, depthStencil.view,
+    swapchain = std::make_shared<VulkanSwapchain>(device, physicalDevice.device, surface, renderPass, depthStencil.view,
         this->canvasWidth, this->canvasHeight, engineDevice->getSetup().vsync, colorFormat, colorSpace);
     
     cmdBuffers.resize(swapchain->getSegmentCount());
@@ -223,19 +223,19 @@ void VulkanRenderer::initTest(Device *engineDevice)
 
     auto stagingBuffer = VulkanBuffer(device, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
         VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-        memProperties);
+        physicalDevice.memProperties);
     stagingBuffer.update(triangle2.data());
     stagingBuffer.update(triangle1.data());
     stagingBuffer.update(triangle2.data()); // just smoking
 
     vertexBuffer = VulkanBuffer(device, sizeof(decltype(triangle1)::value_type) * triangle1.size(),
         VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-        memProperties);
+        physicalDevice.memProperties);
     stagingBuffer.transferTo(vertexBuffer, queue, commandPool);
 
     auto uniformColor = Vector4(1, 1, 0, 1);
     uniformBuffer = VulkanBuffer(device, sizeof(Vector4), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
-        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, memProperties);
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, physicalDevice.memProperties);
     uniformBuffer.update(&uniformColor);
 
     VkDescriptorBufferInfo uboInfo {};
@@ -281,15 +281,19 @@ void VulkanRenderer::updateCmdBuffers()
     {
         renderPassBeginInfo.framebuffer = swapchain->getFramebuffer(i);
 
-        vk::recordCommandBuffer(cmdBuffers[i], [=](VkCommandBuffer buf)
-        {
-            vkCmdBeginRenderPass(buf, &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
+        VkCommandBufferBeginInfo beginInfo{};
+        beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 
-            vkCmdSetViewport(buf, 0, 1, &viewport);
-            vkCmdSetScissor(buf, 0, 1, &scissor);
+        SL_CHECK_VK_RESULT(vkBeginCommandBuffer(cmdBuffers[i], &beginInfo));
 
-            vkCmdEndRenderPass(buf);
-        });
+        vkCmdBeginRenderPass(cmdBuffers[i], &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
+
+        vkCmdSetViewport(cmdBuffers[i], 0, 1, &viewport);
+        vkCmdSetScissor(cmdBuffers[i], 0, 1, &scissor);
+
+        vkCmdEndRenderPass(cmdBuffers[i]);
+
+        SL_CHECK_VK_RESULT(vkEndCommandBuffer(cmdBuffers[i]));
     }
 }
 
