@@ -30,13 +30,15 @@ namespace solo
 {
     class VulkanRenderer;
 
-    class VulkanCamera: public Camera
+    class VulkanCamera final: public Camera
     {
     public:
         explicit VulkanCamera(const Node &node);
 
     private:
         VulkanRenderer *renderer = nullptr;
+
+        void renderImpl() const override final;
     };
 }
 

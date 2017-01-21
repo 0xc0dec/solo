@@ -31,11 +31,20 @@ public:
         initCamera();
     }
 
+    void update() override final
+    {
+        auto lifetime = device->getLifetime();
+        
+        auto color = camera->getClearColor();
+        color.x = std::abs(std::sinf(lifetime));
+
+        camera->setClearColor(color);
+    }
+
     void render() override final
     {
         camera->render([&] (const RenderContext &ctx)
         {
-            
         });
     }
 

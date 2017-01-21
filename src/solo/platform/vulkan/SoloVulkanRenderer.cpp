@@ -120,24 +120,24 @@ bool initialized = false;
 void VulkanRenderer::beginFrame()
 {
     // TODO remove
-    if (!initialized)
-    {
+//    if (!initialized)
+//    {
 //        initTest(engineDevice);
-        initialized = true;
-    }
-
-    if (dirty)
-    {
-        updateRenderCmdBuffers();
-        dirty = false;
-    }
-
+//        initialized = true;
+//    }
+    
     currentBuffer = swapchain->getNextImageIndex(presentCompleteSem);
 }
 
 
 void VulkanRenderer::endFrame()
 {
+    if (dirty)
+    {
+        updateRenderCmdBuffers();
+        dirty = false;
+    }
+
     VkPipelineStageFlags submitPipelineStages = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
 
     VkSubmitInfo submitInfo{};

@@ -27,16 +27,17 @@
 #include "SoloScene.h"
 #include "SoloRenderContext.h"
 #include "platform/opengl/SoloOpenGLCamera.h"
+#include "platform/vulkan/SoloVulkanCamera.h"
 #include "platform/null/SoloNullCamera.h"
 
 using namespace solo;
 
 
 const uint32_t dirtyBitView = 1;
-const uint32_t dirtyBitProjection = 2;
-const uint32_t dirtyBitViewProjection = 4;
-const uint32_t dirtyBitInvView = 8;
-const uint32_t dirtyBitInvViewProjection = 16;
+const uint32_t dirtyBitProjection = 1 << 1;
+const uint32_t dirtyBitViewProjection = 1 << 2;
+const uint32_t dirtyBitInvView = 1 << 3;
+const uint32_t dirtyBitInvViewProjection = 1 << 4;
 
 
 auto Camera::create(const Node &node) -> sptr<Camera>
@@ -45,6 +46,8 @@ auto Camera::create(const Node &node) -> sptr<Camera>
     {
         case DeviceMode::OpenGL:
             return std::make_shared<OpenGLCamera>(node);
+        case DeviceMode::Vulkan:
+            return std::make_shared<VulkanCamera>(node);
         default:
             return std::make_shared<NullCamera>(node);
     }

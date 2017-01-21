@@ -22,12 +22,26 @@
 
 #ifdef SL_VULKAN_RENDERER
 
+#include "SoloDevice.h"
+#include "SoloVulkanRenderer.h"
+
 using namespace solo;
 
 
 VulkanCamera::VulkanCamera(const Node &node):
     Camera(node)
 {
+    renderer = dynamic_cast<VulkanRenderer*>(node.getScene()->getDevice()->getRenderer());
+}
+
+
+void VulkanCamera::renderImpl() const
+{
+    if (renderDirtyFlag)
+    {
+        renderer->setClearColor(clearColor);
+        renderDirtyFlag = false;
+    }
 }
 
 

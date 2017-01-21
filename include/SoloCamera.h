@@ -58,11 +58,11 @@ namespace solo
         auto getClearColor() const -> Vector4;
         void setClearColor(const Vector4 &color);
 
-        bool getClearColorFlag() const;
-        void setClearColorFlag(bool clear);
+        bool isClearColorEnabled() const;
+        void setClearColorEnabled(bool clear);
 
-        bool getClearDepthFlag() const;
-        void setClearDepthFlag(bool clear);
+        bool isClearDepthEnabled() const;
+        void setClearDepthEnabled(bool clear);
 
         auto getViewport() const -> Vector4;
         // Pass -1 values to reset viewport to default
@@ -102,8 +102,6 @@ namespace solo
 
         void onTransformChanged(const Transform *, uint32_t) override;
 
-        mutable uint32_t transformDirtyFlags = ~0;
-
         Device *device = nullptr;
 
         Transform *transform = nullptr;
@@ -125,6 +123,9 @@ namespace solo
         float height = 1;
         float aspectRatio = 1;
 
+        mutable uint32_t transformDirtyFlags = ~0;
+        mutable bool renderDirtyFlag = true;
+
         mutable TransformMatrix viewMatrix;
         mutable TransformMatrix projectionMatrix;
         mutable TransformMatrix viewProjectionMatrix;
@@ -132,18 +133,10 @@ namespace solo
         mutable TransformMatrix invViewProjectionMatrix;
     };
 
-    template <>
-    template <class... Args>
-    auto NodeHelper<Camera>::addComponent(Scene *scene, uint32_t nodeId, Args &&... args) -> Camera *
-    {
-        auto body = std::shared_ptr<Camera>(Camera::create(Node(scene, nodeId), std::forward<Args>(args)...));
-        scene->addComponent(nodeId, body);
-        return body.get();
-    }
-
     inline void Camera::setClearColor(const Vector4& color)
     {
         clearColor = color;
+        renderDirtyFlag = true; // TODO in other places too
     }
 
     inline bool Camera::isPerspective() const
@@ -209,6 +202,7 @@ namespace solo
     inline void Camera::setViewport(const Vector4 &rect)
     {
         viewport = rect;
+        renderDirtyFlag = true;
     }
 
     inline auto Camera::getTransform() const -> Transform*
@@ -216,23 +210,34 @@ namespace solo
         return transform;
     }
 
-    inline bool Camera::getClearColorFlag() const
+    inline bool Camera::isClearColorEnabled() const
     {
         return clearFlags.color;
     }
 
-    inline void Camera::setClearColorFlag(bool clear)
+    inline void Camera::setClearColorEnabled(bool clear)
     {
         this->clearFlags.color = clear;
+        renderDirtyFlag = true;
     }
 
-    inline bool Camera::getClearDepthFlag() const
+    inline bool Camera::isClearDepthEnabled() const
     {
         return clearFlags.depth;
     }
 
-    inline void Camera::setClearDepthFlag(bool clear)
+    inline void Camera::setClearDepthEnabled(bool clear)
     {
         this->clearFlags.depth = clear;
+        renderDirtyFlag = true;
+    }
+
+    template <>
+    template <class... Args>
+    auto NodeHelper<Camera>::addComponent(Scene *scene, uint32_t nodeId, Args &&... args) -> Camera *
+    {
+        auto body = std::shared_ptr<Camera>(Camera::create(Node(scene, nodeId), std::forward<Args>(args)...));
+        scene->addComponent(nodeId, body);
+        return body.get();
     }
 }
