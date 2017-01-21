@@ -65,8 +65,8 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     vkGetDeviceQueue(device, queueIndex, 0, &queue);
 
     depthFormat = vk::getDepthFormat(physicalDevice);
-    presentCompleteSem = vk::createSemaphore(device);
-    renderCompleteSem = vk::createSemaphore(device);
+    semaphores.presentComplete = vk::createSemaphore(device);
+    semaphores.renderComplete = vk::createSemaphore(device);
     commandPool = vk::createCommandPool(device, queueIndex);
     depthStencil = vk::createDepthStencil(device, memProperties, depthFormat, canvasWidth, canvasHeight);
     renderPass = vk::createRenderPass(device, colorFormat, depthFormat);
@@ -74,14 +74,14 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     swapchain = std::make_shared<VulkanSwapchain>(device, physicalDevice, surface, renderPass, depthStencil.view,
         this->canvasWidth, this->canvasHeight, engineDevice->getSetup().vsync, colorFormat, colorSpace);
     
-    renderCmdBuffers.resize(swapchain->getSegmentCount());
-    vk::createCommandBuffers(device, commandPool, swapchain->getSegmentCount(), renderCmdBuffers.data());
+    cmdBuffers.resize(swapchain->getSegmentCount());
+    vk::createCommandBuffers(device, commandPool, swapchain->getSegmentCount(), cmdBuffers.data());
 }
 
 
 VulkanRenderer::~VulkanRenderer()
 {
-    vkFreeCommandBuffers(device, commandPool, renderCmdBuffers.size(), renderCmdBuffers.data());
+    vkFreeCommandBuffers(device, commandPool, cmdBuffers.size(), cmdBuffers.data());
 
     swapchain.reset();
 
@@ -99,17 +99,10 @@ VulkanRenderer::~VulkanRenderer()
     // Command pool
     vkDestroyCommandPool(device, commandPool, nullptr);
 
-    vkDestroySemaphore(device, presentCompleteSem, nullptr);
-    vkDestroySemaphore(device, renderCompleteSem, nullptr);
+    vkDestroySemaphore(device, semaphores.presentComplete, nullptr);
+    vkDestroySemaphore(device, semaphores.renderComplete, nullptr);
 
     vkDestroyDevice(device, nullptr);
-}
-
-
-void VulkanRenderer::setClearColor(const Vector4& color)
-{
-    clearColor = color;
-    dirty = true;
 }
 
 
@@ -126,7 +119,7 @@ void VulkanRenderer::beginFrame()
 //        initialized = true;
 //    }
     
-    currentBuffer = swapchain->getNextImageIndex(presentCompleteSem);
+    currentBuffer = swapchain->getNextImageIndex(semaphores.presentComplete);
 }
 
 
@@ -134,7 +127,7 @@ void VulkanRenderer::endFrame()
 {
     if (dirty)
     {
-        updateRenderCmdBuffers();
+        updateCmdBuffers();
         dirty = false;
     }
 
@@ -144,11 +137,11 @@ void VulkanRenderer::endFrame()
 	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
     submitInfo.pWaitDstStageMask = &submitPipelineStages;
 	submitInfo.waitSemaphoreCount = 1;
-	submitInfo.pWaitSemaphores = &presentCompleteSem;
+	submitInfo.pWaitSemaphores = &semaphores.presentComplete;
 	submitInfo.signalSemaphoreCount = 1;
-	submitInfo.pSignalSemaphores = &renderCompleteSem;
+	submitInfo.pSignalSemaphores = &semaphores.renderComplete;
     submitInfo.commandBufferCount = 1;
-	submitInfo.pCommandBuffers = &renderCmdBuffers[currentBuffer];
+	submitInfo.pCommandBuffers = &cmdBuffers[currentBuffer];
     SL_CHECK_VK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, VK_NULL_HANDLE));
 
     VkPresentInfoKHR presentInfo{};
@@ -157,7 +150,7 @@ void VulkanRenderer::endFrame()
 	presentInfo.swapchainCount = 1;
 	presentInfo.pSwapchains = &swapchain->getHandle();
 	presentInfo.pImageIndices = &currentBuffer;
-	presentInfo.pWaitSemaphores = &renderCompleteSem;
+	presentInfo.pWaitSemaphores = &semaphores.renderComplete;
 	presentInfo.waitSemaphoreCount = 1;
     SL_CHECK_VK_RESULT(vkQueuePresentKHR(queue, &presentInfo));
 
@@ -265,23 +258,13 @@ void VulkanRenderer::initTest(Device *engineDevice)
 }
 
 
-void VulkanRenderer::updateRenderCmdBuffers()
+void VulkanRenderer::updateCmdBuffers()
 {
-    VkViewport viewport{};
-	viewport.width = canvasWidth;
-	viewport.height = canvasHeight;
-	viewport.minDepth = 0;
-	viewport.maxDepth = 1;
-
     VkRect2D scissor{};
-    scissor.extent.width = canvasWidth;
-    scissor.extent.height = canvasHeight;
-    scissor.offset.x = 0;
-    scissor.offset.y = 0;
-
-    VkClearValue clearValues[2];
-    clearValues[0].color = {clearColor.x, clearColor.y, clearColor.z, clearColor.w};
-    clearValues[1].depthStencil = {1.0f, 0};
+    scissor.extent.width = canvasWidth - 50;
+    scissor.extent.height = canvasHeight - 50;
+    scissor.offset.x = 50;
+    scissor.offset.y = 50;
 
     VkRenderPassBeginInfo renderPassBeginInfo{};
     renderPassBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
@@ -291,14 +274,14 @@ void VulkanRenderer::updateRenderCmdBuffers()
 	renderPassBeginInfo.renderArea.offset.y = 0;
 	renderPassBeginInfo.renderArea.extent.width = canvasWidth;
 	renderPassBeginInfo.renderArea.extent.height = canvasHeight;
-	renderPassBeginInfo.clearValueCount = 2;
-	renderPassBeginInfo.pClearValues = clearValues;
+	renderPassBeginInfo.clearValueCount = clearValues.size();
+	renderPassBeginInfo.pClearValues = clearValues.data();
 
-    for (size_t i = 0; i < renderCmdBuffers.size(); i++)
+    for (size_t i = 0; i < cmdBuffers.size(); i++)
     {
         renderPassBeginInfo.framebuffer = swapchain->getFramebuffer(i);
 
-        vk::recordCommandBuffer(renderCmdBuffers[i], [=](VkCommandBuffer buf)
+        vk::recordCommandBuffer(cmdBuffers[i], [=](VkCommandBuffer buf)
         {
             vkCmdBeginRenderPass(buf, &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
 
@@ -309,5 +292,40 @@ void VulkanRenderer::updateRenderCmdBuffers()
         });
     }
 }
+
+
+void VulkanRenderer::setClear(const Vector4& color, bool clearColor, bool clearDepth)
+{
+    clearValues.clear();
+
+    if (clearColor)
+    {
+        VkClearValue colorValue;
+        colorValue.color = {color.x, color.y, color.z, color.w};
+        clearValues.push_back(colorValue);
+    }
+
+    if (clearDepth)
+    {
+        VkClearValue depthValue;
+        depthValue.depthStencil = {1, 0};
+        clearValues.push_back(depthValue);
+    }
+
+    dirty = true;
+}
+
+
+void VulkanRenderer::setViewport(const Vector4& viewport)
+{
+	this->viewport.x = viewport.x;
+	this->viewport.y = viewport.y;
+	this->viewport.width = viewport.z;
+	this->viewport.height = viewport.w;
+	this->viewport.minDepth = 0;
+	this->viewport.maxDepth = 1;
+    dirty = true;
+}
+
 
 #endif

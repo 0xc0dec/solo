@@ -39,7 +39,8 @@ void VulkanCamera::renderImpl() const
 {
     if (renderDirtyFlag)
     {
-        renderer->setClearColor(clearColor);
+        renderer->setClear(clearColor, clearFlags.color, clearFlags.depth);
+        renderer->setViewport(viewport);
         renderDirtyFlag = false;
     }
 }

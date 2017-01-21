@@ -31,7 +31,6 @@
 namespace solo
 {
     class Device;
-    class Vector2;
     class VulkanSwapchain;
 
     class VulkanRenderer final: public Renderer
@@ -40,7 +39,8 @@ namespace solo
         explicit VulkanRenderer(Device *device);
         ~VulkanRenderer();
 
-        void setClearColor(const Vector4 &color);
+        void setClear(const Vector4 &color, bool clearColor, bool clearDepth);
+        void setViewport(const Vector4& viewport);
 
     protected:
         void beginFrame() override final;
@@ -49,31 +49,42 @@ namespace solo
     private:
         uint32_t canvasWidth = 0;
         uint32_t canvasHeight = 0;
-        VkDevice device = nullptr;
+        
         VkPhysicalDevice physicalDevice = nullptr;
-        VkQueue queue = nullptr;
         VkPhysicalDeviceFeatures features;
         VkPhysicalDeviceProperties properties;
         VkPhysicalDeviceMemoryProperties memProperties;
+
+        VkDevice device = nullptr;
+        VkQueue queue = nullptr;
+        VkCommandPool commandPool = nullptr;
+        VkRenderPass renderPass = nullptr;
+
+        vk::DepthStencil depthStencil;
+        
         VkFormat depthFormat = VK_FORMAT_UNDEFINED;
         VkFormat colorFormat = VK_FORMAT_UNDEFINED;
         VkColorSpaceKHR colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
-        VkSemaphore presentCompleteSem = nullptr;
-        VkSemaphore renderCompleteSem = nullptr;
-        VkCommandPool commandPool = nullptr;
-        VkRenderPass renderPass = nullptr;
-        vk::DepthStencil depthStencil;
-        std::vector<VkCommandBuffer> renderCmdBuffers;
+
+        struct
+        {
+            VkSemaphore renderComplete = nullptr;
+            VkSemaphore presentComplete = nullptr;
+        } semaphores;
+        
+        std::vector<VkCommandBuffer> cmdBuffers;
         uint32_t currentBuffer = 0;
 
         sptr<VulkanSwapchain> swapchain;
         
         bool dirty = true;
-        Vector4 clearColor = {0, 0.5, 0.5, 1};
+
+        std::vector<VkClearValue> clearValues;
+        VkViewport viewport = {1, 1, 0, 1};
 
         void initTest(Device *engineDevice);
 
-        void updateRenderCmdBuffers();
+        void updateCmdBuffers();
     };
 }
 
