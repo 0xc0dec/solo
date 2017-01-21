@@ -114,8 +114,8 @@ namespace solo
             bool depth = true;
         } clear;
 
-        Vector4 viewport{-1, -1, -1, -1};
-        Vector4 clearColor{0, 0, 0, 1};
+        Vector4 viewport = {-1, -1, -1, -1};
+        Vector4 clearColor = {0, 0.5, 0.5, 1};
         bool ortho = false;
         Radian fov;
         float nearClip = 1;
