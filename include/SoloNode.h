@@ -53,7 +53,7 @@ namespace solo
         void removeComponent();
 
     private:
-        Scene *scene;
+        Scene *scene = nullptr;
         uint32_t id;
     };
 

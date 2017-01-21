@@ -128,10 +128,9 @@ namespace solo
 
     protected:
         explicit Device(const DeviceSetup &setup);
-
+        
         virtual void beginUpdate() = 0;
         virtual void endUpdate() = 0;
-
         void initSubsystems();
         void updateTime();
 

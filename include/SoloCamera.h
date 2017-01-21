@@ -97,9 +97,8 @@ namespace solo
 
     protected:
         explicit Camera(const Node &node);
-
+        
         virtual void renderImpl() const = 0;
-
         void onTransformChanged(const Transform *, uint32_t) override;
 
         Device *device = nullptr;

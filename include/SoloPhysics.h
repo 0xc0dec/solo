@@ -36,7 +36,7 @@ namespace solo
         Vector3 point;
         Vector3 normal;
 
-        RaycastResult(RigidBody *body = nullptr, const Vector3 &point = Vector3(), const Vector3 &normal = Vector3()):
+        explicit RaycastResult(RigidBody *body = nullptr, const Vector3 &point = Vector3(), const Vector3 &normal = Vector3()):
             body(body), point(point), normal(normal)
         {
         }
@@ -61,6 +61,6 @@ namespace solo
     protected:
         Physics(Device *device, const FriendToken<Device> &);
 
-        Device *device;
+        Device *device = nullptr;
     };
 }

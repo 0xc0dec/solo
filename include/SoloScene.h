@@ -23,7 +23,6 @@
 #include "SoloCommon.h"
 #include <unordered_map>
 #include <list>
-#include <vector>
 #include <functional>
 
 

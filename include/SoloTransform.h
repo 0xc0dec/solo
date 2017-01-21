@@ -123,7 +123,6 @@ namespace solo
     private:
         void setDirtyWithChildren(uint32_t flags) const;
         void setChildrenDirty(uint32_t flags) const;
-
         void notifyChanged(uint32_t dirtyFlags) const;
 
         mutable uint32_t dirtyFlags = ~0;
