@@ -25,6 +25,7 @@
 #include "SoloTransformMatrix.h"
 #include "SoloTransform.h"
 #include "SoloNode.h"
+#include "SoloRadian.h"
 #include <functional>
 
 
@@ -101,7 +102,7 @@ namespace solo
 
         void onTransformChanged(const Transform *, uint32_t) override;
 
-        mutable uint32_t dirtyFlags = ~0;
+        mutable uint32_t transformDirtyFlags = ~0;
 
         Device *device = nullptr;
 
@@ -112,7 +113,7 @@ namespace solo
         {
             bool color = true;
             bool depth = true;
-        } clear;
+        } clearFlags;
 
         Vector4 viewport = {-1, -1, -1, -1};
         Vector4 clearColor = {0, 0.5, 0.5, 1};
@@ -217,21 +218,21 @@ namespace solo
 
     inline bool Camera::getClearColorFlag() const
     {
-        return clear.color;
+        return clearFlags.color;
     }
 
     inline void Camera::setClearColorFlag(bool clear)
     {
-        this->clear.color = clear;
+        this->clearFlags.color = clear;
     }
 
     inline bool Camera::getClearDepthFlag() const
     {
-        return clear.depth;
+        return clearFlags.depth;
     }
 
     inline void Camera::setClearDepthFlag(bool clear)
     {
-        this->clear.depth = clear;
+        this->clearFlags.depth = clear;
     }
 }
