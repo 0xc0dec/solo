@@ -69,7 +69,7 @@ namespace solo
         sptr<VulkanSwapchain> swapchain;
         
         bool dirty = true;
-        Vector4 clearColor;
+        Vector4 clearColor = {0, 0.5, 0.5, 1};
 
         void initTest(Device *engineDevice);
 

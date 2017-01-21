@@ -41,8 +41,7 @@ Device *engineDevice = nullptr;
 
 VulkanRenderer::VulkanRenderer(Device *engineDevice):
     canvasWidth(engineDevice->getSetup().canvasWidth),
-    canvasHeight(engineDevice->getSetup().canvasHeight),
-    clearColor(0, 0, 0, 1)
+    canvasHeight(engineDevice->getSetup().canvasHeight)
 {
     ::engineDevice = engineDevice; // TODO remove
 
@@ -263,19 +262,6 @@ void VulkanRenderer::initTest(Device *engineDevice)
     descriptorWrite.pTexelBufferView = nullptr; // Optional
 
     vkUpdateDescriptorSets(device, 1, &descriptorWrite, 0, nullptr);
-
-//    recordCommandBuffers([&](VkCommandBuffer buf)
-//    {
-//        pipeline.bind(buf);
-//
-//        VkDeviceSize offset = 0;
-//        auto& buffer = vertexBuffer.getHandle();
-//	    vkCmdBindVertexBuffers(buf, 0, 1, &buffer, &offset);
-//
-//        vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline.getLayoutHandle(), 0, 1, &descriptorSet, 0, nullptr);
-//
-//        vkCmdDraw(buf, static_cast<uint32_t>(triangle1.size()), 1, 0, 0);
-//    });
 }
 
 
@@ -316,8 +302,8 @@ void VulkanRenderer::updateRenderCmdBuffers()
         {
             vkCmdBeginRenderPass(buf, &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
 
-            vkCmdSetViewport(renderCmdBuffers[i], 0, 1, &viewport);
-            vkCmdSetScissor(renderCmdBuffers[i], 0, 1, &scissor);
+            vkCmdSetViewport(buf, 0, 1, &viewport);
+            vkCmdSetScissor(buf, 0, 1, &scissor);
 
             vkCmdEndRenderPass(buf);
         });
