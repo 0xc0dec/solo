@@ -43,6 +43,7 @@ LuaScriptRuntime::LuaScriptRuntime(Device *d)
 
     auto module = LuaBinding(lua).beginModule("solo");
     
+    registerDegree(module);
     registerRadian(module);
     registerVector2(module);
     registerDevice(module);

@@ -19,6 +19,7 @@
 */
 
 #include "SoloRadian.h"
+#include "SoloDegree.h"
 #include "SoloVector2.h"
 #include "SoloLuaCommon.h"
 
@@ -29,7 +30,20 @@ using namespace LuaIntf;
 void registerRadian(CppBindModule<LuaBinding> &module)
 {
     auto radian = module.beginClass<Radian>("Radian");
+    radian.addConstructor(LUA_ARGS(float));
+    REGISTER_METHOD(radian, Radian, toRawDegree);
+    REGISTER_METHOD(radian, Radian, toRawRadian);
     radian.endClass();
+}
+
+
+void registerDegree(CppBindModule<LuaBinding> &module)
+{
+    auto degree = module.beginClass<Degree>("Degree");
+    degree.addConstructor(LUA_ARGS(float));
+    REGISTER_METHOD(degree, Degree, toRawDegree);
+    REGISTER_METHOD(degree, Degree, toRawRadian);
+    degree.endClass();
 }
 
 
