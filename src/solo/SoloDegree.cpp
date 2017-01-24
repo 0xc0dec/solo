@@ -44,7 +44,7 @@ auto Degree::toRawRadian() const -> float
 }
 
 
-auto Degree::operator+(const Radian &r) -> Degree
+auto Degree::operator+(const Radian &r) const -> Degree
 {
     return Degree(raw + r.toRawDegree());
 }
@@ -57,7 +57,7 @@ auto Degree::operator+=(const Radian &r) -> Degree &
 }
 
 
-auto Degree::operator-(const Radian &r) -> Degree
+auto Degree::operator-(const Radian &r) const -> Degree
 {
     return Degree(raw - r.toRawDegree());
 }

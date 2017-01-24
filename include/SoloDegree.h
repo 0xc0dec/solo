@@ -37,12 +37,12 @@ namespace solo
         auto toRawRadian() const -> float;
 
         auto operator+(const Degree &d) const -> Degree;
-        auto operator+(const Radian &r) -> Degree;
+        auto operator+(const Radian &r) const -> Degree;
         auto operator+=(const Degree &d) -> Degree&;
         auto operator+=(const Radian &r) -> Degree&;
         auto operator-() const -> Degree;
         auto operator-(const Degree &d) const -> Degree;
-        auto operator-(const Radian &r) -> Degree;
+        auto operator-(const Radian &r) const -> Degree;
         auto operator-=(const Degree &d) -> Degree&;
         auto operator-=(const Radian &r) -> Degree&;
         auto operator*(float f) const -> Degree;
