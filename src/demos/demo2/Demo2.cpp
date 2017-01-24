@@ -29,6 +29,7 @@ public:
     explicit Demo(Device* device): DemoBase(device)
     {
         initCamera();
+        device->getScriptRuntime()->executeFile("../assets/demo2.lua");
     }
 
     void update() override final

@@ -35,3 +35,5 @@
 
 void registerDevice(LuaIntf::CppBindModule<LuaIntf::LuaBinding> &module);
 void registerLogger(LuaIntf::CppBindModule<LuaIntf::LuaBinding> &module);
+void registerRadian(LuaIntf::CppBindModule<LuaIntf::LuaBinding> &module);
+void registerVector2(LuaIntf::CppBindModule<LuaIntf::LuaBinding> &module);

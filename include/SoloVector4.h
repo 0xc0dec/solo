@@ -78,11 +78,6 @@ namespace solo
 
         auto operator/(float x) const -> Vector4;
         auto operator/=(float x) -> Vector4&;
-
-        bool operator<(const Vector4 &v) const;
-
-        bool operator==(const Vector4 &v) const;
-        bool operator!=(const Vector4 &v) const;
     };
 
     inline auto Vector4::operator+(float scalar) const -> Vector4
@@ -197,30 +192,5 @@ namespace solo
         z /= scalar;
         w /= scalar;
         return *this;
-    }
-
-    inline bool Vector4::operator<(const Vector4 &v) const
-    {
-        if (x == v.x)
-        {
-            if (y == v.y)
-            {
-                if (z == v.z)
-                    return w < v.w;
-                return z < v.z;
-            }
-            return y < v.y;
-        }
-        return x < v.x;
-    }
-
-    inline bool Vector4::operator==(const Vector4 &v) const
-    {
-        return x == v.x && y == v.y && z == v.z && w == v.w;
-    }
-
-    inline bool Vector4::operator!=(const Vector4 &v) const
-    {
-        return x != v.x || y != v.y || z != v.z || w != v.w;
     }
 }

@@ -73,11 +73,6 @@ namespace solo
 
         auto operator/(float scalar) const -> Vector2;
         auto operator/=(float scalar) -> Vector2&;
-
-        bool operator<(const Vector2 &v) const;
-
-        bool operator==(const Vector2 &v) const;
-        bool operator!=(const Vector2 &v) const;
     };
 
     inline auto Vector2::operator+(float scalar) const -> Vector2
@@ -180,22 +175,5 @@ namespace solo
         x /= scalar;
         y /= scalar;
         return *this;
-    }
-
-    inline bool Vector2::operator<(const Vector2 &v) const
-    {
-        if (x == v.x)
-            return y < v.y;
-        return x < v.x;
-    }
-
-    inline bool Vector2::operator==(const Vector2 &v) const
-    {
-        return x == v.x && y == v.y;
-    }
-
-    inline bool Vector2::operator!=(const Vector2 &v) const
-    {
-        return x != v.x || y != v.y;
     }
 }
