@@ -54,8 +54,6 @@ namespace solo
 
         bool operator<(const Radian &r) const;
         bool operator<=(const Radian &r) const;
-        bool operator==(const Radian &r) const;
-        bool operator!=(const Radian &r) const;
         bool operator>=(const Radian &r) const;
         bool operator>(const Radian &r) const;
 
@@ -146,16 +144,6 @@ namespace solo
     inline bool Radian::operator<=(const Radian &r) const
     {
         return raw <= r.raw;
-    }
-
-    inline bool Radian::operator==(const Radian &r) const
-    {
-        return raw == r.raw;
-    }
-
-    inline bool Radian::operator!=(const Radian &r) const
-    {
-        return raw != r.raw;
     }
 
     inline bool Radian::operator>=(const Radian &r) const

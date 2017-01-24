@@ -53,8 +53,6 @@ namespace solo
 
         bool operator<(const Degree &d) const;
         bool operator<=(const Degree &d) const;
-        bool operator==(const Degree &d) const;
-        bool operator!=(const Degree &d) const;
         bool operator>=(const Degree &d) const;
         bool operator>(const Degree &d) const;
 
@@ -145,16 +143,6 @@ namespace solo
     inline bool Degree::operator<=(const Degree &d) const
     {
         return raw <= d.raw;
-    }
-
-    inline bool Degree::operator==(const Degree &d) const
-    {
-        return raw == d.raw;
-    }
-
-    inline bool Degree::operator!=(const Degree &d) const
-    {
-        return raw != d.raw;
     }
 
     inline bool Degree::operator>=(const Degree &d) const
