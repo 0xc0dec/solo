@@ -44,9 +44,8 @@ namespace solo
                float m41, float m42, float m43, float m44);
 
         static auto identity() -> Matrix;
-        static auto zero() -> Matrix;
 
-        static auto size() -> size_t;
+        static auto getSize() -> size_t;
 
         bool isIdentity() const;
         auto getDeterminant() const -> float;
@@ -72,7 +71,7 @@ namespace solo
         auto operator*=(const Matrix &m) -> Matrix&;
     };
 
-    inline auto Matrix::size() -> size_t
+    inline auto Matrix::getSize() -> size_t
     {
         return sizeof(float) * 16;
     }

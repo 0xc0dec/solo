@@ -25,7 +25,7 @@
 using namespace solo;
 
 
-static const float IdentityMatrix[16] =
+static const float identityMatrix[16] =
 {
     1.0f, 0.0f, 0.0f, 0.0f,
     0.0f, 1.0f, 0.0f, 0.0f,
@@ -67,7 +67,7 @@ Matrix::Matrix(
 
 Matrix::Matrix(const Matrix &copy)
 {
-    memcpy(m, copy.m, size());
+    memcpy(m, copy.m, getSize());
 }
 
 
@@ -78,17 +78,6 @@ auto Matrix::identity() -> Matrix
         0, 1, 0, 0,
         0, 0, 1, 0,
         0, 0, 0, 1);
-    return m;
-}
-
-
-auto Matrix::zero() -> Matrix
-{
-    static Matrix m(
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0);
     return m;
 }
 
@@ -163,24 +152,23 @@ bool Matrix::invert()
 
 bool Matrix::isIdentity() const
 {
-    return memcmp(m, IdentityMatrix, size()) == 0;
+    return memcmp(m, identityMatrix, getSize()) == 0;
 }
 
 
 void Matrix::makeIdentity()
 {
-    memcpy(m, IdentityMatrix, size());
+    memcpy(m, identityMatrix, getSize());
 }
 
 
 void Matrix::makeZero()
 {
-    memset(m, 0, size());
+    memset(m, 0, getSize());
 }
 
 
 auto Matrix::operator+=(float scalar) -> Matrix &
-
 {
     m[0] += scalar;
     m[1] += scalar;
@@ -203,7 +191,6 @@ auto Matrix::operator+=(float scalar) -> Matrix &
 
 
 auto Matrix::operator+=(const Matrix &other) -> Matrix &
-
 {
     m[0] += other.m[0];
     m[1] += other.m[1];
@@ -234,12 +221,11 @@ void Matrix::transpose()
         m[2], m[6], m[10], m[14],
         m[3], m[7], m[11], m[15]
     };
-    memcpy(&m, t, size());
+    memcpy(&m, t, getSize());
 }
 
 
 auto Matrix::operator*=(float scalar) -> Matrix &
-
 {
     m[0] *= scalar;
     m[1] *= scalar;
@@ -262,7 +248,6 @@ auto Matrix::operator*=(float scalar) -> Matrix &
 
 
 auto Matrix::operator*=(const Matrix &m2) -> Matrix &
-
 {
     float product[16];
 
@@ -286,14 +271,13 @@ auto Matrix::operator*=(const Matrix &m2) -> Matrix &
     product[14] = m[2] * m2.m[12] + m[6] * m2.m[13] + m[10] * m2.m[14] + m[14] * m2.m[15];
     product[15] = m[3] * m2.m[12] + m[7] * m2.m[13] + m[11] * m2.m[14] + m[15] * m2.m[15];
 
-    memcpy(m, product, size());
+    memcpy(m, product, getSize());
 
     return *this;
 }
 
 
 auto Matrix::operator-=(float scalar) -> Matrix &
-
 {
     m[0] -= scalar;
     m[1] -= scalar;
@@ -316,7 +300,6 @@ auto Matrix::operator-=(float scalar) -> Matrix &
 
 
 auto Matrix::operator-=(const Matrix &m2) -> Matrix &
-
 {
     m[0] -= m2.m[0];
     m[1] -= m2.m[1];

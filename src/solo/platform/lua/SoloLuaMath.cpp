@@ -24,6 +24,11 @@
 #include "SoloVector3.h"
 #include "SoloVector4.h"
 #include "SoloQuaternion.h"
+#include "SoloMatrix.h"
+#include "SoloTransformMatrix.h"
+#include "SoloBoundingBox.h"
+#include "SoloBoundingSphere.h"
+#include "SoloRay.h"
 #include "SoloLuaCommon.h"
 
 using namespace solo;
@@ -195,6 +200,77 @@ static void registerDegree(CppBindModule<LuaBinding> &module)
 }
 
 
+static void registerMatrix(CppBindModule<LuaBinding> &module)
+{
+    auto matrix = module.beginClass<Matrix>("Matrix");
+    matrix.addConstructor(LUA_ARGS());
+    
+    REGISTER_STATIC_METHOD(matrix, Matrix, identity);
+    REGISTER_STATIC_METHOD(matrix, Matrix, getSize);
+    
+    REGISTER_METHOD(matrix, Matrix, isIdentity);
+    REGISTER_METHOD(matrix, Matrix, getDeterminant);
+    REGISTER_METHOD(matrix, Matrix, invert);
+    REGISTER_METHOD(matrix, Matrix, transpose);
+    REGISTER_METHOD(matrix, Matrix, makeIdentity);
+    REGISTER_METHOD(matrix, Matrix, makeZero);
+    
+    matrix.endClass();
+}
+
+
+static void registerTransformMatrix(CppBindModule<LuaBinding> &module)
+{
+    auto matrix = module.beginClass<TransformMatrix>("TransformMatrix");
+    matrix.addConstructor(LUA_ARGS());
+
+    REGISTER_STATIC_METHOD(matrix, TransformMatrix, createLookAt);
+    REGISTER_STATIC_METHOD(matrix, TransformMatrix, createPerspective);
+    REGISTER_STATIC_METHOD(matrix, TransformMatrix, createOrthographic);
+    REGISTER_STATIC_METHOD(matrix, TransformMatrix, createReflection);
+    REGISTER_STATIC_METHOD(matrix, TransformMatrix, createScale);
+    REGISTER_STATIC_METHOD(matrix, TransformMatrix, createRotationFromQuaternion);
+    REGISTER_STATIC_METHOD(matrix, TransformMatrix, createRotationFromAxisAngle);
+    REGISTER_STATIC_METHOD(matrix, TransformMatrix, createRotationX);
+    REGISTER_STATIC_METHOD(matrix, TransformMatrix, createRotationY);
+    REGISTER_STATIC_METHOD(matrix, TransformMatrix, createRotationZ);
+    REGISTER_STATIC_METHOD(matrix, TransformMatrix, createTranslation);
+
+    REGISTER_METHOD(matrix, TransformMatrix, getScale);
+    REGISTER_METHOD(matrix, TransformMatrix, getTranslation);
+    REGISTER_METHOD(matrix, TransformMatrix, getRotation);
+    
+    REGISTER_METHOD(matrix, TransformMatrix, getUpVector);
+    REGISTER_METHOD(matrix, TransformMatrix, getDownVector);
+    REGISTER_METHOD(matrix, TransformMatrix, getLeftVector);
+    REGISTER_METHOD(matrix, TransformMatrix, getRightVector);
+    REGISTER_METHOD(matrix, TransformMatrix, getForwardVector);
+    REGISTER_METHOD(matrix, TransformMatrix, getBackVector);
+
+    REGISTER_METHOD(matrix, TransformMatrix, rotateByQuaternion);
+    REGISTER_METHOD(matrix, TransformMatrix, rotateByAxisAngle);
+    REGISTER_METHOD(matrix, TransformMatrix, rotateX);
+    REGISTER_METHOD(matrix, TransformMatrix, rotateY);
+    REGISTER_METHOD(matrix, TransformMatrix, rotateZ);
+
+    REGISTER_METHOD(matrix, TransformMatrix, scaleByScalar);
+    REGISTER_METHOD(matrix, TransformMatrix, scaleByVector);
+
+    REGISTER_METHOD(matrix, TransformMatrix, translate);
+
+    REGISTER_METHOD(matrix, TransformMatrix, transformPoint);
+    REGISTER_METHOD(matrix, TransformMatrix, transformDirection);
+    REGISTER_METHOD(matrix, TransformMatrix, transformBoundingBox);
+    REGISTER_METHOD(matrix, TransformMatrix, transformBoundingSphere);
+    REGISTER_METHOD(matrix, TransformMatrix, transformPlane);
+    REGISTER_METHOD(matrix, TransformMatrix, transformRay);
+    
+    REGISTER_METHOD(matrix, TransformMatrix, decompose);
+
+    matrix.endClass();
+}
+
+
 void registerMath(CppBindModule<LuaBinding> &module)
 {
     registerRadian(module);
@@ -203,4 +279,6 @@ void registerMath(CppBindModule<LuaBinding> &module)
     registerVector3(module);
     registerVector4(module);
     registerQuaternion(module);
+    registerMatrix(module);
+    registerTransformMatrix(module);
 }
