@@ -57,14 +57,14 @@ auto BulletPhysics::castRay(const Vector3 &from, const Vector3 &to) -> RaycastRe
     btCollisionWorld::ClosestRayResultCallback callback(btFrom, btTo);
     world->rayTest(btFrom, btTo, callback);
     if (!callback.hasHit())
-        return {};
+        return RaycastResult();
 
     auto body = dynamic_cast<const btRigidBody *>(callback.m_collisionObject);
     if (!body)
-        return {};
+        return RaycastResult();
 
     auto rigidBody = static_cast<RigidBody *>(body->getUserPointer());
-    return {RaycastResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld), SL_FROMBTVEC3(callback.m_hitNormalWorld))};
+    return RaycastResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld), SL_FROMBTVEC3(callback.m_hitNormalWorld));
 }
 
 

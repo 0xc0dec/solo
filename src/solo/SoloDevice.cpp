@@ -25,6 +25,7 @@
 #include "SoloLogger.h"
 #include "SoloRenderer.h"
 #include "SoloPhysics.h"
+#include "SoloScriptRuntime.h"
 #include "platform/null/SoloNullDevice.h"
 #include "platform/opengl/SoloSDLOpenGLDevice.h"
 #include "platform/vulkan/SoloSDLVulkanDevice.h"
@@ -38,9 +39,11 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device>
     
     switch (setup.mode)
     {
+#ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
             device = std::make_unique<SDLOpenGLDevice>(setup);
             break;
+#endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
             device = std::make_unique<SDLVulkanDevice>(setup);
@@ -80,6 +83,7 @@ void Device::initSubsystems()
     fs = FileSystem::create(this, token);
     assetLoader = std::make_unique<AssetLoader>(this, token);
     scene = std::make_unique<Scene>(this, token);
+    scriptRuntime = ScriptRuntime::create(this, token);
 }
 
 

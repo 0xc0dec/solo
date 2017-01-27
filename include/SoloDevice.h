@@ -35,6 +35,7 @@ namespace solo
     class FileSystem;
     class Renderer;
     class Physics;
+    class ScriptRuntime;
     class Logger;
 
     enum class KeyCode
@@ -124,6 +125,7 @@ namespace solo
         auto getAssetLoader() const -> AssetLoader*;
         auto getRenderer() const -> Renderer*;
         auto getPhysics() const -> Physics*;
+        auto getScriptRuntime() const -> ScriptRuntime*;
         auto getLogger() const -> Logger*;
 
     protected:
@@ -143,6 +145,7 @@ namespace solo
         sptr<FileSystem> fs;
         sptr<AssetLoader> assetLoader;
         sptr<Scene> scene;
+        sptr<ScriptRuntime> scriptRuntime;
 
         // key code -> was pressed for the first time
         std::unordered_map<KeyCode, bool> pressedKeys;
@@ -198,6 +201,11 @@ namespace solo
     inline auto Device::getPhysics() const -> Physics *
     {
         return physics.get();
+    }
+
+    inline auto Device::getScriptRuntime() const -> ScriptRuntime*
+    {
+        return scriptRuntime.get();
     }
 
     inline auto Device::getLogger() const -> Logger *

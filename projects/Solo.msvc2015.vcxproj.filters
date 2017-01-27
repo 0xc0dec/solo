@@ -277,6 +277,12 @@
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanCamera.h">
       <Filter>src\platform\vulkan</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SoloScriptRuntime.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\lua\SoloLuaScriptRuntime.h">
+      <Filter>src\platform\lua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\SoloScene.cpp">
@@ -474,6 +480,12 @@
     <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanCamera.cpp">
       <Filter>src\platform\vulkan</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\solo\SoloScriptRuntime.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaScriptRuntime.cpp">
+      <Filter>src\platform\lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -499,6 +511,9 @@
     </Filter>
     <Filter Include="src\platform\vulkan">
       <UniqueIdentifier>{922994a2-1ba2-4c0e-bb85-b3e9b991e6dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\platform\lua">
+      <UniqueIdentifier>{c148a0ea-cc02-4c45-94c2-63b99310c624}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

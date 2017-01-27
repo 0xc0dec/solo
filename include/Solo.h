@@ -59,6 +59,7 @@
 #include "SoloRenderer.h"
 #include "SoloRigidBody.h"
 #include "SoloScene.h"
+#include "SoloScriptRuntime.h"
 #include "SoloSkyboxRenderer.h"
 #include "SoloSpectator.h"
 #include "SoloSpinLock.h"
