@@ -18,24 +18,17 @@
     3. This notice may not be removed or altered from any source distribution.
 */
 
-#pragma once
+#include "SoloDevice.h"
+#include "SoloLuaCommon.h"
 
-#include "SoloScriptRuntime.h"
-#include <LuaIntf.h>
+using namespace solo;
+using namespace LuaIntf;
 
 
-namespace solo
+void registerDevice(CppBindModule<LuaBinding> &module)
 {
-    class LuaScriptRuntime final: public ScriptRuntime
-    {
-    public:
-        explicit LuaScriptRuntime(Device *device);
-        ~LuaScriptRuntime();
-
-        void executeString(const std::string& code) override final;
-        void executeFile(const std::string& path) override final;
-
-    private:
-        LuaIntf::LuaState lua;
-    };
+    auto device = module.beginClass<Device>("Device");
+    REGISTER_METHOD(device, Device, getLogger);
+    REGISTER_METHOD(device, Device, setWindowTitle);
+    device.endClass();
 }

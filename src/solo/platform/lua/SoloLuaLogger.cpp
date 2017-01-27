@@ -18,24 +18,21 @@
     3. This notice may not be removed or altered from any source distribution.
 */
 
-#pragma once
+#include "SoloLogger.h"
+#include "SoloLuaCommon.h"
 
-#include "SoloScriptRuntime.h"
-#include <LuaIntf.h>
+using namespace solo;
+using namespace LuaIntf;
 
 
-namespace solo
+void registerLogger(CppBindModule<LuaBinding> &module)
 {
-    class LuaScriptRuntime final: public ScriptRuntime
-    {
-    public:
-        explicit LuaScriptRuntime(Device *device);
-        ~LuaScriptRuntime();
-
-        void executeString(const std::string& code) override final;
-        void executeFile(const std::string& path) override final;
-
-    private:
-        LuaIntf::LuaState lua;
-    };
+    auto logger = module.beginClass<Logger>("Logger");
+    REGISTER_METHOD(logger, Logger, setTargetFile);
+    REGISTER_METHOD(logger, Logger, logDebug);
+    REGISTER_METHOD(logger, Logger, logInfo);
+    REGISTER_METHOD(logger, Logger, logWarning);
+    REGISTER_METHOD(logger, Logger, logError);
+    REGISTER_METHOD(logger, Logger, logCritical);
+    logger.endClass();
 }

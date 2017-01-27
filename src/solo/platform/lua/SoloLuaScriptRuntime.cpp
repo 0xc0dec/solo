@@ -19,15 +19,36 @@
 */
 
 #include "SoloLuaScriptRuntime.h"
+#include "SoloDevice.h"
+#include "SoloLogger.h"
+#include "SoloLuaCommon.h"
+#include <map>
+#include <vector>
 
 using namespace solo;
 using namespace LuaIntf;
 
+namespace LuaIntf
+{
+    LUA_USING_SHARED_PTR_TYPE(std::shared_ptr)
+    LUA_USING_LIST_TYPE(std::vector)
+    LUA_USING_MAP_TYPE(std::map) // TODO unordered_map
+}
 
-LuaScriptRuntime::LuaScriptRuntime()
+
+LuaScriptRuntime::LuaScriptRuntime(Device *d)
 {
     lua = LuaState::newState();
     lua.openLibs();
+
+    auto module = LuaBinding(lua).beginModule("solo");
+    
+    registerDevice(module);
+    registerLogger(module);
+
+    module.addConstant("device", d);
+
+    module.endModule();
 }
 
 

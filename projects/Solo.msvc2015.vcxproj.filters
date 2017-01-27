@@ -486,6 +486,15 @@
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaScriptRuntime.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaDevice.cpp">
+      <Filter>src\platform\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaCommon.h">
+      <Filter>src\platform\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaLogger.cpp">
+      <Filter>src\platform\lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
