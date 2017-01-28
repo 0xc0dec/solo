@@ -30,8 +30,10 @@ auto CubeTexture::create(Device *device) -> sptr<CubeTexture>
 {
     switch (device->getSetup().mode)
     {
+#ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
             return std::make_shared<OpenGLCubeTexture>(device);
+#endif
         default:
             return std::make_shared<NullCubeTexture>();
     }

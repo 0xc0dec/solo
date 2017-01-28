@@ -24,5 +24,7 @@ runTest("Plane", assert(loadfile("../src/tests/plane.lua")))
 runTest("Frustum", assert(loadfile("../src/tests/frustum.lua")))
 runTest("Device", assert(loadfile("../src/tests/device.lua")))
 runTest("Logger", assert(loadfile("../src/tests/logger.lua")))
+runTest("Scene", assert(loadfile("../src/tests/scene.lua")))
+runTest("Node/Components", assert(loadfile("../src/tests/node-components.lua")))
 
 logger:logInfo("Script tests finished")

@@ -144,8 +144,9 @@ namespace solo
         sptr<Physics> physics;
         sptr<FileSystem> fs;
         sptr<AssetLoader> assetLoader;
-        sptr<Scene> scene;
+        // Scene may contain refs to script objects, so it must be destroyed first
         sptr<ScriptRuntime> scriptRuntime;
+        sptr<Scene> scene;
 
         // key code -> was pressed for the first time
         std::unordered_map<KeyCode, bool> pressedKeys;

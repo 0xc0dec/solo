@@ -32,8 +32,10 @@ sptr<Mesh> Mesh::create(Device *device)
 {
     switch (device->getSetup().mode)
     {
+#ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
             return std::make_shared<OpenGLMesh>(device);
+#endif
         default:
             return std::make_shared<NullMesh>();
     }
@@ -44,8 +46,10 @@ sptr<Mesh> Mesh::create(Device *device, MeshPrefab prefab)
 {
     switch (device->getSetup().mode)
     {
+#ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
             return std::make_shared<OpenGLMesh>(device, prefab);
+#endif
         default:
             return std::make_shared<NullMesh>();
     }
@@ -56,8 +60,10 @@ sptr<Mesh> Mesh::create(Device *device, MeshData *data)
 {
     switch (device->getSetup().mode)
     {
+#ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
             return std::make_shared<OpenGLMesh>(device, data);
+#endif
         default:
             return std::make_shared<NullMesh>();
     }

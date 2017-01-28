@@ -283,6 +283,9 @@
     <ClInclude Include="..\src\solo\platform\lua\SoloLuaScriptRuntime.h">
       <Filter>src\platform\lua</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\platform\lua\SoloLuaScriptComponent.h">
+      <Filter>src\platform\lua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\SoloScene.cpp">
@@ -499,6 +502,9 @@
       <Filter>src\platform\lua</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaScene.cpp">
+      <Filter>src\platform\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaScriptComponent.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
   </ItemGroup>

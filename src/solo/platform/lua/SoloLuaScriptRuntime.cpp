@@ -25,6 +25,13 @@
 using namespace solo;
 
 
+void registerDevice(CppBindModule<LuaBinding> &module);
+void registerLogger(CppBindModule<LuaBinding> &module);
+void registerMath(CppBindModule<LuaBinding> &module);
+void registerScene(CppBindModule<LuaBinding> &module);
+void registerNodeAndComponent(CppBindModule<LuaBinding> &module);
+
+
 LuaScriptRuntime::LuaScriptRuntime(Device *d)
 {
     lua = LuaState::newState();
@@ -36,6 +43,7 @@ LuaScriptRuntime::LuaScriptRuntime(Device *d)
     registerDevice(module);
     registerLogger(module);
     registerScene(module);
+    registerNodeAndComponent(module);
 
     module.addConstant("device", d);
 

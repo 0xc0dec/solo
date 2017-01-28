@@ -44,7 +44,3 @@ using namespace LuaIntf;
 	binding.addStaticFunction(nameStr, static_cast<resultType(*)(__VA_ARGS__)modifier>(&klass::name))
 #define REGISTER_MODULE_CONSTANT(module, holder, constant) module.addConstant(#constant, holder::constant)
 
-void registerDevice(CppBindModule<LuaBinding> &module);
-void registerLogger(CppBindModule<LuaBinding> &module);
-void registerMath(CppBindModule<LuaBinding> &module);
-void registerScene(CppBindModule<LuaBinding> &module);

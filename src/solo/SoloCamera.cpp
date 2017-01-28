@@ -44,10 +44,14 @@ auto Camera::create(const Node &node) -> sptr<Camera>
 {
     switch (node.getScene()->getDevice()->getSetup().mode)
     {
+#ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
             return std::make_shared<OpenGLCamera>(node);
+#endif
+#ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
             return std::make_shared<VulkanCamera>(node);
+#endif
         default:
             return std::make_shared<NullCamera>(node);
     }
