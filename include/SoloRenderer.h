@@ -121,22 +121,6 @@ namespace solo
         Bottom
     };
 
-    enum class UniformType
-    {
-        Float,
-        FloatArray,
-        Vector2,
-        Vector2Array,
-        Vector3,
-        Vector3Array,
-        Vector4,
-        Vector4Array,
-        Matrix,
-        MatrixArray,
-        Texture,
-        TextureArray,
-    };
-
     class Renderer
     {
     public:

@@ -45,7 +45,7 @@ namespace solo
 
     private:
         OpenGLRenderer *renderer = nullptr;
-        uint32_t handle = EmptyHandle;
+        uint32_t handle = emptyHandle;
     };
 
     inline auto OpenGLEffect::getHandle() const -> uint32_t

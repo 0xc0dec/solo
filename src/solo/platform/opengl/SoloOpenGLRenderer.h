@@ -34,7 +34,23 @@ namespace solo
 {
     class Device;
 
-    constexpr uint32_t EmptyHandle = std::numeric_limits<uint32_t>::max();
+    enum class UniformType
+    {
+        Float,
+        FloatArray,
+        Vector2,
+        Vector2Array,
+        Vector3,
+        Vector3Array,
+        Vector4,
+        Vector4Array,
+        Matrix,
+        MatrixArray,
+        Texture,
+        TextureArray,
+    };
+
+    constexpr uint32_t emptyHandle = std::numeric_limits<uint32_t>::max();
 
     class OpenGLRenderer final: public Renderer
     {

@@ -44,7 +44,7 @@ namespace solo
 
     private:
         OpenGLRenderer *renderer = nullptr;
-        uint32_t handle = EmptyHandle;
+        uint32_t handle = emptyHandle;
     };
 
     inline auto OpenGLRectTexture::getHandle() const -> uint32_t

@@ -348,7 +348,7 @@ void OpenGLRenderer::update2DTexture(uint32_t handle, TextureFormat format, uint
     texture.width = width;
     texture.height = height;
 
-    bindTexture(GL_TEXTURE_2D, EmptyHandle);
+    bindTexture(GL_TEXTURE_2D, emptyHandle);
 }
 
 
@@ -364,7 +364,7 @@ void OpenGLRenderer::updateCubeTexture(uint32_t handle, CubeTextureFace face, Te
 
     // NB width and height in texture data are not updated intentionally
 
-    bindTexture(GL_TEXTURE_CUBE_MAP, EmptyHandle);
+    bindTexture(GL_TEXTURE_CUBE_MAP, emptyHandle);
 }
 
 
@@ -373,7 +373,7 @@ void OpenGLRenderer::generateRectTextureMipmaps(uint32_t handle)
     bindTexture(GL_TEXTURE_2D, handle);
     glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
     glGenerateMipmap(GL_TEXTURE_2D);
-    bindTexture(GL_TEXTURE_2D, EmptyHandle);
+    bindTexture(GL_TEXTURE_2D, emptyHandle);
 }
 
 
@@ -382,34 +382,34 @@ void OpenGLRenderer::generateCubeTextureMipmaps(uint32_t handle)
     bindTexture(GL_TEXTURE_CUBE_MAP, handle);
     glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
     glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
-    bindTexture(GL_TEXTURE_CUBE_MAP, EmptyHandle);
+    bindTexture(GL_TEXTURE_CUBE_MAP, emptyHandle);
 }
 
 
 void OpenGLRenderer::bindTexture(GLenum target, uint32_t handle)
 {
-    auto rawHandle = handle == EmptyHandle ? 0 : textures.at(handle).rawHandle;
+    auto rawHandle = handle == emptyHandle ? 0 : textures.at(handle).rawHandle;
     glBindTexture(target, rawHandle);
 }
 
 
 void OpenGLRenderer::bindVertexBuffer(uint32_t handle)
 {
-    auto rawHandle = handle == EmptyHandle ? 0 : vertexBuffers.at(handle).rawHandle;
+    auto rawHandle = handle == emptyHandle ? 0 : vertexBuffers.at(handle).rawHandle;
     glBindBuffer(GL_ARRAY_BUFFER, rawHandle);
 }
 
 
 void OpenGLRenderer::bindIndexBuffer(uint32_t handle)
 {
-    auto rawHandle = handle == EmptyHandle ? 0 : indexBuffers.at(handle).rawHandle;
+    auto rawHandle = handle == emptyHandle ? 0 : indexBuffers.at(handle).rawHandle;
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rawHandle);
 }
 
 
 void OpenGLRenderer::bindVertexProgramBinding(uint32_t handle)
 {
-    auto rawHandle = handle == EmptyHandle ? 0 : vertexProgramBindings.at(handle);
+    auto rawHandle = handle == emptyHandle ? 0 : vertexProgramBindings.at(handle);
     glBindVertexArray(rawHandle);
 }
 
@@ -418,7 +418,7 @@ void OpenGLRenderer::setTexture(GLenum target, uint32_t handle, uint32_t flags)
 {
     bindTexture(target, handle);
 
-    if (!flags || handle == EmptyHandle)
+    if (!flags || handle == emptyHandle)
         return;
 
     GLenum minFilter = 0;
@@ -519,7 +519,7 @@ void OpenGLRenderer::setCubeTexture(uint32_t handle, uint32_t flags)
 {
     setTexture(GL_TEXTURE_CUBE_MAP, handle, flags);
 
-    if (handle == EmptyHandle)
+    if (handle == emptyHandle)
         return;
 
     GLenum wrapR = 0;
@@ -535,14 +535,14 @@ void OpenGLRenderer::setCubeTexture(uint32_t handle, uint32_t flags)
 void OpenGLRenderer::setCubeTexture(uint32_t handle, uint32_t flags, float anisotropyLevel)
 {
     setCubeTexture(handle, flags);
-    if (handle != EmptyHandle)
+    if (handle != emptyHandle)
         glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
 }
 
 
 void OpenGLRenderer::bindFrameBuffer(uint32_t handle)
 {
-    auto rawHandle = handle == EmptyHandle ? 0 : frameBuffers.at(handle).rawHandle;
+    auto rawHandle = handle == emptyHandle ? 0 : frameBuffers.at(handle).rawHandle;
     glBindFramebuffer(GL_FRAMEBUFFER, rawHandle);
 }
 
@@ -610,7 +610,7 @@ void OpenGLRenderer::updateFrameBuffer(uint32_t handle, const std::vector<uint32
         SL_ERR_IF(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE, "Render target has invalid state");
     }
 
-    bindFrameBuffer(EmptyHandle);
+    bindFrameBuffer(emptyHandle);
 }
 
 
@@ -651,7 +651,7 @@ void OpenGLRenderer::updateDynamicVertexBuffer(uint32_t handle, const void *data
 {
     bindVertexBuffer(handle);
     glBufferSubData(GL_ARRAY_BUFFER, offset, vertexCount, data);
-    bindVertexBuffer(EmptyHandle);
+    bindVertexBuffer(emptyHandle);
 }
 
 
@@ -718,7 +718,7 @@ void OpenGLRenderer::destroyProgram(uint32_t handle)
 
 void OpenGLRenderer::setProgram(uint32_t handle)
 {
-    auto rawHandle = handle == EmptyHandle ? 0 : programs.at(handle);
+    auto rawHandle = handle == emptyHandle ? 0 : programs.at(handle);
     glUseProgram(rawHandle);
 }
 
@@ -801,7 +801,7 @@ auto OpenGLRenderer::createVertexProgramBinding(const uint32_t *bufferHandles, u
             offset += el.size * sizeof(float);
         }
 
-        bindVertexBuffer(EmptyHandle);
+        bindVertexBuffer(emptyHandle);
     }
 
     glBindVertexArray(0);
@@ -829,8 +829,8 @@ void OpenGLRenderer::drawIndexed(PrimitiveType primitiveType, uint32_t bindingHa
     const auto &indexBuffer = indexBuffers.at(indexBufferHandle);
     glDrawElements(toGLPrimitiveType(primitiveType), indexBuffer.elementCount, GL_UNSIGNED_SHORT, nullptr);
 
-    bindIndexBuffer(EmptyHandle);
-    bindVertexProgramBinding(EmptyHandle);
+    bindIndexBuffer(emptyHandle);
+    bindVertexProgramBinding(emptyHandle);
 }
 
 
@@ -838,7 +838,7 @@ void OpenGLRenderer::draw(PrimitiveType primitiveType, uint32_t bindingHandle, u
 {
     bindVertexProgramBinding(bindingHandle);
     glDrawArrays(toGLPrimitiveType(primitiveType), 0, vertexCount);
-    bindVertexProgramBinding(EmptyHandle);
+    bindVertexProgramBinding(emptyHandle);
 }
 
 

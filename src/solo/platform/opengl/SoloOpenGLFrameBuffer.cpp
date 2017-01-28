@@ -50,7 +50,7 @@ void OpenGLFrameBuffer::bind()
 
 void OpenGLFrameBuffer::unbind()
 {
-    renderer->setFrameBuffer(EmptyHandle);
+    renderer->setFrameBuffer(emptyHandle);
 }
 
 
