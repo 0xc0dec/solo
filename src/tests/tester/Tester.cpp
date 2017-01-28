@@ -27,17 +27,17 @@
 using namespace solo;
 
 
-void runInNullEngine(std::function<void(Device *)> run, const std::string &logPath)
+void runInEngine(DeviceMode mode, const std::string &logPath, std::function<void(Device *)> run)
 {
-    auto device = Device::create(DeviceSetup().withMode(DeviceMode::Null).withLogFilePath(logPath));
-    run(device.get());
-}
-
-
-void runInRealEngine(std::function<void(Device *)> run, const std::string &logPath)
-{
-    auto device = Device::create(DeviceSetup().withMode(DeviceMode::OpenGL).withDimensions(1200, 600).withLogFilePath(logPath));
-    run(device.get());
+    auto device = Device::create(DeviceSetup().withMode(mode).withDimensions(1200, 600).withLogFilePath(logPath));
+    try
+    {
+        run(device.get());
+    }
+    catch (EngineException &e)
+    {
+        device->getLogger()->logCritical(e.what());
+    }
 }
 
 
@@ -58,16 +58,16 @@ void runCppIntegrationTests(Device *device)
 
 void runLuaUnitTests(Device *device)
 {
-    device->getScriptRuntime()->executeFile("../src/tests/tests.lua");
+    device->getScriptRuntime()->executeFile("../../src/tests/tests.lua");
 }
 
 
 int main()
 {
 #ifdef SL_DEBUG
-    runInNullEngine(runCppUnitTests, "cpp-unit-tests.log");
-    runInNullEngine(runLuaUnitTests, "lua-unit-tests.log");
-    runInRealEngine(runCppIntegrationTests, "cpp-integration-tests.log");
+    runInEngine(DeviceMode::Null, "cpp-unit-tests.log", runCppUnitTests);
+    runInEngine(DeviceMode::Null, "lua-unit-tests.log", runLuaUnitTests);
+    runInEngine(DeviceMode::OpenGL, "cpp-integration-tests.log", runCppIntegrationTests);
 #endif
     return 0;
 }
