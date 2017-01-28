@@ -28,7 +28,7 @@ using namespace solo;
 void registerRenderContext(CppBindModule<LuaBinding> &module)
 {
     auto rc = module.beginClass<RenderContext>("RenderContext");
-    REGISTER_VARIABLE(rc, RenderContext, camera);
+    REG_VARIABLE(rc, RenderContext, camera);
     rc.endClass();
 }
 
@@ -37,51 +37,51 @@ void registerCamera(CppBindModule<LuaBinding> &module)
 {
     auto camera = module.beginExtendClass<Camera, Component>("Camera");
     
-    REGISTER_METHOD(camera, Camera, render);
+    REG_METHOD(camera, Camera, render);
     
-    REGISTER_METHOD(camera, Camera, getTransform);
+    REG_METHOD(camera, Camera, getTransform);
     
-    REGISTER_METHOD(camera, Camera, getRenderTarget);
-    REGISTER_METHOD(camera, Camera, setRenderTarget);
+    REG_METHOD(camera, Camera, getRenderTarget);
+    REG_METHOD(camera, Camera, setRenderTarget);
 
-    REGISTER_METHOD(camera, Camera, getClearColor);
-    REGISTER_METHOD(camera, Camera, setClearColor);
+    REG_METHOD(camera, Camera, getClearColor);
+    REG_METHOD(camera, Camera, setClearColor);
 
-    REGISTER_METHOD(camera, Camera, isClearColorEnabled);
-    REGISTER_METHOD(camera, Camera, setClearColorEnabled);
+    REG_METHOD(camera, Camera, isClearColorEnabled);
+    REG_METHOD(camera, Camera, setClearColorEnabled);
 
-    REGISTER_METHOD(camera, Camera, isClearDepthEnabled);
-    REGISTER_METHOD(camera, Camera, setClearDepthEnabled);
+    REG_METHOD(camera, Camera, isClearDepthEnabled);
+    REG_METHOD(camera, Camera, setClearDepthEnabled);
 
-    REGISTER_METHOD(camera, Camera, getViewport);
-    REGISTER_METHOD(camera, Camera, setViewport);
+    REG_METHOD(camera, Camera, getViewport);
+    REG_METHOD(camera, Camera, setViewport);
 
-    REGISTER_METHOD(camera, Camera, isPerspective);
-    REGISTER_METHOD(camera, Camera, setPerspective);
+    REG_METHOD(camera, Camera, isPerspective);
+    REG_METHOD(camera, Camera, setPerspective);
 
-    REGISTER_METHOD(camera, Camera, getNear);
-    REGISTER_METHOD(camera, Camera, setNear);
+    REG_METHOD(camera, Camera, getNear);
+    REG_METHOD(camera, Camera, setNear);
 
-    REGISTER_METHOD(camera, Camera, getFar);
-    REGISTER_METHOD(camera, Camera, setFar);
+    REG_METHOD(camera, Camera, getFar);
+    REG_METHOD(camera, Camera, setFar);
 
-    REGISTER_METHOD(camera, Camera, getFOV);
-    REGISTER_METHOD(camera, Camera, setFOV);
+    REG_METHOD(camera, Camera, getFOV);
+    REG_METHOD(camera, Camera, setFOV);
 
-    REGISTER_METHOD(camera, Camera, getWidth);
-    REGISTER_METHOD(camera, Camera, setWidth);
+    REG_METHOD(camera, Camera, getWidth);
+    REG_METHOD(camera, Camera, setWidth);
 
-    REGISTER_METHOD(camera, Camera, getHeight);
-    REGISTER_METHOD(camera, Camera, setHeight);
+    REG_METHOD(camera, Camera, getHeight);
+    REG_METHOD(camera, Camera, setHeight);
 
-    REGISTER_METHOD(camera, Camera, getAspectRatio);
-    REGISTER_METHOD(camera, Camera, setAspectRatio);
+    REG_METHOD(camera, Camera, getAspectRatio);
+    REG_METHOD(camera, Camera, setAspectRatio);
 
-    REGISTER_METHOD(camera, Camera, getViewMatrix);
-    REGISTER_METHOD(camera, Camera, getInvViewMatrix);
-    REGISTER_METHOD(camera, Camera, getProjectionMatrix);
-    REGISTER_METHOD(camera, Camera, getViewProjectionMatrix);
-    REGISTER_METHOD(camera, Camera, getInvViewProjectionMatrix);
+    REG_METHOD(camera, Camera, getViewMatrix);
+    REG_METHOD(camera, Camera, getInvViewMatrix);
+    REG_METHOD(camera, Camera, getProjectionMatrix);
+    REG_METHOD(camera, Camera, getViewProjectionMatrix);
+    REG_METHOD(camera, Camera, getInvViewProjectionMatrix);
     
     camera.endClass();
 }

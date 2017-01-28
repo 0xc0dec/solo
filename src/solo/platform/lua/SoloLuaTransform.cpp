@@ -31,63 +31,63 @@ void registerTransform(CppBindModule<LuaBinding> &module)
     // Transform
     auto transform = module.beginExtendClass<Transform, Component>("Transform");
     
-    REGISTER_METHOD(transform, Transform, getParent);
-    REGISTER_METHOD(transform, Transform, setParent);
+    REG_METHOD(transform, Transform, getParent);
+    REG_METHOD(transform, Transform, setParent);
 
-    REGISTER_METHOD(transform, Transform, getChild);
-    REGISTER_METHOD(transform, Transform, getChildrenCount);
-    REGISTER_METHOD(transform, Transform, clearChildren);
+    REG_METHOD(transform, Transform, getChild);
+    REG_METHOD(transform, Transform, getChildrenCount);
+    REG_METHOD(transform, Transform, clearChildren);
 
-    REGISTER_METHOD(transform, Transform, getWorldScale);
-    REGISTER_METHOD(transform, Transform, getLocalScale);
+    REG_METHOD(transform, Transform, getWorldScale);
+    REG_METHOD(transform, Transform, getLocalScale);
 
-    REGISTER_METHOD(transform, Transform, getWorldRotation);
-    REGISTER_METHOD(transform, Transform, getLocalRotation);
+    REG_METHOD(transform, Transform, getWorldRotation);
+    REG_METHOD(transform, Transform, getLocalRotation);
 
-    REGISTER_METHOD(transform, Transform, getWorldPosition);
-    REGISTER_METHOD(transform, Transform, getLocalPosition);
+    REG_METHOD(transform, Transform, getWorldPosition);
+    REG_METHOD(transform, Transform, getLocalPosition);
 
-    REGISTER_METHOD(transform, Transform, getWorldUp);
-    REGISTER_METHOD(transform, Transform, getLocalUp);
+    REG_METHOD(transform, Transform, getWorldUp);
+    REG_METHOD(transform, Transform, getLocalUp);
 
-    REGISTER_METHOD(transform, Transform, getWorldDown);
-    REGISTER_METHOD(transform, Transform, getLocalDown);
+    REG_METHOD(transform, Transform, getWorldDown);
+    REG_METHOD(transform, Transform, getLocalDown);
 
-    REGISTER_METHOD(transform, Transform, getWorldLeft);
-    REGISTER_METHOD(transform, Transform, getLocalLeft);
+    REG_METHOD(transform, Transform, getWorldLeft);
+    REG_METHOD(transform, Transform, getLocalLeft);
 
-    REGISTER_METHOD(transform, Transform, getWorldRight);
-    REGISTER_METHOD(transform, Transform, getLocalRight);
+    REG_METHOD(transform, Transform, getWorldRight);
+    REG_METHOD(transform, Transform, getLocalRight);
 
-    REGISTER_METHOD(transform, Transform, getWorldForward);
-    REGISTER_METHOD(transform, Transform, getLocalForward);
+    REG_METHOD(transform, Transform, getWorldForward);
+    REG_METHOD(transform, Transform, getLocalForward);
 
-    REGISTER_METHOD(transform, Transform, getWorldBack);
-    REGISTER_METHOD(transform, Transform, getLocalBack);
+    REG_METHOD(transform, Transform, getWorldBack);
+    REG_METHOD(transform, Transform, getLocalBack);
 
-    REGISTER_METHOD(transform, Transform, translateLocal);
-    REGISTER_METHOD(transform, Transform, scaleLocal);
+    REG_METHOD(transform, Transform, translateLocal);
+    REG_METHOD(transform, Transform, scaleLocal);
 
-    REGISTER_METHOD(transform, Transform, setLocalPosition);
-    REGISTER_METHOD(transform, Transform, setLocalScale);
+    REG_METHOD(transform, Transform, setLocalPosition);
+    REG_METHOD(transform, Transform, setLocalScale);
 
-    REGISTER_METHOD(transform, Transform, rotate);
-    REGISTER_METHOD(transform, Transform, rotateByAxisAngle);
+    REG_METHOD(transform, Transform, rotate);
+    REG_METHOD(transform, Transform, rotateByAxisAngle);
     
-    REGISTER_METHOD(transform, Transform, setLocalRotation);
-    REGISTER_METHOD(transform, Transform, setLocalAxisAngleRotation);
+    REG_METHOD(transform, Transform, setLocalRotation);
+    REG_METHOD(transform, Transform, setLocalAxisAngleRotation);
     
-    REGISTER_METHOD(transform, Transform, lookAt);
+    REG_METHOD(transform, Transform, lookAt);
 
-    REGISTER_METHOD(transform, Transform, getMatrix);
-    REGISTER_METHOD(transform, Transform, getWorldMatrix);
-    REGISTER_METHOD(transform, Transform, getWorldViewMatrix);
-    REGISTER_METHOD(transform, Transform, getWorldViewProjMatrix);
-    REGISTER_METHOD(transform, Transform, getInvTransposedWorldMatrix);
-    REGISTER_METHOD(transform, Transform, getInvTransposedWorldViewMatrix);
+    REG_METHOD(transform, Transform, getMatrix);
+    REG_METHOD(transform, Transform, getWorldMatrix);
+    REG_METHOD(transform, Transform, getWorldViewMatrix);
+    REG_METHOD(transform, Transform, getWorldViewProjMatrix);
+    REG_METHOD(transform, Transform, getInvTransposedWorldMatrix);
+    REG_METHOD(transform, Transform, getInvTransposedWorldViewMatrix);
     
-    REGISTER_METHOD(transform, Transform, transformPoint);
-    REGISTER_METHOD(transform, Transform, transformDirection);
+    REG_METHOD(transform, Transform, transformPoint);
+    REG_METHOD(transform, Transform, transformDirection);
     
     transform.endClass();
 }

@@ -26,8 +26,8 @@ using namespace solo;
 void registerDevice(CppBindModule<LuaBinding> &module)
 {
     auto device = module.beginClass<Device>("Device");
-    REGISTER_METHOD(device, Device, getLogger);
-    REGISTER_METHOD(device, Device, getWindowTitle);
-    REGISTER_METHOD(device, Device, setWindowTitle);
+    REG_METHOD(device, Device, getLogger);
+    REG_METHOD(device, Device, getWindowTitle);
+    REG_METHOD(device, Device, setWindowTitle);
     device.endClass();
 }

@@ -26,11 +26,11 @@ using namespace solo;
 void registerLogger(CppBindModule<LuaBinding> &module)
 {
     auto logger = module.beginClass<Logger>("Logger");
-    REGISTER_METHOD(logger, Logger, setTargetFile);
-    REGISTER_METHOD(logger, Logger, logDebug);
-    REGISTER_METHOD(logger, Logger, logInfo);
-    REGISTER_METHOD(logger, Logger, logWarning);
-    REGISTER_METHOD(logger, Logger, logError);
-    REGISTER_METHOD(logger, Logger, logCritical);
+    REG_METHOD(logger, Logger, setTargetFile);
+    REG_METHOD(logger, Logger, logDebug);
+    REG_METHOD(logger, Logger, logInfo);
+    REG_METHOD(logger, Logger, logWarning);
+    REG_METHOD(logger, Logger, logError);
+    REG_METHOD(logger, Logger, logCritical);
     logger.endClass();
 }

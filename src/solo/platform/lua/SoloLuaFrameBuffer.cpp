@@ -27,8 +27,8 @@ using namespace solo;
 void registerFrameBuffer(CppBindModule<LuaBinding> &module)
 {
     auto fb = module.beginClass<FrameBuffer>("FrameBuffer");
-    REGISTER_STATIC_METHOD(fb, FrameBuffer, create);
-    REGISTER_METHOD(fb, FrameBuffer, setAttachments);
-    REGISTER_METHOD(fb, FrameBuffer, getSize);
+    REG_STATIC_METHOD(fb, FrameBuffer, create);
+    REG_METHOD(fb, FrameBuffer, setAttachments);
+    REG_METHOD(fb, FrameBuffer, getSize);
     fb.endClass();
 }

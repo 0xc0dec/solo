@@ -33,14 +33,15 @@ namespace LuaIntf
 
 using namespace LuaIntf;
 
-#define REGISTER_VARIABLE(binding, klass, name) binding.addVariable(#name, &klass::name, true)
-#define REGISTER_METHOD(binding, klass, name) binding.addFunction(#name, &klass::name)
-#define REGISTER_METHOD2(binding, klass, name, argsSpec) binding.addFunction(#name, &klass::name, argsSpec)
-#define REGISTER_METHOD_RENAMED(binding, klass, name, nameStr) binding.addFunction(nameStr, &klass::name)
-#define REGISTER_OVERLOADED_METHOD(binding, klass, name, nameStr, resultType, modifier, ...) \
+#define REG_VARIABLE(binding, klass, name) binding.addVariable(#name, &klass::name, true)
+#define REG_METHOD(binding, klass, name) binding.addFunction(#name, &klass::name)
+#define REG_METHOD_ARG_SPEC(binding, klass, name, argsSpec) binding.addFunction(#name, &klass::name, argsSpec)
+#define REG_METHOD_RENAMED(binding, klass, name, nameStr) binding.addFunction(nameStr, &klass::name)
+#define REG_OVERLOADED_METHOD(binding, klass, name, nameStr, resultType, modifier, ...) \
 	binding.addFunction(nameStr, static_cast<resultType(klass::*)(__VA_ARGS__)modifier>(&klass::name))
-#define REGISTER_STATIC_METHOD(binding, klass, name) binding.addStaticFunction(#name, &klass::name)
-#define REGISTER_STATIC_OVERLOADED_METHOD(binding, klass, name, nameStr, resultType, modifier, ...) \
+#define REG_STATIC_METHOD(binding, klass, name) binding.addStaticFunction(#name, &klass::name)
+#define REG_STATIC_OVERLOADED_METHOD(binding, klass, name, nameStr, resultType, modifier, ...) \
 	binding.addStaticFunction(nameStr, static_cast<resultType(*)(__VA_ARGS__)modifier>(&klass::name))
-#define REGISTER_MODULE_CONSTANT(module, holder, constant) module.addConstant(#constant, holder::constant)
-
+#define REG_FREE_FUNC_AS_METHOD(binding, func) binding.addFunction(#func, func)
+#define REG_FREE_FUNC_AS_METHOD_RENAMED(binding, func, name) binding.addFunction(name, func)
+#define REG_MODULE_CONSTANT(module, holder, constant) module.addConstant(#constant, holder::constant)

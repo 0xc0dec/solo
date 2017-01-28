@@ -29,35 +29,35 @@ using namespace solo;
 void registerEnums(CppBindModule<LuaBinding> &module)
 {
     auto transformSpace = module.beginModule("TransformSpace");
-    REGISTER_MODULE_CONSTANT(transformSpace, TransformSpace, Parent);
-    REGISTER_MODULE_CONSTANT(transformSpace, TransformSpace, Self);
-    REGISTER_MODULE_CONSTANT(transformSpace, TransformSpace, World);
+    REG_MODULE_CONSTANT(transformSpace, TransformSpace, Parent);
+    REG_MODULE_CONSTANT(transformSpace, TransformSpace, Self);
+    REG_MODULE_CONSTANT(transformSpace, TransformSpace, World);
     transformSpace.endModule();
 
     auto intersection = module.beginModule("PlaneIntersection");
-    REGISTER_MODULE_CONSTANT(intersection, PlaneIntersection, Intersecting);
-    REGISTER_MODULE_CONSTANT(intersection, PlaneIntersection, Front);
-    REGISTER_MODULE_CONSTANT(intersection, PlaneIntersection, Back);
+    REG_MODULE_CONSTANT(intersection, PlaneIntersection, Intersecting);
+    REG_MODULE_CONSTANT(intersection, PlaneIntersection, Front);
+    REG_MODULE_CONSTANT(intersection, PlaneIntersection, Back);
     intersection.endModule();
 
     auto textureWrapping = module.beginModule("TextureWrapping");
-    REGISTER_MODULE_CONSTANT(textureWrapping, TextureWrapping, Clamp);
-    REGISTER_MODULE_CONSTANT(textureWrapping, TextureWrapping, Repeat);
+    REG_MODULE_CONSTANT(textureWrapping, TextureWrapping, Clamp);
+    REG_MODULE_CONSTANT(textureWrapping, TextureWrapping, Repeat);
     textureWrapping.endModule();
 
     auto textureFormat = module.beginModule("TextureFormat");
-    REGISTER_MODULE_CONSTANT(textureFormat, TextureFormat, Alpha);
-    REGISTER_MODULE_CONSTANT(textureFormat, TextureFormat, RGB);
-    REGISTER_MODULE_CONSTANT(textureFormat, TextureFormat, RGBA);
-    REGISTER_MODULE_CONSTANT(textureFormat, TextureFormat, Red);
+    REG_MODULE_CONSTANT(textureFormat, TextureFormat, Alpha);
+    REG_MODULE_CONSTANT(textureFormat, TextureFormat, RGB);
+    REG_MODULE_CONSTANT(textureFormat, TextureFormat, RGBA);
+    REG_MODULE_CONSTANT(textureFormat, TextureFormat, Red);
     textureWrapping.endModule();
 
     auto textureFiltering = module.beginModule("TextureFiltering");
-    REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, Nearest);
-    REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, Linear);
-    REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, LinearMipmapLinear);
-    REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, LinearMipmapNearest);
-    REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, NearestMipmapLinear);
-    REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, NearestMipmapNearest);
+    REG_MODULE_CONSTANT(textureFiltering, TextureFiltering, Nearest);
+    REG_MODULE_CONSTANT(textureFiltering, TextureFiltering, Linear);
+    REG_MODULE_CONSTANT(textureFiltering, TextureFiltering, LinearMipmapLinear);
+    REG_MODULE_CONSTANT(textureFiltering, TextureFiltering, LinearMipmapNearest);
+    REG_MODULE_CONSTANT(textureFiltering, TextureFiltering, NearestMipmapLinear);
+    REG_MODULE_CONSTANT(textureFiltering, TextureFiltering, NearestMipmapNearest);
     textureFiltering.endModule();
 }
