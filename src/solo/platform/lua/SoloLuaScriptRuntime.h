@@ -23,7 +23,6 @@
 #include "SoloScriptRuntime.h"
 #include <LuaIntf.h>
 
-
 namespace solo
 {
     class LuaScriptRuntime final: public ScriptRuntime

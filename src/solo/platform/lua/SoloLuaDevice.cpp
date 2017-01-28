@@ -22,8 +22,6 @@
 #include "SoloLuaCommon.h"
 
 using namespace solo;
-using namespace LuaIntf;
-
 
 void registerDevice(CppBindModule<LuaBinding> &module)
 {

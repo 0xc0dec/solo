@@ -34,7 +34,6 @@
 #include "SoloLuaCommon.h"
 
 using namespace solo;
-using namespace LuaIntf;
 
 
 static void registerVector2(CppBindModule<LuaBinding> &module)

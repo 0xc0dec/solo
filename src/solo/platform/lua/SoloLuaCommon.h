@@ -31,6 +31,8 @@ namespace LuaIntf
     LUA_USING_MAP_TYPE(std::map) // TODO unordered_map
 }
 
+using namespace LuaIntf;
+
 #define REGISTER_VARIABLE(binding, klass, name) binding.addVariable(#name, &klass::name, true)
 #define REGISTER_METHOD(binding, klass, name) binding.addFunction(#name, &klass::name)
 #define REGISTER_METHOD2(binding, klass, name, argsSpec) binding.addFunction(#name, &klass::name, argsSpec)
@@ -42,6 +44,6 @@ namespace LuaIntf
 	binding.addStaticFunction(nameStr, static_cast<resultType(*)(__VA_ARGS__)modifier>(&klass::name))
 #define REGISTER_MODULE_CONSTANT(module, holder, constant) module.addConstant(#constant, holder::constant)
 
-void registerDevice(LuaIntf::CppBindModule<LuaIntf::LuaBinding> &module);
-void registerLogger(LuaIntf::CppBindModule<LuaIntf::LuaBinding> &module);
-void registerMath(LuaIntf::CppBindModule<LuaIntf::LuaBinding> &module);
+void registerDevice(CppBindModule<LuaBinding> &module);
+void registerLogger(CppBindModule<LuaBinding> &module);
+void registerMath(CppBindModule<LuaBinding> &module);

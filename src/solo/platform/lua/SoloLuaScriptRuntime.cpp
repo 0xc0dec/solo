@@ -23,8 +23,6 @@
 #include "SoloLuaCommon.h"
 
 using namespace solo;
-using namespace LuaIntf;
-
 
 LuaScriptRuntime::LuaScriptRuntime(Device *d)
 {
