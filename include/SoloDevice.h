@@ -103,7 +103,6 @@ namespace solo
         virtual void setCursorCaptured(bool captured) = 0;
 
         virtual auto getLifetime() const -> float = 0;
-
         auto getTimeDelta() const -> float;
 
         bool isWindowCloseRequested() const;

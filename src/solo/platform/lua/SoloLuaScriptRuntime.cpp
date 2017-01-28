@@ -39,6 +39,9 @@ void registerTexture(CppBindModule<LuaBinding> &module);
 void registerMeshRenderer(CppBindModule<LuaBinding> &module);
 void registerEffect(CppBindModule<LuaBinding> &module);
 void registerMaterial(CppBindModule<LuaBinding> &module);
+void registerDeviceSetup(CppBindModule<LuaBinding> &module);
+void registerFileSystem(CppBindModule<LuaBinding> &module);
+void registerAssetLoader(CppBindModule<LuaBinding> &module);
 
 
 LuaScriptRuntime::LuaScriptRuntime(Device *d)
@@ -62,6 +65,9 @@ LuaScriptRuntime::LuaScriptRuntime(Device *d)
     registerMeshRenderer(module);
     registerEffect(module);
     registerMaterial(module);
+    registerDeviceSetup(module);
+    registerFileSystem(module);
+    registerAssetLoader(module);
 
     module.addConstant("device", d);
 

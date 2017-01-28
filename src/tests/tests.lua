@@ -10,7 +10,6 @@ function runTest(fileName)
     end
 end
 
-runTest("enums.lua")
 runTest("degree-radian.lua")
 runTest("vector2.lua")
 runTest("vector3.lua")

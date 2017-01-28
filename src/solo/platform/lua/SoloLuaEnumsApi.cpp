@@ -23,6 +23,7 @@
 #include "SoloTexture.h"
 #include "SoloLuaCommon.h"
 #include "SoloEffect.h"
+#include "SoloDevice.h"
 #include "SoloMaterialParameter.h"
 
 using namespace solo;
@@ -138,4 +139,63 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, WorldViewMatrix);
     REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, WorldViewProjectionMatrix);
     autoBinding.endModule();
+
+    auto keyCode = module.beginModule("KeyCode");
+    REG_MODULE_CONSTANT(keyCode, KeyCode, Digit0);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, Digit1);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, Digit2);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, Digit3);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, Digit4);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, Digit5);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, Digit6);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, Digit7);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, Digit8);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, Digit9);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, A);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, B);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, C);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, D);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, E);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, F);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, G);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, H);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, I);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, J);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, K);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, L);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, M);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, N);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, O);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, P);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, Q);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, R);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, S);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, T);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, U);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, V);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, W);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, X);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, Y);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, Z);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, LeftArrow);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, RightArrow);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, UpArrow);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, DownArrow);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, Escape);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, Backspace);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, Space);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, Return);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, LeftShift);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, LeftCtrl);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, LeftAlt);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, RightShift);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, RightCtrl);
+    REG_MODULE_CONSTANT(keyCode, KeyCode, RightAlt);
+    keyCode.endModule();
+
+    auto mouseButton = module.beginModule("MouseButton");
+    REG_MODULE_CONSTANT(mouseButton, MouseButton, Left);
+    REG_MODULE_CONSTANT(mouseButton, MouseButton, Middle);
+    REG_MODULE_CONSTANT(mouseButton, MouseButton, Right);
+    mouseButton.endModule();
 }
