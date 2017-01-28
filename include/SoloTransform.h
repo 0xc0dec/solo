@@ -64,6 +64,7 @@ namespace solo
 
         void setParent(Transform *parent);
         auto getParent() const -> Transform*;
+        
         auto getChild(uint32_t index) const -> Transform*;
         auto getChildrenCount() const -> uint32_t;
         void clearChildren();
@@ -102,10 +103,10 @@ namespace solo
         void setLocalScale(const Vector3 &scale);
 
         void rotate(const Quaternion &rotation, TransformSpace space = TransformSpace::Self);
-        void rotate(const Vector3 &axis, const Radian &angle, TransformSpace space = TransformSpace::Self);
+        void rotateByAxisAngle(const Vector3 &axis, const Radian &angle, TransformSpace space = TransformSpace::Self);
 
         void setLocalRotation(const Quaternion &rotation);
-        void setLocalRotation(const Vector3 &axis, const Radian &angle);
+        void setLocalAxisAngleRotation(const Vector3 &axis, const Radian &angle);
 
         void lookAt(const Vector3 &target, const Vector3 &up);
 
@@ -113,7 +114,7 @@ namespace solo
         auto getWorldMatrix() const -> TransformMatrix;
 
         auto getWorldViewMatrix(const Camera *camera) const -> TransformMatrix;
-        auto getWorldViewProjectionMatrix(const Camera *camera) const -> TransformMatrix;
+        auto getWorldViewProjMatrix(const Camera *camera) const -> TransformMatrix;
         auto getInvTransposedWorldViewMatrix(const Camera *camera) const -> TransformMatrix;
         auto getInvTransposedWorldMatrix() const -> TransformMatrix;
 

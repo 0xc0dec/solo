@@ -18,39 +18,17 @@
     3. This notice may not be removed or altered from any source distribution.
 */
 
-#pragma once
+#include "SoloFrameBuffer.h"
+#include "SoloLuaCommon.h"
 
-#include <Solo.h>
+using namespace solo;
 
 
-class Rotator final: public solo::ComponentBase<Rotator>
+void registerFrameBuffer(CppBindModule<LuaBinding> &module)
 {
-public:
-    explicit Rotator(const solo::Node &node, const std::string &space, solo::Vector3 axis):
-        ComponentBase<Rotator>(node),
-        device(node.getScene()->getDevice()),
-        axis(axis),
-        space(space)
-    {
-    }
-
-    void init() override final
-    {
-        transform = node.findComponent<solo::Transform>();
-    }
-
-    void update() override final
-    {
-        auto angle = device->getTimeDelta();
-        auto rotationSpace = solo::TransformSpace::World;
-        if (space == "local")
-            rotationSpace = solo::TransformSpace::Self;
-        transform->rotateByAxisAngle(axis, solo::Radian(angle), rotationSpace);
-    }
-
-private:
-    solo::Transform *transform = nullptr;
-    solo::Device *device;
-    solo::Vector3 axis;
-    std::string space;
-};
+    auto fb = module.beginClass<FrameBuffer>("FrameBuffer");
+    REGISTER_STATIC_METHOD(fb, FrameBuffer, create);
+    REGISTER_METHOD(fb, FrameBuffer, setAttachments);
+    REGISTER_METHOD(fb, FrameBuffer, getSize);
+    fb.endClass();
+}

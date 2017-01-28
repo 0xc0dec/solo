@@ -145,7 +145,7 @@ auto Transform::getWorldViewMatrix(const Camera *camera) const -> TransformMatri
 }
 
 
-auto Transform::getWorldViewProjectionMatrix(const Camera *camera) const -> TransformMatrix
+auto Transform::getWorldViewProjMatrix(const Camera *camera) const -> TransformMatrix
 {
     return camera->getViewProjectionMatrix() * getWorldMatrix();
 }
@@ -195,7 +195,7 @@ void Transform::rotate(const Quaternion &rotation, TransformSpace space)
 }
 
 
-void Transform::rotate(const Vector3 &axis, const Radian &angle, TransformSpace space)
+void Transform::rotateByAxisAngle(const Vector3 &axis, const Radian &angle, TransformSpace space)
 {
     auto rotation = Quaternion::createFromAxisAngle(axis, angle);
     rotate(rotation, space);
@@ -255,7 +255,7 @@ void Transform::setLocalRotation(const Quaternion &rotation)
 }
 
 
-void Transform::setLocalRotation(const Vector3 &axis, const Radian &angle)
+void Transform::setLocalAxisAngleRotation(const Vector3 &axis, const Radian &angle)
 {
     localRotation = Quaternion::createFromAxisAngle(axis, angle);
     setDirtyWithChildren(TransformDirtyFlags::Rotation | TransformDirtyFlags::World | TransformDirtyFlags::InvTransposedWorld);

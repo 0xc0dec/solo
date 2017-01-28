@@ -18,39 +18,24 @@
     3. This notice may not be removed or altered from any source distribution.
 */
 
-#pragma once
+#include "SoloTransform.h"
+#include "SoloPlane.h"
+#include "SoloLuaCommon.h"
 
-#include <Solo.h>
+using namespace solo;
 
 
-class Rotator final: public solo::ComponentBase<Rotator>
+void registerEnums(CppBindModule<LuaBinding> &module)
 {
-public:
-    explicit Rotator(const solo::Node &node, const std::string &space, solo::Vector3 axis):
-        ComponentBase<Rotator>(node),
-        device(node.getScene()->getDevice()),
-        axis(axis),
-        space(space)
-    {
-    }
+    auto transformSpace = module.beginModule("TransformSpace");
+    REGISTER_MODULE_CONSTANT(transformSpace, TransformSpace, Parent);
+    REGISTER_MODULE_CONSTANT(transformSpace, TransformSpace, Self);
+    REGISTER_MODULE_CONSTANT(transformSpace, TransformSpace, World);
+    transformSpace.endModule();
 
-    void init() override final
-    {
-        transform = node.findComponent<solo::Transform>();
-    }
-
-    void update() override final
-    {
-        auto angle = device->getTimeDelta();
-        auto rotationSpace = solo::TransformSpace::World;
-        if (space == "local")
-            rotationSpace = solo::TransformSpace::Self;
-        transform->rotateByAxisAngle(axis, solo::Radian(angle), rotationSpace);
-    }
-
-private:
-    solo::Transform *transform = nullptr;
-    solo::Device *device;
-    solo::Vector3 axis;
-    std::string space;
-};
+    auto intersection = module.beginModule("PlaneIntersection");
+    REGISTER_MODULE_CONSTANT(intersection, PlaneIntersection, Intersecting);
+    REGISTER_MODULE_CONSTANT(intersection, PlaneIntersection, Front);
+    REGISTER_MODULE_CONSTANT(intersection, PlaneIntersection, Back);
+    intersection.endModule();
+}

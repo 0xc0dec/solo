@@ -130,7 +130,7 @@ void Camera::setNear(float near)
 }
 
 
-auto Camera::getViewMatrix() const -> const TransformMatrix &
+auto Camera::getViewMatrix() const -> const TransformMatrix
 {
     if (transformDirtyFlags & dirtyBitView)
     {
@@ -142,7 +142,7 @@ auto Camera::getViewMatrix() const -> const TransformMatrix &
 }
 
 
-auto Camera::getInvViewMatrix() const -> const TransformMatrix &
+auto Camera::getInvViewMatrix() const -> const TransformMatrix
 {
     if (transformDirtyFlags & dirtyBitInvView)
     {
@@ -154,7 +154,7 @@ auto Camera::getInvViewMatrix() const -> const TransformMatrix &
 }
 
 
-auto Camera::getProjectionMatrix() const -> const TransformMatrix &
+auto Camera::getProjectionMatrix() const -> const TransformMatrix
 {
     if (transformDirtyFlags & dirtyBitProjection)
     {
@@ -168,7 +168,7 @@ auto Camera::getProjectionMatrix() const -> const TransformMatrix &
 }
 
 
-auto Camera::getViewProjectionMatrix() const -> const TransformMatrix &
+auto Camera::getViewProjectionMatrix() const -> const TransformMatrix
 {
     if (transformDirtyFlags & dirtyBitViewProjection)
     {
@@ -179,7 +179,7 @@ auto Camera::getViewProjectionMatrix() const -> const TransformMatrix &
 }
 
 
-auto Camera::getInvViewProjectionMatrix() const -> const TransformMatrix &
+auto Camera::getInvViewProjectionMatrix() const -> const TransformMatrix
 {
     if (transformDirtyFlags & dirtyBitInvViewProjection)
     {

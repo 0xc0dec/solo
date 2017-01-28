@@ -210,7 +210,7 @@ void OpenGLMaterialParameter::apply(const Camera *camera, Transform *nodeTransfo
             break;
         case MaterialParameterType::WorldViewProjectionMatrix:
             if (nodeTransform && camera)
-                renderer->setUniform(handle, nodeTransform->getWorldViewProjectionMatrix(camera).m, 1);
+                renderer->setUniform(handle, nodeTransform->getWorldViewProjMatrix(camera).m, 1);
             break;
         case MaterialParameterType::InverseTransposedWorldMatrix:
             if (nodeTransform)

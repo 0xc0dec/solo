@@ -52,7 +52,7 @@ void Spectator::update()
     if (device->isMouseButtonDown(MouseButton::Right, false))
     {
         if (mouseMotion.x != 0)
-            transform->rotate(Vector3::unitY(), Radian(mouseSensitivity * dt * -mouseMotion.x), TransformSpace::World);
+            transform->rotateByAxisAngle(Vector3::unitY(), Radian(mouseSensitivity * dt * -mouseMotion.x), TransformSpace::World);
 
         if (mouseMotion.y != 0)
         {
@@ -69,7 +69,7 @@ void Spectator::update()
                     delta = angleToUp - 3.04f;
             }
 
-            transform->rotate(Vector3::unitX(), Radian(delta), TransformSpace::Self);
+            transform->rotateByAxisAngle(Vector3::unitX(), Radian(delta), TransformSpace::Self);
         }
     }
 

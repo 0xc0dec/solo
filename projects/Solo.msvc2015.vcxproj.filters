@@ -507,6 +507,21 @@
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaScriptComponent.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaCamera.cpp">
+      <Filter>src\platform\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaTransform.cpp">
+      <Filter>src\platform\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaEnums.cpp">
+      <Filter>src\platform\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaFrameBuffer.cpp">
+      <Filter>src\platform\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaTexture.cpp">
+      <Filter>src\platform\lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

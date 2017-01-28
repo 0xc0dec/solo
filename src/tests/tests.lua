@@ -27,5 +27,8 @@ runTest("device.lua")
 runTest("logger.lua")
 runTest("scene.lua")
 runTest("node-components.lua")
+runTest("transform.lua")
+runTest("camera.lua")
+runTest("frame-buffer.lua")
 
 logger:logInfo("Script tests finished")

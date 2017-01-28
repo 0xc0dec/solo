@@ -89,11 +89,11 @@ namespace solo
         auto getAspectRatio() const -> float;
         void setAspectRatio(float ratio);
 
-        auto getViewMatrix() const -> const TransformMatrix&;
-        auto getInvViewMatrix() const -> const TransformMatrix&;
-        auto getProjectionMatrix() const -> const TransformMatrix&;
-        auto getViewProjectionMatrix() const -> const TransformMatrix&;
-        auto getInvViewProjectionMatrix() const -> const TransformMatrix&;
+        auto getViewMatrix() const -> const TransformMatrix;
+        auto getInvViewMatrix() const -> const TransformMatrix;
+        auto getProjectionMatrix() const -> const TransformMatrix;
+        auto getViewProjectionMatrix() const -> const TransformMatrix;
+        auto getInvViewProjectionMatrix() const -> const TransformMatrix;
 
     protected:
         explicit Camera(const Node &node);
@@ -132,7 +132,7 @@ namespace solo
         mutable TransformMatrix invViewProjectionMatrix;
     };
 
-    inline void Camera::setClearColor(const Vector4& color)
+    inline void Camera::setClearColor(const Vector4 &color)
     {
         clearColor = color;
         renderDirtyFlag = true; // TODO in other places too

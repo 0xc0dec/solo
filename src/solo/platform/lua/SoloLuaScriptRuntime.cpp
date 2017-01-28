@@ -25,11 +25,17 @@
 using namespace solo;
 
 
+void registerEnums(CppBindModule<LuaBinding> &module);
 void registerDevice(CppBindModule<LuaBinding> &module);
 void registerLogger(CppBindModule<LuaBinding> &module);
 void registerMath(CppBindModule<LuaBinding> &module);
 void registerScene(CppBindModule<LuaBinding> &module);
 void registerNodeAndComponent(CppBindModule<LuaBinding> &module);
+void registerTransform(CppBindModule<LuaBinding> &module);
+void registerCamera(CppBindModule<LuaBinding> &module);
+void registerRenderContext(CppBindModule<LuaBinding> &module);
+void registerFrameBuffer(CppBindModule<LuaBinding> &module);
+void registerTexture(CppBindModule<LuaBinding> &module);
 
 
 LuaScriptRuntime::LuaScriptRuntime(Device *d)
@@ -39,11 +45,17 @@ LuaScriptRuntime::LuaScriptRuntime(Device *d)
 
     auto module = LuaBinding(lua).beginModule("solo");
     
+    registerEnums(module);
     registerMath(module);
     registerDevice(module);
     registerLogger(module);
     registerScene(module);
     registerNodeAndComponent(module);
+    registerTransform(module);
+    registerCamera(module);
+    registerRenderContext(module);
+    registerFrameBuffer(module);
+    registerTexture(module);
 
     module.addConstant("device", d);
 

@@ -317,12 +317,6 @@ static void registerBoundingSphere(CppBindModule<LuaBinding> &module)
 
 static void registerPlane(CppBindModule<LuaBinding> &module)
 {
-    auto intersection = module.beginModule("PlaneIntersection");
-    REGISTER_MODULE_CONSTANT(intersection, PlaneIntersection, Intersecting);
-    REGISTER_MODULE_CONSTANT(intersection, PlaneIntersection, Front);
-    REGISTER_MODULE_CONSTANT(intersection, PlaneIntersection, Back);
-    intersection.endModule();
-
     auto plane = module.beginClass<Plane>("Plane");
 
     plane.addConstructor(LUA_ARGS(const Vector3&, float));

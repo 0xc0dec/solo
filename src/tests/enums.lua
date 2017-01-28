@@ -53,9 +53,9 @@
 -- assert(solo.AutoBinding.WorldViewMatrix ~= nil)
 -- assert(solo.AutoBinding.WorldViewProjectionMatrix ~= nil)
 
--- assert(solo.TransformSpace.Self ~= nil)
--- assert(solo.TransformSpace.Parent ~= nil)
--- assert(solo.TransformSpace.World ~= nil)
+assert(solo.TransformSpace.Self ~= nil)
+assert(solo.TransformSpace.Parent ~= nil)
+assert(solo.TransformSpace.World ~= nil)
 
 -- assert(solo.TextureFiltering.Linear ~= nil)
 -- assert(solo.TextureFiltering.Nearest ~= nil)
