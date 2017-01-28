@@ -22,5 +22,7 @@ runTest("BoundingSphere", assert(loadfile("../src/tests/bounding-sphere.lua")))
 runTest("BoundingBox", assert(loadfile("../src/tests/bounding-box.lua")))
 runTest("Plane", assert(loadfile("../src/tests/plane.lua")))
 runTest("Frustum", assert(loadfile("../src/tests/frustum.lua")))
+runTest("Device", assert(loadfile("../src/tests/device.lua")))
+runTest("Logger", assert(loadfile("../src/tests/logger.lua")))
 
 logger:logInfo("Script tests finished")
