@@ -18,17 +18,19 @@
     3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "SoloDevice.h"
+#include "SoloScene.h"
 #include "SoloLuaCommon.h"
 
 using namespace solo;
 
-void registerDevice(CppBindModule<LuaBinding> &module)
+void registerScene(CppBindModule<LuaBinding> &module)
 {
-    auto device = module.beginClass<Device>("Device");
-    REGISTER_METHOD(device, Device, getLogger);
-    REGISTER_METHOD(device, Device, getScene);
-    REGISTER_METHOD(device, Device, getWindowTitle);
-    REGISTER_METHOD(device, Device, setWindowTitle);
-    device.endClass();
+    auto scene = module.beginClass<Scene>("Scene");
+    
+    REGISTER_METHOD(scene, Scene, getDevice);
+    REGISTER_METHOD(scene, Scene, createNode);
+    REGISTER_METHOD(scene, Scene, visit);
+    REGISTER_METHOD(scene, Scene, visitByTags);
+    
+    scene.endClass();
 }

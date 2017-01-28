@@ -47,3 +47,4 @@ using namespace LuaIntf;
 void registerDevice(CppBindModule<LuaBinding> &module);
 void registerLogger(CppBindModule<LuaBinding> &module);
 void registerMath(CppBindModule<LuaBinding> &module);
+void registerScene(CppBindModule<LuaBinding> &module);

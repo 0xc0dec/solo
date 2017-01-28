@@ -94,11 +94,11 @@ void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
 // All changes will be seen only on the next iteration.
 void Scene::visit(std::function<void(Component*)> accept)
 {
-    return visit(~0, accept);
+    return visitByTags(~0, accept);
 }
 
 
-void Scene::visit(uint32_t tagMask, std::function<void(Component*)> accept)
+void Scene::visitByTags(uint32_t tagMask, std::function<void(Component*)> accept)
 {
     auto copy = nodes;
     for (const auto &node: copy)

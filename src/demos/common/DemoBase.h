@@ -70,6 +70,6 @@ protected:
 
     void renderByTags(uint32_t tags, const RenderContext &ctx)
     {
-        scene->visit(tags, [=](Component *cmp) { cmp->render(ctx); });
+        scene->visitByTags(tags, [=](Component *cmp) { cmp->render(ctx); });
     }
 };

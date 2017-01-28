@@ -24,6 +24,7 @@
 
 using namespace solo;
 
+
 LuaScriptRuntime::LuaScriptRuntime(Device *d)
 {
     lua = LuaState::newState();
@@ -34,6 +35,7 @@ LuaScriptRuntime::LuaScriptRuntime(Device *d)
     registerMath(module);
     registerDevice(module);
     registerLogger(module);
+    registerScene(module);
 
     module.addConstant("device", d);
 
