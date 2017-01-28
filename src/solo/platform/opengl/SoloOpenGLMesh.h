@@ -69,7 +69,7 @@ namespace solo
         std::vector<uint32_t> vertexCounts;
         std::vector<uint32_t> vertexSizes;
         uint32_t minVertexCount = 0;
-        uint32_t programBinding = emptyHandle;
+        uint32_t programBinding = EmptyHandle;
     };
 
     inline void OpenGLMesh::setPrimitiveType(PrimitiveType type)

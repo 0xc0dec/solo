@@ -31,14 +31,14 @@
 using namespace solo;
 
 
-static const uint32_t minComponentTypeId = 1000000000; // Assume that built-in components don't ever exceed this limit
+static const uint32_t MinComponentTypeId = 1000000000; // Assume that built-in components don't ever exceed this limit
 
 
 LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef scriptComponent):
     ComponentBase<LuaScriptComponent>(node),
     scriptComponent(scriptComponent)
 {
-    typeId = minComponentTypeId + scriptComponent.get<uint32_t>("typeId");
+    typeId = MinComponentTypeId + scriptComponent.get<uint32_t>("typeId");
     
     initFunc = scriptComponent.has("init")
         ? scriptComponent.get<std::function<void(LuaRef)>>("init")
@@ -172,7 +172,7 @@ void LuaScriptComponent::addScriptComponent(Node *node, LuaRef scriptComponent)
 
 void LuaScriptComponent::removeScriptComponent(Node* node, LuaRef scriptComponent)
 {
-    auto typeId = scriptComponent.get<uint32_t>("typeId") + minComponentTypeId;
+    auto typeId = scriptComponent.get<uint32_t>("typeId") + MinComponentTypeId;
     node->getScene()->removeComponent(node->getId(), typeId);
 }
 

@@ -50,7 +50,7 @@ namespace solo
         TextureArray,
     };
 
-    constexpr uint32_t emptyHandle = std::numeric_limits<uint32_t>::max();
+    constexpr uint32_t EmptyHandle = std::numeric_limits<uint32_t>::max();
 
     class OpenGLRenderer final: public Renderer
     {
