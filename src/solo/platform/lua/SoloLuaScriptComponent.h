@@ -41,14 +41,6 @@ namespace solo
         
         auto getTypeId() -> uint32_t override final;
 
-        // TODO as free functions
-        static auto findComponent(Node *node, const std::string &name) -> Component*;
-        static auto addComponent(Node *node, const std::string &name) -> Component*;
-        static void removeComponent(Node *node, const std::string &name);
-
-        static void addScriptComponent(Node *node, LuaIntf::LuaRef scriptComponent);
-        static void removeScriptComponent(Node *node, LuaIntf::LuaRef scriptComponent);
-
     private:
         uint32_t typeId;
         LuaIntf::LuaRef scriptComponent;

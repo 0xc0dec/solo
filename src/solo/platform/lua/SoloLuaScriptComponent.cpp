@@ -104,7 +104,7 @@ void LuaScriptComponent::onComponentRemoved(Component* cmp)
 }
 
 
-auto LuaScriptComponent::findComponent(Node* node, const std::string &name) -> Component*
+static auto findComponent(Node* node, const std::string &name) -> Component*
 {
     if (name == "Transform")
         return node->findComponent<Transform>();
@@ -124,7 +124,7 @@ auto LuaScriptComponent::findComponent(Node* node, const std::string &name) -> C
 }
 
 
-auto LuaScriptComponent::addComponent(Node *node, const std::string &name) -> Component*
+static auto addComponent(Node *node, const std::string &name) -> Component*
 {
     if (name == "Transform")
         return node->addComponent<Transform>();
@@ -144,7 +144,7 @@ auto LuaScriptComponent::addComponent(Node *node, const std::string &name) -> Co
 }
 
 
-void LuaScriptComponent::removeComponent(Node *node, const std::string &name)
+static void removeComponent(Node *node, const std::string &name)
 {
     if (name == "Transform")
         node->removeComponent<Transform>();
@@ -163,14 +163,14 @@ void LuaScriptComponent::removeComponent(Node *node, const std::string &name)
 }
 
 
-void LuaScriptComponent::addScriptComponent(Node *node, LuaRef scriptComponent)
+static void addScriptComponent(Node *node, LuaRef scriptComponent)
 {
     auto actualComponent = std::make_shared<LuaScriptComponent>(*node, scriptComponent);
     node->getScene()->addComponent(node->getId(), actualComponent);
 }
 
 
-void LuaScriptComponent::removeScriptComponent(Node* node, LuaRef scriptComponent)
+static void removeScriptComponent(Node* node, LuaRef scriptComponent)
 {
     auto typeId = scriptComponent.get<uint32_t>("typeId") + MinComponentTypeId;
     node->getScene()->removeComponent(node->getId(), typeId);
@@ -189,10 +189,10 @@ void registerNodeAndComponent(CppBindModule<LuaBinding> &module)
     auto node = module.beginClass<Node>("Node");
     REGISTER_METHOD(node, Node, getId);
     REGISTER_METHOD(node, Node, getScene);
-    REGISTER_METHOD(node, LuaScriptComponent, addScriptComponent);
-    REGISTER_METHOD(node, LuaScriptComponent, removeScriptComponent);
-    REGISTER_METHOD(node, LuaScriptComponent, findComponent);
-    REGISTER_METHOD(node, LuaScriptComponent, addComponent);
-    REGISTER_METHOD(node, LuaScriptComponent, removeComponent);
+    node.addFunction("addScriptComponent", addScriptComponent);
+    node.addFunction("removeScriptComponent", removeScriptComponent);
+    node.addFunction("findComponent", findComponent);
+    node.addFunction("addComponent", addComponent);
+    node.addFunction("removeComponent", removeComponent);
     node.endClass();
 }
