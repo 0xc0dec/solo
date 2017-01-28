@@ -23,6 +23,7 @@
 #include "SoloTransform.h"
 #include "SoloMeshRenderer.h"
 #include "SoloSkyboxRenderer.h"
+#include "SoloFontRenderer.h"
 #include "SoloCamera.h"
 #include "SoloSpectator.h"
 #include "SoloLuaCommon.h"
@@ -115,6 +116,8 @@ auto LuaScriptComponent::findComponent(Node* node, const std::string &name) -> C
         return node->findComponent<Spectator>();
     if (name == "SkyboxRenderer")
         return node->findComponent<SkyboxRenderer>();
+    if (name == "FontRenderer")
+        return node->findComponent<FontRenderer>();
 
     SL_ERR("Unknown standard component ", name)
     return nullptr;
@@ -133,6 +136,8 @@ auto LuaScriptComponent::addComponent(Node *node, const std::string &name) -> Co
         return node->addComponent<Spectator>();
     if (name == "SkyboxRenderer")
         return node->addComponent<SkyboxRenderer>();
+    if (name == "FontRenderer")
+        node->addComponent<FontRenderer>();
 
     SL_ERR("Unknown standard component ", name)
     return nullptr;
@@ -151,6 +156,8 @@ void LuaScriptComponent::removeComponent(Node *node, const std::string &name)
         node->removeComponent<Spectator>();
     else if (name == "SkyboxRenderer")
         node->removeComponent<SkyboxRenderer>();
+    else if (name == "FontRenderer")
+        node->removeComponent<FontRenderer>();
     else
         SL_ERR("Unknown standard component ", name)
 }
