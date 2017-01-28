@@ -51,8 +51,8 @@ namespace solo
         auto getDeterminant() const -> float;
         bool invert();
         void transpose();
-        void makeIdentity();
-        void makeZero();
+        void resetToIdentity();
+        void resetToZero();
 
         auto operator+(float scalar) const -> Matrix;
         auto operator+(const Matrix &m) const -> Matrix;

@@ -33,7 +33,6 @@ namespace solo
         Vector2() {}
         Vector2(float x, float y);
 
-        static auto zero() -> Vector2;
         static auto unit() -> Vector2;
         static auto unitX() -> Vector2;
         static auto unitY() -> Vector2;

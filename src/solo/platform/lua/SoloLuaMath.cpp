@@ -43,11 +43,6 @@ static void registerVector2(CppBindModule<LuaBinding> &module)
     REGISTER_VARIABLE(vector2, Vector2, x);
     REGISTER_VARIABLE(vector2, Vector2, y);
     
-    REGISTER_STATIC_METHOD(vector2, Vector2, zero);
-    REGISTER_STATIC_METHOD(vector2, Vector2, unit);
-    REGISTER_STATIC_METHOD(vector2, Vector2, unitX);
-    REGISTER_STATIC_METHOD(vector2, Vector2, unitY);
-    
     REGISTER_METHOD(vector2, Vector2, isUnit);
     REGISTER_METHOD(vector2, Vector2, isZero);
 
@@ -79,15 +74,11 @@ static void registerVector3(CppBindModule<LuaBinding> &module)
     REGISTER_VARIABLE(vector3, Vector3, y);
     REGISTER_VARIABLE(vector3, Vector3, z);
 
-    REGISTER_STATIC_METHOD(vector3, Vector3, unit);
-    REGISTER_STATIC_METHOD(vector3, Vector3, unitX);
-    REGISTER_STATIC_METHOD(vector3, Vector3, unitY);
-    REGISTER_STATIC_METHOD(vector3, Vector3, unitZ);
-
     REGISTER_METHOD(vector3, Vector3, isUnit);
     REGISTER_METHOD(vector3, Vector3, isZero);
 
     REGISTER_STATIC_METHOD(vector3, Vector3, angle);
+
     REGISTER_METHOD(vector3, Vector3, clamp);
 
     REGISTER_STATIC_METHOD(vector3, Vector3, cross);
@@ -118,12 +109,6 @@ static void registerVector4(CppBindModule<LuaBinding> &module)
     REGISTER_VARIABLE(vector4, Vector4, z);
     REGISTER_VARIABLE(vector4, Vector4, w);
     
-    REGISTER_STATIC_METHOD(vector4, Vector4, unit);
-    REGISTER_STATIC_METHOD(vector4, Vector4, unitX);
-    REGISTER_STATIC_METHOD(vector4, Vector4, unitY);
-    REGISTER_STATIC_METHOD(vector4, Vector4, unitZ);
-    REGISTER_STATIC_METHOD(vector4, Vector4, unitW);
-
     REGISTER_METHOD(vector4, Vector4, isUnit);
     REGISTER_METHOD(vector4, Vector4, isZero);
     
@@ -158,8 +143,6 @@ static void registerQuaternion(CppBindModule<LuaBinding> &module)
     REGISTER_VARIABLE(q, Quaternion, w);
 
     REGISTER_STATIC_METHOD(q, Quaternion, createFromAxisAngle);
-
-    REGISTER_STATIC_METHOD(q, Quaternion, identity);
 
     REGISTER_METHOD(q, Quaternion, isIdentity);
     REGISTER_METHOD(q, Quaternion, isZero);
@@ -212,8 +195,8 @@ static void registerMatrix(CppBindModule<LuaBinding> &module)
     REGISTER_METHOD(matrix, Matrix, getDeterminant);
     REGISTER_METHOD(matrix, Matrix, invert);
     REGISTER_METHOD(matrix, Matrix, transpose);
-    REGISTER_METHOD(matrix, Matrix, makeIdentity);
-    REGISTER_METHOD(matrix, Matrix, makeZero);
+    REGISTER_METHOD(matrix, Matrix, resetToIdentity);
+    REGISTER_METHOD(matrix, Matrix, resetToZero);
     
     matrix.endClass();
 }

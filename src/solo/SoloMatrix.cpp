@@ -156,13 +156,13 @@ bool Matrix::isIdentity() const
 }
 
 
-void Matrix::makeIdentity()
+void Matrix::resetToIdentity()
 {
     memcpy(m, identityMatrix, getSize());
 }
 
 
-void Matrix::makeZero()
+void Matrix::resetToZero()
 {
     memset(m, 0, getSize());
 }

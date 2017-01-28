@@ -30,13 +30,6 @@ Vector2::Vector2(float x, float y):
 }
 
 
-auto Vector2::zero() -> Vector2
-{
-    static Vector2 value(0.0f, 0.0f);
-    return value;
-}
-
-
 auto Vector2::unit() -> Vector2
 {
     static Vector2 value(1.0f, 1.0f);
