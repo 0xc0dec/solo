@@ -15,10 +15,10 @@ local cmp = {
     render = function(ctx)
     end,
 
-    onComponentAdded = function()
+    onComponentAdded = function(cmp)
     end,
 
-    onComponentRemoved = function()
+    onComponentRemoved = function(cmp)
     end
 }
 
@@ -31,3 +31,9 @@ n:removeScriptComponent(cmp)
 assert(n:findComponent("Transform"))
 assert(n:addComponent("Camera"))
 n:removeComponent("Camera")
+
+local t = n:findComponent("Transform")
+assert(t:getTypeId() ~= nil)
+assert(t:getTags() ~= nil)
+t:setTags(123)
+assert(t:getNode())
