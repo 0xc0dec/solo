@@ -51,15 +51,21 @@ namespace solo
 
         void setFloatParameter(const std::string &name, float value);
         void setFloatArrayParameter(const std::string &name, const std::vector<float> &value);
+
         void setVector2Parameter(const std::string &name, const Vector2 &value);
         void setVector2ArrayParameter(const std::string &name, const std::vector<Vector2> &value);
+
         void setVector3Parameter(const std::string &name, const Vector3 &value);
         void setVector3ArrayParameter(const std::string &name, const std::vector<Vector3> &value);
+
         void setVector4Parameter(const std::string &name, const Vector4 &value);
         void setVector4ArrayParameter(const std::string &name, const std::vector<Vector4> &value);
+
         void setMatrixParameter(const std::string &name, const Matrix &value);
         void setMatrixArrayParameter(const std::string &name, const std::vector<Matrix> &value);
+
         void setTextureParameter(const std::string &name, sptr<Texture> value);
+
         void bindWorldMatrixParameter(const std::string &name);
         void bindViewMatrixParameter(const std::string &name);
         void bindProjectionMatrixParameter(const std::string &name);

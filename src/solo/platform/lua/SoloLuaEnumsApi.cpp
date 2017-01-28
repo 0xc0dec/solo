@@ -23,6 +23,7 @@
 #include "SoloTexture.h"
 #include "SoloLuaCommon.h"
 #include "SoloEffect.h"
+#include "SoloMaterialParameter.h"
 
 using namespace solo;
 
@@ -76,11 +77,17 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     REG_MODULE_CONSTANT(effectPrefab, EffectPrefab, Font);
     effectPrefab.endModule();
 
-    auto polygonFace = module.beginModule("FaceCull");
-    REG_MODULE_CONSTANT(polygonFace, FaceCull, All);
-    REG_MODULE_CONSTANT(polygonFace, FaceCull, CW);
-    REG_MODULE_CONSTANT(polygonFace, FaceCull, CCW);
-    polygonFace.endModule();
+    auto faceCull = module.beginModule("FaceCull");
+    REG_MODULE_CONSTANT(faceCull, FaceCull, All);
+    REG_MODULE_CONSTANT(faceCull, FaceCull, CW);
+    REG_MODULE_CONSTANT(faceCull, FaceCull, CCW);
+    faceCull.endModule();
+
+    auto polygonMode = module.beginModule("PolygonMode");
+    REG_MODULE_CONSTANT(polygonMode, PolygonMode, Points);
+    REG_MODULE_CONSTANT(polygonMode, PolygonMode, Triangle);
+    REG_MODULE_CONSTANT(polygonMode, PolygonMode, Wireframe);
+    polygonMode.endModule();
 
     auto depthFunction = module.beginModule("DepthFunction");
     REG_MODULE_CONSTANT(depthFunction, DepthFunction, Never);
@@ -108,4 +115,27 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     REG_MODULE_CONSTANT(blendFactor, BlendFactor, OneMinusConstantAlpha);
     REG_MODULE_CONSTANT(blendFactor, BlendFactor, SrcAlphaSaturate);
     blendFactor.endModule();
+
+    auto autoBinding = module.beginModule("MaterialParameterType");
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, Float);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, FloatArray);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, Vector2);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, Vector2Array);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, Vector3);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, Vector3Array);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, Vector4);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, Vector4Array);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, Matrix);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, MatrixArray);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, Texture);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, CameraWorldPosition);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, InverseTransposedWorldMatrix);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, InverseTransposedWorldViewMatrix);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, ProjectionMatrix);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, ViewMatrix);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, ViewProjectionMatrix);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, WorldMatrix);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, WorldViewMatrix);
+    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, WorldViewProjectionMatrix);
+    autoBinding.endModule();
 }

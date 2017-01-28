@@ -519,6 +519,9 @@
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaVariousApi.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaMaterialApi.cpp">
+      <Filter>src\platform\lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

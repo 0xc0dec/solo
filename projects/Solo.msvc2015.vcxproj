@@ -115,6 +115,7 @@
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaCameraApi.cpp" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaCommon.h" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaEnumsApi.cpp" />
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaMaterialApi.cpp" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaNodeComponentApi.cpp" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaScriptComponent.cpp" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaScriptRuntime.cpp" />
