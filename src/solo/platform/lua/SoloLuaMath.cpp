@@ -23,6 +23,7 @@
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 #include "SoloVector4.h"
+#include "SoloQuaternion.h"
 #include "SoloLuaCommon.h"
 
 using namespace solo;
@@ -141,6 +142,39 @@ static void registerVector4(CppBindModule<LuaBinding> &module)
 }
 
 
+static void registerQuaternion(CppBindModule<LuaBinding> &module)
+{
+    auto q = module.beginClass<Quaternion>("Quaternion");
+    q.addConstructor(LUA_ARGS());
+
+    REGISTER_VARIABLE(q, Quaternion, x);
+    REGISTER_VARIABLE(q, Quaternion, y);
+    REGISTER_VARIABLE(q, Quaternion, z);
+    REGISTER_VARIABLE(q, Quaternion, w);
+
+    REGISTER_STATIC_METHOD(q, Quaternion, createFromAxisAngle);
+
+    REGISTER_STATIC_METHOD(q, Quaternion, identity);
+
+    REGISTER_METHOD(q, Quaternion, isIdentity);
+    REGISTER_METHOD(q, Quaternion, isZero);
+
+    REGISTER_METHOD(q, Quaternion, conjugate);
+    REGISTER_METHOD(q, Quaternion, inverse);
+
+    REGISTER_METHOD(q, Quaternion, normalize);
+    REGISTER_METHOD(q, Quaternion, normalized);
+
+    REGISTER_METHOD(q, Quaternion, toAxisAngle);
+    
+    REGISTER_STATIC_METHOD(q, Quaternion, lerp);
+    REGISTER_STATIC_METHOD(q, Quaternion, slerp);
+    REGISTER_STATIC_METHOD(q, Quaternion, squad);
+    
+    q.endClass();
+}
+
+
 static void registerRadian(CppBindModule<LuaBinding> &module)
 {
     auto radian = module.beginClass<Radian>("Radian");
@@ -168,4 +202,5 @@ void registerMath(CppBindModule<LuaBinding> &module)
     registerVector2(module);
     registerVector3(module);
     registerVector4(module);
+    registerQuaternion(module);
 }

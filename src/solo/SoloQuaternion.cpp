@@ -45,13 +45,6 @@ auto Quaternion::identity() -> Quaternion
 }
 
 
-auto Quaternion::zero() -> Quaternion
-{
-    static Quaternion value(0.0f, 0.0f, 0.0f, 0.0f);
-    return value;
-}
-
-
 bool Quaternion::isIdentity() const
 {
     return math::isZero(x, math::epsilon1) &&

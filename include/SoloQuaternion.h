@@ -40,7 +40,6 @@ namespace solo
         static auto createFromAxisAngle(const Vector3 &axis, const Radian &angle) -> Quaternion;
 
         static auto identity() -> Quaternion;
-        static auto zero() -> Quaternion;
 
         bool isIdentity() const;
         bool isZero() const;
