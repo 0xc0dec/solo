@@ -82,7 +82,6 @@ void Device::initSubsystems()
     physics = Physics::create(this, token);
     fs = FileSystem::create(this, token);
     assetLoader = std::make_unique<AssetLoader>(this, token);
-    scene = std::make_unique<Scene>(this, token);
     scriptRuntime = ScriptRuntime::create(this, token);
 }
 

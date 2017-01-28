@@ -1,7 +1,7 @@
-local t1 = solo.device:getScene():createNode():findComponent("Transform")
-local t2 = solo.device:getScene():createNode():findComponent("Transform")
-
-local cam = solo.device:getScene():createNode():addComponent("Camera")
+local scene = solo.Scene.create(solo.device)
+local t1 = scene:createNode():findComponent("Transform")
+local t2 = scene:createNode():findComponent("Transform")
+local cam = scene:createNode():addComponent("Camera")
 local v = solo.Vector3(1, 2, 3)
 local q = solo.Quaternion()
 local m = solo.Matrix()

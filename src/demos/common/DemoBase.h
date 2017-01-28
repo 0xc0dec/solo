@@ -30,7 +30,7 @@ class DemoBase
 public:
     explicit DemoBase(Device *device):
         device(device),
-        scene(device->getScene()),
+        scene(Scene::create(device)),
         loader(device->getAssetLoader()),
         canvasSize(device->getCanvasSize())
     {
@@ -64,7 +64,7 @@ public:
 
 protected:
     Device *device = nullptr;
-    Scene *scene = nullptr;
+    sptr<Scene> scene = nullptr;
     AssetLoader *loader = nullptr;
     Vector2 canvasSize;
 

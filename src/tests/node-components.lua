@@ -1,4 +1,5 @@
-local n = solo.device:getScene():createNode()
+local scene = solo.Scene.create(solo.device)
+local n = scene:createNode()
 
 local cmp = {
     typeId = 1,

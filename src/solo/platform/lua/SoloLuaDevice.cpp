@@ -27,7 +27,6 @@ void registerDevice(CppBindModule<LuaBinding> &module)
 {
     auto device = module.beginClass<Device>("Device");
     REGISTER_METHOD(device, Device, getLogger);
-    REGISTER_METHOD(device, Device, getScene);
     REGISTER_METHOD(device, Device, getWindowTitle);
     REGISTER_METHOD(device, Device, setWindowTitle);
     device.endClass();

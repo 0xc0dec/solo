@@ -33,7 +33,7 @@ class TestBase
 public:
     TestBase(Device *device) :
         device(device),
-        scene(device->getScene()),
+        scene(Scene::create(device)),
         fileSystem(device->getFileSystem())
     {
     }
@@ -63,6 +63,6 @@ protected:
     }
 
     Device *device;
-    Scene *scene;
+    sptr<Scene> scene;
     FileSystem *fileSystem;
 };

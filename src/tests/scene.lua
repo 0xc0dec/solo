@@ -1,4 +1,4 @@
-local scene = solo.device:getScene()
+local scene = solo.Scene.create(solo.device)
 
 assert(scene:getDevice())
 assert(scene:createNode())

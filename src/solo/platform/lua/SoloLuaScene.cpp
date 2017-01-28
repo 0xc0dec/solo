@@ -27,6 +27,7 @@ void registerScene(CppBindModule<LuaBinding> &module)
 {
     auto scene = module.beginClass<Scene>("Scene");
     
+    REGISTER_STATIC_METHOD(scene, Scene, create);
     REGISTER_METHOD(scene, Scene, getDevice);
     REGISTER_METHOD(scene, Scene, createNode);
     REGISTER_METHOD(scene, Scene, visit);

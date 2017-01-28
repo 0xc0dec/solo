@@ -22,11 +22,18 @@
 #include "SoloComponent.h"
 #include "SoloTransform.h"
 #include "SoloNode.h"
+#include "SoloDevice.h"
 
 using namespace solo;
 
 
-Scene::Scene(Device *device, const FriendToken<Device> &):
+auto Scene::create(Device *device) -> sptr<Scene>
+{
+    return sptr<Scene>(new Scene(device));
+}
+
+
+Scene::Scene(Device *device):
     device(device)
 {
 }

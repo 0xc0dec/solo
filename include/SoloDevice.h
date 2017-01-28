@@ -120,7 +120,6 @@ namespace solo
 
         auto getSetup() const -> DeviceSetup;
 
-        auto getScene() const -> Scene*;
         auto getFileSystem() const -> FileSystem*;
         auto getAssetLoader() const -> AssetLoader*;
         auto getRenderer() const -> Renderer*;
@@ -146,7 +145,6 @@ namespace solo
         sptr<AssetLoader> assetLoader;
         // Scene may contain refs to script objects, so it must be destroyed first
         sptr<ScriptRuntime> scriptRuntime;
-        sptr<Scene> scene;
 
         // key code -> was pressed for the first time
         std::unordered_map<KeyCode, bool> pressedKeys;
@@ -177,11 +175,6 @@ namespace solo
     inline auto Device::getTimeDelta() const -> float
     {
         return timeDelta;
-    }
-
-    inline auto Device::getScene() const -> Scene *
-    {
-        return scene.get();
     }
 
     inline auto Device::getFileSystem() const -> FileSystem *

@@ -37,7 +37,8 @@ namespace solo
     public:
         SL_DISABLE_COPY_AND_MOVE(Scene)
 
-        explicit Scene(Device *device, const FriendToken<Device> &);
+        static auto create(Device *device) -> sptr<Scene>;
+
         ~Scene() {}
 
         auto getDevice() const -> Device*;
@@ -54,6 +55,8 @@ namespace solo
     private:
         using NodeComponents = std::unordered_map<uint32_t, sptr<Component>>;
         using NodesWithComponents = std::unordered_map<uint32_t, NodeComponents>;
+
+        explicit Scene(Device *device);
 
         Device *device = nullptr;
         uint32_t nodeCounter = 0;

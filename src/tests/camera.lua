@@ -1,4 +1,5 @@
-local cam = solo.device:getScene():createNode():addComponent("Camera")
+local scene = solo.Scene.create(solo.device)
+local cam = scene:createNode():addComponent("Camera")
 local v = solo.Vector4(1, 2, 3, 4)
 local rad = solo.Radian(1)
 local fb = solo.FrameBuffer.create(solo.device)
