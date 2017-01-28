@@ -54,7 +54,9 @@ namespace solo
         bool intersectsPoint(const Vector3 &point) const;
         bool intersectsBoundingSphere(const BoundingSphere &sphere) const;
         bool intersectsBoundingBox(const BoundingBox &box) const;
+        
         auto hitByRay(const Ray &ray) const -> float;
+        
         auto intersectPlane(const Plane &plane) const -> PlaneIntersection;
 
     private:

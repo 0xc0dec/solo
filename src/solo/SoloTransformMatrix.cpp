@@ -111,28 +111,6 @@ auto TransformMatrix::createOrthographic(float width, float height, float near, 
 }
 
 
-auto TransformMatrix::createReflection(const Plane &plane) -> TransformMatrix
-{
-    auto normal(plane.getNormal());
-    auto k = -2.0f * plane.getDistance();
-
-    Matrix result;
-
-    result.m[0] -= 2.0f * normal.x * normal.x;
-    result.m[5] -= 2.0f * normal.y * normal.y;
-    result.m[10] -= 2.0f * normal.z * normal.z;
-    result.m[1] = result.m[4] = -2.0f * normal.x * normal.y;
-    result.m[2] = result.m[8] = -2.0f * normal.x * normal.z;
-    result.m[6] = result.m[9] = -2.0f * normal.y * normal.z;
-
-    result.m[3] = k * normal.x;
-    result.m[7] = k * normal.y;
-    result.m[11] = k * normal.z;
-
-    return TransformMatrix(result);
-}
-
-
 auto TransformMatrix::createScale(const Vector3 &scale) -> TransformMatrix
 {
     Matrix result;

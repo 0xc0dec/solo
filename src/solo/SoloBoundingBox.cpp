@@ -35,13 +35,6 @@ BoundingBox::BoundingBox(const Vector3 &min, const Vector3 &max):
 }
 
 
-auto BoundingBox::empty() -> const BoundingBox &
-{
-    static BoundingBox b;
-    return b;
-}
-
-
 auto BoundingBox::getCorners() const -> std::vector<Vector3>
 {
     return

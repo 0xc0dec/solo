@@ -28,6 +28,8 @@
 #include "SoloTransformMatrix.h"
 #include "SoloBoundingBox.h"
 #include "SoloBoundingSphere.h"
+#include "SoloPlane.h"
+#include "SoloFrustum.h"
 #include "SoloRay.h"
 #include "SoloLuaCommon.h"
 
@@ -38,6 +40,7 @@ using namespace LuaIntf;
 static void registerVector2(CppBindModule<LuaBinding> &module)
 {
     auto vector2 = module.beginClass<Vector2>("Vector2");
+    
     vector2.addConstructor(LUA_ARGS(float, float));
     
     REGISTER_VARIABLE(vector2, Vector2, x);
@@ -68,6 +71,7 @@ static void registerVector2(CppBindModule<LuaBinding> &module)
 static void registerVector3(CppBindModule<LuaBinding> &module)
 {
     auto vector3 = module.beginClass<Vector3>("Vector3");
+    
     vector3.addConstructor(LUA_ARGS(float, float, float));
 
     REGISTER_VARIABLE(vector3, Vector3, x);
@@ -102,6 +106,7 @@ static void registerVector3(CppBindModule<LuaBinding> &module)
 static void registerVector4(CppBindModule<LuaBinding> &module)
 {
     auto vector4 = module.beginClass<Vector4>("Vector4");
+    
     vector4.addConstructor(LUA_ARGS(float, float, float, float));
     
     REGISTER_VARIABLE(vector4, Vector4, x);
@@ -135,6 +140,7 @@ static void registerVector4(CppBindModule<LuaBinding> &module)
 static void registerQuaternion(CppBindModule<LuaBinding> &module)
 {
     auto q = module.beginClass<Quaternion>("Quaternion");
+    
     q.addConstructor(LUA_ARGS());
 
     REGISTER_VARIABLE(q, Quaternion, x);
@@ -186,6 +192,7 @@ static void registerDegree(CppBindModule<LuaBinding> &module)
 static void registerMatrix(CppBindModule<LuaBinding> &module)
 {
     auto matrix = module.beginClass<Matrix>("Matrix");
+    
     matrix.addConstructor(LUA_ARGS());
     
     REGISTER_STATIC_METHOD(matrix, Matrix, identity);
@@ -205,12 +212,12 @@ static void registerMatrix(CppBindModule<LuaBinding> &module)
 static void registerTransformMatrix(CppBindModule<LuaBinding> &module)
 {
     auto matrix = module.beginClass<TransformMatrix>("TransformMatrix");
+    
     matrix.addConstructor(LUA_ARGS());
 
     REGISTER_STATIC_METHOD(matrix, TransformMatrix, createLookAt);
     REGISTER_STATIC_METHOD(matrix, TransformMatrix, createPerspective);
     REGISTER_STATIC_METHOD(matrix, TransformMatrix, createOrthographic);
-    REGISTER_STATIC_METHOD(matrix, TransformMatrix, createReflection);
     REGISTER_STATIC_METHOD(matrix, TransformMatrix, createScale);
     REGISTER_STATIC_METHOD(matrix, TransformMatrix, createRotationFromQuaternion);
     REGISTER_STATIC_METHOD(matrix, TransformMatrix, createRotationFromAxisAngle);
@@ -254,6 +261,148 @@ static void registerTransformMatrix(CppBindModule<LuaBinding> &module)
 }
 
 
+static void registerBoundingBox(CppBindModule<LuaBinding> &module)
+{
+    auto bb = module.beginClass<BoundingBox>("BoundingBox");
+    
+    bb.addConstructor(LUA_ARGS(const Vector3&, const Vector3&));
+
+    REGISTER_VARIABLE(bb, BoundingBox, min);
+    REGISTER_VARIABLE(bb, BoundingBox, max);
+
+    REGISTER_METHOD(bb, BoundingBox, getCenter);
+    REGISTER_METHOD(bb, BoundingBox, getCorners);
+    
+    REGISTER_METHOD(bb, BoundingBox, intersectsBoundingBox);
+    REGISTER_METHOD(bb, BoundingBox, intersectsBoundingSphere);
+    REGISTER_METHOD(bb, BoundingBox, intersectsFrustum);
+    
+    REGISTER_METHOD(bb, BoundingBox, hitByRay);
+    
+    REGISTER_METHOD(bb, BoundingBox, intersectPlane);
+    
+    REGISTER_METHOD(bb, BoundingBox, isEmpty);
+    
+    REGISTER_METHOD(bb, BoundingBox, mergeBoundingBox);
+    REGISTER_METHOD(bb, BoundingBox, mergeBoundingSphere);
+    
+    bb.endClass();
+}
+
+
+static void registerBoundingSphere(CppBindModule<LuaBinding> &module)
+{
+    auto bs = module.beginClass<BoundingSphere>("BoundingSphere");
+    
+    REGISTER_VARIABLE(bs, BoundingSphere, center);
+    REGISTER_VARIABLE(bs, BoundingSphere, radius);
+    
+    bs.addConstructor(LUA_ARGS(const Vector3&, float));
+    
+    REGISTER_METHOD(bs, BoundingSphere, intersectsBoundingSphere);
+    REGISTER_METHOD(bs, BoundingSphere, intersectsBoundingBox);
+    REGISTER_METHOD(bs, BoundingSphere, intersectsFrustum);
+
+    REGISTER_METHOD(bs, BoundingSphere, hitByRay);
+    
+    REGISTER_METHOD(bs, BoundingSphere, intersectPlane);
+    
+    REGISTER_METHOD(bs, BoundingSphere, isEmpty);
+    
+    REGISTER_METHOD(bs, BoundingSphere, mergeBoundingBox);
+    REGISTER_METHOD(bs, BoundingSphere, mergeBoundingSphere);
+    
+    bs.endClass();
+}
+
+
+static void registerPlane(CppBindModule<LuaBinding> &module)
+{
+    auto intersection = module.beginModule("PlaneIntersection");
+    REGISTER_MODULE_CONSTANT(intersection, PlaneIntersection, Intersecting);
+    REGISTER_MODULE_CONSTANT(intersection, PlaneIntersection, Front);
+    REGISTER_MODULE_CONSTANT(intersection, PlaneIntersection, Back);
+    intersection.endModule();
+
+    auto plane = module.beginClass<Plane>("Plane");
+
+    plane.addConstructor(LUA_ARGS(const Vector3&, float));
+
+    REGISTER_METHOD(plane, Plane, getNormal);
+    REGISTER_METHOD(plane, Plane, setNormal);
+
+    REGISTER_METHOD(plane, Plane, getDistance);
+    REGISTER_METHOD(plane, Plane, setDistance);
+
+    REGISTER_METHOD(plane, Plane, getDistanceToPoint);
+
+    REGISTER_STATIC_METHOD(plane, Plane, getCommonPoint);
+
+    REGISTER_METHOD(plane, Plane, intersectBoundingBox);
+    REGISTER_METHOD(plane, Plane, intersectBoundingSphere);
+    REGISTER_METHOD(plane, Plane, intersectFrustum);
+    REGISTER_METHOD(plane, Plane, intersectPlane);
+    REGISTER_METHOD(plane, Plane, intersectRay);
+    
+    REGISTER_METHOD(plane, Plane, isParallel);
+
+    plane.endClass();
+}
+
+
+static void registerRay(CppBindModule<LuaBinding> &module)
+{
+    auto ray = module.beginClass<Ray>("Ray");
+    
+    ray.addConstructor(LUA_ARGS(const Vector3&, const Vector3&));
+    
+    REGISTER_METHOD(ray, Ray, getOrigin);
+    REGISTER_METHOD(ray, Ray, setOrigin);
+    
+    REGISTER_METHOD(ray, Ray, getDirection);
+    REGISTER_METHOD(ray, Ray, setDirection);
+    
+    REGISTER_METHOD(ray, Ray, hitBoundingBox);
+    REGISTER_METHOD(ray, Ray, hitBoundingSphere);
+    REGISTER_METHOD(ray, Ray, hitFrustum);
+    REGISTER_METHOD(ray, Ray, hitPlane);
+    
+    ray.endClass();
+}
+
+
+static void registerFrustum(CppBindModule<LuaBinding> &module)
+{
+    auto f = module.beginClass<Frustum>("Frustum");
+    
+    f.addConstructor(LUA_ARGS());
+    
+    REGISTER_METHOD(f, Frustum, getNearPlane);
+    REGISTER_METHOD(f, Frustum, getFarPlane);
+    REGISTER_METHOD(f, Frustum, getLeftPlane);
+    REGISTER_METHOD(f, Frustum, getRightPlane);
+    REGISTER_METHOD(f, Frustum, getTopPlane);
+    REGISTER_METHOD(f, Frustum, getBottomPlane);
+
+    REGISTER_METHOD(f, Frustum, getMatrix);
+    REGISTER_METHOD(f, Frustum, setMatrix);
+
+    REGISTER_METHOD(f, Frustum, getCorners);
+    REGISTER_METHOD(f, Frustum, getNearCorners);
+    REGISTER_METHOD(f, Frustum, getFarCorners);
+
+    REGISTER_METHOD(f, Frustum, intersectsPoint);
+    REGISTER_METHOD(f, Frustum, intersectsBoundingBox);
+    REGISTER_METHOD(f, Frustum, intersectsBoundingSphere);
+
+    REGISTER_METHOD(f, Frustum, hitByRay);
+    
+    REGISTER_METHOD(f, Frustum, intersectPlane);
+    
+    f.endClass();
+}
+
+
 void registerMath(CppBindModule<LuaBinding> &module)
 {
     registerRadian(module);
@@ -264,4 +413,9 @@ void registerMath(CppBindModule<LuaBinding> &module)
     registerQuaternion(module);
     registerMatrix(module);
     registerTransformMatrix(module);
+    registerBoundingBox(module);
+    registerBoundingSphere(module);
+    registerPlane(module);
+    registerRay(module);
+    registerFrustum(module);
 }

@@ -62,10 +62,17 @@ void runCppIntegrationTests(Device *device)
 }
 
 
+void runLuaUnitTests(Device *device)
+{
+    device->getScriptRuntime()->executeFile("../src/tests/tests.lua");
+}
+
+
 int main()
 {
 #ifdef SL_DEBUG
     runInNullEngine(runCppUnitTests, "cpp-unit-tests.log");
+    runInNullEngine(runLuaUnitTests, "lua-unit-tests.log");
     runInRealEngine(runCppIntegrationTests, "cpp-integration-tests.log");
 #endif
     return 0;

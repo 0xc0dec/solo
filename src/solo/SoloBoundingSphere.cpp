@@ -33,13 +33,6 @@ BoundingSphere::BoundingSphere(const Vector3 &center, float radius):
 }
 
 
-auto BoundingSphere::empty() -> const BoundingSphere &
-{
-    static BoundingSphere s;
-    return s;
-}
-
-
 bool BoundingSphere::intersectsBoundingSphere(const BoundingSphere &sphere) const
 {
     auto vx = sphere.center.x - center.x;

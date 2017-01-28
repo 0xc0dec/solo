@@ -55,8 +55,6 @@ public:
             initMonitorQuad({}, mesh);
             initTransparentQuad(mesh);
         });
-
-        device->getScriptRuntime()->executeFile("../assets/demo1.lua");
     }
 
 private:
