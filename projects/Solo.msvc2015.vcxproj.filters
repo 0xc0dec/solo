@@ -495,9 +495,6 @@
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaCommon.h">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\platform\lua\SoloLuaScene.cpp">
-      <Filter>src\platform\lua</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaScriptComponent.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
@@ -513,19 +510,13 @@
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaNodeComponentApi.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\platform\lua\SoloLuaLoggerApi.cpp">
-      <Filter>src\platform\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\lua\SoloLuaFrameBufferApi.cpp">
-      <Filter>src\platform\lua</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaEnumsApi.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\platform\lua\SoloLuaDeviceApi.cpp">
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaCameraApi.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\platform\lua\SoloLuaCameraApi.cpp">
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaVariousApi.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
   </ItemGroup>

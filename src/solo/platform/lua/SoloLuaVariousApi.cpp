@@ -20,6 +20,9 @@
 
 #include "SoloFrameBuffer.h"
 #include "SoloLuaCommon.h"
+#include "SoloLogger.h"
+#include "SoloScene.h"
+#include "SoloDevice.h"
 
 using namespace solo;
 
@@ -31,4 +34,41 @@ void registerFrameBuffer(CppBindModule<LuaBinding> &module)
     REG_METHOD(fb, FrameBuffer, setAttachments);
     REG_METHOD(fb, FrameBuffer, getSize);
     fb.endClass();
+}
+
+
+void registerLogger(CppBindModule<LuaBinding> &module)
+{
+    auto logger = module.beginClass<Logger>("Logger");
+    REG_METHOD(logger, Logger, setTargetFile);
+    REG_METHOD(logger, Logger, logDebug);
+    REG_METHOD(logger, Logger, logInfo);
+    REG_METHOD(logger, Logger, logWarning);
+    REG_METHOD(logger, Logger, logError);
+    REG_METHOD(logger, Logger, logCritical);
+    logger.endClass();
+}
+
+
+void registerScene(CppBindModule<LuaBinding> &module)
+{
+    auto scene = module.beginClass<Scene>("Scene");
+    
+    REG_STATIC_METHOD(scene, Scene, create);
+    REG_METHOD(scene, Scene, getDevice);
+    REG_METHOD(scene, Scene, createNode);
+    REG_METHOD(scene, Scene, visit);
+    REG_METHOD(scene, Scene, visitByTags);
+    
+    scene.endClass();
+}
+
+
+void registerDevice(CppBindModule<LuaBinding> &module)
+{
+    auto device = module.beginClass<Device>("Device");
+    REG_METHOD(device, Device, getLogger);
+    REG_METHOD(device, Device, getWindowTitle);
+    REG_METHOD(device, Device, setWindowTitle);
+    device.endClass();
 }
