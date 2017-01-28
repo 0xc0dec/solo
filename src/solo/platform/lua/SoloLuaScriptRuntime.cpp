@@ -36,6 +36,8 @@ void registerCamera(CppBindModule<LuaBinding> &module);
 void registerRenderContext(CppBindModule<LuaBinding> &module);
 void registerFrameBuffer(CppBindModule<LuaBinding> &module);
 void registerTexture(CppBindModule<LuaBinding> &module);
+void registerMeshRenderer(CppBindModule<LuaBinding> &module);
+void registerEffect(CppBindModule<LuaBinding> &module);
 
 
 LuaScriptRuntime::LuaScriptRuntime(Device *d)
@@ -56,6 +58,8 @@ LuaScriptRuntime::LuaScriptRuntime(Device *d)
     registerRenderContext(module);
     registerFrameBuffer(module);
     registerTexture(module);
+    registerMeshRenderer(module);
+    registerEffect(module);
 
     module.addConstant("device", d);
 

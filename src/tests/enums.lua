@@ -39,9 +39,9 @@
 -- assert(solo.DeviceMode.Stub ~= nil)
 -- assert(solo.DeviceMode.OpenGL ~= nil)
 
--- assert(solo.PolygonFace.All ~= nil)
--- assert(solo.PolygonFace.CCW ~= nil)
--- assert(solo.PolygonFace.CW ~= nil)
+assert(solo.FaceCull.All ~= nil)
+assert(solo.FaceCull.CCW ~= nil)
+assert(solo.FaceCull.CW ~= nil)
 
 -- assert(solo.AutoBinding.CameraWorldPosition ~= nil)
 -- assert(solo.AutoBinding.InverseTransposedWorldMatrix ~= nil)
@@ -83,14 +83,14 @@ assert(solo.CubeTextureFace.Right ~= nil)
 assert(solo.CubeTextureFace.Top ~= nil)
 assert(solo.CubeTextureFace.Bottom ~= nil)
 
--- assert(solo.DepthFunction.Never ~= nil)
--- assert(solo.DepthFunction.Less ~= nil)
--- assert(solo.DepthFunction.Equal ~= nil)
--- assert(solo.DepthFunction.LEqual ~= nil)
--- assert(solo.DepthFunction.Greater ~= nil)
--- assert(solo.DepthFunction.NotEqual ~= nil)
--- assert(solo.DepthFunction.GEqual ~= nil)
--- assert(solo.DepthFunction.Always ~= nil)
+assert(solo.DepthFunction.Never ~= nil)
+assert(solo.DepthFunction.Less ~= nil)
+assert(solo.DepthFunction.Equal ~= nil)
+assert(solo.DepthFunction.LEqual ~= nil)
+assert(solo.DepthFunction.Greater ~= nil)
+assert(solo.DepthFunction.NotEqual ~= nil)
+assert(solo.DepthFunction.GEqual ~= nil)
+assert(solo.DepthFunction.Always ~= nil)
 
 -- assert(solo.PrimitiveType.Lines ~= nil)
 -- assert(solo.PrimitiveType.LineStrip ~= nil)
@@ -115,18 +115,19 @@ assert(solo.CubeTextureFace.Bottom ~= nil)
 -- assert(solo.MeshPrefab.Quad ~= nil)
 -- assert(solo.MeshPrefab.Cube ~= nil)
 
--- assert(solo.EffectPrefab.Skybox ~= nil)
+assert(solo.EffectPrefab.Skybox ~= nil)
+assert(solo.EffectPrefab.Font ~= nil)
 
--- assert(solo.BlendFactor.Zero ~= nil);
--- assert(solo.BlendFactor.One ~= nil);
--- assert(solo.BlendFactor.SrcColor ~= nil);
--- assert(solo.BlendFactor.OneMinusSrcColor ~= nil);
--- assert(solo.BlendFactor.DstColor ~= nil);
--- assert(solo.BlendFactor.OneMinusDstColor ~= nil);
--- assert(solo.BlendFactor.SrcAlpha ~= nil);
--- assert(solo.BlendFactor.OneMinusSrcAlpha ~= nil);
--- assert(solo.BlendFactor.DstAlpha ~= nil);
--- assert(solo.BlendFactor.OneMinusDstAlpha ~= nil);
--- assert(solo.BlendFactor.ConstantAlpha ~= nil);
--- assert(solo.BlendFactor.OneMinusConstantAlpha ~= nil);
--- assert(solo.BlendFactor.SrcAlphaSaturate ~= nil);
+assert(solo.BlendFactor.Zero ~= nil)
+assert(solo.BlendFactor.One ~= nil)
+assert(solo.BlendFactor.SrcColor ~= nil)
+assert(solo.BlendFactor.OneMinusSrcColor ~= nil)
+assert(solo.BlendFactor.DstColor ~= nil)
+assert(solo.BlendFactor.OneMinusDstColor ~= nil)
+assert(solo.BlendFactor.SrcAlpha ~= nil)
+assert(solo.BlendFactor.OneMinusSrcAlpha ~= nil)
+assert(solo.BlendFactor.DstAlpha ~= nil)
+assert(solo.BlendFactor.OneMinusDstAlpha ~= nil)
+assert(solo.BlendFactor.ConstantAlpha ~= nil)
+assert(solo.BlendFactor.OneMinusConstantAlpha ~= nil)
+assert(solo.BlendFactor.SrcAlphaSaturate ~= nil)

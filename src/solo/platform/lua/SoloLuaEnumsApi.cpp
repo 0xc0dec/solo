@@ -22,6 +22,7 @@
 #include "SoloPlane.h"
 #include "SoloTexture.h"
 #include "SoloLuaCommon.h"
+#include "SoloEffect.h"
 
 using namespace solo;
 
@@ -69,4 +70,42 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     REG_MODULE_CONSTANT(cubeTextureFace, CubeTextureFace, Top);
     REG_MODULE_CONSTANT(cubeTextureFace, CubeTextureFace, Bottom);
     cubeTextureFace.endModule();
+
+    auto effectPrefab = module.beginModule("EffectPrefab");
+    REG_MODULE_CONSTANT(effectPrefab, EffectPrefab, Skybox);
+    REG_MODULE_CONSTANT(effectPrefab, EffectPrefab, Font);
+    effectPrefab.endModule();
+
+    auto polygonFace = module.beginModule("FaceCull");
+    REG_MODULE_CONSTANT(polygonFace, FaceCull, All);
+    REG_MODULE_CONSTANT(polygonFace, FaceCull, CW);
+    REG_MODULE_CONSTANT(polygonFace, FaceCull, CCW);
+    polygonFace.endModule();
+
+    auto depthFunction = module.beginModule("DepthFunction");
+    REG_MODULE_CONSTANT(depthFunction, DepthFunction, Never);
+    REG_MODULE_CONSTANT(depthFunction, DepthFunction, Always);
+    REG_MODULE_CONSTANT(depthFunction, DepthFunction, Equal);
+    REG_MODULE_CONSTANT(depthFunction, DepthFunction, NotEqual);
+    REG_MODULE_CONSTANT(depthFunction, DepthFunction, Less);
+    REG_MODULE_CONSTANT(depthFunction, DepthFunction, LEqual);
+    REG_MODULE_CONSTANT(depthFunction, DepthFunction, Greater);
+    REG_MODULE_CONSTANT(depthFunction, DepthFunction, GEqual);
+    depthFunction.endModule();
+
+    auto blendFactor = module.beginModule("BlendFactor");
+    REG_MODULE_CONSTANT(blendFactor, BlendFactor, Zero);
+    REG_MODULE_CONSTANT(blendFactor, BlendFactor, One);
+    REG_MODULE_CONSTANT(blendFactor, BlendFactor, SrcColor);
+    REG_MODULE_CONSTANT(blendFactor, BlendFactor, OneMinusSrcColor);
+    REG_MODULE_CONSTANT(blendFactor, BlendFactor, DstColor);
+    REG_MODULE_CONSTANT(blendFactor, BlendFactor, OneMinusDstColor);
+    REG_MODULE_CONSTANT(blendFactor, BlendFactor, SrcAlpha);
+    REG_MODULE_CONSTANT(blendFactor, BlendFactor, OneMinusSrcAlpha);
+    REG_MODULE_CONSTANT(blendFactor, BlendFactor, DstAlpha);
+    REG_MODULE_CONSTANT(blendFactor, BlendFactor, OneMinusDstAlpha);
+    REG_MODULE_CONSTANT(blendFactor, BlendFactor, ConstantAlpha);
+    REG_MODULE_CONSTANT(blendFactor, BlendFactor, OneMinusConstantAlpha);
+    REG_MODULE_CONSTANT(blendFactor, BlendFactor, SrcAlphaSaturate);
+    blendFactor.endModule();
 }

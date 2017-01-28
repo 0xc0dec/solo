@@ -23,6 +23,8 @@
 #include "SoloLogger.h"
 #include "SoloScene.h"
 #include "SoloDevice.h"
+#include "SoloMeshRenderer.h"
+#include "SoloEffect.h"
 
 using namespace solo;
 
@@ -71,4 +73,24 @@ void registerDevice(CppBindModule<LuaBinding> &module)
     REG_METHOD(device, Device, getWindowTitle);
     REG_METHOD(device, Device, setWindowTitle);
     device.endClass();
+}
+
+
+void registerMeshRenderer(CppBindModule<LuaBinding> &module)
+{
+    auto mr = module.beginExtendClass<MeshRenderer, Component>("MeshRenderer");
+    REG_METHOD(mr, MeshRenderer, render);
+    REG_METHOD(mr, MeshRenderer, getMesh);
+    REG_METHOD(mr, MeshRenderer, setMesh);
+    REG_METHOD(mr, MeshRenderer, getMaterial);
+    REG_METHOD(mr, MeshRenderer, setMaterial);
+    REG_METHOD(mr, MeshRenderer, getMaterialCount);
+    mr.endClass();
+}
+
+
+void registerEffect(CppBindModule<LuaBinding> &module)
+{
+    auto effect = module.beginClass<Effect>("Effect");
+    effect.endClass();
 }

@@ -31,5 +31,7 @@ runTest("transform.lua")
 runTest("camera.lua")
 runTest("frame-buffer.lua")
 runTest("texture.lua")
+runTest("mesh-renderer.lua")
+runTest("material.lua")
 
 logger:logInfo("Script tests finished")
