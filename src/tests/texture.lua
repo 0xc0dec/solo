@@ -21,3 +21,11 @@ rectTex:setAnisotropyLevel(1)
 
 rectTex:setData(solo.TextureFormat.RGB, { 1, 2, 3, 4 }, 2, 2)
 assert(rectTex:getSize())
+
+
+local cubeTex = solo.CubeTexture.create(solo.device)
+
+assert(cubeTex:getDepthWrapping())
+cubeTex:setDepthWrapping(solo.TextureWrapping.Clamp)
+
+cubeTex:setData(solo.CubeTextureFace.Front, solo.TextureFormat.RGB, { 1, 2, 3, 4 }, 2, 2)

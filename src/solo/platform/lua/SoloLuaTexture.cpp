@@ -20,6 +20,7 @@
 
 #include "SoloTexture.h"
 #include "SoloRectTexture.h"
+#include "SoloCubeTexture.h"
 #include "SoloLuaCommon.h"
 
 using namespace solo;
@@ -28,6 +29,12 @@ using namespace solo;
 static void setRectTextureData(RectTexture *tex, TextureFormat format, const std::vector<uint8_t> &data, uint32_t width, uint32_t height)
 {
     tex->setData(format, data.data(), width, height);
+}
+
+
+static void setCubeTextureData(CubeTexture *tex, CubeTextureFace face, TextureFormat format, const std::vector<uint8_t> &data, uint32_t width, uint32_t height)
+{
+    tex->setData(face, format, data.data(), width, height);
 }
 
 
@@ -60,4 +67,11 @@ void registerTexture(CppBindModule<LuaBinding> &module)
     REG_FREE_FUNC_AS_METHOD_RENAMED(rectTex, setRectTextureData, "setData");
     REG_METHOD(rectTex, RectTexture, getSize);
     rectTex.endClass();
+
+    auto cubeTex = module.beginExtendClass<CubeTexture, Texture>("CubeTexture");
+    REG_STATIC_METHOD(cubeTex, CubeTexture, create);
+    REG_FREE_FUNC_AS_METHOD_RENAMED(cubeTex, setCubeTextureData, "setData");
+    REG_METHOD(cubeTex, CubeTexture, getDepthWrapping);
+    REG_METHOD(cubeTex, CubeTexture, setDepthWrapping);
+    cubeTex.endClass();
 }

@@ -60,4 +60,13 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     REG_MODULE_CONSTANT(textureFiltering, TextureFiltering, NearestMipmapLinear);
     REG_MODULE_CONSTANT(textureFiltering, TextureFiltering, NearestMipmapNearest);
     textureFiltering.endModule();
+
+    auto cubeTextureFace = module.beginModule("CubeTextureFace");
+    REG_MODULE_CONSTANT(cubeTextureFace, CubeTextureFace, Front);
+    REG_MODULE_CONSTANT(cubeTextureFace, CubeTextureFace, Back);
+    REG_MODULE_CONSTANT(cubeTextureFace, CubeTextureFace, Left);
+    REG_MODULE_CONSTANT(cubeTextureFace, CubeTextureFace, Right);
+    REG_MODULE_CONSTANT(cubeTextureFace, CubeTextureFace, Top);
+    REG_MODULE_CONSTANT(cubeTextureFace, CubeTextureFace, Bottom);
+    cubeTextureFace.endModule();
 }
