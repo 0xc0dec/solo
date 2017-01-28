@@ -22,6 +22,7 @@
     <ProjectGuid>{0638BB7A-18DF-4B85-9963-A6811F37F5BB}</ProjectGuid>
     <RootNamespace>Demo1</RootNamespace>
     <ProjectName>Demo1</ProjectName>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -75,8 +76,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>..\build;$(LibraryPath)</LibraryPath>
     <IncludePath>$(SolutionDir)..\include\;$(IncludePath)</IncludePath>
-    <OutDir>$(ProjectDir)..\build\</OutDir>
-    <IntDir>$(ProjectDir)..\build\tmp\Demo1\</IntDir>
+    <OutDir>$(ProjectDir)..\build\Demo1\</OutDir>
+    <IntDir>$(ProjectDir)..\build\Demo1\tmp\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\build\</OutDir>
@@ -85,8 +86,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LibraryPath>..\build;$(LibraryPath)</LibraryPath>
-    <OutDir>$(ProjectDir)..\build\</OutDir>
-    <IntDir>$(ProjectDir)..\build\tmp\Demo1\</IntDir>
+    <OutDir>$(ProjectDir)..\build\Demo1\</OutDir>
+    <IntDir>$(ProjectDir)..\build\Demo1\tmp\</IntDir>
     <IncludePath>$(SolutionDir)..\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -113,7 +114,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>solo.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)../build/Solo/Solo.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <AdditionalOptions>/ignore:4006 /ignore:4204 /ignore:4221 /ignore:4201 /ignore:4217 %(AdditionalOptions)</AdditionalOptions>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
@@ -151,7 +152,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>solo.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)../build/Solo/Solo.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <AdditionalOptions>/ignore:4006 /ignore:4204 /ignore:4221 /ignore:4201 /ignore:4217 %(AdditionalOptions)</AdditionalOptions>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>

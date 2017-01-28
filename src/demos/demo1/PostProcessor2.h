@@ -36,7 +36,7 @@ public:
 
         canvasSize = device->getCanvasSize();
 
-        stitchTex = loader->loadRectTexture("../assets/stitches.png");
+        stitchTex = loader->loadRectTexture("../../assets/stitches.png");
         stitchTex->setFiltering(TextureFiltering::Nearest);
 
         auto stitchTexSize = stitchTex->getSize();

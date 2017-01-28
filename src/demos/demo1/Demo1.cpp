@@ -45,12 +45,12 @@ public:
         initCheckerBox();
         initDynamicQuad();
         initCurrentTimeLabel();
-        loadTexture("../assets/cobblestone.png", [&] (sptr<Texture> texture)
+        loadTexture("../../assets/cobblestone.png", [&] (sptr<Texture> texture)
         {
             initMonkeyHead(texture);
             initFloor(texture);
         });
-        loader->loadMeshAsync("../assets/axes.obj")->done([&] (sptr<Mesh> mesh)
+        loader->loadMeshAsync("../../assets/axes.obj")->done([&] (sptr<Mesh> mesh)
         {
             initMonitorQuad({}, mesh);
             initTransparentQuad(mesh);
@@ -161,12 +161,12 @@ private:
     {
         loader->loadCubeTextureAsync(
         {
-            "../assets/skyboxes/deep-space/front.png",
-            "../assets/skyboxes/deep-space/back.png",
-            "../assets/skyboxes/deep-space/left.png",
-            "../assets/skyboxes/deep-space/right.png",
-            "../assets/skyboxes/deep-space/top.png",
-            "../assets/skyboxes/deep-space/bottom.png"
+            "../../assets/skyboxes/deep-space/front.png",
+            "../../assets/skyboxes/deep-space/back.png",
+            "../../assets/skyboxes/deep-space/left.png",
+            "../../assets/skyboxes/deep-space/right.png",
+            "../../assets/skyboxes/deep-space/top.png",
+            "../../assets/skyboxes/deep-space/bottom.png"
         })->done([=](sptr<CubeTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
@@ -204,7 +204,7 @@ private:
         material->bindInvTransposedWorldMatrixParameter("invTransposedWorldMatrix");
         material->setTextureParameter("mainTex", texture);
 
-        loader->loadMeshAsync("../assets/monkey_hires.obj")->done([=](sptr<Mesh> mesh)
+        loader->loadMeshAsync("../../assets/monkey_hires.obj")->done([=](sptr<Mesh> mesh)
         {
             auto node = scene->createNode();
             auto renderer = node->addComponent<MeshRenderer>();
@@ -237,7 +237,7 @@ private:
 
     void initDynamicQuad()
     {
-        loadTexture("../assets/freeman.png", [=](sptr<RectTexture> tex)
+        loadTexture("../../assets/freeman.png", [=](sptr<RectTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
 
@@ -317,7 +317,7 @@ private:
 
     void initTransparentQuad(sptr<Mesh> axesMesh)
     {
-        loadTexture("../assets/flammable.png", [=](sptr<RectTexture> tex)
+        loadTexture("../../assets/flammable.png", [=](sptr<RectTexture> tex)
         {
             tex->setWrapping(TextureWrapping::Clamp);
 

@@ -181,8 +181,8 @@ void VulkanRenderer::initTest(Device *engineDevice)
     descriptorPool = VulkanDescriptorPool(device, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 1);
     auto descriptorSet = descriptorPool.allocateSet(descSetLayout);
 
-    auto vertexShader = vk::createShader(device, engineDevice->getFileSystem()->readBytes("../assets/triangle.vert.spv"));
-    auto fragmentShader = vk::createShader(device, engineDevice->getFileSystem()->readBytes("../assets/triangle.frag.spv"));
+    auto vertexShader = vk::createShader(device, engineDevice->getFileSystem()->readBytes("../../assets/triangle.vert.spv"));
+    auto fragmentShader = vk::createShader(device, engineDevice->getFileSystem()->readBytes("../../assets/triangle.frag.spv"));
 
     VulkanPipeline pipeline(device, renderPass);
     pipeline.setVertexShader(vertexShader, "main");

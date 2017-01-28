@@ -42,7 +42,7 @@ public:
         const int textureHeight = 1024;
         const int lineHeight = 60;
 
-        auto fontData = device->getFileSystem()->readBytes("../assets/aller.ttf");
+        auto fontData = device->getFileSystem()->readBytes("../../assets/aller.ttf");
         auto font = Font::create(device, fontData.data(), lineHeight, textureWidth, textureHeight, ' ', '~' - ' ', 2, 2);
 
         renderer = node.addComponent<FontRenderer>();
