@@ -20,6 +20,7 @@
 
 #include "SoloTransform.h"
 #include "SoloPlane.h"
+#include "SoloTexture.h"
 #include "SoloLuaCommon.h"
 
 using namespace solo;
@@ -38,4 +39,18 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     REGISTER_MODULE_CONSTANT(intersection, PlaneIntersection, Front);
     REGISTER_MODULE_CONSTANT(intersection, PlaneIntersection, Back);
     intersection.endModule();
+
+    auto textureWrapping = module.beginModule("TextureWrapping");
+    REGISTER_MODULE_CONSTANT(textureWrapping, TextureWrapping, Clamp);
+    REGISTER_MODULE_CONSTANT(textureWrapping, TextureWrapping, Repeat);
+    textureWrapping.endModule();
+
+    auto textureFiltering = module.beginModule("TextureFiltering");
+    REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, Nearest);
+    REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, Linear);
+    REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, LinearMipmapLinear);
+    REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, LinearMipmapNearest);
+    REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, NearestMipmapLinear);
+    REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, NearestMipmapNearest);
+    textureFiltering.endModule();
 }
