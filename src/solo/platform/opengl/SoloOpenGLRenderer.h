@@ -60,13 +60,13 @@ namespace solo
 
         auto createTexture() -> uint32_t;
         void destroyTexture(uint32_t handle);
-        void set2DTexture(uint32_t handle);
-        void set2DTexture(uint32_t handle, uint32_t flags);
-        void set2DTexture(uint32_t handle, uint32_t flags, float anisotropyLevel);
+        void setRectTexture(uint32_t handle);
+        void setRectTexture(uint32_t handle, uint32_t flags);
+        void setRectTexture(uint32_t handle, uint32_t flags, float anisotropyLevel);
         void setCubeTexture(uint32_t handle);
         void setCubeTexture(uint32_t handle, uint32_t flags);
         void setCubeTexture(uint32_t handle, uint32_t flags, float anisotropyLevel);
-        void update2DTexture(uint32_t handle, TextureFormat format, uint32_t width, uint32_t height, const void *data);
+        void updateRectTexture(uint32_t handle, TextureFormat format, uint32_t width, uint32_t height, const void *data);
         void updateCubeTexture(uint32_t handle, CubeTextureFace face, TextureFormat format, uint32_t width, uint32_t height, const void *data);
         void generateRectTextureMipmaps(uint32_t handle);
         void generateCubeTextureMipmaps(uint32_t handle);

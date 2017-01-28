@@ -335,7 +335,7 @@ void OpenGLRenderer::destroyTexture(uint32_t handle)
 }
 
 
-void OpenGLRenderer::update2DTexture(uint32_t handle, TextureFormat format, uint32_t width, uint32_t height, const void *data)
+void OpenGLRenderer::updateRectTexture(uint32_t handle, TextureFormat format, uint32_t width, uint32_t height, const void *data)
 {
     bindTexture(GL_TEXTURE_2D, handle);
 
@@ -490,21 +490,21 @@ void OpenGLRenderer::validateFrameBufferAttachments(const std::vector<uint32_t> 
 }
 
 
-void OpenGLRenderer::set2DTexture(uint32_t handle)
+void OpenGLRenderer::setRectTexture(uint32_t handle)
 {
     bindTexture(GL_TEXTURE_2D, handle);
 }
 
 
-void OpenGLRenderer::set2DTexture(uint32_t handle, uint32_t flags)
+void OpenGLRenderer::setRectTexture(uint32_t handle, uint32_t flags)
 {
     setTexture(GL_TEXTURE_2D, handle, flags);
 }
 
 
-void OpenGLRenderer::set2DTexture(uint32_t handle, uint32_t flags, float anisotropyLevel)
+void OpenGLRenderer::setRectTexture(uint32_t handle, uint32_t flags, float anisotropyLevel)
 {
-    set2DTexture(handle, flags);
+    setRectTexture(handle, flags);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
 }
 

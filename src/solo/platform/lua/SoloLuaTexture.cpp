@@ -28,7 +28,18 @@ using namespace solo;
 void registerTexture(CppBindModule<LuaBinding> &module)
 {
     auto tex = module.beginClass<Texture>("Texture");
-    // TODO
+    REGISTER_METHOD(tex, Texture, getHorizontalWrapping);
+    REGISTER_METHOD(tex, Texture, setHorizontalWrapping);
+    REGISTER_METHOD(tex, Texture, getVerticalWrapping);
+    REGISTER_METHOD(tex, Texture, setVerticalWrapping);
+    REGISTER_METHOD(tex, Texture, setWrapping);
+    REGISTER_METHOD(tex, Texture, getMinFiltering);
+    REGISTER_METHOD(tex, Texture, setMinFiltering);
+    REGISTER_METHOD(tex, Texture, getMagFiltering);
+    REGISTER_METHOD(tex, Texture, setMagFiltering);
+    REGISTER_METHOD(tex, Texture, setFiltering);
+    REGISTER_METHOD(tex, Texture, getAnisotropyLevel);
+    REGISTER_METHOD(tex, Texture, setAnisotropyLevel);
     tex.endClass();
 
     auto rectTex = module.beginExtendClass<RectTexture, Texture>("RectTexture");
