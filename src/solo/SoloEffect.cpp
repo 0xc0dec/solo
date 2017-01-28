@@ -40,7 +40,7 @@ auto Effect::create(Device *device, const std::string &vsSrc, const std::string 
 }
 
 
-auto Effect::create(Device *device, EffectPrefab prefab) -> sptr<Effect>
+auto Effect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effect>
 {
     switch (device->getSetup().mode)
     {

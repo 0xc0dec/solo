@@ -92,5 +92,7 @@ void registerMeshRenderer(CppBindModule<LuaBinding> &module)
 void registerEffect(CppBindModule<LuaBinding> &module)
 {
     auto effect = module.beginClass<Effect>("Effect");
+    REG_STATIC_METHOD(effect, Effect, create);
+    REG_STATIC_METHOD(effect, Effect, createFromPrefab);
     effect.endClass();
 }

@@ -35,7 +35,7 @@ SkyboxRenderer::SkyboxRenderer(const Node &node):
 
     auto device = node.getScene()->getDevice();
 
-    auto effect = Effect::create(device, EffectPrefab::Skybox);
+    auto effect = Effect::createFromPrefab(device, EffectPrefab::Skybox);
     material = Material::create(device, effect);
     material->bindProjectionMatrixParameter("projMatrix");
     material->bindWorldViewMatrixParameter("worldViewMatrix");

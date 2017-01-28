@@ -39,7 +39,7 @@ namespace solo
         SL_DISABLE_COPY_AND_MOVE(Effect)
 
         static auto create(Device *device, const std::string &vsSrc, const std::string &fsSrc) -> sptr<Effect>;
-        static auto create(Device *device, EffectPrefab prefab) -> sptr<Effect>;
+        static auto createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effect>;
 
         virtual ~Effect() {}
 

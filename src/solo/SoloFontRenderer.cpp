@@ -34,7 +34,7 @@ FontRenderer::FontRenderer(const Node &node):
 {
     transform = node.findComponent<Transform>();
 
-    auto effect = Effect::create(node.getScene()->getDevice(), EffectPrefab::Font);
+    auto effect = Effect::createFromPrefab(node.getScene()->getDevice(), EffectPrefab::Font);
     material = Material::create(node.getScene()->getDevice(), effect);
     material->setFaceCull(FaceCull::All);
     material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
