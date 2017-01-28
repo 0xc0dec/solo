@@ -4,12 +4,9 @@
     <ClInclude Include="..\src\tests\tester\Components_Test.h" />
     <ClInclude Include="..\src\tests\tester\Device_Test.h" />
     <ClInclude Include="..\src\tests\tester\FileSystem_Test.h" />
-    <ClInclude Include="..\src\tests\tester\Materials_Test.h" />
-    <ClInclude Include="..\src\tests\tester\Mesh_Test.h" />
     <ClInclude Include="..\src\tests\tester\MeshRenderer_Test.h" />
     <ClInclude Include="..\src\tests\tester\TestBase.h" />
     <ClInclude Include="..\src\tests\tester\Transform_Test.h" />
-    <ClInclude Include="..\src\tests\tester\FrameBuffer_Test.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\tests\tester\Tester.cpp" />

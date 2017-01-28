@@ -47,8 +47,8 @@ private:
             "Third",
             "   ... line."
         };
-        fileSystem->writeLines("temp2.txt", lines);
-        auto text = fileSystem->readText("temp2.txt");
+        fileSystem->writeLines("test3.txt", lines);
+        auto text = fileSystem->readText("test3.txt");
         auto expected = "First\nSec ond\nThird\n   ... line.";
         assert(text == expected);
     }
@@ -56,8 +56,8 @@ private:
     void test_BytesReading()
     {
         std::vector<uint8_t> data = {0x01, 0x02, 0x03, 0x04};
-        fileSystem->writeBytes("temp.bin", data);
-        auto readData = fileSystem->readBytes("temp.bin");
+        fileSystem->writeBytes("test1.bin", data);
+        auto readData = fileSystem->readBytes("test1.bin");
         assert(readData.size() == data.size());
         assert(readData[0] == data[0]);
         assert(readData[1] == data[1]);
@@ -74,8 +74,8 @@ private:
             "Third",
             "   ... line."
         };
-        fileSystem->writeLines("temp.txt", lines);
-        auto readLines = fileSystem->readLines("temp.txt");
+        fileSystem->writeLines("test2.txt", lines);
+        auto readLines = fileSystem->readLines("test2.txt");
         assert(readLines.size() == lines.size());
         assert(readLines[0] == lines[0]);
         assert(readLines[1] == lines[1]);

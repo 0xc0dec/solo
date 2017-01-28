@@ -18,14 +18,11 @@
     3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "Materials_Test.h"
-#include "FrameBuffer_Test.h"
 #include "Components_Test.h"
 #include "Transform_Test.h"
 #include "Device_Test.h"
 #include "FileSystem_Test.h"
 #include "MeshRenderer_Test.h"
-#include "Mesh_Test.h"
 
 using namespace solo;
 
@@ -56,9 +53,6 @@ void runCppUnitTests(Device *device)
 void runCppIntegrationTests(Device *device)
 {
     FileSystem_Test(device).run();
-    Materials_Test(device).run();
-    FrameBuffer_Test(device).run();
-    Mesh_Test(device).run();
 }
 
 
