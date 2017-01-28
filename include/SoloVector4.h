@@ -36,7 +36,6 @@ namespace solo
         Vector4() {}
         Vector4(float x, float y, float z, float w);
 
-        static auto zero() -> Vector4;
         static auto unit() -> Vector4;
         static auto unitX() -> Vector4;
         static auto unitY() -> Vector4;

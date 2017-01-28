@@ -30,13 +30,6 @@ Vector4::Vector4(float x, float y, float z, float w):
 }
 
 
-auto Vector4::zero() -> Vector4
-{
-    static Vector4 value(0.0f, 0.0f, 0.0f, 0.0f);
-    return value;
-}
-
-
 auto Vector4::unit() -> Vector4
 {
     static Vector4 value(1.0f, 1.0f, 1.0f, 1.0f);

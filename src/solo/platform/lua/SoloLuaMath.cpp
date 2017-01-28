@@ -21,33 +21,15 @@
 #include "SoloRadian.h"
 #include "SoloDegree.h"
 #include "SoloVector2.h"
+#include "SoloVector3.h"
+#include "SoloVector4.h"
 #include "SoloLuaCommon.h"
 
 using namespace solo;
 using namespace LuaIntf;
 
 
-void registerRadian(CppBindModule<LuaBinding> &module)
-{
-    auto radian = module.beginClass<Radian>("Radian");
-    radian.addConstructor(LUA_ARGS(float));
-    REGISTER_METHOD(radian, Radian, toRawDegree);
-    REGISTER_METHOD(radian, Radian, toRawRadian);
-    radian.endClass();
-}
-
-
-void registerDegree(CppBindModule<LuaBinding> &module)
-{
-    auto degree = module.beginClass<Degree>("Degree");
-    degree.addConstructor(LUA_ARGS(float));
-    REGISTER_METHOD(degree, Degree, toRawDegree);
-    REGISTER_METHOD(degree, Degree, toRawRadian);
-    degree.endClass();
-}
-
-
-void registerVector2(CppBindModule<LuaBinding> &module)
+static void registerVector2(CppBindModule<LuaBinding> &module)
 {
     auto vector2 = module.beginClass<Vector2>("Vector2");
     vector2.addConstructor(LUA_ARGS(float, float));
@@ -79,4 +61,111 @@ void registerVector2(CppBindModule<LuaBinding> &module)
     REGISTER_METHOD(vector2, Vector2, normalized);
 
     vector2.endClass();
+}
+
+
+static void registerVector3(CppBindModule<LuaBinding> &module)
+{
+    auto vector3 = module.beginClass<Vector3>("Vector3");
+    vector3.addConstructor(LUA_ARGS(float, float, float));
+
+    REGISTER_VARIABLE(vector3, Vector3, x);
+    REGISTER_VARIABLE(vector3, Vector3, y);
+    REGISTER_VARIABLE(vector3, Vector3, z);
+
+    REGISTER_STATIC_METHOD(vector3, Vector3, unit);
+    REGISTER_STATIC_METHOD(vector3, Vector3, unitX);
+    REGISTER_STATIC_METHOD(vector3, Vector3, unitY);
+    REGISTER_STATIC_METHOD(vector3, Vector3, unitZ);
+
+    REGISTER_METHOD(vector3, Vector3, isUnit);
+    REGISTER_METHOD(vector3, Vector3, isZero);
+
+    REGISTER_STATIC_METHOD(vector3, Vector3, angle);
+    REGISTER_METHOD(vector3, Vector3, clamp);
+
+    REGISTER_STATIC_METHOD(vector3, Vector3, cross);
+
+    REGISTER_METHOD(vector3, Vector3, distance);
+    REGISTER_METHOD(vector3, Vector3, distanceSquared);
+    
+    REGISTER_STATIC_OVERLOADED_METHOD(vector3, Vector3, dot, "dot", float, , const Vector3&, const Vector3&);
+    REGISTER_OVERLOADED_METHOD(vector3, Vector3, dot, "dot", float, const, const Vector3&);
+    
+    REGISTER_METHOD(vector3, Vector3, length);
+    REGISTER_METHOD(vector3, Vector3, lengthSquared);
+    
+    REGISTER_METHOD(vector3, Vector3, normalize);
+    REGISTER_METHOD(vector3, Vector3, normalized);
+
+    vector3.endClass();
+}
+
+
+static void registerVector4(CppBindModule<LuaBinding> &module)
+{
+    auto vector4 = module.beginClass<Vector4>("Vector4");
+    vector4.addConstructor(LUA_ARGS(float, float, float, float));
+    
+    REGISTER_VARIABLE(vector4, Vector4, x);
+    REGISTER_VARIABLE(vector4, Vector4, y);
+    REGISTER_VARIABLE(vector4, Vector4, z);
+    REGISTER_VARIABLE(vector4, Vector4, w);
+    
+    REGISTER_STATIC_METHOD(vector4, Vector4, unit);
+    REGISTER_STATIC_METHOD(vector4, Vector4, unitX);
+    REGISTER_STATIC_METHOD(vector4, Vector4, unitY);
+    REGISTER_STATIC_METHOD(vector4, Vector4, unitZ);
+    REGISTER_STATIC_METHOD(vector4, Vector4, unitW);
+
+    REGISTER_METHOD(vector4, Vector4, isUnit);
+    REGISTER_METHOD(vector4, Vector4, isZero);
+    
+    REGISTER_STATIC_METHOD(vector4, Vector4, angle);
+    
+    REGISTER_METHOD(vector4, Vector4, clamp);
+
+    REGISTER_METHOD(vector4, Vector4, distance);
+    REGISTER_METHOD(vector4, Vector4, distanceSquared);
+    
+    REGISTER_STATIC_OVERLOADED_METHOD(vector4, Vector4, dot, "dot", float, , const Vector4&, const Vector4&);
+    REGISTER_OVERLOADED_METHOD(vector4, Vector4, dot, "dot", float, const, const Vector4&);
+    
+    REGISTER_METHOD(vector4, Vector4, length);
+    REGISTER_METHOD(vector4, Vector4, lengthSquared);
+    
+    REGISTER_METHOD(vector4, Vector4, normalize);
+    REGISTER_METHOD(vector4, Vector4, normalized);
+
+    vector4.endClass();
+}
+
+
+static void registerRadian(CppBindModule<LuaBinding> &module)
+{
+    auto radian = module.beginClass<Radian>("Radian");
+    radian.addConstructor(LUA_ARGS(float));
+    REGISTER_METHOD(radian, Radian, toRawDegree);
+    REGISTER_METHOD(radian, Radian, toRawRadian);
+    radian.endClass();
+}
+
+
+static void registerDegree(CppBindModule<LuaBinding> &module)
+{
+    auto degree = module.beginClass<Degree>("Degree");
+    degree.addConstructor(LUA_ARGS(float));
+    REGISTER_METHOD(degree, Degree, toRawDegree);
+    REGISTER_METHOD(degree, Degree, toRawRadian);
+    degree.endClass();
+}
+
+
+void registerMath(CppBindModule<LuaBinding> &module)
+{
+    registerRadian(module);
+    registerDegree(module);
+    registerVector2(module);
+    registerVector3(module);
+    registerVector4(module);
 }
