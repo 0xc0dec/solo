@@ -492,16 +492,7 @@
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaScriptRuntime.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\platform\lua\SoloLuaDevice.cpp">
-      <Filter>src\platform\lua</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaCommon.h">
-      <Filter>src\platform\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\lua\SoloLuaLogger.cpp">
-      <Filter>src\platform\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\lua\SoloLuaMath.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaScene.cpp">
@@ -510,19 +501,31 @@
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaScriptComponent.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\platform\lua\SoloLuaCamera.cpp">
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaTransformApi.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\platform\lua\SoloLuaTransform.cpp">
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaTextureApi.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\platform\lua\SoloLuaEnums.cpp">
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaMathApi.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\platform\lua\SoloLuaFrameBuffer.cpp">
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaNodeComponentApi.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\platform\lua\SoloLuaTexture.cpp">
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaLoggerApi.cpp">
+      <Filter>src\platform\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaFrameBufferApi.cpp">
+      <Filter>src\platform\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaEnumsApi.cpp">
+      <Filter>src\platform\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaDeviceApi.cpp">
+      <Filter>src\platform\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaCameraApi.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
   </ItemGroup>
