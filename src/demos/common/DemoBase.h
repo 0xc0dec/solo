@@ -40,18 +40,25 @@ public:
 
     void run()
     {
-        while (!device->isQuitRequested() && !device->isWindowCloseRequested() && !device->isKeyPressed(KeyCode::Escape, true))
+        try
         {
-            device->update([&]
+            while (!device->isQuitRequested() && !device->isWindowCloseRequested() && !device->isKeyPressed(KeyCode::Escape, true))
             {
-                device->getAssetLoader()->update();
-                device->getPhysics()->update();
-                device->getRenderer()->renderFrame([&]
+                device->update([&]
                 {
-                    update();
-                    render();
+                    device->getAssetLoader()->update();
+                    device->getPhysics()->update();
+                    device->getRenderer()->renderFrame([&]
+                    {
+                        update();
+                        render();
+                    });
                 });
-            });
+            }
+        }
+        catch (EngineException &e)
+        {
+            device->getLogger()->logCritical(e.what());
         }
     }
 
