@@ -52,7 +52,6 @@ namespace solo
 
         virtual ~Texture() {}
 
-        virtual void bind() = 0;
         virtual void generateMipmaps() = 0;
 
         auto getHorizontalWrapping() const -> TextureWrapping;

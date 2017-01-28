@@ -90,6 +90,7 @@
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLPrefabShaders.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLRectTexture.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLRenderer.h" />
+    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLTexture.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloSDLOpenGLDevice.h" />
     <ClInclude Include="..\src\solo\platform\sdl\SoloSDLDevice.h" />
     <ClInclude Include="..\src\solo\platform\sdl\SoloSDLInputMaps.h" />

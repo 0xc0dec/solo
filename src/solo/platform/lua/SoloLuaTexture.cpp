@@ -25,25 +25,39 @@
 using namespace solo;
 
 
+static void setRectTextureData(RectTexture *tex, TextureFormat format, const std::vector<uint8_t> &data, uint32_t width, uint32_t height)
+{
+    tex->setData(format, data.data(), width, height);
+}
+
+
 void registerTexture(CppBindModule<LuaBinding> &module)
 {
     auto tex = module.beginClass<Texture>("Texture");
+    
+    REGISTER_METHOD(tex, Texture, generateMipmaps);
+
     REGISTER_METHOD(tex, Texture, getHorizontalWrapping);
-    REGISTER_METHOD(tex, Texture, setHorizontalWrapping);
     REGISTER_METHOD(tex, Texture, getVerticalWrapping);
-    REGISTER_METHOD(tex, Texture, setVerticalWrapping);
+
     REGISTER_METHOD(tex, Texture, setWrapping);
+    REGISTER_METHOD(tex, Texture, setHorizontalWrapping);
+    REGISTER_METHOD(tex, Texture, setVerticalWrapping);
+
     REGISTER_METHOD(tex, Texture, getMinFiltering);
-    REGISTER_METHOD(tex, Texture, setMinFiltering);
     REGISTER_METHOD(tex, Texture, getMagFiltering);
-    REGISTER_METHOD(tex, Texture, setMagFiltering);
+
     REGISTER_METHOD(tex, Texture, setFiltering);
+    REGISTER_METHOD(tex, Texture, setMinFiltering);
+    REGISTER_METHOD(tex, Texture, setMagFiltering);
+
     REGISTER_METHOD(tex, Texture, getAnisotropyLevel);
     REGISTER_METHOD(tex, Texture, setAnisotropyLevel);
     tex.endClass();
 
     auto rectTex = module.beginExtendClass<RectTexture, Texture>("RectTexture");
     REGISTER_STATIC_METHOD(rectTex, RectTexture, create);
-    // TODO
+    rectTex.addFunction("setData", setRectTextureData);
+    REGISTER_METHOD(rectTex, RectTexture, getSize);
     rectTex.endClass();
 }

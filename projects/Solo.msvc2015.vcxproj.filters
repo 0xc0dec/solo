@@ -286,6 +286,9 @@
     <ClInclude Include="..\src\solo\platform\lua\SoloLuaScriptComponent.h">
       <Filter>src\platform\lua</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLTexture.h">
+      <Filter>src\platform\opengl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\SoloScene.cpp">

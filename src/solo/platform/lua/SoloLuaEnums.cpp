@@ -45,6 +45,13 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     REGISTER_MODULE_CONSTANT(textureWrapping, TextureWrapping, Repeat);
     textureWrapping.endModule();
 
+    auto textureFormat = module.beginModule("TextureFormat");
+    REGISTER_MODULE_CONSTANT(textureFormat, TextureFormat, Alpha);
+    REGISTER_MODULE_CONSTANT(textureFormat, TextureFormat, RGB);
+    REGISTER_MODULE_CONSTANT(textureFormat, TextureFormat, RGBA);
+    REGISTER_MODULE_CONSTANT(textureFormat, TextureFormat, Red);
+    textureWrapping.endModule();
+
     auto textureFiltering = module.beginModule("TextureFiltering");
     REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, Nearest);
     REGISTER_MODULE_CONSTANT(textureFiltering, TextureFiltering, Linear);

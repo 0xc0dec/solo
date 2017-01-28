@@ -30,5 +30,6 @@ runTest("node-components.lua")
 runTest("transform.lua")
 runTest("camera.lua")
 runTest("frame-buffer.lua")
+runTest("texture.lua")
 
 logger:logInfo("Script tests finished")

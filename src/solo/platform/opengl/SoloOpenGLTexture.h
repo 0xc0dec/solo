@@ -20,15 +20,20 @@
 
 #pragma once
 
-#include "SoloRectTexture.h"
+#include "SoloCommon.h"
 
+#ifdef SL_OPENGL_RENDERER
 
 namespace solo
 {
-    class NullRectTexture: public RectTexture
+    class OpenGLTexture
     {
     public:
-        void generateMipmaps() override final {}
-        void setData(TextureFormat format, const uint8_t *data, uint32_t width, uint32_t height) override final {}
+        virtual ~OpenGLTexture() {}
+
+        virtual void bind() = 0;
     };
 }
+
+
+#endif

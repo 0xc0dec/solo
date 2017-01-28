@@ -25,13 +25,14 @@
 #ifdef SL_OPENGL_RENDERER
 
 #include "SoloRectTexture.h"
+#include "SoloOpenGLTexture.h"
 #include "SoloOpenGLRenderer.h"
 
 namespace solo
 {
     class Device;
 
-    class OpenGLRectTexture final: public RectTexture
+    class OpenGLRectTexture final: public RectTexture, public OpenGLTexture
     {
     public:
         explicit OpenGLRectTexture(Device *device);

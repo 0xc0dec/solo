@@ -64,8 +64,10 @@ assert(solo.TextureFiltering.LinearMipmapNearest ~= nil)
 assert(solo.TextureFiltering.NearestMipmapLinear ~= nil)
 assert(solo.TextureFiltering.NearestMipmapNearest ~= nil)
 
--- assert(solo.ColorFormat.RGB ~= nil)
--- assert(solo.ColorFormat.RGBA ~= nil)
+assert(solo.TextureFormat.Red ~= nil)
+assert(solo.TextureFormat.Alpha ~= nil)
+assert(solo.TextureFormat.RGB ~= nil)
+assert(solo.TextureFormat.RGBA ~= nil)
 
 assert(solo.TextureWrapping.Clamp ~= nil)
 assert(solo.TextureWrapping.Repeat ~= nil)

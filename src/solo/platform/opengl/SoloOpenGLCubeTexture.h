@@ -25,11 +25,12 @@
 #ifdef SL_OPENGL_RENDERER
 
 #include "SoloCubeTexture.h"
+#include "SoloOpenGLTexture.h"
 #include "SoloOpenGLRenderer.h"
 
 namespace solo
 {
-    class OpenGLCubeTexture final: public CubeTexture
+    class OpenGLCubeTexture final: public CubeTexture, public OpenGLTexture
     {
     public:
         explicit OpenGLCubeTexture(Device *device);
