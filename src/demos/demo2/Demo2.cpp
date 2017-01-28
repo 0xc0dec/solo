@@ -74,7 +74,7 @@ int main()
     auto device = Device::create(DeviceSetup()
         .withMode(DeviceMode::Vulkan)
         .withDimensions(1200, 600)
-        .withLogFilePath("demo2.log")
+        .withLogFilePath("demo.log")
         .withWindowTitle("Demo 2"));
     Demo(device.get()).run();
     return 0;
