@@ -731,7 +731,7 @@ public:
      * @param args arguments to pass to function
      */
     template <typename... P>
-    void operator () (P&&... args) const
+    void operator () (P&&... args)
     {
         assert(L);
         Call<void, P...>::invoke(L, *this, std::forward<P>(args)...);
@@ -754,7 +754,7 @@ public:
      * @return values of function
      */
     template <typename R = void, typename... P>
-    R call(P&&... args) const
+    R call(P&&... args)
     {
         assert(L);
         return Call<R, P...>::invoke(L, *this, std::forward<P>(args)...);
@@ -780,7 +780,7 @@ public:
      * @return values of function
      */
     template <typename R = void, typename... P>
-    R dispatch(const char* func, P&&... args) const
+    R dispatch(const char* func, P&&... args)
     {
         assert(L);
         return Call<R, const LuaRef&, P...>::invoke(L, get(func), *this, std::forward<P>(args)...);
@@ -805,7 +805,7 @@ public:
      * @return values of function
      */
     template <typename R = void, typename... P>
-    R dispatchStatic(const char* func, P&&... args) const
+    R dispatchStatic(const char* func, P&&... args)
     {
         assert(L);
         return Call<R, P...>::invoke(L, get(func), std::forward<P>(args)...);
