@@ -16,3 +16,4 @@ blend1
 ..gitignore.un~
 *VC.db
 *VC.opendb
+*.user
