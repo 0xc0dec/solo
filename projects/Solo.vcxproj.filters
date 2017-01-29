@@ -516,9 +516,6 @@
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaCameraApi.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\platform\lua\SoloLuaVariousApi.cpp">
-      <Filter>src\platform\lua</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaMaterialApi.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
@@ -526,6 +523,9 @@
       <Filter>src\platform\lua</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaPhysicsApi.cpp">
+      <Filter>src\platform\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaMiscApi.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
   </ItemGroup>

@@ -124,7 +124,7 @@
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaMathApi.cpp" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaTextureApi.cpp" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaTransformApi.cpp" />
-    <ClCompile Include="..\src\solo\platform\lua\SoloLuaVariousApi.cpp" />
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaMiscApi.cpp" />
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLEffect.cpp" />
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLFrameBuffer.cpp" />
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLMesh.cpp" />

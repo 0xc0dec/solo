@@ -141,7 +141,7 @@ static void registerRenderer(CppBindModule<LuaBinding> &module)
 }
 
 
-void registerOtherApi(CppBindModule<LuaBinding> &module)
+void registerMiscApi(CppBindModule<LuaBinding> &module)
 {
     registerRenderer(module);
     registerAssetLoader(module);
