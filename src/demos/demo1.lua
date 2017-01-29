@@ -121,23 +121,7 @@ function loadTextureAsync(path, callback)
     end)
 end
 
-function createDynamicQuadUpdater(data, mesh)
-    local time = 0
-
-    return {
-        typeId = 1,
-
-        update = function()
-            time = time + 2 * dev:getTimeDelta()
-            local offset = 0.3 * math.sin(time)
-            data[3] = offset
-            data[8] = -offset
-            data[13] = offset
-            data[18] = -offset
-            mesh:updateDynamicVertexBuffer(0, 0, data, 4)
-        end
-    }
-end
+createDynamicQuadUpdater = dofile("../../src/demos/dynamic-quad-updater.lua")
 
 function createTimeLabelUpdater()
     local textureWidth = 1024
@@ -201,7 +185,7 @@ function initDynamicQuad()
         renderer:setMesh(mesh)
         renderer:setMaterial(0, material)
 
-        node:addScriptComponent(createDynamicQuadUpdater(data, mesh))
+        node:addScriptComponent(createDynamicQuadUpdater(dev, data, mesh))
     end)
 end
 
@@ -264,6 +248,8 @@ loadTextureAsync("../../assets/cobblestone.png", function(tex)
     initMonkeyHead(tex)
     initFloor(tex)
 end)
+
+-- TODO monitor quad, axes, etc...
 
 function keepRunning()
     return not dev:isQuitRequested() and
