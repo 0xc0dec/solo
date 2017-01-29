@@ -21,20 +21,20 @@
 #pragma once
 
 #include "SoloCommon.h"
-#include "SoloSpinLock.h"
 #include <fstream>
 
 
 namespace solo
 {
     class Device;
+    struct LoggerImpl;
 
     class Logger final
     {
     public:
         SL_DISABLE_COPY_AND_MOVE(Logger)
 
-        explicit Logger(const FriendToken<Device> &) {}
+        explicit Logger(const FriendToken<Device> &);
         ~Logger();
 
         void setTargetFile(const std::string &path);
@@ -46,9 +46,6 @@ namespace solo
         void logCritical(const std::string &msg);
 
     private:
-        void log(const std::string &msg, const std::string &level);
-
-        std::ofstream file;
-        SpinLock lock;
+        sptr<LoggerImpl> impl;
     };
 }

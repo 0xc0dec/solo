@@ -79,9 +79,6 @@
     <ClInclude Include="..\include\SoloImage.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloImageLoader.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\solo\SoloPngImageLoader.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -118,13 +115,7 @@
     <ClInclude Include="..\include\SoloFrameBuffer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloSpinLock.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloAssetLoader.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloMeshLoader.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloRadian.h">
@@ -288,6 +279,15 @@
     </ClInclude>
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLTexture.h">
       <Filter>src\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\SoloImageLoader.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\SoloMeshLoader.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\SoloSpinLock.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

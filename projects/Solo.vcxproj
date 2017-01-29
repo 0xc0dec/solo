@@ -29,18 +29,15 @@
     <ClInclude Include="..\include\SoloFrustum.h" />
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\include\SoloImage.h" />
-    <ClInclude Include="..\include\SoloMeshLoader.h" />
     <ClInclude Include="..\include\SoloPhysics.h" />
     <ClInclude Include="..\include\SoloRadian.h" />
     <ClInclude Include="..\include\SoloRenderer.h" />
     <ClInclude Include="..\include\SoloFrameBuffer.h" />
     <ClInclude Include="..\include\SoloCubeTexture.h" />
-    <ClInclude Include="..\include\SoloImageLoader.h" />
     <ClInclude Include="..\include\SoloRigidBody.h" />
     <ClInclude Include="..\include\SoloScriptRuntime.h" />
     <ClInclude Include="..\include\SoloSkyboxRenderer.h" />
     <ClInclude Include="..\include\SoloSpectator.h" />
-    <ClInclude Include="..\include\SoloSpinLock.h" />
     <ClInclude Include="..\include\SoloTexture.h" />
     <ClInclude Include="..\include\SoloLogger.h" />
     <ClInclude Include="..\include\SoloMaterial.h" />
@@ -103,9 +100,12 @@
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanPipeline.h" />
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanRenderer.h" />
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanSwapchain.h" />
+    <ClInclude Include="..\src\solo\SoloImageLoader.h" />
     <ClInclude Include="..\src\solo\SoloMaterialParameter.h" />
+    <ClInclude Include="..\src\solo\SoloMeshLoader.h" />
     <ClInclude Include="..\src\solo\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\solo\SoloPngImageLoader.h" />
+    <ClInclude Include="..\src\solo\SoloSpinLock.h" />
     <ClInclude Include="..\src\solo\SoloTrueTypeFont.h" />
   </ItemGroup>
   <ItemGroup>
