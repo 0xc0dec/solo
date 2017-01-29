@@ -54,8 +54,8 @@ static void registerVector2(CppBindModule<LuaBinding> &module)
     REG_METHOD(vector2, Vector2, distance);
     REG_METHOD(vector2, Vector2, distanceSquared);
 
-    REG_STATIC_OVERLOADED_METHOD(vector2, Vector2, dot, "dot", float, , const Vector2&, const Vector2&);
-    REG_OVERLOADED_METHOD(vector2, Vector2, dot, "dot", float, const, const Vector2&);
+    REG_STATIC_METHOD_OVERLOADED(vector2, Vector2, dot, "dot", float, , const Vector2&, const Vector2&);
+    REG_METHOD_OVERLOADED(vector2, Vector2, dot, "dot", float, const, const Vector2&);
     
     REG_METHOD(vector2, Vector2, length);
     REG_METHOD(vector2, Vector2, lengthSquared);
@@ -89,8 +89,8 @@ static void registerVector3(CppBindModule<LuaBinding> &module)
     REG_METHOD(vector3, Vector3, distance);
     REG_METHOD(vector3, Vector3, distanceSquared);
     
-    REG_STATIC_OVERLOADED_METHOD(vector3, Vector3, dot, "dot", float, , const Vector3&, const Vector3&);
-    REG_OVERLOADED_METHOD(vector3, Vector3, dot, "dot", float, const, const Vector3&);
+    REG_STATIC_METHOD_OVERLOADED(vector3, Vector3, dot, "dot", float, , const Vector3&, const Vector3&);
+    REG_METHOD_OVERLOADED(vector3, Vector3, dot, "dot", float, const, const Vector3&);
     
     REG_METHOD(vector3, Vector3, length);
     REG_METHOD(vector3, Vector3, lengthSquared);
@@ -123,8 +123,8 @@ static void registerVector4(CppBindModule<LuaBinding> &module)
     REG_METHOD(vector4, Vector4, distance);
     REG_METHOD(vector4, Vector4, distanceSquared);
     
-    REG_STATIC_OVERLOADED_METHOD(vector4, Vector4, dot, "dot", float, , const Vector4&, const Vector4&);
-    REG_OVERLOADED_METHOD(vector4, Vector4, dot, "dot", float, const, const Vector4&);
+    REG_STATIC_METHOD_OVERLOADED(vector4, Vector4, dot, "dot", float, , const Vector4&, const Vector4&);
+    REG_METHOD_OVERLOADED(vector4, Vector4, dot, "dot", float, const, const Vector4&);
     
     REG_METHOD(vector4, Vector4, length);
     REG_METHOD(vector4, Vector4, lengthSquared);

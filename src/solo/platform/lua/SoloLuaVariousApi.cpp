@@ -38,7 +38,7 @@ using namespace solo;
 
 static void registerFrameBuffer(CppBindModule<LuaBinding> &module)
 {
-    auto fb = module.beginClass<FrameBuffer>("FrameBuffer");
+    auto fb = BEGIN_CLASS(module, FrameBuffer);
     REG_STATIC_METHOD(fb, FrameBuffer, create);
     REG_METHOD(fb, FrameBuffer, setAttachments);
     REG_METHOD(fb, FrameBuffer, getSize);
@@ -48,7 +48,7 @@ static void registerFrameBuffer(CppBindModule<LuaBinding> &module)
 
 static void registerLogger(CppBindModule<LuaBinding> &module)
 {
-    auto logger = module.beginClass<Logger>("Logger");
+    auto logger = BEGIN_CLASS(module, Logger);
     REG_METHOD(logger, Logger, setTargetFile);
     REG_METHOD(logger, Logger, logDebug);
     REG_METHOD(logger, Logger, logInfo);
@@ -61,7 +61,7 @@ static void registerLogger(CppBindModule<LuaBinding> &module)
 
 static void registerScene(CppBindModule<LuaBinding> &module)
 {
-    auto scene = module.beginClass<Scene>("Scene");
+    auto scene = BEGIN_CLASS(module, Scene);
     REG_STATIC_METHOD(scene, Scene, create);
     REG_METHOD(scene, Scene, getDevice);
     REG_METHOD(scene, Scene, createNode);
@@ -73,7 +73,7 @@ static void registerScene(CppBindModule<LuaBinding> &module)
 
 static void registerDevice(CppBindModule<LuaBinding> &module)
 {
-    auto device = module.beginClass<Device>("Device");
+    auto device = BEGIN_CLASS(module, Device);
     REG_METHOD(device, Device, getWindowTitle);
     REG_METHOD(device, Device, setWindowTitle);
     REG_METHOD(device, Device, getCanvasSize);
@@ -101,7 +101,7 @@ static void registerDevice(CppBindModule<LuaBinding> &module)
 
 static void registerMeshRenderer(CppBindModule<LuaBinding> &module)
 {
-    auto renderer = module.beginExtendClass<MeshRenderer, Component>("MeshRenderer");
+    auto renderer = BEGIN_CLASS_EXTEND(module, MeshRenderer, Component);
     REG_METHOD(renderer, MeshRenderer, render);
     REG_METHOD(renderer, MeshRenderer, getMesh);
     REG_METHOD(renderer, MeshRenderer, setMesh);
@@ -114,7 +114,7 @@ static void registerMeshRenderer(CppBindModule<LuaBinding> &module)
 
 static void registerEffect(CppBindModule<LuaBinding> &module)
 {
-    auto eff = module.beginClass<Effect>("Effect");
+    auto eff = BEGIN_CLASS(module, Effect);
     REG_STATIC_METHOD(eff, Effect, create);
     REG_STATIC_METHOD(eff, Effect, createFromPrefab);
     eff.endClass();
@@ -123,7 +123,7 @@ static void registerEffect(CppBindModule<LuaBinding> &module)
 
 static void registerDeviceSetup(CppBindModule<LuaBinding> &module)
 {
-    auto setup = module.beginClass<DeviceSetup>("DeviceSetup");
+    auto setup = BEGIN_CLASS(module, DeviceSetup);
     REG_VARIABLE(setup, DeviceSetup, mode);
     REG_VARIABLE(setup, DeviceSetup, canvasWidth);
     REG_VARIABLE(setup, DeviceSetup, canvasHeight);
@@ -142,7 +142,7 @@ static void registerDeviceSetup(CppBindModule<LuaBinding> &module)
 
 static void registerFileSystem(CppBindModule<LuaBinding> &module)
 {
-    auto fs = module.beginClass<FileSystem>("FileSystem");
+    auto fs = BEGIN_CLASS(module, FileSystem);
     REG_METHOD(fs, FileSystem, readBytes);
     REG_METHOD(fs, FileSystem, writeBytes);
     REG_METHOD(fs, FileSystem, readText);
@@ -155,15 +155,15 @@ static void registerFileSystem(CppBindModule<LuaBinding> &module)
 
 static void registerAsyncHandles(CppBindModule<LuaBinding> &module)
 {
-    auto meshAsyncHandle = module.beginClass<AsyncHandle<Mesh>>("MeshAsyncHandle");
+    auto meshAsyncHandle = BEGIN_CLASS_RENAMED(module, AsyncHandle<Mesh>, "MeshAsyncHandle");
     REG_METHOD(meshAsyncHandle, AsyncHandle<Mesh>, done);
     meshAsyncHandle.endClass();
 
-    auto rectTexAsyncHandle = module.beginClass<AsyncHandle<RectTexture>>("RectTextureAsyncHandle");
+    auto rectTexAsyncHandle = BEGIN_CLASS_RENAMED(module, AsyncHandle<RectTexture>, "RectTextureAsyncHandle");
     REG_METHOD(rectTexAsyncHandle, AsyncHandle<RectTexture>, done);
     rectTexAsyncHandle.endClass();
 
-    auto cubeTexAsyncHandle = module.beginClass<AsyncHandle<CubeTexture>>("CubeTextureAsyncHandle");
+    auto cubeTexAsyncHandle = BEGIN_CLASS_RENAMED(module, AsyncHandle<CubeTexture>, "CubeTextureAsyncHandle");
     REG_METHOD(cubeTexAsyncHandle, AsyncHandle<CubeTexture>, done);
     cubeTexAsyncHandle.endClass();
 }
@@ -171,7 +171,7 @@ static void registerAsyncHandles(CppBindModule<LuaBinding> &module)
 
 static void registerAssetLoader(CppBindModule<LuaBinding> &module)
 {
-    auto loader = module.beginClass<AssetLoader>("AssetLoader");
+    auto loader = BEGIN_CLASS(module, AssetLoader);
     REG_METHOD(loader, AssetLoader, loadRectTexture);
     REG_METHOD(loader, AssetLoader, loadRectTextureAsync);
     REG_METHOD(loader, AssetLoader, loadCubeTexture);
@@ -185,7 +185,7 @@ static void registerAssetLoader(CppBindModule<LuaBinding> &module)
 
 static void registerRenderer(CppBindModule<LuaBinding> &module)
 {
-    auto renderer = module.beginClass<Renderer>("Renderer");
+    auto renderer = BEGIN_CLASS(module, Renderer);
     REG_METHOD(renderer, Renderer, renderFrame);
     renderer.endClass();
 }
@@ -193,7 +193,7 @@ static void registerRenderer(CppBindModule<LuaBinding> &module)
 
 static void registerRigidBodyConstructionParams(CppBindModule<LuaBinding> &module)
 {
-    auto params = module.beginClass<RigidBodyConstructionParameters>("RigidBodyConstructionParameters");
+    auto params = BEGIN_CLASS(module, RigidBodyConstructionParameters);
     params.addConstructor(LUA_ARGS());
     REG_VARIABLE(params, RigidBodyConstructionParameters, mass);
     REG_VARIABLE(params, RigidBodyConstructionParameters, friction);
@@ -209,7 +209,7 @@ static void registerRigidBodyConstructionParams(CppBindModule<LuaBinding> &modul
 
 static void registerRigidBody(CppBindModule<LuaBinding> &module)
 {
-    auto rb = module.beginExtendClass<RigidBody, Component>("RigidBody");
+    auto rb = BEGIN_CLASS_EXTEND(module, RigidBody, Component);
     REG_METHOD(rb, RigidBody, setCollider);
     rb.endClass();
 }
@@ -217,7 +217,7 @@ static void registerRigidBody(CppBindModule<LuaBinding> &module)
 
 static void registerRaycastResult(CppBindModule<LuaBinding> &module)
 {
-    auto rcr = module.beginClass<RaycastResult>("RaycastResult");
+    auto rcr = BEGIN_CLASS(module, RaycastResult);
     REG_VARIABLE(rcr, RaycastResult, body);
     REG_VARIABLE(rcr, RaycastResult, point);
     REG_VARIABLE(rcr, RaycastResult, normal);
@@ -227,7 +227,7 @@ static void registerRaycastResult(CppBindModule<LuaBinding> &module)
 
 static void registerPhysics(CppBindModule<LuaBinding> &module)
 {
-    auto ph = module.beginClass<Physics>("Physics");
+    auto ph = BEGIN_CLASS(module, Physics);
     REG_METHOD(ph, Physics, update);
     REG_METHOD(ph, Physics, setGravity);
     REG_METHOD(ph, Physics, castRay);
@@ -238,7 +238,7 @@ static void registerPhysics(CppBindModule<LuaBinding> &module)
 
 static void registerColliders(CppBindModule<LuaBinding> &module)
 {
-    auto coll = module.beginClass<Collider>("Collider");
+    auto coll = BEGIN_CLASS(module, Collider);
     coll.endClass();
 
     auto box = module.beginExtendClass<BoxCollider, Collider>("BoxCollider");
