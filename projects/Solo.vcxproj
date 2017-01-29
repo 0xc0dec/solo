@@ -114,6 +114,7 @@
     <ClCompile Include="..\src\solo\platform\bullet\SoloBulletRigidBody.cpp" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaCameraApi.cpp" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaCommon.h" />
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaDeviceApi.cpp" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaEnumsApi.cpp" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaMaterialApi.cpp" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaNodeComponentApi.cpp" />
