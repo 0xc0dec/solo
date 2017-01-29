@@ -17,6 +17,7 @@ postProcessorTag = 16
 createDynamicQuadUpdater = dofile("../../src/demos/dynamic-quad-updater.lua")
 createTimeLabelUpdater = dofile("../../src/demos/time-label-updater.lua")
 createScreenshoter = dofile("../../src/demos/screenshoter.lua")
+createRotator = dofile("../../src/demos/rotator.lua")
 
 shaders = dofile("../../src/demos/shaders.lua")
 
@@ -113,7 +114,7 @@ function initCheckerBox()
     node:addComponent("MeshRenderer"):setMesh(meshes.cube)
     node:findComponent("MeshRenderer"):setMaterial(0, material)
     node:findComponent("Transform"):setLocalPosition(solo.Vector3(-5, 0, 0))
-    -- node:addComponent<Rotator>("world", solo.Vector3(0, 1, 0))
+    node:addScriptComponent(createRotator(dev, "world", solo.Vector3(0, 1, 0)))
 end
 
 function loadTextureAsync(path, callback)
@@ -188,7 +189,7 @@ function initMonkeyHead(tex)
         renderer:setMesh(mesh)
         renderer:setMaterial(0, material)
         node:findComponent("Transform"):setLocalPosition(solo.Vector3(0, 0, 0))
-        -- node:addComponent<Rotator>("local", Vector3::unitX())
+        node:addScriptComponent(createRotator(dev, "local", solo.Vector3(1, 0, 0)))
     end)
 end
 
@@ -228,11 +229,10 @@ function initMonitorQuad(axesMesh)
     material:setFaceCull(solo.FaceCull.All)
     material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
     material:setTextureParameter("mainTex", offscreenCameraTex)
-    print(offscreenCameraTex)
 
     local parent = scene:createNode()
     parent:findComponent("Transform"):setLocalPosition(solo.Vector3(-2, 2, -2))
-    -- parent:addComponent<Rotator>("world", Vector3::unitY())
+    parent:addScriptComponent(createRotator(dev, "world", solo.Vector3(0, 1, 0)))
     attachAxesMesh(parent, axesMesh)
 
     local node = scene:createNode()
@@ -263,11 +263,11 @@ function initTransparentQuad(axesMesh)
 
         local parent = scene:createNode()
         parent:findComponent("Transform"):setLocalPosition(solo.Vector3(5, 0, 0))
-        -- parent:addComponent<Rotator>("world", Vector3::unitY());
+        parent:addScriptComponent(createRotator(dev, "world", solo.Vector3(0, 1, 0)))
         attachAxesMesh(parent, axesMesh)
 
         local node = scene:createNode()
-        -- node:addComponent<Rotator>("local", Vector3::unitX());
+        node:addScriptComponent(createRotator(dev, "local", solo.Vector3(1, 0, 0)))
         node:findComponent("Transform"):setParent(parent:findComponent("Transform"))
         node:findComponent("Transform"):setLocalPosition(solo.Vector3(2, 0, 0))
 
