@@ -122,32 +122,7 @@ function loadTextureAsync(path, callback)
 end
 
 createDynamicQuadUpdater = dofile("../../src/demos/dynamic-quad-updater.lua")
-
-function createTimeLabelUpdater()
-    local textureWidth = 1024
-    local textureHeight = 1024
-    local lineHeight = 60
-    local renderer
-
-    return {
-        typeId = 2,
-
-        init = function(self)
-            local fontData = fs:readBytes("../../assets/aller.ttf")
-            local firstChar = string.byte(" ")
-            local charCount = string.byte("~") - string.byte(" ")
-            local font = solo.Font.create(dev, fontData, lineHeight, textureWidth,
-                textureHeight, firstChar, charCount, 2, 2)
-
-            renderer = self.node:addComponent("FontRenderer")
-            renderer:setFont(font)
-        end,
-
-        update = function()
-            renderer:setText(os.date("Now is %H:%M:%S"))
-        end
-    }
-end
+createTimeLabelUpdater = dofile("../../src/demos/time-label-updater.lua")
 
 function initDynamicQuad()
     loadTextureAsync("../../assets/freeman.png", function(tex)
@@ -191,7 +166,7 @@ end
 
 function initCurrentTimeLabel()
     local node = scene:createNode()
-    node:addScriptComponent(createTimeLabelUpdater())
+    node:addScriptComponent(createTimeLabelUpdater(dev, fs))
     node:findComponent("FontRenderer"):setTags(transparentTag)
     node:findComponent("Transform"):setLocalScale(solo.Vector3(0.02, 0.02, 1))
     node:findComponent("Transform"):setLocalPosition(solo.Vector3(-3, 0, 4))
