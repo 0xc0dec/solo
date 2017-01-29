@@ -18,6 +18,7 @@ createDynamicQuadUpdater = dofile("../../src/demos/dynamic-quad-updater.lua")
 createTimeLabelUpdater = dofile("../../src/demos/time-label-updater.lua")
 createScreenshoter = dofile("../../src/demos/screenshoter.lua")
 createRotator = dofile("../../src/demos/rotator.lua")
+createLookAt = dofile("../../src/demos/lookat.lua")
 
 shaders = dofile("../../src/demos/shaders.lua")
 
@@ -236,7 +237,7 @@ function initMonitorQuad(axesMesh)
     attachAxesMesh(parent, axesMesh)
 
     local node = scene:createNode()
-    -- node:addComponent<LookAt>(targetPos);
+    node:addScriptComponent(createLookAt(solo.Vector3(0, 0, 0)))
 
     local transform = node:findComponent("Transform")
     transform:setParent(parent:findComponent("Transform"))
