@@ -27,11 +27,12 @@
 #include "SoloCamera.h"
 #include "SoloSpectator.h"
 #include "SoloLuaCommon.h"
+#include "SoloRigidBody.h"
 
 using namespace solo;
 
 
-static auto findComponent(Node* node, const std::string &name) -> Component*
+static auto findComponent(Node *node, const std::string &name) -> Component*
 {
     if (name == "Transform")
         return node->findComponent<Transform>();
@@ -45,13 +46,15 @@ static auto findComponent(Node* node, const std::string &name) -> Component*
         return node->findComponent<SkyboxRenderer>();
     if (name == "FontRenderer")
         return node->findComponent<FontRenderer>();
+    if (name == "RigidBody")
+        return node->findComponent<RigidBody>();
 
     SL_ERR("Unknown standard component ", name)
     return nullptr;
 }
 
 
-static auto addComponent(Node *node, const std::string &name) -> Component*
+static auto addComponent(Node *node, const std::string &name, LuaRef arg) -> Component*
 {
     if (name == "Transform")
         return node->addComponent<Transform>();
@@ -64,7 +67,9 @@ static auto addComponent(Node *node, const std::string &name) -> Component*
     if (name == "SkyboxRenderer")
         return node->addComponent<SkyboxRenderer>();
     if (name == "FontRenderer")
-        node->addComponent<FontRenderer>();
+        return node->addComponent<FontRenderer>();
+    if (name == "RigidBody")
+        return node->addComponent<RigidBody>(arg.toValue<RigidBodyConstructionParameters>());
 
     SL_ERR("Unknown standard component ", name)
     return nullptr;
@@ -85,6 +90,8 @@ static void removeComponent(Node *node, const std::string &name)
         node->removeComponent<SkyboxRenderer>();
     else if (name == "FontRenderer")
         node->removeComponent<FontRenderer>();
+    else if (name == "RigidBody")
+        node->removeComponent<RigidBody>();
     else
         SL_ERR("Unknown standard component ", name)
 }
@@ -97,10 +104,16 @@ static void addScriptComponent(Node *node, LuaRef scriptComponent)
 }
 
 
-static void removeScriptComponent(Node* node, LuaRef scriptComponent)
+static void removeScriptComponent(Node *node, LuaRef scriptComponent)
 {
     auto typeId = scriptComponent.get<uint32_t>("typeId") + LuaScriptComponent::MinComponentTypeId;
     node->getScene()->removeComponent(node->getId(), typeId);
+}
+
+
+static int lala(Node *node, LuaRef smth)
+{
+    return smth.toValue<Transform*>()->getTags();
 }
 
 
@@ -114,12 +127,18 @@ void registerNodeAndComponent(CppBindModule<LuaBinding> &module)
     component.endClass();
 
     auto node = module.beginClass<Node>("Node");
+
     REG_METHOD(node, Node, getId);
     REG_METHOD(node, Node, getScene);
+    
     REG_FREE_FUNC_AS_METHOD(node, addScriptComponent);
     REG_FREE_FUNC_AS_METHOD(node, removeScriptComponent);
     REG_FREE_FUNC_AS_METHOD(node, findComponent);
+    
+    node.addFunction("lala", lala);
+    
     REG_FREE_FUNC_AS_METHOD(node, addComponent);
     REG_FREE_FUNC_AS_METHOD(node, removeComponent);
+    
     node.endClass();
 }

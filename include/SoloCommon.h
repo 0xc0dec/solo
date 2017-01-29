@@ -73,8 +73,9 @@
     type &operator=(type &&other) = delete;
 
 #define SL_FLUENT_DTO(dtoType, fields) \
-    struct dtoType final \
+    class dtoType final \
     { \
+    public: \
         typedef dtoType DtoType; \
         fields \
     };

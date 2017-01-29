@@ -3,14 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Solo", "Solo.msvc2015.vcxproj", "{278CAB21-1CAB-49AD-9959-6F97743501FB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Solo", "Solo.vcxproj", "{278CAB21-1CAB-49AD-9959-6F97743501FB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{085AFD38-02E2-4DF4-B3F4-2F28708CFDD1} = {085AFD38-02E2-4DF4-B3F4-2F28708CFDD1}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tester", "Tester.msvc2015.vcxproj", "{58722071-4BF8-42EC-A319-203DB5744A29}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tester", "Tester.vcxproj", "{58722071-4BF8-42EC-A319-203DB5744A29}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demo1", "Demo1.msvc2015.vcxproj", "{0638BB7A-18DF-4B85-9963-A6811F37F5BB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demo1", "Demo1.vcxproj", "{0638BB7A-18DF-4B85-9963-A6811F37F5BB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DemoCommon", "DemoCommon", "{E1C0ED1D-EB82-4E84-8F12-E437DCDC122B}"
 	ProjectSection(SolutionItems) = preProject
@@ -18,14 +18,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DemoCommon", "DemoCommon", 
 		..\src\demos\common\Screenshoter.h = ..\src\demos\common\Screenshoter.h
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demo2", "Demo2.msvc2015.vcxproj", "{40E64E42-215E-4CBD-B01A-78C4F92220C8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demo2", "Demo2.vcxproj", "{40E64E42-215E-4CBD-B01A-78C4F92220C8}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Solo.Vendor", "Solo.Vendor.msvc2015.vcxproj", "{085AFD38-02E2-4DF4-B3F4-2F28708CFDD1}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Solo.Vendor", "Solo.Vendor.vcxproj", "{085AFD38-02E2-4DF4-B3F4-2F28708CFDD1}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3CA10888-FA47-4CC1-A755-121E5D480F16} = {3CA10888-FA47-4CC1-A755-121E5D480F16}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Solo.Vendor.Lua", "Solo.Vendor.Lua.msvc2015.vcxproj", "{3CA10888-FA47-4CC1-A755-121E5D480F16}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Solo.Vendor.Lua", "Solo.Vendor.Lua.vcxproj", "{3CA10888-FA47-4CC1-A755-121E5D480F16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

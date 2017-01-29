@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{0638BB7A-18DF-4B85-9963-A6811F37F5BB}</ProjectGuid>
-    <RootNamespace>Demo1</RootNamespace>
-    <ProjectName>Demo1</ProjectName>
+    <ProjectGuid>{58722071-4BF8-42EC-A319-203DB5744A29}</ProjectGuid>
+    <RootNamespace>Tester</RootNamespace>
+    <ProjectName>Tester</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -69,25 +69,25 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)..\build\</OutDir>
-    <IntDir>$(SolutionDir)..\build\tmp\Demo1\</IntDir>
+    <IntDir>$(SolutionDir)..\build\tmp\tester\</IntDir>
     <LibraryPath>..\build;$(LibraryPath)</LibraryPath>
     <IncludePath>$(ProjectDir)..\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>..\build;$(LibraryPath)</LibraryPath>
     <IncludePath>$(SolutionDir)..\include\;$(IncludePath)</IncludePath>
-    <OutDir>$(ProjectDir)..\build\Demo1\</OutDir>
-    <IntDir>$(ProjectDir)..\build\Demo1\tmp\</IntDir>
+    <OutDir>$(ProjectDir)..\build\Tester\</OutDir>
+    <IntDir>$(ProjectDir)..\build\Tester\tmp\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\build\</OutDir>
-    <IntDir>$(SolutionDir)..\build\tmp\Demo1\</IntDir>
+    <IntDir>$(SolutionDir)..\build\tmp\tester\</IntDir>
     <LibraryPath>..\build;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LibraryPath>..\build;$(LibraryPath)</LibraryPath>
-    <OutDir>$(ProjectDir)..\build\Demo1\</OutDir>
-    <IntDir>$(ProjectDir)..\build\Demo1\tmp\</IntDir>
+    <OutDir>$(ProjectDir)..\build\Tester\</OutDir>
+    <IntDir>$(ProjectDir)..\build\Tester\tmp\</IntDir>
     <IncludePath>$(SolutionDir)..\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -100,8 +100,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>solo.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Windows</SubSystem>
-      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -117,7 +116,6 @@
       <AdditionalDependencies>$(SolutionDir)../build/Solo/Solo.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <AdditionalOptions>/ignore:4006 /ignore:4204 /ignore:4221 /ignore:4201 /ignore:4217 %(AdditionalOptions)</AdditionalOptions>
-      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -134,8 +132,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>solo.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Windows</SubSystem>
-      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -155,11 +152,10 @@
       <AdditionalDependencies>$(SolutionDir)../build/Solo/Solo.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <AdditionalOptions>/ignore:4006 /ignore:4204 /ignore:4221 /ignore:4201 /ignore:4217 %(AdditionalOptions)</AdditionalOptions>
-      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="solo.msvc2015.vcxproj">
+    <ProjectReference Include="Solo.vcxproj">
       <Project>{278cab21-1cab-49ad-9959-6f97743501fb}</Project>
       <Private>true</Private>
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
@@ -169,20 +165,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\demos\demo1\Demo1.cpp" />
+    <ClInclude Include="..\src\tests\tester\Components_Test.h" />
+    <ClInclude Include="..\src\tests\tester\Device_Test.h" />
+    <ClInclude Include="..\src\tests\tester\FileSystem_Test.h" />
+    <ClInclude Include="..\src\tests\tester\MeshRenderer_Test.h" />
+    <ClInclude Include="..\src\tests\tester\TestBase.h" />
+    <ClInclude Include="..\src\tests\tester\Transform_Test.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\demos\demo1\CurrentTimeText.h" />
-    <ClInclude Include="..\src\demos\demo1\DynamicQuadUpdater.h" />
-    <ClInclude Include="..\src\demos\demo1\PostProcessor1.h" />
-    <ClInclude Include="..\src\demos\demo1\PostProcessor2.h" />
-    <ClInclude Include="..\src\demos\demo1\PostProcessorBase.h" />
-    <ClInclude Include="..\src\demos\demo1\Rotator.h" />
-    <ClInclude Include="..\src\demos\demo1\Shaders.h" />
-    <ClInclude Include="..\src\demos\demo1\SpawnedObject.h" />
-    <ClInclude Include="..\src\demos\demo1\SpawnedObjectTargeter.h" />
-    <ClInclude Include="..\src\demos\demo1\Spawner.h" />
-    <ClInclude Include="..\src\demos\demo1\LookAt.h" />
+    <ClCompile Include="..\src\tests\tester\Tester.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

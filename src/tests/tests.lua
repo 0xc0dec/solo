@@ -32,5 +32,6 @@ runTest("frame-buffer.lua")
 runTest("texture.lua")
 runTest("mesh-renderer.lua")
 runTest("material.lua")
+runTest("physics.lua")
 
 logger:logInfo("Script tests finished")

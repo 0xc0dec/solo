@@ -30,8 +30,9 @@ namespace solo
     class Device;
     class RigidBody;
 
-    struct RaycastResult
+    class RaycastResult
     {
+    public:
         RigidBody *body;
         Vector3 point;
         Vector3 normal;

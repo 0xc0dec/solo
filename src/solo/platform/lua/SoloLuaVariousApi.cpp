@@ -27,11 +27,15 @@
 #include "SoloEffect.h"
 #include "SoloFileSystem.h"
 #include "SoloAssetLoader.h"
+#include "SoloRenderer.h"
+#include "SoloPhysics.h"
+#include "SoloRigidBody.h"
+#include "SoloBoxCollider.h"
 
 using namespace solo;
 
 
-void registerFrameBuffer(CppBindModule<LuaBinding> &module)
+static void registerFrameBuffer(CppBindModule<LuaBinding> &module)
 {
     auto c = module.beginClass<FrameBuffer>("FrameBuffer");
     REG_STATIC_METHOD(c, FrameBuffer, create);
@@ -41,7 +45,7 @@ void registerFrameBuffer(CppBindModule<LuaBinding> &module)
 }
 
 
-void registerLogger(CppBindModule<LuaBinding> &module)
+static void registerLogger(CppBindModule<LuaBinding> &module)
 {
     auto c = module.beginClass<Logger>("Logger");
     REG_METHOD(c, Logger, setTargetFile);
@@ -54,7 +58,7 @@ void registerLogger(CppBindModule<LuaBinding> &module)
 }
 
 
-void registerScene(CppBindModule<LuaBinding> &module)
+static void registerScene(CppBindModule<LuaBinding> &module)
 {
     auto c = module.beginClass<Scene>("Scene");
     
@@ -68,7 +72,7 @@ void registerScene(CppBindModule<LuaBinding> &module)
 }
 
 
-void registerDevice(CppBindModule<LuaBinding> &module)
+static void registerDevice(CppBindModule<LuaBinding> &module)
 {
     auto c = module.beginClass<Device>("Device");
     
@@ -108,7 +112,7 @@ void registerDevice(CppBindModule<LuaBinding> &module)
 }
 
 
-void registerMeshRenderer(CppBindModule<LuaBinding> &module)
+static void registerMeshRenderer(CppBindModule<LuaBinding> &module)
 {
     auto c = module.beginExtendClass<MeshRenderer, Component>("MeshRenderer");
     REG_METHOD(c, MeshRenderer, render);
@@ -121,7 +125,7 @@ void registerMeshRenderer(CppBindModule<LuaBinding> &module)
 }
 
 
-void registerEffect(CppBindModule<LuaBinding> &module)
+static void registerEffect(CppBindModule<LuaBinding> &module)
 {
     auto c = module.beginClass<Effect>("Effect");
     REG_STATIC_METHOD(c, Effect, create);
@@ -130,7 +134,7 @@ void registerEffect(CppBindModule<LuaBinding> &module)
 }
 
 
-void registerDeviceSetup(CppBindModule<LuaBinding> &module)
+static void registerDeviceSetup(CppBindModule<LuaBinding> &module)
 {
     auto c = module.beginClass<DeviceSetup>("DeviceSetup");
     
@@ -174,7 +178,7 @@ void registerDeviceSetup(CppBindModule<LuaBinding> &module)
 }
 
 
-void registerFileSystem(CppBindModule<LuaBinding> &module)
+static void registerFileSystem(CppBindModule<LuaBinding> &module)
 {
     auto c = module.beginClass<FileSystem>("FileSystem");
     
@@ -192,7 +196,7 @@ void registerFileSystem(CppBindModule<LuaBinding> &module)
 }
 
 
-void registerAssetLoader(CppBindModule<LuaBinding> &module)
+static void registerAssetLoader(CppBindModule<LuaBinding> &module)
 {
     auto c = module.beginClass<AssetLoader>("AssetLoader");
     
@@ -208,4 +212,106 @@ void registerAssetLoader(CppBindModule<LuaBinding> &module)
     REG_METHOD(c, AssetLoader, update);
 
     c.endClass();
+}
+
+
+static void registerRenderer(CppBindModule<LuaBinding> &module)
+{
+    auto c = module.beginClass<Renderer>("Renderer");
+    REG_METHOD(c, Renderer, renderFrame);
+    c.endClass();
+}
+
+
+static void registerRigidBodyConstructionParams(CppBindModule<LuaBinding> &module)
+{
+    auto c = module.beginClass<RigidBodyConstructionParameters>("RigidBodyConstructionParameters");
+    c.addConstructor(LUA_ARGS());
+    
+    REG_VARIABLE(c, RigidBodyConstructionParameters, mass);
+    REG_METHOD(c, RigidBodyConstructionParameters, withMass);
+
+    REG_VARIABLE(c, RigidBodyConstructionParameters, friction);
+    REG_METHOD(c, RigidBodyConstructionParameters, withFriction);
+
+    REG_VARIABLE(c, RigidBodyConstructionParameters, restitution);
+    REG_METHOD(c, RigidBodyConstructionParameters, withRestitution);
+
+    REG_VARIABLE(c, RigidBodyConstructionParameters, linearDamping);
+    REG_METHOD(c, RigidBodyConstructionParameters, withLinearDamping);
+
+    REG_VARIABLE(c, RigidBodyConstructionParameters, angularDamping);
+    REG_METHOD(c, RigidBodyConstructionParameters, withAngularDamping);
+
+    REG_VARIABLE(c, RigidBodyConstructionParameters, kinematic);
+    REG_METHOD(c, RigidBodyConstructionParameters, withKinematic);
+
+    REG_VARIABLE(c, RigidBodyConstructionParameters, linearFactor);
+    REG_METHOD(c, RigidBodyConstructionParameters, withLinearFactor);
+
+    REG_VARIABLE(c, RigidBodyConstructionParameters, angularFactor);
+    REG_METHOD(c, RigidBodyConstructionParameters, withAngularFactor);
+    
+    c.endClass();
+}
+
+
+static void registerRigidBody(CppBindModule<LuaBinding> &module)
+{
+    auto c = module.beginClass<RigidBody>("RigidBody");
+    REG_METHOD(c, RigidBody, setCollider);
+    c.endClass();
+}
+
+
+static void registerRaycastResult(CppBindModule<LuaBinding> &module)
+{
+    auto c = module.beginClass<RaycastResult>("RaycastResult");
+    c.addConstructor(LUA_ARGS());
+    REG_VARIABLE(c, RaycastResult, body);
+    REG_VARIABLE(c, RaycastResult, point);
+    REG_VARIABLE(c, RaycastResult, normal);
+    c.endClass();
+}
+
+
+static void registerPhysics(CppBindModule<LuaBinding> &module)
+{
+    auto c = module.beginClass<Physics>("Physics");
+    REG_METHOD(c, Physics, update);
+    REG_METHOD(c, Physics, setGravity);
+    REG_METHOD(c, Physics, castRay);
+    REG_METHOD(c, Physics, castRayAll);
+    c.endClass();
+}
+
+
+static void registerColliders(CppBindModule<LuaBinding> &module)
+{
+    auto c = module.beginClass<Collider>("Collider");
+    c.endClass();
+
+    auto box = module.beginExtendClass<BoxCollider, Collider>("BoxCollider");
+    REG_STATIC_METHOD(box, BoxCollider, create);
+    box.endClass();
+}
+
+
+void registerOther(CppBindModule<LuaBinding> &module)
+{
+    registerPhysics(module);
+    registerRigidBody(module);
+    registerRigidBodyConstructionParams(module);
+    registerRenderer(module);
+    registerAssetLoader(module);
+    registerFileSystem(module);
+    registerDeviceSetup(module);
+    registerEffect(module);
+    registerMeshRenderer(module);
+    registerDevice(module);
+    registerScene(module);
+    registerLogger(module);
+    registerFrameBuffer(module);
+    registerRaycastResult(module);
+    registerColliders(module);
 }
