@@ -23,6 +23,7 @@
 #include "SoloCommon.h"
 #include "SoloVector2.h"
 #include "SoloVector3.h"
+#include <vector>
 
 
 namespace solo
@@ -30,10 +31,12 @@ namespace solo
     class RectTexture;
     class Device;
 
-    struct GlyphInfo
+    // class because script binding doesn't like structs
+    class GlyphInfo
     {
-        Vector3 positions[4];
-        Vector2 uvs[4];
+    public:
+        std::vector<Vector3> positions;
+        std::vector<Vector2> uvs;
         float offsetX, offsetY;
     };
 

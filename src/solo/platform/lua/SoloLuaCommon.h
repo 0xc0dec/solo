@@ -51,5 +51,6 @@ using namespace LuaIntf;
 
 #define REG_FREE_FUNC_AS_METHOD(binding, func) binding.addFunction(#func, func)
 #define REG_FREE_FUNC_AS_METHOD_RENAMED(binding, func, name) binding.addFunction(name, func)
+#define REG_FREE_FUNC_AS_STATIC_FUNC_RENAMED(binding, func, name) binding.addStaticFunction(name, func)
 
 #define REG_MODULE_CONSTANT(module, holder, constant) module.addConstant(#constant, holder::constant)

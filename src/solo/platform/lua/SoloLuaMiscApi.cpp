@@ -23,13 +23,14 @@
 #include "SoloLogger.h"
 #include "SoloScene.h"
 #include "SoloMeshRenderer.h"
+#include "SoloSkyboxRenderer.h"
 #include "SoloEffect.h"
 #include "SoloFileSystem.h"
 #include "SoloAssetLoader.h"
 #include "SoloRenderer.h"
-#include "SoloRigidBody.h"
 #include "SoloMesh.h"
 #include "SoloRenderContext.h"
+#include "SoloSpectator.h"
 
 using namespace solo;
 
@@ -79,6 +80,26 @@ static void registerMeshRenderer(CppBindModule<LuaBinding> &module)
     REG_METHOD(renderer, MeshRenderer, setMaterial);
     REG_METHOD(renderer, MeshRenderer, getMaterialCount);
     renderer.endClass();
+}
+
+
+static void registerSpectator(CppBindModule<LuaBinding> &module)
+{
+    auto spec = BEGIN_CLASS_EXTEND(module, Spectator, Component);
+    REG_METHOD(spec, Spectator, getMovementSpeed);
+    REG_METHOD(spec, Spectator, setMovementSpeed);
+    REG_METHOD(spec, Spectator, getMouseSensitivity);
+    REG_METHOD(spec, Spectator, setMouseSensitivity);
+    REG_METHOD(spec, Spectator, getRotationAcceleration);
+    REG_METHOD(spec, Spectator, setRotationAcceleration);
+}
+
+static void registerSkyboxRenderer(CppBindModule<LuaBinding> &module)
+{
+    auto r = BEGIN_CLASS_EXTEND(module, SkyboxRenderer, Component);
+    REG_METHOD(r, SkyboxRenderer, setTexture);
+    REG_METHOD(r, SkyboxRenderer, getTexture);
+    r.endClass();
 }
 
 
@@ -145,6 +166,7 @@ static void registerRenderer(CppBindModule<LuaBinding> &module)
 static void registerRenderContext(CppBindModule<LuaBinding> &module)
 {
     auto rc = BEGIN_CLASS(module, RenderContext);
+    REG_CTOR(rc);
     REG_VARIABLE(rc, RenderContext, camera);
     rc.endClass();
 }
@@ -162,4 +184,6 @@ void registerMiscApi(CppBindModule<LuaBinding> &module)
     registerFrameBuffer(module);
     registerAsyncHandles(module);
     registerRenderContext(module);
+    registerSpectator(module);
+    registerSkyboxRenderer(module);
 }

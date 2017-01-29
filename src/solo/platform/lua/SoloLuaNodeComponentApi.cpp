@@ -110,15 +110,21 @@ static void removeScriptComponent(Node *node, LuaRef scriptComponent)
 }
 
 
-void registerNodeAndComponentApi(CppBindModule<LuaBinding> &module)
+static void registerComponent(CppBindModule<LuaBinding> &module)
 {
     auto component = BEGIN_CLASS(module, Component);
+    REG_METHOD(component, Component, update);
+    REG_METHOD(component, Component, render);
     REG_METHOD(component, Component, getTypeId);
     REG_METHOD(component, Component, getTags);
     REG_METHOD(component, Component, setTags);
     REG_METHOD(component, Component, getNode);
     component.endClass();
+}
 
+
+static void registerNode(CppBindModule<LuaBinding> &module)
+{
     auto node = BEGIN_CLASS(module, Node);
     REG_METHOD(node, Node, getId);
     REG_METHOD(node, Node, getScene);
@@ -128,4 +134,11 @@ void registerNodeAndComponentApi(CppBindModule<LuaBinding> &module)
     REG_FREE_FUNC_AS_METHOD(node, addComponent);
     REG_FREE_FUNC_AS_METHOD(node, removeComponent);
     node.endClass();
+}
+
+
+void registerNodeAndComponentApi(CppBindModule<LuaBinding> &module)
+{
+    registerComponent(module);
+    registerNode(module);
 }
