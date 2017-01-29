@@ -28,7 +28,7 @@ void registerTransform(CppBindModule<LuaBinding> &module)
 {
     // TODO script transform callbacks
 
-    auto transform = module.beginExtendClass<Transform, Component>("Transform");
+    auto transform = BEGIN_CLASS_EXTEND(module, Transform, Component);
     REG_METHOD(transform, Transform, getParent);
     REG_METHOD(transform, Transform, setParent);
     REG_METHOD(transform, Transform, getChild);

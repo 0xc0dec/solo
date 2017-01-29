@@ -27,7 +27,7 @@ using namespace solo;
 
 void registerRenderContext(CppBindModule<LuaBinding> &module)
 {
-    auto rc = module.beginClass<RenderContext>("RenderContext");
+    auto rc = BEGIN_CLASS(module, RenderContext);
     REG_VARIABLE(rc, RenderContext, camera);
     rc.endClass();
 }
@@ -35,7 +35,7 @@ void registerRenderContext(CppBindModule<LuaBinding> &module)
 
 void registerCamera(CppBindModule<LuaBinding> &module)
 {
-    auto camera = module.beginExtendClass<Camera, Component>("Camera");
+    auto camera = BEGIN_CLASS_EXTEND(module, Camera, Component);
     REG_METHOD(camera, Camera, render);
     REG_METHOD(camera, Camera, getTransform);
     REG_METHOD(camera, Camera, getRenderTarget);

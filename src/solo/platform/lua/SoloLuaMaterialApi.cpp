@@ -26,7 +26,7 @@ using namespace solo;
 
 void registerMaterial(CppBindModule<LuaBinding> &module)
 {
-    auto mat = module.beginClass<Material>("Material");
+    auto mat = BEGIN_CLASS(module, Material);
     REG_STATIC_METHOD(mat, Material, create);
     REG_METHOD(mat, Material, setFloatParameter);
     REG_METHOD(mat, Material, setFloatArrayParameter);
