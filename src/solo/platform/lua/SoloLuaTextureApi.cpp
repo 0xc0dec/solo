@@ -61,13 +61,21 @@ void registerTexture(CppBindModule<LuaBinding> &module)
     REG_METHOD(tex, Texture, getAnisotropyLevel);
     REG_METHOD(tex, Texture, setAnisotropyLevel);
     tex.endClass();
+}
 
+
+void registerRectTexture(CppBindModule<LuaBinding> &module)
+{
     auto rectTex = module.beginExtendClass<RectTexture, Texture>("RectTexture");
     REG_STATIC_METHOD(rectTex, RectTexture, create);
     REG_FREE_FUNC_AS_METHOD_RENAMED(rectTex, setRectTextureData, "setData");
     REG_METHOD(rectTex, RectTexture, getSize);
     rectTex.endClass();
+}
 
+
+void registerCubeTexture(CppBindModule<LuaBinding> &module)
+{
     auto cubeTex = module.beginExtendClass<CubeTexture, Texture>("CubeTexture");
     REG_STATIC_METHOD(cubeTex, CubeTexture, create);
     REG_FREE_FUNC_AS_METHOD_RENAMED(cubeTex, setCubeTextureData, "setData");

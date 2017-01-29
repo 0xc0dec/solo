@@ -34,6 +34,8 @@ void registerRenderContext(CppBindModule<LuaBinding> &module);
 void registerTexture(CppBindModule<LuaBinding> &module);
 void registerMaterial(CppBindModule<LuaBinding> &module);
 void registerOther(CppBindModule<LuaBinding> &module);
+void registerCubeTexture(CppBindModule<LuaBinding> &module);
+void registerRectTexture(CppBindModule<LuaBinding> &module);
 
 
 LuaScriptRuntime::LuaScriptRuntime(Device *d)
@@ -50,6 +52,8 @@ LuaScriptRuntime::LuaScriptRuntime(Device *d)
     registerCamera(module);
     registerRenderContext(module);
     registerTexture(module);
+    registerRectTexture(module);
+    registerCubeTexture(module);
     registerMaterial(module);
     registerOther(module);
 
