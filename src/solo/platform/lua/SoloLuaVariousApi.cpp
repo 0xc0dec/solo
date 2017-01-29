@@ -74,39 +74,27 @@ static void registerScene(CppBindModule<LuaBinding> &module)
 static void registerDevice(CppBindModule<LuaBinding> &module)
 {
     auto device = module.beginClass<Device>("Device");
-    
     REG_METHOD(device, Device, getWindowTitle);
     REG_METHOD(device, Device, setWindowTitle);
-
     REG_METHOD(device, Device, getCanvasSize);
-
     REG_METHOD(device, Device, saveScreenshot);
-
     REG_METHOD(device, Device, setCursorCaptured);
-
     REG_METHOD(device, Device, getLifetime);
     REG_METHOD(device, Device, getTimeDelta);
-
     REG_METHOD(device, Device, isWindowCloseRequested);
     REG_METHOD(device, Device, isQuitRequested);
-
     REG_METHOD(device, Device, isKeyPressed);
     REG_METHOD(device, Device, isKeyReleased);
-
     REG_METHOD(device, Device, getMouseMotion);
     REG_METHOD(device, Device, isMouseButtonDown);
     REG_METHOD(device, Device, isMouseButtonReleased);
-    
     REG_METHOD(device, Device, update);
-
     REG_METHOD(device, Device, getSetup);
-
     REG_METHOD(device, Device, getFileSystem);
     REG_METHOD(device, Device, getAssetLoader);
     REG_METHOD(device, Device, getRenderer);
     REG_METHOD(device, Device, getPhysics);
     REG_METHOD(device, Device, getLogger);
-    
     device.endClass();
 }
 
@@ -197,9 +185,9 @@ static void registerAssetLoader(CppBindModule<LuaBinding> &module)
 
 static void registerRenderer(CppBindModule<LuaBinding> &module)
 {
-    auto c = module.beginClass<Renderer>("Renderer");
-    REG_METHOD(c, Renderer, renderFrame);
-    c.endClass();
+    auto renderer = module.beginClass<Renderer>("Renderer");
+    REG_METHOD(renderer, Renderer, renderFrame);
+    renderer.endClass();
 }
 
 
@@ -229,29 +217,29 @@ static void registerRigidBody(CppBindModule<LuaBinding> &module)
 
 static void registerRaycastResult(CppBindModule<LuaBinding> &module)
 {
-    auto c = module.beginClass<RaycastResult>("RaycastResult");
-    REG_VARIABLE(c, RaycastResult, body);
-    REG_VARIABLE(c, RaycastResult, point);
-    REG_VARIABLE(c, RaycastResult, normal);
-    c.endClass();
+    auto rcr = module.beginClass<RaycastResult>("RaycastResult");
+    REG_VARIABLE(rcr, RaycastResult, body);
+    REG_VARIABLE(rcr, RaycastResult, point);
+    REG_VARIABLE(rcr, RaycastResult, normal);
+    rcr.endClass();
 }
 
 
 static void registerPhysics(CppBindModule<LuaBinding> &module)
 {
-    auto c = module.beginClass<Physics>("Physics");
-    REG_METHOD(c, Physics, update);
-    REG_METHOD(c, Physics, setGravity);
-    REG_METHOD(c, Physics, castRay);
-    REG_METHOD(c, Physics, castRayAll);
-    c.endClass();
+    auto ph = module.beginClass<Physics>("Physics");
+    REG_METHOD(ph, Physics, update);
+    REG_METHOD(ph, Physics, setGravity);
+    REG_METHOD(ph, Physics, castRay);
+    REG_METHOD(ph, Physics, castRayAll);
+    ph.endClass();
 }
 
 
 static void registerColliders(CppBindModule<LuaBinding> &module)
 {
-    auto c = module.beginClass<Collider>("Collider");
-    c.endClass();
+    auto coll = module.beginClass<Collider>("Collider");
+    coll.endClass();
 
     auto box = module.beginExtendClass<BoxCollider, Collider>("BoxCollider");
     REG_STATIC_METHOD(box, BoxCollider, create);

@@ -19,7 +19,6 @@
 */
 
 #include "SoloLuaScriptComponent.h"
-#include "SoloRenderContext.h"
 #include "SoloTransform.h"
 #include "SoloMeshRenderer.h"
 #include "SoloSkyboxRenderer.h"
