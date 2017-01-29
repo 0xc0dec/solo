@@ -525,6 +525,9 @@
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaDeviceApi.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaPhysicsApi.cpp">
+      <Filter>src\platform\lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

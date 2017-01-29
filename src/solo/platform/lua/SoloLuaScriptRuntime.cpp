@@ -37,6 +37,7 @@ void registerOtherApi(CppBindModule<LuaBinding> &module);
 void registerCubeTexture(CppBindModule<LuaBinding> &module);
 void registerRectTexture(CppBindModule<LuaBinding> &module);
 void registerDeviceApi(CppBindModule<LuaBinding> &module);
+void registerPhysicsApi(CppBindModule<LuaBinding> &module);
 
 
 LuaScriptRuntime::LuaScriptRuntime(Device *d)
@@ -58,6 +59,7 @@ LuaScriptRuntime::LuaScriptRuntime(Device *d)
     registerMaterial(module);
     registerOtherApi(module);
     registerDeviceApi(module);
+    registerPhysicsApi(module);
 
     module.addConstant("device", d);
 

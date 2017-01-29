@@ -27,9 +27,7 @@
 #include "SoloFileSystem.h"
 #include "SoloAssetLoader.h"
 #include "SoloRenderer.h"
-#include "SoloPhysics.h"
 #include "SoloRigidBody.h"
-#include "SoloBoxCollider.h"
 #include "SoloMesh.h"
 
 using namespace solo;
@@ -143,67 +141,8 @@ static void registerRenderer(CppBindModule<LuaBinding> &module)
 }
 
 
-static void registerRigidBodyConstructionParams(CppBindModule<LuaBinding> &module)
-{
-    auto params = BEGIN_CLASS(module, RigidBodyConstructionParameters);
-    REG_CTOR(params);
-    REG_VARIABLE(params, RigidBodyConstructionParameters, mass);
-    REG_VARIABLE(params, RigidBodyConstructionParameters, friction);
-    REG_VARIABLE(params, RigidBodyConstructionParameters, restitution);
-    REG_VARIABLE(params, RigidBodyConstructionParameters, linearDamping);
-    REG_VARIABLE(params, RigidBodyConstructionParameters, angularDamping);
-    REG_VARIABLE(params, RigidBodyConstructionParameters, kinematic);
-    REG_VARIABLE(params, RigidBodyConstructionParameters, linearFactor);
-    REG_VARIABLE(params, RigidBodyConstructionParameters, angularFactor);
-    params.endClass();
-}
-
-
-static void registerRigidBody(CppBindModule<LuaBinding> &module)
-{
-    auto rb = BEGIN_CLASS_EXTEND(module, RigidBody, Component);
-    REG_METHOD(rb, RigidBody, setCollider);
-    rb.endClass();
-}
-
-
-static void registerRaycastResult(CppBindModule<LuaBinding> &module)
-{
-    auto rcr = BEGIN_CLASS(module, RaycastResult);
-    REG_VARIABLE(rcr, RaycastResult, body);
-    REG_VARIABLE(rcr, RaycastResult, point);
-    REG_VARIABLE(rcr, RaycastResult, normal);
-    rcr.endClass();
-}
-
-
-static void registerPhysics(CppBindModule<LuaBinding> &module)
-{
-    auto ph = BEGIN_CLASS(module, Physics);
-    REG_METHOD(ph, Physics, update);
-    REG_METHOD(ph, Physics, setGravity);
-    REG_METHOD(ph, Physics, castRay);
-    REG_METHOD(ph, Physics, castRayAll);
-    ph.endClass();
-}
-
-
-static void registerColliders(CppBindModule<LuaBinding> &module)
-{
-    auto coll = BEGIN_CLASS(module, Collider);
-    coll.endClass();
-
-    auto box = module.beginExtendClass<BoxCollider, Collider>("BoxCollider");
-    REG_STATIC_METHOD(box, BoxCollider, create);
-    box.endClass();
-}
-
-
 void registerOtherApi(CppBindModule<LuaBinding> &module)
 {
-    registerPhysics(module);
-    registerRigidBody(module);
-    registerRigidBodyConstructionParams(module);
     registerRenderer(module);
     registerAssetLoader(module);
     registerFileSystem(module);
@@ -212,7 +151,5 @@ void registerOtherApi(CppBindModule<LuaBinding> &module)
     registerScene(module);
     registerLogger(module);
     registerFrameBuffer(module);
-    registerRaycastResult(module);
-    registerColliders(module);
     registerAsyncHandles(module);
 }

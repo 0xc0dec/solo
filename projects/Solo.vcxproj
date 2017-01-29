@@ -118,6 +118,7 @@
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaEnumsApi.cpp" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaMaterialApi.cpp" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaNodeComponentApi.cpp" />
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaPhysicsApi.cpp" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaScriptComponent.cpp" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaScriptRuntime.cpp" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaMathApi.cpp" />
