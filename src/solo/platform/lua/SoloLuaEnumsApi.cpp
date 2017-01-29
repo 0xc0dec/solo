@@ -198,4 +198,10 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     REG_MODULE_CONSTANT(mouseButton, MouseButton, Middle);
     REG_MODULE_CONSTANT(mouseButton, MouseButton, Right);
     mouseButton.endModule();
+
+    auto deviceMode = module.beginModule("DeviceMode");
+    REG_MODULE_CONSTANT(deviceMode, DeviceMode, Null);
+    REG_MODULE_CONSTANT(deviceMode, DeviceMode, OpenGL);
+    REG_MODULE_CONSTANT(deviceMode, DeviceMode, Vulkan);
+    deviceMode.endModule();
 }

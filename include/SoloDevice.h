@@ -98,7 +98,7 @@ namespace solo
 
         virtual auto getCanvasSize() const -> Vector2 = 0;
 
-        virtual void saveScreenshot(const std::string &path) = 0;
+        virtual void saveScreenshot(const std::string &path) = 0; // TODO return bytes?
 
         virtual void setCursorCaptured(bool captured) = 0;
 

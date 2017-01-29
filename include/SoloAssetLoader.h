@@ -38,11 +38,6 @@ namespace solo
     class AsyncHandle
     {
     public:
-        auto getResult()
-        {
-            return result;
-        }
-
         void done(std::function<void(sptr<T>)> callback)
         {
             if (callback && result)

@@ -48,6 +48,8 @@ namespace solo
 
         virtual void setCollider(sptr<Collider> collider) = 0;
 
+        int lala() { return 1; }
+
     protected:
         explicit RigidBody(const Node &node);
     };

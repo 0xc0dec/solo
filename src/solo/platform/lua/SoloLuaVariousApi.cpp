@@ -31,187 +31,167 @@
 #include "SoloPhysics.h"
 #include "SoloRigidBody.h"
 #include "SoloBoxCollider.h"
+#include "SoloMesh.h"
 
 using namespace solo;
 
 
 static void registerFrameBuffer(CppBindModule<LuaBinding> &module)
 {
-    auto c = module.beginClass<FrameBuffer>("FrameBuffer");
-    REG_STATIC_METHOD(c, FrameBuffer, create);
-    REG_METHOD(c, FrameBuffer, setAttachments);
-    REG_METHOD(c, FrameBuffer, getSize);
-    c.endClass();
+    auto fb = module.beginClass<FrameBuffer>("FrameBuffer");
+    REG_STATIC_METHOD(fb, FrameBuffer, create);
+    REG_METHOD(fb, FrameBuffer, setAttachments);
+    REG_METHOD(fb, FrameBuffer, getSize);
+    fb.endClass();
 }
 
 
 static void registerLogger(CppBindModule<LuaBinding> &module)
 {
-    auto c = module.beginClass<Logger>("Logger");
-    REG_METHOD(c, Logger, setTargetFile);
-    REG_METHOD(c, Logger, logDebug);
-    REG_METHOD(c, Logger, logInfo);
-    REG_METHOD(c, Logger, logWarning);
-    REG_METHOD(c, Logger, logError);
-    REG_METHOD(c, Logger, logCritical);
-    c.endClass();
+    auto logger = module.beginClass<Logger>("Logger");
+    REG_METHOD(logger, Logger, setTargetFile);
+    REG_METHOD(logger, Logger, logDebug);
+    REG_METHOD(logger, Logger, logInfo);
+    REG_METHOD(logger, Logger, logWarning);
+    REG_METHOD(logger, Logger, logError);
+    REG_METHOD(logger, Logger, logCritical);
+    logger.endClass();
 }
 
 
 static void registerScene(CppBindModule<LuaBinding> &module)
 {
-    auto c = module.beginClass<Scene>("Scene");
-    
-    REG_STATIC_METHOD(c, Scene, create);
-    REG_METHOD(c, Scene, getDevice);
-    REG_METHOD(c, Scene, createNode);
-    REG_METHOD(c, Scene, visit);
-    REG_METHOD(c, Scene, visitByTags);
-    
-    c.endClass();
+    auto scene = module.beginClass<Scene>("Scene");
+    REG_STATIC_METHOD(scene, Scene, create);
+    REG_METHOD(scene, Scene, getDevice);
+    REG_METHOD(scene, Scene, createNode);
+    REG_METHOD(scene, Scene, visit);
+    REG_METHOD(scene, Scene, visitByTags);
+    scene.endClass();
 }
 
 
 static void registerDevice(CppBindModule<LuaBinding> &module)
 {
-    auto c = module.beginClass<Device>("Device");
+    auto device = module.beginClass<Device>("Device");
     
-    REG_METHOD(c, Device, getWindowTitle);
-    REG_METHOD(c, Device, setWindowTitle);
+    REG_METHOD(device, Device, getWindowTitle);
+    REG_METHOD(device, Device, setWindowTitle);
 
-    REG_METHOD(c, Device, getCanvasSize);
+    REG_METHOD(device, Device, getCanvasSize);
 
-    REG_METHOD(c, Device, saveScreenshot);
+    REG_METHOD(device, Device, saveScreenshot);
 
-    REG_METHOD(c, Device, setCursorCaptured);
+    REG_METHOD(device, Device, setCursorCaptured);
 
-    REG_METHOD(c, Device, getLifetime);
-    REG_METHOD(c, Device, getTimeDelta);
+    REG_METHOD(device, Device, getLifetime);
+    REG_METHOD(device, Device, getTimeDelta);
 
-    REG_METHOD(c, Device, isWindowCloseRequested);
-    REG_METHOD(c, Device, isQuitRequested);
+    REG_METHOD(device, Device, isWindowCloseRequested);
+    REG_METHOD(device, Device, isQuitRequested);
 
-    REG_METHOD(c, Device, isKeyPressed);
-    REG_METHOD(c, Device, isKeyReleased);
+    REG_METHOD(device, Device, isKeyPressed);
+    REG_METHOD(device, Device, isKeyReleased);
 
-    REG_METHOD(c, Device, getMouseMotion);
-    REG_METHOD(c, Device, isMouseButtonDown);
-    REG_METHOD(c, Device, isMouseButtonReleased);
+    REG_METHOD(device, Device, getMouseMotion);
+    REG_METHOD(device, Device, isMouseButtonDown);
+    REG_METHOD(device, Device, isMouseButtonReleased);
     
-    REG_METHOD(c, Device, update);
+    REG_METHOD(device, Device, update);
 
-    REG_METHOD(c, Device, getSetup);
+    REG_METHOD(device, Device, getSetup);
 
-    REG_METHOD(c, Device, getFileSystem);
-    REG_METHOD(c, Device, getAssetLoader);
-    REG_METHOD(c, Device, getRenderer);
-    REG_METHOD(c, Device, getPhysics);
-    REG_METHOD(c, Device, getLogger);
+    REG_METHOD(device, Device, getFileSystem);
+    REG_METHOD(device, Device, getAssetLoader);
+    REG_METHOD(device, Device, getRenderer);
+    REG_METHOD(device, Device, getPhysics);
+    REG_METHOD(device, Device, getLogger);
     
-    c.endClass();
+    device.endClass();
 }
 
 
 static void registerMeshRenderer(CppBindModule<LuaBinding> &module)
 {
-    auto c = module.beginExtendClass<MeshRenderer, Component>("MeshRenderer");
-    REG_METHOD(c, MeshRenderer, render);
-    REG_METHOD(c, MeshRenderer, getMesh);
-    REG_METHOD(c, MeshRenderer, setMesh);
-    REG_METHOD(c, MeshRenderer, getMaterial);
-    REG_METHOD(c, MeshRenderer, setMaterial);
-    REG_METHOD(c, MeshRenderer, getMaterialCount);
-    c.endClass();
+    auto renderer = module.beginExtendClass<MeshRenderer, Component>("MeshRenderer");
+    REG_METHOD(renderer, MeshRenderer, render);
+    REG_METHOD(renderer, MeshRenderer, getMesh);
+    REG_METHOD(renderer, MeshRenderer, setMesh);
+    REG_METHOD(renderer, MeshRenderer, getMaterial);
+    REG_METHOD(renderer, MeshRenderer, setMaterial);
+    REG_METHOD(renderer, MeshRenderer, getMaterialCount);
+    renderer.endClass();
 }
 
 
 static void registerEffect(CppBindModule<LuaBinding> &module)
 {
-    auto c = module.beginClass<Effect>("Effect");
-    REG_STATIC_METHOD(c, Effect, create);
-    REG_STATIC_METHOD(c, Effect, createFromPrefab);
-    c.endClass();
+    auto eff = module.beginClass<Effect>("Effect");
+    REG_STATIC_METHOD(eff, Effect, create);
+    REG_STATIC_METHOD(eff, Effect, createFromPrefab);
+    eff.endClass();
 }
 
 
 static void registerDeviceSetup(CppBindModule<LuaBinding> &module)
 {
-    auto c = module.beginClass<DeviceSetup>("DeviceSetup");
-    
-    REG_VARIABLE(c, DeviceSetup, mode);
-    REG_METHOD(c, DeviceSetup, withMode);
-
-    REG_VARIABLE(c, DeviceSetup, canvasWidth);
-    REG_METHOD(c, DeviceSetup, withCanvasWidth);
-
-    REG_VARIABLE(c, DeviceSetup, canvasHeight);
-    REG_METHOD(c, DeviceSetup, withCanvasHeight);
-
-    REG_VARIABLE(c, DeviceSetup, fullScreen);
-    REG_METHOD(c, DeviceSetup, withFullScreen);
-
-    REG_VARIABLE(c, DeviceSetup, windowTitle);
-    REG_METHOD(c, DeviceSetup, withWindowTitle);
-
-    REG_VARIABLE(c, DeviceSetup, redBits);
-    REG_METHOD(c, DeviceSetup, withRedBits);
-
-    REG_VARIABLE(c, DeviceSetup, greenBits);
-    REG_METHOD(c, DeviceSetup, withGreenBits);
-
-    REG_VARIABLE(c, DeviceSetup, blueBits);
-    REG_METHOD(c, DeviceSetup, withBlueBits);
-
-    REG_VARIABLE(c, DeviceSetup, depthBits);
-    REG_METHOD(c, DeviceSetup, withDepthBits);
-
-    REG_VARIABLE(c, DeviceSetup, alphaBits);
-    REG_METHOD(c, DeviceSetup, withAlphaBits);
-
-    REG_VARIABLE(c, DeviceSetup, vsync);
-    REG_METHOD(c, DeviceSetup, withVsync);
-
-    REG_VARIABLE(c, DeviceSetup, logFilePath);
-    REG_METHOD(c, DeviceSetup, withLogFilePath);
-
-    c.endClass();
+    auto setup = module.beginClass<DeviceSetup>("DeviceSetup");
+    REG_VARIABLE(setup, DeviceSetup, mode);
+    REG_VARIABLE(setup, DeviceSetup, canvasWidth);
+    REG_VARIABLE(setup, DeviceSetup, canvasHeight);
+    REG_VARIABLE(setup, DeviceSetup, fullScreen);
+    REG_VARIABLE(setup, DeviceSetup, windowTitle);
+    REG_VARIABLE(setup, DeviceSetup, redBits);
+    REG_VARIABLE(setup, DeviceSetup, greenBits);
+    REG_VARIABLE(setup, DeviceSetup, blueBits);
+    REG_VARIABLE(setup, DeviceSetup, depthBits);
+    REG_VARIABLE(setup, DeviceSetup, alphaBits);
+    REG_VARIABLE(setup, DeviceSetup, vsync);
+    REG_VARIABLE(setup, DeviceSetup, logFilePath);
+    setup.endClass();
 }
 
 
 static void registerFileSystem(CppBindModule<LuaBinding> &module)
 {
-    auto c = module.beginClass<FileSystem>("FileSystem");
-    
-    REG_METHOD(c, FileSystem, readBytes);
-    REG_METHOD(c, FileSystem, writeBytes);
-    
-    REG_METHOD(c, FileSystem, readText);
+    auto fs = module.beginClass<FileSystem>("FileSystem");
+    REG_METHOD(fs, FileSystem, readBytes);
+    REG_METHOD(fs, FileSystem, writeBytes);
+    REG_METHOD(fs, FileSystem, readText);
+    REG_METHOD(fs, FileSystem, readLines);
+    REG_METHOD(fs, FileSystem, writeLines);
+    REG_METHOD(fs, FileSystem, iterateLines);
+    fs.endClass();
+}
 
-    REG_METHOD(c, FileSystem, readLines);
-    REG_METHOD(c, FileSystem, writeLines);
-    
-    REG_METHOD(c, FileSystem, iterateLines);
 
-    c.endClass();
+static void registerAsyncHandles(CppBindModule<LuaBinding> &module)
+{
+    auto meshAsyncHandle = module.beginClass<AsyncHandle<Mesh>>("MeshAsyncHandle");
+    REG_METHOD(meshAsyncHandle, AsyncHandle<Mesh>, done);
+    meshAsyncHandle.endClass();
+
+    auto rectTexAsyncHandle = module.beginClass<AsyncHandle<RectTexture>>("RectTextureAsyncHandle");
+    REG_METHOD(rectTexAsyncHandle, AsyncHandle<RectTexture>, done);
+    rectTexAsyncHandle.endClass();
+
+    auto cubeTexAsyncHandle = module.beginClass<AsyncHandle<CubeTexture>>("CubeTextureAsyncHandle");
+    REG_METHOD(cubeTexAsyncHandle, AsyncHandle<CubeTexture>, done);
+    cubeTexAsyncHandle.endClass();
 }
 
 
 static void registerAssetLoader(CppBindModule<LuaBinding> &module)
 {
-    auto c = module.beginClass<AssetLoader>("AssetLoader");
-    
-    REG_METHOD(c, AssetLoader, loadRectTexture);
-    REG_METHOD(c, AssetLoader, loadRectTextureAsync);
-    
-    REG_METHOD(c, AssetLoader, loadCubeTexture);
-    REG_METHOD(c, AssetLoader, loadCubeTextureAsync);
-
-    REG_METHOD(c, AssetLoader, loadMesh);
-    REG_METHOD(c, AssetLoader, loadMeshAsync);
-
-    REG_METHOD(c, AssetLoader, update);
-
-    c.endClass();
+    auto loader = module.beginClass<AssetLoader>("AssetLoader");
+    REG_METHOD(loader, AssetLoader, loadRectTexture);
+    REG_METHOD(loader, AssetLoader, loadRectTextureAsync);
+    REG_METHOD(loader, AssetLoader, loadCubeTexture);
+    REG_METHOD(loader, AssetLoader, loadCubeTextureAsync);
+    REG_METHOD(loader, AssetLoader, loadMesh);
+    REG_METHOD(loader, AssetLoader, loadMeshAsync);
+    REG_METHOD(loader, AssetLoader, update);
+    loader.endClass();
 }
 
 
@@ -225,49 +205,31 @@ static void registerRenderer(CppBindModule<LuaBinding> &module)
 
 static void registerRigidBodyConstructionParams(CppBindModule<LuaBinding> &module)
 {
-    auto c = module.beginClass<RigidBodyConstructionParameters>("RigidBodyConstructionParameters");
-    c.addConstructor(LUA_ARGS());
-    
-    REG_VARIABLE(c, RigidBodyConstructionParameters, mass);
-    REG_METHOD(c, RigidBodyConstructionParameters, withMass);
-
-    REG_VARIABLE(c, RigidBodyConstructionParameters, friction);
-    REG_METHOD(c, RigidBodyConstructionParameters, withFriction);
-
-    REG_VARIABLE(c, RigidBodyConstructionParameters, restitution);
-    REG_METHOD(c, RigidBodyConstructionParameters, withRestitution);
-
-    REG_VARIABLE(c, RigidBodyConstructionParameters, linearDamping);
-    REG_METHOD(c, RigidBodyConstructionParameters, withLinearDamping);
-
-    REG_VARIABLE(c, RigidBodyConstructionParameters, angularDamping);
-    REG_METHOD(c, RigidBodyConstructionParameters, withAngularDamping);
-
-    REG_VARIABLE(c, RigidBodyConstructionParameters, kinematic);
-    REG_METHOD(c, RigidBodyConstructionParameters, withKinematic);
-
-    REG_VARIABLE(c, RigidBodyConstructionParameters, linearFactor);
-    REG_METHOD(c, RigidBodyConstructionParameters, withLinearFactor);
-
-    REG_VARIABLE(c, RigidBodyConstructionParameters, angularFactor);
-    REG_METHOD(c, RigidBodyConstructionParameters, withAngularFactor);
-    
-    c.endClass();
+    auto params = module.beginClass<RigidBodyConstructionParameters>("RigidBodyConstructionParameters");
+    params.addConstructor(LUA_ARGS());
+    REG_VARIABLE(params, RigidBodyConstructionParameters, mass);
+    REG_VARIABLE(params, RigidBodyConstructionParameters, friction);
+    REG_VARIABLE(params, RigidBodyConstructionParameters, restitution);
+    REG_VARIABLE(params, RigidBodyConstructionParameters, linearDamping);
+    REG_VARIABLE(params, RigidBodyConstructionParameters, angularDamping);
+    REG_VARIABLE(params, RigidBodyConstructionParameters, kinematic);
+    REG_VARIABLE(params, RigidBodyConstructionParameters, linearFactor);
+    REG_VARIABLE(params, RigidBodyConstructionParameters, angularFactor);
+    params.endClass();
 }
 
 
 static void registerRigidBody(CppBindModule<LuaBinding> &module)
 {
-    auto c = module.beginClass<RigidBody>("RigidBody");
-    REG_METHOD(c, RigidBody, setCollider);
-    c.endClass();
+    auto rb = module.beginExtendClass<RigidBody, Component>("RigidBody");
+    REG_METHOD(rb, RigidBody, setCollider);
+    rb.endClass();
 }
 
 
 static void registerRaycastResult(CppBindModule<LuaBinding> &module)
 {
     auto c = module.beginClass<RaycastResult>("RaycastResult");
-    c.addConstructor(LUA_ARGS());
     REG_VARIABLE(c, RaycastResult, body);
     REG_VARIABLE(c, RaycastResult, point);
     REG_VARIABLE(c, RaycastResult, normal);
@@ -314,4 +276,5 @@ void registerOther(CppBindModule<LuaBinding> &module)
     registerFrameBuffer(module);
     registerRaycastResult(module);
     registerColliders(module);
+    registerAsyncHandles(module);
 }
