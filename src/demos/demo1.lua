@@ -14,6 +14,10 @@ transparentTag = 4
 monitorQuadTag = 8
 postProcessorTag = 16
 
+createDynamicQuadUpdater = dofile("../../src/demos/dynamic-quad-updater.lua")
+createTimeLabelUpdater = dofile("../../src/demos/time-label-updater.lua")
+createScreenshoter = dofile("../../src/demos/screenshoter.lua")
+
 shaders = dofile("../../src/demos/shaders.lua")
 
 effects = {
@@ -49,7 +53,7 @@ function initMainCamera()
     t:lookAt(solo.Vector3(0, 0, 0), solo.Vector3(0, 1, 0))
     
     -- TODO
-    -- node:addComponent<Screenshoter>("demo1.bmp");
+    node:addScriptComponent(createScreenshoter(dev, "demo1.bmp"))
     node:addComponent("Spectator")
     -- node:addComponent<SpawnedObjectTargeter>();
     -- node:addComponent<Spawner>(cubeMesh);
@@ -120,9 +124,6 @@ function loadTextureAsync(path, callback)
         callback(tex)
     end)
 end
-
-createDynamicQuadUpdater = dofile("../../src/demos/dynamic-quad-updater.lua")
-createTimeLabelUpdater = dofile("../../src/demos/time-label-updater.lua")
 
 function initDynamicQuad()
     loadTextureAsync("../../assets/freeman.png", function(tex)
