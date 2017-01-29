@@ -60,14 +60,14 @@ public:
 private:
     void render() override final
     {
-        offscreenCamera->render([&](const RenderContext& ctx)
+        offscreenCamera->renderFrame([&](const RenderContext& ctx)
         {
             renderByTags(skyboxTag, ctx);
             renderByTags(~(skyboxTag | monitorQuadTag | transparentTag | postProcessorTag), ctx);
             renderByTags(transparentTag, ctx);
         });
 
-        mainCamera->render([&](const RenderContext& ctx)
+        mainCamera->renderFrame([&](const RenderContext& ctx)
         {
             renderByTags(skyboxTag, ctx);
             renderByTags(~(skyboxTag | transparentTag | postProcessorTag), ctx);
@@ -413,7 +413,8 @@ int main()
     setup.windowTitle = "Demo 1";
     
     auto device = Device::create(setup);
-    Demo(device.get()).run();
+    device->getScriptRuntime()->executeFile("../../src/demos/demo1.lua");
+//    Demo(device.get()).run();
     
     return 0;
 }

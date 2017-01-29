@@ -4,7 +4,7 @@ local v = solo.Vector4(1, 2, 3, 4)
 local rad = solo.Radian(1)
 local fb = solo.FrameBuffer.create(solo.device)
 
-cam:render(function(ctx) end)
+cam:renderFrame(function(ctx) end)
 
 assert(cam:getTransform())
 

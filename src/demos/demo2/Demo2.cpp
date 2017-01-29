@@ -44,7 +44,7 @@ public:
 
     void render() override final
     {
-        camera->render([&] (const RenderContext &ctx)
+        camera->renderFrame([&] (const RenderContext &ctx)
         {
         });
     }

@@ -28,7 +28,7 @@ using namespace solo;
 void registerCameraApi(CppBindModule<LuaBinding> &module)
 {
     auto camera = BEGIN_CLASS_EXTEND(module, Camera, Component);
-    REG_METHOD(camera, Camera, render);
+    REG_METHOD(camera, Camera, renderFrame);
     REG_METHOD(camera, Camera, getTransform);
     REG_METHOD(camera, Camera, getRenderTarget);
     REG_METHOD(camera, Camera, setRenderTarget);

@@ -50,7 +50,7 @@ protected:
         quadRenderer->setMaterial(0, mat);
         camera->setViewport({viewport.x, viewport.y, viewport.z, viewport.w});
         camera->setRenderTarget(target);
-        camera->render([=](const RenderContext &ctx) { quadRenderer->render(ctx);});
+        camera->renderFrame([=](const RenderContext &ctx) { quadRenderer->render(ctx);});
     }
 
     MeshRenderer *quadRenderer = nullptr;
