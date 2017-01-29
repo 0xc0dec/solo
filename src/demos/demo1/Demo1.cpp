@@ -231,7 +231,10 @@ private:
         renderer->setMesh(cubeMesh);
         renderer->setMaterial(0, material);
 
-        auto rigidBody = node->addComponent<RigidBody>(RigidBodyConstructionParameters().withMass(0).withFriction(0.5f));
+        auto params = RigidBodyConstructionParameters();
+        params.mass = 0;
+        params.friction = 0.5f;
+        auto rigidBody = node->addComponent<RigidBody>(params);
         rigidBody->setCollider(BoxCollider::create(Vector3::unit()));
     }
 
@@ -402,11 +405,15 @@ private:
 
 int main()
 {
-    auto device = Device::create(DeviceSetup()
-        .withMode(DeviceMode::OpenGL)
-        .withDimensions(1200, 600)
-        .withLogFilePath("demo.log")
-        .withWindowTitle("Demo 1"));
+    DeviceSetup setup;
+    setup.mode = DeviceMode::OpenGL;
+    setup.canvasWidth = 1200;
+    setup.canvasHeight = 600;
+    setup.logFilePath = "demo.log";
+    setup.windowTitle = "Demo 1";
+    
+    auto device = Device::create(setup);
     Demo(device.get()).run();
+    
     return 0;
 }

@@ -71,11 +71,15 @@ private:
 
 int main()
 {
-    auto device = Device::create(DeviceSetup()
-        .withMode(DeviceMode::Vulkan)
-        .withDimensions(1200, 600)
-        .withLogFilePath("demo.log")
-        .withWindowTitle("Demo 2"));
+    DeviceSetup setup;
+    setup.mode = DeviceMode::Vulkan;
+    setup.canvasWidth = 1200;
+    setup.canvasHeight = 600;
+    setup.logFilePath = "demo.log";
+    setup.windowTitle = "Demo 2";
+
+    auto device = Device::create(setup);
     Demo(device.get()).run();
+
     return 0;
 }

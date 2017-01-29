@@ -29,7 +29,14 @@ using namespace solo;
 
 void runInEngine(DeviceMode mode, const std::string &logPath, std::function<void(Device *)> run)
 {
-    auto device = Device::create(DeviceSetup().withMode(mode).withDimensions(1200, 600).withLogFilePath(logPath));
+    DeviceSetup setup;
+    setup.mode = mode;
+    setup.canvasWidth = 1200;
+    setup.canvasHeight = 600;
+    setup.logFilePath = logPath;
+    
+    auto device = Device::create(setup);
+    
     try
     {
         run(device.get());

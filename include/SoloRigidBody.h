@@ -30,16 +30,22 @@ namespace solo
 {
     class Collider;
 
-    SL_FLUENT_DTO(RigidBodyConstructionParameters,
-        SL_FLUENT_DTO_FIELD(float, float, mass, withMass, = 0)
-        SL_FLUENT_DTO_FIELD(float, float, friction, withFriction, = 0)
-        SL_FLUENT_DTO_FIELD(float, float, restitution, withRestitution, = 0)
-        SL_FLUENT_DTO_FIELD(float, float, linearDamping, withLinearDamping, = 0)
-        SL_FLUENT_DTO_FIELD(float, float, angularDamping, withAngularDamping, = 0)
-        SL_FLUENT_DTO_FIELD(bool, bool, kinematic, withKinematic, = false)
-        SL_FLUENT_DTO_FIELD(Vector3, Vector3, linearFactor, withLinearFactor, = Vector3())
-        SL_FLUENT_DTO_FIELD(Vector3, Vector3, angularFactor, withAngularFactor, = Vector3())
-    )
+    // class because lua binding doesn't like structs :(
+    class RigidBodyConstructionParameters
+    {
+    public:
+        float mass = 0;
+        float friction = 0;
+        float restitution = 0;
+        float linearDamping = 0;
+        float angularDamping = 0;
+        
+        bool kinematic = false;
+
+        Vector3 linearFactor;
+        Vector3 angularFactor;
+    };
+
 
     class RigidBody: public ComponentBase<RigidBody>, public TransformCallback
     {
