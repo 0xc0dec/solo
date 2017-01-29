@@ -19,7 +19,7 @@ createTimeLabelUpdater = dofile("../../src/demos/time-label-updater.lua")
 createScreenshoter = dofile("../../src/demos/screenshoter.lua")
 createRotator = dofile("../../src/demos/rotator.lua")
 createLookAt = dofile("../../src/demos/lookat.lua")
-
+createSpawner = dofile("../../src/demos/spawner.lua")
 shaders = dofile("../../src/demos/shaders.lua")
 
 effects = {
@@ -58,7 +58,7 @@ function initMainCamera()
     node:addScriptComponent(createScreenshoter(dev, "demo1.bmp"))
     node:addComponent("Spectator")
     -- node:addComponent<SpawnedObjectTargeter>();
-    -- node:addComponent<Spawner>(cubeMesh);
+    node:addScriptComponent(createSpawner(dev, meshes.cube, effects.color))
 
     local cam = node:addComponent("Camera")
     cam:setClearColor(solo.Vector4(0.0, 0.6, 0.6, 1.0))
