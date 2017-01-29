@@ -35,7 +35,7 @@ public:
     {
         quadRenderer = camera->getNode().addComponent<MeshRenderer>();
         quadRenderer->setTags(tag);
-        quadRenderer->setMesh(Mesh::create(device, MeshPrefab::Quad));
+        quadRenderer->setMesh(Mesh::createFromPrefab(device, MeshPrefab::Quad));
     }
 
     ~PostProcessorBase()

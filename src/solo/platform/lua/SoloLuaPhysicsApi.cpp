@@ -18,7 +18,6 @@
     3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "SoloFrameBuffer.h"
 #include "SoloLuaCommon.h"
 #include "SoloRigidBody.h"
 #include "SoloPhysics.h"

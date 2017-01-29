@@ -35,6 +35,7 @@ void registerMaterialApi(CppBindModule<LuaBinding> &module);
 void registerMiscApi(CppBindModule<LuaBinding> &module);
 void registerDeviceApi(CppBindModule<LuaBinding> &module);
 void registerPhysicsApi(CppBindModule<LuaBinding> &module);
+void registerMeshApi(CppBindModule<LuaBinding> &module);
 
 
 LuaScriptRuntime::LuaScriptRuntime(Device *d)
@@ -54,6 +55,7 @@ LuaScriptRuntime::LuaScriptRuntime(Device *d)
     registerMiscApi(module);
     registerDeviceApi(module);
     registerPhysicsApi(module);
+    registerMeshApi(module);
 
     module.addConstant("device", d);
 

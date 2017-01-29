@@ -103,8 +103,8 @@ private:
         greenMat = createColorMaterial({0, 1, 0, 1});
         blueMat = createColorMaterial({0, 0, 1, 1});
         whiteMat = createColorMaterial({1, 1, 1, 1});
-        cubeMesh = Mesh::create(device, MeshPrefab::Cube);
-        quadMesh = Mesh::create(device, MeshPrefab::Quad);
+        cubeMesh = Mesh::createFromPrefab(device, MeshPrefab::Cube);
+        quadMesh = Mesh::createFromPrefab(device, MeshPrefab::Quad);
     }
 
     void loadTexture(const std::string &path, std::function<void(sptr<RectTexture>)> callback)

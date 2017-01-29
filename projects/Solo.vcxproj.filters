@@ -528,6 +528,9 @@
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaMiscApi.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\solo\platform\lua\SoloLuaMeshApi.cpp">
+      <Filter>src\platform\lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

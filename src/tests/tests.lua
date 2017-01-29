@@ -39,5 +39,6 @@ runTest("physics.lua")
 runTest("file-system.lua")
 runTest("asset-loader.lua")
 runTest("renderer.lua")
+runTest("mesh.lua")
 
 logger:logInfo("Script tests finished")

@@ -28,7 +28,7 @@
 using namespace solo;
 
 
-sptr<Mesh> Mesh::create(Device *device)
+auto Mesh::create(Device *device) -> sptr<Mesh>
 {
     switch (device->getSetup().mode)
     {
@@ -42,7 +42,7 @@ sptr<Mesh> Mesh::create(Device *device)
 }
 
 
-sptr<Mesh> Mesh::create(Device *device, MeshPrefab prefab)
+auto Mesh::createFromPrefab(Device *device, MeshPrefab prefab) -> sptr<Mesh>
 {
     switch (device->getSetup().mode)
     {
@@ -56,7 +56,7 @@ sptr<Mesh> Mesh::create(Device *device, MeshPrefab prefab)
 }
 
 
-sptr<Mesh> Mesh::create(Device *device, MeshData *data)
+auto Mesh::createFromData(Device *device, MeshData *data) -> sptr<Mesh>
 {
     switch (device->getSetup().mode)
     {

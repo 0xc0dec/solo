@@ -52,8 +52,8 @@ namespace solo
         SL_DISABLE_COPY_AND_MOVE(Mesh)
 
         static auto create(Device *device) -> sptr<Mesh>;
-        static auto create(Device *device, MeshPrefab prefab) -> sptr<Mesh>;
-        static auto create(Device *device, MeshData *data) -> sptr<Mesh>;
+        static auto createFromPrefab(Device *device, MeshPrefab prefab) -> sptr<Mesh>;
+        static auto createFromData(Device *device, MeshData *data) -> sptr<Mesh>;
 
         virtual ~Mesh() {}
 

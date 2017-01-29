@@ -43,7 +43,7 @@ SkyboxRenderer::SkyboxRenderer(const Node &node):
     material->setDepthWrite(false);
     material->setFaceCull(FaceCull::CW);
 
-    quadMesh = Mesh::create(device, MeshPrefab::Quad);
+    quadMesh = Mesh::createFromPrefab(device, MeshPrefab::Quad);
 }
 
 
