@@ -21,6 +21,7 @@ assert(solo.TransformMatrix.createTranslation(v))
 assert(m:getScale() ~= nil)
 assert(m:getRotation() ~= nil)
 assert(m:getTranslation() ~= nil)
+
 assert(m:getUpVector() ~= nil)
 assert(m:getDownVector() ~= nil)
 assert(m:getLeftVector() ~= nil)

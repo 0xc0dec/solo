@@ -1,7 +1,4 @@
-local eff1 = solo.Effect.create(solo.device, "", "")
-local eff2 = solo.Effect.createFromPrefab(solo.device, solo.EffectPrefab.Font)
-
-local mat = solo.Material.create(solo.device, eff1)
+local mat = solo.Material.create(solo.device, solo.Effect.create(solo.device, "", ""))
 local tex = solo.RectTexture.create(solo.device)
 
 mat:setFloatParameter("p1", 1)

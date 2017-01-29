@@ -111,12 +111,6 @@ static void removeScriptComponent(Node *node, LuaRef scriptComponent)
 }
 
 
-static int lala(Node *node, LuaRef smth)
-{
-    return smth.toValue<Transform*>()->getTags();
-}
-
-
 void registerNodeAndComponent(CppBindModule<LuaBinding> &module)
 {
     auto component = module.beginClass<Component>("Component");
@@ -127,18 +121,12 @@ void registerNodeAndComponent(CppBindModule<LuaBinding> &module)
     component.endClass();
 
     auto node = module.beginClass<Node>("Node");
-
     REG_METHOD(node, Node, getId);
     REG_METHOD(node, Node, getScene);
-    
     REG_FREE_FUNC_AS_METHOD(node, addScriptComponent);
     REG_FREE_FUNC_AS_METHOD(node, removeScriptComponent);
     REG_FREE_FUNC_AS_METHOD(node, findComponent);
-    
-    node.addFunction("lala", lala);
-    
     REG_FREE_FUNC_AS_METHOD(node, addComponent);
     REG_FREE_FUNC_AS_METHOD(node, removeComponent);
-    
     node.endClass();
 }

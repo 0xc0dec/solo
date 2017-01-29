@@ -198,9 +198,13 @@ static void registerMatrix(CppBindModule<LuaBinding> &module)
     REG_STATIC_METHOD(matrix, Matrix, getSize);
     
     REG_METHOD(matrix, Matrix, isIdentity);
+    
     REG_METHOD(matrix, Matrix, getDeterminant);
+    
     REG_METHOD(matrix, Matrix, invert);
+    
     REG_METHOD(matrix, Matrix, transpose);
+    
     REG_METHOD(matrix, Matrix, resetToIdentity);
     REG_METHOD(matrix, Matrix, resetToZero);
     

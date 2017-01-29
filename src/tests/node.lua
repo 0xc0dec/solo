@@ -1,6 +1,9 @@
 local scene = solo.Scene.create(solo.device)
 local n = scene:createNode()
 
+assert(n:getId() ~= nil)
+assert(n:getScene())
+
 local cmp = {
     typeId = 1,
 
@@ -23,18 +26,9 @@ local cmp = {
     end
 }
 
-assert(n:getId() ~= nil)
-assert(n:getScene())
-
 n:addScriptComponent(cmp)
 n:removeScriptComponent(cmp)
 
 assert(n:findComponent("Transform"))
 assert(n:addComponent("Camera"))
 n:removeComponent("Camera")
-
-local t = n:findComponent("Transform")
-assert(t:getTypeId() ~= nil)
-assert(t:getTags() ~= nil)
-t:setTags(123)
-assert(t:getNode())
