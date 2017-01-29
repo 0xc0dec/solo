@@ -43,9 +43,11 @@ namespace solo
         
         auto getTypeId() -> uint32_t override final;
 
+        LuaIntf::LuaRef scriptComponent;
+
     private:
         uint32_t typeId;
-        LuaIntf::LuaRef scriptComponent;
+        
         std::function<void(LuaIntf::LuaRef)> initFunc;
         std::function<void(LuaIntf::LuaRef)> terminateFunc;
         std::function<void(LuaIntf::LuaRef)> updateFunc;

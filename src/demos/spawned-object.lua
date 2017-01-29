@@ -34,6 +34,12 @@ return function(device, effect, mesh, initialPos, initialRotation)
             self.material = material
         end,
 
+        setActive = function(self)
+            self:setColor(solo.Vector4(1, 0, 0, 1))
+            self.active = true
+            self.activeTimer = 0
+        end,
+
         setColor = function(self, color)
             self.material:setVector4Parameter("color", color)
         end,

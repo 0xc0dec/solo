@@ -96,6 +96,19 @@ static void removeComponent(Node *node, const std::string &name)
 }
 
 
+static auto findScriptComponent(Node *node, uint32_t typeId) -> LuaRef
+{
+    auto cmp = node->getScene()->findComponent(node->getId(), typeId + LuaScriptComponent::MinComponentTypeId);
+    if (cmp)
+    {
+        auto scriptComponent = dynamic_cast<LuaScriptComponent*>(cmp);
+        return scriptComponent->scriptComponent;
+    }
+
+    return {};
+}
+
+
 static void addScriptComponent(Node *node, LuaRef scriptComponent)
 {
     auto actualComponent = std::make_shared<LuaScriptComponent>(*node, scriptComponent);
@@ -128,6 +141,7 @@ static void registerNode(CppBindModule<LuaBinding> &module)
     auto node = BEGIN_CLASS(module, Node);
     REG_METHOD(node, Node, getId);
     REG_METHOD(node, Node, getScene);
+    REG_FREE_FUNC_AS_METHOD(node, findScriptComponent);
     REG_FREE_FUNC_AS_METHOD(node, addScriptComponent);
     REG_FREE_FUNC_AS_METHOD(node, removeScriptComponent);
     REG_FREE_FUNC_AS_METHOD(node, findComponent);

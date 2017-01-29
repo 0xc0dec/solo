@@ -20,6 +20,8 @@ createScreenshoter = dofile("../../src/demos/screenshoter.lua")
 createRotator = dofile("../../src/demos/rotator.lua")
 createLookAt = dofile("../../src/demos/lookat.lua")
 createSpawner = dofile("../../src/demos/spawner.lua")
+createSpawnedObjectTargeter = dofile("../../src/demos/spawned-object-targeter.lua")
+createPostProcessor1 = dofile("../../src/demos/post-processor1.lua")
 shaders = dofile("../../src/demos/shaders.lua")
 
 effects = {
@@ -58,7 +60,8 @@ function initMainCamera()
     node:addScriptComponent(createScreenshoter(dev, "demo1.bmp"))
     node:addComponent("Spectator")
     -- node:addComponent<SpawnedObjectTargeter>();
-    node:addScriptComponent(createSpawner(dev, meshes.cube, effects.color))
+    -- node:addScriptComponent(createSpawnedObjectTargeter(physics))
+    -- node:addScriptComponent(createSpawner(dev, meshes.cube, effects.color))
 
     local cam = node:addComponent("Camera")
     cam:setClearColor(solo.Vector4(0.0, 0.6, 0.6, 1.0))
@@ -290,6 +293,8 @@ loadTextureAsync("../../assets/cobblestone.png", function(tex)
     initFloor(tex)
 end)
 
+-- pp1 = createPostProcessor1(dev, mainCamera, postProcessorTag, shaders)
+
 loader:loadMeshAsync("../../assets/axes.obj"):done(function(mesh)
     initMonitorQuad(mesh)
     initTransparentQuad(mesh)
@@ -316,15 +321,17 @@ end
 function render()
     offscreenCamera:renderFrame(function(ctx)
         renderByTags(skyboxTag, ctx)
-        renderByTags(~(skyboxTag | transparentTag | monitorQuadTag), ctx)
+        renderByTags(~(skyboxTag | transparentTag | monitorQuadTag | postProcessorTag), ctx)
         renderByTags(transparentTag, ctx)
     end)
 
     mainCamera:renderFrame(function(ctx)
         renderByTags(skyboxTag, ctx)
-        renderByTags(~(skyboxTag | transparentTag), ctx)
+        renderByTags(~(skyboxTag | transparentTag | postProcessorTag), ctx)
         renderByTags(transparentTag, ctx)
     end)
+
+    -- pp1:apply()
 end
 
 function run()
