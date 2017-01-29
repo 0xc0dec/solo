@@ -64,14 +64,21 @@ auto TrueTypeFont::getGlyphInfo(uint32_t character, float offsetX, float offsetY
     auto result = GlyphInfo();
     result.offsetX = offsetX;
     result.offsetY = offsetY;
-    result.positions[0] = {xmin, ymin, 0};
-    result.positions[1] = {xmin, ymax, 0};
-    result.positions[2] = {xmax, ymax, 0};
-    result.positions[3] = {xmax, ymin, 0};
-    result.uvs[0] = {quad.s0, quad.t1};
-    result.uvs[1] = {quad.s0, quad.t0};
-    result.uvs[2] = {quad.s1, quad.t0};
-    result.uvs[3] = {quad.s1, quad.t1};
+    result.positions =
+    {
+        { xmin, ymin, 0 },
+        { xmin, ymax, 0 },
+        { xmax, ymax, 0 },
+        { xmax, ymin, 0 }
+    };
+    result.uvs =
+    {
+        { quad.s0, quad.t1 },
+        { quad.s0, quad.t0 },
+        { quad.s1, quad.t0 },
+        { quad.s1, quad.t1 }
+    };
+
     return result; // TODO move
 }
 
