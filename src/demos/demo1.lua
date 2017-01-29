@@ -213,13 +213,38 @@ function initCurrentTimeLabel()
     node:findComponent("Transform"):setLocalPosition(solo.Vector3(-3, 0, 4))
 end
 
+function initMonkeyHead(tex)
+    local effect = solo.Effect.create(dev, shaders.vs.basicLighting, shaders.fs.textureWithLighting)
+
+    local material = solo.Material.create(dev, effect)
+    material:setFaceCull(solo.FaceCull.All)
+    material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
+    material:bindInvTransposedWorldMatrixParameter("invTransposedWorldMatrix")
+    material:setTextureParameter("mainTex", tex)
+
+    loader:loadMeshAsync("../../assets/monkey_hires.obj"):done(function(mesh)
+        local node = scene:createNode()
+        local renderer = node:addComponent("MeshRenderer")
+        renderer:setMesh(mesh)
+        renderer:setMaterial(0, material)
+        node:findComponent("Transform"):setLocalPosition(solo.Vector3(0, 0, 0))
+        -- node:addComponent<Rotator>("local", Vector3::unitX())
+    end)
+end
+
+function initFloor(tex)
+
+end
+
 mainCamera = initMainCamera()
 offscreenCamera, offscreenCameraTex = initOffscreenCamera()
 initSkybox()
 initCheckerBox()
 initDynamicQuad()
 initCurrentTimeLabel()
-
+loadTextureAsync("../../assets/cobblestone.png", function(tex)
+    initMonkeyHead(tex)
+end)
 
 function keepRunning()
     return not dev:isQuitRequested() and
