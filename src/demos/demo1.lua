@@ -120,6 +120,24 @@ function loadTextureAsync(path, callback)
     end)
 end
 
+function createDynamicQuadUpdater(data, mesh)
+    local time = 0
+
+    return {
+        typeId = 1,
+
+        update = function()
+            time = time + 2 * dev:getTimeDelta()
+            local offset = 0.3 * math.sin(time)
+            data[3] = offset
+            data[8] = -offset
+            data[13] = offset
+            data[18] = -offset
+            mesh:updateDynamicVertexBuffer(0, 0, data, 4)
+        end
+    }
+end
+
 function initDynamicQuad()
     loadTextureAsync("../../assets/freeman.png", function(tex)
         tex:setWrapping(solo.TextureWrapping.Clamp)
@@ -156,7 +174,7 @@ function initDynamicQuad()
         renderer:setMesh(mesh)
         renderer:setMaterial(0, material)
 
-        -- node:addComponent<DynamicQuadUpdater>(data, mesh)
+        node:addScriptComponent(createDynamicQuadUpdater(data, mesh))
     end)
 end
 
