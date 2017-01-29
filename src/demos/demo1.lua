@@ -249,6 +249,35 @@ function initMonitorQuad(axesMesh)
     renderer:setTags(monitorQuadTag)
 end
 
+function initTransparentQuad(axesMesh)
+    loadTextureAsync("../../assets/flammable.png", function(tex)
+        tex:setWrapping(solo.TextureWrapping.Clamp)
+
+        local material = solo.Material.create(dev, effects.simpleTexture)
+        material:setFaceCull(solo.FaceCull.All)
+        material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
+        material:setTextureParameter("mainTex", tex)
+        material:setBlend(true)
+        material:setDepthTest(true)
+        material:setDepthWrite(false)
+
+        local parent = scene:createNode()
+        parent:findComponent("Transform"):setLocalPosition(solo.Vector3(5, 0, 0))
+        -- parent:addComponent<Rotator>("world", Vector3::unitY());
+        attachAxesMesh(parent, axesMesh)
+
+        local node = scene:createNode()
+        -- node:addComponent<Rotator>("local", Vector3::unitX());
+        node:findComponent("Transform"):setParent(parent:findComponent("Transform"))
+        node:findComponent("Transform"):setLocalPosition(solo.Vector3(2, 0, 0))
+
+        local renderer = node:addComponent("MeshRenderer")
+        renderer:setMesh(meshes.quad)
+        renderer:setMaterial(0, material)
+        renderer:setTags(transparentTag)
+    end)
+end
+
 mainCamera = initMainCamera()
 offscreenCamera, offscreenCameraTex = initOffscreenCamera()
 initSkybox()
@@ -262,6 +291,7 @@ end)
 
 loader:loadMeshAsync("../../assets/axes.obj"):done(function(mesh)
     initMonitorQuad(mesh)
+    initTransparentQuad(mesh)
 end)
 
 -- TODO monitor quad, axes, etc...
