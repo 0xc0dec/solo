@@ -194,7 +194,7 @@ static void registerRenderer(CppBindModule<LuaBinding> &module)
 static void registerRigidBodyConstructionParams(CppBindModule<LuaBinding> &module)
 {
     auto params = BEGIN_CLASS(module, RigidBodyConstructionParameters);
-    params.addConstructor(LUA_ARGS());
+    REG_CTOR(params);
     REG_VARIABLE(params, RigidBodyConstructionParameters, mass);
     REG_VARIABLE(params, RigidBodyConstructionParameters, friction);
     REG_VARIABLE(params, RigidBodyConstructionParameters, restitution);

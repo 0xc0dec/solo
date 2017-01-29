@@ -39,7 +39,7 @@ using namespace solo;
 static void registerVector2(CppBindModule<LuaBinding> &module)
 {
     auto vector2 = BEGIN_CLASS(module, Vector2);
-    vector2.addConstructor(LUA_ARGS(float, float));
+    REG_CTOR(vector2, float, float);
     REG_VARIABLE(vector2, Vector2, x);
     REG_VARIABLE(vector2, Vector2, y);
     REG_METHOD(vector2, Vector2, isUnit);
@@ -61,7 +61,7 @@ static void registerVector2(CppBindModule<LuaBinding> &module)
 static void registerVector3(CppBindModule<LuaBinding> &module)
 {
     auto vector3 = BEGIN_CLASS(module, Vector3);
-    vector3.addConstructor(LUA_ARGS(float, float, float));
+    REG_CTOR(vector3, float, float, float);
     REG_VARIABLE(vector3, Vector3, x);
     REG_VARIABLE(vector3, Vector3, y);
     REG_VARIABLE(vector3, Vector3, z);
@@ -85,7 +85,7 @@ static void registerVector3(CppBindModule<LuaBinding> &module)
 static void registerVector4(CppBindModule<LuaBinding> &module)
 {
     auto vector4 = BEGIN_CLASS(module, Vector4);
-    vector4.addConstructor(LUA_ARGS(float, float, float, float));
+    REG_CTOR(vector4, float, float, float, float);
     REG_VARIABLE(vector4, Vector4, x);
     REG_VARIABLE(vector4, Vector4, y);
     REG_VARIABLE(vector4, Vector4, z);
@@ -109,7 +109,7 @@ static void registerVector4(CppBindModule<LuaBinding> &module)
 static void registerQuaternion(CppBindModule<LuaBinding> &module)
 {
     auto q = BEGIN_CLASS(module, Quaternion);
-    q.addConstructor(LUA_ARGS());
+    REG_CTOR(q);
     REG_VARIABLE(q, Quaternion, x);
     REG_VARIABLE(q, Quaternion, y);
     REG_VARIABLE(q, Quaternion, z);
@@ -132,7 +132,7 @@ static void registerQuaternion(CppBindModule<LuaBinding> &module)
 static void registerRadian(CppBindModule<LuaBinding> &module)
 {
     auto radian = BEGIN_CLASS(module, Radian);
-    radian.addConstructor(LUA_ARGS(float));
+    REG_CTOR(radian, float);
     REG_METHOD(radian, Radian, toRawDegree);
     REG_METHOD(radian, Radian, toRawRadian);
     radian.endClass();
@@ -142,7 +142,7 @@ static void registerRadian(CppBindModule<LuaBinding> &module)
 static void registerDegree(CppBindModule<LuaBinding> &module)
 {
     auto degree = BEGIN_CLASS(module, Degree);
-    degree.addConstructor(LUA_ARGS(float));
+    REG_CTOR(degree, float);
     REG_METHOD(degree, Degree, toRawDegree);
     REG_METHOD(degree, Degree, toRawRadian);
     degree.endClass();
@@ -152,7 +152,7 @@ static void registerDegree(CppBindModule<LuaBinding> &module)
 static void registerMatrix(CppBindModule<LuaBinding> &module)
 {
     auto matrix = BEGIN_CLASS(module, Matrix);
-    matrix.addConstructor(LUA_ARGS());
+    REG_CTOR(matrix);
     REG_STATIC_METHOD(matrix, Matrix, identity);
     REG_STATIC_METHOD(matrix, Matrix, getSize);
     REG_METHOD(matrix, Matrix, isIdentity);
@@ -168,7 +168,7 @@ static void registerMatrix(CppBindModule<LuaBinding> &module)
 static void registerTransformMatrix(CppBindModule<LuaBinding> &module)
 {
     auto matrix = BEGIN_CLASS(module, TransformMatrix);
-    matrix.addConstructor(LUA_ARGS());
+    REG_CTOR(matrix);
     REG_STATIC_METHOD(matrix, TransformMatrix, createLookAt);
     REG_STATIC_METHOD(matrix, TransformMatrix, createPerspective);
     REG_STATIC_METHOD(matrix, TransformMatrix, createOrthographic);
@@ -210,7 +210,7 @@ static void registerTransformMatrix(CppBindModule<LuaBinding> &module)
 static void registerBoundingBox(CppBindModule<LuaBinding> &module)
 {
     auto bb = BEGIN_CLASS(module, BoundingBox);
-    bb.addConstructor(LUA_ARGS(const Vector3&, const Vector3&));
+    REG_CTOR(bb, const Vector3&, const Vector3&);
     REG_VARIABLE(bb, BoundingBox, min);
     REG_VARIABLE(bb, BoundingBox, max);
     REG_METHOD(bb, BoundingBox, getCenter);
@@ -230,9 +230,9 @@ static void registerBoundingBox(CppBindModule<LuaBinding> &module)
 static void registerBoundingSphere(CppBindModule<LuaBinding> &module)
 {
     auto bs = BEGIN_CLASS(module, BoundingSphere);
+    REG_CTOR(bs, const Vector3&, float);
     REG_VARIABLE(bs, BoundingSphere, center);
     REG_VARIABLE(bs, BoundingSphere, radius);
-    bs.addConstructor(LUA_ARGS(const Vector3&, float));
     REG_METHOD(bs, BoundingSphere, intersectsBoundingSphere);
     REG_METHOD(bs, BoundingSphere, intersectsBoundingBox);
     REG_METHOD(bs, BoundingSphere, intersectsFrustum);
@@ -248,7 +248,7 @@ static void registerBoundingSphere(CppBindModule<LuaBinding> &module)
 static void registerPlane(CppBindModule<LuaBinding> &module)
 {
     auto plane = BEGIN_CLASS(module, Plane);
-    plane.addConstructor(LUA_ARGS(const Vector3&, float));
+    REG_CTOR(plane, const Vector3&, float);
     REG_METHOD(plane, Plane, getNormal);
     REG_METHOD(plane, Plane, setNormal);
     REG_METHOD(plane, Plane, getDistance);
@@ -268,7 +268,7 @@ static void registerPlane(CppBindModule<LuaBinding> &module)
 static void registerRay(CppBindModule<LuaBinding> &module)
 {
     auto ray = BEGIN_CLASS(module, Ray);
-    ray.addConstructor(LUA_ARGS(const Vector3&, const Vector3&));
+    REG_CTOR(ray, const Vector3&, const Vector3&);
     REG_METHOD(ray, Ray, getOrigin);
     REG_METHOD(ray, Ray, setOrigin);
     REG_METHOD(ray, Ray, getDirection);
@@ -284,7 +284,7 @@ static void registerRay(CppBindModule<LuaBinding> &module)
 static void registerFrustum(CppBindModule<LuaBinding> &module)
 {
     auto f = BEGIN_CLASS(module, Frustum);
-    f.addConstructor(LUA_ARGS());
+    REG_CTOR(f);
     REG_METHOD(f, Frustum, getNearPlane);
     REG_METHOD(f, Frustum, getFarPlane);
     REG_METHOD(f, Frustum, getLeftPlane);

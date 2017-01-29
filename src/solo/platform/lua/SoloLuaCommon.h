@@ -37,6 +37,8 @@ using namespace LuaIntf;
 #define BEGIN_CLASS_RENAMED(module, klass, name) module.beginClass<klass>(name)
 #define BEGIN_CLASS_EXTEND(module, klass, base) module.beginExtendClass<klass, base>(#klass)
 
+#define REG_CTOR(binding, ...) binding.addConstructor(LUA_ARGS(__VA_ARGS__))
+
 #define REG_VARIABLE(binding, klass, name) binding.addVariable(#name, &klass::name, true)
 
 #define REG_METHOD(binding, klass, name) binding.addFunction(#name, &klass::name)
