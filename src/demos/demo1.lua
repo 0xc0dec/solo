@@ -214,6 +214,41 @@ function initFloor(tex)
     rigidBody:setCollider(solo.BoxCollider.create(solo.Vector3(1, 1, 1)))
 end
 
+function attachAxesMesh(node, axesMesh)
+    local renderer = node:addComponent("MeshRenderer")
+    renderer:setMesh(axesMesh)
+    renderer:setMaterial(0, materials.blue)
+    renderer:setMaterial(1, materials.green)
+    renderer:setMaterial(2, materials.white)
+    renderer:setMaterial(3, materials.red)
+end
+
+function initMonitorQuad(axesMesh)
+    local material = solo.Material.create(dev, effects.simpleTexture)
+    material:setFaceCull(solo.FaceCull.All)
+    material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
+    material:setTextureParameter("mainTex", offscreenCameraTex)
+    print(offscreenCameraTex)
+
+    local parent = scene:createNode()
+    parent:findComponent("Transform"):setLocalPosition(solo.Vector3(-2, 2, -2))
+    -- parent:addComponent<Rotator>("world", Vector3::unitY())
+    attachAxesMesh(parent, axesMesh)
+
+    local node = scene:createNode()
+    -- node:addComponent<LookAt>(targetPos);
+
+    local transform = node:findComponent("Transform")
+    transform:setParent(parent:findComponent("Transform"))
+    transform:setLocalPosition(solo.Vector3(5, 2, -5))
+    transform:setLocalScale(solo.Vector3(5, 5 * canvasSize.y / canvasSize.x, 1))
+    
+    local renderer = node:addComponent("MeshRenderer")
+    renderer:setMesh(meshes.quad)
+    renderer:setMaterial(0, material)
+    renderer:setTags(monitorQuadTag)
+end
+
 mainCamera = initMainCamera()
 offscreenCamera, offscreenCameraTex = initOffscreenCamera()
 initSkybox()
@@ -223,6 +258,10 @@ initCurrentTimeLabel()
 loadTextureAsync("../../assets/cobblestone.png", function(tex)
     initMonkeyHead(tex)
     initFloor(tex)
+end)
+
+loader:loadMeshAsync("../../assets/axes.obj"):done(function(mesh)
+    initMonitorQuad(mesh)
 end)
 
 -- TODO monitor quad, axes, etc...
@@ -244,6 +283,12 @@ function renderByTags(tags, ctx)
 end
 
 function render()
+    offscreenCamera:renderFrame(function(ctx)
+        renderByTags(skyboxTag, ctx)
+        renderByTags(~(skyboxTag | transparentTag | monitorQuadTag), ctx)
+        renderByTags(transparentTag, ctx)
+    end)
+
     mainCamera:renderFrame(function(ctx)
         renderByTags(skyboxTag, ctx)
         renderByTags(~(skyboxTag | transparentTag), ctx)
