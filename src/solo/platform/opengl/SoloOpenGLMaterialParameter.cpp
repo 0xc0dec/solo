@@ -27,6 +27,7 @@
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 #include "SoloVector4.h"
+#include "SoloTexture.h"
 #include "SoloOpenGLTexture.h"
 #include "SoloMatrix.h"
 #include "SoloOpenGLRenderer.h"
@@ -91,7 +92,7 @@ class TextureValue final : public MaterialParameterValue
 public:
     explicit TextureValue(const void *value)
     {
-        this->value = *reinterpret_cast<const sptr<OpenGLTexture>*>(value);
+        this->value = std::dynamic_pointer_cast<OpenGLTexture>(*reinterpret_cast<const sptr<Texture>*>(value));
     }
 
     void apply(OpenGLRenderer *renderer, uint32_t handle) override final
