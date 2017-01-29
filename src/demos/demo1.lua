@@ -5,6 +5,7 @@ loader = dev:getAssetLoader()
 physics = dev:getPhysics()
 renderer = dev:getRenderer()
 logger = dev:getLogger()
+fs = dev:getFileSystem()
 scene = solo.Scene.create(dev)
 canvasSize = dev:getCanvasSize()
 
@@ -138,6 +139,32 @@ function createDynamicQuadUpdater(data, mesh)
     }
 end
 
+function createTimeLabelUpdater()
+    local textureWidth = 1024
+    local textureHeight = 1024
+    local lineHeight = 60
+    local renderer
+
+    return {
+        typeId = 2,
+
+        init = function(self)
+            local fontData = fs:readBytes("../../assets/aller.ttf")
+            local firstChar = string.byte(" ")
+            local charCount = string.byte("~") - string.byte(" ")
+            local font = solo.Font.create(dev, fontData, lineHeight, textureWidth,
+                textureHeight, firstChar, charCount, 2, 2)
+
+            renderer = self.node:addComponent("FontRenderer")
+            renderer:setFont(font)
+        end,
+
+        update = function()
+            renderer:setText(os.date("Now is %H:%M:%S"))
+        end
+    }
+end
+
 function initDynamicQuad()
     loadTextureAsync("../../assets/freeman.png", function(tex)
         tex:setWrapping(solo.TextureWrapping.Clamp)
@@ -178,11 +205,20 @@ function initDynamicQuad()
     end)
 end
 
+function initCurrentTimeLabel()
+    local node = scene:createNode()
+    node:addScriptComponent(createTimeLabelUpdater())
+    node:findComponent("FontRenderer"):setTags(transparentTag)
+    node:findComponent("Transform"):setLocalScale(solo.Vector3(0.02, 0.02, 1))
+    node:findComponent("Transform"):setLocalPosition(solo.Vector3(-3, 0, 4))
+end
+
 mainCamera = initMainCamera()
 offscreenCamera, offscreenCameraTex = initOffscreenCamera()
 initSkybox()
 initCheckerBox()
 initDynamicQuad()
+initCurrentTimeLabel()
 
 
 function keepRunning()
@@ -204,7 +240,8 @@ end
 function render()
     mainCamera:renderFrame(function(ctx)
         renderByTags(skyboxTag, ctx)
-        renderByTags(~skyboxTag, ctx)
+        renderByTags(~(skyboxTag | transparentTag), ctx)
+        renderByTags(transparentTag, ctx)
     end)
 end
 
