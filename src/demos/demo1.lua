@@ -97,24 +97,74 @@ function initSkybox()
 end
 
 function initCheckerBox()
-    -- local effect = solo.Effect.create(dev, shaders.vs.basic, shaders.fs.checker)
+    local effect = solo.Effect.create(dev, shaders.vs.basic, shaders.fs.checker)
 
-    -- local material = solo.Material.create(dev, effect)
-    -- material:setFaceCull(solo.FaceCull.All)
-    -- material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
-    -- material:setVector4Parameter("color", solo.Vector4(1, 1, 0, 1))
+    local material = solo.Material.create(dev, effect)
+    material:setFaceCull(solo.FaceCull.All)
+    material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
+    material:setVector4Parameter("color", solo.Vector4(1, 1, 0, 1))
 
-    -- local node = scene:createNode()
-    -- node:addComponent("MeshRenderer"):setMesh(meshes.cube)
-    -- node:findComponent("MeshRenderer"):setMaterial(0, material)
-    -- node:findComponent("Transform"):setLocalPosition(solo.Vector3(-5, 0, 0))
+    local node = scene:createNode()
+    node:addComponent("MeshRenderer"):setMesh(meshes.cube)
+    node:findComponent("MeshRenderer"):setMaterial(0, material)
+    node:findComponent("Transform"):setLocalPosition(solo.Vector3(-5, 0, 0))
     -- node:addComponent<Rotator>("world", solo.Vector3(0, 1, 0))
+end
+
+function loadTextureAsync(path, callback)
+    loader:loadRectTextureAsync(path):done(function(tex)
+        tex:generateMipmaps()
+        tex:setFiltering(solo.TextureFiltering.LinearMipmapNearest)
+        tex:setAnisotropyLevel(8)
+        callback(tex)
+    end)
+end
+
+function initDynamicQuad()
+    loadTextureAsync("../../assets/freeman.png", function(tex)
+        tex:setWrapping(solo.TextureWrapping.Clamp)
+
+        local layout = solo.VertexBufferLayout()
+        layout:add(solo.VertexBufferLayoutSemantics.Position, 3)
+        layout:add(solo.VertexBufferLayoutSemantics.TexCoord0, 2)
+
+        local data = {
+            -1, -1, 0,    0, 0,
+            -1,  1, 0,    0, 1,
+            1,  1, 0,    1, 1,
+            1, -1, 0,    1, 0
+        }
+
+        local indices = {
+            0, 1, 2,
+            0, 2, 3
+        }
+
+        local mesh = solo.Mesh.create(dev)
+        mesh:addDynamicVertexBuffer(layout, data, 4)
+        mesh:addPart(indices, 6)
+        mesh:setPrimitiveType(solo.PrimitiveType.Triangles)
+
+        local material = solo.Material.create(dev, effects.simpleTexture)
+        material:setFaceCull(solo.FaceCull.All)
+        material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
+        material:setTextureParameter("mainTex", tex)
+
+        local node = scene:createNode()
+        node:findComponent("Transform"):setLocalPosition(solo.Vector3(0, 0, -5))
+        local renderer = node:addComponent("MeshRenderer")
+        renderer:setMesh(mesh)
+        renderer:setMaterial(0, material)
+
+        -- node:addComponent<DynamicQuadUpdater>(data, mesh)
+    end)
 end
 
 mainCamera = initMainCamera()
 offscreenCamera, offscreenCameraTex = initOffscreenCamera()
 initSkybox()
 initCheckerBox()
+initDynamicQuad()
 
 
 function keepRunning()
@@ -136,7 +186,6 @@ end
 function render()
     mainCamera:renderFrame(function(ctx)
         renderByTags(skyboxTag, ctx)
-        print(~skyboxTag)
         renderByTags(~skyboxTag, ctx)
     end)
 end
