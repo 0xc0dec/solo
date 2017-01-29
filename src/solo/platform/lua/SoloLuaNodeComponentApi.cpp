@@ -110,7 +110,7 @@ static void removeScriptComponent(Node *node, LuaRef scriptComponent)
 }
 
 
-void registerNodeAndComponent(CppBindModule<LuaBinding> &module)
+void registerNodeAndComponentApi(CppBindModule<LuaBinding> &module)
 {
     auto component = BEGIN_CLASS(module, Component);
     REG_METHOD(component, Component, getTypeId);

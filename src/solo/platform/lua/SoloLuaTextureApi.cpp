@@ -38,7 +38,7 @@ static void setCubeTextureData(CubeTexture *tex, CubeTextureFace face, TextureFo
 }
 
 
-void registerTexture(CppBindModule<LuaBinding> &module)
+static void registerTexture(CppBindModule<LuaBinding> &module)
 {
     auto tex = BEGIN_CLASS(module, Texture);
     REG_METHOD(tex, Texture, generateMipmaps);
@@ -58,7 +58,7 @@ void registerTexture(CppBindModule<LuaBinding> &module)
 }
 
 
-void registerRectTexture(CppBindModule<LuaBinding> &module)
+static void registerRectTexture(CppBindModule<LuaBinding> &module)
 {
     auto rectTex = BEGIN_CLASS_EXTEND(module, RectTexture, Texture);
     REG_STATIC_METHOD(rectTex, RectTexture, create);
@@ -68,7 +68,7 @@ void registerRectTexture(CppBindModule<LuaBinding> &module)
 }
 
 
-void registerCubeTexture(CppBindModule<LuaBinding> &module)
+static void registerCubeTexture(CppBindModule<LuaBinding> &module)
 {
     auto cubeTex = BEGIN_CLASS_EXTEND(module, CubeTexture, Texture);
     REG_STATIC_METHOD(cubeTex, CubeTexture, create);
@@ -76,4 +76,12 @@ void registerCubeTexture(CppBindModule<LuaBinding> &module)
     REG_METHOD(cubeTex, CubeTexture, getDepthWrapping);
     REG_METHOD(cubeTex, CubeTexture, setDepthWrapping);
     cubeTex.endClass();
+}
+
+
+void registerTextureApi(CppBindModule<LuaBinding> &module)
+{
+    registerTexture(module);
+    registerRectTexture(module);
+    registerCubeTexture(module);
 }

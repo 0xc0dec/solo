@@ -19,21 +19,13 @@
 */
 
 #include "SoloCamera.h"
-#include "SoloRenderContext.h"
 #include "SoloLuaCommon.h"
+#include "SoloRenderContext.h"
 
 using namespace solo;
 
 
-void registerRenderContext(CppBindModule<LuaBinding> &module)
-{
-    auto rc = BEGIN_CLASS(module, RenderContext);
-    REG_VARIABLE(rc, RenderContext, camera);
-    rc.endClass();
-}
-
-
-void registerCamera(CppBindModule<LuaBinding> &module)
+void registerCameraApi(CppBindModule<LuaBinding> &module)
 {
     auto camera = BEGIN_CLASS_EXTEND(module, Camera, Component);
     REG_METHOD(camera, Camera, render);

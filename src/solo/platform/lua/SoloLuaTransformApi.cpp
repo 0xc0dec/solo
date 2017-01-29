@@ -24,7 +24,7 @@
 using namespace solo;
 
 
-void registerTransform(CppBindModule<LuaBinding> &module)
+void registerTransformApi(CppBindModule<LuaBinding> &module)
 {
     // TODO script transform callbacks
 

@@ -26,16 +26,13 @@ using namespace solo;
 
 
 void registerEnums(CppBindModule<LuaBinding> &module);
-void registerMath(CppBindModule<LuaBinding> &module);
-void registerNodeAndComponent(CppBindModule<LuaBinding> &module);
-void registerTransform(CppBindModule<LuaBinding> &module);
-void registerCamera(CppBindModule<LuaBinding> &module);
-void registerRenderContext(CppBindModule<LuaBinding> &module);
-void registerTexture(CppBindModule<LuaBinding> &module);
-void registerMaterial(CppBindModule<LuaBinding> &module);
+void registerMathApi(CppBindModule<LuaBinding> &module);
+void registerNodeAndComponentApi(CppBindModule<LuaBinding> &module);
+void registerTransformApi(CppBindModule<LuaBinding> &module);
+void registerCameraApi(CppBindModule<LuaBinding> &module);
+void registerTextureApi(CppBindModule<LuaBinding> &module);
+void registerMaterialApi(CppBindModule<LuaBinding> &module);
 void registerMiscApi(CppBindModule<LuaBinding> &module);
-void registerCubeTexture(CppBindModule<LuaBinding> &module);
-void registerRectTexture(CppBindModule<LuaBinding> &module);
 void registerDeviceApi(CppBindModule<LuaBinding> &module);
 void registerPhysicsApi(CppBindModule<LuaBinding> &module);
 
@@ -48,15 +45,12 @@ LuaScriptRuntime::LuaScriptRuntime(Device *d)
     auto module = LuaBinding(lua).beginModule("solo");
     
     registerEnums(module);
-    registerMath(module);
-    registerNodeAndComponent(module);
-    registerTransform(module);
-    registerCamera(module);
-    registerRenderContext(module);
-    registerTexture(module);
-    registerRectTexture(module);
-    registerCubeTexture(module);
-    registerMaterial(module);
+    registerMathApi(module);
+    registerNodeAndComponentApi(module);
+    registerTransformApi(module);
+    registerCameraApi(module);
+    registerTextureApi(module);
+    registerMaterialApi(module);
     registerMiscApi(module);
     registerDeviceApi(module);
     registerPhysicsApi(module);

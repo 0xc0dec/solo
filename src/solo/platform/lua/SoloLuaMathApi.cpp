@@ -305,7 +305,7 @@ static void registerFrustum(CppBindModule<LuaBinding> &module)
 }
 
 
-void registerMath(CppBindModule<LuaBinding> &module)
+void registerMathApi(CppBindModule<LuaBinding> &module)
 {
     registerRadian(module);
     registerDegree(module);

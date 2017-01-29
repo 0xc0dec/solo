@@ -29,6 +29,7 @@
 #include "SoloRenderer.h"
 #include "SoloRigidBody.h"
 #include "SoloMesh.h"
+#include "SoloRenderContext.h"
 
 using namespace solo;
 
@@ -141,6 +142,14 @@ static void registerRenderer(CppBindModule<LuaBinding> &module)
 }
 
 
+static void registerRenderContext(CppBindModule<LuaBinding> &module)
+{
+    auto rc = BEGIN_CLASS(module, RenderContext);
+    REG_VARIABLE(rc, RenderContext, camera);
+    rc.endClass();
+}
+
+
 void registerMiscApi(CppBindModule<LuaBinding> &module)
 {
     registerRenderer(module);
@@ -152,4 +161,5 @@ void registerMiscApi(CppBindModule<LuaBinding> &module)
     registerLogger(module);
     registerFrameBuffer(module);
     registerAsyncHandles(module);
+    registerRenderContext(module);
 }
