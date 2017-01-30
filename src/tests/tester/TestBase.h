@@ -31,7 +31,7 @@ using namespace solo;
 class TestBase
 {
 public:
-    TestBase(Device *device) :
+    explicit TestBase(Device *device) :
         device(device),
         scene(Scene::create(device)),
         fileSystem(device->getFileSystem())

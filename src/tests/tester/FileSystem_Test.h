@@ -26,7 +26,7 @@
 class FileSystem_Test final: public TestBase
 {
 public:
-    FileSystem_Test(Device *device): TestBase(device)
+    explicit FileSystem_Test(Device *device): TestBase(device)
     {
     }
 
@@ -38,7 +38,7 @@ public:
     }
 
 private:
-    void test_TextReading()
+    void test_TextReading() const
     {
         std::vector<std::string> lines =
         {
@@ -53,7 +53,7 @@ private:
         assert(text == expected);
     }
 
-    void test_BytesReading()
+    void test_BytesReading() const
     {
         std::vector<uint8_t> data = {0x01, 0x02, 0x03, 0x04};
         fileSystem->writeBytes("test1.bin", data);
@@ -65,7 +65,7 @@ private:
         assert(readData[3] == data[3]);
     }
 
-    void test_LinesReading()
+    void test_LinesReading() const
     {
         std::vector<std::string> lines =
         {

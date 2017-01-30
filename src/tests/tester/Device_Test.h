@@ -26,7 +26,7 @@
 class Device_Test final: public TestBase
 {
 public:
-    Device_Test(Device *device): TestBase(device)
+    explicit Device_Test(Device *device): TestBase(device)
     {
     }
 
@@ -36,7 +36,7 @@ public:
     }
 
 private:
-    void test_SetWindowTitle_GetWindowTitle()
+    void test_SetWindowTitle_GetWindowTitle() const
     {
         device->setWindowTitle("Test window");
         assert(device->getWindowTitle() == "Test window");

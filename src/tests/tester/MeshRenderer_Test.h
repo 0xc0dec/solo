@@ -26,7 +26,7 @@
 class MeshRenderer_Test final: public TestBase
 {
 public:
-    MeshRenderer_Test(Device *device): TestBase(device)
+    explicit MeshRenderer_Test(Device *device): TestBase(device)
     {
     }
 
@@ -45,7 +45,7 @@ public:
     }
 
 private:
-    void test_MaterialCountChanges()
+    void test_MaterialCountChanges() const
     {
         auto renderer = scene->createNode()->addComponent<MeshRenderer>();
         renderer->setMesh(mesh);
@@ -59,7 +59,7 @@ private:
         assert(renderer->getMaterial(1) == material.get());
     }
 
-    void test_SetMaterialForVariousIndexes()
+    void test_SetMaterialForVariousIndexes() const
     {
         auto renderer = scene->createNode()->addComponent<MeshRenderer>();
         renderer->setMesh(mesh);
@@ -68,13 +68,13 @@ private:
         renderer->setMaterial(2, material);
     }
 
-    void test_EnsureNoMaterialsAtFirst()
+    void test_EnsureNoMaterialsAtFirst() const
     {
         auto renderer = scene->createNode()->addComponent<MeshRenderer>();
         assert(renderer->getMaterialCount() == 0);
     }
 
-    void test_NoMeshAfterSetUnset()
+    void test_NoMeshAfterSetUnset() const
     {
         auto renderer = scene->createNode()->addComponent<MeshRenderer>();
         renderer->setMesh(mesh);

@@ -84,7 +84,7 @@ public:
 class Components_Test final: public TestBase
 {
 public:
-    Components_Test(Device *device): TestBase(device)
+    explicit Components_Test(Device *device): TestBase(device)
     {
     }
 
@@ -99,7 +99,7 @@ public:
     }
 
 private:
-    void test_AddComponents()
+    void test_AddComponents() const
     {
         auto node = scene->createNode();
         auto a = node->addComponent<A>();
@@ -110,7 +110,7 @@ private:
         assert(b->getTypeId() == B::getId());
     }
 
-    void test_AddOrRemoveComponents_EnsureAddedRemovedEventsCalled()
+    void test_AddOrRemoveComponents_EnsureAddedRemovedEventsCalled() const
     {
         auto node = scene->createNode();
         auto c = node->addComponent<C>();
@@ -128,7 +128,7 @@ private:
         assert(c->removedCmp == b);
     }
 
-    void test_AddComponent_Remove()
+    void test_AddComponent_Remove() const
     {
         auto node = scene->createNode();
         node->addComponent<A>();
@@ -136,7 +136,7 @@ private:
         assert(node->findComponent<A>() == nullptr);
     }
 
-    void test_AddAndRemove_FindByBaseId()
+    void test_AddAndRemove_FindByBaseId() const
     {
         auto node = scene->createNode();
         node->addComponent<Derived>();
@@ -145,13 +145,13 @@ private:
         assert(node->findComponent<Base>() == nullptr);
     }
 
-    void test_RemoveInexistentComponent()
+    void test_RemoveInexistentComponent() const
     {
         auto node = scene->createNode();
         node->removeComponent<Derived>();
     }
 
-    void test_AddDerivedComponent_EnsureFoundAsParent()
+    void test_AddDerivedComponent_EnsureFoundAsParent() const
     {
         auto node = scene->createNode();
         node->addComponent<Derived>();

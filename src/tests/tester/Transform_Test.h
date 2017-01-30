@@ -26,7 +26,7 @@
 class Transform_Test final : public TestBase
 {
 public:
-    Transform_Test(Device *device) : TestBase(device)
+    explicit Transform_Test(Device *device) : TestBase(device)
     {
     }
 
@@ -38,20 +38,20 @@ public:
     }
 
 private:
-    void test_TransformRemovalForbidden()
+    void test_TransformRemovalForbidden() const
     {
         auto node = scene->createNode();
         assertThrows<EngineException>([&] { node->removeComponent<Transform>(); }, "Transform component cannot be removed from a node");
     }
 
-    void test_TransformAddedByDefault()
+    void test_TransformAddedByDefault() const
     {
         auto node = scene->createNode();
         auto transform = node->findComponent<Transform>();
         assert(transform);
     }
 
-    void test_ChildrenManipulation()
+    void test_ChildrenManipulation() const
     {
         auto t1 = scene->createNode()->findComponent<Transform>();
         auto t2 = scene->createNode()->findComponent<Transform>();
