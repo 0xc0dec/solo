@@ -7,13 +7,7 @@ return function(physics)
         end,
 
         update = function(self)
-            local worldPos = self.transform:getWorldPosition()
-            local localFwd = self.transform:getLocalForward()
-            local to = solo.Vector3(
-                    worldPos.x + localFwd.x * 100,
-                    worldPos.y + localFwd.y * 100,
-                    worldPos.z + localFwd.z * 100)
-
+            local to = self.transform:getWorldPosition() + self.transform:getLocalForward() * 100
             local hitResults = physics:castRayAll(self.transform:getWorldPosition(), to)
 
             for i, hit in ipairs(hitResults) do
