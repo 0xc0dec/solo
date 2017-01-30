@@ -76,7 +76,7 @@ end
 
 function initOffscreenCamera()
     local tex = solo.RectTexture.create(dev)
-    tex:setData(solo.TextureFormat.RGB, {}, canvasSize.x / 8.0, canvasSize.y / 8.0)
+    tex:setData(solo.TextureFormat.RGB, {}, math.floor(canvasSize.x / 8.0), math.floor(canvasSize.y / 8.0))
     tex:setFiltering(solo.TextureFiltering.Nearest)
     tex:setWrapping(solo.TextureWrapping.Clamp)
 
@@ -288,7 +288,6 @@ end
 
 mainCamera = initMainCamera()
 offscreenCamera, offscreenCameraTex = initOffscreenCamera()
-initOffscreenCamera()
 initSkybox()
 initCheckerBox()
 initDynamicQuad()
