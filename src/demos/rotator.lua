@@ -1,6 +1,6 @@
 return function(device, space, axis)
     return {
-        typeId = 4,
+        typeId = solo.getCmpId("Rotator"),
 
         init = function(self)
             self.transform = self.node:findComponent("Transform")

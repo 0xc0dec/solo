@@ -1,6 +1,6 @@
 return function(physics)
     return {
-        typeId = 8,
+        typeId = solo.getCmpId("SpawnedObjectTargeter"),
 
         init = function(self)
             self.transform = self.node:findComponent("Transform")
@@ -11,7 +11,7 @@ return function(physics)
             local hitResults = physics:castRayAll(self.transform:getWorldPosition(), to)
 
             for i, hit in ipairs(hitResults) do
-                local obj = hit.body:getNode():findScriptComponent(6) -- TODO remove ugly hack
+                local obj = hit.body:getNode():findScriptComponent(solo.getCmpId("SpawnedObject"))
                 if obj then
                     obj:setActive()
                 end

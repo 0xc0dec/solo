@@ -5,7 +5,7 @@ return function(device, fs)
     local renderer
 
     return {
-        typeId = 2,
+        typeId = solo.getCmpId("TimeLabelUpdater"),
 
         init = function(self)
             local fontData = fs:readBytes("../../assets/aller.ttf")

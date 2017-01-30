@@ -1,6 +1,6 @@
 return function(device, effect, mesh, initialPos, initialRotation)
     return {
-        typeId = 6,
+        typeId = solo.getCmpId("SpawnedObject"),
 
         init = function(self)
             self.active = false -- TODO

@@ -2,7 +2,7 @@ return function(device, data, mesh)
     local time = 0
 
     return {
-        typeId = 1,
+        typeId = solo.getCmpId("DynamicQuadUpdater"),
 
         update = function()
             time = time + 2 * device:getTimeDelta()

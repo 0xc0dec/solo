@@ -1,6 +1,6 @@
 return function(targetPos)
     return {
-        typeId = 5,
+        typeId = solo.getCmpId("LookAt"),
 
         init = function(self)
             self.transform = self.node:findComponent("Transform")

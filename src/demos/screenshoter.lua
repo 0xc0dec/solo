@@ -1,6 +1,6 @@
 return function(device, path)
     return {
-        typeId = 3,
+        typeId = solo.getCmpId("Screenshoter"),
 
         update = function()
             if device:isKeyPressed(solo.KeyCode.P, true) then

@@ -2,7 +2,7 @@ local createSpawnedObject = dofile("../../src/demos/spawned-object.lua")
 
 return function(device, mesh, effect)
     return {
-        typeId = 7,
+        typeId = solo.getCmpId("Spawner"),
 
         init = function(self)
             self.transform = self.node:findComponent("Transform")
