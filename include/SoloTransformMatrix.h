@@ -40,7 +40,6 @@ namespace solo
         static auto createLookAt(const Vector3 &eye, const Vector3 &target, const Vector3 &up) -> TransformMatrix;
         static auto createPerspective(const Radian &fieldOfView, float aspectRatio, float znear, float zfar) -> TransformMatrix;
         static auto createOrthographic(float width, float height, float near, float far) -> TransformMatrix;
-        static auto createReflection(const Plane &plane) -> TransformMatrix;
         static auto createScale(const Vector3 &scale) -> TransformMatrix;
         static auto createRotationFromQuaternion(const Quaternion &quat) -> TransformMatrix;
         static auto createRotationFromAxisAngle(const Vector3 &axis, const Radian &angle) -> TransformMatrix;

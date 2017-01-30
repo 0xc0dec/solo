@@ -13,3 +13,5 @@ m:transpose()
 
 m:resetToIdentity()
 m:resetToZero()
+
+assert(m * solo.Matrix())

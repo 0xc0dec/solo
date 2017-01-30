@@ -151,6 +151,11 @@ static void registerRadian(CppBindModule<LuaBinding> &module)
     REG_CTOR(radian, float);
     REG_METHOD(radian, Radian, toRawDegree);
     REG_METHOD(radian, Radian, toRawRadian);
+    REG_META_METHOD(radian, "__unm", [](const Radian &r) { return -r; });
+    REG_META_METHOD(radian, "__add", [](const Radian &r1, const Radian &r2) { return r1 + r2; });
+    REG_META_METHOD(radian, "__sub", [](const Radian &r1, const Radian &r2) { return r1 - r2; });
+    REG_META_METHOD(radian, "__mul", [](const Radian &r, float f) { return r * f; });
+    REG_META_METHOD(radian, "__div", [](const Radian &r, float f) { return r * f; });
     radian.endClass();
 }
 
@@ -161,6 +166,11 @@ static void registerDegree(CppBindModule<LuaBinding> &module)
     REG_CTOR(degree, float);
     REG_METHOD(degree, Degree, toRawDegree);
     REG_METHOD(degree, Degree, toRawRadian);
+    REG_META_METHOD(degree, "__unm", [](const Degree &d) { return -d; });
+    REG_META_METHOD(degree, "__add", [](const Degree &d1, const Degree &d2) { return d1 + d2; });
+    REG_META_METHOD(degree, "__sub", [](const Degree &d1, const Degree &d2) { return d1 - d2; });
+    REG_META_METHOD(degree, "__mul", [](const Degree &d, float f) { return d * f; });
+    REG_META_METHOD(degree, "__div", [](const Degree &d, float f) { return d * f; });
     degree.endClass();
 }
 
@@ -177,6 +187,7 @@ static void registerMatrix(CppBindModule<LuaBinding> &module)
     REG_METHOD(matrix, Matrix, transpose);
     REG_METHOD(matrix, Matrix, resetToIdentity);
     REG_METHOD(matrix, Matrix, resetToZero);
+    REG_META_METHOD(matrix, "__mul", [](const Matrix &m1, const Matrix &m2) { return m1 * m2; });
     matrix.endClass();
 }
 
