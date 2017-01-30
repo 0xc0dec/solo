@@ -112,7 +112,7 @@ void Scene::visitByTags(uint32_t tagMask, std::function<void(Component*)> accept
     {
         for (const auto &cmp : node.second)
         {
-            if (cmp.second->getTags() & tagMask) // i.e. component contains any tag from the mask
+            if (cmp.second->getTag() & tagMask) // i.e. component contains any tag from the mask
                 accept(cmp.second.get());
         }
     }

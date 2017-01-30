@@ -106,7 +106,7 @@ function initSkybox()
         local node = scene:createNode()
         local renderer = node:addComponent("SkyboxRenderer")
         renderer:setTexture(tex)
-        renderer:setTags(knownTags.skybox)
+        renderer:setTag(knownTags.skybox)
     end)
 end
 
@@ -177,7 +177,7 @@ end
 function initCurrentTimeLabel()
     local node = scene:createNode()
     node:addScriptComponent(createTimeLabelUpdater(dev, fs))
-    node:findComponent("FontRenderer"):setTags(knownTags.transparent)
+    node:findComponent("FontRenderer"):setTag(knownTags.transparent)
     node:findComponent("Transform"):setLocalScale(solo.Vector3(0.02, 0.02, 1))
     node:findComponent("Transform"):setLocalPosition(solo.Vector3(-3, 0, 4))
 end
@@ -254,7 +254,7 @@ function initMonitorQuad(axesMesh)
     local renderer = node:addComponent("MeshRenderer")
     renderer:setMesh(meshes.quad)
     renderer:setMaterial(0, material)
-    renderer:setTags(knownTags.monitor)
+    renderer:setTag(knownTags.monitor)
 end
 
 function initTransparentQuad(axesMesh)
@@ -282,7 +282,7 @@ function initTransparentQuad(axesMesh)
         local renderer = node:addComponent("MeshRenderer")
         renderer:setMesh(meshes.quad)
         renderer:setMaterial(0, material)
-        renderer:setTags(knownTags.transparent)
+        renderer:setTag(knownTags.transparent)
     end)
 end
 

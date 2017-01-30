@@ -63,8 +63,8 @@ namespace solo
 
         auto getNode() const -> Node;
 
-        auto getTags() const -> uint32_t;
-        void setTags(uint32_t tags);
+        auto getTag() const -> uint32_t;
+        void setTag(uint32_t tag);
 
     protected:
         explicit Component(const Node &node): node(node)
@@ -72,7 +72,7 @@ namespace solo
         }
 
         Node node;
-        uint32_t tags = 1;
+        uint32_t tag = 1;
     };
 
     inline auto Component::getNode() const -> Node
@@ -80,14 +80,14 @@ namespace solo
         return node;
     }
 
-    inline auto Component::getTags() const -> uint32_t
+    inline auto Component::getTag() const -> uint32_t
     {
-        return tags;
+        return tag;
     }
 
-    inline void Component::setTags(uint32_t tags)
+    inline void Component::setTag(uint32_t tag)
     {
-        this->tags = tags;
+        this->tag = tag;
     }
 
 

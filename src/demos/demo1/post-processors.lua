@@ -1,6 +1,6 @@
 function createPostProcessor(device, camera, tag)
     local quadRenderer = camera:getNode():addComponent("MeshRenderer")
-    quadRenderer:setTags(tag)
+    quadRenderer:setTag(tag)
     quadRenderer:setMesh(solo.Mesh.createFromPrefab(device, solo.MeshPrefab.Quad))
 
     return {
