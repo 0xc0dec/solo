@@ -26,6 +26,7 @@
 
 #include "SoloMaterial.h"
 #include "SoloOpenGLRenderer.h"
+#include "SoloOpenGLEffect.h"
 #include <unordered_map>
 #include <unordered_set>
 
@@ -78,18 +79,15 @@ namespace solo
         void applyParams(const Camera *camera, Transform *nodeTransform) override final;
 
         template <class T>
-        void applyScalarParams(strKeyMap<T> &params)
-        {
-            for (const auto &p: params)
-                renderer->setUniform(uniformHandles[p.first], &p.second, 1);
-        }
+        void applyScalarParams(strKeyMap<T> &params);
 
         template <class T>
-        void applyVectorParams(strKeyMap<T> &params)
-        {
-            for (const auto &p: params)
-                renderer->setUniform(uniformHandles[p.first], p.second.data(), static_cast<uint32_t>(p.second.size()));
-        }
+        void applyVectorParams(strKeyMap<T> &params);
+
+        template <class T>
+        void setParam(strKeyMap<T> &params, const std::string &name, UniformType uniformType, T value);
+
+        void setAutoBindParam(strSet &params, const std::string &name, UniformType uniformType);
 
         OpenGLRenderer *renderer = nullptr;
         sptr<OpenGLEffect> effect = nullptr;
@@ -118,6 +116,35 @@ namespace solo
         strSet invTransWorldViewMatrixParams;
         strSet camWorldPosParams;
     };
+
+    template <class T>
+    void OpenGLMaterial::applyScalarParams(strKeyMap<T> &params)
+    {
+        for (const auto &p: params)
+            renderer->setUniform(uniformHandles[p.first], &p.second, 1);
+    }
+
+    template <class T>
+    void OpenGLMaterial::applyVectorParams(strKeyMap<T> &params)
+    {
+        for (const auto &p: params)
+            renderer->setUniform(uniformHandles[p.first], p.second.data(), static_cast<uint32_t>(p.second.size()));
+    }
+
+    template <class T>
+    void OpenGLMaterial::setParam(strKeyMap<T> &params, const std::string &name, UniformType uniformType, T value)
+    {
+        if (params.find(name) == params.end())
+            uniformHandles[name] = renderer->createUniform(name.c_str(), uniformType, effect->getHandle());
+        params[name] = value;
+    }
+
+    inline void OpenGLMaterial::setAutoBindParam(strSet &params, const std::string &name, UniformType uniformType)
+    {
+        if (params.find(name) == params.end())
+            uniformHandles[name] = renderer->createUniform(name.c_str(), uniformType, effect->getHandle());
+        params.insert(name);
+    }
 }
 
 #endif
