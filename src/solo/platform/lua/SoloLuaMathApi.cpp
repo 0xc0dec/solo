@@ -57,6 +57,7 @@ static void registerVector2(CppBindModule<LuaBinding> &module)
     REG_META_METHOD(vector2, "__add", [](const Vector2 &v1, const Vector2 &v2) { return v1 + v2; });
     REG_META_METHOD(vector2, "__sub", [](const Vector2 &v1, const Vector2 &v2) { return v1 - v2; });
     REG_META_METHOD(vector2, "__mul", [](const Vector2 &v, float f) { return v * f; });
+    REG_META_METHOD(vector2, "__div", [](const Vector2 &v, float f) { return v / f; });
     REG_META_METHOD(vector2, "__unm", [](const Vector2 &v) { return -v; });
     vector2.endClass();
 }
@@ -85,6 +86,7 @@ static void registerVector3(CppBindModule<LuaBinding> &module)
     REG_META_METHOD(vector3, "__add", [](const Vector3 &v1, const Vector3 &v2) { return v1 + v2; });
     REG_META_METHOD(vector3, "__sub", [](const Vector3 &v1, const Vector3 &v2) { return v1 - v2; });
     REG_META_METHOD(vector3, "__mul", [](const Vector3 &v, float f) { return v * f; });
+    REG_META_METHOD(vector3, "__div", [](const Vector3 &v, float f) { return v / f; });
     REG_META_METHOD(vector3, "__unm", [](const Vector3 &v) { return -v; });
     vector3.endClass();
 }
@@ -113,6 +115,7 @@ static void registerVector4(CppBindModule<LuaBinding> &module)
     REG_META_METHOD(vector4, "__add", [](const Vector4 &v1, const Vector4 &v2) { return v1 + v2; });
     REG_META_METHOD(vector4, "__sub", [](const Vector4 &v1, const Vector4 &v2) { return v1 - v2; });
     REG_META_METHOD(vector4, "__mul", [](const Vector4 &v, float f) { return v * f; });
+    REG_META_METHOD(vector4, "__div", [](const Vector4 &v, float f) { return v / f; });
     REG_META_METHOD(vector4, "__unm", [](const Vector4 &v) { return -v; });
     vector4.endClass();
 }
@@ -137,6 +140,7 @@ static void registerQuaternion(CppBindModule<LuaBinding> &module)
     REG_STATIC_METHOD(q, Quaternion, lerp);
     REG_STATIC_METHOD(q, Quaternion, slerp);
     REG_STATIC_METHOD(q, Quaternion, squad);
+    REG_META_METHOD(q, "__mul", [](const Quaternion &q1, const Quaternion &q2) { return q1 * q2; });
     q.endClass();
 }
 

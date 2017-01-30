@@ -22,3 +22,5 @@ assert(q:toAxisAngle(v))
 assert(solo.Quaternion.lerp(q, q, 1))
 assert(solo.Quaternion.slerp(q, q, 1))
 assert(solo.Quaternion.squad(q, q, q, q, 1))
+
+assert(q * solo.Quaternion())
