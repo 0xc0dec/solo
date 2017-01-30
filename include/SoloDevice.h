@@ -142,7 +142,6 @@ namespace solo
         sptr<Physics> physics;
         sptr<FileSystem> fs;
         sptr<AssetLoader> assetLoader;
-        // Scene may contain refs to script objects, so it must be destroyed first
         sptr<ScriptRuntime> scriptRuntime;
 
         // key code -> was pressed for the first time
