@@ -10,6 +10,7 @@ assert(cam:getTransform())
 
 cam:setRenderTarget(fb)
 assert(cam:getRenderTarget() ~= nil)
+cam:setRenderTarget(nil)
 
 assert(cam:getClearColor())
 cam:setClearColor(v)

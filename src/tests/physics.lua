@@ -31,3 +31,4 @@ local collider = solo.BoxCollider.create(v1)
 local body = scene:createNode():addComponent("RigidBody", solo.RigidBodyConstructionParameters())
 
 body:setCollider(collider)
+body:setCollider(nil)
