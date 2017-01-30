@@ -1,4 +1,4 @@
-local createSpawnedObject = dofile("../../src/demos/spawned-object.lua")
+local createSpawnedObject = dofile("../../src/demos/demo1/spawned-object.lua")
 
 return function(device, mesh, effect)
     return {

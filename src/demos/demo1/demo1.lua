@@ -14,15 +14,15 @@ transparentTag = 1 << 2
 monitorQuadTag = 1 << 3
 postProcessorTag = 1 << 4
 
-createDynamicQuadUpdater = dofile("../../src/demos/dynamic-quad-updater.lua")
-createTimeLabelUpdater = dofile("../../src/demos/time-label-updater.lua")
-createScreenshoter = dofile("../../src/demos/screenshoter.lua")
-createRotator = dofile("../../src/demos/rotator.lua")
-createLookAt = dofile("../../src/demos/lookat.lua")
-createSpawner = dofile("../../src/demos/spawner.lua")
-createSpawnedObjectTargeter = dofile("../../src/demos/spawned-object-targeter.lua")
-postProcessors = dofile("../../src/demos/post-processors.lua")
-shaders = dofile("../../src/demos/shaders.lua")
+createDynamicQuadUpdater = dofile("../../src/demos/demo1/dynamic-quad-updater.lua")
+createTimeLabelUpdater = dofile("../../src/demos/demo1/time-label-updater.lua")
+createScreenshoter = dofile("../../src/demos/demo1/screenshoter.lua")
+createRotator = dofile("../../src/demos/demo1/rotator.lua")
+createLookAt = dofile("../../src/demos/demo1/lookat.lua")
+createSpawner = dofile("../../src/demos/demo1/spawner.lua")
+createSpawnedObjectTargeter = dofile("../../src/demos/demo1/spawned-object-targeter.lua")
+postProcessors = dofile("../../src/demos/demo1/post-processors.lua")
+shaders = dofile("../../src/demos/demo1/shaders.lua")
 
 effects = {
     simpleTexture = solo.Effect.create(dev, shaders.vs.basic, shaders.fs.texture),

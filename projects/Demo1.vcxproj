@@ -171,19 +171,6 @@
   <ItemGroup>
     <ClCompile Include="..\src\demos\demo1\Demo1.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\src\demos\demo1\CurrentTimeText.h" />
-    <ClInclude Include="..\src\demos\demo1\DynamicQuadUpdater.h" />
-    <ClInclude Include="..\src\demos\demo1\PostProcessor1.h" />
-    <ClInclude Include="..\src\demos\demo1\PostProcessor2.h" />
-    <ClInclude Include="..\src\demos\demo1\PostProcessorBase.h" />
-    <ClInclude Include="..\src\demos\demo1\Rotator.h" />
-    <ClInclude Include="..\src\demos\demo1\Shaders.h" />
-    <ClInclude Include="..\src\demos\demo1\SpawnedObject.h" />
-    <ClInclude Include="..\src\demos\demo1\SpawnedObjectTargeter.h" />
-    <ClInclude Include="..\src\demos\demo1\Spawner.h" />
-    <ClInclude Include="..\src\demos\demo1\LookAt.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
