@@ -9,10 +9,12 @@ fs = dev:getFileSystem()
 scene = solo.Scene.create(dev)
 canvasSize = dev:getCanvasSize()
 
-skyboxTag = 1 << 1
-transparentTag = 1 << 2
-monitorQuadTag = 1 << 3
-postProcessorTag = 1 << 4
+knownTags = {
+    skybox = 1 << 1,
+    transparent = 1 << 2,
+    monitor = 1 << 3,
+    postProcessor = 1 << 4
+}
 
 createDynamicQuadUpdater = dofile("../../src/demos/demo1/dynamic-quad-updater.lua")
 createTimeLabelUpdater = dofile("../../src/demos/demo1/time-label-updater.lua")
@@ -100,7 +102,7 @@ function initSkybox()
         local node = scene:createNode()
         local renderer = node:addComponent("SkyboxRenderer")
         renderer:setTexture(tex)
-        renderer:setTags(skyboxTag)
+        renderer:setTags(knownTags.skybox)
     end)
 end
 
@@ -171,7 +173,7 @@ end
 function initCurrentTimeLabel()
     local node = scene:createNode()
     node:addScriptComponent(createTimeLabelUpdater(dev, fs))
-    node:findComponent("FontRenderer"):setTags(transparentTag)
+    node:findComponent("FontRenderer"):setTags(knownTags.transparent)
     node:findComponent("Transform"):setLocalScale(solo.Vector3(0.02, 0.02, 1))
     node:findComponent("Transform"):setLocalPosition(solo.Vector3(-3, 0, 4))
 end
@@ -248,7 +250,7 @@ function initMonitorQuad(axesMesh)
     local renderer = node:addComponent("MeshRenderer")
     renderer:setMesh(meshes.quad)
     renderer:setMaterial(0, material)
-    renderer:setTags(monitorQuadTag)
+    renderer:setTags(knownTags.monitor)
 end
 
 function initTransparentQuad(axesMesh)
@@ -276,7 +278,7 @@ function initTransparentQuad(axesMesh)
         local renderer = node:addComponent("MeshRenderer")
         renderer:setMesh(meshes.quad)
         renderer:setMaterial(0, material)
-        renderer:setTags(transparentTag)
+        renderer:setTags(knownTags.transparent)
     end)
 end
 
@@ -316,12 +318,12 @@ function update()
 
     if dev:isKeyPressed(solo.KeyCode.Digit1, true) then
         detachPostProcessor()
-        pp = postProcessors.create1(dev, mainCamera, postProcessorTag, shaders)
+        pp = postProcessors.create1(dev, mainCamera, knownTags.postProcessor, shaders)
     end
 
     if dev:isKeyPressed(solo.KeyCode.Digit2, true) then
         detachPostProcessor()
-        pp = postProcessors.create2(dev, loader, mainCamera, postProcessorTag, shaders)
+        pp = postProcessors.create2(dev, loader, mainCamera, knownTags.postProcessor, shaders)
     end
 
     if dev:isKeyPressed(solo.KeyCode.Digit3, true) then
@@ -340,15 +342,15 @@ end
 
 function render()
     offscreenCamera:renderFrame(function(ctx)
-        renderByTags(skyboxTag, ctx)
-        renderByTags(~(skyboxTag | transparentTag | monitorQuadTag | postProcessorTag), ctx)
-        renderByTags(transparentTag, ctx)
+        renderByTags(knownTags.skybox, ctx)
+        renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.monitor | knownTags.postProcessor), ctx)
+        renderByTags(knownTags.transparent, ctx)
     end)
 
     mainCamera:renderFrame(function(ctx)
-        renderByTags(skyboxTag, ctx)
-        renderByTags(~(skyboxTag | transparentTag | postProcessorTag), ctx)
-        renderByTags(transparentTag, ctx)
+        renderByTags(knownTags.skybox, ctx)
+        renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.postProcessor), ctx)
+        renderByTags(knownTags.transparent, ctx)
     end)
 
     if pp then

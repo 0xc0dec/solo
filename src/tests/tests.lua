@@ -43,5 +43,6 @@ runTest("mesh.lua")
 runTest("spectator.lua")
 runTest("skybox-renderer.lua")
 runTest("font.lua")
+runTest("lib.lua")
 
 logger:logInfo("Script tests finished")
