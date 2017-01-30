@@ -24,14 +24,14 @@ int main()
 {
     using namespace solo;
 
-    auto externalRuntime = ScriptRuntime::createExternal();
-    externalRuntime->executeFile("../../src/demos/demo1/demo1.init.lua");
+    auto confRuntime = ScriptRuntime::createExternal();
+    confRuntime->executeFile("../../src/demos/demo1/demo1.init.lua");
 
     DeviceSetup setup;
-    setup.mode = DeviceMode::OpenGL; // TODO
-    setup.canvasWidth = externalRuntime->getInt("canvasWidth");
-    setup.canvasHeight = externalRuntime->getInt("canvasHeight");
-    setup.logFilePath = externalRuntime->getString("logFilePath");
+    setup.mode = static_cast<DeviceMode>(confRuntime->getInt("deviceMode"));
+    setup.canvasWidth = confRuntime->getInt("canvasWidth");
+    setup.canvasHeight = confRuntime->getInt("canvasHeight");
+    setup.logFilePath = confRuntime->getString("logFilePath");
     
     auto device = Device::create(setup);
     device->getScriptRuntime()->executeFile("../../src/demos/demo1/demo1.lua");
