@@ -56,12 +56,10 @@ function initMainCamera()
     t:setLocalPosition(solo.Vector3(0, 5, 10))
     t:lookAt(solo.Vector3(0, 0, 0), solo.Vector3(0, 1, 0))
     
-    -- TODO
     node:addScriptComponent(createScreenshoter(dev, "demo1.bmp"))
     node:addComponent("Spectator")
-    -- node:addComponent<SpawnedObjectTargeter>();
-    -- node:addScriptComponent(createSpawnedObjectTargeter(physics))
-    -- node:addScriptComponent(createSpawner(dev, meshes.cube, effects.color))
+    node:addScriptComponent(createSpawnedObjectTargeter(physics))
+    node:addScriptComponent(createSpawner(dev, meshes.cube, effects.color))
 
     local cam = node:addComponent("Camera")
     cam:setClearColor(solo.Vector4(0.0, 0.6, 0.6, 1.0))
