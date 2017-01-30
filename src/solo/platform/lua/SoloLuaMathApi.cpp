@@ -54,6 +54,10 @@ static void registerVector2(CppBindModule<LuaBinding> &module)
     REG_METHOD(vector2, Vector2, lengthSquared);
     REG_METHOD(vector2, Vector2, normalize);
     REG_METHOD(vector2, Vector2, normalized);
+    REG_META_METHOD(vector2, "__add", [](const Vector2 &v1, const Vector2 &v2) { return v1 + v2; });
+    REG_META_METHOD(vector2, "__sub", [](const Vector2 &v1, const Vector2 &v2) { return v1 - v2; });
+    REG_META_METHOD(vector2, "__mul", [](const Vector2 &v, float f) { return v * f; });
+    REG_META_METHOD(vector2, "__unm", [](const Vector2 &v) { return -v; });
     vector2.endClass();
 }
 
@@ -78,6 +82,10 @@ static void registerVector3(CppBindModule<LuaBinding> &module)
     REG_METHOD(vector3, Vector3, lengthSquared);
     REG_METHOD(vector3, Vector3, normalize);
     REG_METHOD(vector3, Vector3, normalized);
+    REG_META_METHOD(vector3, "__add", [](const Vector3 &v1, const Vector3 &v2) { return v1 + v2; });
+    REG_META_METHOD(vector3, "__sub", [](const Vector3 &v1, const Vector3 &v2) { return v1 - v2; });
+    REG_META_METHOD(vector3, "__mul", [](const Vector3 &v, float f) { return v * f; });
+    REG_META_METHOD(vector3, "__unm", [](const Vector3 &v) { return -v; });
     vector3.endClass();
 }
 
@@ -102,6 +110,10 @@ static void registerVector4(CppBindModule<LuaBinding> &module)
     REG_METHOD(vector4, Vector4, lengthSquared);
     REG_METHOD(vector4, Vector4, normalize);
     REG_METHOD(vector4, Vector4, normalized);
+    REG_META_METHOD(vector4, "__add", [](const Vector4 &v1, const Vector4 &v2) { return v1 + v2; });
+    REG_META_METHOD(vector4, "__sub", [](const Vector4 &v1, const Vector4 &v2) { return v1 - v2; });
+    REG_META_METHOD(vector4, "__mul", [](const Vector4 &v, float f) { return v * f; });
+    REG_META_METHOD(vector4, "__unm", [](const Vector4 &v) { return -v; });
     vector4.endClass();
 }
 

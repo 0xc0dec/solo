@@ -41,6 +41,7 @@ using namespace LuaIntf;
 
 #define REG_VARIABLE(binding, klass, name) binding.addVariable(#name, &klass::name, true)
 
+#define REG_META_METHOD(binding, name, func) binding.addMetaFunction(name, func)
 #define REG_METHOD(binding, klass, name) binding.addFunction(#name, &klass::name)
 #define REG_METHOD_OVERLOADED(binding, klass, name, nameStr, resultType, modifier, ...) \
 	binding.addFunction(nameStr, static_cast<resultType(klass::*)(__VA_ARGS__)modifier>(&klass::name))

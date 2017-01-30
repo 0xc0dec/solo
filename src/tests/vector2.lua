@@ -22,3 +22,8 @@ assert(v1:lengthSquared() ~= nil)
 
 v1:normalize()
 assert(v1:normalized() ~= nil)
+
+assert(v1 + v2)
+assert(v1 - v2)
+assert(-v1)
+assert(v1 * 2)

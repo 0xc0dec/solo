@@ -56,13 +56,11 @@ namespace solo
         auto normalized() const -> Vector2;
         void normalize();
 
-        auto operator+(float scalar) const -> Vector2;
         auto operator+(const Vector2 &v) const -> Vector2;
         auto operator+=(float scalar) -> Vector2&;
         auto operator+=(const Vector2 &v) -> Vector2&;
 
         auto operator-() const -> Vector2;
-        auto operator-(float scalar) const -> Vector2;
         auto operator-(const Vector2 &v) const -> Vector2;
         auto operator-=(float scalar) -> Vector2&;
         auto operator-=(const Vector2 &v) -> Vector2&;
@@ -73,13 +71,6 @@ namespace solo
         auto operator/(float scalar) const -> Vector2;
         auto operator/=(float scalar) -> Vector2&;
     };
-
-    inline auto Vector2::operator+(float scalar) const -> Vector2
-    {
-        auto result(*this);
-        result += scalar;
-        return result;
-    }
 
     inline auto Vector2::operator+(const Vector2 &v) const -> Vector2
     {
@@ -112,13 +103,6 @@ namespace solo
         auto result(*this);
         result.x = -result.x;
         result.y = -result.y;
-        return result;
-    }
-
-    inline auto Vector2::operator-(float scalar) const -> Vector2
-    {
-        auto result(*this);
-        result -= scalar;
         return result;
     }
 
