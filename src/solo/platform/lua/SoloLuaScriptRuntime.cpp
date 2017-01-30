@@ -39,6 +39,23 @@ void registerMeshApi(CppBindModule<LuaBinding> &module);
 void registerFontApi(CppBindModule<LuaBinding> &module);
 
 
+static void registerApi(CppBindModule<LuaBinding> &module)
+{
+    registerEnums(module);
+    registerMathApi(module);
+    registerNodeAndComponentApi(module);
+    registerTransformApi(module);
+    registerCameraApi(module);
+    registerTextureApi(module);
+    registerMaterialApi(module);
+    registerMiscApi(module);
+    registerDeviceApi(module);
+    registerPhysicsApi(module);
+    registerMeshApi(module);
+    registerFontApi(module);
+}
+
+
 static void registerLibrary(LuaState &state)
 {
     state.doString(R"(
@@ -58,31 +75,29 @@ static void registerLibrary(LuaState &state)
     )");
 }
 
-
-LuaScriptRuntime::LuaScriptRuntime(Device *d)
+// TODO remove copy-paste
+LuaScriptRuntime::LuaScriptRuntime()
 {
     lua = LuaState::newState();
     lua.openLibs();
 
     auto module = LuaBinding(lua).beginModule("solo");
-    
-    registerEnums(module);
-    registerMathApi(module);
-    registerNodeAndComponentApi(module);
-    registerTransformApi(module);
-    registerCameraApi(module);
-    registerTextureApi(module);
-    registerMaterialApi(module);
-    registerMiscApi(module);
-    registerDeviceApi(module);
-    registerPhysicsApi(module);
-    registerMeshApi(module);
-    registerFontApi(module);
-
+    registerApi(module);
     registerLibrary(lua);
+    module.endModule();
+}
 
+
+LuaScriptRuntime::LuaScriptRuntime(Device *d):
+    LuaScriptRuntime()
+{
+    lua = LuaState::newState();
+    lua.openLibs();
+
+    auto module = LuaBinding(lua).beginModule("solo");
+    registerApi(module);
+    registerLibrary(lua);
     module.addConstant("device", d);
-
     module.endModule();
 }
 
@@ -102,4 +117,18 @@ void LuaScriptRuntime::executeString(const std::string& code)
 void LuaScriptRuntime::executeFile(const std::string& path)
 {
     lua.doFile(path.c_str());
+}
+
+
+auto LuaScriptRuntime::getString(const std::string& name) -> std::string
+{
+    auto ref = LuaRef(lua, name.c_str());
+    return ref.toValue<std::string>();
+}
+
+
+auto LuaScriptRuntime::getInt(const std::string& name) -> int32_t
+{
+    auto ref = LuaRef(lua, name.c_str());
+    return ref.toValue<int32_t>();
 }

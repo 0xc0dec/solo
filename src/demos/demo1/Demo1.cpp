@@ -20,17 +20,18 @@
 
 #include <Solo.h>
 
-
 int main()
 {
     using namespace solo;
 
+    auto externalRuntime = ScriptRuntime::createExternal();
+    externalRuntime->executeFile("../../src/demos/demo1/demo1.init.lua");
+
     DeviceSetup setup;
-    setup.mode = DeviceMode::OpenGL;
-    setup.canvasWidth = 1200;
-    setup.canvasHeight = 600;
-    setup.logFilePath = "demo.log";
-    setup.windowTitle = "Demo 1";
+    setup.mode = DeviceMode::OpenGL; // TODO
+    setup.canvasWidth = externalRuntime->getInt("canvasWidth");
+    setup.canvasHeight = externalRuntime->getInt("canvasHeight");
+    setup.logFilePath = externalRuntime->getString("logFilePath");
     
     auto device = Device::create(setup);
     device->getScriptRuntime()->executeFile("../../src/demos/demo1/demo1.lua");

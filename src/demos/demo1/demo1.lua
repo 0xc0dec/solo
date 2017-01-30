@@ -1,5 +1,3 @@
--- TODO avoid using globals in functions
-
 dofile("../../src/demos/common/common.lua")
 
 createScreenshoter = dofile("../../src/demos/common/screenshoter.lua")
@@ -290,6 +288,7 @@ end
 
 mainCamera = initMainCamera()
 offscreenCamera, offscreenCameraTex = initOffscreenCamera()
+initOffscreenCamera()
 initSkybox()
 initCheckerBox()
 initDynamicQuad()

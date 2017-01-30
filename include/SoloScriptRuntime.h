@@ -21,7 +21,7 @@
 #pragma once
 
 #include "SoloCommon.h"
-
+#include <functional>
 
 namespace solo
 {
@@ -32,6 +32,7 @@ namespace solo
     public:
         SL_DISABLE_COPY_AND_MOVE(ScriptRuntime)
 
+        static auto createExternal() -> sptr<ScriptRuntime>;
         static auto create(Device *device, const FriendToken<Device> &) -> sptr<ScriptRuntime>;
 
         ScriptRuntime() {}
@@ -39,5 +40,8 @@ namespace solo
 
         virtual void executeString(const std::string& code) = 0;
         virtual void executeFile(const std::string& path) = 0;
+
+        virtual auto getString(const std::string &name) -> std::string = 0;
+        virtual auto getInt(const std::string &name) -> int32_t = 0;
     };
 }
