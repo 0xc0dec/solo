@@ -1,3 +1,5 @@
+dofile("../../src/demos/common/common.lua")
+
 return function(targetPos)
     return {
         typeId = solo.getCmpId("LookAt"),
@@ -7,7 +9,7 @@ return function(targetPos)
         end,
 
         update = function(self)
-            self.transform:lookAt(targetPos, solo.Vector3(0, 1, 0))
+            self.transform:lookAt(targetPos, vec3(0, 1, 0))
         end
     }
 end

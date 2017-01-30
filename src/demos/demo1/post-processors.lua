@@ -7,7 +7,7 @@ function createPostProcessor(device, camera, tag)
         detach = function()
             camera:getNode():removeComponent("MeshRenderer")
             camera:setRenderTarget(nil)
-            camera:setViewport(solo.Vector4(-1, -1, -1, -1))
+            camera:setViewport(vec4(-1, -1, -1, -1))
         end,
 
         renderStep = function(mat, inputTexture, target, viewport)
@@ -73,7 +73,7 @@ function createPostProcessor1(device, camera, tag, shaders)
     local pp = createPostProcessor(device, camera, tag)
 
     pp.apply = function(self)
-        local viewport = solo.Vector4(-1, -1, -1, -1)
+        local viewport = vec4(-1, -1, -1, -1)
 
         self.renderStep(grayscaleMat, fbTex1, fb2, viewport)
         self.renderStep(saturateMat, fbTex2, fb1, viewport)
@@ -101,9 +101,9 @@ function createPostProcessor2(device, loader, camera, tag, shaders)
     local resY = math.floor(canvasSize.y / stitchTexSize.y) * 2
     resY = (resY >= 2048) and 2048 or resY
 
-    local offscreenRes = solo.Vector2(resX, resY)
+    local offscreenRes = vec2(resX, resY)
 
-    local stitchCount = solo.Vector2(offscreenRes.x * stitchWidth / (2 * stitchTexSize.x), offscreenRes.y / 2)
+    local stitchCount = vec2(offscreenRes.x * stitchWidth / (2 * stitchTexSize.x), offscreenRes.y / 2)
 
     local fbTex = solo.RectTexture.create(device)
     fbTex:setData(solo.TextureFormat.RGB, {}, offscreenRes.x, offscreenRes.y)
@@ -119,14 +119,14 @@ function createPostProcessor2(device, loader, camera, tag, shaders)
     material:setVector2Parameter("stitchCount", stitchCount)
     material:setVector2Parameter("resolution", offscreenRes)
 
-    camera:setViewport(solo.Vector4(0, 0, offscreenRes.x, offscreenRes.y))
+    camera:setViewport(vec4(0, 0, offscreenRes.x, offscreenRes.y))
     camera:setRenderTarget(fb1)
 
     local pp = createPostProcessor(device, camera, tag)
 
     pp.apply = function(self)
-        self.renderStep(material, fbTex, nil, solo.Vector4(0, 0, canvasSize.x, canvasSize.y))
-        camera:setViewport(solo.Vector4(0, 0, offscreenRes.x, offscreenRes.y))
+        self.renderStep(material, fbTex, nil, vec4(0, 0, canvasSize.x, canvasSize.y))
+        camera:setViewport(vec4(0, 0, offscreenRes.x, offscreenRes.y))
         camera:setRenderTarget(fb1)
     end
 

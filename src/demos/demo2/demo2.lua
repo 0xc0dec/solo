@@ -1,5 +1,7 @@
 -- TODO avoid using globals in functions
 
+dofile("../../src/demos/common/common.lua")
+
 dev = solo.device
 loader = dev:getAssetLoader()
 physics = dev:getPhysics()
@@ -10,11 +12,11 @@ function initMainCamera()
     local node = scene:createNode()
         
     local t = node:findComponent("Transform")
-    t:setLocalPosition(solo.Vector3(10, 10, 10))
-    t:lookAt(solo.Vector3(0, 0, 0), solo.Vector3(0, 1, 0))
+    t:setLocalPosition(vec3(10, 10, 10))
+    t:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
     
     local cam = node:addComponent("Camera")
-    cam:setClearColor(solo.Vector4(0.0, 0.6, 0.6, 1.0))
+    cam:setClearColor(vec4(0.0, 0.6, 0.6, 1.0))
     cam:setNear(0.05)
 
     return cam

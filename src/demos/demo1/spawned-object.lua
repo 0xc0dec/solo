@@ -9,14 +9,14 @@ return function(device, effect, mesh, initialPos, initialRotation)
             material:setFaceCull(solo.FaceCull.All)
             material:setPolygonMode(solo.PolygonMode.Wireframe)
             material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
-            material:setVector4Parameter("color", solo.Vector4(1, 1, 0, 1))
+            material:setVector4Parameter("color", vec4(1, 1, 0, 1))
 
             local renderer = self.node:addComponent("MeshRenderer")
             renderer:setMesh(mesh)
             renderer:setMaterial(0, material)
             
             local t = self.node:findComponent("Transform")
-            t:setLocalScale(solo.Vector3(0.3, 0.3, 0.3))
+            t:setLocalScale(vec3(0.3, 0.3, 0.3))
             t:setLocalPosition(initialPos)
             t:setLocalRotation(initialRotation)
 
@@ -28,14 +28,14 @@ return function(device, effect, mesh, initialPos, initialRotation)
             params.angularDamping = 0.1
 
             local rigidBody = self.node:addComponent("RigidBody", params)
-            rigidBody:setCollider(solo.BoxCollider.create(solo.Vector3(1, 1, 1)))
+            rigidBody:setCollider(solo.BoxCollider.create(vec3(1, 1, 1)))
 
             self.activeTimer = 0
             self.material = material
         end,
 
         setActive = function(self)
-            self:setColor(solo.Vector4(1, 0, 0, 1))
+            self:setColor(vec4(1, 0, 0, 1))
             self.active = true
             self.activeTimer = 0
         end,
@@ -51,7 +51,7 @@ return function(device, effect, mesh, initialPos, initialRotation)
 
             self.activeTimer = self.activeTimer + device:getTimeDelta()
             if self.activeTimer >= 0.2 then
-                self:setColor(solo.Vector4(1, 1, 0, 1))
+                self:setColor(vec4(1, 1, 0, 1))
                 self.active = false
             end
         end

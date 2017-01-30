@@ -1,5 +1,17 @@
 -- TODO avoid using globals in functions
 
+dofile("../../src/demos/common/common.lua")
+
+createScreenshoter = dofile("../../src/demos/common/screenshoter.lua")
+createRotator = dofile("../../src/demos/common/rotator.lua")
+createLookAt = dofile("../../src/demos/common/lookat.lua")
+createDynamicQuadUpdater = dofile("../../src/demos/demo1/dynamic-quad-updater.lua")
+createTimeLabelUpdater = dofile("../../src/demos/demo1/time-label-updater.lua")
+createSpawner = dofile("../../src/demos/demo1/spawner.lua")
+createSpawnedObjectTargeter = dofile("../../src/demos/demo1/spawned-object-targeter.lua")
+postProcessors = dofile("../../src/demos/demo1/post-processors.lua")
+shaders = dofile("../../src/demos/demo1/shaders.lua")
+
 dev = solo.device
 loader = dev:getAssetLoader()
 physics = dev:getPhysics()
@@ -20,16 +32,6 @@ knownTags = {
     postProcessor = 1 << 4
 }
 
-createDynamicQuadUpdater = dofile("../../src/demos/demo1/dynamic-quad-updater.lua")
-createTimeLabelUpdater = dofile("../../src/demos/demo1/time-label-updater.lua")
-createScreenshoter = dofile("../../src/demos/demo1/screenshoter.lua")
-createRotator = dofile("../../src/demos/demo1/rotator.lua")
-createLookAt = dofile("../../src/demos/demo1/lookat.lua")
-createSpawner = dofile("../../src/demos/demo1/spawner.lua")
-createSpawnedObjectTargeter = dofile("../../src/demos/demo1/spawned-object-targeter.lua")
-postProcessors = dofile("../../src/demos/demo1/post-processors.lua")
-shaders = dofile("../../src/demos/demo1/shaders.lua")
-
 effects = {
     simpleTexture = solo.Effect.create(dev, shaders.vs.basic, shaders.fs.texture),
     color = solo.Effect.create(dev, shaders.vs.basic, shaders.fs.color)
@@ -44,10 +46,10 @@ function createColorMaterial(color)
 end
 
 materials = {
-    red = createColorMaterial(solo.Vector4(1, 0, 0, 1)),
-    green = createColorMaterial(solo.Vector4(0, 1, 0, 1)),
-    blue = createColorMaterial(solo.Vector4(0, 0, 1, 1)),
-    white = createColorMaterial(solo.Vector4(1, 1, 1, 1))
+    red = createColorMaterial(vec4(1, 0, 0, 1)),
+    green = createColorMaterial(vec4(0, 1, 0, 1)),
+    blue = createColorMaterial(vec4(0, 0, 1, 1)),
+    white = createColorMaterial(vec4(1, 1, 1, 1))
 }
 
 meshes = {
@@ -59,8 +61,8 @@ function initMainCamera()
     local node = scene:createNode()
         
     local t = node:findComponent("Transform")
-    t:setLocalPosition(solo.Vector3(0, 5, 10))
-    t:lookAt(solo.Vector3(0, 0, 0), solo.Vector3(0, 1, 0))
+    t:setLocalPosition(vec3(0, 5, 10))
+    t:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
     
     node:addScriptComponent(createScreenshoter(dev, "demo1.bmp"))
     node:addComponent("Spectator")
@@ -68,7 +70,7 @@ function initMainCamera()
     node:addScriptComponent(createSpawner(dev, meshes.cube, effects.color))
 
     local cam = node:addComponent("Camera")
-    cam:setClearColor(solo.Vector4(0.0, 0.6, 0.6, 1.0))
+    cam:setClearColor(vec4(0.0, 0.6, 0.6, 1.0))
     cam:setNear(0.05)
 
     return cam
@@ -81,12 +83,12 @@ function initOffscreenCamera()
     tex:setWrapping(solo.TextureWrapping.Clamp)
 
     local node = scene:createNode()
-    node:findComponent("Transform"):setLocalPosition(solo.Vector3(0, 0, 10))
+    node:findComponent("Transform"):setLocalPosition(vec3(0, 0, 10))
 
     local cam = node:addComponent("Camera")
-    cam:setClearColor(solo.Vector4(1, 0, 1, 1))
+    cam:setClearColor(vec4(1, 0, 1, 1))
     cam:setNear(0.05)
-    cam:setViewport(solo.Vector4(0, 0, canvasSize.x / 8, canvasSize.y / 8))
+    cam:setViewport(vec4(0, 0, canvasSize.x / 8, canvasSize.y / 8))
 
     local fb = solo.FrameBuffer.create(dev)
     fb:setAttachments({ tex })
@@ -116,13 +118,13 @@ function initCheckerBox()
     local material = solo.Material.create(dev, effect)
     material:setFaceCull(solo.FaceCull.All)
     material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
-    material:setVector4Parameter("color", solo.Vector4(1, 1, 0, 1))
+    material:setVector4Parameter("color", vec4(1, 1, 0, 1))
 
     local node = scene:createNode()
     node:addComponent("MeshRenderer"):setMesh(meshes.cube)
     node:findComponent("MeshRenderer"):setMaterial(0, material)
-    node:findComponent("Transform"):setLocalPosition(solo.Vector3(-5, 0, 0))
-    node:addScriptComponent(createRotator(dev, "world", solo.Vector3(0, 1, 0)))
+    node:findComponent("Transform"):setLocalPosition(vec3(-5, 0, 0))
+    node:addScriptComponent(createRotator(dev, "world", vec3(0, 1, 0)))
 end
 
 function loadTextureAsync(path, callback)
@@ -165,7 +167,7 @@ function initDynamicQuad()
         material:setTextureParameter("mainTex", tex)
 
         local node = scene:createNode()
-        node:findComponent("Transform"):setLocalPosition(solo.Vector3(0, 0, -5))
+        node:findComponent("Transform"):setLocalPosition(vec3(0, 0, -5))
         local renderer = node:addComponent("MeshRenderer")
         renderer:setMesh(mesh)
         renderer:setMaterial(0, material)
@@ -178,8 +180,8 @@ function initCurrentTimeLabel()
     local node = scene:createNode()
     node:addScriptComponent(createTimeLabelUpdater(dev, fs))
     node:findComponent("FontRenderer"):setTag(knownTags.transparent)
-    node:findComponent("Transform"):setLocalScale(solo.Vector3(0.02, 0.02, 1))
-    node:findComponent("Transform"):setLocalPosition(solo.Vector3(-3, 0, 4))
+    node:findComponent("Transform"):setLocalScale(vec3(0.02, 0.02, 1))
+    node:findComponent("Transform"):setLocalPosition(vec3(-3, 0, 4))
 end
 
 function initMonkeyHead(tex)
@@ -196,8 +198,8 @@ function initMonkeyHead(tex)
         local renderer = node:addComponent("MeshRenderer")
         renderer:setMesh(mesh)
         renderer:setMaterial(0, material)
-        node:findComponent("Transform"):setLocalPosition(solo.Vector3(0, 0, 0))
-        node:addScriptComponent(createRotator(dev, "local", solo.Vector3(1, 0, 0)))
+        node:findComponent("Transform"):setLocalPosition(vec3(0, 0, 0))
+        node:addScriptComponent(createRotator(dev, "local", vec3(1, 0, 0)))
     end)
 end
 
@@ -209,8 +211,8 @@ function initFloor(tex)
 
     local node = scene:createNode()
     
-    node:findComponent("Transform"):setLocalScale(solo.Vector3(10, 0.1, 10))
-    node:findComponent("Transform"):setLocalPosition(solo.Vector3(0, -2, 0))
+    node:findComponent("Transform"):setLocalScale(vec3(10, 0.1, 10))
+    node:findComponent("Transform"):setLocalPosition(vec3(0, -2, 0))
 
     local renderer = node:addComponent("MeshRenderer")
     renderer:setMesh(meshes.cube)
@@ -220,7 +222,7 @@ function initFloor(tex)
     params.mass = 0
     params.friction = 0.5
     local rigidBody = node:addComponent("RigidBody", params)
-    rigidBody:setCollider(solo.BoxCollider.create(solo.Vector3(1, 1, 1)))
+    rigidBody:setCollider(solo.BoxCollider.create(vec3(1, 1, 1)))
 end
 
 function attachAxesMesh(node, axesMesh)
@@ -239,17 +241,17 @@ function initMonitorQuad(axesMesh)
     material:setTextureParameter("mainTex", offscreenCameraTex)
 
     local parent = scene:createNode()
-    parent:findComponent("Transform"):setLocalPosition(solo.Vector3(-2, 2, -2))
-    parent:addScriptComponent(createRotator(dev, "world", solo.Vector3(0, 1, 0)))
+    parent:findComponent("Transform"):setLocalPosition(vec3(-2, 2, -2))
+    parent:addScriptComponent(createRotator(dev, "world", vec3(0, 1, 0)))
     attachAxesMesh(parent, axesMesh)
 
     local node = scene:createNode()
-    node:addScriptComponent(createLookAt(solo.Vector3(0, 0, 0)))
+    node:addScriptComponent(createLookAt(vec3(0, 0, 0)))
 
     local transform = node:findComponent("Transform")
     transform:setParent(parent:findComponent("Transform"))
-    transform:setLocalPosition(solo.Vector3(5, 2, -5))
-    transform:setLocalScale(solo.Vector3(5, 5 * canvasSize.y / canvasSize.x, 1))
+    transform:setLocalPosition(vec3(5, 2, -5))
+    transform:setLocalScale(vec3(5, 5 * canvasSize.y / canvasSize.x, 1))
     
     local renderer = node:addComponent("MeshRenderer")
     renderer:setMesh(meshes.quad)
@@ -270,14 +272,14 @@ function initTransparentQuad(axesMesh)
         material:setDepthWrite(false)
 
         local parent = scene:createNode()
-        parent:findComponent("Transform"):setLocalPosition(solo.Vector3(5, 0, 0))
-        parent:addScriptComponent(createRotator(dev, "world", solo.Vector3(0, 1, 0)))
+        parent:findComponent("Transform"):setLocalPosition(vec3(5, 0, 0))
+        parent:addScriptComponent(createRotator(dev, "world", vec3(0, 1, 0)))
         attachAxesMesh(parent, axesMesh)
 
         local node = scene:createNode()
-        node:addScriptComponent(createRotator(dev, "local", solo.Vector3(1, 0, 0)))
+        node:addScriptComponent(createRotator(dev, "local", vec3(1, 0, 0)))
         node:findComponent("Transform"):setParent(parent:findComponent("Transform"))
-        node:findComponent("Transform"):setLocalPosition(solo.Vector3(2, 0, 0))
+        node:findComponent("Transform"):setLocalPosition(vec3(2, 0, 0))
 
         local renderer = node:addComponent("MeshRenderer")
         renderer:setMesh(meshes.quad)
