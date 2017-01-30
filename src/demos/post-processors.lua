@@ -4,6 +4,12 @@ function createPostProcessor(device, camera, tag)
     quadRenderer:setMesh(solo.Mesh.createFromPrefab(device, solo.MeshPrefab.Quad))
 
     return {
+        detach = function()
+            camera:getNode():removeComponent("MeshRenderer")
+            camera:setRenderTarget(nil)
+            camera:setViewport(solo.Vector4(-1, -1, -1, -1))
+        end,
+
         renderStep = function(mat, inputTexture, target, viewport)
             mat:setTextureParameter("mainTex", inputTexture)
             quadRenderer:setMaterial(0, mat);
@@ -14,7 +20,7 @@ function createPostProcessor(device, camera, tag)
     }
 end
 
-return function(device, camera, tag, shaders)
+function createPostProcessor1(device, camera, tag, shaders)
     local canvasSize = device:getCanvasSize()
 
     local fbTex1 = solo.RectTexture.create(device)
@@ -79,3 +85,55 @@ return function(device, camera, tag, shaders)
 
     return pp
 end
+
+function createPostProcessor2(device, loader, camera, tag, shaders)
+    local stitchWidth = 30
+    local canvasSize = device:getCanvasSize()
+
+    local stitchTex = loader:loadRectTexture("../../assets/stitches.png")
+    stitchTex:setFiltering(solo.TextureFiltering.Nearest)
+
+    local stitchTexSize = stitchTex:getSize()
+
+    local resX = math.floor(canvasSize.x / stitchWidth) * 2
+    resX = (resX >= 2048) and 2048 or resX
+
+    local resY = math.floor(canvasSize.y / stitchTexSize.y) * 2
+    resY = (resY >= 2048) and 2048 or resY
+
+    local offscreenRes = solo.Vector2(resX, resY)
+
+    local stitchCount = solo.Vector2(offscreenRes.x * stitchWidth / (2 * stitchTexSize.x), offscreenRes.y / 2)
+
+    local fbTex = solo.RectTexture.create(device)
+    fbTex:setData(solo.TextureFormat.RGB, {}, offscreenRes.x, offscreenRes.y)
+    fbTex:setFiltering(solo.TextureFiltering.Nearest)
+    fbTex:setWrapping(solo.TextureWrapping.Clamp)
+    local fb1 = solo.FrameBuffer.create(device)
+    fb1:setAttachments({ fbTex })
+
+    local effect = solo.Effect.create(device, shaders.vs.passThrough, shaders.fs.stitches)
+    local material = solo.Material.create(device, effect)
+    material:setTextureParameter("mainTex", fbTex)
+    material:setTextureParameter("stitchTex", stitchTex)
+    material:setVector2Parameter("stitchCount", stitchCount)
+    material:setVector2Parameter("resolution", offscreenRes)
+
+    camera:setViewport(solo.Vector4(0, 0, offscreenRes.x, offscreenRes.y))
+    camera:setRenderTarget(fb1)
+
+    local pp = createPostProcessor(device, camera, tag)
+
+    pp.apply = function(self)
+        self.renderStep(material, fbTex, nil, solo.Vector4(0, 0, canvasSize.x, canvasSize.y))
+        camera:setViewport(solo.Vector4(0, 0, offscreenRes.x, offscreenRes.y))
+        camera:setRenderTarget(fb1)
+    end
+
+    return pp
+end
+
+return {
+    create1 = createPostProcessor1,
+    create2 = createPostProcessor2
+}

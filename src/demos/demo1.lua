@@ -9,10 +9,10 @@ fs = dev:getFileSystem()
 scene = solo.Scene.create(dev)
 canvasSize = dev:getCanvasSize()
 
-skyboxTag = 2
-transparentTag = 4
-monitorQuadTag = 8
-postProcessorTag = 16
+skyboxTag = 1 << 1
+transparentTag = 1 << 2
+monitorQuadTag = 1 << 3
+postProcessorTag = 1 << 4
 
 createDynamicQuadUpdater = dofile("../../src/demos/dynamic-quad-updater.lua")
 createTimeLabelUpdater = dofile("../../src/demos/time-label-updater.lua")
@@ -21,7 +21,7 @@ createRotator = dofile("../../src/demos/rotator.lua")
 createLookAt = dofile("../../src/demos/lookat.lua")
 createSpawner = dofile("../../src/demos/spawner.lua")
 createSpawnedObjectTargeter = dofile("../../src/demos/spawned-object-targeter.lua")
-createPostProcessor1 = dofile("../../src/demos/post-processor1.lua")
+postProcessors = dofile("../../src/demos/post-processors.lua")
 shaders = dofile("../../src/demos/shaders.lua")
 
 effects = {
@@ -293,8 +293,6 @@ loadTextureAsync("../../assets/cobblestone.png", function(tex)
     initFloor(tex)
 end)
 
-pp1 = createPostProcessor1(dev, mainCamera, postProcessorTag, shaders)
-
 loader:loadMeshAsync("../../assets/axes.obj"):done(function(mesh)
     initMonitorQuad(mesh)
     initTransparentQuad(mesh)
@@ -308,10 +306,29 @@ function keepRunning()
            not dev:isKeyPressed(solo.KeyCode.Escape, true)
 end
 
+function detachPostProcessor()
+    if pp then
+        pp:detach()
+        pp = nil
+    end
+end
+
 function update()
-    scene:visit(function(cmp)
-        cmp:update()
-    end)
+    scene:visit(function(cmp) cmp:update() end)
+
+    if dev:isKeyPressed(solo.KeyCode.Digit1, true) then
+        detachPostProcessor()
+        pp = postProcessors.create1(dev, mainCamera, postProcessorTag, shaders)
+    end
+
+    if dev:isKeyPressed(solo.KeyCode.Digit2, true) then
+        detachPostProcessor()
+        pp = postProcessors.create2(dev, loader, mainCamera, postProcessorTag, shaders)
+    end
+
+    if dev:isKeyPressed(solo.KeyCode.Digit3, true) then
+        detachPostProcessor()
+    end
 end
 
 function renderByTags(tags, ctx)
@@ -331,7 +348,9 @@ function render()
         renderByTags(transparentTag, ctx)
     end)
 
-    pp1:apply()
+    if pp then
+        pp:apply()
+    end
 end
 
 function run()
