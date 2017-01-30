@@ -9,6 +9,10 @@ fs = dev:getFileSystem()
 scene = solo.Scene.create(dev)
 canvasSize = dev:getCanvasSize()
 
+function getAssetPath(fileName)
+    return "../../assets/" .. fileName
+end
+
 knownTags = {
     skybox = 1 << 1,
     transparent = 1 << 2,
@@ -92,7 +96,7 @@ function initOffscreenCamera()
 end
 
 function initSkybox()
-    local getImagePath = function(fileName) return "../../assets/skyboxes/deep-space/" .. fileName end
+    local getImagePath = function(fileName) return getAssetPath("skyboxes/deep-space/") .. fileName end
     loader:loadCubeTextureAsync({
         getImagePath("front.png"), getImagePath("back.png"), getImagePath("left.png"),
         getImagePath("right.png"), getImagePath("top.png"), getImagePath("bottom.png")
@@ -131,7 +135,7 @@ function loadTextureAsync(path, callback)
 end
 
 function initDynamicQuad()
-    loadTextureAsync("../../assets/freeman.png", function(tex)
+    loadTextureAsync(getAssetPath("freeman.png"), function(tex)
         tex:setWrapping(solo.TextureWrapping.Clamp)
 
         local layout = solo.VertexBufferLayout()
@@ -187,7 +191,7 @@ function initMonkeyHead(tex)
     material:bindInvTransposedWorldMatrixParameter("invTransposedWorldMatrix")
     material:setTextureParameter("mainTex", tex)
 
-    loader:loadMeshAsync("../../assets/monkey_hires.obj"):done(function(mesh)
+    loader:loadMeshAsync(getAssetPath("monkey_hires.obj")):done(function(mesh)
         local node = scene:createNode()
         local renderer = node:addComponent("MeshRenderer")
         renderer:setMesh(mesh)
@@ -254,7 +258,7 @@ function initMonitorQuad(axesMesh)
 end
 
 function initTransparentQuad(axesMesh)
-    loadTextureAsync("../../assets/flammable.png", function(tex)
+    loadTextureAsync(getAssetPath("flammable.png"), function(tex)
         tex:setWrapping(solo.TextureWrapping.Clamp)
 
         local material = solo.Material.create(dev, effects.simpleTexture)
@@ -288,17 +292,15 @@ initSkybox()
 initCheckerBox()
 initDynamicQuad()
 initCurrentTimeLabel()
-loadTextureAsync("../../assets/cobblestone.png", function(tex)
+loadTextureAsync(getAssetPath("cobblestone.png"), function(tex)
     initMonkeyHead(tex)
     initFloor(tex)
 end)
 
-loader:loadMeshAsync("../../assets/axes.obj"):done(function(mesh)
+loader:loadMeshAsync(getAssetPath("axes.obj")):done(function(mesh)
     initMonitorQuad(mesh)
     initTransparentQuad(mesh)
 end)
-
--- TODO monitor quad, axes, etc...
 
 function keepRunning()
     return not dev:isQuitRequested() and

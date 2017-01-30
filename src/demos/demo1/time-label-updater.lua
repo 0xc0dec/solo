@@ -8,7 +8,7 @@ return function(device, fs)
         typeId = solo.getCmpId("TimeLabelUpdater"),
 
         init = function(self)
-            local fontData = fs:readBytes("../../assets/aller.ttf")
+            local fontData = fs:readBytes(getAssetPath("aller.ttf"))
             local firstChar = string.byte(" ")
             local charCount = string.byte("~") - string.byte(" ")
             local font = solo.Font.create(device, fontData, lineHeight, textureWidth,
