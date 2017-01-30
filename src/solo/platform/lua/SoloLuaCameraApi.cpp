@@ -25,13 +25,23 @@
 using namespace solo;
 
 
+// Allow passing nulls. TODO make this easier for future uses
+static void setRenderTarget(Camera *camera, LuaRef target)
+{
+    auto realTarget = target.isValid() && target.toPtr()
+        ? target.toValue<sptr<FrameBuffer>>()
+        : nullptr;
+    camera->setRenderTarget(realTarget);
+}
+
+
 void registerCameraApi(CppBindModule<LuaBinding> &module)
 {
     auto camera = BEGIN_CLASS_EXTEND(module, Camera, Component);
     REG_METHOD(camera, Camera, renderFrame);
     REG_METHOD(camera, Camera, getTransform);
     REG_METHOD(camera, Camera, getRenderTarget);
-    REG_METHOD(camera, Camera, setRenderTarget);
+    REG_FREE_FUNC_AS_METHOD(camera, setRenderTarget);
     REG_METHOD(camera, Camera, getClearColor);
     REG_METHOD(camera, Camera, setClearColor);
     REG_METHOD(camera, Camera, isClearColorEnabled);
