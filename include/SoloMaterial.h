@@ -35,10 +35,8 @@ namespace solo
     class Device;
     class Effect;
     class Texture;
-    class MaterialParameter;
     class Camera;
     class Transform;
-    enum class MaterialParameterType;
 
     class Material
     {
@@ -49,32 +47,32 @@ namespace solo
 
         virtual ~Material() {}
 
-        void setFloatParameter(const std::string &name, float value);
-        void setFloatArrayParameter(const std::string &name, const std::vector<float> &value);
+        virtual void setFloatParameter(const std::string &name, float value) = 0;
+        virtual void setFloatArrayParameter(const std::string &name, const std::vector<float> &value) = 0;
 
-        void setVector2Parameter(const std::string &name, const Vector2 &value);
-        void setVector2ArrayParameter(const std::string &name, const std::vector<Vector2> &value);
+        virtual void setVector2Parameter(const std::string &name, const Vector2 &value) = 0;
+        virtual void setVector2ArrayParameter(const std::string &name, const std::vector<Vector2> &value) = 0;
 
-        void setVector3Parameter(const std::string &name, const Vector3 &value);
-        void setVector3ArrayParameter(const std::string &name, const std::vector<Vector3> &value);
+        virtual void setVector3Parameter(const std::string &name, const Vector3 &value) = 0;
+        virtual void setVector3ArrayParameter(const std::string &name, const std::vector<Vector3> &value) = 0;
 
-        void setVector4Parameter(const std::string &name, const Vector4 &value);
-        void setVector4ArrayParameter(const std::string &name, const std::vector<Vector4> &value);
+        virtual void setVector4Parameter(const std::string &name, const Vector4 &value) = 0;
+        virtual void setVector4ArrayParameter(const std::string &name, const std::vector<Vector4> &value) = 0;
 
-        void setMatrixParameter(const std::string &name, const Matrix &value);
-        void setMatrixArrayParameter(const std::string &name, const std::vector<Matrix> &value);
+        virtual void setMatrixParameter(const std::string &name, const Matrix &value) = 0;
+        virtual void setMatrixArrayParameter(const std::string &name, const std::vector<Matrix> &value) = 0;
 
-        void setTextureParameter(const std::string &name, sptr<Texture> value);
+        virtual void setTextureParameter(const std::string &name, sptr<Texture> value) = 0;
 
-        void bindWorldMatrixParameter(const std::string &name);
-        void bindViewMatrixParameter(const std::string &name);
-        void bindProjectionMatrixParameter(const std::string &name);
-        void bindWorldViewMatrixParameter(const std::string &name);
-        void bindViewProjectionMatrixParameter(const std::string &name);
-        void bindWorldViewProjectionMatrixParameter(const std::string &name);
-        void bindInvTransposedWorldMatrixParameter(const std::string &name);
-        void bindInvTransposedWorldViewMatrixParameter(const std::string &name);
-        void bindCameraWorldPositionParameter(const std::string &name);
+        virtual void bindWorldMatrixParameter(const std::string &name) = 0;
+        virtual void bindViewMatrixParameter(const std::string &name) = 0;
+        virtual void bindProjectionMatrixParameter(const std::string &name) = 0;
+        virtual void bindWorldViewMatrixParameter(const std::string &name) = 0;
+        virtual void bindViewProjectionMatrixParameter(const std::string &name) = 0;
+        virtual void bindWorldViewProjectionMatrixParameter(const std::string &name) = 0;
+        virtual void bindInvTransposedWorldMatrixParameter(const std::string &name) = 0;
+        virtual void bindInvTransposedWorldViewMatrixParameter(const std::string &name) = 0;
+        virtual void bindCameraWorldPositionParameter(const std::string &name) = 0;
 
         void apply(const Camera *camera, Transform *nodeTransform);
 
@@ -106,12 +104,10 @@ namespace solo
         explicit Material(Device *device, sptr<Effect> effect);
 
         virtual void applyState() = 0;
-        void setParameter(const std::string &name, MaterialParameterType type, const void *value);
+        virtual void applyParams(const Camera *camera, Transform *nodeTransform) = 0;
 
         Device *device = nullptr;
         sptr<Effect> effect;
-
-        std::unordered_map<std::string, sptr<MaterialParameter>> parameters;
 
         FaceCull faceCull = FaceCull::CW;
         PolygonMode polygonMode = PolygonMode::Triangle;

@@ -24,7 +24,6 @@
 #include "SoloLuaCommon.h"
 #include "SoloEffect.h"
 #include "SoloDevice.h"
-#include "SoloMaterialParameter.h"
 #include "SoloVertexFormat.h"
 #include "SoloMesh.h"
 
@@ -118,29 +117,6 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     REG_MODULE_CONSTANT(blendFactor, BlendFactor, OneMinusConstantAlpha);
     REG_MODULE_CONSTANT(blendFactor, BlendFactor, SrcAlphaSaturate);
     blendFactor.endModule();
-
-    auto autoBinding = module.beginModule("MaterialParameterType");
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, Float);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, FloatArray);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, Vector2);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, Vector2Array);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, Vector3);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, Vector3Array);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, Vector4);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, Vector4Array);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, Matrix);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, MatrixArray);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, Texture);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, CameraWorldPosition);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, InverseTransposedWorldMatrix);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, InverseTransposedWorldViewMatrix);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, ProjectionMatrix);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, ViewMatrix);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, ViewProjectionMatrix);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, WorldMatrix);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, WorldViewMatrix);
-    REG_MODULE_CONSTANT(autoBinding, MaterialParameterType, WorldViewProjectionMatrix);
-    autoBinding.endModule();
 
     auto keyCode = module.beginModule("KeyCode");
     REG_MODULE_CONSTANT(keyCode, KeyCode, Digit0);

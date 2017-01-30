@@ -25,6 +25,7 @@
 #ifdef SL_OPENGL_RENDERER
 
 #include "SoloMaterial.h"
+#include "SoloOpenGLRenderer.h"
 #include <unordered_map>
 #include <unordered_set>
 
@@ -39,58 +40,73 @@ namespace solo
     {
     public:
         explicit OpenGLMaterial(Device *device, sptr<Effect> effect);
+        ~OpenGLMaterial();
 
-        void setFloatParameter2(const std::string &name, float value);
-        void setFloatArrayParameter2(const std::string &name, const std::vector<float> &value);
+        void setFloatParameter(const std::string &name, float value) override final;
+        void setFloatArrayParameter(const std::string &name, const std::vector<float> &value) override final;
 
-        void setVector2Parameter2(const std::string &name, const Vector2 &value);
-        void setVector2ArrayParameter2(const std::string &name, const std::vector<Vector2> &value);
+        void setVector2Parameter(const std::string &name, const Vector2 &value) override final;
+        void setVector2ArrayParameter(const std::string &name, const std::vector<Vector2> &value) override final;
 
-        void setVector3Parameter2(const std::string &name, const Vector3 &value);
-        void setVector3ArrayParameter2(const std::string &name, const std::vector<Vector3> &value);
+        void setVector3Parameter(const std::string &name, const Vector3 &value) override final;
+        void setVector3ArrayParameter(const std::string &name, const std::vector<Vector3> &value) override final;
 
-        void setVector4Parameter2(const std::string &name, const Vector4 &value);
-        void setVector4ArrayParameter2(const std::string &name, const std::vector<Vector4> &value);
+        void setVector4Parameter(const std::string &name, const Vector4 &value) override final;
+        void setVector4ArrayParameter(const std::string &name, const std::vector<Vector4> &value) override final;
 
-        void setMatrixParameter2(const std::string &name, const Matrix &value);
-        void setMatrixArrayParameter2(const std::string &name, const std::vector<Matrix> &value);
+        void setMatrixParameter(const std::string &name, const Matrix &value) override final;
+        void setMatrixArrayParameter(const std::string &name, const std::vector<Matrix> &value) override final;
 
-        void setTextureParameter2(const std::string &name, sptr<Texture> value);
+        void setTextureParameter(const std::string &name, sptr<Texture> value) override final;
 
-        void bindWorldMatrixParameter2(const std::string &name);
-        void bindViewMatrixParameter2(const std::string &name);
-        void bindProjectionMatrixParameter2(const std::string &name);
-        void bindWorldViewMatrixParameter2(const std::string &name);
-        void bindViewProjectionMatrixParameter2(const std::string &name);
-        void bindWorldViewProjectionMatrixParameter2(const std::string &name);
-        void bindInvTransposedWorldMatrixParameter2(const std::string &name);
-        void bindInvTransposedWorldViewMatrixParameter2(const std::string &name);
-        void bindCameraWorldPositionParameter2(const std::string &name);
+        void bindWorldMatrixParameter(const std::string &name) override final;
+        void bindViewMatrixParameter(const std::string &name) override final;
+        void bindProjectionMatrixParameter(const std::string &name) override final;
+        void bindWorldViewMatrixParameter(const std::string &name) override final;
+        void bindViewProjectionMatrixParameter(const std::string &name) override final;
+        void bindWorldViewProjectionMatrixParameter(const std::string &name) override final;
+        void bindInvTransposedWorldMatrixParameter(const std::string &name) override final;
+        void bindInvTransposedWorldViewMatrixParameter(const std::string &name) override final;
+        void bindCameraWorldPositionParameter(const std::string &name) override final;
 
     protected:
+        template <class T>
+        using strKeyMap = std::unordered_map<std::string, T>;
+        using strSet = std::unordered_set<std::string>;
+
         void applyState() override final;
-        void applyParams();
+        void applyParams(const Camera *camera, Transform *nodeTransform) override final;
+
+        template <class T>
+        void applyScalarParams(strKeyMap<T> &params)
+        {
+            for (const auto &p: params)
+                renderer->setUniform(uniformHandles[p.first], &p.second, 1);
+        }
+
+        template <class T>
+        void applyVectorParams(strKeyMap<T> &params)
+        {
+            for (const auto &p: params)
+                renderer->setUniform(uniformHandles[p.first], p.second.data(), static_cast<uint32_t>(p.second.size()));
+        }
 
         OpenGLRenderer *renderer = nullptr;
         sptr<OpenGLEffect> effect = nullptr;
 
-        template <class T>
-        using map = std::unordered_map<std::string, T>;
-        using strSet = std::unordered_set<std::string>;
+        strKeyMap<uint32_t> uniformHandles;
 
-        map<uint32_t> uniformHandles;
-
-        map<float> floatParams;
-        map<Vector2> vector2Params;
-        map<Vector3> vector3Params;
-        map<Vector4> vector4Params;
-        map<Matrix> matrixParams;
-        map<std::vector<float>> floatArrayParams;
-        map<std::vector<Vector2>> vector2ArrayParams;
-        map<std::vector<Vector3>> vector3ArrayParams;
-        map<std::vector<Vector4>> vector4ArrayParams;
-        map<std::vector<Matrix>> matrixArrayParams;
-        map<sptr<OpenGLTexture>> textureParams;
+        strKeyMap<float> floatParams;
+        strKeyMap<Vector2> vector2Params;
+        strKeyMap<Vector3> vector3Params;
+        strKeyMap<Vector4> vector4Params;
+        strKeyMap<Matrix> matrixParams;
+        strKeyMap<std::vector<float>> floatArrayParams;
+        strKeyMap<std::vector<Vector2>> vector2ArrayParams;
+        strKeyMap<std::vector<Vector3>> vector3ArrayParams;
+        strKeyMap<std::vector<Vector4>> vector4ArrayParams;
+        strKeyMap<std::vector<Matrix>> matrixArrayParams;
+        strKeyMap<sptr<OpenGLTexture>> textureParams;
 
         strSet worldMatrixParams;
         strSet viewMatrixParams;

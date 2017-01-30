@@ -73,7 +73,6 @@
     <ClInclude Include="..\src\solo\platform\null\SoloNullFileSystem.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullFrameBuffer.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullMaterial.h" />
-    <ClInclude Include="..\src\solo\platform\null\SoloNullMaterialParameter.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullMesh.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullRectTexture.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullRenderer.h" />
@@ -82,7 +81,6 @@
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLEffect.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLFrameBuffer.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLMaterial.h" />
-    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLMaterialParameter.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLMesh.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLPrefabShaders.h" />
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLRectTexture.h" />
@@ -101,7 +99,6 @@
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanRenderer.h" />
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanSwapchain.h" />
     <ClInclude Include="..\src\solo\SoloImageLoader.h" />
-    <ClInclude Include="..\src\solo\SoloMaterialParameter.h" />
     <ClInclude Include="..\src\solo\SoloMeshLoader.h" />
     <ClInclude Include="..\src\solo\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\solo\SoloPngImageLoader.h" />
@@ -134,7 +131,6 @@
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLCamera.cpp" />
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLCubeTexture.cpp" />
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLMaterial.cpp" />
-    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLMaterialParameter.cpp" />
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLPrefabShaders.cpp" />
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLRenderer.cpp" />
     <ClCompile Include="..\src\solo\platform\opengl\SoloSDLOpenGLDevice.cpp" />
@@ -152,7 +148,6 @@
     <ClCompile Include="..\src\solo\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\solo\SoloDegree.cpp" />
     <ClCompile Include="..\src\solo\SoloFontRenderer.cpp" />
-    <ClCompile Include="..\src\solo\SoloMaterialParameter.cpp" />
     <ClCompile Include="..\src\solo\SoloPhysics.cpp" />
     <ClCompile Include="..\src\solo\SoloRadian.cpp" />
     <ClCompile Include="..\src\solo\SoloRenderer.cpp" />

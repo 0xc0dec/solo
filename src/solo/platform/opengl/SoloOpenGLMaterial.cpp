@@ -23,8 +23,11 @@
 #ifdef SL_OPENGL_RENDERER
 
 #include "SoloDevice.h"
-#include "SoloOpenGLRenderer.h"
 #include "SoloOpenGLEffect.h"
+#include "SoloOpenGLTexture.h"
+#include "SoloCamera.h"
+#include "SoloTransform.h"
+#include "SoloTexture.h"
 
 using namespace solo;
 
@@ -34,6 +37,13 @@ OpenGLMaterial::OpenGLMaterial(Device *device, sptr<Effect> effect):
 {
     renderer = dynamic_cast<OpenGLRenderer *>(device->getRenderer());
     this->effect = std::dynamic_pointer_cast<OpenGLEffect>(effect);
+}
+
+
+OpenGLMaterial::~OpenGLMaterial()
+{
+    for (auto &p : uniformHandles)
+        renderer->destroyUniform(p.second);
 }
 
 
@@ -49,15 +59,89 @@ void OpenGLMaterial::applyState()
 }
 
 
-void OpenGLMaterial::applyParams()
+void OpenGLMaterial::applyParams(const Camera *camera, Transform *nodeTransform)
 {
-    for (const auto &p: floatParams)
-        renderer->setUniform(uniformHandles[p.first], &p.second, 1); // TODO avoid handle lookup
-    // TODO etc...
+    // TODO refactor
+    // TODO avoid table lookups
+
+    applyScalarParams(floatParams);
+    applyScalarParams(vector2Params);
+    applyScalarParams(vector3Params);
+    applyScalarParams(vector4Params);
+    applyScalarParams(matrixParams);
+
+    applyVectorParams(floatArrayParams);
+    applyVectorParams(vector2ArrayParams);
+    applyVectorParams(vector3ArrayParams);
+    applyVectorParams(vector4ArrayParams);
+    applyVectorParams(matrixArrayParams);
+
+    for (const auto &p: textureParams)
+    {
+        renderer->setUniform(uniformHandles[p.first], nullptr, 1);
+        p.second->bind();
+    }
+
+    for (const auto &p : worldMatrixParams)
+    {
+        if (nodeTransform)
+            renderer->setUniform(uniformHandles[p], nodeTransform->getWorldMatrix().m, 1);
+    }
+
+    for (const auto &p : viewMatrixParams)
+    {
+        if (camera)
+            renderer->setUniform(uniformHandles[p], camera->getViewMatrix().m, 1);
+    }
+
+    for (const auto &p : projMatrixParams)
+    {
+        if (camera)
+            renderer->setUniform(uniformHandles[p], camera->getProjectionMatrix().m, 1);
+    }
+
+    for (const auto &p : worldViewMatrixParams)
+    {
+        if (nodeTransform && camera)
+            renderer->setUniform(uniformHandles[p], nodeTransform->getWorldViewMatrix(camera).m, 1);
+    }
+        
+    for (const auto &p : viewProjMatrixParams)
+    {
+        if (camera)
+            renderer->setUniform(uniformHandles[p], camera->getViewProjectionMatrix().m, 1);
+    }
+    
+    for (const auto &p : worldViewProjMatrixParams)
+    {
+        if (nodeTransform && camera)
+            renderer->setUniform(uniformHandles[p], nodeTransform->getWorldViewProjMatrix(camera).m, 1);
+    }
+    
+    for (const auto &p : invTransWorldMatrixParams)
+    {
+        if (nodeTransform)
+            renderer->setUniform(uniformHandles[p], nodeTransform->getInvTransposedWorldMatrix().m, 1);
+    }
+    
+    for (const auto &p : invTransWorldMatrixParams)
+    {
+        if (nodeTransform && camera)
+            renderer->setUniform(uniformHandles[p], nodeTransform->getInvTransposedWorldViewMatrix(camera).m, 1);
+    }
+
+    for (const auto &p : viewProjMatrixParams)
+    {
+        if (camera)
+        {
+            auto pos = camera->getTransform()->getWorldPosition();
+            renderer->setUniform(uniformHandles[p], &pos, 1);
+        }
+    }
 }
 
 
-void OpenGLMaterial::setFloatParameter2(const std::string &name, float value)
+void OpenGLMaterial::setFloatParameter(const std::string &name, float value)
 {
     if (floatParams.find(name) == floatParams.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Float, effect->getHandle());
@@ -65,7 +149,7 @@ void OpenGLMaterial::setFloatParameter2(const std::string &name, float value)
 }
 
 
-void OpenGLMaterial::setFloatArrayParameter2(const std::string &name, const std::vector<float> &value)
+void OpenGLMaterial::setFloatArrayParameter(const std::string &name, const std::vector<float> &value)
 {
     if (floatParams.find(name) == floatParams.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::FloatArray, effect->getHandle());
@@ -73,7 +157,7 @@ void OpenGLMaterial::setFloatArrayParameter2(const std::string &name, const std:
 }
 
 
-void OpenGLMaterial::setVector2Parameter2(const std::string& name, const Vector2 &value)
+void OpenGLMaterial::setVector2Parameter(const std::string& name, const Vector2 &value)
 {
     if (vector2Params.find(name) == vector2Params.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Vector2, effect->getHandle());
@@ -81,7 +165,7 @@ void OpenGLMaterial::setVector2Parameter2(const std::string& name, const Vector2
 }
 
 
-void OpenGLMaterial::setVector2ArrayParameter2(const std::string& name, const std::vector<Vector2> &value)
+void OpenGLMaterial::setVector2ArrayParameter(const std::string& name, const std::vector<Vector2> &value)
 {
     if (vector2ArrayParams.find(name) == vector2ArrayParams.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Vector2Array, effect->getHandle());
@@ -89,7 +173,7 @@ void OpenGLMaterial::setVector2ArrayParameter2(const std::string& name, const st
 }
 
 
-void OpenGLMaterial::setVector3Parameter2(const std::string &name, const Vector3 &value)
+void OpenGLMaterial::setVector3Parameter(const std::string &name, const Vector3 &value)
 {
     if (vector3Params.find(name) == vector3Params.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Vector3, effect->getHandle());
@@ -97,7 +181,7 @@ void OpenGLMaterial::setVector3Parameter2(const std::string &name, const Vector3
 }
 
 
-void OpenGLMaterial::setVector3ArrayParameter2(const std::string &name, const std::vector<Vector3> &value)
+void OpenGLMaterial::setVector3ArrayParameter(const std::string &name, const std::vector<Vector3> &value)
 {
     if (vector3ArrayParams.find(name) == vector3ArrayParams.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Vector3Array, effect->getHandle());
@@ -105,7 +189,7 @@ void OpenGLMaterial::setVector3ArrayParameter2(const std::string &name, const st
 }
 
 
-void OpenGLMaterial::setVector4Parameter2(const std::string &name, const Vector4 &value)
+void OpenGLMaterial::setVector4Parameter(const std::string &name, const Vector4 &value)
 {
     if (vector4Params.find(name) == vector4Params.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Vector4, effect->getHandle());
@@ -113,7 +197,7 @@ void OpenGLMaterial::setVector4Parameter2(const std::string &name, const Vector4
 }
 
 
-void OpenGLMaterial::setVector4ArrayParameter2(const std::string &name, const std::vector<Vector4> &value)
+void OpenGLMaterial::setVector4ArrayParameter(const std::string &name, const std::vector<Vector4> &value)
 {
     if (vector4ArrayParams.find(name) == vector4ArrayParams.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Vector4Array, effect->getHandle());
@@ -121,7 +205,7 @@ void OpenGLMaterial::setVector4ArrayParameter2(const std::string &name, const st
 }
 
 
-void OpenGLMaterial::setMatrixParameter2(const std::string &name, const Matrix& value)
+void OpenGLMaterial::setMatrixParameter(const std::string &name, const Matrix& value)
 {
     if (matrixParams.find(name) == matrixParams.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Matrix, effect->getHandle());
@@ -129,7 +213,7 @@ void OpenGLMaterial::setMatrixParameter2(const std::string &name, const Matrix& 
 }
 
 
-void OpenGLMaterial::setMatrixArrayParameter2(const std::string &name, const std::vector<Matrix>& value)
+void OpenGLMaterial::setMatrixArrayParameter(const std::string &name, const std::vector<Matrix>& value)
 {
     if (matrixArrayParams.find(name) == matrixArrayParams.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::MatrixArray, effect->getHandle());
@@ -137,15 +221,15 @@ void OpenGLMaterial::setMatrixArrayParameter2(const std::string &name, const std
 }
 
 
-void OpenGLMaterial::setTextureParameter2(const std::string &name, sptr<Texture> value)
+void OpenGLMaterial::setTextureParameter(const std::string &name, sptr<Texture> value)
 {
     if (textureParams.find(name) == textureParams.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Texture, effect->getHandle());
-    textureParams[name] = value;
+    textureParams[name] = std::dynamic_pointer_cast<OpenGLTexture>(value);
 }
 
 
-void OpenGLMaterial::bindWorldMatrixParameter2(const std::string& name)
+void OpenGLMaterial::bindWorldMatrixParameter(const std::string& name)
 {
     if (uniformHandles.find(name) == uniformHandles.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Matrix, effect->getHandle());
@@ -153,7 +237,7 @@ void OpenGLMaterial::bindWorldMatrixParameter2(const std::string& name)
 }
 
 
-void OpenGLMaterial::bindViewMatrixParameter2(const std::string& name)
+void OpenGLMaterial::bindViewMatrixParameter(const std::string& name)
 {
     if (uniformHandles.find(name) == uniformHandles.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Matrix, effect->getHandle());
@@ -161,7 +245,7 @@ void OpenGLMaterial::bindViewMatrixParameter2(const std::string& name)
 }
 
 
-void OpenGLMaterial::bindProjectionMatrixParameter2(const std::string& name)
+void OpenGLMaterial::bindProjectionMatrixParameter(const std::string& name)
 {
     if (uniformHandles.find(name) == uniformHandles.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Matrix, effect->getHandle());
@@ -169,7 +253,7 @@ void OpenGLMaterial::bindProjectionMatrixParameter2(const std::string& name)
 }
 
 
-void OpenGLMaterial::bindWorldViewMatrixParameter2(const std::string& name)
+void OpenGLMaterial::bindWorldViewMatrixParameter(const std::string& name)
 {
     if (uniformHandles.find(name) == uniformHandles.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Matrix, effect->getHandle());
@@ -177,7 +261,7 @@ void OpenGLMaterial::bindWorldViewMatrixParameter2(const std::string& name)
 }
 
 
-void OpenGLMaterial::bindViewProjectionMatrixParameter2(const std::string& name)
+void OpenGLMaterial::bindViewProjectionMatrixParameter(const std::string& name)
 {
     if (uniformHandles.find(name) == uniformHandles.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Matrix, effect->getHandle());
@@ -185,7 +269,7 @@ void OpenGLMaterial::bindViewProjectionMatrixParameter2(const std::string& name)
 }
 
 
-void OpenGLMaterial::bindWorldViewProjectionMatrixParameter2(const std::string& name)
+void OpenGLMaterial::bindWorldViewProjectionMatrixParameter(const std::string& name)
 {
     if (uniformHandles.find(name) == uniformHandles.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Matrix, effect->getHandle());
@@ -193,7 +277,7 @@ void OpenGLMaterial::bindWorldViewProjectionMatrixParameter2(const std::string& 
 }
 
 
-void OpenGLMaterial::bindInvTransposedWorldMatrixParameter2(const std::string& name)
+void OpenGLMaterial::bindInvTransposedWorldMatrixParameter(const std::string& name)
 {
     if (uniformHandles.find(name) == uniformHandles.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Matrix, effect->getHandle());
@@ -201,7 +285,7 @@ void OpenGLMaterial::bindInvTransposedWorldMatrixParameter2(const std::string& n
 }
 
 
-void OpenGLMaterial::bindInvTransposedWorldViewMatrixParameter2(const std::string& name)
+void OpenGLMaterial::bindInvTransposedWorldViewMatrixParameter(const std::string& name)
 {
     if (uniformHandles.find(name) == uniformHandles.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Matrix, effect->getHandle());
@@ -209,7 +293,7 @@ void OpenGLMaterial::bindInvTransposedWorldViewMatrixParameter2(const std::strin
 }
 
 
-void OpenGLMaterial::bindCameraWorldPositionParameter2(const std::string& name)
+void OpenGLMaterial::bindCameraWorldPositionParameter(const std::string& name)
 {
     if (uniformHandles.find(name) == uniformHandles.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Vector3, effect->getHandle());

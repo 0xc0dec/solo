@@ -145,9 +145,6 @@
     <ClInclude Include="..\src\solo\platform\sdl\SoloSDLDevice.h">
       <Filter>src\platform\sdl</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\SoloMaterialParameter.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloRectTexture.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -203,12 +200,6 @@
       <Filter>src\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="..\src\solo\platform\null\SoloNullMaterial.h">
-      <Filter>src\platform\null</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLMaterialParameter.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\null\SoloNullMaterialParameter.h">
       <Filter>src\platform\null</Filter>
     </ClInclude>
     <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLCubeTexture.h">
@@ -405,9 +396,6 @@
     <ClCompile Include="..\src\solo\platform\sdl\SoloSDLDevice.cpp">
       <Filter>src\platform\sdl</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\SoloMaterialParameter.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\solo\SoloRectTexture.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -439,9 +427,6 @@
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLMaterial.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLMaterialParameter.cpp">
       <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLCubeTexture.cpp">
