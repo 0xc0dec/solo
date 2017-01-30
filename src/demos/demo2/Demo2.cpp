@@ -18,68 +18,21 @@
     3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "../common/DemoBase.h"
-
-using namespace solo;
-
-
-class Demo final: public DemoBase
-{
-public:
-    explicit Demo(Device* device): DemoBase(device)
-    {
-        initCamera();
-        device->getScriptRuntime()->executeFile("../../assets/demo2.lua");
-    }
-
-    void update() override final
-    {
-        auto lifetime = device->getLifetime();
-        
-        auto color = camera->getClearColor();
-        color.x = std::abs(std::sinf(lifetime));
-
-        camera->setClearColor(color);
-    }
-
-    void render() override final
-    {
-        camera->renderFrame([&] (const RenderContext &ctx)
-        {
-        });
-    }
-
-private:
-    void initCamera()
-    {
-        auto node = scene->createNode();
-        
-        auto transform = node->findComponent<Transform>();
-        transform->setLocalPosition({10, 10, 10});
-        transform->lookAt({}, Vector3::unitY());
-
-        camera = node->addComponent<Camera>();
-        camera->setClearColor({0.0f, 0.6f, 0.6f, 1.0f});
-        camera->setNear(0.05f);
-
-        node->addComponent<Spectator>();
-    }
-
-    Camera *camera = nullptr;
-};
-
+#include <Solo.h>
 
 int main()
 {
+    using namespace solo;
+
     DeviceSetup setup;
     setup.mode = DeviceMode::Vulkan;
     setup.canvasWidth = 1200;
     setup.canvasHeight = 600;
     setup.logFilePath = "demo.log";
     setup.windowTitle = "Demo 2";
-
+    
     auto device = Device::create(setup);
-    Demo(device.get()).run();
+    device->getScriptRuntime()->executeFile("../../src/demos/demo2/demo2.lua");
 
     return 0;
 }
