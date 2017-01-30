@@ -293,7 +293,7 @@ loadTextureAsync("../../assets/cobblestone.png", function(tex)
     initFloor(tex)
 end)
 
--- pp1 = createPostProcessor1(dev, mainCamera, postProcessorTag, shaders)
+pp1 = createPostProcessor1(dev, mainCamera, postProcessorTag, shaders)
 
 loader:loadMeshAsync("../../assets/axes.obj"):done(function(mesh)
     initMonitorQuad(mesh)
@@ -331,7 +331,7 @@ function render()
         renderByTags(transparentTag, ctx)
     end)
 
-    -- pp1:apply()
+    pp1:apply()
 end
 
 function run()

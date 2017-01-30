@@ -1,17 +1,15 @@
 function createPostProcessor(device, camera, tag)
     local quadRenderer = camera:getNode():addComponent("MeshRenderer")
     quadRenderer:setTags(tag)
-    quadRenderer:setMesh(solo.Mesh.create(device, solo.MeshPrefab.Quad))
+    quadRenderer:setMesh(solo.Mesh.createFromPrefab(device, solo.MeshPrefab.Quad))
 
     return {
         renderStep = function(mat, inputTexture, target, viewport)
             mat:setTextureParameter("mainTex", inputTexture)
             quadRenderer:setMaterial(0, mat);
-            camera:setViewport(solo.Vector4(viewport.x, viewport.y, viewport.z, viewport.w))
+            camera:setViewport(viewport)
             camera:setRenderTarget(target)
-            camera:renderFrame(function(ctx)
-                quadRenderer:render(ctx)
-            end)
+            camera:renderFrame(function(ctx) quadRenderer:render(ctx) end)
         end
     }
 end
@@ -74,7 +72,7 @@ return function(device, camera, tag, shaders)
         self.renderStep(grayscaleMat, fbTex1, fb2, viewport)
         self.renderStep(saturateMat, fbTex2, fb1, viewport)
         self.renderStep(verticalBlurMat , fbTex1, fb2, viewport)
-        -- self.renderStep(horizontalBlurMat, fbTex2, nil, viewport)
+        self.renderStep(horizontalBlurMat, fbTex2, nil, viewport)
 
         camera:setRenderTarget(fb1)
     end
