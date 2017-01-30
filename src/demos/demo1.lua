@@ -1,21 +1,5 @@
 -- TODO avoid using globals in functions
 
-function getCmpId(name)
-    solo.__nextCmpId = solo.__nextCmpId and solo.__nextCmpId or 1
-    solo.__cmpIds = solo.__cmpIds and solo.__cmpIds or {}
-    
-    local id = solo.__cmpIds[name]
-    if not id then
-        id = solo.__nextCmpId
-        solo.__cmpIds[name] = id
-        solo.__nextCmpId = solo.__nextCmpId + 1
-    end
-
-    return id
-end
-
-solo.getCmpId = getCmpId
-
 dev = solo.device
 loader = dev:getAssetLoader()
 physics = dev:getPhysics()

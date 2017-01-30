@@ -39,6 +39,26 @@ void registerMeshApi(CppBindModule<LuaBinding> &module);
 void registerFontApi(CppBindModule<LuaBinding> &module);
 
 
+static void registerLibrary(LuaState &state)
+{
+    state.doString(R"(
+        solo.getCmpId = function(name)
+            solo.__nextCmpId = solo.__nextCmpId and solo.__nextCmpId or 1
+            solo.__cmpIds = solo.__cmpIds and solo.__cmpIds or {}
+    
+            local id = solo.__cmpIds[name]
+            if not id then
+                id = solo.__nextCmpId
+                solo.__cmpIds[name] = id
+                solo.__nextCmpId = solo.__nextCmpId + 1
+            end
+
+            return id
+        end
+    )");
+}
+
+
 LuaScriptRuntime::LuaScriptRuntime(Device *d)
 {
     lua = LuaState::newState();
@@ -58,6 +78,8 @@ LuaScriptRuntime::LuaScriptRuntime(Device *d)
     registerPhysicsApi(module);
     registerMeshApi(module);
     registerFontApi(module);
+
+    registerLibrary(lua);
 
     module.addConstant("device", d);
 
