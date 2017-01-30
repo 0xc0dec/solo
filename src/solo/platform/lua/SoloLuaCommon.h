@@ -54,4 +54,26 @@ using namespace LuaIntf;
 #define REG_FREE_FUNC_AS_METHOD_RENAMED(binding, func, name) binding.addFunction(name, func)
 #define REG_FREE_FUNC_AS_STATIC_FUNC_RENAMED(binding, func, name) binding.addStaticFunction(name, func)
 
+// TODO refactor these
+#define REG_METHOD_NULLABLE_1ST_ARG(binding, klass, method, argType) \
+    binding.addFunction(#method, \
+        [](klass *obj, LuaRef arg) \
+        { \
+            auto unwrapped = arg.isValid() && arg.toPtr() \
+                ? arg.toValue<argType>() \
+                : nullptr; \
+            obj->method(unwrapped); \
+        })
+
+#define REG_METHOD_NULLABLE_2ND_ARG(binding, klass, method, firstArgType, secondArgType) \
+    binding.addFunction(#method, \
+        [](klass *obj, firstArgType arg1, LuaRef arg2) \
+        { \
+            auto unwrapped = arg2.isValid() && arg2.toPtr() \
+                ? arg2.toValue<secondArgType>() \
+                : nullptr; \
+            obj->method(arg1, unwrapped); \
+        })
+    
+
 #define REG_MODULE_CONSTANT(module, holder, constant) module.addConstant(#constant, holder::constant)

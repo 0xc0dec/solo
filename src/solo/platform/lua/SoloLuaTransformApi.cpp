@@ -30,7 +30,7 @@ void registerTransformApi(CppBindModule<LuaBinding> &module)
 
     auto transform = BEGIN_CLASS_EXTEND(module, Transform, Component);
     REG_METHOD(transform, Transform, getParent);
-    REG_METHOD(transform, Transform, setParent);
+    REG_METHOD_NULLABLE_1ST_ARG(transform, Transform, setParent, Transform*);
     REG_METHOD(transform, Transform, getChild);
     REG_METHOD(transform, Transform, getChildrenCount);
     REG_METHOD(transform, Transform, clearChildren);

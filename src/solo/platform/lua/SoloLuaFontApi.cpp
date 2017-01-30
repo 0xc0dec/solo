@@ -53,7 +53,7 @@ static void registerFont(CppBindModule<LuaBinding> &module)
 static void registerFontRenderer(CppBindModule<LuaBinding> &module)
 {
     auto r = BEGIN_CLASS_EXTEND(module, FontRenderer, Component);
-    REG_METHOD(r, FontRenderer, setFont);
+    REG_METHOD_NULLABLE_1ST_ARG(r, FontRenderer, setFont, sptr<Font>);
     REG_METHOD(r, FontRenderer, setText);
     r.endClass();
 }

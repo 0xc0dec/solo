@@ -75,9 +75,9 @@ static void registerMeshRenderer(CppBindModule<LuaBinding> &module)
     auto renderer = BEGIN_CLASS_EXTEND(module, MeshRenderer, Component);
     REG_METHOD(renderer, MeshRenderer, render);
     REG_METHOD(renderer, MeshRenderer, getMesh);
-    REG_METHOD(renderer, MeshRenderer, setMesh);
+    REG_METHOD_NULLABLE_1ST_ARG(renderer, MeshRenderer, setMesh, sptr<Mesh>);
     REG_METHOD(renderer, MeshRenderer, getMaterial);
-    REG_METHOD(renderer, MeshRenderer, setMaterial);
+    REG_METHOD_NULLABLE_2ND_ARG(renderer, MeshRenderer, setMaterial, uint32_t, sptr<Material>);
     REG_METHOD(renderer, MeshRenderer, getMaterialCount);
     renderer.endClass();
 }
@@ -97,7 +97,7 @@ static void registerSpectator(CppBindModule<LuaBinding> &module)
 static void registerSkyboxRenderer(CppBindModule<LuaBinding> &module)
 {
     auto r = BEGIN_CLASS_EXTEND(module, SkyboxRenderer, Component);
-    REG_METHOD(r, SkyboxRenderer, setTexture);
+    REG_METHOD_NULLABLE_1ST_ARG(r, SkyboxRenderer, setTexture, sptr<CubeTexture>);
     REG_METHOD(r, SkyboxRenderer, getTexture);
     r.endClass();
 }

@@ -26,16 +26,6 @@
 using namespace solo;
 
 
-// Allow passing nulls. TODO make this easier for future uses
-static void setCollider(RigidBody *body, LuaRef collider)
-{
-    auto realCollider = collider.isValid() && collider.toPtr()
-        ? collider.toValue<sptr<Collider>>()
-        : nullptr;
-    body->setCollider(realCollider);
-}
-
-
 static void registerRigidBodyConstructionParams(CppBindModule<LuaBinding> &module)
 {
     auto params = BEGIN_CLASS(module, RigidBodyConstructionParameters);
@@ -55,7 +45,7 @@ static void registerRigidBodyConstructionParams(CppBindModule<LuaBinding> &modul
 static void registerRigidBody(CppBindModule<LuaBinding> &module)
 {
     auto rb = BEGIN_CLASS_EXTEND(module, RigidBody, Component);
-    REG_FREE_FUNC_AS_METHOD(rb, setCollider);
+    REG_METHOD_NULLABLE_1ST_ARG(rb, RigidBody, setCollider, sptr<Collider>);
     rb.endClass();
 }
 

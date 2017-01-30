@@ -61,7 +61,7 @@ namespace solo
         this->mesh = mesh;
     }
 
-    inline auto MeshRenderer::getMaterial(uint32_t index) const -> Material *
+    inline auto MeshRenderer::getMaterial(uint32_t index) const -> Material*
     {
         return materials.at(index).get();
     }

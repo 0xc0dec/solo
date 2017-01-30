@@ -4,3 +4,4 @@ local tex = solo.CubeTexture.create(solo.device)
 
 r:setTexture(tex)
 assert(r:getTexture())
+r:setTexture(nil)

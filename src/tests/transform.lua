@@ -14,6 +14,8 @@ assert(t2:getChild(0))
 assert(t2:getChildrenCount())
 t2:clearChildren()
 
+t1:setParent(nil)
+
 assert(t1:getWorldScale())
 assert(t1:getLocalScale())
 
