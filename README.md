@@ -8,7 +8,8 @@ A playground for my graphics/gamedev experiments.
 * Render to texture
 * Text rendering
 * Physics
-* OpenGL-based rendering, Vulkan is coming
+* OpenGL rendering, Vulkan is coming
+* Fully scriptable (Lua)
 
 ## Screenshots
 
@@ -19,6 +20,7 @@ A playground for my graphics/gamedev experiments.
 * async++ (MIT license)
 * Bullet (zlib license)
 * GLEW (MIT/modified BSD license)
+* LuaIntf (MIT license)
 * png (libpng license)
 * SDL (zlib license)
 * stb_truetype (public domain (?))
