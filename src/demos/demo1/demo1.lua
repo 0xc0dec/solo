@@ -1,5 +1,7 @@
 dofile("../../src/demos/common/common.lua")
 
+collectgarbage("setpause", 100)
+
 createScreenshoter = dofile("../../src/demos/common/screenshoter.lua")
 createRotator = dofile("../../src/demos/common/rotator.lua")
 createLookAt = dofile("../../src/demos/common/lookat.lua")
