@@ -6,7 +6,7 @@ A playground for my graphics/gamedev experiments.
 * OBJ meshes and PNG textures loading
 * Asynchronous asset loading
 * Render to texture
-* Text rendering
+* TTF fonts
 * Physics
 * OpenGL rendering, Vulkan is coming
 * Fully scriptable (Lua)
