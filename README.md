@@ -20,6 +20,7 @@ A playground for my graphics/gamedev experiments.
 * async++ (MIT license)
 * Bullet (zlib license)
 * GLEW (MIT/modified BSD license)
+* Lua (MIT license)
 * LuaIntf (MIT license)
 * png (libpng license)
 * SDL (zlib license)
