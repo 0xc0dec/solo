@@ -239,13 +239,13 @@ auto Quaternion::slerpForSquad(const Quaternion &q1, const Quaternion &q2, float
     if (fabs(c) >= 1.0f)
         return q1;
 
-    auto omega = acos(c);
-    auto s = sqrt(1.0f - c * c);
+    auto omega = acosf(c);
+    auto s = sqrtf(1.0f - c * c);
     if (math::isZero(s, math::epsilon1))
         return q1;
 
-    auto r1 = sin((1 - t) * omega) / s;
-    auto r2 = sin(t * omega) / s;
+    auto r1 = sinf((1 - t) * omega) / s;
+    auto r2 = sinf(t * omega) / s;
     return {
         q1.x * r1 + q2.x * r2,
         q1.y * r1 + q2.y * r2,

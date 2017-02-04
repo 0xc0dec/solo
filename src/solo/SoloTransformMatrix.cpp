@@ -174,7 +174,7 @@ auto TransformMatrix::createRotationFromAxisAngle(const Vector3 &axis, const Rad
     if (n != 1.0f)
     {
         // Not normalized
-        n = sqrt(n);
+        n = sqrtf(n);
         // Prevent division too close to zero.
         if (!math::isZero(n, math::epsilon1))
         {
@@ -185,8 +185,8 @@ auto TransformMatrix::createRotationFromAxisAngle(const Vector3 &axis, const Rad
         }
     }
 
-    auto c = cos(angle.toRawRadian());
-    auto s = sin(angle.toRawRadian());
+    auto c = cosf(angle.toRawRadian());
+    auto s = sinf(angle.toRawRadian());
 
     auto t = 1.0f - c;
     auto tx = t * x;
@@ -227,8 +227,8 @@ auto TransformMatrix::createRotationFromAxisAngle(const Vector3 &axis, const Rad
 
 auto TransformMatrix::createRotationX(const Radian &angle) -> TransformMatrix
 {
-    auto c = cos(angle.toRawRadian());
-    auto s = sin(angle.toRawRadian());
+    auto c = cosf(angle.toRawRadian());
+    auto s = sinf(angle.toRawRadian());
 
     Matrix result;
     result.m[5] = c;
@@ -241,8 +241,8 @@ auto TransformMatrix::createRotationX(const Radian &angle) -> TransformMatrix
 
 auto TransformMatrix::createRotationY(const Radian &angle) -> TransformMatrix
 {
-    auto c = cos(angle.toRawRadian());
-    auto s = sin(angle.toRawRadian());
+    auto c = cosf(angle.toRawRadian());
+    auto s = sinf(angle.toRawRadian());
 
     Matrix result;
 
@@ -257,8 +257,8 @@ auto TransformMatrix::createRotationY(const Radian &angle) -> TransformMatrix
 
 auto TransformMatrix::createRotationZ(const Radian &angle) -> TransformMatrix
 {
-    auto c = cos(angle.toRawRadian());
-    auto s = sin(angle.toRawRadian());
+    auto c = cosf(angle.toRawRadian());
+    auto s = sinf(angle.toRawRadian());
 
     Matrix result;
     result.m[0] = c;
@@ -398,7 +398,7 @@ auto TransformMatrix::transformPlane(const Plane &plane) -> Plane
     auto ny = normal.x * inverted.m[4] + normal.y * inverted.m[5] + normal.z * inverted.m[6] + distance * inverted.m[7];
     auto nz = normal.x * inverted.m[8] + normal.y * inverted.m[9] + normal.z * inverted.m[10] + distance * inverted.m[11];
     auto d = normal.x * inverted.m[12] + normal.y * inverted.m[13] + normal.z * inverted.m[14] + distance * inverted.m[15];
-    auto divisor = sqrt(nx * nx + ny * ny + nz * nz);
+    auto divisor = sqrtf(nx * nx + ny * ny + nz * nz);
     auto factor = 1.0f / divisor;
 
     normal.x = nx * factor;

@@ -23,6 +23,7 @@
 #include "SoloComponent.h"
 #include "SoloVector2.h"
 #include "SoloVector3.h"
+#include <vector>
 
 
 namespace solo

@@ -26,6 +26,7 @@
 #include "SoloVector3.h"
 #include "SoloQuaternion.h"
 #include "SoloNode.h"
+#include <vector>
 
 
 namespace solo

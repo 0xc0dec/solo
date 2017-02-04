@@ -1,11 +1,7 @@
 # CLion project file
 
 cmake_minimum_required(VERSION 2.8.4)
-project(solo)
-
-set(EXECUTABLE_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/build/")
-set(LIBRARY_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/build/")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build")
+project(Solo)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
@@ -18,7 +14,15 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/vendor/async++/include
     ${PROJECT_SOURCE_DIR}/vendor/bullet/2.83.7
     ${PROJECT_SOURCE_DIR}/vendor/stb/truetype/1.11
+    ${PROJECT_SOURCE_DIR}/vendor/lua/5.3.1
+    ${PROJECT_SOURCE_DIR}/vendor/LuaIntf
 )
+
+# Lua
+
+file(GLOB_RECURSE lua_sources "vendor/lua/5.3.1/*.c")
+set_source_files_properties(${lua_sources} PROPERTIES LANGUAGE CXX)
+add_library(lua STATIC ${lua_sources})
 
 # Engine
 
@@ -28,6 +32,7 @@ file(GLOB_RECURSE sources
     "src/solo/platform/sdl/.cpp"
     "src/solo/platform/opengl/.cpp"
     "src/solo/platform/bullet/.cpp"
+    "src/solo/platform/lua/.cpp"
 )
 
 file(GLOB_RECURSE glew_sources "vendor/glew/1.13/src/*.c")
@@ -105,28 +110,32 @@ add_library(solo STATIC
         ${asyncpp_sources}
         ${bullet_sources}
         ${sources})
-target_link_libraries(solo ${frameworks})
+target_link_libraries(solo lua ${frameworks})
+set_target_properties(solo PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build/Solo"
+)
 
-# Tests
+# Tester
 
 file(GLOB_RECURSE tester_sources "src/tests/tester/*.cpp")
 add_executable(Tester ${tester_sources})
 target_link_libraries(Tester LINK_PUBLIC solo)
+set_target_properties(Tester PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build/Tester"
+)
 
 # Demos
 
 file(GLOB_RECURSE demo1_sources "src/demos/demo1/*.cpp")
 add_executable(Demo1 ${demo1_sources})
 target_link_libraries(Demo1 LINK_PUBLIC solo)
+set_target_properties(Demo1 PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build/Demo1"
+)
 
 file(GLOB_RECURSE demo2_sources "src/demos/demo2/*.cpp")
 add_executable(Demo2 ${demo2_sources})
 target_link_libraries(Demo2 LINK_PUBLIC solo)
-
-file(GLOB_RECURSE demo3_sources "src/demos/demo3/*.cpp")
-add_executable(Demo3 ${demo3_sources})
-target_link_libraries(Demo3 LINK_PUBLIC solo)
-
-file(GLOB_RECURSE demo4_sources "src/demos/demo4/*.cpp")
-add_executable(Demo4 ${demo4_sources})
-target_link_libraries(Demo4 LINK_PUBLIC solo)
+set_target_properties(Demo2 PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build/Demo2"
+)
