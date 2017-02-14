@@ -8,7 +8,7 @@ A playground for my graphics/gamedev experiments.
 * Render to texture
 * TTF fonts
 * Physics
-* OpenGL rendering, Vulkan is coming
+* OpenGL rendering, Vulkan is coming in some distant future
 * Fully scriptable (Lua)
 
 ## Screenshots
