@@ -16,7 +16,7 @@ A playground for my graphics/gamedev experiments.
 ![1](/screenshots/screenshot7.png?raw=true)
 ![1](/screenshots/screenshot8.png?raw=true)
 
-## Dependencies
+## Dependencies (all included)
 * async++ (MIT license)
 * Bullet (zlib license)
 * GLEW (MIT/modified BSD license)
