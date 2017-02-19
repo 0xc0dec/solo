@@ -241,18 +241,6 @@
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanRenderer.h">
       <Filter>src\platform\vulkan</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanPipeline.h">
-      <Filter>src\platform\vulkan</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanBuffer.h">
-      <Filter>src\platform\vulkan</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanDescriptorPool.h">
-      <Filter>src\platform\vulkan</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanDescriptorSetLayoutBuilder.h">
-      <Filter>src\platform\vulkan</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanSwapchain.h">
       <Filter>src\platform\vulkan</Filter>
     </ClInclude>
@@ -451,18 +439,6 @@
       <Filter>src\platform\vulkan</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkan.cpp">
-      <Filter>src\platform\vulkan</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanPipeline.cpp">
-      <Filter>src\platform\vulkan</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanBuffer.cpp">
-      <Filter>src\platform\vulkan</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanDescriptorPool.cpp">
-      <Filter>src\platform\vulkan</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanDescriptorSetLayoutBuilder.cpp">
       <Filter>src\platform\vulkan</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanSwapchain.cpp">

@@ -85,8 +85,6 @@ namespace solo
         std::vector<VkClearValue> clearValues;
         VkViewport viewport = {1, 1, 0, 1};
 
-        void initTest(Device *engineDevice);
-
         void updateCmdBuffers();
     };
 }
