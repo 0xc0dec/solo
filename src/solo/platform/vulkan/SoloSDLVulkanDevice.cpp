@@ -88,11 +88,8 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
         instanceInfo.ppEnabledExtensionNames = enabledExtensions.data();
     }
 
-    SL_CHECK_VK_RESULT(vkCreateInstance(&instanceInfo, nullptr, &instance));
-
-#ifdef SL_DEBUG
-    debugCallback = vk::createDebugCallback(instance, debugCallbackFunc);
-#endif
+    instance = vk::Resource<VkInstance>{vkDestroyInstance};
+    SL_CHECK_VK_RESULT(vkCreateInstance(&instanceInfo, nullptr, instance.replace()));
 
 #ifdef SL_WINDOWS
     SDL_SysWMinfo wmInfo;
@@ -109,7 +106,12 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
     surfaceInfo.hinstance = hinstance;
     surfaceInfo.hwnd = hwnd;
 
-    SL_CHECK_VK_RESULT(vkCreateWin32SurfaceKHR(instance, &surfaceInfo, nullptr, &surface));
+    surface = vk::Resource<VkSurfaceKHR>{instance, vkDestroySurfaceKHR};
+    SL_CHECK_VK_RESULT(vkCreateWin32SurfaceKHR(instance, &surfaceInfo, nullptr, surface.replace()));
+#endif
+
+#ifdef SL_DEBUG
+    debugCallback = vk::createDebugCallback(instance, debugCallbackFunc); // TODO put to Resource
 #endif
 }
 
@@ -121,11 +123,6 @@ SDLVulkanDevice::~SDLVulkanDevice()
 
     if (debugCallback)
         vk::destroyDebugCallback(instance, debugCallback);
-
-    if (surface)
-        vkDestroySurfaceKHR(instance, surface, nullptr);
-    if (instance)
-        vkDestroyInstance(instance, nullptr);
 }
 
 

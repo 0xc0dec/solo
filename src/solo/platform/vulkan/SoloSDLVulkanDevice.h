@@ -46,8 +46,8 @@ namespace solo
         void endUpdate() override final;
 
     private:
-        VkInstance instance = nullptr;
-        VkSurfaceKHR surface = nullptr;
+        vk::Resource<VkInstance> instance;
+        vk::Resource<VkSurfaceKHR> surface;
         VkDebugReportCallbackEXT debugCallback = nullptr;
     };
 

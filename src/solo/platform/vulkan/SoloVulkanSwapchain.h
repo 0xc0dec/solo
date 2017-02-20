@@ -34,8 +34,8 @@ namespace solo
     public:
         SL_DISABLE_COPY_AND_MOVE(VulkanSwapchain)
 
-            VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, VkRenderPass renderPass,
-                VkImageView depthStencilView, uint32_t width, uint32_t height, bool vsync, VkFormat colorFormat, VkColorSpaceKHR colorSpace);
+        VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, VkRenderPass renderPass,
+            VkImageView depthStencilView, uint32_t width, uint32_t height, bool vsync, VkFormat colorFormat, VkColorSpaceKHR colorSpace);
         ~VulkanSwapchain();
 
         auto getHandle() const->VkSwapchainKHR const&;
