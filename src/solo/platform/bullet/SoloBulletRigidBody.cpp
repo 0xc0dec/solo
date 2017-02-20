@@ -57,12 +57,12 @@ private:
 };
 
 
-BulletRigidBody::BulletRigidBody(const Node &node, const RigidBodyConstructionParameters &parameters):
-    RigidBody(node),
+bullet::RigidBody::RigidBody(const Node &node, const RigidBodyConstructionParameters &parameters):
+    solo::RigidBody(node),
     mass(parameters.mass),
     shape(nullptr)
 {
-    world = static_cast<BulletPhysics *>(node.getScene()->getDevice()->getPhysics())->getWorld();
+    world = static_cast<Physics *>(node.getScene()->getDevice()->getPhysics())->getWorld();
     transformCmp = node.findComponent<Transform>();
     motionState = std::make_unique<MotionState>(transformCmp);
 
@@ -77,18 +77,18 @@ BulletRigidBody::BulletRigidBody(const Node &node, const RigidBodyConstructionPa
 }
 
 
-BulletRigidBody::~BulletRigidBody()
+bullet::RigidBody::~RigidBody()
 {
     world->removeRigidBody(body.get());
 }
 
 
-void BulletRigidBody::setCollider(sptr<Collider> newCollider)
+void bullet::RigidBody::setCollider(sptr<solo::Collider> newCollider)
 {
     if (newCollider)
     {
         collider = newCollider; // store ownership
-        shape = std::dynamic_pointer_cast<BulletCollider>(collider)->getShape();
+        shape = std::dynamic_pointer_cast<Collider>(collider)->getShape();
 
         btVector3 inertia;
         shape->calculateLocalInertia(mass, inertia);
@@ -108,14 +108,14 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
 }
 
 
-void BulletRigidBody::onTransformChanged(const Transform *transform, uint32_t dirtyFlags)
+void bullet::RigidBody::onTransformChanged(const Transform *transform, uint32_t dirtyFlags)
 {
     if (shape && dirtyFlags | TransformDirtyFlags::Scale)
         syncScale();
 }
 
 
-void BulletRigidBody::syncScale()
+void bullet::RigidBody::syncScale()
 {
     auto scale = transformCmp->getLocalScale();
     shape->setLocalScaling(SL_TOBTVEC3(scale));

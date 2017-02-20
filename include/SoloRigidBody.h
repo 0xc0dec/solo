@@ -25,7 +25,6 @@
 #include "SoloVector3.h"
 #include "SoloTransform.h"
 
-
 namespace solo
 {
     class Collider;
@@ -53,8 +52,6 @@ namespace solo
         static auto create(const Node &node, const RigidBodyConstructionParameters &parameters) -> sptr<RigidBody>;
 
         virtual void setCollider(sptr<Collider> collider) = 0;
-
-        int lala() { return 1; }
 
     protected:
         explicit RigidBody(const Node &node);

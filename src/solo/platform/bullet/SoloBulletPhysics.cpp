@@ -25,8 +25,8 @@
 using namespace solo;
 
 
-BulletPhysics::BulletPhysics(Device *device, const FriendToken<Device> &deviceToken) :
-    Physics(device, deviceToken)
+bullet::Physics::Physics(Device *device, const FriendToken<Device> &deviceToken) :
+    solo::Physics(device, deviceToken)
 {
     broadPhase = std::make_unique<btDbvtBroadphase>();
     collisionConfig = std::make_unique<btDefaultCollisionConfiguration>();
@@ -37,19 +37,19 @@ BulletPhysics::BulletPhysics(Device *device, const FriendToken<Device> &deviceTo
 }
 
 
-void BulletPhysics::update()
+void bullet::Physics::update()
 {
     world->stepSimulation(device->getTimeDelta(), 7); // 7 is debatable, but good enough. See docs
 }
 
 
-void BulletPhysics::setGravity(const Vector3 &gravity)
+void bullet::Physics::setGravity(const Vector3 &gravity)
 {
     world->setGravity(SL_TOBTVEC3(gravity));
 }
 
 
-auto BulletPhysics::castRay(const Vector3 &from, const Vector3 &to) -> RaycastResult
+auto bullet::Physics::castRay(const Vector3 &from, const Vector3 &to) -> RaycastResult
 {
     auto btFrom = SL_TOBTVEC3(from);
     auto btTo = SL_TOBTVEC3(to);
@@ -68,7 +68,7 @@ auto BulletPhysics::castRay(const Vector3 &from, const Vector3 &to) -> RaycastRe
 }
 
 
-auto BulletPhysics::castRayAll(const Vector3 &from, const Vector3 &to) -> std::vector<RaycastResult>
+auto bullet::Physics::castRayAll(const Vector3 &from, const Vector3 &to) -> std::vector<RaycastResult>
 {
     auto btFrom = SL_TOBTVEC3(from);
     auto btTo = SL_TOBTVEC3(to);
@@ -93,7 +93,7 @@ auto BulletPhysics::castRayAll(const Vector3 &from, const Vector3 &to) -> std::v
 }
 
 
-auto BulletPhysics::getWorld() const -> btDiscreteDynamicsWorld *
+auto bullet::Physics::getWorld() const -> btDiscreteDynamicsWorld*
 {
     return world.get();
 }

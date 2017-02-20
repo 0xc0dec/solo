@@ -26,7 +26,7 @@ using namespace solo;
 
 auto RigidBody::create(const Node &node, const RigidBodyConstructionParameters &parameters) -> sptr<RigidBody>
 {
-    return std::make_shared<BulletRigidBody>(node, parameters);
+    return std::make_shared<bullet::RigidBody>(node, parameters);
 }
 
 

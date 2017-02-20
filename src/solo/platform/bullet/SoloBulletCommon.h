@@ -22,7 +22,6 @@
 
 #include <btBulletDynamicsCommon.h>
 
-
 #define SL_TOBTVEC3(v3) btVector3(v3.x, v3.y, v3.z)
 #define SL_FROMBTVEC3(v3) Vector3(v3.x(), v3.y(), v3.z())
 

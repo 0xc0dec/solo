@@ -23,32 +23,35 @@
 #include "SoloRigidBody.h"
 #include <btBulletDynamicsCommon.h>
 
-
 namespace solo
 {
     class Transform;
     class Collider;
-    class BulletCollider;
-
-    class BulletRigidBody final : public RigidBody
+    
+    namespace bullet
     {
-    public:
-        BulletRigidBody(const Node &node, const RigidBodyConstructionParameters &parameters);
-        virtual ~BulletRigidBody();
+        class Collider;
 
-        void setCollider(sptr<Collider> collider) override final;
+        class RigidBody final : public solo::RigidBody
+        {
+        public:
+            RigidBody(const Node &node, const RigidBodyConstructionParameters &parameters);
+            virtual ~RigidBody();
 
-        void onTransformChanged(const Transform *transform, uint32_t dirtyFlags) override final;
+            void setCollider(sptr<solo::Collider> collider) override final;
 
-    private:
-        void syncScale();
+            void onTransformChanged(const Transform *transform, uint32_t dirtyFlags) override final;
 
-        float mass = 0;
-        sptr<Collider> collider;
-        btCollisionShape *shape;
-        Transform *transformCmp;
-        btDiscreteDynamicsWorld *world;
-        uptr<btMotionState> motionState;
-        uptr<btRigidBody> body;
-    };
+        private:
+            void syncScale();
+
+            float mass = 0;
+            sptr<solo::Collider> collider;
+            btCollisionShape *shape;
+            Transform *transformCmp;
+            btDiscreteDynamicsWorld *world;
+            uptr<btMotionState> motionState;
+            uptr<btRigidBody> body;
+        };
+    }
 }

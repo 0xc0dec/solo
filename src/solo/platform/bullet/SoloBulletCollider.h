@@ -23,19 +23,21 @@
 #include "SoloCommon.h"
 #include <btBulletCollisionCommon.h>
 
-
 namespace solo
 {
-    class BulletCollider
+    namespace bullet
     {
-    public:
-        SL_DISABLE_COPY_AND_MOVE(BulletCollider)
+        class Collider
+        {
+        public:
+            SL_DISABLE_COPY_AND_MOVE(Collider)
 
-        virtual ~BulletCollider() {}
+            virtual ~Collider() {}
 
-        virtual auto getShape() -> btCollisionShape * = 0;
+            virtual auto getShape() -> btCollisionShape* = 0;
 
-    protected:
-        BulletCollider() {}
-    };
+        protected:
+            Collider() {}
+        };
+    }
 }

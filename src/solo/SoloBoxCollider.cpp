@@ -26,5 +26,5 @@ using namespace solo;
 
 auto BoxCollider::create(const Vector3 &size) -> sptr<BoxCollider>
 {
-    return std::make_shared<BulletBoxCollider>(size);
+    return std::make_shared<bullet::BoxCollider>(size);
 }
