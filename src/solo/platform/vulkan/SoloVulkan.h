@@ -42,6 +42,98 @@ namespace solo
 {
     namespace vk
     {
+        template <class T>
+        class Resource
+        {
+        public:
+            Resource(): Resource([](T, VkAllocationCallbacks*) {})
+            {
+            }
+
+            Resource(const Resource<T> &other) = delete;
+            Resource(Resource<T> &&other) noexcept
+            {
+                cleanup();
+                handle = std::move(other.handle);
+                del = std::move(other.del);
+                other.handle = VK_NULL_HANDLE;
+            }
+
+            explicit Resource(std::function<void(T, VkAllocationCallbacks*)> del)
+            {
+                this->del = [=](T handle) { del(handle, nullptr); };
+            }
+
+            Resource(VkInstance instance, std::function<void(VkInstance, T, VkAllocationCallbacks*)> del)
+            {
+                this->del = [instance, del](T obj) { del(instance, obj, nullptr); };
+            }
+
+            Resource(VkDevice device, std::function<void(VkDevice, T, VkAllocationCallbacks*)> del)
+            {
+                this->del = [device, del](T obj) { del(device, obj, nullptr); };
+            }
+
+            ~Resource()
+            {
+                cleanup();
+            }
+
+            auto operator=(Resource<T> other) noexcept -> Resource<T>&
+            {
+                std::swap(handle, other.handle);
+                std::swap(del, other.del);
+                return *this;
+            }
+
+            auto operator&() const -> const T*
+            {
+                return &handle;
+            }
+
+            auto replace() -> T*
+            {
+                cleanup();
+                return &handle;
+            }
+
+            operator T() const
+            {
+                return handle;
+            }
+
+            operator bool() const
+            {
+                return handle != VK_NULL_HANDLE;
+            }
+
+            void operator=(T other)
+            {
+                if (other != handle)
+                {
+                    cleanup();
+                    handle = other;
+                }
+            }
+
+            template<typename V>
+            bool operator==(V rhs)
+            {
+                return handle == T(rhs);
+            }
+
+        private:
+            T handle = VK_NULL_HANDLE;
+            std::function<void(T)> del;
+
+            void cleanup()
+            {
+                if (handle != VK_NULL_HANDLE)
+                    del(handle);
+                handle = VK_NULL_HANDLE;
+            }
+        };
+
         struct DepthStencil
         {
             VkImage image;
