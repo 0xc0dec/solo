@@ -20,7 +20,7 @@
 
 #include "SoloRectTexture.h"
 #include "SoloDevice.h"
-#include "platform/opengl/SoloOpenGLRectTexture.h"
+#include "platform/gl/SoloOpenGLRectTexture.h"
 #include "platform/null/SoloNullRectTexture.h"
 
 using namespace solo;

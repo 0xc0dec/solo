@@ -21,7 +21,7 @@
 #include "SoloMaterial.h"
 #include "SoloTexture.h"
 #include "SoloDevice.h"
-#include "platform/opengl/SoloOpenGLMaterial.h"
+#include "platform/gl/SoloOpenGLMaterial.h"
 #include "platform/null/SoloNullMaterial.h"
 
 using namespace solo;

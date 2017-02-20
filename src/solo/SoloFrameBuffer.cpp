@@ -20,7 +20,7 @@
 
 #include "SoloFrameBuffer.h"
 #include "SoloDevice.h"
-#include "platform/opengl/SoloOpenGLFrameBuffer.h"
+#include "platform/gl/SoloOpenGLFrameBuffer.h"
 #include "platform/null/SoloNullFrameBuffer.h"
 
 using namespace solo;

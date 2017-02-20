@@ -21,7 +21,7 @@
 #include "SoloMesh.h"
 #include "SoloEffect.h"
 #include "SoloDevice.h"
-#include "platform/opengl/SoloOpenGLMesh.h"
+#include "platform/gl/SoloOpenGLMesh.h"
 #include "platform/null/SoloNullMesh.h"
 #include <algorithm>
 

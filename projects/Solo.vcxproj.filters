@@ -85,9 +85,6 @@
     <ClInclude Include="..\include\SoloCubeTexture.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\platform\opengl\SoloSDLOpenGLDevice.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloSpectator.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -105,9 +102,6 @@
     </ClInclude>
     <ClInclude Include="..\include\SoloLogger.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLRenderer.h">
-      <Filter>src\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloRenderer.h">
       <Filter>include</Filter>
@@ -166,9 +160,6 @@
     <ClInclude Include="..\include\SoloTransformMatrix.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLPrefabShaders.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloCommon.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -190,44 +181,23 @@
     <ClInclude Include="..\src\solo\platform\null\SoloNullRenderer.h">
       <Filter>src\platform\null</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLCamera.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\solo\platform\null\SoloNullCamera.h">
       <Filter>src\platform\null</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLMaterial.h">
-      <Filter>src\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="..\src\solo\platform\null\SoloNullMaterial.h">
       <Filter>src\platform\null</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLCubeTexture.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\solo\platform\null\SoloNullCubeTexture.h">
       <Filter>src\platform\null</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLRectTexture.h">
-      <Filter>src\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="..\src\solo\platform\null\SoloNullRectTexture.h">
       <Filter>src\platform\null</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLFrameBuffer.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\solo\platform\null\SoloNullFrameBuffer.h">
       <Filter>src\platform\null</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLEffect.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\solo\platform\null\SoloNullEffect.h">
       <Filter>src\platform\null</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLMesh.h">
-      <Filter>src\platform\opengl</Filter>
     </ClInclude>
     <ClInclude Include="..\src\solo\platform\null\SoloNullMesh.h">
       <Filter>src\platform\null</Filter>
@@ -256,9 +226,6 @@
     <ClInclude Include="..\src\solo\platform\lua\SoloLuaScriptComponent.h">
       <Filter>src\platform\lua</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\platform\opengl\SoloOpenGLTexture.h">
-      <Filter>src\platform\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\solo\SoloImageLoader.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -270,6 +237,39 @@
     </ClInclude>
     <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanRenderPass.h">
       <Filter>src\platform\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\gl\SoloOpenGLCamera.h">
+      <Filter>src\platform\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\gl\SoloOpenGLCubeTexture.h">
+      <Filter>src\platform\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\gl\SoloOpenGLEffect.h">
+      <Filter>src\platform\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\gl\SoloOpenGLFrameBuffer.h">
+      <Filter>src\platform\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\gl\SoloOpenGLMaterial.h">
+      <Filter>src\platform\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\gl\SoloOpenGLMesh.h">
+      <Filter>src\platform\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\gl\SoloOpenGLPrefabShaders.h">
+      <Filter>src\platform\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\gl\SoloOpenGLRectTexture.h">
+      <Filter>src\platform\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\gl\SoloOpenGLRenderer.h">
+      <Filter>src\platform\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\gl\SoloOpenGLTexture.h">
+      <Filter>src\platform\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\gl\SoloSDLOpenGLDevice.h">
+      <Filter>src\platform\gl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -339,9 +339,6 @@
     <ClCompile Include="..\src\solo\SoloPngImageLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\platform\opengl\SoloSDLOpenGLDevice.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\solo\SoloSpectator.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -362,9 +359,6 @@
     </ClCompile>
     <ClCompile Include="..\src\solo\SoloRenderer.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLRenderer.cpp">
-      <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\SoloFrameBuffer.cpp">
       <Filter>src</Filter>
@@ -410,30 +404,6 @@
     </ClCompile>
     <ClCompile Include="..\src\solo\SoloTransformMatrix.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLPrefabShaders.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLCamera.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLMaterial.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLCubeTexture.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLRectTexture.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLFrameBuffer.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLEffect.cpp">
-      <Filter>src\platform\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\opengl\SoloOpenGLMesh.cpp">
-      <Filter>src\platform\opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\platform\vulkan\SoloSDLVulkanDevice.cpp">
       <Filter>src\platform\vulkan</Filter>
@@ -501,6 +471,36 @@
     <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanRenderPass.cpp">
       <Filter>src\platform\vulkan</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLCamera.cpp">
+      <Filter>src\platform\gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLCubeTexture.cpp">
+      <Filter>src\platform\gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLEffect.cpp">
+      <Filter>src\platform\gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLFrameBuffer.cpp">
+      <Filter>src\platform\gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLMaterial.cpp">
+      <Filter>src\platform\gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLMesh.cpp">
+      <Filter>src\platform\gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLPrefabShaders.cpp">
+      <Filter>src\platform\gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLRectTexture.cpp">
+      <Filter>src\platform\gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLRenderer.cpp">
+      <Filter>src\platform\gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\gl\SoloSDLOpenGLDevice.cpp">
+      <Filter>src\platform\gl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -511,9 +511,6 @@
     </Filter>
     <Filter Include="src\platform">
       <UniqueIdentifier>{19865fe9-5ca9-4b65-8e94-a5c33cfc767f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\platform\opengl">
-      <UniqueIdentifier>{f14878d2-f3e0-46aa-8dde-49cd0692f7f9}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\platform\sdl">
       <UniqueIdentifier>{b38df00b-fb0f-438f-98a3-7abc58dff698}</UniqueIdentifier>
@@ -529,6 +526,9 @@
     </Filter>
     <Filter Include="src\platform\lua">
       <UniqueIdentifier>{c148a0ea-cc02-4c45-94c2-63b99310c624}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\platform\gl">
+      <UniqueIdentifier>{f14878d2-f3e0-46aa-8dde-49cd0692f7f9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

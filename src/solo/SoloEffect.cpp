@@ -20,7 +20,7 @@
 
 #include "SoloEffect.h"
 #include "SoloDevice.h"
-#include "platform/opengl/SoloOpenGLEffect.h"
+#include "platform/gl/SoloOpenGLEffect.h"
 #include "platform/null/SoloNullEffect.h"
 
 using namespace solo;

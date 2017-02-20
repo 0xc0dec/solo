@@ -20,7 +20,7 @@
 
 #include "SoloCubeTexture.h"
 #include "SoloDevice.h"
-#include "platform/opengl/SoloOpenGLCubeTexture.h"
+#include "platform/gl/SoloOpenGLCubeTexture.h"
 #include "platform/null/SoloNullCubeTexture.h"
 
 using namespace solo;

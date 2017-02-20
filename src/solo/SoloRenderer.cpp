@@ -20,7 +20,7 @@
 
 #include "SoloRenderer.h"
 #include "SoloDevice.h"
-#include "platform/opengl/SoloOpenGLRenderer.h"
+#include "platform/gl/SoloOpenGLRenderer.h"
 #include "platform/vulkan/SoloVulkanRenderer.h"
 #include "platform/null/SoloNullRenderer.h"
 

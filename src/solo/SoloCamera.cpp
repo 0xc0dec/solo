@@ -26,7 +26,7 @@
 #include "SoloDegree.h"
 #include "SoloScene.h"
 #include "SoloRenderContext.h"
-#include "platform/opengl/SoloOpenGLCamera.h"
+#include "platform/gl/SoloOpenGLCamera.h"
 #include "platform/vulkan/SoloVulkanCamera.h"
 #include "platform/null/SoloNullCamera.h"
 
