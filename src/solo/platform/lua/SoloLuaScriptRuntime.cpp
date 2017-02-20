@@ -76,7 +76,7 @@ static void registerLibrary(LuaState &state)
 }
 
 // TODO remove copy-paste
-LuaScriptRuntime::LuaScriptRuntime()
+lua::ScriptRuntime::ScriptRuntime()
 {
     lua = LuaState::newState();
     lua.openLibs();
@@ -88,8 +88,8 @@ LuaScriptRuntime::LuaScriptRuntime()
 }
 
 
-LuaScriptRuntime::LuaScriptRuntime(Device *d):
-    LuaScriptRuntime()
+lua::ScriptRuntime::ScriptRuntime(Device *d):
+    ScriptRuntime()
 {
     lua = LuaState::newState();
     lua.openLibs();
@@ -102,32 +102,32 @@ LuaScriptRuntime::LuaScriptRuntime(Device *d):
 }
 
 
-LuaScriptRuntime::~LuaScriptRuntime()
+lua::ScriptRuntime::~ScriptRuntime()
 {
     lua.close();
 }
 
 
-void LuaScriptRuntime::executeString(const std::string& code)
+void lua::ScriptRuntime::executeString(const std::string& code)
 {
     lua.doString(code.c_str());
 }
 
 
-void LuaScriptRuntime::executeFile(const std::string& path)
+void lua::ScriptRuntime::executeFile(const std::string& path)
 {
     lua.doFile(path.c_str());
 }
 
 
-auto LuaScriptRuntime::getString(const std::string& name) -> std::string
+auto lua::ScriptRuntime::getString(const std::string& name) -> std::string
 {
     auto ref = LuaRef(lua, name.c_str());
     return ref.toValue<std::string>();
 }
 
 
-auto LuaScriptRuntime::getInt(const std::string& name) -> int32_t
+auto lua::ScriptRuntime::getInt(const std::string& name) -> int32_t
 {
     auto ref = LuaRef(lua, name.c_str());
     return ref.toValue<int32_t>();

@@ -26,38 +26,41 @@
 
 namespace solo
 {
-    class LuaScriptComponent final: public ComponentBase<LuaScriptComponent>
+    namespace lua
     {
-    public:
-        static const uint32_t MinComponentTypeId = 1000000000; // Assume that built-in components don't ever exceed this limit
+        class ScriptComponent final : public ComponentBase<ScriptComponent>
+        {
+        public:
+            static const uint32_t MinComponentTypeId = 1000000000; // Assume that built-in components don't ever exceed this limit
 
-        LuaScriptComponent(const Node& node, LuaIntf::LuaRef scriptComponent);
+            ScriptComponent(const Node& node, LuaIntf::LuaRef scriptComponent);
 
-        void init() override final;
-        void terminate() override final;
-        void update() override final;
-        void render(const RenderContext &context) override final;
-        
-        void onComponentAdded(Component *cmp) override final;
-        void onComponentRemoved(Component *cmp) override final;
-        
-        auto getTypeId() -> uint32_t override final;
+            void init() override final;
+            void terminate() override final;
+            void update() override final;
+            void render(const RenderContext &context) override final;
 
-        LuaIntf::LuaRef scriptComponent;
+            void onComponentAdded(Component *cmp) override final;
+            void onComponentRemoved(Component *cmp) override final;
 
-    private:
-        uint32_t typeId;
-        
-        std::function<void(LuaIntf::LuaRef)> initFunc;
-        std::function<void(LuaIntf::LuaRef)> terminateFunc;
-        std::function<void(LuaIntf::LuaRef)> updateFunc;
-        std::function<void(LuaIntf::LuaRef, const RenderContext&)> renderFunc;
-        std::function<void(LuaIntf::LuaRef, Component*)> onComponentAddedFunc;
-        std::function<void(LuaIntf::LuaRef, Component*)> onComponentRemovedFunc;
-    };
+            auto getTypeId()->uint32_t override final;
 
-    inline auto LuaScriptComponent::getTypeId() -> uint32_t
-    {
-        return typeId;
+            LuaIntf::LuaRef scriptComponent;
+
+        private:
+            uint32_t typeId;
+
+            std::function<void(LuaIntf::LuaRef)> initFunc;
+            std::function<void(LuaIntf::LuaRef)> terminateFunc;
+            std::function<void(LuaIntf::LuaRef)> updateFunc;
+            std::function<void(LuaIntf::LuaRef, const RenderContext&)> renderFunc;
+            std::function<void(LuaIntf::LuaRef, Component*)> onComponentAddedFunc;
+            std::function<void(LuaIntf::LuaRef, Component*)> onComponentRemovedFunc;
+        };
+
+        inline auto ScriptComponent::getTypeId() -> uint32_t
+        {
+            return typeId;
+        }
     }
 }
