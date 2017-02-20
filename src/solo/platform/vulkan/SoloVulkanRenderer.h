@@ -25,13 +25,14 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloRenderer.h"
+#include "SoloVulkanSwapchain.h"
+#include "SoloVulkanRenderPass.h"
 #include "SoloVulkan.h"
 #include "SoloVector4.h"
 
 namespace solo
 {
     class Device;
-    class VulkanSwapchain;
 
     class VulkanRenderer final: public Renderer
     {
@@ -40,7 +41,7 @@ namespace solo
         ~VulkanRenderer();
 
         void setClear(const Vector4 &color, bool clearColor, bool clearDepth);
-        void setViewport(const Vector4& viewport);
+        void setViewport(const Vector4 &viewport);
 
     protected:
         void beginFrame() override final;
@@ -49,6 +50,9 @@ namespace solo
     private:
         uint32_t canvasWidth = 0;
         uint32_t canvasHeight = 0;
+        VkFormat depthFormat = VK_FORMAT_UNDEFINED;
+        VkFormat colorFormat = VK_FORMAT_UNDEFINED;
+        VkColorSpaceKHR colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
         
         struct
         {
@@ -58,28 +62,22 @@ namespace solo
             VkPhysicalDeviceMemoryProperties memProperties;
         } physicalDevice;
 
-        VkDevice device = nullptr;
+        vk::Resource<VkDevice> device;
         VkQueue queue = nullptr;
-        VkCommandPool commandPool = nullptr;
-        VkRenderPass renderPass = nullptr;
-
+        vk::Resource<VkCommandPool> commandPool;
         vk::DepthStencil depthStencil;
-        
-        VkFormat depthFormat = VK_FORMAT_UNDEFINED;
-        VkFormat colorFormat = VK_FORMAT_UNDEFINED;
-        VkColorSpaceKHR colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
+        RenderPass renderPass;
+        VulkanSwapchain swapchain;
 
         struct
         {
-            VkSemaphore renderComplete = nullptr;
-            VkSemaphore presentComplete = nullptr;
+            vk::Resource<VkSemaphore> renderComplete;
+            vk::Resource<VkSemaphore> presentComplete;
         } semaphores;
         
         std::vector<VkCommandBuffer> cmdBuffers;
         uint32_t currentBuffer = 0;
 
-        sptr<VulkanSwapchain> swapchain;
-        
         bool dirty = true;
 
         std::vector<VkClearValue> clearValues;

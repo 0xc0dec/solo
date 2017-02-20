@@ -136,40 +136,56 @@ namespace solo
 
         struct DepthStencil
         {
-            VkImage image;
-            VkDeviceMemory mem;
-            VkImageView view;
+            Resource<VkImage> image;
+            Resource<VkDeviceMemory> mem;
+            Resource<VkImageView> view;
         };
 
-        auto createDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -> VkDevice;
-        auto getSurfaceFormats(VkPhysicalDevice device, VkSurfaceKHR surface) -> std::tuple<VkFormat, VkColorSpaceKHR>;
-        auto createSemaphore(VkDevice device) -> VkSemaphore;
         auto getPhysicalDevice(VkInstance instance) -> VkPhysicalDevice;
+    
+        auto createDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -> Resource<VkDevice>;
+    
+        auto getSurfaceFormats(VkPhysicalDevice device, VkSurfaceKHR surface) -> std::tuple<VkFormat, VkColorSpaceKHR>;
+    
+        auto createSemaphore(VkDevice device) -> Resource<VkSemaphore>;
+    
+        auto getPhysicalDevice(VkInstance instance) -> VkPhysicalDevice;
+    
         auto getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> uint32_t;
+    
         auto getDepthFormat(VkPhysicalDevice device) -> VkFormat;
-        auto createCommandPool(VkDevice logicalDevice, uint32_t queueIndex) -> VkCommandPool;
+    
+        auto createCommandPool(VkDevice device, uint32_t queueIndex) -> Resource<VkCommandPool>;
+    
         void submitCommandBuffer(VkQueue queue, VkCommandBuffer buffer);
         void createCommandBuffers(VkDevice logicalDevice, VkCommandPool commandPool, uint32_t count, VkCommandBuffer *result);
-        void destroyCommandBuffers(VkDevice device, VkCommandPool commandPool, VkCommandBuffer *buffers, uint32_t count);
+        void destroyCommandBuffers(VkDevice device, VkCommandPool commandPool, VkCommandBuffer* buffers, uint32_t count);
+    
         auto findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, uint32_t typeBits,
             VkMemoryPropertyFlags properties) -> int32_t;
-        auto createRenderPass(VkDevice device, VkFormat colorFormat, VkFormat depthFormat) -> VkRenderPass;
+    
+        auto createRenderPass(VkDevice device, VkFormat colorFormat, VkFormat depthFormat) -> Resource<VkRenderPass>;
+    
         auto createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImageView depthAttachment,
-            VkRenderPass renderPass, uint32_t width, uint32_t height) -> VkFramebuffer;
-        auto createShader(VkDevice device, const std::vector<uint8_t>& data) -> VkShaderModule;
-        auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEXT callbackFunc) -> VkDebugReportCallbackEXT;
-        void destroyDebugCallback(VkInstance instance, VkDebugReportCallbackEXT callback);
+            VkRenderPass renderPass, uint32_t width, uint32_t height) -> Resource<VkFramebuffer>;
+    
+        auto createShader(VkDevice device, const std::vector<uint8_t> &data) -> Resource<VkShaderModule>;
+        auto createShaderStageInfo(bool vertex, VkShaderModule shader, const char *entryPoint) -> VkPipelineShaderStageCreateInfo;
+    
         auto createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
             VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil;
+    
         auto createRasterizationStateInfo(bool depthClamp, bool discardEnabled, VkCullModeFlags cullMode, VkFrontFace frontFace)
             -> VkPipelineRasterizationStateCreateInfo;
+    
         auto createMultisampleStateInfo(VkSampleCountFlagBits rasterizationSampleCount) -> VkPipelineMultisampleStateCreateInfo;
+    
         auto createBlendAttachmentState(bool blendEnabled, VkBlendFactor srcColorBlendFactor, VkBlendFactor dstColorBlendFactor,
             VkBlendOp colorBlendOp, VkBlendFactor srcAlphaBlendFactor, VkBlendFactor dstAlphaBlendFactor, VkBlendOp alphaBlendOp,
             VkColorComponentFlags colorWriteMask) -> VkPipelineColorBlendAttachmentState;
+    
         auto createColorBlendStateInfo(VkPipelineColorBlendAttachmentState* blendAttachments, bool logicOpEnabled, VkLogicOp logicOp)
             -> VkPipelineColorBlendStateCreateInfo;
-        auto createShaderStageInfo(bool vertex, VkShaderModule shader, const char* entryPoint) -> VkPipelineShaderStageCreateInfo;
     }
 }
 

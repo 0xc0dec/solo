@@ -268,6 +268,9 @@
     <ClInclude Include="..\src\solo\SoloSpinLock.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanRenderPass.h">
+      <Filter>src\platform\vulkan</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\SoloScene.cpp">
@@ -494,6 +497,9 @@
     </ClCompile>
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaFontApi.cpp">
       <Filter>src\platform\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanRenderPass.cpp">
+      <Filter>src\platform\vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -30,7 +30,6 @@ namespace solo
 {
     class VulkanRenderer;
 
-    // TODO rename to Camera and use vk::Camera everywhere
     class VulkanCamera final: public Camera
     {
     public:

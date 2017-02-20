@@ -30,12 +30,12 @@
 using namespace solo;
 
 
-static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
-        uint64_t obj, size_t location, int32_t code, const char *layerPrefix, const char *msg, void *userData)
-{
-    // TODO do something here
-    return VK_FALSE;
-}
+//static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
+//        uint64_t obj, size_t location, int32_t code, const char *layerPrefix, const char *msg, void *userData)
+//{
+//    // TODO do something here
+//    return VK_FALSE;
+//}
 
 
 SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
@@ -110,9 +110,9 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
     SL_CHECK_VK_RESULT(vkCreateWin32SurfaceKHR(instance, &surfaceInfo, nullptr, surface.replace()));
 #endif
 
-#ifdef SL_DEBUG
-    debugCallback = vk::createDebugCallback(instance, debugCallbackFunc); // TODO put to Resource
-#endif
+//#ifdef SL_DEBUG
+//    debugCallback = vk::createDebugCallback(instance, debugCallbackFunc); // TODO put to Resource
+//#endif
 }
 
 
@@ -121,8 +121,8 @@ SDLVulkanDevice::~SDLVulkanDevice()
     // Otherwise it would be destroyed later - not good
     renderer.reset();
 
-    if (debugCallback)
-        vk::destroyDebugCallback(instance, debugCallback);
+//    if (debugCallback)
+//        vk::destroyDebugCallback(instance, debugCallback);
 }
 
 

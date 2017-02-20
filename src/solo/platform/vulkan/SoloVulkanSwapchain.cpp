@@ -25,8 +25,20 @@
 using namespace solo;
 
 
-VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, VkRenderPass renderPass,
-    VkImageView depthStencilView, uint32_t width, uint32_t height, bool vsync, VkFormat colorFormat, VkColorSpaceKHR colorSpace):
+VulkanSwapchain::VulkanSwapchain()
+{
+}
+
+
+VulkanSwapchain::VulkanSwapchain(VulkanSwapchain &&other) noexcept
+{
+    swap(other);
+}
+
+
+VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface,
+    VkRenderPass renderPass, VkImageView depthStencilView, uint32_t width, uint32_t height, bool vsync,
+    VkFormat colorFormat, VkColorSpaceKHR colorSpace):
     device(device)
 {
     VkSurfaceCapabilitiesKHR capabilities;
@@ -89,7 +101,8 @@ VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevic
     swapchainInfo.clipped = VK_TRUE;
     swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
 
-    SL_CHECK_VK_RESULT(vkCreateSwapchainKHR(device, &swapchainInfo, nullptr, &swapchain));
+    vk::Resource<VkSwapchainKHR> swapchain{device, vkDestroySwapchainKHR};
+    SL_CHECK_VK_RESULT(vkCreateSwapchainKHR(device, &swapchainInfo, nullptr, swapchain.replace()));
 
     uint32_t imageCount = 0;
     SL_CHECK_VK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, nullptr));
@@ -122,23 +135,23 @@ VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevic
         imageViewInfo.flags = 0;
         imageViewInfo.image = images[i];
 
+        vk::Resource<VkImageView> view{device, vkDestroyImageView};
+        SL_CHECK_VK_RESULT(vkCreateImageView(device, &imageViewInfo, nullptr, view.replace()));
+
+        steps[i].framebuffer = vk::createFrameBuffer(device, view, depthStencilView, renderPass, width, height);
         steps[i].image = images[i];
-
-        SL_CHECK_VK_RESULT(vkCreateImageView(device, &imageViewInfo, nullptr, &steps[i].imageView));
-
-        steps[i].framebuffer = vk::createFrameBuffer(device, steps[i].imageView, depthStencilView, renderPass, width, height);
+        steps[i].imageView = std::move(view);
     }
+
+    this->swapchain = std::move(swapchain);
 }
 
 
-VulkanSwapchain::~VulkanSwapchain()
+auto VulkanSwapchain::operator=(VulkanSwapchain other) noexcept -> VulkanSwapchain&
 {
-    for (auto &step : steps)
-    {
-        vkDestroyFramebuffer(device, step.framebuffer, nullptr);
-        vkDestroyImageView(device, step.imageView, nullptr);
-    }
-    vkDestroySwapchainKHR(device, swapchain, nullptr);
+    if (&other != this)
+        swap(other);
+    return *this;
 }
 
 
@@ -148,6 +161,15 @@ auto VulkanSwapchain::getNextImageIndex(VkSemaphore semaphore) const -> uint32_t
     SL_CHECK_VK_RESULT(vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, semaphore, nullptr, &result));
     return result;
 }
+
+
+void VulkanSwapchain::swap(VulkanSwapchain &other) noexcept
+{
+    std::swap(device, other.device);
+    std::swap(swapchain, other.swapchain);
+    std::swap(steps, other.steps);
+}
+
 
 
 #endif
