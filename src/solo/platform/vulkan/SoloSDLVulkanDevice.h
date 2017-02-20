@@ -29,36 +29,39 @@
 
 namespace solo
 {
-    class SDLVulkanDevice final: public SDLDevice
+    namespace vk
     {
-    public:
-        explicit SDLVulkanDevice(const DeviceSetup &setup);
-        ~SDLVulkanDevice();
+        class SDLVulkanDevice final : public SDLDevice
+        {
+        public:
+            explicit SDLVulkanDevice(const DeviceSetup &setup);
+            ~SDLVulkanDevice();
 
-        auto getCanvasSize() const -> Vector2 override final;
+            auto getCanvasSize() const->Vector2 override final;
 
-        void saveScreenshot(const std::string &path) override final;
+            void saveScreenshot(const std::string &path) override final;
 
-        auto getVkInstance() const -> VkInstance;
-        auto getVkSurface() const -> VkSurfaceKHR;
+            auto getVkInstance() const->VkInstance;
+            auto getVkSurface() const->VkSurfaceKHR;
 
-    protected:
-        void endUpdate() override final;
+        protected:
+            void endUpdate() override final;
 
-    private:
-        vk::Resource<VkInstance> instance;
-        vk::Resource<VkSurfaceKHR> surface;
-        VkDebugReportCallbackEXT debugCallback = nullptr;
-    };
+        private:
+            Resource<VkInstance> instance;
+            Resource<VkSurfaceKHR> surface;
+            VkDebugReportCallbackEXT debugCallback = nullptr;
+        };
 
-    inline auto SDLVulkanDevice::getVkInstance() const -> VkInstance
-    {
-        return instance;
-    }
+        inline auto SDLVulkanDevice::getVkInstance() const -> VkInstance
+        {
+            return instance;
+        }
 
-    inline auto SDLVulkanDevice::getVkSurface() const -> VkSurfaceKHR
-    {
-        return surface;
+        inline auto SDLVulkanDevice::getVkSurface() const -> VkSurfaceKHR
+        {
+            return surface;
+        }
     }
 }
 

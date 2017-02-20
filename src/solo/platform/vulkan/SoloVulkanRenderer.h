@@ -34,57 +34,60 @@ namespace solo
 {
     class Device;
 
-    class VulkanRenderer final: public Renderer
+    namespace vk
     {
-    public:
-        explicit VulkanRenderer(Device *device);
-        ~VulkanRenderer();
-
-        void setClear(const Vector4 &color, bool clearColor, bool clearDepth);
-        void setViewport(const Vector4 &viewport);
-
-    protected:
-        void beginFrame() override final;
-        void endFrame() override final;
-
-    private:
-        uint32_t canvasWidth = 0;
-        uint32_t canvasHeight = 0;
-        VkFormat depthFormat = VK_FORMAT_UNDEFINED;
-        VkFormat colorFormat = VK_FORMAT_UNDEFINED;
-        VkColorSpaceKHR colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
-        
-        struct
+        class VulkanRenderer final : public Renderer
         {
-            VkPhysicalDevice device = nullptr;
-            VkPhysicalDeviceFeatures features;
-            VkPhysicalDeviceProperties properties;
-            VkPhysicalDeviceMemoryProperties memProperties;
-        } physicalDevice;
+        public:
+            explicit VulkanRenderer(Device *device);
+            ~VulkanRenderer();
 
-        vk::Resource<VkDevice> device;
-        VkQueue queue = nullptr;
-        vk::Resource<VkCommandPool> commandPool;
-        vk::DepthStencil depthStencil;
-        RenderPass renderPass;
-        VulkanSwapchain swapchain;
+            void setClear(const Vector4 &color, bool clearColor, bool clearDepth);
+            void setViewport(const Vector4 &viewport);
 
-        struct
-        {
-            vk::Resource<VkSemaphore> renderComplete;
-            vk::Resource<VkSemaphore> presentComplete;
-        } semaphores;
-        
-        std::vector<VkCommandBuffer> cmdBuffers;
-        uint32_t currentBuffer = 0;
+        protected:
+            void beginFrame() override final;
+            void endFrame() override final;
 
-        bool dirty = true;
+        private:
+            uint32_t canvasWidth = 0;
+            uint32_t canvasHeight = 0;
+            VkFormat depthFormat = VK_FORMAT_UNDEFINED;
+            VkFormat colorFormat = VK_FORMAT_UNDEFINED;
+            VkColorSpaceKHR colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
 
-        std::vector<VkClearValue> clearValues;
-        VkViewport viewport = {1, 1, 0, 1};
+            struct
+            {
+                VkPhysicalDevice device = nullptr;
+                VkPhysicalDeviceFeatures features;
+                VkPhysicalDeviceProperties properties;
+                VkPhysicalDeviceMemoryProperties memProperties;
+            } physicalDevice;
 
-        void updateCmdBuffers();
-    };
+            Resource<VkDevice> device;
+            VkQueue queue = nullptr;
+            Resource<VkCommandPool> commandPool;
+            DepthStencil depthStencil;
+            RenderPass renderPass;
+            VulkanSwapchain swapchain;
+
+            struct
+            {
+                Resource<VkSemaphore> renderComplete;
+                Resource<VkSemaphore> presentComplete;
+            } semaphores;
+
+            std::vector<VkCommandBuffer> cmdBuffers;
+            uint32_t currentBuffer = 0;
+
+            bool dirty = true;
+
+            std::vector<VkClearValue> clearValues;
+            VkViewport viewport = {1, 1, 0, 1};
+
+            void updateCmdBuffers();
+        };
+    }
 }
 
 #endif

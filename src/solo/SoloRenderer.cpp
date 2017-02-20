@@ -37,7 +37,7 @@ auto Renderer::create(Device *device, const FriendToken<Device> &) -> sptr<Rende
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return std::make_shared<VulkanRenderer>(device);
+            return std::make_shared<vk::VulkanRenderer>(device);
 #endif
         default:
             return std::make_shared<NullRenderer>();

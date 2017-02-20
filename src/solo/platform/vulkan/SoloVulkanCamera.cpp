@@ -26,6 +26,7 @@
 #include "SoloVulkanRenderer.h"
 
 using namespace solo;
+using namespace vk;
 
 
 VulkanCamera::VulkanCamera(const Node &node):

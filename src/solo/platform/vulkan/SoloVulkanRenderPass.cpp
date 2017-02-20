@@ -25,6 +25,7 @@
 #include <array>
 
 using namespace solo;
+using namespace vk;
 
 
 RenderPass::RenderPass()
@@ -32,7 +33,7 @@ RenderPass::RenderPass()
 }
 
 
-RenderPass::RenderPass(VkDevice device, vk::Resource<VkRenderPass> pass):
+RenderPass::RenderPass(VkDevice device, Resource<VkRenderPass> pass):
     device(device),
     pass(std::move(pass))
 {
@@ -179,7 +180,7 @@ auto RenderPassBuilder::build() -> RenderPass
     renderPassInfo.dependencyCount = static_cast<uint32_t>(dependencies.size());
     renderPassInfo.pDependencies = dependencies.data();
 
-    vk::Resource<VkRenderPass> pass{device, vkDestroyRenderPass};
+    Resource<VkRenderPass> pass{device, vkDestroyRenderPass};
     SL_VK_CHECK_RESULT(vkCreateRenderPass(device, &renderPassInfo, nullptr, pass.replace()));
 
     return RenderPass(device, std::move(pass));

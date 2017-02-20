@@ -29,58 +29,61 @@
 
 namespace solo
 {
-    class VulkanSwapchain
+    namespace vk
     {
-    public:
-        VulkanSwapchain();
-        VulkanSwapchain(const VulkanSwapchain &other) = delete;
-        VulkanSwapchain(VulkanSwapchain &&other) noexcept;
-        VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, VkRenderPass renderPass,
-            VkImageView depthStencilView, uint32_t width, uint32_t height, bool vsync, VkFormat colorFormat, VkColorSpaceKHR colorSpace);
-        ~VulkanSwapchain() {}
-
-        auto operator=(VulkanSwapchain other) noexcept -> VulkanSwapchain&;
-
-        auto getNextImageIndex(VkSemaphore semaphore) const -> uint32_t;
-        auto getStepCount() const -> uint32_t;
-        auto getFramebuffer(uint32_t idx) const -> VkFramebuffer;
-        auto getImageView(uint32_t idx) -> VkImageView;
-
-        auto getHandle() const -> VkSwapchainKHR;
-
-    private:
-        struct Step
+        class VulkanSwapchain
         {
-            VkImage image;
-            vk::Resource<VkImageView> imageView;
-            vk::Resource<VkFramebuffer> framebuffer;
+        public:
+            VulkanSwapchain();
+            VulkanSwapchain(const VulkanSwapchain &other) = delete;
+            VulkanSwapchain(VulkanSwapchain &&other) noexcept;
+            VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, VkRenderPass renderPass,
+                VkImageView depthStencilView, uint32_t width, uint32_t height, bool vsync, VkFormat colorFormat, VkColorSpaceKHR colorSpace);
+            ~VulkanSwapchain() {}
+
+            auto operator=(VulkanSwapchain other) noexcept->VulkanSwapchain&;
+
+            auto getNextImageIndex(VkSemaphore semaphore) const->uint32_t;
+            auto getStepCount() const->uint32_t;
+            auto getFramebuffer(uint32_t idx) const->VkFramebuffer;
+            auto getImageView(uint32_t idx)->VkImageView;
+
+            auto getHandle() const->VkSwapchainKHR;
+
+        private:
+            struct Step
+            {
+                VkImage image;
+                Resource<VkImageView> imageView;
+                Resource<VkFramebuffer> framebuffer;
+            };
+
+            VkDevice device = nullptr;
+            Resource<VkSwapchainKHR> swapchain;
+            std::vector<Step> steps;
+
+            void swap(VulkanSwapchain &other) noexcept;
         };
 
-        VkDevice device = nullptr;
-        vk::Resource<VkSwapchainKHR> swapchain;
-        std::vector<Step> steps;
+        inline auto VulkanSwapchain::getHandle() const -> VkSwapchainKHR
+        {
+            return swapchain;
+        }
 
-        void swap(VulkanSwapchain &other) noexcept;
-    };
+        inline auto VulkanSwapchain::getStepCount() const -> uint32_t
+        {
+            return static_cast<uint32_t>(steps.size());
+        }
 
-    inline auto VulkanSwapchain::getHandle() const -> VkSwapchainKHR
-    {
-        return swapchain;
-    }
+        inline auto VulkanSwapchain::getFramebuffer(uint32_t idx) const->VkFramebuffer
+        {
+            return steps[idx].framebuffer;
+        }
 
-    inline auto VulkanSwapchain::getStepCount() const -> uint32_t
-    {
-        return static_cast<uint32_t>(steps.size());
-    }
-
-    inline auto VulkanSwapchain::getFramebuffer(uint32_t idx) const->VkFramebuffer
-    {
-        return steps[idx].framebuffer;
-    }
-
-    inline auto VulkanSwapchain::getImageView(uint32_t idx) -> VkImageView
-    {
-        return steps[idx].imageView;
+        inline auto VulkanSwapchain::getImageView(uint32_t idx) -> VkImageView
+        {
+            return steps[idx].imageView;
+        }
     }
 }
 

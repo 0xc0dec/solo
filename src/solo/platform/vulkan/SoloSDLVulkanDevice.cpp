@@ -28,6 +28,7 @@
 #endif
 
 using namespace solo;
+using namespace vk;
 
 
 //static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,

@@ -29,55 +29,58 @@
 
 namespace solo
 {
-    class RenderPass // TODO rename others
+    namespace vk
     {
-    public:
-        RenderPass();
-        RenderPass(VkDevice device, vk::Resource<VkRenderPass> pass);
-        RenderPass(const RenderPass &other) = delete;
-        RenderPass(RenderPass &&other) noexcept;
-        ~RenderPass() {}
-
-        auto operator=(RenderPass other) noexcept -> RenderPass&;
-
-        void setViewport(uint32_t left, uint32_t top, uint32_t width, uint32_t height);
-        void setScissor(uint32_t left, uint32_t top, uint32_t width, uint32_t height);
-        void setClear(VkClearColorValue colorClear, VkClearDepthStencilValue depthStencilClear, bool clearColor, bool clearDepthStencil);
-
-        void begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, uint32_t canvasWidth, uint32_t canvasHeight);
-        void end(VkCommandBuffer cmdBuf);
-
-        operator VkRenderPass()
+        class RenderPass
         {
-            return pass;
-        }
+        public:
+            RenderPass();
+            RenderPass(VkDevice device, Resource<VkRenderPass> pass);
+            RenderPass(const RenderPass &other) = delete;
+            RenderPass(RenderPass &&other) noexcept;
+            ~RenderPass() {}
 
-    private:
-        VkDevice device = nullptr;
-        vk::Resource<VkRenderPass> pass;
-        VkViewport viewport;
-        VkRect2D scissor;
-        std::vector<VkClearValue> clearValues;
+            auto operator=(RenderPass other) noexcept->RenderPass&;
 
-        void swap(RenderPass &other) noexcept;
-    };
+            void setViewport(uint32_t left, uint32_t top, uint32_t width, uint32_t height);
+            void setScissor(uint32_t left, uint32_t top, uint32_t width, uint32_t height);
+            void setClear(VkClearColorValue colorClear, VkClearDepthStencilValue depthStencilClear, bool clearColor, bool clearDepthStencil);
 
-    class RenderPassBuilder
-    {
-    public:
-        explicit RenderPassBuilder(VkDevice device);
+            void begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, uint32_t canvasWidth, uint32_t canvasHeight);
+            void end(VkCommandBuffer cmdBuf);
 
-        auto withColorAttachment(VkFormat colorFormat) -> RenderPassBuilder&;
-        auto withDepthAttachment(VkFormat depthFormat) -> RenderPassBuilder&;
+            operator VkRenderPass()
+            {
+                return pass;
+            }
 
-        auto build() -> RenderPass;
+        private:
+            VkDevice device = nullptr;
+            Resource<VkRenderPass> pass;
+            VkViewport viewport;
+            VkRect2D scissor;
+            std::vector<VkClearValue> clearValues;
 
-    private:
-        VkDevice device = nullptr;
-        std::vector<VkAttachmentDescription> attachments;
-        std::vector<VkAttachmentReference> colorAttachmentRefs;
-        VkAttachmentReference depthAttachmentRef;
-    };
+            void swap(RenderPass &other) noexcept;
+        };
+
+        class RenderPassBuilder
+        {
+        public:
+            explicit RenderPassBuilder(VkDevice device);
+
+            auto withColorAttachment(VkFormat colorFormat)->RenderPassBuilder&;
+            auto withDepthAttachment(VkFormat depthFormat)->RenderPassBuilder&;
+
+            auto build()->RenderPass;
+
+        private:
+            VkDevice device = nullptr;
+            std::vector<VkAttachmentDescription> attachments;
+            std::vector<VkAttachmentReference> colorAttachmentRefs;
+            VkAttachmentReference depthAttachmentRef;
+        };
+    }
 }
 
 #endif

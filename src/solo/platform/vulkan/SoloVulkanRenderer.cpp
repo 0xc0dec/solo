@@ -27,6 +27,7 @@
 #include "SoloVulkan.h"
 
 using namespace solo;
+using namespace vk;
 
 
 VulkanRenderer::VulkanRenderer(Device *engineDevice):
@@ -37,21 +38,21 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     auto instance = vulkanDevice->getVkInstance();
     auto surface = vulkanDevice->getVkSurface();
 
-    physicalDevice.device = vk::getPhysicalDevice(instance);
+    physicalDevice.device = getPhysicalDevice(instance);
     vkGetPhysicalDeviceProperties(physicalDevice.device, &physicalDevice.properties);
     vkGetPhysicalDeviceFeatures(physicalDevice.device, &physicalDevice.features);
     vkGetPhysicalDeviceMemoryProperties(physicalDevice.device, &physicalDevice.memProperties);
 
-    auto surfaceFormats = vk::getSurfaceFormats(physicalDevice.device, surface);
+    auto surfaceFormats = getSurfaceFormats(physicalDevice.device, surface);
     colorFormat = std::get<0>(surfaceFormats);
     colorSpace = std::get<1>(surfaceFormats);
 
-    auto queueIndex = vk::getQueueIndex(physicalDevice.device, surface);
-    this->device = vk::createDevice(physicalDevice.device, queueIndex);
+    auto queueIndex = getQueueIndex(physicalDevice.device, surface);
+    this->device = createDevice(physicalDevice.device, queueIndex);
 
     vkGetDeviceQueue(this->device, queueIndex, 0, &queue);
 
-    depthFormat = vk::getDepthFormat(physicalDevice.device);
+    depthFormat = getDepthFormat(physicalDevice.device);
     commandPool = createCommandPool(this->device, queueIndex);
     depthStencil = createDepthStencil(this->device, physicalDevice.memProperties, depthFormat, canvasWidth, canvasHeight);
     renderPass = RenderPassBuilder(this->device)
