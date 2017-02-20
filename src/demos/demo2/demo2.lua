@@ -7,6 +7,7 @@ loader = dev:getAssetLoader()
 physics = dev:getPhysics()
 renderer = dev:getRenderer()
 logger = dev:getLogger()
+scene = solo.Scene.create(dev)
 
 function initMainCamera()
     local node = scene:createNode()
@@ -22,7 +23,7 @@ function initMainCamera()
     return cam
 end
 
-mainCamera = initMainCamera()
+camera = initMainCamera()
 
 function keepRunning()
     return not dev:isQuitRequested() and
@@ -46,7 +47,7 @@ function renderByTags(tags, ctx)
 end
 
 function render()
-    mainCamera:renderFrame(function(ctx) end)
+    camera:renderFrame(function(ctx) end)
 end
 
 function run()
