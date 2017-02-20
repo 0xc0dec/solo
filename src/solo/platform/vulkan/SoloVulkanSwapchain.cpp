@@ -26,18 +26,18 @@ using namespace solo;
 using namespace vk;
 
 
-VulkanSwapchain::VulkanSwapchain()
+Swapchain::Swapchain()
 {
 }
 
 
-VulkanSwapchain::VulkanSwapchain(VulkanSwapchain &&other) noexcept
+Swapchain::Swapchain(Swapchain &&other) noexcept
 {
     swap(other);
 }
 
 
-VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface,
+Swapchain::Swapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface,
     VkRenderPass renderPass, VkImageView depthStencilView, uint32_t width, uint32_t height, bool vsync,
     VkFormat colorFormat, VkColorSpaceKHR colorSpace):
     device(device)
@@ -148,7 +148,7 @@ VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevic
 }
 
 
-auto VulkanSwapchain::operator=(VulkanSwapchain other) noexcept -> VulkanSwapchain&
+auto Swapchain::operator=(Swapchain other) noexcept -> Swapchain&
 {
     if (&other != this)
         swap(other);
@@ -156,7 +156,7 @@ auto VulkanSwapchain::operator=(VulkanSwapchain other) noexcept -> VulkanSwapcha
 }
 
 
-auto VulkanSwapchain::getNextImageIndex(VkSemaphore semaphore) const -> uint32_t
+auto Swapchain::getNextImageIndex(VkSemaphore semaphore) const -> uint32_t
 {
     uint32_t result;
     SL_VK_CHECK_RESULT(vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, semaphore, nullptr, &result));
@@ -164,7 +164,7 @@ auto VulkanSwapchain::getNextImageIndex(VkSemaphore semaphore) const -> uint32_t
 }
 
 
-void VulkanSwapchain::swap(VulkanSwapchain &other) noexcept
+void Swapchain::swap(Swapchain &other) noexcept
 {
     std::swap(device, other.device);
     std::swap(swapchain, other.swapchain);

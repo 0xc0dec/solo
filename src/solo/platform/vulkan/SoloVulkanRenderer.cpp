@@ -60,7 +60,7 @@ vk::Renderer::Renderer(Device *engineDevice):
         .withDepthAttachment(depthFormat)
         .build();
 
-    swapchain = VulkanSwapchain(this->device, physicalDevice.device, surface, renderPass, depthStencil.view,
+    swapchain = Swapchain(this->device, physicalDevice.device, surface, renderPass, depthStencil.view,
         canvasWidth, canvasHeight, false, colorFormat, colorSpace);
 
     semaphores.presentComplete = createSemaphore(this->device);

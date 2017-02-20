@@ -69,7 +69,7 @@ namespace solo
             Resource<VkCommandPool> commandPool;
             DepthStencil depthStencil;
             RenderPass renderPass;
-            VulkanSwapchain swapchain;
+            Swapchain swapchain;
 
             struct
             {
