@@ -28,7 +28,7 @@
 #include "SoloScriptRuntime.h"
 #include "platform/null/SoloNullDevice.h"
 #include "platform/gl/SoloSDLOpenGLDevice.h"
-#include "platform/vulkan/SoloSDLVulkanDevice.h"
+#include "platform/vk/SoloSDLVulkanDevice.h"
 
 using namespace solo;
 

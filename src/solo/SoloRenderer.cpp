@@ -21,7 +21,7 @@
 #include "SoloRenderer.h"
 #include "SoloDevice.h"
 #include "platform/gl/SoloOpenGLRenderer.h"
-#include "platform/vulkan/SoloVulkanRenderer.h"
+#include "platform/vk/SoloVulkanRenderer.h"
 #include "platform/null/SoloNullRenderer.h"
 
 using namespace solo;

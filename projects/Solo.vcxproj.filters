@@ -202,21 +202,6 @@
     <ClInclude Include="..\src\solo\platform\null\SoloNullMesh.h">
       <Filter>src\platform\null</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\platform\vulkan\SoloSDLVulkanDevice.h">
-      <Filter>src\platform\vulkan</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkan.h">
-      <Filter>src\platform\vulkan</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanRenderer.h">
-      <Filter>src\platform\vulkan</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanSwapchain.h">
-      <Filter>src\platform\vulkan</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanCamera.h">
-      <Filter>src\platform\vulkan</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloScriptRuntime.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -234,9 +219,6 @@
     </ClInclude>
     <ClInclude Include="..\src\solo\SoloSpinLock.h">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\vulkan\SoloVulkanRenderPass.h">
-      <Filter>src\platform\vulkan</Filter>
     </ClInclude>
     <ClInclude Include="..\src\solo\platform\gl\SoloOpenGLCamera.h">
       <Filter>src\platform\gl</Filter>
@@ -270,6 +252,24 @@
     </ClInclude>
     <ClInclude Include="..\src\solo\platform\gl\SoloSDLOpenGLDevice.h">
       <Filter>src\platform\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\vk\SoloSDLVulkanDevice.h">
+      <Filter>src\platform\vk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\vk\SoloVulkan.h">
+      <Filter>src\platform\vk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\vk\SoloVulkanCamera.h">
+      <Filter>src\platform\vk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\vk\SoloVulkanRenderer.h">
+      <Filter>src\platform\vk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\vk\SoloVulkanRenderPass.h">
+      <Filter>src\platform\vk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\platform\vk\SoloVulkanSwapchain.h">
+      <Filter>src\platform\vk</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -405,21 +405,6 @@
     <ClCompile Include="..\src\solo\SoloTransformMatrix.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\platform\vulkan\SoloSDLVulkanDevice.cpp">
-      <Filter>src\platform\vulkan</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanRenderer.cpp">
-      <Filter>src\platform\vulkan</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkan.cpp">
-      <Filter>src\platform\vulkan</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanSwapchain.cpp">
-      <Filter>src\platform\vulkan</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanCamera.cpp">
-      <Filter>src\platform\vulkan</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\solo\SoloScriptRuntime.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -468,9 +453,6 @@
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaFontApi.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\platform\vulkan\SoloVulkanRenderPass.cpp">
-      <Filter>src\platform\vulkan</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLCamera.cpp">
       <Filter>src\platform\gl</Filter>
     </ClCompile>
@@ -501,6 +483,24 @@
     <ClCompile Include="..\src\solo\platform\gl\SoloSDLOpenGLDevice.cpp">
       <Filter>src\platform\gl</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\solo\platform\vk\SoloSDLVulkanDevice.cpp">
+      <Filter>src\platform\vk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\vk\SoloVulkan.cpp">
+      <Filter>src\platform\vk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\vk\SoloVulkanCamera.cpp">
+      <Filter>src\platform\vk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\vk\SoloVulkanRenderer.cpp">
+      <Filter>src\platform\vk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\vk\SoloVulkanRenderPass.cpp">
+      <Filter>src\platform\vk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\vk\SoloVulkanSwapchain.cpp">
+      <Filter>src\platform\vk</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -521,14 +521,14 @@
     <Filter Include="src\platform\null">
       <UniqueIdentifier>{a2160cc5-f9a6-47d6-b537-be79b1e819d7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\platform\vulkan">
-      <UniqueIdentifier>{922994a2-1ba2-4c0e-bb85-b3e9b991e6dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\platform\lua">
       <UniqueIdentifier>{c148a0ea-cc02-4c45-94c2-63b99310c624}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\platform\gl">
       <UniqueIdentifier>{f14878d2-f3e0-46aa-8dde-49cd0692f7f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\platform\vk">
+      <UniqueIdentifier>{922994a2-1ba2-4c0e-bb85-b3e9b991e6dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

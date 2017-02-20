@@ -27,7 +27,7 @@
 #include "SoloScene.h"
 #include "SoloRenderContext.h"
 #include "platform/gl/SoloOpenGLCamera.h"
-#include "platform/vulkan/SoloVulkanCamera.h"
+#include "platform/vk/SoloVulkanCamera.h"
 #include "platform/null/SoloNullCamera.h"
 
 using namespace solo;
