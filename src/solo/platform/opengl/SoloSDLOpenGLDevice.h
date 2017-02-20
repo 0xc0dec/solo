@@ -28,21 +28,24 @@
 
 namespace solo
 {
-    class SDLOpenGLDevice final: public sdl::Device
+    namespace gl
     {
-    public:
-        explicit SDLOpenGLDevice(const DeviceSetup &setup);
-        virtual ~SDLOpenGLDevice();
+        class SDLDevice final : public sdl::Device
+        {
+        public:
+            explicit SDLDevice(const DeviceSetup &setup);
+            virtual ~SDLDevice();
 
-        void saveScreenshot(const std::string &path) override final;
+            void saveScreenshot(const std::string &path) override final;
 
-        auto getCanvasSize() const -> Vector2 override final;
+            auto getCanvasSize() const->Vector2 override final;
 
-    private:
-        void endUpdate() override final;
+        private:
+            void endUpdate() override final;
 
-        SDL_GLContext context = nullptr;
-    };
+            SDL_GLContext context = nullptr;
+        };
+    }
 }
 
 #endif

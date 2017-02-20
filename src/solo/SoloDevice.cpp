@@ -41,7 +41,7 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device>
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            device = std::make_unique<SDLOpenGLDevice>(setup);
+            device = std::make_unique<gl::SDLDevice>(setup);
             break;
 #endif
 #ifdef SL_VULKAN_RENDERER

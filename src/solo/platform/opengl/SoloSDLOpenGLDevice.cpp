@@ -27,9 +27,10 @@
 #include <SDL_surface.h>
 
 using namespace solo;
+using namespace gl;
 
 
-SDLOpenGLDevice::SDLOpenGLDevice(DeviceSetup const &setup):
+SDLDevice::SDLDevice(DeviceSetup const &setup):
     Device(setup)
 {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -60,7 +61,7 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceSetup const &setup):
 }
 
 
-SDLOpenGLDevice::~SDLOpenGLDevice()
+SDLDevice::~SDLDevice()
 {
     if (context)
         SDL_GL_DeleteContext(context);
@@ -69,13 +70,13 @@ SDLOpenGLDevice::~SDLOpenGLDevice()
 }
 
 
-void SDLOpenGLDevice::endUpdate()
+void SDLDevice::endUpdate()
 {
     SDL_GL_SwapWindow(window);
 }
 
 
-void SDLOpenGLDevice::saveScreenshot(const std::string &path)
+void SDLDevice::saveScreenshot(const std::string &path)
 {
     int32_t width, height;
     SDL_GetWindowSize(window, &width, &height);
@@ -102,7 +103,7 @@ void SDLOpenGLDevice::saveScreenshot(const std::string &path)
 }
 
 
-auto SDLOpenGLDevice::getCanvasSize() const -> Vector2
+auto SDLDevice::getCanvasSize() const -> Vector2
 {
     int32_t width, height;
     SDL_GL_GetDrawableSize(window, &width, &height);
