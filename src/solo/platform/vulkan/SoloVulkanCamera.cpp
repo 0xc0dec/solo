@@ -29,14 +29,14 @@ using namespace solo;
 using namespace vk;
 
 
-VulkanCamera::VulkanCamera(const Node &node):
-    Camera(node)
+vk::Camera::Camera(const Node &node):
+    solo::Camera(node)
 {
     renderer = dynamic_cast<Renderer*>(node.getScene()->getDevice()->getRenderer());
 }
 
 
-void VulkanCamera::renderImpl() const
+void vk::Camera::renderImpl() const
 {
     if (renderDirtyFlag)
     {

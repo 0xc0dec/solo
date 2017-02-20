@@ -50,7 +50,7 @@ auto Camera::create(const Node &node) -> sptr<Camera>
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return std::make_shared<vk::VulkanCamera>(node);
+            return std::make_shared<vk::Camera>(node);
 #endif
         default:
             return std::make_shared<NullCamera>(node);

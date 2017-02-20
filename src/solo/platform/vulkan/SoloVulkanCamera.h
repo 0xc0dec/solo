@@ -32,10 +32,10 @@ namespace solo
     {
         class Renderer;
 
-        class VulkanCamera final : public Camera
+        class Camera final : public solo::Camera
         {
         public:
-            explicit VulkanCamera(const Node &node);
+            explicit Camera(const Node &node);
 
         private:
             Renderer *renderer = nullptr;
