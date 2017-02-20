@@ -29,7 +29,7 @@ using namespace solo;
 auto FileSystem::create(Device *device, const FriendToken<Device> &) -> sptr<FileSystem>
 {
     if (device->getSetup().mode == DeviceMode::Null)
-        return std::make_shared<NullFileSystem>();
+        return std::make_shared<null::FileSystem>();
     return std::unique_ptr<FileSystem>(new FileSystem());
 }
 

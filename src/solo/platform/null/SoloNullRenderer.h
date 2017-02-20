@@ -24,10 +24,13 @@
 
 namespace solo
 {
-    class NullRenderer final : public Renderer
+    namespace null
     {
-    protected:
-        void beginFrame() override final {}
-        void endFrame() override final {}
-    };
+        class Renderer final : public solo::Renderer
+        {
+        protected:
+            void beginFrame() override final {}
+            void endFrame() override final {}
+        };
+    }
 }

@@ -53,7 +53,7 @@ auto Camera::create(const Node &node) -> sptr<Camera>
             return std::make_shared<vk::Camera>(node);
 #endif
         default:
-            return std::make_shared<NullCamera>(node);
+            return std::make_shared<null::Camera>(node);
     }
 }
 

@@ -35,6 +35,6 @@ sptr<RectTexture> RectTexture::create(Device *device)
             return std::make_shared<gl::RectTexture>(device);
 #endif
         default:
-            return std::make_shared<NullRectTexture>();
+            return std::make_shared<null::RectTexture>();
     }
 }

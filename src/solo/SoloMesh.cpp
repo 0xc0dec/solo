@@ -37,7 +37,7 @@ auto Mesh::create(Device *device) -> sptr<Mesh>
             return std::make_shared<gl::Mesh>(device);
 #endif
         default:
-            return std::make_shared<NullMesh>();
+            return std::make_shared<null::Mesh>();
     }
 }
 
@@ -51,7 +51,7 @@ auto Mesh::createFromPrefab(Device *device, MeshPrefab prefab) -> sptr<Mesh>
             return std::make_shared<gl::Mesh>(device, prefab);
 #endif
         default:
-            return std::make_shared<NullMesh>();
+            return std::make_shared<null::Mesh>();
     }
 }
 
@@ -65,7 +65,7 @@ auto Mesh::createFromData(Device *device, MeshData *data) -> sptr<Mesh>
             return std::make_shared<gl::Mesh>(device, data);
 #endif
         default:
-            return std::make_shared<NullMesh>();
+            return std::make_shared<null::Mesh>();
     }
 }
 

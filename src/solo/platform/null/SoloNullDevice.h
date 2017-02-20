@@ -24,42 +24,45 @@
 
 namespace solo
 {
-    class NullDevice final: public Device
+    namespace null
     {
-    public:
-        explicit NullDevice(const DeviceSetup &setup): Device(setup) {}
+        class Device final : public solo::Device
+        {
+        public:
+            explicit Device(const DeviceSetup &setup) : solo::Device(setup) {}
 
-        void setWindowTitle(const std::string &title) override final;
-        auto getWindowTitle() const -> std::string override final;
-        void saveScreenshot(const std::string &path) override final {}
-        void setCursorCaptured(bool captured) override final {}
-        auto getCanvasSize() const -> Vector2 override final;
-        auto getLifetime() const -> float override final;
+            void setWindowTitle(const std::string &title) override final;
+            auto getWindowTitle() const->std::string override final;
+            void saveScreenshot(const std::string &path) override final {}
+            void setCursorCaptured(bool captured) override final {}
+            auto getCanvasSize() const -> Vector2 override final;
+            auto getLifetime() const -> float override final;
 
-    private:
-        void beginUpdate() override final {}
-        void endUpdate() override final {}
+        private:
+            void beginUpdate() override final {}
+            void endUpdate() override final {}
 
-        std::string windowTitle;
-    };
+            std::string windowTitle;
+        };
 
-    inline void NullDevice::setWindowTitle(const std::string &title)
-    {
-        windowTitle = title;
-    }
+        inline void Device::setWindowTitle(const std::string &title)
+        {
+            windowTitle = title;
+        }
 
-    inline auto NullDevice::getWindowTitle() const -> std::string
-    {
-        return windowTitle;
-    }
+        inline auto Device::getWindowTitle() const -> std::string
+        {
+            return windowTitle;
+        }
 
-    inline auto NullDevice::getCanvasSize() const -> Vector2
-    {
-        return {0, 0};
-    }
+        inline auto Device::getCanvasSize() const -> Vector2
+        {
+            return{0, 0};
+        }
 
-    inline auto NullDevice::getLifetime() const -> float
-    {
-        return 0;
+        inline auto Device::getLifetime() const -> float
+        {
+            return 0;
+        }
     }
 }

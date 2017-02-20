@@ -22,12 +22,14 @@
 
 #include "SoloEffect.h"
 
-
 namespace solo
 {
-    class NullEffect final: public Effect
+    namespace null
     {
-    public:
-        void apply() override final {}
-    };
+        class Effect final : public solo::Effect
+        {
+        public:
+            void apply() override final {}
+        };
+    }
 }

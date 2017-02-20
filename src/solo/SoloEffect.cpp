@@ -35,7 +35,7 @@ auto Effect::create(Device *device, const std::string &vsSrc, const std::string 
             return std::make_shared<gl::Effect>(device, vsSrc, fsSrc);
 #endif
         default:
-            return std::make_shared<NullEffect>();
+            return std::make_shared<null::Effect>();
     }
 }
 
@@ -49,6 +49,6 @@ auto Effect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effec
             return gl::Effect::create(device, prefab);
 #endif
         default:
-            return std::make_shared<NullEffect>();
+            return std::make_shared<null::Effect>();
     }
 }

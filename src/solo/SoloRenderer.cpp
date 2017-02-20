@@ -40,7 +40,7 @@ auto Renderer::create(Device *device, const FriendToken<Device> &) -> sptr<Rende
             return std::make_shared<vk::Renderer>(device);
 #endif
         default:
-            return std::make_shared<NullRenderer>();
+            return std::make_shared<null::Renderer>();
     }
 }
 

@@ -24,16 +24,19 @@
 
 namespace solo
 {
-    class NullCamera final: public Camera
+    namespace null
     {
-    public:
-        explicit NullCamera(const Node &node): Camera(node)
+        class Camera final : public solo::Camera
         {
-        }
+        public:
+            explicit Camera(const Node &node) : solo::Camera(node)
+            {
+            }
 
-    protected:
-        void renderImpl() const override
-        {
-        }
-    };
+        protected:
+            void renderImpl() const override
+            {
+            }
+        };
+    }
 }

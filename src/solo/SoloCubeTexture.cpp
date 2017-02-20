@@ -35,7 +35,7 @@ auto CubeTexture::create(Device *device) -> sptr<CubeTexture>
             return std::make_shared<gl::CubeTexture>(device);
 #endif
         default:
-            return std::make_shared<NullCubeTexture>();
+            return std::make_shared<null::CubeTexture>();
     }
 }
 
