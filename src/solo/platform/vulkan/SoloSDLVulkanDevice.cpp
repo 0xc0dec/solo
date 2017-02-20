@@ -39,8 +39,8 @@ using namespace vk;
 //}
 
 
-vk::SDLDevice::SDLDevice(const DeviceSetup &setup):
-    solo::SDLDevice(setup)
+SDLDevice::SDLDevice(const DeviceSetup &setup):
+    Device(setup)
 {
     auto flags = static_cast<uint32_t>(SDL_WINDOW_ALLOW_HIGHDPI);
     if (setup.fullScreen)
@@ -89,7 +89,7 @@ vk::SDLDevice::SDLDevice(const DeviceSetup &setup):
         instanceInfo.ppEnabledExtensionNames = enabledExtensions.data();
     }
 
-    instance = vk::Resource<VkInstance>{vkDestroyInstance};
+    instance = Resource<VkInstance>{vkDestroyInstance};
     SL_VK_CHECK_RESULT(vkCreateInstance(&instanceInfo, nullptr, instance.replace()));
 
 #ifdef SL_WINDOWS
@@ -107,7 +107,7 @@ vk::SDLDevice::SDLDevice(const DeviceSetup &setup):
     surfaceInfo.hinstance = hinstance;
     surfaceInfo.hwnd = hwnd;
 
-    surface = vk::Resource<VkSurfaceKHR>{instance, vkDestroySurfaceKHR};
+    surface = Resource<VkSurfaceKHR>{instance, vkDestroySurfaceKHR};
     SL_VK_CHECK_RESULT(vkCreateWin32SurfaceKHR(instance, &surfaceInfo, nullptr, surface.replace()));
 #endif
 
@@ -117,7 +117,7 @@ vk::SDLDevice::SDLDevice(const DeviceSetup &setup):
 }
 
 
-vk::SDLDevice::~SDLDevice()
+SDLDevice::~SDLDevice()
 {
     // Otherwise it would be destroyed later - not good
     renderer.reset();
@@ -127,18 +127,18 @@ vk::SDLDevice::~SDLDevice()
 }
 
 
-auto vk::SDLDevice::getCanvasSize() const -> Vector2
+auto SDLDevice::getCanvasSize() const -> Vector2
 {
     return {};
 }
 
 
-void vk::SDLDevice::saveScreenshot(const std::string &path)
+void SDLDevice::saveScreenshot(const std::string &path)
 {
 }
 
 
-void vk::SDLDevice::endUpdate()
+void SDLDevice::endUpdate()
 {
 }
 

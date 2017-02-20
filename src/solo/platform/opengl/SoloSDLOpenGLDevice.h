@@ -28,7 +28,7 @@
 
 namespace solo
 {
-    class SDLOpenGLDevice final: public SDLDevice
+    class SDLOpenGLDevice final: public sdl::Device
     {
     public:
         explicit SDLOpenGLDevice(const DeviceSetup &setup);

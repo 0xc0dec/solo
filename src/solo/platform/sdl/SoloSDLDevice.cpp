@@ -24,44 +24,44 @@
 using namespace solo;
 
 
-SDLDevice::SDLDevice(const DeviceSetup &setup):
-    Device(setup)
+sdl::Device::Device(const DeviceSetup &setup) :
+    solo::Device(setup)
 {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);
 }
 
 
-SDLDevice::~SDLDevice()
+sdl::Device::~Device()
 {
     SDL_Quit();
 }
 
 
-auto SDLDevice::getWindowTitle() const -> std::string
+auto sdl::Device::getWindowTitle() const -> std::string
 {
     return std::string(SDL_GetWindowTitle(window));
 }
 
 
-void SDLDevice::setWindowTitle(const std::string &title)
+void sdl::Device::setWindowTitle(const std::string &title)
 {
     SDL_SetWindowTitle(window, title.c_str());
 }
 
 
-void SDLDevice::setCursorCaptured(bool captured)
+void sdl::Device::setCursorCaptured(bool captured)
 {
     SDL_SetRelativeMouseMode(captured ? SDL_TRUE : SDL_FALSE);
 }
 
 
-auto SDLDevice::getLifetime() const -> float
+auto sdl::Device::getLifetime() const -> float
 {
     return SDL_GetTicks() / 1000.0f;
 }
 
 
-void SDLDevice::beginUpdate()
+void sdl::Device::beginUpdate()
 {
     windowCloseRequested = false;
     quitRequested = false;
@@ -73,7 +73,7 @@ void SDLDevice::beginUpdate()
 }
 
 
-void SDLDevice::prepareKeyboardState()
+void sdl::Device::prepareKeyboardState()
 {
     releasedKeys.clear();
     if (hasKeyboardFocus)
@@ -90,7 +90,7 @@ void SDLDevice::prepareKeyboardState()
 }
 
 
-void SDLDevice::prepareMouseState()
+void sdl::Device::prepareMouseState()
 {
     mouseDeltaX = mouseDeltaY = 0;
     releasedMouseButtons.clear();
@@ -108,7 +108,7 @@ void SDLDevice::prepareMouseState()
 }
 
 
-void SDLDevice::readWindowState()
+void sdl::Device::readWindowState()
 {
     auto flags = SDL_GetWindowFlags(window);
     hasKeyboardFocus = (flags & SDL_WINDOW_INPUT_FOCUS) != 0;
@@ -116,7 +116,7 @@ void SDLDevice::readWindowState()
 }
 
 
-void SDLDevice::processKeyboardEvent(const SDL_Event &evt)
+void sdl::Device::processKeyboardEvent(const SDL_Event &evt)
 {
     if (!hasKeyboardFocus)
         return;
@@ -147,7 +147,7 @@ void SDLDevice::processKeyboardEvent(const SDL_Event &evt)
 }
 
 
-void SDLDevice::processMouseEvent(const SDL_Event &evt)
+void sdl::Device::processMouseEvent(const SDL_Event &evt)
 {
     switch (evt.type)
     {
@@ -178,7 +178,7 @@ void SDLDevice::processMouseEvent(const SDL_Event &evt)
 }
 
 
-void SDLDevice::processWindowEvent(const SDL_Event &evt)
+void sdl::Device::processWindowEvent(const SDL_Event &evt)
 {
     switch (evt.window.event)
     {
@@ -191,7 +191,7 @@ void SDLDevice::processWindowEvent(const SDL_Event &evt)
 }
 
 
-void SDLDevice::readEvents()
+void sdl::Device::readEvents()
 {
     static auto firstTime = true;
     SDL_Event evt;

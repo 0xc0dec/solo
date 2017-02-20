@@ -23,38 +23,40 @@
 #include "SoloDevice.h"
 #include <SDL.h>
 
-
 namespace solo
 {
-    class SDLDevice: public Device
+    namespace sdl
     {
-    public:
-        virtual ~SDLDevice();
+        class Device : public solo::Device
+        {
+        public:
+            virtual ~Device();
 
-        auto getWindowTitle() const->std::string override final;
-        void setWindowTitle(const std::string &title) override final;
+            auto getWindowTitle() const->std::string override final;
+            void setWindowTitle(const std::string &title) override final;
 
-        void setCursorCaptured(bool captured) override final;
+            void setCursorCaptured(bool captured) override final;
 
-        auto getLifetime() const -> float override final;
+            auto getLifetime() const -> float override final;
 
-    protected:
-        explicit SDLDevice(const DeviceSetup &setup);
+        protected:
+            explicit Device(const DeviceSetup &setup);
 
-        void beginUpdate() override final;
+            void beginUpdate() override final;
 
-        SDL_Window *window = nullptr;
+            SDL_Window *window = nullptr;
 
-        bool hasMouseFocus = false;
-        bool hasKeyboardFocus = false;
+            bool hasMouseFocus = false;
+            bool hasKeyboardFocus = false;
 
-    private:
-        void prepareKeyboardState();
-        void prepareMouseState();
-        void readWindowState();
-        void readEvents();
-        void processKeyboardEvent(const SDL_Event &evt);
-        void processMouseEvent(const SDL_Event &evt);
-        void processWindowEvent(const SDL_Event &evt);
-    };
+        private:
+            void prepareKeyboardState();
+            void prepareMouseState();
+            void readWindowState();
+            void readEvents();
+            void processKeyboardEvent(const SDL_Event &evt);
+            void processMouseEvent(const SDL_Event &evt);
+            void processWindowEvent(const SDL_Event &evt);
+        };
+    }
 }

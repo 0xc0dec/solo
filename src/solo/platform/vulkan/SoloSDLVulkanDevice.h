@@ -31,7 +31,7 @@ namespace solo
 {
     namespace vk
     {
-        class SDLDevice final : public solo::SDLDevice
+        class SDLDevice final : public sdl::Device
         {
         public:
             explicit SDLDevice(const DeviceSetup &setup);
