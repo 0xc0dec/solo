@@ -32,10 +32,10 @@ using namespace solo;
 auto vk::getPhysicalDevice(VkInstance instance) -> VkPhysicalDevice
 {
     uint32_t gpuCount = 0;
-    SL_CHECK_VK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr));
+    SL_VK_CHECK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr));
 
     std::vector<VkPhysicalDevice> physicalDevices(gpuCount);
-    SL_CHECK_VK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, physicalDevices.data()));
+    SL_VK_CHECK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, physicalDevices.data()));
 
     return physicalDevices[0]; // TODO at least for now
 }
@@ -62,7 +62,7 @@ auto vk::createDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -> R
     deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
 
     Resource<VkDevice> result{vkDestroyDevice};
-    SL_CHECK_VK_RESULT(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, result.replace()));
+    SL_VK_CHECK_RESULT(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, result.replace()));
 
     return result;
 }
@@ -76,7 +76,7 @@ auto vk::createSemaphore(VkDevice device) -> Resource<VkSemaphore>
     semaphoreCreateInfo.flags = 0;
 
     Resource<VkSemaphore> semaphore{device, vkDestroySemaphore};
-    SL_CHECK_VK_RESULT(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, semaphore.replace()));
+    SL_VK_CHECK_RESULT(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, semaphore.replace()));
 
     return semaphore;
 }
@@ -85,10 +85,10 @@ auto vk::createSemaphore(VkDevice device) -> Resource<VkSemaphore>
 auto vk::getSurfaceFormats(VkPhysicalDevice device, VkSurfaceKHR surface) -> std::tuple<VkFormat, VkColorSpaceKHR>
 {
     uint32_t count;
-    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, nullptr));
+    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, nullptr));
 
     std::vector<VkSurfaceFormatKHR> formats(count);
-    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, formats.data()));
+    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, formats.data()));
 
     if (count == 1 && formats[0].format == VK_FORMAT_UNDEFINED)
         return std::make_tuple(VK_FORMAT_B8G8R8A8_UNORM, formats[0].colorSpace);
@@ -107,7 +107,7 @@ auto vk::getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> uint32_
 
     std::vector<VkBool32> presentSupported(count);
     for (uint32_t i = 0; i < count; i++)
-        SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupported[i]));
+        SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupported[i]));
 
     // TODO support for separate rendering and presenting queues
     for (uint32_t i = 0; i < count; i++)
@@ -155,7 +155,7 @@ auto vk::createCommandPool(VkDevice device, uint32_t queueIndex) -> Resource<VkC
     poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 
     Resource<VkCommandPool> commandPool{device, vkDestroyCommandPool};
-    SL_CHECK_VK_RESULT(vkCreateCommandPool(device, &poolInfo, nullptr, commandPool.replace()));
+    SL_VK_CHECK_RESULT(vkCreateCommandPool(device, &poolInfo, nullptr, commandPool.replace()));
 
     return commandPool;
 }
@@ -163,15 +163,15 @@ auto vk::createCommandPool(VkDevice device, uint32_t queueIndex) -> Resource<VkC
 
 void vk::submitCommandBuffer(VkQueue queue, VkCommandBuffer buffer)
 {
-    SL_CHECK_VK_RESULT(vkEndCommandBuffer(buffer));
+    SL_VK_CHECK_RESULT(vkEndCommandBuffer(buffer));
 
     VkSubmitInfo submitInfo = {};
     submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
     submitInfo.commandBufferCount = 1;
     submitInfo.pCommandBuffers = &buffer;
 
-    SL_CHECK_VK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, nullptr));
-    SL_CHECK_VK_RESULT(vkQueueWaitIdle(queue));
+    SL_VK_CHECK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, nullptr));
+    SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 }
 
 
@@ -183,7 +183,7 @@ void vk::createCommandBuffers(VkDevice logicalDevice, VkCommandPool commandPool,
     allocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
     allocateInfo.commandBufferCount = count;
     
-    SL_CHECK_VK_RESULT(vkAllocateCommandBuffers(logicalDevice, &allocateInfo, result));
+    SL_VK_CHECK_RESULT(vkAllocateCommandBuffers(logicalDevice, &allocateInfo, result));
 }
 
 
@@ -285,7 +285,7 @@ auto vk::createRenderPass(VkDevice device, VkFormat colorFormat, VkFormat depthF
     renderPassInfo.pDependencies = dependencies.data();
 
     Resource<VkRenderPass> renderPass{device, vkDestroyRenderPass};
-    SL_CHECK_VK_RESULT(vkCreateRenderPass(device, &renderPassInfo, nullptr, renderPass.replace()));
+    SL_VK_CHECK_RESULT(vkCreateRenderPass(device, &renderPassInfo, nullptr, renderPass.replace()));
 
     return renderPass;
 }
@@ -307,7 +307,7 @@ auto vk::createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImage
     createInfo.layers = 1;
 
     Resource<VkFramebuffer> frameBuffer{device, vkDestroyFramebuffer};
-    SL_CHECK_VK_RESULT(vkCreateFramebuffer(device, &createInfo, nullptr, frameBuffer.replace()));
+    SL_VK_CHECK_RESULT(vkCreateFramebuffer(device, &createInfo, nullptr, frameBuffer.replace()));
 
     return frameBuffer;
 }
@@ -323,7 +323,7 @@ auto vk::createShader(VkDevice device, const std::vector<uint8_t>& data) -> Reso
     shaderModuleInfo.pCode = reinterpret_cast<const uint32_t*>(data.data());
 
     Resource<VkShaderModule> module{device, vkDestroyShaderModule};
-    SL_CHECK_VK_RESULT(vkCreateShaderModule(device, &shaderModuleInfo, nullptr, module.replace()));
+    SL_VK_CHECK_RESULT(vkCreateShaderModule(device, &shaderModuleInfo, nullptr, module.replace()));
 
     return module;
 }
@@ -366,7 +366,7 @@ auto vk::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties ph
 
     VkMemoryRequirements memReqs;
     Resource<VkImage> image{device, vkDestroyImage};
-    SL_CHECK_VK_RESULT(vkCreateImage(device, &imageInfo, nullptr, image.replace()));
+    SL_VK_CHECK_RESULT(vkCreateImage(device, &imageInfo, nullptr, image.replace()));
     vkGetImageMemoryRequirements(device, image, &memReqs);
 
     auto memTypeIndex = findMemoryType(physicalDeviceMemProps, memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
@@ -376,12 +376,12 @@ auto vk::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties ph
     allocInfo.memoryTypeIndex = memTypeIndex;
 
     Resource<VkDeviceMemory> mem{device, vkFreeMemory};
-    SL_CHECK_VK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, mem.replace()));
-    SL_CHECK_VK_RESULT(vkBindImageMemory(device, image, mem, 0));
+    SL_VK_CHECK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, mem.replace()));
+    SL_VK_CHECK_RESULT(vkBindImageMemory(device, image, mem, 0));
 
     viewInfo.image = image;
     Resource<VkImageView> view{device, vkDestroyImageView};
-    SL_CHECK_VK_RESULT(vkCreateImageView(device, &viewInfo, nullptr, view.replace()));
+    SL_VK_CHECK_RESULT(vkCreateImageView(device, &viewInfo, nullptr, view.replace()));
 
     DepthStencil result;
     result.image = std::move(image);

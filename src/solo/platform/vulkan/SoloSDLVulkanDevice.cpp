@@ -89,7 +89,7 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
     }
 
     instance = vk::Resource<VkInstance>{vkDestroyInstance};
-    SL_CHECK_VK_RESULT(vkCreateInstance(&instanceInfo, nullptr, instance.replace()));
+    SL_VK_CHECK_RESULT(vkCreateInstance(&instanceInfo, nullptr, instance.replace()));
 
 #ifdef SL_WINDOWS
     SDL_SysWMinfo wmInfo;
@@ -107,7 +107,7 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
     surfaceInfo.hwnd = hwnd;
 
     surface = vk::Resource<VkSurfaceKHR>{instance, vkDestroySurfaceKHR};
-    SL_CHECK_VK_RESULT(vkCreateWin32SurfaceKHR(instance, &surfaceInfo, nullptr, surface.replace()));
+    SL_VK_CHECK_RESULT(vkCreateWin32SurfaceKHR(instance, &surfaceInfo, nullptr, surface.replace()));
 #endif
 
 //#ifdef SL_DEBUG

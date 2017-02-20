@@ -42,13 +42,13 @@ VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevic
     device(device)
 {
     VkSurfaceCapabilitiesKHR capabilities;
-    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, &capabilities));
+    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, &capabilities));
 
     uint32_t presentModeCount;
-    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, nullptr));
+    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, nullptr));
 
     std::vector<VkPresentModeKHR> presentModes(presentModeCount);
-    SL_CHECK_VK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, presentModes.data()));
+    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, presentModes.data()));
 
     if (capabilities.currentExtent.width != static_cast<uint32_t>(-1))
     {
@@ -102,14 +102,14 @@ VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevic
     swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
 
     vk::Resource<VkSwapchainKHR> swapchain{device, vkDestroySwapchainKHR};
-    SL_CHECK_VK_RESULT(vkCreateSwapchainKHR(device, &swapchainInfo, nullptr, swapchain.replace()));
+    SL_VK_CHECK_RESULT(vkCreateSwapchainKHR(device, &swapchainInfo, nullptr, swapchain.replace()));
 
     uint32_t imageCount = 0;
-    SL_CHECK_VK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, nullptr));
+    SL_VK_CHECK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, nullptr));
 
     std::vector<VkImage> images;
     images.resize(imageCount);
-    SL_CHECK_VK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, images.data()));
+    SL_VK_CHECK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, images.data()));
 
     steps.resize(imageCount);
 
@@ -136,7 +136,7 @@ VulkanSwapchain::VulkanSwapchain(VkDevice device, VkPhysicalDevice physicalDevic
         imageViewInfo.image = images[i];
 
         vk::Resource<VkImageView> view{device, vkDestroyImageView};
-        SL_CHECK_VK_RESULT(vkCreateImageView(device, &imageViewInfo, nullptr, view.replace()));
+        SL_VK_CHECK_RESULT(vkCreateImageView(device, &imageViewInfo, nullptr, view.replace()));
 
         steps[i].framebuffer = vk::createFrameBuffer(device, view, depthStencilView, renderPass, width, height);
         steps[i].image = images[i];
@@ -158,7 +158,7 @@ auto VulkanSwapchain::operator=(VulkanSwapchain other) noexcept -> VulkanSwapcha
 auto VulkanSwapchain::getNextImageIndex(VkSemaphore semaphore) const -> uint32_t
 {
     uint32_t result;
-    SL_CHECK_VK_RESULT(vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, semaphore, nullptr, &result));
+    SL_VK_CHECK_RESULT(vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, semaphore, nullptr, &result));
     return result;
 }
 

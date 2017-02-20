@@ -101,7 +101,7 @@ void VulkanRenderer::endFrame()
 	submitInfo.pSignalSemaphores = &semaphores.renderComplete;
     submitInfo.commandBufferCount = 1;
 	submitInfo.pCommandBuffers = &cmdBuffers[currentBuffer];
-    SL_CHECK_VK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, VK_NULL_HANDLE));
+    SL_VK_CHECK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, VK_NULL_HANDLE));
 
     auto swapchainHandle = swapchain.getHandle();
     VkPresentInfoKHR presentInfo{};
@@ -112,9 +112,9 @@ void VulkanRenderer::endFrame()
 	presentInfo.pImageIndices = &currentBuffer;
 	presentInfo.pWaitSemaphores = &semaphores.renderComplete;
 	presentInfo.waitSemaphoreCount = 1;
-    SL_CHECK_VK_RESULT(vkQueuePresentKHR(queue, &presentInfo));
+    SL_VK_CHECK_RESULT(vkQueuePresentKHR(queue, &presentInfo));
 
-    SL_CHECK_VK_RESULT(vkQueueWaitIdle(queue));
+    SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 }
 
 
@@ -129,12 +129,12 @@ void VulkanRenderer::updateCmdBuffers()
 
         VkCommandBufferBeginInfo beginInfo{};
         beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-        SL_CHECK_VK_RESULT(vkBeginCommandBuffer(buf, &beginInfo));
+        SL_VK_CHECK_RESULT(vkBeginCommandBuffer(buf, &beginInfo));
 
         renderPass.begin(buf, swapchain.getFramebuffer(i), canvasWidth, canvasHeight);
         renderPass.end(buf);
 
-        SL_CHECK_VK_RESULT(vkEndCommandBuffer(cmdBuffers[i]));
+        SL_VK_CHECK_RESULT(vkEndCommandBuffer(cmdBuffers[i]));
     }
 }
 
