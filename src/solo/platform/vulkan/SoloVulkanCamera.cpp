@@ -32,7 +32,7 @@ using namespace vk;
 VulkanCamera::VulkanCamera(const Node &node):
     Camera(node)
 {
-    renderer = dynamic_cast<VulkanRenderer*>(node.getScene()->getDevice()->getRenderer());
+    renderer = dynamic_cast<Renderer*>(node.getScene()->getDevice()->getRenderer());
 }
 
 

@@ -30,7 +30,7 @@ using namespace solo;
 using namespace vk;
 
 
-VulkanRenderer::VulkanRenderer(Device *engineDevice):
+vk::Renderer::Renderer(Device *engineDevice):
     canvasWidth(engineDevice->getSetup().canvasWidth),
     canvasHeight(engineDevice->getSetup().canvasHeight)
 {
@@ -71,19 +71,19 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
 }
 
 
-VulkanRenderer::~VulkanRenderer()
+vk::Renderer::~Renderer()
 {
     vkFreeCommandBuffers(device, commandPool, cmdBuffers.size(), cmdBuffers.data());
 }
 
 
-void VulkanRenderer::beginFrame()
+void vk::Renderer::beginFrame()
 {
     currentBuffer = swapchain.getNextImageIndex(semaphores.presentComplete);
 }
 
 
-void VulkanRenderer::endFrame()
+void vk::Renderer::endFrame()
 {
     if (dirty)
     {
@@ -119,7 +119,7 @@ void VulkanRenderer::endFrame()
 }
 
 
-void VulkanRenderer::updateCmdBuffers()
+void vk::Renderer::updateCmdBuffers()
 {
     renderPass.setViewport(0, 0, canvasWidth, canvasHeight);
     renderPass.setScissor(0, 0, canvasWidth, canvasHeight);
@@ -140,14 +140,14 @@ void VulkanRenderer::updateCmdBuffers()
 }
 
 
-void VulkanRenderer::setClear(const Vector4& color, bool clearColor, bool clearDepth)
+void vk::Renderer::setClear(const Vector4& color, bool clearColor, bool clearDepth)
 {
     renderPass.setClear({color.x, color.y, color.z, color.w}, {1, 0}, clearColor, clearDepth);
     dirty = true;
 }
 
 
-void VulkanRenderer::setViewport(const Vector4& viewport)
+void vk::Renderer::setViewport(const Vector4& viewport)
 {
     renderPass.setViewport(viewport.x, viewport.y, viewport.z, viewport.w);
     renderPass.setScissor(0, 0, canvasWidth, canvasHeight); // TODO this is temp

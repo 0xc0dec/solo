@@ -36,11 +36,11 @@ namespace solo
 
     namespace vk
     {
-        class VulkanRenderer final : public Renderer
+        class Renderer final : public solo::Renderer
         {
         public:
-            explicit VulkanRenderer(Device *device);
-            ~VulkanRenderer();
+            explicit Renderer(Device *device);
+            ~Renderer();
 
             void setClear(const Vector4 &color, bool clearColor, bool clearDepth);
             void setViewport(const Vector4 &viewport);
