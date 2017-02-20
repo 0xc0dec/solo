@@ -31,26 +31,29 @@ namespace solo
 {
     class Device;
 
-    class OpenGLEffect final: public Effect
+    namespace gl
     {
-    public:
-        static auto create(Device *device, EffectPrefab prefab) -> sptr<OpenGLEffect>;
+        class Effect final : public solo::Effect
+        {
+        public:
+            static auto create(Device *device, EffectPrefab prefab) -> sptr<Effect>;
 
-        OpenGLEffect(Device *device, const std::string &vsSrc, const std::string &fsSrc);
-        ~OpenGLEffect();
+            Effect(Device *device, const std::string &vsSrc, const std::string &fsSrc);
+            ~Effect();
 
-        auto getHandle() const -> uint32_t;
+            auto getHandle() const->uint32_t;
 
-        void apply() override final;
+            void apply() override final;
 
-    private:
-        OpenGLRenderer *renderer = nullptr;
-        uint32_t handle = EmptyHandle;
-    };
+        private:
+            Renderer *renderer = nullptr;
+            uint32_t handle = EmptyHandle;
+        };
 
-    inline auto OpenGLEffect::getHandle() const -> uint32_t
-    {
-        return handle;
+        inline auto Effect::getHandle() const -> uint32_t
+        {
+            return handle;
+        }
     }
 }
 

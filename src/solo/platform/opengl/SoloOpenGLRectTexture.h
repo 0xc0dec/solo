@@ -32,25 +32,28 @@ namespace solo
 {
     class Device;
 
-    class OpenGLRectTexture final: public RectTexture, public OpenGLTexture
+    namespace gl
     {
-    public:
-        explicit OpenGLRectTexture(Device *device);
+        class RectTexture final : public solo::RectTexture, public Texture
+        {
+        public:
+            explicit RectTexture(Device *device);
 
-        void bind() override final;
-        void generateMipmaps() override final;
-        void setData(TextureFormat format, const uint8_t *data, uint32_t width, uint32_t height) override final;
+            void bind() override final;
+            void generateMipmaps() override final;
+            void setData(TextureFormat format, const uint8_t *data, uint32_t width, uint32_t height) override final;
 
-        auto getHandle() const -> uint32_t;
+            auto getHandle() const->uint32_t;
 
-    private:
-        OpenGLRenderer *renderer = nullptr;
-        uint32_t handle = EmptyHandle;
-    };
+        private:
+            Renderer *renderer = nullptr;
+            uint32_t handle = EmptyHandle;
+        };
 
-    inline auto OpenGLRectTexture::getHandle() const -> uint32_t
-    {
-        return handle;
+        inline auto RectTexture::getHandle() const -> uint32_t
+        {
+            return handle;
+        }
     }
 }
 

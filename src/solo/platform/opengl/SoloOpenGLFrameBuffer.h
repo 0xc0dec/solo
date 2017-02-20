@@ -31,21 +31,24 @@ namespace solo
 {
     class Device;
 
-    class OpenGLFrameBuffer final: public FrameBuffer
+    namespace gl
     {
-    public:
-        explicit OpenGLFrameBuffer(Device *device);
-        ~OpenGLFrameBuffer();
+        class FrameBuffer final : public solo::FrameBuffer
+        {
+        public:
+            explicit FrameBuffer(Device *device);
+            ~FrameBuffer();
 
-        void bind() override final;
-        void unbind() override final;
+            void bind() override final;
+            void unbind() override final;
 
-        void setAttachments(const std::vector<sptr<RectTexture>> &attachments) override final;
+            void setAttachments(const std::vector<sptr<solo::RectTexture>> &attachments) override final;
 
-    private:
-        OpenGLRenderer *renderer = nullptr;
-        uint32_t handle = EmptyHandle;
-    };
+        private:
+            Renderer *renderer = nullptr;
+            uint32_t handle = EmptyHandle;
+        };
+    }
 }
 
 #endif

@@ -28,14 +28,14 @@
 using namespace solo;
 
 
-auto OpenGLEffect::create(Device *device, EffectPrefab prefab) -> sptr<OpenGLEffect>
+auto gl::Effect::create(Device *device, EffectPrefab prefab) -> sptr<Effect>
 {
     switch (prefab)
     {
         case EffectPrefab::Skybox:
-            return std::make_shared<OpenGLEffect>(device, OpenGLPrefabShaders::Vertex::skybox, OpenGLPrefabShaders::Fragment::skybox);
+            return std::make_shared<Effect>(device, PrefabShaders::Vertex::skybox, PrefabShaders::Fragment::skybox);
         case EffectPrefab::Font:
-            return std::make_shared<OpenGLEffect>(device, OpenGLPrefabShaders::Vertex::simple, OpenGLPrefabShaders::Fragment::font);
+            return std::make_shared<Effect>(device, PrefabShaders::Vertex::simple, PrefabShaders::Fragment::font);
         default:
             SL_ERR("Unknown effect prefab");
             break;
@@ -43,20 +43,20 @@ auto OpenGLEffect::create(Device *device, EffectPrefab prefab) -> sptr<OpenGLEff
 }
 
 
-OpenGLEffect::OpenGLEffect(Device *device, const std::string &vsSrc, const std::string &fsSrc)
+gl::Effect::Effect(Device *device, const std::string &vsSrc, const std::string &fsSrc)
 {
-    renderer = dynamic_cast<OpenGLRenderer *>(device->getRenderer());
+    renderer = dynamic_cast<Renderer *>(device->getRenderer());
     handle = renderer->createProgram(vsSrc.c_str(), fsSrc.c_str());
 }
 
 
-OpenGLEffect::~OpenGLEffect()
+gl::Effect::~Effect()
 {
     renderer->destroyProgram(handle);
 }
 
 
-void OpenGLEffect::apply()
+void gl::Effect::apply()
 {
     renderer->setProgram(handle);
 }

@@ -28,18 +28,21 @@
 
 namespace solo
 {
-    class OpenGLRenderer;
-
-    class OpenGLCamera final: public Camera
+    namespace gl
     {
-    public:
-        explicit OpenGLCamera(const Node &node);
+        class Renderer;
 
-    private:
-        void renderImpl() const override final;
+        class Camera final : public solo::Camera
+        {
+        public:
+            explicit Camera(const Node &node);
 
-        OpenGLRenderer *renderer = nullptr;
-    };
+        private:
+            void renderImpl() const override final;
+
+            Renderer *renderer = nullptr;
+        };
+    }
 }
 
 #endif

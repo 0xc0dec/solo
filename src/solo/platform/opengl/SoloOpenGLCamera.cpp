@@ -28,14 +28,14 @@
 using namespace solo;
 
 
-OpenGLCamera::OpenGLCamera(const Node &node):
-    Camera(node)
+gl::Camera::Camera(const Node &node):
+    solo::Camera(node)
 {
-    renderer = dynamic_cast<OpenGLRenderer *>(node.getScene()->getDevice()->getRenderer());
+    renderer = dynamic_cast<Renderer *>(node.getScene()->getDevice()->getRenderer());
 }
 
 
-void OpenGLCamera::renderImpl() const
+void gl::Camera::renderImpl() const
 {
     if (viewport.x >= 0 && viewport.y >= 0 && viewport.z >= 0 && viewport.w >= 0)
     {

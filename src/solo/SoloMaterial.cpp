@@ -33,7 +33,7 @@ auto Material::create(Device *device, sptr<Effect> effect) -> sptr<Material>
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLMaterial>(device, effect);
+            return std::make_shared<gl::Material>(device, effect);
 #endif
         default:
             return std::make_shared<NullMaterial>(device, effect);

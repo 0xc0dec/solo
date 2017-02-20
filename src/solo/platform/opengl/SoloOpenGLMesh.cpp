@@ -30,14 +30,14 @@
 using namespace solo;
 
 
-OpenGLMesh::OpenGLMesh(Device *device)
+gl::Mesh::Mesh(Device *device)
 {
-    renderer = dynamic_cast<OpenGLRenderer *>(device->getRenderer());
+    renderer = dynamic_cast<Renderer *>(device->getRenderer());
 }
 
 
-OpenGLMesh::OpenGLMesh(Device *device, MeshData *data):
-    OpenGLMesh(device)
+gl::Mesh::Mesh(Device *device, MeshData *data):
+    Mesh(device)
 {
     VertexBufferLayout positionLayout;
     positionLayout.add(VertexBufferLayoutSemantics::Position, 3);
@@ -63,8 +63,8 @@ OpenGLMesh::OpenGLMesh(Device *device, MeshData *data):
 }
 
 
-OpenGLMesh::OpenGLMesh(Device *device, MeshPrefab prefab):
-    OpenGLMesh(device)
+gl::Mesh::Mesh(Device *device, MeshPrefab prefab):
+    Mesh(device)
 {
     switch (prefab)
     {
@@ -81,7 +81,7 @@ OpenGLMesh::OpenGLMesh(Device *device, MeshPrefab prefab):
 }
 
 
-OpenGLMesh::~OpenGLMesh()
+gl::Mesh::~Mesh()
 {
     if (programBinding != EmptyHandle)
         renderer->destroyVertexProgramBinding(programBinding);
@@ -92,7 +92,7 @@ OpenGLMesh::~OpenGLMesh()
 }
 
 
-auto OpenGLMesh::addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout &layout, uint32_t vertexCount) -> uint32_t
+auto gl::Mesh::addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout &layout, uint32_t vertexCount) -> uint32_t
 {
     vertexBuffers.push_back(bufferHandle);
     vertexCounts.push_back(vertexCount);
@@ -102,18 +102,18 @@ auto OpenGLMesh::addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout
 }
 
 
-void OpenGLMesh::rebuildEffectBinding(Effect *effect)
+void gl::Mesh::rebuildEffectBinding(solo::Effect *effect)
 {
     if (effect == lastEffect)
         return;
     if (programBinding != EmptyHandle)
         renderer->destroyVertexProgramBinding(programBinding);
-    lastEffect = dynamic_cast<OpenGLEffect *>(effect);
+    lastEffect = dynamic_cast<Effect *>(effect);
     programBinding = renderer->createVertexProgramBinding(vertexBuffers.data(), static_cast<uint32_t>(vertexBuffers.size()), lastEffect->getHandle());
 }
 
 
-void OpenGLMesh::recalculateMinVertexCount()
+void gl::Mesh::recalculateMinVertexCount()
 {
     minVertexCount = std::numeric_limits<uint32_t>::max();
     for (const auto &count : vertexCounts)
@@ -121,21 +121,21 @@ void OpenGLMesh::recalculateMinVertexCount()
 }
 
 
-auto OpenGLMesh::addVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount) -> uint32_t
+auto gl::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount) -> uint32_t
 {
     auto handle = renderer->createVertexBuffer(layout, data, vertexCount);
     return addVertexBuffer(handle, layout, vertexCount);
 }
 
 
-auto OpenGLMesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount) -> uint32_t
+auto gl::Mesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount) -> uint32_t
 {
     auto handle = renderer->createDynamicVertexBuffer(layout, data, vertexCount);
     return addVertexBuffer(handle, layout, vertexCount);
 }
 
 
-void OpenGLMesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const float *data, uint32_t vertexCount)
+void gl::Mesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const float *data, uint32_t vertexCount)
 {
     const auto &handle = vertexBuffers[index];
     auto vertexSize = vertexSizes[index];
@@ -143,7 +143,7 @@ void OpenGLMesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset
 }
 
 
-void OpenGLMesh::removeVertexBuffer(uint32_t index)
+void gl::Mesh::removeVertexBuffer(uint32_t index)
 {
     renderer->destroyVertexBuffer(vertexBuffers[index]);
     vertexBuffers.erase(vertexBuffers.begin() + index);
@@ -153,7 +153,7 @@ void OpenGLMesh::removeVertexBuffer(uint32_t index)
 }
 
 
-auto OpenGLMesh::addPart(const void *data, uint32_t elementCount) -> uint32_t
+auto gl::Mesh::addPart(const void *data, uint32_t elementCount) -> uint32_t
 {
     auto handle = renderer->createIndexBuffer(data, 2, elementCount); // 2 because we currently support only UNSIGNED_SHORT indexes
     indexBuffers.push_back(handle);
@@ -161,14 +161,14 @@ auto OpenGLMesh::addPart(const void *data, uint32_t elementCount) -> uint32_t
 }
 
 
-void OpenGLMesh::removePart(uint32_t part)
+void gl::Mesh::removePart(uint32_t part)
 {
     renderer->destroyIndexBuffer(indexBuffers[part]);
     indexBuffers.erase(indexBuffers.begin() + part);
 }
 
 
-void OpenGLMesh::draw(Effect *effect)
+void gl::Mesh::draw(solo::Effect *effect)
 {
     rebuildEffectBinding(effect);
 
@@ -182,7 +182,7 @@ void OpenGLMesh::draw(Effect *effect)
 }
 
 
-void OpenGLMesh::drawPart(Effect *effect, uint32_t part)
+void gl::Mesh::drawPart(solo::Effect *effect, uint32_t part)
 {
     rebuildEffectBinding(effect);
     if (programBinding != EmptyHandle)

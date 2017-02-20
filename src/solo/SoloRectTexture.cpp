@@ -32,7 +32,7 @@ sptr<RectTexture> RectTexture::create(Device *device)
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLRectTexture>(device);
+            return std::make_shared<gl::RectTexture>(device);
 #endif
         default:
             return std::make_shared<NullRectTexture>();

@@ -29,62 +29,67 @@
 
 namespace solo
 {
-    class OpenGLEffect;
+    class Effect;
 
-    class OpenGLMesh final: public Mesh
+    namespace gl
     {
-    public:
-        explicit OpenGLMesh(Device *device);
-        OpenGLMesh(Device *device, MeshData *data);
-        OpenGLMesh(Device *device, MeshPrefab prefab);
-        ~OpenGLMesh();
+        class Effect;
 
-        auto addVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount) -> uint32_t override final;
-        auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount) -> uint32_t override final;
-        void updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const float *data, uint32_t vertexCount) override final;
-        void removeVertexBuffer(uint32_t index) override final;
+        class Mesh final : public solo::Mesh
+        {
+        public:
+            explicit Mesh(Device *device);
+            Mesh(Device *device, MeshData *data);
+            Mesh(Device *device, MeshPrefab prefab);
+            ~Mesh();
 
-        auto addPart(const void *indexData, uint32_t indexElementCount) -> uint32_t override final;
-        void removePart(uint32_t index) override final;
-        auto getPartCount() const -> uint32_t override final;
+            auto addVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount)->uint32_t override final;
+            auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount)->uint32_t override final;
+            void updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const float *data, uint32_t vertexCount) override final;
+            void removeVertexBuffer(uint32_t index) override final;
 
-        void draw(Effect *effect) override final;
-        void drawPart(Effect *effect, uint32_t part) override final;
+            auto addPart(const void *indexData, uint32_t indexElementCount)->uint32_t override final;
+            void removePart(uint32_t index) override final;
+            auto getPartCount() const->uint32_t override final;
 
-        auto getPrimitiveType() const -> PrimitiveType override final;
-        void setPrimitiveType(PrimitiveType type) override final;
+            void draw(solo::Effect *effect) override final;
+            void drawPart(solo::Effect *effect, uint32_t part) override final;
 
-    private:
-        auto addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout &layout, uint32_t vertexCount) -> uint32_t;
+            auto getPrimitiveType() const->PrimitiveType override final;
+            void setPrimitiveType(PrimitiveType type) override final;
 
-        void rebuildEffectBinding(Effect *effect);
-        void recalculateMinVertexCount();
+        private:
+            auto addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout &layout, uint32_t vertexCount)->uint32_t;
 
-        OpenGLRenderer *renderer = nullptr;
-        OpenGLEffect *lastEffect = nullptr;
+            void rebuildEffectBinding(solo::Effect *effect);
+            void recalculateMinVertexCount();
 
-        PrimitiveType primitiveType = PrimitiveType::Triangles;
-        std::vector<uint32_t> vertexBuffers;
-        std::vector<uint32_t> indexBuffers;
-        std::vector<uint32_t> vertexCounts;
-        std::vector<uint32_t> vertexSizes;
-        uint32_t minVertexCount = 0;
-        uint32_t programBinding = EmptyHandle;
-    };
+            Renderer *renderer = nullptr;
+            Effect *lastEffect = nullptr;
 
-    inline void OpenGLMesh::setPrimitiveType(PrimitiveType type)
-    {
-        primitiveType = type;
-    }
+            PrimitiveType primitiveType = PrimitiveType::Triangles;
+            std::vector<uint32_t> vertexBuffers;
+            std::vector<uint32_t> indexBuffers;
+            std::vector<uint32_t> vertexCounts;
+            std::vector<uint32_t> vertexSizes;
+            uint32_t minVertexCount = 0;
+            uint32_t programBinding = EmptyHandle;
+        };
 
-    inline auto OpenGLMesh::getPrimitiveType() const -> PrimitiveType
-    {
-        return primitiveType;
-    }
+        inline void Mesh::setPrimitiveType(PrimitiveType type)
+        {
+            primitiveType = type;
+        }
 
-    inline auto OpenGLMesh::getPartCount() const -> uint32_t
-    {
-        return static_cast<uint32_t>(indexBuffers.size());
+        inline auto Mesh::getPrimitiveType() const -> PrimitiveType
+        {
+            return primitiveType;
+        }
+
+        inline auto Mesh::getPartCount() const -> uint32_t
+        {
+            return static_cast<uint32_t>(indexBuffers.size());
+        }
     }
 }
 

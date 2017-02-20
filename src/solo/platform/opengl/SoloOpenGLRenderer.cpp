@@ -28,6 +28,7 @@
 #include <unordered_map>
 
 using namespace solo;
+using namespace gl;
 
 
 static auto toGLBlendFactor(BlendFactor factor) -> GLenum
@@ -278,7 +279,7 @@ static bool findUniformInProgram(GLuint program, const char *name, GLint &locati
 }
 
 
-OpenGLRenderer::OpenGLRenderer(Device *device)
+gl::Renderer::Renderer(Device *device)
 {
     GLint major, minor;
     glGetIntegerv(GL_MAJOR_VERSION, &major);
@@ -287,7 +288,7 @@ OpenGLRenderer::OpenGLRenderer(Device *device)
 }
 
 
-OpenGLRenderer::~OpenGLRenderer()
+gl::Renderer::~Renderer()
 {
     // All resources at this point should have already been released
 
@@ -314,7 +315,7 @@ OpenGLRenderer::~OpenGLRenderer()
 }
 
 
-auto OpenGLRenderer::createTexture() -> uint32_t
+auto gl::Renderer::createTexture() -> uint32_t
 {
     GLuint rawHandle = 0;
     glGenTextures(1, &rawHandle);
@@ -327,7 +328,7 @@ auto OpenGLRenderer::createTexture() -> uint32_t
 }
 
 
-void OpenGLRenderer::destroyTexture(uint32_t handle)
+void gl::Renderer::destroyTexture(uint32_t handle)
 {
     auto rawHandle = textures.at(handle).rawHandle;
     glDeleteTextures(1, &rawHandle);
@@ -335,7 +336,7 @@ void OpenGLRenderer::destroyTexture(uint32_t handle)
 }
 
 
-void OpenGLRenderer::updateRectTexture(uint32_t handle, TextureFormat format, uint32_t width, uint32_t height, const void *data)
+void gl::Renderer::updateRectTexture(uint32_t handle, TextureFormat format, uint32_t width, uint32_t height, const void *data)
 {
     bindTexture(GL_TEXTURE_2D, handle);
 
@@ -352,7 +353,7 @@ void OpenGLRenderer::updateRectTexture(uint32_t handle, TextureFormat format, ui
 }
 
 
-void OpenGLRenderer::updateCubeTexture(uint32_t handle, CubeTextureFace face, TextureFormat format, uint32_t width, uint32_t height, const void *data)
+void gl::Renderer::updateCubeTexture(uint32_t handle, CubeTextureFace face, TextureFormat format, uint32_t width, uint32_t height, const void *data)
 {
     bindTexture(GL_TEXTURE_CUBE_MAP, handle);
 
@@ -368,7 +369,7 @@ void OpenGLRenderer::updateCubeTexture(uint32_t handle, CubeTextureFace face, Te
 }
 
 
-void OpenGLRenderer::generateRectTextureMipmaps(uint32_t handle)
+void gl::Renderer::generateRectTextureMipmaps(uint32_t handle)
 {
     bindTexture(GL_TEXTURE_2D, handle);
     glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
@@ -377,7 +378,7 @@ void OpenGLRenderer::generateRectTextureMipmaps(uint32_t handle)
 }
 
 
-void OpenGLRenderer::generateCubeTextureMipmaps(uint32_t handle)
+void gl::Renderer::generateCubeTextureMipmaps(uint32_t handle)
 {
     bindTexture(GL_TEXTURE_CUBE_MAP, handle);
     glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
@@ -386,35 +387,35 @@ void OpenGLRenderer::generateCubeTextureMipmaps(uint32_t handle)
 }
 
 
-void OpenGLRenderer::bindTexture(GLenum target, uint32_t handle)
+void gl::Renderer::bindTexture(GLenum target, uint32_t handle)
 {
     auto rawHandle = handle == EmptyHandle ? 0 : textures.at(handle).rawHandle;
     glBindTexture(target, rawHandle);
 }
 
 
-void OpenGLRenderer::bindVertexBuffer(uint32_t handle)
+void gl::Renderer::bindVertexBuffer(uint32_t handle)
 {
     auto rawHandle = handle == EmptyHandle ? 0 : vertexBuffers.at(handle).rawHandle;
     glBindBuffer(GL_ARRAY_BUFFER, rawHandle);
 }
 
 
-void OpenGLRenderer::bindIndexBuffer(uint32_t handle)
+void gl::Renderer::bindIndexBuffer(uint32_t handle)
 {
     auto rawHandle = handle == EmptyHandle ? 0 : indexBuffers.at(handle).rawHandle;
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rawHandle);
 }
 
 
-void OpenGLRenderer::bindVertexProgramBinding(uint32_t handle)
+void gl::Renderer::bindVertexProgramBinding(uint32_t handle)
 {
     auto rawHandle = handle == EmptyHandle ? 0 : vertexProgramBindings.at(handle);
     glBindVertexArray(rawHandle);
 }
 
 
-void OpenGLRenderer::setTexture(GLenum target, uint32_t handle, uint32_t flags)
+void gl::Renderer::setTexture(GLenum target, uint32_t handle, uint32_t flags)
 {
     bindTexture(target, handle);
 
@@ -471,7 +472,7 @@ void OpenGLRenderer::setTexture(GLenum target, uint32_t handle, uint32_t flags)
 }
 
 
-void OpenGLRenderer::validateFrameBufferAttachments(const std::vector<uint32_t> &attachments)
+void gl::Renderer::validateFrameBufferAttachments(const std::vector<uint32_t> &attachments)
 {
     SL_ERR_IF(attachments.size() > GL_MAX_COLOR_ATTACHMENTS, "Too many attachments");
 
@@ -490,32 +491,32 @@ void OpenGLRenderer::validateFrameBufferAttachments(const std::vector<uint32_t> 
 }
 
 
-void OpenGLRenderer::setRectTexture(uint32_t handle)
+void gl::Renderer::setRectTexture(uint32_t handle)
 {
     bindTexture(GL_TEXTURE_2D, handle);
 }
 
 
-void OpenGLRenderer::setRectTexture(uint32_t handle, uint32_t flags)
+void gl::Renderer::setRectTexture(uint32_t handle, uint32_t flags)
 {
     setTexture(GL_TEXTURE_2D, handle, flags);
 }
 
 
-void OpenGLRenderer::setRectTexture(uint32_t handle, uint32_t flags, float anisotropyLevel)
+void gl::Renderer::setRectTexture(uint32_t handle, uint32_t flags, float anisotropyLevel)
 {
     setRectTexture(handle, flags);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
 }
 
 
-void OpenGLRenderer::setCubeTexture(uint32_t handle)
+void gl::Renderer::setCubeTexture(uint32_t handle)
 {
     bindTexture(GL_TEXTURE_CUBE_MAP, handle);
 }
 
 
-void OpenGLRenderer::setCubeTexture(uint32_t handle, uint32_t flags)
+void gl::Renderer::setCubeTexture(uint32_t handle, uint32_t flags)
 {
     setTexture(GL_TEXTURE_CUBE_MAP, handle, flags);
 
@@ -532,7 +533,7 @@ void OpenGLRenderer::setCubeTexture(uint32_t handle, uint32_t flags)
 }
 
 
-void OpenGLRenderer::setCubeTexture(uint32_t handle, uint32_t flags, float anisotropyLevel)
+void gl::Renderer::setCubeTexture(uint32_t handle, uint32_t flags, float anisotropyLevel)
 {
     setCubeTexture(handle, flags);
     if (handle != EmptyHandle)
@@ -540,14 +541,14 @@ void OpenGLRenderer::setCubeTexture(uint32_t handle, uint32_t flags, float aniso
 }
 
 
-void OpenGLRenderer::bindFrameBuffer(uint32_t handle)
+void gl::Renderer::bindFrameBuffer(uint32_t handle)
 {
     auto rawHandle = handle == EmptyHandle ? 0 : frameBuffers.at(handle).rawHandle;
     glBindFramebuffer(GL_FRAMEBUFFER, rawHandle);
 }
 
 
-auto OpenGLRenderer::createFrameBuffer() -> uint32_t
+auto gl::Renderer::createFrameBuffer() -> uint32_t
 {
     GLuint rawHandle = 0;
     glGenFramebuffers(1, &rawHandle);
@@ -559,7 +560,7 @@ auto OpenGLRenderer::createFrameBuffer() -> uint32_t
 }
 
 
-void OpenGLRenderer::destroyFrameBuffer(uint32_t handle)
+void gl::Renderer::destroyFrameBuffer(uint32_t handle)
 {
     auto rawHandle = frameBuffers.at(handle).rawHandle;
     glDeleteFramebuffers(1, &rawHandle);
@@ -568,13 +569,13 @@ void OpenGLRenderer::destroyFrameBuffer(uint32_t handle)
 }
 
 
-void OpenGLRenderer::setFrameBuffer(uint32_t handle)
+void gl::Renderer::setFrameBuffer(uint32_t handle)
 {
     bindFrameBuffer(handle);
 }
 
 
-void OpenGLRenderer::updateFrameBuffer(uint32_t handle, const std::vector<uint32_t> &attachmentHandles)
+void gl::Renderer::updateFrameBuffer(uint32_t handle, const std::vector<uint32_t> &attachmentHandles)
 {
     SL_ERR_CHECK_BLOCK(validateFrameBufferAttachments(attachmentHandles));
 
@@ -614,7 +615,7 @@ void OpenGLRenderer::updateFrameBuffer(uint32_t handle, const std::vector<uint32
 }
 
 
-auto OpenGLRenderer::createVertexBuffer(bool dynamic, const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
+auto gl::Renderer::createVertexBuffer(bool dynamic, const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
 {
     GLuint rawHandle = 0;
     glGenBuffers(1, &rawHandle);
@@ -635,19 +636,19 @@ auto OpenGLRenderer::createVertexBuffer(bool dynamic, const VertexBufferLayout &
 }
 
 
-auto OpenGLRenderer::createVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
+auto gl::Renderer::createVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
 {
     return createVertexBuffer(false, layout, data, vertexCount);
 }
 
 
-auto OpenGLRenderer::createDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
+auto gl::Renderer::createDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
 {
     return createVertexBuffer(true, layout, data, vertexCount);
 }
 
 
-void OpenGLRenderer::updateDynamicVertexBuffer(uint32_t handle, const void *data, uint32_t offset, uint32_t vertexCount)
+void gl::Renderer::updateDynamicVertexBuffer(uint32_t handle, const void *data, uint32_t offset, uint32_t vertexCount)
 {
     bindVertexBuffer(handle);
     glBufferSubData(GL_ARRAY_BUFFER, offset, vertexCount, data);
@@ -655,7 +656,7 @@ void OpenGLRenderer::updateDynamicVertexBuffer(uint32_t handle, const void *data
 }
 
 
-void OpenGLRenderer::destroyVertexBuffer(uint32_t handle)
+void gl::Renderer::destroyVertexBuffer(uint32_t handle)
 {
     auto rawHandle = vertexBuffers.at(handle).rawHandle;
     glDeleteBuffers(1, &rawHandle);
@@ -663,7 +664,7 @@ void OpenGLRenderer::destroyVertexBuffer(uint32_t handle)
 }
 
 
-auto OpenGLRenderer::createIndexBuffer(const void *data, uint32_t elementSize, uint32_t elementCount) -> uint32_t
+auto gl::Renderer::createIndexBuffer(const void *data, uint32_t elementSize, uint32_t elementCount) -> uint32_t
 {
     GLuint rawHandle = 0;
     glGenBuffers(1, &rawHandle);
@@ -682,7 +683,7 @@ auto OpenGLRenderer::createIndexBuffer(const void *data, uint32_t elementSize, u
 }
 
 
-void OpenGLRenderer::destroyIndexBuffer(uint32_t handle)
+void gl::Renderer::destroyIndexBuffer(uint32_t handle)
 {
     auto rawHandle = indexBuffers.at(handle).rawHandle;
     glDeleteBuffers(1, &rawHandle);
@@ -690,7 +691,7 @@ void OpenGLRenderer::destroyIndexBuffer(uint32_t handle)
 }
 
 
-auto OpenGLRenderer::createProgram(const char *vsSrc, const char *fsSrc) -> uint32_t
+auto gl::Renderer::createProgram(const char *vsSrc, const char *fsSrc) -> uint32_t
 {
     auto vs = compileShader(GL_VERTEX_SHADER, vsSrc);
     auto fs = compileShader(GL_FRAGMENT_SHADER, fsSrc);
@@ -708,7 +709,7 @@ auto OpenGLRenderer::createProgram(const char *vsSrc, const char *fsSrc) -> uint
 }
 
 
-void OpenGLRenderer::destroyProgram(uint32_t handle)
+void gl::Renderer::destroyProgram(uint32_t handle)
 {
     auto rawHandle = programs.at(handle);
     glDeleteProgram(rawHandle);
@@ -716,14 +717,14 @@ void OpenGLRenderer::destroyProgram(uint32_t handle)
 }
 
 
-void OpenGLRenderer::setProgram(uint32_t handle)
+void gl::Renderer::setProgram(uint32_t handle)
 {
     auto rawHandle = handle == EmptyHandle ? 0 : programs.at(handle);
     glUseProgram(rawHandle);
 }
 
 
-auto OpenGLRenderer::createVertexProgramBinding(const uint32_t *bufferHandles, uint32_t bufferCount, uint32_t programHandle) -> uint32_t
+auto gl::Renderer::createVertexProgramBinding(const uint32_t *bufferHandles, uint32_t bufferCount, uint32_t programHandle) -> uint32_t
 {
     GLuint rawHandle;
     glGenVertexArrays(1, &rawHandle);
@@ -813,7 +814,7 @@ auto OpenGLRenderer::createVertexProgramBinding(const uint32_t *bufferHandles, u
 }
 
 
-void OpenGLRenderer::destroyVertexProgramBinding(uint32_t handle)
+void gl::Renderer::destroyVertexProgramBinding(uint32_t handle)
 {
     auto rawHandle = vertexProgramBindings.at(handle);
     glDeleteVertexArrays(1, &rawHandle);
@@ -821,7 +822,7 @@ void OpenGLRenderer::destroyVertexProgramBinding(uint32_t handle)
 }
 
 
-void OpenGLRenderer::drawIndexed(PrimitiveType primitiveType, uint32_t bindingHandle, const uint32_t indexBufferHandle)
+void gl::Renderer::drawIndexed(PrimitiveType primitiveType, uint32_t bindingHandle, const uint32_t indexBufferHandle)
 {
     bindVertexProgramBinding(bindingHandle);
     bindIndexBuffer(indexBufferHandle);
@@ -834,7 +835,7 @@ void OpenGLRenderer::drawIndexed(PrimitiveType primitiveType, uint32_t bindingHa
 }
 
 
-void OpenGLRenderer::draw(PrimitiveType primitiveType, uint32_t bindingHandle, uint32_t vertexCount)
+void gl::Renderer::draw(PrimitiveType primitiveType, uint32_t bindingHandle, uint32_t vertexCount)
 {
     bindVertexProgramBinding(bindingHandle);
     glDrawArrays(toGLPrimitiveType(primitiveType), 0, vertexCount);
@@ -842,7 +843,7 @@ void OpenGLRenderer::draw(PrimitiveType primitiveType, uint32_t bindingHandle, u
 }
 
 
-auto OpenGLRenderer::createUniform(const char *name, UniformType type, uint32_t programHandle) -> uint32_t
+auto gl::Renderer::createUniform(const char *name, UniformType type, uint32_t programHandle) -> uint32_t
 {
     auto rawProgramHandle = programs.at(programHandle);
 
@@ -860,13 +861,13 @@ auto OpenGLRenderer::createUniform(const char *name, UniformType type, uint32_t 
 }
 
 
-void OpenGLRenderer::destroyUniform(uint32_t handle)
+void gl::Renderer::destroyUniform(uint32_t handle)
 {
     uniforms.erase(handle);
 }
 
 
-void OpenGLRenderer::setUniform(uint32_t handle, const void *value, uint32_t count)
+void gl::Renderer::setUniform(uint32_t handle, const void *value, uint32_t count)
 {
     const auto &uniform = uniforms.at(handle);
     auto floatData = reinterpret_cast<const float *>(value);
@@ -914,19 +915,19 @@ void OpenGLRenderer::setUniform(uint32_t handle, const void *value, uint32_t cou
 }
 
 
-void OpenGLRenderer::setDepthWrite(bool enabled)
+void gl::Renderer::setDepthWrite(bool enabled)
 {
     glDepthMask(enabled ? GL_TRUE : GL_FALSE);
 }
 
 
-void OpenGLRenderer::setDepthTest(bool enabled)
+void gl::Renderer::setDepthTest(bool enabled)
 {
     enabled ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
 }
 
 
-void OpenGLRenderer::setDepthFunction(DepthFunction func)
+void gl::Renderer::setDepthFunction(DepthFunction func)
 {
     GLenum glfunc = 0;
     switch (func)
@@ -963,19 +964,19 @@ void OpenGLRenderer::setDepthFunction(DepthFunction func)
 }
 
 
-void OpenGLRenderer::setBlend(bool enabled)
+void gl::Renderer::setBlend(bool enabled)
 {
     enabled ? glEnable(GL_BLEND) : glDisable(GL_BLEND);
 }
 
 
-void OpenGLRenderer::setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor)
+void gl::Renderer::setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor)
 {
     glBlendFunc(toGLBlendFactor(srcFactor), toGLBlendFactor(dstFactor));
 }
 
 
-void OpenGLRenderer::setFaceCull(FaceCull cull)
+void gl::Renderer::setFaceCull(FaceCull cull)
 {
     switch (cull)
     {
@@ -996,7 +997,7 @@ void OpenGLRenderer::setFaceCull(FaceCull cull)
 }
 
 
-void OpenGLRenderer::setPolygonMode(PolygonMode mode)
+void gl::Renderer::setPolygonMode(PolygonMode mode)
 {
     GLenum glMode;
     switch (mode)
@@ -1018,13 +1019,13 @@ void OpenGLRenderer::setPolygonMode(PolygonMode mode)
 }
 
 
-void OpenGLRenderer::setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
+void gl::Renderer::setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
 {
     glViewport(x, y, width, height);
 }
 
 
-void OpenGLRenderer::clear(bool color, bool depth, float r, float g, float b, float a)
+void gl::Renderer::clear(bool color, bool depth, float r, float g, float b, float a)
 {
     if (color)
         glClearColor(r, g, b, a);

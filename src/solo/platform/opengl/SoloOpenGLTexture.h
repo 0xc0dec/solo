@@ -26,14 +26,16 @@
 
 namespace solo
 {
-    class OpenGLTexture
+    namespace gl
     {
-    public:
-        virtual ~OpenGLTexture() {}
+        class Texture
+        {
+        public:
+            virtual ~Texture() {}
 
-        virtual void bind() = 0;
-    };
+            virtual void bind() = 0;
+        };
+    }
 }
-
 
 #endif

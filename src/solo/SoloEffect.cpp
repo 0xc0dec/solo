@@ -32,7 +32,7 @@ auto Effect::create(Device *device, const std::string &vsSrc, const std::string 
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLEffect>(device, vsSrc, fsSrc);
+            return std::make_shared<gl::Effect>(device, vsSrc, fsSrc);
 #endif
         default:
             return std::make_shared<NullEffect>();
@@ -46,7 +46,7 @@ auto Effect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effec
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return OpenGLEffect::create(device, prefab);
+            return gl::Effect::create(device, prefab);
 #endif
         default:
             return std::make_shared<NullEffect>();

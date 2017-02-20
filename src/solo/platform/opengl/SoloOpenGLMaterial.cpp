@@ -31,22 +31,22 @@
 using namespace solo;
 
 
-OpenGLMaterial::OpenGLMaterial(Device *device, sptr<Effect> effect):
-    Material(device, effect)
+gl::Material::Material(Device *device, sptr<solo::Effect> effect):
+    solo::Material(device, effect)
 {
-    renderer = dynamic_cast<OpenGLRenderer *>(device->getRenderer());
-    this->effect = std::dynamic_pointer_cast<OpenGLEffect>(effect);
+    renderer = dynamic_cast<Renderer *>(device->getRenderer());
+    this->effect = std::dynamic_pointer_cast<Effect>(effect);
 }
 
 
-OpenGLMaterial::~OpenGLMaterial()
+gl::Material::~Material()
 {
     for (auto &p : uniformHandles)
         renderer->destroyUniform(p.second);
 }
 
 
-void OpenGLMaterial::applyState()
+void gl::Material::applyState()
 {
     renderer->setFaceCull(faceCull);
     renderer->setPolygonMode(polygonMode);
@@ -58,7 +58,7 @@ void OpenGLMaterial::applyState()
 }
 
 
-void OpenGLMaterial::applyParams(const Camera *camera, Transform *nodeTransform)
+void gl::Material::applyParams(const Camera *camera, Transform *nodeTransform)
 {
     // TODO refactor
     // TODO avoid table lookups
@@ -140,123 +140,123 @@ void OpenGLMaterial::applyParams(const Camera *camera, Transform *nodeTransform)
 }
 
 
-void OpenGLMaterial::setFloatParameter(const std::string &name, float value)
+void gl::Material::setFloatParameter(const std::string &name, float value)
 {
     setParam(floatParams, name, UniformType::Float, value);
 }
 
 
-void OpenGLMaterial::setFloatArrayParameter(const std::string &name, const std::vector<float> &value)
+void gl::Material::setFloatArrayParameter(const std::string &name, const std::vector<float> &value)
 {
     setParam(floatArrayParams, name, UniformType::FloatArray, value);
 }
 
 
-void OpenGLMaterial::setVector2Parameter(const std::string& name, const Vector2 &value)
+void gl::Material::setVector2Parameter(const std::string& name, const Vector2 &value)
 {
     setParam(vector2Params, name, UniformType::Vector2, value);
 }
 
 
-void OpenGLMaterial::setVector2ArrayParameter(const std::string& name, const std::vector<Vector2> &value)
+void gl::Material::setVector2ArrayParameter(const std::string& name, const std::vector<Vector2> &value)
 {
     setParam(vector2ArrayParams, name, UniformType::Vector2Array, value);
 }
 
 
-void OpenGLMaterial::setVector3Parameter(const std::string &name, const Vector3 &value)
+void gl::Material::setVector3Parameter(const std::string &name, const Vector3 &value)
 {
     setParam(vector3Params, name, UniformType::Vector3, value);
 }
 
 
-void OpenGLMaterial::setVector3ArrayParameter(const std::string &name, const std::vector<Vector3> &value)
+void gl::Material::setVector3ArrayParameter(const std::string &name, const std::vector<Vector3> &value)
 {
     setParam(vector3ArrayParams, name, UniformType::Vector3Array, value);
 }
 
 
-void OpenGLMaterial::setVector4Parameter(const std::string &name, const Vector4 &value)
+void gl::Material::setVector4Parameter(const std::string &name, const Vector4 &value)
 {
     setParam(vector4Params, name, UniformType::Vector4, value);
 }
 
 
-void OpenGLMaterial::setVector4ArrayParameter(const std::string &name, const std::vector<Vector4> &value)
+void gl::Material::setVector4ArrayParameter(const std::string &name, const std::vector<Vector4> &value)
 {
     setParam(vector4ArrayParams, name, UniformType::Vector4Array, value);
 }
 
 
-void OpenGLMaterial::setMatrixParameter(const std::string &name, const Matrix& value)
+void gl::Material::setMatrixParameter(const std::string &name, const Matrix& value)
 {
     setParam(matrixParams, name, UniformType::Matrix, value);
 }
 
 
-void OpenGLMaterial::setMatrixArrayParameter(const std::string &name, const std::vector<Matrix>& value)
+void gl::Material::setMatrixArrayParameter(const std::string &name, const std::vector<Matrix>& value)
 {
     setParam(matrixArrayParams, name, UniformType::MatrixArray, value);
 }
 
 
-void OpenGLMaterial::setTextureParameter(const std::string &name, sptr<Texture> value)
+void gl::Material::setTextureParameter(const std::string &name, sptr<solo::Texture> value)
 {
     if (textureParams.find(name) == textureParams.end())
         uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Texture, effect->getHandle());
-    textureParams[name] = std::dynamic_pointer_cast<OpenGLTexture>(value);
+    textureParams[name] = std::dynamic_pointer_cast<Texture>(value);
 }
 
 
-void OpenGLMaterial::bindWorldMatrixParameter(const std::string& name)
+void gl::Material::bindWorldMatrixParameter(const std::string& name)
 {
     setAutoBindParam(worldMatrixParams, name, UniformType::Matrix);
 }
 
 
-void OpenGLMaterial::bindViewMatrixParameter(const std::string& name)
+void gl::Material::bindViewMatrixParameter(const std::string& name)
 {
     setAutoBindParam(viewMatrixParams, name, UniformType::Matrix);
 }
 
 
-void OpenGLMaterial::bindProjectionMatrixParameter(const std::string& name)
+void gl::Material::bindProjectionMatrixParameter(const std::string& name)
 {
     setAutoBindParam(projMatrixParams, name, UniformType::Matrix);
 }
 
 
-void OpenGLMaterial::bindWorldViewMatrixParameter(const std::string& name)
+void gl::Material::bindWorldViewMatrixParameter(const std::string& name)
 {
     setAutoBindParam(worldViewMatrixParams, name, UniformType::Matrix);
 }
 
 
-void OpenGLMaterial::bindViewProjectionMatrixParameter(const std::string& name)
+void gl::Material::bindViewProjectionMatrixParameter(const std::string& name)
 {
     setAutoBindParam(viewProjMatrixParams, name, UniformType::Matrix);
 }
 
 
-void OpenGLMaterial::bindWorldViewProjectionMatrixParameter(const std::string& name)
+void gl::Material::bindWorldViewProjectionMatrixParameter(const std::string& name)
 {
     setAutoBindParam(worldViewProjMatrixParams, name, UniformType::Matrix);
 }
 
 
-void OpenGLMaterial::bindInvTransposedWorldMatrixParameter(const std::string& name)
+void gl::Material::bindInvTransposedWorldMatrixParameter(const std::string& name)
 {
     setAutoBindParam(invTransWorldMatrixParams, name, UniformType::Matrix);
 }
 
 
-void OpenGLMaterial::bindInvTransposedWorldViewMatrixParameter(const std::string& name)
+void gl::Material::bindInvTransposedWorldViewMatrixParameter(const std::string& name)
 {
     setAutoBindParam(invTransWorldViewMatrixParams, name, UniformType::Matrix);
 }
 
 
-void OpenGLMaterial::bindCameraWorldPositionParameter(const std::string& name)
+void gl::Material::bindCameraWorldPositionParameter(const std::string& name)
 {
     setAutoBindParam(camWorldPosParams, name, UniformType::Vector3);
 }

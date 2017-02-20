@@ -28,32 +28,32 @@
 using namespace solo;
 
 
-OpenGLCubeTexture::OpenGLCubeTexture(Device *device)
+gl::CubeTexture::CubeTexture(Device *device)
 {
-    renderer = dynamic_cast<OpenGLRenderer *>(device->getRenderer());
+    renderer = dynamic_cast<Renderer *>(device->getRenderer());
     handle = renderer->createTexture();
 }
 
 
-OpenGLCubeTexture::~OpenGLCubeTexture()
+gl::CubeTexture::~CubeTexture()
 {
     renderer->destroyTexture(handle);
 }
 
 
-void OpenGLCubeTexture::bind()
+void gl::CubeTexture::bind()
 {
     renderer->setCubeTexture(handle, flags, anisotropy);
 }
 
 
-void OpenGLCubeTexture::generateMipmaps()
+void gl::CubeTexture::generateMipmaps()
 {
     renderer->generateCubeTextureMipmaps(handle);
 }
 
 
-void OpenGLCubeTexture::setData(CubeTextureFace face, TextureFormat format, const uint8_t *data, uint32_t width, uint32_t height)
+void gl::CubeTexture::setData(CubeTextureFace face, TextureFormat format, const uint8_t *data, uint32_t width, uint32_t height)
 {
     renderer->updateCubeTexture(handle, face, format, width, height, data);
 }

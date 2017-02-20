@@ -25,7 +25,7 @@
 using namespace solo;
 
 
-const char *OpenGLPrefabShaders::Vertex::skybox = R"(
+const char *gl::PrefabShaders::Vertex::skybox = R"(
     #version 330 core
 
     layout (location = 0) in vec4 position;
@@ -45,7 +45,7 @@ const char *OpenGLPrefabShaders::Vertex::skybox = R"(
 )";
 
 
-const char* OpenGLPrefabShaders::Vertex::simple = R"(
+const char* gl::PrefabShaders::Vertex::simple = R"(
     #version 330 core
 
     in vec4 position;
@@ -62,7 +62,7 @@ const char* OpenGLPrefabShaders::Vertex::simple = R"(
 )";
 
 
-const char* OpenGLPrefabShaders::Fragment::skybox = R"(
+const char* gl::PrefabShaders::Fragment::skybox = R"(
     #version 330 core
 
     uniform samplerCube mainTex;
@@ -77,7 +77,7 @@ const char* OpenGLPrefabShaders::Fragment::skybox = R"(
 )";
 
 
-const char* OpenGLPrefabShaders::Fragment::font = R"(
+const char* gl::PrefabShaders::Fragment::font = R"(
     #version 330 core
 
     uniform sampler2D mainTex;

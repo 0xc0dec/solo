@@ -33,7 +33,7 @@ auto Renderer::create(Device *device, const FriendToken<Device> &) -> sptr<Rende
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLRenderer>(device);
+            return std::make_shared<gl::Renderer>(device);
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:

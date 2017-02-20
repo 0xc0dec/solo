@@ -32,7 +32,7 @@ auto FrameBuffer::create(Device *device) -> sptr<FrameBuffer>
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLFrameBuffer>(device);
+            return std::make_shared<gl::FrameBuffer>(device);
 #endif
         default:
             return std::make_shared<NullFrameBuffer>();
