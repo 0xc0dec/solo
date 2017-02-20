@@ -39,8 +39,8 @@ using namespace vk;
 //}
 
 
-SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
-    SDLDevice(setup)
+vk::SDLDevice::SDLDevice(const DeviceSetup &setup):
+    solo::SDLDevice(setup)
 {
     auto flags = static_cast<uint32_t>(SDL_WINDOW_ALLOW_HIGHDPI);
     if (setup.fullScreen)
@@ -117,7 +117,7 @@ SDLVulkanDevice::SDLVulkanDevice(const DeviceSetup &setup):
 }
 
 
-SDLVulkanDevice::~SDLVulkanDevice()
+vk::SDLDevice::~SDLDevice()
 {
     // Otherwise it would be destroyed later - not good
     renderer.reset();
@@ -127,18 +127,18 @@ SDLVulkanDevice::~SDLVulkanDevice()
 }
 
 
-auto SDLVulkanDevice::getCanvasSize() const -> Vector2
+auto vk::SDLDevice::getCanvasSize() const -> Vector2
 {
     return {};
 }
 
 
-void SDLVulkanDevice::saveScreenshot(const std::string &path)
+void vk::SDLDevice::saveScreenshot(const std::string &path)
 {
 }
 
 
-void SDLVulkanDevice::endUpdate()
+void vk::SDLDevice::endUpdate()
 {
 }
 

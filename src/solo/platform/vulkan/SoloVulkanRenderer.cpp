@@ -34,7 +34,7 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     canvasWidth(engineDevice->getSetup().canvasWidth),
     canvasHeight(engineDevice->getSetup().canvasHeight)
 {
-    auto vulkanDevice = dynamic_cast<SDLVulkanDevice*>(engineDevice);
+    auto vulkanDevice = dynamic_cast<SDLDevice*>(engineDevice);
     auto instance = vulkanDevice->getVkInstance();
     auto surface = vulkanDevice->getVkSurface();
 

@@ -31,11 +31,11 @@ namespace solo
 {
     namespace vk
     {
-        class SDLVulkanDevice final : public SDLDevice
+        class SDLDevice final : public solo::SDLDevice
         {
         public:
-            explicit SDLVulkanDevice(const DeviceSetup &setup);
-            ~SDLVulkanDevice();
+            explicit SDLDevice(const DeviceSetup &setup);
+            ~SDLDevice();
 
             auto getCanvasSize() const->Vector2 override final;
 
@@ -53,12 +53,12 @@ namespace solo
             VkDebugReportCallbackEXT debugCallback = nullptr;
         };
 
-        inline auto SDLVulkanDevice::getVkInstance() const -> VkInstance
+        inline auto SDLDevice::getVkInstance() const -> VkInstance
         {
             return instance;
         }
 
-        inline auto SDLVulkanDevice::getVkSurface() const -> VkSurfaceKHR
+        inline auto SDLDevice::getVkSurface() const -> VkSurfaceKHR
         {
             return surface;
         }
