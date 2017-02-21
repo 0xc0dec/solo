@@ -274,6 +274,9 @@
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanPipeline.h">
       <Filter>src\platform\vk</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\platform\vk\SoloVulkanDescriptorPool.h">
+      <Filter>src\platform\vk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\SoloScene.cpp">
@@ -505,6 +508,9 @@
       <Filter>src\platform\vk</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\platform\vk\SoloVulkanPipeline.cpp">
+      <Filter>src\platform\vk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\vk\SoloVulkanDescriptorPool.cpp">
       <Filter>src\platform\vk</Filter>
     </ClCompile>
   </ItemGroup>
