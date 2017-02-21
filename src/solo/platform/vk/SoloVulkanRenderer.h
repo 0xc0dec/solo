@@ -27,6 +27,9 @@
 #include "SoloRenderer.h"
 #include "SoloVulkanSwapchain.h"
 #include "SoloVulkanRenderPass.h"
+#include "SoloVulkanDescriptorPool.h"
+#include "SoloVulkanBuffer.h"
+#include "SoloVulkanPipeline.h"
 #include "SoloVulkan.h"
 #include "SoloVector4.h"
 
@@ -84,6 +87,15 @@ namespace solo
 
             std::vector<VkClearValue> clearValues;
             VkViewport viewport = {1, 1, 0, 1};
+
+            struct
+            {
+                DescriptorPool descriptorPool;
+                Resource<VkDescriptorSetLayout> descSetLayout;
+                Buffer vertexBuffer;
+                Buffer uniformBuffer;
+                Pipeline pipeline;
+            } test;
 
             void updateCmdBuffers();
         };
