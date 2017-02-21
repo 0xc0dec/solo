@@ -41,14 +41,14 @@ void runInEngine(DeviceMode mode, const std::string& logPath, std::function<void
     {
         run(device.get());
     }
-    catch (EngineException& e)
+    catch (EngineException &e)
     {
         device->getLogger()->logCritical(e.what());
     }
 }
 
 
-void runCppUnitTests(Device* device)
+void runCppUnitTests(Device *device)
 {
     Device_Test(device).run();
     Components_Test(device).run();
@@ -57,13 +57,13 @@ void runCppUnitTests(Device* device)
 }
 
 
-void runCppIntegrationTests(Device* device)
+void runCppIntegrationTests(Device *device)
 {
     FileSystem_Test(device).run();
 }
 
 
-void runLuaUnitTests(Device* device)
+void runLuaUnitTests(Device *device)
 {
     device->getScriptRuntime()->executeFile("../../src/tests/tests.lua");
 }
