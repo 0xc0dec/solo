@@ -116,7 +116,7 @@ auto vk::getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> uint32_
             return i;
     }
 
-    SL_ERR("Could not find queue index");
+    SL_PANIC("Could not find queue index");
     return 0;
 }
 
@@ -370,7 +370,7 @@ auto vk::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties ph
     vkGetImageMemoryRequirements(device, image, &memReqs);
 
     auto memTypeIndex = findMemoryType(physicalDeviceMemProps, memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-    SL_ERR_IF(memTypeIndex < 0);
+    SL_PANIC_IF(memTypeIndex < 0);
 
     allocInfo.allocationSize = memReqs.size;
     allocInfo.memoryTypeIndex = memTypeIndex;

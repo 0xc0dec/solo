@@ -49,7 +49,7 @@ static auto findComponent(Node *node, const std::string &name) -> Component*
     if (name == "RigidBody")
         return node->findComponent<RigidBody>();
 
-    SL_ERR("Unknown standard component ", name)
+    SL_PANIC("Unknown standard component ", name)
     return nullptr;
 }
 
@@ -71,7 +71,7 @@ static auto addComponent(Node *node, const std::string &name, LuaRef arg) -> Com
     if (name == "RigidBody")
         return node->addComponent<RigidBody>(arg.toValue<RigidBodyConstructionParameters>());
 
-    SL_ERR("Unknown standard component ", name)
+    SL_PANIC("Unknown standard component ", name)
     return nullptr;
 }
 
@@ -93,7 +93,7 @@ static void removeComponent(Node *node, const std::string &name)
     else if (name == "RigidBody")
         node->removeComponent<RigidBody>();
     else
-        SL_ERR("Unknown standard component ", name)
+        SL_PANIC("Unknown standard component ", name)
 }
 
 

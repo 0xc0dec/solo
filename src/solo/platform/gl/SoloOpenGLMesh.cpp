@@ -75,7 +75,7 @@ gl::Mesh::Mesh(Device *device, MeshPrefab prefab):
             initCubeMesh();
             break;
         default:
-            SL_ERR("Unknown mesh prefab type");
+            SL_PANIC("Unknown mesh prefab type");
             break;
     }
 }

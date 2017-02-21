@@ -62,7 +62,7 @@ static auto toGLBlendFactor(BlendFactor factor) -> GLenum
         case BlendFactor::SrcAlphaSaturate:
             return GL_SRC_ALPHA_SATURATE;
         default:
-            SL_ERR("Unknown blend factor");
+            SL_PANIC("Unknown blend factor");
             return 0;
     }
 }
@@ -85,7 +85,7 @@ static auto toGLCubeTextureFace(CubeTextureFace face) -> GLenum
         case CubeTextureFace::Bottom:
             return GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
         default:
-            SL_ERR("Unknown cube texture face");
+            SL_PANIC("Unknown cube texture face");
             return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
     }
 }
@@ -106,7 +106,7 @@ static auto toGLPrimitiveType(PrimitiveType type) -> GLenum
         case PrimitiveType::Points:
             return GL_POINTS;
         default:
-            SL_ERR("Unknown primitive type");
+            SL_PANIC("Unknown primitive type");
             return GL_TRIANGLES;
     }
 }
@@ -125,7 +125,7 @@ static auto toTextureFormat(TextureFormat format) -> GLenum
         case TextureFormat::Alpha:
             return GL_ALPHA;
         default:
-            SL_ERR("Unknown texture format");
+            SL_PANIC("Unknown texture format");
             return GL_RED;
     }
 }
@@ -143,7 +143,7 @@ static auto toInternalTextureFormat(TextureFormat format) -> GLenum
         case TextureFormat::Alpha:
             return GL_ALPHA;
         default:
-            SL_ERR("Unknown texture format");
+            SL_PANIC("Unknown texture format");
             return GL_RGB;
     }
 }
@@ -165,7 +165,7 @@ static auto linkProgram(GLuint vs, GLuint fs) -> GLint
         std::vector<GLchar> log(logLength);
         glGetProgramInfoLog(program, logLength, nullptr, log.data());
         glDeleteProgram(program);
-        SL_ERR("Failed to link program", log.data());
+        SL_PANIC("Failed to link program", log.data());
     }
 
     return program;
@@ -194,7 +194,7 @@ static auto compileShader(GLuint type, const char *src) -> GLint
         std::vector<GLchar> log(logLength);
         glGetShaderInfoLog(shader, logLength, nullptr, log.data());
         glDeleteShader(shader);
-        SL_ERR(SL_FMT("Failed to compile ", typeNames[type], " shader"), log.data());
+        SL_PANIC(SL_FMT("Failed to compile ", typeNames[type], " shader"), log.data());
     }
 
     return shader;
@@ -319,7 +319,7 @@ auto gl::Renderer::createTexture() -> uint32_t
 {
     GLuint rawHandle = 0;
     glGenTextures(1, &rawHandle);
-    SL_ERR_IF(!rawHandle, "Failed to obtain texture handle");
+    SL_PANIC_IF(!rawHandle, "Failed to obtain texture handle");
 
     auto handle = textureCounter++;
     textures[handle].rawHandle = rawHandle;
@@ -474,7 +474,7 @@ void gl::Renderer::setTexture(GLenum target, uint32_t handle, uint32_t flags)
 
 void gl::Renderer::validateFrameBufferAttachments(const std::vector<uint32_t> &attachments)
 {
-    SL_ERR_IF(attachments.size() > GL_MAX_COLOR_ATTACHMENTS, "Too many attachments");
+    SL_PANIC_IF(attachments.size() > GL_MAX_COLOR_ATTACHMENTS, "Too many attachments");
 
     auto width = -1, height = -1;
     for (auto i = 0; i < attachments.size(); i++)
@@ -486,7 +486,7 @@ void gl::Renderer::validateFrameBufferAttachments(const std::vector<uint32_t> &a
             height = texture.height;
         }
         else
-            SL_ERR_IF(texture.width != width || texture.height != height, "Attachment sizes do not match")
+            SL_PANIC_IF(texture.width != width || texture.height != height, "Attachment sizes do not match")
         }
 }
 
@@ -552,7 +552,7 @@ auto gl::Renderer::createFrameBuffer() -> uint32_t
 {
     GLuint rawHandle = 0;
     glGenFramebuffers(1, &rawHandle);
-    SL_ERR_IF(!rawHandle, "Failed to obtain frame buffer handle");
+    SL_PANIC_IF(!rawHandle, "Failed to obtain frame buffer handle");
 
     auto handle = frameBufferCounter++;
     frameBuffers[handle].rawHandle = rawHandle;
@@ -577,7 +577,7 @@ void gl::Renderer::setFrameBuffer(uint32_t handle)
 
 void gl::Renderer::updateFrameBuffer(uint32_t handle, const std::vector<uint32_t> &attachmentHandles)
 {
-    SL_ERR_CHECK_BLOCK(validateFrameBufferAttachments(attachmentHandles));
+    SL_PANIC_CHECK_BLOCK(validateFrameBufferAttachments(attachmentHandles));
 
     bindFrameBuffer(handle);
 
@@ -601,14 +601,14 @@ void gl::Renderer::updateFrameBuffer(uint32_t handle, const std::vector<uint32_t
     {
         // Re-create the depth buffer
         glGenRenderbuffers(1, &frameBuffer.depthBufferHandle);
-        SL_ERR_IF(!frameBuffer.depthBufferHandle, "Failed to obtain depth buffer handle");
+        SL_PANIC_IF(!frameBuffer.depthBufferHandle, "Failed to obtain depth buffer handle");
 
         glBindRenderbuffer(GL_RENDERBUFFER, frameBuffer.depthBufferHandle);
         auto firstAttachment = textures.at(attachmentHandles[0]);
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, firstAttachment.width, firstAttachment.height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, frameBuffer.depthBufferHandle);
 
-        SL_ERR_IF(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE, "Render target has invalid state");
+        SL_PANIC_IF(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE, "Render target has invalid state");
     }
 
     bindFrameBuffer(EmptyHandle);
@@ -619,7 +619,7 @@ auto gl::Renderer::createVertexBuffer(bool dynamic, const VertexBufferLayout &la
 {
     GLuint rawHandle = 0;
     glGenBuffers(1, &rawHandle);
-    SL_ERR_IF(!rawHandle, "Failed to obtain vertex buffer handle");
+    SL_PANIC_IF(!rawHandle, "Failed to obtain vertex buffer handle");
 
     glBindBuffer(GL_ARRAY_BUFFER, rawHandle);
     glBufferData(GL_ARRAY_BUFFER, layout.getSize() * vertexCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
@@ -668,7 +668,7 @@ auto gl::Renderer::createIndexBuffer(const void *data, uint32_t elementSize, uin
 {
     GLuint rawHandle = 0;
     glGenBuffers(1, &rawHandle);
-    SL_ERR_IF(!rawHandle, "Failed to obtain index buffer handle");
+    SL_PANIC_IF(!rawHandle, "Failed to obtain index buffer handle");
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rawHandle);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementSize * elementCount, data, GL_STATIC_DRAW);
@@ -728,7 +728,7 @@ auto gl::Renderer::createVertexProgramBinding(const uint32_t *bufferHandles, uin
 {
     GLuint rawHandle;
     glGenVertexArrays(1, &rawHandle);
-    SL_ERR_IF(!rawHandle, "Failed to obtain vertex object handle");
+    SL_PANIC_IF(!rawHandle, "Failed to obtain vertex object handle");
 
     glBindVertexArray(rawHandle);
 
@@ -849,7 +849,7 @@ auto gl::Renderer::createUniform(const char *name, UniformType type, uint32_t pr
 
     GLint location, index;
     auto found = findUniformInProgram(rawProgramHandle, name, location, index);
-    SL_ERR_IF(!found, SL_FMT("Could not find uniform '", name, "'"));
+    SL_PANIC_IF(!found, SL_FMT("Could not find uniform '", name, "'"));
 
     auto handle = uniformCounter++;
     auto &uniform = uniforms[handle];

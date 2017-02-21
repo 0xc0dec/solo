@@ -56,7 +56,7 @@ namespace solo
                 if (loader->isLoadable(path))
                     return loader.get();
             }
-            SL_ERR(SL_FMT("No suitable loader found for mesh '", path, "'"));
+            SL_PANIC(SL_FMT("No suitable loader found for mesh '", path, "'"));
             return nullptr;
         }
 
@@ -67,7 +67,7 @@ namespace solo
                 if (l->isLoadable(path))
                     return l.get();
             }
-            SL_ERR(SL_FMT("No suitable loader found for image '", path, "'"));
+            SL_PANIC(SL_FMT("No suitable loader found for image '", path, "'"));
             return nullptr;
         }
     };

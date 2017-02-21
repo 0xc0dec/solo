@@ -51,13 +51,13 @@ void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
 {
     auto typeId = cmp->getTypeId();
 
-    SL_ERR_CHECK_BLOCK(
+    SL_PANIC_CHECK_BLOCK(
     {
         auto node = nodes.find(nodeId);
         if (node != nodes.end())
         {
             const auto &nodeComponents = node->second;
-            SL_ERR_IF(nodeComponents.find(typeId) != nodeComponents.end(), "Node already contains component with same id")
+            SL_PANIC_IF(nodeComponents.find(typeId) != nodeComponents.end(), "Node already contains component with same id");
         }
     });
 
@@ -71,7 +71,7 @@ void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
 
 void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
 {
-    SL_ERR_IF(typeId == Transform::getId(), "Transform component cannot be removed from a node"); // to simplify things
+    SL_PANIC_IF(typeId == Transform::getId(), "Transform component cannot be removed from a node"); // to simplify things
 
     auto node = nodes.find(nodeId);
     if (node == nodes.end())

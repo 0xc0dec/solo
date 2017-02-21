@@ -53,7 +53,7 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device>
             device = std::make_unique<null::Device>(setup);
             break;
         default:
-            SL_ERR("Unknown device mode");
+            SL_PANIC("Unknown device mode");
             break;
     }
 

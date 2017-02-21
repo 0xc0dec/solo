@@ -36,7 +36,7 @@ TrueTypeFont::TrueTypeFont(Device *device, uint8_t *fontData, uint32_t size, uin
 
     stbtt_pack_context context;
     auto ret = stbtt_PackBegin(&context, pixels.get(), atlasWidth, atlasHeight, 0, 1, nullptr);
-    SL_ERR_IF(!ret)
+    SL_PANIC_IF(!ret)
 
     stbtt_PackSetOversampling(&context, oversampleX, oversampleY);
     stbtt_PackFontRange(&context, fontData, 0, static_cast<float>(size), firstChar, charCount, charInfo.get());

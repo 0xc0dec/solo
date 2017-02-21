@@ -37,7 +37,7 @@ auto gl::Effect::create(Device *device, EffectPrefab prefab) -> sptr<Effect>
         case EffectPrefab::Font:
             return std::make_shared<Effect>(device, PrefabShaders::Vertex::simple, PrefabShaders::Fragment::font);
         default:
-            SL_ERR("Unknown effect prefab");
+            SL_PANIC("Unknown effect prefab");
             break;
     }
 }
