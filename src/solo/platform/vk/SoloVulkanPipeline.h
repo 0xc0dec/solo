@@ -68,14 +68,8 @@ namespace solo
             auto withVertexShader(VkShaderModule shader, const char *entryPoint) -> PipelineBuilder&;
             auto withFragmentShader(VkShaderModule shader, const char *entryPoint) -> PipelineBuilder&;
 
-            auto withColorBlend(VkBlendFactor srcFactor, VkBlendFactor dstFactor, VkBlendOp operation) -> PipelineBuilder&;
-            auto withAlphaBlend(VkBlendFactor srcFactor, VkBlendFactor dstFactor, VkBlendOp operation) -> PipelineBuilder&;
-
-            auto withRasterizationSampleCount(VkSampleCountFlagBits sampleCount) -> PipelineBuilder&;
             auto withTopology(VkPrimitiveTopology topology) -> PipelineBuilder&;
-            auto withFrontFace(VkFrontFace frontFace) -> PipelineBuilder&;
             auto withVertexSize(uint32_t size) -> PipelineBuilder&;
-            auto withCullMode(VkCullModeFlags mode) -> PipelineBuilder&;
 
             auto withVertexAttribute(uint32_t location, uint32_t binding, VkFormat format, uint32_t offset) -> PipelineBuilder&;
 
@@ -97,11 +91,6 @@ namespace solo
 
             uint32_t vertexSize = 0;
             VkPrimitiveTopology topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
-
-            VkPipelineRasterizationStateCreateInfo rasterState;
-            VkPipelineMultisampleStateCreateInfo multisampleState;
-            VkPipelineColorBlendAttachmentState blendAttachmentState;
-            VkPipelineColorBlendStateCreateInfo colorBlendState;
         };
     
         inline VkPipeline Pipeline::getHandle() const
@@ -123,24 +112,6 @@ namespace solo
         inline auto PipelineBuilder::withVertexSize(uint32_t size) -> PipelineBuilder&
         {
             vertexSize = size;
-            return *this;
-        }
-
-        inline auto PipelineBuilder::withCullMode(VkCullModeFlags mode) -> PipelineBuilder&
-        {
-            rasterState.cullMode = mode;
-            return *this;
-        }
-
-        inline auto PipelineBuilder::withFrontFace(VkFrontFace frontFace) -> PipelineBuilder&
-        {
-            rasterState.frontFace = frontFace;
-            return *this;
-        }
-
-        inline auto PipelineBuilder::withRasterizationSampleCount(VkSampleCountFlagBits sampleCount) -> PipelineBuilder&
-        {
-            multisampleState.rasterizationSamples = sampleCount;
             return *this;
         }
     }

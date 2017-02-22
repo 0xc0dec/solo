@@ -161,11 +161,6 @@ void vk::Renderer::updateCmdBuffers()
         .withVertexAttribute(0, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, position))
         .withVertexAttribute(1, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, color))
         .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST)
-        .withCullMode(VK_CULL_MODE_BACK_BIT)
-        .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
-        .withRasterizationSampleCount(VK_SAMPLE_COUNT_1_BIT)
-        .withColorBlend(VK_BLEND_FACTOR_ZERO, VK_BLEND_FACTOR_ZERO, VK_BLEND_OP_ADD)
-        .withAlphaBlend(VK_BLEND_FACTOR_ZERO, VK_BLEND_FACTOR_ZERO, VK_BLEND_OP_ADD)
         .build();
 
     const auto triangleSize = 1.6f;
