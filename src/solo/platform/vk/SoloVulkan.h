@@ -161,7 +161,7 @@ namespace solo
     
         void submitCommandBuffer(VkQueue queue, VkCommandBuffer buffer);
         void createCommandBuffers(VkDevice logicalDevice, VkCommandPool commandPool, uint32_t count, VkCommandBuffer *result);
-        void destroyCommandBuffers(VkDevice device, VkCommandPool commandPool, VkCommandBuffer* buffers, uint32_t count);
+        void destroyCommandBuffers(VkDevice device, VkCommandPool commandPool, VkCommandBuffer *buffers, uint32_t count);
     
         auto findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, uint32_t typeBits,
             VkMemoryPropertyFlags properties) -> int32_t;

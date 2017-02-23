@@ -41,7 +41,7 @@ namespace solo
 
             ~DescriptorPool() {}
 
-            auto operator=(DescriptorPool other) noexcept->DescriptorPool&;
+            auto operator=(DescriptorPool other) noexcept -> DescriptorPool&;
 
             auto allocateSet(VkDescriptorSetLayout layout) const->VkDescriptorSet;
 

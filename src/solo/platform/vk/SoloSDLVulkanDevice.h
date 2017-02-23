@@ -37,12 +37,12 @@ namespace solo
             explicit SDLDevice(const DeviceSetup &setup);
             ~SDLDevice();
 
-            auto getCanvasSize() const->Vector2 override final;
+            auto getCanvasSize() const -> Vector2 override final;
 
             void saveScreenshot(const std::string &path) override final;
 
-            auto getVkInstance() const->VkInstance;
-            auto getVkSurface() const->VkSurfaceKHR;
+            auto getInstance() const -> VkInstance;
+            auto getSurface() const -> VkSurfaceKHR;
 
         protected:
             void endUpdate() override final;
@@ -50,15 +50,14 @@ namespace solo
         private:
             Resource<VkInstance> instance;
             Resource<VkSurfaceKHR> surface;
-            VkDebugReportCallbackEXT debugCallback = nullptr;
         };
 
-        inline auto SDLDevice::getVkInstance() const -> VkInstance
+        inline auto SDLDevice::getInstance() const -> VkInstance
         {
             return instance;
         }
 
-        inline auto SDLDevice::getVkSurface() const -> VkSurfaceKHR
+        inline auto SDLDevice::getSurface() const -> VkSurfaceKHR
         {
             return surface;
         }

@@ -75,7 +75,7 @@ namespace solo
             return static_cast<uint32_t>(steps.size());
         }
 
-        inline auto Swapchain::getFramebuffer(uint32_t idx) const->VkFramebuffer
+        inline auto Swapchain::getFramebuffer(uint32_t idx) const -> VkFramebuffer
         {
             return steps[idx].framebuffer;
         }

@@ -37,8 +37,8 @@ vk::Renderer::Renderer(Device *engineDevice):
     canvasHeight(engineDevice->getSetup().canvasHeight)
 {
     auto vulkanDevice = dynamic_cast<SDLDevice*>(engineDevice);
-    auto instance = vulkanDevice->getVkInstance();
-    auto surface = vulkanDevice->getVkSurface();
+    auto instance = vulkanDevice->getInstance();
+    auto surface = vulkanDevice->getSurface();
 
     physicalDevice.device = getPhysicalDevice(instance);
     vkGetPhysicalDeviceProperties(physicalDevice.device, &physicalDevice.properties);

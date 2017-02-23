@@ -50,9 +50,9 @@ namespace solo
 
             ~Buffer() {}
 
-            auto operator=(Buffer other) noexcept->Buffer&;
+            auto operator=(Buffer other) noexcept -> Buffer&;
 
-            auto getHandle()->VkBuffer;
+            auto getHandle() -> VkBuffer;
 
             void update(void *newData) const;
             void transferTo(const Buffer& other, VkQueue queue, VkCommandPool cmdPool) const;
