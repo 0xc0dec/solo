@@ -42,8 +42,6 @@ namespace solo
 
             auto operator=(RenderPass other) noexcept -> RenderPass&;
 
-            void setViewport(const VkViewport &viewport);
-            void setScissor(uint32_t left, uint32_t top, uint32_t width, uint32_t height);
             void setClear(bool clearColor, bool clearDepthStencil, VkClearColorValue color, VkClearDepthStencilValue depthStencil);
 
             void begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, uint32_t canvasWidth, uint32_t canvasHeight);
@@ -57,8 +55,6 @@ namespace solo
         private:
             VkDevice device = nullptr;
             Resource<VkRenderPass> pass;
-            VkViewport viewport;
-            VkRect2D scissor;
             std::vector<VkClearValue> clearValues;
 
             void swap(RenderPass &other) noexcept;
@@ -72,7 +68,7 @@ namespace solo
             auto withColorAttachment(VkFormat colorFormat) -> RenderPassBuilder&;
             auto withDepthAttachment(VkFormat depthFormat) -> RenderPassBuilder&;
 
-            auto build()->RenderPass;
+            auto build() -> RenderPass;
 
         private:
             VkDevice device = nullptr;

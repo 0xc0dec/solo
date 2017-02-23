@@ -40,9 +40,9 @@ void vk::Camera::beginFrame() const
 {
     auto canvasSize = device->getCanvasSize(); // TODO cache
 
-    renderer->beginRenderPass(canvasSize.x, canvasSize.y,
-        clearFlags.color, clearFlags.depth, clearColor,
-        viewport.x >= 0 ? viewport : Vector4{0, 0, canvasSize.x, canvasSize.y});
+    renderer->beginRenderPass(canvasSize.x, canvasSize.y, clearFlags.color, clearFlags.depth, clearColor);
+
+    renderer->setViewport(viewport.x >= 0 ? viewport : Vector4{0, 0, canvasSize.x, canvasSize.y});
 }
 
 

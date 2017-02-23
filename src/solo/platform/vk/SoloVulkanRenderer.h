@@ -46,9 +46,10 @@ namespace solo
             ~Renderer();
 
             void beginRenderPass(uint32_t canvasWidth, uint32_t canvasHeight,
-                bool clearColor, bool clearDepth, const Vector4 &color,
-                const Vector4 &viewport);
+                bool clearColor, bool clearDepth, const Vector4 &color);
             void endRenderPass();
+
+            void setViewport(const Vector4 &viewport);
 
         protected:
             void beginFrame() override final;
@@ -85,14 +86,12 @@ namespace solo
 
             bool dirty = true;
 
-            std::vector<VkClearValue> clearValues;
-            VkViewport viewport = {1, 1, 0, 1};
-
             enum class RenderCommandType
             {
                 None,
                 BeginRenderPass,
-                EndRenderPass
+                EndRenderPass,
+                SetViewport
             };
 
             struct RenderCommand
@@ -108,8 +107,9 @@ namespace solo
                         Vector4 color;
                         bool clearColor;
                         bool clearDepth;
-                        VkViewport viewport;
                     } beginRenderPass;
+
+                    VkViewport viewport;
                 };
 
                 RenderCommand() {}

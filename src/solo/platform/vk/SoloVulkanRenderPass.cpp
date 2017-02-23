@@ -68,8 +68,6 @@ void RenderPass::begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, uint32
     info.framebuffer = framebuffer;
 
     vkCmdBeginRenderPass(cmdBuf, &info, VK_SUBPASS_CONTENTS_INLINE);
-    vkCmdSetViewport(cmdBuf, 0, 1, &viewport);
-    vkCmdSetScissor(cmdBuf, 0, 1, &scissor);
 }
 
 
@@ -79,7 +77,7 @@ void RenderPass::end(VkCommandBuffer cmdBuf)
 }
 
 
-void RenderPass::swap(RenderPass& other) noexcept
+void RenderPass::swap(RenderPass &other) noexcept
 {
     std::swap(device, other.device);
     std::swap(pass, other.pass);
@@ -183,21 +181,6 @@ auto RenderPassBuilder::build() -> RenderPass
     SL_VK_CHECK_RESULT(vkCreateRenderPass(device, &renderPassInfo, nullptr, pass.cleanAndExpose()));
 
     return RenderPass(device, std::move(pass));
-}
-
-
-void RenderPass::setViewport(const VkViewport &viewport)
-{
-    this->viewport = viewport;
-}
-
-
-void RenderPass::setScissor(uint32_t left, uint32_t top, uint32_t width, uint32_t height)
-{
-    scissor.offset.x = left;
-    scissor.offset.y = top;
-    scissor.extent.width = width;
-    scissor.extent.height = height;
 }
 
 

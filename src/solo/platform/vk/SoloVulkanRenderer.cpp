@@ -145,18 +145,28 @@ void vk::Renderer::updateCmdBuffers()
                             cmd.beginRenderPass.color.w
                         }
                     };
-                    auto w = cmd.beginRenderPass.canvasWidth;
-                    auto h = cmd.beginRenderPass.canvasHeight;
-                    renderPass.setViewport(cmd.beginRenderPass.viewport);
-                    renderPass.setScissor(0, 0, w, h); // TODO this is temp
                     renderPass.setClear(cmd.beginRenderPass.clearColor, cmd.beginRenderPass.clearDepth, color, {1, 0});
-                    renderPass.begin(buf, swapchain.getFramebuffer(i), w, h);
+                    renderPass.begin(buf, swapchain.getFramebuffer(i), cmd.beginRenderPass.canvasWidth, cmd.beginRenderPass.canvasHeight);
                     break;
                 }
 
                 case RenderCommandType::EndRenderPass:
                     renderPass.end(buf);
                     break;
+
+                case RenderCommandType::SetViewport:
+                {
+                    vkCmdSetViewport(buf, 0, 1, &cmd.viewport);
+
+                    // TODO this is temp
+                    VkRect2D scissor;
+                    scissor.offset.x = 0;
+                    scissor.offset.y = 0;
+                    scissor.extent.width = cmd.viewport.width;
+                    scissor.extent.height = cmd.viewport.height;
+                    vkCmdSetScissor(buf, 0, 1, &scissor);
+                    break;
+                }
 
                 default:
                     break;
@@ -169,8 +179,7 @@ void vk::Renderer::updateCmdBuffers()
 
 
 void vk::Renderer::beginRenderPass(uint32_t canvasWidth, uint32_t canvasHeight,
-    bool clearColor, bool clearDepth, const Vector4 &color,
-    const Vector4 &viewport)
+    bool clearColor, bool clearDepth, const Vector4 &color)
 {
     RenderCommand cmd{RenderCommandType::BeginRenderPass};
     cmd.beginRenderPass.clearColor = clearColor;
@@ -178,10 +187,6 @@ void vk::Renderer::beginRenderPass(uint32_t canvasWidth, uint32_t canvasHeight,
     cmd.beginRenderPass.color = color;
     cmd.beginRenderPass.canvasWidth = canvasWidth;
     cmd.beginRenderPass.canvasHeight = canvasHeight;
-    cmd.beginRenderPass.viewport.x = viewport.x;
-    cmd.beginRenderPass.viewport.y = viewport.y;
-    cmd.beginRenderPass.viewport.width = viewport.z;
-    cmd.beginRenderPass.viewport.height = viewport.w;
     renderCommands.push_back(cmd);
 }
 
@@ -189,6 +194,17 @@ void vk::Renderer::beginRenderPass(uint32_t canvasWidth, uint32_t canvasHeight,
 void vk::Renderer::endRenderPass()
 {
     RenderCommand cmd{RenderCommandType::EndRenderPass};
+    renderCommands.push_back(cmd);
+}
+
+
+void vk::Renderer::setViewport(const Vector4 &viewport)
+{
+    RenderCommand cmd{RenderCommandType::SetViewport};
+    cmd.viewport.x = viewport.x;
+    cmd.viewport.y = viewport.y;
+    cmd.viewport.width = viewport.z;
+    cmd.viewport.height = viewport.w;
     renderCommands.push_back(cmd);
 }
 
