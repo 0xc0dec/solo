@@ -196,11 +196,13 @@ void Camera::renderFrame(std::function<void(const RenderContext&)> render) const
     if (renderTarget)
         renderTarget->bind();
     
-    renderImpl();
+    beginFrame();
 
     RenderContext ctx;
     ctx.camera = this;
     render(ctx);
+
+    endFrame();
 
     if (renderTarget)
         renderTarget->unbind();

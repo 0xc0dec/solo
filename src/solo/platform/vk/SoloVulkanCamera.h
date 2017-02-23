@@ -40,7 +40,8 @@ namespace solo
         private:
             Renderer *renderer = nullptr;
 
-            void renderImpl() const override final;
+            void beginFrame() const override final;
+            void endFrame() const override final;
         };
     }
 }

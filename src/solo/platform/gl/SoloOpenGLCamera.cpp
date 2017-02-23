@@ -35,7 +35,7 @@ gl::Camera::Camera(const Node &node):
 }
 
 
-void gl::Camera::renderImpl() const
+void gl::Camera::beginFrame() const
 {
     if (viewport.x >= 0 && viewport.y >= 0 && viewport.z >= 0 && viewport.w >= 0)
     {

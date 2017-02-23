@@ -34,7 +34,11 @@ namespace solo
             }
 
         protected:
-            void renderImpl() const override
+            void beginFrame() const override
+            {
+            }
+
+            void endFrame() const override final
             {
             }
         };
