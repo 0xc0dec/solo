@@ -40,7 +40,7 @@ namespace solo
             RenderPass(RenderPass &&other) noexcept;
             ~RenderPass() {}
 
-            auto operator=(RenderPass other) noexcept->RenderPass&;
+            auto operator=(RenderPass other) noexcept -> RenderPass&;
 
             void setViewport(uint32_t left, uint32_t top, uint32_t width, uint32_t height);
             void setScissor(uint32_t left, uint32_t top, uint32_t width, uint32_t height);
@@ -69,8 +69,8 @@ namespace solo
         public:
             explicit RenderPassBuilder(VkDevice device);
 
-            auto withColorAttachment(VkFormat colorFormat)->RenderPassBuilder&;
-            auto withDepthAttachment(VkFormat depthFormat)->RenderPassBuilder&;
+            auto withColorAttachment(VkFormat colorFormat) -> RenderPassBuilder&;
+            auto withDepthAttachment(VkFormat depthFormat) -> RenderPassBuilder&;
 
             auto build()->RenderPass;
 

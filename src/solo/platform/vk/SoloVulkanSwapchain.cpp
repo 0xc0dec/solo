@@ -102,7 +102,7 @@ Swapchain::Swapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurface
     swapchainInfo.clipped = VK_TRUE;
     swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
 
-    vk::Resource<VkSwapchainKHR> swapchain{device, vkDestroySwapchainKHR};
+    Resource<VkSwapchainKHR> swapchain{device, vkDestroySwapchainKHR};
     SL_VK_CHECK_RESULT(vkCreateSwapchainKHR(device, &swapchainInfo, nullptr, swapchain.replace()));
 
     uint32_t imageCount = 0;
@@ -136,10 +136,10 @@ Swapchain::Swapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurface
         imageViewInfo.flags = 0;
         imageViewInfo.image = images[i];
 
-        vk::Resource<VkImageView> view{device, vkDestroyImageView};
+        Resource<VkImageView> view{device, vkDestroyImageView};
         SL_VK_CHECK_RESULT(vkCreateImageView(device, &imageViewInfo, nullptr, view.replace()));
 
-        steps[i].framebuffer = vk::createFrameBuffer(device, view, depthStencilView, renderPass, width, height);
+        steps[i].framebuffer = createFrameBuffer(device, view, depthStencilView, renderPass, width, height);
         steps[i].image = images[i];
         steps[i].imageView = std::move(view);
     }
@@ -169,7 +169,6 @@ void Swapchain::swap(Swapchain &other) noexcept
     std::swap(swapchain, other.swapchain);
     std::swap(steps, other.steps);
 }
-
 
 
 #endif
