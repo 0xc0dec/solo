@@ -48,8 +48,7 @@ RenderPass::RenderPass(RenderPass &&other) noexcept
 
 auto RenderPass::operator=(RenderPass other) noexcept -> RenderPass&
 {
-    if (&other != this)
-        swap(other);
+    swap(other);
     return *this;
 }
 

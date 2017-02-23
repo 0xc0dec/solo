@@ -80,8 +80,7 @@ Buffer::Buffer(Buffer &&other) noexcept
 
 auto Buffer::operator=(Buffer other) noexcept -> Buffer&
 {
-    if (&other != this) // TODO this check is missing elsewhere
-        swap(other);
+    swap(other);
     return *this;
 }
 

@@ -150,8 +150,7 @@ Swapchain::Swapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurface
 
 auto Swapchain::operator=(Swapchain other) noexcept -> Swapchain&
 {
-    if (&other != this)
-        swap(other);
+    swap(other);
     return *this;
 }
 

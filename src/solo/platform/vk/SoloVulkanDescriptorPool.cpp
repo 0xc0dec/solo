@@ -52,8 +52,7 @@ DescriptorPool::DescriptorPool(DescriptorPool &&other) noexcept
 
 auto DescriptorPool::operator=(DescriptorPool other) noexcept -> DescriptorPool&
 {
-    if (&other != this)
-        swap(other);
+    swap(other);
     return *this;
 }
 
