@@ -26,7 +26,7 @@ using namespace solo;
 using namespace vk;
 
 
-Pipeline::Pipeline(VkDevice device, VkRenderPass renderPass, Resource<VkPipeline> &&pipeline, Resource<VkPipelineLayout> &&layout):
+Pipeline::Pipeline(VkDevice device, VkRenderPass renderPass, Resource<VkPipeline> pipeline, Resource<VkPipelineLayout> layout):
     device(device),
     renderPass(renderPass),
     pipeline(std::move(pipeline)),

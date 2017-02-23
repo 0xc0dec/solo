@@ -34,8 +34,7 @@ namespace solo
         {
         public:
             Pipeline() {}
-            // TODO fix the need to accept rvalue refs
-            Pipeline(VkDevice device, VkRenderPass renderPass, Resource<VkPipeline> &&pipeline, Resource<VkPipelineLayout> &&layout);
+            Pipeline(VkDevice device, VkRenderPass renderPass, Resource<VkPipeline> pipeline, Resource<VkPipelineLayout> layout);
             Pipeline(Pipeline &&other) noexcept;
             Pipeline(const Pipeline &other) = delete;
             ~Pipeline() {}
