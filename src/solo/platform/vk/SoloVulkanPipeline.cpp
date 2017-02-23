@@ -129,7 +129,6 @@ auto PipelineBuilder::build() -> Pipeline
     rasterState.depthBiasEnable = false;
     rasterState.depthBiasClamp = 0;
     rasterState.depthBiasConstantFactor = 0;
-    rasterState.depthBiasClamp = 0;
     rasterState.depthBiasSlopeFactor = 0;
     rasterState.lineWidth = 1;
 
