@@ -103,7 +103,7 @@ Swapchain::Swapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurface
     swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
 
     Resource<VkSwapchainKHR> swapchain{device, vkDestroySwapchainKHR};
-    SL_VK_CHECK_RESULT(vkCreateSwapchainKHR(device, &swapchainInfo, nullptr, swapchain.replace()));
+    SL_VK_CHECK_RESULT(vkCreateSwapchainKHR(device, &swapchainInfo, nullptr, swapchain.cleanAndExpose()));
 
     uint32_t imageCount = 0;
     SL_VK_CHECK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, nullptr));
@@ -137,7 +137,7 @@ Swapchain::Swapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurface
         imageViewInfo.image = images[i];
 
         Resource<VkImageView> view{device, vkDestroyImageView};
-        SL_VK_CHECK_RESULT(vkCreateImageView(device, &imageViewInfo, nullptr, view.replace()));
+        SL_VK_CHECK_RESULT(vkCreateImageView(device, &imageViewInfo, nullptr, view.cleanAndExpose()));
 
         steps[i].framebuffer = createFrameBuffer(device, view, depthStencilView, renderPass, width, height);
         steps[i].image = images[i];

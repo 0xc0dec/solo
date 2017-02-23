@@ -40,7 +40,7 @@ DescriptorPool::DescriptorPool(VkDevice device, VkDescriptorType type, uint32_t 
     poolInfo.maxSets = maxSetCount;
 
     this->pool = Resource<VkDescriptorPool>{device, vkDestroyDescriptorPool};
-    SL_VK_CHECK_RESULT(vkCreateDescriptorPool(device, &poolInfo, nullptr, pool.replace()));
+    SL_VK_CHECK_RESULT(vkCreateDescriptorPool(device, &poolInfo, nullptr, pool.cleanAndExpose()));
 }
 
 

@@ -115,7 +115,7 @@ auto PipelineBuilder::build() -> Pipeline
     pipelineLayoutInfo.pPushConstantRanges = nullptr;
 
     Resource<VkPipelineLayout> layout{device, vkDestroyPipelineLayout};
-    SL_VK_CHECK_RESULT(vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, layout.replace()));
+    SL_VK_CHECK_RESULT(vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, layout.cleanAndExpose()));
 
     VkPipelineRasterizationStateCreateInfo rasterState{};
     rasterState.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
@@ -241,7 +241,7 @@ auto PipelineBuilder::build() -> Pipeline
     pipelineInfo.basePipelineIndex = -1;
 
     Resource<VkPipeline> pipeline{device, vkDestroyPipeline};
-    SL_VK_CHECK_RESULT(vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, pipeline.replace()));
+    SL_VK_CHECK_RESULT(vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, pipeline.cleanAndExpose()));
 
     return Pipeline(device, renderPass, std::move(pipeline), std::move(layout));
 }

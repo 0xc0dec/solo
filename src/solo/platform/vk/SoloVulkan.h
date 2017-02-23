@@ -53,10 +53,7 @@ namespace solo
             Resource(const Resource<T> &other) = delete;
             Resource(Resource<T> &&other) noexcept
             {
-                cleanup();
-                handle = std::move(other.handle);
-                del = std::move(other.del);
-                other.handle = VK_NULL_HANDLE;
+                swap(other);
             }
 
             explicit Resource(std::function<void(T, VkAllocationCallbacks*)> del)
@@ -81,9 +78,17 @@ namespace solo
 
             auto operator=(Resource<T> other) noexcept -> Resource<T>&
             {
-                std::swap(handle, other.handle);
-                std::swap(del, other.del);
+                swap(other);
                 return *this;
+            }
+
+            void operator=(T other)
+            {
+                if (other != handle)
+                {
+                    cleanup();
+                    handle = other;
+                }
             }
 
             auto operator&() const -> const T*
@@ -91,7 +96,7 @@ namespace solo
                 return &handle;
             }
 
-            auto replace() -> T*
+            auto cleanAndExpose() -> T*
             {
                 cleanup();
                 return &handle;
@@ -105,15 +110,6 @@ namespace solo
             operator bool() const
             {
                 return handle != VK_NULL_HANDLE;
-            }
-
-            void operator=(T other)
-            {
-                if (other != handle)
-                {
-                    cleanup();
-                    handle = other;
-                }
             }
 
             template<typename V>
@@ -131,6 +127,12 @@ namespace solo
                 if (handle != VK_NULL_HANDLE)
                     del(handle);
                 handle = VK_NULL_HANDLE;
+            }
+
+            void swap(Resource<T> &other) noexcept
+            {
+                std::swap(handle, other.handle);
+                std::swap(del, other.del);
             }
         };
 

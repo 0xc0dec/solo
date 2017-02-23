@@ -62,7 +62,7 @@ auto vk::createDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -> R
     deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
 
     Resource<VkDevice> result{vkDestroyDevice};
-    SL_VK_CHECK_RESULT(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, result.replace()));
+    SL_VK_CHECK_RESULT(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, result.cleanAndExpose()));
 
     return result;
 }
@@ -76,7 +76,7 @@ auto vk::createSemaphore(VkDevice device) -> Resource<VkSemaphore>
     semaphoreCreateInfo.flags = 0;
 
     Resource<VkSemaphore> semaphore{device, vkDestroySemaphore};
-    SL_VK_CHECK_RESULT(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, semaphore.replace()));
+    SL_VK_CHECK_RESULT(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, semaphore.cleanAndExpose()));
 
     return semaphore;
 }
@@ -155,7 +155,7 @@ auto vk::createCommandPool(VkDevice device, uint32_t queueIndex) -> Resource<VkC
     poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 
     Resource<VkCommandPool> commandPool{device, vkDestroyCommandPool};
-    SL_VK_CHECK_RESULT(vkCreateCommandPool(device, &poolInfo, nullptr, commandPool.replace()));
+    SL_VK_CHECK_RESULT(vkCreateCommandPool(device, &poolInfo, nullptr, commandPool.cleanAndExpose()));
 
     return commandPool;
 }
@@ -285,7 +285,7 @@ auto vk::createRenderPass(VkDevice device, VkFormat colorFormat, VkFormat depthF
     renderPassInfo.pDependencies = dependencies.data();
 
     Resource<VkRenderPass> renderPass{device, vkDestroyRenderPass};
-    SL_VK_CHECK_RESULT(vkCreateRenderPass(device, &renderPassInfo, nullptr, renderPass.replace()));
+    SL_VK_CHECK_RESULT(vkCreateRenderPass(device, &renderPassInfo, nullptr, renderPass.cleanAndExpose()));
 
     return renderPass;
 }
@@ -307,7 +307,7 @@ auto vk::createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImage
     createInfo.layers = 1;
 
     Resource<VkFramebuffer> frameBuffer{device, vkDestroyFramebuffer};
-    SL_VK_CHECK_RESULT(vkCreateFramebuffer(device, &createInfo, nullptr, frameBuffer.replace()));
+    SL_VK_CHECK_RESULT(vkCreateFramebuffer(device, &createInfo, nullptr, frameBuffer.cleanAndExpose()));
 
     return frameBuffer;
 }
@@ -323,7 +323,7 @@ auto vk::createShader(VkDevice device, const std::vector<uint8_t>& data) -> Reso
     shaderModuleInfo.pCode = reinterpret_cast<const uint32_t*>(data.data());
 
     Resource<VkShaderModule> module{device, vkDestroyShaderModule};
-    SL_VK_CHECK_RESULT(vkCreateShaderModule(device, &shaderModuleInfo, nullptr, module.replace()));
+    SL_VK_CHECK_RESULT(vkCreateShaderModule(device, &shaderModuleInfo, nullptr, module.cleanAndExpose()));
 
     return module;
 }
@@ -366,7 +366,7 @@ auto vk::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties ph
 
     VkMemoryRequirements memReqs;
     Resource<VkImage> image{device, vkDestroyImage};
-    SL_VK_CHECK_RESULT(vkCreateImage(device, &imageInfo, nullptr, image.replace()));
+    SL_VK_CHECK_RESULT(vkCreateImage(device, &imageInfo, nullptr, image.cleanAndExpose()));
     vkGetImageMemoryRequirements(device, image, &memReqs);
 
     auto memTypeIndex = findMemoryType(physicalDeviceMemProps, memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
@@ -376,12 +376,12 @@ auto vk::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties ph
     allocInfo.memoryTypeIndex = memTypeIndex;
 
     Resource<VkDeviceMemory> mem{device, vkFreeMemory};
-    SL_VK_CHECK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, mem.replace()));
+    SL_VK_CHECK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, mem.cleanAndExpose()));
     SL_VK_CHECK_RESULT(vkBindImageMemory(device, image, mem, 0));
 
     viewInfo.image = image;
     Resource<VkImageView> view{device, vkDestroyImageView};
-    SL_VK_CHECK_RESULT(vkCreateImageView(device, &viewInfo, nullptr, view.replace()));
+    SL_VK_CHECK_RESULT(vkCreateImageView(device, &viewInfo, nullptr, view.cleanAndExpose()));
 
     DepthStencil result;
     result.image = std::move(image);

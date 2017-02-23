@@ -56,7 +56,7 @@ Buffer::Buffer(VkDevice device, VkDeviceSize size, uint32_t flags, VkPhysicalDev
     bufferInfo.pQueueFamilyIndices = nullptr;
 
     buffer = Resource<VkBuffer>{device, vkDestroyBuffer};
-    SL_VK_CHECK_RESULT(vkCreateBuffer(device, &bufferInfo, nullptr, buffer.replace()));
+    SL_VK_CHECK_RESULT(vkCreateBuffer(device, &bufferInfo, nullptr, buffer.cleanAndExpose()));
 
     VkMemoryRequirements memReqs;
     vkGetBufferMemoryRequirements(device, buffer, &memReqs);
@@ -67,7 +67,7 @@ Buffer::Buffer(VkDevice device, VkDeviceSize size, uint32_t flags, VkPhysicalDev
     allocInfo.memoryTypeIndex = findMemoryType(memProps, memReqs.memoryTypeBits, propFlags);
 
     memory = Resource<VkDeviceMemory>{device, vkFreeMemory};
-    SL_VK_CHECK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, memory.replace()));
+    SL_VK_CHECK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, memory.cleanAndExpose()));
     SL_VK_CHECK_RESULT(vkBindBufferMemory(device, buffer, memory, 0));
 }
 

@@ -90,7 +90,7 @@ SDLDevice::SDLDevice(const DeviceSetup &setup):
     }
 
     instance = Resource<VkInstance>{vkDestroyInstance};
-    SL_VK_CHECK_RESULT(vkCreateInstance(&instanceInfo, nullptr, instance.replace()));
+    SL_VK_CHECK_RESULT(vkCreateInstance(&instanceInfo, nullptr, instance.cleanAndExpose()));
 
 #ifdef SL_WINDOWS
     SDL_SysWMinfo wmInfo;
@@ -108,7 +108,7 @@ SDLDevice::SDLDevice(const DeviceSetup &setup):
     surfaceInfo.hwnd = hwnd;
 
     surface = Resource<VkSurfaceKHR>{instance, vkDestroySurfaceKHR};
-    SL_VK_CHECK_RESULT(vkCreateWin32SurfaceKHR(instance, &surfaceInfo, nullptr, surface.replace()));
+    SL_VK_CHECK_RESULT(vkCreateWin32SurfaceKHR(instance, &surfaceInfo, nullptr, surface.cleanAndExpose()));
 #endif
 
 //#ifdef SL_DEBUG
