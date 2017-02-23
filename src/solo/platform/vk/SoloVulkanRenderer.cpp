@@ -24,21 +24,18 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloSDLVulkanDevice.h"
-#include "SoloVulkanSwapchain.h"
-#include "SoloVulkan.h"
-#include "SoloVector3.h"
 
 using namespace solo;
 using namespace vk;
 
 
-vk::Renderer::Renderer(Device *engineDevice):
-    canvasWidth(engineDevice->getSetup().canvasWidth),
-    canvasHeight(engineDevice->getSetup().canvasHeight)
+vk::Renderer::Renderer(Device *engineDevice)
 {
     auto vulkanDevice = dynamic_cast<SDLDevice*>(engineDevice);
     auto instance = vulkanDevice->getInstance();
     auto surface = vulkanDevice->getSurface();
+    auto canvasWidth = engineDevice->getSetup().canvasWidth;
+    auto canvasHeight = engineDevice->getSetup().canvasHeight;
 
     physicalDevice.device = getPhysicalDevice(instance);
     vkGetPhysicalDeviceProperties(physicalDevice.device, &physicalDevice.properties);
@@ -122,128 +119,9 @@ void vk::Renderer::endFrame()
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 }
 
-// TODO lol remove
-#include <fstream>
-
-auto readAllBytes(const char *path)
-{
-    std::ifstream file(path, std::ios::binary | std::ios::ate);
-    SL_PANIC_IF(!file.is_open(), SL_FMT("Failed to open file '", path, "'"));
-    auto size = file.tellg();
-    file.seekg(0, std::ios::beg);
-    auto result = std::vector<uint8_t>(size);
-    file.read(reinterpret_cast<char *>(&result[0]), size);
-    file.close();
-    return result;
-}
-
 
 void vk::Renderer::updateCmdBuffers()
 {
-    struct Vertex
-    {
-        Vector2 position;
-        Vector3 color;
-    };
-
-    test.descSetLayout = DescriptorSetLayoutBuilder(device)
-        .withBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS)
-        .build();
-
-    auto vertexShader = vk::createShader(device, readAllBytes("../../assets/triangle.vert.spv"));
-    auto fragmentShader = vk::createShader(device, readAllBytes("../../assets/triangle.frag.spv"));
-
-    VkDescriptorSetLayout descSetLayout = test.descSetLayout;
-    test.pipeline = PipelineBuilder(device, renderPass)
-        .withVertexShader(std::move(vertexShader), "main")
-        .withFragmentShader(std::move(fragmentShader), "main")
-        .withDescriptorSetLayouts(&descSetLayout, 1)
-        .withVertexSize(sizeof(Vertex))
-        .withVertexAttribute(0, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, position))
-        .withVertexAttribute(1, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, color))
-        .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST)
-        .build();
-//
-//    const auto triangleSize = 1.6f;
-//    std::vector<Vertex> tri1 =
-//    {
-//		{ Vector2(0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(1.0f, 0.0f, 0.0f) },
-//		{ Vector2(0.0f, -sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 1.0f, 0.0f) },
-//		{ Vector2(-0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 0.0f, 1.0f) }
-//	};
-//
-//    std::vector<Vertex> tri2 =
-//    {
-//		{ Vector2(0.3f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(1.0f, 0.0f, 0.0f) },
-//		{ Vector2(0.0f, -sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 1.0f, 0.0f) },
-//		{ Vector2(-0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 0.0f, 1.0f) }
-//	};
-//
-//    auto stagingBuffer = Buffer(device, sizeof(decltype(tri1)::value_type) * tri1.size(),
-//        Buffer::Host | Buffer::TransferSrc, physicalDevice.memProperties);
-//    stagingBuffer.update(tri2.data());
-//    stagingBuffer.update(tri1.data());
-//    stagingBuffer.update(tri2.data()); // just smoking
-//
-//    test.vertexBuffer = Buffer(device, sizeof(decltype(tri1)::value_type) * tri1.size(),
-//        Buffer::Device | Buffer::Vertex | Buffer::TransferDst, physicalDevice.memProperties);
-//    stagingBuffer.transferTo(test.vertexBuffer, queue, commandPool);
-//
-//    test.descriptorPool = DescriptorPool(device, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 1);
-//    auto descriptorSet = test.descriptorPool.allocateSet(test.descSetLayout);
-//
-//    auto uniformColor = Vector4(0, 0.2f, 0.8f, 1);
-//    test.uniformBuffer = Buffer(device, sizeof(Vector4), Buffer::Uniform | Buffer::Host, physicalDevice.memProperties);
-//    test.uniformBuffer.update(&uniformColor);
-//
-//    VkDescriptorBufferInfo uboInfo{};
-//    uboInfo.buffer = test.uniformBuffer.getHandle();
-//    uboInfo.offset = 0;
-//    uboInfo.range = sizeof(Vector3);
-//
-//    VkWriteDescriptorSet descriptorWrite{};
-//    descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-//    descriptorWrite.dstSet = descriptorSet;
-//    descriptorWrite.dstBinding = 0;
-//    descriptorWrite.dstArrayElement = 0;
-//    descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-//    descriptorWrite.descriptorCount = 1;
-//    descriptorWrite.pBufferInfo = &uboInfo;
-//    descriptorWrite.pImageInfo = nullptr; // Optional
-//    descriptorWrite.pTexelBufferView = nullptr; // Optional
-//
-//    vkUpdateDescriptorSets(device, 1, &descriptorWrite, 0, nullptr);
-
-    for (const auto &cmd: renderCommands)
-    {
-        switch (cmd.type)
-        {
-            case RenderCommandType::Clear:
-            {
-                VkClearColorValue color
-                {
-                    {
-                        cmd.clear.color.x,
-                        cmd.clear.color.y,
-                        cmd.clear.color.z,
-                        cmd.clear.color.w
-                    }
-                };
-                renderPass.setClear(cmd.clear.clearColor, cmd.clear.clearDepth, color, {1, 0});
-                break;
-            }
-
-            case RenderCommandType::SetViewport:
-                renderPass.setViewport(cmd.viewport);
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    renderPass.setScissor(0, 0, canvasWidth, canvasHeight);
-
     for (size_t i = 0; i < cmdBuffers.size(); i++)
     {
         auto buf = cmdBuffers[i];
@@ -252,44 +130,65 @@ void vk::Renderer::updateCmdBuffers()
         beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
         SL_VK_CHECK_RESULT(vkBeginCommandBuffer(buf, &beginInfo));
 
-        renderPass.begin(buf, swapchain.getFramebuffer(i), canvasWidth, canvasHeight);
+        for (const auto &cmd: renderCommands)
+        {
+            switch (cmd.type)
+            {
+                case RenderCommandType::BeginRenderPass:
+                {
+                    VkClearColorValue color
+                    {
+                        {
+                            cmd.beginRenderPass.color.x,
+                            cmd.beginRenderPass.color.y,
+                            cmd.beginRenderPass.color.z,
+                            cmd.beginRenderPass.color.w
+                        }
+                    };
+                    auto w = cmd.beginRenderPass.canvasWidth;
+                    auto h = cmd.beginRenderPass.canvasHeight;
+                    renderPass.setViewport(cmd.beginRenderPass.viewport);
+                    renderPass.setScissor(0, 0, w, h); // TODO this is temp
+                    renderPass.setClear(cmd.beginRenderPass.clearColor, cmd.beginRenderPass.clearDepth, color, {1, 0});
+                    renderPass.begin(buf, swapchain.getFramebuffer(i), w, h);
+                    break;
+                }
 
-        vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline);
+                case RenderCommandType::EndRenderPass:
+                    renderPass.end(buf);
+                    break;
 
-//        VkDeviceSize offset = 0;
-//        auto vertexBuffer = test.vertexBuffer.getHandle();
-//	    vkCmdBindVertexBuffers(buf, 0, 1, &vertexBuffer, &offset);
-//
-//        vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline.getLayout(), 0, 1, &descriptorSet, 0, nullptr);
-//
-//        vkCmdDraw(buf, static_cast<uint32_t>(tri1.size()), 1, 0, 0);
+                default:
+                    break;
+            }
+        }
 
-        renderPass.end(buf);
-
-        SL_VK_CHECK_RESULT(vkEndCommandBuffer(cmdBuffers[i]));
+        SL_VK_CHECK_RESULT(vkEndCommandBuffer(buf));
     }
 }
 
 
-void vk::Renderer::clear(bool clearColor, bool clearDepth, const Vector4 &color)
+void vk::Renderer::beginRenderPass(uint32_t canvasWidth, uint32_t canvasHeight,
+    bool clearColor, bool clearDepth, const Vector4 &color,
+    const Vector4 &viewport)
 {
-    RenderCommand cmd;
-    cmd.type = RenderCommandType::Clear;
-    cmd.clear.clearColor = clearColor;
-    cmd.clear.clearDepth = clearDepth;
-    cmd.clear.color = color;
+    RenderCommand cmd{RenderCommandType::BeginRenderPass};
+    cmd.beginRenderPass.clearColor = clearColor;
+    cmd.beginRenderPass.clearDepth = clearDepth;
+    cmd.beginRenderPass.color = color;
+    cmd.beginRenderPass.canvasWidth = canvasWidth;
+    cmd.beginRenderPass.canvasHeight = canvasHeight;
+    cmd.beginRenderPass.viewport.x = viewport.x;
+    cmd.beginRenderPass.viewport.y = viewport.y;
+    cmd.beginRenderPass.viewport.width = viewport.z;
+    cmd.beginRenderPass.viewport.height = viewport.w;
     renderCommands.push_back(cmd);
 }
 
 
-void vk::Renderer::setViewport(const Vector4 &viewport)
+void vk::Renderer::endRenderPass()
 {
-    RenderCommand cmd;
-    cmd.type = RenderCommandType::SetViewport;
-    cmd.viewport.x = viewport.x;
-    cmd.viewport.y = viewport.y;
-    cmd.viewport.width = viewport.z;
-    cmd.viewport.height = viewport.w;
+    RenderCommand cmd{RenderCommandType::EndRenderPass};
     renderCommands.push_back(cmd);
 }
 

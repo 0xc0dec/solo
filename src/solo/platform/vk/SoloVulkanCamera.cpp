@@ -38,15 +38,13 @@ vk::Camera::Camera(const Node &node):
 
 void vk::Camera::renderImpl() const
 {
-    renderer->clear(clearFlags.color, clearFlags.depth, clearColor);
+    auto canvasSize = device->getCanvasSize(); // TODO cache
 
-    if (viewport.x >= 0 && viewport.y >= 0 && viewport.z >= 0 && viewport.w >= 0)
-        renderer->setViewport(viewport);
-    else
-    {
-        auto size = device->getCanvasSize();
-        renderer->setViewport({0, 0, size.x, size.y});
-    }
+    renderer->beginRenderPass(canvasSize.x, canvasSize.y,
+        clearFlags.color, clearFlags.depth, clearColor,
+        viewport.x >= 0 ? viewport : Vector4{0, 0, canvasSize.x, canvasSize.y});
+    
+    renderer->endRenderPass();
 }
 
 

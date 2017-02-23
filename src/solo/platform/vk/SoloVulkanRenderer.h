@@ -45,16 +45,16 @@ namespace solo
             explicit Renderer(Device *device);
             ~Renderer();
 
-            void clear(bool clearColor, bool clearDepth, const Vector4 &color);
-            void setViewport(const Vector4 &viewport);
+            void beginRenderPass(uint32_t canvasWidth, uint32_t canvasHeight,
+                bool clearColor, bool clearDepth, const Vector4 &color,
+                const Vector4 &viewport);
+            void endRenderPass();
 
         protected:
             void beginFrame() override final;
             void endFrame() override final;
 
         private:
-            uint32_t canvasWidth = 0;
-            uint32_t canvasHeight = 0;
             VkFormat depthFormat = VK_FORMAT_UNDEFINED;
             VkFormat colorFormat = VK_FORMAT_UNDEFINED;
             VkColorSpaceKHR colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
@@ -91,8 +91,8 @@ namespace solo
             enum class RenderCommandType
             {
                 None,
-                Clear,
-                SetViewport
+                BeginRenderPass,
+                EndRenderPass
             };
 
             struct RenderCommand
@@ -103,15 +103,17 @@ namespace solo
                 {
                     struct
                     {
+                        uint32_t canvasWidth;
+                        uint32_t canvasHeight;
                         Vector4 color;
                         bool clearColor;
                         bool clearDepth;
-                    } clear;
-
-                    VkViewport viewport;
+                        VkViewport viewport;
+                    } beginRenderPass;
                 };
 
                 RenderCommand() {}
+                RenderCommand(RenderCommandType type): type(type) {}
             };
 
             // TODO currently we just always recreate render plan.
@@ -130,7 +132,6 @@ namespace solo
             } test;
 
             void updateCmdBuffers();
-            void applyRenderCommand(const RenderCommand &cmd);
         };
     }
 }
