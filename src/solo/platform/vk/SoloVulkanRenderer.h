@@ -39,17 +39,16 @@ namespace solo
 
     namespace vk
     {
+        class Camera;
+
         class Renderer final : public solo::Renderer
         {
         public:
             explicit Renderer(Device *device);
             ~Renderer();
 
-            void beginRenderPass(uint32_t canvasWidth, uint32_t canvasHeight,
-                bool clearColor, bool clearDepth, const Vector4 &color);
-            void endRenderPass();
-
-            void setViewport(const Vector4 &viewport);
+            void beginCamera(const Camera *camera);
+            void endCamera();
 
         protected:
             void beginFrame() override final;
@@ -68,6 +67,7 @@ namespace solo
                 VkPhysicalDeviceMemoryProperties memProperties;
             } physicalDevice;
 
+            Device *engineDevice = nullptr;
             Resource<VkDevice> device;
             VkQueue queue = nullptr;
             Resource<VkCommandPool> commandPool;
@@ -89,9 +89,8 @@ namespace solo
             enum class RenderCommandType
             {
                 None,
-                BeginRenderPass,
-                EndRenderPass,
-                SetViewport
+                BeginCamera,
+                EndCamera
             };
 
             struct RenderCommand
@@ -100,16 +99,7 @@ namespace solo
 
                 union
                 {
-                    struct
-                    {
-                        uint32_t canvasWidth;
-                        uint32_t canvasHeight;
-                        Vector4 color;
-                        bool clearColor;
-                        bool clearDepth;
-                    } beginRenderPass;
-
-                    VkViewport viewport;
+                    const Camera *camera;
                 };
 
                 RenderCommand() {}

@@ -19,17 +19,19 @@
 */
 
 #include "SoloVulkanRenderer.h"
-#include "SoloVulkanDescriptorSetLayoutBuilder.h"
 
 #ifdef SL_VULKAN_RENDERER
 
+#include "SoloDevice.h"
 #include "SoloSDLVulkanDevice.h"
+#include "SoloVulkanCamera.h"
 
 using namespace solo;
 using namespace vk;
 
 
-vk::Renderer::Renderer(Device *engineDevice)
+vk::Renderer::Renderer(Device *engineDevice):
+    engineDevice(engineDevice)
 {
     auto vulkanDevice = dynamic_cast<SDLDevice*>(engineDevice);
     auto instance = vulkanDevice->getInstance();
@@ -134,39 +136,38 @@ void vk::Renderer::updateCmdBuffers()
         {
             switch (cmd.type)
             {
-                case RenderCommandType::BeginRenderPass:
+                case RenderCommandType::BeginCamera:
                 {
-                    VkClearColorValue color
-                    {
-                        {
-                            cmd.beginRenderPass.color.x,
-                            cmd.beginRenderPass.color.y,
-                            cmd.beginRenderPass.color.z,
-                            cmd.beginRenderPass.color.w
-                        }
-                    };
-                    renderPass.setClear(cmd.beginRenderPass.clearColor, cmd.beginRenderPass.clearDepth, color, {1, 0});
-                    renderPass.begin(buf, swapchain.getFramebuffer(i), cmd.beginRenderPass.canvasWidth, cmd.beginRenderPass.canvasHeight);
-                    break;
-                }
+                    auto color = cmd.camera->getClearColor();
+                    renderPass.setClear(cmd.camera->isClearColorEnabled(), cmd.camera->isClearDepthEnabled(),
+                        {{color.x, color.y, color.z, color.w}},
+                        {1, 0});
+                    
+                    // TODO remove this logic
+                    auto canvasSize = engineDevice->getCanvasSize();
+                    auto viewport = cmd.camera->getViewport();
+                    auto vp = viewport.x >= 0
+                        ? VkViewport{viewport.x, viewport.y, viewport.z, viewport.w, 1, 100}
+                        : VkViewport{0, 0, canvasSize.x, canvasSize.y, 1, 100};
 
-                case RenderCommandType::EndRenderPass:
-                    renderPass.end(buf);
-                    break;
-
-                case RenderCommandType::SetViewport:
-                {
-                    vkCmdSetViewport(buf, 0, 1, &cmd.viewport);
+                    renderPass.begin(buf, swapchain.getFramebuffer(i), vp.width, vp.height);
+                    
+                    vkCmdSetViewport(buf, 0, 1, &vp);
 
                     // TODO this is temp
                     VkRect2D scissor;
                     scissor.offset.x = 0;
                     scissor.offset.y = 0;
-                    scissor.extent.width = cmd.viewport.width;
-                    scissor.extent.height = cmd.viewport.height;
+                    scissor.extent.width = vp.width;
+                    scissor.extent.height = vp.height;
                     vkCmdSetScissor(buf, 0, 1, &scissor);
+
                     break;
                 }
+
+                case RenderCommandType::EndCamera:
+                    renderPass.end(buf);
+                    break;
 
                 default:
                     break;
@@ -178,33 +179,17 @@ void vk::Renderer::updateCmdBuffers()
 }
 
 
-void vk::Renderer::beginRenderPass(uint32_t canvasWidth, uint32_t canvasHeight,
-    bool clearColor, bool clearDepth, const Vector4 &color)
+void vk::Renderer::beginCamera(const Camera *camera)
 {
-    RenderCommand cmd{RenderCommandType::BeginRenderPass};
-    cmd.beginRenderPass.clearColor = clearColor;
-    cmd.beginRenderPass.clearDepth = clearDepth;
-    cmd.beginRenderPass.color = color;
-    cmd.beginRenderPass.canvasWidth = canvasWidth;
-    cmd.beginRenderPass.canvasHeight = canvasHeight;
+    RenderCommand cmd{RenderCommandType::BeginCamera};
+    cmd.camera = camera;
     renderCommands.push_back(cmd);
 }
 
 
-void vk::Renderer::endRenderPass()
+void vk::Renderer::endCamera()
 {
-    RenderCommand cmd{RenderCommandType::EndRenderPass};
-    renderCommands.push_back(cmd);
-}
-
-
-void vk::Renderer::setViewport(const Vector4 &viewport)
-{
-    RenderCommand cmd{RenderCommandType::SetViewport};
-    cmd.viewport.x = viewport.x;
-    cmd.viewport.y = viewport.y;
-    cmd.viewport.width = viewport.z;
-    cmd.viewport.height = viewport.w;
+    RenderCommand cmd{RenderCommandType::EndCamera};
     renderCommands.push_back(cmd);
 }
 
