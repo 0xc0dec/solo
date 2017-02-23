@@ -38,7 +38,7 @@ namespace solo
             auto withBinding(uint32_t binding, VkDescriptorType descriptorType, uint32_t descriptorCount,
                 VkShaderStageFlagBits stageFlags) -> DescriptorSetLayoutBuilder&;
 
-            auto build()->Resource<VkDescriptorSetLayout>;
+            auto build() -> Resource<VkDescriptorSetLayout>;
 
         private:
             VkDevice device = nullptr;

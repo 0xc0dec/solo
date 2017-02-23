@@ -39,6 +39,8 @@ namespace solo
 
             auto getLifetime() const -> float override final;
 
+            auto getCanvasSize() const -> Vector2 override final;
+
         protected:
             explicit Device(const DeviceSetup &setup);
 

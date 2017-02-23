@@ -37,8 +37,6 @@ namespace solo
             explicit SDLDevice(const DeviceSetup &setup);
             ~SDLDevice();
 
-            auto getCanvasSize() const -> Vector2 override final;
-
             void saveScreenshot(const std::string &path) override final;
 
             auto getInstance() const -> VkInstance;

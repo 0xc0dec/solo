@@ -82,6 +82,8 @@ vk::Renderer::~Renderer()
 void vk::Renderer::beginFrame()
 {
     currentBuffer = swapchain.getNextImageIndex(semaphores.presentComplete);
+    prevRenderCommands = std::move(renderCommands);
+    renderCommands = std::vector<RenderCommand>(100); // TODO just picked random constant
 }
 
 
@@ -90,7 +92,7 @@ void vk::Renderer::endFrame()
     if (dirty)
     {
         updateCmdBuffers();
-        dirty = false;
+//        dirty = false; TODO
     }
 
     VkPipelineStageFlags submitPipelineStages = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
@@ -138,7 +140,6 @@ auto readAllBytes(const char *path)
 
 void vk::Renderer::updateCmdBuffers()
 {
-    // TODO this is a quick smoke testing
     struct Vertex
     {
         Vector2 position;
@@ -162,58 +163,85 @@ void vk::Renderer::updateCmdBuffers()
         .withVertexAttribute(1, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, color))
         .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST)
         .build();
+//
+//    const auto triangleSize = 1.6f;
+//    std::vector<Vertex> tri1 =
+//    {
+//		{ Vector2(0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(1.0f, 0.0f, 0.0f) },
+//		{ Vector2(0.0f, -sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 1.0f, 0.0f) },
+//		{ Vector2(-0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 0.0f, 1.0f) }
+//	};
+//
+//    std::vector<Vertex> tri2 =
+//    {
+//		{ Vector2(0.3f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(1.0f, 0.0f, 0.0f) },
+//		{ Vector2(0.0f, -sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 1.0f, 0.0f) },
+//		{ Vector2(-0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 0.0f, 1.0f) }
+//	};
+//
+//    auto stagingBuffer = Buffer(device, sizeof(decltype(tri1)::value_type) * tri1.size(),
+//        Buffer::Host | Buffer::TransferSrc, physicalDevice.memProperties);
+//    stagingBuffer.update(tri2.data());
+//    stagingBuffer.update(tri1.data());
+//    stagingBuffer.update(tri2.data()); // just smoking
+//
+//    test.vertexBuffer = Buffer(device, sizeof(decltype(tri1)::value_type) * tri1.size(),
+//        Buffer::Device | Buffer::Vertex | Buffer::TransferDst, physicalDevice.memProperties);
+//    stagingBuffer.transferTo(test.vertexBuffer, queue, commandPool);
+//
+//    test.descriptorPool = DescriptorPool(device, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 1);
+//    auto descriptorSet = test.descriptorPool.allocateSet(test.descSetLayout);
+//
+//    auto uniformColor = Vector4(0, 0.2f, 0.8f, 1);
+//    test.uniformBuffer = Buffer(device, sizeof(Vector4), Buffer::Uniform | Buffer::Host, physicalDevice.memProperties);
+//    test.uniformBuffer.update(&uniformColor);
+//
+//    VkDescriptorBufferInfo uboInfo{};
+//    uboInfo.buffer = test.uniformBuffer.getHandle();
+//    uboInfo.offset = 0;
+//    uboInfo.range = sizeof(Vector3);
+//
+//    VkWriteDescriptorSet descriptorWrite{};
+//    descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+//    descriptorWrite.dstSet = descriptorSet;
+//    descriptorWrite.dstBinding = 0;
+//    descriptorWrite.dstArrayElement = 0;
+//    descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+//    descriptorWrite.descriptorCount = 1;
+//    descriptorWrite.pBufferInfo = &uboInfo;
+//    descriptorWrite.pImageInfo = nullptr; // Optional
+//    descriptorWrite.pTexelBufferView = nullptr; // Optional
+//
+//    vkUpdateDescriptorSets(device, 1, &descriptorWrite, 0, nullptr);
 
-    const auto triangleSize = 1.6f;
-    std::vector<Vertex> tri1 =
+    for (const auto &cmd: renderCommands)
     {
-		{ Vector2(0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(1.0f, 0.0f, 0.0f) },
-		{ Vector2(0.0f, -sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 1.0f, 0.0f) },
-		{ Vector2(-0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 0.0f, 1.0f) }
-	};
+        switch (cmd.type)
+        {
+            case RenderCommandType::Clear:
+            {
+                VkClearColorValue color
+                {
+                    {
+                        cmd.clear.color.x,
+                        cmd.clear.color.y,
+                        cmd.clear.color.z,
+                        cmd.clear.color.w
+                    }
+                };
+                renderPass.setClear(cmd.clear.clearColor, cmd.clear.clearDepth, color, {1, 0});
+                break;
+            }
 
-    std::vector<Vertex> tri2 =
-    {
-		{ Vector2(0.3f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(1.0f, 0.0f, 0.0f) },
-		{ Vector2(0.0f, -sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 1.0f, 0.0f) },
-		{ Vector2(-0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 0.0f, 1.0f) }
-	};
+            case RenderCommandType::SetViewport:
+                renderPass.setViewport(cmd.viewport);
+                break;
 
-    auto stagingBuffer = Buffer(device, sizeof(decltype(tri1)::value_type) * tri1.size(),
-        Buffer::Host | Buffer::TransferSrc, physicalDevice.memProperties);
-    stagingBuffer.update(tri2.data());
-    stagingBuffer.update(tri1.data());
-    stagingBuffer.update(tri2.data()); // just smoking
+            default:
+                break;
+        }
+    }
 
-    test.vertexBuffer = Buffer(device, sizeof(decltype(tri1)::value_type) * tri1.size(),
-        Buffer::Device | Buffer::Vertex | Buffer::TransferDst, physicalDevice.memProperties);
-    stagingBuffer.transferTo(test.vertexBuffer, queue, commandPool);
-
-    test.descriptorPool = DescriptorPool(device, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 1);
-    auto descriptorSet = test.descriptorPool.allocateSet(test.descSetLayout);
-
-    auto uniformColor = Vector4(0, 0.2f, 0.8f, 1);
-    test.uniformBuffer = Buffer(device, sizeof(Vector4), Buffer::Uniform | Buffer::Host, physicalDevice.memProperties);
-    test.uniformBuffer.update(&uniformColor);
-
-    VkDescriptorBufferInfo uboInfo{};
-    uboInfo.buffer = test.uniformBuffer.getHandle();
-    uboInfo.offset = 0;
-    uboInfo.range = sizeof(Vector3);
-
-    VkWriteDescriptorSet descriptorWrite{};
-    descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-    descriptorWrite.dstSet = descriptorSet;
-    descriptorWrite.dstBinding = 0;
-    descriptorWrite.dstArrayElement = 0;
-    descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-    descriptorWrite.descriptorCount = 1;
-    descriptorWrite.pBufferInfo = &uboInfo;
-    descriptorWrite.pImageInfo = nullptr; // Optional
-    descriptorWrite.pTexelBufferView = nullptr; // Optional
-
-    vkUpdateDescriptorSets(device, 1, &descriptorWrite, 0, nullptr);
-
-    renderPass.setViewport(0, 0, canvasWidth, canvasHeight);
     renderPass.setScissor(0, 0, canvasWidth, canvasHeight);
 
     for (size_t i = 0; i < cmdBuffers.size(); i++)
@@ -228,13 +256,13 @@ void vk::Renderer::updateCmdBuffers()
 
         vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline);
 
-        VkDeviceSize offset = 0;
-        auto vertexBuffer = test.vertexBuffer.getHandle();
-	    vkCmdBindVertexBuffers(buf, 0, 1, &vertexBuffer, &offset);
-
-        vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline.getLayout(), 0, 1, &descriptorSet, 0, nullptr);
-
-        vkCmdDraw(buf, static_cast<uint32_t>(tri1.size()), 1, 0, 0);
+//        VkDeviceSize offset = 0;
+//        auto vertexBuffer = test.vertexBuffer.getHandle();
+//	    vkCmdBindVertexBuffers(buf, 0, 1, &vertexBuffer, &offset);
+//
+//        vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline.getLayout(), 0, 1, &descriptorSet, 0, nullptr);
+//
+//        vkCmdDraw(buf, static_cast<uint32_t>(tri1.size()), 1, 0, 0);
 
         renderPass.end(buf);
 
@@ -243,18 +271,26 @@ void vk::Renderer::updateCmdBuffers()
 }
 
 
-void vk::Renderer::setClear(const Vector4& color, bool clearColor, bool clearDepth)
+void vk::Renderer::clear(bool clearColor, bool clearDepth, const Vector4 &color)
 {
-    renderPass.setClear({color.x, color.y, color.z, color.w}, {1, 0}, clearColor, clearDepth);
-    dirty = true;
+    RenderCommand cmd;
+    cmd.type = RenderCommandType::Clear;
+    cmd.clear.clearColor = clearColor;
+    cmd.clear.clearDepth = clearDepth;
+    cmd.clear.color = color;
+    renderCommands.push_back(cmd);
 }
 
 
-void vk::Renderer::setViewport(const Vector4& viewport)
+void vk::Renderer::setViewport(const Vector4 &viewport)
 {
-    renderPass.setViewport(viewport.x, viewport.y, viewport.z, viewport.w);
-    renderPass.setScissor(0, 0, canvasWidth, canvasHeight); // TODO this is temp
-    dirty = true;
+    RenderCommand cmd;
+    cmd.type = RenderCommandType::SetViewport;
+    cmd.viewport.x = viewport.x;
+    cmd.viewport.y = viewport.y;
+    cmd.viewport.width = viewport.z;
+    cmd.viewport.height = viewport.w;
+    renderCommands.push_back(cmd);
 }
 
 

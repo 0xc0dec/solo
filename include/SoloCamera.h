@@ -123,7 +123,6 @@ namespace solo
         float aspectRatio = 1;
 
         mutable uint32_t transformDirtyFlags = ~0;
-        mutable bool renderDirtyFlag = true;
 
         mutable TransformMatrix viewMatrix;
         mutable TransformMatrix projectionMatrix;
@@ -135,7 +134,6 @@ namespace solo
     inline void Camera::setClearColor(const Vector4 &color)
     {
         clearColor = color;
-        renderDirtyFlag = true; // TODO in other places too
     }
 
     inline bool Camera::isPerspective() const
@@ -201,7 +199,6 @@ namespace solo
     inline void Camera::setViewport(const Vector4 &rect)
     {
         viewport = rect;
-        renderDirtyFlag = true;
     }
 
     inline auto Camera::getTransform() const -> Transform*
@@ -217,7 +214,6 @@ namespace solo
     inline void Camera::setClearColorEnabled(bool clear)
     {
         this->clearFlags.color = clear;
-        renderDirtyFlag = true;
     }
 
     inline bool Camera::isClearDepthEnabled() const
@@ -228,7 +224,6 @@ namespace solo
     inline void Camera::setClearDepthEnabled(bool clear)
     {
         this->clearFlags.depth = clear;
-        renderDirtyFlag = true;
     }
 
     template <>

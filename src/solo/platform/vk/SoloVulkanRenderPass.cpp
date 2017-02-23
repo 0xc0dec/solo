@@ -186,12 +186,9 @@ auto RenderPassBuilder::build() -> RenderPass
 }
 
 
-void RenderPass::setViewport(uint32_t left, uint32_t top, uint32_t width, uint32_t height)
+void RenderPass::setViewport(const VkViewport &viewport)
 {
-    viewport.x = static_cast<float>(left);
-    viewport.y = static_cast<float>(top);
-    viewport.width = static_cast<float>(width);
-    viewport.height = static_cast<float>(height);
+    this->viewport = viewport;
 }
 
 
@@ -204,21 +201,21 @@ void RenderPass::setScissor(uint32_t left, uint32_t top, uint32_t width, uint32_
 }
 
 
-void RenderPass::setClear(VkClearColorValue colorClear, VkClearDepthStencilValue depthStencilClear, bool clearColor, bool clearDepthStencil)
+void RenderPass::setClear(bool clearColor, bool clearDepthStencil, VkClearColorValue color, VkClearDepthStencilValue depthStencil)
 {
     clearValues.clear();
 
     if (clearColor)
     {
         VkClearValue colorValue;
-        colorValue.color = colorClear;
+        colorValue.color = color;
         clearValues.push_back(colorValue);
     }
 
     if (clearDepthStencil)
     {
         VkClearValue depthValue;
-        depthValue.depthStencil = depthStencilClear;
+        depthValue.depthStencil = depthStencil;
         clearValues.push_back(depthValue);
     }
 }

@@ -42,9 +42,9 @@ namespace solo
 
             auto operator=(RenderPass other) noexcept -> RenderPass&;
 
-            void setViewport(uint32_t left, uint32_t top, uint32_t width, uint32_t height);
+            void setViewport(const VkViewport &viewport);
             void setScissor(uint32_t left, uint32_t top, uint32_t width, uint32_t height);
-            void setClear(VkClearColorValue colorClear, VkClearDepthStencilValue depthStencilClear, bool clearColor, bool clearDepthStencil);
+            void setClear(bool clearColor, bool clearDepthStencil, VkClearColorValue color, VkClearDepthStencilValue depthStencil);
 
             void begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, uint32_t canvasWidth, uint32_t canvasHeight);
             void end(VkCommandBuffer cmdBuf);

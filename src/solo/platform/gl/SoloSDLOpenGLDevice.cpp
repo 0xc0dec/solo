@@ -103,11 +103,4 @@ void SDLDevice::saveScreenshot(const std::string &path)
 }
 
 
-auto SDLDevice::getCanvasSize() const -> Vector2
-{
-    int32_t width, height;
-    SDL_GL_GetDrawableSize(window, &width, &height);
-    return {static_cast<float>(width), static_cast<float>(height)};
-}
-
 #endif

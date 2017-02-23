@@ -45,7 +45,7 @@ namespace solo
             explicit Renderer(Device *device);
             ~Renderer();
 
-            void setClear(const Vector4 &color, bool clearColor, bool clearDepth);
+            void clear(bool clearColor, bool clearDepth, const Vector4 &color);
             void setViewport(const Vector4 &viewport);
 
         protected:
@@ -88,6 +88,38 @@ namespace solo
             std::vector<VkClearValue> clearValues;
             VkViewport viewport = {1, 1, 0, 1};
 
+            enum class RenderCommandType
+            {
+                None,
+                Clear,
+                SetViewport
+            };
+
+            struct RenderCommand
+            {
+                RenderCommandType type = RenderCommandType::None;
+
+                union
+                {
+                    struct
+                    {
+                        Vector4 color;
+                        bool clearColor;
+                        bool clearDepth;
+                    } clear;
+
+                    VkViewport viewport;
+                };
+
+                RenderCommand() {}
+            };
+
+            // TODO currently we just always recreate render plan.
+            // In the future these command sets should be compared to see it something
+            // really needs to be done
+            std::vector<RenderCommand> renderCommands;
+            std::vector<RenderCommand> prevRenderCommands;
+
             struct
             {
                 DescriptorPool descriptorPool;
@@ -98,6 +130,7 @@ namespace solo
             } test;
 
             void updateCmdBuffers();
+            void applyRenderCommand(const RenderCommand &cmd);
         };
     }
 }

@@ -38,8 +38,6 @@ namespace solo
 
             void saveScreenshot(const std::string &path) override final;
 
-            auto getCanvasSize() const->Vector2 override final;
-
         private:
             void endUpdate() override final;
 

@@ -127,12 +127,6 @@ SDLDevice::~SDLDevice()
 }
 
 
-auto SDLDevice::getCanvasSize() const -> Vector2
-{
-    return {};
-}
-
-
 void SDLDevice::saveScreenshot(const std::string &path)
 {
 }

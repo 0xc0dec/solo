@@ -38,11 +38,14 @@ vk::Camera::Camera(const Node &node):
 
 void vk::Camera::renderImpl() const
 {
-    if (renderDirtyFlag)
-    {
-        renderer->setClear(clearColor, clearFlags.color, clearFlags.depth);
+    renderer->clear(clearFlags.color, clearFlags.depth, clearColor);
+
+    if (viewport.x >= 0 && viewport.y >= 0 && viewport.z >= 0 && viewport.w >= 0)
         renderer->setViewport(viewport);
-        renderDirtyFlag = false;
+    else
+    {
+        auto size = device->getCanvasSize();
+        renderer->setViewport({0, 0, size.x, size.y});
     }
 }
 
