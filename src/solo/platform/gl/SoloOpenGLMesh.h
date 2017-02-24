@@ -73,7 +73,7 @@ namespace solo
             auto addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout &layout, uint32_t vertexCount) -> uint32_t;
 
             void rebuildEffectBinding(solo::Effect *effect);
-            void recalculateMinVertexCount();
+            void updateMinVertexCount();
         };
 
         inline void Mesh::setPrimitiveType(PrimitiveType type)

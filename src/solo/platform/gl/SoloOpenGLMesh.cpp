@@ -79,7 +79,7 @@ auto gl::Mesh::addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout &
     vertexBuffers.push_back(bufferHandle);
     vertexCounts.push_back(vertexCount);
     vertexSizes.push_back(layout.getSize());
-    recalculateMinVertexCount();
+    updateMinVertexCount();
     dirtyEffectBinding = true;
     return static_cast<uint32_t>(vertexBuffers.size() - 1);
 }
@@ -97,7 +97,7 @@ void gl::Mesh::rebuildEffectBinding(solo::Effect *effect)
 }
 
 
-void gl::Mesh::recalculateMinVertexCount()
+void gl::Mesh::updateMinVertexCount()
 {
     minVertexCount = std::numeric_limits<uint32_t>::max();
     for (const auto &count : vertexCounts)
@@ -133,7 +133,7 @@ void gl::Mesh::removeVertexBuffer(uint32_t index)
     vertexBuffers.erase(vertexBuffers.begin() + index);
     vertexCounts.erase(vertexCounts.begin() + index);
     vertexSizes.erase(vertexSizes.begin() + index);
-    recalculateMinVertexCount();
+    updateMinVertexCount();
     dirtyEffectBinding = true;
 }
 
