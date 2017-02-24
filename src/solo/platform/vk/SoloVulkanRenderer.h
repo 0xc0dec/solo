@@ -80,7 +80,7 @@ namespace solo
                 Resource<VkSemaphore> presentComplete;
             } semaphores;
 
-            std::vector<VkCommandBuffer> cmdBuffers;
+            std::vector<VkCommandBuffer> renderCmdBuffers;
             uint32_t currentBuffer = 0;
 
             bool dirty = true;
@@ -120,7 +120,8 @@ namespace solo
                 Pipeline pipeline;
             } test;
 
-            void updateCmdBuffers();
+            void applyRenderCommands(const VkCommandBuffer &buf);
+            void recordRenderCmdBuffers();
         };
     }
 }

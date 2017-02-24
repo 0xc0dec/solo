@@ -67,14 +67,14 @@ vk::Renderer::Renderer(Device *engineDevice):
     semaphores.presentComplete = createSemaphore(this->device);
     semaphores.renderComplete = createSemaphore(this->device);
 
-    cmdBuffers.resize(swapchain.getStepCount());
-    createCommandBuffers(this->device, commandPool, swapchain.getStepCount(), cmdBuffers.data());
+    renderCmdBuffers.resize(swapchain.getStepCount());
+    createCommandBuffers(this->device, commandPool, swapchain.getStepCount(), renderCmdBuffers.data());
 }
 
 
 vk::Renderer::~Renderer()
 {
-    vkFreeCommandBuffers(device, commandPool, cmdBuffers.size(), cmdBuffers.data());
+    vkFreeCommandBuffers(device, commandPool, renderCmdBuffers.size(), renderCmdBuffers.data());
 }
 
 
@@ -90,7 +90,7 @@ void vk::Renderer::endFrame()
 {
     if (dirty)
     {
-        updateCmdBuffers();
+        recordRenderCmdBuffers();
 //        dirty = false; TODO
     }
 
@@ -104,7 +104,7 @@ void vk::Renderer::endFrame()
 	submitInfo.signalSemaphoreCount = 1;
 	submitInfo.pSignalSemaphores = &semaphores.renderComplete;
     submitInfo.commandBufferCount = 1;
-	submitInfo.pCommandBuffers = &cmdBuffers[currentBuffer];
+	submitInfo.pCommandBuffers = &renderCmdBuffers[currentBuffer];
     SL_VK_CHECK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, VK_NULL_HANDLE));
 
     auto swapchainHandle = swapchain.getHandle();
@@ -122,57 +122,63 @@ void vk::Renderer::endFrame()
 }
 
 
-void vk::Renderer::updateCmdBuffers()
+void vk::Renderer::applyRenderCommands(const VkCommandBuffer &buf)
 {
-    for (size_t i = 0; i < cmdBuffers.size(); i++)
+    for (const auto &cmd: renderCommands)
     {
-        auto buf = cmdBuffers[i];
+        switch (cmd.type)
+        {
+            case RenderCommandType::BeginCamera:
+            {
+                auto color = cmd.camera->getClearColor();
+                renderPass.setClear(cmd.camera->isClearColorEnabled(), cmd.camera->isClearDepthEnabled(),
+                    {{color.x, color.y, color.z, color.w}},
+                    {1, 0});
+                    
+                // TODO remove this logic
+                auto canvasSize = engineDevice->getCanvasSize();
+                auto viewport = cmd.camera->getViewport();
+                auto vp = viewport.x >= 0
+                    ? VkViewport{viewport.x, viewport.y, viewport.z, viewport.w, 1, 100}
+                    : VkViewport{0, 0, canvasSize.x, canvasSize.y, 1, 100};
+
+                renderPass.begin(buf, swapchain.getFramebuffer(i), vp.width, vp.height);
+                    
+                vkCmdSetViewport(buf, 0, 1, &vp);
+
+                // TODO this is temp
+                VkRect2D scissor;
+                scissor.offset.x = 0;
+                scissor.offset.y = 0;
+                scissor.extent.width = vp.width;
+                scissor.extent.height = vp.height;
+                vkCmdSetScissor(buf, 0, 1, &scissor);
+
+                break;
+            }
+
+            case RenderCommandType::EndCamera:
+                renderPass.end(buf);
+                break;
+
+            default:
+                break;
+        }
+    }
+}
+
+
+void vk::Renderer::recordRenderCmdBuffers()
+{
+    for (size_t i = 0; i < renderCmdBuffers.size(); i++)
+    {
+        auto buf = renderCmdBuffers[i];
 
         VkCommandBufferBeginInfo beginInfo{};
         beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
         SL_VK_CHECK_RESULT(vkBeginCommandBuffer(buf, &beginInfo));
 
-        for (const auto &cmd: renderCommands)
-        {
-            switch (cmd.type)
-            {
-                case RenderCommandType::BeginCamera:
-                {
-                    auto color = cmd.camera->getClearColor();
-                    renderPass.setClear(cmd.camera->isClearColorEnabled(), cmd.camera->isClearDepthEnabled(),
-                        {{color.x, color.y, color.z, color.w}},
-                        {1, 0});
-                    
-                    // TODO remove this logic
-                    auto canvasSize = engineDevice->getCanvasSize();
-                    auto viewport = cmd.camera->getViewport();
-                    auto vp = viewport.x >= 0
-                        ? VkViewport{viewport.x, viewport.y, viewport.z, viewport.w, 1, 100}
-                        : VkViewport{0, 0, canvasSize.x, canvasSize.y, 1, 100};
-
-                    renderPass.begin(buf, swapchain.getFramebuffer(i), vp.width, vp.height);
-                    
-                    vkCmdSetViewport(buf, 0, 1, &vp);
-
-                    // TODO this is temp
-                    VkRect2D scissor;
-                    scissor.offset.x = 0;
-                    scissor.offset.y = 0;
-                    scissor.extent.width = vp.width;
-                    scissor.extent.height = vp.height;
-                    vkCmdSetScissor(buf, 0, 1, &scissor);
-
-                    break;
-                }
-
-                case RenderCommandType::EndCamera:
-                    renderPass.end(buf);
-                    break;
-
-                default:
-                    break;
-            }
-        }
+        applyRenderCommands(buf);
 
         SL_VK_CHECK_RESULT(vkEndCommandBuffer(buf));
     }

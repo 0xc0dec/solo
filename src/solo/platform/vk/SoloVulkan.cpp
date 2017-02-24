@@ -187,14 +187,8 @@ void vk::createCommandBuffers(VkDevice logicalDevice, VkCommandPool commandPool,
 }
 
 
-void vk::destroyCommandBuffers(VkDevice device, VkCommandPool commandPool, VkCommandBuffer *buffers, uint32_t count)
-{
-    vkFreeCommandBuffers(device, commandPool, count, buffers);
-}
-
-
 auto vk::findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, uint32_t typeBits,
-                        VkMemoryPropertyFlags properties) -> int32_t
+    VkMemoryPropertyFlags properties) -> int32_t
 {
     for (uint32_t i = 0; i < physicalDeviceMemoryProperties.memoryTypeCount; i++)
     {
