@@ -27,10 +27,8 @@
 #include "SoloRenderer.h"
 #include "SoloVulkanSwapchain.h"
 #include "SoloVulkanRenderPass.h"
-#include "SoloVulkanDescriptorPool.h"
-#include "SoloVulkanBuffer.h"
-#include "SoloVulkanPipeline.h"
 #include "SoloVulkan.h"
+#include "SoloVulkanRenderCommand.h"
 
 namespace solo
 {
@@ -39,6 +37,7 @@ namespace solo
     namespace vk
     {
         class Camera;
+        class Mesh;
 
         class Renderer final : public solo::Renderer
         {
@@ -52,6 +51,8 @@ namespace solo
 
             void beginCamera(const Camera *camera);
             void endCamera();
+
+            void drawMesh(const Mesh *mesh);
 
         protected:
             void beginFrame() override final;
@@ -89,40 +90,11 @@ namespace solo
 
             bool dirty = true;
 
-            enum class RenderCommandType
-            {
-                None,
-                BeginCamera,
-                EndCamera
-            };
-
-            struct RenderCommand
-            {
-                RenderCommandType type = RenderCommandType::None;
-
-                union
-                {
-                    const Camera *camera;
-                };
-
-                RenderCommand() {}
-                RenderCommand(RenderCommandType type): type(type) {}
-            };
-
             // TODO currently we just always recreate render plan.
             // In the future these command sets should be compared to see it something
             // really needs to be done
             std::vector<RenderCommand> renderCommands;
             std::vector<RenderCommand> prevRenderCommands;
-
-            struct
-            {
-                DescriptorPool descriptorPool;
-                Resource<VkDescriptorSetLayout> descSetLayout;
-                Buffer vertexBuffer;
-                Buffer uniformBuffer;
-                Pipeline pipeline;
-            } test;
 
             void applyRenderCommands(VkCommandBuffer buf, VkFramebuffer framebuffer);
             void recordRenderCmdBuffers();

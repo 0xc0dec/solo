@@ -182,16 +182,19 @@ void vk::Renderer::recordRenderCmdBuffers()
 
 void vk::Renderer::beginCamera(const Camera *camera)
 {
-    RenderCommand cmd{RenderCommandType::BeginCamera};
-    cmd.camera = camera;
-    renderCommands.push_back(cmd);
+    renderCommands.push_back(RenderCommand::beginCamera(camera));
 }
 
 
 void vk::Renderer::endCamera()
 {
-    RenderCommand cmd{RenderCommandType::EndCamera};
-    renderCommands.push_back(cmd);
+    renderCommands.push_back(RenderCommand::endCamera());
+}
+
+
+void vk::Renderer::drawMesh(const Mesh *mesh)
+{
+    renderCommands.push_back(RenderCommand::drawMesh(mesh));
 }
 
 
