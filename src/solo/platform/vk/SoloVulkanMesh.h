@@ -22,20 +22,19 @@
 
 #include "SoloCommon.h"
 
-#ifdef SL_OPENGL_RENDERER
+#ifdef SL_VULKAN_RENDERER
 
 #include "SoloMesh.h"
-#include "SoloOpenGLRenderer.h"
+#include "SoloVulkanBuffer.h"
+#include <vector>
 
 namespace solo
 {
-    class Effect;
-
-    namespace gl
+    namespace vk
     {
-        class Effect;
+        class Renderer;
 
-        class Mesh final : public solo::Mesh
+        class Mesh final: public solo::Mesh
         {
         public:
             explicit Mesh(Device *device);
@@ -51,44 +50,18 @@ namespace solo
             void removePart(uint32_t index) override final;
             auto getPartCount() const -> uint32_t override final;
 
-            void draw(solo::Effect *effect) override final;
-            void drawPart(solo::Effect *effect, uint32_t part) override final;
+            void draw(Effect *effect) override final;
+            void drawPart(Effect *effect, uint32_t part) override final;
 
+            // TODO move these to base class?
             auto getPrimitiveType() const -> PrimitiveType override final;
             void setPrimitiveType(PrimitiveType type) override final;
 
         private:
             Renderer *renderer = nullptr;
-            Effect *lastEffect = nullptr;
 
-            PrimitiveType primitiveType = PrimitiveType::Triangles;
-            std::vector<uint32_t> vertexBuffers;
-            std::vector<uint32_t> indexBuffers;
-            std::vector<uint32_t> vertexCounts;
-            std::vector<uint32_t> vertexSizes;
-            uint32_t minVertexCount = 0;
-            uint32_t programBinding = EmptyHandle;
-
-            auto addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout &layout, uint32_t vertexCount) -> uint32_t;
-
-            void rebuildEffectBinding(solo::Effect *effect);
-            void recalculateMinVertexCount();
+            std::vector<Buffer> vertexBuffers;
         };
-
-        inline void Mesh::setPrimitiveType(PrimitiveType type)
-        {
-            primitiveType = type;
-        }
-
-        inline auto Mesh::getPrimitiveType() const -> PrimitiveType
-        {
-            return primitiveType;
-        }
-
-        inline auto Mesh::getPartCount() const -> uint32_t
-        {
-            return static_cast<uint32_t>(indexBuffers.size());
-        }
     }
 }
 

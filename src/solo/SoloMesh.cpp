@@ -22,6 +22,7 @@
 #include "SoloEffect.h"
 #include "SoloDevice.h"
 #include "platform/gl/SoloOpenGLMesh.h"
+#include "platform/vk/SoloVulkanMesh.h"
 #include "platform/null/SoloNullMesh.h"
 
 using namespace solo;
@@ -35,6 +36,10 @@ auto Mesh::create(Device *device) -> sptr<Mesh>
         case DeviceMode::OpenGL:
             return std::make_shared<gl::Mesh>(device);
 #endif
+#ifdef SL_VULKAN_RENDERER
+        case DeviceMode::Vulkan:
+            return std::make_shared<vk::Mesh>(device);
+#endif
         default:
             return std::make_shared<null::Mesh>();
     }
@@ -43,15 +48,22 @@ auto Mesh::create(Device *device) -> sptr<Mesh>
 
 auto Mesh::createFromPrefab(Device *device, MeshPrefab prefab) -> sptr<Mesh>
 {
-    switch (device->getSetup().mode)
+    auto mesh = create(device);
+
+    switch (prefab)
     {
-#ifdef SL_OPENGL_RENDERER
-        case DeviceMode::OpenGL:
-            return std::make_shared<gl::Mesh>(device, prefab);
-#endif
+        case MeshPrefab::Quad:
+            mesh->initQuadMesh();
+            break;
+        case MeshPrefab::Cube:
+            mesh->initCubeMesh();
+            break;
         default:
-            return std::make_shared<null::Mesh>();
+            SL_PANIC("Unknown mesh prefab type");
+            break;
     }
+
+    return mesh;
 }
 
 
@@ -62,6 +74,10 @@ auto Mesh::createFromData(Device *device, MeshData *data) -> sptr<Mesh>
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
             return std::make_shared<gl::Mesh>(device, data);
+#endif
+#ifdef SL_VULKAN_RENDERER
+        case DeviceMode::Vulkan:
+            return std::make_shared<vk::Mesh>(device, data);
 #endif
         default:
             return std::make_shared<null::Mesh>();

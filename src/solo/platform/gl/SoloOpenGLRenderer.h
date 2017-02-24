@@ -54,6 +54,7 @@ namespace solo
 
         constexpr uint32_t EmptyHandle = std::numeric_limits<uint32_t>::max();
 
+        // TODO switch to submission-based rendering instead of immediate
         class Renderer final : public solo::Renderer
         {
         public:

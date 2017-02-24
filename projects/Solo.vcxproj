@@ -95,6 +95,7 @@
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanCamera.h" />
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanDescriptorPool.h" />
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanDescriptorSetLayoutBuilder.h" />
+    <ClInclude Include="..\src\solo\platform\vk\SoloVulkanMesh.h" />
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanPipeline.h" />
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanRenderer.h" />
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanRenderPass.h" />
@@ -142,6 +143,7 @@
     <ClCompile Include="..\src\solo\platform\vk\SoloVulkanCamera.cpp" />
     <ClCompile Include="..\src\solo\platform\vk\SoloVulkanDescriptorPool.cpp" />
     <ClCompile Include="..\src\solo\platform\vk\SoloVulkanDescriptorSetLayoutBuilder.cpp" />
+    <ClCompile Include="..\src\solo\platform\vk\SoloVulkanMesh.cpp" />
     <ClCompile Include="..\src\solo\platform\vk\SoloVulkanPipeline.cpp" />
     <ClCompile Include="..\src\solo\platform\vk\SoloVulkanRenderer.cpp" />
     <ClCompile Include="..\src\solo\platform\vk\SoloVulkanRenderPass.cpp" />

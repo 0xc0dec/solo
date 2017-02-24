@@ -46,6 +46,10 @@ namespace solo
             explicit Renderer(Device *device);
             ~Renderer();
 
+            // TODO avoid these?
+            auto getDevice() const -> VkDevice;
+            auto getPhysicalDeviceMemProps() const -> VkPhysicalDeviceMemoryProperties;
+
             void beginCamera(const Camera *camera);
             void endCamera();
 
@@ -123,6 +127,16 @@ namespace solo
             void applyRenderCommands(VkCommandBuffer buf, VkFramebuffer framebuffer);
             void recordRenderCmdBuffers();
         };
+
+        inline auto Renderer::getDevice() const -> VkDevice
+        {
+            return device;
+        }
+
+        inline auto Renderer::getPhysicalDeviceMemProps() const -> VkPhysicalDeviceMemoryProperties
+        {
+            return physicalDevice.memProperties;
+        }
     }
 }
 

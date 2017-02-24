@@ -63,24 +63,6 @@ gl::Mesh::Mesh(Device *device, MeshData *data):
 }
 
 
-gl::Mesh::Mesh(Device *device, MeshPrefab prefab):
-    Mesh(device)
-{
-    switch (prefab)
-    {
-        case MeshPrefab::Quad:
-            initQuadMesh();
-            break;
-        case MeshPrefab::Cube:
-            initCubeMesh();
-            break;
-        default:
-            SL_PANIC("Unknown mesh prefab type");
-            break;
-    }
-}
-
-
 gl::Mesh::~Mesh()
 {
     if (programBinding != EmptyHandle)
