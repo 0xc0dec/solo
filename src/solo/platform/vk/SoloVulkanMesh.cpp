@@ -9,6 +9,7 @@
 
 #include "SoloDevice.h"
 #include "SoloVulkanRenderer.h"
+#include "SoloVulkanRenderCommand.h"
 
 using namespace solo;
 
@@ -32,11 +33,17 @@ vk::Mesh::~Mesh()
 
 auto vk::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount) -> uint32_t
 {
+    auto stagingBuf = Buffer(renderer->getDevice(), layout.getSize() * vertexCount,
+        Buffer::Host | Buffer::TransferSrc, renderer->getPhysicalDeviceMemProps());
+    stagingBuf.update(data);
+
     auto buf = Buffer(renderer->getDevice(), layout.getSize() * vertexCount,
         Buffer::Device | Buffer::Vertex | Buffer::TransferDst,
         renderer->getPhysicalDeviceMemProps());
-    // TODO transfer data
+    stagingBuf.transferTo(buf, renderer->getQueue(), renderer->getCommandPool());
+
     vertexBuffers.push_back(std::move(buf));
+
     return static_cast<uint32_t>(vertexBuffers.size() - 1);
 }
 
@@ -76,6 +83,7 @@ auto vk::Mesh::getPartCount() const -> uint32_t
 
 void vk::Mesh::draw(Effect *effect)
 {
+    renderer->addRenderCommand(RenderCommand::drawMesh(this));
 }
 
 

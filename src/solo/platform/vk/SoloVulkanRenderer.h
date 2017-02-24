@@ -33,11 +33,10 @@ namespace solo
             // TODO avoid these?
             auto getDevice() const -> VkDevice;
             auto getPhysicalDeviceMemProps() const -> VkPhysicalDeviceMemoryProperties;
+            auto getQueue() const -> VkQueue;
+            auto getCommandPool() const -> VkCommandPool;
 
-            void beginCamera(const Camera *camera);
-            void endCamera();
-
-            void drawMesh(const Mesh *mesh);
+            void addRenderCommand(const RenderCommand &cmd);
 
         protected:
             void beginFrame() override final;
@@ -93,6 +92,21 @@ namespace solo
         inline auto Renderer::getPhysicalDeviceMemProps() const -> VkPhysicalDeviceMemoryProperties
         {
             return physicalDevice.memProperties;
+        }
+
+        inline auto Renderer::getQueue() const -> VkQueue
+        {
+            return queue;
+        }
+
+        inline auto Renderer::getCommandPool() const -> VkCommandPool
+        {
+            return commandPool;
+        }
+
+        inline void Renderer::addRenderCommand(const RenderCommand &cmd)
+        {
+            renderCommands.push_back(cmd);
         }
     }
 }

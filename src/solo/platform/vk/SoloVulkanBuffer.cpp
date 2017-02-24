@@ -70,7 +70,7 @@ auto Buffer::operator=(Buffer other) noexcept -> Buffer&
 }
 
 
-void Buffer::update(void *newData) const
+void Buffer::update(const void *newData) const
 {
     void *ptr = nullptr;
 	SL_VK_CHECK_RESULT(vkMapMemory(device, memory, 0, VK_WHOLE_SIZE, 0, &ptr));

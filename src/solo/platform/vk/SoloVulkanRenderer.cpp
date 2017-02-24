@@ -141,6 +141,9 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
                 renderPass.end(buf);
                 break;
 
+            case RenderCommandType::DrawMesh:
+                break;
+
             default:
                 break;
         }
@@ -162,24 +165,6 @@ void vk::Renderer::recordRenderCmdBuffers()
 
         SL_VK_CHECK_RESULT(vkEndCommandBuffer(buf));
     }
-}
-
-
-void vk::Renderer::beginCamera(const Camera *camera)
-{
-    renderCommands.push_back(RenderCommand::beginCamera(camera));
-}
-
-
-void vk::Renderer::endCamera()
-{
-    renderCommands.push_back(RenderCommand::endCamera());
-}
-
-
-void vk::Renderer::drawMesh(const Mesh *mesh)
-{
-    renderCommands.push_back(RenderCommand::drawMesh(mesh));
 }
 
 

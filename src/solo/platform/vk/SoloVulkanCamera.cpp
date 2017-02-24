@@ -9,6 +9,7 @@
 
 #include "SoloDevice.h"
 #include "SoloVulkanRenderer.h"
+#include "SoloVulkanRenderCommand.h"
 
 using namespace solo;
 
@@ -22,13 +23,13 @@ vk::Camera::Camera(const Node &node):
 
 void vk::Camera::beginFrame() const
 {
-    renderer->beginCamera(this);
+    renderer->addRenderCommand(RenderCommand::beginCamera(this));
 }
 
 
 void vk::Camera::endFrame() const
 {
-    renderer->endCamera();
+    renderer->addRenderCommand(RenderCommand::endCamera());
 }
 
 

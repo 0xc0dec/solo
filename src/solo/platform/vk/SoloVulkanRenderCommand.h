@@ -34,27 +34,24 @@ namespace solo
                 const Mesh *mesh;
             };
 
-            RenderCommand() {}
+            RenderCommand(RenderCommandType type = RenderCommandType::None): type(type) {}
 
             static auto beginCamera(const Camera *camera) -> RenderCommand
             {
-                auto cmd = RenderCommand();
-                cmd.type = RenderCommandType::BeginCamera;
+                auto cmd = RenderCommand(RenderCommandType::BeginCamera);
                 cmd.camera = camera;
                 return cmd;
             }
 
             static auto endCamera() -> RenderCommand
             {
-                auto cmd = RenderCommand();
-                cmd.type = RenderCommandType::EndCamera;
+                auto cmd = RenderCommand(RenderCommandType::EndCamera);
                 return cmd;
             }
 
             static auto drawMesh(const Mesh *mesh) -> RenderCommand
             {
-                auto cmd = RenderCommand();
-                cmd.type = RenderCommandType::DrawMesh;
+                auto cmd = RenderCommand(RenderCommandType::DrawMesh);
                 cmd.mesh = mesh;
                 return cmd;
             }

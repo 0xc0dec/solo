@@ -39,7 +39,7 @@ namespace solo
 
             auto getHandle() -> VkBuffer;
 
-            void update(void *newData) const;
+            void update(const void *newData) const;
             void transferTo(const Buffer& other, VkQueue queue, VkCommandPool cmdPool) const;
 
         private:
