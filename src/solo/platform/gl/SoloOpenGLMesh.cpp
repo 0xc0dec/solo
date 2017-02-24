@@ -84,6 +84,7 @@ auto gl::Mesh::addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout &
 }
 
 
+// TODO what vertex buffers have changed?
 void gl::Mesh::rebuildEffectBinding(solo::Effect *effect)
 {
     if (effect == lastEffect)
