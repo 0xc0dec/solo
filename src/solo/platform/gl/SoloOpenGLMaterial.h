@@ -28,7 +28,7 @@ namespace solo
         class Material final : public solo::Material
         {
         public:
-            explicit Material(Device *device, sptr<solo::Effect> effect);
+            Material(Device *device, sptr<solo::Effect> effect);
             ~Material();
 
             void setFloatParameter(const std::string &name, float value) override final;
