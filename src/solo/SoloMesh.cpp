@@ -23,7 +23,6 @@
 #include "SoloDevice.h"
 #include "platform/gl/SoloOpenGLMesh.h"
 #include "platform/null/SoloNullMesh.h"
-#include <algorithm>
 
 using namespace solo;
 
@@ -72,7 +71,7 @@ auto Mesh::createFromData(Device *device, MeshData *data) -> sptr<Mesh>
 
 void Mesh::initQuadMesh()
 {
-    float data[] =
+    float vertices[] =
     {
         -1, -1, 0,  0, 0, -1,   0, 0,
         -1, 1, 0,   0, 0, -1,   0, 1,
@@ -87,14 +86,14 @@ void Mesh::initQuadMesh()
     layout.add(VertexBufferLayoutSemantics::Normal, 3);
     layout.add(VertexBufferLayoutSemantics::TexCoord0, 2);
 
-    addVertexBuffer(layout, data, 6);
+    addVertexBuffer(layout, vertices, 6);
     setPrimitiveType(PrimitiveType::Triangles);
 }
 
 
 void Mesh::initCubeMesh()
 {
-    float positionData[] =
+    float vertices[] =
     {
         -1, -1, 1,  0, 0,    -1, 1, 1,  0, 1,     1, 1, 1,   1, 1,     1, -1, 1,   1, 0,
         -1, -1, -1, 0, 0,    -1, 1, -1, 0, 1,     -1, 1, 1,  1, 1,     -1, -1, 1,  1, 0,
@@ -103,7 +102,7 @@ void Mesh::initCubeMesh()
         -1, 1, 1,   0, 0,    -1, 1, -1, 0, 1,     1, 1, -1,  1, 1,     1, 1, 1,    1, 0,
         -1, -1, -1, 0, 0,    -1, -1, 1, 0, 1,     1, -1, 1,  1, 1,     1, -1, -1,  1, 0
     };
-    uint16_t indexData[] =
+    uint16_t indices[] =
     {
         0, 1, 2,
         0, 2, 3,
@@ -122,7 +121,7 @@ void Mesh::initCubeMesh()
     VertexBufferLayout layout;
     layout.add(VertexBufferLayoutSemantics::Position, 3);
     layout.add(VertexBufferLayoutSemantics::TexCoord0, 2);
-    addVertexBuffer(layout, positionData, 24);
-    addPart(indexData, 36);
+    addVertexBuffer(layout, vertices, 24);
+    addPart(indices, 36);
     setPrimitiveType(PrimitiveType::Triangles);
 }
