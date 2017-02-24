@@ -48,14 +48,14 @@ namespace solo
     private:
         friend class AssetLoader;
 
+        std::function<void(sptr<T>)> callback;
+        sptr<T> result;
+
         void finish(sptr<T> result)
         {
             if (callback)
                 callback(result);
         }
-
-        std::function<void(sptr<T>)> callback;
-        sptr<T> result;
     };
 
     struct AssetLoaderImpl;

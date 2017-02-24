@@ -25,7 +25,6 @@
 #include "SoloNode.h"
 #include "SoloMesh.h"
 
-
 namespace solo
 {
     class Material;

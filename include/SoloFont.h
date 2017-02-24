@@ -55,9 +55,9 @@ namespace solo
         virtual auto getGlyphInfo(uint32_t character, float offsetX, float offsetY) -> GlyphInfo = 0;
 
     protected:
-        Font() {}
-
         sptr<RectTexture> atlas;
+        
+        Font() {}
     };
 
     inline auto Font::getAtlas() const -> sptr<RectTexture>

@@ -50,12 +50,12 @@ namespace solo
 
             auto addPart(const void *indexData, uint32_t indexElementCount) -> uint32_t override final;
             void removePart(uint32_t index) override final;
-            auto getPartCount() const->uint32_t override final;
+            auto getPartCount() const -> uint32_t override final;
 
             void draw(solo::Effect *effect) override final;
             void drawPart(solo::Effect *effect, uint32_t part) override final;
 
-            auto getPrimitiveType() const->PrimitiveType override final;
+            auto getPrimitiveType() const -> PrimitiveType override final;
             void setPrimitiveType(PrimitiveType type) override final;
 
         private:

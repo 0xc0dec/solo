@@ -75,74 +75,74 @@ namespace solo
 
         protected:
             template <class T>
-            using strKeyMap = std::unordered_map<std::string, T>;
-            using strSet = std::unordered_set<std::string>;
+            using StrKeyMap = std::unordered_map<std::string, T>;
+            using StrSet = std::unordered_set<std::string>;
+
+            Renderer *renderer = nullptr;
+            sptr<Effect> effect = nullptr;
+
+            StrKeyMap<uint32_t> uniformHandles;
+
+            StrKeyMap<float> floatParams;
+            StrKeyMap<Vector2> vector2Params;
+            StrKeyMap<Vector3> vector3Params;
+            StrKeyMap<Vector4> vector4Params;
+            StrKeyMap<Matrix> matrixParams;
+            StrKeyMap<std::vector<float>> floatArrayParams;
+            StrKeyMap<std::vector<Vector2>> vector2ArrayParams;
+            StrKeyMap<std::vector<Vector3>> vector3ArrayParams;
+            StrKeyMap<std::vector<Vector4>> vector4ArrayParams;
+            StrKeyMap<std::vector<Matrix>> matrixArrayParams;
+            StrKeyMap<sptr<Texture>> textureParams;
+
+            StrSet worldMatrixParams;
+            StrSet viewMatrixParams;
+            StrSet projMatrixParams;
+            StrSet worldViewMatrixParams;
+            StrSet viewProjMatrixParams;
+            StrSet worldViewProjMatrixParams;
+            StrSet invTransWorldMatrixParams;
+            StrSet invTransWorldViewMatrixParams;
+            StrSet camWorldPosParams;
 
             void applyState() override final;
             void applyParams(const Camera *camera, Transform *nodeTransform) override final;
 
             template <class T>
-            void applyScalarParams(strKeyMap<T> &params);
+            void applyScalarParams(StrKeyMap<T> &params);
 
             template <class T>
-            void applyVectorParams(strKeyMap<T> &params);
+            void applyVectorParams(StrKeyMap<T> &params);
 
             template <class T>
-            void setParam(strKeyMap<T> &params, const std::string &name, UniformType uniformType, T value);
+            void setParam(StrKeyMap<T> &params, const std::string &name, UniformType uniformType, T value);
 
-            void setAutoBindParam(strSet &params, const std::string &name, UniformType uniformType);
-
-            Renderer *renderer = nullptr;
-            sptr<Effect> effect = nullptr;
-
-            strKeyMap<uint32_t> uniformHandles;
-
-            strKeyMap<float> floatParams;
-            strKeyMap<Vector2> vector2Params;
-            strKeyMap<Vector3> vector3Params;
-            strKeyMap<Vector4> vector4Params;
-            strKeyMap<Matrix> matrixParams;
-            strKeyMap<std::vector<float>> floatArrayParams;
-            strKeyMap<std::vector<Vector2>> vector2ArrayParams;
-            strKeyMap<std::vector<Vector3>> vector3ArrayParams;
-            strKeyMap<std::vector<Vector4>> vector4ArrayParams;
-            strKeyMap<std::vector<Matrix>> matrixArrayParams;
-            strKeyMap<sptr<Texture>> textureParams;
-
-            strSet worldMatrixParams;
-            strSet viewMatrixParams;
-            strSet projMatrixParams;
-            strSet worldViewMatrixParams;
-            strSet viewProjMatrixParams;
-            strSet worldViewProjMatrixParams;
-            strSet invTransWorldMatrixParams;
-            strSet invTransWorldViewMatrixParams;
-            strSet camWorldPosParams;
+            void setAutoBindParam(StrSet &params, const std::string &name, UniformType uniformType);
         };
 
         template <class T>
-        void Material::applyScalarParams(strKeyMap<T> &params)
+        void Material::applyScalarParams(StrKeyMap<T> &params)
         {
             for (const auto &p : params)
                 renderer->setUniform(uniformHandles[p.first], &p.second, 1);
         }
 
         template <class T>
-        void Material::applyVectorParams(strKeyMap<T> &params)
+        void Material::applyVectorParams(StrKeyMap<T> &params)
         {
             for (const auto &p : params)
                 renderer->setUniform(uniformHandles[p.first], p.second.data(), static_cast<uint32_t>(p.second.size()));
         }
 
         template <class T>
-        void Material::setParam(strKeyMap<T> &params, const std::string &name, UniformType uniformType, T value)
+        void Material::setParam(StrKeyMap<T> &params, const std::string &name, UniformType uniformType, T value)
         {
             if (params.find(name) == params.end())
                 uniformHandles[name] = renderer->createUniform(name.c_str(), uniformType, effect->getHandle());
             params[name] = value;
         }
 
-        inline void Material::setAutoBindParam(strSet &params, const std::string &name, UniformType uniformType)
+        inline void Material::setAutoBindParam(StrSet &params, const std::string &name, UniformType uniformType)
         {
             if (params.find(name) == params.end())
                 uniformHandles[name] = renderer->createUniform(name.c_str(), uniformType, effect->getHandle());

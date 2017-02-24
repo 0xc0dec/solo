@@ -127,13 +127,6 @@ namespace solo
         auto getLogger() const -> Logger*;
 
     protected:
-        explicit Device(const DeviceSetup &setup);
-        
-        virtual void beginUpdate() = 0;
-        virtual void endUpdate() = 0;
-        void initSubsystems();
-        void updateTime();
-
         DeviceSetup setup;
 
         // Keep order of these fields - matters during destruction
@@ -158,6 +151,14 @@ namespace solo
 
         bool windowCloseRequested = false;
         bool quitRequested = false;
+
+        explicit Device(const DeviceSetup &setup);
+        
+        virtual void beginUpdate() = 0;
+        virtual void endUpdate() = 0;
+
+        void initSubsystems();
+        void updateTime();
     };
 
     inline bool Device::isWindowCloseRequested() const

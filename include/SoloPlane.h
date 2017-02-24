@@ -62,10 +62,10 @@ namespace solo
         bool isParallel(const Plane &plane) const;
 
     private:
-        void normalize();
-
         Vector3 normal{0, 1, 0};
         float distance = 0;
+
+        void normalize();
     };
 
     inline auto Plane::getNormal() const -> Vector3

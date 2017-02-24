@@ -38,12 +38,12 @@ namespace solo
             explicit Camera(const Node &node);
 
         private:
+            Renderer *renderer = nullptr;
+
             void beginFrame() const override final;
             void endFrame() const override final
             {
             }
-
-            Renderer *renderer = nullptr;
         };
     }
 }

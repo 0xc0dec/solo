@@ -39,9 +39,9 @@ namespace solo
             void saveScreenshot(const std::string &path) override final;
 
         private:
-            void endUpdate() override final;
-
             SDL_GLContext context = nullptr;
+
+            void endUpdate() override final;
         };
     }
 }

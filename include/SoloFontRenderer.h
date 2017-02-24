@@ -44,9 +44,6 @@ namespace solo
         void setText(const std::string &text);
 
     private:
-        void rebuildMesh();
-        void updateMesh();
-
         Transform *transform = nullptr;
         sptr<Font> font;
         sptr<Mesh> mesh;
@@ -55,5 +52,8 @@ namespace solo
         std::vector<Vector2> uvs;
         std::vector<uint16_t> indexes;
         std::string text;
+
+        void rebuildMesh();
+        void updateMesh();
     };
 }

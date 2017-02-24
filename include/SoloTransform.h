@@ -28,7 +28,6 @@
 #include "SoloNode.h"
 #include <vector>
 
-
 namespace solo
 {
     class Camera;
@@ -123,10 +122,6 @@ namespace solo
         auto transformDirection(const Vector3 &direction) const -> Vector3;
 
     private:
-        void setDirtyWithChildren(uint32_t flags) const;
-        void setChildrenDirty(uint32_t flags) const;
-        void notifyChanged(uint32_t dirtyFlags) const;
-
         mutable uint32_t dirtyFlags = ~0;
 
         Transform *parent = nullptr;
@@ -139,6 +134,10 @@ namespace solo
         mutable TransformMatrix matrix;
         mutable TransformMatrix worldMatrix;
         mutable TransformMatrix invTransposedWorldMatrix;
+
+        void setDirtyWithChildren(uint32_t flags) const;
+        void setChildrenDirty(uint32_t flags) const;
+        void notifyChanged(uint32_t dirtyFlags) const;
     };
 
     inline auto Transform::getLocalPosition() const -> Vector3

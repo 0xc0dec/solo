@@ -43,7 +43,7 @@ namespace solo
             void generateMipmaps() override final;
             void setData(TextureFormat format, const uint8_t *data, uint32_t width, uint32_t height) override final;
 
-            auto getHandle() const->uint32_t;
+            auto getHandle() const -> uint32_t;
 
         private:
             Renderer *renderer = nullptr;

@@ -26,71 +26,71 @@
 using namespace solo;
 
 
-lua::ScriptComponent::ScriptComponent(const Node &node, LuaRef scriptComponent):
+lua::ScriptComponent::ScriptComponent(const Node &node, LuaRef ref):
     ComponentBase<ScriptComponent>(node),
-    scriptComponent(scriptComponent)
+    ref(ref)
 {
-    typeId = MinComponentTypeId + scriptComponent.get<uint32_t>("typeId");
+    typeId = MinComponentTypeId + ref.get<uint32_t>("typeId");
     
-    initFunc = scriptComponent.has("init")
-        ? scriptComponent.get<std::function<void(LuaRef)>>("init")
+    initFunc = ref.has("init")
+        ? ref.get<std::function<void(LuaRef)>>("init")
         : [](LuaRef) {};
     
-    updateFunc = scriptComponent.has("update")
-        ? scriptComponent.get<std::function<void(LuaRef)>>("update")
+    updateFunc = ref.has("update")
+        ? ref.get<std::function<void(LuaRef)>>("update")
         : [](LuaRef) {};
     
-    terminateFunc = scriptComponent.has("terminate")
-        ? scriptComponent.get<std::function<void(LuaRef)>>("terminate")
+    terminateFunc = ref.has("terminate")
+        ? ref.get<std::function<void(LuaRef)>>("terminate")
         : [](LuaRef) {};
     
-    renderFunc = scriptComponent.has("render")
-        ? scriptComponent.get<std::function<void(LuaRef, const RenderContext&)>>("render")
+    renderFunc = ref.has("render")
+        ? ref.get<std::function<void(LuaRef, const RenderContext&)>>("render")
         : [](LuaRef, const RenderContext&) {};
     
-    onComponentAddedFunc = scriptComponent.has("onComponentAddedFunc")
-        ? scriptComponent.get<std::function<void(LuaRef, Component*)>>("onComponentAddedFunc")
+    onComponentAddedFunc = ref.has("onComponentAddedFunc")
+        ? ref.get<std::function<void(LuaRef, Component*)>>("onComponentAddedFunc")
         : [](LuaRef, Component*) {};
     
-    onComponentRemovedFunc = scriptComponent.has("onComponentRemovedFunc")
-        ? scriptComponent.get<std::function<void(LuaRef, Component*)>>("onComponentRemovedFunc")
+    onComponentRemovedFunc = ref.has("onComponentRemovedFunc")
+        ? ref.get<std::function<void(LuaRef, Component*)>>("onComponentRemovedFunc")
         : [](LuaRef, Component*) {};
     
-    scriptComponent.set("node", node);
+    ref.set("node", node);
 }
 
 
 void lua::ScriptComponent::init()
 {
-    initFunc(scriptComponent);
+    initFunc(ref);
 }
 
 
 void lua::ScriptComponent::terminate()
 {
-    terminateFunc(scriptComponent);
+    terminateFunc(ref);
 }
 
 
 void lua::ScriptComponent::update()
 {
-    updateFunc(scriptComponent);
+    updateFunc(ref);
 }
 
 
 void lua::ScriptComponent::render(const RenderContext &context)
 {
-    renderFunc(scriptComponent, context);
+    renderFunc(ref, context);
 }
 
 
 void lua::ScriptComponent::onComponentAdded(Component* cmp)
 {
-    onComponentAddedFunc(scriptComponent, cmp);
+    onComponentAddedFunc(ref, cmp);
 }
 
 
 void lua::ScriptComponent::onComponentRemoved(Component* cmp)
 {
-    onComponentRemovedFunc(scriptComponent, cmp);
+    onComponentRemovedFunc(ref, cmp);
 }

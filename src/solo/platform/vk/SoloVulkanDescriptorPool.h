@@ -43,7 +43,7 @@ namespace solo
 
             auto operator=(DescriptorPool other) noexcept -> DescriptorPool&;
 
-            auto allocateSet(VkDescriptorSetLayout layout) const->VkDescriptorSet;
+            auto allocateSet(VkDescriptorSetLayout layout) const -> VkDescriptorSet;
 
         private:
             VkDevice device = nullptr;

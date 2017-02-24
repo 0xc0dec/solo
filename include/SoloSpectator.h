@@ -22,7 +22,6 @@
 
 #include "SoloComponent.h"
 
-
 namespace solo
 {
     class Transform;

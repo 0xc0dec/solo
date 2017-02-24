@@ -60,8 +60,6 @@ namespace solo
         auto intersectPlane(const Plane &plane) const -> PlaneIntersection;
 
     private:
-        void updatePlanes();
-
         Plane near;
         Plane far;
         Plane bottom;
@@ -69,6 +67,8 @@ namespace solo
         Plane left;
         Plane right;
         Matrix matrix;
+
+        void updatePlanes();
     };
 
     inline auto Frustum::getNearPlane() const -> Plane

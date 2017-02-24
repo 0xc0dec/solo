@@ -67,12 +67,12 @@ namespace solo
         void setTag(uint32_t tag);
 
     protected:
+        Node node;
+        uint32_t tag = 1;
+
         explicit Component(const Node &node): node(node)
         {
         }
-
-        Node node;
-        uint32_t tag = 1;
     };
 
     inline auto Component::getNode() const -> Node

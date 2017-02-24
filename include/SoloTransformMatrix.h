@@ -22,7 +22,6 @@
 
 #include "SoloMatrix.h"
 
-
 namespace solo
 {
     class BoundingBox;

@@ -50,10 +50,10 @@ namespace solo
         auto hitPlane(const Plane &plane) const -> float;
 
     private:
-        void normalize();
-
         Vector3 origin{0, 0, 0};
         Vector3 direction{0, 0, 1};
+      
+        void normalize();
     };
 
     inline auto Ray::getOrigin() const -> Vector3

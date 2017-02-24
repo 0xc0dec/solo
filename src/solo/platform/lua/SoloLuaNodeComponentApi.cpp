@@ -103,7 +103,7 @@ static auto findScriptComponent(Node *node, uint32_t typeId) -> LuaRef
     if (cmp)
     {
         auto scriptComponent = dynamic_cast<lua::ScriptComponent*>(cmp);
-        return scriptComponent->scriptComponent;
+        return scriptComponent->getRef();
     }
 
     return {};

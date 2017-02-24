@@ -25,7 +25,6 @@
 #include <list>
 #include <functional>
 
-
 namespace solo
 {
     class Device;
@@ -56,11 +55,11 @@ namespace solo
         using NodeComponents = std::unordered_map<uint32_t, sptr<Component>>;
         using NodesWithComponents = std::unordered_map<uint32_t, NodeComponents>;
 
-        explicit Scene(Device *device);
-
         Device *device = nullptr;
         uint32_t nodeCounter = 0;
         NodesWithComponents nodes;
+
+        explicit Scene(Device *device);
     };
 
     inline auto Scene::getDevice() const -> Device *

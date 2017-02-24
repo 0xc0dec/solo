@@ -45,7 +45,6 @@ namespace solo
         Vector3 angularFactor;
     };
 
-
     class RigidBody: public ComponentBase<RigidBody>, public TransformCallback
     {
     public:

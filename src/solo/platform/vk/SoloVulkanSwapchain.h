@@ -41,14 +41,14 @@ namespace solo
                 VkImageView depthStencilView, uint32_t width, uint32_t height, bool vsync, VkFormat colorFormat, VkColorSpaceKHR colorSpace);
             ~Swapchain() {}
 
-            auto operator=(Swapchain other) noexcept->Swapchain&;
+            auto operator=(Swapchain other) noexcept -> Swapchain&;
 
-            auto getNextImageIndex(VkSemaphore semaphore) const->uint32_t;
-            auto getStepCount() const->uint32_t;
-            auto getFramebuffer(uint32_t idx) const->VkFramebuffer;
-            auto getImageView(uint32_t idx)->VkImageView;
+            auto getNextImageIndex(VkSemaphore semaphore) const -> uint32_t;
+            auto getStepCount() const -> uint32_t;
+            auto getFramebuffer(uint32_t idx) const -> VkFramebuffer;
+            auto getImageView(uint32_t idx) -> VkImageView;
 
-            auto getHandle() const->VkSwapchainKHR;
+            auto getHandle() const -> VkSwapchainKHR;
 
         private:
             struct Step

@@ -60,7 +60,7 @@ namespace solo
             explicit Renderer(Device *device);
             ~Renderer();
 
-            auto createTexture()->uint32_t;
+            auto createTexture() -> uint32_t;
             void destroyTexture(uint32_t handle);
             void setRectTexture(uint32_t handle);
             void setRectTexture(uint32_t handle, uint32_t flags);

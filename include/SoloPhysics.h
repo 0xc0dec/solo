@@ -60,8 +60,8 @@ namespace solo
         virtual auto castRayAll(const Vector3 &from, const Vector3 &to) -> std::vector<RaycastResult> = 0;
 
     protected:
-        Physics(Device *device, const FriendToken<Device> &);
-
         Device *device = nullptr;
+      
+        Physics(Device *device, const FriendToken<Device> &);
     };
 }

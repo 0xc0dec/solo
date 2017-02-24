@@ -41,7 +41,7 @@ namespace solo
             Effect(Device *device, const std::string &vsSrc, const std::string &fsSrc);
             ~Effect();
 
-            auto getHandle() const->uint32_t;
+            auto getHandle() const -> uint32_t;
 
             void apply() override final;
 

@@ -31,7 +31,6 @@
 #include "SoloVulkanBuffer.h"
 #include "SoloVulkanPipeline.h"
 #include "SoloVulkan.h"
-#include "SoloVector4.h"
 
 namespace solo
 {

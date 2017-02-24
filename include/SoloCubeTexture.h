@@ -41,11 +41,11 @@ namespace solo
         void setDepthWrapping(TextureWrapping depthWrap);
 
     protected:
+        TextureWrapping depthWrapping = TextureWrapping::Repeat;
+
         CubeTexture();
 
         void rebuildFlags() override final;
-
-        TextureWrapping depthWrapping = TextureWrapping::Repeat;
     };
 
     inline auto CubeTexture::getDepthWrapping() const -> TextureWrapping

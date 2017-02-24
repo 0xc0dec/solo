@@ -23,7 +23,6 @@
 #include "SoloCommon.h"
 #include "SoloRenderer.h"
 
-
 namespace solo
 {
     class RectTexture;
@@ -72,10 +71,6 @@ namespace solo
         void setAnisotropyLevel(float level);
 
     protected:
-        Texture();
-
-        virtual void rebuildFlags();
-
         uint32_t flags = 0;
 
         TextureWrapping horizontalWrapping = TextureWrapping::Clamp;
@@ -85,6 +80,10 @@ namespace solo
         TextureFiltering magFiltering = TextureFiltering::Linear;
 
         float anisotropy = 1.0f;
+
+        Texture();
+
+        virtual void rebuildFlags();
     };
 
     inline auto Texture::getVerticalWrapping() const -> TextureWrapping

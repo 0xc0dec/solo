@@ -46,9 +46,9 @@ namespace solo
         auto getSize() const -> Vector2;
 
     protected:
-        FrameBuffer() {}
-
         Vector2 size;
+
+        FrameBuffer() {}
     };
 
     inline auto FrameBuffer::getSize() const -> Vector2

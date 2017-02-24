@@ -32,7 +32,7 @@ namespace solo
         public:
             virtual ~Device();
 
-            auto getWindowTitle() const->std::string override final;
+            auto getWindowTitle() const -> std::string override final;
             void setWindowTitle(const std::string &title) override final;
 
             void setCursorCaptured(bool captured) override final;
@@ -42,14 +42,14 @@ namespace solo
             auto getCanvasSize() const -> Vector2 override final;
 
         protected:
-            explicit Device(const DeviceSetup &setup);
-
-            void beginUpdate() override final;
-
             SDL_Window *window = nullptr;
 
             bool hasMouseFocus = false;
             bool hasKeyboardFocus = false;
+
+            explicit Device(const DeviceSetup &setup);
+
+            void beginUpdate() override final;
 
         private:
             void prepareKeyboardState();

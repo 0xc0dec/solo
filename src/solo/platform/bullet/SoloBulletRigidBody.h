@@ -43,8 +43,6 @@ namespace solo
             void onTransformChanged(const Transform *transform, uint32_t dirtyFlags) override final;
 
         private:
-            void syncScale();
-
             float mass = 0;
             sptr<solo::Collider> collider;
             btCollisionShape *shape;
@@ -52,6 +50,8 @@ namespace solo
             btDiscreteDynamicsWorld *world;
             uptr<btMotionState> motionState;
             uptr<btRigidBody> body;
+
+            void syncScale();
         };
     }
 }

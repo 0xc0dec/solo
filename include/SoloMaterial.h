@@ -101,11 +101,6 @@ namespace solo
         void setDepthFunction(DepthFunction func);
 
     protected:
-        explicit Material(Device *device, sptr<Effect> effect);
-
-        virtual void applyState() = 0;
-        virtual void applyParams(const Camera *camera, Transform *nodeTransform) = 0;
-
         Device *device = nullptr;
         sptr<Effect> effect;
 
@@ -117,6 +112,11 @@ namespace solo
         BlendFactor srcBlendFactor = BlendFactor::SrcAlpha;
         BlendFactor dstBlendFactor = BlendFactor::OneMinusSrcAlpha;
         DepthFunction depthFunc = DepthFunction::Less;
+
+        explicit Material(Device *device, sptr<Effect> effect);
+
+        virtual void applyState() = 0;
+        virtual void applyParams(const Camera *camera, Transform *nodeTransform) = 0;
     };
 
     inline auto Material::getEffect() const -> Effect *

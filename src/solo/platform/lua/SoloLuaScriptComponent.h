@@ -43,12 +43,13 @@ namespace solo
             void onComponentAdded(Component *cmp) override final;
             void onComponentRemoved(Component *cmp) override final;
 
-            auto getTypeId()->uint32_t override final;
+            auto getTypeId() -> uint32_t override final;
 
-            LuaIntf::LuaRef scriptComponent;
+            auto getRef() const -> LuaIntf::LuaRef;
 
         private:
             uint32_t typeId;
+            LuaIntf::LuaRef ref;
 
             std::function<void(LuaIntf::LuaRef)> initFunc;
             std::function<void(LuaIntf::LuaRef)> terminateFunc;
@@ -61,6 +62,11 @@ namespace solo
         inline auto ScriptComponent::getTypeId() -> uint32_t
         {
             return typeId;
+        }
+
+        inline auto ScriptComponent::getRef() const -> LuaIntf::LuaRef
+        {
+            return ref;
         }
     }
 }

@@ -96,12 +96,6 @@ namespace solo
         auto getInvViewProjectionMatrix() const -> const TransformMatrix;
 
     protected:
-        explicit Camera(const Node &node);
-        
-        virtual void beginFrame() const = 0;
-        virtual void endFrame() const = 0;
-        void onTransformChanged(const Transform *, uint32_t) override;
-
         Device *device = nullptr;
 
         Transform *transform = nullptr;
@@ -130,6 +124,12 @@ namespace solo
         mutable TransformMatrix viewProjectionMatrix;
         mutable TransformMatrix invViewMatrix;
         mutable TransformMatrix invViewProjectionMatrix;
+
+        explicit Camera(const Node &node);
+        
+        virtual void beginFrame() const = 0;
+        virtual void endFrame() const = 0;
+        void onTransformChanged(const Transform *, uint32_t) override;
     };
 
     inline void Camera::setClearColor(const Vector4 &color)
