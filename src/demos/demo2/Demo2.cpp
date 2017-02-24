@@ -20,7 +20,6 @@
 
 #include <Solo.h>
 
-// TODO Remove copy-paste - currently this is the same as in Demo 1
 int main()
 {
     using namespace solo;
