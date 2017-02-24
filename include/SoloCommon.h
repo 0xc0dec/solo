@@ -27,7 +27,7 @@
 #if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS)
 #   define SL_WINDOWS
 #elif defined(__APPLE__) || defined(__MACH__)
-#   define SL_MACOS
+#   define SL_OSX
 #elif defined(__linux__)
 #   define SL_LINUX
 #endif
