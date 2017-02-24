@@ -68,6 +68,7 @@ namespace solo
             std::vector<uint32_t> vertexSizes;
             uint32_t minVertexCount = 0;
             uint32_t programBinding = EmptyHandle;
+            bool dirtyEffectBinding = true;
 
             auto addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout &layout, uint32_t vertexCount) -> uint32_t;
 

@@ -80,19 +80,20 @@ auto gl::Mesh::addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout &
     vertexCounts.push_back(vertexCount);
     vertexSizes.push_back(layout.getSize());
     recalculateMinVertexCount();
+    dirtyEffectBinding = true;
     return static_cast<uint32_t>(vertexBuffers.size() - 1);
 }
 
 
-// TODO what vertex buffers have changed?
 void gl::Mesh::rebuildEffectBinding(solo::Effect *effect)
 {
-    if (effect == lastEffect)
+    if (effect == lastEffect && !dirtyEffectBinding)
         return;
     if (programBinding != EmptyHandle)
         renderer->destroyVertexProgramBinding(programBinding);
     lastEffect = dynamic_cast<Effect *>(effect);
     programBinding = renderer->createVertexProgramBinding(vertexBuffers.data(), static_cast<uint32_t>(vertexBuffers.size()), lastEffect->getHandle());
+    dirtyEffectBinding = false;
 }
 
 
@@ -133,6 +134,7 @@ void gl::Mesh::removeVertexBuffer(uint32_t index)
     vertexCounts.erase(vertexCounts.begin() + index);
     vertexSizes.erase(vertexSizes.begin() + index);
     recalculateMinVertexCount();
+    dirtyEffectBinding = true;
 }
 
 
