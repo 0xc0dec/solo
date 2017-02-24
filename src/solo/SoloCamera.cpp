@@ -63,6 +63,8 @@ Camera::Camera(const Node &node):
     device(node.getScene()->getDevice()),
     fov(Degree(60))
 {
+    auto canvasSize = device->getCanvasSize();
+    viewport = {0, 0, canvasSize.x, canvasSize.y};
 }
 
 

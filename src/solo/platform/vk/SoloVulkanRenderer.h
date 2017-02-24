@@ -120,7 +120,7 @@ namespace solo
                 Pipeline pipeline;
             } test;
 
-            void applyRenderCommands(const VkCommandBuffer &buf);
+            void applyRenderCommands(VkCommandBuffer buf, VkFramebuffer framebuffer);
             void recordRenderCmdBuffers();
         };
     }

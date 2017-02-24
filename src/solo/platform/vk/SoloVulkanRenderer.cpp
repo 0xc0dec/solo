@@ -122,7 +122,7 @@ void vk::Renderer::endFrame()
 }
 
 
-void vk::Renderer::applyRenderCommands(const VkCommandBuffer &buf)
+void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer framebuffer)
 {
     for (const auto &cmd: renderCommands)
     {
@@ -135,15 +135,10 @@ void vk::Renderer::applyRenderCommands(const VkCommandBuffer &buf)
                     {{color.x, color.y, color.z, color.w}},
                     {1, 0});
                     
-                // TODO remove this logic
-                auto canvasSize = engineDevice->getCanvasSize();
                 auto viewport = cmd.camera->getViewport();
-                auto vp = viewport.x >= 0
-                    ? VkViewport{viewport.x, viewport.y, viewport.z, viewport.w, 1, 100}
-                    : VkViewport{0, 0, canvasSize.x, canvasSize.y, 1, 100};
-
-                renderPass.begin(buf, swapchain.getFramebuffer(i), vp.width, vp.height);
-                    
+                auto vp = VkViewport{viewport.x, viewport.y, viewport.z, viewport.w, 1, 100};
+                
+                renderPass.begin(buf, framebuffer, vp.width, vp.height);
                 vkCmdSetViewport(buf, 0, 1, &vp);
 
                 // TODO this is temp
@@ -178,7 +173,7 @@ void vk::Renderer::recordRenderCmdBuffers()
         beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
         SL_VK_CHECK_RESULT(vkBeginCommandBuffer(buf, &beginInfo));
 
-        applyRenderCommands(buf);
+        applyRenderCommands(buf, swapchain.getFramebuffer(i));
 
         SL_VK_CHECK_RESULT(vkEndCommandBuffer(buf));
     }

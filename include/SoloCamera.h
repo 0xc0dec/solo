@@ -65,7 +65,6 @@ namespace solo
         void setClearDepthEnabled(bool clear);
 
         auto getViewport() const -> Vector4;
-        // Pass -1 values to reset viewport to default
         void setViewport(const Vector4 &rect);
 
         bool isPerspective() const;
@@ -107,7 +106,7 @@ namespace solo
             bool depth = true;
         } clearFlags;
 
-        Vector4 viewport = {-1, -1, -1, -1};
+        Vector4 viewport;
         Vector4 clearColor = {0, 0.5, 0.5, 1};
         bool ortho = false;
         Radian fov;

@@ -1,4 +1,6 @@
 function createPostProcessor(device, camera, tag)
+	local canvasSize = device:getCanvasSize()
+
     local quadRenderer = camera:getNode():addComponent("MeshRenderer")
     quadRenderer:setTag(tag)
     quadRenderer:setMesh(solo.Mesh.createFromPrefab(device, solo.MeshPrefab.Quad))
@@ -7,7 +9,7 @@ function createPostProcessor(device, camera, tag)
         detach = function()
             camera:getNode():removeComponent("MeshRenderer")
             camera:setRenderTarget(nil)
-            camera:setViewport(vec4(-1, -1, -1, -1))
+            camera:setViewport(vec4(0, 0, canvasSize.x, canvasSize.y))
         end,
 
         renderStep = function(mat, inputTexture, target, viewport)
@@ -73,7 +75,7 @@ function createPostProcessor1(device, camera, tag, shaders)
     local pp = createPostProcessor(device, camera, tag)
 
     pp.apply = function(self)
-        local viewport = vec4(-1, -1, -1, -1)
+        local viewport = vec4(0, 0, canvasSize.x, canvasSize.y)
 
         self.renderStep(grayscaleMat, fbTex1, fb2, viewport)
         self.renderStep(saturateMat, fbTex2, fb1, viewport)

@@ -37,19 +37,11 @@ gl::Camera::Camera(const Node &node):
 
 void gl::Camera::beginFrame() const
 {
-    if (viewport.x >= 0 && viewport.y >= 0 && viewport.z >= 0 && viewport.w >= 0)
-    {
-        renderer->setViewport(
-            static_cast<uint32_t>(viewport.x),
-            static_cast<uint32_t>(viewport.y),
-            static_cast<uint32_t>(viewport.z),
-            static_cast<uint32_t>(viewport.w));
-    }
-    else
-    {
-        auto size = device->getCanvasSize();
-        renderer->setViewport(0, 0, static_cast<uint32_t>(size.x), static_cast<uint32_t>(size.y));
-    }
+    renderer->setViewport(
+        static_cast<uint32_t>(viewport.x),
+        static_cast<uint32_t>(viewport.y),
+        static_cast<uint32_t>(viewport.z),
+        static_cast<uint32_t>(viewport.w));
 
     renderer->setDepthWrite(true);
     renderer->setDepthTest(true);
