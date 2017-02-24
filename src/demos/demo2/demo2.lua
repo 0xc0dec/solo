@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 -- TODO avoid using globals in functions
 
 dofile("../../src/demos/common/common.lua")

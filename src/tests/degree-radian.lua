@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local rad1 = solo.Radian(1)
 local rad2 = solo.Radian(1)
 

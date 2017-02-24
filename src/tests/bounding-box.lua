@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local v = solo.Vector3(1, 2, 3)
 local bb = solo.BoundingBox(v, v)
 local bs = solo.BoundingSphere(v, 1)

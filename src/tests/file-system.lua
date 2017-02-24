@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local fs = solo.device:getFileSystem()
 
 assert(fs:readBytes("abc"))

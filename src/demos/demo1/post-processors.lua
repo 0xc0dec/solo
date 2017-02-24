@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 function createPostProcessor(device, camera, tag)
 	local canvasSize = device:getCanvasSize()
 

@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 dofile("../../src/demos/common/common.lua")
 
 collectgarbage("setpause", 100)

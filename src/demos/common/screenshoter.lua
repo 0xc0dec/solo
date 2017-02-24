@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 return function(device, path)
     return {
         typeId = solo.getCmpId("Screenshoter"),

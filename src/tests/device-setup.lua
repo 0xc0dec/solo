@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local s = solo.device:getSetup()
 
 assert(s.mode)

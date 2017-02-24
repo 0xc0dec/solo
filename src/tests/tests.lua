@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local logger = solo.device:getLogger()
 
 function runTest(fileName)

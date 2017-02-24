@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local f = solo.Frustum()
 local m = solo.Matrix()
 local v = solo.Vector3(1, 1, 1)

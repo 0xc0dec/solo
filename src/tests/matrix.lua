@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local m = solo.Matrix()
 
 assert(solo.Matrix.getSize() ~= nil)

@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 return function(device, fs)
     local textureWidth = 1024
     local textureHeight = 1024

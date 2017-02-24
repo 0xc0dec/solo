@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local rectTex = solo.RectTexture.create(solo.device)
 
 rectTex:generateMipmaps()

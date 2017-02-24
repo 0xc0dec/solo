@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local p = solo.Plane(solo.Vector3(1, 2, 3), 1)
 local v = solo.Vector3(1, 2, 3)
 local bs = solo.BoundingSphere(v, 1)

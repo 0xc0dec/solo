@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local v1 = solo.Vector4(1, 2, 3, 4)
 local v2 = solo.Vector4(1, 2, 3, 4)
 

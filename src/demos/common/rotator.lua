@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 return function(device, space, axis)
     return {
         typeId = solo.getCmpId("Rotator"),

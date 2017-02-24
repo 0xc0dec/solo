@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local scene = solo.Scene.create(solo.device)
 
 assert(scene:getDevice())

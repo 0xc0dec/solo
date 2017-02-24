@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local mesh1 = solo.Mesh.create(solo.device)
 local mesh2 = solo.Mesh.createFromPrefab(solo.device, solo.MeshPrefab.Quad)
 

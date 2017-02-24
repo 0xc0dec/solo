@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local loader = solo.device:getAssetLoader()
 
 loader:update()

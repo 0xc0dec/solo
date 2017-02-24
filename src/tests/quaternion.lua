@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local q = solo.Quaternion()
 
 assert(q.x ~= nil)

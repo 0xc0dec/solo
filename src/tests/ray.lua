@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local v = solo.Vector3(1, 0, 0)
 local ray = solo.Ray(v, v)
 local plane = solo.Plane(v, 1)

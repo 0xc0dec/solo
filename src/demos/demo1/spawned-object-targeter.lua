@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 return function(physics)
     return {
         typeId = solo.getCmpId("SpawnedObjectTargeter"),

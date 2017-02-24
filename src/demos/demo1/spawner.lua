@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local createSpawnedObject = dofile("../../src/demos/demo1/spawned-object.lua")
 
 return function(device, mesh, effect)

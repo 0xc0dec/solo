@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local id11 = solo.getCmpId("Cmp1")
 local id21 = solo.getCmpId("Cmp2")
 

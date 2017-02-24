@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local v1 = solo.Vector2(2, 3)
 local v2 = solo.Vector2(4, 5)
 

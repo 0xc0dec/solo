@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 return function(device, effect, mesh, initialPos, initialRotation)
     return {
         typeId = solo.getCmpId("SpawnedObject"),

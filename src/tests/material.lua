@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local mat = solo.Material.create(solo.device, solo.Effect.create(solo.device, "", ""))
 local tex = solo.RectTexture.create(solo.device)
 

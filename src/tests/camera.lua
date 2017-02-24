@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local scene = solo.Scene.create(solo.device)
 local cam = scene:createNode():addComponent("Camera")
 local v = solo.Vector4(1, 2, 3, 4)

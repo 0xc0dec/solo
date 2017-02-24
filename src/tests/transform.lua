@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local scene = solo.Scene.create(solo.device)
 local t1 = scene:createNode():findComponent("Transform")
 local t2 = scene:createNode():findComponent("Transform")

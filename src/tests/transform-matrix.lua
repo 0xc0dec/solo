@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local m = solo.TransformMatrix()
 local v = solo.Vector3(1, 2, 3)
 local q = solo.Quaternion()

@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local physics = solo.device:getPhysics()
 local v1 = solo.Vector3(1, 2, 3)
 local v2 = solo.Vector3(2, 3, 4)
