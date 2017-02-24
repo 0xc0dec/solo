@@ -43,12 +43,12 @@ namespace solo
             Mesh(Device *device, MeshPrefab prefab);
             ~Mesh();
 
-            auto addVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount)->uint32_t override final;
-            auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount)->uint32_t override final;
+            auto addVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount) -> uint32_t override final;
+            auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount) -> uint32_t override final;
             void updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const float *data, uint32_t vertexCount) override final;
             void removeVertexBuffer(uint32_t index) override final;
 
-            auto addPart(const void *indexData, uint32_t indexElementCount)->uint32_t override final;
+            auto addPart(const void *indexData, uint32_t indexElementCount) -> uint32_t override final;
             void removePart(uint32_t index) override final;
             auto getPartCount() const->uint32_t override final;
 
@@ -59,11 +59,6 @@ namespace solo
             void setPrimitiveType(PrimitiveType type) override final;
 
         private:
-            auto addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout &layout, uint32_t vertexCount)->uint32_t;
-
-            void rebuildEffectBinding(solo::Effect *effect);
-            void recalculateMinVertexCount();
-
             Renderer *renderer = nullptr;
             Effect *lastEffect = nullptr;
 
@@ -74,6 +69,11 @@ namespace solo
             std::vector<uint32_t> vertexSizes;
             uint32_t minVertexCount = 0;
             uint32_t programBinding = EmptyHandle;
+
+            auto addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout &layout, uint32_t vertexCount) -> uint32_t;
+
+            void rebuildEffectBinding(solo::Effect *effect);
+            void recalculateMinVertexCount();
         };
 
         inline void Mesh::setPrimitiveType(PrimitiveType type)
