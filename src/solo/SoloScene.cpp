@@ -51,7 +51,7 @@ void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
 {
     auto typeId = cmp->getTypeId();
 
-    SL_PANIC_CHECK_BLOCK(
+    SL_PANIC_BLOCK(
     {
         auto node = nodes.find(nodeId);
         if (node != nodes.end())

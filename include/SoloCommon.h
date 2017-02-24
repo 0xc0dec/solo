@@ -32,7 +32,6 @@
 #   define SL_LINUX
 #endif
 
-
 #if defined(SL_WINDOWS) || defined(SL_MACOS)
 #   define SL_OPENGL_RENDERER
 #endif
@@ -40,7 +39,6 @@
 #ifdef SL_WINDOWS
 #   define SL_VULKAN_RENDERER
 #endif
-
 
 #define SL_MACRO_BLOCK(code) do { code; } while (false);
 #define SL_EMPTY_MACRO_BLOCK() do {} while (false);
@@ -57,11 +55,11 @@
 #endif
 
 #ifdef SL_ERR_CHECK
-#   define SL_PANIC_CHECK_BLOCK(code) SL_MACRO_BLOCK(code)
+#   define SL_PANIC_BLOCK(code) SL_MACRO_BLOCK(code)
 #   define SL_PANIC(...) SL_MACRO_BLOCK(throw EngineException(__VA_ARGS__))
 #   define SL_PANIC_IF(condition, ...) SL_MACRO_BLOCK(if (condition) throw EngineException(__VA_ARGS__))
 #else
-#   define SL_PANIC_CHECK_BLOCK(code) SL_EMPTY_MACRO_BLOCK()
+#   define SL_PANIC_BLOCK(code) SL_EMPTY_MACRO_BLOCK()
 #   define SL_PANIC(...) SL_EMPTY_MACRO_BLOCK()
 #   define SL_PANIC_IF(condition, ...) SL_EMPTY_MACRO_BLOCK()
 #endif
