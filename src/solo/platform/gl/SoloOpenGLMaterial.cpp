@@ -31,6 +31,13 @@ gl::Material::~Material()
 }
 
 
+void gl::Material::applyImpl(const Camera *camera, Transform *nodeTransform)
+{
+    applyState();
+    applyParams(camera, nodeTransform);
+}
+
+
 void gl::Material::applyState()
 {
     renderer->setFaceCull(faceCull);
@@ -45,10 +52,12 @@ void gl::Material::applyState()
 
 void gl::Material::applyParams(const Camera *camera, Transform *nodeTransform)
 {
+    if (!this->effect) // TODO needed?
+        return;
+
     // TODO refactor
     // TODO avoid table lookups
 
-    applyScalarParams(floatParams);
     applyScalarParams(vector2Params);
     applyScalarParams(vector3Params);
     applyScalarParams(vector4Params);

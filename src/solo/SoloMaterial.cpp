@@ -40,11 +40,7 @@ Material::Material(Device *device, sptr<Effect> effect):
 
 void Material::apply(const Camera *camera, Transform *nodeTransform)
 {
-    applyState();
-
     if (effect)
-    {
         effect->apply();
-        applyParams(camera, nodeTransform);
-    }
+    applyImpl(camera, nodeTransform);
 }

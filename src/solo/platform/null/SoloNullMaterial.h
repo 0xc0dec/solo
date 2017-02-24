@@ -41,11 +41,7 @@ namespace solo
             void bindCameraWorldPositionParameter(const std::string& name) override final {}
 
         protected:
-            void applyState() override final
-            {
-            }
-
-            void applyParams(const Camera* camera, Transform* nodeTransform) override final
+            void applyImpl(const Camera *camera, Transform *nodeTransform) override final
             {
             }
         };

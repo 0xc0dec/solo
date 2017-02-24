@@ -126,12 +126,7 @@ void vk::Material::bindCameraWorldPositionParameter(const std::string &name)
 }
 
 
-void vk::Material::applyState()
-{
-}
-
-
-void vk::Material::applyParams(const solo::Camera *camera, Transform *nodeTransform)
+void vk::Material::applyImpl(const solo::Camera *camera, Transform *nodeTransform)
 {
 }
 
