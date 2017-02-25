@@ -10,6 +10,7 @@
 #include "SoloDevice.h"
 #include "SoloSDLVulkanDevice.h"
 #include "SoloVulkanCamera.h"
+#include "SoloVulkanMaterial.h"
 
 using namespace solo;
 using namespace vk;
@@ -65,6 +66,7 @@ vk::Renderer::~Renderer()
 
 void vk::Renderer::beginFrame()
 {
+//    currentBuffer = swapchain.getNextImageIndex(semaphores.presentComplete);
     currentBuffer = swapchain.getNextImageIndex(semaphores.presentComplete);
     prevRenderCommands = std::move(renderCommands);
     renderCommands = std::vector<RenderCommand>(100); // TODO just picked random constant
@@ -76,7 +78,7 @@ void vk::Renderer::endFrame()
     if (dirty)
     {
         recordRenderCmdBuffers();
-//        dirty = false; TODO
+//        dirty = false; // TODO
     }
 
     VkPipelineStageFlags submitPipelineStages = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
@@ -107,8 +109,18 @@ void vk::Renderer::endFrame()
 }
 
 
+// TODO remove after testing
+#include "SoloVulkanDescriptorSetLayoutBuilder.h"
+#include "SoloVulkanPipeline.h"
+#include "SoloVulkanEffect.h"
+#include "SoloVulkanBuffer.h"
+#include "SoloVulkanDescriptorPool.h"
+
+
 void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer framebuffer)
 {
+    const Material *currentMaterial = nullptr;
+
     for (const auto &cmd: renderCommands)
     {
         switch (cmd.type)
@@ -141,12 +153,112 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
                 renderPass.end(buf);
                 break;
 
-            case RenderCommandType::DrawMesh:
+            case RenderCommandType::ApplyMaterial:
+                currentMaterial = cmd.material;
                 break;
 
-            case RenderCommandType::ApplyMaterial:
+            // TODO this is a totally test hackery
+            case RenderCommandType::DrawMesh:
+            {
+                if (!currentMaterial)
+                    continue;
+
+                static bool dirty2 = true;
+
+                if (dirty2)
+                {
+                    test.descSetLayout = DescriptorSetLayoutBuilder(device)
+                        .withBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS)
+                        .build();
+
+                    auto effect = dynamic_cast<Effect*>(currentMaterial->getEffect());
+                    auto vs = effect->getVertexShader();
+                    auto fs = effect->getFragmentShader();
+
+                    struct Vertex
+                    {
+                        Vector2 position;
+                        Vector3 color;
+                    };
+
+                    VkDescriptorSetLayout descSetLayoutHandle = test.descSetLayout;
+                    test.pipeline = PipelineBuilder(device, renderPass)
+                        .withVertexShader(vs, "main")
+                        .withFragmentShader(fs, "main")
+                        .withDescriptorSetLayouts(&descSetLayoutHandle, 1)
+                        .withVertexSize(sizeof(Vertex))
+                        .withVertexAttribute(0, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, position))
+                        .withVertexAttribute(1, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, color))
+                        .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST)
+                        .build();
+
+                    const auto triangleSize = 1.6f;
+                    std::vector<Vertex> tri1 =
+                    {
+                        {Vector2(0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(1.0f, 0.0f, 0.0f)},
+                        {Vector2(0.0f, -sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 1.0f, 0.0f)},
+                        {Vector2(-0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 0.0f, 1.0f)}
+                    };
+
+                    std::vector<Vertex> tri2 =
+                    {
+                        {Vector2(0.3f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(1.0f, 0.0f, 0.0f)},
+                        {Vector2(0.0f, -sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 1.0f, 0.0f)},
+                        {Vector2(-0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 0.0f, 1.0f)}
+                    };
+
+                    auto stagingBuffer = Buffer(device, sizeof(decltype(tri1)::value_type) * tri1.size(),
+                        Buffer::Host | Buffer::TransferSrc, physicalDevice.memProperties);
+                    stagingBuffer.update(tri2.data());
+                    stagingBuffer.update(tri1.data());
+                    stagingBuffer.update(tri2.data()); // just smoking
+
+                    test.vertexBuffer = Buffer(device, sizeof(decltype(tri1)::value_type) * tri1.size(),
+                        Buffer::Device | Buffer::Vertex | Buffer::TransferDst, physicalDevice.memProperties);
+                    stagingBuffer.transferTo(test.vertexBuffer, queue, commandPool);
+
+                    test.descriptorPool = DescriptorPool(device, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 1);
+                    test.descriptorSet = test.descriptorPool.allocateSet(test.descSetLayout);
+
+                    auto uniformColor = Vector4(0, 0.2f, 0.8f, 1);
+                    test.uniformBuffer = Buffer(device, sizeof(Vector4), Buffer::Uniform | Buffer::Host, physicalDevice.memProperties);
+                    test.uniformBuffer.update(&uniformColor);
+
+                    VkDescriptorBufferInfo uboInfo{};
+                    uboInfo.buffer = test.uniformBuffer.getHandle();
+                    uboInfo.offset = 0;
+                    uboInfo.range = sizeof(Vector3);
+
+                    VkWriteDescriptorSet descriptorWrite{};
+                    descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+                    descriptorWrite.dstSet = test.descriptorSet;
+                    descriptorWrite.dstBinding = 0;
+                    descriptorWrite.dstArrayElement = 0;
+                    descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+                    descriptorWrite.descriptorCount = 1;
+                    descriptorWrite.pBufferInfo = &uboInfo;
+                    descriptorWrite.pImageInfo = nullptr; // Optional
+                    descriptorWrite.pTexelBufferView = nullptr; // Optional
+
+                    vkUpdateDescriptorSets(device, 1, &descriptorWrite, 0, nullptr);
+
+                    test.vertexCount = static_cast<uint32_t>(tri1.size());
+
+                    dirty2 = false;
+                }
+
+                vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline);
+
+                VkDeviceSize offset = 0;
+                auto vertexBufferHandle = test.vertexBuffer.getHandle();
+	            vkCmdBindVertexBuffers(buf, 0, 1, &vertexBufferHandle, &offset);
+
+                vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline.getLayout(), 0, 1, &test.descriptorSet, 0, nullptr);
+
+                vkCmdDraw(buf, test.vertexCount, 1, 0, 0);
                 
                 break;
+            }
 
             default:
                 break;

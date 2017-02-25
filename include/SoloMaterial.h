@@ -59,6 +59,7 @@ namespace solo
         virtual void bindInvTransposedWorldViewMatrixParameter(const std::string &name) = 0;
         virtual void bindCameraWorldPositionParameter(const std::string &name) = 0;
 
+        // TODO remove such methods (from Effect, Mesh, etc.) and replace them with calls to Renderer
         void apply(const Camera *camera, Transform *nodeTransform);
 
         auto getEffect() const -> Effect*;

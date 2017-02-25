@@ -6,6 +6,7 @@
 #pragma once
 
 #include "SoloCommon.h"
+#include "SoloVulkanDescriptorPool.h"
 
 #ifdef SL_VULKAN_RENDERER
 
@@ -14,6 +15,8 @@
 #include "SoloVulkanRenderPass.h"
 #include "SoloVulkan.h"
 #include "SoloVulkanRenderCommand.h"
+#include "SoloVulkanPipeline.h"
+#include "SoloVulkanBuffer.h"
 
 namespace solo
 {
@@ -79,6 +82,17 @@ namespace solo
             // really needs to be done
             std::vector<RenderCommand> renderCommands;
             std::vector<RenderCommand> prevRenderCommands;
+
+            struct
+            {
+                Resource<VkDescriptorSetLayout> descSetLayout;
+                Buffer vertexBuffer;
+                DescriptorPool descriptorPool;
+                Buffer uniformBuffer;
+                Pipeline pipeline;
+                VkDescriptorSet descriptorSet;
+                uint32_t vertexCount;
+            } test;
 
             void applyRenderCommands(VkCommandBuffer buf, VkFramebuffer framebuffer);
             void recordRenderCmdBuffers();

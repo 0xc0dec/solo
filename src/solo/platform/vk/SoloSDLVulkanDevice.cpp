@@ -16,14 +16,6 @@ using namespace solo;
 using namespace vk;
 
 
-//static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
-//        uint64_t obj, size_t location, int32_t code, const char *layerPrefix, const char *msg, void *userData)
-//{
-//    // TODO do something here
-//    return VK_FALSE;
-//}
-
-
 SDLDevice::SDLDevice(const DeviceSetup &setup):
     Device(setup)
 {
@@ -41,7 +33,7 @@ SDLDevice::SDLDevice(const DeviceSetup &setup):
     appInfo.pEngineName = "";
     appInfo.apiVersion = VK_API_VERSION_1_0;
 
-    std::vector<const char *> enabledExtensions{
+    std::vector<const char *> enabledExtensions {
         VK_KHR_SURFACE_EXTENSION_NAME,
 #ifdef SL_WINDOWS
         VK_KHR_WIN32_SURFACE_EXTENSION_NAME,
@@ -51,7 +43,7 @@ SDLDevice::SDLDevice(const DeviceSetup &setup):
 #endif
     };
 
-    std::vector<const char *> enabledLayers{
+    std::vector<const char *> enabledLayers {
 #ifdef SL_DEBUG
         "VK_LAYER_LUNARG_standard_validation",
 #endif
@@ -95,20 +87,15 @@ SDLDevice::SDLDevice(const DeviceSetup &setup):
     surface = Resource<VkSurfaceKHR>{instance, vkDestroySurfaceKHR};
     SL_VK_CHECK_RESULT(vkCreateWin32SurfaceKHR(instance, &surfaceInfo, nullptr, surface.cleanAndExpose()));
 #endif
-
-//#ifdef SL_DEBUG
-//    debugCallback = vk::createDebugCallback(instance, debugCallbackFunc); // TODO put to Resource
-//#endif
 }
 
 
 SDLDevice::~SDLDevice()
 {
-    // Otherwise it would be destroyed later - not good
+    // Force cleanup order - we don't want Vulkan objects to be destroyed after the device.
+    // TODO better solution
+    scriptRuntime.reset();
     renderer.reset();
-
-//    if (debugCallback)
-//        vk::destroyDebugCallback(instance, debugCallback);
 }
 
 

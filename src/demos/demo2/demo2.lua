@@ -29,6 +29,13 @@ function initMainCamera()
 end
 
 camera = initMainCamera()
+local effect = solo.Effect.createFromPrefab(dev, solo.EffectPrefab.Font)
+local material = solo.Material.create(dev, effect)
+local mesh = solo.Mesh.createFromPrefab(dev, solo.MeshPrefab.Quad)
+local node = scene:createNode()
+local meshRenderer = node:addComponent("MeshRenderer")
+meshRenderer:setMesh(mesh)
+meshRenderer:setMaterial(0, material)
 
 function keepRunning()
     return not dev:isQuitRequested() and
@@ -47,12 +54,10 @@ function update()
     camera:setClearColor(color)
 end
 
-function renderByTags(tags, ctx)
-    scene:visitByTags(tags, function(cmp) cmp:render(ctx) end)
-end
-
 function render()
-    camera:renderFrame(function(ctx) end)
+    camera:renderFrame(function(ctx)
+        scene:visit(function(cmp) cmp:render(ctx) end)
+    end)
 end
 
 function run()
@@ -61,8 +66,8 @@ function run()
             loader:update()
                 loader:update()
                 physics:update()
+                update()
                 renderer:renderFrame(function()
-                    update()
                     render()
                 end)
         end)

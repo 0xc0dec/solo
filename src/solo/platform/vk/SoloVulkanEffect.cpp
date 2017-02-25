@@ -10,6 +10,7 @@
 #include "SoloDevice.h"
 #include "SoloVulkan.h"
 #include "SoloVulkanRenderer.h"
+#include "SoloFileSystem.h"
 
 using namespace solo;
 // TODO remove "using namespace vk" from other places
@@ -17,7 +18,8 @@ using namespace solo;
 
 auto vk::Effect::create(Device *device, EffectPrefab prefab) -> sptr<Effect>
 {
-    SL_PANIC("Not implemented");
+    // TODO remove hackery!
+    return std::make_shared<Effect>(device, "", "");
     return nullptr;
 }
 
@@ -25,8 +27,10 @@ auto vk::Effect::create(Device *device, EffectPrefab prefab) -> sptr<Effect>
 vk::Effect::Effect(Device *device, const std::string &vsSrc, const std::string &fsSrc)
 {
     renderer = dynamic_cast<Renderer *>(device->getRenderer());
-    vertexShader = createShader(renderer->getDevice(), vsSrc.c_str(), vsSrc.size());
-    fragmentShader = createShader(renderer->getDevice(), fsSrc.c_str(), fsSrc.size());
+    auto vsBytes = device->getFileSystem()->readBytes("../../assets/triangle.vert.spv");
+    auto fsBytes = device->getFileSystem()->readBytes("../../assets/triangle.frag.spv");
+    vertexShader = createShader(renderer->getDevice(), vsBytes.data(), vsBytes.size());
+    fragmentShader = createShader(renderer->getDevice(), fsBytes.data(), fsBytes.size());
 }
 
 
