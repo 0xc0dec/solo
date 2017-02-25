@@ -23,7 +23,7 @@ namespace solo
         Cube
     };
 
-    struct MeshData
+    struct MeshData // TODO get rid of
     {
         std::vector<Vector3> vertices;
         std::vector<Vector2> uvs;

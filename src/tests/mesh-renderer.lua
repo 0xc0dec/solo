@@ -6,7 +6,7 @@
 local scene = solo.Scene.create(solo.device)
 local mr = scene:createNode():addComponent("MeshRenderer")
 local mesh = solo.Mesh.create(solo.device)
-local effect = solo.Effect.create(solo.device, "", "")
+local effect = solo.Effect.create(solo.device, {}, {})
 local mat = solo.Material.create(solo.device, effect)
 
 mr:render(solo.RenderContext())

@@ -7,15 +7,9 @@ dofile("../../src/demos/common/common.lua")
 
 collectgarbage("setpause", 100)
 
-createScreenshoter = dofile("../../src/demos/common/screenshoter.lua")
-createRotator = dofile("../../src/demos/common/rotator.lua")
-createLookAt = dofile("../../src/demos/common/lookat.lua")
-createDynamicQuadUpdater = dofile("../../src/demos/demo1/dynamic-quad-updater.lua")
-createTimeLabelUpdater = dofile("../../src/demos/demo1/time-label-updater.lua")
-createSpawner = dofile("../../src/demos/demo1/spawner.lua")
-createSpawnedObjectTargeter = dofile("../../src/demos/demo1/spawned-object-targeter.lua")
-postProcessors = dofile("../../src/demos/demo1/post-processors.lua")
-shaders = dofile("../../src/demos/demo1/shaders.lua")
+function getAssetPath(fileName)
+    return "../../assets/" .. fileName
+end
 
 dev = solo.device
 loader = dev:getAssetLoader()
@@ -26,9 +20,15 @@ fs = dev:getFileSystem()
 scene = solo.Scene.create(dev)
 canvasSize = dev:getCanvasSize()
 
-function getAssetPath(fileName)
-    return "../../assets/" .. fileName
-end
+createScreenshoter = dofile("../../src/demos/common/screenshoter.lua")
+createRotator = dofile("../../src/demos/common/rotator.lua")
+createLookAt = dofile("../../src/demos/common/lookat.lua")
+createDynamicQuadUpdater = dofile("../../src/demos/demo1/dynamic-quad-updater.lua")
+createTimeLabelUpdater = dofile("../../src/demos/demo1/time-label-updater.lua")
+createSpawner = dofile("../../src/demos/demo1/spawner.lua")
+createSpawnedObjectTargeter = dofile("../../src/demos/demo1/spawned-object-targeter.lua")
+postProcessors = dofile("../../src/demos/demo1/post-processors.lua")
+shaders = dofile("../../src/demos/demo1/shaders.lua")(fs, getAssetPath)
 
 knownTags = {
     skybox = 1 << 1,

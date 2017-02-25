@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-local mat = solo.Material.create(solo.device, solo.Effect.create(solo.device, "", ""))
+local mat = solo.Material.create(solo.device, solo.Effect.create(solo.device, {}, {}))
 local tex = solo.RectTexture.create(solo.device)
 
 mat:setFloatParameter("p1", 1)

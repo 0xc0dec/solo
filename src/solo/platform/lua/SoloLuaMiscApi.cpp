@@ -20,6 +20,12 @@
 using namespace solo;
 
 
+static auto createEffect(Device *device, const std::vector<uint8_t> &vsSrc, const std::vector<uint8_t> &fsSrc) -> sptr<Effect>
+{
+    return Effect::create2(device, vsSrc.data(), vsSrc.size(), fsSrc.data(), fsSrc.size());
+}
+
+
 static void registerFrameBuffer(CppBindModule<LuaBinding> &module)
 {
     auto fb = BEGIN_CLASS(module, FrameBuffer);
@@ -91,7 +97,7 @@ static void registerSkyboxRenderer(CppBindModule<LuaBinding> &module)
 static void registerEffect(CppBindModule<LuaBinding> &module)
 {
     auto eff = BEGIN_CLASS(module, Effect);
-    REG_STATIC_METHOD(eff, Effect, create);
+    REG_FREE_FUNC_AS_STATIC_FUNC_RENAMED(eff, createEffect, "create");
     REG_STATIC_METHOD(eff, Effect, createFromPrefab);
     eff.endClass();
 }
