@@ -11,6 +11,7 @@
 #include "SoloSDLVulkanDevice.h"
 #include "SoloVulkanCamera.h"
 #include "SoloVulkanMaterial.h"
+#include "SoloVulkanMesh.h"
 
 using namespace solo;
 using namespace vk;
@@ -175,48 +176,15 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
                     auto vs = effect->getVertexShader();
                     auto fs = effect->getFragmentShader();
 
-                    struct Vertex
-                    {
-                        Vector2 position;
-                        Vector3 color;
-                    };
-
                     VkDescriptorSetLayout descSetLayoutHandle = test.descSetLayout;
-                    test.pipeline = PipelineBuilder(device, renderPass)
+                    auto &pipelineBuilder = PipelineBuilder(device, renderPass)
                         .withVertexShader(vs, "main")
                         .withFragmentShader(fs, "main")
                         .withDescriptorSetLayouts(&descSetLayoutHandle, 1)
-                        .withVertexSize(sizeof(Vertex))
-                        .withVertexAttribute(0, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, position))
-                        .withVertexAttribute(1, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, color))
-                        .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST)
-                        .build();
-
-                    const auto triangleSize = 1.6f;
-                    std::vector<Vertex> tri1 =
-                    {
-                        {Vector2(0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(1.0f, 0.0f, 0.0f)},
-                        {Vector2(0.0f, -sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 1.0f, 0.0f)},
-                        {Vector2(-0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 0.0f, 1.0f)}
-                    };
-
-                    std::vector<Vertex> tri2 =
-                    {
-                        {Vector2(0.3f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(1.0f, 0.0f, 0.0f)},
-                        {Vector2(0.0f, -sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 1.0f, 0.0f)},
-                        {Vector2(-0.5f * triangleSize, sqrtf(3.0f) * 0.25f * triangleSize), Vector3(0.0f, 0.0f, 1.0f)}
-                    };
-
-                    auto stagingBuffer = Buffer(device, sizeof(decltype(tri1)::value_type) * tri1.size(),
-                        Buffer::Host | Buffer::TransferSrc, physicalDevice.memProperties);
-                    stagingBuffer.update(tri2.data());
-                    stagingBuffer.update(tri1.data());
-                    stagingBuffer.update(tri2.data()); // just smoking
-
-                    test.vertexBuffer = Buffer(device, sizeof(decltype(tri1)::value_type) * tri1.size(),
-                        Buffer::Device | Buffer::Vertex | Buffer::TransferDst, physicalDevice.memProperties);
-                    stagingBuffer.transferTo(test.vertexBuffer, queue, commandPool);
-
+                        .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
+                    cmd.mesh->buildPipeline(pipelineBuilder);
+                    
+                    test.pipeline = pipelineBuilder.build();
                     test.descriptorPool = DescriptorPool(device, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 1);
                     test.descriptorSet = test.descriptorPool.allocateSet(test.descSetLayout);
 
@@ -242,7 +210,7 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
 
                     vkUpdateDescriptorSets(device, 1, &descriptorWrite, 0, nullptr);
 
-                    test.vertexCount = static_cast<uint32_t>(tri1.size());
+                    test.vertexCount = 3;// static_cast<uint32_t>(tri1.size()); TODO
 
                     dirty2 = false;
                 }
@@ -250,7 +218,7 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
                 vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline);
 
                 VkDeviceSize offset = 0;
-                auto vertexBufferHandle = test.vertexBuffer.getHandle();
+                auto vertexBufferHandle = cmd.mesh->getVertexBuffer(0);
 	            vkCmdBindVertexBuffers(buf, 0, 1, &vertexBufferHandle, &offset);
 
                 vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline.getLayout(), 0, 1, &test.descriptorSet, 0, nullptr);

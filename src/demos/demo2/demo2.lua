@@ -28,10 +28,21 @@ function initMainCamera()
     return cam
 end
 
+local mesh = solo.Mesh.create(dev)
+local layout = solo.VertexBufferLayout()
+layout:add(solo.VertexBufferLayoutSemantics.Position, 2)
+layout:add(solo.VertexBufferLayoutSemantics.Color, 3)
+triangleSize = 1.6;
+local meshData = {
+    0.5 * triangleSize, math.sqrt(3.0) * 0.25 * triangleSize, 1.0, 0.0, 0.0,
+    0.0, -math.sqrt(3.0) * 0.25 * triangleSize, 0.0, 1.0, 0.0,
+    -0.5 * triangleSize, math.sqrt(3.0) * 0.25 * triangleSize, 0.0, 0.0, 1.0
+}
+mesh:addVertexBuffer(layout, meshData, 3)
+
 camera = initMainCamera()
 local effect = solo.Effect.createFromPrefab(dev, solo.EffectPrefab.Font)
 local material = solo.Material.create(dev, effect)
-local mesh = solo.Mesh.createFromPrefab(dev, solo.MeshPrefab.Quad)
 local node = scene:createNode()
 local meshRenderer = node:addComponent("MeshRenderer")
 meshRenderer:setMesh(mesh)

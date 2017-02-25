@@ -37,7 +37,7 @@ namespace solo
 
             auto operator=(Buffer other) noexcept -> Buffer&;
 
-            auto getHandle() -> VkBuffer;
+            auto getHandle() const -> VkBuffer;
 
             void update(const void *newData) const;
             void transferTo(const Buffer& other, VkQueue queue, VkCommandPool cmdPool) const;
@@ -51,7 +51,7 @@ namespace solo
             void swap(Buffer &other) noexcept;
         };
 
-        inline auto Buffer::getHandle() -> VkBuffer
+        inline auto Buffer::getHandle() const -> VkBuffer
         {
             return buffer;
         }

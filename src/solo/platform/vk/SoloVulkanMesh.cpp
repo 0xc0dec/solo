@@ -43,6 +43,8 @@ auto vk::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *dat
     stagingBuf.transferTo(buf, renderer->getQueue(), renderer->getCommandPool());
 
     vertexBuffers.push_back(std::move(buf));
+    layouts.push_back(layout);
+    vertexCounts.push_back(vertexCount);
 
     return static_cast<uint32_t>(vertexBuffers.size() - 1);
 }
@@ -61,6 +63,19 @@ void vk::Mesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, 
 
 void vk::Mesh::removeVertexBuffer(uint32_t index)
 {
+}
+
+
+void vk::Mesh::buildPipeline(PipelineBuilder &builder) const
+{
+    auto layout = layouts[0];
+    builder.withVertexSize(layout.getSize());
+    uint32_t offset = 0;
+    for (size_t i = 0; i < layout.getElementCount(); ++i)
+    {
+        builder = builder.withVertexAttribute(i, 0, VK_FORMAT_R32G32_SFLOAT, offset);
+        offset += layout.getElement(i).size * sizeof(float); // TODO shouldn't do sizeof(float) itself
+    }
 }
 
 

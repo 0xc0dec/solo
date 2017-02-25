@@ -86,7 +86,6 @@ namespace solo
             struct
             {
                 Resource<VkDescriptorSetLayout> descSetLayout;
-                Buffer vertexBuffer;
                 DescriptorPool descriptorPool;
                 Buffer uniformBuffer;
                 Pipeline pipeline;
