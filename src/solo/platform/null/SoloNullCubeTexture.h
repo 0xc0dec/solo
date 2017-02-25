@@ -15,7 +15,7 @@ namespace solo
         {
         public:
             void generateMipmaps() override final {}
-            void setData(CubeTextureFace face, TextureFormat format, const uint8_t *data, uint32_t width, uint32_t height) override final {}
+            void setData(CubeTextureFace face, TextureFormat format, const void *data, uint32_t width, uint32_t height) override final {}
         };
     }
 }
