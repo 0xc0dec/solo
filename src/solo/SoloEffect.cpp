@@ -12,7 +12,7 @@
 using namespace solo;
 
 
-auto Effect::create2(Device *device, const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen) -> sptr<Effect>
+auto Effect::create(Device *device, const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen) -> sptr<Effect>
 {
     switch (device->getSetup().mode)
     {
@@ -23,24 +23,6 @@ auto Effect::create2(Device *device, const void *vsSrc, uint32_t vsSrcLen, const
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
             return std::make_shared<vk::Effect>(device, vsSrc, vsSrcLen, fsSrc, fsSrcLen);
-#endif
-        default:
-            return std::make_shared<null::Effect>();
-    }
-}
-
-
-auto Effect::create(Device *device, const std::string &vsSrc, const std::string &fsSrc) -> sptr<Effect>
-{
-    switch (device->getSetup().mode)
-    {
-#ifdef SL_OPENGL_RENDERER
-        case DeviceMode::OpenGL:
-            return std::make_shared<gl::Effect>(device, vsSrc, fsSrc);
-#endif
-#ifdef SL_VULKAN_RENDERER
-        case DeviceMode::Vulkan:
-            return std::make_shared<vk::Effect>(device, vsSrc, fsSrc);
 #endif
         default:
             return std::make_shared<null::Effect>();

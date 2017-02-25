@@ -22,7 +22,7 @@ using namespace solo;
 
 static auto createEffect(Device *device, const std::vector<uint8_t> &vsSrc, const std::vector<uint8_t> &fsSrc) -> sptr<Effect>
 {
-    return Effect::create2(device, vsSrc.data(), vsSrc.size(), fsSrc.data(), fsSrc.size());
+    return Effect::create(device, vsSrc.data(), vsSrc.size(), fsSrc.data(), fsSrc.size());
 }
 
 
