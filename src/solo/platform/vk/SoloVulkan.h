@@ -155,7 +155,7 @@ namespace solo
         auto createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImageView depthAttachment,
             VkRenderPass renderPass, uint32_t width, uint32_t height) -> Resource<VkFramebuffer>;
     
-        auto createShader(VkDevice device, const std::vector<uint8_t> &data) -> Resource<VkShaderModule>;
+        auto createShader(VkDevice device, const void *data, uint32_t size) -> Resource<VkShaderModule>;
         auto createShaderStageInfo(bool vertex, VkShaderModule shader, const char *entryPoint) -> VkPipelineShaderStageCreateInfo;
     
         auto createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,

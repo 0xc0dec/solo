@@ -128,6 +128,7 @@ void vk::Material::bindCameraWorldPositionParameter(const std::string &name)
 
 void vk::Material::applyImpl(const solo::Camera *camera, Transform *nodeTransform)
 {
+    renderer->addRenderCommand(RenderCommand::applyMaterial(this));
 }
 
 

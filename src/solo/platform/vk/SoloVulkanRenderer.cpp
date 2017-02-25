@@ -144,6 +144,10 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
             case RenderCommandType::DrawMesh:
                 break;
 
+            case RenderCommandType::ApplyMaterial:
+                
+                break;
+
             default:
                 break;
         }

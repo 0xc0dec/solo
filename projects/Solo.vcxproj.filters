@@ -292,6 +292,9 @@
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanMaterial.h">
       <Filter>src\platform\vk</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\platform\vk\SoloVulkanEffect.h">
+      <Filter>src\platform\vk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\SoloScene.cpp">
@@ -538,6 +541,9 @@
       <Filter>src\platform\vk</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\platform\vk\SoloVulkanMaterial.cpp">
+      <Filter>src\platform\vk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\platform\vk\SoloVulkanEffect.cpp">
       <Filter>src\platform\vk</Filter>
     </ClCompile>
   </ItemGroup>

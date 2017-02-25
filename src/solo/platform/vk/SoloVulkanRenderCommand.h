@@ -15,13 +15,15 @@ namespace solo
     {
         class Camera;
         class Mesh;
+        class Material;
 
         enum class RenderCommandType
         {
             None,
             BeginCamera,
             EndCamera,
-            DrawMesh
+            DrawMesh,
+            ApplyMaterial
         };
 
         struct RenderCommand
@@ -32,6 +34,7 @@ namespace solo
             {
                 const Camera *camera;
                 const Mesh *mesh;
+                const Material *material;
             };
 
             RenderCommand(RenderCommandType type = RenderCommandType::None): type(type) {}
@@ -53,6 +56,13 @@ namespace solo
             {
                 auto cmd = RenderCommand(RenderCommandType::DrawMesh);
                 cmd.mesh = mesh;
+                return cmd;
+            }
+
+            static auto applyMaterial(const Material *material) -> RenderCommand
+            {
+                auto cmd = RenderCommand(RenderCommandType::ApplyMaterial);
+                cmd.material = material;
                 return cmd;
             }
         };

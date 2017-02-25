@@ -292,14 +292,14 @@ auto vk::createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImage
 }
 
 
-auto vk::createShader(VkDevice device, const std::vector<uint8_t>& data) -> Resource<VkShaderModule>
+auto vk::createShader(VkDevice device, const void *data, uint32_t size) -> Resource<VkShaderModule>
 {
     VkShaderModuleCreateInfo shaderModuleInfo {};
     shaderModuleInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
     shaderModuleInfo.pNext = nullptr;
     shaderModuleInfo.flags = 0;
-    shaderModuleInfo.codeSize = data.size();
-    shaderModuleInfo.pCode = reinterpret_cast<const uint32_t*>(data.data());
+    shaderModuleInfo.codeSize = size;
+    shaderModuleInfo.pCode = reinterpret_cast<const uint32_t*>(data);
 
     Resource<VkShaderModule> module{device, vkDestroyShaderModule};
     SL_VK_CHECK_RESULT(vkCreateShaderModule(device, &shaderModuleInfo, nullptr, module.cleanAndExpose()));
