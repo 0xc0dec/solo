@@ -71,6 +71,17 @@ void Device::initSubsystems()
 }
 
 
+void Device::cleanupSubsystems()
+{
+    // Order matters
+    scriptRuntime.reset();
+    assetLoader.reset();
+    fs.reset();
+    renderer.reset();
+    logger.reset();
+}
+
+
 bool Device::isKeyPressed(KeyCode code, bool firstTime) const
 {
     auto where = pressedKeys.find(code);

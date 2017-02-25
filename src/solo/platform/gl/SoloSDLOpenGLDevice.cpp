@@ -52,6 +52,8 @@ SDLDevice::~SDLDevice()
         SDL_GL_DeleteContext(context);
     if (window)
         SDL_DestroyWindow(window);
+
+    cleanupSubsystems();
 }
 
 

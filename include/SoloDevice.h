@@ -143,6 +143,7 @@ namespace solo
         virtual void endUpdate() = 0;
 
         void initSubsystems();
+        void cleanupSubsystems();
         void updateTime();
     };
 

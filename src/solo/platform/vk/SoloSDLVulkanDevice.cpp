@@ -92,10 +92,7 @@ SDLDevice::SDLDevice(const DeviceSetup &setup):
 
 SDLDevice::~SDLDevice()
 {
-    // Force cleanup order - we don't want Vulkan objects to be destroyed after the device.
-    // TODO better solution
-    scriptRuntime.reset();
-    renderer.reset();
+    cleanupSubsystems();
 }
 
 
