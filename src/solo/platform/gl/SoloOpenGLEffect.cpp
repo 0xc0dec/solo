@@ -28,10 +28,16 @@ auto gl::Effect::create(Device *device, EffectPrefab prefab) -> sptr<Effect>
 }
 
 
-gl::Effect::Effect(Device *device, const std::string &vsSrc, const std::string &fsSrc)
+gl::Effect::Effect(Device *device, const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen)
 {
     renderer = dynamic_cast<Renderer *>(device->getRenderer());
-    handle = renderer->createProgram(vsSrc.c_str(), fsSrc.c_str());
+    handle = renderer->createProgram(vsSrc, vsSrcLen, fsSrc, fsSrcLen);
+}
+
+
+gl::Effect::Effect(Device *device, const std::string &vsSrc, const std::string &fsSrc):
+    Effect(device, vsSrc.data(), vsSrc.size(), fsSrc.data(), fsSrc.size())
+{
 }
 
 

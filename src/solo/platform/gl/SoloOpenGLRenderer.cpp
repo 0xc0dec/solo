@@ -157,7 +157,7 @@ static auto linkProgram(GLuint vs, GLuint fs) -> GLint
 }
 
 
-static auto compileShader(GLuint type, const char *src) -> GLint
+static auto compileShader(GLuint type, const void *src, uint32_t length) -> GLint
 {
     static std::unordered_map<GLuint, std::string> typeNames =
     {
@@ -167,7 +167,8 @@ static auto compileShader(GLuint type, const char *src) -> GLint
 
     auto shader = glCreateShader(type);
 
-    glShaderSource(shader, 1, &src, nullptr);
+    GLint len = length;
+    glShaderSource(shader, 1, reinterpret_cast<const GLchar* const*>(&src), &len);
     glCompileShader(shader);
 
     GLint status;
@@ -676,10 +677,10 @@ void gl::Renderer::destroyIndexBuffer(uint32_t handle)
 }
 
 
-auto gl::Renderer::createProgram(const char *vsSrc, const char *fsSrc) -> uint32_t
+auto gl::Renderer::createProgram(const void *vsSrc, uint32_t vsSrcLength, const void *fsSrc, uint32_t fsSrcLength) -> uint32_t
 {
-    auto vs = compileShader(GL_VERTEX_SHADER, vsSrc);
-    auto fs = compileShader(GL_FRAGMENT_SHADER, fsSrc);
+    auto vs = compileShader(GL_VERTEX_SHADER, vsSrc, vsSrcLength);
+    auto fs = compileShader(GL_FRAGMENT_SHADER, fsSrc, fsSrcLength);
     auto program = ::linkProgram(vs, fs);
 
     glDetachShader(program, vs);

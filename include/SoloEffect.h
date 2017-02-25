@@ -23,6 +23,8 @@ namespace solo
     public:
         SL_DISABLE_COPY_AND_MOVE(Effect)
 
+        static auto create2(Device *device, const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen) -> sptr<Effect>;
+        // TODO remove
         static auto create(Device *device, const std::string &vsSrc, const std::string &fsSrc) -> sptr<Effect>;
         static auto createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effect>;
 

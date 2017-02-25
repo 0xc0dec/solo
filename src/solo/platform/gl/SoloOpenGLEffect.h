@@ -23,6 +23,7 @@ namespace solo
         public:
             static auto create(Device *device, EffectPrefab prefab) -> sptr<Effect>;
 
+            Effect(Device *device, const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen);
             Effect(Device *device, const std::string &vsSrc, const std::string &fsSrc);
             ~Effect();
 

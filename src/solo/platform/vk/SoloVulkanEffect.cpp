@@ -24,6 +24,12 @@ auto vk::Effect::create(Device *device, EffectPrefab prefab) -> sptr<Effect>
 }
 
 
+vk::Effect::Effect(Device *device, const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen)
+{
+
+}
+
+
 vk::Effect::Effect(Device *device, const std::string &vsSrc, const std::string &fsSrc)
 {
     renderer = dynamic_cast<Renderer *>(device->getRenderer());

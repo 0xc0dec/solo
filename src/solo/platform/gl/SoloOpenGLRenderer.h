@@ -72,7 +72,7 @@ namespace solo
             auto createIndexBuffer(const void *data, uint32_t elementSize, uint32_t elementCount) -> uint32_t;
             void destroyIndexBuffer(uint32_t handle);
 
-            auto createProgram(const char *vsSrc, const char *fsSrc) -> uint32_t;
+            auto createProgram(const void *vsSrc, uint32_t vsSrcLength, const void *fsSrc, uint32_t fsSrcLength) -> uint32_t;
             void destroyProgram(uint32_t handle);
             void setProgram(uint32_t handle);
 
