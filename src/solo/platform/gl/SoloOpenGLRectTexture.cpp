@@ -31,7 +31,7 @@ void gl::RectTexture::generateMipmaps()
 }
 
 
-void gl::RectTexture::setData(TextureFormat format, const uint8_t *data, uint32_t width, uint32_t height)
+void gl::RectTexture::setData(TextureFormat format, const void *data, uint32_t width, uint32_t height)
 {
     renderer->updateRectTexture(handle, format, width, height, data);
     size = {static_cast<float>(width), static_cast<float>(height)};

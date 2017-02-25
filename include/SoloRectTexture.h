@@ -17,7 +17,7 @@ namespace solo
     public:
         static sptr<RectTexture> create(Device *device);
 
-        virtual void setData(TextureFormat format, const uint8_t *data, uint32_t width, uint32_t height) = 0;
+        virtual void setData(TextureFormat format, const void *data, uint32_t width, uint32_t height) = 0;
 
         auto getSize() const -> Vector2;
 
