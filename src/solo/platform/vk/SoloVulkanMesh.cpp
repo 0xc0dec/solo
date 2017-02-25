@@ -31,7 +31,7 @@ vk::Mesh::~Mesh()
 }
 
 
-auto vk::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount) -> uint32_t
+auto vk::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
 {
     auto stagingBuf = Buffer(renderer->getDevice(), layout.getSize() * vertexCount,
         Buffer::Host | Buffer::TransferSrc, renderer->getPhysicalDeviceMemProps());
@@ -48,13 +48,13 @@ auto vk::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const float *da
 }
 
 
-auto vk::Mesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount) -> uint32_t
+auto vk::Mesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
 {
     return 0;
 }
 
 
-void vk::Mesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const float *data, uint32_t vertexCount)
+void vk::Mesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const void *data, uint32_t vertexCount)
 {
 }
 

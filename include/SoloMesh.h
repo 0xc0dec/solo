@@ -42,9 +42,9 @@ namespace solo
 
         virtual ~Mesh() {}
 
-        virtual auto addVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount) -> uint32_t = 0;
-        virtual auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount) -> uint32_t = 0;
-        virtual void updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const float *data, uint32_t vertexCount) = 0;
+        virtual auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t = 0;
+        virtual auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t = 0;
+        virtual void updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const void *data, uint32_t vertexCount) = 0;
         virtual void removeVertexBuffer(uint32_t index) = 0;
 
         virtual auto addPart(const void *indexData, uint32_t indexElementCount) -> uint32_t = 0;

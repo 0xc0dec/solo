@@ -90,21 +90,21 @@ void gl::Mesh::updateMinVertexCount()
 }
 
 
-auto gl::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount) -> uint32_t
+auto gl::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
 {
     auto handle = renderer->createVertexBuffer(layout, data, vertexCount);
     return addVertexBuffer(handle, layout, vertexCount);
 }
 
 
-auto gl::Mesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const float *data, uint32_t vertexCount) -> uint32_t
+auto gl::Mesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
 {
     auto handle = renderer->createDynamicVertexBuffer(layout, data, vertexCount);
     return addVertexBuffer(handle, layout, vertexCount);
 }
 
 
-void gl::Mesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const float *data, uint32_t vertexCount)
+void gl::Mesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const void *data, uint32_t vertexCount)
 {
     const auto &handle = vertexBuffers[index];
     auto vertexSize = vertexSizes[index];
