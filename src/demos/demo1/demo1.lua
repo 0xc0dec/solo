@@ -183,7 +183,7 @@ end
 
 function initCurrentTimeLabel()
     local node = scene:createNode()
-    node:addScriptComponent(createTimeLabelUpdater(dev, fs))
+    node:addScriptComponent(createTimeLabelUpdater(dev, fs, getAssetPath))
     node:findComponent("FontRenderer"):setTag(knownTags.transparent)
     node:findComponent("Transform"):setLocalScale(vec3(0.02, 0.02, 1))
     node:findComponent("Transform"):setLocalPosition(vec3(-3, 0, 4))
@@ -332,7 +332,7 @@ function update()
 
     if dev:isKeyPressed(solo.KeyCode.Digit2, true) then
         detachPostProcessor()
-        pp = postProcessors.create2(dev, loader, mainCamera, knownTags.postProcessor, shaders)
+        pp = postProcessors.create2(dev, loader, mainCamera, knownTags.postProcessor, shaders, getAssetPath)
     end
 
     if dev:isKeyPressed(solo.KeyCode.Digit3, true) then

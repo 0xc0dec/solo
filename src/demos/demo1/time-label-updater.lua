@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-return function(device, fs)
+return function(device, fs, getAssetPath)
     local textureWidth = 1024
     local textureHeight = 1024
     local lineHeight = 60
