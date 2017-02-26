@@ -4,6 +4,7 @@
 -- 
 
 return function(dev, effects, node, mesh)
+	-- TODO cache materials
 	local createColorMaterial = function(color)
 	    local mat = solo.Material.create(dev, effects.color)
 	    mat:setFaceCull(solo.FaceCull.All)
