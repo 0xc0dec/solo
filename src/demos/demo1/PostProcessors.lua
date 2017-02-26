@@ -97,7 +97,7 @@ function createPostProcessor2(device, loader, camera, tag, shaders, getAssetPath
     local stitchWidth = 30
     local canvasSize = device:getCanvasSize()
 
-    local stitchTex = loader:loadRectTexture(getAssetPath("stitches.png"))
+    local stitchTex = loader:loadRectTexture(getAssetPath("Stitches.png"))
     stitchTex:setFiltering(solo.TextureFiltering.Nearest)
 
     local stitchTexSize = stitchTex:getSize()

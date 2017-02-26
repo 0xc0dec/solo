@@ -10,7 +10,7 @@ int main()
     using namespace solo;
 
     auto confRuntime = ScriptRuntime::createExternal();
-    confRuntime->executeFile("../../src/demos/demo2/demo2.init.lua");
+    confRuntime->executeFile("../../src/demos/demo2/Demo2.init.lua");
 
     DeviceSetup setup;
     setup.mode = static_cast<DeviceMode>(confRuntime->getInt("deviceMode"));
@@ -19,7 +19,7 @@ int main()
     setup.logFilePath = confRuntime->getString("logFilePath");
     
     auto device = Device::create(setup);
-    device->getScriptRuntime()->executeFile("../../src/demos/demo2/demo2.lua");
+    device->getScriptRuntime()->executeFile("../../src/demos/demo2/Demo2.lua");
     
     return 0;
 }

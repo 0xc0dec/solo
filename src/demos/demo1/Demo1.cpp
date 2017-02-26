@@ -13,11 +13,11 @@ int main()
     DeviceSetup setup;
     setup.mode = DeviceMode::Null;
     auto device = Device::create(setup);
-    device->getScriptRuntime()->executeFile("../../src/tests/tests.lua");
+    device->getScriptRuntime()->executeFile("../../src/tests/Tests.lua");
 
     // Run demo
     auto confRuntime = ScriptRuntime::createExternal();
-    confRuntime->executeFile("../../src/demos/demo1/demo1.init.lua");
+    confRuntime->executeFile("../../src/demos/demo1/Demo1.init.lua");
 
     setup.mode = static_cast<DeviceMode>(confRuntime->getInt("deviceMode"));
     setup.canvasWidth = confRuntime->getInt("canvasWidth");
@@ -25,7 +25,7 @@ int main()
     setup.logFilePath = confRuntime->getString("logFilePath");
     
     device = Device::create(setup);
-    device->getScriptRuntime()->executeFile("../../src/demos/demo1/demo1.lua");
+    device->getScriptRuntime()->executeFile("../../src/demos/demo1/Demo1.lua");
     
     return 0;
 }

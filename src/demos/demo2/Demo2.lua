@@ -5,7 +5,7 @@
 
 -- TODO avoid using globals in functions
 
-dofile("../../src/demos/common/common.lua")
+dofile("../../src/demos/common/Common.lua")
 
 dev = solo.device
 loader = dev:getAssetLoader()
@@ -30,8 +30,8 @@ end
 
 local mesh = solo.Mesh.create(dev)
 local layout = solo.VertexBufferLayout()
-layout:add(solo.VertexBufferLayoutSemantics.Position, 2)
-layout:add(solo.VertexBufferLayoutSemantics.Color, 3)
+layout:addAttribute(2, 0)
+layout:addAttribute(3, 1)
 triangleSize = 1.6;
 local meshData = {
     0.5 * triangleSize, math.sqrt(3.0) * 0.25 * triangleSize, 1.0, 0.0, 0.0,

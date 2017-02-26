@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-local createSpawnedObject = dofile("../../src/demos/demo1/spawned-object.lua")
+local createSpawnedObject = dofile("../../src/demos/demo1/SpawnedObject.lua")
 
 return function(device, mesh, effect)
     return {

@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-dofile("../../src/demos/common/common.lua")
+dofile("../../src/demos/common/Common.lua")
 
 collectgarbage("setpause", 100)
 
@@ -20,15 +20,15 @@ fs = dev:getFileSystem()
 scene = solo.Scene.create(dev)
 canvasSize = dev:getCanvasSize()
 
-createScreenshoter = dofile("../../src/demos/common/screenshoter.lua")
-createRotator = dofile("../../src/demos/common/rotator.lua")
-createLookAt = dofile("../../src/demos/common/lookat.lua")
-createDynamicQuadUpdater = dofile("../../src/demos/demo1/dynamic-quad-updater.lua")
-createTimeLabelUpdater = dofile("../../src/demos/demo1/time-label-updater.lua")
-createSpawner = dofile("../../src/demos/demo1/spawner.lua")
-createSpawnedObjectTargeter = dofile("../../src/demos/demo1/spawned-object-targeter.lua")
-postProcessors = dofile("../../src/demos/demo1/post-processors.lua")
-shaders = dofile("../../src/demos/demo1/shaders.lua")(fs, getAssetPath)
+createScreenshoter = dofile("../../src/demos/common/Screenshoter.lua")
+createRotator = dofile("../../src/demos/common/Rotator.lua")
+createLookAt = dofile("../../src/demos/common/LookAt.lua")
+createDynamicQuadUpdater = dofile("../../src/demos/demo1/DynamicQuadUpdater.lua")
+createTimeLabelUpdater = dofile("../../src/demos/demo1/TimeLabelUpdater.lua")
+createSpawner = dofile("../../src/demos/demo1/Spawner.lua")
+createSpawnedObjectTargeter = dofile("../../src/demos/demo1/SpawnedObjectTargeter.lua")
+postProcessors = dofile("../../src/demos/demo1/PostProcessors.lua")
+shaders = dofile("../../src/demos/demo1/Shaders.lua")(fs, getAssetPath)
 
 knownTags = {
     skybox = 1 << 1,
@@ -69,7 +69,7 @@ function initMainCamera()
     t:setLocalPosition(vec3(0, 5, 10))
     t:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
     
-    node:addScriptComponent(createScreenshoter(dev, "demo1.bmp"))
+    node:addScriptComponent(createScreenshoter(dev, "Demo1.bmp"))
     node:addComponent("Spectator")
     node:addScriptComponent(createSpawnedObjectTargeter(physics))
     node:addScriptComponent(createSpawner(dev, meshes.cube, effects.color))
@@ -105,8 +105,8 @@ end
 function initSkybox()
     local getImagePath = function(fileName) return getAssetPath("skyboxes/deep-space/") .. fileName end
     loader:loadCubeTextureAsync({
-        getImagePath("front.png"), getImagePath("back.png"), getImagePath("left.png"),
-        getImagePath("right.png"), getImagePath("top.png"), getImagePath("bottom.png")
+        getImagePath("Front.png"), getImagePath("Back.png"), getImagePath("Left.png"),
+        getImagePath("Right.png"), getImagePath("Top.png"), getImagePath("Bottom.png")
     }):done(function(tex)
         tex:setWrapping(solo.TextureWrapping.Clamp)
         tex:setFiltering(solo.TextureFiltering.Linear)
@@ -142,7 +142,7 @@ function loadTextureAsync(path, callback)
 end
 
 function initDynamicQuad()
-    loadTextureAsync(getAssetPath("freeman.png"), function(tex)
+    loadTextureAsync(getAssetPath("Freeman.png"), function(tex)
         tex:setWrapping(solo.TextureWrapping.Clamp)
 
         local layout = solo.VertexBufferLayout()
@@ -198,7 +198,7 @@ function initMonkeyHead(tex)
     material:bindInvTransposedWorldMatrixParameter("invTransposedWorldMatrix")
     material:setTextureParameter("mainTex", tex)
 
-    loader:loadMeshAsync(getAssetPath("monkey_hires.obj")):done(function(mesh)
+    loader:loadMeshAsync(getAssetPath("MonkeyHD.obj")):done(function(mesh)
         local node = scene:createNode()
         local renderer = node:addComponent("MeshRenderer")
         renderer:setMesh(mesh)
@@ -265,7 +265,7 @@ function initMonitorQuad(axesMesh)
 end
 
 function initTransparentQuad(axesMesh)
-    loadTextureAsync(getAssetPath("flammable.png"), function(tex)
+    loadTextureAsync(getAssetPath("Flammable.png"), function(tex)
         tex:setWrapping(solo.TextureWrapping.Clamp)
 
         local material = solo.Material.create(dev, effects.simpleTexture)
@@ -299,12 +299,12 @@ initSkybox()
 initCheckerBox()
 initDynamicQuad()
 initCurrentTimeLabel()
-loadTextureAsync(getAssetPath("cobblestone.png"), function(tex)
+loadTextureAsync(getAssetPath("Cobblestone.png"), function(tex)
     initMonkeyHead(tex)
     initFloor(tex)
 end)
 
-loader:loadMeshAsync(getAssetPath("axes.obj")):done(function(mesh)
+loader:loadMeshAsync(getAssetPath("Axes.obj")):done(function(mesh)
     initMonitorQuad(mesh)
     initTransparentQuad(mesh)
 end)
