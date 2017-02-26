@@ -232,12 +232,16 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
 
                 vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline);
 
-                VkDeviceSize offset = 0;
-                auto vertexBufferHandle = cmd.mesh->getVertexBuffer(0);
-	            vkCmdBindVertexBuffers(buf, 0, 1, &vertexBufferHandle, &offset);
-
                 vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline.getLayout(), 0, 1, &test.descriptorSet, 0, nullptr);
 
+                VkDeviceSize offset = 0;
+
+                auto vertexBufferHandle = cmd.mesh->getVertexBuffer(0);
+	            vkCmdBindVertexBuffers(buf, 0, 1, &vertexBufferHandle, &offset);
+                vkCmdDraw(buf, test.vertexCount, 1, 0, 0);
+
+                vertexBufferHandle = cmd.mesh->getVertexBuffer(1);
+	            vkCmdBindVertexBuffers(buf, 0, 1, &vertexBufferHandle, &offset);
                 vkCmdDraw(buf, test.vertexCount, 1, 0, 0);
                 
                 break;

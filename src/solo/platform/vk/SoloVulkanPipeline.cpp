@@ -96,7 +96,7 @@ auto PipelineBuilder::build() -> Pipeline
     rasterState.rasterizerDiscardEnable = false;
     rasterState.polygonMode = VK_POLYGON_MODE_FILL;
     rasterState.cullMode = VK_CULL_MODE_BACK_BIT;
-    rasterState.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
+    rasterState.frontFace = VK_FRONT_FACE_CLOCKWISE;
     rasterState.depthBiasEnable = false;
     rasterState.depthBiasClamp = 0;
     rasterState.depthBiasConstantFactor = 0;
