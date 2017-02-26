@@ -15,6 +15,7 @@ namespace solo
     class Material;
     class Mesh;
     class Transform;
+    class Renderer;
 
     class MeshRenderer final: public ComponentBase<MeshRenderer>
     {
@@ -33,6 +34,7 @@ namespace solo
     private:
         sptr<Mesh> mesh;
         Transform *transform = nullptr;
+        Renderer *renderer = nullptr;
         std::unordered_map<uint32_t, sptr<Material>> materials;
     };
 

@@ -9,12 +9,14 @@
 #include "SoloRenderContext.h"
 #include "SoloCubeTexture.h"
 #include "SoloTransform.h"
+#include "SoloDevice.h"
 
 using namespace solo;
 
 
 SkyboxRenderer::SkyboxRenderer(const Node &node):
-    ComponentBase(node)
+    ComponentBase(node),
+    renderer(node.getScene()->getDevice()->getRenderer())
 {
     transform = node.findComponent<Transform>();
 
@@ -34,8 +36,8 @@ SkyboxRenderer::SkyboxRenderer(const Node &node):
 
 void SkyboxRenderer::render(const RenderContext &context)
 {
-    material->apply(context.camera, transform);
-    quadMesh->draw();
+    renderer->addRenderCommand(RenderCommand::applyMaterial(material.get()));
+    renderer->addRenderCommand(RenderCommand::drawMesh(quadMesh.get()));
 }
 
 

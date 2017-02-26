@@ -50,9 +50,6 @@ namespace solo
         virtual void removePart(uint32_t index) = 0;
         virtual auto getPartCount() const -> uint32_t = 0;
 
-        virtual void draw() = 0;
-        virtual void drawPart(uint32_t part) = 0;
-
         virtual auto getPrimitiveType() const -> PrimitiveType = 0;
         virtual void setPrimitiveType(PrimitiveType type) = 0;
 

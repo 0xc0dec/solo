@@ -106,6 +106,75 @@ namespace solo
         Bottom
     };
 
+    class Camera;
+    class Mesh;
+    class Material;
+
+    // TODO move to separate file
+    enum class RenderCommandType
+    {
+        None,
+        BeginCamera,
+        EndCamera,
+        DrawMesh,
+        DrawMeshPart,
+        ApplyMaterial
+    };
+
+    struct RenderCommand
+    {
+        RenderCommandType type = RenderCommandType::None;
+
+        union
+        {
+            const Camera *camera;
+            struct
+            {
+                const Mesh *mesh;
+                uint32_t part;
+            } meshPart;
+            const Mesh *mesh;
+            const Material *material;
+        };
+
+        explicit RenderCommand(RenderCommandType type = RenderCommandType::None): type(type) {}
+
+        static auto beginCamera(const Camera *camera) -> RenderCommand
+        {
+            auto cmd = RenderCommand(RenderCommandType::BeginCamera);
+            cmd.camera = camera;
+            return cmd;
+        }
+
+        static auto endCamera() -> RenderCommand
+        {
+            auto cmd = RenderCommand(RenderCommandType::EndCamera);
+            return cmd;
+        }
+
+        static auto drawMesh(const Mesh *mesh) -> RenderCommand
+        {
+            auto cmd = RenderCommand(RenderCommandType::DrawMesh);
+            cmd.mesh = mesh;
+            return cmd;
+        }
+
+        static auto drawMeshPart(const Mesh *mesh, uint32_t part) -> RenderCommand
+        {
+            auto cmd = RenderCommand(RenderCommandType::DrawMeshPart);
+            cmd.meshPart.mesh = mesh;
+            cmd.meshPart.part = part;
+            return cmd;
+        }
+
+        static auto applyMaterial(const Material *material) -> RenderCommand
+        {
+            auto cmd = RenderCommand(RenderCommandType::ApplyMaterial);
+            cmd.material = material;
+            return cmd;
+        }
+    };
+
     class Renderer
     {
     public:
@@ -116,6 +185,8 @@ namespace solo
         virtual ~Renderer() {}
 
         void renderFrame(std::function<void()> render);
+
+        virtual void addRenderCommand(const RenderCommand &cmd) = 0;
 
     protected:
         Renderer() {}

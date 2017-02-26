@@ -9,6 +9,8 @@
 
 #include "SoloDevice.h"
 #include "SoloLogger.h"
+#include "SoloOpenGLCamera.h"
+#include "SoloOpenGLMaterial.h"
 #include <algorithm>
 #include <unordered_map>
 
@@ -268,6 +270,12 @@ gl::Renderer::~Renderer()
 
     while (!textures.empty())
         destroyTexture(textures.begin()->first);
+}
+
+
+void gl::Renderer::addRenderCommand(const solo::RenderCommand &cmd)
+{
+    renderCommands.push_back(cmd);
 }
 
 
@@ -749,6 +757,69 @@ void gl::Renderer::draw(PrimitiveType primitiveType, uint32_t vertexArrayHandle,
 }
 
 
+void gl::Renderer::beginFrame()
+{
+    // TODO do not clear and update only when something's changed
+    renderCommands.clear();
+}
+
+
+void gl::Renderer::endFrame()
+{
+    for (const auto &cmd: renderCommands)
+    {
+        switch (cmd.type)
+        {
+            case RenderCommandType::BeginCamera:
+            {
+                auto cam = cmd.camera;
+                auto viewport = cam->getViewport();
+                glViewport(viewport.x, viewport.y, viewport.z, viewport.w);
+
+                glDepthMask(GL_TRUE);
+                glEnable(GL_DEPTH_TEST);
+
+                if (cam->isClearColorEnabled())
+                {
+                    auto color = cam->getClearColor();
+                    glClearColor(color.x, color.y, color.z, color.w);
+                }
+
+                GLbitfield flags = (cam->isClearColorEnabled() ? GL_COLOR_BUFFER_BIT : 0) |
+                    (cam->isClearDepthEnabled() ? GL_DEPTH_BUFFER_BIT : 0);
+                glClear(flags);
+
+                break;
+            }
+
+            case RenderCommandType::EndCamera:
+                break;
+
+            case RenderCommandType::DrawMesh:
+                break;
+
+            case RenderCommandType::ApplyMaterial:
+            {
+                // TODO apply effect
+
+                // TODO hide these setters from public
+                setFaceCull(cmd.material->getFaceCull());
+                setPolygonMode(cmd.material->getPolygonMode());
+                setDepthTest(cmd.material->getDepthTest());
+                setDepthWrite(cmd.material->getDepthWrite());
+                setDepthFunction(cmd.material->getDepthFunction());
+                setBlend(cmd.material->getBlend());
+                setBlendFactor(cmd.material->getSrcBlendFactor(), cmd.material->getDstBlendFactor());
+
+                break;
+            }
+
+            default: break;
+        }
+    }
+}
+
+
 auto gl::Renderer::createUniform(const char *name, UniformType type, uint32_t programHandle) -> uint32_t
 {
     auto rawProgramHandle = programs.at(programHandle);
@@ -886,19 +957,19 @@ void gl::Renderer::setFaceCull(FaceCull cull)
 {
     switch (cull)
     {
-    case FaceCull::All:
-        glDisable(GL_CULL_FACE);
-        break;
-    case FaceCull::CW:
-        glEnable(GL_CULL_FACE);
-        glFrontFace(GL_CW);
-        break;
-    case FaceCull::CCW:
-        glEnable(GL_CULL_FACE);
-        glFrontFace(GL_CCW);
-        break;
-    default:
-        break;
+        case FaceCull::All:
+            glDisable(GL_CULL_FACE);
+            break;
+        case FaceCull::CW:
+            glEnable(GL_CULL_FACE);
+            glFrontFace(GL_CW);
+            break;
+        case FaceCull::CCW:
+            glEnable(GL_CULL_FACE);
+            glFrontFace(GL_CCW);
+            break;
+        default:
+            break;
     }
 }
 

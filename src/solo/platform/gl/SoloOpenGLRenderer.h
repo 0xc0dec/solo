@@ -46,6 +46,8 @@ namespace solo
             explicit Renderer(Device *device);
             ~Renderer();
 
+            void addRenderCommand(const solo::RenderCommand &cmd) override final;
+
             auto createTexture() -> uint32_t;
             void destroyTexture(uint32_t handle);
             void setRectTexture(uint32_t handle);
@@ -102,8 +104,8 @@ namespace solo
             void draw(PrimitiveType primitiveType, uint32_t vertexArrayHandle, uint32_t vertexCount);
 
         protected:
-            void beginFrame() override final {}
-            void endFrame() override final {}
+            void beginFrame() override final;
+            void endFrame() override final;
 
         private:
             struct FrameBuffer
@@ -159,6 +161,8 @@ namespace solo
             std::unordered_map<uint32_t, GLuint> programs;
             std::unordered_map<uint32_t, GLuint> vertexArrays;
             std::unordered_map<uint32_t, Uniform> uniforms;
+
+            std::vector<RenderCommand> renderCommands;
 
             void bindFrameBuffer(uint32_t handle);
             void bindTexture(GLenum target, uint32_t handle);

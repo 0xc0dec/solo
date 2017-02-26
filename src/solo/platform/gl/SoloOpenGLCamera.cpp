@@ -31,6 +31,15 @@ void gl::Camera::beginFrame() const
     renderer->setDepthWrite(true);
     renderer->setDepthTest(true);
     renderer->clear(clearFlags.color, clearFlags.depth, clearColor.x, clearColor.y, clearColor.z, clearColor.w);
+
+    renderer->addRenderCommand(RenderCommand::beginCamera(this));
 }
+
+
+void gl::Camera::endFrame() const
+{
+    renderer->addRenderCommand(RenderCommand::endCamera());
+}
+
 
 #endif

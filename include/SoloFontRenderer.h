@@ -17,6 +17,7 @@ namespace solo
     class Mesh;
     class Material;
     class Transform;
+    class Renderer;
 
     class FontRenderer final: public ComponentBase<FontRenderer>
     {
@@ -29,6 +30,7 @@ namespace solo
         void setText(const std::string &text);
 
     private:
+        Renderer *renderer = nullptr;
         Transform *transform = nullptr;
         sptr<Font> font;
         sptr<Mesh> mesh;

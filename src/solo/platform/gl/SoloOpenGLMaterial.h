@@ -90,9 +90,9 @@ namespace solo
             StrSet invTransWorldViewMatrixParams;
             StrSet camWorldPosParams;
 
-            void applyImpl(const Camera *camera, Transform *nodeTransform) override final;
+            void applyImpl(const solo::Camera *camera, Transform *nodeTransform) override final;
             void applyState();
-            void applyParams(const Camera *camera, Transform *nodeTransform);
+            void applyParams(const solo::Camera *camera, Transform *nodeTransform);
 
             template <class T>
             void applyScalarParams(StrKeyMap<T> &params);

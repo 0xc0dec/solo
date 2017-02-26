@@ -9,13 +9,15 @@
 #include "SoloMaterial.h"
 #include "SoloRenderContext.h"
 #include "SoloTransform.h"
+#include "SoloDevice.h"
 #include "SoloRectTexture.h"
 
 using namespace solo;
 
 
-FontRenderer::FontRenderer(const Node &node):
-    ComponentBase(node)
+FontRenderer::FontRenderer(const Node &node) :
+    ComponentBase(node),
+    renderer(node.getScene()->getDevice()->getRenderer())
 {
     transform = node.findComponent<Transform>();
 
@@ -33,8 +35,8 @@ void FontRenderer::render(const RenderContext &context)
 {
     if (!mesh)
         return;
-    material->apply(context.camera, transform);
-    mesh->draw();
+    renderer->addRenderCommand(RenderCommand::applyMaterial(material.get()));
+    renderer->addRenderCommand(RenderCommand::drawMesh(mesh.get()));
 }
 
 

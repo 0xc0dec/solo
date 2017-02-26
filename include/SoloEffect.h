@@ -7,7 +7,6 @@
 
 #include "SoloCommon.h"
 
-
 namespace solo
 {
     class Device;
@@ -27,8 +26,6 @@ namespace solo
         static auto createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effect>;
 
         virtual ~Effect() {}
-
-        virtual void apply() = 0;
 
     protected:
         Effect() {}

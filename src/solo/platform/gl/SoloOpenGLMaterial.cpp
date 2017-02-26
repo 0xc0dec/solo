@@ -31,7 +31,7 @@ gl::Material::~Material()
 }
 
 
-void gl::Material::applyImpl(const Camera *camera, Transform *nodeTransform)
+void gl::Material::applyImpl(const solo::Camera *camera, Transform *nodeTransform)
 {
     applyState();
     applyParams(camera, nodeTransform);
@@ -50,7 +50,7 @@ void gl::Material::applyState()
 }
 
 
-void gl::Material::applyParams(const Camera *camera, Transform *nodeTransform)
+void gl::Material::applyParams(const solo::Camera *camera, Transform *nodeTransform)
 {
     if (!this->effect) // TODO needed?
         return;

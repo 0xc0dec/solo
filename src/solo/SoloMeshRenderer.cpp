@@ -8,12 +8,14 @@
 #include "SoloMaterial.h"
 #include "SoloRenderContext.h"
 #include "SoloTransform.h"
+#include "SoloDevice.h"
 
 using namespace solo;
 
 
 MeshRenderer::MeshRenderer(const Node &node):
-    ComponentBase(node)
+    ComponentBase(node),
+    renderer(node.getScene()->getDevice()->getRenderer())
 {
     transform = node.findComponent<Transform>();
 }
@@ -30,8 +32,8 @@ void MeshRenderer::render(const RenderContext &context)
         auto material = getMaterial(0);
         if (material)
         {
-            material->apply(context.camera, transform);
-            mesh->draw();
+            renderer->addRenderCommand(RenderCommand::applyMaterial(material));
+            renderer->addRenderCommand(RenderCommand::drawMesh(mesh.get()));
         }
     }
     else
@@ -41,8 +43,8 @@ void MeshRenderer::render(const RenderContext &context)
             auto material = getMaterial(part);
             if (material)
             {
-                material->apply(context.camera, transform);
-                mesh->drawPart(part);
+                renderer->addRenderCommand(RenderCommand::applyMaterial(material));
+                renderer->addRenderCommand(RenderCommand::drawMeshPart(mesh.get(), part));
             }
         }
     }
