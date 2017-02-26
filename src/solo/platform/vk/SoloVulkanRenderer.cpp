@@ -73,7 +73,7 @@ vk::Renderer::~Renderer()
 
 void vk::Renderer::beginFrame()
 {
-    currentBuffer = swapchain.getNextImageIndex(semaphores.presentComplete);
+    currentSwapchainStep = swapchain.getNextStep(semaphores.presentComplete);
     prevRenderCommands = std::move(renderCommands);
     renderCommands = std::vector<RenderCommand>(100); // TODO just picked random constant
 }
@@ -97,7 +97,7 @@ void vk::Renderer::endFrame()
 	submitInfo.signalSemaphoreCount = 1;
 	submitInfo.pSignalSemaphores = &semaphores.renderComplete;
     submitInfo.commandBufferCount = 1;
-	submitInfo.pCommandBuffers = &renderCmdBuffers[currentBuffer];
+	submitInfo.pCommandBuffers = &renderCmdBuffers[currentSwapchainStep];
     SL_VK_CHECK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, VK_NULL_HANDLE));
 
     auto swapchainHandle = swapchain.getHandle();
@@ -106,7 +106,7 @@ void vk::Renderer::endFrame()
 	presentInfo.pNext = nullptr;
 	presentInfo.swapchainCount = 1;
 	presentInfo.pSwapchains = &swapchainHandle;
-	presentInfo.pImageIndices = &currentBuffer;
+	presentInfo.pImageIndices = &currentSwapchainStep;
 	presentInfo.pWaitSemaphores = &semaphores.renderComplete;
 	presentInfo.waitSemaphoreCount = 1;
     SL_VK_CHECK_RESULT(vkQueuePresentKHR(queue, &presentInfo));

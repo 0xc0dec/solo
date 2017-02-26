@@ -74,7 +74,7 @@ namespace solo
 
             std::vector<VkCommandBuffer> renderCmdBuffers;
             VkCommandBuffer mainRenderCmdBuffer;
-            uint32_t currentBuffer = 0;
+            uint32_t currentSwapchainStep = 0;
 
             bool dirty = true;
 

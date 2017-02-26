@@ -140,7 +140,7 @@ auto Swapchain::operator=(Swapchain other) noexcept -> Swapchain&
 }
 
 
-auto Swapchain::getNextImageIndex(VkSemaphore semaphore) const -> uint32_t
+auto Swapchain::getNextStep(VkSemaphore semaphore) const -> uint32_t
 {
     uint32_t result;
     SL_VK_CHECK_RESULT(vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, semaphore, nullptr, &result));

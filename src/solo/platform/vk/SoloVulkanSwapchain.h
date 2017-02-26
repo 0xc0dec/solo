@@ -28,7 +28,7 @@ namespace solo
 
             auto operator=(Swapchain other) noexcept -> Swapchain&;
 
-            auto getNextImageIndex(VkSemaphore semaphore) const -> uint32_t;
+            auto getNextStep(VkSemaphore semaphore) const -> uint32_t;
             auto getStepCount() const -> uint32_t;
             auto getFramebuffer(uint32_t idx) const -> VkFramebuffer;
             auto getImageView(uint32_t idx) -> VkImageView;
