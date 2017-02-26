@@ -10,42 +10,27 @@
 
 namespace solo
 {
-    enum class VertexBufferLayoutSemantics
-    {
-        Position = 0,
-        Normal,
-        Color,
-        Tangent,
-        Binormal,
-        TexCoord0,
-        TexCoord1,
-        TexCoord2,
-        TexCoord3,
-        TexCoord4,
-        TexCoord5,
-        TexCoord6,
-        TexCoord7
-    };
-
-    class VertexBufferLayoutElement final
+    class VertexAttribute final
     {
     public:
-        VertexBufferLayoutSemantics semantics;
+        uint32_t elementCount;
         uint32_t size;
+        uint32_t location;
     };
 
     class VertexBufferLayout final
     {
     public:
-        void add(VertexBufferLayoutSemantics semantics, uint32_t size);
+        // TODO "addPrefabAttribute" with "semantics", which simply translates "position" into 0, "normal" into 1, etc.
+        void addAttribute(uint32_t elementCount, uint32_t location);
 
-        auto getElementCount() const -> uint32_t;
-        auto getElement(uint32_t index) const -> const VertexBufferLayoutElement&;
+        auto getAttributeCount() const -> uint32_t;
+        auto getAttribute(uint32_t index) const -> VertexAttribute;
 
         auto getSize() const -> uint32_t;
 
     private:
-        std::vector<VertexBufferLayoutElement> elements;
+        std::vector<VertexAttribute> attrs;
         uint32_t size = 0;
     };
 
@@ -54,19 +39,20 @@ namespace solo
         return size;
     }
 
-    inline auto VertexBufferLayout::getElement(uint32_t index) const -> const VertexBufferLayoutElement &
+    inline auto VertexBufferLayout::getAttribute(uint32_t index) const -> VertexAttribute
     {
-        return elements[index];
+        return attrs.at(index);
     }
 
-    inline auto VertexBufferLayout::getElementCount() const -> uint32_t
+    inline auto VertexBufferLayout::getAttributeCount() const -> uint32_t
     {
-        return static_cast<uint32_t>(elements.size());
+        return static_cast<uint32_t>(attrs.size());
     }
 
-    inline void VertexBufferLayout::add(VertexBufferLayoutSemantics semantics, uint32_t size)
+    inline void VertexBufferLayout::addAttribute(uint32_t elementCount, uint32_t location)
     {
-        elements.push_back(VertexBufferLayoutElement{semantics, size});
-        this->size += sizeof(float) * size;
+        auto size = static_cast<uint32_t>(sizeof(float) * elementCount);
+        attrs.push_back(VertexAttribute{elementCount, size, location});
+        this->size += size;
     }
 }

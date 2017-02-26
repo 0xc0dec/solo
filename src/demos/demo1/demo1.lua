@@ -146,8 +146,8 @@ function initDynamicQuad()
         tex:setWrapping(solo.TextureWrapping.Clamp)
 
         local layout = solo.VertexBufferLayout()
-        layout:add(solo.VertexBufferLayoutSemantics.Position, 3)
-        layout:add(solo.VertexBufferLayoutSemantics.TexCoord0, 2)
+        layout:addAttribute(3, 0)
+        layout:addAttribute(2, 1)
 
         local data = {
             -1, -1, 0,    0, 0,

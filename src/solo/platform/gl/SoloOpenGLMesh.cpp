@@ -21,37 +21,10 @@ gl::Mesh::Mesh(Device *device)
 }
 
 
-gl::Mesh::Mesh(Device *device, MeshData *data):
-    Mesh(device)
-{
-    VertexBufferLayout positionLayout;
-    positionLayout.add(VertexBufferLayoutSemantics::Position, 3);
-    addVertexBuffer(positionLayout, reinterpret_cast<const float *>(data->vertices.data()), static_cast<uint32_t>(data->vertices.size()));
-
-    if (!data->uvs.empty())
-    {
-        VertexBufferLayout uvLayout;
-        uvLayout.add(VertexBufferLayoutSemantics::TexCoord0, 2);
-        addVertexBuffer(uvLayout, reinterpret_cast<const float *>(data->uvs.data()), static_cast<uint32_t>(data->uvs.size()));
-    }
-    if (!data->normals.empty())
-    {
-        VertexBufferLayout normalLayout;
-        normalLayout.add(VertexBufferLayoutSemantics::Normal, 3);
-        addVertexBuffer(normalLayout, reinterpret_cast<const float *>(data->normals.data()), static_cast<uint32_t>(data->normals.size()));
-    }
-
-    for (const auto &indices : data->indices)
-        addPart(reinterpret_cast<const void *>(indices.data()), static_cast<uint32_t>(indices.size()));
-
-    setPrimitiveType(PrimitiveType::Triangles);
-}
-
-
 gl::Mesh::~Mesh()
 {
-    if (programBinding != EmptyHandle)
-        renderer->destroyVertexProgramBinding(programBinding);
+    if (vertexArray != EmptyHandle)
+        renderer->destroyVertexArray(vertexArray);
     while (!vertexBuffers.empty())
         removeVertexBuffer(0);
     while (!indexBuffers.empty())
@@ -65,20 +38,19 @@ auto gl::Mesh::addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout &
     vertexCounts.push_back(vertexCount);
     vertexSizes.push_back(layout.getSize());
     updateMinVertexCount();
-    dirtyEffectBinding = true;
+    dirtyVertexArray = true;
     return static_cast<uint32_t>(vertexBuffers.size() - 1);
 }
 
 
-void gl::Mesh::rebuildEffectBinding(solo::Effect *effect)
+void gl::Mesh::rebuildVertexArray()
 {
-    if (effect == lastEffect && !dirtyEffectBinding)
+    if (!dirtyVertexArray)
         return;
-    if (programBinding != EmptyHandle)
-        renderer->destroyVertexProgramBinding(programBinding);
-    lastEffect = dynamic_cast<Effect *>(effect);
-    programBinding = renderer->createVertexProgramBinding(vertexBuffers.data(), static_cast<uint32_t>(vertexBuffers.size()), lastEffect->getHandle());
-    dirtyEffectBinding = false;
+    if (vertexArray != EmptyHandle)
+        renderer->destroyVertexArray(vertexArray);
+    vertexArray = renderer->createVertexArray(vertexBuffers.data(), static_cast<uint32_t>(vertexBuffers.size()));
+    dirtyVertexArray = false;
 }
 
 
@@ -119,7 +91,7 @@ void gl::Mesh::removeVertexBuffer(uint32_t index)
     vertexCounts.erase(vertexCounts.begin() + index);
     vertexSizes.erase(vertexSizes.begin() + index);
     updateMinVertexCount();
-    dirtyEffectBinding = true;
+    dirtyVertexArray = true;
 }
 
 
@@ -138,25 +110,25 @@ void gl::Mesh::removePart(uint32_t part)
 }
 
 
-void gl::Mesh::draw(solo::Effect *effect)
+void gl::Mesh::draw()
 {
-    rebuildEffectBinding(effect);
+    rebuildVertexArray();
 
     if (indexBuffers.empty())
-        renderer->draw(primitiveType, programBinding, minVertexCount);
+        renderer->draw(primitiveType, vertexArray, minVertexCount);
     else
     {
         for (auto i = 0; i < indexBuffers.size(); i++)
-            renderer->drawIndexed(primitiveType, programBinding, indexBuffers[i]);
+            renderer->drawIndexed(primitiveType, vertexArray, indexBuffers[i]);
     }
 }
 
 
-void gl::Mesh::drawPart(solo::Effect *effect, uint32_t part)
+void gl::Mesh::drawPart(uint32_t part)
 {
-    rebuildEffectBinding(effect);
-    if (programBinding != EmptyHandle)
-        renderer->drawIndexed(primitiveType, programBinding, indexBuffers[part]);
+    rebuildVertexArray();
+    if (vertexArray != EmptyHandle)
+        renderer->drawIndexed(primitiveType, vertexArray, indexBuffers[part]);
 }
 
 #endif

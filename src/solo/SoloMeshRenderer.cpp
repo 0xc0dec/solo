@@ -31,7 +31,7 @@ void MeshRenderer::render(const RenderContext &context)
         if (material)
         {
             material->apply(context.camera, transform);
-            mesh->draw(material->getEffect());
+            mesh->draw();
         }
     }
     else
@@ -42,7 +42,7 @@ void MeshRenderer::render(const RenderContext &context)
             if (material)
             {
                 material->apply(context.camera, transform);
-                mesh->drawPart(material->getEffect(), part);
+                mesh->drawPart(part);
             }
         }
     }

@@ -20,7 +20,7 @@ auto gl::Effect::create(Device *device, EffectPrefab prefab) -> sptr<Effect>
         case EffectPrefab::Skybox:
             return std::make_shared<Effect>(device, PrefabShaders::Vertex::skybox, PrefabShaders::Fragment::skybox);
         case EffectPrefab::Font:
-            return std::make_shared<Effect>(device, PrefabShaders::Vertex::simple, PrefabShaders::Fragment::font);
+            return std::make_shared<Effect>(device, PrefabShaders::Vertex::positionAndTexCoord, PrefabShaders::Fragment::font);
         default:
             SL_PANIC("Unknown effect prefab");
             break;

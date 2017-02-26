@@ -35,16 +35,17 @@ static auto addPart(Mesh *mesh, const std::vector<uint16_t> &indexData, uint32_t
 
 static void registerVertexBufferLayout(CppBindModule<LuaBinding> &module)
 {
-    auto el = BEGIN_CLASS(module, VertexBufferLayoutElement);
-    REG_VARIABLE(el, VertexBufferLayoutElement, semantics);
-    REG_VARIABLE(el, VertexBufferLayoutElement, size);
+    auto el = BEGIN_CLASS(module, VertexAttribute);
+    REG_VARIABLE(el, VertexAttribute, location);
+    REG_VARIABLE(el, VertexAttribute, elementCount);
+    REG_VARIABLE(el, VertexAttribute, size);
     el.endClass();
 
     auto layout = BEGIN_CLASS(module, VertexBufferLayout);
     REG_CTOR(layout);
-    REG_METHOD(layout, VertexBufferLayout, add);
-    REG_METHOD(layout, VertexBufferLayout, getElement);
-    REG_METHOD(layout, VertexBufferLayout, getElementCount);
+    REG_METHOD(layout, VertexBufferLayout, addAttribute);
+    REG_METHOD(layout, VertexBufferLayout, getAttribute);
+    REG_METHOD(layout, VertexBufferLayout, getAttributeCount);
     REG_METHOD(layout, VertexBufferLayout, getSize);
     layout.endClass();
 }

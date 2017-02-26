@@ -20,12 +20,6 @@ vk::Mesh::Mesh(Device *device)
 }
 
 
-vk::Mesh::Mesh(Device *device, MeshData *data):
-    Mesh(device)
-{
-}
-
-
 vk::Mesh::~Mesh()
 {
 }
@@ -71,10 +65,10 @@ void vk::Mesh::buildPipeline(PipelineBuilder &builder) const
     auto layout = layouts[0];
     builder.withVertexSize(layout.getSize());
     uint32_t offset = 0;
-    for (size_t i = 0; i < layout.getElementCount(); ++i)
+    for (size_t i = 0; i < layout.getAttributeCount(); ++i)
     {
         builder = builder.withVertexAttribute(i, 0, VK_FORMAT_R32G32_SFLOAT, offset);
-        offset += layout.getElement(i).size * sizeof(float); // TODO shouldn't do sizeof(float) itself
+        offset += layout.getAttribute(i).size * sizeof(float); // TODO shouldn't do sizeof(float) itself
     }
 }
 
@@ -96,13 +90,13 @@ auto vk::Mesh::getPartCount() const -> uint32_t
 }
 
 
-void vk::Mesh::draw(Effect *effect)
+void vk::Mesh::draw()
 {
     renderer->addRenderCommand(RenderCommand::drawMesh(this));
 }
 
 
-void vk::Mesh::drawPart(Effect *effect, uint32_t part)
+void vk::Mesh::drawPart(uint32_t part)
 {
 }
 

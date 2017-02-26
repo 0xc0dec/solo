@@ -34,7 +34,7 @@ void FontRenderer::render(const RenderContext &context)
     if (!mesh)
         return;
     material->apply(context.camera, transform);
-    mesh->draw(material->getEffect());
+    mesh->draw();
 }
 
 
@@ -109,14 +109,18 @@ void FontRenderer::rebuildMesh()
         lastIndex += 4;
     }
 
-    VertexBufferLayout layout1, layout2;
-    layout1.add(VertexBufferLayoutSemantics::Position, 3);
-    layout2.add(VertexBufferLayoutSemantics::TexCoord0, 2);
-
     mesh = Mesh::create(node.getScene()->getDevice());
-    mesh->addDynamicVertexBuffer(layout1, reinterpret_cast<const float *>(vertices.data()), static_cast<uint32_t>(vertices.size()));
-    mesh->addDynamicVertexBuffer(layout2, reinterpret_cast<const float *>(uvs.data()), static_cast<uint32_t>(uvs.size()));
+
+    VertexBufferLayout positionsLayout;
+    positionsLayout.addAttribute(3, 0);
+    mesh->addDynamicVertexBuffer(positionsLayout, reinterpret_cast<const float *>(vertices.data()), static_cast<uint32_t>(vertices.size()));
+
+    VertexBufferLayout uvsLayout;
+    uvsLayout.addAttribute(2, 1);
+    mesh->addDynamicVertexBuffer(uvsLayout, reinterpret_cast<const float *>(uvs.data()), static_cast<uint32_t>(uvs.size()));
+
     mesh->addPart(reinterpret_cast<const void *>(indexes.data()), static_cast<uint32_t>(indexes.size()));
+
     mesh->setPrimitiveType(PrimitiveType::Triangles);
 }
 

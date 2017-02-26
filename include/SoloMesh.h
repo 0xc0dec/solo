@@ -14,7 +14,6 @@
 
 namespace solo
 {
-    class Effect;
     class Device;
 
     enum class MeshPrefab
@@ -51,8 +50,8 @@ namespace solo
         virtual void removePart(uint32_t index) = 0;
         virtual auto getPartCount() const -> uint32_t = 0;
 
-        virtual void draw(Effect *effect) = 0;
-        virtual void drawPart(Effect *effect, uint32_t part) = 0;
+        virtual void draw() = 0;
+        virtual void drawPart(uint32_t part) = 0;
 
         virtual auto getPrimitiveType() const -> PrimitiveType = 0;
         virtual void setPrimitiveType(PrimitiveType type) = 0;
@@ -60,7 +59,8 @@ namespace solo
     protected:
         Mesh() {}
 
-        void initQuadMesh();
-        void initCubeMesh();
+        void initAsQuadMesh();
+        void initAsCubeMesh();
+        void initFromData(MeshData *data);
     };
 }

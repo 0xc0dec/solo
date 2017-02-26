@@ -38,10 +38,10 @@ auto Mesh::createFromPrefab(Device *device, MeshPrefab prefab) -> sptr<Mesh>
     switch (prefab)
     {
         case MeshPrefab::Quad:
-            mesh->initQuadMesh();
+            mesh->initAsQuadMesh();
             break;
         case MeshPrefab::Cube:
-            mesh->initCubeMesh();
+            mesh->initAsCubeMesh();
             break;
         default:
             SL_PANIC("Unknown mesh prefab type");
@@ -54,45 +54,34 @@ auto Mesh::createFromPrefab(Device *device, MeshPrefab prefab) -> sptr<Mesh>
 
 auto Mesh::createFromData(Device *device, MeshData *data) -> sptr<Mesh>
 {
-    switch (device->getSetup().mode)
-    {
-#ifdef SL_OPENGL_RENDERER
-        case DeviceMode::OpenGL:
-            return std::make_shared<gl::Mesh>(device, data);
-#endif
-#ifdef SL_VULKAN_RENDERER
-        case DeviceMode::Vulkan:
-            return std::make_shared<vk::Mesh>(device, data);
-#endif
-        default:
-            return std::make_shared<null::Mesh>();
-    }
+    auto mesh = create(device);
+    mesh->initFromData(data);
+    return mesh;
 }
 
 
-void Mesh::initQuadMesh()
+void Mesh::initAsQuadMesh()
 {
     float vertices[] =
     {
-        -1, -1, 0,  0, 0, -1,   0, 0,
-        -1, 1, 0,   0, 0, -1,   0, 1,
-        1, 1, 0,    0, 0, -1,   1, 1,
-        -1, -1, 0,  0, 0, -1,   0, 0,
-        1, 1, 0,    0, 0, -1,   1, 1,
-        1, -1, 0,   0, 0, -1,   1, 0
+        -1, -1, 0,  0, 0,
+        -1, 1, 0,   0, 1,
+        1, 1, 0,    1, 1,
+        -1, -1, 0,  0, 0,
+        1, 1, 0,    1, 1,
+        1, -1, 0,   1, 0
     };
 
     VertexBufferLayout layout;
-    layout.add(VertexBufferLayoutSemantics::Position, 3);
-    layout.add(VertexBufferLayoutSemantics::Normal, 3);
-    layout.add(VertexBufferLayoutSemantics::TexCoord0, 2);
+    layout.addAttribute(3, 0);
+    layout.addAttribute(2, 1);
 
     addVertexBuffer(layout, vertices, 6);
     setPrimitiveType(PrimitiveType::Triangles);
 }
 
 
-void Mesh::initCubeMesh()
+void Mesh::initAsCubeMesh()
 {
     float vertices[] =
     {
@@ -103,6 +92,7 @@ void Mesh::initCubeMesh()
         -1, 1, 1,   0, 0,    -1, 1, -1, 0, 1,     1, 1, -1,  1, 1,     1, 1, 1,    1, 0,
         -1, -1, -1, 0, 0,    -1, -1, 1, 0, 1,     1, -1, 1,  1, 1,     1, -1, -1,  1, 0
     };
+
     uint16_t indices[] =
     {
         0, 1, 2,
@@ -120,9 +110,37 @@ void Mesh::initCubeMesh()
     };
 
     VertexBufferLayout layout;
-    layout.add(VertexBufferLayoutSemantics::Position, 3);
-    layout.add(VertexBufferLayoutSemantics::TexCoord0, 2);
+    layout.addAttribute(3, 0);
+    layout.addAttribute(2, 1);
     addVertexBuffer(layout, vertices, 24);
     addPart(indices, 36);
+    setPrimitiveType(PrimitiveType::Triangles);
+}
+
+
+void Mesh::initFromData(MeshData *data)
+{
+    VertexBufferLayout positionLayout;
+    positionLayout.addAttribute(3, 0);
+    addVertexBuffer(positionLayout, reinterpret_cast<const float *>(data->vertices.data()), static_cast<uint32_t>(data->vertices.size()));
+
+    if (!data->normals.empty())
+    {
+        VertexBufferLayout normalLayout;
+        normalLayout.addAttribute(3, 1);
+        addVertexBuffer(normalLayout, reinterpret_cast<const float *>(data->normals.data()), static_cast<uint32_t>(data->normals.size()));
+    }
+
+    if (!data->uvs.empty())
+    {
+        VertexBufferLayout uvLayout;
+        uvLayout.addAttribute(2, 2);
+        addVertexBuffer(uvLayout, reinterpret_cast<const float *>(data->uvs.data()), static_cast<uint32_t>(data->uvs.size()));
+    }
+    
+
+    for (const auto &indices : data->indices)
+        addPart(reinterpret_cast<const void *>(indices.data()), static_cast<uint32_t>(indices.size()));
+
     setPrimitiveType(PrimitiveType::Triangles);
 }

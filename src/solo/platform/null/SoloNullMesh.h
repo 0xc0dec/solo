@@ -40,8 +40,8 @@ namespace solo
                 return 0;
             }
 
-            void draw(Effect *effect) override final {}
-            void drawPart(Effect *effect, uint32_t part) override final {}
+            void draw() override final {}
+            void drawPart(uint32_t part) override final {}
 
             auto getPrimitiveType() const -> PrimitiveType override final
             {

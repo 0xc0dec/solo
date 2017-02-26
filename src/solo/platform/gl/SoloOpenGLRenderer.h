@@ -76,8 +76,8 @@ namespace solo
             void destroyProgram(uint32_t handle);
             void setProgram(uint32_t handle);
 
-            auto createVertexProgramBinding(const uint32_t *bufferHandles, uint32_t bufferCount, uint32_t programHandle) -> uint32_t;
-            void destroyVertexProgramBinding(uint32_t handle);
+            auto createVertexArray(const uint32_t *bufferHandles, uint32_t bufferCount) -> uint32_t;
+            void destroyVertexArray(uint32_t handle);
 
             auto createUniform(const char *name, UniformType type, uint32_t programHandle) -> uint32_t;
             void destroyUniform(uint32_t handle);
@@ -98,8 +98,8 @@ namespace solo
 
             void clear(bool color, bool depth, float r, float g, float b, float a);
 
-            void drawIndexed(PrimitiveType primitiveType, uint32_t bindingHandle, uint32_t indexBufferHandle);
-            void draw(PrimitiveType primitiveType, uint32_t bindingHandle, uint32_t vertexCount);
+            void drawIndexed(PrimitiveType primitiveType, uint32_t vertexArrayHandle, uint32_t indexBufferHandle);
+            void draw(PrimitiveType primitiveType, uint32_t vertexArrayHandle, uint32_t vertexCount);
 
         protected:
             void beginFrame() override final {}
@@ -149,7 +149,7 @@ namespace solo
             uint32_t vertexBufferCounter = 0;
             uint32_t indexBufferCounter = 0;
             uint32_t programCounter = 0;
-            uint32_t vertexProgramBindingCounter = 0;
+            uint32_t vertexArrayCounter = 0;
             uint32_t uniformCounter = 0;
 
             std::unordered_map<uint32_t, Texture> textures;
@@ -157,14 +157,14 @@ namespace solo
             std::unordered_map<uint32_t, VertexBuffer> vertexBuffers;
             std::unordered_map<uint32_t, IndexBuffer> indexBuffers;
             std::unordered_map<uint32_t, GLuint> programs;
-            std::unordered_map<uint32_t, GLuint> vertexProgramBindings;
+            std::unordered_map<uint32_t, GLuint> vertexArrays;
             std::unordered_map<uint32_t, Uniform> uniforms;
 
             void bindFrameBuffer(uint32_t handle);
             void bindTexture(GLenum target, uint32_t handle);
             void bindVertexBuffer(uint32_t handle);
             void bindIndexBuffer(uint32_t handle);
-            void bindVertexProgramBinding(uint32_t handle);
+            void bindVertexArray(uint32_t handle);
             void setTexture(GLenum target, uint32_t handle, uint32_t flags);
             void validateFrameBufferAttachments(const std::vector<uint32_t> &attachments);
             auto createVertexBuffer(bool dynamic, const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t;

@@ -30,11 +30,11 @@ const char *gl::PrefabShaders::Vertex::skybox = R"(
 )";
 
 
-const char* gl::PrefabShaders::Vertex::simple = R"(
+const char* gl::PrefabShaders::Vertex::positionAndTexCoord = R"(
     #version 330 core
 
-    in vec4 position;
-    in vec2 texCoord0;
+    layout (location = 0) in vec4 position;
+    layout (location = 1) in vec2 texCoord0;
 
     uniform mat4 worldViewProjMatrix;
     out vec2 uv0;

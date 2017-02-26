@@ -187,36 +187,6 @@ static auto compileShader(GLuint type, const void *src, uint32_t length) -> GLin
 }
 
 
-static auto discoverVertexAttributes(GLuint program) -> std::unordered_map<std::string, GLuint>
-{
-    std::unordered_map<std::string, GLuint> attributes;
-
-    GLint activeAttributes = 0;
-    glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
-    if (activeAttributes <= 0)
-        return attributes;
-
-    GLint nameMaxLength = 0;
-    glGetProgramiv(program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &nameMaxLength);
-    if (nameMaxLength <= 0)
-        return attributes;
-
-    GLint attribSize;
-    GLenum attribType;
-    std::vector<GLchar> rawName(nameMaxLength + 1);
-    for (GLint i = 0; i < activeAttributes; ++i)
-    {
-        glGetActiveAttrib(program, i, nameMaxLength, nullptr, &attribSize, &attribType, rawName.data());
-        rawName[nameMaxLength] = '\0';
-        GLint location = glGetAttribLocation(program, rawName.data());
-        std::string name = rawName.data();
-        attributes[name] = location;
-    }
-
-    return attributes;
-}
-
-
 static bool findUniformInProgram(GLuint program, const char *name, GLint &location, int32_t &index)
 {
     GLint activeUniforms;
@@ -281,8 +251,8 @@ gl::Renderer::~Renderer()
     while (!uniforms.empty())
         destroyUniform(uniforms.begin()->first);
 
-    while (!vertexProgramBindings.empty())
-        destroyVertexProgramBinding(vertexProgramBindings.begin()->first);
+    while (!vertexArrays.empty())
+        destroyVertexArray(vertexArrays.begin()->first);
 
     while (!programs.empty())
         destroyProgram(programs.begin()->first);
@@ -394,9 +364,9 @@ void gl::Renderer::bindIndexBuffer(uint32_t handle)
 }
 
 
-void gl::Renderer::bindVertexProgramBinding(uint32_t handle)
+void gl::Renderer::bindVertexArray(uint32_t handle)
 {
-    auto rawHandle = handle == EmptyHandle ? 0 : vertexProgramBindings.at(handle);
+    auto rawHandle = handle == EmptyHandle ? 0 : vertexArrays.at(handle);
     glBindVertexArray(rawHandle);
 }
 
@@ -710,7 +680,7 @@ void gl::Renderer::setProgram(uint32_t handle)
 }
 
 
-auto gl::Renderer::createVertexProgramBinding(const uint32_t *bufferHandles, uint32_t bufferCount, uint32_t programHandle) -> uint32_t
+auto gl::Renderer::createVertexArray(const uint32_t *bufferHandles, uint32_t bufferCount) -> uint32_t
 {
     GLuint rawHandle;
     glGenVertexArrays(1, &rawHandle);
@@ -718,74 +688,24 @@ auto gl::Renderer::createVertexProgramBinding(const uint32_t *bufferHandles, uin
 
     glBindVertexArray(rawHandle);
 
-    auto attributes = discoverVertexAttributes(programs.at(programHandle));
-
-    auto findAttributeLocation = [&](const char *name)
-    {
-        auto programAttr = attributes.find(name);
-        return programAttr != attributes.end() ? programAttr->second : -1;
-    };
-
     for (uint32_t i = 0; i < bufferCount; i++)
     {
         const auto &bufferHandle = bufferHandles[i];
         const auto &layout = vertexBuffers.at(bufferHandle).layout;
-        const auto elementCount = layout.getElementCount();
+        const auto elementCount = layout.getAttributeCount();
         if (!elementCount)
             continue;
 
         bindVertexBuffer(bufferHandle);
 
-        // TODO investigate this - remove by-name lookup and rely on layout locations only
-
         uint32_t offset = 0;
         for (uint32_t j = 0; j < elementCount; j++)
         {
-            auto &el = layout.getElement(j);
-            auto attrLoc = 0;
-            switch (el.semantics)
-            {
-            case VertexBufferLayoutSemantics::Position:
-                attrLoc = findAttributeLocation("position");
-                break;
-            case VertexBufferLayoutSemantics::Normal:
-                attrLoc = findAttributeLocation("normal");
-                break;
-            case VertexBufferLayoutSemantics::Color:
-                attrLoc = findAttributeLocation("color");
-                break;
-            case VertexBufferLayoutSemantics::Tangent:
-                attrLoc = findAttributeLocation("tangent");
-                break;
-            case VertexBufferLayoutSemantics::Binormal:
-                attrLoc = findAttributeLocation("binormal");
-                break;
-            case VertexBufferLayoutSemantics::TexCoord0:
-            case VertexBufferLayoutSemantics::TexCoord1:
-            case VertexBufferLayoutSemantics::TexCoord2:
-            case VertexBufferLayoutSemantics::TexCoord3:
-            case VertexBufferLayoutSemantics::TexCoord4:
-            case VertexBufferLayoutSemantics::TexCoord5:
-            case VertexBufferLayoutSemantics::TexCoord6:
-            case VertexBufferLayoutSemantics::TexCoord7:
-                {
-                    auto idx = static_cast<uint32_t>(el.semantics) - static_cast<uint32_t>(VertexBufferLayoutSemantics::TexCoord0);
-                    auto name = "texCoord" + std::to_string(idx);
-                    attrLoc = findAttributeLocation(name.c_str());
-                    break;
-                }
-            default:
-                break;
-            }
-
-            if (attrLoc >= 0)
-            {
-                const auto stride = layout.getSize();
-                glVertexAttribPointer(attrLoc, el.size, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void *>(offset));
-                glEnableVertexAttribArray(attrLoc);
-            }
-
-            offset += el.size * sizeof(float);
+            auto attr = layout.getAttribute(j);
+            const auto stride = layout.getSize();
+            glVertexAttribPointer(attr.location, attr.elementCount, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void *>(offset));
+            glEnableVertexAttribArray(attr.location);
+            offset += attr.size;
         }
 
         bindVertexBuffer(EmptyHandle);
@@ -793,39 +713,39 @@ auto gl::Renderer::createVertexProgramBinding(const uint32_t *bufferHandles, uin
 
     glBindVertexArray(0);
 
-    auto handle = vertexProgramBindingCounter++;
-    vertexProgramBindings[handle] = rawHandle;
+    auto handle = vertexArrayCounter++;
+    vertexArrays[handle] = rawHandle;
 
     return handle;
 }
 
 
-void gl::Renderer::destroyVertexProgramBinding(uint32_t handle)
+void gl::Renderer::destroyVertexArray(uint32_t handle)
 {
-    auto rawHandle = vertexProgramBindings.at(handle);
+    auto rawHandle = vertexArrays.at(handle);
     glDeleteVertexArrays(1, &rawHandle);
-    vertexProgramBindings.erase(handle);
+    vertexArrays.erase(handle);
 }
 
 
-void gl::Renderer::drawIndexed(PrimitiveType primitiveType, uint32_t bindingHandle, const uint32_t indexBufferHandle)
+void gl::Renderer::drawIndexed(PrimitiveType primitiveType, uint32_t vertexArrayHandle, const uint32_t indexBufferHandle)
 {
-    bindVertexProgramBinding(bindingHandle);
+    bindVertexArray(vertexArrayHandle);
     bindIndexBuffer(indexBufferHandle);
 
     const auto &indexBuffer = indexBuffers.at(indexBufferHandle);
     glDrawElements(toGLPrimitiveType(primitiveType), indexBuffer.elementCount, GL_UNSIGNED_SHORT, nullptr);
 
     bindIndexBuffer(EmptyHandle);
-    bindVertexProgramBinding(EmptyHandle);
+    bindVertexArray(EmptyHandle);
 }
 
 
-void gl::Renderer::draw(PrimitiveType primitiveType, uint32_t bindingHandle, uint32_t vertexCount)
+void gl::Renderer::draw(PrimitiveType primitiveType, uint32_t vertexArrayHandle, uint32_t vertexCount)
 {
-    bindVertexProgramBinding(bindingHandle);
+    bindVertexArray(vertexArrayHandle);
     glDrawArrays(toGLPrimitiveType(primitiveType), 0, vertexCount);
-    bindVertexProgramBinding(EmptyHandle);
+    bindVertexArray(EmptyHandle);
 }
 
 

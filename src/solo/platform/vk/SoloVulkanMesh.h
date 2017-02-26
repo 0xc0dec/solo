@@ -24,7 +24,6 @@ namespace solo
         {
         public:
             explicit Mesh(Device *device);
-            Mesh(Device *device, MeshData *data);
             ~Mesh();
 
             auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t override final;
@@ -42,8 +41,8 @@ namespace solo
             void removePart(uint32_t index) override final;
             auto getPartCount() const -> uint32_t override final;
 
-            void draw(Effect *effect) override final;
-            void drawPart(Effect *effect, uint32_t part) override final;
+            void draw() override final;
+            void drawPart(uint32_t part) override final;
 
             // TODO move these to base class?
             auto getPrimitiveType() const -> PrimitiveType override final;

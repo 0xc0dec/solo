@@ -24,7 +24,6 @@ namespace solo
         {
         public:
             explicit Mesh(Device *device);
-            Mesh(Device *device, MeshData *data);
             ~Mesh();
 
             auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t override final;
@@ -36,15 +35,14 @@ namespace solo
             void removePart(uint32_t index) override final;
             auto getPartCount() const -> uint32_t override final;
 
-            void draw(solo::Effect *effect) override final;
-            void drawPart(solo::Effect *effect, uint32_t part) override final;
+            void draw() override final;
+            void drawPart(uint32_t part) override final;
 
             auto getPrimitiveType() const -> PrimitiveType override final;
             void setPrimitiveType(PrimitiveType type) override final;
 
         private:
             Renderer *renderer = nullptr;
-            Effect *lastEffect = nullptr;
 
             PrimitiveType primitiveType = PrimitiveType::Triangles;
             std::vector<uint32_t> vertexBuffers;
@@ -52,12 +50,12 @@ namespace solo
             std::vector<uint32_t> vertexCounts;
             std::vector<uint32_t> vertexSizes;
             uint32_t minVertexCount = 0;
-            uint32_t programBinding = EmptyHandle;
-            bool dirtyEffectBinding = true;
+            uint32_t vertexArray = EmptyHandle;
+            bool dirtyVertexArray = true;
 
             auto addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout &layout, uint32_t vertexCount) -> uint32_t;
 
-            void rebuildEffectBinding(solo::Effect *effect);
+            void rebuildVertexArray();
             void updateMinVertexCount();
         };
 

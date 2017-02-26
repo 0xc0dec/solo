@@ -18,7 +18,7 @@ namespace solo
             struct Vertex
             {
                 static const char *skybox;
-                static const char *simple;
+                static const char *positionAndTexCoord;
             };
 
             struct Fragment
