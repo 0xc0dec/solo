@@ -168,22 +168,6 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     REG_MODULE_CONSTANT(deviceMode, DeviceMode, Vulkan);
     deviceMode.endModule();
 
-    auto layoutSemantics = module.beginModule("VertexBufferLayoutSemantics");
-    REG_MODULE_CONSTANT(layoutSemantics, VertexBufferLayoutSemantics, Position);
-    REG_MODULE_CONSTANT(layoutSemantics, VertexBufferLayoutSemantics, Normal);
-    REG_MODULE_CONSTANT(layoutSemantics, VertexBufferLayoutSemantics, Color);
-    REG_MODULE_CONSTANT(layoutSemantics, VertexBufferLayoutSemantics, Tangent);
-    REG_MODULE_CONSTANT(layoutSemantics, VertexBufferLayoutSemantics, Binormal);
-    REG_MODULE_CONSTANT(layoutSemantics, VertexBufferLayoutSemantics, TexCoord0);
-    REG_MODULE_CONSTANT(layoutSemantics, VertexBufferLayoutSemantics, TexCoord1);
-    REG_MODULE_CONSTANT(layoutSemantics, VertexBufferLayoutSemantics, TexCoord2);
-    REG_MODULE_CONSTANT(layoutSemantics, VertexBufferLayoutSemantics, TexCoord3);
-    REG_MODULE_CONSTANT(layoutSemantics, VertexBufferLayoutSemantics, TexCoord4);
-    REG_MODULE_CONSTANT(layoutSemantics, VertexBufferLayoutSemantics, TexCoord5);
-    REG_MODULE_CONSTANT(layoutSemantics, VertexBufferLayoutSemantics, TexCoord6);
-    REG_MODULE_CONSTANT(layoutSemantics, VertexBufferLayoutSemantics, TexCoord7);
-    layoutSemantics.endModule();
-
     auto meshPrefab = module.beginModule("MeshPrefab");
     REG_MODULE_CONSTANT(meshPrefab, MeshPrefab, Cube);
     REG_MODULE_CONSTANT(meshPrefab, MeshPrefab, Quad);
