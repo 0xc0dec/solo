@@ -22,16 +22,16 @@ local canvasSize = dev:getCanvasSize()
 
 local postProcessors = dofile("../../src/demos/demo1/PostProcessors.lua")
 local shaders = dofile("../../src/demos/demo1/Shaders.lua")(fs, getAssetPath)
-local initMainCamera = dofile("../../src/demos/demo1/MainCamera.lua")
-local initOffscreenCamera = dofile("../../src/demos/demo1/OffscreenCamera.lua")
-local initSkybox = dofile("../../src/demos/demo1/Skybox.lua")
-local initCheckerBox = dofile("../../src/demos/demo1/CheckerBox.lua")
-local initDynamicQuad = dofile("../../src/demos/demo1/DynamicQuad.lua")
-local initTransparentQuad = dofile("../../src/demos/demo1/TransparentQuad.lua")
-local initMonitorQuad = dofile("../../src/demos/demo1/MonitorQuad.lua")
-local initFloor = dofile("../../src/demos/demo1/Floor.lua")
-local initMonkeyHead = dofile("../../src/demos/demo1/MonkeyHead.lua")
-local initTimeLabel = dofile("../../src/demos/demo1/TimeLabel.lua")
+local createMainCamera = dofile("../../src/demos/demo1/MainCamera.lua")
+local createOffscreenCamera = dofile("../../src/demos/demo1/OffscreenCamera.lua")
+local createSkybox = dofile("../../src/demos/demo1/Skybox.lua")
+local createCheckerBox = dofile("../../src/demos/demo1/CheckerBox.lua")
+local createDynamicQuad = dofile("../../src/demos/demo1/DynamicQuad.lua")
+local createTransparentQuad = dofile("../../src/demos/demo1/TransparentQuad.lua")
+local createMonitorQuad = dofile("../../src/demos/demo1/MonitorQuad.lua")
+local createFloor = dofile("../../src/demos/demo1/Floor.lua")
+local createMonkeyHead = dofile("../../src/demos/demo1/MonkeyHead.lua")
+local createTimeLabel = dofile("../../src/demos/demo1/TimeLabel.lua")
 
 local knownTags = {
     skybox = 1 << 1,
@@ -84,27 +84,27 @@ local attachAxesMesh = function(node, axesMesh)
     renderer:setMaterial(3, materials.red)
 end
 
-local mainCamera = initMainCamera(dev, scene, physics, meshes, effects)
-local offscreenCamera, offscreenCameraTex = initOffscreenCamera(dev, scene)
-initSkybox(scene, loader, getAssetPath, knownTags.skybox)
-initCheckerBox(dev, scene, shaders, meshes.cube)
-initDynamicQuad(dev, scene, effects, loadTextureAsync, getAssetPath)
-initTimeLabel(dev, fs, scene, knownTags.transparent, getAssetPath)
+local mainCamera = createMainCamera(dev, scene, physics, meshes, effects)
+local offscreenCamera, offscreenCameraTex = createOffscreenCamera(dev, scene)
+createSkybox(scene, loader, getAssetPath, knownTags.skybox)
+createCheckerBox(dev, scene, shaders, meshes.cube)
+createDynamicQuad(dev, scene, effects, loadTextureAsync, getAssetPath)
+createTimeLabel(dev, scene, knownTags.transparent, fs:readBytes(getAssetPath("Aller.ttf")))
 
 loadTextureAsync(getAssetPath("Cobblestone.png"), function(tex)
     loader:loadMeshAsync(getAssetPath("MonkeyHD.obj")):done(function(mesh)
-        initMonkeyHead(dev, scene, shaders, tex, mesh)
+        createMonkeyHead(dev, scene, shaders, tex, mesh)
     end)
-    initFloor(dev, scene, effects, tex, meshes.cube)
+    createFloor(dev, scene, effects, tex, meshes.cube)
 end)
 
 loader:loadMeshAsync(getAssetPath("Axes.obj")):done(function(axesMesh)
     loadTextureAsync(getAssetPath("Flammable.png"), function(tex)
         attachAxesMesh(
-            initMonitorQuad(dev, scene, effects, offscreenCameraTex, meshes.quad, knownTags.monitor),
+            createMonitorQuad(dev, scene, effects, offscreenCameraTex, meshes.quad, knownTags.monitor),
             axesMesh)
         attachAxesMesh(
-            initTransparentQuad(dev, scene, effects, meshes.quad, knownTags.transparent, tex),
+            createTransparentQuad(dev, scene, effects, meshes.quad, knownTags.transparent, tex),
             axesMesh)
     end)
 end)
