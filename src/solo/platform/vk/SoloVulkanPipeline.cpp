@@ -8,10 +8,9 @@
 #ifdef SL_VULKAN_RENDERER
 
 using namespace solo;
-using namespace vk;
 
 
-Pipeline::Pipeline(VkDevice device, VkRenderPass renderPass, Resource<VkPipeline> pipeline, Resource<VkPipelineLayout> layout):
+vk::Pipeline::Pipeline(VkDevice device, VkRenderPass renderPass, Resource<VkPipeline> pipeline, Resource<VkPipelineLayout> layout):
     device(device),
     renderPass(renderPass),
     pipeline(std::move(pipeline)),
@@ -20,20 +19,20 @@ Pipeline::Pipeline(VkDevice device, VkRenderPass renderPass, Resource<VkPipeline
 }
 
 
-Pipeline::Pipeline(Pipeline &&other) noexcept
+vk::Pipeline::Pipeline(Pipeline &&other) noexcept
 {
     swap(other);
 }
 
 
-auto Pipeline::operator=(Pipeline other) noexcept -> Pipeline&
+auto vk::Pipeline::operator=(Pipeline other) noexcept -> Pipeline&
 {
     swap(other);
     return *this;
 }
 
 
-void Pipeline::swap(Pipeline &other) noexcept
+void vk::Pipeline::swap(Pipeline &other) noexcept
 {
     std::swap(device, other.device);
     std::swap(renderPass, other.renderPass);
@@ -42,7 +41,7 @@ void Pipeline::swap(Pipeline &other) noexcept
 }
 
 
-PipelineBuilder::PipelineBuilder(VkDevice device, VkRenderPass renderPass, VkShaderModule vertexShader, VkShaderModule fragmentShader):
+vk::PipelineBuilder::PipelineBuilder(VkDevice device, VkRenderPass renderPass, VkShaderModule vertexShader, VkShaderModule fragmentShader):
     device(device),
     renderPass(renderPass),
     vertexShader(vertexShader),
@@ -53,7 +52,7 @@ PipelineBuilder::PipelineBuilder(VkDevice device, VkRenderPass renderPass, VkSha
 }
 
 
-auto PipelineBuilder::withVertexAttribute(uint32_t location, uint32_t binding, VkFormat format, uint32_t offset) -> PipelineBuilder&
+auto vk::PipelineBuilder::withVertexAttribute(uint32_t location, uint32_t binding, VkFormat format, uint32_t offset) -> PipelineBuilder&
 {
     if (location >= vertexAttrs.size())
         vertexAttrs.resize(location + 1);
@@ -65,7 +64,7 @@ auto PipelineBuilder::withVertexAttribute(uint32_t location, uint32_t binding, V
 }
 
 
-auto PipelineBuilder::withVertexBinding(uint32_t binding, uint32_t stride, VkVertexInputRate inputRate) -> PipelineBuilder &
+auto vk::PipelineBuilder::withVertexBinding(uint32_t binding, uint32_t stride, VkVertexInputRate inputRate) -> PipelineBuilder &
 {
     if (binding >= vertexBindings.size())
         vertexBindings.resize(binding + 1);
@@ -76,7 +75,7 @@ auto PipelineBuilder::withVertexBinding(uint32_t binding, uint32_t stride, VkVer
 }
 
 
-auto PipelineBuilder::withDescriptorSetLayouts(VkDescriptorSetLayout *layouts, uint32_t count) -> PipelineBuilder&
+auto vk::PipelineBuilder::withDescriptorSetLayouts(VkDescriptorSetLayout *layouts, uint32_t count) -> PipelineBuilder&
 {
     descSetLayouts.resize(count);
     for (auto i = 0; i < count; i++)
@@ -85,19 +84,19 @@ auto PipelineBuilder::withDescriptorSetLayouts(VkDescriptorSetLayout *layouts, u
 }
 
 
-auto PipelineBuilder::build() -> Pipeline
+auto vk::PipelineBuilder::build() -> Pipeline
 {
-    VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
-    pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-    pipelineLayoutInfo.pNext = nullptr;
-    pipelineLayoutInfo.flags = 0;
-    pipelineLayoutInfo.setLayoutCount = descSetLayouts.size();
-    pipelineLayoutInfo.pSetLayouts = descSetLayouts.data();
-    pipelineLayoutInfo.pushConstantRangeCount = 0;
-    pipelineLayoutInfo.pPushConstantRanges = nullptr;
+    VkPipelineLayoutCreateInfo layoutInfo{};
+    layoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+    layoutInfo.pNext = nullptr;
+    layoutInfo.flags = 0;
+    layoutInfo.setLayoutCount = descSetLayouts.size();
+    layoutInfo.pSetLayouts = descSetLayouts.data();
+    layoutInfo.pushConstantRangeCount = 0;
+    layoutInfo.pPushConstantRanges = nullptr;
 
     Resource<VkPipelineLayout> layout{device, vkDestroyPipelineLayout};
-    SL_VK_CHECK_RESULT(vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, layout.cleanAndExpose()));
+    SL_VK_CHECK_RESULT(vkCreatePipelineLayout(device, &layoutInfo, nullptr, layout.cleanAndExpose()));
 
     VkPipelineRasterizationStateCreateInfo rasterState{};
     rasterState.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;

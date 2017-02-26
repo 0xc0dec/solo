@@ -196,9 +196,9 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
                             auto format = VK_FORMAT_R32_SFLOAT;
                             if (attr.elementCount == 2)
                                 format = VK_FORMAT_R32G32_SFLOAT;
-                            if (attr.elementCount == 3)
+                            else if (attr.elementCount == 3)
                                 format = VK_FORMAT_R32G32B32_SFLOAT;
-                            if (attr.elementCount == 4)
+                            else if (attr.elementCount == 4)
                                 format = VK_FORMAT_R32G32B32A32_SFLOAT;
                             builder.withVertexAttribute(attr.location, i, format, offset);
                             offset += attr.size;
