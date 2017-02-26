@@ -32,6 +32,7 @@ local createMonitorQuad = dofile("../../src/demos/demo1/MonitorQuad.lua")
 local createFloor = dofile("../../src/demos/demo1/Floor.lua")
 local createMonkeyHead = dofile("../../src/demos/demo1/MonkeyHead.lua")
 local createTimeLabel = dofile("../../src/demos/demo1/TimeLabel.lua")
+local attachAxesMesh = dofile("../../src/demos/demo1/Axes.lua")
 
 local knownTags = {
     skybox = 1 << 1,
@@ -45,26 +46,10 @@ local effects = {
     color = solo.Effect.create(dev, shaders.vs.basic, shaders.fs.color)
 }
 
-local createColorMaterial = function(color)
-    local mat = solo.Material.create(dev, effects.color)
-    mat:setFaceCull(solo.FaceCull.All)
-    mat:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
-    mat:setVector4Parameter("color", color)
-    return mat
-end
-
-local materials = {
-    red = createColorMaterial(vec4(1, 0, 0, 1)),
-    green = createColorMaterial(vec4(0, 1, 0, 1)),
-    blue = createColorMaterial(vec4(0, 0, 1, 1)),
-    white = createColorMaterial(vec4(1, 1, 1, 1))
-}
-
 local meshes = {
     cube = solo.Mesh.createFromPrefab(dev, solo.MeshPrefab.Cube),
     quad = solo.Mesh.createFromPrefab(dev, solo.MeshPrefab.Quad)
 }
-
 
 local loadTextureAsync = function(path, callback)
     loader:loadRectTextureAsync(path):done(function(tex)
@@ -73,15 +58,6 @@ local loadTextureAsync = function(path, callback)
         tex:setAnisotropyLevel(8)
         callback(tex)
     end)
-end
-
-local attachAxesMesh = function(node, axesMesh)
-    local renderer = node:addComponent("MeshRenderer")
-    renderer:setMesh(axesMesh)
-    renderer:setMaterial(0, materials.blue)
-    renderer:setMaterial(1, materials.green)
-    renderer:setMaterial(2, materials.white)
-    renderer:setMaterial(3, materials.red)
 end
 
 local mainCamera = createMainCamera(dev, scene, physics, meshes, effects)
@@ -100,10 +76,10 @@ end)
 
 loader:loadMeshAsync(getAssetPath("Axes.obj")):done(function(axesMesh)
     loadTextureAsync(getAssetPath("Flammable.png"), function(tex)
-        attachAxesMesh(
+        attachAxesMesh(dev, effects,
             createMonitorQuad(dev, scene, effects, offscreenCameraTex, meshes.quad, knownTags.monitor),
             axesMesh)
-        attachAxesMesh(
+        attachAxesMesh(dev, effects,
             createTransparentQuad(dev, scene, effects, meshes.quad, knownTags.transparent, tex),
             axesMesh)
     end)
