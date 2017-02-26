@@ -31,6 +31,8 @@ namespace solo
             void updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const void *data, uint32_t vertexCount) override final;
             void removeVertexBuffer(uint32_t index) override final;
 
+            auto getVertexBufferCount() const -> uint32_t;
+
             // TODO needed?
             auto getVertexBufferLayout(uint32_t index) const -> VertexBufferLayout;
             auto getVertexBuffer(uint32_t index) const -> VkBuffer;
@@ -62,6 +64,11 @@ namespace solo
         inline auto Mesh::getVertexBuffer(uint32_t index) const -> VkBuffer
         {
             return vertexBuffers.at(index).getHandle();
+        }
+
+        inline auto Mesh::getVertexBufferCount() const -> uint32_t
+        {
+            return vertexBuffers.size();
         }
     }
 }
