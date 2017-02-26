@@ -109,20 +109,20 @@ loader:loadMeshAsync(getAssetPath("Axes.obj")):done(function(axesMesh)
     end)
 end)
 
-function keepRunning()
+local keepRunning = function()
     return not dev:isQuitRequested() and
            not dev:isWindowCloseRequested() and
            not dev:isKeyPressed(solo.KeyCode.Escape, true)
 end
 
-function detachPostProcessor()
+local detachPostProcessor = function()
     if pp then
         pp:detach()
         pp = nil
     end
 end
 
-function update()
+local update = function()
     scene:visit(function(cmp) cmp:update() end)
 
     if dev:isKeyPressed(solo.KeyCode.Digit1, true) then
@@ -140,11 +140,11 @@ function update()
     end
 end
 
-function renderByTags(tags, ctx)
+local renderByTags = function(tags, ctx)
     scene:visitByTags(tags, function(cmp) cmp:render(ctx) end)
 end
 
-function render()
+local render = function()
     offscreenCamera:renderFrame(function(ctx)
         renderByTags(knownTags.skybox, ctx)
         renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.monitor | knownTags.postProcessor), ctx)
@@ -162,7 +162,7 @@ function render()
     end
 end
 
-function run()
+local run = function()
     while keepRunning() do
         dev:update(function()
             loader:update()
@@ -174,11 +174,11 @@ function run()
     end
 end
 
-function runSafe()
-    local _, err = select(1, pcall(run))
+local callSafe = function(f)
+    local _, err = select(1, pcall(f))
     if err then
         logger:logError(err)
     end
 end
 
-runSafe()
+callSafe(run)
