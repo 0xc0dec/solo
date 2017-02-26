@@ -197,6 +197,8 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
                         offset += attr.size;
                     }
 
+                    builder.withVertexBinding(0, layout.getSize(), VK_VERTEX_INPUT_RATE_VERTEX);
+
                     builder.withVertexSize(layout.getSize());
 
                     test.pipeline = builder.build();

@@ -65,6 +65,17 @@ auto PipelineBuilder::withVertexAttribute(uint32_t location, uint32_t binding, V
 }
 
 
+auto PipelineBuilder::withVertexBinding(uint32_t binding, uint32_t stride, VkVertexInputRate inputRate) -> PipelineBuilder &
+{
+    if (binding >= vertexBindings.size())
+        vertexBindings.resize(binding + 1);
+    vertexBindings[binding].binding = binding;
+    vertexBindings[binding].stride = stride;
+    vertexBindings[binding].inputRate = inputRate;
+    return *this;
+}
+
+
 auto PipelineBuilder::withDescriptorSetLayouts(VkDescriptorSetLayout *layouts, uint32_t count) -> PipelineBuilder&
 {
     descSetLayouts.resize(count);
@@ -145,23 +156,14 @@ auto PipelineBuilder::build() -> Pipeline
 	depthStencilState.front = depthStencilState.back;
 	depthStencilState.back.compareOp = VK_COMPARE_OP_ALWAYS;
 
-    std::vector<VkPipelineShaderStageCreateInfo> shaderStageStates;
-    if (vertexShader)
-        shaderStageStates.push_back(vertexShaderStageInfo);
-    if (fragmentShader)
-        shaderStageStates.push_back(fragmentShaderStageInfo);
-
-    VkVertexInputBindingDescription vertexInputBindingDesc{}; // TODO other bindings
-    vertexInputBindingDesc.binding = 0;
-    vertexInputBindingDesc.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
-    vertexInputBindingDesc.stride = vertexSize;
+    std::vector<VkPipelineShaderStageCreateInfo> shaderStageStates{vertexShaderStageInfo, fragmentShaderStageInfo};
 
     VkPipelineVertexInputStateCreateInfo vertexInputState{};
     vertexInputState.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
     vertexInputState.pNext = nullptr;
     vertexInputState.flags = 0;
-    vertexInputState.vertexBindingDescriptionCount = 1;
-    vertexInputState.pVertexBindingDescriptions = &vertexInputBindingDesc;
+    vertexInputState.vertexBindingDescriptionCount = static_cast<uint32_t>(vertexBindings.size());
+    vertexInputState.pVertexBindingDescriptions = vertexBindings.data();
     vertexInputState.vertexAttributeDescriptionCount = static_cast<uint32_t>(vertexAttrs.size());
     vertexInputState.pVertexAttributeDescriptions = vertexAttrs.data();
 

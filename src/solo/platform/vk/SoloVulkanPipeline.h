@@ -53,6 +53,7 @@ namespace solo
             auto withVertexSize(uint32_t size) -> PipelineBuilder&;
 
             auto withVertexAttribute(uint32_t location, uint32_t binding, VkFormat format, uint32_t offset) -> PipelineBuilder&;
+            auto withVertexBinding(uint32_t binding, uint32_t stride, VkVertexInputRate inputRate) -> PipelineBuilder&;
 
             auto withDescriptorSetLayouts(VkDescriptorSetLayout* layouts, uint32_t count) -> PipelineBuilder&;
 
@@ -68,6 +69,7 @@ namespace solo
             VkPipelineShaderStageCreateInfo fragmentShaderStageInfo;
 
             std::vector<VkVertexInputAttributeDescription> vertexAttrs;
+            std::vector<VkVertexInputBindingDescription> vertexBindings;
             std::vector<VkDescriptorSetLayout> descSetLayouts;
 
             uint32_t vertexSize = 0;
