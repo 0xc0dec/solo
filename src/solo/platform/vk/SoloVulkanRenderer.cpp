@@ -181,25 +181,31 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
                         .withDescriptorSetLayouts(&descSetLayoutHandle, 1)
                         .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 
-                    auto layout = cmd.mesh->getVertexBufferLayout(0);
-                    uint32_t offset = 0;
-                    for (auto i = 0; i < layout.getAttributeCount(); ++i)
+                    uint32_t vertexSize = 0;
+                    for (auto i = 0; i < cmd.mesh->getVertexBufferCount(); ++i)
                     {
-                        auto attr = layout.getAttribute(i);
-                        auto format = VK_FORMAT_R32_SFLOAT;
-                        if (attr.elementCount == 2)
-                            format = VK_FORMAT_R32G32_SFLOAT;
-                        if (attr.elementCount == 3)
-                            format = VK_FORMAT_R32G32B32_SFLOAT;
-                        if (attr.elementCount == 4)
-                            format = VK_FORMAT_R32G32B32A32_SFLOAT;
-                        builder.withVertexAttribute(attr.location, 0, format, offset);
-                        offset += attr.size;
+                        auto layout = cmd.mesh->getVertexBufferLayout(i);
+                        builder.withVertexBinding(i, layout.getSize(), VK_VERTEX_INPUT_RATE_VERTEX);
+
+                        vertexSize += layout.getSize();
+
+                        uint32_t offset = 0;
+                        for (auto j = 0; j < layout.getAttributeCount(); ++j)
+                        {
+                            auto attr = layout.getAttribute(j);
+                            auto format = VK_FORMAT_R32_SFLOAT;
+                            if (attr.elementCount == 2)
+                                format = VK_FORMAT_R32G32_SFLOAT;
+                            if (attr.elementCount == 3)
+                                format = VK_FORMAT_R32G32B32_SFLOAT;
+                            if (attr.elementCount == 4)
+                                format = VK_FORMAT_R32G32B32A32_SFLOAT;
+                            builder.withVertexAttribute(attr.location, i, format, offset);
+                            offset += attr.size;
+                        }
                     }
 
-                    builder.withVertexBinding(0, layout.getSize(), VK_VERTEX_INPUT_RATE_VERTEX);
-
-                    builder.withVertexSize(layout.getSize());
+                    builder.withVertexSize(vertexSize);
 
                     test.pipeline = builder.build();
                     test.descriptorPool = DescriptorPool(device, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 1);
@@ -227,26 +233,20 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
 
                     vkUpdateDescriptorSets(device, 1, &descriptorWrite, 0, nullptr);
 
-                    test.vertexCount = 3;// static_cast<uint32_t>(tri1.size()); TODO
+                    test.vertexCount = 6;// static_cast<uint32_t>(tri1.size()); TODO
 
                     dirty2 = false;
                 }
 
                 vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline);
-
                 vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline.getLayout(), 0, 1, &test.descriptorSet, 0, nullptr);
-
-                VkDeviceSize offset = 0;
                 
+                std::vector<VkBuffer> vertexBuffers = {cmd.mesh->getVertexBuffer(0), cmd.mesh->getVertexBuffer(1)};
+                std::vector<VkDeviceSize> offsets = {0, 0};
+	            vkCmdBindVertexBuffers(buf, 0, 2, vertexBuffers.data(), offsets.data());
+
                 vkCmdBindIndexBuffer(buf, cmd.mesh->getPartBuffer(0), 0, VK_INDEX_TYPE_UINT16);
-
-                auto handle = cmd.mesh->getVertexBuffer(0);
-	            vkCmdBindVertexBuffers(buf, 0, 1, &handle, &offset);
-                vkCmdDrawIndexed(buf, 3, 1, 0, 0, 1);
-
-                handle = cmd.mesh->getVertexBuffer(1);
-	            vkCmdBindVertexBuffers(buf, 0, 1, &handle, &offset);
-                vkCmdDraw(buf, test.vertexCount, 1, 0, 0);
+                vkCmdDrawIndexed(buf, test.vertexCount, 1, 0, 0, 1);
                 
                 break;
             }
