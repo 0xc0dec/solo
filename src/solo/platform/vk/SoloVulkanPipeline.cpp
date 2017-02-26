@@ -42,28 +42,14 @@ void Pipeline::swap(Pipeline &other) noexcept
 }
 
 
-PipelineBuilder::PipelineBuilder(VkDevice device, VkRenderPass renderPass):
+PipelineBuilder::PipelineBuilder(VkDevice device, VkRenderPass renderPass, VkShaderModule vertexShader, VkShaderModule fragmentShader):
     device(device),
-    renderPass(renderPass)
+    renderPass(renderPass),
+    vertexShader(vertexShader),
+    fragmentShader(fragmentShader)
 {
-}
-
-
-auto PipelineBuilder::withVertexShader(VkShaderModule shader, const char *entryPoint) -> PipelineBuilder&
-{
-    vertexShader = shader;
-    if (vertexShader)
-        vertexShaderStageInfo = createShaderStageInfo(true, vertexShader, entryPoint);
-    return *this;
-}
-
-
-auto PipelineBuilder::withFragmentShader(VkShaderModule shader, const char *entryPoint) -> PipelineBuilder&
-{
-    fragmentShader = shader;
-    if (fragmentShader)
-        fragmentShaderStageInfo = createShaderStageInfo(false, fragmentShader, entryPoint);
-    return *this;
+    vertexShaderStageInfo = createShaderStageInfo(true, vertexShader, "main");
+    fragmentShaderStageInfo = createShaderStageInfo(false, fragmentShader, "main");
 }
 
 

@@ -166,12 +166,6 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
 
                 static bool dirty2 = true;
 
-                struct Vertex
-                {
-                    Vector2 position;
-                    Vector3 color;
-                };
-
                 if (dirty2)
                 {
                     test.descSetLayout = DescriptorSetLayoutBuilder(device)
@@ -183,9 +177,7 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
                     auto fs = effect->getFragmentShader();
 
                     VkDescriptorSetLayout descSetLayoutHandle = test.descSetLayout;
-                    auto builder = PipelineBuilder(device, renderPass)
-                        .withVertexShader(vs, "main")
-                        .withFragmentShader(fs, "main")
+                    auto builder = PipelineBuilder(device, renderPass, vs, fs)
                         .withDescriptorSetLayouts(&descSetLayoutHandle, 1)
                         .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 

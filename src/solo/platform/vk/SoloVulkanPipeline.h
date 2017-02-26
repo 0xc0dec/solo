@@ -46,11 +46,8 @@ namespace solo
         class PipelineBuilder
         {
         public:
-            PipelineBuilder(VkDevice device, VkRenderPass renderPass);
+            PipelineBuilder(VkDevice device, VkRenderPass renderPass, VkShaderModule vertexShader, VkShaderModule fragmentShader);
             ~PipelineBuilder() {}
-
-            auto withVertexShader(VkShaderModule shader, const char *entryPoint) -> PipelineBuilder&;
-            auto withFragmentShader(VkShaderModule shader, const char *entryPoint) -> PipelineBuilder&;
 
             auto withTopology(VkPrimitiveTopology topology) -> PipelineBuilder&;
             auto withVertexSize(uint32_t size) -> PipelineBuilder&;
@@ -65,8 +62,8 @@ namespace solo
             VkDevice device = nullptr;
             VkRenderPass renderPass = nullptr;
 
-            VkShaderModule vertexShader{};
-            VkShaderModule fragmentShader{};
+            VkShaderModule vertexShader;
+            VkShaderModule fragmentShader;
             VkPipelineShaderStageCreateInfo vertexShaderStageInfo;
             VkPipelineShaderStageCreateInfo fragmentShaderStageInfo;
 
