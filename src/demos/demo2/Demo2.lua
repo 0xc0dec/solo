@@ -49,6 +49,8 @@ local mesh = solo.Mesh.create(dev)
 mesh:addVertexBuffer(layout, meshData1, 3)
 mesh:addVertexBuffer(layout, meshData2, 3)
 
+mesh:addPart({ 0, 1, 2 }, 3)
+
 camera = initMainCamera()
 local effect = solo.Effect.createFromPrefab(dev, solo.EffectPrefab.Font)
 local material = solo.Material.create(dev, effect)

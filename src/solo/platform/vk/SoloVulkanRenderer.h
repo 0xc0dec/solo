@@ -91,7 +91,6 @@ namespace solo
                 Pipeline pipeline;
                 VkDescriptorSet descriptorSet;
                 uint32_t vertexCount;
-                Buffer indexBuffer;
             } test;
 
             void applyRenderCommands(VkCommandBuffer buf, VkFramebuffer framebuffer);

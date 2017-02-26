@@ -57,23 +57,39 @@ void vk::Mesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, 
 
 void vk::Mesh::removeVertexBuffer(uint32_t index)
 {
+    vertexBuffers.erase(vertexBuffers.begin() + index);
+    layouts.erase(layouts.begin() + index);
+    vertexCounts.erase(vertexCounts.begin() + index);
 }
 
 
 auto vk::Mesh::addPart(const void *indexData, uint32_t indexElementCount) -> uint32_t
 {
-    return 0;
+    auto size = sizeof(uint16_t) * indexElementCount;
+
+    auto stagingBuffer = Buffer(renderer->getDevice(), size, Buffer::Host | Buffer::TransferSrc, renderer->getPhysicalDeviceMemProps());
+    stagingBuffer.update(indexData);
+
+    auto buf = Buffer(renderer->getDevice(), size, Buffer::Device | Buffer::Index | Buffer::TransferDst, renderer->getPhysicalDeviceMemProps());
+    stagingBuffer.transferTo(buf, renderer->getQueue(), renderer->getCommandPool());
+
+    indexBuffers.push_back(std::move(buf));
+    indexElementCounts.push_back(indexElementCount);
+
+    return static_cast<uint32_t>(indexElementCounts.size() - 1);
 }
 
 
 void vk::Mesh::removePart(uint32_t index)
 {
+    indexBuffers.erase(indexBuffers.begin() + index);
+    indexElementCounts.erase(indexElementCounts.begin() + index);
 }
 
 
 auto vk::Mesh::getPartCount() const -> uint32_t
 {
-    return 0;
+    return indexBuffers.size();
 }
 
 
@@ -85,6 +101,7 @@ void vk::Mesh::draw()
 
 void vk::Mesh::drawPart(uint32_t part)
 {
+    renderer->addRenderCommand(RenderCommand::drawMesh(this));
 }
 
 

@@ -32,14 +32,13 @@ namespace solo
             void removeVertexBuffer(uint32_t index) override final;
 
             auto getVertexBufferCount() const -> uint32_t;
-
-            // TODO needed?
             auto getVertexBufferLayout(uint32_t index) const -> VertexBufferLayout;
             auto getVertexBuffer(uint32_t index) const -> VkBuffer;
 
             auto addPart(const void *indexData, uint32_t indexElementCount) -> uint32_t override final;
             void removePart(uint32_t index) override final;
             auto getPartCount() const -> uint32_t override final;
+            auto getPartBuffer(uint32_t index) const -> VkBuffer;
 
             void draw() override final;
             void drawPart(uint32_t part) override final;
@@ -52,8 +51,10 @@ namespace solo
             Renderer *renderer = nullptr;
 
             std::vector<Buffer> vertexBuffers;
+            std::vector<Buffer> indexBuffers;
             std::vector<VertexBufferLayout> layouts;
             std::vector<uint32_t> vertexCounts;
+            std::vector<uint32_t> indexElementCounts;
         };
 
         inline auto Mesh::getVertexBufferLayout(uint32_t index) const -> VertexBufferLayout
@@ -69,6 +70,11 @@ namespace solo
         inline auto Mesh::getVertexBufferCount() const -> uint32_t
         {
             return vertexBuffers.size();
+        }
+
+        inline auto Mesh::getPartBuffer(uint32_t index) const -> VkBuffer
+        {
+            return indexBuffers.at(index).getHandle();
         }
     }
 }
