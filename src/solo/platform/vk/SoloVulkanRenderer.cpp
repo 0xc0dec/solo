@@ -3,6 +3,9 @@
     MIT license
 */
 
+// NOTE This file, as well as other vulkan files in the engine, is a total hackfest and test playground.
+// Consider closing this to prevent your eyes from bleeding.
+
 #include "SoloVulkanRenderer.h"
 
 #ifdef SL_VULKAN_RENDERER
@@ -55,19 +58,21 @@ vk::Renderer::Renderer(Device *engineDevice):
     semaphores.renderComplete = createSemaphore(this->device);
 
     renderCmdBuffers.resize(swapchain.getStepCount());
-    createCommandBuffers(this->device, commandPool, swapchain.getStepCount(), renderCmdBuffers.data());
+    createCommandBuffers(this->device, commandPool, true, swapchain.getStepCount(), renderCmdBuffers.data());
+
+    createCommandBuffers(this->device, commandPool, false , 1, &mainRenderCmdBuffer);
 }
 
 
 vk::Renderer::~Renderer()
 {
+    vkFreeCommandBuffers(device, commandPool, 1, &mainRenderCmdBuffer);
     vkFreeCommandBuffers(device, commandPool, renderCmdBuffers.size(), renderCmdBuffers.data());
 }
 
 
 void vk::Renderer::beginFrame()
 {
-//    currentBuffer = swapchain.getNextImageIndex(semaphores.presentComplete);
     currentBuffer = swapchain.getNextImageIndex(semaphores.presentComplete);
     prevRenderCommands = std::move(renderCommands);
     renderCommands = std::vector<RenderCommand>(100); // TODO just picked random constant
@@ -118,8 +123,12 @@ void vk::Renderer::endFrame()
 #include "SoloVulkanDescriptorPool.h"
 
 
+static bool initialized = false;
+
 void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer framebuffer)
 {
+    // vkCmdExecuteCommands(buf, 1, &mainRenderCmdBuffer);
+
     const Material *currentMaterial = nullptr;
 
     for (const auto &cmd: renderCommands)
@@ -128,6 +137,22 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
         {
             case RenderCommandType::BeginCamera:
             {
+                if (!initialized)
+                {
+                    // Start secondary command buffer - this should eventually contain all rendering commands
+                    VkCommandBufferInheritanceInfo inheritance{};
+                    inheritance.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;
+                    inheritance.renderPass = renderPass;
+
+                    VkCommandBufferBeginInfo beginInfo{};
+                    beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+                    beginInfo.flags = VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT | VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
+                    beginInfo.pNext = nullptr;
+                    beginInfo.pInheritanceInfo = &inheritance;
+
+                    SL_VK_CHECK_RESULT(vkBeginCommandBuffer(mainRenderCmdBuffer, &beginInfo));
+                }
+
                 auto color = cmd.camera->getClearColor();
                 renderPass.setClear(cmd.camera->isClearColorEnabled(), cmd.camera->isClearDepthEnabled(),
                     {{color.x, color.y, color.z, color.w}},
@@ -137,20 +162,30 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
                 auto vp = VkViewport{viewport.x, viewport.y, viewport.z, viewport.w, 1, 100};
                 
                 renderPass.begin(buf, framebuffer, vp.width, vp.height);
-                vkCmdSetViewport(buf, 0, 1, &vp);
 
-                // TODO this is temp
-                VkRect2D scissor;
-                scissor.offset.x = 0;
-                scissor.offset.y = 0;
-                scissor.extent.width = vp.width;
-                scissor.extent.height = vp.height;
-                vkCmdSetScissor(buf, 0, 1, &scissor);
+                if (!initialized)
+                {
+                    vkCmdSetViewport(mainRenderCmdBuffer, 0, 1, &vp);
+
+                    VkRect2D scissor;
+                    scissor.offset.x = 0;
+                    scissor.offset.y = 0;
+                    scissor.extent.width = vp.width;
+                    scissor.extent.height = vp.height;
+                    vkCmdSetScissor(mainRenderCmdBuffer, 0, 1, &scissor);
+                }
 
                 break;
             }
 
             case RenderCommandType::EndCamera:
+                if (!initialized)
+                    SL_VK_CHECK_RESULT(vkEndCommandBuffer(mainRenderCmdBuffer));
+
+                initialized = true;
+
+                vkCmdExecuteCommands(buf, 1, &mainRenderCmdBuffer);
+
                 renderPass.end(buf);
                 break;
 
@@ -161,7 +196,7 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
             // TODO this is a totally test hackery
             case RenderCommandType::DrawMesh:
             {
-                if (!currentMaterial)
+                if (!currentMaterial || initialized)
                     continue;
 
                 static bool dirty2 = true;
@@ -238,15 +273,15 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
                     dirty2 = false;
                 }
 
-                vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline);
-                vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline.getLayout(), 0, 1, &test.descriptorSet, 0, nullptr);
+                vkCmdBindPipeline(mainRenderCmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline);
+                vkCmdBindDescriptorSets(mainRenderCmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline.getLayout(), 0, 1, &test.descriptorSet, 0, nullptr);
                 
                 std::vector<VkBuffer> vertexBuffers = {cmd.mesh->getVertexBuffer(0), cmd.mesh->getVertexBuffer(1)};
                 std::vector<VkDeviceSize> offsets = {0, 0};
-	            vkCmdBindVertexBuffers(buf, 0, 2, vertexBuffers.data(), offsets.data());
+	            vkCmdBindVertexBuffers(mainRenderCmdBuffer, 0, 2, vertexBuffers.data(), offsets.data());
 
-                vkCmdBindIndexBuffer(buf, cmd.mesh->getPartBuffer(0), 0, VK_INDEX_TYPE_UINT16);
-                vkCmdDrawIndexed(buf, cmd.mesh->getPartIndexElementCount(0), 1, 0, 0, 1);
+                vkCmdBindIndexBuffer(mainRenderCmdBuffer, cmd.mesh->getPartBuffer(0), 0, VK_INDEX_TYPE_UINT16);
+                vkCmdDrawIndexed(mainRenderCmdBuffer, cmd.mesh->getPartIndexElementCount(0), 1, 0, 0, 1);
                 
                 break;
             }
@@ -260,6 +295,8 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
 
 void vk::Renderer::recordRenderCmdBuffers()
 {
+    initialized = false;
+
     for (size_t i = 0; i < renderCmdBuffers.size(); i++)
     {
         auto buf = renderCmdBuffers[i];

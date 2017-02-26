@@ -160,15 +160,16 @@ void vk::submitCommandBuffer(VkQueue queue, VkCommandBuffer buffer)
 }
 
 
-void vk::createCommandBuffers(VkDevice logicalDevice, VkCommandPool commandPool, uint32_t count, VkCommandBuffer *result)
+void vk::createCommandBuffers(VkDevice device, VkCommandPool commandPool, bool primary, uint32_t count, VkCommandBuffer *result)
 {
     VkCommandBufferAllocateInfo allocateInfo{};
     allocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    allocateInfo.pNext = nullptr;
     allocateInfo.commandPool = commandPool;
-    allocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    allocateInfo.level = primary ? VK_COMMAND_BUFFER_LEVEL_PRIMARY : VK_COMMAND_BUFFER_LEVEL_SECONDARY;
     allocateInfo.commandBufferCount = count;
     
-    SL_VK_CHECK_RESULT(vkAllocateCommandBuffers(logicalDevice, &allocateInfo, result));
+    SL_VK_CHECK_RESULT(vkAllocateCommandBuffers(device, &allocateInfo, result));
 }
 
 

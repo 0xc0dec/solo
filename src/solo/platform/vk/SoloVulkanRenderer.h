@@ -73,6 +73,7 @@ namespace solo
             } semaphores;
 
             std::vector<VkCommandBuffer> renderCmdBuffers;
+            VkCommandBuffer mainRenderCmdBuffer;
             uint32_t currentBuffer = 0;
 
             bool dirty = true;

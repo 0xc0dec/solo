@@ -52,7 +52,7 @@ void RenderPass::begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, uint32
 	info.pClearValues = clearValues.data();
     info.framebuffer = framebuffer;
 
-    vkCmdBeginRenderPass(cmdBuf, &info, VK_SUBPASS_CONTENTS_INLINE);
+    vkCmdBeginRenderPass(cmdBuf, &info, VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS);
 }
 
 

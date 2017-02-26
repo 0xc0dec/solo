@@ -145,7 +145,7 @@ namespace solo
         auto createCommandPool(VkDevice device, uint32_t queueIndex) -> Resource<VkCommandPool>;
     
         void submitCommandBuffer(VkQueue queue, VkCommandBuffer buffer);
-        void createCommandBuffers(VkDevice logicalDevice, VkCommandPool commandPool, uint32_t count, VkCommandBuffer *result);
+        void createCommandBuffers(VkDevice device, VkCommandPool commandPool, bool primary, uint32_t count, VkCommandBuffer *result);
     
         auto findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, uint32_t typeBits,
             VkMemoryPropertyFlags properties) -> int32_t;
