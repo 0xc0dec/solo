@@ -10,6 +10,7 @@
 #include "SoloDevice.h"
 #include "SoloVulkanRenderer.h"
 #include "SoloVulkanRenderCommand.h"
+#include <algorithm>
 
 using namespace solo;
 
@@ -40,6 +41,8 @@ auto vk::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *dat
     layouts.push_back(layout);
     vertexCounts.push_back(vertexCount);
 
+    updateMinVertexCount();
+
     return static_cast<uint32_t>(vertexBuffers.size() - 1);
 }
 
@@ -60,6 +63,7 @@ void vk::Mesh::removeVertexBuffer(uint32_t index)
     vertexBuffers.erase(vertexBuffers.begin() + index);
     layouts.erase(layouts.begin() + index);
     vertexCounts.erase(vertexCounts.begin() + index);
+    updateMinVertexCount();
 }
 
 
@@ -113,6 +117,20 @@ auto vk::Mesh::getPrimitiveType() const -> PrimitiveType
 
 void vk::Mesh::setPrimitiveType(PrimitiveType type)
 {
+}
+
+
+void vk::Mesh::updateMinVertexCount()
+{
+    constexpr auto max = (std::numeric_limits<uint32_t>::max)();
+
+    minVertexCount = max;
+
+    for (const auto &count : vertexCounts)
+        minVertexCount = (std::min)(count, minVertexCount);
+
+    if (minVertexCount == max)
+        minVertexCount = 0;
 }
 
 

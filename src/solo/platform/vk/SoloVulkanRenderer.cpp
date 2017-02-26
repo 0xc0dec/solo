@@ -233,7 +233,7 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
 
                     vkUpdateDescriptorSets(device, 1, &descriptorWrite, 0, nullptr);
 
-                    test.vertexCount = 6;// static_cast<uint32_t>(tri1.size()); TODO
+                    test.vertexCount = cmd.mesh->getMinVertexCount();
 
                     dirty2 = false;
                 }
@@ -246,7 +246,7 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
 	            vkCmdBindVertexBuffers(buf, 0, 2, vertexBuffers.data(), offsets.data());
 
                 vkCmdBindIndexBuffer(buf, cmd.mesh->getPartBuffer(0), 0, VK_INDEX_TYPE_UINT16);
-                vkCmdDrawIndexed(buf, test.vertexCount, 1, 0, 0, 1);
+                vkCmdDrawIndexed(buf, cmd.mesh->getPartIndexElementCount(0), 1, 0, 0, 1);
                 
                 break;
             }

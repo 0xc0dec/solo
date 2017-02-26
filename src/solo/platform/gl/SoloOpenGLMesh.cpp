@@ -56,9 +56,15 @@ void gl::Mesh::rebuildVertexArray()
 
 void gl::Mesh::updateMinVertexCount()
 {
-    minVertexCount = std::numeric_limits<uint32_t>::max();
+    constexpr auto max = (std::numeric_limits<uint32_t>::max)();
+
+    minVertexCount = max;
+
     for (const auto &count : vertexCounts)
-        minVertexCount = std::min(count, minVertexCount);
+        minVertexCount = (std::min)(count, minVertexCount);
+
+    if (minVertexCount == max)
+        minVertexCount = 0;
 }
 
 

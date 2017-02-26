@@ -39,9 +39,12 @@ namespace solo
             void removePart(uint32_t index) override final;
             auto getPartCount() const -> uint32_t override final;
             auto getPartBuffer(uint32_t index) const -> VkBuffer;
+            auto getPartIndexElementCount(uint32_t index) const -> uint32_t;
 
             void draw() override final;
             void drawPart(uint32_t part) override final;
+
+            auto getMinVertexCount() const -> uint32_t;
 
             // TODO move these to base class?
             auto getPrimitiveType() const -> PrimitiveType override final;
@@ -55,6 +58,9 @@ namespace solo
             std::vector<VertexBufferLayout> layouts;
             std::vector<uint32_t> vertexCounts;
             std::vector<uint32_t> indexElementCounts;
+            uint32_t minVertexCount = 0;
+
+            void updateMinVertexCount();
         };
 
         inline auto Mesh::getVertexBufferLayout(uint32_t index) const -> VertexBufferLayout
@@ -75,6 +81,16 @@ namespace solo
         inline auto Mesh::getPartBuffer(uint32_t index) const -> VkBuffer
         {
             return indexBuffers.at(index).getHandle();
+        }
+
+        inline auto Mesh::getMinVertexCount() const -> uint32_t
+        {
+            return minVertexCount;
+        }
+
+        inline auto Mesh::getPartIndexElementCount(uint32_t index) const -> uint32_t
+        {
+            return indexElementCounts.at(index);
         }
     }
 }
