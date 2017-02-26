@@ -58,6 +58,7 @@ void gl::Material::applyParams(const Camera *camera, Transform *nodeTransform)
     // TODO refactor
     // TODO avoid table lookups
 
+    applyScalarParams(floatParams);
     applyScalarParams(vector2Params);
     applyScalarParams(vector3Params);
     applyScalarParams(vector4Params);
