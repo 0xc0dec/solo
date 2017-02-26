@@ -60,19 +60,6 @@ void vk::Mesh::removeVertexBuffer(uint32_t index)
 }
 
 
-void vk::Mesh::buildPipeline(PipelineBuilder &builder) const
-{
-    auto layout = layouts[0];
-    builder.withVertexSize(layout.getSize());
-    uint32_t offset = 0;
-    for (size_t i = 0; i < layout.getAttributeCount(); ++i)
-    {
-        builder = builder.withVertexAttribute(i, 0, VK_FORMAT_R32G32_SFLOAT, offset);
-        offset += layout.getAttribute(i).size * sizeof(float); // TODO shouldn't do sizeof(float) itself
-    }
-}
-
-
 auto vk::Mesh::addPart(const void *indexData, uint32_t indexElementCount) -> uint32_t
 {
     return 0;

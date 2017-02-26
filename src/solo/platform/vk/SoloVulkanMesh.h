@@ -31,8 +31,6 @@ namespace solo
             void updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const void *data, uint32_t vertexCount) override final;
             void removeVertexBuffer(uint32_t index) override final;
 
-            void buildPipeline(PipelineBuilder &builder) const;
-
             // TODO needed?
             auto getVertexBufferLayout(uint32_t index) const -> VertexBufferLayout;
             auto getVertexBuffer(uint32_t index) const -> VkBuffer;

@@ -166,6 +166,12 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
 
                 static bool dirty2 = true;
 
+                struct Vertex
+                {
+                    Vector2 position;
+                    Vector3 color;
+                };
+
                 if (dirty2)
                 {
                     test.descSetLayout = DescriptorSetLayoutBuilder(device)
@@ -177,14 +183,31 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
                     auto fs = effect->getFragmentShader();
 
                     VkDescriptorSetLayout descSetLayoutHandle = test.descSetLayout;
-                    auto &pipelineBuilder = PipelineBuilder(device, renderPass)
+                    auto builder = PipelineBuilder(device, renderPass)
                         .withVertexShader(vs, "main")
                         .withFragmentShader(fs, "main")
                         .withDescriptorSetLayouts(&descSetLayoutHandle, 1)
                         .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
-                    cmd.mesh->buildPipeline(pipelineBuilder);
+
+                    auto layout = cmd.mesh->getVertexBufferLayout(0);
+                    uint32_t offset = 0;
+                    for (auto i = 0; i < layout.getAttributeCount(); ++i)
+                    {
+                        auto attr = layout.getAttribute(i);
+                        auto format = VK_FORMAT_R32_SFLOAT;
+                        if (attr.elementCount == 2)
+                            format = VK_FORMAT_R32G32_SFLOAT;
+                        if (attr.elementCount == 3)
+                            format = VK_FORMAT_R32G32B32_SFLOAT;
+                        if (attr.elementCount == 4)
+                            format = VK_FORMAT_R32G32B32A32_SFLOAT;
+                        builder.withVertexAttribute(attr.location, 0, format, offset);
+                        offset += attr.size;
+                    }
+
+                    builder.withVertexSize(layout.getSize());
                     
-                    test.pipeline = pipelineBuilder.build();
+                    test.pipeline = builder.build();
                     test.descriptorPool = DescriptorPool(device, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 1);
                     test.descriptorSet = test.descriptorPool.allocateSet(test.descSetLayout);
 
