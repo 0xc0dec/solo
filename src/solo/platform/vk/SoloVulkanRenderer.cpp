@@ -198,6 +198,13 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
                     }
 
                     builder.withVertexSize(layout.getSize());
+
+                    std::vector<uint32_t> indices = {0, 1, 2};
+                    auto stagingBuffer = Buffer(device, sizeof(uint32_t) * indices.size(),
+                        Buffer::Host | Buffer::TransferSrc, physicalDevice.memProperties);
+                    stagingBuffer.update(indices.data());
+                    test.indexBuffer = Buffer(device, sizeof(Vector4), Buffer::Device | Buffer::Index | Buffer::TransferDst, physicalDevice.memProperties);
+                    stagingBuffer.transferTo(test.indexBuffer, queue, commandPool);
                     
                     test.pipeline = builder.build();
                     test.descriptorPool = DescriptorPool(device, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 1);
@@ -236,9 +243,11 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
 
                 VkDeviceSize offset = 0;
 
+                vkCmdBindIndexBuffer(buf, test.indexBuffer.getHandle(), 0, VK_INDEX_TYPE_UINT32);
+
                 auto vertexBufferHandle = cmd.mesh->getVertexBuffer(0);
 	            vkCmdBindVertexBuffers(buf, 0, 1, &vertexBufferHandle, &offset);
-                vkCmdDraw(buf, test.vertexCount, 1, 0, 0);
+                vkCmdDrawIndexed(buf, 3, 1, 0, 0, 1);
 
                 vertexBufferHandle = cmd.mesh->getVertexBuffer(1);
 	            vkCmdBindVertexBuffers(buf, 0, 1, &vertexBufferHandle, &offset);

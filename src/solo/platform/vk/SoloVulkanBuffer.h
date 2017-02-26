@@ -24,8 +24,9 @@ namespace solo
                 Device = 1 << 1,
                 Uniform = 1 << 2,
                 Vertex = 1 << 3,
-                TransferSrc = 1 << 4,
-                TransferDst = 1 << 5
+                Index = 1 << 4,
+                TransferSrc = 1 << 5,
+                TransferDst = 1 << 6
             };
 
             Buffer() {}

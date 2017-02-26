@@ -24,6 +24,8 @@ Buffer::Buffer(VkDevice device, VkDeviceSize size, uint32_t flags, VkPhysicalDev
         propFlags |= VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
     if (flags & Vertex)
         usage |= VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+    if (flags & Index)
+        usage |= VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
     if (flags & Uniform)
         usage |= VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
     if (flags & TransferSrc)
