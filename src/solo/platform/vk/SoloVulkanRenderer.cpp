@@ -51,14 +51,16 @@ vk::Renderer::Renderer(Device *engineDevice):
         .withDepthAttachment(depthFormat)
         .build();
 
+    renderPass.setClear(true, true, {{0, 0, 0, 1}}, {1, 0});
+
     swapchain = Swapchain(this->device, physicalDevice.device, surface, renderPass, depthStencil.view,
         canvasWidth, canvasHeight, false, colorFormat, colorSpace);
 
     semaphores.presentComplete = createSemaphore(this->device);
     semaphores.renderComplete = createSemaphore(this->device);
 
-    renderCmdBuffers.resize(swapchain.getStepCount());
-    createCommandBuffers(this->device, commandPool, true, swapchain.getStepCount(), renderCmdBuffers.data());
+    swapchainCmdBuffers.resize(swapchain.getStepCount());
+    createCommandBuffers(this->device, commandPool, true, swapchain.getStepCount(), swapchainCmdBuffers.data());
 
     createCommandBuffers(this->device, commandPool, false , 1, &mainRenderCmdBuffer);
 }
@@ -67,7 +69,7 @@ vk::Renderer::Renderer(Device *engineDevice):
 vk::Renderer::~Renderer()
 {
     vkFreeCommandBuffers(device, commandPool, 1, &mainRenderCmdBuffer);
-    vkFreeCommandBuffers(device, commandPool, renderCmdBuffers.size(), renderCmdBuffers.data());
+    vkFreeCommandBuffers(device, commandPool, swapchainCmdBuffers.size(), swapchainCmdBuffers.data());
 }
 
 
@@ -83,7 +85,7 @@ void vk::Renderer::endFrame()
 {
     if (dirty)
     {
-        recordRenderCmdBuffers();
+        recordCmdBuffers();
 //        dirty = false; // TODO
     }
 
@@ -97,7 +99,7 @@ void vk::Renderer::endFrame()
 	submitInfo.signalSemaphoreCount = 1;
 	submitInfo.pSignalSemaphores = &semaphores.renderComplete;
     submitInfo.commandBufferCount = 1;
-	submitInfo.pCommandBuffers = &renderCmdBuffers[currentSwapchainStep];
+	submitInfo.pCommandBuffers = &swapchainCmdBuffers[currentSwapchainStep];
     SL_VK_CHECK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, VK_NULL_HANDLE));
 
     auto swapchainHandle = swapchain.getHandle();
@@ -123,12 +125,8 @@ void vk::Renderer::endFrame()
 #include "SoloVulkanDescriptorPool.h"
 
 
-static bool initialized = false;
-
-void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer framebuffer)
+void vk::Renderer::applyRenderCommands(VkCommandBuffer buf)
 {
-    // vkCmdExecuteCommands(buf, 1, &mainRenderCmdBuffer);
-
     const Material *currentMaterial = nullptr;
 
     for (const auto &cmd: renderCommands)
@@ -137,22 +135,7 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
         {
             case RenderCommandType::BeginCamera:
             {
-                if (!initialized)
-                {
-                    // Start secondary command buffer - this should eventually contain all rendering commands
-                    VkCommandBufferInheritanceInfo inheritance{};
-                    inheritance.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;
-                    inheritance.renderPass = renderPass;
-
-                    VkCommandBufferBeginInfo beginInfo{};
-                    beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-                    beginInfo.flags = VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT | VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
-                    beginInfo.pNext = nullptr;
-                    beginInfo.pInheritanceInfo = &inheritance;
-
-                    SL_VK_CHECK_RESULT(vkBeginCommandBuffer(mainRenderCmdBuffer, &beginInfo));
-                }
-
+                // TODO doesn't quite belong here
                 auto color = cmd.camera->getClearColor();
                 renderPass.setClear(cmd.camera->isClearColorEnabled(), cmd.camera->isClearDepthEnabled(),
                     {{color.x, color.y, color.z, color.w}},
@@ -161,42 +144,28 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
                 auto viewport = cmd.camera->getViewport();
                 auto vp = VkViewport{viewport.x, viewport.y, viewport.z, viewport.w, 1, 100};
                 
-                renderPass.begin(buf, framebuffer, vp.width, vp.height);
+                vkCmdSetViewport(buf, 0, 1, &vp);
 
-                if (!initialized)
-                {
-                    vkCmdSetViewport(mainRenderCmdBuffer, 0, 1, &vp);
-
-                    VkRect2D scissor;
-                    scissor.offset.x = 0;
-                    scissor.offset.y = 0;
-                    scissor.extent.width = vp.width;
-                    scissor.extent.height = vp.height;
-                    vkCmdSetScissor(mainRenderCmdBuffer, 0, 1, &scissor);
-                }
+                VkRect2D scissor;
+                scissor.offset.x = 0;
+                scissor.offset.y = 0;
+                scissor.extent.width = vp.width;
+                scissor.extent.height = vp.height;
+                vkCmdSetScissor(buf, 0, 1, &scissor);
 
                 break;
             }
 
             case RenderCommandType::EndCamera:
-                if (!initialized)
-                    SL_VK_CHECK_RESULT(vkEndCommandBuffer(mainRenderCmdBuffer));
-
-                initialized = true;
-
-                vkCmdExecuteCommands(buf, 1, &mainRenderCmdBuffer);
-
-                renderPass.end(buf);
                 break;
 
             case RenderCommandType::ApplyMaterial:
                 currentMaterial = cmd.material;
                 break;
 
-            // TODO this is a totally test hackery
             case RenderCommandType::DrawMesh:
             {
-                if (!currentMaterial || initialized)
+                if (!currentMaterial)
                     continue;
 
                 static bool dirty2 = true;
@@ -273,15 +242,15 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
                     dirty2 = false;
                 }
 
-                vkCmdBindPipeline(mainRenderCmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline);
-                vkCmdBindDescriptorSets(mainRenderCmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline.getLayout(), 0, 1, &test.descriptorSet, 0, nullptr);
+                vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline);
+                vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline.getLayout(), 0, 1, &test.descriptorSet, 0, nullptr);
                 
                 std::vector<VkBuffer> vertexBuffers = {cmd.mesh->getVertexBuffer(0), cmd.mesh->getVertexBuffer(1)};
                 std::vector<VkDeviceSize> offsets = {0, 0};
-	            vkCmdBindVertexBuffers(mainRenderCmdBuffer, 0, 2, vertexBuffers.data(), offsets.data());
+	            vkCmdBindVertexBuffers(buf, 0, 2, vertexBuffers.data(), offsets.data());
 
-                vkCmdBindIndexBuffer(mainRenderCmdBuffer, cmd.mesh->getPartBuffer(0), 0, VK_INDEX_TYPE_UINT16);
-                vkCmdDrawIndexed(mainRenderCmdBuffer, cmd.mesh->getPartIndexElementCount(0), 1, 0, 0, 1);
+                vkCmdBindIndexBuffer(buf, cmd.mesh->getPartBuffer(0), 0, VK_INDEX_TYPE_UINT16);
+                vkCmdDrawIndexed(buf, cmd.mesh->getPartIndexElementCount(0), 1, 0, 0, 1);
                 
                 break;
             }
@@ -293,19 +262,36 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf, VkFramebuffer frameb
 }
 
 
-void vk::Renderer::recordRenderCmdBuffers()
+void vk::Renderer::recordCmdBuffers()
 {
-    initialized = false;
-
-    for (size_t i = 0; i < renderCmdBuffers.size(); i++)
     {
-        auto buf = renderCmdBuffers[i];
+        VkCommandBufferInheritanceInfo inheritance{};
+        inheritance.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;
+        inheritance.renderPass = renderPass;
+
+        VkCommandBufferBeginInfo beginInfo{};
+        beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+        beginInfo.flags = VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT | VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
+        beginInfo.pNext = nullptr;
+        beginInfo.pInheritanceInfo = &inheritance;
+
+        SL_VK_CHECK_RESULT(vkBeginCommandBuffer(mainRenderCmdBuffer, &beginInfo));
+        applyRenderCommands(mainRenderCmdBuffer);
+        SL_VK_CHECK_RESULT(vkEndCommandBuffer(mainRenderCmdBuffer));
+    }
+
+    auto canvasSize = engineDevice->getCanvasSize();
+    for (size_t i = 0; i < swapchainCmdBuffers.size(); i++)
+    {
+        auto buf = swapchainCmdBuffers[i];
 
         VkCommandBufferBeginInfo beginInfo{};
         beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
         SL_VK_CHECK_RESULT(vkBeginCommandBuffer(buf, &beginInfo));
-
-        applyRenderCommands(buf, swapchain.getFramebuffer(i));
+        
+        renderPass.begin(buf, swapchain.getFramebuffer(i), canvasSize.x, canvasSize.y);
+        vkCmdExecuteCommands(buf, 1, &mainRenderCmdBuffer);
+        renderPass.end(buf);
 
         SL_VK_CHECK_RESULT(vkEndCommandBuffer(buf));
     }

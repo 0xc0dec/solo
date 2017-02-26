@@ -72,7 +72,7 @@ namespace solo
                 Resource<VkSemaphore> presentComplete;
             } semaphores;
 
-            std::vector<VkCommandBuffer> renderCmdBuffers;
+            std::vector<VkCommandBuffer> swapchainCmdBuffers;
             VkCommandBuffer mainRenderCmdBuffer;
             uint32_t currentSwapchainStep = 0;
 
@@ -94,8 +94,8 @@ namespace solo
                 uint32_t vertexCount;
             } test;
 
-            void applyRenderCommands(VkCommandBuffer buf, VkFramebuffer framebuffer);
-            void recordRenderCmdBuffers();
+            void applyRenderCommands(VkCommandBuffer buf);
+            void recordCmdBuffers();
         };
 
         inline auto Renderer::getDevice() const -> VkDevice
