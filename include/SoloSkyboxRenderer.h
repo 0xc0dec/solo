@@ -22,7 +22,7 @@ namespace solo
     public:
         explicit SkyboxRenderer(const Node &node);
 
-        void render(const RenderContext &context) override final;
+        void render() override final;
 
         void setTexture(sptr<CubeTexture> texture);
         auto getTexture() const -> sptr<CubeTexture>;

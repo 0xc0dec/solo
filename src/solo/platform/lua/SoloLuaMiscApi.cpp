@@ -14,7 +14,6 @@
 #include "SoloAssetLoader.h"
 #include "SoloRenderer.h"
 #include "SoloMesh.h"
-#include "SoloRenderContext.h"
 #include "SoloSpectator.h"
 
 using namespace solo;
@@ -154,15 +153,6 @@ static void registerRenderer(CppBindModule<LuaBinding> &module)
 }
 
 
-static void registerRenderContext(CppBindModule<LuaBinding> &module)
-{
-    auto rc = BEGIN_CLASS(module, RenderContext);
-    REG_CTOR(rc);
-    REG_VARIABLE(rc, RenderContext, camera);
-    rc.endClass();
-}
-
-
 void registerMiscApi(CppBindModule<LuaBinding> &module)
 {
     registerRenderer(module);
@@ -174,7 +164,6 @@ void registerMiscApi(CppBindModule<LuaBinding> &module)
     registerLogger(module);
     registerFrameBuffer(module);
     registerAsyncHandles(module);
-    registerRenderContext(module);
     registerSpectator(module);
     registerSkyboxRenderer(module);
 }

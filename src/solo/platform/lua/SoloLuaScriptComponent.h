@@ -23,7 +23,7 @@ namespace solo
             void init() override final;
             void terminate() override final;
             void update() override final;
-            void render(const RenderContext &context) override final;
+            void render() override final;
 
             void onComponentAdded(Component *cmp) override final;
             void onComponentRemoved(Component *cmp) override final;
@@ -39,7 +39,7 @@ namespace solo
             std::function<void(LuaIntf::LuaRef)> initFunc;
             std::function<void(LuaIntf::LuaRef)> terminateFunc;
             std::function<void(LuaIntf::LuaRef)> updateFunc;
-            std::function<void(LuaIntf::LuaRef, const RenderContext&)> renderFunc;
+            std::function<void(LuaIntf::LuaRef)> renderFunc;
             std::function<void(LuaIntf::LuaRef, Component*)> onComponentAddedFunc;
             std::function<void(LuaIntf::LuaRef, Component*)> onComponentRemovedFunc;
         };

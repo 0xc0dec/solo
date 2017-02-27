@@ -38,7 +38,6 @@
 #include "SoloRadian.h"
 #include "SoloRay.h"
 #include "SoloRectTexture.h"
-#include "SoloRenderContext.h"
 #include "SoloRenderer.h"
 #include "SoloRigidBody.h"
 #include "SoloScene.h"

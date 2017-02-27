@@ -5,7 +5,6 @@
 
 #include "SoloCamera.h"
 #include "SoloLuaCommon.h"
-#include "SoloRenderContext.h"
 
 using namespace solo;
 

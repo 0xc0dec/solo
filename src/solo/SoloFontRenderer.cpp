@@ -7,7 +7,6 @@
 #include "SoloMesh.h"
 #include "SoloFont.h"
 #include "SoloMaterial.h"
-#include "SoloRenderContext.h"
 #include "SoloTransform.h"
 #include "SoloDevice.h"
 #include "SoloRectTexture.h"
@@ -31,7 +30,7 @@ FontRenderer::FontRenderer(const Node &node) :
 }
 
 
-void FontRenderer::render(const RenderContext &context)
+void FontRenderer::render()
 {
     if (!mesh)
         return;

@@ -116,21 +116,21 @@ local update = function()
     end
 end
 
-local renderByTags = function(tags, ctx)
-    scene:visitByTags(tags, function(cmp) cmp:render(ctx) end)
+local renderByTags = function(tags)
+    scene:visitByTags(tags, function(cmp) cmp:render() end)
 end
 
 local render = function()
-    offscreenCamera:renderFrame(function(ctx)
-        renderByTags(knownTags.skybox, ctx)
-        renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.monitor | knownTags.postProcessor), ctx)
-        renderByTags(knownTags.transparent, ctx)
+    offscreenCamera:renderFrame(function()
+        renderByTags(knownTags.skybox)
+        renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.monitor | knownTags.postProcessor))
+        renderByTags(knownTags.transparent)
     end)
 
-    mainCamera:renderFrame(function(ctx)
-        renderByTags(knownTags.skybox, ctx)
-        renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.postProcessor), ctx)
-        renderByTags(knownTags.transparent, ctx)
+    mainCamera:renderFrame(function()
+        renderByTags(knownTags.skybox)
+        renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.postProcessor))
+        renderByTags(knownTags.transparent)
     end)
 
     if pp then

@@ -13,4 +13,4 @@ t:setTag(123)
 assert(t:getNode())
 
 t:update()
-t:render(solo.RenderContext())
+t:render()

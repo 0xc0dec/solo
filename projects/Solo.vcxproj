@@ -49,7 +49,6 @@
     <ClInclude Include="..\include\SoloPlane.h" />
     <ClInclude Include="..\include\SoloQuaternion.h" />
     <ClInclude Include="..\include\SoloRay.h" />
-    <ClInclude Include="..\include\SoloRenderContext.h" />
     <ClInclude Include="..\include\SoloAssetLoader.h" />
     <ClInclude Include="..\include\SoloScene.h" />
     <ClInclude Include="..\include\SoloRectTexture.h" />

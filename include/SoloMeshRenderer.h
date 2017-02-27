@@ -9,7 +9,6 @@
 #include "SoloComponent.h"
 #include "SoloNode.h"
 
-
 namespace solo
 {
     class Material;
@@ -22,7 +21,7 @@ namespace solo
     public:
         explicit MeshRenderer(const Node &node);
 
-        void render(const RenderContext &context) override final;
+        void render() override final;
 
         auto getMesh() const -> Mesh*;
         void setMesh(sptr<Mesh> mesh);

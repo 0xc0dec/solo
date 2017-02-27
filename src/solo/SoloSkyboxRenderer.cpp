@@ -6,7 +6,6 @@
 #include "SoloSkyboxRenderer.h"
 #include "SoloMesh.h"
 #include "SoloMaterial.h"
-#include "SoloRenderContext.h"
 #include "SoloCubeTexture.h"
 #include "SoloTransform.h"
 #include "SoloDevice.h"
@@ -34,7 +33,7 @@ SkyboxRenderer::SkyboxRenderer(const Node &node):
 }
 
 
-void SkyboxRenderer::render(const RenderContext &context) // TODO remove context
+void SkyboxRenderer::render()
 {
     renderer->addRenderCommand(RenderCommand::applyMaterial(material.get()));
     renderer->addRenderCommand(RenderCommand::drawMesh(quadMesh.get(), transform)); // TODO transform needed here?

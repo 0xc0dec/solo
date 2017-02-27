@@ -4,7 +4,6 @@
 */
 
 #include "SoloLuaScriptComponent.h"
-#include "SoloRenderContext.h"
 #include "SoloTransform.h"
 #include "SoloLuaCommon.h"
 
@@ -30,8 +29,8 @@ lua::ScriptComponent::ScriptComponent(const Node &node, LuaRef ref):
         : [](LuaRef) {};
     
     renderFunc = ref.has("render")
-        ? ref.get<std::function<void(LuaRef, const RenderContext&)>>("render")
-        : [](LuaRef, const RenderContext&) {};
+        ? ref.get<std::function<void(LuaRef)>>("render")
+        : [](LuaRef) {};
     
     onComponentAddedFunc = ref.has("onComponentAddedFunc")
         ? ref.get<std::function<void(LuaRef, Component*)>>("onComponentAddedFunc")
@@ -63,9 +62,9 @@ void lua::ScriptComponent::update()
 }
 
 
-void lua::ScriptComponent::render(const RenderContext &context)
+void lua::ScriptComponent::render()
 {
-    renderFunc(ref, context);
+    renderFunc(ref);
 }
 
 

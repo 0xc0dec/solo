@@ -7,11 +7,8 @@
 
 #include "SoloNode.h"
 
-
 namespace solo
 {
-    struct RenderContext;
-
     struct ComponentTypeId
     {
         template <typename T>
@@ -24,7 +21,6 @@ namespace solo
     private:
         static uint32_t counter;
     };
-
 
     class Component
     {
@@ -41,7 +37,7 @@ namespace solo
         virtual void terminate() {}
         
         virtual void update() {}
-        virtual void render(const RenderContext &context) {}
+        virtual void render() {}
 
         virtual void onComponentAdded(Component *cmp) {}
         virtual void onComponentRemoved(Component *cmp) {}
@@ -74,7 +70,6 @@ namespace solo
     {
         this->tag = tag;
     }
-
 
     template <class T>
     class ComponentBase: public Component

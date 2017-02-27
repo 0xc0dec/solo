@@ -22,7 +22,7 @@ function createPostProcessor(device, camera, tag)
             quadRenderer:setMaterial(0, mat);
             camera:setViewport(viewport)
             camera:setRenderTarget(target)
-            camera:renderFrame(function(ctx) quadRenderer:render(ctx) end)
+            camera:renderFrame(function() quadRenderer:render() end)
         end
     }
 end

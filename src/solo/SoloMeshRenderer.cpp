@@ -6,7 +6,6 @@
 #include "SoloMeshRenderer.h"
 #include "SoloMesh.h"
 #include "SoloMaterial.h"
-#include "SoloRenderContext.h"
 #include "SoloTransform.h"
 #include "SoloDevice.h"
 
@@ -21,7 +20,7 @@ MeshRenderer::MeshRenderer(const Node &node):
 }
 
 
-void MeshRenderer::render(const RenderContext &context)
+void MeshRenderer::render()
 {
     if (!mesh || materials.empty())
         return;

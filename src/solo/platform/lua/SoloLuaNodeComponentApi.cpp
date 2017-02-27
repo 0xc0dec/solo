@@ -12,7 +12,6 @@
 #include "SoloSpectator.h"
 #include "SoloLuaCommon.h"
 #include "SoloRigidBody.h"
-#include "SoloRenderContext.h"
 
 using namespace solo;
 

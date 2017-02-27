@@ -10,7 +10,6 @@
 #include "SoloRadian.h"
 #include "SoloDegree.h"
 #include "SoloScene.h"
-#include "SoloRenderContext.h"
 #include "SoloRenderer.h"
 #include "platform/gl/SoloOpenGLCamera.h"
 #include "platform/vk/SoloVulkanCamera.h"
@@ -180,13 +179,9 @@ auto Camera::getInvViewProjectionMatrix() const -> const TransformMatrix
 }
 
 
-void Camera::renderFrame(std::function<void(const RenderContext&)> render) const
+void Camera::renderFrame(std::function<void()> render) const
 {
     renderer->addRenderCommand(RenderCommand::beginCamera(this, renderTarget.get()));
-
-    RenderContext ctx;
-    ctx.camera = this;
-    render(ctx);
-
+    render();
     renderer->addRenderCommand(RenderCommand::endCamera());
 }

@@ -10,7 +10,6 @@
 #include "SoloVector3.h"
 #include <vector>
 
-
 namespace solo
 {
     class Font;
@@ -24,7 +23,7 @@ namespace solo
     public:
         explicit FontRenderer(const Node &node);
 
-        void render(const RenderContext &context) override final;
+        void render() override final;
 
         void setFont(sptr<Font> font);
         void setText(const std::string &text);

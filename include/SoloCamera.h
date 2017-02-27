@@ -13,7 +13,6 @@
 #include "SoloRadian.h"
 #include <functional>
 
-
 namespace solo
 {
     class Transform;
@@ -21,7 +20,6 @@ namespace solo
     class FrameBuffer;
     class Renderer;
     class Device;
-    struct RenderContext;
     struct Radian;
 
     class Camera: public ComponentBase<Camera>, protected TransformCallback
@@ -33,7 +31,7 @@ namespace solo
         void terminate() override final;
 
         // TODO perhaps specify render target to add more "functional" flavor
-        void renderFrame(std::function<void(const RenderContext&)> render) const;
+        void renderFrame(std::function<void()> render) const;
 
         auto getTransform() const -> Transform*;
 
