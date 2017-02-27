@@ -63,7 +63,6 @@
     <ClInclude Include="..\src\solo\platform\bullet\SoloBulletCommon.h" />
     <ClInclude Include="..\src\solo\platform\bullet\SoloBulletPhysics.h" />
     <ClInclude Include="..\src\solo\platform\bullet\SoloBulletRigidBody.h" />
-    <ClInclude Include="..\src\solo\platform\gl\SoloOpenGLCamera.h" />
     <ClInclude Include="..\src\solo\platform\gl\SoloOpenGLCubeTexture.h" />
     <ClInclude Include="..\src\solo\platform\gl\SoloOpenGLEffect.h" />
     <ClInclude Include="..\src\solo\platform\gl\SoloOpenGLFrameBuffer.h" />
@@ -76,7 +75,6 @@
     <ClInclude Include="..\src\solo\platform\gl\SoloSDLOpenGLDevice.h" />
     <ClInclude Include="..\src\solo\platform\lua\SoloLuaScriptComponent.h" />
     <ClInclude Include="..\src\solo\platform\lua\SoloLuaScriptRuntime.h" />
-    <ClInclude Include="..\src\solo\platform\null\SoloNullCamera.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullCubeTexture.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullDevice.h" />
     <ClInclude Include="..\src\solo\platform\null\SoloNullEffect.h" />
@@ -91,7 +89,6 @@
     <ClInclude Include="..\src\solo\platform\vk\SoloSDLVulkanDevice.h" />
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkan.h" />
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanBuffer.h" />
-    <ClInclude Include="..\src\solo\platform\vk\SoloVulkanCamera.h" />
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanDescriptorPool.h" />
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanDescriptorSetLayoutBuilder.h" />
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanEffect.h" />
@@ -113,7 +110,6 @@
     <ClCompile Include="..\src\solo\platform\bullet\SoloBulletBoxCollider.cpp" />
     <ClCompile Include="..\src\solo\platform\bullet\SoloBulletPhysics.cpp" />
     <ClCompile Include="..\src\solo\platform\bullet\SoloBulletRigidBody.cpp" />
-    <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLCamera.cpp" />
     <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLCubeTexture.cpp" />
     <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLEffect.cpp" />
     <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLFrameBuffer.cpp" />
@@ -142,7 +138,6 @@
     <ClCompile Include="..\src\solo\platform\vk\SoloSDLVulkanDevice.cpp" />
     <ClCompile Include="..\src\solo\platform\vk\SoloVulkan.cpp" />
     <ClCompile Include="..\src\solo\platform\vk\SoloVulkanBuffer.cpp" />
-    <ClCompile Include="..\src\solo\platform\vk\SoloVulkanCamera.cpp" />
     <ClCompile Include="..\src\solo\platform\vk\SoloVulkanDescriptorPool.cpp" />
     <ClCompile Include="..\src\solo\platform\vk\SoloVulkanDescriptorSetLayoutBuilder.cpp" />
     <ClCompile Include="..\src\solo\platform\vk\SoloVulkanEffect.cpp" />

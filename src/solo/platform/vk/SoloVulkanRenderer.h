@@ -6,7 +6,6 @@
 #pragma once
 
 #include "SoloCommon.h"
-#include "SoloVulkanDescriptorPool.h"
 
 #ifdef SL_VULKAN_RENDERER
 
@@ -17,14 +16,15 @@
 #include "SoloVulkanRenderCommand.h"
 #include "SoloVulkanPipeline.h"
 #include "SoloVulkanBuffer.h"
+#include "SoloVulkanDescriptorPool.h"
 
 namespace solo
 {
     class Device;
+    class Camera;
 
     namespace vk
     {
-        class Camera;
         class Mesh;
 
         class Renderer final : public solo::Renderer

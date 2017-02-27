@@ -11,8 +11,8 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloDevice.h"
+#include "SoloCamera.h"
 #include "SoloSDLVulkanDevice.h"
-#include "SoloVulkanCamera.h"
 #include "SoloVulkanMaterial.h"
 #include "SoloVulkanMesh.h"
 

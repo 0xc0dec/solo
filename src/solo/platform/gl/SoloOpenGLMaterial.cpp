@@ -8,8 +8,8 @@
 #ifdef SL_OPENGL_RENDERER
 
 #include "SoloDevice.h"
+#include "SoloCamera.h"
 #include "SoloOpenGLTexture.h"
-#include "SoloOpenGLCamera.h"
 #include "SoloTransform.h"
 #include "SoloTexture.h"
 
@@ -36,7 +36,7 @@ void gl::Material::applyState() const
 }
 
 
-void gl::Material::applyParams(const gl::Camera *camera, const Transform *nodeTransform) const
+void gl::Material::applyParams(const Camera *camera, const Transform *nodeTransform) const
 {
     // TODO refactor
     // TODO avoid table lookups

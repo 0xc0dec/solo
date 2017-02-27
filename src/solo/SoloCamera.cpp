@@ -11,9 +11,6 @@
 #include "SoloDegree.h"
 #include "SoloScene.h"
 #include "SoloRenderer.h"
-#include "platform/gl/SoloOpenGLCamera.h"
-#include "platform/vk/SoloVulkanCamera.h"
-#include "platform/null/SoloNullCamera.h"
 
 using namespace solo;
 
@@ -27,19 +24,7 @@ const uint32_t DirtyBitInvViewProjection = 1 << 4;
 
 auto Camera::create(const Node &node) -> sptr<Camera>
 {
-    switch (node.getScene()->getDevice()->getSetup().mode)
-    {
-#ifdef SL_OPENGL_RENDERER
-        case DeviceMode::OpenGL:
-            return std::make_shared<gl::Camera>(node);
-#endif
-#ifdef SL_VULKAN_RENDERER
-        case DeviceMode::Vulkan:
-            return std::make_shared<vk::Camera>(node);
-#endif
-        default:
-            return std::make_shared<null::Camera>(node);
-    }
+    return std::shared_ptr<Camera>(new Camera(node));
 }
 
 

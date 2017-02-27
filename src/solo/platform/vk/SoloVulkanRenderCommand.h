@@ -11,9 +11,10 @@
 
 namespace solo
 {
+    class Camera;
+
     namespace vk
     {
-        class Camera;
         class Mesh;
         class Material;
 

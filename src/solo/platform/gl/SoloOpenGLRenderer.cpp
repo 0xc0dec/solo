@@ -8,8 +8,8 @@
 #ifdef SL_OPENGL_RENDERER
 
 #include "SoloDevice.h"
+#include "SoloCamera.h"
 #include "SoloLogger.h"
-#include "SoloOpenGLCamera.h"
 #include "SoloOpenGLMaterial.h"
 #include "SoloOpenGLMesh.h"
 #include "SoloOpenGLFrameBuffer.h"

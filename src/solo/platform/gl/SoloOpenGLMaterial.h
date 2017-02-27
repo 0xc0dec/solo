@@ -18,13 +18,13 @@
 namespace solo
 {
     class Device;
+    class Camera;
 
     namespace gl
     {
         class Renderer;
         class Effect;
         class Texture;
-        class Camera;
 
         class Material final : public solo::Material
         {
@@ -60,7 +60,7 @@ namespace solo
             void bindCameraWorldPositionParameter(const std::string &name) override final;
 
             void applyState() const;
-            void applyParams(const gl::Camera *camera, const Transform *nodeTransform) const;
+            void applyParams(const Camera *camera, const Transform *nodeTransform) const;
 
         protected:
             template <class T>

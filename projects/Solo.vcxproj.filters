@@ -178,9 +178,6 @@
     <ClInclude Include="..\src\solo\platform\null\SoloNullRenderer.h">
       <Filter>src\platform\null</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\platform\null\SoloNullCamera.h">
-      <Filter>src\platform\null</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\solo\platform\null\SoloNullMaterial.h">
       <Filter>src\platform\null</Filter>
     </ClInclude>
@@ -217,9 +214,6 @@
     <ClInclude Include="..\src\solo\SoloSpinLock.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\platform\gl\SoloOpenGLCamera.h">
-      <Filter>src\platform\gl</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\solo\platform\gl\SoloOpenGLCubeTexture.h">
       <Filter>src\platform\gl</Filter>
     </ClInclude>
@@ -254,9 +248,6 @@
       <Filter>src\platform\vk</Filter>
     </ClInclude>
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkan.h">
-      <Filter>src\platform\vk</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\solo\platform\vk\SoloVulkanCamera.h">
       <Filter>src\platform\vk</Filter>
     </ClInclude>
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanRenderer.h">
@@ -474,9 +465,6 @@
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaFontApi.cpp">
       <Filter>src\platform\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLCamera.cpp">
-      <Filter>src\platform\gl</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLCubeTexture.cpp">
       <Filter>src\platform\gl</Filter>
     </ClCompile>
@@ -508,9 +496,6 @@
       <Filter>src\platform\vk</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\platform\vk\SoloVulkan.cpp">
-      <Filter>src\platform\vk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\platform\vk\SoloVulkanCamera.cpp">
       <Filter>src\platform\vk</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\platform\vk\SoloVulkanRenderer.cpp">
