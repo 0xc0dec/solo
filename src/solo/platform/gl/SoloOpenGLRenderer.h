@@ -59,11 +59,6 @@ namespace solo
             void generateRectTextureMipmaps(uint32_t handle);
             void generateCubeTextureMipmaps(uint32_t handle);
 
-            auto createFrameBuffer() -> uint32_t;
-            void destroyFrameBuffer(uint32_t handle);
-            void setFrameBuffer(uint32_t handle);
-            void updateFrameBuffer(uint32_t handle, const std::vector<uint32_t> &attachmentHandles);
-
             void setFaceCull(FaceCull face);
             void setPolygonMode(PolygonMode mode);
             void setBlend(bool enabled);
@@ -79,13 +74,6 @@ namespace solo
             void endFrame() override final;
 
         private:
-            struct FrameBuffer
-            {
-                GLuint rawHandle = 0;
-                GLuint depthBufferHandle = 0;
-                uint32_t attachmentCount = 0;
-            };
-
             struct Texture
             {
                 GLuint rawHandle = 0;
@@ -97,18 +85,14 @@ namespace solo
             // Released ids do not get reused, so this effectively limits the total
             // number of resource allocations during the program lifetime. That's how it is for now.
             uint32_t textureCounter = 0;
-            uint32_t frameBufferCounter = 0;
-            uint32_t vertexBufferCounter = 0;
 
             std::unordered_map<uint32_t, Texture> textures;
-            std::unordered_map<uint32_t, FrameBuffer> frameBuffers;
 
             std::vector<RenderCommand> renderCommands;
 
             void bindFrameBuffer(uint32_t handle);
             void bindTexture(GLenum target, uint32_t handle);
             void setTexture(GLenum target, uint32_t handle, uint32_t flags);
-            void validateFrameBufferAttachments(const std::vector<uint32_t> &attachments);
         };
     }
 }

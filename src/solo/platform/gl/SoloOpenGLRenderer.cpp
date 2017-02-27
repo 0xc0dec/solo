@@ -129,10 +129,6 @@ gl::Renderer::Renderer(Device *device)
 gl::Renderer::~Renderer()
 {
     // All resources at this point should have already been released
-
-    while (!frameBuffers.empty())
-        destroyFrameBuffer(frameBuffers.begin()->first);
-
     while (!textures.empty())
         destroyTexture(textures.begin()->first);
 }
@@ -280,25 +276,6 @@ void gl::Renderer::setTexture(GLenum target, uint32_t handle, uint32_t flags)
 }
 
 
-void gl::Renderer::validateFrameBufferAttachments(const std::vector<uint32_t> &attachments)
-{
-    SL_PANIC_IF(attachments.size() > GL_MAX_COLOR_ATTACHMENTS, "Too many attachments");
-
-    auto width = -1, height = -1;
-    for (auto i = 0; i < attachments.size(); i++)
-    {
-        auto texture = textures.at(attachments[i]);
-        if (width < 0)
-        {
-            width = texture.width;
-            height = texture.height;
-        }
-        else
-            SL_PANIC_IF(texture.width != width || texture.height != height, "Attachment sizes do not match")
-        }
-}
-
-
 void gl::Renderer::setRectTexture(uint32_t handle)
 {
     bindTexture(GL_TEXTURE_2D, handle);
@@ -346,80 +323,6 @@ void gl::Renderer::setCubeTexture(uint32_t handle, uint32_t flags, float anisotr
     setCubeTexture(handle, flags);
     if (handle != EmptyHandle)
         glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
-}
-
-
-void gl::Renderer::bindFrameBuffer(uint32_t handle)
-{
-    auto rawHandle = handle == EmptyHandle ? 0 : frameBuffers.at(handle).rawHandle;
-    glBindFramebuffer(GL_FRAMEBUFFER, rawHandle);
-}
-
-
-auto gl::Renderer::createFrameBuffer() -> uint32_t
-{
-    GLuint rawHandle = 0;
-    glGenFramebuffers(1, &rawHandle);
-    SL_PANIC_IF(!rawHandle, "Failed to obtain frame buffer handle");
-
-    auto handle = frameBufferCounter++;
-    frameBuffers[handle].rawHandle = rawHandle;
-    return handle;
-}
-
-
-void gl::Renderer::destroyFrameBuffer(uint32_t handle)
-{
-    auto rawHandle = frameBuffers.at(handle).rawHandle;
-    glDeleteFramebuffers(1, &rawHandle);
-    // TODO release depth buffer?
-    frameBuffers.erase(handle);
-}
-
-
-void gl::Renderer::setFrameBuffer(uint32_t handle)
-{
-    bindFrameBuffer(handle);
-}
-
-
-void gl::Renderer::updateFrameBuffer(uint32_t handle, const std::vector<uint32_t> &attachmentHandles)
-{
-    SL_PANIC_BLOCK(validateFrameBufferAttachments(attachmentHandles));
-
-    bindFrameBuffer(handle);
-
-    auto frameBuffer = frameBuffers.at(handle);
-
-    if (frameBuffer.depthBufferHandle)
-    {
-        glDeleteRenderbuffers(1, &frameBuffer.depthBufferHandle);
-        frameBuffer.depthBufferHandle = 0;
-    }
-
-    auto newCount = attachmentHandles.size();
-    auto maxCount = std::max(newCount, static_cast<size_t>(frameBuffer.attachmentCount));
-    for (auto i = 0; i < maxCount; i++)
-    {
-        auto rawHandle = i < newCount ? textures.at(attachmentHandles[i]).rawHandle : 0;
-        glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, rawHandle, 0);
-    }
-
-    if (newCount > 0)
-    {
-        // Re-create the depth buffer
-        glGenRenderbuffers(1, &frameBuffer.depthBufferHandle);
-        SL_PANIC_IF(!frameBuffer.depthBufferHandle, "Failed to obtain depth buffer handle");
-
-        glBindRenderbuffer(GL_RENDERBUFFER, frameBuffer.depthBufferHandle);
-        auto firstAttachment = textures.at(attachmentHandles[0]);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, firstAttachment.width, firstAttachment.height);
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, frameBuffer.depthBufferHandle);
-
-        SL_PANIC_IF(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE, "Render target has invalid state");
-    }
-
-    bindFrameBuffer(EmptyHandle);
 }
 
 
