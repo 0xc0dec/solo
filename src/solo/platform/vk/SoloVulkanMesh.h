@@ -41,9 +41,6 @@ namespace solo
             auto getPartBuffer(uint32_t index) const -> VkBuffer;
             auto getPartIndexElementCount(uint32_t index) const -> uint32_t;
 
-            void draw() override final;
-            void drawPart(uint32_t part) override final;
-
             auto getMinVertexCount() const -> uint32_t;
 
             // TODO move these to base class?

@@ -43,7 +43,7 @@ auto gl::Mesh::addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout &
 }
 
 
-void gl::Mesh::rebuildVertexArray()
+void gl::Mesh::rebuildVertexArray() const
 {
     if (!dirtyVertexArray)
         return;
@@ -116,7 +116,7 @@ void gl::Mesh::removePart(uint32_t part)
 }
 
 
-void gl::Mesh::draw()
+void gl::Mesh::draw() const
 {
     rebuildVertexArray();
 
@@ -125,16 +125,16 @@ void gl::Mesh::draw()
     else
     {
         for (auto i = 0; i < indexBuffers.size(); i++)
-            renderer->drawIndexed(primitiveType, vertexArray, indexBuffers[i]);
+            renderer->drawIndexed(primitiveType, vertexArray, indexBuffers.at(i));
     }
 }
 
 
-void gl::Mesh::drawPart(uint32_t part)
+void gl::Mesh::drawPart(uint32_t part) const
 {
     rebuildVertexArray();
     if (vertexArray != EmptyHandle)
-        renderer->drawIndexed(primitiveType, vertexArray, indexBuffers[part]);
+        renderer->drawIndexed(primitiveType, vertexArray, indexBuffers.at(part));
 }
 
 #endif

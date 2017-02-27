@@ -21,16 +21,16 @@ vk::Camera::Camera(const Node &node):
 }
 
 
-void vk::Camera::beginFrame() const
-{
-    renderer->addRenderCommand(RenderCommand::beginCamera(this));
-}
-
-
-void vk::Camera::endFrame() const
-{
-    renderer->addRenderCommand(RenderCommand::endCamera());
-}
+//void vk::Camera::beginFrame() const
+//{
+//    renderer->addRenderCommand(RenderCommand::beginCamera(this));
+//}
+//
+//
+//void vk::Camera::endFrame() const
+//{
+//    renderer->addRenderCommand(RenderCommand::endCamera());
+//}
 
 
 #endif

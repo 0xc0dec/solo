@@ -97,8 +97,6 @@ namespace solo
         DepthFunction depthFunc = DepthFunction::Less;
 
         explicit Material(Device *device, sptr<Effect> effect);
-
-        virtual void applyImpl(const Camera *camera, Transform *nodeTransform) = 0;
     };
 
     inline auto Material::getEffect() const -> Effect *

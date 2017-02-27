@@ -36,7 +36,7 @@ void FontRenderer::render(const RenderContext &context)
     if (!mesh)
         return;
     renderer->addRenderCommand(RenderCommand::applyMaterial(material.get()));
-    renderer->addRenderCommand(RenderCommand::drawMesh(mesh.get()));
+    renderer->addRenderCommand(RenderCommand::drawMesh(mesh.get(), transform));
 }
 
 

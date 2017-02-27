@@ -20,26 +20,4 @@ gl::Camera::Camera(const Node &node):
 }
 
 
-void gl::Camera::beginFrame() const
-{
-    renderer->setViewport(
-        static_cast<uint32_t>(viewport.x),
-        static_cast<uint32_t>(viewport.y),
-        static_cast<uint32_t>(viewport.z),
-        static_cast<uint32_t>(viewport.w));
-
-    renderer->setDepthWrite(true);
-    renderer->setDepthTest(true);
-    renderer->clear(clearFlags.color, clearFlags.depth, clearColor.x, clearColor.y, clearColor.z, clearColor.w);
-
-    renderer->addRenderCommand(RenderCommand::beginCamera(this));
-}
-
-
-void gl::Camera::endFrame() const
-{
-    renderer->addRenderCommand(RenderCommand::endCamera());
-}
-
-
 #endif

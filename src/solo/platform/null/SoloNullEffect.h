@@ -13,8 +13,6 @@ namespace solo
     {
         class Effect final : public solo::Effect
         {
-        public:
-            void apply() override final {}
         };
     }
 }

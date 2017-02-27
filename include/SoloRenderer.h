@@ -13,6 +13,11 @@
 namespace solo
 {
     class Device;
+    class Camera;
+    class FrameBuffer;
+    class Mesh;
+    class Material;
+    class Transform;
 
     struct TextureFlags
     {
@@ -106,10 +111,6 @@ namespace solo
         Bottom
     };
 
-    class Camera;
-    class Mesh;
-    class Material;
-
     // TODO move to separate file
     enum class RenderCommandType
     {
@@ -127,22 +128,37 @@ namespace solo
 
         union
         {
-            const Camera *camera;
+            
+            
             struct
             {
                 const Mesh *mesh;
+                const Transform *transform;
                 uint32_t part;
             } meshPart;
-            const Mesh *mesh;
+
+            struct
+            {
+                const Camera *camera;
+                const FrameBuffer *frameBuffer;
+            } camera;
+
+            struct
+            {
+                const Mesh *mesh;
+                const Transform *transform;
+            } mesh;
+            
             const Material *material;
         };
 
         explicit RenderCommand(RenderCommandType type = RenderCommandType::None): type(type) {}
 
-        static auto beginCamera(const Camera *camera) -> RenderCommand
+        static auto beginCamera(const Camera *camera, const FrameBuffer *frameBuffer) -> RenderCommand
         {
             auto cmd = RenderCommand(RenderCommandType::BeginCamera);
-            cmd.camera = camera;
+            cmd.camera.camera = camera;
+            cmd.camera.frameBuffer = frameBuffer;
             return cmd;
         }
 
@@ -152,18 +168,20 @@ namespace solo
             return cmd;
         }
 
-        static auto drawMesh(const Mesh *mesh) -> RenderCommand
+        static auto drawMesh(const Mesh *mesh, const Transform *transform) -> RenderCommand
         {
             auto cmd = RenderCommand(RenderCommandType::DrawMesh);
-            cmd.mesh = mesh;
+            cmd.mesh.mesh = mesh;
+            cmd.mesh.transform = transform;
             return cmd;
         }
 
-        static auto drawMeshPart(const Mesh *mesh, uint32_t part) -> RenderCommand
+        static auto drawMeshPart(const Mesh *mesh, uint32_t part, const Transform *transform) -> RenderCommand
         {
             auto cmd = RenderCommand(RenderCommandType::DrawMeshPart);
             cmd.meshPart.mesh = mesh;
             cmd.meshPart.part = part;
+            cmd.meshPart.transform = transform;
             return cmd;
         }
 

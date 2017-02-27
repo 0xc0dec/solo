@@ -39,7 +39,9 @@ namespace solo
             auto getQueue() const -> VkQueue;
             auto getCommandPool() const -> VkCommandPool;
 
+            // TODO merge
             void addRenderCommand(const RenderCommand &cmd);
+            void addRenderCommand(const solo::RenderCommand &cmd) override {}
 
         protected:
             void beginFrame() override final;

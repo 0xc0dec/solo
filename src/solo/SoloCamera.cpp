@@ -11,6 +11,7 @@
 #include "SoloDegree.h"
 #include "SoloScene.h"
 #include "SoloRenderContext.h"
+#include "SoloRenderer.h"
 #include "platform/gl/SoloOpenGLCamera.h"
 #include "platform/vk/SoloVulkanCamera.h"
 #include "platform/null/SoloNullCamera.h"
@@ -46,6 +47,7 @@ auto Camera::create(const Node &node) -> sptr<Camera>
 Camera::Camera(const Node &node):
     ComponentBase(node),
     device(node.getScene()->getDevice()),
+    renderer(device->getRenderer()),
     fov(Degree(60))
 {
     auto canvasSize = device->getCanvasSize();
@@ -180,17 +182,11 @@ auto Camera::getInvViewProjectionMatrix() const -> const TransformMatrix
 
 void Camera::renderFrame(std::function<void(const RenderContext&)> render) const
 {
-    if (renderTarget)
-        renderTarget->bind();
-    
-    beginFrame();
+    renderer->addRenderCommand(RenderCommand::beginCamera(this, renderTarget.get()));
 
     RenderContext ctx;
     ctx.camera = this;
     render(ctx);
 
-    endFrame();
-
-    if (renderTarget)
-        renderTarget->unbind();
+    renderer->addRenderCommand(RenderCommand::endCamera());
 }

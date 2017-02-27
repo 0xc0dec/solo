@@ -33,7 +33,7 @@ void MeshRenderer::render(const RenderContext &context)
         if (material)
         {
             renderer->addRenderCommand(RenderCommand::applyMaterial(material));
-            renderer->addRenderCommand(RenderCommand::drawMesh(mesh.get()));
+            renderer->addRenderCommand(RenderCommand::drawMesh(mesh.get(), transform));
         }
     }
     else
@@ -44,7 +44,7 @@ void MeshRenderer::render(const RenderContext &context)
             if (material)
             {
                 renderer->addRenderCommand(RenderCommand::applyMaterial(material));
-                renderer->addRenderCommand(RenderCommand::drawMeshPart(mesh.get(), part));
+                renderer->addRenderCommand(RenderCommand::drawMeshPart(mesh.get(), part, transform));
             }
         }
     }

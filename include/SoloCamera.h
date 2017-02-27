@@ -81,6 +81,7 @@ namespace solo
 
     protected:
         Device *device = nullptr;
+        Renderer *renderer = nullptr;
 
         Transform *transform = nullptr;
         sptr<FrameBuffer> renderTarget = nullptr;
@@ -111,8 +112,6 @@ namespace solo
 
         explicit Camera(const Node &node);
         
-        virtual void beginFrame() const = 0;
-        virtual void endFrame() const = 0;
         void onTransformChanged(const Transform *, uint32_t) override;
     };
 

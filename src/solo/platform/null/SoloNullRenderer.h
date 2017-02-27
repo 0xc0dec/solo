@@ -13,6 +13,9 @@ namespace solo
     {
         class Renderer final : public solo::Renderer
         {
+        public:
+            void addRenderCommand(const RenderCommand &cmd) override {}
+
         protected:
             void beginFrame() override final {}
             void endFrame() override final {}

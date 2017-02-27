@@ -24,9 +24,6 @@ namespace solo
 
         private:
             Renderer *renderer = nullptr;
-
-            void beginFrame() const override final;
-            void endFrame() const override final;
         };
     }
 }

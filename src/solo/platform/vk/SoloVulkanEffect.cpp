@@ -45,9 +45,4 @@ vk::Effect::~Effect()
 }
 
 
-void vk::Effect::apply()
-{
-}
-
-
 #endif

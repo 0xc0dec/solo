@@ -40,9 +40,6 @@ namespace solo
                 return 0;
             }
 
-            void draw() override final {}
-            void drawPart(uint32_t part) override final {}
-
             auto getPrimitiveType() const -> PrimitiveType override final
             {
                 return PrimitiveType::Lines;

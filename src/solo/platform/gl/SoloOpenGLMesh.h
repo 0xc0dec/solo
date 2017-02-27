@@ -35,11 +35,14 @@ namespace solo
             void removePart(uint32_t index) override final;
             auto getPartCount() const -> uint32_t override final;
 
-            void draw() override final;
-            void drawPart(uint32_t part) override final;
-
             auto getPrimitiveType() const -> PrimitiveType override final;
             void setPrimitiveType(PrimitiveType type) override final;
+
+            // TODO This was a quick hack during the transition to submission-based rendering.
+            // Ideally meshes should only be the source of data for rendering, without actual rendering
+            // code inside them
+            void draw() const;
+            void drawPart(uint32_t part) const;
 
         private:
             Renderer *renderer = nullptr;
@@ -50,12 +53,13 @@ namespace solo
             std::vector<uint32_t> vertexCounts;
             std::vector<uint32_t> vertexSizes;
             uint32_t minVertexCount = 0;
-            uint32_t vertexArray = EmptyHandle;
-            bool dirtyVertexArray = true;
+            // TODO avoid the need for mutables
+            mutable uint32_t vertexArray = EmptyHandle;
+            mutable bool dirtyVertexArray = true;
 
             auto addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout &layout, uint32_t vertexCount) -> uint32_t;
 
-            void rebuildVertexArray();
+            void rebuildVertexArray() const;
             void updateMinVertexCount();
         };
 

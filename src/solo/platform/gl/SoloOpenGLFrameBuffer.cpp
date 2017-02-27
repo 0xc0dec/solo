@@ -27,13 +27,13 @@ gl::FrameBuffer::~FrameBuffer()
 }
 
 
-void gl::FrameBuffer::bind()
+void gl::FrameBuffer::bind() const
 {
     renderer->setFrameBuffer(handle);
 }
 
 
-void gl::FrameBuffer::unbind()
+void gl::FrameBuffer::unbind() const
 {
     renderer->setFrameBuffer(EmptyHandle);
 }

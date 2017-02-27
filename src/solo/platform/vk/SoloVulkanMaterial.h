@@ -56,8 +56,6 @@ namespace solo
         
         private:
             Renderer *renderer = nullptr;
-
-            void applyImpl(const solo::Camera *camera, solo::Transform *nodeTransform) override final;
         };
     }
 }

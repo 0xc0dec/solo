@@ -9,7 +9,7 @@
 
 #include "SoloDevice.h"
 #include "SoloOpenGLTexture.h"
-#include "SoloCamera.h"
+#include "SoloOpenGLCamera.h"
 #include "SoloTransform.h"
 #include "SoloTexture.h"
 
@@ -31,14 +31,7 @@ gl::Material::~Material()
 }
 
 
-void gl::Material::applyImpl(const Camera *camera, Transform *nodeTransform)
-{
-    applyState();
-    applyParams(camera, nodeTransform);
-}
-
-
-void gl::Material::applyState()
+void gl::Material::applyState() const
 {
     renderer->setFaceCull(faceCull);
     renderer->setPolygonMode(polygonMode);
@@ -50,11 +43,8 @@ void gl::Material::applyState()
 }
 
 
-void gl::Material::applyParams(const Camera *camera, Transform *nodeTransform)
+void gl::Material::applyParams(const gl::Camera *camera, const Transform *nodeTransform) const
 {
-    if (!this->effect) // TODO needed?
-        return;
-
     // TODO refactor
     // TODO avoid table lookups
 
@@ -72,56 +62,56 @@ void gl::Material::applyParams(const Camera *camera, Transform *nodeTransform)
 
     for (const auto &p: textureParams)
     {
-        renderer->setUniform(uniformHandles[p.first], nullptr, 1);
+        renderer->setUniform(uniformHandles.at(p.first), nullptr, 1);
         p.second->bind();
     }
 
     for (const auto &p : worldMatrixParams)
     {
         if (nodeTransform)
-            renderer->setUniform(uniformHandles[p], nodeTransform->getWorldMatrix().m, 1);
+            renderer->setUniform(uniformHandles.at(p), nodeTransform->getWorldMatrix().m, 1);
     }
 
     for (const auto &p : viewMatrixParams)
     {
         if (camera)
-            renderer->setUniform(uniformHandles[p], camera->getViewMatrix().m, 1);
+            renderer->setUniform(uniformHandles.at(p), camera->getViewMatrix().m, 1);
     }
 
     for (const auto &p : projMatrixParams)
     {
         if (camera)
-            renderer->setUniform(uniformHandles[p], camera->getProjectionMatrix().m, 1);
+            renderer->setUniform(uniformHandles.at(p), camera->getProjectionMatrix().m, 1);
     }
 
     for (const auto &p : worldViewMatrixParams)
     {
         if (nodeTransform && camera)
-            renderer->setUniform(uniformHandles[p], nodeTransform->getWorldViewMatrix(camera).m, 1);
+            renderer->setUniform(uniformHandles.at(p), nodeTransform->getWorldViewMatrix(camera).m, 1);
     }
         
     for (const auto &p : viewProjMatrixParams)
     {
         if (camera)
-            renderer->setUniform(uniformHandles[p], camera->getViewProjectionMatrix().m, 1);
+            renderer->setUniform(uniformHandles.at(p), camera->getViewProjectionMatrix().m, 1);
     }
     
     for (const auto &p : worldViewProjMatrixParams)
     {
         if (nodeTransform && camera)
-            renderer->setUniform(uniformHandles[p], nodeTransform->getWorldViewProjMatrix(camera).m, 1);
+            renderer->setUniform(uniformHandles.at(p), nodeTransform->getWorldViewProjMatrix(camera).m, 1);
     }
     
     for (const auto &p : invTransWorldMatrixParams)
     {
         if (nodeTransform)
-            renderer->setUniform(uniformHandles[p], nodeTransform->getInvTransposedWorldMatrix().m, 1);
+            renderer->setUniform(uniformHandles.at(p), nodeTransform->getInvTransposedWorldMatrix().m, 1);
     }
     
     for (const auto &p : invTransWorldViewMatrixParams)
     {
         if (nodeTransform && camera)
-            renderer->setUniform(uniformHandles[p], nodeTransform->getInvTransposedWorldViewMatrix(camera).m, 1);
+            renderer->setUniform(uniformHandles.at(p), nodeTransform->getInvTransposedWorldViewMatrix(camera).m, 1);
     }
 
     for (const auto &p : viewProjMatrixParams)
@@ -129,7 +119,7 @@ void gl::Material::applyParams(const Camera *camera, Transform *nodeTransform)
         if (camera)
         {
             auto pos = camera->getTransform()->getWorldPosition();
-            renderer->setUniform(uniformHandles[p], &pos, 1);
+            renderer->setUniform(uniformHandles.at(p), &pos, 1);
         }
     }
 }

@@ -30,8 +30,6 @@ namespace solo
             auto getVertexShader() const -> VkShaderModule;
             auto getFragmentShader() const -> VkShaderModule;
 
-            void apply() override final;
-
         private:
             Renderer *renderer = nullptr;
             Resource<VkShaderModule> vertexShader;

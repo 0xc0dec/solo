@@ -24,6 +24,7 @@ namespace solo
         class Renderer;
         class Effect;
         class Texture;
+        class Camera;
 
         class Material final : public solo::Material
         {
@@ -58,6 +59,9 @@ namespace solo
             void bindInvTransposedWorldViewMatrixParameter(const std::string &name) override final;
             void bindCameraWorldPositionParameter(const std::string &name) override final;
 
+            void applyState() const;
+            void applyParams(const gl::Camera *camera, const Transform *nodeTransform) const;
+
         protected:
             template <class T>
             using StrKeyMap = std::unordered_map<std::string, T>;
@@ -90,15 +94,11 @@ namespace solo
             StrSet invTransWorldViewMatrixParams;
             StrSet camWorldPosParams;
 
-            void applyImpl(const solo::Camera *camera, Transform *nodeTransform) override final;
-            void applyState();
-            void applyParams(const solo::Camera *camera, Transform *nodeTransform);
+            template <class T>
+            void applyScalarParams(const StrKeyMap<T> &params) const;
 
             template <class T>
-            void applyScalarParams(StrKeyMap<T> &params);
-
-            template <class T>
-            void applyVectorParams(StrKeyMap<T> &params);
+            void applyVectorParams(const StrKeyMap<T> &params) const;
 
             template <class T>
             void setParam(StrKeyMap<T> &params, const std::string &name, UniformType uniformType, T value);
@@ -107,17 +107,17 @@ namespace solo
         };
 
         template <class T>
-        void Material::applyScalarParams(StrKeyMap<T> &params)
+        void Material::applyScalarParams(const StrKeyMap<T> &params) const
         {
             for (const auto &p : params)
-                renderer->setUniform(uniformHandles[p.first], &p.second, 1);
+                renderer->setUniform(uniformHandles.at(p.first), &p.second, 1);
         }
 
         template <class T>
-        void Material::applyVectorParams(StrKeyMap<T> &params)
+        void Material::applyVectorParams(const StrKeyMap<T> &params) const
         {
             for (const auto &p : params)
-                renderer->setUniform(uniformHandles[p.first], p.second.data(), static_cast<uint32_t>(p.second.size()));
+                renderer->setUniform(uniformHandles.at(p.first), p.second.data(), static_cast<uint32_t>(p.second.size()));
         }
 
         template <class T>

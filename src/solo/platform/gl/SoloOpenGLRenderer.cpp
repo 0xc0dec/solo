@@ -11,6 +11,8 @@
 #include "SoloLogger.h"
 #include "SoloOpenGLCamera.h"
 #include "SoloOpenGLMaterial.h"
+#include "SoloOpenGLMesh.h"
+#include "SoloOpenGLFrameBuffer.h"
 #include <algorithm>
 #include <unordered_map>
 
@@ -764,15 +766,24 @@ void gl::Renderer::beginFrame()
 
 
 // TODO build "render plan", update it only when something has really changed
+// TODO avoid dynamic casts
 void gl::Renderer::endFrame()
 {
+    const Camera *currentCamera = nullptr;
+    const Material *currentMaterial = nullptr;
+    const gl::FrameBuffer *currentFrameBuffer = nullptr;
+
     for (const auto &cmd: renderCommands)
     {
         switch (cmd.type)
         {
             case RenderCommandType::BeginCamera:
             {
-                auto cam = cmd.camera;
+                currentFrameBuffer = dynamic_cast<const gl::FrameBuffer *>(cmd.camera.frameBuffer);
+                if (currentFrameBuffer)
+                    currentFrameBuffer->bind();
+
+                auto cam = cmd.camera.camera;
                 auto viewport = cam->getViewport();
                 setViewport(viewport.x, viewport.y, viewport.z, viewport.w);
 
@@ -782,27 +793,46 @@ void gl::Renderer::endFrame()
                 auto color = cam->getClearColor();
                 clear(cam->isClearColorEnabled(), cam->isClearDepthEnabled(), color.x, color.y, color.z, color.w);
 
+                currentCamera = dynamic_cast<const Camera*>(cam);
+
                 break;
             }
 
             case RenderCommandType::EndCamera:
+            {
+                if (currentFrameBuffer)
+                    currentFrameBuffer->unbind();
+                currentFrameBuffer = nullptr;
+                currentCamera = nullptr;
                 break;
+            }
 
             case RenderCommandType::DrawMesh:
+            {
+                currentMaterial->applyParams(currentCamera, cmd.mesh.transform);
+                dynamic_cast<const Mesh*>(cmd.mesh.mesh)->draw();
                 break;
+            }
+
+            case RenderCommandType::DrawMeshPart:
+            {
+                currentMaterial->applyParams(currentCamera, cmd.meshPart.transform);
+                dynamic_cast<const Mesh*>(cmd.meshPart.mesh)->drawPart(cmd.meshPart.part);
+                break;
+            }
 
             case RenderCommandType::ApplyMaterial:
             {
-                // TODO apply effect
+                auto glEffect = dynamic_cast<Effect*>(cmd.material->getEffect());
+                
+                // TODO replace with Effect::apply() or smth, this is not consistent with
+                // material application, for instance
+                setProgram(glEffect->getHandle());
+                
+                auto glMaterial = dynamic_cast<const Material*>(cmd.material);
+                glMaterial->applyState();
 
-                // TODO hide these setters from public
-                setFaceCull(cmd.material->getFaceCull());
-                setPolygonMode(cmd.material->getPolygonMode());
-                setDepthTest(cmd.material->getDepthTest());
-                setDepthWrite(cmd.material->getDepthWrite());
-                setDepthFunction(cmd.material->getDepthFunction());
-                setBlend(cmd.material->getBlend());
-                setBlendFactor(cmd.material->getSrcBlendFactor(), cmd.material->getDstBlendFactor());
+                currentMaterial = glMaterial;
 
                 break;
             }

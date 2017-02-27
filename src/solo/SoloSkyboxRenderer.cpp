@@ -34,10 +34,10 @@ SkyboxRenderer::SkyboxRenderer(const Node &node):
 }
 
 
-void SkyboxRenderer::render(const RenderContext &context)
+void SkyboxRenderer::render(const RenderContext &context) // TODO remove context
 {
     renderer->addRenderCommand(RenderCommand::applyMaterial(material.get()));
-    renderer->addRenderCommand(RenderCommand::drawMesh(quadMesh.get()));
+    renderer->addRenderCommand(RenderCommand::drawMesh(quadMesh.get(), transform)); // TODO transform needed here?
 }
 
 

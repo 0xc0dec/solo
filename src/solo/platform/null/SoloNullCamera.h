@@ -17,15 +17,6 @@ namespace solo
             explicit Camera(const Node &node) : solo::Camera(node)
             {
             }
-
-        protected:
-            void beginFrame() const override
-            {
-            }
-
-            void endFrame() const override final
-            {
-            }
         };
     }
 }

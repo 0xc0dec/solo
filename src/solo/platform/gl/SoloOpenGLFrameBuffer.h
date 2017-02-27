@@ -24,8 +24,8 @@ namespace solo
             explicit FrameBuffer(Device *device);
             ~FrameBuffer();
 
-            void bind() override final;
-            void unbind() override final;
+            void bind() const;
+            void unbind() const;
 
             void setAttachments(const std::vector<sptr<solo::RectTexture>> &attachments) override final;
 

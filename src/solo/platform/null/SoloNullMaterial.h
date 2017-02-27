@@ -39,11 +39,6 @@ namespace solo
             void bindInvTransposedWorldMatrixParameter(const std::string& name) override final {}
             void bindInvTransposedWorldViewMatrixParameter(const std::string& name) override final {}
             void bindCameraWorldPositionParameter(const std::string& name) override final {}
-
-        protected:
-            void applyImpl(const Camera *camera, Transform *nodeTransform) override final
-            {
-            }
         };
     }
 }
