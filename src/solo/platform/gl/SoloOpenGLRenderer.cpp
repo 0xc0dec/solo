@@ -65,7 +65,7 @@ gl::Renderer::Renderer(Device *device)
 }
 
 
-void gl::Renderer::addRenderCommand(const solo::RenderCommand &cmd)
+void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
 {
     renderCommands.push_back(cmd);
 }
@@ -84,7 +84,7 @@ void gl::Renderer::endFrame()
 {
     const Camera *currentCamera = nullptr;
     const Material *currentMaterial = nullptr;
-    const gl::FrameBuffer *currentFrameBuffer = nullptr;
+    const FrameBuffer *currentFrameBuffer = nullptr;
 
     for (const auto &cmd: renderCommands)
     {
@@ -92,7 +92,7 @@ void gl::Renderer::endFrame()
         {
             case RenderCommandType::BeginCamera:
             {
-                currentFrameBuffer = dynamic_cast<const gl::FrameBuffer *>(cmd.camera.frameBuffer);
+                currentFrameBuffer = dynamic_cast<const FrameBuffer *>(cmd.camera.frameBuffer);
                 if (currentFrameBuffer)
                     currentFrameBuffer->bind();
 

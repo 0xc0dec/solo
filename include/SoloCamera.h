@@ -30,7 +30,6 @@ namespace solo
         void init() override final;
         void terminate() override final;
 
-        // TODO perhaps specify render target to add more "functional" flavor
         void renderFrame(std::function<void()> render) const;
 
         auto getTransform() const -> Transform*;
