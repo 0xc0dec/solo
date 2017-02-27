@@ -80,27 +80,6 @@ static auto toGLCubeTextureFace(CubeTextureFace face) -> GLenum
 }
 
 
-static auto toGLPrimitiveType(PrimitiveType type) -> GLenum
-{
-    switch (type)
-    {
-        case PrimitiveType::Triangles:
-            return GL_TRIANGLES;
-        case PrimitiveType::TriangleStrip:
-            return GL_TRIANGLE_STRIP;
-        case PrimitiveType::Lines:
-            return GL_LINES;
-        case PrimitiveType::LineStrip:
-            return GL_LINE_STRIP;
-        case PrimitiveType::Points:
-            return GL_POINTS;
-        default:
-            SL_PANIC("Unknown primitive type");
-            return GL_TRIANGLES;
-    }
-}
-
-
 static auto toTextureFormat(TextureFormat format) -> GLenum
 {
     switch (format)
@@ -255,17 +234,8 @@ gl::Renderer::~Renderer()
     while (!uniforms.empty())
         destroyUniform(uniforms.begin()->first);
 
-    while (!vertexArrays.empty())
-        destroyVertexArray(vertexArrays.begin()->first);
-
     while (!programs.empty())
         destroyProgram(programs.begin()->first);
-
-    while (!indexBuffers.empty())
-        destroyIndexBuffer(indexBuffers.begin()->first);
-
-    while (!vertexBuffers.empty())
-        destroyVertexBuffer(vertexBuffers.begin()->first);
 
     while (!frameBuffers.empty())
         destroyFrameBuffer(frameBuffers.begin()->first);
@@ -357,27 +327,6 @@ void gl::Renderer::bindTexture(GLenum target, uint32_t handle)
 {
     auto rawHandle = handle == EmptyHandle ? 0 : textures.at(handle).rawHandle;
     glBindTexture(target, rawHandle);
-}
-
-
-void gl::Renderer::bindVertexBuffer(uint32_t handle)
-{
-    auto rawHandle = handle == EmptyHandle ? 0 : vertexBuffers.at(handle).rawHandle;
-    glBindBuffer(GL_ARRAY_BUFFER, rawHandle);
-}
-
-
-void gl::Renderer::bindIndexBuffer(uint32_t handle)
-{
-    auto rawHandle = handle == EmptyHandle ? 0 : indexBuffers.at(handle).rawHandle;
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rawHandle);
-}
-
-
-void gl::Renderer::bindVertexArray(uint32_t handle)
-{
-    auto rawHandle = handle == EmptyHandle ? 0 : vertexArrays.at(handle);
-    glBindVertexArray(rawHandle);
 }
 
 
@@ -581,82 +530,6 @@ void gl::Renderer::updateFrameBuffer(uint32_t handle, const std::vector<uint32_t
 }
 
 
-auto gl::Renderer::createVertexBuffer(bool dynamic, const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
-{
-    GLuint rawHandle = 0;
-    glGenBuffers(1, &rawHandle);
-    SL_PANIC_IF(!rawHandle, "Failed to obtain vertex buffer handle");
-
-    glBindBuffer(GL_ARRAY_BUFFER, rawHandle);
-    glBufferData(GL_ARRAY_BUFFER, layout.getSize() * vertexCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    auto handle = vertexBufferCounter++;
-    auto &vertexBuffer = vertexBuffers[handle];
-    vertexBuffer.rawHandle = rawHandle;
-    vertexBuffer.layout = layout;
-    vertexBuffer.vertexCount = vertexCount;
-    vertexBuffer.dynamic = dynamic;
-
-    return handle;
-}
-
-
-auto gl::Renderer::createVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
-{
-    return createVertexBuffer(false, layout, data, vertexCount);
-}
-
-
-auto gl::Renderer::createDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
-{
-    return createVertexBuffer(true, layout, data, vertexCount);
-}
-
-
-void gl::Renderer::updateDynamicVertexBuffer(uint32_t handle, const void *data, uint32_t offset, uint32_t vertexCount)
-{
-    bindVertexBuffer(handle);
-    glBufferSubData(GL_ARRAY_BUFFER, offset, vertexCount, data);
-    bindVertexBuffer(EmptyHandle);
-}
-
-
-void gl::Renderer::destroyVertexBuffer(uint32_t handle)
-{
-    auto rawHandle = vertexBuffers.at(handle).rawHandle;
-    glDeleteBuffers(1, &rawHandle);
-    vertexBuffers.erase(handle);
-}
-
-
-auto gl::Renderer::createIndexBuffer(const void *data, uint32_t elementSize, uint32_t elementCount) -> uint32_t
-{
-    GLuint rawHandle = 0;
-    glGenBuffers(1, &rawHandle);
-    SL_PANIC_IF(!rawHandle, "Failed to obtain index buffer handle");
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rawHandle);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementSize * elementCount, data, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-    auto handle = indexBufferCounter++;
-    auto &indexBuffer = indexBuffers[handle];
-    indexBuffer.rawHandle = rawHandle;
-    indexBuffer.elementCount = elementCount;
-
-    return handle;
-}
-
-
-void gl::Renderer::destroyIndexBuffer(uint32_t handle)
-{
-    auto rawHandle = indexBuffers.at(handle).rawHandle;
-    glDeleteBuffers(1, &rawHandle);
-    indexBuffers.erase(handle);
-}
-
-
 auto gl::Renderer::createProgram(const void *vsSrc, uint32_t vsSrcLength, const void *fsSrc, uint32_t fsSrcLength) -> uint32_t
 {
     auto vs = compileShader(GL_VERTEX_SHADER, vsSrc, vsSrcLength);
@@ -690,81 +563,13 @@ void gl::Renderer::setProgram(uint32_t handle)
 }
 
 
-auto gl::Renderer::createVertexArray(const uint32_t *bufferHandles, uint32_t bufferCount) -> uint32_t
-{
-    GLuint rawHandle;
-    glGenVertexArrays(1, &rawHandle);
-    SL_PANIC_IF(!rawHandle, "Failed to obtain vertex object handle");
-
-    glBindVertexArray(rawHandle);
-
-    for (uint32_t i = 0; i < bufferCount; i++)
-    {
-        const auto &bufferHandle = bufferHandles[i];
-        const auto &layout = vertexBuffers.at(bufferHandle).layout;
-        const auto elementCount = layout.getAttributeCount();
-        if (!elementCount)
-            continue;
-
-        bindVertexBuffer(bufferHandle);
-
-        uint32_t offset = 0;
-        for (uint32_t j = 0; j < elementCount; j++)
-        {
-            auto attr = layout.getAttribute(j);
-            const auto stride = layout.getSize();
-            glVertexAttribPointer(attr.location, attr.elementCount, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void *>(offset));
-            glEnableVertexAttribArray(attr.location);
-            offset += attr.size;
-        }
-
-        bindVertexBuffer(EmptyHandle);
-    }
-
-    glBindVertexArray(0);
-
-    auto handle = vertexArrayCounter++;
-    vertexArrays[handle] = rawHandle;
-
-    return handle;
-}
-
-
-void gl::Renderer::destroyVertexArray(uint32_t handle)
-{
-    auto rawHandle = vertexArrays.at(handle);
-    glDeleteVertexArrays(1, &rawHandle);
-    vertexArrays.erase(handle);
-}
-
-
-void gl::Renderer::drawIndexed(PrimitiveType primitiveType, uint32_t vertexArrayHandle, const uint32_t indexBufferHandle)
-{
-    bindVertexArray(vertexArrayHandle);
-    bindIndexBuffer(indexBufferHandle);
-
-    const auto &indexBuffer = indexBuffers.at(indexBufferHandle);
-    glDrawElements(toGLPrimitiveType(primitiveType), indexBuffer.elementCount, GL_UNSIGNED_SHORT, nullptr);
-
-    bindIndexBuffer(EmptyHandle);
-    bindVertexArray(EmptyHandle);
-}
-
-
-void gl::Renderer::draw(PrimitiveType primitiveType, uint32_t vertexArrayHandle, uint32_t vertexCount)
-{
-    bindVertexArray(vertexArrayHandle);
-    glDrawArrays(toGLPrimitiveType(primitiveType), 0, vertexCount);
-    bindVertexArray(EmptyHandle);
-}
-
-
 void gl::Renderer::beginFrame()
 {
     renderCommands.clear();
 }
 
 
+// TODO optimize: group by material etc.
 // TODO build "render plan", update it only when something has really changed
 // TODO avoid dynamic casts
 void gl::Renderer::endFrame()

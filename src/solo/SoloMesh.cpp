@@ -19,7 +19,7 @@ auto Mesh::create(Device *device) -> sptr<Mesh>
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<gl::Mesh>(device);
+            return std::make_shared<gl::Mesh>();
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:

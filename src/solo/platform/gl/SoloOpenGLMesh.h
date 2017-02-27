@@ -23,7 +23,7 @@ namespace solo
         class Mesh final : public solo::Mesh
         {
         public:
-            explicit Mesh(Device *device);
+            Mesh() {}
             ~Mesh();
 
             auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t override final;
@@ -45,19 +45,19 @@ namespace solo
             void drawPart(uint32_t part) const;
 
         private:
-            Renderer *renderer = nullptr;
-
             PrimitiveType primitiveType = PrimitiveType::Triangles;
-            std::vector<uint32_t> vertexBuffers;
-            std::vector<uint32_t> indexBuffers;
+            std::vector<GLuint> vertexBuffers;
+            std::vector<VertexBufferLayout> layouts;
+            std::vector<GLuint> indexBuffers;
+            std::vector<uint32_t> indexElementCounts;
             std::vector<uint32_t> vertexCounts;
-            std::vector<uint32_t> vertexSizes;
+            std::vector<uint32_t> vertexSizes; // TODO use layours and don't store these
             uint32_t minVertexCount = 0;
             // TODO avoid the need for mutables
-            mutable uint32_t vertexArray = EmptyHandle;
+            mutable GLuint vertexArray = 0;
             mutable bool dirtyVertexArray = true;
 
-            auto addVertexBuffer(uint32_t bufferHandle, const VertexBufferLayout &layout, uint32_t vertexCount) -> uint32_t;
+            auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount, bool dynamic) -> uint32_t;
 
             void rebuildVertexArray() const;
             void updateMinVertexCount();
