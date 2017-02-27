@@ -18,9 +18,13 @@ auto gl::Effect::create(Device *device, EffectPrefab prefab) -> sptr<Effect>
     switch (prefab)
     {
         case EffectPrefab::Skybox:
-            return std::make_shared<Effect>(device, PrefabShaders::Vertex::skybox, PrefabShaders::Fragment::skybox);
+            return std::make_shared<Effect>(device,
+                PrefabShaders::Vertex::skybox, std::strlen(PrefabShaders::Vertex::skybox),
+                PrefabShaders::Fragment::skybox, std::strlen(PrefabShaders::Fragment::skybox));
         case EffectPrefab::Font:
-            return std::make_shared<Effect>(device, PrefabShaders::Vertex::positionAndTexCoord, PrefabShaders::Fragment::font);
+            return std::make_shared<Effect>(device,
+                PrefabShaders::Vertex::positionAndTexCoord, std::strlen(PrefabShaders::Vertex::positionAndTexCoord),
+                PrefabShaders::Fragment::font, std::strlen(PrefabShaders::Fragment::font));
         default:
             SL_PANIC("Unknown effect prefab");
             break;
@@ -35,21 +39,10 @@ gl::Effect::Effect(Device *device, const void *vsSrc, uint32_t vsSrcLen, const v
 }
 
 
-gl::Effect::Effect(Device *device, const std::string &vsSrc, const std::string &fsSrc):
-    Effect(device, vsSrc.data(), vsSrc.size(), fsSrc.data(), fsSrc.size())
-{
-}
-
-
 gl::Effect::~Effect()
 {
     renderer->destroyProgram(handle);
 }
 
-
-void gl::Effect::apply()
-{
-    renderer->setProgram(handle);
-}
 
 #endif
