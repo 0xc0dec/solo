@@ -10,30 +10,27 @@
 #ifdef SL_OPENGL_RENDERER
 
 #include "SoloEffect.h"
-#include "SoloOpenGLRenderer.h"
+#include <GL/glew.h>
 
 namespace solo
 {
-    class Device;
-
     namespace gl
     {
         class Effect final : public solo::Effect
         {
         public:
-            static auto create(Device *device, EffectPrefab prefab) -> sptr<Effect>;
+            static auto create(EffectPrefab prefab) -> sptr<Effect>;
 
-            Effect(Device *device, const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen);
+            Effect(const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen);
             ~Effect();
 
-            auto getHandle() const -> uint32_t;
+            auto getHandle() const -> GLuint;
 
         private:
-            Renderer *renderer = nullptr;
-            uint32_t handle = EmptyHandle;
+            GLuint handle = 0;
         };
 
-        inline auto Effect::getHandle() const -> uint32_t
+        inline auto Effect::getHandle() const -> GLuint
         {
             return handle;
         }

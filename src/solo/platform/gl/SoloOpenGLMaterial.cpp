@@ -24,13 +24,6 @@ gl::Material::Material(Device *device, sptr<solo::Effect> effect):
 }
 
 
-gl::Material::~Material()
-{
-    for (auto &p : uniformHandles)
-        renderer->destroyUniform(p.second);
-}
-
-
 void gl::Material::applyState() const
 {
     renderer->setFaceCull(faceCull);
@@ -62,56 +55,56 @@ void gl::Material::applyParams(const gl::Camera *camera, const Transform *nodeTr
 
     for (const auto &p: textureParams)
     {
-        renderer->setUniform(uniformHandles.at(p.first), nullptr, 1);
+        setUniform(p.first, nullptr, 1);
         p.second->bind();
     }
 
     for (const auto &p : worldMatrixParams)
     {
         if (nodeTransform)
-            renderer->setUniform(uniformHandles.at(p), nodeTransform->getWorldMatrix().m, 1);
+            setUniform(p, nodeTransform->getWorldMatrix().m, 1);
     }
 
     for (const auto &p : viewMatrixParams)
     {
         if (camera)
-            renderer->setUniform(uniformHandles.at(p), camera->getViewMatrix().m, 1);
+            setUniform(p, camera->getViewMatrix().m, 1);
     }
 
     for (const auto &p : projMatrixParams)
     {
         if (camera)
-            renderer->setUniform(uniformHandles.at(p), camera->getProjectionMatrix().m, 1);
+            setUniform(p, camera->getProjectionMatrix().m, 1);
     }
 
     for (const auto &p : worldViewMatrixParams)
     {
         if (nodeTransform && camera)
-            renderer->setUniform(uniformHandles.at(p), nodeTransform->getWorldViewMatrix(camera).m, 1);
+            setUniform(p, nodeTransform->getWorldViewMatrix(camera).m, 1);
     }
         
     for (const auto &p : viewProjMatrixParams)
     {
         if (camera)
-            renderer->setUniform(uniformHandles.at(p), camera->getViewProjectionMatrix().m, 1);
+            setUniform(p, camera->getViewProjectionMatrix().m, 1);
     }
     
     for (const auto &p : worldViewProjMatrixParams)
     {
         if (nodeTransform && camera)
-            renderer->setUniform(uniformHandles.at(p), nodeTransform->getWorldViewProjMatrix(camera).m, 1);
+            setUniform(p, nodeTransform->getWorldViewProjMatrix(camera).m, 1);
     }
     
     for (const auto &p : invTransWorldMatrixParams)
     {
         if (nodeTransform)
-            renderer->setUniform(uniformHandles.at(p), nodeTransform->getInvTransposedWorldMatrix().m, 1);
+            setUniform(p, nodeTransform->getInvTransposedWorldMatrix().m, 1);
     }
     
     for (const auto &p : invTransWorldViewMatrixParams)
     {
         if (nodeTransform && camera)
-            renderer->setUniform(uniformHandles.at(p), nodeTransform->getInvTransposedWorldViewMatrix(camera).m, 1);
+            setUniform(p, nodeTransform->getInvTransposedWorldViewMatrix(camera).m, 1);
     }
 
     for (const auto &p : viewProjMatrixParams)
@@ -119,8 +112,120 @@ void gl::Material::applyParams(const gl::Camera *camera, const Transform *nodeTr
         if (camera)
         {
             auto pos = camera->getTransform()->getWorldPosition();
-            renderer->setUniform(uniformHandles.at(p), &pos, 1);
+            setUniform(p, &pos, 1);
         }
+    }
+}
+
+
+static bool findUniformInProgram(GLuint program, const char *name, GLint &location, int32_t &index)
+{
+    GLint activeUniforms;
+    glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &activeUniforms);
+    if (activeUniforms <= 0)
+        return false;
+
+    GLint nameMaxLength;
+    glGetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &nameMaxLength);
+    if (nameMaxLength <= 0)
+        return false;
+
+    std::vector<GLchar> rawName(nameMaxLength + 1);
+    uint32_t samplerIndex = 0;
+    for (GLint i = 0; i < activeUniforms; ++i)
+    {
+        GLint size;
+        GLenum type;
+
+        glGetActiveUniform(program, i, nameMaxLength, nullptr, &size, &type, rawName.data());
+        rawName[nameMaxLength] = '\0';
+        std::string n = rawName.data();
+
+        // Strip away possible square brackets for array uniforms,
+        // they are sometimes present on some platforms
+        auto bracketIndex = n.find('[');
+        if (bracketIndex != std::string::npos)
+            n.erase(bracketIndex);
+
+        uint32_t idx = 0;
+        if (type == GL_SAMPLER_2D || type == GL_SAMPLER_CUBE) // TODO other types of samplers
+        {
+            idx = samplerIndex;
+            samplerIndex += size;
+        }
+
+        if (n == name)
+        {
+            location = glGetUniformLocation(program, rawName.data());
+            index = idx;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+void gl::Material::initUniform(const std::string &name, UniformType type)
+{
+    GLint location, index;
+    auto found = findUniformInProgram(effect->getHandle(), name.c_str(), location, index);
+    SL_PANIC_IF(!found, SL_FMT("Could not find uniform '", name, "'"));
+
+    uniformLocations[name] = location;
+    uniformIndexes[name] = index;
+    uniformTypes[name] = type;
+}
+
+
+void gl::Material::setUniform(const std::string &name, const void *value, uint32_t count) const
+{
+    // TODO avoid lookup
+    auto location = uniformLocations.at(name);
+    auto index = uniformIndexes.at(name);
+    auto type = uniformTypes.at(name);
+
+    auto floatData = reinterpret_cast<const float *>(value);
+    switch (type)
+    {
+        case UniformType::Float:
+            glUniform1f(location, *floatData);
+            break;
+        case UniformType::FloatArray:
+            glUniform1fv(location, static_cast<GLsizei>(count), floatData);
+            break;
+        case UniformType::Vector2:
+            glUniform2f(location, floatData[0], floatData[1]);
+            break;
+        case UniformType::Vector2Array:
+            glUniform2fv(location, static_cast<GLsizei>(count), floatData);
+            break;
+        case UniformType::Vector3:
+            glUniform3f(location, floatData[0], floatData[1], floatData[2]);
+            break;
+        case UniformType::Vector3Array:
+            glUniform3fv(location, static_cast<GLsizei>(count), floatData);
+            break;
+        case UniformType::Vector4:
+            glUniform4f(location, floatData[0], floatData[1], floatData[2], floatData[3]);
+            break;
+        case UniformType::Vector4Array:
+            glUniform4fv(location, static_cast<GLsizei>(count), floatData);
+            break;
+        case UniformType::Matrix:
+            glUniformMatrix4fv(location, 1, GL_FALSE, floatData);
+            break;
+        case UniformType::MatrixArray:
+            glUniformMatrix4fv(location, static_cast<GLsizei>(count), GL_FALSE, floatData);
+            break;
+        case UniformType::Texture:
+            glActiveTexture(GL_TEXTURE0 + index);
+            glUniform1i(location, index);
+            break;
+        case UniformType::TextureArray:
+            break; // TODO
+        default:
+            break;
     }
 }
 
@@ -188,7 +293,7 @@ void gl::Material::setMatrixArrayParameter(const std::string &name, const std::v
 void gl::Material::setTextureParameter(const std::string &name, sptr<solo::Texture> value)
 {
     if (textureParams.find(name) == textureParams.end())
-        uniformHandles[name] = renderer->createUniform(name.c_str(), UniformType::Texture, effect->getHandle());
+        initUniform(name, UniformType::Texture);
     textureParams[name] = std::dynamic_pointer_cast<Texture>(value);
 }
 

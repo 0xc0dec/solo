@@ -30,7 +30,7 @@ namespace solo
         {
         public:
             Material(Device *device, sptr<solo::Effect> effect);
-            ~Material();
+            ~Material() {}
 
             void setFloatParameter(const std::string &name, float value) override final;
             void setFloatArrayParameter(const std::string &name, const std::vector<float> &value) override final;
@@ -70,7 +70,9 @@ namespace solo
             Renderer *renderer = nullptr;
             sptr<Effect> effect = nullptr;
 
-            StrKeyMap<uint32_t> uniformHandles;
+            StrKeyMap<GLint> uniformLocations;
+            StrKeyMap<GLint> uniformIndexes;
+            StrKeyMap<UniformType> uniformTypes;
 
             StrKeyMap<float> floatParams;
             StrKeyMap<Vector2> vector2Params;
@@ -104,34 +106,37 @@ namespace solo
             void setParam(StrKeyMap<T> &params, const std::string &name, UniformType uniformType, T value);
 
             void setAutoBindParam(StrSet &params, const std::string &name, UniformType uniformType);
+
+            void initUniform(const std::string &name, UniformType type);
+            void setUniform(const std::string &name, const void *value, uint32_t count) const;
         };
 
         template <class T>
         void Material::applyScalarParams(const StrKeyMap<T> &params) const
         {
             for (const auto &p : params)
-                renderer->setUniform(uniformHandles.at(p.first), &p.second, 1);
+                setUniform(p.first, &p.second, 1);
         }
 
         template <class T>
         void Material::applyVectorParams(const StrKeyMap<T> &params) const
         {
             for (const auto &p : params)
-                renderer->setUniform(uniformHandles.at(p.first), p.second.data(), static_cast<uint32_t>(p.second.size()));
+                setUniform(p.first, p.second.data(), static_cast<uint32_t>(p.second.size()));
         }
 
         template <class T>
         void Material::setParam(StrKeyMap<T> &params, const std::string &name, UniformType uniformType, T value)
         {
             if (params.find(name) == params.end())
-                uniformHandles[name] = renderer->createUniform(name.c_str(), uniformType, effect->getHandle());
+                initUniform(name, uniformType);
             params[name] = value;
         }
 
         inline void Material::setAutoBindParam(StrSet &params, const std::string &name, UniformType uniformType)
         {
             if (params.find(name) == params.end())
-                uniformHandles[name] = renderer->createUniform(name.c_str(), uniformType, effect->getHandle());
+                initUniform(name, uniformType);
             params.insert(name);
         }
     }

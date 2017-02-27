@@ -117,107 +117,6 @@ static auto toInternalTextureFormat(TextureFormat format) -> GLenum
 }
 
 
-static auto linkProgram(GLuint vs, GLuint fs) -> GLint
-{
-    auto program = glCreateProgram();
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-    glLinkProgram(program);
-
-    GLint status;
-    glGetProgramiv(program, GL_LINK_STATUS, &status);
-    if (status == GL_FALSE)
-    {
-        GLint logLength;
-        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
-        std::vector<GLchar> log(logLength);
-        glGetProgramInfoLog(program, logLength, nullptr, log.data());
-        glDeleteProgram(program);
-        SL_PANIC("Failed to link program", log.data());
-    }
-
-    return program;
-}
-
-
-static auto compileShader(GLuint type, const void *src, uint32_t length) -> GLint
-{
-    static std::unordered_map<GLuint, std::string> typeNames =
-    {
-        {GL_VERTEX_SHADER, "vertex"},
-        {GL_FRAGMENT_SHADER, "fragment"}
-    };
-
-    auto shader = glCreateShader(type);
-
-    GLint len = length;
-    glShaderSource(shader, 1, reinterpret_cast<const GLchar* const*>(&src), &len);
-    glCompileShader(shader);
-
-    GLint status;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-    if (status == GL_FALSE)
-    {
-        GLint logLength;
-        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-        std::vector<GLchar> log(logLength);
-        glGetShaderInfoLog(shader, logLength, nullptr, log.data());
-        glDeleteShader(shader);
-        SL_PANIC(SL_FMT("Failed to compile ", typeNames[type], " shader"), log.data());
-    }
-
-    return shader;
-}
-
-
-static bool findUniformInProgram(GLuint program, const char *name, GLint &location, int32_t &index)
-{
-    GLint activeUniforms;
-    glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &activeUniforms);
-    if (activeUniforms <= 0)
-        return false;
-
-    GLint nameMaxLength;
-    glGetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &nameMaxLength);
-    if (nameMaxLength <= 0)
-        return false;
-
-    std::vector<GLchar> rawName(nameMaxLength + 1);
-    uint32_t samplerIndex = 0;
-    for (GLint i = 0; i < activeUniforms; ++i)
-    {
-        GLint size;
-        GLenum type;
-
-        glGetActiveUniform(program, i, nameMaxLength, nullptr, &size, &type, rawName.data());
-        rawName[nameMaxLength] = '\0';
-        std::string n = rawName.data();
-
-        // Strip away possible square brackets for array uniforms,
-        // they are sometimes present on some platforms
-        auto bracketIndex = n.find('[');
-        if (bracketIndex != std::string::npos)
-            n.erase(bracketIndex);
-
-        uint32_t idx = 0;
-        if (type == GL_SAMPLER_2D || type == GL_SAMPLER_CUBE) // TODO other types of samplers
-        {
-            idx = samplerIndex;
-            samplerIndex += size;
-        }
-
-        if (n == name)
-        {
-            location = glGetUniformLocation(program, rawName.data());
-            index = idx;
-            return true;
-        }
-    }
-
-    return false;
-}
-
-
 gl::Renderer::Renderer(Device *device)
 {
     GLint major, minor;
@@ -230,12 +129,6 @@ gl::Renderer::Renderer(Device *device)
 gl::Renderer::~Renderer()
 {
     // All resources at this point should have already been released
-
-    while (!uniforms.empty())
-        destroyUniform(uniforms.begin()->first);
-
-    while (!programs.empty())
-        destroyProgram(programs.begin()->first);
 
     while (!frameBuffers.empty())
         destroyFrameBuffer(frameBuffers.begin()->first);
@@ -530,39 +423,6 @@ void gl::Renderer::updateFrameBuffer(uint32_t handle, const std::vector<uint32_t
 }
 
 
-auto gl::Renderer::createProgram(const void *vsSrc, uint32_t vsSrcLength, const void *fsSrc, uint32_t fsSrcLength) -> uint32_t
-{
-    auto vs = compileShader(GL_VERTEX_SHADER, vsSrc, vsSrcLength);
-    auto fs = compileShader(GL_FRAGMENT_SHADER, fsSrc, fsSrcLength);
-    auto program = ::linkProgram(vs, fs);
-
-    glDetachShader(program, vs);
-    glDeleteShader(vs);
-    glDetachShader(program, fs);
-    glDeleteShader(fs);
-
-    auto handle = programCounter++;
-    programs[handle] = program;
-
-    return handle;
-}
-
-
-void gl::Renderer::destroyProgram(uint32_t handle)
-{
-    auto rawHandle = programs.at(handle);
-    glDeleteProgram(rawHandle);
-    programs.erase(handle);
-}
-
-
-void gl::Renderer::setProgram(uint32_t handle)
-{
-    auto rawHandle = handle == EmptyHandle ? 0 : programs.at(handle);
-    glUseProgram(rawHandle);
-}
-
-
 void gl::Renderer::beginFrame()
 {
     renderCommands.clear();
@@ -632,7 +492,7 @@ void gl::Renderer::endFrame()
                 
                 // TODO replace with Effect::apply() or smth, this is not consistent with
                 // material application, for instance
-                setProgram(glEffect->getHandle());
+                glUseProgram(glEffect->getHandle());
                 
                 auto glMaterial = dynamic_cast<const Material*>(cmd.material);
                 glMaterial->applyState();
@@ -644,78 +504,6 @@ void gl::Renderer::endFrame()
 
             default: break;
         }
-    }
-}
-
-
-auto gl::Renderer::createUniform(const char *name, UniformType type, uint32_t programHandle) -> uint32_t
-{
-    auto rawProgramHandle = programs.at(programHandle);
-
-    GLint location, index;
-    auto found = findUniformInProgram(rawProgramHandle, name, location, index);
-    SL_PANIC_IF(!found, SL_FMT("Could not find uniform '", name, "'"));
-
-    auto handle = uniformCounter++;
-    auto &uniform = uniforms[handle];
-    uniform.type = type;
-    uniform.index = index;
-    uniform.location = location;
-
-    return handle;
-}
-
-
-void gl::Renderer::destroyUniform(uint32_t handle)
-{
-    uniforms.erase(handle);
-}
-
-
-void gl::Renderer::setUniform(uint32_t handle, const void *value, uint32_t count)
-{
-    const auto &uniform = uniforms.at(handle);
-    auto floatData = reinterpret_cast<const float *>(value);
-    switch (uniform.type)
-    {
-    case UniformType::Float:
-        glUniform1f(uniform.location, *floatData);
-        break;
-    case UniformType::FloatArray:
-        glUniform1fv(uniform.location, static_cast<GLsizei>(count), floatData);
-        break;
-    case UniformType::Vector2:
-        glUniform2f(uniform.location, floatData[0], floatData[1]);
-        break;
-    case UniformType::Vector2Array:
-        glUniform2fv(uniform.location, static_cast<GLsizei>(count), floatData);
-        break;
-    case UniformType::Vector3:
-        glUniform3f(uniform.location, floatData[0], floatData[1], floatData[2]);
-        break;
-    case UniformType::Vector3Array:
-        glUniform3fv(uniform.location, static_cast<GLsizei>(count), floatData);
-        break;
-    case UniformType::Vector4:
-        glUniform4f(uniform.location, floatData[0], floatData[1], floatData[2], floatData[3]);
-        break;
-    case UniformType::Vector4Array:
-        glUniform4fv(uniform.location, static_cast<GLsizei>(count), floatData);
-        break;
-    case UniformType::Matrix:
-        glUniformMatrix4fv(uniform.location, 1, GL_FALSE, floatData);
-        break;
-    case UniformType::MatrixArray:
-        glUniformMatrix4fv(uniform.location, static_cast<GLsizei>(count), GL_FALSE, floatData);
-        break;
-    case UniformType::Texture:
-        glActiveTexture(GL_TEXTURE0 + uniform.index);
-        glUniform1i(uniform.location, uniform.index);
-        break;
-    case UniformType::TextureArray:
-        break; // TODO
-    default:
-        break;
     }
 }
 

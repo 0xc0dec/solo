@@ -64,14 +64,6 @@ namespace solo
             void setFrameBuffer(uint32_t handle);
             void updateFrameBuffer(uint32_t handle, const std::vector<uint32_t> &attachmentHandles);
 
-            auto createProgram(const void *vsSrc, uint32_t vsSrcLength, const void *fsSrc, uint32_t fsSrcLength) -> uint32_t;
-            void destroyProgram(uint32_t handle);
-            void setProgram(uint32_t handle);
-
-            auto createUniform(const char *name, UniformType type, uint32_t programHandle) -> uint32_t;
-            void destroyUniform(uint32_t handle);
-            void setUniform(uint32_t handle, const void *value, uint32_t count);
-
             void setFaceCull(FaceCull face);
             void setPolygonMode(PolygonMode mode);
             void setBlend(bool enabled);
@@ -101,26 +93,15 @@ namespace solo
                 uint32_t height = 0;
             };
 
-            struct Uniform
-            {
-                UniformType type = UniformType::Float;
-                GLint location = 0;
-                GLint index = 0;
-            };
-
             // Counters for assigning unique resource ids.
             // Released ids do not get reused, so this effectively limits the total
             // number of resource allocations during the program lifetime. That's how it is for now.
             uint32_t textureCounter = 0;
             uint32_t frameBufferCounter = 0;
             uint32_t vertexBufferCounter = 0;
-            uint32_t programCounter = 0;
-            uint32_t uniformCounter = 0;
 
             std::unordered_map<uint32_t, Texture> textures;
             std::unordered_map<uint32_t, FrameBuffer> frameBuffers;
-            std::unordered_map<uint32_t, GLuint> programs;
-            std::unordered_map<uint32_t, Uniform> uniforms;
 
             std::vector<RenderCommand> renderCommands;
 
