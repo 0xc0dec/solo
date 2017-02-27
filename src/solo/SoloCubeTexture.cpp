@@ -17,7 +17,7 @@ auto CubeTexture::create(Device *device) -> sptr<CubeTexture>
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<gl::CubeTexture>(device);
+            return std::make_shared<gl::CubeTexture>();
 #endif
         default:
             return std::make_shared<null::CubeTexture>();

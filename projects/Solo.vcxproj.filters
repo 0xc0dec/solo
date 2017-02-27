@@ -528,6 +528,9 @@
     <ClCompile Include="..\src\solo\platform\vk\SoloVulkanEffect.cpp">
       <Filter>src\platform\vk</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLTexture.cpp">
+      <Filter>src\platform\gl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

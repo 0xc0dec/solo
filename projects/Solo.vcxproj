@@ -118,6 +118,7 @@
     <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLPrefabShaders.cpp" />
     <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLRectTexture.cpp" />
     <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLRenderer.cpp" />
+    <ClCompile Include="..\src\solo\platform\gl\SoloOpenGLTexture.cpp" />
     <ClCompile Include="..\src\solo\platform\gl\SoloSDLOpenGLDevice.cpp" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaCameraApi.cpp" />
     <ClCompile Include="..\src\solo\platform\lua\SoloLuaCommon.h" />

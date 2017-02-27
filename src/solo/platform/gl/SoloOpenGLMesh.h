@@ -10,7 +10,7 @@
 #ifdef SL_OPENGL_RENDERER
 
 #include "SoloMesh.h"
-#include "SoloOpenGLRenderer.h"
+#include <GL/glew.h>
 
 namespace solo
 {
