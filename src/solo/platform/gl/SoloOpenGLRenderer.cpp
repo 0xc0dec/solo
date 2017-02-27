@@ -759,11 +759,11 @@ void gl::Renderer::draw(PrimitiveType primitiveType, uint32_t vertexArrayHandle,
 
 void gl::Renderer::beginFrame()
 {
-    // TODO do not clear and update only when something's changed
     renderCommands.clear();
 }
 
 
+// TODO build "render plan", update it only when something has really changed
 void gl::Renderer::endFrame()
 {
     for (const auto &cmd: renderCommands)
@@ -774,20 +774,13 @@ void gl::Renderer::endFrame()
             {
                 auto cam = cmd.camera;
                 auto viewport = cam->getViewport();
-                glViewport(viewport.x, viewport.y, viewport.z, viewport.w);
+                setViewport(viewport.x, viewport.y, viewport.z, viewport.w);
 
-                glDepthMask(GL_TRUE);
-                glEnable(GL_DEPTH_TEST);
-
-                if (cam->isClearColorEnabled())
-                {
-                    auto color = cam->getClearColor();
-                    glClearColor(color.x, color.y, color.z, color.w);
-                }
-
-                GLbitfield flags = (cam->isClearColorEnabled() ? GL_COLOR_BUFFER_BIT : 0) |
-                    (cam->isClearDepthEnabled() ? GL_DEPTH_BUFFER_BIT : 0);
-                glClear(flags);
+                setDepthWrite(true);
+                setDepthTest(true);
+                
+                auto color = cam->getClearColor();
+                clear(cam->isClearColorEnabled(), cam->isClearDepthEnabled(), color.x, color.y, color.z, color.w);
 
                 break;
             }
