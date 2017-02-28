@@ -38,9 +38,6 @@ namespace solo
             auto getPrimitiveType() const -> PrimitiveType override final;
             void setPrimitiveType(PrimitiveType type) override final;
 
-            // TODO This was a quick hack during the transition to submission-based rendering.
-            // Ideally meshes should only be the source of data for rendering, without actual rendering
-            // code inside them
             void draw() const;
             void drawPart(uint32_t part) const;
 

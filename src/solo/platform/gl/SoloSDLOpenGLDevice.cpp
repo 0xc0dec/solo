@@ -7,8 +7,8 @@
 
 #ifdef SL_OPENGL_RENDERER
 
+#include "SoloOpenGL.h"
 #include <vector>
-#include <GL/glew.h>
 #include <SDL_surface.h>
 
 using namespace solo;
@@ -48,12 +48,12 @@ SDLDevice::SDLDevice(DeviceSetup const &setup):
 
 SDLDevice::~SDLDevice()
 {
+    cleanupSubsystems();
+
     if (context)
         SDL_GL_DeleteContext(context);
     if (window)
         SDL_DestroyWindow(window);
-
-    cleanupSubsystems();
 }
 
 

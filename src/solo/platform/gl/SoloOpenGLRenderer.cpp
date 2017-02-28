@@ -40,9 +40,11 @@ void gl::Renderer::beginFrame()
 }
 
 
-// TODO optimize: group by material etc.
-// TODO build "render plan", update it only when something has really changed
-// TODO avoid dynamic casts
+// TODO Optimize: group by material etc.
+// TODO Build "render plan", update it only when something has really changed
+// TODO Avoid dynamic casts
+// TODO Make it consistent whether ogl classes contain drawing code themselves or only serve as a source of data
+// for the renderer
 void gl::Renderer::endFrame()
 {
     const Camera *currentCamera = nullptr;
@@ -98,8 +100,6 @@ void gl::Renderer::endFrame()
             {
                 auto glEffect = dynamic_cast<Effect*>(cmd.material->getEffect());
                 
-                // TODO replace with Effect::apply() or smth, this is not consistent with
-                // material application, for instance
                 glUseProgram(glEffect->getHandle());
                 
                 auto glMaterial = dynamic_cast<const Material*>(cmd.material);
