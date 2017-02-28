@@ -13,6 +13,7 @@
 
 namespace solo
 {
+    enum class PrimitiveType;
     enum class FaceCull;
     enum class PolygonMode;
     enum class DepthFunction;
@@ -23,6 +24,7 @@ namespace solo
 
     namespace gl
     {
+        auto toPrimitiveType(PrimitiveType type) -> GLenum;
         auto toCubeTextureFace(CubeTextureFace face) -> GLenum;
         auto toInternalTextureFormat(TextureFormat format) -> GLenum;
         auto toTextureFormat(TextureFormat format) -> GLenum;

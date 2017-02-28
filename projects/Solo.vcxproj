@@ -31,6 +31,7 @@
     <ClInclude Include="..\include\SoloImage.h" />
     <ClInclude Include="..\include\SoloPhysics.h" />
     <ClInclude Include="..\include\SoloRadian.h" />
+    <ClInclude Include="..\include\SoloRenderCommand.h" />
     <ClInclude Include="..\include\SoloRenderer.h" />
     <ClInclude Include="..\include\SoloFrameBuffer.h" />
     <ClInclude Include="..\include\SoloCubeTexture.h" />

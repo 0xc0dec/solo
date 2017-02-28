@@ -170,28 +170,6 @@ void gl::Mesh::removePart(uint32_t part)
 }
 
 
-// TODO to a separate file of helper functions
-static auto toGLPrimitiveType(PrimitiveType type) -> GLenum
-{
-    switch (type)
-    {
-        case PrimitiveType::Triangles:
-            return GL_TRIANGLES;
-        case PrimitiveType::TriangleStrip:
-            return GL_TRIANGLE_STRIP;
-        case PrimitiveType::Lines:
-            return GL_LINES;
-        case PrimitiveType::LineStrip:
-            return GL_LINE_STRIP;
-        case PrimitiveType::Points:
-            return GL_POINTS;
-        default:
-            SL_PANIC("Unknown primitive type");
-            return GL_TRIANGLES;
-    }
-}
-
-
 void gl::Mesh::draw() const
 {
     rebuildVertexArray();
@@ -199,7 +177,7 @@ void gl::Mesh::draw() const
     if (indexBuffers.empty())
     {
         glBindVertexArray(vertexArray);
-        glDrawArrays(toGLPrimitiveType(primitiveType), 0, minVertexCount);
+        glDrawArrays(toPrimitiveType(primitiveType), 0, minVertexCount);
         glBindVertexArray(0);
     }
     else
@@ -217,7 +195,7 @@ void gl::Mesh::drawPart(uint32_t part) const
     glBindVertexArray(vertexArray);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffers.at(part));
             
-    glDrawElements(toGLPrimitiveType(primitiveType), indexElementCounts.at(part), GL_UNSIGNED_SHORT, nullptr);
+    glDrawElements(toPrimitiveType(primitiveType), indexElementCounts.at(part), GL_UNSIGNED_SHORT, nullptr);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindVertexArray(0);

@@ -11,6 +11,7 @@
 #include "SoloDegree.h"
 #include "SoloScene.h"
 #include "SoloRenderer.h"
+#include "SoloRenderCommand.h"
 
 using namespace solo;
 

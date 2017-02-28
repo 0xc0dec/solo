@@ -8,6 +8,7 @@
 #include "SoloMaterial.h"
 #include "SoloTransform.h"
 #include "SoloDevice.h"
+#include "SoloRenderCommand.h"
 
 using namespace solo;
 

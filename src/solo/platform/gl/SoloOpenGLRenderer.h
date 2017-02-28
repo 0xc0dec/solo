@@ -10,6 +10,7 @@
 #ifdef SL_OPENGL_RENDERER
 
 #include "SoloRenderer.h"
+#include "SoloRenderCommand.h"
 #include <vector>
 
 namespace solo
