@@ -3,6 +3,8 @@
 -- MIT license
 -- 
 
+-- TODO refactor, esp. after the latest fix
+
 function createPostProcessor(device, camera, tag)
 	local canvasSize = device:getCanvasSize()
 
