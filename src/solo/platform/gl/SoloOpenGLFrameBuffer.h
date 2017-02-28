@@ -10,7 +10,7 @@
 #ifdef SL_OPENGL_RENDERER
 
 #include "SoloFrameBuffer.h"
-#include <GL/glew.h>
+#include "SoloOpenGL.h"
 
 namespace solo
 {

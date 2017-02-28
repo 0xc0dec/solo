@@ -26,13 +26,13 @@ gl::Material::Material(Device *device, sptr<solo::Effect> effect):
 
 void gl::Material::applyState() const
 {
-    renderer->setFaceCull(faceCull);
-    renderer->setPolygonMode(polygonMode);
-    renderer->setDepthTest(depthTest);
-    renderer->setDepthWrite(depthWrite);
-    renderer->setDepthFunction(depthFunc);
-    renderer->setBlend(blend);
-    renderer->setBlendFactor(srcBlendFactor, dstBlendFactor);
+    gl::setFaceCull(faceCull);
+    gl::setPolygonMode(polygonMode);
+    gl::setDepthTest(depthTest);
+    gl::setDepthWrite(depthWrite);
+    gl::setDepthFunction(depthFunc);
+    gl::setBlend(blend);
+    gl::setBlendFactor(srcBlendFactor, dstBlendFactor);
 }
 
 

@@ -8,6 +8,7 @@
 #include "SoloCommon.h"
 
 #ifdef SL_OPENGL_RENDERER
+
 #include <GL/glew.h>
 
 namespace solo

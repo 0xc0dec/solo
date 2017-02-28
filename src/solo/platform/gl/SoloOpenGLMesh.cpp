@@ -123,7 +123,7 @@ void gl::Mesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, 
 {
     auto vertexSize = vertexSizes.at(index);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers.at(index));
-    glBufferSubData(GL_ARRAY_BUFFER, vertexOffset * vertexSize, vertexCount * vertexSize, data); // TODO not sure about offset/count
+    glBufferSubData(GL_ARRAY_BUFFER, vertexOffset * vertexSize, vertexCount * vertexSize, data);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 

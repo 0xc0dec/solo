@@ -12,7 +12,7 @@
 #include "SoloMaterial.h"
 #include "SoloOpenGLRenderer.h"
 #include "SoloOpenGLEffect.h"
-#include <GL/glew.h>
+#include "SoloOpenGL.h"
 #include <unordered_map>
 #include <unordered_set>
 
@@ -26,22 +26,6 @@ namespace solo
         class Renderer;
         class Effect;
         class Texture;
-
-        enum class UniformType
-        {
-            Float,
-            FloatArray,
-            Vector2,
-            Vector2Array,
-            Vector3,
-            Vector3Array,
-            Vector4,
-            Vector4Array,
-            Matrix,
-            MatrixArray,
-            Texture,
-            TextureArray,
-        };
 
         class Material final : public solo::Material
         {
@@ -80,6 +64,22 @@ namespace solo
             void applyParams(const Camera *camera, const Transform *nodeTransform) const;
 
         protected:
+            enum class UniformType
+            {
+                Float,
+                FloatArray,
+                Vector2,
+                Vector2Array,
+                Vector3,
+                Vector3Array,
+                Vector4,
+                Vector4Array,
+                Matrix,
+                MatrixArray,
+                Texture,
+                TextureArray,
+            };
+
             template <class T>
             using StrKeyMap = std::unordered_map<std::string, T>;
             using StrSet = std::unordered_set<std::string>;
