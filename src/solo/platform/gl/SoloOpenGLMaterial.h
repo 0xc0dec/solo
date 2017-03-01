@@ -60,7 +60,6 @@ namespace solo
             void bindInvTransposedWorldViewMatrixParameter(const std::string &name) override final;
             void bindCameraWorldPositionParameter(const std::string &name) override final;
 
-            void applyState() const;
             void applyParams(const Camera *camera, const Transform *nodeTransform) const;
 
         protected:
