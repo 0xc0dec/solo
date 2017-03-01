@@ -69,6 +69,7 @@ namespace solo
             std::unordered_map<std::string, uint32_t> applierIndices;
             std::unordered_map<std::string, GLint> uniformIndexes;
 
+            // Note: maybe not the fastest, but convenient and good enough for now
             std::vector<std::function<void(const Camera *camera, const Transform *nodeTransform)>> appliers;
 
             void setParameter(const std::string &paramName, std::function<std::function<void(const Camera *, const Transform *)>(GLuint, GLint)> getApplier);
