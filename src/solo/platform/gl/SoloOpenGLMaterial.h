@@ -30,7 +30,7 @@ namespace solo
         class Material final : public solo::Material
         {
         public:
-            Material(Device *device, sptr<solo::Effect> effect);
+            Material(sptr<solo::Effect> effect);
             ~Material() {}
 
             void setFloatParameter(const std::string &name, float value) override final;
@@ -83,7 +83,6 @@ namespace solo
             using StrKeyMap = std::unordered_map<std::string, T>;
             using StrSet = std::unordered_set<std::string>;
 
-            Renderer *renderer = nullptr;
             sptr<Effect> effect = nullptr;
 
             StrKeyMap<GLint> uniformLocations;
@@ -147,13 +146,6 @@ namespace solo
             if (params.find(name) == params.end())
                 initUniform(name, uniformType);
             params[name] = value;
-        }
-
-        inline void Material::setAutoBindParam(StrSet &params, const std::string &name, UniformType uniformType)
-        {
-            if (params.find(name) == params.end())
-                initUniform(name, uniformType);
-            params.insert(name);
         }
     }
 }

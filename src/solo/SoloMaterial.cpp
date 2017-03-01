@@ -19,20 +19,19 @@ auto Material::create(Device *device, sptr<Effect> effect) -> sptr<Material>
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<gl::Material>(device, effect);
+            return std::make_shared<gl::Material>(effect);
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return std::make_shared<vk::Material>(device, effect);
+            return std::make_shared<vk::Material>(effect);
 #endif
         default:
-            return std::make_shared<null::Material>(device, effect);
+            return std::make_shared<null::Material>(effect);
     }
 }
 
 
-Material::Material(Device *device, sptr<Effect> effect):
-    device(device),
+Material::Material(sptr<Effect> effect):
     effect(effect)
 {
 }

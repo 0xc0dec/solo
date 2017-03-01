@@ -14,10 +14,9 @@
 using namespace solo;
 
 
-vk::Material::Material(Device *device, sptr<Effect> effect):
-    solo::Material(device, effect)
+vk::Material::Material(sptr<Effect> effect):
+    solo::Material(effect)
 {
-    renderer = dynamic_cast<Renderer *>(device->getRenderer());
 }
 
 

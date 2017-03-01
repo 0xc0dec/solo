@@ -16,10 +16,9 @@
 using namespace solo;
 
 
-gl::Material::Material(Device *device, sptr<solo::Effect> effect):
-    solo::Material(device, effect)
+gl::Material::Material(sptr<solo::Effect> effect):
+    solo::Material(effect)
 {
-    renderer = dynamic_cast<Renderer *>(device->getRenderer());
     this->effect = std::dynamic_pointer_cast<Effect>(effect);
 }
 
@@ -283,6 +282,14 @@ void gl::Material::setTextureParameter(const std::string &name, sptr<solo::Textu
     if (textureParams.find(name) == textureParams.end())
         initUniform(name, UniformType::Texture);
     textureParams[name] = std::dynamic_pointer_cast<Texture>(value);
+}
+
+
+void gl::Material::setAutoBindParam(StrSet &params, const std::string &name, UniformType uniformType)
+{
+    if (params.find(name) == params.end())
+        initUniform(name, uniformType);
+    params.insert(name);
 }
 
 

@@ -24,7 +24,7 @@ namespace solo
         class Material final: public solo::Material
         {
         public:
-            Material(Device *device, sptr<solo::Effect> effect);
+            Material(sptr<solo::Effect> effect);
             ~Material();
 
             void setFloatParameter(const std::string &name, float value) override final;
@@ -53,9 +53,6 @@ namespace solo
             void bindInvTransposedWorldMatrixParameter(const std::string &name) override final;
             void bindInvTransposedWorldViewMatrixParameter(const std::string &name) override final;
             void bindCameraWorldPositionParameter(const std::string &name) override final;
-        
-        private:
-            Renderer *renderer = nullptr;
         };
     }
 }

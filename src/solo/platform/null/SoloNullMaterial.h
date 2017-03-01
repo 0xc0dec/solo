@@ -14,8 +14,8 @@ namespace solo
         class Material final : public solo::Material
         {
         public:
-            explicit Material(Device *device, const sptr<Effect> &effect) :
-                solo::Material(device, effect)
+            explicit Material(const sptr<Effect> &effect) :
+                solo::Material(effect)
             {
             }
 

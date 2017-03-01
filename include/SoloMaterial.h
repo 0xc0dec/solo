@@ -84,7 +84,6 @@ namespace solo
         void setDepthFunction(DepthFunction func);
 
     protected:
-        Device *device = nullptr;
         sptr<Effect> effect;
 
         FaceCull faceCull = FaceCull::CW;
@@ -96,7 +95,7 @@ namespace solo
         BlendFactor dstBlendFactor = BlendFactor::OneMinusSrcAlpha;
         DepthFunction depthFunc = DepthFunction::Less;
 
-        explicit Material(Device *device, sptr<Effect> effect);
+        explicit Material(sptr<Effect> effect);
     };
 
     inline auto Material::getEffect() const -> Effect *
