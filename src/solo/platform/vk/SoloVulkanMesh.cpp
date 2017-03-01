@@ -9,7 +9,6 @@
 
 #include "SoloDevice.h"
 #include "SoloVulkanRenderer.h"
-#include "SoloVulkanRenderCommand.h"
 #include <algorithm>
 
 using namespace solo;
@@ -95,18 +94,6 @@ auto vk::Mesh::getPartCount() const -> uint32_t
 {
     return indexBuffers.size();
 }
-
-
-//void vk::Mesh::draw()
-//{
-//    renderer->addRenderCommand(RenderCommand::drawMesh(this));
-//}
-//
-//
-//void vk::Mesh::drawPart(uint32_t part)
-//{
-//    renderer->addRenderCommand(RenderCommand::drawMesh(this));
-//}
 
 
 auto vk::Mesh::getPrimitiveType() const -> PrimitiveType

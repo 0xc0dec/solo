@@ -274,9 +274,6 @@
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanMesh.h">
       <Filter>src\platform\vk</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\platform\vk\SoloVulkanRenderCommand.h">
-      <Filter>src\platform\vk</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanMaterial.h">
       <Filter>src\platform\vk</Filter>
     </ClInclude>

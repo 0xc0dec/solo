@@ -97,7 +97,6 @@
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanMaterial.h" />
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanMesh.h" />
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanPipeline.h" />
-    <ClInclude Include="..\src\solo\platform\vk\SoloVulkanRenderCommand.h" />
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanRenderer.h" />
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanRenderPass.h" />
     <ClInclude Include="..\src\solo\platform\vk\SoloVulkanSwapchain.h" />

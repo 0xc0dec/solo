@@ -3,9 +3,6 @@
     MIT license
 */
 
-// NOTE This file, as well as other vulkan files in the engine, is a total hackfest and test playground.
-// Consider closing this to prevent your eyes from bleeding.
-
 #include "SoloVulkanRenderer.h"
 
 #ifdef SL_VULKAN_RENDERER
@@ -127,7 +124,7 @@ void vk::Renderer::endFrame()
 
 void vk::Renderer::applyRenderCommands(VkCommandBuffer buf)
 {
-    const Material *currentMaterial = nullptr;
+    const solo::Material *currentMaterial = nullptr;
 
     for (const auto &cmd: renderCommands)
     {
@@ -164,11 +161,14 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf)
                 break;
 
             case RenderCommandType::DrawMesh:
+            case RenderCommandType::DrawMeshPart:
             {
                 if (!currentMaterial)
                     continue;
 
                 static bool dirty2 = true;
+
+                auto mesh = dynamic_cast<const Mesh*>(cmd.mesh.mesh);
 
                 if (dirty2)
                 {
@@ -186,9 +186,9 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf)
                         .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 
                     uint32_t vertexSize = 0;
-                    for (auto i = 0; i < cmd.mesh->getVertexBufferCount(); ++i)
+                    for (auto i = 0; i < mesh->getVertexBufferCount(); ++i)
                     {
-                        auto layout = cmd.mesh->getVertexBufferLayout(i);
+                        auto layout = mesh->getVertexBufferLayout(i);
                         builder.withVertexBinding(i, layout.getSize(), VK_VERTEX_INPUT_RATE_VERTEX);
 
                         vertexSize += layout.getSize();
@@ -237,7 +237,7 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf)
 
                     vkUpdateDescriptorSets(device, 1, &descriptorWrite, 0, nullptr);
 
-                    test.vertexCount = cmd.mesh->getMinVertexCount();
+                    test.vertexCount = mesh->getMinVertexCount();
 
                     dirty2 = false;
                 }
@@ -245,12 +245,12 @@ void vk::Renderer::applyRenderCommands(VkCommandBuffer buf)
                 vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline);
                 vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, test.pipeline.getLayout(), 0, 1, &test.descriptorSet, 0, nullptr);
                 
-                std::vector<VkBuffer> vertexBuffers = {cmd.mesh->getVertexBuffer(0), cmd.mesh->getVertexBuffer(1)};
+                std::vector<VkBuffer> vertexBuffers = {mesh->getVertexBuffer(0), mesh->getVertexBuffer(1)};
                 std::vector<VkDeviceSize> offsets = {0, 0};
 	            vkCmdBindVertexBuffers(buf, 0, 2, vertexBuffers.data(), offsets.data());
 
-                vkCmdBindIndexBuffer(buf, cmd.mesh->getPartBuffer(0), 0, VK_INDEX_TYPE_UINT16);
-                vkCmdDrawIndexed(buf, cmd.mesh->getPartIndexElementCount(0), 1, 0, 0, 1);
+                vkCmdBindIndexBuffer(buf, mesh->getPartBuffer(0), 0, VK_INDEX_TYPE_UINT16);
+                vkCmdDrawIndexed(buf, mesh->getPartIndexElementCount(0), 1, 0, 0, 1);
                 
                 break;
             }

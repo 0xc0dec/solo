@@ -3,6 +3,9 @@
     MIT license
 */
 
+// NOTE This file, as well as other vulkan files in the engine, is a total hackfest and test playground currently.
+// Don't pay attention to the quality of code here.
+
 #pragma once
 
 #include "SoloCommon.h"
@@ -12,8 +15,8 @@
 #include "SoloRenderer.h"
 #include "SoloVulkanSwapchain.h"
 #include "SoloVulkanRenderPass.h"
+#include "SoloRenderCommand.h"
 #include "SoloVulkan.h"
-#include "SoloVulkanRenderCommand.h"
 #include "SoloVulkanPipeline.h"
 #include "SoloVulkanBuffer.h"
 #include "SoloVulkanDescriptorPool.h"
@@ -39,9 +42,7 @@ namespace solo
             auto getQueue() const -> VkQueue;
             auto getCommandPool() const -> VkCommandPool;
 
-            // TODO merge
-            void addRenderCommand(const RenderCommand &cmd);
-            void addRenderCommand(const solo::RenderCommand &cmd) override {}
+            void addRenderCommand(const RenderCommand &cmd) override final;
 
         protected:
             void beginFrame() override final;
