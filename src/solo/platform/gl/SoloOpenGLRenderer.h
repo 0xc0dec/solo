@@ -41,6 +41,7 @@ namespace solo
                 std::function<void()> applyMaterialState;
             };
 
+            // Note: maybe not the fastest, but convenient and good enough for now
             std::vector<RenderStep> renderSteps;
         };
     }
