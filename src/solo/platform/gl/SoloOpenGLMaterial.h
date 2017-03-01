@@ -20,6 +20,7 @@ namespace solo
 {
     class Device;
     class Camera;
+    class Transform;
 
     namespace gl
     {
@@ -30,7 +31,7 @@ namespace solo
         class Material final : public solo::Material
         {
         public:
-            Material(sptr<solo::Effect> effect);
+            explicit Material(sptr<solo::Effect> effect);
             ~Material() {}
 
             void setFloatParameter(const std::string &name, float value) override final;
@@ -86,8 +87,11 @@ namespace solo
             sptr<Effect> effect = nullptr;
 
             StrKeyMap<GLint> uniformLocations;
+            StrKeyMap<uint32_t> applierIndices;
             StrKeyMap<GLint> uniformIndexes;
             StrKeyMap<UniformType> uniformTypes;
+
+            std::vector<std::function<void(const Camera *camera, const Transform *nodeTransform)>> appliers;
 
             StrKeyMap<float> floatParams;
             StrKeyMap<Vector2> vector2Params;
@@ -110,6 +114,8 @@ namespace solo
             StrSet invTransWorldMatrixParams;
             StrSet invTransWorldViewMatrixParams;
             StrSet camWorldPosParams;
+
+            void setParameter(const std::string &paramName, std::function<std::function<void(const Camera *, const Transform *)>(GLuint)> getApplier);
 
             template <class T>
             void applyScalarParams(const StrKeyMap<T> &params) const;

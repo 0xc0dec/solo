@@ -28,7 +28,10 @@ void gl::Material::applyParams(const Camera *camera, const Transform *nodeTransf
     // TODO refactor
     // TODO avoid table lookups
 
-    applyScalarParams(floatParams);
+    for (const auto &apl : appliers)
+        apl(camera, nodeTransform);
+
+//    applyScalarParams(floatParams);
     applyScalarParams(vector2Params);
     applyScalarParams(vector3Params);
     applyScalarParams(vector4Params);
@@ -44,63 +47,6 @@ void gl::Material::applyParams(const Camera *camera, const Transform *nodeTransf
     {
         setUniform(p.first, nullptr, 1);
         p.second->bind();
-    }
-
-    for (const auto &p : worldMatrixParams)
-    {
-        if (nodeTransform)
-            setUniform(p, nodeTransform->getWorldMatrix().m, 1);
-    }
-
-    for (const auto &p : viewMatrixParams)
-    {
-        if (camera)
-            setUniform(p, camera->getViewMatrix().m, 1);
-    }
-
-    for (const auto &p : projMatrixParams)
-    {
-        if (camera)
-            setUniform(p, camera->getProjectionMatrix().m, 1);
-    }
-
-    for (const auto &p : worldViewMatrixParams)
-    {
-        if (nodeTransform && camera)
-            setUniform(p, nodeTransform->getWorldViewMatrix(camera).m, 1);
-    }
-        
-    for (const auto &p : viewProjMatrixParams)
-    {
-        if (camera)
-            setUniform(p, camera->getViewProjectionMatrix().m, 1);
-    }
-    
-    for (const auto &p : worldViewProjMatrixParams)
-    {
-        if (nodeTransform && camera)
-            setUniform(p, nodeTransform->getWorldViewProjMatrix(camera).m, 1);
-    }
-    
-    for (const auto &p : invTransWorldMatrixParams)
-    {
-        if (nodeTransform)
-            setUniform(p, nodeTransform->getInvTransposedWorldMatrix().m, 1);
-    }
-    
-    for (const auto &p : invTransWorldViewMatrixParams)
-    {
-        if (nodeTransform && camera)
-            setUniform(p, nodeTransform->getInvTransposedWorldViewMatrix(camera).m, 1);
-    }
-
-    for (const auto &p : viewProjMatrixParams)
-    {
-        if (camera)
-        {
-            auto pos = camera->getTransform()->getWorldPosition();
-            setUniform(p, &pos, 1);
-        }
     }
 }
 
@@ -219,13 +165,25 @@ void gl::Material::setUniform(const std::string &name, const void *value, uint32
 
 void gl::Material::setFloatParameter(const std::string &name, float value)
 {
-    setParam(floatParams, name, UniformType::Float, value);
+    setParameter(name, [value](GLuint location)
+    {
+        return [location, value](const Camera *, const Transform *)
+        {
+            glUniform1f(location, value);
+        };
+    });
 }
 
 
 void gl::Material::setFloatArrayParameter(const std::string &name, const std::vector<float> &value)
 {
-    setParam(floatArrayParams, name, UniformType::FloatArray, value);
+    setParameter(name, [value](GLuint location)
+    {
+        return [location, value](const Camera *, const Transform *)
+        {
+            glUniform1fv(location, static_cast<GLsizei>(value.size()), value.data());
+        };
+    });
 }
 
 
@@ -285,6 +243,27 @@ void gl::Material::setTextureParameter(const std::string &name, sptr<solo::Textu
 }
 
 
+void gl::Material::setParameter(const std::string &paramName, std::function<std::function<void(const Camera *, const Transform *)>(GLuint)> getApplier)
+{
+    auto locIt = uniformLocations.find(paramName);
+    if (locIt == uniformLocations.end())
+    {
+        GLint location, index;
+        auto found = findUniformInProgram(effect->getHandle(), paramName.c_str(), location, index);
+        SL_PANIC_IF(!found, SL_FMT("Could not find uniform '", paramName, "'"));
+
+        appliers.push_back(getApplier(location));
+        uniformLocations[paramName] = location;
+        applierIndices[paramName] = appliers.size() - 1;
+    }
+    else
+    {
+        auto location = locIt->second;
+        appliers[applierIndices.at(paramName)] = getApplier(location);
+    }
+}
+
+
 void gl::Material::setAutoBindParam(StrSet &params, const std::string &name, UniformType uniformType)
 {
     if (params.find(name) == params.end())
@@ -293,57 +272,147 @@ void gl::Material::setAutoBindParam(StrSet &params, const std::string &name, Uni
 }
 
 
-void gl::Material::bindWorldMatrixParameter(const std::string& name)
+void gl::Material::bindWorldMatrixParameter(const std::string &name)
 {
-    setAutoBindParam(worldMatrixParams, name, UniformType::Matrix);
+    setParameter(name, [](GLuint location)
+    {
+        return [location](const Camera *, const Transform *nodeTransform)
+        {
+            if (nodeTransform)
+            {
+                auto data = nodeTransform->getWorldMatrix().m;
+                glUniformMatrix4fv(location, 1, GL_FALSE, data);
+            }
+        };
+    });
 }
 
 
-void gl::Material::bindViewMatrixParameter(const std::string& name)
+void gl::Material::bindViewMatrixParameter(const std::string &name)
 {
-    setAutoBindParam(viewMatrixParams, name, UniformType::Matrix);
+    setParameter(name, [](GLuint location)
+    {
+        return [location](const Camera *camera, const Transform *)
+        {
+            if (camera)
+            {
+                auto data = camera->getViewMatrix().m;
+                glUniformMatrix4fv(location, 1, GL_FALSE, data);
+            }
+        };
+    });
 }
 
 
-void gl::Material::bindProjectionMatrixParameter(const std::string& name)
+void gl::Material::bindProjectionMatrixParameter(const std::string &name)
 {
-    setAutoBindParam(projMatrixParams, name, UniformType::Matrix);
+    setParameter(name, [](GLuint location)
+    {
+        return [location](const Camera *camera, const Transform *)
+        {
+            if (camera)
+            {
+                auto data = camera->getProjectionMatrix().m;
+                glUniformMatrix4fv(location, 1, GL_FALSE, data);
+            }
+        };
+    });
 }
 
 
-void gl::Material::bindWorldViewMatrixParameter(const std::string& name)
+void gl::Material::bindWorldViewMatrixParameter(const std::string &name)
 {
-    setAutoBindParam(worldViewMatrixParams, name, UniformType::Matrix);
+    setParameter(name, [](GLuint location)
+    {
+        return [location](const Camera *camera, const Transform *nodeTransform)
+        {
+            if (nodeTransform && camera)
+            {
+                auto data = nodeTransform->getWorldViewMatrix(camera).m;
+                glUniformMatrix4fv(location, 1, GL_FALSE, data);
+            }
+        };
+    });
 }
 
 
-void gl::Material::bindViewProjectionMatrixParameter(const std::string& name)
+void gl::Material::bindViewProjectionMatrixParameter(const std::string &name)
 {
-    setAutoBindParam(viewProjMatrixParams, name, UniformType::Matrix);
+    setParameter(name, [](GLuint location)
+    {
+        return [location](const Camera *camera, const Transform *)
+        {
+            if (camera)
+            {
+                auto data = camera->getViewProjectionMatrix().m;
+                glUniformMatrix4fv(location, 1, GL_FALSE, data);
+            }
+        };
+    });
 }
 
 
-void gl::Material::bindWorldViewProjectionMatrixParameter(const std::string& name)
+void gl::Material::bindWorldViewProjectionMatrixParameter(const std::string &name)
 {
-    setAutoBindParam(worldViewProjMatrixParams, name, UniformType::Matrix);
+    setParameter(name, [](GLuint location)
+    {
+        return [location](const Camera *camera, const Transform *nodeTransform)
+        {
+            if (nodeTransform && camera)
+            {
+                auto data = nodeTransform->getWorldViewProjMatrix(camera).m;
+                glUniformMatrix4fv(location, 1, GL_FALSE, data);
+            }
+        };
+    });
 }
 
 
-void gl::Material::bindInvTransposedWorldMatrixParameter(const std::string& name)
+void gl::Material::bindInvTransposedWorldMatrixParameter(const std::string &name)
 {
-    setAutoBindParam(invTransWorldMatrixParams, name, UniformType::Matrix);
+    setParameter(name, [](GLuint location)
+    {
+        return [location](const Camera *, const Transform *nodeTransform)
+        {
+            if (nodeTransform)
+            {
+                auto data = nodeTransform->getInvTransposedWorldMatrix().m;
+                glUniformMatrix4fv(location, 1, GL_FALSE, data);
+            }
+        };
+    });
 }
 
 
-void gl::Material::bindInvTransposedWorldViewMatrixParameter(const std::string& name)
+void gl::Material::bindInvTransposedWorldViewMatrixParameter(const std::string &name)
 {
-    setAutoBindParam(invTransWorldViewMatrixParams, name, UniformType::Matrix);
+    setParameter(name, [](GLuint location)
+    {
+        return [location](const Camera *camera, const Transform *nodeTransform)
+        {
+            if (nodeTransform && camera)
+            {
+                auto data = nodeTransform->getInvTransposedWorldViewMatrix(camera).m;
+                glUniformMatrix4fv(location, 1, GL_FALSE, data);
+            }
+        };
+    });
 }
 
 
-void gl::Material::bindCameraWorldPositionParameter(const std::string& name)
+void gl::Material::bindCameraWorldPositionParameter(const std::string &name)
 {
-    setAutoBindParam(camWorldPosParams, name, UniformType::Vector3);
+    setParameter(name, [](GLuint location)
+    {
+        return [location](const Camera *camera, const Transform *)
+        {
+            if (camera)
+            {
+                auto pos = camera->getTransform()->getWorldPosition();
+                glUniform3f(location, pos.x, pos.y, pos.z);
+            }
+        };
+    });
 }
 
 
