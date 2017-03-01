@@ -33,68 +33,81 @@ void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
     RenderStep step;
     step.cmd = cmd;
 
-    if (cmd.type == RenderCommandType::BeginCamera)
+    switch (cmd.type)
     {
-        auto viewport = cmd.camera->getViewport();
-        auto colorClearEnabled = cmd.camera->isClearColorEnabled();
-        auto depthClearEnabled = cmd.camera->isClearDepthEnabled();
-        auto clearColor = cmd.camera->getClearColor();
-
-        GLuint targetFBHandle = 0;
-        auto target = step.cmd.camera->getRenderTarget();
-        if (target)
+        case RenderCommandType::BeginCamera:
         {
+            auto viewport = cmd.camera->getViewport();
+            auto colorClearEnabled = cmd.camera->isClearColorEnabled();
+            auto depthClearEnabled = cmd.camera->isClearDepthEnabled();
+            auto clearColor = cmd.camera->getClearColor();
+
+            GLuint targetFBHandle = 0;
+            auto target = step.cmd.camera->getRenderTarget();
             if (target)
-                targetFBHandle = dynamic_cast<const FrameBuffer *>(target.get())->getHandle();
+            {
+                if (target)
+                    targetFBHandle = dynamic_cast<const FrameBuffer *>(target.get())->getHandle();
+            }
+
+            step.beginCamera = [=]
+            {
+                if (targetFBHandle)
+                    glBindFramebuffer(GL_FRAMEBUFFER, targetFBHandle);
+
+                setViewport(viewport);
+                setDepthWrite(true);
+                setDepthTest(true);
+                clear(colorClearEnabled, depthClearEnabled, clearColor);
+            };
+
+            break;
         }
 
-        step.beginCamera = [=]
+        case RenderCommandType::EndCamera:
         {
-            if (targetFBHandle)
-                glBindFramebuffer(GL_FRAMEBUFFER, targetFBHandle);
+            auto hasTarget = step.cmd.camera->getRenderTarget() != nullptr;
 
-            setViewport(viewport);
-            setDepthWrite(true);
-            setDepthTest(true);
-            clear(colorClearEnabled, depthClearEnabled, clearColor);
-        };
-    }
-    else if (cmd.type == RenderCommandType::EndCamera)
-    {
-        auto hasTarget = step.cmd.camera->getRenderTarget() != nullptr;
+            step.endCamera = [=]
+            {
+                // Note: this assumes that the camera's frame buffer is the current one,
+                // so we can correctly unbind it.
+                if (hasTarget)
+                    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            };
 
-        step.endCamera = [=]
+            break;
+        }
+
+        case RenderCommandType::ApplyMaterial:
         {
-            // Note: this assumes that the camera's frame buffer is the current one,
-            // so we can correctly unbind it.
-            if (hasTarget)
-                glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        };
-    }
-    else if (cmd.type == RenderCommandType::ApplyMaterial)
-    {
-        auto faceCull = cmd.material->getFaceCull();
-        auto polygonMode = cmd.material->getPolygonMode();
-        auto depthTest = cmd.material->getDepthTest();
-        auto depthWrite = cmd.material->getDepthWrite();
-        auto depthFunc = cmd.material->getDepthFunction();
-        auto blend = cmd.material->getBlend();
-        auto srcBlendFactor = cmd.material->getSrcBlendFactor();
-        auto dstBlendFactor = cmd.material->getDstBlendFactor();
-        auto effect = dynamic_cast<Effect*>(step.cmd.material->getEffect());
-        auto program = effect->getHandle();
+            auto faceCull = cmd.material->getFaceCull();
+            auto polygonMode = cmd.material->getPolygonMode();
+            auto depthTest = cmd.material->getDepthTest();
+            auto depthWrite = cmd.material->getDepthWrite();
+            auto depthFunc = cmd.material->getDepthFunction();
+            auto blend = cmd.material->getBlend();
+            auto srcBlendFactor = cmd.material->getSrcBlendFactor();
+            auto dstBlendFactor = cmd.material->getDstBlendFactor();
+            auto effect = dynamic_cast<Effect*>(step.cmd.material->getEffect());
+            auto program = effect->getHandle();
 
-        step.applyMaterialState = [=]
-        {
-            glUseProgram(program);
-            setFaceCull(faceCull);
-            setPolygonMode(polygonMode);
-            setDepthTest(depthTest);
-            setDepthWrite(depthWrite);
-            setDepthFunction(depthFunc);
-            setBlend(blend);
-            setBlendFactor(srcBlendFactor, dstBlendFactor);
-        };
+            step.applyMaterialState = [=]
+            {
+                glUseProgram(program);
+                setFaceCull(faceCull);
+                setPolygonMode(polygonMode);
+                setDepthTest(depthTest);
+                setDepthWrite(depthWrite);
+                setDepthFunction(depthFunc);
+                setBlend(blend);
+                setBlendFactor(srcBlendFactor, dstBlendFactor);
+            };
+
+            break;
+        }
+
+        default: break;
     }
 
     renderSteps.push_back(step);
