@@ -14,7 +14,6 @@
 #include "SoloOpenGLEffect.h"
 #include "SoloOpenGL.h"
 #include <unordered_map>
-#include <unordered_set>
 
 namespace solo
 {
@@ -64,95 +63,16 @@ namespace solo
             void applyParams(const Camera *camera, const Transform *nodeTransform) const;
 
         protected:
-            enum class UniformType
-            {
-                Float,
-                FloatArray,
-                Vector2,
-                Vector2Array,
-                Vector3,
-                Vector3Array,
-                Vector4,
-                Vector4Array,
-                Matrix,
-                MatrixArray,
-                Texture,
-                TextureArray,
-            };
-
-            template <class T>
-            using StrKeyMap = std::unordered_map<std::string, T>;
-            using StrSet = std::unordered_set<std::string>;
-
             sptr<Effect> effect = nullptr;
 
-            StrKeyMap<GLint> uniformLocations;
-            StrKeyMap<uint32_t> applierIndices;
-            StrKeyMap<GLint> uniformIndexes;
-            StrKeyMap<UniformType> uniformTypes;
+            std::unordered_map<std::string, GLint> uniformLocations;
+            std::unordered_map<std::string, uint32_t> applierIndices;
+            std::unordered_map<std::string, GLint> uniformIndexes;
 
             std::vector<std::function<void(const Camera *camera, const Transform *nodeTransform)>> appliers;
 
-            StrKeyMap<float> floatParams;
-            StrKeyMap<Vector2> vector2Params;
-            StrKeyMap<Vector3> vector3Params;
-            StrKeyMap<Vector4> vector4Params;
-            StrKeyMap<Matrix> matrixParams;
-            StrKeyMap<std::vector<float>> floatArrayParams;
-            StrKeyMap<std::vector<Vector2>> vector2ArrayParams;
-            StrKeyMap<std::vector<Vector3>> vector3ArrayParams;
-            StrKeyMap<std::vector<Vector4>> vector4ArrayParams;
-            StrKeyMap<std::vector<Matrix>> matrixArrayParams;
-            StrKeyMap<sptr<Texture>> textureParams;
-
-            StrSet worldMatrixParams;
-            StrSet viewMatrixParams;
-            StrSet projMatrixParams;
-            StrSet worldViewMatrixParams;
-            StrSet viewProjMatrixParams;
-            StrSet worldViewProjMatrixParams;
-            StrSet invTransWorldMatrixParams;
-            StrSet invTransWorldViewMatrixParams;
-            StrSet camWorldPosParams;
-
-            void setParameter(const std::string &paramName, std::function<std::function<void(const Camera *, const Transform *)>(GLuint)> getApplier);
-
-            template <class T>
-            void applyScalarParams(const StrKeyMap<T> &params) const;
-
-            template <class T>
-            void applyVectorParams(const StrKeyMap<T> &params) const;
-
-            template <class T>
-            void setParam(StrKeyMap<T> &params, const std::string &name, UniformType uniformType, T value);
-
-            void setAutoBindParam(StrSet &params, const std::string &name, UniformType uniformType);
-
-            void initUniform(const std::string &name, UniformType type);
-            void setUniform(const std::string &name, const void *value, uint32_t count) const;
+            void setParameter(const std::string &paramName, std::function<std::function<void(const Camera *, const Transform *)>(GLuint, GLint)> getApplier);
         };
-
-        template <class T>
-        void Material::applyScalarParams(const StrKeyMap<T> &params) const
-        {
-            for (const auto &p : params)
-                setUniform(p.first, &p.second, 1);
-        }
-
-        template <class T>
-        void Material::applyVectorParams(const StrKeyMap<T> &params) const
-        {
-            for (const auto &p : params)
-                setUniform(p.first, p.second.data(), static_cast<uint32_t>(p.second.size()));
-        }
-
-        template <class T>
-        void Material::setParam(StrKeyMap<T> &params, const std::string &name, UniformType uniformType, T value)
-        {
-            if (params.find(name) == params.end())
-                initUniform(name, uniformType);
-            params[name] = value;
-        }
     }
 }
 

@@ -29,6 +29,7 @@ namespace solo
         auto toInternalTextureFormat(TextureFormat format) -> GLenum;
         auto toTextureFormat(TextureFormat format) -> GLenum;
         auto toBlendFactor(BlendFactor factor) -> GLenum;
+        bool findUniformInProgram(GLuint program, const char *name, GLint &location, int32_t &index);
         void applyMinFilter(GLenum target, uint32_t flags);
         void applyMagFilter(GLenum target, uint32_t flags);
         void applyRectWrap(GLenum target, uint32_t flags);
