@@ -59,8 +59,7 @@ void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
             clear(colorClearEnabled, depthClearEnabled, clearColor);
         };
     }
-
-    if (cmd.type == RenderCommandType::EndCamera)
+    else if (cmd.type == RenderCommandType::EndCamera)
     {
         auto hasTarget = step.cmd.camera->getRenderTarget() != nullptr;
 
@@ -70,6 +69,31 @@ void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
             // so we can correctly unbind it.
             if (hasTarget)
                 glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        };
+    }
+    else if (cmd.type == RenderCommandType::ApplyMaterial)
+    {
+        auto faceCull = cmd.material->getFaceCull();
+        auto polygonMode = cmd.material->getPolygonMode();
+        auto depthTest = cmd.material->getDepthTest();
+        auto depthWrite = cmd.material->getDepthWrite();
+        auto depthFunc = cmd.material->getDepthFunction();
+        auto blend = cmd.material->getBlend();
+        auto srcBlendFactor = cmd.material->getSrcBlendFactor();
+        auto dstBlendFactor = cmd.material->getDstBlendFactor();
+        auto effect = dynamic_cast<Effect*>(step.cmd.material->getEffect());
+        auto program = effect->getHandle();
+
+        step.applyMaterialState = [=]
+        {
+            glUseProgram(program);
+            setFaceCull(faceCull);
+            setPolygonMode(polygonMode);
+            setDepthTest(depthTest);
+            setDepthWrite(depthWrite);
+            setDepthFunction(depthFunc);
+            setBlend(blend);
+            setBlendFactor(srcBlendFactor, dstBlendFactor);
         };
     }
 
@@ -127,15 +151,8 @@ void gl::Renderer::endFrame()
 
             case RenderCommandType::ApplyMaterial:
             {
-                auto glEffect = dynamic_cast<Effect*>(step.cmd.material->getEffect());
-                
-                glUseProgram(glEffect->getHandle());
-                
-                auto glMaterial = dynamic_cast<const Material*>(step.cmd.material);
-                glMaterial->applyState();
-
-                currentMaterial = glMaterial;
-
+                step.applyMaterialState();
+                currentMaterial = dynamic_cast<const Material*>(step.cmd.material);
                 break;
             }
 

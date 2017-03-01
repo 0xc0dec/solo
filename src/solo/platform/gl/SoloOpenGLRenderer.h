@@ -11,7 +11,6 @@
 
 #include "SoloRenderer.h"
 #include "SoloRenderCommand.h"
-#include "SoloOpenGL.h"
 #include <vector>
 #include <functional>
 
@@ -39,10 +38,10 @@ namespace solo
                 RenderCommand cmd;
                 std::function<void()> beginCamera;
                 std::function<void()> endCamera;
+                std::function<void()> applyMaterialState;
             };
 
             std::vector<RenderStep> renderSteps;
-            std::vector<RenderCommand> renderCommands;
         };
     }
 }
