@@ -3,8 +3,6 @@
 -- MIT license
 -- 
 
--- TODO refactor, esp. after the latest fix
-
 function createPostProcessor(device, camera, tag)
 	local canvasSize = device:getCanvasSize()
 
@@ -27,23 +25,6 @@ function createPostProcessor(device, camera, tag)
             camera:renderFrame(function() quadRenderer:render() end)
         end
     }
-end
-
-function createStep(device, scene, material, viewport, tag)
-	local helperNode = scene:createNode()
-    local helperCamera = helperNode:addComponent("Camera")
-    helperCamera:setViewport(viewport)
-
-    local quadRenderer = helperNode:addComponent("MeshRenderer")
-    quadRenderer:setTag(tag)
-    quadRenderer:setMesh(solo.Mesh.createFromPrefab(device, solo.MeshPrefab.Quad))
-    quadRenderer:setMaterial(0, material);
-
-    return {
-    	render = function()
-    		helperCamera:renderFrame(function() quadRenderer:render() end)
-    	end
-	}
 end
 
 function createPostProcessor1(device, camera, tag, shaders)
@@ -148,19 +129,15 @@ function createPostProcessor2(device, loader, camera, tag, shaders, getAssetPath
     camera:setViewport(vec4(0, 0, offscreenRes.x, offscreenRes.y))
     camera:setRenderTarget(fb1)
 
-    local scene = camera:getNode():getScene()
-    local step = createStep(device, scene, material, vec4(0, 0, canvasSize.x, canvasSize.y), tag)
+    local pp = createPostProcessor(device, camera, tag)
 
-    return {
-    	apply = function(self)
-	        step:render()
-	    end,
+    pp.apply = function(self)
+        self.renderStep(material, fbTex, nil, vec4(0, 0, canvasSize.x, canvasSize.y))
+        camera:setViewport(vec4(0, 0, offscreenRes.x, offscreenRes.y))
+        camera:setRenderTarget(fb1)
+    end
 
-	    detach = function()
-	    	camera:setViewport(vec4(0, 0, canvasSize.x, canvasSize.y))
-    		camera:setRenderTarget(nil)
-	    end
-	}
+    return pp
 end
 
 return {
