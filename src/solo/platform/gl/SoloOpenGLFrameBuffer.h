@@ -26,8 +26,7 @@ namespace solo
             FrameBuffer();
             ~FrameBuffer();
 
-            void bind() const;
-            void unbind() const;
+            auto getHandle() const -> GLuint;
 
             void setAttachments(const std::vector<sptr<solo::RectTexture>> &attachments) override final;
 
@@ -36,6 +35,11 @@ namespace solo
             GLuint depthBufferHandle = 0;
             uint32_t attachmentCount = 0;
         };
+
+        inline auto FrameBuffer::getHandle() const -> GLuint
+        {
+            return handle;
+        }
     }
 }
 

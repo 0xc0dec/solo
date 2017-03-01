@@ -28,18 +28,6 @@ gl::FrameBuffer::~FrameBuffer()
 }
 
 
-void gl::FrameBuffer::bind() const
-{
-    glBindFramebuffer(GL_FRAMEBUFFER, handle);
-}
-
-
-void gl::FrameBuffer::unbind() const
-{
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
-
 static void validateNewAttachments(const std::vector<sptr<solo::RectTexture>> &attachments)
 {
     SL_PANIC_IF(attachments.size() > GL_MAX_COLOR_ATTACHMENTS, "Too many attachments");
