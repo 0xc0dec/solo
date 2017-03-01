@@ -38,11 +38,7 @@ namespace solo
                 uint32_t part;
             } meshPart;
 
-            struct
-            {
-                const Camera *camera;
-                const FrameBuffer *frameBuffer;
-            } camera;
+            const Camera *camera;
 
             struct
             {
@@ -55,17 +51,17 @@ namespace solo
 
         explicit RenderCommand(RenderCommandType type = RenderCommandType::None): type(type) {}
 
-        static auto beginCamera(const Camera *camera, const FrameBuffer *frameBuffer) -> RenderCommand
+        static auto beginCamera(const Camera *camera) -> RenderCommand
         {
             auto cmd = RenderCommand(RenderCommandType::BeginCamera);
-            cmd.camera.camera = camera;
-            cmd.camera.frameBuffer = frameBuffer;
+            cmd.camera = camera;
             return cmd;
         }
 
-        static auto endCamera() -> RenderCommand
+        static auto endCamera(const Camera *camera) -> RenderCommand
         {
             auto cmd = RenderCommand(RenderCommandType::EndCamera);
+            cmd.camera = camera;
             return cmd;
         }
 

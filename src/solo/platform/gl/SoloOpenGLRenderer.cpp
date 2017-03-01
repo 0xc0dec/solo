@@ -30,13 +30,56 @@ gl::Renderer::Renderer(Device *device)
 
 void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
 {
-    renderCommands.push_back(cmd);
+    RenderStep step;
+    step.cmd = cmd;
+
+    if (cmd.type == RenderCommandType::BeginCamera)
+    {
+        auto viewport = cmd.camera->getViewport();
+        auto colorClearEnabled = cmd.camera->isClearColorEnabled();
+        auto depthClearEnabled = cmd.camera->isClearDepthEnabled();
+        auto clearColor = cmd.camera->getClearColor();
+
+        GLuint targetFBHandle = 0;
+        auto target = step.cmd.camera->getRenderTarget();
+        if (target)
+        {
+            if (target)
+                targetFBHandle = dynamic_cast<const FrameBuffer *>(target.get())->getHandle();
+        }
+
+        step.beginCamera = [=]
+        {
+            if (targetFBHandle)
+                glBindFramebuffer(GL_FRAMEBUFFER, targetFBHandle);
+
+            setViewport(viewport);
+            setDepthWrite(true);
+            setDepthTest(true);
+            clear(colorClearEnabled, depthClearEnabled, clearColor);
+        };
+    }
+
+    if (cmd.type == RenderCommandType::EndCamera)
+    {
+        auto hasTarget = step.cmd.camera->getRenderTarget() != nullptr;
+
+        step.endCamera = [=]
+        {
+            // Note: this assumes that the camera's frame buffer is the current one,
+            // so we can correctly unbind it.
+            if (hasTarget)
+                glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        };
+    }
+
+    renderSteps.push_back(step);
 }
 
 
 void gl::Renderer::beginFrame()
 {
-    renderCommands.clear();
+    renderSteps.clear();
 }
 
 
@@ -49,60 +92,46 @@ void gl::Renderer::endFrame()
 {
     const Camera *currentCamera = nullptr;
     const Material *currentMaterial = nullptr;
-    const FrameBuffer *currentFrameBuffer = nullptr;
 
-    for (const auto &cmd: renderCommands)
+    for (const auto &step: renderSteps)
     {
-        switch (cmd.type)
+        switch (step.cmd.type)
         {
             case RenderCommandType::BeginCamera:
             {
-                currentFrameBuffer = dynamic_cast<const FrameBuffer *>(cmd.camera.frameBuffer);
-                if (currentFrameBuffer)
-                    currentFrameBuffer->bind();
-
-                auto cam = cmd.camera.camera;
-                
-                setViewport(cam->getViewport());
-                setDepthWrite(true);
-                setDepthTest(true);
-                clear(cam->isClearColorEnabled(), cam->isClearDepthEnabled(), cam->getClearColor());
-
-                currentCamera = dynamic_cast<const Camera*>(cam);
-
+                step.beginCamera();
+                currentCamera = dynamic_cast<const Camera*>(step.cmd.camera);
                 break;
             }
 
             case RenderCommandType::EndCamera:
             {
-                if (currentFrameBuffer)
-                    currentFrameBuffer->unbind();
-                currentFrameBuffer = nullptr;
+                step.endCamera();
                 currentCamera = nullptr;
                 break;
             }
 
             case RenderCommandType::DrawMesh:
             {
-                currentMaterial->applyParams(currentCamera, cmd.mesh.transform);
-                dynamic_cast<const Mesh*>(cmd.mesh.mesh)->draw();
+                currentMaterial->applyParams(currentCamera, step.cmd.mesh.transform);
+                dynamic_cast<const Mesh*>(step.cmd.mesh.mesh)->draw();
                 break;
             }
 
             case RenderCommandType::DrawMeshPart:
             {
-                currentMaterial->applyParams(currentCamera, cmd.meshPart.transform);
-                dynamic_cast<const Mesh*>(cmd.meshPart.mesh)->drawPart(cmd.meshPart.part);
+                currentMaterial->applyParams(currentCamera, step.cmd.meshPart.transform);
+                dynamic_cast<const Mesh*>(step.cmd.meshPart.mesh)->drawPart(step.cmd.meshPart.part);
                 break;
             }
 
             case RenderCommandType::ApplyMaterial:
             {
-                auto glEffect = dynamic_cast<Effect*>(cmd.material->getEffect());
+                auto glEffect = dynamic_cast<Effect*>(step.cmd.material->getEffect());
                 
                 glUseProgram(glEffect->getHandle());
                 
-                auto glMaterial = dynamic_cast<const Material*>(cmd.material);
+                auto glMaterial = dynamic_cast<const Material*>(step.cmd.material);
                 glMaterial->applyState();
 
                 currentMaterial = glMaterial;

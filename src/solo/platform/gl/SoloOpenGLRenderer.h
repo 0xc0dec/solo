@@ -11,7 +11,9 @@
 
 #include "SoloRenderer.h"
 #include "SoloRenderCommand.h"
+#include "SoloOpenGL.h"
 #include <vector>
+#include <functional>
 
 namespace solo
 {
@@ -32,6 +34,14 @@ namespace solo
             void endFrame() override final;
 
         private:
+            struct RenderStep
+            {
+                RenderCommand cmd;
+                std::function<void()> beginCamera;
+                std::function<void()> endCamera;
+            };
+
+            std::vector<RenderStep> renderSteps;
             std::vector<RenderCommand> renderCommands;
         };
     }
