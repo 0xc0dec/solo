@@ -3,6 +3,8 @@
 -- MIT license
 -- 
 
+require "Common"
+
 local createUpdater = function(device, data, mesh)
     local time = 0
 

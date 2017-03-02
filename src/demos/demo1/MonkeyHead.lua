@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-local createRotator = dofile("../../src/demos/common/Rotator.lua")
+local createRotator = require "Rotator"
 
 return function(dev, scene, effects, tex, mesh)
     local material = solo.Material.create(dev, effects.basicLighting)

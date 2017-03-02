@@ -5,7 +5,9 @@
 
 -- TODO avoid using globals in functions
 
-dofile("../../src/demos/common/Common.lua")
+package.path = "../../src/demos/demo1/?.lua;../../src/demos/common/?.lua;" .. package.path
+
+require "Common"
 
 dev = solo.device
 loader = dev:getAssetLoader()

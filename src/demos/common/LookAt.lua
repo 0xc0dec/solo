@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-dofile("../../src/demos/common/Common.lua")
+require "Common"
 
 return function(targetPos)
     return {

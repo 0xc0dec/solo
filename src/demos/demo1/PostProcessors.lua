@@ -3,6 +3,8 @@
 -- MIT license
 -- 
 
+require "Common"
+
 function createPostProcessor(device, camera, tag)
 	local canvasSize = device:getCanvasSize()
 

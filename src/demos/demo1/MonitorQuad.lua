@@ -3,8 +3,8 @@
 -- MIT license
 -- 
 
-local createRotator = dofile("../../src/demos/common/Rotator.lua")
-local createLookAt = dofile("../../src/demos/common/LookAt.lua")
+local createRotator = require "Rotator"
+local createLookAt = require "LookAt"
 
 return function(dev, scene, effects, offscreenCameraTex, quadMesh, tag)
 	local canvasSize = dev:getCanvasSize()

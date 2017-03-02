@@ -3,9 +3,9 @@
 -- MIT license
 -- 
 
-local createScreenshoter = dofile("../../src/demos/common/Screenshoter.lua")
-local createSpawner = dofile("../../src/demos/demo1/Spawner.lua")
-local createSpawnedObjectTargeter = dofile("../../src/demos/demo1/SpawnedObjectTargeter.lua")
+local createScreenshoter = require "Screenshoter"
+local createSpawner = require "Spawner"
+local createSpawnedObjectTargeter = require "SpawnedObjectTargeter"
 
 return function(dev, scene, physics, meshes, effects)
     local node = scene:createNode()

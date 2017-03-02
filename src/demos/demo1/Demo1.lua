@@ -3,7 +3,9 @@
 -- MIT license
 -- 
 
-dofile("../../src/demos/common/Common.lua")
+package.path = "../../src/demos/demo1/?.lua;../../src/demos/common/?.lua;" .. package.path
+
+require "Common"
 
 collectgarbage("setpause", 100)
 
@@ -16,19 +18,19 @@ local fs = dev:getFileSystem()
 local scene = solo.Scene.create(dev)
 local canvasSize = dev:getCanvasSize()
 
-local postProcessors = dofile("../../src/demos/demo1/PostProcessors.lua")
-local effects = dofile("../../src/demos/demo1/Effects.lua")(dev)
-local createMainCamera = dofile("../../src/demos/demo1/MainCamera.lua")
-local createOffscreenCamera = dofile("../../src/demos/demo1/OffscreenCamera.lua")
-local createSkybox = dofile("../../src/demos/demo1/Skybox.lua")
-local createCheckerBox = dofile("../../src/demos/demo1/CheckerBox.lua")
-local createDynamicQuad = dofile("../../src/demos/demo1/DynamicQuad.lua")
-local createTransparentQuad = dofile("../../src/demos/demo1/TransparentQuad.lua")
-local createMonitorQuad = dofile("../../src/demos/demo1/MonitorQuad.lua")
-local createFloor = dofile("../../src/demos/demo1/Floor.lua")
-local createMonkeyHead = dofile("../../src/demos/demo1/MonkeyHead.lua")
-local createTimeLabel = dofile("../../src/demos/demo1/TimeLabel.lua")
-local attachAxesMesh = dofile("../../src/demos/demo1/Axes.lua")
+local postProcessors = require "PostProcessors"
+local effects = (require "Effects")(dev)
+local createMainCamera = require "MainCamera"
+local createOffscreenCamera = require "OffscreenCamera"
+local createSkybox = require "Skybox"
+local createCheckerBox = require "CheckerBox"
+local createDynamicQuad = require "DynamicQuad"
+local createTransparentQuad = require "TransparentQuad"
+local createMonitorQuad = require "MonitorQuad"
+local createFloor = require "Floor"
+local createMonkeyHead = require "MonkeyHead"
+local createTimeLabel = require "TimeLabel"
+local attachAxesMesh = require "Axes"
 
 local knownTags = {
     skybox = 1 << 1,
