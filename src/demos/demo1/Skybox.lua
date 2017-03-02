@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-return function(scene, loader, getAssetPath, tag)
+return function(scene, loader, tag)
     local getImagePath = function(fileName) return getAssetPath("skyboxes/deep-space/") .. fileName end
     loader:loadCubeTextureAsync({
         getImagePath("Front.png"), getImagePath("Back.png"), getImagePath("Left.png"),

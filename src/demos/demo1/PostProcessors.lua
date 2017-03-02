@@ -89,7 +89,7 @@ function createPostProcessor1(device, camera, tag, effects)
     return pp
 end
 
-function createPostProcessor2(device, loader, camera, tag, effects, getAssetPath)
+function createPostProcessor2(device, loader, camera, tag, effects)
     local stitchWidth = 30
     local canvasSize = device:getCanvasSize()
 

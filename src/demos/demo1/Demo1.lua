@@ -53,9 +53,9 @@ end
 
 local mainCamera = createMainCamera(dev, scene, physics, meshes, effects)
 local offscreenCamera, offscreenCameraTex = createOffscreenCamera(dev, scene)
-createSkybox(scene, loader, getAssetPath, knownTags.skybox)
+createSkybox(scene, loader, knownTags.skybox)
 createCheckerBox(dev, scene, effects, meshes.cube)
-createDynamicQuad(dev, scene, effects, loadTextureAsync, getAssetPath)
+createDynamicQuad(dev, scene, effects, loadTextureAsync)
 createTimeLabel(dev, scene, knownTags.transparent, fs:readBytes(getAssetPath("Aller.ttf")))
 
 loadTextureAsync(getAssetPath("Cobblestone.png"), function(tex)
@@ -99,7 +99,7 @@ local update = function()
 
     if dev:isKeyPressed(solo.KeyCode.Digit2, true) then
         detachPostProcessor()
-        pp = postProcessors.create2(dev, loader, mainCamera, knownTags.postProcessor, effects, getAssetPath)
+        pp = postProcessors.create2(dev, loader, mainCamera, knownTags.postProcessor, effects)
     end
 
     if dev:isKeyPressed(solo.KeyCode.Digit3, true) then

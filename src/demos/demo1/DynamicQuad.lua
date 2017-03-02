@@ -21,7 +21,7 @@ local createUpdater = function(device, data, mesh)
     }
 end
 
-return function(dev, scene, effects, loadTextureAsync, getAssetPath)
+return function(dev, scene, effects, loadTextureAsync)
     loadTextureAsync(getAssetPath("Freeman.png"), function(tex)
         tex:setWrapping(solo.TextureWrapping.Clamp)
 
