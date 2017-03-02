@@ -11,8 +11,9 @@ return function(dev, scene, effects, tex, cubeMesh)
 
     local node = scene:createNode()
     
-    node:findComponent("Transform"):setLocalScale(vec3(10, 0.1, 10))
-    node:findComponent("Transform"):setLocalPosition(vec3(0, -2, 0))
+    local transform = node:findComponent("Transform")
+    transform:setLocalScale(vec3(10, 0.1, 10))
+    transform:setLocalPosition(vec3(0, -2, 0))
 
     local renderer = node:addComponent("MeshRenderer")
     renderer:setMesh(cubeMesh)

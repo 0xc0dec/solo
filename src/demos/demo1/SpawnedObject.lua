@@ -8,7 +8,7 @@ return function(device, effect, mesh, initialPos, initialRotation)
         typeId = solo.getCmpId("SpawnedObject"),
 
         init = function(self)
-            self.active = false -- TODO
+            self.active = false
 
             local material = solo.Material.create(device, effect)
             material:setFaceCull(solo.FaceCull.All)

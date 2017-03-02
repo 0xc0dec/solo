@@ -14,8 +14,8 @@ return function(dev, scene, physics, meshes, effects)
     t:setLocalPosition(vec3(0, 5, 10))
     t:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
     
-    node:addScriptComponent(createScreenshoter(dev, "Demo1.bmp"))
     node:addComponent("Spectator")
+    node:addScriptComponent(createScreenshoter(dev, "Demo1.bmp"))
     node:addScriptComponent(createSpawnedObjectTargeter(physics))
     node:addScriptComponent(createSpawner(dev, meshes.cube, effects.color))
 
