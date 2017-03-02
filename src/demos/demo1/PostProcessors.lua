@@ -27,7 +27,7 @@ function createPostProcessor(device, camera, tag)
     }
 end
 
-function createPostProcessor1(device, camera, tag, shaders)
+function createPostProcessor1(device, camera, tag, effects)
     local canvasSize = device:getCanvasSize()
 
     local fbTex1 = solo.RectTexture.create(device)
@@ -44,31 +44,27 @@ function createPostProcessor1(device, camera, tag, shaders)
     local fb2 = solo.FrameBuffer.create(device)
     fb2:setAttachments({ fbTex2 })
 
-    local grayscaleEffect = solo.Effect.create(device, shaders.vs.passThrough, shaders.fs.grayscale)
-    local grayscaleMat = solo.Material.create(device, grayscaleEffect)
+    local grayscaleMat = solo.Material.create(device, effects.grayscale)
     grayscaleMat:setDepthTest(false)
     grayscaleMat:setDepthWrite(false)
     grayscaleMat:setFaceCull(solo.FaceCull.All)
     grayscaleMat:setFloatParameter("rightSeparator", 0.25)
 
-    local saturateEffect = solo.Effect.create(device, shaders.vs.passThrough, shaders.fs.saturate)
-    local saturateMat = solo.Material.create(device, saturateEffect)
+    local saturateMat = solo.Material.create(device, effects.saturate)
     saturateMat:setDepthTest(false)
     saturateMat:setDepthWrite(false)
     saturateMat:setFaceCull(solo.FaceCull.All)
     saturateMat:setFloatParameter("leftSeparator", 0.75)
     saturateMat:setFloatParameter("rightSeparator", 1.0)
 
-    local verticalBlurEffect = solo.Effect.create(device, shaders.vs.passThrough, shaders.fs.verticalBlur)
-    local verticalBlurMat = solo.Material.create(device, verticalBlurEffect)
+    local verticalBlurMat = solo.Material.create(device, effects.verticalBlur)
     verticalBlurMat:setDepthTest(false)
     verticalBlurMat:setDepthWrite(false)
     verticalBlurMat:setFaceCull(solo.FaceCull.All)
     verticalBlurMat:setFloatParameter("leftSeparator", 0.25)
     verticalBlurMat:setFloatParameter("rightSeparator", 0.75)
 
-    local horizontalBlurEffect = solo.Effect.create(device, shaders.vs.passThrough, shaders.fs.horizontalBlur)
-    local horizontalBlurMat = solo.Material.create(device, horizontalBlurEffect)
+    local horizontalBlurMat = solo.Material.create(device, effects.horizontalBlur)
     horizontalBlurMat:setDepthTest(false)
     horizontalBlurMat:setDepthWrite(false)
     horizontalBlurMat:setFaceCull(solo.FaceCull.All)
@@ -93,7 +89,7 @@ function createPostProcessor1(device, camera, tag, shaders)
     return pp
 end
 
-function createPostProcessor2(device, loader, camera, tag, shaders, getAssetPath)
+function createPostProcessor2(device, loader, camera, tag, effects, getAssetPath)
     local stitchWidth = 30
     local canvasSize = device:getCanvasSize()
 
@@ -119,8 +115,7 @@ function createPostProcessor2(device, loader, camera, tag, shaders, getAssetPath
     local fb1 = solo.FrameBuffer.create(device)
     fb1:setAttachments({ fbTex })
 
-    local effect = solo.Effect.create(device, shaders.vs.passThrough, shaders.fs.stitches)
-    local material = solo.Material.create(device, effect)
+    local material = solo.Material.create(device, effects.stitches)
     material:setTextureParameter("mainTex", fbTex)
     material:setTextureParameter("stitchTex", stitchTex)
     material:setVector2Parameter("stitchCount", stitchCount)

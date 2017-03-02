@@ -7,10 +7,6 @@ dofile("../../src/demos/common/Common.lua")
 
 collectgarbage("setpause", 100)
 
-local getAssetPath = function(fileName)
-    return "../../assets/" .. fileName
-end
-
 local dev = solo.device
 local loader = dev:getAssetLoader()
 local physics = dev:getPhysics()
@@ -21,7 +17,7 @@ local scene = solo.Scene.create(dev)
 local canvasSize = dev:getCanvasSize()
 
 local postProcessors = dofile("../../src/demos/demo1/PostProcessors.lua")
-local shaders = dofile("../../src/demos/demo1/Shaders.lua")(fs, getAssetPath)
+local effects = dofile("../../src/demos/demo1/Effects.lua")(dev)
 local createMainCamera = dofile("../../src/demos/demo1/MainCamera.lua")
 local createOffscreenCamera = dofile("../../src/demos/demo1/OffscreenCamera.lua")
 local createSkybox = dofile("../../src/demos/demo1/Skybox.lua")
@@ -41,11 +37,6 @@ local knownTags = {
     postProcessor = 1 << 4
 }
 
-local effects = {
-    simpleTexture = solo.Effect.create(dev, shaders.vs.basic, shaders.fs.texture),
-    color = solo.Effect.create(dev, shaders.vs.basic, shaders.fs.color)
-}
-
 local meshes = {
     cube = solo.Mesh.createFromPrefab(dev, solo.MeshPrefab.Cube),
     quad = solo.Mesh.createFromPrefab(dev, solo.MeshPrefab.Quad)
@@ -63,13 +54,13 @@ end
 local mainCamera = createMainCamera(dev, scene, physics, meshes, effects)
 local offscreenCamera, offscreenCameraTex = createOffscreenCamera(dev, scene)
 createSkybox(scene, loader, getAssetPath, knownTags.skybox)
-createCheckerBox(dev, scene, shaders, meshes.cube)
+createCheckerBox(dev, scene, effects, meshes.cube)
 createDynamicQuad(dev, scene, effects, loadTextureAsync, getAssetPath)
 createTimeLabel(dev, scene, knownTags.transparent, fs:readBytes(getAssetPath("Aller.ttf")))
 
 loadTextureAsync(getAssetPath("Cobblestone.png"), function(tex)
     loader:loadMeshAsync(getAssetPath("MonkeyHD.obj")):done(function(mesh)
-        createMonkeyHead(dev, scene, shaders, tex, mesh)
+        createMonkeyHead(dev, scene, effects, tex, mesh)
     end)
     createFloor(dev, scene, effects, tex, meshes.cube)
 end)
@@ -103,12 +94,12 @@ local update = function()
 
     if dev:isKeyPressed(solo.KeyCode.Digit1, true) then
         detachPostProcessor()
-        pp = postProcessors.create1(dev, mainCamera, knownTags.postProcessor, shaders)
+        pp = postProcessors.create1(dev, mainCamera, knownTags.postProcessor, effects)
     end
 
     if dev:isKeyPressed(solo.KeyCode.Digit2, true) then
         detachPostProcessor()
-        pp = postProcessors.create2(dev, loader, mainCamera, knownTags.postProcessor, shaders, getAssetPath)
+        pp = postProcessors.create2(dev, loader, mainCamera, knownTags.postProcessor, effects, getAssetPath)
     end
 
     if dev:isKeyPressed(solo.KeyCode.Digit3, true) then

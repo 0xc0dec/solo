@@ -5,10 +5,8 @@
 
 local createRotator = dofile("../../src/demos/common/Rotator.lua")
 
-return function(dev, scene, shaders, tex, mesh)
-    local effect = solo.Effect.create(dev, shaders.vs.basicLighting, shaders.fs.textureWithLighting)
-
-    local material = solo.Material.create(dev, effect)
+return function(dev, scene, effects, tex, mesh)
+    local material = solo.Material.create(dev, effects.basicLighting)
     material:setFaceCull(solo.FaceCull.All)
     material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
     material:bindInvTransposedWorldMatrixParameter("invTransposedWorldMatrix")

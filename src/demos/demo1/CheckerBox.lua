@@ -5,10 +5,8 @@
 
 local createRotator = dofile("../../src/demos/common/Rotator.lua")
 
-return function(dev, scene, shaders, cubeMesh)
-    local effect = solo.Effect.create(dev, shaders.vs.basic, shaders.fs.checker)
-
-    local material = solo.Material.create(dev, effect)
+return function(dev, scene, effects, cubeMesh)
+    local material = solo.Material.create(dev, effects.checker)
     material:setFaceCull(solo.FaceCull.All)
     material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
     material:setVector4Parameter("color", vec4(1, 1, 0, 1))
