@@ -9,6 +9,9 @@
 
 #include "SoloRenderer.h"
 #include "SoloVector4.h"
+#include "SoloMesh.h"
+#include "SoloMaterial.h"
+#include "SoloTexture.h"
 
 using namespace solo;
 

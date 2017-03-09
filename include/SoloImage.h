@@ -6,11 +6,11 @@
 #pragma once
 
 #include "SoloCommon.h"
-#include "SoloRenderer.h"
-
 
 namespace solo
 {
+    enum class TextureFormat;
+
     struct Image
     {
         uint32_t width;

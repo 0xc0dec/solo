@@ -10,6 +10,7 @@
 #include "SoloEffect.h"
 #include "SoloDevice.h"
 #include "SoloVertexFormat.h"
+#include "SoloMaterial.h"
 #include "SoloMesh.h"
 
 using namespace solo;

@@ -5,9 +5,7 @@
 
 #pragma once
 
-#include "SoloCommon.h"
 #include <atomic>
-
 
 namespace solo
 {

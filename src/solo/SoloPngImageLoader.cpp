@@ -6,6 +6,7 @@
 #include "SoloPngImageLoader.h"
 #include "SoloFileSystem.h"
 #include "SoloImage.h"
+#include "SoloTexture.h"
 #include "SoloDevice.h"
 #include <png.h>
 

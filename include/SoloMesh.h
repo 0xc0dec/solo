@@ -16,6 +16,15 @@ namespace solo
 {
     class Device;
 
+    enum class PrimitiveType
+    {
+        Triangles,
+        TriangleStrip,
+        Lines,
+        LineStrip,
+        Points
+    };
+
     enum class MeshPrefab
     {
         Quad,

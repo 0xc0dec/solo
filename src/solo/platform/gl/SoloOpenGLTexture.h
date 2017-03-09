@@ -9,7 +9,7 @@
 
 #ifdef SL_OPENGL_RENDERER
 
-#include <GL/glew.h>
+#include "SoloOpenGL.h"
 
 namespace solo
 {

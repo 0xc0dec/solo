@@ -7,7 +7,6 @@
 
 #include "SoloMeshLoader.h"
 
-
 namespace solo
 {
     class Device;

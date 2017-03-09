@@ -8,7 +8,6 @@
 #include "SoloSDLDevice.h"
 #include "SoloDevice.h"
 
-
 namespace solo
 {
     namespace sdl

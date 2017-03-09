@@ -14,7 +14,6 @@
 #include "SoloEffect.h"
 #include <unordered_map>
 
-
 namespace solo
 {
     class Device;
@@ -22,6 +21,49 @@ namespace solo
     class Texture;
     class Camera;
     class Transform;
+
+    enum class FaceCull
+    {
+        All = 0,
+        CW,
+        CCW
+    };
+
+    enum class PolygonMode
+    {
+        Triangle,
+        Wireframe,
+        Points
+    };
+
+    enum class DepthFunction
+    {
+        Never = 0,
+        Less,
+        Equal,
+        LEqual,
+        Greater,
+        NotEqual,
+        GEqual,
+        Always
+    };
+
+    enum class BlendFactor
+    {
+        Zero = 0,
+        One,
+        SrcColor,
+        OneMinusSrcColor,
+        DstColor,
+        OneMinusDstColor,
+        SrcAlpha,
+        OneMinusSrcAlpha,
+        DstAlpha,
+        OneMinusDstAlpha,
+        ConstantAlpha,
+        OneMinusConstantAlpha,
+        SrcAlphaSaturate
+    };
 
     class Material
     {

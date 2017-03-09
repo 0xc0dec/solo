@@ -13,7 +13,7 @@ local createUpdater = function(device, data, mesh)
 
         update = function()
             time = time + 2 * device:getTimeDelta()
-            local offset = 0.3 * math.sin(time)
+            local offset = 0.5 * math.sin(time)
             data[3] = offset
             data[8] = -offset
             data[13] = offset

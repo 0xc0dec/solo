@@ -8,7 +8,6 @@
 #include "SoloFont.h"
 #include <stb_truetype.h>
 
-
 namespace solo
 {
     class TrueTypeFont final: public Font

@@ -7,7 +7,6 @@
 
 #include "SoloImageLoader.h"
 
-
 namespace solo
 {
     class Device;

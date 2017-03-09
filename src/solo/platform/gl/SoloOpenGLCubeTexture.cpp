@@ -7,8 +7,6 @@
 
 #ifdef SL_OPENGL_RENDERER
 
-#include "SoloOpenGL.h"
-
 using namespace solo;
 
 

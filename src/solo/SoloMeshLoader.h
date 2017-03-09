@@ -7,7 +7,6 @@
 
 #include "SoloCommon.h"
 
-
 namespace solo
 {
     struct MeshData;
