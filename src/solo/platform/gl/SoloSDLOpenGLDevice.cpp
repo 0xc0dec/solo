@@ -52,9 +52,15 @@ SDLDevice::~SDLDevice()
 void SDLDevice::cleanup()
 {
     if (context)
+    {
         SDL_GL_DeleteContext(context);
+        context = nullptr;
+    }
     if (window)
+    {
         SDL_DestroyWindow(window);
+        window = nullptr;
+    }
     SDL_Quit();
 }
 
