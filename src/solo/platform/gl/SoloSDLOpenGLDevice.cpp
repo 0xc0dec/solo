@@ -36,11 +36,7 @@ SDLDevice::SDLDevice(DeviceSetup const &setup):
 
     glewExperimental = true;
     if (glewInit() != GLEW_OK)
-    {
-        SDL_GL_DeleteContext(context);
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-    }
+        cleanup();
 
     SDL_GL_SetSwapInterval(1);
 }
@@ -49,11 +45,17 @@ SDLDevice::SDLDevice(DeviceSetup const &setup):
 SDLDevice::~SDLDevice()
 {
     cleanupSubsystems();
+    cleanup();
+}
 
+
+void SDLDevice::cleanup()
+{
     if (context)
         SDL_GL_DeleteContext(context);
     if (window)
         SDL_DestroyWindow(window);
+    SDL_Quit();
 }
 
 

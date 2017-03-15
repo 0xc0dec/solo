@@ -27,6 +27,8 @@ namespace solo
             SDL_GLContext context = nullptr;
 
             void endUpdate() override final;
+
+            void cleanup();
         };
     }
 }
