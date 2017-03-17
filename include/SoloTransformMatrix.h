@@ -13,6 +13,7 @@ namespace solo
     class BoundingSphere;
     class Plane;
     class Ray;
+    class Quaternion;
 
     class TransformMatrix final: public Matrix
     {

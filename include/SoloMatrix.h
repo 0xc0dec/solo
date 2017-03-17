@@ -8,11 +8,8 @@
 #include "SoloVector3.h"
 #include <stddef.h> // for size_t
 
-
 namespace solo
 {
-    class Plane;
-    class Quaternion;
     struct Radian;
 
     class Matrix
