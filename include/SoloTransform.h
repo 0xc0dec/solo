@@ -5,7 +5,6 @@
 
 #pragma once
 
-#include "SoloCommon.h"
 #include "SoloComponent.h"
 #include "SoloTransformMatrix.h"
 #include "SoloVector3.h"
@@ -17,6 +16,7 @@ namespace solo
 {
     class Camera;
     class TransformCallback;
+    class Transform;
     struct Radian;
 
     enum class TransformSpace
@@ -35,6 +35,14 @@ namespace solo
         static const uint32_t Scale = 1 << 2;
         static const uint32_t World = 1 << 3;
         static const uint32_t InvTransposedWorld = 1 << 4;
+    };
+
+    class TransformCallback
+    {
+    public:
+        virtual ~TransformCallback() {}
+
+        virtual void onTransformChanged(const Transform *transform, uint32_t dirtyFlags) = 0;
     };
 
     class Transform final: public ComponentBase<Transform>
@@ -229,12 +237,4 @@ namespace solo
     {
         return children[index];
     }
-
-    class TransformCallback
-    {
-    public:
-        virtual ~TransformCallback() {}
-
-        virtual void onTransformChanged(const Transform *transform, uint32_t dirtyFlags) = 0;
-    };
 }
