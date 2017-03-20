@@ -46,14 +46,14 @@ void gl::Mesh::rebuildVertexArray() const
     {
         const auto &bufferHandle = vertexBuffers.at(i);
         const auto &layout = layouts.at(i);
-        const auto elementCount = layout.getAttributeCount();
-        if (!elementCount)
+        const auto attrCount = layout.getAttributeCount();
+        if (!attrCount)
             continue;
 
         glBindBuffer(GL_ARRAY_BUFFER, bufferHandle);
 
         uint32_t offset = 0;
-        for (uint32_t j = 0; j < elementCount; j++)
+        for (uint32_t j = 0; j < attrCount; j++)
         {
             auto attr = layout.getAttribute(j);
             const auto stride = layout.getSize();
