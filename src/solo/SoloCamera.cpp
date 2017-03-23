@@ -40,6 +40,18 @@ Camera::Camera(const Node &node):
 }
 
 
+void Camera::markProjectionDirty()
+{
+    transformDirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInvViewProjection;
+}
+
+
+void Camera::markViewDirty()
+{
+    transformDirtyFlags |= DirtyBitView | DirtyBitViewProjection | DirtyBitInvView | DirtyBitInvViewProjection;
+}
+
+
 void Camera::init()
 {
     transform = node.findComponent<Transform>();
@@ -51,56 +63,56 @@ void Camera::init()
 
 void Camera::onTransformChanged(const Transform *, uint32_t)
 {
-    this->transformDirtyFlags |= DirtyBitView | DirtyBitViewProjection | DirtyBitInvView | DirtyBitInvViewProjection;
+    markViewDirty();
 }
 
 
 void Camera::setPerspective(bool perspective)
 {
     ortho = !perspective;
-    transformDirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInvViewProjection;
+    markProjectionDirty();
 }
 
 
 void Camera::setFOV(const Radian &fov)
 {
     this->fov = fov;
-    transformDirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInvViewProjection;
+    markProjectionDirty();
 }
 
 
 void Camera::setWidth(float width)
 {
     this->width = width;
-    transformDirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInvViewProjection;
+    markProjectionDirty();
 }
 
 
 void Camera::setHeight(float height)
 {
     this->height = height;
-    transformDirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInvViewProjection;
+    markProjectionDirty();
 }
 
 
 void Camera::setAspectRatio(float ratio)
 {
     aspectRatio = ratio;
-    transformDirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInvViewProjection;
+    markProjectionDirty();
 }
 
 
 void Camera::setFar(float far)
 {
     this->farClip = far;
-    transformDirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInvViewProjection;
+    markProjectionDirty();
 }
 
 
 void Camera::setNear(float near)
 {
     this->nearClip = near;
-    transformDirtyFlags |= DirtyBitProjection | DirtyBitViewProjection | DirtyBitInvViewProjection;
+    markProjectionDirty();
 }
 
 

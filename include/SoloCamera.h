@@ -108,6 +108,9 @@ namespace solo
         mutable TransformMatrix invViewProjectionMatrix;
 
         explicit Camera(const Node &node);
+
+        void markProjectionDirty();
+        void markViewDirty();
         
         void onTransformChanged(const Transform *, uint32_t) override;
     };
