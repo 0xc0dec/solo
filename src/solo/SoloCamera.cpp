@@ -179,9 +179,6 @@ auto Camera::getInvViewProjectionMatrix() const -> const TransformMatrix
 
 void Camera::renderFrame(std::function<void()> render) const
 {
-    // TODO Big problem here. If we change camera params between issuing render calls,
-    // only the last camera state will be used. Either we accept and live with it
-    // or (ideally) we should record the whole state in a render command
     renderer->addRenderCommand(RenderCommand::beginCamera(this));
     render();
     renderer->addRenderCommand(RenderCommand::endCamera(this));
