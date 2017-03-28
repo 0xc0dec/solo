@@ -13,19 +13,17 @@
 using namespace solo;
 
 
-struct PngReadContext
+struct ReadContext
 {
-    std::vector<uint8_t> *bytes;
-    size_t offset;
+    uint8_t *data;
+    uint32_t offset;
 };
 
 
 static void callback(png_structp png, png_bytep data, png_size_t length)
 {
-    auto context = reinterpret_cast<PngReadContext *>(png_get_io_ptr(png));
-    if (!context)
-        png_error(png, "Failed to read PNG");
-    memcpy(data, context->bytes->data() + context->offset, length);
+    auto context = reinterpret_cast<ReadContext*>(png_get_io_ptr(png));
+    memcpy(data, context->data + context->offset, length);
     context->offset += length;
 }
 
@@ -56,8 +54,8 @@ auto PngImageLoader::load(const std::string &path) -> sptr<Image>
         SL_PANIC(SL_FMT("Failed to read file '", path, "' as PNG image"));
     }
 
-    std::unique_ptr<PngReadContext> context(new PngReadContext{&bytes, 8});
-    png_set_read_fn(png, reinterpret_cast<png_voidp>(context.get()), callback);
+    ReadContext context{const_cast<uint8_t*>(bytes.data()), 8};
+    png_set_read_fn(png, reinterpret_cast<png_voidp>(&context), callback);
     png_set_sig_bytes(png, 8);
     png_read_png(png, info, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND, nullptr);
 
