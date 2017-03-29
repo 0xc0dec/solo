@@ -99,7 +99,7 @@ namespace solo
         float height = 1;
         float aspectRatio = 1;
 
-        mutable uint32_t transformDirtyFlags = ~0;
+        mutable uint32_t dirtyFlags = ~0;
 
         mutable TransformMatrix viewMatrix;
         mutable TransformMatrix projectionMatrix;
@@ -109,9 +109,6 @@ namespace solo
 
         explicit Camera(const Node &node);
 
-        void markProjectionDirty();
-        void markViewDirty();
-        
         void onTransformChanged(const Transform *, uint32_t) override;
     };
 
