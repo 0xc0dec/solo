@@ -6,7 +6,6 @@
 #include "SoloCamera.h"
 #include "SoloNode.h"
 #include "SoloDevice.h"
-#include "SoloFrameBuffer.h"
 #include "SoloRadian.h"
 #include "SoloDegree.h"
 #include "SoloScene.h"
@@ -70,16 +69,9 @@ void Camera::setFOV(const Radian &fov)
 }
 
 
-void Camera::setWidth(float width)
+void Camera::setOrthoSize(const Vector2& size)
 {
-    this->width = width;
-    dirtyFlags |= AllProjectionDirtyBits;
-}
-
-
-void Camera::setHeight(float height)
-{
-    this->height = height;
+    orthoSize = size;
     dirtyFlags |= AllProjectionDirtyBits;
 }
 
@@ -134,7 +126,7 @@ auto Camera::getProjectionMatrix() const -> const TransformMatrix
     if (dirtyFlags & ProjectionDirtyBit)
     {
         if (ortho)
-            projectionMatrix = TransformMatrix::createOrthographic(width, height, nearClip, farClip);
+            projectionMatrix = TransformMatrix::createOrthographic(orthoSize.x, orthoSize.y, nearClip, farClip);
         else
             projectionMatrix = TransformMatrix::createPerspective(fov, aspectRatio, nearClip, farClip);
         dirtyFlags &= ~ProjectionDirtyBit;

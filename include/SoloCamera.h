@@ -6,6 +6,7 @@
 #pragma once
 
 #include "SoloComponent.h"
+#include "SoloVector2.h"
 #include "SoloVector4.h"
 #include "SoloTransformMatrix.h"
 #include "SoloTransform.h"
@@ -61,11 +62,8 @@ namespace solo
         auto getFOV() const -> Radian;
         void setFOV(const Radian &fov);
 
-        auto getWidth() const -> float;
-        void setWidth(float width);
-
-        auto getHeight() const -> float;
-        void setHeight(float height);
+        auto getOrthoSize() const -> Vector2;
+        void setOrthoSize(const Vector2 &size);
 
         auto getAspectRatio() const -> float;
         void setAspectRatio(float ratio);
@@ -90,13 +88,12 @@ namespace solo
         } clearFlags;
 
         Vector4 viewport;
-        Vector4 clearColor = {0, 0.5, 0.5, 1};
+        Vector4 clearColor{0, 0.5, 0.5, 1};
         bool ortho = false;
+        Vector2 orthoSize{1, 1};
         Radian fov;
         float nearClip = 1;
         float farClip = 100;
-        float width = 1;
-        float height = 1;
         float aspectRatio = 1;
 
         mutable uint32_t dirtyFlags = ~0;
@@ -137,14 +134,9 @@ namespace solo
         return fov;
     }
 
-    inline auto Camera::getWidth() const -> float
+    inline auto Camera::getOrthoSize() const -> Vector2
     {
-        return width;
-    }
-
-    inline auto Camera::getHeight() const -> float
-    {
-        return height;
+        return orthoSize;
     }
 
     inline auto Camera::getAspectRatio() const -> float

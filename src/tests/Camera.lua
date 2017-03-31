@@ -5,20 +5,18 @@
 
 local scene = solo.Scene.create(solo.device)
 local cam = scene:createNode():addComponent("Camera")
-local v = solo.Vector4(1, 2, 3, 4)
-local rad = solo.Radian(1)
-local fb = solo.FrameBuffer.create(solo.device)
+local v4 = solo.Vector4(1, 2, 3, 4)
 
 cam:renderFrame(function(ctx) end)
 
 assert(cam:getTransform())
 
-cam:setRenderTarget(fb)
+cam:setRenderTarget(solo.FrameBuffer.create(solo.device))
 assert(cam:getRenderTarget() ~= nil)
 cam:setRenderTarget(nil)
 
 assert(cam:getClearColor())
-cam:setClearColor(v)
+cam:setClearColor(v4)
 
 assert(cam:isClearColorEnabled() ~= nil)
 cam:setClearColorEnabled(true)
@@ -27,7 +25,7 @@ assert(cam:isClearDepthEnabled() ~= nil)
 cam:setClearDepthEnabled(true)
 
 assert(cam:getViewport())
-cam:setViewport(v)
+cam:setViewport(v4)
 
 assert(cam:isPerspective() ~= nil)
 cam:setPerspective(true)
@@ -39,13 +37,10 @@ assert(cam:getFar() ~= nil)
 cam:setFar(1)
 
 assert(cam:getFOV() ~= nil)
-cam:setFOV(rad)
+cam:setFOV(solo.Radian(1))
 
-assert(cam:getWidth() ~= nil)
-cam:setWidth(1)
-
-assert(cam:getHeight() ~= nil)
-cam:setHeight(1)
+assert(cam:getOrthoSize() ~= nil)
+cam:setOrthoSize(solo.Vector2(1, 2))
 
 assert(cam:getAspectRatio() ~= nil)
 cam:setAspectRatio(1)
