@@ -113,6 +113,7 @@ void sdl::Device::processKeyboardEvent(const SDL_Event &evt)
 {
     if (!hasKeyboardFocus)
         return;
+
     switch (evt.type)
     {
         case SDL_KEYUP:
@@ -142,6 +143,9 @@ void sdl::Device::processKeyboardEvent(const SDL_Event &evt)
 
 void sdl::Device::processMouseEvent(const SDL_Event &evt)
 {
+    if (!hasMouseFocus)
+        return;
+
     switch (evt.type)
     {
         case SDL_MOUSEMOTION:
