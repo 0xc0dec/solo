@@ -136,8 +136,6 @@ namespace solo
     
         auto createSemaphore(VkDevice device) -> Resource<VkSemaphore>;
     
-        auto getPhysicalDevice(VkInstance instance) -> VkPhysicalDevice;
-    
         auto getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> uint32_t;
     
         auto getDepthFormat(VkPhysicalDevice device) -> VkFormat;
