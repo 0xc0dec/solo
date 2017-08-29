@@ -7,7 +7,6 @@
 
 #include <cmath>
 
-
 namespace solo
 {
     namespace math

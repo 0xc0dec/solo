@@ -6,7 +6,6 @@
 
 #include "SoloVector3.h"
 
-
 namespace solo
 {
     class BoundingSphere;

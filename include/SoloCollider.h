@@ -7,7 +7,6 @@
 
 #include "SoloComponent.h"
 
-
 namespace solo
 {
     class Collider

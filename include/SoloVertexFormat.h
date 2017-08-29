@@ -7,7 +7,6 @@
 
 #include <vector>
 
-
 namespace solo
 {
     class VertexAttribute final

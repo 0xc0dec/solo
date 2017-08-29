@@ -7,7 +7,6 @@
 
 #include "SoloRadian.h"
 
-
 namespace solo
 {
     class Vector4 final

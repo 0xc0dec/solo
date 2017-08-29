@@ -10,7 +10,6 @@
 #include "SoloMath.h"
 #include <vector>
 
-
 namespace solo
 {
     class BoundingSphere;

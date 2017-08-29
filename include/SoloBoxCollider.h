@@ -7,7 +7,6 @@
 
 #include "SoloCollider.h"
 
-
 namespace solo
 {
     class Vector3;

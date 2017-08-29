@@ -8,7 +8,6 @@
 #include "SoloFormatter.h"
 #include <memory>
 
-
 #if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS)
 #   define SL_WINDOWS
 #elif defined(__APPLE__) || defined(__MACH__)

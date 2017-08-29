@@ -5,7 +5,6 @@
 
 #pragma once
 
-
 namespace solo
 {
     struct Degree;

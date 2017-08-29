@@ -7,7 +7,6 @@
 
 #include "SoloTexture.h"
 
-
 namespace solo
 {
     enum class CubeTextureFace;

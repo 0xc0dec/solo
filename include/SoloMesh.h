@@ -11,7 +11,6 @@
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 
-
 namespace solo
 {
     class Device;

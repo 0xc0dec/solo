@@ -7,7 +7,6 @@
 
 #include <string>
 
-
 namespace solo
 {
     enum class DeviceMode;

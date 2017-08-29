@@ -10,7 +10,6 @@
 #include "SoloVector3.h"
 #include <vector>
 
-
 namespace solo
 {
     class RectTexture;

@@ -7,7 +7,6 @@
 
 #include "SoloScene.h"
 
-
 namespace solo
 {
     // A convenient wrapper for working with components. There's no real "Node" in the engine

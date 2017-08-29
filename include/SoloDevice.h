@@ -12,7 +12,6 @@
 #include <unordered_set>
 #include <functional>
 
-
 namespace solo
 {
     class Scene;

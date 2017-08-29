@@ -8,7 +8,6 @@
 #include "SoloCommon.h"
 #include <fstream>
 
-
 namespace solo
 {
     class Device;

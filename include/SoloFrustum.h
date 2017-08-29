@@ -9,7 +9,6 @@
 #include "SoloMatrix.h"
 #include <vector>
 
-
 namespace solo
 {
     class Vector3;

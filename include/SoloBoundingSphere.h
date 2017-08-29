@@ -9,7 +9,6 @@
 #include "SoloPlane.h"
 #include "SoloMath.h"
 
-
 namespace solo
 {
     class BoundingSphere final

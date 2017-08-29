@@ -9,7 +9,6 @@
 #include <vector>
 #include <functional>
 
-
 namespace solo
 {
     class Device;
