@@ -18,6 +18,8 @@
 #include "SoloRay.h"
 #include "SoloLuaCommon.h"
 
+#include <glm/glm.hpp>
+
 using namespace solo;
 
 static void registerVector2(CppBindModule<LuaBinding> &module)
@@ -318,4 +320,13 @@ void registerMathApi(CppBindModule<LuaBinding> &module)
     registerPlane(module);
     registerRay(module);
     registerFrustum(module);
+
+    // TODO remove after testing
+    auto v = BEGIN_CLASS_RENAMED(module, glm::vec3, "Wector");
+    REG_CTOR(v, float, float, float);
+    REG_VARIABLE(v, glm::vec3, x);
+    REG_VARIABLE(v, glm::vec3, y);
+    REG_VARIABLE(v, glm::vec3, z);
+    REG_META_METHOD(v, "__add", [](const glm::vec3 &v1, const glm::vec3 &v2) { return v1 + v2; });
+    v.endClass();
 }
