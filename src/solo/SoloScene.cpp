@@ -11,18 +11,15 @@
 
 using namespace solo;
 
-
 auto Scene::create(Device *device) -> sptr<Scene>
 {
     return sptr<Scene>(new Scene(device));
 }
 
-
 Scene::Scene(Device *device):
     device(device)
 {
 }
-
 
 auto Scene::createNode() -> sptr<Node>
 {
@@ -30,7 +27,6 @@ auto Scene::createNode() -> sptr<Node>
     node->addComponent<Transform>();
     return node;
 }
-
 
 void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
 {
@@ -52,7 +48,6 @@ void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
     for (const auto &a : nodes.at(nodeId))
         a.second->onComponentAdded(cmp.get());
 }
-
 
 void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
 {
@@ -79,7 +74,6 @@ void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
     }
 }
 
-
 // TODO Make this more optimal.
 // Currently this is the simplest way of making addComponent/removeComponent work from within visit().
 // During the visit() call we keep iterating over the old version of nodes, so iterators stay valid.
@@ -88,7 +82,6 @@ void Scene::visit(std::function<void(Component*)> accept)
 {
     return visitByTags(~0, accept);
 }
-
 
 void Scene::visitByTags(uint32_t tagMask, std::function<void(Component*)> accept)
 {
@@ -102,7 +95,6 @@ void Scene::visitByTags(uint32_t tagMask, std::function<void(Component*)> accept
         }
     }
 }
-
 
 auto Scene::findComponent(uint32_t nodeId, uint32_t typeId) const -> Component *
 {

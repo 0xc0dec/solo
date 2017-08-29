@@ -11,7 +11,6 @@
 
 using namespace solo;
 
-
 auto Effect::create(Device *device, const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen) -> sptr<Effect>
 {
     switch (device->getSetup().mode)
@@ -28,7 +27,6 @@ auto Effect::create(Device *device, const void *vsSrc, uint32_t vsSrcLen, const 
             return std::make_shared<null::Effect>();
     }
 }
-
 
 auto Effect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effect>
 {

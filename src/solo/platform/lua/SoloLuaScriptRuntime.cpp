@@ -9,7 +9,6 @@
 
 using namespace solo;
 
-
 void registerEnums(CppBindModule<LuaBinding> &module);
 void registerMathApi(CppBindModule<LuaBinding> &module);
 void registerNodeAndComponentApi(CppBindModule<LuaBinding> &module);
@@ -22,7 +21,6 @@ void registerDeviceApi(CppBindModule<LuaBinding> &module);
 void registerPhysicsApi(CppBindModule<LuaBinding> &module);
 void registerMeshApi(CppBindModule<LuaBinding> &module);
 void registerFontApi(CppBindModule<LuaBinding> &module);
-
 
 static void registerApi(CppBindModule<LuaBinding> &module)
 {
@@ -39,7 +37,6 @@ static void registerApi(CppBindModule<LuaBinding> &module)
     registerMeshApi(module);
     registerFontApi(module);
 }
-
 
 static void registerLibrary(LuaState &state)
 {
@@ -72,7 +69,6 @@ lua::ScriptRuntime::ScriptRuntime()
     module.endModule();
 }
 
-
 lua::ScriptRuntime::ScriptRuntime(Device *d):
     ScriptRuntime()
 {
@@ -86,31 +82,26 @@ lua::ScriptRuntime::ScriptRuntime(Device *d):
     module.endModule();
 }
 
-
 lua::ScriptRuntime::~ScriptRuntime()
 {
     lua.close();
 }
-
 
 void lua::ScriptRuntime::executeString(const std::string& code)
 {
     lua.doString(code.c_str());
 }
 
-
 void lua::ScriptRuntime::executeFile(const std::string& path)
 {
     lua.doFile(path.c_str());
 }
-
 
 auto lua::ScriptRuntime::getString(const std::string& name) -> std::string
 {
     auto ref = LuaRef(lua, name.c_str());
     return ref.toValue<std::string>();
 }
-
 
 auto lua::ScriptRuntime::getInt(const std::string& name) -> int32_t
 {

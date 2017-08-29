@@ -15,23 +15,19 @@
 
 using namespace solo;
 
-
 TransformMatrix::TransformMatrix()
 {
 }
-
 
 TransformMatrix::TransformMatrix(const TransformMatrix &other):
     Matrix(other)
 {
 }
 
-
 TransformMatrix::TransformMatrix(const Matrix &m):
     Matrix(m)
 {
 }
-
 
 auto TransformMatrix::createLookAt(const Vector3 &eye, const Vector3 &target, const Vector3 &up) -> TransformMatrix
 {
@@ -53,7 +49,6 @@ auto TransformMatrix::createLookAt(const Vector3 &eye, const Vector3 &target, co
     ));
 }
 
-
 auto TransformMatrix::createPerspective(const Radian &fieldOfView, float aspectRatio, float znear, float zfar) -> TransformMatrix
 {
     auto f_n = 1.0f / (zfar - znear);
@@ -73,7 +68,6 @@ auto TransformMatrix::createPerspective(const Radian &fieldOfView, float aspectR
 
     return TransformMatrix(result);
 }
-
 
 auto TransformMatrix::createOrthographic(float width, float height, float near, float far) -> TransformMatrix
 {
@@ -95,7 +89,6 @@ auto TransformMatrix::createOrthographic(float width, float height, float near, 
     return TransformMatrix(result);
 }
 
-
 auto TransformMatrix::createScale(const Vector3 &scale) -> TransformMatrix
 {
     Matrix result;
@@ -104,7 +97,6 @@ auto TransformMatrix::createScale(const Vector3 &scale) -> TransformMatrix
     result.m[10] = scale.z;
     return TransformMatrix(result);
 }
-
 
 auto TransformMatrix::createRotationFromQuaternion(const Quaternion &q) -> TransformMatrix
 {
@@ -146,7 +138,6 @@ auto TransformMatrix::createRotationFromQuaternion(const Quaternion &q) -> Trans
 
     return TransformMatrix(result);
 }
-
 
 auto TransformMatrix::createRotationFromAxisAngle(const Vector3 &axis, const Radian &angle) -> TransformMatrix
 {
@@ -209,7 +200,6 @@ auto TransformMatrix::createRotationFromAxisAngle(const Vector3 &axis, const Rad
     return TransformMatrix(result);
 }
 
-
 auto TransformMatrix::createRotationX(const Radian &angle) -> TransformMatrix
 {
     auto c = cosf(angle.toRawRadian());
@@ -222,7 +212,6 @@ auto TransformMatrix::createRotationX(const Radian &angle) -> TransformMatrix
     result.m[10] = c;
     return TransformMatrix(result);
 }
-
 
 auto TransformMatrix::createRotationY(const Radian &angle) -> TransformMatrix
 {
@@ -239,7 +228,6 @@ auto TransformMatrix::createRotationY(const Radian &angle) -> TransformMatrix
     return TransformMatrix(result);
 }
 
-
 auto TransformMatrix::createRotationZ(const Radian &angle) -> TransformMatrix
 {
     auto c = cosf(angle.toRawRadian());
@@ -253,7 +241,6 @@ auto TransformMatrix::createRotationZ(const Radian &angle) -> TransformMatrix
     return TransformMatrix(result);
 }
 
-
 auto TransformMatrix::createTranslation(const Vector3 &translation) -> TransformMatrix
 {
     Matrix result;
@@ -263,14 +250,12 @@ auto TransformMatrix::createTranslation(const Vector3 &translation) -> Transform
     return TransformMatrix(result);
 }
 
-
 auto TransformMatrix::getScale() const -> Vector3
 {
     Vector3 result;
     decompose(&result, nullptr, nullptr);
     return result;
 }
-
 
 auto TransformMatrix::getRotation() const -> Quaternion
 {
@@ -279,7 +264,6 @@ auto TransformMatrix::getRotation() const -> Quaternion
     return result;
 }
 
-
 auto TransformMatrix::getTranslation() const -> Vector3
 {
     Vector3 result;
@@ -287,12 +271,10 @@ auto TransformMatrix::getTranslation() const -> Vector3
     return result;
 }
 
-
 void TransformMatrix::scaleByVector(const Vector3 &s)
 {
     *this *= createScale(s);
 }
-
 
 auto TransformMatrix::transformPoint(const Vector3 &point) const -> Vector3
 {
@@ -303,7 +285,6 @@ auto TransformMatrix::transformPoint(const Vector3 &point) const -> Vector3
     };
 }
 
-
 auto TransformMatrix::transformDirection(const Vector3 &dir) const -> Vector3
 {
     return{
@@ -313,12 +294,10 @@ auto TransformMatrix::transformDirection(const Vector3 &dir) const -> Vector3
     };
 }
 
-
 void TransformMatrix::translate(const Vector3 &t)
 {
     *this *= createTranslation(t);
 }
-
 
 static void updateBounds(const Vector3 &point, Vector3 &min, Vector3 &max)
 {
@@ -341,7 +320,6 @@ static void updateBounds(const Vector3 &point, Vector3 &min, Vector3 &max)
         max.z = point.z;
 }
 
-
 auto TransformMatrix::transformBoundingBox(const BoundingBox &box) -> BoundingBox
 {
     auto corners = box.getCorners();
@@ -357,7 +335,6 @@ auto TransformMatrix::transformBoundingBox(const BoundingBox &box) -> BoundingBo
     return {{newMin.x, newMin.y, newMin.z}, {newMax.x, newMax.y, newMax.z}};
 }
 
-
 auto TransformMatrix::transformBoundingSphere(const BoundingSphere &sphere) -> BoundingSphere
 {
     auto scale = getScale();
@@ -366,7 +343,6 @@ auto TransformMatrix::transformBoundingSphere(const BoundingSphere &sphere) -> B
     r = std::max(r, sphere.radius * scale.z);
     return {transformPoint(sphere.center), r};
 }
-
 
 auto TransformMatrix::transformPlane(const Plane &plane) -> Plane
 {
@@ -393,7 +369,6 @@ auto TransformMatrix::transformPlane(const Plane &plane) -> Plane
     return {normal, d * factor};
 }
 
-
 auto TransformMatrix::transformRay(const Ray &ray) -> Ray
 {
     auto origin = transformPoint(ray.getOrigin());
@@ -401,7 +376,6 @@ auto TransformMatrix::transformRay(const Ray &ray) -> Ray
     direction.normalize();
     return {origin, direction};
 }
-
 
 bool TransformMatrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translation) const
 {

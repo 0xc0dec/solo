@@ -18,7 +18,6 @@
 using namespace solo;
 using namespace gl;
 
-
 gl::Renderer::Renderer(Device *device)
 {
     GLint major, minor;
@@ -26,7 +25,6 @@ gl::Renderer::Renderer(Device *device)
     glGetIntegerv(GL_MINOR_VERSION, &minor);
     device->getLogger()->logInfo(SL_FMT("Running in OpenGL ", major, ".", minor, " mode"));
 }
-
 
 void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
 {
@@ -113,12 +111,10 @@ void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
     renderSteps.push_back(step);
 }
 
-
 void gl::Renderer::beginFrame()
 {
     renderSteps.clear();
 }
-
 
 // TODO Optimize: group by material etc.
 // TODO Build "render plan", update it only when something has really changed
@@ -173,6 +169,5 @@ void gl::Renderer::endFrame()
         }
     }
 }
-
 
 #endif

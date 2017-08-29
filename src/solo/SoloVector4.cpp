@@ -8,12 +8,10 @@
 
 using namespace solo;
 
-
 Vector4::Vector4(float x, float y, float z, float w):
     x(x), y(y), z(z), w(w)
 {
 }
-
 
 auto Vector4::unit() -> Vector4
 {
@@ -21,13 +19,11 @@ auto Vector4::unit() -> Vector4
     return value;
 }
 
-
 auto Vector4::unitX() -> Vector4
 {
     static Vector4 value(1.0f, 0.0f, 0.0f, 0.0f);
     return value;
 }
-
 
 auto Vector4::unitY() -> Vector4
 {
@@ -35,20 +31,17 @@ auto Vector4::unitY() -> Vector4
     return value;
 }
 
-
 auto Vector4::unitZ() -> Vector4
 {
     static Vector4 value(0.0f, 0.0f, 1.0f, 0.0f);
     return value;
 }
 
-
 auto Vector4::unitW() -> Vector4
 {
     static Vector4 value(0.0f, 0.0f, 0.0f, 1.0f);
     return value;
 }
-
 
 bool Vector4::isZero() const
 {
@@ -58,7 +51,6 @@ bool Vector4::isZero() const
            math::isZero(w, math::epsilon1);
 }
 
-
 bool Vector4::isUnit() const
 {
     return math::areEqual(x, 1.0f, math::epsilon1) &&
@@ -66,7 +58,6 @@ bool Vector4::isUnit() const
            math::areEqual(z, 1.0f, math::epsilon1) &&
            math::areEqual(w, 1.0f, math::epsilon1);
 }
-
 
 auto Vector4::angle(const Vector4 &v1, const Vector4 &v2) -> Radian
 {
@@ -76,7 +67,6 @@ auto Vector4::angle(const Vector4 &v1, const Vector4 &v2) -> Radian
 
     return Radian(atan2f(sqrt(dx * dx + dy * dy + dz * dz) + math::epsilon2, dot(v1, v2)));
 }
-
 
 void Vector4::clamp(const Vector4 &min, const Vector4 &max)
 {
@@ -101,7 +91,6 @@ void Vector4::clamp(const Vector4 &min, const Vector4 &max)
         w = max.w;
 }
 
-
 auto Vector4::distance(const Vector4 &v) const -> float
 {
     auto dx = v.x - x;
@@ -111,7 +100,6 @@ auto Vector4::distance(const Vector4 &v) const -> float
 
     return sqrt(dx * dx + dy * dy + dz * dz + dw * dw);
 }
-
 
 auto Vector4::distanceSquared(const Vector4 &v) const -> float
 {
@@ -123,30 +111,25 @@ auto Vector4::distanceSquared(const Vector4 &v) const -> float
     return dx * dx + dy * dy + dz * dz + dw * dw;
 }
 
-
 auto Vector4::dot(const Vector4 &v) const -> float
 {
     return x * v.x + y * v.y + z * v.z + w * v.w;
 }
-
 
 auto Vector4::dot(const Vector4 &v1, const Vector4 &v2) -> float
 {
     return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
 }
 
-
 auto Vector4::length() const -> float
 {
     return sqrt(x * x + y * y + z * z + w * w);
 }
 
-
 auto Vector4::lengthSquared() const -> float
 {
     return x * x + y * y + z * z + w * w;
 }
-
 
 auto Vector4::normalized() const -> Vector4
 {
@@ -154,7 +137,6 @@ auto Vector4::normalized() const -> Vector4
     result.normalize();
     return result;
 }
-
 
 void Vector4::normalize()
 {

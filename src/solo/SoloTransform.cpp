@@ -9,12 +9,10 @@
 
 using namespace solo;
 
-
 Transform::Transform(const Node &node):
     ComponentBase(node)
 {
 }
-
 
 void Transform::notifyChanged(uint32_t dirtyFlags) const
 {
@@ -22,24 +20,20 @@ void Transform::notifyChanged(uint32_t dirtyFlags) const
         callback->onTransformChanged(this, dirtyFlags);
 }
 
-
 void Transform::init()
 {
     localScale = Vector3::unit();
 }
-
 
 void Transform::addCallback(TransformCallback *callback)
 {
     callbacks.push_back(callback);
 }
 
-
 void Transform::removeCallback(TransformCallback *callback)
 {
     callbacks.erase(std::remove(callbacks.begin(), callbacks.end(), callback), callbacks.end());
 }
-
 
 void Transform::setParent(Transform *parent)
 {
@@ -56,7 +50,6 @@ void Transform::setParent(Transform *parent)
     setDirtyWithChildren(TransformDirtyFlags::World | TransformDirtyFlags::InvTransposedWorld);
 }
 
-
 void Transform::clearChildren()
 {
     while (!children.empty())
@@ -65,7 +58,6 @@ void Transform::clearChildren()
         child->setParent(nullptr);
     }
 }
-
 
 auto Transform::getMatrix() const -> TransformMatrix
 {
@@ -96,7 +88,6 @@ auto Transform::getMatrix() const -> TransformMatrix
     return matrix;
 }
 
-
 auto Transform::getWorldMatrix() const -> TransformMatrix
 {
     if (dirtyFlags & TransformDirtyFlags::World)
@@ -110,7 +101,6 @@ auto Transform::getWorldMatrix() const -> TransformMatrix
     return worldMatrix;
 }
 
-
 auto Transform::getInvTransposedWorldMatrix() const -> TransformMatrix
 {
     if (dirtyFlags & TransformDirtyFlags::InvTransposedWorld)
@@ -123,18 +113,15 @@ auto Transform::getInvTransposedWorldMatrix() const -> TransformMatrix
     return invTransposedWorldMatrix;
 }
 
-
 auto Transform::getWorldViewMatrix(const Camera *camera) const -> TransformMatrix
 {
     return camera->getViewMatrix() * getWorldMatrix();
 }
 
-
 auto Transform::getWorldViewProjMatrix(const Camera *camera) const -> TransformMatrix
 {
     return camera->getViewProjectionMatrix() * getWorldMatrix();
 }
-
 
 auto Transform::getInvTransposedWorldViewMatrix(const Camera *camera) const -> TransformMatrix
 {
@@ -144,13 +131,11 @@ auto Transform::getInvTransposedWorldViewMatrix(const Camera *camera) const -> T
     return result;
 }
 
-
 void Transform::translateLocal(const Vector3 &translation)
 {
     localPosition += translation;
     setDirtyWithChildren(TransformDirtyFlags::Position | TransformDirtyFlags::World | TransformDirtyFlags::InvTransposedWorld);
 }
-
 
 void Transform::rotate(const Quaternion &rotation, TransformSpace space)
 {
@@ -179,13 +164,11 @@ void Transform::rotate(const Quaternion &rotation, TransformSpace space)
     setDirtyWithChildren(TransformDirtyFlags::Rotation | TransformDirtyFlags::World | TransformDirtyFlags::InvTransposedWorld);
 }
 
-
 void Transform::rotateByAxisAngle(const Vector3 &axis, const Radian &angle, TransformSpace space)
 {
     auto rotation = Quaternion::createFromAxisAngle(axis, angle);
     rotate(rotation, space);
 }
-
 
 void Transform::scaleLocal(const Vector3 &scale)
 {
@@ -195,13 +178,11 @@ void Transform::scaleLocal(const Vector3 &scale)
     setDirtyWithChildren(TransformDirtyFlags::Scale | TransformDirtyFlags::World | TransformDirtyFlags::InvTransposedWorld);
 }
 
-
 void Transform::setLocalScale(const Vector3 &scale)
 {
     localScale = scale;
     setDirtyWithChildren(TransformDirtyFlags::Scale | TransformDirtyFlags::World | TransformDirtyFlags::InvTransposedWorld);
 }
-
 
 void Transform::lookAt(const Vector3 &target, const Vector3 &up)
 {
@@ -220,18 +201,15 @@ void Transform::lookAt(const Vector3 &target, const Vector3 &up)
     setLocalRotation(lookAtMatrix.getRotation());
 }
 
-
 auto Transform::transformPoint(const Vector3 &point) const -> Vector3
 {
     return getMatrix().transformPoint(point);
 }
 
-
 auto Transform::transformDirection(const Vector3 &direction) const -> Vector3
 {
     return getMatrix().transformDirection(direction);
 }
-
 
 void Transform::setLocalRotation(const Quaternion &rotation)
 {
@@ -239,20 +217,17 @@ void Transform::setLocalRotation(const Quaternion &rotation)
     setDirtyWithChildren(TransformDirtyFlags::Rotation | TransformDirtyFlags::World | TransformDirtyFlags::InvTransposedWorld);
 }
 
-
 void Transform::setLocalAxisAngleRotation(const Vector3 &axis, const Radian &angle)
 {
     localRotation = Quaternion::createFromAxisAngle(axis, angle);
     setDirtyWithChildren(TransformDirtyFlags::Rotation | TransformDirtyFlags::World | TransformDirtyFlags::InvTransposedWorld);
 }
 
-
 void Transform::setLocalPosition(const Vector3 &position)
 {
     localPosition = position;
     setDirtyWithChildren(TransformDirtyFlags::Position | TransformDirtyFlags::World | TransformDirtyFlags::InvTransposedWorld);
 }
-
 
 void Transform::setDirtyWithChildren(uint32_t flags) const
 {
@@ -261,7 +236,6 @@ void Transform::setDirtyWithChildren(uint32_t flags) const
     for (auto child : children)
         child->setDirtyWithChildren(flags);
 }
-
 
 void Transform::setChildrenDirty(uint32_t flags) const
 {

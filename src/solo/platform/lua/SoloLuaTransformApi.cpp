@@ -8,7 +8,6 @@
 
 using namespace solo;
 
-
 void registerTransformApi(CppBindModule<LuaBinding> &module)
 {
     // TODO script transform callbacks

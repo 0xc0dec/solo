@@ -11,7 +11,6 @@
 
 using namespace solo;
 
-
 static void registerDevice(CppBindModule<LuaBinding> &module)
 {
     auto device = BEGIN_CLASS(module, Device);
@@ -39,7 +38,6 @@ static void registerDevice(CppBindModule<LuaBinding> &module)
     device.endClass();
 }
 
-
 static void registerDeviceSetup(CppBindModule<LuaBinding> &module)
 {
     auto setup = BEGIN_CLASS(module, DeviceSetup);
@@ -57,7 +55,6 @@ static void registerDeviceSetup(CppBindModule<LuaBinding> &module)
     REG_VARIABLE(setup, DeviceSetup, logFilePath);
     setup.endClass();
 }
-
 
 void registerDeviceApi(CppBindModule<LuaBinding> &module)
 {

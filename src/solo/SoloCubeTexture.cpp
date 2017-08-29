@@ -10,7 +10,6 @@
 
 using namespace solo;
 
-
 auto CubeTexture::create(Device *device) -> sptr<CubeTexture>
 {
     switch (device->getSetup().mode)
@@ -24,12 +23,10 @@ auto CubeTexture::create(Device *device) -> sptr<CubeTexture>
     }
 }
 
-
 CubeTexture::CubeTexture()
 {
     rebuildFlags();
 }
-
 
 void CubeTexture::setWrapping(TextureWrapping wrap)
 {
@@ -38,7 +35,6 @@ void CubeTexture::setWrapping(TextureWrapping wrap)
     depthWrapping = wrap;
     rebuildFlags();
 }
-
 
 void CubeTexture::rebuildFlags()
 {

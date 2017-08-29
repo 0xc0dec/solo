@@ -59,6 +59,5 @@ using namespace LuaIntf;
                 : nullptr; \
             obj->method(arg1, unwrapped); \
         })
-    
 
 #define REG_MODULE_CONSTANT(module, holder, constant) module.addConstant(#constant, holder::constant)

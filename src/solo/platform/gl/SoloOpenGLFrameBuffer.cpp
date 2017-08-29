@@ -14,19 +14,16 @@
 
 using namespace solo;
 
-
 gl::FrameBuffer::FrameBuffer()
 {
     glGenFramebuffers(1, &handle);
     SL_PANIC_IF(!handle, "Failed to create frame buffer handle");
 }
 
-
 gl::FrameBuffer::~FrameBuffer()
 {
     glDeleteFramebuffers(1, &handle);
 }
-
 
 static void validateNewAttachments(const std::vector<sptr<solo::RectTexture>> &attachments)
 {
@@ -45,7 +42,6 @@ static void validateNewAttachments(const std::vector<sptr<solo::RectTexture>> &a
             SL_PANIC_IF(size.x != width || size.y != height, "Attachment sizes do not match");
     }
 }
-
 
 void gl::FrameBuffer::setAttachments(const std::vector<sptr<solo::RectTexture>> &attachments)
 {

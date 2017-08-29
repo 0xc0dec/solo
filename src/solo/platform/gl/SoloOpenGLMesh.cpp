@@ -14,7 +14,6 @@
 
 using namespace solo;
 
-
 gl::Mesh::~Mesh()
 {
     if (vertexArray)
@@ -24,7 +23,6 @@ gl::Mesh::~Mesh()
     while (!indexBuffers.empty())
         removePart(0);
 }
-
 
 void gl::Mesh::rebuildVertexArray() const
 {
@@ -70,7 +68,6 @@ void gl::Mesh::rebuildVertexArray() const
     dirtyVertexArray = false;
 }
 
-
 void gl::Mesh::updateMinVertexCount()
 {
     constexpr auto max = (std::numeric_limits<uint32_t>::max)();
@@ -84,18 +81,15 @@ void gl::Mesh::updateMinVertexCount()
         minVertexCount = 0;
 }
 
-
 auto gl::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
 {
     return addVertexBuffer(layout, data, vertexCount, false);
 }
 
-
 auto gl::Mesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
 {
     return addVertexBuffer(layout, data, vertexCount, true);
 }
-
 
 auto gl::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount, bool dynamic) -> uint32_t
 {
@@ -118,7 +112,6 @@ auto gl::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *dat
     return static_cast<uint32_t>(vertexBuffers.size() - 1);
 }
 
-
 void gl::Mesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const void *data, uint32_t vertexCount)
 {
     auto vertexSize = vertexSizes.at(index);
@@ -126,7 +119,6 @@ void gl::Mesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, 
     glBufferSubData(GL_ARRAY_BUFFER, vertexOffset * vertexSize, vertexCount * vertexSize, data);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
-
 
 void gl::Mesh::removeVertexBuffer(uint32_t index)
 {
@@ -142,7 +134,6 @@ void gl::Mesh::removeVertexBuffer(uint32_t index)
 
     dirtyVertexArray = true;
 }
-
 
 auto gl::Mesh::addPart(const void *data, uint32_t elementCount) -> uint32_t
 {
@@ -160,7 +151,6 @@ auto gl::Mesh::addPart(const void *data, uint32_t elementCount) -> uint32_t
     return static_cast<uint32_t>(indexBuffers.size() - 1);
 }
 
-
 void gl::Mesh::removePart(uint32_t part)
 {
     auto handle = indexBuffers.at(part);
@@ -168,7 +158,6 @@ void gl::Mesh::removePart(uint32_t part)
     indexBuffers.erase(indexBuffers.begin() + part);
     indexElementCounts.erase(indexElementCounts.begin() + part);
 }
-
 
 void gl::Mesh::draw() const
 {
@@ -187,7 +176,6 @@ void gl::Mesh::draw() const
     }
 }
 
-
 void gl::Mesh::drawPart(uint32_t part) const
 {
     rebuildVertexArray();
@@ -200,6 +188,5 @@ void gl::Mesh::drawPart(uint32_t part) const
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
-
 
 #endif

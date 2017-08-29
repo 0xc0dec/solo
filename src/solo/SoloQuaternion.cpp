@@ -10,25 +10,21 @@
 
 using namespace solo;
 
-
 Quaternion::Quaternion(float x, float y, float z, float w):
     x(x), y(y), z(z), w(w)
 {
 }
-
 
 Quaternion::Quaternion(const Vector3 &axis, const Radian &angle)
 {
     *this = createFromAxisAngle(axis, angle);
 }
 
-
 auto Quaternion::identity() -> Quaternion
 {
     static Quaternion value(0.0f, 0.0f, 0.0f, 1.0f);
     return value;
 }
-
 
 bool Quaternion::isIdentity() const
 {
@@ -38,7 +34,6 @@ bool Quaternion::isIdentity() const
            math::areEqual(w, 1.0f, math::epsilon1);
 }
 
-
 bool Quaternion::isZero() const
 {
     return math::isZero(x, math::epsilon1) &&
@@ -46,7 +41,6 @@ bool Quaternion::isZero() const
            math::isZero(z, math::epsilon1) &&
            math::isZero(w, math::epsilon1);
 }
-
 
 auto Quaternion::createFromAxisAngle(const Vector3 &axis, const Radian &angle) -> Quaternion
 {
@@ -57,14 +51,12 @@ auto Quaternion::createFromAxisAngle(const Vector3 &axis, const Radian &angle) -
     return {normal.x * sinHalfAngle, normal.y * sinHalfAngle, normal.z * sinHalfAngle, cosf(halfAngle)};
 }
 
-
 void Quaternion::conjugate()
 {
     x = -x;
     y = -y;
     z = -z;
 }
-
 
 bool Quaternion::inverse()
 {
@@ -89,7 +81,6 @@ bool Quaternion::inverse()
     return true;
 }
 
-
 void Quaternion::normalize()
 {
     auto n = x * x + y * y + z * z + w * w;
@@ -109,14 +100,12 @@ void Quaternion::normalize()
     w *= n;
 }
 
-
 auto Quaternion::normalized() const -> Quaternion
 {
     auto result(*this);
     result.normalize();
     return result;
 }
-
 
 auto Quaternion::toAxisAngle(Vector3 &axis) const -> Radian
 {
@@ -128,7 +117,6 @@ auto Quaternion::toAxisAngle(Vector3 &axis) const -> Radian
     axis.normalize();
     return Radian(2.0f * acos(q.w));
 }
-
 
 auto Quaternion::lerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion
 {
@@ -147,7 +135,6 @@ auto Quaternion::lerp(const Quaternion &q1, const Quaternion &q2, float t) -> Qu
         t1 * q1.w + t * q2.w
     };
 }
-
 
 auto Quaternion::slerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion
 {
@@ -208,14 +195,12 @@ auto Quaternion::slerp(const Quaternion &q1, const Quaternion &q2, float t) -> Q
     return {w * f1, x * f1, y * f1, z * f1};
 }
 
-
 auto Quaternion::squad(const Quaternion &q1, const Quaternion &q2, const Quaternion &s1, const Quaternion &s2, float t) -> Quaternion
 {
     auto q = slerpForSquad(q1, q2, t);
     auto s = slerpForSquad(s1, s2, t);
     return slerpForSquad(q, s, 2.0f * t * (1.0f - t));
 }
-
 
 auto Quaternion::slerpForSquad(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion
 {
@@ -238,7 +223,6 @@ auto Quaternion::slerpForSquad(const Quaternion &q1, const Quaternion &q2, float
         q1.w * r1 + q2.w * r2
     };
 }
-
 
 auto Quaternion::operator*=(const Quaternion &q) -> Quaternion &
 {

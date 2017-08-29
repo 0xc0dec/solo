@@ -8,43 +8,36 @@
 
 using namespace solo;
 
-
 sdl::Device::Device(const DeviceSetup &setup) :
     solo::Device(setup)
 {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);
 }
 
-
 sdl::Device::~Device()
 {
     SDL_Quit();
 }
-
 
 auto sdl::Device::getWindowTitle() const -> std::string
 {
     return std::string(SDL_GetWindowTitle(window));
 }
 
-
 void sdl::Device::setWindowTitle(const std::string &title)
 {
     SDL_SetWindowTitle(window, title.c_str());
 }
-
 
 void sdl::Device::setCursorCaptured(bool captured)
 {
     SDL_SetRelativeMouseMode(captured ? SDL_TRUE : SDL_FALSE);
 }
 
-
 auto sdl::Device::getLifetime() const -> float
 {
     return SDL_GetTicks() / 1000.0f;
 }
-
 
 auto sdl::Device::getCanvasSize() const -> Vector2
 {
@@ -52,7 +45,6 @@ auto sdl::Device::getCanvasSize() const -> Vector2
     SDL_GL_GetDrawableSize(window, &width, &height);
     return {static_cast<float>(width), static_cast<float>(height)};
 }
-
 
 void sdl::Device::beginUpdate()
 {
@@ -64,7 +56,6 @@ void sdl::Device::beginUpdate()
     readEvents();
     updateTime();
 }
-
 
 void sdl::Device::prepareKeyboardState()
 {
@@ -81,7 +72,6 @@ void sdl::Device::prepareKeyboardState()
         pressedKeys.clear();
     }
 }
-
 
 void sdl::Device::prepareMouseState()
 {
@@ -100,14 +90,12 @@ void sdl::Device::prepareMouseState()
     }
 }
 
-
 void sdl::Device::readWindowState()
 {
     auto flags = SDL_GetWindowFlags(window);
     hasKeyboardFocus = (flags & SDL_WINDOW_INPUT_FOCUS) != 0;
     hasMouseFocus = (flags & SDL_WINDOW_MOUSE_FOCUS) != 0;
 }
-
 
 void sdl::Device::processKeyboardEvent(const SDL_Event &evt)
 {
@@ -139,7 +127,6 @@ void sdl::Device::processKeyboardEvent(const SDL_Event &evt)
             break;
     }
 }
-
 
 void sdl::Device::processMouseEvent(const SDL_Event &evt)
 {
@@ -174,7 +161,6 @@ void sdl::Device::processMouseEvent(const SDL_Event &evt)
     }
 }
 
-
 void sdl::Device::processWindowEvent(const SDL_Event &evt)
 {
     switch (evt.window.event)
@@ -186,7 +172,6 @@ void sdl::Device::processWindowEvent(const SDL_Event &evt)
             break;
     }
 }
-
 
 void sdl::Device::readEvents()
 {

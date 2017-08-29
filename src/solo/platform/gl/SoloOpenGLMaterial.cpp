@@ -15,7 +15,6 @@
 
 using namespace solo;
 
-
 #define SET_PARAM(call) \
     setParameter(name, [value](GLuint location, GLuint index) \
     { \
@@ -34,13 +33,11 @@ using namespace solo;
         }; \
     });
 
-
 gl::Material::Material(sptr<solo::Effect> effect):
     solo::Material(effect)
 {
     this->effect = std::dynamic_pointer_cast<Effect>(effect);
 }
-
 
 void gl::Material::applyParams(const Camera *camera, const Transform *nodeTransform) const
 {
@@ -48,66 +45,55 @@ void gl::Material::applyParams(const Camera *camera, const Transform *nodeTransf
         apply(camera, nodeTransform);
 }
 
-
 void gl::Material::setFloatParameter(const std::string &name, float value)
 {
     SET_PARAM(glUniform1f(location, value));
 }
-
 
 void gl::Material::setFloatArrayParameter(const std::string &name, const std::vector<float> &value)
 {
     SET_PARAM(glUniform1fv(location, static_cast<GLsizei>(value.size()), value.data()));
 }
 
-
 void gl::Material::setVector2Parameter(const std::string &name, const Vector2 &value)
 {
     SET_PARAM(glUniform2f(location, value.x, value.y));
 }
-
 
 void gl::Material::setVector2ArrayParameter(const std::string &name, const std::vector<Vector2> &value)
 {
     SET_PARAM(glUniform2fv(location, static_cast<GLsizei>(value.size()), reinterpret_cast<const float *>(value.data())));
 }
 
-
 void gl::Material::setVector3Parameter(const std::string &name, const Vector3 &value)
 {
     SET_PARAM(glUniform3f(location, value.x, value.y, value.z));
 }
-
 
 void gl::Material::setVector3ArrayParameter(const std::string &name, const std::vector<Vector3> &value)
 {
     SET_PARAM(glUniform3fv(location, static_cast<GLsizei>(value.size()), reinterpret_cast<const float *>(value.data())));
 }
 
-
 void gl::Material::setVector4Parameter(const std::string &name, const Vector4 &value)
 {
     SET_PARAM(glUniform4f(location, value.x, value.y, value.z, value.w));
 }
-
 
 void gl::Material::setVector4ArrayParameter(const std::string &name, const std::vector<Vector4> &value)
 {
     SET_PARAM(glUniform4fv(location, static_cast<GLsizei>(value.size()), reinterpret_cast<const float *>(value.data())));
 }
 
-
 void gl::Material::setMatrixParameter(const std::string &name, const Matrix &value)
 {
     SET_PARAM(glUniformMatrix4fv(location, 1, GL_FALSE, value.m));
 }
 
-
 void gl::Material::setMatrixArrayParameter(const std::string &name, const std::vector<Matrix>& value)
 {
     SET_PARAM(glUniformMatrix4fv(location, static_cast<GLsizei>(value.size()), GL_FALSE, reinterpret_cast<const float *>(value.data())));
 }
-
 
 void gl::Material::setTextureParameter(const std::string &name, sptr<solo::Texture> value)
 {
@@ -118,7 +104,6 @@ void gl::Material::setTextureParameter(const std::string &name, sptr<solo::Textu
         dynamic_cast<Texture*>(value.get())->bind();
     )
 }
-
 
 void gl::Material::bindWorldMatrixParameter(const std::string &name)
 {
@@ -131,7 +116,6 @@ void gl::Material::bindWorldMatrixParameter(const std::string &name)
     );
 }
 
-
 void gl::Material::bindViewMatrixParameter(const std::string &name)
 {
     SET_PARAM_NO_VAL(
@@ -142,7 +126,6 @@ void gl::Material::bindViewMatrixParameter(const std::string &name)
         }
     );
 }
-
 
 void gl::Material::bindProjectionMatrixParameter(const std::string &name)
 {
@@ -155,7 +138,6 @@ void gl::Material::bindProjectionMatrixParameter(const std::string &name)
     );
 }
 
-
 void gl::Material::bindWorldViewMatrixParameter(const std::string &name)
 {
     SET_PARAM_NO_VAL(
@@ -166,7 +148,6 @@ void gl::Material::bindWorldViewMatrixParameter(const std::string &name)
         }
     );
 }
-
 
 void gl::Material::bindViewProjectionMatrixParameter(const std::string &name)
 {
@@ -179,7 +160,6 @@ void gl::Material::bindViewProjectionMatrixParameter(const std::string &name)
     );
 }
 
-
 void gl::Material::bindWorldViewProjectionMatrixParameter(const std::string &name)
 {
     SET_PARAM_NO_VAL(
@@ -190,7 +170,6 @@ void gl::Material::bindWorldViewProjectionMatrixParameter(const std::string &nam
         }
     );
 }
-
 
 void gl::Material::bindInvTransposedWorldMatrixParameter(const std::string &name)
 {
@@ -203,7 +182,6 @@ void gl::Material::bindInvTransposedWorldMatrixParameter(const std::string &name
     );
 }
 
-
 void gl::Material::bindInvTransposedWorldViewMatrixParameter(const std::string &name)
 {
     SET_PARAM_NO_VAL(
@@ -215,7 +193,6 @@ void gl::Material::bindInvTransposedWorldViewMatrixParameter(const std::string &
     );
 }
 
-
 void gl::Material::bindCameraWorldPositionParameter(const std::string &name)
 {
     SET_PARAM_NO_VAL(
@@ -226,7 +203,6 @@ void gl::Material::bindCameraWorldPositionParameter(const std::string &name)
         }
     );
 }
-
 
 void gl::Material::setParameter(const std::string &paramName,
     std::function<std::function<void(const Camera *, const Transform *)>(GLuint, GLint)> getApplier)
@@ -246,6 +222,5 @@ void gl::Material::setParameter(const std::string &paramName,
     else
         appliers[applierIndices.at(paramName)] = getApplier(locIt->second, uniformIndexes.at(paramName));
 }
-
 
 #endif

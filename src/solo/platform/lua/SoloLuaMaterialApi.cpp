@@ -8,7 +8,6 @@
 
 using namespace solo;
 
-
 void registerMaterialApi(CppBindModule<LuaBinding> &module)
 {
     auto mat = BEGIN_CLASS(module, Material);

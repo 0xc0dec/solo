@@ -10,13 +10,11 @@
 
 using namespace solo;
 
-
 BoundingSphere::BoundingSphere(const Vector3 &center, float radius):
     center(center),
     radius(radius)
 {
 }
-
 
 bool BoundingSphere::intersectsBoundingSphere(const BoundingSphere &sphere) const
 {
@@ -25,7 +23,6 @@ bool BoundingSphere::intersectsBoundingSphere(const BoundingSphere &sphere) cons
     auto vz = sphere.center.z - center.z;
     return sqrt(vx * vx + vy * vy + vz * vz) <= radius + sphere.radius;
 }
-
 
 bool BoundingSphere::intersectsBoundingBox(const BoundingBox &box) const
 {
@@ -58,7 +55,6 @@ bool BoundingSphere::intersectsBoundingBox(const BoundingBox &box) const
     return sqrt(cpX * cpX + cpY * cpY + cpZ * cpZ) <= radius;
 }
 
-
 bool BoundingSphere::intersectsFrustum(const Frustum &frustum) const
 {
     return intersectPlane(frustum.getNearPlane()) != PlaneIntersection::Back &&
@@ -69,7 +65,6 @@ bool BoundingSphere::intersectsFrustum(const Frustum &frustum) const
            intersectPlane(frustum.getTopPlane()) != PlaneIntersection::Back;
 }
 
-
 auto BoundingSphere::intersectPlane(const Plane &plane) const -> PlaneIntersection
 {
     auto distance = plane.getDistanceToPoint(center);
@@ -77,7 +72,6 @@ auto BoundingSphere::intersectPlane(const Plane &plane) const -> PlaneIntersecti
         return PlaneIntersection::Intersecting;
     return distance > 0.0f ? PlaneIntersection::Front : PlaneIntersection::Back;
 }
-
 
 auto BoundingSphere::hitByRay(const Ray &ray) const -> float
 {
@@ -104,7 +98,6 @@ auto BoundingSphere::hitByRay(const Ray &ray) const -> float
     auto t1 = (-b + sqrtDisc) * 0.5f;
     return (t0 > 0.0f && t0 < t1) ? t0 : t1;
 }
-
 
 void BoundingSphere::mergeBoundingSphere(const BoundingSphere &sphere)
 {
@@ -142,7 +135,6 @@ void BoundingSphere::mergeBoundingSphere(const BoundingSphere &sphere)
     center.z = vz;
     radius = r;
 }
-
 
 void BoundingSphere::mergeBoundingBox(const BoundingBox &box)
 {

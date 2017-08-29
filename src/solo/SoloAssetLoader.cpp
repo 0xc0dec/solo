@@ -15,7 +15,6 @@
 #define LIBASYNC_STATIC
 #include <async++.h>
 
-
 namespace solo
 {
     struct AssetLoaderImpl
@@ -60,12 +59,10 @@ namespace solo
 
 using namespace solo;
 
-
 AssetLoader::AssetLoader(Device *device, const FriendToken<Device> &)
 {
     impl = std::make_unique<AssetLoaderImpl>(device);
 }
-
 
 auto AssetLoader::loadRectTexture(const std::string &path) -> sptr<RectTexture>
 {
@@ -75,7 +72,6 @@ auto AssetLoader::loadRectTexture(const std::string &path) -> sptr<RectTexture>
     result->setData(image->format, image->data.data(), image->width, image->height);
     return result;
 }
-
 
 auto AssetLoader::loadRectTextureAsync(const std::string &path) -> sptr<AsyncHandle<RectTexture>>
 {
@@ -99,7 +95,6 @@ auto AssetLoader::loadRectTextureAsync(const std::string &path) -> sptr<AsyncHan
     return handle;
 }
 
-
 auto AssetLoader::loadCubeTexture(const std::vector<std::string> &sidePaths) -> sptr<CubeTexture>
 {
     auto result = CubeTexture::create(impl->device);
@@ -115,7 +110,6 @@ auto AssetLoader::loadCubeTexture(const std::vector<std::string> &sidePaths) -> 
 
     return result;
 }
-
 
 auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string> &sidePaths) -> sptr<AsyncHandle<CubeTexture>>
 {
@@ -154,14 +148,12 @@ auto AssetLoader::loadCubeTextureAsync(const std::vector<std::string> &sidePaths
     return handle;
 }
 
-
 auto AssetLoader::loadMesh(const std::string &path) -> sptr<Mesh>
 {
     auto loader = impl->getMeshLoader(path);
     auto data = loader->loadData(path);
     return Mesh::createFromData(impl->device, data.get());
 }
-
 
 auto AssetLoader::loadMeshAsync(const std::string &path) -> sptr<AsyncHandle<Mesh>>
 {
@@ -180,7 +172,6 @@ auto AssetLoader::loadMeshAsync(const std::string &path) -> sptr<AsyncHandle<Mes
 
     return handle;
 }
-
 
 void AssetLoader::update()
 {

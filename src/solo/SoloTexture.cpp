@@ -7,12 +7,10 @@
 
 using namespace solo;
 
-
 Texture::Texture()
 {
     rebuildFlags(); // yes, virtual call
 }
-
 
 void Texture::setWrapping(TextureWrapping wrap)
 {
@@ -20,7 +18,6 @@ void Texture::setWrapping(TextureWrapping wrap)
     verticalWrapping = wrap;
     rebuildFlags();
 }
-
 
 void Texture::rebuildFlags()
 {

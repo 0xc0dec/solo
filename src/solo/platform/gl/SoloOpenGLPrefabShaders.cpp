@@ -9,7 +9,6 @@
 
 using namespace solo;
 
-
 const char *gl::PrefabShaders::Vertex::skybox = R"(
     #version 330 core
 
@@ -29,7 +28,6 @@ const char *gl::PrefabShaders::Vertex::skybox = R"(
     }
 )";
 
-
 const char* gl::PrefabShaders::Vertex::positionAndTexCoord = R"(
     #version 330 core
 
@@ -46,7 +44,6 @@ const char* gl::PrefabShaders::Vertex::positionAndTexCoord = R"(
     }
 )";
 
-
 const char* gl::PrefabShaders::Fragment::skybox = R"(
     #version 330 core
 
@@ -60,7 +57,6 @@ const char* gl::PrefabShaders::Fragment::skybox = R"(
         fragColor = texture(mainTex, eyeDir);
     }
 )";
-
 
 const char* gl::PrefabShaders::Fragment::font = R"(
     #version 330 core

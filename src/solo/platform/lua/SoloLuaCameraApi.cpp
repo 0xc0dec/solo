@@ -8,7 +8,6 @@
 
 using namespace solo;
 
-
 void registerCameraApi(CppBindModule<LuaBinding> &module)
 {
     auto camera = BEGIN_CLASS_EXTEND(module, Camera, Component);

@@ -14,7 +14,6 @@
 
 using namespace solo;
 
-
 class MotionState final: public btMotionState
 {
 public:
@@ -41,7 +40,6 @@ private:
     Transform *transform;
 };
 
-
 bullet::RigidBody::RigidBody(const Node &node, const RigidBodyConstructionParameters &parameters):
     solo::RigidBody(node),
     mass(parameters.mass),
@@ -61,12 +59,10 @@ bullet::RigidBody::RigidBody(const Node &node, const RigidBodyConstructionParame
     body->setUserPointer(this);
 }
 
-
 bullet::RigidBody::~RigidBody()
 {
     world->removeRigidBody(body.get());
 }
-
 
 void bullet::RigidBody::setCollider(sptr<solo::Collider> newCollider)
 {
@@ -92,13 +88,11 @@ void bullet::RigidBody::setCollider(sptr<solo::Collider> newCollider)
     }
 }
 
-
 void bullet::RigidBody::onTransformChanged(const Transform *transform, uint32_t dirtyFlags)
 {
     if (shape && dirtyFlags | TransformDirtyFlags::Scale)
         syncScale();
 }
-
 
 void bullet::RigidBody::syncScale()
 {

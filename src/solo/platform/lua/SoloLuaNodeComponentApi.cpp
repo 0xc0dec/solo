@@ -15,7 +15,6 @@
 
 using namespace solo;
 
-
 static auto findComponent(Node *node, const std::string &name) -> Component*
 {
     if (name == "Transform")
@@ -36,7 +35,6 @@ static auto findComponent(Node *node, const std::string &name) -> Component*
     SL_PANIC("Unknown standard component ", name)
     return nullptr;
 }
-
 
 static auto addComponent(Node *node, const std::string &name, LuaRef arg) -> Component*
 {
@@ -59,7 +57,6 @@ static auto addComponent(Node *node, const std::string &name, LuaRef arg) -> Com
     return nullptr;
 }
 
-
 static void removeComponent(Node *node, const std::string &name)
 {
     if (name == "Transform")
@@ -80,7 +77,6 @@ static void removeComponent(Node *node, const std::string &name)
         SL_PANIC("Unknown standard component ", name)
 }
 
-
 static auto findScriptComponent(Node *node, uint32_t typeId) -> LuaRef
 {
     auto cmp = node->getScene()->findComponent(node->getId(), typeId + lua::ScriptComponent::MinComponentTypeId);
@@ -93,20 +89,17 @@ static auto findScriptComponent(Node *node, uint32_t typeId) -> LuaRef
     return {};
 }
 
-
 static void addScriptComponent(Node *node, LuaRef scriptComponent)
 {
     auto actualComponent = std::make_shared<lua::ScriptComponent>(*node, scriptComponent);
     node->getScene()->addComponent(node->getId(), actualComponent);
 }
 
-
 static void removeScriptComponent(Node *node, LuaRef scriptComponent)
 {
     auto typeId = scriptComponent.get<uint32_t>("typeId") + lua::ScriptComponent::MinComponentTypeId;
     node->getScene()->removeComponent(node->getId(), typeId);
 }
-
 
 static void registerComponent(CppBindModule<LuaBinding> &module)
 {
@@ -119,7 +112,6 @@ static void registerComponent(CppBindModule<LuaBinding> &module)
     REG_METHOD(component, Component, getNode);
     component.endClass();
 }
-
 
 static void registerNode(CppBindModule<LuaBinding> &module)
 {
@@ -134,7 +126,6 @@ static void registerNode(CppBindModule<LuaBinding> &module)
     REG_FREE_FUNC_AS_METHOD(node, removeComponent);
     node.endClass();
 }
-
 
 void registerNodeAndComponentApi(CppBindModule<LuaBinding> &module)
 {

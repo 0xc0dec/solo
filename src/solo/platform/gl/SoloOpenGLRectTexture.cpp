@@ -9,7 +9,6 @@
 
 using namespace solo;
 
-
 void gl::RectTexture::bind()
 {
     glBindTexture(GL_TEXTURE_2D, handle);
@@ -21,7 +20,6 @@ void gl::RectTexture::bind()
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy);
 }
 
-
 void gl::RectTexture::generateMipmaps()
 {
     glBindTexture(GL_TEXTURE_2D, handle);
@@ -29,7 +27,6 @@ void gl::RectTexture::generateMipmaps()
     glGenerateMipmap(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
-
 
 void gl::RectTexture::setData(TextureFormat format, const void *data, uint32_t width, uint32_t height)
 {

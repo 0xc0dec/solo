@@ -10,19 +10,16 @@
 
 using namespace solo;
 
-
 Spectator::Spectator(const Node &node):
     ComponentBase(node),
     device(node.getScene()->getDevice())
 {
 }
 
-
 void Spectator::init()
 {
     transform = node.findComponent<Transform>();
 }
-
 
 void Spectator::update()
 {

@@ -12,14 +12,12 @@
 
 using namespace solo;
 
-
 MeshRenderer::MeshRenderer(const Node &node):
     ComponentBase(node),
     renderer(node.getScene()->getDevice()->getRenderer())
 {
     transform = node.findComponent<Transform>();
 }
-
 
 void MeshRenderer::render()
 {
@@ -49,7 +47,6 @@ void MeshRenderer::render()
         }
     }
 }
-
 
 void MeshRenderer::setMaterial(uint32_t index, sptr<Material> material)
 {

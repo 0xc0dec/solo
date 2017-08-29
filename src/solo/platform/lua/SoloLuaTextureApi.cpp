@@ -10,18 +10,15 @@
 
 using namespace solo;
 
-
 static void setRectTextureData(RectTexture *tex, TextureFormat format, const std::vector<uint8_t> &data, uint32_t width, uint32_t height)
 {
     tex->setData(format, data.data(), width, height);
 }
 
-
 static void setCubeTextureData(CubeTexture *tex, CubeTextureFace face, TextureFormat format, const std::vector<uint8_t> &data, uint32_t width, uint32_t height)
 {
     tex->setData(face, format, data.data(), width, height);
 }
-
 
 static void registerTexture(CppBindModule<LuaBinding> &module)
 {
@@ -42,7 +39,6 @@ static void registerTexture(CppBindModule<LuaBinding> &module)
     tex.endClass();
 }
 
-
 static void registerRectTexture(CppBindModule<LuaBinding> &module)
 {
     auto rectTex = BEGIN_CLASS_EXTEND(module, RectTexture, Texture);
@@ -51,7 +47,6 @@ static void registerRectTexture(CppBindModule<LuaBinding> &module)
     REG_METHOD(rectTex, RectTexture, getSize);
     rectTex.endClass();
 }
-
 
 static void registerCubeTexture(CppBindModule<LuaBinding> &module)
 {
@@ -62,7 +57,6 @@ static void registerCubeTexture(CppBindModule<LuaBinding> &module)
     REG_METHOD(cubeTex, CubeTexture, setDepthWrapping);
     cubeTex.endClass();
 }
-
 
 void registerTextureApi(CppBindModule<LuaBinding> &module)
 {

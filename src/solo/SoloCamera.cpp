@@ -14,7 +14,6 @@
 
 using namespace solo;
 
-
 const uint32_t ViewDirtyBit = 1;
 const uint32_t ProjectionDirtyBit = 1 << 1;
 const uint32_t ViewProjectionDirtyBit = 1 << 2;
@@ -22,12 +21,10 @@ const uint32_t InvViewDirtyBit = 1 << 3;
 const uint32_t InvViewProjectionDirtyBit = 1 << 4;
 const uint32_t AllProjectionDirtyBits = ProjectionDirtyBit | ViewProjectionDirtyBit | InvViewProjectionDirtyBit;
 
-
 auto Camera::create(const Node &node) -> sptr<Camera>
 {
     return std::shared_ptr<Camera>(new Camera(node));
 }
-
 
 Camera::Camera(const Node &node):
     ComponentBase(node),
@@ -39,7 +36,6 @@ Camera::Camera(const Node &node):
     viewport = {0, 0, canvasSize.x, canvasSize.y};
 }
 
-
 void Camera::init()
 {
     transform = node.findComponent<Transform>();
@@ -48,12 +44,10 @@ void Camera::init()
     setAspectRatio(canvasSize.x / canvasSize.y);
 }
 
-
 void Camera::onTransformChanged(const Transform *, uint32_t)
 {
     dirtyFlags |= ViewDirtyBit | ViewProjectionDirtyBit | InvViewDirtyBit | InvViewProjectionDirtyBit;
 }
-
 
 void Camera::setPerspective(bool perspective)
 {
@@ -61,13 +55,11 @@ void Camera::setPerspective(bool perspective)
     dirtyFlags |= AllProjectionDirtyBits;
 }
 
-
 void Camera::setFOV(const Radian &fov)
 {
     this->fov = fov;
     dirtyFlags |= AllProjectionDirtyBits;
 }
-
 
 void Camera::setOrthoSize(const Vector2& size)
 {
@@ -75,13 +67,11 @@ void Camera::setOrthoSize(const Vector2& size)
     dirtyFlags |= AllProjectionDirtyBits;
 }
 
-
 void Camera::setAspectRatio(float ratio)
 {
     aspectRatio = ratio;
     dirtyFlags |= AllProjectionDirtyBits;
 }
-
 
 void Camera::setFar(float far)
 {
@@ -89,13 +79,11 @@ void Camera::setFar(float far)
     dirtyFlags |= AllProjectionDirtyBits;
 }
 
-
 void Camera::setNear(float near)
 {
     this->nearClip = near;
     dirtyFlags |= AllProjectionDirtyBits;
 }
-
 
 auto Camera::getViewMatrix() const -> const TransformMatrix
 {
@@ -108,7 +96,6 @@ auto Camera::getViewMatrix() const -> const TransformMatrix
     return viewMatrix;
 }
 
-
 auto Camera::getInvViewMatrix() const -> const TransformMatrix
 {
     if (dirtyFlags & InvViewDirtyBit)
@@ -119,7 +106,6 @@ auto Camera::getInvViewMatrix() const -> const TransformMatrix
     }
     return invViewMatrix;
 }
-
 
 auto Camera::getProjectionMatrix() const -> const TransformMatrix
 {
@@ -134,7 +120,6 @@ auto Camera::getProjectionMatrix() const -> const TransformMatrix
     return projectionMatrix;
 }
 
-
 auto Camera::getViewProjectionMatrix() const -> const TransformMatrix
 {
     if (dirtyFlags & ViewProjectionDirtyBit)
@@ -144,7 +129,6 @@ auto Camera::getViewProjectionMatrix() const -> const TransformMatrix
     }
     return viewProjectionMatrix;
 }
-
 
 auto Camera::getInvViewProjectionMatrix() const -> const TransformMatrix
 {
@@ -156,7 +140,6 @@ auto Camera::getInvViewProjectionMatrix() const -> const TransformMatrix
     }
     return invViewProjectionMatrix;
 }
-
 
 void Camera::renderFrame(std::function<void()> render) const
 {

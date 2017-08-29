@@ -11,18 +11,15 @@
 
 using namespace solo;
 
-
 ObjMeshLoader::ObjMeshLoader(Device *device):
     fs(device->getFileSystem())
 {
 }
 
-
 bool ObjMeshLoader::isLoadable(const std::string &path) const
 {
     return path.find(".obj", path.size() - 5) != std::string::npos;
 }
-
 
 Vector3 parseVector3(const char *from, const char *to)
 {
@@ -46,7 +43,6 @@ Vector3 parseVector3(const char *from, const char *to)
     }
     return {result[0], result[1], result[2]};
 }
-
 
 void parseIndexes(const char **from, const char *to, uint32_t **result)
 {
@@ -75,7 +71,6 @@ void parseIndexes(const char **from, const char *to, uint32_t **result)
         }
     }
 }
-
 
 auto ObjMeshLoader::loadData(const std::string &path) const -> sptr<MeshData>
 {

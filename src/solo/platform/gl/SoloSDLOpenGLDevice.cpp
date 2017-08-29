@@ -14,7 +14,6 @@
 using namespace solo;
 using namespace gl;
 
-
 SDLDevice::SDLDevice(DeviceSetup const &setup):
     Device(setup)
 {
@@ -41,13 +40,11 @@ SDLDevice::SDLDevice(DeviceSetup const &setup):
     SDL_GL_SetSwapInterval(1);
 }
 
-
 SDLDevice::~SDLDevice()
 {
     cleanupSubsystems();
     cleanup();
 }
-
 
 void SDLDevice::cleanup()
 {
@@ -64,12 +61,10 @@ void SDLDevice::cleanup()
     SDL_Quit();
 }
 
-
 void SDLDevice::endUpdate()
 {
     SDL_GL_SwapWindow(window);
 }
-
 
 void SDLDevice::saveScreenshot(const std::string &path)
 {
@@ -96,6 +91,5 @@ void SDLDevice::saveScreenshot(const std::string &path)
 
     SDL_FreeSurface(surface);
 }
-
 
 #endif

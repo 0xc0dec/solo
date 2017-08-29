@@ -10,14 +10,12 @@
 
 using namespace solo;
 
-
 auto FileSystem::create(Device *device, const FriendToken<Device> &) -> sptr<FileSystem>
 {
     if (device->getSetup().mode == DeviceMode::Null)
         return std::make_shared<null::FileSystem>();
     return std::unique_ptr<FileSystem>(new FileSystem());
 }
-
 
 auto FileSystem::readBytes(const std::string &path) -> std::vector<uint8_t>
 {
@@ -31,7 +29,6 @@ auto FileSystem::readBytes(const std::string &path) -> std::vector<uint8_t>
     return result;
 }
 
-
 void FileSystem::writeBytes(const std::string &path, const std::vector<uint8_t> &data)
 {
     std::ofstream file(path, std::ios::binary | std::ios::trunc);
@@ -40,14 +37,12 @@ void FileSystem::writeBytes(const std::string &path, const std::vector<uint8_t> 
     file.close();
 }
 
-
 auto FileSystem::readText(const std::string &path) -> std::string
 {
     std::ifstream f(path);
     auto result = std::string(std::istreambuf_iterator<char>(f), std::istreambuf_iterator<char>());
     return result;
 }
-
 
 auto FileSystem::readLines(const std::string &path) -> std::vector<std::string>
 {
@@ -59,7 +54,6 @@ auto FileSystem::readLines(const std::string &path) -> std::vector<std::string>
     });
     return result;
 }
-
 
 void FileSystem::iterateLines(const std::string &path, std::function<bool(const std::string &)> process)
 {
@@ -74,7 +68,6 @@ void FileSystem::iterateLines(const std::string &path, std::function<bool(const 
     }
     file.close();
 }
-
 
 void FileSystem::writeLines(const std::string &path, const std::vector<std::string> &lines)
 {

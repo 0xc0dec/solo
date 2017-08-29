@@ -12,7 +12,6 @@
 
 using namespace solo;
 
-
 auto Mesh::create(Device *device) -> sptr<Mesh>
 {
     switch (device->getSetup().mode)
@@ -29,7 +28,6 @@ auto Mesh::create(Device *device) -> sptr<Mesh>
             return std::make_shared<null::Mesh>();
     }
 }
-
 
 auto Mesh::createFromPrefab(Device *device, MeshPrefab prefab) -> sptr<Mesh>
 {
@@ -51,14 +49,12 @@ auto Mesh::createFromPrefab(Device *device, MeshPrefab prefab) -> sptr<Mesh>
     return mesh;
 }
 
-
 auto Mesh::createFromData(Device *device, MeshData *data) -> sptr<Mesh>
 {
     auto mesh = create(device);
     mesh->initFromData(data);
     return mesh;
 }
-
 
 void Mesh::initAsQuadMesh()
 {
@@ -79,7 +75,6 @@ void Mesh::initAsQuadMesh()
     addVertexBuffer(layout, vertices, 6);
     setPrimitiveType(PrimitiveType::Triangles);
 }
-
 
 void Mesh::initAsCubeMesh()
 {
@@ -116,7 +111,6 @@ void Mesh::initAsCubeMesh()
     addPart(indices, 36);
     setPrimitiveType(PrimitiveType::Triangles);
 }
-
 
 void Mesh::initFromData(MeshData *data)
 {

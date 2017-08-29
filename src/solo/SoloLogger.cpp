@@ -7,7 +7,6 @@
 #include "SoloSpinLock.h"
 #include <iostream>
 
-
 namespace solo
 {
     struct LoggerImpl
@@ -26,22 +25,18 @@ namespace solo
     };
 }
 
-
 using namespace solo;
-
 
 Logger::Logger(const FriendToken<Device>&)
 {
     impl = std::make_shared<LoggerImpl>();
 }
 
-
 Logger::~Logger()
 {
     if (impl->file.is_open())
         impl->file.close();
 }
-
 
 void Logger::setTargetFile(const std::string &path)
 {
@@ -54,30 +49,25 @@ void Logger::setTargetFile(const std::string &path)
     }
 }
 
-
 void Logger::logDebug(const std::string &msg)
 {
     impl->log(msg, "debug");
 }
-
 
 void Logger::logInfo(const std::string &msg)
 {
     impl->log(msg, "info");
 }
 
-
 void Logger::logWarning(const std::string &msg)
 {
     impl->log(msg, "warn");
 }
 
-
 void Logger::logError(const std::string &msg)
 {
     impl->log(msg, "error");
 }
-
 
 void Logger::logCritical(const std::string &msg)
 {

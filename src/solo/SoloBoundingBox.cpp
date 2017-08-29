@@ -12,13 +12,11 @@
 
 using namespace solo;
 
-
 BoundingBox::BoundingBox(const Vector3 &min, const Vector3 &max):
     min(min),
     max(max)
 {
 }
-
 
 auto BoundingBox::getCorners() const -> std::vector<Vector3>
 {
@@ -52,7 +50,6 @@ auto BoundingBox::getCorners() const -> std::vector<Vector3>
     };
 }
 
-
 auto BoundingBox::getCenter() const -> Vector3
 {
     auto center = max - min;
@@ -61,12 +58,10 @@ auto BoundingBox::getCenter() const -> Vector3
     return center;
 }
 
-
 bool BoundingBox::intersectsBoundingSphere(const BoundingSphere &sphere) const
 {
     return sphere.intersectsBoundingBox(*this);
 }
-
 
 bool BoundingBox::intersectsBoundingBox(const BoundingBox &box) const
 {
@@ -74,7 +69,6 @@ bool BoundingBox::intersectsBoundingBox(const BoundingBox &box) const
            ((min.y >= box.min.y && min.y <= box.max.y) || (box.min.y >= min.y && box.min.y <= max.y)) &&
            ((min.z >= box.min.z && min.z <= box.max.z) || (box.min.z >= min.z && box.min.z <= max.z));
 }
-
 
 bool BoundingBox::intersectsFrustum(const Frustum &frustum) const
 {
@@ -85,7 +79,6 @@ bool BoundingBox::intersectsFrustum(const Frustum &frustum) const
            intersectPlane(frustum.getBottomPlane()) != PlaneIntersection::Back &&
            intersectPlane(frustum.getTopPlane()) != PlaneIntersection::Back;
 }
-
 
 auto BoundingBox::intersectPlane(const Plane &plane) const -> PlaneIntersection
 {
@@ -102,7 +95,6 @@ auto BoundingBox::intersectPlane(const Plane &plane) const -> PlaneIntersection
 
     return distance > 0.0f ? PlaneIntersection::Front : PlaneIntersection::Back;
 }
-
 
 auto BoundingBox::hitByRay(const Ray &ray) const -> float
 {
@@ -177,7 +169,6 @@ auto BoundingBox::hitByRay(const Ray &ray) const -> float
     return dnear;
 }
 
-
 void BoundingBox::mergeBoundingBox(const BoundingBox &box)
 {
     min.x = std::min(min.x, box.min.x);
@@ -188,7 +179,6 @@ void BoundingBox::mergeBoundingBox(const BoundingBox &box)
     max.y = std::max(max.y, box.max.y);
     max.z = std::max(max.z, box.max.z);
 }
-
 
 void BoundingBox::mergeBoundingSphere(const BoundingSphere &sphere)
 {

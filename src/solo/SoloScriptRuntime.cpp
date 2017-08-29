@@ -9,12 +9,10 @@
 
 using namespace solo;
 
-
 auto ScriptRuntime::createExternal() -> sptr<ScriptRuntime>
 {
     return std::make_shared<lua::ScriptRuntime>();
 }
-
 
 auto ScriptRuntime::create(Device *device, const FriendToken<Device>&) -> sptr<ScriptRuntime>
 {

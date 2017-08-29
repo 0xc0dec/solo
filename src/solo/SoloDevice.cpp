@@ -17,7 +17,6 @@
 
 using namespace solo;
 
-
 auto Device::create(const DeviceSetup &setup) -> uptr<Device>
 {
     uptr<Device> device = nullptr;
@@ -48,12 +47,10 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device>
     return device;
 }
 
-
 Device::Device(const DeviceSetup &setup):
     setup(setup)
 {
 }
-
 
 void Device::initSubsystems()
 {
@@ -70,7 +67,6 @@ void Device::initSubsystems()
     scriptRuntime = ScriptRuntime::create(this, token);
 }
 
-
 void Device::cleanupSubsystems()
 {
     // Order matters
@@ -81,25 +77,21 @@ void Device::cleanupSubsystems()
     logger.reset();
 }
 
-
 bool Device::isKeyPressed(KeyCode code, bool firstTime) const
 {
     auto where = pressedKeys.find(code);
     return where != pressedKeys.end() && (!firstTime || where->second);
 }
 
-
 bool Device::isKeyReleased(KeyCode code) const
 {
     return releasedKeys.find(code) != releasedKeys.end();
 }
 
-
 auto Device::getMouseMotion() const -> Vector2
 {
     return {static_cast<float>(mouseDeltaX), static_cast<float>(mouseDeltaY)};
 }
-
 
 bool Device::isMouseButtonDown(MouseButton button, bool firstTime) const
 {
@@ -107,12 +99,10 @@ bool Device::isMouseButtonDown(MouseButton button, bool firstTime) const
     return where != pressedMouseButtons.end() && (!firstTime || where->second);
 }
 
-
 bool Device::isMouseButtonReleased(MouseButton button) const
 {
     return releasedMouseButtons.find(button) != releasedMouseButtons.end();
 }
-
 
 void Device::update(std::function<void()> update)
 {
@@ -120,7 +110,6 @@ void Device::update(std::function<void()> update)
     update();
     endUpdate();
 }
-
 
 void Device::updateTime()
 {

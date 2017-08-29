@@ -9,12 +9,10 @@
 
 using namespace solo;
 
-
-solo::Degree::Degree(const Radian &r):
+Degree::Degree(const Radian &r):
     raw(r.toRawDegree())
 {
 }
-
 
 auto Degree::operator=(const Radian &r) -> Degree &
 {
@@ -22,18 +20,15 @@ auto Degree::operator=(const Radian &r) -> Degree &
     return *this;
 }
 
-
 auto Degree::toRawRadian() const -> float
 {
     return math::degToRad(raw);
 }
 
-
 auto Degree::operator+(const Radian &r) const -> Degree
 {
     return Degree(raw + r.toRawDegree());
 }
-
 
 auto Degree::operator+=(const Radian &r) -> Degree &
 {
@@ -41,12 +36,10 @@ auto Degree::operator+=(const Radian &r) -> Degree &
     return *this;
 }
 
-
 auto Degree::operator-(const Radian &r) const -> Degree
 {
     return Degree(raw - r.toRawDegree());
 }
-
 
 auto Degree::operator-=(const Radian &r) -> Degree &
 {

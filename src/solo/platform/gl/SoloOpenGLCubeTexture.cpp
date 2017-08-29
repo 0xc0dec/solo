@@ -9,7 +9,6 @@
 
 using namespace solo;
 
-
 void gl::CubeTexture::bind()
 {
     glBindTexture(GL_TEXTURE_CUBE_MAP, handle);
@@ -22,7 +21,6 @@ void gl::CubeTexture::bind()
     glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy);
 }
 
-
 void gl::CubeTexture::generateMipmaps()
 {
     glBindTexture(GL_TEXTURE_CUBE_MAP, handle);
@@ -30,7 +28,6 @@ void gl::CubeTexture::generateMipmaps()
     glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
-
 
 void gl::CubeTexture::setData(CubeTextureFace face, TextureFormat format, const void *data, uint32_t width, uint32_t height)
 {

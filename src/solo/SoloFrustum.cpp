@@ -10,19 +10,16 @@
 
 using namespace solo;
 
-
 Frustum::Frustum()
 {
     setMatrix(Matrix::identity());
 }
-
 
 void Frustum::setMatrix(const Matrix &m)
 {
     this->matrix = m;
     updatePlanes();
 }
-
 
 auto Frustum::getCorners() const -> std::vector<Vector3>
 {
@@ -31,7 +28,6 @@ auto Frustum::getCorners() const -> std::vector<Vector3>
     near.insert(near.end(), far.begin(), far.end());
     return near;
 }
-
 
 auto Frustum::getNearCorners() const -> std::vector<Vector3>
 {
@@ -43,7 +39,6 @@ auto Frustum::getNearCorners() const -> std::vector<Vector3>
     return result;
 }
 
-
 auto Frustum::getFarCorners() const -> std::vector<Vector3>
 {
     std::vector<Vector3> result;
@@ -53,7 +48,6 @@ auto Frustum::getFarCorners() const -> std::vector<Vector3>
     result.emplace_back(Plane::getCommonPoint(far, left, top));
     return result;
 }
-
 
 bool Frustum::intersectsPoint(const Vector3 &point) const
 {
@@ -73,30 +67,25 @@ bool Frustum::intersectsPoint(const Vector3 &point) const
     return true;
 }
 
-
 bool Frustum::intersectsBoundingSphere(const BoundingSphere &sphere) const
 {
     return sphere.intersectsFrustum(*this);
 }
-
 
 bool Frustum::intersectsBoundingBox(const BoundingBox &box) const
 {
     return box.intersectsFrustum(*this);
 }
 
-
 auto Frustum::intersectPlane(const Plane &plane) const -> PlaneIntersection
 {
     return plane.intersectFrustum(*this);
 }
 
-
 auto Frustum::hitByRay(const Ray &ray) const -> float
 {
     return ray.hitFrustum(*this);
 }
-
 
 void Frustum::updatePlanes()
 {

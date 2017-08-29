@@ -10,7 +10,6 @@
 
 using namespace solo;
 
-
 auto FrameBuffer::create(Device *device) -> sptr<FrameBuffer>
 {
     switch (device->getSetup().mode)

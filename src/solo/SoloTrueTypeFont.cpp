@@ -10,7 +10,6 @@
 
 using namespace solo;
 
-
 TrueTypeFont::TrueTypeFont(Device *device, uint8_t *fontData, uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight,
                            uint32_t firstChar, uint32_t charCount, uint32_t oversampleX, uint32_t oversampleY):
     firstChar(firstChar)
@@ -32,7 +31,6 @@ TrueTypeFont::TrueTypeFont(Device *device, uint8_t *fontData, uint32_t size, uin
     atlas->setData(TextureFormat::Red, pixels.get(), atlasWidth, atlasHeight);
     atlas->generateMipmaps();
 }
-
 
 auto TrueTypeFont::getGlyphInfo(uint32_t character, float offsetX, float offsetY) -> GlyphInfo
 {
@@ -66,7 +64,6 @@ auto TrueTypeFont::getGlyphInfo(uint32_t character, float offsetX, float offsetY
 
     return result; // TODO move
 }
-
 
 auto Font::create(Device *device, uint8_t *fontData, uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight,
                   uint32_t firstChar, uint32_t charCount, uint32_t oversampleX, uint32_t oversampleY) -> sptr<Font>

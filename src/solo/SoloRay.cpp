@@ -13,14 +13,12 @@
 
 using namespace solo;
 
-
 Ray::Ray(const Vector3 &origin, const Vector3 &direction):
     origin(origin),
     direction(direction)
 {
     normalize();
 }
-
 
 Ray::Ray(float originX, float originY, float originZ, float dirX, float dirY, float dirZ):
     origin(originX, originY, originZ),
@@ -29,12 +27,10 @@ Ray::Ray(float originX, float originY, float originZ, float dirX, float dirY, fl
     normalize();
 }
 
-
 void Ray::setOrigin(const Vector3 &origin)
 {
     this->origin = origin;
 }
-
 
 void Ray::setDirection(const Vector3 &direction)
 {
@@ -42,18 +38,15 @@ void Ray::setDirection(const Vector3 &direction)
     normalize();
 }
 
-
 auto Ray::hitBoundingSphere(const BoundingSphere &sphere) const -> float
 {
     return sphere.hitByRay(*this);
 }
 
-
 auto Ray::hitBoundingBox(const BoundingBox &box) const -> float
 {
     return box.hitByRay(*this);
 }
-
 
 auto Ray::hitFrustum(const Frustum &frustum) const -> float
 {
@@ -99,7 +92,6 @@ auto Ray::hitFrustum(const Frustum &frustum) const -> float
     return d;
 }
 
-
 auto Ray::hitPlane(const Plane &plane) const -> float
 {
     const auto &normal = plane.getNormal();
@@ -118,7 +110,6 @@ auto Ray::hitPlane(const Plane &plane) const -> float
     auto d = -alpha / dot;
     return d < 0.0f ? -1 : d;
 }
-
 
 void Ray::normalize()
 {

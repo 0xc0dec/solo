@@ -14,7 +14,6 @@
 
 using namespace solo;
 
-
 FontRenderer::FontRenderer(const Node &node) :
     ComponentBase(node),
     renderer(node.getScene()->getDevice()->getRenderer())
@@ -30,7 +29,6 @@ FontRenderer::FontRenderer(const Node &node) :
     material->setDepthWrite(false);
 }
 
-
 void FontRenderer::render()
 {
     if (!mesh)
@@ -38,7 +36,6 @@ void FontRenderer::render()
     renderer->addRenderCommand(RenderCommand::applyMaterial(material.get()));
     renderer->addRenderCommand(RenderCommand::drawMesh(mesh.get(), transform));
 }
-
 
 void FontRenderer::setFont(sptr<Font> newFont)
 {
@@ -56,7 +53,6 @@ void FontRenderer::setFont(sptr<Font> newFont)
     else
         mesh = nullptr;
 }
-
 
 void FontRenderer::setText(const std::string &newText)
 {
@@ -77,7 +73,6 @@ void FontRenderer::setText(const std::string &newText)
     else
         mesh = nullptr;
 }
-
 
 void FontRenderer::rebuildMesh()
 {
@@ -125,7 +120,6 @@ void FontRenderer::rebuildMesh()
 
     mesh->setPrimitiveType(PrimitiveType::Triangles);
 }
-
 
 void FontRenderer::updateMesh()
 {

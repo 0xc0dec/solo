@@ -13,7 +13,6 @@
 
 using namespace solo;
 
-
 SkyboxRenderer::SkyboxRenderer(const Node &node):
     ComponentBase(node),
     renderer(node.getScene()->getDevice()->getRenderer())
@@ -33,13 +32,11 @@ SkyboxRenderer::SkyboxRenderer(const Node &node):
     quadMesh = Mesh::createFromPrefab(device, MeshPrefab::Quad);
 }
 
-
 void SkyboxRenderer::render()
 {
     renderer->addRenderCommand(RenderCommand::applyMaterial(material.get()));
     renderer->addRenderCommand(RenderCommand::drawMesh(quadMesh.get(), transform)); // TODO transform needed here?
 }
-
 
 void SkyboxRenderer::setTexture(sptr<CubeTexture> texture)
 {

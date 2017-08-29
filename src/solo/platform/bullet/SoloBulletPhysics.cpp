@@ -9,7 +9,6 @@
 
 using namespace solo;
 
-
 bullet::Physics::Physics(Device *device, const FriendToken<Device> &deviceToken) :
     solo::Physics(device, deviceToken)
 {
@@ -21,18 +20,15 @@ bullet::Physics::Physics(Device *device, const FriendToken<Device> &deviceToken)
     world->setGravity(btVector3(0, -10, 0));
 }
 
-
 void bullet::Physics::update()
 {
     world->stepSimulation(device->getTimeDelta(), 7); // 7 is debatable, but good enough. See docs
 }
 
-
 void bullet::Physics::setGravity(const Vector3 &gravity)
 {
     world->setGravity(SL_TOBTVEC3(gravity));
 }
-
 
 auto bullet::Physics::castRay(const Vector3 &from, const Vector3 &to) -> RaycastResult
 {
@@ -51,7 +47,6 @@ auto bullet::Physics::castRay(const Vector3 &from, const Vector3 &to) -> Raycast
     auto rigidBody = static_cast<RigidBody *>(body->getUserPointer());
     return RaycastResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld), SL_FROMBTVEC3(callback.m_hitNormalWorld));
 }
-
 
 auto bullet::Physics::castRayAll(const Vector3 &from, const Vector3 &to) -> std::vector<RaycastResult>
 {
@@ -76,7 +71,6 @@ auto bullet::Physics::castRayAll(const Vector3 &from, const Vector3 &to) -> std:
 
     return result;
 }
-
 
 auto bullet::Physics::getWorld() const -> btDiscreteDynamicsWorld*
 {

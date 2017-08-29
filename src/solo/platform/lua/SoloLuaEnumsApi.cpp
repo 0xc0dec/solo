@@ -15,7 +15,6 @@
 
 using namespace solo;
 
-
 void registerEnums(CppBindModule<LuaBinding> &module)
 {
     auto transformSpace = module.beginModule("TransformSpace");

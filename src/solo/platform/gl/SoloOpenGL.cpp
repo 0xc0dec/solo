@@ -15,7 +15,6 @@
 
 using namespace solo;
 
-
 auto gl::toPrimitiveType(PrimitiveType type) -> GLenum
 {
     switch (type)
@@ -35,7 +34,6 @@ auto gl::toPrimitiveType(PrimitiveType type) -> GLenum
             return GL_TRIANGLES;
     }
 }
-
 
 auto gl::toCubeTextureFace(CubeTextureFace face) -> GLenum
 {
@@ -59,7 +57,6 @@ auto gl::toCubeTextureFace(CubeTextureFace face) -> GLenum
     }
 }
 
-
 auto gl::toInternalTextureFormat(TextureFormat format) -> GLenum
 {
     switch (format)
@@ -76,7 +73,6 @@ auto gl::toInternalTextureFormat(TextureFormat format) -> GLenum
             return GL_RGB;
     }
 }
-
 
 auto gl::toTextureFormat(TextureFormat format) -> GLenum
 {
@@ -95,7 +91,6 @@ auto gl::toTextureFormat(TextureFormat format) -> GLenum
             return GL_RED;
     }
 }
-
 
 void gl::applyMinFilter(GLenum target, uint32_t flags)
 {
@@ -117,7 +112,6 @@ void gl::applyMinFilter(GLenum target, uint32_t flags)
         glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minFilter);
 }
 
-
 void gl::applyMagFilter(GLenum target, uint32_t flags)
 {
     GLenum magFilter = 0;
@@ -138,7 +132,6 @@ void gl::applyMagFilter(GLenum target, uint32_t flags)
         glTexParameteri(target, GL_TEXTURE_MAG_FILTER, magFilter);
 }
 
-
 void gl::applyRectWrap(GLenum target, uint32_t flags)
 {
     GLenum wrapS = 0;
@@ -158,7 +151,6 @@ void gl::applyRectWrap(GLenum target, uint32_t flags)
         glTexParameteri(target, GL_TEXTURE_WRAP_T, wrapT);
 }
 
-
 void gl::applyDepthWrap(uint32_t flags)
 {
     GLenum wrapR = 0;
@@ -170,7 +162,6 @@ void gl::applyDepthWrap(uint32_t flags)
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, wrapR);
 }
 
-
 void gl::clear(bool color, bool depth, const Vector4 &clearColor)
 {
     if (color)
@@ -179,24 +170,20 @@ void gl::clear(bool color, bool depth, const Vector4 &clearColor)
     glClear(flags);
 }
 
-
 void gl::setViewport(const Vector4 &viewport)
 {
     glViewport(viewport.x, viewport.y, viewport.z, viewport.w);
 }
-
 
 void gl::setDepthWrite(bool enabled)
 {
     glDepthMask(enabled ? GL_TRUE : GL_FALSE);
 }
 
-
 void gl::setDepthTest(bool enabled)
 {
     enabled ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
 }
-
 
 void gl::setDepthFunction(DepthFunction func)
 {
@@ -234,7 +221,6 @@ void gl::setDepthFunction(DepthFunction func)
         glDepthFunc(glfunc);
 }
 
-
 void gl::setPolygonMode(PolygonMode mode)
 {
     GLenum glMode;
@@ -256,7 +242,6 @@ void gl::setPolygonMode(PolygonMode mode)
     glPolygonMode(GL_FRONT_AND_BACK, glMode);
 }
 
-
 void gl::setFaceCull(FaceCull cull)
 {
     switch (cull)
@@ -277,18 +262,15 @@ void gl::setFaceCull(FaceCull cull)
     }
 }
 
-
 void gl::setBlend(bool enabled)
 {
     enabled ? glEnable(GL_BLEND) : glDisable(GL_BLEND);
 }
 
-
 void gl::setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor)
 {
     glBlendFunc(toBlendFactor(srcFactor), toBlendFactor(dstFactor));
 }
-
 
 auto gl::toBlendFactor(BlendFactor factor) -> GLenum
 {
@@ -325,7 +307,6 @@ auto gl::toBlendFactor(BlendFactor factor) -> GLenum
             return 0;
     }
 }
-
 
 bool gl::findUniformInProgram(GLuint program, const char *name, GLint &location, int32_t &index)
 {
@@ -373,6 +354,5 @@ bool gl::findUniformInProgram(GLuint program, const char *name, GLint &location,
 
     return false;
 }
-
 
 #endif

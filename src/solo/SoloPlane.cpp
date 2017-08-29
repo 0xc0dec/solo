@@ -12,13 +12,11 @@
 
 using namespace solo;
 
-
 Plane::Plane(const Vector3 &normal, float distance):
     normal(normal),
     distance(distance)
 {
 }
-
 
 Plane::Plane(float normalX, float normalY, float normalZ, float distance):
     normal(normalX, normalY, normalZ),
@@ -26,25 +24,21 @@ Plane::Plane(float normalX, float normalY, float normalZ, float distance):
 {
 }
 
-
 void Plane::setNormal(const Vector3 &normal)
 {
     this->normal = normal;
     normalize();
 }
 
-
 void Plane::setDistance(float distance)
 {
     this->distance = distance;
 }
 
-
 auto Plane::getDistanceToPoint(const Vector3 &point) const -> float
 {
     return normal.x * point.x + normal.y * point.y + normal.z * point.z + distance;
 }
-
 
 auto Plane::getCommonPoint(const Plane &p1, const Plane &p2, const Plane &p3) -> Vector3
 {
@@ -96,18 +90,15 @@ auto Plane::getCommonPoint(const Plane &p1, const Plane &p2, const Plane &p3) ->
     return result;
 }
 
-
 auto Plane::intersectBoundingSphere(const BoundingSphere &sphere) const -> PlaneIntersection
 {
     return sphere.intersectPlane(*this);
 }
 
-
 auto Plane::intersectBoundingBox(const BoundingBox &box) const -> PlaneIntersection
 {
     return box.intersectPlane(*this);
 }
-
 
 auto Plane::intersectFrustum(const Frustum &frustum) const -> PlaneIntersection
 {
@@ -149,7 +140,6 @@ auto Plane::intersectFrustum(const Frustum &frustum) const -> PlaneIntersection
     return PlaneIntersection::Intersecting;
 }
 
-
 auto Plane::intersectPlane(const Plane &plane) const -> PlaneIntersection
 {
     if ((math::areEqual(normal.x, plane.normal.x, math::epsilon1) &&
@@ -164,7 +154,6 @@ auto Plane::intersectPlane(const Plane &plane) const -> PlaneIntersection
     // (corresponds directly to the sign of the distance from the point calculated above to this plane).
     return getDistanceToPoint(point) > 0.0f ? PlaneIntersection::Front : PlaneIntersection::Back;
 }
-
 
 auto Plane::intersectRay(const Ray &ray) const -> PlaneIntersection
 {
@@ -184,14 +173,12 @@ auto Plane::intersectRay(const Ray &ray) const -> PlaneIntersection
     return d > 0.0f ? PlaneIntersection::Intersecting : PlaneIntersection::Back;
 }
 
-
 bool Plane::isParallel(const Plane &plane) const
 {
     return math::areEqual(normal.y * plane.normal.z, normal.z * plane.normal.y, math::epsilon1) &&
            math::areEqual(normal.z * plane.normal.x, normal.x * plane.normal.z, math::epsilon1) &&
            math::areEqual(normal.x * plane.normal.y, normal.y * plane.normal.x, math::epsilon1);
 }
-
 
 void Plane::normalize()
 {

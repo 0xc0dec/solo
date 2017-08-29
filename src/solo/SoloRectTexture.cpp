@@ -10,7 +10,6 @@
 
 using namespace solo;
 
-
 sptr<RectTexture> RectTexture::create(Device *device)
 {
     switch (device->getSetup().mode)

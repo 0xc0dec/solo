@@ -9,7 +9,6 @@
 
 using namespace solo;
 
-
 static const float identityMatrix[16] =
 {
     1.0f, 0.0f, 0.0f, 0.0f,
@@ -18,12 +17,10 @@ static const float identityMatrix[16] =
     0.0f, 0.0f, 0.0f, 1.0f
 };
 
-
 Matrix::Matrix()
 {
     *this = identity();
 }
-
 
 Matrix::Matrix(
     float m11, float m12, float m13, float m14,
@@ -49,12 +46,10 @@ Matrix::Matrix(
     m[15] = m44;
 }
 
-
 Matrix::Matrix(const Matrix &copy)
 {
     memcpy(m, copy.m, getSize());
 }
-
 
 auto Matrix::identity() -> Matrix
 {
@@ -65,7 +60,6 @@ auto Matrix::identity() -> Matrix
         0, 0, 0, 1);
     return m;
 }
-
 
 auto Matrix::getDeterminant() const -> float
 {
@@ -84,7 +78,6 @@ auto Matrix::getDeterminant() const -> float
 
     return a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
 }
-
 
 bool Matrix::invert()
 {
@@ -134,24 +127,20 @@ bool Matrix::invert()
     return true;
 }
 
-
 bool Matrix::isIdentity() const
 {
     return memcmp(m, identityMatrix, getSize()) == 0;
 }
-
 
 void Matrix::resetToIdentity()
 {
     memcpy(m, identityMatrix, getSize());
 }
 
-
 void Matrix::resetToZero()
 {
     memset(m, 0, getSize());
 }
-
 
 auto Matrix::operator+=(float scalar) -> Matrix &
 {
@@ -174,7 +163,6 @@ auto Matrix::operator+=(float scalar) -> Matrix &
     return *this;
 }
 
-
 auto Matrix::operator+=(const Matrix &other) -> Matrix &
 {
     m[0] += other.m[0];
@@ -196,7 +184,6 @@ auto Matrix::operator+=(const Matrix &other) -> Matrix &
     return *this;
 }
 
-
 void Matrix::transpose()
 {
     float t[16] =
@@ -208,7 +195,6 @@ void Matrix::transpose()
     };
     memcpy(&m, t, getSize());
 }
-
 
 auto Matrix::operator*=(float scalar) -> Matrix &
 {
@@ -230,7 +216,6 @@ auto Matrix::operator*=(float scalar) -> Matrix &
     m[15] *= scalar;
     return *this;
 }
-
 
 auto Matrix::operator*=(const Matrix &m2) -> Matrix &
 {
@@ -261,7 +246,6 @@ auto Matrix::operator*=(const Matrix &m2) -> Matrix &
     return *this;
 }
 
-
 auto Matrix::operator-=(float scalar) -> Matrix &
 {
     m[0] -= scalar;
@@ -282,7 +266,6 @@ auto Matrix::operator-=(float scalar) -> Matrix &
     m[15] -= scalar;
     return *this;
 }
-
 
 auto Matrix::operator-=(const Matrix &m2) -> Matrix &
 {
@@ -305,7 +288,6 @@ auto Matrix::operator-=(const Matrix &m2) -> Matrix &
     return *this;
 }
 
-
 auto Matrix::operator-() const -> Matrix
 {
     Matrix result;
@@ -327,4 +309,3 @@ auto Matrix::operator-() const -> Matrix
     result.m[15] = -m[15];
     return result;
 }
-

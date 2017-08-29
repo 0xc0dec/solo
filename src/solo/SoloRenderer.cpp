@@ -11,7 +11,6 @@
 
 using namespace solo;
 
-
 auto Renderer::create(Device *device, const FriendToken<Device> &) -> sptr<Renderer>
 {
     switch (device->getSetup().mode)
@@ -28,7 +27,6 @@ auto Renderer::create(Device *device, const FriendToken<Device> &) -> sptr<Rende
             return std::make_shared<null::Renderer>();
     }
 }
-
 
 void Renderer::renderFrame(std::function<void()> render)
 {

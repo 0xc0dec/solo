@@ -12,13 +12,11 @@
 
 using namespace solo;
 
-
 struct ReadContext
 {
     uint8_t *data;
     uint32_t offset;
 };
-
 
 static void callback(png_structp png, png_bytep data, png_size_t length)
 {
@@ -27,18 +25,15 @@ static void callback(png_structp png, png_bytep data, png_size_t length)
     context->offset += length;
 }
 
-
 PngImageLoader::PngImageLoader(Device *device):
     fs(device->getFileSystem())
 {
 }
 
-
 bool PngImageLoader::isLoadable(const std::string &path) const
 {
     return path.find(".png", path.size() - 5) != std::string::npos;
 }
-
 
 auto PngImageLoader::load(const std::string &path) -> sptr<Image>
 {

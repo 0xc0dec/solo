@@ -18,12 +18,10 @@
 
 using namespace solo;
 
-
 static auto createEffect(Device *device, const std::vector<uint8_t> &vsSrc, const std::vector<uint8_t> &fsSrc) -> sptr<Effect>
 {
     return Effect::create(device, vsSrc.data(), vsSrc.size(), fsSrc.data(), fsSrc.size());
 }
-
 
 static void registerFrameBuffer(CppBindModule<LuaBinding> &module)
 {
@@ -33,7 +31,6 @@ static void registerFrameBuffer(CppBindModule<LuaBinding> &module)
     REG_METHOD(fb, FrameBuffer, getSize);
     fb.endClass();
 }
-
 
 static void registerLogger(CppBindModule<LuaBinding> &module)
 {
@@ -47,7 +44,6 @@ static void registerLogger(CppBindModule<LuaBinding> &module)
     logger.endClass();
 }
 
-
 static void registerScene(CppBindModule<LuaBinding> &module)
 {
     auto scene = BEGIN_CLASS(module, Scene);
@@ -58,7 +54,6 @@ static void registerScene(CppBindModule<LuaBinding> &module)
     REG_METHOD(scene, Scene, visitByTags);
     scene.endClass();
 }
-
 
 static void registerMeshRenderer(CppBindModule<LuaBinding> &module)
 {
@@ -71,7 +66,6 @@ static void registerMeshRenderer(CppBindModule<LuaBinding> &module)
     REG_METHOD(renderer, MeshRenderer, getMaterialCount);
     renderer.endClass();
 }
-
 
 static void registerSpectator(CppBindModule<LuaBinding> &module)
 {
@@ -92,7 +86,6 @@ static void registerSkyboxRenderer(CppBindModule<LuaBinding> &module)
     r.endClass();
 }
 
-
 static void registerEffect(CppBindModule<LuaBinding> &module)
 {
     auto eff = BEGIN_CLASS(module, Effect);
@@ -100,7 +93,6 @@ static void registerEffect(CppBindModule<LuaBinding> &module)
     REG_STATIC_METHOD(eff, Effect, createFromPrefab);
     eff.endClass();
 }
-
 
 static void registerFileSystem(CppBindModule<LuaBinding> &module)
 {
@@ -113,7 +105,6 @@ static void registerFileSystem(CppBindModule<LuaBinding> &module)
     REG_METHOD(fs, FileSystem, iterateLines);
     fs.endClass();
 }
-
 
 static void registerAsyncHandles(CppBindModule<LuaBinding> &module)
 {
@@ -130,7 +121,6 @@ static void registerAsyncHandles(CppBindModule<LuaBinding> &module)
     cubeTexAsyncHandle.endClass();
 }
 
-
 static void registerAssetLoader(CppBindModule<LuaBinding> &module)
 {
     auto loader = BEGIN_CLASS(module, AssetLoader);
@@ -144,14 +134,12 @@ static void registerAssetLoader(CppBindModule<LuaBinding> &module)
     loader.endClass();
 }
 
-
 static void registerRenderer(CppBindModule<LuaBinding> &module)
 {
     auto renderer = BEGIN_CLASS(module, Renderer);
     REG_METHOD(renderer, Renderer, renderFrame);
     renderer.endClass();
 }
-
 
 void registerMiscApi(CppBindModule<LuaBinding> &module)
 {

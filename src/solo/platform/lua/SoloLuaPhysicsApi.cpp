@@ -10,7 +10,6 @@
 
 using namespace solo;
 
-
 static void registerRigidBodyConstructionParams(CppBindModule<LuaBinding> &module)
 {
     auto params = BEGIN_CLASS(module, RigidBodyConstructionParameters);
@@ -26,14 +25,12 @@ static void registerRigidBodyConstructionParams(CppBindModule<LuaBinding> &modul
     params.endClass();
 }
 
-
 static void registerRigidBody(CppBindModule<LuaBinding> &module)
 {
     auto rb = BEGIN_CLASS_EXTEND(module, RigidBody, Component);
     REG_METHOD_NULLABLE_1ST_ARG(rb, RigidBody, setCollider, sptr<Collider>);
     rb.endClass();
 }
-
 
 static void registerRaycastResult(CppBindModule<LuaBinding> &module)
 {
@@ -43,7 +40,6 @@ static void registerRaycastResult(CppBindModule<LuaBinding> &module)
     REG_VARIABLE(rcr, RaycastResult, normal);
     rcr.endClass();
 }
-
 
 static void registerPhysics(CppBindModule<LuaBinding> &module)
 {
@@ -55,7 +51,6 @@ static void registerPhysics(CppBindModule<LuaBinding> &module)
     ph.endClass();
 }
 
-
 static void registerColliders(CppBindModule<LuaBinding> &module)
 {
     auto coll = BEGIN_CLASS(module, Collider);
@@ -65,7 +60,6 @@ static void registerColliders(CppBindModule<LuaBinding> &module)
     REG_STATIC_METHOD(box, BoxCollider, create);
     box.endClass();
 }
-
 
 void registerPhysicsApi(CppBindModule<LuaBinding> &module)
 {
