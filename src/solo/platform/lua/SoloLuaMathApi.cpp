@@ -17,28 +17,27 @@ using namespace solo;
 
 static void registerVector2(CppBindModule<LuaBinding> &module)
 {
-    auto vector2 = BEGIN_CLASS(module, Vector2);
-    REG_CTOR(vector2, float, float);
-    REG_VARIABLE(vector2, Vector2, x);
-    REG_VARIABLE(vector2, Vector2, y);
-    REG_METHOD(vector2, Vector2, isUnit);
-    REG_METHOD(vector2, Vector2, isZero);
-    REG_STATIC_METHOD(vector2, Vector2, angle);
-    REG_METHOD(vector2, Vector2, clamp);
-    REG_METHOD(vector2, Vector2, distance);
-    REG_METHOD(vector2, Vector2, distanceSquared);
-    REG_STATIC_METHOD_OVERLOADED(vector2, Vector2, dot, "dot", float, , const Vector2&, const Vector2&);
-    REG_METHOD_OVERLOADED(vector2, Vector2, dot, "dot", float, const, const Vector2&);
-    REG_METHOD(vector2, Vector2, length);
-    REG_METHOD(vector2, Vector2, lengthSquared);
-    REG_METHOD(vector2, Vector2, normalize);
-    REG_METHOD(vector2, Vector2, normalized);
-    REG_META_METHOD(vector2, "__add", [](const Vector2 &v1, const Vector2 &v2) { return v1 + v2; });
-    REG_META_METHOD(vector2, "__sub", [](const Vector2 &v1, const Vector2 &v2) { return v1 - v2; });
-    REG_META_METHOD(vector2, "__mul", [](const Vector2 &v, float f) { return v * f; });
-    REG_META_METHOD(vector2, "__div", [](const Vector2 &v, float f) { return v / f; });
-    REG_META_METHOD(vector2, "__unm", [](const Vector2 &v) { return -v; });
-    vector2.endClass();
+    auto v = BEGIN_CLASS(module, Vector2);
+    REG_CTOR(v, float, float);
+    REG_VARIABLE(v, Vector2, x);
+    REG_VARIABLE(v, Vector2, y);
+    REG_METHOD(v, Vector2, isUnit);
+    REG_METHOD(v, Vector2, isZero);
+    REG_METHOD(v, Vector2, angle);
+    REG_METHOD(v, Vector2, clamp);
+    REG_METHOD(v, Vector2, distance);
+    REG_METHOD(v, Vector2, distanceSquared);
+    REG_METHOD(v, Vector2, dot);
+    REG_METHOD(v, Vector2, length);
+    REG_METHOD(v, Vector2, lengthSquared);
+    REG_METHOD(v, Vector2, normalize);
+    REG_METHOD(v, Vector2, normalized);
+    REG_META_METHOD(v, "__add", [](const Vector2 &v1, const Vector2 &v2) { return v1 + v2; });
+    REG_META_METHOD(v, "__sub", [](const Vector2 &v1, const Vector2 &v2) { return v1 - v2; });
+    REG_META_METHOD(v, "__mul", [](const Vector2 &v, float f) { return v * f; });
+    REG_META_METHOD(v, "__div", [](const Vector2 &v, float f) { return v / f; });
+    REG_META_METHOD(v, "__unm", [](const Vector2 &v) { return -v; });
+    v.endClass();
 }
 
 static void registerVector3(CppBindModule<LuaBinding> &module)

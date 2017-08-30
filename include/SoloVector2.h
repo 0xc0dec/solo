@@ -18,26 +18,16 @@ namespace solo
         Vector2() {}
         Vector2(float x, float y);
 
-        static auto unit() -> Vector2;
-        static auto unitX() -> Vector2;
-        static auto unitY() -> Vector2;
-
         bool isZero() const;
         bool isUnit() const;
 
-        static auto angle(const Vector2 &v1, const Vector2 &v2) -> Radian;
-
         void clamp(const Vector2 &min, const Vector2 &max);
-
         auto distance(const Vector2 &v) const -> float;
         auto distanceSquared(const Vector2 &v) const -> float;
-
         auto dot(const Vector2 &v) const -> float;
-        static auto dot(const Vector2 &v1, const Vector2 &v2) -> float;
-
+        auto angle(const Vector2 &v) const -> Radian;
         auto length() const -> float;
         auto lengthSquared() const -> float;
-
         auto normalized() const -> Vector2;
         void normalize();
 
