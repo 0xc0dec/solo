@@ -16,7 +16,4 @@ assert(m:getDeterminant() ~= nil)
 assert(m:invert() ~= nil)
 m:transpose()
 
-m:resetToIdentity()
-m:resetToZero()
-
 assert(m * solo.Matrix())

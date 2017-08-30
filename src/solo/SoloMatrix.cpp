@@ -132,16 +132,6 @@ bool Matrix::isIdentity() const
     return memcmp(m, identityMatrix, getSize()) == 0;
 }
 
-void Matrix::resetToIdentity()
-{
-    memcpy(m, identityMatrix, getSize());
-}
-
-void Matrix::resetToZero()
-{
-    memset(m, 0, getSize());
-}
-
 auto Matrix::operator+=(float scalar) -> Matrix &
 {
     m[0] += scalar;

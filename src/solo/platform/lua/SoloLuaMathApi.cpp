@@ -223,8 +223,6 @@ static void registerMatrix(CppBindModule<LuaBinding> &module)
     REG_METHOD(matrix, Matrix, getDeterminant);
     REG_METHOD(matrix, Matrix, invert);
     REG_METHOD(matrix, Matrix, transpose);
-    REG_METHOD(matrix, Matrix, resetToIdentity);
-    REG_METHOD(matrix, Matrix, resetToZero);
     REG_META_METHOD(matrix, "__mul", [](const Matrix &m1, const Matrix &m2) { return m1 * m2; });
     matrix.endClass();
 }
