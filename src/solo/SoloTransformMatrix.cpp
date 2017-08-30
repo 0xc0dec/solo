@@ -12,6 +12,7 @@
 #include "SoloBoundingSphere.h"
 #include "SoloRay.h"
 #include <algorithm>
+#include <glm/gtx/common.hpp>
 
 using namespace solo;
 
@@ -46,6 +47,21 @@ auto TransformMatrix::createLookAt(const Vector3 &eye, const Vector3 &target, co
         xaxis.y, yaxis.y, zaxis.y, 0,
         xaxis.z, yaxis.z, zaxis.z, 0,
         -Vector3::dot(xaxis, eye), -Vector3::dot(yaxis, eye), -Vector3::dot(zaxis, eye), 1
+    ));
+}
+
+auto TransformMatrix::createLookAt2(const glm::vec3 &eye, const glm::vec3 &target, const glm::vec3 &up) -> TransformMatrix
+{
+    auto zaxis = glm::normalize(eye - target);
+    auto xaxis = glm::normalize(glm::cross(glm::normalize(up), zaxis));
+    auto yaxis = glm::normalize(glm::cross(zaxis, xaxis));
+
+    // Matrix is built already transposed
+    return TransformMatrix(Matrix(
+        xaxis.x, yaxis.x, zaxis.x, 0,
+        xaxis.y, yaxis.y, zaxis.y, 0,
+        xaxis.z, yaxis.z, zaxis.z, 0,
+        -glm::dot(xaxis, eye), -glm::dot(yaxis, eye), -glm::dot(zaxis, eye), 1
     ));
 }
 

@@ -6,6 +6,7 @@
 #pragma once
 
 #include "SoloMatrix.h"
+#include <glm/vec3.hpp>
 
 namespace solo
 {
@@ -23,6 +24,7 @@ namespace solo
         TransformMatrix(const Matrix &other);
 
         static auto createLookAt(const Vector3 &eye, const Vector3 &target, const Vector3 &up) -> TransformMatrix;
+        static auto createLookAt2(const glm::vec3 &eye, const glm::vec3 &target, const glm::vec3 &up) -> TransformMatrix;
         static auto createPerspective(const Radian &fieldOfView, float aspectRatio, float znear, float zfar) -> TransformMatrix;
         static auto createOrthographic(float width, float height, float near, float far) -> TransformMatrix;
         static auto createScale(const Vector3 &scale) -> TransformMatrix;

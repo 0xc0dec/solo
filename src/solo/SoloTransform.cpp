@@ -197,7 +197,10 @@ void Transform::lookAt(const Vector3 &target, const Vector3 &up)
         localUp = m.transformDirection(up);
     }
 
-    auto lookAtMatrix = TransformMatrix::createLookAt(localPosition, localTarget, localUp);
+    auto lookAtMatrix = TransformMatrix::createLookAt2(
+        {localPosition.x, localPosition.y, localPosition.z},
+        {localTarget.x, localTarget.y, localTarget.z},
+        {localUp.x, localUp.y, localUp.z});
     setLocalRotation(lookAtMatrix.getRotation());
 }
 
