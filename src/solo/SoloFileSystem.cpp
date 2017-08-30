@@ -5,7 +5,7 @@
 
 #include "SoloFileSystem.h"
 #include "SoloDevice.h"
-#include "platform/null/SoloNullFileSystem.h"
+#include "null/SoloNullFileSystem.h"
 #include <fstream>
 
 using namespace solo;

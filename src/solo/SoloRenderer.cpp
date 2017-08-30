@@ -5,9 +5,9 @@
 
 #include "SoloRenderer.h"
 #include "SoloDevice.h"
-#include "platform/gl/SoloOpenGLRenderer.h"
-#include "platform/vk/SoloVulkanRenderer.h"
-#include "platform/null/SoloNullRenderer.h"
+#include "gl/SoloOpenGLRenderer.h"
+#include "vk/SoloVulkanRenderer.h"
+#include "null/SoloNullRenderer.h"
 
 using namespace solo;
 

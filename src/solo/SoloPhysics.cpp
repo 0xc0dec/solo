@@ -4,7 +4,7 @@
 */
 
 #include "SoloPhysics.h"
-#include "platform/bullet/SoloBulletPhysics.h"
+#include "bullet/SoloBulletPhysics.h"
 
 using namespace solo;
 

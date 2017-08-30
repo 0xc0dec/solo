@@ -6,9 +6,9 @@
 #include "SoloMaterial.h"
 #include "SoloTexture.h"
 #include "SoloDevice.h"
-#include "platform/gl/SoloOpenGLMaterial.h"
-#include "platform/vk/SoloVulkanMaterial.h"
-#include "platform/null/SoloNullMaterial.h"
+#include "gl/SoloOpenGLMaterial.h"
+#include "vk/SoloVulkanMaterial.h"
+#include "null/SoloNullMaterial.h"
 
 using namespace solo;
 

@@ -5,8 +5,8 @@
 
 #include "SoloFrameBuffer.h"
 #include "SoloDevice.h"
-#include "platform/gl/SoloOpenGLFrameBuffer.h"
-#include "platform/null/SoloNullFrameBuffer.h"
+#include "gl/SoloOpenGLFrameBuffer.h"
+#include "null/SoloNullFrameBuffer.h"
 
 using namespace solo;
 

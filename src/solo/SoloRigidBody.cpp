@@ -4,7 +4,7 @@
 */
 
 #include "SoloRigidBody.h"
-#include "platform/bullet/SoloBulletRigidBody.h"
+#include "bullet/SoloBulletRigidBody.h"
 
 using namespace solo;
 

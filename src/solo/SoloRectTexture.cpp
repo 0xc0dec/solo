@@ -5,8 +5,8 @@
 
 #include "SoloRectTexture.h"
 #include "SoloDevice.h"
-#include "platform/gl/SoloOpenGLRectTexture.h"
-#include "platform/null/SoloNullRectTexture.h"
+#include "gl/SoloOpenGLRectTexture.h"
+#include "null/SoloNullRectTexture.h"
 
 using namespace solo;
 

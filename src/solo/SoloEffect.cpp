@@ -5,9 +5,9 @@
 
 #include "SoloEffect.h"
 #include "SoloDevice.h"
-#include "platform/gl/SoloOpenGLEffect.h"
-#include "platform/vk/SoloVulkanEffect.h"
-#include "platform/null/SoloNullEffect.h"
+#include "gl/SoloOpenGLEffect.h"
+#include "vk/SoloVulkanEffect.h"
+#include "null/SoloNullEffect.h"
 
 using namespace solo;
 

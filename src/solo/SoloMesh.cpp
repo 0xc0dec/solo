@@ -6,9 +6,9 @@
 #include "SoloMesh.h"
 #include "SoloEffect.h"
 #include "SoloDevice.h"
-#include "platform/gl/SoloOpenGLMesh.h"
-#include "platform/vk/SoloVulkanMesh.h"
-#include "platform/null/SoloNullMesh.h"
+#include "gl/SoloOpenGLMesh.h"
+#include "vk/SoloVulkanMesh.h"
+#include "null/SoloNullMesh.h"
 
 using namespace solo;
 

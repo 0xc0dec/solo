@@ -4,7 +4,7 @@
 */
 
 #include "SoloBoxCollider.h"
-#include "platform/bullet/SoloBulletBoxCollider.h"
+#include "bullet/SoloBulletBoxCollider.h"
 
 using namespace solo;
 

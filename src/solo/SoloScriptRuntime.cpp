@@ -5,7 +5,7 @@
 
 #include "SoloScriptRuntime.h"
 #include "SoloDevice.h"
-#include "platform/lua/SoloLuaScriptRuntime.h"
+#include "lua/SoloLuaScriptRuntime.h"
 
 using namespace solo;
 

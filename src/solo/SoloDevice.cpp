@@ -11,9 +11,9 @@
 #include "SoloRenderer.h"
 #include "SoloPhysics.h"
 #include "SoloScriptRuntime.h"
-#include "platform/null/SoloNullDevice.h"
-#include "platform/gl/SoloSDLOpenGLDevice.h"
-#include "platform/vk/SoloSDLVulkanDevice.h"
+#include "null/SoloNullDevice.h"
+#include "gl/SoloSDLOpenGLDevice.h"
+#include "vk/SoloSDLVulkanDevice.h"
 
 using namespace solo;
 

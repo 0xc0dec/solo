@@ -5,8 +5,8 @@
 
 #include "SoloCubeTexture.h"
 #include "SoloDevice.h"
-#include "platform/gl/SoloOpenGLCubeTexture.h"
-#include "platform/null/SoloNullCubeTexture.h"
+#include "gl/SoloOpenGLCubeTexture.h"
+#include "null/SoloNullCubeTexture.h"
 
 using namespace solo;
 
