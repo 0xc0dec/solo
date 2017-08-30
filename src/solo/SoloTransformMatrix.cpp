@@ -6,10 +6,7 @@
 #include "SoloTransformMatrix.h"
 #include "SoloCommon.h"
 #include "SoloMath.h"
-#include "SoloPlane.h"
 #include "SoloQuaternion.h"
-#include "SoloBoundingBox.h"
-#include "SoloBoundingSphere.h"
 #include "SoloRay.h"
 #include <algorithm>
 #include <glm/gtx/common.hpp>
@@ -546,55 +543,6 @@ static void updateBounds(const Vector3 &point, Vector3 &min, Vector3 &max)
 
     if (point.z > max.z)
         max.z = point.z;
-}
-
-auto TransformMatrix::transformBoundingBox(const BoundingBox &box) -> BoundingBox
-{
-    auto corners = box.getCorners();
-    auto newMin = Vector3(std::numeric_limits<float>::max());
-    auto newMax = Vector3(std::numeric_limits<float>::min());
-
-    for (const auto &corner : corners)
-    {
-        auto newCorner = transformPoint(corner);
-        updateBounds(newCorner, newMin, newMax);
-    }
-
-    return {{newMin.x, newMin.y, newMin.z}, {newMax.x, newMax.y, newMax.z}};
-}
-
-auto TransformMatrix::transformBoundingSphere(const BoundingSphere &sphere) -> BoundingSphere
-{
-    auto scale = getScale();
-    auto r = sphere.radius * scale.x;
-    r = std::max(r, sphere.radius * scale.y);
-    r = std::max(r, sphere.radius * scale.z);
-    return {transformPoint(sphere.center), r};
-}
-
-auto TransformMatrix::transformPlane(const Plane &plane) -> Plane
-{
-    auto inverted(*this);
-    if (!inverted.invert())
-        return plane;
-
-    auto normal = plane.getNormal();
-    auto distance = plane.getDistance();
-
-    // Treat the plane as a four-tuple and multiply by the inverse transpose of the matrix to get the transformed plane.
-    // Then we normalize the plane by dividing both the normal and the distance by the length of the normal.
-    auto nx = normal.x * inverted.m[0] + normal.y * inverted.m[1] + normal.z * inverted.m[2] + distance * inverted.m[3];
-    auto ny = normal.x * inverted.m[4] + normal.y * inverted.m[5] + normal.z * inverted.m[6] + distance * inverted.m[7];
-    auto nz = normal.x * inverted.m[8] + normal.y * inverted.m[9] + normal.z * inverted.m[10] + distance * inverted.m[11];
-    auto d = normal.x * inverted.m[12] + normal.y * inverted.m[13] + normal.z * inverted.m[14] + distance * inverted.m[15];
-    auto divisor = sqrtf(nx * nx + ny * ny + nz * nz);
-    auto factor = 1.0f / divisor;
-
-    normal.x = nx * factor;
-    normal.y = ny * factor;
-    normal.z = nz * factor;
-
-    return {normal, d * factor};
 }
 
 auto TransformMatrix::transformRay(const Ray &ray) -> Ray

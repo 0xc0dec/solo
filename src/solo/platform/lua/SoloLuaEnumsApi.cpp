@@ -4,7 +4,6 @@
 */
 
 #include "SoloTransform.h"
-#include "SoloPlane.h"
 #include "SoloTexture.h"
 #include "SoloLuaCommon.h"
 #include "SoloEffect.h"
@@ -22,12 +21,6 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     REG_MODULE_CONSTANT(transformSpace, TransformSpace, Self);
     REG_MODULE_CONSTANT(transformSpace, TransformSpace, World);
     transformSpace.endModule();
-
-    auto intersection = module.beginModule("PlaneIntersection");
-    REG_MODULE_CONSTANT(intersection, PlaneIntersection, Intersecting);
-    REG_MODULE_CONSTANT(intersection, PlaneIntersection, Front);
-    REG_MODULE_CONSTANT(intersection, PlaneIntersection, Back);
-    intersection.endModule();
 
     auto textureWrapping = module.beginModule("TextureWrapping");
     REG_MODULE_CONSTANT(textureWrapping, TextureWrapping, Clamp);

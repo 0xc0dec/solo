@@ -9,11 +9,6 @@
 
 namespace solo
 {
-    class Plane;
-    class BoundingSphere;
-    class BoundingBox;
-    class Frustum;
-
     class Ray final
     {
     public:
@@ -26,12 +21,6 @@ namespace solo
 
         auto getDirection() const -> Vector3;
         void setDirection(const Vector3 &direction);
-
-        // These methods return -1 if there's no intersection
-        auto hitBoundingSphere(const BoundingSphere &sphere) const -> float;
-        auto hitBoundingBox(const BoundingBox &box) const -> float;
-        auto hitFrustum(const Frustum &frustum) const -> float;
-        auto hitPlane(const Plane &plane) const -> float;
 
     private:
         Vector3 origin{0, 0, 0};

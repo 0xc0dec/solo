@@ -11,10 +11,6 @@
 #include "SoloQuaternion.h"
 #include "SoloMatrix.h"
 #include "SoloTransformMatrix.h"
-#include "SoloBoundingBox.h"
-#include "SoloBoundingSphere.h"
-#include "SoloPlane.h"
-#include "SoloFrustum.h"
 #include "SoloRay.h"
 #include "SoloLuaCommon.h"
 
@@ -266,67 +262,9 @@ static void registerTransformMatrix(CppBindModule<LuaBinding> &module)
     REG_METHOD(matrix, TransformMatrix, translate);
     REG_METHOD(matrix, TransformMatrix, transformPoint);
     REG_METHOD(matrix, TransformMatrix, transformDirection);
-    REG_METHOD(matrix, TransformMatrix, transformBoundingBox);
-    REG_METHOD(matrix, TransformMatrix, transformBoundingSphere);
-    REG_METHOD(matrix, TransformMatrix, transformPlane);
     REG_METHOD(matrix, TransformMatrix, transformRay);
     REG_METHOD(matrix, TransformMatrix, decompose);
     matrix.endClass();
-}
-
-static void registerBoundingBox(CppBindModule<LuaBinding> &module)
-{
-    auto bb = BEGIN_CLASS(module, BoundingBox);
-    REG_CTOR(bb, const Vector3&, const Vector3&);
-    REG_VARIABLE(bb, BoundingBox, min);
-    REG_VARIABLE(bb, BoundingBox, max);
-    REG_METHOD(bb, BoundingBox, getCenter);
-    REG_METHOD(bb, BoundingBox, getCorners);
-    REG_METHOD(bb, BoundingBox, intersectsBoundingBox);
-    REG_METHOD(bb, BoundingBox, intersectsBoundingSphere);
-    REG_METHOD(bb, BoundingBox, intersectsFrustum);
-    REG_METHOD(bb, BoundingBox, hitByRay);
-    REG_METHOD(bb, BoundingBox, intersectPlane);
-    REG_METHOD(bb, BoundingBox, isEmpty);
-    REG_METHOD(bb, BoundingBox, mergeBoundingBox);
-    REG_METHOD(bb, BoundingBox, mergeBoundingSphere);
-    bb.endClass();
-}
-
-static void registerBoundingSphere(CppBindModule<LuaBinding> &module)
-{
-    auto bs = BEGIN_CLASS(module, BoundingSphere);
-    REG_CTOR(bs, const Vector3&, float);
-    REG_VARIABLE(bs, BoundingSphere, center);
-    REG_VARIABLE(bs, BoundingSphere, radius);
-    REG_METHOD(bs, BoundingSphere, intersectsBoundingSphere);
-    REG_METHOD(bs, BoundingSphere, intersectsBoundingBox);
-    REG_METHOD(bs, BoundingSphere, intersectsFrustum);
-    REG_METHOD(bs, BoundingSphere, hitByRay);
-    REG_METHOD(bs, BoundingSphere, intersectPlane);
-    REG_METHOD(bs, BoundingSphere, isEmpty);
-    REG_METHOD(bs, BoundingSphere, mergeBoundingBox);
-    REG_METHOD(bs, BoundingSphere, mergeBoundingSphere);
-    bs.endClass();
-}
-
-static void registerPlane(CppBindModule<LuaBinding> &module)
-{
-    auto plane = BEGIN_CLASS(module, Plane);
-    REG_CTOR(plane, const Vector3&, float);
-    REG_METHOD(plane, Plane, getNormal);
-    REG_METHOD(plane, Plane, setNormal);
-    REG_METHOD(plane, Plane, getDistance);
-    REG_METHOD(plane, Plane, setDistance);
-    REG_METHOD(plane, Plane, getDistanceToPoint);
-    REG_STATIC_METHOD(plane, Plane, getCommonPoint);
-    REG_METHOD(plane, Plane, intersectBoundingBox);
-    REG_METHOD(plane, Plane, intersectBoundingSphere);
-    REG_METHOD(plane, Plane, intersectFrustum);
-    REG_METHOD(plane, Plane, intersectPlane);
-    REG_METHOD(plane, Plane, intersectRay);
-    REG_METHOD(plane, Plane, isParallel);
-    plane.endClass();
 }
 
 static void registerRay(CppBindModule<LuaBinding> &module)
@@ -337,34 +275,7 @@ static void registerRay(CppBindModule<LuaBinding> &module)
     REG_METHOD(ray, Ray, setOrigin);
     REG_METHOD(ray, Ray, getDirection);
     REG_METHOD(ray, Ray, setDirection);
-    REG_METHOD(ray, Ray, hitBoundingBox);
-    REG_METHOD(ray, Ray, hitBoundingSphere);
-    REG_METHOD(ray, Ray, hitFrustum);
-    REG_METHOD(ray, Ray, hitPlane);
     ray.endClass();
-}
-
-static void registerFrustum(CppBindModule<LuaBinding> &module)
-{
-    auto f = BEGIN_CLASS(module, Frustum);
-    REG_CTOR(f);
-    REG_METHOD(f, Frustum, getNearPlane);
-    REG_METHOD(f, Frustum, getFarPlane);
-    REG_METHOD(f, Frustum, getLeftPlane);
-    REG_METHOD(f, Frustum, getRightPlane);
-    REG_METHOD(f, Frustum, getTopPlane);
-    REG_METHOD(f, Frustum, getBottomPlane);
-    REG_METHOD(f, Frustum, getMatrix);
-    REG_METHOD(f, Frustum, setMatrix);
-    REG_METHOD(f, Frustum, getCorners);
-    REG_METHOD(f, Frustum, getNearCorners);
-    REG_METHOD(f, Frustum, getFarCorners);
-    REG_METHOD(f, Frustum, intersectsPoint);
-    REG_METHOD(f, Frustum, intersectsBoundingBox);
-    REG_METHOD(f, Frustum, intersectsBoundingSphere);
-    REG_METHOD(f, Frustum, hitByRay);
-    REG_METHOD(f, Frustum, intersectPlane);
-    f.endClass();
 }
 
 void registerMathApi(CppBindModule<LuaBinding> &module)
@@ -380,9 +291,5 @@ void registerMathApi(CppBindModule<LuaBinding> &module)
     registerQuaternion(module);
     registerMatrix(module);
     registerTransformMatrix(module);
-    registerBoundingBox(module);
-    registerBoundingSphere(module);
-    registerPlane(module);
     registerRay(module);
-    registerFrustum(module);
 }

@@ -22,19 +22,7 @@
     <ClInclude Include="..\include\SoloQuaternion.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloPlane.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloBoundingSphere.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloBoundingBox.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloRay.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SoloFrustum.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SoloFormatter.h">
@@ -312,19 +300,7 @@
     <ClCompile Include="..\src\solo\SoloMatrix.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\SoloPlane.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\SoloBoundingSphere.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\SoloBoundingBox.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\solo\SoloRay.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\SoloFrustum.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\SoloTransform.cpp">

@@ -6,8 +6,6 @@
 #pragma once
 
 #include "SoloAssetLoader.h"
-#include "SoloBoundingBox.h"
-#include "SoloBoundingSphere.h"
 #include "SoloBoxCollider.h"
 #include "SoloCamera.h"
 #include "SoloCollider.h"
@@ -23,7 +21,6 @@
 #include "SoloFontRenderer.h"
 #include "SoloFormatter.h"
 #include "SoloFrameBuffer.h"
-#include "SoloFrustum.h"
 #include "SoloImage.h"
 #include "SoloLogger.h"
 #include "SoloMaterial.h"
@@ -33,7 +30,6 @@
 #include "SoloMeshRenderer.h"
 #include "SoloNode.h"
 #include "SoloPhysics.h"
-#include "SoloPlane.h"
 #include "SoloQuaternion.h"
 #include "SoloRadian.h"
 #include "SoloRay.h"

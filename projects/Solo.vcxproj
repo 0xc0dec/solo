@@ -12,8 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\SoloCommon.h" />
-    <ClInclude Include="..\include\SoloBoundingBox.h" />
-    <ClInclude Include="..\include\SoloBoundingSphere.h" />
     <ClInclude Include="..\include\SoloBoxCollider.h" />
     <ClInclude Include="..\include\SoloCamera.h" />
     <ClInclude Include="..\include\SoloCollider.h" />
@@ -26,7 +24,6 @@
     <ClInclude Include="..\include\SoloFont.h" />
     <ClInclude Include="..\include\SoloFontRenderer.h" />
     <ClInclude Include="..\include\SoloFormatter.h" />
-    <ClInclude Include="..\include\SoloFrustum.h" />
     <ClInclude Include="..\include\Solo.h" />
     <ClInclude Include="..\include\SoloImage.h" />
     <ClInclude Include="..\include\SoloPhysics.h" />
@@ -47,7 +44,6 @@
     <ClInclude Include="..\include\SoloMesh.h" />
     <ClInclude Include="..\include\SoloMeshRenderer.h" />
     <ClInclude Include="..\include\SoloNode.h" />
-    <ClInclude Include="..\include\SoloPlane.h" />
     <ClInclude Include="..\include\SoloQuaternion.h" />
     <ClInclude Include="..\include\SoloRay.h" />
     <ClInclude Include="..\include\SoloAssetLoader.h" />
@@ -163,13 +159,10 @@
     <ClCompile Include="..\src\solo\SoloSpectator.cpp" />
     <ClCompile Include="..\src\solo\SoloTransformMatrix.cpp" />
     <ClCompile Include="..\src\solo\SoloTrueTypeFont.cpp" />
-    <ClCompile Include="..\src\solo\SoloBoundingBox.cpp" />
-    <ClCompile Include="..\src\solo\SoloBoundingSphere.cpp" />
     <ClCompile Include="..\src\solo\SoloCamera.cpp" />
     <ClCompile Include="..\src\solo\SoloFileSystem.cpp" />
     <ClCompile Include="..\src\solo\SoloBase.cpp" />
     <ClCompile Include="..\src\solo\SoloDevice.cpp" />
-    <ClCompile Include="..\src\solo\SoloFrustum.cpp" />
     <ClCompile Include="..\src\solo\SoloLogger.cpp" />
     <ClCompile Include="..\src\solo\SoloMaterial.cpp" />
     <ClCompile Include="..\src\solo\SoloMatrix.cpp" />
@@ -177,7 +170,6 @@
     <ClCompile Include="..\src\solo\SoloMeshRenderer.cpp" />
     <ClCompile Include="..\src\solo\SoloNode.cpp" />
     <ClCompile Include="..\src\solo\SoloObjMeshLoader.cpp" />
-    <ClCompile Include="..\src\solo\SoloPlane.cpp" />
     <ClCompile Include="..\src\solo\SoloPngImageLoader.cpp" />
     <ClCompile Include="..\src\solo\SoloQuaternion.cpp" />
     <ClCompile Include="..\src\solo\SoloRay.cpp" />

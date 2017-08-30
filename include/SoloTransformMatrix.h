@@ -11,9 +11,6 @@
 
 namespace solo
 {
-    class BoundingBox;
-    class BoundingSphere;
-    class Plane;
     class Ray;
     class Quaternion;
 
@@ -86,9 +83,6 @@ namespace solo
         auto transformPoint2(const glm::vec3 &point) const -> glm::vec3;
         auto transformDirection(const Vector3 &dir) const -> Vector3;
         auto transformDirection2(const glm::vec3 &dir) const -> glm::vec3;
-        auto transformBoundingBox(const BoundingBox &box) -> BoundingBox;
-        auto transformBoundingSphere(const BoundingSphere &sphere) -> BoundingSphere;
-        auto transformPlane(const Plane &plane) -> Plane;
         auto transformRay(const Ray &ray) -> Ray;
 
         bool decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translation) const;

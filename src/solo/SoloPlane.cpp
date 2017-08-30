@@ -3,10 +3,7 @@
     MIT license
 */
 
-#include "SoloPlane.h"
 #include "SoloMath.h"
-#include "SoloBoundingSphere.h"
-#include "SoloBoundingBox.h"
 #include "SoloFrustum.h"
 #include "SoloRay.h"
 
