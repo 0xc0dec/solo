@@ -94,7 +94,6 @@ namespace solo
 
         auto getMatrix() const -> Matrix;
         auto getWorldMatrix() const -> Matrix;
-
         auto getWorldViewMatrix(const Camera *camera) const -> Matrix;
         auto getWorldViewProjMatrix(const Camera *camera) const -> Matrix;
         auto getInvTransposedWorldViewMatrix(const Camera *camera) const -> Matrix;

@@ -36,24 +36,3 @@ assert(v1 - v2)
 assert(-v1)
 assert(v1 * 2)
 assert(v1 / 2)
-
---- GLM vector
-
-local v1 = solo.Wector3(1, 2, 3)
-local v2 = solo.Wector3(-1, -2, -3)
-
-assert(v1:angle(v2) ~= nil)
-assert(v1:dot(v2) ~= nil)
-assert(v1:cross(v2) ~= nil)
-assert(v1:distance(v2) ~= nil)
-assert(v1:length() ~= nil)
-assert(v1:normalized() ~= nil)
-
-assert(v1.x ~= nil)
-assert(v1.y ~= nil)
-assert(v1.z ~= nil)
-assert(v1 + v2)
-assert(v1 - v2)
-assert(-v1)
-assert(v1 * 2)
-assert(v1 / 2)
