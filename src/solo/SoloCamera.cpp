@@ -44,7 +44,7 @@ void Camera::init()
     setAspectRatio(canvasSize.x / canvasSize.y);
 }
 
-void Camera::onTransformChanged(const Transform *, uint32_t)
+void Camera::onTransformChanged(const Transform *)
 {
     dirtyFlags |= ViewDirtyBit | ViewProjectionDirtyBit | InvViewDirtyBit | InvViewProjectionDirtyBit;
 }

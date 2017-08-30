@@ -106,7 +106,7 @@ namespace solo
 
         explicit Camera(const Node &node);
 
-        void onTransformChanged(const Transform *, uint32_t) override;
+        void onTransformChanged(const Transform *) override;
     };
 
     inline void Camera::setClearColor(const Vector4 &color)

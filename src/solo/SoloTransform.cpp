@@ -9,15 +9,20 @@
 
 using namespace solo;
 
+static const uint32_t DirtyFlagLocal = 1 << 0;
+static const uint32_t DirtyFlagWorld = 1 << 1;
+static const uint32_t DirtyFlagInvTransposedWorld = 1 << 2;
+static const uint32_t DirtyFlagAll = DirtyFlagLocal | DirtyFlagWorld | DirtyFlagInvTransposedWorld;
+
 Transform::Transform(const Node &node):
     ComponentBase(node)
 {
 }
 
-void Transform::notifyChanged(uint32_t dirtyFlags) const
+void Transform::notifyChanged() const
 {
     for (auto callback : callbacks)
-        callback->onTransformChanged(this, dirtyFlags);
+        callback->onTransformChanged(this);
 }
 
 void Transform::init()
@@ -47,7 +52,7 @@ void Transform::setParent(Transform *parent)
     this->parent = parent;
     if (parent)
         parent->children.push_back(this);
-    setDirtyWithChildren(TransformDirtyFlags::World | TransformDirtyFlags::InvTransposedWorld);
+    setDirtyWithChildren(DirtyFlagWorld | DirtyFlagInvTransposedWorld);
 }
 
 void Transform::clearChildren()
@@ -61,54 +66,37 @@ void Transform::clearChildren()
 
 auto Transform::getMatrix() const -> TransformMatrix
 {
-    auto dirty = dirtyFlags & TransformDirtyFlags::Position ||
-                 dirtyFlags & TransformDirtyFlags::Rotation ||
-                 dirtyFlags & TransformDirtyFlags::Scale;
-    if (dirty)
+    if (dirtyFlags & DirtyFlagLocal)
     {
-        if (dirtyFlags & TransformDirtyFlags::Position || !localPosition.isZero())
-        {
-            matrix = TransformMatrix::createTranslation(localPosition);
-            if (dirtyFlags & TransformDirtyFlags::Rotation || !localRotation.isIdentity())
-                matrix.rotateByQuaternion(localRotation);
-            if (dirtyFlags & TransformDirtyFlags::Scale || !localScale.isUnit())
-                matrix.scaleByVector(localScale);
-        }
-        else if (dirtyFlags & TransformDirtyFlags::Rotation || !localRotation.isIdentity())
-        {
-            matrix = TransformMatrix::createRotationFromQuaternion(localRotation);
-            if (dirtyFlags & TransformDirtyFlags::Scale || !localScale.isUnit())
-                matrix.scaleByVector(localScale);
-        }
-        else if (dirtyFlags & TransformDirtyFlags::Scale || !localScale.isUnit())
-            matrix = TransformMatrix::createScale(localScale);
-
-        dirtyFlags &= ~(TransformDirtyFlags::Position | TransformDirtyFlags::Rotation | TransformDirtyFlags::Scale);
+        matrix = TransformMatrix::createTranslation(localPosition);
+        matrix.rotateByQuaternion(localRotation);
+        matrix.scaleByVector(localScale);
+        dirtyFlags &= ~DirtyFlagLocal;
     }
     return matrix;
 }
 
 auto Transform::getWorldMatrix() const -> TransformMatrix
 {
-    if (dirtyFlags & TransformDirtyFlags::World)
+    if (dirtyFlags & DirtyFlagWorld)
     {
         if (parent)
             worldMatrix = parent->getWorldMatrix() * getMatrix();
         else
             worldMatrix = getMatrix();
-        dirtyFlags &= ~TransformDirtyFlags::World;
+        dirtyFlags &= ~DirtyFlagWorld;
     }
     return worldMatrix;
 }
 
 auto Transform::getInvTransposedWorldMatrix() const -> TransformMatrix
 {
-    if (dirtyFlags & TransformDirtyFlags::InvTransposedWorld)
+    if (dirtyFlags & DirtyFlagInvTransposedWorld)
     {
         invTransposedWorldMatrix = getWorldMatrix();
         invTransposedWorldMatrix.invert();
         invTransposedWorldMatrix.transpose();
-        dirtyFlags &= ~TransformDirtyFlags::InvTransposedWorld;
+        dirtyFlags &= ~DirtyFlagInvTransposedWorld;
     }
     return invTransposedWorldMatrix;
 }
@@ -134,7 +122,7 @@ auto Transform::getInvTransposedWorldViewMatrix(const Camera *camera) const -> T
 void Transform::translateLocal(const Vector3 &translation)
 {
     localPosition += translation;
-    setDirtyWithChildren(TransformDirtyFlags::Position | TransformDirtyFlags::World | TransformDirtyFlags::InvTransposedWorld);
+    setDirtyWithChildren(DirtyFlagAll);
 }
 
 void Transform::rotate(const Quaternion &rotation, TransformSpace space)
@@ -161,7 +149,7 @@ void Transform::rotate(const Quaternion &rotation, TransformSpace space)
             break;
     }
 
-    setDirtyWithChildren(TransformDirtyFlags::Rotation | TransformDirtyFlags::World | TransformDirtyFlags::InvTransposedWorld);
+    setDirtyWithChildren(DirtyFlagAll);
 }
 
 void Transform::rotateByAxisAngle(const Vector3 &axis, const Radian &angle, TransformSpace space)
@@ -175,13 +163,13 @@ void Transform::scaleLocal(const Vector3 &scale)
     localScale.x *= scale.x;
     localScale.y *= scale.y;
     localScale.z *= scale.z;
-    setDirtyWithChildren(TransformDirtyFlags::Scale | TransformDirtyFlags::World | TransformDirtyFlags::InvTransposedWorld);
+    setDirtyWithChildren(DirtyFlagAll);
 }
 
 void Transform::setLocalScale(const Vector3 &scale)
 {
     localScale = scale;
-    setDirtyWithChildren(TransformDirtyFlags::Scale | TransformDirtyFlags::World | TransformDirtyFlags::InvTransposedWorld);
+    setDirtyWithChildren(DirtyFlagAll);
 }
 
 void Transform::lookAt(const Vector3 &target, const Vector3 &up)
@@ -197,10 +185,7 @@ void Transform::lookAt(const Vector3 &target, const Vector3 &up)
         localUp = m.transformDirection(up);
     }
 
-    auto lookAtMatrix = TransformMatrix::createLookAt2(
-        {localPosition.x, localPosition.y, localPosition.z},
-        {localTarget.x, localTarget.y, localTarget.z},
-        {localUp.x, localUp.y, localUp.z});
+    auto lookAtMatrix = TransformMatrix::createLookAt(localPosition, localTarget, localUp);
     setLocalRotation(lookAtMatrix.getRotation());
 }
 
@@ -217,25 +202,25 @@ auto Transform::transformDirection(const Vector3 &direction) const -> Vector3
 void Transform::setLocalRotation(const Quaternion &rotation)
 {
     localRotation = rotation;
-    setDirtyWithChildren(TransformDirtyFlags::Rotation | TransformDirtyFlags::World | TransformDirtyFlags::InvTransposedWorld);
+    setDirtyWithChildren(DirtyFlagAll);
 }
 
 void Transform::setLocalAxisAngleRotation(const Vector3 &axis, const Radian &angle)
 {
     localRotation = Quaternion::createFromAxisAngle(axis, angle);
-    setDirtyWithChildren(TransformDirtyFlags::Rotation | TransformDirtyFlags::World | TransformDirtyFlags::InvTransposedWorld);
+    setDirtyWithChildren(DirtyFlagAll);
 }
 
 void Transform::setLocalPosition(const Vector3 &position)
 {
     localPosition = position;
-    setDirtyWithChildren(TransformDirtyFlags::Position | TransformDirtyFlags::World | TransformDirtyFlags::InvTransposedWorld);
+    setDirtyWithChildren(DirtyFlagAll);
 }
 
 void Transform::setDirtyWithChildren(uint32_t flags) const
 {
     dirtyFlags |= flags;
-    notifyChanged(flags);
+    notifyChanged();
     for (auto child : children)
         child->setDirtyWithChildren(flags);
 }
