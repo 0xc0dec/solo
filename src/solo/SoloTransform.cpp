@@ -64,11 +64,11 @@ void Transform::clearChildren()
     }
 }
 
-auto Transform::getMatrix() const -> TransformMatrix
+auto Transform::getMatrix() const -> Matrix
 {
     if (dirtyFlags & DirtyFlagLocal)
     {
-        matrix = TransformMatrix::createTranslation(localPosition);
+        matrix = Matrix::createTranslation(localPosition);
         matrix.rotateByQuaternion(localRotation);
         matrix.scaleByVector(localScale);
         dirtyFlags &= ~DirtyFlagLocal;
@@ -76,7 +76,7 @@ auto Transform::getMatrix() const -> TransformMatrix
     return matrix;
 }
 
-auto Transform::getWorldMatrix() const -> TransformMatrix
+auto Transform::getWorldMatrix() const -> Matrix
 {
     if (dirtyFlags & DirtyFlagWorld)
     {
@@ -89,7 +89,7 @@ auto Transform::getWorldMatrix() const -> TransformMatrix
     return worldMatrix;
 }
 
-auto Transform::getInvTransposedWorldMatrix() const -> TransformMatrix
+auto Transform::getInvTransposedWorldMatrix() const -> Matrix
 {
     if (dirtyFlags & DirtyFlagInvTransposedWorld)
     {
@@ -101,17 +101,17 @@ auto Transform::getInvTransposedWorldMatrix() const -> TransformMatrix
     return invTransposedWorldMatrix;
 }
 
-auto Transform::getWorldViewMatrix(const Camera *camera) const -> TransformMatrix
+auto Transform::getWorldViewMatrix(const Camera *camera) const -> Matrix
 {
     return camera->getViewMatrix() * getWorldMatrix();
 }
 
-auto Transform::getWorldViewProjMatrix(const Camera *camera) const -> TransformMatrix
+auto Transform::getWorldViewProjMatrix(const Camera *camera) const -> Matrix
 {
     return camera->getViewProjectionMatrix() * getWorldMatrix();
 }
 
-auto Transform::getInvTransposedWorldViewMatrix(const Camera *camera) const -> TransformMatrix
+auto Transform::getInvTransposedWorldViewMatrix(const Camera *camera) const -> Matrix
 {
     auto result = camera->getViewMatrix() * getWorldMatrix();
     result.invert();
@@ -185,7 +185,7 @@ void Transform::lookAt(const Vector3 &target, const Vector3 &up)
         localUp = m.transformDirection(up);
     }
 
-    auto lookAtMatrix = TransformMatrix::createLookAt(localPosition, localTarget, localUp);
+    auto lookAtMatrix = Matrix::createLookAt(localPosition, localTarget, localUp);
     setLocalRotation(lookAtMatrix.getRotation());
 }
 

@@ -142,9 +142,6 @@
     <ClInclude Include="..\src\solo\platform\bullet\SoloBulletRigidBody.h">
       <Filter>src\platform\bullet</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloTransformMatrix.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloCommon.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -391,9 +388,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\SoloRigidBody.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\SoloTransformMatrix.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\SoloScriptRuntime.cpp">

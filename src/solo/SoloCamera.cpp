@@ -85,7 +85,7 @@ void Camera::setNear(float near)
     dirtyFlags |= AllProjectionDirtyBits;
 }
 
-auto Camera::getViewMatrix() const -> const TransformMatrix
+auto Camera::getViewMatrix() const -> const Matrix
 {
     if (dirtyFlags & ViewDirtyBit)
     {
@@ -96,7 +96,7 @@ auto Camera::getViewMatrix() const -> const TransformMatrix
     return viewMatrix;
 }
 
-auto Camera::getInvViewMatrix() const -> const TransformMatrix
+auto Camera::getInvViewMatrix() const -> const Matrix
 {
     if (dirtyFlags & InvViewDirtyBit)
     {
@@ -107,20 +107,20 @@ auto Camera::getInvViewMatrix() const -> const TransformMatrix
     return invViewMatrix;
 }
 
-auto Camera::getProjectionMatrix() const -> const TransformMatrix
+auto Camera::getProjectionMatrix() const -> const Matrix
 {
     if (dirtyFlags & ProjectionDirtyBit)
     {
         if (ortho)
-            projectionMatrix = TransformMatrix::createOrthographic(orthoSize.x, orthoSize.y, nearClip, farClip);
+            projectionMatrix = Matrix::createOrthographic(orthoSize.x, orthoSize.y, nearClip, farClip);
         else
-            projectionMatrix = TransformMatrix::createPerspective(fov, aspectRatio, nearClip, farClip);
+            projectionMatrix = Matrix::createPerspective(fov, aspectRatio, nearClip, farClip);
         dirtyFlags &= ~ProjectionDirtyBit;
     }
     return projectionMatrix;
 }
 
-auto Camera::getViewProjectionMatrix() const -> const TransformMatrix
+auto Camera::getViewProjectionMatrix() const -> const Matrix
 {
     if (dirtyFlags & ViewProjectionDirtyBit)
     {
@@ -130,7 +130,7 @@ auto Camera::getViewProjectionMatrix() const -> const TransformMatrix
     return viewProjectionMatrix;
 }
 
-auto Camera::getInvViewProjectionMatrix() const -> const TransformMatrix
+auto Camera::getInvViewProjectionMatrix() const -> const Matrix
 {
     if (dirtyFlags & InvViewProjectionDirtyBit)
     {

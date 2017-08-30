@@ -50,7 +50,6 @@
     <ClInclude Include="..\include\SoloScene.h" />
     <ClInclude Include="..\include\SoloRectTexture.h" />
     <ClInclude Include="..\include\SoloTransform.h" />
-    <ClInclude Include="..\include\SoloTransformMatrix.h" />
     <ClInclude Include="..\include\SoloVector2.h" />
     <ClInclude Include="..\include\SoloVector3.h" />
     <ClInclude Include="..\include\SoloVector4.h" />
@@ -157,7 +156,6 @@
     <ClCompile Include="..\src\solo\SoloScriptRuntime.cpp" />
     <ClCompile Include="..\src\solo\SoloSkyboxRenderer.cpp" />
     <ClCompile Include="..\src\solo\SoloSpectator.cpp" />
-    <ClCompile Include="..\src\solo\SoloTransformMatrix.cpp" />
     <ClCompile Include="..\src\solo\SoloTrueTypeFont.cpp" />
     <ClCompile Include="..\src\solo\SoloCamera.cpp" />
     <ClCompile Include="..\src\solo\SoloFileSystem.cpp" />

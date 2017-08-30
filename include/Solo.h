@@ -42,7 +42,6 @@
 #include "SoloSpectator.h"
 #include "SoloTexture.h"
 #include "SoloTransform.h"
-#include "SoloTransformMatrix.h"
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 #include "SoloVector4.h"

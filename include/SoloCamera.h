@@ -8,7 +8,6 @@
 #include "SoloComponent.h"
 #include "SoloVector2.h"
 #include "SoloVector4.h"
-#include "SoloTransformMatrix.h"
 #include "SoloTransform.h"
 #include "SoloNode.h"
 #include "SoloRadian.h"
@@ -68,11 +67,11 @@ namespace solo
         auto getAspectRatio() const -> float;
         void setAspectRatio(float ratio);
 
-        auto getViewMatrix() const -> const TransformMatrix;
-        auto getInvViewMatrix() const -> const TransformMatrix;
-        auto getProjectionMatrix() const -> const TransformMatrix;
-        auto getViewProjectionMatrix() const -> const TransformMatrix;
-        auto getInvViewProjectionMatrix() const -> const TransformMatrix;
+        auto getViewMatrix() const -> const Matrix;
+        auto getInvViewMatrix() const -> const Matrix;
+        auto getProjectionMatrix() const -> const Matrix;
+        auto getViewProjectionMatrix() const -> const Matrix;
+        auto getInvViewProjectionMatrix() const -> const Matrix;
 
     protected:
         Device *device = nullptr;
@@ -98,11 +97,11 @@ namespace solo
 
         mutable uint32_t dirtyFlags = ~0;
 
-        mutable TransformMatrix viewMatrix;
-        mutable TransformMatrix projectionMatrix;
-        mutable TransformMatrix viewProjectionMatrix;
-        mutable TransformMatrix invViewMatrix;
-        mutable TransformMatrix invViewProjectionMatrix;
+        mutable Matrix viewMatrix;
+        mutable Matrix projectionMatrix;
+        mutable Matrix viewProjectionMatrix;
+        mutable Matrix invViewMatrix;
+        mutable Matrix invViewProjectionMatrix;
 
         explicit Camera(const Node &node);
 

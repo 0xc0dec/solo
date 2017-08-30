@@ -10,7 +10,6 @@
 #include "SoloVector4.h"
 #include "SoloQuaternion.h"
 #include "SoloMatrix.h"
-#include "SoloTransformMatrix.h"
 #include "SoloRay.h"
 #include "SoloLuaCommon.h"
 
@@ -223,45 +222,38 @@ static void registerMatrix(CppBindModule<LuaBinding> &module)
     REG_METHOD(matrix, Matrix, getDeterminant);
     REG_METHOD(matrix, Matrix, invert);
     REG_METHOD(matrix, Matrix, transpose);
+    REG_STATIC_METHOD(matrix, Matrix, createLookAt);
+    REG_STATIC_METHOD(matrix, Matrix, createPerspective);
+    REG_STATIC_METHOD(matrix, Matrix, createOrthographic);
+    REG_STATIC_METHOD(matrix, Matrix, createScale);
+    REG_STATIC_METHOD(matrix, Matrix, createRotationFromQuaternion);
+    REG_STATIC_METHOD(matrix, Matrix, createRotationFromAxisAngle);
+    REG_STATIC_METHOD(matrix, Matrix, createRotationX);
+    REG_STATIC_METHOD(matrix, Matrix, createRotationY);
+    REG_STATIC_METHOD(matrix, Matrix, createRotationZ);
+    REG_STATIC_METHOD(matrix, Matrix, createTranslation);
+    REG_METHOD(matrix, Matrix, getScale);
+    REG_METHOD(matrix, Matrix, getTranslation);
+    REG_METHOD(matrix, Matrix, getRotation);
+    REG_METHOD(matrix, Matrix, getUpVector);
+    REG_METHOD(matrix, Matrix, getDownVector);
+    REG_METHOD(matrix, Matrix, getLeftVector);
+    REG_METHOD(matrix, Matrix, getRightVector);
+    REG_METHOD(matrix, Matrix, getForwardVector);
+    REG_METHOD(matrix, Matrix, getBackVector);
+    REG_METHOD(matrix, Matrix, rotateByQuaternion);
+    REG_METHOD(matrix, Matrix, rotateByAxisAngle);
+    REG_METHOD(matrix, Matrix, rotateX);
+    REG_METHOD(matrix, Matrix, rotateY);
+    REG_METHOD(matrix, Matrix, rotateZ);
+    REG_METHOD(matrix, Matrix, scaleByScalar);
+    REG_METHOD(matrix, Matrix, scaleByVector);
+    REG_METHOD(matrix, Matrix, translate);
+    REG_METHOD(matrix, Matrix, transformPoint);
+    REG_METHOD(matrix, Matrix, transformDirection);
+    REG_METHOD(matrix, Matrix, transformRay);
+    REG_METHOD(matrix, Matrix, decompose);
     REG_META_METHOD(matrix, "__mul", [](const Matrix &m1, const Matrix &m2) { return m1 * m2; });
-    matrix.endClass();
-}
-
-static void registerTransformMatrix(CppBindModule<LuaBinding> &module)
-{
-    auto matrix = BEGIN_CLASS(module, TransformMatrix);
-    REG_CTOR(matrix);
-    REG_STATIC_METHOD(matrix, TransformMatrix, createLookAt);
-    REG_STATIC_METHOD(matrix, TransformMatrix, createPerspective);
-    REG_STATIC_METHOD(matrix, TransformMatrix, createOrthographic);
-    REG_STATIC_METHOD(matrix, TransformMatrix, createScale);
-    REG_STATIC_METHOD(matrix, TransformMatrix, createRotationFromQuaternion);
-    REG_STATIC_METHOD(matrix, TransformMatrix, createRotationFromAxisAngle);
-    REG_STATIC_METHOD(matrix, TransformMatrix, createRotationX);
-    REG_STATIC_METHOD(matrix, TransformMatrix, createRotationY);
-    REG_STATIC_METHOD(matrix, TransformMatrix, createRotationZ);
-    REG_STATIC_METHOD(matrix, TransformMatrix, createTranslation);
-    REG_METHOD(matrix, TransformMatrix, getScale);
-    REG_METHOD(matrix, TransformMatrix, getTranslation);
-    REG_METHOD(matrix, TransformMatrix, getRotation);
-    REG_METHOD(matrix, TransformMatrix, getUpVector);
-    REG_METHOD(matrix, TransformMatrix, getDownVector);
-    REG_METHOD(matrix, TransformMatrix, getLeftVector);
-    REG_METHOD(matrix, TransformMatrix, getRightVector);
-    REG_METHOD(matrix, TransformMatrix, getForwardVector);
-    REG_METHOD(matrix, TransformMatrix, getBackVector);
-    REG_METHOD(matrix, TransformMatrix, rotateByQuaternion);
-    REG_METHOD(matrix, TransformMatrix, rotateByAxisAngle);
-    REG_METHOD(matrix, TransformMatrix, rotateX);
-    REG_METHOD(matrix, TransformMatrix, rotateY);
-    REG_METHOD(matrix, TransformMatrix, rotateZ);
-    REG_METHOD(matrix, TransformMatrix, scaleByScalar);
-    REG_METHOD(matrix, TransformMatrix, scaleByVector);
-    REG_METHOD(matrix, TransformMatrix, translate);
-    REG_METHOD(matrix, TransformMatrix, transformPoint);
-    REG_METHOD(matrix, TransformMatrix, transformDirection);
-    REG_METHOD(matrix, TransformMatrix, transformRay);
-    REG_METHOD(matrix, TransformMatrix, decompose);
     matrix.endClass();
 }
 
@@ -288,6 +280,5 @@ void registerMathApi(CppBindModule<LuaBinding> &module)
     registerVector4_2(module);
     registerQuaternion(module);
     registerMatrix(module);
-    registerTransformMatrix(module);
     registerRay(module);
 }

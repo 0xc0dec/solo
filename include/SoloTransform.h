@@ -6,9 +6,9 @@
 #pragma once
 
 #include "SoloComponent.h"
-#include "SoloTransformMatrix.h"
 #include "SoloVector3.h"
 #include "SoloQuaternion.h"
+#include "SoloMatrix.h"
 #include "SoloNode.h"
 #include <vector>
 
@@ -92,13 +92,13 @@ namespace solo
 
         void lookAt(const Vector3 &target, const Vector3 &up);
 
-        auto getMatrix() const -> TransformMatrix;
-        auto getWorldMatrix() const -> TransformMatrix;
+        auto getMatrix() const -> Matrix;
+        auto getWorldMatrix() const -> Matrix;
 
-        auto getWorldViewMatrix(const Camera *camera) const -> TransformMatrix;
-        auto getWorldViewProjMatrix(const Camera *camera) const -> TransformMatrix;
-        auto getInvTransposedWorldViewMatrix(const Camera *camera) const -> TransformMatrix;
-        auto getInvTransposedWorldMatrix() const -> TransformMatrix;
+        auto getWorldViewMatrix(const Camera *camera) const -> Matrix;
+        auto getWorldViewProjMatrix(const Camera *camera) const -> Matrix;
+        auto getInvTransposedWorldViewMatrix(const Camera *camera) const -> Matrix;
+        auto getInvTransposedWorldMatrix() const -> Matrix;
 
         auto transformPoint(const Vector3 &point) const -> Vector3;
         auto transformDirection(const Vector3 &direction) const -> Vector3;
@@ -113,9 +113,9 @@ namespace solo
         Vector3 localPosition;
         Vector3 localScale;
         Quaternion localRotation;
-        mutable TransformMatrix matrix;
-        mutable TransformMatrix worldMatrix;
-        mutable TransformMatrix invTransposedWorldMatrix;
+        mutable Matrix matrix;
+        mutable Matrix worldMatrix;
+        mutable Matrix invTransposedWorldMatrix;
 
         void setDirtyWithChildren(uint32_t flags) const;
         void setChildrenDirty(uint32_t flags) const;
