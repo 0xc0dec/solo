@@ -23,8 +23,9 @@ namespace solo
         Quaternion(const Vector3 &axis, const Radian &angle);
 
         static auto createFromAxisAngle(const Vector3 &axis, const Radian &angle) -> Quaternion;
-
-        static auto identity() -> Quaternion;
+        static auto lerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion;
+        static auto slerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion;
+        static auto squad(const Quaternion &q1, const Quaternion &q2, const Quaternion &s1, const Quaternion &s2, float t) -> Quaternion;
 
         bool isIdentity() const;
         bool isZero() const;
@@ -36,10 +37,6 @@ namespace solo
         void normalize();
 
         auto toAxisAngle(Vector3 &e) const -> Radian;
-
-        static auto lerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion;
-        static auto slerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion;
-        static auto squad(const Quaternion &q1, const Quaternion &q2, const Quaternion &s1, const Quaternion &s2, float t) -> Quaternion;
 
         auto operator*(const Quaternion &q) const -> Quaternion;
         auto operator*=(const Quaternion &q) -> Quaternion&;

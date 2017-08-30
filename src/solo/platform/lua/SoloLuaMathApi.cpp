@@ -103,6 +103,9 @@ static void registerQuaternion(CppBindModule<LuaBinding> &module)
     REG_VARIABLE(q, Quaternion, z);
     REG_VARIABLE(q, Quaternion, w);
     REG_STATIC_METHOD(q, Quaternion, createFromAxisAngle);
+    REG_STATIC_METHOD(q, Quaternion, lerp);
+    REG_STATIC_METHOD(q, Quaternion, slerp);
+    REG_STATIC_METHOD(q, Quaternion, squad);
     REG_METHOD(q, Quaternion, isIdentity);
     REG_METHOD(q, Quaternion, isZero);
     REG_METHOD(q, Quaternion, conjugate);
@@ -110,9 +113,6 @@ static void registerQuaternion(CppBindModule<LuaBinding> &module)
     REG_METHOD(q, Quaternion, normalize);
     REG_METHOD(q, Quaternion, normalized);
     REG_METHOD(q, Quaternion, toAxisAngle);
-    REG_STATIC_METHOD(q, Quaternion, lerp);
-    REG_STATIC_METHOD(q, Quaternion, slerp);
-    REG_STATIC_METHOD(q, Quaternion, squad);
     REG_META_METHOD(q, "__mul", [](const Quaternion &q1, const Quaternion &q2) { return q1 * q2; });
     q.endClass();
 }

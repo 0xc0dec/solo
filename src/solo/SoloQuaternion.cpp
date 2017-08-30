@@ -20,12 +20,6 @@ Quaternion::Quaternion(const Vector3 &axis, const Radian &angle)
     *this = createFromAxisAngle(axis, angle);
 }
 
-auto Quaternion::identity() -> Quaternion
-{
-    static Quaternion value(0.0f, 0.0f, 0.0f, 1.0f);
-    return value;
-}
-
 bool Quaternion::isIdentity() const
 {
     return math::isZero(x, math::epsilon1) &&
