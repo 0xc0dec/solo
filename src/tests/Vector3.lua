@@ -44,6 +44,7 @@ local v2 = solo.Wector3(-1, -2, -3)
 
 assert(v1:angle(v2) ~= nil)
 assert(v1:dot(v2) ~= nil)
+assert(v1:cross(v2) ~= nil)
 assert(v1:distance(v2) ~= nil)
 assert(v1:length() ~= nil)
 assert(v1:normalized() ~= nil)

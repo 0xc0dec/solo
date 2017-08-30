@@ -23,6 +23,25 @@
 
 using namespace solo;
 
+static void registerVector2_2(CppBindModule<LuaBinding> &module)
+{
+    auto v = BEGIN_CLASS_RENAMED(module, glm::vec2, "Wector2");
+    REG_CTOR(v, float, float);
+    REG_VARIABLE(v, glm::vec2, x);
+    REG_VARIABLE(v, glm::vec2, y);
+    REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec2 *v1, const glm::vec2 &v2) { return glm::angle(*v1, v2); }, "angle");
+    REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec2 *v1, const glm::vec2 &v2) { return glm::distance(*v1, v2); }, "distance");
+    REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec2 *v1, const glm::vec2 &v2) { return glm::dot(*v1, v2); }, "dot");
+    REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec2 *v1) { return glm::length(*v1); }, "length");
+    REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec2 *v1) { return glm::normalize(*v1); }, "normalized");
+    REG_META_METHOD(v, "__add", [](const glm::vec2 &v1, const glm::vec2 &v2) { return v1 + v2; });
+    REG_META_METHOD(v, "__sub", [](const glm::vec2 &v1, const glm::vec2 &v2) { return v1 - v2; });
+    REG_META_METHOD(v, "__mul", [](const glm::vec2 &v, float f) { return v * f; });
+    REG_META_METHOD(v, "__div", [](const glm::vec2 &v, float f) { return v / f; });
+    REG_META_METHOD(v, "__unm", [](const glm::vec2 &v) { return -v; });
+    v.endClass();
+}
+
 static void registerVector3_2(CppBindModule<LuaBinding> &module)
 {
     auto v = BEGIN_CLASS_RENAMED(module, glm::vec3, "Wector3");
@@ -33,6 +52,7 @@ static void registerVector3_2(CppBindModule<LuaBinding> &module)
     REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec3 *v1, const glm::vec3 &v2) { return glm::angle(*v1, v2); }, "angle");
     REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec3 *v1, const glm::vec3 &v2) { return glm::distance(*v1, v2); }, "distance");
     REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec3 *v1, const glm::vec3 &v2) { return glm::dot(*v1, v2); }, "dot");
+    REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec3 *v1, const glm::vec3 &v2) { return glm::cross(*v1, v2); }, "cross");
     REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec3 *v1) { return glm::length(*v1); }, "length");
     REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec3 *v1) { return glm::normalize(*v1); }, "normalized");
     REG_META_METHOD(v, "__add", [](const glm::vec3 &v1, const glm::vec3 &v2) { return v1 + v2; });
@@ -40,6 +60,27 @@ static void registerVector3_2(CppBindModule<LuaBinding> &module)
     REG_META_METHOD(v, "__mul", [](const glm::vec3 &v, float f) { return v * f; });
     REG_META_METHOD(v, "__div", [](const glm::vec3 &v, float f) { return v / f; });
     REG_META_METHOD(v, "__unm", [](const glm::vec3 &v) { return -v; });
+    v.endClass();
+}
+
+static void registerVector4_2(CppBindModule<LuaBinding> &module)
+{
+    auto v = BEGIN_CLASS_RENAMED(module, glm::vec4, "Wector4");
+    REG_CTOR(v, float, float, float, float);
+    REG_VARIABLE(v, glm::vec4, x);
+    REG_VARIABLE(v, glm::vec4, y);
+    REG_VARIABLE(v, glm::vec4, z);
+    REG_VARIABLE(v, glm::vec4, w);
+    REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec4 *v1, const glm::vec4 &v2) { return glm::angle(*v1, v2); }, "angle");
+    REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec4 *v1, const glm::vec4 &v2) { return glm::distance(*v1, v2); }, "distance");
+    REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec4 *v1, const glm::vec4 &v2) { return glm::dot(*v1, v2); }, "dot");
+    REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec4 *v1) { return glm::length(*v1); }, "length");
+    REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec4 *v1) { return glm::normalize(*v1); }, "normalized");
+    REG_META_METHOD(v, "__add", [](const glm::vec4 &v1, const glm::vec4 &v2) { return v1 + v2; });
+    REG_META_METHOD(v, "__sub", [](const glm::vec4 &v1, const glm::vec4 &v2) { return v1 - v2; });
+    REG_META_METHOD(v, "__mul", [](const glm::vec4 &v, float f) { return v * f; });
+    REG_META_METHOD(v, "__div", [](const glm::vec4 &v, float f) { return v / f; });
+    REG_META_METHOD(v, "__unm", [](const glm::vec4 &v) { return -v; });
     v.endClass();
 }
 
@@ -331,9 +372,11 @@ void registerMathApi(CppBindModule<LuaBinding> &module)
     registerRadian(module);
     registerDegree(module);
     registerVector2(module);
+    registerVector2_2(module);
     registerVector3(module);
     registerVector3_2(module);
     registerVector4(module);
+    registerVector4_2(module);
     registerQuaternion(module);
     registerMatrix(module);
     registerTransformMatrix(module);
