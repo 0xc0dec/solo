@@ -99,7 +99,7 @@ bool Matrix::invert()
     auto det = a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
 
     // Close to zero, can't invert
-    if (math::isZero(det, math::epsilon3))
+    if (math::isZero(det))
         return false;
 
     // Support the case where m == dst
@@ -158,7 +158,7 @@ auto Matrix::createPerspective(const Radian &fieldOfView, float aspectRatio, flo
 {
     auto f_n = 1.0f / (zfar - znear);
     auto theta = fieldOfView.toRawRadian() * 0.5f;
-    SL_PANIC_IF(math::isZero(fmod(theta, math::piOver2), math::epsilon1))
+    SL_PANIC_IF(math::isZero(fmod(theta, math::PiOver2)))
 
     auto divisor = tan(theta);
     auto factor = 1.0f / divisor;
@@ -257,7 +257,7 @@ auto Matrix::createRotationFromAxisAngle(const Vector3 &axis, const Radian &angl
         // Not normalized
         n = sqrtf(n);
         // Prevent division too close to zero.
-        if (!math::isZero(n, math::epsilon1))
+        if (!math::isZero(n))
         {
             n = 1.0f / n;
             x *= n;
@@ -461,7 +461,7 @@ bool Matrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translatio
         return true;
 
     // Scale too close to zero, can't decompose rotation.
-    if (scaleX < math::epsilon3 || scaleY < math::epsilon3 || scaleZ < math::epsilon3)
+    if (math::isZero(scaleX) || math::isZero(scaleY) || math::isZero(scaleZ))
         return false;
 
     // Factor the scale out of the matrix axes.
@@ -483,7 +483,7 @@ bool Matrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translatio
     // Calculate the rotation from the resulting matrix (axes).
     auto trace = xaxis.x + yaxis.y + zaxis.z + 1.0f;
 
-    if (trace > math::epsilon1)
+    if (!math::isZero(trace))
     {
         auto s = 0.5f / sqrt(trace);
         rotation->w = 0.25f / s;

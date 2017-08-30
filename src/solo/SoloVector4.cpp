@@ -15,27 +15,23 @@ Vector4::Vector4(float x, float y, float z, float w):
 
 bool Vector4::isZero() const
 {
-    return math::isZero(x, math::epsilon1) &&
-           math::isZero(y, math::epsilon1) &&
-           math::isZero(z, math::epsilon1) &&
-           math::isZero(w, math::epsilon1);
+    return math::isZero(x) &&
+           math::isZero(y) &&
+           math::isZero(z) &&
+           math::isZero(w);
 }
 
 bool Vector4::isUnit() const
 {
-    return math::areEqual(x, 1.0f, math::epsilon1) &&
-           math::areEqual(y, 1.0f, math::epsilon1) &&
-           math::areEqual(z, 1.0f, math::epsilon1) &&
-           math::areEqual(w, 1.0f, math::epsilon1);
+    return math::areEqual(x, 1.0f) &&
+           math::areEqual(y, 1.0f) &&
+           math::areEqual(z, 1.0f) &&
+           math::areEqual(w, 1.0f);
 }
 
 auto Vector4::angle(const Vector4 &v) -> Radian
 {
-    auto dx = w * v.x - x * v.w - y * v.z + z * v.y;
-    auto dy = w * v.y - y * v.w - z * v.x + x * v.z;
-    auto dz = w * v.z - z * v.w - x * v.y + y * v.x;
-
-    return Radian(atan2f(sqrt(dx * dx + dy * dy + dz * dz) + math::epsilon2, dot(v)));
+    return Radian(acosf(math::clamp(dot(v), -1, 1)));
 }
 
 void Vector4::clamp(const Vector4 &min, const Vector4 &max)
@@ -107,11 +103,11 @@ void Vector4::normalize()
 {
     auto n = x * x + y * y + z * z + w * w;
     // Already normalized
-    if (math::areEqual(n, 1.0f, math::epsilon1))
+    if (math::areEqual(n, 1.0f))
         return;
 
     n = sqrt(n);
-    if (math::isZero(n, math::epsilon3))
+    if (math::isZero(n))
         return;
 
     n = 1.0f / n;

@@ -40,7 +40,7 @@ void Ray::normalize()
 
     // Normalize the ray's direction vector
     auto normalizeFactor = 1.0f / sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
-    if (!math::areEqual(normalizeFactor, 1.0f, math::epsilon1))
+    if (!math::areEqual(normalizeFactor, 1.0f))
     {
         direction.x *= normalizeFactor;
         direction.y *= normalizeFactor;

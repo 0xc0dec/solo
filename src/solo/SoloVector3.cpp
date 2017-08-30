@@ -20,25 +20,21 @@ Vector3::Vector3(float x, float y, float z):
 
 bool Vector3::isZero() const
 {
-    return math::isZero(x, math::epsilon1) &&
-           math::isZero(y, math::epsilon1) &&
-           math::isZero(z, math::epsilon1);
+    return math::isZero(x) &&
+           math::isZero(y) &&
+           math::isZero(z);
 }
 
 bool Vector3::isUnit() const
 {
-    return math::areEqual(x, 1.0f, math::epsilon1) &&
-           math::areEqual(y, 1.0f, math::epsilon1) &&
-           math::areEqual(z, 1.0f, math::epsilon1);
+    return math::areEqual(x, 1.0f) &&
+           math::areEqual(y, 1.0f) &&
+           math::areEqual(z, 1.0f);
 }
 
 auto Vector3::angle(const Vector3 &v) -> Radian
 {
-    auto dx = y * v.z - z * v.y;
-    auto dy = z * v.x - x * v.z;
-    auto dz = x * v.y - y * v.x;
-
-    return Radian(atan2f(sqrt(dx * dx + dy * dy + dz * dz) + math::epsilon2, dot(v)));
+    return Radian(acosf(math::clamp(dot(v), -1, 1)));
 }
 
 void Vector3::clamp(const Vector3 &min, const Vector3 &max)
@@ -111,11 +107,11 @@ void Vector3::normalize()
 {
     auto n = x * x + y * y + z * z;
     // Already normalized
-    if (math::areEqual(n, 1.0f, math::epsilon1))
+    if (math::areEqual(n, 1.0f))
         return;
 
     n = sqrt(n);
-    if (math::isZero(n, math::epsilon3))
+    if (math::isZero(n))
         return;
 
     n = 1.0f / n;

@@ -22,18 +22,18 @@ Quaternion::Quaternion(const Vector3 &axis, const Radian &angle)
 
 bool Quaternion::isIdentity() const
 {
-    return math::isZero(x, math::epsilon1) &&
-           math::isZero(y, math::epsilon1) &&
-           math::isZero(z, math::epsilon1) &&
-           math::areEqual(w, 1.0f, math::epsilon1);
+    return math::isZero(x) &&
+           math::isZero(y) &&
+           math::isZero(z) &&
+           math::areEqual(w, 1.0f);
 }
 
 bool Quaternion::isZero() const
 {
-    return math::isZero(x, math::epsilon1) &&
-           math::isZero(y, math::epsilon1) &&
-           math::isZero(z, math::epsilon1) &&
-           math::isZero(w, math::epsilon1);
+    return math::isZero(x) &&
+           math::isZero(y) &&
+           math::isZero(z) &&
+           math::isZero(w);
 }
 
 auto Quaternion::createFromAxisAngle(const Vector3 &axis, const Radian &angle) -> Quaternion
@@ -55,7 +55,7 @@ void Quaternion::conjugate()
 bool Quaternion::inverse()
 {
     auto n = x * x + y * y + z * z + w * w;
-    if (math::areEqual(n, 1.0f, math::epsilon1))
+    if (math::areEqual(n, 1.0f))
     {
         x = -x;
         y = -y;
@@ -63,7 +63,7 @@ bool Quaternion::inverse()
         return true;
     }
 
-    if (math::isZero(n, math::epsilon1))
+    if (math::isZero(n))
         return false;
 
     n = 1.0f / n;
@@ -80,11 +80,11 @@ void Quaternion::normalize()
     auto n = x * x + y * y + z * z + w * w;
 
     // Already normalized
-    if (math::areEqual(n, 1.0f, math::epsilon1))
+    if (math::areEqual(n, 1.0f))
         return;
 
     n = sqrt(n);
-    if (math::isZero(n, math::epsilon1))
+    if (math::isZero(n))
         return;
 
     n = 1.0f / n;
@@ -114,10 +114,10 @@ auto Quaternion::toAxisAngle(Vector3 &axis) const -> Radian
 
 auto Quaternion::lerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion
 {
-    if (math::isZero(t, math::epsilon1))
+    if (math::isZero(t))
         return q1;
 
-    if (math::areEqual(t, 1.0f, math::epsilon1))
+    if (math::areEqual(t, 1.0f))
         return q2;
 
     auto t1 = 1.0f - t;
@@ -132,16 +132,16 @@ auto Quaternion::lerp(const Quaternion &q1, const Quaternion &q2, float t) -> Qu
 
 auto Quaternion::slerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion
 {
-    if (math::isZero(t, math::epsilon1))
+    if (math::isZero(t))
         return q1;
 
-    if (math::areEqual(t, 1.0f, math::epsilon1))
+    if (math::areEqual(t, 1.0f))
         return q2;
 
-    if (math::areEqual(q1.x, q2.x, math::epsilon1) &&
-    math::areEqual(q1.y, q2.y, math::epsilon1) &&
-    math::areEqual(q1.z, q2.z, math::epsilon1) &&
-    math::areEqual(q1.w, q2.w, math::epsilon1))
+    if (math::areEqual(q1.x, q2.x) &&
+    math::areEqual(q1.y, q2.y) &&
+    math::areEqual(q1.z, q2.z) &&
+    math::areEqual(q1.w, q2.w))
         return q1;
 
     auto cosTheta = q1.w * q2.w + q1.x * q2.x + q1.y * q2.y + q1.z * q2.z;
@@ -205,7 +205,7 @@ auto Quaternion::slerpForSquad(const Quaternion &q1, const Quaternion &q2, float
 
     auto omega = acosf(c);
     auto s = sqrtf(1.0f - c * c);
-    if (math::isZero(s, math::epsilon1))
+    if (math::isZero(s))
         return q1;
 
     auto r1 = sinf((1 - t) * omega) / s;

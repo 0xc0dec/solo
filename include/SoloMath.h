@@ -6,19 +6,17 @@
 #pragma once
 
 #include <cmath>
+#include <cfloat>
 
 namespace solo
 {
     namespace math
     {
-        static constexpr float epsilon1 = 0.000001f;
-        static constexpr float epsilon2 = 1.0e-37f;
-        static constexpr float epsilon3 = 2e-37f;
-        static constexpr float pi = 3.14159265358979323846f;
-        static constexpr float piOver2 = 1.57079632679489661923f;
+        static constexpr float Pi = 3.14159265358979323846f;
+        static constexpr float PiOver2 = 1.57079632679489661923f;
 
-        static bool isZero(float value, float epsilon);
-        static bool areEqual(float first, float second, float epsilon);
+        static bool isZero(float value);
+        static bool areEqual(float first, float second);
 
         static auto degToRad(float degrees) -> float;
         static auto radToDeg(float radians) -> float;
@@ -26,14 +24,14 @@ namespace solo
         static auto clamp(float x, float lo, float hi) -> float;
     }
 
-    inline bool math::isZero(float value, float epsilon)
+    inline bool math::isZero(float value)
     {
-        return fabs(value) <= epsilon;
+        return fabs(value) <= FLT_EPSILON;
     }
 
-    inline bool math::areEqual(float first, float second, float epsilon)
+    inline bool math::areEqual(float first, float second)
     {
-        return fabs(first - second) <= epsilon;
+        return fabs(first - second) <= FLT_EPSILON;
     }
 
     inline auto math::degToRad(float degrees) -> float

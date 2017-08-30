@@ -15,18 +15,17 @@ Vector2::Vector2(float x, float y):
 
 bool Vector2::isZero() const
 {
-    return math::isZero(x, math::epsilon1) && math::isZero(y, math::epsilon1);
+    return math::isZero(x) && math::isZero(y);
 }
 
 bool Vector2::isUnit() const
 {
-    return math::areEqual(x, 1.0f, math::epsilon1) && math::areEqual(y, 1.0f, math::epsilon1);
+    return math::areEqual(x, 1.0f) && math::areEqual(y, 1.0f);
 }
 
 auto Vector2::angle(const Vector2 &v) const -> Radian
 {
-    auto dz = x * v.y - y * x;
-    return Radian(atan2f(fabsf(dz) + math::epsilon2, dot(v)));
+    return Radian(acosf(math::clamp(dot(v), -1, 1)));
 }
 
 void Vector2::clamp(const Vector2 &min, const Vector2 &max)
@@ -82,11 +81,11 @@ void Vector2::normalize()
 {
     auto n = x * x + y * y;
     // Already normalized
-    if (math::areEqual(n, 1.0f, math::epsilon1))
+    if (math::areEqual(n, 1.0f))
         return;
 
     n = sqrt(n);
-    if (math::isZero(n, math::epsilon2))
+    if (math::isZero(n))
         return;
 
     n = 1.0f / n;
