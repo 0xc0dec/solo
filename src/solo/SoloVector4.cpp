@@ -13,36 +13,6 @@ Vector4::Vector4(float x, float y, float z, float w):
 {
 }
 
-auto Vector4::unit() -> Vector4
-{
-    static Vector4 value(1.0f, 1.0f, 1.0f, 1.0f);
-    return value;
-}
-
-auto Vector4::unitX() -> Vector4
-{
-    static Vector4 value(1.0f, 0.0f, 0.0f, 0.0f);
-    return value;
-}
-
-auto Vector4::unitY() -> Vector4
-{
-    static Vector4 value(0.0f, 1.0f, 0.0f, 0.0f);
-    return value;
-}
-
-auto Vector4::unitZ() -> Vector4
-{
-    static Vector4 value(0.0f, 0.0f, 1.0f, 0.0f);
-    return value;
-}
-
-auto Vector4::unitW() -> Vector4
-{
-    static Vector4 value(0.0f, 0.0f, 0.0f, 1.0f);
-    return value;
-}
-
 bool Vector4::isZero() const
 {
     return math::isZero(x, math::epsilon1) &&
@@ -59,13 +29,13 @@ bool Vector4::isUnit() const
            math::areEqual(w, 1.0f, math::epsilon1);
 }
 
-auto Vector4::angle(const Vector4 &v1, const Vector4 &v2) -> Radian
+auto Vector4::angle(const Vector4 &v) -> Radian
 {
-    auto dx = v1.w * v2.x - v1.x * v2.w - v1.y * v2.z + v1.z * v2.y;
-    auto dy = v1.w * v2.y - v1.y * v2.w - v1.z * v2.x + v1.x * v2.z;
-    auto dz = v1.w * v2.z - v1.z * v2.w - v1.x * v2.y + v1.y * v2.x;
+    auto dx = w * v.x - x * v.w - y * v.z + z * v.y;
+    auto dy = w * v.y - y * v.w - z * v.x + x * v.z;
+    auto dz = w * v.z - z * v.w - x * v.y + y * v.x;
 
-    return Radian(atan2f(sqrt(dx * dx + dy * dy + dz * dz) + math::epsilon2, dot(v1, v2)));
+    return Radian(atan2f(sqrt(dx * dx + dy * dy + dz * dz) + math::epsilon2, dot(v)));
 }
 
 void Vector4::clamp(const Vector4 &min, const Vector4 &max)
@@ -114,11 +84,6 @@ auto Vector4::distanceSquared(const Vector4 &v) const -> float
 auto Vector4::dot(const Vector4 &v) const -> float
 {
     return x * v.x + y * v.y + z * v.z + w * v.w;
-}
-
-auto Vector4::dot(const Vector4 &v1, const Vector4 &v2) -> float
-{
-    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
 }
 
 auto Vector4::length() const -> float

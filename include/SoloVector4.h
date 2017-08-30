@@ -20,30 +20,18 @@ namespace solo
         Vector4() {}
         Vector4(float x, float y, float z, float w);
 
-        static auto unit() -> Vector4;
-        static auto unitX() -> Vector4;
-        static auto unitY() -> Vector4;
-        static auto unitZ() -> Vector4;
-        static auto unitW() -> Vector4;
-
         bool isZero() const;
         bool isUnit() const;
 
-        static auto angle(const Vector4 &v1, const Vector4 &v2) -> Radian;
-
-        void clamp(const Vector4 &min, const Vector4 &max);
-
         auto distance(const Vector4 &v) const -> float;
         auto distanceSquared(const Vector4 &v) const -> float;
-
-        auto dot(const Vector4 &v) const -> float;
-        static auto dot(const Vector4 &v1, const Vector4 &v2) -> float;
-
         auto length() const -> float;
         auto lengthSquared() const -> float;
-
         auto normalized() const -> Vector4;
         void normalize();
+        auto angle(const Vector4 &v) -> Radian;
+        void clamp(const Vector4 &min, const Vector4 &max);
+        auto dot(const Vector4 &v) const -> float;
 
         auto operator+(float scalar) const -> Vector4;
         auto operator+(const Vector4 &v) const -> Vector4;

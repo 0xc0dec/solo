@@ -139,10 +139,10 @@ auto Matrix::createLookAt(const Vector3 &eye, const Vector3 &target, const Vecto
     auto zaxis(eye - target);
     zaxis.normalize();
 
-    auto xaxis = Vector3::cross(up.normalized(), zaxis);
+    auto xaxis = up.normalized().cross(zaxis);
     xaxis.normalize();
 
-    auto yaxis = Vector3::cross(zaxis, xaxis);
+    auto yaxis = zaxis.cross(xaxis);
     yaxis.normalize();
 
     // Matrix is built already transposed
@@ -150,7 +150,7 @@ auto Matrix::createLookAt(const Vector3 &eye, const Vector3 &target, const Vecto
         xaxis.x, yaxis.x, zaxis.x, 0,
         xaxis.y, yaxis.y, zaxis.y, 0,
         xaxis.z, yaxis.z, zaxis.z, 0,
-        -Vector3::dot(xaxis, eye), -Vector3::dot(yaxis, eye), -Vector3::dot(zaxis, eye), 1
+        -xaxis.dot(eye), -yaxis.dot(eye), -zaxis.dot(eye), 1
     ));
 }
 

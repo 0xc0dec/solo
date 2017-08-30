@@ -27,7 +27,7 @@ void Transform::notifyChanged() const
 
 void Transform::init()
 {
-    localScale = Vector3::unit();
+    localScale = {1, 1, 1};
 }
 
 void Transform::addCallback(TransformCallback *callback)

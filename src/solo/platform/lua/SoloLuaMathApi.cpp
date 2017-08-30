@@ -23,15 +23,15 @@ static void registerVector2(CppBindModule<LuaBinding> &module)
     REG_VARIABLE(v, Vector2, y);
     REG_METHOD(v, Vector2, isUnit);
     REG_METHOD(v, Vector2, isZero);
-    REG_METHOD(v, Vector2, angle);
-    REG_METHOD(v, Vector2, clamp);
     REG_METHOD(v, Vector2, distance);
     REG_METHOD(v, Vector2, distanceSquared);
-    REG_METHOD(v, Vector2, dot);
     REG_METHOD(v, Vector2, length);
     REG_METHOD(v, Vector2, lengthSquared);
-    REG_METHOD(v, Vector2, normalize);
     REG_METHOD(v, Vector2, normalized);
+    REG_METHOD(v, Vector2, normalize);
+    REG_METHOD(v, Vector2, angle);
+    REG_METHOD(v, Vector2, clamp);
+    REG_METHOD(v, Vector2, dot);
     REG_META_METHOD(v, "__add", [](const Vector2 &v1, const Vector2 &v2) { return v1 + v2; });
     REG_META_METHOD(v, "__sub", [](const Vector2 &v1, const Vector2 &v2) { return v1 - v2; });
     REG_META_METHOD(v, "__mul", [](const Vector2 &v, float f) { return v * f; });
@@ -42,58 +42,56 @@ static void registerVector2(CppBindModule<LuaBinding> &module)
 
 static void registerVector3(CppBindModule<LuaBinding> &module)
 {
-    auto vector3 = BEGIN_CLASS(module, Vector3);
-    REG_CTOR(vector3, float, float, float);
-    REG_VARIABLE(vector3, Vector3, x);
-    REG_VARIABLE(vector3, Vector3, y);
-    REG_VARIABLE(vector3, Vector3, z);
-    REG_METHOD(vector3, Vector3, isUnit);
-    REG_METHOD(vector3, Vector3, isZero);
-    REG_STATIC_METHOD(vector3, Vector3, angle);
-    REG_METHOD(vector3, Vector3, clamp);
-    REG_STATIC_METHOD(vector3, Vector3, cross);
-    REG_METHOD(vector3, Vector3, distance);
-    REG_METHOD(vector3, Vector3, distanceSquared);
-    REG_STATIC_METHOD_OVERLOADED(vector3, Vector3, dot, "dot", float, , const Vector3&, const Vector3&);
-    REG_METHOD_OVERLOADED(vector3, Vector3, dot, "dot", float, const, const Vector3&);
-    REG_METHOD(vector3, Vector3, length);
-    REG_METHOD(vector3, Vector3, lengthSquared);
-    REG_METHOD(vector3, Vector3, normalize);
-    REG_METHOD(vector3, Vector3, normalized);
-    REG_META_METHOD(vector3, "__add", [](const Vector3 &v1, const Vector3 &v2) { return v1 + v2; });
-    REG_META_METHOD(vector3, "__sub", [](const Vector3 &v1, const Vector3 &v2) { return v1 - v2; });
-    REG_META_METHOD(vector3, "__mul", [](const Vector3 &v, float f) { return v * f; });
-    REG_META_METHOD(vector3, "__div", [](const Vector3 &v, float f) { return v / f; });
-    REG_META_METHOD(vector3, "__unm", [](const Vector3 &v) { return -v; });
-    vector3.endClass();
+    auto v = BEGIN_CLASS(module, Vector3);
+    REG_CTOR(v, float, float, float);
+    REG_VARIABLE(v, Vector3, x);
+    REG_VARIABLE(v, Vector3, y);
+    REG_VARIABLE(v, Vector3, z);
+    REG_METHOD(v, Vector3, isUnit);
+    REG_METHOD(v, Vector3, isZero);
+    REG_METHOD(v, Vector3, distance);
+    REG_METHOD(v, Vector3, distanceSquared);
+    REG_METHOD(v, Vector3, length);
+    REG_METHOD(v, Vector3, lengthSquared);
+    REG_METHOD(v, Vector3, normalized);
+    REG_METHOD(v, Vector3, normalize);
+    REG_METHOD(v, Vector3, angle);
+    REG_METHOD(v, Vector3, clamp);
+    REG_METHOD(v, Vector3, dot);
+    REG_METHOD(v, Vector3, cross);
+    REG_META_METHOD(v, "__add", [](const Vector3 &v1, const Vector3 &v2) { return v1 + v2; });
+    REG_META_METHOD(v, "__sub", [](const Vector3 &v1, const Vector3 &v2) { return v1 - v2; });
+    REG_META_METHOD(v, "__mul", [](const Vector3 &v, float f) { return v * f; });
+    REG_META_METHOD(v, "__div", [](const Vector3 &v, float f) { return v / f; });
+    REG_META_METHOD(v, "__unm", [](const Vector3 &v) { return -v; });
+    v.endClass();
 }
 
 static void registerVector4(CppBindModule<LuaBinding> &module)
 {
-    auto vector4 = BEGIN_CLASS(module, Vector4);
-    REG_CTOR(vector4, float, float, float, float);
-    REG_VARIABLE(vector4, Vector4, x);
-    REG_VARIABLE(vector4, Vector4, y);
-    REG_VARIABLE(vector4, Vector4, z);
-    REG_VARIABLE(vector4, Vector4, w);
-    REG_METHOD(vector4, Vector4, isUnit);
-    REG_METHOD(vector4, Vector4, isZero);
-    REG_STATIC_METHOD(vector4, Vector4, angle);
-    REG_METHOD(vector4, Vector4, clamp);
-    REG_METHOD(vector4, Vector4, distance);
-    REG_METHOD(vector4, Vector4, distanceSquared);
-    REG_STATIC_METHOD_OVERLOADED(vector4, Vector4, dot, "dot", float, , const Vector4&, const Vector4&);
-    REG_METHOD_OVERLOADED(vector4, Vector4, dot, "dot", float, const, const Vector4&);
-    REG_METHOD(vector4, Vector4, length);
-    REG_METHOD(vector4, Vector4, lengthSquared);
-    REG_METHOD(vector4, Vector4, normalize);
-    REG_METHOD(vector4, Vector4, normalized);
-    REG_META_METHOD(vector4, "__add", [](const Vector4 &v1, const Vector4 &v2) { return v1 + v2; });
-    REG_META_METHOD(vector4, "__sub", [](const Vector4 &v1, const Vector4 &v2) { return v1 - v2; });
-    REG_META_METHOD(vector4, "__mul", [](const Vector4 &v, float f) { return v * f; });
-    REG_META_METHOD(vector4, "__div", [](const Vector4 &v, float f) { return v / f; });
-    REG_META_METHOD(vector4, "__unm", [](const Vector4 &v) { return -v; });
-    vector4.endClass();
+    auto v = BEGIN_CLASS(module, Vector4);
+    REG_CTOR(v, float, float, float, float);
+    REG_VARIABLE(v, Vector4, x);
+    REG_VARIABLE(v, Vector4, y);
+    REG_VARIABLE(v, Vector4, z);
+    REG_VARIABLE(v, Vector4, w);
+    REG_METHOD(v, Vector4, isUnit);
+    REG_METHOD(v, Vector4, isZero);
+    REG_METHOD(v, Vector4, distance);
+    REG_METHOD(v, Vector4, distanceSquared);
+    REG_METHOD(v, Vector4, length);
+    REG_METHOD(v, Vector4, lengthSquared);
+    REG_METHOD(v, Vector4, normalized);
+    REG_METHOD(v, Vector4, normalize);
+    REG_METHOD(v, Vector4, angle);
+    REG_METHOD(v, Vector4, clamp);
+    REG_METHOD(v, Vector4, dot);
+    REG_META_METHOD(v, "__add", [](const Vector4 &v1, const Vector4 &v2) { return v1 + v2; });
+    REG_META_METHOD(v, "__sub", [](const Vector4 &v1, const Vector4 &v2) { return v1 - v2; });
+    REG_META_METHOD(v, "__mul", [](const Vector4 &v, float f) { return v * f; });
+    REG_META_METHOD(v, "__div", [](const Vector4 &v, float f) { return v / f; });
+    REG_META_METHOD(v, "__unm", [](const Vector4 &v) { return -v; });
+    v.endClass();
 }
 
 static void registerQuaternion(CppBindModule<LuaBinding> &module)

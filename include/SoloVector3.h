@@ -20,31 +20,19 @@ namespace solo
         Vector3(float all);
         Vector3(float x, float y, float z);
 
-        static auto unit() -> Vector3;
-        static auto unitX() -> Vector3;
-        static auto unitY() -> Vector3;
-        static auto unitZ() -> Vector3;
-
         bool isZero() const;
         bool isUnit() const;
 
-        static auto angle(const Vector3 &v1, const Vector3 &v2) -> Radian;
-
-        void clamp(const Vector3 &min, const Vector3 &max);
-
-        static auto cross(const Vector3 &v1, const Vector3 &v2) -> Vector3;
-
         auto distance(const Vector3 &v) const -> float;
         auto distanceSquared(const Vector3 &v) const -> float;
-
-        auto dot(const Vector3 &v) const -> float;
-        static auto dot(const Vector3 &v1, const Vector3 &v2) -> float;
-
         auto length() const -> float;
         auto lengthSquared() const -> float;
-
         auto normalized() const -> Vector3;
         void normalize();
+        auto angle(const Vector3 &v) -> Radian;
+        void clamp(const Vector3 &min, const Vector3 &max);
+        auto dot(const Vector3 &v) const -> float;
+        auto cross(const Vector3 &v) -> Vector3;
 
         auto operator+(float scalar) const -> Vector3;
         auto operator+(const Vector3 &v) const -> Vector3;

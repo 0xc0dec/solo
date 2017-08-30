@@ -18,30 +18,6 @@ Vector3::Vector3(float x, float y, float z):
 {
 }
 
-auto Vector3::unit() -> Vector3
-{
-    static Vector3 value(1.0f, 1.0f, 1.0f);
-    return value;
-}
-
-auto Vector3::unitX() -> Vector3
-{
-    static Vector3 value(1.0f, 0.0f, 0.0f);
-    return value;
-}
-
-auto Vector3::unitY() -> Vector3
-{
-    static Vector3 value(0.0f, 1.0f, 0.0f);
-    return value;
-}
-
-auto Vector3::unitZ() -> Vector3
-{
-    static Vector3 value(0.0f, 0.0f, 1.0f);
-    return value;
-}
-
 bool Vector3::isZero() const
 {
     return math::isZero(x, math::epsilon1) &&
@@ -56,13 +32,13 @@ bool Vector3::isUnit() const
            math::areEqual(z, 1.0f, math::epsilon1);
 }
 
-auto Vector3::angle(const Vector3 &v1, const Vector3 &v2) -> Radian
+auto Vector3::angle(const Vector3 &v) -> Radian
 {
-    auto dx = v1.y * v2.z - v1.z * v2.y;
-    auto dy = v1.z * v2.x - v1.x * v2.z;
-    auto dz = v1.x * v2.y - v1.y * v2.x;
+    auto dx = y * v.z - z * v.y;
+    auto dy = z * v.x - x * v.z;
+    auto dz = x * v.y - y * v.x;
 
-    return Radian(atan2f(sqrt(dx * dx + dy * dy + dz * dz) + math::epsilon2, dot(v1, v2)));
+    return Radian(atan2f(sqrt(dx * dx + dy * dy + dz * dz) + math::epsilon2, dot(v)));
 }
 
 void Vector3::clamp(const Vector3 &min, const Vector3 &max)
@@ -83,12 +59,12 @@ void Vector3::clamp(const Vector3 &min, const Vector3 &max)
         z = max.z;
 }
 
-auto Vector3::cross(const Vector3 &v1, const Vector3 &v2) -> Vector3
+auto Vector3::cross(const Vector3 &v) -> Vector3
 {
     return Vector3(
-        (v1.y * v2.z) - (v1.z * v2.y),
-        (v1.z * v2.x) - (v1.x * v2.z),
-        (v1.x * v2.y) - (v1.y * v2.x)
+        (y * v.z) - (z * v.y),
+        (z * v.x) - (x * v.z),
+        (x * v.y) - (y * v.x)
     );
 }
 
@@ -112,11 +88,6 @@ auto Vector3::distanceSquared(const Vector3 &v) const -> float
 auto Vector3::dot(const Vector3 &v) const -> float
 {
     return x * v.x + y * v.y + z * v.z;
-}
-
-auto Vector3::dot(const Vector3 &v1, const Vector3 &v2) -> float
-{
-    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
 
 auto Vector3::length() const -> float

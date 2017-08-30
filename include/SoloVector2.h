@@ -21,15 +21,15 @@ namespace solo
         bool isZero() const;
         bool isUnit() const;
 
-        void clamp(const Vector2 &min, const Vector2 &max);
         auto distance(const Vector2 &v) const -> float;
         auto distanceSquared(const Vector2 &v) const -> float;
-        auto dot(const Vector2 &v) const -> float;
-        auto angle(const Vector2 &v) const -> Radian;
         auto length() const -> float;
         auto lengthSquared() const -> float;
         auto normalized() const -> Vector2;
         void normalize();
+        auto angle(const Vector2 &v) const -> Radian;
+        void clamp(const Vector2 &min, const Vector2 &max);
+        auto dot(const Vector2 &v) const -> float;
 
         auto operator+(const Vector2 &v) const -> Vector2;
         auto operator+=(float scalar) -> Vector2&;
