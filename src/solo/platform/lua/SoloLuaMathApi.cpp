@@ -19,8 +19,29 @@
 #include "SoloLuaCommon.h"
 
 #include <glm/glm.hpp>
+#include <glm/gtx/vector_angle.hpp>
 
 using namespace solo;
+
+static void registerVector3_2(CppBindModule<LuaBinding> &module)
+{
+    auto v = BEGIN_CLASS_RENAMED(module, glm::vec3, "Wector3");
+    REG_CTOR(v, float, float, float);
+    REG_VARIABLE(v, glm::vec3, x);
+    REG_VARIABLE(v, glm::vec3, y);
+    REG_VARIABLE(v, glm::vec3, z);
+    REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec3 *v1, const glm::vec3 &v2) { return glm::angle(*v1, v2); }, "angle");
+    REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec3 *v1, const glm::vec3 &v2) { return glm::distance(*v1, v2); }, "distance");
+    REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec3 *v1, const glm::vec3 &v2) { return glm::dot(*v1, v2); }, "dot");
+    REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec3 *v1) { return glm::length(*v1); }, "length");
+    REG_FREE_FUNC_AS_METHOD_RENAMED(v, [](glm::vec3 *v1) { return glm::normalize(*v1); }, "normalized");
+    REG_META_METHOD(v, "__add", [](const glm::vec3 &v1, const glm::vec3 &v2) { return v1 + v2; });
+    REG_META_METHOD(v, "__sub", [](const glm::vec3 &v1, const glm::vec3 &v2) { return v1 - v2; });
+    REG_META_METHOD(v, "__mul", [](const glm::vec3 &v, float f) { return v * f; });
+    REG_META_METHOD(v, "__div", [](const glm::vec3 &v, float f) { return v / f; });
+    REG_META_METHOD(v, "__unm", [](const glm::vec3 &v) { return -v; });
+    v.endClass();
+}
 
 static void registerVector2(CppBindModule<LuaBinding> &module)
 {
@@ -311,6 +332,7 @@ void registerMathApi(CppBindModule<LuaBinding> &module)
     registerDegree(module);
     registerVector2(module);
     registerVector3(module);
+    registerVector3_2(module);
     registerVector4(module);
     registerQuaternion(module);
     registerMatrix(module);
@@ -320,13 +342,4 @@ void registerMathApi(CppBindModule<LuaBinding> &module)
     registerPlane(module);
     registerRay(module);
     registerFrustum(module);
-
-    // TODO remove after testing
-    auto v = BEGIN_CLASS_RENAMED(module, glm::vec3, "Wector");
-    REG_CTOR(v, float, float, float);
-    REG_VARIABLE(v, glm::vec3, x);
-    REG_VARIABLE(v, glm::vec3, y);
-    REG_VARIABLE(v, glm::vec3, z);
-    REG_META_METHOD(v, "__add", [](const glm::vec3 &v1, const glm::vec3 &v2) { return v1 + v2; });
-    v.endClass();
 }

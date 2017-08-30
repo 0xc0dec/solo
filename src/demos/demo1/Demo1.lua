@@ -3,15 +3,6 @@
 -- MIT license
 -- 
 
-local wector = solo.Wector(1, 2, 3)
-print(wector.x)
-
-wector.x = 10
-print(wector.x)
-
-wector = wector + wector
-print(wector.x)
-
 package.path = "../../src/demos/demo1/?.lua;../../src/demos/common/?.lua;" .. package.path
 
 require "Common"
