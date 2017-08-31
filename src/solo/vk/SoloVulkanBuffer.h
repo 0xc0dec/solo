@@ -15,47 +15,38 @@ namespace solo
 {
     namespace vk
     {
+        class Renderer;
+
         class Buffer
         {
         public:
-            enum Flags
-            {
-                Host = 1,
-                Device = 1 << 1,
-                Uniform = 1 << 2,
-                Vertex = 1 << 3,
-                Index = 1 << 4,
-                TransferSrc = 1 << 5,
-                TransferDst = 1 << 6
-            };
+            static auto createStaging(Renderer *renderer, VkDeviceSize size, const void *initialData = nullptr) -> Buffer;
+            static auto createUniformHostVisible(Renderer *renderer, VkDeviceSize size) -> Buffer;
+            static auto createDeviceLocal(Renderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> Buffer;
 
             Buffer() {}
-            Buffer(VkDevice device, VkDeviceSize size, uint32_t flags, VkPhysicalDeviceMemoryProperties memProps);
-            Buffer(Buffer &&other) noexcept;
+            Buffer(Renderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags);
+            Buffer(Buffer &&other) = default;
             Buffer(const Buffer &other) = delete;
-
             ~Buffer() {}
 
-            auto operator=(Buffer other) noexcept -> Buffer&;
+            auto operator=(const Buffer &other) -> Buffer& = delete;
+            auto operator=(Buffer &&other) -> Buffer& = default;
 
-            auto getHandle() const -> VkBuffer;
+            operator VkBuffer() { return buffer; }
+
+            auto getHandle() const -> VkBuffer { return buffer; }
 
             void update(const void *newData) const;
             void transferTo(const Buffer& other, VkQueue queue, VkCommandPool cmdPool) const;
 
         private:
             VkDevice device = nullptr;
+            Renderer *renderer = nullptr;
             Resource<VkDeviceMemory> memory;
             Resource<VkBuffer> buffer;
             VkDeviceSize size = 0;
-
-            void swap(Buffer &other) noexcept;
         };
-
-        inline auto Buffer::getHandle() const -> VkBuffer
-        {
-            return buffer;
-        }
     }
 }
 

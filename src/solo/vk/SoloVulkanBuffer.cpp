@@ -7,43 +7,55 @@
 
 #ifdef SL_VULKAN_RENDERER
 
+#include "SoloVulkanRenderer.h"
+
 using namespace solo;
 using namespace vk;
 
+auto Buffer::createStaging(Renderer *renderer, VkDeviceSize size, const void *initialData) -> Buffer
+{
+    auto buffer = Buffer(renderer, size,
+        VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
-Buffer::Buffer(VkDevice device, VkDeviceSize size, uint32_t flags, VkPhysicalDeviceMemoryProperties memProps):
-    device(device),
+    if (initialData)
+        buffer.update(initialData);
+
+    return buffer;
+}
+
+auto Buffer::createUniformHostVisible(Renderer *renderer, VkDeviceSize size) -> Buffer
+{
+    return Buffer(renderer, size,
+        VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+}
+
+auto Buffer::createDeviceLocal(Renderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> Buffer
+{
+    auto stagingBuffer = createStaging(renderer, size, data);
+
+    auto buffer = Buffer(renderer, size, VK_BUFFER_USAGE_TRANSFER_DST_BIT | usageFlags, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+    stagingBuffer.transferTo(buffer, renderer->getQueue(), renderer->getCommandPool());
+
+    return std::move(buffer);
+}
+
+Buffer::Buffer(Renderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags):
+    device(renderer->getDevice()),
     size(size)
 {
-    VkBufferUsageFlags usage = 0;
-    VkMemoryPropertyFlags propFlags = 0;
-
-    if (flags & Host)
-        propFlags |= VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
-    if (flags & Device)
-        propFlags |= VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
-    if (flags & Vertex)
-        usage |= VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
-    if (flags & Index)
-        usage |= VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
-    if (flags & Uniform)
-        usage |= VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
-    if (flags & TransferSrc)
-        usage |= VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
-    if (flags & TransferDst)
-        usage |= VK_BUFFER_USAGE_TRANSFER_DST_BIT;
-
     VkBufferCreateInfo bufferInfo {};
     bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
     bufferInfo.size = size;
-    bufferInfo.usage = usage;
+    bufferInfo.usage = usageFlags;
     bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
     bufferInfo.flags = 0;
     bufferInfo.queueFamilyIndexCount = 0;
     bufferInfo.pQueueFamilyIndices = nullptr;
 
     buffer = Resource<VkBuffer>{device, vkDestroyBuffer};
-    SL_VK_CHECK_RESULT(vkCreateBuffer(device, &bufferInfo, nullptr, buffer.cleanAndExpose()));
+    SL_VK_CHECK_RESULT(vkCreateBuffer(device, &bufferInfo, nullptr, buffer.cleanRef()));
 
     VkMemoryRequirements memReqs;
     vkGetBufferMemoryRequirements(device, buffer, &memReqs);
@@ -51,26 +63,12 @@ Buffer::Buffer(VkDevice device, VkDeviceSize size, uint32_t flags, VkPhysicalDev
     VkMemoryAllocateInfo allocInfo {};
     allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
     allocInfo.allocationSize = memReqs.size;
-    allocInfo.memoryTypeIndex = findMemoryType(memProps, memReqs.memoryTypeBits, propFlags);
+    allocInfo.memoryTypeIndex = findMemoryType(renderer->getPhysicalMemoryFeatures(), memReqs.memoryTypeBits, memPropertyFlags);
 
     memory = Resource<VkDeviceMemory>{device, vkFreeMemory};
-    SL_VK_CHECK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, memory.cleanAndExpose()));
+    SL_VK_CHECK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, memory.cleanRef()));
     SL_VK_CHECK_RESULT(vkBindBufferMemory(device, buffer, memory, 0));
 }
-
-
-Buffer::Buffer(Buffer &&other) noexcept
-{
-    swap(other);
-}
-
-
-auto Buffer::operator=(Buffer other) noexcept -> Buffer&
-{
-    swap(other);
-    return *this;
-}
-
 
 void Buffer::update(const void *newData) const
 {
@@ -80,23 +78,10 @@ void Buffer::update(const void *newData) const
 	vkUnmapMemory(device, memory);
 }
 
-
 void Buffer::transferTo(const Buffer &dst, VkQueue queue, VkCommandPool cmdPool) const
 {
-    VkCommandBufferAllocateInfo allocInfo{};
-    allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-    allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-    allocInfo.commandPool = cmdPool;
-    allocInfo.commandBufferCount = 1;
-
-    VkCommandBuffer cmdBuf;
-    SL_VK_CHECK_RESULT(vkAllocateCommandBuffers(device, &allocInfo, &cmdBuf));
-
-    VkCommandBufferBeginInfo beginInfo{};
-    beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-    beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-
-    SL_VK_CHECK_RESULT(vkBeginCommandBuffer(cmdBuf, &beginInfo));
+    auto cmdBuf = createCommandBuffer(device, cmdPool);
+    beginCommandBuffer(cmdBuf, true);
 
     VkBufferCopy copyRegion{};
     copyRegion.size = dst.size;
@@ -104,25 +89,8 @@ void Buffer::transferTo(const Buffer &dst, VkQueue queue, VkCommandPool cmdPool)
 
     SL_VK_CHECK_RESULT(vkEndCommandBuffer(cmdBuf));
 
-    VkSubmitInfo submitInfo{};
-    submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-    submitInfo.commandBufferCount = 1;
-    submitInfo.pCommandBuffers = &cmdBuf;
-
-    SL_VK_CHECK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, nullptr));
+    queueSubmit(queue, 0, nullptr, 0, nullptr, 1, &cmdBuf);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
-
-    vkFreeCommandBuffers(device, cmdPool, 1, &cmdBuf);
 }
-
-
-void Buffer::swap(Buffer &other) noexcept
-{
-    std::swap(device, other.device);
-    std::swap(memory, other.memory);
-    std::swap(buffer, other.buffer);
-    std::swap(size, other.size);
-}
-
 
 #endif

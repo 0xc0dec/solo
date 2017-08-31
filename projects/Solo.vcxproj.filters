@@ -274,6 +274,9 @@
     <ClInclude Include="..\src\solo\vk\SoloVulkanSwapchain.h">
       <Filter>src\vk</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\vk\SoloVulkanResource.h">
+      <Filter>src\vk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\SoloScene.cpp">

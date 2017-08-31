@@ -15,7 +15,6 @@
 using namespace solo;
 // TODO remove "using namespace vk" from other places
 
-
 auto vk::Effect::create(Device *device, EffectPrefab prefab) -> sptr<Effect>
 {
     // TODO remove hackery!
@@ -23,12 +22,10 @@ auto vk::Effect::create(Device *device, EffectPrefab prefab) -> sptr<Effect>
     return nullptr;
 }
 
-
 vk::Effect::Effect(Device *device, const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen)
 {
 
 }
-
 
 vk::Effect::Effect(Device *device, const std::string &vsSrc, const std::string &fsSrc)
 {
@@ -39,10 +36,8 @@ vk::Effect::Effect(Device *device, const std::string &vsSrc, const std::string &
     fragmentShader = createShader(renderer->getDevice(), fsBytes.data(), fsBytes.size());
 }
 
-
 vk::Effect::~Effect()
 {
 }
-
 
 #endif

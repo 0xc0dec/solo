@@ -7,6 +7,7 @@
 
 #ifdef SL_VULKAN_RENDERER
 
+#include <tuple>
 #include <SDL_syswm.h>
 #ifdef SL_WINDOWS
 #   include <windows.h>
@@ -14,7 +15,6 @@
 
 using namespace solo;
 using namespace vk;
-
 
 SDLDevice::SDLDevice(const DeviceSetup &setup):
     Device(setup)
@@ -67,7 +67,7 @@ SDLDevice::SDLDevice(const DeviceSetup &setup):
     }
 
     instance = Resource<VkInstance>{vkDestroyInstance};
-    SL_VK_CHECK_RESULT(vkCreateInstance(&instanceInfo, nullptr, instance.cleanAndExpose()));
+    SL_VK_CHECK_RESULT(vkCreateInstance(&instanceInfo, nullptr, instance.cleanRef()));
 
 #ifdef SL_WINDOWS
     SDL_SysWMinfo wmInfo;
@@ -85,25 +85,21 @@ SDLDevice::SDLDevice(const DeviceSetup &setup):
     surfaceInfo.hwnd = hwnd;
 
     surface = Resource<VkSurfaceKHR>{instance, vkDestroySurfaceKHR};
-    SL_VK_CHECK_RESULT(vkCreateWin32SurfaceKHR(instance, &surfaceInfo, nullptr, surface.cleanAndExpose()));
+    SL_VK_CHECK_RESULT(vkCreateWin32SurfaceKHR(instance, &surfaceInfo, nullptr, surface.cleanRef()));
 #endif
 }
-
 
 SDLDevice::~SDLDevice()
 {
     cleanupSubsystems();
 }
 
-
 void SDLDevice::saveScreenshot(const std::string &path)
 {
 }
 
-
 void SDLDevice::endUpdate()
 {
 }
-
 
 #endif

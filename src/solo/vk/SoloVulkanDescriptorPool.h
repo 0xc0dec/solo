@@ -15,26 +15,34 @@ namespace solo
 {
     namespace vk
     {
-        // TODO currently supports pools that allocate only one predefined type of sets
+        class DescriptorPoolConfig
+        {
+        public:
+            auto forDescriptors(VkDescriptorType descriptorType, uint32_t descriptorCount) -> DescriptorPoolConfig&;
+
+        private:
+            friend class DescriptorPool;
+
+            std::vector<VkDescriptorPoolSize> sizes;
+        };
+
         class DescriptorPool
         {
         public:
             DescriptorPool() {}
-            DescriptorPool(VkDevice device, VkDescriptorType type, uint32_t descriptorCount, uint32_t maxSetCount);
+            DescriptorPool(VkDevice device, uint32_t maxSetCount, const DescriptorPoolConfig &config);
             DescriptorPool(const DescriptorPool &other) = delete;
-            DescriptorPool(DescriptorPool &&other) noexcept;
-
+            DescriptorPool(DescriptorPool &&other) = default;
             ~DescriptorPool() {}
 
-            auto operator=(DescriptorPool other) noexcept -> DescriptorPool&;
+            auto operator=(const DescriptorPool &other) -> DescriptorPool& = delete;
+            auto operator=(DescriptorPool &&other) -> DescriptorPool& = default;
 
             auto allocateSet(VkDescriptorSetLayout layout) const -> VkDescriptorSet;
 
         private:
             VkDevice device = nullptr;
             Resource<VkDescriptorPool> pool;
-
-            void swap(DescriptorPool &other) noexcept;
         };
     }
 }

@@ -24,8 +24,8 @@ namespace solo
 
             void saveScreenshot(const std::string &path) override final;
 
-            auto getInstance() const -> VkInstance;
-            auto getSurface() const -> VkSurfaceKHR;
+            auto getInstance() const -> VkInstance { return instance; }
+            auto getSurface() const -> VkSurfaceKHR { return surface; }
 
         protected:
             void endUpdate() override final;
@@ -34,16 +34,6 @@ namespace solo
             Resource<VkInstance> instance;
             Resource<VkSurfaceKHR> surface;
         };
-
-        inline auto SDLDevice::getInstance() const -> VkInstance
-        {
-            return instance;
-        }
-
-        inline auto SDLDevice::getSurface() const -> VkSurfaceKHR
-        {
-            return surface;
-        }
     }
 }
 

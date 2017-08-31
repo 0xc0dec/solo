@@ -101,6 +101,7 @@
     <ClInclude Include="..\src\solo\vk\SoloVulkanPipeline.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkanRenderer.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkanRenderPass.h" />
+    <ClInclude Include="..\src\solo\vk\SoloVulkanResource.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkanSwapchain.h" />
   </ItemGroup>
   <ItemGroup>

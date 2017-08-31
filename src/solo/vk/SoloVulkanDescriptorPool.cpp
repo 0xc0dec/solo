@@ -10,37 +10,20 @@
 using namespace solo;
 using namespace vk;
 
-
-DescriptorPool::DescriptorPool(VkDevice device, VkDescriptorType type, uint32_t descriptorCount, uint32_t maxSetCount):
+DescriptorPool::DescriptorPool(VkDevice device, uint32_t maxSetCount, const DescriptorPoolConfig &config):
     device(device)
 {
-    VkDescriptorPoolSize poolSize{};
-    poolSize.type = type;
-    poolSize.descriptorCount = descriptorCount;
-
-    VkDescriptorPoolCreateInfo poolInfo {};
+    VkDescriptorPoolCreateInfo poolInfo{};
     poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-    poolInfo.poolSizeCount = 1;
-    poolInfo.pPoolSizes = &poolSize;
+    poolInfo.poolSizeCount = config.sizes.size();
+    poolInfo.pPoolSizes = config.sizes.data();
     poolInfo.maxSets = maxSetCount;
 
-    this->pool = Resource<VkDescriptorPool>{device, vkDestroyDescriptorPool};
-    SL_VK_CHECK_RESULT(vkCreateDescriptorPool(device, &poolInfo, nullptr, pool.cleanAndExpose()));
+    Resource<VkDescriptorPool> pool{device, vkDestroyDescriptorPool};
+    SL_VK_CHECK_RESULT(vkCreateDescriptorPool(device, &poolInfo, nullptr, pool.cleanRef()));
+
+    this->pool = std::move(pool);
 }
-
-
-DescriptorPool::DescriptorPool(DescriptorPool &&other) noexcept
-{
-    swap(other);
-}
-
-
-auto DescriptorPool::operator=(DescriptorPool other) noexcept -> DescriptorPool&
-{
-    swap(other);
-    return *this;
-}
-
 
 auto DescriptorPool::allocateSet(VkDescriptorSetLayout layout) const -> VkDescriptorSet
 {
@@ -56,12 +39,13 @@ auto DescriptorPool::allocateSet(VkDescriptorSetLayout layout) const -> VkDescri
     return set;
 }
 
-
-void DescriptorPool::swap(DescriptorPool &other) noexcept
+auto DescriptorPoolConfig::forDescriptors(VkDescriptorType descriptorType, uint32_t descriptorCount) -> DescriptorPoolConfig&
 {
-    std::swap(device, other.device);
-    std::swap(pool, other.pool);
+    VkDescriptorPoolSize poolSize{};
+    poolSize.type = descriptorType;
+    poolSize.descriptorCount = descriptorCount;
+    sizes.push_back(poolSize);
+    return *this;
 }
-
 
 #endif

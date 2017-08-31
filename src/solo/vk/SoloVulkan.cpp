@@ -13,7 +13,6 @@
 
 using namespace solo;
 
-    
 auto vk::getPhysicalDevice(VkInstance instance) -> VkPhysicalDevice
 {
     uint32_t gpuCount = 0;
@@ -24,7 +23,6 @@ auto vk::getPhysicalDevice(VkInstance instance) -> VkPhysicalDevice
 
     return physicalDevices[0]; // TODO at least for now
 }
-
 
 auto vk::createDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -> Resource<VkDevice>
 {
@@ -47,11 +45,10 @@ auto vk::createDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -> R
     deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
 
     Resource<VkDevice> result{vkDestroyDevice};
-    SL_VK_CHECK_RESULT(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, result.cleanAndExpose()));
+    SL_VK_CHECK_RESULT(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, result.cleanRef()));
 
     return result;
 }
-
 
 auto vk::createSemaphore(VkDevice device) -> Resource<VkSemaphore>
 {
@@ -61,50 +58,10 @@ auto vk::createSemaphore(VkDevice device) -> Resource<VkSemaphore>
     semaphoreCreateInfo.flags = 0;
 
     Resource<VkSemaphore> semaphore{device, vkDestroySemaphore};
-    SL_VK_CHECK_RESULT(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, semaphore.cleanAndExpose()));
+    SL_VK_CHECK_RESULT(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, semaphore.cleanRef()));
 
     return semaphore;
 }
-
-
-auto vk::getSurfaceFormats(VkPhysicalDevice device, VkSurfaceKHR surface) -> std::tuple<VkFormat, VkColorSpaceKHR>
-{
-    uint32_t count;
-    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, nullptr));
-
-    std::vector<VkSurfaceFormatKHR> formats(count);
-    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, formats.data()));
-
-    if (count == 1 && formats[0].format == VK_FORMAT_UNDEFINED)
-        return std::make_tuple(VK_FORMAT_B8G8R8A8_UNORM, formats[0].colorSpace);
-    return std::make_tuple(formats[0].format, formats[0].colorSpace);
-}
-
-
-auto vk::getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> uint32_t
-{
-    uint32_t count;
-    vkGetPhysicalDeviceQueueFamilyProperties(device, &count, nullptr);
-
-    std::vector<VkQueueFamilyProperties> queueProps;
-    queueProps.resize(count);
-    vkGetPhysicalDeviceQueueFamilyProperties(device, &count, queueProps.data());
-
-    std::vector<VkBool32> presentSupported(count);
-    for (uint32_t i = 0; i < count; i++)
-        SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupported[i]));
-
-    // TODO support for separate rendering and presenting queues
-    for (uint32_t i = 0; i < count; i++)
-    {
-        if (queueProps[i].queueFlags & VK_QUEUE_GRAPHICS_BIT && presentSupported[i] == VK_TRUE)
-            return i;
-    }
-
-    SL_PANIC("Could not find queue index");
-    return 0;
-}
-
 
 auto vk::getDepthFormat(VkPhysicalDevice device) -> VkFormat
 {
@@ -131,21 +88,6 @@ auto vk::getDepthFormat(VkPhysicalDevice device) -> VkFormat
     return VK_FORMAT_UNDEFINED;
 }
 
-
-auto vk::createCommandPool(VkDevice device, uint32_t queueIndex) -> Resource<VkCommandPool>
-{
-    VkCommandPoolCreateInfo poolInfo{};
-    poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-    poolInfo.queueFamilyIndex = queueIndex;
-    poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
-
-    Resource<VkCommandPool> commandPool{device, vkDestroyCommandPool};
-    SL_VK_CHECK_RESULT(vkCreateCommandPool(device, &poolInfo, nullptr, commandPool.cleanAndExpose()));
-
-    return commandPool;
-}
-
-
 void vk::submitCommandBuffer(VkQueue queue, VkCommandBuffer buffer)
 {
     SL_VK_CHECK_RESULT(vkEndCommandBuffer(buffer));
@@ -159,6 +101,20 @@ void vk::submitCommandBuffer(VkQueue queue, VkCommandBuffer buffer)
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 }
 
+auto vk::createCommandBuffer(VkDevice device, VkCommandPool commandPool) -> Resource<VkCommandBuffer>
+{
+    VkCommandBufferAllocateInfo allocateInfo{};
+    allocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    allocateInfo.pNext = nullptr;
+    allocateInfo.commandPool = commandPool;
+    allocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    allocateInfo.commandBufferCount = 1;
+
+    Resource<VkCommandBuffer> buffer{device, commandPool, vkFreeCommandBuffers};
+    SL_VK_CHECK_RESULT(vkAllocateCommandBuffers(device, &allocateInfo, &buffer));
+
+    return buffer;
+}
 
 void vk::createCommandBuffers(VkDevice device, VkCommandPool commandPool, bool primary, uint32_t count, VkCommandBuffer *result)
 {
@@ -172,6 +128,31 @@ void vk::createCommandBuffers(VkDevice device, VkCommandPool commandPool, bool p
     SL_VK_CHECK_RESULT(vkAllocateCommandBuffers(device, &allocateInfo, result));
 }
 
+void vk::beginCommandBuffer(VkCommandBuffer buffer, bool oneTime)
+{
+    VkCommandBufferBeginInfo beginInfo{};
+    beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+    beginInfo.flags = oneTime ? VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT : 0;
+    SL_VK_CHECK_RESULT(vkBeginCommandBuffer(buffer, &beginInfo));
+}
+
+void vk::queueSubmit(VkQueue queue, uint32_t waitSemaphoreCount, const VkSemaphore *waitSemaphores,
+    uint32_t signalSemaphoreCount, const VkSemaphore *signalSemaphores,
+    uint32_t commandBufferCount, const VkCommandBuffer *commandBuffers)
+{
+    VkPipelineStageFlags submitPipelineStages = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+
+    VkSubmitInfo submitInfo{};
+    submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    submitInfo.pWaitDstStageMask = &submitPipelineStages;
+    submitInfo.waitSemaphoreCount = waitSemaphoreCount;
+    submitInfo.pWaitSemaphores = waitSemaphores;
+    submitInfo.signalSemaphoreCount = signalSemaphoreCount;
+    submitInfo.pSignalSemaphores = signalSemaphores;
+    submitInfo.commandBufferCount = commandBufferCount;
+    submitInfo.pCommandBuffers = commandBuffers;
+    SL_VK_CHECK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, VK_NULL_HANDLE));
+}
 
 auto vk::findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, uint32_t typeBits,
     VkMemoryPropertyFlags properties) -> int32_t
@@ -187,7 +168,6 @@ auto vk::findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryPro
     }
     return -1;
 }
-
 
 auto vk::createRenderPass(VkDevice device, VkFormat colorFormat, VkFormat depthFormat) -> Resource<VkRenderPass>
 {
@@ -265,11 +245,10 @@ auto vk::createRenderPass(VkDevice device, VkFormat colorFormat, VkFormat depthF
     renderPassInfo.pDependencies = dependencies.data();
 
     Resource<VkRenderPass> renderPass{device, vkDestroyRenderPass};
-    SL_VK_CHECK_RESULT(vkCreateRenderPass(device, &renderPassInfo, nullptr, renderPass.cleanAndExpose()));
+    SL_VK_CHECK_RESULT(vkCreateRenderPass(device, &renderPassInfo, nullptr, renderPass.cleanRef()));
 
     return renderPass;
 }
-
 
 auto vk::createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImageView depthAttachment,
     VkRenderPass renderPass, uint32_t width, uint32_t height) -> Resource<VkFramebuffer>
@@ -287,11 +266,10 @@ auto vk::createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImage
     createInfo.layers = 1;
 
     Resource<VkFramebuffer> frameBuffer{device, vkDestroyFramebuffer};
-    SL_VK_CHECK_RESULT(vkCreateFramebuffer(device, &createInfo, nullptr, frameBuffer.cleanAndExpose()));
+    SL_VK_CHECK_RESULT(vkCreateFramebuffer(device, &createInfo, nullptr, frameBuffer.cleanRef()));
 
     return frameBuffer;
 }
-
 
 auto vk::createShader(VkDevice device, const void *data, uint32_t size) -> Resource<VkShaderModule>
 {
@@ -303,11 +281,10 @@ auto vk::createShader(VkDevice device, const void *data, uint32_t size) -> Resou
     shaderModuleInfo.pCode = reinterpret_cast<const uint32_t*>(data);
 
     Resource<VkShaderModule> module{device, vkDestroyShaderModule};
-    SL_VK_CHECK_RESULT(vkCreateShaderModule(device, &shaderModuleInfo, nullptr, module.cleanAndExpose()));
+    SL_VK_CHECK_RESULT(vkCreateShaderModule(device, &shaderModuleInfo, nullptr, module.cleanRef()));
 
     return module;
 }
-
 
 auto vk::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties physicalDeviceMemProps,
     VkFormat depthFormat, uint32_t canvasWidth, uint32_t canvasHeight) -> DepthStencil
@@ -346,7 +323,7 @@ auto vk::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties ph
 
     VkMemoryRequirements memReqs;
     Resource<VkImage> image{device, vkDestroyImage};
-    SL_VK_CHECK_RESULT(vkCreateImage(device, &imageInfo, nullptr, image.cleanAndExpose()));
+    SL_VK_CHECK_RESULT(vkCreateImage(device, &imageInfo, nullptr, image.cleanRef()));
     vkGetImageMemoryRequirements(device, image, &memReqs);
 
     auto memTypeIndex = findMemoryType(physicalDeviceMemProps, memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
@@ -356,12 +333,12 @@ auto vk::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties ph
     allocInfo.memoryTypeIndex = memTypeIndex;
 
     Resource<VkDeviceMemory> mem{device, vkFreeMemory};
-    SL_VK_CHECK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, mem.cleanAndExpose()));
+    SL_VK_CHECK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, mem.cleanRef()));
     SL_VK_CHECK_RESULT(vkBindImageMemory(device, image, mem, 0));
 
     viewInfo.image = image;
     Resource<VkImageView> view{device, vkDestroyImageView};
-    SL_VK_CHECK_RESULT(vkCreateImageView(device, &viewInfo, nullptr, view.cleanAndExpose()));
+    SL_VK_CHECK_RESULT(vkCreateImageView(device, &viewInfo, nullptr, view.cleanRef()));
 
     DepthStencil result;
     result.image = std::move(image);
@@ -371,6 +348,24 @@ auto vk::createDepthStencil(VkDevice device, VkPhysicalDeviceMemoryProperties ph
     return result;
 }
 
+auto vk::createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEXT callbackFunc) -> Resource<VkDebugReportCallbackEXT>
+{
+    VkDebugReportCallbackCreateInfoEXT createInfo;
+    createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
+    createInfo.flags = VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT;
+    createInfo.pfnCallback = callbackFunc;
+
+    auto create = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT"));
+    SL_PANIC_IF(!create, "Failed to load pointer to vkCreateDebugReportCallbackEXT");
+
+    auto destroy = reinterpret_cast<PFN_vkDestroyDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkDestroyDebugReportCallbackEXT"));
+    SL_PANIC_IF(!destroy, "Failed to load pointer to vkDestroyDebugReportCallbackEXT");
+
+    Resource<VkDebugReportCallbackEXT> result{instance, destroy};
+    SL_VK_CHECK_RESULT(create(instance, &createInfo, nullptr, result.cleanRef()));
+
+    return result;
+}
 
 auto vk::createShaderStageInfo(bool vertex, VkShaderModule shader, const char* entryPoint) -> VkPipelineShaderStageCreateInfo
 {
@@ -384,6 +379,5 @@ auto vk::createShaderStageInfo(bool vertex, VkShaderModule shader, const char* e
     info.pSpecializationInfo = nullptr;
     return info;
 }
-
 
 #endif

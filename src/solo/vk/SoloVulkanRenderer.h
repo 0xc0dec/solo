@@ -17,9 +17,6 @@
 #include "SoloVulkanRenderPass.h"
 #include "SoloRenderCommand.h"
 #include "SoloVulkan.h"
-#include "SoloVulkanPipeline.h"
-#include "SoloVulkanBuffer.h"
-#include "SoloVulkanDescriptorPool.h"
 
 namespace solo
 {
@@ -37,10 +34,16 @@ namespace solo
             ~Renderer();
 
             // TODO avoid these?
-            auto getDevice() const -> VkDevice;
-            auto getPhysicalDeviceMemProps() const -> VkPhysicalDeviceMemoryProperties;
-            auto getQueue() const -> VkQueue;
-            auto getCommandPool() const -> VkCommandPool;
+            auto getDevice() const -> VkDevice { return device; }
+            auto getPhysicalDevice() const -> VkPhysicalDevice { return physicalDevice; }
+            auto getPhysicalFeatures() const -> VkPhysicalDeviceFeatures { return physicalFeatures; }
+            auto getPhysicalProperties() const -> VkPhysicalDeviceProperties { return physicalProperties; }
+            auto getPhysicalMemoryFeatures() const -> VkPhysicalDeviceMemoryProperties { return physicalMemoryFeatures; }
+            auto getColorFormat() const -> VkFormat { return colorFormat; }
+            auto getDepthFormat() const -> VkFormat { return depthFormat; }
+            auto getColorSpace() const -> VkColorSpaceKHR { return colorSpace; }
+            auto getCommandPool() const -> VkCommandPool { return commandPool; }
+            auto getQueue() const -> VkQueue { return queue; }
 
             void addRenderCommand(const RenderCommand &cmd) override final;
 
@@ -49,35 +52,19 @@ namespace solo
             void endFrame() override final;
 
         private:
-            VkFormat depthFormat = VK_FORMAT_UNDEFINED;
-            VkFormat colorFormat = VK_FORMAT_UNDEFINED;
-            VkColorSpaceKHR colorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
-
-            struct
-            {
-                VkPhysicalDevice device = nullptr;
-                VkPhysicalDeviceFeatures features;
-                VkPhysicalDeviceProperties properties;
-                VkPhysicalDeviceMemoryProperties memProperties;
-            } physicalDevice;
-
             Device *engineDevice = nullptr;
+
             Resource<VkDevice> device;
-            VkQueue queue = nullptr;
             Resource<VkCommandPool> commandPool;
-            DepthStencil depthStencil;
-            RenderPass renderPass;
-            Swapchain swapchain;
-
-            struct
-            {
-                Resource<VkSemaphore> renderComplete;
-                Resource<VkSemaphore> presentComplete;
-            } semaphores;
-
-            std::vector<VkCommandBuffer> swapchainCmdBuffers;
-            VkCommandBuffer mainRenderCmdBuffer;
-            uint32_t currentSwapchainStep = 0;
+            VkPhysicalDevice physicalDevice = nullptr;
+            VkPhysicalDeviceFeatures physicalFeatures{};
+            VkPhysicalDeviceProperties physicalProperties{};
+            VkPhysicalDeviceMemoryProperties physicalMemoryFeatures{};
+            VkFormat colorFormat = VK_FORMAT_UNDEFINED;
+            VkFormat depthFormat = VK_FORMAT_UNDEFINED;
+            VkColorSpaceKHR colorSpace = VK_COLOR_SPACE_MAX_ENUM_KHR;
+            VkQueue queue = nullptr;
+            Resource<VkDebugReportCallbackEXT> debugCallback;
 
             bool dirty = true;
 
@@ -87,39 +74,9 @@ namespace solo
             std::vector<RenderCommand> renderCommands;
             std::vector<RenderCommand> prevRenderCommands;
 
-            struct
-            {
-                Resource<VkDescriptorSetLayout> descSetLayout;
-                DescriptorPool descriptorPool;
-                Buffer uniformBuffer;
-                Pipeline pipeline;
-                VkDescriptorSet descriptorSet;
-                uint32_t vertexCount;
-            } test;
-
             void applyRenderCommands(VkCommandBuffer buf);
             void recordCmdBuffers();
         };
-
-        inline auto Renderer::getDevice() const -> VkDevice
-        {
-            return device;
-        }
-
-        inline auto Renderer::getPhysicalDeviceMemProps() const -> VkPhysicalDeviceMemoryProperties
-        {
-            return physicalDevice.memProperties;
-        }
-
-        inline auto Renderer::getQueue() const -> VkQueue
-        {
-            return queue;
-        }
-
-        inline auto Renderer::getCommandPool() const -> VkCommandPool
-        {
-            return commandPool;
-        }
 
         inline void Renderer::addRenderCommand(const RenderCommand &cmd)
         {
