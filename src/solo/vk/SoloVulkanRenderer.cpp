@@ -21,6 +21,51 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT fl
     return VK_FALSE;
 }
 
+static auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEXT callbackFunc) -> Resource<VkDebugReportCallbackEXT>
+{
+    VkDebugReportCallbackCreateInfoEXT createInfo;
+    createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
+    createInfo.flags = VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT;
+    createInfo.pfnCallback = callbackFunc;
+
+    auto create = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT"));
+    SL_PANIC_IF(!create, "Failed to load pointer to vkCreateDebugReportCallbackEXT");
+
+    auto destroy = reinterpret_cast<PFN_vkDestroyDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkDestroyDebugReportCallbackEXT"));
+    SL_PANIC_IF(!destroy, "Failed to load pointer to vkDestroyDebugReportCallbackEXT");
+
+    Resource<VkDebugReportCallbackEXT> result{instance, destroy};
+    SL_VK_CHECK_RESULT(create(instance, &createInfo, nullptr, result.cleanRef()));
+
+    return result;
+}
+
+static auto createDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -> Resource<VkDevice>
+{
+    std::vector<float> queuePriorities = {0.0f};
+    VkDeviceQueueCreateInfo queueCreateInfo{};
+    queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+    queueCreateInfo.queueFamilyIndex = queueIndex;
+    queueCreateInfo.queueCount = 1;
+    queueCreateInfo.pQueuePriorities = queuePriorities.data();
+
+    std::vector<const char *> deviceExtensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME};
+
+    VkDeviceCreateInfo deviceCreateInfo {};
+    std::vector<VkPhysicalDeviceFeatures> enabledFeatures {};
+    deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+    deviceCreateInfo.queueCreateInfoCount = 1;
+    deviceCreateInfo.pQueueCreateInfos = &queueCreateInfo;
+    deviceCreateInfo.pEnabledFeatures = enabledFeatures.data();
+    deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
+    deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
+
+    Resource<VkDevice> result{vkDestroyDevice};
+    SL_VK_CHECK_RESULT(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, result.cleanRef()));
+
+    return result;
+}
+
 static auto getPhysicalDevice(VkInstance instance) -> VkPhysicalDevice
 {
     uint32_t gpuCount = 0;
@@ -82,16 +127,42 @@ static auto createCommandPool(VkDevice device, uint32_t queueIndex) -> vk::Resou
     return commandPool;
 }
 
+static auto getDepthFormat(VkPhysicalDevice device) -> VkFormat
+{
+    // Since all depth formats may be optional, we need to find a suitable depth format to use
+    // Start with the highest precision packed format
+    std::vector<VkFormat> depthFormats =
+    {
+        VK_FORMAT_D32_SFLOAT_S8_UINT,
+        VK_FORMAT_D32_SFLOAT,
+        VK_FORMAT_D24_UNORM_S8_UINT,
+        VK_FORMAT_D16_UNORM_S8_UINT,
+        VK_FORMAT_D16_UNORM
+    };
+
+    for (auto &format : depthFormats)
+    {
+        VkFormatProperties formatProps;
+        vkGetPhysicalDeviceFormatProperties(device, format, &formatProps);
+        // Format must support depth stencil attachment for optimal tiling
+        if (formatProps.optimalTilingFeatures & VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT)
+            return format;
+    }
+
+    return VK_FORMAT_UNDEFINED;
+}
+
 vk::Renderer::Renderer(Device *engineDevice):
     engineDevice(engineDevice)
 {
-    auto vulkanDevice = dynamic_cast<SDLDevice*>(engineDevice);
-    auto instance = vulkanDevice->getInstance();
-    auto surface = vulkanDevice->getSurface();
+    const auto vulkanDevice = dynamic_cast<SDLDevice*>(engineDevice);
+    const auto instance = vulkanDevice->getInstance();
+    const auto surface = vulkanDevice->getSurface();
     auto canvasWidth = engineDevice->getSetup().canvasWidth;
     auto canvasHeight = engineDevice->getSetup().canvasHeight;
 
     debugCallback = createDebugCallback(instance, debugCallbackFunc);
+    physicalDevice = ::getPhysicalDevice(instance);
     vkGetPhysicalDeviceProperties(physicalDevice, &physicalProperties);
     vkGetPhysicalDeviceFeatures(physicalDevice, &physicalFeatures);
     vkGetPhysicalDeviceMemoryProperties(physicalDevice, &physicalMemoryFeatures);
@@ -101,7 +172,7 @@ vk::Renderer::Renderer(Device *engineDevice):
     colorSpace = std::get<1>(surfaceFormats);
     depthFormat = ::getDepthFormat(physicalDevice);
 
-    auto queueIndex = getQueueIndex(physicalDevice, surface);
+    const auto queueIndex = getQueueIndex(physicalDevice, surface);
     device = createDevice(physicalDevice, queueIndex);
     vkGetDeviceQueue(device, queueIndex, 0, &queue);
 

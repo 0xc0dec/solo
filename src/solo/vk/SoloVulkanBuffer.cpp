@@ -12,7 +12,7 @@
 using namespace solo;
 using namespace vk;
 
-auto Buffer::createStaging(Renderer *renderer, VkDeviceSize size, const void *initialData) -> Buffer
+auto Buffer::createStaging(vk::Renderer *renderer, VkDeviceSize size, const void *initialData) -> Buffer
 {
     auto buffer = Buffer(renderer, size,
         VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
@@ -24,14 +24,14 @@ auto Buffer::createStaging(Renderer *renderer, VkDeviceSize size, const void *in
     return buffer;
 }
 
-auto Buffer::createUniformHostVisible(Renderer *renderer, VkDeviceSize size) -> Buffer
+auto Buffer::createUniformHostVisible(vk::Renderer *renderer, VkDeviceSize size) -> Buffer
 {
     return Buffer(renderer, size,
         VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
         VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 }
 
-auto Buffer::createDeviceLocal(Renderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> Buffer
+auto Buffer::createDeviceLocal(vk::Renderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> Buffer
 {
     auto stagingBuffer = createStaging(renderer, size, data);
 
@@ -41,7 +41,7 @@ auto Buffer::createDeviceLocal(Renderer *renderer, VkDeviceSize size, VkBufferUs
     return std::move(buffer);
 }
 
-Buffer::Buffer(Renderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags):
+Buffer::Buffer(vk::Renderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags):
     device(renderer->getDevice()),
     size(size)
 {

@@ -10,30 +10,40 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloVulkan.h"
+#include "SoloVulkanImage.h"
+#include "SoloVulkanRenderPass.h"
 #include <vector>
 
 namespace solo
 {
     namespace vk
     {
+        class Renderer;
+        class SDLDevice;
+
         class Swapchain
         {
         public:
-            Swapchain();
+            Swapchain() {}
+
+            Swapchain(Renderer *renderer, SDLDevice *device, uint32_t width, uint32_t height, bool vsync);
             Swapchain(const Swapchain &other) = delete;
-            Swapchain(Swapchain &&other) noexcept;
-            Swapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, VkRenderPass renderPass,
-                VkImageView depthStencilView, uint32_t width, uint32_t height, bool vsync, VkFormat colorFormat, VkColorSpaceKHR colorSpace);
+            Swapchain(Swapchain &&other) = default;
+
             ~Swapchain() {}
 
-            auto operator=(Swapchain other) noexcept -> Swapchain&;
+            auto operator=(const Swapchain &other) -> Swapchain& = delete;
+            auto operator=(Swapchain &&other) -> Swapchain& = default;
 
-            auto getNextStep(VkSemaphore semaphore) const -> uint32_t;
-            auto getStepCount() const -> uint32_t;
-            auto getFramebuffer(uint32_t idx) const -> VkFramebuffer;
-            auto getImageView(uint32_t idx) -> VkImageView;
+            operator VkSwapchainKHR() { return swapchain; }
+            operator VkSwapchainKHR() const { return swapchain; }
 
-            auto getHandle() const -> VkSwapchainKHR;
+            auto getRenderPass() -> RenderPass& { return renderPass; }
+            auto getPresentCompleteSemaphore() const -> VkSemaphore { return presentCompleteSem; }
+
+            void recordCommandBuffers(std::function<void(VkFramebuffer, VkCommandBuffer)> issueCommands);
+            auto acquireNext() -> VkSemaphore;
+            void presentNext(VkQueue queue, uint32_t waitSemaphoreCount, const VkSemaphore *waitSemaphores);
 
         private:
             struct Step
@@ -41,34 +51,18 @@ namespace solo
                 VkImage image;
                 Resource<VkImageView> imageView;
                 Resource<VkFramebuffer> framebuffer;
+                Resource<VkCommandBuffer> cmdBuffer;
             };
 
             VkDevice device = nullptr;
             Resource<VkSwapchainKHR> swapchain;
+            Image depthStencil;
             std::vector<Step> steps;
-
-            void swap(Swapchain &other) noexcept;
+            Resource<VkSemaphore> presentCompleteSem;
+            Resource<VkSemaphore> renderCompleteSem;
+            RenderPass renderPass;
+            uint32_t nextStep = 0;
         };
-
-        inline auto Swapchain::getHandle() const -> VkSwapchainKHR
-        {
-            return swapchain;
-        }
-
-        inline auto Swapchain::getStepCount() const -> uint32_t
-        {
-            return static_cast<uint32_t>(steps.size());
-        }
-
-        inline auto Swapchain::getFramebuffer(uint32_t idx) const -> VkFramebuffer
-        {
-            return steps[idx].framebuffer;
-        }
-
-        inline auto Swapchain::getImageView(uint32_t idx) -> VkImageView
-        {
-            return steps[idx].imageView;
-        }
     }
 }
 

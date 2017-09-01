@@ -7,7 +7,6 @@
 
 #ifdef SL_VULKAN_RENDERER
 
-#include <tuple>
 #include <SDL_syswm.h>
 #ifdef SL_WINDOWS
 #   include <windows.h>
@@ -74,8 +73,8 @@ SDLDevice::SDLDevice(const DeviceSetup &setup):
     SDL_VERSION(&wmInfo.version);
     SDL_GetWindowWMInfo(window, &wmInfo);
 
-    auto hwnd = wmInfo.info.win.window;
-    auto hinstance = reinterpret_cast<HINSTANCE>(GetWindowLongPtr(hwnd, GWLP_HINSTANCE));
+    const auto hwnd = wmInfo.info.win.window;
+    const auto hinstance = reinterpret_cast<HINSTANCE>(GetWindowLongPtr(hwnd, GWLP_HINSTANCE));
 
     VkWin32SurfaceCreateInfoKHR surfaceInfo;
     surfaceInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;

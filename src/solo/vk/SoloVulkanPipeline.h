@@ -9,92 +9,85 @@
 
 #ifdef SL_VULKAN_RENDERER
 
+#include "SoloVertexFormat.h"
 #include "SoloVulkan.h"
 
 namespace solo
 {
     namespace vk
     {
-        class Pipeline
+        class PipelineConfig
         {
         public:
-            Pipeline() {}
-            Pipeline(VkDevice device, VkRenderPass renderPass, Resource<VkPipeline> pipeline, Resource<VkPipelineLayout> layout);
-            Pipeline(Pipeline &&other) noexcept;
-            Pipeline(const Pipeline &other) = delete;
-            ~Pipeline() {}
+            PipelineConfig(VkShaderModule vertexShader, VkShaderModule fragmentShader);
 
-            auto operator=(Pipeline other) noexcept -> Pipeline&;
-
-            operator VkPipeline()
+            ~PipelineConfig()
             {
-                return pipeline;
             }
 
-            VkPipeline getHandle() const;
-            VkPipelineLayout getLayout() const;
+            auto withVertexAttribute(uint32_t location, uint32_t binding, VkFormat format, uint32_t offset) -> PipelineConfig&;
+            auto withVertexBinding(uint32_t binding, uint32_t stride, VkVertexInputRate inputRate) -> PipelineConfig&;
+            auto withVertexBufferLayout(const VertexBufferLayout &layout) -> PipelineConfig&; // TODO rename
+
+            auto withDescriptorSetLayout(VkDescriptorSetLayout layout) -> PipelineConfig&;
+
+            auto withFrontFace(VkFrontFace frontFace) -> PipelineConfig&;
+            auto withCullMode(VkCullModeFlags cullFlags) -> PipelineConfig&;
+
+            auto withDepthTest(bool write, bool test) -> PipelineConfig&;
+
+            auto withBlend(bool enabled, VkBlendFactor srcColorFactor, VkBlendFactor dstColorFactor,
+                VkBlendFactor srcAlphaFactor, VkBlendFactor dstAlphaFactor) -> PipelineConfig&;
+
+            auto withTopology(VkPrimitiveTopology topology) -> PipelineConfig&;
 
         private:
-            VkDevice device = nullptr;
-            VkRenderPass renderPass = nullptr;
-            Resource<VkPipeline> pipeline;
-            Resource<VkPipelineLayout> layout;
-
-            void swap(Pipeline &other) noexcept;
-        };
-
-        class PipelineBuilder
-        {
-        public:
-            PipelineBuilder(VkDevice device, VkRenderPass renderPass, VkShaderModule vertexShader, VkShaderModule fragmentShader);
-            ~PipelineBuilder() {}
-
-            auto withTopology(VkPrimitiveTopology topology) -> PipelineBuilder&;
-            auto withVertexSize(uint32_t size) -> PipelineBuilder&;
-
-            auto withVertexAttribute(uint32_t location, uint32_t binding, VkFormat format, uint32_t offset) -> PipelineBuilder&;
-            auto withVertexBinding(uint32_t binding, uint32_t stride, VkVertexInputRate inputRate) -> PipelineBuilder&;
-
-            auto withDescriptorSetLayouts(VkDescriptorSetLayout* layouts, uint32_t count) -> PipelineBuilder&;
-
-            auto build() -> Pipeline;
-
-        private:
-            VkDevice device = nullptr;
-            VkRenderPass renderPass = nullptr;
+            friend class Pipeline;
 
             VkShaderModule vertexShader;
             VkShaderModule fragmentShader;
-            VkPipelineShaderStageCreateInfo vertexShaderStageInfo;
-            VkPipelineShaderStageCreateInfo fragmentShaderStageInfo;
+            VkPipelineRasterizationStateCreateInfo rasterStateInfo;
+            VkPipelineDepthStencilStateCreateInfo depthStencilStateInfo;
+            VkPipelineColorBlendAttachmentState blendAttachmentState;
 
             std::vector<VkVertexInputAttributeDescription> vertexAttrs;
             std::vector<VkVertexInputBindingDescription> vertexBindings;
             std::vector<VkDescriptorSetLayout> descSetLayouts;
 
-            uint32_t vertexSize = 0;
             VkPrimitiveTopology topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
         };
-    
-        inline VkPipeline Pipeline::getHandle() const
-        {
-            return pipeline;
-        }
 
-        inline VkPipelineLayout Pipeline::getLayout() const
+        class Pipeline
         {
-            return layout;
-        }
+        public:
+            Pipeline()
+            {
+            }
 
-        inline auto PipelineBuilder::withTopology(VkPrimitiveTopology topology) -> PipelineBuilder&
+            Pipeline(VkDevice device, VkRenderPass renderPass, const PipelineConfig &config);
+            Pipeline(const Pipeline &other) = delete;
+            Pipeline(Pipeline &&other) = default;
+
+            ~Pipeline()
+            {
+            }
+
+            auto operator=(const Pipeline &other) -> Pipeline& = delete;
+            auto operator=(Pipeline &&other) -> Pipeline& = default;
+
+            operator VkPipeline() { return pipeline; }
+
+            auto getHandle() const -> VkPipeline { return pipeline; }
+            auto getLayout() const -> VkPipelineLayout { return layout; }
+
+        private:
+            Resource<VkPipeline> pipeline;
+            Resource<VkPipelineLayout> layout;
+        };
+
+        inline auto PipelineConfig::withTopology(VkPrimitiveTopology topology) -> PipelineConfig&
         {
             this->topology = topology;
-            return *this;
-        }
-
-        inline auto PipelineBuilder::withVertexSize(uint32_t size) -> PipelineBuilder&
-        {
-            vertexSize = size;
             return *this;
         }
     }

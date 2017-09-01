@@ -277,6 +277,9 @@
     <ClInclude Include="..\src\solo\vk\SoloVulkanResource.h">
       <Filter>src\vk</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\vk\SoloVulkanImage.h">
+      <Filter>src\vk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\SoloScene.cpp">
@@ -508,6 +511,9 @@
       <Filter>src\vk</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\vk\SoloVulkanSwapchain.cpp">
+      <Filter>src\vk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\vk\SoloVulkanImage.cpp">
       <Filter>src\vk</Filter>
     </ClCompile>
   </ItemGroup>
