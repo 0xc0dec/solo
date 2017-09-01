@@ -10,6 +10,7 @@
 
 namespace solo
 {
+    enum class ImageFormat;
     class Device;
 
     class RectTexture: public Texture
@@ -17,7 +18,7 @@ namespace solo
     public:
         static sptr<RectTexture> create(Device *device);
 
-        virtual void setData(TextureFormat format, const void *data, uint32_t width, uint32_t height) = 0;
+        virtual void setData(ImageFormat format, const void *data, uint32_t width, uint32_t height) = 0;
 
         auto getSize() const -> Vector2;
 

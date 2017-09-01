@@ -29,7 +29,7 @@ void gl::CubeTexture::generateMipmaps()
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
-void gl::CubeTexture::setData(CubeTextureFace face, TextureFormat format, const void *data, uint32_t width, uint32_t height)
+void gl::CubeTexture::setData(CubeTextureFace face, ImageFormat format, const void *data, uint32_t width, uint32_t height)
 {
     glBindTexture(GL_TEXTURE_CUBE_MAP, handle);
     

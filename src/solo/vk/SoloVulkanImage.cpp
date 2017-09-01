@@ -8,23 +8,23 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloVulkanRenderer.h"
-#include "SoloTexture.h"
+#include "SoloImage.h"
 
 using namespace solo;
 using namespace vk;
 
-static auto toVulkanFormat(TextureFormat format) -> VkFormat
+static auto toVulkanFormat(ImageFormat format) -> VkFormat
 {
     switch (format)
     {
-        case TextureFormat::RGB:
+        case ImageFormat::RGB:
             return VK_FORMAT_R8G8B8_UNORM;
-        case TextureFormat::RGBA:
+        case ImageFormat::RGBA:
             return VK_FORMAT_R8G8B8A8_UNORM;
-        case TextureFormat::Red:
+        case ImageFormat::Red:
             return VK_FORMAT_R8_UNORM;
         default:
-            SL_PANIC("Unsupported texture format");
+            SL_PANIC("Unsupported image format");
             return VK_FORMAT_UNDEFINED;
     }
 }
@@ -206,7 +206,7 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
     return memory;
 }
 
-auto Image::create2D(vk::Renderer *renderer/*, const ImageData &data*/) -> Image
+auto vk::Image::create2D(vk::Renderer *renderer/*, const ImageData &data*/) -> Image
 {
     /*const auto mipLevels = data.getMipLevelCount();
     const auto width = data.getWidth(0);
@@ -225,7 +225,7 @@ auto Image::create2D(vk::Renderer *renderer/*, const ImageData &data*/) -> Image
     return Image();
 }
 
-auto Image::createCube(vk::Renderer *renderer/*, const ImageData &data*/) -> Image
+auto vk::Image::createCube(vk::Renderer *renderer/*, const ImageData &data*/) -> Image
 {
     /*const auto mipLevels = data.getMipLevelCount();
     const auto width = data.getWidth(0, 0);
@@ -244,7 +244,7 @@ auto Image::createCube(vk::Renderer *renderer/*, const ImageData &data*/) -> Ima
     return Image();
 }
 
-Image::Image(vk::Renderer *renderer, uint32_t width, uint32_t height, uint32_t mipLevels, uint32_t layers, VkFormat format,
+vk::Image::Image(vk::Renderer *renderer, uint32_t width, uint32_t height, uint32_t mipLevels, uint32_t layers, VkFormat format,
     VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask):
     mipLevels(mipLevels),
     layers(layers),
@@ -263,7 +263,7 @@ Image::Image(vk::Renderer *renderer, uint32_t width, uint32_t height, uint32_t m
     this->view = std::move(view);
 }
 
-void Image::uploadData(/*const ImageData &data*/)
+void vk::Image::uploadData(/*const ImageData &data*/)
 {
     /*uint32_t offset = 0;
     std::vector<VkBufferImageCopy> copyRegions;

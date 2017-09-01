@@ -22,7 +22,7 @@ namespace solo
             void bind() override final;
             void generateMipmaps() override final;
 
-            void setData(CubeTextureFace face, TextureFormat format, const void *data, uint32_t width, uint32_t height) override final;
+            void setData(CubeTextureFace face, ImageFormat format, const void *data, uint32_t width, uint32_t height) override final;
         };
     }
 }

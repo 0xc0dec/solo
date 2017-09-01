@@ -12,6 +12,7 @@
 #include "SoloMesh.h"
 #include "SoloMaterial.h"
 #include "SoloTexture.h"
+#include "SoloImage.h"
 
 using namespace solo;
 
@@ -57,37 +58,37 @@ auto gl::toCubeTextureFace(CubeTextureFace face) -> GLenum
     }
 }
 
-auto gl::toInternalTextureFormat(TextureFormat format) -> GLenum
+auto gl::toInternalTextureFormat(ImageFormat format) -> GLenum
 {
     switch (format)
     {
-        case TextureFormat::Red:
-        case TextureFormat::RGB:
+        case ImageFormat::Red:
+        case ImageFormat::RGB:
             return GL_RGB;
-        case TextureFormat::RGBA:
+        case ImageFormat::RGBA:
             return GL_RGBA;
-        case TextureFormat::Alpha:
+        case ImageFormat::Alpha:
             return GL_ALPHA;
         default:
-            SL_PANIC("Unknown texture format");
+            SL_PANIC("Unknown image format");
             return GL_RGB;
     }
 }
 
-auto gl::toTextureFormat(TextureFormat format) -> GLenum
+auto gl::toTextureFormat(ImageFormat format) -> GLenum
 {
     switch (format)
     {
-        case TextureFormat::Red:
+        case ImageFormat::Red:
             return GL_RED;
-        case TextureFormat::RGB:
+        case ImageFormat::RGB:
             return GL_RGB;
-        case TextureFormat::RGBA:
+        case ImageFormat::RGBA:
             return GL_RGBA;
-        case TextureFormat::Alpha:
+        case ImageFormat::Alpha:
             return GL_ALPHA;
         default:
-            SL_PANIC("Unknown texture format");
+            SL_PANIC("Unknown image format");
             return GL_RED;
     }
 }

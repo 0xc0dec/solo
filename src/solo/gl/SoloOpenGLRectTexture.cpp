@@ -28,7 +28,7 @@ void gl::RectTexture::generateMipmaps()
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void gl::RectTexture::setData(TextureFormat format, const void *data, uint32_t width, uint32_t height)
+void gl::RectTexture::setData(ImageFormat format, const void *data, uint32_t width, uint32_t height)
 {
     glBindTexture(GL_TEXTURE_2D, handle);
 

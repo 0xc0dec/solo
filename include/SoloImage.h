@@ -9,13 +9,19 @@
 
 namespace solo
 {
-    enum class TextureFormat;
+    enum class ImageFormat
+    {
+        Red,
+        RGB,
+        RGBA,
+        Alpha
+    };
 
     struct Image
     {
         uint32_t width;
         uint32_t height;
-        TextureFormat format;
+        ImageFormat format;
         std::vector<uint8_t> data;
     };
 }

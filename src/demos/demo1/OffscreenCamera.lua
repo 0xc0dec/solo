@@ -7,7 +7,7 @@ return function(dev, scene)
 	local canvasSize = dev:getCanvasSize()
 
     local tex = solo.RectTexture.create(dev)
-    tex:setData(solo.TextureFormat.RGB, {}, math.floor(canvasSize.x / 8.0), math.floor(canvasSize.y / 8.0))
+    tex:setData(solo.ImageFormat.RGB, {}, math.floor(canvasSize.x / 8.0), math.floor(canvasSize.y / 8.0))
     tex:setFiltering(solo.TextureFiltering.Nearest)
     tex:setWrapping(solo.TextureWrapping.Clamp)
 

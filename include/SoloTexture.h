@@ -28,14 +28,6 @@ namespace solo
         LinearMipmapLinear
     };
 
-    enum class TextureFormat
-    {
-        Red,
-        RGB,
-        RGBA,
-        Alpha
-    };
-
     enum class CubeTextureFace
     {
         Front = 0,

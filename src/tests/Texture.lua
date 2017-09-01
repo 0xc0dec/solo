@@ -24,7 +24,7 @@ rectTex:setMagFiltering(solo.TextureFiltering.NearestMipmapNearest)
 assert(rectTex:getAnisotropyLevel() ~= nil)
 rectTex:setAnisotropyLevel(1)
 
-rectTex:setData(solo.TextureFormat.RGB, { 1, 2, 3, 4 }, 2, 2)
+rectTex:setData(solo.ImageFormat.RGB, { 1, 2, 3, 4 }, 2, 2)
 assert(rectTex:getSize())
 
 
@@ -33,4 +33,4 @@ local cubeTex = solo.CubeTexture.create(solo.device)
 assert(cubeTex:getDepthWrapping())
 cubeTex:setDepthWrapping(solo.TextureWrapping.Clamp)
 
-cubeTex:setData(solo.CubeTextureFace.Front, solo.TextureFormat.RGB, { 1, 2, 3, 4 }, 2, 2)
+cubeTex:setData(solo.CubeTextureFace.Front, solo.ImageFormat.RGB, { 1, 2, 3, 4 }, 2, 2)

@@ -5,10 +5,10 @@
 
 #include "SoloTransform.h"
 #include "SoloTexture.h"
+#include "SoloImage.h"
 #include "SoloLuaCommon.h"
 #include "SoloEffect.h"
 #include "SoloDevice.h"
-#include "SoloVertexFormat.h"
 #include "SoloMaterial.h"
 #include "SoloMesh.h"
 
@@ -27,11 +27,11 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     REG_MODULE_CONSTANT(textureWrapping, TextureWrapping, Repeat);
     textureWrapping.endModule();
 
-    auto textureFormat = module.beginModule("TextureFormat");
-    REG_MODULE_CONSTANT(textureFormat, TextureFormat, Alpha);
-    REG_MODULE_CONSTANT(textureFormat, TextureFormat, RGB);
-    REG_MODULE_CONSTANT(textureFormat, TextureFormat, RGBA);
-    REG_MODULE_CONSTANT(textureFormat, TextureFormat, Red);
+    auto imageFormat = module.beginModule("ImageFormat");
+    REG_MODULE_CONSTANT(imageFormat, ImageFormat, Alpha);
+    REG_MODULE_CONSTANT(imageFormat, ImageFormat, RGB);
+    REG_MODULE_CONSTANT(imageFormat, ImageFormat, RGBA);
+    REG_MODULE_CONSTANT(imageFormat, ImageFormat, Red);
     textureWrapping.endModule();
 
     auto textureFiltering = module.beginModule("TextureFiltering");

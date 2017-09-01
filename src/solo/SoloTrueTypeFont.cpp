@@ -5,6 +5,7 @@
 
 #include "SoloTrueTypeFont.h"
 #include "SoloRectTexture.h"
+#include "SoloImage.h"
 #define STB_TRUETYPE_IMPLEMENTATION
 #include <stb_truetype.h>
 
@@ -28,7 +29,7 @@ TrueTypeFont::TrueTypeFont(Device *device, uint8_t *fontData, uint32_t size, uin
 
     atlas = RectTexture::create(device);
     atlas->setFiltering(TextureFiltering::Linear);
-    atlas->setData(TextureFormat::Red, pixels.get(), atlasWidth, atlasHeight);
+    atlas->setData(ImageFormat::Red, pixels.get(), atlasWidth, atlasHeight);
     atlas->generateMipmaps();
 }
 

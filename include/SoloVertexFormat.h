@@ -51,8 +51,8 @@ namespace solo
 
     inline void VertexBufferLayout::addAttribute(uint32_t elementCount, uint32_t location)
     {
-        auto size = static_cast<uint32_t>(sizeof(float) * elementCount);
-        auto offset = attrs.crbegin()->offset + attrs.crbegin()->size;
+        const auto size = static_cast<uint32_t>(sizeof(float) * elementCount);
+        const auto offset = attrs.empty() ? 0 : attrs.crbegin()->offset + attrs.crbegin()->size;
         attrs.push_back(VertexAttribute{elementCount, size, location, offset});
         this->size += size;
     }
