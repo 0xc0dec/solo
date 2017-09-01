@@ -15,6 +15,7 @@ namespace solo
         uint32_t elementCount;
         uint32_t size;
         uint32_t location;
+        uint32_t offset;
     };
 
     class VertexBufferLayout final
@@ -51,7 +52,8 @@ namespace solo
     inline void VertexBufferLayout::addAttribute(uint32_t elementCount, uint32_t location)
     {
         auto size = static_cast<uint32_t>(sizeof(float) * elementCount);
-        attrs.push_back(VertexAttribute{elementCount, size, location});
+        auto offset = attrs.crbegin()->offset + attrs.crbegin()->size;
+        attrs.push_back(VertexAttribute{elementCount, size, location, offset});
         this->size += size;
     }
 }
