@@ -34,7 +34,7 @@ namespace solo
 
         virtual ~Font() {}
 
-        auto getAtlas() const -> sptr<RectTexture>;
+        auto getAtlas() const -> sptr<RectTexture> { return atlas; }
 
         virtual auto getGlyphInfo(uint32_t character, float offsetX, float offsetY) -> GlyphInfo = 0;
 
@@ -43,9 +43,4 @@ namespace solo
         
         Font() {}
     };
-
-    inline auto Font::getAtlas() const -> sptr<RectTexture>
-    {
-        return atlas;
-    }
 }

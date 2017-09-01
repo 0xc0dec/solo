@@ -89,7 +89,7 @@
     <ClInclude Include="..\src\solo\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\solo\SoloPngImageLoader.h" />
     <ClInclude Include="..\src\solo\SoloSpinLock.h" />
-    <ClInclude Include="..\src\solo\SoloTrueTypeFont.h" />
+    <ClInclude Include="..\src\solo\stb\SoloStbTrueTypeFont.h" />
     <ClInclude Include="..\src\solo\vk\SoloSDLVulkanDevice.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkan.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkanBuffer.h" />
@@ -146,7 +146,6 @@
     <ClCompile Include="..\src\solo\SoloScriptRuntime.cpp" />
     <ClCompile Include="..\src\solo\SoloSkyboxRenderer.cpp" />
     <ClCompile Include="..\src\solo\SoloSpectator.cpp" />
-    <ClCompile Include="..\src\solo\SoloTrueTypeFont.cpp" />
     <ClCompile Include="..\src\solo\SoloCamera.cpp" />
     <ClCompile Include="..\src\solo\SoloFileSystem.cpp" />
     <ClCompile Include="..\src\solo\SoloBase.cpp" />
@@ -171,6 +170,7 @@
     <ClCompile Include="..\src\solo\SoloVector2.cpp" />
     <ClCompile Include="..\src\solo\SoloVector3.cpp" />
     <ClCompile Include="..\src\solo\SoloVector4.cpp" />
+    <ClCompile Include="..\src\solo\stb\SoloStbTrueTypeFont.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloSDLVulkanDevice.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloVulkan.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloVulkanBuffer.cpp" />

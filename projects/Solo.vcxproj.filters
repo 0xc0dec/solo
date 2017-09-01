@@ -130,9 +130,6 @@
     <ClInclude Include="..\include\SoloDeviceSetup.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\SoloTrueTypeFont.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloScriptRuntime.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -280,6 +277,9 @@
     <ClInclude Include="..\src\solo\vk\SoloVulkanImage.h">
       <Filter>src\vk</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\stb\SoloStbTrueTypeFont.h">
+      <Filter>src\stb</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\SoloScene.cpp">
@@ -367,9 +367,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\SoloDegree.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\SoloTrueTypeFont.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\SoloFontRenderer.cpp">
@@ -516,6 +513,9 @@
     <ClCompile Include="..\src\solo\vk\SoloVulkanImage.cpp">
       <Filter>src\vk</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\solo\stb\SoloStbTrueTypeFont.cpp">
+      <Filter>src\stb</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -541,6 +541,9 @@
     </Filter>
     <Filter Include="src\vk">
       <UniqueIdentifier>{a549a9cc-182c-4c81-ba00-370056813008}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\stb">
+      <UniqueIdentifier>{7280382c-a6ab-4d81-b829-044fcf58555f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

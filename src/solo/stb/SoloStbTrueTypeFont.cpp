@@ -3,7 +3,7 @@
     MIT license
 */
 
-#include "SoloTrueTypeFont.h"
+#include "SoloStbTrueTypeFont.h"
 #include "SoloRectTexture.h"
 #include "SoloImage.h"
 #define STB_TRUETYPE_IMPLEMENTATION
