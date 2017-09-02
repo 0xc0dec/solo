@@ -11,48 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\SoloCommon.h" />
-    <ClInclude Include="..\include\SoloBoxCollider.h" />
-    <ClInclude Include="..\include\SoloCamera.h" />
-    <ClInclude Include="..\include\SoloCollider.h" />
-    <ClInclude Include="..\include\SoloComponent.h" />
-    <ClInclude Include="..\include\SoloDegree.h" />
-    <ClInclude Include="..\include\SoloDevice.h" />
-    <ClInclude Include="..\include\SoloDeviceSetup.h" />
-    <ClInclude Include="..\include\SoloEffect.h" />
-    <ClInclude Include="..\include\SoloFileSystem.h" />
-    <ClInclude Include="..\include\SoloFont.h" />
-    <ClInclude Include="..\include\SoloFontRenderer.h" />
-    <ClInclude Include="..\include\SoloFormatter.h" />
-    <ClInclude Include="..\include\Solo.h" />
-    <ClInclude Include="..\include\SoloImage.h" />
-    <ClInclude Include="..\include\SoloPhysics.h" />
-    <ClInclude Include="..\include\SoloRadian.h" />
-    <ClInclude Include="..\include\SoloRenderCommand.h" />
-    <ClInclude Include="..\include\SoloRenderer.h" />
-    <ClInclude Include="..\include\SoloFrameBuffer.h" />
-    <ClInclude Include="..\include\SoloCubeTexture.h" />
-    <ClInclude Include="..\include\SoloRigidBody.h" />
-    <ClInclude Include="..\include\SoloScriptRuntime.h" />
-    <ClInclude Include="..\include\SoloSkyboxRenderer.h" />
-    <ClInclude Include="..\include\SoloSpectator.h" />
-    <ClInclude Include="..\include\SoloTexture.h" />
-    <ClInclude Include="..\include\SoloLogger.h" />
-    <ClInclude Include="..\include\SoloMaterial.h" />
-    <ClInclude Include="..\include\SoloMath.h" />
-    <ClInclude Include="..\include\SoloMatrix.h" />
-    <ClInclude Include="..\include\SoloMesh.h" />
-    <ClInclude Include="..\include\SoloMeshRenderer.h" />
-    <ClInclude Include="..\include\SoloNode.h" />
-    <ClInclude Include="..\include\SoloQuaternion.h" />
-    <ClInclude Include="..\include\SoloRay.h" />
-    <ClInclude Include="..\include\SoloScene.h" />
-    <ClInclude Include="..\include\SoloRectTexture.h" />
-    <ClInclude Include="..\include\SoloTransform.h" />
-    <ClInclude Include="..\include\SoloVector2.h" />
-    <ClInclude Include="..\include\SoloVector3.h" />
-    <ClInclude Include="..\include\SoloVector4.h" />
-    <ClInclude Include="..\include\SoloVertexFormat.h" />
     <ClInclude Include="..\src\solo\bullet\SoloBulletBoxCollider.h" />
     <ClInclude Include="..\src\solo\bullet\SoloBulletCollider.h" />
     <ClInclude Include="..\src\solo\bullet\SoloBulletCommon.h" />
@@ -83,11 +41,52 @@
     <ClInclude Include="..\src\solo\null\SoloNullRenderer.h" />
     <ClInclude Include="..\src\solo\sdl\SoloSDLDevice.h" />
     <ClInclude Include="..\src\solo\sdl\SoloSDLInputMaps.h" />
+    <ClInclude Include="..\src\solo\SoloBoxCollider.h" />
+    <ClInclude Include="..\src\solo\SoloCamera.h" />
+    <ClInclude Include="..\src\solo\SoloCollider.h" />
+    <ClInclude Include="..\src\solo\SoloCommon.h" />
+    <ClInclude Include="..\src\solo\SoloComponent.h" />
+    <ClInclude Include="..\src\solo\SoloCubeTexture.h" />
+    <ClInclude Include="..\src\solo\SoloDegree.h" />
+    <ClInclude Include="..\src\solo\SoloDevice.h" />
+    <ClInclude Include="..\src\solo\SoloDeviceSetup.h" />
+    <ClInclude Include="..\src\solo\SoloEffect.h" />
+    <ClInclude Include="..\src\solo\SoloFileSystem.h" />
+    <ClInclude Include="..\src\solo\SoloFont.h" />
+    <ClInclude Include="..\src\solo\SoloFontRenderer.h" />
+    <ClInclude Include="..\src\solo\SoloFormatter.h" />
+    <ClInclude Include="..\src\solo\SoloFrameBuffer.h" />
+    <ClInclude Include="..\src\solo\SoloImage.h" />
     <ClInclude Include="..\src\solo\SoloImageLoader.h" />
+    <ClInclude Include="..\src\solo\SoloLogger.h" />
+    <ClInclude Include="..\src\solo\SoloMaterial.h" />
+    <ClInclude Include="..\src\solo\SoloMath.h" />
+    <ClInclude Include="..\src\solo\SoloMatrix.h" />
+    <ClInclude Include="..\src\solo\SoloMesh.h" />
     <ClInclude Include="..\src\solo\SoloMeshLoader.h" />
+    <ClInclude Include="..\src\solo\SoloMeshRenderer.h" />
+    <ClInclude Include="..\src\solo\SoloNode.h" />
     <ClInclude Include="..\src\solo\SoloObjMeshLoader.h" />
+    <ClInclude Include="..\src\solo\SoloPhysics.h" />
     <ClInclude Include="..\src\solo\SoloPngImageLoader.h" />
+    <ClInclude Include="..\src\solo\SoloQuaternion.h" />
+    <ClInclude Include="..\src\solo\SoloRadian.h" />
+    <ClInclude Include="..\src\solo\SoloRay.h" />
+    <ClInclude Include="..\src\solo\SoloRectTexture.h" />
+    <ClInclude Include="..\src\solo\SoloRenderCommand.h" />
+    <ClInclude Include="..\src\solo\SoloRenderer.h" />
+    <ClInclude Include="..\src\solo\SoloRigidBody.h" />
+    <ClInclude Include="..\src\solo\SoloScene.h" />
+    <ClInclude Include="..\src\solo\SoloScriptRuntime.h" />
+    <ClInclude Include="..\src\solo\SoloSkyboxRenderer.h" />
+    <ClInclude Include="..\src\solo\SoloSpectator.h" />
     <ClInclude Include="..\src\solo\SoloSpinLock.h" />
+    <ClInclude Include="..\src\solo\SoloTexture.h" />
+    <ClInclude Include="..\src\solo\SoloTransform.h" />
+    <ClInclude Include="..\src\solo\SoloVector2.h" />
+    <ClInclude Include="..\src\solo\SoloVector3.h" />
+    <ClInclude Include="..\src\solo\SoloVector4.h" />
+    <ClInclude Include="..\src\solo\SoloVertexFormat.h" />
     <ClInclude Include="..\src\solo\stb\SoloStbTrueTypeFont.h" />
     <ClInclude Include="..\src\solo\vk\SoloSDLVulkanDevice.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkan.h" />
@@ -134,6 +133,7 @@
     <ClCompile Include="..\src\solo\lua\SoloLuaTextureApi.cpp" />
     <ClCompile Include="..\src\solo\lua\SoloLuaTransformApi.cpp" />
     <ClCompile Include="..\src\solo\sdl\SoloSDLDevice.cpp" />
+    <ClCompile Include="..\src\solo\Solo.cpp" />
     <ClCompile Include="..\src\solo\SoloBoxCollider.cpp" />
     <ClCompile Include="..\src\solo\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\solo\SoloDegree.cpp" />
@@ -192,13 +192,13 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -218,13 +218,13 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\1.6.16\include;$(ProjectDir)..\vendor\zlib\1.2.8\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(ProjectDir)..\src\solo\;$(ProjectDir)..\vendor\vulkan\include\;$(ProjectDir)..\vendor\LuaIntf\;$(ProjectDir)..\vendor\lua\5.3.1\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\Solo\</OutDir>
     <IntDir>$(ProjectDir)..\build\Solo\tmp\</IntDir>
-    <LibraryPath>$(ProjectDir)..\build\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)..\build\Solo.Vendor\;$(ProjectDir)..\build\Solo.Vendor.Lua\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\1.6.16\include;$(ProjectDir)..\vendor\zlib\1.2.8\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(ProjectDir)..\src\solo\;$(ProjectDir)..\vendor\vulkan\include\;$(ProjectDir)..\vendor\LuaIntf\;$(ProjectDir)..\vendor\lua\5.3.1\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\Solo\</OutDir>
     <IntDir>$(ProjectDir)..\build\Solo\tmp\</IntDir>
-    <LibraryPath>$(ProjectDir)..\build\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)..\build\Solo.Vendor\;$(ProjectDir)..\build\Solo.Vendor.Lua\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -243,6 +243,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>Solo.Vendor.lib;Solo.Vendor.Lua.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
       <AdditionalDependencies>$(SolutionDir)../build/Solo.Vendor/Solo.Vendor.lib;$(SolutionDir)../build/Solo.Vendor.Lua/Solo.Vendor.Lua.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -273,6 +275,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>Solo.Vendor.lib;Solo.Vendor.Lua.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
       <AdditionalDependencies>$(SolutionDir)../build/Solo.Vendor/Solo.Vendor.lib;$(SolutionDir)../build/Solo.Vendor.Lua/Solo.Vendor.Lua.lib;%(AdditionalDependencies)</AdditionalDependencies>
