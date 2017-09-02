@@ -94,13 +94,11 @@ end
 function run()
     while keepRunning() do
         dev:update(function()
-            loader:update()
-                loader:update()
-                physics:update()
-                update()
-                renderer:renderFrame(function()
-                    render()
-                end)
+            physics:update()
+            update()
+            renderer:renderFrame(function()
+                render()
+            end)
         end)
     end
 end

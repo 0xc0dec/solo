@@ -44,39 +44,35 @@ local meshes = {
     quad = solo.Mesh.createFromPrefab(dev, solo.MeshPrefab.Quad)
 }
 
-local loadTextureAsync = function(path, callback)
-    loader:loadRectTextureAsync(path):done(function(tex)
-        tex:generateMipmaps()
-        tex:setFiltering(solo.TextureFiltering.LinearMipmapNearest)
-        tex:setAnisotropyLevel(8)
-        callback(tex)
-    end)
+local loadTexture = function(path)
+    local tex = loader:loadRectTexture(path)
+    tex:generateMipmaps()
+    tex:setFiltering(solo.TextureFiltering.LinearMipmapNearest)
+    tex:setAnisotropyLevel(8)
+    return tex
 end
 
 local mainCamera = createMainCamera(dev, scene, physics, meshes, effects)
 local offscreenCamera, offscreenCameraTex = createOffscreenCamera(dev, scene)
 createSkybox(scene, loader, knownTags.skybox)
 createCheckerBox(dev, scene, effects, meshes.cube)
-createDynamicQuad(dev, scene, effects, loadTextureAsync)
+createDynamicQuad(dev, scene, effects, loadTexture)
 createTimeLabel(dev, scene, knownTags.transparent, fs:readBytes(getAssetPath("Aller.ttf")))
 
-loadTextureAsync(getAssetPath("Cobblestone.png"), function(tex)
-    loader:loadMeshAsync(getAssetPath("MonkeyHD.obj")):done(function(mesh)
-        createMonkeyHead(dev, scene, effects, tex, mesh)
-    end)
-    createFloor(dev, scene, effects, tex, meshes.cube)
-end)
+local stoneTex = loadTexture(getAssetPath("Cobblestone.png"))
+local monkeyHeadMesh = loader:loadMesh(getAssetPath("MonkeyHD.obj"))
+createMonkeyHead(dev, scene, effects, stoneTex, monkeyHeadMesh)
+createFloor(dev, scene, effects, stoneTex, meshes.cube)
 
-loader:loadMeshAsync(getAssetPath("Axes.obj")):done(function(axesMesh)
-    loadTextureAsync(getAssetPath("Flammable.png"), function(tex)
-        attachAxesMesh(dev, effects,
-            createMonitorQuad(dev, scene, effects, offscreenCameraTex, meshes.quad, knownTags.monitor),
-            axesMesh)
-        attachAxesMesh(dev, effects,
-            createTransparentQuad(dev, scene, effects, meshes.quad, knownTags.transparent, tex),
-            axesMesh)
-    end)
-end)
+local axesMesh = loader:loadMesh(getAssetPath("Axes.obj"))
+local logoTex = loadTexture(getAssetPath("Flammable.png"))
+
+attachAxesMesh(dev, effects,
+    createMonitorQuad(dev, scene, effects, offscreenCameraTex, meshes.quad, knownTags.monitor),
+    axesMesh)
+attachAxesMesh(dev, effects,
+    createTransparentQuad(dev, scene, effects, meshes.quad, knownTags.transparent, logoTex),
+    axesMesh)
 
 local keepRunning = function()
     return not dev:isQuitRequested() and
@@ -134,11 +130,9 @@ end
 local run = function()
     while keepRunning() do
         dev:update(function()
-            loader:update()
-                loader:update()
-                physics:update()
-                update()
-                renderer:renderFrame(render)
+            physics:update()
+            update()
+            renderer:renderFrame(render)
         end)
     end
 end

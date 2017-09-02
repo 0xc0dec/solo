@@ -9,6 +9,7 @@
 
 namespace solo
 {
+    class Device;
     class RectTexture;
     class CubeTexture;
 

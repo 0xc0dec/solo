@@ -53,15 +53,8 @@ namespace solo
         ~AssetLoader() {}
 
         auto loadRectTexture(const std::string &path) -> sptr<RectTexture>;
-        auto loadRectTextureAsync(const std::string &path) -> sptr<AsyncHandle<RectTexture>>;
-
         auto loadCubeTexture(const std::vector<std::string> &sidePaths) -> sptr<CubeTexture>;
-        auto loadCubeTextureAsync(const std::vector<std::string> &sidePaths) -> sptr<AsyncHandle<CubeTexture>>;
-
         auto loadMesh(const std::string &path) -> sptr<Mesh>;
-        auto loadMeshAsync(const std::string &path) -> sptr<AsyncHandle<Mesh>>;
-
-        void update();
 
     private:
         sptr<AssetLoaderImpl> impl;
