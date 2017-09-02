@@ -3,8 +3,8 @@
 -- MIT license
 -- 
 
-return function(dev, scene, effects, tex, cubeMesh)
-    local material = sl.Material.create(dev, effects.simpleTexture)
+return function(scene, effects, tex, cubeMesh)
+    local material = sl.Material.create(sl.device, effects.simpleTexture)
     material:setFaceCull(sl.FaceCull.All)
     material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
     material:setTextureParameter("mainTex", tex)

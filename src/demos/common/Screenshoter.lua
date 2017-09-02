@@ -3,13 +3,13 @@
 -- MIT license
 -- 
 
-return function(device, path)
+return function(path)
     return {
         typeId = sl.getCmpId("Screenshoter"),
 
         update = function()
-            if device:isKeyPressed(sl.KeyCode.P, true) then
-                device:saveScreenshot(path)
+            if sl.device:isKeyPressed(sl.KeyCode.P, true) then
+                sl.device:saveScreenshot(path)
             end
         end
     }

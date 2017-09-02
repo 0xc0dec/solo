@@ -5,14 +5,14 @@
 
 require "Common"
 
-local createUpdater = function(device, data, mesh)
+local createUpdater = function(data, mesh)
     local time = 0
 
     return {
         typeId = sl.getCmpId("DynamicQuadUpdater"),
 
         update = function()
-            time = time + 2 * device:getTimeDelta()
+            time = time + 2 * sl.device:getTimeDelta()
             local offset = 0.5 * math.sin(time)
             data[3] = offset
             data[8] = -offset
@@ -23,7 +23,7 @@ local createUpdater = function(device, data, mesh)
     }
 end
 
-return function(dev, scene, effects, loadTexture)
+return function(scene, effects, loadTexture)
     local tex = loadTexture(getAssetPath("Freeman.png"))
     tex:setWrapping(sl.TextureWrapping.Clamp)
 
@@ -43,12 +43,12 @@ return function(dev, scene, effects, loadTexture)
         0, 2, 3
     }
 
-    local mesh = sl.Mesh.create(dev)
+    local mesh = sl.Mesh.create(sl.device)
     mesh:addDynamicVertexBuffer(layout, data, 4)
     mesh:addPart(indices, 6)
     mesh:setPrimitiveType(sl.PrimitiveType.Triangles)
 
-    local material = sl.Material.create(dev, effects.simpleTexture)
+    local material = sl.Material.create(sl.device, effects.simpleTexture)
     material:setFaceCull(sl.FaceCull.All)
     material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
     material:setTextureParameter("mainTex", tex)
@@ -59,5 +59,5 @@ return function(dev, scene, effects, loadTexture)
     renderer:setMesh(mesh)
     renderer:setMaterial(0, material)
 
-    node:addScriptComponent(createUpdater(dev, data, mesh))
+    node:addScriptComponent(createUpdater(data, mesh))
 end

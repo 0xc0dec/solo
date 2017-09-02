@@ -6,17 +6,17 @@
 local createRotator = require "Rotator"
 local createLookAt = require "LookAt"
 
-return function(dev, scene, effects, offscreenCameraTex, quadMesh, tag)
-	local canvasSize = dev:getCanvasSize()
+return function(scene, effects, offscreenCameraTex, quadMesh, tag)
+	local canvasSize = sl.device:getCanvasSize()
 
-    local material = sl.Material.create(dev, effects.simpleTexture)
+    local material = sl.Material.create(sl.device, effects.simpleTexture)
     material:setFaceCull(sl.FaceCull.All)
     material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
     material:setTextureParameter("mainTex", offscreenCameraTex)
 
     local parent = scene:createNode()
     parent:findComponent("Transform"):setLocalPosition(vec3(-2, 2, -2))
-    parent:addScriptComponent(createRotator(dev, "world", vec3(0, 1, 0)))
+    parent:addScriptComponent(createRotator("world", vec3(0, 1, 0)))
 
     local node = scene:createNode()
     node:addScriptComponent(createLookAt(vec3(0, 0, 0)))

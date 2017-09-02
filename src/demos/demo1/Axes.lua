@@ -3,10 +3,10 @@
 -- MIT license
 -- 
 
-return function(dev, effects, node, mesh)
+return function(effects, node, mesh)
 	-- TODO cache materials
 	local createColorMaterial = function(color)
-	    local mat = sl.Material.create(dev, effects.color)
+	    local mat = sl.Material.create(sl.device, effects.color)
 	    mat:setFaceCull(sl.FaceCull.All)
 	    mat:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
 	    mat:setVector4Parameter("color", color)

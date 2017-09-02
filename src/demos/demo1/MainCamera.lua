@@ -7,7 +7,7 @@ local createScreenshoter = require "Screenshoter"
 local createSpawner = require "Spawner"
 local createSpawnedObjectTargeter = require "SpawnedObjectTargeter"
 
-return function(dev, scene, physics, meshes, effects)
+return function(scene, physics, meshes, effects)
     local node = scene:createNode()
         
     local t = node:findComponent("Transform")
@@ -15,9 +15,9 @@ return function(dev, scene, physics, meshes, effects)
     t:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
     
     node:addComponent("Spectator")
-    node:addScriptComponent(createScreenshoter(dev, "Demo1.bmp"))
+    node:addScriptComponent(createScreenshoter("Demo1.bmp"))
     node:addScriptComponent(createSpawnedObjectTargeter(physics))
-    node:addScriptComponent(createSpawner(dev, meshes.cube, effects.color))
+    node:addScriptComponent(createSpawner(meshes.cube, effects.color))
 
     local cam = node:addComponent("Camera")
     cam:setClearColor(vec4(0.0, 0.6, 0.6, 1.0))

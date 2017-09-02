@@ -5,7 +5,7 @@
 
 local createSpawnedObject = require "SpawnedObject"
 
-return function(device, mesh, effect)
+return function(mesh, effect)
     return {
         typeId = sl.getCmpId("Spawner"),
 
@@ -15,11 +15,11 @@ return function(device, mesh, effect)
         end,
 
         update = function(self)
-            if device:isKeyPressed(sl.KeyCode.Space, true) then
+            if sl.device:isKeyPressed(sl.KeyCode.Space, true) then
                 local initialPos = self.transform:getLocalPosition() + self.transform:getLocalForward() * 2
                 local initialRotation = self.transform:getLocalRotation()
                 self.scene:createNode():addScriptComponent(
-                    createSpawnedObject(device, effect, mesh, initialPos, initialRotation))
+                    createSpawnedObject(effect, mesh, initialPos, initialRotation))
             end
         end
     }

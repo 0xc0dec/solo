@@ -5,8 +5,8 @@
 
 local createRotator = require "Rotator"
 
-return function(dev, scene, effects, tex, mesh)
-    local material = sl.Material.create(dev, effects.basicLighting)
+return function(scene, effects, tex, mesh)
+    local material = sl.Material.create(sl.device, effects.basicLighting)
     material:setFaceCull(sl.FaceCull.All)
     material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
     material:bindInvTransposedWorldMatrixParameter("invTransposedWorldMatrix")
@@ -17,5 +17,5 @@ return function(dev, scene, effects, tex, mesh)
     renderer:setMesh(mesh)
     renderer:setMaterial(0, material)
     node:findComponent("Transform"):setLocalPosition(vec3(0, 0, 0))
-    node:addScriptComponent(createRotator(dev, "local", vec3(1, 0, 0)))
+    node:addScriptComponent(createRotator("local", vec3(1, 0, 0)))
 end

@@ -5,12 +5,12 @@
 
 require "Common"
 
-function createPostProcessor(device, camera, tag)
-	local canvasSize = device:getCanvasSize()
+function createPostProcessor(camera, tag)
+	local canvasSize = sl.device:getCanvasSize()
 
     local quadRenderer = camera:getNode():addComponent("MeshRenderer")
     quadRenderer:setTag(tag)
-    quadRenderer:setMesh(sl.Mesh.createFromPrefab(device, sl.MeshPrefab.Quad))
+    quadRenderer:setMesh(sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Quad))
 
     return {
         detach = function()
@@ -29,44 +29,44 @@ function createPostProcessor(device, camera, tag)
     }
 end
 
-function createPostProcessor1(device, camera, tag, effects)
-    local canvasSize = device:getCanvasSize()
+function createPostProcessor1(camera, tag, effects)
+    local canvasSize = sl.device:getCanvasSize()
 
-    local fbTex1 = sl.RectTexture.create(device)
+    local fbTex1 = sl.RectTexture.create(sl.device)
     fbTex1:setData(sl.ImageFormat.RGB, {}, canvasSize.x, canvasSize.y)
     fbTex1:setFiltering(sl.TextureFiltering.Nearest)
     fbTex1:setWrapping(sl.TextureWrapping.Clamp)
-    local fb1 = sl.FrameBuffer.create(device)
+    local fb1 = sl.FrameBuffer.create(sl.device)
     fb1:setAttachments({ fbTex1 })
 
-    local fbTex2 = sl.RectTexture.create(device)
+    local fbTex2 = sl.RectTexture.create(sl.device)
     fbTex2:setData(sl.ImageFormat.RGB, {}, canvasSize.x, canvasSize.y)
     fbTex2:setFiltering(sl.TextureFiltering.Nearest)
     fbTex2:setWrapping(sl.TextureWrapping.Clamp)
-    local fb2 = sl.FrameBuffer.create(device)
+    local fb2 = sl.FrameBuffer.create(sl.device)
     fb2:setAttachments({ fbTex2 })
 
-    local grayscaleMat = sl.Material.create(device, effects.grayscale)
+    local grayscaleMat = sl.Material.create(sl.device, effects.grayscale)
     grayscaleMat:setDepthTest(false)
     grayscaleMat:setDepthWrite(false)
     grayscaleMat:setFaceCull(sl.FaceCull.All)
     grayscaleMat:setFloatParameter("rightSeparator", 0.25)
 
-    local saturateMat = sl.Material.create(device, effects.saturate)
+    local saturateMat = sl.Material.create(sl.device, effects.saturate)
     saturateMat:setDepthTest(false)
     saturateMat:setDepthWrite(false)
     saturateMat:setFaceCull(sl.FaceCull.All)
     saturateMat:setFloatParameter("leftSeparator", 0.75)
     saturateMat:setFloatParameter("rightSeparator", 1.0)
 
-    local verticalBlurMat = sl.Material.create(device, effects.verticalBlur)
+    local verticalBlurMat = sl.Material.create(sl.device, effects.verticalBlur)
     verticalBlurMat:setDepthTest(false)
     verticalBlurMat:setDepthWrite(false)
     verticalBlurMat:setFaceCull(sl.FaceCull.All)
     verticalBlurMat:setFloatParameter("leftSeparator", 0.25)
     verticalBlurMat:setFloatParameter("rightSeparator", 0.75)
 
-    local horizontalBlurMat = sl.Material.create(device, effects.horizontalBlur)
+    local horizontalBlurMat = sl.Material.create(sl.device, effects.horizontalBlur)
     horizontalBlurMat:setDepthTest(false)
     horizontalBlurMat:setDepthWrite(false)
     horizontalBlurMat:setFaceCull(sl.FaceCull.All)
@@ -75,7 +75,7 @@ function createPostProcessor1(device, camera, tag, effects)
 
     camera:setRenderTarget(fb1)
 
-    local pp = createPostProcessor(device, camera, tag)
+    local pp = createPostProcessor(camera, tag)
 
     pp.apply = function(self)
         local viewport = vec4(0, 0, canvasSize.x, canvasSize.y)
@@ -91,9 +91,9 @@ function createPostProcessor1(device, camera, tag, effects)
     return pp
 end
 
-function createPostProcessor2(device, camera, tag, effects)
+function createPostProcessor2(camera, tag, effects)
     local stitchWidth = 30
-    local canvasSize = device:getCanvasSize()
+    local canvasSize = sl.device:getCanvasSize()
 
     local stitchTex = sl.Texture.loadRectFromFile(getAssetPath("Stitches.png"))
     stitchTex:setFiltering(sl.TextureFiltering.Nearest)
@@ -110,14 +110,14 @@ function createPostProcessor2(device, camera, tag, effects)
 
     local stitchCount = vec2(offscreenRes.x * stitchWidth / (2 * stitchTexSize.x), offscreenRes.y / 2)
 
-    local fbTex = sl.RectTexture.create(device)
+    local fbTex = sl.RectTexture.create(sl.device)
     fbTex:setData(sl.ImageFormat.RGB, {}, offscreenRes.x, offscreenRes.y)
     fbTex:setFiltering(sl.TextureFiltering.Nearest)
     fbTex:setWrapping(sl.TextureWrapping.Clamp)
-    local fb1 = sl.FrameBuffer.create(device)
+    local fb1 = sl.FrameBuffer.create(sl.device)
     fb1:setAttachments({ fbTex })
 
-    local material = sl.Material.create(device, effects.stitches)
+    local material = sl.Material.create(sl.device, effects.stitches)
     material:setTextureParameter("mainTex", fbTex)
     material:setTextureParameter("stitchTex", stitchTex)
     material:setVector2Parameter("stitchCount", stitchCount)
@@ -126,7 +126,7 @@ function createPostProcessor2(device, camera, tag, effects)
     camera:setViewport(vec4(0, 0, offscreenRes.x, offscreenRes.y))
     camera:setRenderTarget(fb1)
 
-    local pp = createPostProcessor(device, camera, tag)
+    local pp = createPostProcessor(camera, tag)
 
     pp.apply = function(self)
         self.renderStep(material, fbTex, nil, vec4(0, 0, canvasSize.x, canvasSize.y))

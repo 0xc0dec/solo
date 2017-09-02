@@ -3,14 +3,14 @@
 -- MIT license
 -- 
 
-return function(device, effect, mesh, initialPos, initialRotation)
+return function(effect, mesh, initialPos, initialRotation)
     return {
         typeId = sl.getCmpId("SpawnedObject"),
 
         init = function(self)
             self.active = false
 
-            local material = sl.Material.create(device, effect)
+            local material = sl.Material.create(sl.device, effect)
             material:setFaceCull(sl.FaceCull.All)
             material:setPolygonMode(sl.PolygonMode.Wireframe)
             material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
@@ -54,7 +54,7 @@ return function(device, effect, mesh, initialPos, initialRotation)
                 return
             end
 
-            self.activeTimer = self.activeTimer + device:getTimeDelta()
+            self.activeTimer = self.activeTimer + sl.device:getTimeDelta()
             if self.activeTimer >= 0.2 then
                 self:setColor(vec4(1, 1, 0, 1))
                 self.active = false

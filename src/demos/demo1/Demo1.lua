@@ -18,7 +18,7 @@ local scene = sl.Scene.create(dev)
 local canvasSize = dev:getCanvasSize()
 
 local postProcessors = require "PostProcessors"
-local effects = (require "Effects")(dev)
+local effects = (require "Effects")()
 local createMainCamera = require "MainCamera"
 local createOffscreenCamera = require "OffscreenCamera"
 local createSkybox = require "Skybox"
@@ -51,26 +51,26 @@ local loadTexture = function(path)
     return tex
 end
 
-local mainCamera = createMainCamera(dev, scene, physics, meshes, effects)
-local offscreenCamera, offscreenCameraTex = createOffscreenCamera(dev, scene)
-createSkybox(dev, scene, knownTags.skybox)
-createCheckerBox(dev, scene, effects, meshes.cube)
-createDynamicQuad(dev, scene, effects, loadTexture)
-createTimeLabel(dev, scene, knownTags.transparent, fs:readBytes(getAssetPath("Aller.ttf")))
+local mainCamera = createMainCamera(scene, physics, meshes, effects)
+local offscreenCamera, offscreenCameraTex = createOffscreenCamera(scene)
+createSkybox(scene, knownTags.skybox)
+createCheckerBox(scene, effects, meshes.cube)
+createDynamicQuad(scene, effects, loadTexture)
+createTimeLabel(scene, knownTags.transparent, fs:readBytes(getAssetPath("Aller.ttf")))
 
 local stoneTex = loadTexture(getAssetPath("Cobblestone.png"))
 local monkeyHeadMesh = sl.Mesh.loadFromFile(dev, getAssetPath("MonkeyHD.obj"))
-createMonkeyHead(dev, scene, effects, stoneTex, monkeyHeadMesh)
-createFloor(dev, scene, effects, stoneTex, meshes.cube)
+createMonkeyHead(scene, effects, stoneTex, monkeyHeadMesh)
+createFloor(scene, effects, stoneTex, meshes.cube)
 
 local axesMesh = sl.Mesh.loadFromFile(dev, getAssetPath("Axes.obj"))
 local logoTex = loadTexture(getAssetPath("Flammable.png"))
 
-attachAxesMesh(dev, effects,
-    createMonitorQuad(dev, scene, effects, offscreenCameraTex, meshes.quad, knownTags.monitor),
+attachAxesMesh(effects,
+    createMonitorQuad(scene, effects, offscreenCameraTex, meshes.quad, knownTags.monitor),
     axesMesh)
-attachAxesMesh(dev, effects,
-    createTransparentQuad(dev, scene, effects, meshes.quad, knownTags.transparent, logoTex),
+attachAxesMesh(effects,
+    createTransparentQuad(scene, effects, meshes.quad, knownTags.transparent, logoTex),
     axesMesh)
 
 local keepRunning = function()
@@ -91,12 +91,12 @@ local update = function()
 
     if dev:isKeyPressed(sl.KeyCode.Digit1, true) then
         detachPostProcessor()
-        pp = postProcessors.create1(dev, mainCamera, knownTags.postProcessor, effects)
+        pp = postProcessors.create1(mainCamera, knownTags.postProcessor, effects)
     end
 
     if dev:isKeyPressed(sl.KeyCode.Digit2, true) then
         detachPostProcessor()
-        pp = postProcessors.create2(dev, mainCamera, knownTags.postProcessor, effects)
+        pp = postProcessors.create2(mainCamera, knownTags.postProcessor, effects)
     end
 
     if dev:isKeyPressed(sl.KeyCode.Digit3, true) then

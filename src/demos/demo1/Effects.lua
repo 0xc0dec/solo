@@ -5,8 +5,8 @@
 
 require "Common"
 
-return function(device)
-    local fs = device:getFileSystem()
+return function()
+    local fs = sl.device:getFileSystem()
     local load = function(fileName)
         return fs:readBytes(getAssetPath(fileName))
     end
@@ -32,14 +32,14 @@ return function(device)
     }
 
     return {
-        simpleTexture = sl.Effect.create(device, shaders.vs.basic, shaders.fs.texture),
-        color = sl.Effect.create(device, shaders.vs.basic, shaders.fs.color),
-        checker = sl.Effect.create(device, shaders.vs.basic, shaders.fs.checker),
-        basicLighting = sl.Effect.create(device, shaders.vs.basicLighting, shaders.fs.textureWithLighting),
-        grayscale = sl.Effect.create(device, shaders.vs.passThrough, shaders.fs.grayscale),
-        saturate = sl.Effect.create(device, shaders.vs.passThrough, shaders.fs.saturate),
-        verticalBlur = sl.Effect.create(device, shaders.vs.passThrough, shaders.fs.verticalBlur),
-        horizontalBlur = sl.Effect.create(device, shaders.vs.passThrough, shaders.fs.horizontalBlur),
-        stitches = sl.Effect.create(device, shaders.vs.passThrough, shaders.fs.stitches)
+        simpleTexture = sl.Effect.create(sl.device, shaders.vs.basic, shaders.fs.texture),
+        color = sl.Effect.create(sl.device, shaders.vs.basic, shaders.fs.color),
+        checker = sl.Effect.create(sl.device, shaders.vs.basic, shaders.fs.checker),
+        basicLighting = sl.Effect.create(sl.device, shaders.vs.basicLighting, shaders.fs.textureWithLighting),
+        grayscale = sl.Effect.create(sl.device, shaders.vs.passThrough, shaders.fs.grayscale),
+        saturate = sl.Effect.create(sl.device, shaders.vs.passThrough, shaders.fs.saturate),
+        verticalBlur = sl.Effect.create(sl.device, shaders.vs.passThrough, shaders.fs.verticalBlur),
+        horizontalBlur = sl.Effect.create(sl.device, shaders.vs.passThrough, shaders.fs.horizontalBlur),
+        stitches = sl.Effect.create(sl.device, shaders.vs.passThrough, shaders.fs.stitches)
     }
 end

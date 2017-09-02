@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-return function(device, space, axis)
+return function(space, axis)
     return {
         typeId = sl.getCmpId("Rotator"),
 
@@ -12,7 +12,7 @@ return function(device, space, axis)
         end,
 
         update = function(self)
-            local angle = device:getTimeDelta()
+            local angle = sl.device:getTimeDelta()
             local rotationSpace = sl.TransformSpace.World
             if space == "local" then
                 rotationSpace = sl.TransformSpace.Self

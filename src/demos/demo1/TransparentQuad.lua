@@ -5,10 +5,10 @@
 
 local createRotator = require "Rotator"
 
-return function(dev, scene, effects, quadMesh, tag, tex)
+return function(scene, effects, quadMesh, tag, tex)
     tex:setWrapping(sl.TextureWrapping.Clamp)
 
-    local material = sl.Material.create(dev, effects.simpleTexture)
+    local material = sl.Material.create(sl.device, effects.simpleTexture)
     material:setFaceCull(sl.FaceCull.All)
     material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
     material:setTextureParameter("mainTex", tex)
@@ -18,10 +18,10 @@ return function(dev, scene, effects, quadMesh, tag, tex)
 
     local parent = scene:createNode()
     parent:findComponent("Transform"):setLocalPosition(vec3(5, 0, 0))
-    parent:addScriptComponent(createRotator(dev, "world", vec3(0, 1, 0)))
+    parent:addScriptComponent(createRotator("world", vec3(0, 1, 0)))
 
     local node = scene:createNode()
-    node:addScriptComponent(createRotator(dev, "local", vec3(1, 0, 0)))
+    node:addScriptComponent(createRotator("local", vec3(1, 0, 0)))
     node:findComponent("Transform"):setParent(parent:findComponent("Transform"))
     node:findComponent("Transform"):setLocalPosition(vec3(2, 0, 0))
 
