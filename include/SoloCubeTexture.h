@@ -41,5 +41,6 @@ namespace solo
     inline void CubeTexture::setDepthWrapping(TextureWrapping wrapping)
     {
         this->depthWrapping = wrapping;
+        rebuildFlags();
     }
 }
