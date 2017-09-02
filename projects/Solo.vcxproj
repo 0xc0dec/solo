@@ -148,7 +148,6 @@
     <ClCompile Include="..\src\solo\SoloSpectator.cpp" />
     <ClCompile Include="..\src\solo\SoloCamera.cpp" />
     <ClCompile Include="..\src\solo\SoloFileSystem.cpp" />
-    <ClCompile Include="..\src\solo\SoloBase.cpp" />
     <ClCompile Include="..\src\solo\SoloDevice.cpp" />
     <ClCompile Include="..\src\solo\SoloLogger.cpp" />
     <ClCompile Include="..\src\solo\SoloMaterial.cpp" />

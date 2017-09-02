@@ -6,11 +6,14 @@
 #include "SoloDevice.h"
 #include "SoloDeviceSetup.h"
 #include "SoloScriptRuntime.h"
+#include "SoloComponent.h"
+
+using namespace solo;
+
+uint32_t ComponentTypeId::counter = 0;
 
 int main(int argc, char **argv)
 {
-    using namespace solo;
-
     if (argc <= 1)
         return 1;
 

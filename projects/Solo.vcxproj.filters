@@ -314,7 +314,6 @@
       <Filter>stb</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\Solo.cpp" />
-    <ClCompile Include="..\src\solo\SoloBase.cpp" />
     <ClCompile Include="..\src\solo\SoloBoxCollider.cpp" />
     <ClCompile Include="..\src\solo\SoloCamera.cpp" />
     <ClCompile Include="..\src\solo\SoloCubeTexture.cpp" />
