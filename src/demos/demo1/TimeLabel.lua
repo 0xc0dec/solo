@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-local createUpdater = function(fontData)
+local createUpdater = function(fontPath)
     local textureWidth = 1024
     local textureHeight = 1024
     local lineHeight = 60
@@ -15,7 +15,8 @@ local createUpdater = function(fontData)
         init = function(self)
             local firstChar = string.byte(" ")
             local charCount = string.byte("~") - string.byte(" ")
-            local font = sl.Font.create(sl.device, fontData, lineHeight, textureWidth,
+            local font = sl.Font.loadFromFile(sl.device, fontPath,
+                lineHeight, textureWidth,
                 textureHeight, firstChar, charCount, 2, 2)
 
             renderer = self.node:addComponent("FontRenderer")
@@ -28,9 +29,9 @@ local createUpdater = function(fontData)
     }
 end
 
-return function(scene, tag, fontData)
+return function(scene, tag, fontPath)
     local node = scene:createNode()
-    node:addScriptComponent(createUpdater(fontData))
+    node:addScriptComponent(createUpdater(fontPath))
     node:findComponent("FontRenderer"):setTag(tag)
     node:findComponent("Transform"):setLocalScale(vec3(0.02, 0.02, 1))
     node:findComponent("Transform"):setLocalPosition(vec3(-3, 0, 4))

@@ -9,16 +9,10 @@
 
 using namespace solo;
 
-static auto createFont(Device *device, const std::vector<uint8_t> &fontData, uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight, 
-    uint32_t firstChar, uint32_t charCount, uint32_t oversampleX, uint32_t oversampleY) -> sptr<Font>
-{
-    // TODO remove const_cast, or maybe the need for this wrapper altogether
-    return Font::create(device, const_cast<uint8_t*>(fontData.data()), size, atlasWidth, atlasHeight, firstChar, charCount, oversampleX, oversampleY);
-}
-
 static void registerFont(CppBindModule<LuaBinding> &module)
 {
     auto gi = BEGIN_CLASS(module, GlyphInfo);
+    REG_CTOR(gi);
     REG_VARIABLE(gi, GlyphInfo, positions);
     REG_VARIABLE(gi, GlyphInfo, uvs);
     REG_VARIABLE(gi, GlyphInfo, offsetX);
@@ -26,7 +20,7 @@ static void registerFont(CppBindModule<LuaBinding> &module)
     gi.endClass();
 
     auto font = BEGIN_CLASS(module, Font);
-    font.addStaticFunction("create", createFont);
+    REG_STATIC_METHOD(font, Font, loadFromFile);
     REG_METHOD(font, Font, getAtlas);
     REG_METHOD(font, Font, getGlyphInfo);
     font.endClass();

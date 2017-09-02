@@ -510,6 +510,9 @@
     <ClCompile Include="..\src\solo\stb\SoloStbTrueTypeFont.cpp">
       <Filter>src\stb</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\solo\SoloFont.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

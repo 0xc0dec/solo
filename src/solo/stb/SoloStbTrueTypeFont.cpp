@@ -6,13 +6,15 @@
 #include "SoloStbTrueTypeFont.h"
 #include "SoloRectTexture.h"
 #include "SoloImage.h"
+#include "SoloDevice.h"
+#include "SoloFileSystem.h"
 #define STB_TRUETYPE_IMPLEMENTATION
 #include <stb_truetype.h>
 
 using namespace solo;
 
-TrueTypeFont::TrueTypeFont(Device *device, uint8_t *fontData, uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight,
-                           uint32_t firstChar, uint32_t charCount, uint32_t oversampleX, uint32_t oversampleY):
+stb::TrueTypeFont::TrueTypeFont(Device *device, uint8_t *fontData, uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight,
+    uint32_t firstChar, uint32_t charCount, uint32_t oversampleX, uint32_t oversampleY):
     firstChar(firstChar)
 {
     charInfo = std::make_unique<stbtt_packedchar[]>(charCount);
@@ -33,10 +35,10 @@ TrueTypeFont::TrueTypeFont(Device *device, uint8_t *fontData, uint32_t size, uin
     atlas->generateMipmaps();
 }
 
-auto TrueTypeFont::getGlyphInfo(uint32_t character, float offsetX, float offsetY) -> GlyphInfo
+auto stb::TrueTypeFont::getGlyphInfo(uint32_t character, float offsetX, float offsetY) -> GlyphInfo
 {
     stbtt_aligned_quad quad;
-    auto atlasSize = atlas->getSize();
+    const auto atlasSize = atlas->getSize();
 
     stbtt_GetPackedQuad(charInfo.get(), static_cast<uint32_t>(atlasSize.x), static_cast<uint32_t>(atlasSize.y),
     character - firstChar, &offsetX, &offsetY, &quad, 1);
@@ -66,9 +68,17 @@ auto TrueTypeFont::getGlyphInfo(uint32_t character, float offsetX, float offsetY
     return result; // TODO move
 }
 
-auto Font::create(Device *device, uint8_t *fontData, uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight,
-                  uint32_t firstChar, uint32_t charCount, uint32_t oversampleX, uint32_t oversampleY) -> sptr<Font>
+bool stb::TrueTypeFont::canLoadFromFile(const std::string &path)
 {
-    // TODO if constructors throws...
-    return std::make_unique<TrueTypeFont>(device, fontData, size, atlasWidth, atlasHeight, firstChar, charCount, oversampleX, oversampleY);
+    static const std::string ext = ".ttf";
+    return std::equal(ext.rbegin(), ext.rend(), path.rbegin());
+}
+
+auto stb::TrueTypeFont::loadFromFile(Device *device, const std::string &path,
+    uint32_t size, uint32_t atlasWidth,
+    uint32_t atlasHeight, uint32_t firstChar, uint32_t charCount, uint32_t oversampleX,
+    uint32_t oversampleY) -> sptr<TrueTypeFont>
+{
+    auto data = device->getFileSystem()->readBytes(path);
+    return std::make_shared<TrueTypeFont>(device, data.data(), size, atlasWidth, atlasHeight, firstChar, charCount, oversampleX, oversampleY);
 }

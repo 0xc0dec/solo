@@ -56,7 +56,7 @@ local offscreenCamera, offscreenCameraTex = createOffscreenCamera(scene)
 createSkybox(scene, knownTags.skybox)
 createCheckerBox(scene, effects, meshes.cube)
 createDynamicQuad(scene, effects, loadTexture)
-createTimeLabel(scene, knownTags.transparent, fs:readBytes(getAssetPath("Aller.ttf")))
+createTimeLabel(scene, knownTags.transparent, getAssetPath("Aller.ttf"))
 
 local stoneTex = loadTexture(getAssetPath("Cobblestone.png"))
 local monkeyHeadMesh = sl.Mesh.loadFromFile(dev, getAssetPath("MonkeyHD.obj"))

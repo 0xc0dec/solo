@@ -137,6 +137,7 @@
     <ClCompile Include="..\src\solo\SoloBoxCollider.cpp" />
     <ClCompile Include="..\src\solo\SoloCubeTexture.cpp" />
     <ClCompile Include="..\src\solo\SoloDegree.cpp" />
+    <ClCompile Include="..\src\solo\SoloFont.cpp" />
     <ClCompile Include="..\src\solo\SoloFontRenderer.cpp" />
     <ClCompile Include="..\src\solo\SoloPhysics.cpp" />
     <ClCompile Include="..\src\solo\SoloRadian.cpp" />
