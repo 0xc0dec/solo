@@ -6,11 +6,33 @@
 #include "SoloMesh.h"
 #include "SoloEffect.h"
 #include "SoloDevice.h"
+#include "SoloObjMeshLoader.h"
 #include "gl/SoloOpenGLMesh.h"
 #include "vk/SoloVulkanMesh.h"
 #include "null/SoloNullMesh.h"
 
 using namespace solo;
+
+// TODO remove when proper loading is implemented
+static std::vector<sptr<MeshLoader>> meshLoaders;
+
+static void initMeshLoaders(Device *device)
+{
+    if (!meshLoaders.empty())
+        return;
+    meshLoaders.push_back(std::make_unique<ObjMeshLoader>(device));
+}
+
+static auto getMeshLoader(const std::string &path) -> MeshLoader*
+{
+    for (const auto &loader : meshLoaders)
+    {
+        if (loader->isLoadable(path))
+            return loader.get();
+    }
+    SL_PANIC(SL_FMT("No suitable loader found for mesh '", path, "'"));
+    return nullptr;
+}
 
 auto Mesh::create(Device *device) -> sptr<Mesh>
 {
@@ -54,6 +76,14 @@ auto Mesh::createFromData(Device *device, MeshData *data) -> sptr<Mesh>
     auto mesh = create(device);
     mesh->initFromData(data);
     return mesh;
+}
+
+auto Mesh::loadFromFile(Device *device, const std::string &path) -> sptr<Mesh>
+{
+    initMeshLoaders(device);
+    const auto loader = getMeshLoader(path);
+    auto data = loader->loadData(path);
+    return createFromData(device, data.get());
 }
 
 void Mesh::initAsQuadMesh()

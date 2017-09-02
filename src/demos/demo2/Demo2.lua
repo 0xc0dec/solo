@@ -10,7 +10,6 @@ package.path = "../../src/demos/demo1/?.lua;../../src/demos/common/?.lua;" .. pa
 require "Common"
 
 dev = solo.device
-loader = dev:getAssetLoader()
 physics = dev:getPhysics()
 renderer = dev:getRenderer()
 logger = dev:getLogger()

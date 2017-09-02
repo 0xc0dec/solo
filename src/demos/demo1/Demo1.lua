@@ -10,7 +10,6 @@ require "Common"
 collectgarbage("setpause", 100)
 
 local dev = solo.device
-local loader = dev:getAssetLoader()
 local physics = dev:getPhysics()
 local renderer = dev:getRenderer()
 local logger = dev:getLogger()
@@ -60,11 +59,11 @@ createDynamicQuad(dev, scene, effects, loadTexture)
 createTimeLabel(dev, scene, knownTags.transparent, fs:readBytes(getAssetPath("Aller.ttf")))
 
 local stoneTex = loadTexture(getAssetPath("Cobblestone.png"))
-local monkeyHeadMesh = loader:loadMesh(getAssetPath("MonkeyHD.obj"))
+local monkeyHeadMesh = solo.Mesh.loadFromFile(dev, getAssetPath("MonkeyHD.obj"))
 createMonkeyHead(dev, scene, effects, stoneTex, monkeyHeadMesh)
 createFloor(dev, scene, effects, stoneTex, meshes.cube)
 
-local axesMesh = loader:loadMesh(getAssetPath("Axes.obj"))
+local axesMesh = solo.Mesh.loadFromFile(dev, getAssetPath("Axes.obj"))
 local logoTex = loadTexture(getAssetPath("Flammable.png"))
 
 attachAxesMesh(dev, effects,
