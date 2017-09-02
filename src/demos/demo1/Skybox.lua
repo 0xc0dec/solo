@@ -5,9 +5,9 @@
 
 require "Common"
 
-return function(scene, loader, tag)
+return function(dev, scene, tag)
     local getImagePath = function(fileName) return getAssetPath("skyboxes/deep-space/") .. fileName end
-    local tex = loader:loadCubeTexture({
+    local tex = solo.Texture.loadCubeFromFiles(dev, {
         getImagePath("Front.png"), getImagePath("Back.png"), getImagePath("Left.png"),
         getImagePath("Right.png"), getImagePath("Top.png"), getImagePath("Bottom.png")
     })

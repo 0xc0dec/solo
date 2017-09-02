@@ -6,6 +6,7 @@
 #pragma once
 
 #include "SoloCommon.h"
+#include <vector>
 
 namespace solo
 {
@@ -64,6 +65,9 @@ namespace solo
     class Texture
     {
     public:
+        static auto loadRectFromFile(Device *device, const std::string &path) -> sptr<RectTexture>;
+        static auto loadCubeFromFiles(Device *device, const std::vector<std::string> &paths) -> sptr<CubeTexture>;
+
         SL_DISABLE_COPY_AND_MOVE(Texture)
 
         virtual ~Texture() {}

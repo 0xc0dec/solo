@@ -4,12 +4,66 @@
 */
 
 #include "SoloTexture.h"
+#include "SoloPngImageLoader.h"
+#include "SoloImage.h"
+#include "SoloRectTexture.h"
+#include "SoloCubeTexture.h"
+#include <vector>
 
 using namespace solo;
+
+// TODO remove later when proper loading is implemented
+static std::vector<sptr<ImageLoader>> imageLoaders;
+
+static void initImageLoaders(Device *device)
+{
+    if (!imageLoaders.empty())
+        return;
+    imageLoaders.push_back(std::make_unique<PngImageLoader>(device));
+}
+
+static auto getImageLoader(const std::string &path) -> ImageLoader*
+{
+    for (const auto &l : imageLoaders)
+    {
+        if (l->isLoadable(path))
+            return l.get();
+    }
+    SL_PANIC(SL_FMT("No suitable loader found for image '", path, "'"));
+    return nullptr;
+}
 
 Texture::Texture()
 {
     rebuildFlags(); // yes, virtual call
+}
+
+auto Texture::loadRectFromFile(Device *device, const std::string &path) -> sptr<RectTexture>
+{
+    initImageLoaders(device);
+    auto loader = getImageLoader(path);
+    auto image = loader->load(path);
+    auto result = RectTexture::create(device);
+    result->setData(image->format, image->data.data(), image->width, image->height);
+    return result;
+}
+
+auto Texture::loadCubeFromFiles(Device *device, const std::vector<std::string> &paths) -> sptr<CubeTexture>
+{
+    initImageLoaders(device);
+
+    auto result = CubeTexture::create(device);
+    auto loader = getImageLoader(paths[0]);
+
+    auto idx = 0;
+    for (const auto &path : paths)
+    {
+        auto image = loader->load(path);
+        const auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + idx++);
+        result->setData(face, image->format, image->data.data(), image->width, image->height);
+    }
+
+    return result;
 }
 
 void Texture::setWrapping(TextureWrapping wrap)

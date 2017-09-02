@@ -91,11 +91,11 @@ function createPostProcessor1(device, camera, tag, effects)
     return pp
 end
 
-function createPostProcessor2(device, loader, camera, tag, effects)
+function createPostProcessor2(device, camera, tag, effects)
     local stitchWidth = 30
     local canvasSize = device:getCanvasSize()
 
-    local stitchTex = loader:loadRectTexture(getAssetPath("Stitches.png"))
+    local stitchTex = solo.Texture.loadRectFromFile(getAssetPath("Stitches.png"))
     stitchTex:setFiltering(solo.TextureFiltering.Nearest)
 
     local stitchTexSize = stitchTex:getSize()

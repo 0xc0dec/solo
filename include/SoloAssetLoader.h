@@ -28,8 +28,6 @@ namespace solo
         explicit AssetLoader(Device *device, const FriendToken<Device> &);
         ~AssetLoader() {}
 
-        auto loadRectTexture(const std::string &path) -> sptr<RectTexture>;
-        auto loadCubeTexture(const std::vector<std::string> &sidePaths) -> sptr<CubeTexture>;
         auto loadMesh(const std::string &path) -> sptr<Mesh>;
 
     private:

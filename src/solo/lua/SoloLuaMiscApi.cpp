@@ -109,8 +109,6 @@ static void registerFileSystem(CppBindModule<LuaBinding> &module)
 static void registerAssetLoader(CppBindModule<LuaBinding> &module)
 {
     auto loader = BEGIN_CLASS(module, AssetLoader);
-    REG_METHOD(loader, AssetLoader, loadRectTexture);
-    REG_METHOD(loader, AssetLoader, loadCubeTexture);
     REG_METHOD(loader, AssetLoader, loadMesh);
     loader.endClass();
 }

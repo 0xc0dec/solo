@@ -23,6 +23,8 @@ static void setCubeTextureData(CubeTexture *tex, CubeTextureFace face, ImageForm
 static void registerTexture(CppBindModule<LuaBinding> &module)
 {
     auto tex = BEGIN_CLASS(module, Texture);
+    REG_STATIC_METHOD(tex, Texture, loadRectFromFile);
+    REG_STATIC_METHOD(tex, Texture, loadCubeFromFiles);
     REG_METHOD(tex, Texture, generateMipmaps);
     REG_METHOD(tex, Texture, getHorizontalWrapping);
     REG_METHOD(tex, Texture, getVerticalWrapping);

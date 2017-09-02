@@ -45,7 +45,7 @@ local meshes = {
 }
 
 local loadTexture = function(path)
-    local tex = loader:loadRectTexture(path)
+    local tex = solo.Texture.loadRectFromFile(dev, path)
     tex:generateMipmaps()
     tex:setFiltering(solo.TextureFiltering.LinearMipmapNearest)
     tex:setAnisotropyLevel(8)
@@ -54,7 +54,7 @@ end
 
 local mainCamera = createMainCamera(dev, scene, physics, meshes, effects)
 local offscreenCamera, offscreenCameraTex = createOffscreenCamera(dev, scene)
-createSkybox(scene, loader, knownTags.skybox)
+createSkybox(dev, scene, knownTags.skybox)
 createCheckerBox(dev, scene, effects, meshes.cube)
 createDynamicQuad(dev, scene, effects, loadTexture)
 createTimeLabel(dev, scene, knownTags.transparent, fs:readBytes(getAssetPath("Aller.ttf")))
@@ -97,7 +97,7 @@ local update = function()
 
     if dev:isKeyPressed(solo.KeyCode.Digit2, true) then
         detachPostProcessor()
-        pp = postProcessors.create2(dev, loader, mainCamera, knownTags.postProcessor, effects)
+        pp = postProcessors.create2(dev, mainCamera, knownTags.postProcessor, effects)
     end
 
     if dev:isKeyPressed(solo.KeyCode.Digit3, true) then

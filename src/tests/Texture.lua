@@ -34,3 +34,6 @@ assert(cubeTex:getDepthWrapping())
 cubeTex:setDepthWrapping(solo.TextureWrapping.Clamp)
 
 cubeTex:setData(solo.CubeTextureFace.Front, solo.ImageFormat.RGB, { 1, 2, 3, 4 }, 2, 2)
+
+assert(solo.Texture.loadRectFromFile)
+assert(solo.Texture.loadCubeFromFiles)
