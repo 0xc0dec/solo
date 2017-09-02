@@ -52,7 +52,7 @@ auto Mesh::createFromPrefab(Device *device, MeshPrefab prefab) -> sptr<Mesh>
 
 auto Mesh::loadFromFile(Device *device, const std::string &path) -> sptr<Mesh>
 {
-    if (obj::canLoad(path))
+    if (obj::canLoadMesh(path))
         return obj::loadMesh(device, path);
     SL_PANIC("Unsupported mesh file ", path);
     return nullptr;

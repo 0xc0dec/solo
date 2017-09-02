@@ -15,7 +15,7 @@ namespace solo
 
     namespace obj
     {
-        bool canLoad(const std::string &path);
+        bool canLoadMesh(const std::string &path);
         auto loadMesh(Device *device, const std::string &path) -> sptr<Mesh>;
     }
 }

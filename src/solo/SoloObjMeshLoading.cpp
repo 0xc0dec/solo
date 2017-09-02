@@ -64,7 +64,7 @@ void parseIndexes(const char **from, const char *to, uint32_t **result)
     }
 }
 
-bool obj::canLoad(const std::string &path)
+bool obj::canLoadMesh(const std::string &path)
 {
     // TODO Extract helper method (replace in other places too)
     static const std::string ext = ".obj";
