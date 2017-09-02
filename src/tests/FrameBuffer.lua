@@ -3,8 +3,8 @@
 -- MIT license
 -- 
 
-local fb = solo.FrameBuffer.create(solo.device)
-local tex = solo.RectTexture.create(solo.device)
+local fb = sl.FrameBuffer.create(sl.device)
+local tex = sl.RectTexture.create(sl.device)
 
 fb:setAttachments({ tex, tex })
 assert(fb:getSize())

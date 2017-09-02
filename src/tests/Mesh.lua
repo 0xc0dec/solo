@@ -3,17 +3,17 @@
 -- MIT license
 -- 
 
-local mesh1 = solo.Mesh.create(solo.device)
-local mesh2 = solo.Mesh.createFromPrefab(solo.device, solo.MeshPrefab.Quad)
+local mesh1 = sl.Mesh.create(sl.device)
+local mesh2 = sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Quad)
 
-local data = solo.MeshData()
-data.vertices = { solo.Vector3(1, 2, 3) }
-data.uvs = { solo.Vector2(1, 2) }
-data.normals = { solo.Vector3(1, 2, 3) }
+local data = sl.MeshData()
+data.vertices = { sl.Vector3(1, 2, 3) }
+data.uvs = { sl.Vector2(1, 2) }
+data.normals = { sl.Vector3(1, 2, 3) }
 data.indices = { { 1, 2, 3 }, { 1, 2, 3 } }
-local mesh3 = solo.Mesh.createFromData(solo.device, data)
+local mesh3 = sl.Mesh.createFromData(sl.device, data)
 
-local layout = solo.VertexBufferLayout()
+local layout = sl.VertexBufferLayout()
 layout:addAttribute(1, 0)
 assert(layout:getAttributeCount())
 assert(layout:getSize())
@@ -35,4 +35,4 @@ mesh1:removePart(0)
 assert(mesh1:getPartCount() ~= nil)
 
 assert(mesh1:getPrimitiveType())
-mesh1:setPrimitiveType(solo.PrimitiveType.Points)
+mesh1:setPrimitiveType(sl.PrimitiveType.Points)

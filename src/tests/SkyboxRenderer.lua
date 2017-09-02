@@ -3,9 +3,9 @@
 -- MIT license
 -- 
 
-local scene = solo.Scene.create(solo.device)
+local scene = sl.Scene.create(sl.device)
 local r = scene:createNode():addComponent("SkyboxRenderer")
-local tex = solo.CubeTexture.create(solo.device)
+local tex = sl.CubeTexture.create(sl.device)
 
 r:setTexture(tex)
 assert(r:getTexture())

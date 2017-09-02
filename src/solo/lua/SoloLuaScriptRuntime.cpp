@@ -41,15 +41,15 @@ static void registerApi(CppBindModule<LuaBinding> &module)
 static void registerLibrary(LuaState &state)
 {
     state.doString(R"(
-        solo.getCmpId = function(name)
-            solo.__nextCmpId = solo.__nextCmpId and solo.__nextCmpId or 1
-            solo.__cmpIds = solo.__cmpIds and solo.__cmpIds or {}
+        sl.getCmpId = function(name)
+            sl.__nextCmpId = sl.__nextCmpId and sl.__nextCmpId or 1
+            sl.__cmpIds = sl.__cmpIds and sl.__cmpIds or {}
     
-            local id = solo.__cmpIds[name]
+            local id = sl.__cmpIds[name]
             if not id then
-                id = solo.__nextCmpId
-                solo.__cmpIds[name] = id
-                solo.__nextCmpId = solo.__nextCmpId + 1
+                id = sl.__nextCmpId
+                sl.__cmpIds[name] = id
+                sl.__nextCmpId = sl.__nextCmpId + 1
             end
 
             return id
@@ -63,7 +63,7 @@ lua::ScriptRuntime::ScriptRuntime()
     lua = LuaState::newState();
     lua.openLibs();
 
-    auto module = LuaBinding(lua).beginModule("solo");
+    auto module = LuaBinding(lua).beginModule("sl");
     registerApi(module);
     registerLibrary(lua);
     module.endModule();
@@ -75,7 +75,7 @@ lua::ScriptRuntime::ScriptRuntime(Device *d):
     lua = LuaState::newState();
     lua.openLibs();
 
-    auto module = LuaBinding(lua).beginModule("solo");
+    auto module = LuaBinding(lua).beginModule("sl");
     registerApi(module);
     registerLibrary(lua);
     module.addConstant("device", d);

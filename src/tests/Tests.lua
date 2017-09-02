@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-local logger = solo.device:getLogger()
+local logger = sl.device:getLogger()
 
 function runTest(fileName)
     local test = assert(loadfile("../../src/tests/" .. fileName))

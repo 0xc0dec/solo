@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-local scene = solo.Scene.create(solo.device)
+local scene = sl.Scene.create(sl.device)
 local s = scene:createNode():addComponent("Spectator")
 
 assert(s:getMovementSpeed() ~= nil)

@@ -3,15 +3,15 @@
 -- MIT license
 -- 
 
-local scene = solo.Scene.create(solo.device)
+local scene = sl.Scene.create(sl.device)
 local cam = scene:createNode():addComponent("Camera")
-local v4 = solo.Vector4(1, 2, 3, 4)
+local v4 = sl.Vector4(1, 2, 3, 4)
 
 cam:renderFrame(function(ctx) end)
 
 assert(cam:getTransform())
 
-cam:setRenderTarget(solo.FrameBuffer.create(solo.device))
+cam:setRenderTarget(sl.FrameBuffer.create(sl.device))
 assert(cam:getRenderTarget() ~= nil)
 cam:setRenderTarget(nil)
 
@@ -37,10 +37,10 @@ assert(cam:getFar() ~= nil)
 cam:setFar(1)
 
 assert(cam:getFOV() ~= nil)
-cam:setFOV(solo.Radian(1))
+cam:setFOV(sl.Radian(1))
 
 assert(cam:getOrthoSize() ~= nil)
-cam:setOrthoSize(solo.Vector2(1, 2))
+cam:setOrthoSize(sl.Vector2(1, 2))
 
 assert(cam:getAspectRatio() ~= nil)
 cam:setAspectRatio(1)

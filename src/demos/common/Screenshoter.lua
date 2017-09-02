@@ -5,10 +5,10 @@
 
 return function(device, path)
     return {
-        typeId = solo.getCmpId("Screenshoter"),
+        typeId = sl.getCmpId("Screenshoter"),
 
         update = function()
-            if device:isKeyPressed(solo.KeyCode.P, true) then
+            if device:isKeyPressed(sl.KeyCode.P, true) then
                 device:saveScreenshot(path)
             end
         end

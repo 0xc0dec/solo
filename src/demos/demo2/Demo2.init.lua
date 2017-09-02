@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-deviceMode = solo.DeviceMode.Vulkan
+deviceMode = sl.DeviceMode.Vulkan
 canvasWidth = 1000
 canvasHeight = 600
 logFilePath = "Demo2.log"

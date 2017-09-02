@@ -32,14 +32,14 @@ return function(device)
     }
 
     return {
-        simpleTexture = solo.Effect.create(device, shaders.vs.basic, shaders.fs.texture),
-        color = solo.Effect.create(device, shaders.vs.basic, shaders.fs.color),
-        checker = solo.Effect.create(device, shaders.vs.basic, shaders.fs.checker),
-        basicLighting = solo.Effect.create(device, shaders.vs.basicLighting, shaders.fs.textureWithLighting),
-        grayscale = solo.Effect.create(device, shaders.vs.passThrough, shaders.fs.grayscale),
-        saturate = solo.Effect.create(device, shaders.vs.passThrough, shaders.fs.saturate),
-        verticalBlur = solo.Effect.create(device, shaders.vs.passThrough, shaders.fs.verticalBlur),
-        horizontalBlur = solo.Effect.create(device, shaders.vs.passThrough, shaders.fs.horizontalBlur),
-        stitches = solo.Effect.create(device, shaders.vs.passThrough, shaders.fs.stitches)
+        simpleTexture = sl.Effect.create(device, shaders.vs.basic, shaders.fs.texture),
+        color = sl.Effect.create(device, shaders.vs.basic, shaders.fs.color),
+        checker = sl.Effect.create(device, shaders.vs.basic, shaders.fs.checker),
+        basicLighting = sl.Effect.create(device, shaders.vs.basicLighting, shaders.fs.textureWithLighting),
+        grayscale = sl.Effect.create(device, shaders.vs.passThrough, shaders.fs.grayscale),
+        saturate = sl.Effect.create(device, shaders.vs.passThrough, shaders.fs.saturate),
+        verticalBlur = sl.Effect.create(device, shaders.vs.passThrough, shaders.fs.verticalBlur),
+        horizontalBlur = sl.Effect.create(device, shaders.vs.passThrough, shaders.fs.horizontalBlur),
+        stitches = sl.Effect.create(device, shaders.vs.passThrough, shaders.fs.stitches)
     }
 end

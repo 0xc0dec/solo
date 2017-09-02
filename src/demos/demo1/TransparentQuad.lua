@@ -6,10 +6,10 @@
 local createRotator = require "Rotator"
 
 return function(dev, scene, effects, quadMesh, tag, tex)
-    tex:setWrapping(solo.TextureWrapping.Clamp)
+    tex:setWrapping(sl.TextureWrapping.Clamp)
 
-    local material = solo.Material.create(dev, effects.simpleTexture)
-    material:setFaceCull(solo.FaceCull.All)
+    local material = sl.Material.create(dev, effects.simpleTexture)
+    material:setFaceCull(sl.FaceCull.All)
     material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
     material:setTextureParameter("mainTex", tex)
     material:setBlend(true)

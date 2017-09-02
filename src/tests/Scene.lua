@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-local scene = solo.Scene.create(solo.device)
+local scene = sl.Scene.create(sl.device)
 
 assert(scene:getDevice())
 assert(scene:createNode())

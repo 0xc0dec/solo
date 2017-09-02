@@ -9,12 +9,12 @@ require "Common"
 
 collectgarbage("setpause", 100)
 
-local dev = solo.device
+local dev = sl.device
 local physics = dev:getPhysics()
 local renderer = dev:getRenderer()
 local logger = dev:getLogger()
 local fs = dev:getFileSystem()
-local scene = solo.Scene.create(dev)
+local scene = sl.Scene.create(dev)
 local canvasSize = dev:getCanvasSize()
 
 local postProcessors = require "PostProcessors"
@@ -39,14 +39,14 @@ local knownTags = {
 }
 
 local meshes = {
-    cube = solo.Mesh.createFromPrefab(dev, solo.MeshPrefab.Cube),
-    quad = solo.Mesh.createFromPrefab(dev, solo.MeshPrefab.Quad)
+    cube = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Cube),
+    quad = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Quad)
 }
 
 local loadTexture = function(path)
-    local tex = solo.Texture.loadRectFromFile(dev, path)
+    local tex = sl.Texture.loadRectFromFile(dev, path)
     tex:generateMipmaps()
-    tex:setFiltering(solo.TextureFiltering.LinearMipmapNearest)
+    tex:setFiltering(sl.TextureFiltering.LinearMipmapNearest)
     tex:setAnisotropyLevel(8)
     return tex
 end
@@ -59,11 +59,11 @@ createDynamicQuad(dev, scene, effects, loadTexture)
 createTimeLabel(dev, scene, knownTags.transparent, fs:readBytes(getAssetPath("Aller.ttf")))
 
 local stoneTex = loadTexture(getAssetPath("Cobblestone.png"))
-local monkeyHeadMesh = solo.Mesh.loadFromFile(dev, getAssetPath("MonkeyHD.obj"))
+local monkeyHeadMesh = sl.Mesh.loadFromFile(dev, getAssetPath("MonkeyHD.obj"))
 createMonkeyHead(dev, scene, effects, stoneTex, monkeyHeadMesh)
 createFloor(dev, scene, effects, stoneTex, meshes.cube)
 
-local axesMesh = solo.Mesh.loadFromFile(dev, getAssetPath("Axes.obj"))
+local axesMesh = sl.Mesh.loadFromFile(dev, getAssetPath("Axes.obj"))
 local logoTex = loadTexture(getAssetPath("Flammable.png"))
 
 attachAxesMesh(dev, effects,
@@ -76,7 +76,7 @@ attachAxesMesh(dev, effects,
 local keepRunning = function()
     return not dev:isQuitRequested() and
            not dev:isWindowCloseRequested() and
-           not dev:isKeyPressed(solo.KeyCode.Escape, true)
+           not dev:isKeyPressed(sl.KeyCode.Escape, true)
 end
 
 local detachPostProcessor = function()
@@ -89,17 +89,17 @@ end
 local update = function()
     scene:visit(function(cmp) cmp:update() end)
 
-    if dev:isKeyPressed(solo.KeyCode.Digit1, true) then
+    if dev:isKeyPressed(sl.KeyCode.Digit1, true) then
         detachPostProcessor()
         pp = postProcessors.create1(dev, mainCamera, knownTags.postProcessor, effects)
     end
 
-    if dev:isKeyPressed(solo.KeyCode.Digit2, true) then
+    if dev:isKeyPressed(sl.KeyCode.Digit2, true) then
         detachPostProcessor()
         pp = postProcessors.create2(dev, mainCamera, knownTags.postProcessor, effects)
     end
 
-    if dev:isKeyPressed(solo.KeyCode.Digit3, true) then
+    if dev:isKeyPressed(sl.KeyCode.Digit3, true) then
         detachPostProcessor()
     end
 end

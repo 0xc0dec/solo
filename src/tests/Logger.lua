@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-local logger = solo.device:getLogger()
+local logger = sl.device:getLogger()
 
 logger:logDebug("Test debug msg")
 logger:logInfo("Test info msg")

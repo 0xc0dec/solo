@@ -3,6 +3,6 @@
 -- MIT license
 -- 
 
-local r = solo.device:getRenderer()
+local r = sl.device:getRenderer()
 
 r:renderFrame(function() end)

@@ -10,12 +10,12 @@ local createUpdater = function(device, fontData)
     local renderer
 
     return {
-        typeId = solo.getCmpId("TimeLabelUpdater"),
+        typeId = sl.getCmpId("TimeLabelUpdater"),
 
         init = function(self)
             local firstChar = string.byte(" ")
             local charCount = string.byte("~") - string.byte(" ")
-            local font = solo.Font.create(device, fontData, lineHeight, textureWidth,
+            local font = sl.Font.create(device, fontData, lineHeight, textureWidth,
                 textureHeight, firstChar, charCount, 2, 2)
 
             renderer = self.node:addComponent("FontRenderer")

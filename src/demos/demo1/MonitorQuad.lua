@@ -9,8 +9,8 @@ local createLookAt = require "LookAt"
 return function(dev, scene, effects, offscreenCameraTex, quadMesh, tag)
 	local canvasSize = dev:getCanvasSize()
 
-    local material = solo.Material.create(dev, effects.simpleTexture)
-    material:setFaceCull(solo.FaceCull.All)
+    local material = sl.Material.create(dev, effects.simpleTexture)
+    material:setFaceCull(sl.FaceCull.All)
     material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
     material:setTextureParameter("mainTex", offscreenCameraTex)
 

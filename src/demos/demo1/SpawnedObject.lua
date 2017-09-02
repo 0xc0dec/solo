@@ -5,14 +5,14 @@
 
 return function(device, effect, mesh, initialPos, initialRotation)
     return {
-        typeId = solo.getCmpId("SpawnedObject"),
+        typeId = sl.getCmpId("SpawnedObject"),
 
         init = function(self)
             self.active = false
 
-            local material = solo.Material.create(device, effect)
-            material:setFaceCull(solo.FaceCull.All)
-            material:setPolygonMode(solo.PolygonMode.Wireframe)
+            local material = sl.Material.create(device, effect)
+            material:setFaceCull(sl.FaceCull.All)
+            material:setPolygonMode(sl.PolygonMode.Wireframe)
             material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
             material:setVector4Parameter("color", vec4(1, 1, 0, 1))
 
@@ -25,7 +25,7 @@ return function(device, effect, mesh, initialPos, initialRotation)
             t:setLocalPosition(initialPos)
             t:setLocalRotation(initialRotation)
 
-            local params = solo.RigidBodyConstructionParameters()
+            local params = sl.RigidBodyConstructionParameters()
             params.mass = 50
             params.restitution = 0.5
             params.friction = 0.2
@@ -33,7 +33,7 @@ return function(device, effect, mesh, initialPos, initialRotation)
             params.angularDamping = 0.1
 
             local rigidBody = self.node:addComponent("RigidBody", params)
-            rigidBody:setCollider(solo.BoxCollider.create(vec3(1, 1, 1)))
+            rigidBody:setCollider(sl.BoxCollider.create(vec3(1, 1, 1)))
 
             self.activeTimer = 0
             self.material = material

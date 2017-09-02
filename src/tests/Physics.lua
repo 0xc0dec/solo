@@ -3,9 +3,9 @@
 -- MIT license
 -- 
 
-local physics = solo.device:getPhysics()
-local v1 = solo.Vector3(1, 2, 3)
-local v2 = solo.Vector3(2, 3, 4)
+local physics = sl.device:getPhysics()
+local v1 = sl.Vector3(1, 2, 3)
+local v2 = sl.Vector3(2, 3, 4)
 
 physics:update()
 physics:setGravity(v1)
@@ -19,7 +19,7 @@ assert(rcr.normal)
 assert(physics:castRayAll(v1, v2))
 
 
-local params = solo.RigidBodyConstructionParameters()
+local params = sl.RigidBodyConstructionParameters()
 
 assert(params.mass ~= nil)
 assert(params.friction ~= nil)
@@ -31,9 +31,9 @@ assert(params.linearFactor ~= nil)
 assert(params.angularFactor ~= nil)
 
 
-local scene = solo.Scene.create(solo.device)
-local collider = solo.BoxCollider.create(v1)
-local body = scene:createNode():addComponent("RigidBody", solo.RigidBodyConstructionParameters())
+local scene = sl.Scene.create(sl.device)
+local collider = sl.BoxCollider.create(v1)
+local body = scene:createNode():addComponent("RigidBody", sl.RigidBodyConstructionParameters())
 
 body:setCollider(collider)
 body:setCollider(nil)

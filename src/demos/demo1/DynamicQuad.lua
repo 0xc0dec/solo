@@ -9,7 +9,7 @@ local createUpdater = function(device, data, mesh)
     local time = 0
 
     return {
-        typeId = solo.getCmpId("DynamicQuadUpdater"),
+        typeId = sl.getCmpId("DynamicQuadUpdater"),
 
         update = function()
             time = time + 2 * device:getTimeDelta()
@@ -25,9 +25,9 @@ end
 
 return function(dev, scene, effects, loadTexture)
     local tex = loadTexture(getAssetPath("Freeman.png"))
-    tex:setWrapping(solo.TextureWrapping.Clamp)
+    tex:setWrapping(sl.TextureWrapping.Clamp)
 
-    local layout = solo.VertexBufferLayout()
+    local layout = sl.VertexBufferLayout()
     layout:addAttribute(3, 0)
     layout:addAttribute(2, 1)
 
@@ -43,13 +43,13 @@ return function(dev, scene, effects, loadTexture)
         0, 2, 3
     }
 
-    local mesh = solo.Mesh.create(dev)
+    local mesh = sl.Mesh.create(dev)
     mesh:addDynamicVertexBuffer(layout, data, 4)
     mesh:addPart(indices, 6)
-    mesh:setPrimitiveType(solo.PrimitiveType.Triangles)
+    mesh:setPrimitiveType(sl.PrimitiveType.Triangles)
 
-    local material = solo.Material.create(dev, effects.simpleTexture)
-    material:setFaceCull(solo.FaceCull.All)
+    local material = sl.Material.create(dev, effects.simpleTexture)
+    material:setFaceCull(sl.FaceCull.All)
     material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
     material:setTextureParameter("mainTex", tex)
 

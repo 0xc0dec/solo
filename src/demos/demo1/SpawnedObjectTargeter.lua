@@ -5,7 +5,7 @@
 
 return function(physics)
     return {
-        typeId = solo.getCmpId("SpawnedObjectTargeter"),
+        typeId = sl.getCmpId("SpawnedObjectTargeter"),
 
         init = function(self)
             self.transform = self.node:findComponent("Transform")
@@ -16,7 +16,7 @@ return function(physics)
             local hitResults = physics:castRayAll(self.transform:getWorldPosition(), to)
 
             for i, hit in ipairs(hitResults) do
-                local obj = hit.body:getNode():findScriptComponent(solo.getCmpId("SpawnedObject"))
+                local obj = hit.body:getNode():findScriptComponent(sl.getCmpId("SpawnedObject"))
                 if obj then
                     obj:setActive()
                 end

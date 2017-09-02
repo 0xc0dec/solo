@@ -7,12 +7,12 @@ require "Common"
 
 return function(dev, scene, tag)
     local getImagePath = function(fileName) return getAssetPath("skyboxes/deep-space/") .. fileName end
-    local tex = solo.Texture.loadCubeFromFiles(dev, {
+    local tex = sl.Texture.loadCubeFromFiles(dev, {
         getImagePath("Front.png"), getImagePath("Back.png"), getImagePath("Left.png"),
         getImagePath("Right.png"), getImagePath("Top.png"), getImagePath("Bottom.png")
     })
-    tex:setWrapping(solo.TextureWrapping.Clamp)
-    tex:setFiltering(solo.TextureFiltering.Linear)
+    tex:setWrapping(sl.TextureWrapping.Clamp)
+    tex:setFiltering(sl.TextureFiltering.Linear)
     local node = scene:createNode()
     local renderer = node:addComponent("SkyboxRenderer")
     renderer:setTexture(tex)

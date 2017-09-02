@@ -3,37 +3,37 @@
 -- MIT license
 -- 
 
-local rectTex = solo.RectTexture.create(solo.device)
+local rectTex = sl.RectTexture.create(sl.device)
 
 rectTex:generateMipmaps()
 
 assert(rectTex:getHorizontalWrapping())
 assert(rectTex:getVerticalWrapping())
 
-rectTex:setWrapping(solo.TextureWrapping.Clamp)
-rectTex:setVerticalWrapping(solo.TextureWrapping.Clamp)
-rectTex:setHorizontalWrapping(solo.TextureWrapping.Clamp)
+rectTex:setWrapping(sl.TextureWrapping.Clamp)
+rectTex:setVerticalWrapping(sl.TextureWrapping.Clamp)
+rectTex:setHorizontalWrapping(sl.TextureWrapping.Clamp)
 
 assert(rectTex:getMinFiltering())
 assert(rectTex:getMagFiltering())
 
-rectTex:setFiltering(solo.TextureFiltering.NearestMipmapNearest)
-rectTex:setMinFiltering(solo.TextureFiltering.NearestMipmapNearest)
-rectTex:setMagFiltering(solo.TextureFiltering.NearestMipmapNearest)
+rectTex:setFiltering(sl.TextureFiltering.NearestMipmapNearest)
+rectTex:setMinFiltering(sl.TextureFiltering.NearestMipmapNearest)
+rectTex:setMagFiltering(sl.TextureFiltering.NearestMipmapNearest)
 
 assert(rectTex:getAnisotropyLevel() ~= nil)
 rectTex:setAnisotropyLevel(1)
 
-rectTex:setData(solo.ImageFormat.RGB, { 1, 2, 3, 4 }, 2, 2)
+rectTex:setData(sl.ImageFormat.RGB, { 1, 2, 3, 4 }, 2, 2)
 assert(rectTex:getSize())
 
 
-local cubeTex = solo.CubeTexture.create(solo.device)
+local cubeTex = sl.CubeTexture.create(sl.device)
 
 assert(cubeTex:getDepthWrapping())
-cubeTex:setDepthWrapping(solo.TextureWrapping.Clamp)
+cubeTex:setDepthWrapping(sl.TextureWrapping.Clamp)
 
-cubeTex:setData(solo.CubeTextureFace.Front, solo.ImageFormat.RGB, { 1, 2, 3, 4 }, 2, 2)
+cubeTex:setData(sl.CubeTextureFace.Front, sl.ImageFormat.RGB, { 1, 2, 3, 4 }, 2, 2)
 
-assert(solo.Texture.loadRectFromFile)
-assert(solo.Texture.loadCubeFromFiles)
+assert(sl.Texture.loadRectFromFile)
+assert(sl.Texture.loadCubeFromFiles)

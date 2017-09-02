@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-deviceMode = solo.DeviceMode.OpenGL
+deviceMode = sl.DeviceMode.OpenGL
 canvasWidth = 1200
 canvasHeight = 700
 logFilePath = "Demo1.log"

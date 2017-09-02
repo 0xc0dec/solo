@@ -4,8 +4,8 @@
 -- 
 
 return function(dev, scene, effects, tex, cubeMesh)
-    local material = solo.Material.create(dev, effects.simpleTexture)
-    material:setFaceCull(solo.FaceCull.All)
+    local material = sl.Material.create(dev, effects.simpleTexture)
+    material:setFaceCull(sl.FaceCull.All)
     material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
     material:setTextureParameter("mainTex", tex)
 
@@ -19,9 +19,9 @@ return function(dev, scene, effects, tex, cubeMesh)
     renderer:setMesh(cubeMesh)
     renderer:setMaterial(0, material)
 
-    local params = solo.RigidBodyConstructionParameters()
+    local params = sl.RigidBodyConstructionParameters()
     params.mass = 0
     params.friction = 0.5
     local body = node:addComponent("RigidBody", params)
-    body:setCollider(solo.BoxCollider.create(vec3(1, 1, 1)))
+    body:setCollider(sl.BoxCollider.create(vec3(1, 1, 1)))
 end

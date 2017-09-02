@@ -3,8 +3,8 @@
 -- MIT license
 -- 
 
-local v = solo.Vector3(1, 0, 0)
-local ray = solo.Ray(v, v)
+local v = sl.Vector3(1, 0, 0)
+local ray = sl.Ray(v, v)
 
 assert(ray:getOrigin() ~= nil)
 ray:setOrigin(v)

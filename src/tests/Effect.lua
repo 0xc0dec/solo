@@ -3,5 +3,5 @@
 -- MIT license
 -- 
 
-assert(solo.Effect.create(solo.device, {}, {}))
-assert(solo.Effect.createFromPrefab(solo.device, solo.EffectPrefab.Font))
+assert(sl.Effect.create(sl.device, {}, {}))
+assert(sl.Effect.createFromPrefab(sl.device, sl.EffectPrefab.Font))

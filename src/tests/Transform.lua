@@ -3,14 +3,14 @@
 -- MIT license
 -- 
 
-local scene = solo.Scene.create(solo.device)
+local scene = sl.Scene.create(sl.device)
 local t1 = scene:createNode():findComponent("Transform")
 local t2 = scene:createNode():findComponent("Transform")
 local cam = scene:createNode():addComponent("Camera")
-local v = solo.Vector3(1, 2, 3)
-local q = solo.Quaternion()
-local m = solo.Matrix()
-local rad = solo.Radian(1)
+local v = sl.Vector3(1, 2, 3)
+local q = sl.Quaternion()
+local m = sl.Matrix()
+local rad = sl.Radian(1)
 
 t1:setParent(t2)
 assert(t1:getParent())
@@ -54,8 +54,8 @@ t1:scaleLocal(v)
 t1:setLocalPosition(v)
 t1:setLocalScale(v)
 
-t1:rotate(q, solo.TransformSpace.World)
-t1:rotateByAxisAngle(v, rad, solo.TransformSpace.World)
+t1:rotate(q, sl.TransformSpace.World)
+t1:rotateByAxisAngle(v, rad, sl.TransformSpace.World)
 
 t1:setLocalRotation(q)
 t1:setLocalAxisAngleRotation(v, rad)

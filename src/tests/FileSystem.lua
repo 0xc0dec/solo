@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-local fs = solo.device:getFileSystem()
+local fs = sl.device:getFileSystem()
 
 assert(fs:readBytes("abc"))
 fs:writeBytes("abc", { 1, 2, 3 })

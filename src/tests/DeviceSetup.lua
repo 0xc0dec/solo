@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-local s = solo.device:getSetup()
+local s = sl.device:getSetup()
 
 assert(s.mode)
 assert(s.canvasWidth)

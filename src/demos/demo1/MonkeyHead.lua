@@ -6,8 +6,8 @@
 local createRotator = require "Rotator"
 
 return function(dev, scene, effects, tex, mesh)
-    local material = solo.Material.create(dev, effects.basicLighting)
-    material:setFaceCull(solo.FaceCull.All)
+    local material = sl.Material.create(dev, effects.basicLighting)
+    material:setFaceCull(sl.FaceCull.All)
     material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
     material:bindInvTransposedWorldMatrixParameter("invTransposedWorldMatrix")
     material:setTextureParameter("mainTex", tex)

@@ -7,7 +7,7 @@ require "Common"
 
 return function(targetPos)
     return {
-        typeId = solo.getCmpId("LookAt"),
+        typeId = sl.getCmpId("LookAt"),
 
         init = function(self)
             self.transform = self.node:findComponent("Transform")

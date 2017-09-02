@@ -9,11 +9,11 @@ package.path = "../../src/demos/demo1/?.lua;../../src/demos/common/?.lua;" .. pa
 
 require "Common"
 
-dev = solo.device
+dev = sl.device
 physics = dev:getPhysics()
 renderer = dev:getRenderer()
 logger = dev:getLogger()
-scene = solo.Scene.create(dev)
+scene = sl.Scene.create(dev)
 
 function initMainCamera()
     local node = scene:createNode()
@@ -29,9 +29,9 @@ function initMainCamera()
     return cam
 end
 
-local mesh = solo.Mesh.create(dev)
+local mesh = sl.Mesh.create(dev)
 
-local layout = solo.VertexBufferLayout()
+local layout = sl.VertexBufferLayout()
 layout:addAttribute(2, 0)
 local positions = {
 	0.9, 0.9,
@@ -44,7 +44,7 @@ local positions = {
 }
 mesh:addVertexBuffer(layout, positions, 6)
 
-layout = solo.VertexBufferLayout()
+layout = sl.VertexBufferLayout()
 layout:addAttribute(3, 1)
 local colors = {
 	0.0, 0.0, 0.0,
@@ -60,8 +60,8 @@ mesh:addVertexBuffer(layout, colors, 6)
 mesh:addPart({ 0, 1, 2, 3, 4, 5 }, 6)
 
 camera = initMainCamera()
-local effect = solo.Effect.createFromPrefab(dev, solo.EffectPrefab.Font)
-local material = solo.Material.create(dev, effect)
+local effect = sl.Effect.createFromPrefab(dev, sl.EffectPrefab.Font)
+local material = sl.Material.create(dev, effect)
 local node = scene:createNode()
 local meshRenderer = node:addComponent("MeshRenderer")
 meshRenderer:setMesh(mesh)
@@ -70,7 +70,7 @@ meshRenderer:setMaterial(0, material)
 function keepRunning()
     return not dev:isQuitRequested() and
            not dev:isWindowCloseRequested() and
-           not dev:isKeyPressed(solo.KeyCode.Escape, true)
+           not dev:isKeyPressed(sl.KeyCode.Escape, true)
 end
 
 function update()

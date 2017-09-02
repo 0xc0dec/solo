@@ -6,10 +6,10 @@
 return function(dev, scene)
 	local canvasSize = dev:getCanvasSize()
 
-    local tex = solo.RectTexture.create(dev)
-    tex:setData(solo.ImageFormat.RGB, {}, math.floor(canvasSize.x / 8.0), math.floor(canvasSize.y / 8.0))
-    tex:setFiltering(solo.TextureFiltering.Nearest)
-    tex:setWrapping(solo.TextureWrapping.Clamp)
+    local tex = sl.RectTexture.create(dev)
+    tex:setData(sl.ImageFormat.RGB, {}, math.floor(canvasSize.x / 8.0), math.floor(canvasSize.y / 8.0))
+    tex:setFiltering(sl.TextureFiltering.Nearest)
+    tex:setWrapping(sl.TextureWrapping.Clamp)
 
     local node = scene:createNode()
     node:findComponent("Transform"):setLocalPosition(vec3(0, 0, 10))
@@ -19,7 +19,7 @@ return function(dev, scene)
     cam:setNear(0.05)
     cam:setViewport(vec4(0, 0, canvasSize.x / 8, canvasSize.y / 8))
 
-    local fb = solo.FrameBuffer.create(dev)
+    local fb = sl.FrameBuffer.create(dev)
     fb:setAttachments({ tex })
     cam:setRenderTarget(fb)
 

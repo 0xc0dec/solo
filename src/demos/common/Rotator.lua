@@ -5,7 +5,7 @@
 
 return function(device, space, axis)
     return {
-        typeId = solo.getCmpId("Rotator"),
+        typeId = sl.getCmpId("Rotator"),
 
         init = function(self)
             self.transform = self.node:findComponent("Transform")
@@ -13,11 +13,11 @@ return function(device, space, axis)
 
         update = function(self)
             local angle = device:getTimeDelta()
-            local rotationSpace = solo.TransformSpace.World
+            local rotationSpace = sl.TransformSpace.World
             if space == "local" then
-                rotationSpace = solo.TransformSpace.Self
+                rotationSpace = sl.TransformSpace.Self
             end
-            self.transform:rotateByAxisAngle(axis, solo.Radian(angle), rotationSpace)
+            self.transform:rotateByAxisAngle(axis, sl.Radian(angle), rotationSpace)
         end
     }
 end

@@ -6,8 +6,8 @@
 return function(dev, effects, node, mesh)
 	-- TODO cache materials
 	local createColorMaterial = function(color)
-	    local mat = solo.Material.create(dev, effects.color)
-	    mat:setFaceCull(solo.FaceCull.All)
+	    local mat = sl.Material.create(dev, effects.color)
+	    mat:setFaceCull(sl.FaceCull.All)
 	    mat:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
 	    mat:setVector4Parameter("color", color)
 	    return mat

@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-local scene = solo.Scene.create(solo.device)
+local scene = sl.Scene.create(sl.device)
 local r = scene:createNode():addComponent("FontRenderer")
 
 r:setFont(nil) -- make sure nil is allowed

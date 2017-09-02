@@ -3,8 +3,8 @@
 -- MIT license
 -- 
 
-local v1 = solo.Vector3(1, 2, 3)
-local v2 = solo.Vector3(1, 2, 3)
+local v1 = sl.Vector3(1, 2, 3)
+local v2 = sl.Vector3(1, 2, 3)
 
 assert(v1.x ~= nil)
 assert(v1.y ~= nil)
