@@ -137,8 +137,6 @@
       <Filter>stb</Filter>
     </ClInclude>
     <ClInclude Include="..\src\solo\SoloImageLoader.h" />
-    <ClInclude Include="..\src\solo\SoloMeshLoader.h" />
-    <ClInclude Include="..\src\solo\SoloObjMeshLoader.h" />
     <ClInclude Include="..\src\solo\SoloPngImageLoader.h" />
     <ClInclude Include="..\src\solo\SoloSpinLock.h" />
     <ClInclude Include="..\src\solo\SoloBoxCollider.h" />
@@ -182,6 +180,7 @@
     <ClInclude Include="..\src\solo\SoloVector3.h" />
     <ClInclude Include="..\src\solo\SoloVector4.h" />
     <ClInclude Include="..\src\solo\SoloVertexFormat.h" />
+    <ClInclude Include="..\src\solo\SoloObjMeshLoading.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp">
@@ -330,7 +329,6 @@
     <ClCompile Include="..\src\solo\SoloMesh.cpp" />
     <ClCompile Include="..\src\solo\SoloMeshRenderer.cpp" />
     <ClCompile Include="..\src\solo\SoloNode.cpp" />
-    <ClCompile Include="..\src\solo\SoloObjMeshLoader.cpp" />
     <ClCompile Include="..\src\solo\SoloPhysics.cpp" />
     <ClCompile Include="..\src\solo\SoloPngImageLoader.cpp" />
     <ClCompile Include="..\src\solo\SoloQuaternion.cpp" />
@@ -348,6 +346,7 @@
     <ClCompile Include="..\src\solo\SoloVector2.cpp" />
     <ClCompile Include="..\src\solo\SoloVector3.cpp" />
     <ClCompile Include="..\src\solo\SoloVector4.cpp" />
+    <ClCompile Include="..\src\solo\SoloObjMeshLoading.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bullet">

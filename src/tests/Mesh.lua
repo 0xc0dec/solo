@@ -6,13 +6,6 @@
 local mesh1 = sl.Mesh.create(sl.device)
 local mesh2 = sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Quad)
 
-local data = sl.MeshData()
-data.vertices = { sl.Vector3(1, 2, 3) }
-data.uvs = { sl.Vector2(1, 2) }
-data.normals = { sl.Vector3(1, 2, 3) }
-data.indices = { { 1, 2, 3 }, { 1, 2, 3 } }
-local mesh3 = sl.Mesh.createFromData(sl.device, data)
-
 local layout = sl.VertexBufferLayout()
 layout:addAttribute(1, 0)
 assert(layout:getAttributeCount())

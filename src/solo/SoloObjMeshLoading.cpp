@@ -3,23 +3,15 @@
     MIT license
 */
 
-#include "SoloObjMeshLoader.h"
+#include "SoloObjMeshLoading.h"
 #include "SoloMesh.h"
 #include "SoloFileSystem.h"
 #include "SoloDevice.h"
+#include "SoloVector2.h"
+#include "SoloVector3.h"
 #include <unordered_map>
 
 using namespace solo;
-
-ObjMeshLoader::ObjMeshLoader(Device *device):
-    fs(device->getFileSystem())
-{
-}
-
-bool ObjMeshLoader::isLoadable(const std::string &path) const
-{
-    return path.find(".obj", path.size() - 5) != std::string::npos;
-}
 
 Vector3 parseVector3(const char *from, const char *to)
 {
@@ -29,7 +21,7 @@ Vector3 parseVector3(const char *from, const char *to)
     size_t resultIdx = -1;
     for (; from <= to; ++from)
     {
-        auto c = *from;
+        const auto c = *from;
         if ((from == to || isspace(c)) && bufIdx > 0)
         {
             buf[bufIdx] = '\0';
@@ -51,8 +43,8 @@ void parseIndexes(const char **from, const char *to, uint32_t **result)
     size_t resultIdx = 0;
     for (; *from <= to; *from += 1)
     {
-        auto c = **from;
-        auto okSym = (c >= '0' && c <= '9') || c == '-' || c == '.';
+        const auto c = **from;
+        const auto okSym = (c >= '0' && c <= '9') || c == '-' || c == '.';
         if (okSym)
             buf[bufIdx++] = c;
 
@@ -72,21 +64,32 @@ void parseIndexes(const char **from, const char *to, uint32_t **result)
     }
 }
 
-auto ObjMeshLoader::loadData(const std::string &path) const -> sptr<MeshData>
+bool obj::canLoad(const std::string &path)
 {
-    // TODO speed up and make more intelligent
+    // TODO Extract helper method (replace in other places too)
+    static const std::string ext = ".obj";
+    return std::equal(ext.rbegin(), ext.rend(), path.rbegin());
+}
 
-    auto data = std::make_shared<MeshData>();
+auto obj::loadMesh(Device *device, const std::string &path) -> sptr<Mesh>
+{
+    auto fs = device->getFileSystem();
+
+    // TODO speed up and make more intelligent
 
     std::vector<Vector3> inputVertices;
     std::vector<Vector3> inputNormals;
     std::vector<Vector2> inputUvs;
     std::vector<uint16_t> currentIndices;
     std::unordered_map<std::string, uint16_t> uniqueIndices;
+    std::vector<Vector3> vertexBuffer;
+    std::vector<Vector2> uvBuffer;
+    std::vector<Vector3> normalBuffer;
+    std::vector<std::vector<uint16_t>> indexBuffers;
 
     auto finishIndex = [&]
     {
-        data->indices.push_back(std::move(currentIndices));
+        indexBuffers.push_back(std::move(currentIndices));
         currentIndices = std::vector<uint16_t>();
         uniqueIndices.clear();
     };
@@ -134,12 +137,12 @@ auto ObjMeshLoader::loadData(const std::string &path) const -> sptr<MeshData>
                 else
                 {
                     parseIndexes(&from, to, idxs);
-                    data->vertices.push_back(inputVertices[vIdx - 1]);
+                    vertexBuffer.push_back(inputVertices[vIdx - 1]);
                     if (idxs[1])
-                        data->uvs.push_back(inputUvs[uvIdx - 1]);
+                        uvBuffer.push_back(inputUvs[uvIdx - 1]);
                     if (idxs[2])
-                        data->normals.push_back(inputNormals[nIdx - 1]);
-                    auto newIndex = static_cast<uint16_t>(data->vertices.size() - 1);
+                        normalBuffer.push_back(inputNormals[nIdx - 1]);
+                    auto newIndex = static_cast<uint16_t>(vertexBuffer.size() - 1);
                     uniqueIndices[three] = newIndex;
                     currentIndices.push_back(newIndex);
                 }
@@ -156,5 +159,30 @@ auto ObjMeshLoader::loadData(const std::string &path) const -> sptr<MeshData>
     if (!currentIndices.empty())
         finishIndex();
 
-    return data;
+    auto mesh = Mesh::create(device);
+
+    VertexBufferLayout positionLayout;
+    positionLayout.addAttribute(3, 0);
+    mesh->addVertexBuffer(positionLayout, reinterpret_cast<const float *>(vertexBuffer.data()), static_cast<uint32_t>(vertexBuffer.size()));
+
+    if (!normalBuffer.empty())
+    {
+        VertexBufferLayout normalLayout;
+        normalLayout.addAttribute(3, 1);
+        mesh->addVertexBuffer(normalLayout, reinterpret_cast<const float *>(normalBuffer.data()), static_cast<uint32_t>(normalBuffer.size()));
+    }
+
+    if (!uvBuffer.empty())
+    {
+        VertexBufferLayout uvLayout;
+        uvLayout.addAttribute(2, 2);
+        mesh->addVertexBuffer(uvLayout, reinterpret_cast<const float *>(uvBuffer.data()), static_cast<uint32_t>(uvBuffer.size()));
+    }
+
+    for (const auto &indexBuffer : indexBuffers)
+        mesh->addPart(reinterpret_cast<const void *>(indexBuffer.data()), static_cast<uint32_t>(indexBuffer.size()));
+
+    mesh->setPrimitiveType(PrimitiveType::Triangles);
+
+    return mesh;
 }

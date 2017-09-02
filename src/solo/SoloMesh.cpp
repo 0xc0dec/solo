@@ -6,33 +6,12 @@
 #include "SoloMesh.h"
 #include "SoloEffect.h"
 #include "SoloDevice.h"
-#include "SoloObjMeshLoader.h"
+#include "SoloObjMeshLoading.h"
 #include "gl/SoloOpenGLMesh.h"
 #include "vk/SoloVulkanMesh.h"
 #include "null/SoloNullMesh.h"
 
 using namespace solo;
-
-// TODO remove when proper loading is implemented
-static std::vector<sptr<MeshLoader>> meshLoaders;
-
-static void initMeshLoaders(Device *device)
-{
-    if (!meshLoaders.empty())
-        return;
-    meshLoaders.push_back(std::make_unique<ObjMeshLoader>(device));
-}
-
-static auto getMeshLoader(const std::string &path) -> MeshLoader*
-{
-    for (const auto &loader : meshLoaders)
-    {
-        if (loader->isLoadable(path))
-            return loader.get();
-    }
-    SL_PANIC(SL_FMT("No suitable loader found for mesh '", path, "'"));
-    return nullptr;
-}
 
 auto Mesh::create(Device *device) -> sptr<Mesh>
 {
@@ -71,19 +50,12 @@ auto Mesh::createFromPrefab(Device *device, MeshPrefab prefab) -> sptr<Mesh>
     return mesh;
 }
 
-auto Mesh::createFromData(Device *device, MeshData *data) -> sptr<Mesh>
-{
-    auto mesh = create(device);
-    mesh->initFromData(data);
-    return mesh;
-}
-
 auto Mesh::loadFromFile(Device *device, const std::string &path) -> sptr<Mesh>
 {
-    initMeshLoaders(device);
-    const auto loader = getMeshLoader(path);
-    auto data = loader->loadData(path);
-    return createFromData(device, data.get());
+    if (obj::canLoad(path))
+        return obj::loadMesh(device, path);
+    SL_PANIC("Unsupported mesh file ", path);
+    return nullptr;
 }
 
 void Mesh::initAsQuadMesh()
@@ -139,32 +111,5 @@ void Mesh::initAsCubeMesh()
     layout.addAttribute(2, 1);
     addVertexBuffer(layout, vertices, 24);
     addPart(indices, 36);
-    setPrimitiveType(PrimitiveType::Triangles);
-}
-
-void Mesh::initFromData(MeshData *data)
-{
-    VertexBufferLayout positionLayout;
-    positionLayout.addAttribute(3, 0);
-    addVertexBuffer(positionLayout, reinterpret_cast<const float *>(data->vertices.data()), static_cast<uint32_t>(data->vertices.size()));
-
-    if (!data->normals.empty())
-    {
-        VertexBufferLayout normalLayout;
-        normalLayout.addAttribute(3, 1);
-        addVertexBuffer(normalLayout, reinterpret_cast<const float *>(data->normals.data()), static_cast<uint32_t>(data->normals.size()));
-    }
-
-    if (!data->uvs.empty())
-    {
-        VertexBufferLayout uvLayout;
-        uvLayout.addAttribute(2, 2);
-        addVertexBuffer(uvLayout, reinterpret_cast<const float *>(data->uvs.data()), static_cast<uint32_t>(data->uvs.size()));
-    }
-    
-
-    for (const auto &indices : data->indices)
-        addPart(reinterpret_cast<const void *>(indices.data()), static_cast<uint32_t>(indices.size()));
-
     setPrimitiveType(PrimitiveType::Triangles);
 }

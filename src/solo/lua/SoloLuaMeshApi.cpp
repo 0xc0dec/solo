@@ -50,7 +50,6 @@ static void registerMesh(CppBindModule<LuaBinding> &module)
     auto mesh = BEGIN_CLASS(module, Mesh);
     REG_STATIC_METHOD(mesh, Mesh, create);
     REG_STATIC_METHOD(mesh, Mesh, createFromPrefab);
-    REG_STATIC_METHOD(mesh, Mesh, createFromData);
     REG_STATIC_METHOD(mesh, Mesh, loadFromFile);
     REG_FREE_FUNC_AS_METHOD(mesh, addVertexBuffer);
     REG_FREE_FUNC_AS_METHOD(mesh, addDynamicVertexBuffer);
@@ -63,20 +62,8 @@ static void registerMesh(CppBindModule<LuaBinding> &module)
     REG_METHOD(mesh, Mesh, setPrimitiveType);
 }
 
-static void registerMeshData(CppBindModule<LuaBinding> &module)
-{
-    auto data = BEGIN_CLASS(module, MeshData);
-    REG_CTOR(data);
-    REG_VARIABLE(data, MeshData, vertices);
-    REG_VARIABLE(data, MeshData, uvs);
-    REG_VARIABLE(data, MeshData, normals);
-    REG_VARIABLE(data, MeshData, indices);
-    data.endClass();
-}
-
 void registerMeshApi(CppBindModule<LuaBinding> &module)
 {
     registerMesh(module);
     registerVertexBufferLayout(module);
-    registerMeshData(module);
 }

@@ -63,10 +63,9 @@
     <ClInclude Include="..\src\solo\SoloMath.h" />
     <ClInclude Include="..\src\solo\SoloMatrix.h" />
     <ClInclude Include="..\src\solo\SoloMesh.h" />
-    <ClInclude Include="..\src\solo\SoloMeshLoader.h" />
     <ClInclude Include="..\src\solo\SoloMeshRenderer.h" />
     <ClInclude Include="..\src\solo\SoloNode.h" />
-    <ClInclude Include="..\src\solo\SoloObjMeshLoader.h" />
+    <ClInclude Include="..\src\solo\SoloObjMeshLoading.h" />
     <ClInclude Include="..\src\solo\SoloPhysics.h" />
     <ClInclude Include="..\src\solo\SoloPngImageLoader.h" />
     <ClInclude Include="..\src\solo\SoloQuaternion.h" />
@@ -155,7 +154,7 @@
     <ClCompile Include="..\src\solo\SoloMesh.cpp" />
     <ClCompile Include="..\src\solo\SoloMeshRenderer.cpp" />
     <ClCompile Include="..\src\solo\SoloNode.cpp" />
-    <ClCompile Include="..\src\solo\SoloObjMeshLoader.cpp" />
+    <ClCompile Include="..\src\solo\SoloObjMeshLoading.cpp" />
     <ClCompile Include="..\src\solo\SoloPngImageLoader.cpp" />
     <ClCompile Include="..\src\solo\SoloQuaternion.cpp" />
     <ClCompile Include="..\src\solo\SoloRay.cpp" />

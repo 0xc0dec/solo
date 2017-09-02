@@ -8,8 +8,6 @@
 #include "SoloCommon.h"
 #include "SoloVertexFormat.h"
 #include "SoloRenderer.h"
-#include "SoloVector2.h"
-#include "SoloVector3.h"
 
 namespace solo
 {
@@ -28,14 +26,6 @@ namespace solo
         Cube
     };
 
-    struct MeshData // TODO get rid of
-    {
-        std::vector<Vector3> vertices;
-        std::vector<Vector2> uvs;
-        std::vector<Vector3> normals;
-        std::vector<std::vector<uint16_t>> indices;
-    };
-
     class Device;
 
     class Mesh
@@ -45,7 +35,6 @@ namespace solo
 
         static auto create(Device *device) -> sptr<Mesh>;
         static auto createFromPrefab(Device *device, MeshPrefab prefab) -> sptr<Mesh>;
-        static auto createFromData(Device *device, MeshData *data) -> sptr<Mesh>;
         static auto loadFromFile(Device *device, const std::string &path) -> sptr<Mesh>;
 
         virtual ~Mesh() {}
@@ -67,6 +56,5 @@ namespace solo
 
         void initAsQuadMesh();
         void initAsCubeMesh();
-        void initFromData(MeshData *data);
     };
 }
