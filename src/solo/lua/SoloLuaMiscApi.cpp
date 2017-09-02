@@ -106,21 +106,6 @@ static void registerFileSystem(CppBindModule<LuaBinding> &module)
     fs.endClass();
 }
 
-static void registerAsyncHandles(CppBindModule<LuaBinding> &module)
-{
-    auto meshAsyncHandle = BEGIN_CLASS_RENAMED(module, AsyncHandle<Mesh>, "MeshAsyncHandle");
-    REG_METHOD(meshAsyncHandle, AsyncHandle<Mesh>, done);
-    meshAsyncHandle.endClass();
-
-    auto rectTexAsyncHandle = BEGIN_CLASS_RENAMED(module, AsyncHandle<RectTexture>, "RectTextureAsyncHandle");
-    REG_METHOD(rectTexAsyncHandle, AsyncHandle<RectTexture>, done);
-    rectTexAsyncHandle.endClass();
-
-    auto cubeTexAsyncHandle = BEGIN_CLASS_RENAMED(module, AsyncHandle<CubeTexture>, "CubeTextureAsyncHandle");
-    REG_METHOD(cubeTexAsyncHandle, AsyncHandle<CubeTexture>, done);
-    cubeTexAsyncHandle.endClass();
-}
-
 static void registerAssetLoader(CppBindModule<LuaBinding> &module)
 {
     auto loader = BEGIN_CLASS(module, AssetLoader);
@@ -147,7 +132,6 @@ void registerMiscApi(CppBindModule<LuaBinding> &module)
     registerScene(module);
     registerLogger(module);
     registerFrameBuffer(module);
-    registerAsyncHandles(module);
     registerSpectator(module);
     registerSkyboxRenderer(module);
 }

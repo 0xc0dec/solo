@@ -18,30 +18,6 @@ namespace solo
     class ImageLoader;
     class MeshLoader;
 
-    template <class T>
-    class AsyncHandle
-    {
-    public:
-        void done(std::function<void(sptr<T>)> callback)
-        {
-            if (callback && result)
-                callback(result);
-            this->callback = callback;
-        }
-
-    private:
-        friend class AssetLoader;
-
-        std::function<void(sptr<T>)> callback;
-        sptr<T> result;
-
-        void finish(sptr<T> result)
-        {
-            if (callback)
-                callback(result);
-        }
-    };
-
     struct AssetLoaderImpl;
 
     class AssetLoader
