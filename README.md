@@ -4,7 +4,6 @@ A playground for my graphics/gamedev experiments.
 ## Features
 * Unity-inspired component system
 * OBJ meshes and PNG textures loading
-* Asynchronous asset loading
 * Render to texture
 * TTF fonts
 * Physics
@@ -17,7 +16,6 @@ A playground for my graphics/gamedev experiments.
 ![1](/screenshots/screenshot8.png?raw=true)
 
 ## Dependencies (all included)
-* async++ (MIT license)
 * Bullet (zlib license)
 * GLEW (MIT/modified BSD license)
 * Lua (MIT license)
