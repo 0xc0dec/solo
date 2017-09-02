@@ -15,7 +15,6 @@
 namespace solo
 {
     class Scene;
-    class AssetLoader;
     class FileSystem;
     class Renderer;
     class Physics;
@@ -104,7 +103,6 @@ namespace solo
         auto getSetup() const -> DeviceSetup;
 
         auto getFileSystem() const -> FileSystem*;
-        auto getAssetLoader() const -> AssetLoader*;
         auto getRenderer() const -> Renderer*;
         auto getPhysics() const -> Physics*;
         auto getScriptRuntime() const -> ScriptRuntime*;
@@ -118,7 +116,6 @@ namespace solo
         sptr<Renderer> renderer;
         sptr<Physics> physics;
         sptr<FileSystem> fs;
-        sptr<AssetLoader> assetLoader;
         sptr<ScriptRuntime> scriptRuntime;
 
         // key code -> was pressed for the first time
@@ -169,11 +166,6 @@ namespace solo
     inline auto Device::getRenderer() const -> Renderer *
     {
         return renderer.get();
-    }
-
-    inline auto Device::getAssetLoader() const -> AssetLoader *
-    {
-        return assetLoader.get();
     }
 
     inline auto Device::getPhysics() const -> Physics *

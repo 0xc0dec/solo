@@ -11,7 +11,6 @@
 #include "SoloSkyboxRenderer.h"
 #include "SoloEffect.h"
 #include "SoloFileSystem.h"
-#include "SoloAssetLoader.h"
 #include "SoloRenderer.h"
 #include "SoloMesh.h"
 #include "SoloSpectator.h"
@@ -106,13 +105,6 @@ static void registerFileSystem(CppBindModule<LuaBinding> &module)
     fs.endClass();
 }
 
-static void registerAssetLoader(CppBindModule<LuaBinding> &module)
-{
-    auto loader = BEGIN_CLASS(module, AssetLoader);
-    REG_METHOD(loader, AssetLoader, loadMesh);
-    loader.endClass();
-}
-
 static void registerRenderer(CppBindModule<LuaBinding> &module)
 {
     auto renderer = BEGIN_CLASS(module, Renderer);
@@ -123,7 +115,6 @@ static void registerRenderer(CppBindModule<LuaBinding> &module)
 void registerMiscApi(CppBindModule<LuaBinding> &module)
 {
     registerRenderer(module);
-    registerAssetLoader(module);
     registerFileSystem(module);
     registerEffect(module);
     registerMeshRenderer(module);

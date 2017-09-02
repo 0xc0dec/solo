@@ -94,9 +94,6 @@
     <ClInclude Include="..\include\SoloFrameBuffer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SoloAssetLoader.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SoloRadian.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -358,9 +355,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\SoloFrameBuffer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\SoloAssetLoader.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\SoloRadian.cpp">

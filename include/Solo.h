@@ -5,7 +5,6 @@
 
 #pragma once
 
-#include "SoloAssetLoader.h"
 #include "SoloBoxCollider.h"
 #include "SoloCamera.h"
 #include "SoloCollider.h"

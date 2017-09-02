@@ -31,7 +31,6 @@ static void registerDevice(CppBindModule<LuaBinding> &module)
     REG_METHOD(device, Device, update);
     REG_METHOD(device, Device, getSetup);
     REG_METHOD(device, Device, getFileSystem);
-    REG_METHOD(device, Device, getAssetLoader);
     REG_METHOD(device, Device, getRenderer);
     REG_METHOD(device, Device, getPhysics);
     REG_METHOD(device, Device, getLogger);

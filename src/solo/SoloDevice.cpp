@@ -5,7 +5,6 @@
 
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
-#include "SoloAssetLoader.h"
 #include "SoloScene.h"
 #include "SoloLogger.h"
 #include "SoloRenderer.h"
@@ -63,7 +62,6 @@ void Device::initSubsystems()
     renderer = Renderer::create(this, token);
     physics = Physics::create(this, token);
     fs = FileSystem::create(this, token);
-    assetLoader = std::make_unique<AssetLoader>(this, token);
     scriptRuntime = ScriptRuntime::create(this, token);
 }
 
@@ -71,7 +69,6 @@ void Device::cleanupSubsystems()
 {
     // Order matters
     scriptRuntime.reset();
-    assetLoader.reset();
     fs.reset();
     renderer.reset();
     logger.reset();

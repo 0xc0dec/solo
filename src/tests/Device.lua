@@ -32,7 +32,6 @@ device:update(function() end)
 assert(device:getSetup())
 
 assert(device:getFileSystem())
-assert(device:getAssetLoader())
 assert(device:getRenderer())
 assert(device:getPhysics())
 assert(device:getLogger())
