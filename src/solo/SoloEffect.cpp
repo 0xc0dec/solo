@@ -46,7 +46,7 @@ auto Effect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effec
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return vk::Effect::create(device, prefab);
+            return vk::Effect::createFromPrefab(device, prefab);
 #endif
         default:
             return std::make_shared<null::Effect>();
