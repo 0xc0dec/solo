@@ -24,7 +24,7 @@ local createUpdater = function(data, mesh)
 end
 
 return function(scene, effects, loadTexture)
-    local tex = loadTexture(getAssetPath("Freeman.png"))
+    local tex = loadTexture(getAssetPath("Bricks.jpg"))
     tex:setWrapping(sl.TextureWrapping.Clamp)
 
     local layout = sl.VertexBufferLayout()
