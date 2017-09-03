@@ -22,7 +22,7 @@ namespace solo
         SL_DISABLE_COPY_AND_MOVE(RectTextureData)
         virtual ~RectTextureData() {}
 
-        virtual auto getMipLevelCount() const -> uint32_t = 0;
+        virtual auto getMipLevels() const -> uint32_t = 0;
 
         virtual auto getSize() const -> uint32_t = 0;
         virtual auto getSize(uint32_t mipLevel) const -> uint32_t = 0;
@@ -54,7 +54,7 @@ namespace solo
         SL_DISABLE_COPY_AND_MOVE(CubeTextureData)
         virtual ~CubeTextureData() {}
 
-        virtual auto getMipLevelCount() const -> uint32_t = 0;
+        virtual auto getMipLevels() const -> uint32_t = 0;
 
         virtual auto getSize() const -> uint32_t = 0;
         virtual auto getSize(uint32_t mipLevel) const -> uint32_t = 0;

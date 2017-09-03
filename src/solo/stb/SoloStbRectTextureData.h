@@ -24,7 +24,7 @@ namespace solo
             RectTextureData() {}
             ~RectTextureData();
 
-            auto getMipLevelCount() const -> uint32_t override final { return 1; }
+            auto getMipLevels() const -> uint32_t override final { return 1; }
 
             auto getSize() const -> uint32_t override final { return width * height * bpp; }
             auto getSize(uint32_t mipLevel) const -> uint32_t override final { return getSize(); }

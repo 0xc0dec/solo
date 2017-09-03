@@ -53,7 +53,7 @@ auto stb::CubeTextureData::loadFromFaceFiles(Device *device,
     return tex;
 }
 
-auto stb::CubeTextureData::getMipLevelCount() const -> uint32_t
+auto stb::CubeTextureData::getMipLevels() const -> uint32_t
 {
     return 1;
 }

@@ -33,7 +33,7 @@ namespace solo
                 const std::string &topPath,
                 const std::string &bottomPath) -> sptr<CubeTextureData>;
 
-            auto getMipLevelCount() const -> uint32_t override;
+            auto getMipLevels() const -> uint32_t override;
 
             auto getSize() const -> uint32_t override final;
             auto getSize(uint32_t mipLevel) const -> uint32_t override final;
