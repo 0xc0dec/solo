@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-local mat = sl.Material.create(sl.device, sl.Effect.create(sl.device, {}, {}))
+local mat = sl.Material.create(sl.device, sl.Effect.createFromPrefab(sl.device, sl.EffectPrefab.Skybox))
 local tex = sl.RectTexture.create(sl.device, 1, 1, sl.TextureFormat.RGB)
 
 mat:setFloatParameter("p1", 1)

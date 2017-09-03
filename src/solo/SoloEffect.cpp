@@ -5,13 +5,14 @@
 
 #include "SoloEffect.h"
 #include "SoloDevice.h"
+#include "SoloFileSystem.h"
 #include "gl/SoloOpenGLEffect.h"
 #include "vk/SoloVulkanEffect.h"
 #include "null/SoloNullEffect.h"
 
 using namespace solo;
 
-auto Effect::create(Device *device, const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen) -> sptr<Effect>
+static auto create(Device *device, const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen) -> sptr<Effect>
 {
     switch (device->getSetup().mode)
     {
@@ -28,13 +29,20 @@ auto Effect::create(Device *device, const void *vsSrc, uint32_t vsSrcLen, const 
     }
 }
 
+auto Effect::loadFromFiles(Device *device, const std::string &vsPath, const std::string &fsPath) -> sptr<Effect>
+{
+    auto vsBytes = device->getFileSystem()->readBytes(vsPath);
+    auto fsBytes = device->getFileSystem()->readBytes(fsPath);
+    return create(device, vsBytes.data(), vsBytes.size(), fsBytes.data(), fsBytes.size());
+}
+
 auto Effect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effect>
 {
     switch (device->getSetup().mode)
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return gl::Effect::create(prefab);
+            return gl::Effect::createFromPrefab(prefab);
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:

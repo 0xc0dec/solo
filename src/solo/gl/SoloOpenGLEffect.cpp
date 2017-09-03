@@ -12,7 +12,7 @@
 
 using namespace solo;
 
-auto gl::Effect::create(EffectPrefab prefab) -> sptr<Effect>
+auto gl::Effect::createFromPrefab(EffectPrefab prefab) -> sptr<Effect>
 {
     switch (prefab)
     {
@@ -38,7 +38,7 @@ static auto compileShader(GLuint type, const void *src, uint32_t length) -> GLin
         {GL_FRAGMENT_SHADER, "fragment"}
     };
 
-    auto shader = glCreateShader(type);
+    const auto shader = glCreateShader(type);
 
     GLint len = length;
     glShaderSource(shader, 1, reinterpret_cast<const GLchar* const*>(&src), &len);
@@ -61,7 +61,7 @@ static auto compileShader(GLuint type, const void *src, uint32_t length) -> GLin
 
 static auto linkProgram(GLuint vs, GLuint fs) -> GLint
 {
-    auto program = glCreateProgram();
+    const auto program = glCreateProgram();
     glAttachShader(program, vs);
     glAttachShader(program, fs);
     glLinkProgram(program);
@@ -83,8 +83,8 @@ static auto linkProgram(GLuint vs, GLuint fs) -> GLint
 
 gl::Effect::Effect(const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen)
 {
-    auto vs = compileShader(GL_VERTEX_SHADER, vsSrc, vsSrcLen);
-    auto fs = compileShader(GL_FRAGMENT_SHADER, fsSrc, fsSrcLen);
+    const auto vs = compileShader(GL_VERTEX_SHADER, vsSrc, vsSrcLen);
+    const auto fs = compileShader(GL_FRAGMENT_SHADER, fsSrc, fsSrcLen);
     handle = linkProgram(vs, fs);
 
     glDetachShader(handle, vs);

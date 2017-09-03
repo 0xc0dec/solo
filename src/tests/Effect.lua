@@ -3,5 +3,5 @@
 -- MIT license
 -- 
 
-assert(sl.Effect.create(sl.device, {}, {}))
+assert(sl.Effect.loadFromFiles ~= nil)
 assert(sl.Effect.createFromPrefab(sl.device, sl.EffectPrefab.Font))
