@@ -19,7 +19,7 @@ namespace solo
         class CubeTexture final : public solo::CubeTexture, public Texture
         {
         public:
-            CubeTexture(uint32_t width, uint32_t height, uint32_t depth, TextureFormat format);
+            CubeTexture(uint32_t dimension, TextureFormat format);
 
             void bind() override final;
             void generateMipmaps() override final;

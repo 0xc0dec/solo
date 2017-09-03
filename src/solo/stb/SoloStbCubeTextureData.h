@@ -15,7 +15,7 @@ namespace solo
 
     namespace stb
     {
-        class CubeTextureData : public solo::CubeTextureData
+        class CubeTextureData final: public solo::CubeTextureData
         {
         public:
             static bool canLoadFromFaceFiles(
@@ -35,19 +35,16 @@ namespace solo
 
             auto getMipLevelCount() const -> uint32_t override;
 
-            auto getSize() const -> uint32_t override;
-            auto getSize(uint32_t mipLevel) const -> uint32_t override;
-            auto getSize(uint32_t face, uint32_t mipLevel) const -> uint32_t override;
+            auto getSize() const -> uint32_t override final;
+            auto getSize(uint32_t mipLevel) const -> uint32_t override final;
+            auto getSize(uint32_t face, uint32_t mipLevel) const -> uint32_t override final;
 
-            auto getWidth(uint32_t mipLevel) const -> uint32_t override;
-            auto getWidth(uint32_t face, uint32_t mipLevel) const -> uint32_t override;
-            auto getHeight(uint32_t mipLevel) const -> uint32_t override;
-            auto getHeight(uint32_t face, uint32_t mipLevel) const -> uint32_t override;
+            auto getDimension(uint32_t mipLevel) const -> uint32_t override final;
 
-            auto getData() const -> const void* override;
-            auto getData(uint32_t face) const -> const void* override;
+            auto getData() const -> const void* override final;
+            auto getData(uint32_t face) const -> const void* override final;
 
-            auto getFormat() const -> TextureFormat override;
+            auto getFormat() const -> TextureFormat override final;
 
         private:
             std::vector<sptr<stb::RectTextureData>> faces;

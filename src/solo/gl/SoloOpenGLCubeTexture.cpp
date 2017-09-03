@@ -34,8 +34,8 @@ static auto toTextureCubeMapFace(CubeTextureFace face) -> GLenum
     }
 }
 
-gl::CubeTexture::CubeTexture(uint32_t width, uint32_t height, uint32_t depth, TextureFormat format):
-    solo::CubeTexture(width, height, depth, format)
+gl::CubeTexture::CubeTexture(uint32_t dimension, TextureFormat format):
+    solo::CubeTexture(dimension, format)
 {
 }
 
@@ -63,14 +63,15 @@ void gl::CubeTexture::setData(CubeTextureData *data)
 {
     glBindTexture(GL_TEXTURE_CUBE_MAP, handle);
 
-    for (int i = 0; i < depth; ++i)
+    for (int i = 0; i < 6; ++i)
     {
         const auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + i);
         const auto glFace = toTextureCubeMapFace(face);
         const auto internalFormat = toInternalTextureFormat(data->getFormat()); // TODO pass 'face' instead of 'i'
         const auto fmt = toTextureFormat(data->getFormat());
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glTexImage2D(glFace, 0, internalFormat, data->getWidth(i, 0), data->getHeight(i, 0), 0, fmt, GL_UNSIGNED_BYTE, data->getData(i));
+        // TODO Add support for mip levels
+        glTexImage2D(glFace, 0, internalFormat, data->getDimension(0), data->getDimension(0), 0, fmt, GL_UNSIGNED_BYTE, data->getData(i));
     }
 
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);

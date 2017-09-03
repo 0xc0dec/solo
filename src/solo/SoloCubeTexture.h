@@ -23,7 +23,7 @@ namespace solo
             const std::string &rightPath,
             const std::string &topPath,
             const std::string &bottomPath) -> sptr<CubeTexture>;
-        static auto create(Device *device, uint32_t width, uint32_t height, uint32_t depth, TextureFormat format) -> sptr<CubeTexture>;
+        static auto create(Device *device, uint32_t dimension, TextureFormat format) -> sptr<CubeTexture>;
 
         void setWrapping(TextureWrapping wrapping) override final;
 
@@ -32,12 +32,10 @@ namespace solo
 
     protected:
         TextureWrapping depthWrapping = TextureWrapping::Repeat;
-        uint32_t width = 0;
-        uint32_t height = 0;
-        uint32_t depth = 0;
+        uint32_t dimension = 0;
         TextureFormat format = TextureFormat::RGB;
 
-        CubeTexture(uint32_t width, uint32_t height, uint32_t depth, TextureFormat format);
+        CubeTexture(uint32_t dimension, TextureFormat format);
 
         virtual void setData(CubeTextureData *data) = 0;
 

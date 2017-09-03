@@ -14,8 +14,8 @@ namespace solo
         class CubeTexture final : public solo::CubeTexture
         {
         public:
-            CubeTexture(uint32_t width, uint32_t height, uint32_t depth, TextureFormat format):
-                solo::CubeTexture(width, height, depth, format)
+            CubeTexture(uint32_t dimension, TextureFormat format):
+                solo::CubeTexture(dimension, format)
             {
             }
 

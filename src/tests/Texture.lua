@@ -30,7 +30,7 @@ assert(rectTex:getSize())
 
 
 assert(sl.CubeTexture.loadFromFaceFiles)
-local cubeTex = sl.CubeTexture.create(sl.device, 1, 1, 1, sl.TextureFormat.RGB)
+local cubeTex = sl.CubeTexture.create(sl.device, 1, sl.TextureFormat.RGB)
 
 assert(cubeTex:getDepthWrapping())
 cubeTex:setDepthWrapping(sl.TextureWrapping.Clamp)

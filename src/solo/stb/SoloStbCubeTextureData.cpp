@@ -40,6 +40,16 @@ auto stb::CubeTextureData::loadFromFaceFiles(Device *device,
     tex->faces.push_back(stb::RectTextureData::loadFromFile(device, rightPath));
     tex->faces.push_back(stb::RectTextureData::loadFromFile(device, topPath));
     tex->faces.push_back(stb::RectTextureData::loadFromFile(device, bottomPath));
+    
+    SL_PANIC_BLOCK(
+    {
+        auto width = tex->faces[0]->getWidth();
+        auto height = tex->faces[0]->getHeight();
+        SL_PANIC_IF(width != height, "Cube texture width must be equal to height");
+        for (const auto &face: tex->faces)
+            SL_PANIC_IF(face->getWidth() != width || face->getHeight() != height, "All cube texture sizes must match");
+    });
+
     return tex;
 }
 
@@ -73,24 +83,9 @@ auto stb::CubeTextureData::getSize(uint32_t face, uint32_t mipLevel) const -> ui
     return faces[face]->getSize(mipLevel);
 }
 
-auto stb::CubeTextureData::getWidth(uint32_t mipLevel) const -> uint32_t
+auto stb::CubeTextureData::getDimension(unsigned mipLevel) const -> uint32_t
 {
     return faces[0]->getWidth(mipLevel);
-}
-
-auto stb::CubeTextureData::getWidth(uint32_t face, uint32_t mipLevel) const -> uint32_t
-{
-    return faces[face]->getWidth(mipLevel);
-}
-
-auto stb::CubeTextureData::getHeight(uint32_t mipLevel) const -> uint32_t
-{
-    return faces[0]->getHeight(mipLevel);
-}
-
-auto stb::CubeTextureData::getHeight(uint32_t face, uint32_t mipLevel) const -> uint32_t
-{
-    return faces[face]->getHeight(mipLevel);
 }
 
 auto stb::CubeTextureData::getData() const -> const void*

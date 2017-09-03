@@ -5,7 +5,7 @@
 
 local scene = sl.Scene.create(sl.device)
 local r = scene:createNode():addComponent("SkyboxRenderer")
-local tex = sl.CubeTexture.create(sl.device, 1, 1, 1, sl.TextureFormat.RGB)
+local tex = sl.CubeTexture.create(sl.device, 1, sl.TextureFormat.RGB)
 
 r:setTexture(tex)
 assert(r:getTexture())

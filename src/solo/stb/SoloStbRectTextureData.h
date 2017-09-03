@@ -15,7 +15,7 @@ namespace solo
 
     namespace stb
     {
-        class RectTextureData: public solo::RectTextureData
+        class RectTextureData final: public solo::RectTextureData
         {
         public:
             static bool canLoadFromFile(const std::string &path);
@@ -24,19 +24,19 @@ namespace solo
             RectTextureData() {}
             ~RectTextureData();
 
-            auto getMipLevelCount() const -> uint32_t override { return 1; }
+            auto getMipLevelCount() const -> uint32_t override final { return 1; }
 
-            auto getSize() const -> uint32_t override { return width * height * bpp; }
-            auto getSize(uint32_t mipLevel) const -> uint32_t override { return getSize(); }
+            auto getSize() const -> uint32_t override final { return width * height * bpp; }
+            auto getSize(uint32_t mipLevel) const -> uint32_t override final { return getSize(); }
 
-            auto getWidth() const -> uint32_t override { return width; }
-            auto getWidth(uint32_t mipLevel) const -> uint32_t override { return getWidth(); }
-            auto getHeight() const -> uint32_t override { return height; }
-            auto getHeight(uint32_t mipLevel) const -> uint32_t override { return getHeight(); }
+            auto getWidth() const -> uint32_t override final { return width; }
+            auto getWidth(uint32_t mipLevel) const -> uint32_t override final { return getWidth(); }
+            auto getHeight() const -> uint32_t override final { return height; }
+            auto getHeight(uint32_t mipLevel) const -> uint32_t override final { return getHeight(); }
 
-            auto getData() const -> const void * override { return data; }
+            auto getData() const -> const void * override final { return data; }
 
-            auto getFormat() const -> TextureFormat override { return format; }
+            auto getFormat() const -> TextureFormat override final { return format; }
 
         private:
             uint32_t bpp = 0;

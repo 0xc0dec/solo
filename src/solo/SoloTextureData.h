@@ -60,11 +60,7 @@ namespace solo
         virtual auto getSize(uint32_t mipLevel) const -> uint32_t = 0;
         virtual auto getSize(uint32_t face, uint32_t mipLevel) const -> uint32_t = 0;
 
-        virtual auto getWidth(uint32_t mipLevel) const -> uint32_t = 0;
-        virtual auto getWidth(uint32_t face, uint32_t mipLevel) const -> uint32_t = 0;
-
-        virtual auto getHeight(uint32_t mipLevel) const -> uint32_t = 0;
-        virtual auto getHeight(uint32_t face, uint32_t mipLevel) const -> uint32_t = 0;
+        virtual auto getDimension(uint32_t mipLevel) const -> uint32_t = 0;
 
         virtual auto getData() const -> const void* = 0;
         virtual auto getData(uint32_t face) const -> const void* = 0;
