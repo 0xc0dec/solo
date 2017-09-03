@@ -14,7 +14,7 @@
 
 #include "SoloRenderer.h"
 #include "SoloVulkanSwapchain.h"
-#include "SoloVulkanRenderPass.h"
+#include "SoloVulkanPipeline.h"
 #include "SoloRenderCommand.h"
 #include "SoloVulkan.h"
 
@@ -45,7 +45,7 @@ namespace solo
             auto getCommandPool() const -> VkCommandPool { return commandPool; }
             auto getQueue() const -> VkQueue { return queue; }
 
-            void addRenderCommand(const RenderCommand &cmd) override final;
+            void addRenderCommand(const RenderCommand &cmd) override final { renderCommands.push_back(cmd); }
 
         protected:
             void beginFrame() override final;
@@ -65,23 +65,11 @@ namespace solo
             VkColorSpaceKHR colorSpace = VK_COLOR_SPACE_MAX_ENUM_KHR;
             VkQueue queue = nullptr;
             Resource<VkDebugReportCallbackEXT> debugCallback;
+            Swapchain swapchain;
 
-            bool dirty = true;
-
-            // TODO currently we just always recreate render plan.
-            // In the future these command sets should be compared to see it something
-            // really needs to be done
             std::vector<RenderCommand> renderCommands;
-            std::vector<RenderCommand> prevRenderCommands;
-
-            void applyRenderCommands(VkCommandBuffer buf);
-            void recordCmdBuffers();
+            std::vector<Pipeline> pipelines;
         };
-
-        inline void Renderer::addRenderCommand(const RenderCommand &cmd)
-        {
-            renderCommands.push_back(cmd);
-        }
     }
 }
 

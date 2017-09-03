@@ -5,7 +5,7 @@
 
 -- TODO avoid using globals in functions
 
-package.path = "../../src/demos/demo1/?.lua;../../src/demos/common/?.lua;" .. package.path
+package.path = "../../src/demos/demo2/?.lua;../../src/demos/common/?.lua;" .. package.path
 
 require "Common"
 
@@ -60,7 +60,7 @@ mesh:addVertexBuffer(layout, colors, 6)
 mesh:addPart({ 0, 1, 2, 3, 4, 5 }, 6)
 
 camera = initMainCamera()
-local effect = sl.Effect.createFromPrefab(dev, sl.EffectPrefab.Font)
+local effect = sl.Effect.loadFromFiles(dev, getAssetPath("Triangle.vert.spv"), getAssetPath("Triangle.frag.spv"))
 local material = sl.Material.create(dev, effect)
 local node = scene:createNode()
 local meshRenderer = node:addComponent("MeshRenderer")

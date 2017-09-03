@@ -60,17 +60,11 @@ namespace solo
         class Pipeline
         {
         public:
-            Pipeline()
-            {
-            }
-
+            Pipeline(){}
             Pipeline(VkDevice device, VkRenderPass renderPass, const PipelineConfig &config);
             Pipeline(const Pipeline &other) = delete;
             Pipeline(Pipeline &&other) = default;
-
-            ~Pipeline()
-            {
-            }
+            ~Pipeline(){}
 
             auto operator=(const Pipeline &other) -> Pipeline& = delete;
             auto operator=(Pipeline &&other) -> Pipeline& = default;

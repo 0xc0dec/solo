@@ -38,14 +38,13 @@ namespace solo
                 uint32_t part;
             } meshPart;
 
-            const Camera *camera;
-
             struct
             {
                 const Mesh *mesh;
                 const Transform *transform;
             } mesh;
-            
+
+            const Camera *camera;
             const Material *material;
         };
 

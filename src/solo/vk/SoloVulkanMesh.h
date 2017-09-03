@@ -31,21 +31,20 @@ namespace solo
             void updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const void *data, uint32_t vertexCount) override final;
             void removeVertexBuffer(uint32_t index) override final;
 
-            auto getVertexBufferCount() const -> uint32_t;
-            auto getVertexBufferLayout(uint32_t index) const -> VertexBufferLayout;
-            auto getVertexBuffer(uint32_t index) const -> VkBuffer;
-
             auto addPart(const void *indexData, uint32_t indexElementCount) -> uint32_t override final;
             void removePart(uint32_t index) override final;
             auto getPartCount() const -> uint32_t override final;
-            auto getPartBuffer(uint32_t index) const -> VkBuffer;
-            auto getPartIndexElementCount(uint32_t index) const -> uint32_t;
-
-            auto getMinVertexCount() const -> uint32_t;
 
             // TODO move these to base class?
             auto getPrimitiveType() const -> PrimitiveType override final;
             void setPrimitiveType(PrimitiveType type) override final;
+
+            auto getVertexBufferCount() const -> uint32_t;
+            auto getVertexBufferLayout(uint32_t index) const -> VertexBufferLayout;
+            auto getVertexBuffer(uint32_t index) const -> VkBuffer;
+            auto getPartBuffer(uint32_t index) const -> VkBuffer;
+            auto getPartIndexElementCount(uint32_t index) const -> uint32_t;
+            auto getMinVertexCount() const -> uint32_t;
 
         private:
             Renderer *renderer = nullptr;

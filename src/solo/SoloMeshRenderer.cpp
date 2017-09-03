@@ -24,10 +24,10 @@ void MeshRenderer::render()
     if (!mesh || materials.empty())
         return;
 
-    auto partCount = mesh->getPartCount();
+    const auto partCount = mesh->getPartCount();
     if (partCount == 0)
     {
-        auto material = getMaterial(0);
+        const auto material = getMaterial(0);
         if (material)
         {
             renderer->addRenderCommand(RenderCommand::applyMaterial(material));
@@ -38,7 +38,7 @@ void MeshRenderer::render()
     {
         for (uint32_t part = 0; part < partCount; ++part)
         {
-            auto material = getMaterial(part);
+            const auto material = getMaterial(part);
             if (material)
             {
                 renderer->addRenderCommand(RenderCommand::applyMaterial(material));

@@ -11,6 +11,8 @@
 #include "SoloSDLVulkanDevice.h"
 #include "SoloVulkanMaterial.h"
 #include "SoloVulkanMesh.h"
+#include "SoloVulkanEffect.h"
+#include "SoloCamera.h"
 
 using namespace solo;
 using namespace vk;
@@ -158,8 +160,7 @@ vk::Renderer::Renderer(Device *engineDevice):
     const auto vulkanDevice = dynamic_cast<SDLDevice*>(engineDevice);
     const auto instance = vulkanDevice->getInstance();
     const auto surface = vulkanDevice->getSurface();
-    auto canvasWidth = engineDevice->getSetup().canvasWidth;
-    auto canvasHeight = engineDevice->getSetup().canvasHeight;
+    const auto setup = engineDevice->getSetup();
 
     debugCallback = createDebugCallback(instance, debugCallbackFunc);
     physicalDevice = ::getPhysicalDevice(instance);
@@ -177,6 +178,7 @@ vk::Renderer::Renderer(Device *engineDevice):
     vkGetDeviceQueue(device, queueIndex, 0, &queue);
 
     commandPool = createCommandPool(device, queueIndex);
+    swapchain = Swapchain(this, vulkanDevice, setup.canvasWidth, setup.canvasHeight, setup.vsync);
 }
 
 vk::Renderer::~Renderer()
@@ -185,43 +187,98 @@ vk::Renderer::~Renderer()
 
 void vk::Renderer::beginFrame()
 {
-    //currentSwapchainStep = swapchain.getNextStep(semaphores.presentComplete);
-    //prevRenderCommands = std::move(renderCommands);
-    //renderCommands = std::vector<RenderCommand>(100); // TODO just picked random constant
+    renderCommands.clear();
+    renderCommands.reserve(100); // TODO just picked random constant
+
+    pipelines.clear();
+    pipelines.reserve(100);
 }
 
 void vk::Renderer::endFrame()
 {
-}
+    // TODO Properly set clear values based on camera
 
-void vk::Renderer::applyRenderCommands(VkCommandBuffer buf)
-{
-    for (const auto &cmd: renderCommands)
+    swapchain.recordCommandBuffers([&](VkFramebuffer fb, VkCommandBuffer buf)
     {
-        switch (cmd.type)
+        auto canvasWidth = engineDevice->getSetup().canvasWidth; // TODO Replace getSetup with individual methods for each setting
+        auto canvasHeight = engineDevice->getSetup().canvasHeight;
+        swapchain.getRenderPass().begin(buf, fb, canvasWidth, canvasHeight);
+
+        const vk::Material *currentMaterial = nullptr;
+        const vk::Effect *currentEffect = nullptr;
+
+        for (const auto &cmd: renderCommands)
         {
-            case RenderCommandType::BeginCamera:
-                break;
+            switch (cmd.type)
+            {
+                case RenderCommandType::BeginCamera:
+                {
+                    auto camViewport = cmd.camera->getViewport();
+                    VkViewport vp{camViewport.x, camViewport.y, camViewport.z, camViewport.w, 0, 1};
+                    vkCmdSetViewport(buf, 0, 1, &vp);
 
-            case RenderCommandType::EndCamera:
-                break;
+                    VkRect2D scissor{{0, 0}, {vp.width, vp.height}}; // TODO proper values
+                    vkCmdSetScissor(buf, 0, 1, &scissor);
+                    break;
+                }
 
-            case RenderCommandType::ApplyMaterial:
-                break;
+                case RenderCommandType::EndCamera:
+                    break;
 
-            case RenderCommandType::DrawMesh:
-            case RenderCommandType::DrawMeshPart:
-                break;
+                case RenderCommandType::ApplyMaterial:
+                {
+                    currentMaterial = static_cast<const vk::Material*>(cmd.material);
+                    currentEffect = static_cast<const vk::Effect*>(currentMaterial->getEffect());
+                    break;
+                }
 
-            default:
-                break;
+                case RenderCommandType::DrawMesh:
+                {
+                    break;
+                }
+
+                case RenderCommandType::DrawMeshPart:
+                {
+                    if (!currentMaterial)
+                        continue;
+
+                    const auto mesh = static_cast<const vk::Mesh*>(cmd.mesh.mesh);
+                    auto &renderPass = swapchain.getRenderPass();
+                    auto vs = currentEffect->getVertexShader();
+                    auto fs = currentEffect->getFragmentShader();
+
+                    pipelines.emplace_back(
+                        device, renderPass, vk::PipelineConfig(vs, fs)
+                        //.withDescriptorSetLayout(descSetLayout)
+                        /*.withFrontFace(VK_FRONT_FACE_CLOCKWISE)
+                        .withCullMode(VK_CULL_MODE_NONE)
+                        .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST)*/
+                        //.withVertexFormat(data.getFormat()));
+                    );
+
+                    //VkBuffer vertexBuffer = this->vertexBuffer;
+                    VkDeviceSize vertexBufferOffset = 0;
+                    //std::vector<VkDescriptorSet> descSets = {globalDescSet, descSet};
+                    vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipelines.rbegin());
+                    //vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline.getLayout(), 0, 2, descSets.data(), 0, nullptr);
+                    /*vkCmdBindVertexBuffers(buf, 0, 1, &vertexBuffer, &vertexBufferOffset);
+                    vkCmdBindIndexBuffer(buf, indexBuffer, 0, VK_INDEX_TYPE_UINT32);
+                    vkCmdDrawIndexed(buf, indexCount, 1, 0, 0, 0);*/
+
+                    break;
+                }
+
+                default:
+                    break;
+            }
         }
-    }
-}
 
-void vk::Renderer::recordCmdBuffers()
-{
-    
+        swapchain.getRenderPass().end(buf);
+    });
+
+    auto presendCompleteSem = swapchain.acquireNext();
+    swapchain.presentNext(queue, 1, &presendCompleteSem);
+    SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 }
 
 #endif

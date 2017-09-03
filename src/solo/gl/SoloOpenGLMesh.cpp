@@ -53,7 +53,7 @@ void gl::Mesh::rebuildVertexArray() const
         uint32_t offset = 0;
         for (uint32_t j = 0; j < attrCount; j++)
         {
-            auto attr = layout.getAttribute(j);
+            const auto attr = layout.getAttribute(j);
             const auto stride = layout.getSize();
             glVertexAttribPointer(attr.location, attr.elementCount, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void *>(offset));
             glEnableVertexAttribArray(attr.location);
@@ -114,7 +114,7 @@ auto gl::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *dat
 
 void gl::Mesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const void *data, uint32_t vertexCount)
 {
-    auto vertexSize = vertexSizes.at(index);
+    const auto vertexSize = vertexSizes.at(index);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers.at(index));
     glBufferSubData(GL_ARRAY_BUFFER, vertexOffset * vertexSize, vertexCount * vertexSize, data);
     glBindBuffer(GL_ARRAY_BUFFER, 0);

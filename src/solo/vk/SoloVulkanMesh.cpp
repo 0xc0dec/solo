@@ -54,7 +54,7 @@ void vk::Mesh::removeVertexBuffer(uint32_t index)
 
 auto vk::Mesh::addPart(const void *indexData, uint32_t indexElementCount) -> uint32_t
 {
-    auto size = sizeof(uint16_t) * indexElementCount;
+    const auto size = sizeof(uint16_t) * indexElementCount;
     auto buf = Buffer::createDeviceLocal(renderer, size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, indexData);
     indexBuffers.push_back(std::move(buf));
     indexElementCounts.push_back(indexElementCount);

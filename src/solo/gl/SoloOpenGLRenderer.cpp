@@ -35,10 +35,10 @@ void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
     {
         case RenderCommandType::BeginCamera:
         {
-            auto viewport = cmd.camera->getViewport();
-            auto colorClearEnabled = cmd.camera->isClearColorEnabled();
-            auto depthClearEnabled = cmd.camera->isClearDepthEnabled();
-            auto clearColor = cmd.camera->getClearColor();
+            const auto viewport = cmd.camera->getViewport();
+            const auto colorClearEnabled = cmd.camera->isClearColorEnabled();
+            const auto depthClearEnabled = cmd.camera->isClearDepthEnabled();
+            const auto clearColor = cmd.camera->getClearColor();
 
             GLuint targetFBHandle = 0;
             auto target = step.cmd.camera->getRenderTarget();
@@ -64,7 +64,7 @@ void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
 
         case RenderCommandType::EndCamera:
         {
-            auto hasTarget = step.cmd.camera->getRenderTarget() != nullptr;
+            const auto hasTarget = step.cmd.camera->getRenderTarget() != nullptr;
 
             step.endCamera = [=]
             {
@@ -79,16 +79,16 @@ void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
 
         case RenderCommandType::ApplyMaterial:
         {
-            auto faceCull = cmd.material->getFaceCull();
-            auto polygonMode = cmd.material->getPolygonMode();
-            auto depthTest = cmd.material->getDepthTest();
-            auto depthWrite = cmd.material->getDepthWrite();
-            auto depthFunc = cmd.material->getDepthFunction();
-            auto blend = cmd.material->getBlend();
-            auto srcBlendFactor = cmd.material->getSrcBlendFactor();
-            auto dstBlendFactor = cmd.material->getDstBlendFactor();
-            auto effect = dynamic_cast<Effect*>(step.cmd.material->getEffect());
-            auto program = effect->getHandle();
+            const auto faceCull = cmd.material->getFaceCull();
+            const auto polygonMode = cmd.material->getPolygonMode();
+            const auto depthTest = cmd.material->getDepthTest();
+            const auto depthWrite = cmd.material->getDepthWrite();
+            const auto depthFunc = cmd.material->getDepthFunction();
+            const auto blend = cmd.material->getBlend();
+            const auto srcBlendFactor = cmd.material->getSrcBlendFactor();
+            const auto dstBlendFactor = cmd.material->getDstBlendFactor();
+            const auto effect = dynamic_cast<Effect*>(step.cmd.material->getEffect());
+            const auto program = effect->getHandle();
 
             step.applyMaterialState = [=]
             {
