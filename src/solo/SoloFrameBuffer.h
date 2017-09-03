@@ -25,16 +25,11 @@ namespace solo
 
         virtual void setAttachments(const std::vector<sptr<RectTexture>> &attachments) = 0;
 
-        auto getSize() const -> Vector2;
+        auto getDimensions() const -> Vector2 { return dimensions; }
 
     protected:
-        Vector2 size;
+        Vector2 dimensions;
 
         FrameBuffer() {}
     };
-
-    inline auto FrameBuffer::getSize() const -> Vector2
-    {
-        return size;
-    }
 }

@@ -32,7 +32,7 @@ static void validateNewAttachments(const std::vector<sptr<solo::RectTexture>> &a
     auto width = -1, height = -1;
     for (auto i = 0; i < attachments.size(); i++)
     {
-        auto size = attachments.at(i)->getSize();
+        auto size = attachments.at(i)->getDimensions();
         if (width < 0)
         {
             width = size.x;
@@ -59,27 +59,27 @@ void gl::FrameBuffer::setAttachments(const std::vector<sptr<solo::RectTexture>> 
         depthBufferHandle = 0;
     }
 
-    auto newCount = newAttachments.size();
-    auto maxCount = std::max(newCount, static_cast<size_t>(attachmentCount));
+    const auto newCount = newAttachments.size();
+    const auto maxCount = std::max(newCount, static_cast<size_t>(attachmentCount));
     for (auto i = 0; i < maxCount; i++)
     {
-        auto handle = i < newCount ? newAttachments.at(i)->getHandle() : 0;
+        const auto handle = i < newCount ? newAttachments.at(i)->getHandle() : 0;
         glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, handle, 0);
     }
 
-    size = {0, 0};
+    dimensions = {0, 0};
     attachmentCount = newCount;
 
     if (newCount > 0)
     {
-        size = attachments[0]->getSize();
+        dimensions = attachments[0]->getDimensions();
 
         // Re-create the depth buffer
         glGenRenderbuffers(1, &depthBufferHandle);
         SL_PANIC_IF(!depthBufferHandle, "Failed to create depth buffer handle");
 
         glBindRenderbuffer(GL_RENDERBUFFER, depthBufferHandle);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, size.x, size.y);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, dimensions.x, dimensions.y);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferHandle);
 
         SL_PANIC_IF(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE, "Render target has invalid state");

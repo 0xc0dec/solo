@@ -96,7 +96,7 @@ function createPostProcessor2(camera, tag, effects)
     local stitchTex = sl.RectTexture.loadFromFile(sl.device, getAssetPath("Stitches.png"))
     stitchTex:setFiltering(sl.TextureFiltering.Nearest)
 
-    local stitchTexSize = stitchTex:getSize()
+    local stitchTexSize = stitchTex:getDimensions()
 
     local resX = math.floor(canvasSize.x / stitchWidth) * 2
     resX = (resX >= 2048) and 2048 or resX

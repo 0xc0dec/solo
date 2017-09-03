@@ -34,6 +34,6 @@ sptr<RectTexture> RectTexture::create(Device *device, uint32_t width, uint32_t h
 
 RectTexture::RectTexture(uint32_t width, uint32_t height, TextureFormat format):
     format(format),
-    size{static_cast<float>(width), static_cast<float>(height)}
+    dimensions{static_cast<float>(width), static_cast<float>(height)}
 {
 }

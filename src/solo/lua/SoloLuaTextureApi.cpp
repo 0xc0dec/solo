@@ -34,7 +34,7 @@ static void registerRectTexture(CppBindModule<LuaBinding> &module)
     auto rectTex = BEGIN_CLASS_EXTEND(module, RectTexture, Texture);
     REG_STATIC_METHOD(rectTex, RectTexture, loadFromFile);
     REG_STATIC_METHOD(rectTex, RectTexture, create);
-    REG_METHOD(rectTex, RectTexture, getSize);
+    REG_METHOD(rectTex, RectTexture, getDimensions);
     rectTex.endClass();
 }
 

@@ -26,7 +26,7 @@ rectTex:setMagFiltering(sl.TextureFiltering.NearestMipmapNearest)
 assert(rectTex:getAnisotropyLevel() ~= nil)
 rectTex:setAnisotropyLevel(1)
 
-assert(rectTex:getSize())
+assert(rectTex:getDimensions())
 
 
 assert(sl.CubeTexture.loadFromFaceFiles)

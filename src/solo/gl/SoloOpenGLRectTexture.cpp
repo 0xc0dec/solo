@@ -42,7 +42,7 @@ void gl::RectTexture::setData(const void *data)
     const auto internalFormat = toInternalTextureFormat(format);
     const auto fmt = toTextureFormat(format);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, size.x, size.y, 0, fmt, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x, dimensions.y, 0, fmt, GL_UNSIGNED_BYTE, data);
 
     glBindTexture(GL_TEXTURE_2D, 0);
 }

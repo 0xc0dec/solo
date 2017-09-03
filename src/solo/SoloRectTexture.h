@@ -20,12 +20,12 @@ namespace solo
 
         virtual void setData(const void *data) = 0;
 
-        auto getSize() const -> Vector2 { return size; }
+        auto getDimensions() const -> Vector2 { return dimensions; }
 
     protected:
         RectTexture(uint32_t width, uint32_t height, TextureFormat format);
 
         TextureFormat format;
-        Vector2 size;
+        Vector2 dimensions;
     };
 }

@@ -38,7 +38,7 @@ stb::TrueTypeFont::TrueTypeFont(Device *device, uint8_t *fontData, uint32_t size
 auto stb::TrueTypeFont::getGlyphInfo(uint32_t character, float offsetX, float offsetY) -> GlyphInfo
 {
     stbtt_aligned_quad quad;
-    const auto atlasSize = atlas->getSize();
+    const auto atlasSize = atlas->getDimensions();
 
     stbtt_GetPackedQuad(charInfo.get(), static_cast<uint32_t>(atlasSize.x), static_cast<uint32_t>(atlasSize.y),
     character - firstChar, &offsetX, &offsetY, &quad, 1);

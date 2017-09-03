@@ -27,7 +27,7 @@ static void registerFrameBuffer(CppBindModule<LuaBinding> &module)
     auto fb = BEGIN_CLASS(module, FrameBuffer);
     REG_STATIC_METHOD(fb, FrameBuffer, create);
     REG_METHOD(fb, FrameBuffer, setAttachments);
-    REG_METHOD(fb, FrameBuffer, getSize);
+    REG_METHOD(fb, FrameBuffer, getDimensions);
     fb.endClass();
 }
 
