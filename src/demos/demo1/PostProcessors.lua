@@ -93,7 +93,7 @@ function createPostProcessor2(camera, tag, effects)
     local stitchWidth = 30
     local canvasSize = sl.device:getCanvasSize()
 
-    local stitchTex = sl.RectTexture.loadFromFile(getAssetPath("Stitches.png"))
+    local stitchTex = sl.RectTexture.loadFromFile(sl.device, getAssetPath("Stitches.png"))
     stitchTex:setFiltering(sl.TextureFiltering.Nearest)
 
     local stitchTexSize = stitchTex:getSize()
