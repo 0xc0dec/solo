@@ -13,7 +13,7 @@ auto RectTextureData::loadFromFile(Device *device, const std::string &path) -> s
 {
     if (stb::RectTextureData::canLoadFromFile(path))
         return stb::RectTextureData::loadFromFile(device, path);
-    SL_PANIC("Unsupported texture file ", path);
+    SL_PANIC("Unsupported cube texture file ", path);
     return nullptr;
 }
 
@@ -27,6 +27,6 @@ auto CubeTextureData::loadFromFaceFiles(Device *device,
 {
     if (stb::CubeTextureData::canLoadFromFaceFiles(frontPath, backPath, leftPath, rightPath, topPath, bottomPath))
         return stb::CubeTextureData::loadFromFaceFiles(device, frontPath, backPath, leftPath, rightPath, topPath, bottomPath);
-    SL_PANIC(SL_FMT("Unsupported texture face files ", frontPath, ", ..."));
+    SL_PANIC(SL_FMT("Unsupported cube texture face files ", frontPath, ", ..."));
     return nullptr;
 }
