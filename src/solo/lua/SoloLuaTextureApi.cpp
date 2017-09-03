@@ -10,21 +10,9 @@
 
 using namespace solo;
 
-static void setRectTextureData(RectTexture *tex, ImageFormat format, const std::vector<uint8_t> &data, uint32_t width, uint32_t height)
-{
-    tex->setData(format, data.data(), width, height);
-}
-
-static void setCubeTextureData(CubeTexture *tex, CubeTextureFace face, ImageFormat format, const std::vector<uint8_t> &data, uint32_t width, uint32_t height)
-{
-    tex->setData(face, format, data.data(), width, height);
-}
-
 static void registerTexture(CppBindModule<LuaBinding> &module)
 {
     auto tex = BEGIN_CLASS(module, Texture);
-    REG_STATIC_METHOD(tex, Texture, loadRectFromFile);
-    REG_STATIC_METHOD(tex, Texture, loadCubeFromFiles);
     REG_METHOD(tex, Texture, generateMipmaps);
     REG_METHOD(tex, Texture, getHorizontalWrapping);
     REG_METHOD(tex, Texture, getVerticalWrapping);
@@ -44,8 +32,8 @@ static void registerTexture(CppBindModule<LuaBinding> &module)
 static void registerRectTexture(CppBindModule<LuaBinding> &module)
 {
     auto rectTex = BEGIN_CLASS_EXTEND(module, RectTexture, Texture);
+    REG_STATIC_METHOD(rectTex, RectTexture, loadFromFile);
     REG_STATIC_METHOD(rectTex, RectTexture, create);
-    REG_FREE_FUNC_AS_METHOD_RENAMED(rectTex, setRectTextureData, "setData");
     REG_METHOD(rectTex, RectTexture, getSize);
     rectTex.endClass();
 }
@@ -53,8 +41,8 @@ static void registerRectTexture(CppBindModule<LuaBinding> &module)
 static void registerCubeTexture(CppBindModule<LuaBinding> &module)
 {
     auto cubeTex = BEGIN_CLASS_EXTEND(module, CubeTexture, Texture);
+    REG_STATIC_METHOD(cubeTex, CubeTexture, loadFromFaceFiles);
     REG_STATIC_METHOD(cubeTex, CubeTexture, create);
-    REG_FREE_FUNC_AS_METHOD_RENAMED(cubeTex, setCubeTextureData, "setData");
     REG_METHOD(cubeTex, CubeTexture, getDepthWrapping);
     REG_METHOD(cubeTex, CubeTexture, setDepthWrapping);
     cubeTex.endClass();

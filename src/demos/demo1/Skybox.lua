@@ -7,10 +7,10 @@ require "Common"
 
 return function(scene, tag)
     local getImagePath = function(fileName) return getAssetPath("skyboxes/deep-space/") .. fileName end
-    local tex = sl.Texture.loadCubeFromFiles(sl.device, {
+    local tex = sl.CubeTexture.loadFromFaceFiles(sl.device,
         getImagePath("Front.png"), getImagePath("Back.png"), getImagePath("Left.png"),
         getImagePath("Right.png"), getImagePath("Top.png"), getImagePath("Bottom.png")
-    })
+    )
     tex:setWrapping(sl.TextureWrapping.Clamp)
     tex:setFiltering(sl.TextureFiltering.Linear)
     local node = scene:createNode()

@@ -766,84 +766,6 @@
     <ClCompile Include="..\vendor\glew\1.13\src\glew.c">
       <Filter>glew</Filter>
     </ClCompile>
-    <ClCompile Include="..\vendor\png\1.6.16\src\png.c">
-      <Filter>png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngerror.c">
-      <Filter>png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngget.c">
-      <Filter>png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngmem.c">
-      <Filter>png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngpread.c">
-      <Filter>png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngread.c">
-      <Filter>png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngrio.c">
-      <Filter>png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngrtran.c">
-      <Filter>png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngrutil.c">
-      <Filter>png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngset.c">
-      <Filter>png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngtrans.c">
-      <Filter>png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngwio.c">
-      <Filter>png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngwrite.c">
-      <Filter>png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngwtran.c">
-      <Filter>png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngwutil.c">
-      <Filter>png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\adler32.c">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\compress.c">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\crc32.c">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\deflate.c">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\infback.c">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\inffast.c">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\inflate.c">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\inftrees.c">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\trees.c">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\uncompr.c">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\zutil.c">
-      <Filter>zlib</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bullet">
@@ -852,14 +774,8 @@
     <Filter Include="glew">
       <UniqueIdentifier>{c71565b1-047c-43cf-ac19-33d2ac0eba05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="png">
-      <UniqueIdentifier>{308fcd1a-298e-4726-b0ad-977bc1e9763a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="sdl">
       <UniqueIdentifier>{34eeae20-bf80-4ab8-8321-a68d67849f4b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="zlib">
-      <UniqueIdentifier>{c75d28c3-b7bf-43af-91dd-132d3fea8685}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

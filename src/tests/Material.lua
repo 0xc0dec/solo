@@ -4,7 +4,7 @@
 -- 
 
 local mat = sl.Material.create(sl.device, sl.Effect.create(sl.device, {}, {}))
-local tex = sl.RectTexture.create(sl.device)
+local tex = sl.RectTexture.create(sl.device, 1, 1, sl.TextureFormat.RGB)
 
 mat:setFloatParameter("p1", 1)
 mat:setFloatArrayParameter("p2", { 1, 2 })

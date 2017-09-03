@@ -8,20 +8,20 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloVulkanRenderer.h"
-#include "SoloImage.h"
+#include "SoloTexture.h"
 
 using namespace solo;
 using namespace vk;
 
-static auto toVulkanFormat(ImageFormat format) -> VkFormat
+static auto toVulkanFormat(TextureFormat format) -> VkFormat
 {
     switch (format)
     {
-        case ImageFormat::RGB:
+        case TextureFormat::RGB:
             return VK_FORMAT_R8G8B8_UNORM;
-        case ImageFormat::RGBA:
+        case TextureFormat::RGBA:
             return VK_FORMAT_R8G8B8A8_UNORM;
-        case ImageFormat::Red:
+        case TextureFormat::Red:
             return VK_FORMAT_R8_UNORM;
         default:
             SL_PANIC("Unsupported image format");

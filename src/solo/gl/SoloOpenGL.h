@@ -18,16 +18,15 @@ namespace solo
     enum class PolygonMode;
     enum class DepthFunction;
     enum class BlendFactor;
-    enum class ImageFormat;
+    enum class TextureFormat;
     enum class CubeTextureFace;
     class Vector4;
 
     namespace gl
     {
         auto toPrimitiveType(PrimitiveType type) -> GLenum;
-        auto toCubeTextureFace(CubeTextureFace face) -> GLenum;
-        auto toInternalTextureFormat(ImageFormat format) -> GLenum;
-        auto toTextureFormat(ImageFormat format) -> GLenum;
+        auto toInternalTextureFormat(TextureFormat format) -> GLenum;
+        auto toTextureFormat(TextureFormat format) -> GLenum;
         auto toBlendFactor(BlendFactor factor) -> GLenum;
         bool findUniformInProgram(GLuint program, const char *name, GLint &location, int32_t &index);
         void applyMinFilter(GLenum target, uint32_t flags);

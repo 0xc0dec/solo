@@ -10,24 +10,22 @@
 
 namespace solo
 {
-    enum class ImageFormat;
     class Device;
 
     class RectTexture: public Texture
     {
     public:
-        static sptr<RectTexture> create(Device *device);
+        static auto loadFromFile(Device *device, const std::string &path) -> sptr<RectTexture>;
+        static sptr<RectTexture> create(Device *device, uint32_t width, uint32_t height, TextureFormat format);
 
-        virtual void setData(ImageFormat format, const void *data, uint32_t width, uint32_t height) = 0;
+        virtual void setData(const void *data) = 0;
 
-        auto getSize() const -> Vector2;
+        auto getSize() const -> Vector2 { return size; }
 
     protected:
+        RectTexture(uint32_t width, uint32_t height, TextureFormat format);
+
+        TextureFormat format;
         Vector2 size;
     };
-
-    inline auto RectTexture::getSize() const -> Vector2
-    {
-        return size;
-    }
 }

@@ -9,6 +9,7 @@
 #include "SoloDevice.h"
 #include "SoloVector2.h"
 #include "SoloVector3.h"
+#include "SoloStringUtils.h"
 #include <unordered_map>
 
 using namespace solo;
@@ -66,9 +67,7 @@ void parseIndexes(const char **from, const char *to, uint32_t **result)
 
 bool obj::canLoadMesh(const std::string &path)
 {
-    // TODO Extract helper method (replace in other places too)
-    static const std::string ext = ".obj";
-    return std::equal(ext.rbegin(), ext.rend(), path.rbegin());
+    return stringutils::endsWith(path, ".obj");
 }
 
 auto obj::loadMesh(Device *device, const std::string &path) -> sptr<Mesh>

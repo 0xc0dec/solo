@@ -11,11 +11,13 @@ namespace solo
 {
     namespace null
     {
-        class RectTexture : public solo::RectTexture
+        class RectTexture final: public solo::RectTexture
         {
         public:
+            RectTexture(uint32_t width, uint32_t height, TextureFormat format): solo::RectTexture(width, height, format) {}
+
             void generateMipmaps() override final {}
-            void setData(ImageFormat format, const void *data, uint32_t width, uint32_t height) override final {}
+            void setData(const void *data) override final {}
         };
     }
 }

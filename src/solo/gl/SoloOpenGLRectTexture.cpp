@@ -9,6 +9,13 @@
 
 using namespace solo;
 
+gl::RectTexture::RectTexture(uint32_t width, uint32_t height, TextureFormat format):
+    solo::RectTexture(width, height, format)
+{
+    std::vector<uint32_t> data;
+    setData(data.data());
+}
+
 void gl::RectTexture::bind()
 {
     glBindTexture(GL_TEXTURE_2D, handle);
@@ -28,18 +35,16 @@ void gl::RectTexture::generateMipmaps()
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void gl::RectTexture::setData(ImageFormat format, const void *data, uint32_t width, uint32_t height)
+void gl::RectTexture::setData(const void *data)
 {
     glBindTexture(GL_TEXTURE_2D, handle);
 
-    auto internalFormat = toInternalTextureFormat(format);
-    auto fmt = toTextureFormat(format);
+    const auto internalFormat = toInternalTextureFormat(format);
+    const auto fmt = toTextureFormat(format);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, fmt, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, size.x, size.y, 0, fmt, GL_UNSIGNED_BYTE, data);
 
     glBindTexture(GL_TEXTURE_2D, 0);
-
-    size = {static_cast<float>(width), static_cast<float>(height)};
 }
 
 #endif

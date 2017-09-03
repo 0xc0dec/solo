@@ -18,12 +18,15 @@ namespace solo
 
     namespace gl
     {
-        class RectTexture final : public solo::RectTexture, public Texture
+        class RectTexture final: public solo::RectTexture, public Texture
         {
         public:
+            RectTexture(uint32_t width, uint32_t height, TextureFormat format);
+
+            void setData(const void *data) override final;
             void bind() override final;
             void generateMipmaps() override final;
-            void setData(ImageFormat format, const void *data, uint32_t width, uint32_t height) override final;
+            
         };
     }
 }

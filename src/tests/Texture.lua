@@ -3,7 +3,9 @@
 -- MIT license
 -- 
 
-local rectTex = sl.RectTexture.create(sl.device)
+assert(sl.RectTexture.loadFromFile)
+
+local rectTex = sl.RectTexture.create(sl.device, 1, 1, sl.TextureFormat.RGB)
 
 rectTex:generateMipmaps()
 
@@ -24,16 +26,11 @@ rectTex:setMagFiltering(sl.TextureFiltering.NearestMipmapNearest)
 assert(rectTex:getAnisotropyLevel() ~= nil)
 rectTex:setAnisotropyLevel(1)
 
-rectTex:setData(sl.ImageFormat.RGB, { 1, 2, 3, 4 }, 2, 2)
 assert(rectTex:getSize())
 
 
-local cubeTex = sl.CubeTexture.create(sl.device)
+assert(sl.CubeTexture.loadFromFaceFiles)
+local cubeTex = sl.CubeTexture.create(sl.device, 1, 1, 1, sl.TextureFormat.RGB)
 
 assert(cubeTex:getDepthWrapping())
 cubeTex:setDepthWrapping(sl.TextureWrapping.Clamp)
-
-cubeTex:setData(sl.CubeTextureFace.Front, sl.ImageFormat.RGB, { 1, 2, 3, 4 }, 2, 2)
-
-assert(sl.Texture.loadRectFromFile)
-assert(sl.Texture.loadCubeFromFiles)

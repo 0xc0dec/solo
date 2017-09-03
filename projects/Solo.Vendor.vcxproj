@@ -140,21 +140,6 @@
     <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btSerializer.cpp" />
     <ClCompile Include="..\vendor\bullet\2.83.7\LinearMath\btVector3.cpp" />
     <ClCompile Include="..\vendor\glew\1.13\src\glew.c" />
-    <ClCompile Include="..\vendor\png\1.6.16\src\png.c" />
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngerror.c" />
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngget.c" />
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngmem.c" />
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngpread.c" />
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngread.c" />
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngrio.c" />
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngrtran.c" />
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngrutil.c" />
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngset.c" />
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngtrans.c" />
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngwio.c" />
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngwrite.c" />
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngwtran.c" />
-    <ClCompile Include="..\vendor\png\1.6.16\src\pngwutil.c" />
     <ClCompile Include="..\vendor\SDL\2.0.4\src\haptic\dummy\SDL_syshaptic.c" />
     <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\dummy\SDL_sysjoystick.c" />
     <ClCompile Include="..\vendor\SDL\2.0.4\src\joystick\SDL_gamecontroller.c" />
@@ -281,17 +266,6 @@
     <ClCompile Include="..\vendor\SDL\2.0.4\src\core\windows\SDL_xinput.c" />
     <ClCompile Include="..\vendor\SDL\2.0.4\src\render\SDL_yuv_mmx.c" />
     <ClCompile Include="..\vendor\SDL\2.0.4\src\render\SDL_yuv_sw.c" />
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\adler32.c" />
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\compress.c" />
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\crc32.c" />
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\deflate.c" />
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\infback.c" />
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\inffast.c" />
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\inflate.c" />
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\inftrees.c" />
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\trees.c" />
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\uncompr.c" />
-    <ClCompile Include="..\vendor\zlib\1.2.8\src\zutil.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{085AFD38-02E2-4DF4-B3F4-2F28708CFDD1}</ProjectGuid>

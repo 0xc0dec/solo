@@ -62,34 +62,39 @@ namespace solo
         static const uint32_t DepthWrapRepeat = 1 << 17;
     };
 
+    enum class TextureFormat
+    {
+        Red,
+        RGB,
+        RGBA,
+        Alpha
+    };
+
     class Texture
     {
     public:
-        static auto loadRectFromFile(Device *device, const std::string &path) -> sptr<RectTexture>;
-        static auto loadCubeFromFiles(Device *device, const std::vector<std::string> &paths) -> sptr<CubeTexture>;
-
         SL_DISABLE_COPY_AND_MOVE(Texture)
 
         virtual ~Texture() {}
 
         virtual void generateMipmaps() = 0;
 
-        auto getHorizontalWrapping() const -> TextureWrapping;
-        auto getVerticalWrapping() const -> TextureWrapping;
+        auto getHorizontalWrapping() const -> TextureWrapping { return horizontalWrapping; }
+        auto getVerticalWrapping() const -> TextureWrapping { return verticalWrapping; }
 
         virtual void setWrapping(TextureWrapping wrap);
         void setHorizontalWrapping(TextureWrapping horizontalWrap);
         void setVerticalWrapping(TextureWrapping verticalWrap);
 
-        auto getMinFiltering() const -> TextureFiltering;
-        auto getMagFiltering() const -> TextureFiltering;
+        auto getMinFiltering() const -> TextureFiltering { return minFiltering; }
+        auto getMagFiltering() const -> TextureFiltering { return magFiltering; }
 
         void setFiltering(TextureFiltering filtering);
         void setMinFiltering(TextureFiltering filtering);
         void setMagFiltering(TextureFiltering filtering);
 
-        auto getAnisotropyLevel() const -> float;
-        void setAnisotropyLevel(float level);
+        auto getAnisotropyLevel() const -> float { return anisotropy; }
+        void setAnisotropyLevel(float level) { anisotropy = level; }
 
     protected:
         uint32_t flags = 0;
@@ -107,20 +112,10 @@ namespace solo
         virtual void rebuildFlags();
     };
 
-    inline auto Texture::getVerticalWrapping() const -> TextureWrapping
-    {
-        return verticalWrapping;
-    }
-
     inline void Texture::setVerticalWrapping(TextureWrapping wrap)
     {
         verticalWrapping = wrap;
         rebuildFlags();
-    }
-
-    inline auto Texture::getHorizontalWrapping() const -> TextureWrapping
-    {
-        return horizontalWrapping;
     }
 
     inline void Texture::setHorizontalWrapping(TextureWrapping wrap)
@@ -129,20 +124,10 @@ namespace solo
         rebuildFlags();
     }
 
-    inline auto Texture::getMinFiltering() const -> TextureFiltering
-    {
-        return minFiltering;
-    }
-
     inline void Texture::setMinFiltering(TextureFiltering filtering)
     {
         minFiltering = filtering;
         rebuildFlags();
-    }
-
-    inline auto Texture::getMagFiltering() const -> TextureFiltering
-    {
-        return magFiltering;
     }
 
     inline void Texture::setMagFiltering(TextureFiltering filtering)
@@ -156,15 +141,5 @@ namespace solo
         minFiltering = filtering;
         magFiltering = filtering;
         rebuildFlags();
-    }
-
-    inline auto Texture::getAnisotropyLevel() const -> float
-    {
-        return anisotropy;
-    }
-
-    inline void Texture::setAnisotropyLevel(float level)
-    {
-        anisotropy = level;
     }
 }

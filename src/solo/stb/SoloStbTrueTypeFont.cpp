@@ -5,9 +5,9 @@
 
 #include "SoloStbTrueTypeFont.h"
 #include "SoloRectTexture.h"
-#include "SoloImage.h"
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
+#include "SoloStringUtils.h"
 #define STB_TRUETYPE_IMPLEMENTATION
 #include <stb_truetype.h>
 
@@ -29,9 +29,9 @@ stb::TrueTypeFont::TrueTypeFont(Device *device, uint8_t *fontData, uint32_t size
     stbtt_PackFontRange(&context, fontData, 0, static_cast<float>(size), firstChar, charCount, charInfo.get());
     stbtt_PackEnd(&context);
 
-    atlas = RectTexture::create(device);
+    atlas = RectTexture::create(device, atlasWidth, atlasHeight, TextureFormat::Red);
     atlas->setFiltering(TextureFiltering::Linear);
-    atlas->setData(ImageFormat::Red, pixels.get(), atlasWidth, atlasHeight);
+    atlas->setData(pixels.get());
     atlas->generateMipmaps();
 }
 
@@ -70,8 +70,7 @@ auto stb::TrueTypeFont::getGlyphInfo(uint32_t character, float offsetX, float of
 
 bool stb::TrueTypeFont::canLoadFromFile(const std::string &path)
 {
-    static const std::string ext = ".ttf";
-    return std::equal(ext.rbegin(), ext.rend(), path.rbegin());
+    return stringutils::endsWith(path, ".ttf");
 }
 
 auto stb::TrueTypeFont::loadFromFile(Device *device, const std::string &path,

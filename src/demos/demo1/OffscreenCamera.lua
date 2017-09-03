@@ -6,8 +6,8 @@
 return function(scene)
 	local canvasSize = sl.device:getCanvasSize()
 
-    local tex = sl.RectTexture.create(sl.device)
-    tex:setData(sl.ImageFormat.RGB, {}, math.floor(canvasSize.x / 8.0), math.floor(canvasSize.y / 8.0))
+    local tex = sl.RectTexture.create(sl.device,
+        math.floor(canvasSize.x / 8.0), math.floor(canvasSize.y / 8.0), sl.TextureFormat.RGB)
     tex:setFiltering(sl.TextureFiltering.Nearest)
     tex:setWrapping(sl.TextureWrapping.Clamp)
 

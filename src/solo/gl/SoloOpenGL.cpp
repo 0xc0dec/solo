@@ -12,7 +12,6 @@
 #include "SoloMesh.h"
 #include "SoloMaterial.h"
 #include "SoloTexture.h"
-#include "SoloImage.h"
 
 using namespace solo;
 
@@ -36,38 +35,16 @@ auto gl::toPrimitiveType(PrimitiveType type) -> GLenum
     }
 }
 
-auto gl::toCubeTextureFace(CubeTextureFace face) -> GLenum
-{
-    switch (face)
-    {
-        case CubeTextureFace::Front:
-            return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
-        case CubeTextureFace::Back:
-            return GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
-        case CubeTextureFace::Right:
-            return GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
-        case CubeTextureFace::Left:
-            return GL_TEXTURE_CUBE_MAP_POSITIVE_X;
-        case CubeTextureFace::Top:
-            return GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
-        case CubeTextureFace::Bottom:
-            return GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
-        default:
-            SL_PANIC("Unknown cube texture face");
-            return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
-    }
-}
-
-auto gl::toInternalTextureFormat(ImageFormat format) -> GLenum
+auto gl::toInternalTextureFormat(TextureFormat format) -> GLenum
 {
     switch (format)
     {
-        case ImageFormat::Red:
-        case ImageFormat::RGB:
+        case TextureFormat::Red:
+        case TextureFormat::RGB:
             return GL_RGB;
-        case ImageFormat::RGBA:
+        case TextureFormat::RGBA:
             return GL_RGBA;
-        case ImageFormat::Alpha:
+        case TextureFormat::Alpha:
             return GL_ALPHA;
         default:
             SL_PANIC("Unknown image format");
@@ -75,17 +52,17 @@ auto gl::toInternalTextureFormat(ImageFormat format) -> GLenum
     }
 }
 
-auto gl::toTextureFormat(ImageFormat format) -> GLenum
+auto gl::toTextureFormat(TextureFormat format) -> GLenum
 {
     switch (format)
     {
-        case ImageFormat::Red:
+        case TextureFormat::Red:
             return GL_RED;
-        case ImageFormat::RGB:
+        case TextureFormat::RGB:
             return GL_RGB;
-        case ImageFormat::RGBA:
+        case TextureFormat::RGBA:
             return GL_RGBA;
-        case ImageFormat::Alpha:
+        case TextureFormat::Alpha:
             return GL_ALPHA;
         default:
             SL_PANIC("Unknown image format");

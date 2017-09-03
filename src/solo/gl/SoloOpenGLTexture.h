@@ -23,18 +23,13 @@ namespace solo
             Texture();
             virtual ~Texture();
 
-            auto getHandle() const -> GLuint;
+            auto getHandle() const -> GLuint { return handle; }
 
             virtual void bind() = 0;
 
         protected:
             GLuint handle = 0;
         };
-
-        inline auto Texture::getHandle() const -> GLuint
-        {
-            return handle;
-        }
     }
 }
 
