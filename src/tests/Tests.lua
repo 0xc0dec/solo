@@ -16,6 +16,7 @@ function runTest(fileName)
 end
 
 runTest("DegreeRadian.lua")
+runTest("Enums.lua")
 runTest("Vector2.lua")
 runTest("Vector3.lua")
 runTest("Vector4.lua")
