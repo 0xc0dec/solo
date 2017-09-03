@@ -3,11 +3,11 @@ A playground for my graphics/gamedev experiments.
 
 ## Features
 * Unity-inspired component system
-* OBJ meshes and PNG textures loading
+* Loading of OBJ meshes and several popular texture formats
 * Render to texture
 * TTF fonts
 * Physics
-* OpenGL rendering, Vulkan is coming in some distant future
+* OpenGL rendering, Vulkan is WIP
 * Fully scriptable (Lua)
 
 ## Screenshots
@@ -20,7 +20,6 @@ A playground for my graphics/gamedev experiments.
 * GLEW (MIT/modified BSD license)
 * Lua (MIT license)
 * LuaIntf (MIT license)
-* png (libpng license)
 * SDL (zlib license)
 * stb_truetype (public domain (?))
-* zlib (zlib license)
+* stb_image (public domain (?))
