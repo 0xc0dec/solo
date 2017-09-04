@@ -10,6 +10,10 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloMaterial.h"
+#include "SoloVulkan.h"
+#include "SoloVulkanDescriptorPool.h"
+#include "SoloVulkanBuffer.h"
+#include <unordered_map>
 
 namespace solo
 {
@@ -53,6 +57,16 @@ namespace solo
             void bindInvTransposedWorldMatrixParameter(const std::string &name) override final;
             void bindInvTransposedWorldViewMatrixParameter(const std::string &name) override final;
             void bindCameraWorldPositionParameter(const std::string &name) override final;
+
+            void applyParameters(Renderer *renderer);
+
+        private:
+            DescriptorPool descPool;
+            Resource<VkDescriptorSetLayout> descSetLayout;
+            VkDescriptorSet descSet = VK_NULL_HANDLE;
+            Buffer uniformBuffer;
+
+            bool dirtyLayout = false; // TODO add "dirtyData" or smth or per parameter
         };
     }
 }

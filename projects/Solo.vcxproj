@@ -93,6 +93,7 @@
     <ClInclude Include="..\src\solo\vk\SoloVulkanBuffer.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkanDescriptorPool.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkanDescriptorSetLayoutBuilder.h" />
+    <ClInclude Include="..\src\solo\vk\SoloVulkanDescriptorSetUpdater.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkanEffect.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkanImage.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkanMaterial.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="..\src\solo\vk\SoloVulkanBuffer.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloVulkanDescriptorPool.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloVulkanDescriptorSetLayoutBuilder.cpp" />
+    <ClCompile Include="..\src\solo\vk\SoloVulkanDescriptorSetUpdater.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloVulkanEffect.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloVulkanImage.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloVulkanMaterial.cpp" />

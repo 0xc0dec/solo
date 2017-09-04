@@ -186,6 +186,9 @@
     <ClInclude Include="..\src\solo\stb\SoloStbCubeTextureData.h">
       <Filter>stb</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\vk\SoloVulkanDescriptorSetUpdater.h">
+      <Filter>vk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp">
@@ -357,6 +360,9 @@
     </ClCompile>
     <ClCompile Include="..\src\solo\stb\SoloStbCubeTextureData.cpp">
       <Filter>stb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\vk\SoloVulkanDescriptorSetUpdater.cpp">
+      <Filter>vk</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

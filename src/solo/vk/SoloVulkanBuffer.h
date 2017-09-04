@@ -36,6 +36,7 @@ namespace solo
             operator VkBuffer() { return buffer; }
 
             auto getHandle() const -> VkBuffer { return buffer; }
+            auto getSize() const -> uint32_t { return size; }
 
             void update(const void *newData) const;
             void transferTo(const Buffer& other, VkQueue queue, VkCommandPool cmdPool) const;

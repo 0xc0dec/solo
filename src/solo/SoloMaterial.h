@@ -101,29 +101,29 @@ namespace solo
         virtual void bindInvTransposedWorldViewMatrixParameter(const std::string &name) = 0;
         virtual void bindCameraWorldPositionParameter(const std::string &name) = 0;
 
-        auto getEffect() const -> Effect*;
+        auto getEffect() const -> Effect* { return effect.get(); }
 
-        auto getPolygonMode() const -> PolygonMode;
-        void setPolygonMode(PolygonMode mode);
+        auto getPolygonMode() const -> PolygonMode { return polygonMode; }
+        void setPolygonMode(PolygonMode mode) { polygonMode = mode; }
 
-        bool getBlend() const;
-        void setBlend(bool enabled);
+        bool getBlend() const { return blend; }
+        void setBlend(bool enabled) { blend = enabled; }
 
-        auto getSrcBlendFactor() const -> BlendFactor;
-        auto getDstBlendFactor() const -> BlendFactor;
+        auto getSrcBlendFactor() const -> BlendFactor { return srcBlendFactor; }
+        auto getDstBlendFactor() const -> BlendFactor { return dstBlendFactor; }
         void setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor);
 
-        auto getFaceCull() const -> FaceCull;
-        void setFaceCull(FaceCull face);
+        auto getFaceCull() const -> FaceCull { return faceCull; }
+        void setFaceCull(FaceCull face) { faceCull = face; }
 
-        bool getDepthWrite() const;
-        void setDepthWrite(bool enabled);
+        bool getDepthWrite() const { return depthWrite; }
+        void setDepthWrite(bool enabled) { depthWrite = enabled; }
 
-        bool getDepthTest() const;
-        void setDepthTest(bool enabled);
+        bool getDepthTest() const { return depthTest; }
+        void setDepthTest(bool enabled) { depthTest = enabled; }
 
-        auto getDepthFunction() const -> DepthFunction;
-        void setDepthFunction(DepthFunction func);
+        auto getDepthFunction() const -> DepthFunction { return depthFunc; }
+        void setDepthFunction(DepthFunction func) { depthFunc = func; }
 
     protected:
         sptr<Effect> effect;
@@ -140,84 +140,9 @@ namespace solo
         explicit Material(sptr<Effect> effect);
     };
 
-    inline auto Material::getEffect() const -> Effect *
-    {
-        return effect.get();
-    }
-
-    inline auto Material::getPolygonMode() const -> PolygonMode
-    {
-        return polygonMode;
-    }
-
-    inline void Material::setPolygonMode(PolygonMode mode)
-    {
-        polygonMode = mode;
-    }
-
-    inline bool Material::getBlend() const
-    {
-        return blend;
-    }
-
-    inline void Material::setBlend(bool enabled)
-    {
-        blend = enabled;
-    }
-
-    inline auto Material::getSrcBlendFactor() const -> BlendFactor
-    {
-        return srcBlendFactor;
-    }
-
-    inline auto Material::getDstBlendFactor() const -> BlendFactor
-    {
-        return dstBlendFactor;
-    }
-
     inline void Material::setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor)
     {
         srcBlendFactor = srcFactor;
         dstBlendFactor = dstFactor;
-    }
-
-    inline auto Material::getFaceCull() const -> FaceCull
-    {
-        return faceCull;
-    }
-
-    inline void Material::setFaceCull(FaceCull face)
-    {
-        faceCull = face;
-    }
-
-    inline bool Material::getDepthWrite() const
-    {
-        return depthWrite;
-    }
-
-    inline void Material::setDepthWrite(bool enabled)
-    {
-        depthWrite = enabled;
-    }
-
-    inline bool Material::getDepthTest() const
-    {
-        return depthTest;
-    }
-
-    inline void Material::setDepthFunction(DepthFunction func)
-    {
-        depthFunc = func;
-    }
-
-    inline auto Material::getDepthFunction() const -> DepthFunction
-    {
-        return depthFunc;
-    }
-
-    inline void Material::setDepthTest(bool enabled)
-    {
-        depthTest = enabled;
     }
 }
