@@ -19,9 +19,9 @@ SkyboxRenderer::SkyboxRenderer(const Node &node):
 {
     transform = node.findComponent<Transform>();
 
-    auto device = node.getScene()->getDevice();
+    const auto device = node.getScene()->getDevice();
 
-    auto effect = Effect::createFromPrefab(device, EffectPrefab::Skybox);
+    const auto effect = Effect::createFromPrefab(device, EffectPrefab::Skybox);
     material = Material::create(device, effect);
     material->bindProjectionMatrixParameter("projMatrix");
     material->bindWorldViewMatrixParameter("worldViewMatrix");

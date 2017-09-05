@@ -45,7 +45,7 @@ void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
             if (target)
             {
                 if (target)
-                    targetFBHandle = dynamic_cast<const FrameBuffer *>(target.get())->getHandle();
+                    targetFBHandle = static_cast<FrameBuffer*>(target.get())->getHandle();
             }
 
             step.beginCamera = [=]
@@ -87,7 +87,7 @@ void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
             const auto blend = cmd.material->getBlend();
             const auto srcBlendFactor = cmd.material->getSrcBlendFactor();
             const auto dstBlendFactor = cmd.material->getDstBlendFactor();
-            const auto effect = dynamic_cast<Effect*>(step.cmd.material->getEffect());
+            const auto effect = static_cast<Effect*>(step.cmd.material->getEffect());
             const auto program = effect->getHandle();
 
             step.applyMaterialState = [=]
@@ -123,8 +123,8 @@ void gl::Renderer::beginFrame()
 // for the renderer
 void gl::Renderer::endFrame()
 {
-    const Camera *currentCamera = nullptr;
-    const Material *currentMaterial = nullptr;
+    Camera *currentCamera = nullptr;
+    Material *currentMaterial = nullptr;
 
     for (const auto &step: renderSteps)
     {
@@ -133,7 +133,7 @@ void gl::Renderer::endFrame()
             case RenderCommandType::BeginCamera:
             {
                 step.beginCamera();
-                currentCamera = dynamic_cast<const Camera*>(step.cmd.camera);
+                currentCamera = static_cast<Camera*>(step.cmd.camera);
                 break;
             }
 
@@ -147,21 +147,21 @@ void gl::Renderer::endFrame()
             case RenderCommandType::DrawMesh:
             {
                 currentMaterial->applyParams(currentCamera, step.cmd.mesh.transform);
-                dynamic_cast<const Mesh*>(step.cmd.mesh.mesh)->draw();
+                static_cast<const Mesh*>(step.cmd.mesh.mesh)->draw();
                 break;
             }
 
             case RenderCommandType::DrawMeshPart:
             {
                 currentMaterial->applyParams(currentCamera, step.cmd.meshPart.transform);
-                dynamic_cast<const Mesh*>(step.cmd.meshPart.mesh)->drawPart(step.cmd.meshPart.part);
+                static_cast<Mesh*>(step.cmd.meshPart.mesh)->drawPart(step.cmd.meshPart.part);
                 break;
             }
 
             case RenderCommandType::ApplyMaterial:
             {
                 step.applyMaterialState();
-                currentMaterial = dynamic_cast<const Material*>(step.cmd.material);
+                currentMaterial = static_cast<Material*>(step.cmd.material);
                 break;
             }
 

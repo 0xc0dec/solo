@@ -204,7 +204,7 @@ void vk::Renderer::endFrame()
         auto canvasHeight = engineDevice->getSetup().canvasHeight;
         swapchain.getRenderPass().begin(buf, fb, canvasWidth, canvasHeight);
 
-        const vk::Material *currentMaterial = nullptr;
+        vk::Material *currentMaterial = nullptr;
         const vk::Effect *currentEffect = nullptr;
 
         for (const auto &cmd: renderCommands)
@@ -227,8 +227,9 @@ void vk::Renderer::endFrame()
 
                 case RenderCommandType::ApplyMaterial:
                 {
-                    currentMaterial = static_cast<const vk::Material*>(cmd.material);
-                    currentEffect = static_cast<const vk::Effect*>(currentMaterial->getEffect());
+                    currentMaterial = static_cast<vk::Material*>(cmd.material);
+                    currentMaterial->applyParameters(this);
+                    currentEffect = static_cast<vk::Effect*>(currentMaterial->getEffect());
                     break;
                 }
 
@@ -242,7 +243,7 @@ void vk::Renderer::endFrame()
                     if (!currentMaterial)
                         continue;
 
-                    const auto mesh = static_cast<const vk::Mesh*>(cmd.mesh.mesh);
+                    const auto mesh = static_cast<vk::Mesh*>(cmd.mesh.mesh);
                     auto &renderPass = swapchain.getRenderPass();
                     auto vs = currentEffect->getVertexShader();
                     auto fs = currentEffect->getFragmentShader();

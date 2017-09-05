@@ -64,8 +64,25 @@ namespace solo
             DescriptorPool descPool;
             Resource<VkDescriptorSetLayout> descSetLayout;
             VkDescriptorSet descSet = VK_NULL_HANDLE;
-            Buffer uniformBuffer;
 
+            struct UniformBufferItem
+            {
+                uint32_t size;
+                std::function<void(Buffer&, uint32_t)> write;
+            };
+
+            struct Binding
+            {
+                std::vector<UniformBufferItem> bufferItems;
+                uint32_t bufferSize;
+                Buffer buffer;
+                void *texture;
+                bool dirtyData;
+                // TODO texture pointer here
+            };
+
+            std::unordered_map<uint32_t, Binding> bindings;
+            
             bool dirtyLayout = false; // TODO add "dirtyData" or smth or per parameter
         };
     }

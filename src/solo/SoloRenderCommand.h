@@ -33,38 +33,38 @@ namespace solo
         {
             struct
             {
-                const Mesh *mesh;
-                const Transform *transform;
+                Mesh *mesh;
+                Transform *transform;
                 uint32_t part;
             } meshPart;
 
             struct
             {
-                const Mesh *mesh;
-                const Transform *transform;
+                Mesh *mesh;
+                Transform *transform;
             } mesh;
 
-            const Camera *camera;
-            const Material *material;
+            Camera *camera;
+            Material *material;
         };
 
         explicit RenderCommand(RenderCommandType type = RenderCommandType::None): type(type) {}
 
-        static auto beginCamera(const Camera *camera) -> RenderCommand
+        static auto beginCamera(Camera *camera) -> RenderCommand
         {
             auto cmd = RenderCommand(RenderCommandType::BeginCamera);
             cmd.camera = camera;
             return cmd;
         }
 
-        static auto endCamera(const Camera *camera) -> RenderCommand
+        static auto endCamera(Camera *camera) -> RenderCommand
         {
             auto cmd = RenderCommand(RenderCommandType::EndCamera);
             cmd.camera = camera;
             return cmd;
         }
 
-        static auto drawMesh(const Mesh *mesh, const Transform *transform) -> RenderCommand
+        static auto drawMesh(Mesh *mesh, Transform *transform) -> RenderCommand
         {
             auto cmd = RenderCommand(RenderCommandType::DrawMesh);
             cmd.mesh.mesh = mesh;
@@ -72,7 +72,7 @@ namespace solo
             return cmd;
         }
 
-        static auto drawMeshPart(const Mesh *mesh, uint32_t part, const Transform *transform) -> RenderCommand
+        static auto drawMeshPart(Mesh *mesh, uint32_t part, Transform *transform) -> RenderCommand
         {
             auto cmd = RenderCommand(RenderCommandType::DrawMeshPart);
             cmd.meshPart.mesh = mesh;
@@ -81,7 +81,7 @@ namespace solo
             return cmd;
         }
 
-        static auto applyMaterial(const Material *material) -> RenderCommand
+        static auto applyMaterial(Material *material) -> RenderCommand
         {
             auto cmd = RenderCommand(RenderCommandType::ApplyMaterial);
             cmd.material = material;

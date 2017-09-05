@@ -19,7 +19,7 @@ auto Buffer::createStaging(vk::Renderer *renderer, VkDeviceSize size, const void
         VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
     if (initialData)
-        buffer.update(initialData);
+        buffer.updateAll(initialData);
 
     return buffer;
 }
@@ -70,11 +70,19 @@ Buffer::Buffer(vk::Renderer *renderer, VkDeviceSize size, VkBufferUsageFlags usa
     SL_VK_CHECK_RESULT(vkBindBufferMemory(device, buffer, memory, 0));
 }
 
-void Buffer::update(const void *newData) const
+void Buffer::updateAll(const void *newData) const
 {
     void *ptr = nullptr;
 	SL_VK_CHECK_RESULT(vkMapMemory(device, memory, 0, VK_WHOLE_SIZE, 0, &ptr));
 	memcpy(ptr, newData, size);
+	vkUnmapMemory(device, memory);
+}
+
+void Buffer::updatePart(const void *newData, uint32_t offset, uint32_t size)
+{
+    void *ptr = nullptr;
+	SL_VK_CHECK_RESULT(vkMapMemory(device, memory, 0, VK_WHOLE_SIZE, 0, &ptr));
+	memcpy(static_cast<uint8_t*>(ptr) + offset, newData, size);
 	vkUnmapMemory(device, memory);
 }
 

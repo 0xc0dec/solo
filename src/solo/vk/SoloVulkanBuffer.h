@@ -38,7 +38,8 @@ namespace solo
             auto getHandle() const -> VkBuffer { return buffer; }
             auto getSize() const -> uint32_t { return size; }
 
-            void update(const void *newData) const;
+            void updateAll(const void *newData) const;
+            void updatePart(const void *newData, uint32_t offset, uint32_t size);
             void transferTo(const Buffer& other, VkQueue queue, VkCommandPool cmdPool) const;
 
         private:
