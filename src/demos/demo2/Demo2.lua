@@ -68,6 +68,7 @@ meshRenderer:setMesh(mesh)
 meshRenderer:setMaterial(0, material)
 
 material:setFloatParameter("12:34", 12.3)
+material:setFloatArrayParameter("0:1", {1, 2, 3})
 
 function keepRunning()
     return not dev:isQuitRequested() and

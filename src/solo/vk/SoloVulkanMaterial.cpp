@@ -15,10 +15,45 @@
 
 using namespace solo;
 
+// TODO Make it less horrible, currently this expects certain variables to be present in the calling context lol
+#define SET_UNIFORM_PARAM(valueAddress) \
+    auto parsedName = parseName(name); \
+    const int32_t bindingIndex = std::get<0>(parsedName); \
+    int32_t bufferItemIndex = std::get<1>(parsedName); \
+\
+    if (bindings.count(bindingIndex) == 0) \
+    { \
+        bindings[bindingIndex]; \
+        dirtyLayout = true; \
+    } \
+\
+    auto &binding = bindings.at(bindingIndex); \
+    SL_PANIC_IF(bufferItemIndex >= 0 && binding.texture, "Parameter already has different type"); \
+    SL_PANIC_IF( \
+        bufferItemIndex >= 0 && \
+        binding.bufferItems.size() > bufferItemIndex && \
+        binding.bufferItems[bufferItemIndex].size != size, \
+        "Parameter already has different size" \
+    ); \
+\
+    if (binding.bufferItems.size() < bufferItemIndex + 1) \
+    { \
+        binding.bufferItems.resize(bufferItemIndex + 1); \
+        dirtyLayout = true; \
+    } \
+\
+    auto &item = binding.bufferItems[bufferItemIndex]; \
+    item.size = size; \
+    item.write = [value, size](Buffer &buffer, uint32_t offset) \
+    { \
+        buffer.updatePart(valueAddress, offset, size); \
+    }; \
+\
+    binding.dirtyData = true; \
+
 static auto parseIndex(const char *from, uint32_t len) -> int32_t
 {
-    int32_t index = 0;
-    int digit = 1;
+    int32_t index = 0, digit = 1;
     while (len > 0)
     {
         index += digit * (*(from + len - 1) - '0');
@@ -49,43 +84,14 @@ vk::Material::~Material()
 
 void vk::Material::setFloatParameter(const std::string &name, float value)
 {
-    auto parsedName = parseName(name);
-    const int32_t bindingIndex = std::get<0>(parsedName);
-    int32_t bufferItemIndex = std::get<1>(parsedName);
-
-    if (bindings.count(bindingIndex) == 0)
-    {
-        bindings[bindingIndex];
-        dirtyLayout = true;
-    }
-
-    auto &binding = bindings.at(bindingIndex);
-    SL_PANIC_IF(bufferItemIndex >= 0 && binding.texture, "Parameter already has different type");
-    SL_PANIC_IF(
-        bufferItemIndex >= 0 &&
-        binding.bufferItems.size() > bufferItemIndex &&
-        binding.bufferItems[bufferItemIndex].size != sizeof(float),
-        "Parameter already has different size"
-    );
-
-    if (binding.bufferItems.size() < bufferItemIndex + 1)
-    {
-        binding.bufferItems.resize(bufferItemIndex + 1);
-        dirtyLayout = true;
-    }
-
-    auto &item = binding.bufferItems[bufferItemIndex];
-    item.size = sizeof(float);
-    item.write = [value](Buffer &buffer, uint32_t offset)
-    {
-        buffer.updatePart(&value, offset, sizeof(float));
-    };
-
-    binding.dirtyData = true;
+    const auto size = sizeof(float);
+    SET_UNIFORM_PARAM(&value);
 }
 
 void vk::Material::setFloatArrayParameter(const std::string &name, const std::vector<float> &value)
 {
+    const auto size = sizeof(float) * value.size();
+    SET_UNIFORM_PARAM(value.data());
 }
 
 void vk::Material::setVector2Parameter(const std::string &name, const Vector2 &value)
