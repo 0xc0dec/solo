@@ -44,7 +44,7 @@ local meshes = {
 }
 
 local loadTexture = function(path)
-    local tex = sl.RectTexture.loadFromFile(dev, path)
+    local tex = sl.Texture2d.loadFromFile(dev, path)
     tex:generateMipmaps()
     tex:setFiltering(sl.TextureFiltering.LinearMipmapNearest)
     tex:setAnisotropyLevel(8)

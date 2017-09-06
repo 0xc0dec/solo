@@ -4,7 +4,7 @@
 -- 
 
 local mat = sl.Material.create(sl.device, sl.Effect.createFromPrefab(sl.device, sl.EffectPrefab.Skybox))
-local tex = sl.RectTexture.create(sl.device, 1, 1, sl.TextureFormat.RGB)
+local tex = sl.Texture2d.create(sl.device, 1, 1, sl.TextureFormat.RGB)
 
 mat:setFloatParameter("p1", 1)
 mat:setFloatArrayParameter("p2", { 1, 2 })

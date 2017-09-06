@@ -3,7 +3,7 @@
     MIT license
 */
 
-#include "SoloStbRectTextureData.h"
+#include "SoloStbTexture2dData.h"
 #include "SoloStringUtils.h"
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
@@ -27,20 +27,20 @@ static auto toImageFormat(int components) -> TextureFormat
     }
 }
 
-bool stb::RectTextureData::canLoadFromFile(const std::string &path)
+bool stb::Texture2dData::canLoadFromFile(const std::string &path)
 {
     static std::vector<std::string> supportedFormats = {".bmp", ".jpg", ".jpeg", ".png"};
     return std::find_if(supportedFormats.begin(), supportedFormats.end(),
         [&](const std::string &ext) { return stringutils::endsWith(path, ext); }) != supportedFormats.end();
 }
 
-stb::RectTextureData::~RectTextureData()
+stb::Texture2dData::~Texture2dData()
 {
     if (data)
         stbi_image_free(data);
 }
 
-auto stb::RectTextureData::loadFromFile(Device *device, const std::string &path) -> sptr<RectTextureData>
+auto stb::Texture2dData::loadFromFile(Device *device, const std::string &path) -> sptr<Texture2dData>
 {
     auto bytes = device->getFileSystem()->readBytes(path);
     int width, height, bpp;
@@ -48,7 +48,7 @@ auto stb::RectTextureData::loadFromFile(Device *device, const std::string &path)
     const auto data = stbi_load_from_memory(bytes.data(), bytes.size(), &width, &height, &bpp, 0);
     SL_PANIC_IF(!data, "Failed to load image ", path);
 
-    const auto result = std::make_shared<RectTextureData>();
+    const auto result = std::make_shared<Texture2dData>();
     result->bpp = bpp;
     result->format = toImageFormat(bpp);
     result->width = width;

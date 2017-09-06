@@ -18,7 +18,7 @@ namespace solo
 
     namespace gl
     {
-        class RectTexture;
+        class Texture2d;
 
         class FrameBuffer final : public solo::FrameBuffer
         {
@@ -28,7 +28,7 @@ namespace solo
 
             auto getHandle() const -> GLuint { return handle; }
 
-            void setAttachments(const std::vector<sptr<solo::RectTexture>> &attachments) override final;
+            void setAttachments(const std::vector<sptr<solo::Texture2d>> &attachments) override final;
 
         private:
             GLuint handle = 0;

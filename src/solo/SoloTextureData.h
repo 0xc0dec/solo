@@ -14,13 +14,13 @@ namespace solo
     enum class CubeTextureFace;
     class Device;
 
-    class RectTextureData
+    class Texture2dData
     {
     public:
-        static auto loadFromFile(Device *device, const std::string &path) -> sptr<RectTextureData>;
+        static auto loadFromFile(Device *device, const std::string &path) -> sptr<Texture2dData>;
 
-        SL_DISABLE_COPY_AND_MOVE(RectTextureData)
-        virtual ~RectTextureData() {}
+        SL_DISABLE_COPY_AND_MOVE(Texture2dData)
+        virtual ~Texture2dData() {}
 
         virtual auto getMipLevels() const -> uint32_t = 0;
 
@@ -37,7 +37,7 @@ namespace solo
         virtual auto getFormat() const -> TextureFormat = 0;
 
     protected:
-        RectTextureData() {}
+        Texture2dData() {}
     };
 
     class CubeTextureData

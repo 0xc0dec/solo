@@ -8,8 +8,8 @@
 #ifdef SL_OPENGL_RENDERER
 
 #include "SoloDevice.h"
-#include "SoloRectTexture.h"
-#include "SoloOpenGLRectTexture.h"
+#include "SoloTexture2d.h"
+#include "SoloOpenGLTexture2d.h"
 #include <algorithm>
 
 using namespace solo;
@@ -25,7 +25,7 @@ gl::FrameBuffer::~FrameBuffer()
     glDeleteFramebuffers(1, &handle);
 }
 
-static void validateNewAttachments(const std::vector<sptr<solo::RectTexture>> &attachments)
+static void validateNewAttachments(const std::vector<sptr<solo::Texture2d>> &attachments)
 {
     SL_PANIC_IF(attachments.size() > GL_MAX_COLOR_ATTACHMENTS, "Too many attachments");
 
@@ -43,13 +43,13 @@ static void validateNewAttachments(const std::vector<sptr<solo::RectTexture>> &a
     }
 }
 
-void gl::FrameBuffer::setAttachments(const std::vector<sptr<solo::RectTexture>> &attachments)
+void gl::FrameBuffer::setAttachments(const std::vector<sptr<solo::Texture2d>> &attachments)
 {
     SL_PANIC_BLOCK(validateNewAttachments(attachments));
 
-    std::vector<RectTexture*> newAttachments;
+    std::vector<Texture2d*> newAttachments;
     for (const auto &tex : attachments)
-        newAttachments.push_back(dynamic_cast<RectTexture*>(tex.get()));
+        newAttachments.push_back(dynamic_cast<Texture2d*>(tex.get()));
 
     glBindFramebuffer(GL_FRAMEBUFFER, handle);
 

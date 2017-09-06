@@ -4,7 +4,7 @@
 */
 
 #include "SoloTexture.h"
-#include "SoloRectTexture.h"
+#include "SoloTexture2d.h"
 #include "SoloCubeTexture.h"
 #include "SoloLuaCommon.h"
 
@@ -29,12 +29,12 @@ static void registerTexture(CppBindModule<LuaBinding> &module)
     tex.endClass();
 }
 
-static void registerRectTexture(CppBindModule<LuaBinding> &module)
+static void registerTexture2d(CppBindModule<LuaBinding> &module)
 {
-    auto rectTex = BEGIN_CLASS_EXTEND(module, RectTexture, Texture);
-    REG_STATIC_METHOD(rectTex, RectTexture, loadFromFile);
-    REG_STATIC_METHOD(rectTex, RectTexture, create);
-    REG_METHOD(rectTex, RectTexture, getDimensions);
+    auto rectTex = BEGIN_CLASS_EXTEND(module, Texture2d, Texture);
+    REG_STATIC_METHOD(rectTex, Texture2d, loadFromFile);
+    REG_STATIC_METHOD(rectTex, Texture2d, create);
+    REG_METHOD(rectTex, Texture2d, getDimensions);
     rectTex.endClass();
 }
 
@@ -51,6 +51,6 @@ static void registerCubeTexture(CppBindModule<LuaBinding> &module)
 void registerTextureApi(CppBindModule<LuaBinding> &module)
 {
     registerTexture(module);
-    registerRectTexture(module);
+    registerTexture2d(module);
     registerCubeTexture(module);
 }

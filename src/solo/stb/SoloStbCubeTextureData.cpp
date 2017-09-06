@@ -17,12 +17,12 @@ bool stb::CubeTextureData::canLoadFromFaceFiles(
     const std::string &topPath,
     const std::string &bottomPath)
 {
-    return stb::RectTextureData::canLoadFromFile(frontPath) &&
-           stb::RectTextureData::canLoadFromFile(backPath) &&
-           stb::RectTextureData::canLoadFromFile(leftPath) &&
-           stb::RectTextureData::canLoadFromFile(rightPath) &&
-           stb::RectTextureData::canLoadFromFile(topPath) &&
-           stb::RectTextureData::canLoadFromFile(bottomPath);
+    return stb::Texture2dData::canLoadFromFile(frontPath) &&
+           stb::Texture2dData::canLoadFromFile(backPath) &&
+           stb::Texture2dData::canLoadFromFile(leftPath) &&
+           stb::Texture2dData::canLoadFromFile(rightPath) &&
+           stb::Texture2dData::canLoadFromFile(topPath) &&
+           stb::Texture2dData::canLoadFromFile(bottomPath);
 }
 
 auto stb::CubeTextureData::loadFromFaceFiles(Device *device,
@@ -34,12 +34,12 @@ auto stb::CubeTextureData::loadFromFaceFiles(Device *device,
     const std::string &bottomPath) -> sptr<CubeTextureData>
 {
     auto tex = std::make_shared<stb::CubeTextureData>();
-    tex->faces.push_back(stb::RectTextureData::loadFromFile(device, frontPath));
-    tex->faces.push_back(stb::RectTextureData::loadFromFile(device, backPath));
-    tex->faces.push_back(stb::RectTextureData::loadFromFile(device, leftPath));
-    tex->faces.push_back(stb::RectTextureData::loadFromFile(device, rightPath));
-    tex->faces.push_back(stb::RectTextureData::loadFromFile(device, topPath));
-    tex->faces.push_back(stb::RectTextureData::loadFromFile(device, bottomPath));
+    tex->faces.push_back(stb::Texture2dData::loadFromFile(device, frontPath));
+    tex->faces.push_back(stb::Texture2dData::loadFromFile(device, backPath));
+    tex->faces.push_back(stb::Texture2dData::loadFromFile(device, leftPath));
+    tex->faces.push_back(stb::Texture2dData::loadFromFile(device, rightPath));
+    tex->faces.push_back(stb::Texture2dData::loadFromFile(device, topPath));
+    tex->faces.push_back(stb::Texture2dData::loadFromFile(device, bottomPath));
     
     SL_PANIC_BLOCK(
     {

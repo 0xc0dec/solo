@@ -24,8 +24,8 @@ static auto convertTextureFormat(TextureFormat format) -> VkFormat
     }
 }
 
-vk::RectTexture::RectTexture(Device *device, uint32_t width, uint32_t height, TextureFormat format):
-    solo::RectTexture(width, height, format)
+vk::Texture2d::Texture2d(Device *device, uint32_t width, uint32_t height, TextureFormat format):
+    solo::Texture2d(width, height, format)
 {
     const auto renderer = static_cast<vk::Renderer*>(device->getRenderer());
     image = Image(renderer, width, height, 1, 1, convertTextureFormat(format),
@@ -35,12 +35,12 @@ vk::RectTexture::RectTexture(Device *device, uint32_t width, uint32_t height, Te
         VK_IMAGE_ASPECT_COLOR_BIT);
 }
 
-void vk::RectTexture::generateMipmaps()
+void vk::Texture2d::generateMipmaps()
 {
     // TODO
 }
 
-void vk::RectTexture::setData(const void *data)
+void vk::Texture2d::setData(const void *data)
 {
     // TODO
 }

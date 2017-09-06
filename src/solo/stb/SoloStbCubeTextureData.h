@@ -7,7 +7,7 @@
 
 #include "SoloTextureData.h"
 #include "SoloTexture.h"
-#include "SoloStbRectTextureData.h"
+#include "SoloStbTexture2dData.h"
 
 namespace solo
 {
@@ -47,7 +47,7 @@ namespace solo
             auto getFormat() const -> TextureFormat override final;
 
         private:
-            std::vector<sptr<stb::RectTextureData>> faces;
+            std::vector<sptr<stb::Texture2dData>> faces;
         };
     }
 }

@@ -9,7 +9,7 @@
 
 #ifdef SL_VULKAN_RENDERER
 
-#include "SoloRectTexture.h"
+#include "SoloTexture2d.h"
 #include "SoloVulkanImage.h"
 
 namespace solo
@@ -29,10 +29,10 @@ namespace solo
             Image image;
         };
 
-        class RectTexture final: public solo::RectTexture, public vk::Texture
+        class Texture2d final: public solo::Texture2d, public vk::Texture
         {
         public:
-            RectTexture(Device *device, uint32_t width, uint32_t height, TextureFormat format);
+            Texture2d(Device *device, uint32_t width, uint32_t height, TextureFormat format);
 
             void generateMipmaps() override final;
             void setData(const void *data) override final;

@@ -9,7 +9,7 @@
 #include "SoloMaterial.h"
 #include "SoloTransform.h"
 #include "SoloDevice.h"
-#include "SoloRectTexture.h"
+#include "SoloTexture2d.h"
 #include "SoloRenderCommand.h"
 
 using namespace solo;
@@ -59,8 +59,8 @@ void FontRenderer::setText(const std::string &newText)
     if (newText == text)
         return;
 
-    auto oldLength = text.size();
-    auto newLength = newText.size();
+    const auto oldLength = text.size();
+    const auto newLength = newText.size();
     text = newText;
 
     if (font && newLength > 0)

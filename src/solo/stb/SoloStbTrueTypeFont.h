@@ -26,11 +26,11 @@ namespace solo
                 uint32_t firstChar, uint32_t charCount,
                 uint32_t oversampleX, uint32_t oversampleY);
 
-            auto getAtlas() const -> sptr<RectTexture> override final { return atlas; }
+            auto getAtlas() const -> sptr<Texture2d> override final { return atlas; }
             auto getGlyphInfo(uint32_t character, float offsetX, float offsetY) -> GlyphInfo override final;
 
         private:
-            sptr<RectTexture> atlas;
+            sptr<Texture2d> atlas;
             uint32_t firstChar;
             uptr<stbtt_packedchar[]> charInfo;
         };

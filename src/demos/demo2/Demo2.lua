@@ -59,7 +59,7 @@ mesh:addVertexBuffer(layout, colors, 6)
 
 mesh:addPart({ 0, 1, 2, 3, 4, 5 }, 6)
 
-local tex = sl.RectTexture.create(dev, 100, 100, sl.TextureFormat.RGBA)
+local tex = sl.Texture2d.create(dev, 100, 100, sl.TextureFormat.RGBA)
 local effect = sl.Effect.loadFromFiles(dev, getAssetPath("Triangle.vert.spv"), getAssetPath("Triangle.frag.spv"))
 local material = sl.Material.create(dev, effect)
 material:setFloatParameter("0:0", 12.3)

@@ -15,14 +15,14 @@ namespace solo
 
     namespace stb
     {
-        class RectTextureData final: public solo::RectTextureData
+        class Texture2dData final: public solo::Texture2dData
         {
         public:
             static bool canLoadFromFile(const std::string &path);
-            static auto loadFromFile(Device *device, const std::string &path) -> sptr<RectTextureData>;
+            static auto loadFromFile(Device *device, const std::string &path) -> sptr<Texture2dData>;
 
-            RectTextureData() {}
-            ~RectTextureData();
+            Texture2dData() {}
+            ~Texture2dData();
 
             auto getMipLevels() const -> uint32_t override final { return 1; }
 

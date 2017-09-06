@@ -12,7 +12,7 @@
 
 namespace solo
 {
-    class RectTexture;
+    class Texture2d;
     class Device;
 
     // class because script binding doesn't like structs
@@ -36,7 +36,7 @@ namespace solo
 
         virtual ~Font() {}
 
-        virtual auto getAtlas() const -> sptr<RectTexture> = 0;
+        virtual auto getAtlas() const -> sptr<Texture2d> = 0;
         virtual auto getGlyphInfo(uint32_t character, float offsetX, float offsetY) -> GlyphInfo = 0;
 
     protected:

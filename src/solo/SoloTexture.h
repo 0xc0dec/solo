@@ -11,7 +11,7 @@
 namespace solo
 {
     class Device;
-    class RectTexture;
+    class Texture2d;
     class CubeTexture;
 
     enum class TextureWrapping

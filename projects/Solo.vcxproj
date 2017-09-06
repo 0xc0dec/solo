@@ -23,7 +23,7 @@
     <ClInclude Include="..\src\solo\gl\SoloOpenGLMaterial.h" />
     <ClInclude Include="..\src\solo\gl\SoloOpenGLMesh.h" />
     <ClInclude Include="..\src\solo\gl\SoloOpenGLPrefabShaders.h" />
-    <ClInclude Include="..\src\solo\gl\SoloOpenGLRectTexture.h" />
+    <ClInclude Include="..\src\solo\gl\SoloOpenGLTexture2d.h" />
     <ClInclude Include="..\src\solo\gl\SoloOpenGLRenderer.h" />
     <ClInclude Include="..\src\solo\gl\SoloOpenGLTexture.h" />
     <ClInclude Include="..\src\solo\gl\SoloSDLOpenGLDevice.h" />
@@ -37,7 +37,7 @@
     <ClInclude Include="..\src\solo\null\SoloNullFrameBuffer.h" />
     <ClInclude Include="..\src\solo\null\SoloNullMaterial.h" />
     <ClInclude Include="..\src\solo\null\SoloNullMesh.h" />
-    <ClInclude Include="..\src\solo\null\SoloNullRectTexture.h" />
+    <ClInclude Include="..\src\solo\null\SoloNullTexture2d.h" />
     <ClInclude Include="..\src\solo\null\SoloNullRenderer.h" />
     <ClInclude Include="..\src\solo\sdl\SoloSDLDevice.h" />
     <ClInclude Include="..\src\solo\sdl\SoloSDLInputMaps.h" />
@@ -69,7 +69,7 @@
     <ClInclude Include="..\src\solo\SoloQuaternion.h" />
     <ClInclude Include="..\src\solo\SoloRadian.h" />
     <ClInclude Include="..\src\solo\SoloRay.h" />
-    <ClInclude Include="..\src\solo\SoloRectTexture.h" />
+    <ClInclude Include="..\src\solo\SoloTexture2d.h" />
     <ClInclude Include="..\src\solo\SoloRenderCommand.h" />
     <ClInclude Include="..\src\solo\SoloRenderer.h" />
     <ClInclude Include="..\src\solo\SoloRigidBody.h" />
@@ -86,7 +86,7 @@
     <ClInclude Include="..\src\solo\SoloVector4.h" />
     <ClInclude Include="..\src\solo\SoloVertexFormat.h" />
     <ClInclude Include="..\src\solo\stb\SoloStbCubeTextureData.h" />
-    <ClInclude Include="..\src\solo\stb\SoloStbRectTextureData.h" />
+    <ClInclude Include="..\src\solo\stb\SoloStbTexture2dData.h" />
     <ClInclude Include="..\src\solo\stb\SoloStbTrueTypeFont.h" />
     <ClInclude Include="..\src\solo\vk\SoloSDLVulkanDevice.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkan.h" />
@@ -116,7 +116,7 @@
     <ClCompile Include="..\src\solo\gl\SoloOpenGLMaterial.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLMesh.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLPrefabShaders.cpp" />
-    <ClCompile Include="..\src\solo\gl\SoloOpenGLRectTexture.cpp" />
+    <ClCompile Include="..\src\solo\gl\SoloOpenGLTexture2d.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLRenderer.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLTexture.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloSDLOpenGLDevice.cpp" />
@@ -165,13 +165,13 @@
     <ClCompile Include="..\src\solo\SoloScene.cpp" />
     <ClCompile Include="..\src\solo\SoloEffect.cpp" />
     <ClCompile Include="..\src\solo\SoloTexture.cpp" />
-    <ClCompile Include="..\src\solo\SoloRectTexture.cpp" />
+    <ClCompile Include="..\src\solo\SoloTexture2d.cpp" />
     <ClCompile Include="..\src\solo\SoloTransform.cpp" />
     <ClCompile Include="..\src\solo\SoloVector2.cpp" />
     <ClCompile Include="..\src\solo\SoloVector3.cpp" />
     <ClCompile Include="..\src\solo\SoloVector4.cpp" />
     <ClCompile Include="..\src\solo\stb\SoloStbCubeTextureData.cpp" />
-    <ClCompile Include="..\src\solo\stb\SoloStbRectTextureData.cpp" />
+    <ClCompile Include="..\src\solo\stb\SoloStbTexture2dData.cpp" />
     <ClCompile Include="..\src\solo\stb\SoloStbTrueTypeFont.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloSDLVulkanDevice.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloVulkan.cpp" />

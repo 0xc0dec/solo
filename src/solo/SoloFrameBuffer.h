@@ -12,7 +12,7 @@
 namespace solo
 {
     class Device;
-    class RectTexture;
+    class Texture2d;
 
     class FrameBuffer
     {
@@ -23,7 +23,7 @@ namespace solo
 
         virtual ~FrameBuffer() {}
 
-        virtual void setAttachments(const std::vector<sptr<RectTexture>> &attachments) = 0;
+        virtual void setAttachments(const std::vector<sptr<Texture2d>> &attachments) = 0;
 
         auto getDimensions() const -> Vector2 { return dimensions; }
 

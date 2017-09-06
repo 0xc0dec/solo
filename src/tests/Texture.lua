@@ -3,9 +3,9 @@
 -- MIT license
 -- 
 
-assert(sl.RectTexture.loadFromFile)
+assert(sl.Texture2d.loadFromFile)
 
-local rectTex = sl.RectTexture.create(sl.device, 1, 1, sl.TextureFormat.RGB)
+local rectTex = sl.Texture2d.create(sl.device, 1, 1, sl.TextureFormat.RGB)
 
 rectTex:generateMipmaps()
 

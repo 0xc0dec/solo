@@ -4,15 +4,15 @@
 */
 
 #include "SoloTextureData.h"
-#include "stb/SoloStbRectTextureData.h"
+#include "stb/SoloStbTexture2dData.h"
 #include "stb/SoloStbCubeTextureData.h"
 
 using namespace solo;
 
-auto RectTextureData::loadFromFile(Device *device, const std::string &path) -> sptr<RectTextureData>
+auto Texture2dData::loadFromFile(Device *device, const std::string &path) -> sptr<Texture2dData>
 {
-    if (stb::RectTextureData::canLoadFromFile(path))
-        return stb::RectTextureData::loadFromFile(device, path);
+    if (stb::Texture2dData::canLoadFromFile(path))
+        return stb::Texture2dData::loadFromFile(device, path);
     SL_PANIC("Unsupported cube texture file ", path);
     return nullptr;
 }

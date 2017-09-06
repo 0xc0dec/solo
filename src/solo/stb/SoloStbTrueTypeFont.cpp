@@ -4,7 +4,7 @@
 */
 
 #include "SoloStbTrueTypeFont.h"
-#include "SoloRectTexture.h"
+#include "SoloTexture2d.h"
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
 #include "SoloStringUtils.h"
@@ -29,7 +29,7 @@ stb::TrueTypeFont::TrueTypeFont(Device *device, uint8_t *fontData, uint32_t size
     stbtt_PackFontRange(&context, fontData, 0, static_cast<float>(size), firstChar, charCount, charInfo.get());
     stbtt_PackEnd(&context);
 
-    atlas = RectTexture::create(device, atlasWidth, atlasHeight, TextureFormat::Red);
+    atlas = Texture2d::create(device, atlasWidth, atlasHeight, TextureFormat::Red);
     atlas->setFiltering(TextureFiltering::Linear);
     atlas->setData(pixels.get());
     atlas->generateMipmaps();
