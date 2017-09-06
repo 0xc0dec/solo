@@ -89,6 +89,32 @@ void vk::Material::setFloatParameter(const std::string &name, float value)
     SET_UNIFORM_PARAM(&value);
 }
 
+auto vk::Material::getCullModeFlags() const -> VkCullModeFlags
+{
+    switch (faceCull)
+    {
+        case FaceCull::All: return VK_CULL_MODE_NONE;
+        case FaceCull::CW: return VK_CULL_MODE_FRONT_BIT;
+        case FaceCull::CCW: return VK_CULL_MODE_BACK_BIT;
+        default:
+            SL_PANIC("Unsupported face cull mode");
+            return VK_FRONT_FACE_CLOCKWISE;
+    }
+}
+
+auto vk::Material::getPolygonMode() const -> VkPolygonMode
+{
+    switch (polygonMode)
+    {
+        case PolygonMode::Points: return VK_POLYGON_MODE_POINT;
+        case PolygonMode::Triangle: return VK_POLYGON_MODE_FILL;
+        case PolygonMode::Wireframe: return VK_POLYGON_MODE_LINE;
+        default:
+            SL_PANIC("Unsupported polygon mode");
+            return VK_POLYGON_MODE_FILL;
+    }
+}
+
 void vk::Material::setFloatArrayParameter(const std::string &name, const std::vector<float> &value)
 {
     const auto size = sizeof(float) * value.size();

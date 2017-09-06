@@ -39,12 +39,12 @@ namespace solo
             auto getPrimitiveType() const -> PrimitiveType override final;
             void setPrimitiveType(PrimitiveType type) override final;
 
-            auto getVertexBufferCount() const -> uint32_t;
-            auto getVertexBufferLayout(uint32_t index) const -> VertexBufferLayout;
-            auto getVertexBuffer(uint32_t index) const -> VkBuffer;
-            auto getPartBuffer(uint32_t index) const -> VkBuffer;
-            auto getPartIndexElementCount(uint32_t index) const -> uint32_t;
-            auto getMinVertexCount() const -> uint32_t;
+            auto getVertexBufferCount() const -> uint32_t { return vertexBuffers.size(); }
+            auto getVertexBufferLayout(uint32_t index) const -> VertexBufferLayout { return layouts.at(index); }
+            auto getVertexBuffer(uint32_t index) const -> VkBuffer { return vertexBuffers.at(index).getHandle(); }
+            auto getPartBuffer(uint32_t index) const -> VkBuffer { return indexBuffers.at(index).getHandle(); }
+            auto getPartIndexElementCount(uint32_t index) const -> uint32_t { return indexElementCounts.at(index); }
+            auto getMinVertexCount() const -> uint32_t { return minVertexCount; }
 
         private:
             Renderer *renderer = nullptr;
@@ -58,36 +58,6 @@ namespace solo
 
             void updateMinVertexCount();
         };
-
-        inline auto Mesh::getVertexBufferLayout(uint32_t index) const -> VertexBufferLayout
-        {
-            return layouts.at(index);
-        }
-
-        inline auto Mesh::getVertexBuffer(uint32_t index) const -> VkBuffer
-        {
-            return vertexBuffers.at(index).getHandle();
-        }
-
-        inline auto Mesh::getVertexBufferCount() const -> uint32_t
-        {
-            return vertexBuffers.size();
-        }
-
-        inline auto Mesh::getPartBuffer(uint32_t index) const -> VkBuffer
-        {
-            return indexBuffers.at(index).getHandle();
-        }
-
-        inline auto Mesh::getMinVertexCount() const -> uint32_t
-        {
-            return minVertexCount;
-        }
-
-        inline auto Mesh::getPartIndexElementCount(uint32_t index) const -> uint32_t
-        {
-            return indexElementCounts.at(index);
-        }
     }
 }
 

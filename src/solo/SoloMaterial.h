@@ -24,7 +24,7 @@ namespace solo
 
     enum class FaceCull
     {
-        All = 0,
+        All = 0, // TODO rename to None
         CW,
         CCW
     };

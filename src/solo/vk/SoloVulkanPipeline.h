@@ -20,14 +20,11 @@ namespace solo
         {
         public:
             PipelineConfig(VkShaderModule vertexShader, VkShaderModule fragmentShader);
-
-            ~PipelineConfig()
-            {
-            }
+            ~PipelineConfig(){}
 
             auto withVertexAttribute(uint32_t location, uint32_t binding, VkFormat format, uint32_t offset) -> PipelineConfig&;
             auto withVertexBinding(uint32_t binding, uint32_t stride, VkVertexInputRate inputRate) -> PipelineConfig&;
-            auto withVertexBufferLayout(const VertexBufferLayout &layout) -> PipelineConfig&; // TODO rename
+            auto withVertexBufferLayout(uint32_t binding, const VertexBufferLayout &layout) -> PipelineConfig&; // TODO rename
 
             auto withDescriptorSetLayout(VkDescriptorSetLayout layout) -> PipelineConfig&;
 
@@ -40,6 +37,7 @@ namespace solo
                 VkBlendFactor srcAlphaFactor, VkBlendFactor dstAlphaFactor) -> PipelineConfig&;
 
             auto withTopology(VkPrimitiveTopology topology) -> PipelineConfig&;
+            auto withPolygonMode(VkPolygonMode mode) -> PipelineConfig&;
 
         private:
             friend class Pipeline;
@@ -82,6 +80,30 @@ namespace solo
         inline auto PipelineConfig::withTopology(VkPrimitiveTopology topology) -> PipelineConfig&
         {
             this->topology = topology;
+            return *this;
+        }
+
+        inline auto PipelineConfig::withPolygonMode(VkPolygonMode mode) -> PipelineConfig&
+        {
+            rasterStateInfo.polygonMode = mode;
+            return *this;
+        }
+
+        inline auto PipelineConfig::withDescriptorSetLayout(VkDescriptorSetLayout layout) -> PipelineConfig&
+        {
+            descSetLayouts.push_back(layout);
+            return *this;
+        }
+
+        inline auto PipelineConfig::withFrontFace(VkFrontFace frontFace) -> PipelineConfig&
+        {
+            rasterStateInfo.frontFace = frontFace;
+            return *this;
+        }
+
+        inline auto PipelineConfig::withCullMode(VkCullModeFlags cullFlags) -> PipelineConfig&
+        {
+            rasterStateInfo.cullMode = cullFlags;
             return *this;
         }
     }

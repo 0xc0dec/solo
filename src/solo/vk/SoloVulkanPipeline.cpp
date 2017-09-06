@@ -7,6 +7,8 @@
 
 #ifdef SL_VULKAN_RENDERER
 
+#include "SoloMaterial.h"
+
 using namespace solo;
 using namespace vk;
 
@@ -48,8 +50,8 @@ Pipeline::Pipeline(VkDevice device, VkRenderPass renderPass, const PipelineConfi
     colorBlendState.blendConstants[2] = 0;
     colorBlendState.blendConstants[3] = 0;
 
-    auto vertexShaderStageInfo = createShaderStageInfo(true, config.vertexShader, "main");
-    auto fragmentShaderStageInfo = createShaderStageInfo(false, config.fragmentShader, "main");
+    const auto vertexShaderStageInfo = createShaderStageInfo(true, config.vertexShader, "main");
+    const auto fragmentShaderStageInfo = createShaderStageInfo(false, config.fragmentShader, "main");
 
     std::vector<VkPipelineShaderStageCreateInfo> shaderStageStates{vertexShaderStageInfo, fragmentShaderStageInfo};
 
@@ -173,9 +175,9 @@ auto PipelineConfig::withVertexBinding(uint32_t binding, uint32_t stride, VkVert
     return *this;
 }
 
-auto PipelineConfig::withVertexBufferLayout(const VertexBufferLayout &layout) -> PipelineConfig&
+auto PipelineConfig::withVertexBufferLayout(uint32_t binding, const VertexBufferLayout &layout) -> PipelineConfig&
 {
-    withVertexBinding(0, layout.getSize(), VK_VERTEX_INPUT_RATE_VERTEX);
+    withVertexBinding(binding, layout.getSize(), VK_VERTEX_INPUT_RATE_VERTEX);
 
     for (auto i = 0; i < layout.getAttributeCount(); i++)
     {
@@ -195,27 +197,11 @@ auto PipelineConfig::withVertexBufferLayout(const VertexBufferLayout &layout) ->
                 SL_PANIC("Unsupported vertex attribute size");
                 break;
         }
-        withVertexAttribute(i, 0, vkFormat, layout.getAttribute(i).offset);
+
+        const auto attr = layout.getAttribute(i);
+        withVertexAttribute(attr.location, binding, vkFormat, attr.offset);
     }
 
-    return *this;
-}
-
-auto PipelineConfig::withDescriptorSetLayout(VkDescriptorSetLayout layout) -> PipelineConfig&
-{
-    descSetLayouts.push_back(layout);
-    return *this;
-}
-
-auto PipelineConfig::withFrontFace(VkFrontFace frontFace) -> PipelineConfig&
-{
-    rasterStateInfo.frontFace = frontFace;
-    return *this;
-}
-
-auto PipelineConfig::withCullMode(VkCullModeFlags cullFlags) -> PipelineConfig&
-{
-    rasterStateInfo.cullMode = cullFlags;
     return *this;
 }
 

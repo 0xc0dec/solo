@@ -60,6 +60,10 @@ namespace solo
             void bindCameraWorldPositionParameter(const std::string &name) override final;
 
             void applyParameters(Renderer *renderer);
+            auto getDescSetLayout() const -> VkDescriptorSetLayout { return descSetLayout; }
+            auto getDescSet() const -> VkDescriptorSet { return descSet; }
+            auto getCullModeFlags() const -> VkCullModeFlags;
+            auto getPolygonMode() const -> VkPolygonMode;
 
         private:
             DescriptorPool descPool;

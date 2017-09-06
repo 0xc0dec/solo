@@ -243,28 +243,37 @@ void vk::Renderer::endFrame()
                     if (!currentMaterial)
                         continue;
 
-                    const auto mesh = static_cast<vk::Mesh*>(cmd.mesh.mesh);
+                    const auto mesh = static_cast<vk::Mesh*>(cmd.meshPart.mesh);
                     auto &renderPass = swapchain.getRenderPass();
                     auto vs = currentEffect->getVertexShader();
                     auto fs = currentEffect->getFragmentShader();
 
-                    pipelines.emplace_back(
-                        device, renderPass, vk::PipelineConfig(vs, fs)
-                        //.withDescriptorSetLayout(descSetLayout)
-                        /*.withFrontFace(VK_FRONT_FACE_CLOCKWISE)
-                        .withCullMode(VK_CULL_MODE_NONE)
-                        .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST)*/
-                        //.withVertexFormat(data.getFormat()));
-                    );
+                    auto pipelineConfig = vk::PipelineConfig(vs, fs)
+                        .withDescriptorSetLayout(currentMaterial->getDescSetLayout())
+                        .withFrontFace(VK_FRONT_FACE_CLOCKWISE)
+                        .withCullMode(currentMaterial->getCullModeFlags())
+                        .withPolygonMode(currentMaterial->getPolygonMode())
+                        .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 
-                    //VkBuffer vertexBuffer = this->vertexBuffer;
+                    for (int32_t binding = 0; binding < mesh->getVertexBufferCount(); binding++)
+                        pipelineConfig.withVertexBufferLayout(binding, mesh->getVertexBufferLayout(binding));
+
+                    pipelines.emplace_back(device, renderPass, pipelineConfig);
+
                     VkDeviceSize vertexBufferOffset = 0;
-                    //std::vector<VkDescriptorSet> descSets = {globalDescSet, descSet};
+                    VkDescriptorSet descSet = currentMaterial->getDescSet();
                     vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipelines.rbegin());
-                    //vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline.getLayout(), 0, 2, descSets.data(), 0, nullptr);
-                    /*vkCmdBindVertexBuffers(buf, 0, 1, &vertexBuffer, &vertexBufferOffset);
-                    vkCmdBindIndexBuffer(buf, indexBuffer, 0, VK_INDEX_TYPE_UINT32);
-                    vkCmdDrawIndexed(buf, indexCount, 1, 0, 0, 0);*/
+                    vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelines.rbegin()->getLayout(), 0, 1, &descSet, 0, nullptr);
+                    
+                    for (uint32_t i = 0; i < mesh->getVertexBufferCount(); i++)
+                    {
+                        auto vertexBuffer = mesh->getVertexBuffer(i);
+                        vkCmdBindVertexBuffers(buf, i, 1, &vertexBuffer, &vertexBufferOffset);
+                    }
+                    
+                    auto indexBuffer = mesh->getPartBuffer(cmd.meshPart.part);
+                    vkCmdBindIndexBuffer(buf, indexBuffer, 0, VK_INDEX_TYPE_UINT16);
+                    vkCmdDrawIndexed(buf, mesh->getPartIndexElementCount(cmd.meshPart.part), 1, 0, 0, 0);
 
                     break;
                 }
