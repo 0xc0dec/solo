@@ -12,6 +12,7 @@
 #include "SoloVulkanRenderer.h"
 #include "SoloVulkanDescriptorSetLayoutBuilder.h"
 #include "SoloVulkanDescriptorSetUpdater.h"
+#include "SoloVulkanTexture.h"
 
 using namespace solo;
 
@@ -126,8 +127,26 @@ void vk::Material::setMatrixArrayParameter(const std::string &name, const std::v
 {
 }
 
-void vk::Material::setTextureParameter(const std::string &name, sptr<Texture> value)
+void vk::Material::setTextureParameter(const std::string &name, sptr<solo::Texture> value)
 {
+    auto parsedName = parseName(name); 
+    const int32_t bindingIndex = std::get<0>(parsedName); 
+
+    if (bindings.count(bindingIndex) == 0) 
+    { 
+        bindings[bindingIndex]; 
+        dirtyLayout = true; 
+    } 
+
+    auto &binding = bindings.at(bindingIndex); 
+    SL_PANIC_IF(binding.buffer, "Parameter already has different type");
+
+    const auto vkTex = std::dynamic_pointer_cast<vk::Texture>(value);
+    if (binding.texture != vkTex) 
+    { 
+        binding.texture = vkTex;
+        dirtyLayout = true; 
+    } 
 }
 
 void vk::Material::bindWorldMatrixParameter(const std::string &name)
@@ -218,7 +237,11 @@ void vk::Material::applyParameters(Renderer *renderer)
             if (b.second.buffer) // TODO how's this buffer-to-bool comparison supposed to work?
                 updater.forUniformBuffer(b.first, descSet, b.second.buffer, 0, b.second.buffer.getSize());
             else if (b.second.texture)
-                updater.forTexture(b.first, descSet, VK_NULL_HANDLE, VK_NULL_HANDLE, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+            {
+                updater.forTexture(b.first, descSet,
+                    b.second.texture->getView(), b.second.texture->getSampler(),
+                    VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+            }
         }
 
         updater.updateSets();
@@ -226,6 +249,7 @@ void vk::Material::applyParameters(Renderer *renderer)
         dirtyLayout = false;
     }
 
+    // Update uniform buffers
     for (auto &b : bindings)
     {
         if (!b.second.dirtyData || !b.second.buffer) // TODO how's this buffer-to-bool comparison supposed to work?

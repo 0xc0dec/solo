@@ -26,7 +26,6 @@ namespace solo
             void setData(const void *data) override final;
             void bind() override final;
             void generateMipmaps() override final;
-            
         };
     }
 }

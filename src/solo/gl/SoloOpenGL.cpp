@@ -44,8 +44,6 @@ auto gl::toInternalTextureFormat(TextureFormat format) -> GLenum
             return GL_RGB;
         case TextureFormat::RGBA:
             return GL_RGBA;
-        case TextureFormat::Alpha:
-            return GL_ALPHA;
         default:
             SL_PANIC("Unknown image format");
             return GL_RGB;
@@ -62,8 +60,6 @@ auto gl::toTextureFormat(TextureFormat format) -> GLenum
             return GL_RGB;
         case TextureFormat::RGBA:
             return GL_RGBA;
-        case TextureFormat::Alpha:
-            return GL_ALPHA;
         default:
             SL_PANIC("Unknown image format");
             return GL_RED;

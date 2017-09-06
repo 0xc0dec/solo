@@ -24,6 +24,7 @@ namespace solo
     namespace vk
     {
         class Renderer;
+        class Texture;
 
         class Material final: public solo::Material
         {
@@ -46,7 +47,7 @@ namespace solo
             void setMatrixParameter(const std::string &name, const Matrix &value) override final;
             void setMatrixArrayParameter(const std::string &name, const std::vector<Matrix> &value) override final;
             
-            void setTextureParameter(const std::string &name, sptr<Texture> value) override final;
+            void setTextureParameter(const std::string &name, sptr<solo::Texture> value) override final;
             
             void bindWorldMatrixParameter(const std::string &name) override final;
             void bindViewMatrixParameter(const std::string &name) override final;
@@ -76,9 +77,8 @@ namespace solo
                 std::vector<UniformBufferItem> bufferItems;
                 uint32_t bufferSize;
                 Buffer buffer;
-                void *texture;
+                sptr<vk::Texture> texture;
                 bool dirtyData;
-                // TODO texture pointer here
             };
 
             std::unordered_map<uint32_t, Binding> bindings;

@@ -4,7 +4,7 @@ assert(sl.TransformSpace.World ~= nil)
 
 assert(sl.TextureWrapping.Clamp ~= nil)
 assert(sl.TextureWrapping.Repeat ~= nil)
-assert(sl.TextureFormat.Alpha ~= nil)
+
 assert(sl.TextureFormat.RGB ~= nil)
 assert(sl.TextureFormat.RGBA ~= nil)
 assert(sl.TextureFormat.Red ~= nil)

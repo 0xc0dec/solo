@@ -65,9 +65,8 @@ namespace solo
     enum class TextureFormat
     {
         Red,
-        RGB,
-        RGBA,
-        Alpha
+        RGB, // Not supported in Vulkan (my driver doesn't like it)
+        RGBA
     };
 
     class Texture

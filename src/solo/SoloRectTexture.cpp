@@ -7,6 +7,7 @@
 #include "SoloDevice.h"
 #include "SoloTextureData.h"
 #include "gl/SoloOpenGLRectTexture.h"
+#include "vk/SoloVulkanTexture.h"
 #include "null/SoloNullRectTexture.h"
 
 using namespace solo;
@@ -26,6 +27,10 @@ sptr<RectTexture> RectTexture::create(Device *device, uint32_t width, uint32_t h
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
             return std::make_shared<gl::RectTexture>(width, height, format);
+#endif
+#ifdef SL_VULKAN_RENDERER
+        case DeviceMode::Vulkan:
+            return std::make_shared<vk::RectTexture>(device, width, height, format);
 #endif
         default:
             return std::make_shared<null::RectTexture>(width, height, format);

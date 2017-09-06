@@ -17,12 +17,8 @@ static auto toVulkanFormat(TextureFormat format) -> VkFormat
 {
     switch (format)
     {
-        case TextureFormat::RGB:
-            return VK_FORMAT_R8G8B8_UNORM;
-        case TextureFormat::RGBA:
-            return VK_FORMAT_R8G8B8A8_UNORM;
-        case TextureFormat::Red:
-            return VK_FORMAT_R8_UNORM;
+        case TextureFormat::RGBA: return VK_FORMAT_R8G8B8A8_UNORM; // since my driver seems not liking 24-bit
+        case TextureFormat::Red: return VK_FORMAT_R8_UNORM;
         default:
             SL_PANIC("Unsupported image format");
             return VK_FORMAT_UNDEFINED;

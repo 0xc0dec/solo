@@ -59,16 +59,19 @@ mesh:addVertexBuffer(layout, colors, 6)
 
 mesh:addPart({ 0, 1, 2, 3, 4, 5 }, 6)
 
-camera = initMainCamera()
+local tex = sl.RectTexture.create(dev, 100, 100, sl.TextureFormat.RGBA)
 local effect = sl.Effect.loadFromFiles(dev, getAssetPath("Triangle.vert.spv"), getAssetPath("Triangle.frag.spv"))
 local material = sl.Material.create(dev, effect)
+material:setFloatParameter("0:0", 12.3)
+material:setFloatArrayParameter("0:1", {1, 2, 3})
+material:setTextureParameter("1", tex)
+
+camera = initMainCamera()
+
 local node = scene:createNode()
 local meshRenderer = node:addComponent("MeshRenderer")
 meshRenderer:setMesh(mesh)
 meshRenderer:setMaterial(0, material)
-
-material:setFloatParameter("12:34", 12.3)
-material:setFloatArrayParameter("0:1", {1, 2, 3})
 
 function keepRunning()
     return not dev:isQuitRequested() and

@@ -27,6 +27,8 @@
 
 namespace solo
 {
+    enum class TextureFormat;
+
     namespace vk
     {
         auto createSemaphore(VkDevice device) -> Resource<VkSemaphore>;
