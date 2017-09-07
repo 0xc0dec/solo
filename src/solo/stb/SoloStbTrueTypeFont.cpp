@@ -4,7 +4,7 @@
 */
 
 #include "SoloStbTrueTypeFont.h"
-#include "SoloTexture2d.h"
+#include "SoloTexture.h"
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
 #include "SoloStringUtils.h"

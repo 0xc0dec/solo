@@ -9,7 +9,7 @@
 
 #ifdef SL_VULKAN_RENDERER
 
-#include "SoloTexture2d.h"
+#include "SoloTexture.h"
 #include "SoloVulkanImage.h"
 
 namespace solo

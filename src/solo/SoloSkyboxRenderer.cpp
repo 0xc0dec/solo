@@ -6,7 +6,7 @@
 #include "SoloSkyboxRenderer.h"
 #include "SoloMesh.h"
 #include "SoloMaterial.h"
-#include "SoloCubeTexture.h"
+#include "SoloTexture.h"
 #include "SoloTransform.h"
 #include "SoloDevice.h"
 #include "SoloRenderCommand.h"

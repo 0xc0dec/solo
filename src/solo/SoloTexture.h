@@ -6,6 +6,7 @@
 #pragma once
 
 #include "SoloCommon.h"
+#include "SoloVector2.h"
 #include <vector>
 
 namespace solo
@@ -13,6 +14,7 @@ namespace solo
     class Device;
     class Texture2d;
     class CubeTexture;
+    class CubeTextureData;
 
     enum class TextureWrapping
     {
@@ -111,34 +113,55 @@ namespace solo
         virtual void rebuildFlags();
     };
 
-    inline void Texture::setVerticalWrapping(TextureWrapping wrap)
+    class Texture2d: public Texture
     {
-        verticalWrapping = wrap;
-        rebuildFlags();
-    }
+    public:
+        static auto loadFromFile(Device *device, const std::string &path) -> sptr<Texture2d>;
+        static sptr<Texture2d> create(Device *device, uint32_t width, uint32_t height, TextureFormat format);
 
-    inline void Texture::setHorizontalWrapping(TextureWrapping wrap)
-    {
-        horizontalWrapping = wrap;
-        rebuildFlags();
-    }
+        virtual void setData(const void *data) = 0;
 
-    inline void Texture::setMinFiltering(TextureFiltering filtering)
-    {
-        minFiltering = filtering;
-        rebuildFlags();
-    }
+        auto getDimensions() const -> Vector2 { return dimensions; }
 
-    inline void Texture::setMagFiltering(TextureFiltering filtering)
-    {
-        magFiltering = filtering;
-        rebuildFlags();
-    }
+    protected:
+        Texture2d(uint32_t width, uint32_t height, TextureFormat format);
 
-    inline void Texture::setFiltering(TextureFiltering filtering)
+        TextureFormat format;
+        Vector2 dimensions;
+    };
+
+    class CubeTexture: public Texture
     {
-        minFiltering = filtering;
-        magFiltering = filtering;
+    public:
+        static auto loadFromFaceFiles(Device *device,
+            const std::string &frontPath,
+            const std::string &backPath,
+            const std::string &leftPath,
+            const std::string &rightPath,
+            const std::string &topPath,
+            const std::string &bottomPath) -> sptr<CubeTexture>;
+        static auto create(Device *device, uint32_t dimension, TextureFormat format) -> sptr<CubeTexture>;
+
+        void setWrapping(TextureWrapping wrapping) override final;
+
+        auto getDepthWrapping() const -> TextureWrapping { return depthWrapping; }
+        void setDepthWrapping(TextureWrapping depthWrap);
+
+    protected:
+        TextureWrapping depthWrapping = TextureWrapping::Repeat;
+        uint32_t dimension = 0;
+        TextureFormat format = TextureFormat::RGB;
+
+        CubeTexture(uint32_t dimension, TextureFormat format);
+
+        virtual void setData(CubeTextureData *data) = 0;
+
+        void rebuildFlags() override final;
+    };
+
+    inline void CubeTexture::setDepthWrapping(TextureWrapping wrapping)
+    {
+        this->depthWrapping = wrapping;
         rebuildFlags();
     }
 }

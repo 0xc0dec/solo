@@ -4,8 +4,7 @@
 */
 
 #include "SoloTextureData.h"
-#include "stb/SoloStbTexture2dData.h"
-#include "stb/SoloStbCubeTextureData.h"
+#include "stb/SoloStbTextureData.h"
 
 using namespace solo;
 

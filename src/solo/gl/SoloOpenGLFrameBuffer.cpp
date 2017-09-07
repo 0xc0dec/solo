@@ -8,8 +8,7 @@
 #ifdef SL_OPENGL_RENDERER
 
 #include "SoloDevice.h"
-#include "SoloTexture2d.h"
-#include "SoloOpenGLTexture2d.h"
+#include "SoloOpenGLTexture.h"
 #include <algorithm>
 
 using namespace solo;

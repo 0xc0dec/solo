@@ -4,8 +4,7 @@
 */
 
 #include "SoloTexture.h"
-#include "SoloTexture2d.h"
-#include "SoloCubeTexture.h"
+#include "SoloTexture.h"
 #include "SoloLuaCommon.h"
 
 using namespace solo;
