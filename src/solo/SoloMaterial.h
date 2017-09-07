@@ -22,7 +22,7 @@ namespace solo
     class Camera;
     class Transform;
 
-    enum class FaceCull
+    enum class FaceCull // TODO Rename, currently its logic is inverted
     {
         All = 0, // TODO rename to None
         CW,
