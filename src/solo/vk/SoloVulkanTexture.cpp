@@ -9,6 +9,7 @@
 
 #include "SoloDevice.h"
 #include "SoloVulkanRenderer.h"
+#include "SoloTextureData.h"
 
 using namespace solo;
 
@@ -24,23 +25,14 @@ static auto convertTextureFormat(TextureFormat format) -> VkFormat
     }
 }
 
-vk::Texture2d::Texture2d(Device *device, uint32_t width, uint32_t height, TextureFormat format):
-    solo::Texture2d(width, height, format)
+vk::Texture2d::Texture2d(Device *device, Texture2dData *data):
+    solo::Texture2d(data)
 {
     const auto renderer = static_cast<vk::Renderer*>(device->getRenderer());
-    image = Image(renderer, width, height, 1, 1, convertTextureFormat(format),
-        0,
-        VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
-        VK_IMAGE_VIEW_TYPE_2D,
-        VK_IMAGE_ASPECT_COLOR_BIT);
+    image = Image::create2d(renderer, data);
 }
 
 void vk::Texture2d::generateMipmaps()
-{
-    // TODO
-}
-
-void vk::Texture2d::setData(const void *data)
 {
     // TODO
 }

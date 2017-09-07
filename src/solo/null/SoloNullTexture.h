@@ -14,24 +14,17 @@ namespace solo
         class Texture2d final: public solo::Texture2d
         {
         public:
-            Texture2d(uint32_t width, uint32_t height, TextureFormat format): solo::Texture2d(width, height, format) {}
+            Texture2d(Texture2dData *data): solo::Texture2d(data) {}
 
             void generateMipmaps() override final {}
-            void setData(const void *data) override final {}
         };
 
         class CubeTexture final : public solo::CubeTexture
         {
         public:
-            CubeTexture(uint32_t dimension, TextureFormat format):
-                solo::CubeTexture(dimension, format)
-            {
-            }
-
+            CubeTexture(CubeTextureData *data): solo::CubeTexture(data) {}
+                
             void generateMipmaps() override final {}
-
-        protected:
-            void setData(CubeTextureData *data) override final {}
         };
     }
 }

@@ -131,6 +131,11 @@ auto stb::CubeTextureData::getSize(uint32_t face, uint32_t mipLevel) const -> ui
     return faces[face]->getSize(mipLevel);
 }
 
+auto stb::CubeTextureData::getDimension() const -> uint32_t
+{
+    return faces[0]->getWidth();
+}
+
 auto stb::CubeTextureData::getDimension(unsigned mipLevel) const -> uint32_t
 {
     return faces[0]->getWidth(mipLevel);

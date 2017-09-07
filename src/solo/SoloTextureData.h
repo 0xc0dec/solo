@@ -18,6 +18,7 @@ namespace solo
     {
     public:
         static auto loadFromFile(Device *device, const std::string &path) -> sptr<Texture2dData>;
+        static auto createFromMemory(uint32_t width, uint32_t height, TextureFormat format, const std::vector<uint8_t> &data) -> sptr<Texture2dData>;
 
         SL_DISABLE_COPY_AND_MOVE(Texture2dData)
         virtual ~Texture2dData() {}
@@ -60,6 +61,7 @@ namespace solo
         virtual auto getSize(uint32_t mipLevel) const -> uint32_t = 0;
         virtual auto getSize(uint32_t face, uint32_t mipLevel) const -> uint32_t = 0;
 
+        virtual auto getDimension() const -> uint32_t = 0;
         virtual auto getDimension(uint32_t mipLevel) const -> uint32_t = 0;
 
         virtual auto getData() const -> const void* = 0;

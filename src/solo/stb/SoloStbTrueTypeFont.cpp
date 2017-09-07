@@ -8,6 +8,7 @@
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
 #include "SoloStringUtils.h"
+#include "SoloTextureData.h"
 #define STB_TRUETYPE_IMPLEMENTATION
 #include <stb_truetype.h>
 
@@ -19,19 +20,20 @@ stb::TrueTypeFont::TrueTypeFont(Device *device, uint8_t *fontData, uint32_t size
 {
     charInfo = std::make_unique<stbtt_packedchar[]>(charCount);
 
-    auto pixels = std::make_unique<uint8_t[]>(atlasWidth * atlasHeight);
+    std::vector<uint8_t> pixels;
+    pixels.resize(atlasWidth * atlasHeight);
 
     stbtt_pack_context context;
-    auto ret = stbtt_PackBegin(&context, pixels.get(), atlasWidth, atlasHeight, 0, 1, nullptr);
+    auto ret = stbtt_PackBegin(&context, pixels.data(), atlasWidth, atlasHeight, 0, 1, nullptr);
     SL_PANIC_IF(!ret)
 
     stbtt_PackSetOversampling(&context, oversampleX, oversampleY);
     stbtt_PackFontRange(&context, fontData, 0, static_cast<float>(size), firstChar, charCount, charInfo.get());
     stbtt_PackEnd(&context);
 
-    atlas = Texture2d::create(device, atlasWidth, atlasHeight, TextureFormat::Red);
+    auto data = Texture2dData::createFromMemory(atlasWidth, atlasHeight, TextureFormat::Red, pixels);
+    atlas = Texture2d::createFromData(device, data.get());
     atlas->setFiltering(TextureFiltering::Linear);
-    atlas->setData(pixels.get());
     atlas->generateMipmaps();
 }
 

@@ -5,7 +5,7 @@
 
 assert(sl.Texture2d.loadFromFile)
 
-local rectTex = sl.Texture2d.create(sl.device, 1, 1, sl.TextureFormat.RGB)
+local rectTex = sl.Texture2d.createEmpty(sl.device, 1, 1, sl.TextureFormat.RGB)
 
 rectTex:generateMipmaps()
 
@@ -28,9 +28,9 @@ rectTex:setAnisotropyLevel(1)
 
 assert(rectTex:getDimensions())
 
+-- Cube textures are currently only loadable from files
+-- assert(sl.CubeTexture.loadFromFaceFiles)
+-- local cubeTex = sl.CubeTexture.create(sl.device, 1, sl.TextureFormat.RGB)
 
-assert(sl.CubeTexture.loadFromFaceFiles)
-local cubeTex = sl.CubeTexture.create(sl.device, 1, sl.TextureFormat.RGB)
-
-assert(cubeTex:getDepthWrapping())
-cubeTex:setDepthWrapping(sl.TextureWrapping.Clamp)
+-- assert(cubeTex:getDepthWrapping())
+-- cubeTex:setDepthWrapping(sl.TextureWrapping.Clamp)

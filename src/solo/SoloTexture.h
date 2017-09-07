@@ -13,6 +13,7 @@ namespace solo
 {
     class Device;
     class Texture2d;
+    class Texture2dData;
     class CubeTexture;
     class CubeTextureData;
 
@@ -117,14 +118,13 @@ namespace solo
     {
     public:
         static auto loadFromFile(Device *device, const std::string &path) -> sptr<Texture2d>;
-        static sptr<Texture2d> create(Device *device, uint32_t width, uint32_t height, TextureFormat format);
-
-        virtual void setData(const void *data) = 0;
+        static auto createFromData(Device *device, Texture2dData *data) -> sptr<Texture2d>;
+        static auto createEmpty(Device *device, uint32_t width, uint32_t height, TextureFormat format) -> sptr<Texture2d>;
 
         auto getDimensions() const -> Vector2 { return dimensions; }
 
     protected:
-        Texture2d(uint32_t width, uint32_t height, TextureFormat format);
+        Texture2d(Texture2dData *data);
 
         TextureFormat format;
         Vector2 dimensions;
@@ -140,7 +140,7 @@ namespace solo
             const std::string &rightPath,
             const std::string &topPath,
             const std::string &bottomPath) -> sptr<CubeTexture>;
-        static auto create(Device *device, uint32_t dimension, TextureFormat format) -> sptr<CubeTexture>;
+        static auto create(Device *device, CubeTextureData *data) -> sptr<CubeTexture>;
 
         void setWrapping(TextureWrapping wrapping) override final;
 
@@ -152,9 +152,7 @@ namespace solo
         uint32_t dimension = 0;
         TextureFormat format = TextureFormat::RGB;
 
-        CubeTexture(uint32_t dimension, TextureFormat format);
-
-        virtual void setData(CubeTextureData *data) = 0;
+        CubeTexture(CubeTextureData *data);
 
         void rebuildFlags() override final;
     };

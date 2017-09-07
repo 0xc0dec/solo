@@ -9,6 +9,8 @@
 
 #include "SoloVulkanRenderer.h"
 #include "SoloTexture.h"
+#include "SoloVulkanBuffer.h"
+#include "SoloTextureData.h"
 
 using namespace solo;
 using namespace vk;
@@ -202,23 +204,85 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
     return memory;
 }
 
-auto vk::Image::create2D(vk::Renderer *renderer/*, const ImageData &data*/) -> Image
+auto vk::Image::create2d(vk::Renderer *renderer, Texture2dData *data) -> Image
 {
-    /*const auto mipLevels = data.getMipLevelCount();
-    const auto width = data.getWidth(0);
-    const auto height = data.getHeight(0);
-    const auto format = toVulkanFormat(data.getFormat());
+    const auto mipLevels = data->getMipLevels();
+    const auto width = data->getWidth(0);
+    const auto height = data->getHeight(0);
+    const auto format = toVulkanFormat(data->getFormat());
 
     auto image = Image(renderer, width, height, mipLevels, 1, format,
         0,
         VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
         VK_IMAGE_VIEW_TYPE_2D,
         VK_IMAGE_ASPECT_COLOR_BIT);
-    image.uploadData(data);
+    
+    uint32_t offset = 0;
+    std::vector<VkBufferImageCopy> copyRegions;
+    for (uint32_t layer = 0; layer < 1; layer++) // Layers == 1 because 2d
+    {
+        for (uint32_t level = 0; level < mipLevels; level++)
+        {
+            VkBufferImageCopy bufferCopyRegion = {};
+            bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+            bufferCopyRegion.imageSubresource.mipLevel = level;
+            bufferCopyRegion.imageSubresource.baseArrayLayer = layer;
+            bufferCopyRegion.imageSubresource.layerCount = 1;
+            bufferCopyRegion.imageExtent.width = data->getWidth(level);
+            bufferCopyRegion.imageExtent.height = data->getHeight(level);
+            bufferCopyRegion.imageExtent.depth = 1;
+            bufferCopyRegion.bufferOffset = offset;
 
-    return image;*/
+            copyRegions.push_back(bufferCopyRegion);
 
-    return Image();
+            offset += data->getSize(level);
+        }
+    }
+
+    VkImageSubresourceRange subresourceRange{};
+	subresourceRange.aspectMask = image.aspectMask;
+	subresourceRange.baseMipLevel = 0;
+	subresourceRange.levelCount = mipLevels;
+	subresourceRange.layerCount = image.layers;
+
+    auto srcBuf = Buffer::createStaging(renderer, data->getSize(), data->getData());
+
+    auto cmdBuf = createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
+    beginCommandBuffer(cmdBuf, true);
+
+    setImageLayout(
+        cmdBuf,
+        image.image,
+        VK_IMAGE_LAYOUT_UNDEFINED,
+        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+        subresourceRange,
+        VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+        VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+
+    vkCmdCopyBufferToImage(
+        cmdBuf,
+        srcBuf,
+        image.image,
+        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+        copyRegions.size(),
+        copyRegions.data());
+
+    const auto imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+    setImageLayout(
+        cmdBuf,
+        image.image,
+        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+        imageLayout,
+        subresourceRange,
+        VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+        VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+
+    vkEndCommandBuffer(cmdBuf);
+
+    queueSubmit(renderer->getQueue(), 0, nullptr, 0, nullptr, 1, &cmdBuf);
+    SL_VK_CHECK_RESULT(vkQueueWaitIdle(renderer->getQueue()));
+
+    return image;
 }
 
 auto vk::Image::createCube(vk::Renderer *renderer/*, const ImageData &data*/) -> Image
@@ -236,6 +300,8 @@ auto vk::Image::createCube(vk::Renderer *renderer/*, const ImageData &data*/) ->
     image.uploadData(device, data);
 
     return image;*/
+
+    SL_PANIC("Not implemented");
 
     return Image();
 }
@@ -259,8 +325,8 @@ vk::Image::Image(vk::Renderer *renderer, uint32_t width, uint32_t height, uint32
     this->view = std::move(view);
 }
 
-void vk::Image::uploadData(/*const ImageData &data*/)
-{
+//void vk::Image::uploadData(const ImageData &data)
+//{
     /*uint32_t offset = 0;
     std::vector<VkBufferImageCopy> copyRegions;
     for (uint32_t layer = 0; layer < layers; layer++)
@@ -325,6 +391,6 @@ void vk::Image::uploadData(/*const ImageData &data*/)
 
     queueSubmit(device.getQueue(), 0, nullptr, 0, nullptr, 1, &cmdBuf);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(device.getQueue()));*/
-}
+//}
 
 #endif

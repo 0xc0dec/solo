@@ -35,23 +35,25 @@ namespace solo
         class Texture2d final: public solo::Texture2d, public Texture
         {
         public:
-            Texture2d(uint32_t width, uint32_t height, TextureFormat format);
+            Texture2d(Texture2dData *data);
 
-            void setData(const void *data) override final;
             void bind() override final;
             void generateMipmaps() override final;
+
+        private:
+            void setData(const void *data);
         };
 
         class CubeTexture final : public solo::CubeTexture, public Texture
         {
         public:
-            CubeTexture(uint32_t dimension, TextureFormat format);
+            CubeTexture(CubeTextureData *data);
 
             void bind() override final;
             void generateMipmaps() override final;
 
         protected:
-            void setData(CubeTextureData *data) override final;
+            void setData(CubeTextureData *data);
         };
     }
 }

@@ -45,26 +45,24 @@ local positions = {
 mesh:addVertexBuffer(layout, positions, 6)
 
 layout = sl.VertexBufferLayout()
-layout:addAttribute(3, 1)
-local colors = {
-	0.0, 0.0, 0.0,
-    0.0, 1.0, 0.0,
-    1.0, 0.0, 1.0,
+layout:addAttribute(2, 1)
+local texCoords = {
+	0.0, 0.0,
+    0.0, 1.0,
+    1.0, 0.0,
 
-    0.0, 0.0, 0.0,
-    0.0, 1.0, 0.0,
-    1.0, 0.0, 1.0
+    0.0, 0.0,
+    0.0, 1.0,
+    1.0, 0.0
 }
-mesh:addVertexBuffer(layout, colors, 6)
+mesh:addVertexBuffer(layout, texCoords, 6)
 
 mesh:addPart({ 0, 1, 2, 3, 4, 5 }, 6)
 
-local tex = sl.Texture2d.create(dev, 100, 100, sl.TextureFormat.RGBA)
+local tex = sl.Texture2d.loadFromFile(dev, getAssetPath("Cobblestone.png"))
 local effect = sl.Effect.loadFromFiles(dev, getAssetPath("Triangle.vert.spv"), getAssetPath("Triangle.frag.spv"))
 local material = sl.Material.create(dev, effect)
-material:setFloatParameter("0:0", 12.3)
-material:setFloatArrayParameter("0:1", {1, 2, 3})
-material:setTextureParameter("1", tex)
+material:setTextureParameter("0", tex)
 
 camera = initMainCamera()
 

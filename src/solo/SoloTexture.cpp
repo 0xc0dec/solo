@@ -135,31 +135,35 @@ void Texture::setFiltering(TextureFiltering filtering)
 auto Texture2d::loadFromFile(Device *device, const std::string &path) -> sptr<Texture2d>
 {
     const auto data = Texture2dData::loadFromFile(device, path);
-    auto tex = create(device, data->getWidth(0), data->getHeight(0), data->getFormat());
-    tex->setData(data->getData());
-    return tex;
+    return createFromData(device, data.get());
 }
 
-sptr<Texture2d> Texture2d::create(Device *device, uint32_t width, uint32_t height, TextureFormat format)
+auto Texture2d::createEmpty(Device *device, uint32_t width, uint32_t height, TextureFormat format) -> sptr<Texture2d>
+{
+    const auto data = Texture2dData::createFromMemory(width, height, format, std::vector<uint8_t>{});
+    return createFromData(device, data.get());
+}
+
+sptr<Texture2d> Texture2d::createFromData(Device *device, Texture2dData *data)
 {
     switch (device->getSetup().mode)
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<gl::Texture2d>(width, height, format);
+            return std::make_shared<gl::Texture2d>(data);
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return std::make_shared<vk::Texture2d>(device, width, height, format);
+            return std::make_shared<vk::Texture2d>(device, data);
 #endif
         default:
-            return std::make_shared<null::Texture2d>(width, height, format);
+            return std::make_shared<null::Texture2d>(data);
     }
 }
 
-Texture2d::Texture2d(uint32_t width, uint32_t height, TextureFormat format):
-    format(format),
-    dimensions{static_cast<float>(width), static_cast<float>(height)}
+Texture2d::Texture2d(Texture2dData *data):
+    format(data->getFormat()),
+    dimensions{static_cast<float>(data->getWidth()), static_cast<float>(data->getHeight())}
 {
 }
 
@@ -172,27 +176,25 @@ auto CubeTexture::loadFromFaceFiles(Device *device,
     const std::string &bottomPath) -> sptr<CubeTexture>
 {
     auto data = CubeTextureData::loadFromFaceFiles(device, frontPath, backPath, leftPath, rightPath, topPath, bottomPath);
-    auto tex = create(device, data->getDimension(0), data->getFormat());
-    tex->setData(data.get());
-    return tex;
+    return create(device, data.get());
 }
 
-auto CubeTexture::create(Device *device, uint32_t dimension, TextureFormat format) -> sptr<CubeTexture>
+auto CubeTexture::create(Device *device, CubeTextureData *data) -> sptr<CubeTexture>
 {
     switch (device->getSetup().mode)
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<gl::CubeTexture>(dimension, format);
+            return std::make_shared<gl::CubeTexture>(data);
 #endif
         default:
-            return std::make_shared<null::CubeTexture>(dimension, format);
+            return std::make_shared<null::CubeTexture>(data);
     }
 }
 
-CubeTexture::CubeTexture(uint32_t dimension, TextureFormat format):
-    dimension(dimension),
-    format(format)
+CubeTexture::CubeTexture(CubeTextureData *data):
+    dimension(data->getDimension()),
+    format(data->getFormat())
 {
     rebuildFlags();
 }

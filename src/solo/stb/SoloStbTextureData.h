@@ -70,6 +70,7 @@ namespace solo
             auto getSize(uint32_t mipLevel) const -> uint32_t override final;
             auto getSize(uint32_t face, uint32_t mipLevel) const -> uint32_t override final;
 
+            auto getDimension() const -> uint32_t override final;
             auto getDimension(uint32_t mipLevel) const -> uint32_t override final;
 
             auto getData() const -> const void* override final;

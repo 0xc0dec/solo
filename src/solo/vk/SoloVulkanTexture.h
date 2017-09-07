@@ -32,10 +32,9 @@ namespace solo
         class Texture2d final: public solo::Texture2d, public vk::Texture
         {
         public:
-            Texture2d(Device *device, uint32_t width, uint32_t height, TextureFormat format);
+            Texture2d(Device *device, Texture2dData *data);
 
             void generateMipmaps() override final;
-            void setData(const void *data) override final;
         };
     }
 }

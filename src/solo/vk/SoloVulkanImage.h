@@ -14,6 +14,8 @@
 
 namespace solo
 {
+    class Texture2dData;
+
     namespace vk
     {
         class Renderer;
@@ -21,7 +23,7 @@ namespace solo
         class Image
         {
         public:
-            static auto create2D(Renderer *renderer/*, const ImageData &data*/) -> Image;
+            static auto create2d(Renderer *renderer, Texture2dData *data) -> Image;
             static auto createCube(Renderer *renderer/*, const ImageData &data*/) -> Image;
 
             Image() {}
@@ -37,8 +39,6 @@ namespace solo
             auto getLayout() const -> VkImageLayout { return layout; }
             auto getSampler() const -> VkSampler { return sampler; }
             auto getView() const -> VkImageView { return view; }
-
-            void uploadData(/*const ImageData &data*/);
 
         private:
             Resource<VkImage> image;

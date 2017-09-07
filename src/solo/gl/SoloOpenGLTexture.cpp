@@ -44,11 +44,10 @@ gl::Texture::~Texture()
     glDeleteTextures(1, &handle);
 }
 
-gl::Texture2d::Texture2d(uint32_t width, uint32_t height, TextureFormat format):
-    solo::Texture2d(width, height, format)
+gl::Texture2d::Texture2d(Texture2dData *data):
+    solo::Texture2d(data)
 {
-    std::vector<uint32_t> data;
-    setData(data.data());
+    setData(data->getData());
 }
 
 void gl::Texture2d::bind()
@@ -82,9 +81,10 @@ void gl::Texture2d::setData(const void *data)
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-gl::CubeTexture::CubeTexture(uint32_t dimension, TextureFormat format):
-    solo::CubeTexture(dimension, format)
+gl::CubeTexture::CubeTexture(CubeTextureData *data):
+    solo::CubeTexture(data)
 {
+    setData(data);
 }
 
 void gl::CubeTexture::bind()
@@ -119,7 +119,7 @@ void gl::CubeTexture::setData(CubeTextureData *data)
         const auto fmt = toTextureFormat(data->getFormat());
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         // TODO Add support for mip levels
-        glTexImage2D(glFace, 0, internalFormat, data->getDimension(0), data->getDimension(0), 0, fmt, GL_UNSIGNED_BYTE, data->getData(i));
+        glTexImage2D(glFace, 0, internalFormat, data->getDimension(), data->getDimension(), 0, fmt, GL_UNSIGNED_BYTE, data->getData(i));
     }
 
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
