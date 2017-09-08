@@ -260,11 +260,11 @@ void vk::Renderer::endFrame()
 
                     pipelines.emplace_back(device, renderPass, pipelineConfig);
 
-                    VkDeviceSize vertexBufferOffset = 0;
                     VkDescriptorSet descSet = currentMaterial->getDescSet();
                     vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipelines.rbegin());
                     vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelines.rbegin()->getLayout(), 0, 1, &descSet, 0, nullptr);
-                    
+
+                    VkDeviceSize vertexBufferOffset = 0;                    
                     for (uint32_t i = 0; i < mesh->getVertexBufferCount(); i++)
                     {
                         auto vertexBuffer = mesh->getVertexBuffer(i);
