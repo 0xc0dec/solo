@@ -131,6 +131,8 @@ void vk::Material::setVector2ArrayParameter(const std::string &name, const std::
 
 void vk::Material::setVector3Parameter(const std::string &name, const Vector3 &value)
 {
+    const auto size = sizeof(Vector3);
+    SET_UNIFORM_PARAM(&value);
 }
 
 void vk::Material::setVector3ArrayParameter(const std::string &name, const std::vector<Vector3> &value)

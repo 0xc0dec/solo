@@ -63,6 +63,7 @@ local tex = sl.Texture2d.loadFromFile(dev, getAssetPath("Cobblestone.png"))
 local effect = sl.Effect.loadFromFiles(dev, getAssetPath("Triangle.vert.spv"), getAssetPath("Triangle.frag.spv"))
 local material = sl.Material.create(dev, effect)
 material:setTextureParameter("0", tex)
+material:setVector3Parameter("1:0", vec3(0.1, 0.2, 0.3))
 
 camera = initMainCamera()
 
