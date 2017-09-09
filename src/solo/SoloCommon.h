@@ -28,7 +28,7 @@
 #define SL_EMPTY_MACRO_BLOCK() do {} while (false);
 
 /*
-    Note
+    TODO
     Currently all error checks have the same priority. For instance, the same macro is used for places where only assert() is necessary.
     All checks are disabled in release build. Later they should probably get their respective "severity" level,
     making it possible to disable checks granularly.
@@ -68,7 +68,9 @@ namespace solo
         {
         }
 
-        explicit EngineException(const std::string &msg): std::runtime_error(msg)
+        explicit EngineException(const std::string &msg):
+            std::runtime_error(msg),
+            info(msg)
         {
         }
 
@@ -80,7 +82,7 @@ namespace solo
     };
 
     template <class T>
-    class FriendToken
+    class FriendToken // TODO Remove - not needed since we moved everything to scripts
     {
         friend T;
         FriendToken() {}

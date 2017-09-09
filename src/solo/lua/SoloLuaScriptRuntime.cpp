@@ -94,6 +94,7 @@ void lua::ScriptRuntime::executeString(const std::string& code)
 
 void lua::ScriptRuntime::executeFile(const std::string& path)
 {
+    // TODO use FileSystem to read the file
     lua.doFile(path.c_str());
 }
 

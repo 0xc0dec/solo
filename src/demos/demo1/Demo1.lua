@@ -8,8 +8,6 @@ package.path = "../../src/demos/common/?.lua;" .. package.path
 
 require "Common"
 
-collectgarbage("setpause", 100)
-
 local dev = sl.device
 local physics = dev:getPhysics()
 local renderer = dev:getRenderer()
@@ -19,7 +17,7 @@ local scene = sl.Scene.create(dev)
 local canvasSize = dev:getCanvasSize()
 
 local postProcessors = require "PostProcessors"
-local effects = (require "Effects")()
+local createEffects = require "Effects"
 local createMainCamera = require "MainCamera"
 local createOffscreenCamera = require "OffscreenCamera"
 local createSkybox = require "Skybox"
@@ -28,9 +26,11 @@ local createDynamicQuad = require "DynamicQuad"
 local createTransparentQuad = require "TransparentQuad"
 local createMonitorQuad = require "MonitorQuad"
 local createFloor = require "Floor"
-local createMonkeyHead = require "MonkeyHead"
+local createRotatingMesh = require "RotatingMesh"
 local createTimeLabel = require "TimeLabel"
 local attachAxesMesh = require "Axes"
+
+local effects = createEffects()
 
 local knownTags = {
     skybox = 1 << 1,
@@ -60,8 +60,8 @@ createDynamicQuad(scene, effects, loadTexture)
 createTimeLabel(scene, knownTags.transparent, getAssetPath("fonts/Aller.ttf"))
 
 local stoneTex = loadTexture(getAssetPath("textures/Cobblestone.png"))
-local monkeyHeadMesh = sl.Mesh.loadFromFile(dev, getAssetPath("meshes/MonkeyHD.obj"))
-createMonkeyHead(scene, effects, stoneTex, monkeyHeadMesh)
+local monkeyHeadMesh = sl.Mesh.loadFromFile(dev, getAssetPath("meshes/Teapot.obj"))
+createRotatingMesh(scene, effects, stoneTex, monkeyHeadMesh)
 createFloor(scene, effects, stoneTex, meshes.cube)
 
 local axesMesh = sl.Mesh.loadFromFile(dev, getAssetPath("meshes/Axes.obj"))

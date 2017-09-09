@@ -30,6 +30,6 @@ namespace solo
         void logCritical(const std::string &msg);
 
     private:
-        sptr<LoggerImpl> impl;
+        sptr<LoggerImpl> impl; // TODO remove
     };
 }
