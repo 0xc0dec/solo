@@ -50,7 +50,7 @@ return function(scene, effects, loadTexture)
 
     local material = sl.Material.create(sl.device, effects.simpleTexture)
     material:setFaceCull(sl.FaceCull.All)
-    material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
+    material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     material:setTextureParameter("mainTex", tex)
 
     local node = scene:createNode()

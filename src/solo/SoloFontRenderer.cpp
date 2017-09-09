@@ -23,7 +23,7 @@ FontRenderer::FontRenderer(const Node &node) :
     const auto effect = Effect::createFromPrefab(node.getScene()->getDevice(), EffectPrefab::Font);
     material = Material::create(node.getScene()->getDevice(), effect);
     material->setFaceCull(FaceCull::All);
-    material->bindWorldViewProjectionMatrixParameter("worldViewProjMatrix");
+    material->bindParameter("worldViewProjMatrix", BindParameterSemantics::WorldViewProjectionMatrix);
     material->setBlend(true);
     material->setDepthTest(true);
     material->setDepthWrite(false);

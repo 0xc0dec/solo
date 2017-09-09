@@ -11,7 +11,7 @@ return function(scene, effects, offscreenCameraTex, quadMesh, tag)
 
     local material = sl.Material.create(sl.device, effects.simpleTexture)
     material:setFaceCull(sl.FaceCull.All)
-    material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
+    material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     material:setTextureParameter("mainTex", offscreenCameraTex)
 
     local parent = scene:createNode()

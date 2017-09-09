@@ -13,7 +13,7 @@ return function(effect, mesh, initialPos, initialRotation)
             local material = sl.Material.create(sl.device, effect)
             material:setFaceCull(sl.FaceCull.All)
             material:setPolygonMode(sl.PolygonMode.Wireframe)
-            material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
+            material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
             material:setVector4Parameter("color", vec4(1, 1, 0, 1))
 
             local renderer = self.node:addComponent("MeshRenderer")

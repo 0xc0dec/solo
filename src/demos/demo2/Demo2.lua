@@ -68,7 +68,7 @@ local effect = sl.Effect.loadFromFiles(dev,
     getAssetPath("shaders/vulkan/Triangle.frag.spv"))
 local material = sl.Material.create(dev, effect)
 local m = sl.Matrix()
-material:bindWorldViewProjectionMatrixParameter("matrices.wvp")
+material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
 material:setTextureParameter("colorTex", tex)
 material:setVector4Parameter("test.v4", vec4(0.1, 0.2, 0.3, 0.4))
 material:setVector3Parameter("test.v3", vec3(0.5, 0.6, 0.7))

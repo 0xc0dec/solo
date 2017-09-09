@@ -40,15 +40,7 @@ namespace solo
             void setMatrixParameter(const std::string &name, const Matrix &value) override final;
             void setTextureParameter(const std::string &name, sptr<solo::Texture> value) override final;
 
-            void bindWorldMatrixParameter(const std::string &name) override final;
-            void bindViewMatrixParameter(const std::string &name) override final;
-            void bindProjectionMatrixParameter(const std::string &name) override final;
-            void bindWorldViewMatrixParameter(const std::string &name) override final;
-            void bindViewProjectionMatrixParameter(const std::string &name) override final;
-            void bindWorldViewProjectionMatrixParameter(const std::string &name) override final;
-            void bindInvTransposedWorldMatrixParameter(const std::string &name) override final;
-            void bindInvTransposedWorldViewMatrixParameter(const std::string &name) override final;
-            void bindCameraWorldPositionParameter(const std::string &name) override final;
+            void bindParameter(const std::string &name, BindParameterSemantics semantics) override final;
 
             void applyParams(const Camera *camera, const Transform *nodeTransform) const;
 

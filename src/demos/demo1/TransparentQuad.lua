@@ -10,7 +10,7 @@ return function(scene, effects, quadMesh, tag, tex)
 
     local material = sl.Material.create(sl.device, effects.simpleTexture)
     material:setFaceCull(sl.FaceCull.All)
-    material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
+    material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     material:setTextureParameter("mainTex", tex)
     material:setBlend(true)
     material:setDepthTest(true)

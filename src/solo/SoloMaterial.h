@@ -65,6 +65,19 @@ namespace solo
         SrcAlphaSaturate
     };
 
+    enum class BindParameterSemantics
+    {
+        WorldMatrix,
+        ViewMatrix,
+        ProjectionMatrix,
+        WorldViewMatrix,
+        ViewProjectionMatrix,
+        WorldViewProjectionMatrix,
+        InverseTransposedWorldMatrix,
+        InverseTransposedWorldViewMatrix,
+        CameraWorldPosition
+    };
+
     class Material
     {
     public:
@@ -81,15 +94,7 @@ namespace solo
         virtual void setMatrixParameter(const std::string &name, const Matrix &value) = 0;
         virtual void setTextureParameter(const std::string &name, sptr<Texture> value) = 0;
 
-        virtual void bindWorldMatrixParameter(const std::string &name) = 0;
-        virtual void bindViewMatrixParameter(const std::string &name) = 0;
-        virtual void bindProjectionMatrixParameter(const std::string &name) = 0;
-        virtual void bindWorldViewMatrixParameter(const std::string &name) = 0;
-        virtual void bindViewProjectionMatrixParameter(const std::string &name) = 0;
-        virtual void bindWorldViewProjectionMatrixParameter(const std::string &name) = 0;
-        virtual void bindInvTransposedWorldMatrixParameter(const std::string &name) = 0;
-        virtual void bindInvTransposedWorldViewMatrixParameter(const std::string &name) = 0;
-        virtual void bindCameraWorldPositionParameter(const std::string &name) = 0;
+        virtual void bindParameter(const std::string &name, BindParameterSemantics semantics) = 0;
 
         auto getEffect() const -> Effect* { return effect.get(); }
 

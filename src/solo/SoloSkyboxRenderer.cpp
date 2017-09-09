@@ -23,8 +23,8 @@ SkyboxRenderer::SkyboxRenderer(const Node &node):
 
     const auto effect = Effect::createFromPrefab(device, EffectPrefab::Skybox);
     material = Material::create(device, effect);
-    material->bindProjectionMatrixParameter("projMatrix");
-    material->bindWorldViewMatrixParameter("worldViewMatrix");
+    material->bindParameter("projMatrix", BindParameterSemantics::ProjectionMatrix);
+    material->bindParameter("worldViewMatrix", BindParameterSemantics::WorldViewMatrix);
     material->setDepthTest(true);
     material->setDepthWrite(false);
     material->setFaceCull(FaceCull::CW);

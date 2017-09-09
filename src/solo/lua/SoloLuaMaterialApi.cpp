@@ -18,15 +18,7 @@ void registerMaterialApi(CppBindModule<LuaBinding> &module)
     REG_METHOD(mat, Material, setVector4Parameter);
     REG_METHOD(mat, Material, setMatrixParameter);
     REG_METHOD(mat, Material, setTextureParameter);
-    REG_METHOD(mat, Material, bindWorldMatrixParameter);
-    REG_METHOD(mat, Material, bindViewMatrixParameter);
-    REG_METHOD(mat, Material, bindProjectionMatrixParameter);
-    REG_METHOD(mat, Material, bindWorldViewMatrixParameter);
-    REG_METHOD(mat, Material, bindViewProjectionMatrixParameter);
-    REG_METHOD(mat, Material, bindWorldViewProjectionMatrixParameter);
-    REG_METHOD(mat, Material, bindInvTransposedWorldMatrixParameter);
-    REG_METHOD(mat, Material, bindInvTransposedWorldViewMatrixParameter);
-    REG_METHOD(mat, Material, bindCameraWorldPositionParameter);
+    REG_METHOD(mat, Material, bindParameter);
     REG_METHOD(mat, Material, getEffect);
     REG_METHOD(mat, Material, getPolygonMode);
     REG_METHOD(mat, Material, setPolygonMode);

@@ -9,6 +9,7 @@
 
 #include "SoloDevice.h"
 #include "SoloTransform.h"
+#include "SoloCamera.h"
 #include "SoloVulkanEffect.h"
 #include "SoloVulkanRenderer.h"
 #include "SoloVulkanDescriptorSetLayoutBuilder.h"
@@ -106,27 +107,7 @@ void vk::Material::setTextureParameter(const std::string &name, sptr<solo::Textu
     // TODO Optimize and mark only this sampler as dirty
 }
 
-void vk::Material::bindWorldMatrixParameter(const std::string &name)
-{
-}
-
-void vk::Material::bindViewMatrixParameter(const std::string &name)
-{
-}
-
-void vk::Material::bindProjectionMatrixParameter(const std::string &name)
-{
-}
-
-void vk::Material::bindWorldViewMatrixParameter(const std::string &name)
-{
-}
-
-void vk::Material::bindViewProjectionMatrixParameter(const std::string &name)
-{
-}
-
-void vk::Material::bindWorldViewProjectionMatrixParameter(const std::string &name)
+void vk::Material::bindParameter(const std::string &name, BindParameterSemantics semantics)
 {
     auto parsedName = parseName(name);
     auto bufferName = std::get<0>(parsedName);
@@ -148,26 +129,129 @@ void vk::Material::bindWorldViewProjectionMatrixParameter(const std::string &nam
     auto &item = buffer.items[fieldName];
     item.dirty = true;
     item.alwaysDirty = true;
-    item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+    
+    switch (semantics)
     {
-        if (camera && nodeTransform)
+        case BindParameterSemantics::WorldMatrix:
         {
-            auto value = nodeTransform->getWorldViewProjMatrix(camera);
-            buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+            item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            {
+                if (nodeTransform)
+                {
+                    auto value = nodeTransform->getWorldMatrix();
+                    buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+                }
+            };
+            break;
         }
-    };
-}
 
-void vk::Material::bindInvTransposedWorldMatrixParameter(const std::string &name)
-{
-}
+        case BindParameterSemantics::ViewMatrix:
+        {
+            item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            {
+                if (camera)
+                {
+                    auto value = camera->getViewMatrix();
+                    buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+                }
+            };
+            break;
+        }
 
-void vk::Material::bindInvTransposedWorldViewMatrixParameter(const std::string &name)
-{
-}
+        case BindParameterSemantics::ProjectionMatrix:
+        {
+            item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            {
+                if (camera)
+                {
+                    auto value = camera->getProjectionMatrix();
+                    buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+                }
+            };
+            break;
+        }
 
-void vk::Material::bindCameraWorldPositionParameter(const std::string &name)
-{
+        case BindParameterSemantics::WorldViewMatrix:
+        {
+            item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            {
+                if (camera && nodeTransform)
+                {
+                    auto value = nodeTransform->getWorldViewMatrix(camera);
+                    buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+                }
+            };
+            break;
+        }
+
+        case BindParameterSemantics::ViewProjectionMatrix:
+        {
+            item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            {
+                if (camera)
+                {
+                    auto value = camera->getViewProjectionMatrix();
+                    buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+                }
+            };
+            break;
+        }
+
+        case BindParameterSemantics::WorldViewProjectionMatrix:
+        {
+            item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            {
+                if (nodeTransform && camera)
+                {
+                    auto value = nodeTransform->getWorldViewProjMatrix(camera);
+                    buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+                }
+            };
+            break;
+        }
+
+        case BindParameterSemantics::InverseTransposedWorldMatrix:
+        {
+            item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            {
+                if (nodeTransform)
+                {
+                    auto value = nodeTransform->getInvTransposedWorldMatrix();
+                    buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+                }
+            };
+            break;
+        }
+
+        case BindParameterSemantics::InverseTransposedWorldViewMatrix:
+        {
+            item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            {
+                if (nodeTransform && camera)
+                {
+                    auto value = nodeTransform->getInvTransposedWorldViewMatrix(camera);
+                    buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+                }
+            };
+            break;
+        }
+
+        case BindParameterSemantics::CameraWorldPosition:
+        {
+            item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            {
+                if (camera)
+                {
+                    auto value = camera->getTransform()->getWorldPosition();
+                    buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+                }
+            };
+            break;
+        }
+
+        default:
+            SL_PANIC("Unsupported bind parameter semantics");
+    }
 }
 
 void vk::Material::applyParameters(Renderer *renderer, const Camera *camera, const Transform *nodeTransform)

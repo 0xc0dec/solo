@@ -8,7 +8,7 @@ return function(effects, node, mesh)
 	local createColorMaterial = function(color)
 	    local mat = sl.Material.create(sl.device, effects.color)
 	    mat:setFaceCull(sl.FaceCull.All)
-	    mat:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
+	    mat:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
 	    mat:setVector4Parameter("color", color)
 	    return mat
 	end

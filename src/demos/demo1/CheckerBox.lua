@@ -8,7 +8,7 @@ local createRotator = require "Rotator"
 return function(scene, effects, cubeMesh)
     local material = sl.Material.create(sl.device, effects.checker)
     material:setFaceCull(sl.FaceCull.All)
-    material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
+    material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     material:setVector4Parameter("color", vec4(1, 1, 0, 1))
 
     local node = scene:createNode()

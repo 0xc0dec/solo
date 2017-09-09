@@ -80,103 +80,121 @@ void gl::Material::setTextureParameter(const std::string &name, sptr<solo::Textu
     )
 }
 
-void gl::Material::bindWorldMatrixParameter(const std::string &name)
+void gl::Material::bindParameter(const std::string &name, BindParameterSemantics semantics)
 {
-    SET_PARAM_NO_VAL(
-        if (nodeTransform)
+    switch (semantics)
+    {
+        case BindParameterSemantics::WorldMatrix:
         {
-            auto data = nodeTransform->getWorldMatrix().m;
-            glUniformMatrix4fv(location, 1, GL_FALSE, data);
+            SET_PARAM_NO_VAL(
+                if (nodeTransform)
+                {
+                    auto data = nodeTransform->getWorldMatrix().m;
+                    glUniformMatrix4fv(location, 1, GL_FALSE, data);
+                }
+            );
+            break;
         }
-    );
-}
 
-void gl::Material::bindViewMatrixParameter(const std::string &name)
-{
-    SET_PARAM_NO_VAL(
-        if (camera)
+        case BindParameterSemantics::ViewMatrix:
         {
-            auto data = camera->getViewMatrix().m;
-            glUniformMatrix4fv(location, 1, GL_FALSE, data);
+            SET_PARAM_NO_VAL(
+                if (camera)
+                {
+                    auto data = camera->getViewMatrix().m;
+                    glUniformMatrix4fv(location, 1, GL_FALSE, data);
+                }
+            );
+            break;
         }
-    );
-}
 
-void gl::Material::bindProjectionMatrixParameter(const std::string &name)
-{
-    SET_PARAM_NO_VAL(
-        if (camera)
+        case BindParameterSemantics::ProjectionMatrix:
         {
-            auto data = camera->getProjectionMatrix().m;
-            glUniformMatrix4fv(location, 1, GL_FALSE, data);
+            SET_PARAM_NO_VAL(
+                if (camera)
+                {
+                    auto data = camera->getProjectionMatrix().m;
+                    glUniformMatrix4fv(location, 1, GL_FALSE, data);
+                }
+            );
+            break;
         }
-    );
-}
 
-void gl::Material::bindWorldViewMatrixParameter(const std::string &name)
-{
-    SET_PARAM_NO_VAL(
-        if (nodeTransform && camera)
+        case BindParameterSemantics::WorldViewMatrix:
         {
-            auto data = nodeTransform->getWorldViewMatrix(camera).m;
-            glUniformMatrix4fv(location, 1, GL_FALSE, data);
+            SET_PARAM_NO_VAL(
+                if (nodeTransform && camera)
+                {
+                    auto data = nodeTransform->getWorldViewMatrix(camera).m;
+                    glUniformMatrix4fv(location, 1, GL_FALSE, data);
+                }
+            );
+            break;
         }
-    );
-}
 
-void gl::Material::bindViewProjectionMatrixParameter(const std::string &name)
-{
-    SET_PARAM_NO_VAL(
-        if (camera)
+        case BindParameterSemantics::ViewProjectionMatrix:
         {
-            auto data = camera->getViewProjectionMatrix().m;
-            glUniformMatrix4fv(location, 1, GL_FALSE, data);
+            SET_PARAM_NO_VAL(
+                if (camera)
+                {
+                    auto data = camera->getViewProjectionMatrix().m;
+                    glUniformMatrix4fv(location, 1, GL_FALSE, data);
+                }
+            );
+            break;
         }
-    );
-}
 
-void gl::Material::bindWorldViewProjectionMatrixParameter(const std::string &name)
-{
-    SET_PARAM_NO_VAL(
-        if (nodeTransform && camera)
+        case BindParameterSemantics::WorldViewProjectionMatrix:
         {
-            auto data = nodeTransform->getWorldViewProjMatrix(camera).m;
-            glUniformMatrix4fv(location, 1, GL_FALSE, data);
+            SET_PARAM_NO_VAL(
+                if (nodeTransform && camera)
+                {
+                    auto data = nodeTransform->getWorldViewProjMatrix(camera).m;
+                    glUniformMatrix4fv(location, 1, GL_FALSE, data);
+                }
+            );
+            break;
         }
-    );
-}
 
-void gl::Material::bindInvTransposedWorldMatrixParameter(const std::string &name)
-{
-    SET_PARAM_NO_VAL(
-        if (nodeTransform)
+        case BindParameterSemantics::InverseTransposedWorldMatrix:
         {
-            auto data = nodeTransform->getInvTransposedWorldMatrix().m;
-            glUniformMatrix4fv(location, 1, GL_FALSE, data);
+            SET_PARAM_NO_VAL(
+                if (nodeTransform)
+                {
+                    auto data = nodeTransform->getInvTransposedWorldMatrix().m;
+                    glUniformMatrix4fv(location, 1, GL_FALSE, data);
+                }
+            );
+            break;
         }
-    );
-}
 
-void gl::Material::bindInvTransposedWorldViewMatrixParameter(const std::string &name)
-{
-    SET_PARAM_NO_VAL(
-        if (nodeTransform && camera)
+        case BindParameterSemantics::InverseTransposedWorldViewMatrix:
         {
-            auto data = nodeTransform->getInvTransposedWorldViewMatrix(camera).m;
-            glUniformMatrix4fv(location, 1, GL_FALSE, data);
+            SET_PARAM_NO_VAL(
+                if (nodeTransform && camera)
+                {
+                    auto data = nodeTransform->getInvTransposedWorldViewMatrix(camera).m;
+                    glUniformMatrix4fv(location, 1, GL_FALSE, data);
+                }
+            );
+            break;
         }
-    );
-}
 
-void gl::Material::bindCameraWorldPositionParameter(const std::string &name)
-{
-    SET_PARAM_NO_VAL(
-        if (camera)
+        case BindParameterSemantics::CameraWorldPosition:
         {
-            auto pos = camera->getTransform()->getWorldPosition();
-            glUniform3f(location, pos.x, pos.y, pos.z);
+            SET_PARAM_NO_VAL(
+                if (camera)
+                {
+                    auto pos = camera->getTransform()->getWorldPosition();
+                    glUniform3f(location, pos.x, pos.y, pos.z);
+                }
+            );
+            break;
         }
-    );
+        
+        default:
+            SL_PANIC("Unsupported bind parameter semantics");
+    }
 }
 
 void gl::Material::setParameter(const std::string &paramName,

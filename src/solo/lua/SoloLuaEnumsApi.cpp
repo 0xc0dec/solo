@@ -85,6 +85,17 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     REG_MODULE_CONSTANT(bf, BlendFactor, SrcAlphaSaturate);
     bf.endModule();
 
+    auto bps = module.beginModule("BindParameterSemantics");
+    REG_MODULE_CONSTANT(bps, BindParameterSemantics, WorldMatrix);
+    REG_MODULE_CONSTANT(bps, BindParameterSemantics, ViewMatrix);
+    REG_MODULE_CONSTANT(bps, BindParameterSemantics, ProjectionMatrix);
+    REG_MODULE_CONSTANT(bps, BindParameterSemantics, WorldViewMatrix);
+    REG_MODULE_CONSTANT(bps, BindParameterSemantics, ViewProjectionMatrix);
+    REG_MODULE_CONSTANT(bps, BindParameterSemantics, WorldViewProjectionMatrix);
+    REG_MODULE_CONSTANT(bps, BindParameterSemantics, InverseTransposedWorldMatrix);
+    REG_MODULE_CONSTANT(bps, BindParameterSemantics, InverseTransposedWorldViewMatrix);
+    REG_MODULE_CONSTANT(bps, BindParameterSemantics, CameraWorldPosition);
+
     auto kc = module.beginModule("KeyCode");
     REG_MODULE_CONSTANT(kc, KeyCode, Digit0);
     REG_MODULE_CONSTANT(kc, KeyCode, Digit1);

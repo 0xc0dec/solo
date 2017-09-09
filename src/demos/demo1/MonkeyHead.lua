@@ -8,8 +8,8 @@ local createRotator = require "Rotator"
 return function(scene, effects, tex, mesh)
     local material = sl.Material.create(sl.device, effects.basicLighting)
     material:setFaceCull(sl.FaceCull.All)
-    material:bindWorldViewProjectionMatrixParameter("worldViewProjMatrix")
-    material:bindInvTransposedWorldMatrixParameter("invTransposedWorldMatrix")
+    material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    material:bindParameter("invTransposedWorldMatrix", sl.BindParameterSemantics.InverseTransposedWorldMatrix)
     material:setTextureParameter("mainTex", tex)
 
     local node = scene:createNode()

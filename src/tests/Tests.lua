@@ -46,4 +46,4 @@ runTest("smoke/Font.lua")
 runTest("smoke/FontRenderer.lua")
 runTest("smoke/Lib.lua")
 
-logger:logInfo("Script tests finished")
+logger:logInfo("All tests finished")

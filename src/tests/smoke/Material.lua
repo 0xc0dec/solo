@@ -13,14 +13,7 @@ mat:setVector4Parameter("p7", sl.Vector4(1, 2, 3, 4))
 mat:setMatrixParameter("p9", sl.Matrix())
 mat:setTextureParameter("p11", tex)
 
-mat:bindWorldMatrixParameter("p12")
-mat:bindViewMatrixParameter("p13")
-mat:bindProjectionMatrixParameter("p14")
-mat:bindWorldViewMatrixParameter("p15")
-mat:bindViewProjectionMatrixParameter("p16")
-mat:bindInvTransposedWorldMatrixParameter("p17")
-mat:bindInvTransposedWorldViewMatrixParameter("p18")
-mat:bindCameraWorldPositionParameter("p19")
+mat:bindParameter("p20", sl.BindParameterSemantics.WorldMatrix)
 
 assert(mat:getEffect())
 
