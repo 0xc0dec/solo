@@ -23,8 +23,8 @@ void Spectator::init()
 
 void Spectator::update()
 {
-    auto mouseMotion = device->getMouseMotion();
-    auto dt = device->getTimeDelta();
+    const auto mouseMotion = device->getMouseMotion();
+    const auto dt = device->getTimeDelta();
 
     if (device->isMouseButtonDown(MouseButton::Right, true))
         device->setCursorCaptured(true);
@@ -38,7 +38,7 @@ void Spectator::update()
 
         if (mouseMotion.y != 0)
         {
-            auto angleToUp = transform->getLocalForward().angle({0, 1, 0}).toRawRadian();
+            const auto angleToUp = transform->getLocalForward().angle({0, 1, 0}).toRawRadian();
             auto delta = mouseSensitivity * dt * -mouseMotion.y;
             if (delta > 0)
             {

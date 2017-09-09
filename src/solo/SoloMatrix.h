@@ -60,11 +60,8 @@ namespace solo
         void rotateByQuaternion(const Quaternion &q);
         void rotateByAxisAngle(const Vector3 &axis, const Radian &angle);
         void rotateX(const Radian &angle);
-        void rotateX2(float angle);
         void rotateY(const Radian &angle);
-        void rotateY2(float angle);
         void rotateZ(const Radian &angle);
-        void rotateZ2(float angle);
 
         void scaleByScalar(float value);
         void scaleByVector(const Vector3 &s);

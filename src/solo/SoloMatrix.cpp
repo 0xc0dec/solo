@@ -65,38 +65,37 @@ auto Matrix::identity() -> Matrix
 
 auto Matrix::getDeterminant() const -> float
 {
-    auto a0 = m[0] * m[5] - m[1] * m[4];
-    auto a1 = m[0] * m[6] - m[2] * m[4];
-    auto a2 = m[0] * m[7] - m[3] * m[4];
-    auto a3 = m[1] * m[6] - m[2] * m[5];
-    auto a4 = m[1] * m[7] - m[3] * m[5];
-    auto a5 = m[2] * m[7] - m[3] * m[6];
-    auto b0 = m[8] * m[13] - m[9] * m[12];
-    auto b1 = m[8] * m[14] - m[10] * m[12];
-    auto b2 = m[8] * m[15] - m[11] * m[12];
-    auto b3 = m[9] * m[14] - m[10] * m[13];
-    auto b4 = m[9] * m[15] - m[11] * m[13];
-    auto b5 = m[10] * m[15] - m[11] * m[14];
+    const auto a0 = m[0] * m[5] - m[1] * m[4];
+    const auto a1 = m[0] * m[6] - m[2] * m[4];
+    const auto a2 = m[0] * m[7] - m[3] * m[4];
+    const auto a3 = m[1] * m[6] - m[2] * m[5];
+    const auto a4 = m[1] * m[7] - m[3] * m[5];
+    const auto a5 = m[2] * m[7] - m[3] * m[6];
+    const auto b0 = m[8] * m[13] - m[9] * m[12];
+    const auto b1 = m[8] * m[14] - m[10] * m[12];
+    const auto b2 = m[8] * m[15] - m[11] * m[12];
+    const auto b3 = m[9] * m[14] - m[10] * m[13];
+    const auto b4 = m[9] * m[15] - m[11] * m[13];
+    const auto b5 = m[10] * m[15] - m[11] * m[14];
 
     return a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
 }
 
 bool Matrix::invert()
 {
-    auto a0 = m[0] * m[5] - m[1] * m[4];
-    auto a1 = m[0] * m[6] - m[2] * m[4];
-    auto a2 = m[0] * m[7] - m[3] * m[4];
-    auto a3 = m[1] * m[6] - m[2] * m[5];
-    auto a4 = m[1] * m[7] - m[3] * m[5];
-    auto a5 = m[2] * m[7] - m[3] * m[6];
-    auto b0 = m[8] * m[13] - m[9] * m[12];
-    auto b1 = m[8] * m[14] - m[10] * m[12];
-    auto b2 = m[8] * m[15] - m[11] * m[12];
-    auto b3 = m[9] * m[14] - m[10] * m[13];
-    auto b4 = m[9] * m[15] - m[11] * m[13];
-    auto b5 = m[10] * m[15] - m[11] * m[14];
-
-    auto det = a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
+    const auto a0 = m[0] * m[5] - m[1] * m[4];
+    const auto a1 = m[0] * m[6] - m[2] * m[4];
+    const auto a2 = m[0] * m[7] - m[3] * m[4];
+    const auto a3 = m[1] * m[6] - m[2] * m[5];
+    const auto a4 = m[1] * m[7] - m[3] * m[5];
+    const auto a5 = m[2] * m[7] - m[3] * m[6];
+    const auto b0 = m[8] * m[13] - m[9] * m[12];
+    const auto b1 = m[8] * m[14] - m[10] * m[12];
+    const auto b2 = m[8] * m[15] - m[11] * m[12];
+    const auto b3 = m[9] * m[14] - m[10] * m[13];
+    const auto b4 = m[9] * m[15] - m[11] * m[13];
+    const auto b5 = m[10] * m[15] - m[11] * m[14];
+    const auto det = a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
 
     // Close to zero, can't invert
     if (math::isZero(det))
@@ -156,12 +155,12 @@ auto Matrix::createLookAt(const Vector3 &eye, const Vector3 &target, const Vecto
 
 auto Matrix::createPerspective(const Radian &fieldOfView, float aspectRatio, float znear, float zfar) -> Matrix
 {
-    auto f_n = 1.0f / (zfar - znear);
+    const auto f_n = 1.0f / (zfar - znear);
     auto theta = fieldOfView.toRawRadian() * 0.5f;
     SL_PANIC_IF(math::isZero(fmod(theta, math::PiOver2)))
 
-    auto divisor = tan(theta);
-    auto factor = 1.0f / divisor;
+    const auto divisor = tan(theta);
+    const auto factor = 1.0f / divisor;
 
     Matrix result;
     memset(&result.m, 0, getSize());
@@ -176,12 +175,12 @@ auto Matrix::createPerspective(const Radian &fieldOfView, float aspectRatio, flo
 
 auto Matrix::createOrthographic(float width, float height, float near, float far) -> Matrix
 {
-    auto halfWidth = width / 2.0f;
-    auto halfHeight = height / 2.0f;
-    auto left = -halfWidth;
-    auto right = halfWidth;
-    auto top = halfHeight;
-    auto bottom = -halfHeight;
+    const auto halfWidth = width / 2.0f;
+    const auto halfHeight = height / 2.0f;
+    const auto left = -halfWidth;
+    const auto right = halfWidth;
+    const auto top = halfHeight;
+    const auto bottom = -halfHeight;
     Matrix result;
     memset(&result.m, 0, getSize());
     result.m[0] = 2 / (right - left);
@@ -205,19 +204,19 @@ auto Matrix::createScale(const Vector3 &scale) -> Matrix
 
 auto Matrix::createRotationFromQuaternion(const Quaternion &q) -> Matrix
 {
-    auto x2 = q.x + q.x;
-    auto y2 = q.y + q.y;
-    auto z2 = q.z + q.z;
+    const auto x2 = q.x + q.x;
+    const auto y2 = q.y + q.y;
+    const auto z2 = q.z + q.z;
 
-    auto xx2 = q.x * x2;
-    auto yy2 = q.y * y2;
-    auto zz2 = q.z * z2;
-    auto xy2 = q.x * y2;
-    auto xz2 = q.x * z2;
-    auto yz2 = q.y * z2;
-    auto wx2 = q.w * x2;
-    auto wy2 = q.w * y2;
-    auto wz2 = q.w * z2;
+    const auto xx2 = q.x * x2;
+    const auto yy2 = q.y * y2;
+    const auto zz2 = q.z * z2;
+    const auto xy2 = q.x * y2;
+    const auto xz2 = q.x * z2;
+    const auto yz2 = q.y * z2;
+    const auto wx2 = q.w * x2;
+    const auto wy2 = q.w * y2;
+    const auto wz2 = q.w * z2;
 
     Matrix result;
 
@@ -307,8 +306,8 @@ auto Matrix::createRotationFromAxisAngle(const Vector3 &axis, const Radian &angl
 
 auto Matrix::createRotationX(const Radian &angle) -> Matrix
 {
-    auto c = cosf(angle.toRawRadian());
-    auto s = sinf(angle.toRawRadian());
+    const auto c = cosf(angle.toRawRadian());
+    const auto s = sinf(angle.toRawRadian());
 
     Matrix result;
     result.m[5] = c;
@@ -320,8 +319,8 @@ auto Matrix::createRotationX(const Radian &angle) -> Matrix
 
 auto Matrix::createRotationY(const Radian &angle) -> Matrix
 {
-    auto c = cosf(angle.toRawRadian());
-    auto s = sinf(angle.toRawRadian());
+    const auto c = cosf(angle.toRawRadian());
+    const auto s = sinf(angle.toRawRadian());
 
     Matrix result;
 
@@ -335,8 +334,8 @@ auto Matrix::createRotationY(const Radian &angle) -> Matrix
 
 auto Matrix::createRotationZ(const Radian &angle) -> Matrix
 {
-    auto c = cosf(angle.toRawRadian());
-    auto s = sinf(angle.toRawRadian());
+    const auto c = cosf(angle.toRawRadian());
+    const auto s = sinf(angle.toRawRadian());
 
     Matrix result;
     result.m[0] = c;
@@ -417,7 +416,7 @@ static void updateBounds(const Vector3 &point, Vector3 &min, Vector3 &max)
 
 auto Matrix::transformRay(const Ray &ray) -> Ray
 {
-    auto origin = transformPoint(ray.getOrigin());
+    const auto origin = transformPoint(ray.getOrigin());
     auto direction = transformDirection(ray.getDirection());
     direction.normalize();
     return {origin, direction};
@@ -436,17 +435,17 @@ bool Matrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translatio
         return true;
 
     Vector3 xaxis(m[0], m[1], m[2]);
-    auto scaleX = xaxis.length();
+    const auto scaleX = xaxis.length();
 
     Vector3 yaxis(m[4], m[5], m[6]);
-    auto scaleY = yaxis.length();
+    const auto scaleY = yaxis.length();
 
     Vector3 zaxis(m[8], m[9], m[10]);
     auto scaleZ = zaxis.length();
 
     // Determine if we have a negative scale (true if determinant is less than zero).
     // In this case, we simply negate a single axis of the scale.
-    auto det = getDeterminant();
+    const auto det = getDeterminant();
     if (det < 0)
         scaleZ = -scaleZ;
 

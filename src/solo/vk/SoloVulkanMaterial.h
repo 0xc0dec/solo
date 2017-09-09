@@ -50,7 +50,7 @@ namespace solo
             void bindInvTransposedWorldViewMatrixParameter(const std::string &name) override final;
             void bindCameraWorldPositionParameter(const std::string &name) override final;
 
-            void applyParameters(Renderer *renderer);
+            void applyParameters(Renderer *renderer, const Camera *camera, const Transform *nodeTransform);
             auto getDescSetLayout() const -> VkDescriptorSetLayout { return descSetLayout; }
             auto getDescSet() const -> VkDescriptorSet { return descSet; }
             auto getCullModeFlags() const -> VkCullModeFlags;
@@ -82,12 +82,14 @@ namespace solo
             struct UniformBufferItem2
             {
                 bool dirty;
-                std::function<void(Buffer&)> write;
+                bool alwaysDirty;
+                std::function<void(Buffer&, const Camera*, const Transform*)> write;
             };
 
             struct UniformBuffer
             {
                 bool dirty;
+                bool alwaysDirty;
                 uint32_t binding;
                 uint32_t size;
                 Buffer buffer;

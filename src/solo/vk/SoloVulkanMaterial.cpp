@@ -8,6 +8,7 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloDevice.h"
+#include "SoloTransform.h"
 #include "SoloVulkanEffect.h"
 #include "SoloVulkanRenderer.h"
 #include "SoloVulkanDescriptorSetLayoutBuilder.h"
@@ -74,6 +75,7 @@ void vk::Material::methodName(const std::string &name, paramType value) \
 \
     auto &buffer = uniformBuffers[bufferName]; \
     buffer.dirty = true; \
+    buffer.alwaysDirty = false; \
     buffer.binding = bufferInfo.binding; \
     buffer.size = bufferInfo.size; \
     if (!buffer.buffer) \
@@ -81,7 +83,8 @@ void vk::Material::methodName(const std::string &name, paramType value) \
 \
     auto &item = buffer.items[fieldName]; \
     item.dirty = true; \
-    item.write = [value, itemInfo](Buffer &buffer) \
+    item.alwaysDirty = false; \
+    item.write = [value, itemInfo](Buffer &buffer, const Camera*, const Transform*) \
     { \
         buffer.updatePart(&value, itemInfo.offset, itemInfo.size); \
     };\
@@ -125,6 +128,34 @@ void vk::Material::bindViewProjectionMatrixParameter(const std::string &name)
 
 void vk::Material::bindWorldViewProjectionMatrixParameter(const std::string &name)
 {
+    auto parsedName = parseName(name);
+    auto bufferName = std::get<0>(parsedName);
+    auto fieldName = std::get<1>(parsedName);
+    SL_PANIC_IF(bufferName.empty() || fieldName.empty(), SL_FMT("Invalid parameter name ", name));
+
+    auto bufferInfo = vkEffect->getUniformBufferInfo(bufferName);
+    SL_PANIC_IF(!bufferInfo.members.count(fieldName), SL_FMT("Unknown buffer ", bufferName, " or buffer member ", fieldName));
+    auto itemInfo = bufferInfo.members.at(fieldName);
+
+    auto &buffer = uniformBuffers[bufferName];
+    buffer.dirty = true;
+    buffer.alwaysDirty = true;
+    buffer.binding = bufferInfo.binding;
+    buffer.size = bufferInfo.size;
+    if (!buffer.buffer)
+        dirtyLayout = true;
+
+    auto &item = buffer.items[fieldName];
+    item.dirty = true;
+    item.alwaysDirty = true;
+    item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+    {
+        if (camera && nodeTransform)
+        {
+            auto value = nodeTransform->getWorldViewProjMatrix(camera);
+            buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+        }
+    };
 }
 
 void vk::Material::bindInvTransposedWorldMatrixParameter(const std::string &name)
@@ -139,7 +170,7 @@ void vk::Material::bindCameraWorldPositionParameter(const std::string &name)
 {
 }
 
-void vk::Material::applyParameters(Renderer *renderer)
+void vk::Material::applyParameters(Renderer *renderer, const Camera *camera, const Transform *nodeTransform)
 {
     if (dirtyLayout)
     {
@@ -197,17 +228,20 @@ void vk::Material::applyParameters(Renderer *renderer)
 
     for (auto &pair : uniformBuffers)
     {
-        auto &info = pair.second;
-        if (info.dirty)
+        auto &buffer = pair.second;
+        if (buffer.dirty)
         {
-            for (auto &p : info.items)
+            for (auto &p : buffer.items)
             {
-                if (p.second.dirty)
+                auto &item = p.second;
+                if (item.dirty)
                 {
-                    p.second.write(info.buffer);
-                    p.second.dirty = false;
+                    item.write(buffer.buffer, camera, nodeTransform);
+                    item.dirty = item.alwaysDirty;
                 }
             }
+
+            buffer.dirty = buffer.alwaysDirty;
         }
     }
 }

@@ -5,7 +5,8 @@
 
 -- TODO avoid using globals in functions
 
-package.path = "../../src/demos/demo2/?.lua;../../src/demos/common/?.lua;" .. package.path
+package.path = "../../src/demos/demo2/?.lua;" .. package.path
+package.path = "../../src/demos/common/?.lua;" .. package.path
 
 require "Common"
 
@@ -19,9 +20,11 @@ function initMainCamera()
     local node = scene:createNode()
         
     local t = node:findComponent("Transform")
-    t:setLocalPosition(vec3(10, 10, 10))
+    t:setLocalPosition(vec3(0, 5, 10))
     t:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
     
+    node:addComponent("Spectator")
+
     local cam = node:addComponent("Camera")
     cam:setClearColor(vec4(0.0, 0.6, 0.6, 1.0))
     cam:setNear(0.05)
@@ -63,12 +66,11 @@ local tex = sl.Texture2d.loadFromFile(dev, getAssetPath("Cobblestone.png"))
 local effect = sl.Effect.loadFromFiles(dev, getAssetPath("Triangle.vert.spv"), getAssetPath("Triangle.frag.spv"))
 local material = sl.Material.create(dev, effect)
 local m = sl.Matrix()
-material:setMatrixParameter("matrices.test", m)
+material:bindWorldViewProjectionMatrixParameter("matrices.wvp")
 material:setTextureParameter("colorTex", tex)
 material:setVector4Parameter("test.v4", vec4(0.1, 0.2, 0.3, 0.4))
 material:setVector3Parameter("test.v3", vec3(0.5, 0.6, 0.7))
 material:setVector2Parameter("test.v2", vec2(0.8, 0.9))
-material:setFloatParameter("test.f", 1)
 
 camera = initMainCamera()
 
@@ -90,8 +92,9 @@ function update()
         
     local color = camera:getClearColor()
     color.x = math.abs(math.sin(lifetime))
-
     camera:setClearColor(color)
+
+    material:setFloatParameter("test.f", math.abs(math.sin(lifetime)) * 4)
 end
 
 function render()

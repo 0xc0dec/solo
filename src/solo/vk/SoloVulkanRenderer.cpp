@@ -204,6 +204,7 @@ void vk::Renderer::endFrame()
         auto canvasHeight = engineDevice->getSetup().canvasHeight;
         swapchain.getRenderPass().begin(buf, fb, canvasWidth, canvasHeight);
 
+        const Camera *currentCamera = nullptr;
         vk::Material *currentMaterial = nullptr;
         const vk::Effect *currentEffect = nullptr;
 
@@ -213,6 +214,8 @@ void vk::Renderer::endFrame()
             {
                 case RenderCommandType::BeginCamera:
                 {
+                    currentCamera = cmd.camera;
+
                     auto camViewport = cmd.camera->getViewport();
                     VkViewport vp{camViewport.x, camViewport.y, camViewport.z, camViewport.w, 0, 1};
                     vkCmdSetViewport(buf, 0, 1, &vp);
@@ -223,12 +226,12 @@ void vk::Renderer::endFrame()
                 }
 
                 case RenderCommandType::EndCamera:
+                    currentCamera = nullptr;
                     break;
 
                 case RenderCommandType::ApplyMaterial:
                 {
                     currentMaterial = static_cast<vk::Material*>(cmd.material);
-                    currentMaterial->applyParameters(this);
                     currentEffect = static_cast<vk::Effect*>(currentMaterial->getEffect());
                     break;
                 }
@@ -242,6 +245,8 @@ void vk::Renderer::endFrame()
                 {
                     if (!currentMaterial)
                         continue;
+
+                    currentMaterial->applyParameters(this, currentCamera, cmd.meshPart.transform);
 
                     const auto mesh = static_cast<vk::Mesh*>(cmd.meshPart.mesh);
                     auto &renderPass = swapchain.getRenderPass();

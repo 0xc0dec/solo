@@ -45,38 +45,38 @@ namespace solo
         void removeCallback(TransformCallback *callback);
 
         void setParent(Transform *parent);
-        auto getParent() const -> Transform*;
+        auto getParent() const -> Transform* { return parent; }
         
-        auto getChild(uint32_t index) const -> Transform*;
-        auto getChildrenCount() const -> uint32_t;
+        auto getChild(uint32_t index) const -> Transform* { return children[index]; }
+        auto getChildrenCount() const -> uint32_t { return static_cast<uint32_t>(children.size()); }
         void clearChildren();
 
-        auto getWorldScale() const -> Vector3;
-        auto getLocalScale() const -> Vector3;
+        auto getWorldScale() const -> Vector3 { return getWorldMatrix().getScale(); }
+        auto getLocalScale() const -> Vector3 { return localScale; }
 
-        auto getWorldRotation() const -> Quaternion;
-        auto getLocalRotation() const -> Quaternion;
+        auto getWorldRotation() const -> Quaternion { return getWorldMatrix().getRotation(); }
+        auto getLocalRotation() const -> Quaternion { return localRotation; }
 
-        auto getWorldPosition() const -> Vector3;
-        auto getLocalPosition() const -> Vector3;
+        auto getWorldPosition() const -> Vector3 { return getWorldMatrix().getTranslation(); }
+        auto getLocalPosition() const -> Vector3 { return localPosition; }
 
-        auto getWorldUp() const -> Vector3;
-        auto getLocalUp() const -> Vector3;
+        auto getWorldUp() const -> Vector3 { return getWorldMatrix().getUpVector(); }
+        auto getLocalUp() const -> Vector3 { return getMatrix().getUpVector(); }
 
-        auto getWorldDown() const -> Vector3;
-        auto getLocalDown() const -> Vector3;
+        auto getWorldDown() const -> Vector3 { return getWorldMatrix().getDownVector(); }
+        auto getLocalDown() const -> Vector3 { return getMatrix().getDownVector(); }
 
-        auto getWorldLeft() const -> Vector3;
-        auto getLocalLeft() const -> Vector3;
+        auto getWorldLeft() const -> Vector3 { return getWorldMatrix().getLeftVector(); }
+        auto getLocalLeft() const -> Vector3 { return getMatrix().getLeftVector(); }
 
-        auto getWorldRight() const -> Vector3;
-        auto getLocalRight() const -> Vector3;
+        auto getWorldRight() const -> Vector3 { return getWorldMatrix().getRightVector(); }
+        auto getLocalRight() const -> Vector3 { return getMatrix().getRightVector(); }
 
-        auto getWorldForward() const -> Vector3;
-        auto getLocalForward() const -> Vector3;
+        auto getWorldForward() const -> Vector3 { return getWorldMatrix().getForwardVector(); }
+        auto getLocalForward() const -> Vector3 { return getMatrix().getForwardVector(); }
 
-        auto getWorldBack() const -> Vector3;
-        auto getLocalBack() const -> Vector3;
+        auto getWorldBack() const -> Vector3 { return getWorldMatrix().getBackVector(); }
+        auto getLocalBack() const -> Vector3 { return getMatrix().getBackVector(); }
 
         void translateLocal(const Vector3 &translation);
         void scaleLocal(const Vector3 &scale);
@@ -120,109 +120,4 @@ namespace solo
         void setChildrenDirty(uint32_t flags) const;
         void notifyChanged() const;
     };
-
-    inline auto Transform::getLocalPosition() const -> Vector3
-    {
-        return localPosition;
-    }
-
-    inline auto Transform::getWorldPosition() const -> Vector3
-    {
-        return getWorldMatrix().getTranslation();
-    }
-
-    inline auto Transform::getWorldUp() const -> Vector3
-    {
-        return getWorldMatrix().getUpVector();
-    }
-
-    inline auto Transform::getLocalUp() const -> Vector3
-    {
-        return getMatrix().getUpVector();
-    }
-
-    inline auto Transform::getWorldDown() const -> Vector3
-    {
-        return getWorldMatrix().getDownVector();
-    }
-
-    inline auto Transform::getLocalDown() const -> Vector3
-    {
-        return getMatrix().getDownVector();
-    }
-
-    inline auto Transform::getWorldLeft() const -> Vector3
-    {
-        return getWorldMatrix().getLeftVector();
-    }
-
-    inline auto Transform::getLocalLeft() const -> Vector3
-    {
-        return getMatrix().getLeftVector();
-    }
-
-    inline auto Transform::getWorldRight() const -> Vector3
-    {
-        return getWorldMatrix().getRightVector();
-    }
-
-    inline auto Transform::getLocalRight() const -> Vector3
-    {
-        return getMatrix().getRightVector();
-    }
-
-    inline auto Transform::getWorldForward() const -> Vector3
-    {
-        return getWorldMatrix().getForwardVector();
-    }
-
-    inline auto Transform::getLocalForward() const -> Vector3
-    {
-        return getMatrix().getForwardVector();
-    }
-
-    inline auto Transform::getWorldBack() const -> Vector3
-    {
-        return getWorldMatrix().getBackVector();
-    }
-
-    inline auto Transform::getLocalBack() const -> Vector3
-    {
-        return getMatrix().getBackVector();
-    }
-
-    inline auto Transform::getChildrenCount() const -> uint32_t
-    {
-        return static_cast<uint32_t>(children.size());
-    }
-
-    inline auto Transform::getLocalScale() const -> Vector3
-    {
-        return localScale;
-    }
-
-    inline auto Transform::getWorldRotation() const -> Quaternion
-    {
-        return getWorldMatrix().getRotation();
-    }
-
-    inline auto Transform::getWorldScale() const -> Vector3
-    {
-        return getWorldMatrix().getScale();
-    }
-
-    inline auto Transform::getLocalRotation() const -> Quaternion
-    {
-        return localRotation;
-    }
-
-    inline auto Transform::getParent() const -> Transform *
-    {
-        return parent;
-    }
-
-    inline auto Transform::getChild(uint32_t index) const -> Transform *
-    {
-        return children[index];
-    }
 }
