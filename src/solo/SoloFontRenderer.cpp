@@ -31,10 +31,11 @@ FontRenderer::FontRenderer(const Node &node) :
 
 void FontRenderer::render()
 {
-    if (!mesh)
-        return;
-    renderer->addRenderCommand(RenderCommand::applyMaterial(material.get()));
-    renderer->addRenderCommand(RenderCommand::drawMesh(mesh.get(), transform));
+    if (mesh)
+    {
+        renderer->addRenderCommand(RenderCommand::applyMaterial(material.get()));
+        renderer->addRenderCommand(RenderCommand::drawMesh(mesh.get(), transform));
+    }
 }
 
 void FontRenderer::setFont(sptr<Font> newFont)
