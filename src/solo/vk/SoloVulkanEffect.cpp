@@ -4,16 +4,16 @@
 */
 
 #include "SoloVulkanEffect.h"
-#include "spirv-cross/spirv_cross.hpp"
-#include "spirv-cross/spirv_glsl.hpp"
+
 
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloDevice.h"
 #include "SoloVulkan.h"
 #include "SoloVulkanRenderer.h"
-
-#include "../spirv-cross/spirv.hpp"
+#include <spirv_cross/spirv.hpp>
+#include <spirv_cross/spirv_cross.hpp>
+#include <spirv_cross/spirv_glsl.hpp>
 
 using namespace solo;
 // TODO remove "using namespace vk" from other places

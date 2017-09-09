@@ -80,14 +80,6 @@
     <ClInclude Include="..\src\solo\SoloVector3.h" />
     <ClInclude Include="..\src\solo\SoloVector4.h" />
     <ClInclude Include="..\src\solo\SoloVertexFormat.h" />
-    <ClInclude Include="..\src\solo\spirv-cross\spirv.hpp" />
-    <ClInclude Include="..\src\solo\spirv-cross\spirv_cfg.hpp" />
-    <ClInclude Include="..\src\solo\spirv-cross\spirv_common.hpp" />
-    <ClInclude Include="..\src\solo\spirv-cross\spirv_cpp.hpp" />
-    <ClInclude Include="..\src\solo\spirv-cross\spirv_cross.hpp" />
-    <ClInclude Include="..\src\solo\spirv-cross\spirv_glsl.hpp" />
-    <ClInclude Include="..\src\solo\spirv-cross\spirv_hlsl.hpp" />
-    <ClInclude Include="..\src\solo\spirv-cross\spirv_msl.hpp" />
     <ClInclude Include="..\src\solo\stb\SoloStbTextureData.h" />
     <ClInclude Include="..\src\solo\stb\SoloStbTrueTypeFont.h" />
     <ClInclude Include="..\src\solo\vk\SoloSDLVulkanDevice.h" />
@@ -168,12 +160,6 @@
     <ClCompile Include="..\src\solo\SoloVector2.cpp" />
     <ClCompile Include="..\src\solo\SoloVector3.cpp" />
     <ClCompile Include="..\src\solo\SoloVector4.cpp" />
-    <ClCompile Include="..\src\solo\spirv-cross\spirv_cfg.cpp" />
-    <ClCompile Include="..\src\solo\spirv-cross\spirv_cpp.cpp" />
-    <ClCompile Include="..\src\solo\spirv-cross\spirv_cross.cpp" />
-    <ClCompile Include="..\src\solo\spirv-cross\spirv_glsl.cpp" />
-    <ClCompile Include="..\src\solo\spirv-cross\spirv_hlsl.cpp" />
-    <ClCompile Include="..\src\solo\spirv-cross\spirv_msl.cpp" />
     <ClCompile Include="..\src\solo\stb\SoloStbTextureData.cpp" />
     <ClCompile Include="..\src\solo\stb\SoloStbTrueTypeFont.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloSDLVulkanDevice.cpp" />
@@ -223,13 +209,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb_truetype\1.11\;$(ProjectDir)..\src\solo\;$(ProjectDir)..\vendor\vulkan\include\;$(ProjectDir)..\vendor\LuaIntf\;$(ProjectDir)..\vendor\lua\5.3.1\;$(ProjectDir)..\vendor\stb_image\2.15\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb_truetype\1.11\;$(ProjectDir)..\src\solo\;$(ProjectDir)..\vendor\vulkan\include\;$(ProjectDir)..\vendor\LuaIntf\;$(ProjectDir)..\vendor\lua\5.3.1\;$(ProjectDir)..\vendor\stb_image\2.15\;$(ProjectDir)..\vendor\spirv_cross\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\Solo\</OutDir>
     <IntDir>$(ProjectDir)..\build\Solo\tmp\</IntDir>
     <LibraryPath>$(ProjectDir)..\build\Solo.Vendor\;$(ProjectDir)..\build\Solo.Vendor.Lua\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb_truetype\1.11\;$(ProjectDir)..\src\solo\;$(ProjectDir)..\vendor\vulkan\include\;$(ProjectDir)..\vendor\LuaIntf\;$(ProjectDir)..\vendor\lua\5.3.1\;$(ProjectDir)..\vendor\stb_image\2.15\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb_truetype\1.11\;$(ProjectDir)..\src\solo\;$(ProjectDir)..\vendor\vulkan\include\;$(ProjectDir)..\vendor\LuaIntf\;$(ProjectDir)..\vendor\lua\5.3.1\;$(ProjectDir)..\vendor\stb_image\2.15\;$(ProjectDir)..\vendor\spirv_cross\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\Solo\</OutDir>
     <IntDir>$(ProjectDir)..\build\Solo\tmp\</IntDir>
     <LibraryPath>$(ProjectDir)..\build\Solo.Vendor\;$(ProjectDir)..\build\Solo.Vendor.Lua\;$(LibraryPath)</LibraryPath>

@@ -766,6 +766,24 @@
     <ClCompile Include="..\vendor\glew\1.13\src\glew.c">
       <Filter>glew</Filter>
     </ClCompile>
+    <ClCompile Include="..\vendor\spirv_cross\spirv_cfg.cpp">
+      <Filter>spirv_cross</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\spirv_cross\spirv_cpp.cpp">
+      <Filter>spirv_cross</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\spirv_cross\spirv_cross.cpp">
+      <Filter>spirv_cross</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\spirv_cross\spirv_glsl.cpp">
+      <Filter>spirv_cross</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\spirv_cross\spirv_hlsl.cpp">
+      <Filter>spirv_cross</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\spirv_cross\spirv_msl.cpp">
+      <Filter>spirv_cross</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bullet">
@@ -777,5 +795,34 @@
     <Filter Include="sdl">
       <UniqueIdentifier>{34eeae20-bf80-4ab8-8321-a68d67849f4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="spirv_cross">
+      <UniqueIdentifier>{9599602b-475b-45f1-ba25-63dbeadcd8d8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\vendor\spirv_cross\spirv.hpp">
+      <Filter>spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vendor\spirv_cross\spirv_cfg.hpp">
+      <Filter>spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vendor\spirv_cross\spirv_common.hpp">
+      <Filter>spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vendor\spirv_cross\spirv_cpp.hpp">
+      <Filter>spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vendor\spirv_cross\spirv_cross.hpp">
+      <Filter>spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vendor\spirv_cross\spirv_glsl.hpp">
+      <Filter>spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vendor\spirv_cross\spirv_hlsl.hpp">
+      <Filter>spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vendor\spirv_cross\spirv_msl.hpp">
+      <Filter>spirv_cross</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
