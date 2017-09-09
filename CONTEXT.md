@@ -4,7 +4,6 @@
 * Handle Vulkan/OpenGL coordinate system differences
 (for example add mesh methods setVertices/setUVs/... as in Unity, make these methods fix coordinates;
 or add global const vectors storing directions of global axes in relation to the 'screen')
-* Single material method for setting effect parameters
 * Refactor texture/texture data stuff
 * Refactor all vulkan code
 * More error checks, write errors to console
