@@ -77,14 +77,14 @@ namespace solo
                 sptr<vk::Texture> texture;
             };
 
-            using ParameterWriteFunc = std::function<void(Buffer&, const Camera*, const Transform*)>;
+            using ParameterWriteFunc = std::function<void(Buffer&, uint32_t, uint32_t, const Camera*, const Transform*)>;
 
             std::unordered_map<std::string, UniformBuffer> uniformBuffers;
             std::unordered_map<std::string, SamplerInfo> samplers;
             
-            bool dirtyLayout = false; // TODO add "dirtyData" or smth or per parameter
+            bool dirtyLayout = false;
 
-            void setUniformParameter(const std::string &name, std::function<ParameterWriteFunc(uint32_t, uint32_t)> getWrite);
+            void setUniformParameter(const std::string &name, ParameterWriteFunc write);
         };
     }
 }

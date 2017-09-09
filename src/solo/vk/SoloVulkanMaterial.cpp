@@ -64,61 +64,46 @@ auto vk::Material::getPolygonMode() const -> VkPolygonMode
 
 void vk::Material::setFloatParameter(const std::string &name, float value)
 {
-    setUniformParameter(name, [value](uint32_t offset, uint32_t size)
+    setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
     {
-        return [value, offset, size](Buffer &buffer, auto, auto)
-        {
-            buffer.updatePart(&value, offset, size);
-        };
+        buffer.updatePart(&value, offset, size);
     });
 }
 
 void vk::Material::setVector2Parameter(const std::string &name, const Vector2 &value)
 {
-    setUniformParameter(name, [value](uint32_t offset, uint32_t size)
+    setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
     {
-        return [value, offset, size](Buffer &buffer, auto, auto)
-        {
-            buffer.updatePart(&value, offset, size);
-        };
+        buffer.updatePart(&value, offset, size);
     });
 }
 
 void vk::Material::setVector3Parameter(const std::string &name, const Vector3 &value)
 {
-    setUniformParameter(name, [value](uint32_t offset, uint32_t size)
+    setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
     {
-        return [value, offset, size](Buffer &buffer, auto, auto)
-        {
-            buffer.updatePart(&value, offset, size);
-        };
+        buffer.updatePart(&value, offset, size);
     });
 }
 
 void vk::Material::setVector4Parameter(const std::string &name, const Vector4 &value)
 {
-    setUniformParameter(name, [value](uint32_t offset, uint32_t size)
+    setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
     {
-        return [value, offset, size](Buffer &buffer, auto, auto)
-        {
-            buffer.updatePart(&value, offset, size);
-        };
+        buffer.updatePart(&value, offset, size);
     });
 }
 
 void vk::Material::setMatrixParameter(const std::string &name, const Matrix &value)
 {
     // TODO avoid copy-paste
-    setUniformParameter(name, [value](uint32_t offset, uint32_t size)
+    setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
     {
-        return [value, offset, size](Buffer &buffer, auto, auto)
-        {
-            buffer.updatePart(&value, offset, size);
-        };
+        buffer.updatePart(&value, offset, size);
     });
 }
 
-void vk::Material::setUniformParameter(const std::string &name, std::function<ParameterWriteFunc(uint32_t, uint32_t)> getWrite)
+void vk::Material::setUniformParameter(const std::string &name, ParameterWriteFunc write)
 {
     auto parsedName = parseName(name);
     auto bufferName = std::get<0>(parsedName);
@@ -126,7 +111,8 @@ void vk::Material::setUniformParameter(const std::string &name, std::function<Pa
     SL_PANIC_IF(bufferName.empty() || fieldName.empty(), SL_FMT("Invalid parameter name ", name));
 
     auto bufferInfo = vkEffect->getUniformBufferInfo(bufferName);
-    SL_PANIC_IF(!bufferInfo.members.count(fieldName), SL_FMT("Unknown buffer ", bufferName, " or buffer member ", fieldName));
+    SL_PANIC_IF(!bufferInfo.members.count(fieldName), SL_FMT("Unknown buffer ", bufferName, " or buffer member ",
+        fieldName));
     const auto itemInfo = bufferInfo.members.at(fieldName);
 
     auto &buffer = uniformBuffers[bufferName];
@@ -140,7 +126,10 @@ void vk::Material::setUniformParameter(const std::string &name, std::function<Pa
     auto &item = buffer.items[fieldName];
     item.dirty = true;
     item.alwaysDirty = false;
-    item.write = getWrite(itemInfo.offset, itemInfo.size);
+    item.write = [itemInfo, write](Buffer &buffer, const Camera *camera, const Transform *transform)
+    {
+        write(buffer, itemInfo.offset, itemInfo.size, camera, transform);
+    };
 }
 
 void vk::Material::setTextureParameter(const std::string &name, sptr<solo::Texture> value)
@@ -161,7 +150,8 @@ void vk::Material::bindParameter(const std::string &name, BindParameterSemantics
     SL_PANIC_IF(bufferName.empty() || fieldName.empty(), SL_FMT("Invalid parameter name ", name));
 
     auto bufferInfo = vkEffect->getUniformBufferInfo(bufferName);
-    SL_PANIC_IF(!bufferInfo.members.count(fieldName), SL_FMT("Unknown buffer ", bufferName, " or buffer member ", fieldName));
+    SL_PANIC_IF(!bufferInfo.members.count(fieldName), SL_FMT("Unknown buffer ", bufferName, " or buffer member ",
+        fieldName));
     auto itemInfo = bufferInfo.members.at(fieldName);
 
     auto &buffer = uniformBuffers[bufferName];
@@ -175,7 +165,7 @@ void vk::Material::bindParameter(const std::string &name, BindParameterSemantics
     auto &item = buffer.items[fieldName];
     item.dirty = true;
     item.alwaysDirty = true;
-    
+
     switch (semantics)
     {
         case BindParameterSemantics::WorldMatrix:
