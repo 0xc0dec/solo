@@ -48,7 +48,7 @@ auto Texture2dData::loadFromFile(Device *device, const std::string &path) -> spt
 {
     if (stb::Texture2dData::canLoadFromFile(path))
         return stb::Texture2dData::loadFromFile(device, path);
-    SL_PANIC("Unsupported cube texture file ", path);
+    SL_PANIC(SL_FMT("Unsupported cube texture file ", path));
     return nullptr;
 }
 

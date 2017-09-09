@@ -62,21 +62,11 @@ namespace solo
     class EngineException: public std::runtime_error
     {
     public:
-        std::string info = "";
-
         EngineException(): std::runtime_error("")
         {
         }
 
-        explicit EngineException(const std::string &msg):
-            std::runtime_error(msg),
-            info(msg)
-        {
-        }
-
-        EngineException(const std::string &msg, const std::string &info):
-            std::runtime_error(msg),
-            info(info)
+        explicit EngineException(const std::string &msg): std::runtime_error(msg)
         {
         }
     };

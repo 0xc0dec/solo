@@ -54,7 +54,7 @@ auto Mesh::loadFromFile(Device *device, const std::string &path) -> sptr<Mesh>
 {
     if (obj::canLoadMesh(path))
         return obj::loadMesh(device, path);
-    SL_PANIC("Unsupported mesh file ", path);
+    SL_PANIC(SL_FMT("Unsupported mesh file ", path));
     return nullptr;
 }
 

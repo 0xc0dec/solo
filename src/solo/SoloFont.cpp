@@ -15,6 +15,6 @@ auto Font::loadFromFile(Device *device, const std::string &path,
 {
     if (stb::TrueTypeFont::canLoadFromFile(path))
         return stb::TrueTypeFont::loadFromFile(device, path, size, atlasWidth, atlasHeight, firstChar, charCount, oversampleX, oversampleY);
-    SL_PANIC("Unsupported font file ", path);
+    SL_PANIC(SL_FMT("Unsupported font file ", path));
     return nullptr;
 }

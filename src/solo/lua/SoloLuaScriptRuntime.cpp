@@ -87,13 +87,14 @@ lua::ScriptRuntime::~ScriptRuntime()
     lua.close();
 }
 
-void lua::ScriptRuntime::executeString(const std::string& code)
-{
-    lua.doString(code.c_str());
-}
-
 void lua::ScriptRuntime::executeFile(const std::string& path)
 {
+    if (lua.loadFile(path.c_str()))
+    {
+        auto msg = lua.getString(-1);
+        SL_PANIC(SL_FMT("Script failed to load: ", msg));
+    }
+
     // TODO use FileSystem to read the file
     lua.doFile(path.c_str());
 }

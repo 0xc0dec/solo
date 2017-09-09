@@ -19,7 +19,6 @@ namespace solo
             explicit ScriptRuntime(Device *device);
             ~ScriptRuntime();
 
-            void executeString(const std::string& code) override final;
             void executeFile(const std::string& path) override final;
 
             auto getString(const std::string &name) -> std::string override final;

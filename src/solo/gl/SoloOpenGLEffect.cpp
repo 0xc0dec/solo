@@ -53,7 +53,7 @@ static auto compileShader(GLuint type, const void *src, uint32_t length) -> GLin
         std::vector<GLchar> log(logLength);
         glGetShaderInfoLog(shader, logLength, nullptr, log.data());
         glDeleteShader(shader);
-        SL_PANIC(SL_FMT("Failed to compile ", typeNames[type], " shader"), log.data());
+        SL_PANIC(SL_FMT("Failed to compile ", typeNames[type], " shader:\n", log.data()));
     }
 
     return shader;
@@ -75,7 +75,7 @@ static auto linkProgram(GLuint vs, GLuint fs) -> GLint
         std::vector<GLchar> log(logLength);
         glGetProgramInfoLog(program, logLength, nullptr, log.data());
         glDeleteProgram(program);
-        SL_PANIC("Failed to link program", log.data());
+        SL_PANIC(SL_FMT("Failed to link program:\n", log.data()));
     }
 
     return program;

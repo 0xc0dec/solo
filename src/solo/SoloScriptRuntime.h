@@ -23,7 +23,6 @@ namespace solo
         ScriptRuntime() {}
         virtual ~ScriptRuntime() {}
 
-        virtual void executeString(const std::string& code) = 0;
         virtual void executeFile(const std::string& path) = 0;
 
         virtual auto getString(const std::string &name) -> std::string = 0;
