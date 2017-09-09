@@ -56,23 +56,6 @@ namespace solo
 
             struct UniformBufferItem
             {
-                uint32_t size;
-                std::function<void(Buffer&, uint32_t)> write;
-            };
-
-            struct Binding
-            {
-                std::vector<UniformBufferItem> bufferItems;
-                uint32_t bufferSize;
-                Buffer buffer;
-                sptr<vk::Texture> texture;
-                bool dirtyData;
-            };
-
-            std::unordered_map<uint32_t, Binding> bindings;
-
-            struct UniformBufferItem2
-            {
                 bool dirty;
                 bool alwaysDirty;
                 std::function<void(Buffer&, const Camera*, const Transform*)> write;
@@ -85,7 +68,7 @@ namespace solo
                 uint32_t binding;
                 uint32_t size;
                 Buffer buffer;
-                std::unordered_map<std::string, UniformBufferItem2> items;
+                std::unordered_map<std::string, UniformBufferItem> items;
             };
 
             struct SamplerInfo
@@ -94,10 +77,14 @@ namespace solo
                 sptr<vk::Texture> texture;
             };
 
+            using ParameterWriteFunc = std::function<void(Buffer&, const Camera*, const Transform*)>;
+
             std::unordered_map<std::string, UniformBuffer> uniformBuffers;
             std::unordered_map<std::string, SamplerInfo> samplers;
             
             bool dirtyLayout = false; // TODO add "dirtyData" or smth or per parameter
+
+            void setUniformParameter(const std::string &name, std::function<ParameterWriteFunc(uint32_t, uint32_t)> getWrite);
         };
     }
 }

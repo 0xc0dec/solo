@@ -62,40 +62,86 @@ auto vk::Material::getPolygonMode() const -> VkPolygonMode
     }
 }
 
-#define IMPLEMENT_SET_UNIFORM_PARAM_METHOD(methodName, paramType) \
-void vk::Material::methodName(const std::string &name, paramType value) \
-{ \
-    auto parsedName = parseName(name); \
-    auto bufferName = std::get<0>(parsedName); \
-    auto fieldName = std::get<1>(parsedName); \
-    SL_PANIC_IF(bufferName.empty() || fieldName.empty(), SL_FMT("Invalid parameter name ", name)); \
-\
-    auto bufferInfo = vkEffect->getUniformBufferInfo(bufferName); \
-    SL_PANIC_IF(!bufferInfo.members.count(fieldName), SL_FMT("Unknown buffer ", bufferName, " or buffer member ", fieldName)); \
-    auto itemInfo = bufferInfo.members.at(fieldName); \
-\
-    auto &buffer = uniformBuffers[bufferName]; \
-    buffer.dirty = true; \
-    buffer.alwaysDirty = false; \
-    buffer.binding = bufferInfo.binding; \
-    buffer.size = bufferInfo.size; \
-    if (!buffer.buffer) \
-        dirtyLayout = true; \
-\
-    auto &item = buffer.items[fieldName]; \
-    item.dirty = true; \
-    item.alwaysDirty = false; \
-    item.write = [value, itemInfo](Buffer &buffer, const Camera*, const Transform*) \
-    { \
-        buffer.updatePart(&value, itemInfo.offset, itemInfo.size); \
-    };\
+void vk::Material::setFloatParameter(const std::string &name, float value)
+{
+    setUniformParameter(name, [value](uint32_t offset, uint32_t size)
+    {
+        return [value, offset, size](Buffer &buffer, auto, auto)
+        {
+            buffer.updatePart(&value, offset, size);
+        };
+    });
 }
 
-IMPLEMENT_SET_UNIFORM_PARAM_METHOD(setFloatParameter, float)
-IMPLEMENT_SET_UNIFORM_PARAM_METHOD(setVector2Parameter, const Vector2&)
-IMPLEMENT_SET_UNIFORM_PARAM_METHOD(setVector3Parameter, const Vector3&)
-IMPLEMENT_SET_UNIFORM_PARAM_METHOD(setVector4Parameter, const Vector4&)
-IMPLEMENT_SET_UNIFORM_PARAM_METHOD(setMatrixParameter, const Matrix&)
+void vk::Material::setVector2Parameter(const std::string &name, const Vector2 &value)
+{
+    setUniformParameter(name, [value](uint32_t offset, uint32_t size)
+    {
+        return [value, offset, size](Buffer &buffer, auto, auto)
+        {
+            buffer.updatePart(&value, offset, size);
+        };
+    });
+}
+
+void vk::Material::setVector3Parameter(const std::string &name, const Vector3 &value)
+{
+    setUniformParameter(name, [value](uint32_t offset, uint32_t size)
+    {
+        return [value, offset, size](Buffer &buffer, auto, auto)
+        {
+            buffer.updatePart(&value, offset, size);
+        };
+    });
+}
+
+void vk::Material::setVector4Parameter(const std::string &name, const Vector4 &value)
+{
+    setUniformParameter(name, [value](uint32_t offset, uint32_t size)
+    {
+        return [value, offset, size](Buffer &buffer, auto, auto)
+        {
+            buffer.updatePart(&value, offset, size);
+        };
+    });
+}
+
+void vk::Material::setMatrixParameter(const std::string &name, const Matrix &value)
+{
+    // TODO avoid copy-paste
+    setUniformParameter(name, [value](uint32_t offset, uint32_t size)
+    {
+        return [value, offset, size](Buffer &buffer, auto, auto)
+        {
+            buffer.updatePart(&value, offset, size);
+        };
+    });
+}
+
+void vk::Material::setUniformParameter(const std::string &name, std::function<ParameterWriteFunc(uint32_t, uint32_t)> getWrite)
+{
+    auto parsedName = parseName(name);
+    auto bufferName = std::get<0>(parsedName);
+    auto fieldName = std::get<1>(parsedName);
+    SL_PANIC_IF(bufferName.empty() || fieldName.empty(), SL_FMT("Invalid parameter name ", name));
+
+    auto bufferInfo = vkEffect->getUniformBufferInfo(bufferName);
+    SL_PANIC_IF(!bufferInfo.members.count(fieldName), SL_FMT("Unknown buffer ", bufferName, " or buffer member ", fieldName));
+    const auto itemInfo = bufferInfo.members.at(fieldName);
+
+    auto &buffer = uniformBuffers[bufferName];
+    buffer.dirty = true;
+    buffer.alwaysDirty = false;
+    buffer.binding = bufferInfo.binding;
+    buffer.size = bufferInfo.size;
+    if (!buffer.buffer)
+        dirtyLayout = true;
+
+    auto &item = buffer.items[fieldName];
+    item.dirty = true;
+    item.alwaysDirty = false;
+    item.write = getWrite(itemInfo.offset, itemInfo.size);
+}
 
 void vk::Material::setTextureParameter(const std::string &name, sptr<solo::Texture> value)
 {
