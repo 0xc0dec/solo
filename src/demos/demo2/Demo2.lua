@@ -62,8 +62,10 @@ mesh:addVertexBuffer(layout, texCoords, 6)
 
 mesh:addPart({ 0, 1, 2, 3, 4, 5 }, 6)
 
-local tex = sl.Texture2d.loadFromFile(dev, getAssetPath("Cobblestone.png"))
-local effect = sl.Effect.loadFromFiles(dev, getAssetPath("Triangle.vert.spv"), getAssetPath("Triangle.frag.spv"))
+local tex = sl.Texture2d.loadFromFile(dev, getAssetPath("textures/Cobblestone.png"))
+local effect = sl.Effect.loadFromFiles(dev,
+    getAssetPath("shaders/vulkan/Triangle.vert.spv"),
+    getAssetPath("shaders/vulkan/Triangle.frag.spv"))
 local material = sl.Material.create(dev, effect)
 local m = sl.Matrix()
 material:bindWorldViewProjectionMatrixParameter("matrices.wvp")

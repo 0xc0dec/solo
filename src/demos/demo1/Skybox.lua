@@ -6,7 +6,7 @@
 require "Common"
 
 return function(scene, tag)
-    local getImagePath = function(fileName) return getAssetPath("skyboxes/deep-space/") .. fileName end
+    local getImagePath = function(fileName) return getAssetPath("textures/skyboxes/deep-space/") .. fileName end
     local tex = sl.CubeTexture.loadFromFaceFiles(sl.device,
         getImagePath("Front.png"), getImagePath("Back.png"), getImagePath("Left.png"),
         getImagePath("Right.png"), getImagePath("Top.png"), getImagePath("Bottom.png")

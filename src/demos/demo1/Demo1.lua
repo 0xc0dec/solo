@@ -57,15 +57,15 @@ local offscreenCamera, offscreenCameraTex = createOffscreenCamera(scene)
 createSkybox(scene, knownTags.skybox)
 createCheckerBox(scene, effects, meshes.cube)
 createDynamicQuad(scene, effects, loadTexture)
-createTimeLabel(scene, knownTags.transparent, getAssetPath("Aller.ttf"))
+createTimeLabel(scene, knownTags.transparent, getAssetPath("fonts/Aller.ttf"))
 
-local stoneTex = loadTexture(getAssetPath("Cobblestone.png"))
-local monkeyHeadMesh = sl.Mesh.loadFromFile(dev, getAssetPath("MonkeyHD.obj"))
+local stoneTex = loadTexture(getAssetPath("textures/Cobblestone.png"))
+local monkeyHeadMesh = sl.Mesh.loadFromFile(dev, getAssetPath("meshes/MonkeyHD.obj"))
 createMonkeyHead(scene, effects, stoneTex, monkeyHeadMesh)
 createFloor(scene, effects, stoneTex, meshes.cube)
 
-local axesMesh = sl.Mesh.loadFromFile(dev, getAssetPath("Axes.obj"))
-local logoTex = loadTexture(getAssetPath("Flammable.png"))
+local axesMesh = sl.Mesh.loadFromFile(dev, getAssetPath("meshes/Axes.obj"))
+local logoTex = loadTexture(getAssetPath("textures/Flammable.png"))
 
 attachAxesMesh(effects,
     createMonitorQuad(scene, effects, offscreenCameraTex, meshes.quad, knownTags.monitor),

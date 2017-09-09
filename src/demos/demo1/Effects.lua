@@ -8,21 +8,21 @@ require "Common"
 return function()
     local shaderFiles = {
         vs = {
-            basic = getAssetPath("Basic.vs.glsl"),
-            passThrough = getAssetPath("PassThrough.vs.glsl"),
-            basicLighting = getAssetPath("BasicLighting.vs.glsl")
+            basic = getAssetPath("shaders/gl/Basic.vert.glsl"),
+            passThrough = getAssetPath("shaders/gl/PassThrough.vert.glsl"),
+            basicLighting = getAssetPath("shaders/gl/BasicLighting.vert.glsl")
         },
 
         fs = {
-            checker = getAssetPath("Checker.fs.glsl"),
-            textureWithLighting = getAssetPath("TextureWithLighting.fs.glsl"),
-            grayscale = getAssetPath("Grayscale.fs.glsl"),
-            saturate = getAssetPath("Saturate.fs.glsl"),
-            verticalBlur = getAssetPath("VerticalBlur.fs.glsl"),
-            horizontalBlur = getAssetPath("HorizontalBlur.fs.glsl"),
-            texture = getAssetPath("Texture.fs.glsl"),
-            color = getAssetPath("Color.fs.glsl"),
-            stitches = getAssetPath("Stitches.fs.glsl")
+            checker = getAssetPath("shaders/gl/Checker.frag.glsl"),
+            textureWithLighting = getAssetPath("shaders/gl/TextureWithLighting.frag.glsl"),
+            grayscale = getAssetPath("shaders/gl/Grayscale.frag.glsl"),
+            saturate = getAssetPath("shaders/gl/Saturate.frag.glsl"),
+            verticalBlur = getAssetPath("shaders/gl/VerticalBlur.frag.glsl"),
+            horizontalBlur = getAssetPath("shaders/gl/HorizontalBlur.frag.glsl"),
+            texture = getAssetPath("shaders/gl/Texture.frag.glsl"),
+            color = getAssetPath("shaders/gl/Color.frag.glsl"),
+            stitches = getAssetPath("shaders/gl/Stitches.frag.glsl")
         }
     }
 
