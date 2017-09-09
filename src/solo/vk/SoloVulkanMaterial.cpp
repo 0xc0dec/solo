@@ -7,8 +7,8 @@
 
 #ifdef SL_VULKAN_RENDERER
 
-#include "SoloEffect.h"
 #include "SoloDevice.h"
+#include "SoloVulkanEffect.h"
 #include "SoloVulkanRenderer.h"
 #include "SoloVulkanDescriptorSetLayoutBuilder.h"
 #include "SoloVulkanDescriptorSetUpdater.h"
@@ -16,77 +16,22 @@
 
 using namespace solo;
 
-// TODO Make it less horrible, currently this expects certain variables to be present in the calling context lol
-#define SET_UNIFORM_PARAM(valueAddress) \
-    auto parsedName = parseName(name); \
-    const int32_t bindingIndex = std::get<0>(parsedName); \
-    int32_t bufferItemIndex = std::get<1>(parsedName); \
-\
-    if (bindings.count(bindingIndex) == 0) \
-    { \
-        bindings[bindingIndex]; \
-        dirtyLayout = true; \
-    } \
-\
-    auto &binding = bindings.at(bindingIndex); \
-    SL_PANIC_IF(bufferItemIndex >= 0 && binding.texture, "Parameter already has different type"); \
-    SL_PANIC_IF( \
-        bufferItemIndex >= 0 && \
-        binding.bufferItems.size() > bufferItemIndex && \
-        binding.bufferItems[bufferItemIndex].size != size, \
-        "Parameter already has different size" \
-    ); \
-\
-    if (binding.bufferItems.size() < bufferItemIndex + 1) \
-    { \
-        binding.bufferItems.resize(bufferItemIndex + 1); \
-        dirtyLayout = true; \
-    } \
-\
-    auto &item = binding.bufferItems[bufferItemIndex]; \
-    item.size = size; \
-    item.write = [value, size](Buffer &buffer, uint32_t offset) \
-    { \
-        buffer.updatePart(valueAddress, offset, size); \
-    }; \
-\
-    binding.dirtyData = true; \
-
-static auto parseIndex(const char *from, uint32_t len) -> int32_t
+static auto parseName(const std::string &name) -> std::tuple<std::string, std::string>
 {
-    int32_t index = 0, digit = 1;
-    while (len > 0)
-    {
-        index += digit * (*(from + len - 1) - '0');
-        digit *= 10;
-        len--;
-    }
-
-    return index;
+    const auto idx = name.find(".");
+    const auto first = (idx != std::string::npos) ? name.substr(0, idx) : name;
+    const auto second = (idx != std::string::npos) ? name.substr(idx + 1) : "";
+    return std::make_tuple(first, second);
 }
 
-static auto parseName(const std::string &name) -> std::tuple<uint32_t, int32_t>
-{
-    const auto idx = name.find(":");
-    const auto rawName = name.c_str();
-    const uint32_t binding = parseIndex(rawName, idx == std::string::npos ? name.size() : idx);
-    const int32_t indexInBuffer = idx == std::string::npos ? -1 : parseIndex(rawName + idx + 1, name.size() - idx - 1);
-    return std::make_tuple(binding, indexInBuffer);
-}
-
-vk::Material::Material(sptr<Effect> effect):
-    solo::Material(effect)
+vk::Material::Material(sptr<solo::Effect> effect):
+    solo::Material(effect),
+    vkEffect(std::static_pointer_cast<vk::Effect>(effect))
 {
 }
 
 vk::Material::~Material()
 {
-}
-
-void vk::Material::setFloatParameter(const std::string &name, float value)
-{
-    const auto size = sizeof(float);
-    SET_UNIFORM_PARAM(&value);
 }
 
 auto vk::Material::getCullModeFlags() const -> VkCullModeFlags
@@ -115,66 +60,47 @@ auto vk::Material::getPolygonMode() const -> VkPolygonMode
     }
 }
 
-void vk::Material::setFloatArrayParameter(const std::string &name, const std::vector<float> &value)
-{
-    const auto size = sizeof(float) * value.size();
-    SET_UNIFORM_PARAM(value.data());
+#define IMPLEMENT_SET_UNIFORM_PARAM_METHOD(methodName, paramType) \
+void vk::Material::methodName(const std::string &name, paramType value) \
+{ \
+    auto parsedName = parseName(name); \
+    auto bufferName = std::get<0>(parsedName); \
+    auto fieldName = std::get<1>(parsedName); \
+    SL_PANIC_IF(bufferName.empty() || fieldName.empty(), SL_FMT("Invalid parameter name ", name)); \
+\
+    auto bufferInfo = vkEffect->getUniformBufferInfo(bufferName); \
+    SL_PANIC_IF(!bufferInfo.members.count(fieldName), SL_FMT("Unknown buffer ", bufferName, " or buffer member ", fieldName)); \
+    auto itemInfo = bufferInfo.members.at(fieldName); \
+\
+    auto &buffer = uniformBuffers[bufferName]; \
+    buffer.dirty = true; \
+    buffer.binding = bufferInfo.binding; \
+    buffer.size = bufferInfo.size; \
+    if (!buffer.buffer) \
+        dirtyLayout = true; \
+\
+    auto &item = buffer.items[fieldName]; \
+    item.dirty = true; \
+    item.write = [value, itemInfo](Buffer &buffer) \
+    { \
+        buffer.updatePart(&value, itemInfo.offset, itemInfo.size); \
+    };\
 }
 
-void vk::Material::setVector2Parameter(const std::string &name, const Vector2 &value)
-{
-}
-
-void vk::Material::setVector2ArrayParameter(const std::string &name, const std::vector<Vector2> &value)
-{
-}
-
-void vk::Material::setVector3Parameter(const std::string &name, const Vector3 &value)
-{
-    const auto size = sizeof(Vector3);
-    SET_UNIFORM_PARAM(&value);
-}
-
-void vk::Material::setVector3ArrayParameter(const std::string &name, const std::vector<Vector3> &value)
-{
-}
-
-void vk::Material::setVector4Parameter(const std::string &name, const Vector4 &value)
-{
-}
-
-void vk::Material::setVector4ArrayParameter(const std::string &name, const std::vector<Vector4> &value)
-{
-}
-
-void vk::Material::setMatrixParameter(const std::string &name, const Matrix &value)
-{
-}
-
-void vk::Material::setMatrixArrayParameter(const std::string &name, const std::vector<Matrix> &value)
-{
-}
+IMPLEMENT_SET_UNIFORM_PARAM_METHOD(setFloatParameter, float)
+IMPLEMENT_SET_UNIFORM_PARAM_METHOD(setVector2Parameter, const Vector2&)
+IMPLEMENT_SET_UNIFORM_PARAM_METHOD(setVector3Parameter, const Vector3&)
+IMPLEMENT_SET_UNIFORM_PARAM_METHOD(setVector4Parameter, const Vector4&)
+IMPLEMENT_SET_UNIFORM_PARAM_METHOD(setMatrixParameter, const Matrix&)
 
 void vk::Material::setTextureParameter(const std::string &name, sptr<solo::Texture> value)
 {
-    auto parsedName = parseName(name); 
-    const int32_t bindingIndex = std::get<0>(parsedName); 
-
-    if (bindings.count(bindingIndex) == 0) 
-    { 
-        bindings[bindingIndex]; 
-        dirtyLayout = true; 
-    } 
-
-    auto &binding = bindings.at(bindingIndex); 
-    SL_PANIC_IF(binding.buffer, "Parameter already has different type");
-
-    const auto vkTex = std::dynamic_pointer_cast<vk::Texture>(value);
-    if (binding.texture != vkTex) 
-    { 
-        binding.texture = vkTex;
-        dirtyLayout = true; 
-    } 
+    const auto samplerInfo = vkEffect->getSamplerInfo(name);
+    auto &sampler = samplers[name];
+    sampler.binding = samplerInfo.binding;
+    sampler.texture = std::dynamic_pointer_cast<vk::Texture>(value);
+    dirtyLayout = true;
+    // TODO Optimize and mark only this sampler as dirty
 }
 
 void vk::Material::bindWorldMatrixParameter(const std::string &name)
@@ -215,61 +141,53 @@ void vk::Material::bindCameraWorldPositionParameter(const std::string &name)
 
 void vk::Material::applyParameters(Renderer *renderer)
 {
-    // Store everything in one set for simplicity
-    // "0:2" means "binding 0, index 2 in the uniform buffer" (for uniforms)
-    // "1" means "set 0, sampler binding 1"
-
     if (dirtyLayout)
     {
         auto builder = vk::DescriptorSetLayoutBuilder(renderer->getDevice());
 
-        auto samplerCount = 0;
-        auto uniformBufferCount = 0;
-        for (auto &b: bindings)
+        for (auto &pair : uniformBuffers)
         {
-            if (b.second.texture)
+            auto &info = pair.second;
+            if (!info.buffer)
             {
-                builder.withBinding(b.first, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT);
-                samplerCount++;
+                builder.withBinding(info.binding, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
+                // TODO Make sure this destroys the old buffer
+                info.buffer = Buffer::createUniformHostVisible(renderer, info.size);
             }
-            else if (!b.second.bufferItems.empty())
-            {
-                builder.withBinding(b.first, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
-                uniformBufferCount++;
+        }
 
-                b.second.bufferSize = 0;
-                for (const auto &item: b.second.bufferItems)
-                    b.second.bufferSize += item.size;
-                // TODO Make sure the old buffer is destroyed
-                b.second.buffer = Buffer::createUniformHostVisible(renderer, b.second.bufferSize);
-            }
+        for (auto &pair : samplers)
+        {
+            auto &info = pair.second;
+            builder.withBinding(info.binding, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1,
+                VK_SHADER_STAGE_FRAGMENT_BIT);
         }
 
         descSetLayout = builder.build();
 
         auto poolConfig = vk::DescriptorPoolConfig();
-        if (uniformBufferCount > 0)
-            poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, uniformBufferCount);
-        if (samplerCount > 0)
-            poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, samplerCount);
+        if (!uniformBuffers.empty())
+            poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, uniformBuffers.size());
+        if (!samplers.empty())
+            poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, samplers.size());
 
         // TODO Make sure this destroys the old pool
         descPool = vk::DescriptorPool(renderer->getDevice(), 1, poolConfig);
-
         descSet = descPool.allocateSet(descSetLayout);
 
         vk::DescriptorSetUpdater updater{renderer->getDevice()};
 
-        for (auto &b : bindings)
+        for (auto &pair : uniformBuffers)
         {
-            if (b.second.buffer) // TODO how's this buffer-to-bool comparison supposed to work?
-                updater.forUniformBuffer(b.first, descSet, b.second.buffer, 0, b.second.buffer.getSize());
-            else if (b.second.texture)
-            {
-                updater.forTexture(b.first, descSet,
-                    b.second.texture->getView(), b.second.texture->getSampler(),
-                    VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
-            }
+            auto &info = pair.second;
+            updater.forUniformBuffer(info.binding, descSet, info.buffer, 0, info.size);
+        }
+
+        for (auto &pair : samplers)
+        {
+            auto &info = pair.second;
+            updater.forTexture(info.binding, descSet, info.texture->getView(), info.texture->getSampler(),
+                VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
         }
 
         updater.updateSets();
@@ -277,21 +195,20 @@ void vk::Material::applyParameters(Renderer *renderer)
         dirtyLayout = false;
     }
 
-    // Update uniform buffers
-    for (auto &b : bindings)
+    for (auto &pair : uniformBuffers)
     {
-        if (!b.second.dirtyData || !b.second.buffer) // TODO how's this buffer-to-bool comparison supposed to work?
-            continue;
-
-        uint32_t offset = 0;
-        for (const auto &item : b.second.bufferItems)
+        auto &info = pair.second;
+        if (info.dirty)
         {
-            if (item.size > 0 && item.write) // check against accidental gaps in items array
-                item.write(b.second.buffer, offset);
-            offset += item.size;
+            for (auto &p : info.items)
+            {
+                if (p.second.dirty)
+                {
+                    p.second.write(info.buffer);
+                    p.second.dirty = false;
+                }
+            }
         }
-
-        b.second.dirtyData = false;
     }
 }
 

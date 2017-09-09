@@ -25,6 +25,7 @@ namespace solo
     {
         class Renderer;
         class Texture;
+        class Effect;
 
         class Material final: public solo::Material
         {
@@ -33,20 +34,10 @@ namespace solo
             ~Material();
 
             void setFloatParameter(const std::string &name, float value) override final;
-            void setFloatArrayParameter(const std::string &name, const std::vector<float> &value) override final;
-            
             void setVector2Parameter(const std::string &name, const Vector2 &value) override final;
-            void setVector2ArrayParameter(const std::string &name, const std::vector<Vector2> &value) override final;
-            
             void setVector3Parameter(const std::string &name, const Vector3 &value) override final;
-            void setVector3ArrayParameter(const std::string &name, const std::vector<Vector3> &value) override final;
-            
             void setVector4Parameter(const std::string &name, const Vector4 &value) override final;
-            void setVector4ArrayParameter(const std::string &name, const std::vector<Vector4> &value) override final;
-            
             void setMatrixParameter(const std::string &name, const Matrix &value) override final;
-            void setMatrixArrayParameter(const std::string &name, const std::vector<Matrix> &value) override final;
-            
             void setTextureParameter(const std::string &name, sptr<solo::Texture> value) override final;
             
             void bindWorldMatrixParameter(const std::string &name) override final;
@@ -66,6 +57,7 @@ namespace solo
             auto getPolygonMode() const -> VkPolygonMode;
 
         private:
+            sptr<vk::Effect> vkEffect; // TODO remove effect field from base class, make getEffect virtual
             DescriptorPool descPool;
             Resource<VkDescriptorSetLayout> descSetLayout;
             VkDescriptorSet descSet = VK_NULL_HANDLE;
@@ -86,6 +78,30 @@ namespace solo
             };
 
             std::unordered_map<uint32_t, Binding> bindings;
+
+            struct UniformBufferItem2
+            {
+                bool dirty;
+                std::function<void(Buffer&)> write;
+            };
+
+            struct UniformBuffer
+            {
+                bool dirty;
+                uint32_t binding;
+                uint32_t size;
+                Buffer buffer;
+                std::unordered_map<std::string, UniformBufferItem2> items;
+            };
+
+            struct SamplerInfo
+            {
+                uint32_t binding;
+                sptr<vk::Texture> texture;
+            };
+
+            std::unordered_map<std::string, UniformBuffer> uniformBuffers;
+            std::unordered_map<std::string, SamplerInfo> samplers;
             
             bool dirtyLayout = false; // TODO add "dirtyData" or smth or per parameter
         };

@@ -1,6 +1,7 @@
 # TODO
 * Continue with Vulkan material and textures
 * Continue with Vulkan renderer
+* Single material method for setting effect parameters
 * Refactor texture/texture data stuff
 * Refactor all vulkan code
 * Fix todos in code

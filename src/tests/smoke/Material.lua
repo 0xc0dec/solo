@@ -4,23 +4,13 @@
 -- 
 
 local mat = sl.Material.create(sl.device, sl.Effect.createFromPrefab(sl.device, sl.EffectPrefab.Skybox))
-local tex = sl.Texture2d.create(sl.device, 1, 1, sl.TextureFormat.RGB)
+local tex = sl.Texture2d.createEmpty(sl.device, 1, 1, sl.TextureFormat.RGB)
 
 mat:setFloatParameter("p1", 1)
-mat:setFloatArrayParameter("p2", { 1, 2 })
-
 mat:setVector2Parameter("p3", sl.Vector2(1, 2))
-mat:setVector2ArrayParameter("p4", { sl.Vector2(1, 2), sl.Vector2(1, 2) })
-
 mat:setVector3Parameter("p5", sl.Vector3(1, 2, 3))
-mat:setVector3ArrayParameter("p6", { sl.Vector3(1, 2, 3), sl.Vector3(1, 2, 3) })
-
 mat:setVector4Parameter("p7", sl.Vector4(1, 2, 3, 4))
-mat:setVector4ArrayParameter("p8", { sl.Vector4(1, 2, 3, 4), sl.Vector4(1, 2, 3, 4) })
-
 mat:setMatrixParameter("p9", sl.Matrix())
-mat:setMatrixArrayParameter("p10", { sl.Matrix(), sl.Matrix() })
-
 mat:setTextureParameter("p11", tex)
 
 mat:bindWorldMatrixParameter("p12")

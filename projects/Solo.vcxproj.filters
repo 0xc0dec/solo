@@ -178,6 +178,30 @@
     <ClInclude Include="..\src\solo\stb\SoloStbTextureData.h">
       <Filter>stb</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\spirv-cross\spirv.hpp">
+      <Filter>test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\spirv-cross\spirv_cfg.hpp">
+      <Filter>test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\spirv-cross\spirv_common.hpp">
+      <Filter>test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\spirv-cross\spirv_cpp.hpp">
+      <Filter>test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\spirv-cross\spirv_cross.hpp">
+      <Filter>test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\spirv-cross\spirv_glsl.hpp">
+      <Filter>test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\spirv-cross\spirv_hlsl.hpp">
+      <Filter>test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\spirv-cross\spirv_msl.hpp">
+      <Filter>test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp">
@@ -345,6 +369,24 @@
     <ClCompile Include="..\src\solo\stb\SoloStbTextureData.cpp">
       <Filter>stb</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\solo\spirv-cross\spirv_cfg.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\spirv-cross\spirv_cpp.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\spirv-cross\spirv_cross.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\spirv-cross\spirv_glsl.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\spirv-cross\spirv_hlsl.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\spirv-cross\spirv_msl.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bullet">
@@ -367,6 +409,9 @@
     </Filter>
     <Filter Include="vk">
       <UniqueIdentifier>{a549a9cc-182c-4c81-ba00-370056813008}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{29011bb0-de1a-4e37-91c9-6a43457ee599}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

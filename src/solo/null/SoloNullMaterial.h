@@ -14,21 +14,13 @@ namespace solo
         class Material final : public solo::Material
         {
         public:
-            explicit Material(const sptr<Effect> &effect) :
-                solo::Material(effect)
-            {
-            }
+            explicit Material(const sptr<Effect> &effect): solo::Material(effect) {}
 
             void setFloatParameter(const std::string& name, float value) override final {}
-            void setFloatArrayParameter(const std::string& name, const std::vector<float>& value) override final {}
             void setVector2Parameter(const std::string& name, const Vector2& value) override final {}
-            void setVector2ArrayParameter(const std::string& name, const std::vector<Vector2>& value) override final {}
             void setVector3Parameter(const std::string& name, const Vector3& value) override final {}
-            void setVector3ArrayParameter(const std::string& name, const std::vector<Vector3>& value) override final {}
             void setVector4Parameter(const std::string& name, const Vector4& value) override final {}
-            void setVector4ArrayParameter(const std::string& name, const std::vector<Vector4>& value) override final {}
             void setMatrixParameter(const std::string& name, const Matrix& value) override final {}
-            void setMatrixArrayParameter(const std::string& name, const std::vector<Matrix>& value) override final {}
             void setTextureParameter(const std::string& name, sptr<Texture> value) override final {}
             void bindWorldMatrixParameter(const std::string& name) override final {}
             void bindViewMatrixParameter(const std::string& name) override final {}

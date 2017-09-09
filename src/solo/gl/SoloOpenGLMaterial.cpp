@@ -50,19 +50,9 @@ void gl::Material::setFloatParameter(const std::string &name, float value)
     SET_PARAM(glUniform1f(location, value));
 }
 
-void gl::Material::setFloatArrayParameter(const std::string &name, const std::vector<float> &value)
-{
-    SET_PARAM(glUniform1fv(location, static_cast<GLsizei>(value.size()), value.data()));
-}
-
 void gl::Material::setVector2Parameter(const std::string &name, const Vector2 &value)
 {
     SET_PARAM(glUniform2f(location, value.x, value.y));
-}
-
-void gl::Material::setVector2ArrayParameter(const std::string &name, const std::vector<Vector2> &value)
-{
-    SET_PARAM(glUniform2fv(location, static_cast<GLsizei>(value.size()), reinterpret_cast<const float *>(value.data())));
 }
 
 void gl::Material::setVector3Parameter(const std::string &name, const Vector3 &value)
@@ -70,29 +60,14 @@ void gl::Material::setVector3Parameter(const std::string &name, const Vector3 &v
     SET_PARAM(glUniform3f(location, value.x, value.y, value.z));
 }
 
-void gl::Material::setVector3ArrayParameter(const std::string &name, const std::vector<Vector3> &value)
-{
-    SET_PARAM(glUniform3fv(location, static_cast<GLsizei>(value.size()), reinterpret_cast<const float *>(value.data())));
-}
-
 void gl::Material::setVector4Parameter(const std::string &name, const Vector4 &value)
 {
     SET_PARAM(glUniform4f(location, value.x, value.y, value.z, value.w));
 }
 
-void gl::Material::setVector4ArrayParameter(const std::string &name, const std::vector<Vector4> &value)
-{
-    SET_PARAM(glUniform4fv(location, static_cast<GLsizei>(value.size()), reinterpret_cast<const float *>(value.data())));
-}
-
 void gl::Material::setMatrixParameter(const std::string &name, const Matrix &value)
 {
     SET_PARAM(glUniformMatrix4fv(location, 1, GL_FALSE, value.m));
-}
-
-void gl::Material::setMatrixArrayParameter(const std::string &name, const std::vector<Matrix>& value)
-{
-    SET_PARAM(glUniformMatrix4fv(location, static_cast<GLsizei>(value.size()), GL_FALSE, reinterpret_cast<const float *>(value.data())));
 }
 
 void gl::Material::setTextureParameter(const std::string &name, sptr<solo::Texture> value)

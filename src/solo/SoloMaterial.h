@@ -75,20 +75,10 @@ namespace solo
         virtual ~Material() {}
 
         virtual void setFloatParameter(const std::string &name, float value) = 0;
-        virtual void setFloatArrayParameter(const std::string &name, const std::vector<float> &value) = 0;
-
         virtual void setVector2Parameter(const std::string &name, const Vector2 &value) = 0;
-        virtual void setVector2ArrayParameter(const std::string &name, const std::vector<Vector2> &value) = 0;
-
         virtual void setVector3Parameter(const std::string &name, const Vector3 &value) = 0;
-        virtual void setVector3ArrayParameter(const std::string &name, const std::vector<Vector3> &value) = 0;
-
         virtual void setVector4Parameter(const std::string &name, const Vector4 &value) = 0;
-        virtual void setVector4ArrayParameter(const std::string &name, const std::vector<Vector4> &value) = 0;
-
         virtual void setMatrixParameter(const std::string &name, const Matrix &value) = 0;
-        virtual void setMatrixArrayParameter(const std::string &name, const std::vector<Matrix> &value) = 0;
-
         virtual void setTextureParameter(const std::string &name, sptr<Texture> value) = 0;
 
         virtual void bindWorldMatrixParameter(const std::string &name) = 0;
