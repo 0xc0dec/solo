@@ -9,7 +9,6 @@ local q = sl.Quaternion()
 local rad = sl.Radian(1)
 local ray = sl.Ray(v, v)
 
-assert(sl.Matrix.getSize() ~= nil)
 assert(sl.Matrix.identity())
 assert(sl.Matrix.createLookAt(v, v, v))
 assert(sl.Matrix.createPerspective(rad, 2, 3, 4))

@@ -28,7 +28,6 @@ namespace solo
             float m41, float m42, float m43, float m44);
 
         static auto identity() -> Matrix;
-        static auto getSize() -> size_t;
 
         static auto createLookAt(const Vector3 &eye, const Vector3 &target, const Vector3 &up) -> Matrix;
         static auto createPerspective(const Radian &fieldOfView, float aspectRatio, float znear, float zfar) -> Matrix;
@@ -90,11 +89,6 @@ namespace solo
         auto operator*=(float scalar) -> Matrix&;
         auto operator*=(const Matrix &m) -> Matrix&;
     };
-
-    inline auto Matrix::getSize() -> size_t
-    {
-        return sizeof(float) * 16;
-    }
 
     inline auto Matrix::getUpVector() const -> Vector3
     {

@@ -50,7 +50,7 @@ Matrix::Matrix(
 
 Matrix::Matrix(const Matrix &copy)
 {
-    memcpy(m, copy.m, getSize());
+    memcpy(m, copy.m, sizeof(Matrix));
 }
 
 auto Matrix::identity() -> Matrix
@@ -130,7 +130,7 @@ bool Matrix::invert()
 
 bool Matrix::isIdentity() const
 {
-    return memcmp(m, identityMatrix, getSize()) == 0;
+    return memcmp(m, identityMatrix, sizeof(Matrix)) == 0;
 }
 
 auto Matrix::createLookAt(const Vector3 &eye, const Vector3 &target, const Vector3 &up) -> Matrix
@@ -163,7 +163,7 @@ auto Matrix::createPerspective(const Radian &fieldOfView, float aspectRatio, flo
     const auto factor = 1.0f / divisor;
 
     Matrix result;
-    memset(&result.m, 0, getSize());
+    memset(&result.m, 0, sizeof(Matrix));
     result.m[0] = (1.0f / aspectRatio) * factor;
     result.m[5] = factor;
     result.m[10] = -(zfar + znear) * f_n;
@@ -182,7 +182,7 @@ auto Matrix::createOrthographic(float width, float height, float near, float far
     const auto top = halfHeight;
     const auto bottom = -halfHeight;
     Matrix result;
-    memset(&result.m, 0, getSize());
+    memset(&result.m, 0, sizeof(Matrix));
     result.m[0] = 2 / (right - left);
     result.m[5] = 2 / (top - bottom);
     result.m[12] = (left + right) / (left - right);
@@ -574,7 +574,7 @@ void Matrix::transpose()
         m[2], m[6], m[10], m[14],
         m[3], m[7], m[11], m[15]
     };
-    memcpy(&m, t, getSize());
+    memcpy(&m, t, sizeof(Matrix));
 }
 
 auto Matrix::operator*=(float scalar) -> Matrix &
@@ -622,7 +622,7 @@ auto Matrix::operator*=(const Matrix &m2) -> Matrix &
     product[14] = m[2] * m2.m[12] + m[6] * m2.m[13] + m[10] * m2.m[14] + m[14] * m2.m[15];
     product[15] = m[3] * m2.m[12] + m[7] * m2.m[13] + m[11] * m2.m[14] + m[15] * m2.m[15];
 
-    memcpy(m, product, getSize());
+    memcpy(m, product, sizeof(Matrix));
 
     return *this;
 }

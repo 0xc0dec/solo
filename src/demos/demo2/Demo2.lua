@@ -37,13 +37,13 @@ local mesh = sl.Mesh.create(dev)
 local layout = sl.VertexBufferLayout()
 layout:addAttribute(2, 0)
 local positions = {
-	0.9, 0.9,
-    -0.9, 0.9,
-    -0.9, -0.9,
+	1, 1,
+    -1, 1,
+    -1, -1,
 
-    0.9, 0.8,
-    -0.8, -0.9,
-    0.9, -0.9
+    1, 1,
+    -1, -1,
+    1, -1
 }
 mesh:addVertexBuffer(layout, positions, 6)
 

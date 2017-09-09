@@ -150,7 +150,6 @@ static void registerMatrix(CppBindModule<LuaBinding> &module)
     auto matrix = BEGIN_CLASS(module, Matrix);
     REG_CTOR(matrix);
     REG_STATIC_METHOD(matrix, Matrix, identity);
-    REG_STATIC_METHOD(matrix, Matrix, getSize);
     REG_METHOD(matrix, Matrix, isIdentity);
     REG_METHOD(matrix, Matrix, getDeterminant);
     REG_METHOD(matrix, Matrix, invert);
