@@ -20,7 +20,7 @@ function initMainCamera()
     local node = scene:createNode()
         
     local t = node:findComponent("Transform")
-    t:setLocalPosition(vec3(0, 5, 10))
+    t:setLocalPosition(vec3(0, 5, 5))
     t:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
     
     node:addComponent("Spectator")
@@ -37,11 +37,11 @@ local mesh = sl.Mesh.create(dev)
 local layout = sl.VertexBufferLayout()
 layout:addAttribute(2, 0)
 local positions = {
-	1, 1,
-    -1, 1,
+	0.5, 1,
+    -0.5, 1,
     -1, -1,
 
-    1, 1,
+    0.5, 1,
     -1, -1,
     1, -1
 }
