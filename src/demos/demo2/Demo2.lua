@@ -78,21 +78,27 @@ function createCustomMesh(material, position)
     meshRenderer:setMesh(mesh)
     meshRenderer:setMaterial(0, material)
 
-    node:findComponent("Transform"):setLocalPosition(position)
+    if position then
+        node:findComponent("Transform"):setLocalPosition(position)
+    end
 end
 
-function createMesh(material)
+function createMesh(material, position)
     local mesh = sl.Mesh.loadFromFile(dev, getAssetPath("meshes/Teapot.obj"))
     local node = scene:createNode()
     local meshRenderer = node:addComponent("MeshRenderer")
     meshRenderer:setMesh(mesh)
     meshRenderer:setMaterial(0, material)
+
+    if position then
+        node:findComponent("Transform"):setLocalPosition(position)
+    end
 end
 
 material = createMaterials()
 camera = createMainCamera()
-createCustomMesh(material, vec3(5, 0, 5))
-createMesh(material)
+createCustomMesh(material)
+createMesh(material, vec3(5, 0, 5))
 
 function keepRunning()
     return not dev:isQuitRequested() and
