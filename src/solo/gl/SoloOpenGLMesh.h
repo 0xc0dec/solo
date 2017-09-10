@@ -48,7 +48,7 @@ namespace solo
             std::vector<GLuint> indexBuffers;
             std::vector<uint32_t> indexElementCounts;
             std::vector<uint32_t> vertexCounts;
-            std::vector<uint32_t> vertexSizes; // TODO use layours and don't store these
+            std::vector<uint32_t> vertexSizes; // TODO use layouts and don't store these
             uint32_t minVertexCount = 0;
             // TODO avoid the need for mutables
             mutable GLuint vertexArray = 0;

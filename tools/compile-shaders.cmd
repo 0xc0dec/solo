@@ -1,1 +1,1 @@
-python compileshaders.py "../assets"
+python compileshaders.py "../assets/shaders/vulkan"

@@ -37,11 +37,13 @@ auto vk::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *dat
 
 auto vk::Mesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
 {
-    return 0;
+    // TODO
+    return addVertexBuffer(layout, data, vertexCount);
 }
 
 void vk::Mesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const void *data, uint32_t vertexCount)
 {
+    // TODO
 }
 
 void vk::Mesh::removeVertexBuffer(uint32_t index)
