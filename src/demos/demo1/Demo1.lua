@@ -25,10 +25,73 @@ local createCheckerBox = require "CheckerBox"
 local createDynamicQuad = require "DynamicQuad"
 local createTransparentQuad = require "TransparentQuad"
 local createMonitorQuad = require "MonitorQuad"
-local createFloor = require "Floor"
 local createRotatingMesh = require "RotatingMesh"
-local createTimeLabel = require "TimeLabel"
 local attachAxesMesh = require "Axes"
+
+local loadTexture2d = function(path)
+    local tex = sl.Texture2d.loadFromFile(dev, path)
+    tex:generateMipmaps()
+    tex:setFiltering(sl.TextureFiltering.LinearMipmapNearest)
+    tex:setAnisotropyLevel(8)
+    return tex
+end
+
+local createFloor = function(effects, tex, cubeMesh)
+    local material = sl.Material.create(sl.device, effects.simpleTexture)
+    material:setFaceCull(sl.FaceCull.All)
+    material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    material:setTextureParameter("mainTex", tex)
+
+    local node = scene:createNode()
+    
+    local transform = node:findComponent("Transform")
+    transform:setLocalScale(vec3(10, 0.1, 10))
+    transform:setLocalPosition(vec3(0, -2, 0))
+
+    local renderer = node:addComponent("MeshRenderer")
+    renderer:setMesh(cubeMesh)
+    renderer:setMaterial(0, material)
+
+    local params = sl.RigidBodyConstructionParameters()
+    params.mass = 0
+    params.friction = 0.5
+    local body = node:addComponent("RigidBody", params)
+    body:setCollider(sl.BoxCollider.create(vec3(1, 1, 1)))
+end
+
+local createTimeLabel = function(tag, fontPath)
+    local createUpdater = function()
+        local textureWidth = 1024
+        local textureHeight = 1024
+        local lineHeight = 60
+        local renderer
+
+        return {
+            typeId = sl.getCmpId("TimeLabelUpdater"),
+
+            init = function(self)
+                local firstChar = string.byte(" ")
+                local charCount = string.byte("~") - string.byte(" ")
+                local font = sl.Font.loadFromFile(sl.device, fontPath,
+                    lineHeight, textureWidth,
+                    textureHeight, firstChar, charCount, 2, 2)
+
+                renderer = self.node:addComponent("FontRenderer")
+                renderer:setFont(font)
+            end,
+
+            update = function()
+                renderer:setText(os.date("Now is %H:%M:%S"))
+            end
+        }
+    end
+
+    local node = scene:createNode()
+    node:addScriptComponent(createUpdater())
+    node:findComponent("FontRenderer"):setTag(tag)
+    node:findComponent("Transform"):setLocalScale(vec3(0.02, 0.02, 1))
+    node:findComponent("Transform"):setLocalPosition(vec3(-3, 0, 4))
+end
 
 local effects = createEffects()
 
@@ -44,28 +107,20 @@ local meshes = {
     quad = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Quad)
 }
 
-local loadTexture = function(path)
-    local tex = sl.Texture2d.loadFromFile(dev, path)
-    tex:generateMipmaps()
-    tex:setFiltering(sl.TextureFiltering.LinearMipmapNearest)
-    tex:setAnisotropyLevel(8)
-    return tex
-end
-
 local mainCamera = createMainCamera(scene, physics, meshes, effects)
 local offscreenCamera, offscreenCameraTex = createOffscreenCamera(scene)
 createSkybox(scene, knownTags.skybox)
 createCheckerBox(scene, effects, meshes.cube)
-createDynamicQuad(scene, effects, loadTexture)
-createTimeLabel(scene, knownTags.transparent, getAssetPath("fonts/Aller.ttf"))
+createDynamicQuad(scene, effects, loadTexture2d)
+createTimeLabel(knownTags.transparent, getAssetPath("fonts/Aller.ttf"))
 
-local stoneTex = loadTexture(getAssetPath("textures/Cobblestone.png"))
+local stoneTex = loadTexture2d(getAssetPath("textures/Cobblestone.png"))
 local monkeyHeadMesh = sl.Mesh.loadFromFile(dev, getAssetPath("meshes/Teapot.obj"))
 createRotatingMesh(scene, effects, stoneTex, monkeyHeadMesh)
-createFloor(scene, effects, stoneTex, meshes.cube)
+createFloor(effects, stoneTex, meshes.cube)
 
 local axesMesh = sl.Mesh.loadFromFile(dev, getAssetPath("meshes/Axes.obj"))
-local logoTex = loadTexture(getAssetPath("textures/Flammable.png"))
+local logoTex = loadTexture2d(getAssetPath("textures/Flammable.png"))
 
 attachAxesMesh(effects,
     createMonitorQuad(scene, effects, offscreenCameraTex, meshes.quad, knownTags.monitor),
