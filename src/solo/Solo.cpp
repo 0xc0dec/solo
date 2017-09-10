@@ -21,7 +21,7 @@ int main(int argc, char **argv)
     try
     {
         const auto entryScript = argv[1];
-        auto entryRuntime = ScriptRuntime::createExternal();
+        auto entryRuntime = ScriptRuntime::create();
         entryRuntime->executeFile(entryScript);
 
         DeviceSetup setup;

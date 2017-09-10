@@ -9,7 +9,7 @@
 
 using namespace solo;
 
-auto ScriptRuntime::createExternal() -> sptr<ScriptRuntime>
+auto ScriptRuntime::create() -> sptr<ScriptRuntime>
 {
     return std::make_shared<lua::ScriptRuntime>();
 }
