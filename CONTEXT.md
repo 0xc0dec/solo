@@ -1,12 +1,14 @@
 # TODO
-* Continue with Vulkan material and textures
-* Continue with Vulkan renderer
+? Allocate uniform buffers per material-object pair because
+when several changes are made to the shader buffer only the latest is used
+when render commands are submitted
+* Continue with Vulkan backend
 * Handle Vulkan/OpenGL coordinate system differences
 (for example add mesh methods setVertices/setUVs/... as in Unity, make these methods fix coordinates;
 or add global const vectors storing directions of global axes in relation to the 'screen')
 * Refactor texture/texture data stuff
 * Refactor all vulkan code
 * More error checks, write errors to console
-* Fix todos in code
 * Make sure findComponent returns nil for inexistent components.
 * Review sptr and maybe replace some of them with raw pointers.
+* Fix todos in code
