@@ -1,7 +1,8 @@
 # TODO
 ? Allocate uniform buffers per material-object pair because
-when several changes are made to the shader buffer only the latest is used
-when render commands are submitted
+when several changes are made to the shader buffer only the latest is used when render commands are submitted
+OR
+Build separate command buffers for objects and submit them separately.
 * Continue with Vulkan backend
 * Handle Vulkan/OpenGL coordinate system differences
 (for example add mesh methods setVertices/setUVs/... as in Unity, make these methods fix coordinates;
