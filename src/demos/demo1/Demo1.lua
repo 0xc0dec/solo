@@ -74,60 +74,60 @@ attachAxesMesh(effects,
     createTransparentQuad(scene, effects, meshes.quad, knownTags.transparent, logoTex),
     axesMesh)
 
-local keepRunning = function()
-    return not dev:isQuitRequested() and
-           not dev:isWindowCloseRequested() and
-           not dev:isKeyPressed(sl.KeyCode.Escape, true)
-end
-
-local detachPostProcessor = function()
-    if pp then
-        pp:detach()
-        pp = nil
-    end
-end
-
-local update = function()
-    scene:visit(function(cmp) cmp:update() end)
-
-    if dev:isKeyPressed(sl.KeyCode.Digit1, true) then
-        detachPostProcessor()
-        pp = postProcessors.create1(mainCamera, knownTags.postProcessor, effects)
-    end
-
-    if dev:isKeyPressed(sl.KeyCode.Digit2, true) then
-        detachPostProcessor()
-        pp = postProcessors.create2(mainCamera, knownTags.postProcessor, effects)
-    end
-
-    if dev:isKeyPressed(sl.KeyCode.Digit3, true) then
-        detachPostProcessor()
-    end
-end
-
-local renderByTags = function(tags)
-    scene:visitByTags(tags, function(cmp) cmp:render() end)
-end
-
-local render = function()
-    offscreenCamera:renderFrame(function()
-        renderByTags(knownTags.skybox)
-        renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.monitor | knownTags.postProcessor))
-        renderByTags(knownTags.transparent)
-    end)
-
-    mainCamera:renderFrame(function()
-        renderByTags(knownTags.skybox)
-        renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.postProcessor))
-        renderByTags(knownTags.transparent)
-    end)
-
-    if pp then
-        pp:apply()
-    end
-end
-
 local run = function()
+    local keepRunning = function()
+        return not dev:isQuitRequested() and
+            not dev:isWindowCloseRequested() and
+            not dev:isKeyPressed(sl.KeyCode.Escape, true)
+    end
+
+    local detachPostProcessor = function()
+        if pp then
+            pp:detach()
+            pp = nil
+        end
+    end
+
+    local update = function()
+        scene:visit(function(cmp) cmp:update() end)
+
+        if dev:isKeyPressed(sl.KeyCode.Digit1, true) then
+            detachPostProcessor()
+            pp = postProcessors.create1(mainCamera, knownTags.postProcessor, effects)
+        end
+
+        if dev:isKeyPressed(sl.KeyCode.Digit2, true) then
+            detachPostProcessor()
+            pp = postProcessors.create2(mainCamera, knownTags.postProcessor, effects)
+        end
+
+        if dev:isKeyPressed(sl.KeyCode.Digit3, true) then
+            detachPostProcessor()
+        end
+    end
+
+    local renderByTags = function(tags)
+        scene:visitByTags(tags, function(cmp) cmp:render() end)
+    end
+
+    local render = function()
+        offscreenCamera:renderFrame(function()
+            renderByTags(knownTags.skybox)
+            renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.monitor | knownTags.postProcessor))
+            renderByTags(knownTags.transparent)
+        end)
+
+        mainCamera:renderFrame(function()
+            renderByTags(knownTags.skybox)
+            renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.postProcessor))
+            renderByTags(knownTags.transparent)
+        end)
+
+        if pp then
+            pp:apply()
+        end
+    end
+
     while keepRunning() do
         dev:update(function()
             physics:update()
