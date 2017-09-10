@@ -19,8 +19,7 @@ local canvasSize = dev:getCanvasSize()
 local postProcessors = require "PostProcessors"
 local createRotator = require "Rotator"
 local createScreenshoter = require "Screenshoter"
-local createSpawner = require "Spawner"
-local createSpawnedObjectTargeter = require "SpawnedObjectTargeter"
+local createSpawnedObject = require "SpawnedObject"
 local createLookAt = require "LookAt"
 
 local loadTexture2d = function(path)
@@ -29,6 +28,48 @@ local loadTexture2d = function(path)
     tex:setFiltering(sl.TextureFiltering.LinearMipmapNearest)
     tex:setAnisotropyLevel(8)
     return tex
+end
+
+local createSpawnedObjectTargeter = function()
+    return {
+        typeId = sl.getCmpId("SpawnedObjectTargeter"),
+
+        init = function(self)
+            self.transform = self.node:findComponent("Transform")
+        end,
+
+        update = function(self)
+            local to = self.transform:getWorldPosition() + self.transform:getLocalForward() * 100
+            local hitResults = sl.device:getPhysics():castRayAll(self.transform:getWorldPosition(), to)
+
+            for i, hit in ipairs(hitResults) do
+                local obj = hit.body:getNode():findScriptComponent(sl.getCmpId("SpawnedObject"))
+                if obj then
+                    obj:setActive()
+                end
+            end
+        end
+    }
+end
+
+local createSpawner = function(mesh, effect)
+    return {
+        typeId = sl.getCmpId("Spawner"),
+
+        init = function(self)
+            self.transform = self.node:findComponent("Transform")
+            self.scene = self.node:getScene()
+        end,
+
+        update = function(self)
+            if sl.device:isKeyPressed(sl.KeyCode.Space, true) then
+                local initialPos = self.transform:getLocalPosition() + self.transform:getLocalForward() * 2
+                local initialRotation = self.transform:getLocalRotation()
+                self.scene:createNode():addScriptComponent(
+                    createSpawnedObject(effect, mesh, initialPos, initialRotation))
+            end
+        end
+    }
 end
 
 local createTransparentQuad = function(effects, quadMesh, tag, tex)
