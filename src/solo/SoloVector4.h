@@ -6,6 +6,8 @@
 #pragma once
 
 #include "SoloRadian.h"
+#include "SoloMath.h"
+#include "SoloHash.h"
 
 namespace solo
 {
@@ -33,6 +35,8 @@ namespace solo
         void clamp(const Vector4 &min, const Vector4 &max);
         auto dot(const Vector4 &v) const -> float;
 
+        bool operator==(const Vector4 &v) const;
+
         auto operator+(float scalar) const -> Vector4;
         auto operator+(const Vector4 &v) const -> Vector4;
         auto operator+=(float scalar) -> Vector4&;
@@ -50,6 +54,12 @@ namespace solo
         auto operator/(float x) const -> Vector4;
         auto operator/=(float x) -> Vector4&;
     };
+
+    inline bool Vector4::operator==(const Vector4 &v) const
+    {
+        return math::areEqual(x, v.x) && math::areEqual(y, v.y) &&
+            math::areEqual(z, v.z) && math::areEqual(w, v.w);
+    }
 
     inline auto Vector4::operator+(float scalar) const -> Vector4
     {
@@ -164,4 +174,22 @@ namespace solo
         w /= scalar;
         return *this;
     }
+}
+
+namespace std
+{
+    template <>
+	struct hash<solo::Vector4>
+	{
+		size_t operator()(const solo::Vector4 &v) const
+        {
+            size_t seed = 0;
+            const hash<float> hasher;
+            solo::combineHash(seed, hasher(v.x));
+            solo::combineHash(seed, hasher(v.y));
+            solo::combineHash(seed, hasher(v.z));
+            solo::combineHash(seed, hasher(v.w));
+		    return seed;
+        }
+	};
 }

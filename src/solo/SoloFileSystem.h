@@ -22,6 +22,8 @@ namespace solo
 
         virtual ~FileSystem() {}
 
+        virtual auto getStream(const std::string &path) -> sptr<std::istream>;
+
         virtual auto readBytes(const std::string &path) -> std::vector<uint8_t>;
         virtual void writeBytes(const std::string &path, const std::vector<uint8_t> &data);
 

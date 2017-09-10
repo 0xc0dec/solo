@@ -59,7 +59,20 @@ function createCustomMesh(material, position)
     mesh:addVertexBuffer(layout, positions, 6)
 
     layout = sl.VertexBufferLayout()
-    layout:addAttribute(2, 1)
+    layout:addAttribute(3, 1)
+    local normals = {
+        0, 0, 0,
+        0, 0, 0,
+        0, 0, 0,
+
+        0, 0, 0,
+        0, 0, 0,
+        0, 0, 0
+    }
+    mesh:addVertexBuffer(layout, normals, 6)
+
+    layout = sl.VertexBufferLayout()
+    layout:addAttribute(2, 2)
     local texCoords = {
         0.0, 0.0,
         0.0, 1.0,
@@ -98,7 +111,7 @@ end
 material = createMaterials()
 camera = createMainCamera()
 createCustomMesh(material)
-createMesh(material, vec3(5, 0, 5))
+createMesh(material)
 
 function keepRunning()
     return not dev:isQuitRequested() and

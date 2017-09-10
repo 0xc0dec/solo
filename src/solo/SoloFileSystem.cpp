@@ -17,15 +17,24 @@ auto FileSystem::create(Device *device, const FriendToken<Device> &) -> sptr<Fil
     return std::unique_ptr<FileSystem>(new FileSystem());
 }
 
+auto FileSystem::getStream(const std::string &path) -> sptr<std::istream>
+{
+    std::ifstream file{path};
+    SL_PANIC_IF(!file.is_open());
+    return std::make_shared<std::ifstream>(std::move(file));
+}
+
 auto FileSystem::readBytes(const std::string &path) -> std::vector<uint8_t>
 {
     std::ifstream file(path, std::ios::binary | std::ios::ate);
     SL_PANIC_IF(!file.is_open(), SL_FMT("Failed to open file '", path, "'"));
-    auto size = file.tellg();
+
+    const auto size = file.tellg();
     file.seekg(0, std::ios::beg);
     auto result = std::vector<uint8_t>(size);
     file.read(reinterpret_cast<char *>(&result[0]), size);
     file.close();
+
     return result;
 }
 

@@ -163,7 +163,6 @@
     <ClInclude Include="..\src\solo\SoloVector3.h" />
     <ClInclude Include="..\src\solo\SoloVector4.h" />
     <ClInclude Include="..\src\solo\SoloVertexFormat.h" />
-    <ClInclude Include="..\src\solo\SoloObjMeshLoading.h" />
     <ClInclude Include="..\src\solo\SoloStringUtils.h" />
     <ClInclude Include="..\src\solo\SoloTextureData.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkanDescriptorSetUpdater.h">
@@ -178,6 +177,10 @@
     <ClInclude Include="..\src\solo\stb\SoloStbTextureData.h">
       <Filter>stb</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\obj\SoloObjMeshLoading.h">
+      <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\SoloHash.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp">
@@ -334,7 +337,6 @@
     <ClCompile Include="..\src\solo\SoloVector2.cpp" />
     <ClCompile Include="..\src\solo\SoloVector3.cpp" />
     <ClCompile Include="..\src\solo\SoloVector4.cpp" />
-    <ClCompile Include="..\src\solo\SoloObjMeshLoading.cpp" />
     <ClCompile Include="..\src\solo\SoloTextureData.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloVulkanDescriptorSetUpdater.cpp">
       <Filter>vk</Filter>
@@ -344,6 +346,9 @@
     </ClCompile>
     <ClCompile Include="..\src\solo\stb\SoloStbTextureData.cpp">
       <Filter>stb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\obj\SoloObjMeshLoading.cpp">
+      <Filter>obj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -367,6 +372,9 @@
     </Filter>
     <Filter Include="vk">
       <UniqueIdentifier>{a549a9cc-182c-4c81-ba00-370056813008}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="obj">
+      <UniqueIdentifier>{95b4ec15-ca5a-49ad-bb4c-95b20a8137cc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

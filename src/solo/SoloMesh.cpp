@@ -6,7 +6,7 @@
 #include "SoloMesh.h"
 #include "SoloEffect.h"
 #include "SoloDevice.h"
-#include "SoloObjMeshLoading.h"
+#include "obj/SoloObjMeshLoading.h"
 #include "gl/SoloOpenGLMesh.h"
 #include "vk/SoloVulkanMesh.h"
 #include "null/SoloNullMesh.h"

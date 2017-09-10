@@ -3,7 +3,6 @@
     MIT license
 */
 
-#include "SoloMath.h"
 #include "SoloVector2.h"
 
 using namespace solo;

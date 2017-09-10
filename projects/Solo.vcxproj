@@ -36,6 +36,7 @@
     <ClInclude Include="..\src\solo\null\SoloNullMesh.h" />
     <ClInclude Include="..\src\solo\null\SoloNullTexture.h" />
     <ClInclude Include="..\src\solo\null\SoloNullRenderer.h" />
+    <ClInclude Include="..\src\solo\obj\SoloObjMeshLoading.h" />
     <ClInclude Include="..\src\solo\sdl\SoloSDLDevice.h" />
     <ClInclude Include="..\src\solo\sdl\SoloSDLInputMaps.h" />
     <ClInclude Include="..\src\solo\SoloBoxCollider.h" />
@@ -52,6 +53,7 @@
     <ClInclude Include="..\src\solo\SoloFontRenderer.h" />
     <ClInclude Include="..\src\solo\SoloFormatter.h" />
     <ClInclude Include="..\src\solo\SoloFrameBuffer.h" />
+    <ClInclude Include="..\src\solo\SoloHash.h" />
     <ClInclude Include="..\src\solo\SoloTextureData.h" />
     <ClInclude Include="..\src\solo\SoloLogger.h" />
     <ClInclude Include="..\src\solo\SoloMaterial.h" />
@@ -60,7 +62,6 @@
     <ClInclude Include="..\src\solo\SoloMesh.h" />
     <ClInclude Include="..\src\solo\SoloMeshRenderer.h" />
     <ClInclude Include="..\src\solo\SoloNode.h" />
-    <ClInclude Include="..\src\solo\SoloObjMeshLoading.h" />
     <ClInclude Include="..\src\solo\SoloPhysics.h" />
     <ClInclude Include="..\src\solo\SoloQuaternion.h" />
     <ClInclude Include="..\src\solo\SoloRadian.h" />
@@ -126,6 +127,7 @@
     <ClCompile Include="..\src\solo\lua\SoloLuaScriptRuntime.cpp" />
     <ClCompile Include="..\src\solo\lua\SoloLuaTextureApi.cpp" />
     <ClCompile Include="..\src\solo\lua\SoloLuaTransformApi.cpp" />
+    <ClCompile Include="..\src\solo\obj\SoloObjMeshLoading.cpp" />
     <ClCompile Include="..\src\solo\sdl\SoloSDLDevice.cpp" />
     <ClCompile Include="..\src\solo\Solo.cpp" />
     <ClCompile Include="..\src\solo\SoloBoxCollider.cpp" />
@@ -149,7 +151,6 @@
     <ClCompile Include="..\src\solo\SoloMesh.cpp" />
     <ClCompile Include="..\src\solo\SoloMeshRenderer.cpp" />
     <ClCompile Include="..\src\solo\SoloNode.cpp" />
-    <ClCompile Include="..\src\solo\SoloObjMeshLoading.cpp" />
     <ClCompile Include="..\src\solo\SoloQuaternion.cpp" />
     <ClCompile Include="..\src\solo\SoloRay.cpp" />
     <ClCompile Include="..\src\solo\SoloFrameBuffer.cpp" />

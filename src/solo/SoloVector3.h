@@ -6,6 +6,8 @@
 #pragma once
 
 #include "SoloRadian.h"
+#include "SoloMath.h"
+#include "SoloHash.h"
 
 namespace solo
 {
@@ -34,6 +36,8 @@ namespace solo
         auto dot(const Vector3 &v) const -> float;
         auto cross(const Vector3 &v) -> Vector3;
 
+        bool operator==(const Vector3 &v) const;
+
         auto operator+(float scalar) const -> Vector3;
         auto operator+(const Vector3 &v) const -> Vector3;
         auto operator+=(const Vector3 &v) -> Vector3&;
@@ -51,6 +55,11 @@ namespace solo
         auto operator/(float scalar) const -> Vector3;
         auto operator/=(float scalar) -> Vector3&;
     };
+
+    inline bool Vector3::operator==(const Vector3 &v) const
+    {
+        return math::areEqual(x, v.x) && math::areEqual(y, v.y) && math::areEqual(z, v.z);
+    }
 
     inline auto Vector3::operator+(const Vector3 &v) const -> Vector3
     {
@@ -158,4 +167,21 @@ namespace solo
         z /= scalar;
         return *this;
     }
+}
+
+namespace std
+{
+    template <>
+	struct hash<solo::Vector3>
+	{
+		size_t operator()(const solo::Vector3 &v) const
+        {
+            size_t seed = 0;
+            const hash<float> hasher;
+            solo::combineHash(seed, hasher(v.x));
+            solo::combineHash(seed, hasher(v.y));
+            solo::combineHash(seed, hasher(v.z));
+		    return seed;
+        }
+	};
 }
