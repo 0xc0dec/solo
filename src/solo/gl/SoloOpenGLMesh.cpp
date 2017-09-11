@@ -14,6 +14,26 @@
 
 using namespace solo;
 
+static auto toPrimitiveType(PrimitiveType type) -> GLenum
+{
+    switch (type)
+    {
+        case PrimitiveType::Triangles:
+            return GL_TRIANGLES;
+        case PrimitiveType::TriangleStrip:
+            return GL_TRIANGLE_STRIP;
+        case PrimitiveType::Lines:
+            return GL_LINES;
+        case PrimitiveType::LineStrip:
+            return GL_LINE_STRIP;
+        case PrimitiveType::Points:
+            return GL_POINTS;
+        default:
+            SL_PANIC("Unknown primitive type");
+            return GL_TRIANGLES;
+    }
+}
+
 gl::Mesh::~Mesh()
 {
     if (vertexArray)

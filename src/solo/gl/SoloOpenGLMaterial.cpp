@@ -15,6 +15,53 @@
 
 using namespace solo;
 
+static bool findUniformInProgram(GLuint program, const char *name, GLint &location, int32_t &index)
+{
+    GLint activeUniforms;
+    glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &activeUniforms);
+    if (activeUniforms <= 0)
+        return false;
+
+    GLint nameMaxLength;
+    glGetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &nameMaxLength);
+    if (nameMaxLength <= 0)
+        return false;
+
+    std::vector<GLchar> rawName(nameMaxLength + 1);
+    uint32_t samplerIndex = 0;
+    for (GLint i = 0; i < activeUniforms; ++i)
+    {
+        GLint size;
+        GLenum type;
+
+        glGetActiveUniform(program, i, nameMaxLength, nullptr, &size, &type, rawName.data());
+        rawName[nameMaxLength] = '\0';
+        std::string n = rawName.data();
+
+        // Strip away possible square brackets for array uniforms,
+        // they are sometimes present on some platforms
+        auto bracketIndex = n.find('[');
+        if (bracketIndex != std::string::npos)
+            n.erase(bracketIndex);
+
+        uint32_t idx = 0;
+        if (type == GL_SAMPLER_2D || type == GL_SAMPLER_CUBE) // TODO other types of samplers
+        {
+            idx = samplerIndex;
+            samplerIndex += size;
+        }
+
+        if (n == name)
+        {
+            location = glGetUniformLocation(program, rawName.data());
+            index = idx;
+            return true;
+        }
+    }
+
+    return false;
+}
+
 gl::Material::Material(sptr<solo::Effect> effect):
     solo::Material(effect)
 {

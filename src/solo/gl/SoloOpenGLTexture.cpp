@@ -11,7 +11,108 @@
 
 using namespace solo;
 
-static auto toTextureCubeMapFace(CubeTextureFace face) -> GLenum
+static auto toFormat(TextureFormat format) -> GLenum
+{
+    switch (format)
+    {
+        case TextureFormat::Red:
+            return GL_RED;
+        case TextureFormat::RGB:
+            return GL_RGB;
+        case TextureFormat::RGBA:
+            return GL_RGBA;
+        default:
+            SL_PANIC("Unknown image format");
+            return GL_RED;
+    }
+}
+
+static auto toInternalFormat(TextureFormat format) -> GLenum
+{
+    switch (format)
+    {
+        case TextureFormat::Red:
+        case TextureFormat::RGB:
+            return GL_RGB;
+        case TextureFormat::RGBA:
+            return GL_RGBA;
+        default:
+            SL_PANIC("Unknown image format");
+            return GL_RGB;
+    }
+}
+
+static void applyRectWrap(GLenum target, uint32_t flags)
+{
+    GLenum wrapS = 0;
+    if (flags & TextureFlags::HorizontalWrapClamp)
+        wrapS = GL_CLAMP_TO_EDGE;
+    else if (flags & TextureFlags::HorizontalWrapRepeat)
+        wrapS = GL_REPEAT;
+    if (wrapS)
+        glTexParameteri(target, GL_TEXTURE_WRAP_S, wrapS);
+
+    GLenum wrapT = 0;
+    if (flags & TextureFlags::VerticalWrapClamp)
+        wrapT = GL_CLAMP_TO_EDGE;
+    else if (flags & TextureFlags::VerticalWrapRepeat)
+        wrapT = GL_REPEAT;
+    if (wrapT)
+        glTexParameteri(target, GL_TEXTURE_WRAP_T, wrapT);
+}
+
+static void applyDepthWrap(uint32_t flags)
+{
+    GLenum wrapR = 0;
+    if (flags & TextureFlags::DepthWrapClamp)
+        wrapR = GL_CLAMP_TO_EDGE;
+    else if (flags & TextureFlags::DepthWrapRepeat)
+        wrapR = GL_REPEAT;
+    if (wrapR)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, wrapR);
+}
+
+static void applyMinFilter(GLenum target, uint32_t flags)
+{
+    GLenum minFilter = 0;
+    if (flags & TextureFlags::MinFilterLinear)
+        minFilter = GL_LINEAR;
+    else if (flags & TextureFlags::MinFilterLinearMipmapLinear)
+        minFilter = GL_LINEAR_MIPMAP_LINEAR;
+    else if (flags & TextureFlags::MinFilterLinearMipmapNearest)
+        minFilter = GL_LINEAR_MIPMAP_NEAREST;
+    else if (flags & TextureFlags::MinFilterNearest)
+        minFilter = GL_NEAREST;
+    else if (flags & TextureFlags::MinFilterNearestMipmapLinear)
+        minFilter = GL_NEAREST_MIPMAP_LINEAR;
+    else if (flags & TextureFlags::MinFilterNearestMipmapNearest)
+        minFilter = GL_NEAREST_MIPMAP_NEAREST;
+
+    if (minFilter)
+        glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minFilter);
+}
+
+static void applyMagFilter(GLenum target, uint32_t flags)
+{
+    GLenum magFilter = 0;
+    if (flags & TextureFlags::MagFilterLinear)
+        magFilter = GL_LINEAR;
+    else if (flags & TextureFlags::MagFilterLinearMipmapLinear)
+        magFilter = GL_LINEAR_MIPMAP_LINEAR;
+    else if (flags & TextureFlags::MagFilterLinearMipmapNearest)
+        magFilter = GL_LINEAR_MIPMAP_NEAREST;
+    else if (flags & TextureFlags::MagFilterNearest)
+        magFilter = GL_NEAREST;
+    else if (flags & TextureFlags::MagFilterNearestMipmapLinear)
+        magFilter = GL_NEAREST_MIPMAP_LINEAR;
+    else if (flags & TextureFlags::MagFilterNearestMipmapNearest)
+        magFilter = GL_NEAREST_MIPMAP_NEAREST;
+
+    if (magFilter)
+        glTexParameteri(target, GL_TEXTURE_MAG_FILTER, magFilter);
+}
+
+static auto toCubeMapFace(CubeTextureFace face) -> GLenum
 {
     switch (face)
     {
@@ -73,10 +174,10 @@ void gl::Texture2d::setData(const void *data)
 {
     glBindTexture(GL_TEXTURE_2D, handle);
 
-    const auto internalFormat = toInternalTextureFormat(format);
-    const auto fmt = toTextureFormat(format);
+    const auto internalFormat = toInternalFormat(this->format);
+    const auto format = toFormat(this->format);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x, dimensions.y, 0, fmt, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x, dimensions.y, 0, format, GL_UNSIGNED_BYTE, data);
 
     glBindTexture(GL_TEXTURE_2D, 0);
 }
@@ -114,9 +215,9 @@ void gl::CubeTexture::setData(CubeTextureData *data)
     for (int i = 0; i < 6; ++i)
     {
         const auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + i);
-        const auto glFace = toTextureCubeMapFace(face);
-        const auto internalFormat = toInternalTextureFormat(data->getFormat()); // TODO pass 'face' instead of 'i'
-        const auto fmt = toTextureFormat(data->getFormat());
+        const auto glFace = toCubeMapFace(face);
+        const auto internalFormat = toInternalFormat(data->getFormat()); // TODO pass 'face' instead of 'i'
+        const auto fmt = toFormat(data->getFormat());
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         // TODO Add support for mip levels
         glTexImage2D(glFace, 0, internalFormat, data->getDimension(), data->getDimension(), 0, fmt, GL_UNSIGNED_BYTE, data->getData(i));
