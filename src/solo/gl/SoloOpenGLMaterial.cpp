@@ -40,7 +40,7 @@ static bool findUniformInProgram(GLuint program, const char *name, GLint &locati
 
         // Strip away possible square brackets for array uniforms,
         // they are sometimes present on some platforms
-        auto bracketIndex = n.find('[');
+        const auto bracketIndex = n.find('[');
         if (bracketIndex != std::string::npos)
             n.erase(bracketIndex);
 
@@ -63,9 +63,8 @@ static bool findUniformInProgram(GLuint program, const char *name, GLint &locati
 }
 
 gl::Material::Material(sptr<solo::Effect> effect):
-    solo::Material(effect)
+    effect(std::dynamic_pointer_cast<gl::Effect>(effect))
 {
-    this->effect = std::dynamic_pointer_cast<Effect>(effect);
 }
 
 void gl::Material::applyParams(const Camera *camera, const Transform *nodeTransform) const

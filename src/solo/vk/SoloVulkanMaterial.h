@@ -13,6 +13,7 @@
 #include "SoloVulkan.h"
 #include "SoloVulkanDescriptorPool.h"
 #include "SoloVulkanBuffer.h"
+#include "SoloVulkanEffect.h"
 #include <unordered_map>
 
 namespace solo
@@ -25,13 +26,14 @@ namespace solo
     {
         class Renderer;
         class Texture;
-        class Effect;
 
         class Material final: public solo::Material
         {
         public:
             Material(sptr<solo::Effect> effect);
             ~Material();
+
+            auto getEffect() const -> solo::Effect* override final { return effect.get(); }
 
             void setFloatParameter(const std::string &name, float value) override final;
             void setVector2Parameter(const std::string &name, const Vector2 &value) override final;
@@ -49,7 +51,7 @@ namespace solo
             auto getPolygonMode() const -> VkPolygonMode;
 
         private:
-            sptr<vk::Effect> vkEffect; // TODO remove effect field from base class, make getEffect virtual
+            sptr<vk::Effect> effect;
             DescriptorPool descPool;
             Resource<VkDescriptorSetLayout> descSetLayout;
             VkDescriptorSet descSet = VK_NULL_HANDLE;

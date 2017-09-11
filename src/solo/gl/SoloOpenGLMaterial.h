@@ -33,6 +33,8 @@ namespace solo
             explicit Material(sptr<solo::Effect> effect);
             ~Material() {}
 
+            auto getEffect() const -> solo::Effect* override final { return effect.get(); }
+
             void setFloatParameter(const std::string &name, float value) override final;
             void setVector2Parameter(const std::string &name, const Vector2 &value) override final;
             void setVector3Parameter(const std::string &name, const Vector3 &value) override final;
@@ -45,7 +47,7 @@ namespace solo
             void applyParams(const Camera *camera, const Transform *nodeTransform) const;
 
         protected:
-            sptr<Effect> effect = nullptr;
+            sptr<gl::Effect> effect = nullptr;
 
             std::unordered_map<std::string, GLint> uniformLocations;
             std::unordered_map<std::string, uint32_t> applierIndices;

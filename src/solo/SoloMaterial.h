@@ -96,7 +96,7 @@ namespace solo
 
         virtual void bindParameter(const std::string &name, BindParameterSemantics semantics) = 0;
 
-        auto getEffect() const -> Effect* { return effect.get(); }
+        virtual auto getEffect() const -> Effect* = 0;
 
         auto getPolygonMode() const -> PolygonMode { return polygonMode; }
         void setPolygonMode(PolygonMode mode) { polygonMode = mode; }
@@ -121,8 +121,6 @@ namespace solo
         void setDepthFunction(DepthFunction func) { depthFunc = func; }
 
     protected:
-        sptr<Effect> effect;
-
         FaceCull faceCull = FaceCull::CW;
         PolygonMode polygonMode = PolygonMode::Triangle;
         bool depthWrite = true;
@@ -132,7 +130,7 @@ namespace solo
         BlendFactor dstBlendFactor = BlendFactor::OneMinusSrcAlpha;
         DepthFunction depthFunc = DepthFunction::Less;
 
-        explicit Material(sptr<Effect> effect);
+        Material() {}
     };
 
     inline void Material::setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor)

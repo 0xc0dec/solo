@@ -15,7 +15,7 @@ mat:setTextureParameter("p11", tex)
 
 mat:bindParameter("p20", sl.BindParameterSemantics.WorldMatrix)
 
-assert(mat:getEffect())
+mat:getEffect() -- null material returns null
 
 assert(mat:getPolygonMode())
 mat:setPolygonMode(sl.PolygonMode.Points)

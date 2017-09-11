@@ -14,7 +14,9 @@ namespace solo
         class Material final : public solo::Material
         {
         public:
-            explicit Material(const sptr<Effect> &effect): solo::Material(effect) {}
+            Material() {}
+
+            auto getEffect() const -> solo::Effect* override final { return nullptr; }
 
             void setFloatParameter(const std::string& name, float value) override final {}
             void setVector2Parameter(const std::string& name, const Vector2& value) override final {}

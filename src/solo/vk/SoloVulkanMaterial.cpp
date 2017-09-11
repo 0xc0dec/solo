@@ -27,8 +27,7 @@ static auto parseName(const std::string &name) -> std::tuple<std::string, std::s
 }
 
 vk::Material::Material(sptr<solo::Effect> effect):
-    solo::Material(effect),
-    vkEffect(std::static_pointer_cast<vk::Effect>(effect))
+    effect(std::dynamic_pointer_cast<vk::Effect>(effect))
 {
 }
 
@@ -110,7 +109,7 @@ void vk::Material::setUniformParameter(const std::string &name, ParameterWriteFu
     auto fieldName = std::get<1>(parsedName);
     SL_PANIC_IF(bufferName.empty() || fieldName.empty(), SL_FMT("Invalid parameter name ", name));
 
-    auto bufferInfo = vkEffect->getUniformBufferInfo(bufferName);
+    auto bufferInfo = effect->getUniformBufferInfo(bufferName);
     SL_PANIC_IF(!bufferInfo.members.count(fieldName), SL_FMT("Unknown buffer ", bufferName, " or buffer member ",
         fieldName));
     const auto itemInfo = bufferInfo.members.at(fieldName);
@@ -134,7 +133,7 @@ void vk::Material::setUniformParameter(const std::string &name, ParameterWriteFu
 
 void vk::Material::setTextureParameter(const std::string &name, sptr<solo::Texture> value)
 {
-    const auto samplerInfo = vkEffect->getSamplerInfo(name);
+    const auto samplerInfo = effect->getSamplerInfo(name);
     auto &sampler = samplers[name];
     sampler.binding = samplerInfo.binding;
     sampler.texture = std::dynamic_pointer_cast<vk::Texture>(value);
@@ -149,7 +148,7 @@ void vk::Material::bindParameter(const std::string &name, BindParameterSemantics
     auto fieldName = std::get<1>(parsedName);
     SL_PANIC_IF(bufferName.empty() || fieldName.empty(), SL_FMT("Invalid parameter name ", name));
 
-    auto bufferInfo = vkEffect->getUniformBufferInfo(bufferName);
+    auto bufferInfo = effect->getUniformBufferInfo(bufferName);
     SL_PANIC_IF(!bufferInfo.members.count(fieldName),
         SL_FMT("Unknown buffer ", bufferName, " or buffer member ", fieldName));
     auto itemInfo = bufferInfo.members.at(fieldName);
