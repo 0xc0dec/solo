@@ -256,7 +256,7 @@ void gl::Material::setParameter(const std::string &paramName,
     if (locIt == uniformLocations.end())
     {
         GLint location, index;
-        auto found = findUniformInProgram(effect->getHandle(), paramName.c_str(), location, index);
+        auto found = findUniformInProgram(effect->getHandle(), paramName.c_str(), location, index); // TODO move to Effect
         SL_PANIC_IF(!found, SL_FMT("Could not find uniform '", paramName, "'"));
 
         appliers.push_back(getApplier(location, index));
