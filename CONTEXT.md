@@ -1,6 +1,6 @@
 # TODO
 * Async resource loading
-? Allocate uniform buffers per material-object pair because
+? (Vulkan) Allocate uniform buffers per material-object pair because
 when several changes are made to the shader buffer only the latest is used when render commands are submitted
 OR
 Build separate command buffers for objects and submit them separately.
