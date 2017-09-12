@@ -22,6 +22,13 @@ local createScreenshoter = require "Screenshoter"
 local createSpawnedObject = require "SpawnedObject"
 local createLookAt = require "LookAt"
 
+local callSafe = function(f)
+    local _, err = select(1, pcall(f))
+    if err then
+        logger:logError(err)
+    end
+end
+
 local loadTexture2d = function(path)
     local tex = sl.Texture2d.loadFromFile(dev, path)
     tex:generateMipmaps()
@@ -221,7 +228,39 @@ local createEffects = function()
     }
 end
 
-local createDynamicQuad = function(effects, loadTexture)
+local createCommonMaterials = function(effects)
+    function createTextured1()
+        local tex = loadTexture2d(getAssetPath("textures/Bricks.jpg"))
+        tex:setWrapping(sl.TextureWrapping.Clamp)
+
+        local mat = sl.Material.create(sl.device, effects.simpleTexture)
+        mat:setFaceCull(sl.FaceCull.All)
+        mat:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+        mat:setTextureParameter("mainTex", tex)
+
+        return mat
+    end
+
+    function createLitTextured()
+        local tex = loadTexture2d(getAssetPath("textures/Cobblestone.png"))
+        tex:setWrapping(sl.TextureWrapping.Clamp)
+
+        local mat = sl.Material.create(sl.device, effects.basicLighting)
+        mat:setFaceCull(sl.FaceCull.All)
+        mat:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+        mat:bindParameter("invTransposedWorldMatrix", sl.BindParameterSemantics.InverseTransposedWorldMatrix)
+        mat:setTextureParameter("mainTex", tex)
+
+        return mat
+    end
+
+    return {
+        textured1 = createTextured1(),
+        litTextured = createLitTextured()
+    }
+end
+
+local createDynamicQuad = function(material)
     local createUpdater = function(data, mesh)
         local time = 0
 
@@ -239,9 +278,6 @@ local createDynamicQuad = function(effects, loadTexture)
             end
         }
     end
-
-    local tex = loadTexture(getAssetPath("textures/Bricks.jpg"))
-    tex:setWrapping(sl.TextureWrapping.Clamp)
 
     local layout = sl.VertexBufferLayout()
     layout:addNamedAttribute(3, "position");
@@ -263,11 +299,6 @@ local createDynamicQuad = function(effects, loadTexture)
     mesh:addDynamicVertexBuffer(layout, data, 4)
     mesh:addPart(indices, 6)
     mesh:setPrimitiveType(sl.PrimitiveType.Triangles)
-
-    local material = sl.Material.create(sl.device, effects.simpleTexture)
-    material:setFaceCull(sl.FaceCull.All)
-    material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-    material:setTextureParameter("mainTex", tex)
 
     local node = scene:createNode()
     node:findComponent("Transform"):setLocalPosition(vec3(0, 0, -5))
@@ -291,13 +322,7 @@ local createCheckerBox = function(effects, cubeMesh)
     node:addScriptComponent(createRotator("world", vec3(0, 1, 0)))
 end
 
-local createRotatingMesh = function(effects, tex, mesh)
-    local material = sl.Material.create(sl.device, effects.basicLighting)
-    material:setFaceCull(sl.FaceCull.All)
-    material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-    material:bindParameter("invTransposedWorldMatrix", sl.BindParameterSemantics.InverseTransposedWorldMatrix)
-    material:setTextureParameter("mainTex", tex)
-
+local createRotatingMesh = function(mesh, material)
     local node = scene:createNode()
     local renderer = node:addComponent("MeshRenderer")
     renderer:setMesh(mesh)
@@ -387,6 +412,7 @@ local createTimeLabel = function(tag, fontPath)
 end
 
 local effects = createEffects()
+local materials = createCommonMaterials(effects)
 
 local knownTags = {
     skybox = 1 << 1,
@@ -404,12 +430,12 @@ local mainCamera = createMainCamera(meshes, effects)
 local offscreenCamera, offscreenCameraTex = createOffscreenCamera()
 createSkybox(knownTags.skybox)
 createCheckerBox(effects, meshes.cube)
-createDynamicQuad(effects, loadTexture2d)
+createDynamicQuad(materials.textured1)
 createTimeLabel(knownTags.transparent, getAssetPath("fonts/Aller.ttf"))
 
 local stoneTex = loadTexture2d(getAssetPath("textures/Cobblestone.png"))
 local monkeyHeadMesh = sl.Mesh.loadFromFile(dev, getAssetPath("meshes/Teapot.obj"))
-createRotatingMesh(effects, stoneTex, monkeyHeadMesh)
+createRotatingMesh(monkeyHeadMesh, materials.litTextured)
 createFloor(effects, stoneTex, meshes.cube)
 
 local axesMesh = sl.Mesh.loadFromFile(dev, getAssetPath("meshes/Axes.obj"))
@@ -482,13 +508,6 @@ local run = function()
             update()
             renderer:renderFrame(render)
         end)
-    end
-end
-
-local callSafe = function(f)
-    local _, err = select(1, pcall(f))
-    if err then
-        logger:logError(err)
     end
 end
 
