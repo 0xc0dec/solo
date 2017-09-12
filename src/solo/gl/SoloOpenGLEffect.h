@@ -26,6 +26,11 @@ namespace solo
                 uint32_t samplerIndex;
             };
 
+            struct AttributeInfo
+            {
+                uint32_t location;
+            };
+
             static auto createFromPrefab(EffectPrefab prefab) -> sptr<Effect>;
 
             Effect(const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen);
@@ -34,12 +39,15 @@ namespace solo
             auto getHandle() const -> GLuint { return handle; }
 
             auto getUniformInfo(const std::string &name) -> UniformInfo;
+            auto getAttributeInfo(const std::string &name) -> AttributeInfo;
 
         private:
             GLuint handle = 0;
             std::unordered_map<std::string, UniformInfo> uniforms;
+            std::unordered_map<std::string, AttributeInfo> attributes;
 
-            void introspect();
+            void introspectUniforms();
+            void introspectAttributes();
         };
     }
 }

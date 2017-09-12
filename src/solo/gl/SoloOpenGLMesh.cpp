@@ -56,7 +56,7 @@ void gl::Mesh::rebuildVertexArray() const
     }
 
     glGenVertexArrays(1, &vertexArray);
-    SL_PANIC_IF(!vertexArray, "Failed to create vertex array handle");
+    SL_PANIC_IF(!vertexArray, "Failed to create vertex array");
 
     glBindVertexArray(vertexArray);
 
