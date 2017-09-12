@@ -244,14 +244,14 @@ local createDynamicQuad = function(effects, loadTexture)
     tex:setWrapping(sl.TextureWrapping.Clamp)
 
     local layout = sl.VertexBufferLayout()
-    layout:addAttribute(3, 0)
-    layout:addAttribute(2, 1)
+    layout:addNamedAttribute(3, "position");
+    layout:addNamedAttribute(2, "texCoord0");
 
     local data = {
-        -1, -1, 0,    0, 0,
-        -1,  1, 0,    0, 1,
-        1,  1, 0,    1, 1,
-        1, -1, 0,    1, 0
+        -1, -1, 0, 0, 0,
+        -1,  1, 0, 0, 1,
+         1,  1, 0, 1, 1,
+         1, -1, 0, 1, 0
     }
 
     local indices = {

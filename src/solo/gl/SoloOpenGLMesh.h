@@ -11,6 +11,8 @@
 
 #include "SoloMesh.h"
 #include "SoloOpenGL.h"
+#include <unordered_set>
+#include <unordered_map>
 
 namespace solo
 {
@@ -38,8 +40,8 @@ namespace solo
             auto getPrimitiveType() const -> PrimitiveType override final;
             void setPrimitiveType(PrimitiveType type) override final;
 
-            void draw() const;
-            void drawPart(uint32_t part) const;
+            void draw(gl::Effect *effect) const;
+            void drawPart(uint32_t part, gl::Effect *effect) const;
 
         private:
             PrimitiveType primitiveType = PrimitiveType::Triangles;
@@ -50,13 +52,13 @@ namespace solo
             std::vector<uint32_t> vertexCounts;
             std::vector<uint32_t> vertexSizes; // TODO use layouts and don't store these
             uint32_t minVertexCount = 0;
-            // TODO avoid the need for mutables
-            mutable GLuint vertexArray = 0;
-            mutable bool dirtyVertexArray = true;
+            
+            mutable std::unordered_map<gl::Effect*, GLuint> vertexArrays; // TODO clean!
 
             auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount, bool dynamic) -> uint32_t;
 
-            void rebuildVertexArray() const;
+            auto rebuildVertexArrays(gl::Effect *effect) const -> GLuint;
+            void resetVertexArrays();
             void updateMinVertexCount();
         };
 

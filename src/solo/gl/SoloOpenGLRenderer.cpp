@@ -271,6 +271,7 @@ void gl::Renderer::endFrame()
 {
     Camera *currentCamera = nullptr;
     Material *currentMaterial = nullptr;
+    gl::Effect *currentEffect = nullptr;
 
     for (const auto &step: renderSteps)
     {
@@ -293,14 +294,14 @@ void gl::Renderer::endFrame()
             case RenderCommandType::DrawMesh:
             {
                 currentMaterial->applyParams(currentCamera, step.cmd.mesh.transform);
-                static_cast<const Mesh*>(step.cmd.mesh.mesh)->draw();
+                static_cast<const Mesh*>(step.cmd.mesh.mesh)->draw(currentEffect);
                 break;
             }
 
             case RenderCommandType::DrawMeshPart:
             {
                 currentMaterial->applyParams(currentCamera, step.cmd.meshPart.transform);
-                static_cast<Mesh*>(step.cmd.meshPart.mesh)->drawPart(step.cmd.meshPart.part);
+                static_cast<Mesh*>(step.cmd.meshPart.mesh)->drawPart(step.cmd.meshPart.part, currentEffect);
                 break;
             }
 
@@ -308,6 +309,7 @@ void gl::Renderer::endFrame()
             {
                 step.applyMaterialState();
                 currentMaterial = static_cast<Material*>(step.cmd.material);
+                currentEffect = static_cast<gl::Effect*>(currentMaterial->getEffect());
                 break;
             }
 

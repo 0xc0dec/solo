@@ -36,29 +36,23 @@ static auto toPrimitiveType(PrimitiveType type) -> GLenum
 
 gl::Mesh::~Mesh()
 {
-    if (vertexArray)
-        glDeleteVertexArrays(1, &vertexArray);
+    resetVertexArrays();
     while (!vertexBuffers.empty())
         removeVertexBuffer(0);
     while (!indexBuffers.empty())
         removePart(0);
 }
 
-void gl::Mesh::rebuildVertexArray() const
+auto gl::Mesh::rebuildVertexArrays(gl::Effect *effect) const -> GLuint
 {
-    if (!dirtyVertexArray)
-        return;
+    auto va = vertexArrays[effect];
+    if (va)
+        return va;
     
-    if (vertexArray)
-    {
-        glDeleteVertexArrays(1, &vertexArray);
-        vertexArray = 0;
-    }
+    glGenVertexArrays(1, &va);
+    SL_PANIC_IF(!va, "Failed to create vertex array");
 
-    glGenVertexArrays(1, &vertexArray);
-    SL_PANIC_IF(!vertexArray, "Failed to create vertex array");
-
-    glBindVertexArray(vertexArray);
+    glBindVertexArray(va);
 
     for (uint32_t i = 0; i < vertexBuffers.size(); i++)
     {
@@ -75,8 +69,17 @@ void gl::Mesh::rebuildVertexArray() const
         {
             const auto attr = layout.getAttribute(j);
             const auto stride = layout.getSize();
-            glVertexAttribPointer(attr.location, attr.elementCount, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void *>(offset));
-            glEnableVertexAttribArray(attr.location);
+            auto location = attr.location;
+
+            if (!attr.name.empty())
+            {
+                const auto attrInfo = effect->getAttributeInfo(attr.name);
+                location = attrInfo.location;
+            }
+
+            glVertexAttribPointer(location, attr.elementCount, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void *>(offset));
+            glEnableVertexAttribArray(location);
+
             offset += attr.size;
         }
 
@@ -85,7 +88,15 @@ void gl::Mesh::rebuildVertexArray() const
 
     glBindVertexArray(0);
 
-    dirtyVertexArray = false;
+    vertexArrays[effect] = va;
+    return va;
+}
+
+void gl::Mesh::resetVertexArrays()
+{
+    for (auto &p: vertexArrays)
+        glDeleteVertexArrays(1, &p.second);
+    vertexArrays.clear();
 }
 
 void gl::Mesh::updateMinVertexCount()
@@ -127,7 +138,7 @@ auto gl::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *dat
     vertexSizes.push_back(layout.getSize());
     
     updateMinVertexCount();
-    dirtyVertexArray = true;
+    resetVertexArrays();
 
     return static_cast<uint32_t>(vertexBuffers.size() - 1);
 }
@@ -151,8 +162,7 @@ void gl::Mesh::removeVertexBuffer(uint32_t index)
     layouts.erase(layouts.begin() + index);
 
     updateMinVertexCount();
-
-    dirtyVertexArray = true;
+    resetVertexArrays();
 }
 
 auto gl::Mesh::addPart(const void *data, uint32_t elementCount) -> uint32_t
@@ -179,32 +189,30 @@ void gl::Mesh::removePart(uint32_t part)
     indexElementCounts.erase(indexElementCounts.begin() + part);
 }
 
-void gl::Mesh::draw() const
+void gl::Mesh::draw(gl::Effect *effect) const
 {
-    rebuildVertexArray();
+    const auto va = rebuildVertexArrays(effect);
 
     if (indexBuffers.empty())
     {
-        glBindVertexArray(vertexArray);
+        glBindVertexArray(va);
         glDrawArrays(toPrimitiveType(primitiveType), 0, minVertexCount);
         glBindVertexArray(0);
     }
     else
     {
         for (auto i = 0; i < indexBuffers.size(); i++)
-            drawPart(i);
+            drawPart(i, effect);
     }
 }
 
-void gl::Mesh::drawPart(uint32_t part) const
+void gl::Mesh::drawPart(uint32_t part, gl::Effect *effect) const
 {
-    rebuildVertexArray();
+    const auto va = rebuildVertexArrays(effect);
 
-    glBindVertexArray(vertexArray);
+    glBindVertexArray(va);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffers.at(part));
-            
     glDrawElements(toPrimitiveType(primitiveType), indexElementCounts.at(part), GL_UNSIGNED_SHORT, nullptr);
-
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
