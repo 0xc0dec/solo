@@ -110,8 +110,6 @@ void vk::Material::setUniformParameter(const std::string &name, ParameterWriteFu
     SL_PANIC_IF(bufferName.empty() || fieldName.empty(), SL_FMT("Invalid parameter name ", name));
 
     auto bufferInfo = effect->getUniformBufferInfo(bufferName);
-    SL_PANIC_IF(!bufferInfo.members.count(fieldName), SL_FMT("Unknown buffer ", bufferName, " or buffer member ",
-        fieldName));
     const auto itemInfo = bufferInfo.members.at(fieldName);
 
     auto &buffer = uniformBuffers[bufferName];
@@ -149,8 +147,6 @@ void vk::Material::bindParameter(const std::string &name, BindParameterSemantics
     SL_PANIC_IF(bufferName.empty() || fieldName.empty(), SL_FMT("Invalid parameter name ", name));
 
     auto bufferInfo = effect->getUniformBufferInfo(bufferName);
-    SL_PANIC_IF(!bufferInfo.members.count(fieldName),
-        SL_FMT("Unknown buffer ", bufferName, " or buffer member ", fieldName));
     auto itemInfo = bufferInfo.members.at(fieldName);
 
     auto &buffer = uniformBuffers[bufferName];
