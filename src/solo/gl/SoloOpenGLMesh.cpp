@@ -36,23 +36,26 @@ static auto toPrimitiveType(PrimitiveType type) -> GLenum
 
 gl::Mesh::~Mesh()
 {
-    resetVertexArrays();
+    resetVertexArrayCache();
     while (!vertexBuffers.empty())
         removeVertexBuffer(0);
     while (!indexBuffers.empty())
         removePart(0);
 }
 
-auto gl::Mesh::rebuildVertexArrays(gl::Effect *effect) const -> GLuint
+auto gl::Mesh::getOrCreateVertexArray(gl::Effect *effect) -> GLuint
 {
-    auto va = vertexArrays[effect];
-    if (va)
-        return va;
-    
-    glGenVertexArrays(1, &va);
-    SL_PANIC_IF(!va, "Failed to create vertex array");
+    auto &cacheEntry = vertexArrayCache[effect];
+    cacheEntry.age = 0;
 
-    glBindVertexArray(va);
+    auto &handle = cacheEntry.handle;
+    if (handle)
+        return handle;
+    
+    glGenVertexArrays(1, &handle);
+    SL_PANIC_IF(!handle, "Failed to create vertex array");
+
+    glBindVertexArray(handle);
 
     for (uint32_t i = 0; i < vertexBuffers.size(); i++)
     {
@@ -88,15 +91,27 @@ auto gl::Mesh::rebuildVertexArrays(gl::Effect *effect) const -> GLuint
 
     glBindVertexArray(0);
 
-    vertexArrays[effect] = va;
-    return va;
+    return handle;
 }
 
-void gl::Mesh::resetVertexArrays()
+void gl::Mesh::resetVertexArrayCache()
 {
-    for (auto &p: vertexArrays)
-        glDeleteVertexArrays(1, &p.second);
-    vertexArrays.clear();
+    for (auto &p: vertexArrayCache)
+        glDeleteVertexArrays(1, &p.second.handle);
+    vertexArrayCache.clear();
+}
+
+void gl::Mesh::flushVertexArrayCache()
+{
+    std::unordered_set<gl::Effect*> toRemove;
+    for (auto &entry: vertexArrayCache)
+    {
+        if (++entry.second.age >= 1000) // TODO more sophisticated way
+            toRemove.insert(entry.first);
+    }
+    
+    for (auto &key: toRemove)
+        vertexArrayCache.erase(key);
 }
 
 void gl::Mesh::updateMinVertexCount()
@@ -138,7 +153,7 @@ auto gl::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *dat
     vertexSizes.push_back(layout.getSize());
     
     updateMinVertexCount();
-    resetVertexArrays();
+    resetVertexArrayCache();
 
     return static_cast<uint32_t>(vertexBuffers.size() - 1);
 }
@@ -162,7 +177,7 @@ void gl::Mesh::removeVertexBuffer(uint32_t index)
     layouts.erase(layouts.begin() + index);
 
     updateMinVertexCount();
-    resetVertexArrays();
+    resetVertexArrayCache();
 }
 
 auto gl::Mesh::addPart(const void *data, uint32_t elementCount) -> uint32_t
@@ -189,9 +204,10 @@ void gl::Mesh::removePart(uint32_t part)
     indexElementCounts.erase(indexElementCounts.begin() + part);
 }
 
-void gl::Mesh::draw(gl::Effect *effect) const
+void gl::Mesh::draw(gl::Effect *effect)
 {
-    const auto va = rebuildVertexArrays(effect);
+    const auto va = getOrCreateVertexArray(effect);
+    flushVertexArrayCache();
 
     if (indexBuffers.empty())
     {
@@ -206,9 +222,10 @@ void gl::Mesh::draw(gl::Effect *effect) const
     }
 }
 
-void gl::Mesh::drawPart(uint32_t part, gl::Effect *effect) const
+void gl::Mesh::drawPart(uint32_t part, gl::Effect *effect)
 {
-    const auto va = rebuildVertexArrays(effect);
+    const auto va = getOrCreateVertexArray(effect);
+    flushVertexArrayCache();
 
     glBindVertexArray(va);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffers.at(part));

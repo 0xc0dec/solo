@@ -270,7 +270,7 @@ void gl::Renderer::beginFrame()
 void gl::Renderer::endFrame()
 {
     Camera *currentCamera = nullptr;
-    Material *currentMaterial = nullptr;
+    gl::Material *currentMaterial = nullptr;
     gl::Effect *currentEffect = nullptr;
 
     for (const auto &step: renderSteps)
@@ -294,7 +294,7 @@ void gl::Renderer::endFrame()
             case RenderCommandType::DrawMesh:
             {
                 currentMaterial->applyParams(currentCamera, step.cmd.mesh.transform);
-                static_cast<const Mesh*>(step.cmd.mesh.mesh)->draw(currentEffect);
+                static_cast<Mesh*>(step.cmd.mesh.mesh)->draw(currentEffect);
                 break;
             }
 

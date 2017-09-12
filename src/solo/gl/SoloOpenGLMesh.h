@@ -40,8 +40,8 @@ namespace solo
             auto getPrimitiveType() const -> PrimitiveType override final;
             void setPrimitiveType(PrimitiveType type) override final;
 
-            void draw(gl::Effect *effect) const;
-            void drawPart(uint32_t part, gl::Effect *effect) const;
+            void draw(gl::Effect *effect);
+            void drawPart(uint32_t part, gl::Effect *effect);
 
         private:
             PrimitiveType primitiveType = PrimitiveType::Triangles;
@@ -53,12 +53,19 @@ namespace solo
             std::vector<uint32_t> vertexSizes; // TODO use layouts and don't store these
             uint32_t minVertexCount = 0;
             
-            mutable std::unordered_map<gl::Effect*, GLuint> vertexArrays; // TODO clean!
+            struct VertexArrayCacheEntry
+            {
+                GLuint handle;
+                uint32_t age;
+            };
+
+            std::unordered_map<gl::Effect*, VertexArrayCacheEntry> vertexArrayCache; // TODO clean!
 
             auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount, bool dynamic) -> uint32_t;
 
-            auto rebuildVertexArrays(gl::Effect *effect) const -> GLuint;
-            void resetVertexArrays();
+            auto getOrCreateVertexArray(gl::Effect *effect) -> GLuint;
+            void resetVertexArrayCache();
+            void flushVertexArrayCache();
             void updateMinVertexCount();
         };
 
