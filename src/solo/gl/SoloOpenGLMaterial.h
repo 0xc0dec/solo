@@ -47,16 +47,14 @@ namespace solo
             void applyParams(const Camera *camera, const Transform *nodeTransform) const;
 
         protected:
+            using ParameterApplier = std::function<void(const Camera *, const Transform *)>;
+
             sptr<gl::Effect> effect = nullptr;
 
-            std::unordered_map<std::string, GLint> uniformLocations;
-            std::unordered_map<std::string, uint32_t> applierIndices;
-            std::unordered_map<std::string, GLint> uniformIndexes;
+            // Maybe not the fastest, but convenient and good enough for now
+            std::unordered_map<std::string, ParameterApplier> appliers;
 
-            // Note: maybe not the fastest, but convenient and good enough for now
-            std::vector<std::function<void(const Camera *camera, const Transform *nodeTransform)>> appliers;
-
-            void setParameter(const std::string &paramName, std::function<std::function<void(const Camera *, const Transform *)>(GLuint, GLint)> getApplier);
+            void setParameter(const std::string &paramName, std::function<ParameterApplier(GLuint, GLint)> getApplier);
         };
     }
 }

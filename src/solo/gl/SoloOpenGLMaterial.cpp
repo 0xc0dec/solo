@@ -15,53 +15,6 @@
 
 using namespace solo;
 
-static bool findUniformInProgram(GLuint program, const char *name, GLint &location, int32_t &index)
-{
-    GLint activeUniforms;
-    glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &activeUniforms);
-    if (activeUniforms <= 0)
-        return false;
-
-    GLint nameMaxLength;
-    glGetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &nameMaxLength);
-    if (nameMaxLength <= 0)
-        return false;
-
-    std::vector<GLchar> rawName(nameMaxLength + 1);
-    uint32_t samplerIndex = 0;
-    for (GLint i = 0; i < activeUniforms; ++i)
-    {
-        GLint size;
-        GLenum type;
-
-        glGetActiveUniform(program, i, nameMaxLength, nullptr, &size, &type, rawName.data());
-        rawName[nameMaxLength] = '\0';
-        std::string n = rawName.data();
-
-        // Strip away possible square brackets for array uniforms,
-        // they are sometimes present on some platforms
-        const auto bracketIndex = n.find('[');
-        if (bracketIndex != std::string::npos)
-            n.erase(bracketIndex);
-
-        uint32_t idx = 0;
-        if (type == GL_SAMPLER_2D || type == GL_SAMPLER_CUBE) // TODO other types of samplers
-        {
-            idx = samplerIndex;
-            samplerIndex += size;
-        }
-
-        if (n == name)
-        {
-            location = glGetUniformLocation(program, rawName.data());
-            index = idx;
-            return true;
-        }
-    }
-
-    return false;
-}
-
 gl::Material::Material(sptr<solo::Effect> effect):
     effect(std::dynamic_pointer_cast<gl::Effect>(effect))
 {
@@ -69,8 +22,8 @@ gl::Material::Material(sptr<solo::Effect> effect):
 
 void gl::Material::applyParams(const Camera *camera, const Transform *nodeTransform) const
 {
-    for (const auto &apply : appliers)
-        apply(camera, nodeTransform);
+    for (const auto &p : appliers)
+        p.second(camera, nodeTransform);
 }
 
 void gl::Material::setFloatParameter(const std::string &name, float value)
@@ -295,23 +248,10 @@ void gl::Material::bindParameter(const std::string &name, BindParameterSemantics
     }
 }
 
-void gl::Material::setParameter(const std::string &paramName,
-    std::function<std::function<void(const Camera *, const Transform *)>(GLuint, GLint)> getApplier)
+void gl::Material::setParameter(const std::string &paramName, std::function<ParameterApplier(GLuint, GLint)> getApplier)
 {
-    const auto locIt = uniformLocations.find(paramName);
-    if (locIt == uniformLocations.end())
-    {
-        GLint location, index;
-        auto found = findUniformInProgram(effect->getHandle(), paramName.c_str(), location, index); // TODO move to Effect
-        SL_PANIC_IF(!found, SL_FMT("Could not find uniform '", paramName, "'"));
-
-        appliers.push_back(getApplier(location, index));
-        uniformLocations[paramName] = location;
-        uniformIndexes[paramName] = index;
-        applierIndices[paramName] = appliers.size() - 1;
-    }
-    else
-        appliers[applierIndices.at(paramName)] = getApplier(locIt->second, uniformIndexes.at(paramName));
+    const auto info = effect->getUniformInfo(paramName);
+    appliers[paramName] = getApplier(info.location, info.samplerIndex);
 }
 
 #endif

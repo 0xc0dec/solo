@@ -91,11 +91,63 @@ gl::Effect::Effect(const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint
     glDeleteShader(vs);
     glDetachShader(handle, fs);
     glDeleteShader(fs);
+
+    introspect();
 }
 
 gl::Effect::~Effect()
 {
     glDeleteProgram(handle);
+}
+
+auto gl::Effect::getUniformInfo(const std::string &name) -> UniformInfo
+{
+    if (uniforms.count(name))
+        return uniforms.at(name);
+    SL_PANIC(SL_FMT("Uniform ", name, " not found"));
+    return {};
+}
+
+void gl::Effect::introspect()
+{
+    GLint activeUniforms;
+    glGetProgramiv(handle, GL_ACTIVE_UNIFORMS, &activeUniforms);
+    if (activeUniforms <= 0)
+        return;
+
+    GLint nameMaxLength;
+    glGetProgramiv(handle, GL_ACTIVE_UNIFORM_MAX_LENGTH, &nameMaxLength);
+    if (nameMaxLength <= 0)
+        return;
+
+    std::vector<GLchar> rawName(nameMaxLength + 1);
+    uint32_t samplerIndex = 0;
+    for (GLint i = 0; i < activeUniforms; ++i)
+    {
+        GLint size;
+        GLenum type;
+        glGetActiveUniform(handle, i, nameMaxLength, nullptr, &size, &type, rawName.data());
+        
+        rawName[nameMaxLength] = '\0';
+        std::string n = rawName.data();
+
+        // Strip away possible square brackets for array uniforms,
+        // they are sometimes present on some platforms
+        const auto bracketIndex = n.find('[');
+        if (bracketIndex != std::string::npos)
+            n.erase(bracketIndex);
+
+        uniforms[n].location = glGetUniformLocation(handle, rawName.data());
+        uniforms.at(n).samplerIndex = 0;
+
+        uint32_t idx = 0;
+        if (type == GL_SAMPLER_2D || type == GL_SAMPLER_CUBE) // TODO other types of samplers
+        {
+            idx = samplerIndex;
+            samplerIndex += size;
+            uniforms.at(n).samplerIndex = idx;
+        }
+    }
 }
 
 #endif
