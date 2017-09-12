@@ -8,14 +8,17 @@ local mesh2 = sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Quad)
 
 local layout = sl.VertexBufferLayout()
 layout:addAttribute(1, 0)
+layout:addNamedAttribute(2, "someName")
 assert(layout:getAttributeCount())
 assert(layout:getSize())
 
-local attr = layout:getAttribute(0)
+local attr = layout:getAttribute(1)
 assert(attr)
 assert(attr.location)
 assert(attr.size)
 assert(attr.elementCount)
+assert(attr.name)
+assert(attr.offset)
 
 mesh1:addVertexBuffer(layout, { 1, 2, 3 }, 3)
 mesh1:addDynamicVertexBuffer(layout, { 1, 2, 3 }, 3)
