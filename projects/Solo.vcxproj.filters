@@ -181,6 +181,7 @@
       <Filter>obj</Filter>
     </ClInclude>
     <ClInclude Include="..\src\solo\SoloHash.h" />
+    <ClInclude Include="..\src\solo\SoloJobPool.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp">

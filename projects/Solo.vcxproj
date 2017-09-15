@@ -54,6 +54,7 @@
     <ClInclude Include="..\src\solo\SoloFormatter.h" />
     <ClInclude Include="..\src\solo\SoloFrameBuffer.h" />
     <ClInclude Include="..\src\solo\SoloHash.h" />
+    <ClInclude Include="..\src\solo\SoloJobPool.h" />
     <ClInclude Include="..\src\solo\SoloTextureData.h" />
     <ClInclude Include="..\src\solo\SoloLogger.h" />
     <ClInclude Include="..\src\solo\SoloMaterial.h" />

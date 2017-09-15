@@ -92,7 +92,7 @@ auto Device::getMouseMotion() const -> Vector2
 
 bool Device::isMouseButtonDown(MouseButton button, bool firstTime) const
 {
-    auto where = pressedMouseButtons.find(button);
+    const auto where = pressedMouseButtons.find(button);
     return where != pressedMouseButtons.end() && (!firstTime || where->second);
 }
 
@@ -110,7 +110,7 @@ void Device::update(std::function<void()> update)
 
 void Device::updateTime()
 {
-    auto time = getLifetime();
+    const auto time = getLifetime();
     timeDelta = time - lastUpdateTime;
     lastUpdateTime = time;
 }

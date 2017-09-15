@@ -111,7 +111,6 @@ namespace solo
     protected:
         DeviceSetup setup;
 
-        // Keep order of these fields - matters during destruction
         sptr<Logger> logger;
         sptr<Renderer> renderer;
         sptr<Physics> physics;
