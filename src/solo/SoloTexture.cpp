@@ -150,7 +150,7 @@ auto Texture2d::loadFromFileAsync(Device *device, const std::string &path) -> sp
         handle->finish(texture);
     };
 
-    device->getJobPool()->add(std::make_shared<JobBase<Texture2dData>>(producers, consumer));
+    device->getJobPool()->addJob(std::make_shared<JobBase<Texture2dData>>(producers, consumer));
 
     return handle;
 }
@@ -220,7 +220,7 @@ auto CubeTexture::loadFromFaceFilesAsync(Device *device,
         handle->finish(texture);
     };
 
-    device->getJobPool()->add(std::make_shared<JobBase<CubeTextureData>>(producers, consumer));
+    device->getJobPool()->addJob(std::make_shared<JobBase<CubeTextureData>>(producers, consumer));
 
     return handle;
 }

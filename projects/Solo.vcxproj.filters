@@ -352,6 +352,7 @@
     <ClCompile Include="..\src\solo\obj\SoloObjMeshLoading.cpp">
       <Filter>obj</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\solo\SoloJobPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bullet">

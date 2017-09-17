@@ -136,6 +136,7 @@
     <ClCompile Include="..\src\solo\SoloDegree.cpp" />
     <ClCompile Include="..\src\solo\SoloFont.cpp" />
     <ClCompile Include="..\src\solo\SoloFontRenderer.cpp" />
+    <ClCompile Include="..\src\solo\SoloJobPool.cpp" />
     <ClCompile Include="..\src\solo\SoloTextureData.cpp" />
     <ClCompile Include="..\src\solo\SoloPhysics.cpp" />
     <ClCompile Include="..\src\solo\SoloRadian.cpp" />
