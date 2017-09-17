@@ -23,6 +23,7 @@ namespace solo
 
     private:
         friend class Texture2d; // TODO!
+        friend class CubeTexture; // TODO!
 
         std::function<void(sptr<T>)> callback;
         sptr<T> result;

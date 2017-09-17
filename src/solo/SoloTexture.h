@@ -142,6 +142,13 @@ namespace solo
             const std::string &rightPath,
             const std::string &topPath,
             const std::string &bottomPath) -> sptr<CubeTexture>;
+        static auto loadFromFaceFilesAsync(Device *device,
+            const std::string &frontPath,
+            const std::string &backPath,
+            const std::string &leftPath,
+            const std::string &rightPath,
+            const std::string &topPath,
+            const std::string &bottomPath) -> sptr<AsyncHandle<CubeTexture>>;
         static auto create(Device *device, CubeTextureData *data) -> sptr<CubeTexture>;
 
         void setWrapping(TextureWrapping wrapping) override final;

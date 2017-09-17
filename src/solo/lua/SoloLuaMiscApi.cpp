@@ -114,6 +114,10 @@ static void registerAsyncHandles(CppBindModule<LuaBinding> &module)
     auto h1 = BEGIN_CLASS_RENAMED(module, AsyncHandle<Texture2d>, "Texture2dAsyncHandle");
     REG_METHOD(h1, AsyncHandle<Texture2d>, done);
     h1.endClass();
+
+    auto h2 = BEGIN_CLASS_RENAMED(module, AsyncHandle<CubeTexture>, "CubeTextureAsyncHandle");
+    REG_METHOD(h2, AsyncHandle<CubeTexture>, done);
+    h2.endClass();
 }
 
 void registerMiscApi(CppBindModule<LuaBinding> &module)

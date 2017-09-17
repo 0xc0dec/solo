@@ -196,6 +196,34 @@ auto CubeTexture::loadFromFaceFiles(Device *device,
     return create(device, data.get());
 }
 
+auto CubeTexture::loadFromFaceFilesAsync(Device *device,
+    const std::string &frontPath,
+    const std::string &backPath,
+    const std::string &leftPath,
+    const std::string &rightPath,
+    const std::string &topPath,
+    const std::string &bottomPath) -> sptr<AsyncHandle<CubeTexture>>
+{
+    auto handle = std::make_shared<AsyncHandle<CubeTexture>>();
+
+    auto producers = JobBase<CubeTextureData>::Producers{[=]()
+    {
+        return CubeTextureData::loadFromFaceFiles(device,
+            frontPath, backPath,
+            leftPath, rightPath,
+            topPath, bottomPath);
+    }};
+    auto consumer = [handle, device](const std::vector<sptr<CubeTextureData>> &results)
+    {
+        auto texture = create(device, results[0].get());
+        handle->finish(texture);
+    };
+
+    device->getJobPool()->add(std::make_shared<JobBase<CubeTextureData>>(producers, consumer));
+
+    return handle;
+}
+
 auto CubeTexture::create(Device *device, CubeTextureData *data) -> sptr<CubeTexture>
 {
     switch (device->getSetup().mode)

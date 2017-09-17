@@ -42,6 +42,7 @@ static void registerCubeTexture(CppBindModule<LuaBinding> &module)
 {
     auto cubeTex = BEGIN_CLASS_EXTEND(module, CubeTexture, Texture);
     REG_STATIC_METHOD(cubeTex, CubeTexture, loadFromFaceFiles);
+    REG_STATIC_METHOD(cubeTex, CubeTexture, loadFromFaceFilesAsync);
     REG_METHOD(cubeTex, CubeTexture, getDepthWrapping);
     REG_METHOD(cubeTex, CubeTexture, setDepthWrapping);
     cubeTex.endClass();

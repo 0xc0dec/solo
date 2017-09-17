@@ -8,16 +8,17 @@ local getImagePath = function(fileName)
 end
 
 return function(dev, scene, tag)
-    local tex = sl.CubeTexture.loadFromFaceFiles(dev,
+    sl.CubeTexture.loadFromFaceFilesAsync(dev,
         getImagePath("Front.png"), getImagePath("Back.png"),
         getImagePath("Left.png"), getImagePath("Right.png"),
         getImagePath("Top.png"), getImagePath("Bottom.png")
-    )
-    tex:setWrapping(sl.TextureWrapping.Clamp)
-    tex:setFiltering(sl.TextureFiltering.Linear)
+    ):done(function(tex)
+        tex:setWrapping(sl.TextureWrapping.Clamp)
+        tex:setFiltering(sl.TextureFiltering.Linear)
 
-    local node = scene:createNode()
-    local renderer = node:addComponent("SkyboxRenderer")
-    renderer:setTexture(tex)
-    renderer:setTag(tag)
+        local node = scene:createNode()
+        local renderer = node:addComponent("SkyboxRenderer")
+        renderer:setTexture(tex)
+        renderer:setTag(tag)
+    end)
 end
