@@ -182,6 +182,7 @@
     </ClInclude>
     <ClInclude Include="..\src\solo\SoloHash.h" />
     <ClInclude Include="..\src\solo\SoloJobPool.h" />
+    <ClInclude Include="..\src\solo\SoloAsyncHandle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp">

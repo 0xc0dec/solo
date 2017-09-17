@@ -6,6 +6,7 @@
 #include "SoloTexture.h"
 #include "SoloDevice.h"
 #include "SoloTextureData.h"
+#include "SoloJobPool.h"
 #include "gl/SoloOpenGLTexture.h"
 #include "vk/SoloVulkanTexture.h"
 #include "null/SoloNullTexture.h"
@@ -136,6 +137,22 @@ auto Texture2d::loadFromFile(Device *device, const std::string &path) -> sptr<Te
 {
     const auto data = Texture2dData::loadFromFile(device, path);
     return createFromData(device, data.get());
+}
+
+auto Texture2d::loadFromFileAsync(Device *device, const std::string &path) -> sptr<AsyncHandle<Texture2d>>
+{
+    auto handle = std::make_shared<AsyncHandle<Texture2d>>();
+
+    auto producers = JobBase<Texture2dData>::Producers{[=]() { return Texture2dData::loadFromFile(device, path); }};
+    auto consumer = [handle, device](const std::vector<sptr<Texture2dData>> &results)
+    {
+        auto texture = createFromData(device, results[0].get());
+        handle->finish(texture);
+    };
+
+    device->getJobPool()->add(std::make_shared<JobBase<Texture2dData>>(producers, consumer));
+
+    return handle;
 }
 
 auto Texture2d::createEmpty(Device *device, uint32_t width, uint32_t height, TextureFormat format) -> sptr<Texture2d>

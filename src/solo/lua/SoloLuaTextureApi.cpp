@@ -32,6 +32,7 @@ static void registerTexture2d(CppBindModule<LuaBinding> &module)
 {
     auto rectTex = BEGIN_CLASS_EXTEND(module, Texture2d, Texture);
     REG_STATIC_METHOD(rectTex, Texture2d, loadFromFile);
+    REG_STATIC_METHOD(rectTex, Texture2d, loadFromFileAsync);
     REG_STATIC_METHOD(rectTex, Texture2d, createEmpty);
     REG_METHOD(rectTex, Texture2d, getDimensions);
     rectTex.endClass();

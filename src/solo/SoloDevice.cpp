@@ -10,6 +10,7 @@
 #include "SoloRenderer.h"
 #include "SoloPhysics.h"
 #include "SoloScriptRuntime.h"
+#include "SoloJobPool.h"
 #include "null/SoloNullDevice.h"
 #include "gl/SoloSDLOpenGLDevice.h"
 #include "vk/SoloSDLVulkanDevice.h"
@@ -63,11 +64,13 @@ void Device::initSubsystems()
     physics = Physics::create(this, token);
     fs = FileSystem::create(this, token);
     scriptRuntime = ScriptRuntime::create(this, token);
+    jobPool = std::make_shared<JobPool>();
 }
 
 void Device::cleanupSubsystems()
 {
     // Order matters
+    jobPool.reset();
     scriptRuntime.reset();
     fs.reset();
     renderer.reset();
@@ -76,7 +79,7 @@ void Device::cleanupSubsystems()
 
 bool Device::isKeyPressed(KeyCode code, bool firstTime) const
 {
-    auto where = pressedKeys.find(code);
+    const auto where = pressedKeys.find(code);
     return where != pressedKeys.end() && (!firstTime || where->second);
 }
 
@@ -104,6 +107,7 @@ bool Device::isMouseButtonReleased(MouseButton button) const
 void Device::update(std::function<void()> update)
 {
     beginUpdate();
+    jobPool->update();
     update();
     endUpdate();
 }

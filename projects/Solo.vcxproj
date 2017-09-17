@@ -39,6 +39,7 @@
     <ClInclude Include="..\src\solo\obj\SoloObjMeshLoading.h" />
     <ClInclude Include="..\src\solo\sdl\SoloSDLDevice.h" />
     <ClInclude Include="..\src\solo\sdl\SoloSDLInputMaps.h" />
+    <ClInclude Include="..\src\solo\SoloAsyncHandle.h" />
     <ClInclude Include="..\src\solo\SoloBoxCollider.h" />
     <ClInclude Include="..\src\solo\SoloCamera.h" />
     <ClInclude Include="..\src\solo\SoloCollider.h" />

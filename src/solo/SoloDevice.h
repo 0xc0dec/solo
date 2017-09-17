@@ -20,6 +20,7 @@ namespace solo
     class Physics;
     class ScriptRuntime;
     class Logger;
+    class JobPool;
 
     enum class KeyCode
     {
@@ -107,6 +108,7 @@ namespace solo
         auto getPhysics() const -> Physics*;
         auto getScriptRuntime() const -> ScriptRuntime*;
         auto getLogger() const -> Logger*;
+        auto getJobPool() const -> JobPool*;
 
     protected:
         DeviceSetup setup;
@@ -116,6 +118,7 @@ namespace solo
         sptr<Physics> physics;
         sptr<FileSystem> fs;
         sptr<ScriptRuntime> scriptRuntime;
+        sptr<JobPool> jobPool;
 
         // key code -> was pressed for the first time
         std::unordered_map<KeyCode, bool> pressedKeys;
@@ -180,6 +183,11 @@ namespace solo
     inline auto Device::getLogger() const -> Logger *
     {
         return logger.get();
+    }
+
+    inline auto Device::getJobPool() const -> JobPool*
+    {
+        return jobPool.get();
     }
 
     inline auto Device::getSetup() const -> DeviceSetup

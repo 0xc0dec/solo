@@ -36,7 +36,8 @@ namespace solo
     {
     public:
         using Producer = std::function<sptr<T>()>;
-        using Consumer = std::function<void(const std::vector<sptr<int>> &)>;
+        using Producers = std::vector<Producer>;
+        using Consumer = std::function<void(const std::vector<sptr<T>> &)>;
 
         JobBase(const std::vector<Producer> &funcs, const Consumer &onDone):
             callback(onDone)
@@ -88,6 +89,8 @@ namespace solo
     {
     public:
         SL_DISABLE_COPY_AND_MOVE(JobPool)
+
+        JobPool() {}
 
         void add(sptr<Job> job)
         {

@@ -7,6 +7,7 @@
 
 #include "SoloCommon.h"
 #include "SoloVector2.h"
+#include "SoloAsyncHandle.h"
 #include <vector>
 
 namespace solo
@@ -118,6 +119,7 @@ namespace solo
     {
     public:
         static auto loadFromFile(Device *device, const std::string &path) -> sptr<Texture2d>;
+        static auto loadFromFileAsync(Device *device, const std::string &path) -> sptr<AsyncHandle<Texture2d>>;
         static auto createFromData(Device *device, Texture2dData *data) -> sptr<Texture2d>;
         static auto createEmpty(Device *device, uint32_t width, uint32_t height, TextureFormat format) -> sptr<Texture2d>;
 
