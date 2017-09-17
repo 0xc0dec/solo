@@ -208,6 +208,7 @@ auto CubeTexture::loadFromFaceFilesAsync(Device *device,
 
     auto producers = JobBase<CubeTextureData>::Producers{[=]()
     {
+        // TODO run each face loading in separate jobs
         return CubeTextureData::loadFromFaceFiles(device,
             frontPath, backPath,
             leftPath, rightPath,
