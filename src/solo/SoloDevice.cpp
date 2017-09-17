@@ -107,7 +107,7 @@ bool Device::isMouseButtonReleased(MouseButton button) const
 void Device::update(std::function<void()> update)
 {
     beginUpdate();
-    jobPool->update();
+    jobPool->update(); // TODO add smth like waitForFinish() to Device and wait in it for background tasks to finish
     update();
     endUpdate();
 }
