@@ -8,6 +8,7 @@
 #include "SoloCommon.h"
 #include "SoloVertexFormat.h"
 #include "SoloRenderer.h"
+#include "SoloAsyncHandle.h"
 
 namespace solo
 {
@@ -36,6 +37,7 @@ namespace solo
         static auto create(Device *device) -> sptr<Mesh>;
         static auto createFromPrefab(Device *device, MeshPrefab prefab) -> sptr<Mesh>;
         static auto loadFromFile(Device *device, const std::string &path) -> sptr<Mesh>;
+        static auto loadFromFileAsync(Device *device, const std::string &path) -> sptr<AsyncHandle<Mesh>>;
 
         virtual ~Mesh() {}
 

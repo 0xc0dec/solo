@@ -13,23 +13,29 @@ void JobPool::addJob(sptr<Job> job)
     jobs.push_back(job);
 }
 
-bool JobPool::update()
+void JobPool::update()
 {
     if (!jobs.empty())
     {
-        auto token = lock.acquire();
-        if (!jobs.empty())
+        decltype(jobs) oldJobs;
         {
-            for (auto job : jobs)
-                job->updateStatus();
+            auto token = lock.acquire();
+            if (!jobs.empty())
+                oldJobs = jobs;
+        }
 
-            const auto wasEmpty = jobs.empty();
+        auto anyDone = false;
+        for (auto job : oldJobs)
+        {
+            job->updateStatus();
+            if (job->isDone())
+                anyDone = true;
+        }
+
+        if (anyDone)
+        {
+            auto token = lock.acquire();
             jobs.remove_if([](sptr<Job> job) { return job->isDone(); });
-
-            if (jobs.empty() && !wasEmpty)
-                return true;
         }
     }
-
-    return false;
 }

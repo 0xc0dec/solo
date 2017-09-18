@@ -93,7 +93,7 @@ namespace solo
         JobPool() {}
 
         void addJob(sptr<Job> job);
-        bool update();
+        void update();
 
     private:
         std::list<sptr<Job>> jobs;

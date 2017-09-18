@@ -10,6 +10,7 @@
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 #include "SoloStringUtils.h"
+#include "SoloJobPool.h"
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 #include <unordered_map>
@@ -40,12 +41,18 @@ namespace std
     };
 }
 
+struct Data
+{
+    std::vector<float> vertices;
+    std::vector<std::vector<uint16_t>> parts;
+};
+
 bool obj::canLoadMesh(const std::string &path)
 {
     return stringutils::endsWith(path, ".obj");
 }
 
-auto obj::loadMesh(Device *device, const std::string &path) -> sptr<Mesh>
+static auto loadMeshData(Device *device, const std::string &path) -> sptr<Data>
 {
     auto file = device->getFileSystem()->getStream(path);
 
@@ -56,7 +63,7 @@ auto obj::loadMesh(Device *device, const std::string &path) -> sptr<Mesh>
     SL_PANIC_IF(!tinyobj::LoadObj(&attrib, &shapes, &materials, &err, file.get()), err);
     
     std::vector<float> vertexData;
-    auto mesh = Mesh::create(device);
+    std::vector<std::vector<uint16_t>> parts;
 
     for (const auto &shape: shapes)
     {
@@ -109,14 +116,56 @@ auto obj::loadMesh(Device *device, const std::string &path) -> sptr<Mesh>
             indexData.push_back(uniqueVertices[v]);
         }
 
-        mesh->addPart(indexData.data(), indexData.size());
+        parts.push_back(indexData);
     }
 
+    return std::make_shared<Data>(Data{std::move(vertexData), std::move(parts)});
+}
+
+auto obj::loadMesh(Device *device, const std::string &path) -> sptr<Mesh>
+{
+    auto file = device->getFileSystem()->getStream(path);
+    auto data = loadMeshData(device, path);
+    auto mesh = Mesh::create(device);
+    
     VertexBufferLayout layout;
     layout.addAttribute(3, 0);
     layout.addAttribute(3, 1);
     layout.addAttribute(2, 2);
-    mesh->addVertexBuffer(layout, vertexData.data(), vertexData.size() / 8);
+
+    mesh->addVertexBuffer(layout, data->vertices.data(), data->vertices.size() / 8);
+    
+    for (auto &part : data->parts)
+        mesh->addPart(part.data(), part.size());
 
     return mesh;
+}
+
+// TODO Refactor
+auto obj::loadMeshAsync(Device *device, const std::string &path) -> sptr<AsyncHandle<Mesh>>
+{
+    auto handle = std::make_shared<AsyncHandle<Mesh>>();
+
+    auto producers = JobBase<Data>::Producers{[=]() { return loadMeshData(device, path); }};
+    auto consumer = [handle, device](const std::vector<sptr<Data>> &results)
+    {
+        auto data = results[0];
+        auto mesh = Mesh::create(device);
+    
+        VertexBufferLayout layout;
+        layout.addAttribute(3, 0);
+        layout.addAttribute(3, 1);
+        layout.addAttribute(2, 2);
+
+        mesh->addVertexBuffer(layout, data->vertices.data(), data->vertices.size() / 8);
+    
+        for (auto &part : data->parts)
+            mesh->addPart(part.data(), part.size());
+
+        handle->finish(mesh);
+    };
+
+    device->getJobPool()->addJob(std::make_shared<JobBase<Data>>(producers, consumer));
+
+    return handle;
 }

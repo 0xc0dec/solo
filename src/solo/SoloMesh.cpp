@@ -58,6 +58,14 @@ auto Mesh::loadFromFile(Device *device, const std::string &path) -> sptr<Mesh>
     return nullptr;
 }
 
+auto Mesh::loadFromFileAsync(Device *device, const std::string &path) -> sptr<AsyncHandle<Mesh>>
+{
+    if (obj::canLoadMesh(path))
+        return obj::loadMeshAsync(device, path);
+    SL_PANIC(SL_FMT("Unsupported mesh file ", path));
+    return nullptr;
+}
+
 void Mesh::initAsQuadMesh()
 {
     float vertices[] =
