@@ -23,7 +23,7 @@ namespace solo
 
         bool isDone() const { return done; }
 
-        virtual void updateStatus() = 0;
+        virtual void update() = 0;
 
     protected:
         Job() {}
@@ -50,7 +50,7 @@ namespace solo
             }
         }
 
-        void updateStatus() override final
+        void update() override final
         {
             auto readyCount = 0;
             auto i = 0;

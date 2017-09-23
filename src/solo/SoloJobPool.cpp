@@ -27,7 +27,7 @@ void JobPool::update()
         auto anyDone = false;
         for (auto job : oldJobs)
         {
-            job->updateStatus();
+            job->update();
             if (job->isDone())
                 anyDone = true;
         }
