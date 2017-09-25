@@ -87,10 +87,10 @@ namespace solo
         virtual void setCursorCaptured(bool captured) = 0;
 
         virtual auto getLifetime() const -> float = 0;
-        auto getTimeDelta() const -> float;
+        auto getTimeDelta() const -> float { return timeDelta; }
 
-        bool isWindowCloseRequested() const;
-        bool isQuitRequested() const;
+        bool isWindowCloseRequested() const { return windowCloseRequested; }
+        bool isQuitRequested() const { return quitRequested; }
 
         bool isKeyPressed(KeyCode code, bool firstTime = false) const;
         bool isKeyReleased(KeyCode code) const;
@@ -101,14 +101,14 @@ namespace solo
 
         void update(std::function<void()> update);
 
-        auto getSetup() const -> DeviceSetup;
+        auto getSetup() const -> DeviceSetup { return setup; }
 
-        auto getFileSystem() const -> FileSystem*;
-        auto getRenderer() const -> Renderer*;
-        auto getPhysics() const -> Physics*;
-        auto getScriptRuntime() const -> ScriptRuntime*;
-        auto getLogger() const -> Logger*;
-        auto getJobPool() const -> JobPool*;
+        auto getFileSystem() const -> FileSystem* { return fs.get(); }
+        auto getRenderer() const -> Renderer* { return renderer.get(); }
+        auto getPhysics() const -> Physics* { return physics.get(); }
+        auto getScriptRuntime() const -> ScriptRuntime* { return scriptRuntime.get(); }
+        auto getLogger() const -> Logger* { return logger.get(); }
+        auto getJobPool() const -> JobPool* { return jobPool.get(); }
 
     protected:
         DeviceSetup setup;
@@ -144,54 +144,4 @@ namespace solo
         void cleanupSubsystems();
         void updateTime();
     };
-
-    inline bool Device::isWindowCloseRequested() const
-    {
-        return windowCloseRequested;
-    }
-
-    inline bool Device::isQuitRequested() const
-    {
-        return quitRequested;
-    }
-
-    inline auto Device::getTimeDelta() const -> float
-    {
-        return timeDelta;
-    }
-
-    inline auto Device::getFileSystem() const -> FileSystem *
-    {
-        return fs.get();
-    }
-
-    inline auto Device::getRenderer() const -> Renderer *
-    {
-        return renderer.get();
-    }
-
-    inline auto Device::getPhysics() const -> Physics *
-    {
-        return physics.get();
-    }
-
-    inline auto Device::getScriptRuntime() const -> ScriptRuntime*
-    {
-        return scriptRuntime.get();
-    }
-
-    inline auto Device::getLogger() const -> Logger *
-    {
-        return logger.get();
-    }
-
-    inline auto Device::getJobPool() const -> JobPool*
-    {
-        return jobPool.get();
-    }
-
-    inline auto Device::getSetup() const -> DeviceSetup
-    {
-        return setup;
-    }
 }
