@@ -44,7 +44,7 @@ auto stb::Texture2dData::loadFromFile(Device *device, const std::string &path) -
 {
     auto bytes = device->getFileSystem()->readBytes(path);
     int width, height, bpp;
-    stbi_set_flip_vertically_on_load(device->getSetup().mode == DeviceMode::OpenGL);
+    stbi_set_flip_vertically_on_load(device->getMode() == DeviceMode::OpenGL);
     const auto data = stbi_load_from_memory(bytes.data(), bytes.size(), &width, &height, &bpp, 0);
     SL_PANIC_IF(!data, SL_FMT("Failed to load image ", path));
 

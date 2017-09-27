@@ -12,7 +12,7 @@ using namespace solo;
 
 auto FrameBuffer::create(Device *device) -> sptr<FrameBuffer>
 {
-    switch (device->getSetup().mode)
+    switch (device->getMode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:

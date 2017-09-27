@@ -14,7 +14,7 @@ using namespace solo;
 
 auto Material::create(Device *device, sptr<Effect> effect) -> sptr<Material>
 {
-    switch (device->getSetup().mode)
+    switch (device->getMode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:

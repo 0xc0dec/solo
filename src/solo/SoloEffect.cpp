@@ -14,7 +14,7 @@ using namespace solo;
 
 static auto create(Device *device, const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen) -> sptr<Effect>
 {
-    switch (device->getSetup().mode)
+    switch (device->getMode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
@@ -38,7 +38,7 @@ auto Effect::loadFromFiles(Device *device, const std::string &vsPath, const std:
 
 auto Effect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effect>
 {
-    switch (device->getSetup().mode)
+    switch (device->getMode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:

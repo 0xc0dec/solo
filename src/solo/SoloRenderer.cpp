@@ -13,7 +13,7 @@ using namespace solo;
 
 auto Renderer::create(Device *device, const FriendToken<Device> &) -> sptr<Renderer>
 {
-    switch (device->getSetup().mode)
+    switch (device->getMode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:

@@ -163,7 +163,7 @@ auto Texture2d::createEmpty(Device *device, uint32_t width, uint32_t height, Tex
 
 sptr<Texture2d> Texture2d::createFromData(Device *device, Texture2dData *data)
 {
-    switch (device->getSetup().mode)
+    switch (device->getMode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
@@ -227,7 +227,7 @@ auto CubeTexture::loadFromFaceFilesAsync(Device *device,
 
 auto CubeTexture::create(Device *device, CubeTextureData *data) -> sptr<CubeTexture>
 {
-    switch (device->getSetup().mode)
+    switch (device->getMode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:

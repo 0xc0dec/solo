@@ -15,7 +15,7 @@ using namespace solo;
 
 auto Mesh::create(Device *device) -> sptr<Mesh>
 {
-    switch (device->getSetup().mode)
+    switch (device->getMode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
