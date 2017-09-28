@@ -101,8 +101,8 @@ namespace solo
 
         void update(std::function<void()> update);
 
-        auto getSetup() const -> DeviceSetup { return setup; }
         auto getMode() const -> DeviceMode { return setup.mode; }
+        bool isVsync() const { return setup.vsync; }
 
         auto getFileSystem() const -> FileSystem* { return fs.get(); }
         auto getRenderer() const -> Renderer* { return renderer.get(); }

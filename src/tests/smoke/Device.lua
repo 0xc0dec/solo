@@ -9,6 +9,8 @@ assert(device:getWindowTitle())
 device:setWindowTitle("werwer")
 
 assert(device:getCanvasSize())
+assert(device:isVsync() ~= nil)
+assert(device:getMode() ~= nil)
 
 device:saveScreenshot("abc")
 
@@ -28,8 +30,6 @@ assert(device:isMouseButtonDown(sl.MouseButton.Left) ~= nil)
 assert(device:isMouseButtonReleased(sl.MouseButton.Left) ~= nil)
 
 device:update(function() end)
-
-assert(device:getSetup())
 
 assert(device:getFileSystem())
 assert(device:getRenderer())

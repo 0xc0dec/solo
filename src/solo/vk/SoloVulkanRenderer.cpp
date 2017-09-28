@@ -161,7 +161,7 @@ vk::Renderer::Renderer(Device *engineDevice):
     const auto vulkanDevice = dynamic_cast<SDLDevice*>(engineDevice);
     const auto instance = vulkanDevice->getInstance();
     const auto surface = vulkanDevice->getSurface();
-    const auto setup = engineDevice->getSetup();
+    const auto canvasSize = engineDevice->getCanvasSize();
 
     debugCallback = createDebugCallback(instance, debugCallbackFunc);
     physicalDevice = ::getPhysicalDevice(instance);
@@ -179,7 +179,7 @@ vk::Renderer::Renderer(Device *engineDevice):
     vkGetDeviceQueue(device, queueIndex, 0, &queue);
 
     commandPool = createCommandPool(device, queueIndex);
-    swapchain = Swapchain(this, vulkanDevice, setup.canvasWidth, setup.canvasHeight, setup.vsync);
+    swapchain = Swapchain(this, vulkanDevice, canvasSize.x, canvasSize.y, engineDevice->isVsync());
 }
 
 vk::Renderer::~Renderer()
@@ -201,9 +201,8 @@ void vk::Renderer::endFrame()
 
     swapchain.recordCommandBuffers([&](VkFramebuffer fb, VkCommandBuffer buf)
     {
-        auto canvasWidth = engineDevice->getSetup().canvasWidth; // TODO Replace getSetup with individual methods for each setting
-        auto canvasHeight = engineDevice->getSetup().canvasHeight;
-        swapchain.getRenderPass().begin(buf, fb, canvasWidth, canvasHeight);
+        auto canvasSize = engineDevice->getCanvasSize();
+        swapchain.getRenderPass().begin(buf, fb, canvasSize.x, canvasSize.y);
 
         const Camera *currentCamera = nullptr;
         vk::Material *currentMaterial = nullptr;
