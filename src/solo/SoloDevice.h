@@ -101,8 +101,8 @@ namespace solo
 
         void update(std::function<void()> update);
 
-        auto getMode() const -> DeviceMode { return setup.mode; }
-        bool isVsync() const { return setup.vsync; }
+        auto getMode() const -> DeviceMode { return mode; }
+        bool isVsync() const { return vsync; }
 
         auto getFileSystem() const -> FileSystem* { return fs.get(); }
         auto getRenderer() const -> Renderer* { return renderer.get(); }
@@ -112,14 +112,15 @@ namespace solo
         auto getJobPool() const -> JobPool* { return jobPool.get(); }
 
     protected:
-        DeviceSetup setup;
-
         sptr<Logger> logger;
         sptr<Renderer> renderer;
         sptr<Physics> physics;
         sptr<FileSystem> fs;
         sptr<ScriptRuntime> scriptRuntime;
         sptr<JobPool> jobPool;
+
+        DeviceMode mode;
+        bool vsync;
 
         // key code -> was pressed for the first time
         std::unordered_map<KeyCode, bool> pressedKeys;
@@ -141,7 +142,7 @@ namespace solo
         virtual void beginUpdate() = 0;
         virtual void endUpdate() = 0;
 
-        void initSubsystems();
+        void initSubsystems(const DeviceSetup &setup);
         void cleanupSubsystems();
         void updateTime();
     };

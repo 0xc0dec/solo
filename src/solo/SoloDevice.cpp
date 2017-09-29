@@ -42,17 +42,18 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device>
     }
 
     if (device)
-        device->initSubsystems();
+        device->initSubsystems(setup);
     
     return device;
 }
 
 Device::Device(const DeviceSetup &setup):
-    setup(setup)
+    mode(setup.mode),
+    vsync(setup.vsync)
 {
 }
 
-void Device::initSubsystems()
+void Device::initSubsystems(const DeviceSetup &setup)
 {
     FriendToken<Device> token;
 
