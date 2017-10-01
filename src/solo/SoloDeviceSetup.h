@@ -11,7 +11,7 @@ namespace solo
 {
     enum class DeviceMode;
 
-    // class because lua binding doesn't like structs :(
+    // "class" because binding to lua seems to not support structs
     class DeviceSetup
     {
     public:
