@@ -31,11 +31,11 @@ static auto addPart(Mesh *mesh, const std::vector<uint16_t> &indexData, uint32_t
 static void registerVertexBufferLayout(CppBindModule<LuaBinding> &module)
 {
     auto el = BEGIN_CLASS(module, VertexAttribute);
-    REG_VARIABLE(el, VertexAttribute, name);
-    REG_VARIABLE(el, VertexAttribute, location);
-    REG_VARIABLE(el, VertexAttribute, elementCount);
-    REG_VARIABLE(el, VertexAttribute, size);
-    REG_VARIABLE(el, VertexAttribute, offset);
+    REG_FIELD(el, VertexAttribute, name);
+    REG_FIELD(el, VertexAttribute, location);
+    REG_FIELD(el, VertexAttribute, elementCount);
+    REG_FIELD(el, VertexAttribute, size);
+    REG_FIELD(el, VertexAttribute, offset);
     el.endClass();
 
     auto layout = BEGIN_CLASS(module, VertexBufferLayout);

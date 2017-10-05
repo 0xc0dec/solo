@@ -14,14 +14,14 @@ static void registerRigidBodyConstructionParams(CppBindModule<LuaBinding> &modul
 {
     auto params = BEGIN_CLASS(module, RigidBodyConstructionParameters);
     REG_CTOR(params);
-    REG_VARIABLE(params, RigidBodyConstructionParameters, mass);
-    REG_VARIABLE(params, RigidBodyConstructionParameters, friction);
-    REG_VARIABLE(params, RigidBodyConstructionParameters, restitution);
-    REG_VARIABLE(params, RigidBodyConstructionParameters, linearDamping);
-    REG_VARIABLE(params, RigidBodyConstructionParameters, angularDamping);
-    REG_VARIABLE(params, RigidBodyConstructionParameters, kinematic);
-    REG_VARIABLE(params, RigidBodyConstructionParameters, linearFactor);
-    REG_VARIABLE(params, RigidBodyConstructionParameters, angularFactor);
+    REG_FIELD(params, RigidBodyConstructionParameters, mass);
+    REG_FIELD(params, RigidBodyConstructionParameters, friction);
+    REG_FIELD(params, RigidBodyConstructionParameters, restitution);
+    REG_FIELD(params, RigidBodyConstructionParameters, linearDamping);
+    REG_FIELD(params, RigidBodyConstructionParameters, angularDamping);
+    REG_FIELD(params, RigidBodyConstructionParameters, kinematic);
+    REG_FIELD(params, RigidBodyConstructionParameters, linearFactor);
+    REG_FIELD(params, RigidBodyConstructionParameters, angularFactor);
     params.endClass();
 }
 
@@ -35,9 +35,9 @@ static void registerRigidBody(CppBindModule<LuaBinding> &module)
 static void registerRaycastResult(CppBindModule<LuaBinding> &module)
 {
     auto rcr = BEGIN_CLASS(module, RaycastResult);
-    REG_VARIABLE(rcr, RaycastResult, body);
-    REG_VARIABLE(rcr, RaycastResult, point);
-    REG_VARIABLE(rcr, RaycastResult, normal);
+    REG_FIELD(rcr, RaycastResult, body);
+    REG_FIELD(rcr, RaycastResult, point);
+    REG_FIELD(rcr, RaycastResult, normal);
     rcr.endClass();
 }
 

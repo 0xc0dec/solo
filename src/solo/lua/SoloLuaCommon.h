@@ -24,7 +24,7 @@ using namespace LuaIntf;
 
 #define REG_CTOR(binding, ...) binding.addConstructor(LUA_ARGS(__VA_ARGS__))
 
-#define REG_VARIABLE(binding, klass, name) binding.addVariable(#name, &klass::name, true)
+#define REG_FIELD(binding, klass, name) binding.addVariable(#name, &klass::name, true)
 
 #define REG_META_METHOD(binding, name, func) binding.addMetaFunction(name, func)
 #define REG_METHOD(binding, klass, name) binding.addFunction(#name, &klass::name)

@@ -5,9 +5,9 @@
 
 #include "SoloFrameBuffer.h"
 #include "SoloLuaCommon.h"
-#include "SoloLogger.h"
 #include "SoloScene.h"
 #include "SoloDevice.h"
+#include "SoloDeviceSetup.h"
 
 using namespace solo;
 
@@ -38,7 +38,27 @@ static void registerDevice(CppBindModule<LuaBinding> &module)
     device.endClass();
 }
 
+void registerDeviceSetup(CppBindModule<LuaBinding> &module)
+{
+    auto setup = BEGIN_CLASS(module, DeviceSetup);
+    REG_CTOR(setup);
+    REG_FIELD(setup, DeviceSetup, mode);
+    REG_FIELD(setup, DeviceSetup, canvasWidth);
+    REG_FIELD(setup, DeviceSetup, canvasHeight);
+    REG_FIELD(setup, DeviceSetup, fullScreen);
+    REG_FIELD(setup, DeviceSetup, windowTitle);
+    REG_FIELD(setup, DeviceSetup, redBits);
+    REG_FIELD(setup, DeviceSetup, greenBits);
+    REG_FIELD(setup, DeviceSetup, blueBits);
+    REG_FIELD(setup, DeviceSetup, depthBits);
+    REG_FIELD(setup, DeviceSetup, alphaBits);
+    REG_FIELD(setup, DeviceSetup, vsync);
+    REG_FIELD(setup, DeviceSetup, logFilePath);
+    setup.endClass();
+}
+
 void registerDeviceApi(CppBindModule<LuaBinding> &module)
 {
+    registerDeviceSetup(module);
     registerDevice(module);
 }

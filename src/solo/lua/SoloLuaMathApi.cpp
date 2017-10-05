@@ -19,8 +19,8 @@ static void registerVector2(CppBindModule<LuaBinding> &module)
 {
     auto v = BEGIN_CLASS(module, Vector2);
     REG_CTOR(v, float, float);
-    REG_VARIABLE(v, Vector2, x);
-    REG_VARIABLE(v, Vector2, y);
+    REG_FIELD(v, Vector2, x);
+    REG_FIELD(v, Vector2, y);
     REG_METHOD(v, Vector2, isUnit);
     REG_METHOD(v, Vector2, isZero);
     REG_METHOD(v, Vector2, distance);
@@ -44,9 +44,9 @@ static void registerVector3(CppBindModule<LuaBinding> &module)
 {
     auto v = BEGIN_CLASS(module, Vector3);
     REG_CTOR(v, float, float, float);
-    REG_VARIABLE(v, Vector3, x);
-    REG_VARIABLE(v, Vector3, y);
-    REG_VARIABLE(v, Vector3, z);
+    REG_FIELD(v, Vector3, x);
+    REG_FIELD(v, Vector3, y);
+    REG_FIELD(v, Vector3, z);
     REG_METHOD(v, Vector3, isUnit);
     REG_METHOD(v, Vector3, isZero);
     REG_METHOD(v, Vector3, distance);
@@ -71,10 +71,10 @@ static void registerVector4(CppBindModule<LuaBinding> &module)
 {
     auto v = BEGIN_CLASS(module, Vector4);
     REG_CTOR(v, float, float, float, float);
-    REG_VARIABLE(v, Vector4, x);
-    REG_VARIABLE(v, Vector4, y);
-    REG_VARIABLE(v, Vector4, z);
-    REG_VARIABLE(v, Vector4, w);
+    REG_FIELD(v, Vector4, x);
+    REG_FIELD(v, Vector4, y);
+    REG_FIELD(v, Vector4, z);
+    REG_FIELD(v, Vector4, w);
     REG_METHOD(v, Vector4, isUnit);
     REG_METHOD(v, Vector4, isZero);
     REG_METHOD(v, Vector4, distance);
@@ -98,10 +98,10 @@ static void registerQuaternion(CppBindModule<LuaBinding> &module)
 {
     auto q = BEGIN_CLASS(module, Quaternion);
     REG_CTOR(q);
-    REG_VARIABLE(q, Quaternion, x);
-    REG_VARIABLE(q, Quaternion, y);
-    REG_VARIABLE(q, Quaternion, z);
-    REG_VARIABLE(q, Quaternion, w);
+    REG_FIELD(q, Quaternion, x);
+    REG_FIELD(q, Quaternion, y);
+    REG_FIELD(q, Quaternion, z);
+    REG_FIELD(q, Quaternion, w);
     REG_STATIC_METHOD(q, Quaternion, createFromAxisAngle);
     REG_STATIC_METHOD(q, Quaternion, lerp);
     REG_STATIC_METHOD(q, Quaternion, slerp);

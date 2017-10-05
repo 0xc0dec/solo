@@ -99,14 +99,14 @@ void lua::ScriptRuntime::executeFile(const std::string& path)
     lua.doFile(path.c_str());
 }
 
-auto lua::ScriptRuntime::getString(const std::string& name) -> std::string
+auto lua::ScriptRuntime::readString(const std::string& name) -> std::string
 {
     auto ref = LuaRef(lua, name.c_str());
     return ref.toValue<std::string>();
 }
 
-auto lua::ScriptRuntime::getInt(const std::string& name) -> int32_t
+auto lua::ScriptRuntime::readDeviceSetup(const std::string &name) -> DeviceSetup
 {
     auto ref = LuaRef(lua, name.c_str());
-    return ref.toValue<int32_t>();
+    return ref.toValue<DeviceSetup>();
 }

@@ -21,8 +21,8 @@ namespace solo
 
             void executeFile(const std::string& path) override final;
 
-            auto getString(const std::string &name) -> std::string override final;
-            auto getInt(const std::string &name) -> int32_t override final;
+            auto readString(const std::string &name) -> std::string override final;
+            auto readDeviceSetup(const std::string &name) -> DeviceSetup override final;
 
         private:
             LuaIntf::LuaState lua;

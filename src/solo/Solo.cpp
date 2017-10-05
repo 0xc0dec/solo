@@ -24,13 +24,8 @@ int main(int argc, char **argv)
         auto entryRuntime = ScriptRuntime::create();
         entryRuntime->executeFile(entryScript);
 
-        DeviceSetup setup;
-        setup.mode = static_cast<DeviceMode>(entryRuntime->getInt("deviceMode"));
-        setup.canvasWidth = entryRuntime->getInt("canvasWidth");
-        setup.canvasHeight = entryRuntime->getInt("canvasHeight");
-        setup.logFilePath = entryRuntime->getString("logFilePath");
-        const auto runScript = entryRuntime->getString("runScript");
-        // TODO other fields
+        const auto setup = entryRuntime->readDeviceSetup("deviceSetup");
+        const auto runScript = entryRuntime->readString("runScript");
 
         const auto device = Device::create(setup);
         device->getScriptRuntime()->executeFile(runScript);

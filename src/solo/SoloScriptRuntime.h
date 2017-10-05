@@ -6,6 +6,7 @@
 #pragma once
 
 #include "SoloCommon.h"
+#include "SoloDeviceSetup.h"
 #include <functional>
 
 namespace solo
@@ -25,7 +26,7 @@ namespace solo
 
         virtual void executeFile(const std::string& path) = 0;
 
-        virtual auto getString(const std::string &name) -> std::string = 0;
-        virtual auto getInt(const std::string &name) -> int32_t = 0;
+        virtual auto readString(const std::string &name) -> std::string = 0;
+        virtual auto readDeviceSetup(const std::string &name) -> DeviceSetup = 0;
     };
 }

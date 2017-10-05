@@ -13,10 +13,10 @@ static void registerFont(CppBindModule<LuaBinding> &module)
 {
     auto gi = BEGIN_CLASS(module, GlyphInfo);
     REG_CTOR(gi);
-    REG_VARIABLE(gi, GlyphInfo, positions);
-    REG_VARIABLE(gi, GlyphInfo, uvs);
-    REG_VARIABLE(gi, GlyphInfo, offsetX);
-    REG_VARIABLE(gi, GlyphInfo, offsetY);
+    REG_FIELD(gi, GlyphInfo, positions);
+    REG_FIELD(gi, GlyphInfo, uvs);
+    REG_FIELD(gi, GlyphInfo, offsetX);
+    REG_FIELD(gi, GlyphInfo, offsetY);
     gi.endClass();
 
     auto font = BEGIN_CLASS(module, Font);
