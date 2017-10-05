@@ -3,9 +3,10 @@
 -- MIT license
 -- 
 
--- Exported config
-deviceMode = sl.DeviceMode.Null
-canvasWidth = 100
-canvasHeight = 100
-logFilePath = "Tests.log"
+deviceSetup = sl.DeviceSetup()
+deviceSetup.mode = sl.DeviceMode.Null
+deviceSetup.canvasWidth = 100
+deviceSetup.canvasHeight = 100
+deviceSetup.logFilePath = "Tests.log"
+
 runScript = "../../src/tests/Tests.lua"
