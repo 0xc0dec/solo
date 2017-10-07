@@ -22,6 +22,13 @@ void registerPhysicsApi(CppBindModule<LuaBinding> &module);
 void registerMeshApi(CppBindModule<LuaBinding> &module);
 void registerFontApi(CppBindModule<LuaBinding> &module);
 
+template <class T>
+static auto readValue(LuaIntf::LuaState &lua, const std::string &name) -> T
+{
+    auto ref = LuaRef(lua, name.c_str());
+    return ref.toValue<T>();
+}
+
 static void registerApi(CppBindModule<LuaBinding> &module)
 {
     registerEnums(module);
@@ -101,12 +108,10 @@ void lua::ScriptRuntime::executeFile(const std::string& path)
 
 auto lua::ScriptRuntime::readString(const std::string& name) -> std::string
 {
-    auto ref = LuaRef(lua, name.c_str());
-    return ref.toValue<std::string>();
+    return readValue<std::string>(lua, name);
 }
 
 auto lua::ScriptRuntime::readDeviceSetup(const std::string &name) -> DeviceSetup
 {
-    auto ref = LuaRef(lua, name.c_str());
-    return ref.toValue<DeviceSetup>();
+    return readValue<DeviceSetup>(lua, name);
 }
