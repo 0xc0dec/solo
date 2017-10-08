@@ -64,7 +64,6 @@ static void registerLibrary(LuaState &state)
     )");
 }
 
-// TODO remove copy-paste
 lua::ScriptRuntime::ScriptRuntime()
 {
     lua = LuaState::newState();
@@ -79,12 +78,7 @@ lua::ScriptRuntime::ScriptRuntime()
 lua::ScriptRuntime::ScriptRuntime(Device *d):
     ScriptRuntime()
 {
-    lua = LuaState::newState();
-    lua.openLibs();
-
     auto module = LuaBinding(lua).beginModule("sl");
-    registerApi(module);
-    registerLibrary(lua);
     module.addConstant("device", d);
     module.endModule();
 }
