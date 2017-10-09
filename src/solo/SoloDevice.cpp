@@ -78,6 +78,11 @@ void Device::cleanupSubsystems()
     logger.reset();
 }
 
+bool Device::hasActiveBackgroundJobs() const
+{
+    return jobPool->hasActiveJobs();
+}
+
 bool Device::isKeyPressed(KeyCode code, bool firstTime) const
 {
     const auto where = pressedKeys.find(code);

@@ -68,9 +68,11 @@ attachAxes(transparentQuad)
 
 local run = function()
     local keepRunning = function()
-        return not dev:isQuitRequested() and
+        return (
+            not dev:isQuitRequested() and
             not dev:isWindowCloseRequested() and
             not dev:isKeyPressed(sl.KeyCode.Escape, true)
+            ) or dev:hasActiveBackgroundJobs()
     end
 
     local detachPostProcessor = function()

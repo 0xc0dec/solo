@@ -91,6 +91,7 @@ namespace solo
 
         bool isWindowCloseRequested() const { return windowCloseRequested; }
         bool isQuitRequested() const { return quitRequested; }
+        bool hasActiveBackgroundJobs() const;
 
         bool isKeyPressed(KeyCode code, bool firstTime = false) const;
         bool isKeyReleased(KeyCode code) const;

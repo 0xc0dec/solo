@@ -92,11 +92,13 @@ namespace solo
 
         JobPool() {}
 
+        bool hasActiveJobs() const { return anyActiveJobs; }
         void addJob(sptr<Job> job);
         void update();
 
     private:
         std::list<sptr<Job>> jobs;
+        bool anyActiveJobs = false;
         SpinLock lock;
     };
 }

@@ -21,7 +21,10 @@ void JobPool::update()
         {
             auto token = lock.acquire();
             if (!jobs.empty())
+            {
                 oldJobs = jobs;
+                anyActiveJobs = true;
+            }
         }
 
         auto anyDone = false;
@@ -36,6 +39,8 @@ void JobPool::update()
         {
             auto token = lock.acquire();
             jobs.remove_if([](sptr<Job> job) { return job->isDone(); });
+            if (jobs.empty())
+                anyActiveJobs = false;
         }
     }
 }
