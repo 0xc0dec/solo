@@ -14,7 +14,6 @@ local renderer = dev:getRenderer()
 local logger = dev:getLogger()
 local fs = dev:getFileSystem()
 local scene = sl.Scene.create(dev)
-local canvasSize = dev:getCanvasSize()
 
 local createMainCamera = require "MainCamera"
 local postProcessors = require "PostProcessors"
