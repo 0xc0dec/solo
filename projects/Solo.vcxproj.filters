@@ -194,9 +194,6 @@
     <ClCompile Include="..\src\solo\bullet\SoloBulletRigidBody.cpp">
       <Filter>bullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\gl\SoloOpenGL.cpp">
-      <Filter>gl</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\solo\gl\SoloOpenGLEffect.cpp">
       <Filter>gl</Filter>
     </ClCompile>

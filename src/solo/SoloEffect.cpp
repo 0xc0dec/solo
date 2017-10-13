@@ -33,7 +33,9 @@ auto Effect::loadFromFiles(Device *device, const std::string &vsPath, const std:
 {
     auto vsBytes = device->getFileSystem()->readBytes(vsPath);
     auto fsBytes = device->getFileSystem()->readBytes(fsPath);
-    return create(device, vsBytes.data(), vsBytes.size(), fsBytes.data(), fsBytes.size());
+    return create(device,
+        vsBytes.data(), static_cast<uint32_t>(vsBytes.size()),
+        fsBytes.data(), static_cast<uint32_t>(fsBytes.size()));
 }
 
 auto Effect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effect>

@@ -106,7 +106,6 @@
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp" />
     <ClCompile Include="..\src\solo\bullet\SoloBulletPhysics.cpp" />
     <ClCompile Include="..\src\solo\bullet\SoloBulletRigidBody.cpp" />
-    <ClCompile Include="..\src\solo\gl\SoloOpenGL.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLEffect.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLFrameBuffer.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLMaterial.cpp" />
