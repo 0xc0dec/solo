@@ -149,11 +149,4 @@ function run()
     end
 end
 
-function runSafe()
-    local _, err = select(1, pcall(run))
-    if err then
-        logger:logError(err)
-    end
-end
-
-runSafe()
+callSafe(run)

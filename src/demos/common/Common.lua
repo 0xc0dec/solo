@@ -10,3 +10,10 @@ vec4 = sl.Vector4
 function getAssetPath(fileName)
     return "../../assets/" .. fileName
 end
+
+function callSafe(f)
+    local _, err = select(1, pcall(f))
+    if err then
+        logger:logError(err)
+    end
+end

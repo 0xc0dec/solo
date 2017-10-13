@@ -33,13 +33,6 @@ local createAxesAttacher = require "Axes"
 local createSpawner = require "Spawner"
 local createSpawnedObjectTargeter = require "SpawnedObjectTargeter"
 
-local callSafe = function(f)
-    local _, err = select(1, pcall(f))
-    if err then
-        logger:logError(err)
-    end
-end
-
 local knownTags = {
     skybox = 1 << 1,
     transparent = 1 << 2,
