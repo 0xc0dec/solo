@@ -30,6 +30,8 @@ local createLoadedMesh = require "LoadedMesh"
 local createOffscreenCamera = require "OffscreenCamera"
 local createEffects = require "Effects"
 local createAxesAttacher = require "Axes"
+local createSpawner = require "Spawner"
+local createSpawnedObjectTargeter = require "SpawnedObjectTargeter"
 
 local callSafe = function(f)
     local _, err = select(1, pcall(f))
@@ -45,22 +47,21 @@ local knownTags = {
     postProcessor = 1 << 4
 }
 
-local meshes = {
-    cube = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Cube),
-    quad = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Quad)
-}
-
+local cubeMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Cube)
+local quadMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Quad)
 local effects = createEffects(dev)
-local mainCamera = createMainCamera(dev, scene, meshes, effects)
 local offscreenCamera, offscreenCameraTex = createOffscreenCamera(dev, scene)
+local mainCamera, mainCameraNode = createMainCamera(dev, scene)
+mainCameraNode:addScriptComponent(createSpawnedObjectTargeter(dev:getPhysics()))
+mainCameraNode:addScriptComponent(createSpawner(dev, cubeMesh, effects.color))
 createSkybox(dev, scene, knownTags.skybox)
-createCheckerBox(dev, scene, effects, meshes.cube)
+createCheckerBox(dev, scene, effects, cubeMesh)
 createDynamicQuad(dev, scene, effects)
 createTimeLabel(dev, scene, knownTags.transparent)
 createLoadedMesh(dev, scene, effects)
-createFloor(dev, scene, effects, meshes.cube)
-local monitorQuad = createMonitorQuad(dev, scene, effects, offscreenCameraTex, meshes.quad, knownTags.monitor)
-local transparentQuad = createTransparentQuad(dev, scene, effects, meshes.quad, knownTags.transparent)
+createFloor(dev, scene, effects, cubeMesh)
+local monitorQuad = createMonitorQuad(dev, scene, effects, offscreenCameraTex, quadMesh, knownTags.monitor)
+local transparentQuad = createTransparentQuad(dev, scene, effects, quadMesh, knownTags.transparent)
 local attachAxes = createAxesAttacher(dev, effects)
 attachAxes(monitorQuad)
 attachAxes(transparentQuad)
