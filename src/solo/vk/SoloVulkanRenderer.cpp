@@ -257,7 +257,7 @@ void vk::Renderer::endFrame()
                         .withDescriptorSetLayout(currentMaterial->getDescSetLayout())
                         .withFrontFace(VK_FRONT_FACE_CLOCKWISE)
                         .withCullMode(currentMaterial->getCullModeFlags())
-                        .withPolygonMode(currentMaterial->getPolygonMode())
+                        .withPolygonMode(currentMaterial->getVkPolygonMode())
                         .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 
                     for (int32_t binding = 0; binding < mesh->getVertexBufferCount(); binding++)

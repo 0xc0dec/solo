@@ -48,7 +48,7 @@ auto vk::Material::getCullModeFlags() const -> VkCullModeFlags
     }
 }
 
-auto vk::Material::getPolygonMode() const -> VkPolygonMode
+auto vk::Material::getVkPolygonMode() const -> VkPolygonMode
 {
     switch (polygonMode)
     {

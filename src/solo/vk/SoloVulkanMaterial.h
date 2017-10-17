@@ -48,7 +48,7 @@ namespace solo
             auto getDescSetLayout() const -> VkDescriptorSetLayout { return descSetLayout; }
             auto getDescSet() const -> VkDescriptorSet { return descSet; }
             auto getCullModeFlags() const -> VkCullModeFlags;
-            auto getPolygonMode() const -> VkPolygonMode;
+            auto getVkPolygonMode() const -> VkPolygonMode;
 
         private:
             sptr<vk::Effect> effect;
