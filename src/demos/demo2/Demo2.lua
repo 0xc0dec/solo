@@ -14,7 +14,7 @@ renderer = dev:getRenderer()
 logger = dev:getLogger()
 scene = sl.Scene.create(dev)
 
-function createMaterials()
+function createMaterial()
     local tex = sl.Texture2d.loadFromFile(dev, getAssetPath("textures/Cobblestone.png"))
     local effect = sl.Effect.loadFromFiles(dev,
         getAssetPath("shaders/vulkan/Test.vert.spv"),
@@ -108,7 +108,7 @@ function createMesh(material, position)
     end
 end
 
-material = createMaterials()
+material = createMaterial()
 camera = createMainCamera()
 createCustomMesh(material)
 createMesh(material)

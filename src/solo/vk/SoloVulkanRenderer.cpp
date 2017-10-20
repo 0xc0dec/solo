@@ -291,8 +291,8 @@ void vk::Renderer::endFrame()
         swapchain.getRenderPass().end(buf);
     });
 
-    auto presendCompleteSem = swapchain.acquireNext();
-    swapchain.presentNext(queue, 1, &presendCompleteSem);
+    auto presentCompleteSem = swapchain.acquireNext();
+    swapchain.presentNext(queue, 1, &presentCompleteSem);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 }
 

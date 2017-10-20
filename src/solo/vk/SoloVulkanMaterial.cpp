@@ -305,8 +305,7 @@ void vk::Material::applyParameters(Renderer *renderer, const Camera *camera, con
         for (auto &pair : samplers)
         {
             auto &info = pair.second;
-            builder.withBinding(info.binding, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1,
-                VK_SHADER_STAGE_FRAGMENT_BIT);
+            builder.withBinding(info.binding, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT);
         }
 
         descSetLayout = builder.build();
