@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <xhash>
+#include <functional>
 
 namespace solo
 {

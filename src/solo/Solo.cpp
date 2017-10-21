@@ -13,7 +13,7 @@ using namespace solo;
 
 uint32_t ComponentTypeId::counter = 0;
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
     if (argc <= 1)
         return 1;

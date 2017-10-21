@@ -16,7 +16,7 @@
 #   define SL_LINUX
 #endif
 
-#if defined(SL_WINDOWS) || defined(SL_MACOS)
+#if defined(SL_WINDOWS) || defined(SL_OSX)
 #   define SL_OPENGL_RENDERER
 #endif
 

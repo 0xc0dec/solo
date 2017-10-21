@@ -9,6 +9,7 @@
 
 #include "SoloOpenGLPrefabShaders.h"
 #include <unordered_map>
+#include <vector>
 
 using namespace solo;
 
