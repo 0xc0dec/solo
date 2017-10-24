@@ -118,7 +118,7 @@ void vk::Material::setUniformParameter(const std::string &name, ParameterWriteFu
     buffer.binding = bufferInfo.binding;
     buffer.size = bufferInfo.size;
     if (!buffer.buffer)
-        dirtyLayout = true;
+        dirtyLayout = true; // TODO allocate buffer right away?
 
     auto &item = buffer.items[fieldName];
     item.dirty = true;
@@ -287,19 +287,25 @@ void vk::Material::bindParameter(const std::string &name, BindParameterSemantics
 
 void vk::Material::applyParameters(Renderer *renderer, const Camera *camera, const Transform *nodeTransform)
 {
-    if (dirtyLayout)
+    const auto x = knownTransformBindings.find(nodeTransform);
+    const auto newBinding = x == knownTransformBindings.end() || x->second != camera;
+
+    if (dirtyLayout || newBinding)
     {
         auto builder = vk::DescriptorSetLayoutBuilder(renderer->getDevice());
 
         for (auto &pair : uniformBuffers)
         {
             auto &info = pair.second;
-            if (!info.buffer)
-            {
+//            if (!info.buffer) TODO why is this?
+//            {
                 builder.withBinding(info.binding, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
                 // TODO Make sure this destroys the old buffer
-                info.buffer = Buffer::createUniformHostVisible(renderer, info.size);
-            }
+                if (info.alwaysDirty) // meaning "use binding buffers" lol
+                    info.bindingBuffers[nodeTransform][camera] = Buffer::createUniformHostVisible(renderer, info.size);
+                else if (!info.buffer)
+                    info.buffer = Buffer::createUniformHostVisible(renderer, info.size);
+//            }
         }
 
         for (auto &pair : samplers)
@@ -325,7 +331,10 @@ void vk::Material::applyParameters(Renderer *renderer, const Camera *camera, con
         for (auto &pair : uniformBuffers)
         {
             auto &info = pair.second;
-            updater.forUniformBuffer(info.binding, descSet, info.buffer, 0, info.size);
+            if (info.alwaysDirty)
+                updater.forUniformBuffer(info.binding, descSet, info.bindingBuffers[nodeTransform][camera], 0, info.size);
+            else
+                updater.forUniformBuffer(info.binding, descSet, info.buffer, 0, info.size);
         }
 
         for (auto &pair : samplers)
@@ -337,6 +346,7 @@ void vk::Material::applyParameters(Renderer *renderer, const Camera *camera, con
 
         updater.updateSets();
 
+        knownTransformBindings[nodeTransform] = camera;
         dirtyLayout = false;
     }
 
@@ -350,7 +360,8 @@ void vk::Material::applyParameters(Renderer *renderer, const Camera *camera, con
                 auto &item = p.second;
                 if (item.dirty)
                 {
-                    item.write(buffer.buffer, camera, nodeTransform);
+                    auto &b = buffer.alwaysDirty ? buffer.bindingBuffers[nodeTransform][camera] : buffer.buffer;
+                    item.write(b, camera, nodeTransform);
                     item.dirty = item.alwaysDirty;
                 }
             }
