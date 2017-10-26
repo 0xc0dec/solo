@@ -70,8 +70,6 @@ namespace solo
                 uint32_t binding;
                 uint32_t size;
                 Buffer buffer;
-                // TODO better name after testing
-                std::unordered_map<const Transform*, std::unordered_map<const Camera*, Buffer>> bindingBuffers;
                 std::unordered_map<std::string, UniformBufferItem> items;
             };
 
@@ -86,9 +84,6 @@ namespace solo
             std::unordered_map<std::string, UniformBuffer> uniformBuffers;
             std::unordered_map<std::string, SamplerInfo> samplers;
 
-            // TODO This is for testing
-            std::unordered_map<const Transform*, const Camera*> knownTransformBindings;
-            
             bool dirtyLayout = false;
 
             void setUniformParameter(const std::string &name, ParameterWriteFunc write);
