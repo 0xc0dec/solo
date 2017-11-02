@@ -23,11 +23,11 @@ static auto parseName(const std::string &name) -> std::tuple<std::string, std::s
     const auto idx = name.find(".");
     const auto first = (idx != std::string::npos) ? name.substr(0, idx) : name;
     const auto second = (idx != std::string::npos) ? name.substr(idx + 1) : "";
-    return std::make_tuple(first, second);
+    return make_tuple(first, second);
 }
 
 vk::Material::Material(sptr<solo::Effect> effect):
-    effect(std::dynamic_pointer_cast<vk::Effect>(effect))
+    effect(std::dynamic_pointer_cast<Effect>(effect))
 {
 }
 
@@ -113,8 +113,6 @@ void vk::Material::setUniformParameter(const std::string &name, ParameterWriteFu
     const auto itemInfo = bufferInfo.members.at(fieldName);
 
     auto &item = bufferItems[bufferName][fieldName];
-    item.dirty = true;
-    item.alwaysDirty = false;
     item.write = [itemInfo, write](Buffer &buffer, const Camera *camera, const Transform *transform)
     {
         write(buffer, itemInfo.offset, itemInfo.size, camera, transform);
@@ -126,7 +124,7 @@ void vk::Material::setTextureParameter(const std::string &name, sptr<solo::Textu
     const auto samplerInfo = effect->getSamplerInfo(name);
     auto &sampler = samplers[name];
     sampler.binding = samplerInfo.binding;
-    sampler.texture = std::dynamic_pointer_cast<vk::Texture>(value);
+    sampler.texture = std::dynamic_pointer_cast<Texture>(value);
     // TODO Optimize and mark only this sampler as dirty
 }
 
@@ -141,8 +139,6 @@ void vk::Material::bindParameter(const std::string &name, BindParameterSemantics
     auto itemInfo = bufferInfo.members.at(fieldName);
 
     auto &item = bufferItems[bufferName][fieldName];
-    item.dirty = true;
-    item.alwaysDirty = false;
 
     switch (semantics)
     {
@@ -274,7 +270,7 @@ void vk::Material::applyParameters(Renderer *renderer, const Camera *camera, con
     {
         auto &binding = nodeBindings[nodeTransform][camera];
 
-        auto builder = vk::DescriptorSetLayoutBuilder(renderer->getDevice());
+        auto builder = DescriptorSetLayoutBuilder(renderer->getDevice());
 
         auto effectBuffers = effect->getUniformBuffers();
         for (const auto &info: effectBuffers)
@@ -293,7 +289,7 @@ void vk::Material::applyParameters(Renderer *renderer, const Camera *camera, con
         poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, effectBuffers.size());
         poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, samplers.size());
 
-        binding.descPool = vk::DescriptorPool(renderer->getDevice(), 1, poolConfig);
+        binding.descPool = DescriptorPool(renderer->getDevice(), 1, poolConfig);
         binding.descSet = binding.descPool.allocateSet(binding.descSetLayout);
 
         DescriptorSetUpdater updater{renderer->getDevice()};
@@ -315,7 +311,7 @@ void vk::Material::applyParameters(Renderer *renderer, const Camera *camera, con
         updater.updateSets();
     }
 
-    // TODO Properly mark items as dirty on per-object basis
+    // TODO Mark items as dirty on per-object basis
     auto &binding = nodeBindings[nodeTransform][camera];
     for (auto &p: bufferItems)
     {

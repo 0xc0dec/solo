@@ -54,15 +54,13 @@ namespace solo
         private:
             struct UniformBufferItem
             {
-                bool dirty;
-                bool alwaysDirty;
                 std::function<void(Buffer&, const Camera*, const Transform*)> write;
             };
 
             struct SamplerInfo
             {
                 uint32_t binding;
-                sptr<vk::Texture> texture;
+                sptr<Texture> texture;
             };
 
             struct NodeBinding
@@ -75,7 +73,7 @@ namespace solo
 
             using ParameterWriteFunc = std::function<void(Buffer&, uint32_t, uint32_t, const Camera*, const Transform*)>;
 
-            sptr<vk::Effect> effect;
+            sptr<Effect> effect;
 
             std::unordered_map<const Transform*, std::unordered_map<const Camera*, NodeBinding>> nodeBindings;
             std::unordered_map<std::string, std::unordered_map<std::string, UniformBufferItem>> bufferItems;
