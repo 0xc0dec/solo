@@ -52,23 +52,11 @@ namespace solo
             auto getVkPolygonMode() const -> VkPolygonMode;
 
         private:
-            sptr<vk::Effect> effect;
-
             struct UniformBufferItem
             {
                 bool dirty;
                 bool alwaysDirty;
                 std::function<void(Buffer&, const Camera*, const Transform*)> write;
-            };
-
-            struct UniformBuffer
-            {
-                bool dirty;
-                bool alwaysDirty;
-                uint32_t binding;
-                uint32_t size;
-                Buffer buffer;
-                std::unordered_map<std::string, UniformBufferItem> items;
             };
 
             struct SamplerInfo
@@ -77,7 +65,7 @@ namespace solo
                 sptr<vk::Texture> texture;
             };
 
-            struct Binding
+            struct NodeBinding
             {
                 std::unordered_map<std::string, Buffer> buffers;
                 DescriptorPool descPool;
@@ -87,13 +75,11 @@ namespace solo
 
             using ParameterWriteFunc = std::function<void(Buffer&, uint32_t, uint32_t, const Camera*, const Transform*)>;
 
-            std::unordered_map<std::string, UniformBuffer> uniformBuffers;
-            std::unordered_map<std::string, SamplerInfo> samplers;
+            sptr<vk::Effect> effect;
 
-            std::unordered_map<const Transform*, std::unordered_map<const Camera*, Binding>> nodeBindings;
+            std::unordered_map<const Transform*, std::unordered_map<const Camera*, NodeBinding>> nodeBindings;
             std::unordered_map<std::string, std::unordered_map<std::string, UniformBufferItem>> bufferItems;
-
-            bool dirtyLayout = false;
+            std::unordered_map<std::string, SamplerInfo> samplers;
 
             void setUniformParameter(const std::string &name, ParameterWriteFunc write);
         };

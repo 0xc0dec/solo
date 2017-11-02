@@ -119,22 +119,6 @@ void vk::Material::setUniformParameter(const std::string &name, ParameterWriteFu
     {
         write(buffer, itemInfo.offset, itemInfo.size, camera, transform);
     };
-
-    //    auto &buffer = uniformBuffers[bufferName];
-//    buffer.dirty = true;
-//    buffer.alwaysDirty = false;
-//    buffer.binding = bufferInfo.binding;
-//    buffer.size = bufferInfo.size;
-//    if (!buffer.buffer)
-//        dirtyLayout = true; // TODO allocate buffer right away?
-//
-//    auto &item = buffer.items[fieldName];
-//    item.dirty = true;
-//    item.alwaysDirty = false;
-//    item.write = [itemInfo, write](Buffer &buffer, const Camera *camera, const Transform *transform)
-//    {
-//        write(buffer, itemInfo.offset, itemInfo.size, camera, transform);
-//    };
 }
 
 void vk::Material::setTextureParameter(const std::string &name, sptr<solo::Texture> value)
@@ -143,7 +127,6 @@ void vk::Material::setTextureParameter(const std::string &name, sptr<solo::Textu
     auto &sampler = samplers[name];
     sampler.binding = samplerInfo.binding;
     sampler.texture = std::dynamic_pointer_cast<vk::Texture>(value);
-    dirtyLayout = true;
     // TODO Optimize and mark only this sampler as dirty
 }
 
@@ -160,18 +143,6 @@ void vk::Material::bindParameter(const std::string &name, BindParameterSemantics
     auto &item = bufferItems[bufferName][fieldName];
     item.dirty = true;
     item.alwaysDirty = false;
-
-//    auto &buffer = uniformBuffers[bufferName];
-//    buffer.dirty = true;
-//    buffer.alwaysDirty = true;
-//    buffer.binding = bufferInfo.binding;
-//    buffer.size = bufferInfo.size;
-//    if (!buffer.buffer)
-//        dirtyLayout = true;
-//
-//    auto &item = buffer.items[fieldName];
-//    item.dirty = true;
-//    item.alwaysDirty = true;
 
     switch (semantics)
     {
@@ -352,77 +323,6 @@ void vk::Material::applyParameters(Renderer *renderer, const Camera *camera, con
         for (auto &pp: p.second)
             pp.second.write(buffer, camera, nodeTransform);
     }
-
-    //    if (dirtyLayout)
-//    {
-//        auto builder = vk::DescriptorSetLayoutBuilder(renderer->getDevice());
-//
-//        for (auto &pair : uniformBuffers)
-//        {
-//            auto &info = pair.second;
-//            if (!info.buffer) // TODO why is this?
-//            {
-//                builder.withBinding(info.binding, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
-//                info.buffer = Buffer::createUniformHostVisible(renderer, info.size);
-//            }
-//        }
-//
-//        for (auto &pair : samplers)
-//        {
-//            auto &info = pair.second;
-//            builder.withBinding(info.binding, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT);
-//        }
-//
-//        descSetLayout = builder.build();
-//
-//        auto poolConfig = vk::DescriptorPoolConfig();
-//        if (!uniformBuffers.empty())
-//            poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, uniformBuffers.size());
-//        if (!samplers.empty())
-//            poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, samplers.size());
-//
-//        // TODO Make sure this destroys the old pool
-//        descPool = vk::DescriptorPool(renderer->getDevice(), 1, poolConfig);
-//        descSet = descPool.allocateSet(descSetLayout);
-//
-//        vk::DescriptorSetUpdater updater{renderer->getDevice()};
-//
-//        for (auto &pair : uniformBuffers)
-//        {
-//            auto &info = pair.second;
-//            updater.forUniformBuffer(info.binding, descSet, info.buffer, 0, info.size); // TODO use single large buffer?
-//        }
-//
-//        for (auto &pair : samplers)
-//        {
-//            auto &info = pair.second;
-//            updater.forTexture(info.binding, descSet, info.texture->getView(), info.texture->getSampler(),
-//                VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
-//        }
-//
-//        updater.updateSets();
-//
-//        dirtyLayout = false;
-//    }
-
-//    for (auto &pair : uniformBuffers)
-//    {
-//        auto &buffer = pair.second;
-//        if (buffer.dirty)
-//        {
-//            for (auto &p : buffer.items)
-//            {
-//                auto &item = p.second;
-//                if (item.dirty)
-//                {
-//                    item.write(buffer.buffer, camera, nodeTransform);
-//                    item.dirty = item.alwaysDirty;
-//                }
-//            }
-//
-//            buffer.dirty = buffer.alwaysDirty;
-//        }
-//    }
 }
 
 auto vk::Material::getDescSetLayout(const Camera *camera, const Transform *nodeTransform) const -> VkDescriptorSetLayout
