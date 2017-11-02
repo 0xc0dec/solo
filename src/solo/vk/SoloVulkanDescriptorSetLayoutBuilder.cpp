@@ -19,7 +19,7 @@ auto DescriptorSetLayoutBuilder::withBinding(uint32_t binding, VkDescriptorType 
     VkShaderStageFlagBits stageFlags) -> DescriptorSetLayoutBuilder&
 {
     if (binding >= bindings.size())
-        bindings.resize(binding + 1);
+        bindings.resize(binding + 1); // TODO Fix this. Causes troubles when there are gaps between binding numbers
 
     bindings[binding].binding = binding;
     bindings[binding].descriptorType = descriptorType;

@@ -152,11 +152,11 @@ namespace std
 	{
 		size_t operator()(const solo::Vector2 &v) const
         {
-            size_t seed = 0;
+            size_t h = 0;
             const hash<float> hasher;
-            solo::combineHash(seed, hasher(v.x));
-            solo::combineHash(seed, hasher(v.y));
-		    return seed;
+            solo::combineHash(h, hasher(v.x));
+            solo::combineHash(h, hasher(v.y));
+		    return h;
         }
 	};
 }

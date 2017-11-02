@@ -51,6 +51,8 @@ namespace solo
             auto getUniformBufferInfo(const std::string &bufferName) -> UniformBufferInfo;
             auto getSamplerInfo(const std::string &samplerName) -> SamplerInfo;
 
+            auto getUniformBuffers() const -> std::unordered_map<std::string, UniformBufferInfo> const& { return uniformBuffers; }
+
         private:
             Renderer *renderer = nullptr;
             Resource<VkShaderModule> vertexShader;

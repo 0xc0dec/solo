@@ -45,16 +45,14 @@ namespace solo
             void bindParameter(const std::string &name, BindParameterSemantics semantics) override final;
 
             void applyParameters(Renderer *renderer, const Camera *camera, const Transform *nodeTransform);
-            auto getDescSetLayout() const -> VkDescriptorSetLayout { return descSetLayout; }
-            auto getDescSet() const -> VkDescriptorSet { return descSet; }
+
+            auto getDescSetLayout(const Camera *camera, const Transform *nodeTransform) const -> VkDescriptorSetLayout; // TODO remove/make better
+            auto getDescSet(const Camera *camera, const Transform *nodeTransform) const -> VkDescriptorSet; // TODO remove/make better
             auto getCullModeFlags() const -> VkCullModeFlags;
             auto getVkPolygonMode() const -> VkPolygonMode;
 
         private:
             sptr<vk::Effect> effect;
-            DescriptorPool descPool;
-            Resource<VkDescriptorSetLayout> descSetLayout;
-            VkDescriptorSet descSet = VK_NULL_HANDLE;
 
             struct UniformBufferItem
             {
@@ -79,10 +77,21 @@ namespace solo
                 sptr<vk::Texture> texture;
             };
 
+            struct Binding
+            {
+                std::unordered_map<std::string, Buffer> buffers;
+                DescriptorPool descPool;
+                Resource<VkDescriptorSetLayout> descSetLayout;
+                VkDescriptorSet descSet = VK_NULL_HANDLE;
+            };
+
             using ParameterWriteFunc = std::function<void(Buffer&, uint32_t, uint32_t, const Camera*, const Transform*)>;
 
             std::unordered_map<std::string, UniformBuffer> uniformBuffers;
             std::unordered_map<std::string, SamplerInfo> samplers;
+
+            std::unordered_map<const Transform*, std::unordered_map<const Camera*, Binding>> nodeBindings;
+            std::unordered_map<std::string, std::unordered_map<std::string, UniformBufferItem>> bufferItems;
 
             bool dirtyLayout = false;
 

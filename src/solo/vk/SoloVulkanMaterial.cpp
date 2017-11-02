@@ -112,21 +112,29 @@ void vk::Material::setUniformParameter(const std::string &name, ParameterWriteFu
     auto bufferInfo = effect->getUniformBufferInfo(bufferName);
     const auto itemInfo = bufferInfo.members.at(fieldName);
 
-    auto &buffer = uniformBuffers[bufferName];
-    buffer.dirty = true;
-    buffer.alwaysDirty = false;
-    buffer.binding = bufferInfo.binding;
-    buffer.size = bufferInfo.size;
-    if (!buffer.buffer)
-        dirtyLayout = true; // TODO allocate buffer right away?
-
-    auto &item = buffer.items[fieldName];
+    auto &item = bufferItems[bufferName][fieldName];
     item.dirty = true;
     item.alwaysDirty = false;
     item.write = [itemInfo, write](Buffer &buffer, const Camera *camera, const Transform *transform)
     {
         write(buffer, itemInfo.offset, itemInfo.size, camera, transform);
     };
+
+    //    auto &buffer = uniformBuffers[bufferName];
+//    buffer.dirty = true;
+//    buffer.alwaysDirty = false;
+//    buffer.binding = bufferInfo.binding;
+//    buffer.size = bufferInfo.size;
+//    if (!buffer.buffer)
+//        dirtyLayout = true; // TODO allocate buffer right away?
+//
+//    auto &item = buffer.items[fieldName];
+//    item.dirty = true;
+//    item.alwaysDirty = false;
+//    item.write = [itemInfo, write](Buffer &buffer, const Camera *camera, const Transform *transform)
+//    {
+//        write(buffer, itemInfo.offset, itemInfo.size, camera, transform);
+//    };
 }
 
 void vk::Material::setTextureParameter(const std::string &name, sptr<solo::Texture> value)
@@ -149,17 +157,21 @@ void vk::Material::bindParameter(const std::string &name, BindParameterSemantics
     auto bufferInfo = effect->getUniformBufferInfo(bufferName);
     auto itemInfo = bufferInfo.members.at(fieldName);
 
-    auto &buffer = uniformBuffers[bufferName];
-    buffer.dirty = true;
-    buffer.alwaysDirty = true;
-    buffer.binding = bufferInfo.binding;
-    buffer.size = bufferInfo.size;
-    if (!buffer.buffer)
-        dirtyLayout = true;
-
-    auto &item = buffer.items[fieldName];
+    auto &item = bufferItems[bufferName][fieldName];
     item.dirty = true;
-    item.alwaysDirty = true;
+    item.alwaysDirty = false;
+
+//    auto &buffer = uniformBuffers[bufferName];
+//    buffer.dirty = true;
+//    buffer.alwaysDirty = true;
+//    buffer.binding = bufferInfo.binding;
+//    buffer.size = bufferInfo.size;
+//    if (!buffer.buffer)
+//        dirtyLayout = true;
+//
+//    auto &item = buffer.items[fieldName];
+//    item.dirty = true;
+//    item.alwaysDirty = true;
 
     switch (semantics)
     {
@@ -287,77 +299,142 @@ void vk::Material::bindParameter(const std::string &name, BindParameterSemantics
 
 void vk::Material::applyParameters(Renderer *renderer, const Camera *camera, const Transform *nodeTransform)
 {
-    if (dirtyLayout)
+    if (!nodeBindings.count(nodeTransform) || !nodeBindings[nodeTransform].count(camera))
     {
+        auto &binding = nodeBindings[nodeTransform][camera];
+
         auto builder = vk::DescriptorSetLayoutBuilder(renderer->getDevice());
 
-        for (auto &pair : uniformBuffers)
+        auto effectBuffers = effect->getUniformBuffers();
+        for (const auto &info: effectBuffers)
         {
-            auto &info = pair.second;
-            if (!info.buffer) // TODO why is this?
-            {
-                builder.withBinding(info.binding, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
-                if (!info.buffer)
-                    info.buffer = Buffer::createUniformHostVisible(renderer, info.size);
-            }
+            const auto bufferName = info.first;
+            binding.buffers[bufferName] = Buffer::createUniformHostVisible(renderer, info.second.size);
+            builder.withBinding(info.second.binding, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
+        }
+
+        for (auto &pair : samplers)
+            builder.withBinding(pair.second.binding, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT);
+
+        binding.descSetLayout = builder.build();
+
+        auto poolConfig = DescriptorPoolConfig();
+        poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, effectBuffers.size());
+        poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, samplers.size());
+
+        binding.descPool = vk::DescriptorPool(renderer->getDevice(), 1, poolConfig);
+        binding.descSet = binding.descPool.allocateSet(binding.descSetLayout);
+
+        DescriptorSetUpdater updater{renderer->getDevice()};
+
+        for (auto &pair : binding.buffers)
+        {
+            const auto info = effectBuffers[pair.first];
+            auto &buffer = pair.second;
+            updater.forUniformBuffer(info.binding, binding.descSet, buffer, 0, info.size); // TODO use single large buffer?
         }
 
         for (auto &pair : samplers)
         {
             auto &info = pair.second;
-            builder.withBinding(info.binding, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT);
-        }
-
-        descSetLayout = builder.build();
-
-        auto poolConfig = vk::DescriptorPoolConfig();
-        if (!uniformBuffers.empty())
-            poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, uniformBuffers.size());
-        if (!samplers.empty())
-            poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, samplers.size());
-
-        // TODO Make sure this destroys the old pool
-        descPool = vk::DescriptorPool(renderer->getDevice(), 1, poolConfig);
-        descSet = descPool.allocateSet(descSetLayout);
-
-        vk::DescriptorSetUpdater updater{renderer->getDevice()};
-
-        for (auto &pair : uniformBuffers)
-        {
-            auto &info = pair.second;
-            updater.forUniformBuffer(info.binding, descSet, info.buffer, 0, info.size);
-        }
-
-        for (auto &pair : samplers)
-        {
-            auto &info = pair.second;
-            updater.forTexture(info.binding, descSet, info.texture->getView(), info.texture->getSampler(),
+            updater.forTexture(info.binding, binding.descSet, info.texture->getView(), info.texture->getSampler(),
                 VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
         }
 
         updater.updateSets();
-
-        dirtyLayout = false;
     }
 
-    for (auto &pair : uniformBuffers)
+    // TODO Properly mark items as dirty on per-object basis
+    auto &binding = nodeBindings[nodeTransform][camera];
+    for (auto &p: bufferItems)
     {
-        auto &buffer = pair.second;
-        if (buffer.dirty)
-        {
-            for (auto &p : buffer.items)
-            {
-                auto &item = p.second;
-                if (item.dirty)
-                {
-                    item.write(buffer.buffer, camera, nodeTransform);
-                    item.dirty = item.alwaysDirty;
-                }
-            }
-
-            buffer.dirty = buffer.alwaysDirty;
-        }
+        auto &buffer = binding.buffers[p.first];
+        for (auto &pp: p.second)
+            pp.second.write(buffer, camera, nodeTransform);
     }
+
+    //    if (dirtyLayout)
+//    {
+//        auto builder = vk::DescriptorSetLayoutBuilder(renderer->getDevice());
+//
+//        for (auto &pair : uniformBuffers)
+//        {
+//            auto &info = pair.second;
+//            if (!info.buffer) // TODO why is this?
+//            {
+//                builder.withBinding(info.binding, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
+//                info.buffer = Buffer::createUniformHostVisible(renderer, info.size);
+//            }
+//        }
+//
+//        for (auto &pair : samplers)
+//        {
+//            auto &info = pair.second;
+//            builder.withBinding(info.binding, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT);
+//        }
+//
+//        descSetLayout = builder.build();
+//
+//        auto poolConfig = vk::DescriptorPoolConfig();
+//        if (!uniformBuffers.empty())
+//            poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, uniformBuffers.size());
+//        if (!samplers.empty())
+//            poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, samplers.size());
+//
+//        // TODO Make sure this destroys the old pool
+//        descPool = vk::DescriptorPool(renderer->getDevice(), 1, poolConfig);
+//        descSet = descPool.allocateSet(descSetLayout);
+//
+//        vk::DescriptorSetUpdater updater{renderer->getDevice()};
+//
+//        for (auto &pair : uniformBuffers)
+//        {
+//            auto &info = pair.second;
+//            updater.forUniformBuffer(info.binding, descSet, info.buffer, 0, info.size); // TODO use single large buffer?
+//        }
+//
+//        for (auto &pair : samplers)
+//        {
+//            auto &info = pair.second;
+//            updater.forTexture(info.binding, descSet, info.texture->getView(), info.texture->getSampler(),
+//                VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+//        }
+//
+//        updater.updateSets();
+//
+//        dirtyLayout = false;
+//    }
+
+//    for (auto &pair : uniformBuffers)
+//    {
+//        auto &buffer = pair.second;
+//        if (buffer.dirty)
+//        {
+//            for (auto &p : buffer.items)
+//            {
+//                auto &item = p.second;
+//                if (item.dirty)
+//                {
+//                    item.write(buffer.buffer, camera, nodeTransform);
+//                    item.dirty = item.alwaysDirty;
+//                }
+//            }
+//
+//            buffer.dirty = buffer.alwaysDirty;
+//        }
+//    }
+}
+
+auto vk::Material::getDescSetLayout(const Camera *camera, const Transform *nodeTransform) const -> VkDescriptorSetLayout
+{
+    SL_PANIC_IF(!nodeBindings.count(nodeTransform) || !nodeBindings.at(nodeTransform).count(camera), "Node binding not found");
+    return nodeBindings.at(nodeTransform).at(camera).descSetLayout;
+}
+
+auto vk::Material::getDescSet(const Camera *camera, const Transform *nodeTransform) const -> VkDescriptorSet
+{
+    SL_PANIC_IF(!nodeBindings.count(nodeTransform) || !nodeBindings.at(nodeTransform).count(camera), "Node binding not found");
+    return nodeBindings.at(nodeTransform).at(camera).descSet;
 }
 
 #endif

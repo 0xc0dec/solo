@@ -254,7 +254,7 @@ void vk::Renderer::endFrame()
                     auto fs = currentEffect->getFragmentShader();
 
                     auto pipelineConfig = vk::PipelineConfig(vs, fs)
-                        .withDescriptorSetLayout(currentMaterial->getDescSetLayout())
+                        .withDescriptorSetLayout(currentMaterial->getDescSetLayout(currentCamera, cmd.meshPart.transform))
                         .withFrontFace(VK_FRONT_FACE_CLOCKWISE)
                         .withCullMode(currentMaterial->getCullModeFlags())
                         .withPolygonMode(currentMaterial->getVkPolygonMode())
@@ -265,7 +265,7 @@ void vk::Renderer::endFrame()
 
                     pipelines.emplace_back(device, renderPass, pipelineConfig);
 
-                    VkDescriptorSet descSet = currentMaterial->getDescSet();
+                    VkDescriptorSet descSet = currentMaterial->getDescSet(currentCamera, cmd.meshPart.transform);
                     vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipelines.rbegin());
                     vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelines.rbegin()->getLayout(), 0, 1, &descSet, 0, nullptr);
 
