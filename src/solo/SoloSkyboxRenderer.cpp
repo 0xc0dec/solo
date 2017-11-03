@@ -34,8 +34,7 @@ SkyboxRenderer::SkyboxRenderer(const Node &node):
 
 void SkyboxRenderer::render()
 {
-    renderer->addRenderCommand(RenderCommand::applyMaterial(material.get()));
-    renderer->addRenderCommand(RenderCommand::drawMesh(quadMesh.get(), transform)); // TODO transform needed here?
+    renderer->addRenderCommand(RenderCommand::drawMesh(quadMesh.get(), transform, material.get())); // TODO transform needed here?
 }
 
 void SkyboxRenderer::setTexture(sptr<CubeTexture> texture)

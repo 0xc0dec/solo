@@ -22,7 +22,6 @@ namespace solo
         EndCamera,
         DrawMesh,
         DrawMeshPart,
-        ApplyMaterial
     };
 
     struct RenderCommand
@@ -36,16 +35,17 @@ namespace solo
                 Mesh *mesh;
                 Transform *transform;
                 uint32_t part;
+                Material *material;
             } meshPart;
 
             struct
             {
                 Mesh *mesh;
                 Transform *transform;
+                Material *material;
             } mesh;
 
             Camera *camera;
-            Material *material;
         };
 
         explicit RenderCommand(RenderCommandType type = RenderCommandType::None): type(type) {}
@@ -64,27 +64,22 @@ namespace solo
             return cmd;
         }
 
-        static auto drawMesh(Mesh *mesh, Transform *transform) -> RenderCommand
+        static auto drawMesh(Mesh *mesh, Transform *transform, Material *material) -> RenderCommand
         {
             auto cmd = RenderCommand(RenderCommandType::DrawMesh);
             cmd.mesh.mesh = mesh;
             cmd.mesh.transform = transform;
+            cmd.mesh.material = material;
             return cmd;
         }
 
-        static auto drawMeshPart(Mesh *mesh, uint32_t part, Transform *transform) -> RenderCommand
+        static auto drawMeshPart(Mesh *mesh, uint32_t part, Transform *transform, Material *material) -> RenderCommand
         {
             auto cmd = RenderCommand(RenderCommandType::DrawMeshPart);
             cmd.meshPart.mesh = mesh;
             cmd.meshPart.part = part;
             cmd.meshPart.transform = transform;
-            return cmd;
-        }
-
-        static auto applyMaterial(Material *material) -> RenderCommand
-        {
-            auto cmd = RenderCommand(RenderCommandType::ApplyMaterial);
-            cmd.material = material;
+            cmd.meshPart.material = material;
             return cmd;
         }
     };

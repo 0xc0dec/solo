@@ -223,17 +223,19 @@ void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
             break;
         }
 
-        case RenderCommandType::ApplyMaterial:
+        case RenderCommandType::DrawMesh:
+        case RenderCommandType::DrawMeshPart:
         {
-            const auto faceCull = cmd.material->getFaceCull();
-            const auto polygonMode = cmd.material->getPolygonMode();
-            const auto depthTest = cmd.material->getDepthTest();
-            const auto depthWrite = cmd.material->getDepthWrite();
-            const auto depthFunc = cmd.material->getDepthFunction();
-            const auto blend = cmd.material->getBlend();
-            const auto srcBlendFactor = cmd.material->getSrcBlendFactor();
-            const auto dstBlendFactor = cmd.material->getDstBlendFactor();
-            const auto effect = static_cast<Effect*>(step.cmd.material->getEffect());
+            const auto material = cmd.type == RenderCommandType::DrawMesh ? cmd.mesh.material : cmd.meshPart.material;
+            const auto faceCull = material->getFaceCull();
+            const auto polygonMode = material->getPolygonMode();
+            const auto depthTest = material->getDepthTest();
+            const auto depthWrite = material->getDepthWrite();
+            const auto depthFunc = material->getDepthFunction();
+            const auto blend = material->getBlend();
+            const auto srcBlendFactor = material->getSrcBlendFactor();
+            const auto dstBlendFactor = material->getDstBlendFactor();
+            const auto effect = static_cast<Effect*>(material->getEffect());
             const auto program = effect->getHandle();
 
             step.applyMaterialState = [=]
@@ -270,8 +272,6 @@ void gl::Renderer::beginFrame()
 void gl::Renderer::endFrame()
 {
     Camera *currentCamera = nullptr;
-    gl::Material *currentMaterial = nullptr;
-    gl::Effect *currentEffect = nullptr;
 
     for (const auto &step: renderSteps)
     {
@@ -293,23 +293,19 @@ void gl::Renderer::endFrame()
 
             case RenderCommandType::DrawMesh:
             {
-                currentMaterial->applyParams(currentCamera, step.cmd.mesh.transform);
-                static_cast<Mesh*>(step.cmd.mesh.mesh)->draw(currentEffect);
+                step.applyMaterialState();
+                static_cast<Material*>(step.cmd.mesh.material)->applyParams(currentCamera, step.cmd.mesh.transform);
+                const auto effect = static_cast<Effect*>(step.cmd.mesh.material->getEffect());
+                static_cast<Mesh*>(step.cmd.mesh.mesh)->draw(effect);
                 break;
             }
 
             case RenderCommandType::DrawMeshPart:
             {
-                currentMaterial->applyParams(currentCamera, step.cmd.meshPart.transform);
-                static_cast<Mesh*>(step.cmd.meshPart.mesh)->drawPart(step.cmd.meshPart.part, currentEffect);
-                break;
-            }
-
-            case RenderCommandType::ApplyMaterial:
-            {
                 step.applyMaterialState();
-                currentMaterial = static_cast<Material*>(step.cmd.material);
-                currentEffect = static_cast<gl::Effect*>(currentMaterial->getEffect());
+                static_cast<Material*>(step.cmd.meshPart.material)->applyParams(currentCamera, step.cmd.meshPart.transform);
+                const auto effect = static_cast<Effect*>(step.cmd.meshPart.material->getEffect());
+                static_cast<Mesh*>(step.cmd.meshPart.mesh)->drawPart(step.cmd.meshPart.part, effect);
                 break;
             }
 

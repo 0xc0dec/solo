@@ -29,10 +29,7 @@ void MeshRenderer::render()
     {
         const auto material = getMaterial(0);
         if (material)
-        {
-            renderer->addRenderCommand(RenderCommand::applyMaterial(material));
-            renderer->addRenderCommand(RenderCommand::drawMesh(mesh.get(), transform));
-        }
+            renderer->addRenderCommand(RenderCommand::drawMesh(mesh.get(), transform, material));
     }
     else
     {
@@ -40,10 +37,7 @@ void MeshRenderer::render()
         {
             const auto material = getMaterial(part);
             if (material)
-            {
-                renderer->addRenderCommand(RenderCommand::applyMaterial(material));
-                renderer->addRenderCommand(RenderCommand::drawMeshPart(mesh.get(), part, transform));
-            }
+                renderer->addRenderCommand(RenderCommand::drawMeshPart(mesh.get(), part, transform, material));
         }
     }
 }

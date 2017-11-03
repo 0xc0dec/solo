@@ -117,14 +117,14 @@ static auto getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> uint
     return 0;
 }
 
-static auto createCommandPool(VkDevice device, uint32_t queueIndex) -> vk::Resource<VkCommandPool>
+static auto createCommandPool(VkDevice device, uint32_t queueIndex) -> Resource<VkCommandPool>
 {
     VkCommandPoolCreateInfo poolInfo{};
     poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
     poolInfo.queueFamilyIndex = queueIndex;
     poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 
-    vk::Resource<VkCommandPool> commandPool{device, vkDestroyCommandPool};
+    Resource<VkCommandPool> commandPool{device, vkDestroyCommandPool};
     SL_VK_CHECK_RESULT(vkCreateCommandPool(device, &poolInfo, nullptr, commandPool.cleanRef()));
 
     return commandPool;
@@ -197,18 +197,14 @@ void vk::Renderer::beginFrame()
 
 void vk::Renderer::endFrame()
 {
-    // TODO Properly set clear values based on camera
-
     swapchain.recordCommandBuffers([&](VkFramebuffer fb, VkCommandBuffer buf)
     {
         auto canvasSize = engineDevice->getCanvasSize();
         swapchain.getRenderPass().begin(buf, fb, canvasSize.x, canvasSize.y);
 
         const Camera *currentCamera = nullptr;
-        vk::Material *currentMaterial = nullptr;
-        const vk::Effect *currentEffect = nullptr;
 
-        for (const auto &cmd: renderCommands)
+        for (const auto &cmd : renderCommands)
         {
             switch (cmd.type)
             {
@@ -229,13 +225,6 @@ void vk::Renderer::endFrame()
                     currentCamera = nullptr;
                     break;
 
-                case RenderCommandType::ApplyMaterial:
-                {
-                    currentMaterial = static_cast<vk::Material*>(cmd.material);
-                    currentEffect = static_cast<vk::Effect*>(currentMaterial->getEffect());
-                    break;
-                }
-
                 case RenderCommandType::DrawMesh:
                 {
                     break;
@@ -243,21 +232,20 @@ void vk::Renderer::endFrame()
 
                 case RenderCommandType::DrawMeshPart:
                 {
-                    if (!currentMaterial)
-                        continue;
+                    auto material = static_cast<Material*>(cmd.meshPart.material);
+                    auto effect = static_cast<Effect*>(material->getEffect());
+                    material->applyParameters(this, currentCamera, cmd.meshPart.transform);
 
-                    currentMaterial->applyParameters(this, currentCamera, cmd.meshPart.transform);
-
-                    const auto mesh = static_cast<vk::Mesh*>(cmd.meshPart.mesh);
+                    const auto mesh = static_cast<Mesh*>(cmd.meshPart.mesh);
                     auto &renderPass = swapchain.getRenderPass();
-                    auto vs = currentEffect->getVertexShader();
-                    auto fs = currentEffect->getFragmentShader();
+                    auto vs = effect->getVertexShader();
+                    auto fs = effect->getFragmentShader();
 
-                    auto pipelineConfig = vk::PipelineConfig(vs, fs)
-                        .withDescriptorSetLayout(currentMaterial->getDescSetLayout(currentCamera, cmd.meshPart.transform))
+                    auto pipelineConfig = PipelineConfig(vs, fs)
+                        .withDescriptorSetLayout(material->getDescSetLayout(currentCamera, cmd.meshPart.transform))
                         .withFrontFace(VK_FRONT_FACE_CLOCKWISE)
-                        .withCullMode(currentMaterial->getCullModeFlags())
-                        .withPolygonMode(currentMaterial->getVkPolygonMode())
+                        .withCullMode(material->getCullModeFlags())
+                        .withPolygonMode(material->getVkPolygonMode())
                         .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 
                     for (int32_t binding = 0; binding < mesh->getVertexBufferCount(); binding++)
@@ -265,17 +253,17 @@ void vk::Renderer::endFrame()
 
                     pipelines.emplace_back(device, renderPass, pipelineConfig);
 
-                    VkDescriptorSet descSet = currentMaterial->getDescSet(currentCamera, cmd.meshPart.transform);
+                    VkDescriptorSet descSet = material->getDescSet(currentCamera, cmd.meshPart.transform);
                     vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipelines.rbegin());
                     vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelines.rbegin()->getLayout(), 0, 1, &descSet, 0, nullptr);
 
-                    VkDeviceSize vertexBufferOffset = 0;                    
+                    VkDeviceSize vertexBufferOffset = 0;
                     for (uint32_t i = 0; i < mesh->getVertexBufferCount(); i++)
                     {
                         auto vertexBuffer = mesh->getVertexBuffer(i);
                         vkCmdBindVertexBuffers(buf, i, 1, &vertexBuffer, &vertexBufferOffset);
                     }
-                    
+
                     auto indexBuffer = mesh->getPartBuffer(cmd.meshPart.part);
                     vkCmdBindIndexBuffer(buf, indexBuffer, 0, VK_INDEX_TYPE_UINT16);
                     vkCmdDrawIndexed(buf, mesh->getPartIndexElementCount(cmd.meshPart.part), 1, 0, 0, 0);
@@ -290,6 +278,7 @@ void vk::Renderer::endFrame()
 
         swapchain.getRenderPass().end(buf);
     });
+
 
     auto presentCompleteSem = swapchain.acquireNext();
     swapchain.presentNext(queue, 1, &presentCompleteSem);
