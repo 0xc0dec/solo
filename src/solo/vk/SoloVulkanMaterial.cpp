@@ -137,7 +137,6 @@ void vk::Material::bindParameter(const std::string &name, BindParameterSemantics
 
     auto bufferInfo = effect->getUniformBufferInfo(bufferName);
     auto itemInfo = bufferInfo.members.at(fieldName);
-
     auto &item = bufferItems[bufferName][fieldName];
 
     switch (semantics)

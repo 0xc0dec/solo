@@ -110,8 +110,8 @@ end
 
 material = createMaterial()
 camera = createMainCamera()
-createCustomMesh(material)
-createMesh(material, vec3(2, 2, 2))
+createCustomMesh(material, vec3(-2, 0, 0))
+createMesh(material, vec3(2, 0, 0))
 
 function keepRunning()
     return not dev:isQuitRequested() and
