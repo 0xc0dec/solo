@@ -1,5 +1,6 @@
 # TODO
 
+* Implement "dirty/versions" mechanism for vulkan resources and remove all pipelines rebuilding every frame.
 * Continue with Vulkan backend
 * Handle Vulkan/OpenGL coordinate system differences
 (for example add mesh methods setVertices/setUVs/... as in Unity, make these methods fix coordinates;
