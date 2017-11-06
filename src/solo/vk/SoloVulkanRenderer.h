@@ -70,7 +70,7 @@ namespace solo
             std::vector<RenderCommand> renderCommands;
             std::vector<Pipeline> pipelines;
 
-            void recordRenderCommands(RenderPass &renderPass, VkCommandBuffer buf, VkFramebuffer frameBuffer);
+            void recordRenderCommands(VkCommandBuffer buf, RenderPass &renderPass, VkFramebuffer frameBuffer);
         };
     }
 }

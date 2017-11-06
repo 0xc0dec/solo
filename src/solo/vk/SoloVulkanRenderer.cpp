@@ -199,16 +199,15 @@ void vk::Renderer::endFrame()
 {
     swapchain.recordCommandBuffers([&](VkFramebuffer fb, VkCommandBuffer buf)
     {
-        recordRenderCommands(swapchain.getRenderPass(), buf, fb);
+        recordRenderCommands(buf, swapchain.getRenderPass(), fb);
     });
-
 
     auto presentCompleteSem = swapchain.acquireNext();
     swapchain.presentNext(queue, 1, &presentCompleteSem);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 }
 
-void vk::Renderer::recordRenderCommands(RenderPass &renderPass, VkCommandBuffer buf, VkFramebuffer frameBuffer)
+void vk::Renderer::recordRenderCommands(VkCommandBuffer buf, RenderPass &renderPass, VkFramebuffer frameBuffer)
 {
     const auto canvasSize = engineDevice->getCanvasSize();
     renderPass.begin(buf, frameBuffer, canvasSize.x, canvasSize.y);
@@ -229,6 +228,7 @@ void vk::Renderer::recordRenderCommands(RenderPass &renderPass, VkCommandBuffer 
 
                 VkRect2D scissor{{0, 0}, {vp.width, vp.height}}; // TODO proper values
                 vkCmdSetScissor(buf, 0, 1, &scissor);
+
                 break;
             }
 
