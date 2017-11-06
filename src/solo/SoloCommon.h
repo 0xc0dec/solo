@@ -8,6 +8,8 @@
 #include "SoloFormatter.h"
 #include <string>
 #include <vector>
+#include <unordered_map>
+#include <unordered_set>
 #include <array>
 #include <list>
 #include <memory>
@@ -68,6 +70,8 @@ namespace solo
     template <typename T> using vec = std::vector<T>;
     template <typename T, size_t Size> using arr = std::array<T, Size>;
     template <typename T> using list = std::list<T>;
+    template <class K, class V> using umap = std::unordered_map<K, V>;
+    template <class K> using uset = std::unordered_set<K>;
 
     using s8 = char;
     using u8 = uint8_t;

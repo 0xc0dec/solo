@@ -37,20 +37,20 @@ vk::Effect::~Effect()
 {
 }
 
-auto vk::Effect::getUniformBufferInfo(const str &bufferName) -> UniformBufferInfo
+auto vk::Effect::getUniformBuffer(const str &name) -> UniformBuffer
 {
-    if (uniformBuffers.count(bufferName))
-        return uniformBuffers.at(bufferName);
-    SL_PANIC(SL_FMT("Uniform buffer ", bufferName, " not found"));
-    return UniformBufferInfo{};
+    if (uniformBuffers.count(name))
+        return uniformBuffers.at(name);
+    SL_PANIC(SL_FMT("Uniform buffer ", name, " not found"));
+    return UniformBuffer{};
 }
 
-auto vk::Effect::getSamplerInfo(const str &samplerName) -> SamplerInfo
+auto vk::Effect::getSampler(const str &name) -> Sampler
 {
-    if (samplers.count(samplerName))
-        return samplers.at(samplerName);
-    SL_PANIC(SL_FMT("Sampler ", samplerName, " not found"));
-    return SamplerInfo{};
+    if (samplers.count(name))
+        return samplers.at(name);
+    SL_PANIC(SL_FMT("Sampler ", name, " not found"));
+    return Sampler{};
 }
 
 void vk::Effect::introspectShader(const u32 *src, u32 len)

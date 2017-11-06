@@ -11,7 +11,6 @@
 
 #include "SoloEffect.h"
 #include "SoloOpenGL.h"
-#include "SoloMap.h"
 
 namespace solo
 {

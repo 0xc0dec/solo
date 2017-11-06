@@ -11,7 +11,6 @@
 
 #include "SoloEffect.h"
 #include "SoloVulkan.h"
-#include "SoloMap.h"
 
 namespace solo
 {
@@ -22,20 +21,20 @@ namespace solo
         class Effect final: public solo::Effect
         {
         public:
-            struct UniformBufferMemberInfo
+            struct UniformBufferMember
             {
                 u32 offset;
                 u32 size;
             };
 
-            struct UniformBufferInfo
+            struct UniformBuffer
             {
-                umap<str, UniformBufferMemberInfo> members;
+                umap<str, UniformBufferMember> members;
                 u32 binding;
                 u32 size;
             };
 
-            struct SamplerInfo
+            struct Sampler
             {
                 u32 binding;
             };
@@ -48,18 +47,19 @@ namespace solo
             auto getVertexShader() const -> VkShaderModule { return vertexShader; }
             auto getFragmentShader() const -> VkShaderModule { return fragmentShader; }
 
-            auto getUniformBufferInfo(const str &bufferName) -> UniformBufferInfo;
-            auto getSamplerInfo(const str &samplerName) -> SamplerInfo;
+            auto getUniformBuffer(const str &name) -> UniformBuffer;
+            auto getSampler(const str &name) -> Sampler;
 
-            auto getUniformBuffers() const -> umap<str, UniformBufferInfo> const& { return uniformBuffers; }
+            auto getUniformBuffers() const -> umap<str, UniformBuffer> const& { return uniformBuffers; }
+            auto getSamplers() const -> umap<str, Sampler> const& { return samplers; }
 
         private:
             Renderer *renderer = nullptr;
             Resource<VkShaderModule> vertexShader;
             Resource<VkShaderModule> fragmentShader;
             
-            umap<str, UniformBufferInfo> uniformBuffers;
-            umap<str, SamplerInfo> samplers;
+            umap<str, UniformBuffer> uniformBuffers;
+            umap<str, Sampler> samplers;
 
             void introspectShader(const u32 *src, u32 len);
         };

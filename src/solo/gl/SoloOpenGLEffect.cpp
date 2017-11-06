@@ -8,7 +8,6 @@
 #ifdef SL_OPENGL_RENDERER
 
 #include "SoloOpenGLPrefabShaders.h"
-#include "SoloMap.h"
 
 using namespace solo;
 

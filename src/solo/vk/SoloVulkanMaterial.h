@@ -11,10 +11,8 @@
 
 #include "SoloMaterial.h"
 #include "SoloVulkan.h"
-#include "SoloVulkanDescriptorPool.h"
 #include "SoloVulkanBuffer.h"
 #include "SoloVulkanEffect.h"
-#include "SoloMap.h"
 
 namespace solo
 {
@@ -30,6 +28,17 @@ namespace solo
         class Material final: public solo::Material
         {
         public:
+            struct UniformBufferItem
+            {
+                std::function<void(Buffer&, const Camera*, const Transform*)> write;
+            };
+
+            struct Sampler
+            {
+                u32 binding;
+                sptr<Texture> texture;
+            };
+
             Material(sptr<solo::Effect> effect);
             ~Material();
 
@@ -44,40 +53,19 @@ namespace solo
             
             void bindParameter(const str &name, BindParameterSemantics semantics) override final;
 
-            void applyParameters(Renderer *renderer, const Camera *camera, const Transform *nodeTransform);
+            auto getSamplers() const -> umap<str, Sampler> const& { return samplers; }
+            auto getBufferItems() const -> umap<str, umap<str, UniformBufferItem>> const& { return bufferItems; } // TODO rename
 
-            auto getDescSetLayout(const Camera *camera, const Transform *nodeTransform) const -> VkDescriptorSetLayout; // TODO remove/make better
-            auto getDescSet(const Camera *camera, const Transform *nodeTransform) const -> VkDescriptorSet; // TODO remove/make better
             auto getCullModeFlags() const -> VkCullModeFlags;
             auto getVkPolygonMode() const -> VkPolygonMode;
 
         private:
-            struct UniformBufferItem
-            {
-                std::function<void(Buffer&, const Camera*, const Transform*)> write;
-            };
-
-            struct SamplerInfo
-            {
-                u32 binding;
-                sptr<Texture> texture;
-            };
-
-            struct NodeBinding
-            {
-                umap<str, Buffer> buffers;
-                DescriptorPool descPool;
-                Resource<VkDescriptorSetLayout> descSetLayout;
-                VkDescriptorSet descSet = VK_NULL_HANDLE;
-            };
-
             using ParameterWriteFunc = std::function<void(Buffer&, u32, u32, const Camera*, const Transform*)>;
 
             sptr<Effect> effect;
 
-            umap<const Transform*, umap<const Camera*, NodeBinding>> nodeBindings;
             umap<str, umap<str, UniformBufferItem>> bufferItems;
-            umap<str, SamplerInfo> samplers;
+            umap<str, Sampler> samplers;
 
             void setUniformParameter(const str &name, ParameterWriteFunc write);
         };

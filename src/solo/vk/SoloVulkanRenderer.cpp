@@ -12,6 +12,9 @@
 #include "SoloVulkanMaterial.h"
 #include "SoloVulkanMesh.h"
 #include "SoloVulkanEffect.h"
+#include "SoloVulkanDescriptorSetLayoutBuilder.h"
+#include "SoloVulkanDescriptorSetUpdater.h"
+#include "SoloVulkanTexture.h"
 #include "SoloCamera.h"
 
 using namespace solo;
@@ -243,29 +246,86 @@ void vk::Renderer::recordRenderCommands(VkCommandBuffer buf, RenderPass &renderP
 
             case RenderCommandType::DrawMeshPart:
             {
-                auto material = static_cast<Material*>(cmd.meshPart.material);
+                const auto material = static_cast<Material*>(cmd.meshPart.material);
                 const auto effect = static_cast<Effect*>(material->getEffect());
-                material->applyParameters(this, currentCamera, cmd.meshPart.transform);
-
+                const auto transform = cmd.meshPart.transform;
                 const auto mesh = static_cast<Mesh*>(cmd.meshPart.mesh);
                 const auto vs = effect->getVertexShader();
                 const auto fs = effect->getFragmentShader();
+                const auto &uniformBufs = effect->getUniformBuffers();
+                const auto &effectSamplers = effect->getSamplers();
+                const auto &materialSamplers = material->getSamplers();
+                auto &binding = nodeMaterialBindings[material][transform][currentCamera];
+
+                if (!binding.descSet) // new binding
+                {
+                    auto builder = DescriptorSetLayoutBuilder(device);
+
+                    for (const auto &info: uniformBufs)
+                    {
+                        const auto bufferName = info.first;
+                        binding.buffers[bufferName] = Buffer::createUniformHostVisible(this, info.second.size);
+                        builder.withBinding(info.second.binding, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
+                    }
+
+                    for (auto &pair : effectSamplers)
+                        builder.withBinding(pair.second.binding, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT);
+
+                    binding.descSetLayout = builder.build();
+
+                    auto poolConfig = DescriptorPoolConfig();
+                    poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, uniformBufs.size());
+                    poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, effectSamplers.size());
+
+                    binding.descPool = DescriptorPool(device, 1, poolConfig);
+                    binding.descSet = binding.descPool.allocateSet(binding.descSetLayout);
+
+                    // TODO Invoke updater outside of the binding initialization because at least
+                    // material sampeler parameters may change in future
+
+                    // TODO Invoke updater not so often - only when something really changes
+                    DescriptorSetUpdater updater{device};
+
+                    // TODO Not necessary (?), buffers don't change anyway, only their content
+                    for (auto &pair : binding.buffers)
+                    {
+                        const auto info = uniformBufs.at(pair.first);
+                        auto &buffer = pair.second;
+                        updater.forUniformBuffer(info.binding, binding.descSet, buffer, 0, info.size); // TODO use single large buffer?
+                    }
+
+                    for (auto &pair : materialSamplers)
+                    {
+                        auto &info = pair.second;
+                        updater.forTexture(info.binding, binding.descSet, info.texture->getView(), info.texture->getSampler(),
+                            VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+                    }
+
+                    updater.updateSets();
+                }
+
+                auto &bufferItems = material->getBufferItems();
+                for (auto &p: bufferItems)
+                {
+                    auto &buffer = binding.buffers[p.first];
+                    for (auto &pp: p.second)
+                        pp.second.write(buffer, currentCamera, transform);
+                }
 
                 auto pipelineConfig = PipelineConfig(vs, fs)
-                    .withDescriptorSetLayout(material->getDescSetLayout(currentCamera, cmd.meshPart.transform))
+                    .withDescriptorSetLayout(binding.descSetLayout)
                     .withFrontFace(VK_FRONT_FACE_CLOCKWISE)
                     .withCullMode(material->getCullModeFlags())
                     .withPolygonMode(material->getVkPolygonMode())
                     .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 
-                for (s32 binding = 0; binding < mesh->getVertexBufferCount(); binding++)
-                    pipelineConfig.withVertexBufferLayout(binding, mesh->getVertexBufferLayout(binding));
+                for (s32 i = 0; i < mesh->getVertexBufferCount(); i++)
+                    pipelineConfig.withVertexBufferLayout(i, mesh->getVertexBufferLayout(i));
 
                 pipelines.emplace_back(device, renderPass, pipelineConfig);
 
-                VkDescriptorSet descSet = material->getDescSet(currentCamera, cmd.meshPart.transform);
                 vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipelines.rbegin());
-                vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelines.rbegin()->getLayout(), 0, 1, &descSet, 0, nullptr);
+                vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelines.rbegin()->getLayout(), 0, 1, &binding.descSet, 0, nullptr);
 
                 VkDeviceSize vertexBufferOffset = 0;
                 for (u32 i = 0; i < mesh->getVertexBufferCount(); i++)

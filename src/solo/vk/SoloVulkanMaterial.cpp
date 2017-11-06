@@ -12,8 +12,6 @@
 #include "SoloCamera.h"
 #include "SoloVulkanEffect.h"
 #include "SoloVulkanRenderer.h"
-#include "SoloVulkanDescriptorSetLayoutBuilder.h"
-#include "SoloVulkanDescriptorSetUpdater.h"
 #include "SoloVulkanTexture.h"
 
 using namespace solo;
@@ -109,7 +107,7 @@ void vk::Material::setUniformParameter(const str &name, ParameterWriteFunc write
     auto fieldName = std::get<1>(parsedName);
     SL_PANIC_IF(bufferName.empty() || fieldName.empty(), SL_FMT("Invalid parameter name ", name));
 
-    auto bufferInfo = effect->getUniformBufferInfo(bufferName);
+    auto bufferInfo = effect->getUniformBuffer(bufferName);
     const auto itemInfo = bufferInfo.members.at(fieldName);
 
     auto &item = bufferItems[bufferName][fieldName];
@@ -121,7 +119,7 @@ void vk::Material::setUniformParameter(const str &name, ParameterWriteFunc write
 
 void vk::Material::setTextureParameter(const str &name, sptr<solo::Texture> value)
 {
-    const auto samplerInfo = effect->getSamplerInfo(name);
+    const auto samplerInfo = effect->getSampler(name);
     auto &sampler = samplers[name];
     sampler.binding = samplerInfo.binding;
     sampler.texture = std::dynamic_pointer_cast<Texture>(value);
@@ -135,7 +133,7 @@ void vk::Material::bindParameter(const str &name, BindParameterSemantics semanti
     auto fieldName = std::get<1>(parsedName);
     SL_PANIC_IF(bufferName.empty() || fieldName.empty(), SL_FMT("Invalid parameter name ", name));
 
-    auto bufferInfo = effect->getUniformBufferInfo(bufferName);
+    auto bufferInfo = effect->getUniformBuffer(bufferName);
     auto itemInfo = bufferInfo.members.at(fieldName);
     auto &item = bufferItems[bufferName][fieldName];
 
@@ -261,75 +259,6 @@ void vk::Material::bindParameter(const str &name, BindParameterSemantics semanti
         default:
             SL_PANIC("Unsupported bind parameter semantics");
     }
-}
-
-void vk::Material::applyParameters(Renderer *renderer, const Camera *camera, const Transform *nodeTransform)
-{
-    if (!nodeBindings.count(nodeTransform) || !nodeBindings[nodeTransform].count(camera))
-    {
-        auto &binding = nodeBindings[nodeTransform][camera];
-
-        auto builder = DescriptorSetLayoutBuilder(renderer->getDevice());
-
-        auto effectBuffers = effect->getUniformBuffers();
-        for (const auto &info: effectBuffers)
-        {
-            const auto bufferName = info.first;
-            binding.buffers[bufferName] = Buffer::createUniformHostVisible(renderer, info.second.size);
-            builder.withBinding(info.second.binding, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
-        }
-
-        for (auto &pair : samplers)
-            builder.withBinding(pair.second.binding, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT);
-
-        binding.descSetLayout = builder.build();
-
-        auto poolConfig = DescriptorPoolConfig();
-        poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, effectBuffers.size());
-        poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, samplers.size());
-
-        binding.descPool = DescriptorPool(renderer->getDevice(), 1, poolConfig);
-        binding.descSet = binding.descPool.allocateSet(binding.descSetLayout);
-
-        DescriptorSetUpdater updater{renderer->getDevice()};
-
-        for (auto &pair : binding.buffers)
-        {
-            const auto info = effectBuffers[pair.first];
-            auto &buffer = pair.second;
-            updater.forUniformBuffer(info.binding, binding.descSet, buffer, 0, info.size); // TODO use single large buffer?
-        }
-
-        for (auto &pair : samplers)
-        {
-            auto &info = pair.second;
-            updater.forTexture(info.binding, binding.descSet, info.texture->getView(), info.texture->getSampler(),
-                VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
-        }
-
-        updater.updateSets();
-    }
-
-    // TODO Mark items as dirty on per-object basis
-    auto &binding = nodeBindings[nodeTransform][camera];
-    for (auto &p: bufferItems)
-    {
-        auto &buffer = binding.buffers[p.first];
-        for (auto &pp: p.second)
-            pp.second.write(buffer, camera, nodeTransform);
-    }
-}
-
-auto vk::Material::getDescSetLayout(const Camera *camera, const Transform *nodeTransform) const -> VkDescriptorSetLayout
-{
-    SL_PANIC_IF(!nodeBindings.count(nodeTransform) || !nodeBindings.at(nodeTransform).count(camera), "Node binding not found");
-    return nodeBindings.at(nodeTransform).at(camera).descSetLayout;
-}
-
-auto vk::Material::getDescSet(const Camera *camera, const Transform *nodeTransform) const -> VkDescriptorSet
-{
-    SL_PANIC_IF(!nodeBindings.count(nodeTransform) || !nodeBindings.at(nodeTransform).count(camera), "Node binding not found");
-    return nodeBindings.at(nodeTransform).at(camera).descSet;
 }
 
 #endif

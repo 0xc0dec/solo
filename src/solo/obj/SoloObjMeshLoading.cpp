@@ -11,7 +11,6 @@
 #include "SoloVector3.h"
 #include "SoloStringUtils.h"
 #include "SoloJobPool.h"
-#include "SoloMap.h"
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 

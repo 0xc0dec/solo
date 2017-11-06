@@ -7,7 +7,6 @@
 
 #include "SoloSDLDevice.h"
 #include "SoloDevice.h"
-#include "SoloMap.h"
 
 namespace solo
 {

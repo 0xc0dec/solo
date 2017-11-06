@@ -17,6 +17,8 @@
 #include "SoloVulkanPipeline.h"
 #include "SoloRenderCommand.h"
 #include "SoloVulkan.h"
+#include "SoloVulkanDescriptorPool.h"
+#include "SoloVulkanBuffer.h"
 
 namespace solo
 {
@@ -69,6 +71,17 @@ namespace solo
 
             vec<RenderCommand> renderCommands;
             vec<Pipeline> pipelines;
+
+            struct NodeBinding
+            {
+                umap<str, Buffer> buffers;
+                DescriptorPool descPool;
+                Resource<VkDescriptorSetLayout> descSetLayout;
+                VkDescriptorSet descSet = VK_NULL_HANDLE;
+            };
+
+            // TODO clear this when bindings get no longer used
+            umap<const Material*, umap<const Transform*, umap<const Camera*, NodeBinding>>> nodeMaterialBindings;
 
             void recordRenderCommands(VkCommandBuffer buf, RenderPass &renderPass, VkFramebuffer frameBuffer);
         };

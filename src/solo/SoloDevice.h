@@ -8,7 +8,6 @@
 #include "SoloCommon.h"
 #include "SoloVector2.h"
 #include "SoloDeviceSetup.h"
-#include "SoloMap.h"
 #include <functional>
 
 namespace solo

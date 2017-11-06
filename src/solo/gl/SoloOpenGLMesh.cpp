@@ -10,7 +10,6 @@
 #include "SoloOpenGLMesh.h"
 #include "SoloDevice.h"
 #include "SoloOpenGLEffect.h"
-#include "SoloMap.h"
 #include <algorithm>
 
 using namespace solo;

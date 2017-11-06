@@ -6,7 +6,6 @@
 #pragma once
 
 #include "SoloCommon.h"
-#include "SoloMap.h"
 #include <functional>
 
 namespace solo

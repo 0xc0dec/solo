@@ -11,7 +11,6 @@
 
 #include "SoloMesh.h"
 #include "SoloOpenGL.h"
-#include "SoloMap.h"
 
 namespace solo
 {

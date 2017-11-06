@@ -13,7 +13,6 @@
 #include "SoloOpenGLRenderer.h"
 #include "SoloOpenGLEffect.h"
 #include "SoloOpenGL.h"
-#include "SoloMap.h"
 
 namespace solo
 {
