@@ -11,7 +11,7 @@
 
 #include "SoloEffect.h"
 #include "SoloOpenGL.h"
-#include <unordered_map>
+#include "SoloMap.h"
 
 namespace solo
 {
@@ -43,8 +43,8 @@ namespace solo
 
         private:
             GLuint handle = 0;
-            std::unordered_map<std::string, UniformInfo> uniforms;
-            std::unordered_map<std::string, AttributeInfo> attributes;
+            umap<std::string, UniformInfo> uniforms;
+            umap<std::string, AttributeInfo> attributes;
 
             void introspectUniforms();
             void introspectAttributes();

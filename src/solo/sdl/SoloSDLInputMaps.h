@@ -7,12 +7,13 @@
 
 #include "SoloSDLDevice.h"
 #include "SoloDevice.h"
+#include "SoloMap.h"
 
 namespace solo
 {
     namespace sdl
     {
-        static std::unordered_map<SDL_Keycode, KeyCode> keymap =
+        static umap<SDL_Keycode, KeyCode> keymap =
         {
             {SDLK_0, KeyCode::Digit0},
             {SDLK_1, KeyCode::Digit1},
@@ -74,7 +75,7 @@ namespace solo
             // ...
         };
 
-        static std::unordered_map<Uint8, MouseButton> mouseButtonsMap =
+        static umap<Uint8, MouseButton> mouseButtonsMap =
         {
             {SDL_BUTTON_LEFT, MouseButton::Left},
             {SDL_BUTTON_MIDDLE, MouseButton::Middle},

@@ -8,8 +8,7 @@
 #include "SoloCommon.h"
 #include "SoloVector2.h"
 #include "SoloDeviceSetup.h"
-#include <unordered_map>
-#include <unordered_set>
+#include "SoloMap.h"
 #include <functional>
 
 namespace solo
@@ -124,13 +123,13 @@ namespace solo
         bool vsync;
 
         // key code -> was pressed for the first time
-        std::unordered_map<KeyCode, bool> pressedKeys;
-        std::unordered_set<KeyCode> releasedKeys;
+        umap<KeyCode, bool> pressedKeys;
+        uset<KeyCode> releasedKeys;
 
         int32_t mouseDeltaX = 0;
         int32_t mouseDeltaY = 0;
-        std::unordered_map<MouseButton, bool> pressedMouseButtons;
-        std::unordered_set<MouseButton> releasedMouseButtons;
+        umap<MouseButton, bool> pressedMouseButtons;
+        uset<MouseButton> releasedMouseButtons;
 
         float lastUpdateTime = 0;
         float timeDelta = 0;

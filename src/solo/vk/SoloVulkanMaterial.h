@@ -14,7 +14,7 @@
 #include "SoloVulkanDescriptorPool.h"
 #include "SoloVulkanBuffer.h"
 #include "SoloVulkanEffect.h"
-#include <unordered_map>
+#include "SoloMap.h"
 
 namespace solo
 {
@@ -65,7 +65,7 @@ namespace solo
 
             struct NodeBinding
             {
-                std::unordered_map<std::string, Buffer> buffers;
+                umap<std::string, Buffer> buffers;
                 DescriptorPool descPool;
                 Resource<VkDescriptorSetLayout> descSetLayout;
                 VkDescriptorSet descSet = VK_NULL_HANDLE;
@@ -75,9 +75,9 @@ namespace solo
 
             sptr<Effect> effect;
 
-            std::unordered_map<const Transform*, std::unordered_map<const Camera*, NodeBinding>> nodeBindings;
-            std::unordered_map<std::string, std::unordered_map<std::string, UniformBufferItem>> bufferItems;
-            std::unordered_map<std::string, SamplerInfo> samplers;
+            umap<const Transform*, umap<const Camera*, NodeBinding>> nodeBindings;
+            umap<std::string, umap<std::string, UniformBufferItem>> bufferItems;
+            umap<std::string, SamplerInfo> samplers;
 
             void setUniformParameter(const std::string &name, ParameterWriteFunc write);
         };

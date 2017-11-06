@@ -11,9 +11,9 @@
 #include "SoloVector3.h"
 #include "SoloStringUtils.h"
 #include "SoloJobPool.h"
+#include "SoloMap.h"
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
-#include <unordered_map>
 
 using namespace solo;
 
@@ -67,7 +67,7 @@ static auto loadMeshData(Device *device, const std::string &path) -> sptr<Data>
 
     for (const auto &shape: shapes)
     {
-        std::unordered_map<Vertex, uint16_t> uniqueVertices;
+        umap<Vertex, uint16_t> uniqueVertices;
         std::vector<uint16_t> indexData;
 
         for (const auto &index: shape.mesh.indices)

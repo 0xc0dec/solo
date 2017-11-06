@@ -8,7 +8,7 @@
 #ifdef SL_OPENGL_RENDERER
 
 #include "SoloOpenGLPrefabShaders.h"
-#include <unordered_map>
+#include "SoloMap.h"
 #include <vector>
 
 using namespace solo;
@@ -33,7 +33,7 @@ auto gl::Effect::createFromPrefab(EffectPrefab prefab) -> sptr<Effect>
 
 static auto compileShader(GLuint type, const void *src, uint32_t length) -> GLint
 {
-    static std::unordered_map<GLuint, std::string> typeNames =
+    static umap<GLuint, std::string> typeNames =
     {
         {GL_VERTEX_SHADER, "vertex"},
         {GL_FRAGMENT_SHADER, "fragment"}

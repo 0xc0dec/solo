@@ -11,7 +11,7 @@
 
 #include "SoloEffect.h"
 #include "SoloVulkan.h"
-#include <unordered_map>
+#include "SoloMap.h"
 
 namespace solo
 {
@@ -30,7 +30,7 @@ namespace solo
 
             struct UniformBufferInfo
             {
-                std::unordered_map<std::string, UniformBufferMemberInfo> members;
+                umap<std::string, UniformBufferMemberInfo> members;
                 uint32_t binding;
                 uint32_t size;
             };
@@ -51,15 +51,15 @@ namespace solo
             auto getUniformBufferInfo(const std::string &bufferName) -> UniformBufferInfo;
             auto getSamplerInfo(const std::string &samplerName) -> SamplerInfo;
 
-            auto getUniformBuffers() const -> std::unordered_map<std::string, UniformBufferInfo> const& { return uniformBuffers; }
+            auto getUniformBuffers() const -> umap<std::string, UniformBufferInfo> const& { return uniformBuffers; }
 
         private:
             Renderer *renderer = nullptr;
             Resource<VkShaderModule> vertexShader;
             Resource<VkShaderModule> fragmentShader;
             
-            std::unordered_map<std::string, UniformBufferInfo> uniformBuffers;
-            std::unordered_map<std::string, SamplerInfo> samplers;
+            umap<std::string, UniformBufferInfo> uniformBuffers;
+            umap<std::string, SamplerInfo> samplers;
 
             void introspectShader(const uint32_t *src, uint32_t len);
         };

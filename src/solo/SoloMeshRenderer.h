@@ -8,6 +8,7 @@
 #include "SoloCommon.h"
 #include "SoloComponent.h"
 #include "SoloNode.h"
+#include "SoloMap.h"
 
 namespace solo
 {
@@ -23,37 +24,17 @@ namespace solo
 
         void render() override final;
 
-        auto getMesh() const -> Mesh*;
-        void setMesh(sptr<Mesh> mesh);
+        auto getMesh() const -> Mesh* { return mesh.get(); }
+        void setMesh(sptr<Mesh> mesh) { this->mesh = mesh; }
 
-        auto getMaterial(uint32_t index) const -> Material*;
+        auto getMaterial(uint32_t index) const -> Material* { return materials.at(index).get(); }
         void setMaterial(uint32_t index, sptr<Material> material);
-        auto getMaterialCount() const -> uint32_t;
+        auto getMaterialCount() const -> uint32_t { return static_cast<uint32_t>(materials.size()); }
 
     private:
         sptr<Mesh> mesh;
         Transform *transform = nullptr;
         Renderer *renderer = nullptr;
-        std::unordered_map<uint32_t, sptr<Material>> materials;
+        umap<uint32_t, sptr<Material>> materials;
     };
-
-    inline auto MeshRenderer::getMesh() const -> Mesh *
-    {
-        return mesh.get();
-    }
-
-    inline void MeshRenderer::setMesh(sptr<Mesh> mesh)
-    {
-        this->mesh = mesh;
-    }
-
-    inline auto MeshRenderer::getMaterial(uint32_t index) const -> Material*
-    {
-        return materials.at(index).get();
-    }
-
-    inline auto MeshRenderer::getMaterialCount() const -> uint32_t
-    {
-        return static_cast<uint32_t>(materials.size());
-    }
 }

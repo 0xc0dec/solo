@@ -13,7 +13,7 @@
 #include "SoloOpenGLRenderer.h"
 #include "SoloOpenGLEffect.h"
 #include "SoloOpenGL.h"
-#include <unordered_map>
+#include "SoloMap.h"
 
 namespace solo
 {
@@ -52,7 +52,7 @@ namespace solo
             sptr<gl::Effect> effect = nullptr;
 
             // Maybe not the fastest, but convenient and good enough for now
-            std::unordered_map<std::string, ParameterApplier> appliers;
+            umap<std::string, ParameterApplier> appliers;
 
             void setParameter(const std::string &paramName, std::function<ParameterApplier(GLuint, GLint)> getApplier);
         };

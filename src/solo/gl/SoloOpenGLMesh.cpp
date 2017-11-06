@@ -10,6 +10,7 @@
 #include "SoloOpenGLMesh.h"
 #include "SoloDevice.h"
 #include "SoloOpenGLEffect.h"
+#include "SoloMap.h"
 #include <algorithm>
 
 using namespace solo;
@@ -103,7 +104,7 @@ void gl::Mesh::resetVertexArrayCache()
 
 void gl::Mesh::flushVertexArrayCache()
 {
-    std::unordered_set<gl::Effect*> toRemove;
+    uset<gl::Effect*> toRemove;
     for (auto &entry: vertexArrayCache)
     {
         if (++entry.second.age >= 1000) // TODO more sophisticated way

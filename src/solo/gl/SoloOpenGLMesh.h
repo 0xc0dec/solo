@@ -11,8 +11,7 @@
 
 #include "SoloMesh.h"
 #include "SoloOpenGL.h"
-#include <unordered_set>
-#include <unordered_map>
+#include "SoloMap.h"
 
 namespace solo
 {
@@ -59,7 +58,7 @@ namespace solo
                 uint32_t age;
             };
 
-            std::unordered_map<gl::Effect*, VertexArrayCacheEntry> vertexArrayCache; // TODO clean!
+            umap<gl::Effect*, VertexArrayCacheEntry> vertexArrayCache; // TODO clean!
 
             auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount, bool dynamic) -> uint32_t;
 

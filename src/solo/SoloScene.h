@@ -6,8 +6,7 @@
 #pragma once
 
 #include "SoloCommon.h"
-#include <unordered_map>
-#include <list>
+#include "SoloMap.h"
 #include <functional>
 
 namespace solo
@@ -25,7 +24,7 @@ namespace solo
 
         ~Scene() {}
 
-        auto getDevice() const -> Device*;
+        auto getDevice() const -> Device* { return device; }
 
         auto createNode() -> sptr<Node>;
 
@@ -37,8 +36,8 @@ namespace solo
         void visitByTags(uint32_t tagMask, std::function<void(Component*)> accept);
 
     private:
-        using NodeComponents = std::unordered_map<uint32_t, sptr<Component>>;
-        using NodesWithComponents = std::unordered_map<uint32_t, NodeComponents>;
+        using NodeComponents = umap<uint32_t, sptr<Component>>;
+        using NodesWithComponents = umap<uint32_t, NodeComponents>;
 
         Device *device = nullptr;
         uint32_t nodeCounter = 0;
@@ -46,9 +45,4 @@ namespace solo
 
         explicit Scene(Device *device);
     };
-
-    inline auto Scene::getDevice() const -> Device *
-    {
-        return device;
-    }
 }
