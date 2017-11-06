@@ -33,7 +33,7 @@ auto gl::Effect::createFromPrefab(EffectPrefab prefab) -> sptr<Effect>
 
 static auto compileShader(GLuint type, const void *src, uint32_t length) -> GLint
 {
-    static umap<GLuint, std::string> typeNames =
+    static umap<GLuint, str> typeNames =
     {
         {GL_VERTEX_SHADER, "vertex"},
         {GL_FRAGMENT_SHADER, "fragment"}
@@ -102,7 +102,7 @@ gl::Effect::~Effect()
     glDeleteProgram(handle);
 }
 
-auto gl::Effect::getUniformInfo(const std::string &name) -> UniformInfo
+auto gl::Effect::getUniformInfo(const str &name) -> UniformInfo
 {
     if (uniforms.count(name))
         return uniforms.at(name);
@@ -110,7 +110,7 @@ auto gl::Effect::getUniformInfo(const std::string &name) -> UniformInfo
     return {};
 }
 
-auto gl::Effect::getAttributeInfo(const std::string &name) -> AttributeInfo
+auto gl::Effect::getAttributeInfo(const str &name) -> AttributeInfo
 {
     if (attributes.count(name))
         return attributes.at(name);
@@ -139,12 +139,12 @@ void gl::Effect::introspectUniforms()
         glGetActiveUniform(handle, i, nameMaxLength, nullptr, &size, &type, nameArr.data());
         
         nameArr[nameMaxLength] = '\0';
-        std::string name = nameArr.data();
+        str name = nameArr.data();
 
         // Strip away possible square brackets for array uniforms,
         // they are sometimes present on some platforms
         const auto bracketIndex = name.find('[');
-        if (bracketIndex != std::string::npos)
+        if (bracketIndex != str::npos)
             name.erase(bracketIndex);
 
         uniforms[name].location = glGetUniformLocation(handle, nameArr.data());
@@ -177,7 +177,7 @@ void gl::Effect::introspectAttributes()
         GLenum type;
         glGetActiveAttrib(handle, i, nameMaxLength, nullptr, &size, &type, nameArr.data());
 
-        std::string name = nameArr.data();
+        str name = nameArr.data();
         attributes[name].location = glGetAttribLocation(handle, name.c_str());
     }
 }

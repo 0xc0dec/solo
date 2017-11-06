@@ -5,15 +5,15 @@
 
 #pragma once
 
+#include "SoloCommon.h"
 #include <vector>
-#include <string>
 
 namespace solo
 {
     class VertexAttribute final
     {
     public:
-        std::string name;
+        str name;
         uint32_t elementCount;
         uint32_t size;
         uint32_t location;
@@ -25,7 +25,7 @@ namespace solo
     public:
         // TODO "addPrefabAttribute" with "semantics", which simply translates "position" into 0, "normal" into 1, etc.
         void addAttribute(uint32_t elementCount, uint32_t location);
-        void addNamedAttribute(uint32_t elementCount, const std::string &name);
+        void addNamedAttribute(uint32_t elementCount, const str &name);
 
         auto getAttributeCount() const -> uint32_t { return static_cast<uint32_t>(attrs.size()); }
         auto getAttribute(uint32_t index) const -> VertexAttribute { return attrs.at(index); }
@@ -45,7 +45,7 @@ namespace solo
         this->size += size;
     }
 
-    inline void VertexBufferLayout::addNamedAttribute(uint32_t elementCount, const std::string &name)
+    inline void VertexBufferLayout::addNamedAttribute(uint32_t elementCount, const str &name)
     {
         const auto size = static_cast<uint32_t>(sizeof(float) * elementCount);
         const auto offset = attrs.empty() ? 0 : attrs.crbegin()->offset + attrs.crbegin()->size;

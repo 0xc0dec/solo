@@ -24,9 +24,9 @@ namespace solo
         ScriptRuntime() {}
         virtual ~ScriptRuntime() {}
 
-        virtual void executeFile(const std::string& path) = 0;
+        virtual void executeFile(const str& path) = 0;
 
-        virtual auto readString(const std::string &name) -> std::string = 0;
-        virtual auto readDeviceSetup(const std::string &name) -> DeviceSetup = 0;
+        virtual auto readString(const str &name) -> str = 0;
+        virtual auto readDeviceSetup(const str &name) -> DeviceSetup = 0;
     };
 }

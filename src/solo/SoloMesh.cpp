@@ -50,7 +50,7 @@ auto Mesh::createFromPrefab(Device *device, MeshPrefab prefab) -> sptr<Mesh>
     return mesh;
 }
 
-auto Mesh::loadFromFile(Device *device, const std::string &path) -> sptr<Mesh>
+auto Mesh::loadFromFile(Device *device, const str &path) -> sptr<Mesh>
 {
     if (obj::canLoadMesh(path))
         return obj::loadMesh(device, path);
@@ -58,7 +58,7 @@ auto Mesh::loadFromFile(Device *device, const std::string &path) -> sptr<Mesh>
     return nullptr;
 }
 
-auto Mesh::loadFromFileAsync(Device *device, const std::string &path) -> sptr<AsyncHandle<Mesh>>
+auto Mesh::loadFromFileAsync(Device *device, const str &path) -> sptr<AsyncHandle<Mesh>>
 {
     if (obj::canLoadMesh(path))
         return obj::loadMeshAsync(device, path);

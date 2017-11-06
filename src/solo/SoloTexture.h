@@ -118,8 +118,8 @@ namespace solo
     class Texture2d: public Texture
     {
     public:
-        static auto loadFromFile(Device *device, const std::string &path) -> sptr<Texture2d>;
-        static auto loadFromFileAsync(Device *device, const std::string &path) -> sptr<AsyncHandle<Texture2d>>;
+        static auto loadFromFile(Device *device, const str &path) -> sptr<Texture2d>;
+        static auto loadFromFileAsync(Device *device, const str &path) -> sptr<AsyncHandle<Texture2d>>;
         static auto createFromData(Device *device, Texture2dData *data) -> sptr<Texture2d>;
         static auto createEmpty(Device *device, uint32_t width, uint32_t height, TextureFormat format) -> sptr<Texture2d>;
 
@@ -136,19 +136,19 @@ namespace solo
     {
     public:
         static auto loadFromFaceFiles(Device *device,
-            const std::string &frontPath,
-            const std::string &backPath,
-            const std::string &leftPath,
-            const std::string &rightPath,
-            const std::string &topPath,
-            const std::string &bottomPath) -> sptr<CubeTexture>;
+            const str &frontPath,
+            const str &backPath,
+            const str &leftPath,
+            const str &rightPath,
+            const str &topPath,
+            const str &bottomPath) -> sptr<CubeTexture>;
         static auto loadFromFaceFilesAsync(Device *device,
-            const std::string &frontPath,
-            const std::string &backPath,
-            const std::string &leftPath,
-            const std::string &rightPath,
-            const std::string &topPath,
-            const std::string &bottomPath) -> sptr<AsyncHandle<CubeTexture>>;
+            const str &frontPath,
+            const str &backPath,
+            const str &leftPath,
+            const str &rightPath,
+            const str &topPath,
+            const str &bottomPath) -> sptr<AsyncHandle<CubeTexture>>;
         static auto create(Device *device, CubeTextureData *data) -> sptr<CubeTexture>;
 
         void setWrapping(TextureWrapping wrapping) override final;

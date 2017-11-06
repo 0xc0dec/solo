@@ -87,14 +87,14 @@ namespace solo
 
         virtual ~Material() {}
 
-        virtual void setFloatParameter(const std::string &name, float value) = 0;
-        virtual void setVector2Parameter(const std::string &name, const Vector2 &value) = 0;
-        virtual void setVector3Parameter(const std::string &name, const Vector3 &value) = 0;
-        virtual void setVector4Parameter(const std::string &name, const Vector4 &value) = 0;
-        virtual void setMatrixParameter(const std::string &name, const Matrix &value) = 0;
-        virtual void setTextureParameter(const std::string &name, sptr<Texture> value) = 0;
+        virtual void setFloatParameter(const str &name, float value) = 0;
+        virtual void setVector2Parameter(const str &name, const Vector2 &value) = 0;
+        virtual void setVector3Parameter(const str &name, const Vector3 &value) = 0;
+        virtual void setVector4Parameter(const str &name, const Vector4 &value) = 0;
+        virtual void setMatrixParameter(const str &name, const Matrix &value) = 0;
+        virtual void setTextureParameter(const str &name, sptr<Texture> value) = 0;
 
-        virtual void bindParameter(const std::string &name, BindParameterSemantics semantics) = 0;
+        virtual void bindParameter(const str &name, BindParameterSemantics semantics) = 0;
 
         virtual auto getEffect() const -> Effect* = 0;
 

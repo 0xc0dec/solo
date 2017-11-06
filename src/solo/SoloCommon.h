@@ -6,6 +6,7 @@
 #pragma once
 
 #include "SoloFormatter.h"
+#include <string>
 #include <memory>
 
 #if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS)
@@ -58,6 +59,7 @@ namespace solo
 {
     template <typename T> using sptr = std::shared_ptr<T>;
     template <typename T> using uptr = std::unique_ptr<T>;
+    using str = std::string;
 
     class EngineException: public std::runtime_error
     {
@@ -66,7 +68,7 @@ namespace solo
         {
         }
 
-        explicit EngineException(const std::string &msg): std::runtime_error(msg)
+        explicit EngineException(const str &msg): std::runtime_error(msg)
         {
         }
     };

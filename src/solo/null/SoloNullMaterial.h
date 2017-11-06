@@ -18,14 +18,14 @@ namespace solo
 
             auto getEffect() const -> solo::Effect* override final { return nullptr; }
 
-            void setFloatParameter(const std::string& name, float value) override final {}
-            void setVector2Parameter(const std::string& name, const Vector2& value) override final {}
-            void setVector3Parameter(const std::string& name, const Vector3& value) override final {}
-            void setVector4Parameter(const std::string& name, const Vector4& value) override final {}
-            void setMatrixParameter(const std::string& name, const Matrix& value) override final {}
-            void setTextureParameter(const std::string& name, sptr<Texture> value) override final {}
+            void setFloatParameter(const str& name, float value) override final {}
+            void setVector2Parameter(const str& name, const Vector2& value) override final {}
+            void setVector3Parameter(const str& name, const Vector3& value) override final {}
+            void setVector4Parameter(const str& name, const Vector4& value) override final {}
+            void setMatrixParameter(const str& name, const Matrix& value) override final {}
+            void setTextureParameter(const str& name, sptr<Texture> value) override final {}
 
-            void bindParameter(const std::string &name, BindParameterSemantics semantics) override final {}
+            void bindParameter(const str &name, BindParameterSemantics semantics) override final {}
         };
     }
 }

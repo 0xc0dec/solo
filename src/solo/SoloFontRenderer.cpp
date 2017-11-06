@@ -52,7 +52,7 @@ void FontRenderer::setFont(sptr<Font> newFont)
         mesh = nullptr;
 }
 
-void FontRenderer::setText(const std::string &newText)
+void FontRenderer::setText(const str &newText)
 {
     if (newText == text)
         return;

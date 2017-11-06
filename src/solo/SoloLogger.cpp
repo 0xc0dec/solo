@@ -11,7 +11,7 @@ namespace solo
 {
     struct LoggerImpl
     {
-        void log(const std::string &msg, const std::string &level)
+        void log(const str &msg, const str &level)
         {
             volatile auto lt = lock.acquire();
             auto fullMsg = SL_FMT("[", level, "]	", msg);
@@ -38,7 +38,7 @@ Logger::~Logger()
         impl->file.close();
 }
 
-void Logger::setTargetFile(const std::string &path)
+void Logger::setTargetFile(const str &path)
 {
     if (impl->file.is_open())
         impl->file.close();
@@ -49,27 +49,27 @@ void Logger::setTargetFile(const std::string &path)
     }
 }
 
-void Logger::logDebug(const std::string &msg)
+void Logger::logDebug(const str &msg)
 {
     impl->log(msg, "debug");
 }
 
-void Logger::logInfo(const std::string &msg)
+void Logger::logInfo(const str &msg)
 {
     impl->log(msg, "info");
 }
 
-void Logger::logWarning(const std::string &msg)
+void Logger::logWarning(const str &msg)
 {
     impl->log(msg, "warn");
 }
 
-void Logger::logError(const std::string &msg)
+void Logger::logError(const str &msg)
 {
     impl->log(msg, "error");
 }
 
-void Logger::logCritical(const std::string &msg)
+void Logger::logCritical(const str &msg)
 {
     impl->log(msg, "crit");
 }

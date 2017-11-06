@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <string>
+#include "SoloCommon.h"
 
 namespace solo
 {
@@ -28,7 +28,7 @@ namespace solo
         bool fullScreen = false;
         bool vsync = false;
         
-        std::string windowTitle;
-        std::string logFilePath = "";
+        str windowTitle;
+        str logFilePath = "";
     };
 }

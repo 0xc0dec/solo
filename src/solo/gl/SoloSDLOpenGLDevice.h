@@ -21,7 +21,7 @@ namespace solo
             explicit SDLDevice(const DeviceSetup &setup);
             virtual ~SDLDevice();
 
-            void saveScreenshot(const std::string &path) override final;
+            void saveScreenshot(const str &path) override final;
 
         private:
             SDL_GLContext context = nullptr;

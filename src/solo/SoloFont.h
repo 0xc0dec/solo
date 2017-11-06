@@ -29,7 +29,7 @@ namespace solo
     public:
         SL_DISABLE_COPY_AND_MOVE(Font)
 
-        static auto loadFromFile(Device *device, const std::string &path,
+        static auto loadFromFile(Device *device, const str &path,
             uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight,
             uint32_t firstChar, uint32_t charCount,
             uint32_t oversampleX, uint32_t oversampleY) -> sptr<Font>;

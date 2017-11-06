@@ -133,13 +133,13 @@ void Texture::setFiltering(TextureFiltering filtering)
     rebuildFlags();
 }
 
-auto Texture2d::loadFromFile(Device *device, const std::string &path) -> sptr<Texture2d>
+auto Texture2d::loadFromFile(Device *device, const str &path) -> sptr<Texture2d>
 {
     const auto data = Texture2dData::loadFromFile(device, path);
     return createFromData(device, data.get());
 }
 
-auto Texture2d::loadFromFileAsync(Device *device, const std::string &path) -> sptr<AsyncHandle<Texture2d>>
+auto Texture2d::loadFromFileAsync(Device *device, const str &path) -> sptr<AsyncHandle<Texture2d>>
 {
     auto handle = std::make_shared<AsyncHandle<Texture2d>>();
 
@@ -185,24 +185,24 @@ Texture2d::Texture2d(Texture2dData *data):
 }
 
 auto CubeTexture::loadFromFaceFiles(Device *device,
-    const std::string &frontPath,
-    const std::string &backPath,
-    const std::string &leftPath,
-    const std::string &rightPath,
-    const std::string &topPath,
-    const std::string &bottomPath) -> sptr<CubeTexture>
+    const str &frontPath,
+    const str &backPath,
+    const str &leftPath,
+    const str &rightPath,
+    const str &topPath,
+    const str &bottomPath) -> sptr<CubeTexture>
 {
     auto data = CubeTextureData::loadFromFaceFiles(device, frontPath, backPath, leftPath, rightPath, topPath, bottomPath);
     return create(device, data.get());
 }
 
 auto CubeTexture::loadFromFaceFilesAsync(Device *device,
-    const std::string &frontPath,
-    const std::string &backPath,
-    const std::string &leftPath,
-    const std::string &rightPath,
-    const std::string &topPath,
-    const std::string &bottomPath) -> sptr<AsyncHandle<CubeTexture>>
+    const str &frontPath,
+    const str &backPath,
+    const str &leftPath,
+    const str &rightPath,
+    const str &topPath,
+    const str &bottomPath) -> sptr<AsyncHandle<CubeTexture>>
 {
     auto handle = std::make_shared<AsyncHandle<CubeTexture>>();
 

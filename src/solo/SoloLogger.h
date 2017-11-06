@@ -21,13 +21,13 @@ namespace solo
         explicit Logger(const FriendToken<Device> &);
         ~Logger();
 
-        void setTargetFile(const std::string &path);
+        void setTargetFile(const str &path);
 
-        void logDebug(const std::string &msg);
-        void logInfo(const std::string &msg);
-        void logWarning(const std::string &msg);
-        void logError(const std::string &msg);
-        void logCritical(const std::string &msg);
+        void logDebug(const str &msg);
+        void logInfo(const str &msg);
+        void logWarning(const str &msg);
+        void logError(const str &msg);
+        void logCritical(const str &msg);
 
     private:
         sptr<LoggerImpl> impl; // TODO remove

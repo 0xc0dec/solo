@@ -27,11 +27,11 @@ static auto toImageFormat(int components) -> TextureFormat
     }
 }
 
-bool stb::Texture2dData::canLoadFromFile(const std::string &path)
+bool stb::Texture2dData::canLoadFromFile(const str &path)
 {
-    static std::vector<std::string> supportedFormats = {".bmp", ".jpg", ".jpeg", ".png"};
+    static std::vector<str> supportedFormats = {".bmp", ".jpg", ".jpeg", ".png"};
     return std::find_if(supportedFormats.begin(), supportedFormats.end(),
-        [&](const std::string &ext) { return stringutils::endsWith(path, ext); }) != supportedFormats.end();
+        [&](const str &ext) { return stringutils::endsWith(path, ext); }) != supportedFormats.end();
 }
 
 stb::Texture2dData::~Texture2dData()
@@ -40,7 +40,7 @@ stb::Texture2dData::~Texture2dData()
         stbi_image_free(data);
 }
 
-auto stb::Texture2dData::loadFromFile(Device *device, const std::string &path) -> sptr<Texture2dData>
+auto stb::Texture2dData::loadFromFile(Device *device, const str &path) -> sptr<Texture2dData>
 {
     auto bytes = device->getFileSystem()->readBytes(path);
     int width, height, bpp;
@@ -58,12 +58,12 @@ auto stb::Texture2dData::loadFromFile(Device *device, const std::string &path) -
 }
 
 bool stb::CubeTextureData::canLoadFromFaceFiles(
-    const std::string &frontPath,
-    const std::string &backPath,
-    const std::string &leftPath,
-    const std::string &rightPath,
-    const std::string &topPath,
-    const std::string &bottomPath)
+    const str &frontPath,
+    const str &backPath,
+    const str &leftPath,
+    const str &rightPath,
+    const str &topPath,
+    const str &bottomPath)
 {
     return stb::Texture2dData::canLoadFromFile(frontPath) &&
            stb::Texture2dData::canLoadFromFile(backPath) &&
@@ -74,12 +74,12 @@ bool stb::CubeTextureData::canLoadFromFaceFiles(
 }
 
 auto stb::CubeTextureData::loadFromFaceFiles(Device *device,
-    const std::string &frontPath,
-    const std::string &backPath,
-    const std::string &leftPath,
-    const std::string &rightPath,
-    const std::string &topPath,
-    const std::string &bottomPath) -> sptr<CubeTextureData>
+    const str &frontPath,
+    const str &backPath,
+    const str &leftPath,
+    const str &rightPath,
+    const str &topPath,
+    const str &bottomPath) -> sptr<CubeTextureData>
 {
     auto tex = std::make_shared<stb::CubeTextureData>();
     tex->faces.push_back(stb::Texture2dData::loadFromFile(device, frontPath));

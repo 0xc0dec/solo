@@ -26,7 +26,7 @@ namespace solo
         void render() override final;
 
         void setFont(sptr<Font> font);
-        void setText(const std::string &text);
+        void setText(const str &text);
 
     private:
         Renderer *renderer = nullptr;
@@ -37,7 +37,7 @@ namespace solo
         std::vector<Vector3> vertices;
         std::vector<Vector2> uvs;
         std::vector<uint16_t> indexes;
-        std::string text;
+        str text;
 
         void rebuildMesh();
         void updateMesh();

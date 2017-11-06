@@ -67,7 +67,7 @@ void SDLDevice::endUpdate()
     SDL_GL_SwapWindow(window);
 }
 
-void SDLDevice::saveScreenshot(const std::string &path)
+void SDLDevice::saveScreenshot(const str &path)
 {
     int32_t width, height;
     SDL_GetWindowSize(window, &width, &height);

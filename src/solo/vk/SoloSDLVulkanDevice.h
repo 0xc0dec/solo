@@ -22,7 +22,7 @@ namespace solo
             explicit SDLDevice(const DeviceSetup &setup);
             ~SDLDevice();
 
-            void saveScreenshot(const std::string &path) override final;
+            void saveScreenshot(const str &path) override final;
 
             auto getInstance() const -> VkInstance { return instance; }
             auto getSurface() const -> VkSurfaceKHR { return surface; }

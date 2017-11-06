@@ -17,8 +17,8 @@ namespace solo
         public:
             virtual ~Device();
 
-            auto getWindowTitle() const -> std::string override final;
-            void setWindowTitle(const std::string &title) override final;
+            auto getWindowTitle() const -> str override final;
+            void setWindowTitle(const str &title) override final;
 
             void setCursorCaptured(bool captured) override final;
 

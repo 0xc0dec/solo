@@ -18,8 +18,8 @@ namespace solo
         class Texture2dData final: public solo::Texture2dData
         {
         public:
-            static bool canLoadFromFile(const std::string &path);
-            static auto loadFromFile(Device *device, const std::string &path) -> sptr<Texture2dData>;
+            static bool canLoadFromFile(const str &path);
+            static auto loadFromFile(Device *device, const str &path) -> sptr<Texture2dData>;
 
             Texture2dData() {}
             ~Texture2dData();
@@ -50,19 +50,19 @@ namespace solo
         {
         public:
             static bool canLoadFromFaceFiles(
-                const std::string &frontPath,
-                const std::string &backPath,
-                const std::string &leftPath,
-                const std::string &rightPath,
-                const std::string &topPath,
-                const std::string &bottomPath);
+                const str &frontPath,
+                const str &backPath,
+                const str &leftPath,
+                const str &rightPath,
+                const str &topPath,
+                const str &bottomPath);
             static auto loadFromFaceFiles(Device *device,
-                const std::string &frontPath,
-                const std::string &backPath,
-                const std::string &leftPath,
-                const std::string &rightPath,
-                const std::string &topPath,
-                const std::string &bottomPath) -> sptr<CubeTextureData>;
+                const str &frontPath,
+                const str &backPath,
+                const str &leftPath,
+                const str &rightPath,
+                const str &topPath,
+                const str &bottomPath) -> sptr<CubeTextureData>;
 
             auto getMipLevels() const -> uint32_t override;
 

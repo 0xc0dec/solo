@@ -15,7 +15,7 @@
 
 using namespace solo;
 
-static auto findComponent(Node *node, const std::string &name) -> Component*
+static auto findComponent(Node *node, const str &name) -> Component*
 {
     if (name == "Transform")
         return node->findComponent<Transform>();
@@ -36,7 +36,7 @@ static auto findComponent(Node *node, const std::string &name) -> Component*
     return nullptr;
 }
 
-static auto addComponent(Node *node, const std::string &name, LuaRef arg) -> Component*
+static auto addComponent(Node *node, const str &name, LuaRef arg) -> Component*
 {
     if (name == "Transform")
         return node->addComponent<Transform>();
@@ -57,7 +57,7 @@ static auto addComponent(Node *node, const std::string &name, LuaRef arg) -> Com
     return nullptr;
 }
 
-static void removeComponent(Node *node, const std::string &name)
+static void removeComponent(Node *node, const str &name)
 {
     if (name == "Transform")
         node->removeComponent<Transform>();

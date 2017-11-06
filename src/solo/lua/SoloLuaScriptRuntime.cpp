@@ -23,7 +23,7 @@ void registerMeshApi(CppBindModule<LuaBinding> &module);
 void registerFontApi(CppBindModule<LuaBinding> &module);
 
 template <class T>
-static auto readValue(LuaIntf::LuaState &lua, const std::string &name) -> T
+static auto readValue(LuaIntf::LuaState &lua, const str &name) -> T
 {
     auto ref = LuaRef(lua, name.c_str());
     return ref.toValue<T>();
@@ -88,7 +88,7 @@ lua::ScriptRuntime::~ScriptRuntime()
     lua.close();
 }
 
-void lua::ScriptRuntime::executeFile(const std::string& path)
+void lua::ScriptRuntime::executeFile(const str& path)
 {
     if (lua.loadFile(path.c_str()))
     {
@@ -100,12 +100,12 @@ void lua::ScriptRuntime::executeFile(const std::string& path)
     lua.doFile(path.c_str());
 }
 
-auto lua::ScriptRuntime::readString(const std::string& name) -> std::string
+auto lua::ScriptRuntime::readString(const str& name) -> str
 {
-    return readValue<std::string>(lua, name);
+    return readValue<str>(lua, name);
 }
 
-auto lua::ScriptRuntime::readDeviceSetup(const std::string &name) -> DeviceSetup
+auto lua::ScriptRuntime::readDeviceSetup(const str &name) -> DeviceSetup
 {
     return readValue<DeviceSetup>(lua, name);
 }

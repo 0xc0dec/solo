@@ -16,26 +16,26 @@ namespace solo
         public:
             explicit Device(const DeviceSetup &setup) : solo::Device(setup) {}
 
-            void setWindowTitle(const std::string &title) override final;
-            auto getWindowTitle() const -> std::string override final;
-            void saveScreenshot(const std::string &path) override final {}
+            void setWindowTitle(const str &title) override final;
+            auto getWindowTitle() const -> str override final;
+            void saveScreenshot(const str &path) override final {}
             void setCursorCaptured(bool captured) override final {}
             auto getCanvasSize() const -> Vector2 override final;
             auto getLifetime() const -> float override final;
 
         private:
-            std::string windowTitle;
+            str windowTitle;
 
             void beginUpdate() override final {}
             void endUpdate() override final {}
         };
 
-        inline void Device::setWindowTitle(const std::string &title)
+        inline void Device::setWindowTitle(const str &title)
         {
             windowTitle = title;
         }
 
-        inline auto Device::getWindowTitle() const -> std::string
+        inline auto Device::getWindowTitle() const -> str
         {
             return windowTitle;
         }

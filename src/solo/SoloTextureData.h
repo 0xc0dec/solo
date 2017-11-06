@@ -17,7 +17,7 @@ namespace solo
     class Texture2dData
     {
     public:
-        static auto loadFromFile(Device *device, const std::string &path) -> sptr<Texture2dData>;
+        static auto loadFromFile(Device *device, const str &path) -> sptr<Texture2dData>;
         static auto createFromMemory(uint32_t width, uint32_t height, TextureFormat format, const std::vector<uint8_t> &data) -> sptr<Texture2dData>;
 
         SL_DISABLE_COPY_AND_MOVE(Texture2dData)
@@ -45,12 +45,12 @@ namespace solo
     {
     public:
         static auto loadFromFaceFiles(Device *device,
-            const std::string &frontPath,
-            const std::string &backPath,
-            const std::string &leftPath,
-            const std::string &rightPath,
-            const std::string &topPath,
-            const std::string &bottomPath) -> sptr<CubeTextureData>;
+            const str &frontPath,
+            const str &backPath,
+            const str &leftPath,
+            const str &rightPath,
+            const str &topPath,
+            const str &bottomPath) -> sptr<CubeTextureData>;
 
         SL_DISABLE_COPY_AND_MOVE(CubeTextureData)
         virtual ~CubeTextureData() {}

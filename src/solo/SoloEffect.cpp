@@ -29,7 +29,7 @@ static auto create(Device *device, const void *vsSrc, uint32_t vsSrcLen, const v
     }
 }
 
-auto Effect::loadFromFiles(Device *device, const std::string &vsPath, const std::string &fsPath) -> sptr<Effect>
+auto Effect::loadFromFiles(Device *device, const str &vsPath, const str &fsPath) -> sptr<Effect>
 {
     auto vsBytes = device->getFileSystem()->readBytes(vsPath);
     auto fsBytes = device->getFileSystem()->readBytes(fsPath);

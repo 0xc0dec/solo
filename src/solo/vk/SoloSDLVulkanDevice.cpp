@@ -93,7 +93,7 @@ SDLDevice::~SDLDevice()
     cleanupSubsystems();
 }
 
-void SDLDevice::saveScreenshot(const std::string &path)
+void SDLDevice::saveScreenshot(const str &path)
 {
 }
 

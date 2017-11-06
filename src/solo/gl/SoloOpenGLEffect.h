@@ -38,13 +38,13 @@ namespace solo
 
             auto getHandle() const -> GLuint { return handle; }
 
-            auto getUniformInfo(const std::string &name) -> UniformInfo;
-            auto getAttributeInfo(const std::string &name) -> AttributeInfo;
+            auto getUniformInfo(const str &name) -> UniformInfo;
+            auto getAttributeInfo(const str &name) -> AttributeInfo;
 
         private:
             GLuint handle = 0;
-            umap<std::string, UniformInfo> uniforms;
-            umap<std::string, AttributeInfo> attributes;
+            umap<str, UniformInfo> uniforms;
+            umap<str, AttributeInfo> attributes;
 
             void introspectUniforms();
             void introspectAttributes();

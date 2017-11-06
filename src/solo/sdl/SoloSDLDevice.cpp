@@ -19,12 +19,12 @@ sdl::Device::~Device()
     SDL_Quit();
 }
 
-auto sdl::Device::getWindowTitle() const -> std::string
+auto sdl::Device::getWindowTitle() const -> str
 {
-    return std::string(SDL_GetWindowTitle(window));
+    return str(SDL_GetWindowTitle(window));
 }
 
-void sdl::Device::setWindowTitle(const std::string &title)
+void sdl::Device::setWindowTitle(const str &title)
 {
     SDL_SetWindowTitle(window, title.c_str());
 }

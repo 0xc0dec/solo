@@ -30,7 +30,7 @@ namespace solo
 
             struct UniformBufferInfo
             {
-                umap<std::string, UniformBufferMemberInfo> members;
+                umap<str, UniformBufferMemberInfo> members;
                 uint32_t binding;
                 uint32_t size;
             };
@@ -48,18 +48,18 @@ namespace solo
             auto getVertexShader() const -> VkShaderModule { return vertexShader; }
             auto getFragmentShader() const -> VkShaderModule { return fragmentShader; }
 
-            auto getUniformBufferInfo(const std::string &bufferName) -> UniformBufferInfo;
-            auto getSamplerInfo(const std::string &samplerName) -> SamplerInfo;
+            auto getUniformBufferInfo(const str &bufferName) -> UniformBufferInfo;
+            auto getSamplerInfo(const str &samplerName) -> SamplerInfo;
 
-            auto getUniformBuffers() const -> umap<std::string, UniformBufferInfo> const& { return uniformBuffers; }
+            auto getUniformBuffers() const -> umap<str, UniformBufferInfo> const& { return uniformBuffers; }
 
         private:
             Renderer *renderer = nullptr;
             Resource<VkShaderModule> vertexShader;
             Resource<VkShaderModule> fragmentShader;
             
-            umap<std::string, UniformBufferInfo> uniformBuffers;
-            umap<std::string, SamplerInfo> samplers;
+            umap<str, UniformBufferInfo> uniformBuffers;
+            umap<str, SamplerInfo> samplers;
 
             void introspectShader(const uint32_t *src, uint32_t len);
         };

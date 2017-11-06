@@ -19,10 +19,10 @@ namespace solo
             explicit ScriptRuntime(Device *device);
             ~ScriptRuntime();
 
-            void executeFile(const std::string& path) override final;
+            void executeFile(const str& path) override final;
 
-            auto readString(const std::string &name) -> std::string override final;
-            auto readDeviceSetup(const std::string &name) -> DeviceSetup override final;
+            auto readString(const str &name) -> str override final;
+            auto readDeviceSetup(const str &name) -> DeviceSetup override final;
 
         private:
             LuaIntf::LuaState lua;

@@ -22,15 +22,15 @@ namespace solo
 
         virtual ~FileSystem() {}
 
-        virtual auto getStream(const std::string &path) -> sptr<std::istream>;
+        virtual auto getStream(const str &path) -> sptr<std::istream>;
 
-        virtual auto readBytes(const std::string &path) -> std::vector<uint8_t>;
-        virtual void writeBytes(const std::string &path, const std::vector<uint8_t> &data);
+        virtual auto readBytes(const str &path) -> std::vector<uint8_t>;
+        virtual void writeBytes(const str &path, const std::vector<uint8_t> &data);
 
-        virtual auto readText(const std::string &path) -> std::string;
-        virtual auto readLines(const std::string &path) -> std::vector<std::string>;
-        virtual void iterateLines(const std::string &path, std::function<bool(const std::string &)> process);
-        virtual void writeLines(const std::string &path, const std::vector<std::string> &lines);
+        virtual auto readText(const str &path) -> str;
+        virtual auto readLines(const str &path) -> std::vector<str>;
+        virtual void iterateLines(const str &path, std::function<bool(const str &)> process);
+        virtual void writeLines(const str &path, const std::vector<str> &lines);
 
     protected:
         FileSystem() {}

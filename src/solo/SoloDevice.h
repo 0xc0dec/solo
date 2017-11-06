@@ -76,12 +76,12 @@ namespace solo
 
         virtual ~Device() {}
 
-        virtual auto getWindowTitle() const -> std::string = 0;
-        virtual void setWindowTitle(const std::string &title) = 0;
+        virtual auto getWindowTitle() const -> str = 0;
+        virtual void setWindowTitle(const str &title) = 0;
 
         virtual auto getCanvasSize() const -> Vector2 = 0;
 
-        virtual void saveScreenshot(const std::string &path) = 0; // TODO return bytes?
+        virtual void saveScreenshot(const str &path) = 0; // TODO return bytes?
 
         virtual void setCursorCaptured(bool captured) = 0;
 

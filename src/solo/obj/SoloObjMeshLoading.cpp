@@ -47,19 +47,19 @@ struct Data
     std::vector<std::vector<uint16_t>> parts;
 };
 
-bool obj::canLoadMesh(const std::string &path)
+bool obj::canLoadMesh(const str &path)
 {
     return stringutils::endsWith(path, ".obj");
 }
 
-static auto loadMeshData(Device *device, const std::string &path) -> sptr<Data>
+static auto loadMeshData(Device *device, const str &path) -> sptr<Data>
 {
     auto file = device->getFileSystem()->getStream(path);
 
     tinyobj::attrib_t attrib;
     std::vector<tinyobj::shape_t> shapes;
     std::vector<tinyobj::material_t> materials;
-    std::string err;
+    str err;
     SL_PANIC_IF(!tinyobj::LoadObj(&attrib, &shapes, &materials, &err, file.get()), err);
     
     std::vector<float> vertexData;
@@ -122,7 +122,7 @@ static auto loadMeshData(Device *device, const std::string &path) -> sptr<Data>
     return std::make_shared<Data>(Data{std::move(vertexData), std::move(parts)});
 }
 
-auto obj::loadMesh(Device *device, const std::string &path) -> sptr<Mesh>
+auto obj::loadMesh(Device *device, const str &path) -> sptr<Mesh>
 {
     auto file = device->getFileSystem()->getStream(path);
     auto data = loadMeshData(device, path);
@@ -142,7 +142,7 @@ auto obj::loadMesh(Device *device, const std::string &path) -> sptr<Mesh>
 }
 
 // TODO Refactor
-auto obj::loadMeshAsync(Device *device, const std::string &path) -> sptr<AsyncHandle<Mesh>>
+auto obj::loadMeshAsync(Device *device, const str &path) -> sptr<AsyncHandle<Mesh>>
 {
     auto handle = std::make_shared<AsyncHandle<Mesh>>();
 

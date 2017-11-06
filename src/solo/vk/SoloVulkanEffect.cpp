@@ -37,7 +37,7 @@ vk::Effect::~Effect()
 {
 }
 
-auto vk::Effect::getUniformBufferInfo(const std::string &bufferName) -> UniformBufferInfo
+auto vk::Effect::getUniformBufferInfo(const str &bufferName) -> UniformBufferInfo
 {
     if (uniformBuffers.count(bufferName))
         return uniformBuffers.at(bufferName);
@@ -45,7 +45,7 @@ auto vk::Effect::getUniformBufferInfo(const std::string &bufferName) -> UniformB
     return UniformBufferInfo{};
 }
 
-auto vk::Effect::getSamplerInfo(const std::string &samplerName) -> SamplerInfo
+auto vk::Effect::getSamplerInfo(const str &samplerName) -> SamplerInfo
 {
     if (samplers.count(samplerName))
         return samplers.at(samplerName);

@@ -18,11 +18,11 @@
 
 using namespace solo;
 
-static auto parseName(const std::string &name) -> std::tuple<std::string, std::string>
+static auto parseName(const str &name) -> std::tuple<str, str>
 {
     const auto idx = name.find(".");
-    const auto first = (idx != std::string::npos) ? name.substr(0, idx) : name;
-    const auto second = (idx != std::string::npos) ? name.substr(idx + 1) : "";
+    const auto first = (idx != str::npos) ? name.substr(0, idx) : name;
+    const auto second = (idx != str::npos) ? name.substr(idx + 1) : "";
     return make_tuple(first, second);
 }
 
@@ -61,7 +61,7 @@ auto vk::Material::getVkPolygonMode() const -> VkPolygonMode
     }
 }
 
-void vk::Material::setFloatParameter(const std::string &name, float value)
+void vk::Material::setFloatParameter(const str &name, float value)
 {
     setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
     {
@@ -69,7 +69,7 @@ void vk::Material::setFloatParameter(const std::string &name, float value)
     });
 }
 
-void vk::Material::setVector2Parameter(const std::string &name, const Vector2 &value)
+void vk::Material::setVector2Parameter(const str &name, const Vector2 &value)
 {
     setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
     {
@@ -77,7 +77,7 @@ void vk::Material::setVector2Parameter(const std::string &name, const Vector2 &v
     });
 }
 
-void vk::Material::setVector3Parameter(const std::string &name, const Vector3 &value)
+void vk::Material::setVector3Parameter(const str &name, const Vector3 &value)
 {
     setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
     {
@@ -85,7 +85,7 @@ void vk::Material::setVector3Parameter(const std::string &name, const Vector3 &v
     });
 }
 
-void vk::Material::setVector4Parameter(const std::string &name, const Vector4 &value)
+void vk::Material::setVector4Parameter(const str &name, const Vector4 &value)
 {
     setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
     {
@@ -93,7 +93,7 @@ void vk::Material::setVector4Parameter(const std::string &name, const Vector4 &v
     });
 }
 
-void vk::Material::setMatrixParameter(const std::string &name, const Matrix &value)
+void vk::Material::setMatrixParameter(const str &name, const Matrix &value)
 {
     // TODO avoid copy-paste
     setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
@@ -102,7 +102,7 @@ void vk::Material::setMatrixParameter(const std::string &name, const Matrix &val
     });
 }
 
-void vk::Material::setUniformParameter(const std::string &name, ParameterWriteFunc write)
+void vk::Material::setUniformParameter(const str &name, ParameterWriteFunc write)
 {
     auto parsedName = parseName(name);
     auto bufferName = std::get<0>(parsedName);
@@ -119,7 +119,7 @@ void vk::Material::setUniformParameter(const std::string &name, ParameterWriteFu
     };
 }
 
-void vk::Material::setTextureParameter(const std::string &name, sptr<solo::Texture> value)
+void vk::Material::setTextureParameter(const str &name, sptr<solo::Texture> value)
 {
     const auto samplerInfo = effect->getSamplerInfo(name);
     auto &sampler = samplers[name];
@@ -128,7 +128,7 @@ void vk::Material::setTextureParameter(const std::string &name, sptr<solo::Textu
     // TODO Optimize and mark only this sampler as dirty
 }
 
-void vk::Material::bindParameter(const std::string &name, BindParameterSemantics semantics)
+void vk::Material::bindParameter(const str &name, BindParameterSemantics semantics)
 {
     auto parsedName = parseName(name);
     auto bufferName = std::get<0>(parsedName);

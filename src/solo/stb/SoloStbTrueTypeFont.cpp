@@ -70,12 +70,12 @@ auto stb::TrueTypeFont::getGlyphInfo(uint32_t character, float offsetX, float of
     return result; // TODO move
 }
 
-bool stb::TrueTypeFont::canLoadFromFile(const std::string &path)
+bool stb::TrueTypeFont::canLoadFromFile(const str &path)
 {
     return stringutils::endsWith(path, ".ttf");
 }
 
-auto stb::TrueTypeFont::loadFromFile(Device *device, const std::string &path,
+auto stb::TrueTypeFont::loadFromFile(Device *device, const str &path,
     uint32_t size, uint32_t atlasWidth,
     uint32_t atlasHeight, uint32_t firstChar, uint32_t charCount, uint32_t oversampleX,
     uint32_t oversampleY) -> sptr<TrueTypeFont>
