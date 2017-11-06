@@ -24,7 +24,7 @@ gl::FrameBuffer::~FrameBuffer()
     glDeleteFramebuffers(1, &handle);
 }
 
-static void validateNewAttachments(const std::vector<sptr<solo::Texture2d>> &attachments)
+static void validateNewAttachments(const vec<sptr<solo::Texture2d>> &attachments)
 {
     SL_PANIC_IF(attachments.size() > GL_MAX_COLOR_ATTACHMENTS, "Too many attachments");
 
@@ -42,11 +42,11 @@ static void validateNewAttachments(const std::vector<sptr<solo::Texture2d>> &att
     }
 }
 
-void gl::FrameBuffer::setAttachments(const std::vector<sptr<solo::Texture2d>> &attachments)
+void gl::FrameBuffer::setAttachments(const vec<sptr<solo::Texture2d>> &attachments)
 {
     SL_PANIC_BLOCK(validateNewAttachments(attachments));
 
-    std::vector<Texture2d*> newAttachments;
+    vec<Texture2d*> newAttachments;
     for (const auto &tex : attachments)
         newAttachments.push_back(dynamic_cast<Texture2d*>(tex.get()));
 

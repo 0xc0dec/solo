@@ -28,12 +28,12 @@ namespace solo
 
             auto getHandle() const -> GLuint { return handle; }
 
-            void setAttachments(const std::vector<sptr<solo::Texture2d>> &attachments) override final;
+            void setAttachments(const vec<sptr<solo::Texture2d>> &attachments) override final;
 
         private:
             GLuint handle = 0;
             GLuint depthBufferHandle = 0;
-            uint32_t attachmentCount = 0;
+            u32 attachmentCount = 0;
         };
     }
 }

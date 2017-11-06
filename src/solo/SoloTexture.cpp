@@ -144,7 +144,7 @@ auto Texture2d::loadFromFileAsync(Device *device, const str &path) -> sptr<Async
     auto handle = std::make_shared<AsyncHandle<Texture2d>>();
 
     auto producers = JobBase<Texture2dData>::Producers{[=]() { return Texture2dData::loadFromFile(device, path); }};
-    auto consumer = [handle, device](const std::vector<sptr<Texture2dData>> &results)
+    auto consumer = [handle, device](const vec<sptr<Texture2dData>> &results)
     {
         auto texture = createFromData(device, results[0].get());
         handle->finish(texture);
@@ -155,9 +155,9 @@ auto Texture2d::loadFromFileAsync(Device *device, const str &path) -> sptr<Async
     return handle;
 }
 
-auto Texture2d::createEmpty(Device *device, uint32_t width, uint32_t height, TextureFormat format) -> sptr<Texture2d>
+auto Texture2d::createEmpty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<Texture2d>
 {
-    const auto data = Texture2dData::createFromMemory(width, height, format, std::vector<uint8_t>{});
+    const auto data = Texture2dData::createFromMemory(width, height, format, vec<u8>{});
     return createFromData(device, data.get());
 }
 
@@ -214,7 +214,7 @@ auto CubeTexture::loadFromFaceFilesAsync(Device *device,
             leftPath, rightPath,
             topPath, bottomPath);
     }};
-    auto consumer = [handle, device](const std::vector<sptr<CubeTextureData>> &results)
+    auto consumer = [handle, device](const vec<sptr<CubeTextureData>> &results)
     {
         auto texture = create(device, results[0].get());
         handle->finish(texture);

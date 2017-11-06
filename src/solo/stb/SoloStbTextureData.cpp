@@ -7,7 +7,6 @@
 #include "SoloStringUtils.h"
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
-#include <vector>
 #include <algorithm>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -29,7 +28,7 @@ static auto toImageFormat(int components) -> TextureFormat
 
 bool stb::Texture2dData::canLoadFromFile(const str &path)
 {
-    static std::vector<str> supportedFormats = {".bmp", ".jpg", ".jpeg", ".png"};
+    static vec<str> supportedFormats = {".bmp", ".jpg", ".jpeg", ".png"};
     return std::find_if(supportedFormats.begin(), supportedFormats.end(),
         [&](const str &ext) { return stringutils::endsWith(path, ext); }) != supportedFormats.end();
 }
@@ -101,12 +100,12 @@ auto stb::CubeTextureData::loadFromFaceFiles(Device *device,
     return tex;
 }
 
-auto stb::CubeTextureData::getMipLevels() const -> uint32_t
+auto stb::CubeTextureData::getMipLevels() const -> u32
 {
     return 1;
 }
 
-auto stb::CubeTextureData::getSize() const -> uint32_t
+auto stb::CubeTextureData::getSize() const -> u32
 {
     return faces[0]->getSize() + 
            faces[1]->getSize() + 
@@ -116,7 +115,7 @@ auto stb::CubeTextureData::getSize() const -> uint32_t
            faces[5]->getSize();
 }
 
-auto stb::CubeTextureData::getSize(uint32_t mipLevel) const -> uint32_t
+auto stb::CubeTextureData::getSize(u32 mipLevel) const -> u32
 {
     return faces[0]->getSize(mipLevel) + 
            faces[1]->getSize(mipLevel) + 
@@ -126,17 +125,17 @@ auto stb::CubeTextureData::getSize(uint32_t mipLevel) const -> uint32_t
            faces[5]->getSize(mipLevel);
 }
 
-auto stb::CubeTextureData::getSize(uint32_t face, uint32_t mipLevel) const -> uint32_t
+auto stb::CubeTextureData::getSize(u32 face, u32 mipLevel) const -> u32
 {
     return faces[face]->getSize(mipLevel);
 }
 
-auto stb::CubeTextureData::getDimension() const -> uint32_t
+auto stb::CubeTextureData::getDimension() const -> u32
 {
     return faces[0]->getWidth();
 }
 
-auto stb::CubeTextureData::getDimension(unsigned mipLevel) const -> uint32_t
+auto stb::CubeTextureData::getDimension(unsigned mipLevel) const -> u32
 {
     return faces[0]->getWidth(mipLevel);
 }
@@ -147,7 +146,7 @@ auto stb::CubeTextureData::getData() const -> const void*
     return nullptr;
 }
 
-auto stb::CubeTextureData::getData(uint32_t face) const -> const void*
+auto stb::CubeTextureData::getData(u32 face) const -> const void*
 {
     return faces[face]->getData();
 }

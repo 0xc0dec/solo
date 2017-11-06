@@ -8,7 +8,7 @@
 
 using namespace solo;
 
-Node::Node(Scene *scene, uint32_t nodeId):
+Node::Node(Scene *scene, u32 nodeId):
     scene(scene), id(nodeId)
 {
 }

@@ -10,7 +10,7 @@
 using namespace solo;
 using namespace vk;
 
-DescriptorPool::DescriptorPool(VkDevice device, uint32_t maxSetCount, const DescriptorPoolConfig &config):
+DescriptorPool::DescriptorPool(VkDevice device, u32 maxSetCount, const DescriptorPoolConfig &config):
     device(device)
 {
     VkDescriptorPoolCreateInfo poolInfo{};
@@ -39,7 +39,7 @@ auto DescriptorPool::allocateSet(VkDescriptorSetLayout layout) const -> VkDescri
     return set;
 }
 
-auto DescriptorPoolConfig::forDescriptors(VkDescriptorType descriptorType, uint32_t descriptorCount) -> DescriptorPoolConfig&
+auto DescriptorPoolConfig::forDescriptors(VkDescriptorType descriptorType, u32 descriptorCount) -> DescriptorPoolConfig&
 {
     VkDescriptorPoolSize poolSize{};
     poolSize.type = descriptorType;

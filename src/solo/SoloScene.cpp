@@ -28,7 +28,7 @@ auto Scene::createNode() -> sptr<Node>
     return node;
 }
 
-void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
+void Scene::addComponent(u32 nodeId, sptr<Component> cmp)
 {
     auto typeId = cmp->getTypeId();
 
@@ -49,7 +49,7 @@ void Scene::addComponent(uint32_t nodeId, sptr<Component> cmp)
         a.second->onComponentAdded(cmp.get());
 }
 
-void Scene::removeComponent(uint32_t nodeId, uint32_t typeId)
+void Scene::removeComponent(u32 nodeId, u32 typeId)
 {
     SL_PANIC_IF(typeId == Transform::getId(), "Transform component cannot be removed from a node"); // to simplify things
 
@@ -83,7 +83,7 @@ void Scene::visit(std::function<void(Component*)> accept)
     return visitByTags(~0, accept);
 }
 
-void Scene::visitByTags(uint32_t tagMask, std::function<void(Component*)> accept)
+void Scene::visitByTags(u32 tagMask, std::function<void(Component*)> accept)
 {
     auto copy = nodes;
     for (const auto &node: copy)
@@ -96,7 +96,7 @@ void Scene::visitByTags(uint32_t tagMask, std::function<void(Component*)> accept
     }
 }
 
-auto Scene::findComponent(uint32_t nodeId, uint32_t typeId) const -> Component *
+auto Scene::findComponent(u32 nodeId, u32 typeId) const -> Component *
 {
     auto node = nodes.find(nodeId);
     if (node == nodes.end())

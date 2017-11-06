@@ -13,19 +13,19 @@ namespace solo
     class Node final
     {
     public:
-        Node(Scene *scene, uint32_t nodeId);
+        Node(Scene *scene, u32 nodeId);
 
-        auto getId() const -> uint32_t;
+        auto getId() const -> u32;
         auto getScene() const -> Scene*;
 
         template <typename T>
-        static auto findComponent(Scene *scene, uint32_t nodeId) -> T*;
+        static auto findComponent(Scene *scene, u32 nodeId) -> T*;
 
         template <typename T, typename... Args>
-        static auto addComponent(Scene *scene, uint32_t nodeId, Args &&... args) -> T*;
+        static auto addComponent(Scene *scene, u32 nodeId, Args &&... args) -> T*;
 
         template <typename T>
-        static void removeComponent(Scene *scene, uint32_t nodeId);
+        static void removeComponent(Scene *scene, u32 nodeId);
 
         template <typename T>
         auto findComponent() const -> T*;
@@ -38,7 +38,7 @@ namespace solo
 
     private:
         Scene *scene = nullptr;
-        uint32_t id;
+        u32 id;
     };
 
     // Helper needed for making addComponent work with any kind of default components
@@ -47,7 +47,7 @@ namespace solo
     struct NodeHelper
     {
         template <class... Args>
-        static auto addComponent(Scene *scene, uint32_t nodeId, Args &&... args) -> T *
+        static auto addComponent(Scene *scene, u32 nodeId, Args &&... args) -> T *
         {
             auto cmp = std::make_shared<T>(Node(scene, nodeId), std::forward<Args>(args)...);
             auto base = std::static_pointer_cast<Component>(cmp);
@@ -56,7 +56,7 @@ namespace solo
         }
     };
 
-    inline auto Node::getId() const -> uint32_t
+    inline auto Node::getId() const -> u32
     {
         return id;
     }
@@ -67,7 +67,7 @@ namespace solo
     }
 
     template <typename T, typename... Args>
-    auto Node::addComponent(Scene *scene, uint32_t nodeId, Args &&... args) -> T *
+    auto Node::addComponent(Scene *scene, u32 nodeId, Args &&... args) -> T *
     {
         return NodeHelper<T>::addComponent(scene, nodeId, std::forward<Args>(args)...);
     }
@@ -79,7 +79,7 @@ namespace solo
     }
 
     template <typename T>
-    auto Node::findComponent(Scene *scene, uint32_t nodeId) -> T *
+    auto Node::findComponent(Scene *scene, u32 nodeId) -> T *
     {
         auto typeId = T::getId();
         auto cmp = scene->findComponent(nodeId, typeId);
@@ -93,7 +93,7 @@ namespace solo
     }
 
     template <typename T>
-    void Node::removeComponent(Scene *scene, uint32_t nodeId)
+    void Node::removeComponent(Scene *scene, u32 nodeId)
     {
         scene->removeComponent(nodeId, T::getId());
     }

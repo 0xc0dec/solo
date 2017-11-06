@@ -9,10 +9,10 @@
 
 using namespace solo;
 
-static const uint32_t DirtyFlagLocal = 1 << 0;
-static const uint32_t DirtyFlagWorld = 1 << 1;
-static const uint32_t DirtyFlagInvTransposedWorld = 1 << 2;
-static const uint32_t DirtyFlagAll = DirtyFlagLocal | DirtyFlagWorld | DirtyFlagInvTransposedWorld;
+static const u32 DirtyFlagLocal = 1 << 0;
+static const u32 DirtyFlagWorld = 1 << 1;
+static const u32 DirtyFlagInvTransposedWorld = 1 << 2;
+static const u32 DirtyFlagAll = DirtyFlagLocal | DirtyFlagWorld | DirtyFlagInvTransposedWorld;
 
 Transform::Transform(const Node &node):
     ComponentBase(node)
@@ -217,7 +217,7 @@ void Transform::setLocalPosition(const Vector3 &position)
     setDirtyWithChildren(DirtyFlagAll);
 }
 
-void Transform::setDirtyWithChildren(uint32_t flags) const
+void Transform::setDirtyWithChildren(u32 flags) const
 {
     dirtyFlags |= flags;
     notifyChanged();
@@ -225,7 +225,7 @@ void Transform::setDirtyWithChildren(uint32_t flags) const
         child->setDirtyWithChildren(flags);
 }
 
-void Transform::setChildrenDirty(uint32_t flags) const
+void Transform::setChildrenDirty(u32 flags) const
 {
     for (auto child : children)
         child->setDirtyWithChildren(flags);

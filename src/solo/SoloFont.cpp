@@ -9,9 +9,9 @@
 using namespace solo;
 
 auto Font::loadFromFile(Device *device, const str &path,
-    uint32_t size, uint32_t atlasWidth,
-    uint32_t atlasHeight, uint32_t firstChar, uint32_t charCount,
-    uint32_t oversampleX, uint32_t oversampleY) -> sptr<Font>
+    u32 size, u32 atlasWidth,
+    u32 atlasHeight, u32 firstChar, u32 charCount,
+    u32 oversampleX, u32 oversampleY) -> sptr<Font>
 {
     if (stb::TrueTypeFont::canLoadFromFile(path))
         return stb::TrueTypeFont::loadFromFile(device, path, size, atlasWidth, atlasHeight, firstChar, charCount, oversampleX, oversampleY);

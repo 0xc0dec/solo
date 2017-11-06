@@ -18,7 +18,7 @@ using namespace vk;
 SDLDevice::SDLDevice(const DeviceSetup &setup):
     Device(setup)
 {
-    auto flags = static_cast<uint32_t>(SDL_WINDOW_ALLOW_HIGHDPI);
+    auto flags = static_cast<u32>(SDL_WINDOW_ALLOW_HIGHDPI);
     if (setup.fullScreen)
         flags |= SDL_WINDOW_FULLSCREEN;
 
@@ -32,7 +32,7 @@ SDLDevice::SDLDevice(const DeviceSetup &setup):
     appInfo.pEngineName = "";
     appInfo.apiVersion = VK_API_VERSION_1_0;
 
-    std::vector<const char *> enabledExtensions {
+    vec<const s8*> enabledExtensions {
         VK_KHR_SURFACE_EXTENSION_NAME,
 #ifdef SL_WINDOWS
         VK_KHR_WIN32_SURFACE_EXTENSION_NAME,
@@ -42,7 +42,7 @@ SDLDevice::SDLDevice(const DeviceSetup &setup):
 #endif
     };
 
-    std::vector<const char *> enabledLayers {
+    vec<const s8*> enabledLayers {
 #ifdef SL_DEBUG
         "VK_LAYER_LUNARG_standard_validation",
 #endif
@@ -61,7 +61,7 @@ SDLDevice::SDLDevice(const DeviceSetup &setup):
 
     if (!enabledExtensions.empty())
     {
-        instanceInfo.enabledExtensionCount = static_cast<uint32_t>(enabledExtensions.size());
+        instanceInfo.enabledExtensionCount = static_cast<u32>(enabledExtensions.size());
         instanceInfo.ppEnabledExtensionNames = enabledExtensions.data();
     }
 

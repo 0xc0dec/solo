@@ -9,7 +9,6 @@
 
 #include "SoloOpenGLPrefabShaders.h"
 #include "SoloMap.h"
-#include <vector>
 
 using namespace solo;
 
@@ -31,7 +30,7 @@ auto gl::Effect::createFromPrefab(EffectPrefab prefab) -> sptr<Effect>
     }
 }
 
-static auto compileShader(GLuint type, const void *src, uint32_t length) -> GLint
+static auto compileShader(GLuint type, const void *src, u32 length) -> GLint
 {
     static umap<GLuint, str> typeNames =
     {
@@ -51,7 +50,7 @@ static auto compileShader(GLuint type, const void *src, uint32_t length) -> GLin
     {
         GLint logLength;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-        std::vector<GLchar> log(logLength);
+        vec<GLchar> log(logLength);
         glGetShaderInfoLog(shader, logLength, nullptr, log.data());
         glDeleteShader(shader);
         SL_PANIC(SL_FMT("Failed to compile ", typeNames[type], " shader:\n", log.data()));
@@ -73,7 +72,7 @@ static auto linkProgram(GLuint vs, GLuint fs) -> GLint
     {
         GLint logLength;
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
-        std::vector<GLchar> log(logLength);
+        vec<GLchar> log(logLength);
         glGetProgramInfoLog(program, logLength, nullptr, log.data());
         glDeleteProgram(program);
         SL_PANIC(SL_FMT("Failed to link program:\n", log.data()));
@@ -82,7 +81,7 @@ static auto linkProgram(GLuint vs, GLuint fs) -> GLint
     return program;
 }
 
-gl::Effect::Effect(const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen)
+gl::Effect::Effect(const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
 {
     const auto vs = compileShader(GL_VERTEX_SHADER, vsSrc, vsSrcLen);
     const auto fs = compileShader(GL_FRAGMENT_SHADER, fsSrc, fsSrcLen);
@@ -130,8 +129,8 @@ void gl::Effect::introspectUniforms()
     if (nameMaxLength <= 0)
         return;
 
-    std::vector<GLchar> nameArr(nameMaxLength + 1);
-    uint32_t samplerIndex = 0;
+    vec<GLchar> nameArr(nameMaxLength + 1);
+    u32 samplerIndex = 0;
     for (GLint i = 0; i < activeUniforms; ++i)
     {
         GLint size;
@@ -150,7 +149,7 @@ void gl::Effect::introspectUniforms()
         uniforms[name].location = glGetUniformLocation(handle, nameArr.data());
         uniforms.at(name).samplerIndex = 0;
 
-        uint32_t idx = 0;
+        u32 idx = 0;
         if (type == GL_SAMPLER_2D || type == GL_SAMPLER_CUBE) // TODO other types of samplers
         {
             idx = samplerIndex;
@@ -170,7 +169,7 @@ void gl::Effect::introspectAttributes()
     if (nameMaxLength <= 0)
         return;
 
-    std::vector<GLchar> nameArr(nameMaxLength + 1);
+    vec<GLchar> nameArr(nameMaxLength + 1);
     for (GLint i = 0; i < activeAttributes; ++i)
     {
         GLint size;

@@ -27,14 +27,14 @@ namespace solo
         auto getMesh() const -> Mesh* { return mesh.get(); }
         void setMesh(sptr<Mesh> mesh) { this->mesh = mesh; }
 
-        auto getMaterial(uint32_t index) const -> Material* { return materials.at(index).get(); }
-        void setMaterial(uint32_t index, sptr<Material> material);
-        auto getMaterialCount() const -> uint32_t { return static_cast<uint32_t>(materials.size()); }
+        auto getMaterial(u32 index) const -> Material* { return materials.at(index).get(); }
+        void setMaterial(u32 index, sptr<Material> material);
+        auto getMaterialCount() const -> u32 { return static_cast<u32>(materials.size()); }
 
     private:
         sptr<Mesh> mesh;
         Transform *transform = nullptr;
         Renderer *renderer = nullptr;
-        umap<uint32_t, sptr<Material>> materials;
+        umap<u32, sptr<Material>> materials;
     };
 }

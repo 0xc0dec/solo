@@ -17,13 +17,13 @@ namespace solo
     public:
         DeviceMode mode;
         
-        uint32_t canvasWidth = 800;
-        uint32_t canvasHeight = 600;
-        uint32_t redBits = 5;
-        uint32_t greenBits = 5;
-        uint32_t blueBits = 5;
-        uint32_t depthBits = 24;
-        uint32_t alphaBits = 0;
+        u32 canvasWidth = 800;
+        u32 canvasHeight = 600;
+        u32 redBits = 5;
+        u32 greenBits = 5;
+        u32 blueBits = 5;
+        u32 depthBits = 24;
+        u32 alphaBits = 0;
         
         bool fullScreen = false;
         bool vsync = false;

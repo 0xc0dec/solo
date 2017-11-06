@@ -22,18 +22,18 @@ namespace solo
         public:
             struct UniformInfo
             {
-                uint32_t location;
-                uint32_t samplerIndex;
+                u32 location;
+                u32 samplerIndex;
             };
 
             struct AttributeInfo
             {
-                uint32_t location;
+                u32 location;
             };
 
             static auto createFromPrefab(EffectPrefab prefab) -> sptr<Effect>;
 
-            Effect(const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen);
+            Effect(const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen);
             ~Effect();
 
             auto getHandle() const -> GLuint { return handle; }

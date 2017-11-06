@@ -17,21 +17,21 @@ namespace solo
         public:
             static bool canLoadFromFile(const str &path);
             static auto loadFromFile(Device *device, const str &path,
-                uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight,
-                uint32_t firstChar, uint32_t charCount,
-                uint32_t oversampleX, uint32_t oversampleY) -> sptr<TrueTypeFont>;
+                u32 size, u32 atlasWidth, u32 atlasHeight,
+                u32 firstChar, u32 charCount,
+                u32 oversampleX, u32 oversampleY) -> sptr<TrueTypeFont>;
 
-            TrueTypeFont(Device *device, uint8_t *fontData,
-                uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight,
-                uint32_t firstChar, uint32_t charCount,
-                uint32_t oversampleX, uint32_t oversampleY);
+            TrueTypeFont(Device *device, u8 *fontData,
+                u32 size, u32 atlasWidth, u32 atlasHeight,
+                u32 firstChar, u32 charCount,
+                u32 oversampleX, u32 oversampleY);
 
             auto getAtlas() const -> sptr<Texture2d> override final { return atlas; }
-            auto getGlyphInfo(uint32_t character, float offsetX, float offsetY) -> GlyphInfo override final;
+            auto getGlyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo override final;
 
         private:
             sptr<Texture2d> atlas;
-            uint32_t firstChar;
+            u32 firstChar;
             uptr<stbtt_packedchar[]> charInfo;
         };
     }

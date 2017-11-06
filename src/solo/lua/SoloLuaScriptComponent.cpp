@@ -13,7 +13,7 @@ lua::ScriptComponent::ScriptComponent(const Node &node, LuaRef ref):
     ComponentBase<ScriptComponent>(node),
     ref(ref)
 {
-    typeId = MinComponentTypeId + ref.get<uint32_t>("typeId");
+    typeId = MinComponentTypeId + ref.get<u32>("typeId");
     
     initFunc = ref.has("init")
         ? ref.get<std::function<void(LuaRef)>>("init")

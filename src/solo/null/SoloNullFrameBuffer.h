@@ -14,7 +14,7 @@ namespace solo
         class FrameBuffer : public solo::FrameBuffer
         {
         public:
-            void setAttachments(const std::vector<sptr<Texture2d>> &attachments) override final {}
+            void setAttachments(const vec<sptr<Texture2d>> &attachments) override final {}
         };
     }
 }

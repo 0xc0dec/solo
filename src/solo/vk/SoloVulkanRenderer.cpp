@@ -18,7 +18,7 @@ using namespace solo;
 using namespace vk;
 
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
-    uint64_t obj, size_t location, int32_t code, const char *layerPrefix, const char *msg, void *userData)
+    u64 obj, size_t location, s32 code, const s8 *layerPrefix, const s8 *msg, void *userData)
 {
     SL_PANIC(msg);
     return VK_FALSE;
@@ -43,24 +43,24 @@ static auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEX
     return result;
 }
 
-static auto createDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -> Resource<VkDevice>
+static auto createDevice(VkPhysicalDevice physicalDevice, u32 queueIndex) -> Resource<VkDevice>
 {
-    std::vector<float> queuePriorities = {0.0f};
+    vec<float> queuePriorities = {0.0f};
     VkDeviceQueueCreateInfo queueCreateInfo{};
     queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
     queueCreateInfo.queueFamilyIndex = queueIndex;
     queueCreateInfo.queueCount = 1;
     queueCreateInfo.pQueuePriorities = queuePriorities.data();
 
-    std::vector<const char *> deviceExtensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME};
+    vec<const s8*> deviceExtensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME};
 
     VkDeviceCreateInfo deviceCreateInfo {};
-    std::vector<VkPhysicalDeviceFeatures> enabledFeatures {};
+    vec<VkPhysicalDeviceFeatures> enabledFeatures {};
     deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
     deviceCreateInfo.queueCreateInfoCount = 1;
     deviceCreateInfo.pQueueCreateInfos = &queueCreateInfo;
     deviceCreateInfo.pEnabledFeatures = enabledFeatures.data();
-    deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
+    deviceCreateInfo.enabledExtensionCount = static_cast<u32>(deviceExtensions.size());
     deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
 
     Resource<VkDevice> result{vkDestroyDevice};
@@ -71,10 +71,10 @@ static auto createDevice(VkPhysicalDevice physicalDevice, uint32_t queueIndex) -
 
 static auto getPhysicalDevice(VkInstance instance) -> VkPhysicalDevice
 {
-    uint32_t gpuCount = 0;
+    u32 gpuCount = 0;
     SL_VK_CHECK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr));
 
-    std::vector<VkPhysicalDevice> devices(gpuCount);
+    vec<VkPhysicalDevice> devices(gpuCount);
     SL_VK_CHECK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, devices.data()));
 
     return devices[0]; // Taking first one for simplicity
@@ -82,10 +82,10 @@ static auto getPhysicalDevice(VkInstance instance) -> VkPhysicalDevice
 
 static auto getSurfaceFormats(VkPhysicalDevice device, VkSurfaceKHR surface) -> std::tuple<VkFormat, VkColorSpaceKHR>
 {
-    uint32_t count;
+    u32 count;
     SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, nullptr));
 
-    std::vector<VkSurfaceFormatKHR> formats(count);
+    vec<VkSurfaceFormatKHR> formats(count);
     SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, formats.data()));
 
     if (count == 1 && formats[0].format == VK_FORMAT_UNDEFINED)
@@ -93,21 +93,21 @@ static auto getSurfaceFormats(VkPhysicalDevice device, VkSurfaceKHR surface) -> 
     return {formats[0].format, formats[0].colorSpace};
 }
 
-static auto getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> uint32_t
+static auto getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> u32
 {
-    uint32_t count;
+    u32 count;
     vkGetPhysicalDeviceQueueFamilyProperties(device, &count, nullptr);
 
-    std::vector<VkQueueFamilyProperties> queueProps;
+    vec<VkQueueFamilyProperties> queueProps;
     queueProps.resize(count);
     vkGetPhysicalDeviceQueueFamilyProperties(device, &count, queueProps.data());
 
-    std::vector<VkBool32> presentSupported(count);
-    for (uint32_t i = 0; i < count; i++)
+    vec<VkBool32> presentSupported(count);
+    for (u32 i = 0; i < count; i++)
     SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupported[i]));
 
     // TODO support for separate rendering and presenting queues
-    for (uint32_t i = 0; i < count; i++)
+    for (u32 i = 0; i < count; i++)
     {
         if (queueProps[i].queueFlags & VK_QUEUE_GRAPHICS_BIT && presentSupported[i] == VK_TRUE)
             return i;
@@ -117,7 +117,7 @@ static auto getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> uint
     return 0;
 }
 
-static auto createCommandPool(VkDevice device, uint32_t queueIndex) -> Resource<VkCommandPool>
+static auto createCommandPool(VkDevice device, u32 queueIndex) -> Resource<VkCommandPool>
 {
     VkCommandPoolCreateInfo poolInfo{};
     poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
@@ -134,7 +134,7 @@ static auto getDepthFormat(VkPhysicalDevice device) -> VkFormat
 {
     // Since all depth formats may be optional, we need to find a suitable depth format to use
     // Start with the highest precision packed format
-    std::vector<VkFormat> depthFormats =
+    vec<VkFormat> depthFormats =
     {
         VK_FORMAT_D32_SFLOAT_S8_UINT,
         VK_FORMAT_D32_SFLOAT,
@@ -258,7 +258,7 @@ void vk::Renderer::recordRenderCommands(VkCommandBuffer buf, RenderPass &renderP
                     .withPolygonMode(material->getVkPolygonMode())
                     .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 
-                for (int32_t binding = 0; binding < mesh->getVertexBufferCount(); binding++)
+                for (s32 binding = 0; binding < mesh->getVertexBufferCount(); binding++)
                     pipelineConfig.withVertexBufferLayout(binding, mesh->getVertexBufferLayout(binding));
 
                 pipelines.emplace_back(device, renderPass, pipelineConfig);
@@ -268,7 +268,7 @@ void vk::Renderer::recordRenderCommands(VkCommandBuffer buf, RenderPass &renderP
                 vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelines.rbegin()->getLayout(), 0, 1, &descSet, 0, nullptr);
 
                 VkDeviceSize vertexBufferOffset = 0;
-                for (uint32_t i = 0; i < mesh->getVertexBufferCount(); i++)
+                for (u32 i = 0; i < mesh->getVertexBufferCount(); i++)
                 {
                     auto vertexBuffer = mesh->getVertexBuffer(i);
                     vkCmdBindVertexBuffers(buf, i, 1, &vertexBuffer, &vertexBufferOffset);

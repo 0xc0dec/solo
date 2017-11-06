@@ -41,7 +41,7 @@ auto sdl::Device::getLifetime() const -> float
 
 auto sdl::Device::getCanvasSize() const -> Vector2
 {
-    int32_t width, height;
+    s32 width, height;
     SDL_GL_GetDrawableSize(window, &width, &height);
     return {static_cast<float>(width), static_cast<float>(height)};
 }

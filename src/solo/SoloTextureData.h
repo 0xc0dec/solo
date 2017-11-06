@@ -6,7 +6,6 @@
 #pragma once
 
 #include "SoloCommon.h"
-#include <vector>
 
 namespace solo
 {
@@ -18,20 +17,20 @@ namespace solo
     {
     public:
         static auto loadFromFile(Device *device, const str &path) -> sptr<Texture2dData>;
-        static auto createFromMemory(uint32_t width, uint32_t height, TextureFormat format, const std::vector<uint8_t> &data) -> sptr<Texture2dData>;
+        static auto createFromMemory(u32 width, u32 height, TextureFormat format, const vec<u8> &data) -> sptr<Texture2dData>;
 
         SL_DISABLE_COPY_AND_MOVE(Texture2dData)
         virtual ~Texture2dData() {}
 
-        virtual auto getMipLevels() const -> uint32_t = 0;
+        virtual auto getMipLevels() const -> u32 = 0;
 
-        virtual auto getSize() const -> uint32_t = 0;
-        virtual auto getSize(uint32_t mipLevel) const -> uint32_t = 0;
+        virtual auto getSize() const -> u32 = 0;
+        virtual auto getSize(u32 mipLevel) const -> u32 = 0;
 
-        virtual auto getWidth() const -> uint32_t = 0;
-        virtual auto getWidth(uint32_t mipLevel) const -> uint32_t = 0;
-        virtual auto getHeight() const -> uint32_t = 0;
-        virtual auto getHeight(uint32_t mipLevel) const -> uint32_t = 0;
+        virtual auto getWidth() const -> u32 = 0;
+        virtual auto getWidth(u32 mipLevel) const -> u32 = 0;
+        virtual auto getHeight() const -> u32 = 0;
+        virtual auto getHeight(u32 mipLevel) const -> u32 = 0;
 
         virtual auto getData() const -> const void* = 0;
 
@@ -55,17 +54,17 @@ namespace solo
         SL_DISABLE_COPY_AND_MOVE(CubeTextureData)
         virtual ~CubeTextureData() {}
 
-        virtual auto getMipLevels() const -> uint32_t = 0;
+        virtual auto getMipLevels() const -> u32 = 0;
 
-        virtual auto getSize() const -> uint32_t = 0;
-        virtual auto getSize(uint32_t mipLevel) const -> uint32_t = 0;
-        virtual auto getSize(uint32_t face, uint32_t mipLevel) const -> uint32_t = 0;
+        virtual auto getSize() const -> u32 = 0;
+        virtual auto getSize(u32 mipLevel) const -> u32 = 0;
+        virtual auto getSize(u32 face, u32 mipLevel) const -> u32 = 0;
 
-        virtual auto getDimension() const -> uint32_t = 0;
-        virtual auto getDimension(uint32_t mipLevel) const -> uint32_t = 0;
+        virtual auto getDimension() const -> u32 = 0;
+        virtual auto getDimension(u32 mipLevel) const -> u32 = 0;
 
         virtual auto getData() const -> const void* = 0;
-        virtual auto getData(uint32_t face) const -> const void* = 0;
+        virtual auto getData(u32 face) const -> const void* = 0;
 
         virtual auto getFormat() const -> TextureFormat = 0;
 

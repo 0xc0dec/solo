@@ -20,7 +20,7 @@ static auto convertTextureFormat(TextureFormat format) -> VkFormat
         case TextureFormat::RGBA: return VK_FORMAT_R8G8B8A8_UNORM;
         case TextureFormat::Red: return VK_FORMAT_R8_UNORM;
         default:
-            SL_PANIC(SL_FMT("Unsupported texture format ", static_cast<uint32_t>(format)));
+            SL_PANIC(SL_FMT("Unsupported texture format ", static_cast<u32>(format)));
             return VK_FORMAT_UNDEFINED;
     }
 }

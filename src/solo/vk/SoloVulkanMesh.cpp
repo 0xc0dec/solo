@@ -22,7 +22,7 @@ vk::Mesh::~Mesh()
 {
 }
 
-auto vk::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
+auto vk::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
 {
     auto buf = Buffer::createDeviceLocal(renderer, layout.getSize() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data);
 
@@ -32,21 +32,21 @@ auto vk::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *dat
 
     updateMinVertexCount();
 
-    return static_cast<uint32_t>(vertexBuffers.size() - 1);
+    return static_cast<u32>(vertexBuffers.size() - 1);
 }
 
-auto vk::Mesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
+auto vk::Mesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
 {
     // TODO
     return addVertexBuffer(layout, data, vertexCount);
 }
 
-void vk::Mesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const void *data, uint32_t vertexCount)
+void vk::Mesh::updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount)
 {
     // TODO
 }
 
-void vk::Mesh::removeVertexBuffer(uint32_t index)
+void vk::Mesh::removeVertexBuffer(u32 index)
 {
     vertexBuffers.erase(vertexBuffers.begin() + index);
     layouts.erase(layouts.begin() + index);
@@ -54,22 +54,22 @@ void vk::Mesh::removeVertexBuffer(uint32_t index)
     updateMinVertexCount();
 }
 
-auto vk::Mesh::addPart(const void *indexData, uint32_t indexElementCount) -> uint32_t
+auto vk::Mesh::addPart(const void *indexData, u32 indexElementCount) -> u32
 {
     const auto size = sizeof(uint16_t) * indexElementCount;
     auto buf = Buffer::createDeviceLocal(renderer, size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, indexData);
     indexBuffers.push_back(std::move(buf));
     indexElementCounts.push_back(indexElementCount);
-    return static_cast<uint32_t>(indexElementCounts.size() - 1);
+    return static_cast<u32>(indexElementCounts.size() - 1);
 }
 
-void vk::Mesh::removePart(uint32_t index)
+void vk::Mesh::removePart(u32 index)
 {
     indexBuffers.erase(indexBuffers.begin() + index);
     indexElementCounts.erase(indexElementCounts.begin() + index);
 }
 
-auto vk::Mesh::getPartCount() const -> uint32_t
+auto vk::Mesh::getPartCount() const -> u32
 {
     return indexBuffers.size();
 }
@@ -85,7 +85,7 @@ void vk::Mesh::setPrimitiveType(PrimitiveType type)
 
 void vk::Mesh::updateMinVertexCount()
 {
-    constexpr auto max = (std::numeric_limits<uint32_t>::max)();
+    constexpr auto max = (std::numeric_limits<u32>::max)();
 
     minVertexCount = max;
 

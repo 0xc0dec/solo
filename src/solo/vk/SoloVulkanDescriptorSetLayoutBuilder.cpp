@@ -15,7 +15,7 @@ DescriptorSetLayoutBuilder::DescriptorSetLayoutBuilder(VkDevice device):
 {
 }
 
-auto DescriptorSetLayoutBuilder::withBinding(uint32_t binding, VkDescriptorType descriptorType, uint32_t descriptorCount,
+auto DescriptorSetLayoutBuilder::withBinding(u32 binding, VkDescriptorType descriptorType, u32 descriptorCount,
     VkShaderStageFlagBits stageFlags) -> DescriptorSetLayoutBuilder&
 {
     if (binding >= bindings.size())

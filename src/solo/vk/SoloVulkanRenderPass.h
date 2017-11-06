@@ -10,7 +10,6 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloVulkan.h"
-#include <vector>
 
 namespace solo
 {
@@ -28,10 +27,10 @@ namespace solo
             friend class RenderPass;
 
             VkDevice device = nullptr;
-            std::vector<VkAttachmentDescription> attachments;
-            std::vector<VkAttachmentReference> colorAttachmentRefs;
+            vec<VkAttachmentDescription> attachments;
+            vec<VkAttachmentReference> colorAttachmentRefs;
             VkAttachmentReference depthAttachmentRef;
-            std::vector<VkClearValue> clearValues;
+            vec<VkClearValue> clearValues;
         };
 
         class RenderPass
@@ -48,7 +47,7 @@ namespace solo
             auto operator=(const RenderPass &other) -> RenderPass& = delete;
             auto operator=(RenderPass &&other) -> RenderPass& = default;
 
-            void begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, uint32_t canvasWidth, uint32_t canvasHeight);
+            void begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight);
             void end(VkCommandBuffer cmdBuf);
 
             operator VkRenderPass() { return pass; }
@@ -56,7 +55,7 @@ namespace solo
         private:
             VkDevice device = nullptr;
             Resource<VkRenderPass> pass;
-            std::vector<VkClearValue> clearValues;
+            vec<VkClearValue> clearValues;
         };
     }
 }

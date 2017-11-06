@@ -24,24 +24,24 @@ namespace solo
             Texture2dData() {}
             ~Texture2dData();
 
-            auto getMipLevels() const -> uint32_t override final { return 1; }
+            auto getMipLevels() const -> u32 override final { return 1; }
 
-            auto getSize() const -> uint32_t override final { return width * height * bpp; }
-            auto getSize(uint32_t mipLevel) const -> uint32_t override final { return getSize(); }
+            auto getSize() const -> u32 override final { return width * height * bpp; }
+            auto getSize(u32 mipLevel) const -> u32 override final { return getSize(); }
 
-            auto getWidth() const -> uint32_t override final { return width; }
-            auto getWidth(uint32_t mipLevel) const -> uint32_t override final { return getWidth(); }
-            auto getHeight() const -> uint32_t override final { return height; }
-            auto getHeight(uint32_t mipLevel) const -> uint32_t override final { return getHeight(); }
+            auto getWidth() const -> u32 override final { return width; }
+            auto getWidth(u32 mipLevel) const -> u32 override final { return getWidth(); }
+            auto getHeight() const -> u32 override final { return height; }
+            auto getHeight(u32 mipLevel) const -> u32 override final { return getHeight(); }
 
             auto getData() const -> const void * override final { return data; }
 
             auto getFormat() const -> TextureFormat override final { return format; }
 
         private:
-            uint32_t bpp = 0;
-            uint32_t width = 0;
-            uint32_t height = 0;
+            u32 bpp = 0;
+            u32 width = 0;
+            u32 height = 0;
             TextureFormat format = TextureFormat::RGB;
             stbi_uc *data = nullptr;
         };
@@ -64,22 +64,22 @@ namespace solo
                 const str &topPath,
                 const str &bottomPath) -> sptr<CubeTextureData>;
 
-            auto getMipLevels() const -> uint32_t override;
+            auto getMipLevels() const -> u32 override;
 
-            auto getSize() const -> uint32_t override final;
-            auto getSize(uint32_t mipLevel) const -> uint32_t override final;
-            auto getSize(uint32_t face, uint32_t mipLevel) const -> uint32_t override final;
+            auto getSize() const -> u32 override final;
+            auto getSize(u32 mipLevel) const -> u32 override final;
+            auto getSize(u32 face, u32 mipLevel) const -> u32 override final;
 
-            auto getDimension() const -> uint32_t override final;
-            auto getDimension(uint32_t mipLevel) const -> uint32_t override final;
+            auto getDimension() const -> u32 override final;
+            auto getDimension(u32 mipLevel) const -> u32 override final;
 
             auto getData() const -> const void* override final;
-            auto getData(uint32_t face) const -> const void* override final;
+            auto getData(u32 face) const -> const void* override final;
 
             auto getFormat() const -> TextureFormat override final;
 
         private:
-            std::vector<sptr<stb::Texture2dData>> faces;
+            vec<sptr<stb::Texture2dData>> faces;
         };
     }
 }

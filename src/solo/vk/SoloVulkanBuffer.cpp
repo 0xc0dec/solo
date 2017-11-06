@@ -79,7 +79,7 @@ void Buffer::updateAll(const void *newData) const
 	vkUnmapMemory(device, memory);
 }
 
-void Buffer::updatePart(const void *newData, uint32_t offset, uint32_t size)
+void Buffer::updatePart(const void *newData, u32 offset, u32 size)
 {
     void *ptr = nullptr;
 	SL_VK_CHECK_RESULT(vkMapMemory(device, memory, offset, VK_WHOLE_SIZE, 0, &ptr));

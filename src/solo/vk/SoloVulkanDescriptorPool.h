@@ -18,19 +18,19 @@ namespace solo
         class DescriptorPoolConfig
         {
         public:
-            auto forDescriptors(VkDescriptorType descriptorType, uint32_t descriptorCount) -> DescriptorPoolConfig&;
+            auto forDescriptors(VkDescriptorType descriptorType, u32 descriptorCount) -> DescriptorPoolConfig&;
 
         private:
             friend class DescriptorPool;
 
-            std::vector<VkDescriptorPoolSize> sizes;
+            vec<VkDescriptorPoolSize> sizes;
         };
 
         class DescriptorPool
         {
         public:
             DescriptorPool() {}
-            DescriptorPool(VkDevice device, uint32_t maxSetCount, const DescriptorPoolConfig &config);
+            DescriptorPool(VkDevice device, u32 maxSetCount, const DescriptorPoolConfig &config);
             DescriptorPool(const DescriptorPool &other) = delete;
             DescriptorPool(DescriptorPool &&other) = default;
             ~DescriptorPool() {}

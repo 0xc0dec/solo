@@ -59,7 +59,7 @@ namespace solo
 
             struct SamplerInfo
             {
-                uint32_t binding;
+                u32 binding;
                 sptr<Texture> texture;
             };
 
@@ -71,7 +71,7 @@ namespace solo
                 VkDescriptorSet descSet = VK_NULL_HANDLE;
             };
 
-            using ParameterWriteFunc = std::function<void(Buffer&, uint32_t, uint32_t, const Camera*, const Transform*)>;
+            using ParameterWriteFunc = std::function<void(Buffer&, u32, u32, const Camera*, const Transform*)>;
 
             sptr<Effect> effect;
 

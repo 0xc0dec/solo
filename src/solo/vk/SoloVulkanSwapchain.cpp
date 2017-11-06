@@ -13,12 +13,12 @@
 using namespace solo;
 using namespace vk;
 
-static auto getSwapchainImages(VkDevice device, VkSwapchainKHR swapchain) -> std::vector<VkImage>
+static auto getSwapchainImages(VkDevice device, VkSwapchainKHR swapchain) -> vec<VkImage>
 {
-    uint32_t imageCount = 0;
+    u32 imageCount = 0;
     SL_VK_CHECK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, nullptr));
     
-    std::vector<VkImage> images;
+    vec<VkImage> images;
     images.resize(imageCount);
     SL_VK_CHECK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, images.data()));
 
@@ -27,10 +27,10 @@ static auto getSwapchainImages(VkDevice device, VkSwapchainKHR swapchain) -> std
 
 static auto getPresentMode(vk::Renderer *renderer, SDLDevice *device, bool vsync) -> VkPresentModeKHR
 {
-    uint32_t presentModeCount;
+    u32 presentModeCount;
     SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(renderer->getPhysicalDevice(), device->getSurface(), &presentModeCount, nullptr));
 
-    std::vector<VkPresentModeKHR> presentModes(presentModeCount);
+    vec<VkPresentModeKHR> presentModes(presentModeCount);
     SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(renderer->getPhysicalDevice(), device->getSurface(), &presentModeCount, presentModes.data()));
 
     auto presentMode = VK_PRESENT_MODE_FIFO_KHR; // "vsync"
@@ -52,12 +52,12 @@ static auto getPresentMode(vk::Renderer *renderer, SDLDevice *device, bool vsync
     return presentMode;
 }
 
-static auto createSwapchain(vk::Renderer *renderer, SDLDevice *device, uint32_t width, uint32_t height, bool vsync) -> Resource<VkSwapchainKHR>
+static auto createSwapchain(vk::Renderer *renderer, SDLDevice *device, u32 width, u32 height, bool vsync) -> Resource<VkSwapchainKHR>
 {
     VkSurfaceCapabilitiesKHR capabilities;
     SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(renderer->getPhysicalDevice(), device->getSurface(), &capabilities));
 
-    if (capabilities.currentExtent.width != static_cast<uint32_t>(-1))
+    if (capabilities.currentExtent.width != static_cast<u32>(-1))
     {
         width = capabilities.currentExtent.width;
         height = capabilities.currentExtent.height;
@@ -100,7 +100,7 @@ static auto createSwapchain(vk::Renderer *renderer, SDLDevice *device, uint32_t 
     return swapchain;
 }
 
-Swapchain::Swapchain(vk::Renderer *renderer, SDLDevice *device, uint32_t width, uint32_t height, bool vsync):
+Swapchain::Swapchain(vk::Renderer *renderer, SDLDevice *device, u32 width, u32 height, bool vsync):
     device(renderer->getDevice())
 {
     const auto colorFormat = renderer->getColorFormat();
@@ -121,7 +121,7 @@ Swapchain::Swapchain(vk::Renderer *renderer, SDLDevice *device, uint32_t width, 
     auto images = getSwapchainImages(this->device, swapchain);
     
     steps.resize(images.size());
-    for (uint32_t i = 0; i < images.size(); i++)
+    for (u32 i = 0; i < images.size(); i++)
     {
         auto view = createImageView(this->device, colorFormat, VK_IMAGE_VIEW_TYPE_2D, 1, 1, images[i], VK_IMAGE_ASPECT_COLOR_BIT);
         steps[i].framebuffer = createFrameBuffer(this->device, view, depthStencil.getView(), renderPass, width, height);
@@ -151,7 +151,7 @@ void Swapchain::recordCommandBuffers(std::function<void(VkFramebuffer, VkCommand
     }
 }
 
-void Swapchain::presentNext(VkQueue queue, uint32_t waitSemaphoreCount, const VkSemaphore *waitSemaphores)
+void Swapchain::presentNext(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores)
 {
     queueSubmit(queue, waitSemaphoreCount, waitSemaphores, 1, &renderCompleteSem, 1, &steps[nextStep].cmdBuffer);
 

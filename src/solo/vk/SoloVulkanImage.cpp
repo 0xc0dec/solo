@@ -27,8 +27,8 @@ static auto toVulkanFormat(TextureFormat format) -> VkFormat
     }
 }
 
-static auto createImage(VkDevice device, VkFormat format, uint32_t width, uint32_t height, uint32_t mipLevels,
-    uint32_t arrayLayers, VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags) -> Resource<VkImage>
+static auto createImage(VkDevice device, VkFormat format, u32 width, u32 height, u32 mipLevels,
+    u32 arrayLayers, VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags) -> Resource<VkImage>
 {
     VkImageCreateInfo imageCreateInfo{};
     imageCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
@@ -51,7 +51,7 @@ static auto createImage(VkDevice device, VkFormat format, uint32_t width, uint32
 }
 
 static auto createSampler(VkDevice device, VkPhysicalDeviceFeatures physicalFeatures, VkPhysicalDeviceProperties physicalProps,
-    uint32_t mipLevels) -> Resource<VkSampler>
+    u32 mipLevels) -> Resource<VkSampler>
 {
     VkSamplerCreateInfo samplerInfo{};
     samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
@@ -217,11 +217,11 @@ auto vk::Image::create2d(vk::Renderer *renderer, Texture2dData *data) -> Image
         VK_IMAGE_VIEW_TYPE_2D,
         VK_IMAGE_ASPECT_COLOR_BIT);
     
-    uint32_t offset = 0;
-    std::vector<VkBufferImageCopy> copyRegions;
-    for (uint32_t layer = 0; layer < 1; layer++) // Layers == 1 because 2d
+    u32 offset = 0;
+    vec<VkBufferImageCopy> copyRegions;
+    for (u32 layer = 0; layer < 1; layer++) // Layers == 1 because 2d
     {
-        for (uint32_t level = 0; level < mipLevels; level++)
+        for (u32 level = 0; level < mipLevels; level++)
         {
             VkBufferImageCopy bufferCopyRegion = {};
             bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
@@ -306,7 +306,7 @@ auto vk::Image::createCube(vk::Renderer *renderer/*, const ImageData &data*/) ->
     return Image();
 }
 
-vk::Image::Image(vk::Renderer *renderer, uint32_t width, uint32_t height, uint32_t mipLevels, uint32_t layers, VkFormat format,
+vk::Image::Image(vk::Renderer *renderer, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format,
     VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask):
     mipLevels(mipLevels),
     layers(layers),
@@ -327,11 +327,11 @@ vk::Image::Image(vk::Renderer *renderer, uint32_t width, uint32_t height, uint32
 
 //void vk::Image::uploadData(const ImageData &data)
 //{
-    /*uint32_t offset = 0;
-    std::vector<VkBufferImageCopy> copyRegions;
-    for (uint32_t layer = 0; layer < layers; layer++)
+    /*u32 offset = 0;
+    vec<VkBufferImageCopy> copyRegions;
+    for (u32 layer = 0; layer < layers; layer++)
     {
-        for (uint32_t level = 0; level < mipLevels; level++)
+        for (u32 level = 0; level < mipLevels; level++)
         {
             VkBufferImageCopy bufferCopyRegion = {};
             bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;

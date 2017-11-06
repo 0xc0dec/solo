@@ -8,7 +8,6 @@
 #include "SoloCommon.h"
 #include "SoloVector2.h"
 #include "SoloAsyncHandle.h"
-#include <vector>
 
 namespace solo
 {
@@ -46,24 +45,24 @@ namespace solo
 
     struct TextureFlags
     {
-        static const uint32_t MinFilterNearest = 1 << 0;
-        static const uint32_t MinFilterLinear = 1 << 1;
-        static const uint32_t MinFilterNearestMipmapNearest = 1 << 2;
-        static const uint32_t MinFilterLinearMipmapNearest = 1 << 3;
-        static const uint32_t MinFilterNearestMipmapLinear = 1 << 4;
-        static const uint32_t MinFilterLinearMipmapLinear = 1 << 5;
-        static const uint32_t MagFilterNearest = 1 << 6;
-        static const uint32_t MagFilterLinear = 1 << 7;
-        static const uint32_t MagFilterNearestMipmapNearest = 1 << 8;
-        static const uint32_t MagFilterLinearMipmapNearest = 1 << 9;
-        static const uint32_t MagFilterNearestMipmapLinear = 1 << 10;
-        static const uint32_t MagFilterLinearMipmapLinear = 1 << 11;
-        static const uint32_t HorizontalWrapClamp = 1 << 12;
-        static const uint32_t HorizontalWrapRepeat = 1 << 13;
-        static const uint32_t VerticalWrapClamp = 1 << 14;
-        static const uint32_t VerticalWrapRepeat = 1 << 15;
-        static const uint32_t DepthWrapClamp = 1 << 16;
-        static const uint32_t DepthWrapRepeat = 1 << 17;
+        static const u32 MinFilterNearest = 1 << 0;
+        static const u32 MinFilterLinear = 1 << 1;
+        static const u32 MinFilterNearestMipmapNearest = 1 << 2;
+        static const u32 MinFilterLinearMipmapNearest = 1 << 3;
+        static const u32 MinFilterNearestMipmapLinear = 1 << 4;
+        static const u32 MinFilterLinearMipmapLinear = 1 << 5;
+        static const u32 MagFilterNearest = 1 << 6;
+        static const u32 MagFilterLinear = 1 << 7;
+        static const u32 MagFilterNearestMipmapNearest = 1 << 8;
+        static const u32 MagFilterLinearMipmapNearest = 1 << 9;
+        static const u32 MagFilterNearestMipmapLinear = 1 << 10;
+        static const u32 MagFilterLinearMipmapLinear = 1 << 11;
+        static const u32 HorizontalWrapClamp = 1 << 12;
+        static const u32 HorizontalWrapRepeat = 1 << 13;
+        static const u32 VerticalWrapClamp = 1 << 14;
+        static const u32 VerticalWrapRepeat = 1 << 15;
+        static const u32 DepthWrapClamp = 1 << 16;
+        static const u32 DepthWrapRepeat = 1 << 17;
     };
 
     enum class TextureFormat
@@ -100,7 +99,7 @@ namespace solo
         void setAnisotropyLevel(float level) { anisotropy = level; }
 
     protected:
-        uint32_t flags = 0;
+        u32 flags = 0;
 
         TextureWrapping horizontalWrapping = TextureWrapping::Clamp;
         TextureWrapping verticalWrapping = TextureWrapping::Clamp;
@@ -121,7 +120,7 @@ namespace solo
         static auto loadFromFile(Device *device, const str &path) -> sptr<Texture2d>;
         static auto loadFromFileAsync(Device *device, const str &path) -> sptr<AsyncHandle<Texture2d>>;
         static auto createFromData(Device *device, Texture2dData *data) -> sptr<Texture2d>;
-        static auto createEmpty(Device *device, uint32_t width, uint32_t height, TextureFormat format) -> sptr<Texture2d>;
+        static auto createEmpty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<Texture2d>;
 
         auto getDimensions() const -> Vector2 { return dimensions; }
 
@@ -158,7 +157,7 @@ namespace solo
 
     protected:
         TextureWrapping depthWrapping = TextureWrapping::Repeat;
-        uint32_t dimension = 0;
+        u32 dimension = 0;
         TextureFormat format = TextureFormat::RGB;
 
         CubeTexture(CubeTextureData *data);

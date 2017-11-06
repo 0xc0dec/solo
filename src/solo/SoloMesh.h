@@ -41,14 +41,14 @@ namespace solo
 
         virtual ~Mesh() {}
 
-        virtual auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t = 0;
-        virtual auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t = 0;
-        virtual void updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const void *data, uint32_t vertexCount) = 0;
-        virtual void removeVertexBuffer(uint32_t index) = 0;
+        virtual auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 = 0;
+        virtual auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 = 0;
+        virtual void updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount) = 0;
+        virtual void removeVertexBuffer(u32 index) = 0;
 
-        virtual auto addPart(const void *indexData, uint32_t indexElementCount) -> uint32_t = 0;
-        virtual void removePart(uint32_t index) = 0;
-        virtual auto getPartCount() const -> uint32_t = 0;
+        virtual auto addPart(const void *indexData, u32 indexElementCount) -> u32 = 0;
+        virtual void removePart(u32 index) = 0;
+        virtual auto getPartCount() const -> u32 = 0;
 
         virtual auto getPrimitiveType() const -> PrimitiveType = 0;
         virtual void setPrimitiveType(PrimitiveType type) = 0;

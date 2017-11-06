@@ -43,8 +43,8 @@ namespace std
 
 struct Data
 {
-    std::vector<float> vertices;
-    std::vector<std::vector<uint16_t>> parts;
+    vec<float> vertices;
+    vec<vec<uint16_t>> parts;
 };
 
 bool obj::canLoadMesh(const str &path)
@@ -57,18 +57,18 @@ static auto loadMeshData(Device *device, const str &path) -> sptr<Data>
     auto file = device->getFileSystem()->getStream(path);
 
     tinyobj::attrib_t attrib;
-    std::vector<tinyobj::shape_t> shapes;
-    std::vector<tinyobj::material_t> materials;
+    vec<tinyobj::shape_t> shapes;
+    vec<tinyobj::material_t> materials;
     str err;
     SL_PANIC_IF(!tinyobj::LoadObj(&attrib, &shapes, &materials, &err, file.get()), err);
     
-    std::vector<float> vertexData;
-    std::vector<std::vector<uint16_t>> parts;
+    vec<float> vertexData;
+    vec<vec<uint16_t>> parts;
 
     for (const auto &shape: shapes)
     {
         umap<Vertex, uint16_t> uniqueVertices;
-        std::vector<uint16_t> indexData;
+        vec<uint16_t> indexData;
 
         for (const auto &index: shape.mesh.indices)
         {
@@ -147,7 +147,7 @@ auto obj::loadMeshAsync(Device *device, const str &path) -> sptr<AsyncHandle<Mes
     auto handle = std::make_shared<AsyncHandle<Mesh>>();
 
     auto producers = JobBase<Data>::Producers{[=]() { return loadMeshData(device, path); }};
-    auto consumer = [handle, device](const std::vector<sptr<Data>> &results)
+    auto consumer = [handle, device](const vec<sptr<Data>> &results)
     {
         auto data = results[0];
         auto mesh = Mesh::create(device);

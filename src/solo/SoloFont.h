@@ -8,7 +8,6 @@
 #include "SoloCommon.h"
 #include "SoloVector2.h"
 #include "SoloVector3.h"
-#include <vector>
 
 namespace solo
 {
@@ -19,8 +18,8 @@ namespace solo
     class GlyphInfo
     {
     public:
-        std::vector<Vector3> positions;
-        std::vector<Vector2> uvs;
+        vec<Vector3> positions;
+        vec<Vector2> uvs;
         float offsetX, offsetY;
     };
 
@@ -30,14 +29,14 @@ namespace solo
         SL_DISABLE_COPY_AND_MOVE(Font)
 
         static auto loadFromFile(Device *device, const str &path,
-            uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight,
-            uint32_t firstChar, uint32_t charCount,
-            uint32_t oversampleX, uint32_t oversampleY) -> sptr<Font>;
+            u32 size, u32 atlasWidth, u32 atlasHeight,
+            u32 firstChar, u32 charCount,
+            u32 oversampleX, u32 oversampleY) -> sptr<Font>;
 
         virtual ~Font() {}
 
         virtual auto getAtlas() const -> sptr<Texture2d> = 0;
-        virtual auto getGlyphInfo(uint32_t character, float offsetX, float offsetY) -> GlyphInfo = 0;
+        virtual auto getGlyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo = 0;
 
     protected:
         Font() {}

@@ -95,7 +95,7 @@ namespace solo
         float farClip = 100;
         float aspectRatio = 1;
 
-        mutable uint32_t dirtyFlags = ~0;
+        mutable u32 dirtyFlags = ~0;
 
         mutable Matrix viewMatrix;
         mutable Matrix projectionMatrix;
@@ -200,7 +200,7 @@ namespace solo
 
     template <>
     template <class... Args>
-    auto NodeHelper<Camera>::addComponent(Scene *scene, uint32_t nodeId, Args &&... args) -> Camera *
+    auto NodeHelper<Camera>::addComponent(Scene *scene, u32 nodeId, Args &&... args) -> Camera *
     {
         auto body = std::shared_ptr<Camera>(Camera::create(Node(scene, nodeId), std::forward<Args>(args)...));
         scene->addComponent(nodeId, body);

@@ -27,7 +27,7 @@ namespace solo
             static auto createCube(Renderer *renderer/*, const ImageData &data*/) -> Image;
 
             Image() {}
-            Image(Renderer *renderer, uint32_t width, uint32_t height, uint32_t mipLevels, uint32_t layers, VkFormat format,
+            Image(Renderer *renderer, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format,
                 VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask);
             Image(const Image &other) = delete;
             Image(Image &&other) = default;
@@ -46,10 +46,10 @@ namespace solo
             Resource<VkImageView> view;
             Resource<VkSampler> sampler;
             VkImageLayout layout = VK_IMAGE_LAYOUT_UNDEFINED;
-            uint32_t mipLevels = 0;
-            uint32_t layers = 0;
-            uint32_t width = 0;
-            uint32_t height = 0;
+            u32 mipLevels = 0;
+            u32 layers = 0;
+            u32 width = 0;
+            u32 height = 0;
             VkImageAspectFlags aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
         };
     }

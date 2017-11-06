@@ -33,7 +33,7 @@ void MeshRenderer::render()
     }
     else
     {
-        for (uint32_t part = 0; part < partCount; ++part)
+        for (u32 part = 0; part < partCount; ++part)
         {
             const auto material = getMaterial(part);
             if (material)
@@ -42,7 +42,7 @@ void MeshRenderer::render()
     }
 }
 
-void MeshRenderer::setMaterial(uint32_t index, sptr<Material> material)
+void MeshRenderer::setMaterial(u32 index, sptr<Material> material)
 {
     if (material)
         materials[index] = material;

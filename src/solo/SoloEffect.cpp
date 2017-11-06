@@ -12,7 +12,7 @@
 
 using namespace solo;
 
-static auto create(Device *device, const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen) -> sptr<Effect>
+static auto create(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen) -> sptr<Effect>
 {
     switch (device->getMode())
     {
@@ -34,8 +34,8 @@ auto Effect::loadFromFiles(Device *device, const str &vsPath, const str &fsPath)
     auto vsBytes = device->getFileSystem()->readBytes(vsPath);
     auto fsBytes = device->getFileSystem()->readBytes(fsPath);
     return create(device,
-        vsBytes.data(), static_cast<uint32_t>(vsBytes.size()),
-        fsBytes.data(), static_cast<uint32_t>(fsBytes.size()));
+        vsBytes.data(), static_cast<u32>(vsBytes.size()),
+        fsBytes.data(), static_cast<u32>(fsBytes.size()));
 }
 
 auto Effect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effect>

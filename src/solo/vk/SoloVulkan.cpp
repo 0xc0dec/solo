@@ -7,9 +7,6 @@
 
 #ifdef SL_VULKAN_RENDERER
 
-#include <vector>
-#include <array>
-
 using namespace solo;
 
 auto vk::createSemaphore(VkDevice device) -> Resource<VkSemaphore>
@@ -48,9 +45,9 @@ void vk::beginCommandBuffer(VkCommandBuffer buffer, bool oneTime)
     SL_VK_CHECK_RESULT(vkBeginCommandBuffer(buffer, &beginInfo));
 }
 
-void vk::queueSubmit(VkQueue queue, uint32_t waitSemaphoreCount, const VkSemaphore *waitSemaphores,
-    uint32_t signalSemaphoreCount, const VkSemaphore *signalSemaphores,
-    uint32_t commandBufferCount, const VkCommandBuffer *commandBuffers)
+void vk::queueSubmit(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores,
+    u32 signalSemaphoreCount, const VkSemaphore *signalSemaphores,
+    u32 commandBufferCount, const VkCommandBuffer *commandBuffers)
 {
     VkPipelineStageFlags submitPipelineStages = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
 
@@ -66,10 +63,10 @@ void vk::queueSubmit(VkQueue queue, uint32_t waitSemaphoreCount, const VkSemapho
     SL_VK_CHECK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, VK_NULL_HANDLE));
 }
 
-auto vk::findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, uint32_t typeBits,
-    VkMemoryPropertyFlags properties) -> int32_t
+auto vk::findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, u32 typeBits,
+    VkMemoryPropertyFlags properties) -> s32
 {
-    for (uint32_t i = 0; i < physicalDeviceMemoryProperties.memoryTypeCount; i++)
+    for (u32 i = 0; i < physicalDeviceMemoryProperties.memoryTypeCount; i++)
     {
         if ((typeBits & 1) == 1)
         {
@@ -82,9 +79,9 @@ auto vk::findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryPro
 }
 
 auto vk::createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImageView depthAttachment,
-    VkRenderPass renderPass, uint32_t width, uint32_t height) -> Resource<VkFramebuffer>
+    VkRenderPass renderPass, u32 width, u32 height) -> Resource<VkFramebuffer>
 {
-    std::array<VkImageView, 2> attachments = {colorAttachment, depthAttachment};
+    arr<VkImageView, 2> attachments = {colorAttachment, depthAttachment};
 
     VkFramebufferCreateInfo createInfo{};
     createInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
@@ -102,14 +99,14 @@ auto vk::createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImage
     return frameBuffer;
 }
 
-auto vk::createShader(VkDevice device, const void *data, uint32_t size) -> Resource<VkShaderModule>
+auto vk::createShader(VkDevice device, const void *data, u32 size) -> Resource<VkShaderModule>
 {
     VkShaderModuleCreateInfo shaderModuleInfo {};
     shaderModuleInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
     shaderModuleInfo.pNext = nullptr;
     shaderModuleInfo.flags = 0;
     shaderModuleInfo.codeSize = size;
-    shaderModuleInfo.pCode = reinterpret_cast<const uint32_t*>(data);
+    shaderModuleInfo.pCode = reinterpret_cast<const u32*>(data);
 
     Resource<VkShaderModule> module{device, vkDestroyShaderModule};
     SL_VK_CHECK_RESULT(vkCreateShaderModule(device, &shaderModuleInfo, nullptr, module.cleanRef()));
@@ -117,7 +114,7 @@ auto vk::createShader(VkDevice device, const void *data, uint32_t size) -> Resou
     return module;
 }
 
-auto vk::createImageView(VkDevice device, VkFormat format, VkImageViewType type, uint32_t mipLevels, uint32_t layers,
+auto vk::createImageView(VkDevice device, VkFormat format, VkImageViewType type, u32 mipLevels, u32 layers,
     VkImage image, VkImageAspectFlags aspectMask) -> Resource<VkImageView>
 {
     VkImageViewCreateInfo viewInfo{};
@@ -139,7 +136,7 @@ auto vk::createImageView(VkDevice device, VkFormat format, VkImageViewType type,
     return view;
 }
 
-auto vk::createShaderStageInfo(bool vertex, VkShaderModule shader, const char* entryPoint) -> VkPipelineShaderStageCreateInfo
+auto vk::createShaderStageInfo(bool vertex, VkShaderModule shader, const s8* entryPoint) -> VkPipelineShaderStageCreateInfo
 {
     VkPipelineShaderStageCreateInfo info{};
     info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;

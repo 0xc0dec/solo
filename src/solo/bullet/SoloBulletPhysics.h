@@ -22,7 +22,7 @@ namespace solo
             void setGravity(const Vector3 &gravity) override final;
 
             auto castRay(const Vector3 &from, const Vector3 &to) -> RaycastResult override;
-            auto castRayAll(const Vector3 &from, const Vector3 &to) -> std::vector<RaycastResult> override;
+            auto castRayAll(const Vector3 &from, const Vector3 &to) -> vec<RaycastResult> override;
 
             auto getWorld() const -> btDiscreteDynamicsWorld*;
 

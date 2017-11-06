@@ -11,7 +11,6 @@
 
 #include "SoloRenderer.h"
 #include "SoloRenderCommand.h"
-#include <vector>
 #include <functional>
 
 namespace solo
@@ -42,7 +41,7 @@ namespace solo
             };
 
             // Note: maybe not the fastest, but convenient and good enough for now
-            std::vector<RenderStep> renderSteps;
+            vec<RenderStep> renderSteps;
         };
     }
 }

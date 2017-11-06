@@ -24,13 +24,13 @@ auto vk::Effect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<E
     return nullptr;
 }
 
-vk::Effect::Effect(Device *device, const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen)
+vk::Effect::Effect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
 {
     renderer = dynamic_cast<Renderer *>(device->getRenderer());
     vertexShader = createShader(renderer->getDevice(), vsSrc, vsSrcLen);
     fragmentShader = createShader(renderer->getDevice(), fsSrc, fsSrcLen);
-    introspectShader(static_cast<const uint32_t*>(vsSrc), vsSrcLen / sizeof(uint32_t));
-    introspectShader(static_cast<const uint32_t*>(fsSrc), fsSrcLen / sizeof(uint32_t));
+    introspectShader(static_cast<const u32*>(vsSrc), vsSrcLen / sizeof(u32));
+    introspectShader(static_cast<const u32*>(fsSrc), fsSrcLen / sizeof(u32));
 }
 
 vk::Effect::~Effect()
@@ -53,7 +53,7 @@ auto vk::Effect::getSamplerInfo(const str &samplerName) -> SamplerInfo
     return SamplerInfo{};
 }
 
-void vk::Effect::introspectShader(const uint32_t *src, uint32_t len)
+void vk::Effect::introspectShader(const u32 *src, u32 len)
 {
     spirv_cross::CompilerGLSL compiler{src, len};
     const auto resources = compiler.get_shader_resources();
@@ -63,7 +63,7 @@ void vk::Effect::introspectShader(const uint32_t *src, uint32_t len)
         const auto name = compiler.get_name(buffer.id);
         uniformBuffers[name].binding = compiler.get_decoration(buffer.id, spv::DecorationBinding);
 
-        uint32_t size = 0;
+        u32 size = 0;
         const auto ranges = compiler.get_active_buffer_ranges(buffer.id);
         for (auto &range: ranges)
         {

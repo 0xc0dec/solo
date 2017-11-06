@@ -7,6 +7,9 @@
 
 #include "SoloFormatter.h"
 #include <string>
+#include <vector>
+#include <array>
+#include <list>
 #include <memory>
 
 #if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS)
@@ -59,7 +62,18 @@ namespace solo
 {
     template <typename T> using sptr = std::shared_ptr<T>;
     template <typename T> using uptr = std::unique_ptr<T>;
+
     using str = std::string;
+
+    template <typename T> using vec = std::vector<T>;
+    template <typename T, size_t Size> using arr = std::array<T, Size>;
+    template <typename T> using list = std::list<T>;
+
+    using s8 = char;
+    using u8 = uint8_t;
+    using s32 = int32_t;
+    using u32 = uint32_t;
+    using u64 = uint64_t;
 
     class EngineException: public std::runtime_error
     {

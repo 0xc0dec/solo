@@ -12,14 +12,14 @@ namespace solo
     struct ComponentTypeId
     {
         template <typename T>
-        static auto get() -> uint32_t
+        static auto get() -> u32
         {
             static const auto id = counter++;
             return id;
         }
 
     private:
-        static uint32_t counter;
+        static u32 counter;
     };
 
     class Component
@@ -29,7 +29,7 @@ namespace solo
 
         virtual ~Component() {}
 
-        virtual auto getTypeId() -> uint32_t = 0;
+        virtual auto getTypeId() -> u32 = 0;
 
         // Called when the component is added to the scene
         virtual void init() {}
@@ -44,12 +44,12 @@ namespace solo
 
         auto getNode() const -> Node;
 
-        auto getTag() const -> uint32_t;
-        void setTag(uint32_t tag);
+        auto getTag() const -> u32;
+        void setTag(u32 tag);
 
     protected:
         Node node;
-        uint32_t tag = 1;
+        u32 tag = 1;
 
         explicit Component(const Node &node): node(node)
         {
@@ -61,12 +61,12 @@ namespace solo
         return node;
     }
 
-    inline auto Component::getTag() const -> uint32_t
+    inline auto Component::getTag() const -> u32
     {
         return tag;
     }
 
-    inline void Component::setTag(uint32_t tag)
+    inline void Component::setTag(u32 tag)
     {
         this->tag = tag;
     }
@@ -75,21 +75,21 @@ namespace solo
     class ComponentBase: public Component
     {
     public:
-        static auto getId() -> uint32_t;
+        static auto getId() -> u32;
 
         explicit ComponentBase(const Node &node): Component(node) {}
 
-        auto getTypeId() -> uint32_t override;
+        auto getTypeId() -> u32 override;
     };
 
     template <class T>
-    auto ComponentBase<T>::getId() -> uint32_t
+    auto ComponentBase<T>::getId() -> u32
     {
         return ComponentTypeId::get<T>();
     }
 
     template <class T>
-    auto ComponentBase<T>::getTypeId() -> uint32_t
+    auto ComponentBase<T>::getTypeId() -> u32
     {
         return getId();
     }

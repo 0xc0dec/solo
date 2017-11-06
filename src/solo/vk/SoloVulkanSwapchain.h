@@ -12,7 +12,6 @@
 #include "SoloVulkan.h"
 #include "SoloVulkanImage.h"
 #include "SoloVulkanRenderPass.h"
-#include <vector>
 
 namespace solo
 {
@@ -26,7 +25,7 @@ namespace solo
         public:
             Swapchain() {}
 
-            Swapchain(Renderer *renderer, SDLDevice *device, uint32_t width, uint32_t height, bool vsync);
+            Swapchain(Renderer *renderer, SDLDevice *device, u32 width, u32 height, bool vsync);
             Swapchain(const Swapchain &other) = delete;
             Swapchain(Swapchain &&other) = default;
 
@@ -43,7 +42,7 @@ namespace solo
 
             void recordCommandBuffers(std::function<void(VkFramebuffer, VkCommandBuffer)> issueCommands);
             auto acquireNext() -> VkSemaphore;
-            void presentNext(VkQueue queue, uint32_t waitSemaphoreCount, const VkSemaphore *waitSemaphores);
+            void presentNext(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores);
 
         private:
             struct Step
@@ -57,11 +56,11 @@ namespace solo
             VkDevice device = nullptr;
             Resource<VkSwapchainKHR> swapchain;
             Image depthStencil;
-            std::vector<Step> steps;
+            vec<Step> steps;
             Resource<VkSemaphore> presentCompleteSem;
             Resource<VkSemaphore> renderCompleteSem;
             RenderPass renderPass;
-            uint32_t nextStep = 0;
+            u32 nextStep = 0;
         };
     }
 }

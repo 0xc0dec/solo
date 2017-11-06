@@ -7,8 +7,6 @@
 
 #ifdef SL_VULKAN_RENDERER
 
-#include <array>
-
 using namespace solo;
 using namespace vk;
 
@@ -31,7 +29,7 @@ RenderPass::RenderPass(VkDevice device, const RenderPassConfig &config):
     subpass.preserveAttachmentCount = 0;
     subpass.pPreserveAttachments = nullptr;
 
-	std::array<VkSubpassDependency, 2> dependencies;
+	arr<VkSubpassDependency, 2> dependencies;
 
 	dependencies[0].srcSubpass = VK_SUBPASS_EXTERNAL;
 	dependencies[0].dstSubpass = 0;
@@ -66,7 +64,7 @@ RenderPass::RenderPass(VkDevice device, const RenderPassConfig &config):
     this->pass = std::move(pass);
 }
 
-void RenderPass::begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, uint32_t canvasWidth, uint32_t canvasHeight)
+void RenderPass::begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight)
 {
     VkRenderPassBeginInfo info{};
     info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;

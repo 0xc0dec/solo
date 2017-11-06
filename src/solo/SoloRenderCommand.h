@@ -34,7 +34,7 @@ namespace solo
             {
                 Mesh *mesh;
                 Transform *transform;
-                uint32_t part;
+                u32 part;
                 Material *material;
             } meshPart;
 
@@ -73,7 +73,7 @@ namespace solo
             return cmd;
         }
 
-        static auto drawMeshPart(Mesh *mesh, uint32_t part, Transform *transform, Material *material) -> RenderCommand
+        static auto drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material) -> RenderCommand
         {
             auto cmd = RenderCommand(RenderCommandType::DrawMeshPart);
             cmd.meshPart.mesh = mesh;

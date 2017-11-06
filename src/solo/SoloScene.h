@@ -28,19 +28,19 @@ namespace solo
 
         auto createNode() -> sptr<Node>;
 
-        auto findComponent(uint32_t nodeId, uint32_t typeId) const -> Component*;
-        void addComponent(uint32_t nodeId, sptr<Component> cmp);
-        void removeComponent(uint32_t nodeId, uint32_t typeId);
+        auto findComponent(u32 nodeId, u32 typeId) const -> Component*;
+        void addComponent(u32 nodeId, sptr<Component> cmp);
+        void removeComponent(u32 nodeId, u32 typeId);
 
         void visit(std::function<void(Component*)> accept);
-        void visitByTags(uint32_t tagMask, std::function<void(Component*)> accept);
+        void visitByTags(u32 tagMask, std::function<void(Component*)> accept);
 
     private:
-        using NodeComponents = umap<uint32_t, sptr<Component>>;
-        using NodesWithComponents = umap<uint32_t, NodeComponents>;
+        using NodeComponents = umap<u32, sptr<Component>>;
+        using NodesWithComponents = umap<u32, NodeComponents>;
 
         Device *device = nullptr;
-        uint32_t nodeCounter = 0;
+        u32 nodeCounter = 0;
         NodesWithComponents nodes;
 
         explicit Scene(Device *device);

@@ -77,7 +77,7 @@ static void removeComponent(Node *node, const str &name)
         SL_PANIC(SL_FMT("Unknown standard component ", name));
 }
 
-static auto findScriptComponent(Node *node, uint32_t typeId) -> LuaRef
+static auto findScriptComponent(Node *node, u32 typeId) -> LuaRef
 {
     const auto cmp = node->getScene()->findComponent(node->getId(), typeId + lua::ScriptComponent::MinComponentTypeId);
     if (cmp)
@@ -97,7 +97,7 @@ static void addScriptComponent(Node *node, LuaRef scriptComponent)
 
 static void removeScriptComponent(Node *node, LuaRef scriptComponent)
 {
-    const auto typeId = scriptComponent.get<uint32_t>("typeId") + lua::ScriptComponent::MinComponentTypeId;
+    const auto typeId = scriptComponent.get<u32>("typeId") + lua::ScriptComponent::MinComponentTypeId;
     node->getScene()->removeComponent(node->getId(), typeId);
 }
 

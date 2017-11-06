@@ -42,7 +42,7 @@ static auto toInternalFormat(TextureFormat format) -> GLenum
     }
 }
 
-static void applyRectWrap(GLenum target, uint32_t flags)
+static void applyRectWrap(GLenum target, u32 flags)
 {
     GLenum wrapS = 0;
     if (flags & TextureFlags::HorizontalWrapClamp)
@@ -61,7 +61,7 @@ static void applyRectWrap(GLenum target, uint32_t flags)
         glTexParameteri(target, GL_TEXTURE_WRAP_T, wrapT);
 }
 
-static void applyDepthWrap(uint32_t flags)
+static void applyDepthWrap(u32 flags)
 {
     GLenum wrapR = 0;
     if (flags & TextureFlags::DepthWrapClamp)
@@ -72,7 +72,7 @@ static void applyDepthWrap(uint32_t flags)
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, wrapR);
 }
 
-static void applyMinFilter(GLenum target, uint32_t flags)
+static void applyMinFilter(GLenum target, u32 flags)
 {
     GLenum minFilter = 0;
     if (flags & TextureFlags::MinFilterLinear)
@@ -92,7 +92,7 @@ static void applyMinFilter(GLenum target, uint32_t flags)
         glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minFilter);
 }
 
-static void applyMagFilter(GLenum target, uint32_t flags)
+static void applyMagFilter(GLenum target, u32 flags)
 {
     GLenum magFilter = 0;
     if (flags & TextureFlags::MagFilterLinear)
@@ -214,7 +214,7 @@ void gl::CubeTexture::setData(CubeTextureData *data)
 
     for (int i = 0; i < 6; ++i)
     {
-        const auto face = static_cast<CubeTextureFace>(static_cast<uint32_t>(CubeTextureFace::Front) + i);
+        const auto face = static_cast<CubeTextureFace>(static_cast<u32>(CubeTextureFace::Front) + i);
         const auto glFace = toCubeMapFace(face);
         const auto internalFormat = toInternalFormat(data->getFormat()); // TODO pass 'face' instead of 'i'
         const auto fmt = toFormat(data->getFormat());

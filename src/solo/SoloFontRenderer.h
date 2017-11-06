@@ -8,7 +8,6 @@
 #include "SoloComponent.h"
 #include "SoloVector2.h"
 #include "SoloVector3.h"
-#include <vector>
 
 namespace solo
 {
@@ -34,9 +33,9 @@ namespace solo
         sptr<Font> font;
         sptr<Mesh> mesh;
         sptr<Material> material;
-        std::vector<Vector3> vertices;
-        std::vector<Vector2> uvs;
-        std::vector<uint16_t> indexes;
+        vec<Vector3> vertices;
+        vec<Vector2> uvs;
+        vec<uint16_t> indexes;
         str text;
 
         void rebuildMesh();

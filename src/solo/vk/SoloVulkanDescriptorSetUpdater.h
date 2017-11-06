@@ -20,9 +20,9 @@ namespace solo
         public:
             explicit DescriptorSetUpdater(VkDevice device);
 
-            auto forUniformBuffer(uint32_t binding, VkDescriptorSet set, VkBuffer buffer, VkDeviceSize offset,
+            auto forUniformBuffer(u32 binding, VkDescriptorSet set, VkBuffer buffer, VkDeviceSize offset,
                 VkDeviceSize range) -> DescriptorSetUpdater&;
-            auto forTexture(uint32_t binding, VkDescriptorSet set, VkImageView view, VkSampler sampler,
+            auto forTexture(u32 binding, VkDescriptorSet set, VkImageView view, VkSampler sampler,
                 VkImageLayout layout) -> DescriptorSetUpdater&;
 
             void updateSets();
@@ -32,12 +32,12 @@ namespace solo
             {
                 VkDescriptorBufferInfo buffer;
                 VkDescriptorImageInfo image;
-                uint32_t binding;
+                u32 binding;
                 VkDescriptorSet targetSet;
             };
 
             VkDevice device = nullptr;
-            std::vector<Item> items;
+            vec<Item> items;
         };
     }
 }

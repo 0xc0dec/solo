@@ -14,28 +14,28 @@ namespace solo
         class Mesh final : public solo::Mesh
         {
         public:
-            auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t override final
+            auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override final
             {
                 return 0;
             }
             
-            auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t override final
+            auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override final
             {
                 return 0;
             }
 
-            void updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const void *data, uint32_t vertexCount) override final {}
+            void updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount) override final {}
 
-            void removeVertexBuffer(uint32_t index) override final {}
+            void removeVertexBuffer(u32 index) override final {}
 
-            auto addPart(const void *indexData, uint32_t indexElementCount) -> uint32_t override final
+            auto addPart(const void *indexData, u32 indexElementCount) -> u32 override final
             {
                 return 0;
             }
 
-            void removePart(uint32_t index) override final {}
+            void removePart(u32 index) override final {}
 
-            auto getPartCount() const -> uint32_t override
+            auto getPartCount() const -> u32 override
             {
                 return 0;
             }

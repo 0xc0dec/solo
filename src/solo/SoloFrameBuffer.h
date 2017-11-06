@@ -7,7 +7,6 @@
 
 #include "SoloCommon.h"
 #include "SoloVector2.h"
-#include <vector>
 
 namespace solo
 {
@@ -23,7 +22,7 @@ namespace solo
 
         virtual ~FrameBuffer() {}
 
-        virtual void setAttachments(const std::vector<sptr<Texture2d>> &attachments) = 0;
+        virtual void setAttachments(const vec<sptr<Texture2d>> &attachments) = 0;
 
         auto getDimensions() const -> Vector2 { return dimensions; }
 

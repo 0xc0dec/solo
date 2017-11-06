@@ -48,7 +48,7 @@ auto bullet::Physics::castRay(const Vector3 &from, const Vector3 &to) -> Raycast
     return RaycastResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld), SL_FROMBTVEC3(callback.m_hitNormalWorld));
 }
 
-auto bullet::Physics::castRayAll(const Vector3 &from, const Vector3 &to) -> std::vector<RaycastResult>
+auto bullet::Physics::castRayAll(const Vector3 &from, const Vector3 &to) -> vec<RaycastResult>
 {
     auto btFrom = SL_TOBTVEC3(from);
     auto btTo = SL_TOBTVEC3(to);
@@ -59,7 +59,7 @@ auto bullet::Physics::castRayAll(const Vector3 &from, const Vector3 &to) -> std:
     if (size == 0)
         return {};
 
-    auto result = std::vector<RaycastResult>();
+    auto result = vec<RaycastResult>();
     for (size_t i = 0; i < size; i++)
     {
         auto body = dynamic_cast<const btRigidBody *>(callback.m_collisionObjects[i]);

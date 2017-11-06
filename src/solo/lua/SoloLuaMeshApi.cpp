@@ -8,22 +8,22 @@
 
 using namespace solo;
 
-static auto addVertexBuffer(Mesh *mesh, const VertexBufferLayout &layout, const std::vector<float> &data, uint32_t vertexCount) -> uint32_t
+static auto addVertexBuffer(Mesh *mesh, const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32
 {
     return mesh->addVertexBuffer(layout, data.data(), vertexCount);
 }
 
-static auto addDynamicVertexBuffer(Mesh *mesh, const VertexBufferLayout &layout, const std::vector<float> &data, uint32_t vertexCount) -> uint32_t
+static auto addDynamicVertexBuffer(Mesh *mesh, const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32
 {
     return mesh->addDynamicVertexBuffer(layout, data.data(), vertexCount);
 }
 
-static void updateDynamicVertexBuffer(Mesh *mesh, uint32_t index, uint32_t vertexOffset, const std::vector<float> &data, uint32_t vertexCount)
+static void updateDynamicVertexBuffer(Mesh *mesh, u32 index, u32 vertexOffset, const vec<float> &data, u32 vertexCount)
 {
     mesh->updateDynamicVertexBuffer(index, vertexOffset, data.data(), vertexCount);
 }
 
-static auto addPart(Mesh *mesh, const std::vector<uint16_t> &indexData, uint32_t indexElementCount) -> uint32_t
+static auto addPart(Mesh *mesh, const vec<uint16_t> &indexData, u32 indexElementCount) -> u32
 {
     return mesh->addPart(indexData.data(), indexElementCount);
 }

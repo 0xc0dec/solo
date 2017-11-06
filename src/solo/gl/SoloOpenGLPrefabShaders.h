@@ -17,14 +17,14 @@ namespace solo
         {
             struct Vertex
             {
-                static const char *skybox;
-                static const char *positionAndTexCoord;
+                static const s8 *skybox;
+                static const s8 *positionAndTexCoord;
             };
 
             struct Fragment
             {
-                static const char *skybox;
-                static const char *font;
+                static const s8 *skybox;
+                static const s8 *font;
             };
         };
     }

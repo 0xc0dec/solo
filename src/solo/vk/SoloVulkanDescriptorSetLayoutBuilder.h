@@ -20,14 +20,14 @@ namespace solo
         public:
             explicit DescriptorSetLayoutBuilder(VkDevice device);
 
-            auto withBinding(uint32_t binding, VkDescriptorType descriptorType, uint32_t descriptorCount,
+            auto withBinding(u32 binding, VkDescriptorType descriptorType, u32 descriptorCount,
                 VkShaderStageFlagBits stageFlags) -> DescriptorSetLayoutBuilder&;
 
             auto build() -> Resource<VkDescriptorSetLayout>;
 
         private:
             VkDevice device = nullptr;
-            std::vector<VkDescriptorSetLayoutBinding> bindings;
+            vec<VkDescriptorSetLayoutBinding> bindings;
         };
     }
 }

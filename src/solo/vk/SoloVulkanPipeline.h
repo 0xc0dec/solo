@@ -22,9 +22,9 @@ namespace solo
             PipelineConfig(VkShaderModule vertexShader, VkShaderModule fragmentShader);
             ~PipelineConfig(){}
 
-            auto withVertexAttribute(uint32_t location, uint32_t binding, VkFormat format, uint32_t offset) -> PipelineConfig&;
-            auto withVertexBinding(uint32_t binding, uint32_t stride, VkVertexInputRate inputRate) -> PipelineConfig&;
-            auto withVertexBufferLayout(uint32_t binding, const VertexBufferLayout &layout) -> PipelineConfig&; // TODO rename
+            auto withVertexAttribute(u32 location, u32 binding, VkFormat format, u32 offset) -> PipelineConfig&;
+            auto withVertexBinding(u32 binding, u32 stride, VkVertexInputRate inputRate) -> PipelineConfig&;
+            auto withVertexBufferLayout(u32 binding, const VertexBufferLayout &layout) -> PipelineConfig&; // TODO rename
 
             auto withDescriptorSetLayout(VkDescriptorSetLayout layout) -> PipelineConfig&;
 
@@ -48,9 +48,9 @@ namespace solo
             VkPipelineDepthStencilStateCreateInfo depthStencilStateInfo;
             VkPipelineColorBlendAttachmentState blendAttachmentState;
 
-            std::vector<VkVertexInputAttributeDescription> vertexAttrs;
-            std::vector<VkVertexInputBindingDescription> vertexBindings;
-            std::vector<VkDescriptorSetLayout> descSetLayouts;
+            vec<VkVertexInputAttributeDescription> vertexAttrs;
+            vec<VkVertexInputBindingDescription> vertexBindings;
+            vec<VkDescriptorSetLayout> descSetLayouts;
 
             VkPrimitiveTopology topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
         };

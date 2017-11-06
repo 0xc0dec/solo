@@ -24,25 +24,25 @@ namespace solo
         public:
             struct UniformBufferMemberInfo
             {
-                uint32_t offset;
-                uint32_t size;
+                u32 offset;
+                u32 size;
             };
 
             struct UniformBufferInfo
             {
                 umap<str, UniformBufferMemberInfo> members;
-                uint32_t binding;
-                uint32_t size;
+                u32 binding;
+                u32 size;
             };
 
             struct SamplerInfo
             {
-                uint32_t binding;
+                u32 binding;
             };
 
             static auto createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effect>;
 
-            Effect(Device *device, const void *vsSrc, uint32_t vsSrcLen, const void *fsSrc, uint32_t fsSrcLen);
+            Effect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen);
             ~Effect();
 
             auto getVertexShader() const -> VkShaderModule { return vertexShader; }
@@ -61,7 +61,7 @@ namespace solo
             umap<str, UniformBufferInfo> uniformBuffers;
             umap<str, SamplerInfo> samplers;
 
-            void introspectShader(const uint32_t *src, uint32_t len);
+            void introspectShader(const u32 *src, u32 len);
         };
     }
 }

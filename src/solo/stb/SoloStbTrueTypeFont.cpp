@@ -14,13 +14,13 @@
 
 using namespace solo;
 
-stb::TrueTypeFont::TrueTypeFont(Device *device, uint8_t *fontData, uint32_t size, uint32_t atlasWidth, uint32_t atlasHeight,
-    uint32_t firstChar, uint32_t charCount, uint32_t oversampleX, uint32_t oversampleY):
+stb::TrueTypeFont::TrueTypeFont(Device *device, u8 *fontData, u32 size, u32 atlasWidth, u32 atlasHeight,
+    u32 firstChar, u32 charCount, u32 oversampleX, u32 oversampleY):
     firstChar(firstChar)
 {
     charInfo = std::make_unique<stbtt_packedchar[]>(charCount);
 
-    std::vector<uint8_t> pixels;
+    vec<u8> pixels;
     pixels.resize(atlasWidth * atlasHeight);
 
     stbtt_pack_context context;
@@ -37,12 +37,12 @@ stb::TrueTypeFont::TrueTypeFont(Device *device, uint8_t *fontData, uint32_t size
     atlas->generateMipmaps();
 }
 
-auto stb::TrueTypeFont::getGlyphInfo(uint32_t character, float offsetX, float offsetY) -> GlyphInfo
+auto stb::TrueTypeFont::getGlyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo
 {
     stbtt_aligned_quad quad;
     const auto atlasSize = atlas->getDimensions();
 
-    stbtt_GetPackedQuad(charInfo.get(), static_cast<uint32_t>(atlasSize.x), static_cast<uint32_t>(atlasSize.y),
+    stbtt_GetPackedQuad(charInfo.get(), static_cast<u32>(atlasSize.x), static_cast<u32>(atlasSize.y),
     character - firstChar, &offsetX, &offsetY, &quad, 1);
     auto xmin = quad.x0;
     auto xmax = quad.x1;
@@ -76,9 +76,9 @@ bool stb::TrueTypeFont::canLoadFromFile(const str &path)
 }
 
 auto stb::TrueTypeFont::loadFromFile(Device *device, const str &path,
-    uint32_t size, uint32_t atlasWidth,
-    uint32_t atlasHeight, uint32_t firstChar, uint32_t charCount, uint32_t oversampleX,
-    uint32_t oversampleY) -> sptr<TrueTypeFont>
+    u32 size, u32 atlasWidth,
+    u32 atlasHeight, u32 firstChar, u32 charCount, u32 oversampleX,
+    u32 oversampleY) -> sptr<TrueTypeFont>
 {
     auto data = device->getFileSystem()->readBytes(path);
     return std::make_shared<TrueTypeFont>(device, data.data(), size, atlasWidth, atlasHeight, firstChar, charCount, oversampleX, oversampleY);

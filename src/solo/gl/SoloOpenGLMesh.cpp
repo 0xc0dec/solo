@@ -58,7 +58,7 @@ auto gl::Mesh::getOrCreateVertexArray(gl::Effect *effect) -> GLuint
 
     glBindVertexArray(handle);
 
-    for (uint32_t i = 0; i < vertexBuffers.size(); i++)
+    for (u32 i = 0; i < vertexBuffers.size(); i++)
     {
         const auto &bufferHandle = vertexBuffers.at(i);
         const auto &layout = layouts.at(i);
@@ -68,8 +68,8 @@ auto gl::Mesh::getOrCreateVertexArray(gl::Effect *effect) -> GLuint
 
         glBindBuffer(GL_ARRAY_BUFFER, bufferHandle);
 
-        uint32_t offset = 0;
-        for (uint32_t j = 0; j < attrCount; j++)
+        u32 offset = 0;
+        for (u32 j = 0; j < attrCount; j++)
         {
             const auto attr = layout.getAttribute(j);
             const auto stride = layout.getSize();
@@ -117,7 +117,7 @@ void gl::Mesh::flushVertexArrayCache()
 
 void gl::Mesh::updateMinVertexCount()
 {
-    constexpr auto max = (std::numeric_limits<uint32_t>::max)();
+    constexpr auto max = (std::numeric_limits<u32>::max)();
 
     minVertexCount = max;
 
@@ -128,17 +128,17 @@ void gl::Mesh::updateMinVertexCount()
         minVertexCount = 0;
 }
 
-auto gl::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
+auto gl::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
 {
     return addVertexBuffer(layout, data, vertexCount, false);
 }
 
-auto gl::Mesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount) -> uint32_t
+auto gl::Mesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
 {
     return addVertexBuffer(layout, data, vertexCount, true);
 }
 
-auto gl::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, uint32_t vertexCount, bool dynamic) -> uint32_t
+auto gl::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount, bool dynamic) -> u32
 {
     GLuint handle = 0;
     glGenBuffers(1, &handle);
@@ -156,10 +156,10 @@ auto gl::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *dat
     updateMinVertexCount();
     resetVertexArrayCache();
 
-    return static_cast<uint32_t>(vertexBuffers.size() - 1);
+    return static_cast<u32>(vertexBuffers.size() - 1);
 }
 
-void gl::Mesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, const void *data, uint32_t vertexCount)
+void gl::Mesh::updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount)
 {
     const auto vertexSize = vertexSizes.at(index);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers.at(index));
@@ -167,7 +167,7 @@ void gl::Mesh::updateDynamicVertexBuffer(uint32_t index, uint32_t vertexOffset, 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void gl::Mesh::removeVertexBuffer(uint32_t index)
+void gl::Mesh::removeVertexBuffer(u32 index)
 {
     auto handle = vertexBuffers.at(index);
     glDeleteBuffers(1, &handle);
@@ -181,7 +181,7 @@ void gl::Mesh::removeVertexBuffer(uint32_t index)
     resetVertexArrayCache();
 }
 
-auto gl::Mesh::addPart(const void *data, uint32_t elementCount) -> uint32_t
+auto gl::Mesh::addPart(const void *data, u32 elementCount) -> u32
 {
     GLuint handle = 0;
     glGenBuffers(1, &handle);
@@ -194,10 +194,10 @@ auto gl::Mesh::addPart(const void *data, uint32_t elementCount) -> uint32_t
     indexBuffers.push_back(handle);
     indexElementCounts.push_back(elementCount);
 
-    return static_cast<uint32_t>(indexBuffers.size() - 1);
+    return static_cast<u32>(indexBuffers.size() - 1);
 }
 
-void gl::Mesh::removePart(uint32_t part)
+void gl::Mesh::removePart(u32 part)
 {
     auto handle = indexBuffers.at(part);
     glDeleteBuffers(1, &handle);
@@ -223,7 +223,7 @@ void gl::Mesh::draw(gl::Effect *effect)
     }
 }
 
-void gl::Mesh::drawPart(uint32_t part, gl::Effect *effect)
+void gl::Mesh::drawPart(u32 part, gl::Effect *effect)
 {
     const auto va = getOrCreateVertexArray(effect);
     flushVertexArrayCache();

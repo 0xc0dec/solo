@@ -8,8 +8,6 @@
 #include "SoloCommon.h"
 #include "SoloSpinLock.h"
 #include <functional>
-#include <vector>
-#include <list>
 #include <future>
 
 namespace solo
@@ -36,10 +34,10 @@ namespace solo
     {
     public:
         using Producer = std::function<sptr<T>()>;
-        using Producers = std::vector<Producer>;
-        using Consumer = std::function<void(const std::vector<sptr<T>> &)>;
+        using Producers = vec<Producer>;
+        using Consumer = std::function<void(const vec<sptr<T>> &)>;
 
-        JobBase(const std::vector<Producer> &funcs, const Consumer &onDone):
+        JobBase(const vec<Producer> &funcs, const Consumer &onDone):
             callback(onDone)
         {
             for (auto &func : funcs)
@@ -80,8 +78,8 @@ namespace solo
         }
 
     private:
-        std::vector<std::future<sptr<T>>> futures;
-        std::vector<sptr<T>> results;
+        vec<std::future<sptr<T>>> futures;
+        vec<sptr<T>> results;
         Consumer callback;
     };
 
@@ -97,7 +95,7 @@ namespace solo
         void update();
 
     private:
-        std::list<sptr<Job>> jobs;
+        list<sptr<Job>> jobs;
         bool anyActiveJobs = false;
         SpinLock lock;
     };

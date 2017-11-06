@@ -14,14 +14,14 @@ vk::DescriptorSetUpdater::DescriptorSetUpdater(VkDevice device):
 {
 }
 
-auto vk::DescriptorSetUpdater::forUniformBuffer(uint32_t binding, VkDescriptorSet set, VkBuffer buffer,
+auto vk::DescriptorSetUpdater::forUniformBuffer(u32 binding, VkDescriptorSet set, VkBuffer buffer,
     VkDeviceSize offset, VkDeviceSize range) -> DescriptorSetUpdater&
 {
     items.push_back({{buffer, offset, range}, {}, binding, set});
     return *this;
 }
 
-auto vk::DescriptorSetUpdater::forTexture(uint32_t binding, VkDescriptorSet set, VkImageView view,
+auto vk::DescriptorSetUpdater::forTexture(u32 binding, VkDescriptorSet set, VkImageView view,
     VkSampler sampler, VkImageLayout layout) -> DescriptorSetUpdater&
 {
     items.push_back({{}, {sampler, view, layout}, binding, set});
@@ -30,7 +30,7 @@ auto vk::DescriptorSetUpdater::forTexture(uint32_t binding, VkDescriptorSet set,
 
 void vk::DescriptorSetUpdater::updateSets()
 {
-    std::vector<VkWriteDescriptorSet> writes;
+    vec<VkWriteDescriptorSet> writes;
 
     for (const auto &item: items)
     {

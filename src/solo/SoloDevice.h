@@ -126,8 +126,8 @@ namespace solo
         umap<KeyCode, bool> pressedKeys;
         uset<KeyCode> releasedKeys;
 
-        int32_t mouseDeltaX = 0;
-        int32_t mouseDeltaY = 0;
+        s32 mouseDeltaX = 0;
+        s32 mouseDeltaY = 0;
         umap<MouseButton, bool> pressedMouseButtons;
         uset<MouseButton> releasedMouseButtons;
 

@@ -11,7 +11,7 @@ namespace solo
     class InMemoryTexture2dData final: public Texture2dData
     {
     public:
-        explicit InMemoryTexture2dData(uint32_t width, uint32_t height, TextureFormat format, const std::vector<uint8_t> &data):
+        explicit InMemoryTexture2dData(u32 width, u32 height, TextureFormat format, const vec<u8> &data):
             width(width),
             height(height),
             format(format),
@@ -19,26 +19,26 @@ namespace solo
         {
         }
 
-        auto getMipLevels() const -> uint32_t override final { return 1; }
+        auto getMipLevels() const -> u32 override final { return 1; }
         
-        auto getSize() const -> uint32_t override final { return data.size(); }
-        auto getSize(uint32_t mipLevel) const -> uint32_t override final { return getSize(); }
+        auto getSize() const -> u32 override final { return data.size(); }
+        auto getSize(u32 mipLevel) const -> u32 override final { return getSize(); }
 
-        auto getWidth() const -> uint32_t override final { return width; }
-        auto getWidth(uint32_t mipLevel) const -> uint32_t override { return getWidth(); }
+        auto getWidth() const -> u32 override final { return width; }
+        auto getWidth(u32 mipLevel) const -> u32 override { return getWidth(); }
 
-        auto getHeight() const -> uint32_t override final { return height; }
-        auto getHeight(uint32_t mipLevel) const -> uint32_t override final { return getHeight(); }
+        auto getHeight() const -> u32 override final { return height; }
+        auto getHeight(u32 mipLevel) const -> u32 override final { return getHeight(); }
 
         auto getData() const -> const void* override final { return data.data(); }
 
         auto getFormat() const -> TextureFormat override final { return format; }
 
     private:
-        uint32_t width;
-        uint32_t height;
+        u32 width;
+        u32 height;
         TextureFormat format;
-        std::vector<uint8_t> data;
+        vec<u8> data;
     };
 }
 
@@ -52,8 +52,8 @@ auto Texture2dData::loadFromFile(Device *device, const str &path) -> sptr<Textur
     return nullptr;
 }
 
-auto Texture2dData::createFromMemory(uint32_t width, uint32_t height, TextureFormat format,
-    const std::vector<uint8_t> &data) -> sptr<Texture2dData>
+auto Texture2dData::createFromMemory(u32 width, u32 height, TextureFormat format,
+    const vec<u8> &data) -> sptr<Texture2dData>
 {
     return std::make_shared<InMemoryTexture2dData>(width, height, format, data);
 }

@@ -53,7 +53,7 @@ Pipeline::Pipeline(VkDevice device, VkRenderPass renderPass, const PipelineConfi
     const auto vertexShaderStageInfo = createShaderStageInfo(true, config.vertexShader, "main");
     const auto fragmentShaderStageInfo = createShaderStageInfo(false, config.fragmentShader, "main");
 
-    std::vector<VkPipelineShaderStageCreateInfo> shaderStageStates{vertexShaderStageInfo, fragmentShaderStageInfo};
+    vec<VkPipelineShaderStageCreateInfo> shaderStageStates{vertexShaderStageInfo, fragmentShaderStageInfo};
 
     VkPipelineVertexInputStateCreateInfo vertexInputState{};
     vertexInputState.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
@@ -80,7 +80,7 @@ Pipeline::Pipeline(VkDevice device, VkRenderPass renderPass, const PipelineConfi
     viewportState.scissorCount = 1;
     viewportState.pScissors = nullptr;
 
-    std::vector<VkDynamicState> dynamicStates = { VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR };
+    vec<VkDynamicState> dynamicStates = { VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR };
     VkPipelineDynamicStateCreateInfo dynamicState{};
     dynamicState.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
     dynamicState.pNext = nullptr;
@@ -154,7 +154,7 @@ PipelineConfig::PipelineConfig(VkShaderModule vertexShader, VkShaderModule fragm
     blendAttachmentState.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
 }
 
-auto PipelineConfig::withVertexAttribute(uint32_t location, uint32_t binding, VkFormat format, uint32_t offset) -> PipelineConfig&
+auto PipelineConfig::withVertexAttribute(u32 location, u32 binding, VkFormat format, u32 offset) -> PipelineConfig&
 {
     if (location >= vertexAttrs.size())
         vertexAttrs.resize(location + 1);
@@ -165,7 +165,7 @@ auto PipelineConfig::withVertexAttribute(uint32_t location, uint32_t binding, Vk
     return *this;
 }
 
-auto PipelineConfig::withVertexBinding(uint32_t binding, uint32_t stride, VkVertexInputRate inputRate) -> PipelineConfig&
+auto PipelineConfig::withVertexBinding(u32 binding, u32 stride, VkVertexInputRate inputRate) -> PipelineConfig&
 {
     if (binding >= vertexBindings.size())
         vertexBindings.resize(binding + 1);
@@ -175,7 +175,7 @@ auto PipelineConfig::withVertexBinding(uint32_t binding, uint32_t stride, VkVert
     return *this;
 }
 
-auto PipelineConfig::withVertexBufferLayout(uint32_t binding, const VertexBufferLayout &layout) -> PipelineConfig&
+auto PipelineConfig::withVertexBufferLayout(u32 binding, const VertexBufferLayout &layout) -> PipelineConfig&
 {
     withVertexBinding(binding, layout.getSize(), VK_VERTEX_INPUT_RATE_VERTEX);
 

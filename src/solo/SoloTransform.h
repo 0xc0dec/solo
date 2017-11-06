@@ -10,7 +10,6 @@
 #include "SoloQuaternion.h"
 #include "SoloMatrix.h"
 #include "SoloNode.h"
-#include <vector>
 
 namespace solo
 {
@@ -47,8 +46,8 @@ namespace solo
         void setParent(Transform *parent);
         auto getParent() const -> Transform* { return parent; }
         
-        auto getChild(uint32_t index) const -> Transform* { return children[index]; }
-        auto getChildrenCount() const -> uint32_t { return static_cast<uint32_t>(children.size()); }
+        auto getChild(u32 index) const -> Transform* { return children[index]; }
+        auto getChildrenCount() const -> u32 { return static_cast<u32>(children.size()); }
         void clearChildren();
 
         auto getWorldScale() const -> Vector3 { return getWorldMatrix().getScale(); }
@@ -103,11 +102,11 @@ namespace solo
         auto transformDirection(const Vector3 &direction) const -> Vector3;
 
     private:
-        mutable uint32_t dirtyFlags = ~0;
+        mutable u32 dirtyFlags = ~0;
 
         Transform *parent = nullptr;
-        std::vector<Transform *> children;
-        std::vector<TransformCallback *> callbacks;
+        vec<Transform *> children;
+        vec<TransformCallback *> callbacks;
 
         Vector3 localPosition;
         Vector3 localScale;
@@ -116,8 +115,8 @@ namespace solo
         mutable Matrix worldMatrix;
         mutable Matrix invTransposedWorldMatrix;
 
-        void setDirtyWithChildren(uint32_t flags) const;
-        void setChildrenDirty(uint32_t flags) const;
+        void setDirtyWithChildren(u32 flags) const;
+        void setChildrenDirty(u32 flags) const;
         void notifyChanged() const;
     };
 }

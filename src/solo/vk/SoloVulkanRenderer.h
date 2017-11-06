@@ -67,8 +67,8 @@ namespace solo
             Resource<VkDebugReportCallbackEXT> debugCallback;
             Swapchain swapchain;
 
-            std::vector<RenderCommand> renderCommands;
-            std::vector<Pipeline> pipelines;
+            vec<RenderCommand> renderCommands;
+            vec<Pipeline> pipelines;
 
             void recordRenderCommands(VkCommandBuffer buf, RenderPass &renderPass, VkFramebuffer frameBuffer);
         };
