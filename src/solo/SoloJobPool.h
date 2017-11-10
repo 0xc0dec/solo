@@ -65,7 +65,7 @@ namespace solo
                     if (results[i])
                         readyCount++;
                     else
-                        throw std::exception();
+                        throw EngineException("Failed to obtain job result"); // TODO less generic message
                 }
                 i++;
             }
