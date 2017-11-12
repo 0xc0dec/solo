@@ -59,6 +59,11 @@ local attachAxes = createAxesAttacher(dev, effects)
 attachAxes(monitorQuad)
 attachAxes(transparentQuad)
 
+local originAxesNode = scene:createNode()
+attachAxes(originAxesNode)
+
+--- 
+
 local run = function()
     local keepRunning = function()
         return (
