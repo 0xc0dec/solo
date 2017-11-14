@@ -281,7 +281,7 @@ void vk::Renderer::recordRenderCommands(VkCommandBuffer buf, RenderPass &renderP
                     binding.descSet = binding.descPool.allocateSet(binding.descSetLayout);
 
                     // TODO Invoke updater outside of the binding initialization because at least
-                    // material sampeler parameters may change in future
+                    // material sampler parameters may change in future
 
                     // TODO Invoke updater not so often - only when something really changes
                     DescriptorSetUpdater updater{device};
@@ -314,7 +314,7 @@ void vk::Renderer::recordRenderCommands(VkCommandBuffer buf, RenderPass &renderP
 
                 auto pipelineConfig = PipelineConfig(vs, fs)
                     .withDescriptorSetLayout(binding.descSetLayout)
-                    .withFrontFace(VK_FRONT_FACE_CLOCKWISE)
+                    .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
                     .withCullMode(material->getCullModeFlags())
                     .withPolygonMode(material->getVkPolygonMode())
                     .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);

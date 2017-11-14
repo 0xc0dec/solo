@@ -14,4 +14,5 @@ void main()
 {
     outTexCood = inTexCoord;
 	gl_Position = matrices.wvp * vec4(inPos.xyz, 1.0);
+    gl_Position.y = -gl_Position.y;
 }

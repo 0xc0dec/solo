@@ -32,6 +32,9 @@ end
 
 function createMainCamera()
     local node = scene:createNode()
+    local t = node:findComponent("Transform")
+    t:setLocalPosition(vec3(5, 6, 7))
+    t:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
     
     local cam = node:addComponent("Camera")
     cam:setClearColor(vec4(0.0, 0.6, 0.6, 1.0))
