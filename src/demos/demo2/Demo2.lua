@@ -8,11 +8,14 @@ package.path = "../../src/demos/common/?.lua;" .. package.path
 
 require "Common"
 
-dev = sl.device
-physics = dev:getPhysics()
-renderer = dev:getRenderer()
-logger = dev:getLogger()
-scene = sl.Scene.create(dev)
+local dev = sl.device
+local physics = dev:getPhysics()
+local renderer = dev:getRenderer()
+local logger = dev:getLogger()
+local fs = dev:getFileSystem()
+local scene = sl.Scene.create(dev)
+
+local createMainCamera = require "MainCamera"
 
 function createMaterial()
     local tex = sl.Texture2d.loadFromFile(dev, getAssetPath("textures/Cobblestone.png"))
@@ -28,21 +31,6 @@ function createMaterial()
     material:setVector2Parameter("test.v2", vec2(0.8, 0.9))
 
     return material
-end
-
-function createMainCamera()
-    local node = scene:createNode()
-    local t = node:findComponent("Transform")
-    t:setLocalPosition(vec3(5, 6, 7))
-    t:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
-    
-    local cam = node:addComponent("Camera")
-    cam:setClearColor(vec4(0.0, 0.6, 0.6, 1.0))
-    cam:setNear(0.05)
-
-    node:addComponent("Spectator")
-
-    return cam
 end
 
 function createCustomMesh(material, position)
@@ -143,7 +131,12 @@ function createAxesAttacher()
 end
 
 local material = createMaterial()
-local camera = createMainCamera()
+
+local camera, cameraNode = createMainCamera(dev, scene)
+local cameraTransform = cameraNode:findComponent("Transform")
+cameraTransform:setLocalPosition(vec3(5, 6, 7))
+cameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
+
 createCustomMesh(material, vec3(-2, 0, 0))
 createMesh(material, vec3(2, 0, 0))
 

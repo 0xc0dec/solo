@@ -44,9 +44,14 @@ local cubeMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Cube)
 local quadMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Quad)
 local effects = createEffects(dev)
 local offscreenCamera, offscreenCameraTex = createOffscreenCamera(dev, scene)
+
 local mainCamera, mainCameraNode = createMainCamera(dev, scene)
 mainCameraNode:addScriptComponent(createSpawnedObjectTargeter(dev:getPhysics()))
 mainCameraNode:addScriptComponent(createSpawner(dev, cubeMesh, effects.color))
+local mainCameraTransform = mainCameraNode:findComponent("Transform")
+mainCameraTransform:setLocalPosition(vec3(0, 5, 10))
+mainCameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
+
 createSkybox(dev, scene, knownTags.skybox)
 createCheckerBox(dev, scene, effects, cubeMesh)
 createDynamicQuad(dev, scene, effects)
@@ -55,12 +60,13 @@ createLoadedMesh(dev, scene, effects)
 createFloor(dev, scene, effects, cubeMesh)
 local monitorQuad = createMonitorQuad(dev, scene, effects, offscreenCameraTex, quadMesh, knownTags.monitor)
 local transparentQuad = createTransparentQuad(dev, scene, effects, quadMesh, knownTags.transparent)
+
 local attachAxes = createAxesAttacher(dev, effects)
 attachAxes(monitorQuad)
 attachAxes(transparentQuad)
 
-local originAxesNode = scene:createNode()
-attachAxes(originAxesNode)
+local originNode = scene:createNode()
+attachAxes(originNode)
 
 --- 
 
