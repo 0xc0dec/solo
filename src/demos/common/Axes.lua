@@ -5,13 +5,22 @@
 
 return function(dev, effectCache)
     local mesh = sl.Mesh.loadFromFile(dev, getAssetPath("meshes/Axes.obj"))
-    local effect = effectCache("shaders/vulkan/Color.vert.spv", "shaders/vulkan/Color.frag.spv")
+    local vsPath = getShaderPath(dev, "Color.vert")
+    local fsPath = getShaderPath(dev, "Color.frag")
+    local effect = effectCache(vsPath, fsPath)
 
     local createColorMaterial = function(color)
         local mat = sl.Material.create(dev, effect)
         mat:setFaceCull(sl.FaceCull.All)
-        mat:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-        mat:setVector4Parameter("variables.color", color)
+
+        if dev:getMode() == sl.DeviceMode.Vulkan then
+            mat:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+            mat:setVector4Parameter("variables.color", color)
+        elseif dev:getMode() == sl.DeviceMode.OpenGL then
+            mat:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+            mat:setVector4Parameter("color", color)
+        end
+
         return mat
     end
 

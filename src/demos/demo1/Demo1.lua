@@ -15,6 +15,7 @@ local logger = dev:getLogger()
 local fs = dev:getFileSystem()
 local scene = sl.Scene.create(dev)
 
+local effectCache = (require "EffectCache")(dev)
 local createMainCamera = require "MainCamera"
 local postProcessors = require "PostProcessors"
 local createRotator = require "Rotator"
@@ -29,9 +30,11 @@ local createCheckerBox = require "CheckerBox"
 local createLoadedMesh = require "LoadedMesh"
 local createOffscreenCamera = require "OffscreenCamera"
 local createEffects = require "Effects"
-local createAxesAttacher = require "Axes"
+local attachAxes = (require "Axes")(dev, effectCache)
 local createSpawner = require "Spawner"
 local createSpawnedObjectTargeter = require "SpawnedObjectTargeter"
+
+---
 
 local knownTags = {
     skybox = 1 << 1,
@@ -58,11 +61,11 @@ createDynamicQuad(dev, scene, effects)
 createTimeLabel(dev, scene, knownTags.transparent)
 createLoadedMesh(dev, scene, effects)
 createFloor(dev, scene, effects, cubeMesh)
-local monitorQuad = createMonitorQuad(dev, scene, effects, offscreenCameraTex, quadMesh, knownTags.monitor)
-local transparentQuad = createTransparentQuad(dev, scene, effects, quadMesh, knownTags.transparent)
 
-local attachAxes = createAxesAttacher(dev, effects)
+local monitorQuad = createMonitorQuad(dev, scene, effects, offscreenCameraTex, quadMesh, knownTags.monitor)
 attachAxes(monitorQuad)
+
+local transparentQuad = createTransparentQuad(dev, scene, effects, quadMesh, knownTags.transparent)
 attachAxes(transparentQuad)
 
 local originNode = scene:createNode()
