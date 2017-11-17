@@ -15,7 +15,7 @@ local logger = dev:getLogger()
 local fs = dev:getFileSystem()
 local scene = sl.Scene.create(dev)
 
-local effectCache = (require "EffectCache")(dev)
+local assetCache = (require "AssetCache")(dev)
 local createMainCamera = require "MainCamera"
 local postProcessors = require "PostProcessors"
 local createRotator = require "Rotator"
@@ -30,7 +30,7 @@ local createCheckerBox = require "CheckerBox"
 local createLoadedMesh = require "LoadedMesh"
 local createOffscreenCamera = require "OffscreenCamera"
 local createEffects = require "Effects"
-local attachAxes = (require "Axes")(dev, effectCache)
+local attachAxes = (require "Axes")(dev, assetCache)
 local createSpawner = require "Spawner"
 local createSpawnedObjectTargeter = require "SpawnedObjectTargeter"
 
@@ -50,7 +50,7 @@ local offscreenCamera, offscreenCameraTex = createOffscreenCamera(dev, scene)
 
 local mainCamera, mainCameraNode = createMainCamera(dev, scene)
 mainCameraNode:addScriptComponent(createSpawnedObjectTargeter(dev:getPhysics()))
-mainCameraNode:addScriptComponent(createSpawner(dev, cubeMesh, effects.color))
+mainCameraNode:addScriptComponent(createSpawner(dev, cubeMesh, assetCache.getEffect("Color.vert", "Color.frag")))
 local mainCameraTransform = mainCameraNode:findComponent("Transform")
 mainCameraTransform:setLocalPosition(vec3(0, 5, 10))
 mainCameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))

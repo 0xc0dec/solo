@@ -3,11 +3,9 @@
 -- MIT license
 -- 
 
-return function(dev, effectCache)
+return function(dev, assetCache)
     local mesh = sl.Mesh.loadFromFile(dev, getAssetPath("meshes/Axes.obj"))
-    local vsPath = getShaderPath(dev, "Color.vert")
-    local fsPath = getShaderPath(dev, "Color.frag")
-    local effect = effectCache(vsPath, fsPath)
+    local effect = assetCache.getEffect("Color.vert", "Color.frag")
 
     local createColorMaterial = function(color)
         local mat = sl.Material.create(dev, effect)

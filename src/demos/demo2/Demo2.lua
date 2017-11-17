@@ -16,14 +16,12 @@ local fs = dev:getFileSystem()
 local scene = sl.Scene.create(dev)
 
 local createMainCamera = require "MainCamera"
-local effectCache = (require "EffectCache")(dev)
-local attachAxes = (require "Axes")(dev, effectCache)
+local assetCache = (require "AssetCache")(dev)
+local attachAxes = (require "Axes")(dev, assetCache)
 
 function createMaterial()
     local tex = sl.Texture2d.loadFromFile(dev, getAssetPath("textures/Cobblestone.png"))
-    local effect = sl.Effect.loadFromFiles(dev,
-        getAssetPath("shaders/vulkan/Test.vert.spv"),
-        getAssetPath("shaders/vulkan/Test.frag.spv"))
+    local effect = assetCache.getEffect("Test.vert", "Test.frag")
     local material = sl.Material.create(dev, effect)
     
     material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
