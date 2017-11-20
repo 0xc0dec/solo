@@ -7,9 +7,9 @@ return function(dev)
     local cache = {}
 
     return {
-        getEffect = function(vsPath, fsPath)
-            vsPath = getShaderPath(dev, vsPath)
-            fsPath = getShaderPath(dev, fsPath)
+        getEffect = function(name)
+            local vsPath = getShaderPath(dev, name .. ".vert")
+            local fsPath = getShaderPath(dev, name .. ".frag")
             local key = vsPath .. fsPath
 
             if not cache[key] then

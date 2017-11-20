@@ -50,7 +50,7 @@ local offscreenCamera, offscreenCameraTex = createOffscreenCamera(dev, scene)
 
 local mainCamera, mainCameraNode = createMainCamera(dev, scene)
 mainCameraNode:addScriptComponent(createSpawnedObjectTargeter(dev:getPhysics()))
-mainCameraNode:addScriptComponent(createSpawner(dev, cubeMesh, assetCache.getEffect("Color.vert", "Color.frag")))
+mainCameraNode:addScriptComponent(createSpawner(dev, cubeMesh, assetCache.getEffect("Color")))
 local mainCameraTransform = mainCameraNode:findComponent("Transform")
 mainCameraTransform:setLocalPosition(vec3(0, 5, 10))
 mainCameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))

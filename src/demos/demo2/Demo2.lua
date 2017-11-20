@@ -21,7 +21,7 @@ local attachAxes = (require "Axes")(dev, assetCache)
 
 function createMaterial()
     local tex = sl.Texture2d.loadFromFile(dev, getAssetPath("textures/Cobblestone.png"))
-    local effect = assetCache.getEffect("Test.vert", "Test.frag")
+    local effect = assetCache.getEffect("Test")
     local material = sl.Material.create(dev, effect)
     
     material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)

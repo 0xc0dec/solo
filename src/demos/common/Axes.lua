@@ -5,7 +5,7 @@
 
 return function(dev, assetCache)
     local mesh = sl.Mesh.loadFromFile(dev, getAssetPath("meshes/Axes.obj"))
-    local effect = assetCache.getEffect("Color.vert", "Color.frag")
+    local effect = assetCache.getEffect("Color")
 
     local createColorMaterial = function(color)
         local mat = sl.Material.create(dev, effect)
