@@ -3,6 +3,17 @@
 -- MIT license
 -- 
 
+function getShaderPath(dev, name)
+    local path = dev:getMode() == sl.DeviceMode.OpenGL and ("shaders/gl/" .. name .. ".glsl") or nil
+    path = dev:getMode() == sl.DeviceMode.Vulkan and ("shaders/vulkan/" .. name .. ".spv") or path
+
+    if not path then
+        error("Could not calculate shader path for " .. name)
+    end
+
+    return getAssetPath(path)
+end
+
 return function(dev)
     local cache = {}
 

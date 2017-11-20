@@ -11,17 +11,6 @@ function getAssetPath(fileName)
     return "../../assets/" .. fileName
 end
 
-function getShaderPath(dev, name)
-    local path = dev:getMode() == sl.DeviceMode.OpenGL and ("shaders/gl/" .. name .. ".glsl") or nil
-    path = dev:getMode() == sl.DeviceMode.Vulkan and ("shaders/vulkan/" .. name .. ".spv") or path
-
-    if not path then
-        error("Could not calculate shader path for " .. name)
-    end
-
-    return getAssetPath(path)
-end    
-
 function callSafe(f)
     local _, err = select(1, pcall(f))
     if err then
