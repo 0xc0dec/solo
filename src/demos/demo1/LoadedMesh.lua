@@ -5,7 +5,7 @@
 
 local createRotator = require "Rotator"
 
-return function(dev, scene, effects)
+return function(dev, scene, assetCache)
     sl.Texture2d.loadFromFileAsync(dev, getAssetPath("textures/Cobblestone.png")):done(
         function(tex)
             tex:generateMipmaps()
@@ -13,7 +13,8 @@ return function(dev, scene, effects)
             tex:setAnisotropyLevel(8)
             tex:setWrapping(sl.TextureWrapping.Clamp)
 
-            local mat = sl.Material.create(dev, effects.basicLighting)
+            local effect = assetCache.getEffect("TextureWithLighting")
+            local mat = sl.Material.create(dev, effect)
             mat:setFaceCull(sl.FaceCull.All)
             mat:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
             mat:bindParameter("invTransposedWorldMatrix", sl.BindParameterSemantics.InverseTransposedWorldMatrix)

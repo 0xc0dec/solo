@@ -29,7 +29,7 @@ function createPostProcessor(camera, tag)
     }
 end
 
-function createPostProcessor1(camera, tag, effects)
+function createPostProcessor1(camera, tag, assetCache)
     local canvasSize = sl.device:getCanvasSize()
 
     local fbTex1 = sl.Texture2d.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGB)
@@ -44,27 +44,27 @@ function createPostProcessor1(camera, tag, effects)
     local fb2 = sl.FrameBuffer.create(sl.device)
     fb2:setAttachments({ fbTex2 })
 
-    local grayscaleMat = sl.Material.create(sl.device, effects.grayscale)
+    local grayscaleMat = sl.Material.create(sl.device, assetCache.getEffect("Grayscale"))
     grayscaleMat:setDepthTest(false)
     grayscaleMat:setDepthWrite(false)
     grayscaleMat:setFaceCull(sl.FaceCull.All)
     grayscaleMat:setFloatParameter("rightSeparator", 0.25)
 
-    local saturateMat = sl.Material.create(sl.device, effects.saturate)
+    local saturateMat = sl.Material.create(sl.device, assetCache.getEffect("Saturate"))
     saturateMat:setDepthTest(false)
     saturateMat:setDepthWrite(false)
     saturateMat:setFaceCull(sl.FaceCull.All)
     saturateMat:setFloatParameter("leftSeparator", 0.75)
     saturateMat:setFloatParameter("rightSeparator", 1.0)
 
-    local verticalBlurMat = sl.Material.create(sl.device, effects.verticalBlur)
+    local verticalBlurMat = sl.Material.create(sl.device, assetCache.getEffect("VerticalBlur"))
     verticalBlurMat:setDepthTest(false)
     verticalBlurMat:setDepthWrite(false)
     verticalBlurMat:setFaceCull(sl.FaceCull.All)
     verticalBlurMat:setFloatParameter("leftSeparator", 0.25)
     verticalBlurMat:setFloatParameter("rightSeparator", 0.75)
 
-    local horizontalBlurMat = sl.Material.create(sl.device, effects.horizontalBlur)
+    local horizontalBlurMat = sl.Material.create(sl.device, assetCache.getEffect("HorizontalBlur"))
     horizontalBlurMat:setDepthTest(false)
     horizontalBlurMat:setDepthWrite(false)
     horizontalBlurMat:setFaceCull(sl.FaceCull.All)
@@ -89,7 +89,7 @@ function createPostProcessor1(camera, tag, effects)
     return pp
 end
 
-function createPostProcessor2(camera, tag, effects)
+function createPostProcessor2(camera, tag, assetCache)
     local stitchWidth = 30
     local canvasSize = sl.device:getCanvasSize()
 
@@ -114,7 +114,7 @@ function createPostProcessor2(camera, tag, effects)
     local fb1 = sl.FrameBuffer.create(sl.device)
     fb1:setAttachments({ fbTex })
 
-    local material = sl.Material.create(sl.device, effects.stitches)
+    local material = sl.Material.create(sl.device, assetCache.getEffect("Stitches"))
     material:setTextureParameter("mainTex", fbTex)
     material:setTextureParameter("stitchTex", stitchTex)
     material:setVector2Parameter("stitchCount", stitchCount)

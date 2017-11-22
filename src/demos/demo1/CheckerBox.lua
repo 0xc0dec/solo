@@ -5,8 +5,9 @@
 
 local createRotator = require "Rotator"
 
-return function(dev, scene, effects, cubeMesh)
-    local material = sl.Material.create(dev, effects.checker)
+return function(dev, scene, assetCache, cubeMesh)
+    local effect = assetCache.getEffect("Checker")
+    local material = sl.Material.create(dev, effect)
     material:setFaceCull(sl.FaceCull.All)
     material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     material:setVector4Parameter("color", vec4(1, 1, 0, 1))

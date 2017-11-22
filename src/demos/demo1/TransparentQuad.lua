@@ -7,14 +7,14 @@ require "Common"
 
 local createRotator = require "Rotator"
 
-return function(dev, scene, effects, mesh, tag)
+return function(dev, scene, assetCache, mesh, tag)
     local tex = sl.Texture2d.loadFromFile(dev, getAssetPath("textures/Flammable.png"))
     tex:generateMipmaps()
     tex:setFiltering(sl.TextureFiltering.LinearMipmapNearest)
     tex:setAnisotropyLevel(8)
     tex:setWrapping(sl.TextureWrapping.Clamp)
 
-    local material = sl.Material.create(dev, effects.simpleTexture)
+    local material = sl.Material.create(dev, assetCache.getEffect("Texture"))
     material:setFaceCull(sl.FaceCull.All)
     material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     material:setTextureParameter("mainTex", tex)

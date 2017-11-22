@@ -6,10 +6,10 @@
 local createRotator = require "Rotator"
 local createLookAt = require "LookAt"
 
-return function(dev, scene, effects, offscreenCameraTex, quadMesh, tag)
+return function(dev, scene, assetCache, offscreenCameraTex, quadMesh, tag)
 	local canvasSize = dev:getCanvasSize()
 
-    local material = sl.Material.create(dev, effects.simpleTexture)
+    local material = sl.Material.create(dev, assetCache.getEffect("Texture"))
     material:setFaceCull(sl.FaceCull.All)
     material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     material:setTextureParameter("mainTex", offscreenCameraTex)

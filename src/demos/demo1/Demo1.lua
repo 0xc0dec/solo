@@ -29,7 +29,6 @@ local createDynamicQuad = require "DynamicQuad"
 local createCheckerBox = require "CheckerBox"
 local createLoadedMesh = require "LoadedMesh"
 local createOffscreenCamera = require "OffscreenCamera"
-local createEffects = require "Effects"
 local attachAxes = (require "Axes")(dev, assetCache)
 local createSpawner = require "Spawner"
 local createSpawnedObjectTargeter = require "SpawnedObjectTargeter"
@@ -45,27 +44,26 @@ local knownTags = {
 
 local cubeMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Cube)
 local quadMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Quad)
-local effects = createEffects(dev)
 local offscreenCamera, offscreenCameraTex = createOffscreenCamera(dev, scene)
 
 local mainCamera, mainCameraNode = createMainCamera(dev, scene)
 mainCameraNode:addScriptComponent(createSpawnedObjectTargeter(dev:getPhysics()))
-mainCameraNode:addScriptComponent(createSpawner(dev, cubeMesh, assetCache.getEffect("Color")))
+mainCameraNode:addScriptComponent(createSpawner(dev, cubeMesh, assetCache))
 local mainCameraTransform = mainCameraNode:findComponent("Transform")
 mainCameraTransform:setLocalPosition(vec3(0, 5, 10))
 mainCameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
 createSkybox(dev, scene, knownTags.skybox)
-createCheckerBox(dev, scene, effects, cubeMesh)
-createDynamicQuad(dev, scene, effects)
+createCheckerBox(dev, scene, assetCache, cubeMesh)
+createDynamicQuad(dev, scene, assetCache)
 createTimeLabel(dev, scene, knownTags.transparent)
-createLoadedMesh(dev, scene, effects)
-createFloor(dev, scene, effects, cubeMesh)
+createLoadedMesh(dev, scene, assetCache)
+createFloor(dev, scene, assetCache, cubeMesh)
 
-local monitorQuad = createMonitorQuad(dev, scene, effects, offscreenCameraTex, quadMesh, knownTags.monitor)
+local monitorQuad = createMonitorQuad(dev, scene, assetCache, offscreenCameraTex, quadMesh, knownTags.monitor)
 attachAxes(monitorQuad)
 
-local transparentQuad = createTransparentQuad(dev, scene, effects, quadMesh, knownTags.transparent)
+local transparentQuad = createTransparentQuad(dev, scene, assetCache, quadMesh, knownTags.transparent)
 attachAxes(transparentQuad)
 
 local originNode = scene:createNode()
@@ -94,12 +92,12 @@ local run = function()
 
         if dev:isKeyPressed(sl.KeyCode.Digit1, true) then
             detachPostProcessor()
-            pp = postProcessors.create1(mainCamera, knownTags.postProcessor, effects)
+            pp = postProcessors.create1(mainCamera, knownTags.postProcessor, assetCache)
         end
 
         if dev:isKeyPressed(sl.KeyCode.Digit2, true) then
             detachPostProcessor()
-            pp = postProcessors.create2(mainCamera, knownTags.postProcessor, effects)
+            pp = postProcessors.create2(mainCamera, knownTags.postProcessor, assetCache)
         end
 
         if dev:isKeyPressed(sl.KeyCode.Digit3, true) then

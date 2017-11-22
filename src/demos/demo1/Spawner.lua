@@ -5,7 +5,7 @@
 
 local createSpawnedObject = require "SpawnedObject"
 
-return function(dev, mesh, effect)
+return function(dev, mesh, assetCache)
     return {
         typeId = sl.getCmpId("Spawner"),
 
@@ -19,7 +19,7 @@ return function(dev, mesh, effect)
                 local initialPos = self.transform:getLocalPosition() + self.transform:getLocalForward() * 2
                 local initialRotation = self.transform:getLocalRotation()
                 self.scene:createNode():addScriptComponent(
-                    createSpawnedObject(effect, mesh, initialPos, initialRotation))
+                    createSpawnedObject(assetCache, mesh, initialPos, initialRotation))
             end
         end
     }

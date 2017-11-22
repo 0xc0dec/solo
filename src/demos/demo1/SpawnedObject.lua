@@ -3,13 +3,14 @@
 -- MIT license
 -- 
 
-return function(effect, mesh, initialPos, initialRotation)
+return function(assetCache, mesh, initialPos, initialRotation)
     return {
         typeId = sl.getCmpId("SpawnedObject"),
 
         init = function(self)
             self.active = false
 
+            local effect = assetCache.getEffect("Color")
             local material = sl.Material.create(sl.device, effect)
             material:setFaceCull(sl.FaceCull.All)
             material:setPolygonMode(sl.PolygonMode.Wireframe)

@@ -3,13 +3,14 @@
 -- MIT license
 -- 
 
-return function(dev, scene, effects, cubeMesh)
+return function(dev, scene, assetCache, cubeMesh)
     local tex = sl.Texture2d.loadFromFile(dev, getAssetPath("textures/Cobblestone.png"))
     tex:generateMipmaps()
     tex:setFiltering(sl.TextureFiltering.LinearMipmapNearest)
     tex:setAnisotropyLevel(8)
 
-    local material = sl.Material.create(dev, effects.simpleTexture)
+    local effect = assetCache.getEffect("Texture")
+    local material = sl.Material.create(dev, effect)
     material:setFaceCull(sl.FaceCull.All)
     material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     material:setTextureParameter("mainTex", tex)

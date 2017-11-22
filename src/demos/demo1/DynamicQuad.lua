@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-return function(dev, scene, effects)
+return function(dev, scene, assetCache)
     local createUpdater = function(data, mesh)
         local time = 0
 
@@ -51,7 +51,8 @@ return function(dev, scene, effects)
         tex:setAnisotropyLevel(8)
         tex:setWrapping(sl.TextureWrapping.Clamp)
 
-        local mat = sl.Material.create(dev, effects.simpleTexture)
+        local effect = assetCache.getEffect("Texture")
+        local mat = sl.Material.create(dev, effect)
         mat:setFaceCull(sl.FaceCull.All)
         mat:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
         mat:setTextureParameter("mainTex", tex)    
