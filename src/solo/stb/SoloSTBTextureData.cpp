@@ -26,20 +26,20 @@ static auto toImageFormat(int components) -> TextureFormat
     }
 }
 
-bool stb::STBTexture2dData::canLoadFromFile(const str &path)
+bool STBTexture2dData::canLoadFromFile(const str &path)
 {
     static vec<str> supportedFormats = {".bmp", ".jpg", ".jpeg", ".png"};
     return std::find_if(supportedFormats.begin(), supportedFormats.end(),
         [&](const str &ext) { return stringutils::endsWith(path, ext); }) != supportedFormats.end();
 }
 
-stb::STBTexture2dData::~STBTexture2dData()
+STBTexture2dData::~STBTexture2dData()
 {
     if (data)
         stbi_image_free(data);
 }
 
-auto stb::STBTexture2dData::loadFromFile(Device *device, const str &path) -> sptr<STBTexture2dData>
+auto STBTexture2dData::loadFromFile(Device *device, const str &path) -> sptr<STBTexture2dData>
 {
     auto bytes = device->getFileSystem()->readBytes(path);
     int width, height, bpp;
@@ -56,7 +56,7 @@ auto stb::STBTexture2dData::loadFromFile(Device *device, const str &path) -> spt
     return result;
 }
 
-bool stb::STBCubeTextureData::canLoadFromFaceFiles(
+bool STBCubeTextureData::canLoadFromFaceFiles(
     const str &frontPath,
     const str &backPath,
     const str &leftPath,
@@ -64,15 +64,15 @@ bool stb::STBCubeTextureData::canLoadFromFaceFiles(
     const str &topPath,
     const str &bottomPath)
 {
-    return stb::STBTexture2dData::canLoadFromFile(frontPath) &&
-           stb::STBTexture2dData::canLoadFromFile(backPath) &&
-           stb::STBTexture2dData::canLoadFromFile(leftPath) &&
-           stb::STBTexture2dData::canLoadFromFile(rightPath) &&
-           stb::STBTexture2dData::canLoadFromFile(topPath) &&
-           stb::STBTexture2dData::canLoadFromFile(bottomPath);
+    return STBTexture2dData::canLoadFromFile(frontPath) &&
+           STBTexture2dData::canLoadFromFile(backPath) &&
+           STBTexture2dData::canLoadFromFile(leftPath) &&
+           STBTexture2dData::canLoadFromFile(rightPath) &&
+           STBTexture2dData::canLoadFromFile(topPath) &&
+           STBTexture2dData::canLoadFromFile(bottomPath);
 }
 
-auto stb::STBCubeTextureData::loadFromFaceFiles(Device *device,
+auto STBCubeTextureData::loadFromFaceFiles(Device *device,
     const str &frontPath,
     const str &backPath,
     const str &leftPath,
@@ -80,13 +80,13 @@ auto stb::STBCubeTextureData::loadFromFaceFiles(Device *device,
     const str &topPath,
     const str &bottomPath) -> sptr<STBCubeTextureData>
 {
-    auto tex = std::make_shared<stb::STBCubeTextureData>();
-    tex->faces.push_back(stb::STBTexture2dData::loadFromFile(device, frontPath));
-    tex->faces.push_back(stb::STBTexture2dData::loadFromFile(device, backPath));
-    tex->faces.push_back(stb::STBTexture2dData::loadFromFile(device, leftPath));
-    tex->faces.push_back(stb::STBTexture2dData::loadFromFile(device, rightPath));
-    tex->faces.push_back(stb::STBTexture2dData::loadFromFile(device, topPath));
-    tex->faces.push_back(stb::STBTexture2dData::loadFromFile(device, bottomPath));
+    auto tex = std::make_shared<STBCubeTextureData>();
+    tex->faces.push_back(STBTexture2dData::loadFromFile(device, frontPath));
+    tex->faces.push_back(STBTexture2dData::loadFromFile(device, backPath));
+    tex->faces.push_back(STBTexture2dData::loadFromFile(device, leftPath));
+    tex->faces.push_back(STBTexture2dData::loadFromFile(device, rightPath));
+    tex->faces.push_back(STBTexture2dData::loadFromFile(device, topPath));
+    tex->faces.push_back(STBTexture2dData::loadFromFile(device, bottomPath));
     
     SL_PANIC_BLOCK(
     {
@@ -100,12 +100,12 @@ auto stb::STBCubeTextureData::loadFromFaceFiles(Device *device,
     return tex;
 }
 
-auto stb::STBCubeTextureData::getMipLevels() const -> u32
+auto STBCubeTextureData::getMipLevels() const -> u32
 {
     return 1;
 }
 
-auto stb::STBCubeTextureData::getSize() const -> u32
+auto STBCubeTextureData::getSize() const -> u32
 {
     return faces[0]->getSize() + 
            faces[1]->getSize() + 
@@ -115,7 +115,7 @@ auto stb::STBCubeTextureData::getSize() const -> u32
            faces[5]->getSize();
 }
 
-auto stb::STBCubeTextureData::getSize(u32 mipLevel) const -> u32
+auto STBCubeTextureData::getSize(u32 mipLevel) const -> u32
 {
     return faces[0]->getSize(mipLevel) + 
            faces[1]->getSize(mipLevel) + 
@@ -125,33 +125,33 @@ auto stb::STBCubeTextureData::getSize(u32 mipLevel) const -> u32
            faces[5]->getSize(mipLevel);
 }
 
-auto stb::STBCubeTextureData::getSize(u32 face, u32 mipLevel) const -> u32
+auto STBCubeTextureData::getSize(u32 face, u32 mipLevel) const -> u32
 {
     return faces[face]->getSize(mipLevel);
 }
 
-auto stb::STBCubeTextureData::getDimension() const -> u32
+auto STBCubeTextureData::getDimension() const -> u32
 {
     return faces[0]->getWidth();
 }
 
-auto stb::STBCubeTextureData::getDimension(u32 mipLevel) const -> u32
+auto STBCubeTextureData::getDimension(u32 mipLevel) const -> u32
 {
     return faces[0]->getWidth(mipLevel);
 }
 
-auto stb::STBCubeTextureData::getData() const -> const void*
+auto STBCubeTextureData::getData() const -> const void*
 {
     SL_PANIC("Not implemented");
     return nullptr;
 }
 
-auto stb::STBCubeTextureData::getData(u32 face) const -> const void*
+auto STBCubeTextureData::getData(u32 face) const -> const void*
 {
     return faces[face]->getData();
 }
 
-auto stb::STBCubeTextureData::getFormat() const -> TextureFormat
+auto STBCubeTextureData::getFormat() const -> TextureFormat
 {
     return faces[0]->getFormat();
 }

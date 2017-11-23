@@ -14,7 +14,7 @@
 
 using namespace solo;
 
-stb::STBTrueTypeFont::STBTrueTypeFont(Device *device, u8 *fontData, u32 size, u32 atlasWidth, u32 atlasHeight,
+STBTrueTypeFont::STBTrueTypeFont(Device *device, u8 *fontData, u32 size, u32 atlasWidth, u32 atlasHeight,
     u32 firstChar, u32 charCount, u32 oversampleX, u32 oversampleY):
     firstChar(firstChar)
 {
@@ -37,7 +37,7 @@ stb::STBTrueTypeFont::STBTrueTypeFont(Device *device, u8 *fontData, u32 size, u3
     atlas->generateMipmaps();
 }
 
-auto stb::STBTrueTypeFont::getGlyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo
+auto STBTrueTypeFont::getGlyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo
 {
     stbtt_aligned_quad quad;
     const auto atlasSize = atlas->getDimensions();
@@ -70,12 +70,12 @@ auto stb::STBTrueTypeFont::getGlyphInfo(u32 character, float offsetX, float offs
     return result; // TODO move
 }
 
-bool stb::STBTrueTypeFont::canLoadFromFile(const str &path)
+bool STBTrueTypeFont::canLoadFromFile(const str &path)
 {
     return stringutils::endsWith(path, ".ttf");
 }
 
-auto stb::STBTrueTypeFont::loadFromFile(Device *device, const str &path,
+auto STBTrueTypeFont::loadFromFile(Device *device, const str &path,
     u32 size, u32 atlasWidth,
     u32 atlasHeight, u32 firstChar, u32 charCount, u32 oversampleX,
     u32 oversampleY) -> sptr<STBTrueTypeFont>
