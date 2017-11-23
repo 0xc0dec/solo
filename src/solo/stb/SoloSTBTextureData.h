@@ -15,14 +15,14 @@ namespace solo
 
     namespace stb
     {
-        class Texture2dData final: public solo::Texture2dData
+        class STBTexture2dData final: public Texture2dData
         {
         public:
             static bool canLoadFromFile(const str &path);
-            static auto loadFromFile(Device *device, const str &path) -> sptr<Texture2dData>;
+            static auto loadFromFile(Device *device, const str &path) -> sptr<STBTexture2dData>;
 
-            Texture2dData() {}
-            ~Texture2dData();
+            STBTexture2dData() {}
+            ~STBTexture2dData();
 
             auto getMipLevels() const -> u32 override final { return 1; }
 
@@ -46,7 +46,7 @@ namespace solo
             stbi_uc *data = nullptr;
         };
 
-        class CubeTextureData final: public solo::CubeTextureData
+        class STBCubeTextureData final: public CubeTextureData
         {
         public:
             static bool canLoadFromFaceFiles(
@@ -62,7 +62,7 @@ namespace solo
                 const str &leftPath,
                 const str &rightPath,
                 const str &topPath,
-                const str &bottomPath) -> sptr<CubeTextureData>;
+                const str &bottomPath) -> sptr<STBCubeTextureData>;
 
             auto getMipLevels() const -> u32 override;
 
@@ -79,7 +79,7 @@ namespace solo
             auto getFormat() const -> TextureFormat override final;
 
         private:
-            vec<sptr<stb::Texture2dData>> faces;
+            vec<sptr<STBTexture2dData>> faces;
         };
     }
 }

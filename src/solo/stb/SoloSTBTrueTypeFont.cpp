@@ -3,7 +3,7 @@
     MIT license
 */
 
-#include "SoloStbTrueTypeFont.h"
+#include "SoloSTBTrueTypeFont.h"
 #include "SoloTexture.h"
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
@@ -14,7 +14,7 @@
 
 using namespace solo;
 
-stb::TrueTypeFont::TrueTypeFont(Device *device, u8 *fontData, u32 size, u32 atlasWidth, u32 atlasHeight,
+stb::STBTrueTypeFont::STBTrueTypeFont(Device *device, u8 *fontData, u32 size, u32 atlasWidth, u32 atlasHeight,
     u32 firstChar, u32 charCount, u32 oversampleX, u32 oversampleY):
     firstChar(firstChar)
 {
@@ -37,7 +37,7 @@ stb::TrueTypeFont::TrueTypeFont(Device *device, u8 *fontData, u32 size, u32 atla
     atlas->generateMipmaps();
 }
 
-auto stb::TrueTypeFont::getGlyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo
+auto stb::STBTrueTypeFont::getGlyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo
 {
     stbtt_aligned_quad quad;
     const auto atlasSize = atlas->getDimensions();
@@ -70,16 +70,16 @@ auto stb::TrueTypeFont::getGlyphInfo(u32 character, float offsetX, float offsetY
     return result; // TODO move
 }
 
-bool stb::TrueTypeFont::canLoadFromFile(const str &path)
+bool stb::STBTrueTypeFont::canLoadFromFile(const str &path)
 {
     return stringutils::endsWith(path, ".ttf");
 }
 
-auto stb::TrueTypeFont::loadFromFile(Device *device, const str &path,
+auto stb::STBTrueTypeFont::loadFromFile(Device *device, const str &path,
     u32 size, u32 atlasWidth,
     u32 atlasHeight, u32 firstChar, u32 charCount, u32 oversampleX,
-    u32 oversampleY) -> sptr<TrueTypeFont>
+    u32 oversampleY) -> sptr<STBTrueTypeFont>
 {
     auto data = device->getFileSystem()->readBytes(path);
-    return std::make_shared<TrueTypeFont>(device, data.data(), size, atlasWidth, atlasHeight, firstChar, charCount, oversampleX, oversampleY);
+    return std::make_shared<STBTrueTypeFont>(device, data.data(), size, atlasWidth, atlasHeight, firstChar, charCount, oversampleX, oversampleY);
 }

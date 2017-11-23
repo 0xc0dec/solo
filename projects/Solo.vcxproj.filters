@@ -121,9 +121,6 @@
     <ClInclude Include="..\src\solo\vk\SoloVulkanImage.h">
       <Filter>vk</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\stb\SoloStbTrueTypeFont.h">
-      <Filter>stb</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\solo\SoloSpinLock.h" />
     <ClInclude Include="..\src\solo\SoloBoxCollider.h" />
     <ClInclude Include="..\src\solo\SoloCamera.h" />
@@ -174,9 +171,6 @@
     <ClInclude Include="..\src\solo\null\SoloNullTexture.h">
       <Filter>null</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\stb\SoloStbTextureData.h">
-      <Filter>stb</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\solo\obj\SoloObjMeshLoading.h">
       <Filter>obj</Filter>
     </ClInclude>
@@ -184,6 +178,12 @@
     <ClInclude Include="..\src\solo\SoloJobPool.h" />
     <ClInclude Include="..\src\solo\SoloAsyncHandle.h" />
     <ClInclude Include="..\src\solo\SoloMap.h" />
+    <ClInclude Include="..\src\solo\stb\SoloSTBTextureData.h">
+      <Filter>stb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\solo\stb\SoloSTBTrueTypeFont.h">
+      <Filter>stb</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp">
@@ -303,9 +303,6 @@
     <ClCompile Include="..\src\solo\vk\SoloVulkanImage.cpp">
       <Filter>vk</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\stb\SoloStbTrueTypeFont.cpp">
-      <Filter>stb</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\solo\Solo.cpp" />
     <ClCompile Include="..\src\solo\SoloBoxCollider.cpp" />
     <ClCompile Include="..\src\solo\SoloCamera.cpp" />
@@ -344,13 +341,16 @@
     <ClCompile Include="..\src\solo\vk\SoloVulkanTexture.cpp">
       <Filter>vk</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\stb\SoloStbTextureData.cpp">
-      <Filter>stb</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\solo\obj\SoloObjMeshLoading.cpp">
       <Filter>obj</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\SoloJobPool.cpp" />
+    <ClCompile Include="..\src\solo\stb\SoloSTBTextureData.cpp">
+      <Filter>stb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\stb\SoloSTBTrueTypeFont.cpp">
+      <Filter>stb</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bullet">

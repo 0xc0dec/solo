@@ -4,7 +4,7 @@
 */
 
 #include "SoloTextureData.h"
-#include "stb/SoloStbTextureData.h"
+#include "stb/SoloSTBTextureData.h"
 
 namespace solo
 {
@@ -46,8 +46,8 @@ using namespace solo;
 
 auto Texture2dData::loadFromFile(Device *device, const str &path) -> sptr<Texture2dData>
 {
-    if (stb::Texture2dData::canLoadFromFile(path))
-        return stb::Texture2dData::loadFromFile(device, path);
+    if (stb::STBTexture2dData::canLoadFromFile(path))
+        return stb::STBTexture2dData::loadFromFile(device, path);
     SL_PANIC(SL_FMT("Unsupported cube texture file ", path));
     return nullptr;
 }
@@ -66,8 +66,8 @@ auto CubeTextureData::loadFromFaceFiles(Device *device,
     const str &topPath,
     const str &bottomPath) -> sptr<CubeTextureData>
 {
-    if (stb::CubeTextureData::canLoadFromFaceFiles(frontPath, backPath, leftPath, rightPath, topPath, bottomPath))
-        return stb::CubeTextureData::loadFromFaceFiles(device, frontPath, backPath, leftPath, rightPath, topPath, bottomPath);
+    if (stb::STBCubeTextureData::canLoadFromFaceFiles(frontPath, backPath, leftPath, rightPath, topPath, bottomPath))
+        return stb::STBCubeTextureData::loadFromFaceFiles(device, frontPath, backPath, leftPath, rightPath, topPath, bottomPath);
     SL_PANIC(SL_FMT("Unsupported cube texture face files ", frontPath, ", ..."));
     return nullptr;
 }

@@ -3,7 +3,7 @@
     MIT license
 */
 
-#include "SoloStbTextureData.h"
+#include "SoloSTBTextureData.h"
 #include "SoloStringUtils.h"
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
@@ -26,20 +26,20 @@ static auto toImageFormat(int components) -> TextureFormat
     }
 }
 
-bool stb::Texture2dData::canLoadFromFile(const str &path)
+bool stb::STBTexture2dData::canLoadFromFile(const str &path)
 {
     static vec<str> supportedFormats = {".bmp", ".jpg", ".jpeg", ".png"};
     return std::find_if(supportedFormats.begin(), supportedFormats.end(),
         [&](const str &ext) { return stringutils::endsWith(path, ext); }) != supportedFormats.end();
 }
 
-stb::Texture2dData::~Texture2dData()
+stb::STBTexture2dData::~STBTexture2dData()
 {
     if (data)
         stbi_image_free(data);
 }
 
-auto stb::Texture2dData::loadFromFile(Device *device, const str &path) -> sptr<Texture2dData>
+auto stb::STBTexture2dData::loadFromFile(Device *device, const str &path) -> sptr<STBTexture2dData>
 {
     auto bytes = device->getFileSystem()->readBytes(path);
     int width, height, bpp;
@@ -47,7 +47,7 @@ auto stb::Texture2dData::loadFromFile(Device *device, const str &path) -> sptr<T
     const auto data = stbi_load_from_memory(bytes.data(), bytes.size(), &width, &height, &bpp, 0);
     SL_PANIC_IF(!data, SL_FMT("Failed to load image ", path));
 
-    const auto result = std::make_shared<Texture2dData>();
+    const auto result = std::make_shared<STBTexture2dData>();
     result->bpp = bpp;
     result->format = toImageFormat(bpp);
     result->width = width;
@@ -56,7 +56,7 @@ auto stb::Texture2dData::loadFromFile(Device *device, const str &path) -> sptr<T
     return result;
 }
 
-bool stb::CubeTextureData::canLoadFromFaceFiles(
+bool stb::STBCubeTextureData::canLoadFromFaceFiles(
     const str &frontPath,
     const str &backPath,
     const str &leftPath,
@@ -64,29 +64,29 @@ bool stb::CubeTextureData::canLoadFromFaceFiles(
     const str &topPath,
     const str &bottomPath)
 {
-    return stb::Texture2dData::canLoadFromFile(frontPath) &&
-           stb::Texture2dData::canLoadFromFile(backPath) &&
-           stb::Texture2dData::canLoadFromFile(leftPath) &&
-           stb::Texture2dData::canLoadFromFile(rightPath) &&
-           stb::Texture2dData::canLoadFromFile(topPath) &&
-           stb::Texture2dData::canLoadFromFile(bottomPath);
+    return stb::STBTexture2dData::canLoadFromFile(frontPath) &&
+           stb::STBTexture2dData::canLoadFromFile(backPath) &&
+           stb::STBTexture2dData::canLoadFromFile(leftPath) &&
+           stb::STBTexture2dData::canLoadFromFile(rightPath) &&
+           stb::STBTexture2dData::canLoadFromFile(topPath) &&
+           stb::STBTexture2dData::canLoadFromFile(bottomPath);
 }
 
-auto stb::CubeTextureData::loadFromFaceFiles(Device *device,
+auto stb::STBCubeTextureData::loadFromFaceFiles(Device *device,
     const str &frontPath,
     const str &backPath,
     const str &leftPath,
     const str &rightPath,
     const str &topPath,
-    const str &bottomPath) -> sptr<CubeTextureData>
+    const str &bottomPath) -> sptr<STBCubeTextureData>
 {
-    auto tex = std::make_shared<stb::CubeTextureData>();
-    tex->faces.push_back(stb::Texture2dData::loadFromFile(device, frontPath));
-    tex->faces.push_back(stb::Texture2dData::loadFromFile(device, backPath));
-    tex->faces.push_back(stb::Texture2dData::loadFromFile(device, leftPath));
-    tex->faces.push_back(stb::Texture2dData::loadFromFile(device, rightPath));
-    tex->faces.push_back(stb::Texture2dData::loadFromFile(device, topPath));
-    tex->faces.push_back(stb::Texture2dData::loadFromFile(device, bottomPath));
+    auto tex = std::make_shared<stb::STBCubeTextureData>();
+    tex->faces.push_back(stb::STBTexture2dData::loadFromFile(device, frontPath));
+    tex->faces.push_back(stb::STBTexture2dData::loadFromFile(device, backPath));
+    tex->faces.push_back(stb::STBTexture2dData::loadFromFile(device, leftPath));
+    tex->faces.push_back(stb::STBTexture2dData::loadFromFile(device, rightPath));
+    tex->faces.push_back(stb::STBTexture2dData::loadFromFile(device, topPath));
+    tex->faces.push_back(stb::STBTexture2dData::loadFromFile(device, bottomPath));
     
     SL_PANIC_BLOCK(
     {
@@ -100,12 +100,12 @@ auto stb::CubeTextureData::loadFromFaceFiles(Device *device,
     return tex;
 }
 
-auto stb::CubeTextureData::getMipLevels() const -> u32
+auto stb::STBCubeTextureData::getMipLevels() const -> u32
 {
     return 1;
 }
 
-auto stb::CubeTextureData::getSize() const -> u32
+auto stb::STBCubeTextureData::getSize() const -> u32
 {
     return faces[0]->getSize() + 
            faces[1]->getSize() + 
@@ -115,7 +115,7 @@ auto stb::CubeTextureData::getSize() const -> u32
            faces[5]->getSize();
 }
 
-auto stb::CubeTextureData::getSize(u32 mipLevel) const -> u32
+auto stb::STBCubeTextureData::getSize(u32 mipLevel) const -> u32
 {
     return faces[0]->getSize(mipLevel) + 
            faces[1]->getSize(mipLevel) + 
@@ -125,33 +125,33 @@ auto stb::CubeTextureData::getSize(u32 mipLevel) const -> u32
            faces[5]->getSize(mipLevel);
 }
 
-auto stb::CubeTextureData::getSize(u32 face, u32 mipLevel) const -> u32
+auto stb::STBCubeTextureData::getSize(u32 face, u32 mipLevel) const -> u32
 {
     return faces[face]->getSize(mipLevel);
 }
 
-auto stb::CubeTextureData::getDimension() const -> u32
+auto stb::STBCubeTextureData::getDimension() const -> u32
 {
     return faces[0]->getWidth();
 }
 
-auto stb::CubeTextureData::getDimension(unsigned mipLevel) const -> u32
+auto stb::STBCubeTextureData::getDimension(u32 mipLevel) const -> u32
 {
     return faces[0]->getWidth(mipLevel);
 }
 
-auto stb::CubeTextureData::getData() const -> const void*
+auto stb::STBCubeTextureData::getData() const -> const void*
 {
     SL_PANIC("Not implemented");
     return nullptr;
 }
 
-auto stb::CubeTextureData::getData(u32 face) const -> const void*
+auto stb::STBCubeTextureData::getData(u32 face) const -> const void*
 {
     return faces[face]->getData();
 }
 
-auto stb::CubeTextureData::getFormat() const -> TextureFormat
+auto stb::STBCubeTextureData::getFormat() const -> TextureFormat
 {
     return faces[0]->getFormat();
 }

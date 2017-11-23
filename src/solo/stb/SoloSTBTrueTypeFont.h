@@ -12,16 +12,16 @@ namespace solo
 {
     namespace stb
     {
-        class TrueTypeFont final : public Font
+        class STBTrueTypeFont final : public Font
         {
         public:
             static bool canLoadFromFile(const str &path);
             static auto loadFromFile(Device *device, const str &path,
                 u32 size, u32 atlasWidth, u32 atlasHeight,
                 u32 firstChar, u32 charCount,
-                u32 oversampleX, u32 oversampleY) -> sptr<TrueTypeFont>;
+                u32 oversampleX, u32 oversampleY) -> sptr<STBTrueTypeFont>;
 
-            TrueTypeFont(Device *device, u8 *fontData,
+            STBTrueTypeFont(Device *device, u8 *fontData,
                 u32 size, u32 atlasWidth, u32 atlasHeight,
                 u32 firstChar, u32 charCount,
                 u32 oversampleX, u32 oversampleY);
