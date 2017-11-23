@@ -189,10 +189,7 @@ void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
             GLuint targetFBHandle = 0;
             auto target = step.cmd.camera->getRenderTarget();
             if (target)
-            {
-                if (target)
-                    targetFBHandle = static_cast<FrameBuffer*>(target.get())->getHandle();
-            }
+                targetFBHandle = static_cast<FrameBuffer*>(target.get())->getHandle();
 
             step.beginCamera = [=]
             {
