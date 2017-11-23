@@ -11,7 +11,6 @@
 #include <SDL_surface.h>
 
 using namespace solo;
-using namespace gl;
 
 SDLOpenGLDevice::SDLOpenGLDevice(DeviceSetup const &setup):
     SDLDevice(setup)

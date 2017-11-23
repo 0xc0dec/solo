@@ -11,23 +11,20 @@
 
 namespace solo
 {
-    namespace gl
+    struct OpenGLPrefabShaders
     {
-        struct OpenGLPrefabShaders
+        struct Vertex
         {
-            struct Vertex
-            {
-                static const s8 *skybox;
-                static const s8 *positionAndTexCoord;
-            };
-
-            struct Fragment
-            {
-                static const s8 *skybox;
-                static const s8 *font;
-            };
+            static const s8 *skybox;
+            static const s8 *positionAndTexCoord;
         };
-    }
+
+        struct Fragment
+        {
+            static const s8 *skybox;
+            static const s8 *font;
+        };
+    };
 }
 
 #endif

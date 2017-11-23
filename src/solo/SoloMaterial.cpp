@@ -18,7 +18,7 @@ auto Material::create(Device *device, sptr<Effect> effect) -> sptr<Material>
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<gl::OpenGLMaterial>(effect);
+            return std::make_shared<OpenGLMaterial>(effect);
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:

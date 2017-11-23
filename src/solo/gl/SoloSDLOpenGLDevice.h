@@ -13,24 +13,21 @@
 
 namespace solo
 {
-    namespace gl
+    class SDLOpenGLDevice final : public SDLDevice
     {
-        class SDLOpenGLDevice final : public SDLDevice
-        {
-        public:
-            explicit SDLOpenGLDevice(const DeviceSetup &setup);
-            virtual ~SDLOpenGLDevice();
+    public:
+        explicit SDLOpenGLDevice(const DeviceSetup &setup);
+        virtual ~SDLOpenGLDevice();
 
-            void saveScreenshot(const str &path) override final;
+        void saveScreenshot(const str &path) override final;
 
-        private:
-            SDL_GLContext context = nullptr;
+    private:
+        SDL_GLContext context = nullptr;
 
-            void endUpdate() override final;
+        void endUpdate() override final;
 
-            void cleanup();
-        };
-    }
+        void cleanup();
+    };
 }
 
 #endif

@@ -11,7 +11,7 @@
 
 using namespace solo;
 
-auto gl::OpenGLEffect::createFromPrefab(EffectPrefab prefab) -> sptr<OpenGLEffect>
+auto OpenGLEffect::createFromPrefab(EffectPrefab prefab) -> sptr<OpenGLEffect>
 {
     switch (prefab)
     {
@@ -80,7 +80,7 @@ static auto linkProgram(GLuint vs, GLuint fs) -> GLint
     return program;
 }
 
-gl::OpenGLEffect::OpenGLEffect(const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
+OpenGLEffect::OpenGLEffect(const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
 {
     const auto vs = compileShader(GL_VERTEX_SHADER, vsSrc, vsSrcLen);
     const auto fs = compileShader(GL_FRAGMENT_SHADER, fsSrc, fsSrcLen);
@@ -95,12 +95,12 @@ gl::OpenGLEffect::OpenGLEffect(const void *vsSrc, u32 vsSrcLen, const void *fsSr
     introspectAttributes();
 }
 
-gl::OpenGLEffect::~OpenGLEffect()
+OpenGLEffect::~OpenGLEffect()
 {
     glDeleteProgram(handle);
 }
 
-auto gl::OpenGLEffect::getUniformInfo(const str &name) -> UniformInfo
+auto OpenGLEffect::getUniformInfo(const str &name) -> UniformInfo
 {
     if (uniforms.count(name))
         return uniforms.at(name);
@@ -108,7 +108,7 @@ auto gl::OpenGLEffect::getUniformInfo(const str &name) -> UniformInfo
     return {};
 }
 
-auto gl::OpenGLEffect::getAttributeInfo(const str &name) -> AttributeInfo
+auto OpenGLEffect::getAttributeInfo(const str &name) -> AttributeInfo
 {
     if (attributes.count(name))
         return attributes.at(name);
@@ -116,7 +116,7 @@ auto gl::OpenGLEffect::getAttributeInfo(const str &name) -> AttributeInfo
     return {};
 }
 
-void gl::OpenGLEffect::introspectUniforms()
+void OpenGLEffect::introspectUniforms()
 {
     GLint activeUniforms;
     glGetProgramiv(handle, GL_ACTIVE_UNIFORMS, &activeUniforms);
@@ -158,7 +158,7 @@ void gl::OpenGLEffect::introspectUniforms()
     }
 }
 
-void gl::OpenGLEffect::introspectAttributes()
+void OpenGLEffect::introspectAttributes()
 {
     GLint activeAttributes;
     glGetProgramiv(handle, GL_ACTIVE_ATTRIBUTES, &activeAttributes);

@@ -19,43 +19,39 @@ namespace solo
     class Device;
     class Camera;
     class Transform;
+    class OpenGLRenderer;
+    class OpenGLEffect;
+    class OpenGLTexture;
 
-    namespace gl
+    class OpenGLMaterial final : public Material
     {
-        class OpenGLRenderer;
-        class OpenGLEffect;
-        class OpenGLTexture;
+    public:
+        explicit OpenGLMaterial(sptr<Effect> effect);
+        ~OpenGLMaterial() {}
 
-        class OpenGLMaterial final : public Material
-        {
-        public:
-            explicit OpenGLMaterial(sptr<Effect> effect);
-            ~OpenGLMaterial() {}
+        auto getEffect() const -> Effect* override final { return effect.get(); }
 
-            auto getEffect() const -> Effect* override final { return effect.get(); }
+        void setFloatParameter(const str &name, float value) override final;
+        void setVector2Parameter(const str &name, const Vector2 &value) override final;
+        void setVector3Parameter(const str &name, const Vector3 &value) override final;
+        void setVector4Parameter(const str &name, const Vector4 &value) override final;
+        void setMatrixParameter(const str &name, const Matrix &value) override final;
+        void setTextureParameter(const str &name, sptr<solo::Texture> value) override final;
 
-            void setFloatParameter(const str &name, float value) override final;
-            void setVector2Parameter(const str &name, const Vector2 &value) override final;
-            void setVector3Parameter(const str &name, const Vector3 &value) override final;
-            void setVector4Parameter(const str &name, const Vector4 &value) override final;
-            void setMatrixParameter(const str &name, const Matrix &value) override final;
-            void setTextureParameter(const str &name, sptr<solo::Texture> value) override final;
+        void bindParameter(const str &name, BindParameterSemantics semantics) override final;
 
-            void bindParameter(const str &name, BindParameterSemantics semantics) override final;
+        void applyParams(const Camera *camera, const Transform *nodeTransform) const;
 
-            void applyParams(const Camera *camera, const Transform *nodeTransform) const;
+    protected:
+        using ParameterApplier = std::function<void(const Camera *, const Transform *)>;
 
-        protected:
-            using ParameterApplier = std::function<void(const Camera *, const Transform *)>;
+        sptr<OpenGLEffect> effect = nullptr;
 
-            sptr<OpenGLEffect> effect = nullptr;
+        // Maybe not the fastest, but convenient and good enough for now
+        umap<str, ParameterApplier> appliers;
 
-            // Maybe not the fastest, but convenient and good enough for now
-            umap<str, ParameterApplier> appliers;
-
-            void setParameter(const str &paramName, std::function<ParameterApplier(GLuint, GLint)> getApplier);
-        };
-    }
+        void setParameter(const str &paramName, std::function<ParameterApplier(GLuint, GLint)> getApplier);
+    };
 }
 
 #endif

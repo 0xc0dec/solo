@@ -13,13 +13,13 @@
 
 using namespace solo;
 
-gl::OpenGLFrameBuffer::OpenGLFrameBuffer()
+OpenGLFrameBuffer::OpenGLFrameBuffer()
 {
     glGenFramebuffers(1, &handle);
     SL_PANIC_IF(!handle, "Failed to create frame buffer handle");
 }
 
-gl::OpenGLFrameBuffer::~OpenGLFrameBuffer()
+OpenGLFrameBuffer::~OpenGLFrameBuffer()
 {
     glDeleteFramebuffers(1, &handle);
 }
@@ -42,7 +42,7 @@ static void validateNewAttachments(const vec<sptr<solo::Texture2d>> &attachments
     }
 }
 
-void gl::OpenGLFrameBuffer::setAttachments(const vec<sptr<solo::Texture2d>> &attachments)
+void OpenGLFrameBuffer::setAttachments(const vec<sptr<solo::Texture2d>> &attachments)
 {
     SL_PANIC_BLOCK(validateNewAttachments(attachments));
 

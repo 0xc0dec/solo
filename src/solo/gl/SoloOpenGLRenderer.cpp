@@ -16,7 +16,6 @@
 #include "SoloOpenGL.h"
 
 using namespace solo;
-using namespace gl;
 
 static auto toBlendFactor(BlendFactor factor) -> GLenum
 {
@@ -164,7 +163,7 @@ static void setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor)
     glBlendFunc(toBlendFactor(srcFactor), toBlendFactor(dstFactor));
 }
 
-gl::OpenGLRenderer::OpenGLRenderer(Device *device)
+OpenGLRenderer::OpenGLRenderer(Device *device)
 {
     GLint major, minor;
     glGetIntegerv(GL_MAJOR_VERSION, &major);
@@ -172,7 +171,7 @@ gl::OpenGLRenderer::OpenGLRenderer(Device *device)
     device->getLogger()->logInfo(SL_FMT("Running in OpenGL ", major, ".", minor, " mode"));
 }
 
-void gl::OpenGLRenderer::addRenderCommand(const RenderCommand &cmd)
+void OpenGLRenderer::addRenderCommand(const RenderCommand &cmd)
 {
     RenderStep step;
     step.cmd = cmd;
@@ -256,7 +255,7 @@ void gl::OpenGLRenderer::addRenderCommand(const RenderCommand &cmd)
     renderSteps.push_back(step);
 }
 
-void gl::OpenGLRenderer::beginFrame()
+void OpenGLRenderer::beginFrame()
 {
     renderSteps.clear();
 }
@@ -266,7 +265,7 @@ void gl::OpenGLRenderer::beginFrame()
 // TODO Avoid dynamic casts
 // TODO Make it consistent whether ogl classes contain drawing code themselves or only serve as a source of data
 // for the renderer
-void gl::OpenGLRenderer::endFrame()
+void OpenGLRenderer::endFrame()
 {
     Camera *currentCamera = nullptr;
 
