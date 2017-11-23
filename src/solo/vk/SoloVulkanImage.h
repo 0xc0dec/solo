@@ -18,22 +18,22 @@ namespace solo
 
     namespace vk
     {
-        class Renderer;
+        class VulkanRenderer;
 
-        class Image
+        class VulkanImage
         {
         public:
-            static auto create2d(Renderer *renderer, Texture2dData *data) -> Image;
-            static auto createCube(Renderer *renderer/*, const ImageData &data*/) -> Image;
+            static auto create2d(VulkanRenderer *renderer, Texture2dData *data) -> VulkanImage;
+            static auto createCube(VulkanRenderer *renderer/*, const ImageData &data*/) -> VulkanImage;
 
-            Image() {}
-            Image(Renderer *renderer, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format,
+            VulkanImage() {}
+            VulkanImage(VulkanRenderer *renderer, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format,
                 VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask);
-            Image(const Image &other) = delete;
-            Image(Image &&other) = default;
+            VulkanImage(const VulkanImage &other) = delete;
+            VulkanImage(VulkanImage &&other) = default;
 
-            auto operator=(const Image &other) -> Image& = delete;
-            auto operator=(Image &&other) -> Image& = default;
+            auto operator=(const VulkanImage &other) -> VulkanImage& = delete;
+            auto operator=(VulkanImage &&other) -> VulkanImage& = default;
 
             auto getSize() const -> Vector2 { return {static_cast<float>(width), static_cast<float>(height)}; }
             auto getLayout() const -> VkImageLayout { return layout; }
@@ -41,10 +41,10 @@ namespace solo
             auto getView() const -> VkImageView { return view; }
 
         private:
-            Resource<VkImage> image;
-            Resource<VkDeviceMemory> memory;
-            Resource<VkImageView> view;
-            Resource<VkSampler> sampler;
+            VulkanResource<VkImage> image;
+            VulkanResource<VkDeviceMemory> memory;
+            VulkanResource<VkImageView> view;
+            VulkanResource<VkSampler> sampler;
             VkImageLayout layout = VK_IMAGE_LAYOUT_UNDEFINED;
             u32 mipLevels = 0;
             u32 layers = 0;

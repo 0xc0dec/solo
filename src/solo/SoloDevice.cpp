@@ -13,7 +13,7 @@
 #include "SoloJobPool.h"
 #include "null/SoloNullDevice.h"
 #include "gl/SoloSDLOpenGLDevice.h"
-#include "vk/SoloSDLVulkanDevice.h"
+#include "vk/SoloVulkanSDLDevice.h"
 
 using namespace solo;
 
@@ -30,7 +30,7 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device>
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            device = std::make_unique<vk::SDLDevice>(setup);
+            device = std::make_unique<vk::VulkanSDLDevice>(setup);
             break;
 #endif
         case DeviceMode::Null:

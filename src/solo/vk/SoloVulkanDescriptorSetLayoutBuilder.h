@@ -15,15 +15,15 @@ namespace solo
 {
     namespace vk
     {
-        class DescriptorSetLayoutBuilder
+        class VulkanDescriptorSetLayoutBuilder
         {
         public:
-            explicit DescriptorSetLayoutBuilder(VkDevice device);
+            explicit VulkanDescriptorSetLayoutBuilder(VkDevice device);
 
             auto withBinding(u32 binding, VkDescriptorType descriptorType, u32 descriptorCount,
-                VkShaderStageFlagBits stageFlags) -> DescriptorSetLayoutBuilder&;
+                VkShaderStageFlagBits stageFlags) -> VulkanDescriptorSetLayoutBuilder&;
 
-            auto build() -> Resource<VkDescriptorSetLayout>;
+            auto build() -> VulkanResource<VkDescriptorSetLayout>;
 
         private:
             VkDevice device = nullptr;

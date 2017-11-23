@@ -22,7 +22,7 @@ auto Material::create(Device *device, sptr<Effect> effect) -> sptr<Material>
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return std::make_shared<vk::Material>(effect);
+            return std::make_shared<vk::VulkanMaterial>(effect);
 #endif
         default:
             return std::make_shared<null::NullMaterial>();

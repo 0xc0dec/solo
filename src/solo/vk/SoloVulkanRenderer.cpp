@@ -8,7 +8,7 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloDevice.h"
-#include "SoloSDLVulkanDevice.h"
+#include "SoloVulkanSDLDevice.h"
 #include "SoloVulkanMaterial.h"
 #include "SoloVulkanMesh.h"
 #include "SoloVulkanEffect.h"
@@ -27,7 +27,7 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT fl
     return VK_FALSE;
 }
 
-static auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEXT callbackFunc) -> Resource<VkDebugReportCallbackEXT>
+static auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEXT callbackFunc) -> VulkanResource<VkDebugReportCallbackEXT>
 {
     VkDebugReportCallbackCreateInfoEXT createInfo;
     createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
@@ -40,13 +40,13 @@ static auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEX
     auto destroy = reinterpret_cast<PFN_vkDestroyDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkDestroyDebugReportCallbackEXT"));
     SL_PANIC_IF(!destroy, "Failed to load pointer to vkDestroyDebugReportCallbackEXT");
 
-    Resource<VkDebugReportCallbackEXT> result{instance, destroy};
+    VulkanResource<VkDebugReportCallbackEXT> result{instance, destroy};
     SL_VK_CHECK_RESULT(create(instance, &createInfo, nullptr, result.cleanRef()));
 
     return result;
 }
 
-static auto createDevice(VkPhysicalDevice physicalDevice, u32 queueIndex) -> Resource<VkDevice>
+static auto createDevice(VkPhysicalDevice physicalDevice, u32 queueIndex) -> VulkanResource<VkDevice>
 {
     vec<float> queuePriorities = {0.0f};
     VkDeviceQueueCreateInfo queueCreateInfo{};
@@ -66,7 +66,7 @@ static auto createDevice(VkPhysicalDevice physicalDevice, u32 queueIndex) -> Res
     deviceCreateInfo.enabledExtensionCount = static_cast<u32>(deviceExtensions.size());
     deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
 
-    Resource<VkDevice> result{vkDestroyDevice};
+    VulkanResource<VkDevice> result{vkDestroyDevice};
     SL_VK_CHECK_RESULT(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, result.cleanRef()));
 
     return result;
@@ -120,14 +120,14 @@ static auto getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> u32
     return 0;
 }
 
-static auto createCommandPool(VkDevice device, u32 queueIndex) -> Resource<VkCommandPool>
+static auto createCommandPool(VkDevice device, u32 queueIndex) -> VulkanResource<VkCommandPool>
 {
     VkCommandPoolCreateInfo poolInfo{};
     poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
     poolInfo.queueFamilyIndex = queueIndex;
     poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 
-    Resource<VkCommandPool> commandPool{device, vkDestroyCommandPool};
+    VulkanResource<VkCommandPool> commandPool{device, vkDestroyCommandPool};
     SL_VK_CHECK_RESULT(vkCreateCommandPool(device, &poolInfo, nullptr, commandPool.cleanRef()));
 
     return commandPool;
@@ -158,10 +158,10 @@ static auto getDepthFormat(VkPhysicalDevice device) -> VkFormat
     return VK_FORMAT_UNDEFINED;
 }
 
-vk::Renderer::Renderer(Device *engineDevice):
+vk::VulkanRenderer::VulkanRenderer(Device *engineDevice):
     engineDevice(engineDevice)
 {
-    const auto vulkanDevice = dynamic_cast<SDLDevice*>(engineDevice);
+    const auto vulkanDevice = dynamic_cast<VulkanSDLDevice*>(engineDevice);
     const auto instance = vulkanDevice->getInstance();
     const auto surface = vulkanDevice->getSurface();
     const auto canvasSize = engineDevice->getCanvasSize();
@@ -182,14 +182,14 @@ vk::Renderer::Renderer(Device *engineDevice):
     vkGetDeviceQueue(device, queueIndex, 0, &queue);
 
     commandPool = createCommandPool(device, queueIndex);
-    swapchain = Swapchain(this, vulkanDevice, canvasSize.x, canvasSize.y, engineDevice->isVsync());
+    swapchain = VulkanSwapchain(this, vulkanDevice, canvasSize.x, canvasSize.y, engineDevice->isVsync());
 }
 
-vk::Renderer::~Renderer()
+vk::VulkanRenderer::~VulkanRenderer()
 {
 }
 
-void vk::Renderer::beginFrame()
+void vk::VulkanRenderer::beginFrame()
 {
     renderCommands.clear();
     renderCommands.reserve(100); // TODO just picked random constant
@@ -198,7 +198,7 @@ void vk::Renderer::beginFrame()
     pipelines.reserve(100);
 }
 
-void vk::Renderer::endFrame()
+void vk::VulkanRenderer::endFrame()
 {
     swapchain.recordCommandBuffers([&](VkFramebuffer fb, VkCommandBuffer buf)
     {
@@ -210,7 +210,7 @@ void vk::Renderer::endFrame()
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 }
 
-void vk::Renderer::recordRenderCommands(VkCommandBuffer buf, RenderPass &renderPass, VkFramebuffer frameBuffer)
+void vk::VulkanRenderer::recordRenderCommands(VkCommandBuffer buf, VulkanRenderPass &renderPass, VkFramebuffer frameBuffer)
 {
     const auto canvasSize = engineDevice->getCanvasSize();
     renderPass.begin(buf, frameBuffer, canvasSize.x, canvasSize.y);
@@ -246,10 +246,10 @@ void vk::Renderer::recordRenderCommands(VkCommandBuffer buf, RenderPass &renderP
 
             case RenderCommandType::DrawMeshPart:
             {
-                const auto material = static_cast<Material*>(cmd.meshPart.material);
-                const auto effect = static_cast<Effect*>(material->getEffect());
+                const auto material = static_cast<VulkanMaterial*>(cmd.meshPart.material);
+                const auto effect = static_cast<VulkanEffect*>(material->getEffect());
                 const auto transform = cmd.meshPart.transform;
-                const auto mesh = static_cast<Mesh*>(cmd.meshPart.mesh);
+                const auto mesh = static_cast<VulkanMesh*>(cmd.meshPart.mesh);
                 const auto vs = effect->getVertexShader();
                 const auto fs = effect->getFragmentShader();
                 const auto &uniformBufs = effect->getUniformBuffers();
@@ -259,12 +259,12 @@ void vk::Renderer::recordRenderCommands(VkCommandBuffer buf, RenderPass &renderP
 
                 if (!binding.descSet) // new binding
                 {
-                    auto builder = DescriptorSetLayoutBuilder(device);
+                    auto builder = VulkanDescriptorSetLayoutBuilder(device);
 
                     for (const auto &info: uniformBufs)
                     {
                         const auto bufferName = info.first;
-                        binding.buffers[bufferName] = Buffer::createUniformHostVisible(this, info.second.size);
+                        binding.buffers[bufferName] = VulkanBuffer::createUniformHostVisible(this, info.second.size);
                         builder.withBinding(info.second.binding, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
                     }
 
@@ -273,18 +273,18 @@ void vk::Renderer::recordRenderCommands(VkCommandBuffer buf, RenderPass &renderP
 
                     binding.descSetLayout = builder.build();
 
-                    auto poolConfig = DescriptorPoolConfig();
+                    auto poolConfig = VulkanDescriptorPoolConfig();
                     poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, uniformBufs.size());
                     poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, effectSamplers.size());
 
-                    binding.descPool = DescriptorPool(device, 1, poolConfig);
+                    binding.descPool = VulkanDescriptorPool(device, 1, poolConfig);
                     binding.descSet = binding.descPool.allocateSet(binding.descSetLayout);
 
                     // TODO Invoke updater outside of the binding initialization because at least
                     // material sampler parameters may change in future
 
                     // TODO Invoke updater not so often - only when something really changes
-                    DescriptorSetUpdater updater{device};
+                    VulkanDescriptorSetUpdater updater{device};
 
                     // TODO Not necessary (?), buffers don't change anyway, only their content
                     for (auto &pair : binding.buffers)
@@ -312,7 +312,7 @@ void vk::Renderer::recordRenderCommands(VkCommandBuffer buf, RenderPass &renderP
                         pp.second.write(buffer, currentCamera, transform);
                 }
 
-                auto pipelineConfig = PipelineConfig(vs, fs)
+                auto pipelineConfig = VulkanPipelineConfig(vs, fs)
                     .withDescriptorSetLayout(binding.descSetLayout)
                     .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
                     .withCullMode(material->getCullModeFlags())

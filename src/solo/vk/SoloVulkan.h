@@ -28,8 +28,8 @@ namespace solo
 
     namespace vk
     {
-        auto createSemaphore(VkDevice device) -> Resource<VkSemaphore>;
-        auto createCommandBuffer(VkDevice device, VkCommandPool commandPool) -> Resource<VkCommandBuffer>;
+        auto createSemaphore(VkDevice device) -> VulkanResource<VkSemaphore>;
+        auto createCommandBuffer(VkDevice device, VkCommandPool commandPool) -> VulkanResource<VkCommandBuffer>;
         void beginCommandBuffer(VkCommandBuffer buffer, bool oneTime);
         void queueSubmit(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores,
             u32 signalSemaphoreCount, const VkSemaphore *signalSemaphores,
@@ -37,11 +37,11 @@ namespace solo
         auto findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, u32 typeBits,
             VkMemoryPropertyFlags properties) -> s32;
         auto createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImageView depthAttachment,
-            VkRenderPass renderPass, u32 width, u32 height) -> Resource<VkFramebuffer>;
-        auto createShader(VkDevice device, const void *data, u32 size) -> Resource<VkShaderModule>;
+            VkRenderPass renderPass, u32 width, u32 height) -> VulkanResource<VkFramebuffer>;
+        auto createShader(VkDevice device, const void *data, u32 size) -> VulkanResource<VkShaderModule>;
         auto createShaderStageInfo(bool vertex, VkShaderModule shader, const s8 *entryPoint) -> VkPipelineShaderStageCreateInfo;
         auto createImageView(VkDevice device, VkFormat format, VkImageViewType type, u32 mipLevels, u32 layers,
-            VkImage image, VkImageAspectFlags aspectMask) -> Resource<VkImageView>;
+            VkImage image, VkImageAspectFlags aspectMask) -> VulkanResource<VkImageView>;
     }
 }
 

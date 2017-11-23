@@ -12,9 +12,9 @@
 using namespace solo;
 using namespace vk;
 
-auto Buffer::createStaging(vk::Renderer *renderer, VkDeviceSize size, const void *initialData) -> Buffer
+auto VulkanBuffer::createStaging(vk::VulkanRenderer *renderer, VkDeviceSize size, const void *initialData) -> VulkanBuffer
 {
-    auto buffer = Buffer(renderer, size,
+    auto buffer = VulkanBuffer(renderer, size,
         VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
         VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
@@ -24,24 +24,24 @@ auto Buffer::createStaging(vk::Renderer *renderer, VkDeviceSize size, const void
     return buffer;
 }
 
-auto Buffer::createUniformHostVisible(vk::Renderer *renderer, VkDeviceSize size) -> Buffer
+auto VulkanBuffer::createUniformHostVisible(vk::VulkanRenderer *renderer, VkDeviceSize size) -> VulkanBuffer
 {
-    return Buffer(renderer, size,
+    return VulkanBuffer(renderer, size,
         VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
         VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 }
 
-auto Buffer::createDeviceLocal(vk::Renderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> Buffer
+auto VulkanBuffer::createDeviceLocal(vk::VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
 {
     auto stagingBuffer = createStaging(renderer, size, data);
 
-    auto buffer = Buffer(renderer, size, VK_BUFFER_USAGE_TRANSFER_DST_BIT | usageFlags, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+    auto buffer = VulkanBuffer(renderer, size, VK_BUFFER_USAGE_TRANSFER_DST_BIT | usageFlags, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
     stagingBuffer.transferTo(buffer, renderer->getQueue(), renderer->getCommandPool());
 
     return std::move(buffer);
 }
 
-Buffer::Buffer(vk::Renderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags):
+VulkanBuffer::VulkanBuffer(vk::VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags):
     renderer(renderer),
     device(renderer->getDevice()),
     size(size)
@@ -55,7 +55,7 @@ Buffer::Buffer(vk::Renderer *renderer, VkDeviceSize size, VkBufferUsageFlags usa
     bufferInfo.queueFamilyIndexCount = 0;
     bufferInfo.pQueueFamilyIndices = nullptr;
 
-    buffer = Resource<VkBuffer>{device, vkDestroyBuffer};
+    buffer = VulkanResource<VkBuffer>{device, vkDestroyBuffer};
     SL_VK_CHECK_RESULT(vkCreateBuffer(device, &bufferInfo, nullptr, buffer.cleanRef()));
 
     VkMemoryRequirements memReqs;
@@ -66,12 +66,12 @@ Buffer::Buffer(vk::Renderer *renderer, VkDeviceSize size, VkBufferUsageFlags usa
     allocInfo.allocationSize = memReqs.size;
     allocInfo.memoryTypeIndex = findMemoryType(renderer->getPhysicalMemoryFeatures(), memReqs.memoryTypeBits, memPropertyFlags);
 
-    memory = Resource<VkDeviceMemory>{device, vkFreeMemory};
+    memory = VulkanResource<VkDeviceMemory>{device, vkFreeMemory};
     SL_VK_CHECK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, memory.cleanRef()));
     SL_VK_CHECK_RESULT(vkBindBufferMemory(device, buffer, memory, 0));
 }
 
-void Buffer::updateAll(const void *newData) const
+void VulkanBuffer::updateAll(const void *newData) const
 {
     void *ptr = nullptr;
 	SL_VK_CHECK_RESULT(vkMapMemory(device, memory, 0, VK_WHOLE_SIZE, 0, &ptr));
@@ -79,7 +79,7 @@ void Buffer::updateAll(const void *newData) const
 	vkUnmapMemory(device, memory);
 }
 
-void Buffer::updatePart(const void *newData, u32 offset, u32 size)
+void VulkanBuffer::updatePart(const void *newData, u32 offset, u32 size)
 {
     void *ptr = nullptr;
 	SL_VK_CHECK_RESULT(vkMapMemory(device, memory, offset, VK_WHOLE_SIZE, 0, &ptr));
@@ -87,7 +87,7 @@ void Buffer::updatePart(const void *newData, u32 offset, u32 size)
 	vkUnmapMemory(device, memory);
 }
 
-void Buffer::transferTo(const Buffer &dst, VkQueue queue, VkCommandPool cmdPool) const
+void VulkanBuffer::transferTo(const VulkanBuffer &dst, VkQueue queue, VkCommandPool cmdPool) const
 {
     auto cmdBuf = createCommandBuffer(device, cmdPool);
     beginCommandBuffer(cmdBuf, true);

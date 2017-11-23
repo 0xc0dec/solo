@@ -23,7 +23,7 @@ auto Mesh::create(Device *device) -> sptr<Mesh>
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return std::make_shared<vk::Mesh>(device);
+            return std::make_shared<vk::VulkanMesh>(device);
 #endif
         default:
             return std::make_shared<null::NullMesh>();

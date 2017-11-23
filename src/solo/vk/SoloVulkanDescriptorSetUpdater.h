@@ -15,15 +15,15 @@ namespace solo
 {
     namespace vk
     {
-        class DescriptorSetUpdater
+        class VulkanDescriptorSetUpdater
         {
         public:
-            explicit DescriptorSetUpdater(VkDevice device);
+            explicit VulkanDescriptorSetUpdater(VkDevice device);
 
             auto forUniformBuffer(u32 binding, VkDescriptorSet set, VkBuffer buffer, VkDeviceSize offset,
-                VkDeviceSize range) -> DescriptorSetUpdater&;
+                VkDeviceSize range) -> VulkanDescriptorSetUpdater&;
             auto forTexture(u32 binding, VkDescriptorSet set, VkImageView view, VkSampler sampler,
-                VkImageLayout layout) -> DescriptorSetUpdater&;
+                VkImageLayout layout) -> VulkanDescriptorSetUpdater&;
 
             void updateSets();
 

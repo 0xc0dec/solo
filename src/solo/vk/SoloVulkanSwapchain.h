@@ -17,27 +17,27 @@ namespace solo
 {
     namespace vk
     {
-        class Renderer;
-        class SDLDevice;
+        class VulkanRenderer;
+        class VulkanSDLDevice;
 
-        class Swapchain
+        class VulkanSwapchain
         {
         public:
-            Swapchain() {}
+            VulkanSwapchain() {}
 
-            Swapchain(Renderer *renderer, SDLDevice *device, u32 width, u32 height, bool vsync);
-            Swapchain(const Swapchain &other) = delete;
-            Swapchain(Swapchain &&other) = default;
+            VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *device, u32 width, u32 height, bool vsync);
+            VulkanSwapchain(const VulkanSwapchain &other) = delete;
+            VulkanSwapchain(VulkanSwapchain &&other) = default;
 
-            ~Swapchain() {}
+            ~VulkanSwapchain() {}
 
-            auto operator=(const Swapchain &other) -> Swapchain& = delete;
-            auto operator=(Swapchain &&other) -> Swapchain& = default;
+            auto operator=(const VulkanSwapchain &other) -> VulkanSwapchain& = delete;
+            auto operator=(VulkanSwapchain &&other) -> VulkanSwapchain& = default;
 
             operator VkSwapchainKHR() { return swapchain; }
             operator VkSwapchainKHR() const { return swapchain; }
 
-            auto getRenderPass() -> RenderPass& { return renderPass; }
+            auto getRenderPass() -> VulkanRenderPass& { return renderPass; }
             auto getPresentCompleteSemaphore() const -> VkSemaphore { return presentCompleteSem; }
 
             void recordCommandBuffers(std::function<void(VkFramebuffer, VkCommandBuffer)> issueCommands);
@@ -48,18 +48,18 @@ namespace solo
             struct Step
             {
                 VkImage image;
-                Resource<VkImageView> imageView;
-                Resource<VkFramebuffer> framebuffer;
-                Resource<VkCommandBuffer> cmdBuffer;
+                VulkanResource<VkImageView> imageView;
+                VulkanResource<VkFramebuffer> framebuffer;
+                VulkanResource<VkCommandBuffer> cmdBuffer;
             };
 
             VkDevice device = nullptr;
-            Resource<VkSwapchainKHR> swapchain;
-            Image depthStencil;
+            VulkanResource<VkSwapchainKHR> swapchain;
+            VulkanImage depthStencil;
             vec<Step> steps;
-            Resource<VkSemaphore> presentCompleteSem;
-            Resource<VkSemaphore> renderCompleteSem;
-            RenderPass renderPass;
+            VulkanResource<VkSemaphore> presentCompleteSem;
+            VulkanResource<VkSemaphore> renderCompleteSem;
+            VulkanRenderPass renderPass;
             u32 nextStep = 0;
         };
     }

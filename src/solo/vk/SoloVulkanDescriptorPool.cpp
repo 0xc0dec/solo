@@ -10,7 +10,7 @@
 using namespace solo;
 using namespace vk;
 
-DescriptorPool::DescriptorPool(VkDevice device, u32 maxSetCount, const DescriptorPoolConfig &config):
+VulkanDescriptorPool::VulkanDescriptorPool(VkDevice device, u32 maxSetCount, const VulkanDescriptorPoolConfig &config):
     device(device)
 {
     VkDescriptorPoolCreateInfo poolInfo{};
@@ -19,13 +19,13 @@ DescriptorPool::DescriptorPool(VkDevice device, u32 maxSetCount, const Descripto
     poolInfo.pPoolSizes = config.sizes.data();
     poolInfo.maxSets = maxSetCount;
 
-    Resource<VkDescriptorPool> pool{device, vkDestroyDescriptorPool};
+    VulkanResource<VkDescriptorPool> pool{device, vkDestroyDescriptorPool};
     SL_VK_CHECK_RESULT(vkCreateDescriptorPool(device, &poolInfo, nullptr, pool.cleanRef()));
 
     this->pool = std::move(pool);
 }
 
-auto DescriptorPool::allocateSet(VkDescriptorSetLayout layout) const -> VkDescriptorSet
+auto VulkanDescriptorPool::allocateSet(VkDescriptorSetLayout layout) const -> VkDescriptorSet
 {
     VkDescriptorSetAllocateInfo allocInfo{};
     allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
@@ -39,7 +39,7 @@ auto DescriptorPool::allocateSet(VkDescriptorSetLayout layout) const -> VkDescri
     return set;
 }
 
-auto DescriptorPoolConfig::forDescriptors(VkDescriptorType descriptorType, u32 descriptorCount) -> DescriptorPoolConfig&
+auto VulkanDescriptorPoolConfig::forDescriptors(VkDescriptorType descriptorType, u32 descriptorCount) -> VulkanDescriptorPoolConfig&
 {
     VkDescriptorPoolSize poolSize{};
     poolSize.type = descriptorType;

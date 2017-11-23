@@ -22,7 +22,7 @@ static auto create(Device *device, const void *vsSrc, u32 vsSrcLen, const void *
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return std::make_shared<vk::Effect>(device, vsSrc, vsSrcLen, fsSrc, fsSrcLen);
+            return std::make_shared<vk::VulkanEffect>(device, vsSrc, vsSrcLen, fsSrc, fsSrcLen);
 #endif
         default:
             return std::make_shared<null::NullEffect>();
@@ -48,7 +48,7 @@ auto Effect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effec
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return vk::Effect::createFromPrefab(device, prefab);
+            return vk::VulkanEffect::createFromPrefab(device, prefab);
 #endif
         default:
             return std::make_shared<null::NullEffect>();

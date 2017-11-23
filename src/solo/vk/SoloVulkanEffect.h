@@ -16,9 +16,9 @@ namespace solo
 {
     namespace vk
     {
-        class Renderer;
+        class VulkanRenderer;
 
-        class Effect final: public solo::Effect
+        class VulkanEffect final: public Effect
         {
         public:
             struct UniformBufferMember
@@ -39,10 +39,10 @@ namespace solo
                 u32 binding;
             };
 
-            static auto createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effect>;
+            static auto createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<VulkanEffect>;
 
-            Effect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen);
-            ~Effect();
+            VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen);
+            ~VulkanEffect();
 
             auto getVertexShader() const -> VkShaderModule { return vertexShader; }
             auto getFragmentShader() const -> VkShaderModule { return fragmentShader; }
@@ -54,9 +54,9 @@ namespace solo
             auto getSamplers() const -> umap<str, Sampler> const& { return samplers; }
 
         private:
-            Renderer *renderer = nullptr;
-            Resource<VkShaderModule> vertexShader;
-            Resource<VkShaderModule> fragmentShader;
+            VulkanRenderer *renderer = nullptr;
+            VulkanResource<VkShaderModule> vertexShader;
+            VulkanResource<VkShaderModule> fragmentShader;
             
             umap<str, UniformBuffer> uniformBuffers;
             umap<str, Sampler> samplers;

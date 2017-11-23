@@ -86,7 +86,7 @@
     <ClInclude Include="..\src\solo\SoloVertexFormat.h" />
     <ClInclude Include="..\src\solo\stb\SoloSTBTextureData.h" />
     <ClInclude Include="..\src\solo\stb\SoloSTBTrueTypeFont.h" />
-    <ClInclude Include="..\src\solo\vk\SoloSDLVulkanDevice.h" />
+    <ClInclude Include="..\src\solo\vk\SoloVulkanSDLDevice.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkan.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkanBuffer.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkanDescriptorPool.h" />
@@ -166,7 +166,7 @@
     <ClCompile Include="..\src\solo\SoloVector4.cpp" />
     <ClCompile Include="..\src\solo\stb\SoloSTBTextureData.cpp" />
     <ClCompile Include="..\src\solo\stb\SoloSTBTrueTypeFont.cpp" />
-    <ClCompile Include="..\src\solo\vk\SoloSDLVulkanDevice.cpp" />
+    <ClCompile Include="..\src\solo\vk\SoloVulkanSDLDevice.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloVulkan.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloVulkanBuffer.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloVulkanDescriptorPool.cpp" />

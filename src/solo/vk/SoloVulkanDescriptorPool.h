@@ -15,34 +15,34 @@ namespace solo
 {
     namespace vk
     {
-        class DescriptorPoolConfig
+        class VulkanDescriptorPoolConfig
         {
         public:
-            auto forDescriptors(VkDescriptorType descriptorType, u32 descriptorCount) -> DescriptorPoolConfig&;
+            auto forDescriptors(VkDescriptorType descriptorType, u32 descriptorCount) -> VulkanDescriptorPoolConfig&;
 
         private:
-            friend class DescriptorPool;
+            friend class VulkanDescriptorPool;
 
             vec<VkDescriptorPoolSize> sizes;
         };
 
-        class DescriptorPool
+        class VulkanDescriptorPool
         {
         public:
-            DescriptorPool() {}
-            DescriptorPool(VkDevice device, u32 maxSetCount, const DescriptorPoolConfig &config);
-            DescriptorPool(const DescriptorPool &other) = delete;
-            DescriptorPool(DescriptorPool &&other) = default;
-            ~DescriptorPool() {}
+            VulkanDescriptorPool() {}
+            VulkanDescriptorPool(VkDevice device, u32 maxSetCount, const VulkanDescriptorPoolConfig &config);
+            VulkanDescriptorPool(const VulkanDescriptorPool &other) = delete;
+            VulkanDescriptorPool(VulkanDescriptorPool &&other) = default;
+            ~VulkanDescriptorPool() {}
 
-            auto operator=(const DescriptorPool &other) -> DescriptorPool& = delete;
-            auto operator=(DescriptorPool &&other) -> DescriptorPool& = default;
+            auto operator=(const VulkanDescriptorPool &other) -> VulkanDescriptorPool& = delete;
+            auto operator=(VulkanDescriptorPool &&other) -> VulkanDescriptorPool& = default;
 
             auto allocateSet(VkDescriptorSetLayout layout) const -> VkDescriptorSet;
 
         private:
             VkDevice device = nullptr;
-            Resource<VkDescriptorPool> pool;
+            VulkanResource<VkDescriptorPool> pool;
         };
     }
 }

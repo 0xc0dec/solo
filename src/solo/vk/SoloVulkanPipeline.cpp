@@ -12,7 +12,7 @@
 using namespace solo;
 using namespace vk;
 
-Pipeline::Pipeline(VkDevice device, VkRenderPass renderPass, const PipelineConfig &config)
+VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const VulkanPipelineConfig &config)
 {
     VkPipelineLayoutCreateInfo layoutInfo{};
     layoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
@@ -23,7 +23,7 @@ Pipeline::Pipeline(VkDevice device, VkRenderPass renderPass, const PipelineConfi
     layoutInfo.pushConstantRangeCount = 0;
     layoutInfo.pPushConstantRanges = nullptr;
 
-    Resource<VkPipelineLayout> layout{device, vkDestroyPipelineLayout};
+    VulkanResource<VkPipelineLayout> layout{device, vkDestroyPipelineLayout};
     SL_VK_CHECK_RESULT(vkCreatePipelineLayout(device, &layoutInfo, nullptr, layout.cleanRef()));
 
     VkPipelineMultisampleStateCreateInfo multisampleState{};
@@ -109,14 +109,14 @@ Pipeline::Pipeline(VkDevice device, VkRenderPass renderPass, const PipelineConfi
     pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
     pipelineInfo.basePipelineIndex = -1;
 
-    Resource<VkPipeline> pipeline{device, vkDestroyPipeline};
+    VulkanResource<VkPipeline> pipeline{device, vkDestroyPipeline};
     SL_VK_CHECK_RESULT(vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, pipeline.cleanRef()));
 
     this->pipeline = std::move(pipeline);
     this->layout = std::move(layout);
 }
 
-PipelineConfig::PipelineConfig(VkShaderModule vertexShader, VkShaderModule fragmentShader):
+VulkanPipelineConfig::VulkanPipelineConfig(VkShaderModule vertexShader, VkShaderModule fragmentShader):
     vertexShader(vertexShader),
     fragmentShader(fragmentShader),
     rasterStateInfo{},
@@ -154,7 +154,7 @@ PipelineConfig::PipelineConfig(VkShaderModule vertexShader, VkShaderModule fragm
     blendAttachmentState.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
 }
 
-auto PipelineConfig::withVertexAttribute(u32 location, u32 binding, VkFormat format, u32 offset) -> PipelineConfig&
+auto VulkanPipelineConfig::withVertexAttribute(u32 location, u32 binding, VkFormat format, u32 offset) -> VulkanPipelineConfig&
 {
     if (location >= vertexAttrs.size())
         vertexAttrs.resize(location + 1);
@@ -165,7 +165,7 @@ auto PipelineConfig::withVertexAttribute(u32 location, u32 binding, VkFormat for
     return *this;
 }
 
-auto PipelineConfig::withVertexBinding(u32 binding, u32 stride, VkVertexInputRate inputRate) -> PipelineConfig&
+auto VulkanPipelineConfig::withVertexBinding(u32 binding, u32 stride, VkVertexInputRate inputRate) -> VulkanPipelineConfig&
 {
     if (binding >= vertexBindings.size())
         vertexBindings.resize(binding + 1);
@@ -175,7 +175,7 @@ auto PipelineConfig::withVertexBinding(u32 binding, u32 stride, VkVertexInputRat
     return *this;
 }
 
-auto PipelineConfig::withVertexBufferLayout(u32 binding, const VertexBufferLayout &layout) -> PipelineConfig&
+auto VulkanPipelineConfig::withVertexBufferLayout(u32 binding, const VertexBufferLayout &layout) -> VulkanPipelineConfig&
 {
     withVertexBinding(binding, layout.getSize(), VK_VERTEX_INPUT_RATE_VERTEX);
 
@@ -205,15 +205,15 @@ auto PipelineConfig::withVertexBufferLayout(u32 binding, const VertexBufferLayou
     return *this;
 }
 
-auto PipelineConfig::withDepthTest(bool write, bool test) -> PipelineConfig&
+auto VulkanPipelineConfig::withDepthTest(bool write, bool test) -> VulkanPipelineConfig&
 {
     depthStencilStateInfo.depthWriteEnable = write;
     depthStencilStateInfo.depthTestEnable = test;
     return *this;
 }
 
-auto PipelineConfig::withBlend(bool enabled, VkBlendFactor srcColorFactor, VkBlendFactor dstColorFactor,
-    VkBlendFactor srcAlphaFactor, VkBlendFactor dstAlphaFactor) -> PipelineConfig&
+auto VulkanPipelineConfig::withBlend(bool enabled, VkBlendFactor srcColorFactor, VkBlendFactor dstColorFactor,
+    VkBlendFactor srcAlphaFactor, VkBlendFactor dstAlphaFactor) -> VulkanPipelineConfig&
 {
     blendAttachmentState.blendEnable = enabled ? VK_TRUE : VK_FALSE;
     blendAttachmentState.srcColorBlendFactor = srcColorFactor;

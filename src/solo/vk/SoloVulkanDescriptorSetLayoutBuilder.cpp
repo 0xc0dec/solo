@@ -10,13 +10,13 @@
 using namespace solo;
 using namespace vk;
 
-DescriptorSetLayoutBuilder::DescriptorSetLayoutBuilder(VkDevice device):
+VulkanDescriptorSetLayoutBuilder::VulkanDescriptorSetLayoutBuilder(VkDevice device):
     device(device)
 {
 }
 
-auto DescriptorSetLayoutBuilder::withBinding(u32 binding, VkDescriptorType descriptorType, u32 descriptorCount,
-    VkShaderStageFlagBits stageFlags) -> DescriptorSetLayoutBuilder&
+auto VulkanDescriptorSetLayoutBuilder::withBinding(u32 binding, VkDescriptorType descriptorType, u32 descriptorCount,
+    VkShaderStageFlagBits stageFlags) -> VulkanDescriptorSetLayoutBuilder&
 {
     if (binding >= bindings.size())
         bindings.resize(binding + 1); // TODO Fix this. Causes troubles when there are gaps between binding numbers
@@ -30,14 +30,14 @@ auto DescriptorSetLayoutBuilder::withBinding(u32 binding, VkDescriptorType descr
     return *this;
 }
 
-auto DescriptorSetLayoutBuilder::build() -> Resource<VkDescriptorSetLayout>
+auto VulkanDescriptorSetLayoutBuilder::build() -> VulkanResource<VkDescriptorSetLayout>
 {
     VkDescriptorSetLayoutCreateInfo layoutInfo {};
     layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
     layoutInfo.bindingCount = bindings.size();
     layoutInfo.pBindings = bindings.data();
 
-    Resource<VkDescriptorSetLayout> result{device, vkDestroyDescriptorSetLayout};
+    VulkanResource<VkDescriptorSetLayout> result{device, vkDestroyDescriptorSetLayout};
     SL_VK_CHECK_RESULT(vkCreateDescriptorSetLayout(device, &layoutInfo, nullptr, result.cleanRef()));
     
     return result;

@@ -3,7 +3,7 @@
     MIT license
 */
 
-#include "SoloSDLVulkanDevice.h"
+#include "SoloVulkanSDLDevice.h"
 
 #ifdef SL_VULKAN_RENDERER
 
@@ -15,7 +15,7 @@
 using namespace solo;
 using namespace vk;
 
-SDLDevice::SDLDevice(const DeviceSetup &setup):
+VulkanSDLDevice::VulkanSDLDevice(const DeviceSetup &setup):
     SDLDevice(setup)
 {
     auto flags = static_cast<u32>(SDL_WINDOW_ALLOW_HIGHDPI);
@@ -65,7 +65,7 @@ SDLDevice::SDLDevice(const DeviceSetup &setup):
         instanceInfo.ppEnabledExtensionNames = enabledExtensions.data();
     }
 
-    instance = Resource<VkInstance>{vkDestroyInstance};
+    instance = VulkanResource<VkInstance>{vkDestroyInstance};
     SL_VK_CHECK_RESULT(vkCreateInstance(&instanceInfo, nullptr, instance.cleanRef()));
 
 #ifdef SL_WINDOWS
@@ -83,21 +83,21 @@ SDLDevice::SDLDevice(const DeviceSetup &setup):
     surfaceInfo.hinstance = hinstance;
     surfaceInfo.hwnd = hwnd;
 
-    surface = Resource<VkSurfaceKHR>{instance, vkDestroySurfaceKHR};
+    surface = VulkanResource<VkSurfaceKHR>{instance, vkDestroySurfaceKHR};
     SL_VK_CHECK_RESULT(vkCreateWin32SurfaceKHR(instance, &surfaceInfo, nullptr, surface.cleanRef()));
 #endif
 }
 
-SDLDevice::~SDLDevice()
+VulkanSDLDevice::~VulkanSDLDevice()
 {
     cleanupSubsystems();
 }
 
-void SDLDevice::saveScreenshot(const str &path)
+void VulkanSDLDevice::saveScreenshot(const str &path)
 {
 }
 
-void SDLDevice::endUpdate()
+void VulkanSDLDevice::endUpdate()
 {
 }
 

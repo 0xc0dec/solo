@@ -79,9 +79,6 @@
     <ClInclude Include="..\src\solo\sdl\SoloSDLInputMaps.h">
       <Filter>sdl</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\vk\SoloSDLVulkanDevice.h">
-      <Filter>vk</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\solo\vk\SoloVulkan.h">
       <Filter>vk</Filter>
     </ClInclude>
@@ -184,6 +181,9 @@
     <ClInclude Include="..\src\solo\stb\SoloSTBTrueTypeFont.h">
       <Filter>stb</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\vk\SoloVulkanSDLDevice.h">
+      <Filter>vk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp">
@@ -263,9 +263,6 @@
     </ClCompile>
     <ClCompile Include="..\src\solo\sdl\SoloSDLDevice.cpp">
       <Filter>sdl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\vk\SoloSDLVulkanDevice.cpp">
-      <Filter>vk</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\vk\SoloVulkan.cpp">
       <Filter>vk</Filter>
@@ -350,6 +347,9 @@
     </ClCompile>
     <ClCompile Include="..\src\solo\stb\SoloSTBTrueTypeFont.cpp">
       <Filter>stb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\vk\SoloVulkanSDLDevice.cpp">
+      <Filter>vk</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

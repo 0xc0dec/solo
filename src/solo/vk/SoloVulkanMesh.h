@@ -17,13 +17,13 @@ namespace solo
 {
     namespace vk
     {
-        class Renderer;
+        class VulkanRenderer;
 
-        class Mesh final: public solo::Mesh
+        class VulkanMesh final: public Mesh
         {
         public:
-            explicit Mesh(Device *device);
-            ~Mesh();
+            explicit VulkanMesh(Device *device);
+            ~VulkanMesh();
 
             auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override final;
             auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override final;
@@ -45,10 +45,10 @@ namespace solo
             auto getMinVertexCount() const -> u32 { return minVertexCount; }
 
         private:
-            Renderer *renderer = nullptr;
+            VulkanRenderer *renderer = nullptr;
 
-            vec<Buffer> vertexBuffers;
-            vec<Buffer> indexBuffers;
+            vec<VulkanBuffer> vertexBuffers;
+            vec<VulkanBuffer> indexBuffers;
             vec<VertexBufferLayout> layouts;
             vec<u32> vertexCounts;
             vec<u32> indexElementCounts;

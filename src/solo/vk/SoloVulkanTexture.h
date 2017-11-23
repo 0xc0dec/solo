@@ -18,7 +18,7 @@ namespace solo
 
     namespace vk
     {
-        class Texture
+        class VulkanTexture
         {
         public:
             auto getImage() const -> VkImageLayout { return image.getLayout(); }
@@ -26,13 +26,13 @@ namespace solo
             auto getSampler() const -> VkSampler { return image.getSampler(); }
 
         protected:
-            Image image;
+            VulkanImage image;
         };
 
-        class Texture2d final: public solo::Texture2d, public vk::Texture
+        class VulkanTexture2d final: public Texture2d, public VulkanTexture
         {
         public:
-            Texture2d(Device *device, Texture2dData *data);
+            VulkanTexture2d(Device *device, Texture2dData *data);
 
             void generateMipmaps() override final;
         };

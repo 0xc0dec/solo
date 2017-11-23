@@ -21,42 +21,42 @@ namespace solo
     namespace vk
     {
         template <class T>
-        class Resource
+        class VulkanResource
         {
         public:
-            Resource() {}
-            Resource(const Resource<T> &other) = delete;
-            Resource(Resource<T> &&other) noexcept
+            VulkanResource() {}
+            VulkanResource(const VulkanResource<T> &other) = delete;
+            VulkanResource(VulkanResource<T> &&other) noexcept
             {
                 swap(other);
             }
 
-            explicit Resource(std::function<void(T, VkAllocationCallbacks*)> del)
+            explicit VulkanResource(std::function<void(T, VkAllocationCallbacks*)> del)
             {
                 this->del = [=](T handle) { del(handle, nullptr); };
             }
 
-            Resource(VkInstance instance, std::function<void(VkInstance, T, VkAllocationCallbacks*)> del)
+            VulkanResource(VkInstance instance, std::function<void(VkInstance, T, VkAllocationCallbacks*)> del)
             {
                 this->del = [instance, del](T obj) { del(instance, obj, nullptr); };
             }
 
-            Resource(VkDevice device, std::function<void(VkDevice, T, VkAllocationCallbacks*)> del)
+            VulkanResource(VkDevice device, std::function<void(VkDevice, T, VkAllocationCallbacks*)> del)
             {
                 this->del = [device, del](T obj) { del(device, obj, nullptr); };
             }
 
-            Resource(VkDevice device, VkCommandPool cmdPool, std::function<void(VkDevice, VkCommandPool, u32, T*)> del)
+            VulkanResource(VkDevice device, VkCommandPool cmdPool, std::function<void(VkDevice, VkCommandPool, u32, T*)> del)
             {
                 this->del = [device, cmdPool, del](T obj) { del(device, cmdPool, 1, &obj); };
             }
 
-            ~Resource()
+            ~VulkanResource()
             {
                 cleanup();
             }
 
-            auto operator=(Resource<T> other) noexcept -> Resource<T>&
+            auto operator=(VulkanResource<T> other) noexcept -> VulkanResource<T>&
             {
                 swap(other);
                 return *this;
@@ -114,7 +114,7 @@ namespace solo
                 assert(del /* Calling cleanup() on a Resource with empty deleter */);
             }
 
-            void swap(Resource<T> &other) noexcept
+            void swap(VulkanResource<T> &other) noexcept
             {
                 std::swap(handle, other.handle);
                 std::swap(del, other.del);

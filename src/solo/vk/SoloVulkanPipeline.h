@@ -16,31 +16,31 @@ namespace solo
 {
     namespace vk
     {
-        class PipelineConfig
+        class VulkanPipelineConfig
         {
         public:
-            PipelineConfig(VkShaderModule vertexShader, VkShaderModule fragmentShader);
-            ~PipelineConfig(){}
+            VulkanPipelineConfig(VkShaderModule vertexShader, VkShaderModule fragmentShader);
+            ~VulkanPipelineConfig(){}
 
-            auto withVertexAttribute(u32 location, u32 binding, VkFormat format, u32 offset) -> PipelineConfig&;
-            auto withVertexBinding(u32 binding, u32 stride, VkVertexInputRate inputRate) -> PipelineConfig&;
-            auto withVertexBufferLayout(u32 binding, const VertexBufferLayout &layout) -> PipelineConfig&; // TODO rename
+            auto withVertexAttribute(u32 location, u32 binding, VkFormat format, u32 offset) -> VulkanPipelineConfig&;
+            auto withVertexBinding(u32 binding, u32 stride, VkVertexInputRate inputRate) -> VulkanPipelineConfig&;
+            auto withVertexBufferLayout(u32 binding, const VertexBufferLayout &layout) -> VulkanPipelineConfig&; // TODO rename
 
-            auto withDescriptorSetLayout(VkDescriptorSetLayout layout) -> PipelineConfig&;
+            auto withDescriptorSetLayout(VkDescriptorSetLayout layout) -> VulkanPipelineConfig&;
 
-            auto withFrontFace(VkFrontFace frontFace) -> PipelineConfig&;
-            auto withCullMode(VkCullModeFlags cullFlags) -> PipelineConfig&;
+            auto withFrontFace(VkFrontFace frontFace) -> VulkanPipelineConfig&;
+            auto withCullMode(VkCullModeFlags cullFlags) -> VulkanPipelineConfig&;
 
-            auto withDepthTest(bool write, bool test) -> PipelineConfig&;
+            auto withDepthTest(bool write, bool test) -> VulkanPipelineConfig&;
 
             auto withBlend(bool enabled, VkBlendFactor srcColorFactor, VkBlendFactor dstColorFactor,
-                VkBlendFactor srcAlphaFactor, VkBlendFactor dstAlphaFactor) -> PipelineConfig&;
+                VkBlendFactor srcAlphaFactor, VkBlendFactor dstAlphaFactor) -> VulkanPipelineConfig&;
 
-            auto withTopology(VkPrimitiveTopology topology) -> PipelineConfig&;
-            auto withPolygonMode(VkPolygonMode mode) -> PipelineConfig&;
+            auto withTopology(VkPrimitiveTopology topology) -> VulkanPipelineConfig&;
+            auto withPolygonMode(VkPolygonMode mode) -> VulkanPipelineConfig&;
 
         private:
-            friend class Pipeline;
+            friend class VulkanPipeline;
 
             VkShaderModule vertexShader;
             VkShaderModule fragmentShader;
@@ -55,17 +55,17 @@ namespace solo
             VkPrimitiveTopology topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
         };
 
-        class Pipeline
+        class VulkanPipeline
         {
         public:
-            Pipeline(){}
-            Pipeline(VkDevice device, VkRenderPass renderPass, const PipelineConfig &config);
-            Pipeline(const Pipeline &other) = delete;
-            Pipeline(Pipeline &&other) = default;
-            ~Pipeline(){}
+            VulkanPipeline(){}
+            VulkanPipeline(VkDevice device, VkRenderPass renderPass, const VulkanPipelineConfig &config);
+            VulkanPipeline(const VulkanPipeline &other) = delete;
+            VulkanPipeline(VulkanPipeline &&other) = default;
+            ~VulkanPipeline(){}
 
-            auto operator=(const Pipeline &other) -> Pipeline& = delete;
-            auto operator=(Pipeline &&other) -> Pipeline& = default;
+            auto operator=(const VulkanPipeline &other) -> VulkanPipeline& = delete;
+            auto operator=(VulkanPipeline &&other) -> VulkanPipeline& = default;
 
             operator VkPipeline() { return pipeline; }
 
@@ -73,35 +73,35 @@ namespace solo
             auto getLayout() const -> VkPipelineLayout { return layout; }
 
         private:
-            Resource<VkPipeline> pipeline;
-            Resource<VkPipelineLayout> layout;
+            VulkanResource<VkPipeline> pipeline;
+            VulkanResource<VkPipelineLayout> layout;
         };
 
-        inline auto PipelineConfig::withTopology(VkPrimitiveTopology topology) -> PipelineConfig&
+        inline auto VulkanPipelineConfig::withTopology(VkPrimitiveTopology topology) -> VulkanPipelineConfig&
         {
             this->topology = topology;
             return *this;
         }
 
-        inline auto PipelineConfig::withPolygonMode(VkPolygonMode mode) -> PipelineConfig&
+        inline auto VulkanPipelineConfig::withPolygonMode(VkPolygonMode mode) -> VulkanPipelineConfig&
         {
             rasterStateInfo.polygonMode = mode;
             return *this;
         }
 
-        inline auto PipelineConfig::withDescriptorSetLayout(VkDescriptorSetLayout layout) -> PipelineConfig&
+        inline auto VulkanPipelineConfig::withDescriptorSetLayout(VkDescriptorSetLayout layout) -> VulkanPipelineConfig&
         {
             descSetLayouts.push_back(layout);
             return *this;
         }
 
-        inline auto PipelineConfig::withFrontFace(VkFrontFace frontFace) -> PipelineConfig&
+        inline auto VulkanPipelineConfig::withFrontFace(VkFrontFace frontFace) -> VulkanPipelineConfig&
         {
             rasterStateInfo.frontFace = frontFace;
             return *this;
         }
 
-        inline auto PipelineConfig::withCullMode(VkCullModeFlags cullFlags) -> PipelineConfig&
+        inline auto VulkanPipelineConfig::withCullMode(VkCullModeFlags cullFlags) -> VulkanPipelineConfig&
         {
             rasterStateInfo.cullMode = cullFlags;
             return *this;

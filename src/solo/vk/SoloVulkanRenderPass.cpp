@@ -10,7 +10,7 @@
 using namespace solo;
 using namespace vk;
 
-RenderPass::RenderPass(VkDevice device, const RenderPassConfig &config):
+VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig &config):
     device(device),
     clearValues(config.clearValues)
 {
@@ -58,13 +58,13 @@ RenderPass::RenderPass(VkDevice device, const RenderPassConfig &config):
     renderPassInfo.dependencyCount = dependencies.size();
     renderPassInfo.pDependencies = dependencies.data();
 
-    Resource<VkRenderPass> pass{device, vkDestroyRenderPass};
+    VulkanResource<VkRenderPass> pass{device, vkDestroyRenderPass};
     SL_VK_CHECK_RESULT(vkCreateRenderPass(device, &renderPassInfo, nullptr, pass.cleanRef()));
 
     this->pass = std::move(pass);
 }
 
-void RenderPass::begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight)
+void VulkanRenderPass::begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight)
 {
     VkRenderPassBeginInfo info{};
     info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
@@ -81,17 +81,17 @@ void RenderPass::begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 ca
     vkCmdBeginRenderPass(cmdBuf, &info, VK_SUBPASS_CONTENTS_INLINE);
 }
 
-void RenderPass::end(VkCommandBuffer cmdBuf)
+void VulkanRenderPass::end(VkCommandBuffer cmdBuf)
 {
     vkCmdEndRenderPass(cmdBuf);
 }
 
-RenderPassConfig::RenderPassConfig():
+VulkanRenderPassConfig::VulkanRenderPassConfig():
     depthAttachmentRef{0, VK_IMAGE_LAYOUT_UNDEFINED}
 {
 }
 
-auto RenderPassConfig::withColorAttachment(VkFormat colorFormat, VkImageLayout finalLayout, bool clear, VkClearColorValue clearValue) -> RenderPassConfig&
+auto VulkanRenderPassConfig::withColorAttachment(VkFormat colorFormat, VkImageLayout finalLayout, bool clear, VkClearColorValue clearValue) -> VulkanRenderPassConfig&
 {
     VkAttachmentDescription desc{};
     desc.format = colorFormat;
@@ -115,7 +115,7 @@ auto RenderPassConfig::withColorAttachment(VkFormat colorFormat, VkImageLayout f
     return *this;
 }
 
-auto RenderPassConfig::withDepthAttachment(VkFormat depthFormat, bool clear, VkClearDepthStencilValue clearValue) -> RenderPassConfig&
+auto VulkanRenderPassConfig::withDepthAttachment(VkFormat depthFormat, bool clear, VkClearDepthStencilValue clearValue) -> VulkanRenderPassConfig&
 {
     VkAttachmentDescription desc{};
     desc.format = depthFormat;

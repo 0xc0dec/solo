@@ -6,11 +6,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerWorkingDirectory>$(OutDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>"../../src/demos/demo1/Demo1.Entry.lua"</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>"../../src/demos/demo2/Demo2.Entry.lua"</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LocalDebuggerWorkingDirectory>$(OutDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>"../../src/demos/demo1/Demo1.Entry.lua"</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>"../../src/demos/demo2/Demo2.Entry.lua"</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

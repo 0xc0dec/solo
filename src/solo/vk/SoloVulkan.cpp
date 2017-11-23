@@ -9,20 +9,20 @@
 
 using namespace solo;
 
-auto vk::createSemaphore(VkDevice device) -> Resource<VkSemaphore>
+auto vk::createSemaphore(VkDevice device) -> VulkanResource<VkSemaphore>
 {
     VkSemaphoreCreateInfo semaphoreCreateInfo{};
     semaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
     semaphoreCreateInfo.pNext = nullptr;
     semaphoreCreateInfo.flags = 0;
 
-    Resource<VkSemaphore> semaphore{device, vkDestroySemaphore};
+    VulkanResource<VkSemaphore> semaphore{device, vkDestroySemaphore};
     SL_VK_CHECK_RESULT(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, semaphore.cleanRef()));
 
     return semaphore;
 }
 
-auto vk::createCommandBuffer(VkDevice device, VkCommandPool commandPool) -> Resource<VkCommandBuffer>
+auto vk::createCommandBuffer(VkDevice device, VkCommandPool commandPool) -> VulkanResource<VkCommandBuffer>
 {
     VkCommandBufferAllocateInfo allocateInfo{};
     allocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
@@ -31,7 +31,7 @@ auto vk::createCommandBuffer(VkDevice device, VkCommandPool commandPool) -> Reso
     allocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
     allocateInfo.commandBufferCount = 1;
 
-    Resource<VkCommandBuffer> buffer{device, commandPool, vkFreeCommandBuffers};
+    VulkanResource<VkCommandBuffer> buffer{device, commandPool, vkFreeCommandBuffers};
     SL_VK_CHECK_RESULT(vkAllocateCommandBuffers(device, &allocateInfo, &buffer));
 
     return buffer;
@@ -79,7 +79,7 @@ auto vk::findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryPro
 }
 
 auto vk::createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImageView depthAttachment,
-    VkRenderPass renderPass, u32 width, u32 height) -> Resource<VkFramebuffer>
+    VkRenderPass renderPass, u32 width, u32 height) -> VulkanResource<VkFramebuffer>
 {
     arr<VkImageView, 2> attachments = {colorAttachment, depthAttachment};
 
@@ -93,13 +93,13 @@ auto vk::createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImage
     createInfo.height = height;
     createInfo.layers = 1;
 
-    Resource<VkFramebuffer> frameBuffer{device, vkDestroyFramebuffer};
+    VulkanResource<VkFramebuffer> frameBuffer{device, vkDestroyFramebuffer};
     SL_VK_CHECK_RESULT(vkCreateFramebuffer(device, &createInfo, nullptr, frameBuffer.cleanRef()));
 
     return frameBuffer;
 }
 
-auto vk::createShader(VkDevice device, const void *data, u32 size) -> Resource<VkShaderModule>
+auto vk::createShader(VkDevice device, const void *data, u32 size) -> VulkanResource<VkShaderModule>
 {
     VkShaderModuleCreateInfo shaderModuleInfo {};
     shaderModuleInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
@@ -108,14 +108,14 @@ auto vk::createShader(VkDevice device, const void *data, u32 size) -> Resource<V
     shaderModuleInfo.codeSize = size;
     shaderModuleInfo.pCode = reinterpret_cast<const u32*>(data);
 
-    Resource<VkShaderModule> module{device, vkDestroyShaderModule};
+    VulkanResource<VkShaderModule> module{device, vkDestroyShaderModule};
     SL_VK_CHECK_RESULT(vkCreateShaderModule(device, &shaderModuleInfo, nullptr, module.cleanRef()));
 
     return module;
 }
 
 auto vk::createImageView(VkDevice device, VkFormat format, VkImageViewType type, u32 mipLevels, u32 layers,
-    VkImage image, VkImageAspectFlags aspectMask) -> Resource<VkImageView>
+    VkImage image, VkImageAspectFlags aspectMask) -> VulkanResource<VkImageView>
 {
     VkImageViewCreateInfo viewInfo{};
     viewInfo.viewType = type;
@@ -130,7 +130,7 @@ auto vk::createImageView(VkDevice device, VkFormat format, VkImageViewType type,
     viewInfo.subresourceRange.levelCount = mipLevels;
     viewInfo.image = image;
 
-    Resource<VkImageView> view{device, vkDestroyImageView};
+    VulkanResource<VkImageView> view{device, vkDestroyImageView};
     SL_VK_CHECK_RESULT(vkCreateImageView(device, &viewInfo, nullptr, view.cleanRef()));
 
     return view;

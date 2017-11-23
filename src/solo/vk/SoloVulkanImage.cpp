@@ -28,7 +28,7 @@ static auto toVulkanFormat(TextureFormat format) -> VkFormat
 }
 
 static auto createImage(VkDevice device, VkFormat format, u32 width, u32 height, u32 mipLevels,
-    u32 arrayLayers, VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags) -> Resource<VkImage>
+    u32 arrayLayers, VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags) -> VulkanResource<VkImage>
 {
     VkImageCreateInfo imageCreateInfo{};
     imageCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
@@ -44,14 +44,14 @@ static auto createImage(VkDevice device, VkFormat format, u32 width, u32 height,
     imageCreateInfo.usage = usageFlags;
     imageCreateInfo.flags = createFlags;
 
-    Resource<VkImage> image{device, vkDestroyImage};
+    VulkanResource<VkImage> image{device, vkDestroyImage};
     SL_VK_CHECK_RESULT(vkCreateImage(device, &imageCreateInfo, nullptr, image.cleanRef()));
 
     return image;
 }
 
 static auto createSampler(VkDevice device, VkPhysicalDeviceFeatures physicalFeatures, VkPhysicalDeviceProperties physicalProps,
-    u32 mipLevels) -> Resource<VkSampler>
+    u32 mipLevels) -> VulkanResource<VkSampler>
 {
     VkSamplerCreateInfo samplerInfo{};
     samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
@@ -75,7 +75,7 @@ static auto createSampler(VkDevice device, VkPhysicalDeviceFeatures physicalFeat
         samplerInfo.anisotropyEnable = VK_TRUE;
     }
 
-    Resource<VkSampler> sampler{device, vkDestroySampler};
+    VulkanResource<VkSampler> sampler{device, vkDestroySampler};
     SL_VK_CHECK_RESULT(vkCreateSampler(device, &samplerInfo, nullptr, sampler.cleanRef()));
 
     return sampler;
@@ -156,7 +156,7 @@ static void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageLayo
     vkCmdPipelineBarrier(cmdbuffer, srcStageMask, dstStageMask, 0, 0, nullptr, 0, nullptr, 1, &imageMemoryBarrier);
 }
 
-static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryProperties memProps, VkImage image) -> Resource<VkDeviceMemory>
+static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryProperties memProps, VkImage image) -> VulkanResource<VkDeviceMemory>
 {
     VkMemoryRequirements memReqs{};
     vkGetImageMemoryRequirements(device, image, &memReqs);
@@ -166,21 +166,21 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
     allocInfo.allocationSize = memReqs.size;
     allocInfo.memoryTypeIndex = findMemoryType(memProps, memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
-    Resource<VkDeviceMemory> memory{device, vkFreeMemory};
+    VulkanResource<VkDeviceMemory> memory{device, vkFreeMemory};
     SL_VK_CHECK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, memory.cleanRef()));
     SL_VK_CHECK_RESULT(vkBindImageMemory(device, image, memory, 0));
 
     return memory;
 }
 
-auto vk::Image::create2d(vk::Renderer *renderer, Texture2dData *data) -> Image
+auto vk::VulkanImage::create2d(vk::VulkanRenderer *renderer, Texture2dData *data) -> VulkanImage
 {
     const auto mipLevels = data->getMipLevels();
     const auto width = data->getWidth(0);
     const auto height = data->getHeight(0);
     const auto format = toVulkanFormat(data->getFormat());
 
-    auto image = Image(renderer, width, height, mipLevels, 1, format,
+    auto image = VulkanImage(renderer, width, height, mipLevels, 1, format,
         0,
         VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
         VK_IMAGE_VIEW_TYPE_2D,
@@ -214,7 +214,7 @@ auto vk::Image::create2d(vk::Renderer *renderer, Texture2dData *data) -> Image
 	subresourceRange.levelCount = mipLevels;
 	subresourceRange.layerCount = image.layers;
 
-    auto srcBuf = Buffer::createStaging(renderer, data->getSize(), data->getData());
+    auto srcBuf = VulkanBuffer::createStaging(renderer, data->getSize(), data->getData());
 
     auto cmdBuf = createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
     beginCommandBuffer(cmdBuf, true);
@@ -254,7 +254,7 @@ auto vk::Image::create2d(vk::Renderer *renderer, Texture2dData *data) -> Image
     return image;
 }
 
-auto vk::Image::createCube(vk::Renderer *renderer/*, const ImageData &data*/) -> Image
+auto vk::VulkanImage::createCube(vk::VulkanRenderer *renderer/*, const ImageData &data*/) -> VulkanImage
 {
     /*const auto mipLevels = data.getMipLevelCount();
     const auto width = data.getWidth(0, 0);
@@ -272,10 +272,10 @@ auto vk::Image::createCube(vk::Renderer *renderer/*, const ImageData &data*/) ->
 
     SL_PANIC("Not implemented");
 
-    return Image();
+    return VulkanImage();
 }
 
-vk::Image::Image(vk::Renderer *renderer, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format,
+vk::VulkanImage::VulkanImage(vk::VulkanRenderer *renderer, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format,
     VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask):
     mipLevels(mipLevels),
     layers(layers),

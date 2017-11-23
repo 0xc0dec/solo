@@ -27,13 +27,13 @@ namespace solo
 
     namespace vk
     {
-        class Mesh;
+        class VulkanMesh;
 
-        class Renderer final : public solo::Renderer
+        class VulkanRenderer final : public solo::Renderer
         {
         public:
-            explicit Renderer(Device *device);
-            ~Renderer();
+            explicit VulkanRenderer(Device *device);
+            ~VulkanRenderer();
 
             // TODO avoid these?
             auto getDevice() const -> VkDevice { return device; }
@@ -56,8 +56,8 @@ namespace solo
         private:
             Device *engineDevice = nullptr;
 
-            Resource<VkDevice> device;
-            Resource<VkCommandPool> commandPool;
+            VulkanResource<VkDevice> device;
+            VulkanResource<VkCommandPool> commandPool;
             VkPhysicalDevice physicalDevice = nullptr;
             VkPhysicalDeviceFeatures physicalFeatures{};
             VkPhysicalDeviceProperties physicalProperties{};
@@ -66,24 +66,24 @@ namespace solo
             VkFormat depthFormat = VK_FORMAT_UNDEFINED;
             VkColorSpaceKHR colorSpace = VK_COLOR_SPACE_MAX_ENUM_KHR;
             VkQueue queue = nullptr;
-            Resource<VkDebugReportCallbackEXT> debugCallback;
-            Swapchain swapchain;
+            VulkanResource<VkDebugReportCallbackEXT> debugCallback;
+            VulkanSwapchain swapchain;
 
             vec<RenderCommand> renderCommands;
-            vec<Pipeline> pipelines;
+            vec<VulkanPipeline> pipelines;
 
             struct NodeBinding
             {
-                umap<str, Buffer> buffers;
-                DescriptorPool descPool;
-                Resource<VkDescriptorSetLayout> descSetLayout;
+                umap<str, VulkanBuffer> buffers;
+                VulkanDescriptorPool descPool;
+                VulkanResource<VkDescriptorSetLayout> descSetLayout;
                 VkDescriptorSet descSet = VK_NULL_HANDLE;
             };
 
             // TODO clear this when bindings get no longer used
             umap<const Material*, umap<const Transform*, umap<const Camera*, NodeBinding>>> nodeMaterialBindings;
 
-            void recordRenderCommands(VkCommandBuffer buf, RenderPass &renderPass, VkFramebuffer frameBuffer);
+            void recordRenderCommands(VkCommandBuffer buf, VulkanRenderPass &renderPass, VkFramebuffer frameBuffer);
         };
     }
 }

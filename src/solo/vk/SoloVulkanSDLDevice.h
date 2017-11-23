@@ -16,11 +16,11 @@ namespace solo
 {
     namespace vk
     {
-        class SDLDevice final : public sdl::SDLDevice
+        class VulkanSDLDevice final : public sdl::SDLDevice
         {
         public:
-            explicit SDLDevice(const DeviceSetup &setup);
-            ~SDLDevice();
+            explicit VulkanSDLDevice(const DeviceSetup &setup);
+            ~VulkanSDLDevice();
 
             void saveScreenshot(const str &path) override final;
 
@@ -31,8 +31,8 @@ namespace solo
             void endUpdate() override final;
 
         private:
-            Resource<VkInstance> instance;
-            Resource<VkSurfaceKHR> surface;
+            VulkanResource<VkInstance> instance;
+            VulkanResource<VkSurfaceKHR> surface;
         };
     }
 }

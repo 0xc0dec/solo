@@ -18,26 +18,26 @@
 using namespace solo;
 // TODO remove "using namespace vk" from other places
 
-auto vk::Effect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effect>
+auto vk::VulkanEffect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<VulkanEffect>
 {
     // TODO
     return nullptr;
 }
 
-vk::Effect::Effect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
+vk::VulkanEffect::VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
 {
-    renderer = dynamic_cast<Renderer *>(device->getRenderer());
+    renderer = dynamic_cast<VulkanRenderer *>(device->getRenderer());
     vertexShader = createShader(renderer->getDevice(), vsSrc, vsSrcLen);
     fragmentShader = createShader(renderer->getDevice(), fsSrc, fsSrcLen);
     introspectShader(static_cast<const u32*>(vsSrc), vsSrcLen / sizeof(u32));
     introspectShader(static_cast<const u32*>(fsSrc), fsSrcLen / sizeof(u32));
 }
 
-vk::Effect::~Effect()
+vk::VulkanEffect::~VulkanEffect()
 {
 }
 
-auto vk::Effect::getUniformBuffer(const str &name) -> UniformBuffer
+auto vk::VulkanEffect::getUniformBuffer(const str &name) -> UniformBuffer
 {
     if (uniformBuffers.count(name))
         return uniformBuffers.at(name);
@@ -45,7 +45,7 @@ auto vk::Effect::getUniformBuffer(const str &name) -> UniformBuffer
     return UniformBuffer{};
 }
 
-auto vk::Effect::getSampler(const str &name) -> Sampler
+auto vk::VulkanEffect::getSampler(const str &name) -> Sampler
 {
     if (samplers.count(name))
         return samplers.at(name);
@@ -53,7 +53,7 @@ auto vk::Effect::getSampler(const str &name) -> Sampler
     return Sampler{};
 }
 
-void vk::Effect::introspectShader(const u32 *src, u32 len)
+void vk::VulkanEffect::introspectShader(const u32 *src, u32 len)
 {
     spirv_cross::CompilerGLSL compiler{src, len};
     const auto resources = compiler.get_shader_resources();

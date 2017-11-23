@@ -24,16 +24,16 @@ static auto parseName(const str &name) -> std::tuple<str, str>
     return make_tuple(first, second);
 }
 
-vk::Material::Material(sptr<solo::Effect> effect):
-    effect(std::dynamic_pointer_cast<Effect>(effect))
+vk::VulkanMaterial::VulkanMaterial(sptr<solo::Effect> effect):
+    effect(std::dynamic_pointer_cast<VulkanEffect>(effect))
 {
 }
 
-vk::Material::~Material()
+vk::VulkanMaterial::~VulkanMaterial()
 {
 }
 
-auto vk::Material::getCullModeFlags() const -> VkCullModeFlags
+auto vk::VulkanMaterial::getCullModeFlags() const -> VkCullModeFlags
 {
     switch (faceCull)
     {
@@ -46,7 +46,7 @@ auto vk::Material::getCullModeFlags() const -> VkCullModeFlags
     }
 }
 
-auto vk::Material::getVkPolygonMode() const -> VkPolygonMode
+auto vk::VulkanMaterial::getVkPolygonMode() const -> VkPolygonMode
 {
     switch (polygonMode)
     {
@@ -59,7 +59,7 @@ auto vk::Material::getVkPolygonMode() const -> VkPolygonMode
     }
 }
 
-void vk::Material::setFloatParameter(const str &name, float value)
+void vk::VulkanMaterial::setFloatParameter(const str &name, float value)
 {
     setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
     {
@@ -67,7 +67,7 @@ void vk::Material::setFloatParameter(const str &name, float value)
     });
 }
 
-void vk::Material::setVector2Parameter(const str &name, const Vector2 &value)
+void vk::VulkanMaterial::setVector2Parameter(const str &name, const Vector2 &value)
 {
     setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
     {
@@ -75,7 +75,7 @@ void vk::Material::setVector2Parameter(const str &name, const Vector2 &value)
     });
 }
 
-void vk::Material::setVector3Parameter(const str &name, const Vector3 &value)
+void vk::VulkanMaterial::setVector3Parameter(const str &name, const Vector3 &value)
 {
     setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
     {
@@ -83,7 +83,7 @@ void vk::Material::setVector3Parameter(const str &name, const Vector3 &value)
     });
 }
 
-void vk::Material::setVector4Parameter(const str &name, const Vector4 &value)
+void vk::VulkanMaterial::setVector4Parameter(const str &name, const Vector4 &value)
 {
     setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
     {
@@ -91,7 +91,7 @@ void vk::Material::setVector4Parameter(const str &name, const Vector4 &value)
     });
 }
 
-void vk::Material::setMatrixParameter(const str &name, const Matrix &value)
+void vk::VulkanMaterial::setMatrixParameter(const str &name, const Matrix &value)
 {
     // TODO avoid copy-paste
     setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
@@ -100,7 +100,7 @@ void vk::Material::setMatrixParameter(const str &name, const Matrix &value)
     });
 }
 
-void vk::Material::setUniformParameter(const str &name, ParameterWriteFunc write)
+void vk::VulkanMaterial::setUniformParameter(const str &name, ParameterWriteFunc write)
 {
     auto parsedName = parseName(name);
     auto bufferName = std::get<0>(parsedName);
@@ -111,22 +111,22 @@ void vk::Material::setUniformParameter(const str &name, ParameterWriteFunc write
     const auto itemInfo = bufferInfo.members.at(fieldName);
 
     auto &item = bufferItems[bufferName][fieldName];
-    item.write = [itemInfo, write](Buffer &buffer, const Camera *camera, const Transform *transform)
+    item.write = [itemInfo, write](VulkanBuffer &buffer, const Camera *camera, const Transform *transform)
     {
         write(buffer, itemInfo.offset, itemInfo.size, camera, transform);
     };
 }
 
-void vk::Material::setTextureParameter(const str &name, sptr<solo::Texture> value)
+void vk::VulkanMaterial::setTextureParameter(const str &name, sptr<solo::Texture> value)
 {
     const auto samplerInfo = effect->getSampler(name);
     auto &sampler = samplers[name];
     sampler.binding = samplerInfo.binding;
-    sampler.texture = std::dynamic_pointer_cast<Texture>(value);
+    sampler.texture = std::dynamic_pointer_cast<VulkanTexture>(value);
     // TODO Optimize and mark only this sampler as dirty
 }
 
-void vk::Material::bindParameter(const str &name, BindParameterSemantics semantics)
+void vk::VulkanMaterial::bindParameter(const str &name, BindParameterSemantics semantics)
 {
     auto parsedName = parseName(name);
     auto bufferName = std::get<0>(parsedName);
@@ -141,7 +141,7 @@ void vk::Material::bindParameter(const str &name, BindParameterSemantics semanti
     {
         case BindParameterSemantics::WorldMatrix:
         {
-            item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
             {
                 if (nodeTransform)
                 {
@@ -154,7 +154,7 @@ void vk::Material::bindParameter(const str &name, BindParameterSemantics semanti
 
         case BindParameterSemantics::ViewMatrix:
         {
-            item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
             {
                 if (camera)
                 {
@@ -167,7 +167,7 @@ void vk::Material::bindParameter(const str &name, BindParameterSemantics semanti
 
         case BindParameterSemantics::ProjectionMatrix:
         {
-            item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
             {
                 if (camera)
                 {
@@ -180,7 +180,7 @@ void vk::Material::bindParameter(const str &name, BindParameterSemantics semanti
 
         case BindParameterSemantics::WorldViewMatrix:
         {
-            item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
             {
                 if (camera && nodeTransform)
                 {
@@ -193,7 +193,7 @@ void vk::Material::bindParameter(const str &name, BindParameterSemantics semanti
 
         case BindParameterSemantics::ViewProjectionMatrix:
         {
-            item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
             {
                 if (camera)
                 {
@@ -206,7 +206,7 @@ void vk::Material::bindParameter(const str &name, BindParameterSemantics semanti
 
         case BindParameterSemantics::WorldViewProjectionMatrix:
         {
-            item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
             {
                 if (nodeTransform && camera)
                 {
@@ -219,7 +219,7 @@ void vk::Material::bindParameter(const str &name, BindParameterSemantics semanti
 
         case BindParameterSemantics::InverseTransposedWorldMatrix:
         {
-            item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
             {
                 if (nodeTransform)
                 {
@@ -232,7 +232,7 @@ void vk::Material::bindParameter(const str &name, BindParameterSemantics semanti
 
         case BindParameterSemantics::InverseTransposedWorldViewMatrix:
         {
-            item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
             {
                 if (nodeTransform && camera)
                 {
@@ -245,7 +245,7 @@ void vk::Material::bindParameter(const str &name, BindParameterSemantics semanti
 
         case BindParameterSemantics::CameraWorldPosition:
         {
-            item.write = [itemInfo](Buffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
             {
                 if (camera)
                 {

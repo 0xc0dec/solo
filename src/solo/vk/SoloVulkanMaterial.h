@@ -22,27 +22,27 @@ namespace solo
 
     namespace vk
     {
-        class Renderer;
-        class Texture;
+        class VulkanRenderer;
+        class VulkanTexture;
 
-        class Material final: public solo::Material
+        class VulkanMaterial final: public Material
         {
         public:
             struct UniformBufferItem
             {
-                std::function<void(Buffer&, const Camera*, const Transform*)> write;
+                std::function<void(VulkanBuffer&, const Camera*, const Transform*)> write;
             };
 
             struct Sampler
             {
                 u32 binding;
-                sptr<Texture> texture;
+                sptr<VulkanTexture> texture;
             };
 
-            Material(sptr<solo::Effect> effect);
-            ~Material();
+            VulkanMaterial(sptr<Effect> effect);
+            ~VulkanMaterial();
 
-            auto getEffect() const -> solo::Effect* override final { return effect.get(); }
+            auto getEffect() const -> Effect* override final { return effect.get(); }
 
             void setFloatParameter(const str &name, float value) override final;
             void setVector2Parameter(const str &name, const Vector2 &value) override final;
@@ -60,9 +60,9 @@ namespace solo
             auto getVkPolygonMode() const -> VkPolygonMode;
 
         private:
-            using ParameterWriteFunc = std::function<void(Buffer&, u32, u32, const Camera*, const Transform*)>;
+            using ParameterWriteFunc = std::function<void(VulkanBuffer&, u32, u32, const Camera*, const Transform*)>;
 
-            sptr<Effect> effect;
+            sptr<VulkanEffect> effect;
 
             umap<str, umap<str, UniformBufferItem>> bufferItems;
             umap<str, Sampler> samplers;

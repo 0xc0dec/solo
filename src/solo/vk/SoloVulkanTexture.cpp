@@ -25,14 +25,14 @@ static auto convertTextureFormat(TextureFormat format) -> VkFormat
     }
 }
 
-vk::Texture2d::Texture2d(Device *device, Texture2dData *data):
+vk::VulkanTexture2d::VulkanTexture2d(Device *device, Texture2dData *data):
     solo::Texture2d(data)
 {
-    const auto renderer = static_cast<vk::Renderer*>(device->getRenderer());
-    image = Image::create2d(renderer, data);
+    const auto renderer = static_cast<vk::VulkanRenderer*>(device->getRenderer());
+    image = VulkanImage::create2d(renderer, data);
 }
 
-void vk::Texture2d::generateMipmaps()
+void vk::VulkanTexture2d::generateMipmaps()
 {
     // TODO
 }

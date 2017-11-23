@@ -15,16 +15,16 @@ namespace solo
 {
     namespace vk
     {
-        class RenderPassConfig
+        class VulkanRenderPassConfig
         {
         public:
-            RenderPassConfig();
+            VulkanRenderPassConfig();
 
-            auto withColorAttachment(VkFormat colorFormat, VkImageLayout finalLayout, bool clear, VkClearColorValue clearValue = {}) -> RenderPassConfig&;
-            auto withDepthAttachment(VkFormat depthFormat, bool clear, VkClearDepthStencilValue clearValue = {}) -> RenderPassConfig&;
+            auto withColorAttachment(VkFormat colorFormat, VkImageLayout finalLayout, bool clear, VkClearColorValue clearValue = {}) -> VulkanRenderPassConfig&;
+            auto withDepthAttachment(VkFormat depthFormat, bool clear, VkClearDepthStencilValue clearValue = {}) -> VulkanRenderPassConfig&;
 
         private:
-            friend class RenderPass;
+            friend class VulkanRenderPass;
 
             VkDevice device = nullptr;
             vec<VkAttachmentDescription> attachments;
@@ -33,19 +33,19 @@ namespace solo
             vec<VkClearValue> clearValues;
         };
 
-        class RenderPass
+        class VulkanRenderPass
         {
         public:
-            RenderPass() {}
+            VulkanRenderPass() {}
 
-            RenderPass(VkDevice device, const RenderPassConfig &config);
-            RenderPass(const RenderPass &other) = delete;
-            RenderPass(RenderPass &&other) = default;
+            VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig &config);
+            VulkanRenderPass(const VulkanRenderPass &other) = delete;
+            VulkanRenderPass(VulkanRenderPass &&other) = default;
 
-            ~RenderPass() {}
+            ~VulkanRenderPass() {}
 
-            auto operator=(const RenderPass &other) -> RenderPass& = delete;
-            auto operator=(RenderPass &&other) -> RenderPass& = default;
+            auto operator=(const VulkanRenderPass &other) -> VulkanRenderPass& = delete;
+            auto operator=(VulkanRenderPass &&other) -> VulkanRenderPass& = default;
 
             void begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight);
             void end(VkCommandBuffer cmdBuf);
@@ -54,7 +54,7 @@ namespace solo
 
         private:
             VkDevice device = nullptr;
-            Resource<VkRenderPass> pass;
+            VulkanResource<VkRenderPass> pass;
             vec<VkClearValue> clearValues;
         };
     }
