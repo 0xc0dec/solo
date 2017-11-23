@@ -174,7 +174,7 @@ sptr<Texture2d> Texture2d::createFromData(Device *device, Texture2dData *data)
             return std::make_shared<vk::Texture2d>(device, data);
 #endif
         default:
-            return std::make_shared<null::Texture2d>(data);
+            return std::make_shared<null::NullTexture2d>(data);
     }
 }
 
@@ -234,7 +234,7 @@ auto CubeTexture::createFromData(Device *device, CubeTextureData *data) -> sptr<
             return std::make_shared<gl::OpenGLCubeTexture>(data);
 #endif
         default:
-            return std::make_shared<null::CubeTexture>(data);
+            return std::make_shared<null::NullCubeTexture>(data);
     }
 }
 

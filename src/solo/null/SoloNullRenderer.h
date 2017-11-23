@@ -11,7 +11,7 @@ namespace solo
 {
     namespace null
     {
-        class Renderer final : public solo::Renderer
+        class NullRenderer final : public Renderer
         {
         public:
             void addRenderCommand(const RenderCommand &cmd) override {}

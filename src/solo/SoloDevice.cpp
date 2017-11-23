@@ -34,7 +34,7 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device>
             break;
 #endif
         case DeviceMode::Null:
-            device = std::make_unique<null::Device>(setup);
+            device = std::make_unique<null::NullDevice>(setup);
             break;
         default:
             SL_PANIC("Unknown device mode");

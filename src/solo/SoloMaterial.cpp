@@ -25,6 +25,6 @@ auto Material::create(Device *device, sptr<Effect> effect) -> sptr<Material>
             return std::make_shared<vk::Material>(effect);
 #endif
         default:
-            return std::make_shared<null::Material>();
+            return std::make_shared<null::NullMaterial>();
     }
 }

@@ -25,7 +25,7 @@ static auto create(Device *device, const void *vsSrc, u32 vsSrcLen, const void *
             return std::make_shared<vk::Effect>(device, vsSrc, vsSrcLen, fsSrc, fsSrcLen);
 #endif
         default:
-            return std::make_shared<null::Effect>();
+            return std::make_shared<null::NullEffect>();
     }
 }
 
@@ -51,6 +51,6 @@ auto Effect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effec
             return vk::Effect::createFromPrefab(device, prefab);
 #endif
         default:
-            return std::make_shared<null::Effect>();
+            return std::make_shared<null::NullEffect>();
     }
 }

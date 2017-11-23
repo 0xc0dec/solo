@@ -11,12 +11,12 @@ namespace solo
 {
     namespace null
     {
-        class Material final : public solo::Material
+        class NullMaterial final : public Material
         {
         public:
-            Material() {}
+            NullMaterial() {}
 
-            auto getEffect() const -> solo::Effect* override final { return nullptr; }
+            auto getEffect() const -> Effect* override final { return nullptr; }
 
             void setFloatParameter(const str& name, float value) override final {}
             void setVector2Parameter(const str& name, const Vector2& value) override final {}

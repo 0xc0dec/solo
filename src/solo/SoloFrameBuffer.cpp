@@ -19,6 +19,6 @@ auto FrameBuffer::create(Device *device) -> sptr<FrameBuffer>
             return std::make_shared<gl::OpenGLFrameBuffer>();
 #endif
         default:
-            return std::make_shared<null::FrameBuffer>();
+            return std::make_shared<null::NullFrameBuffer>();
     }
 }

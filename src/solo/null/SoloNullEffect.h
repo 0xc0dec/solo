@@ -11,7 +11,7 @@ namespace solo
 {
     namespace null
     {
-        class Effect final : public solo::Effect
+        class NullEffect final : public Effect
         {
         };
     }

@@ -11,18 +11,18 @@ namespace solo
 {
     namespace null
     {
-        class Texture2d final: public solo::Texture2d
+        class NullTexture2d final: public Texture2d
         {
         public:
-            Texture2d(Texture2dData *data): solo::Texture2d(data) {}
+            NullTexture2d(Texture2dData *data): Texture2d(data) {}
 
             void generateMipmaps() override final {}
         };
 
-        class CubeTexture final : public solo::CubeTexture
+        class NullCubeTexture final : public CubeTexture
         {
         public:
-            CubeTexture(CubeTextureData *data): solo::CubeTexture(data) {}
+            NullCubeTexture(CubeTextureData *data): CubeTexture(data) {}
                 
             void generateMipmaps() override final {}
         };

@@ -26,7 +26,7 @@ auto Mesh::create(Device *device) -> sptr<Mesh>
             return std::make_shared<vk::Mesh>(device);
 #endif
         default:
-            return std::make_shared<null::Mesh>();
+            return std::make_shared<null::NullMesh>();
     }
 }
 
