@@ -14,27 +14,24 @@
 
 namespace solo
 {
-    namespace vk
+    class VulkanSDLDevice final : public sdl::SDLDevice
     {
-        class VulkanSDLDevice final : public sdl::SDLDevice
-        {
-        public:
-            explicit VulkanSDLDevice(const DeviceSetup &setup);
-            ~VulkanSDLDevice();
+    public:
+        explicit VulkanSDLDevice(const DeviceSetup &setup);
+        ~VulkanSDLDevice();
 
-            void saveScreenshot(const str &path) override final;
+        void saveScreenshot(const str &path) override final;
 
-            auto getInstance() const -> VkInstance { return instance; }
-            auto getSurface() const -> VkSurfaceKHR { return surface; }
+        auto getInstance() const -> VkInstance { return instance; }
+        auto getSurface() const -> VkSurfaceKHR { return surface; }
 
-        protected:
-            void endUpdate() override final;
+    protected:
+        void endUpdate() override final;
 
-        private:
-            VulkanResource<VkInstance> instance;
-            VulkanResource<VkSurfaceKHR> surface;
-        };
-    }
+    private:
+        VulkanResource<VkInstance> instance;
+        VulkanResource<VkSurfaceKHR> surface;
+    };
 }
 
 #endif

@@ -13,7 +13,6 @@
 #include "SoloTextureData.h"
 
 using namespace solo;
-using namespace vk;
 
 static auto toVulkanFormat(TextureFormat format) -> VkFormat
 {
@@ -164,7 +163,7 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
     VkMemoryAllocateInfo allocInfo{};
     allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
     allocInfo.allocationSize = memReqs.size;
-    allocInfo.memoryTypeIndex = findMemoryType(memProps, memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+    allocInfo.memoryTypeIndex = vk::findMemoryType(memProps, memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
     VulkanResource<VkDeviceMemory> memory{device, vkFreeMemory};
     SL_VK_CHECK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, memory.cleanRef()));
@@ -173,7 +172,7 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
     return memory;
 }
 
-auto vk::VulkanImage::create2d(vk::VulkanRenderer *renderer, Texture2dData *data) -> VulkanImage
+auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data) -> VulkanImage
 {
     const auto mipLevels = data->getMipLevels();
     const auto width = data->getWidth(0);
@@ -216,8 +215,8 @@ auto vk::VulkanImage::create2d(vk::VulkanRenderer *renderer, Texture2dData *data
 
     auto srcBuf = VulkanBuffer::createStaging(renderer, data->getSize(), data->getData());
 
-    auto cmdBuf = createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
-    beginCommandBuffer(cmdBuf, true);
+    auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
+    vk::beginCommandBuffer(cmdBuf, true);
 
     setImageLayout(
         cmdBuf,
@@ -248,13 +247,13 @@ auto vk::VulkanImage::create2d(vk::VulkanRenderer *renderer, Texture2dData *data
 
     vkEndCommandBuffer(cmdBuf);
 
-    queueSubmit(renderer->getQueue(), 0, nullptr, 0, nullptr, 1, &cmdBuf);
+    vk::queueSubmit(renderer->getQueue(), 0, nullptr, 0, nullptr, 1, &cmdBuf);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(renderer->getQueue()));
 
     return image;
 }
 
-auto vk::VulkanImage::createCube(vk::VulkanRenderer *renderer/*, const ImageData &data*/) -> VulkanImage
+auto VulkanImage::createCube(VulkanRenderer *renderer/*, const ImageData &data*/) -> VulkanImage
 {
     /*const auto mipLevels = data.getMipLevelCount();
     const auto width = data.getWidth(0, 0);
@@ -275,7 +274,7 @@ auto vk::VulkanImage::createCube(vk::VulkanRenderer *renderer/*, const ImageData
     return VulkanImage();
 }
 
-vk::VulkanImage::VulkanImage(vk::VulkanRenderer *renderer, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format,
+VulkanImage::VulkanImage(VulkanRenderer *renderer, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format,
     VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask):
     mipLevels(mipLevels),
     layers(layers),
@@ -287,7 +286,7 @@ vk::VulkanImage::VulkanImage(vk::VulkanRenderer *renderer, u32 width, u32 height
     auto image = createImage(device, format, width, height, mipLevels, layers, createFlags, usageFlags);
     auto memory = allocateImageMemory(device, renderer->getPhysicalMemoryFeatures(), image);
     auto sampler = createSampler(device, renderer->getPhysicalFeatures(), renderer->getPhysicalProperties(), mipLevels);
-    auto view = createImageView(device, format, viewType, mipLevels, layers, image, aspectMask);
+    auto view = vk::createImageView(device, format, viewType, mipLevels, layers, image, aspectMask);
     this->image = std::move(image);
     this->memory = std::move(memory);
     this->sampler = std::move(sampler);

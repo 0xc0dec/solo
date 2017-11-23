@@ -18,7 +18,6 @@
 #include "SoloCamera.h"
 
 using namespace solo;
-using namespace vk;
 
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
     u64 obj, size_t location, s32 code, const s8 *layerPrefix, const s8 *msg, void *userData)
@@ -158,7 +157,7 @@ static auto getDepthFormat(VkPhysicalDevice device) -> VkFormat
     return VK_FORMAT_UNDEFINED;
 }
 
-vk::VulkanRenderer::VulkanRenderer(Device *engineDevice):
+VulkanRenderer::VulkanRenderer(Device *engineDevice):
     engineDevice(engineDevice)
 {
     const auto vulkanDevice = dynamic_cast<VulkanSDLDevice*>(engineDevice);
@@ -185,11 +184,11 @@ vk::VulkanRenderer::VulkanRenderer(Device *engineDevice):
     swapchain = VulkanSwapchain(this, vulkanDevice, canvasSize.x, canvasSize.y, engineDevice->isVsync());
 }
 
-vk::VulkanRenderer::~VulkanRenderer()
+VulkanRenderer::~VulkanRenderer()
 {
 }
 
-void vk::VulkanRenderer::beginFrame()
+void VulkanRenderer::beginFrame()
 {
     renderCommands.clear();
     renderCommands.reserve(100); // TODO just picked random constant
@@ -198,7 +197,7 @@ void vk::VulkanRenderer::beginFrame()
     pipelines.reserve(100);
 }
 
-void vk::VulkanRenderer::endFrame()
+void VulkanRenderer::endFrame()
 {
     swapchain.recordCommandBuffers([&](VkFramebuffer fb, VkCommandBuffer buf)
     {
@@ -210,7 +209,7 @@ void vk::VulkanRenderer::endFrame()
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 }
 
-void vk::VulkanRenderer::recordRenderCommands(VkCommandBuffer buf, VulkanRenderPass &renderPass, VkFramebuffer frameBuffer)
+void VulkanRenderer::recordRenderCommands(VkCommandBuffer buf, VulkanRenderPass &renderPass, VkFramebuffer frameBuffer)
 {
     const auto canvasSize = engineDevice->getCanvasSize();
     renderPass.begin(buf, frameBuffer, canvasSize.x, canvasSize.y);

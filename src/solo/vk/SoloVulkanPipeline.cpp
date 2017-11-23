@@ -10,7 +10,6 @@
 #include "SoloMaterial.h"
 
 using namespace solo;
-using namespace vk;
 
 VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const VulkanPipelineConfig &config)
 {
@@ -50,8 +49,8 @@ VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const V
     colorBlendState.blendConstants[2] = 0;
     colorBlendState.blendConstants[3] = 0;
 
-    const auto vertexShaderStageInfo = createShaderStageInfo(true, config.vertexShader, "main");
-    const auto fragmentShaderStageInfo = createShaderStageInfo(false, config.fragmentShader, "main");
+    const auto vertexShaderStageInfo = vk::createShaderStageInfo(true, config.vertexShader, "main");
+    const auto fragmentShaderStageInfo = vk::createShaderStageInfo(false, config.fragmentShader, "main");
 
     vec<VkPipelineShaderStageCreateInfo> shaderStageStates{vertexShaderStageInfo, fragmentShaderStageInfo};
 

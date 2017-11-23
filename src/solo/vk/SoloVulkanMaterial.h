@@ -19,57 +19,53 @@ namespace solo
     class Device;
     class Effect;
     class Camera;
+    class VulkanRenderer;
+    class VulkanTexture;
 
-    namespace vk
+    class VulkanMaterial final: public Material
     {
-        class VulkanRenderer;
-        class VulkanTexture;
-
-        class VulkanMaterial final: public Material
+    public:
+        struct UniformBufferItem
         {
-        public:
-            struct UniformBufferItem
-            {
-                std::function<void(VulkanBuffer&, const Camera*, const Transform*)> write;
-            };
-
-            struct Sampler
-            {
-                u32 binding;
-                sptr<VulkanTexture> texture;
-            };
-
-            VulkanMaterial(sptr<Effect> effect);
-            ~VulkanMaterial();
-
-            auto getEffect() const -> Effect* override final { return effect.get(); }
-
-            void setFloatParameter(const str &name, float value) override final;
-            void setVector2Parameter(const str &name, const Vector2 &value) override final;
-            void setVector3Parameter(const str &name, const Vector3 &value) override final;
-            void setVector4Parameter(const str &name, const Vector4 &value) override final;
-            void setMatrixParameter(const str &name, const Matrix &value) override final;
-            void setTextureParameter(const str &name, sptr<solo::Texture> value) override final;
-            
-            void bindParameter(const str &name, BindParameterSemantics semantics) override final;
-
-            auto getSamplers() const -> umap<str, Sampler> const& { return samplers; }
-            auto getBufferItems() const -> umap<str, umap<str, UniformBufferItem>> const& { return bufferItems; } // TODO rename
-
-            auto getCullModeFlags() const -> VkCullModeFlags;
-            auto getVkPolygonMode() const -> VkPolygonMode;
-
-        private:
-            using ParameterWriteFunc = std::function<void(VulkanBuffer&, u32, u32, const Camera*, const Transform*)>;
-
-            sptr<VulkanEffect> effect;
-
-            umap<str, umap<str, UniformBufferItem>> bufferItems;
-            umap<str, Sampler> samplers;
-
-            void setUniformParameter(const str &name, ParameterWriteFunc write);
+            std::function<void(VulkanBuffer&, const Camera*, const Transform*)> write;
         };
-    }
+
+        struct Sampler
+        {
+            u32 binding;
+            sptr<VulkanTexture> texture;
+        };
+
+        VulkanMaterial(sptr<Effect> effect);
+        ~VulkanMaterial();
+
+        auto getEffect() const -> Effect* override final { return effect.get(); }
+
+        void setFloatParameter(const str &name, float value) override final;
+        void setVector2Parameter(const str &name, const Vector2 &value) override final;
+        void setVector3Parameter(const str &name, const Vector3 &value) override final;
+        void setVector4Parameter(const str &name, const Vector4 &value) override final;
+        void setMatrixParameter(const str &name, const Matrix &value) override final;
+        void setTextureParameter(const str &name, sptr<solo::Texture> value) override final;
+            
+        void bindParameter(const str &name, BindParameterSemantics semantics) override final;
+
+        auto getSamplers() const -> umap<str, Sampler> const& { return samplers; }
+        auto getBufferItems() const -> umap<str, umap<str, UniformBufferItem>> const& { return bufferItems; } // TODO rename
+
+        auto getCullModeFlags() const -> VkCullModeFlags;
+        auto getVkPolygonMode() const -> VkPolygonMode;
+
+    private:
+        using ParameterWriteFunc = std::function<void(VulkanBuffer&, u32, u32, const Camera*, const Transform*)>;
+
+        sptr<VulkanEffect> effect;
+
+        umap<str, umap<str, UniformBufferItem>> bufferItems;
+        umap<str, Sampler> samplers;
+
+        void setUniformParameter(const str &name, ParameterWriteFunc write);
+    };
 }
 
 #endif

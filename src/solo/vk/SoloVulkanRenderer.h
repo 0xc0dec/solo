@@ -24,68 +24,64 @@ namespace solo
 {
     class Device;
     class Camera;
+    class VulkanMesh;
 
-    namespace vk
+    class VulkanRenderer final : public Renderer
     {
-        class VulkanMesh;
+    public:
+        explicit VulkanRenderer(Device *device);
+        ~VulkanRenderer();
 
-        class VulkanRenderer final : public solo::Renderer
+        // TODO avoid these?
+        auto getDevice() const -> VkDevice { return device; }
+        auto getPhysicalDevice() const -> VkPhysicalDevice { return physicalDevice; }
+        auto getPhysicalFeatures() const -> VkPhysicalDeviceFeatures { return physicalFeatures; }
+        auto getPhysicalProperties() const -> VkPhysicalDeviceProperties { return physicalProperties; }
+        auto getPhysicalMemoryFeatures() const -> VkPhysicalDeviceMemoryProperties { return physicalMemoryFeatures; }
+        auto getColorFormat() const -> VkFormat { return colorFormat; }
+        auto getDepthFormat() const -> VkFormat { return depthFormat; }
+        auto getColorSpace() const -> VkColorSpaceKHR { return colorSpace; }
+        auto getCommandPool() const -> VkCommandPool { return commandPool; }
+        auto getQueue() const -> VkQueue { return queue; }
+
+        void addRenderCommand(const RenderCommand &cmd) override final { renderCommands.push_back(cmd); }
+
+    protected:
+        void beginFrame() override final;
+        void endFrame() override final;
+
+    private:
+        Device *engineDevice = nullptr;
+
+        VulkanResource<VkDevice> device;
+        VulkanResource<VkCommandPool> commandPool;
+        VkPhysicalDevice physicalDevice = nullptr;
+        VkPhysicalDeviceFeatures physicalFeatures{};
+        VkPhysicalDeviceProperties physicalProperties{};
+        VkPhysicalDeviceMemoryProperties physicalMemoryFeatures{};
+        VkFormat colorFormat = VK_FORMAT_UNDEFINED;
+        VkFormat depthFormat = VK_FORMAT_UNDEFINED;
+        VkColorSpaceKHR colorSpace = VK_COLOR_SPACE_MAX_ENUM_KHR;
+        VkQueue queue = nullptr;
+        VulkanResource<VkDebugReportCallbackEXT> debugCallback;
+        VulkanSwapchain swapchain;
+
+        vec<RenderCommand> renderCommands;
+        vec<VulkanPipeline> pipelines;
+
+        struct NodeBinding
         {
-        public:
-            explicit VulkanRenderer(Device *device);
-            ~VulkanRenderer();
-
-            // TODO avoid these?
-            auto getDevice() const -> VkDevice { return device; }
-            auto getPhysicalDevice() const -> VkPhysicalDevice { return physicalDevice; }
-            auto getPhysicalFeatures() const -> VkPhysicalDeviceFeatures { return physicalFeatures; }
-            auto getPhysicalProperties() const -> VkPhysicalDeviceProperties { return physicalProperties; }
-            auto getPhysicalMemoryFeatures() const -> VkPhysicalDeviceMemoryProperties { return physicalMemoryFeatures; }
-            auto getColorFormat() const -> VkFormat { return colorFormat; }
-            auto getDepthFormat() const -> VkFormat { return depthFormat; }
-            auto getColorSpace() const -> VkColorSpaceKHR { return colorSpace; }
-            auto getCommandPool() const -> VkCommandPool { return commandPool; }
-            auto getQueue() const -> VkQueue { return queue; }
-
-            void addRenderCommand(const RenderCommand &cmd) override final { renderCommands.push_back(cmd); }
-
-        protected:
-            void beginFrame() override final;
-            void endFrame() override final;
-
-        private:
-            Device *engineDevice = nullptr;
-
-            VulkanResource<VkDevice> device;
-            VulkanResource<VkCommandPool> commandPool;
-            VkPhysicalDevice physicalDevice = nullptr;
-            VkPhysicalDeviceFeatures physicalFeatures{};
-            VkPhysicalDeviceProperties physicalProperties{};
-            VkPhysicalDeviceMemoryProperties physicalMemoryFeatures{};
-            VkFormat colorFormat = VK_FORMAT_UNDEFINED;
-            VkFormat depthFormat = VK_FORMAT_UNDEFINED;
-            VkColorSpaceKHR colorSpace = VK_COLOR_SPACE_MAX_ENUM_KHR;
-            VkQueue queue = nullptr;
-            VulkanResource<VkDebugReportCallbackEXT> debugCallback;
-            VulkanSwapchain swapchain;
-
-            vec<RenderCommand> renderCommands;
-            vec<VulkanPipeline> pipelines;
-
-            struct NodeBinding
-            {
-                umap<str, VulkanBuffer> buffers;
-                VulkanDescriptorPool descPool;
-                VulkanResource<VkDescriptorSetLayout> descSetLayout;
-                VkDescriptorSet descSet = VK_NULL_HANDLE;
-            };
-
-            // TODO clear this when bindings get no longer used
-            umap<const Material*, umap<const Transform*, umap<const Camera*, NodeBinding>>> nodeMaterialBindings;
-
-            void recordRenderCommands(VkCommandBuffer buf, VulkanRenderPass &renderPass, VkFramebuffer frameBuffer);
+            umap<str, VulkanBuffer> buffers;
+            VulkanDescriptorPool descPool;
+            VulkanResource<VkDescriptorSetLayout> descSetLayout;
+            VkDescriptorSet descSet = VK_NULL_HANDLE;
         };
-    }
+
+        // TODO clear this when bindings get no longer used
+        umap<const Material*, umap<const Transform*, umap<const Camera*, NodeBinding>>> nodeMaterialBindings;
+
+        void recordRenderCommands(VkCommandBuffer buf, VulkanRenderPass &renderPass, VkFramebuffer frameBuffer);
+    };
 }
 
 #endif

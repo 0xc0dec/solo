@@ -16,28 +16,27 @@
 #include <spirv_cross/spirv_glsl.hpp>
 
 using namespace solo;
-// TODO remove "using namespace vk" from other places
 
-auto vk::VulkanEffect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<VulkanEffect>
+auto VulkanEffect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<VulkanEffect>
 {
     // TODO
     return nullptr;
 }
 
-vk::VulkanEffect::VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
+VulkanEffect::VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
 {
     renderer = dynamic_cast<VulkanRenderer *>(device->getRenderer());
-    vertexShader = createShader(renderer->getDevice(), vsSrc, vsSrcLen);
-    fragmentShader = createShader(renderer->getDevice(), fsSrc, fsSrcLen);
+    vertexShader = vk::createShader(renderer->getDevice(), vsSrc, vsSrcLen);
+    fragmentShader = vk::createShader(renderer->getDevice(), fsSrc, fsSrcLen);
     introspectShader(static_cast<const u32*>(vsSrc), vsSrcLen / sizeof(u32));
     introspectShader(static_cast<const u32*>(fsSrc), fsSrcLen / sizeof(u32));
 }
 
-vk::VulkanEffect::~VulkanEffect()
+VulkanEffect::~VulkanEffect()
 {
 }
 
-auto vk::VulkanEffect::getUniformBuffer(const str &name) -> UniformBuffer
+auto VulkanEffect::getUniformBuffer(const str &name) -> UniformBuffer
 {
     if (uniformBuffers.count(name))
         return uniformBuffers.at(name);
@@ -45,7 +44,7 @@ auto vk::VulkanEffect::getUniformBuffer(const str &name) -> UniformBuffer
     return UniformBuffer{};
 }
 
-auto vk::VulkanEffect::getSampler(const str &name) -> Sampler
+auto VulkanEffect::getSampler(const str &name) -> Sampler
 {
     if (samplers.count(name))
         return samplers.at(name);
@@ -53,7 +52,7 @@ auto vk::VulkanEffect::getSampler(const str &name) -> Sampler
     return Sampler{};
 }
 
-void vk::VulkanEffect::introspectShader(const u32 *src, u32 len)
+void VulkanEffect::introspectShader(const u32 *src, u32 len)
 {
     spirv_cross::CompilerGLSL compiler{src, len};
     const auto resources = compiler.get_shader_resources();

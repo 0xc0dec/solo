@@ -10,9 +10,8 @@
 #include "SoloVulkanRenderer.h"
 
 using namespace solo;
-using namespace vk;
 
-auto VulkanBuffer::createStaging(vk::VulkanRenderer *renderer, VkDeviceSize size, const void *initialData) -> VulkanBuffer
+auto VulkanBuffer::createStaging(VulkanRenderer *renderer, VkDeviceSize size, const void *initialData) -> VulkanBuffer
 {
     auto buffer = VulkanBuffer(renderer, size,
         VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
@@ -24,14 +23,14 @@ auto VulkanBuffer::createStaging(vk::VulkanRenderer *renderer, VkDeviceSize size
     return buffer;
 }
 
-auto VulkanBuffer::createUniformHostVisible(vk::VulkanRenderer *renderer, VkDeviceSize size) -> VulkanBuffer
+auto VulkanBuffer::createUniformHostVisible(VulkanRenderer *renderer, VkDeviceSize size) -> VulkanBuffer
 {
     return VulkanBuffer(renderer, size,
         VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
         VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 }
 
-auto VulkanBuffer::createDeviceLocal(vk::VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
+auto VulkanBuffer::createDeviceLocal(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
 {
     auto stagingBuffer = createStaging(renderer, size, data);
 
@@ -41,7 +40,7 @@ auto VulkanBuffer::createDeviceLocal(vk::VulkanRenderer *renderer, VkDeviceSize 
     return std::move(buffer);
 }
 
-VulkanBuffer::VulkanBuffer(vk::VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags):
+VulkanBuffer::VulkanBuffer(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags):
     renderer(renderer),
     device(renderer->getDevice()),
     size(size)
@@ -64,7 +63,7 @@ VulkanBuffer::VulkanBuffer(vk::VulkanRenderer *renderer, VkDeviceSize size, VkBu
     VkMemoryAllocateInfo allocInfo {};
     allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
     allocInfo.allocationSize = memReqs.size;
-    allocInfo.memoryTypeIndex = findMemoryType(renderer->getPhysicalMemoryFeatures(), memReqs.memoryTypeBits, memPropertyFlags);
+    allocInfo.memoryTypeIndex = vk::findMemoryType(renderer->getPhysicalMemoryFeatures(), memReqs.memoryTypeBits, memPropertyFlags);
 
     memory = VulkanResource<VkDeviceMemory>{device, vkFreeMemory};
     SL_VK_CHECK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, memory.cleanRef()));
@@ -89,8 +88,8 @@ void VulkanBuffer::updatePart(const void *newData, u32 offset, u32 size)
 
 void VulkanBuffer::transferTo(const VulkanBuffer &dst, VkQueue queue, VkCommandPool cmdPool) const
 {
-    auto cmdBuf = createCommandBuffer(device, cmdPool);
-    beginCommandBuffer(cmdBuf, true);
+    auto cmdBuf = vk::createCommandBuffer(device, cmdPool);
+    vk::beginCommandBuffer(cmdBuf, true);
 
     VkBufferCopy copyRegion{};
     copyRegion.size = dst.size;
@@ -98,7 +97,7 @@ void VulkanBuffer::transferTo(const VulkanBuffer &dst, VkQueue queue, VkCommandP
 
     SL_VK_CHECK_RESULT(vkEndCommandBuffer(cmdBuf));
 
-    queueSubmit(queue, 0, nullptr, 0, nullptr, 1, &cmdBuf);
+    vk::queueSubmit(queue, 0, nullptr, 0, nullptr, 1, &cmdBuf);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 }
 

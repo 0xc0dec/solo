@@ -13,23 +13,20 @@
 
 namespace solo
 {
-    namespace vk
+    class VulkanDescriptorSetLayoutBuilder
     {
-        class VulkanDescriptorSetLayoutBuilder
-        {
-        public:
-            explicit VulkanDescriptorSetLayoutBuilder(VkDevice device);
+    public:
+        explicit VulkanDescriptorSetLayoutBuilder(VkDevice device);
 
-            auto withBinding(u32 binding, VkDescriptorType descriptorType, u32 descriptorCount,
-                VkShaderStageFlagBits stageFlags) -> VulkanDescriptorSetLayoutBuilder&;
+        auto withBinding(u32 binding, VkDescriptorType descriptorType, u32 descriptorCount,
+            VkShaderStageFlagBits stageFlags) -> VulkanDescriptorSetLayoutBuilder&;
 
-            auto build() -> VulkanResource<VkDescriptorSetLayout>;
+        auto build() -> VulkanResource<VkDescriptorSetLayout>;
 
-        private:
-            VkDevice device = nullptr;
-            vec<VkDescriptorSetLayoutBinding> bindings;
-        };
-    }
+    private:
+        VkDevice device = nullptr;
+        vec<VkDescriptorSetLayoutBinding> bindings;
+    };
 }
 
 #endif

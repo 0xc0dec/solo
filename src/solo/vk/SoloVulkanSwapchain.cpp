@@ -11,7 +11,6 @@
 #include "SoloVulkanSDLDevice.h"
 
 using namespace solo;
-using namespace vk;
 
 static auto getSwapchainImages(VkDevice device, VkSwapchainKHR swapchain) -> vec<VkImage>
 {
@@ -25,7 +24,7 @@ static auto getSwapchainImages(VkDevice device, VkSwapchainKHR swapchain) -> vec
     return images;
 }
 
-static auto getPresentMode(vk::VulkanRenderer *renderer, VulkanSDLDevice *device, bool vsync) -> VkPresentModeKHR
+static auto getPresentMode(VulkanRenderer *renderer, VulkanSDLDevice *device, bool vsync) -> VkPresentModeKHR
 {
     u32 presentModeCount;
     SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(renderer->getPhysicalDevice(), device->getSurface(), &presentModeCount, nullptr));
@@ -52,7 +51,7 @@ static auto getPresentMode(vk::VulkanRenderer *renderer, VulkanSDLDevice *device
     return presentMode;
 }
 
-static auto createSwapchain(vk::VulkanRenderer *renderer, VulkanSDLDevice *device, u32 width, u32 height, bool vsync) -> VulkanResource<VkSwapchainKHR>
+static auto createSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *device, u32 width, u32 height, bool vsync) -> VulkanResource<VkSwapchainKHR>
 {
     VkSurfaceCapabilitiesKHR capabilities;
     SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(renderer->getPhysicalDevice(), device->getSurface(), &capabilities));
@@ -100,7 +99,7 @@ static auto createSwapchain(vk::VulkanRenderer *renderer, VulkanSDLDevice *devic
     return swapchain;
 }
 
-VulkanSwapchain::VulkanSwapchain(vk::VulkanRenderer *renderer, VulkanSDLDevice *device, u32 width, u32 height, bool vsync):
+VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *device, u32 width, u32 height, bool vsync):
     device(renderer->getDevice())
 {
     const auto colorFormat = renderer->getColorFormat();
@@ -123,15 +122,15 @@ VulkanSwapchain::VulkanSwapchain(vk::VulkanRenderer *renderer, VulkanSDLDevice *
     steps.resize(images.size());
     for (u32 i = 0; i < images.size(); i++)
     {
-        auto view = createImageView(this->device, colorFormat, VK_IMAGE_VIEW_TYPE_2D, 1, 1, images[i], VK_IMAGE_ASPECT_COLOR_BIT);
-        steps[i].framebuffer = createFrameBuffer(this->device, view, depthStencil.getView(), renderPass, width, height);
+        auto view = vk::createImageView(this->device, colorFormat, VK_IMAGE_VIEW_TYPE_2D, 1, 1, images[i], VK_IMAGE_ASPECT_COLOR_BIT);
+        steps[i].framebuffer = vk::createFrameBuffer(this->device, view, depthStencil.getView(), renderPass, width, height);
         steps[i].image = images[i];
         steps[i].imageView = std::move(view);
-        steps[i].cmdBuffer = createCommandBuffer(this->device, renderer->getCommandPool());
+        steps[i].cmdBuffer = vk::createCommandBuffer(this->device, renderer->getCommandPool());
     }
 
-    presentCompleteSem = createSemaphore(this->device);
-    renderCompleteSem = createSemaphore(this->device);
+    presentCompleteSem = vk::createSemaphore(this->device);
+    renderCompleteSem = vk::createSemaphore(this->device);
 }
 
 auto VulkanSwapchain::acquireNext() -> VkSemaphore
@@ -145,7 +144,7 @@ void VulkanSwapchain::recordCommandBuffers(std::function<void(VkFramebuffer, VkC
     for (size_t i = 0; i < steps.size(); ++i)
     {
         VkCommandBuffer buf = steps[i].cmdBuffer;
-        beginCommandBuffer(buf, false);
+        vk::beginCommandBuffer(buf, false);
         issueCommands(steps[i].framebuffer, buf);
         SL_VK_CHECK_RESULT(vkEndCommandBuffer(buf));
     }
@@ -153,7 +152,7 @@ void VulkanSwapchain::recordCommandBuffers(std::function<void(VkFramebuffer, VkC
 
 void VulkanSwapchain::presentNext(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores)
 {
-    queueSubmit(queue, waitSemaphoreCount, waitSemaphores, 1, &renderCompleteSem, 1, &steps[nextStep].cmdBuffer);
+    vk::queueSubmit(queue, waitSemaphoreCount, waitSemaphores, 1, &renderCompleteSem, 1, &steps[nextStep].cmdBuffer);
 
     VkPresentInfoKHR presentInfo{};
     presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;

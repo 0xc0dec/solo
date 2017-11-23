@@ -13,7 +13,6 @@
 #endif
 
 using namespace solo;
-using namespace vk;
 
 VulkanSDLDevice::VulkanSDLDevice(const DeviceSetup &setup):
     SDLDevice(setup)

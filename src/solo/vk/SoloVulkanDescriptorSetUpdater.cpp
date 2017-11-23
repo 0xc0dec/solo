@@ -9,26 +9,26 @@
 
 using namespace solo;
 
-vk::VulkanDescriptorSetUpdater::VulkanDescriptorSetUpdater(VkDevice device):
+VulkanDescriptorSetUpdater::VulkanDescriptorSetUpdater(VkDevice device):
     device(device)
 {
 }
 
-auto vk::VulkanDescriptorSetUpdater::forUniformBuffer(u32 binding, VkDescriptorSet set, VkBuffer buffer,
+auto VulkanDescriptorSetUpdater::forUniformBuffer(u32 binding, VkDescriptorSet set, VkBuffer buffer,
     VkDeviceSize offset, VkDeviceSize range) -> VulkanDescriptorSetUpdater&
 {
     items.push_back({{buffer, offset, range}, {}, binding, set});
     return *this;
 }
 
-auto vk::VulkanDescriptorSetUpdater::forTexture(u32 binding, VkDescriptorSet set, VkImageView view,
+auto VulkanDescriptorSetUpdater::forTexture(u32 binding, VkDescriptorSet set, VkImageView view,
     VkSampler sampler, VkImageLayout layout) -> VulkanDescriptorSetUpdater&
 {
     items.push_back({{}, {sampler, view, layout}, binding, set});
     return *this;
 }
 
-void vk::VulkanDescriptorSetUpdater::updateSets()
+void VulkanDescriptorSetUpdater::updateSets()
 {
     vec<VkWriteDescriptorSet> writes;
 
@@ -55,4 +55,3 @@ void vk::VulkanDescriptorSetUpdater::updateSets()
 }
 
 #endif
-

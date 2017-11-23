@@ -13,43 +13,40 @@
 
 namespace solo
 {
-    namespace vk
+    class VulkanRenderer;
+
+    class VulkanBuffer
     {
-        class VulkanRenderer;
+    public:
+        static auto createStaging(VulkanRenderer *renderer, VkDeviceSize size, const void *initialData = nullptr) -> VulkanBuffer;
+        static auto createUniformHostVisible(VulkanRenderer *renderer, VkDeviceSize size) -> VulkanBuffer;
+        static auto createDeviceLocal(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer;
 
-        class VulkanBuffer
-        {
-        public:
-            static auto createStaging(VulkanRenderer *renderer, VkDeviceSize size, const void *initialData = nullptr) -> VulkanBuffer;
-            static auto createUniformHostVisible(VulkanRenderer *renderer, VkDeviceSize size) -> VulkanBuffer;
-            static auto createDeviceLocal(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer;
+        VulkanBuffer() {}
+        VulkanBuffer(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags);
+        VulkanBuffer(VulkanBuffer &&other) = default;
+        VulkanBuffer(const VulkanBuffer &other) = delete;
+        ~VulkanBuffer() {}
 
-            VulkanBuffer() {}
-            VulkanBuffer(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags);
-            VulkanBuffer(VulkanBuffer &&other) = default;
-            VulkanBuffer(const VulkanBuffer &other) = delete;
-            ~VulkanBuffer() {}
+        auto operator=(const VulkanBuffer &other) -> VulkanBuffer& = delete;
+        auto operator=(VulkanBuffer &&other) -> VulkanBuffer& = default;
 
-            auto operator=(const VulkanBuffer &other) -> VulkanBuffer& = delete;
-            auto operator=(VulkanBuffer &&other) -> VulkanBuffer& = default;
+        operator VkBuffer() { return buffer; }
 
-            operator VkBuffer() { return buffer; }
+        auto getHandle() const -> VkBuffer { return buffer; }
+        auto getSize() const -> u32 { return size; }
 
-            auto getHandle() const -> VkBuffer { return buffer; }
-            auto getSize() const -> u32 { return size; }
+        void updateAll(const void *newData) const;
+        void updatePart(const void *newData, u32 offset, u32 size);
+        void transferTo(const VulkanBuffer& other, VkQueue queue, VkCommandPool cmdPool) const;
 
-            void updateAll(const void *newData) const;
-            void updatePart(const void *newData, u32 offset, u32 size);
-            void transferTo(const VulkanBuffer& other, VkQueue queue, VkCommandPool cmdPool) const;
-
-        private:
-            VkDevice device = nullptr;
-            VulkanRenderer *renderer = nullptr;
-            VulkanResource<VkDeviceMemory> memory;
-            VulkanResource<VkBuffer> buffer;
-            VkDeviceSize size = 0;
-        };
-    }
+    private:
+        VkDevice device = nullptr;
+        VulkanRenderer *renderer = nullptr;
+        VulkanResource<VkDeviceMemory> memory;
+        VulkanResource<VkBuffer> buffer;
+        VkDeviceSize size = 0;
+    };
 }
 
 #endif

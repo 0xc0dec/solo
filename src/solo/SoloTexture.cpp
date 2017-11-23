@@ -171,7 +171,7 @@ sptr<Texture2d> Texture2d::createFromData(Device *device, Texture2dData *data)
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return std::make_shared<vk::VulkanTexture2d>(device, data);
+            return std::make_shared<VulkanTexture2d>(device, data);
 #endif
         default:
             return std::make_shared<null::NullTexture2d>(data);

@@ -8,7 +8,6 @@
 #ifdef SL_VULKAN_RENDERER
 
 using namespace solo;
-using namespace vk;
 
 VulkanDescriptorSetLayoutBuilder::VulkanDescriptorSetLayoutBuilder(VkDevice device):
     device(device)

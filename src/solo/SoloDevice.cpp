@@ -30,7 +30,7 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device>
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            device = std::make_unique<vk::VulkanSDLDevice>(setup);
+            device = std::make_unique<VulkanSDLDevice>(setup);
             break;
 #endif
         case DeviceMode::Null:

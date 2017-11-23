@@ -8,7 +8,6 @@
 #ifdef SL_VULKAN_RENDERER
 
 using namespace solo;
-using namespace vk;
 
 VulkanDescriptorPool::VulkanDescriptorPool(VkDevice device, u32 maxSetCount, const VulkanDescriptorPoolConfig &config):
     device(device)

@@ -24,16 +24,16 @@ static auto parseName(const str &name) -> std::tuple<str, str>
     return make_tuple(first, second);
 }
 
-vk::VulkanMaterial::VulkanMaterial(sptr<solo::Effect> effect):
+VulkanMaterial::VulkanMaterial(sptr<solo::Effect> effect):
     effect(std::dynamic_pointer_cast<VulkanEffect>(effect))
 {
 }
 
-vk::VulkanMaterial::~VulkanMaterial()
+VulkanMaterial::~VulkanMaterial()
 {
 }
 
-auto vk::VulkanMaterial::getCullModeFlags() const -> VkCullModeFlags
+auto VulkanMaterial::getCullModeFlags() const -> VkCullModeFlags
 {
     switch (faceCull)
     {
@@ -46,7 +46,7 @@ auto vk::VulkanMaterial::getCullModeFlags() const -> VkCullModeFlags
     }
 }
 
-auto vk::VulkanMaterial::getVkPolygonMode() const -> VkPolygonMode
+auto VulkanMaterial::getVkPolygonMode() const -> VkPolygonMode
 {
     switch (polygonMode)
     {
@@ -59,7 +59,7 @@ auto vk::VulkanMaterial::getVkPolygonMode() const -> VkPolygonMode
     }
 }
 
-void vk::VulkanMaterial::setFloatParameter(const str &name, float value)
+void VulkanMaterial::setFloatParameter(const str &name, float value)
 {
     setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
     {
@@ -67,7 +67,7 @@ void vk::VulkanMaterial::setFloatParameter(const str &name, float value)
     });
 }
 
-void vk::VulkanMaterial::setVector2Parameter(const str &name, const Vector2 &value)
+void VulkanMaterial::setVector2Parameter(const str &name, const Vector2 &value)
 {
     setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
     {
@@ -75,7 +75,7 @@ void vk::VulkanMaterial::setVector2Parameter(const str &name, const Vector2 &val
     });
 }
 
-void vk::VulkanMaterial::setVector3Parameter(const str &name, const Vector3 &value)
+void VulkanMaterial::setVector3Parameter(const str &name, const Vector3 &value)
 {
     setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
     {
@@ -83,7 +83,7 @@ void vk::VulkanMaterial::setVector3Parameter(const str &name, const Vector3 &val
     });
 }
 
-void vk::VulkanMaterial::setVector4Parameter(const str &name, const Vector4 &value)
+void VulkanMaterial::setVector4Parameter(const str &name, const Vector4 &value)
 {
     setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
     {
@@ -91,7 +91,7 @@ void vk::VulkanMaterial::setVector4Parameter(const str &name, const Vector4 &val
     });
 }
 
-void vk::VulkanMaterial::setMatrixParameter(const str &name, const Matrix &value)
+void VulkanMaterial::setMatrixParameter(const str &name, const Matrix &value)
 {
     // TODO avoid copy-paste
     setUniformParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
@@ -100,7 +100,7 @@ void vk::VulkanMaterial::setMatrixParameter(const str &name, const Matrix &value
     });
 }
 
-void vk::VulkanMaterial::setUniformParameter(const str &name, ParameterWriteFunc write)
+void VulkanMaterial::setUniformParameter(const str &name, ParameterWriteFunc write)
 {
     auto parsedName = parseName(name);
     auto bufferName = std::get<0>(parsedName);
@@ -117,7 +117,7 @@ void vk::VulkanMaterial::setUniformParameter(const str &name, ParameterWriteFunc
     };
 }
 
-void vk::VulkanMaterial::setTextureParameter(const str &name, sptr<solo::Texture> value)
+void VulkanMaterial::setTextureParameter(const str &name, sptr<solo::Texture> value)
 {
     const auto samplerInfo = effect->getSampler(name);
     auto &sampler = samplers[name];
@@ -126,7 +126,7 @@ void vk::VulkanMaterial::setTextureParameter(const str &name, sptr<solo::Texture
     // TODO Optimize and mark only this sampler as dirty
 }
 
-void vk::VulkanMaterial::bindParameter(const str &name, BindParameterSemantics semantics)
+void VulkanMaterial::bindParameter(const str &name, BindParameterSemantics semantics)
 {
     auto parsedName = parseName(name);
     auto bufferName = std::get<0>(parsedName);
