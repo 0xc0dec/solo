@@ -186,15 +186,15 @@ void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
             const auto depthClearEnabled = cmd.camera->isClearDepthEnabled();
             const auto clearColor = cmd.camera->getClearColor();
 
-            GLuint targetFBHandle = 0;
+            GLuint fb = 0;
             auto target = step.cmd.camera->getRenderTarget();
             if (target)
-                targetFBHandle = static_cast<FrameBuffer*>(target.get())->getHandle();
+                fb = static_cast<FrameBuffer*>(target.get())->getHandle();
 
             step.beginCamera = [=]
             {
-                if (targetFBHandle)
-                    glBindFramebuffer(GL_FRAMEBUFFER, targetFBHandle);
+                if (fb)
+                    glBindFramebuffer(GL_FRAMEBUFFER, fb);
 
                 setViewport(viewport);
                 setDepthWrite(true);

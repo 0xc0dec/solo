@@ -148,7 +148,7 @@ namespace solo
             const str &rightPath,
             const str &topPath,
             const str &bottomPath) -> sptr<AsyncHandle<CubeTexture>>;
-        static auto create(Device *device, CubeTextureData *data) -> sptr<CubeTexture>;
+        static auto createFromData(Device *device, CubeTextureData *data) -> sptr<CubeTexture>;
 
         void setWrapping(TextureWrapping wrapping) override final;
 

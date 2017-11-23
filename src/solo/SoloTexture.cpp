@@ -193,7 +193,7 @@ auto CubeTexture::loadFromFaceFiles(Device *device,
     const str &bottomPath) -> sptr<CubeTexture>
 {
     auto data = CubeTextureData::loadFromFaceFiles(device, frontPath, backPath, leftPath, rightPath, topPath, bottomPath);
-    return create(device, data.get());
+    return createFromData(device, data.get());
 }
 
 auto CubeTexture::loadFromFaceFilesAsync(Device *device,
@@ -216,7 +216,7 @@ auto CubeTexture::loadFromFaceFilesAsync(Device *device,
     }};
     auto consumer = [handle, device](const vec<sptr<CubeTextureData>> &results)
     {
-        auto texture = create(device, results[0].get());
+        auto texture = createFromData(device, results[0].get());
         handle->finish(texture);
     };
 
@@ -225,7 +225,7 @@ auto CubeTexture::loadFromFaceFilesAsync(Device *device,
     return handle;
 }
 
-auto CubeTexture::create(Device *device, CubeTextureData *data) -> sptr<CubeTexture>
+auto CubeTexture::createFromData(Device *device, CubeTextureData *data) -> sptr<CubeTexture>
 {
     switch (device->getMode())
     {
