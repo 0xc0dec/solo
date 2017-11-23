@@ -9,10 +9,7 @@
 
 namespace solo
 {
-    namespace null
+    class NullEffect final : public Effect
     {
-        class NullEffect final : public Effect
-        {
-        };
-    }
+    };
 }

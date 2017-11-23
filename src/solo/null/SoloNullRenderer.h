@@ -9,16 +9,13 @@
 
 namespace solo
 {
-    namespace null
+    class NullRenderer final : public Renderer
     {
-        class NullRenderer final : public Renderer
-        {
-        public:
-            void addRenderCommand(const RenderCommand &cmd) override {}
+    public:
+        void addRenderCommand(const RenderCommand &cmd) override {}
 
-        protected:
-            void beginFrame() override final {}
-            void endFrame() override final {}
-        };
-    }
+    protected:
+        void beginFrame() override final {}
+        void endFrame() override final {}
+    };
 }

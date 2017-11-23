@@ -9,22 +9,19 @@
 
 namespace solo
 {
-    namespace null
+    class NullTexture2d final: public Texture2d
     {
-        class NullTexture2d final: public Texture2d
-        {
-        public:
-            NullTexture2d(Texture2dData *data): Texture2d(data) {}
+    public:
+        NullTexture2d(Texture2dData *data): Texture2d(data) {}
 
-            void generateMipmaps() override final {}
-        };
+        void generateMipmaps() override final {}
+    };
 
-        class NullCubeTexture final : public CubeTexture
-        {
-        public:
-            NullCubeTexture(CubeTextureData *data): CubeTexture(data) {}
+    class NullCubeTexture final : public CubeTexture
+    {
+    public:
+        NullCubeTexture(CubeTextureData *data): CubeTexture(data) {}
                 
-            void generateMipmaps() override final {}
-        };
-    }
+        void generateMipmaps() override final {}
+    };
 }

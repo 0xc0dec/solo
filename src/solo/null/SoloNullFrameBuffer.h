@@ -9,12 +9,9 @@
 
 namespace solo
 {
-    namespace null
+    class NullFrameBuffer : public FrameBuffer
     {
-        class NullFrameBuffer : public FrameBuffer
-        {
-        public:
-            void setAttachments(const vec<sptr<Texture2d>> &attachments) override final {}
-        };
-    }
+    public:
+        void setAttachments(const vec<sptr<Texture2d>> &attachments) override final {}
+    };
 }

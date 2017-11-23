@@ -24,7 +24,7 @@ auto Renderer::create(Device *device, const FriendToken<Device> &) -> sptr<Rende
             return std::make_shared<VulkanRenderer>(device);
 #endif
         default:
-            return std::make_shared<null::NullRenderer>();
+            return std::make_shared<NullRenderer>();
     }
 }
 
