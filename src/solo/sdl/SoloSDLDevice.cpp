@@ -8,45 +8,45 @@
 
 using namespace solo;
 
-sdl::SDLDevice::SDLDevice(const DeviceSetup &setup) :
+SDLDevice::SDLDevice(const DeviceSetup &setup) :
     Device(setup)
 {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);
 }
 
-sdl::SDLDevice::~SDLDevice()
+SDLDevice::~SDLDevice()
 {
     SDL_Quit();
 }
 
-auto sdl::SDLDevice::getWindowTitle() const -> str
+auto SDLDevice::getWindowTitle() const -> str
 {
     return str(SDL_GetWindowTitle(window));
 }
 
-void sdl::SDLDevice::setWindowTitle(const str &title)
+void SDLDevice::setWindowTitle(const str &title)
 {
     SDL_SetWindowTitle(window, title.c_str());
 }
 
-void sdl::SDLDevice::setCursorCaptured(bool captured)
+void SDLDevice::setCursorCaptured(bool captured)
 {
     SDL_SetRelativeMouseMode(captured ? SDL_TRUE : SDL_FALSE);
 }
 
-auto sdl::SDLDevice::getLifetime() const -> float
+auto SDLDevice::getLifetime() const -> float
 {
     return SDL_GetTicks() / 1000.0f;
 }
 
-auto sdl::SDLDevice::getCanvasSize() const -> Vector2
+auto SDLDevice::getCanvasSize() const -> Vector2
 {
     s32 width, height;
     SDL_GL_GetDrawableSize(window, &width, &height);
     return {static_cast<float>(width), static_cast<float>(height)};
 }
 
-void sdl::SDLDevice::beginUpdate()
+void SDLDevice::beginUpdate()
 {
     windowCloseRequested = false;
     quitRequested = false;
@@ -57,7 +57,7 @@ void sdl::SDLDevice::beginUpdate()
     updateTime();
 }
 
-void sdl::SDLDevice::prepareKeyboardState()
+void SDLDevice::prepareKeyboardState()
 {
     releasedKeys.clear();
     if (hasKeyboardFocus)
@@ -73,7 +73,7 @@ void sdl::SDLDevice::prepareKeyboardState()
     }
 }
 
-void sdl::SDLDevice::prepareMouseState()
+void SDLDevice::prepareMouseState()
 {
     mouseDeltaX = mouseDeltaY = 0;
     releasedMouseButtons.clear();
@@ -90,14 +90,14 @@ void sdl::SDLDevice::prepareMouseState()
     }
 }
 
-void sdl::SDLDevice::readWindowState()
+void SDLDevice::readWindowState()
 {
     const auto flags = SDL_GetWindowFlags(window);
     hasKeyboardFocus = (flags & SDL_WINDOW_INPUT_FOCUS) != 0;
     hasMouseFocus = (flags & SDL_WINDOW_MOUSE_FOCUS) != 0;
 }
 
-void sdl::SDLDevice::processKeyboardEvent(const SDL_Event &evt)
+void SDLDevice::processKeyboardEvent(const SDL_Event &evt)
 {
     if (!hasKeyboardFocus)
         return;
@@ -107,10 +107,10 @@ void sdl::SDLDevice::processKeyboardEvent(const SDL_Event &evt)
         case SDL_KEYUP:
         case SDL_KEYDOWN:
         {
-            auto it = SDLKeyMap.find(evt.key.keysym.sym);
+            const auto it = SDLKeyMap.find(evt.key.keysym.sym);
             if (it == SDLKeyMap.end())
                 break;
-            auto code = it->second;
+            const auto code = it->second;
             if (evt.type == SDL_KEYUP)
             {
                 releasedKeys.insert(code);
@@ -128,7 +128,7 @@ void sdl::SDLDevice::processKeyboardEvent(const SDL_Event &evt)
     }
 }
 
-void sdl::SDLDevice::processMouseEvent(const SDL_Event &evt)
+void SDLDevice::processMouseEvent(const SDL_Event &evt)
 {
     if (!hasMouseFocus)
         return;
@@ -161,7 +161,7 @@ void sdl::SDLDevice::processMouseEvent(const SDL_Event &evt)
     }
 }
 
-void sdl::SDLDevice::processWindowEvent(const SDL_Event &evt)
+void SDLDevice::processWindowEvent(const SDL_Event &evt)
 {
     switch (evt.window.event)
     {
@@ -173,7 +173,7 @@ void sdl::SDLDevice::processWindowEvent(const SDL_Event &evt)
     }
 }
 
-void sdl::SDLDevice::readEvents()
+void SDLDevice::readEvents()
 {
     static auto firstTime = true;
     SDL_Event evt;

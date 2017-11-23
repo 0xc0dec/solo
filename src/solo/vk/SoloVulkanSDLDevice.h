@@ -14,7 +14,7 @@
 
 namespace solo
 {
-    class VulkanSDLDevice final : public sdl::SDLDevice
+    class VulkanSDLDevice final : public SDLDevice
     {
     public:
         explicit VulkanSDLDevice(const DeviceSetup &setup);
