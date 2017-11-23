@@ -10,22 +10,19 @@
 
 namespace solo
 {
-    namespace lua
+    class LuaScriptRuntime final : public ScriptRuntime
     {
-        class LuaScriptRuntime final : public ScriptRuntime
-        {
-        public:
-            LuaScriptRuntime();
-            explicit LuaScriptRuntime(Device *device);
-            ~LuaScriptRuntime();
+    public:
+        LuaScriptRuntime();
+        explicit LuaScriptRuntime(Device *device);
+        ~LuaScriptRuntime();
 
-            void executeFile(const str& path) override final;
+        void executeFile(const str& path) override final;
 
-            auto readString(const str &name) -> str override final;
-            auto readDeviceSetup(const str &name) -> DeviceSetup override final;
+        auto readString(const str &name) -> str override final;
+        auto readDeviceSetup(const str &name) -> DeviceSetup override final;
 
-        private:
-            LuaIntf::LuaState lua;
-        };
-    }
+    private:
+        LuaIntf::LuaState lua;
+    };
 }

@@ -64,7 +64,7 @@ static void registerLibrary(LuaState &state)
     )");
 }
 
-lua::LuaScriptRuntime::LuaScriptRuntime()
+LuaScriptRuntime::LuaScriptRuntime()
 {
     lua = LuaState::newState();
     lua.openLibs();
@@ -75,7 +75,7 @@ lua::LuaScriptRuntime::LuaScriptRuntime()
     module.endModule();
 }
 
-lua::LuaScriptRuntime::LuaScriptRuntime(Device *d):
+LuaScriptRuntime::LuaScriptRuntime(Device *d):
     LuaScriptRuntime()
 {
     auto module = LuaBinding(lua).beginModule("sl");
@@ -83,12 +83,12 @@ lua::LuaScriptRuntime::LuaScriptRuntime(Device *d):
     module.endModule();
 }
 
-lua::LuaScriptRuntime::~LuaScriptRuntime()
+LuaScriptRuntime::~LuaScriptRuntime()
 {
     lua.close();
 }
 
-void lua::LuaScriptRuntime::executeFile(const str& path)
+void LuaScriptRuntime::executeFile(const str& path)
 {
     if (lua.loadFile(path.c_str()))
     {
@@ -100,12 +100,12 @@ void lua::LuaScriptRuntime::executeFile(const str& path)
     lua.doFile(path.c_str());
 }
 
-auto lua::LuaScriptRuntime::readString(const str& name) -> str
+auto LuaScriptRuntime::readString(const str& name) -> str
 {
     return readValue<str>(lua, name);
 }
 
-auto lua::LuaScriptRuntime::readDeviceSetup(const str &name) -> DeviceSetup
+auto LuaScriptRuntime::readDeviceSetup(const str &name) -> DeviceSetup
 {
     return readValue<DeviceSetup>(lua, name);
 }
