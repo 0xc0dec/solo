@@ -9,8 +9,8 @@
 
 using namespace solo;
 
-lua::ScriptComponent::ScriptComponent(const Node &node, LuaRef ref):
-    ComponentBase<ScriptComponent>(node),
+lua::LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef ref):
+    ComponentBase<LuaScriptComponent>(node),
     ref(ref)
 {
     typeId = MinComponentTypeId + ref.get<u32>("typeId");
@@ -42,32 +42,32 @@ lua::ScriptComponent::ScriptComponent(const Node &node, LuaRef ref):
     ref.set("node", node);
 }
 
-void lua::ScriptComponent::init()
+void lua::LuaScriptComponent::init()
 {
     initFunc(ref);
 }
 
-void lua::ScriptComponent::terminate()
+void lua::LuaScriptComponent::terminate()
 {
     terminateFunc(ref);
 }
 
-void lua::ScriptComponent::update()
+void lua::LuaScriptComponent::update()
 {
     updateFunc(ref);
 }
 
-void lua::ScriptComponent::render()
+void lua::LuaScriptComponent::render()
 {
     renderFunc(ref);
 }
 
-void lua::ScriptComponent::onComponentAdded(Component* cmp)
+void lua::LuaScriptComponent::onComponentAdded(Component* cmp)
 {
     onComponentAddedFunc(ref, cmp);
 }
 
-void lua::ScriptComponent::onComponentRemoved(Component* cmp)
+void lua::LuaScriptComponent::onComponentRemoved(Component* cmp)
 {
     onComponentRemovedFunc(ref, cmp);
 }

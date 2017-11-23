@@ -12,12 +12,12 @@ namespace solo
 {
     namespace lua
     {
-        class ScriptRuntime final : public solo::ScriptRuntime
+        class LuaScriptRuntime final : public ScriptRuntime
         {
         public:
-            ScriptRuntime();
-            explicit ScriptRuntime(Device *device);
-            ~ScriptRuntime();
+            LuaScriptRuntime();
+            explicit LuaScriptRuntime(Device *device);
+            ~LuaScriptRuntime();
 
             void executeFile(const str& path) override final;
 
