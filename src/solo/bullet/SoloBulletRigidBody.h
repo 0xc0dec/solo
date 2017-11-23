@@ -12,31 +12,27 @@ namespace solo
 {
     class Transform;
     class Collider;
-    
-    namespace bullet
+    class BulletCollider;
+
+    class BulletRigidBody final : public RigidBody
     {
-        class Collider;
+    public:
+        BulletRigidBody(const Node &node, const RigidBodyConstructionParameters &parameters);
+        virtual ~BulletRigidBody();
 
-        class RigidBody final : public solo::RigidBody
-        {
-        public:
-            RigidBody(const Node &node, const RigidBodyConstructionParameters &parameters);
-            virtual ~RigidBody();
+        void setCollider(sptr<solo::Collider> collider) override final;
 
-            void setCollider(sptr<solo::Collider> collider) override final;
+        void onTransformChanged(const Transform *transform) override final;
 
-            void onTransformChanged(const Transform *transform) override final;
+    private:
+        float mass = 0;
+        sptr<solo::Collider> collider;
+        btCollisionShape *shape;
+        Transform *transformCmp;
+        btDiscreteDynamicsWorld *world;
+        uptr<btMotionState> motionState;
+        uptr<btRigidBody> body;
 
-        private:
-            float mass = 0;
-            sptr<solo::Collider> collider;
-            btCollisionShape *shape;
-            Transform *transformCmp;
-            btDiscreteDynamicsWorld *world;
-            uptr<btMotionState> motionState;
-            uptr<btRigidBody> body;
-
-            void syncScale();
-        };
-    }
+        void syncScale();
+    };
 }

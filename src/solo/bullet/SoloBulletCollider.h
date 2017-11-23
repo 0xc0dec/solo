@@ -10,19 +10,16 @@
 
 namespace solo
 {
-    namespace bullet
+    class BulletCollider
     {
-        class Collider
-        {
-        public:
-            SL_DISABLE_COPY_AND_MOVE(Collider)
+    public:
+        SL_DISABLE_COPY_AND_MOVE(BulletCollider)
 
-            virtual ~Collider() {}
+        virtual ~BulletCollider() {}
 
-            virtual auto getShape() -> btCollisionShape* = 0;
+        virtual auto getShape() -> btCollisionShape* = 0;
 
-        protected:
-            Collider() {}
-        };
-    }
+    protected:
+        BulletCollider() {}
+    };
 }

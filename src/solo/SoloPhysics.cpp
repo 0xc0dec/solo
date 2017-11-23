@@ -10,7 +10,7 @@ using namespace solo;
 
 auto Physics::create(Device *device, const FriendToken<Device> &deviceToken) -> sptr<Physics>
 {
-    return std::make_shared<bullet::Physics>(device, deviceToken);
+    return std::make_shared<BulletPhysics>(device, deviceToken);
 }
 
 Physics::Physics(Device *device, const FriendToken<Device> &):

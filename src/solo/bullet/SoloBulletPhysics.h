@@ -10,29 +10,26 @@
 
 namespace solo
 {
-    namespace bullet
+    class BulletPhysics final : public Physics
     {
-        class Physics final : public solo::Physics
-        {
-        public:
-            Physics(Device *device, const FriendToken<Device> &deviceToken);
+    public:
+        BulletPhysics(Device *device, const FriendToken<Device> &deviceToken);
 
-            void update() override final;
+        void update() override final;
 
-            void setGravity(const Vector3 &gravity) override final;
+        void setGravity(const Vector3 &gravity) override final;
 
-            auto castRay(const Vector3 &from, const Vector3 &to) -> RaycastResult override;
-            auto castRayAll(const Vector3 &from, const Vector3 &to) -> vec<RaycastResult> override;
+        auto castRay(const Vector3 &from, const Vector3 &to) -> RaycastResult override;
+        auto castRayAll(const Vector3 &from, const Vector3 &to) -> vec<RaycastResult> override;
 
-            auto getWorld() const -> btDiscreteDynamicsWorld*;
+        auto getWorld() const -> btDiscreteDynamicsWorld* { return world.get(); }
 
-        private:
-            // Note: order matters for the proper destruction
-            uptr<btBroadphaseInterface> broadPhase;
-            uptr<btCollisionConfiguration> collisionConfig;
-            uptr<btCollisionDispatcher> collisionDispatcher;
-            uptr<btSequentialImpulseConstraintSolver> solver;
-            uptr<btDiscreteDynamicsWorld> world;
-        };
-    }
+    private:
+        // Note: order matters for proper destruction
+        uptr<btBroadphaseInterface> broadPhase;
+        uptr<btCollisionConfiguration> collisionConfig;
+        uptr<btCollisionDispatcher> collisionDispatcher;
+        uptr<btSequentialImpulseConstraintSolver> solver;
+        uptr<btDiscreteDynamicsWorld> world;
+    };
 }

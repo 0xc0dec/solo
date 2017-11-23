@@ -12,22 +12,14 @@ namespace solo
 {
     class Vector3;
 
-    namespace bullet
+    class BulletBoxCollider final : public BulletCollider, public BoxCollider
     {
-        class BoxCollider final : public Collider, public solo::BoxCollider
-        {
-        public:
-            explicit BoxCollider(const Vector3 &halfExtents);
+    public:
+        explicit BulletBoxCollider(const Vector3 &halfExtents);
 
-            auto getShape() -> btCollisionShape* override final;
+        auto getShape() -> btCollisionShape* override final { return shape.get(); }
 
-        private:
-            uptr<btBoxShape> shape;
-        };
-
-        inline auto BoxCollider::getShape() -> btCollisionShape *
-        {
-            return shape.get();
-        }
-    }
+    private:
+        uptr<btBoxShape> shape;
+    };
 }
