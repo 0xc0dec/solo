@@ -13,7 +13,7 @@
 using namespace solo;
 using namespace gl;
 
-SDLDevice::SDLDevice(DeviceSetup const &setup):
+SDLOpenGLDevice::SDLOpenGLDevice(DeviceSetup const &setup):
     Device(setup)
 {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -40,13 +40,13 @@ SDLDevice::SDLDevice(DeviceSetup const &setup):
     SDL_GL_SetSwapInterval(1);
 }
 
-SDLDevice::~SDLDevice()
+SDLOpenGLDevice::~SDLOpenGLDevice()
 {
     cleanupSubsystems();
     cleanup();
 }
 
-void SDLDevice::cleanup()
+void SDLOpenGLDevice::cleanup()
 {
     if (context)
     {
@@ -61,12 +61,12 @@ void SDLDevice::cleanup()
     SDL_Quit();
 }
 
-void SDLDevice::endUpdate()
+void SDLOpenGLDevice::endUpdate()
 {
     SDL_GL_SwapWindow(window);
 }
 
-void SDLDevice::saveScreenshot(const str &path)
+void SDLOpenGLDevice::saveScreenshot(const str &path)
 {
     s32 width, height;
     SDL_GetWindowSize(window, &width, &height);

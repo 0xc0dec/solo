@@ -22,17 +22,17 @@ namespace solo
 
     namespace gl
     {
-        class Renderer;
-        class Effect;
-        class Texture;
+        class OpenGLRenderer;
+        class OpenGLEffect;
+        class OpenGLTexture;
 
-        class Material final : public solo::Material
+        class OpenGLMaterial final : public Material
         {
         public:
-            explicit Material(sptr<solo::Effect> effect);
-            ~Material() {}
+            explicit OpenGLMaterial(sptr<Effect> effect);
+            ~OpenGLMaterial() {}
 
-            auto getEffect() const -> solo::Effect* override final { return effect.get(); }
+            auto getEffect() const -> Effect* override final { return effect.get(); }
 
             void setFloatParameter(const str &name, float value) override final;
             void setVector2Parameter(const str &name, const Vector2 &value) override final;
@@ -48,7 +48,7 @@ namespace solo
         protected:
             using ParameterApplier = std::function<void(const Camera *, const Transform *)>;
 
-            sptr<gl::Effect> effect = nullptr;
+            sptr<OpenGLEffect> effect = nullptr;
 
             // Maybe not the fastest, but convenient and good enough for now
             umap<str, ParameterApplier> appliers;

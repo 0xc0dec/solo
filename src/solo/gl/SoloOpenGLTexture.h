@@ -16,13 +16,13 @@ namespace solo
 {
     namespace gl
     {
-        class Texture
+        class OpenGLTexture
         {
         public:
-            SL_DISABLE_COPY_AND_MOVE(Texture)
+            SL_DISABLE_COPY_AND_MOVE(OpenGLTexture)
 
-            Texture();
-            virtual ~Texture();
+            OpenGLTexture();
+            virtual ~OpenGLTexture();
 
             auto getHandle() const -> GLuint { return handle; }
 
@@ -32,10 +32,10 @@ namespace solo
             GLuint handle = 0;
         };
 
-        class Texture2d final: public solo::Texture2d, public Texture
+        class OpenGLTexture2d final: public Texture2d, public OpenGLTexture
         {
         public:
-            Texture2d(Texture2dData *data);
+            OpenGLTexture2d(Texture2dData *data);
 
             void bind() override final;
             void generateMipmaps() override final;
@@ -44,10 +44,10 @@ namespace solo
             void setData(const void *data);
         };
 
-        class CubeTexture final : public solo::CubeTexture, public Texture
+        class OpenGLCubeTexture final : public CubeTexture, public OpenGLTexture
         {
         public:
-            CubeTexture(CubeTextureData *data);
+            OpenGLCubeTexture(CubeTextureData *data);
 
             void bind() override final;
             void generateMipmaps() override final;

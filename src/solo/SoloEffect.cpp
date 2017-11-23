@@ -18,7 +18,7 @@ static auto create(Device *device, const void *vsSrc, u32 vsSrcLen, const void *
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<gl::Effect>(vsSrc, vsSrcLen, fsSrc, fsSrcLen);
+            return std::make_shared<gl::OpenGLEffect>(vsSrc, vsSrcLen, fsSrc, fsSrcLen);
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
@@ -44,7 +44,7 @@ auto Effect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effec
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return gl::Effect::createFromPrefab(prefab);
+            return gl::OpenGLEffect::createFromPrefab(prefab);
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:

@@ -15,18 +15,18 @@
 
 using namespace solo;
 
-gl::Material::Material(sptr<solo::Effect> effect):
-    effect(std::dynamic_pointer_cast<gl::Effect>(effect))
+gl::OpenGLMaterial::OpenGLMaterial(sptr<Effect> effect):
+    effect(std::dynamic_pointer_cast<OpenGLEffect>(effect))
 {
 }
 
-void gl::Material::applyParams(const Camera *camera, const Transform *nodeTransform) const
+void gl::OpenGLMaterial::applyParams(const Camera *camera, const Transform *nodeTransform) const
 {
     for (const auto &p : appliers)
         p.second(camera, nodeTransform);
 }
 
-void gl::Material::setFloatParameter(const str &name, float value)
+void gl::OpenGLMaterial::setFloatParameter(const str &name, float value)
 {
     setParameter(name, [value](GLuint location, GLuint index)
     {
@@ -37,7 +37,7 @@ void gl::Material::setFloatParameter(const str &name, float value)
     });
 }
 
-void gl::Material::setVector2Parameter(const str &name, const Vector2 &value)
+void gl::OpenGLMaterial::setVector2Parameter(const str &name, const Vector2 &value)
 {
     setParameter(name, [value](GLuint location, GLuint index)
     {
@@ -48,7 +48,7 @@ void gl::Material::setVector2Parameter(const str &name, const Vector2 &value)
     });
 }
 
-void gl::Material::setVector3Parameter(const str &name, const Vector3 &value)
+void gl::OpenGLMaterial::setVector3Parameter(const str &name, const Vector3 &value)
 {
     setParameter(name, [value](GLuint location, GLuint index)
     {
@@ -59,7 +59,7 @@ void gl::Material::setVector3Parameter(const str &name, const Vector3 &value)
     });
 }
 
-void gl::Material::setVector4Parameter(const str &name, const Vector4 &value)
+void gl::OpenGLMaterial::setVector4Parameter(const str &name, const Vector4 &value)
 {
     setParameter(name, [value](GLuint location, GLuint index)
     {
@@ -70,7 +70,7 @@ void gl::Material::setVector4Parameter(const str &name, const Vector4 &value)
     });
 }
 
-void gl::Material::setMatrixParameter(const str &name, const Matrix &value)
+void gl::OpenGLMaterial::setMatrixParameter(const str &name, const Matrix &value)
 {
     setParameter(name, [value](GLuint location, GLuint index)
     {
@@ -81,9 +81,9 @@ void gl::Material::setMatrixParameter(const str &name, const Matrix &value)
     });
 }
 
-void gl::Material::setTextureParameter(const str &name, sptr<solo::Texture> value)
+void gl::OpenGLMaterial::setTextureParameter(const str &name, sptr<solo::Texture> value)
 {
-    auto tex = std::dynamic_pointer_cast<gl::Texture>(value);
+    auto tex = std::dynamic_pointer_cast<OpenGLTexture>(value);
     setParameter(name, [tex](GLuint location, GLuint index)
     {
         return [location, index, tex](const Camera *, const Transform *)
@@ -95,7 +95,7 @@ void gl::Material::setTextureParameter(const str &name, sptr<solo::Texture> valu
     });
 }
 
-void gl::Material::bindParameter(const str &name, BindParameterSemantics semantics)
+void gl::OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics semantics)
 {
     switch (semantics)
     {
@@ -248,7 +248,7 @@ void gl::Material::bindParameter(const str &name, BindParameterSemantics semanti
     }
 }
 
-void gl::Material::setParameter(const str &paramName, std::function<ParameterApplier(GLuint, GLint)> getApplier)
+void gl::OpenGLMaterial::setParameter(const str &paramName, std::function<ParameterApplier(GLuint, GLint)> getApplier)
 {
     const auto info = effect->getUniformInfo(paramName);
     appliers[paramName] = getApplier(info.location, info.samplerIndex);

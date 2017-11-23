@@ -18,13 +18,13 @@ namespace solo
 
     namespace gl
     {
-        class Texture2d;
+        class OpenGLTexture2d;
 
-        class FrameBuffer final : public solo::FrameBuffer
+        class OpenGLFrameBuffer final : public FrameBuffer
         {
         public:
-            FrameBuffer();
-            ~FrameBuffer();
+            OpenGLFrameBuffer();
+            ~OpenGLFrameBuffer();
 
             auto getHandle() const -> GLuint { return handle; }
 

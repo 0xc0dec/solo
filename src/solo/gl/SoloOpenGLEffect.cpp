@@ -11,18 +11,18 @@
 
 using namespace solo;
 
-auto gl::Effect::createFromPrefab(EffectPrefab prefab) -> sptr<Effect>
+auto gl::OpenGLEffect::createFromPrefab(EffectPrefab prefab) -> sptr<OpenGLEffect>
 {
     switch (prefab)
     {
         case EffectPrefab::Skybox:
-            return std::make_shared<Effect>(
-                PrefabShaders::Vertex::skybox, std::strlen(PrefabShaders::Vertex::skybox),
-                PrefabShaders::Fragment::skybox, std::strlen(PrefabShaders::Fragment::skybox));
+            return std::make_shared<OpenGLEffect>(
+                OpenGLPrefabShaders::Vertex::skybox, std::strlen(OpenGLPrefabShaders::Vertex::skybox),
+                OpenGLPrefabShaders::Fragment::skybox, std::strlen(OpenGLPrefabShaders::Fragment::skybox));
         case EffectPrefab::Font:
-            return std::make_shared<Effect>(
-                PrefabShaders::Vertex::positionAndTexCoord, std::strlen(PrefabShaders::Vertex::positionAndTexCoord),
-                PrefabShaders::Fragment::font, std::strlen(PrefabShaders::Fragment::font));
+            return std::make_shared<OpenGLEffect>(
+                OpenGLPrefabShaders::Vertex::positionAndTexCoord, std::strlen(OpenGLPrefabShaders::Vertex::positionAndTexCoord),
+                OpenGLPrefabShaders::Fragment::font, std::strlen(OpenGLPrefabShaders::Fragment::font));
         default:
             SL_PANIC("Unknown effect prefab");
             break;
@@ -80,7 +80,7 @@ static auto linkProgram(GLuint vs, GLuint fs) -> GLint
     return program;
 }
 
-gl::Effect::Effect(const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
+gl::OpenGLEffect::OpenGLEffect(const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
 {
     const auto vs = compileShader(GL_VERTEX_SHADER, vsSrc, vsSrcLen);
     const auto fs = compileShader(GL_FRAGMENT_SHADER, fsSrc, fsSrcLen);
@@ -95,12 +95,12 @@ gl::Effect::Effect(const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrc
     introspectAttributes();
 }
 
-gl::Effect::~Effect()
+gl::OpenGLEffect::~OpenGLEffect()
 {
     glDeleteProgram(handle);
 }
 
-auto gl::Effect::getUniformInfo(const str &name) -> UniformInfo
+auto gl::OpenGLEffect::getUniformInfo(const str &name) -> UniformInfo
 {
     if (uniforms.count(name))
         return uniforms.at(name);
@@ -108,7 +108,7 @@ auto gl::Effect::getUniformInfo(const str &name) -> UniformInfo
     return {};
 }
 
-auto gl::Effect::getAttributeInfo(const str &name) -> AttributeInfo
+auto gl::OpenGLEffect::getAttributeInfo(const str &name) -> AttributeInfo
 {
     if (attributes.count(name))
         return attributes.at(name);
@@ -116,7 +116,7 @@ auto gl::Effect::getAttributeInfo(const str &name) -> AttributeInfo
     return {};
 }
 
-void gl::Effect::introspectUniforms()
+void gl::OpenGLEffect::introspectUniforms()
 {
     GLint activeUniforms;
     glGetProgramiv(handle, GL_ACTIVE_UNIFORMS, &activeUniforms);
@@ -158,7 +158,7 @@ void gl::Effect::introspectUniforms()
     }
 }
 
-void gl::Effect::introspectAttributes()
+void gl::OpenGLEffect::introspectAttributes()
 {
     GLint activeAttributes;
     glGetProgramiv(handle, GL_ACTIVE_ATTRIBUTES, &activeAttributes);

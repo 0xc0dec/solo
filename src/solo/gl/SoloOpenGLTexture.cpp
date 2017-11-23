@@ -134,24 +134,24 @@ static auto toCubeMapFace(CubeTextureFace face) -> GLenum
     }
 }
 
-gl::Texture::Texture()
+gl::OpenGLTexture::OpenGLTexture()
 {
     glGenTextures(1, &handle);
     SL_PANIC_IF(!handle, "Failed to create texture handle");
 }
 
-gl::Texture::~Texture()
+gl::OpenGLTexture::~OpenGLTexture()
 {
     glDeleteTextures(1, &handle);
 }
 
-gl::Texture2d::Texture2d(Texture2dData *data):
-    solo::Texture2d(data)
+gl::OpenGLTexture2d::OpenGLTexture2d(Texture2dData *data):
+    Texture2d(data)
 {
     setData(data->getData());
 }
 
-void gl::Texture2d::bind()
+void gl::OpenGLTexture2d::bind()
 {
     glBindTexture(GL_TEXTURE_2D, handle);
 
@@ -162,7 +162,7 @@ void gl::Texture2d::bind()
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy);
 }
 
-void gl::Texture2d::generateMipmaps()
+void gl::OpenGLTexture2d::generateMipmaps()
 {
     glBindTexture(GL_TEXTURE_2D, handle);
     glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
@@ -170,7 +170,7 @@ void gl::Texture2d::generateMipmaps()
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void gl::Texture2d::setData(const void *data)
+void gl::OpenGLTexture2d::setData(const void *data)
 {
     glBindTexture(GL_TEXTURE_2D, handle);
 
@@ -182,13 +182,13 @@ void gl::Texture2d::setData(const void *data)
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-gl::CubeTexture::CubeTexture(CubeTextureData *data):
-    solo::CubeTexture(data)
+gl::OpenGLCubeTexture::OpenGLCubeTexture(CubeTextureData *data):
+    CubeTexture(data)
 {
     setData(data);
 }
 
-void gl::CubeTexture::bind()
+void gl::OpenGLCubeTexture::bind()
 {
     glBindTexture(GL_TEXTURE_CUBE_MAP, handle);
 
@@ -200,7 +200,7 @@ void gl::CubeTexture::bind()
     glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy);
 }
 
-void gl::CubeTexture::generateMipmaps()
+void gl::OpenGLCubeTexture::generateMipmaps()
 {
     glBindTexture(GL_TEXTURE_CUBE_MAP, handle);
     glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
@@ -208,7 +208,7 @@ void gl::CubeTexture::generateMipmaps()
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
-void gl::CubeTexture::setData(CubeTextureData *data)
+void gl::OpenGLCubeTexture::setData(CubeTextureData *data)
 {
     glBindTexture(GL_TEXTURE_CUBE_MAP, handle);
 

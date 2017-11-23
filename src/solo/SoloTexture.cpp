@@ -167,7 +167,7 @@ sptr<Texture2d> Texture2d::createFromData(Device *device, Texture2dData *data)
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<gl::Texture2d>(data);
+            return std::make_shared<gl::OpenGLTexture2d>(data);
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
@@ -231,7 +231,7 @@ auto CubeTexture::createFromData(Device *device, CubeTextureData *data) -> sptr<
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<gl::CubeTexture>(data);
+            return std::make_shared<gl::OpenGLCubeTexture>(data);
 #endif
         default:
             return std::make_shared<null::CubeTexture>(data);

@@ -16,7 +16,7 @@ namespace solo
 {
     namespace gl
     {
-        class Effect final : public solo::Effect
+        class OpenGLEffect final : public Effect
         {
         public:
             struct UniformInfo
@@ -30,10 +30,10 @@ namespace solo
                 u32 location;
             };
 
-            static auto createFromPrefab(EffectPrefab prefab) -> sptr<Effect>;
+            static auto createFromPrefab(EffectPrefab prefab) -> sptr<OpenGLEffect>;
 
-            Effect(const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen);
-            ~Effect();
+            OpenGLEffect(const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen);
+            ~OpenGLEffect();
 
             auto getHandle() const -> GLuint { return handle; }
 

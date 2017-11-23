@@ -15,11 +15,11 @@ namespace solo
 {
     namespace gl
     {
-        class SDLDevice final : public sdl::Device
+        class SDLOpenGLDevice final : public sdl::Device
         {
         public:
-            explicit SDLDevice(const DeviceSetup &setup);
-            virtual ~SDLDevice();
+            explicit SDLOpenGLDevice(const DeviceSetup &setup);
+            virtual ~SDLOpenGLDevice();
 
             void saveScreenshot(const str &path) override final;
 

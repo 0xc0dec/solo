@@ -13,7 +13,7 @@ namespace solo
 {
     namespace gl
     {
-        struct PrefabShaders
+        struct OpenGLPrefabShaders
         {
             struct Vertex
             {

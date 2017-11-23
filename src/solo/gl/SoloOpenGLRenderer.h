@@ -19,11 +19,11 @@ namespace solo
 
     namespace gl
     {
-        class Renderer final : public solo::Renderer
+        class OpenGLRenderer final : public Renderer
         {
         public:
-            explicit Renderer(Device *device);
-            ~Renderer() {}
+            explicit OpenGLRenderer(Device *device);
+            ~OpenGLRenderer() {}
 
             void addRenderCommand(const RenderCommand &cmd) override final;
 

@@ -164,7 +164,7 @@ static void setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor)
     glBlendFunc(toBlendFactor(srcFactor), toBlendFactor(dstFactor));
 }
 
-gl::Renderer::Renderer(Device *device)
+gl::OpenGLRenderer::OpenGLRenderer(Device *device)
 {
     GLint major, minor;
     glGetIntegerv(GL_MAJOR_VERSION, &major);
@@ -172,7 +172,7 @@ gl::Renderer::Renderer(Device *device)
     device->getLogger()->logInfo(SL_FMT("Running in OpenGL ", major, ".", minor, " mode"));
 }
 
-void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
+void gl::OpenGLRenderer::addRenderCommand(const RenderCommand &cmd)
 {
     RenderStep step;
     step.cmd = cmd;
@@ -189,7 +189,7 @@ void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
             GLuint fb = 0;
             auto target = step.cmd.camera->getRenderTarget();
             if (target)
-                fb = static_cast<FrameBuffer*>(target.get())->getHandle();
+                fb = static_cast<OpenGLFrameBuffer*>(target.get())->getHandle();
 
             step.beginCamera = [=]
             {
@@ -232,7 +232,7 @@ void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
             const auto blend = material->getBlend();
             const auto srcBlendFactor = material->getSrcBlendFactor();
             const auto dstBlendFactor = material->getDstBlendFactor();
-            const auto effect = static_cast<Effect*>(material->getEffect());
+            const auto effect = static_cast<OpenGLEffect*>(material->getEffect());
             const auto program = effect->getHandle();
 
             step.applyMaterialState = [=]
@@ -256,7 +256,7 @@ void gl::Renderer::addRenderCommand(const RenderCommand &cmd)
     renderSteps.push_back(step);
 }
 
-void gl::Renderer::beginFrame()
+void gl::OpenGLRenderer::beginFrame()
 {
     renderSteps.clear();
 }
@@ -266,7 +266,7 @@ void gl::Renderer::beginFrame()
 // TODO Avoid dynamic casts
 // TODO Make it consistent whether ogl classes contain drawing code themselves or only serve as a source of data
 // for the renderer
-void gl::Renderer::endFrame()
+void gl::OpenGLRenderer::endFrame()
 {
     Camera *currentCamera = nullptr;
 
@@ -291,18 +291,18 @@ void gl::Renderer::endFrame()
             case RenderCommandType::DrawMesh:
             {
                 step.applyMaterialState();
-                static_cast<Material*>(step.cmd.mesh.material)->applyParams(currentCamera, step.cmd.mesh.transform);
-                const auto effect = static_cast<Effect*>(step.cmd.mesh.material->getEffect());
-                static_cast<Mesh*>(step.cmd.mesh.mesh)->draw(effect);
+                static_cast<OpenGLMaterial*>(step.cmd.mesh.material)->applyParams(currentCamera, step.cmd.mesh.transform);
+                const auto effect = static_cast<OpenGLEffect*>(step.cmd.mesh.material->getEffect());
+                static_cast<OpenGLMesh*>(step.cmd.mesh.mesh)->draw(effect);
                 break;
             }
 
             case RenderCommandType::DrawMeshPart:
             {
                 step.applyMaterialState();
-                static_cast<Material*>(step.cmd.meshPart.material)->applyParams(currentCamera, step.cmd.meshPart.transform);
-                const auto effect = static_cast<Effect*>(step.cmd.meshPart.material->getEffect());
-                static_cast<Mesh*>(step.cmd.meshPart.mesh)->drawPart(step.cmd.meshPart.part, effect);
+                static_cast<OpenGLMaterial*>(step.cmd.meshPart.material)->applyParams(currentCamera, step.cmd.meshPart.transform);
+                const auto effect = static_cast<OpenGLEffect*>(step.cmd.meshPart.material->getEffect());
+                static_cast<OpenGLMesh*>(step.cmd.meshPart.mesh)->drawPart(step.cmd.meshPart.part, effect);
                 break;
             }
 

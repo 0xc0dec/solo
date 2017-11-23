@@ -18,13 +18,13 @@ namespace solo
 
     namespace gl
     {
-        class Effect;
+        class OpenGLEffect;
 
-        class Mesh final : public solo::Mesh
+        class OpenGLMesh final : public Mesh
         {
         public:
-            Mesh() {}
-            ~Mesh();
+            OpenGLMesh() {}
+            ~OpenGLMesh();
 
             auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override final;
             auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override final;
@@ -38,8 +38,8 @@ namespace solo
             auto getPrimitiveType() const -> PrimitiveType override final;
             void setPrimitiveType(PrimitiveType type) override final;
 
-            void draw(gl::Effect *effect);
-            void drawPart(u32 part, gl::Effect *effect);
+            void draw(OpenGLEffect *effect);
+            void drawPart(u32 part, OpenGLEffect *effect);
 
         private:
             PrimitiveType primitiveType = PrimitiveType::Triangles;
@@ -57,27 +57,27 @@ namespace solo
                 u32 age;
             };
 
-            umap<gl::Effect*, VertexArrayCacheEntry> vertexArrayCache; // TODO clean!
+            umap<OpenGLEffect*, VertexArrayCacheEntry> vertexArrayCache; // TODO clean!
 
             auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount, bool dynamic) -> u32;
 
-            auto getOrCreateVertexArray(gl::Effect *effect) -> GLuint;
+            auto getOrCreateVertexArray(OpenGLEffect *effect) -> GLuint;
             void resetVertexArrayCache();
             void flushVertexArrayCache();
             void updateMinVertexCount();
         };
 
-        inline void Mesh::setPrimitiveType(PrimitiveType type)
+        inline void OpenGLMesh::setPrimitiveType(PrimitiveType type)
         {
             primitiveType = type;
         }
 
-        inline auto Mesh::getPrimitiveType() const -> PrimitiveType
+        inline auto OpenGLMesh::getPrimitiveType() const -> PrimitiveType
         {
             return primitiveType;
         }
 
-        inline auto Mesh::getPartCount() const -> u32
+        inline auto OpenGLMesh::getPartCount() const -> u32
         {
             return static_cast<u32>(indexBuffers.size());
         }

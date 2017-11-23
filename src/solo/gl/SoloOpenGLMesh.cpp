@@ -34,7 +34,7 @@ static auto toPrimitiveType(PrimitiveType type) -> GLenum
     }
 }
 
-gl::Mesh::~Mesh()
+gl::OpenGLMesh::~OpenGLMesh()
 {
     resetVertexArrayCache();
     while (!vertexBuffers.empty())
@@ -43,7 +43,7 @@ gl::Mesh::~Mesh()
         removePart(0);
 }
 
-auto gl::Mesh::getOrCreateVertexArray(gl::Effect *effect) -> GLuint
+auto gl::OpenGLMesh::getOrCreateVertexArray(gl::OpenGLEffect *effect) -> GLuint
 {
     auto &cacheEntry = vertexArrayCache[effect];
     cacheEntry.age = 0;
@@ -94,16 +94,16 @@ auto gl::Mesh::getOrCreateVertexArray(gl::Effect *effect) -> GLuint
     return handle;
 }
 
-void gl::Mesh::resetVertexArrayCache()
+void gl::OpenGLMesh::resetVertexArrayCache()
 {
     for (auto &p: vertexArrayCache)
         glDeleteVertexArrays(1, &p.second.handle);
     vertexArrayCache.clear();
 }
 
-void gl::Mesh::flushVertexArrayCache()
+void gl::OpenGLMesh::flushVertexArrayCache()
 {
-    uset<gl::Effect*> toRemove;
+    uset<gl::OpenGLEffect*> toRemove;
     for (auto &entry: vertexArrayCache)
     {
         if (++entry.second.age >= 1000) // TODO more sophisticated way
@@ -114,7 +114,7 @@ void gl::Mesh::flushVertexArrayCache()
         vertexArrayCache.erase(key);
 }
 
-void gl::Mesh::updateMinVertexCount()
+void gl::OpenGLMesh::updateMinVertexCount()
 {
     constexpr auto max = (std::numeric_limits<u32>::max)();
 
@@ -127,17 +127,17 @@ void gl::Mesh::updateMinVertexCount()
         minVertexCount = 0;
 }
 
-auto gl::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
+auto gl::OpenGLMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
 {
     return addVertexBuffer(layout, data, vertexCount, false);
 }
 
-auto gl::Mesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
+auto gl::OpenGLMesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
 {
     return addVertexBuffer(layout, data, vertexCount, true);
 }
 
-auto gl::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount, bool dynamic) -> u32
+auto gl::OpenGLMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount, bool dynamic) -> u32
 {
     GLuint handle = 0;
     glGenBuffers(1, &handle);
@@ -158,7 +158,7 @@ auto gl::Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *dat
     return static_cast<u32>(vertexBuffers.size() - 1);
 }
 
-void gl::Mesh::updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount)
+void gl::OpenGLMesh::updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount)
 {
     const auto vertexSize = vertexSizes.at(index);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers.at(index));
@@ -166,7 +166,7 @@ void gl::Mesh::updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void gl::Mesh::removeVertexBuffer(u32 index)
+void gl::OpenGLMesh::removeVertexBuffer(u32 index)
 {
     auto handle = vertexBuffers.at(index);
     glDeleteBuffers(1, &handle);
@@ -180,7 +180,7 @@ void gl::Mesh::removeVertexBuffer(u32 index)
     resetVertexArrayCache();
 }
 
-auto gl::Mesh::addPart(const void *data, u32 elementCount) -> u32
+auto gl::OpenGLMesh::addPart(const void *data, u32 elementCount) -> u32
 {
     GLuint handle = 0;
     glGenBuffers(1, &handle);
@@ -196,7 +196,7 @@ auto gl::Mesh::addPart(const void *data, u32 elementCount) -> u32
     return static_cast<u32>(indexBuffers.size() - 1);
 }
 
-void gl::Mesh::removePart(u32 part)
+void gl::OpenGLMesh::removePart(u32 part)
 {
     auto handle = indexBuffers.at(part);
     glDeleteBuffers(1, &handle);
@@ -204,7 +204,7 @@ void gl::Mesh::removePart(u32 part)
     indexElementCounts.erase(indexElementCounts.begin() + part);
 }
 
-void gl::Mesh::draw(gl::Effect *effect)
+void gl::OpenGLMesh::draw(gl::OpenGLEffect *effect)
 {
     const auto va = getOrCreateVertexArray(effect);
     flushVertexArrayCache();
@@ -222,7 +222,7 @@ void gl::Mesh::draw(gl::Effect *effect)
     }
 }
 
-void gl::Mesh::drawPart(u32 part, gl::Effect *effect)
+void gl::OpenGLMesh::drawPart(u32 part, gl::OpenGLEffect *effect)
 {
     const auto va = getOrCreateVertexArray(effect);
     flushVertexArrayCache();
