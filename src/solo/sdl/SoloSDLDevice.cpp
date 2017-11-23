@@ -8,45 +8,45 @@
 
 using namespace solo;
 
-sdl::Device::Device(const DeviceSetup &setup) :
-    solo::Device(setup)
+sdl::SDLDevice::SDLDevice(const DeviceSetup &setup) :
+    Device(setup)
 {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);
 }
 
-sdl::Device::~Device()
+sdl::SDLDevice::~SDLDevice()
 {
     SDL_Quit();
 }
 
-auto sdl::Device::getWindowTitle() const -> str
+auto sdl::SDLDevice::getWindowTitle() const -> str
 {
     return str(SDL_GetWindowTitle(window));
 }
 
-void sdl::Device::setWindowTitle(const str &title)
+void sdl::SDLDevice::setWindowTitle(const str &title)
 {
     SDL_SetWindowTitle(window, title.c_str());
 }
 
-void sdl::Device::setCursorCaptured(bool captured)
+void sdl::SDLDevice::setCursorCaptured(bool captured)
 {
     SDL_SetRelativeMouseMode(captured ? SDL_TRUE : SDL_FALSE);
 }
 
-auto sdl::Device::getLifetime() const -> float
+auto sdl::SDLDevice::getLifetime() const -> float
 {
     return SDL_GetTicks() / 1000.0f;
 }
 
-auto sdl::Device::getCanvasSize() const -> Vector2
+auto sdl::SDLDevice::getCanvasSize() const -> Vector2
 {
     s32 width, height;
     SDL_GL_GetDrawableSize(window, &width, &height);
     return {static_cast<float>(width), static_cast<float>(height)};
 }
 
-void sdl::Device::beginUpdate()
+void sdl::SDLDevice::beginUpdate()
 {
     windowCloseRequested = false;
     quitRequested = false;
@@ -57,7 +57,7 @@ void sdl::Device::beginUpdate()
     updateTime();
 }
 
-void sdl::Device::prepareKeyboardState()
+void sdl::SDLDevice::prepareKeyboardState()
 {
     releasedKeys.clear();
     if (hasKeyboardFocus)
@@ -73,7 +73,7 @@ void sdl::Device::prepareKeyboardState()
     }
 }
 
-void sdl::Device::prepareMouseState()
+void sdl::SDLDevice::prepareMouseState()
 {
     mouseDeltaX = mouseDeltaY = 0;
     releasedMouseButtons.clear();
@@ -90,14 +90,14 @@ void sdl::Device::prepareMouseState()
     }
 }
 
-void sdl::Device::readWindowState()
+void sdl::SDLDevice::readWindowState()
 {
-    auto flags = SDL_GetWindowFlags(window);
+    const auto flags = SDL_GetWindowFlags(window);
     hasKeyboardFocus = (flags & SDL_WINDOW_INPUT_FOCUS) != 0;
     hasMouseFocus = (flags & SDL_WINDOW_MOUSE_FOCUS) != 0;
 }
 
-void sdl::Device::processKeyboardEvent(const SDL_Event &evt)
+void sdl::SDLDevice::processKeyboardEvent(const SDL_Event &evt)
 {
     if (!hasKeyboardFocus)
         return;
@@ -107,8 +107,8 @@ void sdl::Device::processKeyboardEvent(const SDL_Event &evt)
         case SDL_KEYUP:
         case SDL_KEYDOWN:
         {
-            auto it = keymap.find(evt.key.keysym.sym);
-            if (it == keymap.end())
+            auto it = SDLKeyMap.find(evt.key.keysym.sym);
+            if (it == SDLKeyMap.end())
                 break;
             auto code = it->second;
             if (evt.type == SDL_KEYUP)
@@ -128,7 +128,7 @@ void sdl::Device::processKeyboardEvent(const SDL_Event &evt)
     }
 }
 
-void sdl::Device::processMouseEvent(const SDL_Event &evt)
+void sdl::SDLDevice::processMouseEvent(const SDL_Event &evt)
 {
     if (!hasMouseFocus)
         return;
@@ -141,14 +141,14 @@ void sdl::Device::processMouseEvent(const SDL_Event &evt)
             break;
         case SDL_MOUSEBUTTONDOWN:
         {
-            auto button = mouseButtonsMap[evt.button.button];
+            const auto button = SDLMouseButtonsMap.at(evt.button.button);
             pressedMouseButtons[button] = true; // pressed for the first time
             releasedMouseButtons.erase(button);
             break;
         }
         case SDL_MOUSEBUTTONUP:
         {
-            auto button = mouseButtonsMap[evt.button.button];
+            const auto button = SDLMouseButtonsMap.at(evt.button.button);
             if (pressedMouseButtons.find(button) != pressedMouseButtons.end())
             {
                 releasedMouseButtons.insert(button);
@@ -161,7 +161,7 @@ void sdl::Device::processMouseEvent(const SDL_Event &evt)
     }
 }
 
-void sdl::Device::processWindowEvent(const SDL_Event &evt)
+void sdl::SDLDevice::processWindowEvent(const SDL_Event &evt)
 {
     switch (evt.window.event)
     {
@@ -173,7 +173,7 @@ void sdl::Device::processWindowEvent(const SDL_Event &evt)
     }
 }
 
-void sdl::Device::readEvents()
+void sdl::SDLDevice::readEvents()
 {
     static auto firstTime = true;
     SDL_Event evt;

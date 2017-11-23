@@ -16,7 +16,7 @@ namespace solo
 {
     namespace vk
     {
-        class SDLDevice final : public sdl::Device
+        class SDLDevice final : public sdl::SDLDevice
         {
         public:
             explicit SDLDevice(const DeviceSetup &setup);

@@ -12,10 +12,10 @@ namespace solo
 {
     namespace sdl
     {
-        class Device : public solo::Device
+        class SDLDevice : public Device
         {
         public:
-            virtual ~Device();
+            virtual ~SDLDevice();
 
             auto getWindowTitle() const -> str override final;
             void setWindowTitle(const str &title) override final;
@@ -32,7 +32,7 @@ namespace solo
             bool hasMouseFocus = false;
             bool hasKeyboardFocus = false;
 
-            explicit Device(const DeviceSetup &setup);
+            explicit SDLDevice(const DeviceSetup &setup);
 
             void beginUpdate() override final;
 

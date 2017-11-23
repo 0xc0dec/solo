@@ -14,7 +14,7 @@ using namespace solo;
 using namespace gl;
 
 SDLOpenGLDevice::SDLOpenGLDevice(DeviceSetup const &setup):
-    Device(setup)
+    SDLDevice(setup)
 {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, setup.redBits);

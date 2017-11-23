@@ -12,7 +12,7 @@ namespace solo
 {
     namespace sdl
     {
-        static umap<SDL_Keycode, KeyCode> keymap =
+        static const umap<SDL_Keycode, KeyCode> SDLKeyMap =
         {
             {SDLK_0, KeyCode::Digit0},
             {SDLK_1, KeyCode::Digit1},
@@ -74,7 +74,7 @@ namespace solo
             // ...
         };
 
-        static umap<Uint8, MouseButton> mouseButtonsMap =
+        static const umap<Uint8, MouseButton> SDLMouseButtonsMap =
         {
             {SDL_BUTTON_LEFT, MouseButton::Left},
             {SDL_BUTTON_MIDDLE, MouseButton::Middle},

@@ -16,7 +16,7 @@ using namespace solo;
 using namespace vk;
 
 SDLDevice::SDLDevice(const DeviceSetup &setup):
-    Device(setup)
+    SDLDevice(setup)
 {
     auto flags = static_cast<u32>(SDL_WINDOW_ALLOW_HIGHDPI);
     if (setup.fullScreen)
