@@ -276,11 +276,12 @@ auto VulkanImage::createCube(VulkanRenderer *renderer/*, const ImageData &data*/
 
 VulkanImage::VulkanImage(VulkanRenderer *renderer, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format,
     VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask):
+    format(format),
     mipLevels(mipLevels),
     layers(layers),
-    aspectMask(aspectMask),
     width(width),
-    height(height)
+    height(height),
+    aspectMask(aspectMask)
 {
     const auto device = renderer->getDevice();
     auto image = createImage(device, format, width, height, mipLevels, layers, createFlags, usageFlags);

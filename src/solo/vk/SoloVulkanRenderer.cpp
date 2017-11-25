@@ -296,8 +296,13 @@ void VulkanRenderer::recordRenderCommands(VkCommandBuffer buf, VulkanRenderPass 
                     for (auto &pair : materialSamplers)
                     {
                         auto &info = pair.second;
-                        updater.forTexture(info.binding, binding.descSet, info.texture->getView(), info.texture->getSampler(),
-                            VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+                        updater.forTexture(
+                            info.binding,
+                            binding.descSet,
+                            info.texture->getImage().getView(),
+                            info.texture->getImage().getSampler(),
+                            VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
+                        );
                     }
 
                     updater.updateSets();

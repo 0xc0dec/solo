@@ -123,7 +123,7 @@ VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *devi
     for (u32 i = 0; i < images.size(); i++)
     {
         auto view = vk::createImageView(this->device, colorFormat, VK_IMAGE_VIEW_TYPE_2D, 1, 1, images[i], VK_IMAGE_ASPECT_COLOR_BIT);
-        steps[i].framebuffer = vk::createFrameBuffer(this->device, view, depthStencil.getView(), renderPass, width, height);
+        steps[i].framebuffer = vk::createFrameBuffer(this->device, {view, depthStencil.getView()}, renderPass, width, height);
         steps[i].image = images[i];
         steps[i].imageView = std::move(view);
         steps[i].cmdBuffer = vk::createCommandBuffer(this->device, renderer->getCommandPool());

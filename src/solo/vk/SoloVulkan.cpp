@@ -78,11 +78,9 @@ auto vk::findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryPro
     return -1;
 }
 
-auto vk::createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImageView depthAttachment,
+auto vk::createFrameBuffer(VkDevice device, const vec<VkImageView> &attachments,
     VkRenderPass renderPass, u32 width, u32 height) -> VulkanResource<VkFramebuffer>
 {
-    arr<VkImageView, 2> attachments = {colorAttachment, depthAttachment};
-
     VkFramebufferCreateInfo createInfo{};
     createInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
     createInfo.pNext = nullptr;

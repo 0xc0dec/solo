@@ -184,6 +184,9 @@
     <ClInclude Include="..\src\solo\vk\SoloVulkanSDLDevice.h">
       <Filter>vk</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\vk\SoloVulkanFrameBuffer.h">
+      <Filter>vk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp">
@@ -349,6 +352,9 @@
       <Filter>stb</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\vk\SoloVulkanSDLDevice.cpp">
+      <Filter>vk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\vk\SoloVulkanFrameBuffer.cpp">
       <Filter>vk</Filter>
     </ClCompile>
   </ItemGroup>

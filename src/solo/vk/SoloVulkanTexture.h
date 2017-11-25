@@ -19,9 +19,7 @@ namespace solo
     class VulkanTexture
     {
     public:
-        auto getImage() const -> VkImageLayout { return image.getLayout(); }
-        auto getView() const -> VkImageView { return image.getView(); }
-        auto getSampler() const -> VkSampler { return image.getSampler(); }
+        auto getImage() const -> VulkanImage const& { return image; }
 
     protected:
         VulkanImage image;

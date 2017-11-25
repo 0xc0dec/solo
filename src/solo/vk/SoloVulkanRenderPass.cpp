@@ -90,7 +90,8 @@ VulkanRenderPassConfig::VulkanRenderPassConfig():
 {
 }
 
-auto VulkanRenderPassConfig::withColorAttachment(VkFormat colorFormat, VkImageLayout finalLayout, bool clear, VkClearColorValue clearValue) -> VulkanRenderPassConfig&
+auto VulkanRenderPassConfig::withColorAttachment(VkFormat colorFormat, VkImageLayout finalLayout, bool clear, VkClearColorValue clearValue)
+    -> VulkanRenderPassConfig&
 {
     VkAttachmentDescription desc{};
     desc.format = colorFormat;

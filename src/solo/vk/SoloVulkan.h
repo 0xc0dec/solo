@@ -36,7 +36,7 @@ namespace solo
             u32 commandBufferCount, const VkCommandBuffer *commandBuffers);
         auto findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, u32 typeBits,
             VkMemoryPropertyFlags properties) -> s32;
-        auto createFrameBuffer(VkDevice device, VkImageView colorAttachment, VkImageView depthAttachment,
+        auto createFrameBuffer(VkDevice device, const vec<VkImageView> &attachments,
             VkRenderPass renderPass, u32 width, u32 height) -> VulkanResource<VkFramebuffer>;
         auto createShader(VkDevice device, const void *data, u32 size) -> VulkanResource<VkShaderModule>;
         auto createShaderStageInfo(bool vertex, VkShaderModule shader, const s8 *entryPoint) -> VkPipelineShaderStageCreateInfo;

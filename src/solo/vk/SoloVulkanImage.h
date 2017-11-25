@@ -32,6 +32,7 @@ namespace solo
         auto operator=(const VulkanImage &other) -> VulkanImage& = delete;
         auto operator=(VulkanImage &&other) -> VulkanImage& = default;
 
+        auto getFormat() const -> VkFormat { return format;  }
         auto getSize() const -> Vector2 { return {static_cast<float>(width), static_cast<float>(height)}; }
         auto getLayout() const -> VkImageLayout { return layout; }
         auto getSampler() const -> VkSampler { return sampler; }
@@ -43,6 +44,7 @@ namespace solo
         VulkanResource<VkImageView> view;
         VulkanResource<VkSampler> sampler;
         VkImageLayout layout = VK_IMAGE_LAYOUT_UNDEFINED;
+        VkFormat format = VK_FORMAT_UNDEFINED;
         u32 mipLevels = 0;
         u32 layers = 0;
         u32 width = 0;
