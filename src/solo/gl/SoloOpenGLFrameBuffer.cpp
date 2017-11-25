@@ -24,7 +24,7 @@ OpenGLFrameBuffer::~OpenGLFrameBuffer()
     glDeleteFramebuffers(1, &handle);
 }
 
-static void validateNewAttachments(const vec<sptr<solo::Texture2d>> &attachments)
+static void validateNewAttachments(const vec<sptr<Texture2d>> &attachments)
 {
     SL_PANIC_IF(attachments.size() > GL_MAX_COLOR_ATTACHMENTS, "Too many attachments");
 
@@ -42,13 +42,13 @@ static void validateNewAttachments(const vec<sptr<solo::Texture2d>> &attachments
     }
 }
 
-void OpenGLFrameBuffer::setAttachments(const vec<sptr<solo::Texture2d>> &attachments)
+void OpenGLFrameBuffer::setAttachments(const vec<sptr<Texture2d>> &attachments)
 {
     SL_PANIC_BLOCK(validateNewAttachments(attachments));
 
-    vec<OpenGLTexture2d*> newAttachments;
+    vec<sptr<OpenGLTexture2d>> newAttachments;
     for (const auto &tex : attachments)
-        newAttachments.push_back(dynamic_cast<OpenGLTexture2d*>(tex.get()));
+        newAttachments.push_back(std::static_pointer_cast<OpenGLTexture2d>(tex));
 
     glBindFramebuffer(GL_FRAMEBUFFER, handle);
 
@@ -59,7 +59,7 @@ void OpenGLFrameBuffer::setAttachments(const vec<sptr<solo::Texture2d>> &attachm
     }
 
     const auto newCount = newAttachments.size();
-    const auto maxCount = std::max(newCount, static_cast<size_t>(attachmentCount));
+    const auto maxCount = std::max(newCount, static_cast<size_t>(this->attachments.size()));
     for (auto i = 0; i < maxCount; i++)
     {
         const auto handle = i < newCount ? newAttachments.at(i)->getHandle() : 0;
@@ -67,7 +67,6 @@ void OpenGLFrameBuffer::setAttachments(const vec<sptr<solo::Texture2d>> &attachm
     }
 
     dimensions = {0, 0};
-    attachmentCount = newCount;
 
     if (newCount > 0)
     {
@@ -85,6 +84,8 @@ void OpenGLFrameBuffer::setAttachments(const vec<sptr<solo::Texture2d>> &attachm
     }
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    this->attachments = newAttachments; // Store ownership
 }
 
 #endif

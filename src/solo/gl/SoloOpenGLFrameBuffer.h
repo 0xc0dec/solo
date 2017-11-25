@@ -30,7 +30,7 @@ namespace solo
     private:
         GLuint handle = 0;
         GLuint depthBufferHandle = 0;
-        u32 attachmentCount = 0;
+        vec<sptr<OpenGLTexture2d>> attachments;
     };
 }
 
