@@ -80,7 +80,7 @@ namespace solo
         // TODO clear this when bindings get no longer used
         umap<const Material*, umap<const Transform*, umap<const Camera*, NodeBinding>>> nodeMaterialBindings;
 
-        void recordRenderCommands(VkCommandBuffer buf, VulkanRenderPass &renderPass, VkFramebuffer frameBuffer);
+        void crappyName();
     };
 }
 

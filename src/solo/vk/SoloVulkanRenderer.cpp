@@ -198,18 +198,21 @@ void VulkanRenderer::beginFrame()
 
 void VulkanRenderer::endFrame()
 {
-    swapchain.recordCommandBuffers([&](VkFramebuffer fb, VkCommandBuffer buf)
-    {
-        recordRenderCommands(buf, swapchain.getRenderPass(), fb);
-    });
+    crappyName();
 
-    auto presentCompleteSem = swapchain.acquireNext();
-    swapchain.presentNext(queue, 1, &presentCompleteSem);
+    auto presentCompleteSem = swapchain.acquire();
+    swapchain.submitAndPresent(queue, 1, &presentCompleteSem);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 }
 
-void VulkanRenderer::recordRenderCommands(VkCommandBuffer buf, VulkanRenderPass &renderPass, VkFramebuffer frameBuffer)
+void VulkanRenderer::crappyName()
 {
+    const auto buf = swapchain.getCurrentCmdBuffer();
+    const auto frameBuffer = swapchain.getCurrentFrameBuffer();
+    auto &renderPass = swapchain.getRenderPass();
+    
+    vk::beginCommandBuffer(buf, false);
+
     const auto canvasSize = engineDevice->getCanvasSize();
     renderPass.begin(buf, frameBuffer, canvasSize.x, canvasSize.y);
 
@@ -350,6 +353,7 @@ void VulkanRenderer::recordRenderCommands(VkCommandBuffer buf, VulkanRenderPass 
     }
 
     renderPass.end(buf);
+    SL_VK_CHECK_RESULT(vkEndCommandBuffer(buf));
 }
 
 #endif
