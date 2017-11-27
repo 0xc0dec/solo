@@ -3,7 +3,7 @@
     MIT license
 */
 
-#include "SoloSDLOpenGLDevice.h"
+#include "SoloOpenGLSDLDevice.h"
 
 #ifdef SL_OPENGL_RENDERER
 
@@ -12,7 +12,7 @@
 
 using namespace solo;
 
-SDLOpenGLDevice::SDLOpenGLDevice(DeviceSetup const &setup):
+OpenGLSDLDevice::OpenGLSDLDevice(DeviceSetup const &setup):
     SDLDevice(setup)
 {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -39,13 +39,13 @@ SDLOpenGLDevice::SDLOpenGLDevice(DeviceSetup const &setup):
     SDL_GL_SetSwapInterval(1);
 }
 
-SDLOpenGLDevice::~SDLOpenGLDevice()
+OpenGLSDLDevice::~OpenGLSDLDevice()
 {
     cleanupSubsystems();
     cleanup();
 }
 
-void SDLOpenGLDevice::cleanup()
+void OpenGLSDLDevice::cleanup()
 {
     if (context)
     {
@@ -60,12 +60,12 @@ void SDLOpenGLDevice::cleanup()
     SDL_Quit();
 }
 
-void SDLOpenGLDevice::endUpdate()
+void OpenGLSDLDevice::endUpdate()
 {
     SDL_GL_SwapWindow(window);
 }
 
-void SDLOpenGLDevice::saveScreenshot(const str &path)
+void OpenGLSDLDevice::saveScreenshot(const str &path)
 {
     s32 width, height;
     SDL_GetWindowSize(window, &width, &height);

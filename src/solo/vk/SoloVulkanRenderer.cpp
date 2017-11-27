@@ -194,7 +194,6 @@ void VulkanRenderer::beginFrame()
     renderCommands.reserve(100); // TODO just picked random constant
 
     pipelines.clear();
-    pipelines.reserve(100);
 }
 
 void VulkanRenderer::endFrame()

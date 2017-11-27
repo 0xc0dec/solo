@@ -24,7 +24,7 @@
     <ClInclude Include="..\src\solo\gl\SoloOpenGLPrefabShaders.h" />
     <ClInclude Include="..\src\solo\gl\SoloOpenGLRenderer.h" />
     <ClInclude Include="..\src\solo\gl\SoloOpenGLTexture.h" />
-    <ClInclude Include="..\src\solo\gl\SoloSDLOpenGLDevice.h" />
+    <ClInclude Include="..\src\solo\gl\SoloOpenGLSDLDevice.h" />
     <ClInclude Include="..\src\solo\lua\SoloLuaCommon.h" />
     <ClInclude Include="..\src\solo\lua\SoloLuaScriptComponent.h" />
     <ClInclude Include="..\src\solo\lua\SoloLuaScriptRuntime.h" />
@@ -115,7 +115,7 @@
     <ClCompile Include="..\src\solo\gl\SoloOpenGLPrefabShaders.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLRenderer.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLTexture.cpp" />
-    <ClCompile Include="..\src\solo\gl\SoloSDLOpenGLDevice.cpp" />
+    <ClCompile Include="..\src\solo\gl\SoloOpenGLSDLDevice.cpp" />
     <ClCompile Include="..\src\solo\lua\SoloLuaCameraApi.cpp" />
     <ClCompile Include="..\src\solo\lua\SoloLuaDeviceApi.cpp" />
     <ClCompile Include="..\src\solo\lua\SoloLuaEnumsApi.cpp" />

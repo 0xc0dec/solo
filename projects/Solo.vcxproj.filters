@@ -40,9 +40,6 @@
     <ClInclude Include="..\src\solo\gl\SoloOpenGLTexture.h">
       <Filter>gl</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\gl\SoloSDLOpenGLDevice.h">
-      <Filter>gl</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\solo\lua\SoloLuaCommon.h">
       <Filter>lua</Filter>
     </ClInclude>
@@ -187,6 +184,9 @@
     <ClInclude Include="..\src\solo\vk\SoloVulkanFrameBuffer.h">
       <Filter>vk</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\gl\SoloOpenGLSDLDevice.h">
+      <Filter>gl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp">
@@ -217,9 +217,6 @@
       <Filter>gl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\gl\SoloOpenGLTexture.cpp">
-      <Filter>gl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\gl\SoloSDLOpenGLDevice.cpp">
       <Filter>gl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\lua\SoloLuaCameraApi.cpp">
@@ -356,6 +353,9 @@
     </ClCompile>
     <ClCompile Include="..\src\solo\vk\SoloVulkanFrameBuffer.cpp">
       <Filter>vk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\gl\SoloOpenGLSDLDevice.cpp">
+      <Filter>gl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -5,14 +5,13 @@
 
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
-#include "SoloScene.h"
 #include "SoloLogger.h"
 #include "SoloRenderer.h"
 #include "SoloPhysics.h"
 #include "SoloScriptRuntime.h"
 #include "SoloJobPool.h"
 #include "null/SoloNullDevice.h"
-#include "gl/SoloSDLOpenGLDevice.h"
+#include "gl/SoloOpenGLSDLDevice.h"
 #include "vk/SoloVulkanSDLDevice.h"
 
 using namespace solo;
@@ -25,7 +24,7 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device>
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            device = std::make_unique<SDLOpenGLDevice>(setup);
+            device = std::make_unique<OpenGLSDLDevice>(setup);
             break;
 #endif
 #ifdef SL_VULKAN_RENDERER
