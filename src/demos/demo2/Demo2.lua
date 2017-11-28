@@ -33,6 +33,32 @@ function createMaterial()
     return material
 end
 
+function createOffscreenCamera()
+    local canvasSize = dev:getCanvasSize()
+
+    local tex = sl.Texture2d.createEmpty(
+        dev,
+        math.floor(canvasSize.x / 8.0), math.floor(canvasSize.y / 8.0),
+        sl.TextureFormat.RGBA
+    )
+    tex:setFiltering(sl.TextureFiltering.Nearest)
+    tex:setWrapping(sl.TextureWrapping.Clamp)
+
+    local node = scene:createNode()
+    node:findComponent("Transform"):setLocalPosition(vec3(5, 5, 5))
+
+    local cam = node:addComponent("Camera")
+    cam:setClearColor(vec4(1, 0, 1, 1))
+    cam:setNear(0.05)
+    cam:setViewport(vec4(0, 0, canvasSize.x / 8, canvasSize.y / 8))
+
+    local fb = sl.FrameBuffer.create(dev)
+    fb:setAttachments({ tex })
+    cam:setRenderTarget(fb)
+
+    return cam
+end
+
 function createCustomMesh(material, position)
     local mesh = sl.Mesh.create(dev)
 
@@ -108,6 +134,8 @@ local cameraTransform = cameraNode:findComponent("Transform")
 cameraTransform:setLocalPosition(vec3(5, 6, 7))
 cameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
+local offscreenCamera = createOffscreenCamera()
+
 createCustomMesh(material, vec3(-2, 0, 0))
 createMesh(material, vec3(2, 0, 0))
 
@@ -135,6 +163,10 @@ function update()
 end
 
 function render()
+    offscreenCamera:renderFrame(function(ctx)
+        scene:visit(function(cmp) cmp:render(ctx) end)
+    end)
+
     camera:renderFrame(function(ctx)
         scene:visit(function(cmp) cmp:render(ctx) end)
     end)

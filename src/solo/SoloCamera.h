@@ -28,43 +28,43 @@ namespace solo
         static auto create(const Node &node) -> sptr<Camera>;
 
         void init() override final;
-        void terminate() override final;
+        void terminate() override final { transform->removeCallback(this); }
 
         void renderFrame(std::function<void()> render);
 
-        auto getTransform() const -> Transform*;
+        auto getTransform() const -> Transform* { return transform; }
 
-        auto getRenderTarget() const -> sptr<FrameBuffer>;
-        void setRenderTarget(sptr<FrameBuffer> target);
+        auto getRenderTarget() const -> sptr<FrameBuffer> { return renderTarget; }
+        void setRenderTarget(sptr<FrameBuffer> target) { renderTarget = target; }
 
-        auto getClearColor() const -> Vector4;
-        void setClearColor(const Vector4 &color);
+        auto getClearColor() const -> Vector4 { return clearColor; }
+        void setClearColor(const Vector4 &color) { clearColor = color; }
 
-        bool isClearColorEnabled() const;
-        void setClearColorEnabled(bool clear);
+        bool isClearColorEnabled() const { return clearFlags.color; }
+        void setClearColorEnabled(bool clear) { this->clearFlags.color = clear; }
 
-        bool isClearDepthEnabled() const;
-        void setClearDepthEnabled(bool clear);
+        bool isClearDepthEnabled() const { return clearFlags.depth; }
+        void setClearDepthEnabled(bool clear) { this->clearFlags.depth = clear; }
 
-        auto getViewport() const -> Vector4;
-        void setViewport(const Vector4 &rect);
+        auto getViewport() const -> Vector4 { return viewport; }
+        void setViewport(const Vector4 &rect) { viewport = rect; }
 
-        bool isPerspective() const;
+        bool isPerspective() const { return !ortho; }
         void setPerspective(bool perspective);
 
-        auto getNear() const -> float;
+        auto getNear() const -> float { return nearClip; }
         void setNear(float near);
 
-        auto getFar() const -> float;
+        auto getFar() const -> float { return farClip; }
         void setFar(float far);
 
-        auto getFOV() const -> Radian;
+        auto getFOV() const -> Radian { return fov; }
         void setFOV(const Radian &fov);
 
-        auto getOrthoSize() const -> Vector2;
+        auto getOrthoSize() const -> Vector2 { return orthoSize; }
         void setOrthoSize(const Vector2 &size);
 
-        auto getAspectRatio() const -> float;
+        auto getAspectRatio() const -> float { return aspectRatio; }
         void setAspectRatio(float ratio);
 
         auto getViewMatrix() const -> const Matrix;
@@ -108,99 +108,9 @@ namespace solo
         void onTransformChanged(const Transform *) override;
     };
 
-    inline void Camera::setClearColor(const Vector4 &color)
-    {
-        clearColor = color;
-    }
-
-    inline bool Camera::isPerspective() const
-    {
-        return !ortho;
-    }
-
-    inline auto Camera::getNear() const -> float
-    {
-        return nearClip;
-    }
-
-    inline auto Camera::getFar() const -> float
-    {
-        return farClip;
-    }
-
-    inline auto Camera::getFOV() const -> Radian
-    {
-        return fov;
-    }
-
-    inline auto Camera::getOrthoSize() const -> Vector2
-    {
-        return orthoSize;
-    }
-
-    inline auto Camera::getAspectRatio() const -> float
-    {
-        return aspectRatio;
-    }
-
-    inline void Camera::setRenderTarget(sptr<FrameBuffer> target)
-    {
-        renderTarget = target;
-    }
-
-    inline auto Camera::getClearColor() const -> Vector4
-    {
-        return clearColor;
-    }
-
-    inline auto Camera::getRenderTarget() const -> sptr<FrameBuffer>
-    {
-        return renderTarget;
-    }
-
-    inline void Camera::terminate()
-    {
-        transform->removeCallback(this);
-    }
-
-    inline auto Camera::getViewport() const -> Vector4
-    {
-        return viewport;
-    }
-
-    inline void Camera::setViewport(const Vector4 &rect)
-    {
-        viewport = rect;
-    }
-
-    inline auto Camera::getTransform() const -> Transform*
-    {
-        return transform;
-    }
-
-    inline bool Camera::isClearColorEnabled() const
-    {
-        return clearFlags.color;
-    }
-
-    inline void Camera::setClearColorEnabled(bool clear)
-    {
-        this->clearFlags.color = clear;
-    }
-
-    inline bool Camera::isClearDepthEnabled() const
-    {
-        return clearFlags.depth;
-    }
-
-    inline void Camera::setClearDepthEnabled(bool clear)
-    {
-        this->clearFlags.depth = clear;
-    }
-
     template <>
     template <class... Args>
-    auto NodeHelper<Camera>::addComponent(Scene *scene, u32 nodeId, Args &&... args) -> Camera *
+    auto NodeHelper<Camera>::addComponent(Scene *scene, u32 nodeId, Args &&... args) -> Camera*
     {
         auto body = std::shared_ptr<Camera>(Camera::create(Node(scene, nodeId), std::forward<Args>(args)...));
         scene->addComponent(nodeId, body);

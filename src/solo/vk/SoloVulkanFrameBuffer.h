@@ -15,16 +15,15 @@
 
 namespace solo
 {
-    class VulkanRenderer;
-
     class VulkanFrameBuffer final: public FrameBuffer
     {
     public:
-        VulkanFrameBuffer(VulkanRenderer *renderer);
+        VulkanFrameBuffer(Device *device);
         ~VulkanFrameBuffer();
 
         void setAttachments(const vec<sptr<Texture2d>> &attachments) override final;
 
+        auto getHandle() const -> VkFramebuffer { return frameBuffer; }
         auto getRenderPass() -> VulkanRenderPass& { return renderPass; }
 
     private:

@@ -8,6 +8,7 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloDevice.h"
+#include "SoloVulkanFrameBuffer.h"
 #include "SoloVulkanSDLDevice.h"
 #include "SoloVulkanMaterial.h"
 #include "SoloVulkanMesh.h"
@@ -207,15 +208,17 @@ void VulkanRenderer::endFrame()
 
 void VulkanRenderer::crappyName()
 {
-    const auto buf = swapchain.getCurrentCmdBuffer();
-    const auto frameBuffer = swapchain.getCurrentFrameBuffer();
-    auto &renderPass = swapchain.getRenderPass();
-    
-    vk::beginCommandBuffer(buf, false);
-
     const auto canvasSize = engineDevice->getCanvasSize();
-    renderPass.begin(buf, frameBuffer, canvasSize.x, canvasSize.y);
+    
+    const auto swapchainCmdBuf = swapchain.getCurrentCmdBuffer();
+    vk::beginCommandBuffer(swapchainCmdBuf, false);
 
+    const auto swapchainFrameBuffer = swapchain.getCurrentFrameBuffer();
+    auto &swapchainRenderPass = swapchain.getRenderPass();
+    swapchainRenderPass.begin(swapchainCmdBuf, swapchainFrameBuffer, canvasSize.x, canvasSize.y);
+
+    VkRenderPass currentRenderPass = swapchainRenderPass;
+    VkCommandBuffer currentCmdBuf = swapchainCmdBuf;
     const Camera *currentCamera = nullptr;
 
     for (const auto &cmd : renderCommands)
@@ -226,19 +229,47 @@ void VulkanRenderer::crappyName()
             {
                 currentCamera = cmd.camera;
 
+                const auto renderTarget = currentCamera->getRenderTarget();
+                if (renderTarget)
+                {
+                    const auto targetFrameBuffer = std::static_pointer_cast<VulkanFrameBuffer>(renderTarget);
+                    const auto fbSize = targetFrameBuffer->getDimensions();
+                    
+                    const auto cmdBuf = vk::createCommandBuffer(device, commandPool);
+                    vk::beginCommandBuffer(cmdBuf, false);
+                    currentCmdBuf = cmdBuf;
+
+                    auto &renderPass = targetFrameBuffer->getRenderPass();
+                    renderPass.begin(currentCmdBuf, targetFrameBuffer->getHandle(), fbSize.x, fbSize.y);
+                    currentRenderPass = renderPass;
+                }
+
                 const auto camViewport = cmd.camera->getViewport();
                 VkViewport vp{camViewport.x, camViewport.y, camViewport.z, camViewport.w, 0, 1};
-                vkCmdSetViewport(buf, 0, 1, &vp);
+                vkCmdSetViewport(currentCmdBuf, 0, 1, &vp);
 
                 VkRect2D scissor{{0, 0}, {vp.width, vp.height}}; // TODO proper values
-                vkCmdSetScissor(buf, 0, 1, &scissor);
+                vkCmdSetScissor(currentCmdBuf, 0, 1, &scissor);
 
                 break;
             }
 
             case RenderCommandType::EndCamera:
+            {
+                const auto renderTarget = currentCamera->getRenderTarget();
+                if (renderTarget)
+                {
+                    const auto targetFrameBuffer = std::static_pointer_cast<VulkanFrameBuffer>(renderTarget);
+                    targetFrameBuffer->getRenderPass().end(currentCmdBuf);
+                    SL_VK_CHECK_RESULT(vkEndCommandBuffer(currentCmdBuf));
+                    currentCmdBuf = swapchainCmdBuf;
+                    currentRenderPass = swapchainRenderPass;
+                }
+                
                 currentCamera = nullptr;
+                
                 break;
+            }
 
             case RenderCommandType::DrawMesh:
             {
@@ -328,21 +359,21 @@ void VulkanRenderer::crappyName()
                 for (s32 i = 0; i < mesh->getVertexBufferCount(); i++)
                     pipelineConfig.withVertexBufferLayout(i, mesh->getVertexBufferLayout(i));
 
-                pipelines.emplace_back(device, renderPass, pipelineConfig);
+                pipelines.emplace_back(device, currentRenderPass, pipelineConfig);
 
-                vkCmdBindPipeline(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipelines.rbegin());
-                vkCmdBindDescriptorSets(buf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelines.rbegin()->getLayout(), 0, 1, &binding.descSet, 0, nullptr);
+                vkCmdBindPipeline(currentCmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipelines.rbegin());
+                vkCmdBindDescriptorSets(currentCmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelines.rbegin()->getLayout(), 0, 1, &binding.descSet, 0, nullptr);
 
                 VkDeviceSize vertexBufferOffset = 0;
                 for (u32 i = 0; i < mesh->getVertexBufferCount(); i++)
                 {
                     auto vertexBuffer = mesh->getVertexBuffer(i);
-                    vkCmdBindVertexBuffers(buf, i, 1, &vertexBuffer, &vertexBufferOffset);
+                    vkCmdBindVertexBuffers(currentCmdBuf, i, 1, &vertexBuffer, &vertexBufferOffset);
                 }
 
                 const auto indexBuffer = mesh->getPartBuffer(cmd.meshPart.part);
-                vkCmdBindIndexBuffer(buf, indexBuffer, 0, VK_INDEX_TYPE_UINT16);
-                vkCmdDrawIndexed(buf, mesh->getPartIndexElementCount(cmd.meshPart.part), 1, 0, 0, 0);
+                vkCmdBindIndexBuffer(currentCmdBuf, indexBuffer, 0, VK_INDEX_TYPE_UINT16);
+                vkCmdDrawIndexed(currentCmdBuf, mesh->getPartIndexElementCount(cmd.meshPart.part), 1, 0, 0, 0);
 
                 break;
             }
@@ -352,8 +383,8 @@ void VulkanRenderer::crappyName()
         }
     }
 
-    renderPass.end(buf);
-    SL_VK_CHECK_RESULT(vkEndCommandBuffer(buf));
+    swapchainRenderPass.end(swapchainCmdBuf);
+    SL_VK_CHECK_RESULT(vkEndCommandBuffer(swapchainCmdBuf));
 }
 
 #endif

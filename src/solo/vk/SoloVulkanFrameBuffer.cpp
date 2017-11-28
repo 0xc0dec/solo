@@ -7,6 +7,7 @@
 
 #ifdef SL_VULKAN_RENDERER
 
+#include "SoloDevice.h"
 #include "SoloVulkanRenderer.h"
 #include "SoloVulkanTexture.h"
 
@@ -29,8 +30,8 @@ static void validateNewAttachments(const vec<sptr<Texture2d>> &attachments)
     }
 }
 
-VulkanFrameBuffer::VulkanFrameBuffer(VulkanRenderer *renderer):
-    renderer(renderer)
+VulkanFrameBuffer::VulkanFrameBuffer(Device *device):
+    renderer(static_cast<VulkanRenderer*>(device->getRenderer()))
 {
 }
 
@@ -49,6 +50,7 @@ void VulkanFrameBuffer::setAttachments(const vec<sptr<Texture2d>> &attachments)
             frameBuffer.cleanRef();
         renderPass = VulkanRenderPass();
         depthStencil = VulkanImage();
+        dimensions = {0, 0};
         return;
     }
 
@@ -57,15 +59,15 @@ void VulkanFrameBuffer::setAttachments(const vec<sptr<Texture2d>> &attachments)
     for (const auto tex: attachments)
     {
         const auto vulkanTexture = std::static_pointer_cast<VulkanTexture2d>(tex);
-        config.withColorAttachment(vulkanTexture->getImage().getFormat(), VK_IMAGE_LAYOUT_GENERAL, true, {0, 0, 0, 1}); // TODO Proper layout
+        config.withColorAttachment(vulkanTexture->getImage().getFormat(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, true, {0, 0, 0, 1}); // TODO Proper layout
         attachmentViews.push_back(vulkanTexture->getImage().getView());
     }
 
-    const auto size = attachments[0]->getDimensions();
+    dimensions = attachments[0]->getDimensions();
     
     depthStencil = VulkanImage(
         renderer,
-        size.x, size.y,
+        dimensions.x, dimensions.y,
         1, 1,
         renderer->getDepthFormat(),
         0,
@@ -77,7 +79,7 @@ void VulkanFrameBuffer::setAttachments(const vec<sptr<Texture2d>> &attachments)
     attachmentViews.push_back(depthStencil.getView());
     
     renderPass = VulkanRenderPass(renderer->getDevice(), config);
-    frameBuffer = vk::createFrameBuffer(renderer->getDevice(), attachmentViews, renderPass, size.x, size.y);
+    frameBuffer = vk::createFrameBuffer(renderer->getDevice(), attachmentViews, renderPass, dimensions.x, dimensions.y);
 }
 
 #endif

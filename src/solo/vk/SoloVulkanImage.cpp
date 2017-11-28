@@ -18,6 +18,7 @@ static auto toVulkanFormat(TextureFormat format) -> VkFormat
 {
     switch (format)
     {
+        case TextureFormat::RGB:
         case TextureFormat::RGBA: return VK_FORMAT_R8G8B8A8_UNORM; // since my driver seems not liking 24-bit
         case TextureFormat::Red: return VK_FORMAT_R8_UNORM;
         default:
@@ -172,6 +173,7 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
     return memory;
 }
 
+// TODO Refactor this crap
 auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data) -> VulkanImage
 {
     const auto mipLevels = data->getMipLevels();
@@ -213,37 +215,50 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data) -> Vul
 	subresourceRange.levelCount = mipLevels;
 	subresourceRange.layerCount = image.layers;
 
-    auto srcBuf = VulkanBuffer::createStaging(renderer, data->getSize(), data->getData());
-
     auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
     vk::beginCommandBuffer(cmdBuf, true);
 
-    setImageLayout(
-        cmdBuf,
-        image.image,
-        VK_IMAGE_LAYOUT_UNDEFINED,
-        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-        subresourceRange,
-        VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-        VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+    const auto size = data->getSize();
+    if (size)
+    {
+        auto srcBuf = VulkanBuffer::createStaging(renderer, data->getSize(), data->getData());
+        setImageLayout(
+            cmdBuf,
+            image.image,
+            VK_IMAGE_LAYOUT_UNDEFINED,
+            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+            subresourceRange,
+            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
 
-    vkCmdCopyBufferToImage(
-        cmdBuf,
-        srcBuf,
-        image.image,
-        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-        copyRegions.size(),
-        copyRegions.data());
+        vkCmdCopyBufferToImage(
+            cmdBuf,
+            srcBuf,
+            image.image,
+            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+            copyRegions.size(),
+            copyRegions.data());
 
-    const auto imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-    setImageLayout(
-        cmdBuf,
-        image.image,
-        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-        imageLayout,
-        subresourceRange,
-        VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-        VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+        setImageLayout(
+            cmdBuf,
+            image.image,
+            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+            VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+            subresourceRange,
+            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+    }
+    else
+    {
+        setImageLayout(
+            cmdBuf,
+            image.image,
+            VK_IMAGE_LAYOUT_UNDEFINED,
+            VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+            subresourceRange,
+            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+    }
 
     vkEndCommandBuffer(cmdBuf);
 
