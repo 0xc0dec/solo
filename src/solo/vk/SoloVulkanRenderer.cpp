@@ -197,19 +197,139 @@ void VulkanRenderer::beginFrame()
     pipelines.clear();
 }
 
-void VulkanRenderer::endFrame()
+void VulkanRenderer::drawMeshPart(Material *mat, Transform *transform, Mesh *m, const Camera *currentCamera,
+    u32 part, VkCommandBuffer cmdBuf, VkRenderPass renderPass)
 {
-    crappyName();
+    const auto material = static_cast<VulkanMaterial*>(mat);
+    const auto effect = static_cast<VulkanEffect*>(material->getEffect());
+    const auto mesh = static_cast<VulkanMesh*>(m);
+    const auto vs = effect->getVertexShader();
+    const auto fs = effect->getFragmentShader();
+    const auto &uniformBufs = effect->getUniformBuffers();
+    const auto &effectSamplers = effect->getSamplers();
+    const auto &materialSamplers = material->getSamplers();
+    auto &binding = nodeMaterialBindings[material][transform][currentCamera];
 
-    auto presentCompleteSem = swapchain.acquire();
-    swapchain.submitAndPresent(queue, 1, &presentCompleteSem);
-    SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
+    if (!binding.descSet) // new binding
+    {
+        auto builder = VulkanDescriptorSetLayoutBuilder(device);
+
+        for (const auto &info: uniformBufs)
+        {
+            const auto bufferName = info.first;
+            binding.buffers[bufferName] = VulkanBuffer::createUniformHostVisible(this, info.second.size);
+            builder.withBinding(info.second.binding, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
+        }
+
+        for (auto &pair : effectSamplers)
+            builder.withBinding(pair.second.binding, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT);
+
+        binding.descSetLayout = builder.build();
+
+        auto poolConfig = VulkanDescriptorPoolConfig();
+        poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, uniformBufs.size());
+        poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, effectSamplers.size());
+
+        binding.descPool = VulkanDescriptorPool(device, 1, poolConfig);
+        binding.descSet = binding.descPool.allocateSet(binding.descSetLayout);
+
+        // TODO Invoke updater outside of the binding initialization because at least
+        // material sampler parameters may change in future
+
+        // TODO Invoke updater not so often - only when something really changes
+        VulkanDescriptorSetUpdater updater{device};
+
+        // TODO Not necessary (?), buffers don't change anyway, only their content
+        for (auto &pair : binding.buffers)
+        {
+            const auto info = uniformBufs.at(pair.first);
+            auto &buffer = pair.second;
+            updater.forUniformBuffer(info.binding, binding.descSet, buffer, 0, info.size); // TODO use single large buffer?
+        }
+
+        for (auto &pair : materialSamplers)
+        {
+            auto &info = pair.second;
+            updater.forTexture(
+                info.binding,
+                binding.descSet,
+                info.texture->getImage().getView(),
+                info.texture->getImage().getSampler(),
+                VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
+            );
+        }
+
+        updater.updateSets();
+    }
+
+    auto &bufferItems = material->getBufferItems();
+    for (auto &p: bufferItems)
+    {
+        auto &buffer = binding.buffers[p.first];
+        for (auto &pp: p.second)
+            pp.second.write(buffer, currentCamera, transform);
+    }
+
+    auto pipelineConfig = VulkanPipelineConfig(vs, fs)
+        .withDescriptorSetLayout(binding.descSetLayout)
+        .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
+        .withCullMode(material->getCullModeFlags())
+        .withPolygonMode(material->getVkPolygonMode())
+        .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
+
+    for (s32 i = 0; i < mesh->getVertexBufferCount(); i++)
+        pipelineConfig.withVertexBufferLayout(i, mesh->getVertexBufferLayout(i));
+
+    pipelines.emplace_back(device, renderPass, pipelineConfig);
+
+    vkCmdBindPipeline(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipelines.rbegin());
+    vkCmdBindDescriptorSets(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelines.rbegin()->getLayout(), 0, 1, &binding.descSet, 0, nullptr);
+
+    VkDeviceSize vertexBufferOffset = 0;
+    for (u32 i = 0; i < mesh->getVertexBufferCount(); i++)
+    {
+        auto vertexBuffer = mesh->getVertexBuffer(i);
+        vkCmdBindVertexBuffers(cmdBuf, i, 1, &vertexBuffer, &vertexBufferOffset);
+    }
+
+    const auto indexBuffer = mesh->getPartBuffer(part);
+    vkCmdBindIndexBuffer(cmdBuf, indexBuffer, 0, VK_INDEX_TYPE_UINT16);
+    vkCmdDrawIndexed(cmdBuf, mesh->getPartIndexElementCount(part), 1, 0, 0, 0);
 }
 
-void VulkanRenderer::crappyName()
+void VulkanRenderer::endFrame()
 {
     const auto canvasSize = engineDevice->getCanvasSize();
-    
+
+//    if (!test.initialized)
+//    {
+//        test.colorAttachment = VulkanImage(this, canvasSize.x, canvasSize.y, 1, 1,
+//            VK_FORMAT_R8G8B8A8_UNORM,
+//            0,
+//            VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
+//            VK_IMAGE_VIEW_TYPE_2D,
+//            VK_IMAGE_ASPECT_COLOR_BIT);
+//        test.depthAttachment = VulkanImage(this, canvasSize.x, canvasSize.y, 1, 1,
+//            depthFormat,
+//            0,
+//            VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
+//            VK_IMAGE_VIEW_TYPE_2D,
+//            VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT);
+//
+//        test.renderPass = VulkanRenderPass(device, VulkanRenderPassConfig()
+//            .withColorAttachment(VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, true, {0, 1, 1, 0})
+//            .withDepthAttachment(depthFormat, true, {1, 0}));
+//
+//        test.frameBuffer = vk::createFrameBuffer(device, {test.colorAttachment.getView(), test.depthAttachment.getView()},
+//            test.renderPass, canvasSize.x, canvasSize.y);
+//
+//        test.semaphore = vk::createSemaphore(device);
+//
+//        test.cmdBuf = vk::createCommandBuffer(device, commandPool);
+//
+//        test.initialized = true;
+//    }
+
     const auto swapchainCmdBuf = swapchain.getCurrentCmdBuffer();
     vk::beginCommandBuffer(swapchainCmdBuf, false);
 
@@ -219,6 +339,7 @@ void VulkanRenderer::crappyName()
 
     VkRenderPass currentRenderPass = swapchainRenderPass;
     VkCommandBuffer currentCmdBuf = swapchainCmdBuf;
+
     const Camera *currentCamera = nullptr;
 
     for (const auto &cmd : renderCommands)
@@ -232,20 +353,27 @@ void VulkanRenderer::crappyName()
                 const auto renderTarget = currentCamera->getRenderTarget();
                 if (renderTarget)
                 {
-                    const auto targetFrameBuffer = std::static_pointer_cast<VulkanFrameBuffer>(renderTarget);
-                    const auto fbSize = targetFrameBuffer->getDimensions();
+//                    const auto targetFrameBuffer = std::static_pointer_cast<VulkanFrameBuffer>(renderTarget);
+//                    const auto fbSize = targetFrameBuffer->getDimensions();
                     
-                    const auto cmdBuf = vk::createCommandBuffer(device, commandPool);
-                    vk::beginCommandBuffer(cmdBuf, false);
-                    currentCmdBuf = cmdBuf;
+//                    if (!cameraCmdBuffers.count(currentCamera))
+//                        cameraCmdBuffers[currentCamera] = vk::createCommandBuffer(device, commandPool);
+//                    currentCmdBuf = cameraCmdBuffers.at(currentCamera);
+//                    vk::beginCommandBuffer(currentCmdBuf, false);
+//
+//                    auto &renderPass = targetFrameBuffer->getRenderPass();
+//                    renderPass.begin(currentCmdBuf, targetFrameBuffer->getHandle(), fbSize.x, fbSize.y);
+//                    currentRenderPass = renderPass;
 
-                    auto &renderPass = targetFrameBuffer->getRenderPass();
-                    renderPass.begin(currentCmdBuf, targetFrameBuffer->getHandle(), fbSize.x, fbSize.y);
-                    currentRenderPass = renderPass;
+//                    vk::beginCommandBuffer(test.cmdBuf, false);
+//                    test.renderPass.begin(test.cmdBuf, test.frameBuffer, canvasSize.x, canvasSize.y);
+//                    currentCmdBuf = test.cmdBuf;
+//                    currentRenderPass = test.renderPass;
                 }
 
                 const auto camViewport = cmd.camera->getViewport();
-                VkViewport vp{camViewport.x, camViewport.y, camViewport.z, camViewport.w, 0, 1};
+//                VkViewport vp{camViewport.x, camViewport.y, camViewport.z, camViewport.w, 0, 1};
+                VkViewport vp{0, 0, canvasSize.x, canvasSize.y, 0, 1};
                 vkCmdSetViewport(currentCmdBuf, 0, 1, &vp);
 
                 VkRect2D scissor{{0, 0}, {vp.width, vp.height}}; // TODO proper values
@@ -259,11 +387,14 @@ void VulkanRenderer::crappyName()
                 const auto renderTarget = currentCamera->getRenderTarget();
                 if (renderTarget)
                 {
-                    const auto targetFrameBuffer = std::static_pointer_cast<VulkanFrameBuffer>(renderTarget);
-                    targetFrameBuffer->getRenderPass().end(currentCmdBuf);
-                    SL_VK_CHECK_RESULT(vkEndCommandBuffer(currentCmdBuf));
-                    currentCmdBuf = swapchainCmdBuf;
-                    currentRenderPass = swapchainRenderPass;
+//                    const auto targetFrameBuffer = std::static_pointer_cast<VulkanFrameBuffer>(renderTarget);
+//                    targetFrameBuffer->getRenderPass().end(currentCmdBuf);
+//                    SL_VK_CHECK_RESULT(vkEndCommandBuffer(currentCmdBuf));
+
+//                    test.renderPass.end(currentCmdBuf);
+//                    SL_VK_CHECK_RESULT(vkEndCommandBuffer(currentCmdBuf));
+//                    currentCmdBuf = swapchainCmdBuf;
+//                    currentRenderPass = swapchainRenderPass;
                 }
                 
                 currentCamera = nullptr;
@@ -278,102 +409,15 @@ void VulkanRenderer::crappyName()
 
             case RenderCommandType::DrawMeshPart:
             {
-                const auto material = static_cast<VulkanMaterial*>(cmd.meshPart.material);
-                const auto effect = static_cast<VulkanEffect*>(material->getEffect());
-                const auto transform = cmd.meshPart.transform;
-                const auto mesh = static_cast<VulkanMesh*>(cmd.meshPart.mesh);
-                const auto vs = effect->getVertexShader();
-                const auto fs = effect->getFragmentShader();
-                const auto &uniformBufs = effect->getUniformBuffers();
-                const auto &effectSamplers = effect->getSamplers();
-                const auto &materialSamplers = material->getSamplers();
-                auto &binding = nodeMaterialBindings[material][transform][currentCamera];
-
-                if (!binding.descSet) // new binding
-                {
-                    auto builder = VulkanDescriptorSetLayoutBuilder(device);
-
-                    for (const auto &info: uniformBufs)
-                    {
-                        const auto bufferName = info.first;
-                        binding.buffers[bufferName] = VulkanBuffer::createUniformHostVisible(this, info.second.size);
-                        builder.withBinding(info.second.binding, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
-                    }
-
-                    for (auto &pair : effectSamplers)
-                        builder.withBinding(pair.second.binding, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT);
-
-                    binding.descSetLayout = builder.build();
-
-                    auto poolConfig = VulkanDescriptorPoolConfig();
-                    poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, uniformBufs.size());
-                    poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, effectSamplers.size());
-
-                    binding.descPool = VulkanDescriptorPool(device, 1, poolConfig);
-                    binding.descSet = binding.descPool.allocateSet(binding.descSetLayout);
-
-                    // TODO Invoke updater outside of the binding initialization because at least
-                    // material sampler parameters may change in future
-
-                    // TODO Invoke updater not so often - only when something really changes
-                    VulkanDescriptorSetUpdater updater{device};
-
-                    // TODO Not necessary (?), buffers don't change anyway, only their content
-                    for (auto &pair : binding.buffers)
-                    {
-                        const auto info = uniformBufs.at(pair.first);
-                        auto &buffer = pair.second;
-                        updater.forUniformBuffer(info.binding, binding.descSet, buffer, 0, info.size); // TODO use single large buffer?
-                    }
-
-                    for (auto &pair : materialSamplers)
-                    {
-                        auto &info = pair.second;
-                        updater.forTexture(
-                            info.binding,
-                            binding.descSet,
-                            info.texture->getImage().getView(),
-                            info.texture->getImage().getSampler(),
-                            VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
-                        );
-                    }
-
-                    updater.updateSets();
-                }
-
-                auto &bufferItems = material->getBufferItems();
-                for (auto &p: bufferItems)
-                {
-                    auto &buffer = binding.buffers[p.first];
-                    for (auto &pp: p.second)
-                        pp.second.write(buffer, currentCamera, transform);
-                }
-
-                auto pipelineConfig = VulkanPipelineConfig(vs, fs)
-                    .withDescriptorSetLayout(binding.descSetLayout)
-                    .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
-                    .withCullMode(material->getCullModeFlags())
-                    .withPolygonMode(material->getVkPolygonMode())
-                    .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
-
-                for (s32 i = 0; i < mesh->getVertexBufferCount(); i++)
-                    pipelineConfig.withVertexBufferLayout(i, mesh->getVertexBufferLayout(i));
-
-                pipelines.emplace_back(device, currentRenderPass, pipelineConfig);
-
-                vkCmdBindPipeline(currentCmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipelines.rbegin());
-                vkCmdBindDescriptorSets(currentCmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelines.rbegin()->getLayout(), 0, 1, &binding.descSet, 0, nullptr);
-
-                VkDeviceSize vertexBufferOffset = 0;
-                for (u32 i = 0; i < mesh->getVertexBufferCount(); i++)
-                {
-                    auto vertexBuffer = mesh->getVertexBuffer(i);
-                    vkCmdBindVertexBuffers(currentCmdBuf, i, 1, &vertexBuffer, &vertexBufferOffset);
-                }
-
-                const auto indexBuffer = mesh->getPartBuffer(cmd.meshPart.part);
-                vkCmdBindIndexBuffer(currentCmdBuf, indexBuffer, 0, VK_INDEX_TYPE_UINT16);
-                vkCmdDrawIndexed(currentCmdBuf, mesh->getPartIndexElementCount(cmd.meshPart.part), 1, 0, 0, 0);
+                drawMeshPart(
+                    cmd.meshPart.material,
+                    cmd.meshPart.transform,
+                    cmd.meshPart.mesh,
+                    currentCamera,
+                    cmd.meshPart.part,
+                    currentCmdBuf,
+                    currentRenderPass
+                );
 
                 break;
             }
@@ -385,6 +429,14 @@ void VulkanRenderer::crappyName()
 
     swapchainRenderPass.end(swapchainCmdBuf);
     SL_VK_CHECK_RESULT(vkEndCommandBuffer(swapchainCmdBuf));
+
+    auto presentCompleteSem = swapchain.acquire();
+//    vk::queueSubmit(queue, 1, &presentCompleteSem, 1, &test.semaphore, 1, &test.cmdBuf);
+//    SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
+
+//    swapchain.submitAndPresent(queue, 1, &test.semaphore);
+    swapchain.submitAndPresent(queue, 1, &presentCompleteSem);
+    SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 }
 
 #endif

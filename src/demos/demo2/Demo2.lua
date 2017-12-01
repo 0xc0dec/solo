@@ -163,9 +163,9 @@ function update()
 end
 
 function render()
-    offscreenCamera:renderFrame(function(ctx)
-        scene:visit(function(cmp) cmp:render(ctx) end)
-    end)
+    -- offscreenCamera:renderFrame(function(ctx)
+    --     scene:visit(function(cmp) cmp:render(ctx) end)
+    -- end)
 
     camera:renderFrame(function(ctx)
         scene:visit(function(cmp) cmp:render(ctx) end)
