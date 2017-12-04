@@ -166,7 +166,9 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     const auto surface = vulkanDevice->getSurface();
     const auto canvasSize = engineDevice->getCanvasSize();
 
+#ifdef SL_DEBUG
     debugCallback = createDebugCallback(instance, debugCallbackFunc);
+#endif
     physicalDevice = ::getPhysicalDevice(instance);
     vkGetPhysicalDeviceProperties(physicalDevice, &physicalProperties);
     vkGetPhysicalDeviceFeatures(physicalDevice, &physicalFeatures);
