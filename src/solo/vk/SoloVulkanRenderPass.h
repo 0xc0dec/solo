@@ -18,8 +18,8 @@ namespace solo
     public:
         VulkanRenderPassConfig();
 
-        auto withColorAttachment(VkFormat colorFormat, VkImageLayout finalLayout, bool clear, VkClearColorValue clearValue = {}) -> VulkanRenderPassConfig&;
-        auto withDepthAttachment(VkFormat depthFormat, bool clear, VkClearDepthStencilValue clearValue = {}) -> VulkanRenderPassConfig&;
+        auto withColorAttachment(VkFormat colorFormat, VkImageLayout finalLayout) -> VulkanRenderPassConfig&;
+        auto withDepthAttachment(VkFormat depthFormat) -> VulkanRenderPassConfig&;
 
     private:
         friend class VulkanRenderPass;
@@ -45,7 +45,8 @@ namespace solo
         auto operator=(const VulkanRenderPass &other) -> VulkanRenderPass& = delete;
         auto operator=(VulkanRenderPass &&other) -> VulkanRenderPass& = default;
 
-        void begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight);
+        void begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight,
+            VkClearColorValue clearColor, VkClearDepthStencilValue clearDepthStencil);
         void end(VkCommandBuffer cmdBuf);
 
         operator VkRenderPass() { return pass; }

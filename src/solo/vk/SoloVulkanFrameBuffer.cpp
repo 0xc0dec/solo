@@ -59,7 +59,7 @@ void VulkanFrameBuffer::setAttachments(const vec<sptr<Texture2d>> &attachments)
     for (const auto tex: attachments)
     {
         const auto vulkanTexture = std::static_pointer_cast<VulkanTexture2d>(tex);
-        config.withColorAttachment(vulkanTexture->getImage().getFormat(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, true, {0, 0, 0, 1}); // TODO Proper layout
+        config.withColorAttachment(vulkanTexture->getImage().getFormat(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL); // TODO Proper layout
         attachmentViews.push_back(vulkanTexture->getImage().getView());
     }
 
@@ -75,7 +75,7 @@ void VulkanFrameBuffer::setAttachments(const vec<sptr<Texture2d>> &attachments)
         VK_IMAGE_VIEW_TYPE_2D,
         VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT);
 
-    config.withDepthAttachment(renderer->getDepthFormat(), true, {1, 0});
+    config.withDepthAttachment(renderer->getDepthFormat());
     attachmentViews.push_back(depthStencil.getView());
     
     renderPass = VulkanRenderPass(renderer->getDevice(), config);

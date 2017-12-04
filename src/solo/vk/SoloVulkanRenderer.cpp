@@ -193,7 +193,6 @@ void VulkanRenderer::beginFrame()
 {
     renderCommands.clear();
     renderCommands.reserve(100); // TODO just picked random constant
-
     pipelines.clear();
 }
 
@@ -330,7 +329,14 @@ void VulkanRenderer::endFrame()
                         vk::beginCommandBuffer(test.cmdBuf, false);
 
                         auto &renderPass = targetFrameBuffer->getRenderPass();
-                        renderPass.begin(test.cmdBuf, targetFrameBuffer->getHandle(), fbSize.x, fbSize.y);
+                        const auto clearColor = currentCamera->getClearColor();
+                        renderPass.begin(
+                            test.cmdBuf,
+                            targetFrameBuffer->getHandle(),
+                            fbSize.x, fbSize.y,
+                            {clearColor.x, clearColor.y, clearColor.z, clearColor.w},
+                            {1, 0}
+                        );
                         currentRenderPass = renderPass;
 
                         const auto camViewport = cmd.camera->getViewport();
@@ -406,7 +412,14 @@ void VulkanRenderer::endFrame()
                     {
                         currentCamera = cmd.camera;
 
-                        swapchainRenderPass.begin(swapchainCmdBuf, swapchainFrameBuffer, canvasSize.x, canvasSize.y);
+                        const auto clearColor = currentCamera->getClearColor();
+                        swapchainRenderPass.begin(
+                            swapchainCmdBuf,
+                            swapchainFrameBuffer,
+                            canvasSize.x, canvasSize.y,
+                            {clearColor.x, clearColor.y, clearColor.z, clearColor.w},
+                            {1, 0}
+                        );
 
                         const auto camViewport = cmd.camera->getViewport();
                         VkViewport vp{camViewport.x, camViewport.y, camViewport.z, camViewport.w, 0, 1};
@@ -463,7 +476,6 @@ void VulkanRenderer::endFrame()
     });
 
     swapchain.submitAndPresent(queue, 1, &test.semaphore);
-//    swapchain.submitAndPresent(queue, 1, &presentCompleteSem);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 }
 

@@ -45,8 +45,6 @@ function createOffscreenCamera()
     tex:setWrapping(sl.TextureWrapping.Clamp)
 
     local node = scene:createNode()
-    node:findComponent("Transform"):setLocalPosition(vec3(5, 5, 5))
-    node:findComponent("Transform"):lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
     local cam = node:addComponent("Camera")
     cam:setClearColor(vec4(1, 0, 1, 1))
@@ -57,7 +55,7 @@ function createOffscreenCamera()
     fb:setAttachments({ tex })
     cam:setRenderTarget(fb)
 
-    return cam, tex
+    return cam, tex, node
 end
 
 function createCustomMesh(material, position)
@@ -128,7 +126,10 @@ end
 
 ---
 
-local offscreenCamera, offscreenCameraTex = createOffscreenCamera()
+local offscreenCamera, offscreenCameraTex, offscreenCameraNode = createOffscreenCamera()
+local offscreenCameraTransform = offscreenCameraNode:findComponent("Transform")
+offscreenCameraTransform:setLocalPosition(vec3(5, 5, 5))
+offscreenCameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
 local camera, cameraNode = createMainCamera(dev, scene)
 local cameraTransform = cameraNode:findComponent("Transform")
@@ -161,8 +162,8 @@ function update()
     color.x = math.abs(math.sin(lifetime))
     camera:setClearColor(color)
 
-    material1:setFloatParameter("test.f", math.abs(math.sin(lifetime)) * 4)
-    material2:setFloatParameter("test.f", math.abs(math.sin(lifetime)) * 4)
+    material1:setFloatParameter("test.f", math.abs(math.sin(lifetime)))
+    material2:setFloatParameter("test.f", math.abs(math.sin(lifetime)) * 3)
 end
 
 function render()

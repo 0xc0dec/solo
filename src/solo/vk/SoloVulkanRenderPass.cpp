@@ -10,11 +10,11 @@
 using namespace solo;
 
 VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig &config):
-    device(device),
-    clearValues(config.clearValues)
+    device(device)
 {
     const auto colorAttachments = config.colorAttachmentRefs.empty() ? nullptr : config.colorAttachmentRefs.data();
     const auto depthAttachment = config.depthAttachmentRef.layout != VK_IMAGE_LAYOUT_UNDEFINED ? &config.depthAttachmentRef : nullptr;
+    clearValues.resize(config.colorAttachmentRefs.size() + 1);
 
     VkSubpassDescription subpass{};
     subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
@@ -63,8 +63,13 @@ VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig
     this->pass = std::move(pass);
 }
 
-void VulkanRenderPass::begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight)
+void VulkanRenderPass::begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight,
+    VkClearColorValue clearColor, VkClearDepthStencilValue clearDepthStencil)
 {
+    for (int i = 0; i < clearValues.size() - 1; ++i)
+        clearValues[i].color = clearColor;
+    clearValues[clearValues.size() - 1].depthStencil = clearDepthStencil;
+
     VkRenderPassBeginInfo info{};
     info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
     info.pNext = nullptr;
@@ -90,14 +95,15 @@ VulkanRenderPassConfig::VulkanRenderPassConfig():
 {
 }
 
-auto VulkanRenderPassConfig::withColorAttachment(VkFormat colorFormat, VkImageLayout finalLayout, bool clear, VkClearColorValue clearValue)
+auto VulkanRenderPassConfig::withColorAttachment(VkFormat colorFormat, VkImageLayout finalLayout)
     -> VulkanRenderPassConfig&
 {
     VkAttachmentDescription desc{};
     desc.format = colorFormat;
     desc.flags = 0;
     desc.samples = VK_SAMPLE_COUNT_1_BIT;
-    desc.loadOp = clear ? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+//    desc.loadOp = clear ? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+    desc.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR; // TODO optional clearing
     desc.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
     desc.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
     desc.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
@@ -110,18 +116,17 @@ auto VulkanRenderPassConfig::withColorAttachment(VkFormat colorFormat, VkImageLa
     reference.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
     colorAttachmentRefs.push_back(reference);
 
-    clearValues.push_back({clearValue});
-
     return *this;
 }
 
-auto VulkanRenderPassConfig::withDepthAttachment(VkFormat depthFormat, bool clear, VkClearDepthStencilValue clearValue) -> VulkanRenderPassConfig&
+auto VulkanRenderPassConfig::withDepthAttachment(VkFormat depthFormat) -> VulkanRenderPassConfig&
 {
     VkAttachmentDescription desc{};
     desc.format = depthFormat;
     desc.flags = 0;
     desc.samples = VK_SAMPLE_COUNT_1_BIT;
-    desc.loadOp = clear ? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+//    desc.loadOp = clear ? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+    desc.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR; // TODO Optional clearing
     desc.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
     desc.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
     desc.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
@@ -131,10 +136,6 @@ auto VulkanRenderPassConfig::withDepthAttachment(VkFormat depthFormat, bool clea
 
     depthAttachmentRef.attachment = attachments.size() - 1;
     depthAttachmentRef.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-
-    VkClearValue cv;
-    cv.depthStencil = clearValue;
-    clearValues.push_back(cv);
 
     return *this;
 }
