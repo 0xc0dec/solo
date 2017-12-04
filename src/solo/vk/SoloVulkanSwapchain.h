@@ -33,6 +33,7 @@ namespace solo
         operator VkSwapchainKHR() { return swapchain; }
         operator VkSwapchainKHR() const { return swapchain; }
 
+        void recordCommandBuffers(std::function<void(VkFramebuffer, VkCommandBuffer)> issueCommands);
         auto getCurrentCmdBuffer() -> VkCommandBuffer { return steps[currentStep].cmdBuffer; }
         auto getCurrentFrameBuffer() -> VkFramebuffer { return steps[currentStep].framebuffer; }
 

@@ -80,16 +80,18 @@ namespace solo
         struct
         {
             bool initialized = false;
-            VulkanImage colorAttachment;
-            VulkanImage depthAttachment;
-            VulkanRenderPass renderPass;
-            VulkanResource<VkFramebuffer> frameBuffer;
+//            VulkanImage colorAttachment;
+//            VulkanImage depthAttachment;
+//            VulkanRenderPass renderPass;
+//            VulkanResource<VkFramebuffer> frameBuffer;
             VulkanResource<VkSemaphore> semaphore;
             VulkanResource<VkCommandBuffer> cmdBuf;
         } test;
 
         // TODO clear this when bindings get no longer used
         umap<const Material*, umap<const Transform*, umap<const Camera*, NodeBinding>>> nodeMaterialBindings;
+
+        umap<const Camera*, VulkanResource<VkCommandBuffer>> cameraCmdBuffers;
 
         void drawMeshPart(Material *mat, Transform *transform, Mesh *m, const Camera *currentCamera,
             u32 part, VkCommandBuffer cmdBuf, VkRenderPass renderPass);

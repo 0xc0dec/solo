@@ -134,6 +134,17 @@ VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *devi
     renderCompleteSem = vk::createSemaphore(this->device);
 }
 
+void VulkanSwapchain::recordCommandBuffers(std::function<void(VkFramebuffer, VkCommandBuffer)> issueCommands)
+{
+    for (size_t i = 0; i < steps.size(); ++i)
+    {
+        VkCommandBuffer buf = steps[i].cmdBuffer;
+        vk::beginCommandBuffer(buf, false);
+        issueCommands(steps[i].framebuffer, buf);
+        SL_VK_CHECK_RESULT(vkEndCommandBuffer(buf));
+    }
+}
+
 auto VulkanSwapchain::acquire() -> VkSemaphore
 {
     SL_VK_CHECK_RESULT(vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, presentCompleteSem, VK_NULL_HANDLE, &currentStep));

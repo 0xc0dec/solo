@@ -19,8 +19,8 @@ local createMainCamera = require "MainCamera"
 local assetCache = (require "AssetCache")(dev)
 local attachAxes = (require "Axes")(dev, assetCache)
 
-function createMaterial()
-    local tex = sl.Texture2d.loadFromFile(dev, getAssetPath("textures/Cobblestone.png"))
+function createMaterial(t)
+    local tex = t or sl.Texture2d.loadFromFile(dev, getAssetPath("textures/Cobblestone.png"))
     local effect = assetCache.getEffect("Test")
     local material = sl.Material.create(dev, effect)
     
@@ -38,7 +38,7 @@ function createOffscreenCamera()
 
     local tex = sl.Texture2d.createEmpty(
         dev,
-        math.floor(canvasSize.x / 8.0), math.floor(canvasSize.y / 8.0),
+        canvasSize.x, canvasSize.y,
         sl.TextureFormat.RGBA
     )
     tex:setFiltering(sl.TextureFiltering.Nearest)
@@ -46,17 +46,18 @@ function createOffscreenCamera()
 
     local node = scene:createNode()
     node:findComponent("Transform"):setLocalPosition(vec3(5, 5, 5))
+    node:findComponent("Transform"):lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
     local cam = node:addComponent("Camera")
     cam:setClearColor(vec4(1, 0, 1, 1))
     cam:setNear(0.05)
-    cam:setViewport(vec4(0, 0, canvasSize.x / 8, canvasSize.y / 8))
+    cam:setViewport(vec4(0, 0, canvasSize.x, canvasSize.y))
 
     local fb = sl.FrameBuffer.create(dev)
     fb:setAttachments({ tex })
     cam:setRenderTarget(fb)
 
-    return cam
+    return cam, tex
 end
 
 function createCustomMesh(material, position)
@@ -65,11 +66,11 @@ function createCustomMesh(material, position)
     local layout = sl.VertexBufferLayout()
     layout:addAttribute(3, 0)
     local positions = {
-        0.5, 1, 0,
-        -0.5, 1, 0,
+        1, 1, 0,
+        -1, 1, 0,
         -1, -1, 0,
 
-        0.5, 1, 0,
+        1, 1, 0,
         -1, -1, 0,
         1, -1, 0,
     }
@@ -93,10 +94,10 @@ function createCustomMesh(material, position)
     local texCoords = {
         0.0, 0.0,
         0.0, 1.0,
-        1.0, 0.0,
+        1.0, 1.0,
 
         0.0, 0.0,
-        0.0, 1.0,
+        1.0, 1.0,
         1.0, 0.0
     }
     mesh:addVertexBuffer(layout, texCoords, 6)
@@ -127,17 +128,18 @@ end
 
 ---
 
-local material = createMaterial()
+local offscreenCamera, offscreenCameraTex = createOffscreenCamera()
 
 local camera, cameraNode = createMainCamera(dev, scene)
 local cameraTransform = cameraNode:findComponent("Transform")
 cameraTransform:setLocalPosition(vec3(5, 6, 7))
 cameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
-local offscreenCamera = createOffscreenCamera()
+local material1 = createMaterial(offscreenCameraTex)
+local material2 = createMaterial()
 
-createCustomMesh(material, vec3(-2, 0, 0))
-createMesh(material, vec3(2, 0, 0))
+createCustomMesh(material1, vec3(-2, 0, 0))
+createMesh(material2, vec3(2, 0, 0))
 
 local rootNode = scene:createNode()
 attachAxes(rootNode)
@@ -159,13 +161,14 @@ function update()
     color.x = math.abs(math.sin(lifetime))
     camera:setClearColor(color)
 
-    material:setFloatParameter("test.f", math.abs(math.sin(lifetime)) * 4)
+    material1:setFloatParameter("test.f", math.abs(math.sin(lifetime)) * 4)
+    material2:setFloatParameter("test.f", math.abs(math.sin(lifetime)) * 4)
 end
 
 function render()
-    -- offscreenCamera:renderFrame(function(ctx)
-    --     scene:visit(function(cmp) cmp:render(ctx) end)
-    -- end)
+    offscreenCamera:renderFrame(function(ctx)
+        scene:visit(function(cmp) cmp:render(ctx) end)
+    end)
 
     camera:renderFrame(function(ctx)
         scene:visit(function(cmp) cmp:render(ctx) end)
