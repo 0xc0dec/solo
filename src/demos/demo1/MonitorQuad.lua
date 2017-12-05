@@ -16,7 +16,7 @@ return function(dev, scene, assetCache, offscreenCameraTex, quadMesh, tag)
 
     local parent = scene:createNode()
     parent:findComponent("Transform"):setLocalPosition(vec3(-2, 2, -2))
-    parent:addScriptComponent(createRotator("world", vec3(0, 1, 0)))
+    parent:addScriptComponent(createRotator("world", vec3(0, 1, 0), 1))
 
     local node = scene:createNode()
     node:addScriptComponent(createLookAt(vec3(0, 0, 0)))

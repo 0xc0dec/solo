@@ -12,8 +12,8 @@ function getAssetPath(fileName)
 end
 
 function callSafe(f)
-    local _, err = select(1, pcall(f))
+    local success, err = select(1, pcall(f))
     if err then
-        logger:logError(err) -- TODO Avoid global logger dependency
+        print(err)
     end
 end

@@ -24,10 +24,10 @@ return function(dev, scene, assetCache, mesh, tag)
 
     local parent = scene:createNode()
     parent:findComponent("Transform"):setLocalPosition(vec3(5, 0, 0))
-    parent:addScriptComponent(createRotator("world", vec3(0, 1, 0)))
+    parent:addScriptComponent(createRotator("world", vec3(0, 1, 0), 1))
 
     local node = scene:createNode()
-    node:addScriptComponent(createRotator("local", vec3(1, 0, 0)))
+    node:addScriptComponent(createRotator("local", vec3(1, 0, 0), 1))
     node:findComponent("Transform"):setParent(parent:findComponent("Transform"))
     node:findComponent("Transform"):setLocalPosition(vec3(2, 0, 0))
 

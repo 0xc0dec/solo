@@ -27,7 +27,7 @@ return function(dev, scene, assetCache)
                     renderer:setMesh(mesh)
                     renderer:setMaterial(0, mat)
                     node:findComponent("Transform"):setLocalPosition(vec3(0, 0, 0))
-                    node:addScriptComponent(createRotator("local", vec3(1, 0, 0)))
+                    node:addScriptComponent(createRotator("local", vec3(1, 0, 0), 1))
                 end)
         end)
 end

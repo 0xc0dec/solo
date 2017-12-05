@@ -16,5 +16,5 @@ return function(dev, scene, assetCache, cubeMesh)
     node:addComponent("MeshRenderer"):setMesh(cubeMesh)
     node:findComponent("MeshRenderer"):setMaterial(0, material)
     node:findComponent("Transform"):setLocalPosition(vec3(-5, 0, 0))
-    node:addScriptComponent(createRotator("world", vec3(0, 1, 0)))
+    node:addScriptComponent(createRotator("world", vec3(0, 1, 0), 2))
 end
