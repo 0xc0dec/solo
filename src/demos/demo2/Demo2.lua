@@ -23,14 +23,11 @@ function demo()
 
     function createMaterial(t)
         local tex = t or sl.Texture2d.loadFromFile(dev, getAssetPath("textures/Cobblestone.png"))
-        local effect = assetCache.getEffect("Test")
+        local effect = assetCache.getEffect("Texture")
         local material = sl.Material.create(dev, effect)
         
         material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
         material:setTextureParameter("colorTex", tex)
-        material:setVector4Parameter("test.v4", vec4(0.1, 0.2, 0.3, 0.4))
-        material:setVector3Parameter("test.v3", vec3(0.5, 0.6, 0.7))
-        material:setVector2Parameter("test.v2", vec2(0.8, 0.9))
 
         return material
     end
@@ -166,9 +163,6 @@ function demo()
         local color = camera:getClearColor()
         color.x = math.abs(math.sin(lifetime))
         camera:setClearColor(color)
-
-        material1:setFloatParameter("test.f", math.abs(math.sin(lifetime)))
-        material2:setFloatParameter("test.f", math.abs(math.sin(lifetime)) * 3)
     end
 
     function render()
@@ -186,9 +180,7 @@ function demo()
             dev:update(function()
                 physics:update()
                 update()
-                renderer:renderFrame(function()
-                    render()
-                end)
+                renderer:renderFrame(render)
             end)
         end
     end
