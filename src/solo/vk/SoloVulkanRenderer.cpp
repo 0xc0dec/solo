@@ -187,10 +187,6 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     swapchain = VulkanSwapchain(this, vulkanDevice, canvasSize.x, canvasSize.y, engineDevice->isVsync());
 }
 
-VulkanRenderer::~VulkanRenderer()
-{
-}
-
 void VulkanRenderer::beginFrame()
 {
     renderCommands.clear();
@@ -198,18 +194,18 @@ void VulkanRenderer::beginFrame()
     pipelines.clear();
 }
 
-void VulkanRenderer::drawMeshPart(Material *mat, Transform *transform, Mesh *m, const Camera *currentCamera,
-    u32 part, VkCommandBuffer cmdBuf, VkRenderPass renderPass)
+void VulkanRenderer::drawMeshPart(
+    Material *material, Transform *transform, Mesh *mesh,
+    const Camera *camera, u32 part, VkCommandBuffer cmdBuf, VkRenderPass renderPass
+)
 {
-    const auto material = static_cast<VulkanMaterial*>(mat);
-    const auto effect = static_cast<VulkanEffect*>(material->getEffect());
-    const auto mesh = static_cast<VulkanMesh*>(m);
-    const auto vs = effect->getVertexShader();
-    const auto fs = effect->getFragmentShader();
-    const auto &uniformBufs = effect->getUniformBuffers();
-    const auto &effectSamplers = effect->getSamplers();
-    const auto &materialSamplers = material->getSamplers();
-    auto &binding = nodeMaterialBindings[material][transform][currentCamera];
+    const auto vkMaterial = static_cast<VulkanMaterial*>(material);
+    const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->getEffect());
+    const auto vkMesh = static_cast<VulkanMesh*>(mesh);
+    const auto &uniformBufs = vkEffect->getUniformBuffers();
+    const auto &effectSamplers = vkEffect->getSamplers();
+    const auto &materialSamplers = vkMaterial->getSamplers();
+    auto &binding = nodeMaterialBindings[vkMaterial][transform][camera];
 
     if (!binding.descSet) // new binding
     {
@@ -263,23 +259,25 @@ void VulkanRenderer::drawMeshPart(Material *mat, Transform *transform, Mesh *m, 
         updater.updateSets();
     }
 
-    auto &bufferItems = material->getBufferItems();
+    auto &bufferItems = vkMaterial->getBufferItems();
     for (auto &p: bufferItems)
     {
         auto &buffer = binding.buffers[p.first];
         for (auto &pp: p.second)
-            pp.second.write(buffer, currentCamera, transform);
+            pp.second.write(buffer, camera, transform);
     }
 
+    const auto vs = vkEffect->getVertexShader();
+    const auto fs = vkEffect->getFragmentShader();
     auto pipelineConfig = VulkanPipelineConfig(vs, fs)
         .withDescriptorSetLayout(binding.descSetLayout)
         .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
-        .withCullMode(material->getCullModeFlags())
-        .withPolygonMode(material->getVkPolygonMode())
+        .withCullMode(vkMaterial->getCullModeFlags())
+        .withPolygonMode(vkMaterial->getVkPolygonMode())
         .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 
-    for (s32 i = 0; i < mesh->getVertexBufferCount(); i++)
-        pipelineConfig.withVertexBufferLayout(i, mesh->getVertexBufferLayout(i));
+    for (s32 i = 0; i < vkMesh->getVertexBufferCount(); i++)
+        pipelineConfig.withVertexBufferLayout(i, vkMesh->getVertexBufferLayout(i));
 
     pipelines.emplace_back(device, renderPass, pipelineConfig);
 
@@ -287,15 +285,15 @@ void VulkanRenderer::drawMeshPart(Material *mat, Transform *transform, Mesh *m, 
     vkCmdBindDescriptorSets(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelines.rbegin()->getLayout(), 0, 1, &binding.descSet, 0, nullptr);
 
     VkDeviceSize vertexBufferOffset = 0;
-    for (u32 i = 0; i < mesh->getVertexBufferCount(); i++)
+    for (u32 i = 0; i < vkMesh->getVertexBufferCount(); i++)
     {
-        auto vertexBuffer = mesh->getVertexBuffer(i);
+        auto vertexBuffer = vkMesh->getVertexBuffer(i);
         vkCmdBindVertexBuffers(cmdBuf, i, 1, &vertexBuffer, &vertexBufferOffset);
     }
 
-    const auto indexBuffer = mesh->getPartBuffer(part);
+    const auto indexBuffer = vkMesh->getPartBuffer(part);
     vkCmdBindIndexBuffer(cmdBuf, indexBuffer, 0, VK_INDEX_TYPE_UINT16);
-    vkCmdDrawIndexed(cmdBuf, mesh->getPartIndexElementCount(part), 1, 0, 0, 0);
+    vkCmdDrawIndexed(cmdBuf, vkMesh->getPartIndexElementCount(part), 1, 0, 0, 0);
 }
 
 void VulkanRenderer::endFrame()

@@ -30,7 +30,7 @@ namespace solo
     {
     public:
         explicit VulkanRenderer(Device *device);
-        ~VulkanRenderer();
+        ~VulkanRenderer() {}
 
         // TODO avoid these?
         auto getDevice() const -> VkDevice { return device; }
@@ -77,15 +77,6 @@ namespace solo
             VkDescriptorSet descSet = VK_NULL_HANDLE;
         };
 
-        struct
-        {
-            bool initialized = false;
-//            VulkanImage colorAttachment;
-//            VulkanImage depthAttachment;
-//            VulkanRenderPass renderPass;
-//            VulkanResource<VkFramebuffer> frameBuffer;
-        } test;
-
         struct RenderPassContext
         {
             bool started = false;
@@ -99,9 +90,7 @@ namespace solo
         // TODO clear this when bindings get no longer used
         umap<const Material*, umap<const Transform*, umap<const Camera*, NodeBinding>>> nodeMaterialBindings;
 
-        umap<const Camera*, VulkanResource<VkCommandBuffer>> cameraCmdBuffers;
-
-        void drawMeshPart(Material *mat, Transform *transform, Mesh *m, const Camera *currentCamera,
+        void drawMeshPart(Material *material, Transform *transform, Mesh *mesh, const Camera *camera,
             u32 part, VkCommandBuffer cmdBuf, VkRenderPass renderPass);
     };
 }
