@@ -127,42 +127,27 @@ VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *devi
         steps[i].framebuffer = vk::createFrameBuffer(this->device, {view, depthStencil.getView()}, renderPass, width, height);
         steps[i].image = images[i];
         steps[i].imageView = std::move(view);
-        steps[i].cmdBuffer = vk::createCommandBuffer(this->device, renderer->getCommandPool());
     }
 
     presentCompleteSem = vk::createSemaphore(this->device);
-    renderCompleteSem = vk::createSemaphore(this->device);
 }
 
-void VulkanSwapchain::recordCommandBuffers(std::function<void(VkFramebuffer, VkCommandBuffer)> issueCommands)
-{
-    for (size_t i = 0; i < steps.size(); ++i)
-    {
-        VkCommandBuffer buf = steps[i].cmdBuffer;
-        vk::beginCommandBuffer(buf, false);
-        issueCommands(steps[i].framebuffer, buf);
-        SL_VK_CHECK_RESULT(vkEndCommandBuffer(buf));
-    }
-}
-
-auto VulkanSwapchain::acquire() -> VkSemaphore
+auto VulkanSwapchain::moveNext() -> VkSemaphore
 {
     SL_VK_CHECK_RESULT(vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, presentCompleteSem, VK_NULL_HANDLE, &currentStep));
     return presentCompleteSem;
 }
 
-void VulkanSwapchain::submitAndPresent(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores)
+void VulkanSwapchain::present(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores)
 {
-    vk::queueSubmit(queue, waitSemaphoreCount, waitSemaphores, 1, &renderCompleteSem, 1, &steps[currentStep].cmdBuffer);
-
     VkPresentInfoKHR presentInfo{};
     presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
     presentInfo.pNext = nullptr;
     presentInfo.swapchainCount = 1;
     presentInfo.pSwapchains = &swapchain;
     presentInfo.pImageIndices = &currentStep;
-    presentInfo.pWaitSemaphores = &renderCompleteSem;
-    presentInfo.waitSemaphoreCount = 1;
+    presentInfo.pWaitSemaphores = waitSemaphores;
+    presentInfo.waitSemaphoreCount = waitSemaphoreCount;
     SL_VK_CHECK_RESULT(vkQueuePresentKHR(queue, &presentInfo));
 }
 

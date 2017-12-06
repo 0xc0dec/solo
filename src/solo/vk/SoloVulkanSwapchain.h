@@ -33,15 +33,11 @@ namespace solo
         operator VkSwapchainKHR() { return swapchain; }
         operator VkSwapchainKHR() const { return swapchain; }
 
-        void recordCommandBuffers(std::function<void(VkFramebuffer, VkCommandBuffer)> issueCommands);
-        auto getCurrentCmdBuffer() -> VkCommandBuffer { return steps[currentStep].cmdBuffer; }
         auto getCurrentFrameBuffer() -> VkFramebuffer { return steps[currentStep].framebuffer; }
-
         auto getRenderPass() -> VulkanRenderPass& { return renderPass; }
-        auto getPresentCompleteSemaphore() const -> VkSemaphore { return presentCompleteSem; }
 
-        auto acquire() -> VkSemaphore;
-        void submitAndPresent(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores);
+        auto moveNext() -> VkSemaphore;
+        void present(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores);
 
     private:
         struct Step
@@ -57,7 +53,6 @@ namespace solo
         VulkanImage depthStencil;
         vec<Step> steps;
         VulkanResource<VkSemaphore> presentCompleteSem;
-        VulkanResource<VkSemaphore> renderCompleteSem;
         VulkanRenderPass renderPass;
         u32 currentStep = 0;
     };

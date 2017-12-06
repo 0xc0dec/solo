@@ -84,9 +84,17 @@ namespace solo
 //            VulkanImage depthAttachment;
 //            VulkanRenderPass renderPass;
 //            VulkanResource<VkFramebuffer> frameBuffer;
-            VulkanResource<VkSemaphore> semaphore;
-            VulkanResource<VkCommandBuffer> cmdBuf;
         } test;
+
+        struct RenderPassContext
+        {
+            bool started = false;
+            VulkanResource<VkSemaphore> completeSemaphore;
+            VulkanResource<VkCommandBuffer> cmdBuffer;
+            VulkanRenderPass *renderPass = nullptr;
+        };
+
+        umap<VulkanRenderPass*, RenderPassContext> renderPassContexts;
 
         // TODO clear this when bindings get no longer used
         umap<const Material*, umap<const Transform*, umap<const Camera*, NodeBinding>>> nodeMaterialBindings;

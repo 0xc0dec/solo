@@ -301,183 +301,124 @@ void VulkanRenderer::drawMeshPart(Material *mat, Transform *transform, Mesh *m, 
 void VulkanRenderer::endFrame()
 {
     const auto canvasSize = engineDevice->getCanvasSize();
-    auto presentCompleteSem = swapchain.acquire();
+    const auto presentCompleteSem = swapchain.moveNext();
+    const Camera *currentCamera = nullptr;
+    VulkanRenderPass *currentRenderPass = nullptr;
+    VkCommandBuffer currentCmdBuffer = VK_NULL_HANDLE;
+    vec<VulkanRenderPass*> passesToRender;
 
+    for (const auto &cmd : renderCommands)
     {
-        if (!test.initialized)
+        switch (cmd.type)
         {
-            test.initialized = true;
-            test.semaphore = vk::createSemaphore(device);
-            test.cmdBuf = vk::createCommandBuffer(device, commandPool);
-        }
-
-        const Camera *currentCamera = nullptr;
-        VkRenderPass currentRenderPass = VK_NULL_HANDLE;
-
-        for (const auto &cmd : renderCommands)
-        {
-            switch (cmd.type)
+            case RenderCommandType::BeginCamera:
             {
-                case RenderCommandType::BeginCamera:
+                currentCamera = cmd.camera;
+                currentRenderPass = &swapchain.getRenderPass();
+                auto currentFrameBuffer = swapchain.getCurrentFrameBuffer();
+                auto dimensions = canvasSize;
+
+                const auto renderTarget = cmd.camera->getRenderTarget();
+                if (renderTarget)
                 {
-                    const auto renderTarget = cmd.camera->getRenderTarget();
-                    if (renderTarget)
-                    {
-                        currentCamera = cmd.camera;
-
-                        const auto targetFrameBuffer = std::static_pointer_cast<VulkanFrameBuffer>(renderTarget);
-                        const auto fbSize = targetFrameBuffer->getDimensions();
-                            
-                        vk::beginCommandBuffer(test.cmdBuf, false);
-
-                        auto &renderPass = targetFrameBuffer->getRenderPass();
-                        const auto clearColor = currentCamera->getClearColor();
-                        renderPass.begin(
-                            test.cmdBuf,
-                            targetFrameBuffer->getHandle(),
-                            fbSize.x, fbSize.y,
-                            {clearColor.x, clearColor.y, clearColor.z, clearColor.w},
-                            {1, 0}
-                        );
-                        currentRenderPass = renderPass;
-
-                        const auto camViewport = cmd.camera->getViewport();
-                        VkViewport vp{camViewport.x, camViewport.y, camViewport.z, camViewport.w, 0, 1};
-                        vkCmdSetViewport(test.cmdBuf, 0, 1, &vp);
-
-                        VkRect2D scissor{{0, 0}, {vp.width, vp.height}}; // TODO proper values
-                        vkCmdSetScissor(test.cmdBuf, 0, 1, &scissor);
-                    }
-
-                    break;
+                    const auto targetFrameBuffer = std::static_pointer_cast<VulkanFrameBuffer>(renderTarget);
+                    currentRenderPass = &targetFrameBuffer->getRenderPass();
+                    currentFrameBuffer = targetFrameBuffer->getHandle();
+                    dimensions = targetFrameBuffer->getDimensions();
                 }
 
-                case RenderCommandType::EndCamera:
+                if (!renderPassContexts.count(currentRenderPass))
                 {
-                    if (currentCamera)
-                    {
-                        const auto renderTarget = currentCamera->getRenderTarget();
-                        const auto targetFrameBuffer = std::static_pointer_cast<VulkanFrameBuffer>(renderTarget);
-                        auto &renderPass = targetFrameBuffer->getRenderPass();
-                        renderPass.end(test.cmdBuf);
-                        SL_VK_CHECK_RESULT(vkEndCommandBuffer(test.cmdBuf));
-                    }
-                    currentCamera = nullptr;
-                    break;
+                    // TODO Clear later
+                    renderPassContexts[currentRenderPass].cmdBuffer = vk::createCommandBuffer(device, commandPool);
+                    renderPassContexts[currentRenderPass].completeSemaphore = vk::createSemaphore(device);
                 }
 
-                case RenderCommandType::DrawMesh:
+                auto &info = renderPassContexts.at(currentRenderPass);
+                currentCmdBuffer = info.cmdBuffer;
+
+                if (!info.started)
                 {
-                    break;
+                    info.started = true;
+                    passesToRender.push_back(currentRenderPass);
+
+                    vk::beginCommandBuffer(currentCmdBuffer, false);
+
+                    const auto clearColor = currentCamera->getClearColor();
+                    currentRenderPass->begin(
+                        currentCmdBuffer,
+                        currentFrameBuffer,
+                        dimensions.x, dimensions.y,
+                        {clearColor.x, clearColor.y, clearColor.z, clearColor.w},
+                        {1, 0}
+                    );
                 }
 
-                case RenderCommandType::DrawMeshPart:
-                {
-                    if (currentCamera)
-                    {
-                        drawMeshPart(
-                            cmd.meshPart.material,
-                            cmd.meshPart.transform,
-                            cmd.meshPart.mesh,
-                            currentCamera,
-                            cmd.meshPart.part,
-                            test.cmdBuf,
-                            currentRenderPass
-                        );
-                    }
+                const auto viewport = currentCamera->getViewport();
+                VkViewport vp{viewport.x, viewport.y, viewport.z, viewport.w, 0, 1};
+                vkCmdSetViewport(currentCmdBuffer, 0, 1, &vp);
 
-                    break;
-                }
+                VkRect2D scissor{{0, 0}, {vp.width, vp.height}}; // TODO proper values
+                vkCmdSetScissor(currentCmdBuffer, 0, 1, &scissor);
 
-                default:
-                    break;
+                break;
             }
-        }
 
-        vk::queueSubmit(queue, 1, &presentCompleteSem, 1, &test.semaphore, 1, &test.cmdBuf);
+            case RenderCommandType::EndCamera:
+            {
+                currentCamera = nullptr;
+                break;
+            }
+
+            case RenderCommandType::DrawMeshPart:
+            {
+                if (currentCamera)
+                {
+                    drawMeshPart(
+                        cmd.meshPart.material,
+                        cmd.meshPart.transform,
+                        cmd.meshPart.mesh,
+                        currentCamera,
+                        cmd.meshPart.part,
+                        currentCmdBuffer,
+                        *currentRenderPass
+                    );
+                }
+
+                break;
+            }
+
+            default:
+                break;
+        }
     }
 
-    swapchain.recordCommandBuffers([&](VkFramebuffer swapchainFrameBuffer, VkCommandBuffer swapchainCmdBuf)
+    for (auto &pair: renderPassContexts)
     {
-        auto &swapchainRenderPass = swapchain.getRenderPass();
-        
-        const Camera *currentCamera = nullptr;
+        if (!pair.second.started)
+            continue;
 
-        for (const auto &cmd : renderCommands)
-        {
-            switch (cmd.type)
-            {
-                case RenderCommandType::BeginCamera:
-                {
-                    const auto renderTarget = cmd.camera->getRenderTarget();
-                    if (!renderTarget)
-                    {
-                        currentCamera = cmd.camera;
+        pair.second.started = false;
 
-                        const auto clearColor = currentCamera->getClearColor();
-                        swapchainRenderPass.begin(
-                            swapchainCmdBuf,
-                            swapchainFrameBuffer,
-                            canvasSize.x, canvasSize.y,
-                            {clearColor.x, clearColor.y, clearColor.z, clearColor.w},
-                            {1, 0}
-                        );
+        const VkCommandBuffer cmdBuffer = pair.second.cmdBuffer;
+            
+        if (pair.first)
+            pair.first->end(cmdBuffer);
+        else
+            swapchain.getRenderPass().end(cmdBuffer);
 
-                        const auto camViewport = cmd.camera->getViewport();
-                        VkViewport vp{camViewport.x, camViewport.y, camViewport.z, camViewport.w, 0, 1};
-                        vkCmdSetViewport(swapchainCmdBuf, 0, 1, &vp);
+        SL_VK_CHECK_RESULT(vkEndCommandBuffer(cmdBuffer));
+    }
 
-                        VkRect2D scissor{{0, 0}, {vp.width, vp.height}}; // TODO proper values
-                        vkCmdSetScissor(swapchainCmdBuf, 0, 1, &scissor);
-                    }
+    VkSemaphore prevSemaphore = presentCompleteSem;
+    for (auto &pass: passesToRender)
+    {
+        auto &ctx = renderPassContexts.at(pass);
+        vk::queueSubmit(queue, 1, &prevSemaphore, 1, &ctx.completeSemaphore, 1, &ctx.cmdBuffer);
+        prevSemaphore = ctx.completeSemaphore;
+    }
 
-                    break;
-                }
-
-                case RenderCommandType::EndCamera:
-                {
-                    if (currentCamera)
-                    {
-                        const auto renderTarget = currentCamera->getRenderTarget();
-                        if (!renderTarget)
-                            swapchainRenderPass.end(swapchainCmdBuf);
-
-                        currentCamera = nullptr;
-                    }
-                
-                    break;
-                }
-
-                case RenderCommandType::DrawMesh:
-                {
-                    break;
-                }
-
-                case RenderCommandType::DrawMeshPart:
-                {
-                    if (currentCamera)
-                    {
-                        drawMeshPart(
-                            cmd.meshPart.material,
-                            cmd.meshPart.transform,
-                            cmd.meshPart.mesh,
-                            currentCamera,
-                            cmd.meshPart.part,
-                            swapchainCmdBuf,
-                            swapchainRenderPass
-                        );
-                    }
-
-                    break;
-                }
-
-                default:
-                    break;
-            }
-        }
-    });
-
-    swapchain.submitAndPresent(queue, 1, &test.semaphore);
+    swapchain.present(queue, 1, &prevSemaphore);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 }
 
