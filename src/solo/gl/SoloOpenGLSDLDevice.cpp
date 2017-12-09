@@ -27,9 +27,12 @@ OpenGLSDLDevice::OpenGLSDLDevice(DeviceSetup const &setup):
     if (setup.fullScreen)
         flags |= SDL_WINDOW_FULLSCREEN;
 
-    window = SDL_CreateWindow(setup.windowTitle.c_str(),
+    window = SDL_CreateWindow(
+        setup.windowTitle.c_str(),
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        setup.canvasWidth, setup.canvasHeight, flags);
+        setup.canvasWidth, setup.canvasHeight,
+        flags
+    );
     context = SDL_GL_CreateContext(window);
 
     glewExperimental = true;
