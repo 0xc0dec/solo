@@ -71,7 +71,7 @@ function demo()
     --- 
 
     function run()
-        local keepRunning = function()
+        function keepRunning()
             return (
                 not dev:isQuitRequested() and
                 not dev:isWindowCloseRequested() and
@@ -79,18 +79,22 @@ function demo()
                 ) or dev:hasActiveBackgroundJobs()
         end
 
-        local detachPostProcessor = function()
+        function detachPostProcessor()
             if pp then
                 pp:detach()
                 pp = nil
             end
         end
 
-        local updateCmp = function(cmp)
+        function updateCmp(cmp)
             cmp:update()
         end
 
-        local update = function()
+        function renderCmp(cmp)
+            cmp:render()
+        end
+
+        function update()
             scene:visit(updateCmp)
 
             if dev:isKeyPressed(sl.KeyCode.Digit1, true) then
@@ -108,23 +112,23 @@ function demo()
             end
         end
 
-        local renderByTags = function(tags)
-            scene:visitByTags(tags, function(cmp) cmp:render() end)
+        function renderByTags(tags)
+            scene:visitByTags(tags, renderCmp)
         end
 
-        local renderOffscreenFrame = function()
+        function renderOffscreenFrame()
             renderByTags(knownTags.skybox)
             renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.monitor | knownTags.postProcessor))
             renderByTags(knownTags.transparent)
         end
 
-        local renderFrame = function()
+        function renderFrame()
             renderByTags(knownTags.skybox)
             renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.postProcessor))
             renderByTags(knownTags.transparent)
         end
 
-        local render = function()
+        function render()
             offscreenCamera:renderFrame(renderOffscreenFrame)
             mainCamera:renderFrame(renderFrame)
 
@@ -133,12 +137,14 @@ function demo()
             end
         end
 
+        function updateAndRender()
+            physics:update()
+            update()
+            renderer:renderFrame(render)
+        end
+
         while keepRunning() do
-            dev:update(function()
-                physics:update()
-                update()
-                renderer:renderFrame(render)
-            end)
+            dev:update(updateAndRender)
         end
     end
 

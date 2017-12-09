@@ -155,8 +155,16 @@ function demo()
                not dev:isKeyPressed(sl.KeyCode.Escape, true)
     end
 
+    function renderCmp(cmp)
+        cmp:render()
+    end
+
+    function updateCmp(cmp)
+        cmp:update()
+    end
+
     function update()
-        scene:visit(function(cmp) cmp:update() end)
+        scene:visit(updateCmp)
 
         local lifetime = dev:getLifetime()
             
@@ -165,23 +173,24 @@ function demo()
         camera:setClearColor(color)
     end
 
-    function render()
-        offscreenCamera:renderFrame(function(ctx)
-            scene:visit(function(cmp) cmp:render(ctx) end)
-        end)
+    function renderFrame()
+        scene:visit(renderCmp)
+    end
 
-        camera:renderFrame(function(ctx)
-            scene:visit(function(cmp) cmp:render(ctx) end)
-        end)
+    function render()
+        offscreenCamera:renderFrame(renderFrame)
+        camera:renderFrame(renderFrame)
+    end
+
+    function updateAndRender()
+        physics:update()
+        update()
+        renderer:renderFrame(render)
     end
 
     function run()
         while keepRunning() do
-            dev:update(function()
-                physics:update()
-                update()
-                renderer:renderFrame(render)
-            end)
+            dev:update(updateAndRender)
         end
     end
 

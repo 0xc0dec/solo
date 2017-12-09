@@ -20,51 +20,21 @@ namespace solo
         void init() override final;
         void update() override final;
 
-        auto getMovementSpeed() const -> float;
-        void setMovementSpeed(float speed);
+        auto getMovementSpeed() const -> float { return movementSpeed; }
+        void setMovementSpeed(float speed) { movementSpeed = speed; }
 
-        auto getMouseSensitivity() const -> float;
-        void setMouseSensitivity(float sensitivity);
+        auto getMouseSensitivity() const -> float { return mouseSensitivity; }
+        void setMouseSensitivity(float sensitivity) { mouseSensitivity = sensitivity; }
 
-        auto getRotationAcceleration() const -> float;
-        void setRotationAcceleration(float acceleration);
+        auto getRotationAcceleration() const -> float { return rotationAcceleration; }
+        void setRotationAcceleration(float acceleration) { rotationAcceleration = acceleration;  }
 
     private:
         Device *device = nullptr;
         Transform *transform = nullptr;
 
-        float mouseSensitivity = 0.08f;
+        float mouseSensitivity = 0.002f;
         float rotationAcceleration = 20;
         float movementSpeed = 10;
     };
-
-    inline auto Spectator::getMouseSensitivity() const -> float
-    {
-        return mouseSensitivity;
-    }
-
-    inline void Spectator::setMouseSensitivity(float sensitivity)
-    {
-        mouseSensitivity = sensitivity;
-    }
-
-    inline auto Spectator::getMovementSpeed() const -> float
-    {
-        return movementSpeed;
-    }
-
-    inline void Spectator::setMovementSpeed(float speed)
-    {
-        movementSpeed = speed;
-    }
-
-    inline auto Spectator::getRotationAcceleration() const -> float
-    {
-        return rotationAcceleration;
-    }
-
-    inline void Spectator::setRotationAcceleration(float acceleration)
-    {
-        rotationAcceleration = acceleration; 
-    }
 }

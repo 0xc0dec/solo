@@ -48,11 +48,6 @@ void registerDeviceSetup(CppBindModule<LuaBinding> &module)
     REG_FIELD(setup, DeviceSetup, canvasHeight);
     REG_FIELD(setup, DeviceSetup, fullScreen);
     REG_FIELD(setup, DeviceSetup, windowTitle);
-    REG_FIELD(setup, DeviceSetup, redBits);
-    REG_FIELD(setup, DeviceSetup, greenBits);
-    REG_FIELD(setup, DeviceSetup, blueBits);
-    REG_FIELD(setup, DeviceSetup, depthBits);
-    REG_FIELD(setup, DeviceSetup, alphaBits);
     REG_FIELD(setup, DeviceSetup, vsync);
     REG_FIELD(setup, DeviceSetup, logFilePath);
     setup.endClass();

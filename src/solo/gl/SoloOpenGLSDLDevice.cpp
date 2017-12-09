@@ -16,11 +16,7 @@ OpenGLSDLDevice::OpenGLSDLDevice(DeviceSetup const &setup):
     SDLDevice(setup)
 {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, setup.redBits);
-    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, setup.greenBits);
-    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, setup.blueBits);
-    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, setup.alphaBits);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, setup.depthBits);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
     auto flags = static_cast<u32>(SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);

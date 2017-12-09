@@ -19,11 +19,6 @@ namespace solo
         
         u32 canvasWidth = 800;
         u32 canvasHeight = 600;
-        u32 redBits = 5;
-        u32 greenBits = 5;
-        u32 blueBits = 5;
-        u32 depthBits = 24;
-        u32 alphaBits = 0;
         
         bool fullScreen = false;
         bool vsync = false;
