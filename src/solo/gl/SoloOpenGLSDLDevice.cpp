@@ -36,7 +36,7 @@ OpenGLSDLDevice::OpenGLSDLDevice(DeviceSetup const &setup):
     if (glewInit() != GLEW_OK)
         cleanup();
 
-    SDL_GL_SetSwapInterval(1);
+    SDL_GL_SetSwapInterval(setup.vsync ? -1 : 0);
 }
 
 OpenGLSDLDevice::~OpenGLSDLDevice()
