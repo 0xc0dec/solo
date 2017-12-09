@@ -17,6 +17,21 @@
 
 using namespace solo;
 
+static auto createShader(VkDevice device, const void *data, u32 size) -> VulkanResource<VkShaderModule>
+{
+    VkShaderModuleCreateInfo shaderModuleInfo{};
+    shaderModuleInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+    shaderModuleInfo.pNext = nullptr;
+    shaderModuleInfo.flags = 0;
+    shaderModuleInfo.codeSize = size;
+    shaderModuleInfo.pCode = reinterpret_cast<const u32*>(data);
+
+    VulkanResource<VkShaderModule> module{device, vkDestroyShaderModule};
+    SL_VK_CHECK_RESULT(vkCreateShaderModule(device, &shaderModuleInfo, nullptr, module.cleanRef()));
+
+    return module;
+}
+
 auto VulkanEffect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<VulkanEffect>
 {
     // TODO
@@ -26,8 +41,8 @@ auto VulkanEffect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr
 VulkanEffect::VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
 {
     renderer = dynamic_cast<VulkanRenderer *>(device->getRenderer());
-    vertexShader = vk::createShader(renderer->getDevice(), vsSrc, vsSrcLen);
-    fragmentShader = vk::createShader(renderer->getDevice(), fsSrc, fsSrcLen);
+    vertexShader = createShader(renderer->getDevice(), vsSrc, vsSrcLen);
+    fragmentShader = createShader(renderer->getDevice(), fsSrc, fsSrcLen);
     introspectShader(static_cast<const u32*>(vsSrc), vsSrcLen / sizeof(u32));
     introspectShader(static_cast<const u32*>(fsSrc), fsSrcLen / sizeof(u32));
 }

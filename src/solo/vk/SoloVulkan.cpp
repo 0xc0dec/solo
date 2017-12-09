@@ -97,21 +97,6 @@ auto vk::createFrameBuffer(VkDevice device, const vec<VkImageView> &attachments,
     return frameBuffer;
 }
 
-auto vk::createShader(VkDevice device, const void *data, u32 size) -> VulkanResource<VkShaderModule>
-{
-    VkShaderModuleCreateInfo shaderModuleInfo {};
-    shaderModuleInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-    shaderModuleInfo.pNext = nullptr;
-    shaderModuleInfo.flags = 0;
-    shaderModuleInfo.codeSize = size;
-    shaderModuleInfo.pCode = reinterpret_cast<const u32*>(data);
-
-    VulkanResource<VkShaderModule> module{device, vkDestroyShaderModule};
-    SL_VK_CHECK_RESULT(vkCreateShaderModule(device, &shaderModuleInfo, nullptr, module.cleanRef()));
-
-    return module;
-}
-
 auto vk::createImageView(VkDevice device, VkFormat format, VkImageViewType type, u32 mipLevels, u32 layers,
     VkImage image, VkImageAspectFlags aspectMask) -> VulkanResource<VkImageView>
 {
@@ -132,19 +117,6 @@ auto vk::createImageView(VkDevice device, VkFormat format, VkImageViewType type,
     SL_VK_CHECK_RESULT(vkCreateImageView(device, &viewInfo, nullptr, view.cleanRef()));
 
     return view;
-}
-
-auto vk::createShaderStageInfo(bool vertex, VkShaderModule shader, const s8* entryPoint) -> VkPipelineShaderStageCreateInfo
-{
-    VkPipelineShaderStageCreateInfo info{};
-    info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-    info.pNext = nullptr;
-    info.flags = 0;
-    info.stage = vertex ? VK_SHADER_STAGE_VERTEX_BIT : VK_SHADER_STAGE_FRAGMENT_BIT;
-    info.module = shader;
-    info.pName = entryPoint;
-    info.pSpecializationInfo = nullptr;
-    return info;
 }
 
 #endif

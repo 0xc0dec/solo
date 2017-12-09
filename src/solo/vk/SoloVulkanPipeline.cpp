@@ -11,6 +11,19 @@
 
 using namespace solo;
 
+static auto createShaderStageInfo(bool vertex, VkShaderModule shader, const s8* entryPoint) -> VkPipelineShaderStageCreateInfo
+{
+    VkPipelineShaderStageCreateInfo info{};
+    info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+    info.pNext = nullptr;
+    info.flags = 0;
+    info.stage = vertex ? VK_SHADER_STAGE_VERTEX_BIT : VK_SHADER_STAGE_FRAGMENT_BIT;
+    info.module = shader;
+    info.pName = entryPoint;
+    info.pSpecializationInfo = nullptr;
+    return info;
+}
+
 VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const VulkanPipelineConfig &config)
 {
     VkPipelineLayoutCreateInfo layoutInfo{};
@@ -49,8 +62,8 @@ VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const V
     colorBlendState.blendConstants[2] = 0;
     colorBlendState.blendConstants[3] = 0;
 
-    const auto vertexShaderStageInfo = vk::createShaderStageInfo(true, config.vertexShader, "main");
-    const auto fragmentShaderStageInfo = vk::createShaderStageInfo(false, config.fragmentShader, "main");
+    const auto vertexShaderStageInfo = createShaderStageInfo(true, config.vertexShader, "main");
+    const auto fragmentShaderStageInfo = createShaderStageInfo(false, config.fragmentShader, "main");
 
     vec<VkPipelineShaderStageCreateInfo> shaderStageStates{vertexShaderStageInfo, fragmentShaderStageInfo};
 

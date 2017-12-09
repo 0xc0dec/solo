@@ -38,8 +38,6 @@ namespace solo
             VkMemoryPropertyFlags properties) -> s32;
         auto createFrameBuffer(VkDevice device, const vec<VkImageView> &attachments,
             VkRenderPass renderPass, u32 width, u32 height) -> VulkanResource<VkFramebuffer>;
-        auto createShader(VkDevice device, const void *data, u32 size) -> VulkanResource<VkShaderModule>;
-        auto createShaderStageInfo(bool vertex, VkShaderModule shader, const s8 *entryPoint) -> VkPipelineShaderStageCreateInfo;
         auto createImageView(VkDevice device, VkFormat format, VkImageViewType type, u32 mipLevels, u32 layers,
             VkImage image, VkImageAspectFlags aspectMask) -> VulkanResource<VkImageView>;
     }
