@@ -110,30 +110,5 @@ add_executable(Solo
         ${sources})
 target_link_libraries(Solo lua ${frameworks})
 set_target_properties(Solo PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build"
+    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build/solo"
 )
-
-# Tester
-
-#file(GLOB_RECURSE tester_sources "src/tests/tester/*.cpp")
-#add_executable(Tester ${tester_sources})
-#target_link_libraries(Tester LINK_PUBLIC solo)
-#set_target_properties(Tester PROPERTIES
-#    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build/Tester"
-#)
-
-# Demos
-
-#file(GLOB_RECURSE demo1_sources "src/demos/demo1/*.cpp")
-#add_executable(Demo1 ${demo1_sources})
-#target_link_libraries(Demo1 LINK_PUBLIC solo)
-#set_target_properties(Demo1 PROPERTIES
-#    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build/Demo1"
-#)
-#
-#file(GLOB_RECURSE demo2_sources "src/demos/demo2/*.cpp")
-#add_executable(Demo2 ${demo2_sources})
-#target_link_libraries(Demo2 LINK_PUBLIC solo)
-#set_target_properties(Demo2 PROPERTIES
-#    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build/Demo2"
-#)
