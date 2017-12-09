@@ -86,8 +86,12 @@ function demo()
             end
         end
 
+        local updateCmp = function(cmp)
+            cmp:update()
+        end
+
         local update = function()
-            scene:visit(function(cmp) cmp:update() end)
+            scene:visit(updateCmp)
 
             if dev:isKeyPressed(sl.KeyCode.Digit1, true) then
                 detachPostProcessor()
@@ -108,18 +112,21 @@ function demo()
             scene:visitByTags(tags, function(cmp) cmp:render() end)
         end
 
-        local render = function()
-            offscreenCamera:renderFrame(function()
-                renderByTags(knownTags.skybox)
-                renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.monitor | knownTags.postProcessor))
-                renderByTags(knownTags.transparent)
-            end)
+        local renderOffscreenFrame = function()
+            renderByTags(knownTags.skybox)
+            renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.monitor | knownTags.postProcessor))
+            renderByTags(knownTags.transparent)
+        end
 
-            mainCamera:renderFrame(function()
-                renderByTags(knownTags.skybox)
-                renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.postProcessor))
-                renderByTags(knownTags.transparent)
-            end)
+        local renderFrame = function()
+            renderByTags(knownTags.skybox)
+            renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.postProcessor))
+            renderByTags(knownTags.transparent)
+        end
+
+        local render = function()
+            offscreenCamera:renderFrame(renderOffscreenFrame)
+            mainCamera:renderFrame(renderFrame)
 
             if pp then
                 pp:apply()
