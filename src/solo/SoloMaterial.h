@@ -12,7 +12,6 @@
 #include "SoloVector4.h"
 #include "SoloMatrix.h"
 #include "SoloEffect.h"
-#include <unordered_map>
 
 namespace solo
 {

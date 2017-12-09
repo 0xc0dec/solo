@@ -25,6 +25,7 @@ namespace solo
     class Device;
     class Camera;
     class VulkanMesh;
+    class VulkanMaterial;
 
     class VulkanRenderer final : public Renderer
     {
@@ -67,11 +68,11 @@ namespace solo
         VulkanSwapchain swapchain;
 
         vec<RenderCommand> renderCommands;
-        vec<VulkanPipeline> pipelines;
+        umap<Material*, umap<Transform*, umap<Camera*, VulkanPipeline>>> testPipelines;
 
-        struct NodeBinding
+        struct NodeContext
         {
-            umap<str, VulkanBuffer> buffers;
+            umap<str, VulkanBuffer> uniformBuffers;
             VulkanDescriptorPool descPool;
             VulkanResource<VkDescriptorSetLayout> descSetLayout;
             VkDescriptorSet descSet = VK_NULL_HANDLE;
@@ -85,13 +86,16 @@ namespace solo
             VulkanRenderPass *renderPass = nullptr;
         };
 
+        // TODO Clear
         umap<VulkanRenderPass*, RenderPassContext> renderPassContexts;
 
         // TODO clear this when bindings get no longer used
-        umap<const Material*, umap<const Transform*, umap<const Camera*, NodeBinding>>> nodeMaterialBindings;
+        umap<const Material*, umap<const Transform*, umap<const Camera*, NodeContext>>> nodeContexts;
 
-        void drawMeshPart(Material *material, Transform *transform, Mesh *mesh, const Camera *camera,
+        void drawMeshPart(Material *material, Transform *transform, Mesh *mesh, Camera *camera,
             u32 part, VkCommandBuffer cmdBuf, VkRenderPass renderPass);
+        auto ensureNodeContext(Transform *transform, Camera *camera, Mesh *mesh, VulkanMaterial *material)
+            -> NodeContext&;
     };
 }
 

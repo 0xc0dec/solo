@@ -191,98 +191,117 @@ void VulkanRenderer::beginFrame()
 {
     renderCommands.clear();
     renderCommands.reserve(100); // TODO just picked random constant
-    pipelines.clear();
+//    pipelines.clear();
+}
+
+auto VulkanRenderer::ensureNodeContext(Transform *transform, Camera *camera, Mesh *mesh, VulkanMaterial *material)
+    -> NodeContext&
+{
+    auto &context = nodeContexts[material][transform][camera];
+    if (context.descSet) // already initialized
+        return context;
+
+    const auto vkEffect = static_cast<VulkanEffect*>(material->getEffect());
+    const auto &uniformBufs = vkEffect->getUniformBuffers();
+    const auto &effectSamplers = vkEffect->getSamplers();
+
+    auto builder = VulkanDescriptorSetLayoutBuilder(device);
+
+    for (const auto &info: uniformBufs)
+    {
+        const auto bufferName = info.first;
+        context.uniformBuffers[bufferName] = VulkanBuffer::createUniformHostVisible(this, info.second.size);
+        builder.withBinding(info.second.binding, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
+    }
+
+    for (auto &pair : effectSamplers)
+        builder.withBinding(pair.second.binding, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT);
+
+    context.descSetLayout = builder.build();
+
+    auto poolConfig = VulkanDescriptorPoolConfig();
+    poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, uniformBufs.size());
+    poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, effectSamplers.size());
+
+    context.descPool = VulkanDescriptorPool(device, 1, poolConfig);
+    context.descSet = context.descPool.allocateSet(context.descSetLayout);
+
+    return context;
 }
 
 void VulkanRenderer::drawMeshPart(
     Material *material, Transform *transform, Mesh *mesh,
-    const Camera *camera, u32 part, VkCommandBuffer cmdBuf, VkRenderPass renderPass
+    Camera *camera, u32 part, VkCommandBuffer cmdBuf, VkRenderPass renderPass
 )
 {
     const auto vkMaterial = static_cast<VulkanMaterial*>(material);
     const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->getEffect());
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
     const auto &uniformBufs = vkEffect->getUniformBuffers();
-    const auto &effectSamplers = vkEffect->getSamplers();
     const auto &materialSamplers = vkMaterial->getSamplers();
-    auto &binding = nodeMaterialBindings[vkMaterial][transform][camera];
+    
+    auto &context = ensureNodeContext(transform, camera, mesh, vkMaterial);
 
-    if (!binding.descSet) // new binding
+    // TODO Invoke updater outside of the binding initialization because at least
+    // material sampler parameters may change in future
+
+    // TODO Invoke updater not so often - only when something really changes
+    VulkanDescriptorSetUpdater updater{device};
+
+    // TODO Not necessary (?), buffers don't change anyway, only their content
+    for (auto &pair : context.uniformBuffers)
     {
-        auto builder = VulkanDescriptorSetLayoutBuilder(device);
-
-        for (const auto &info: uniformBufs)
-        {
-            const auto bufferName = info.first;
-            binding.buffers[bufferName] = VulkanBuffer::createUniformHostVisible(this, info.second.size);
-            builder.withBinding(info.second.binding, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
-        }
-
-        for (auto &pair : effectSamplers)
-            builder.withBinding(pair.second.binding, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT);
-
-        binding.descSetLayout = builder.build();
-
-        auto poolConfig = VulkanDescriptorPoolConfig();
-        poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, uniformBufs.size());
-        poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, effectSamplers.size());
-
-        binding.descPool = VulkanDescriptorPool(device, 1, poolConfig);
-        binding.descSet = binding.descPool.allocateSet(binding.descSetLayout);
-
-        // TODO Invoke updater outside of the binding initialization because at least
-        // material sampler parameters may change in future
-
-        // TODO Invoke updater not so often - only when something really changes
-        VulkanDescriptorSetUpdater updater{device};
-
-        // TODO Not necessary (?), buffers don't change anyway, only their content
-        for (auto &pair : binding.buffers)
-        {
-            const auto info = uniformBufs.at(pair.first);
-            auto &buffer = pair.second;
-            updater.forUniformBuffer(info.binding, binding.descSet, buffer, 0, info.size); // TODO use single large buffer?
-        }
-
-        for (auto &pair : materialSamplers)
-        {
-            auto &info = pair.second;
-            updater.forTexture(
-                info.binding,
-                binding.descSet,
-                info.texture->getImage().getView(),
-                info.texture->getImage().getSampler(),
-                VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
-            );
-        }
-
-        updater.updateSets();
+        const auto info = uniformBufs.at(pair.first);
+        auto &buffer = pair.second;
+        updater.forUniformBuffer(info.binding, context.descSet, buffer, 0, info.size); // TODO use single large buffer?
     }
+
+    for (auto &pair : materialSamplers)
+    {
+        auto &info = pair.second;
+        updater.forTexture(
+            info.binding,
+            context.descSet,
+            info.texture->getImage().getView(),
+            info.texture->getImage().getSampler(),
+            VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
+        );
+    }
+
+    updater.updateSets();
 
     auto &bufferItems = vkMaterial->getBufferItems();
     for (auto &p: bufferItems)
     {
-        auto &buffer = binding.buffers[p.first];
+        auto &buffer = context.uniformBuffers[p.first];
         for (auto &pp: p.second)
             pp.second.write(buffer, camera, transform);
     }
 
-    const auto vs = vkEffect->getVertexShader();
-    const auto fs = vkEffect->getFragmentShader();
-    auto pipelineConfig = VulkanPipelineConfig(vs, fs)
-        .withDescriptorSetLayout(binding.descSetLayout)
-        .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
-        .withCullMode(vkMaterial->getCullModeFlags())
-        .withPolygonMode(vkMaterial->getVkPolygonMode())
-        .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
+    auto *pipeline = &testPipelines[material][transform][camera];
+    if (!*pipeline)
+    {
+        const auto vs = vkEffect->getVertexShader();
+        const auto fs = vkEffect->getFragmentShader();
+        auto pipelineConfig = VulkanPipelineConfig(vs, fs)
+            .withDescriptorSetLayout(context.descSetLayout)
+            .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
+            .withCullMode(vkMaterial->getCullModeFlags())
+            .withPolygonMode(vkMaterial->getVkPolygonMode())
+            .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 
-    for (s32 i = 0; i < vkMesh->getVertexBufferCount(); i++)
-        pipelineConfig.withVertexBufferLayout(i, vkMesh->getVertexBufferLayout(i));
+        for (s32 i = 0; i < vkMesh->getVertexBufferCount(); i++)
+            pipelineConfig.withVertexBufferLayout(i, vkMesh->getVertexBufferLayout(i));
 
-    pipelines.emplace_back(device, renderPass, pipelineConfig);
+        testPipelines[material][transform][camera] = std::move(VulkanPipeline{device, renderPass, pipelineConfig});
+        pipeline = &testPipelines[material][transform][camera];
+//        pipelines.emplace_back(device, renderPass, pipelineConfig);
+    }
 
-    vkCmdBindPipeline(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipelines.rbegin());
-    vkCmdBindDescriptorSets(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelines.rbegin()->getLayout(), 0, 1, &binding.descSet, 0, nullptr);
+//    vkCmdBindPipeline(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipelines.rbegin());
+//    vkCmdBindDescriptorSets(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelines.rbegin()->getLayout(), 0, 1, &context.descSet, 0, nullptr);
+    vkCmdBindPipeline(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipeline);
+    vkCmdBindDescriptorSets(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->getLayout(), 0, 1, &context.descSet, 0, nullptr);
 
     VkDeviceSize vertexBufferOffset = 0;
     for (u32 i = 0; i < vkMesh->getVertexBufferCount(); i++)
@@ -300,7 +319,7 @@ void VulkanRenderer::endFrame()
 {
     const auto canvasSize = engineDevice->getCanvasSize();
     const auto presentCompleteSem = swapchain.moveNext();
-    const Camera *currentCamera = nullptr;
+    Camera *currentCamera = nullptr;
     VulkanRenderPass *currentRenderPass = nullptr;
     VkCommandBuffer currentCmdBuffer = VK_NULL_HANDLE;
     vec<VulkanRenderPass*> passesToRender;
