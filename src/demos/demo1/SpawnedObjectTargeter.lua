@@ -3,17 +3,23 @@
 -- MIT license
 -- 
 
-return function(physics)
+return function(dev)
+    local physics = dev:getPhysics()
+
     return {
         typeId = sl.getCmpId("SpawnedObjectTargeter"),
 
         init = function(self)
             self.transform = self.node:findComponent("Transform")
+            self.camera = self.node:findComponent("Camera")
         end,
 
         update = function(self)
-            local to = self.transform:getWorldPosition() + self.transform:getLocalForward() * 100
-            local hitResults = physics:rayTestAll(self.transform:getWorldPosition(), to)
+            local mousePos = dev:getMousePosition()
+            local ray = self.camera:canvasPointToWorldRay(mousePos)
+            local from = ray:getOrigin()
+            local to = from + ray:getDirection() * 100
+            local hitResults = physics:rayTestAll(from, to)
 
             for i, hit in ipairs(hitResults) do
                 local obj = hit.body:getNode():findScriptComponent(sl.getCmpId("SpawnedObject"))

@@ -20,6 +20,7 @@ namespace solo
     class FrameBuffer;
     class Renderer;
     class Device;
+    class Ray;
     struct Radian;
 
     class Camera: public ComponentBase<Camera>, protected TransformCallback
@@ -31,6 +32,8 @@ namespace solo
         void terminate() override final { transform->removeCallback(this); }
 
         void renderFrame(std::function<void()> render);
+
+        auto canvasPointToWorldRay(const Vector2 &canvasPoint) -> Ray;
 
         auto getTransform() const -> Transform* { return transform; }
 
@@ -52,11 +55,11 @@ namespace solo
         bool isPerspective() const { return !ortho; }
         void setPerspective(bool perspective);
 
-        auto getNear() const -> float { return nearClip; }
-        void setNear(float near);
+        auto getZNear() const -> float { return zNear; }
+        void setZNear(float near);
 
-        auto getFar() const -> float { return farClip; }
-        void setFar(float far);
+        auto getZFar() const -> float { return zFar; }
+        void setZFar(float far);
 
         auto getFOV() const -> Radian { return fov; }
         void setFOV(const Radian &fov);
@@ -65,7 +68,6 @@ namespace solo
         void setOrthoSize(const Vector2 &size);
 
         auto getAspectRatio() const -> float { return aspectRatio; }
-        void setAspectRatio(float ratio);
 
         auto getViewMatrix() const -> const Matrix;
         auto getInvViewMatrix() const -> const Matrix;
@@ -91,8 +93,8 @@ namespace solo
         bool ortho = false;
         Vector2 orthoSize{1, 1};
         Radian fov;
-        float nearClip = 1;
-        float farClip = 100;
+        float zNear = 1;
+        float zFar = 100;
         float aspectRatio = 1;
 
         mutable u32 dirtyFlags = ~0;

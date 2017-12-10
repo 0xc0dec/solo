@@ -13,7 +13,7 @@ return function(dev, scene)
 
     local cam = node:addComponent("Camera")
     cam:setClearColor(vec4(0.0, 0.6, 0.6, 1.0))
-    cam:setNear(0.05)
+    cam:setZNear(0.05)
 
     return cam, node
 end

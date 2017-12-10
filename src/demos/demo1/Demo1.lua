@@ -46,7 +46,7 @@ function demo()
     local offscreenCamera, offscreenCameraTex = createOffscreenCamera(dev, scene)
 
     local mainCamera, mainCameraNode = createMainCamera(dev, scene)
-    mainCameraNode:addScriptComponent(createSpawnedObjectTargeter(dev:getPhysics()))
+    mainCameraNode:addScriptComponent(createSpawnedObjectTargeter(dev))
     mainCameraNode:addScriptComponent(createSpawner(dev, cubeMesh, assetCache))
     local mainCameraTransform = mainCameraNode:findComponent("Transform")
     mainCameraTransform:setLocalPosition(vec3(0, 5, 10))

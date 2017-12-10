@@ -9,8 +9,10 @@
 #include "SoloRadian.h"
 #include "SoloDegree.h"
 #include "SoloScene.h"
+#include "SoloRay.h"
 #include "SoloRenderer.h"
 #include "SoloRenderCommand.h"
+#include "SoloFrameBuffer.h"
 
 using namespace solo;
 
@@ -40,8 +42,9 @@ void Camera::init()
 {
     transform = node.findComponent<Transform>();
     transform->addCallback(this);
-    auto canvasSize = device->getCanvasSize();
-    setAspectRatio(canvasSize.x / canvasSize.y);
+    const auto canvasSize = device->getCanvasSize();
+    aspectRatio = canvasSize.x / canvasSize.y;
+    dirtyFlags |= AllProjectionDirtyBits;
 }
 
 void Camera::onTransformChanged(const Transform *)
@@ -67,21 +70,15 @@ void Camera::setOrthoSize(const Vector2& size)
     dirtyFlags |= AllProjectionDirtyBits;
 }
 
-void Camera::setAspectRatio(float ratio)
+void Camera::setZFar(float far)
 {
-    aspectRatio = ratio;
+    this->zFar = far;
     dirtyFlags |= AllProjectionDirtyBits;
 }
 
-void Camera::setFar(float far)
+void Camera::setZNear(float near)
 {
-    this->farClip = far;
-    dirtyFlags |= AllProjectionDirtyBits;
-}
-
-void Camera::setNear(float near)
-{
-    this->nearClip = near;
+    this->zNear = near;
     dirtyFlags |= AllProjectionDirtyBits;
 }
 
@@ -112,9 +109,9 @@ auto Camera::getProjectionMatrix() const -> const Matrix
     if (dirtyFlags & ProjectionDirtyBit)
     {
         if (ortho)
-            projectionMatrix = Matrix::createOrthographic(orthoSize.x, orthoSize.y, nearClip, farClip);
+            projectionMatrix = Matrix::createOrthographic(orthoSize.x, orthoSize.y, zNear, zFar);
         else
-            projectionMatrix = Matrix::createPerspective(fov, aspectRatio, nearClip, farClip);
+            projectionMatrix = Matrix::createPerspective(fov, aspectRatio, zNear, zFar);
         dirtyFlags &= ~ProjectionDirtyBit;
     }
     return projectionMatrix;
@@ -146,4 +143,17 @@ void Camera::renderFrame(std::function<void()> render)
     renderer->addRenderCommand(RenderCommand::beginCamera(this));
     render();
     renderer->addRenderCommand(RenderCommand::endCamera(this));
+}
+
+auto Camera::canvasPointToWorldRay(const Vector2 &canvasPoint) -> Ray
+{
+    const auto halfHeightInWorldUnits = zNear * tanf(fov.toRawRadian() / 2);
+    const auto halfWidthInWorldUnits = halfHeightInWorldUnits * aspectRatio;
+    const auto canvasSize = renderTarget ? renderTarget->getDimensions() : device->getCanvasSize();
+    const auto right = transform->getWorldRight() * (halfWidthInWorldUnits * (2 * canvasPoint.x / canvasSize.x - 1));
+    const auto down = transform->getWorldDown() * (halfHeightInWorldUnits * (2 * canvasPoint.y / canvasSize.y - 1));
+    const auto pos = transform->getWorldPosition();
+    const auto canvasCenter = pos + transform->getWorldForward() * zNear;
+    const auto origin = canvasCenter + right + down;
+    return Ray{origin, (origin - pos).normalized()};
 }

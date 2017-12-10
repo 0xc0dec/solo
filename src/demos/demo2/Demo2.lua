@@ -47,7 +47,7 @@ function demo()
 
         local cam = node:addComponent("Camera")
         cam:setClearColor(vec4(1, 0, 1, 1))
-        cam:setNear(0.05)
+        cam:setZNear(0.05)
         cam:setViewport(vec4(0, 0, canvasSize.x, canvasSize.y))
 
         local fb = sl.FrameBuffer.create(dev)

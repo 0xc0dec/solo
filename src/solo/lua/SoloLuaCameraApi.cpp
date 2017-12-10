@@ -4,6 +4,7 @@
 */
 
 #include "SoloCamera.h"
+#include "SoloRay.h" // really needed
 #include "SoloLuaCommon.h"
 
 using namespace solo;
@@ -25,16 +26,16 @@ void registerCameraApi(CppBindModule<LuaBinding> &module)
     REG_METHOD(camera, Camera, setViewport);
     REG_METHOD(camera, Camera, isPerspective);
     REG_METHOD(camera, Camera, setPerspective);
-    REG_METHOD(camera, Camera, getNear);
-    REG_METHOD(camera, Camera, setNear);
-    REG_METHOD(camera, Camera, getFar);
-    REG_METHOD(camera, Camera, setFar);
+    REG_METHOD(camera, Camera, getZNear);
+    REG_METHOD(camera, Camera, setZNear);
+    REG_METHOD(camera, Camera, getZFar);
+    REG_METHOD(camera, Camera, setZFar);
     REG_METHOD(camera, Camera, getFOV);
     REG_METHOD(camera, Camera, setFOV);
     REG_METHOD(camera, Camera, getOrthoSize);
     REG_METHOD(camera, Camera, setOrthoSize);
+    REG_METHOD(camera, Camera, canvasPointToWorldRay);
     REG_METHOD(camera, Camera, getAspectRatio);
-    REG_METHOD(camera, Camera, setAspectRatio);
     REG_METHOD(camera, Camera, getViewMatrix);
     REG_METHOD(camera, Camera, getInvViewMatrix);
     REG_METHOD(camera, Camera, getProjectionMatrix);

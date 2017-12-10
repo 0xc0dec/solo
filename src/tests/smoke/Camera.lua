@@ -30,11 +30,11 @@ cam:setViewport(v4)
 assert(cam:isPerspective() ~= nil)
 cam:setPerspective(true)
 
-assert(cam:getNear() ~= nil)
-cam:setNear(1)
+assert(cam:getZNear() ~= nil)
+cam:setZNear(1)
 
-assert(cam:getFar() ~= nil)
-cam:setFar(1)
+assert(cam:getZFar() ~= nil)
+cam:setZFar(1)
 
 assert(cam:getFOV() ~= nil)
 cam:setFOV(sl.Radian(1))
@@ -43,7 +43,6 @@ assert(cam:getOrthoSize() ~= nil)
 cam:setOrthoSize(sl.Vector2(1, 2))
 
 assert(cam:getAspectRatio() ~= nil)
-cam:setAspectRatio(1)
 
 assert(cam:getViewMatrix())
 assert(cam:getInvViewMatrix())

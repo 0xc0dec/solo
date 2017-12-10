@@ -16,10 +16,10 @@ namespace solo
         Ray(const Vector3 &origin, const Vector3 &direction);
         Ray(float originX, float originY, float originZ, float dirX, float dirY, float dirZ);
 
-        auto getOrigin() const -> Vector3;
+        auto getOrigin() const -> Vector3 { return origin; }
         void setOrigin(const Vector3 &origin);
 
-        auto getDirection() const -> Vector3;
+        auto getDirection() const -> Vector3 { return direction; }
         void setDirection(const Vector3 &direction);
 
     private:
@@ -28,14 +28,4 @@ namespace solo
       
         void normalize();
     };
-
-    inline auto Ray::getOrigin() const -> Vector3
-    {
-        return origin;
-    }
-
-    inline auto Ray::getDirection() const -> Vector3
-    {
-        return direction;
-    }
 }
