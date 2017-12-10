@@ -19,8 +19,8 @@ namespace solo
 
         void setGravity(const Vector3 &gravity) override final;
 
-        auto castRay(const Vector3 &from, const Vector3 &to) -> RaycastResult override final;
-        auto castRayAll(const Vector3 &from, const Vector3 &to) -> vec<RaycastResult> override final;
+        auto rayTestFirst(const Vector3 &from, const Vector3 &to) -> RayTestResult override final;
+        auto rayTestAll(const Vector3 &from, const Vector3 &to) -> vec<RayTestResult> override final;
 
         auto getWorld() const -> btDiscreteDynamicsWorld* { return world.get(); }
 

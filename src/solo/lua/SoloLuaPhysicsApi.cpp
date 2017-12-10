@@ -32,12 +32,12 @@ static void registerRigidBody(CppBindModule<LuaBinding> &module)
     rb.endClass();
 }
 
-static void registerRaycastResult(CppBindModule<LuaBinding> &module)
+static void registerRayTestResult(CppBindModule<LuaBinding> &module)
 {
-    auto rcr = BEGIN_CLASS(module, RaycastResult);
-    REG_FIELD(rcr, RaycastResult, body);
-    REG_FIELD(rcr, RaycastResult, point);
-    REG_FIELD(rcr, RaycastResult, normal);
+    auto rcr = BEGIN_CLASS(module, RayTestResult);
+    REG_FIELD(rcr, RayTestResult, body);
+    REG_FIELD(rcr, RayTestResult, point);
+    REG_FIELD(rcr, RayTestResult, normal);
     rcr.endClass();
 }
 
@@ -46,8 +46,8 @@ static void registerPhysics(CppBindModule<LuaBinding> &module)
     auto ph = BEGIN_CLASS(module, Physics);
     REG_METHOD(ph, Physics, update);
     REG_METHOD(ph, Physics, setGravity);
-    REG_METHOD(ph, Physics, castRay);
-    REG_METHOD(ph, Physics, castRayAll);
+    REG_METHOD(ph, Physics, rayTestFirst);
+    REG_METHOD(ph, Physics, rayTestAll);
     ph.endClass();
 }
 
@@ -65,7 +65,7 @@ void registerPhysicsApi(CppBindModule<LuaBinding> &module)
 {
     registerRigidBodyConstructionParams(module);
     registerRigidBody(module);
-    registerRaycastResult(module);
+    registerRayTestResult(module);
     registerPhysics(module);
     registerColliders(module);
 }

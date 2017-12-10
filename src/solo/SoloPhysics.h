@@ -13,14 +13,14 @@ namespace solo
     class Device;
     class RigidBody;
 
-    class RaycastResult
+    class RayTestResult
     {
     public:
         RigidBody *body;
         Vector3 point;
         Vector3 normal;
 
-        explicit RaycastResult(RigidBody *body = nullptr, const Vector3 &point = Vector3(), const Vector3 &normal = Vector3()):
+        explicit RayTestResult(RigidBody *body = nullptr, const Vector3 &point = Vector3(), const Vector3 &normal = Vector3()):
             body(body), point(point), normal(normal)
         {
         }
@@ -39,8 +39,8 @@ namespace solo
 
         virtual void setGravity(const Vector3 &gravity) = 0;
 
-        virtual auto castRay(const Vector3 &from, const Vector3 &to) -> RaycastResult = 0;
-        virtual auto castRayAll(const Vector3 &from, const Vector3 &to) -> vec<RaycastResult> = 0;
+        virtual auto rayTestFirst(const Vector3 &from, const Vector3 &to) -> RayTestResult = 0;
+        virtual auto rayTestAll(const Vector3 &from, const Vector3 &to) -> vec<RayTestResult> = 0;
 
     protected:
         Device *device = nullptr;

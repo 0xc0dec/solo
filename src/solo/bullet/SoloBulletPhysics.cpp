@@ -30,7 +30,7 @@ void BulletPhysics::setGravity(const Vector3 &gravity)
     world->setGravity(SL_TOBTVEC3(gravity));
 }
 
-auto BulletPhysics::castRay(const Vector3 &from, const Vector3 &to) -> RaycastResult
+auto BulletPhysics::rayTestFirst(const Vector3 &from, const Vector3 &to) -> RayTestResult
 {
     const auto btFrom = SL_TOBTVEC3(from);
     const auto btTo = SL_TOBTVEC3(to);
@@ -38,17 +38,17 @@ auto BulletPhysics::castRay(const Vector3 &from, const Vector3 &to) -> RaycastRe
     btCollisionWorld::ClosestRayResultCallback callback(btFrom, btTo);
     world->rayTest(btFrom, btTo, callback);
     if (!callback.hasHit())
-        return RaycastResult();
+        return RayTestResult();
 
     const auto body = dynamic_cast<const btRigidBody *>(callback.m_collisionObject);
     if (!body)
-        return RaycastResult();
+        return RayTestResult();
 
     const auto rigidBody = static_cast<RigidBody *>(body->getUserPointer());
-    return RaycastResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld), SL_FROMBTVEC3(callback.m_hitNormalWorld));
+    return RayTestResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld), SL_FROMBTVEC3(callback.m_hitNormalWorld));
 }
 
-auto BulletPhysics::castRayAll(const Vector3 &from, const Vector3 &to) -> vec<RaycastResult>
+auto BulletPhysics::rayTestAll(const Vector3 &from, const Vector3 &to) -> vec<RayTestResult>
 {
     const auto btFrom = SL_TOBTVEC3(from);
     const auto btTo = SL_TOBTVEC3(to);
@@ -59,14 +59,14 @@ auto BulletPhysics::castRayAll(const Vector3 &from, const Vector3 &to) -> vec<Ra
     if (size == 0)
         return {};
 
-    auto result = vec<RaycastResult>();
+    auto result = vec<RayTestResult>();
     for (size_t i = 0; i < size; i++)
     {
         const auto body = dynamic_cast<const btRigidBody *>(callback.m_collisionObjects[i]);
         if (body)
         {
             const auto rigidBody = static_cast<RigidBody *>(body->getUserPointer());
-            result.push_back(RaycastResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld[i]), SL_FROMBTVEC3(callback.m_hitNormalWorld[i])));
+            result.push_back(RayTestResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld[i]), SL_FROMBTVEC3(callback.m_hitNormalWorld[i])));
         }
     }
 
