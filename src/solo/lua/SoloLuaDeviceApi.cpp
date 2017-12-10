@@ -28,6 +28,7 @@ static void registerDevice(CppBindModule<LuaBinding> &module)
     REG_METHOD(device, Device, isKeyPressed);
     REG_METHOD(device, Device, isKeyReleased);
     REG_METHOD(device, Device, getMouseMotion);
+    REG_METHOD(device, Device, getMousePosition);
     REG_METHOD(device, Device, isMouseButtonDown);
     REG_METHOD(device, Device, isMouseButtonReleased);
     REG_METHOD(device, Device, update);

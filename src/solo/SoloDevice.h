@@ -94,7 +94,8 @@ namespace solo
         bool isKeyPressed(KeyCode code, bool firstTime = false) const;
         bool isKeyReleased(KeyCode code) const;
 
-        auto getMouseMotion() const -> Vector2;
+        auto getMouseMotion() const -> Vector2 { return mouseDelta; }
+        auto getMousePosition() const -> Vector2 { return mousePos; }
         bool isMouseButtonDown(MouseButton button, bool firstTime = false) const;
         bool isMouseButtonReleased(MouseButton button) const;
 
@@ -125,8 +126,8 @@ namespace solo
         umap<KeyCode, bool> pressedKeys;
         uset<KeyCode> releasedKeys;
 
-        s32 mouseDeltaX = 0;
-        s32 mouseDeltaY = 0;
+        Vector2 mouseDelta;
+        Vector2 mousePos;
         umap<MouseButton, bool> pressedMouseButtons;
         uset<MouseButton> releasedMouseButtons;
 

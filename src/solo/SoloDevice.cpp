@@ -93,11 +93,6 @@ bool Device::isKeyReleased(KeyCode code) const
     return releasedKeys.find(code) != releasedKeys.end();
 }
 
-auto Device::getMouseMotion() const -> Vector2
-{
-    return {static_cast<float>(mouseDeltaX), static_cast<float>(mouseDeltaY)};
-}
-
 bool Device::isMouseButtonDown(MouseButton button, bool firstTime) const
 {
     const auto where = pressedMouseButtons.find(button);

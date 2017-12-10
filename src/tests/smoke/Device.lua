@@ -28,6 +28,7 @@ assert(device:isKeyReleased(sl.KeyCode.Digit0) ~= nil)
 assert(device:hasActiveBackgroundJobs() ~= nil)
 
 assert(device:getMouseMotion())
+assert(device:getMousePosition())
 assert(device:isMouseButtonDown(sl.MouseButton.Left) ~= nil)
 assert(device:isMouseButtonReleased(sl.MouseButton.Left) ~= nil)
 
