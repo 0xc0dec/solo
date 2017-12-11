@@ -23,7 +23,7 @@ namespace solo
 
         void render() override final;
 
-        auto getMesh() const -> Mesh* { return mesh.get(); }
+        auto getMesh() const -> sptr<Mesh> { return mesh; }
         void setMesh(sptr<Mesh> mesh) { this->mesh = mesh; }
 
         auto getMaterial(u32 index) const -> sptr<Material> { return materials.at(index); }
