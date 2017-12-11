@@ -6,6 +6,7 @@
 #include "SoloLogger.h"
 #include "SoloSpinLock.h"
 #include <iostream>
+#include <fstream>
 
 namespace solo
 {

@@ -6,7 +6,6 @@
 #pragma once
 
 #include "SoloCommon.h"
-#include <fstream>
 
 namespace solo
 {
