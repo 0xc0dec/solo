@@ -5,7 +5,13 @@
 
 local scene = sl.Scene.create(sl.device)
 
+local node = scene:createNode()
+assert(node)
+scene:removeNode(node)
+
+node = scene:createNode()
+scene:removeNodeById(node:getId())
+
 assert(scene:getDevice())
-assert(scene:createNode())
 scene:visit(function(cmp) end)
 scene:visitByTags(1, function(cmp) end)

@@ -46,6 +46,8 @@ static void registerScene(CppBindModule<LuaBinding> &module)
     REG_STATIC_METHOD(scene, Scene, create);
     REG_METHOD(scene, Scene, getDevice);
     REG_METHOD(scene, Scene, createNode);
+    REG_METHOD(scene, Scene, removeNode);
+    REG_METHOD(scene, Scene, removeNodeById);
     REG_METHOD(scene, Scene, visit);
     REG_METHOD(scene, Scene, visitByTags);
     scene.endClass();

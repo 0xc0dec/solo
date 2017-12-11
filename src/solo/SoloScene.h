@@ -26,6 +26,8 @@ namespace solo
         auto getDevice() const -> Device* { return device; }
 
         auto createNode() -> sptr<Node>;
+        void removeNodeById(u32 nodeId);
+        void removeNode(Node *node);
 
         auto findComponent(u32 nodeId, u32 typeId) const -> Component*;
         void addComponent(u32 nodeId, sptr<Component> cmp);

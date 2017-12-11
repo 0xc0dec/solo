@@ -28,6 +28,17 @@ auto Scene::createNode() -> sptr<Node>
     return node;
 }
 
+void Scene::removeNodeById(u32 nodeId)
+{
+    while (nodes.count(nodeId) && !nodes[nodeId].empty())
+        removeComponent(nodeId, nodes.at(nodeId).begin()->second->getTypeId());
+}
+
+void Scene::removeNode(Node *node)
+{
+    removeNodeById(node->getId());
+}
+
 void Scene::addComponent(u32 nodeId, sptr<Component> cmp)
 {
     auto typeId = cmp->getTypeId();
@@ -51,13 +62,11 @@ void Scene::addComponent(u32 nodeId, sptr<Component> cmp)
 
 void Scene::removeComponent(u32 nodeId, u32 typeId)
 {
-    SL_PANIC_IF(typeId == Transform::getId(), "Transform component cannot be removed from a node"); // to simplify things
-
     auto node = nodes.find(nodeId);
     if (node == nodes.end())
         return;
 
-    auto cmpIt = node->second.find(typeId);
+    const auto cmpIt = node->second.find(typeId);
     if (cmpIt == node->second.end())
         return;
 
@@ -98,12 +107,12 @@ void Scene::visitByTags(u32 tagMask, std::function<void(Component*)> accept)
 
 auto Scene::findComponent(u32 nodeId, u32 typeId) const -> Component *
 {
-    auto node = nodes.find(nodeId);
+    const auto node = nodes.find(nodeId);
     if (node == nodes.end())
         return nullptr;
 
     const auto &nodeComponents = node->second;
-    auto cmpIt = nodeComponents.find(typeId);
+    const auto cmpIt = nodeComponents.find(typeId);
     if (cmpIt != nodeComponents.end())
         return cmpIt->second.get();
 
