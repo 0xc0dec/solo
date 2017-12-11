@@ -28,6 +28,10 @@ return function(dev, assetCache)
                 self.prevHighlightedMaterial = nil
             end
 
+            if dev:isMouseButtonDown(sl.MouseButton.Right, false) then
+                return
+            end
+            
             local mousePos = dev:getMousePosition()
             local ray = self.camera:canvasPointToWorldRay(mousePos)
             local from = ray:getOrigin()
