@@ -7,8 +7,8 @@ local getImagePath = function(fileName)
     return getAssetPath("textures/skyboxes/deep-space/") .. fileName
 end
 
-return function(dev, scene, tag)
-    sl.CubeTexture.loadFromFaceFilesAsync(dev,
+return function(scene, tag)
+    sl.CubeTexture.loadFromFaceFilesAsync(sl.device,
         getImagePath("Front.png"), getImagePath("Back.png"),
         getImagePath("Left.png"), getImagePath("Right.png"),
         getImagePath("Top.png"), getImagePath("Bottom.png")

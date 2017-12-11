@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-return function(dev, scene, tag)
+return function(scene, tag)
     local font
 
     local createUpdater = function()
@@ -29,7 +29,7 @@ return function(dev, scene, tag)
     local firstChar = string.byte(" ")
     local charCount = string.byte("~") - string.byte(" ")
     local path = getAssetPath("fonts/Aller.ttf")
-    font = sl.Font.loadFromFile(dev, path,
+    font = sl.Font.loadFromFile(sl.device, path,
         lineHeight, textureWidth,
         textureHeight, firstChar, charCount, 2, 2)
 

@@ -16,7 +16,7 @@ function demo()
     local fs = dev:getFileSystem()
     local scene = sl.Scene.create(dev)
 
-    local assetCache = (require "AssetCache")(dev)
+    local assetCache = (require "AssetCache")()
     local createMainCamera = require "MainCamera"
     local postProcessors = require "PostProcessors"
     local createTransparentQuad = require "TransparentQuad"
@@ -28,7 +28,7 @@ function demo()
     local createCheckerBox = require "CheckerBox"
     local createLoadedMesh = require "LoadedMesh"
     local createOffscreenCamera = require "OffscreenCamera"
-    local attachAxes = (require "Axes")(dev, assetCache)
+    local attachAxes = (require "Axes")(assetCache)
     local createSpawner = require "Spawner"
     local createHighlighter = require "Highlighter"
 
@@ -43,26 +43,26 @@ function demo()
 
     local cubeMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Cube)
     local quadMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Quad)
-    local offscreenCamera, offscreenCameraTex = createOffscreenCamera(dev, scene)
+    local offscreenCamera, offscreenCameraTex = createOffscreenCamera(scene)
 
-    local mainCamera, mainCameraNode = createMainCamera(dev, scene)
-    mainCameraNode:addScriptComponent(createHighlighter(dev, assetCache))
-    mainCameraNode:addScriptComponent(createSpawner(dev, cubeMesh, assetCache))
+    local mainCamera, mainCameraNode = createMainCamera(scene)
+    mainCameraNode:addScriptComponent(createHighlighter(assetCache))
+    mainCameraNode:addScriptComponent(createSpawner(cubeMesh, assetCache))
     local mainCameraTransform = mainCameraNode:findComponent("Transform")
     mainCameraTransform:setLocalPosition(vec3(0, 5, 10))
     mainCameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
-    createSkybox(dev, scene, knownTags.skybox)
-    createCheckerBox(dev, scene, assetCache, cubeMesh)
-    createDynamicQuad(dev, scene, assetCache)
-    createTimeLabel(dev, scene, knownTags.transparent)
-    createLoadedMesh(dev, scene, assetCache)
-    createFloor(dev, scene, assetCache, cubeMesh)
+    createSkybox(scene, knownTags.skybox)
+    createCheckerBox(scene, assetCache, cubeMesh)
+    createDynamicQuad(scene, assetCache)
+    createTimeLabel(scene, knownTags.transparent)
+    createLoadedMesh(scene, assetCache)
+    createFloor(scene, assetCache, cubeMesh)
 
-    local monitorQuad = createMonitorQuad(dev, scene, assetCache, offscreenCameraTex, quadMesh, knownTags.monitor)
+    local monitorQuad = createMonitorQuad(scene, assetCache, offscreenCameraTex, quadMesh, knownTags.monitor)
     attachAxes(monitorQuad)
 
-    local transparentQuad = createTransparentQuad(dev, scene, assetCache, quadMesh, knownTags.transparent)
+    local transparentQuad = createTransparentQuad(scene, assetCache, quadMesh, knownTags.transparent)
     attachAxes(transparentQuad)
 
     local originNode = scene:createNode()

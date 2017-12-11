@@ -5,8 +5,8 @@
 
 local createRotator = require "Rotator"
 
-return function(dev, scene, assetCache)
-    sl.Texture2d.loadFromFileAsync(dev, getAssetPath("textures/Cobblestone.png")):done(
+return function(scene, assetCache)
+    sl.Texture2d.loadFromFileAsync(sl.device, getAssetPath("textures/Cobblestone.png")):done(
         function(tex)
             tex:generateMipmaps()
             tex:setFiltering(sl.TextureFiltering.LinearMipmapNearest)
@@ -14,13 +14,13 @@ return function(dev, scene, assetCache)
             tex:setWrapping(sl.TextureWrapping.Clamp)
 
             local effect = assetCache.getEffect("TextureWithLighting")
-            local mat = sl.Material.create(dev, effect)
+            local mat = sl.Material.create(sl.device, effect)
             mat:setFaceCull(sl.FaceCull.All)
             mat:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
             mat:bindParameter("invTransposedWorldMatrix", sl.BindParameterSemantics.InverseTransposedWorldMatrix)
             mat:setTextureParameter("mainTex", tex)
 
-            sl.Mesh.loadFromFileAsync(dev, getAssetPath("meshes/Teapot.obj")):done(
+            sl.Mesh.loadFromFileAsync(sl.device, getAssetPath("meshes/Teapot.obj")):done(
                 function(mesh)
                     local node = scene:createNode()
                     local renderer = node:addComponent("MeshRenderer")

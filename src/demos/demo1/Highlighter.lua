@@ -3,11 +3,11 @@
 -- MIT license
 -- 
 
-return function(dev, assetCache)
-    local physics = dev:getPhysics()
+return function(assetCache)
+    local physics = sl.device:getPhysics()
 
     local effect = assetCache.getEffect("Color")
-    local highlightMaterial = sl.Material.create(dev, effect)
+    local highlightMaterial = sl.Material.create(sl.device, effect)
     highlightMaterial:setFaceCull(sl.FaceCull.All)
     highlightMaterial:setPolygonMode(sl.PolygonMode.Wireframe)
     highlightMaterial:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
@@ -28,11 +28,11 @@ return function(dev, assetCache)
                 self.prevHighlightedMaterial = nil
             end
 
-            if dev:isMouseButtonDown(sl.MouseButton.Right, false) then
+            if sl.device:isMouseButtonDown(sl.MouseButton.Right, false) then
                 return
             end
-            
-            local mousePos = dev:getMousePosition()
+
+            local mousePos = sl.device:getMousePosition()
             local ray = self.camera:canvasPointToWorldRay(mousePos)
             local from = ray:getOrigin()
             local to = from + ray:getDirection() * 100

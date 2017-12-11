@@ -3,10 +3,10 @@
 -- MIT license
 -- 
 
-return function(dev, scene)
-	local canvasSize = dev:getCanvasSize()
+return function(scene)
+	local canvasSize = sl.device:getCanvasSize()
 
-    local tex = sl.Texture2d.createEmpty(dev,
+    local tex = sl.Texture2d.createEmpty(sl.device,
         math.floor(canvasSize.x / 8.0), math.floor(canvasSize.y / 8.0), sl.TextureFormat.RGB)
     tex:setFiltering(sl.TextureFiltering.Nearest)
     tex:setWrapping(sl.TextureWrapping.Clamp)
@@ -19,7 +19,7 @@ return function(dev, scene)
     cam:setZNear(0.05)
     cam:setViewport(vec4(0, 0, canvasSize.x / 8, canvasSize.y / 8))
 
-    local fb = sl.FrameBuffer.create(dev)
+    local fb = sl.FrameBuffer.create(sl.device)
     fb:setAttachments({ tex })
     cam:setRenderTarget(fb)
 

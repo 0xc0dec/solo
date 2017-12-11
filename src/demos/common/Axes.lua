@@ -3,18 +3,18 @@
 -- MIT license
 -- 
 
-return function(dev, assetCache)
-    local mesh = sl.Mesh.loadFromFile(dev, getAssetPath("meshes/Axes.obj"))
+return function(assetCache)
+    local mesh = sl.Mesh.loadFromFile(sl.device, getAssetPath("meshes/Axes.obj"))
     local effect = assetCache.getEffect("Color")
 
     local createColorMaterial = function(color)
-        local mat = sl.Material.create(dev, effect)
+        local mat = sl.Material.create(sl.device, effect)
         mat:setFaceCull(sl.FaceCull.All)
 
-        if dev:getMode() == sl.DeviceMode.Vulkan then
+        if sl.device:getMode() == sl.DeviceMode.Vulkan then
             mat:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
             mat:setVector4Parameter("variables.color", color)
-        elseif dev:getMode() == sl.DeviceMode.OpenGL then
+        elseif sl.device:getMode() == sl.DeviceMode.OpenGL then
             mat:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
             mat:setVector4Parameter("color", color)
         end

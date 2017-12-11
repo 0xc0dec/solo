@@ -3,9 +3,9 @@
 -- MIT license
 -- 
 
-return function(dev, mesh, assetCache)
+return function(mesh, assetCache)
     local effect = assetCache.getEffect("Color")
-    local material = sl.Material.create(dev, effect)
+    local material = sl.Material.create(sl.device, effect)
     material:setFaceCull(sl.FaceCull.All)
     material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     material:setVector4Parameter("color", vec4(1, 1, 0, 1))
@@ -44,7 +44,7 @@ return function(dev, mesh, assetCache)
         end,
 
         update = function(self)
-            if dev:isKeyPressed(sl.KeyCode.Space, true) then
+            if sl.device:isKeyPressed(sl.KeyCode.Space, true) then
                 local initialPos = self.transform:getLocalPosition() + self.transform:getLocalForward() * 3
                 local initialRotation = self.transform:getLocalRotation()
                 spawn(self.scene, initialPos, initialRotation)

@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-return function(dev, scene, assetCache)
+return function(scene, assetCache)
     local createUpdater = function(data, mesh)
         local time = 0
 
@@ -11,7 +11,7 @@ return function(dev, scene, assetCache)
             typeId = sl.getCmpId("DynamicQuadUpdater"),
 
             update = function()
-                time = time + 2 * dev:getTimeDelta()
+                time = time + 2 * sl.device:getTimeDelta()
                 local offset = 0.5 * math.sin(time)
                 data[3] = offset
                 data[8] = -offset
@@ -38,21 +38,21 @@ return function(dev, scene, assetCache)
         0, 2, 3
     }
 
-    local mesh = sl.Mesh.create(dev)
+    local mesh = sl.Mesh.create(sl.device)
     mesh:addDynamicVertexBuffer(layout, data, 4)
     mesh:addPart(indices, 6)
     mesh:setPrimitiveType(sl.PrimitiveType.Triangles)
 
-    local texHandle = sl.Texture2d.loadFromFileAsync(dev, getAssetPath("textures/Bricks.jpg"))
+    local texHandle = sl.Texture2d.loadFromFileAsync(sl.device, getAssetPath("textures/Bricks.jpg"))
     texHandle:done(function(tex)
-        local tex = sl.Texture2d.loadFromFile(dev, getAssetPath("textures/Bricks.jpg"))
+        local tex = sl.Texture2d.loadFromFile(sl.device, getAssetPath("textures/Bricks.jpg"))
         tex:generateMipmaps()
         tex:setFiltering(sl.TextureFiltering.LinearMipmapNearest)
         tex:setAnisotropyLevel(8)
         tex:setWrapping(sl.TextureWrapping.Clamp)
 
         local effect = assetCache.getEffect("Texture")
-        local mat = sl.Material.create(dev, effect)
+        local mat = sl.Material.create(sl.device, effect)
         mat:setFaceCull(sl.FaceCull.All)
         mat:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
         mat:setTextureParameter("mainTex", tex)    

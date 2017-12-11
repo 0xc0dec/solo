@@ -18,8 +18,8 @@ function demo()
 
     local createRotator = require "Rotator"
     local createMainCamera = require "MainCamera"
-    local assetCache = (require "AssetCache")(dev)
-    local attachAxes = (require "Axes")(dev, assetCache)
+    local assetCache = (require "AssetCache")()
+    local attachAxes = (require "Axes")(assetCache)
 
     function createMaterial(t)
         local tex = t or sl.Texture2d.loadFromFile(dev, getAssetPath("textures/Cobblestone.png"))
@@ -133,7 +133,7 @@ function demo()
     offscreenCameraTransform:setLocalPosition(vec3(5, 5, 5))
     offscreenCameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
-    local camera, cameraNode = createMainCamera(dev, scene)
+    local camera, cameraNode = createMainCamera(scene)
     local cameraTransform = cameraNode:findComponent("Transform")
     cameraTransform:setLocalPosition(vec3(5, 6, 7))
     cameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
