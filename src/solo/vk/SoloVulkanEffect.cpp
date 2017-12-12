@@ -17,7 +17,7 @@
 
 using namespace solo;
 
-static auto createShader(VkDevice device, const void *data, u32 size) -> VulkanResource<VkShaderModule>
+static auto createShaderModule(VkDevice device, const void *data, u32 size) -> VulkanResource<VkShaderModule>
 {
     VkShaderModuleCreateInfo shaderModuleInfo{};
     shaderModuleInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
@@ -32,7 +32,7 @@ static auto createShader(VkDevice device, const void *data, u32 size) -> VulkanR
     return module;
 }
 
-static auto compileShader(const void *src, u32 srcLen, const str &fileName, bool vertex) -> vec<u32>
+static auto compileToSpiv(const void *src, u32 srcLen, const str &fileName, bool vertex) -> vec<u32>
 {
     shaderc::Compiler compiler{};
     const shaderc::CompileOptions options{};
@@ -62,8 +62,8 @@ auto VulkanEffect::createFromSource(Device *device,
     const void *fsSrc, u32 fsSrcLen, const str &fsFileName)
     -> sptr<VulkanEffect>
 {
-    auto vsSpiv = compileShader(vsSrc, vsSrcLen, vsFileName, true);
-    auto fsSpiv = compileShader(fsSrc, fsSrcLen, fsFileName, false);
+    auto vsSpiv = compileToSpiv(vsSrc, vsSrcLen, vsFileName, true);
+    auto fsSpiv = compileToSpiv(fsSrc, fsSrcLen, fsFileName, false);
     return std::make_shared<VulkanEffect>(
         device,
         vsSpiv.data(), vsSpiv.size() * sizeof(u32),
@@ -74,8 +74,8 @@ auto VulkanEffect::createFromSource(Device *device,
 VulkanEffect::VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
 {
     renderer = dynamic_cast<VulkanRenderer *>(device->getRenderer());
-    vertexShader = createShader(renderer->getDevice(), vsSrc, vsSrcLen);
-    fragmentShader = createShader(renderer->getDevice(), fsSrc, fsSrcLen);
+    vertexShader = createShaderModule(renderer->getDevice(), vsSrc, vsSrcLen);
+    fragmentShader = createShaderModule(renderer->getDevice(), fsSrc, fsSrcLen);
     introspectShader(static_cast<const u32*>(vsSrc), vsSrcLen / sizeof(u32));
     introspectShader(static_cast<const u32*>(fsSrc), fsSrcLen / sizeof(u32));
 }
