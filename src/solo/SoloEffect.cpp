@@ -12,30 +12,29 @@
 
 using namespace solo;
 
-static auto create(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen) -> sptr<Effect>
-{
-    switch (device->getMode())
-    {
-#ifdef SL_OPENGL_RENDERER
-        case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLEffect>(vsSrc, vsSrcLen, fsSrc, fsSrcLen);
-#endif
-#ifdef SL_VULKAN_RENDERER
-        case DeviceMode::Vulkan:
-            return std::make_shared<VulkanEffect>(device, vsSrc, vsSrcLen, fsSrc, fsSrcLen);
-#endif
-        default:
-            return std::make_shared<NullEffect>();
-    }
-}
-
 auto Effect::loadFromFiles(Device *device, const str &vsPath, const str &fsPath) -> sptr<Effect>
 {
     auto vsBytes = device->getFileSystem()->readBytes(vsPath);
     auto fsBytes = device->getFileSystem()->readBytes(fsPath);
-    return create(device,
-        vsBytes.data(), static_cast<u32>(vsBytes.size()),
-        fsBytes.data(), static_cast<u32>(fsBytes.size()));
+
+    switch (device->getMode())
+    {
+#ifdef SL_OPENGL_RENDERER
+        case DeviceMode::OpenGL:
+            return std::make_shared<OpenGLEffect>(vsBytes.data(), vsBytes.size(), fsBytes.data(), fsBytes.size());
+#endif
+#ifdef SL_VULKAN_RENDERER
+        case DeviceMode::Vulkan:
+            // TODO Allow loading compiled SPIV
+            return VulkanEffect::createFromSource(
+                device,
+                vsBytes.data(), vsBytes.size(), vsPath,
+                fsBytes.data(), fsBytes.size(), fsPath
+            );
+#endif
+        default:
+            return std::make_shared<NullEffect>();
+    }
 }
 
 auto Effect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effect>

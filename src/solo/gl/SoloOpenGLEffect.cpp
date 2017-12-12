@@ -25,7 +25,7 @@ auto OpenGLEffect::createFromPrefab(EffectPrefab prefab) -> sptr<OpenGLEffect>
                 OpenGLPrefabShaders::Fragment::font, std::strlen(OpenGLPrefabShaders::Fragment::font));
         default:
             SL_PANIC("Unknown effect prefab");
-            break;
+            return nullptr;
     }
 }
 

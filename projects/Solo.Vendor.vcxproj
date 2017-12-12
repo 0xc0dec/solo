@@ -317,13 +317,13 @@
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\1.6.16\include;$(ProjectDir)..\vendor\zlib\1.2.8\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(ProjectDir)..\vendor\vulkan\include\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\Solo.Vendor\</OutDir>
     <IntDir>$(ProjectDir)..\build\Solo.Vendor\tmp\</IntDir>
-    <LibraryPath>$(ProjectDir)..\vendor\vulkan\lib\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)..\vendor\vulkan\lib\;$(ProjectDir)..\vendor\shaderc\build\libshaderc\debug\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\png\1.6.16\include;$(ProjectDir)..\vendor\zlib\1.2.8\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(ProjectDir)..\vendor\vulkan\include\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\Solo.Vendor\</OutDir>
     <IntDir>$(ProjectDir)..\build\Solo.Vendor\tmp\</IntDir>
-    <LibraryPath>$(ProjectDir)..\vendor\vulkan\lib\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)..\vendor\vulkan\lib\;$(ProjectDir)..\vendor\shaderc\build\libshaderc\minsizerel\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -344,7 +344,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>kernel32.lib;winmm.lib;oleaut32.lib;version.lib;shell32.lib;ole32.lib;imm32.lib;gdi32.lib;user32.lib;opengl32.lib;vulkan-1.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;winmm.lib;oleaut32.lib;version.lib;shell32.lib;ole32.lib;imm32.lib;gdi32.lib;user32.lib;opengl32.lib;vulkan-1.lib;shaderc_combined.lib</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalOptions>/ignore:4006 /ignore:4221 /ignore:4204 /ignore:4217</AdditionalOptions>
     </Lib>
@@ -374,7 +374,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>kernel32.lib;winmm.lib;oleaut32.lib;version.lib;shell32.lib;ole32.lib;imm32.lib;gdi32.lib;user32.lib;opengl32.lib;vulkan-1.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;winmm.lib;oleaut32.lib;version.lib;shell32.lib;ole32.lib;imm32.lib;gdi32.lib;user32.lib;opengl32.lib;vulkan-1.lib;shaderc_combined.lib</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalOptions>/ignore:4006 /ignore:4221 /ignore:4204 /ignore:4217</AdditionalOptions>
     </Lib>

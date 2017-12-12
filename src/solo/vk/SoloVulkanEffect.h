@@ -38,6 +38,9 @@ namespace solo
         };
 
         static auto createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<VulkanEffect>;
+        static auto createFromSource(Device *device,
+            const void *vsSrc, u32 vsSrcLen, const str &vsFileName,
+            const void *fsSrc, u32 fsSrcLen, const str &fsFileName) -> sptr<VulkanEffect>;
 
         VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen);
         ~VulkanEffect();

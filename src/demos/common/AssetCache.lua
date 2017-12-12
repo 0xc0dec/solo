@@ -5,7 +5,7 @@
 
 function getShaderPath(name)
     local path = sl.device:getMode() == sl.DeviceMode.OpenGL and ("shaders/gl/" .. name .. ".glsl") or nil
-    path = sl.device:getMode() == sl.DeviceMode.Vulkan and ("shaders/vulkan/" .. name .. ".spv") or path
+    path = sl.device:getMode() == sl.DeviceMode.Vulkan and ("shaders/vulkan/" .. name .. ".glsl") or path
 
     if not path then
         error("Could not calculate shader path for " .. name)

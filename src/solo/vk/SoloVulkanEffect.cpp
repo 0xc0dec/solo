@@ -5,7 +5,6 @@
 
 #include "SoloVulkanEffect.h"
 
-
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloDevice.h"
@@ -14,6 +13,7 @@
 #include <spirv_cross/spirv.hpp>
 #include <spirv_cross/spirv_cross.hpp>
 #include <spirv_cross/spirv_glsl.hpp>
+#include <shaderc/shaderc.hpp>
 
 using namespace solo;
 
@@ -32,10 +32,43 @@ static auto createShader(VkDevice device, const void *data, u32 size) -> VulkanR
     return module;
 }
 
+static auto compileShader(const void *src, u32 srcLen, const str &fileName, bool vertex) -> vec<u32>
+{
+    shaderc::Compiler compiler{};
+    const shaderc::CompileOptions options{};
+    auto result = compiler.CompileGlslToSpv(
+        static_cast<const s8*>(src),
+        srcLen,
+        vertex ? shaderc_glsl_vertex_shader : shaderc_glsl_fragment_shader,
+        fileName.c_str(),
+        options
+    );
+
+    auto compilationStatus = result.GetCompilationStatus();
+    auto errorMessage = result.GetErrorMessage();
+    SL_PANIC_IF(compilationStatus != shaderc_compilation_status_success, errorMessage);
+
+    return vec<u32>{result.begin(), result.end()};
+}
+
 auto VulkanEffect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<VulkanEffect>
 {
     // TODO
     return nullptr;
+}
+
+auto VulkanEffect::createFromSource(Device *device,
+    const void *vsSrc, u32 vsSrcLen, const str &vsFileName,
+    const void *fsSrc, u32 fsSrcLen, const str &fsFileName)
+    -> sptr<VulkanEffect>
+{
+    auto vsSpiv = compileShader(vsSrc, vsSrcLen, vsFileName, true);
+    auto fsSpiv = compileShader(fsSrc, fsSrcLen, fsFileName, false);
+    return std::make_shared<VulkanEffect>(
+        device,
+        vsSpiv.data(), vsSpiv.size() * sizeof(u32),
+        fsSpiv.data(), fsSpiv.size() * sizeof(u32)
+    );
 }
 
 VulkanEffect::VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
