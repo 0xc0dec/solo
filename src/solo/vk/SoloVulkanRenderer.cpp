@@ -194,7 +194,7 @@ void VulkanRenderer::beginFrame()
 //    pipelines.clear();
 }
 
-auto VulkanRenderer::ensureNodeContext(Transform *transform, Camera *camera, Mesh *mesh, VulkanMaterial *material)
+auto VulkanRenderer::ensureNodeContext(Transform *transform, Camera *camera, VulkanMaterial *material)
     -> NodeContext&
 {
     auto &context = nodeContexts[material][transform][camera];
@@ -240,7 +240,7 @@ void VulkanRenderer::drawMeshPart(
     const auto &uniformBufs = vkEffect->getUniformBuffers();
     const auto &materialSamplers = vkMaterial->getSamplers();
     
-    auto &context = ensureNodeContext(transform, camera, mesh, vkMaterial);
+    auto &context = ensureNodeContext(transform, camera, vkMaterial);
 
     // TODO Invoke updater outside of the binding initialization because at least
     // material sampler parameters may change in future
@@ -278,7 +278,7 @@ void VulkanRenderer::drawMeshPart(
             pp.second.write(buffer, camera, transform);
     }
 
-    auto *pipeline = &testPipelines[material][transform][camera];
+    auto *pipeline = &context.pipeline;
     if (!*pipeline)
     {
         const auto vs = vkEffect->getVertexShader();
@@ -293,13 +293,10 @@ void VulkanRenderer::drawMeshPart(
         for (s32 i = 0; i < vkMesh->getVertexBufferCount(); i++)
             pipelineConfig.withVertexBufferLayout(i, vkMesh->getVertexBufferLayout(i));
 
-        testPipelines[material][transform][camera] = std::move(VulkanPipeline{device, renderPass, pipelineConfig});
-        pipeline = &testPipelines[material][transform][camera];
-//        pipelines.emplace_back(device, renderPass, pipelineConfig);
+        context.pipeline = std::move(VulkanPipeline{device, renderPass, pipelineConfig});
+        pipeline = &context.pipeline;
     }
 
-//    vkCmdBindPipeline(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipelines.rbegin());
-//    vkCmdBindDescriptorSets(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelines.rbegin()->getLayout(), 0, 1, &context.descSet, 0, nullptr);
     vkCmdBindPipeline(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipeline);
     vkCmdBindDescriptorSets(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->getLayout(), 0, 1, &context.descSet, 0, nullptr);
 

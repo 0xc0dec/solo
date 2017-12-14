@@ -68,12 +68,12 @@ namespace solo
         VulkanSwapchain swapchain;
 
         vec<RenderCommand> renderCommands;
-        umap<Material*, umap<Transform*, umap<Camera*, VulkanPipeline>>> testPipelines;
 
         struct NodeContext
         {
             umap<str, VulkanBuffer> uniformBuffers;
             VulkanDescriptorPool descPool;
+            VulkanPipeline pipeline;
             VulkanResource<VkDescriptorSetLayout> descSetLayout;
             VkDescriptorSet descSet = VK_NULL_HANDLE;
         };
@@ -94,7 +94,7 @@ namespace solo
 
         void drawMeshPart(Material *material, Transform *transform, Mesh *mesh, Camera *camera,
             u32 part, VkCommandBuffer cmdBuf, VkRenderPass renderPass);
-        auto ensureNodeContext(Transform *transform, Camera *camera, Mesh *mesh, VulkanMaterial *material)
+        auto ensureNodeContext(Transform *transform, Camera *camera, VulkanMaterial *material)
             -> NodeContext&;
     };
 }
