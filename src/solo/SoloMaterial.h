@@ -95,7 +95,7 @@ namespace solo
 
         virtual void bindParameter(const str &name, BindParameterSemantics semantics) = 0;
 
-        virtual auto getEffect() const -> Effect* = 0;
+        virtual auto getEffect() const -> sptr<Effect> = 0;
 
         auto getPolygonMode() const -> PolygonMode { return polygonMode; }
         void setPolygonMode(PolygonMode mode) { polygonMode = mode; }
@@ -131,10 +131,4 @@ namespace solo
 
         Material() {}
     };
-
-    inline void Material::setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor)
-    {
-        srcBlendFactor = srcFactor;
-        dstBlendFactor = dstFactor;
-    }
 }

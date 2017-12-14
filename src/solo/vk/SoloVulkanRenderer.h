@@ -69,13 +69,15 @@ namespace solo
 
         vec<RenderCommand> renderCommands;
 
-        struct NodeContext
+        struct PipelineContext
         {
             umap<str, VulkanBuffer> uniformBuffers;
             VulkanDescriptorPool descPool;
             VulkanPipeline pipeline;
             VulkanResource<VkDescriptorSetLayout> descSetLayout;
             VkDescriptorSet descSet = VK_NULL_HANDLE;
+            size_t lastMaterialFlagsHash = 0;
+            size_t lastMeshLayoutHash = 0;
         };
 
         struct RenderPassContext
@@ -86,16 +88,16 @@ namespace solo
             VulkanRenderPass *renderPass = nullptr;
         };
 
-        // TODO Clear
+        // TODO clear entries when no longer used
         umap<VulkanRenderPass*, RenderPassContext> renderPassContexts;
 
-        // TODO clear this when bindings get no longer used
-        umap<const Material*, umap<const Transform*, umap<const Camera*, NodeContext>>> nodeContexts;
+        // TODO clear entries when no longer used
+        umap<size_t, PipelineContext> pipelineContexts;
 
         void drawMeshPart(Material *material, Transform *transform, Mesh *mesh, Camera *camera,
             u32 part, VkCommandBuffer cmdBuf, VkRenderPass renderPass);
-        auto ensureNodeContext(Transform *transform, Camera *camera, VulkanMaterial *material)
-            -> NodeContext&;
+        auto ensurePipelineContext(Transform *transform, Camera *camera, VulkanMaterial *material,
+            VulkanMesh *mesh, VkRenderPass renderPass) -> PipelineContext&;
     };
 }
 

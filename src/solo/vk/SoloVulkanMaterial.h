@@ -39,7 +39,7 @@ namespace solo
         VulkanMaterial(sptr<Effect> effect);
         ~VulkanMaterial();
 
-        auto getEffect() const -> Effect* override final { return effect.get(); }
+        auto getEffect() const -> sptr<Effect> override final { return effect; }
 
         void setFloatParameter(const str &name, float value) override final;
         void setVector2Parameter(const str &name, const Vector2 &value) override final;
@@ -53,16 +53,17 @@ namespace solo
         auto getSamplers() const -> umap<str, Sampler> const& { return samplers; }
         auto getBufferItems() const -> umap<str, umap<str, UniformBufferItem>> const& { return bufferItems; } // TODO rename
 
-        auto getCullModeFlags() const -> VkCullModeFlags;
+        auto getVkCullModeFlags() const -> VkCullModeFlags;
         auto getVkPolygonMode() const -> VkPolygonMode;
+        auto getVkPrimitiveTopology() const -> VkPrimitiveTopology;
 
     private:
         using ParameterWriteFunc = std::function<void(VulkanBuffer&, u32, u32, const Camera*, const Transform*)>;
 
         sptr<VulkanEffect> effect;
-
         umap<str, umap<str, UniformBufferItem>> bufferItems;
         umap<str, Sampler> samplers;
+        u32 version = 0;
 
         void setUniformParameter(const str &name, ParameterWriteFunc write);
     };

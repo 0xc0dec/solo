@@ -11,6 +11,7 @@
 #include "SoloVector3.h"
 #include "SoloStringUtils.h"
 #include "SoloJobPool.h"
+#include "SoloHash.h"
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 
@@ -30,6 +31,20 @@ struct Vertex
 
 namespace std
 {
+    template <>
+	struct hash<Vector3>
+	{
+		size_t operator()(const Vector3 &v) const
+        {
+            size_t seed = 0;
+            const hash<float> hasher;
+            combineHash(seed, hasher(v.x));
+            combineHash(seed, hasher(v.y));
+            combineHash(seed, hasher(v.z));
+		    return seed;
+        }
+	};
+
     template<>
     struct hash<Vertex>
     {
@@ -59,7 +74,7 @@ static auto loadMeshData(Device *device, const str &path) -> sptr<Data>
     vec<tinyobj::shape_t> shapes;
     vec<tinyobj::material_t> materials;
     str err;
-    auto loaded = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, file.get());
+    auto loaded = LoadObj(&attrib, &shapes, &materials, &err, file.get());
     SL_PANIC_IF(!loaded, err);
     
     vec<float> vertexData;
@@ -119,7 +134,7 @@ static auto loadMeshData(Device *device, const str &path) -> sptr<Data>
         parts.push_back(indexData);
     }
 
-    return std::make_shared<Data>(Data{std::move(vertexData), std::move(parts)});
+    return std::make_shared<Data>(Data{move(vertexData), move(parts)});
 }
 
 auto obj::loadMesh(Device *device, const str &path) -> sptr<Mesh>

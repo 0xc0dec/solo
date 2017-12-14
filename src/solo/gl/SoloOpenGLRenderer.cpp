@@ -231,7 +231,7 @@ void OpenGLRenderer::addRenderCommand(const RenderCommand &cmd)
             const auto blend = material->getBlend();
             const auto srcBlendFactor = material->getSrcBlendFactor();
             const auto dstBlendFactor = material->getDstBlendFactor();
-            const auto effect = static_cast<OpenGLEffect*>(material->getEffect());
+            const auto effect = static_cast<OpenGLEffect*>(material->getEffect().get());
             const auto program = effect->getHandle();
 
             step.applyMaterialState = [=]
@@ -291,7 +291,7 @@ void OpenGLRenderer::endFrame()
             {
                 step.applyMaterialState();
                 static_cast<OpenGLMaterial*>(step.cmd.mesh.material)->applyParams(currentCamera, step.cmd.mesh.transform);
-                const auto effect = static_cast<OpenGLEffect*>(step.cmd.mesh.material->getEffect());
+                const auto effect = static_cast<OpenGLEffect*>(step.cmd.mesh.material->getEffect().get());
                 static_cast<OpenGLMesh*>(step.cmd.mesh.mesh)->draw(effect);
                 break;
             }
@@ -300,7 +300,7 @@ void OpenGLRenderer::endFrame()
             {
                 step.applyMaterialState();
                 static_cast<OpenGLMaterial*>(step.cmd.meshPart.material)->applyParams(currentCamera, step.cmd.meshPart.transform);
-                const auto effect = static_cast<OpenGLEffect*>(step.cmd.meshPart.material->getEffect());
+                const auto effect = static_cast<OpenGLEffect*>(step.cmd.meshPart.material->getEffect().get());
                 static_cast<OpenGLMesh*>(step.cmd.meshPart.mesh)->drawPart(step.cmd.meshPart.part, effect);
                 break;
             }

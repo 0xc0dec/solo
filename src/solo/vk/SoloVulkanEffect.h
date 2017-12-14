@@ -45,8 +45,8 @@ namespace solo
         VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen);
         ~VulkanEffect();
 
-        auto getVertexShader() const -> VkShaderModule { return vertexShader; }
-        auto getFragmentShader() const -> VkShaderModule { return fragmentShader; }
+        auto getVkVertexShader() const -> VkShaderModule { return vertexShader; }
+        auto getVkFragmentShader() const -> VkShaderModule { return fragmentShader; }
 
         auto getUniformBuffer(const str &name) -> UniformBuffer;
         auto getSampler(const str &name) -> Sampler;

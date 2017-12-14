@@ -33,7 +33,7 @@ VulkanMaterial::~VulkanMaterial()
 {
 }
 
-auto VulkanMaterial::getCullModeFlags() const -> VkCullModeFlags
+auto VulkanMaterial::getVkCullModeFlags() const -> VkCullModeFlags
 {
     switch (faceCull)
     {
@@ -56,6 +56,15 @@ auto VulkanMaterial::getVkPolygonMode() const -> VkPolygonMode
         default:
             SL_PANIC("Unsupported polygon mode");
             return VK_POLYGON_MODE_FILL;
+    }
+}
+
+auto VulkanMaterial::getVkPrimitiveTopology() const -> VkPrimitiveTopology
+{
+    switch (polygonMode)
+    {
+        case PolygonMode::Points: return VK_PRIMITIVE_TOPOLOGY_POINT_LIST;
+        default: return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
     }
 }
 

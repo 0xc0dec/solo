@@ -8,6 +8,7 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloDevice.h"
+#include "SoloHash.h"
 #include "SoloVulkanFrameBuffer.h"
 #include "SoloVulkanSDLDevice.h"
 #include "SoloVulkanMaterial.h"
@@ -19,6 +20,50 @@
 #include "SoloCamera.h"
 
 using namespace solo;
+
+static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMaterial *material)
+{
+    size_t seed = 0;
+    const std::hash<void*> hasher;
+    combineHash(seed, hasher(material));
+    combineHash(seed, hasher(camera));
+    combineHash(seed, hasher(transform));
+    return seed;
+}
+
+static auto getMaterialFlagsHash(VulkanMaterial *material) -> size_t
+{
+    size_t seed = 0;
+    const std::hash<u32> hasher;
+    combineHash(seed, hasher(material->getVkCullModeFlags()));
+    combineHash(seed, hasher(material->getVkPolygonMode()));
+    combineHash(seed, hasher(material->getVkPrimitiveTopology()));
+    return seed;
+}
+
+static auto getMeshLayoutHash(VulkanMesh *mesh) -> size_t
+{
+    size_t seed = 0;
+    const std::hash<u32> hasher;
+
+    for (s32 i = 0; i < mesh->getVertexBufferCount(); i++)
+    {
+        auto layout = mesh->getVertexBufferLayout(i);
+        combineHash(seed, hasher(i));
+
+        for (s32 j = 0; j < layout.getAttributeCount(); j++)
+        {
+            const auto attr = layout.getAttribute(j);
+            combineHash(seed, hasher(j));
+            combineHash(seed, hasher(attr.elementCount));
+            combineHash(seed, hasher(attr.location));
+            combineHash(seed, hasher(attr.offset));
+            combineHash(seed, hasher(attr.size));
+        }
+    }
+
+    return seed;
+}
 
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
     u64 obj, size_t location, s32 code, const s8 *layerPrefix, const s8 *msg, void *userData)
@@ -191,40 +236,68 @@ void VulkanRenderer::beginFrame()
 {
     renderCommands.clear();
     renderCommands.reserve(100); // TODO just picked random constant
-//    pipelines.clear();
 }
 
-auto VulkanRenderer::ensureNodeContext(Transform *transform, Camera *camera, VulkanMaterial *material)
-    -> NodeContext&
+auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera, VulkanMaterial *material,
+    VulkanMesh *mesh, VkRenderPass renderPass) -> PipelineContext&
 {
-    auto &context = nodeContexts[material][transform][camera];
-    if (context.descSet) // already initialized
-        return context;
+    const auto vkMaterial = static_cast<VulkanMaterial*>(material);
+    const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->getEffect().get());
+    const auto vkMesh = static_cast<VulkanMesh*>(mesh);
 
-    const auto vkEffect = static_cast<VulkanEffect*>(material->getEffect());
-    const auto &uniformBufs = vkEffect->getUniformBuffers();
-    const auto &effectSamplers = vkEffect->getSamplers();
+    auto key = getPipelineContextKey(transform, camera, material);
+    auto &context = pipelineContexts[key];
 
-    auto builder = VulkanDescriptorSetLayoutBuilder(device);
-
-    for (const auto &info: uniformBufs)
+    if (!context.descSet)
     {
-        const auto bufferName = info.first;
-        context.uniformBuffers[bufferName] = VulkanBuffer::createUniformHostVisible(this, info.second.size);
-        builder.withBinding(info.second.binding, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
+        const auto &uniformBufs = vkEffect->getUniformBuffers();
+        const auto &effectSamplers = vkEffect->getSamplers();
+
+        auto builder = VulkanDescriptorSetLayoutBuilder(device);
+
+        for (const auto &info : uniformBufs)
+        {
+            const auto bufferName = info.first;
+            context.uniformBuffers[bufferName] = VulkanBuffer::createUniformHostVisible(this, info.second.size);
+            builder.withBinding(info.second.binding, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
+        }
+
+        for (auto &pair : effectSamplers)
+            builder.withBinding(pair.second.binding, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT);
+
+        context.descSetLayout = builder.build();
+
+        auto poolConfig = VulkanDescriptorPoolConfig();
+        poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, uniformBufs.size());
+        poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, effectSamplers.size());
+
+        context.descPool = VulkanDescriptorPool(device, 1, poolConfig);
+        context.descSet = context.descPool.allocateSet(context.descSetLayout);
     }
 
-    for (auto &pair : effectSamplers)
-        builder.withBinding(pair.second.binding, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT);
+    const auto materialFlagsHash = getMaterialFlagsHash(vkMaterial);
+    const auto meshLayoutHash = getMeshLayoutHash(vkMesh);
+    const auto materialFlagsChanged = materialFlagsHash != context.lastMaterialFlagsHash;
+    const auto meshLayoutChanged = meshLayoutHash != context.lastMeshLayoutHash;
 
-    context.descSetLayout = builder.build();
+    if (!context.pipeline || materialFlagsChanged || meshLayoutChanged)
+    {
+        const auto vs = vkEffect->getVkVertexShader();
+        const auto fs = vkEffect->getVkFragmentShader();
+        auto pipelineConfig = VulkanPipelineConfig(vs, fs)
+            .withDescriptorSetLayout(context.descSetLayout)
+            .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
+            .withCullMode(vkMaterial->getVkCullModeFlags())
+            .withPolygonMode(vkMaterial->getVkPolygonMode())
+            .withTopology(vkMaterial->getVkPrimitiveTopology());
 
-    auto poolConfig = VulkanDescriptorPoolConfig();
-    poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, uniformBufs.size());
-    poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, effectSamplers.size());
+        for (s32 i = 0; i < vkMesh->getVertexBufferCount(); i++)
+            pipelineConfig.withVertexBufferLayout(i, vkMesh->getVertexBufferLayout(i));
 
-    context.descPool = VulkanDescriptorPool(device, 1, poolConfig);
-    context.descSet = context.descPool.allocateSet(context.descSetLayout);
+        context.pipeline = std::move(VulkanPipeline{device, renderPass, pipelineConfig});
+        context.lastMaterialFlagsHash = materialFlagsHash;
+        context.lastMeshLayoutHash = meshLayoutHash;
+    }
 
     return context;
 }
@@ -235,17 +308,16 @@ void VulkanRenderer::drawMeshPart(
 )
 {
     const auto vkMaterial = static_cast<VulkanMaterial*>(material);
-    const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->getEffect());
+    const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->getEffect().get());
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
     const auto &uniformBufs = vkEffect->getUniformBuffers();
     const auto &materialSamplers = vkMaterial->getSamplers();
     
-    auto &context = ensureNodeContext(transform, camera, vkMaterial);
-
-    // TODO Invoke updater outside of the binding initialization because at least
-    // material sampler parameters may change in future
-
-    // TODO Invoke updater not so often - only when something really changes
+    auto &context = ensurePipelineContext(transform, camera, vkMaterial, vkMesh, renderPass);
+    
+    // Run the desc set updater
+    // TODO Not so often - only when something really changes
+    
     VulkanDescriptorSetUpdater updater{device};
 
     // TODO Not necessary (?), buffers don't change anyway, only their content
@@ -270,6 +342,8 @@ void VulkanRenderer::drawMeshPart(
 
     updater.updateSets();
 
+    // Update buffers content
+
     auto &bufferItems = vkMaterial->getBufferItems();
     for (auto &p: bufferItems)
     {
@@ -278,27 +352,10 @@ void VulkanRenderer::drawMeshPart(
             pp.second.write(buffer, camera, transform);
     }
 
-    auto *pipeline = &context.pipeline;
-    if (!*pipeline)
-    {
-        const auto vs = vkEffect->getVertexShader();
-        const auto fs = vkEffect->getFragmentShader();
-        auto pipelineConfig = VulkanPipelineConfig(vs, fs)
-            .withDescriptorSetLayout(context.descSetLayout)
-            .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
-            .withCullMode(vkMaterial->getCullModeFlags())
-            .withPolygonMode(vkMaterial->getVkPolygonMode())
-            .withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
+    // Issue commands
 
-        for (s32 i = 0; i < vkMesh->getVertexBufferCount(); i++)
-            pipelineConfig.withVertexBufferLayout(i, vkMesh->getVertexBufferLayout(i));
-
-        context.pipeline = std::move(VulkanPipeline{device, renderPass, pipelineConfig});
-        pipeline = &context.pipeline;
-    }
-
-    vkCmdBindPipeline(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipeline);
-    vkCmdBindDescriptorSets(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->getLayout(), 0, 1, &context.descSet, 0, nullptr);
+    vkCmdBindPipeline(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, context.pipeline);
+    vkCmdBindDescriptorSets(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, context.pipeline.getLayout(), 0, 1, &context.descSet, 0, nullptr);
 
     VkDeviceSize vertexBufferOffset = 0;
     for (u32 i = 0; i < vkMesh->getVertexBufferCount(); i++)

@@ -14,7 +14,7 @@ namespace solo
     public:
         NullMaterial() {}
 
-        auto getEffect() const -> Effect* override final { return nullptr; }
+        auto getEffect() const -> sptr<Effect> override final { return nullptr; }
 
         void setFloatParameter(const str& name, float value) override final {}
         void setVector2Parameter(const str& name, const Vector2& value) override final {}
