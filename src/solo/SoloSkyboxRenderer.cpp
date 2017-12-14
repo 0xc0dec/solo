@@ -27,7 +27,7 @@ SkyboxRenderer::SkyboxRenderer(const Node &node):
     material->bindParameter("worldViewMatrix", BindParameterSemantics::WorldViewMatrix);
     material->setDepthTest(true);
     material->setDepthWrite(false);
-    material->setFaceCull(FaceCull::CW);
+    material->setFaceCull(FaceCull::Back);
 
     quadMesh = Mesh::createFromPrefab(device, MeshPrefab::Quad);
 }

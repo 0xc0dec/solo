@@ -15,7 +15,7 @@ return function(scene, assetCache, mesh, tag)
     tex:setWrapping(sl.TextureWrapping.Clamp)
 
     local material = sl.Material.create(sl.device, assetCache.getEffect("Texture"))
-    material:setFaceCull(sl.FaceCull.All)
+    material:setFaceCull(sl.FaceCull.None)
     material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     material:setTextureParameter("mainTex", tex)
     material:setBlend(true)

@@ -19,9 +19,9 @@ assert(sl.TextureFiltering.NearestMipmapNearest ~= nil)
 assert(sl.EffectPrefab.Skybox ~= nil)
 assert(sl.EffectPrefab.Font ~= nil)
 
-assert(sl.FaceCull.All ~= nil)
-assert(sl.FaceCull.CW ~= nil)
-assert(sl.FaceCull.CCW ~= nil)
+assert(sl.FaceCull.None ~= nil)
+assert(sl.FaceCull.Front ~= nil)
+assert(sl.FaceCull.Back ~= nil)
 
 assert(sl.PolygonMode.Points ~= nil)
 assert(sl.PolygonMode.Fill ~= nil)

@@ -25,7 +25,7 @@ function demo()
         local tex = t or sl.Texture2d.loadFromFile(dev, getAssetPath("textures/Cobblestone.png"))
         local effect = assetCache.getEffect("Texture")
         local material = sl.Material.create(dev, effect)
-        material:setFaceCull(sl.FaceCull.All)
+        material:setFaceCull(sl.FaceCull.None)
         material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
         material:setTextureParameter("colorTex", tex)
 

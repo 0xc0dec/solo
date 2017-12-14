@@ -47,9 +47,9 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     ep.endModule();
 
     auto fc = module.beginModule("FaceCull");
-    REG_MODULE_CONSTANT(fc, FaceCull, All);
-    REG_MODULE_CONSTANT(fc, FaceCull, CW);
-    REG_MODULE_CONSTANT(fc, FaceCull, CCW);
+    REG_MODULE_CONSTANT(fc, FaceCull, None);
+    REG_MODULE_CONSTANT(fc, FaceCull, Back);
+    REG_MODULE_CONSTANT(fc, FaceCull, Front);
     fc.endModule();
 
     auto pm = module.beginModule("PolygonMode");

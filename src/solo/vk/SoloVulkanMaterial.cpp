@@ -37,9 +37,9 @@ auto VulkanMaterial::getVkCullModeFlags() const -> VkCullModeFlags
 {
     switch (faceCull)
     {
-        case FaceCull::All: return VK_CULL_MODE_NONE;
-        case FaceCull::CCW: return VK_CULL_MODE_FRONT_BIT;
-        case FaceCull::CW: return VK_CULL_MODE_BACK_BIT;
+        case FaceCull::None: return VK_CULL_MODE_NONE;
+        case FaceCull::Front: return VK_CULL_MODE_FRONT_BIT;
+        case FaceCull::Back: return VK_CULL_MODE_BACK_BIT;
         default:
             SL_PANIC("Unsupported face cull mode");
             return VK_FRONT_FACE_CLOCKWISE;

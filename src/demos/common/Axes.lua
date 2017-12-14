@@ -9,7 +9,7 @@ return function(assetCache)
 
     local createColorMaterial = function(color)
         local mat = sl.Material.create(sl.device, effect)
-        mat:setFaceCull(sl.FaceCull.All)
+        mat:setFaceCull(sl.FaceCull.None)
 
         if sl.device:getMode() == sl.DeviceMode.Vulkan then
             mat:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)

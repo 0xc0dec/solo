@@ -28,7 +28,7 @@ assert(mat:getDstBlendFactor() ~= nil)
 mat:setBlendFactors(sl.BlendFactor.SrcAlphaSaturate, sl.BlendFactor.SrcAlphaSaturate)
 
 assert(mat:getFaceCull() ~= nil)
-mat:setFaceCull(sl.FaceCull.All)
+mat:setFaceCull(sl.FaceCull.None)
 
 assert(mat:getDepthWrite() ~= nil)
 mat:setDepthWrite(true)

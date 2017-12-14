@@ -137,14 +137,14 @@ static void setFaceCull(FaceCull cull)
 {
     switch (cull)
     {
-        case FaceCull::All:
+        case FaceCull::None:
             glDisable(GL_CULL_FACE);
             break;
-        case FaceCull::CW:
+        case FaceCull::Back:
             glEnable(GL_CULL_FACE);
             glFrontFace(GL_CW);
             break;
-        case FaceCull::CCW:
+        case FaceCull::Front:
             glEnable(GL_CULL_FACE);
             glFrontFace(GL_CCW);
             break;

@@ -10,7 +10,7 @@ return function(scene, assetCache, offscreenCameraTex, quadMesh, tag)
 	local canvasSize = sl.device:getCanvasSize()
 
     local material = sl.Material.create(sl.device, assetCache.getEffect("Texture"))
-    material:setFaceCull(sl.FaceCull.All)
+    material:setFaceCull(sl.FaceCull.None)
     material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     material:setTextureParameter("mainTex", offscreenCameraTex)
 

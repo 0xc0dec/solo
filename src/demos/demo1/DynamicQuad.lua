@@ -53,7 +53,7 @@ return function(scene, assetCache)
 
         local effect = assetCache.getEffect("Texture")
         local mat = sl.Material.create(sl.device, effect)
-        mat:setFaceCull(sl.FaceCull.All)
+        mat:setFaceCull(sl.FaceCull.None)
         mat:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
         mat:setTextureParameter("mainTex", tex)    
 

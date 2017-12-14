@@ -21,11 +21,11 @@ namespace solo
     class Camera;
     class Transform;
 
-    enum class FaceCull // TODO Rename, currently its logic is inverted
+    enum class FaceCull // TODO Test this is consistent between gl and vk
     {
-        All = 0, // TODO rename to None
-        CW,
-        CCW
+        None = 0,
+        Front,
+        Back
     };
 
     enum class PolygonMode
@@ -120,7 +120,7 @@ namespace solo
         void setDepthFunction(DepthFunction func) { depthFunc = func; }
 
     protected:
-        FaceCull faceCull = FaceCull::CW;
+        FaceCull faceCull = FaceCull::Back;
         PolygonMode polygonMode = PolygonMode::Fill;
         bool depthWrite = true;
         bool depthTest = true;

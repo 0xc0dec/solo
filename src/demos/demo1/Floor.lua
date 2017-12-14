@@ -11,7 +11,7 @@ return function(scene, assetCache, cubeMesh)
 
     local effect = assetCache.getEffect("Texture")
     local material = sl.Material.create(sl.device, effect)
-    material:setFaceCull(sl.FaceCull.All)
+    material:setFaceCull(sl.FaceCull.None)
     material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     material:setTextureParameter("mainTex", tex)
 
