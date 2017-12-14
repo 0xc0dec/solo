@@ -54,7 +54,7 @@ void registerEnums(CppBindModule<LuaBinding> &module)
 
     auto pm = module.beginModule("PolygonMode");
     REG_MODULE_CONSTANT(pm, PolygonMode, Points);
-    REG_MODULE_CONSTANT(pm, PolygonMode, Triangle);
+    REG_MODULE_CONSTANT(pm, PolygonMode, Fill);
     REG_MODULE_CONSTANT(pm, PolygonMode, Wireframe);
     pm.endModule();
 

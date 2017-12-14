@@ -24,7 +24,7 @@ assert(sl.FaceCull.CW ~= nil)
 assert(sl.FaceCull.CCW ~= nil)
 
 assert(sl.PolygonMode.Points ~= nil)
-assert(sl.PolygonMode.Triangle ~= nil)
+assert(sl.PolygonMode.Fill ~= nil)
 assert(sl.PolygonMode.Wireframe ~= nil)
 
 assert(sl.DepthFunction.Never ~= nil)

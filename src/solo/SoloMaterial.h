@@ -30,7 +30,7 @@ namespace solo
 
     enum class PolygonMode
     {
-        Triangle,
+        Fill,
         Wireframe,
         Points
     };
@@ -121,7 +121,7 @@ namespace solo
 
     protected:
         FaceCull faceCull = FaceCull::CW;
-        PolygonMode polygonMode = PolygonMode::Triangle;
+        PolygonMode polygonMode = PolygonMode::Fill;
         bool depthWrite = true;
         bool depthTest = true;
         bool blend = false;

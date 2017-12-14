@@ -117,7 +117,7 @@ static void setPolygonMode(PolygonMode mode)
     GLenum glMode;
     switch (mode)
     {
-        case PolygonMode::Triangle:
+        case PolygonMode::Fill:
             glMode = GL_FILL;
             break;
         case PolygonMode::Wireframe:

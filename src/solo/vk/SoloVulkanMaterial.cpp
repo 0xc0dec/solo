@@ -51,7 +51,7 @@ auto VulkanMaterial::getVkPolygonMode() const -> VkPolygonMode
     switch (polygonMode)
     {
         case PolygonMode::Points: return VK_POLYGON_MODE_POINT;
-        case PolygonMode::Triangle: return VK_POLYGON_MODE_FILL;
+        case PolygonMode::Fill: return VK_POLYGON_MODE_FILL;
         case PolygonMode::Wireframe: return VK_POLYGON_MODE_LINE;
         default:
             SL_PANIC("Unsupported polygon mode");
