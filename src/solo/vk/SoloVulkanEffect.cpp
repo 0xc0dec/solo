@@ -32,7 +32,7 @@ static auto createShaderModule(VkDevice device, const void *data, u32 size) -> V
     return module;
 }
 
-static auto compileToSpiv(const void *src, u32 srcLen, const str &fileName, bool vertex) -> vec<u32>
+static auto compileToSpiv(const void *src, u32 srcLen, const str &fileName, bool vertex) -> shaderc::SpvCompilationResult
 {
     shaderc::Compiler compiler{};
     const shaderc::CompileOptions options{};
@@ -48,7 +48,7 @@ static auto compileToSpiv(const void *src, u32 srcLen, const str &fileName, bool
     auto errorMessage = result.GetErrorMessage();
     SL_PANIC_IF(compilationStatus != shaderc_compilation_status_success, errorMessage);
 
-    return vec<u32>{result.begin(), result.end()};
+    return result;
 }
 
 auto VulkanEffect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<VulkanEffect>
@@ -62,12 +62,14 @@ auto VulkanEffect::createFromSource(Device *device,
     const void *fsSrc, u32 fsSrcLen, const str &fsFileName)
     -> sptr<VulkanEffect>
 {
-    auto vsSpiv = compileToSpiv(vsSrc, vsSrcLen, vsFileName, true);
-    auto fsSpiv = compileToSpiv(fsSrc, fsSrcLen, fsFileName, false);
+    auto vsCompilationResult = compileToSpiv(vsSrc, vsSrcLen, vsFileName, true);
+    auto fsCompilationResult = compileToSpiv(fsSrc, fsSrcLen, fsFileName, false);
+    auto vsSize = (vsCompilationResult.end() - vsCompilationResult.begin()) * sizeof(u32);
+    auto fsSize = (fsCompilationResult.end() - fsCompilationResult.begin()) * sizeof(u32);
     return std::make_shared<VulkanEffect>(
         device,
-        vsSpiv.data(), vsSpiv.size() * sizeof(u32),
-        fsSpiv.data(), fsSpiv.size() * sizeof(u32)
+        vsCompilationResult.begin(), vsSize,
+        fsCompilationResult.begin(), fsSize
     );
 }
 
