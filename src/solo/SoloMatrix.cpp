@@ -460,7 +460,7 @@ bool Matrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translatio
         return true;
 
     // Scale too close to zero, can't decompose rotation.
-    if (math::isZero(scaleX) || math::isZero(scaleY) || math::isZero(scaleZ))
+    if (scaleX < FLT_EPSILON || scaleY < FLT_EPSILON || scaleZ < FLT_EPSILON)
         return false;
 
     // Factor the scale out of the matrix axes.
@@ -480,11 +480,11 @@ bool Matrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translatio
     zaxis.z *= rn;
 
     // Calculate the rotation from the resulting matrix (axes).
-    auto trace = xaxis.x + yaxis.y + zaxis.z + 1.0f;
+    const auto trace = xaxis.x + yaxis.y + zaxis.z + 1.0f;
 
-    if (!math::isZero(trace))
+    if (trace > FLT_EPSILON)
     {
-        auto s = 0.5f / sqrt(trace);
+        const auto s = 0.5f / sqrt(trace);
         rotation->w = 0.25f / s;
         rotation->x = (yaxis.z - zaxis.y) * s;
         rotation->y = (zaxis.x - xaxis.z) * s;
