@@ -34,7 +34,7 @@ function demo()
 
     ---
 
-    local knownTags = {
+    local tags = {
         skybox = 1 << 1,
         transparent = 1 << 2,
         monitor = 1 << 3,
@@ -46,22 +46,22 @@ function demo()
     local offscreenCamera, offscreenCameraTex = createOffscreenCamera(scene)
 
     local mainCamera, mainCameraNode = createMainCamera(scene)
-    mainCameraNode:addScriptComponent(createSpawner(cubeMesh, assetCache))
+    -- mainCameraNode:addScriptComponent(createSpawner(cubeMesh, assetCache)) TODO revert back
     local mainCameraTransform = mainCameraNode:findComponent("Transform")
     mainCameraTransform:setLocalPosition(vec3(0, 5, 10))
     mainCameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
-    createSkybox(scene, knownTags.skybox)
+    createSkybox(scene, tags.skybox)
     createCheckerBox(scene, assetCache, cubeMesh)
     createDynamicQuad(scene, assetCache)
-    createTimeLabel(scene, knownTags.transparent)
+    createTimeLabel(scene, tags.transparent)
     createLoadedMesh(scene, assetCache)
     createFloor(scene, assetCache, cubeMesh)
 
-    local monitorQuad = createMonitorQuad(scene, assetCache, offscreenCameraTex, quadMesh, knownTags.monitor)
+    local monitorQuad = createMonitorQuad(scene, assetCache, offscreenCameraTex, quadMesh, tags.monitor)
     attachAxes(monitorQuad)
 
-    local transparentQuad = createTransparentQuad(scene, assetCache, quadMesh, knownTags.transparent)
+    local transparentQuad = createTransparentQuad(scene, assetCache, quadMesh, tags.transparent)
     attachAxes(transparentQuad)
 
     local originNode = scene:createNode()
@@ -98,12 +98,12 @@ function demo()
 
             if dev:isKeyPressed(sl.KeyCode.Digit1, true) then
                 detachPostProcessor()
-                pp = postProcessors.create1(mainCamera, knownTags.postProcessor, assetCache)
+                pp = postProcessors.create1(mainCamera, tags.postProcessor, assetCache)
             end
 
             if dev:isKeyPressed(sl.KeyCode.Digit2, true) then
                 detachPostProcessor()
-                pp = postProcessors.create2(mainCamera, knownTags.postProcessor, assetCache)
+                pp = postProcessors.create2(mainCamera, tags.postProcessor, assetCache)
             end
 
             if dev:isKeyPressed(sl.KeyCode.Digit3, true) then
@@ -116,15 +116,15 @@ function demo()
         end
 
         function renderOffscreenFrame()
-            renderByTags(knownTags.skybox)
-            renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.monitor | knownTags.postProcessor))
-            renderByTags(knownTags.transparent)
+            renderByTags(tags.skybox)
+            renderByTags(~(tags.skybox | tags.transparent | tags.monitor | tags.postProcessor))
+            renderByTags(tags.transparent)
         end
 
         function renderFrame()
-            renderByTags(knownTags.skybox)
-            renderByTags(~(knownTags.skybox | knownTags.transparent | knownTags.postProcessor))
-            renderByTags(knownTags.transparent)
+            renderByTags(tags.skybox)
+            renderByTags(~(tags.skybox | tags.transparent | tags.postProcessor))
+            renderByTags(tags.transparent)
         end
 
         function render()

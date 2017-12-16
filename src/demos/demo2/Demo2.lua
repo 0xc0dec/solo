@@ -18,6 +18,7 @@ function demo()
 
     local createRotator = require "Rotator"
     local createMainCamera = require "MainCamera"
+    local createSkybox = require "Skybox"
     local assetCache = (require "AssetCache")()
     local attachAxes = (require "Axes")(assetCache)
 
@@ -128,6 +129,10 @@ function demo()
 
     ---
 
+    local tags = {
+        skybox = 1 << 1,
+    }
+
     local offscreenCamera, offscreenCameraTex, offscreenCameraNode = createOffscreenCamera()
     local offscreenCameraTransform = offscreenCameraNode:findComponent("Transform")
     offscreenCameraTransform:setLocalPosition(vec3(5, 5, 5))
@@ -141,6 +146,7 @@ function demo()
     local material1 = createMaterial(offscreenCameraTex)
     local material2 = createMaterial()
 
+    createSkybox(scene, tags.skybox)
     createCustomMesh(material1, vec3(-3, 3, 0))
     createMesh(material2, vec3(3, 3, 0))
 
@@ -174,11 +180,12 @@ function demo()
     end
 
     function renderFrame()
-        scene:visit(renderCmp)
+        scene:visitByTags(tags.skybox, renderCmp)
+        -- scene:visitByTags(~tags.skybox, renderCmp)
     end
 
     function render()
-        offscreenCamera:renderFrame(renderFrame)
+        -- offscreenCamera:renderFrame(renderFrame)
         camera:renderFrame(renderFrame)
     end
 

@@ -10,6 +10,7 @@
 #include "SoloDevice.h"
 #include "SoloVulkan.h"
 #include "SoloVulkanRenderer.h"
+#include "SoloVulkanPrefabShaders.h"
 #include <spirv_cross/spirv.hpp>
 #include <spirv_cross/spirv_cross.hpp>
 #include <spirv_cross/spirv_glsl.hpp>
@@ -53,8 +54,22 @@ static auto compileToSpiv(const void *src, u32 srcLen, const str &fileName, bool
 
 auto VulkanEffect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<VulkanEffect>
 {
-    // TODO
-    return nullptr;
+    switch (prefab)
+    {
+        case EffectPrefab::Skybox:
+            return createFromSource(
+                device,
+                VulkanPrefabShaders::Vertex::skybox, strlen(VulkanPrefabShaders::Vertex::skybox), "prefab.skybox.vert.glsl",
+                VulkanPrefabShaders::Fragment::skybox, strlen(VulkanPrefabShaders::Fragment::skybox), "prefab.skybox.frag.glsl");
+        case EffectPrefab::Font:
+            return createFromSource(
+                device,
+                VulkanPrefabShaders::Vertex::font, strlen(VulkanPrefabShaders::Vertex::font), "prefab.font.vert.glsl",
+                VulkanPrefabShaders::Fragment::font, strlen(VulkanPrefabShaders::Fragment::font), "prefab.font.frag.glsl");
+        default:
+            SL_PANIC("Unknown effect prefab");
+            return nullptr;
+    }
 }
 
 auto VulkanEffect::createFromSource(Device *device,

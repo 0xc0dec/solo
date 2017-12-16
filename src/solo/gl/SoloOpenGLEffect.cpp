@@ -21,7 +21,7 @@ auto OpenGLEffect::createFromPrefab(EffectPrefab prefab) -> sptr<OpenGLEffect>
                 OpenGLPrefabShaders::Fragment::skybox, std::strlen(OpenGLPrefabShaders::Fragment::skybox));
         case EffectPrefab::Font:
             return std::make_shared<OpenGLEffect>(
-                OpenGLPrefabShaders::Vertex::positionAndTexCoord, std::strlen(OpenGLPrefabShaders::Vertex::positionAndTexCoord),
+                OpenGLPrefabShaders::Vertex::font, std::strlen(OpenGLPrefabShaders::Vertex::font),
                 OpenGLPrefabShaders::Fragment::font, std::strlen(OpenGLPrefabShaders::Fragment::font));
         default:
             SL_PANIC("Unknown effect prefab");

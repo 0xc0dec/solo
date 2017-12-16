@@ -96,6 +96,8 @@ namespace solo
 
         void drawMeshPart(Material *material, Transform *transform, Mesh *mesh, Camera *camera,
             u32 part, VkCommandBuffer cmdBuf, VkRenderPass renderPass);
+        void drawMesh(Material *material, Transform *transform, Mesh *mesh,
+            Camera *camera, VkCommandBuffer cmdBuf, VkRenderPass renderPass);
         auto ensurePipelineContext(Transform *transform, Camera *camera, VulkanMaterial *material,
             VulkanMesh *mesh, VkRenderPass renderPass) -> PipelineContext&;
     };

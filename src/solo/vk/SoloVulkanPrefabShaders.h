@@ -7,11 +7,11 @@
 
 #include "SoloCommon.h"
 
-#ifdef SL_OPENGL_RENDERER
+#ifdef SL_VULKAN_RENDERER
 
 namespace solo
 {
-    struct OpenGLPrefabShaders
+    struct VulkanPrefabShaders
     {
         struct Vertex
         {

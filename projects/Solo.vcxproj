@@ -103,6 +103,7 @@
     <ClInclude Include="..\src\solo\vk\SoloVulkanResource.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkanSwapchain.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkanTexture.h" />
+    <ClInclude Include="..\src\solo\vk\SoloVulkanPrefabShaders.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="..\src\solo\vk\SoloVulkanRenderer.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloVulkanRenderPass.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloVulkanSwapchain.cpp" />
+    <ClCompile Include="..\src\solo\vk\SoloVulkanPrefabShaders.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{278CAB21-1CAB-49AD-9959-6F97743501FB}</ProjectGuid>

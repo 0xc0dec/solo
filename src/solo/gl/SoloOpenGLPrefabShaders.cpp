@@ -28,7 +28,7 @@ const s8 *OpenGLPrefabShaders::Vertex::skybox = R"(
     }
 )";
 
-const s8* OpenGLPrefabShaders::Vertex::positionAndTexCoord = R"(
+const s8* OpenGLPrefabShaders::Vertex::font = R"(
     #version 330 core
 
     layout (location = 0) in vec4 position;

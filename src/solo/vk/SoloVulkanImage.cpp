@@ -182,7 +182,9 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data) -> Vul
     const auto height = data->getHeight();
     const auto format = toVulkanFormat(data->getFormat());
 
-    auto image = VulkanImage(renderer, width, height, mipLevels, 1, format,
+    auto image = VulkanImage(
+        renderer, width, height, mipLevels, 1,
+        format,
         0,
         VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
         VK_IMAGE_VIEW_TYPE_2D,
@@ -281,18 +283,19 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
         renderer,
         width, height, mipLevels, layers,
         format,
-        0,
+        VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT,
         VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
-        VK_IMAGE_VIEW_TYPE_2D,
+        VK_IMAGE_VIEW_TYPE_CUBE,
         VK_IMAGE_ASPECT_COLOR_BIT
     );
 
     VkImageSubresourceRange subresourceRange{};
 	subresourceRange.aspectMask = image.aspectMask;
+	subresourceRange.baseArrayLayer = 0;
 	subresourceRange.baseMipLevel = 0;
 	subresourceRange.levelCount = mipLevels;
 	subresourceRange.layerCount = layers;
-    
+
     auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
     vk::beginCommandBuffer(cmdBuf, true);
 
@@ -308,11 +311,13 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
             VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
             VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
 
-        vec<VulkanBuffer> srcBuffers;
+        auto srcBuffer = VulkanBuffer::createStaging(renderer, data->getSize());
+        
+        u32 offset = 0;
+        vec<VkBufferImageCopy> copyRegions;
         for (u32 layer = 0; layer < layers; layer++)
         {
-            u32 offset = 0;
-            vec<VkBufferImageCopy> copyRegions;
+            srcBuffer.updatePart(data->getData(layer), offset, data->getSize(layer));
 
             for (u32 level = 0; level < mipLevels; level++)
             {
@@ -330,18 +335,15 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
 
                 offset += data->getSize(layer); // TODO use per-level size once TextureData supports mip levels
             }
-
-            auto srcBuf = VulkanBuffer::createStaging(renderer, data->getSize(layer), data->getData(layer));
-            srcBuffers.emplace_back(std::move(srcBuf)); // so that buffers don't get out of scope before we submit to the queue
-
-            vkCmdCopyBufferToImage(
-                cmdBuf,
-                srcBuf,
-                image.image,
-                VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-                copyRegions.size(),
-                copyRegions.data());
         }
+
+        vkCmdCopyBufferToImage(
+            cmdBuf,
+            srcBuffer,
+            image.image,
+            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+            copyRegions.size(),
+            copyRegions.data());
 
         setImageLayout(
             cmdBuf,

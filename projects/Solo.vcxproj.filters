@@ -187,6 +187,9 @@
     <ClInclude Include="..\src\solo\gl\SoloOpenGLSDLDevice.h">
       <Filter>gl</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\vk\SoloVulkanPrefabShaders.h">
+      <Filter>vk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp">
@@ -356,6 +359,9 @@
     </ClCompile>
     <ClCompile Include="..\src\solo\gl\SoloOpenGLSDLDevice.cpp">
       <Filter>gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\solo\vk\SoloVulkanPrefabShaders.cpp">
+      <Filter>vk</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

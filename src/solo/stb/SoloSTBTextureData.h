@@ -22,14 +22,14 @@ namespace solo
         STBTexture2dData() {}
         ~STBTexture2dData();
 
-        auto getSize() const -> u32 override final { return width * height * bpp; }
+        auto getSize() const -> u32 override final { return width * height * channels; }
         auto getWidth() const -> u32 override final { return width; }
         auto getHeight() const -> u32 override final { return height; }
         auto getData() const -> const void * override final { return data; }
         auto getFormat() const -> TextureFormat override final { return format; }
 
     private:
-        u32 bpp = 0;
+        u32 channels = 0;
         u32 width = 0;
         u32 height = 0;
         TextureFormat format = TextureFormat::RGB;

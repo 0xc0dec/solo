@@ -1,11 +1,10 @@
 # TODO
 
-* Continue with FrameBuffer
-* Implement "dirty/versions" mechanism for vulkan resources and remove all pipelines rebuilding every frame.
+* Fix wrong vulkan skybox orientation
+* WorldView matrix becomes invalid after a couple of seconds of rotating camera (can be seen in RenderDoc as NaN
+values in the uniform variable), this probably causes the bug with crashed while raycasting
+* Fix wrong GL textures appeared after switching to always load 4 channel textures
 * Continue with Vulkan backend
-* Handle Vulkan/OpenGL coordinate system differences
-(for example add mesh methods setVertices/setUVs/... as in Unity, make these methods fix coordinates;
-or add global const vectors storing directions of global axes in relation to the 'screen')
 * Refactor texture/texture data stuff
 * Refactor all vulkan code
 * More error checks, write errors to console
