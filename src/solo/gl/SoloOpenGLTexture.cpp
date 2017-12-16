@@ -216,7 +216,7 @@ void OpenGLCubeTexture::setData(CubeTextureData *data)
     {
         const auto face = static_cast<CubeTextureFace>(static_cast<u32>(CubeTextureFace::Front) + i);
         const auto glFace = toCubeMapFace(face);
-        const auto internalFormat = toInternalFormat(data->getFormat()); // TODO pass 'face' instead of 'i'
+        const auto internalFormat = toInternalFormat(data->getFormat());
         const auto fmt = toFormat(data->getFormat());
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         // TODO Add support for mip levels

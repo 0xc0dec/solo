@@ -50,7 +50,7 @@ auto STBTexture2dData::loadFromFile(Device *device, const str &path) -> sptr<STB
 
     const auto result = std::make_shared<STBTexture2dData>();
     result->channels = 4;
-    result->format = toImageFormat(channels);
+    result->format = toImageFormat(4);
     result->width = width;
     result->height = height;
     result->data = data;
