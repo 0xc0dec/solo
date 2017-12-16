@@ -303,77 +303,30 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
 }
 
 void VulkanRenderer::drawMeshPart(
-    Material *material, Transform *transform, Mesh *mesh,
-    Camera *camera, u32 part, VkCommandBuffer cmdBuf, VkRenderPass renderPass
+    VkCommandBuffer cmdBuf, VkRenderPass renderPass, Material *material,
+    Transform *transform, Mesh *mesh, Camera *camera, u32 part
 )
 {
-    const auto vkMaterial = static_cast<VulkanMaterial*>(material);
-    const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->getEffect().get());
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
-    const auto &uniformBufs = vkEffect->getUniformBuffers();
-    const auto &materialSamplers = vkMaterial->getSamplers();
-    
-    auto &context = ensurePipelineContext(transform, camera, vkMaterial, vkMesh, renderPass);
-    
-    // Run the desc set updater
-    // TODO Not so often - only when something really changes
-    
-    VulkanDescriptorSetUpdater updater{device};
-
-    // TODO Not necessary (?), buffers don't change anyway, only their content
-    for (auto &pair : context.uniformBuffers)
-    {
-        const auto info = uniformBufs.at(pair.first);
-        auto &buffer = pair.second;
-        updater.forUniformBuffer(info.binding, context.descSet, buffer, 0, info.size); // TODO use single large buffer?
-    }
-
-    for (auto &pair : materialSamplers)
-    {
-        auto &info = pair.second;
-        updater.forTexture(
-            info.binding,
-            context.descSet,
-            info.texture->getImage().getView(),
-            info.texture->getImage().getSampler(),
-            VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
-        );
-    }
-
-    updater.updateSets();
-
-    // Update buffers content
-
-    auto &bufferItems = vkMaterial->getBufferItems();
-    for (auto &p: bufferItems)
-    {
-        auto &buffer = context.uniformBuffers[p.first];
-        for (auto &pp: p.second)
-            pp.second.write(buffer, camera, transform);
-    }
-
-    // Issue commands
-
-    vkCmdBindPipeline(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, context.pipeline);
-    vkCmdBindDescriptorSets(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, context.pipeline.getLayout(), 0, 1, &context.descSet, 0, nullptr);
-
-    VkDeviceSize vertexBufferOffset = 0;
-    for (u32 i = 0; i < vkMesh->getVertexBufferCount(); i++)
-    {
-        auto vertexBuffer = vkMesh->getVertexBuffer(i);
-        vkCmdBindVertexBuffers(cmdBuf, i, 1, &vertexBuffer, &vertexBufferOffset);
-    }
-
+    prepareAndBindMesh(cmdBuf, renderPass, material, transform, mesh, camera);
     const auto indexBuffer = vkMesh->getPartBuffer(part);
     vkCmdBindIndexBuffer(cmdBuf, indexBuffer, 0, VK_INDEX_TYPE_UINT16);
     vkCmdDrawIndexed(cmdBuf, vkMesh->getPartIndexElementCount(part), 1, 0, 0, 0);
 }
 
-// TODO this is a copy-paste from drawMeshPart
 void VulkanRenderer::drawMesh(
-    Material *material, Transform *transform, Mesh *mesh,
-    Camera *camera, VkCommandBuffer cmdBuf, VkRenderPass renderPass
+    VkCommandBuffer cmdBuf, VkRenderPass renderPass, Material *material,
+    Transform *transform, Mesh *mesh, Camera *camera
 )
+{
+    const auto vkMesh = static_cast<VulkanMesh*>(mesh);
+    prepareAndBindMesh(cmdBuf, renderPass, material, transform, mesh, camera);
+    vkCmdDraw(cmdBuf, vkMesh->getMinVertexCount(), 1, 0, 0);
+}
+
+void VulkanRenderer::prepareAndBindMesh(
+    VkCommandBuffer cmdBuf, VkRenderPass renderPass, Material *material,
+    Transform *transform, Mesh *mesh, Camera *camera)
 {
     const auto vkMaterial = static_cast<VulkanMaterial*>(material);
     const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->getEffect().get());
@@ -431,8 +384,6 @@ void VulkanRenderer::drawMesh(
         auto vertexBuffer = vkMesh->getVertexBuffer(i);
         vkCmdBindVertexBuffers(cmdBuf, i, 1, &vertexBuffer, &vertexBufferOffset);
     }
-
-    vkCmdDraw(cmdBuf, vkMesh->getMinVertexCount(), 1, 0, 0);
 }
 
 void VulkanRenderer::endFrame()
@@ -512,13 +463,13 @@ void VulkanRenderer::endFrame()
                 if (currentCamera)
                 {
                     drawMeshPart(
+                        currentCmdBuffer,
+                        *currentRenderPass,
                         cmd.meshPart.material,
                         cmd.meshPart.transform,
                         cmd.meshPart.mesh,
                         currentCamera,
-                        cmd.meshPart.part,
-                        currentCmdBuffer,
-                        *currentRenderPass
+                        cmd.meshPart.part
                     );
                 }
 
@@ -530,12 +481,12 @@ void VulkanRenderer::endFrame()
                 if (currentCamera)
                 {
                     drawMesh(
+                        currentCmdBuffer,
+                        *currentRenderPass,
                         cmd.mesh.material,
                         cmd.mesh.transform,
                         cmd.mesh.mesh,
-                        currentCamera,
-                        currentCmdBuffer,
-                        *currentRenderPass
+                        currentCamera
                     );
                 }
 

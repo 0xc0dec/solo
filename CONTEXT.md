@@ -1,7 +1,6 @@
 # TODO
 
-* WorldView matrix becomes invalid after a couple of seconds of rotating camera (can be seen in RenderDoc as NaN
-values in the uniform variable), this probably causes the bug with crashed while raycasting
+* Prefab materials? Remove skybox renderer?
 * Add no clearing to Vulkan backend and return back other objects rendering in Demo2
 * Fix wrong GL textures appeared after switching to always load 4 channel textures
 * Continue with Vulkan backend

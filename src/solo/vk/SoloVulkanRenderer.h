@@ -94,10 +94,12 @@ namespace solo
         // TODO clear entries when no longer used
         umap<size_t, PipelineContext> pipelineContexts;
 
-        void drawMeshPart(Material *material, Transform *transform, Mesh *mesh, Camera *camera,
-            u32 part, VkCommandBuffer cmdBuf, VkRenderPass renderPass);
-        void drawMesh(Material *material, Transform *transform, Mesh *mesh,
-            Camera *camera, VkCommandBuffer cmdBuf, VkRenderPass renderPass);
+        void prepareAndBindMesh(VkCommandBuffer cmdBuf, VkRenderPass renderPass, Material *material,
+            Transform *transform, Mesh *mesh, Camera *camera);
+        void drawMeshPart(VkCommandBuffer cmdBuf, VkRenderPass renderPass, Material *material, Transform *transform,
+            Mesh *mesh, Camera *camera, u32 part);
+        void drawMesh(VkCommandBuffer cmdBuf, VkRenderPass renderPass, Material *material,
+            Transform *transform, Mesh *mesh, Camera *camera);
         auto ensurePipelineContext(Transform *transform, Camera *camera, VulkanMaterial *material,
             VulkanMesh *mesh, VkRenderPass renderPass) -> PipelineContext&;
     };
