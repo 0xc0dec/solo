@@ -173,10 +173,11 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
     return memory;
 }
 
-// TODO Refactor this crap
+// TODO Refactor, avoid copy-paste
 auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data) -> VulkanImage
 {
-    const auto mipLevels = 1;
+    const auto mipLevels = 1; // TODO proper support
+    const auto layers = 1;
     const auto width = data->getWidth();
     const auto height = data->getHeight();
     const auto format = toVulkanFormat(data->getFormat());
@@ -193,7 +194,7 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data) -> Vul
     {
         for (u32 level = 0; level < mipLevels; level++)
         {
-            VkBufferImageCopy bufferCopyRegion = {};
+            VkBufferImageCopy bufferCopyRegion{};
             bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
             bufferCopyRegion.imageSubresource.mipLevel = level;
             bufferCopyRegion.imageSubresource.baseArrayLayer = layer;
@@ -213,7 +214,7 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data) -> Vul
 	subresourceRange.aspectMask = image.aspectMask;
 	subresourceRange.baseMipLevel = 0;
 	subresourceRange.levelCount = mipLevels;
-	subresourceRange.layerCount = image.layers;
+	subresourceRange.layerCount = layers;
 
     auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
     vk::beginCommandBuffer(cmdBuf, true);
@@ -270,7 +271,7 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data) -> Vul
 
 auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) -> VulkanImage
 {
-    const auto mipLevels = 1;
+    const auto mipLevels = 1; // TODO proper support
     const auto layers = 6;
     const auto width = data->getDimension();
     const auto height = width;
@@ -290,7 +291,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
 	subresourceRange.aspectMask = image.aspectMask;
 	subresourceRange.baseMipLevel = 0;
 	subresourceRange.levelCount = mipLevels;
-	subresourceRange.layerCount = image.layers;
+	subresourceRange.layerCount = layers;
     
     auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
     vk::beginCommandBuffer(cmdBuf, true);
@@ -298,13 +299,24 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
     const auto size = data->getSize();
     if (size)
     {
-        u32 offset = 0;
-        vec<VkBufferImageCopy> copyRegions;
+        setImageLayout(
+            cmdBuf,
+            image.image,
+            VK_IMAGE_LAYOUT_UNDEFINED,
+            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+            subresourceRange,
+            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+
+        vec<VulkanBuffer> srcBuffers;
         for (u32 layer = 0; layer < layers; layer++)
         {
+            u32 offset = 0;
+            vec<VkBufferImageCopy> copyRegions;
+
             for (u32 level = 0; level < mipLevels; level++)
             {
-                VkBufferImageCopy bufferCopyRegion = {};
+                VkBufferImageCopy bufferCopyRegion{};
                 bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
                 bufferCopyRegion.imageSubresource.mipLevel = level;
                 bufferCopyRegion.imageSubresource.baseArrayLayer = layer;
@@ -316,28 +328,20 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
 
                 copyRegions.push_back(bufferCopyRegion);
 
-                offset += data->getSize(level);
+                offset += data->getSize(layer); // TODO use per-level size once TextureData supports mip levels
             }
+
+            auto srcBuf = VulkanBuffer::createStaging(renderer, data->getSize(layer), data->getData(layer));
+            srcBuffers.emplace_back(std::move(srcBuf)); // so that buffers don't get out of scope before we submit to the queue
+
+            vkCmdCopyBufferToImage(
+                cmdBuf,
+                srcBuf,
+                image.image,
+                VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+                copyRegions.size(),
+                copyRegions.data());
         }
-
-        auto srcBuf = VulkanBuffer::createStaging(renderer, data->getSize(), data->getData());
-
-        setImageLayout(
-            cmdBuf,
-            image.image,
-            VK_IMAGE_LAYOUT_UNDEFINED,
-            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-            subresourceRange,
-            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
-
-        vkCmdCopyBufferToImage(
-            cmdBuf,
-            srcBuf,
-            image.image,
-            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-            copyRegions.size(),
-            copyRegions.data());
 
         setImageLayout(
             cmdBuf,

@@ -121,12 +121,6 @@ auto STBCubeTextureData::getDimension() const -> u32
     return faces[0]->getWidth();
 }
 
-auto STBCubeTextureData::getData() const -> const void*
-{
-    SL_PANIC("Not implemented");
-    return nullptr;
-}
-
 auto STBCubeTextureData::getData(u32 face) const -> const void*
 {
     return faces[face]->getData();

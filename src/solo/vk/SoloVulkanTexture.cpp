@@ -25,7 +25,6 @@ void VulkanTexture2d::generateMipmaps()
     // TODO
 }
 
-
 VulkanCubeTexture::VulkanCubeTexture(Device *device, CubeTextureData *data):
     CubeTexture(data)
 {

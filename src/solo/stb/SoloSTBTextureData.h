@@ -58,7 +58,6 @@ namespace solo
         auto getSize() const -> u32 override final;
         auto getSize(u32 face) const -> u32 override final;
         auto getDimension() const -> u32 override final;
-        auto getData() const -> const void* override final; // TODO remove for now?
         auto getData(u32 face) const -> const void* override final;
         auto getFormat() const -> TextureFormat override final;
 

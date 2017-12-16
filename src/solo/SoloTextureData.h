@@ -50,7 +50,6 @@ namespace solo
         virtual auto getSize() const -> u32 = 0;
         virtual auto getSize(u32 face) const -> u32 = 0;
         virtual auto getDimension() const -> u32 = 0;
-        virtual auto getData() const -> const void* = 0;
         virtual auto getData(u32 face) const -> const void* = 0;
         virtual auto getFormat() const -> TextureFormat = 0;
 
