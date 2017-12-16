@@ -176,9 +176,9 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
 // TODO Refactor this crap
 auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data) -> VulkanImage
 {
-    const auto mipLevels = data->getMipLevels();
-    const auto width = data->getWidth(0);
-    const auto height = data->getHeight(0);
+    const auto mipLevels = 1;
+    const auto width = data->getWidth();
+    const auto height = data->getHeight();
     const auto format = toVulkanFormat(data->getFormat());
 
     auto image = VulkanImage(renderer, width, height, mipLevels, 1, format,
@@ -198,14 +198,14 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data) -> Vul
             bufferCopyRegion.imageSubresource.mipLevel = level;
             bufferCopyRegion.imageSubresource.baseArrayLayer = layer;
             bufferCopyRegion.imageSubresource.layerCount = 1;
-            bufferCopyRegion.imageExtent.width = data->getWidth(level);
-            bufferCopyRegion.imageExtent.height = data->getHeight(level);
+            bufferCopyRegion.imageExtent.width = data->getWidth(); // TODO use per-level dimensions once TextureData supports mip levels
+            bufferCopyRegion.imageExtent.height = data->getHeight(); // TODO use per-level dimensions once TextureData supports mip levels
             bufferCopyRegion.imageExtent.depth = 1;
             bufferCopyRegion.bufferOffset = offset;
 
             copyRegions.push_back(bufferCopyRegion);
 
-            offset += data->getSize(level);
+            offset += data->getSize(); // TODO use per-level size once TextureData supports mip levels
         }
     }
 
@@ -268,25 +268,104 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data) -> Vul
     return image;
 }
 
-auto VulkanImage::createCube(VulkanRenderer *renderer/*, const ImageData &data*/) -> VulkanImage
+auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) -> VulkanImage
 {
-    /*const auto mipLevels = data.getMipLevelCount();
-    const auto width = data.getWidth(0, 0);
-    const auto height = data.getHeight(0, 0);
-    const auto format = toVulkanFormat(data.getFormat());
+    const auto mipLevels = 1;
+    const auto layers = 6;
+    const auto width = data->getDimension();
+    const auto height = width;
+    const auto format = toVulkanFormat(data->getFormat());
 
-    auto image = Image(device, width, height, mipLevels, 6, format,
-        VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT,
+    auto image = VulkanImage(
+        renderer,
+        width, height, mipLevels, layers,
+        format,
+        0,
         VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
-        VK_IMAGE_VIEW_TYPE_CUBE,
-        VK_IMAGE_ASPECT_COLOR_BIT);
-    image.uploadData(device, data);
+        VK_IMAGE_VIEW_TYPE_2D,
+        VK_IMAGE_ASPECT_COLOR_BIT
+    );
 
-    return image;*/
+    VkImageSubresourceRange subresourceRange{};
+	subresourceRange.aspectMask = image.aspectMask;
+	subresourceRange.baseMipLevel = 0;
+	subresourceRange.levelCount = mipLevels;
+	subresourceRange.layerCount = image.layers;
+    
+    auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
+    vk::beginCommandBuffer(cmdBuf, true);
 
-    SL_PANIC("Not implemented");
+    const auto size = data->getSize();
+    if (size)
+    {
+        u32 offset = 0;
+        vec<VkBufferImageCopy> copyRegions;
+        for (u32 layer = 0; layer < layers; layer++)
+        {
+            for (u32 level = 0; level < mipLevels; level++)
+            {
+                VkBufferImageCopy bufferCopyRegion = {};
+                bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+                bufferCopyRegion.imageSubresource.mipLevel = level;
+                bufferCopyRegion.imageSubresource.baseArrayLayer = layer;
+                bufferCopyRegion.imageSubresource.layerCount = 1;
+                bufferCopyRegion.imageExtent.width = data->getDimension();
+                bufferCopyRegion.imageExtent.height = data->getDimension();
+                bufferCopyRegion.imageExtent.depth = 1;
+                bufferCopyRegion.bufferOffset = offset;
 
-    return VulkanImage();
+                copyRegions.push_back(bufferCopyRegion);
+
+                offset += data->getSize(level);
+            }
+        }
+
+        auto srcBuf = VulkanBuffer::createStaging(renderer, data->getSize(), data->getData());
+
+        setImageLayout(
+            cmdBuf,
+            image.image,
+            VK_IMAGE_LAYOUT_UNDEFINED,
+            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+            subresourceRange,
+            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+
+        vkCmdCopyBufferToImage(
+            cmdBuf,
+            srcBuf,
+            image.image,
+            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+            copyRegions.size(),
+            copyRegions.data());
+
+        setImageLayout(
+            cmdBuf,
+            image.image,
+            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+            VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+            subresourceRange,
+            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+    }
+    else // empty
+    {
+        setImageLayout(
+            cmdBuf,
+            image.image,
+            VK_IMAGE_LAYOUT_UNDEFINED,
+            VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+            subresourceRange,
+            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+    }
+
+    vkEndCommandBuffer(cmdBuf);
+
+    vk::queueSubmit(renderer->getQueue(), 0, nullptr, 0, nullptr, 1, &cmdBuf);
+    SL_VK_CHECK_RESULT(vkQueueWaitIdle(renderer->getQueue()));
+
+    return image;
 }
 
 VulkanImage::VulkanImage(VulkanRenderer *renderer, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format,
@@ -308,73 +387,5 @@ VulkanImage::VulkanImage(VulkanRenderer *renderer, u32 width, u32 height, u32 mi
     this->sampler = std::move(sampler);
     this->view = std::move(view);
 }
-
-//void vk::Image::uploadData(const ImageData &data)
-//{
-    /*u32 offset = 0;
-    vec<VkBufferImageCopy> copyRegions;
-    for (u32 layer = 0; layer < layers; layer++)
-    {
-        for (u32 level = 0; level < mipLevels; level++)
-        {
-            VkBufferImageCopy bufferCopyRegion = {};
-            bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-            bufferCopyRegion.imageSubresource.mipLevel = level;
-            bufferCopyRegion.imageSubresource.baseArrayLayer = layer;
-            bufferCopyRegion.imageSubresource.layerCount = 1;
-            bufferCopyRegion.imageExtent.width = data.getWidth(layer, level);
-            bufferCopyRegion.imageExtent.height = data.getHeight(layer, level);
-            bufferCopyRegion.imageExtent.depth = 1;
-            bufferCopyRegion.bufferOffset = offset;
-
-            copyRegions.push_back(bufferCopyRegion);
-
-            offset += data.getSize(layer, level);
-        }
-    }
-
-    VkImageSubresourceRange subresourceRange{};
-	subresourceRange.aspectMask = aspectMask;
-	subresourceRange.baseMipLevel = 0;
-	subresourceRange.levelCount = mipLevels;
-	subresourceRange.layerCount = layers;
-
-    auto srcBuf = Buffer::createStaging(device, data.getSize(), data.getData());
-
-    auto cmdBuf = createCommandBuffer(device, device.getCommandPool());
-    beginCommandBuffer(cmdBuf, true);
-
-    setImageLayout(
-        cmdBuf,
-        image,
-        VK_IMAGE_LAYOUT_UNDEFINED,
-        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-        subresourceRange,
-        VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-        VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
-
-    vkCmdCopyBufferToImage(
-        cmdBuf,
-        srcBuf,
-        image,
-        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-        copyRegions.size(),
-        copyRegions.data());
-
-    auto imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-    setImageLayout(
-        cmdBuf,
-        image,
-        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-        imageLayout,
-        subresourceRange,
-        VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-        VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
-
-    vkEndCommandBuffer(cmdBuf);
-
-    queueSubmit(device.getQueue(), 0, nullptr, 0, nullptr, 1, &cmdBuf);
-    SL_VK_CHECK_RESULT(vkQueueWaitIdle(device.getQueue()));*/
-//}
 
 #endif

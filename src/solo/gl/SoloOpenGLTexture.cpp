@@ -212,7 +212,7 @@ void OpenGLCubeTexture::setData(CubeTextureData *data)
 {
     glBindTexture(GL_TEXTURE_CUBE_MAP, handle);
 
-    for (int i = 0; i < 6; ++i)
+    for (s32 i = 0; i < 6; ++i)
     {
         const auto face = static_cast<CubeTextureFace>(static_cast<u32>(CubeTextureFace::Front) + i);
         const auto glFace = toCubeMapFace(face);

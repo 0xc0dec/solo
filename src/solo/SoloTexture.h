@@ -17,7 +17,7 @@ namespace solo
     class CubeTexture;
     class CubeTextureData;
 
-    enum class TextureWrapping
+    enum class TextureWrapping // TODO rename to TextureWrap?
     {
         Clamp = 0,
         Repeat

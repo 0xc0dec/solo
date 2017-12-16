@@ -25,4 +25,17 @@ void VulkanTexture2d::generateMipmaps()
     // TODO
 }
 
+
+VulkanCubeTexture::VulkanCubeTexture(Device *device, CubeTextureData *data):
+    CubeTexture(data)
+{
+    const auto renderer = static_cast<VulkanRenderer*>(device->getRenderer());
+    image = VulkanImage::createCube(renderer, data);
+}
+
+void VulkanCubeTexture::generateMipmaps()
+{
+    // TODO
+}
+
 #endif

@@ -22,18 +22,10 @@ namespace solo
         SL_DISABLE_COPY_AND_MOVE(Texture2dData)
         virtual ~Texture2dData() {}
 
-        virtual auto getMipLevels() const -> u32 = 0;
-
         virtual auto getSize() const -> u32 = 0;
-        virtual auto getSize(u32 mipLevel) const -> u32 = 0;
-
         virtual auto getWidth() const -> u32 = 0;
-        virtual auto getWidth(u32 mipLevel) const -> u32 = 0;
         virtual auto getHeight() const -> u32 = 0;
-        virtual auto getHeight(u32 mipLevel) const -> u32 = 0;
-
         virtual auto getData() const -> const void* = 0;
-
         virtual auto getFormat() const -> TextureFormat = 0;
 
     protected:
@@ -43,7 +35,8 @@ namespace solo
     class CubeTextureData
     {
     public:
-        static auto loadFromFaceFiles(Device *device,
+        static auto loadFromFaceFiles(
+            Device *device,
             const str &frontPath,
             const str &backPath,
             const str &leftPath,
@@ -54,18 +47,11 @@ namespace solo
         SL_DISABLE_COPY_AND_MOVE(CubeTextureData)
         virtual ~CubeTextureData() {}
 
-        virtual auto getMipLevels() const -> u32 = 0;
-
         virtual auto getSize() const -> u32 = 0;
-        virtual auto getSize(u32 mipLevel) const -> u32 = 0;
-        virtual auto getSize(u32 face, u32 mipLevel) const -> u32 = 0;
-
+        virtual auto getSize(u32 face) const -> u32 = 0;
         virtual auto getDimension() const -> u32 = 0;
-        virtual auto getDimension(u32 mipLevel) const -> u32 = 0;
-
         virtual auto getData() const -> const void* = 0;
         virtual auto getData(u32 face) const -> const void* = 0;
-
         virtual auto getFormat() const -> TextureFormat = 0;
 
     protected:

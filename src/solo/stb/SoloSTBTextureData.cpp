@@ -72,7 +72,8 @@ bool STBCubeTextureData::canLoadFromFaceFiles(
            STBTexture2dData::canLoadFromFile(bottomPath);
 }
 
-auto STBCubeTextureData::loadFromFaceFiles(Device *device,
+auto STBCubeTextureData::loadFromFaceFiles(
+    Device *device,
     const str &frontPath,
     const str &backPath,
     const str &leftPath,
@@ -100,11 +101,6 @@ auto STBCubeTextureData::loadFromFaceFiles(Device *device,
     return tex;
 }
 
-auto STBCubeTextureData::getMipLevels() const -> u32
-{
-    return 1;
-}
-
 auto STBCubeTextureData::getSize() const -> u32
 {
     return faces[0]->getSize() + 
@@ -115,29 +111,14 @@ auto STBCubeTextureData::getSize() const -> u32
            faces[5]->getSize();
 }
 
-auto STBCubeTextureData::getSize(u32 mipLevel) const -> u32
+auto STBCubeTextureData::getSize(u32 face) const -> u32
 {
-    return faces[0]->getSize(mipLevel) + 
-           faces[1]->getSize(mipLevel) + 
-           faces[2]->getSize(mipLevel) + 
-           faces[3]->getSize(mipLevel) + 
-           faces[4]->getSize(mipLevel) + 
-           faces[5]->getSize(mipLevel);
-}
-
-auto STBCubeTextureData::getSize(u32 face, u32 mipLevel) const -> u32
-{
-    return faces[face]->getSize(mipLevel);
+    return faces[face]->getSize();
 }
 
 auto STBCubeTextureData::getDimension() const -> u32
 {
     return faces[0]->getWidth();
-}
-
-auto STBCubeTextureData::getDimension(u32 mipLevel) const -> u32
-{
-    return faces[0]->getWidth(mipLevel);
 }
 
 auto STBCubeTextureData::getData() const -> const void*

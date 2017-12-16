@@ -184,7 +184,8 @@ Texture2d::Texture2d(Texture2dData *data):
 {
 }
 
-auto CubeTexture::loadFromFaceFiles(Device *device,
+auto CubeTexture::loadFromFaceFiles(
+    Device *device,
     const str &frontPath,
     const str &backPath,
     const str &leftPath,
@@ -196,7 +197,8 @@ auto CubeTexture::loadFromFaceFiles(Device *device,
     return createFromData(device, data.get());
 }
 
-auto CubeTexture::loadFromFaceFilesAsync(Device *device,
+auto CubeTexture::loadFromFaceFilesAsync(
+    Device *device,
     const str &frontPath,
     const str &backPath,
     const str &leftPath,
@@ -232,6 +234,10 @@ auto CubeTexture::createFromData(Device *device, CubeTextureData *data) -> sptr<
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
             return std::make_shared<OpenGLCubeTexture>(data);
+#endif
+#ifdef SL_VULKAN_RENDERER
+        case DeviceMode::Vulkan:
+            return std::make_shared<VulkanCubeTexture>(device, data);
 #endif
         default:
             return std::make_shared<NullCubeTexture>(data);

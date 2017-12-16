@@ -22,18 +22,10 @@ namespace solo
         STBTexture2dData() {}
         ~STBTexture2dData();
 
-        auto getMipLevels() const -> u32 override final { return 1; }
-
         auto getSize() const -> u32 override final { return width * height * bpp; }
-        auto getSize(u32 mipLevel) const -> u32 override final { return getSize(); }
-
         auto getWidth() const -> u32 override final { return width; }
-        auto getWidth(u32 mipLevel) const -> u32 override final { return getWidth(); }
         auto getHeight() const -> u32 override final { return height; }
-        auto getHeight(u32 mipLevel) const -> u32 override final { return getHeight(); }
-
         auto getData() const -> const void * override final { return data; }
-
         auto getFormat() const -> TextureFormat override final { return format; }
 
     private:
@@ -54,7 +46,8 @@ namespace solo
             const str &rightPath,
             const str &topPath,
             const str &bottomPath);
-        static auto loadFromFaceFiles(Device *device,
+        static auto loadFromFaceFiles(
+            Device *device,
             const str &frontPath,
             const str &backPath,
             const str &leftPath,
@@ -62,18 +55,11 @@ namespace solo
             const str &topPath,
             const str &bottomPath) -> sptr<STBCubeTextureData>;
 
-        auto getMipLevels() const -> u32 override;
-
         auto getSize() const -> u32 override final;
-        auto getSize(u32 mipLevel) const -> u32 override final;
-        auto getSize(u32 face, u32 mipLevel) const -> u32 override final;
-
+        auto getSize(u32 face) const -> u32 override final;
         auto getDimension() const -> u32 override final;
-        auto getDimension(u32 mipLevel) const -> u32 override final;
-
-        auto getData() const -> const void* override final;
+        auto getData() const -> const void* override final; // TODO remove for now?
         auto getData(u32 face) const -> const void* override final;
-
         auto getFormat() const -> TextureFormat override final;
 
     private:

@@ -19,19 +19,10 @@ namespace solo
         {
         }
 
-        auto getMipLevels() const -> u32 override final { return 1; }
-        
         auto getSize() const -> u32 override final { return data.size(); }
-        auto getSize(u32 mipLevel) const -> u32 override final { return getSize(); }
-
         auto getWidth() const -> u32 override final { return width; }
-        auto getWidth(u32 mipLevel) const -> u32 override { return getWidth(); }
-
         auto getHeight() const -> u32 override final { return height; }
-        auto getHeight(u32 mipLevel) const -> u32 override final { return getHeight(); }
-
         auto getData() const -> const void* override final { return data.data(); }
-
         auto getFormat() const -> TextureFormat override final { return format; }
 
     private:
@@ -58,7 +49,8 @@ auto Texture2dData::createFromMemory(u32 width, u32 height, TextureFormat format
     return std::make_shared<InMemoryTexture2dData>(width, height, format, data);
 }
 
-auto CubeTextureData::loadFromFaceFiles(Device *device,
+auto CubeTextureData::loadFromFaceFiles(
+    Device *device,
     const str &frontPath,
     const str &backPath,
     const str &leftPath,

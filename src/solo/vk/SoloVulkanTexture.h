@@ -32,6 +32,14 @@ namespace solo
 
         void generateMipmaps() override final;
     };
+
+    class VulkanCubeTexture final: public CubeTexture, public VulkanTexture
+    {
+    public:
+        VulkanCubeTexture(Device *device, CubeTextureData *data);
+
+        void generateMipmaps() override final;
+    };
 }
 
 #endif
