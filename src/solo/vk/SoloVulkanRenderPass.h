@@ -28,7 +28,6 @@ namespace solo
         vec<VkAttachmentDescription> attachments;
         vec<VkAttachmentReference> colorAttachmentRefs;
         VkAttachmentReference depthAttachmentRef;
-        vec<VkClearValue> clearValues;
     };
 
     class VulkanRenderPass
