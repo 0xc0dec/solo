@@ -29,6 +29,7 @@ const s8 *VulkanPrefabShaders::Vertex::skybox = R"(
         vec4 mirroredPos =  vec4(position.x, -position.y, position.z, position.w);
         vec3 unprojected = (invProjMatrix * mirroredPos).xyz;
         eyeDir = invModelViewMatrix * unprojected;
+        eyeDir.y = -eyeDir.y;
         gl_Position = position;
     }
 )";

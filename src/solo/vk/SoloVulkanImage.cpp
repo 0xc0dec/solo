@@ -312,12 +312,17 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
             VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
 
         auto srcBuffer = VulkanBuffer::createStaging(renderer, data->getSize());
+
+        // We load front, back, etc., this expects +x, -x, +y, -y, +z, -z,
+        // also in Vulkan Y axis is inversed, so we end up with
+        // left, right, down, up, front, back
+        static vec<u32> layerFaceMapping = {2, 3, 5, 4, 0, 1};
         
         u32 offset = 0;
         vec<VkBufferImageCopy> copyRegions;
         for (u32 layer = 0; layer < layers; layer++)
         {
-            srcBuffer.updatePart(data->getData(layer), offset, data->getSize(layer));
+            srcBuffer.updatePart(data->getData(layerFaceMapping[layer]), offset, data->getSize(layerFaceMapping[layer]));
 
             for (u32 level = 0; level < mipLevels; level++)
             {
