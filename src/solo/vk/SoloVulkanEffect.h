@@ -37,6 +37,11 @@ namespace solo
             u32 binding;
         };
 
+        struct VertexAttribute
+        {
+            u32 location;
+        };
+
         static auto createFromSource(Device *device,
             const void *vsSrc, u32 vsSrcLen, const str &vsFileName,
             const void *fsSrc, u32 fsSrcLen, const str &fsFileName) -> sptr<VulkanEffect>;
@@ -52,6 +57,7 @@ namespace solo
 
         auto getUniformBuffers() const -> umap<str, UniformBuffer> const& { return uniformBuffers; }
         auto getSamplers() const -> umap<str, Sampler> const& { return samplers; }
+        auto getVertexAttributes() const -> umap<str, VertexAttribute> const& { return vertexAttributes; }
 
     private:
         VulkanRenderer *renderer = nullptr;
@@ -60,8 +66,9 @@ namespace solo
             
         umap<str, UniformBuffer> uniformBuffers;
         umap<str, Sampler> samplers;
+        umap<str, VertexAttribute> vertexAttributes;
 
-        void introspectShader(const u32 *src, u32 len);
+        void introspectShader(const u32 *src, u32 len, bool vertex);
     };
 }
 

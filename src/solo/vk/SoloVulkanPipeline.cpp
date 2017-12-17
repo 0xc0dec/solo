@@ -187,36 +187,6 @@ auto VulkanPipelineConfig::withVertexBinding(u32 binding, u32 stride, VkVertexIn
     return *this;
 }
 
-auto VulkanPipelineConfig::withVertexBufferLayout(u32 binding, const VertexBufferLayout &layout) -> VulkanPipelineConfig&
-{
-    withVertexBinding(binding, layout.getSize(), VK_VERTEX_INPUT_RATE_VERTEX);
-
-    for (auto i = 0; i < layout.getAttributeCount(); i++)
-    {
-        VkFormat vkFormat;
-        switch (layout.getAttribute(i).size)
-        {
-            case 4:
-                vkFormat = VK_FORMAT_R32_SFLOAT;
-                break;
-            case 8:
-                vkFormat = VK_FORMAT_R32G32_SFLOAT;
-                break;
-            case 12:
-                vkFormat = VK_FORMAT_R32G32B32_SFLOAT;
-                break;
-            default:
-                SL_PANIC("Unsupported vertex attribute size");
-                break;
-        }
-
-        const auto attr = layout.getAttribute(i);
-        withVertexAttribute(attr.location, binding, vkFormat, attr.offset);
-    }
-
-    return *this;
-}
-
 auto VulkanPipelineConfig::withDepthTest(bool write, bool test) -> VulkanPipelineConfig&
 {
     depthStencilStateInfo.depthWriteEnable = write;

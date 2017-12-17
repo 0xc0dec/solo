@@ -50,17 +50,24 @@ return function(scene, assetCache)
         tex:setAnisotropyLevel(8)
         tex:setWrapping(sl.TextureWrapping.Clamp)
 
+        -- TODO Move to a shared place - this material is used in many places
         local effect = assetCache.getEffect("Texture")
-        local mat = sl.Material.create(sl.device, effect)
-        mat:setFaceCull(sl.FaceCull.None)
-        mat:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-        mat:setTextureParameter("mainTex", tex)    
+        local material = sl.Material.create(sl.device, effect)
+        material:setFaceCull(sl.FaceCull.None)
+
+        if sl.device:getMode() == sl.DeviceMode.Vulkan then
+            material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+            material:setTextureParameter("colorTex", tex)
+        elseif sl.device:getMode() == sl.DeviceMode.OpenGL then
+            material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+            material:setTextureParameter("mainTex", tex)
+        end
 
         local node = scene:createNode()
         node:findComponent("Transform"):setLocalPosition(vec3(0, 0, -5))
         local renderer = node:addComponent("MeshRenderer")
         renderer:setMesh(mesh)
-        renderer:setMaterial(0, mat)
+        renderer:setMaterial(0, material)
 
         node:addScriptComponent(createUpdater(data, mesh))
     end)

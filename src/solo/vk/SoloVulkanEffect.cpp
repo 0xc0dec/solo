@@ -70,11 +70,11 @@ auto VulkanEffect::createFromSource(Device *device,
 
 VulkanEffect::VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
 {
-    renderer = dynamic_cast<VulkanRenderer *>(device->getRenderer());
+    renderer = dynamic_cast<VulkanRenderer*>(device->getRenderer());
     vertexShader = createShaderModule(renderer->getDevice(), vsSrc, vsSrcLen);
     fragmentShader = createShaderModule(renderer->getDevice(), fsSrc, fsSrcLen);
-    introspectShader(static_cast<const u32*>(vsSrc), vsSrcLen / sizeof(u32));
-    introspectShader(static_cast<const u32*>(fsSrc), fsSrcLen / sizeof(u32));
+    introspectShader(static_cast<const u32*>(vsSrc), vsSrcLen / sizeof(u32), true);
+    introspectShader(static_cast<const u32*>(fsSrc), fsSrcLen / sizeof(u32), false);
 }
 
 VulkanEffect::~VulkanEffect()
@@ -97,7 +97,7 @@ auto VulkanEffect::getSampler(const str &name) -> Sampler
     return Sampler{};
 }
 
-void VulkanEffect::introspectShader(const u32 *src, u32 len)
+void VulkanEffect::introspectShader(const u32 *src, u32 len, bool vertex)
 {
     spirv_cross::CompilerGLSL compiler{src, len};
     const auto resources = compiler.get_shader_resources();
@@ -126,6 +126,16 @@ void VulkanEffect::introspectShader(const u32 *src, u32 len)
     {
         const auto binding = compiler.get_decoration(sampler.id, spv::DecorationBinding);
         samplers[sampler.name].binding = binding;
+    }
+
+    if (vertex)
+    {
+        for (auto &stageInput : resources.stage_inputs)
+        {
+            const auto name = stageInput.name;
+            const auto location = compiler.get_decoration(stageInput.id, spv::DecorationLocation);
+            vertexAttributes[name].location = location;
+        }
     }
 }
 

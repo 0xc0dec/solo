@@ -23,6 +23,7 @@ function demo()
     local attachAxes = (require "Axes")(assetCache)
     local createFloor = require "Floor"
     local createCheckerBox = require "CheckerBox"
+    local createDynamicQuad = require "DynamicQuad"
 
     function createOffscreenCamera()
         local canvasSize = dev:getCanvasSize()
@@ -124,6 +125,7 @@ function demo()
     createSkybox(scene, tags.skybox)
     createCheckerBox(scene, assetCache, cubeMesh)
     createFloor(scene, assetCache, cubeMesh)
+    createDynamicQuad(scene, assetCache)
 
     local rootNode = scene:createNode()
     attachAxes(rootNode)

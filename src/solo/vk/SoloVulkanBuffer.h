@@ -21,6 +21,7 @@ namespace solo
         static auto createStaging(VulkanRenderer *renderer, VkDeviceSize size, const void *initialData = nullptr) -> VulkanBuffer;
         static auto createUniformHostVisible(VulkanRenderer *renderer, VkDeviceSize size) -> VulkanBuffer;
         static auto createDeviceLocal(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer;
+        static auto createHostVisible(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer;
 
         VulkanBuffer() {}
         VulkanBuffer(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags);

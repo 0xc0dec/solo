@@ -295,8 +295,47 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
             .withDepthTest(vkMaterial->hasDepthWrite(), vkMaterial->hasDepthTest())
             .withTopology(vkMaterial->getVkPrimitiveTopology());
 
-        for (s32 i = 0; i < vkMesh->getVertexBufferCount(); i++)
-            pipelineConfig.withVertexBufferLayout(i, vkMesh->getVertexBufferLayout(i));
+        const auto &effectVertexAttrs = vkEffect->getVertexAttributes();
+        for (s32 binding = 0; binding < vkMesh->getVertexBufferCount(); binding++)
+        {
+            const auto &layout = vkMesh->getVertexBufferLayout(binding);
+            
+            pipelineConfig.withVertexBinding(binding, layout.getSize(), VK_VERTEX_INPUT_RATE_VERTEX);
+
+            for (auto attrIndex = 0; attrIndex < layout.getAttributeCount(); attrIndex++)
+            {
+                const auto attr = layout.getAttribute(attrIndex);
+
+                VkFormat format;
+                switch (attr.elementCount)
+                {
+                    case 1:
+                        format = VK_FORMAT_R32_SFLOAT;
+                        break;
+                    case 2:
+                        format = VK_FORMAT_R32G32_SFLOAT;
+                        break;
+                    case 3:
+                        format = VK_FORMAT_R32G32B32_SFLOAT;
+                        break;
+                    case 4:
+                        format = VK_FORMAT_R32G32B32A32_SFLOAT;
+                        break;
+                    default:
+                        SL_PANIC("Unsupported vertex attribute element count");
+                        break;
+                }
+                
+                auto location = attr.location;
+                if (!attr.name.empty())
+                {
+                    SL_PANIC_IF(!effectVertexAttrs.count(attr.name), SL_FMT("Unknown vertex attribute ", attr.name));
+                    location = effectVertexAttrs.at(attr.name).location;
+                }
+
+                pipelineConfig.withVertexAttribute(location, binding, format, attr.offset);
+            }
+        }
 
         context.pipeline = std::move(VulkanPipeline{device, renderPass, pipelineConfig});
         context.lastMaterialFlagsHash = materialFlagsHash;

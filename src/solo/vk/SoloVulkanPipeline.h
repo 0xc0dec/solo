@@ -9,7 +9,6 @@
 
 #ifdef SL_VULKAN_RENDERER
 
-#include "SoloVertexFormat.h"
 #include "SoloVulkan.h"
 
 namespace solo
@@ -22,18 +21,12 @@ namespace solo
 
         auto withVertexAttribute(u32 location, u32 binding, VkFormat format, u32 offset) -> VulkanPipelineConfig&;
         auto withVertexBinding(u32 binding, u32 stride, VkVertexInputRate inputRate) -> VulkanPipelineConfig&;
-        auto withVertexBufferLayout(u32 binding, const VertexBufferLayout &layout) -> VulkanPipelineConfig&; // TODO rename
-
         auto withDescriptorSetLayout(VkDescriptorSetLayout layout) -> VulkanPipelineConfig&;
-
         auto withFrontFace(VkFrontFace frontFace) -> VulkanPipelineConfig&;
         auto withCullMode(VkCullModeFlags cullFlags) -> VulkanPipelineConfig&;
-
         auto withDepthTest(bool write, bool test) -> VulkanPipelineConfig&;
-
         auto withBlend(bool enabled, VkBlendFactor srcColorFactor, VkBlendFactor dstColorFactor,
             VkBlendFactor srcAlphaFactor, VkBlendFactor dstAlphaFactor) -> VulkanPipelineConfig&;
-
         auto withTopology(VkPrimitiveTopology topology) -> VulkanPipelineConfig&;
         auto withPolygonMode(VkPolygonMode mode) -> VulkanPipelineConfig&;
 

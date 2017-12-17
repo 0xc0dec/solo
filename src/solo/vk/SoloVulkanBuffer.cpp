@@ -33,10 +33,15 @@ auto VulkanBuffer::createUniformHostVisible(VulkanRenderer *renderer, VkDeviceSi
 auto VulkanBuffer::createDeviceLocal(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
 {
     auto stagingBuffer = createStaging(renderer, size, data);
-
     auto buffer = VulkanBuffer(renderer, size, VK_BUFFER_USAGE_TRANSFER_DST_BIT | usageFlags, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
     stagingBuffer.transferTo(buffer, renderer->getQueue(), renderer->getCommandPool());
+    return std::move(buffer);
+}
 
+auto VulkanBuffer::createHostVisible(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
+{
+    auto buffer = VulkanBuffer(renderer, size, usageFlags, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
+    buffer.updateAll(data);
     return std::move(buffer);
 }
 

@@ -35,15 +35,24 @@ auto VulkanMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *d
     return static_cast<u32>(vertexBuffers.size() - 1);
 }
 
+// TODO less copy-paste
 auto VulkanMesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
 {
-    // TODO
-    return addVertexBuffer(layout, data, vertexCount);
+    auto buf = VulkanBuffer::createHostVisible(renderer, layout.getSize() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data);
+
+    vertexBuffers.push_back(std::move(buf));
+    layouts.push_back(layout);
+    vertexCounts.push_back(vertexCount);
+
+    updateMinVertexCount();
+
+    return static_cast<u32>(vertexBuffers.size() - 1);
 }
 
 void VulkanMesh::updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount)
 {
-    // TODO
+    const auto vertexSize = layouts[index].getSize();
+    vertexBuffers[index].updatePart(data, vertexOffset * vertexSize, vertexCount * vertexSize);
 }
 
 void VulkanMesh::removeVertexBuffer(u32 index)
