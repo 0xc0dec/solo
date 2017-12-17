@@ -21,9 +21,6 @@ cam:setClearColor(v4)
 assert(cam:hasColorClearing() ~= nil)
 cam:setColorClearing(true)
 
-assert(cam:hasDepthClearing() ~= nil)
-cam:setDepthClearing(true)
-
 assert(cam:getViewport())
 cam:setViewport(v4)
 

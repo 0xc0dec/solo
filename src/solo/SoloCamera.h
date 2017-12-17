@@ -46,9 +46,6 @@ namespace solo
         bool hasColorClearing() const { return colorClearing; }
         void setColorClearing(bool enabled) { this->colorClearing = enabled; }
 
-        bool hasDepthClearing() const { return depthClearing; }
-        void setDepthClearing(bool enabled) { this->depthClearing = enabled; }
-
         auto getViewport() const -> Vector4 { return viewport; }
         void setViewport(const Vector4 &rect) { viewport = rect; }
 
@@ -85,7 +82,6 @@ namespace solo
         Vector4 viewport;
         Vector4 clearColor{0, 0.5, 0.5, 1};
         bool colorClearing = true;
-        bool depthClearing = true;
         bool ortho = false;
         Vector2 orthoSize{1, 1};
         Radian fov;

@@ -53,11 +53,11 @@ static auto toBlendFactor(BlendFactor factor) -> GLenum
     }
 }
 
-static void clear(bool color, bool depth, const Vector4 &clearColor)
+static void clear(bool color, const Vector4 &clearColor)
 {
     if (color)
         glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
-    const GLbitfield flags = (color ? GL_COLOR_BUFFER_BIT : 0) | (depth ? GL_DEPTH_BUFFER_BIT : 0);
+    const GLbitfield flags = (color ? GL_COLOR_BUFFER_BIT : 0) | GL_DEPTH_BUFFER_BIT;
     glClear(flags);
 }
 
@@ -181,8 +181,7 @@ void OpenGLRenderer::addRenderCommand(const RenderCommand &cmd)
         case RenderCommandType::BeginCamera:
         {
             const auto viewport = cmd.camera->getViewport();
-            const auto colorClearEnabled = cmd.camera->hasColorClearing();
-            const auto depthClearEnabled = cmd.camera->hasDepthClearing();
+            const auto hasClearColor = cmd.camera->hasColorClearing();
             const auto clearColor = cmd.camera->getClearColor();
 
             GLuint fb = 0;
@@ -198,7 +197,7 @@ void OpenGLRenderer::addRenderCommand(const RenderCommand &cmd)
                 setViewport(viewport);
                 setDepthWrite(true);
                 setDepthTest(true);
-                clear(colorClearEnabled, depthClearEnabled, clearColor);
+                clear(hasClearColor, clearColor);
             };
 
             break;
