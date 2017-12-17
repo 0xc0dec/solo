@@ -43,11 +43,11 @@ namespace solo
         auto getClearColor() const -> Vector4 { return clearColor; }
         void setClearColor(const Vector4 &color) { clearColor = color; }
 
-        bool isClearColorEnabled() const { return clearFlags.color; }
-        void setClearColorEnabled(bool clear) { this->clearFlags.color = clear; }
+        bool hasColorClearing() const { return colorClearing; }
+        void setColorClearing(bool enabled) { this->colorClearing = enabled; }
 
-        bool isClearDepthEnabled() const { return clearFlags.depth; }
-        void setClearDepthEnabled(bool clear) { this->clearFlags.depth = clear; }
+        bool hasDepthClearing() const { return depthClearing; }
+        void setDepthClearing(bool enabled) { this->depthClearing = enabled; }
 
         auto getViewport() const -> Vector4 { return viewport; }
         void setViewport(const Vector4 &rect) { viewport = rect; }
@@ -82,14 +82,10 @@ namespace solo
         Transform *transform = nullptr;
         sptr<FrameBuffer> renderTarget = nullptr;
 
-        struct
-        {
-            bool color = true;
-            bool depth = true;
-        } clearFlags;
-
         Vector4 viewport;
         Vector4 clearColor{0, 0.5, 0.5, 1};
+        bool colorClearing = true;
+        bool depthClearing = true;
         bool ortho = false;
         Vector2 orthoSize{1, 1};
         Radian fov;

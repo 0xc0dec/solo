@@ -18,11 +18,11 @@ cam:setRenderTarget(nil)
 assert(cam:getClearColor())
 cam:setClearColor(v4)
 
-assert(cam:isClearColorEnabled() ~= nil)
-cam:setClearColorEnabled(true)
+assert(cam:hasColorClearing() ~= nil)
+cam:setColorClearing(true)
 
-assert(cam:isClearDepthEnabled() ~= nil)
-cam:setClearDepthEnabled(true)
+assert(cam:hasDepthClearing() ~= nil)
+cam:setDepthClearing(true)
 
 assert(cam:getViewport())
 cam:setViewport(v4)

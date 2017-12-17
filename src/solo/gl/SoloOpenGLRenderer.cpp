@@ -181,8 +181,8 @@ void OpenGLRenderer::addRenderCommand(const RenderCommand &cmd)
         case RenderCommandType::BeginCamera:
         {
             const auto viewport = cmd.camera->getViewport();
-            const auto colorClearEnabled = cmd.camera->isClearColorEnabled();
-            const auto depthClearEnabled = cmd.camera->isClearDepthEnabled();
+            const auto colorClearEnabled = cmd.camera->hasColorClearing();
+            const auto depthClearEnabled = cmd.camera->hasDepthClearing();
             const auto clearColor = cmd.camera->getClearColor();
 
             GLuint fb = 0;

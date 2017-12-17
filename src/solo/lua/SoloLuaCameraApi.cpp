@@ -18,10 +18,10 @@ void registerCameraApi(CppBindModule<LuaBinding> &module)
     REG_METHOD_NULLABLE_1ST_ARG(camera, Camera, setRenderTarget, sptr<FrameBuffer>);
     REG_METHOD(camera, Camera, getClearColor);
     REG_METHOD(camera, Camera, setClearColor);
-    REG_METHOD(camera, Camera, isClearColorEnabled);
-    REG_METHOD(camera, Camera, setClearColorEnabled);
-    REG_METHOD(camera, Camera, isClearDepthEnabled);
-    REG_METHOD(camera, Camera, setClearDepthEnabled);
+    REG_METHOD(camera, Camera, hasColorClearing);
+    REG_METHOD(camera, Camera, setColorClearing);
+    REG_METHOD(camera, Camera, hasDepthClearing);
+    REG_METHOD(camera, Camera, setDepthClearing);
     REG_METHOD(camera, Camera, getViewport);
     REG_METHOD(camera, Camera, setViewport);
     REG_METHOD(camera, Camera, isPerspective);
