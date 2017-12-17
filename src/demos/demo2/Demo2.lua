@@ -21,6 +21,7 @@ function demo()
     local createSkybox = require "Skybox"
     local assetCache = (require "AssetCache")()
     local attachAxes = (require "Axes")(assetCache)
+    local createFloor = require "Floor"
 
     function createMaterial(t)
         local tex = t or sl.Texture2d.loadFromFile(dev, getAssetPath("textures/Cobblestone.png"))
@@ -146,9 +147,12 @@ function demo()
     local material1 = createMaterial(offscreenCameraTex)
     local material2 = createMaterial()
 
+    local cubeMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Cube)
+
     createSkybox(scene, tags.skybox)
     createCustomMesh(material1, vec3(-3, 3, 0))
     createMesh(material2, vec3(3, 3, 0))
+    createFloor(scene, assetCache, cubeMesh)
 
     local rootNode = scene:createNode()
     attachAxes(rootNode)

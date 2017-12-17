@@ -1,5 +1,6 @@
 # TODO
 
+* Anisotropy for VK textures
 * Use axis names in CubeTextureData for fetching layer data
 * Continue with Vulkan backend
 * Refactor all vulkan code
