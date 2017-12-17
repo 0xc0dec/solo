@@ -1,5 +1,6 @@
 # TODO
 
+* Use axis names in CubeTextureData for fetching layer data
 * Continue with Vulkan backend
 * Refactor all vulkan code
 * More error checks, write errors to console
