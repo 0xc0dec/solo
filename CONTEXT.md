@@ -1,5 +1,7 @@
 # TODO
 
+* Demos refactoring, esp. texture/effect/material loading
+* Blending in VK
 * Anisotropy for VK textures
 * Use axis names in CubeTextureData for fetching layer data
 * Continue with Vulkan backend
