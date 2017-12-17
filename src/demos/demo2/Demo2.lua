@@ -22,17 +22,18 @@ function demo()
     local assetCache = (require "AssetCache")()
     local attachAxes = (require "Axes")(assetCache)
     local createFloor = require "Floor"
+    local createCheckerBox = require "CheckerBox"
 
-    function createMaterial(t)
-        local tex = t or sl.Texture2d.loadFromFile(dev, getAssetPath("textures/Cobblestone.png"))
-        local effect = assetCache.getEffect("Texture")
-        local material = sl.Material.create(dev, effect)
-        material:setFaceCull(sl.FaceCull.None)
-        material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-        material:setTextureParameter("colorTex", tex)
+    -- function createMaterial(t)
+    --     local tex = t or sl.Texture2d.loadFromFile(dev, getAssetPath("textures/Cobblestone.png"))
+    --     local effect = assetCache.getEffect("Texture")
+    --     local material = sl.Material.create(dev, effect)
+    --     material:setFaceCull(sl.FaceCull.None)
+    --     material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    --     material:setTextureParameter("colorTex", tex)
 
-        return material
-    end
+    --     return material
+    -- end
 
     function createOffscreenCamera()
         local canvasSize = dev:getCanvasSize()
@@ -59,74 +60,74 @@ function demo()
         return cam, tex, node
     end
 
-    function createCustomMesh(material, position)
-        local mesh = sl.Mesh.create(dev)
+    -- function createCustomMesh(material, position)
+    --     local mesh = sl.Mesh.create(dev)
 
-        local layout = sl.VertexBufferLayout()
-        layout:addAttribute(3, 0)
-        local positions = {
-            1, 1, 0,
-            -1, 1, 0,
-            -1, -1, 0,
+    --     local layout = sl.VertexBufferLayout()
+    --     layout:addAttribute(3, 0)
+    --     local positions = {
+    --         1, 1, 0,
+    --         -1, 1, 0,
+    --         -1, -1, 0,
 
-            1, 1, 0,
-            -1, -1, 0,
-            1, -1, 0,
-        }
-        mesh:addVertexBuffer(layout, positions, 6)
+    --         1, 1, 0,
+    --         -1, -1, 0,
+    --         1, -1, 0,
+    --     }
+    --     mesh:addVertexBuffer(layout, positions, 6)
 
-        layout = sl.VertexBufferLayout()
-        layout:addAttribute(3, 1)
-        local normals = {
-            0, 0, 0,
-            0, 0, 0,
-            0, 0, 0,
+    --     layout = sl.VertexBufferLayout()
+    --     layout:addAttribute(3, 1)
+    --     local normals = {
+    --         0, 0, 0,
+    --         0, 0, 0,
+    --         0, 0, 0,
 
-            0, 0, 0,
-            0, 0, 0,
-            0, 0, 0
-        }
-        mesh:addVertexBuffer(layout, normals, 6)
+    --         0, 0, 0,
+    --         0, 0, 0,
+    --         0, 0, 0
+    --     }
+    --     mesh:addVertexBuffer(layout, normals, 6)
 
-        layout = sl.VertexBufferLayout()
-        layout:addAttribute(2, 2)
-        local texCoords = {
-            0.0, 0.0,
-            0.0, 1.0,
-            1.0, 1.0,
+    --     layout = sl.VertexBufferLayout()
+    --     layout:addAttribute(2, 2)
+    --     local texCoords = {
+    --         0.0, 0.0,
+    --         0.0, 1.0,
+    --         1.0, 1.0,
 
-            0.0, 0.0,
-            1.0, 1.0,
-            1.0, 0.0
-        }
-        mesh:addVertexBuffer(layout, texCoords, 6)
-        mesh:addPart({0, 1, 2, 3, 4, 5}, 6)
+    --         0.0, 0.0,
+    --         1.0, 1.0,
+    --         1.0, 0.0
+    --     }
+    --     mesh:addVertexBuffer(layout, texCoords, 6)
+    --     mesh:addPart({0, 1, 2, 3, 4, 5}, 6)
 
-        local node = scene:createNode()
+    --     local node = scene:createNode()
 
-        local meshRenderer = node:addComponent("MeshRenderer")
-        meshRenderer:setMesh(mesh)
-        meshRenderer:setMaterial(0, material)
+    --     local meshRenderer = node:addComponent("MeshRenderer")
+    --     meshRenderer:setMesh(mesh)
+    --     meshRenderer:setMaterial(0, material)
 
-        if position then
-            node:findComponent("Transform"):setLocalPosition(position)
-        end
-    end
+    --     if position then
+    --         node:findComponent("Transform"):setLocalPosition(position)
+    --     end
+    -- end
 
-    function createMesh(material, position)
-        local mesh = sl.Mesh.loadFromFile(dev, getAssetPath("meshes/Teapot.obj"))
-        local node = scene:createNode()
+    -- function createMesh(material, position)
+    --     local mesh = sl.Mesh.loadFromFile(dev, getAssetPath("meshes/Teapot.obj"))
+    --     local node = scene:createNode()
 
-        node:addScriptComponent(createRotator("world", vec3(0, 1, 0), 2))
+    --     node:addScriptComponent(createRotator("world", vec3(0, 1, 0), 2))
         
-        local meshRenderer = node:addComponent("MeshRenderer")
-        meshRenderer:setMesh(mesh)
-        meshRenderer:setMaterial(0, material)
+    --     local meshRenderer = node:addComponent("MeshRenderer")
+    --     meshRenderer:setMesh(mesh)
+    --     meshRenderer:setMaterial(0, material)
 
-        if position then
-            node:findComponent("Transform"):setLocalPosition(position)
-        end
-    end
+    --     if position then
+    --         node:findComponent("Transform"):setLocalPosition(position)
+    --     end
+    -- end
 
     ---
 
@@ -144,14 +145,15 @@ function demo()
     cameraTransform:setLocalPosition(vec3(0, 6, 7))
     cameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
-    local material1 = createMaterial(offscreenCameraTex)
-    local material2 = createMaterial()
+    -- local material1 = createMaterial(offscreenCameraTex)
+    -- local material2 = createMaterial()
 
     local cubeMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Cube)
 
     createSkybox(scene, tags.skybox)
-    createCustomMesh(material1, vec3(-3, 3, 0))
-    createMesh(material2, vec3(3, 3, 0))
+    createCheckerBox(scene, assetCache, cubeMesh)
+    -- createCustomMesh(material1, vec3(-3, 3, 0))
+    -- createMesh(material2, vec3(3, 3, 0))
     createFloor(scene, assetCache, cubeMesh)
 
     local rootNode = scene:createNode()
