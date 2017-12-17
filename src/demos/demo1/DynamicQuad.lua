@@ -45,7 +45,6 @@ return function(scene, assetCache)
 
     local texHandle = sl.Texture2d.loadFromFileAsync(sl.device, getAssetPath("textures/Bricks.jpg"))
     texHandle:done(function(tex)
-        local tex = sl.Texture2d.loadFromFile(sl.device, getAssetPath("textures/Bricks.jpg"))
         tex:generateMipmaps()
         tex:setFiltering(sl.TextureFiltering.LinearMipmapNearest)
         tex:setAnisotropyLevel(8)

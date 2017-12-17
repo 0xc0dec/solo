@@ -24,17 +24,6 @@ function demo()
     local createFloor = require "Floor"
     local createCheckerBox = require "CheckerBox"
 
-    -- function createMaterial(t)
-    --     local tex = t or sl.Texture2d.loadFromFile(dev, getAssetPath("textures/Cobblestone.png"))
-    --     local effect = assetCache.getEffect("Texture")
-    --     local material = sl.Material.create(dev, effect)
-    --     material:setFaceCull(sl.FaceCull.None)
-    --     material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-    --     material:setTextureParameter("colorTex", tex)
-
-    --     return material
-    -- end
-
     function createOffscreenCamera()
         local canvasSize = dev:getCanvasSize()
 
@@ -114,21 +103,6 @@ function demo()
     --     end
     -- end
 
-    -- function createMesh(material, position)
-    --     local mesh = sl.Mesh.loadFromFile(dev, getAssetPath("meshes/Teapot.obj"))
-    --     local node = scene:createNode()
-
-    --     node:addScriptComponent(createRotator("world", vec3(0, 1, 0), 2))
-        
-    --     local meshRenderer = node:addComponent("MeshRenderer")
-    --     meshRenderer:setMesh(mesh)
-    --     meshRenderer:setMaterial(0, material)
-
-    --     if position then
-    --         node:findComponent("Transform"):setLocalPosition(position)
-    --     end
-    -- end
-
     ---
 
     local tags = {
@@ -145,15 +119,10 @@ function demo()
     cameraTransform:setLocalPosition(vec3(0, 6, 7))
     cameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
-    -- local material1 = createMaterial(offscreenCameraTex)
-    -- local material2 = createMaterial()
-
     local cubeMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Cube)
 
     createSkybox(scene, tags.skybox)
     createCheckerBox(scene, assetCache, cubeMesh)
-    -- createCustomMesh(material1, vec3(-3, 3, 0))
-    -- createMesh(material2, vec3(3, 3, 0))
     createFloor(scene, assetCache, cubeMesh)
 
     local rootNode = scene:createNode()
