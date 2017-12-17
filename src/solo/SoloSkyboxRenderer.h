@@ -25,7 +25,7 @@ namespace solo
         void render() override final;
 
         void setTexture(sptr<CubeTexture> texture);
-        auto getTexture() const -> sptr<CubeTexture>;
+        auto getTexture() const -> sptr<CubeTexture> { return texture; }
 
     private:
         Renderer *renderer = nullptr;
@@ -34,9 +34,4 @@ namespace solo
         sptr<Material> material;
         sptr<CubeTexture> texture;
     };
-
-    inline auto SkyboxRenderer::getTexture() const -> sptr<CubeTexture>
-    {
-        return texture;
-    }
 }

@@ -41,7 +41,7 @@ private:
 };
 
 BulletRigidBody::BulletRigidBody(const Node &node, const RigidBodyConstructionParameters &parameters):
-    solo::RigidBody(node),
+    RigidBody(node),
     mass(parameters.mass),
     shape(nullptr)
 {
@@ -64,7 +64,7 @@ BulletRigidBody::~BulletRigidBody()
     world->removeRigidBody(body.get());
 }
 
-void BulletRigidBody::setCollider(sptr<solo::Collider> newCollider)
+void BulletRigidBody::setCollider(sptr<Collider> newCollider)
 {
     if (newCollider)
     {

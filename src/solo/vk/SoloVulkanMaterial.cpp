@@ -24,8 +24,8 @@ static auto parseName(const str &name) -> std::tuple<str, str>
     return make_tuple(first, second);
 }
 
-VulkanMaterial::VulkanMaterial(sptr<solo::Effect> effect):
-    effect(std::dynamic_pointer_cast<VulkanEffect>(effect))
+VulkanMaterial::VulkanMaterial(sptr<Effect> effect):
+    effect(std::static_pointer_cast<VulkanEffect>(effect))
 {
 }
 
@@ -126,7 +126,7 @@ void VulkanMaterial::setUniformParameter(const str &name, ParameterWriteFunc wri
     };
 }
 
-void VulkanMaterial::setTextureParameter(const str &name, sptr<solo::Texture> value)
+void VulkanMaterial::setTextureParameter(const str &name, sptr<Texture> value)
 {
     const auto samplerInfo = effect->getSampler(name);
     auto &sampler = samplers[name];

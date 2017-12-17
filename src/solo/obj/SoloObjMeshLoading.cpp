@@ -45,6 +45,19 @@ namespace std
         }
 	};
 
+    template <>
+	struct hash<Vector2>
+	{
+		size_t operator()(const Vector2 &v) const
+        {
+            size_t seed = 0;
+            const hash<float> hasher;
+            combineHash(seed, hasher(v.x));
+            combineHash(seed, hasher(v.y));
+		    return seed;
+        }
+	};
+
     template<>
     struct hash<Vertex>
     {

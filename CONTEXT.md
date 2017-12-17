@@ -1,10 +1,9 @@
 # TODO
 
 * Prefab materials? Remove skybox renderer?
-* Add no clearing to Vulkan backend and return back other objects rendering in Demo2
+* Add handling of clear/no clear camera flags in VK backend
 * Fix wrong GL textures appeared after switching to always load 4 channel textures
 * Continue with Vulkan backend
-* Refactor texture/texture data stuff
 * Refactor all vulkan code
 * More error checks, write errors to console
 * Make sure findComponent returns nil for inexistent components.

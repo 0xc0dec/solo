@@ -16,7 +16,7 @@
 using namespace solo;
 
 OpenGLMaterial::OpenGLMaterial(sptr<Effect> effect):
-    effect(std::dynamic_pointer_cast<OpenGLEffect>(effect))
+    effect(std::static_pointer_cast<OpenGLEffect>(effect))
 {
 }
 
@@ -81,7 +81,7 @@ void OpenGLMaterial::setMatrixParameter(const str &name, const Matrix &value)
     });
 }
 
-void OpenGLMaterial::setTextureParameter(const str &name, sptr<solo::Texture> value)
+void OpenGLMaterial::setTextureParameter(const str &name, sptr<Texture> value)
 {
     auto tex = std::dynamic_pointer_cast<OpenGLTexture>(value);
     setParameter(name, [tex](GLuint location, GLuint index)

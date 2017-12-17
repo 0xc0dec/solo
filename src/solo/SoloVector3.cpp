@@ -65,18 +65,18 @@ auto Vector3::cross(const Vector3 &v) -> Vector3
 
 auto Vector3::distance(const Vector3 &v) const -> float
 {
-    auto dx = v.x - x;
-    auto dy = v.y - y;
-    auto dz = v.z - z;
+    const auto dx = v.x - x;
+    const auto dy = v.y - y;
+    const auto dz = v.z - z;
 
     return sqrt(dx * dx + dy * dy + dz * dz);
 }
 
 auto Vector3::distanceSquared(const Vector3 &v) const -> float
 {
-    auto dx = v.x - x;
-    auto dy = v.y - y;
-    auto dz = v.z - z;
+    const auto dx = v.x - x;
+    const auto dy = v.y - y;
+    const auto dz = v.z - z;
     return dx * dx + dy * dy + dz * dz;
 }
 

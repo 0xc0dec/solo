@@ -7,7 +7,6 @@
 
 #include "SoloRadian.h"
 #include "SoloMath.h"
-#include "SoloHash.h"
 
 namespace solo
 {
@@ -143,20 +142,4 @@ namespace solo
         y /= scalar;
         return *this;
     }
-}
-
-namespace std
-{
-    template <>
-	struct hash<solo::Vector2>
-	{
-		size_t operator()(const solo::Vector2 &v) const
-        {
-            size_t h = 0;
-            const hash<float> hasher;
-            solo::combineHash(h, hasher(v.x));
-            solo::combineHash(h, hasher(v.y));
-		    return h;
-        }
-	};
 }
