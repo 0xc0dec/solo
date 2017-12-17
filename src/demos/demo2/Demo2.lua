@@ -47,7 +47,7 @@ function demo()
         local node = scene:createNode()
 
         local cam = node:addComponent("Camera")
-        cam:setClearColor(vec4(1, 0, 1, 1))
+        cam:setClearColor(vec4(0, 1, 0, 1))
         cam:setZNear(0.05)
         cam:setViewport(vec4(0, 0, canvasSize.x, canvasSize.y))
 
