@@ -34,34 +34,37 @@ static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMa
 static auto getMaterialStateHash(VulkanMaterial *material) -> size_t
 {
     size_t seed = 0;
-    const std::hash<u32> signedHash;
+    const std::hash<u32> unsignedHasher;
     const std::hash<bool> boolHash;
-    combineHash(seed, signedHash(material->getVkCullModeFlags()));
-    combineHash(seed, signedHash(material->getVkPolygonMode()));
-    combineHash(seed, signedHash(material->getVkPrimitiveTopology()));
+    combineHash(seed, unsignedHasher(material->getVkCullModeFlags()));
+    combineHash(seed, unsignedHasher(material->getVkPolygonMode()));
+    combineHash(seed, unsignedHasher(material->getVkPrimitiveTopology()));
     combineHash(seed, boolHash(material->hasDepthTest()));
     combineHash(seed, boolHash(material->hasDepthWrite()));
     return seed;
 }
 
+// TODO Move stuff like this to corresponding classes?
 static auto getMeshLayoutHash(VulkanMesh *mesh) -> size_t
 {
     size_t seed = 0;
-    const std::hash<u32> hasher;
+    const std::hash<u32> unsignedHasher;
+    const std::hash<str> strHasher;
 
     for (s32 i = 0; i < mesh->getVertexBufferCount(); i++)
     {
         auto layout = mesh->getVertexBufferLayout(i);
-        combineHash(seed, hasher(i));
+        combineHash(seed, unsignedHasher(i));
 
         for (s32 j = 0; j < layout.getAttributeCount(); j++)
         {
             const auto attr = layout.getAttribute(j);
-            combineHash(seed, hasher(j));
-            combineHash(seed, hasher(attr.elementCount));
-            combineHash(seed, hasher(attr.location));
-            combineHash(seed, hasher(attr.offset));
-            combineHash(seed, hasher(attr.size));
+            combineHash(seed, unsignedHasher(j));
+            combineHash(seed, strHasher(attr.name));
+            combineHash(seed, unsignedHasher(attr.elementCount));
+            combineHash(seed, unsignedHasher(attr.location));
+            combineHash(seed, unsignedHasher(attr.offset));
+            combineHash(seed, unsignedHasher(attr.size));
         }
     }
 
