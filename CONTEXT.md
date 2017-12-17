@@ -1,7 +1,6 @@
 # TODO
 
-* Prefab materials? Remove skybox renderer?
-* Add handling of clear/no clear camera flags in VK backend
+* Remove optional clearing of depth buffer
 * Fix wrong GL textures appeared after switching to always load 4 channel textures
 * Continue with Vulkan backend
 * Refactor all vulkan code

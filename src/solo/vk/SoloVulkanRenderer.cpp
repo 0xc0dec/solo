@@ -409,6 +409,7 @@ void VulkanRenderer::endFrame()
                 currentRenderPass = &swapchain.getRenderPass();
                 auto currentFrameBuffer = swapchain.getCurrentFrameBuffer();
                 auto dimensions = canvasSize;
+                vec<VkClearAttachment> clearAttachments = {{VK_IMAGE_ASPECT_COLOR_BIT, 0, {{0, 0, 0, 1}}}}; // TODO avoid mem allocation
 
                 const auto renderTarget = cmd.camera->getRenderTarget();
                 if (renderTarget)
@@ -417,6 +418,7 @@ void VulkanRenderer::endFrame()
                     currentRenderPass = &targetFrameBuffer->getRenderPass();
                     currentFrameBuffer = targetFrameBuffer->getHandle();
                     dimensions = targetFrameBuffer->getDimensions();
+                    clearAttachments.resize(targetFrameBuffer->getColorAttachmentCount());
                 }
 
                 if (!renderPassContexts.count(currentRenderPass))
@@ -436,14 +438,27 @@ void VulkanRenderer::endFrame()
 
                     vk::beginCommandBuffer(currentCmdBuffer, false);
 
-                    const auto clearColor = currentCamera->getClearColor();
                     currentRenderPass->begin(
                         currentCmdBuffer,
                         currentFrameBuffer,
-                        dimensions.x, dimensions.y,
-                        {clearColor.x, clearColor.y, clearColor.z, clearColor.w},
-                        {1, 0}
+                        dimensions.x, dimensions.y
                     );
+
+                    if (currentCamera->hasColorClearing())
+                    {
+                        VkClearRect clearRect{};
+                        clearRect.layerCount = 1;
+                        clearRect.rect.offset = {0, 0};
+                        clearRect.rect.extent = {static_cast<u32>(dimensions.x), static_cast<u32>(dimensions.y)};
+                        auto clearColor = currentCamera->getClearColor();
+                        for (u32 i = 0; i < clearAttachments.size(); ++i)
+                        {
+                            clearAttachments[i].aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+                            clearAttachments[i].colorAttachment = i;
+                            clearAttachments[i].clearValue = {{clearColor.x, clearColor.y, clearColor.z, clearColor.w}};
+                        }
+                        vkCmdClearAttachments(currentCmdBuffer, clearAttachments.size(), clearAttachments.data(), 1, &clearRect);
+                    }
                 }
 
                 const auto viewport = currentCamera->getViewport();

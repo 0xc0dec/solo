@@ -15,6 +15,7 @@ VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig
     const auto colorAttachments = config.colorAttachmentRefs.empty() ? nullptr : config.colorAttachmentRefs.data();
     const auto depthAttachment = config.depthAttachmentRef.layout != VK_IMAGE_LAYOUT_UNDEFINED ? &config.depthAttachmentRef : nullptr;
     clearValues.resize(config.colorAttachmentRefs.size() + 1);
+    clearValues.rbegin()->depthStencil = {1, 0};
 
     VkSubpassDescription subpass{};
     subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
@@ -63,13 +64,8 @@ VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig
     this->pass = std::move(pass);
 }
 
-void VulkanRenderPass::begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight,
-    VkClearColorValue clearColor, VkClearDepthStencilValue clearDepthStencil)
+void VulkanRenderPass::begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight)
 {
-    for (int i = 0; i < clearValues.size() - 1; ++i)
-        clearValues[i].color = clearColor;
-    clearValues[clearValues.size() - 1].depthStencil = clearDepthStencil;
-
     VkRenderPassBeginInfo info{};
     info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
     info.pNext = nullptr;
@@ -102,8 +98,7 @@ auto VulkanRenderPassConfig::withColorAttachment(VkFormat colorFormat, VkImageLa
     desc.format = colorFormat;
     desc.flags = 0;
     desc.samples = VK_SAMPLE_COUNT_1_BIT;
-//    desc.loadOp = clear ? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    desc.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR; // TODO optional clearing
+    desc.loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
     desc.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
     desc.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
     desc.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
@@ -125,8 +120,7 @@ auto VulkanRenderPassConfig::withDepthAttachment(VkFormat depthFormat) -> Vulkan
     desc.format = depthFormat;
     desc.flags = 0;
     desc.samples = VK_SAMPLE_COUNT_1_BIT;
-//    desc.loadOp = clear ? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    desc.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR; // TODO Optional clearing
+    desc.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
     desc.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
     desc.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
     desc.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;

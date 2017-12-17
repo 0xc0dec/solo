@@ -140,7 +140,7 @@ function demo()
 
     local camera, cameraNode = createMainCamera(scene)
     local cameraTransform = cameraNode:findComponent("Transform")
-    cameraTransform:setLocalPosition(vec3(5, 6, 7))
+    cameraTransform:setLocalPosition(vec3(0, 6, 7))
     cameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
     local material1 = createMaterial(offscreenCameraTex)
@@ -176,7 +176,7 @@ function demo()
             
         local color = camera:getClearColor()
         color.x = math.abs(math.sin(lifetime))
-        camera:setClearColor(color)
+        offscreenCamera:setClearColor(color)
     end
 
     function renderFrame()
@@ -184,8 +184,12 @@ function demo()
         scene:visitByTags(~tags.skybox, renderCmp)
     end
 
+    function renderOffscreenCameraFrame()
+        scene:visitByTags(~tags.skybox, renderCmp)
+    end
+
     function render()
-        offscreenCamera:renderFrame(renderFrame)
+        offscreenCamera:renderFrame(renderOffscreenCameraFrame)
         camera:renderFrame(renderFrame)
     end
 

@@ -43,8 +43,7 @@ namespace solo
         auto operator=(const VulkanRenderPass &other) -> VulkanRenderPass& = delete;
         auto operator=(VulkanRenderPass &&other) -> VulkanRenderPass& = default;
 
-        void begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight,
-            VkClearColorValue clearColor, VkClearDepthStencilValue clearDepthStencil);
+        void begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight);
         void end(VkCommandBuffer cmdBuf);
 
         operator VkRenderPass() { return pass; }

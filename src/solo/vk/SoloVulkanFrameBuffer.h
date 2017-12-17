@@ -25,12 +25,14 @@ namespace solo
 
         auto getHandle() const -> VkFramebuffer { return frameBuffer; }
         auto getRenderPass() -> VulkanRenderPass& { return renderPass; }
+        auto getColorAttachmentCount() const -> u32 { return colorAttachmentCount; }
 
     private:
         VulkanRenderer *renderer = nullptr;
         VulkanRenderPass renderPass;
         VulkanImage depthStencil;
         VulkanResource<VkFramebuffer> frameBuffer;
+        u32 colorAttachmentCount = 0;
     };
 }
 
