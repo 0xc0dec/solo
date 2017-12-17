@@ -140,6 +140,7 @@ function demo()
             physics:update()
             update()
             renderer:renderFrame(render)
+            collectgarbage("collect")
         end
 
         while keepRunning() do

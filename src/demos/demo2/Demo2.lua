@@ -202,6 +202,7 @@ function demo()
     function run()
         while keepRunning() do
             dev:update(updateAndRender)
+            collectgarbage("collect")
         end
     end
 
