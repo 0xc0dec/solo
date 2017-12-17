@@ -31,13 +31,16 @@ static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMa
     return seed;
 }
 
-static auto getMaterialFlagsHash(VulkanMaterial *material) -> size_t
+static auto getMaterialStateHash(VulkanMaterial *material) -> size_t
 {
     size_t seed = 0;
-    const std::hash<u32> hasher;
-    combineHash(seed, hasher(material->getVkCullModeFlags()));
-    combineHash(seed, hasher(material->getVkPolygonMode()));
-    combineHash(seed, hasher(material->getVkPrimitiveTopology()));
+    const std::hash<u32> signedHash;
+    const std::hash<bool> boolHash;
+    combineHash(seed, signedHash(material->getVkCullModeFlags()));
+    combineHash(seed, signedHash(material->getVkPolygonMode()));
+    combineHash(seed, signedHash(material->getVkPrimitiveTopology()));
+    combineHash(seed, boolHash(material->getDepthTest()));
+    combineHash(seed, boolHash(material->getDepthWrite()));
     return seed;
 }
 
@@ -275,7 +278,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
         context.descSet = context.descPool.allocateSet(context.descSetLayout);
     }
 
-    const auto materialFlagsHash = getMaterialFlagsHash(vkMaterial);
+    const auto materialFlagsHash = getMaterialStateHash(vkMaterial);
     const auto meshLayoutHash = getMeshLayoutHash(vkMesh);
     const auto materialFlagsChanged = materialFlagsHash != context.lastMaterialFlagsHash;
     const auto meshLayoutChanged = meshLayoutHash != context.lastMeshLayoutHash;
@@ -289,6 +292,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
             .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
             .withCullMode(vkMaterial->getVkCullModeFlags())
             .withPolygonMode(vkMaterial->getVkPolygonMode())
+            .withDepthTest(vkMaterial->getDepthWrite(), vkMaterial->getDepthTest())
             .withTopology(vkMaterial->getVkPrimitiveTopology());
 
         for (s32 i = 0; i < vkMesh->getVertexBufferCount(); i++)
@@ -422,12 +426,12 @@ void VulkanRenderer::endFrame()
                     renderPassContexts[currentRenderPass].completeSemaphore = vk::createSemaphore(device);
                 }
 
-                auto &info = renderPassContexts.at(currentRenderPass);
-                currentCmdBuffer = info.cmdBuffer;
+                auto &passContext = renderPassContexts.at(currentRenderPass);
+                currentCmdBuffer = passContext.cmdBuffer;
 
-                if (!info.started)
+                if (!passContext.started)
                 {
-                    info.started = true;
+                    passContext.started = true;
                     passesToRender.push_back(currentRenderPass);
 
                     vk::beginCommandBuffer(currentCmdBuffer, false);

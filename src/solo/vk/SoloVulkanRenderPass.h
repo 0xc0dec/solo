@@ -24,7 +24,6 @@ namespace solo
     private:
         friend class VulkanRenderPass;
 
-        VkDevice device = nullptr;
         vec<VkAttachmentDescription> attachments;
         vec<VkAttachmentReference> colorAttachmentRefs;
         VkAttachmentReference depthAttachmentRef;

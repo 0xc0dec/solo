@@ -181,11 +181,11 @@ function demo()
 
     function renderFrame()
         scene:visitByTags(tags.skybox, renderCmp)
-        -- scene:visitByTags(~tags.skybox, renderCmp)
+        scene:visitByTags(~tags.skybox, renderCmp)
     end
 
     function render()
-        -- offscreenCamera:renderFrame(renderFrame)
+        offscreenCamera:renderFrame(renderFrame)
         camera:renderFrame(renderFrame)
     end
 

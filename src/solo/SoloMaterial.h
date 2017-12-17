@@ -110,11 +110,11 @@ namespace solo
         auto getFaceCull() const -> FaceCull { return faceCull; }
         void setFaceCull(FaceCull face) { faceCull = face; }
 
-        bool getDepthWrite() const { return depthWrite; }
-        void setDepthWrite(bool enabled) { depthWrite = enabled; }
+        bool getDepthWrite() const { return depthWrite; } // TODO rename
+        void setDepthWrite(bool enabled) { depthWrite = enabled; } // TODO rename
 
-        bool getDepthTest() const { return depthTest; }
-        void setDepthTest(bool enabled) { depthTest = enabled; }
+        bool getDepthTest() const { return depthTest; } // TODO rename
+        void setDepthTest(bool enabled) { depthTest = enabled; } // TODO rename
 
         auto getDepthFunction() const -> DepthFunction { return depthFunc; }
         void setDepthFunction(DepthFunction func) { depthFunc = func; }

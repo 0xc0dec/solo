@@ -55,7 +55,7 @@ void VulkanFrameBuffer::setAttachments(const vec<sptr<Texture2d>> &attachments)
     }
 
     vec<VkImageView> attachmentViews;
-    VulkanRenderPassConfig config{};
+    VulkanRenderPassConfig config;
     for (const auto tex: attachments)
     {
         const auto vulkanTexture = std::static_pointer_cast<VulkanTexture2d>(tex);
