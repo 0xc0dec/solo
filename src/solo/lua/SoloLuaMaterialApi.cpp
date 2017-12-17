@@ -12,6 +12,7 @@ void registerMaterialApi(CppBindModule<LuaBinding> &module)
 {
     auto mat = BEGIN_CLASS(module, Material);
     REG_STATIC_METHOD(mat, Material, create);
+    REG_STATIC_METHOD(mat, Material, createFromPrefab);
     REG_METHOD(mat, Material, setFloatParameter);
     REG_METHOD(mat, Material, setVector2Parameter);
     REG_METHOD(mat, Material, setVector3Parameter);

@@ -29,6 +29,23 @@ auto Material::create(Device *device, sptr<Effect> effect) -> sptr<Material>
     }
 }
 
+auto Material::createFromPrefab(Device *device, MaterialPrefab prefab) -> sptr<Material>
+{
+    switch (device->getMode())
+    {
+#ifdef SL_OPENGL_RENDERER
+        case DeviceMode::OpenGL:
+            return OpenGLMaterial::createFromPrefab(device, prefab);
+#endif
+#ifdef SL_VULKAN_RENDERER
+        case DeviceMode::Vulkan:
+            return VulkanMaterial::createFromPrefab(device, prefab);
+#endif
+        default:
+            return std::make_shared<NullMaterial>();
+    }
+}
+
 void Material::setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor)
 {
     srcBlendFactor = srcFactor;

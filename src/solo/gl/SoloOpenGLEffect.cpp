@@ -7,27 +7,7 @@
 
 #ifdef SL_OPENGL_RENDERER
 
-#include "SoloOpenGLPrefabShaders.h"
-
 using namespace solo;
-
-auto OpenGLEffect::createFromPrefab(EffectPrefab prefab) -> sptr<OpenGLEffect>
-{
-    switch (prefab)
-    {
-        case EffectPrefab::Skybox:
-            return std::make_shared<OpenGLEffect>(
-                OpenGLPrefabShaders::Vertex::skybox, std::strlen(OpenGLPrefabShaders::Vertex::skybox),
-                OpenGLPrefabShaders::Fragment::skybox, std::strlen(OpenGLPrefabShaders::Fragment::skybox));
-        case EffectPrefab::Font:
-            return std::make_shared<OpenGLEffect>(
-                OpenGLPrefabShaders::Vertex::font, std::strlen(OpenGLPrefabShaders::Vertex::font),
-                OpenGLPrefabShaders::Fragment::font, std::strlen(OpenGLPrefabShaders::Fragment::font));
-        default:
-            SL_PANIC("Unknown effect prefab");
-            return nullptr;
-    }
-}
 
 static auto compileShader(GLuint type, const void *src, u32 length) -> GLint
 {

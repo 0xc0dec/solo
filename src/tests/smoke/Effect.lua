@@ -4,4 +4,3 @@
 -- 
 
 assert(sl.Effect.loadFromFiles ~= nil)
-assert(sl.Effect.createFromPrefab(sl.device, sl.EffectPrefab.Font))

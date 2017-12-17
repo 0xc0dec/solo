@@ -28,8 +28,6 @@ namespace solo
             u32 location;
         };
 
-        static auto createFromPrefab(EffectPrefab prefab) -> sptr<OpenGLEffect>;
-
         OpenGLEffect(const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen);
         ~OpenGLEffect();
 

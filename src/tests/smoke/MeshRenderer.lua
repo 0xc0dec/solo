@@ -6,8 +6,7 @@
 local scene = sl.Scene.create(sl.device)
 local mr = scene:createNode():addComponent("MeshRenderer")
 local mesh = sl.Mesh.create(sl.device)
-local effect = sl.Effect.createFromPrefab(sl.device, sl.EffectPrefab.Skybox)
-local mat = sl.Material.create(sl.device, effect)
+local mat = sl.Material.createFromPrefab(sl.device, sl.MaterialPrefab.Skybox)
 
 mr:render()
 

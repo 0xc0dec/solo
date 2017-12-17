@@ -10,10 +10,46 @@
 #include "SoloDevice.h"
 #include "SoloCamera.h"
 #include "SoloOpenGLTexture.h"
+#include "SoloOpenGLPrefabShaders.h"
 #include "SoloTransform.h"
 #include "SoloTexture.h"
 
 using namespace solo;
+
+auto OpenGLMaterial::createFromPrefab(Device *device, MaterialPrefab prefab) -> sptr<OpenGLMaterial>
+{
+    switch (prefab)
+    {
+        case MaterialPrefab::Font:
+        {
+            auto effect = Effect::createFromSource(
+                device,
+                OpenGLPrefabShaders::Vertex::font, strlen(OpenGLPrefabShaders::Vertex::font),
+                OpenGLPrefabShaders::Fragment::font, strlen(OpenGLPrefabShaders::Fragment::font)
+            );
+            auto material = std::make_shared<OpenGLMaterial>(effect);
+            material->bindParameter("worldViewProjMatrix", BindParameterSemantics::WorldViewProjectionMatrix);
+            return material;
+        }
+
+        case MaterialPrefab::Skybox:
+        {
+            auto effect = Effect::createFromSource(
+                device,
+                OpenGLPrefabShaders::Vertex::skybox, strlen(OpenGLPrefabShaders::Vertex::skybox),
+                OpenGLPrefabShaders::Fragment::skybox, strlen(OpenGLPrefabShaders::Fragment::skybox)
+            );
+            auto material = std::make_shared<OpenGLMaterial>(effect);
+            material->bindParameter("projMatrix", BindParameterSemantics::ProjectionMatrix);
+            material->bindParameter("worldViewMatrix", BindParameterSemantics::WorldViewMatrix);
+            return material;
+        }
+
+        default:
+            SL_PANIC("Unknown material prefab");
+            return nullptr;
+    }
+}
 
 OpenGLMaterial::OpenGLMaterial(sptr<Effect> effect):
     effect(std::static_pointer_cast<OpenGLEffect>(effect))

@@ -13,6 +13,7 @@
 #include "SoloVulkanEffect.h"
 #include "SoloVulkanRenderer.h"
 #include "SoloVulkanTexture.h"
+#include "SoloVulkanPrefabShaders.h"
 
 using namespace solo;
 
@@ -22,6 +23,40 @@ static auto parseName(const str &name) -> std::tuple<str, str>
     const auto first = (idx != str::npos) ? name.substr(0, idx) : name;
     const auto second = (idx != str::npos) ? name.substr(idx + 1) : "";
     return make_tuple(first, second);
+}
+
+auto VulkanMaterial::createFromPrefab(Device *device, MaterialPrefab prefab) -> sptr<VulkanMaterial>
+{
+    switch (prefab)
+    {
+        case MaterialPrefab::Font:
+        {
+            auto effect = Effect::createFromSource(
+                device,
+                VulkanPrefabShaders::Vertex::font, strlen(VulkanPrefabShaders::Vertex::font),
+                VulkanPrefabShaders::Fragment::font, strlen(VulkanPrefabShaders::Fragment::font)
+            );
+            // TODO bind specific parameters
+            return std::make_shared<VulkanMaterial>(effect);
+        }
+
+        case MaterialPrefab::Skybox:
+        {
+            auto effect = Effect::createFromSource(
+                device,
+                VulkanPrefabShaders::Vertex::skybox, strlen(VulkanPrefabShaders::Vertex::skybox),
+                VulkanPrefabShaders::Fragment::skybox, strlen(VulkanPrefabShaders::Fragment::skybox)
+            );
+            auto material = std::make_shared<VulkanMaterial>(effect);
+            material->bindParameter("matrices.proj", BindParameterSemantics::ProjectionMatrix);
+            material->bindParameter("matrices.worldView", BindParameterSemantics::WorldViewMatrix);
+            return material;
+        }
+
+        default:
+            SL_PANIC("Unknown material prefab");
+            return nullptr;
+    }
 }
 
 VulkanMaterial::VulkanMaterial(sptr<Effect> effect):

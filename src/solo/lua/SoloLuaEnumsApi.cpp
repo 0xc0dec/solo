@@ -6,7 +6,6 @@
 #include "SoloTransform.h"
 #include "SoloTexture.h"
 #include "SoloLuaCommon.h"
-#include "SoloEffect.h"
 #include "SoloDevice.h"
 #include "SoloMaterial.h"
 #include "SoloMesh.h"
@@ -15,162 +14,193 @@ using namespace solo;
 
 void registerEnums(CppBindModule<LuaBinding> &module)
 {
-    auto ts = module.beginModule("TransformSpace");
-    REG_MODULE_CONSTANT(ts, TransformSpace, Parent);
-    REG_MODULE_CONSTANT(ts, TransformSpace, Self);
-    REG_MODULE_CONSTANT(ts, TransformSpace, World);
-    ts.endModule();
+    {
+        auto m = module.beginModule("TransformSpace");
+        REG_MODULE_CONSTANT(m, TransformSpace, Parent);
+        REG_MODULE_CONSTANT(m, TransformSpace, Self);
+        REG_MODULE_CONSTANT(m, TransformSpace, World);
+        m.endModule();
+    }
 
-    auto w = module.beginModule("TextureWrapping");
-    REG_MODULE_CONSTANT(w, TextureWrapping, Clamp);
-    REG_MODULE_CONSTANT(w, TextureWrapping, Repeat);
-    w.endModule();
+    {
+        auto m = module.beginModule("TextureWrapping");
+        REG_MODULE_CONSTANT(m, TextureWrapping, Clamp);
+        REG_MODULE_CONSTANT(m, TextureWrapping, Repeat);
+        m.endModule();
+    }
 
-    auto f = module.beginModule("TextureFormat");
-    REG_MODULE_CONSTANT(f, TextureFormat, RGB);
-    REG_MODULE_CONSTANT(f, TextureFormat, RGBA);
-    REG_MODULE_CONSTANT(f, TextureFormat, Red);
-    w.endModule();
+    {
+        auto m = module.beginModule("TextureFormat");
+        REG_MODULE_CONSTANT(m, TextureFormat, RGB);
+        REG_MODULE_CONSTANT(m, TextureFormat, RGBA);
+        REG_MODULE_CONSTANT(m, TextureFormat, Red);
+        m.endModule();
+    }
 
-    auto tf = module.beginModule("TextureFiltering");
-    REG_MODULE_CONSTANT(tf, TextureFiltering, Nearest);
-    REG_MODULE_CONSTANT(tf, TextureFiltering, Linear);
-    REG_MODULE_CONSTANT(tf, TextureFiltering, LinearMipmapLinear);
-    REG_MODULE_CONSTANT(tf, TextureFiltering, LinearMipmapNearest);
-    REG_MODULE_CONSTANT(tf, TextureFiltering, NearestMipmapLinear);
-    REG_MODULE_CONSTANT(tf, TextureFiltering, NearestMipmapNearest);
-    tf.endModule();
+    {
+        auto m = module.beginModule("TextureFiltering");
+        REG_MODULE_CONSTANT(m, TextureFiltering, Nearest);
+        REG_MODULE_CONSTANT(m, TextureFiltering, Linear);
+        REG_MODULE_CONSTANT(m, TextureFiltering, LinearMipmapLinear);
+        REG_MODULE_CONSTANT(m, TextureFiltering, LinearMipmapNearest);
+        REG_MODULE_CONSTANT(m, TextureFiltering, NearestMipmapLinear);
+        REG_MODULE_CONSTANT(m, TextureFiltering, NearestMipmapNearest);
+        m.endModule();
+    }
 
-    auto ep = module.beginModule("EffectPrefab");
-    REG_MODULE_CONSTANT(ep, EffectPrefab, Skybox);
-    REG_MODULE_CONSTANT(ep, EffectPrefab, Font);
-    ep.endModule();
+    {
+        auto m = module.beginModule("MaterialPrefab");
+        REG_MODULE_CONSTANT(m, MaterialPrefab, Skybox);
+        REG_MODULE_CONSTANT(m, MaterialPrefab, Font);
+        m.endModule();
+    }
 
-    auto fc = module.beginModule("FaceCull");
-    REG_MODULE_CONSTANT(fc, FaceCull, None);
-    REG_MODULE_CONSTANT(fc, FaceCull, Back);
-    REG_MODULE_CONSTANT(fc, FaceCull, Front);
-    fc.endModule();
+    {
+        auto m = module.beginModule("FaceCull");
+        REG_MODULE_CONSTANT(m, FaceCull, None);
+        REG_MODULE_CONSTANT(m, FaceCull, Back);
+        REG_MODULE_CONSTANT(m, FaceCull, Front);
+        m.endModule();
+    }
 
-    auto pm = module.beginModule("PolygonMode");
-    REG_MODULE_CONSTANT(pm, PolygonMode, Points);
-    REG_MODULE_CONSTANT(pm, PolygonMode, Fill);
-    REG_MODULE_CONSTANT(pm, PolygonMode, Wireframe);
-    pm.endModule();
+    {
+        auto m = module.beginModule("PolygonMode");
+        REG_MODULE_CONSTANT(m, PolygonMode, Points);
+        REG_MODULE_CONSTANT(m, PolygonMode, Fill);
+        REG_MODULE_CONSTANT(m, PolygonMode, Wireframe);
+        m.endModule();
+    }
 
-    auto df = module.beginModule("DepthFunction");
-    REG_MODULE_CONSTANT(df, DepthFunction, Never);
-    REG_MODULE_CONSTANT(df, DepthFunction, Always);
-    REG_MODULE_CONSTANT(df, DepthFunction, Equal);
-    REG_MODULE_CONSTANT(df, DepthFunction, NotEqual);
-    REG_MODULE_CONSTANT(df, DepthFunction, Less);
-    REG_MODULE_CONSTANT(df, DepthFunction, LEqual);
-    REG_MODULE_CONSTANT(df, DepthFunction, Greater);
-    REG_MODULE_CONSTANT(df, DepthFunction, GEqual);
-    df.endModule();
+    {
+        auto m = module.beginModule("DepthFunction");
+        REG_MODULE_CONSTANT(m, DepthFunction, Never);
+        REG_MODULE_CONSTANT(m, DepthFunction, Always);
+        REG_MODULE_CONSTANT(m, DepthFunction, Equal);
+        REG_MODULE_CONSTANT(m, DepthFunction, NotEqual);
+        REG_MODULE_CONSTANT(m, DepthFunction, Less);
+        REG_MODULE_CONSTANT(m, DepthFunction, LEqual);
+        REG_MODULE_CONSTANT(m, DepthFunction, Greater);
+        REG_MODULE_CONSTANT(m, DepthFunction, GEqual);
+        m.endModule();
+    }
 
-    auto bf = module.beginModule("BlendFactor");
-    REG_MODULE_CONSTANT(bf, BlendFactor, Zero);
-    REG_MODULE_CONSTANT(bf, BlendFactor, One);
-    REG_MODULE_CONSTANT(bf, BlendFactor, SrcColor);
-    REG_MODULE_CONSTANT(bf, BlendFactor, OneMinusSrcColor);
-    REG_MODULE_CONSTANT(bf, BlendFactor, DstColor);
-    REG_MODULE_CONSTANT(bf, BlendFactor, OneMinusDstColor);
-    REG_MODULE_CONSTANT(bf, BlendFactor, SrcAlpha);
-    REG_MODULE_CONSTANT(bf, BlendFactor, OneMinusSrcAlpha);
-    REG_MODULE_CONSTANT(bf, BlendFactor, DstAlpha);
-    REG_MODULE_CONSTANT(bf, BlendFactor, OneMinusDstAlpha);
-    REG_MODULE_CONSTANT(bf, BlendFactor, ConstantAlpha);
-    REG_MODULE_CONSTANT(bf, BlendFactor, OneMinusConstantAlpha);
-    REG_MODULE_CONSTANT(bf, BlendFactor, SrcAlphaSaturate);
-    bf.endModule();
+    {
+        auto m = module.beginModule("BlendFactor");
+        REG_MODULE_CONSTANT(m, BlendFactor, Zero);
+        REG_MODULE_CONSTANT(m, BlendFactor, One);
+        REG_MODULE_CONSTANT(m, BlendFactor, SrcColor);
+        REG_MODULE_CONSTANT(m, BlendFactor, OneMinusSrcColor);
+        REG_MODULE_CONSTANT(m, BlendFactor, DstColor);
+        REG_MODULE_CONSTANT(m, BlendFactor, OneMinusDstColor);
+        REG_MODULE_CONSTANT(m, BlendFactor, SrcAlpha);
+        REG_MODULE_CONSTANT(m, BlendFactor, OneMinusSrcAlpha);
+        REG_MODULE_CONSTANT(m, BlendFactor, DstAlpha);
+        REG_MODULE_CONSTANT(m, BlendFactor, OneMinusDstAlpha);
+        REG_MODULE_CONSTANT(m, BlendFactor, ConstantAlpha);
+        REG_MODULE_CONSTANT(m, BlendFactor, OneMinusConstantAlpha);
+        REG_MODULE_CONSTANT(m, BlendFactor, SrcAlphaSaturate);
+        m.endModule();
+    }
 
-    auto bps = module.beginModule("BindParameterSemantics");
-    REG_MODULE_CONSTANT(bps, BindParameterSemantics, WorldMatrix);
-    REG_MODULE_CONSTANT(bps, BindParameterSemantics, ViewMatrix);
-    REG_MODULE_CONSTANT(bps, BindParameterSemantics, ProjectionMatrix);
-    REG_MODULE_CONSTANT(bps, BindParameterSemantics, WorldViewMatrix);
-    REG_MODULE_CONSTANT(bps, BindParameterSemantics, ViewProjectionMatrix);
-    REG_MODULE_CONSTANT(bps, BindParameterSemantics, WorldViewProjectionMatrix);
-    REG_MODULE_CONSTANT(bps, BindParameterSemantics, InverseTransposedWorldMatrix);
-    REG_MODULE_CONSTANT(bps, BindParameterSemantics, InverseTransposedWorldViewMatrix);
-    REG_MODULE_CONSTANT(bps, BindParameterSemantics, CameraWorldPosition);
+    {
+        auto m = module.beginModule("BindParameterSemantics");
+        REG_MODULE_CONSTANT(m, BindParameterSemantics, WorldMatrix);
+        REG_MODULE_CONSTANT(m, BindParameterSemantics, ViewMatrix);
+        REG_MODULE_CONSTANT(m, BindParameterSemantics, ProjectionMatrix);
+        REG_MODULE_CONSTANT(m, BindParameterSemantics, WorldViewMatrix);
+        REG_MODULE_CONSTANT(m, BindParameterSemantics, ViewProjectionMatrix);
+        REG_MODULE_CONSTANT(m, BindParameterSemantics, WorldViewProjectionMatrix);
+        REG_MODULE_CONSTANT(m, BindParameterSemantics, InverseTransposedWorldMatrix);
+        REG_MODULE_CONSTANT(m, BindParameterSemantics, InverseTransposedWorldViewMatrix);
+        REG_MODULE_CONSTANT(m, BindParameterSemantics, CameraWorldPosition);
+        m.endModule();
+    }
 
-    auto kc = module.beginModule("KeyCode");
-    REG_MODULE_CONSTANT(kc, KeyCode, Digit0);
-    REG_MODULE_CONSTANT(kc, KeyCode, Digit1);
-    REG_MODULE_CONSTANT(kc, KeyCode, Digit2);
-    REG_MODULE_CONSTANT(kc, KeyCode, Digit3);
-    REG_MODULE_CONSTANT(kc, KeyCode, Digit4);
-    REG_MODULE_CONSTANT(kc, KeyCode, Digit5);
-    REG_MODULE_CONSTANT(kc, KeyCode, Digit6);
-    REG_MODULE_CONSTANT(kc, KeyCode, Digit7);
-    REG_MODULE_CONSTANT(kc, KeyCode, Digit8);
-    REG_MODULE_CONSTANT(kc, KeyCode, Digit9);
-    REG_MODULE_CONSTANT(kc, KeyCode, A);
-    REG_MODULE_CONSTANT(kc, KeyCode, B);
-    REG_MODULE_CONSTANT(kc, KeyCode, C);
-    REG_MODULE_CONSTANT(kc, KeyCode, D);
-    REG_MODULE_CONSTANT(kc, KeyCode, E);
-    REG_MODULE_CONSTANT(kc, KeyCode, F);
-    REG_MODULE_CONSTANT(kc, KeyCode, G);
-    REG_MODULE_CONSTANT(kc, KeyCode, H);
-    REG_MODULE_CONSTANT(kc, KeyCode, I);
-    REG_MODULE_CONSTANT(kc, KeyCode, J);
-    REG_MODULE_CONSTANT(kc, KeyCode, K);
-    REG_MODULE_CONSTANT(kc, KeyCode, L);
-    REG_MODULE_CONSTANT(kc, KeyCode, M);
-    REG_MODULE_CONSTANT(kc, KeyCode, N);
-    REG_MODULE_CONSTANT(kc, KeyCode, O);
-    REG_MODULE_CONSTANT(kc, KeyCode, P);
-    REG_MODULE_CONSTANT(kc, KeyCode, Q);
-    REG_MODULE_CONSTANT(kc, KeyCode, R);
-    REG_MODULE_CONSTANT(kc, KeyCode, S);
-    REG_MODULE_CONSTANT(kc, KeyCode, T);
-    REG_MODULE_CONSTANT(kc, KeyCode, U);
-    REG_MODULE_CONSTANT(kc, KeyCode, V);
-    REG_MODULE_CONSTANT(kc, KeyCode, W);
-    REG_MODULE_CONSTANT(kc, KeyCode, X);
-    REG_MODULE_CONSTANT(kc, KeyCode, Y);
-    REG_MODULE_CONSTANT(kc, KeyCode, Z);
-    REG_MODULE_CONSTANT(kc, KeyCode, LeftArrow);
-    REG_MODULE_CONSTANT(kc, KeyCode, RightArrow);
-    REG_MODULE_CONSTANT(kc, KeyCode, UpArrow);
-    REG_MODULE_CONSTANT(kc, KeyCode, DownArrow);
-    REG_MODULE_CONSTANT(kc, KeyCode, Escape);
-    REG_MODULE_CONSTANT(kc, KeyCode, Backspace);
-    REG_MODULE_CONSTANT(kc, KeyCode, Space);
-    REG_MODULE_CONSTANT(kc, KeyCode, Return);
-    REG_MODULE_CONSTANT(kc, KeyCode, LeftShift);
-    REG_MODULE_CONSTANT(kc, KeyCode, LeftCtrl);
-    REG_MODULE_CONSTANT(kc, KeyCode, LeftAlt);
-    REG_MODULE_CONSTANT(kc, KeyCode, RightShift);
-    REG_MODULE_CONSTANT(kc, KeyCode, RightCtrl);
-    REG_MODULE_CONSTANT(kc, KeyCode, RightAlt);
-    kc.endModule();
+    {
+        auto m = module.beginModule("KeyCode");
+        REG_MODULE_CONSTANT(m, KeyCode, Digit0);
+        REG_MODULE_CONSTANT(m, KeyCode, Digit1);
+        REG_MODULE_CONSTANT(m, KeyCode, Digit2);
+        REG_MODULE_CONSTANT(m, KeyCode, Digit3);
+        REG_MODULE_CONSTANT(m, KeyCode, Digit4);
+        REG_MODULE_CONSTANT(m, KeyCode, Digit5);
+        REG_MODULE_CONSTANT(m, KeyCode, Digit6);
+        REG_MODULE_CONSTANT(m, KeyCode, Digit7);
+        REG_MODULE_CONSTANT(m, KeyCode, Digit8);
+        REG_MODULE_CONSTANT(m, KeyCode, Digit9);
+        REG_MODULE_CONSTANT(m, KeyCode, A);
+        REG_MODULE_CONSTANT(m, KeyCode, B);
+        REG_MODULE_CONSTANT(m, KeyCode, C);
+        REG_MODULE_CONSTANT(m, KeyCode, D);
+        REG_MODULE_CONSTANT(m, KeyCode, E);
+        REG_MODULE_CONSTANT(m, KeyCode, F);
+        REG_MODULE_CONSTANT(m, KeyCode, G);
+        REG_MODULE_CONSTANT(m, KeyCode, H);
+        REG_MODULE_CONSTANT(m, KeyCode, I);
+        REG_MODULE_CONSTANT(m, KeyCode, J);
+        REG_MODULE_CONSTANT(m, KeyCode, K);
+        REG_MODULE_CONSTANT(m, KeyCode, L);
+        REG_MODULE_CONSTANT(m, KeyCode, M);
+        REG_MODULE_CONSTANT(m, KeyCode, N);
+        REG_MODULE_CONSTANT(m, KeyCode, O);
+        REG_MODULE_CONSTANT(m, KeyCode, P);
+        REG_MODULE_CONSTANT(m, KeyCode, Q);
+        REG_MODULE_CONSTANT(m, KeyCode, R);
+        REG_MODULE_CONSTANT(m, KeyCode, S);
+        REG_MODULE_CONSTANT(m, KeyCode, T);
+        REG_MODULE_CONSTANT(m, KeyCode, U);
+        REG_MODULE_CONSTANT(m, KeyCode, V);
+        REG_MODULE_CONSTANT(m, KeyCode, W);
+        REG_MODULE_CONSTANT(m, KeyCode, X);
+        REG_MODULE_CONSTANT(m, KeyCode, Y);
+        REG_MODULE_CONSTANT(m, KeyCode, Z);
+        REG_MODULE_CONSTANT(m, KeyCode, LeftArrow);
+        REG_MODULE_CONSTANT(m, KeyCode, RightArrow);
+        REG_MODULE_CONSTANT(m, KeyCode, UpArrow);
+        REG_MODULE_CONSTANT(m, KeyCode, DownArrow);
+        REG_MODULE_CONSTANT(m, KeyCode, Escape);
+        REG_MODULE_CONSTANT(m, KeyCode, Backspace);
+        REG_MODULE_CONSTANT(m, KeyCode, Space);
+        REG_MODULE_CONSTANT(m, KeyCode, Return);
+        REG_MODULE_CONSTANT(m, KeyCode, LeftShift);
+        REG_MODULE_CONSTANT(m, KeyCode, LeftCtrl);
+        REG_MODULE_CONSTANT(m, KeyCode, LeftAlt);
+        REG_MODULE_CONSTANT(m, KeyCode, RightShift);
+        REG_MODULE_CONSTANT(m, KeyCode, RightCtrl);
+        REG_MODULE_CONSTANT(m, KeyCode, RightAlt);
+        m.endModule();
+    }
 
-    auto mb = module.beginModule("MouseButton");
-    REG_MODULE_CONSTANT(mb, MouseButton, Left);
-    REG_MODULE_CONSTANT(mb, MouseButton, Middle);
-    REG_MODULE_CONSTANT(mb, MouseButton, Right);
-    mb.endModule();
+    {
+        auto m = module.beginModule("MouseButton");
+        REG_MODULE_CONSTANT(m, MouseButton, Left);
+        REG_MODULE_CONSTANT(m, MouseButton, Middle);
+        REG_MODULE_CONSTANT(m, MouseButton, Right);
+        m.endModule();
+    }
+    
+    {
+        auto m = module.beginModule("DeviceMode");
+        REG_MODULE_CONSTANT(m, DeviceMode, Null);
+        REG_MODULE_CONSTANT(m, DeviceMode, OpenGL);
+        REG_MODULE_CONSTANT(m, DeviceMode, Vulkan);
+        m.endModule();
+    }
 
-    auto dm = module.beginModule("DeviceMode");
-    REG_MODULE_CONSTANT(dm, DeviceMode, Null);
-    REG_MODULE_CONSTANT(dm, DeviceMode, OpenGL);
-    REG_MODULE_CONSTANT(dm, DeviceMode, Vulkan);
-    dm.endModule();
+    {
+        auto m = module.beginModule("MeshPrefab");
+        REG_MODULE_CONSTANT(m, MeshPrefab, Cube);
+        REG_MODULE_CONSTANT(m, MeshPrefab, Quad);
+        m.endModule();
+    }
 
-    auto mp = module.beginModule("MeshPrefab");
-    REG_MODULE_CONSTANT(mp, MeshPrefab, Cube);
-    REG_MODULE_CONSTANT(mp, MeshPrefab, Quad);
-    mp.endModule();
-
-    auto pt = module.beginModule("PrimitiveType");
-    REG_MODULE_CONSTANT(pt, PrimitiveType, Triangles);
-    REG_MODULE_CONSTANT(pt, PrimitiveType, TriangleStrip);
-    REG_MODULE_CONSTANT(pt, PrimitiveType, Lines);
-    REG_MODULE_CONSTANT(pt, PrimitiveType, LineStrip);
-    REG_MODULE_CONSTANT(pt, PrimitiveType, Points);
-    pt.endModule();
+    {
+        auto m = module.beginModule("PrimitiveType");
+        REG_MODULE_CONSTANT(m, PrimitiveType, Triangles);
+        REG_MODULE_CONSTANT(m, PrimitiveType, TriangleStrip);
+        REG_MODULE_CONSTANT(m, PrimitiveType, Lines);
+        REG_MODULE_CONSTANT(m, PrimitiveType, LineStrip);
+        REG_MODULE_CONSTANT(m, PrimitiveType, Points);
+        m.endModule();
+    }
 }

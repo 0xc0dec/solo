@@ -11,19 +11,16 @@ namespace solo
 {
     class Device;
 
-    enum class EffectPrefab
-    {
-        Skybox,
-        Font
-    };
-
     class Effect
     {
     public:
         SL_DISABLE_COPY_AND_MOVE(Effect)
 
         static auto loadFromFiles(Device *device, const str &vsPath, const str &fsPath) -> sptr<Effect>;
-        static auto createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effect>;
+        static auto createFromSource(
+            Device *device,
+            const void *vsSrc, u32 vsSrcLen,
+            const void *fsSrc, u32 fsSrcLen) -> sptr<Effect>;
 
         virtual ~Effect() {}
 

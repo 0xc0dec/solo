@@ -26,6 +26,8 @@ namespace solo
     class OpenGLMaterial final : public Material
     {
     public:
+        static auto createFromPrefab(Device *device, MaterialPrefab prefab) -> sptr<OpenGLMaterial>;
+
         explicit OpenGLMaterial(sptr<Effect> effect);
         ~OpenGLMaterial() {}
 

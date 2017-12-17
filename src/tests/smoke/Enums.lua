@@ -16,8 +16,8 @@ assert(sl.TextureFiltering.LinearMipmapNearest ~= nil)
 assert(sl.TextureFiltering.NearestMipmapLinear ~= nil)
 assert(sl.TextureFiltering.NearestMipmapNearest ~= nil)
 
-assert(sl.EffectPrefab.Skybox ~= nil)
-assert(sl.EffectPrefab.Font ~= nil)
+assert(sl.MaterialPrefab.Skybox ~= nil)
+assert(sl.MaterialPrefab.Font ~= nil)
 
 assert(sl.FaceCull.None ~= nil)
 assert(sl.FaceCull.Front ~= nil)

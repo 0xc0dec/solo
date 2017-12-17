@@ -77,12 +77,19 @@ namespace solo
         CameraWorldPosition
     };
 
+    enum class MaterialPrefab
+    {
+        Skybox,
+        Font
+    };
+
     class Material
     {
     public:
         SL_DISABLE_COPY_AND_MOVE(Material)
 
         static auto create(Device *device, sptr<Effect> effect) -> sptr<Material>;
+        static auto createFromPrefab(Device *device, MaterialPrefab prefab) -> sptr<Material>;
 
         virtual ~Material() {}
 

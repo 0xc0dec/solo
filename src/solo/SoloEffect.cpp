@@ -21,11 +21,13 @@ auto Effect::loadFromFiles(Device *device, const str &vsPath, const str &fsPath)
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLEffect>(vsBytes.data(), vsBytes.size(), fsBytes.data(), fsBytes.size());
+            return std::make_shared<OpenGLEffect>(
+                vsBytes.data(), vsBytes.size(),
+                fsBytes.data(), fsBytes.size()
+            );
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            // TODO Allow loading compiled SPIV
             return VulkanEffect::createFromSource(
                 device,
                 vsBytes.data(), vsBytes.size(), vsPath,
@@ -37,17 +39,20 @@ auto Effect::loadFromFiles(Device *device, const str &vsPath, const str &fsPath)
     }
 }
 
-auto Effect::createFromPrefab(Device *device, EffectPrefab prefab) -> sptr<Effect>
+auto Effect::createFromSource(
+    Device *device,
+    const void *vsSrc, u32 vsSrcLen,
+    const void *fsSrc, u32 fsSrcLen) -> sptr<Effect>
 {
     switch (device->getMode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return OpenGLEffect::createFromPrefab(prefab);
+            return std::make_shared<OpenGLEffect>(vsSrc, vsSrcLen, fsSrc, fsSrcLen);
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return VulkanEffect::createFromPrefab(device, prefab);
+            return VulkanEffect::createFromSource(device, vsSrc, vsSrcLen, "vert-src", fsSrc, fsSrcLen, "frag-src");
 #endif
         default:
             return std::make_shared<NullEffect>();

@@ -21,27 +21,10 @@ SkyboxRenderer::SkyboxRenderer(const Node &node):
 
     const auto device = node.getScene()->getDevice();
 
-    const auto effect = Effect::createFromPrefab(device, EffectPrefab::Skybox);
-    material = Material::create(device, effect);
+    material = Material::createFromPrefab(device, MaterialPrefab::Skybox);
     material->setDepthTest(true);
     material->setDepthWrite(false);
     material->setFaceCull(FaceCull::None);
-
-    // TODO avoid this, add prefab materials and do dirty stuff there
-    const auto deviceMode = node.getScene()->getDevice()->getMode();
-    switch (deviceMode)
-    {
-        case DeviceMode::OpenGL:
-            material->bindParameter("projMatrix", BindParameterSemantics::ProjectionMatrix);
-            material->bindParameter("worldViewMatrix", BindParameterSemantics::WorldViewMatrix);
-            break;
-        case DeviceMode::Vulkan:
-            material->bindParameter("matrices.proj", BindParameterSemantics::ProjectionMatrix);
-            material->bindParameter("matrices.worldView", BindParameterSemantics::WorldViewMatrix);
-            break;
-        default:
-            break;
-    }
 
     quadMesh = Mesh::createFromPrefab(device, MeshPrefab::Quad);
 }

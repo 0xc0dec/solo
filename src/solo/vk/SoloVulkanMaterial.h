@@ -36,7 +36,9 @@ namespace solo
             sptr<VulkanTexture> texture;
         };
 
-        VulkanMaterial(sptr<Effect> effect);
+        static auto createFromPrefab(Device *device, MaterialPrefab prefab) -> sptr<VulkanMaterial>;
+
+        explicit VulkanMaterial(sptr<Effect> effect);
         ~VulkanMaterial();
 
         auto getEffect() const -> sptr<Effect> override final { return effect; }
