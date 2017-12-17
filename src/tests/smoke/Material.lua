@@ -30,10 +30,10 @@ mat:setBlendFactors(sl.BlendFactor.SrcAlphaSaturate, sl.BlendFactor.SrcAlphaSatu
 assert(mat:getFaceCull() ~= nil)
 mat:setFaceCull(sl.FaceCull.None)
 
-assert(mat:getDepthWrite() ~= nil)
+assert(mat:hasDepthWrite() ~= nil)
 mat:setDepthWrite(true)
 
-assert(mat:getDepthTest() ~= nil)
+assert(mat:hasDepthTest() ~= nil)
 mat:setDepthTest(true)
 
 assert(mat:getDepthFunction() ~= nil)

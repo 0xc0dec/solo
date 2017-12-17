@@ -225,8 +225,8 @@ void OpenGLRenderer::addRenderCommand(const RenderCommand &cmd)
             const auto material = cmd.type == RenderCommandType::DrawMesh ? cmd.mesh.material : cmd.meshPart.material;
             const auto faceCull = material->getFaceCull();
             const auto polygonMode = material->getPolygonMode();
-            const auto depthTest = material->getDepthTest();
-            const auto depthWrite = material->getDepthWrite();
+            const auto depthTest = material->hasDepthTest();
+            const auto depthWrite = material->hasDepthWrite();
             const auto depthFunc = material->getDepthFunction();
             const auto blend = material->getBlend();
             const auto srcBlendFactor = material->getSrcBlendFactor();

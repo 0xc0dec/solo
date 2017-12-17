@@ -39,8 +39,8 @@ static auto getMaterialStateHash(VulkanMaterial *material) -> size_t
     combineHash(seed, signedHash(material->getVkCullModeFlags()));
     combineHash(seed, signedHash(material->getVkPolygonMode()));
     combineHash(seed, signedHash(material->getVkPrimitiveTopology()));
-    combineHash(seed, boolHash(material->getDepthTest()));
-    combineHash(seed, boolHash(material->getDepthWrite()));
+    combineHash(seed, boolHash(material->hasDepthTest()));
+    combineHash(seed, boolHash(material->hasDepthWrite()));
     return seed;
 }
 
@@ -292,7 +292,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
             .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
             .withCullMode(vkMaterial->getVkCullModeFlags())
             .withPolygonMode(vkMaterial->getVkPolygonMode())
-            .withDepthTest(vkMaterial->getDepthWrite(), vkMaterial->getDepthTest())
+            .withDepthTest(vkMaterial->hasDepthWrite(), vkMaterial->hasDepthTest())
             .withTopology(vkMaterial->getVkPrimitiveTopology());
 
         for (s32 i = 0; i < vkMesh->getVertexBufferCount(); i++)

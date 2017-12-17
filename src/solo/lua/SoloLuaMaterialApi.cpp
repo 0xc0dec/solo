@@ -29,9 +29,9 @@ void registerMaterialApi(CppBindModule<LuaBinding> &module)
     REG_METHOD(mat, Material, setBlendFactors);
     REG_METHOD(mat, Material, getFaceCull);
     REG_METHOD(mat, Material, setFaceCull);
-    REG_METHOD(mat, Material, getDepthWrite);
+    REG_METHOD(mat, Material, hasDepthWrite);
     REG_METHOD(mat, Material, setDepthWrite);
-    REG_METHOD(mat, Material, getDepthTest);
+    REG_METHOD(mat, Material, hasDepthTest);
     REG_METHOD(mat, Material, setDepthTest);
     REG_METHOD(mat, Material, getDepthFunction);
     REG_METHOD(mat, Material, setDepthFunction);
