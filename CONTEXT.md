@@ -1,7 +1,8 @@
 # TODO
 
+* Fix post-processor in demo2. Perhaps has something to do with camera render target not being saved in render command,
+so if a camera renders twice a frame, with render target and without, only the latest setting is used
 * Demos refactoring, esp. texture/effect/material loading
-* Blending in VK
 * Anisotropy for VK textures
 * Use axis names in CubeTextureData for fetching layer data
 * Continue with Vulkan backend
