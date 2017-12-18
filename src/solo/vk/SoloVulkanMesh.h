@@ -42,6 +42,8 @@ namespace solo
         auto getPartIndexElementCount(u32 index) const -> u32 { return indexElementCounts.at(index); }
         auto getMinVertexCount() const -> u32 { return minVertexCount; }
 
+        auto getLayoutHash() const -> size_t;
+
     private:
         VulkanRenderer *renderer = nullptr;
 

@@ -8,6 +8,7 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloDevice.h"
+#include "SoloHash.h"
 #include "SoloVulkanRenderer.h"
 #include <algorithm>
 
@@ -90,6 +91,32 @@ auto VulkanMesh::getPrimitiveType() const -> PrimitiveType
 
 void VulkanMesh::setPrimitiveType(PrimitiveType type)
 {
+}
+
+auto VulkanMesh::getLayoutHash() const -> size_t
+{
+    size_t seed = 0;
+    const std::hash<u32> unsignedHasher;
+    const std::hash<str> strHasher;
+
+    for (s32 i = 0; i < getVertexBufferCount(); i++)
+    {
+        auto layout = getVertexBufferLayout(i);
+        combineHash(seed, unsignedHasher(i));
+
+        for (s32 j = 0; j < layout.getAttributeCount(); j++)
+        {
+            const auto attr = layout.getAttribute(j);
+            combineHash(seed, unsignedHasher(j));
+            combineHash(seed, strHasher(attr.name));
+            combineHash(seed, unsignedHasher(attr.elementCount));
+            combineHash(seed, unsignedHasher(attr.location));
+            combineHash(seed, unsignedHasher(attr.offset));
+            combineHash(seed, unsignedHasher(attr.size));
+        }
+    }
+
+    return seed;
 }
 
 void VulkanMesh::updateMinVertexCount()

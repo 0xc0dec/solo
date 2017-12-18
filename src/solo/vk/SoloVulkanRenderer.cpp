@@ -31,33 +31,6 @@ static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMa
     return seed;
 }
 
-// TODO Move stuff like this to corresponding classes?
-static auto getMeshLayoutHash(VulkanMesh *mesh) -> size_t
-{
-    size_t seed = 0;
-    const std::hash<u32> unsignedHasher;
-    const std::hash<str> strHasher;
-
-    for (s32 i = 0; i < mesh->getVertexBufferCount(); i++)
-    {
-        auto layout = mesh->getVertexBufferLayout(i);
-        combineHash(seed, unsignedHasher(i));
-
-        for (s32 j = 0; j < layout.getAttributeCount(); j++)
-        {
-            const auto attr = layout.getAttribute(j);
-            combineHash(seed, unsignedHasher(j));
-            combineHash(seed, strHasher(attr.name));
-            combineHash(seed, unsignedHasher(attr.elementCount));
-            combineHash(seed, unsignedHasher(attr.location));
-            combineHash(seed, unsignedHasher(attr.offset));
-            combineHash(seed, unsignedHasher(attr.size));
-        }
-    }
-
-    return seed;
-}
-
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
     u64 obj, size_t location, s32 code, const s8 *layerPrefix, const s8 *msg, void *userData)
 {
@@ -269,7 +242,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
     }
 
     const auto materialFlagsHash = vkMaterial->getStateHash();
-    const auto meshLayoutHash = getMeshLayoutHash(vkMesh);
+    const auto meshLayoutHash = vkMesh->getLayoutHash();
     const auto materialFlagsChanged = materialFlagsHash != context.lastMaterialFlagsHash;
     const auto meshLayoutChanged = meshLayoutHash != context.lastMeshLayoutHash;
 
