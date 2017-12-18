@@ -151,8 +151,8 @@ void VulkanMaterial::configurePipeline(VulkanPipelineConfig &cfg)
         blend,
         convertBlendFactor(srcBlendFactor),
         convertBlendFactor(dstBlendFactor),
-        VK_BLEND_FACTOR_SRC_ALPHA,
-        VK_BLEND_FACTOR_DST_ALPHA);
+        convertBlendFactor(srcBlendFactor),
+        convertBlendFactor(dstBlendFactor));
 }
 
 void VulkanMaterial::setFloatParameter(const str &name, float value)

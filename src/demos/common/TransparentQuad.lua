@@ -16,11 +16,17 @@ return function(scene, assetCache, mesh, tag)
 
     local material = sl.Material.create(sl.device, assetCache.getEffect("Texture"))
     material:setFaceCull(sl.FaceCull.None)
-    material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-    material:setTextureParameter("mainTex", tex)
     material:setBlend(true)
     material:setDepthTest(true)
     material:setDepthWrite(false)
+
+    if sl.device:getMode() == sl.DeviceMode.Vulkan then
+        material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+        material:setTextureParameter("colorTex", tex)
+    elseif sl.device:getMode() == sl.DeviceMode.OpenGL then
+        material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+        material:setTextureParameter("mainTex", tex)
+    end
 
     local parent = scene:createNode()
     parent:findComponent("Transform"):setLocalPosition(vec3(5, 0, 0))
