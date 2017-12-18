@@ -10,10 +10,12 @@
 #include "SoloDevice.h"
 #include "SoloTransform.h"
 #include "SoloCamera.h"
+#include "SoloHash.h"
 #include "SoloVulkanEffect.h"
 #include "SoloVulkanRenderer.h"
 #include "SoloVulkanTexture.h"
 #include "SoloVulkanPrefabShaders.h"
+#include "SoloVulkanPipeline.h"
 
 using namespace solo;
 
@@ -23,6 +25,30 @@ static auto parseName(const str &name) -> std::tuple<str, str>
     const auto first = (idx != str::npos) ? name.substr(0, idx) : name;
     const auto second = (idx != str::npos) ? name.substr(idx + 1) : "";
     return make_tuple(first, second);
+}
+
+static auto convertBlendFactor(BlendFactor factor) -> VkBlendFactor
+{
+    switch (factor)
+    {
+        case BlendFactor::Zero: return VK_BLEND_FACTOR_ZERO;
+        case BlendFactor::One: return VK_BLEND_FACTOR_ONE;
+        case BlendFactor::SrcColor: return VK_BLEND_FACTOR_SRC_COLOR;
+        case BlendFactor::OneMinusSrcColor: return VK_BLEND_FACTOR_ONE_MINUS_SRC_COLOR;
+        case BlendFactor::DstColor: return VK_BLEND_FACTOR_DST_COLOR;
+        case BlendFactor::OneMinusDstColor: return VK_BLEND_FACTOR_ONE_MINUS_DST_COLOR;
+        case BlendFactor::SrcAlpha: return VK_BLEND_FACTOR_SRC_ALPHA;
+        case BlendFactor::OneMinusSrcAlpha: return VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
+        case BlendFactor::DstAlpha: return VK_BLEND_FACTOR_DST_ALPHA;
+        case BlendFactor::OneMinusDstAlpha: return VK_BLEND_FACTOR_ONE_MINUS_DST_ALPHA;
+        case BlendFactor::ConstantAlpha: return VK_BLEND_FACTOR_CONSTANT_ALPHA;
+        case BlendFactor::OneMinusConstantAlpha: return VK_BLEND_FACTOR_ONE_MINUS_CONSTANT_ALPHA;
+        case BlendFactor::SrcAlphaSaturate: return VK_BLEND_FACTOR_SRC_ALPHA_SATURATE;
+        // TODO support other vk blend modes?
+        default:
+            SL_PANIC("Unknown blend factor");
+            return VK_BLEND_FACTOR_ONE;
+    }
 }
 
 auto VulkanMaterial::createFromPrefab(Device *device, MaterialPrefab prefab) -> sptr<VulkanMaterial>
@@ -68,39 +94,65 @@ VulkanMaterial::~VulkanMaterial()
 {
 }
 
-auto VulkanMaterial::getVkCullModeFlags() const -> VkCullModeFlags
+auto VulkanMaterial::getStateHash() const -> size_t
 {
+    size_t seed = 0;
+    const std::hash<u32> unsignedHasher;
+    const std::hash<bool> boolHash;
+    combineHash(seed, unsignedHasher(static_cast<u32>(faceCull)));
+    combineHash(seed, unsignedHasher(static_cast<u32>(polygonMode)));
+    combineHash(seed, unsignedHasher(static_cast<u32>(srcBlendFactor)));
+    combineHash(seed, unsignedHasher(static_cast<u32>(dstBlendFactor)));
+    combineHash(seed, boolHash(depthTest));
+    combineHash(seed, boolHash(depthWrite));
+    return seed;
+}
+
+void VulkanMaterial::configurePipeline(VulkanPipelineConfig &cfg)
+{
+    switch (polygonMode)
+    {
+        case PolygonMode::Points:
+            cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_POINT_LIST);
+            cfg.withPolygonMode(VK_POLYGON_MODE_POINT);
+            break;
+        case PolygonMode::Fill:
+            cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
+            cfg.withPolygonMode(VK_POLYGON_MODE_FILL);
+            break;
+        case PolygonMode::Wireframe:
+            cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
+            cfg.withPolygonMode(VK_POLYGON_MODE_LINE);
+            break;
+        default:
+            SL_PANIC("Unknown polygon mode");
+            break;
+    }
+
     switch (faceCull)
     {
-        case FaceCull::None: return VK_CULL_MODE_NONE;
-        case FaceCull::Front: return VK_CULL_MODE_FRONT_BIT;
-        case FaceCull::Back: return VK_CULL_MODE_BACK_BIT;
+        case FaceCull::None:
+            cfg.withCullMode(VK_CULL_MODE_NONE);
+            break;
+        case FaceCull::Front:
+            cfg.withCullMode(VK_CULL_MODE_FRONT_BIT);
+            break;
+        case FaceCull::Back:
+            cfg.withCullMode(VK_CULL_MODE_BACK_BIT);
+            break;
         default:
             SL_PANIC("Unsupported face cull mode");
-            return VK_FRONT_FACE_CLOCKWISE;
+            break;
     }
-}
 
-auto VulkanMaterial::getVkPolygonMode() const -> VkPolygonMode
-{
-    switch (polygonMode)
-    {
-        case PolygonMode::Points: return VK_POLYGON_MODE_POINT;
-        case PolygonMode::Fill: return VK_POLYGON_MODE_FILL;
-        case PolygonMode::Wireframe: return VK_POLYGON_MODE_LINE;
-        default:
-            SL_PANIC("Unsupported polygon mode");
-            return VK_POLYGON_MODE_FILL;
-    }
-}
+    cfg.withDepthTest(depthWrite, depthTest);
 
-auto VulkanMaterial::getVkPrimitiveTopology() const -> VkPrimitiveTopology
-{
-    switch (polygonMode)
-    {
-        case PolygonMode::Points: return VK_PRIMITIVE_TOPOLOGY_POINT_LIST;
-        default: return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
-    }
+    cfg.withBlend(
+        blend,
+        convertBlendFactor(srcBlendFactor),
+        convertBlendFactor(dstBlendFactor),
+        VK_BLEND_FACTOR_SRC_ALPHA,
+        VK_BLEND_FACTOR_DST_ALPHA);
 }
 
 void VulkanMaterial::setFloatParameter(const str &name, float value)

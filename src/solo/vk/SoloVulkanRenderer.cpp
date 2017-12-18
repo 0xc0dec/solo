@@ -31,19 +31,6 @@ static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMa
     return seed;
 }
 
-static auto getMaterialStateHash(VulkanMaterial *material) -> size_t
-{
-    size_t seed = 0;
-    const std::hash<u32> unsignedHasher;
-    const std::hash<bool> boolHash;
-    combineHash(seed, unsignedHasher(material->getVkCullModeFlags()));
-    combineHash(seed, unsignedHasher(material->getVkPolygonMode()));
-    combineHash(seed, unsignedHasher(material->getVkPrimitiveTopology()));
-    combineHash(seed, boolHash(material->hasDepthTest()));
-    combineHash(seed, boolHash(material->hasDepthWrite()));
-    return seed;
-}
-
 // TODO Move stuff like this to corresponding classes?
 static auto getMeshLayoutHash(VulkanMesh *mesh) -> size_t
 {
@@ -281,7 +268,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
         context.descSet = context.descPool.allocateSet(context.descSetLayout);
     }
 
-    const auto materialFlagsHash = getMaterialStateHash(vkMaterial);
+    const auto materialFlagsHash = vkMaterial->getStateHash();
     const auto meshLayoutHash = getMeshLayoutHash(vkMesh);
     const auto materialFlagsChanged = materialFlagsHash != context.lastMaterialFlagsHash;
     const auto meshLayoutChanged = meshLayoutHash != context.lastMeshLayoutHash;
@@ -292,11 +279,8 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
         const auto fs = vkEffect->getVkFragmentShader();
         auto pipelineConfig = VulkanPipelineConfig(vs, fs)
             .withDescriptorSetLayout(context.descSetLayout)
-            .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
-            .withCullMode(vkMaterial->getVkCullModeFlags())
-            .withPolygonMode(vkMaterial->getVkPolygonMode())
-            .withDepthTest(vkMaterial->hasDepthWrite(), vkMaterial->hasDepthTest())
-            .withTopology(vkMaterial->getVkPrimitiveTopology());
+            .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE);
+        vkMaterial->configurePipeline(pipelineConfig);
 
         const auto &effectVertexAttrs = vkEffect->getVertexAttributes();
         for (s32 binding = 0; binding < vkMesh->getVertexBufferCount(); binding++)

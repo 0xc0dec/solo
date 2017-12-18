@@ -194,7 +194,8 @@ auto VulkanPipelineConfig::withDepthTest(bool write, bool test) -> VulkanPipelin
     return *this;
 }
 
-auto VulkanPipelineConfig::withBlend(bool enabled, VkBlendFactor srcColorFactor, VkBlendFactor dstColorFactor,
+auto VulkanPipelineConfig::withBlend(bool enabled,
+    VkBlendFactor srcColorFactor, VkBlendFactor dstColorFactor,
     VkBlendFactor srcAlphaFactor, VkBlendFactor dstAlphaFactor) -> VulkanPipelineConfig&
 {
     blendAttachmentState.blendEnable = enabled ? VK_TRUE : VK_FALSE;

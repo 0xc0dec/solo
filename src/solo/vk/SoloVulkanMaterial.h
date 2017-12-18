@@ -21,6 +21,7 @@ namespace solo
     class Camera;
     class VulkanRenderer;
     class VulkanTexture;
+    class VulkanPipelineConfig;
 
     class VulkanMaterial final: public Material
     {
@@ -54,10 +55,9 @@ namespace solo
 
         auto getSamplers() const -> umap<str, Sampler> const& { return samplers; }
         auto getBufferItems() const -> umap<str, umap<str, UniformBufferItem>> const& { return bufferItems; } // TODO rename
+        auto getStateHash() const -> size_t;
 
-        auto getVkCullModeFlags() const -> VkCullModeFlags;
-        auto getVkPolygonMode() const -> VkPolygonMode;
-        auto getVkPrimitiveTopology() const -> VkPrimitiveTopology;
+        void configurePipeline(VulkanPipelineConfig &cfg);
 
     private:
         using ParameterWriteFunc = std::function<void(VulkanBuffer&, u32, u32, const Camera*, const Transform*)>;
