@@ -12,6 +12,10 @@ function createPostProcessor(camera, tag)
     quadRenderer:setTag(tag)
     quadRenderer:setMesh(sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Quad))
 
+    function renderQuad()
+        quadRenderer:render()
+    end
+
     return {
         detach = function()
             camera:getNode():removeComponent("MeshRenderer")
@@ -24,7 +28,7 @@ function createPostProcessor(camera, tag)
             quadRenderer:setMaterial(0, mat);
             camera:setViewport(viewport)
             camera:setRenderTarget(target)
-            camera:renderFrame(function() quadRenderer:render() end)
+            camera:renderFrame(renderQuad)
         end
     }
 end
