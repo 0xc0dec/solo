@@ -520,16 +520,10 @@ void VulkanRenderer::endFrame()
     {
         if (!pair.second.started)
             continue;
-
+        
         pair.second.started = false;
-
         const VkCommandBuffer cmdBuffer = pair.second.cmdBuffer;
-            
-        if (pair.first)
-            pair.first->end(cmdBuffer);
-        else
-            swapchain.getRenderPass().end(cmdBuffer);
-
+        pair.first->end(cmdBuffer);
         SL_VK_CHECK_RESULT(vkEndCommandBuffer(cmdBuffer));
     }
 

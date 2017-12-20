@@ -124,18 +124,32 @@ function createPostProcessor2(camera, tag, assetCache)
     material:setVector2Parameter("variables.stitchCount", stitchCount)
     material:setVector2Parameter("variables.resolution", offscreenRes)
 
+    local scene = camera:getNode():getScene()
+
+    local quadCameraNode = scene:createNode()
+    quadCameraNode:findComponent("Transform"):setParent(camera:getNode():findComponent("Transform"))
+    local quadCamera = quadCameraNode:addComponent("Camera")
+    quadCamera:setZNear(0.05)
+
+    local quadRenderer = quadCameraNode:addComponent("MeshRenderer")
+    quadRenderer:setTag(tag)
+    quadRenderer:setMesh(sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Quad))
+    quadRenderer:setMaterial(0, material); -- TODO setting nil as material here causes VK renderer to crash
+
     camera:setViewport(vec4(0, 0, offscreenRes.x, offscreenRes.y))
     camera:setRenderTarget(fb1)
 
-    local pp = createPostProcessor(camera, tag)
+    return {
+        apply = function(self)
+            quadCamera:renderFrame(function() quadRenderer:render() end)
+        end,
 
-    pp.apply = function(self)
-        self.renderStep(material, fbTex, nil, vec4(0, 0, canvasSize.x, canvasSize.y))
-        camera:setViewport(vec4(0, 0, offscreenRes.x, offscreenRes.y))
-        camera:setRenderTarget(fb1)
-    end
-
-    return pp
+        detach = function()
+            scene:removeNode(quadCameraNode)
+            camera:setRenderTarget(nil)
+            camera:setViewport(vec4(0, 0, canvasSize.x, canvasSize.y))
+        end
+    }
 end
 
 return {

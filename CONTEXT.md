@@ -1,5 +1,6 @@
 # TODO
 
+* Fix removeNode method - clears transform first, so other components as transform listeners can't unregister themselves
 * Fix post-processor in demo2. Perhaps has something to do with camera render target not being saved in render command,
 so if a camera renders twice a frame, with render target and without, only the latest setting is used
 * For opengl materials trim out everything before the first dot in parameter names. This will allow use same
