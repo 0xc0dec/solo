@@ -2,6 +2,8 @@
 
 * Fix post-processor in demo2. Perhaps has something to do with camera render target not being saved in render command,
 so if a camera renders twice a frame, with render target and without, only the latest setting is used
+* For opengl materials trim out everything before the first dot in parameter names. This will allow use same
+calls for settings VK and GL material params.
 * Demos refactoring, esp. texture/effect/material loading
 * Anisotropy for VK textures
 * Use axis names in CubeTextureData for fetching layer data

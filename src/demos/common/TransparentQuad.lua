@@ -19,14 +19,8 @@ return function(scene, assetCache, mesh, tag)
     material:setBlend(true)
     material:setDepthTest(true)
     material:setDepthWrite(false)
-
-    if sl.device:getMode() == sl.DeviceMode.Vulkan then
-        material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-        material:setTextureParameter("colorTex", tex)
-    elseif sl.device:getMode() == sl.DeviceMode.OpenGL then
-        material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-        material:setTextureParameter("mainTex", tex)
-    end
+    material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    material:setTextureParameter("mainTex", tex)
 
     local parent = scene:createNode()
     parent:findComponent("Transform"):setLocalPosition(vec3(5, 0, 0))

@@ -404,16 +404,16 @@ void VulkanRenderer::endFrame()
         {
             case RenderCommandType::BeginCamera:
             {
-                currentCamera = cmd.camera;
+                currentCamera = cmd.camera.camera;
                 currentRenderPass = &swapchain.getRenderPass();
                 auto currentFrameBuffer = swapchain.getCurrentFrameBuffer();
                 auto dimensions = canvasSize;
                 vec<VkClearAttachment> clearAttachments = {{VK_IMAGE_ASPECT_COLOR_BIT, 0, {{0, 0, 0, 1}}}}; // TODO avoid mem allocation
 
-                const auto renderTarget = cmd.camera->getRenderTarget();
+                const auto renderTarget = cmd.camera.renderTarget;
                 if (renderTarget)
                 {
-                    const auto targetFrameBuffer = std::static_pointer_cast<VulkanFrameBuffer>(renderTarget);
+                    const auto targetFrameBuffer = static_cast<VulkanFrameBuffer*>(renderTarget);
                     currentRenderPass = &targetFrameBuffer->getRenderPass();
                     currentFrameBuffer = targetFrameBuffer->getHandle();
                     dimensions = targetFrameBuffer->getDimensions();

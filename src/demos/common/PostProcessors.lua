@@ -52,51 +52,28 @@ function createPostProcessor1(camera, tag, assetCache)
     grayscaleMat:setDepthTest(false)
     grayscaleMat:setDepthWrite(false)
     grayscaleMat:setFaceCull(sl.FaceCull.None)
-
-    if sl.device:getMode() == sl.DeviceMode.Vulkan then
-        grayscaleMat:setFloatParameter("variables.rightSeparator", 0.25)
-    elseif sl.device:getMode() == sl.DeviceMode.OpenGL then
-        grayscaleMat:setFloatParameter("rightSeparator", 0.25)
-    end
+    grayscaleMat:setFloatParameter("variables.rightSeparator", 0.25)
 
     local saturateMat = sl.Material.create(sl.device, assetCache.getEffect("Saturate"))
     saturateMat:setDepthTest(false)
     saturateMat:setDepthWrite(false)
     saturateMat:setFaceCull(sl.FaceCull.None)
-
-    if sl.device:getMode() == sl.DeviceMode.Vulkan then
-        saturateMat:setFloatParameter("variables.leftSeparator", 0.75)
-        saturateMat:setFloatParameter("variables.rightSeparator", 1.0)
-    elseif sl.device:getMode() == sl.DeviceMode.OpenGL then
-        saturateMat:setFloatParameter("leftSeparator", 0.75)
-        saturateMat:setFloatParameter("rightSeparator", 1.0)
-    end
+    saturateMat:setFloatParameter("variables.leftSeparator", 0.75)
+    saturateMat:setFloatParameter("variables.rightSeparator", 1.0)
 
     local verticalBlurMat = sl.Material.create(sl.device, assetCache.getEffect("VerticalBlur"))
     verticalBlurMat:setDepthTest(false)
     verticalBlurMat:setDepthWrite(false)
     verticalBlurMat:setFaceCull(sl.FaceCull.None)
-
-    if sl.device:getMode() == sl.DeviceMode.Vulkan then
-        verticalBlurMat:setFloatParameter("variables.leftSeparator", 0.25)
-        verticalBlurMat:setFloatParameter("variables.rightSeparator", 0.75)
-    elseif sl.device:getMode() == sl.DeviceMode.OpenGL then
-        verticalBlurMat:setFloatParameter("leftSeparator", 0.25)
-        verticalBlurMat:setFloatParameter("rightSeparator", 0.75)
-    end
+    verticalBlurMat:setFloatParameter("variables.leftSeparator", 0.25)
+    verticalBlurMat:setFloatParameter("variables.rightSeparator", 0.75)
 
     local horizontalBlurMat = sl.Material.create(sl.device, assetCache.getEffect("HorizontalBlur"))
     horizontalBlurMat:setDepthTest(false)
     horizontalBlurMat:setDepthWrite(false)
     horizontalBlurMat:setFaceCull(sl.FaceCull.None)
-
-    if sl.device:getMode() == sl.DeviceMode.Vulkan then
-        horizontalBlurMat:setFloatParameter("variables.leftSeparator", 0.25)
-        horizontalBlurMat:setFloatParameter("variables.rightSeparator", 0.75)
-    elseif sl.device:getMode() == sl.DeviceMode.OpenGL then
-        horizontalBlurMat:setFloatParameter("leftSeparator", 0.25)
-        horizontalBlurMat:setFloatParameter("rightSeparator", 0.75)
-    end
+    horizontalBlurMat:setFloatParameter("variables.leftSeparator", 0.25)
+    horizontalBlurMat:setFloatParameter("variables.rightSeparator", 0.75)
 
     camera:setRenderTarget(fb1)
 
@@ -144,14 +121,8 @@ function createPostProcessor2(camera, tag, assetCache)
     local material = sl.Material.create(sl.device, assetCache.getEffect("Stitches"))
     material:setTextureParameter("mainTex", fbTex)
     material:setTextureParameter("stitchTex", stitchTex)
-
-    if sl.device:getMode() == sl.DeviceMode.Vulkan then
-        material:setVector2Parameter("variables.stitchCount", stitchCount)
-        material:setVector2Parameter("variables.resolution", offscreenRes)
-    elseif sl.device:getMode() == sl.DeviceMode.OpenGL then
-        material:setVector2Parameter("stitchCount", stitchCount)
-        material:setVector2Parameter("resolution", offscreenRes)
-    end
+    material:setVector2Parameter("variables.stitchCount", stitchCount)
+    material:setVector2Parameter("variables.resolution", offscreenRes)
 
     camera:setViewport(vec4(0, 0, offscreenRes.x, offscreenRes.y))
     camera:setRenderTarget(fb1)

@@ -10,13 +10,13 @@ return function(mesh, assetCache)
 
     local material = sl.Material.create(sl.device, effect)
     material:setFaceCull(sl.FaceCull.None)
-    material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    material:bindParameter("wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     material:setVector4Parameter("color", vec4(1, 1, 0, 1))
 
     local highlightMaterial = sl.Material.create(sl.device, effect)
     highlightMaterial:setFaceCull(sl.FaceCull.None)
     highlightMaterial:setPolygonMode(sl.PolygonMode.Wireframe)
-    highlightMaterial:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    highlightMaterial:bindParameter("wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     highlightMaterial:setVector4Parameter("color", vec4(1, 1, 0, 1))
 
     return {

@@ -54,14 +54,8 @@ return function(scene, assetCache)
         local effect = assetCache.getEffect("Texture")
         local material = sl.Material.create(sl.device, effect)
         material:setFaceCull(sl.FaceCull.None)
-
-        if sl.device:getMode() == sl.DeviceMode.Vulkan then
-            material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-            material:setTextureParameter("colorTex", tex)
-        elseif sl.device:getMode() == sl.DeviceMode.OpenGL then
-            material:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-            material:setTextureParameter("mainTex", tex)
-        end
+        material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+        material:setTextureParameter("mainTex", tex)
 
         local node = scene:createNode()
         node:findComponent("Transform"):setLocalPosition(vec3(0, 0, -5))

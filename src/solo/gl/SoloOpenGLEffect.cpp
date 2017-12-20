@@ -144,7 +144,7 @@ void OpenGLEffect::introspectAttributes()
     glGetProgramiv(handle, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
 
     GLint nameMaxLength;
-    glGetProgramiv(handle, GL_ACTIVE_UNIFORM_MAX_LENGTH, &nameMaxLength);
+    glGetProgramiv(handle, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &nameMaxLength);
     if (nameMaxLength <= 0)
         return;
 

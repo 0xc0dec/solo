@@ -10,14 +10,8 @@ return function(assetCache)
     local createColorMaterial = function(color)
         local mat = sl.Material.create(sl.device, effect)
         mat:setFaceCull(sl.FaceCull.None)
-
-        if sl.device:getMode() == sl.DeviceMode.Vulkan then
-            mat:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-            mat:setVector4Parameter("variables.color", color)
-        elseif sl.device:getMode() == sl.DeviceMode.OpenGL then
-            mat:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-            mat:setVector4Parameter("color", color)
-        end
+        mat:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+        mat:setVector4Parameter("variables.color", color)
 
         return mat
     end

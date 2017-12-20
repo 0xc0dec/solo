@@ -45,22 +45,28 @@ namespace solo
                 Material *material;
             } mesh;
 
-            Camera *camera;
+            struct
+            {
+                Camera *camera;
+                FrameBuffer *renderTarget;
+            } camera;
         };
 
         explicit RenderCommand(RenderCommandType type = RenderCommandType::None): type(type) {}
 
-        static auto beginCamera(Camera *camera) -> RenderCommand
+        static auto beginCamera(Camera *camera, FrameBuffer *renderTarget) -> RenderCommand
         {
             auto cmd = RenderCommand(RenderCommandType::BeginCamera);
-            cmd.camera = camera;
+            cmd.camera.camera = camera;
+            cmd.camera.renderTarget = renderTarget;
             return cmd;
         }
 
         static auto endCamera(Camera *camera) -> RenderCommand
         {
             auto cmd = RenderCommand(RenderCommandType::EndCamera);
-            cmd.camera = camera;
+            cmd.camera.camera = camera;
+            cmd.camera.renderTarget = nullptr; // TODO is this correct?
             return cmd;
         }
 

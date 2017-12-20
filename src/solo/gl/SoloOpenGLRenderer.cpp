@@ -180,12 +180,13 @@ void OpenGLRenderer::addRenderCommand(const RenderCommand &cmd)
     {
         case RenderCommandType::BeginCamera:
         {
-            const auto viewport = cmd.camera->getViewport();
-            const auto hasClearColor = cmd.camera->hasColorClearing();
-            const auto clearColor = cmd.camera->getClearColor();
+            const auto viewport = cmd.camera.camera->getViewport();
+            const auto hasClearColor = cmd.camera.camera->hasColorClearing();
+            const auto clearColor = cmd.camera.camera->getClearColor();
 
+            // Not using the cmd.camera.renderTarget here since we're saving it anyway
             GLuint fb = 0;
-            auto target = step.cmd.camera->getRenderTarget();
+            auto target = step.cmd.camera.camera->getRenderTarget();
             if (target)
                 fb = static_cast<OpenGLFrameBuffer*>(target.get())->getHandle();
 
@@ -205,7 +206,7 @@ void OpenGLRenderer::addRenderCommand(const RenderCommand &cmd)
 
         case RenderCommandType::EndCamera:
         {
-            const auto hasTarget = step.cmd.camera->getRenderTarget() != nullptr;
+            const auto hasTarget = step.cmd.camera.camera->getRenderTarget() != nullptr;
 
             step.endCamera = [=]
             {
@@ -275,7 +276,7 @@ void OpenGLRenderer::endFrame()
             case RenderCommandType::BeginCamera:
             {
                 step.beginCamera();
-                currentCamera = static_cast<Camera*>(step.cmd.camera);
+                currentCamera = static_cast<Camera*>(step.cmd.camera.camera);
                 break;
             }
 

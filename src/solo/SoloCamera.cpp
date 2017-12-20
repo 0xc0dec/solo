@@ -140,7 +140,7 @@ auto Camera::getInvViewProjectionMatrix() const -> const Matrix
 
 void Camera::renderFrame(std::function<void()> render)
 {
-    renderer->addRenderCommand(RenderCommand::beginCamera(this));
+    renderer->addRenderCommand(RenderCommand::beginCamera(this, renderTarget.get()));
     render();
     renderer->addRenderCommand(RenderCommand::endCamera(this));
 }

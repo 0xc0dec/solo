@@ -286,7 +286,11 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
 
 void OpenGLMaterial::setParameter(const str &paramName, std::function<ParameterApplier(GLuint, GLint)> getApplier)
 {
-    const auto info = effect->getUniformInfo(paramName);
+    auto name = paramName;
+    const auto lastDotIdx = paramName.find_last_of(".");
+    if (lastDotIdx != std::string::npos)
+        name = paramName.substr(lastDotIdx + 1);
+    const auto info = effect->getUniformInfo(name);
     appliers[paramName] = getApplier(info.location, info.samplerIndex);
 }
 
