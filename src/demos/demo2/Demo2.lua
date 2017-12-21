@@ -28,6 +28,7 @@ function demo()
     local postProcessors = require "PostProcessors"
     local createLoadedMesh = require "LoadedMesh"
     local createTimeLabel = require "TimeLabel"
+    local createSpawner = require "Spawner"
 
     ---
 
@@ -38,13 +39,15 @@ function demo()
         postProcessor = 1 << 4
     }
 
+    local cubeMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Cube)
+    local quadMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Quad)
+
     local mainCamera, mainCameraNode = createMainCamera(scene)
     local mainCameraTransform = mainCameraNode:findComponent("Transform")
     mainCameraTransform:setLocalPosition(vec3(0, 5, 10))
     mainCameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
-    local cubeMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Cube)
-    local quadMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Quad)
+    mainCameraNode:addScriptComponent(createSpawner(cubeMesh, assetCache))
 
     createSkybox(scene, tags.skybox)
     createCheckerBox(scene, assetCache, cubeMesh)

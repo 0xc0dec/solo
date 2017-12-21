@@ -10,14 +10,14 @@ return function(mesh, assetCache)
 
     local material = sl.Material.create(sl.device, effect)
     material:setFaceCull(sl.FaceCull.None)
-    material:bindParameter("wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-    material:setVector4Parameter("color", vec4(1, 1, 0, 1))
+    material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    material:setVector4Parameter("variables.color", vec4(1, 1, 0, 1))
 
     local highlightMaterial = sl.Material.create(sl.device, effect)
     highlightMaterial:setFaceCull(sl.FaceCull.None)
     highlightMaterial:setPolygonMode(sl.PolygonMode.Wireframe)
-    highlightMaterial:bindParameter("wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-    highlightMaterial:setVector4Parameter("color", vec4(1, 1, 0, 1))
+    highlightMaterial:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    highlightMaterial:setVector4Parameter("variables.color", vec4(1, 1, 0, 1))
 
     return {
         typeId = sl.getCmpId("Spawner"),
