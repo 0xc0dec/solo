@@ -30,7 +30,6 @@ function demo()
     local createOffscreenCamera = require "OffscreenCamera"
     local attachAxes = (require "Axes")(assetCache)
     local createSpawner = require "Spawner"
-    local createHighlighter = require "Highlighter"
 
     ---
 
