@@ -16,8 +16,8 @@ return function(scene, assetCache)
             local effect = assetCache.getEffect("TextureWithLighting")
             local mat = sl.Material.create(sl.device, effect)
             mat:setFaceCull(sl.FaceCull.None)
-            mat:bindParameter("worldViewProjMatrix", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-            mat:bindParameter("invTransposedWorldMatrix", sl.BindParameterSemantics.InverseTransposedWorldMatrix)
+            mat:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+            mat:bindParameter("matrices.invTranspWorld", sl.BindParameterSemantics.InverseTransposedWorldMatrix)
             mat:setTextureParameter("mainTex", tex)
 
             sl.Mesh.loadFromFileAsync(sl.device, getAssetPath("meshes/Teapot.obj")):done(

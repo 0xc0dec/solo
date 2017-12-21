@@ -26,6 +26,7 @@ function demo()
     local createDynamicQuad = require "DynamicQuad"
     local createTransparentQuad = require "TransparentQuad"
     local postProcessors = require "PostProcessors"
+    local createLoadedMesh = require "LoadedMesh"
 
     ---
 
@@ -48,6 +49,7 @@ function demo()
     createCheckerBox(scene, assetCache, cubeMesh)
     createFloor(scene, assetCache, cubeMesh)
     createDynamicQuad(scene, assetCache)
+    createLoadedMesh(scene, assetCache)
 
     local transparentQuad = createTransparentQuad(scene, assetCache, quadMesh, tags.transparent)
     attachAxes(transparentQuad)
