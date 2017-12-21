@@ -47,7 +47,7 @@ void Camera::init()
     dirtyFlags |= AllProjectionDirtyBits;
 }
 
-void Camera::onTransformChanged(const Transform *)
+void Camera::handleTransformChanged(const Transform *)
 {
     dirtyFlags |= ViewDirtyBit | ViewProjectionDirtyBit | InvViewDirtyBit | InvViewProjectionDirtyBit;
 }

@@ -88,7 +88,7 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
     }
 }
 
-void BulletRigidBody::onTransformChanged(const Transform *transform)
+void BulletRigidBody::handleTransformChanged(const Transform *transform)
 {
     if (shape)
         syncScale();

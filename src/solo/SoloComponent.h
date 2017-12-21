@@ -39,13 +39,13 @@ namespace solo
         virtual void update() {}
         virtual void render() {}
 
-        virtual void onComponentAdded(Component *cmp) {}
-        virtual void onComponentRemoved(Component *cmp) {}
+        virtual void handleComponentAdded(Component *cmp) {}
+        virtual void handleComponentRemoved(Component *cmp) {}
 
-        auto getNode() const -> Node;
+        auto getNode() const -> Node { return node; }
 
-        auto getTag() const -> u32;
-        void setTag(u32 tag);
+        auto getTag() const -> u32 { return tag; }
+        void setTag(u32 tag) { this->tag = tag; }
 
     protected:
         Node node;
@@ -56,41 +56,14 @@ namespace solo
         }
     };
 
-    inline auto Component::getNode() const -> Node
-    {
-        return node;
-    }
-
-    inline auto Component::getTag() const -> u32
-    {
-        return tag;
-    }
-
-    inline void Component::setTag(u32 tag)
-    {
-        this->tag = tag;
-    }
-
     template <class T>
     class ComponentBase: public Component
     {
     public:
-        static auto getId() -> u32;
+        static auto getId() -> u32 { return ComponentTypeId::get<T>(); }
 
         explicit ComponentBase(const Node &node): Component(node) {}
 
-        auto getTypeId() -> u32 override;
+        auto getTypeId() -> u32 override { return getId(); }
     };
-
-    template <class T>
-    auto ComponentBase<T>::getId() -> u32
-    {
-        return ComponentTypeId::get<T>();
-    }
-
-    template <class T>
-    auto ComponentBase<T>::getTypeId() -> u32
-    {
-        return getId();
-    }
 }

@@ -62,12 +62,12 @@ void LuaScriptComponent::render()
     renderFunc(ref);
 }
 
-void LuaScriptComponent::onComponentAdded(Component* cmp)
+void LuaScriptComponent::handleComponentAdded(Component* cmp)
 {
     onComponentAddedFunc(ref, cmp);
 }
 
-void LuaScriptComponent::onComponentRemoved(Component* cmp)
+void LuaScriptComponent::handleComponentRemoved(Component* cmp)
 {
     onComponentRemovedFunc(ref, cmp);
 }

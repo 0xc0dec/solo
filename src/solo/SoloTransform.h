@@ -30,7 +30,7 @@ namespace solo
     public:
         virtual ~TransformCallback() {}
 
-        virtual void onTransformChanged(const Transform *transform) = 0;
+        virtual void handleTransformChanged(const Transform *transform) = 0;
     };
 
     class Transform final: public ComponentBase<Transform>

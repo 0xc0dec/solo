@@ -22,7 +22,7 @@ namespace solo
 
         void setCollider(sptr<solo::Collider> collider) override final;
 
-        void onTransformChanged(const Transform *transform) override final;
+        void handleTransformChanged(const Transform *transform) override final;
 
     private:
         float mass = 0;

@@ -57,7 +57,7 @@ void Scene::addComponent(u32 nodeId, sptr<Component> cmp)
     cmp->init();
 
     for (const auto &a : nodes.at(nodeId))
-        a.second->onComponentAdded(cmp.get());
+        a.second->handleComponentAdded(cmp.get());
 }
 
 void Scene::removeComponent(u32 nodeId, u32 typeId)
@@ -79,7 +79,7 @@ void Scene::removeComponent(u32 nodeId, u32 typeId)
     else
     {
         for (const auto &otherCmp : node->second)
-            otherCmp.second->onComponentRemoved(cmp.get());
+            otherCmp.second->handleComponentRemoved(cmp.get());
     }
 }
 

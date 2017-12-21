@@ -23,8 +23,8 @@ namespace solo
         void update() override final;
         void render() override final;
 
-        void onComponentAdded(Component *cmp) override final;
-        void onComponentRemoved(Component *cmp) override final;
+        void handleComponentAdded(Component *cmp) override final;
+        void handleComponentRemoved(Component *cmp) override final;
 
         auto getTypeId() -> u32 override final { return typeId; }
 

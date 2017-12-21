@@ -22,7 +22,7 @@ Transform::Transform(const Node &node):
 void Transform::notifyChanged() const
 {
     for (auto callback : callbacks)
-        callback->onTransformChanged(this);
+        callback->handleTransformChanged(this);
 }
 
 void Transform::init()

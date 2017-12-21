@@ -99,7 +99,7 @@ namespace solo
 
         explicit Camera(const Node &node);
 
-        void onTransformChanged(const Transform *) override;
+        void handleTransformChanged(const Transform *) override;
     };
 
     template <>
