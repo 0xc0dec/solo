@@ -324,7 +324,18 @@ void VulkanRenderer::drawMesh(
 {
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
     prepareAndBindMesh(cmdBuf, renderPass, material, transform, mesh, camera);
-    vkCmdDraw(cmdBuf, vkMesh->getMinVertexCount(), 1, 0, 0);
+
+    if (vkMesh->getPartCount())
+    {
+        for (u32 part = 0; part < vkMesh->getPartCount(); part++)
+        {
+            const auto indexBuffer = vkMesh->getPartBuffer(part);
+            vkCmdBindIndexBuffer(cmdBuf, indexBuffer, 0, VK_INDEX_TYPE_UINT16);
+            vkCmdDrawIndexed(cmdBuf, vkMesh->getPartIndexElementCount(part), 1, 0, 0, 0);
+        }
+    }
+    else
+        vkCmdDraw(cmdBuf, vkMesh->getMinVertexCount(), 1, 0, 0);
 }
 
 void VulkanRenderer::prepareAndBindMesh(

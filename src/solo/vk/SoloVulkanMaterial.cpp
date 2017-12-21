@@ -62,8 +62,9 @@ auto VulkanMaterial::createFromPrefab(Device *device, MaterialPrefab prefab) -> 
                 VulkanPrefabShaders::Vertex::font, strlen(VulkanPrefabShaders::Vertex::font),
                 VulkanPrefabShaders::Fragment::font, strlen(VulkanPrefabShaders::Fragment::font)
             );
-            // TODO bind specific parameters
-            return std::make_shared<VulkanMaterial>(effect);
+            auto material = std::make_shared<VulkanMaterial>(effect);
+            material->bindParameter("matrices.wvp", BindParameterSemantics::WorldViewProjectionMatrix);
+            return material;
         }
 
         case MaterialPrefab::Skybox:

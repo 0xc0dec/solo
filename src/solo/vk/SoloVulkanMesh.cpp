@@ -79,18 +79,15 @@ void VulkanMesh::removePart(u32 index)
     indexElementCounts.erase(indexElementCounts.begin() + index);
 }
 
-auto VulkanMesh::getPartCount() const -> u32
-{
-    return indexBuffers.size();
-}
-
 auto VulkanMesh::getPrimitiveType() const -> PrimitiveType
 {
+    // TODO
     return PrimitiveType::Triangles;
 }
 
 void VulkanMesh::setPrimitiveType(PrimitiveType type)
 {
+    // TODO
 }
 
 auto VulkanMesh::getLayoutHash() const -> size_t

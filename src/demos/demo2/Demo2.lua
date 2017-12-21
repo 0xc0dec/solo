@@ -27,6 +27,7 @@ function demo()
     local createTransparentQuad = require "TransparentQuad"
     local postProcessors = require "PostProcessors"
     local createLoadedMesh = require "LoadedMesh"
+    local createTimeLabel = require "TimeLabel"
 
     ---
 
@@ -50,6 +51,7 @@ function demo()
     createFloor(scene, assetCache, cubeMesh)
     createDynamicQuad(scene, assetCache)
     createLoadedMesh(scene, assetCache)
+    createTimeLabel(scene, tags.transparent)
 
     local transparentQuad = createTransparentQuad(scene, assetCache, quadMesh, tags.transparent)
     attachAxes(transparentQuad)

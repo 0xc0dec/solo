@@ -35,7 +35,24 @@ const s8 *VulkanPrefabShaders::Vertex::skybox = R"(
 )";
 
 const s8* VulkanPrefabShaders::Vertex::font = R"(
-    TODO
+    #version 450
+
+    layout (binding = 0) uniform Matrices
+    {
+        mat4 wvp;
+    } matrices;
+
+    layout (location = 0) in vec4 position;
+    layout (location = 1) in vec2 texCoord0;
+
+    layout (location = 0) out vec2 uv0;
+
+    void main()
+    {
+        gl_Position = matrices.wvp * position;
+        gl_Position.y = -gl_Position.y;
+        uv0 = texCoord0;
+    }
 )";
 
 const s8* VulkanPrefabShaders::Fragment::skybox = R"(
@@ -54,7 +71,19 @@ const s8* VulkanPrefabShaders::Fragment::skybox = R"(
 )";
 
 const s8* VulkanPrefabShaders::Fragment::font = R"(
-    TODO
+    #version 450
+
+    layout (binding = 1) uniform sampler2D mainTex;
+
+    layout (location = 0) in vec2 uv0;
+
+    layout (location = 0) out vec4 fragColor;
+
+    void main()
+    {
+        vec4 c = texture(mainTex, uv0, 1);
+        fragColor = vec4(c.r, c.r, c.r, c.r);
+    }
 )";
 
 #endif
