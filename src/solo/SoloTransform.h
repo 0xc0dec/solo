@@ -14,7 +14,6 @@
 namespace solo
 {
     class Camera;
-    class TransformCallback;
     class Transform;
     struct Radian;
 
@@ -25,23 +24,15 @@ namespace solo
         World
     };
 
-    class TransformCallback
-    {
-    public:
-        virtual ~TransformCallback() {}
-
-        virtual void handleTransformChanged(const Transform *transform) = 0;
-    };
-
     class Transform final: public ComponentBase<Transform>
     {
     public:
         explicit Transform(const Node &node);
 
         void init() override final;
+        void terminate() override final;
 
-        void addCallback(TransformCallback *callback);
-        void removeCallback(TransformCallback *callback);
+        auto getVersion() const -> u32 { return version; }
 
         void setParent(Transform *parent);
         auto getParent() const -> Transform* { return parent; }
@@ -103,10 +94,10 @@ namespace solo
 
     private:
         mutable u32 dirtyFlags = ~0;
+        mutable u32 version = 0;
 
         Transform *parent = nullptr;
         vec<Transform *> children;
-        vec<TransformCallback *> callbacks;
 
         Vector3 localPosition;
         Vector3 localScale;
@@ -117,6 +108,5 @@ namespace solo
 
         void setDirtyWithChildren(u32 flags) const;
         void setChildrenDirty(u32 flags) const;
-        void notifyChanged() const;
     };
 }

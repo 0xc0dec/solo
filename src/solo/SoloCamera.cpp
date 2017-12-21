@@ -41,15 +41,18 @@ Camera::Camera(const Node &node):
 void Camera::init()
 {
     transform = node.findComponent<Transform>();
-    transform->addCallback(this);
     const auto canvasSize = device->getCanvasSize();
     aspectRatio = canvasSize.x / canvasSize.y;
     dirtyFlags |= AllProjectionDirtyBits;
 }
 
-void Camera::handleTransformChanged(const Transform *)
+void Camera::update()
 {
-    dirtyFlags |= ViewDirtyBit | ViewProjectionDirtyBit | InvViewDirtyBit | InvViewProjectionDirtyBit;
+    if (lastTransformVersion != transform->getVersion())
+    {
+        lastTransformVersion = transform->getVersion();
+        dirtyFlags |= ViewDirtyBit | ViewProjectionDirtyBit | InvViewDirtyBit | InvViewProjectionDirtyBit;
+    }
 }
 
 void Camera::setPerspective(bool perspective)

@@ -20,18 +20,19 @@ namespace solo
         BulletRigidBody(const Node &node, const RigidBodyConstructionParameters &parameters);
         virtual ~BulletRigidBody();
 
-        void setCollider(sptr<solo::Collider> collider) override final;
+        void update() override final;
 
-        void handleTransformChanged(const Transform *transform) override final;
+        void setCollider(sptr<Collider> collider) override final;
 
     private:
         float mass = 0;
-        sptr<solo::Collider> collider;
+        sptr<Collider> collider;
         btCollisionShape *shape;
         Transform *transformCmp;
         btDiscreteDynamicsWorld *world;
         uptr<btMotionState> motionState;
         uptr<btRigidBody> body;
+        u32 lastTransformVersion = ~0;
 
         void syncScale();
     };

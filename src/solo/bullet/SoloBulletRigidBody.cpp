@@ -64,6 +64,16 @@ BulletRigidBody::~BulletRigidBody()
     world->removeRigidBody(body.get());
 }
 
+void BulletRigidBody::update()
+{
+    if (lastTransformVersion != transformCmp->getVersion())
+    {
+        lastTransformVersion = transformCmp->getVersion();
+        if (shape)
+            syncScale();
+    }
+}
+
 void BulletRigidBody::setCollider(sptr<Collider> newCollider)
 {
     if (newCollider)
@@ -86,12 +96,6 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
         collider = nullptr;
         shape = nullptr;
     }
-}
-
-void BulletRigidBody::handleTransformChanged(const Transform *transform)
-{
-    if (shape)
-        syncScale();
 }
 
 void BulletRigidBody::syncScale()

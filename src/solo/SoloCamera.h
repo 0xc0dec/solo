@@ -23,13 +23,13 @@ namespace solo
     class Ray;
     struct Radian;
 
-    class Camera: public ComponentBase<Camera>, protected TransformCallback
+    class Camera: public ComponentBase<Camera>
     {
     public:
         static auto create(const Node &node) -> sptr<Camera>;
 
         void init() override final;
-        void terminate() override final { transform->removeCallback(this); }
+        void update() override final;
 
         void renderFrame(std::function<void()> render);
 
@@ -89,6 +89,7 @@ namespace solo
         float zFar = 100;
         float aspectRatio = 1;
 
+        mutable u32 lastTransformVersion = ~0;
         mutable u32 dirtyFlags = ~0;
 
         mutable Matrix viewMatrix;
@@ -98,8 +99,6 @@ namespace solo
         mutable Matrix invViewProjectionMatrix;
 
         explicit Camera(const Node &node);
-
-        void handleTransformChanged(const Transform *) override;
     };
 
     template <>

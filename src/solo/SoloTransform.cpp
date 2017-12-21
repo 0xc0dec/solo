@@ -19,39 +19,35 @@ Transform::Transform(const Node &node):
 {
 }
 
-void Transform::notifyChanged() const
-{
-    for (auto callback : callbacks)
-        callback->handleTransformChanged(this);
-}
-
 void Transform::init()
 {
     localScale = {1, 1, 1};
 }
 
-void Transform::addCallback(TransformCallback *callback)
+void Transform::terminate()
 {
-    callbacks.push_back(callback);
-}
-
-void Transform::removeCallback(TransformCallback *callback)
-{
-    callbacks.erase(std::remove(callbacks.begin(), callbacks.end(), callback), callbacks.end());
+    if (this->parent)
+    {
+        auto &parentChildren = this->parent->children;
+        this->parent->children.erase(std::remove(parentChildren.begin(), parentChildren.end(), this), parentChildren.end());
+    }
 }
 
 void Transform::setParent(Transform *parent)
 {
     if (parent == this || parent == this->parent)
         return;
+
     if (this->parent)
     {
         auto &parentChildren = this->parent->children;
         this->parent->children.erase(std::remove(parentChildren.begin(), parentChildren.end(), this), parentChildren.end());
     }
+
     this->parent = parent;
     if (parent)
         parent->children.push_back(this);
+
     setDirtyWithChildren(DirtyFlagWorld | DirtyFlagInvTransposedWorld);
 }
 
@@ -154,7 +150,7 @@ void Transform::rotate(const Quaternion &rotation, TransformSpace space)
 
 void Transform::rotateByAxisAngle(const Vector3 &axis, const Radian &angle, TransformSpace space)
 {
-    auto rotation = Quaternion::createFromAxisAngle(axis, angle);
+    const auto rotation = Quaternion::createFromAxisAngle(axis, angle);
     rotate(rotation, space);
 }
 
@@ -220,7 +216,7 @@ void Transform::setLocalPosition(const Vector3 &position)
 void Transform::setDirtyWithChildren(u32 flags) const
 {
     dirtyFlags |= flags;
-    notifyChanged();
+    version++;
     for (auto child : children)
         child->setDirtyWithChildren(flags);
 }
