@@ -1,5 +1,6 @@
 # TODO
 
+* Delete transform in Scene::removeNodeById()
 * Fix post-processor in demo2. Perhaps has something to do with camera render target not being saved in render command,
 so if a camera renders twice a frame, with render target and without, only the latest setting is used
 * Demos refactoring, esp. texture/effect/material loading
