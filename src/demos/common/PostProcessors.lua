@@ -5,30 +5,32 @@
 
 require "Common"
 
-function createPostProcessor(camera, tag)
-	local canvasSize = sl.device:getCanvasSize()
+function createStep(parentCamera, material, tag, target)
+    local scene = parentCamera:getNode():getScene()
 
-    local quadRenderer = camera:getNode():addComponent("MeshRenderer")
+    local cameraNode = scene:createNode()
+    cameraNode:findComponent("Transform"):setParent(parentCamera:getNode():findComponent("Transform"))
+
+    local camera = cameraNode:addComponent("Camera")
+    camera:setZNear(0.05)
+    camera:setRenderTarget(target)
+
+    local quadRenderer = cameraNode:addComponent("MeshRenderer")
     quadRenderer:setTag(tag)
     quadRenderer:setMesh(sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Quad))
+    quadRenderer:setMaterial(0, material); -- TODO setting nil as material here causes VK renderer to crash
 
-    function renderQuad()
+    local render = function()
         quadRenderer:render()
     end
 
     return {
-        detach = function()
-            camera:getNode():removeComponent("MeshRenderer")
-            camera:setRenderTarget(nil)
-            camera:setViewport(vec4(0, 0, canvasSize.x, canvasSize.y))
+        apply = function()
+            camera:renderFrame(render)
         end,
 
-        renderStep = function(mat, inputTexture, target, viewport)
-            mat:setTextureParameter("mainTex", inputTexture)
-            quadRenderer:setMaterial(0, mat);
-            camera:setViewport(viewport)
-            camera:setRenderTarget(target)
-            camera:renderFrame(renderQuad)
+        destroy = function()
+            scene:removeNode(cameraNode)
         end
     }
 end
@@ -36,23 +38,28 @@ end
 function createPostProcessor1(camera, tag, assetCache)
     local canvasSize = sl.device:getCanvasSize()
 
-    local fbTex1 = sl.Texture2d.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGB)
-    fbTex1:setFiltering(sl.TextureFiltering.Nearest)
-    fbTex1:setWrapping(sl.TextureWrapping.Clamp)
-    local fb1 = sl.FrameBuffer.create(sl.device)
-    fb1:setAttachments({ fbTex1 })
+    local createTarget = function()
+        local tex = sl.Texture2d.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGB)
+        tex:setFiltering(sl.TextureFiltering.Nearest)
+        tex:setWrapping(sl.TextureWrapping.Clamp)
+        
+        local frameBuffer = sl.FrameBuffer.create(sl.device)
+        frameBuffer:setAttachments({ tex })
 
-    local fbTex2 = sl.Texture2d.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGB)
-    fbTex2:setFiltering(sl.TextureFiltering.Nearest)
-    fbTex2:setWrapping(sl.TextureWrapping.Clamp)
-    local fb2 = sl.FrameBuffer.create(sl.device)
-    fb2:setAttachments({ fbTex2 })
+        return tex, frameBuffer
+    end
+
+    local targetTex1, target1 = createTarget()    
+    local targetTex2, target2 = createTarget()
+    local targetTex3, target3 = createTarget()
+    local targetTex4, target4 = createTarget()
 
     local grayscaleMat = sl.Material.create(sl.device, assetCache.getEffect("Grayscale"))
     grayscaleMat:setDepthTest(false)
     grayscaleMat:setDepthWrite(false)
     grayscaleMat:setFaceCull(sl.FaceCull.None)
     grayscaleMat:setFloatParameter("variables.rightSeparator", 0.25)
+    grayscaleMat:setTextureParameter("mainTex", targetTex1)
 
     local saturateMat = sl.Material.create(sl.device, assetCache.getEffect("Saturate"))
     saturateMat:setDepthTest(false)
@@ -60,6 +67,7 @@ function createPostProcessor1(camera, tag, assetCache)
     saturateMat:setFaceCull(sl.FaceCull.None)
     saturateMat:setFloatParameter("variables.leftSeparator", 0.75)
     saturateMat:setFloatParameter("variables.rightSeparator", 1.0)
+    saturateMat:setTextureParameter("mainTex", targetTex2)
 
     local verticalBlurMat = sl.Material.create(sl.device, assetCache.getEffect("VerticalBlur"))
     verticalBlurMat:setDepthTest(false)
@@ -67,6 +75,7 @@ function createPostProcessor1(camera, tag, assetCache)
     verticalBlurMat:setFaceCull(sl.FaceCull.None)
     verticalBlurMat:setFloatParameter("variables.leftSeparator", 0.25)
     verticalBlurMat:setFloatParameter("variables.rightSeparator", 0.75)
+    verticalBlurMat:setTextureParameter("mainTex", targetTex3)
 
     local horizontalBlurMat = sl.Material.create(sl.device, assetCache.getEffect("HorizontalBlur"))
     horizontalBlurMat:setDepthTest(false)
@@ -74,23 +83,30 @@ function createPostProcessor1(camera, tag, assetCache)
     horizontalBlurMat:setFaceCull(sl.FaceCull.None)
     horizontalBlurMat:setFloatParameter("variables.leftSeparator", 0.25)
     horizontalBlurMat:setFloatParameter("variables.rightSeparator", 0.75)
+    horizontalBlurMat:setTextureParameter("mainTex", targetTex4)
 
-    camera:setRenderTarget(fb1)
+    camera:setRenderTarget(target1)
+    local step1 = createStep(camera, grayscaleMat, tag, target2)
+    local step2 = createStep(camera, saturateMat, tag, target3)
+    local step3 = createStep(camera, verticalBlurMat, tag, target4)
+    local step4 = createStep(camera, horizontalBlurMat, tag, nil)
 
-    local pp = createPostProcessor(camera, tag)
+    return {
+        apply = function(self)
+            step1.apply()
+            step2.apply()
+            step3.apply()
+            step4.apply()
+        end,
 
-    pp.apply = function(self)
-        local viewport = vec4(0, 0, canvasSize.x, canvasSize.y)
-
-        self.renderStep(grayscaleMat, fbTex1, fb2, viewport)
-        self.renderStep(saturateMat, fbTex2, fb1, viewport)
-        self.renderStep(verticalBlurMat , fbTex1, fb2, viewport)
-        self.renderStep(horizontalBlurMat, fbTex2, nil, viewport)
-
-        camera:setRenderTarget(fb1)
-    end
-
-    return pp
+        detach = function()
+            step1.destroy()
+            step2.destroy()
+            step3.destroy()
+            step4.destroy()
+            camera:setRenderTarget(nil)
+        end
+    }
 end
 
 function createPostProcessor2(camera, tag, assetCache)
@@ -115,8 +131,8 @@ function createPostProcessor2(camera, tag, assetCache)
     local fbTex = sl.Texture2d.createEmpty(sl.device, offscreenRes.x, offscreenRes.y, sl.TextureFormat.RGB)
     fbTex:setFiltering(sl.TextureFiltering.Nearest)
     fbTex:setWrapping(sl.TextureWrapping.Clamp)
-    local fb1 = sl.FrameBuffer.create(sl.device)
-    fb1:setAttachments({ fbTex })
+    local target1 = sl.FrameBuffer.create(sl.device)
+    target1:setAttachments({ fbTex })
 
     local material = sl.Material.create(sl.device, assetCache.getEffect("Stitches"))
     material:setTextureParameter("mainTex", fbTex)
@@ -124,28 +140,18 @@ function createPostProcessor2(camera, tag, assetCache)
     material:setVector2Parameter("variables.stitchCount", stitchCount)
     material:setVector2Parameter("variables.resolution", offscreenRes)
 
-    local scene = camera:getNode():getScene()
-
-    local quadCameraNode = scene:createNode()
-    quadCameraNode:findComponent("Transform"):setParent(camera:getNode():findComponent("Transform"))
-    local quadCamera = quadCameraNode:addComponent("Camera")
-    quadCamera:setZNear(0.05)
-
-    local quadRenderer = quadCameraNode:addComponent("MeshRenderer")
-    quadRenderer:setTag(tag)
-    quadRenderer:setMesh(sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Quad))
-    quadRenderer:setMaterial(0, material); -- TODO setting nil as material here causes VK renderer to crash
+    local step = createStep(camera, material, tag, nil)
 
     camera:setViewport(vec4(0, 0, offscreenRes.x, offscreenRes.y))
-    camera:setRenderTarget(fb1)
+    camera:setRenderTarget(target1)
 
     return {
         apply = function(self)
-            quadCamera:renderFrame(function() quadRenderer:render() end)
+            step.apply()
         end,
 
         detach = function()
-            scene:removeNode(quadCameraNode)
+            step.destroy()
             camera:setRenderTarget(nil)
             camera:setViewport(vec4(0, 0, canvasSize.x, canvasSize.y))
         end
