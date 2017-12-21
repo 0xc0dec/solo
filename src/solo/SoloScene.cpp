@@ -33,12 +33,14 @@ void Scene::removeNodeById(u32 nodeId)
     while (nodes.count(nodeId) && nodes.at(nodeId).size() > 1)
     {
         auto toRemove = nodes.at(nodeId).begin();
-        // Remove Transform last because other components might be TransformCallbacks
-        // TODO more generic approach
         if (toRemove->second->getTypeId() == Transform::getId())
             toRemove = ++nodes.at(nodeId).begin();
         removeComponent(nodeId, toRemove->second->getTypeId());
     }
+
+    // Remove Transform last because other components might be TransformCallbacks
+    // TODO more generic approach
+    removeComponent(nodeId, Transform::getId());
 }
 
 void Scene::removeNode(Node *node)
