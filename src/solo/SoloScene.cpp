@@ -30,8 +30,15 @@ auto Scene::createNode() -> sptr<Node>
 
 void Scene::removeNodeById(u32 nodeId)
 {
-    while (nodes.count(nodeId) && !nodes[nodeId].empty())
-        removeComponent(nodeId, nodes.at(nodeId).begin()->second->getTypeId());
+    while (nodes.count(nodeId) && nodes.at(nodeId).size() > 1)
+    {
+        auto toRemove = nodes.at(nodeId).begin();
+        // Remove Transform last because other components might be TransformCallbacks
+        // TODO more generic approach
+        if (toRemove->second->getTypeId() == Transform::getId())
+            toRemove = ++nodes.at(nodeId).begin();
+        removeComponent(nodeId, toRemove->second->getTypeId());
+    }
 }
 
 void Scene::removeNode(Node *node)
