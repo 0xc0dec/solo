@@ -29,6 +29,8 @@ function demo()
     local createLoadedMesh = require "LoadedMesh"
     local createTimeLabel = require "TimeLabel"
     local createSpawner = require "Spawner"
+    local createMonitorQuad = require "MonitorQuad"
+    local createOffscreenCamera = require "OffscreenCamera"
 
     ---
 
@@ -41,6 +43,8 @@ function demo()
 
     local cubeMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Cube)
     local quadMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Quad)
+
+    local offscreenCamera, offscreenCameraTex = createOffscreenCamera(scene)
 
     local mainCamera, mainCameraNode = createMainCamera(scene)
     local mainCameraTransform = mainCameraNode:findComponent("Transform")
@@ -55,6 +59,9 @@ function demo()
     createDynamicQuad(scene, assetCache)
     createLoadedMesh(scene, assetCache)
     createTimeLabel(scene, tags.transparent)
+
+    local monitorQuadParent = createMonitorQuad(scene, assetCache, offscreenCameraTex, quadMesh, tags.monitor)
+    attachAxes(monitorQuadParent)
 
     local transparentQuad = createTransparentQuad(scene, assetCache, quadMesh, tags.transparent)
     attachAxes(transparentQuad)
@@ -103,6 +110,12 @@ function demo()
         end
     end
 
+    function renderOffscreenFrame()
+        scene:visitByTags(tags.skybox, renderCmp)
+        scene:visitByTags(~(tags.skybox | tags.transparent | tags.monitor | tags.postProcessor), renderCmp)
+        scene:visitByTags(tags.transparent, renderCmp)
+    end
+
     function renderFrame()
         scene:visitByTags(tags.skybox, renderCmp)
         scene:visitByTags(~(tags.skybox | tags.transparent | tags.postProcessor), renderCmp)
@@ -110,6 +123,7 @@ function demo()
     end
 
     function render()
+        offscreenCamera:renderFrame(renderOffscreenFrame)
         mainCamera:renderFrame(renderFrame)
         if pp then
             pp:apply()

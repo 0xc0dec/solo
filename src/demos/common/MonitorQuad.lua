@@ -11,7 +11,7 @@ return function(scene, assetCache, offscreenCameraTex, quadMesh, tag)
 
     local material = sl.Material.create(sl.device, assetCache.getEffect("Texture"))
     material:setFaceCull(sl.FaceCull.None)
-    material:bindParameter("wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     material:setTextureParameter("mainTex", offscreenCameraTex)
 
     local parent = scene:createNode()

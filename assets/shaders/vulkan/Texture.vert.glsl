@@ -13,6 +13,7 @@ layout (location = 0) out vec2 outTexCood;
 void main()
 {
     outTexCood = texCoord0;
+    outTexCood.y = -outTexCood.y;
 	gl_Position = matrices.wvp * vec4(position.xyz, 1.0);
     gl_Position.y = -gl_Position.y;
 }

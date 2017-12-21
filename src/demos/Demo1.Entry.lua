@@ -4,12 +4,12 @@
 -- 
 
 deviceSetup = sl.DeviceSetup()
-deviceSetup.mode = sl.DeviceMode.Vulkan
+deviceSetup.mode = sl.DeviceMode.OpenGL
 deviceSetup.canvasWidth = 1200
 deviceSetup.canvasHeight = 700
 deviceSetup.fullScreen = false
 deviceSetup.vsync = true
-deviceSetup.windowTitle = "Demo 2"
-deviceSetup.logFilePath = "Demo2.log"
+deviceSetup.windowTitle = "Demo 1"
+deviceSetup.logFilePath = "Demo1.log"
 
-runScript = "../../src/demos/demo2/Demo2.lua"
+runScript = "../../src/demos/common/Demo.lua"

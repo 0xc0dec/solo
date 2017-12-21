@@ -1,3 +1,3 @@
 pushd Solo
-Solo.exe "../../src/demos/demo2/Demo2.Entry.lua"
+Solo.exe "../../src/demos/Demo2.Entry.lua"
 popd

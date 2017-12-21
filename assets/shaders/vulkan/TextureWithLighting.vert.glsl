@@ -16,6 +16,7 @@ layout (location = 1) out vec3 n;
 void main()
 {
     uv0 = texCoord0;
+    uv0.y = -uv0.y;
     n = normalize((matrices.invTranspWorld * vec4(normal, 1)).xyz);
     gl_Position = matrices.wvp * vec4(position, 1);
     gl_Position.y = -gl_Position.y;
