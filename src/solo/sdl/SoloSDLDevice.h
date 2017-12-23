@@ -23,6 +23,7 @@ namespace solo
         auto getLifetime() const -> float override final;
 
         auto getCanvasSize() const -> Vector2 override final;
+        auto getDpiIndependentCanvasSize() const -> Vector2 override final;
 
     protected:
         SDL_Window *window = nullptr;

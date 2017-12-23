@@ -17,6 +17,7 @@ static void registerDevice(CppBindModule<LuaBinding> &module)
     REG_METHOD(device, Device, getWindowTitle);
     REG_METHOD(device, Device, setWindowTitle);
     REG_METHOD(device, Device, getCanvasSize);
+    REG_METHOD(device, Device, getDpiIndependentCanvasSize);
     REG_METHOD(device, Device, isVsync);
     REG_METHOD(device, Device, getMode);
     REG_METHOD(device, Device, saveScreenshot);

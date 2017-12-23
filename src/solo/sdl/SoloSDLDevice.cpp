@@ -46,6 +46,13 @@ auto SDLDevice::getCanvasSize() const -> Vector2
     return {static_cast<float>(width), static_cast<float>(height)};
 }
 
+auto SDLDevice::getDpiIndependentCanvasSize() const -> Vector2
+{
+    s32 width, height;
+    SDL_GetWindowSize(window, &width, &height);
+    return {static_cast<float>(width), static_cast<float>(height)};
+}
+
 void SDLDevice::beginUpdate()
 {
     windowCloseRequested = false;

@@ -29,11 +29,11 @@ using namespace LuaIntf;
 #define REG_META_METHOD(binding, name, func) binding.addMetaFunction(name, func)
 #define REG_METHOD(binding, klass, name) binding.addFunction(#name, &klass::name)
 #define REG_METHOD_OVERLOADED(binding, klass, name, nameStr, resultType, modifier, ...) \
-	binding.addFunction(nameStr, static_cast<resultType(klass::*)(__VA_ARGS__)modifier>(&klass::name))
+        binding.addFunction(nameStr, static_cast<resultType(klass::*)(__VA_ARGS__)modifier>(&klass::name))
 
 #define REG_STATIC_METHOD(binding, klass, name) binding.addStaticFunction(#name, &klass::name)
 #define REG_STATIC_METHOD_OVERLOADED(binding, klass, name, nameStr, resultType, modifier, ...) \
-	binding.addStaticFunction(nameStr, static_cast<resultType(*)(__VA_ARGS__)modifier>(&klass::name))
+        binding.addStaticFunction(nameStr, static_cast<resultType(*)(__VA_ARGS__)modifier>(&klass::name))
 
 #define REG_FREE_FUNC_AS_METHOD(binding, func) binding.addFunction(#func, func)
 #define REG_FREE_FUNC_AS_METHOD_RENAMED(binding, func, name) binding.addFunction(name, func)

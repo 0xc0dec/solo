@@ -32,7 +32,7 @@ void registerCameraApi(CppBindModule<LuaBinding> &module)
     REG_METHOD(camera, Camera, setFOV);
     REG_METHOD(camera, Camera, getOrthoSize);
     REG_METHOD(camera, Camera, setOrthoSize);
-    REG_METHOD(camera, Camera, canvasPointToWorldRay);
+    REG_METHOD(camera, Camera, windowPointToWorldRay);
     REG_METHOD(camera, Camera, getAspectRatio);
     REG_METHOD(camera, Camera, getViewMatrix);
     REG_METHOD(camera, Camera, getInvViewMatrix);

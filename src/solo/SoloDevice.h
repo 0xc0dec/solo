@@ -79,6 +79,7 @@ namespace solo
         virtual void setWindowTitle(const str &title) = 0;
 
         virtual auto getCanvasSize() const -> Vector2 = 0;
+        virtual auto getDpiIndependentCanvasSize() const -> Vector2 = 0;
 
         virtual void saveScreenshot(const str &path) = 0; // TODO return bytes?
 

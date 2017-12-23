@@ -33,7 +33,7 @@ namespace solo
 
         void renderFrame(std::function<void()> render);
 
-        auto canvasPointToWorldRay(const Vector2 &canvasPoint) -> Ray;
+        auto windowPointToWorldRay(const Vector2 &pt) -> Ray;
 
         auto getTransform() const -> Transform* { return transform; }
 

@@ -148,13 +148,13 @@ void Camera::renderFrame(std::function<void()> render)
     renderer->addRenderCommand(RenderCommand::endCamera(this));
 }
 
-auto Camera::canvasPointToWorldRay(const Vector2 &canvasPoint) -> Ray
+auto Camera::windowPointToWorldRay(const Vector2 &pt) -> Ray
 {
     const auto halfHeightInWorldUnits = zNear * tanf(fov.toRawRadian() / 2);
     const auto halfWidthInWorldUnits = halfHeightInWorldUnits * aspectRatio;
-    const auto canvasSize = renderTarget ? renderTarget->getDimensions() : device->getCanvasSize();
-    const auto right = transform->getWorldRight() * (halfWidthInWorldUnits * (2 * canvasPoint.x / canvasSize.x - 1));
-    const auto down = transform->getWorldDown() * (halfHeightInWorldUnits * (2 * canvasPoint.y / canvasSize.y - 1));
+    const auto canvasSize = device->getDpiIndependentCanvasSize();
+    const auto right = transform->getWorldRight() * (halfWidthInWorldUnits * (2 * pt.x / canvasSize.x - 1));
+    const auto down = transform->getWorldDown() * (halfHeightInWorldUnits * (2 * pt.y / canvasSize.y - 1));
     const auto pos = transform->getWorldPosition();
     const auto canvasCenter = pos + transform->getWorldForward() * zNear;
     const auto origin = canvasCenter + right + down;

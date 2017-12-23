@@ -85,7 +85,7 @@ return function(mesh, assetCache)
 
         findUnderCursor = function(self)
             local mousePos = sl.device:getMousePosition()
-            local ray = self.camera:canvasPointToWorldRay(mousePos)
+            local ray = self.camera:windowPointToWorldRay(mousePos)
             local from = ray:getOrigin()
             local to = from + ray:getDirection() * 100
             local hitResult = physics:rayTestFirst(from, to)

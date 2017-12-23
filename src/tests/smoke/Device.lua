@@ -9,6 +9,7 @@ assert(device:getWindowTitle())
 device:setWindowTitle("werwer")
 
 assert(device:getCanvasSize())
+assert(device:getDpiIndependentCanvasSize())
 assert(device:isVsync() ~= nil)
 assert(device:getMode() ~= nil)
 
