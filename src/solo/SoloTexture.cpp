@@ -259,6 +259,12 @@ void CubeTexture::setWrapping(TextureWrapping wrap)
     rebuildFlags();
 }
 
+void CubeTexture::setDepthWrapping(TextureWrapping wrapping)
+{
+    this->depthWrapping = wrapping;
+    rebuildFlags();
+}
+
 void CubeTexture::rebuildFlags()
 {
     Texture::rebuildFlags();

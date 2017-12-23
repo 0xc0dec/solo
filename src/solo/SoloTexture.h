@@ -125,7 +125,7 @@ namespace solo
         auto getDimensions() const -> Vector2 { return dimensions; }
 
     protected:
-        Texture2d(Texture2dData *data);
+        explicit Texture2d(Texture2dData *data);
 
         TextureFormat format;
         Vector2 dimensions;
@@ -160,14 +160,8 @@ namespace solo
         u32 dimension = 0;
         TextureFormat format = TextureFormat::RGB;
 
-        CubeTexture(CubeTextureData *data);
+        explicit CubeTexture(CubeTextureData *data);
 
         void rebuildFlags() override final;
     };
-
-    inline void CubeTexture::setDepthWrapping(TextureWrapping wrapping)
-    {
-        this->depthWrapping = wrapping;
-        rebuildFlags();
-    }
 }
