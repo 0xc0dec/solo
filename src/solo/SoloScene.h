@@ -40,9 +40,16 @@ namespace solo
         using NodeComponents = umap<u32, sptr<Component>>;
         using NodesWithComponents = umap<u32, NodeComponents>;
 
+        struct ComponentContext
+        {
+            bool deleted = false;
+            sptr<Component> component;
+        };
+
         Device *device = nullptr;
         u32 nodeCounter = 0;
-        NodesWithComponents nodes;
+        umap<u32, umap<u32, ComponentContext>> nodes;
+        umap<u32, uset<u32>> deletedComponents;
 
         explicit Scene(Device *device);
     };

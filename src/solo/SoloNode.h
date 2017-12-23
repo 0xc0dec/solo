@@ -15,8 +15,8 @@ namespace solo
     public:
         Node(Scene *scene, u32 nodeId);
 
-        auto getId() const -> u32;
-        auto getScene() const -> Scene*;
+        auto getId() const -> u32 { return id; }
+        auto getScene() const -> Scene* { return scene; }
 
         template <typename T>
         static auto findComponent(Scene *scene, u32 nodeId) -> T*;
@@ -55,16 +55,6 @@ namespace solo
             return cmp.get();
         }
     };
-
-    inline auto Node::getId() const -> u32
-    {
-        return id;
-    }
-
-    inline auto Node::getScene() const -> Scene *
-    {
-        return scene;
-    }
 
     template <typename T, typename... Args>
     auto Node::addComponent(Scene *scene, u32 nodeId, Args &&... args) -> T *
