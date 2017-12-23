@@ -55,6 +55,7 @@ namespace solo
         u32 minVertexCount = 0;
 
         void updateMinVertexCount();
+        auto addVertexBuffer(VulkanBuffer &buffer, const VertexBufferLayout &layout, u32 vertexCount) -> s32;
     };
 }
 

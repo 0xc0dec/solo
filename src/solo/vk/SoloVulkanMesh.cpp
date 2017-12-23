@@ -26,22 +26,18 @@ VulkanMesh::~VulkanMesh()
 auto VulkanMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
 {
     auto buf = VulkanBuffer::createDeviceLocal(renderer, layout.getSize() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data);
-
-    vertexBuffers.push_back(std::move(buf));
-    layouts.push_back(layout);
-    vertexCounts.push_back(vertexCount);
-
-    updateMinVertexCount();
-
-    return static_cast<u32>(vertexBuffers.size() - 1);
+    return addVertexBuffer(buf, layout, vertexCount);
 }
 
-// TODO less copy-paste
 auto VulkanMesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
 {
     auto buf = VulkanBuffer::createHostVisible(renderer, layout.getSize() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data);
+    return addVertexBuffer(buf, layout, vertexCount);
+}
 
-    vertexBuffers.push_back(std::move(buf));
+auto VulkanMesh::addVertexBuffer(VulkanBuffer &buffer, const VertexBufferLayout &layout, u32 vertexCount) -> s32
+{
+    vertexBuffers.push_back(std::move(buffer));
     layouts.push_back(layout);
     vertexCounts.push_back(vertexCount);
 
