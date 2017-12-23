@@ -12,11 +12,10 @@ return function(scene, assetCache)
 
             update = function()
                 time = time + 2 * sl.device:getTimeDelta()
-                local offset = 0.5 * math.sin(time)
-                data[3] = offset
-                data[8] = -offset
-                data[13] = offset
-                data[18] = -offset
+                data[3] = 0.5 * math.sin(time + 1)
+                data[8] = 0.5 * math.sin(time + 2)
+                data[13] = 0.5 * math.sin(time + 3)
+                data[18] = 0.5 * math.sin(time + 4)
                 mesh:updateDynamicVertexBuffer(0, 0, data, 4)
             end
         }
