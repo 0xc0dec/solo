@@ -370,7 +370,7 @@ void VulkanRenderer::prepareAndBindMesh(
             info.binding,
             context.descSet,
             info.texture->getImage().getView(),
-            info.texture->getImage().getSampler(),
+            info.texture->getSampler(),
             VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
         );
     }

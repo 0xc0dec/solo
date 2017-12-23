@@ -36,14 +36,12 @@ namespace solo
         auto getFormat() const -> VkFormat { return format;  }
         auto getSize() const -> Vector2 { return {static_cast<float>(width), static_cast<float>(height)}; }
         auto getLayout() const -> VkImageLayout { return layout; }
-        auto getSampler() const -> VkSampler { return sampler; }
         auto getView() const -> VkImageView { return view; }
 
     private:
         VulkanResource<VkImage> image;
         VulkanResource<VkDeviceMemory> memory;
         VulkanResource<VkImageView> view;
-        VulkanResource<VkSampler> sampler;
         VkImageLayout layout = VK_IMAGE_LAYOUT_UNDEFINED;
         VkFormat format = VK_FORMAT_UNDEFINED;
         u32 mipLevels = 0;

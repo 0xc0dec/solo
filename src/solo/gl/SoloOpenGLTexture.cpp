@@ -159,7 +159,7 @@ void OpenGLTexture2d::bind()
     applyMagFilter(GL_TEXTURE_2D, flags);
     applyRectWrap(GL_TEXTURE_2D, flags);
 
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
 }
 
 void OpenGLTexture2d::generateMipmaps()
@@ -197,7 +197,7 @@ void OpenGLCubeTexture::bind()
     applyRectWrap(GL_TEXTURE_CUBE_MAP, flags);
     applyDepthWrap(flags);
 
-    glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy);
+    glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
 }
 
 void OpenGLCubeTexture::generateMipmaps()

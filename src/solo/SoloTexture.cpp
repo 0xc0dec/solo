@@ -15,17 +15,17 @@ using namespace solo;
 
 Texture::Texture()
 {
-    rebuildFlags(); // yes, virtual call
+    rebuild(); // yes, virtual call
 }
 
 void Texture::setWrapping(TextureWrapping wrap)
 {
     horizontalWrapping = wrap;
     verticalWrapping = wrap;
-    rebuildFlags();
+    rebuild();
 }
 
-void Texture::rebuildFlags()
+void Texture::rebuild()
 {
     flags = 0;
 
@@ -105,32 +105,32 @@ void Texture::rebuildFlags()
 void Texture::setVerticalWrapping(TextureWrapping wrap)
 {
     verticalWrapping = wrap;
-    rebuildFlags();
+    rebuild();
 }
 
 void Texture::setHorizontalWrapping(TextureWrapping wrap)
 {
     horizontalWrapping = wrap;
-    rebuildFlags();
+    rebuild();
 }
 
 void Texture::setMinFiltering(TextureFiltering filtering)
 {
     minFiltering = filtering;
-    rebuildFlags();
+    rebuild();
 }
 
 void Texture::setMagFiltering(TextureFiltering filtering)
 {
     magFiltering = filtering;
-    rebuildFlags();
+    rebuild();
 }
 
 void Texture::setFiltering(TextureFiltering filtering)
 {
     minFiltering = filtering;
     magFiltering = filtering;
-    rebuildFlags();
+    rebuild();
 }
 
 auto Texture2d::loadFromFile(Device *device, const str &path) -> sptr<Texture2d>
@@ -248,7 +248,7 @@ CubeTexture::CubeTexture(CubeTextureData *data):
     dimension(data->getDimension()),
     format(data->getFormat())
 {
-    rebuildFlags();
+    rebuild();
 }
 
 void CubeTexture::setWrapping(TextureWrapping wrap)
@@ -256,18 +256,18 @@ void CubeTexture::setWrapping(TextureWrapping wrap)
     verticalWrapping = wrap;
     horizontalWrapping = wrap;
     depthWrapping = wrap;
-    rebuildFlags();
+    rebuild();
 }
 
 void CubeTexture::setDepthWrapping(TextureWrapping wrapping)
 {
     this->depthWrapping = wrapping;
-    rebuildFlags();
+    rebuild();
 }
 
-void CubeTexture::rebuildFlags()
+void CubeTexture::rebuild()
 {
-    Texture::rebuildFlags();
+    Texture::rebuild();
 
     switch (depthWrapping)
     {

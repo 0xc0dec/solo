@@ -20,9 +20,16 @@ namespace solo
     {
     public:
         auto getImage() const -> VulkanImage const& { return image; }
+        auto getSampler() const -> VkSampler { return sampler; }
 
     protected:
+        VulkanRenderer *renderer = nullptr;
         VulkanImage image;
+        VulkanResource<VkSampler> sampler;
+
+        explicit VulkanTexture(Device *device);
+
+        void rebuildSampler(float anisotropyLevel, u32 flags);
     };
 
     class VulkanTexture2d final: public Texture2d, public VulkanTexture
@@ -31,6 +38,9 @@ namespace solo
         VulkanTexture2d(Device *device, Texture2dData *data);
 
         void generateMipmaps() override final;
+
+    protected:
+        void rebuild() override final;
     };
 
     class VulkanCubeTexture final: public CubeTexture, public VulkanTexture
@@ -39,6 +49,9 @@ namespace solo
         VulkanCubeTexture(Device *device, CubeTextureData *data);
 
         void generateMipmaps() override final;
+
+    protected:
+        void rebuild() override final;
     };
 }
 

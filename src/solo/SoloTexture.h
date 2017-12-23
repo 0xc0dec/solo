@@ -95,8 +95,8 @@ namespace solo
         void setMinFiltering(TextureFiltering filtering);
         void setMagFiltering(TextureFiltering filtering);
 
-        auto getAnisotropyLevel() const -> float { return anisotropy; }
-        void setAnisotropyLevel(float level) { anisotropy = level; }
+        auto getAnisotropyLevel() const -> float { return anisotropyLevel; }
+        void setAnisotropyLevel(float level) { anisotropyLevel = level; }
 
     protected:
         u32 flags = 0;
@@ -107,11 +107,11 @@ namespace solo
         TextureFiltering minFiltering = TextureFiltering::Linear;
         TextureFiltering magFiltering = TextureFiltering::Linear;
 
-        float anisotropy = 1.0f;
+        float anisotropyLevel = 1.0f;
 
         Texture();
 
-        virtual void rebuildFlags();
+        virtual void rebuild();
     };
 
     class Texture2d: public Texture
@@ -150,7 +150,7 @@ namespace solo
             const str &bottomPath) -> sptr<AsyncHandle<CubeTexture>>;
         static auto createFromData(Device *device, CubeTextureData *data) -> sptr<CubeTexture>;
 
-        void setWrapping(TextureWrapping wrapping) override final;
+        void setWrapping(TextureWrapping wrapping) override;
 
         auto getDepthWrapping() const -> TextureWrapping { return depthWrapping; }
         void setDepthWrapping(TextureWrapping depthWrap);
@@ -162,6 +162,6 @@ namespace solo
 
         explicit CubeTexture(CubeTextureData *data);
 
-        void rebuildFlags() override final;
+        void rebuild() override;
     };
 }

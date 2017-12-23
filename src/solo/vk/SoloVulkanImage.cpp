@@ -50,37 +50,6 @@ static auto createImage(VkDevice device, VkFormat format, u32 width, u32 height,
     return image;
 }
 
-static auto createSampler(VkDevice device, VkPhysicalDeviceFeatures physicalFeatures, VkPhysicalDeviceProperties physicalProps,
-    u32 mipLevels) -> VulkanResource<VkSampler>
-{
-    VkSamplerCreateInfo samplerInfo{};
-    samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-    samplerInfo.maxAnisotropy = 1.0f;
-    samplerInfo.anisotropyEnable = VK_FALSE;
-    samplerInfo.magFilter = VK_FILTER_LINEAR;
-    samplerInfo.minFilter = VK_FILTER_LINEAR;
-    samplerInfo.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
-    samplerInfo.addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-    samplerInfo.addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-    samplerInfo.addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-    samplerInfo.mipLodBias = 0.0f;
-    samplerInfo.compareOp = VK_COMPARE_OP_NEVER;
-    samplerInfo.minLod = 0.0f;
-    samplerInfo.maxLod = mipLevels;
-    samplerInfo.borderColor = VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE;
-
-    if (physicalFeatures.samplerAnisotropy)
-    {
-        samplerInfo.maxAnisotropy = physicalProps.limits.maxSamplerAnisotropy;
-        samplerInfo.anisotropyEnable = VK_TRUE;
-    }
-
-    VulkanResource<VkSampler> sampler{device, vkDestroySampler};
-    SL_VK_CHECK_RESULT(vkCreateSampler(device, &samplerInfo, nullptr, sampler.cleanRef()));
-
-    return sampler;
-}
-
 static void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageLayout oldImageLayout, VkImageLayout newImageLayout,
     VkImageSubresourceRange subresourceRange, VkPipelineStageFlags srcStageMask, VkPipelineStageFlags dstStageMask)
 {
@@ -391,11 +360,9 @@ VulkanImage::VulkanImage(VulkanRenderer *renderer, u32 width, u32 height, u32 mi
     const auto device = renderer->getDevice();
     auto image = createImage(device, format, width, height, mipLevels, layers, createFlags, usageFlags);
     auto memory = allocateImageMemory(device, renderer->getPhysicalMemoryFeatures(), image);
-    auto sampler = createSampler(device, renderer->getPhysicalFeatures(), renderer->getPhysicalProperties(), mipLevels);
     auto view = vk::createImageView(device, format, viewType, mipLevels, layers, image, aspectMask);
     this->image = std::move(image);
     this->memory = std::move(memory);
-    this->sampler = std::move(sampler);
     this->view = std::move(view);
 }
 
