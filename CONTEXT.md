@@ -1,7 +1,7 @@
 # TODO
 
 * Demos refactoring, esp. texture/effect/material loading
-* Anisotropy for VK textures
+* Mipmapping for VK textures
 * Use axis names in CubeTextureData for fetching layer data
 * Refactor all vulkan code
 * More error checks, write errors to console
