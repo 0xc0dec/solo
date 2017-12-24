@@ -12,16 +12,15 @@ using namespace solo;
 static void registerTexture(CppBindModule<LuaBinding> &module)
 {
     auto tex = BEGIN_CLASS(module, Texture);
-    REG_METHOD(tex, Texture, getHorizontalWrapping);
-    REG_METHOD(tex, Texture, getVerticalWrapping);
-    REG_METHOD(tex, Texture, setWrapping);
-    REG_METHOD(tex, Texture, setHorizontalWrapping);
-    REG_METHOD(tex, Texture, setVerticalWrapping);
-    REG_METHOD(tex, Texture, getMinFiltering);
-    REG_METHOD(tex, Texture, getMagFiltering);
-    REG_METHOD(tex, Texture, setFiltering);
-    REG_METHOD(tex, Texture, setMinFiltering);
-    REG_METHOD(tex, Texture, setMagFiltering);
+    REG_METHOD(tex, Texture, getHorizontalWrap);
+    REG_METHOD(tex, Texture, getVerticalWrap);
+    REG_METHOD(tex, Texture, setWrap);
+    REG_METHOD(tex, Texture, setHorizontalWrap);
+    REG_METHOD(tex, Texture, setVerticalWrap);
+    REG_METHOD(tex, Texture, getMinFilter);
+    REG_METHOD(tex, Texture, getMagFilter);
+    REG_METHOD(tex, Texture, getMipFilter);
+    REG_METHOD(tex, Texture, setFilter);
     REG_METHOD(tex, Texture, getAnisotropyLevel);
     REG_METHOD(tex, Texture, setAnisotropyLevel);
     tex.endClass();
@@ -42,8 +41,8 @@ static void registerCubeTexture(CppBindModule<LuaBinding> &module)
     auto cubeTex = BEGIN_CLASS_EXTEND(module, CubeTexture, Texture);
     REG_STATIC_METHOD(cubeTex, CubeTexture, loadFromFaceFiles);
     REG_STATIC_METHOD(cubeTex, CubeTexture, loadFromFaceFilesAsync);
-    REG_METHOD(cubeTex, CubeTexture, getDepthWrapping);
-    REG_METHOD(cubeTex, CubeTexture, setDepthWrapping);
+    REG_METHOD(cubeTex, CubeTexture, getDepthWrap);
+    REG_METHOD(cubeTex, CubeTexture, setDepthWrap);
     cubeTex.endClass();
 }
 

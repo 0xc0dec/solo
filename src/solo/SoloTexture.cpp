@@ -18,124 +18,36 @@ Texture::Texture()
     rebuild(); // yes, virtual call
 }
 
-void Texture::setWrapping(TextureWrapping wrap)
+void Texture::setWrap(TextureWrap wrap)
 {
-    horizontalWrapping = wrap;
-    verticalWrapping = wrap;
+    horizontalWrap = wrap;
+    verticalWrap = wrap;
     rebuild();
 }
 
-void Texture::rebuild()
+void Texture::setVerticalWrap(TextureWrap wrap)
 {
-    flags = 0;
-
-    switch (horizontalWrapping)
-    {
-        case TextureWrapping::Clamp:
-            flags |= TextureFlags::HorizontalWrapClamp;
-            break;
-        case TextureWrapping::Repeat:
-            flags |= TextureFlags::HorizontalWrapRepeat;
-            break;
-        default:
-            break;
-    }
-
-    switch (verticalWrapping)
-    {
-        case TextureWrapping::Clamp:
-            flags |= TextureFlags::VerticalWrapClamp;
-            break;
-        case TextureWrapping::Repeat:
-            flags |= TextureFlags::VerticalWrapRepeat;
-            break;
-        default:
-            break;
-    }
-
-    switch (minFiltering)
-    {
-        case TextureFiltering::Nearest:
-            flags |= TextureFlags::MinFilterNearest;
-            break;
-        case TextureFiltering::Linear:
-            flags |= TextureFlags::MinFilterLinear;
-            break;
-        case TextureFiltering::NearestMipmapNearest:
-            flags |= TextureFlags::MinFilterNearestMipmapNearest;
-            break;
-        case TextureFiltering::LinearMipmapNearest:
-            flags |= TextureFlags::MinFilterLinearMipmapNearest;
-            break;
-        case TextureFiltering::NearestMipmapLinear:
-            flags |= TextureFlags::MinFilterNearestMipmapLinear;
-            break;
-        case TextureFiltering::LinearMipmapLinear:
-            flags |= TextureFlags::MinFilterLinearMipmapLinear;
-            break;
-        default:
-            break;
-    }
-
-    switch (magFiltering)
-    {
-        case TextureFiltering::Nearest:
-            flags |= TextureFlags::MagFilterNearest;
-            break;
-        case TextureFiltering::Linear:
-            flags |= TextureFlags::MagFilterLinear;
-            break;
-        case TextureFiltering::NearestMipmapNearest:
-            flags |= TextureFlags::MagFilterNearestMipmapNearest;
-            break;
-        case TextureFiltering::LinearMipmapNearest:
-            flags |= TextureFlags::MagFilterLinearMipmapNearest;
-            break;
-        case TextureFiltering::NearestMipmapLinear:
-            flags |= TextureFlags::MagFilterNearestMipmapLinear;
-            break;
-        case TextureFiltering::LinearMipmapLinear:
-            flags |= TextureFlags::MagFilterLinearMipmapLinear;
-            break;
-        default:
-            break;
-    }
-}
-
-void Texture::setVerticalWrapping(TextureWrapping wrap)
-{
-    verticalWrapping = wrap;
+    verticalWrap = wrap;
     rebuild();
 }
 
-void Texture::setHorizontalWrapping(TextureWrapping wrap)
+void Texture::setHorizontalWrap(TextureWrap wrap)
 {
-    horizontalWrapping = wrap;
+    horizontalWrap = wrap;
     rebuild();
 }
 
-void Texture::setMinFiltering(TextureFiltering filtering)
+void Texture::setFilter(TextureFilter minFiltering, TextureFilter magFiltering, TextureMipFilter mipFiltering)
 {
-    minFiltering = filtering;
-    rebuild();
-}
-
-void Texture::setMagFiltering(TextureFiltering filtering)
-{
-    magFiltering = filtering;
+    this->minFilter = minFiltering;
+    this->magFilter = magFiltering;
+    this->mipFilter = mipFiltering;
     rebuild();
 }
 
 void Texture::setAnisotropyLevel(float level)
 {
     anisotropyLevel = level;
-    rebuild();
-}
-
-void Texture::setFiltering(TextureFiltering filtering)
-{
-    minFiltering = filtering;
-    magFiltering = filtering;
     rebuild();
 }
 
@@ -257,33 +169,17 @@ CubeTexture::CubeTexture(CubeTextureData *data):
     rebuild();
 }
 
-void CubeTexture::setWrapping(TextureWrapping wrap)
+void CubeTexture::setWrap(TextureWrap wrap)
 {
-    verticalWrapping = wrap;
-    horizontalWrapping = wrap;
-    depthWrapping = wrap;
+    verticalWrap = wrap;
+    horizontalWrap = wrap;
+    depthWrap = wrap;
     rebuild();
 }
 
-void CubeTexture::setDepthWrapping(TextureWrapping wrapping)
+void CubeTexture::setDepthWrap(TextureWrap wrap)
 {
-    this->depthWrapping = wrapping;
+    this->depthWrap = wrap;
     rebuild();
 }
 
-void CubeTexture::rebuild()
-{
-    Texture::rebuild();
-
-    switch (depthWrapping)
-    {
-        case TextureWrapping::Clamp:
-            flags |= TextureFlags::DepthWrapClamp;
-            break;
-        case TextureWrapping::Repeat:
-            flags |= TextureFlags::DepthWrapRepeat;
-            break;
-        default:
-            break;
-    }
-}

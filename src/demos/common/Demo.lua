@@ -46,7 +46,6 @@ function demo()
 
     function loadCommonTextures()
         local cobbleStone = sl.Texture2d.loadFromFile(sl.device, getAssetPath("textures/Cobblestone.png"), true)
-        cobbleStone:setFiltering(sl.TextureFiltering.LinearMipmapNearest)
         cobbleStone:setAnisotropyLevel(16)
 
         return {

@@ -33,7 +33,7 @@ STBTrueTypeFont::STBTrueTypeFont(Device *device, u8 *fontData, u32 size, u32 atl
 
     auto data = Texture2dData::createFromMemory(atlasWidth, atlasHeight, TextureFormat::Red, pixels);
     atlas = Texture2d::createFromData(device, data.get(), true);
-    atlas->setFiltering(TextureFiltering::Linear);
+    atlas->setFilter(TextureFilter::Linear, TextureFilter::Linear, TextureMipFilter::Linear);
 }
 
 auto STBTrueTypeFont::getGlyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo

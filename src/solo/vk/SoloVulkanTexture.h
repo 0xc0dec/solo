@@ -28,8 +28,6 @@ namespace solo
         VulkanResource<VkSampler> sampler;
 
         explicit VulkanTexture(Device *device);
-
-        void rebuildSampler(float anisotropyLevel, u32 flags);
     };
 
     class VulkanTexture2d final: public Texture2d, public VulkanTexture
@@ -39,6 +37,7 @@ namespace solo
 
     protected:
         void rebuild() override final;
+        void rebuildSampler();
     };
 
     class VulkanCubeTexture final: public CubeTexture, public VulkanTexture
@@ -48,6 +47,7 @@ namespace solo
 
     protected:
         void rebuild() override final;
+        void rebuildSampler();
     };
 }
 

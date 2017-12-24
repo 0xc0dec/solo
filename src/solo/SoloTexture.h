@@ -17,20 +17,25 @@ namespace solo
     class CubeTexture;
     class CubeTextureData;
 
-    enum class TextureWrapping // TODO rename to TextureWrap?
+    enum class TextureWrap
     {
-        Clamp = 0,
-        Repeat
+        ClampToEdge = 0,
+        ClampToBorder,
+        Repeat,
+        MirrorRepeat
     };
 
-    enum class TextureFiltering
+    enum class TextureFilter
     {
         Nearest = 0,
-        Linear,
-        NearestMipmapNearest,
-        LinearMipmapNearest,
-        NearestMipmapLinear,
-        LinearMipmapLinear
+        Linear
+    };
+
+    enum class TextureMipFilter
+    {
+        None = 0,
+        Nearest,
+        Linear
     };
 
     enum class CubeTextureFace
@@ -41,28 +46,6 @@ namespace solo
         Right,
         Top,
         Bottom
-    };
-
-    struct TextureFlags
-    {
-        static const u32 MinFilterNearest = 1 << 0;
-        static const u32 MinFilterLinear = 1 << 1;
-        static const u32 MinFilterNearestMipmapNearest = 1 << 2;
-        static const u32 MinFilterLinearMipmapNearest = 1 << 3;
-        static const u32 MinFilterNearestMipmapLinear = 1 << 4;
-        static const u32 MinFilterLinearMipmapLinear = 1 << 5;
-        static const u32 MagFilterNearest = 1 << 6;
-        static const u32 MagFilterLinear = 1 << 7;
-        static const u32 MagFilterNearestMipmapNearest = 1 << 8;
-        static const u32 MagFilterLinearMipmapNearest = 1 << 9;
-        static const u32 MagFilterNearestMipmapLinear = 1 << 10;
-        static const u32 MagFilterLinearMipmapLinear = 1 << 11;
-        static const u32 HorizontalWrapClamp = 1 << 12;
-        static const u32 HorizontalWrapRepeat = 1 << 13;
-        static const u32 VerticalWrapClamp = 1 << 14;
-        static const u32 VerticalWrapRepeat = 1 << 15;
-        static const u32 DepthWrapClamp = 1 << 16;
-        static const u32 DepthWrapRepeat = 1 << 17;
     };
 
     enum class TextureFormat
@@ -79,35 +62,33 @@ namespace solo
 
         virtual ~Texture() {}
 
-        auto getHorizontalWrapping() const -> TextureWrapping { return horizontalWrapping; }
-        auto getVerticalWrapping() const -> TextureWrapping { return verticalWrapping; }
-        virtual void setWrapping(TextureWrapping wrap);
-        void setHorizontalWrapping(TextureWrapping horizontalWrap);
-        void setVerticalWrapping(TextureWrapping verticalWrap);
+        auto getHorizontalWrap() const -> TextureWrap { return horizontalWrap; }
+        auto getVerticalWrap() const -> TextureWrap { return verticalWrap; }
+        virtual void setWrap(TextureWrap wrap);
+        void setHorizontalWrap(TextureWrap wrap);
+        void setVerticalWrap(TextureWrap wrap);
 
-        auto getMinFiltering() const -> TextureFiltering { return minFiltering; }
-        auto getMagFiltering() const -> TextureFiltering { return magFiltering; }
-        void setFiltering(TextureFiltering filtering);
-        void setMinFiltering(TextureFiltering filtering);
-        void setMagFiltering(TextureFiltering filtering);
+        auto getMinFilter() const -> TextureFilter { return minFilter; }
+        auto getMagFilter() const -> TextureFilter { return magFilter; }
+        auto getMipFilter() const -> TextureMipFilter { return mipFilter; }
+        void setFilter(TextureFilter minFilter, TextureFilter magFilter, TextureMipFilter mipFilter);
 
         auto getAnisotropyLevel() const -> float { return anisotropyLevel; }
         void setAnisotropyLevel(float level);
 
     protected:
-        u32 flags = 0;
+        TextureWrap horizontalWrap = TextureWrap::ClampToEdge;
+        TextureWrap verticalWrap = TextureWrap::ClampToEdge;
 
-        TextureWrapping horizontalWrapping = TextureWrapping::Clamp;
-        TextureWrapping verticalWrapping = TextureWrapping::Clamp;
-
-        TextureFiltering minFiltering = TextureFiltering::Linear;
-        TextureFiltering magFiltering = TextureFiltering::Linear;
+        TextureFilter minFilter = TextureFilter::Linear;
+        TextureFilter magFilter = TextureFilter::Linear;
+        TextureMipFilter mipFilter = TextureMipFilter::Linear;
 
         float anisotropyLevel = 1.0f;
 
         Texture();
 
-        virtual void rebuild();
+        virtual void rebuild() {}
     };
 
     class Texture2d: public Texture
@@ -146,18 +127,15 @@ namespace solo
             const str &bottomPath) -> sptr<AsyncHandle<CubeTexture>>;
         static auto createFromData(Device *device, CubeTextureData *data) -> sptr<CubeTexture>;
 
-        void setWrapping(TextureWrapping wrapping) override;
-
-        auto getDepthWrapping() const -> TextureWrapping { return depthWrapping; }
-        void setDepthWrapping(TextureWrapping depthWrap);
+        auto getDepthWrap() const -> TextureWrap { return depthWrap; }
+        void setDepthWrap(TextureWrap wrap);
+        void setWrap(TextureWrap wrap) override;
 
     protected:
-        TextureWrapping depthWrapping = TextureWrapping::Repeat;
+        TextureWrap depthWrap = TextureWrap::Repeat;
         u32 dimension = 0;
         TextureFormat format = TextureFormat::RGB;
 
         explicit CubeTexture(CubeTextureData *data);
-
-        void rebuild() override;
     };
 }

@@ -23,9 +23,11 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     }
 
     {
-        auto m = module.beginModule("TextureWrapping");
-        REG_MODULE_CONSTANT(m, TextureWrapping, Clamp);
-        REG_MODULE_CONSTANT(m, TextureWrapping, Repeat);
+        auto m = module.beginModule("TextureWrap");
+        REG_MODULE_CONSTANT(m, TextureWrap, ClampToEdge);
+        REG_MODULE_CONSTANT(m, TextureWrap, ClampToBorder);
+        REG_MODULE_CONSTANT(m, TextureWrap, Repeat);
+        REG_MODULE_CONSTANT(m, TextureWrap, MirrorRepeat);
         m.endModule();
     }
 
@@ -38,13 +40,17 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     }
 
     {
-        auto m = module.beginModule("TextureFiltering");
-        REG_MODULE_CONSTANT(m, TextureFiltering, Nearest);
-        REG_MODULE_CONSTANT(m, TextureFiltering, Linear);
-        REG_MODULE_CONSTANT(m, TextureFiltering, LinearMipmapLinear);
-        REG_MODULE_CONSTANT(m, TextureFiltering, LinearMipmapNearest);
-        REG_MODULE_CONSTANT(m, TextureFiltering, NearestMipmapLinear);
-        REG_MODULE_CONSTANT(m, TextureFiltering, NearestMipmapNearest);
+        auto m = module.beginModule("TextureFilter");
+        REG_MODULE_CONSTANT(m, TextureFilter, Nearest);
+        REG_MODULE_CONSTANT(m, TextureFilter, Linear);
+        m.endModule();
+    }
+
+    {
+        auto m = module.beginModule("TextureMipFilter");
+        REG_MODULE_CONSTANT(m, TextureMipFilter, Nearest);
+        REG_MODULE_CONSTANT(m, TextureMipFilter, Linear);
+        REG_MODULE_CONSTANT(m, TextureMipFilter, None);
         m.endModule();
     }
 

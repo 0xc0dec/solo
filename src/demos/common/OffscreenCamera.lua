@@ -8,8 +8,8 @@ return function(scene)
 
     local tex = sl.Texture2d.createEmpty(sl.device,
         math.floor(canvasSize.x / 8.0), math.floor(canvasSize.y / 8.0), sl.TextureFormat.RGB)
-    tex:setFiltering(sl.TextureFiltering.Nearest)
-    tex:setWrapping(sl.TextureWrapping.Clamp)
+    tex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.None)
+    tex:setWrap(sl.TextureWrap.ClampToEdge)
 
     local node = scene:createNode()
     node:findComponent("Transform"):setLocalPosition(vec3(0, 0, 10))

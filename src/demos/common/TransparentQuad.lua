@@ -9,9 +9,8 @@ local createRotator = require "Rotator"
 
 return function(scene, assetCache, mesh, tag)
     local tex = sl.Texture2d.loadFromFile(sl.device, getAssetPath("textures/Flammable.png"), true)
-    tex:setFiltering(sl.TextureFiltering.LinearMipmapNearest)
-    tex:setAnisotropyLevel(8)
-    tex:setWrapping(sl.TextureWrapping.Clamp)
+    tex:setAnisotropyLevel(16)
+    tex:setWrap(sl.TextureWrap.ClampToEdge)
 
     local material = sl.Material.create(sl.device, assetCache.getEffect("Texture"))
     material:setFaceCull(sl.FaceCull.None)

@@ -44,9 +44,7 @@ return function(scene, assetCache)
 
     local texHandle = sl.Texture2d.loadFromFileAsync(sl.device, getAssetPath("textures/Bricks.jpg"), true)
     texHandle:done(function(tex)
-        tex:setFiltering(sl.TextureFiltering.LinearMipmapNearest)
-        tex:setAnisotropyLevel(8)
-        tex:setWrapping(sl.TextureWrapping.Clamp)
+        tex:setAnisotropyLevel(16)
 
         -- TODO Move to a shared place - this material is used in many places
         local effect = assetCache.getEffect("Texture")

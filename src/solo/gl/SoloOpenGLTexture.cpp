@@ -42,74 +42,71 @@ static auto toInternalFormat(TextureFormat format) -> GLenum
     }
 }
 
-static void applyRectWrap(GLenum target, u32 flags)
+static auto toWrap(TextureWrap wrap) -> GLenum
 {
-    GLenum wrapS = 0;
-    if (flags & TextureFlags::HorizontalWrapClamp)
-        wrapS = GL_CLAMP_TO_EDGE;
-    else if (flags & TextureFlags::HorizontalWrapRepeat)
-        wrapS = GL_REPEAT;
-    if (wrapS)
-        glTexParameteri(target, GL_TEXTURE_WRAP_S, wrapS);
-
-    GLenum wrapT = 0;
-    if (flags & TextureFlags::VerticalWrapClamp)
-        wrapT = GL_CLAMP_TO_EDGE;
-    else if (flags & TextureFlags::VerticalWrapRepeat)
-        wrapT = GL_REPEAT;
-    if (wrapT)
-        glTexParameteri(target, GL_TEXTURE_WRAP_T, wrapT);
+    switch (wrap)
+    {
+        case TextureWrap::MirrorRepeat:
+            return GL_MIRRORED_REPEAT;
+        case TextureWrap::ClampToEdge:
+            return GL_CLAMP_TO_EDGE;
+        case TextureWrap::ClampToBorder:
+            return GL_CLAMP_TO_BORDER;
+        case TextureWrap::Repeat:
+            return GL_REPEAT;
+        default:
+            SL_PANIC("Unsupported wrap mode");
+            return GL_REPEAT;
+    }
 }
 
-static void applyDepthWrap(u32 flags)
+static auto toMinFilter(TextureFilter minFilter, TextureMipFilter mipFilter) -> GLenum
 {
-    GLenum wrapR = 0;
-    if (flags & TextureFlags::DepthWrapClamp)
-        wrapR = GL_CLAMP_TO_EDGE;
-    else if (flags & TextureFlags::DepthWrapRepeat)
-        wrapR = GL_REPEAT;
-    if (wrapR)
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, wrapR);
+    switch (minFilter)
+    {
+        case TextureFilter::Linear:
+        {
+            switch (mipFilter)
+            {
+                case TextureMipFilter::Linear: return GL_LINEAR_MIPMAP_LINEAR;
+                case TextureMipFilter::Nearest: return GL_LINEAR_MIPMAP_NEAREST;
+                case TextureMipFilter::None: return GL_LINEAR;
+                default:
+                    SL_PANIC("Unsupported mip filter")
+                    return GL_LINEAR;
+            }
+            break;
+        }
+
+        case TextureFilter::Nearest:
+        {
+            switch (mipFilter)
+            {
+                case TextureMipFilter::Linear: return GL_NEAREST_MIPMAP_LINEAR;
+                case TextureMipFilter::Nearest: return GL_NEAREST_MIPMAP_NEAREST;
+                case TextureMipFilter::None: return GL_NEAREST;
+                default:
+                    SL_PANIC("Unsupported mip filter")
+                    return GL_LINEAR;
+            }
+            break;
+        }
+        default:
+            SL_PANIC("Unsupported min filter")
+            return GL_LINEAR;
+    }
 }
 
-static void applyMinFilter(GLenum target, u32 flags)
+static auto toMagFilter(TextureFilter filter) -> GLenum
 {
-    GLenum minFilter = 0;
-    if (flags & TextureFlags::MinFilterLinear)
-        minFilter = GL_LINEAR;
-    else if (flags & TextureFlags::MinFilterLinearMipmapLinear)
-        minFilter = GL_LINEAR_MIPMAP_LINEAR;
-    else if (flags & TextureFlags::MinFilterLinearMipmapNearest)
-        minFilter = GL_LINEAR_MIPMAP_NEAREST;
-    else if (flags & TextureFlags::MinFilterNearest)
-        minFilter = GL_NEAREST;
-    else if (flags & TextureFlags::MinFilterNearestMipmapLinear)
-        minFilter = GL_NEAREST_MIPMAP_LINEAR;
-    else if (flags & TextureFlags::MinFilterNearestMipmapNearest)
-        minFilter = GL_NEAREST_MIPMAP_NEAREST;
-
-    if (minFilter)
-        glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minFilter);
-}
-
-static void applyMagFilter(GLenum target, u32 flags)
-{
-    GLenum magFilter = 0;
-    if (flags & TextureFlags::MagFilterLinear)
-        magFilter = GL_LINEAR;
-    else if (flags & TextureFlags::MagFilterLinearMipmapLinear)
-        magFilter = GL_LINEAR_MIPMAP_LINEAR;
-    else if (flags & TextureFlags::MagFilterLinearMipmapNearest)
-        magFilter = GL_LINEAR_MIPMAP_NEAREST;
-    else if (flags & TextureFlags::MagFilterNearest)
-        magFilter = GL_NEAREST;
-    else if (flags & TextureFlags::MagFilterNearestMipmapLinear)
-        magFilter = GL_NEAREST_MIPMAP_LINEAR;
-    else if (flags & TextureFlags::MagFilterNearestMipmapNearest)
-        magFilter = GL_NEAREST_MIPMAP_NEAREST;
-
-    if (magFilter)
-        glTexParameteri(target, GL_TEXTURE_MAG_FILTER, magFilter);
+    switch (filter)
+    {
+        case TextureFilter::Linear: return GL_LINEAR;
+        case TextureFilter::Nearest: return GL_NEAREST;
+        default:
+            SL_PANIC("Unsupported mag filter")
+            return GL_LINEAR;
+    }
 }
 
 static auto toCubeMapFace(CubeTextureFace face) -> GLenum
@@ -155,9 +152,10 @@ void OpenGLTexture2d::bind()
 {
     glBindTexture(GL_TEXTURE_2D, handle);
 
-    applyMinFilter(GL_TEXTURE_2D, flags);
-    applyMagFilter(GL_TEXTURE_2D, flags);
-    applyRectWrap(GL_TEXTURE_2D, flags);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, toMinFilter(minFilter, mipFilter));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, toMagFilter(magFilter));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, toWrap(horizontalWrap));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, toWrap(verticalWrap));
 
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
 }
@@ -193,17 +191,22 @@ void OpenGLCubeTexture::bind()
 {
     glBindTexture(GL_TEXTURE_CUBE_MAP, handle);
 
-    applyMinFilter(GL_TEXTURE_CUBE_MAP, flags);
-    applyMagFilter(GL_TEXTURE_CUBE_MAP, flags);
-    applyRectWrap(GL_TEXTURE_CUBE_MAP, flags);
-    applyDepthWrap(flags);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, toMinFilter(minFilter, mipFilter));
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, toMagFilter(magFilter));
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, toWrap(horizontalWrap));
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, toWrap(verticalWrap));
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, toWrap(depthWrap));
 
     glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
 }
 
 void OpenGLCubeTexture::setData(CubeTextureData *data, bool generateMipmaps)
 {
+    const auto mipLevels = generateMipmaps ? floor(log2((std::max)(dimension, dimension))) + 1 : 0; // TODO remove this copy-paste (from VK as well)
+
     glBindTexture(GL_TEXTURE_CUBE_MAP, handle);
+
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, mipLevels);
 
     for (s32 i = 0; i < 6; ++i)
     {
@@ -215,7 +218,11 @@ void OpenGLCubeTexture::setData(CubeTextureData *data, bool generateMipmaps)
         glTexImage2D(glFace, 0, internalFormat, data->getDimension(), data->getDimension(), 0, fmt, GL_UNSIGNED_BYTE, data->getData(i));
     }
 
-    // TODO handle mipmap generation
+    if (generateMipmaps)
+    {
+        glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
+        glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+    }
 
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
