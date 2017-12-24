@@ -146,29 +146,38 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
 auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data) -> VulkanImage
 {
     const auto mipLevels = 1; // TODO proper support
-    const auto layers = 1;
-    const auto width = data->getWidth();
-    const auto height = data->getHeight();
     const auto format = toVulkanFormat(data->getFormat());
 
     auto image = VulkanImage(
-        renderer, width, height, mipLevels, 1,
+        renderer,
+        data->getWidth(), data->getHeight(),
+        mipLevels, 1,
         format,
         0,
         VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
         VK_IMAGE_VIEW_TYPE_2D,
         VK_IMAGE_ASPECT_COLOR_BIT);
     
-    u32 offset = 0;
-    vec<VkBufferImageCopy> copyRegions;
-    for (u32 layer = 0; layer < 1; layer++) // Layers == 1 because 2d
+    VkImageSubresourceRange subresourceRange{};
+	subresourceRange.aspectMask = image.aspectMask;
+	subresourceRange.baseMipLevel = 0;
+	subresourceRange.levelCount = mipLevels;
+	subresourceRange.layerCount = 1;
+
+    auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
+    vk::beginCommandBuffer(cmdBuf, true);
+
+    const auto size = data->getSize();
+    if (size)
     {
+        u32 offset = 0;
+        vec<VkBufferImageCopy> copyRegions;
         for (u32 level = 0; level < mipLevels; level++)
         {
             VkBufferImageCopy bufferCopyRegion{};
             bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
             bufferCopyRegion.imageSubresource.mipLevel = level;
-            bufferCopyRegion.imageSubresource.baseArrayLayer = layer;
+            bufferCopyRegion.imageSubresource.baseArrayLayer = 0;
             bufferCopyRegion.imageSubresource.layerCount = 1;
             bufferCopyRegion.imageExtent.width = data->getWidth(); // TODO use per-level dimensions once TextureData supports mip levels
             bufferCopyRegion.imageExtent.height = data->getHeight(); // TODO use per-level dimensions once TextureData supports mip levels
@@ -179,20 +188,7 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data) -> Vul
 
             offset += data->getSize(); // TODO use per-level size once TextureData supports mip levels
         }
-    }
 
-    VkImageSubresourceRange subresourceRange{};
-	subresourceRange.aspectMask = image.aspectMask;
-	subresourceRange.baseMipLevel = 0;
-	subresourceRange.levelCount = mipLevels;
-	subresourceRange.layerCount = layers;
-
-    auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
-    vk::beginCommandBuffer(cmdBuf, true);
-
-    const auto size = data->getSize();
-    if (size)
-    {
         auto srcBuf = VulkanBuffer::createStaging(renderer, data->getSize(), data->getData());
         setImageLayout(
             cmdBuf,

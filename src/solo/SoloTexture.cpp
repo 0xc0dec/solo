@@ -161,7 +161,7 @@ auto Texture2d::createEmpty(Device *device, u32 width, u32 height, TextureFormat
     return createFromData(device, data.get());
 }
 
-sptr<Texture2d> Texture2d::createFromData(Device *device, Texture2dData *data)
+auto Texture2d::createFromData(Device *device, Texture2dData *data) -> sptr<Texture2d>
 {
     switch (device->getMode())
     {
