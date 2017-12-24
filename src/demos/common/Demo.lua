@@ -44,6 +44,18 @@ function demo()
     local cubeMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Cube)
     local quadMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Quad)
 
+    function loadCommonTextures()
+        local cobbleStone = sl.Texture2d.loadFromFile(sl.device, getAssetPath("textures/Cobblestone.png"), true)
+        cobbleStone:setFiltering(sl.TextureFiltering.LinearMipmapNearest)
+        cobbleStone:setAnisotropyLevel(16)
+
+        return {
+            cobbleStone = cobbleStone
+        }
+    end
+
+    local commonTextures = loadCommonTextures()
+
     local offscreenCamera, offscreenCameraTex = createOffscreenCamera(scene)
 
     local mainCamera, mainCameraNode = createMainCamera(scene)
@@ -55,9 +67,9 @@ function demo()
 
     createSkybox(scene, tags.skybox)
     createCheckerBox(scene, assetCache, cubeMesh)
-    createFloor(scene, assetCache, cubeMesh)
+    createFloor(scene, assetCache, cubeMesh, commonTextures.cobbleStone)
     createDynamicQuad(scene, assetCache)
-    createLoadedMesh(scene, assetCache)
+    createLoadedMesh(scene, assetCache, commonTextures.cobbleStone)
     createTimeLabel(scene, tags.transparent)
 
     local monitorQuadParent = createMonitorQuad(scene, assetCache, offscreenCameraTex, quadMesh, tags.monitor)
