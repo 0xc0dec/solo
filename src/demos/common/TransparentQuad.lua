@@ -8,8 +8,7 @@ require "Common"
 local createRotator = require "Rotator"
 
 return function(scene, assetCache, mesh, tag)
-    local tex = sl.Texture2d.loadFromFile(sl.device, getAssetPath("textures/Flammable.png"))
-    tex:generateMipmaps()
+    local tex = sl.Texture2d.loadFromFile(sl.device, getAssetPath("textures/Flammable.png"), true)
     tex:setFiltering(sl.TextureFiltering.LinearMipmapNearest)
     tex:setAnisotropyLevel(8)
     tex:setWrapping(sl.TextureWrapping.Clamp)

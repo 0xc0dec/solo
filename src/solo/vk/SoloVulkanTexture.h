@@ -35,9 +35,7 @@ namespace solo
     class VulkanTexture2d final: public Texture2d, public VulkanTexture
     {
     public:
-        VulkanTexture2d(Device *device, Texture2dData *data);
-
-        void generateMipmaps() override final;
+        VulkanTexture2d(Device *device, Texture2dData *data, bool generateMipmaps);
 
     protected:
         void rebuild() override final;
@@ -47,8 +45,6 @@ namespace solo
     {
     public:
         VulkanCubeTexture(Device *device, CubeTextureData *data);
-
-        void generateMipmaps() override final;
 
     protected:
         void rebuild() override final;

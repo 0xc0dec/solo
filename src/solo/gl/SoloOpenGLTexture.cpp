@@ -145,10 +145,10 @@ OpenGLTexture::~OpenGLTexture()
     glDeleteTextures(1, &handle);
 }
 
-OpenGLTexture2d::OpenGLTexture2d(Texture2dData *data):
+OpenGLTexture2d::OpenGLTexture2d(Texture2dData *data, bool generateMipmaps):
     Texture2d(data)
 {
-    setData(data->getData());
+    setData(data->getData(), generateMipmaps);
 }
 
 void OpenGLTexture2d::bind()
@@ -162,30 +162,31 @@ void OpenGLTexture2d::bind()
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
 }
 
-void OpenGLTexture2d::generateMipmaps()
+void OpenGLTexture2d::setData(const void *data, bool generateMipmaps)
 {
-    glBindTexture(GL_TEXTURE_2D, handle);
-    glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
-    glGenerateMipmap(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, 0);
-}
-
-void OpenGLTexture2d::setData(const void *data)
-{
-    glBindTexture(GL_TEXTURE_2D, handle);
-
     const auto internalFormat = toInternalFormat(this->format);
     const auto format = toFormat(this->format);
+    const auto mipLevels = generateMipmaps ? floor(log2((std::max)(dimensions.x, dimensions.y))) + 1 : 0; // TODO remove this copy-paste (from VK as well)
+
+    glBindTexture(GL_TEXTURE_2D, handle);
+
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipLevels);
     glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x, dimensions.y, 0, format, GL_UNSIGNED_BYTE, data);
+
+    if (generateMipmaps)
+    {
+        glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
 
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-OpenGLCubeTexture::OpenGLCubeTexture(CubeTextureData *data):
+OpenGLCubeTexture::OpenGLCubeTexture(CubeTextureData *data, bool generateMipmaps):
     CubeTexture(data)
 {
-    setData(data);
+    setData(data, generateMipmaps);
 }
 
 void OpenGLCubeTexture::bind()
@@ -200,15 +201,7 @@ void OpenGLCubeTexture::bind()
     glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
 }
 
-void OpenGLCubeTexture::generateMipmaps()
-{
-    glBindTexture(GL_TEXTURE_CUBE_MAP, handle);
-    glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
-    glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-}
-
-void OpenGLCubeTexture::setData(CubeTextureData *data)
+void OpenGLCubeTexture::setData(CubeTextureData *data, bool generateMipmaps)
 {
     glBindTexture(GL_TEXTURE_CUBE_MAP, handle);
 
@@ -219,9 +212,10 @@ void OpenGLCubeTexture::setData(CubeTextureData *data)
         const auto internalFormat = toInternalFormat(data->getFormat());
         const auto fmt = toFormat(data->getFormat());
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        // TODO Add support for mip levels
         glTexImage2D(glFace, 0, internalFormat, data->getDimension(), data->getDimension(), 0, fmt, GL_UNSIGNED_BYTE, data->getData(i));
     }
+
+    // TODO handle mipmap generation
 
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }

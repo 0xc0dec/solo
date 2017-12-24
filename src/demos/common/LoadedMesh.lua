@@ -6,9 +6,8 @@
 local createRotator = require "Rotator"
 
 return function(scene, assetCache)
-    sl.Texture2d.loadFromFileAsync(sl.device, getAssetPath("textures/Cobblestone.png")):done(
+    sl.Texture2d.loadFromFileAsync(sl.device, getAssetPath("textures/Cobblestone.png"), true):done(
         function(tex)
-            tex:generateMipmaps()
             tex:setFiltering(sl.TextureFiltering.LinearMipmapNearest)
             tex:setAnisotropyLevel(8)
             tex:setWrapping(sl.TextureWrapping.Clamp)

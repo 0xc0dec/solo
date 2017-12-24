@@ -451,7 +451,6 @@ VulkanImage::VulkanImage(VulkanRenderer *renderer, u32 width, u32 height, u32 mi
     VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask):
     format(format),
     mipLevels(mipLevels),
-    layers(layers),
     width(width),
     height(height),
     aspectMask(aspectMask)

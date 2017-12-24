@@ -15,8 +15,9 @@ using namespace solo;
 
 static auto createSampler(
     VkDevice device, VkPhysicalDeviceFeatures physicalFeatures, VkPhysicalDeviceProperties physicalProps,
-    bool anisotropic, float anisotropyLevel, u32 flags
-) -> VulkanResource<VkSampler>
+    bool anisotropic, float anisotropyLevel,
+    float mipLevels,
+    u32 flags) -> VulkanResource<VkSampler>
 {
     // TODO Better support for flags
 
@@ -60,7 +61,7 @@ static auto createSampler(
     samplerInfo.compareEnable = VK_FALSE;
     samplerInfo.compareOp = VK_COMPARE_OP_NEVER;
     samplerInfo.minLod = 0;
-    samplerInfo.maxLod = 16;
+    samplerInfo.maxLod = mipLevels;
     samplerInfo.borderColor = VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK;
 
     VulkanResource<VkSampler> sampler{device, vkDestroySampler};
@@ -79,21 +80,18 @@ void VulkanTexture::rebuildSampler(float anisotropyLevel, u32 flags)
     sampler = createSampler(
         renderer->getDevice(),
         renderer->getPhysicalFeatures(), renderer->getPhysicalProperties(),
-        anisotropyLevel > 1, anisotropyLevel, flags); // TODO Better calculation of anisotropy-enabling flag
+        anisotropyLevel > 1, anisotropyLevel, // TODO Better calculation of anisotropy-enabling flag
+        image.getMipLevels(),
+        flags); 
 }
 
-VulkanTexture2d::VulkanTexture2d(Device *device, Texture2dData *data):
+VulkanTexture2d::VulkanTexture2d(Device *device, Texture2dData *data, bool generateMipmaps):
     Texture2d(data),
     VulkanTexture(device)
 {
     const auto renderer = static_cast<VulkanRenderer*>(device->getRenderer());
-    image = VulkanImage::create2d(renderer, data, true);
+    image = VulkanImage::create2d(renderer, data, generateMipmaps);
     rebuildSampler(anisotropyLevel, flags);
-}
-
-void VulkanTexture2d::generateMipmaps()
-{
-    // TODO
 }
 
 void VulkanTexture2d::rebuild()
@@ -109,11 +107,6 @@ VulkanCubeTexture::VulkanCubeTexture(Device *device, CubeTextureData *data):
     const auto renderer = static_cast<VulkanRenderer*>(device->getRenderer());
     image = VulkanImage::createCube(renderer, data);
     rebuildSampler(anisotropyLevel, flags);
-}
-
-void VulkanCubeTexture::generateMipmaps()
-{
-    // TODO
 }
 
 void VulkanCubeTexture::rebuild()

@@ -79,8 +79,6 @@ namespace solo
 
         virtual ~Texture() {}
 
-        virtual void generateMipmaps() = 0;
-
         auto getHorizontalWrapping() const -> TextureWrapping { return horizontalWrapping; }
         auto getVerticalWrapping() const -> TextureWrapping { return verticalWrapping; }
 
@@ -117,9 +115,9 @@ namespace solo
     class Texture2d: public Texture
     {
     public:
-        static auto loadFromFile(Device *device, const str &path) -> sptr<Texture2d>;
-        static auto loadFromFileAsync(Device *device, const str &path) -> sptr<AsyncHandle<Texture2d>>;
-        static auto createFromData(Device *device, Texture2dData *data) -> sptr<Texture2d>;
+        static auto loadFromFile(Device *device, const str &path, bool generateMipmaps) -> sptr<Texture2d>;
+        static auto loadFromFileAsync(Device *device, const str &path, bool generateMipmaps) -> sptr<AsyncHandle<Texture2d>>;
+        static auto createFromData(Device *device, Texture2dData *data, bool generateMipmaps) -> sptr<Texture2d>;
         static auto createEmpty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<Texture2d>;
 
         auto getDimensions() const -> Vector2 { return dimensions; }

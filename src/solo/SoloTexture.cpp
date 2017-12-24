@@ -133,20 +133,20 @@ void Texture::setFiltering(TextureFiltering filtering)
     rebuild();
 }
 
-auto Texture2d::loadFromFile(Device *device, const str &path) -> sptr<Texture2d>
+auto Texture2d::loadFromFile(Device *device, const str &path, bool generateMipmaps) -> sptr<Texture2d>
 {
     const auto data = Texture2dData::loadFromFile(device, path);
-    return createFromData(device, data.get());
+    return createFromData(device, data.get(), generateMipmaps);
 }
 
-auto Texture2d::loadFromFileAsync(Device *device, const str &path) -> sptr<AsyncHandle<Texture2d>>
+auto Texture2d::loadFromFileAsync(Device *device, const str &path, bool generateMipmaps) -> sptr<AsyncHandle<Texture2d>>
 {
     auto handle = std::make_shared<AsyncHandle<Texture2d>>();
 
     auto producers = JobBase<Texture2dData>::Producers{[=]() { return Texture2dData::loadFromFile(device, path); }};
-    auto consumer = [handle, device](const vec<sptr<Texture2dData>> &results)
+    auto consumer = [handle, device, generateMipmaps](const vec<sptr<Texture2dData>> &results)
     {
-        auto texture = createFromData(device, results[0].get());
+        auto texture = createFromData(device, results[0].get(), generateMipmaps);
         handle->finish(texture);
     };
 
@@ -158,20 +158,20 @@ auto Texture2d::loadFromFileAsync(Device *device, const str &path) -> sptr<Async
 auto Texture2d::createEmpty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<Texture2d>
 {
     const auto data = Texture2dData::createFromMemory(width, height, format, vec<u8>{});
-    return createFromData(device, data.get());
+    return createFromData(device, data.get(), false);
 }
 
-auto Texture2d::createFromData(Device *device, Texture2dData *data) -> sptr<Texture2d>
+auto Texture2d::createFromData(Device *device, Texture2dData *data, bool generateMipmaps) -> sptr<Texture2d>
 {
     switch (device->getMode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLTexture2d>(data);
+            return std::make_shared<OpenGLTexture2d>(data, generateMipmaps);
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return std::make_shared<VulkanTexture2d>(device, data);
+            return std::make_shared<VulkanTexture2d>(device, data, generateMipmaps);
 #endif
         default:
             return std::make_shared<NullTexture2d>(data);
@@ -233,7 +233,7 @@ auto CubeTexture::createFromData(Device *device, CubeTextureData *data) -> sptr<
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLCubeTexture>(data);
+            return std::make_shared<OpenGLCubeTexture>(data, false);
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:

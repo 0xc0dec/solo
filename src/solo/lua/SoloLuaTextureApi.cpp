@@ -12,7 +12,6 @@ using namespace solo;
 static void registerTexture(CppBindModule<LuaBinding> &module)
 {
     auto tex = BEGIN_CLASS(module, Texture);
-    REG_METHOD(tex, Texture, generateMipmaps);
     REG_METHOD(tex, Texture, getHorizontalWrapping);
     REG_METHOD(tex, Texture, getVerticalWrapping);
     REG_METHOD(tex, Texture, setWrapping);

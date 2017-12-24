@@ -12,16 +12,12 @@ namespace solo
     class NullTexture2d final: public Texture2d
     {
     public:
-        NullTexture2d(Texture2dData *data): Texture2d(data) {}
-
-        void generateMipmaps() override final {}
+        explicit NullTexture2d(Texture2dData *data): Texture2d(data) {}
     };
 
     class NullCubeTexture final : public CubeTexture
     {
     public:
-        NullCubeTexture(CubeTextureData *data): CubeTexture(data) {}
-                
-        void generateMipmaps() override final {}
+        explicit NullCubeTexture(CubeTextureData *data): CubeTexture(data) {}
     };
 }

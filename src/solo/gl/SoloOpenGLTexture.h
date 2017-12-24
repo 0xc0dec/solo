@@ -33,25 +33,23 @@ namespace solo
     class OpenGLTexture2d final: public Texture2d, public OpenGLTexture
     {
     public:
-        OpenGLTexture2d(Texture2dData *data);
+        explicit OpenGLTexture2d(Texture2dData *data, bool generateMipmaps);
 
         void bind() override final;
-        void generateMipmaps() override final;
 
     private:
-        void setData(const void *data);
+        void setData(const void *data, bool generateMipmaps);
     };
 
     class OpenGLCubeTexture final : public CubeTexture, public OpenGLTexture
     {
     public:
-        OpenGLCubeTexture(CubeTextureData *data);
+        explicit OpenGLCubeTexture(CubeTextureData *data, bool generateMipmaps);
 
         void bind() override final;
-        void generateMipmaps() override final;
 
     protected:
-        void setData(CubeTextureData *data);
+        void setData(CubeTextureData *data, bool generateMipmaps);
     };
 }
 

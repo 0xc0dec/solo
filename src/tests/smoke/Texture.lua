@@ -7,8 +7,6 @@ assert(sl.Texture2d.loadFromFile)
 
 local rectTex = sl.Texture2d.createEmpty(sl.device, 1, 1, sl.TextureFormat.RGB)
 
-rectTex:generateMipmaps()
-
 assert(rectTex:getHorizontalWrapping())
 assert(rectTex:getVerticalWrapping())
 

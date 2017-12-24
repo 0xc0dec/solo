@@ -4,10 +4,9 @@
 -- 
 
 return function(scene, assetCache, cubeMesh)
-    local tex = sl.Texture2d.loadFromFile(sl.device, getAssetPath("textures/Cobblestone.png"))
-    tex:generateMipmaps()
+    local tex = sl.Texture2d.loadFromFile(sl.device, getAssetPath("textures/Cobblestone.png"), true)
     tex:setFiltering(sl.TextureFiltering.LinearMipmapNearest)
-    tex:setAnisotropyLevel(8)
+    tex:setAnisotropyLevel(16)
 
     local effect = assetCache.getEffect("Texture")
     local material = sl.Material.create(sl.device, effect)
