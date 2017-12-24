@@ -19,11 +19,11 @@ void main()
 {
     if (uv0.x >= variables.leftSeparator && uv0.x <= variables.rightSeparator)
     {
-        fragColor = texture(mainTex, uv0, 1) * weight[0];
+        fragColor = texture(mainTex, uv0) * weight[0];
         for (int i = 1; i < 5; i++)
         {
-            fragColor += texture(mainTex, uv0 + vec2(offset[i], 0), 1) * weight[i];
-            fragColor += texture(mainTex, uv0 - vec2(offset[i], 0), 1) * weight[i];
+            fragColor += texture(mainTex, uv0 + vec2(offset[i], 0)) * weight[i];
+            fragColor += texture(mainTex, uv0 - vec2(offset[i], 0)) * weight[i];
         }
     }
     else

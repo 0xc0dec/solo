@@ -9,6 +9,6 @@ layout (location = 0) out vec4 fragColor;
 
 void main()
 {
-    vec4 color = texture(mainTex, uv0, 1);
+    vec4 color = texture(mainTex, uv0);
     fragColor = color * dot(vec3(1, 1, 1), n) / (length(vec3(1, 1, 1)) * length(n));
 }

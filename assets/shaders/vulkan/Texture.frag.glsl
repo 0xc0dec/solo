@@ -8,5 +8,5 @@ layout (location = 0) out vec4 outFragColor;
 
 void main()
 {
-    outFragColor = texture(mainTex, inTexCoord, 1);
+    outFragColor = texture(mainTex, inTexCoord);
 }

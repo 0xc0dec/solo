@@ -81,7 +81,7 @@ const s8* VulkanPrefabShaders::Fragment::font = R"(
 
     void main()
     {
-        vec4 c = texture(mainTex, uv0, 1);
+        vec4 c = texture(mainTex, uv0);
         fragColor = vec4(c.r, c.r, c.r, c.r);
     }
 )";
