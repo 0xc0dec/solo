@@ -172,7 +172,7 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
         mipLevels, 1,
         format,
         0,
-        VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
+        VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
         VK_IMAGE_VIEW_TYPE_2D,
         VK_IMAGE_ASPECT_COLOR_BIT);
     
@@ -195,8 +195,9 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
 
         VkImageSubresourceRange subresourceRange{};
 	    subresourceRange.aspectMask = image.aspectMask;
+	    subresourceRange.baseArrayLayer = 0;
 	    subresourceRange.baseMipLevel = 0;
-	    subresourceRange.levelCount = mipLevels;
+	    subresourceRange.levelCount = 1;
 	    subresourceRange.layerCount = 1;
 
         setImageLayout(
@@ -238,17 +239,17 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
 			    // Source
 			    imageBlit.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 			    imageBlit.srcSubresource.layerCount = 1;
-			    imageBlit.srcSubresource.mipLevel = i-1;
-			    imageBlit.srcOffsets[1].x = int32_t(width >> (i - 1));
-			    imageBlit.srcOffsets[1].y = int32_t(height >> (i - 1));
+			    imageBlit.srcSubresource.mipLevel = i - 1;
+			    imageBlit.srcOffsets[1].x = s32(width >> (i - 1));
+			    imageBlit.srcOffsets[1].y = s32(height >> (i - 1));
 			    imageBlit.srcOffsets[1].z = 1;
 
 			    // Destination
 			    imageBlit.dstSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 			    imageBlit.dstSubresource.layerCount = 1;
 			    imageBlit.dstSubresource.mipLevel = i;
-			    imageBlit.dstOffsets[1].x = int32_t(width >> i);
-			    imageBlit.dstOffsets[1].y = int32_t(height >> i);
+			    imageBlit.dstOffsets[1].x = s32(width >> i);
+			    imageBlit.dstOffsets[1].y = s32(height >> i);
 			    imageBlit.dstOffsets[1].z = 1;
 
 			    VkImageSubresourceRange mipSubRange{};

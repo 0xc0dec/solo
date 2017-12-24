@@ -126,6 +126,12 @@ void Texture::setMagFiltering(TextureFiltering filtering)
     rebuild();
 }
 
+void Texture::setAnisotropyLevel(float level)
+{
+    anisotropyLevel = level;
+    rebuild();
+}
+
 void Texture::setFiltering(TextureFiltering filtering)
 {
     minFiltering = filtering;

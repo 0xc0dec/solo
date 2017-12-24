@@ -81,20 +81,18 @@ namespace solo
 
         auto getHorizontalWrapping() const -> TextureWrapping { return horizontalWrapping; }
         auto getVerticalWrapping() const -> TextureWrapping { return verticalWrapping; }
-
         virtual void setWrapping(TextureWrapping wrap);
         void setHorizontalWrapping(TextureWrapping horizontalWrap);
         void setVerticalWrapping(TextureWrapping verticalWrap);
 
         auto getMinFiltering() const -> TextureFiltering { return minFiltering; }
         auto getMagFiltering() const -> TextureFiltering { return magFiltering; }
-
         void setFiltering(TextureFiltering filtering);
         void setMinFiltering(TextureFiltering filtering);
         void setMagFiltering(TextureFiltering filtering);
 
         auto getAnisotropyLevel() const -> float { return anisotropyLevel; }
-        void setAnisotropyLevel(float level) { anisotropyLevel = level; }
+        void setAnisotropyLevel(float level);
 
     protected:
         u32 flags = 0;
