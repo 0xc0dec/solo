@@ -102,10 +102,10 @@ namespace solo
         auto getDimensions() const -> Vector2 { return dimensions; }
 
     protected:
-        explicit Texture2d(Texture2dData *data);
-
         TextureFormat format;
         Vector2 dimensions;
+
+        explicit Texture2d(Texture2dData *data);
     };
 
     class CubeTexture: public Texture
