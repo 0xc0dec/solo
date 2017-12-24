@@ -57,9 +57,10 @@ static auto createSampler(
     samplerInfo.addressModeW = addressModeW;
     samplerInfo.mipLodBias = 0;
     samplerInfo.unnormalizedCoordinates = VK_FALSE;
-    samplerInfo.compareOp = VK_COMPARE_OP_ALWAYS;
+    samplerInfo.compareEnable = VK_FALSE;
+    samplerInfo.compareOp = VK_COMPARE_OP_NEVER;
     samplerInfo.minLod = 0;
-    samplerInfo.maxLod = 0;
+    samplerInfo.maxLod = 16;
     samplerInfo.borderColor = VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK;
 
     VulkanResource<VkSampler> sampler{device, vkDestroySampler};
@@ -86,7 +87,7 @@ VulkanTexture2d::VulkanTexture2d(Device *device, Texture2dData *data):
     VulkanTexture(device)
 {
     const auto renderer = static_cast<VulkanRenderer*>(device->getRenderer());
-    image = VulkanImage::create2d(renderer, data);
+    image = VulkanImage::create2d(renderer, data, true);
     rebuildSampler(anisotropyLevel, flags);
 }
 
