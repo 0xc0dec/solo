@@ -33,7 +33,7 @@ namespace solo
         ~VulkanRenderer() {}
 
         void beginCamera(Camera *camera, FrameBuffer *renderTarget) override final;
-        void endCamera(Camera *camera) override final;
+        void endCamera(Camera *camera, FrameBuffer *renderTarget) override final;
         void drawMesh(Mesh *mesh, Transform *transform, Material *material) override final;
         void drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material) override final;
 

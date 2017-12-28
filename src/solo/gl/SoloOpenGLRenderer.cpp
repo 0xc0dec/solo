@@ -192,9 +192,9 @@ void OpenGLRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
 }
 
 // TODO pass render target, just as in beginCamera method
-void OpenGLRenderer::endCamera(Camera *camera)
+void OpenGLRenderer::endCamera(Camera *camera, FrameBuffer *renderTarget)
 {
-    if (camera->getRenderTarget())
+    if (renderTarget)
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     currentCamera = nullptr;
 }

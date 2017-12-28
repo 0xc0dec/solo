@@ -143,7 +143,7 @@ void Camera::renderFrame(std::function<void()> render)
 {
     renderer->beginCamera(this, renderTarget.get());
     render();
-    renderer->endCamera(this);
+    renderer->endCamera(this, renderTarget.get());
 }
 
 auto Camera::windowPointToWorldRay(const Vector2 &pt) -> Ray

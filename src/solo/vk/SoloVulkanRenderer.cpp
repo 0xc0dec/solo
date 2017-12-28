@@ -264,7 +264,7 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
     vkCmdSetScissor(currentCmdBuffer, 0, 1, &scissor);
 }
 
-void VulkanRenderer::endCamera(Camera *camera)
+void VulkanRenderer::endCamera(Camera *camera, FrameBuffer *renderTarget)
 {
     currentCamera = nullptr;
 }
