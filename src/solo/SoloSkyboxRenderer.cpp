@@ -9,7 +9,6 @@
 #include "SoloTexture.h"
 #include "SoloTransform.h"
 #include "SoloDevice.h"
-#include "SoloRenderCommand.h"
 
 using namespace solo;
 
@@ -31,7 +30,7 @@ SkyboxRenderer::SkyboxRenderer(const Node &node):
 
 void SkyboxRenderer::render()
 {
-    renderer->addRenderCommand(RenderCommand::drawMesh(quadMesh.get(), transform, material.get())); // TODO transform needed here?
+    renderer->drawMesh(quadMesh.get(), transform, material.get()); // TODO transform needed here?
 }
 
 void SkyboxRenderer::setTexture(sptr<CubeTexture> texture)

@@ -171,143 +171,94 @@ OpenGLRenderer::OpenGLRenderer(Device *device)
     device->getLogger()->logInfo(SL_FMT("Running in OpenGL ", major, ".", minor, " mode"));
 }
 
-void OpenGLRenderer::addRenderCommand(const RenderCommand &cmd)
+void OpenGLRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
 {
-    RenderStep step;
-    step.cmd = cmd;
-
-    switch (cmd.type)
+    if (renderTarget)
     {
-        case RenderCommandType::BeginCamera:
-        {
-            const auto viewport = cmd.camera.camera->getViewport();
-            const auto hasClearColor = cmd.camera.camera->hasColorClearing();
-            const auto clearColor = cmd.camera.camera->getClearColor();
-
-            // Not using the cmd.camera.renderTarget here since we're saving it anyway
-            GLuint fb = 0;
-            auto target = step.cmd.camera.camera->getRenderTarget();
-            if (target)
-                fb = static_cast<OpenGLFrameBuffer*>(target.get())->getHandle();
-
-            step.beginCamera = [=]
-            {
-                if (fb)
-                    glBindFramebuffer(GL_FRAMEBUFFER, fb);
-
-                setViewport(viewport);
-                setDepthWrite(true);
-                setDepthTest(true);
-                clear(hasClearColor, clearColor);
-            };
-
-            break;
-        }
-
-        case RenderCommandType::EndCamera:
-        {
-            const auto hasTarget = step.cmd.camera.camera->getRenderTarget() != nullptr;
-
-            step.endCamera = [=]
-            {
-                // Note: this assumes that the camera's frame buffer is the current one,
-                // so we can correctly unbind it.
-                if (hasTarget)
-                    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-            };
-
-            break;
-        }
-
-        case RenderCommandType::DrawMesh:
-        case RenderCommandType::DrawMeshPart:
-        {
-            const auto material = cmd.type == RenderCommandType::DrawMesh ? cmd.mesh.material : cmd.meshPart.material;
-            const auto faceCull = material->getFaceCull();
-            const auto polygonMode = material->getPolygonMode();
-            const auto depthTest = material->hasDepthTest();
-            const auto depthWrite = material->hasDepthWrite();
-            const auto depthFunc = material->getDepthFunction();
-            const auto blend = material->getBlend();
-            const auto srcBlendFactor = material->getSrcBlendFactor();
-            const auto dstBlendFactor = material->getDstBlendFactor();
-            const auto effect = static_cast<OpenGLEffect*>(material->getEffect().get());
-            const auto program = effect->getHandle();
-
-            step.applyMaterialState = [=]
-            {
-                glUseProgram(program);
-                setFaceCull(faceCull);
-                setPolygonMode(polygonMode);
-                setDepthTest(depthTest);
-                setDepthWrite(depthWrite);
-                setDepthFunction(depthFunc);
-                setBlend(blend);
-                setBlendFactor(srcBlendFactor, dstBlendFactor);
-            };
-
-            break;
-        }
-
-        default: break;
+        const auto fb = static_cast<OpenGLFrameBuffer*>(renderTarget)->getHandle();
+        glBindFramebuffer(GL_FRAMEBUFFER, fb);
     }
+        
+    const auto viewport = camera->getViewport();
+    const auto hasClearColor = camera->hasColorClearing();
+    const auto clearColor = camera->getClearColor();
 
-    renderSteps.push_back(step);
+    setViewport(viewport);
+    setDepthWrite(true);
+    setDepthTest(true);
+    clear(hasClearColor, clearColor);
+
+    currentCamera = camera;
+}
+
+// TODO pass render target, just as in beginCamera method
+void OpenGLRenderer::endCamera(Camera *camera)
+{
+    if (camera->getRenderTarget())
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    currentCamera = nullptr;
+}
+
+void OpenGLRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *material)
+{
+    const auto faceCull = material->getFaceCull();
+    const auto polygonMode = material->getPolygonMode();
+    const auto depthTest = material->hasDepthTest();
+    const auto depthWrite = material->hasDepthWrite();
+    const auto depthFunc = material->getDepthFunction();
+    const auto blend = material->getBlend();
+    const auto srcBlendFactor = material->getSrcBlendFactor();
+    const auto dstBlendFactor = material->getDstBlendFactor();
+    const auto effect = static_cast<OpenGLEffect*>(material->getEffect().get());
+    const auto program = effect->getHandle();
+
+    glUseProgram(program);
+    setFaceCull(faceCull);
+    setPolygonMode(polygonMode);
+    setDepthTest(depthTest);
+    setDepthWrite(depthWrite);
+    setDepthFunction(depthFunc);
+    setBlend(blend);
+    setBlendFactor(srcBlendFactor, dstBlendFactor);
+
+    static_cast<OpenGLMaterial*>(material)->applyParams(currentCamera, transform);
+    static_cast<OpenGLMesh*>(mesh)->draw(effect);
+}
+
+void OpenGLRenderer::drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material)
+{
+    // TODO Remove copy-paste
+    const auto faceCull = material->getFaceCull();
+    const auto polygonMode = material->getPolygonMode();
+    const auto depthTest = material->hasDepthTest();
+    const auto depthWrite = material->hasDepthWrite();
+    const auto depthFunc = material->getDepthFunction();
+    const auto blend = material->getBlend();
+    const auto srcBlendFactor = material->getSrcBlendFactor();
+    const auto dstBlendFactor = material->getDstBlendFactor();
+    const auto effect = static_cast<OpenGLEffect*>(material->getEffect().get());
+    const auto program = effect->getHandle();
+
+    glUseProgram(program);
+    setFaceCull(faceCull);
+    setPolygonMode(polygonMode);
+    setDepthTest(depthTest);
+    setDepthWrite(depthWrite);
+    setDepthFunction(depthFunc);
+    setBlend(blend);
+    setBlendFactor(srcBlendFactor, dstBlendFactor);
+
+    static_cast<OpenGLMaterial*>(material)->applyParams(currentCamera, transform);
+    static_cast<OpenGLMesh*>(mesh)->drawPart(part, effect);
 }
 
 void OpenGLRenderer::beginFrame()
 {
-    renderSteps.clear();
+    currentCamera = nullptr;
 }
 
-// TODO Optimize: group by material etc.
-// TODO Build "render plan", update it only when something has really changed
-// TODO Avoid dynamic casts
-// TODO Make it consistent whether ogl classes contain drawing code themselves or only serve as a source of data
-// for the renderer
 void OpenGLRenderer::endFrame()
 {
-    Camera *currentCamera = nullptr;
-
-    for (const auto &step: renderSteps)
-    {
-        switch (step.cmd.type)
-        {
-            case RenderCommandType::BeginCamera:
-            {
-                step.beginCamera();
-                currentCamera = static_cast<Camera*>(step.cmd.camera.camera);
-                break;
-            }
-
-            case RenderCommandType::EndCamera:
-            {
-                step.endCamera();
-                currentCamera = nullptr;
-                break;
-            }
-
-            case RenderCommandType::DrawMesh:
-            {
-                step.applyMaterialState();
-                static_cast<OpenGLMaterial*>(step.cmd.mesh.material)->applyParams(currentCamera, step.cmd.mesh.transform);
-                const auto effect = static_cast<OpenGLEffect*>(step.cmd.mesh.material->getEffect().get());
-                static_cast<OpenGLMesh*>(step.cmd.mesh.mesh)->draw(effect);
-                break;
-            }
-
-            case RenderCommandType::DrawMeshPart:
-            {
-                step.applyMaterialState();
-                static_cast<OpenGLMaterial*>(step.cmd.meshPart.material)->applyParams(currentCamera, step.cmd.meshPart.transform);
-                const auto effect = static_cast<OpenGLEffect*>(step.cmd.meshPart.material->getEffect().get());
-                static_cast<OpenGLMesh*>(step.cmd.meshPart.mesh)->drawPart(step.cmd.meshPart.part, effect);
-                break;
-            }
-
-            default: break;
-        }
-    }
 }
 
 #endif

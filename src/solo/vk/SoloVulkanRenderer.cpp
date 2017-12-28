@@ -198,10 +198,87 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     swapchain = VulkanSwapchain(this, vulkanDevice, canvasSize.x, canvasSize.y, engineDevice->isVsync());
 }
 
-void VulkanRenderer::beginFrame()
+void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
 {
-    renderCommands.clear();
-    renderCommands.reserve(100); // TODO just picked random constant
+    currentCamera = camera;
+    currentRenderPass = &swapchain.getRenderPass();
+    const auto canvasSize = engineDevice->getCanvasSize();
+    auto currentFrameBuffer = swapchain.getCurrentFrameBuffer();
+    auto dimensions = canvasSize;
+    vec<VkClearAttachment> clearAttachments = {{VK_IMAGE_ASPECT_COLOR_BIT, 0, {{0, 0, 0, 1}}}}; // TODO avoid mem allocation
+
+    if (renderTarget)
+    {
+        const auto targetFrameBuffer = static_cast<VulkanFrameBuffer*>(renderTarget);
+        currentRenderPass = &targetFrameBuffer->getRenderPass();
+        currentFrameBuffer = targetFrameBuffer->getHandle();
+        dimensions = targetFrameBuffer->getDimensions();
+        clearAttachments.resize(targetFrameBuffer->getColorAttachmentCount());
+    }
+
+    if (!renderPassContexts.count(currentRenderPass))
+    {
+        // TODO Clear later
+        renderPassContexts[currentRenderPass].cmdBuffer = vk::createCommandBuffer(device, commandPool);
+        renderPassContexts[currentRenderPass].completeSemaphore = vk::createSemaphore(device);
+    }
+
+    auto &passContext = renderPassContexts.at(currentRenderPass);
+    currentCmdBuffer = passContext.cmdBuffer;
+
+    if (!passContext.started)
+    {
+        passContext.started = true;
+        passesToRender.push_back(currentRenderPass);
+
+        vk::beginCommandBuffer(currentCmdBuffer, false);
+
+        currentRenderPass->begin(
+            currentCmdBuffer,
+            currentFrameBuffer,
+            dimensions.x, dimensions.y
+        );
+
+        if (currentCamera->hasColorClearing())
+        {
+            VkClearRect clearRect{};
+            clearRect.layerCount = 1;
+            clearRect.rect.offset = {0, 0};
+            clearRect.rect.extent = {static_cast<u32>(dimensions.x), static_cast<u32>(dimensions.y)};
+            auto clearColor = currentCamera->getClearColor();
+            for (u32 i = 0; i < clearAttachments.size(); ++i)
+            {
+                clearAttachments[i].aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+                clearAttachments[i].colorAttachment = i;
+                clearAttachments[i].clearValue = {{clearColor.x, clearColor.y, clearColor.z, clearColor.w}};
+            }
+            vkCmdClearAttachments(currentCmdBuffer, clearAttachments.size(), clearAttachments.data(), 1, &clearRect);
+        }
+    }
+
+    const auto viewport = currentCamera->getViewport();
+    VkViewport vp{viewport.x, viewport.y, viewport.z, viewport.w, 0, 1};
+    vkCmdSetViewport(currentCmdBuffer, 0, 1, &vp);
+
+    VkRect2D scissor{{0, 0}, {vp.width, vp.height}}; // TODO proper values
+    vkCmdSetScissor(currentCmdBuffer, 0, 1, &scissor);
+}
+
+void VulkanRenderer::endCamera(Camera *camera)
+{
+    currentCamera = nullptr;
+}
+
+void VulkanRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *material)
+{
+    if (currentCamera)
+        drawMesh(currentCmdBuffer, *currentRenderPass, material, transform, mesh, currentCamera);
+}
+
+void VulkanRenderer::drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material)
+{
+    if (currentCamera)
+        drawMeshPart(currentCmdBuffer, *currentRenderPass, material, transform, mesh, currentCamera, part);
 }
 
 auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera, VulkanMaterial *material,
@@ -400,133 +477,16 @@ void VulkanRenderer::prepareAndBindMesh(
     }
 }
 
+void VulkanRenderer::beginFrame()
+{
+    currentCamera = nullptr;
+    currentRenderPass = nullptr;
+    currentCmdBuffer = nullptr;
+    passesToRender.clear();
+}
+
 void VulkanRenderer::endFrame()
 {
-    const auto canvasSize = engineDevice->getCanvasSize();
-    const auto presentCompleteSem = swapchain.moveNext();
-    Camera *currentCamera = nullptr;
-    VulkanRenderPass *currentRenderPass = nullptr;
-    VkCommandBuffer currentCmdBuffer = VK_NULL_HANDLE;
-    vec<VulkanRenderPass*> passesToRender;
-
-    for (const auto &cmd : renderCommands)
-    {
-        switch (cmd.type)
-        {
-            case RenderCommandType::BeginCamera:
-            {
-                currentCamera = cmd.camera.camera;
-                currentRenderPass = &swapchain.getRenderPass();
-                auto currentFrameBuffer = swapchain.getCurrentFrameBuffer();
-                auto dimensions = canvasSize;
-                vec<VkClearAttachment> clearAttachments = {{VK_IMAGE_ASPECT_COLOR_BIT, 0, {{0, 0, 0, 1}}}}; // TODO avoid mem allocation
-
-                const auto renderTarget = cmd.camera.renderTarget;
-                if (renderTarget)
-                {
-                    const auto targetFrameBuffer = static_cast<VulkanFrameBuffer*>(renderTarget);
-                    currentRenderPass = &targetFrameBuffer->getRenderPass();
-                    currentFrameBuffer = targetFrameBuffer->getHandle();
-                    dimensions = targetFrameBuffer->getDimensions();
-                    clearAttachments.resize(targetFrameBuffer->getColorAttachmentCount());
-                }
-
-                if (!renderPassContexts.count(currentRenderPass))
-                {
-                    // TODO Clear later
-                    renderPassContexts[currentRenderPass].cmdBuffer = vk::createCommandBuffer(device, commandPool);
-                    renderPassContexts[currentRenderPass].completeSemaphore = vk::createSemaphore(device);
-                }
-
-                auto &passContext = renderPassContexts.at(currentRenderPass);
-                currentCmdBuffer = passContext.cmdBuffer;
-
-                if (!passContext.started)
-                {
-                    passContext.started = true;
-                    passesToRender.push_back(currentRenderPass);
-
-                    vk::beginCommandBuffer(currentCmdBuffer, false);
-
-                    currentRenderPass->begin(
-                        currentCmdBuffer,
-                        currentFrameBuffer,
-                        dimensions.x, dimensions.y
-                    );
-
-                    if (currentCamera->hasColorClearing())
-                    {
-                        VkClearRect clearRect{};
-                        clearRect.layerCount = 1;
-                        clearRect.rect.offset = {0, 0};
-                        clearRect.rect.extent = {static_cast<u32>(dimensions.x), static_cast<u32>(dimensions.y)};
-                        auto clearColor = currentCamera->getClearColor();
-                        for (u32 i = 0; i < clearAttachments.size(); ++i)
-                        {
-                            clearAttachments[i].aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-                            clearAttachments[i].colorAttachment = i;
-                            clearAttachments[i].clearValue = {{clearColor.x, clearColor.y, clearColor.z, clearColor.w}};
-                        }
-                        vkCmdClearAttachments(currentCmdBuffer, clearAttachments.size(), clearAttachments.data(), 1, &clearRect);
-                    }
-                }
-
-                const auto viewport = currentCamera->getViewport();
-                VkViewport vp{viewport.x, viewport.y, viewport.z, viewport.w, 0, 1};
-                vkCmdSetViewport(currentCmdBuffer, 0, 1, &vp);
-
-                VkRect2D scissor{{0, 0}, {vp.width, vp.height}}; // TODO proper values
-                vkCmdSetScissor(currentCmdBuffer, 0, 1, &scissor);
-
-                break;
-            }
-
-            case RenderCommandType::EndCamera:
-            {
-                currentCamera = nullptr;
-                break;
-            }
-
-            case RenderCommandType::DrawMeshPart:
-            {
-                if (currentCamera)
-                {
-                    drawMeshPart(
-                        currentCmdBuffer,
-                        *currentRenderPass,
-                        cmd.meshPart.material,
-                        cmd.meshPart.transform,
-                        cmd.meshPart.mesh,
-                        currentCamera,
-                        cmd.meshPart.part
-                    );
-                }
-
-                break;
-            }
-
-            case RenderCommandType::DrawMesh:
-            {
-                if (currentCamera)
-                {
-                    drawMesh(
-                        currentCmdBuffer,
-                        *currentRenderPass,
-                        cmd.mesh.material,
-                        cmd.mesh.transform,
-                        cmd.mesh.mesh,
-                        currentCamera
-                    );
-                }
-
-                break;
-            }
-
-            default:
-                break;
-        }
-    }
-
     for (auto &pair: renderPassContexts)
     {
         if (!pair.second.started)
@@ -538,7 +498,7 @@ void VulkanRenderer::endFrame()
         SL_VK_CHECK_RESULT(vkEndCommandBuffer(cmdBuffer));
     }
 
-    VkSemaphore prevSemaphore = presentCompleteSem;
+    VkSemaphore prevSemaphore = swapchain.moveNext();
     for (auto &pass: passesToRender)
     {
         auto &ctx = renderPassContexts.at(pass);

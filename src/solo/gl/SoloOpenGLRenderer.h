@@ -10,8 +10,6 @@
 #ifdef SL_OPENGL_RENDERER
 
 #include "SoloRenderer.h"
-#include "SoloRenderCommand.h"
-#include <functional>
 
 namespace solo
 {
@@ -23,23 +21,17 @@ namespace solo
         explicit OpenGLRenderer(Device *device);
         ~OpenGLRenderer() {}
 
-        void addRenderCommand(const RenderCommand &cmd) override final;
+        void beginCamera(Camera *camera, FrameBuffer *renderTarget) override final;
+        void endCamera(Camera *camera) override final;
+        void drawMesh(Mesh *mesh, Transform *transform, Material *material) override final;
+        void drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material) override final;
 
     protected:
         void beginFrame() override final;
         void endFrame() override final;
 
     private:
-        struct RenderStep
-        {
-            RenderCommand cmd;
-            std::function<void()> beginCamera;
-            std::function<void()> endCamera;
-            std::function<void()> applyMaterialState;
-        };
-
-        // Note: maybe not the fastest, but convenient and good enough for now
-        vec<RenderStep> renderSteps;
+        Camera *currentCamera = nullptr;
     };
 }
 

@@ -8,7 +8,6 @@
 #include "SoloMaterial.h"
 #include "SoloTransform.h"
 #include "SoloDevice.h"
-#include "SoloRenderCommand.h"
 
 using namespace solo;
 
@@ -29,7 +28,7 @@ void MeshRenderer::render()
     {
         const auto material = getMaterial(0);
         if (material)
-            renderer->addRenderCommand(RenderCommand::drawMesh(mesh.get(), transform, material.get()));
+            renderer->drawMesh(mesh.get(), transform, material.get());
     }
     else
     {
@@ -37,7 +36,7 @@ void MeshRenderer::render()
         {
             const auto material = getMaterial(part);
             if (material)
-                renderer->addRenderCommand(RenderCommand::drawMeshPart(mesh.get(), part, transform, material.get()));
+                renderer->drawMeshPart(mesh.get(), part, transform, material.get());
         }
     }
 }

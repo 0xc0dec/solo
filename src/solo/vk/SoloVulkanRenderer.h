@@ -15,7 +15,6 @@
 #include "SoloRenderer.h"
 #include "SoloVulkanSwapchain.h"
 #include "SoloVulkanPipeline.h"
-#include "SoloRenderCommand.h"
 #include "SoloVulkan.h"
 #include "SoloVulkanDescriptorPool.h"
 #include "SoloVulkanBuffer.h"
@@ -33,6 +32,11 @@ namespace solo
         explicit VulkanRenderer(Device *device);
         ~VulkanRenderer() {}
 
+        void beginCamera(Camera *camera, FrameBuffer *renderTarget) override final;
+        void endCamera(Camera *camera) override final;
+        void drawMesh(Mesh *mesh, Transform *transform, Material *material) override final;
+        void drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material) override final;
+
         // TODO avoid these?
         auto getDevice() const -> VkDevice { return device; }
         auto getPhysicalDevice() const -> VkPhysicalDevice { return physicalDevice; }
@@ -44,8 +48,6 @@ namespace solo
         auto getColorSpace() const -> VkColorSpaceKHR { return colorSpace; }
         auto getCommandPool() const -> VkCommandPool { return commandPool; }
         auto getQueue() const -> VkQueue { return queue; }
-
-        void addRenderCommand(const RenderCommand &cmd) override final { renderCommands.push_back(cmd); }
 
     protected:
         void beginFrame() override final;
@@ -66,8 +68,6 @@ namespace solo
         VkQueue queue = nullptr;
         VulkanResource<VkDebugReportCallbackEXT> debugCallback;
         VulkanSwapchain swapchain;
-
-        vec<RenderCommand> renderCommands;
 
         struct PipelineContext
         {
@@ -93,6 +93,11 @@ namespace solo
 
         // TODO clear entries when no longer used
         umap<size_t, PipelineContext> pipelineContexts;
+
+        Camera *currentCamera = nullptr;
+        VulkanRenderPass *currentRenderPass = nullptr;
+        VkCommandBuffer currentCmdBuffer = nullptr;
+        vec<VulkanRenderPass*> passesToRender;
 
         void prepareAndBindMesh(VkCommandBuffer cmdBuf, VkRenderPass renderPass, Material *material,
             Transform *transform, Mesh *mesh, Camera *camera);

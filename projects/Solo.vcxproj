@@ -69,7 +69,6 @@
     <ClInclude Include="..\src\solo\SoloQuaternion.h" />
     <ClInclude Include="..\src\solo\SoloRadian.h" />
     <ClInclude Include="..\src\solo\SoloRay.h" />
-    <ClInclude Include="..\src\solo\SoloRenderCommand.h" />
     <ClInclude Include="..\src\solo\SoloRenderer.h" />
     <ClInclude Include="..\src\solo\SoloRigidBody.h" />
     <ClInclude Include="..\src\solo\SoloScene.h" />

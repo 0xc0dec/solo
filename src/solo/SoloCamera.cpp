@@ -11,8 +11,6 @@
 #include "SoloScene.h"
 #include "SoloRay.h"
 #include "SoloRenderer.h"
-#include "SoloRenderCommand.h"
-#include "SoloFrameBuffer.h"
 
 using namespace solo;
 
@@ -143,9 +141,9 @@ auto Camera::getInvViewProjectionMatrix() const -> const Matrix
 
 void Camera::renderFrame(std::function<void()> render)
 {
-    renderer->addRenderCommand(RenderCommand::beginCamera(this, renderTarget.get()));
+    renderer->beginCamera(this, renderTarget.get());
     render();
-    renderer->addRenderCommand(RenderCommand::endCamera(this));
+    renderer->endCamera(this);
 }
 
 auto Camera::windowPointToWorldRay(const Vector2 &pt) -> Ray

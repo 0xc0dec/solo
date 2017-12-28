@@ -10,7 +10,6 @@
 #include "SoloTransform.h"
 #include "SoloDevice.h"
 #include "SoloTexture.h"
-#include "SoloRenderCommand.h"
 
 using namespace solo;
 
@@ -30,7 +29,7 @@ FontRenderer::FontRenderer(const Node &node) :
 void FontRenderer::render()
 {
     if (mesh)
-        renderer->addRenderCommand(RenderCommand::drawMesh(mesh.get(), transform, material.get()));
+        renderer->drawMesh(mesh.get(), transform, material.get());
 }
 
 void FontRenderer::setFont(sptr<Font> newFont)
