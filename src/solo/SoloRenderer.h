@@ -16,7 +16,6 @@ namespace solo
     class Mesh;
     class Transform;
     class Material;
-    struct RenderCommand;
 
     class Renderer
     {
