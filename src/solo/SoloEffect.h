@@ -16,7 +16,6 @@ namespace solo
     public:
         SL_DISABLE_COPY_AND_MOVE(Effect)
 
-        static auto loadFromFiles(Device *device, const str &vsPath, const str &fsPath) -> sptr<Effect>;
         static auto loadFromFile(Device *device, const str &path) -> sptr<Effect>;
         static auto createFromSource(
             Device *device,

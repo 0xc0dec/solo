@@ -3,4 +3,4 @@
 -- MIT license
 -- 
 
-assert(sl.Effect.loadFromFiles ~= nil)
+assert(sl.Effect.loadFromFile ~= nil)
