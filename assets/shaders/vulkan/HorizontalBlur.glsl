@@ -1,3 +1,20 @@
+// VERTEX
+
+#version 450
+
+layout (location = 0) in vec4 position;
+layout (location = 1) in vec2 texCoord0;
+
+layout (location = 0) out vec2 uv0;
+
+void main()
+{
+    gl_Position = position;
+    uv0 = texCoord0;
+}
+
+// FRAGMENT
+
 #version 450
 
 layout (binding = 0) uniform Variables
@@ -22,8 +39,8 @@ void main()
         fragColor = texture(mainTex, uv0) * weight[0];
         for (int i = 1; i < 5; i++)
         {
-            fragColor += texture(mainTex, uv0 + vec2(0, offset[i])) * weight[i];
-            fragColor += texture(mainTex, uv0 - vec2(0, offset[i])) * weight[i];
+            fragColor += texture(mainTex, uv0 + vec2(offset[i], 0)) * weight[i];
+            fragColor += texture(mainTex, uv0 - vec2(offset[i], 0)) * weight[i];
         }
     }
     else

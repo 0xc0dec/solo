@@ -1,3 +1,5 @@
+// VERTEX
+
 #version 450
 
 layout (binding = 0) uniform Matrices
@@ -16,4 +18,19 @@ void main()
     outTexCood.y = 1 - outTexCood.y;
 	gl_Position = matrices.wvp * vec4(position.xyz, 1.0);
     gl_Position.y = -gl_Position.y;
+}
+
+// FRAGMENT
+
+#version 450
+
+layout (binding = 1) uniform sampler2D mainTex;
+
+layout (location = 0) in vec2 inTexCoord;
+
+layout (location = 0) out vec4 outFragColor;
+
+void main()
+{
+    outFragColor = texture(mainTex, inTexCoord);
 }

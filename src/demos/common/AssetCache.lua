@@ -19,12 +19,11 @@ return function()
 
     return {
         getEffect = function(name)
-            local vsPath = getShaderPath(name .. ".vert")
-            local fsPath = getShaderPath(name .. ".frag")
-            local key = vsPath .. fsPath
+            local path = getShaderPath(name)
+            local key = path
 
             if not cache[key] then
-                cache[key] = sl.Effect.loadFromFiles(sl.device, vsPath, fsPath)
+                cache[key] = sl.Effect.loadFromFile(sl.device, path)
             end
 
             return cache[key]

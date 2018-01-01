@@ -1,3 +1,5 @@
+// VERTEX
+
 #version 330 core
 
 layout (location = 0) in vec4 position;
@@ -10,4 +12,18 @@ void main()
 {
     gl_Position = wvp * position;
     uv0 = texCoord0;
+}
+
+// FRAGMENT
+
+#version 330 core
+
+uniform vec4 color;
+
+in vec2 uv0;
+out vec4 fragColor;
+
+void main()
+{
+    fragColor = color;
 }
