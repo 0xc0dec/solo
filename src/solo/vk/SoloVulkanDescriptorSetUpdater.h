@@ -20,7 +20,7 @@ namespace solo
 
         auto forUniformBuffer(u32 binding, VkDescriptorSet set, VkBuffer buffer, VkDeviceSize offset,
             VkDeviceSize range) -> VulkanDescriptorSetUpdater&;
-        auto forTexture(u32 binding, VkDescriptorSet set, VkImageView view, VkSampler sampler,
+        auto forImageSampler(u32 binding, VkDescriptorSet set, VkImageView view, VkSampler sampler,
             VkImageLayout layout) -> VulkanDescriptorSetUpdater&;
 
         void updateSets();

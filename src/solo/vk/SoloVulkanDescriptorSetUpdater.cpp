@@ -21,7 +21,7 @@ auto VulkanDescriptorSetUpdater::forUniformBuffer(u32 binding, VkDescriptorSet s
     return *this;
 }
 
-auto VulkanDescriptorSetUpdater::forTexture(u32 binding, VkDescriptorSet set, VkImageView view,
+auto VulkanDescriptorSetUpdater::forImageSampler(u32 binding, VkDescriptorSet set, VkImageView view,
     VkSampler sampler, VkImageLayout layout) -> VulkanDescriptorSetUpdater&
 {
     items.push_back({{}, {sampler, view, layout}, binding, set});

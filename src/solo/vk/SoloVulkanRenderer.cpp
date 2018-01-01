@@ -443,7 +443,7 @@ void VulkanRenderer::prepareAndBindMesh(
     for (auto &pair : materialSamplers)
     {
         auto &info = pair.second;
-        updater.forTexture(
+        updater.forImageSampler(
             info.binding,
             context.descSet,
             info.texture->getImage().getView(),
