@@ -31,6 +31,12 @@ namespace solo
         void init() override final;
         void update() override final;
 
+        auto getOrder() const -> s32 { return order; }
+        void setOrder(s32 order) { this->order = order; }
+
+        auto getTagMask() const -> u32 { return tagMask; }
+        void setTagMask(u32 mask) { tagMask = mask; }
+
         void renderFrame(std::function<void()> render);
 
         auto windowPointToWorldRay(const Vector2 &pt) -> Ray;
@@ -88,6 +94,9 @@ namespace solo
         float zNear = 1;
         float zFar = 100;
         float aspectRatio = 1;
+
+        s32 order = 0;
+        u32 tagMask = ~0;
 
         mutable u32 lastTransformVersion = ~0;
         mutable u32 dirtyFlags = ~0;

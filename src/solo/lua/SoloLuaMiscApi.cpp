@@ -48,8 +48,6 @@ static void registerScene(CppBindModule<LuaBinding> &module)
     REG_METHOD(scene, Scene, createNode);
     REG_METHOD(scene, Scene, removeNode);
     REG_METHOD(scene, Scene, removeNodeById);
-    REG_METHOD(scene, Scene, visit);
-    REG_METHOD(scene, Scene, visitByTags);
     scene.endClass();
 }
 
@@ -106,7 +104,6 @@ static void registerFileSystem(CppBindModule<LuaBinding> &module)
 static void registerRenderer(CppBindModule<LuaBinding> &module)
 {
     auto renderer = BEGIN_CLASS(module, Renderer);
-    REG_METHOD(renderer, Renderer, renderFrame);
     renderer.endClass();
 }
 
@@ -127,11 +124,11 @@ static void registerAsyncHandles(CppBindModule<LuaBinding> &module)
 
 void registerMiscApi(CppBindModule<LuaBinding> &module)
 {
-    registerRenderer(module);
     registerFileSystem(module);
     registerEffect(module);
     registerMeshRenderer(module);
     registerScene(module);
+    registerRenderer(module);
     registerLogger(module);
     registerFrameBuffer(module);
     registerSpectator(module);

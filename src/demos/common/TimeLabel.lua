@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-return function(scene, tag)
+return function(scene, layer)
     local font
 
     local createUpdater = function()
@@ -33,7 +33,7 @@ return function(scene, tag)
 
     local node = scene:createNode()
     node:addScriptComponent(createUpdater())
-    node:findComponent("FontRenderer"):setTag(tag)
+    node:findComponent("FontRenderer"):setLayer(layer)
     node:findComponent("Transform"):setLocalScale(vec3(0.02, 0.02, 1))
     node:findComponent("Transform"):setLocalPosition(vec3(-3, 0, 4))
 end

@@ -7,8 +7,6 @@ local scene = sl.Scene.create(sl.device)
 local cam = scene:createNode():addComponent("Camera")
 local v4 = sl.Vector4(1, 2, 3, 4)
 
-cam:renderFrame(function(ctx) end)
-
 assert(cam:getTransform())
 
 cam:setRenderTarget(sl.FrameBuffer.create(sl.device))
@@ -40,6 +38,12 @@ assert(cam:getOrthoSize() ~= nil)
 cam:setOrthoSize(sl.Vector2(1, 2))
 
 assert(cam:getAspectRatio() ~= nil)
+
+assert(cam:getTagMask() ~= nil)
+cam:setTagMask(123)
+
+assert(cam:getOrder() ~= nil)
+cam:setOrder(3)
 
 assert(cam:getViewMatrix())
 assert(cam:getInvViewMatrix())

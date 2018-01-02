@@ -13,5 +13,3 @@ node = scene:createNode()
 scene:removeNodeById(node:getId())
 
 assert(scene:getDevice())
-scene:visit(function(cmp) end)
-scene:visitByTags(1, function(cmp) end)

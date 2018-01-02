@@ -13,6 +13,7 @@ namespace solo
     class Device;
     class Component;
     class Node;
+    class Camera;
 
     class Scene final
     {
@@ -33,8 +34,8 @@ namespace solo
         void addComponent(u32 nodeId, sptr<Component> cmp);
         void removeComponent(u32 nodeId, u32 typeId);
 
-        void visit(std::function<void(Component*)> accept);
-        void visitByTags(u32 tagMask, std::function<void(Component*)> accept);
+        void update();
+        void render();
 
     private:
         using NodeComponents = umap<u32, sptr<Component>>;
@@ -50,9 +51,12 @@ namespace solo
         u32 nodeCounter = 0;
         umap<u32, umap<u32, ComponentContext>> nodes;
         umap<u32, uset<u32>> deletedComponents;
+        vec<Camera*> cameras;
 
         explicit Scene(Device *device);
 
         void cleanupDeleted();
+        void visit(std::function<void(Component*)> accept);
+        void visitByTags(u32 tagMask, std::function<void(Component*)> accept);
     };
 }

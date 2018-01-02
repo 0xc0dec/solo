@@ -109,6 +109,8 @@ static void registerComponent(CppBindModule<LuaBinding> &module)
     REG_METHOD(component, Component, getTypeId);
     REG_METHOD(component, Component, getTag);
     REG_METHOD(component, Component, setTag);
+    REG_METHOD(component, Component, getLayer);
+    REG_METHOD(component, Component, setLayer);
     REG_METHOD(component, Component, getNode);
     component.endClass();
 }

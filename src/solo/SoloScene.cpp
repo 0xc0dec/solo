@@ -8,6 +8,7 @@
 #include "SoloTransform.h"
 #include "SoloNode.h"
 #include "SoloDevice.h"
+#include "SoloCamera.h"
 
 using namespace solo;
 
@@ -74,6 +75,9 @@ void Scene::addComponent(u32 nodeId, sptr<Component> cmp)
 
     nodes[nodeId][typeId].component = cmp;
     cmp->init();
+
+    if (cmp->getTypeId() == Camera::getId())
+        cameras.push_back(static_cast<Camera*>(cmp.get()));
 }
 
 void Scene::removeComponent(u32 nodeId, u32 typeId)
@@ -93,6 +97,9 @@ void Scene::removeComponent(u32 nodeId, u32 typeId)
     cmp.component->terminate();
 
     deletedComponents[nodeId].insert(typeId);
+
+    if (cmp.component->getTypeId() == Camera::getId())
+        cameras.erase(std::remove(cameras.begin(), cameras.end(), cmp.component.get()));
 }
 
 void Scene::visit(std::function<void(Component*)> accept)
@@ -110,8 +117,43 @@ void Scene::visitByTags(u32 tagMask, std::function<void(Component*)> accept)
                 accept(cmp.second.component.get());
         }
     }
+}
 
+void Scene::update()
+{
+    visit([](Component *cmp) { cmp->update(); });
     cleanupDeleted();
+}
+
+// TODO More optimal, avoid several component traversals
+void Scene::render()
+{
+    std::sort(cameras.begin(), cameras.end(), [](auto c1, auto c2) { return c1->getOrder() < c2->getOrder(); });
+
+    s32 usedLayers[32]{};
+    visit([&](Component *cmp)
+    {
+        if (cmp->getLayer() < 32)
+            usedLayers[cmp->getLayer()] = 1;
+    });
+
+    for (auto &camera: cameras)
+    {
+        camera->renderFrame([&]()
+        {
+            for (s32 layer = 0; layer < 32; layer++)
+            {
+                if (!usedLayers[layer])
+                    continue;
+            
+                visitByTags(camera->getTagMask(), [&](Component *cmp)
+                {
+                    if (cmp->getLayer() == layer)
+                        cmp->render();
+                });
+            }
+        });
+    }
 }
 
 auto Scene::findComponent(u32 nodeId, u32 typeId) const -> Component*

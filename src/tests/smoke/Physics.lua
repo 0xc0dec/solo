@@ -7,7 +7,6 @@ local physics = sl.device:getPhysics()
 local v1 = sl.Vector3(1, 2, 3)
 local v2 = sl.Vector3(2, 3, 4)
 
-physics:update()
 physics:setGravity(v1)
 
 local rtr = physics:rayTestFirst(v1, v2)

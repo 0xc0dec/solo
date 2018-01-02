@@ -44,7 +44,6 @@ static void registerRayTestResult(CppBindModule<LuaBinding> &module)
 static void registerPhysics(CppBindModule<LuaBinding> &module)
 {
     auto ph = BEGIN_CLASS(module, Physics);
-    REG_METHOD(ph, Physics, update);
     REG_METHOD(ph, Physics, setGravity);
     REG_METHOD(ph, Physics, rayTestFirst);
     REG_METHOD(ph, Physics, rayTestAll);

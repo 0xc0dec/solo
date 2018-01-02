@@ -31,9 +31,7 @@ namespace solo
 
         virtual auto getTypeId() -> u32 = 0;
 
-        // Called when the component is added to the scene
         virtual void init() {}
-        // Called when the component is removed from the scene
         virtual void terminate() {}
         
         virtual void update() {}
@@ -44,9 +42,13 @@ namespace solo
         auto getTag() const -> u32 { return tag; }
         void setTag(u32 tag) { this->tag = tag; }
 
+        auto getLayer() const -> u32 { return layer; }
+        void setLayer(u32 layer) { this->layer = layer; }
+
     protected:
         Node node;
         u32 tag = 1;
+        u32 layer = 16;
 
         explicit Component(const Node &node): node(node)
         {

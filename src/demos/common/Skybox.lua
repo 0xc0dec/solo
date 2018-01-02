@@ -7,7 +7,7 @@ local getImagePath = function(fileName)
     return getAssetPath("textures/skyboxes/deep-space/") .. fileName
 end
 
-return function(scene, tag)
+return function(scene, layer)
     sl.CubeTexture.loadFromFaceFilesAsync(sl.device,
         getImagePath("Front.png"), getImagePath("Back.png"),
         getImagePath("Left.png"), getImagePath("Right.png"),
@@ -18,6 +18,6 @@ return function(scene, tag)
         local node = scene:createNode()
         local renderer = node:addComponent("SkyboxRenderer")
         renderer:setTexture(tex)
-        renderer:setTag(tag)
+        renderer:setLayer(layer)
     end)
 end

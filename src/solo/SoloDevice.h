@@ -100,7 +100,7 @@ namespace solo
         bool isMouseButtonDown(MouseButton button, bool firstTime = false) const;
         bool isMouseButtonReleased(MouseButton button) const;
 
-        void update(std::function<void()> update);
+        void update(Scene *currentScene);
 
         auto getMode() const -> DeviceMode { return mode; }
         bool isVsync() const { return vsync; }

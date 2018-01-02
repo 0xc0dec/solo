@@ -10,6 +10,7 @@
 #include "SoloPhysics.h"
 #include "SoloScriptRuntime.h"
 #include "SoloJobPool.h"
+#include "SoloScene.h"
 #include "null/SoloNullDevice.h"
 #include "gl/SoloOpenGLSDLDevice.h"
 #include "vk/SoloVulkanSDLDevice.h"
@@ -104,11 +105,13 @@ bool Device::isMouseButtonReleased(MouseButton button) const
     return releasedMouseButtons.find(button) != releasedMouseButtons.end();
 }
 
-void Device::update(std::function<void()> update)
+void Device::update(Scene *currentScene)
 {
     beginUpdate();
     jobPool->update(); // TODO add smth like waitForFinish() to Device and wait in it for background tasks to finish
-    update();
+    physics->update();
+    currentScene->update();
+    renderer->renderFrame([currentScene]() { currentScene->render(); });
     endUpdate();
 }
 

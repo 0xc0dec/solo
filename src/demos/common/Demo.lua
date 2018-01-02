@@ -41,6 +41,11 @@ function demo()
         postProcessor = 1 << 4
     }
 
+    local layers = {
+        skybox = 1, -- default is 16, so this render before
+        transparent = 20 -- default is 16, so this render after
+    }
+
     local cubeMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Cube)
     local quadMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Quad)
 
@@ -56,25 +61,27 @@ function demo()
     local commonTextures = loadCommonTextures()
 
     local offscreenCamera, offscreenCameraTex = createOffscreenCamera(scene)
+    offscreenCamera:setOrder(0)
+    offscreenCamera:setTagMask(~tags.monitor)
 
     local mainCamera, mainCameraNode = createMainCamera(scene)
     local mainCameraTransform = mainCameraNode:findComponent("Transform")
     mainCameraTransform:setLocalPosition(vec3(0, 5, 10))
     mainCameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
-
     mainCameraNode:addScriptComponent(createSpawner(cubeMesh, assetCache))
+    mainCamera:setOrder(1)
 
-    createSkybox(scene, tags.skybox)
+    createSkybox(scene, layers.skybox)
     createCheckerBox(scene, assetCache, cubeMesh)
     createFloor(scene, assetCache, cubeMesh, commonTextures.cobbleStone)
     createDynamicQuad(scene, assetCache)
     createLoadedMesh(scene, assetCache, commonTextures.cobbleStone)
-    createTimeLabel(scene, tags.transparent)
+    createTimeLabel(scene, layers.transparent)
 
     local monitorQuadParent = createMonitorQuad(scene, assetCache, offscreenCameraTex, quadMesh, tags.monitor)
     attachAxes(monitorQuadParent)
 
-    local transparentQuad = createTransparentQuad(scene, assetCache, quadMesh, tags.transparent)
+    local transparentQuad = createTransparentQuad(scene, assetCache, quadMesh, layers.transparent)
     attachAxes(transparentQuad)
 
     local rootNode = scene:createNode()
@@ -95,17 +102,7 @@ function demo()
                not dev:isKeyPressed(sl.KeyCode.Escape, true)
     end
 
-    function renderCmp(cmp)
-        cmp:render()
-    end
-
-    function updateCmp(cmp)
-        cmp:update()
-    end
-
     function update()
-        scene:visit(updateCmp)
-
         if dev:isKeyPressed(sl.KeyCode.Digit1, true) then
             detachPostProcessor()
             pp = postProcessors.create1(mainCamera, tags.postProcessor, assetCache)
@@ -121,35 +118,9 @@ function demo()
         end
     end
 
-    function renderOffscreenFrame()
-        scene:visitByTags(tags.skybox, renderCmp)
-        scene:visitByTags(~(tags.skybox | tags.transparent | tags.monitor | tags.postProcessor), renderCmp)
-        scene:visitByTags(tags.transparent, renderCmp)
-    end
-
-    function renderFrame()
-        scene:visitByTags(tags.skybox, renderCmp)
-        scene:visitByTags(~(tags.skybox | tags.transparent | tags.postProcessor), renderCmp)
-        scene:visitByTags(tags.transparent, renderCmp)
-    end
-
-    function render()
-        offscreenCamera:renderFrame(renderOffscreenFrame)
-        mainCamera:renderFrame(renderFrame)
-        if pp then
-            pp:apply()
-        end
-    end
-
-    function updateAndRender()
-        physics:update()
-        update()
-        renderer:renderFrame(render)
-    end
-
     function run()
         while keepRunning() do
-            dev:update(updateAndRender)
+            dev:update(scene)
             collectgarbage("collect")
         end
     end
