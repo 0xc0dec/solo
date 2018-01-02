@@ -79,14 +79,14 @@ function demo()
 
     ---
 
-    function keepRunning()
-        return not dev:isQuitRequested() and
-               not dev:isWindowCloseRequested() and
-               not dev:isKeyPressed(sl.KeyCode.Escape, true)
+    function shouldStop()
+        return dev:isQuitRequested() or
+               dev:isWindowCloseRequested() or
+               dev:isKeyPressed(sl.KeyCode.Escape, true)
     end
 
     function run()
-        while keepRunning() do
+        while not shouldStop() do
             dev:update(scene)
             collectgarbage("collect")
         end
