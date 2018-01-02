@@ -19,9 +19,7 @@ return function(mesh, assetCache)
     highlightMaterial:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     highlightMaterial:setVector4Parameter("variables.color", vec4(1, 1, 0, 1))
 
-    return {
-        typeId = sl.getCmpId("Spawner"),
-
+    return sl.createComponent("Spawner", {
         init = function(self)
             self.transform = self.node:findComponent("Transform")
             self.scene = self.node:getScene()
@@ -53,7 +51,7 @@ return function(mesh, assetCache)
 
             local node = self.scene:createNode()
             
-            node:addScriptComponent({ typeId = sl.getCmpId("SpawnedObject") })
+            node:addScriptComponent(sl.createComponent("SpawnedObject", {}))
             
             local renderer = node:addComponent("MeshRenderer")
             renderer:setMesh(mesh)
@@ -108,5 +106,5 @@ return function(mesh, assetCache)
             self.prevHighlighted = renderer
             self.prevHighlightedMaterial = prevMaterial
         end
-    }
+    })
 end

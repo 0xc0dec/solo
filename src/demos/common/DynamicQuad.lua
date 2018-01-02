@@ -7,9 +7,7 @@ return function(scene, assetCache)
     local createUpdater = function(data, mesh)
         local time = 0
 
-        return {
-            typeId = sl.getCmpId("DynamicQuadUpdater"),
-
+        return sl.createComponent("DynamicQuadUpdater", {
             update = function()
                 time = time + 2 * sl.device:getTimeDelta()
                 data[3] = 0.5 * math.sin(time + 1)
@@ -18,7 +16,7 @@ return function(scene, assetCache)
                 data[18] = 0.5 * math.sin(time + 4)
                 mesh:updateDynamicVertexBuffer(0, 0, data, 4)
             end
-        }
+        })
     end
 
     local layout = sl.VertexBufferLayout()

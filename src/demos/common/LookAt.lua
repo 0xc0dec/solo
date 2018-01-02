@@ -6,9 +6,7 @@
 require "Common"
 
 return function(targetPos)
-    return {
-        typeId = sl.getCmpId("LookAt"),
-
+    return sl.createComponent("LookAt", {
         init = function(self)
             self.transform = self.node:findComponent("Transform")
         end,
@@ -16,5 +14,5 @@ return function(targetPos)
         update = function(self)
             self.transform:lookAt(targetPos, vec3(0, 1, 0))
         end
-    }
+    })
 end

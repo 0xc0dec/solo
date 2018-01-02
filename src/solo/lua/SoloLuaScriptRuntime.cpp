@@ -61,6 +61,11 @@ static void registerLibrary(LuaState &state)
 
             return id
         end
+
+        sl.createComponent = function(id, shape)
+            shape.typeId = sl.getCmpId(id)
+            return shape
+        end
     )");
 }
 

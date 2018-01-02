@@ -4,13 +4,12 @@
 -- 
 
 return function(path)
-    return {
-        typeId = sl.getCmpId("Screenshoter"),
+    return sl.createComponent("Screenshoter", {
 
         update = function()
             if sl.device:isKeyPressed(sl.KeyCode.P, true) then
                 sl.device:saveScreenshot(path)
             end
         end
-    }
+    })
 end

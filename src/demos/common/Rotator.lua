@@ -4,8 +4,7 @@
 -- 
 
 return function(space, axis, speed)
-    return {
-        typeId = sl.getCmpId("Rotator"),
+    return sl.createComponent("Rotator", {
 
         init = function(self)
             self.transform = self.node:findComponent("Transform")
@@ -19,5 +18,5 @@ return function(space, axis, speed)
             end
             self.transform:rotateByAxisAngle(axis, sl.Radian(angle), rotationSpace)
         end
-    }
+    })
 end

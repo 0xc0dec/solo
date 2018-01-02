@@ -9,9 +9,7 @@ return function(scene, tag)
     local createUpdater = function()
         local renderer
 
-        return {
-            typeId = sl.getCmpId("TimeLabelUpdater"),
-
+        return sl.createComponent("TimeLabelUpdater", {
             init = function(self)
                 renderer = self.node:addComponent("FontRenderer")
                 renderer:setFont(font)
@@ -20,7 +18,7 @@ return function(scene, tag)
             update = function()
                 renderer:setText(os.date("Now is %H:%M:%S"))
             end
-        }
+        })
     end
 
     local textureWidth = 1024
