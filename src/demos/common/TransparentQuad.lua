@@ -6,8 +6,9 @@
 require "Common"
 
 local createRotator = require "Rotator"
+local layers = require "Layers"
 
-return function(scene, assetCache, mesh, layer)
+return function(scene, assetCache, mesh)
     local tex = sl.Texture2d.loadFromFile(sl.device, getAssetPath("textures/Flammable.png"), true)
     tex:setAnisotropyLevel(16)
     tex:setWrap(sl.TextureWrap.ClampToEdge)
@@ -32,7 +33,7 @@ return function(scene, assetCache, mesh, layer)
     local renderer = node:addComponent("MeshRenderer")
     renderer:setMesh(mesh)
     renderer:setMaterial(0, material)
-    renderer:setLayer(layer)
+    renderer:setLayer(layers.transparent)
 
     return parent
 end

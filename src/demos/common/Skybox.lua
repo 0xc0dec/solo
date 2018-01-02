@@ -3,11 +3,13 @@
 -- MIT license
 -- 
 
+local layers = require "Layers"
+
 local getImagePath = function(fileName)
     return getAssetPath("textures/skyboxes/deep-space/") .. fileName
 end
 
-return function(scene, layer)
+return function(scene)
     sl.CubeTexture.loadFromFaceFilesAsync(sl.device,
         getImagePath("Front.png"), getImagePath("Back.png"),
         getImagePath("Left.png"), getImagePath("Right.png"),
@@ -18,6 +20,6 @@ return function(scene, layer)
         local node = scene:createNode()
         local renderer = node:addComponent("SkyboxRenderer")
         renderer:setTexture(tex)
-        renderer:setLayer(layer)
+        renderer:setLayer(layers.skybox)
     end)
 end

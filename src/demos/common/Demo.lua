@@ -34,11 +34,6 @@ function demo()
 
     ---
 
-    local layers = {
-        skybox = 1, -- default is 16, so this render before
-        transparent = 20 -- default is 16, so this render after
-    }
-
     local cubeMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Cube)
     local quadMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Quad)
 
@@ -66,17 +61,17 @@ function demo()
     mainCamera:setOrder(1)
     mainCamera:setTagMask(~tags.allPostProcessorSteps)
 
-    createSkybox(scene, layers.skybox)
+    createSkybox(scene)
     createCheckerBox(scene, assetCache, cubeMesh)
     createFloor(scene, assetCache, cubeMesh, commonTextures.cobbleStone)
     createDynamicQuad(scene, assetCache)
     createLoadedMesh(scene, assetCache, commonTextures.cobbleStone)
-    createTimeLabel(scene, layers.transparent)
+    createTimeLabel(scene)
 
     local monitorQuadParent = createMonitorQuad(scene, assetCache, offscreenCameraTex, quadMesh)
     attachAxes(monitorQuadParent)
 
-    local transparentQuad = createTransparentQuad(scene, assetCache, quadMesh, layers.transparent)
+    local transparentQuad = createTransparentQuad(scene, assetCache, quadMesh)
     attachAxes(transparentQuad)
 
     local rootNode = scene:createNode()
