@@ -5,8 +5,9 @@
 
 local createRotator = require "Rotator"
 local createLookAt = require "LookAt"
+local tags = require "Tags"
 
-return function(scene, assetCache, offscreenCameraTex, quadMesh, tag)
+return function(scene, assetCache, offscreenCameraTex, quadMesh)
 	local canvasSize = sl.device:getCanvasSize()
 
     local material = sl.Material.create(sl.device, assetCache.getEffect("Texture"))
@@ -29,7 +30,7 @@ return function(scene, assetCache, offscreenCameraTex, quadMesh, tag)
     local renderer = node:addComponent("MeshRenderer")
     renderer:setMesh(quadMesh)
     renderer:setMaterial(0, material)
-    renderer:setTag(tag)
+    renderer:setTag(tags.monitor)
 
     return parent
 end

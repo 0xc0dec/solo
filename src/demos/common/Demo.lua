@@ -3,7 +3,6 @@
 -- MIT license
 -- 
 
-package.path = "../../src/demos/demo2/?.lua;" .. package.path
 package.path = "../../src/demos/common/?.lua;" .. package.path
 
 require "Common"
@@ -25,21 +24,15 @@ function demo()
     local createCheckerBox = require "CheckerBox"
     local createDynamicQuad = require "DynamicQuad"
     local createTransparentQuad = require "TransparentQuad"
-    local postProcessors = require "PostProcessors"
     local createLoadedMesh = require "LoadedMesh"
     local createTimeLabel = require "TimeLabel"
     local createSpawner = require "Spawner"
     local createMonitorQuad = require "MonitorQuad"
     local createOffscreenCamera = require "OffscreenCamera"
+    local createPostProcessor = require "PostProcessor"
+    local tags = require "Tags"
 
     ---
-
-    local tags = {
-        skybox = 1 << 1,
-        transparent = 1 << 2,
-        monitor = 1 << 3,
-        postProcessor = 1 << 4
-    }
 
     local layers = {
         skybox = 1, -- default is 16, so this render before
@@ -62,14 +55,16 @@ function demo()
 
     local offscreenCamera, offscreenCameraTex = createOffscreenCamera(scene)
     offscreenCamera:setOrder(0)
-    offscreenCamera:setTagMask(~tags.monitor)
+    offscreenCamera:setTagMask(~(tags.monitor | tags.allPostProcessorSteps))
 
     local mainCamera, mainCameraNode = createMainCamera(scene)
     local mainCameraTransform = mainCameraNode:findComponent("Transform")
     mainCameraTransform:setLocalPosition(vec3(0, 5, 10))
     mainCameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
     mainCameraNode:addScriptComponent(createSpawner(cubeMesh, assetCache))
+    mainCameraNode:addScriptComponent(createPostProcessor(assetCache))
     mainCamera:setOrder(1)
+    mainCamera:setTagMask(~tags.allPostProcessorSteps)
 
     createSkybox(scene, layers.skybox)
     createCheckerBox(scene, assetCache, cubeMesh)
@@ -78,7 +73,7 @@ function demo()
     createLoadedMesh(scene, assetCache, commonTextures.cobbleStone)
     createTimeLabel(scene, layers.transparent)
 
-    local monitorQuadParent = createMonitorQuad(scene, assetCache, offscreenCameraTex, quadMesh, tags.monitor)
+    local monitorQuadParent = createMonitorQuad(scene, assetCache, offscreenCameraTex, quadMesh)
     attachAxes(monitorQuadParent)
 
     local transparentQuad = createTransparentQuad(scene, assetCache, quadMesh, layers.transparent)
@@ -89,33 +84,10 @@ function demo()
 
     ---
 
-    function detachPostProcessor()
-        if pp then
-            pp:detach()
-            pp = nil
-        end
-    end
-
     function keepRunning()
         return not dev:isQuitRequested() and
                not dev:isWindowCloseRequested() and
                not dev:isKeyPressed(sl.KeyCode.Escape, true)
-    end
-
-    function update()
-        if dev:isKeyPressed(sl.KeyCode.Digit1, true) then
-            detachPostProcessor()
-            pp = postProcessors.create1(mainCamera, tags.postProcessor, assetCache)
-        end
-
-        if dev:isKeyPressed(sl.KeyCode.Digit2, true) then
-            detachPostProcessor()
-            pp = postProcessors.create2(mainCamera, tags.postProcessor, assetCache)
-        end
-
-        if dev:isKeyPressed(sl.KeyCode.Digit3, true) then
-            detachPostProcessor()
-        end
     end
 
     function run()
