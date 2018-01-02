@@ -23,9 +23,6 @@ namespace solo
         void update() override final;
         void render() override final;
 
-        void handleComponentAdded(Component *cmp) override final;
-        void handleComponentRemoved(Component *cmp) override final;
-
         auto getTypeId() -> u32 override final { return typeId; }
 
         auto getRef() const -> LuaIntf::LuaRef { return ref; }
@@ -38,7 +35,5 @@ namespace solo
         std::function<void(LuaIntf::LuaRef)> terminateFunc;
         std::function<void(LuaIntf::LuaRef)> updateFunc;
         std::function<void(LuaIntf::LuaRef)> renderFunc;
-        std::function<void(LuaIntf::LuaRef, Component*)> onComponentAddedFunc;
-        std::function<void(LuaIntf::LuaRef, Component*)> onComponentRemovedFunc;
     };
 }

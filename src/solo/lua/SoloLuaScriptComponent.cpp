@@ -31,14 +31,6 @@ LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef ref):
         ? ref.get<std::function<void(LuaRef)>>("render")
         : [](LuaRef) {};
     
-    onComponentAddedFunc = ref.has("onComponentAddedFunc")
-        ? ref.get<std::function<void(LuaRef, Component*)>>("onComponentAddedFunc")
-        : [](LuaRef, Component*) {};
-    
-    onComponentRemovedFunc = ref.has("onComponentRemovedFunc")
-        ? ref.get<std::function<void(LuaRef, Component*)>>("onComponentRemovedFunc")
-        : [](LuaRef, Component*) {};
-    
     ref.set("node", node);
 }
 
@@ -62,12 +54,3 @@ void LuaScriptComponent::render()
     renderFunc(ref);
 }
 
-void LuaScriptComponent::handleComponentAdded(Component* cmp)
-{
-    onComponentAddedFunc(ref, cmp);
-}
-
-void LuaScriptComponent::handleComponentRemoved(Component* cmp)
-{
-    onComponentRemovedFunc(ref, cmp);
-}

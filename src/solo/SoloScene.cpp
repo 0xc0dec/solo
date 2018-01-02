@@ -21,6 +21,21 @@ Scene::Scene(Device *device):
 {
 }
 
+void Scene::cleanupDeleted()
+{
+    // "Garbage collect" deleted stuff
+    for (auto &nodeComponents: deletedComponents)
+    {
+        auto nodeId = nodeComponents.first;
+        for (auto cmpId: nodeComponents.second)
+            nodes.at(nodeId).erase(cmpId);
+        if (nodes.at(nodeId).empty())
+            nodes.erase(nodeId);
+    }
+
+    deletedComponents.clear();
+}
+
 auto Scene::createNode() -> sptr<Node>
 {
     auto node = std::make_shared<Node>(this, nodeCounter++);
@@ -59,9 +74,6 @@ void Scene::addComponent(u32 nodeId, sptr<Component> cmp)
 
     nodes[nodeId][typeId].component = cmp;
     cmp->init();
-
-    for (const auto &a : nodes.at(nodeId))
-        a.second.component->handleComponentAdded(cmp.get());
 }
 
 void Scene::removeComponent(u32 nodeId, u32 typeId)
@@ -81,9 +93,6 @@ void Scene::removeComponent(u32 nodeId, u32 typeId)
     cmp.component->terminate();
 
     deletedComponents[nodeId].insert(typeId);
-
-    for (const auto &otherCmp : nodeComponents)
-        otherCmp.second.component->handleComponentRemoved(cmp.component.get());
 }
 
 void Scene::visit(std::function<void(Component*)> accept)
@@ -102,17 +111,7 @@ void Scene::visitByTags(u32 tagMask, std::function<void(Component*)> accept)
         }
     }
 
-    // "Garbage collect" deleted stuff
-    for (auto &nodeComponents: deletedComponents)
-    {
-        auto nodeId = nodeComponents.first;
-        for (auto cmpId: nodeComponents.second)
-            nodes.at(nodeId).erase(cmpId);
-        if (nodes.at(nodeId).empty())
-            nodes.erase(nodeId);
-    }
-
-    deletedComponents.clear();
+    cleanupDeleted();
 }
 
 auto Scene::findComponent(u32 nodeId, u32 typeId) const -> Component*

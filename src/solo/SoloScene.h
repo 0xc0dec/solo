@@ -52,5 +52,7 @@ namespace solo
         umap<u32, uset<u32>> deletedComponents;
 
         explicit Scene(Device *device);
+
+        void cleanupDeleted();
     };
 }

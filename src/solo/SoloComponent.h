@@ -39,9 +39,6 @@ namespace solo
         virtual void update() {}
         virtual void render() {}
 
-        virtual void handleComponentAdded(Component *cmp) {}
-        virtual void handleComponentRemoved(Component *cmp) {}
-
         auto getNode() const -> Node { return node; }
 
         auto getTag() const -> u32 { return tag; }
