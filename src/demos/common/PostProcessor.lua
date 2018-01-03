@@ -7,7 +7,7 @@ require "Common"
 
 local tags = require "Tags"
 
-function createStep(parentCamera, material, target, cameraOrder, tag)
+local function createStep(parentCamera, material, target, cameraOrder, tag)
     local scene = parentCamera:getNode():getScene()
 
     local cameraNode = scene:createNode()
@@ -29,7 +29,7 @@ function createStep(parentCamera, material, target, cameraOrder, tag)
     end
 end
 
-local init1 = function(camera, assetCache)
+local function init1(camera, assetCache)
     local canvasSize = sl.device:getCanvasSize()
 
     local createTarget = function()
@@ -95,7 +95,7 @@ local init1 = function(camera, assetCache)
     end
 end
 
-local init2 = function(camera, assetCache)
+local function init2(camera, assetCache)
     local stitchWidth = 30
     local canvasSize = sl.device:getCanvasSize()
 
@@ -141,7 +141,7 @@ end
 return function(assetCache)
     local cleanup = nil
     
-    function cleanupAndReset()
+    local function cleanupAndReset()
         if cleanup then
             cleanup()
             cleanup = nil
