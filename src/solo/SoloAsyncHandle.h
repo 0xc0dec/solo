@@ -24,7 +24,7 @@ namespace solo
             this->callback = callback;
         }
 
-        void finish(sptr<T> result)
+        void resolve(sptr<T> result)
         {
             if (callback)
             {

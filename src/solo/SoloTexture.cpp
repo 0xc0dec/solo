@@ -65,7 +65,7 @@ auto Texture2d::loadFromFileAsync(Device *device, const str &path, bool generate
     auto consumer = [handle, device, generateMipmaps](const vec<sptr<Texture2dData>> &results)
     {
         auto texture = createFromData(device, results[0].get(), generateMipmaps);
-        handle->finish(texture);
+        handle->resolve(texture);
     };
 
     device->getJobPool()->addJob(std::make_shared<JobBase<Texture2dData>>(producers, consumer));
@@ -137,7 +137,7 @@ auto CubeTexture::loadFromFaceFilesAsync(
     auto consumer = [handle, device](const vec<sptr<CubeTextureData>> &results)
     {
         auto texture = createFromData(device, results[0].get());
-        handle->finish(texture);
+        handle->resolve(texture);
     };
 
     device->getJobPool()->addJob(std::make_shared<JobBase<CubeTextureData>>(producers, consumer));

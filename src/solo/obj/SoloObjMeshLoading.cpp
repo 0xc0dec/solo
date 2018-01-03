@@ -190,7 +190,7 @@ auto obj::loadMeshAsync(Device *device, const str &path) -> sptr<AsyncHandle<Mes
         for (auto &part : data->parts)
             mesh->addPart(part.data(), part.size());
 
-        handle->finish(mesh);
+        handle->resolve(mesh);
     };
 
     device->getJobPool()->addJob(std::make_shared<JobBase<Data>>(producers, consumer));
