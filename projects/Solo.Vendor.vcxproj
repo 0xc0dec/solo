@@ -287,7 +287,7 @@
     <ProjectGuid>{085AFD38-02E2-4DF4-B3F4-2F28708CFDD1}</ProjectGuid>
     <RootNamespace>solovendor</RootNamespace>
     <ProjectName>Solo.Vendor</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
