@@ -34,7 +34,6 @@ static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMa
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
     u64 obj, size_t location, s32 code, const s8 *layerPrefix, const s8 *msg, void *userData)
 {
-    SL_PANIC(msg);
     return VK_FALSE;
 }
 
@@ -45,10 +44,10 @@ static auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEX
     createInfo.flags = VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT;
     createInfo.pfnCallback = callbackFunc;
 
-    auto create = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT"));
+	const auto create = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT"));
     SL_PANIC_IF(!create, "Failed to load pointer to vkCreateDebugReportCallbackEXT");
 
-    auto destroy = reinterpret_cast<PFN_vkDestroyDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkDestroyDebugReportCallbackEXT"));
+	const auto destroy = reinterpret_cast<PFN_vkDestroyDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkDestroyDebugReportCallbackEXT"));
     SL_PANIC_IF(!destroy, "Failed to load pointer to vkDestroyDebugReportCallbackEXT");
 
     VulkanResource<VkDebugReportCallbackEXT> result{instance, destroy};

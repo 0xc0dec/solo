@@ -120,6 +120,7 @@ static void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageLayo
                 imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
             imageMemoryBarrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
             break;
+
         default:
             break;
     }
