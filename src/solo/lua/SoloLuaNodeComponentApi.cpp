@@ -95,7 +95,7 @@ static void addScriptComponent(Node *node, LuaRef scriptComponent)
     node->getScene()->addComponent(node->getId(), actualComponent);
 }
 
-static void removeScriptComponent(Node *node, LuaRef scriptComponent)
+static void removeScriptComponent(Node *node, const LuaRef& scriptComponent)
 {
     const auto typeId = scriptComponent.get<u32>("typeId") + LuaScriptComponent::MinComponentTypeId;
     node->getScene()->removeComponent(node->getId(), typeId);

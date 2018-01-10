@@ -10,7 +10,6 @@
 #include "SoloDevice.h"
 #include "SoloVulkan.h"
 #include "SoloVulkanRenderer.h"
-#include "SoloVulkanPrefabShaders.h"
 #include <spirv_cross/spirv.hpp>
 #include <spirv_cross/spirv_cross.hpp>
 #include <spirv_cross/spirv_glsl.hpp>
@@ -45,8 +44,8 @@ static auto compileToSpiv(const void *src, u32 srcLen, const str &fileName, bool
         options
     );
 
-    auto compilationStatus = result.GetCompilationStatus();
-    auto errorMessage = result.GetErrorMessage();
+	const auto compilationStatus = result.GetCompilationStatus();
+	const auto errorMessage = result.GetErrorMessage();
     SL_PANIC_IF(compilationStatus != shaderc_compilation_status_success, errorMessage);
 
     return result;
@@ -77,10 +76,6 @@ VulkanEffect::VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, cons
     introspectShader(static_cast<const u32*>(fsSrc), fsSrcLen / sizeof(u32), false);
 }
 
-VulkanEffect::~VulkanEffect()
-{
-}
-
 auto VulkanEffect::getUniformBuffer(const str &name) -> UniformBuffer
 {
     if (uniformBuffers.count(name))
@@ -104,7 +99,7 @@ void VulkanEffect::introspectShader(const u32 *src, u32 len, bool vertex)
 
     for (auto &buffer: resources.uniform_buffers)
     {
-        const auto name = compiler.get_name(buffer.id);
+        const auto& name = compiler.get_name(buffer.id);
         uniformBuffers[name].binding = compiler.get_decoration(buffer.id, spv::DecorationBinding);
 
         u32 size = 0;
