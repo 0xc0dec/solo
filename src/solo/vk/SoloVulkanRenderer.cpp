@@ -287,7 +287,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
     const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->getEffect().get());
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
 
-    auto key = getPipelineContextKey(transform, camera, material);
+	const auto key = getPipelineContextKey(transform, camera, material);
     auto &context = pipelineContexts[key];
 
     if (!context.descSet)
@@ -373,7 +373,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
             }
         }
 
-        context.pipeline = std::move(VulkanPipeline{device, renderPass, pipelineConfig});
+        context.pipeline = VulkanPipeline{device, renderPass, pipelineConfig};
         context.lastMaterialFlagsHash = materialFlagsHash;
         context.lastMeshLayoutHash = meshLayoutHash;
     }
@@ -434,7 +434,7 @@ void VulkanRenderer::prepareAndBindMesh(
     // TODO Not necessary (?), buffers don't change anyway, only their content
     for (auto &pair : context.uniformBuffers)
     {
-        const auto info = uniformBufs.at(pair.first);
+        const auto& info = uniformBufs.at(pair.first);
         auto &buffer = pair.second;
         updater.forUniformBuffer(info.binding, context.descSet, buffer, 0, info.size); // TODO use single large buffer?
     }
@@ -492,7 +492,7 @@ void VulkanRenderer::endFrame()
             continue;
         
         pair.second.started = false;
-        const VkCommandBuffer cmdBuffer = pair.second.cmdBuffer;
+	    const VkCommandBuffer cmdBuffer = pair.second.cmdBuffer;
         pair.first->end(cmdBuffer);
         SL_VK_CHECK_RESULT(vkEndCommandBuffer(cmdBuffer));
     }
