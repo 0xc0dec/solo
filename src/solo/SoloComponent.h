@@ -27,7 +27,7 @@ namespace solo
     public:
         SL_DISABLE_COPY_AND_MOVE(Component)
 
-        virtual ~Component() {}
+        virtual ~Component() = default;
 
         virtual auto getTypeId() -> u32 = 0;
 

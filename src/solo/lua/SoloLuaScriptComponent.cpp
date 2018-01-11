@@ -9,29 +9,29 @@
 
 using namespace solo;
 
-LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef ref):
+LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef scriptComponent):
     ComponentBase<LuaScriptComponent>(node),
-    ref(ref)
+    ref(scriptComponent)
 {
-    typeId = MinComponentTypeId + ref.get<u32>("typeId");
+    typeId = minComponentTypeId + scriptComponent.get<u32>("typeId");
     
-    initFunc = ref.has("init")
-        ? ref.get<std::function<void(LuaRef)>>("init")
+    initFunc = scriptComponent.has("init")
+        ? scriptComponent.get<std::function<void(LuaRef)>>("init")
         : [](LuaRef) {};
     
-    updateFunc = ref.has("update")
-        ? ref.get<std::function<void(LuaRef)>>("update")
+    updateFunc = scriptComponent.has("update")
+        ? scriptComponent.get<std::function<void(LuaRef)>>("update")
         : [](LuaRef) {};
     
-    terminateFunc = ref.has("terminate")
-        ? ref.get<std::function<void(LuaRef)>>("terminate")
+    terminateFunc = scriptComponent.has("terminate")
+        ? scriptComponent.get<std::function<void(LuaRef)>>("terminate")
         : [](LuaRef) {};
     
-    renderFunc = ref.has("render")
-        ? ref.get<std::function<void(LuaRef)>>("render")
+    renderFunc = scriptComponent.has("render")
+        ? scriptComponent.get<std::function<void(LuaRef)>>("render")
         : [](LuaRef) {};
     
-    ref.set("node", node);
+    scriptComponent.set("node", node);
 }
 
 void LuaScriptComponent::init()

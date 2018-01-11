@@ -32,11 +32,11 @@ static auto findComponent(Node *node, const str &name) -> Component*
     if (name == "RigidBody")
         return node->findComponent<RigidBody>();
 
-    SL_PANIC(SL_FMT("Unknown standard component ", name));
+    SL_PANIC(SL_FMT("Unknown built-in component ", name));
     return nullptr;
 }
 
-static auto addComponent(Node *node, const str &name, LuaRef arg) -> Component*
+static auto addComponent(Node *node, const str &name, const LuaRef& arg) -> Component*
 {
     if (name == "Transform")
         return node->addComponent<Transform>();
@@ -53,7 +53,7 @@ static auto addComponent(Node *node, const str &name, LuaRef arg) -> Component*
     if (name == "RigidBody")
         return node->addComponent<RigidBody>(arg.toValue<RigidBodyConstructionParameters>());
 
-    SL_PANIC(SL_FMT("Unknown standard component ", name))
+    SL_PANIC(SL_FMT("Unknown built-in component ", name))
     return nullptr;
 }
 
@@ -79,7 +79,7 @@ static void removeComponent(Node *node, const str &name)
 
 static auto findScriptComponent(Node *node, u32 typeId) -> LuaRef
 {
-    const auto cmp = node->getScene()->findComponent(node->getId(), typeId + LuaScriptComponent::MinComponentTypeId);
+    const auto cmp = node->getScene()->findComponent(node->getId(), typeId + LuaScriptComponent::minComponentTypeId);
     if (cmp)
     {
         const auto scriptComponent = dynamic_cast<LuaScriptComponent*>(cmp);
@@ -97,7 +97,7 @@ static void addScriptComponent(Node *node, LuaRef scriptComponent)
 
 static void removeScriptComponent(Node *node, const LuaRef& scriptComponent)
 {
-    const auto typeId = scriptComponent.get<u32>("typeId") + LuaScriptComponent::MinComponentTypeId;
+    const auto typeId = scriptComponent.get<u32>("typeId") + LuaScriptComponent::minComponentTypeId;
     node->getScene()->removeComponent(node->getId(), typeId);
 }
 

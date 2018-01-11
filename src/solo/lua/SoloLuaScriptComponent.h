@@ -14,7 +14,7 @@ namespace solo
     class LuaScriptComponent final : public ComponentBase<LuaScriptComponent>
     {
     public:
-        static const u32 MinComponentTypeId = 1000000000; // Assume that built-in components don't ever exceed this limit
+        static const u32 minComponentTypeId = 1000000000; // Assume that built-in components don't ever exceed this limit
 
         LuaScriptComponent(const Node& node, LuaIntf::LuaRef scriptComponent);
 
