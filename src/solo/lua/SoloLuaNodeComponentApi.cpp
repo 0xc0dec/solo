@@ -15,25 +15,20 @@
 
 using namespace solo;
 
+static umap<str, u32> builtInComponents = {
+	{"Transform", Transform::getId()},
+	{"MeshRenderer", MeshRenderer::getId()},
+	{"Camera", Camera::getId()},
+	{"Spectator", Spectator::getId()},
+	{"SkyboxRenderer", SkyboxRenderer::getId()},
+	{"FontRenderer", FontRenderer::getId()},
+	{"RigidBody", RigidBody::getId()}
+};
+
 static auto findComponent(Node *node, const str &name) -> Component*
 {
-    if (name == "Transform")
-        return node->findComponent<Transform>();
-    if (name == "MeshRenderer")
-        return node->findComponent<MeshRenderer>();
-    if (name == "Camera")
-        return node->findComponent<Camera>();
-    if (name == "Spectator")
-        return node->findComponent<Spectator>();
-    if (name == "SkyboxRenderer")
-        return node->findComponent<SkyboxRenderer>();
-    if (name == "FontRenderer")
-        return node->findComponent<FontRenderer>();
-    if (name == "RigidBody")
-        return node->findComponent<RigidBody>();
-
-    SL_PANIC(SL_FMT("Unknown built-in component ", name));
-    return nullptr;
+	SL_PANIC_IF(!builtInComponents.count(name), SL_FMT("Not found built-in component ", name));
+	return node->getScene()->findComponent(node->getId(), builtInComponents.at(name));
 }
 
 static auto addComponent(Node *node, const str &name, const LuaRef& arg) -> Component*
@@ -59,22 +54,8 @@ static auto addComponent(Node *node, const str &name, const LuaRef& arg) -> Comp
 
 static void removeComponent(Node *node, const str &name)
 {
-    if (name == "Transform")
-        node->removeComponent<Transform>();
-    else if (name == "MeshRenderer")
-        node->removeComponent<MeshRenderer>();
-    else if (name == "Camera")
-        node->removeComponent<Camera>();
-    else if (name == "Spectator")
-        node->removeComponent<Spectator>();
-    else if (name == "SkyboxRenderer")
-        node->removeComponent<SkyboxRenderer>();
-    else if (name == "FontRenderer")
-        node->removeComponent<FontRenderer>();
-    else if (name == "RigidBody")
-        node->removeComponent<RigidBody>();
-    else
-        SL_PANIC(SL_FMT("Unknown standard component ", name));
+	SL_PANIC_IF(!builtInComponents.count(name), SL_FMT("Not found built-in component ", name));
+	node->getScene()->removeComponent(node->getId(), builtInComponents.at(name));
 }
 
 static auto findScriptComponent(Node *node, u32 typeId) -> LuaRef
