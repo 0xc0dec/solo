@@ -22,7 +22,6 @@ return function(physics)
             else
                 self.hitNode = nil
             end
-            print(self.hitNode)
         end,
     });
 end
