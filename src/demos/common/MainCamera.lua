@@ -5,7 +5,7 @@
 
 local createScreenshoter = require "Screenshoter"
 
-return function(scene)
+return function(scene, physics)
     local node = scene:createNode()
     
     node:addComponent("Spectator")

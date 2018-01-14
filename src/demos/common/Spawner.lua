@@ -4,8 +4,6 @@
 -- 
 
 return function(mesh, assetCache)
-    local physics = sl.device:getPhysics()
-
     local effect = assetCache.getEffect("Color")
 
     local material = sl.Material.create(sl.device, effect)
@@ -24,6 +22,7 @@ return function(mesh, assetCache)
             self.transform = self.node:findComponent("Transform")
             self.scene = self.node:getScene()
             self.camera = self.node:findComponent("Camera")
+            self.tracer = self.node:findScriptComponent(sl.getCmpId("Tracer"))
         end,
 
         update = function(self)
@@ -38,6 +37,7 @@ return function(mesh, assetCache)
                 if target then
                     if sl.device:isMouseButtonDown(sl.MouseButton.Left, true) then
                         self.scene:removeNode(target)
+                        self.tracer.hitNode = nil -- Reset so that it's not picked anywhere else
                     else
                         self:highlight(target)
                     end
@@ -82,17 +82,12 @@ return function(mesh, assetCache)
         end,
 
         findUnderCursor = function(self)
-            local mousePos = sl.device:getMousePosition()
-            local ray = self.camera:windowPointToWorldRay(mousePos)
-            local from = ray:getOrigin()
-            local to = from + ray:getDirection() * 100
-            local hitResult = physics:rayTestFirst(from, to)
+            local hitNode = self.tracer.hitNode
 
-            if hitResult.body then
-                local node = hitResult.body:getNode()
-                local spawnedObject = node:findScriptComponent(sl.getCmpId("SpawnedObject"))
+            if hitNode then
+                local spawnedObject = hitNode:findScriptComponent(sl.getCmpId("SpawnedObject"))
                 if spawnedObject then
-                    return node
+                    return hitNode
                 end
             end
 

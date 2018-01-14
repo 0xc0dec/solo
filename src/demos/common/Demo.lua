@@ -30,6 +30,7 @@ function demo()
     local createMonitorQuad = require "MonitorQuad"
     local createOffscreenCamera = require "OffscreenCamera"
     local createPostProcessor = require "PostProcessor"
+    local createTracer = require "Tracer"
     local tags = require "Tags"
 
     ---
@@ -52,10 +53,11 @@ function demo()
     offscreenCamera:setOrder(0)
     offscreenCamera:setTagMask(~(tags.monitor | tags.allPostProcessorSteps))
 
-    local mainCamera, mainCameraNode = createMainCamera(scene)
+    local mainCamera, mainCameraNode = createMainCamera(scene, physics)
     local mainCameraTransform = mainCameraNode:findComponent("Transform")
     mainCameraTransform:setLocalPosition(vec3(0, 5, 10))
     mainCameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
+    mainCameraNode:addScriptComponent(createTracer(physics))
     mainCameraNode:addScriptComponent(createSpawner(cubeMesh, assetCache))
     mainCameraNode:addScriptComponent(createPostProcessor(assetCache))
     mainCamera:setOrder(1)
