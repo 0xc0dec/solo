@@ -3,12 +3,12 @@
 -- MIT license
 -- 
 
-return function(scene, assetCache, cubeMesh, texture)
+return function(scene, assetCache)
     local effect = assetCache.getEffect("Texture")
     local material = sl.Material.create(sl.device, effect)
     material:setFaceCull(sl.FaceCull.None)
     material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-    material:setTextureParameter("mainTex", texture)
+    material:setTextureParameter("mainTex", assetCache.textures.cobbleStone)
 
     local node = scene:createNode()
     
@@ -17,7 +17,7 @@ return function(scene, assetCache, cubeMesh, texture)
     transform:setLocalPosition(vec3(0, -2, 0))
 
     local renderer = node:addComponent("MeshRenderer")
-    renderer:setMesh(cubeMesh)
+    renderer:setMesh(assetCache.meshes.cube)
     renderer:setMaterial(0, material)
 
     local params = sl.RigidBodyConstructionParameters()

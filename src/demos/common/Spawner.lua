@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-return function(mesh, assetCache)
+return function(assetCache)
     local effect = assetCache.getEffect("Color")
 
     local material = sl.Material.create(sl.device, effect)
@@ -54,7 +54,7 @@ return function(mesh, assetCache)
             node:addScriptComponent(sl.createComponent("SpawnedObject", {}))
             
             local renderer = node:addComponent("MeshRenderer")
-            renderer:setMesh(mesh)
+            renderer:setMesh(assetCache.meshes.cube)
             renderer:setMaterial(0, material)
     
             local transform = node:findComponent("Transform")

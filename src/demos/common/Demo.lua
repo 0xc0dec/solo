@@ -31,24 +31,10 @@ function demo()
     local createOffscreenCamera = require "OffscreenCamera"
     local createPostProcessor = require "PostProcessor"
     local createTracer = require "Tracer"
+    local createPostProcessorControlPanel = require "PostProcessorControlPanel"
     local tags = require "Tags"
 
     ---
-
-    local cubeMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Cube)
-    local quadMesh = sl.Mesh.createFromPrefab(dev, sl.MeshPrefab.Quad)
-
-    function loadCommonTextures()
-        local cobbleStone = sl.Texture2d.loadFromFile(sl.device, getAssetPath("textures/Cobblestone.png"), true)
-        cobbleStone:setAnisotropyLevel(16)
-
-        return {
-            cobbleStone = cobbleStone
-        }
-    end
-
-    local commonTextures = loadCommonTextures()
-
     local offscreenCamera, offscreenCameraTex = createOffscreenCamera(scene)
     offscreenCamera:setOrder(0)
     offscreenCamera:setTagMask(~(tags.monitor | tags.allPostProcessorSteps))
@@ -58,22 +44,23 @@ function demo()
     mainCameraTransform:setLocalPosition(vec3(0, 5, 10))
     mainCameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
     mainCameraNode:addScriptComponent(createTracer(physics))
-    mainCameraNode:addScriptComponent(createSpawner(cubeMesh, assetCache))
+    mainCameraNode:addScriptComponent(createSpawner(assetCache))
     mainCameraNode:addScriptComponent(createPostProcessor(assetCache))
+    mainCameraNode:addScriptComponent(createPostProcessorControlPanel(assetCache))
     mainCamera:setOrder(1)
     mainCamera:setTagMask(~tags.allPostProcessorSteps)
 
     createSkybox(scene)
-    createCheckerBox(scene, assetCache, cubeMesh)
-    createFloor(scene, assetCache, cubeMesh, commonTextures.cobbleStone)
+    createCheckerBox(scene, assetCache)
+    createFloor(scene, assetCache)
     createDynamicQuad(scene, assetCache)
-    createLoadedMesh(scene, assetCache, commonTextures.cobbleStone)
+    createLoadedMesh(scene, assetCache)
     createTimeLabel(scene)
 
-    local monitorQuadParent = createMonitorQuad(scene, assetCache, offscreenCameraTex, quadMesh)
+    local monitorQuadParent = createMonitorQuad(scene, assetCache, offscreenCameraTex)
     attachAxes(monitorQuadParent)
 
-    local transparentQuad = createTransparentQuad(scene, assetCache, quadMesh)
+    local transparentQuad = createTransparentQuad(scene, assetCache)
     attachAxes(transparentQuad)
 
     local rootNode = scene:createNode()

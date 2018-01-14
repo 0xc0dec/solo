@@ -5,7 +5,7 @@
 
 local createRotator = require "Rotator"
 
-return function(scene, assetCache, cubeMesh)
+return function(scene, assetCache)
     local effect = assetCache.getEffect("Checker")
     local material = sl.Material.create(sl.device, effect)
     material:setFaceCull(sl.FaceCull.None)
@@ -13,7 +13,7 @@ return function(scene, assetCache, cubeMesh)
     material:setVector4Parameter("variables.color", vec4(1, 1, 0, 1))
 
     local node = scene:createNode()
-    node:addComponent("MeshRenderer"):setMesh(cubeMesh)
+    node:addComponent("MeshRenderer"):setMesh(assetCache.meshes.cube)
     node:findComponent("MeshRenderer"):setMaterial(0, material)
     node:findComponent("Transform"):setLocalPosition(vec3(-5, 0, 0))
     node:addScriptComponent(createRotator("world", vec3(0, 1, 0), 2))
