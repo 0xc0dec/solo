@@ -56,9 +56,11 @@ return function(assetCache)
             local renderer = node:addComponent("MeshRenderer")
             renderer:setMesh(assetCache.meshes.cube)
             renderer:setMaterial(0, material)
+
+            local size = 0.1 + math.random()
     
             local transform = node:findComponent("Transform")
-            transform:setLocalScale(vec3(0.3, 0.3, 0.3))
+            transform:setLocalScale(vec3(size, size, size))
             transform:setLocalPosition(initialPos)
             transform:setLocalRotation(initialRotation)
     

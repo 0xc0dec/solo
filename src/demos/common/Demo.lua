@@ -46,7 +46,7 @@ function demo()
     mainCameraNode:addScriptComponent(createTracer(physics))
     mainCameraNode:addScriptComponent(createSpawner(assetCache))
     mainCameraNode:addScriptComponent(createPostProcessor(assetCache))
-    mainCameraNode:addScriptComponent(createPostProcessorControlPanel(assetCache))
+    mainCameraNode:addScriptComponent(createPostProcessorControlPanel(assetCache, mainCameraNode))
     mainCamera:setOrder(1)
     mainCamera:setTagMask(~tags.allPostProcessorSteps)
 
