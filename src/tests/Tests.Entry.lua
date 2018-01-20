@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-deviceSetup = sl.DeviceSetup()
+deviceSetup = sl.DeviceSetup.new()
 deviceSetup.mode = sl.DeviceMode.Null
 deviceSetup.canvasWidth = 100
 deviceSetup.canvasHeight = 100

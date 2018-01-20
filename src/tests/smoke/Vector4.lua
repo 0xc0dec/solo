@@ -3,8 +3,8 @@
 -- MIT license
 -- 
 
-local v1 = sl.Vector4(1, 2, 3, 4)
-local v2 = sl.Vector4(1, 2, 3, 4)
+local v1 = sl.Vector4.new()
+local v2 = sl.Vector4.new(1, 2, 3, 4)
 
 assert(v1.x ~= nil)
 assert(v1.y ~= nil)

@@ -3,8 +3,8 @@
 -- MIT license
 -- 
 
-local v1 = sl.Vector2(2, 3)
-local v2 = sl.Vector2(4, 5)
+local v1 = sl.Vector2.new()
+local v2 = sl.Vector2.new(4, 5)
 
 assert(v1.x ~= nil)
 assert(v1.y ~= nil)
