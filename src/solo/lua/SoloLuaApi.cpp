@@ -16,6 +16,10 @@
 #include "SoloRadian.h"
 #include "SoloMatrix.h"
 #include "SoloRay.h"
+#include "SoloTransform.h"
+#include "SoloTexture.h"
+#include "SoloMaterial.h"
+#include "SoloMesh.h"
 
 using namespace solo;
 
@@ -29,6 +33,179 @@ static void registerEnums(sol::table &module)
 		ENUM_FIELD(DeviceMode, Null),
 		ENUM_FIELD(DeviceMode, OpenGL),
 		ENUM_FIELD(DeviceMode, Vulkan)
+	);
+
+	module.new_enum(
+		"TransformSpace",
+		ENUM_FIELD(TransformSpace, Parent),
+		ENUM_FIELD(TransformSpace, Self),
+		ENUM_FIELD(TransformSpace, World)
+	);
+
+	module.new_enum(
+		"TextureWrap",
+		ENUM_FIELD(TextureWrap, ClampToBorder),
+		ENUM_FIELD(TextureWrap, ClampToEdge),
+		ENUM_FIELD(TextureWrap, MirrorRepeat),
+		ENUM_FIELD(TextureWrap, Repeat)
+	);
+
+	module.new_enum(
+		"TextureFormat",
+		ENUM_FIELD(TextureFormat, RGB),
+		ENUM_FIELD(TextureFormat, RGBA),
+		ENUM_FIELD(TextureFormat, Red)
+	);
+
+	module.new_enum(
+		"TextureFilter",
+		ENUM_FIELD(TextureFilter, Linear),
+		ENUM_FIELD(TextureFilter, Nearest)
+	);
+
+	module.new_enum(
+		"TextureMipFilter",
+		ENUM_FIELD(TextureMipFilter, Nearest),
+		ENUM_FIELD(TextureMipFilter, Linear),
+		ENUM_FIELD(TextureMipFilter, None)
+	);
+
+	module.new_enum(
+		"MaterialPrefab",
+		ENUM_FIELD(MaterialPrefab, Font),
+		ENUM_FIELD(MaterialPrefab, Skybox)
+	);
+
+	module.new_enum(
+		"FaceCull",
+		ENUM_FIELD(FaceCull, None),
+		ENUM_FIELD(FaceCull, Back),
+		ENUM_FIELD(FaceCull, Front)
+	);
+
+	module.new_enum(
+		"PolygonMode",
+		ENUM_FIELD(PolygonMode, Fill),
+		ENUM_FIELD(PolygonMode, Points),
+		ENUM_FIELD(PolygonMode, Wireframe)
+	);
+
+	module.new_enum(
+		"DepthFunction",
+		ENUM_FIELD(DepthFunction, Always),
+		ENUM_FIELD(DepthFunction, Equal),
+		ENUM_FIELD(DepthFunction, GEqual),
+		ENUM_FIELD(DepthFunction, Greater),
+		ENUM_FIELD(DepthFunction, LEqual),
+		ENUM_FIELD(DepthFunction, Less),
+		ENUM_FIELD(DepthFunction, Never),
+		ENUM_FIELD(DepthFunction, NotEqual)
+	);
+
+	module.new_enum(
+		"BlendFactor",
+		ENUM_FIELD(BlendFactor, Zero),
+		ENUM_FIELD(BlendFactor, One),
+		ENUM_FIELD(BlendFactor, SrcColor),
+		ENUM_FIELD(BlendFactor, OneMinusSrcColor),
+		ENUM_FIELD(BlendFactor, DstColor),
+		ENUM_FIELD(BlendFactor, OneMinusDstColor),
+		ENUM_FIELD(BlendFactor, SrcAlpha),
+		ENUM_FIELD(BlendFactor, OneMinusSrcAlpha),
+		ENUM_FIELD(BlendFactor, DstAlpha),
+		ENUM_FIELD(BlendFactor, OneMinusDstAlpha),
+		ENUM_FIELD(BlendFactor, ConstantAlpha),
+		ENUM_FIELD(BlendFactor, OneMinusConstantAlpha),
+		ENUM_FIELD(BlendFactor, SrcAlphaSaturate)
+	);
+
+	module.new_enum(
+		"BindParameterSemantics",
+		ENUM_FIELD(BindParameterSemantics, WorldMatrix),
+		ENUM_FIELD(BindParameterSemantics, ViewMatrix),
+		ENUM_FIELD(BindParameterSemantics, ProjectionMatrix),
+		ENUM_FIELD(BindParameterSemantics, WorldViewMatrix),
+		ENUM_FIELD(BindParameterSemantics, ViewProjectionMatrix),
+		ENUM_FIELD(BindParameterSemantics, WorldViewProjectionMatrix),
+		ENUM_FIELD(BindParameterSemantics, InverseTransposedWorldMatrix),
+		ENUM_FIELD(BindParameterSemantics, InverseTransposedWorldViewMatrix),
+		ENUM_FIELD(BindParameterSemantics, CameraWorldPosition)
+	);
+
+	module.new_enum(
+		"KeyCode",
+		ENUM_FIELD(KeyCode, Digit0),
+		ENUM_FIELD(KeyCode, Digit1),
+		ENUM_FIELD(KeyCode, Digit2),
+		ENUM_FIELD(KeyCode, Digit3),
+		ENUM_FIELD(KeyCode, Digit4),
+		ENUM_FIELD(KeyCode, Digit5),
+		ENUM_FIELD(KeyCode, Digit6),
+		ENUM_FIELD(KeyCode, Digit7),
+		ENUM_FIELD(KeyCode, Digit8),
+		ENUM_FIELD(KeyCode, Digit9),
+		ENUM_FIELD(KeyCode, A),
+		ENUM_FIELD(KeyCode, B),
+		ENUM_FIELD(KeyCode, C),
+		ENUM_FIELD(KeyCode, D),
+		ENUM_FIELD(KeyCode, E),
+		ENUM_FIELD(KeyCode, F),
+		ENUM_FIELD(KeyCode, G),
+		ENUM_FIELD(KeyCode, H),
+		ENUM_FIELD(KeyCode, I),
+		ENUM_FIELD(KeyCode, J),
+		ENUM_FIELD(KeyCode, K),
+		ENUM_FIELD(KeyCode, L),
+		ENUM_FIELD(KeyCode, M),
+		ENUM_FIELD(KeyCode, N),
+		ENUM_FIELD(KeyCode, O),
+		ENUM_FIELD(KeyCode, P),
+		ENUM_FIELD(KeyCode, Q),
+		ENUM_FIELD(KeyCode, R),
+		ENUM_FIELD(KeyCode, S),
+		ENUM_FIELD(KeyCode, T),
+		ENUM_FIELD(KeyCode, U),
+		ENUM_FIELD(KeyCode, V),
+		ENUM_FIELD(KeyCode, W),
+		ENUM_FIELD(KeyCode, X),
+		ENUM_FIELD(KeyCode, Y),
+		ENUM_FIELD(KeyCode, Z),
+		ENUM_FIELD(KeyCode, LeftArrow),
+		ENUM_FIELD(KeyCode, RightArrow),
+		ENUM_FIELD(KeyCode, UpArrow),
+		ENUM_FIELD(KeyCode, DownArrow),
+		ENUM_FIELD(KeyCode, Escape),
+		ENUM_FIELD(KeyCode, Backspace),
+		ENUM_FIELD(KeyCode, Space),
+		ENUM_FIELD(KeyCode, Return),
+		ENUM_FIELD(KeyCode, LeftShift),
+		ENUM_FIELD(KeyCode, LeftCtrl),
+		ENUM_FIELD(KeyCode, LeftAlt),
+		ENUM_FIELD(KeyCode, RightShift),
+		ENUM_FIELD(KeyCode, RightCtrl),
+		ENUM_FIELD(KeyCode, RightAlt)
+	);
+
+	module.new_enum(
+		"MouseButton",
+		ENUM_FIELD(MouseButton, Left),
+		ENUM_FIELD(MouseButton, Middle),
+		ENUM_FIELD(MouseButton, Right)
+	);
+
+	module.new_enum(
+		"MeshPrefab",
+		ENUM_FIELD(MeshPrefab, Cube),
+		ENUM_FIELD(MeshPrefab, Quad)
+	);
+
+	module.new_enum(
+		"PrimitiveType",
+		ENUM_FIELD(PrimitiveType, Triangles),
+		ENUM_FIELD(PrimitiveType, TriangleStrip),
+		ENUM_FIELD(PrimitiveType, Lines),
+		ENUM_FIELD(PrimitiveType, LineStrip),
+		ENUM_FIELD(PrimitiveType, Points)
 	);
 }
 
