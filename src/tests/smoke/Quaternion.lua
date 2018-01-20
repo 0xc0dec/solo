@@ -4,7 +4,8 @@
 -- 
 
 local q = sl.Quaternion.new()
--- TODO other constructors
+local q2 = sl.Quaternion.new(1, 2, 3, 4)
+local q3 = sl.Quaternion.new(sl.Vector3.new(), sl.Radian.new(1))
 
 assert(q.x ~= nil)
 assert(q.y ~= nil)

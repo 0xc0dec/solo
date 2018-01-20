@@ -3,11 +3,11 @@
 -- MIT license
 -- 
 
-local m = sl.Matrix()
-local v = sl.Vector3(1, 2, 3)
-local q = sl.Quaternion()
-local rad = sl.Radian(1)
-local ray = sl.Ray(v, v)
+local m = sl.Matrix.new()
+local v = sl.Vector3.new(1, 2, 3)
+local q = sl.Quaternion.new()
+local rad = sl.Radian.new(1)
+local ray = sl.Ray.new(v, v)
 
 assert(sl.Matrix.identity())
 assert(sl.Matrix.createLookAt(v, v, v))
@@ -28,7 +28,7 @@ assert(m:getDeterminant() ~= nil)
 assert(m:invert() ~= nil)
 m:transpose()
 
-assert(m * sl.Matrix())
+assert(m * sl.Matrix.new())
 
 assert(m:getScale() ~= nil)
 assert(m:getRotation() ~= nil)

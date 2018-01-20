@@ -14,6 +14,8 @@
 #include "SoloQuaternion.h"
 #include "SoloDegree.h"
 #include "SoloRadian.h"
+#include "SoloMatrix.h"
+#include "SoloRay.h"
 
 using namespace solo;
 
@@ -86,6 +88,94 @@ static void registerVector3(sol::table &module)
 	module.set_usertype("Vector3", vector3);
 }
 
+static void registerVector4(sol::table &module)
+{
+	const sol::constructors<Vector4(), Vector4(float, float, float, float)> ctors{};
+	sol::usertype<Vector4> vector4{
+		ctors,
+		FIELD(Vector4, x),
+		FIELD(Vector4, y),
+		FIELD(Vector4, z),
+		FIELD(Vector4, w),
+		FIELD(Vector4, isUnit),
+		FIELD(Vector4, isZero),
+		FIELD(Vector4, distance),
+		FIELD(Vector4, distanceSquared),
+		FIELD(Vector4, length),
+		FIELD(Vector4, lengthSquared),
+		FIELD(Vector4, normalized),
+		FIELD(Vector4, normalize),
+		FIELD(Vector4, angle),
+		FIELD(Vector4, clamp),
+		FIELD(Vector4, dot),
+		sol::meta_function::addition, sol::resolve<Vector4(const Vector4&)const>(&Vector4::operator+),
+		sol::meta_function::subtraction, sol::resolve<Vector4(const Vector4&)const>(&Vector4::operator-),
+		sol::meta_function::unary_minus, sol::resolve<Vector4()const>(&Vector4::operator-),
+		sol::meta_function::multiplication, &Vector4::operator*,
+		sol::meta_function::division, &Vector4::operator/
+	};
+	module.set_usertype("Vector4", vector4);
+}
+
+static void registerMatrix(sol::table &module)
+{
+	const sol::constructors<Matrix(), Matrix(const Matrix&)> ctors{};
+	sol::usertype<Matrix> matrix{
+		ctors,
+		FIELD(Matrix, identity),
+		FIELD(Matrix, isIdentity),
+		FIELD(Matrix, getDeterminant),
+		FIELD(Matrix, invert),
+		FIELD(Matrix, transpose),
+		FIELD(Matrix, createLookAt),
+		FIELD(Matrix, createPerspective),
+		FIELD(Matrix, createOrthographic),
+		FIELD(Matrix, createScale),
+		FIELD(Matrix, createRotationFromQuaternion),
+		FIELD(Matrix, createRotationFromAxisAngle),
+		FIELD(Matrix, createRotationX),
+		FIELD(Matrix, createRotationY),
+		FIELD(Matrix, createRotationZ),
+		FIELD(Matrix, createTranslation),
+		FIELD(Matrix, getScale),
+		FIELD(Matrix, getRotation),
+		FIELD(Matrix, getTranslation),
+		FIELD(Matrix, getUpVector),
+		FIELD(Matrix, getDownVector),
+		FIELD(Matrix, getLeftVector),
+		FIELD(Matrix, getRightVector),
+		FIELD(Matrix, getForwardVector),
+		FIELD(Matrix, getBackVector),
+		FIELD(Matrix, rotateByQuaternion),
+		FIELD(Matrix, rotateByAxisAngle),
+		FIELD(Matrix, rotateX),
+		FIELD(Matrix, rotateY),
+		FIELD(Matrix, rotateZ),
+		FIELD(Matrix, scaleByScalar),
+		FIELD(Matrix, scaleByVector),
+		FIELD(Matrix, translate),
+		FIELD(Matrix, transformPoint),
+		FIELD(Matrix, transformDirection),
+		FIELD(Matrix, transformRay),
+		FIELD(Matrix, decompose),
+		sol::meta_function::multiplication, sol::resolve<Matrix(const Matrix&)const>(&Matrix::operator*),
+	};
+	module.set_usertype("Matrix", matrix);
+}
+
+static void registerRay(sol::table &module)
+{
+	const sol::constructors<Ray(), Ray(const Vector3&, const Vector3&), Ray(float, float, float, float, float, float)> ctors{};
+	sol::usertype<Ray> ray{
+		ctors,
+		FIELD(Ray, getOrigin),
+		FIELD(Ray, setOrigin),
+		FIELD(Ray, getDirection),
+		FIELD(Ray, setDirection),
+	};
+	module.set_usertype("Ray", ray);
+}
+
 static void registerQuaternion(sol::table &module)
 {
 	const sol::constructors<Quaternion(), Quaternion(float, float, float, float), Quaternion(const Vector3&, const Radian&)> ctors{};
@@ -141,35 +231,6 @@ static void registerDegree(sol::table &module)
 		sol::meta_function::division, &Degree::operator/
 	};
 	module.set_usertype("Degree", degree);
-}
-
-static void registerVector4(sol::table &module)
-{
-	const sol::constructors<Vector4(), Vector4(float, float, float, float)> ctors{};
-	sol::usertype<Vector4> vector4{
-		ctors,
-		FIELD(Vector4, x),
-		FIELD(Vector4, y),
-		FIELD(Vector4, z),
-		FIELD(Vector4, w),
-		FIELD(Vector4, isUnit),
-		FIELD(Vector4, isZero),
-		FIELD(Vector4, distance),
-		FIELD(Vector4, distanceSquared),
-		FIELD(Vector4, length),
-		FIELD(Vector4, lengthSquared),
-		FIELD(Vector4, normalized),
-		FIELD(Vector4, normalize),
-		FIELD(Vector4, angle),
-		FIELD(Vector4, clamp),
-		FIELD(Vector4, dot),
-		sol::meta_function::addition, sol::resolve<Vector4(const Vector4&)const>(&Vector4::operator+),
-		sol::meta_function::subtraction, sol::resolve<Vector4(const Vector4&)const>(&Vector4::operator-),
-		sol::meta_function::unary_minus, sol::resolve<Vector4()const>(&Vector4::operator-),
-		sol::meta_function::multiplication, &Vector4::operator*,
-		sol::meta_function::division, &Vector4::operator/
-	};
-	module.set_usertype("Vector4", vector4);
 }
 
 static void registerLogger(sol::table &module)
@@ -251,6 +312,8 @@ void registerApi(sol::table &module)
 	registerDegree(module);
 	registerRadian(module);
 	registerQuaternion(module);
+	registerRay(module);
+	registerMatrix(module);
 	registerLogger(module);
 	registerFileSystem(module);
 	registerDeviceSetup(module);
