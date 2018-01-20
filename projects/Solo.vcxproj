@@ -116,6 +116,7 @@
     <ClCompile Include="..\src\solo\gl\SoloOpenGLRenderer.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLTexture.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLSDLDevice.cpp" />
+    <ClCompile Include="..\src\solo\lua\SoloLuaApi.cpp" />
     <ClCompile Include="..\src\solo\lua\SoloLuaCameraApi.cpp" />
     <ClCompile Include="..\src\solo\lua\SoloLuaDeviceApi.cpp" />
     <ClCompile Include="..\src\solo\lua\SoloLuaEnumsApi.cpp" />

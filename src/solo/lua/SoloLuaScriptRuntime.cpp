@@ -10,7 +10,6 @@
 using namespace solo;
 
 void registerEnums(CppBindModule<LuaBinding> &module);
-void registerEnums2(sol::table &module);
 void registerMathApi(CppBindModule<LuaBinding> &module);
 void registerNodeAndComponentApi(CppBindModule<LuaBinding> &module);
 void registerTransformApi(CppBindModule<LuaBinding> &module);
@@ -19,10 +18,10 @@ void registerTextureApi(CppBindModule<LuaBinding> &module);
 void registerMaterialApi(CppBindModule<LuaBinding> &module);
 void registerMiscApi(CppBindModule<LuaBinding> &module);
 void registerDeviceApi(CppBindModule<LuaBinding> &module);
-void registerDeviceApi2(sol::table &module);
 void registerPhysicsApi(CppBindModule<LuaBinding> &module);
 void registerMeshApi(CppBindModule<LuaBinding> &module);
 void registerFontApi(CppBindModule<LuaBinding> &module);
+void registerApi(sol::table &module);
 
 template <class T>
 static auto readValue(LuaIntf::LuaState &lua, const str &name) -> T
@@ -122,8 +121,7 @@ LuaScriptRuntime2::LuaScriptRuntime2()
 	state.open_libraries();
 
 	auto t = state.create_table("sl");
-	registerEnums2(t);
-	registerDeviceApi2(t);
+	registerApi(t);
 }
 
 LuaScriptRuntime2::LuaScriptRuntime2(Device* device):

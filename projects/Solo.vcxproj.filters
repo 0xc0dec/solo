@@ -362,6 +362,9 @@
     <ClCompile Include="..\src\solo\vk\SoloVulkanPrefabShaders.cpp">
       <Filter>vk</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\solo\lua\SoloLuaApi.cpp">
+      <Filter>lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bullet">
