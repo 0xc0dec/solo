@@ -210,3 +210,13 @@ void registerEnums(CppBindModule<LuaBinding> &module)
         m.endModule();
     }
 }
+
+void registerEnums2(sol::table &module)
+{
+	module.new_enum(
+		"DeviceMode",
+		"Null", DeviceMode::Null,
+		"OpenGL", DeviceMode::OpenGL,
+		"Vulkan", DeviceMode::Vulkan
+	);
+}

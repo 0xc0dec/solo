@@ -6,6 +6,7 @@
 #pragma once
 
 #include <LuaIntf.h>
+#include <sol.hpp>
 #include <map>
 #include <vector>
 

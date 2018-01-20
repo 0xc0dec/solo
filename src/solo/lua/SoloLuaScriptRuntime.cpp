@@ -10,6 +10,7 @@
 using namespace solo;
 
 void registerEnums(CppBindModule<LuaBinding> &module);
+void registerEnums2(sol::table &module);
 void registerMathApi(CppBindModule<LuaBinding> &module);
 void registerNodeAndComponentApi(CppBindModule<LuaBinding> &module);
 void registerTransformApi(CppBindModule<LuaBinding> &module);
@@ -18,6 +19,7 @@ void registerTextureApi(CppBindModule<LuaBinding> &module);
 void registerMaterialApi(CppBindModule<LuaBinding> &module);
 void registerMiscApi(CppBindModule<LuaBinding> &module);
 void registerDeviceApi(CppBindModule<LuaBinding> &module);
+void registerDeviceApi2(sol::table &module);
 void registerPhysicsApi(CppBindModule<LuaBinding> &module);
 void registerMeshApi(CppBindModule<LuaBinding> &module);
 void registerFontApi(CppBindModule<LuaBinding> &module);
@@ -80,11 +82,11 @@ LuaScriptRuntime::LuaScriptRuntime()
     module.endModule();
 }
 
-LuaScriptRuntime::LuaScriptRuntime(Device *d):
+LuaScriptRuntime::LuaScriptRuntime(Device *device):
     LuaScriptRuntime()
 {
     auto module = LuaBinding(lua).beginModule("sl");
-    module.addConstant("device", d);
+    module.addConstant("device", device);
     module.endModule();
 }
 
@@ -97,7 +99,7 @@ void LuaScriptRuntime::executeFile(const str& path)
 {
     if (lua.loadFile(path.c_str()))
     {
-        auto msg = lua.getString(-1);
+        const auto msg = lua.getString(-1);
         SL_PANIC(SL_FMT("Script failed to load: ", msg));
     }
 
@@ -113,4 +115,33 @@ auto LuaScriptRuntime::readString(const str& name) -> str
 auto LuaScriptRuntime::readDeviceSetup(const str &name) -> DeviceSetup
 {
     return readValue<DeviceSetup>(lua, name);
+}
+
+LuaScriptRuntime2::LuaScriptRuntime2()
+{
+	state.open_libraries();
+
+	auto t = state.create_table("sl");
+	registerEnums2(t);
+	registerDeviceApi2(t);
+}
+
+LuaScriptRuntime2::LuaScriptRuntime2(Device* device):
+	LuaScriptRuntime2()
+{
+}
+
+void LuaScriptRuntime2::executeFile(const str& path)
+{
+	state.do_file(path);
+}
+
+auto LuaScriptRuntime2::readString(const str& name) -> str
+{
+	return state[name].get<str>();
+}
+
+auto LuaScriptRuntime2::readDeviceSetup(const str& name) -> DeviceSetup
+{
+	return state[name].get<DeviceSetup>();
 }
