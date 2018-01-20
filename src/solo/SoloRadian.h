@@ -31,7 +31,6 @@ namespace solo
         auto operator-=(const Radian &r) -> Radian&;
         auto operator-=(const Degree &d) -> Radian&;
         auto operator*(float f) const -> Radian;
-        auto operator*(const Radian &f) const -> Radian;
         auto operator*=(float f) -> Radian&;
         auto operator/(float f) const -> Radian;
         auto operator/=(float f) -> Radian&;
@@ -96,11 +95,6 @@ namespace solo
     inline auto Radian::operator*(float f) const -> Radian
     {
         return Radian(raw * f);
-    }
-
-    inline auto Radian::operator*(const Radian &f) const -> Radian
-    {
-        return Radian(raw * f.raw);
     }
 
     inline auto Radian::operator*=(float f) -> Radian &

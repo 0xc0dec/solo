@@ -11,6 +11,9 @@
 #include "SoloVector2.h"
 #include "SoloVector3.h"
 #include "SoloVector4.h"
+#include "SoloQuaternion.h"
+#include "SoloDegree.h"
+#include "SoloRadian.h"
 
 using namespace solo;
 
@@ -81,6 +84,63 @@ static void registerVector3(sol::table &module)
 		sol::meta_function::division, &Vector3::operator/
 	};
 	module.set_usertype("Vector3", vector3);
+}
+
+static void registerQuaternion(sol::table &module)
+{
+	const sol::constructors<Quaternion(), Quaternion(float, float, float, float), Quaternion(const Vector3&, const Radian&)> ctors{};
+	sol::usertype<Quaternion> quaternion{
+		ctors,
+		FIELD(Quaternion, x),
+		FIELD(Quaternion, y),
+		FIELD(Quaternion, z),
+		FIELD(Quaternion, w),
+		FIELD(Quaternion, createFromAxisAngle),
+		FIELD(Quaternion, lerp),
+		FIELD(Quaternion, slerp),
+		FIELD(Quaternion, squad),
+		FIELD(Quaternion, isIdentity),
+		FIELD(Quaternion, isZero),
+		FIELD(Quaternion, conjugate),
+		FIELD(Quaternion, inverse),
+		FIELD(Quaternion, normalize),
+		FIELD(Quaternion, normalized),
+		FIELD(Quaternion, toAxisAngle),
+		sol::meta_function::multiplication, &Quaternion::operator*,
+	};
+	module.set_usertype("Quaternion", quaternion);
+}
+
+static void registerRadian(sol::table &module)
+{
+	const sol::constructors<Radian(float), Radian(const Degree&)> ctors{};
+	sol::usertype<Radian> radian{
+		ctors,
+		FIELD(Radian, toRawDegree),
+		FIELD(Radian, toRawRadian),
+		sol::meta_function::addition, sol::resolve<Radian(const Radian&)const>(&Radian::operator+),
+		sol::meta_function::subtraction, sol::resolve<Radian(const Radian&)const>(&Radian::operator-),
+		sol::meta_function::unary_minus, sol::resolve<Radian()const>(&Radian::operator-),
+		sol::meta_function::multiplication, &Radian::operator*,
+		sol::meta_function::division, &Radian::operator/
+	};
+	module.set_usertype("Radian", radian);
+}
+
+static void registerDegree(sol::table &module)
+{
+	const sol::constructors<Degree(float), Degree(const Radian&)> ctors{};
+	sol::usertype<Degree> degree{
+		ctors,
+		FIELD(Degree, toRawDegree),
+		FIELD(Degree, toRawRadian),
+		sol::meta_function::addition, sol::resolve<Degree(const Degree&)const>(&Degree::operator+),
+		sol::meta_function::subtraction, sol::resolve<Degree(const Degree&)const>(&Degree::operator-),
+		sol::meta_function::unary_minus, sol::resolve<Degree()const>(&Degree::operator-),
+		sol::meta_function::multiplication, &Degree::operator*,
+		sol::meta_function::division, &Degree::operator/
+	};
+	module.set_usertype("Degree", degree);
 }
 
 static void registerVector4(sol::table &module)
@@ -188,6 +248,9 @@ void registerApi(sol::table &module)
 	registerVector2(module);
 	registerVector3(module);
 	registerVector4(module);
+	registerDegree(module);
+	registerRadian(module);
+	registerQuaternion(module);
 	registerLogger(module);
 	registerFileSystem(module);
 	registerDeviceSetup(module);

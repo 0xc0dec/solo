@@ -13,12 +13,12 @@ function runTest(fileName)
     end
 end
 
--- runTest("smoke/DegreeRadian.lua")
+runTest("smoke/DegreeRadian.lua")
 -- runTest("smoke/Enums.lua")
 runTest("smoke/Vector2.lua")
 runTest("smoke/Vector3.lua")
 runTest("smoke/Vector4.lua")
--- runTest("smoke/Quaternion.lua")
+runTest("smoke/Quaternion.lua")
 -- runTest("smoke/Matrix.lua")
 -- runTest("smoke/Ray.lua")
 -- runTest("smoke/Device.lua")

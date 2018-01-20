@@ -31,7 +31,6 @@ namespace solo
         auto operator-=(const Degree &d) -> Degree&;
         auto operator-=(const Radian &r) -> Degree&;
         auto operator*(float f) const -> Degree;
-        auto operator*(const Degree &f) const -> Degree;
         auto operator*=(float f) -> Degree&;
         auto operator/(float f) const -> Degree;
         auto operator/=(float f) -> Degree&;
@@ -96,11 +95,6 @@ namespace solo
     inline auto Degree::operator*(float f) const -> Degree
     {
         return Degree(raw * f);
-    }
-
-    inline auto Degree::operator*(const Degree &f) const -> Degree
-    {
-        return Degree(raw * f.raw);
     }
 
     inline auto Degree::operator*=(float f) -> Degree &
