@@ -3,15 +3,13 @@
 -- MIT license
 -- 
 
-local logger = sl.device:getLogger()
-
 function runTest(fileName)
     local test = assert(loadfile("../../src/tests/" .. fileName))
     local _, err = select(1, pcall(test))
     if err then
-        logger:logError(fileName .. ": failed\n" .. err)
+        print(fileName .. ": failed\n" .. err)
     else
-        logger:logInfo(fileName .. ": success")
+        print(fileName .. ": success")
     end
 end
 

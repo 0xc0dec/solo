@@ -27,10 +27,6 @@ LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef scriptComponent)
         ? scriptComponent.get<std::function<void(LuaRef)>>("terminate")
         : [](LuaRef) {};
     
-    renderFunc = scriptComponent.has("render")
-        ? scriptComponent.get<std::function<void(LuaRef)>>("render")
-        : [](LuaRef) {};
-    
     scriptComponent.set("node", node);
 }
 
@@ -48,9 +44,3 @@ void LuaScriptComponent::update()
 {
     updateFunc(ref);
 }
-
-void LuaScriptComponent::render()
-{
-    renderFunc(ref);
-}
-

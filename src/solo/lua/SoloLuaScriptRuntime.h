@@ -6,7 +6,7 @@
 #pragma once
 
 #include "SoloScriptRuntime.h"
-#include <LuaIntf.h>
+#include "SoloLuaCommon.h"
 
 namespace solo
 {

@@ -6,7 +6,7 @@
 #pragma once
 
 #include "SoloComponent.h"
-#include <LuaIntf.h>
+#include "SoloLuaCommon.h"
 #include <functional>
 
 namespace solo
@@ -21,7 +21,6 @@ namespace solo
         void init() override final;
         void terminate() override final;
         void update() override final;
-        void render() override final;
 
         auto getTypeId() -> u32 override final { return typeId; }
 
@@ -34,6 +33,5 @@ namespace solo
         std::function<void(LuaIntf::LuaRef)> initFunc;
         std::function<void(LuaIntf::LuaRef)> terminateFunc;
         std::function<void(LuaIntf::LuaRef)> updateFunc;
-        std::function<void(LuaIntf::LuaRef)> renderFunc;
     };
 }

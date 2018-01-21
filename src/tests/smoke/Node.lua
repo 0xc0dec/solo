@@ -19,15 +19,6 @@ local cmp = {
     end,
 
     terminate = function()
-    end,
-
-    render = function(ctx)
-    end,
-
-    onComponentAdded = function(cmp)
-    end,
-
-    onComponentRemoved = function(cmp)
     end
 }
 
