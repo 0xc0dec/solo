@@ -52,4 +52,4 @@ assert(cam:getProjectionMatrix())
 assert(cam:getViewProjectionMatrix())
 assert(cam:getInvViewProjectionMatrix())
 
-assert(cam:windowPointToWorldRay(sl.Vector2.new(1, 2)))
+cam:windowPointToWorldRay(sl.Vector2.new(1, 2))

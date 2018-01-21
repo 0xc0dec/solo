@@ -8,8 +8,6 @@ local mr = scene:createNode():addMeshRenderer()
 local mesh = sl.Mesh.create(sl.device)
 local mat = sl.Material.createFromPrefab(sl.device, sl.MaterialPrefab.Skybox)
 
-mr:render()
-
 mr:setMesh(mesh)
 assert(mr:getMesh())
 mr:setMesh(nil)

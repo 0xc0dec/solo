@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-local s = sl.DeviceSetup()
+local s = sl.DeviceSetup.new()
 
 assert(s.mode)
 assert(s.canvasWidth)

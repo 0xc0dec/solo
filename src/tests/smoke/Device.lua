@@ -36,6 +36,5 @@ assert(device:isMouseButtonReleased(sl.MouseButton.Left) ~= nil)
 device:update(sl.Scene.create(device))
 
 assert(device:getFileSystem())
-assert(device:getRenderer())
 assert(device:getPhysics())
 assert(device:getLogger())

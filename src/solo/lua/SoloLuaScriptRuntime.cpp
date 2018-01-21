@@ -70,6 +70,30 @@ static void registerLibrary(LuaState &state)
     )");
 }
 
+static void registerLibrary2(sol::state &state)
+{
+    state.do_string(R"(
+        sl.getCmpId = function(name)
+            sl.__nextCmpId = sl.__nextCmpId and sl.__nextCmpId or 1
+            sl.__cmpIds = sl.__cmpIds and sl.__cmpIds or {}
+    
+            local id = sl.__cmpIds[name]
+            if not id then
+                id = sl.__nextCmpId
+                sl.__cmpIds[name] = id
+                sl.__nextCmpId = sl.__nextCmpId + 1
+            end
+
+            return id
+        end
+
+        sl.createComponent = function(id, shape)
+            shape.typeId = sl.getCmpId(id)
+            return shape
+        end
+    )");
+}
+
 LuaScriptRuntime::LuaScriptRuntime()
 {
     lua = LuaState::newState();
@@ -122,6 +146,7 @@ LuaScriptRuntime2::LuaScriptRuntime2()
 
 	auto t = state.create_table("sl");
 	registerApi(t);
+	registerLibrary2(state);
 }
 
 LuaScriptRuntime2::LuaScriptRuntime2(Device* device):

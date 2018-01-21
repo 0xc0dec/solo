@@ -28,6 +28,9 @@
 #include "SoloFontRenderer.h"
 #include "SoloRigidBody.h"
 #include "SoloFrameBuffer.h"
+#include "SoloFontRenderer.h"
+#include "SoloFont.h"
+#include "SoloBoxCollider.h"
 
 using namespace solo;
 
@@ -493,19 +496,287 @@ static void registerTransform(sol::table &module)
 	);
 }
 
+static void setAttachments(FrameBuffer *fb, const sol::as_table_t<std::vector<sptr<Texture2d>>> &attachments)
+{
+	fb->setAttachments(attachments.source);
+}
+
 static void registerFrameBuffer(sol::table &module)
 {
 	module.new_usertype<FrameBuffer>(
 		"FrameBuffer",
 		FIELD(FrameBuffer, create),
-		FIELD(FrameBuffer, setAttachments),
+		"setAttachments", &setAttachments,
 		FIELD(FrameBuffer, getDimensions)
+	);
+}
+
+static void registerEffect(sol::table &module)
+{
+	module.new_usertype<Effect>(
+		"Effect",
+		FIELD(Effect, loadFromFile)
+	);
+}
+
+static void setFont(FontRenderer *renderer, sol::optional<sptr<Font>> font)
+{
+	renderer->setFont(font.value_or(nullptr));
+}
+
+static void registerFontRenderer(sol::table &module)
+{
+	module.new_usertype<FontRenderer>(
+		"FontRenderer",
+		sol::base_classes, sol::bases<Component>(),
+		"setFont", &setFont,
+		FIELD(FontRenderer, setText)
+	);
+}
+
+static void registerFont(sol::table &module)
+{
+	module.new_usertype<GlyphInfo>(
+		"GlyphInfo",
+		FIELD(GlyphInfo, positions),
+		FIELD(GlyphInfo, uvs),
+		FIELD(GlyphInfo, offsetX),
+		FIELD(GlyphInfo, offsetY)
+	);
+
+	module.new_usertype<Font>(
+		"Font",
+		FIELD(Font, loadFromFile),
+		FIELD(Font, getAtlas),
+		FIELD(Font, getGlyphInfo)
+	);
+}
+
+static void registerMaterial(sol::table &module)
+{
+	module.new_usertype<Material>(
+		"Material",
+		FIELD(Material, create),
+		FIELD(Material, createFromPrefab),
+		FIELD(Material, setFloatParameter),
+		FIELD(Material, setVector2Parameter),
+		FIELD(Material, setVector3Parameter),
+		FIELD(Material, setVector4Parameter),
+		FIELD(Material, setMatrixParameter),
+		FIELD(Material, setTextureParameter),
+		FIELD(Material, bindParameter),
+		FIELD(Material, getEffect),
+		FIELD(Material, getPolygonMode),
+		FIELD(Material, setPolygonMode),
+		FIELD(Material, getBlend),
+		FIELD(Material, setBlend),
+		FIELD(Material, getSrcBlendFactor),
+		FIELD(Material, getDstBlendFactor),
+		FIELD(Material, setBlendFactors),
+		FIELD(Material, getFaceCull),
+		FIELD(Material, setFaceCull),
+		FIELD(Material, hasDepthWrite),
+		FIELD(Material, setDepthWrite),
+		FIELD(Material, hasDepthTest),
+		FIELD(Material, setDepthTest),
+		FIELD(Material, getDepthFunction),
+		FIELD(Material, setDepthFunction)
+	);
+}
+
+static auto addVertexBuffer(Mesh *mesh, const VertexBufferLayout &layout, const sol::as_table_t<vec<float>> &data, u32 vertexCount) -> u32
+{
+    return mesh->addVertexBuffer(layout, data.source.data(), vertexCount);
+}
+
+static auto addDynamicVertexBuffer(Mesh *mesh, const VertexBufferLayout &layout, const sol::as_table_t<vec<float>> &data, u32 vertexCount) -> u32
+{
+    return mesh->addDynamicVertexBuffer(layout, data.source.data(), vertexCount);
+}
+
+static void updateDynamicVertexBuffer(Mesh *mesh, u32 index, u32 vertexOffset, const sol::as_table_t<vec<float>> &data, u32 vertexCount)
+{
+    mesh->updateDynamicVertexBuffer(index, vertexOffset, data.source.data(), vertexCount);
+}
+
+static auto addPart(Mesh *mesh, const sol::as_table_t<vec<uint16_t>> &indexData, u32 indexElementCount) -> u32
+{
+    return mesh->addPart(indexData.source.data(), indexElementCount);
+}
+
+static void registerMesh(sol::table &module)
+{
+	module.new_usertype<Mesh>(
+		"Mesh",
+		FIELD(Mesh, create),
+		FIELD(Mesh, createFromPrefab),
+		FIELD(Mesh, loadFromFile),
+		FIELD(Mesh, loadFromFileAsync),
+		FIELD(Mesh, removeVertexBuffer),
+		FIELD(Mesh, removePart),
+		FIELD(Mesh, getPartCount),
+		FIELD(Mesh, getPrimitiveType),
+		FIELD(Mesh, setPrimitiveType),
+		"addVertexBuffer", &addVertexBuffer,
+		"addDynamicVertexBuffer", &addDynamicVertexBuffer,
+		"updateDynamicVertexBuffer", &updateDynamicVertexBuffer,
+		"addPart", &addPart
+	);
+}
+
+static void registerVertexBufferLayout(sol::table &module)
+{
+	module.new_usertype<VertexAttribute>(
+		"VertexAttribute",
+		FIELD(VertexAttribute, name),
+		FIELD(VertexAttribute, location),
+		FIELD(VertexAttribute, elementCount),
+		FIELD(VertexAttribute, size),
+		FIELD(VertexAttribute, offset)
+	);
+
+	module.new_usertype<VertexBufferLayout>(
+		"VertexBufferLayout",
+		FIELD(VertexBufferLayout, addAttribute),
+		FIELD(VertexBufferLayout, addNamedAttribute),
+		FIELD(VertexBufferLayout, getAttribute),
+		FIELD(VertexBufferLayout, getAttributeCount),
+		FIELD(VertexBufferLayout, getSize)
+	);
+}
+
+static void registerTexture(sol::table &module)
+{
+	module.new_usertype<Texture>(
+		"Texture",
+		FIELD(Texture, getHorizontalWrap),
+		FIELD(Texture, getVerticalWrap),
+		FIELD(Texture, setWrap),
+		FIELD(Texture, setHorizontalWrap),
+		FIELD(Texture, setVerticalWrap),
+		FIELD(Texture, getMinFilter),
+		FIELD(Texture, getMagFilter),
+		FIELD(Texture, getMipFilter),
+		FIELD(Texture, setFilter),
+		FIELD(Texture, getAnisotropyLevel),
+		FIELD(Texture, setAnisotropyLevel)
+	);
+}
+
+static void registerTexture2d(sol::table &module)
+{
+	module.new_usertype<Texture2d>(
+		"Texture2d",
+		sol::base_classes, sol::bases<Texture>(),
+		FIELD(Texture2d, loadFromFile),
+		FIELD(Texture2d, loadFromFileAsync),
+		FIELD(Texture2d, createEmpty),
+		FIELD(Texture2d, getDimensions)
 	);
 }
 
 static void setRenderTarget(Camera *camera, sol::optional<sptr<FrameBuffer>> target)
 {
 	camera->setRenderTarget(target.value_or(nullptr));
+}
+
+static void registerSpectator(sol::table &module)
+{
+	module.new_usertype<Spectator>(
+		"Spectator",
+		sol::base_classes, sol::bases<Component>(),
+		FIELD(Spectator, getMovementSpeed),
+		FIELD(Spectator, setMovementSpeed),
+		FIELD(Spectator, getMouseSensitivity),
+		FIELD(Spectator, setMouseSensitivity),
+		FIELD(Spectator, getRotationAcceleration),
+		FIELD(Spectator, setRotationAcceleration)
+	);
+}
+
+static void setTexture(SkyboxRenderer *renderer, sol::optional<sptr<CubeTexture>> texture)
+{
+	renderer->setTexture(texture.value_or(nullptr));
+}
+
+static void registerSkyboxRenderer(sol::table &module)
+{
+	module.new_usertype<SkyboxRenderer>(
+		"SkyboxRenderer",
+		sol::base_classes, sol::bases<Component>(),
+		"setTexture", &setTexture,
+		FIELD(SkyboxRenderer, getTexture)
+	);
+}
+
+static void meshRenderer_setMesh(MeshRenderer *renderer, sol::optional<sptr<Mesh>> mesh)
+{
+	renderer->setMesh(mesh.value_or(nullptr));
+}
+
+static void meshRenderer_setMaterial(MeshRenderer *renderer, u32 part, sol::optional<sptr<Material>> material)
+{
+	renderer->setMaterial(part, material.value_or(nullptr));
+}
+
+static void registerMeshRenderer(sol::table &module)
+{
+	module.new_usertype<MeshRenderer>(
+		"MeshRenderer",
+		sol::base_classes, sol::bases<Component>(),
+		FIELD(MeshRenderer, getMesh),
+		"setMesh", &meshRenderer_setMesh,
+		FIELD(MeshRenderer, getMaterial),
+		"setMaterial", &meshRenderer_setMaterial,
+		FIELD(MeshRenderer, getMaterialCount)
+	);
+}
+
+static void setCollider(RigidBody *rigidBody, sol::optional<sptr<Collider>> collider)
+{
+	rigidBody->setCollider(collider.value_or(nullptr));
+}
+
+static void registerPhysics(sol::table &module)
+{
+	module.new_usertype<RigidBodyConstructionParameters>(
+		"RigidBodyConstructionParameters",
+		FIELD(RigidBodyConstructionParameters, mass),
+		FIELD(RigidBodyConstructionParameters, friction),
+		FIELD(RigidBodyConstructionParameters, restitution),
+		FIELD(RigidBodyConstructionParameters, linearDamping),
+		FIELD(RigidBodyConstructionParameters, angularDamping),
+		FIELD(RigidBodyConstructionParameters, kinematic),
+		FIELD(RigidBodyConstructionParameters, linearFactor),
+		FIELD(RigidBodyConstructionParameters, angularFactor)
+	);
+
+	module.new_usertype<Collider>("Collider");
+	module.new_usertype<BoxCollider>(
+		"BoxCollider",
+		sol::base_classes, sol::bases<Collider>(),
+		FIELD(BoxCollider, create)
+	);
+
+	module.new_usertype<RigidBody>(
+		"RigidBody",
+		sol::base_classes, sol::bases<Component>(),
+		"setCollider", &setCollider
+	);
+
+	module.new_usertype<RayTestResult>(
+		"RayTestResult",
+		FIELD(RayTestResult, body),
+		FIELD(RayTestResult, point),
+		FIELD(RayTestResult, normal)
+	);
+
+	module.new_usertype<Physics>(
+		"Physics",
+		FIELD(Physics, setGravity),
+		FIELD(Physics, rayTestFirst),
+		FIELD(Physics, rayTestAll)
+	);
 }
 
 static void registerCamera(sol::table &module)
@@ -773,15 +1044,25 @@ static void registerComponent(sol::table &module)
 	);
 }
 
+static void writeBytes(FileSystem *fs, const str &path, const sol::as_table_t<vec<u8>> &bytes)
+{
+	fs->writeBytes(path, bytes.source);
+}
+
+static void writeLines(FileSystem *fs, const str &path, const sol::as_table_t<vec<str>> &lines)
+{
+	fs->writeLines(path, lines.source);
+}
+
 static void registerFileSystem(sol::table &module)
 {
 	module.new_usertype<FileSystem>(
 		"FileSystem",
 		FIELD(FileSystem, readBytes),
-		FIELD(FileSystem, writeBytes),
+		"writeBytes", &writeBytes,
 		FIELD(FileSystem, readText),
 		FIELD(FileSystem, readLines),
-		FIELD(FileSystem, writeLines),
+		"writeLines", &writeLines,
 		FIELD(FileSystem, iterateLines)
 	);
 }
@@ -806,5 +1087,17 @@ void registerApi(sol::table &module)
 	registerTransform(module);
 	registerCamera(module);
 	registerFrameBuffer(module);
+	registerTexture(module);
+	registerTexture2d(module);
+	registerMaterial(module);
+	registerEffect(module);
+	registerMesh(module);
+	registerVertexBufferLayout(module);
+	registerFont(module);
+	registerFontRenderer(module);
+	registerSpectator(module);
+	registerSkyboxRenderer(module);
+	registerMeshRenderer(module);
+	registerPhysics(module);
 	registerNode(module);
 }
