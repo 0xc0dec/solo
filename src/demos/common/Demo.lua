@@ -39,7 +39,7 @@ function demo()
     offscreenCamera:setTagMask(~(tags.monitor | tags.allPostProcessorSteps))
 
     local mainCamera, mainCameraNode = createMainCamera(scene, physics)
-    local mainCameraTransform = mainCameraNode:findComponent("Transform")
+    local mainCameraTransform = mainCameraNode:findTransform()
     mainCameraTransform:setLocalPosition(vec3(0, 5, 10))
     mainCameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
     mainCameraNode:addScriptComponent(createTracer(physics))

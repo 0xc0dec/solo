@@ -4,13 +4,13 @@
 -- 
 
 local scene = sl.Scene.create(sl.device)
-local t1 = scene:createNode():findComponent("Transform")
-local t2 = scene:createNode():findComponent("Transform")
-local cam = scene:createNode():addComponent("Camera")
-local v = sl.Vector3(1, 2, 3)
-local q = sl.Quaternion()
-local m = sl.Matrix()
-local rad = sl.Radian(1)
+local t1 = scene:createNode():findTransform()
+local t2 = scene:createNode():findTransform()
+local cam = scene:createNode():addCamera()
+local v = sl.Vector3.new(1, 2, 3)
+local q = sl.Quaternion.new()
+local m = sl.Matrix.new()
+local rad = sl.Radian.new(1)
 
 t1:setParent(t2)
 assert(t1:getParent())

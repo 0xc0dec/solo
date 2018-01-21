@@ -19,9 +19,9 @@ return function(assetCache)
 
     return sl.createComponent("Spawner", {
         init = function(self)
-            self.transform = self.node:findComponent("Transform")
+            self.transform = self.node:findTransform()
             self.scene = self.node:getScene()
-            self.camera = self.node:findComponent("Camera")
+            self.camera = self.node:findCamera()
             self.tracer = self.node:findScriptComponent(sl.getCmpId("Tracer"))
         end,
 
@@ -53,13 +53,13 @@ return function(assetCache)
             
             node:addScriptComponent(sl.createComponent("SpawnedObject", {}))
             
-            local renderer = node:addComponent("MeshRenderer")
+            local renderer = node:addMeshRenderer()
             renderer:setMesh(assetCache.meshes.cube)
             renderer:setMaterial(0, material)
 
             local size = 0.1 + math.random()
     
-            local transform = node:findComponent("Transform")
+            local transform = node:findTransform()
             transform:setLocalScale(vec3(size, size, size))
             transform:setLocalPosition(initialPos)
             transform:setLocalRotation(initialRotation)
@@ -71,7 +71,7 @@ return function(assetCache)
             params.linearDamping = 0.1
             params.angularDamping = 0.1
     
-            local rigidBody = node:addComponent("RigidBody", params)
+            local rigidBody = node:addRigidBody(params)
             rigidBody:setCollider(sl.BoxCollider.create(vec3(1, 1, 1)))
         end,
 
@@ -97,7 +97,7 @@ return function(assetCache)
         end,
 
         highlight = function(self, target)
-            local renderer = target:findComponent("MeshRenderer")
+            local renderer = target:findMeshRenderer()
             local prevMaterial = renderer:getMaterial(0)
             renderer:setMaterial(0, highlightMaterial)
             self.prevHighlighted = renderer

@@ -13,7 +13,7 @@ return function(scene)
 
         return sl.createComponent("TimeLabelUpdater", {
             init = function(self)
-                renderer = self.node:addComponent("FontRenderer")
+                renderer = self.node:addFontRenderer()
                 renderer:setFont(font)
             end,
 
@@ -35,7 +35,7 @@ return function(scene)
 
     local node = scene:createNode()
     node:addScriptComponent(createUpdater())
-    node:findComponent("FontRenderer"):setLayer(layers.transparent)
-    node:findComponent("Transform"):setLocalScale(vec3(0.02, 0.02, 1))
-    node:findComponent("Transform"):setLocalPosition(vec3(-3, 0, 4))
+    node:findFontRenderer():setLayer(layers.transparent)
+    node:findTransform():setLocalScale(vec3(0.02, 0.02, 1))
+    node:findTransform():setLocalPosition(vec3(-3, 0, 4))
 end

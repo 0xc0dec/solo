@@ -8,7 +8,7 @@ require "Common"
 return function(targetPos)
     return sl.createComponent("LookAt", {
         init = function(self)
-            self.transform = self.node:findComponent("Transform")
+            self.transform = self.node:findTransform()
         end,
 
         update = function(self)

@@ -32,7 +32,7 @@ assert(params.angularFactor ~= nil)
 
 local scene = sl.Scene.create(sl.device)
 local collider = sl.BoxCollider.create(v1)
-local body = scene:createNode():addComponent("RigidBody", sl.RigidBodyConstructionParameters())
+local body = scene:createNode():addRigidBody(sl.RigidBodyConstructionParameters())
 
 body:setCollider(collider)
 body:setCollider(nil)

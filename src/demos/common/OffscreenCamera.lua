@@ -12,9 +12,9 @@ return function(scene)
     tex:setWrap(sl.TextureWrap.ClampToEdge)
 
     local node = scene:createNode()
-    node:findComponent("Transform"):setLocalPosition(vec3(0, 0, 10))
+    node:findTransform():setLocalPosition(vec3(0, 0, 10))
 
-    local cam = node:addComponent("Camera")
+    local cam = node:addCamera()
     cam:setClearColor(vec4(1, 0, 1, 1))
     cam:setZNear(0.05)
     cam:setViewport(vec4(0, 0, canvasSize.x / 8, canvasSize.y / 8))

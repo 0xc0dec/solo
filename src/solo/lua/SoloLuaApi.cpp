@@ -27,6 +27,7 @@
 #include "SoloSkyboxRenderer.h"
 #include "SoloFontRenderer.h"
 #include "SoloRigidBody.h"
+#include "SoloFrameBuffer.h"
 
 using namespace solo;
 
@@ -444,9 +445,110 @@ static void registerDeviceSetup(sol::table &module)
 	);
 }
 
+static void registerTransform(sol::table &module)
+{
+	module.new_usertype<Transform>(
+		"Transform",
+		sol::base_classes, sol::bases<Component>(),
+		FIELD(Transform, getParent),
+		FIELD(Transform, setParent),
+		FIELD(Transform, getChild),
+		FIELD(Transform, getChildrenCount),
+		FIELD(Transform, clearChildren),
+		FIELD(Transform, getWorldScale),
+		FIELD(Transform, getLocalScale),
+		FIELD(Transform, getWorldRotation),
+		FIELD(Transform, getLocalRotation),
+		FIELD(Transform, getWorldPosition),
+		FIELD(Transform, getLocalPosition),
+		FIELD(Transform, getWorldUp),
+		FIELD(Transform, getLocalUp),
+		FIELD(Transform, getWorldDown),
+		FIELD(Transform, getLocalDown),
+		FIELD(Transform, getWorldLeft),
+		FIELD(Transform, getLocalLeft),
+		FIELD(Transform, getWorldRight),
+		FIELD(Transform, getLocalRight),
+		FIELD(Transform, getWorldForward),
+		FIELD(Transform, getLocalForward),
+		FIELD(Transform, getWorldBack),
+		FIELD(Transform, getLocalBack),
+		FIELD(Transform, translateLocal),
+		FIELD(Transform, scaleLocal),
+		FIELD(Transform, setLocalPosition),
+		FIELD(Transform, setLocalScale),
+		FIELD(Transform, rotate),
+		FIELD(Transform, rotateByAxisAngle),
+		FIELD(Transform, setLocalRotation),
+		FIELD(Transform, setLocalAxisAngleRotation),
+		FIELD(Transform, lookAt),
+		FIELD(Transform, getMatrix),
+		FIELD(Transform, getWorldMatrix),
+		FIELD(Transform, getWorldViewMatrix),
+		FIELD(Transform, getWorldViewProjMatrix),
+		FIELD(Transform, getInvTransposedWorldMatrix),
+		FIELD(Transform, getInvTransposedWorldViewMatrix),
+		FIELD(Transform, transformPoint),
+		FIELD(Transform, transformDirection)
+	);
+}
+
+static void registerFrameBuffer(sol::table &module)
+{
+	module.new_usertype<FrameBuffer>(
+		"FrameBuffer",
+		FIELD(FrameBuffer, create),
+		FIELD(FrameBuffer, setAttachments),
+		FIELD(FrameBuffer, getDimensions)
+	);
+}
+
+static void setRenderTarget(Camera *camera, sol::optional<sptr<FrameBuffer>> target)
+{
+	camera->setRenderTarget(target.value_or(nullptr));
+}
+
+static void registerCamera(sol::table &module)
+{
+	module.new_usertype<Camera>(
+		"Camera",
+		sol::base_classes, sol::bases<Component>(),
+		FIELD(Camera, getTransform),
+		FIELD(Camera, getRenderTarget),
+		"setRenderTarget", &setRenderTarget,
+		FIELD(Camera, getClearColor),
+		FIELD(Camera, setClearColor),
+		FIELD(Camera, hasColorClearing),
+		FIELD(Camera, setColorClearing),
+		FIELD(Camera, getViewport),
+		FIELD(Camera, setViewport),
+		FIELD(Camera, isPerspective),
+		FIELD(Camera, setPerspective),
+		FIELD(Camera, getZNear),
+		FIELD(Camera, setZNear),
+		FIELD(Camera, getZFar),
+		FIELD(Camera, setZFar),
+		FIELD(Camera, getFOV),
+		FIELD(Camera, setFOV),
+		FIELD(Camera, getOrthoSize),
+		FIELD(Camera, setOrthoSize),
+		FIELD(Camera, windowPointToWorldRay),
+		FIELD(Camera, getAspectRatio),
+		FIELD(Camera, getTagMask),
+		FIELD(Camera, setTagMask),
+		FIELD(Camera, getOrder),
+		FIELD(Camera, setOrder),
+		FIELD(Camera, getViewMatrix),
+		FIELD(Camera, getInvViewMatrix),
+		FIELD(Camera, getProjectionMatrix),
+		FIELD(Camera, getViewProjectionMatrix),
+		FIELD(Camera, getInvViewProjectionMatrix)
+	);
+}
+
 static void registerScene(sol::table &module)
 {
-	auto scene = module.new_usertype<Scene>(
+	module.new_usertype<Scene>(
 		"Scene",
 		FIELD(Scene, create),
 		FIELD(Scene, getDevice),
@@ -502,6 +604,81 @@ static auto findComponent(Node *node, const str &name) -> Component*
 	return node->getScene()->findComponent(node->getId(), builtInComponents.at(name));
 }
 
+static auto findTransform(Node *node) -> Transform*
+{
+	return node->findComponent<Transform>();
+}
+
+static auto addTransform(Node *node) -> Transform*
+{
+	return node->addComponent<Transform>();
+}
+
+static void removeTransform(Node *node)
+{
+	node->removeComponent<Transform>();
+}
+
+static auto addMeshRenderer(Node *node) -> MeshRenderer*
+{
+	return node->addComponent<MeshRenderer>();
+}
+
+static void removeMeshRenderer(Node *node)
+{
+	node->addComponent<MeshRenderer>();
+}
+
+static auto addCamera(Node *node) -> Camera*
+{
+	return node->addComponent<Camera>();
+}
+
+static void removeCamera(Node *node)
+{
+	node->removeComponent<Camera>();
+}
+
+static auto addSpectator(Node *node) -> Spectator*
+{
+	return node->addComponent<Spectator>();
+}
+
+static void removeSpectator(Node *node)
+{
+	node->removeComponent<Spectator>();
+}
+
+static auto addSkyboxRenderer(Node *node) -> SkyboxRenderer*
+{
+	return node->addComponent<SkyboxRenderer>();
+}
+
+static void removeSkyboxRenderer(Node *node)
+{
+	node->removeComponent<SkyboxRenderer>();
+}
+
+static auto addFontRenderer(Node *node) -> FontRenderer*
+{
+	return node->addComponent<FontRenderer>();
+}
+
+static void removeFontRenderer(Node *node)
+{
+	node->removeComponent<FontRenderer>();
+}
+
+static auto addRigidBody(Node *node, sol::object &arg) -> RigidBody*
+{
+	return node->addComponent<RigidBody>(arg.as<RigidBodyConstructionParameters>());
+}
+
+static void removeRigidBody(Node *node)
+{
+	node->removeComponent<RigidBody>();
+}
+
 static auto addComponent(Node *node, const str &name, sol::object &arg) -> Component*
 {
 	if (name == "Transform")
@@ -550,7 +727,7 @@ static auto findScriptComponent(Node *node, u32 typeId) -> sol::object
 		return scriptComponent->getUnderlyingCmp();
 	}
 
-	return {};
+	return sol::nil;
 }
 
 static void registerNode(sol::table &module)
@@ -563,7 +740,22 @@ static void registerNode(sol::table &module)
 		"removeScriptComponent", &removeScriptComponent,
 		"findScriptComponent", &findScriptComponent,
 		"addComponent", &addComponent,
-		"findComponent", &findComponent,
+		"addCamera", &addCamera,
+		"removeCamera", &removeCamera,
+		"addTransform", &addTransform,
+		"removeTransform", &removeTransform,
+		"addSkyboxRenderer", &addSkyboxRenderer,
+		"removeSkyboxRenderer", &removeSkyboxRenderer,
+		"addFontRenderer", &addFontRenderer,
+		"removeFontRenderer", &removeFontRenderer,
+		"addRigidBody", &addRigidBody,
+		"removeRigidBody", &removeRigidBody,
+		"addSpectator", &addSpectator,
+		"removeSpectator", &removeSpectator,
+		"addMeshRenderer", &addMeshRenderer,
+		"removeMeshRenderer", &removeMeshRenderer,
+		"findComponent", &findComponent, // TODO remove
+		"findTransform", &findTransform,
 		"removeComponent", &removeComponent
 	);
 }
@@ -611,5 +803,8 @@ void registerApi(sol::table &module)
 	registerDevice(module);
 	registerScene(module);
 	registerComponent(module);
+	registerTransform(module);
+	registerCamera(module);
+	registerFrameBuffer(module);
 	registerNode(module);
 }

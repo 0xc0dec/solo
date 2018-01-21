@@ -36,13 +36,13 @@ return function(assetCache, mainCameraNode)
         _createBox = function(self, parentNode, localPos, localScale, material, withCollider)
             local node = self.scene:createNode()
             
-            local renderer = node:addComponent("MeshRenderer")
+            local renderer = node:addMeshRenderer()
             renderer:setMesh(assetCache.meshes.cube)
             renderer:setMaterial(0, material)
     
-            local transform = node:findComponent("Transform")
+            local transform = node:findTransform()
             if parentNode then
-                transform:setParent(parentNode:findComponent("Transform"))
+                transform:setParent(parentNode:findTransform())
             end
             transform:setLocalPosition(localPos)
             transform:setLocalScale(localScale)
@@ -51,7 +51,7 @@ return function(assetCache, mainCameraNode)
                 local params = sl.RigidBodyConstructionParameters()
                 params.mass = 0
                 params.friction = 0.5
-                local body = node:addComponent("RigidBody", params)
+                local body = node:addRigidBody(params)
                 body:setCollider(sl.BoxCollider.create(vec3(1, 1, 1)))
             end
 

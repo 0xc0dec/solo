@@ -16,18 +16,18 @@ return function(scene, assetCache, offscreenCameraTex)
     material:setTextureParameter("mainTex", offscreenCameraTex)
 
     local parent = scene:createNode()
-    parent:findComponent("Transform"):setLocalPosition(vec3(-2, 2, -2))
+    parent:findTransform():setLocalPosition(vec3(-2, 2, -2))
     parent:addScriptComponent(createRotator("world", vec3(0, 1, 0), 1))
 
     local node = scene:createNode()
     node:addScriptComponent(createLookAt(vec3(0, 0, 0)))
 
-    local transform = node:findComponent("Transform")
-    transform:setParent(parent:findComponent("Transform"))
+    local transform = node:findTransform()
+    transform:setParent(parent:findTransform())
     transform:setLocalPosition(vec3(5, 2, -5))
     transform:setLocalScale(vec3(5, 5 * canvasSize.y / canvasSize.x, 1))
     
-    local renderer = node:addComponent("MeshRenderer")
+    local renderer = node:addMeshRenderer()
     renderer:setMesh(assetCache.meshes.quad)
     renderer:setMaterial(0, material)
     renderer:setTag(tags.monitor)

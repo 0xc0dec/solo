@@ -4,14 +4,15 @@
 -- 
 
 local scene = sl.Scene.create(sl.device)
-local cam = scene:createNode():addComponent("Camera")
-local v4 = sl.Vector4(1, 2, 3, 4)
+local cam = scene:createNode():addCamera()
+local v4 = sl.Vector4.new(1, 2, 3, 4)
 
 assert(cam:getTransform())
 
 cam:setRenderTarget(sl.FrameBuffer.create(sl.device))
 assert(cam:getRenderTarget() ~= nil)
 cam:setRenderTarget(nil)
+assert(cam:getRenderTarget() == nil)
 
 assert(cam:getClearColor())
 cam:setClearColor(v4)
@@ -32,10 +33,10 @@ assert(cam:getZFar() ~= nil)
 cam:setZFar(1)
 
 assert(cam:getFOV() ~= nil)
-cam:setFOV(sl.Radian(1))
+cam:setFOV(sl.Radian.new(1))
 
 assert(cam:getOrthoSize() ~= nil)
-cam:setOrthoSize(sl.Vector2(1, 2))
+cam:setOrthoSize(sl.Vector2.new(1, 2))
 
 assert(cam:getAspectRatio() ~= nil)
 
@@ -51,4 +52,4 @@ assert(cam:getProjectionMatrix())
 assert(cam:getViewProjectionMatrix())
 assert(cam:getInvViewProjectionMatrix())
 
-assert(cam:windowPointToWorldRay(sl.Vector2(1, 2)))
+assert(cam:windowPointToWorldRay(sl.Vector2.new(1, 2)))

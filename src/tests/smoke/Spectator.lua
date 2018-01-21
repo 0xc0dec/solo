@@ -4,7 +4,7 @@
 -- 
 
 local scene = sl.Scene.create(sl.device)
-local s = scene:createNode():addComponent("Spectator")
+local s = scene:createNode():addSpectator()
 
 assert(s:getMovementSpeed() ~= nil)
 s:setMovementSpeed(1)

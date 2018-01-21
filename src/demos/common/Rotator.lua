@@ -7,7 +7,7 @@ return function(space, axis, speed)
     return sl.createComponent("Rotator", {
 
         init = function(self)
-            self.transform = self.node:findComponent("Transform")
+            self.transform = self.node:findTransform()
         end,
 
         update = function(self)

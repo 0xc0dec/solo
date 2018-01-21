@@ -6,9 +6,9 @@
 return function(physics)
     return sl.createComponent("Tracer", {
         init = function(self)
-            self.transform = self.node:findComponent("Transform")
+            self.transform = self.node:findTransform()
             self.scene = self.node:getScene()
-            self.camera = self.node:findComponent("Camera")
+            self.camera = self.node:findCamera()
         end,
 
         update = function(self)

@@ -18,7 +18,7 @@ return function(scene)
         tex:setWrap(sl.TextureWrap.ClampToEdge)
 
         local node = scene:createNode()
-        local renderer = node:addComponent("SkyboxRenderer")
+        local renderer = node:addSkyboxRenderer()
         renderer:setTexture(tex)
         renderer:setLayer(layers.skybox)
     end)

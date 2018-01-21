@@ -12,17 +12,17 @@ return function(scene, assetCache)
 
     local node = scene:createNode()
     
-    local transform = node:findComponent("Transform")
+    local transform = node:findTransform()
     transform:setLocalScale(vec3(10, 0.1, 10))
     transform:setLocalPosition(vec3(0, -2, 0))
 
-    local renderer = node:addComponent("MeshRenderer")
+    local renderer = node:addMeshRenderer()
     renderer:setMesh(assetCache.meshes.cube)
     renderer:setMaterial(0, material)
 
     local params = sl.RigidBodyConstructionParameters()
     params.mass = 0
     params.friction = 0.5
-    local body = node:addComponent("RigidBody", params)
+    local body = node:addRigidBody(params)
     body:setCollider(sl.BoxCollider.create(vec3(1, 1, 1)))
 end

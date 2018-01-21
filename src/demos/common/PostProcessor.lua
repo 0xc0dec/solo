@@ -11,15 +11,15 @@ local function createStep(parentCamera, material, target, cameraOrder, tag)
     local scene = parentCamera:getNode():getScene()
 
     local cameraNode = scene:createNode()
-    cameraNode:findComponent("Transform"):setParent(parentCamera:getNode():findComponent("Transform"))
+    cameraNode:findTransform():setParent(parentCamera:getNode():findTransform())
 
-    local camera = cameraNode:addComponent("Camera")
+    local camera = cameraNode:addCamera()
     camera:setZNear(0.05)
     camera:setRenderTarget(target)
     camera:setOrder(cameraOrder)
     camera:setTagMask(tag)
 
-    local quadRenderer = cameraNode:addComponent("MeshRenderer")
+    local quadRenderer = cameraNode:addMeshRenderer()
     quadRenderer:setTag(tag)
     quadRenderer:setMesh(sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Quad))
     quadRenderer:setMaterial(0, material); -- TODO setting nil as material here causes VK renderer to crash
@@ -150,7 +150,7 @@ return function(assetCache)
 
     return sl.createComponent("PostProcessor", {
         init = function(self)
-            self.mainCamera = self.node:findComponent("Camera")
+            self.mainCamera = self.node:findCamera()
         end,
 
         update = function(self)

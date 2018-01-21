@@ -4,7 +4,7 @@
 -- 
 
 local scene = sl.Scene.create(sl.device)
-local mr = scene:createNode():addComponent("MeshRenderer")
+local mr = scene:createNode():addMeshRenderer()
 local mesh = sl.Mesh.create(sl.device)
 local mat = sl.Material.createFromPrefab(sl.device, sl.MaterialPrefab.Skybox)
 

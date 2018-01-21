@@ -24,7 +24,7 @@ return function(assetCache)
     }
 
     return function(node)
-        local renderer = node:addComponent("MeshRenderer")
+        local renderer = node:addMeshRenderer()
         renderer:setMesh(mesh)
         renderer:setMaterial(0, materials.blue)
         renderer:setMaterial(1, materials.green)
