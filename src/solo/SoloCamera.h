@@ -37,9 +37,9 @@ namespace solo
         auto getTagMask() const -> u32 { return tagMask; }
         void setTagMask(u32 mask) { tagMask = mask; }
 
-        void renderFrame(std::function<void()> render);
+        void renderFrame(const std::function<void()> &render);
 
-        auto windowPointToWorldRay(const Vector2 &pt) -> Ray;
+        auto windowPointToWorldRay(const Vector2 &pt) const -> Ray;
 
         auto getTransform() const -> Transform* { return transform; }
 

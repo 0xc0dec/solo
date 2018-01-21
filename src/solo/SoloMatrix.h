@@ -69,7 +69,7 @@ namespace solo
 
         auto transformPoint(const Vector3 &point) const -> Vector3;
         auto transformDirection(const Vector3 &dir) const -> Vector3;
-        auto transformRay(const Ray &ray) -> Ray;
+        auto transformRay(const Ray &ray) const -> Ray;
 
         bool decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translation) const;
 

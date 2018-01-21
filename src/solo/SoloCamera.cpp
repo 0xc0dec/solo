@@ -139,16 +139,16 @@ auto Camera::getInvViewProjectionMatrix() const -> const Matrix
     return invViewProjectionMatrix;
 }
 
-void Camera::renderFrame(std::function<void()> render)
+void Camera::renderFrame(const std::function<void()> &render)
 {
     renderer->beginCamera(this, renderTarget.get());
     render();
     renderer->endCamera(this, renderTarget.get());
 }
 
-auto Camera::windowPointToWorldRay(const Vector2 &pt) -> Ray
+auto Camera::windowPointToWorldRay(const Vector2 &pt) const -> Ray
 {
-    const auto halfHeightInWorldUnits = zNear * tanf(fov.toRawRadian() / 2);
+    const auto halfHeightInWorldUnits = zNear * std::tan(fov.toRawRadian() / 2);
     const auto halfWidthInWorldUnits = halfHeightInWorldUnits * aspectRatio;
     const auto canvasSize = device->getDpiIndependentCanvasSize();
     const auto right = transform->getWorldRight() * (halfWidthInWorldUnits * (2 * pt.x / canvasSize.x - 1));

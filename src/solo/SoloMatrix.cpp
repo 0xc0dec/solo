@@ -254,7 +254,7 @@ auto Matrix::createRotationFromAxisAngle(const Vector3 &axis, const Radian &angl
     if (n != 1.0f)
     {
         // Not normalized
-        n = sqrtf(n);
+        n = std::sqrt(n);
         // Prevent division too close to zero.
         if (!math::isZero(n))
         {
@@ -265,19 +265,19 @@ auto Matrix::createRotationFromAxisAngle(const Vector3 &axis, const Radian &angl
         }
     }
 
-    auto c = cosf(angle.toRawRadian());
-    auto s = sinf(angle.toRawRadian());
+    const auto c = std::cos(angle.toRawRadian());
+    const auto s = std::sin(angle.toRawRadian());
 
-    auto t = 1.0f - c;
-    auto tx = t * x;
-    auto ty = t * y;
-    auto tz = t * z;
-    auto txy = tx * y;
-    auto txz = tx * z;
-    auto tyz = ty * z;
-    auto sx = s * x;
-    auto sy = s * y;
-    auto sz = s * z;
+    const auto t = 1.0f - c;
+    const auto tx = t * x;
+    const auto ty = t * y;
+    const auto tz = t * z;
+    const auto txy = tx * y;
+    const auto txz = tx * z;
+    const auto tyz = ty * z;
+    const auto sx = s * x;
+    const auto sy = s * y;
+    const auto sz = s * z;
 
     Matrix result;
 
@@ -319,8 +319,8 @@ auto Matrix::createRotationX(const Radian &angle) -> Matrix
 
 auto Matrix::createRotationY(const Radian &angle) -> Matrix
 {
-    const auto c = cosf(angle.toRawRadian());
-    const auto s = sinf(angle.toRawRadian());
+    const auto c = std::cos(angle.toRawRadian());
+    const auto s = std::sin(angle.toRawRadian());
 
     Matrix result;
 
@@ -334,8 +334,8 @@ auto Matrix::createRotationY(const Radian &angle) -> Matrix
 
 auto Matrix::createRotationZ(const Radian &angle) -> Matrix
 {
-    const auto c = cosf(angle.toRawRadian());
-    const auto s = sinf(angle.toRawRadian());
+    const auto c = std::cos(angle.toRawRadian());
+    const auto s = std::sin(angle.toRawRadian());
 
     Matrix result;
     result.m[0] = c;
@@ -393,28 +393,7 @@ auto Matrix::transformDirection(const Vector3 &dir) const -> Vector3
     };
 }
 
-static void updateBounds(const Vector3 &point, Vector3 &min, Vector3 &max)
-{
-    if (point.x < min.x)
-        min.x = point.x;
-
-    if (point.x > max.x)
-        max.x = point.x;
-
-    if (point.y < min.y)
-        min.y = point.y;
-
-    if (max.y < point.y)
-        max.y = point.y;
-
-    if (min.z > point.z)
-        min.z = point.z;
-
-    if (point.z > max.z)
-        max.z = point.z;
-}
-
-auto Matrix::transformRay(const Ray &ray) -> Ray
+auto Matrix::transformRay(const Ray &ray) const -> Ray
 {
     const auto origin = transformPoint(ray.getOrigin());
     auto direction = transformDirection(ray.getDirection());
