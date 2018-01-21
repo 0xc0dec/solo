@@ -19,20 +19,13 @@ local cmp = {
     end,
 
     terminate = function()
-    end,
-
-    render = function(ctx)
-    end,
-
-    onComponentAdded = function(cmp)
-    end,
-
-    onComponentRemoved = function(cmp)
     end
 }
 
 n:addScriptComponent(cmp)
+assert(n:findScriptComponent(1))
 n:removeScriptComponent(cmp)
+assert(n:findScriptComponent(1) == nil)
 
 assert(n:findComponent("Transform"))
 assert(n:addComponent("Camera"))

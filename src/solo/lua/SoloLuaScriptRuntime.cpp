@@ -127,6 +127,7 @@ LuaScriptRuntime2::LuaScriptRuntime2()
 LuaScriptRuntime2::LuaScriptRuntime2(Device* device):
 	LuaScriptRuntime2()
 {
+	state["sl"]["device"] = device;
 }
 
 void LuaScriptRuntime2::executeFile(const str& path)

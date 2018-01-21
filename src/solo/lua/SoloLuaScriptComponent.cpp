@@ -9,48 +9,38 @@
 
 using namespace solo;
 
-LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef scriptComponent):
+LuaScriptComponent::LuaScriptComponent(const Node &node, sol::table &cmp):
     ComponentBase<LuaScriptComponent>(node),
-    ref(scriptComponent)
+	cmp(cmp)
 {
-    typeId = minComponentTypeId + scriptComponent.get<u32>("typeId");
+    typeId = minComponentTypeId + cmp.get<u32>("typeId");
     
-    initFunc = scriptComponent.has("init")
-        ? scriptComponent.get<std::function<void(LuaRef)>>("init")
-        : [](LuaRef) {};
+    initFunc = cmp["init"].valid()
+        ? cmp.get<std::function<void(sol::object)>>("init")
+        : [](sol::object) {};
     
-    updateFunc = scriptComponent.has("update")
-        ? scriptComponent.get<std::function<void(LuaRef)>>("update")
-        : [](LuaRef) {};
+    updateFunc = cmp["update"].valid()
+        ? cmp.get<std::function<void(sol::object)>>("update")
+        : [](sol::object) {};
     
-    terminateFunc = scriptComponent.has("terminate")
-        ? scriptComponent.get<std::function<void(LuaRef)>>("terminate")
-        : [](LuaRef) {};
+    terminateFunc = cmp["terminate"].valid()
+        ? cmp.get<std::function<void(sol::object)>>("terminate")
+        : [](sol::object) {};
     
-    renderFunc = scriptComponent.has("render")
-        ? scriptComponent.get<std::function<void(LuaRef)>>("render")
-        : [](LuaRef) {};
-    
-    scriptComponent.set("node", node);
+    cmp.set("node", node);
 }
 
 void LuaScriptComponent::init()
 {
-    initFunc(ref);
+    initFunc(cmp);
 }
 
 void LuaScriptComponent::terminate()
 {
-    terminateFunc(ref);
+    terminateFunc(cmp);
 }
 
 void LuaScriptComponent::update()
 {
-    updateFunc(ref);
+    updateFunc(cmp);
 }
-
-void LuaScriptComponent::render()
-{
-    renderFunc(ref);
-}
-

@@ -6,7 +6,7 @@
 #pragma once
 
 #include "SoloComponent.h"
-#include <LuaIntf.h>
+#include "SoloLuaCommon.h"
 #include <functional>
 
 namespace solo
@@ -16,24 +16,21 @@ namespace solo
     public:
         static const u32 minComponentTypeId = 1000000000; // Assume that built-in components don't ever exceed this limit
 
-        LuaScriptComponent(const Node& node, LuaIntf::LuaRef scriptComponent);
+        LuaScriptComponent(const Node& node, sol::table &cmp);
 
         void init() override final;
         void terminate() override final;
         void update() override final;
-        void render() override final;
 
         auto getTypeId() -> u32 override final { return typeId; }
-
-        auto getRef() const -> LuaIntf::LuaRef { return ref; }
+		auto getUnderlyingCmp() const -> sol::object { return cmp; }
 
     private:
         u32 typeId;
-        LuaIntf::LuaRef ref;
+		sol::object cmp;
 
-        std::function<void(LuaIntf::LuaRef)> initFunc;
-        std::function<void(LuaIntf::LuaRef)> terminateFunc;
-        std::function<void(LuaIntf::LuaRef)> updateFunc;
-        std::function<void(LuaIntf::LuaRef)> renderFunc;
+        std::function<void(sol::object)> initFunc;
+        std::function<void(sol::object)> terminateFunc;
+        std::function<void(sol::object)> updateFunc;
     };
 }

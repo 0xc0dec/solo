@@ -20,6 +20,13 @@
 #include "SoloTexture.h"
 #include "SoloMaterial.h"
 #include "SoloMesh.h"
+#include "SoloLuaScriptComponent.h"
+#include "SoloMeshRenderer.h"
+#include "SoloCamera.h"
+#include "SoloSpectator.h"
+#include "SoloSkyboxRenderer.h"
+#include "SoloFontRenderer.h"
+#include "SoloRigidBody.h"
 
 using namespace solo;
 
@@ -437,6 +444,18 @@ static void registerDeviceSetup(sol::table &module)
 	);
 }
 
+static void registerScene(sol::table &module)
+{
+	auto scene = module.new_usertype<Scene>(
+		"Scene",
+		FIELD(Scene, create),
+		FIELD(Scene, getDevice),
+		FIELD(Scene, createNode),
+		FIELD(Scene, removeNode),
+		FIELD(Scene, removeNodeById)
+	);
+}
+
 static void registerDevice(sol::table &module)
 {
 	module.new_usertype<Device>(
@@ -464,6 +483,101 @@ static void registerDevice(sol::table &module)
 		FIELD(Device, getFileSystem),
 		FIELD(Device, getPhysics),
 		FIELD(Device, getLogger)
+	);
+}
+
+static umap<str, u32> builtInComponents = {
+	{ "Transform", Transform::getId() },
+	{ "MeshRenderer", MeshRenderer::getId() },
+	{ "Camera", Camera::getId() },
+	{ "Spectator", Spectator::getId() },
+	{ "SkyboxRenderer", SkyboxRenderer::getId() },
+	{ "FontRenderer", FontRenderer::getId() },
+	{ "RigidBody", RigidBody::getId() }
+};
+
+static auto findComponent(Node *node, const str &name) -> Component*
+{
+	SL_PANIC_IF(!builtInComponents.count(name), SL_FMT("Not found built-in component ", name));
+	return node->getScene()->findComponent(node->getId(), builtInComponents.at(name));
+}
+
+static auto addComponent(Node *node, const str &name, sol::object &arg) -> Component*
+{
+	if (name == "Transform")
+		return node->addComponent<Transform>();
+	if (name == "MeshRenderer")
+		return node->addComponent<MeshRenderer>();
+	if (name == "Camera")
+		return node->addComponent<Camera>();
+	if (name == "Spectator")
+		return node->addComponent<Spectator>();
+	if (name == "SkyboxRenderer")
+		return node->addComponent<SkyboxRenderer>();
+	if (name == "FontRenderer")
+		return node->addComponent<FontRenderer>();
+	if (name == "RigidBody")
+		return node->addComponent<RigidBody>(arg.as<RigidBodyConstructionParameters>());
+
+	SL_PANIC(SL_FMT("Unknown built-in component ", name))
+	return nullptr;
+}
+
+static void removeComponent(Node *node, const str &name)
+{
+	SL_PANIC_IF(!builtInComponents.count(name), SL_FMT("Not found built-in component ", name));
+	node->getScene()->removeComponent(node->getId(), builtInComponents.at(name));
+}
+
+static void addScriptComponent(Node *node, sol::table &cmp)
+{
+	const auto c = std::make_shared<LuaScriptComponent>(*node, cmp);
+	node->getScene()->addComponent(node->getId(), c);
+}
+
+static void removeScriptComponent(Node *node, sol::table &cmp) // TODO also version with cmp id param
+{
+	const auto typeId = cmp.get<u32>("typeId") + LuaScriptComponent::minComponentTypeId;
+	node->getScene()->removeComponent(node->getId(), typeId);
+}
+
+static auto findScriptComponent(Node *node, u32 typeId) -> sol::object
+{
+	const auto cmp = node->getScene()->findComponent(node->getId(), typeId + LuaScriptComponent::minComponentTypeId);
+	if (cmp)
+	{
+	    const auto scriptComponent = dynamic_cast<LuaScriptComponent*>(cmp);
+		return scriptComponent->getUnderlyingCmp();
+	}
+
+	return {};
+}
+
+static void registerNode(sol::table &module)
+{
+	module.new_usertype<Node>(
+		"Node",
+		FIELD(Node, getId),
+		FIELD(Node, getScene),
+		"addScriptComponent", &addScriptComponent,
+		"removeScriptComponent", &removeScriptComponent,
+		"findScriptComponent", &findScriptComponent,
+		"addComponent", &addComponent,
+		"findComponent", &findComponent,
+		"removeComponent", &removeComponent
+	);
+}
+
+static void registerComponent(sol::table &module)
+{
+	module.new_usertype<Component>(
+		"Component",
+		FIELD(Component, getTypeId),
+		FIELD(Component, getTag),
+		FIELD(Component, setTag),
+		FIELD(Component, getLayer),
+		FIELD(Component, setLayer),
+		FIELD(Component, getNode)
 	);
 }
 
@@ -495,4 +609,7 @@ void registerApi(sol::table &module)
 	registerFileSystem(module);
 	registerDeviceSetup(module);
 	registerDevice(module);
+	registerScene(module);
+	registerComponent(module);
+	registerNode(module);
 }

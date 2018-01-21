@@ -92,7 +92,7 @@ void Scene::removeComponent(u32 nodeId, u32 typeId)
     if (cmpIt == nodeComponents.end() || cmpIt->second.deleted)
         return;
 
-    auto cmp = cmpIt->second;
+    auto &cmp = cmpIt->second;
     cmp.deleted = true;
     cmp.component->terminate();
 

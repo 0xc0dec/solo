@@ -60,20 +60,20 @@ static void removeComponent(Node *node, const str &name)
 
 static auto findScriptComponent(Node *node, u32 typeId) -> LuaRef
 {
-    const auto cmp = node->getScene()->findComponent(node->getId(), typeId + LuaScriptComponent::minComponentTypeId);
-    if (cmp)
-    {
-        const auto scriptComponent = dynamic_cast<LuaScriptComponent*>(cmp);
-        return scriptComponent->getRef();
-    }
+//    const auto cmp = node->getScene()->findComponent(node->getId(), typeId + LuaScriptComponent::minComponentTypeId);
+//    if (cmp)
+//    {
+//        const auto scriptComponent = dynamic_cast<LuaScriptComponent*>(cmp);
+//        return scriptComponent->getRef();
+//    }
 
     return {};
 }
 
 static void addScriptComponent(Node *node, LuaRef scriptComponent)
 {
-    const auto actualComponent = std::make_shared<LuaScriptComponent>(*node, scriptComponent);
-    node->getScene()->addComponent(node->getId(), actualComponent);
+//    const auto actualComponent = std::make_shared<LuaScriptComponent>(*node, scriptComponent);
+//    node->getScene()->addComponent(node->getId(), actualComponent);
 }
 
 static void removeScriptComponent(Node *node, const LuaRef& scriptComponent)
