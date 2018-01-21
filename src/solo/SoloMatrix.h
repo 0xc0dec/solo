@@ -33,7 +33,7 @@ namespace solo
         static auto createPerspective(const Radian &fieldOfView, float aspectRatio, float znear, float zfar) -> Matrix;
         static auto createOrthographic(float width, float height, float near, float far) -> Matrix;
         static auto createScale(const Vector3 &scale) -> Matrix;
-        static auto createRotationFromQuaternion(const Quaternion &quat) -> Matrix;
+        static auto createRotationFromQuaternion(const Quaternion &q) -> Matrix;
         static auto createRotationFromAxisAngle(const Vector3 &axis, const Radian &angle) -> Matrix;
         static auto createRotationX(const Radian &angle) -> Matrix;
         static auto createRotationY(const Radian &angle) -> Matrix;
