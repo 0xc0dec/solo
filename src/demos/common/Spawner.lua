@@ -64,7 +64,7 @@ return function(assetCache)
             transform:setLocalPosition(initialPos)
             transform:setLocalRotation(initialRotation)
     
-            local params = sl.RigidBodyConstructionParameters()
+            local params = sl.RigidBodyConstructionParameters.new()
             params.mass = 50
             params.restitution = 0.5
             params.friction = 0.2

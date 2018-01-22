@@ -48,7 +48,7 @@ return function(assetCache, mainCameraNode)
             transform:setLocalScale(localScale)
 
             if withCollider then
-                local params = sl.RigidBodyConstructionParameters()
+                local params = sl.RigidBodyConstructionParameters.new()
                 params.mass = 0
                 params.friction = 0.5
                 local body = node:addRigidBody(params)

@@ -20,7 +20,7 @@ return function(scene, assetCache)
     renderer:setMesh(assetCache.meshes.cube)
     renderer:setMaterial(0, material)
 
-    local params = sl.RigidBodyConstructionParameters()
+    local params = sl.RigidBodyConstructionParameters.new()
     params.mass = 0
     params.friction = 0.5
     local body = node:addRigidBody(params)

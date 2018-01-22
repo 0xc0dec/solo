@@ -3,9 +3,9 @@
 -- MIT license
 -- 
 
-vec2 = sl.Vector2
-vec3 = sl.Vector3
-vec4 = sl.Vector4
+vec2 = sl.Vector2.new
+vec3 = sl.Vector3.new
+vec4 = sl.Vector4.new
 
 function getAssetPath(fileName)
     return "../../assets/" .. fileName

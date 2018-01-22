@@ -675,6 +675,18 @@ static void registerTexture2d(sol::table &module)
 	);
 }
 
+static void registerCubeTexture(sol::table &module)
+{
+	module.new_usertype<CubeTexture>(
+		"CubeTexture",
+		sol::base_classes, sol::bases<Texture>(),
+		FIELD(CubeTexture, loadFromFaceFiles),
+		FIELD(CubeTexture, loadFromFaceFilesAsync),
+		FIELD(CubeTexture, getDepthWrap),
+		FIELD(CubeTexture, setDepthWrap)
+	);
+}
+
 static void setRenderTarget(Camera *camera, sol::optional<sptr<FrameBuffer>> target)
 {
 	camera->setRenderTarget(target.value_or(nullptr));
@@ -880,6 +892,36 @@ static auto findTransform(Node *node) -> Transform*
 	return node->findComponent<Transform>();
 }
 
+static auto findCamera(Node *node) -> Camera*
+{
+	return node->findComponent<Camera>();
+}
+
+static auto findMeshRenderer(Node *node) -> MeshRenderer*
+{
+	return node->findComponent<MeshRenderer>();
+}
+
+static auto findSpectator(Node *node) -> Spectator*
+{
+	return node->findComponent<Spectator>();
+}
+
+static auto findSkyboxRenderer(Node *node) -> SkyboxRenderer*
+{
+	return node->findComponent<SkyboxRenderer>();
+}
+
+static auto findFontRenderer(Node *node) -> FontRenderer*
+{
+	return node->findComponent<FontRenderer>();
+}
+
+static auto findRigidBody(Node *node) -> RigidBody*
+{
+	return node->findComponent<RigidBody>();
+}
+
 static auto addTransform(Node *node) -> Transform*
 {
 	return node->addComponent<Transform>();
@@ -1013,6 +1055,12 @@ static void registerNode(sol::table &module)
 		"addComponent", &addComponent,
 		"addCamera", &addCamera,
 		"removeCamera", &removeCamera,
+		"findCamera", &findCamera,
+		"findMeshRenderer", &findMeshRenderer,
+		"findSpectator", &findSpectator,
+		"findSkyboxRenderer", &findSkyboxRenderer,
+		"findFontRenderer", &findFontRenderer,
+		"findRigidBody", &findRigidBody,
 		"addTransform", &addTransform,
 		"removeTransform", &removeTransform,
 		"addSkyboxRenderer", &addSkyboxRenderer,
@@ -1067,6 +1115,24 @@ static void registerFileSystem(sol::table &module)
 	);
 }
 
+static void registerAsyncHandles(sol::table &module)
+{
+	module.new_usertype<AsyncHandle<Texture2d>>(
+		"Texture2dAsyncHandle",
+		FIELD(AsyncHandle<Texture2d>, done)
+	);
+
+	module.new_usertype<AsyncHandle<CubeTexture>>(
+		"CubeTextureAsyncHandle",
+		FIELD(AsyncHandle<CubeTexture>, done)
+	);
+
+	module.new_usertype<AsyncHandle<Mesh>>(
+		"MeshAsyncHandle",
+		FIELD(AsyncHandle<Mesh>, done)
+	);
+}
+
 void registerApi(sol::table &module)
 {
 	registerEnums(module);
@@ -1089,6 +1155,7 @@ void registerApi(sol::table &module)
 	registerFrameBuffer(module);
 	registerTexture(module);
 	registerTexture2d(module);
+	registerCubeTexture(module);
 	registerMaterial(module);
 	registerEffect(module);
 	registerMesh(module);
@@ -1099,5 +1166,6 @@ void registerApi(sol::table &module)
 	registerSkyboxRenderer(module);
 	registerMeshRenderer(module);
 	registerPhysics(module);
+	registerAsyncHandles(module);
 	registerNode(module);
 }

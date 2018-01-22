@@ -19,7 +19,7 @@ return function(scene, assetCache)
         })
     end
 
-    local layout = sl.VertexBufferLayout()
+    local layout = sl.VertexBufferLayout.new()
     layout:addNamedAttribute(3, "position");
     layout:addNamedAttribute(2, "texCoord0");
 

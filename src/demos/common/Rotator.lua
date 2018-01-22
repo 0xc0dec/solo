@@ -5,7 +5,6 @@
 
 return function(space, axis, speed)
     return sl.createComponent("Rotator", {
-
         init = function(self)
             self.transform = self.node:findTransform()
         end,
@@ -16,7 +15,7 @@ return function(space, axis, speed)
             if space == "local" then
                 rotationSpace = sl.TransformSpace.Self
             end
-            self.transform:rotateByAxisAngle(axis, sl.Radian(angle), rotationSpace)
+            self.transform:rotateByAxisAngle(axis, sl.Radian.new(angle), rotationSpace)
         end
     })
 end

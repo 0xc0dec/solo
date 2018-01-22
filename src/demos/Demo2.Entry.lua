@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-deviceSetup = sl.DeviceSetup()
+deviceSetup = sl.DeviceSetup.new()
 deviceSetup.mode = sl.DeviceMode.Vulkan
 deviceSetup.canvasWidth = 1200
 deviceSetup.canvasHeight = 700
