@@ -14,7 +14,6 @@
 #include "SoloVulkanEffect.h"
 #include "SoloVulkanRenderer.h"
 #include "SoloVulkanTexture.h"
-#include "SoloVulkanPrefabShaders.h"
 #include "SoloVulkanPipeline.h"
 
 using namespace solo;
@@ -48,41 +47,6 @@ static auto convertBlendFactor(BlendFactor factor) -> VkBlendFactor
         default:
             SL_PANIC("Unknown blend factor");
             return VK_BLEND_FACTOR_ONE;
-    }
-}
-
-auto VulkanMaterial::createFromPrefab(Device *device, MaterialPrefab prefab) -> sptr<VulkanMaterial>
-{
-    switch (prefab)
-    {
-        case MaterialPrefab::Font:
-        {
-            auto effect = Effect::createFromSources(
-                device,
-                VulkanPrefabShaders::Vertex::font, strlen(VulkanPrefabShaders::Vertex::font),
-                VulkanPrefabShaders::Fragment::font, strlen(VulkanPrefabShaders::Fragment::font)
-            );
-            auto material = std::make_shared<VulkanMaterial>(effect);
-            material->bindParameter("matrices:wvp", BindParameterSemantics::WorldViewProjectionMatrix);
-            return material;
-        }
-
-        case MaterialPrefab::Skybox:
-        {
-            auto effect = Effect::createFromSources(
-                device,
-                VulkanPrefabShaders::Vertex::skybox, strlen(VulkanPrefabShaders::Vertex::skybox),
-                VulkanPrefabShaders::Fragment::skybox, strlen(VulkanPrefabShaders::Fragment::skybox)
-            );
-            auto material = std::make_shared<VulkanMaterial>(effect);
-            material->bindParameter("matrices:proj", BindParameterSemantics::ProjectionMatrix);
-            material->bindParameter("matrices:worldView", BindParameterSemantics::WorldViewMatrix);
-            return material;
-        }
-
-        default:
-            SL_PANIC("Unknown material prefab");
-            return nullptr;
     }
 }
 

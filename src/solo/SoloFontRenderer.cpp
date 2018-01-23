@@ -104,11 +104,11 @@ void FontRenderer::rebuildMesh()
     mesh = Mesh::create(node.getScene()->getDevice());
 
     VertexBufferLayout positionsLayout;
-    positionsLayout.addAttribute(3, 0);
+	positionsLayout.addNamedAttribute(3, "position");
     mesh->addDynamicVertexBuffer(positionsLayout, reinterpret_cast<const float *>(vertices.data()), static_cast<u32>(vertices.size()));
 
     VertexBufferLayout uvsLayout;
-    uvsLayout.addAttribute(2, 1);
+    uvsLayout.addNamedAttribute(2, "texCoord");
     mesh->addDynamicVertexBuffer(uvsLayout, reinterpret_cast<const float *>(uvs.data()), static_cast<u32>(uvs.size()));
 
     mesh->addPart(reinterpret_cast<const void *>(indexes.data()), static_cast<u32>(indexes.size()));

@@ -16,13 +16,11 @@ return function()
 
     return {
         getEffect = function(name)
-            local path = "effects/" .. name
+            local path = "../../src/demos/effects/" .. name .. ".lua"
             local key = path
 
             if not effectCache[key] then
-                local desc = require(path)
-                local src = effectTools.generateEffectSource(desc, sl.device:getMode())
-                effectCache[key] = sl.Effect.createFromSource(sl.device, src)
+                effectCache[key] = sl.Effect.loadFromDescriptionFile(sl.device, path)
             end
 
             return effectCache[key]

@@ -21,11 +21,11 @@ int main(int argc, s8 *argv[])
     try
     {
         const auto entryScript = argv[1];
-        auto entryRuntime = ScriptRuntime::create();
-        entryRuntime->executeFile(entryScript);
+        auto transientRuntime = ScriptRuntime::create();
+        transientRuntime->executeFile(entryScript);
 
-        const auto setup = entryRuntime->readDeviceSetup("deviceSetup");
-        const auto runScript = entryRuntime->readString("runScript");
+        const auto setup = transientRuntime->getDeviceSetup("deviceSetup");
+        const auto runScript = transientRuntime->getString("runScript");
 
         const auto device = Device::create(setup);
         device->getScriptRuntime()->executeFile(runScript);

@@ -19,8 +19,9 @@ namespace solo
 
         void executeFile(const str& path) override final;
 
-        auto readString(const str &name) -> str override final;
-        auto readDeviceSetup(const str &name) -> DeviceSetup override final;
+	    auto eval(const str& code) -> str override;
+        auto getString(const str &name) -> str override final;
+        auto getDeviceSetup(const str &name) -> DeviceSetup override final;
 
     private:
         LuaIntf::LuaState lua;

@@ -85,7 +85,8 @@ static void registerSkyboxRenderer(CppBindModule<LuaBinding> &module)
 static void registerEffect(CppBindModule<LuaBinding> &module)
 {
     auto eff = BEGIN_CLASS(module, Effect);
-    REG_STATIC_METHOD(eff, Effect, loadFromFile);
+    REG_STATIC_METHOD(eff, Effect, loadFromSourceFile);
+    REG_STATIC_METHOD(eff, Effect, loadFromDescriptionFile);
     REG_STATIC_METHOD(eff, Effect, createFromSource);
     eff.endClass();
 }

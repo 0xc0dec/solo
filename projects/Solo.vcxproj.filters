@@ -31,9 +31,6 @@
     <ClInclude Include="..\src\solo\gl\SoloOpenGLMesh.h">
       <Filter>gl</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\gl\SoloOpenGLPrefabShaders.h">
-      <Filter>gl</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\solo\gl\SoloOpenGLRenderer.h">
       <Filter>gl</Filter>
     </ClInclude>
@@ -186,9 +183,6 @@
     <ClInclude Include="..\src\solo\gl\SoloOpenGLSDLDevice.h">
       <Filter>gl</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\vk\SoloVulkanPrefabShaders.h">
-      <Filter>vk</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp">
@@ -210,9 +204,6 @@
       <Filter>gl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\gl\SoloOpenGLMesh.cpp">
-      <Filter>gl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\gl\SoloOpenGLPrefabShaders.cpp">
       <Filter>gl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\gl\SoloOpenGLRenderer.cpp">
@@ -358,9 +349,6 @@
     </ClCompile>
     <ClCompile Include="..\src\solo\gl\SoloOpenGLSDLDevice.cpp">
       <Filter>gl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\solo\vk\SoloVulkanPrefabShaders.cpp">
-      <Filter>vk</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

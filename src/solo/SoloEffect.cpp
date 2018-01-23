@@ -6,15 +6,28 @@
 #include "SoloEffect.h"
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
+#include "SoloScriptRuntime.h"
 #include "gl/SoloOpenGLEffect.h"
 #include "vk/SoloVulkanEffect.h"
 #include "null/SoloNullEffect.h"
 
 using namespace solo;
 
-auto Effect::loadFromFile(Device *device, const str &path) -> sptr<Effect>
+auto Effect::loadFromSourceFile(Device *device, const str &path) -> sptr<Effect>
 {
     const auto source = device->getFileSystem()->readText(path);
+	return createFromSource(device, source);
+}
+
+auto Effect::loadFromDescriptionFile(Device* device, const str& path) -> sptr<Effect>
+{
+	const auto desc = device->getFileSystem()->readText(path);
+	return createFromDescription(device, desc);
+}
+
+auto Effect::createFromDescription(Device* device, const str& description) -> sptr<Effect>
+{
+	const auto source = device->getScriptRuntime()->eval("sl.generateEffectSource(" + description + ")");
 	return createFromSource(device, source);
 }
 
@@ -51,7 +64,7 @@ auto Effect::createFromSource(Device* device, const str& source) -> sptr<Effect>
     }
 }
 
-auto Effect::createFromSources(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen) -> sptr<Effect>
+auto Effect::createFromShaderSources(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen) -> sptr<Effect>
 {
     switch (device->getMode())
     {

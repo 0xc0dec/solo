@@ -1,4 +1,4 @@
-return {
+{
     vertex = {
         uniformBuffers = {
             matrices = {
@@ -20,6 +20,7 @@ return {
             uv = texCoord;
             gl_Position = #matrices:wvp# * vec4(position.xyz, 1.0);
             FIX_UV#uv#;
+            FIX_Y#gl_Position#;
         ]]
     },
 

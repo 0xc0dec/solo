@@ -1,4 +1,4 @@
-return {
+{
     vertex = {
         inputs = {
             position = "vec4",
@@ -13,6 +13,7 @@ return {
             gl_Position = position;
             uv = texCoord;
             FIX_UV#uv#;
+            FIX_Y#gl_Position#;
         ]]
     },
 

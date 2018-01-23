@@ -1,4 +1,4 @@
-return {
+{
     vertex = {
         uniformBuffers = {
             matrices = {
@@ -23,6 +23,7 @@ return {
             n = normalize((#matrices:invTranspWorld# * vec4(normal, 1)).xyz);
             gl_Position = #matrices:wvp# * vec4(position, 1);
             FIX_UV#uv#;
+            FIX_Y#gl_Position#;
         ]]
     },
 

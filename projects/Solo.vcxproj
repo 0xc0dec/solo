@@ -21,7 +21,6 @@
     <ClInclude Include="..\src\solo\gl\SoloOpenGLFrameBuffer.h" />
     <ClInclude Include="..\src\solo\gl\SoloOpenGLMaterial.h" />
     <ClInclude Include="..\src\solo\gl\SoloOpenGLMesh.h" />
-    <ClInclude Include="..\src\solo\gl\SoloOpenGLPrefabShaders.h" />
     <ClInclude Include="..\src\solo\gl\SoloOpenGLRenderer.h" />
     <ClInclude Include="..\src\solo\gl\SoloOpenGLTexture.h" />
     <ClInclude Include="..\src\solo\gl\SoloOpenGLSDLDevice.h" />
@@ -102,7 +101,6 @@
     <ClInclude Include="..\src\solo\vk\SoloVulkanResource.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkanSwapchain.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkanTexture.h" />
-    <ClInclude Include="..\src\solo\vk\SoloVulkanPrefabShaders.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp" />
@@ -112,7 +110,6 @@
     <ClCompile Include="..\src\solo\gl\SoloOpenGLFrameBuffer.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLMaterial.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLMesh.cpp" />
-    <ClCompile Include="..\src\solo\gl\SoloOpenGLPrefabShaders.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLRenderer.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLTexture.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLSDLDevice.cpp" />
@@ -183,7 +180,6 @@
     <ClCompile Include="..\src\solo\vk\SoloVulkanRenderer.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloVulkanRenderPass.cpp" />
     <ClCompile Include="..\src\solo\vk\SoloVulkanSwapchain.cpp" />
-    <ClCompile Include="..\src\solo\vk\SoloVulkanPrefabShaders.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{278CAB21-1CAB-49AD-9959-6F97743501FB}</ProjectGuid>

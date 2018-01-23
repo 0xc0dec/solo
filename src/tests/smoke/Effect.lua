@@ -3,5 +3,6 @@
 -- MIT license
 -- 
 
-assert(sl.Effect.loadFromFile ~= nil)
+assert(sl.Effect.loadFromSourceFile ~= nil)
 assert(sl.Effect.createFromSource ~= nil)
+assert(sl.Effect.loadFromDescriptionFile ~= nil)
