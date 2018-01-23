@@ -156,10 +156,10 @@ auto obj::loadMesh(Device *device, const str &path) -> sptr<Mesh>
     auto data = loadMeshData(device, path);
     auto mesh = Mesh::create(device);
     
-    VertexBufferLayout layout;
-    layout.addAttribute(3, 0);
-    layout.addAttribute(3, 1);
-    layout.addAttribute(2, 2);
+    VertexBufferLayout layout; // TODO take layout from effect or smth
+	layout.addNamedAttribute(3, "position");
+	layout.addNamedAttribute(3, "normal");
+	layout.addNamedAttribute(2, "texCoord");
 
     mesh->addVertexBuffer(layout, data->vertices.data(), data->vertices.size() / 8);
     
@@ -180,10 +180,10 @@ auto obj::loadMeshAsync(Device *device, const str &path) -> sptr<AsyncHandle<Mes
         auto data = results[0];
         auto mesh = Mesh::create(device);
     
-        VertexBufferLayout layout;
-        layout.addAttribute(3, 0);
-        layout.addAttribute(3, 1);
-        layout.addAttribute(2, 2);
+        VertexBufferLayout layout; // TODO take layout from effect or smth
+		layout.addNamedAttribute(3, "position");
+		layout.addNamedAttribute(3, "normal");
+		layout.addNamedAttribute(2, "texCoord");
 
         mesh->addVertexBuffer(layout, data->vertices.data(), data->vertices.size() / 8);
     
