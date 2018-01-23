@@ -86,6 +86,7 @@ static void registerEffect(CppBindModule<LuaBinding> &module)
 {
     auto eff = BEGIN_CLASS(module, Effect);
     REG_STATIC_METHOD(eff, Effect, loadFromFile);
+    REG_STATIC_METHOD(eff, Effect, createFromSource);
     eff.endClass();
 }
 

@@ -28,8 +28,8 @@ namespace solo
         struct UniformBuffer
         {
             umap<str, UniformBufferMember> members;
-            u32 binding;
-            u32 size;
+            u32 binding = 0;
+			u32 size = 0;
         };
 
         struct Sampler
@@ -42,7 +42,7 @@ namespace solo
             u32 location;
         };
 
-        static auto createFromSource(Device *device,
+        static auto createFromSources(Device *device,
             const void *vsSrc, u32 vsSrcLen, const str &vsFileName,
             const void *fsSrc, u32 fsSrcLen, const str &fsFileName) -> sptr<VulkanEffect>;
 

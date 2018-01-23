@@ -22,7 +22,7 @@ auto OpenGLMaterial::createFromPrefab(Device *device, MaterialPrefab prefab) -> 
     {
         case MaterialPrefab::Font:
         {
-            auto effect = Effect::createFromSource(
+            auto effect = Effect::createFromSources(
                 device,
                 OpenGLPrefabShaders::Vertex::font, strlen(OpenGLPrefabShaders::Vertex::font),
                 OpenGLPrefabShaders::Fragment::font, strlen(OpenGLPrefabShaders::Fragment::font)
@@ -34,7 +34,7 @@ auto OpenGLMaterial::createFromPrefab(Device *device, MaterialPrefab prefab) -> 
 
         case MaterialPrefab::Skybox:
         {
-            auto effect = Effect::createFromSource(
+            auto effect = Effect::createFromSources(
                 device,
                 OpenGLPrefabShaders::Vertex::skybox, strlen(OpenGLPrefabShaders::Vertex::skybox),
                 OpenGLPrefabShaders::Fragment::skybox, strlen(OpenGLPrefabShaders::Fragment::skybox)

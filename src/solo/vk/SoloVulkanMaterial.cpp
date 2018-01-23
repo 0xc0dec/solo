@@ -57,7 +57,7 @@ auto VulkanMaterial::createFromPrefab(Device *device, MaterialPrefab prefab) -> 
     {
         case MaterialPrefab::Font:
         {
-            auto effect = Effect::createFromSource(
+            auto effect = Effect::createFromSources(
                 device,
                 VulkanPrefabShaders::Vertex::font, strlen(VulkanPrefabShaders::Vertex::font),
                 VulkanPrefabShaders::Fragment::font, strlen(VulkanPrefabShaders::Fragment::font)
@@ -69,7 +69,7 @@ auto VulkanMaterial::createFromPrefab(Device *device, MaterialPrefab prefab) -> 
 
         case MaterialPrefab::Skybox:
         {
-            auto effect = Effect::createFromSource(
+            auto effect = Effect::createFromSources(
                 device,
                 VulkanPrefabShaders::Vertex::skybox, strlen(VulkanPrefabShaders::Vertex::skybox),
                 VulkanPrefabShaders::Fragment::skybox, strlen(VulkanPrefabShaders::Fragment::skybox)

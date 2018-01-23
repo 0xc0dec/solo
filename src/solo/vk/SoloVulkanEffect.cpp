@@ -51,7 +51,7 @@ static auto compileToSpiv(const void *src, u32 srcLen, const str &fileName, bool
     return result;
 }
 
-auto VulkanEffect::createFromSource(Device *device,
+auto VulkanEffect::createFromSources(Device *device,
     const void *vsSrc, u32 vsSrcLen, const str &vsFileName,
     const void *fsSrc, u32 fsSrcLen, const str &fsFileName)
     -> sptr<VulkanEffect>
