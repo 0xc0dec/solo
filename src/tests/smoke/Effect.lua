@@ -4,3 +4,4 @@
 -- 
 
 assert(sl.Effect.loadFromFile ~= nil)
+assert(sl.Effect.createFromSource ~= nil)

@@ -33,8 +33,52 @@ function demo()
     local createTracer = require "Tracer"
     local createPostProcessorControlPanel = require "PostProcessorControlPanel"
     local tags = require "Tags"
+    local effectTools = require "effect-tools"
 
     ---
+
+    local effect = {
+        vertex = {
+            uniformBuffers = {
+                ["matrices"] = {
+                    wvp = "mat4"
+                }
+            },
+    
+            inputs = {
+                position = "vec3",
+                texCoord0 = "vec2"
+            },
+    
+            outputs = {
+                outTexCoord = "vec2"
+            },
+    
+            entry = [[
+                outTexCoord = texCoord0;
+                outTexCoord.y = 1 - outTexCoord.y;
+                gl_Position = #matrices:wvp# * vec4(position.xyz, 1.0);
+            ]]
+        },
+    
+        fragment = {
+            samplers = {
+                mainTex = "sampler2D"
+            },
+    
+            outputs = {
+                outFragColor = "vec4"
+            },
+    
+            entry = [[
+                outFragColor = texture(mainTex, outTexCoord);
+            ]]
+        }
+    }
+
+    local effectSrc = effectTools.generateEffectSource(effect, dev:getMode())
+    local eff = sl.Effect.createFromSource(dev, effectSrc)
+
     local offscreenCamera, offscreenCameraTex = createOffscreenCamera(scene)
     offscreenCamera:setOrder(0)
     offscreenCamera:setTagMask(~(tags.monitor | tags.allPostProcessorSteps))
