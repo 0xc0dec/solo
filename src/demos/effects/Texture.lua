@@ -8,7 +8,8 @@ return {
 
         inputs = {
             position = "vec4",
-            texCoord = "vec2"
+            texCoord = "vec2",
+            normal = "vec3"
         },
 
         outputs = {

@@ -26,20 +26,20 @@ return {
         samplers = {
             mainTex = "sampler2D",
             stitchTex = "sampler2D"
-        }
+        },
 
         outputs = {
             fragColor = "vec4"
         },
 
         entry = [[
-            vec2 colorBlock = floor(uv0 * #variables:resolution#);
-            vec4 color = texture(mainTex, uv0);
-            vec4 prevColor = texture(mainTex, vec2(uv0.x, uv0.y + 1.0 / #variables:resolution#.y));
+            vec2 colorBlock = floor(uv * #variables:resolution#);
+            vec4 color = texture(mainTex, uv);
+            vec4 prevColor = texture(mainTex, vec2(uv.x, uv.y + 1.0 / #variables:resolution#.y));
 
-            float stitchUvX = fract(#variables:stitchCount#.x * (uv0.x + pow(colorBlock.y, 2.0) / #variables:resolution#.x * 2.0));
-            float stitchUvY = fract(#variables:stitchCount#.y * uv0.y);
-            float nextStitchUvX = fract(#variables:stitchCount#.x * (uv0.x + pow(colorBlock.y + 1.0, 2.0) / #variables:resolution#.x * 2.0));
+            float stitchUvX = fract(#variables:stitchCount#.x * (uv.x + pow(colorBlock.y, 2.0) / #variables:resolution#.x * 2.0));
+            float stitchUvY = fract(#variables:stitchCount#.y * uv.y);
+            float nextStitchUvX = fract(#variables:stitchCount#.x * (uv.x + pow(colorBlock.y + 1.0, 2.0) / #variables:resolution#.x * 2.0));
             if (stitchUvY > 0.5)
             {
                 vec2 stitchUV = vec2(stitchUvX, stitchUvY);

@@ -25,7 +25,7 @@ return {
 
         samplers = {
             mainTex = "sampler2D"
-        }
+        },
 
         outputs = {
             fragColor = "vec4"

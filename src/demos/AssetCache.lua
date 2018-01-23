@@ -5,17 +5,6 @@
 
 local effectTools = require "effect-tools"
 
-function getShaderPath(name)
-    local path = sl.device:getMode() == sl.DeviceMode.OpenGL and ("shaders/gl/" .. name .. ".glsl") or nil
-    path = sl.device:getMode() == sl.DeviceMode.Vulkan and ("shaders/vulkan/" .. name .. ".glsl") or path
-
-    if not path then
-        error("Could not calculate shader path for " .. name)
-    end
-
-    return getAssetPath(path)
-end
-
 return function()
     local cubeMesh = sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Cube)
     local quadMesh = sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Quad)
@@ -31,10 +20,8 @@ return function()
             local key = path
 
             if not effectCache[key] then
-                print("Loading effect " .. path)
                 local desc = require(path)
                 local src = effectTools.generateEffectSource(desc, sl.device:getMode())
-                print(src)
                 effectCache[key] = sl.Effect.createFromSource(sl.device, src)
             end
 
