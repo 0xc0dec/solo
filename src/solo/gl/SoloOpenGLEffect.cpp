@@ -88,6 +88,11 @@ auto OpenGLEffect::getUniformInfo(const str &name) -> UniformInfo
     return {};
 }
 
+auto OpenGLEffect::hasAttribute(const str& name) -> bool
+{
+	return attributes.count(name);
+}
+
 auto OpenGLEffect::getAttributeInfo(const str &name) -> AttributeInfo
 {
     if (attributes.count(name))

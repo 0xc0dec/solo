@@ -365,7 +365,8 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
                 auto location = attr.location;
                 if (!attr.name.empty())
                 {
-                    SL_PANIC_IF(!effectVertexAttrs.count(attr.name), SL_FMT("Unknown vertex attribute ", attr.name));
+					if (!effectVertexAttrs.count(attr.name))
+						continue; // TODO log that not found?
                     location = effectVertexAttrs.at(attr.name).location;
                 }
 

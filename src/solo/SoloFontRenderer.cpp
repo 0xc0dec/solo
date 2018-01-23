@@ -41,7 +41,7 @@ void FontRenderer::setFont(sptr<Font> newFont)
 
     if (font)
     {
-        if (text.size() > 0)
+        if (!text.empty())
             rebuildMesh();
         material->setTextureParameter("mainTex", font->getAtlas());
     }
