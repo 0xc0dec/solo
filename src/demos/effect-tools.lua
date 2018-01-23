@@ -32,17 +32,17 @@ return {
         end
         
         function generateBuffer(name, desc, binding)
-            local result = vulkan and string.format("layout (binding = %d) uniform __%s {\n", binding, name) or ""
+            local result = vulkan and string.format("layout (binding = %d) uniform _%s {\n", binding, name) or ""
         
             for varName, varType in pairs(desc or {}) do
                 local prefix = (not vulkan) and "uniform " or ""
-                local newVarName = vulkan and varName or string.format("_%s_%s", name, varName)
+                local newVarName = vulkan and varName or string.format("%s_%s", name, varName)
                 local varStr = string.format("%s%s %s;\n", prefix, varType, newVarName)
                 result = result .. varStr
             end
         
             if vulkan then
-                result = string.format("%s} _%s;", result, name)
+                result = string.format("%s} %s;", result, name)
             end
         
             return result .. "\n"
@@ -60,10 +60,10 @@ return {
         end
         
         function generateEntry(raw)
-            return string.gsub(raw, "#(.+):(.+)#", function(buffer, uniform)
+            return string.gsub(raw, "#([_0-9a-zA-Z]+):([_0-9a-zA-Z]+)#", function(buffer, uniform)
                 return vulkan
-                    and string.format("_%s.%s", buffer, uniform)
-                    or string.format("_%s_%s", buffer, uniform)
+                    and string.format("%s.%s", buffer, uniform)
+                    or string.format("%s_%s", buffer, uniform)
             end)
         end
 

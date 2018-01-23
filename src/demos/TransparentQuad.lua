@@ -18,7 +18,7 @@ return function(scene, assetCache)
     material:setBlend(true)
     material:setDepthTest(true)
     material:setDepthWrite(false)
-    material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    material:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     material:setTextureParameter("mainTex", tex)
 
     local parent = scene:createNode()

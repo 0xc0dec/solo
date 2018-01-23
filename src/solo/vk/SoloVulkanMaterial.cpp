@@ -21,7 +21,7 @@ using namespace solo;
 
 static auto parseName(const str &name) -> std::tuple<str, str>
 {
-    const auto idx = name.find(".");
+    const auto idx = name.find(':');
     const auto first = (idx != str::npos) ? name.substr(0, idx) : name;
     const auto second = (idx != str::npos) ? name.substr(idx + 1) : "";
     return make_tuple(first, second);
@@ -63,7 +63,7 @@ auto VulkanMaterial::createFromPrefab(Device *device, MaterialPrefab prefab) -> 
                 VulkanPrefabShaders::Fragment::font, strlen(VulkanPrefabShaders::Fragment::font)
             );
             auto material = std::make_shared<VulkanMaterial>(effect);
-            material->bindParameter("matrices.wvp", BindParameterSemantics::WorldViewProjectionMatrix);
+            material->bindParameter("matrices:wvp", BindParameterSemantics::WorldViewProjectionMatrix);
             return material;
         }
 
@@ -75,8 +75,8 @@ auto VulkanMaterial::createFromPrefab(Device *device, MaterialPrefab prefab) -> 
                 VulkanPrefabShaders::Fragment::skybox, strlen(VulkanPrefabShaders::Fragment::skybox)
             );
             auto material = std::make_shared<VulkanMaterial>(effect);
-            material->bindParameter("matrices.proj", BindParameterSemantics::ProjectionMatrix);
-            material->bindParameter("matrices.worldView", BindParameterSemantics::WorldViewMatrix);
+            material->bindParameter("matrices:proj", BindParameterSemantics::ProjectionMatrix);
+            material->bindParameter("matrices:worldView", BindParameterSemantics::WorldViewMatrix);
             return material;
         }
 

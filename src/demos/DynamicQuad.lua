@@ -21,7 +21,7 @@ return function(scene, assetCache)
 
     local layout = sl.VertexBufferLayout()
     layout:addNamedAttribute(3, "position");
-    layout:addNamedAttribute(2, "texCoord0");
+    layout:addNamedAttribute(2, "texCoord");
 
     local data = {
         -1, -1, 0, 0, 0,
@@ -48,7 +48,7 @@ return function(scene, assetCache)
         local effect = assetCache.getEffect("Texture")
         local material = sl.Material.create(sl.device, effect)
         material:setFaceCull(sl.FaceCull.None)
-        material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+        material:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
         material:setTextureParameter("mainTex", tex)
 
         local node = scene:createNode()

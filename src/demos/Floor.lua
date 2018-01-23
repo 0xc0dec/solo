@@ -7,7 +7,7 @@ return function(scene, assetCache)
     local effect = assetCache.getEffect("Texture")
     local material = sl.Material.create(sl.device, effect)
     material:setFaceCull(sl.FaceCull.None)
-    material:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    material:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     material:setTextureParameter("mainTex", assetCache.textures.cobbleStone)
 
     local node = scene:createNode()

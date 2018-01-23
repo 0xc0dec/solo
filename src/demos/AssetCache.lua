@@ -3,6 +3,8 @@
 -- MIT license
 -- 
 
+local effectTools = require "effect-tools"
+
 function getShaderPath(name)
     local path = sl.device:getMode() == sl.DeviceMode.OpenGL and ("shaders/gl/" .. name .. ".glsl") or nil
     path = sl.device:getMode() == sl.DeviceMode.Vulkan and ("shaders/vulkan/" .. name .. ".glsl") or path
@@ -25,11 +27,15 @@ return function()
 
     return {
         getEffect = function(name)
-            local path = getShaderPath(name)
+            local path = "effects/" .. name
             local key = path
 
             if not effectCache[key] then
-                effectCache[key] = sl.Effect.loadFromFile(sl.device, path)
+                print("Loading effect " .. path)
+                local desc = require(path)
+                local src = effectTools.generateEffectSource(desc, sl.device:getMode())
+                print(src)
+                effectCache[key] = sl.Effect.createFromSource(sl.device, src)
             end
 
             return effectCache[key]

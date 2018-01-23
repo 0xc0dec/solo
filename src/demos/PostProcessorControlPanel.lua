@@ -9,8 +9,8 @@ return function(assetCache, mainCameraNode)
     function createMaterial(color)
         local m = sl.Material.create(sl.device, effect)
         m:setFaceCull(sl.FaceCull.None)
-        m:bindParameter("matrices.wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-        m:setVector4Parameter("variables.color", color)
+        m:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+        m:setVector4Parameter("variables:color", color)
         return m
     end
 

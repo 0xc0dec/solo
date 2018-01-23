@@ -52,7 +52,7 @@ namespace solo
         // Maybe not the fastest, but convenient and good enough for now
         umap<str, ParameterApplier> appliers;
 
-        void setParameter(const str &paramName, std::function<ParameterApplier(GLuint, GLint)> getApplier);
+        void setParameter(const str &paramName, const std::function<ParameterApplier(GLuint, GLint)> &getApplier);
     };
 }
 

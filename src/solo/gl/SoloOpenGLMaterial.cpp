@@ -66,7 +66,7 @@ void OpenGLMaterial::setFloatParameter(const str &name, float value)
 {
     setParameter(name, [value](GLuint location, GLuint index)
     {
-        return [location, index, value](const Camera *, const Transform *)
+        return [location, value](const Camera *, const Transform *)
         {
             glUniform1f(location, value);
         };
@@ -77,7 +77,7 @@ void OpenGLMaterial::setVector2Parameter(const str &name, const Vector2 &value)
 {
     setParameter(name, [value](GLuint location, GLuint index)
     {
-        return [location, index, value](const Camera *, const Transform *)
+        return [location, value](const Camera *, const Transform *)
         {
             glUniform2f(location, value.x, value.y);
         };
@@ -88,7 +88,7 @@ void OpenGLMaterial::setVector3Parameter(const str &name, const Vector3 &value)
 {
     setParameter(name, [value](GLuint location, GLuint index)
     {
-        return [location, index, value](const Camera *, const Transform *)
+        return [location, value](const Camera *, const Transform *)
         {
             glUniform3f(location, value.x, value.y, value.z);
         };
@@ -99,7 +99,7 @@ void OpenGLMaterial::setVector4Parameter(const str &name, const Vector4 &value)
 {
     setParameter(name, [value](GLuint location, GLuint index)
     {
-        return [location, index, value](const Camera *, const Transform *)
+        return [location, value](const Camera *, const Transform *)
         {
             glUniform4f(location, value.x, value.y, value.z, value.w);
         };
@@ -110,7 +110,7 @@ void OpenGLMaterial::setMatrixParameter(const str &name, const Matrix &value)
 {
     setParameter(name, [value](GLuint location, GLuint index)
     {
-        return [location, index, value](const Camera *, const Transform *)
+        return [location, value](const Camera *, const Transform *)
         {
             glUniformMatrix4fv(location, 1, GL_FALSE, value.m);
         };
@@ -139,7 +139,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
         {
             setParameter(name, [](GLuint location, GLuint index)
             {
-                return [location, index](const Camera *camera, const Transform *nodeTransform)
+                return [location](const Camera *camera, const Transform *nodeTransform)
                 {
                     if (nodeTransform)
                     {
@@ -155,7 +155,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
         {
             setParameter(name, [](GLuint location, GLuint index)
             {
-                return [location, index](const Camera *camera, const Transform *nodeTransform)
+                return [location](const Camera *camera, const Transform *nodeTransform)
                 {
                     if (camera)
                     {
@@ -171,7 +171,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
         {
             setParameter(name, [](GLuint location, GLuint index)
             {
-                return [location, index](const Camera *camera, const Transform *nodeTransform)
+                return [location](const Camera *camera, const Transform *nodeTransform)
                 {
                     if (camera)
                     {
@@ -187,7 +187,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
         {
             setParameter(name, [](GLuint location, GLuint index)
             {
-                return [location, index](const Camera *camera, const Transform *nodeTransform)
+                return [location](const Camera *camera, const Transform *nodeTransform)
                 {
                     if (nodeTransform && camera)
                     {
@@ -203,7 +203,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
         {
             setParameter(name, [](GLuint location, GLuint index)
             {
-                return [location, index](const Camera *camera, const Transform *nodeTransform)
+                return [location](const Camera *camera, const Transform *nodeTransform)
                 {
                     if (camera)
                     {
@@ -219,7 +219,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
         {
             setParameter(name, [](GLuint location, GLuint index)
             {
-                return [location, index](const Camera *camera, const Transform *nodeTransform)
+                return [location](const Camera *camera, const Transform *nodeTransform)
                 {
                     if (nodeTransform && camera)
                     {
@@ -235,7 +235,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
         {
             setParameter(name, [](GLuint location, GLuint index)
             {
-                return [location, index](const Camera *camera, const Transform *nodeTransform)
+                return [location](const Camera *camera, const Transform *nodeTransform)
                 {
                     if (nodeTransform)
                     {
@@ -251,7 +251,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
         {
             setParameter(name, [](GLuint location, GLuint index)
             {
-                return [location, index](const Camera *camera, const Transform *nodeTransform)
+                return [location](const Camera *camera, const Transform *nodeTransform)
                 {
                     if (nodeTransform && camera)
                     {
@@ -267,7 +267,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
         {
             setParameter(name, [](GLuint location, GLuint index)
             {
-                return [location, index](const Camera *camera, const Transform *nodeTransform)
+                return [location](const Camera *camera, const Transform *nodeTransform)
                 {
                     if (camera)
                     {
@@ -284,12 +284,12 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
     }
 }
 
-void OpenGLMaterial::setParameter(const str &paramName, std::function<ParameterApplier(GLuint, GLint)> getApplier)
+void OpenGLMaterial::setParameter(const str &paramName, const std::function<ParameterApplier(GLuint, GLint)> &getApplier)
 {
     auto name = paramName;
-    const auto lastDotIdx = paramName.find_last_of(".");
-    if (lastDotIdx != std::string::npos)
-        name = paramName.substr(lastDotIdx + 1);
+    const auto idx = paramName.find_last_of(':');
+	if (idx != std::string::npos)
+		name.replace(idx, 1, "_");
     const auto info = effect->getUniformInfo(name);
     appliers[paramName] = getApplier(info.location, info.samplerIndex);
 }
