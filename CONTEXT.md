@@ -5,7 +5,6 @@
 * Demo2 sometimes dies at startup. Probably related to vertex attributes change made recently. Also RenderDoc throws a bunch of validator errors
 * Finish with shader generation: pass GLSL version as parameter, rely on it instead of "vulkan or not".
 * Refactor mesh attributes lookup, introduce attribute semantics or make sure predefined attributes always called the same
-* Remake built-in effects with lua format
 * Better demos, separate scenes for separate effects, real buttons for toggling post-processing effects, etc.
 * Demos refactoring, esp. texture/effect/material loading
 * Use axis names in CubeTextureData for fetching layer data
