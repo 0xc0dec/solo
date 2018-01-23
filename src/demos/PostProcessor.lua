@@ -121,6 +121,7 @@ local function init2(camera, assetCache)
     target:setAttachments({ fbTex })
 
     local material = sl.Material.create(sl.device, assetCache.getEffect("Stitches"))
+    material:setFaceCull(sl.FaceCull.None)
     material:setTextureParameter("mainTex", fbTex)
     material:setTextureParameter("stitchTex", stitchTex)
     material:setVector2Parameter("variables:stitchCount", stitchCount)

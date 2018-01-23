@@ -12,6 +12,7 @@ return {
         entry = [[
             gl_Position = position;
             uv = texCoord;
+            FIX_UV#uv#;
         ]]
     },
 

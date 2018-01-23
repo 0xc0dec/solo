@@ -18,8 +18,8 @@ return {
 
         entry = [[
             uv = texCoord;
-            uv.y = 1 - uv.y; // TODO
             gl_Position = #matrices:wvp# * vec4(position.xyz, 1.0);
+            FIX_UV#uv#;
         ]]
     },
 

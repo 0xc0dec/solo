@@ -20,9 +20,9 @@ return {
 
         entry = [[
             uv = texCoord;
-            uv.y = 1 - uv.y; // TODO
             n = normalize((#matrices:invTranspWorld# * vec4(normal, 1)).xyz);
             gl_Position = #matrices:wvp# * vec4(position, 1);
+            FIX_UV#uv#;
         ]]
     },
 

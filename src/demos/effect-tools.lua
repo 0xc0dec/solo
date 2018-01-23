@@ -60,10 +60,14 @@ return {
         end
         
         function generateEntry(raw)
-            return string.gsub(raw, "#([_0-9a-zA-Z]+):([_0-9a-zA-Z]+)#", function(buffer, uniform)
+            raw = string.gsub(raw, "#([_0-9a-zA-Z]+):([_0-9a-zA-Z]+)#", function(buffer, uniform)
                 return vulkan
                     and string.format("%s.%s", buffer, uniform)
                     or string.format("%s_%s", buffer, uniform)
+            end)
+
+            return string.gsub(raw, "FIX_UV#([_0-9a-zA-Z]+)#", function(varName)
+                return vulkan and string.format("%s.y = 1 - %s.y", varName, varName) or ""
             end)
         end
 
