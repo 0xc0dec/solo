@@ -132,7 +132,8 @@ VulkanPipelineConfig::VulkanPipelineConfig(VkShaderModule vertexShader, VkShader
     vertexShader(vertexShader),
     fragmentShader(fragmentShader),
     rasterStateInfo{},
-    depthStencilStateInfo{}
+    depthStencilStateInfo{},
+	blendAttachmentState{}
 {
     rasterStateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
     rasterStateInfo.pNext = nullptr;
@@ -168,22 +169,22 @@ VulkanPipelineConfig::VulkanPipelineConfig(VkShaderModule vertexShader, VkShader
 
 auto VulkanPipelineConfig::withVertexAttribute(u32 location, u32 binding, VkFormat format, u32 offset) -> VulkanPipelineConfig&
 {
-    if (location >= vertexAttrs.size())
-        vertexAttrs.resize(location + 1);
-    vertexAttrs[location].location = location;
-    vertexAttrs[location].binding = binding;
-    vertexAttrs[location].format = format;
-    vertexAttrs[location].offset = offset;
+	VkVertexInputAttributeDescription desc{};
+	desc.location = location;
+	desc.binding = binding;
+	desc.format = format;
+	desc.offset = offset;
+	vertexAttrs.push_back(desc);
     return *this;
 }
 
 auto VulkanPipelineConfig::withVertexBinding(u32 binding, u32 stride, VkVertexInputRate inputRate) -> VulkanPipelineConfig&
 {
-    if (binding >= vertexBindings.size())
-        vertexBindings.resize(binding + 1);
-    vertexBindings[binding].binding = binding;
-    vertexBindings[binding].stride = stride;
-    vertexBindings[binding].inputRate = inputRate;
+	VkVertexInputBindingDescription desc{};
+    desc.binding = binding;
+    desc.stride = stride;
+    desc.inputRate = inputRate;
+	vertexBindings.push_back(desc);
     return *this;
 }
 

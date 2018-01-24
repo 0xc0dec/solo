@@ -17,7 +17,7 @@ namespace solo
     {
     public:
         VulkanPipelineConfig(VkShaderModule vertexShader, VkShaderModule fragmentShader);
-        ~VulkanPipelineConfig(){}
+		~VulkanPipelineConfig() = default;
 
         auto withVertexAttribute(u32 location, u32 binding, VkFormat format, u32 offset) -> VulkanPipelineConfig&;
         auto withVertexBinding(u32 binding, u32 stride, VkVertexInputRate inputRate) -> VulkanPipelineConfig&;
