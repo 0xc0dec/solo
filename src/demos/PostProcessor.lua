@@ -154,19 +154,13 @@ return function(assetCache)
             self.mainCamera = self.node:findComponent("Camera")
         end,
 
-        update = function(self)
-            if sl.device:isKeyPressed(sl.KeyCode.Digit1, true) then
-                cleanupAndReset()
+        setMode = function(self, mode)
+            cleanupAndReset()
+
+            if mode == "1" then
                 cleanup = init1(self.mainCamera, assetCache)
-            end
-    
-            if sl.device:isKeyPressed(sl.KeyCode.Digit2, true) then
-                cleanupAndReset()
+            elseif mode == "2" then
                 cleanup = init2(self.mainCamera, assetCache)
-            end
-    
-            if sl.device:isKeyPressed(sl.KeyCode.Digit3, true) then
-                cleanupAndReset()
             end
         end
     })

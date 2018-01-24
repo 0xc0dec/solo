@@ -24,6 +24,6 @@ namespace solo
         auto getDeviceSetup(const str &name) -> DeviceSetup override final;
 
     private:
-        LuaIntf::LuaState lua;
+        LuaState lua;
     };
 }
