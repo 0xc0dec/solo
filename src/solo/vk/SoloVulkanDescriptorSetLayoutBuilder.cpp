@@ -17,14 +17,13 @@ VulkanDescriptorSetLayoutBuilder::VulkanDescriptorSetLayoutBuilder(VkDevice devi
 auto VulkanDescriptorSetLayoutBuilder::withBinding(u32 binding, VkDescriptorType descriptorType, u32 descriptorCount,
     VkShaderStageFlagBits stageFlags) -> VulkanDescriptorSetLayoutBuilder&
 {
-    if (binding >= bindings.size())
-        bindings.resize(binding + 1); // TODO Fix this. Causes troubles when there are gaps between binding numbers
-
-    bindings[binding].binding = binding;
-    bindings[binding].descriptorType = descriptorType;
-    bindings[binding].descriptorCount = descriptorCount;
-    bindings[binding].stageFlags = stageFlags;
-    bindings[binding].pImmutableSamplers = nullptr;
+	VkDescriptorSetLayoutBinding b{};
+    b.binding = binding;
+    b.descriptorType = descriptorType;
+    b.descriptorCount = descriptorCount;
+    b.stageFlags = stageFlags;
+    b.pImmutableSamplers = nullptr;
+	bindings.push_back(b);
 
     return *this;
 }
