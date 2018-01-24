@@ -12,6 +12,11 @@ return function(physics)
         end,
 
         update = function(self)
+            if sl.device:isMouseButtonDown(sl.MouseButton.Right, false) then
+                self.hitNode = nil
+                return
+            end
+
             local mousePos = sl.device:getMousePosition()
             local ray = self.camera:windowPointToWorldRay(mousePos)
             local from = ray:getOrigin()

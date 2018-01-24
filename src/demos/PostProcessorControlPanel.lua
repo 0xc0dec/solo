@@ -3,6 +3,8 @@
 -- MIT license
 -- 
 
+local layers = require "Layers"
+
 return function(assetCache, mainCameraNode)
     local effect = assetCache.getEffect("Color")
 
@@ -24,28 +26,52 @@ return function(assetCache, mainCameraNode)
             local btnMat = createMaterial(vec4(0, 1, 0, 1))
 
             local root = self.scene:createNode()
-            root:findComponent("Transform"):setLocalPosition(vec3(0, -1.8, 6))
+            local rootTransform = root:findComponent("Transform")
+            rootTransform:setLocalPosition(vec3(0, -1.8, 6))
 
             local btnScale = vec3(0.3, 0.1, 0.3)
-            self.btn1Node = self:_createBtn(root, vec3(-0.8, 0, 0), btnScale, btnMat, "1")
-            self.btn2Node = self:_createBtn(root, vec3(0, 0, 0), btnScale, btnMat, "2")
-            self.btn3Node = self:_createBtn(root, vec3(0.8, 0, 0), btnScale, btnMat, "none")
+            self.btn1Node = self:_createBtn(root, vec3(-0.8, 0, 0), btnScale, btnMat, "1", "Enable PP mode 1")
+            self.btn2Node = self:_createBtn(root, vec3(0, 0, 0), btnScale, btnMat, "2", "Enable PP mode 2")
+            self.btn3Node = self:_createBtn(root, vec3(0.8, 0, 0), btnScale, btnMat, "none", "Disable PP")
+
+            local textureWidth = 1024
+            local textureHeight = 1024
+            local lineHeight = 60
+            local firstChar = string.byte(" ")
+            local charCount = string.byte("~") - string.byte(" ")
+            local path = getAssetPath("fonts/Aller.ttf")
+            local font = sl.Font.loadFromFile(sl.device, path, lineHeight, textureWidth, textureHeight, firstChar, charCount, 2, 2)
+
+            local textNode = self.scene:createNode()
+            local textTransform = textNode:findComponent("Transform")
+            textTransform:setParent(rootTransform)
+            textTransform:setLocalScale(vec3(0.01, 0.01, 1))
+            textTransform:setLocalPosition(vec3(-1.1, 0.4, -0.4))
+            self.fontRenderer = textNode:addComponent("FontRenderer")
+            self.fontRenderer:setFont(font)
+            self.fontRenderer:setLayer(layers.transparent)
         end,
 
         update = function(self)
+            local btn
             if self.tracer.hitNode then
-                local btn = self.tracer.hitNode:findScriptComponent(sl.getCmpId("PostProcessorControlPanelBtn"));
-                if btn then
-                    btn.highlighted = true
-                    self.lastHighlightedBtn = btn
-                elseif self.lastHighlightedBtn then
-                    self.lastHighlightedBtn.highlighted = false
-                    self.lastHighlightedBtn = nil
-                end
+                btn = self.tracer.hitNode:findScriptComponent(sl.getCmpId("PostProcessorControlPanelBtn"));
+            end
+
+            if btn ~= self.lastHighlightedBtn and self.lastHighlightedBtn then
+                self.lastHighlightedBtn.highlighted = false
+                self.lastHighlightedBtn = nil
+                self.fontRenderer:setText("")
+            end
+
+            if btn then
+                btn.highlighted = true
+                self.lastHighlightedBtn = btn
+                self.fontRenderer:setText(btn.tipText)
             end
         end,
 
-        _createBtn = function(self, parentNode, localPos, localScale, material, ppMode)
+        _createBtn = function(self, parentNode, localPos, localScale, material, ppMode, tipText)
             local node = self.scene:createNode()
             
             local renderer = node:addComponent("MeshRenderer")
@@ -66,6 +92,8 @@ return function(assetCache, mainCameraNode)
             body:setCollider(sl.BoxCollider.create(vec3(1, 1, 1)))
 
             node:addScriptComponent(sl.createComponent("PostProcessorControlPanelBtn", {
+                tipText = tipText,
+
                 update = function(self)
                     if self.highlighted and sl.device:isMouseButtonDown(sl.MouseButton.Left, true) then
                         local pp = mainCameraNode:findScriptComponent(sl.getCmpId("PostProcessor"))

@@ -24,7 +24,6 @@ function demo()
     local createDynamicQuad = require "DynamicQuad"
     local createTransparentQuad = require "TransparentQuad"
     local createLoadedMesh = require "LoadedMesh"
-    local createTimeLabel = require "TimeLabel"
     local createSpawner = require "Spawner"
     local createMonitorQuad = require "MonitorQuad"
     local createOffscreenCamera = require "OffscreenCamera"
@@ -55,7 +54,6 @@ function demo()
     createFloor(scene, assetCache)
     createDynamicQuad(scene, assetCache)
     createLoadedMesh(scene, assetCache)
-    createTimeLabel(scene)
 
     local monitorQuadParent = createMonitorQuad(scene, assetCache, offscreenCameraTex)
     attachAxes(monitorQuadParent)
