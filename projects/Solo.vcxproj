@@ -57,7 +57,6 @@
     <ClInclude Include="..\src\solo\SoloJobPool.h" />
     <ClInclude Include="..\src\solo\SoloMap.h" />
     <ClInclude Include="..\src\solo\SoloTextureData.h" />
-    <ClInclude Include="..\src\solo\SoloLogger.h" />
     <ClInclude Include="..\src\solo\SoloMaterial.h" />
     <ClInclude Include="..\src\solo\SoloMath.h" />
     <ClInclude Include="..\src\solo\SoloMatrix.h" />
@@ -131,6 +130,7 @@
     <ClCompile Include="..\src\solo\sdl\SoloSDLDevice.cpp" />
     <ClCompile Include="..\src\solo\Solo.cpp" />
     <ClCompile Include="..\src\solo\SoloBoxCollider.cpp" />
+    <ClCompile Include="..\src\solo\SoloCommon.cpp" />
     <ClCompile Include="..\src\solo\SoloDegree.cpp" />
     <ClCompile Include="..\src\solo\SoloFont.cpp" />
     <ClCompile Include="..\src\solo\SoloFontRenderer.cpp" />
@@ -146,7 +146,6 @@
     <ClCompile Include="..\src\solo\SoloCamera.cpp" />
     <ClCompile Include="..\src\solo\SoloFileSystem.cpp" />
     <ClCompile Include="..\src\solo\SoloDevice.cpp" />
-    <ClCompile Include="..\src\solo\SoloLogger.cpp" />
     <ClCompile Include="..\src\solo\SoloMaterial.cpp" />
     <ClCompile Include="..\src\solo\SoloMatrix.cpp" />
     <ClCompile Include="..\src\solo\SoloMesh.cpp" />

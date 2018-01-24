@@ -5,7 +5,6 @@
 
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
-#include "SoloLogger.h"
 #include "SoloRenderer.h"
 #include "SoloPhysics.h"
 #include "SoloScriptRuntime.h"

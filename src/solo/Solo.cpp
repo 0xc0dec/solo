@@ -7,7 +7,6 @@
 #include "SoloDeviceSetup.h"
 #include "SoloScriptRuntime.h"
 #include "SoloComponent.h"
-#include "SoloLogger.h"
 
 using namespace solo;
 

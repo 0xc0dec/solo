@@ -127,7 +127,6 @@
     <ClInclude Include="..\src\solo\SoloFontRenderer.h" />
     <ClInclude Include="..\src\solo\SoloFormatter.h" />
     <ClInclude Include="..\src\solo\SoloFrameBuffer.h" />
-    <ClInclude Include="..\src\solo\SoloLogger.h" />
     <ClInclude Include="..\src\solo\SoloMaterial.h" />
     <ClInclude Include="..\src\solo\SoloMath.h" />
     <ClInclude Include="..\src\solo\SoloMatrix.h" />
@@ -303,7 +302,6 @@
     <ClCompile Include="..\src\solo\SoloFont.cpp" />
     <ClCompile Include="..\src\solo\SoloFontRenderer.cpp" />
     <ClCompile Include="..\src\solo\SoloFrameBuffer.cpp" />
-    <ClCompile Include="..\src\solo\SoloLogger.cpp" />
     <ClCompile Include="..\src\solo\SoloMaterial.cpp" />
     <ClCompile Include="..\src\solo\SoloMatrix.cpp" />
     <ClCompile Include="..\src\solo\SoloMesh.cpp" />
@@ -350,6 +348,7 @@
     <ClCompile Include="..\src\solo\gl\SoloOpenGLSDLDevice.cpp">
       <Filter>gl</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\solo\SoloCommon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bullet">
