@@ -1,8 +1,6 @@
 # TODO
 
-* Remove Logger? Write to cout?
 * Bad error message in Vulkan when variable not declared in effect and is referenced
-* Demo2 sometimes dies at startup. Probably related to vertex attributes change made recently. Also RenderDoc throws a bunch of validator errors
 * Finish with shader generation: pass GLSL version as parameter, rely on it instead of "vulkan or not".
 * Refactor mesh attributes lookup, introduce attribute semantics or make sure predefined attributes always called the same
 * Better demos, separate scenes for separate effects, real buttons for toggling post-processing effects, etc.
