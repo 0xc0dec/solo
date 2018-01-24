@@ -61,12 +61,12 @@ static void registerLibrary(LuaState &state)
         end
 
 		sl.generateEffectSource = function(desc)
-			local vulkan = sl.device:getMode() == sl.DeviceMode.Vulkan
+			local ver450 = sl.device:getMode() == sl.DeviceMode.Vulkan -- otherwise 330
 
 			function generateAttributes(desc, location, typeStr)
 				local all = {}
 				for name, type in pairs(desc or {}) do
-					local s = vulkan
+					local s = ver450
 						and string.format("layout (location = %d) %s %s %s;", location, typeStr, type, name)
 						or string.format("%s %s %s;", typeStr, type, name)
 					all[#all + 1] = s
@@ -78,7 +78,7 @@ static void registerLibrary(LuaState &state)
 			function generateSamplers(desc, binding)
 				local all = {}
 				for name, type in pairs(desc or {}) do
-					local s = vulkan
+					local s = ver450
 						and string.format("layout (binding = %d) uniform %s %s;", binding, type, name)
 						or string.format("uniform %s %s;", type, name)
 					all[#all + 1] = s
@@ -88,16 +88,16 @@ static void registerLibrary(LuaState &state)
 			end
         
 			function generateBuffer(name, desc, binding)
-				local result = vulkan and string.format("layout (binding = %d) uniform _%s {\n", binding, name) or ""
+				local result = ver450 and string.format("layout (binding = %d) uniform _%s {\n", binding, name) or ""
         
 				for varName, varType in pairs(desc or {}) do
-					local prefix = (not vulkan) and "uniform " or ""
-					local newVarName = vulkan and varName or string.format("%s_%s", name, varName)
+					local prefix = (not ver450) and "uniform " or ""
+					local newVarName = ver450 and varName or string.format("%s_%s", name, varName)
 					local varStr = string.format("%s%s %s;\n", prefix, varType, newVarName)
 					result = result .. varStr
 				end
         
-				if vulkan then
+				if ver450 then
 					result = string.format("%s} %s;", result, name)
 				end
         
@@ -117,21 +117,21 @@ static void registerLibrary(LuaState &state)
         
 			function generateEntry(raw)
 				raw = string.gsub(raw, "#([_0-9a-zA-Z]+):([_0-9a-zA-Z]+)#", function(buffer, uniform)
-					return vulkan
+					return ver450
 						and string.format("%s.%s", buffer, uniform)
 						or string.format("%s_%s", buffer, uniform)
 				end)
 
 				raw = string.gsub(raw, "FIX_Y#([_0-9a-zA-Z]+)#", function(varName)
-					return vulkan and string.format("%s.y = -%s.y", varName, varName) or ""
+					return ver450 and string.format("%s.y = -%s.y", varName, varName) or ""
 				end)
 
 				return string.gsub(raw, "FIX_UV#([_0-9a-zA-Z]+)#", function(varName)
-					return vulkan and string.format("%s.y = 1 - %s.y", varName, varName) or ""
+					return ver450 and string.format("%s.y = 1 - %s.y", varName, varName) or ""
 				end)
 			end
 
-			local versionAttr = vulkan and "#version 450" or "#version 330"
+			local versionAttr = ver450 and "#version 450" or "#version 330"
         
 			local vsUniformBuffers, vsUniformBufferCount = generateBuffers(desc.vertex.uniformBuffers, 0)
 			local vsInputs = generateAttributes(desc.vertex.inputs, 0, "in")
