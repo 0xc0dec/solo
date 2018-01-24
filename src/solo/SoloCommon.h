@@ -83,18 +83,6 @@ namespace solo
 		auto operator=(NoCopyAndMove &&other) -> NoCopyAndMove& = delete;
 	};
 
-    class EngineException: public std::runtime_error
-    {
-    public:
-        EngineException(): std::runtime_error("")
-        {
-        }
-
-        explicit EngineException(const str &msg): std::runtime_error(msg)
-        {
-        }
-    };
-
     template <class T>
     class FriendToken
     {
@@ -136,7 +124,7 @@ namespace solo
 
 	template <class T = void> T panic()
 	{
-		return panic("Panic with no description");
+		return panic("<empty panic message>");
 	}
 
 	template <class T = void> T panicIf(bool condition, const str &msg)
