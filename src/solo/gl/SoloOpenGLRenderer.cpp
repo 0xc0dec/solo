@@ -9,7 +9,6 @@
 
 #include "SoloDevice.h"
 #include "SoloCamera.h"
-#include "SoloLogger.h"
 #include "SoloOpenGLMaterial.h"
 #include "SoloOpenGLMesh.h"
 #include "SoloOpenGLFrameBuffer.h"
@@ -48,8 +47,7 @@ static auto toBlendFactor(BlendFactor factor) -> GLenum
         case BlendFactor::SrcAlphaSaturate:
             return GL_SRC_ALPHA_SATURATE;
         default:
-            SL_PANIC("Unknown blend factor");
-            return 0;
+            return panic<GLenum>("Unknown blend factor");
     }
 }
 
@@ -168,7 +166,7 @@ OpenGLRenderer::OpenGLRenderer(Device *device)
     GLint major, minor;
     glGetIntegerv(GL_MAJOR_VERSION, &major);
     glGetIntegerv(GL_MINOR_VERSION, &minor);
-    device->getLogger()->logInfo(SL_FMT("Running in OpenGL ", major, ".", minor, " mode"));
+	Logger::global().logInfo(SL_FMT("Running in OpenGL ", major, ".", minor, " mode"));
 }
 
 void OpenGLRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)

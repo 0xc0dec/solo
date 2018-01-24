@@ -36,10 +36,10 @@ void Ray::setDirection(const Vector3 &direction)
 
 void Ray::normalize()
 {
-    SL_PANIC_IF(direction.isZero())
+	panicIf(direction.isZero());
 
     // Normalize the ray's direction vector
-    auto normalizeFactor = 1.0f / sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
+	const auto normalizeFactor = 1.0f / sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
     if (!math::areEqual(normalizeFactor, 1.0f))
     {
         direction.x *= normalizeFactor;

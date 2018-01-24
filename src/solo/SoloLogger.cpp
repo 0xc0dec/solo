@@ -3,74 +3,82 @@
     MIT license
 */
 
-#include "SoloLogger.h"
+#include "SoloCommon.h"
 #include "SoloSpinLock.h"
 #include <iostream>
 #include <fstream>
 
-namespace solo
-{
-    struct LoggerImpl
-    {
-        void log(const str &msg, const str &level)
-        {
-            volatile auto lt = lock.acquire();
-            auto fullMsg = SL_FMT("[", level, "]	", msg);
-            std::cout << fullMsg << std::endl;
-            if (file.is_open())
-                file << fullMsg << std::endl;
-        }
-
-        std::ofstream file;
-        SpinLock lock;
-    };
-}
-
 using namespace solo;
 
-Logger::Logger(const FriendToken<Device>&)
+namespace solo
 {
-    impl = std::make_shared<LoggerImpl>();
+	class LoggerImpl : public Logger
+	{
+	public:
+		~LoggerImpl()
+		{
+			if (file.is_open())
+				file.close();
+		}
+
+		void setTargetFile(const str& path) override final
+		{
+			if (file.is_open())
+				file.close();
+			if (!path.empty())
+			{
+				file.open(path, std::ios_base::trunc);
+				panicIf(!file.is_open(), SL_FMT("Unable to open target log file ", path));
+			}
+		}
+
+		void logDebug(const str& msg) override final
+		{
+			log(msg, "debug");
+		}
+
+		void logInfo(const str& msg) override final
+		{
+			log(msg, "info");
+		}
+
+		void logWarning(const str& msg) override final
+		{
+			log(msg, "warn");
+		}
+
+		void logError(const str& msg) override final
+		{
+			log(msg, "error");
+		}
+
+		void logCritical(const str& msg) override final
+		{
+			log(msg, "crit");
+		}
+
+	private:
+		std::ofstream file;
+		SpinLock lock;
+
+		void log(const str &msg, const str &level)
+		{
+			volatile auto lt = lock.acquire();
+			const auto fullMsg = SL_FMT("[", level, "]	", msg);
+			std::cout << fullMsg << std::endl;
+			if (file.is_open())
+				file << fullMsg << std::endl;
+		}
+	};
 }
 
-Logger::~Logger()
+auto Logger::global() -> Logger&
 {
-    if (impl->file.is_open())
-        impl->file.close();
+	static LoggerImpl instance;
+	return instance;
 }
 
-void Logger::setTargetFile(const str &path)
+auto Logger::create(const FriendToken<Device>&) -> sptr<Logger>
 {
-    if (impl->file.is_open())
-        impl->file.close();
-    if (!path.empty())
-    {
-        impl->file.open(path, std::ios_base::trunc);
-        SL_PANIC_IF(!impl->file.is_open(), SL_FMT("Unable to open target log file ", path));
-    }
-}
-
-void Logger::logDebug(const str &msg)
-{
-    impl->log(msg, "debug");
-}
-
-void Logger::logInfo(const str &msg)
-{
-    impl->log(msg, "info");
-}
-
-void Logger::logWarning(const str &msg)
-{
-    impl->log(msg, "warn");
-}
-
-void Logger::logError(const str &msg)
-{
-    impl->log(msg, "error");
-}
-
-void Logger::logCritical(const str &msg)
-{
-    impl->log(msg, "crit");
+	return std::make_unique<LoggerImpl>();
 }

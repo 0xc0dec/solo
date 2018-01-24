@@ -22,8 +22,7 @@ static auto toFormat(TextureFormat format) -> GLenum
         case TextureFormat::RGBA:
             return GL_RGBA;
         default:
-            SL_PANIC("Unknown image format");
-            return GL_RED;
+            return panic<GLenum>("Unknown image format");
     }
 }
 
@@ -37,8 +36,7 @@ static auto toInternalFormat(TextureFormat format) -> GLenum
         case TextureFormat::RGBA:
             return GL_RGBA;
         default:
-            SL_PANIC("Unknown image format");
-            return GL_RGB;
+            return panic<GLenum>("Unknown image format");
     }
 }
 
@@ -55,8 +53,7 @@ static auto toWrap(TextureWrap wrap) -> GLenum
         case TextureWrap::Repeat:
             return GL_REPEAT;
         default:
-            SL_PANIC("Unsupported wrap mode");
-            return GL_REPEAT;
+            return panic<GLenum>("Unsupported wrap mode");
     }
 }
 
@@ -72,8 +69,7 @@ static auto toMinFilter(TextureFilter minFilter, TextureMipFilter mipFilter) -> 
                 case TextureMipFilter::Nearest: return GL_LINEAR_MIPMAP_NEAREST;
                 case TextureMipFilter::None: return GL_LINEAR;
                 default:
-                    SL_PANIC("Unsupported mip filter")
-                    return GL_LINEAR;
+					return panic<GLenum>("Unsupported mip filter");
             }
             break;
         }
@@ -86,14 +82,11 @@ static auto toMinFilter(TextureFilter minFilter, TextureMipFilter mipFilter) -> 
                 case TextureMipFilter::Nearest: return GL_NEAREST_MIPMAP_NEAREST;
                 case TextureMipFilter::None: return GL_NEAREST;
                 default:
-                    SL_PANIC("Unsupported mip filter")
-                    return GL_LINEAR;
+					return panic<GLenum>("Unsupported mip filter");
             }
-            break;
         }
         default:
-            SL_PANIC("Unsupported min filter")
-            return GL_LINEAR;
+			return panic<GLenum>("Unsupported min filter");
     }
 }
 
@@ -104,8 +97,7 @@ static auto toMagFilter(TextureFilter filter) -> GLenum
         case TextureFilter::Linear: return GL_LINEAR;
         case TextureFilter::Nearest: return GL_NEAREST;
         default:
-            SL_PANIC("Unsupported mag filter")
-            return GL_LINEAR;
+			return panic<GLenum>("Unsupported mag filter");
     }
 }
 
@@ -126,15 +118,14 @@ static auto toCubeMapFace(CubeTextureFace face) -> GLenum
         case CubeTextureFace::Bottom:
             return GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
         default:
-            SL_PANIC("Unknown cube texture face");
-            return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
+            return panic<GLenum>("Unknown cube texture face");
     }
 }
 
 OpenGLTexture::OpenGLTexture()
 {
     glGenTextures(1, &handle);
-    SL_PANIC_IF(!handle, "Failed to create texture handle");
+    panicIf(!handle, "Failed to create texture handle");
 }
 
 OpenGLTexture::~OpenGLTexture()

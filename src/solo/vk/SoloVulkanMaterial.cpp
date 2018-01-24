@@ -45,8 +45,7 @@ static auto convertBlendFactor(BlendFactor factor) -> VkBlendFactor
         case BlendFactor::SrcAlphaSaturate: return VK_BLEND_FACTOR_SRC_ALPHA_SATURATE;
         // TODO support other vk blend modes?
         default:
-            SL_PANIC("Unknown blend factor");
-            return VK_BLEND_FACTOR_ONE;
+            return panic<VkBlendFactor>("Unknown blend factor");
     }
 }
 
@@ -90,8 +89,7 @@ void VulkanMaterial::configurePipeline(VulkanPipelineConfig &cfg)
             cfg.withPolygonMode(VK_POLYGON_MODE_LINE);
             break;
         default:
-            SL_PANIC("Unknown polygon mode");
-            break;
+            return panic("Unknown polygon mode");
     }
 
     switch (faceCull)
@@ -106,8 +104,7 @@ void VulkanMaterial::configurePipeline(VulkanPipelineConfig &cfg)
             cfg.withCullMode(VK_CULL_MODE_BACK_BIT);
             break;
         default:
-            SL_PANIC("Unsupported face cull mode");
-            break;
+            return panic("Unsupported face cull mode");
     }
 
     cfg.withDepthTest(depthWrite, depthTest);
@@ -166,7 +163,7 @@ void VulkanMaterial::setUniformParameter(const str &name, ParameterWriteFunc wri
     auto parsedName = parseName(name);
     auto bufferName = std::get<0>(parsedName);
     auto fieldName = std::get<1>(parsedName);
-    SL_PANIC_IF(bufferName.empty() || fieldName.empty(), SL_FMT("Invalid parameter name ", name));
+    panicIf(bufferName.empty() || fieldName.empty(), SL_FMT("Invalid parameter name ", name));
 
     auto bufferInfo = effect->getUniformBuffer(bufferName);
     const auto itemInfo = bufferInfo.members.at(fieldName);
@@ -192,7 +189,7 @@ void VulkanMaterial::bindParameter(const str &name, BindParameterSemantics seman
     auto parsedName = parseName(name);
     auto bufferName = std::get<0>(parsedName);
     auto fieldName = std::get<1>(parsedName);
-    SL_PANIC_IF(bufferName.empty() || fieldName.empty(), SL_FMT("Invalid parameter name ", name));
+    panicIf(bufferName.empty() || fieldName.empty(), SL_FMT("Invalid parameter name ", name));
 
     auto bufferInfo = effect->getUniformBuffer(bufferName);
     auto itemInfo = bufferInfo.members.at(fieldName);
@@ -318,7 +315,7 @@ void VulkanMaterial::bindParameter(const str &name, BindParameterSemantics seman
         }
 
         default:
-            SL_PANIC("Unsupported bind parameter semantics");
+            return panic("Unsupported bind parameter semantics");
     }
 }
 

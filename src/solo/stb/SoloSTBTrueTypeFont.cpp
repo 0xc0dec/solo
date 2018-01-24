@@ -24,8 +24,8 @@ STBTrueTypeFont::STBTrueTypeFont(Device *device, u8 *fontData, u32 size, u32 atl
     pixels.resize(atlasWidth * atlasHeight);
 
     stbtt_pack_context context;
-    auto ret = stbtt_PackBegin(&context, pixels.data(), atlasWidth, atlasHeight, 0, 1, nullptr);
-    SL_PANIC_IF(!ret)
+	const auto ret = stbtt_PackBegin(&context, pixels.data(), atlasWidth, atlasHeight, 0, 1, nullptr);
+	panicIf(!ret);
 
     stbtt_PackSetOversampling(&context, oversampleX, oversampleY);
     stbtt_PackFontRange(&context, fontData, 0, static_cast<float>(size), firstChar, charCount, charInfo.get());

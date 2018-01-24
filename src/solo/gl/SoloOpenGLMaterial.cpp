@@ -244,7 +244,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
         }
 
         default:
-            SL_PANIC("Unsupported bind parameter semantics");
+			return panic("Unsupported bind parameter semantics");
     }
 }
 

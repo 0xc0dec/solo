@@ -88,7 +88,7 @@ static auto loadMeshData(Device *device, const str &path) -> sptr<Data>
     vec<tinyobj::material_t> materials;
     str err;
     auto loaded = LoadObj(&attrib, &shapes, &materials, &err, file.get());
-    SL_PANIC_IF(!loaded, err);
+    panicIf(!loaded, err);
     
     vec<float> vertexData;
     vec<vec<uint16_t>> parts;

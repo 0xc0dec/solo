@@ -26,7 +26,7 @@ static void validateNewAttachments(const vec<sptr<Texture2d>> &attachments)
         }
         else
             // TODO Make sure this is a valid assumption. For now I'm just copying this from opengl
-            SL_PANIC_IF(size.x != width || size.y != height, "Attachment sizes do not match");
+            panicIf(size.x != width || size.y != height, "Attachment sizes do not match");
     }
 }
 
@@ -41,7 +41,7 @@ VulkanFrameBuffer::~VulkanFrameBuffer()
 
 void VulkanFrameBuffer::setAttachments(const vec<sptr<Texture2d>> &attachments)
 {
-    SL_PANIC_BLOCK(validateNewAttachments(attachments));
+    SL_DEBUG_BLOCK(validateNewAttachments(attachments));
 
     if (frameBuffer)
         frameBuffer.cleanRef();

@@ -21,8 +21,7 @@ static auto toImageFormat(int components) -> TextureFormat
         case 3: return TextureFormat::RGB;
         case 4: return TextureFormat::RGBA;
         default:
-            SL_PANIC(SL_FMT("Unsupported components count ", components))
-            return TextureFormat::RGB;
+			return panic<TextureFormat>(SL_FMT("Unsupported components count ", components));
     }
 }
 
@@ -46,7 +45,7 @@ auto STBTexture2dData::loadFromFile(Device *device, const str &path) -> sptr<STB
     stbi_set_flip_vertically_on_load(device->getMode() == DeviceMode::OpenGL);
     // According to the docs, channels are not affected by the requested channels
     const auto data = stbi_load_from_memory(bytes.data(), bytes.size(), &width, &height, &channels, 4);
-    SL_PANIC_IF(!data, SL_FMT("Failed to load image ", path));
+    panicIf(!data, SL_FMT("Failed to load image ", path));
 
     const auto result = std::make_shared<STBTexture2dData>();
     result->channels = 4;
@@ -90,13 +89,13 @@ auto STBCubeTextureData::loadFromFaceFiles(
     tex->faces.push_back(STBTexture2dData::loadFromFile(device, topPath));
     tex->faces.push_back(STBTexture2dData::loadFromFile(device, bottomPath));
     
-    SL_PANIC_BLOCK(
+    SL_DEBUG_BLOCK(
     {
         auto width = tex->faces[0]->getWidth();
         auto height = tex->faces[0]->getHeight();
-        SL_PANIC_IF(width != height, "Cube texture width must be equal to height");
+        panicIf(width != height, "Cube texture width must be equal to height");
         for (const auto &face: tex->faces)
-            SL_PANIC_IF(face->getWidth() != width || face->getHeight() != height, "All cube texture sizes must match");
+            panicIf(face->getWidth() != width || face->getHeight() != height, "All cube texture sizes must match");
     });
 
     return tex;

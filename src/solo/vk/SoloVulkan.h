@@ -16,8 +16,8 @@
 #endif
 #include <vulkan.h>
 
-#ifdef SL_ERR_CHECK
-#   define SL_VK_CHECK_RESULT(vkCall, ...) SL_PANIC_IF(vkCall != VK_SUCCESS, __VA_ARGS__)
+#ifdef SL_DEBUG
+#   define SL_VK_CHECK_RESULT(vkCall, ...) panicIf(vkCall != VK_SUCCESS, __VA_ARGS__)
 #else
 #   define SL_VK_CHECK_RESULT(vkCall) vkCall
 #endif

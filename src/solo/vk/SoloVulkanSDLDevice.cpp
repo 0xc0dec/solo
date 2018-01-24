@@ -23,7 +23,7 @@ VulkanSDLDevice::VulkanSDLDevice(const DeviceSetup &setup):
 
     window = SDL_CreateWindow(setup.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         setup.canvasWidth, setup.canvasHeight, flags);
-    SL_PANIC_IF(!window, "Failed to create window");
+    panicIf(!window, "Failed to create window");
 
     VkApplicationInfo appInfo {};
     appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;

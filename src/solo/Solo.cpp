@@ -7,7 +7,7 @@
 #include "SoloDeviceSetup.h"
 #include "SoloScriptRuntime.h"
 #include "SoloComponent.h"
-#include <iostream>
+#include "SoloLogger.h"
 
 using namespace solo;
 
@@ -32,7 +32,7 @@ int main(int argc, s8 *argv[])
     }
     catch (const std::exception &e)
     {
-        std::cout << e.what() << std::endl;
+		Logger::global().logCritical(e.what());
         return 2;
     }
     

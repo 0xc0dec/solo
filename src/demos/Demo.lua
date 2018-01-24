@@ -11,7 +11,6 @@ function demo()
     local dev = sl.device
     local physics = dev:getPhysics()
     local renderer = dev:getRenderer()
-    local logger = dev:getLogger()
     local fs = dev:getFileSystem()
     local scene = sl.Scene.create(dev)
 

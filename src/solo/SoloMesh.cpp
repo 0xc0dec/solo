@@ -43,7 +43,7 @@ auto Mesh::createFromPrefab(Device *device, MeshPrefab prefab) -> sptr<Mesh>
             mesh->initAsCubeMesh();
             break;
         default:
-            SL_PANIC("Unknown mesh prefab type");
+            panic("Unknown mesh prefab type");
             break;
     }
 
@@ -54,16 +54,14 @@ auto Mesh::loadFromFile(Device *device, const str &path) -> sptr<Mesh>
 {
     if (obj::canLoadMesh(path))
         return obj::loadMesh(device, path);
-    SL_PANIC(SL_FMT("Unsupported mesh file ", path));
-    return nullptr;
+    return panic<nullptr_t>(SL_FMT("Unsupported mesh file ", path));
 }
 
 auto Mesh::loadFromFileAsync(Device *device, const str &path) -> sptr<AsyncHandle<Mesh>>
 {
     if (obj::canLoadMesh(path))
         return obj::loadMeshAsync(device, path);
-    SL_PANIC(SL_FMT("Unsupported mesh file ", path));
-    return nullptr;
+    return panic<nullptr_t>(SL_FMT("Unsupported mesh file ", path));
 }
 
 void Mesh::initAsQuadMesh()

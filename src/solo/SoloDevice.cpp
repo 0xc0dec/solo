@@ -37,7 +37,7 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device>
             device = std::make_unique<NullDevice>(setup);
             break;
         default:
-            SL_PANIC("Unknown device mode");
+            panic("Unknown device mode");
             break;
     }
 
@@ -55,11 +55,10 @@ Device::Device(const DeviceSetup &setup):
 
 void Device::initSubsystems(const DeviceSetup &setup)
 {
-    FriendToken<Device> token;
+    const FriendToken<Device> token;
 
-    logger = std::make_unique<Logger>(token);
-    if (!setup.logFilePath.empty())
-        logger->setTargetFile(setup.logFilePath);
+	if (!setup.logFilePath.empty())
+		Logger::global().setTargetFile(setup.logFilePath);
 
     renderer = Renderer::create(this, token);
     physics = Physics::create(this, token);
@@ -75,7 +74,6 @@ void Device::cleanupSubsystems()
     scriptRuntime.reset();
     fs.reset();
     renderer.reset();
-    logger.reset();
 }
 
 bool Device::hasActiveBackgroundJobs() const

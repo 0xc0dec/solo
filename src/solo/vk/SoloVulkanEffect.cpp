@@ -46,7 +46,7 @@ static auto compileToSpiv(const void *src, u32 srcLen, const str &fileName, bool
 
 	const auto compilationStatus = result.GetCompilationStatus();
 	const auto errorMessage = result.GetErrorMessage();
-    SL_PANIC_IF(compilationStatus != shaderc_compilation_status_success, errorMessage);
+    panicIf(compilationStatus != shaderc_compilation_status_success, errorMessage);
 
     return result;
 }
@@ -80,16 +80,14 @@ auto VulkanEffect::getUniformBuffer(const str &name) -> UniformBuffer
 {
     if (uniformBuffers.count(name))
         return uniformBuffers.at(name);
-    SL_PANIC(SL_FMT("Uniform buffer ", name, " not found"));
-    return UniformBuffer{};
+    return panic<UniformBuffer>(SL_FMT("Uniform buffer ", name, " not found"));
 }
 
 auto VulkanEffect::getSampler(const str &name) -> Sampler
 {
     if (samplers.count(name))
         return samplers.at(name);
-    SL_PANIC(SL_FMT("Sampler ", name, " not found"));
-    return Sampler{};
+    return panic<Sampler>(SL_FMT("Sampler ", name, " not found"));
 }
 
 void VulkanEffect::introspectShader(const u32 *src, u32 len, bool vertex)

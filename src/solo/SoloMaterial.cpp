@@ -138,8 +138,7 @@ auto Material::createFromPrefab(Device *device, MaterialPrefab prefab) -> sptr<M
 		}
 
 		default:
-			SL_PANIC("Unknown material prefab");
-			return nullptr;
+			return panic<nullptr_t>("Unknown material prefab");
 	}
 }
 

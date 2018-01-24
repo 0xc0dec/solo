@@ -16,7 +16,7 @@ using namespace solo;
 OpenGLFrameBuffer::OpenGLFrameBuffer()
 {
     glGenFramebuffers(1, &handle);
-    SL_PANIC_IF(!handle, "Failed to create frame buffer handle");
+    panicIf(!handle, "Failed to create frame buffer handle");
 }
 
 OpenGLFrameBuffer::~OpenGLFrameBuffer()
@@ -26,25 +26,25 @@ OpenGLFrameBuffer::~OpenGLFrameBuffer()
 
 static void validateNewAttachments(const vec<sptr<Texture2d>> &attachments)
 {
-    SL_PANIC_IF(attachments.size() > GL_MAX_COLOR_ATTACHMENTS, "Too many attachments");
+    panicIf(attachments.size() > GL_MAX_COLOR_ATTACHMENTS, "Too many attachments");
 
     auto width = -1, height = -1;
     for (auto i = 0; i < attachments.size(); i++)
     {
-        auto size = attachments.at(i)->getDimensions();
+	    const auto size = attachments.at(i)->getDimensions();
         if (width < 0)
         {
             width = size.x;
             height = size.y;
         }
         else
-            SL_PANIC_IF(size.x != width || size.y != height, "Attachment sizes do not match");
+            panicIf(size.x != width || size.y != height, "Attachment sizes do not match");
     }
 }
 
 void OpenGLFrameBuffer::setAttachments(const vec<sptr<Texture2d>> &attachments)
 {
-    SL_PANIC_BLOCK(validateNewAttachments(attachments));
+    SL_DEBUG_BLOCK(validateNewAttachments(attachments));
 
     vec<sptr<OpenGLTexture2d>> newAttachments;
     for (const auto &tex : attachments)
@@ -74,13 +74,13 @@ void OpenGLFrameBuffer::setAttachments(const vec<sptr<Texture2d>> &attachments)
 
         // Re-create the depth buffer
         glGenRenderbuffers(1, &depthBufferHandle);
-        SL_PANIC_IF(!depthBufferHandle, "Failed to create depth buffer handle");
+        panicIf(!depthBufferHandle, "Failed to create depth buffer handle");
 
         glBindRenderbuffer(GL_RENDERBUFFER, depthBufferHandle);
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, dimensions.x, dimensions.y);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferHandle);
 
-        SL_PANIC_IF(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE, "Render target has invalid state");
+        panicIf(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE, "Render target has invalid state");
     }
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);

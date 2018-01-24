@@ -23,15 +23,15 @@ public:
 
     void getWorldTransform(btTransform &worldTransform) const override final
     {
-        auto worldPos = transform->getWorldPosition();
-        auto rotation = transform->getWorldRotation();
+	    const auto worldPos = transform->getWorldPosition();
+        const auto rotation = transform->getWorldRotation();
         worldTransform.setOrigin(SL_TOBTVEC3(worldPos));
         worldTransform.setRotation(SL_TOBTQTRN(rotation));
     }
 
     void setWorldTransform(const btTransform &worldTransform) override final
     {
-        SL_PANIC_IF(transform->getParent())
+		panicIf(transform->getParent());
         transform->setLocalPosition(SL_FROMBTVEC3(worldTransform.getOrigin()));
         transform->setLocalRotation(SL_FROMBTQTRN(worldTransform.getRotation()));
     }

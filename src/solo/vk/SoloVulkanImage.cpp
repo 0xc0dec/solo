@@ -22,8 +22,7 @@ static auto toVulkanFormat(TextureFormat format) -> VkFormat
         case TextureFormat::RGBA: return VK_FORMAT_R8G8B8A8_UNORM; // since my driver seems not liking 24-bit
         case TextureFormat::Red: return VK_FORMAT_R8_UNORM;
         default:
-            SL_PANIC("Unsupported image format");
-            return VK_FORMAT_UNDEFINED;
+            return panic<VkFormat>("Unsupported image format");
     }
 }
 
@@ -157,11 +156,11 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
     auto mipLevels = 1;
     if (withMipmaps)
     {
-        SL_PANIC_BLOCK({
+        SL_DEBUG_BLOCK({
             VkFormatProperties formatProperties;
             vkGetPhysicalDeviceFormatProperties(renderer->getPhysicalDevice(), format, &formatProperties);
-            SL_PANIC_IF(!(formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_BLIT_SRC_BIT));
-            SL_PANIC_IF(!(formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_BLIT_DST_BIT));
+            panicIf(!(formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_BLIT_SRC_BIT));
+            panicIf(!(formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_BLIT_DST_BIT));
         });
 
         mipLevels = floor(log2((std::max)(width, height))) + 1;

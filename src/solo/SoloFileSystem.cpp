@@ -20,14 +20,14 @@ auto FileSystem::create(Device *device, const FriendToken<Device> &) -> sptr<Fil
 auto FileSystem::getStream(const str &path) -> sptr<std::istream>
 {
     std::ifstream file{path};
-    SL_PANIC_IF(!file.is_open());
+    panicIf(!file.is_open());
     return std::make_shared<std::ifstream>(std::move(file));
 }
 
 auto FileSystem::readBytes(const str &path) -> vec<u8>
 {
     std::ifstream file(path, std::ios::binary | std::ios::ate);
-    SL_PANIC_IF(!file.is_open(), SL_FMT("Failed to open file '", path, "'"));
+    panicIf(!file.is_open(), SL_FMT("Failed to open file '", path, "'"));
 
     const auto size = file.tellg();
     file.seekg(0, std::ios::beg);
@@ -41,7 +41,7 @@ auto FileSystem::readBytes(const str &path) -> vec<u8>
 void FileSystem::writeBytes(const str &path, const vec<u8> &data)
 {
     std::ofstream file(path, std::ios::binary | std::ios::trunc);
-    SL_PANIC_IF(!file.is_open(), SL_FMT("Failed to open file '", path, "'"));
+    panicIf(!file.is_open(), SL_FMT("Failed to open file '", path, "'"));
     file.write(reinterpret_cast<const s8*>(&data[0]), data.size());
     file.close();
 }
@@ -67,7 +67,7 @@ auto FileSystem::readLines(const str &path) -> vec<str>
 void FileSystem::iterateLines(const str &path, std::function<bool(const str &)> process)
 {
     std::ifstream file(path);
-    SL_PANIC_IF(!file.is_open(), SL_FMT("Failed to open file '", path, "'"));
+    panicIf(!file.is_open(), SL_FMT("Failed to open file '", path, "'"));
     while (!file.eof())
     {
         str line;
@@ -81,7 +81,7 @@ void FileSystem::iterateLines(const str &path, std::function<bool(const str &)> 
 void FileSystem::writeLines(const str &path, const vec<str> &lines)
 {
     std::ofstream file(path, std::ios::trunc);
-    SL_PANIC_IF(!file.is_open(), SL_FMT("Failed to open file '", path, "'"));
+    panicIf(!file.is_open(), SL_FMT("Failed to open file '", path, "'"));
     for (size_t i = 0; i < lines.size(); ++i)
     {
         file << lines[i];

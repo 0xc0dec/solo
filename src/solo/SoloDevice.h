@@ -17,7 +17,6 @@ namespace solo
     class Renderer;
     class Physics;
     class ScriptRuntime;
-    class Logger;
     class JobPool;
 
     enum class KeyCode
@@ -109,11 +108,9 @@ namespace solo
         auto getRenderer() const -> Renderer* { return renderer.get(); }
         auto getPhysics() const -> Physics* { return physics.get(); }
         auto getScriptRuntime() const -> ScriptRuntime* { return scriptRuntime.get(); }
-        auto getLogger() const -> Logger* { return logger.get(); }
         auto getJobPool() const -> JobPool* { return jobPool.get(); }
 
     protected:
-        sptr<Logger> logger;
         sptr<Renderer> renderer;
         sptr<Physics> physics;
         sptr<FileSystem> fs;

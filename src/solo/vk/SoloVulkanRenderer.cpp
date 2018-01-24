@@ -19,6 +19,8 @@
 #include "SoloVulkanTexture.h"
 #include "SoloCamera.h"
 
+#include <iostream>
+
 using namespace solo;
 
 static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMaterial *material)
@@ -34,6 +36,7 @@ static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMa
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
     u64 obj, size_t location, s32 code, const s8 *layerPrefix, const s8 *msg, void *userData)
 {
+	std::cout << msg << std::endl;
     return VK_FALSE;
 }
 
@@ -45,10 +48,10 @@ static auto createDebugCallback(const VkInstance instance, const PFN_vkDebugRepo
     createInfo.pfnCallback = callbackFunc;
 
 	const auto create = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT"));
-    SL_PANIC_IF(!create, "Failed to load pointer to vkCreateDebugReportCallbackEXT");
+    panicIf(!create, "Failed to load pointer to vkCreateDebugReportCallbackEXT");
 
 	const auto destroy = reinterpret_cast<PFN_vkDestroyDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkDestroyDebugReportCallbackEXT"));
-    SL_PANIC_IF(!destroy, "Failed to load pointer to vkDestroyDebugReportCallbackEXT");
+    panicIf(!destroy, "Failed to load pointer to vkDestroyDebugReportCallbackEXT");
 
     VulkanResource<VkDebugReportCallbackEXT> result{instance, destroy};
     SL_VK_CHECK_RESULT(create(instance, &createInfo, nullptr, result.cleanRef()));
@@ -126,8 +129,7 @@ static auto getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> u32
             return i;
     }
 
-    SL_PANIC("Could not find queue index");
-    return 0;
+    return panic<u32>("Could not find queue index");
 }
 
 static auto createCommandPool(VkDevice device, u32 queueIndex) -> VulkanResource<VkCommandPool>
@@ -359,7 +361,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
                         format = VK_FORMAT_R32G32B32A32_SFLOAT;
                         break;
                     default:
-                        SL_PANIC("Unsupported vertex attribute element count");
+                        panic("Unsupported vertex attribute element count");
                         break;
                 }
                 

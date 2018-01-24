@@ -41,17 +41,9 @@
 */
 
 #ifdef SL_DEBUG
-#   define SL_ERR_CHECK
-#endif
-
-#ifdef SL_ERR_CHECK
-#   define SL_PANIC_BLOCK(code) SL_MACRO_BLOCK(code)
-#   define SL_PANIC(...) SL_MACRO_BLOCK(throw EngineException(__VA_ARGS__))
-#   define SL_PANIC_IF(condition, ...) SL_MACRO_BLOCK(if (condition) throw EngineException(__VA_ARGS__))
+#   define SL_DEBUG_BLOCK(code) SL_MACRO_BLOCK(code)
 #else
-#   define SL_PANIC_BLOCK(code) SL_EMPTY_MACRO_BLOCK()
-#   define SL_PANIC(...) SL_EMPTY_MACRO_BLOCK()
-#   define SL_PANIC_IF(condition, ...) SL_EMPTY_MACRO_BLOCK()
+#   define SL_DEBUG_BLOCK(code) SL_EMPTY_MACRO_BLOCK()
 #endif
 
 #define SL_DISABLE_COPY_AND_MOVE(type) \
@@ -79,6 +71,18 @@ namespace solo
     using u32 = uint32_t;
     using u64 = uint64_t;
 
+	class NoCopyAndMove
+	{
+	public:
+		NoCopyAndMove() = default;
+		virtual ~NoCopyAndMove() = default;
+
+		NoCopyAndMove(const NoCopyAndMove &other) = delete;
+		NoCopyAndMove(NoCopyAndMove &&other) = delete;
+		auto operator=(const NoCopyAndMove &other) -> NoCopyAndMove& = delete;
+		auto operator=(NoCopyAndMove &&other) -> NoCopyAndMove& = delete;
+	};
+
     class EngineException: public std::runtime_error
     {
     public:
@@ -92,9 +96,64 @@ namespace solo
     };
 
     template <class T>
-    class FriendToken // TODO Remove - not needed since we moved everything to scripts
+    class FriendToken
     {
         friend T;
-        FriendToken() {}
+		FriendToken() = default;
     };
+
+	class Device;
+
+	class Logger: public NoCopyAndMove
+    {
+    public:
+		static auto global() -> Logger&;
+
+		static auto create(const FriendToken<Device> &) -> sptr<Logger>;
+        
+		virtual ~Logger() = default;
+
+		virtual void setTargetFile(const str &path) = 0;
+
+        virtual void logDebug(const str &msg) = 0;
+        virtual void logInfo(const str &msg) = 0;
+        virtual void logWarning(const str &msg) = 0;
+        virtual void logError(const str &msg) = 0;
+		virtual void logCritical(const str &msg) = 0;
+
+    protected:
+		Logger() = default;
+    };
+
+	template <class T = void> T panic(const str &msg)
+	{
+#ifdef SL_DEBUG
+		Logger::global().logCritical(SL_FMT(msg, " (", __FILE__, " line ", __LINE__, ")"));
+		exit(1);
+#endif
+		return T();
+	}
+
+	template <class T = void> T panic()
+	{
+		return panic("Panic with no description");
+	}
+
+	template <class T = void> T panicIf(bool condition, const str &msg)
+	{
+#ifdef SL_DEBUG
+		if (condition)
+			return panic(msg);
+#endif
+		return T();
+	}
+
+	template <class T = void> T panicIf(bool condition)
+	{
+#ifdef SL_DEBUG
+		if (condition)
+			return panic();
+#endif
+		return T();
+	}
 }

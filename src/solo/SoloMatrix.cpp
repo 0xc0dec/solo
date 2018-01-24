@@ -156,8 +156,8 @@ auto Matrix::createLookAt(const Vector3 &eye, const Vector3 &target, const Vecto
 auto Matrix::createPerspective(const Radian &fieldOfView, float aspectRatio, float znear, float zfar) -> Matrix
 {
     const auto f_n = 1.0f / (zfar - znear);
-    auto theta = fieldOfView.toRawRadian() * 0.5f;
-    SL_PANIC_IF(math::isZero(fmod(theta, math::PiOver2)))
+	const auto theta = fieldOfView.toRawRadian() * 0.5f;
+	panicIf(math::isZero(fmod(theta, math::PiOver2)));
 
     const auto divisor = tan(theta);
     const auto factor = 1.0f / divisor;
