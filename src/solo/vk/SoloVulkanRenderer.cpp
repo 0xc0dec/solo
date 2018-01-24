@@ -19,8 +19,6 @@
 #include "SoloVulkanTexture.h"
 #include "SoloCamera.h"
 
-#include <iostream>
-
 using namespace solo;
 
 static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMaterial *material)
@@ -36,7 +34,7 @@ static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMa
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
     u64 obj, size_t location, s32 code, const s8 *layerPrefix, const s8 *msg, void *userData)
 {
-	std::cout << msg << std::endl;
+	Logger::global().logDebug(SL_FMT("Vulkan debug message: ", msg));
     return VK_FALSE;
 }
 
