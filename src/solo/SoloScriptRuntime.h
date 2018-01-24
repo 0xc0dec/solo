@@ -13,11 +13,9 @@ namespace solo
 {
     class Device;
 
-    class ScriptRuntime
+    class ScriptRuntime: public NoCopyAndMove
     {
     public:
-        SL_DISABLE_COPY_AND_MOVE(ScriptRuntime)
-
         static auto create() -> sptr<ScriptRuntime>;
         static auto create(Device *device, const FriendToken<Device> &) -> sptr<ScriptRuntime>;
 

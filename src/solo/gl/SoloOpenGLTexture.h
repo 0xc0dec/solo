@@ -14,11 +14,9 @@
 
 namespace solo
 {
-    class OpenGLTexture
+    class OpenGLTexture: public NoCopyAndMove
     {
     public:
-        SL_DISABLE_COPY_AND_MOVE(OpenGLTexture)
-
         OpenGLTexture();
         virtual ~OpenGLTexture();
 

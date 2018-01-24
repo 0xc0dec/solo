@@ -55,12 +55,10 @@ namespace solo
         RGBA
     };
 
-    class Texture
+    class Texture: public NoCopyAndMove
     {
     public:
-        SL_DISABLE_COPY_AND_MOVE(Texture)
-
-        virtual ~Texture() {}
+		virtual ~Texture() = default;
 
         auto getHorizontalWrap() const -> TextureWrap { return horizontalWrap; }
         auto getVerticalWrap() const -> TextureWrap { return verticalWrap; }

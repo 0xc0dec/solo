@@ -12,14 +12,12 @@ namespace solo
 {
     class Device;
 
-    class FileSystem
+    class FileSystem: public NoCopyAndMove
     {
     public:
-        SL_DISABLE_COPY_AND_MOVE(FileSystem)
-
         static auto create(Device *device, const FriendToken<Device> &) -> sptr<FileSystem>;
 
-        virtual ~FileSystem() {}
+		virtual ~FileSystem() = default;
 
         virtual auto getStream(const str &path) -> sptr<std::istream>;
 
@@ -32,6 +30,6 @@ namespace solo
         virtual void writeLines(const str &path, const vec<str> &lines);
 
     protected:
-        FileSystem() {}
+		FileSystem() = default;
     };
 }

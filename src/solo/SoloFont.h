@@ -23,22 +23,20 @@ namespace solo
         float offsetX, offsetY;
     };
 
-    class Font
+    class Font: public NoCopyAndMove
     {
     public:
-        SL_DISABLE_COPY_AND_MOVE(Font)
-
         static auto loadFromFile(Device *device, const str &path,
             u32 size, u32 atlasWidth, u32 atlasHeight,
             u32 firstChar, u32 charCount,
             u32 oversampleX, u32 oversampleY) -> sptr<Font>;
 
-        virtual ~Font() {}
+		virtual ~Font() = default;
 
         virtual auto getAtlas() const -> sptr<Texture2d> = 0;
         virtual auto getGlyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo = 0;
 
     protected:
-        Font() {}
+		Font() = default;
     };
 }

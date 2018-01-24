@@ -15,14 +15,12 @@ namespace solo
     class Node;
     class Camera;
 
-    class Scene final
+    class Scene final: public NoCopyAndMove
     {
     public:
-        SL_DISABLE_COPY_AND_MOVE(Scene)
-
         static auto create(Device *device) -> sptr<Scene>;
 
-        ~Scene() {}
+		~Scene() = default;
 
         auto getDevice() const -> Device* { return device; }
 

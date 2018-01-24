@@ -22,11 +22,9 @@ namespace solo
         static u32 counter;
     };
 
-    class Component
+    class Component: public NoCopyAndMove
     {
     public:
-        SL_DISABLE_COPY_AND_MOVE(Component)
-
         virtual ~Component() = default;
 
         virtual auto getTypeId() -> u32 = 0;

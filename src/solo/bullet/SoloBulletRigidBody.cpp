@@ -100,6 +100,6 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
 
 void BulletRigidBody::syncScale()
 {
-    auto scale = transformCmp->getLocalScale();
+	const auto scale = transformCmp->getWorldScale();
     shape->setLocalScaling(SL_TOBTVEC3(scale));
 }

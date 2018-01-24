@@ -65,14 +65,12 @@ namespace solo
         Vulkan
     };
 
-    class Device
+    class Device: public NoCopyAndMove
     {
     public:
-        SL_DISABLE_COPY_AND_MOVE(Device)
-
         static auto create(const DeviceSetup &setup) -> uptr<Device>;
 
-        virtual ~Device() {}
+		virtual ~Device() = default;
 
         virtual auto getWindowTitle() const -> str = 0;
         virtual void setWindowTitle(const str &title) = 0;

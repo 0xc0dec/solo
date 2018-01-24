@@ -5,18 +5,16 @@
 
 #pragma once
 
-#include "SoloComponent.h"
+#include "SoloCommon.h"
 
 namespace solo
 {
-    class Collider
+    class Collider: public NoCopyAndMove
     {
     public:
-        SL_DISABLE_COPY_AND_MOVE(Collider)
-
-        virtual ~Collider() {}
+		virtual ~Collider() = default;
 
     protected:
-        Collider() {}
+		Collider() = default;
     };
 }

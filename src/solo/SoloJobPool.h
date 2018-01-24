@@ -12,11 +12,9 @@
 
 namespace solo
 {
-    class Job
+    class Job: public NoCopyAndMove
     {
     public:
-        SL_DISABLE_COPY_AND_MOVE(Job)
-
         virtual ~Job(){}
 
         bool isDone() const { return done; }
@@ -83,11 +81,9 @@ namespace solo
         Consumer callback;
     };
 
-    class JobPool final
+    class JobPool final: public NoCopyAndMove
     {
     public:
-        SL_DISABLE_COPY_AND_MOVE(JobPool)
-
         JobPool() {}
 
         bool hasActiveJobs() const { return anyActiveJobs; }

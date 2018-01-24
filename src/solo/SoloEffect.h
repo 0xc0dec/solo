@@ -11,11 +11,9 @@ namespace solo
 {
     class Device;
 
-    class Effect
+    class Effect: public NoCopyAndMove
     {
     public:
-        SL_DISABLE_COPY_AND_MOVE(Effect)
-
         static auto loadFromSourceFile(Device *device, const str &path) -> sptr<Effect>;
 		static auto loadFromDescriptionFile(Device *device, const str &path) -> sptr<Effect>;
 		static auto createFromSource(Device *device, const str &source) -> sptr<Effect>;

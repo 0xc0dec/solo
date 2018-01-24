@@ -46,12 +46,6 @@
 #   define SL_DEBUG_BLOCK(code) SL_EMPTY_MACRO_BLOCK()
 #endif
 
-#define SL_DISABLE_COPY_AND_MOVE(type) \
-    type(const type &other) = delete; \
-    type(type &&other) = delete; \
-    type &operator=(const type &other) = delete; \
-    type &operator=(type &&other) = delete;
-
 namespace solo
 {
     template <typename T> using sptr = std::shared_ptr<T>;

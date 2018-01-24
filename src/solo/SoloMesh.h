@@ -29,17 +29,15 @@ namespace solo
 
     class Device;
 
-    class Mesh
+    class Mesh: public NoCopyAndMove
     {
     public:
-        SL_DISABLE_COPY_AND_MOVE(Mesh)
-
         static auto create(Device *device) -> sptr<Mesh>;
         static auto createFromPrefab(Device *device, MeshPrefab prefab) -> sptr<Mesh>;
         static auto loadFromFile(Device *device, const str &path) -> sptr<Mesh>;
         static auto loadFromFileAsync(Device *device, const str &path) -> sptr<AsyncHandle<Mesh>>;
 
-        virtual ~Mesh() {}
+		virtual ~Mesh() = default;
 
         virtual auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 = 0;
         virtual auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 = 0;
@@ -54,7 +52,7 @@ namespace solo
         virtual void setPrimitiveType(PrimitiveType type) = 0;
 
     protected:
-        Mesh() {}
+		Mesh() = default;
 
         void initAsQuadMesh();
         void initAsCubeMesh();

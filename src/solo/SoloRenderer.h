@@ -17,14 +17,12 @@ namespace solo
     class Transform;
     class Material;
 
-    class Renderer
+    class Renderer: public NoCopyAndMove
     {
     public:
-        SL_DISABLE_COPY_AND_MOVE(Renderer)
-
         static auto create(Device *device, const FriendToken<Device> &) -> sptr<Renderer>;
 
-        virtual ~Renderer() {}
+		virtual ~Renderer() = default;
 
         virtual void beginCamera(Camera *camera, FrameBuffer *renderTarget) = 0;
         virtual void endCamera(Camera *camera, FrameBuffer *renderTarget) = 0;
@@ -34,7 +32,7 @@ namespace solo
         void renderFrame(std::function<void()> render);
 
     protected:
-        Renderer() {}
+		Renderer() = default;
 
         virtual void beginFrame() = 0;
         virtual void endFrame() = 0;
