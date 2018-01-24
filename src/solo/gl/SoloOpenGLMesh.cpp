@@ -74,15 +74,16 @@ auto OpenGLMesh::getOrCreateVertexArray(OpenGLEffect *effect) -> GLuint
             const auto stride = layout.getSize();
             
         	auto location = attr.location;
-			auto found = false;
+			auto found = true;
             if (!attr.name.empty())
             {
 				if (effect->hasAttribute(attr.name))
 				{
 					const auto attrInfo = effect->getAttributeInfo(attr.name);
 					location = attrInfo.location;
-					found = true;
 				}
+				else
+					found = false;
             }
 
 			if (found)

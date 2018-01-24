@@ -338,6 +338,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
             
             pipelineConfig.withVertexBinding(binding, layout.getSize(), VK_VERTEX_INPUT_RATE_VERTEX);
 
+			u32 offset = 0;
             for (auto attrIndex = 0; attrIndex < layout.getAttributeCount(); attrIndex++)
             {
                 const auto attr = layout.getAttribute(attrIndex);
@@ -363,14 +364,19 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
                 }
                 
                 auto location = attr.location;
+				auto found = true;
                 if (!attr.name.empty())
                 {
-					if (!effectVertexAttrs.count(attr.name))
-						continue; // TODO log that not found?
-                    location = effectVertexAttrs.at(attr.name).location;
+					if (effectVertexAttrs.count(attr.name))
+						location = effectVertexAttrs.at(attr.name).location;
+					else
+						found = false;
                 }
 
-                pipelineConfig.withVertexAttribute(location, binding, format, attr.offset);
+				if (found)
+					pipelineConfig.withVertexAttribute(location, binding, format, offset);
+
+				offset += attr.size;
             }
         }
 
