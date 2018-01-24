@@ -310,8 +310,10 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
         context.descSetLayout = builder.build();
 
         auto poolConfig = VulkanDescriptorPoolConfig();
-        poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, uniformBufs.size());
-        poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, effectSamplers.size());
+		if (!uniformBufs.empty())
+			poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, uniformBufs.size());
+		if (!effectSamplers.empty())
+			poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, effectSamplers.size());
 
         context.descPool = VulkanDescriptorPool(device, 1, poolConfig);
         context.descSet = context.descPool.allocateSet(context.descSetLayout);

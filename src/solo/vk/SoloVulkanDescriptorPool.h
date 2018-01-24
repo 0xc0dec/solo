@@ -27,11 +27,11 @@ namespace solo
     class VulkanDescriptorPool
     {
     public:
-        VulkanDescriptorPool() {}
+        VulkanDescriptorPool() = default;
         VulkanDescriptorPool(VkDevice device, u32 maxSetCount, const VulkanDescriptorPoolConfig &config);
         VulkanDescriptorPool(const VulkanDescriptorPool &other) = delete;
         VulkanDescriptorPool(VulkanDescriptorPool &&other) = default;
-        ~VulkanDescriptorPool() {}
+        ~VulkanDescriptorPool() = default;
 
         auto operator=(const VulkanDescriptorPool &other) -> VulkanDescriptorPool& = delete;
         auto operator=(VulkanDescriptorPool &&other) -> VulkanDescriptorPool& = default;
