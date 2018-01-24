@@ -1,5 +1,6 @@
 # TODO
 
+* Remove SL_DISABLE_COPY_AND_MODE
 * Bad error message in Vulkan when variable not declared in effect and is referenced
 * Finish with shader generation: pass GLSL version as parameter, rely on it instead of "vulkan or not".
 * Refactor mesh attributes lookup, introduce attribute semantics or make sure predefined attributes always called the same

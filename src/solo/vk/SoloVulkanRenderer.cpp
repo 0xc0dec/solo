@@ -68,12 +68,14 @@ static auto createDevice(VkPhysicalDevice physicalDevice, u32 queueIndex) -> Vul
 
     vec<const s8*> deviceExtensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME};
 
-    VkDeviceCreateInfo deviceCreateInfo {};
-    vec<VkPhysicalDeviceFeatures> enabledFeatures {};
+	VkPhysicalDeviceFeatures enabledFeatures{};
+	enabledFeatures.samplerAnisotropy = true;
+
+    VkDeviceCreateInfo deviceCreateInfo{};
     deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
     deviceCreateInfo.queueCreateInfoCount = 1;
     deviceCreateInfo.pQueueCreateInfos = &queueCreateInfo;
-    deviceCreateInfo.pEnabledFeatures = enabledFeatures.data();
+    deviceCreateInfo.pEnabledFeatures = &enabledFeatures;
     deviceCreateInfo.enabledExtensionCount = static_cast<u32>(deviceExtensions.size());
     deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
 

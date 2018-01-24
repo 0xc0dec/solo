@@ -58,7 +58,9 @@ static auto createSampler(
     VkSamplerCreateInfo samplerInfo{};
     samplerInfo.flags = 0;
     samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-    samplerInfo.maxAnisotropy = (std::min)(anisotropyLevel, physicalProps.limits.maxSamplerAnisotropy);
+	samplerInfo.maxAnisotropy = physicalFeatures.samplerAnisotropy
+		? (std::min)(anisotropyLevel, physicalProps.limits.maxSamplerAnisotropy)
+		: 1;
     samplerInfo.anisotropyEnable = physicalFeatures.samplerAnisotropy && anisotropic;
     samplerInfo.magFilter = toFilter(magFilter);
     samplerInfo.minFilter = toFilter(minFilter);
