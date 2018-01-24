@@ -5,7 +5,6 @@
 
 #include "SoloFrameBuffer.h"
 #include "SoloLuaCommon.h"
-#include "SoloLogger.h"
 #include "SoloScene.h"
 #include "SoloMeshRenderer.h"
 #include "SoloSkyboxRenderer.h"
@@ -26,18 +25,6 @@ static void registerFrameBuffer(CppBindModule<LuaBinding> &module)
     REG_METHOD(fb, FrameBuffer, setAttachments);
     REG_METHOD(fb, FrameBuffer, getDimensions);
     fb.endClass();
-}
-
-static void registerLogger(CppBindModule<LuaBinding> &module)
-{
-    auto logger = BEGIN_CLASS(module, Logger);
-    REG_METHOD(logger, Logger, setTargetFile);
-    REG_METHOD(logger, Logger, logDebug);
-    REG_METHOD(logger, Logger, logInfo);
-    REG_METHOD(logger, Logger, logWarning);
-    REG_METHOD(logger, Logger, logError);
-    REG_METHOD(logger, Logger, logCritical);
-    logger.endClass();
 }
 
 static void registerScene(CppBindModule<LuaBinding> &module)
@@ -131,7 +118,6 @@ void registerMiscApi(CppBindModule<LuaBinding> &module)
     registerMeshRenderer(module);
     registerScene(module);
     registerRenderer(module);
-    registerLogger(module);
     registerFrameBuffer(module);
     registerSpectator(module);
     registerSkyboxRenderer(module);
