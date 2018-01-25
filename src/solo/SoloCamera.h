@@ -10,7 +10,7 @@
 #include "SoloVector4.h"
 #include "SoloTransform.h"
 #include "SoloNode.h"
-#include "SoloRadian.h"
+#include "SoloRadians.h"
 #include <functional>
 
 namespace solo
@@ -21,7 +21,7 @@ namespace solo
     class Renderer;
     class Device;
     class Ray;
-    struct Radian;
+    struct Radians;
 
     class Camera: public ComponentBase<Camera>
     {
@@ -64,8 +64,8 @@ namespace solo
         auto getZFar() const -> float { return zFar; }
         void setZFar(float far);
 
-        auto getFOV() const -> Radian { return fov; }
-        void setFOV(const Radian &fov);
+        auto getFOV() const -> Radians { return fov; }
+        void setFOV(const Radians &fov);
 
         auto getOrthoSize() const -> Vector2 { return orthoSize; }
         void setOrthoSize(const Vector2 &size);
@@ -90,7 +90,7 @@ namespace solo
         bool colorClearing = true;
         bool ortho = false;
         Vector2 orthoSize{1, 1};
-        Radian fov;
+        Radians fov;
         float zNear = 1;
         float zFar = 100;
         float aspectRatio = 1;

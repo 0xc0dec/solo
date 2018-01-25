@@ -148,7 +148,7 @@ void Transform::rotate(const Quaternion &rotation, TransformSpace space)
     setDirtyWithChildren(dirtyFlagAll);
 }
 
-void Transform::rotateByAxisAngle(const Vector3 &axis, const Radian &angle, TransformSpace space)
+void Transform::rotateByAxisAngle(const Vector3 &axis, const Radians &angle, TransformSpace space)
 {
     const auto rotation = Quaternion::createFromAxisAngle(axis, angle);
     rotate(rotation, space);
@@ -201,7 +201,7 @@ void Transform::setLocalRotation(const Quaternion &rotation)
     setDirtyWithChildren(dirtyFlagAll);
 }
 
-void Transform::setLocalAxisAngleRotation(const Vector3 &axis, const Radian &angle)
+void Transform::setLocalAxisAngleRotation(const Vector3 &axis, const Radians &angle)
 {
     localRotation = Quaternion::createFromAxisAngle(axis, angle);
     setDirtyWithChildren(dirtyFlagAll);

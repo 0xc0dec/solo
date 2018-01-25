@@ -28,9 +28,9 @@ bool Vector4::isUnit() const
            math::areEqual(w, 1.0f);
 }
 
-auto Vector4::angle(const Vector4 &v) -> Radian
+auto Vector4::angle(const Vector4 &v) -> Radians
 {
-    return Radian(acosf(math::clamp(dot(v), -1, 1)));
+    return Radians(acosf(math::clamp(dot(v), -1, 1)));
 }
 
 void Vector4::clamp(const Vector4 &min, const Vector4 &max)

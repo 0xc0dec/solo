@@ -15,7 +15,7 @@ namespace solo
 {
     class Camera;
     class Transform;
-    struct Radian;
+    struct Radians;
 
     enum class TransformSpace
     {
@@ -75,10 +75,10 @@ namespace solo
         void setLocalScale(const Vector3 &scale);
 
         void rotate(const Quaternion &rotation, TransformSpace space = TransformSpace::Self);
-        void rotateByAxisAngle(const Vector3 &axis, const Radian &angle, TransformSpace space = TransformSpace::Self);
+        void rotateByAxisAngle(const Vector3 &axis, const Radians &angle, TransformSpace space = TransformSpace::Self);
 
         void setLocalRotation(const Quaternion &rotation);
-        void setLocalAxisAngleRotation(const Vector3 &axis, const Radian &angle);
+        void setLocalAxisAngleRotation(const Vector3 &axis, const Radians &angle);
 
         void lookAt(const Vector3 &target, const Vector3 &up);
 

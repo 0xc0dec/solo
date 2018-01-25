@@ -153,10 +153,10 @@ auto Matrix::createLookAt(const Vector3 &eye, const Vector3 &target, const Vecto
     ));
 }
 
-auto Matrix::createPerspective(const Radian &fieldOfView, float aspectRatio, float znear, float zfar) -> Matrix
+auto Matrix::createPerspective(const Radians &fieldOfView, float aspectRatio, float znear, float zfar) -> Matrix
 {
     const auto f_n = 1.0f / (zfar - znear);
-	const auto theta = fieldOfView.toRawRadian() * 0.5f;
+	const auto theta = fieldOfView.toRawRadians() * 0.5f;
 	panicIf(math::isZero(fmod(theta, math::PiOver2)));
 
     const auto divisor = tan(theta);
@@ -243,7 +243,7 @@ auto Matrix::createRotationFromQuaternion(const Quaternion &q) -> Matrix
     return Matrix(result);
 }
 
-auto Matrix::createRotationFromAxisAngle(const Vector3 &axis, const Radian &angle) -> Matrix
+auto Matrix::createRotationFromAxisAngle(const Vector3 &axis, const Radians &angle) -> Matrix
 {
     auto x = axis.x;
     auto y = axis.y;
@@ -265,8 +265,8 @@ auto Matrix::createRotationFromAxisAngle(const Vector3 &axis, const Radian &angl
         }
     }
 
-    const auto c = std::cos(angle.toRawRadian());
-    const auto s = std::sin(angle.toRawRadian());
+    const auto c = std::cos(angle.toRawRadians());
+    const auto s = std::sin(angle.toRawRadians());
 
     const auto t = 1.0f - c;
     const auto tx = t * x;
@@ -304,10 +304,10 @@ auto Matrix::createRotationFromAxisAngle(const Vector3 &axis, const Radian &angl
     return Matrix(result);
 }
 
-auto Matrix::createRotationX(const Radian &angle) -> Matrix
+auto Matrix::createRotationX(const Radians &angle) -> Matrix
 {
-    const auto c = cosf(angle.toRawRadian());
-    const auto s = sinf(angle.toRawRadian());
+    const auto c = cosf(angle.toRawRadians());
+    const auto s = sinf(angle.toRawRadians());
 
     Matrix result;
     result.m[5] = c;
@@ -317,10 +317,10 @@ auto Matrix::createRotationX(const Radian &angle) -> Matrix
     return Matrix(result);
 }
 
-auto Matrix::createRotationY(const Radian &angle) -> Matrix
+auto Matrix::createRotationY(const Radians &angle) -> Matrix
 {
-    const auto c = std::cos(angle.toRawRadian());
-    const auto s = std::sin(angle.toRawRadian());
+    const auto c = std::cos(angle.toRawRadians());
+    const auto s = std::sin(angle.toRawRadians());
 
     Matrix result;
 
@@ -332,10 +332,10 @@ auto Matrix::createRotationY(const Radian &angle) -> Matrix
     return Matrix(result);
 }
 
-auto Matrix::createRotationZ(const Radian &angle) -> Matrix
+auto Matrix::createRotationZ(const Radians &angle) -> Matrix
 {
-    const auto c = std::cos(angle.toRawRadian());
-    const auto s = std::sin(angle.toRawRadian());
+    const auto c = std::cos(angle.toRawRadians());
+    const auto s = std::sin(angle.toRawRadians());
 
     Matrix result;
     result.m[0] = c;

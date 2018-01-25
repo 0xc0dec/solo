@@ -44,7 +44,7 @@
     <ClInclude Include="..\src\solo\SoloCollider.h" />
     <ClInclude Include="..\src\solo\SoloCommon.h" />
     <ClInclude Include="..\src\solo\SoloComponent.h" />
-    <ClInclude Include="..\src\solo\SoloDegree.h" />
+    <ClInclude Include="..\src\solo\SoloDegrees.h" />
     <ClInclude Include="..\src\solo\SoloDevice.h" />
     <ClInclude Include="..\src\solo\SoloDeviceSetup.h" />
     <ClInclude Include="..\src\solo\SoloEffect.h" />
@@ -65,7 +65,7 @@
     <ClInclude Include="..\src\solo\SoloNode.h" />
     <ClInclude Include="..\src\solo\SoloPhysics.h" />
     <ClInclude Include="..\src\solo\SoloQuaternion.h" />
-    <ClInclude Include="..\src\solo\SoloRadian.h" />
+    <ClInclude Include="..\src\solo\SoloRadians.h" />
     <ClInclude Include="..\src\solo\SoloRay.h" />
     <ClInclude Include="..\src\solo\SoloRenderer.h" />
     <ClInclude Include="..\src\solo\SoloRigidBody.h" />
@@ -131,13 +131,13 @@
     <ClCompile Include="..\src\solo\Solo.cpp" />
     <ClCompile Include="..\src\solo\SoloBoxCollider.cpp" />
     <ClCompile Include="..\src\solo\SoloCommon.cpp" />
-    <ClCompile Include="..\src\solo\SoloDegree.cpp" />
+    <ClCompile Include="..\src\solo\SoloDegrees.cpp" />
     <ClCompile Include="..\src\solo\SoloFont.cpp" />
     <ClCompile Include="..\src\solo\SoloFontRenderer.cpp" />
     <ClCompile Include="..\src\solo\SoloJobPool.cpp" />
     <ClCompile Include="..\src\solo\SoloTextureData.cpp" />
     <ClCompile Include="..\src\solo\SoloPhysics.cpp" />
-    <ClCompile Include="..\src\solo\SoloRadian.cpp" />
+    <ClCompile Include="..\src\solo\SoloRadians.cpp" />
     <ClCompile Include="..\src\solo\SoloRenderer.cpp" />
     <ClCompile Include="..\src\solo\SoloRigidBody.cpp" />
     <ClCompile Include="..\src\solo\SoloScriptRuntime.cpp" />

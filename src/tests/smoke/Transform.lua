@@ -10,7 +10,7 @@ local cam = scene:createNode():addComponent("Camera")
 local v = sl.Vector3(1, 2, 3)
 local q = sl.Quaternion()
 local m = sl.Matrix()
-local rad = sl.Radian(1)
+local rad = sl.Radians(1)
 
 t1:setParent(t2)
 assert(t1:getParent())

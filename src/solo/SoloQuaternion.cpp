@@ -5,7 +5,7 @@
 
 #include "SoloQuaternion.h"
 #include "SoloMath.h"
-#include "SoloRadian.h"
+#include "SoloRadians.h"
 #include "SoloVector3.h"
 
 using namespace solo;
@@ -15,7 +15,7 @@ Quaternion::Quaternion(float x, float y, float z, float w):
 {
 }
 
-Quaternion::Quaternion(const Vector3 &axis, const Radian &angle)
+Quaternion::Quaternion(const Vector3 &axis, const Radians &angle)
 {
     *this = createFromAxisAngle(axis, angle);
 }
@@ -36,9 +36,9 @@ bool Quaternion::isZero() const
            math::isZero(w);
 }
 
-auto Quaternion::createFromAxisAngle(const Vector3 &axis, const Radian &angle) -> Quaternion
+auto Quaternion::createFromAxisAngle(const Vector3 &axis, const Radians &angle) -> Quaternion
 {
-    auto halfAngle = angle.toRawRadian() * 0.5f;
+    auto halfAngle = angle.toRawRadians() * 0.5f;
     auto sinHalfAngle = sinf(halfAngle);
     auto normal(const_cast<Vector3 &>(axis));
     normal.normalize();
@@ -101,7 +101,7 @@ auto Quaternion::normalized() const -> Quaternion
     return result;
 }
 
-auto Quaternion::toAxisAngle(Vector3 &axis) const -> Radian
+auto Quaternion::toAxisAngle(Vector3 &axis) const -> Radians
 {
     Quaternion q(x, y, z, w);
     q.normalize();
@@ -109,7 +109,7 @@ auto Quaternion::toAxisAngle(Vector3 &axis) const -> Radian
     axis.y = q.y;
     axis.z = q.z;
     axis.normalize();
-    return Radian(2.0f * acos(q.w));
+    return Radians(2.0f * acos(q.w));
 }
 
 auto Quaternion::lerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion

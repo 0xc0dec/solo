@@ -22,9 +22,9 @@ bool Vector2::isUnit() const
     return math::areEqual(x, 1.0f) && math::areEqual(y, 1.0f);
 }
 
-auto Vector2::angle(const Vector2 &v) const -> Radian
+auto Vector2::angle(const Vector2 &v) const -> Radians
 {
-    return Radian(acosf(math::clamp(dot(v), -1, 1)));
+    return Radians(acosf(math::clamp(dot(v), -1, 1)));
 }
 
 void Vector2::clamp(const Vector2 &min, const Vector2 &max)

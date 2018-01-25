@@ -6,8 +6,8 @@
 #include "SoloCamera.h"
 #include "SoloNode.h"
 #include "SoloDevice.h"
-#include "SoloRadian.h"
-#include "SoloDegree.h"
+#include "SoloRadians.h"
+#include "SoloDegrees.h"
 #include "SoloScene.h"
 #include "SoloRay.h"
 #include "SoloRenderer.h"
@@ -30,7 +30,7 @@ Camera::Camera(const Node &node):
     ComponentBase(node),
     device(node.getScene()->getDevice()),
     renderer(device->getRenderer()),
-    fov(Degree(60))
+    fov(Degrees(60))
 {
     auto canvasSize = device->getCanvasSize();
     viewport = {0, 0, canvasSize.x, canvasSize.y};
@@ -59,7 +59,7 @@ void Camera::setPerspective(bool perspective)
     dirtyFlags |= allProjectionDirtyBits;
 }
 
-void Camera::setFOV(const Radian &fov)
+void Camera::setFOV(const Radians &fov)
 {
     this->fov = fov;
     dirtyFlags |= allProjectionDirtyBits;
@@ -148,7 +148,7 @@ void Camera::renderFrame(const std::function<void()> &render)
 
 auto Camera::windowPointToWorldRay(const Vector2 &pt) const -> Ray
 {
-    const auto halfHeightInWorldUnits = zNear * std::tan(fov.toRawRadian() / 2);
+    const auto halfHeightInWorldUnits = zNear * std::tan(fov.toRawRadians() / 2);
     const auto halfWidthInWorldUnits = halfHeightInWorldUnits * aspectRatio;
     const auto canvasSize = device->getDpiIndependentCanvasSize();
     const auto right = transform->getWorldRight() * (halfWidthInWorldUnits * (2 * pt.x / canvasSize.x - 1));

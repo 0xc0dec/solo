@@ -31,9 +31,9 @@ bool Vector3::isUnit() const
            math::areEqual(z, 1.0f);
 }
 
-auto Vector3::angle(const Vector3 &v) -> Radian
+auto Vector3::angle(const Vector3 &v) -> Radians
 {
-    return Radian(acosf(math::clamp(dot(v), -1, 1)));
+    return Radians(acosf(math::clamp(dot(v), -1, 1)));
 }
 
 void Vector3::clamp(const Vector3 &min, const Vector3 &max)

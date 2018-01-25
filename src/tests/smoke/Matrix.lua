@@ -6,7 +6,7 @@
 local m = sl.Matrix()
 local v = sl.Vector3(1, 2, 3)
 local q = sl.Quaternion()
-local rad = sl.Radian(1)
+local rad = sl.Radians(1)
 local ray = sl.Ray(v, v)
 
 assert(sl.Matrix.identity())

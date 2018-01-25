@@ -32,7 +32,7 @@ assert(cam:getZFar() ~= nil)
 cam:setZFar(1)
 
 assert(cam:getFOV() ~= nil)
-cam:setFOV(sl.Radian(1))
+cam:setFOV(sl.Radians(1))
 
 assert(cam:getOrthoSize() ~= nil)
 cam:setOrthoSize(sl.Vector2(1, 2))

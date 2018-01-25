@@ -7,7 +7,7 @@
 
 namespace solo
 {
-    struct Radian;
+    struct Radians;
     class Vector3;
 
     class Quaternion final
@@ -20,9 +20,9 @@ namespace solo
 
         Quaternion() {}
         Quaternion(float x, float y, float z, float w);
-        Quaternion(const Vector3 &axis, const Radian &angle);
+        Quaternion(const Vector3 &axis, const Radians &angle);
 
-        static auto createFromAxisAngle(const Vector3 &axis, const Radian &angle) -> Quaternion;
+        static auto createFromAxisAngle(const Vector3 &axis, const Radians &angle) -> Quaternion;
         static auto lerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion;
         static auto slerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion;
         static auto squad(const Quaternion &q1, const Quaternion &q2, const Quaternion &s1, const Quaternion &s2, float t) -> Quaternion;
@@ -36,7 +36,7 @@ namespace solo
         auto normalized() const -> Quaternion;
         void normalize();
 
-        auto toAxisAngle(Vector3 &e) const -> Radian;
+        auto toAxisAngle(Vector3 &e) const -> Radians;
 
         auto operator*(const Quaternion &q) const -> Quaternion;
         auto operator*=(const Quaternion &q) -> Quaternion&;

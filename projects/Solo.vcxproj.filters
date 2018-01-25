@@ -118,7 +118,6 @@
     <ClInclude Include="..\src\solo\SoloCollider.h" />
     <ClInclude Include="..\src\solo\SoloCommon.h" />
     <ClInclude Include="..\src\solo\SoloComponent.h" />
-    <ClInclude Include="..\src\solo\SoloDegree.h" />
     <ClInclude Include="..\src\solo\SoloDevice.h" />
     <ClInclude Include="..\src\solo\SoloDeviceSetup.h" />
     <ClInclude Include="..\src\solo\SoloEffect.h" />
@@ -135,7 +134,6 @@
     <ClInclude Include="..\src\solo\SoloNode.h" />
     <ClInclude Include="..\src\solo\SoloPhysics.h" />
     <ClInclude Include="..\src\solo\SoloQuaternion.h" />
-    <ClInclude Include="..\src\solo\SoloRadian.h" />
     <ClInclude Include="..\src\solo\SoloRay.h" />
     <ClInclude Include="..\src\solo\SoloRenderer.h" />
     <ClInclude Include="..\src\solo\SoloRigidBody.h" />
@@ -182,6 +180,8 @@
     <ClInclude Include="..\src\solo\gl\SoloOpenGLSDLDevice.h">
       <Filter>gl</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\solo\SoloDegrees.h" />
+    <ClInclude Include="..\src\solo\SoloRadians.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp">
@@ -295,7 +295,6 @@
     <ClCompile Include="..\src\solo\Solo.cpp" />
     <ClCompile Include="..\src\solo\SoloBoxCollider.cpp" />
     <ClCompile Include="..\src\solo\SoloCamera.cpp" />
-    <ClCompile Include="..\src\solo\SoloDegree.cpp" />
     <ClCompile Include="..\src\solo\SoloDevice.cpp" />
     <ClCompile Include="..\src\solo\SoloEffect.cpp" />
     <ClCompile Include="..\src\solo\SoloFileSystem.cpp" />
@@ -309,7 +308,6 @@
     <ClCompile Include="..\src\solo\SoloNode.cpp" />
     <ClCompile Include="..\src\solo\SoloPhysics.cpp" />
     <ClCompile Include="..\src\solo\SoloQuaternion.cpp" />
-    <ClCompile Include="..\src\solo\SoloRadian.cpp" />
     <ClCompile Include="..\src\solo\SoloRay.cpp" />
     <ClCompile Include="..\src\solo\SoloRenderer.cpp" />
     <ClCompile Include="..\src\solo\SoloRigidBody.cpp" />
@@ -349,6 +347,8 @@
       <Filter>gl</Filter>
     </ClCompile>
     <ClCompile Include="..\src\solo\SoloCommon.cpp" />
+    <ClCompile Include="..\src\solo\SoloDegrees.cpp" />
+    <ClCompile Include="..\src\solo\SoloRadians.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bullet">

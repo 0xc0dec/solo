@@ -10,7 +10,7 @@ assert(q.y ~= nil)
 assert(q.z ~= nil)
 assert(q.w ~= nil)
 
-assert(sl.Quaternion.createFromAxisAngle(sl.Vector3(1, 2, 3), sl.Radian(1)))
+assert(sl.Quaternion.createFromAxisAngle(sl.Vector3(1, 2, 3), sl.Radians(1)))
 
 assert(q:isIdentity() ~= nil)
 assert(q:isZero() ~= nil)

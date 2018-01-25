@@ -10,7 +10,7 @@
 
 namespace solo
 {
-    struct Radian;
+    struct Radians;
     class Ray;
     class Quaternion;
 
@@ -30,14 +30,14 @@ namespace solo
         static auto identity() -> Matrix;
 
         static auto createLookAt(const Vector3 &eye, const Vector3 &target, const Vector3 &up) -> Matrix;
-        static auto createPerspective(const Radian &fieldOfView, float aspectRatio, float znear, float zfar) -> Matrix;
+        static auto createPerspective(const Radians &fieldOfView, float aspectRatio, float znear, float zfar) -> Matrix;
         static auto createOrthographic(float width, float height, float near, float far) -> Matrix;
         static auto createScale(const Vector3 &scale) -> Matrix;
         static auto createRotationFromQuaternion(const Quaternion &q) -> Matrix;
-        static auto createRotationFromAxisAngle(const Vector3 &axis, const Radian &angle) -> Matrix;
-        static auto createRotationX(const Radian &angle) -> Matrix;
-        static auto createRotationY(const Radian &angle) -> Matrix;
-        static auto createRotationZ(const Radian &angle) -> Matrix;
+        static auto createRotationFromAxisAngle(const Vector3 &axis, const Radians &angle) -> Matrix;
+        static auto createRotationX(const Radians &angle) -> Matrix;
+        static auto createRotationY(const Radians &angle) -> Matrix;
+        static auto createRotationZ(const Radians &angle) -> Matrix;
         static auto createTranslation(const Vector3 &translation) -> Matrix;
 
         bool isIdentity() const;
@@ -57,10 +57,10 @@ namespace solo
         auto getBackVector() const -> Vector3;
 
         void rotateByQuaternion(const Quaternion &q);
-        void rotateByAxisAngle(const Vector3 &axis, const Radian &angle);
-        void rotateX(const Radian &angle);
-        void rotateY(const Radian &angle);
-        void rotateZ(const Radian &angle);
+        void rotateByAxisAngle(const Vector3 &axis, const Radians &angle);
+        void rotateX(const Radians &angle);
+        void rotateY(const Radians &angle);
+        void rotateZ(const Radians &angle);
 
         void scaleByScalar(float value);
         void scaleByVector(const Vector3 &s);
@@ -130,22 +130,22 @@ namespace solo
         *this *= createRotationFromQuaternion(q);
     }
 
-    inline void Matrix::rotateByAxisAngle(const Vector3 &axis, const Radian &angle)
+    inline void Matrix::rotateByAxisAngle(const Vector3 &axis, const Radians &angle)
     {
         *this *= createRotationFromAxisAngle(axis, angle);
     }
 
-    inline void Matrix::rotateX(const Radian &angle)
+    inline void Matrix::rotateX(const Radians &angle)
     {
         *this *= createRotationX(angle);
     }
 
-    inline void Matrix::rotateY(const Radian &angle)
+    inline void Matrix::rotateY(const Radians &angle)
     {
         *this *= createRotationY(angle);
     }
 
-    inline void Matrix::rotateZ(const Radian &angle)
+    inline void Matrix::rotateZ(const Radians &angle)
     {
         *this *= createRotationZ(angle);
     }

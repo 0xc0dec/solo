@@ -205,7 +205,9 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
             image.image,
             VK_IMAGE_LAYOUT_UNDEFINED,
             VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-            subresourceRange);
+            subresourceRange,
+			VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+			VK_PIPELINE_STAGE_TRANSFER_BIT);
 
         vkCmdCopyBufferToImage(
             initCmdBuf,
@@ -222,7 +224,9 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
                 image.image,
                 VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
                 VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-                subresourceRange);
+                subresourceRange,
+				VK_PIPELINE_STAGE_TRANSFER_BIT,
+				VK_PIPELINE_STAGE_TRANSFER_BIT);
 
             // TODO Refactor, avoid copy-paste in other similar places
             vkEndCommandBuffer(initCmdBuf);
@@ -265,7 +269,7 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
                     VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
                     mipSubRange,
                     VK_PIPELINE_STAGE_TRANSFER_BIT,
-                    VK_PIPELINE_STAGE_HOST_BIT);
+                    VK_PIPELINE_STAGE_TRANSFER_BIT);
 
                 vkCmdBlitImage(
 				    blitCmdBuf,
@@ -283,7 +287,7 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
                     VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
                     VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
                     mipSubRange,
-                    VK_PIPELINE_STAGE_HOST_BIT,
+                    VK_PIPELINE_STAGE_TRANSFER_BIT,
                     VK_PIPELINE_STAGE_TRANSFER_BIT);
             }
 
@@ -293,7 +297,9 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
                 image.image,
                 VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
                 VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
-                subresourceRange);
+                subresourceRange,
+				VK_PIPELINE_STAGE_TRANSFER_BIT,
+				VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
 
             vkEndCommandBuffer(blitCmdBuf);
             vk::queueSubmit(renderer->getQueue(), 0, nullptr, 0, nullptr, 1, &blitCmdBuf);
@@ -307,8 +313,8 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
                 VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
                 VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
                 subresourceRange,
-                VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-                VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+                VK_PIPELINE_STAGE_TRANSFER_BIT,
+                VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
 
             vkEndCommandBuffer(initCmdBuf);
             vk::queueSubmit(renderer->getQueue(), 0, nullptr, 0, nullptr, 1, &initCmdBuf);
@@ -329,8 +335,8 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
             VK_IMAGE_LAYOUT_UNDEFINED,
             VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
             subresourceRange,
-            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+            VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, // TODO veeery unsure about this, but validator doesn't complain
+            VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
 
         vkEndCommandBuffer(initCmdBuf);
         vk::queueSubmit(renderer->getQueue(), 0, nullptr, 0, nullptr, 1, &initCmdBuf);

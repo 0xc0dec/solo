@@ -16,7 +16,7 @@ return function(space, axis, speed)
             if space == "local" then
                 rotationSpace = sl.TransformSpace.Self
             end
-            self.transform:rotateByAxisAngle(axis, sl.Radian(angle), rotationSpace)
+            self.transform:rotateByAxisAngle(axis, sl.Radians(angle), rotationSpace)
         end
     })
 end

@@ -6,7 +6,7 @@
 #include "SoloSpectator.h"
 #include "SoloTransform.h"
 #include "SoloDevice.h"
-#include "SoloRadian.h"
+#include "SoloRadians.h"
 
 using namespace solo;
 
@@ -34,11 +34,11 @@ void Spectator::update()
     if (device->isMouseButtonDown(MouseButton::Right, false))
     {
         if (mouseMotion.x != 0)
-            transform->rotateByAxisAngle({0, 1, 0}, Radian(mouseSensitivity * -mouseMotion.x), TransformSpace::World);
+            transform->rotateByAxisAngle({0, 1, 0}, Radians(mouseSensitivity * -mouseMotion.x), TransformSpace::World);
 
         if (mouseMotion.y != 0)
         {
-            const auto angleToUp = transform->getLocalForward().angle({0, 1, 0}).toRawRadian();
+            const auto angleToUp = transform->getLocalForward().angle({0, 1, 0}).toRawRadians();
             auto delta = mouseSensitivity * -mouseMotion.y;
             if (delta > 0)
             {
@@ -51,7 +51,7 @@ void Spectator::update()
                     delta = angleToUp - 3.04f;
             }
 
-            transform->rotateByAxisAngle({1, 0, 0}, Radian(delta), TransformSpace::Self);
+            transform->rotateByAxisAngle({1, 0, 0}, Radians(delta), TransformSpace::Self);
         }
     }
 

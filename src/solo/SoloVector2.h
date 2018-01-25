@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "SoloRadian.h"
+#include "SoloRadians.h"
 #include "SoloMath.h"
 
 namespace solo
@@ -28,7 +28,7 @@ namespace solo
         auto lengthSquared() const -> float;
         auto normalized() const -> Vector2;
         void normalize();
-        auto angle(const Vector2 &v) const -> Radian;
+        auto angle(const Vector2 &v) const -> Radians;
         void clamp(const Vector2 &min, const Vector2 &max);
         auto dot(const Vector2 &v) const -> float;
 
