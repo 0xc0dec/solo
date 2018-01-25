@@ -371,12 +371,12 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
 	subresourceRange.levelCount = mipLevels;
 	subresourceRange.layerCount = layers;
 
-    auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
-    vk::beginCommandBuffer(cmdBuf, true);
-
     const auto size = data->getSize();
     if (size)
     {
+		auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
+		vk::beginCommandBuffer(cmdBuf, true);
+
         setImageLayout(
             cmdBuf,
             image.image,
@@ -433,9 +433,17 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
             subresourceRange,
             VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
             VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+
+		// TODO Refactor copy-paste
+		vkEndCommandBuffer(cmdBuf);
+		vk::queueSubmit(renderer->getQueue(), 0, nullptr, 0, nullptr, 1, &cmdBuf);
+		SL_VK_CHECK_RESULT(vkQueueWaitIdle(renderer->getQueue()));
     }
     else // empty
     {
+		auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
+		vk::beginCommandBuffer(cmdBuf, true);
+
         setImageLayout(
             cmdBuf,
             image.image,
@@ -444,12 +452,12 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
             subresourceRange,
             VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
             VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+
+		// TODO Refactor copy-paste
+		vkEndCommandBuffer(cmdBuf);
+		vk::queueSubmit(renderer->getQueue(), 0, nullptr, 0, nullptr, 1, &cmdBuf);
+		SL_VK_CHECK_RESULT(vkQueueWaitIdle(renderer->getQueue()));
     }
-
-    vkEndCommandBuffer(cmdBuf);
-
-    vk::queueSubmit(renderer->getQueue(), 0, nullptr, 0, nullptr, 1, &cmdBuf);
-    SL_VK_CHECK_RESULT(vkQueueWaitIdle(renderer->getQueue()));
 
     return image;
 }
