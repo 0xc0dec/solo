@@ -27,7 +27,7 @@ return function(assetCache, mainCameraNode)
 
             local root = self.scene:createNode()
             local rootTransform = root:findComponent("Transform")
-            rootTransform:setLocalPosition(vec3(0, -1.8, 6))
+            rootTransform:setLocalPosition(vec3(0, -1.8, 3))
 
             local btnScale = vec3(0.3, 0.1, 0.3)
             self.btn1Node = self:_createBtn(root, vec3(-0.8, 0, 0), btnScale, btnMat, "1", "Enable PP mode 1")

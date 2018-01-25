@@ -52,7 +52,7 @@ return function(scene, assetCache)
         material:setTextureParameter("mainTex", tex)
 
         local node = scene:createNode()
-        node:findComponent("Transform"):setLocalPosition(vec3(0, 0, -5))
+        node:findComponent("Transform"):setLocalPosition(vec3(3, 0, -5))
         local renderer = node:addComponent("MeshRenderer")
         renderer:setMesh(mesh)
         renderer:setMaterial(0, material)

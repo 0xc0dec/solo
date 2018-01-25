@@ -13,13 +13,18 @@ return function(scene, assetCache)
     mat:bindParameter("matrices:invTranspWorld", sl.BindParameterSemantics.InverseTransposedWorldMatrix)
     mat:setTextureParameter("mainTex", assetCache.textures.cobbleStone)
 
+    local node = scene:createNode()
+    node:addScriptComponent(createRotator("local", vec3(0, 1, 0), 1))
+
+    local renderer = node:addComponent("MeshRenderer")
+    renderer:setMaterial(0, mat)
+
+    local transform = node:findComponent("Transform")
+    transform:setLocalRotation(sl.Quaternion.createFromAxisAngle(vec3(0, 0, 1), sl.Radian(sl.Degree(180):toRawRadian())))
+    transform:setLocalPosition(vec3(-3, -1, -5))
+
     sl.Mesh.loadFromFileAsync(sl.device, getAssetPath("meshes/Teapot.obj")):done(
         function(mesh)
-            local node = scene:createNode()
-            local renderer = node:addComponent("MeshRenderer")
             renderer:setMesh(mesh)
-            renderer:setMaterial(0, mat)
-            node:findComponent("Transform"):setLocalPosition(vec3(0, 0, 0))
-            node:addScriptComponent(createRotator("local", vec3(1, 0, 0), 1))
         end)
 end
