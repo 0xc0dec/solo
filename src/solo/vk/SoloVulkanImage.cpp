@@ -384,7 +384,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
             VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
             subresourceRange,
             VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+            VK_PIPELINE_STAGE_TRANSFER_BIT);
 
         auto srcBuffer = VulkanBuffer::createStaging(renderer, data->getSize());
 
@@ -431,8 +431,8 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
             VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
             VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
             subresourceRange,
-            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+            VK_PIPELINE_STAGE_TRANSFER_BIT,
+            VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
 
 		// TODO Refactor copy-paste
 		vkEndCommandBuffer(cmdBuf);
