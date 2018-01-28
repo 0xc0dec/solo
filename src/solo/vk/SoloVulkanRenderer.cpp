@@ -21,13 +21,14 @@
 
 using namespace solo;
 
-static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMaterial *material)
+static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMaterial *material, VkRenderPass renderPass)
 {
     size_t seed = 0;
     const std::hash<void*> hasher;
+    combineHash(seed, hasher(transform));
     combineHash(seed, hasher(material));
     combineHash(seed, hasher(camera));
-    combineHash(seed, hasher(transform));
+    combineHash(seed, hasher(renderPass));
     return seed;
 }
 
@@ -203,6 +204,7 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
 {
     currentCamera = camera;
     currentRenderPass = &swapchain.getRenderPass();
+
     const auto canvasSize = engineDevice->getCanvasSize();
     auto currentFrameBuffer = swapchain.getCurrentFrameBuffer();
     auto dimensions = canvasSize;
@@ -234,11 +236,7 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
 
         vk::beginCommandBuffer(currentCmdBuffer, false);
 
-        currentRenderPass->begin(
-            currentCmdBuffer,
-            currentFrameBuffer,
-            dimensions.x, dimensions.y
-        );
+        currentRenderPass->begin(currentCmdBuffer, currentFrameBuffer, dimensions.x, dimensions.y);
 
         if (currentCamera->hasColorClearing())
         {
@@ -289,7 +287,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
     const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->getEffect().get());
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
 
-	const auto key = getPipelineContextKey(transform, camera, material);
+	const auto key = getPipelineContextKey(transform, camera, material, renderPass);
     auto &context = pipelineContexts[key];
 
     if (!context.descSet)
@@ -499,13 +497,13 @@ void VulkanRenderer::endFrame()
 {
     for (auto &pair: renderPassContexts)
     {
-        if (!pair.second.started)
-            continue;
-        
-        pair.second.started = false;
-	    const VkCommandBuffer cmdBuffer = pair.second.cmdBuffer;
-        pair.first->end(cmdBuffer);
-        SL_VK_CHECK_RESULT(vkEndCommandBuffer(cmdBuffer));
+        if (pair.second.started)
+	    {
+		    pair.second.started = false;
+		    const VkCommandBuffer cmdBuffer = pair.second.cmdBuffer;
+		    pair.first->end(cmdBuffer);
+		    SL_VK_CHECK_RESULT(vkEndCommandBuffer(cmdBuffer));
+	    }
     }
 
     VkSemaphore prevSemaphore = swapchain.moveNext();
