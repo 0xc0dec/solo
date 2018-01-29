@@ -35,10 +35,6 @@ VulkanFrameBuffer::VulkanFrameBuffer(Device *device):
 {
 }
 
-VulkanFrameBuffer::~VulkanFrameBuffer()
-{
-}
-
 void VulkanFrameBuffer::setAttachments(const vec<sptr<Texture2d>> &attachments)
 {
     SL_DEBUG_BLOCK(validateNewAttachments(attachments));
@@ -55,7 +51,7 @@ void VulkanFrameBuffer::setAttachments(const vec<sptr<Texture2d>> &attachments)
     {
         vec<VkImageView> attachmentViews;
         VulkanRenderPassConfig config;
-        for (const auto tex: attachments)
+        for (const auto &tex: attachments)
         {
             const auto vulkanTexture = std::static_pointer_cast<VulkanTexture2d>(tex);
             config.withColorAttachment(vulkanTexture->getImage().getFormat(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL); // TODO Proper layout

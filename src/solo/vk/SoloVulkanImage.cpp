@@ -172,7 +172,8 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
         mipLevels, 1,
         format,
         0,
-        VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
+        VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
+			VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
         VK_IMAGE_VIEW_TYPE_2D,
         VK_IMAGE_ASPECT_COLOR_BIT);
     
@@ -359,7 +360,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
         width, height, mipLevels, layers,
         format,
         VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT,
-        VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
+        VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
         VK_IMAGE_VIEW_TYPE_CUBE,
         VK_IMAGE_ASPECT_COLOR_BIT
     );

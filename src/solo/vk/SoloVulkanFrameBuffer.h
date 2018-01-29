@@ -19,7 +19,7 @@ namespace solo
     {
     public:
         VulkanFrameBuffer(Device *device);
-        ~VulkanFrameBuffer();
+		~VulkanFrameBuffer() = default;
 
         void setAttachments(const vec<sptr<Texture2d>> &attachments) override final;
 
