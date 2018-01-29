@@ -35,7 +35,7 @@ static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMa
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
     u64 obj, size_t location, s32 code, const s8 *layerPrefix, const s8 *msg, void *userData)
 {
-	Logger::global().logDebug(SL_FMT("Vulkan debug message: ", msg));
+	SL_DEBUG_LOG(SL_FMT("Vulkan debug message: ", msg));
     return VK_FALSE;
 }
 
@@ -227,6 +227,7 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
     }
 
     auto &passContext = renderPassContexts.at(currentRenderPass);
+	passContext.frameOfLastUse = frame;
     currentCmdBuffer = passContext.cmdBuffer;
 
     if (!passContext.started)
@@ -385,6 +386,9 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
         context.pipeline = VulkanPipeline{device, renderPass, pipelineConfig};
         context.lastMaterialFlagsHash = materialFlagsHash;
         context.lastMeshLayoutHash = meshLayoutHash;
+
+		SL_DEBUG_LOG(SL_FMT("Initialized new pipeline (transform: ",
+			transform, ", camera: ", camera, ", material: ", material, ")"));
     }
 
     return context;
@@ -434,7 +438,8 @@ void VulkanRenderer::prepareAndBindMesh(
     const auto &materialSamplers = vkMaterial->getSamplers();
     
     auto &context = ensurePipelineContext(transform, camera, vkMaterial, vkMesh, renderPass);
-    
+	context.frameOfLastUse = frame;
+
     // Run the desc set updater
     // TODO Not so often - only when something really changes
     
@@ -487,6 +492,7 @@ void VulkanRenderer::prepareAndBindMesh(
 
 void VulkanRenderer::beginFrame()
 {
+	frame++;
     currentCamera = nullptr;
     currentRenderPass = nullptr;
     currentCmdBuffer = nullptr;
@@ -516,6 +522,65 @@ void VulkanRenderer::endFrame()
 
     swapchain.present(queue, 1, &prevSemaphore);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
+
+	// Naive cleanup
+	if (frame % 100 == 0)
+	{
+		cleanupUnusedPipelineContexts();
+		cleanupUnusedRenderPassContexts();
+	}
+}
+
+void VulkanRenderer::cleanupUnusedRenderPassContexts()
+{
+	bool removed;
+	do
+	{
+		removed = false;
+		VulkanRenderPass* key = nullptr;
+		for (const auto &p: renderPassContexts)
+		{
+			const auto frameOfLastUse = p.second.frameOfLastUse;
+			if ((frame > frameOfLastUse && frame - frameOfLastUse >= 100) ||
+				(frame < frameOfLastUse && frameOfLastUse - frame >= 100))
+			{
+				key = p.first;
+				removed = true;
+			}
+		}
+		if (removed)
+		{
+			renderPassContexts.erase(key);
+			SL_DEBUG_LOG(SL_FMT("Removed render pass context ", key));
+		}
+	}
+	while (removed);
+}
+
+void VulkanRenderer::cleanupUnusedPipelineContexts()
+{
+	bool removed;
+	do
+	{
+		removed = false;
+		size_t key = 0;
+		for (const auto &p: pipelineContexts)
+		{
+			const auto frameOfLastUse = p.second.frameOfLastUse;
+			if ((frame > frameOfLastUse && frame - frameOfLastUse >= 100) ||
+				(frame < frameOfLastUse && frameOfLastUse - frame >= 100))
+			{
+				key = p.first;
+				removed = true;
+			}
+		}
+		if (removed)
+		{
+			pipelineContexts.erase(key);
+			SL_DEBUG_LOG(SL_FMT("Removed pipeline context ", key));
+		}
+	}
+	while (removed);
 }
 
 #endif

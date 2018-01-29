@@ -78,6 +78,7 @@ namespace solo
             VkDescriptorSet descSet = VK_NULL_HANDLE;
             size_t lastMaterialFlagsHash = 0;
             size_t lastMeshLayoutHash = 0;
+			u32 frameOfLastUse = 0;
         };
 
         struct RenderPassContext
@@ -86,7 +87,10 @@ namespace solo
             VulkanResource<VkSemaphore> completeSemaphore;
             VulkanResource<VkCommandBuffer> cmdBuffer;
             VulkanRenderPass *renderPass = nullptr;
+			u32 frameOfLastUse = 0;
         };
+
+		u32 frame = 0;
 
         // TODO clear entries when no longer used
         umap<VulkanRenderPass*, RenderPassContext> renderPassContexts;
@@ -107,6 +111,8 @@ namespace solo
             Transform *transform, Mesh *mesh, Camera *camera);
         auto ensurePipelineContext(Transform *transform, Camera *camera, VulkanMaterial *material,
             VulkanMesh *mesh, VkRenderPass renderPass) -> PipelineContext&;
+		void cleanupUnusedRenderPassContexts();
+		void cleanupUnusedPipelineContexts();
     };
 }
 

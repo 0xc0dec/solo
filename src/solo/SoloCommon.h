@@ -42,8 +42,10 @@
 
 #ifdef SL_DEBUG
 #   define SL_DEBUG_BLOCK(code) SL_MACRO_BLOCK(code)
+#	define SL_DEBUG_LOG(...) SL_MACRO_BLOCK(Logger::global().logDebug(__VA_ARGS__))
 #else
 #   define SL_DEBUG_BLOCK(code) SL_EMPTY_MACRO_BLOCK()
+#	define SL_DEBUG_LOG(...) SL_EMPTY_MACRO_BLOCK()
 #endif
 
 namespace solo
