@@ -523,7 +523,7 @@ void VulkanRenderer::endFrame()
     swapchain.present(queue, 1, &prevSemaphore);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 
-	// Naive cleanup
+	// Naive cleanup TODO better
 	if (frame % 100 == 0)
 	{
 		cleanupUnusedPipelineContexts();

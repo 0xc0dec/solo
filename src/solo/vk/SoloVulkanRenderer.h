@@ -92,10 +92,7 @@ namespace solo
 
 		u32 frame = 0;
 
-        // TODO clear entries when no longer used
         umap<VulkanRenderPass*, RenderPassContext> renderPassContexts;
-
-        // TODO clear entries when no longer used
         umap<size_t, PipelineContext> pipelineContexts;
 
         Camera *currentCamera = nullptr;
