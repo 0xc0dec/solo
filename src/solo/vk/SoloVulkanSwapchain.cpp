@@ -118,6 +118,15 @@ VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *devi
         VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT);
 
     auto images = getSwapchainImages(this->device, swapchain);
+
+	const auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
+    vk::beginCommandBuffer(cmdBuf, true);
+
+	VkImageSubresourceRange subresourceRange{};
+	subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+	subresourceRange.baseMipLevel = 0;
+	subresourceRange.levelCount = 1;
+	subresourceRange.layerCount = 1;
     
     steps.resize(images.size());
     for (u32 i = 0; i < images.size(); i++)
@@ -127,7 +136,19 @@ VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *devi
         steps[i].framebuffer = vk::createFrameBuffer(this->device, {view, depthStencil.getView()}, renderPass, width, height);
         steps[i].image = images[i];
         steps[i].imageView = std::move(view);
+
+		vk::setImageLayout(
+			cmdBuf,
+			images[i],
+			VK_IMAGE_LAYOUT_UNDEFINED,
+			VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
+			subresourceRange);
     }
+
+	// TODO Extract similar places to a func
+	vkEndCommandBuffer(cmdBuf);
+    vk::queueSubmit(renderer->getQueue(), 0, nullptr, 0, nullptr, 1, &cmdBuf);
+    SL_VK_CHECK_RESULT(vkQueueWaitIdle(renderer->getQueue()));
 
     presentCompleteSem = vk::createSemaphore(this->device);
 }

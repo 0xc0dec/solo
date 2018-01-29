@@ -49,84 +49,6 @@ static auto createImage(VkDevice device, VkFormat format, u32 width, u32 height,
     return image;
 }
 
-static void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageLayout oldImageLayout, VkImageLayout newImageLayout,
-    VkImageSubresourceRange subresourceRange,
-    VkPipelineStageFlags srcStageMask = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-    VkPipelineStageFlags dstStageMask = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT)
-{
-    VkImageMemoryBarrier imageMemoryBarrier{};
-	imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-	imageMemoryBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-	imageMemoryBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-    imageMemoryBarrier.oldLayout = oldImageLayout;
-    imageMemoryBarrier.newLayout = newImageLayout;
-    imageMemoryBarrier.image = image;
-    imageMemoryBarrier.subresourceRange = subresourceRange;
-
-    switch (oldImageLayout)
-    {
-        case VK_IMAGE_LAYOUT_UNDEFINED:
-            imageMemoryBarrier.srcAccessMask = 0;
-            break;
-
-        case VK_IMAGE_LAYOUT_PREINITIALIZED:
-            imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT;
-            break;
-
-        case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
-            imageMemoryBarrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-            break;
-
-        case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
-            imageMemoryBarrier.srcAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
-            break;
-
-        case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
-            imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-            break;
-
-        case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
-            imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-            break;
-
-        case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
-            imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
-            break;
-        default:
-            break;
-    }
-
-    switch (newImageLayout)
-    {
-        case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
-            imageMemoryBarrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-            break;
-
-        case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
-            imageMemoryBarrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-            break;
-
-        case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
-            imageMemoryBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-            break;
-
-        case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
-            imageMemoryBarrier.dstAccessMask = imageMemoryBarrier.dstAccessMask | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
-            break;
-
-        case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
-            if (imageMemoryBarrier.srcAccessMask == 0)
-                imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
-            imageMemoryBarrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
-            break;
-
-        default:
-            break;
-    }
-
-    vkCmdPipelineBarrier(cmdbuffer, srcStageMask, dstStageMask, 0, 0, nullptr, 0, nullptr, 1, &imageMemoryBarrier);
-}
-
 static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryProperties memProps, VkImage image) -> VulkanResource<VkDeviceMemory>
 {
     VkMemoryRequirements memReqs{};
@@ -201,7 +123,7 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
 	    subresourceRange.levelCount = 1;
 	    subresourceRange.layerCount = 1;
 
-        setImageLayout(
+        vk::setImageLayout(
             initCmdBuf,
             image.image,
             VK_IMAGE_LAYOUT_UNDEFINED,
@@ -220,7 +142,7 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
 
         if (withMipmaps)
         {
-            setImageLayout(
+            vk::setImageLayout(
                 initCmdBuf,
                 image.image,
                 VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
@@ -263,7 +185,7 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
 			    mipSubRange.levelCount = 1;
 			    mipSubRange.layerCount = 1;
 
-                setImageLayout(
+                vk::setImageLayout(
                     blitCmdBuf,
                     image.image,
                     VK_IMAGE_LAYOUT_UNDEFINED,
@@ -282,7 +204,7 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
 				    &imageBlit,
 				    VK_FILTER_LINEAR);
 
-                setImageLayout(
+                vk::setImageLayout(
                     blitCmdBuf,
                     image.image,
                     VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
@@ -293,7 +215,7 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
             }
 
             subresourceRange.levelCount = mipLevels;
-            setImageLayout(
+            vk::setImageLayout(
                 blitCmdBuf,
                 image.image,
                 VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
@@ -308,7 +230,7 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
         }
         else
         {
-            setImageLayout(
+            vk::setImageLayout(
                 initCmdBuf,
                 image.image,
                 VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
@@ -330,7 +252,7 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
 	    subresourceRange.levelCount = 1;
 	    subresourceRange.layerCount = 1;
 
-        setImageLayout(
+        vk::setImageLayout(
             initCmdBuf,
             image.image,
             VK_IMAGE_LAYOUT_UNDEFINED,
@@ -378,7 +300,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
 		auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
 		vk::beginCommandBuffer(cmdBuf, true);
 
-        setImageLayout(
+        vk::setImageLayout(
             cmdBuf,
             image.image,
             VK_IMAGE_LAYOUT_UNDEFINED,
@@ -426,7 +348,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
             copyRegions.size(),
             copyRegions.data());
 
-        setImageLayout(
+        vk::setImageLayout(
             cmdBuf,
             image.image,
             VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
@@ -445,7 +367,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
 		auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
 		vk::beginCommandBuffer(cmdBuf, true);
 
-        setImageLayout(
+        vk::setImageLayout(
             cmdBuf,
             image.image,
             VK_IMAGE_LAYOUT_UNDEFINED,
