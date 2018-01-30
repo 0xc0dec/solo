@@ -1,6 +1,5 @@
 # TODO
 
-* lua factory methods for creating Radian/Degree from other angles
 * findScriptComponent to operate on component names
 * Fix VK debug errors (esp. check post-processor errors)
 * Bad error message in Vulkan when variable not declared in effect and is referenced
