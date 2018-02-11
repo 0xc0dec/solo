@@ -11,9 +11,9 @@ end
 
 return function(scene)
     sl.CubeTexture.loadFromFaceFilesAsync(sl.device,
-        getImagePath("Front.png"), getImagePath("Back.png"),
-        getImagePath("Left.png"), getImagePath("Right.png"),
-        getImagePath("Top.png"), getImagePath("Bottom.png")
+        getImagePath("+X.png"), getImagePath("-X.png"),
+        getImagePath("+Y.png"), getImagePath("-Y.png"),
+        getImagePath("+Z.png"), getImagePath("-Z.png")
     ):done(function(tex)
         tex:setWrap(sl.TextureWrap.ClampToEdge)
 

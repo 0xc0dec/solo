@@ -101,27 +101,6 @@ static auto toMagFilter(TextureFilter filter) -> GLenum
     }
 }
 
-static auto toCubeMapFace(CubeTextureFace face) -> GLenum
-{
-    switch (face)
-    {
-        case CubeTextureFace::Front:
-            return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
-        case CubeTextureFace::Back:
-            return GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
-        case CubeTextureFace::Right:
-            return GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
-        case CubeTextureFace::Left:
-            return GL_TEXTURE_CUBE_MAP_POSITIVE_X;
-        case CubeTextureFace::Top:
-            return GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
-        case CubeTextureFace::Bottom:
-            return GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
-        default:
-            return panic<GLenum>("Unknown cube texture face");
-    }
-}
-
 OpenGLTexture::OpenGLTexture()
 {
     glGenTextures(1, &handle);
@@ -201,8 +180,7 @@ void OpenGLCubeTexture::setData(CubeTextureData *data, bool generateMipmaps)
 
     for (s32 i = 0; i < 6; ++i)
     {
-        const auto face = static_cast<CubeTextureFace>(static_cast<u32>(CubeTextureFace::Front) + i);
-        const auto glFace = toCubeMapFace(face);
+        const auto glFace = static_cast<u32>(GL_TEXTURE_CUBE_MAP_POSITIVE_X) + i;
         const auto internalFormat = toInternalFormat(data->getFormat());
         const auto fmt = toFormat(data->getFormat());
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);

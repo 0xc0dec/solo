@@ -6,6 +6,5 @@
 * Refactor mesh attributes lookup, introduce attribute semantics or make sure predefined attributes always called the same
 * Better demos, separate scenes for separate effects, etc.
 * Demos refactoring, esp. texture/effect/material loading
-* Use axis names in CubeTextureData for fetching layer data
 * More error checks
 * Fix todos in code

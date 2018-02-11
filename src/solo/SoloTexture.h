@@ -38,16 +38,6 @@ namespace solo
         Linear
     };
 
-    enum class CubeTextureFace
-    {
-        Front = 0,
-        Back,
-        Left,
-        Right,
-        Top,
-        Bottom
-    };
-
     enum class TextureFormat
     {
         Red,
@@ -110,19 +100,13 @@ namespace solo
     {
     public:
         static auto loadFromFaceFiles(Device *device,
-            const str &frontPath,
-            const str &backPath,
-            const str &leftPath,
-            const str &rightPath,
-            const str &topPath,
-            const str &bottomPath) -> sptr<CubeTexture>;
+            const str& positiveXPath, const str& negativeXPath,
+			const str& positiveYPath, const str& negativeYPath,
+			const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTexture>;
         static auto loadFromFaceFilesAsync(Device *device,
-            const str &frontPath,
-            const str &backPath,
-            const str &leftPath,
-            const str &rightPath,
-            const str &topPath,
-            const str &bottomPath) -> sptr<AsyncHandle<CubeTexture>>;
+            const str& positiveXPath, const str& negativeXPath,
+			const str& positiveYPath, const str& negativeYPath,
+			const str& positiveZPath, const str& negativeZPath) -> sptr<AsyncHandle<CubeTexture>>;
         static auto createFromData(Device *device, CubeTextureData *data) -> sptr<CubeTexture>;
 
         auto getDepthWrap() const -> TextureWrap { return depthWrap; }

@@ -19,7 +19,7 @@ namespace solo
         static bool canLoadFromFile(const str &path);
         static auto loadFromFile(Device *device, const str &path) -> sptr<STBTexture2dData>;
 
-        STBTexture2dData() {}
+        STBTexture2dData() = default;
         ~STBTexture2dData();
 
         auto getSize() const -> u32 override final { return width * height * channels; }
@@ -40,20 +40,14 @@ namespace solo
     {
     public:
         static bool canLoadFromFaceFiles(
-            const str &frontPath,
-            const str &backPath,
-            const str &leftPath,
-            const str &rightPath,
-            const str &topPath,
-            const str &bottomPath);
+            const str& positiveXPath, const str& negativeXPath,
+			const str& positiveYPath, const str& negativeYPath,
+			const str& positiveZPath, const str& negativeZPath);
         static auto loadFromFaceFiles(
             Device *device,
-            const str &frontPath,
-            const str &backPath,
-            const str &leftPath,
-            const str &rightPath,
-            const str &topPath,
-            const str &bottomPath) -> sptr<STBCubeTextureData>;
+            const str& positiveXPath, const str& negativeXPath,
+			const str& positiveYPath, const str& negativeYPath,
+			const str& positiveZPath, const str& negativeZPath) -> sptr<STBCubeTextureData>;
 
         auto getSize() const -> u32 override final;
         auto getSize(u32 face) const -> u32 override final;

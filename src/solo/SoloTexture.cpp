@@ -104,35 +104,34 @@ Texture2d::Texture2d(Texture2dData *data):
 
 auto CubeTexture::loadFromFaceFiles(
     Device *device,
-    const str &frontPath,
-    const str &backPath,
-    const str &leftPath,
-    const str &rightPath,
-    const str &topPath,
-    const str &bottomPath) -> sptr<CubeTexture>
+    const str& positiveXPath, const str& negativeXPath,
+	const str& positiveYPath, const str& negativeYPath,
+	const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTexture>
 {
-    auto data = CubeTextureData::loadFromFaceFiles(device, frontPath, backPath, leftPath, rightPath, topPath, bottomPath);
+    auto data = CubeTextureData::loadFromFaceFiles(
+		device,
+		positiveXPath, negativeXPath,
+		positiveYPath, negativeYPath,
+		positiveZPath, negativeZPath);
     return createFromData(device, data.get());
 }
 
 auto CubeTexture::loadFromFaceFilesAsync(
     Device *device,
-    const str &frontPath,
-    const str &backPath,
-    const str &leftPath,
-    const str &rightPath,
-    const str &topPath,
-    const str &bottomPath) -> sptr<AsyncHandle<CubeTexture>>
+    const str& positiveXPath, const str& negativeXPath,
+	const str& positiveYPath, const str& negativeYPath,
+	const str& positiveZPath, const str& negativeZPath) -> sptr<AsyncHandle<CubeTexture>>
 {
     auto handle = std::make_shared<AsyncHandle<CubeTexture>>();
 
     auto producers = JobBase<CubeTextureData>::Producers{[=]()
     {
         // TODO run each face loading in separate jobs
-        return CubeTextureData::loadFromFaceFiles(device,
-            frontPath, backPath,
-            leftPath, rightPath,
-            topPath, bottomPath);
+        return CubeTextureData::loadFromFaceFiles(
+			device,
+			positiveXPath, negativeXPath,
+			positiveYPath, negativeYPath,
+			positiveZPath, negativeZPath);
     }};
     auto consumer = [handle, device](const vec<sptr<CubeTextureData>> &results)
     {

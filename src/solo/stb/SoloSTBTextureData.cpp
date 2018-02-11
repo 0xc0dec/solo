@@ -57,42 +57,36 @@ auto STBTexture2dData::loadFromFile(Device *device, const str &path) -> sptr<STB
 }
 
 bool STBCubeTextureData::canLoadFromFaceFiles(
-    const str &frontPath,
-    const str &backPath,
-    const str &leftPath,
-    const str &rightPath,
-    const str &topPath,
-    const str &bottomPath)
+	const str& positiveXPath, const str& negativeXPath,
+	const str& positiveYPath, const str& negativeYPath,
+	const str& positiveZPath, const str& negativeZPath)
 {
-    return STBTexture2dData::canLoadFromFile(frontPath) &&
-           STBTexture2dData::canLoadFromFile(backPath) &&
-           STBTexture2dData::canLoadFromFile(leftPath) &&
-           STBTexture2dData::canLoadFromFile(rightPath) &&
-           STBTexture2dData::canLoadFromFile(topPath) &&
-           STBTexture2dData::canLoadFromFile(bottomPath);
+	return STBTexture2dData::canLoadFromFile(positiveXPath) &&
+		STBTexture2dData::canLoadFromFile(negativeXPath) &&
+		STBTexture2dData::canLoadFromFile(positiveYPath) &&
+		STBTexture2dData::canLoadFromFile(negativeYPath) &&
+		STBTexture2dData::canLoadFromFile(positiveZPath) &&
+		STBTexture2dData::canLoadFromFile(negativeZPath);
 }
 
 auto STBCubeTextureData::loadFromFaceFiles(
     Device *device,
-    const str &frontPath,
-    const str &backPath,
-    const str &leftPath,
-    const str &rightPath,
-    const str &topPath,
-    const str &bottomPath) -> sptr<STBCubeTextureData>
+    const str& positiveXPath, const str& negativeXPath,
+	const str& positiveYPath, const str& negativeYPath,
+	const str& positiveZPath, const str& negativeZPath) -> sptr<STBCubeTextureData>
 {
     auto tex = std::make_shared<STBCubeTextureData>();
-    tex->faces.push_back(STBTexture2dData::loadFromFile(device, frontPath));
-    tex->faces.push_back(STBTexture2dData::loadFromFile(device, backPath));
-    tex->faces.push_back(STBTexture2dData::loadFromFile(device, leftPath));
-    tex->faces.push_back(STBTexture2dData::loadFromFile(device, rightPath));
-    tex->faces.push_back(STBTexture2dData::loadFromFile(device, topPath));
-    tex->faces.push_back(STBTexture2dData::loadFromFile(device, bottomPath));
+    tex->faces.push_back(STBTexture2dData::loadFromFile(device, positiveXPath));
+    tex->faces.push_back(STBTexture2dData::loadFromFile(device, negativeXPath));
+    tex->faces.push_back(STBTexture2dData::loadFromFile(device, positiveYPath));
+    tex->faces.push_back(STBTexture2dData::loadFromFile(device, negativeYPath));
+    tex->faces.push_back(STBTexture2dData::loadFromFile(device, positiveZPath));
+    tex->faces.push_back(STBTexture2dData::loadFromFile(device, negativeZPath));
     
     SL_DEBUG_BLOCK(
     {
-        auto width = tex->faces[0]->getWidth();
-        auto height = tex->faces[0]->getHeight();
+        const auto width = tex->faces[0]->getWidth();
+        const auto height = tex->faces[0]->getHeight();
         panicIf(width != height, "Cube texture width must be equal to height");
         for (const auto &face: tex->faces)
             panicIf(face->getWidth() != width || face->getHeight() != height, "All cube texture sizes must match");

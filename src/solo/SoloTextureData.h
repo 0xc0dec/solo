@@ -10,7 +10,6 @@
 namespace solo
 {
     enum class TextureFormat;
-    enum class CubeTextureFace;
     class Device;
 
     class Texture2dData: public NoCopyAndMove
@@ -36,13 +35,10 @@ namespace solo
     public:
         static auto loadFromFaceFiles(
             Device *device,
-            const str &frontPath,
-            const str &backPath,
-            const str &leftPath,
-            const str &rightPath,
-            const str &topPath,
-            const str &bottomPath) -> sptr<CubeTextureData>;
-
+            const str& positiveXPath, const str& negativeXPath,
+			const str& positiveYPath, const str& negativeYPath,
+			const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTextureData>;
+	
         virtual ~CubeTextureData() = default;
 
         virtual auto getSize() const -> u32 = 0;

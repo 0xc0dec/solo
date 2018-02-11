@@ -50,14 +50,11 @@ auto Texture2dData::createFromMemory(u32 width, u32 height, TextureFormat format
 
 auto CubeTextureData::loadFromFaceFiles(
     Device *device,
-    const str &frontPath,
-    const str &backPath,
-    const str &leftPath,
-    const str &rightPath,
-    const str &topPath,
-    const str &bottomPath) -> sptr<CubeTextureData>
+    const str& positiveXPath, const str& negativeXPath,
+	const str& positiveYPath, const str& negativeYPath,
+	const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTextureData>
 {
-    if (STBCubeTextureData::canLoadFromFaceFiles(frontPath, backPath, leftPath, rightPath, topPath, bottomPath))
-        return STBCubeTextureData::loadFromFaceFiles(device, frontPath, backPath, leftPath, rightPath, topPath, bottomPath);
-    return panic<nullptr_t>(SL_FMT("Unsupported cube texture face files ", frontPath, ", ..."));
+    if (STBCubeTextureData::canLoadFromFaceFiles(positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath))
+        return STBCubeTextureData::loadFromFaceFiles(device, positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath);
+    return panic<nullptr_t>(SL_FMT("Unsupported cube texture face files ", positiveXPath, ", ..."));
 }
