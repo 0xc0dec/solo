@@ -311,7 +311,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
 
         auto srcBuffer = VulkanBuffer::createStaging(renderer, data->getSize());
 
-        // Engine provides face in order +X, -X, +Y, -Y, +Z, -Z
+        // Engine provides faces in order +X, -X, +Y, -Y, +Z, -Z
 		// Vulkan's Y axis is inverted, so we invert
         static vec<u32> layerFaceMapping = {0, 1, 3, 2, 4, 5};
         
