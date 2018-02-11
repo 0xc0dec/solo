@@ -7,8 +7,8 @@ local mesh1 = sl.Mesh.create(sl.device)
 local mesh2 = sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Quad)
 
 local layout = sl.VertexBufferLayout()
-layout:addAttribute(1, 0)
-layout:addNamedAttribute(2, "someName")
+layout:addNamedAttribute(2, "firstAttr")
+layout:addNamedAttribute(2, "secondAttr")
 assert(layout:getAttributeCount())
 assert(layout:getSize())
 

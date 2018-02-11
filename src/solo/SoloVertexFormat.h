@@ -23,7 +23,6 @@ namespace solo
     {
     public:
         // TODO "addPrefabAttribute" with "semantics", which simply translates "position" into 0, "normal" into 1, etc.
-        void addAttribute(u32 elementCount, u32 location);
         void addNamedAttribute(u32 elementCount, const str &name);
 
         auto getAttributeCount() const -> u32 { return static_cast<u32>(attrs.size()); }
@@ -35,14 +34,6 @@ namespace solo
         vec<VertexAttribute> attrs;
         u32 size = 0;
     };
-
-    inline void VertexBufferLayout::addAttribute(u32 elementCount, u32 location)
-    {
-        const auto size = static_cast<u32>(sizeof(float) * elementCount);
-        const auto offset = attrs.empty() ? 0 : attrs.crbegin()->offset + attrs.crbegin()->size;
-        attrs.push_back(VertexAttribute{"", elementCount, size, location, offset});
-        this->size += size;
-    }
 
     inline void VertexBufferLayout::addNamedAttribute(u32 elementCount, const str &name)
     {
