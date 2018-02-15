@@ -197,7 +197,7 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     vkGetDeviceQueue(device, queueIndex, 0, &queue);
 
     commandPool = createCommandPool(device, queueIndex);
-    swapchain = VulkanSwapchain(this, vulkanDevice, canvasSize.x, canvasSize.y, engineDevice->isVsync());
+    swapchain = VulkanSwapchain(this, vulkanDevice, canvasSize.x(), canvasSize.y(), engineDevice->isVsync());
 }
 
 void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
@@ -237,14 +237,14 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
 
         vk::beginCommandBuffer(currentCmdBuffer, false);
 
-        currentRenderPass->begin(currentCmdBuffer, currentFrameBuffer, dimensions.x, dimensions.y);
+        currentRenderPass->begin(currentCmdBuffer, currentFrameBuffer, dimensions.x(), dimensions.y());
 
         if (currentCamera->hasColorClearing())
         {
             VkClearRect clearRect{};
             clearRect.layerCount = 1;
             clearRect.rect.offset = {0, 0};
-            clearRect.rect.extent = {static_cast<u32>(dimensions.x), static_cast<u32>(dimensions.y)};
+            clearRect.rect.extent = {static_cast<u32>(dimensions.x()), static_cast<u32>(dimensions.y())};
             auto clearColor = currentCamera->getClearColor();
             for (u32 i = 0; i < clearAttachments.size(); ++i)
             {

@@ -52,8 +52,8 @@ namespace std
         {
             size_t seed = 0;
             const hash<float> hasher;
-            combineHash(seed, hasher(v.x));
-            combineHash(seed, hasher(v.y));
+            combineHash(seed, hasher(v.x()));
+            combineHash(seed, hasher(v.y()));
 		    return seed;
         }
 	};
@@ -137,8 +137,8 @@ static auto loadMeshData(Device *device, const str &path) -> sptr<Data>
                 vertexData.push_back(v.normal.x());
                 vertexData.push_back(v.normal.y());
                 vertexData.push_back(v.normal.z());
-                vertexData.push_back(v.texCoord.x);
-                vertexData.push_back(v.texCoord.y);
+                vertexData.push_back(v.texCoord.x());
+                vertexData.push_back(v.texCoord.y());
             }
 
             indexData.push_back(uniqueVertices[v]);

@@ -41,7 +41,7 @@ auto STBTrueTypeFont::getGlyphInfo(u32 character, float offsetX, float offsetY) 
     stbtt_aligned_quad quad;
     const auto atlasSize = atlas->getDimensions();
 
-    stbtt_GetPackedQuad(charInfo.get(), static_cast<u32>(atlasSize.x), static_cast<u32>(atlasSize.y),
+    stbtt_GetPackedQuad(charInfo.get(), static_cast<u32>(atlasSize.x()), static_cast<u32>(atlasSize.y()),
     character - firstChar, &offsetX, &offsetY, &quad, 1);
     auto xmin = quad.x0;
     auto xmax = quad.x1;

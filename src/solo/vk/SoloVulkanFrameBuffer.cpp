@@ -21,12 +21,12 @@ static void validateNewAttachments(const vec<sptr<Texture2d>> &attachments)
         auto size = attachments.at(i)->getDimensions();
         if (width < 0)
         {
-            width = size.x;
-            height = size.y;
+            width = size.x();
+            height = size.y();
         }
         else
             // TODO Make sure this is a valid assumption. For now I'm just copying this from opengl
-            panicIf(size.x != width || size.y != height, "Attachment sizes do not match");
+            panicIf(size.x() != width || size.y() != height, "Attachment sizes do not match");
     }
 }
 
@@ -62,7 +62,7 @@ void VulkanFrameBuffer::setAttachments(const vec<sptr<Texture2d>> &attachments)
 
         depthStencil = VulkanImage(
             renderer,
-            dimensions.x, dimensions.y,
+            dimensions.x(), dimensions.y(),
             1, 1,
             renderer->getDepthFormat(),
             0,
@@ -74,7 +74,7 @@ void VulkanFrameBuffer::setAttachments(const vec<sptr<Texture2d>> &attachments)
         attachmentViews.push_back(depthStencil.getView());
 
         renderPass = VulkanRenderPass(renderer->getDevice(), config);
-        frameBuffer = vk::createFrameBuffer(renderer->getDevice(), attachmentViews, renderPass, dimensions.x, dimensions.y);
+        frameBuffer = vk::createFrameBuffer(renderer->getDevice(), attachmentViews, renderPass, dimensions.x(), dimensions.y());
 
         colorAttachmentCount = attachments.size();
     }

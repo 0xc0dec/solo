@@ -34,11 +34,11 @@ static void validateNewAttachments(const vec<sptr<Texture2d>> &attachments)
 	    const auto size = attachments.at(i)->getDimensions();
         if (width < 0)
         {
-            width = size.x;
-            height = size.y;
+            width = size.x();
+            height = size.y();
         }
         else
-            panicIf(size.x != width || size.y != height, "Attachment sizes do not match");
+            panicIf(size.x() != width || size.y() != height, "Attachment sizes do not match");
     }
 }
 
@@ -77,7 +77,7 @@ void OpenGLFrameBuffer::setAttachments(const vec<sptr<Texture2d>> &attachments)
         panicIf(!depthBufferHandle, "Failed to create depth buffer handle");
 
         glBindRenderbuffer(GL_RENDERBUFFER, depthBufferHandle);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, dimensions.x, dimensions.y);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, dimensions.x(), dimensions.y());
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferHandle);
 
         panicIf(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE, "Render target has invalid state");

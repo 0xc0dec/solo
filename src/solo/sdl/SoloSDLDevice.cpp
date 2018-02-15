@@ -84,10 +84,10 @@ void SDLDevice::prepareMouseState()
 {
     int x, y;
     SDL_GetMouseState(&x, &y);
-    mousePos.x = x;
-    mousePos.y = y;
+    mousePos.x() = x;
+    mousePos.y() = y;
     
-    mouseDelta.x = mouseDelta.y = 0;
+    mouseDelta.x() = mouseDelta.y() = 0;
     releasedMouseButtons.clear();
     if (hasMouseFocus)
     {
@@ -149,10 +149,10 @@ void SDLDevice::processMouseEvent(const SDL_Event &evt)
     {
         case SDL_MOUSEMOTION:
         {
-            mouseDelta.x += evt.motion.xrel;
-            mouseDelta.y += evt.motion.yrel;
-            mousePos.x = evt.motion.x;
-            mousePos.y = evt.motion.y;
+            mouseDelta.x() += evt.motion.xrel;
+            mouseDelta.y() += evt.motion.yrel;
+            mousePos.x() = evt.motion.x;
+            mousePos.y() = evt.motion.y;
             break;
         }
         case SDL_MOUSEBUTTONDOWN:

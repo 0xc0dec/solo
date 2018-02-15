@@ -33,13 +33,13 @@ void Spectator::update()
 
     if (device->isMouseButtonDown(MouseButton::Right, false))
     {
-        if (mouseMotion.x != 0)
-            transform->rotateByAxisAngle({0, 1, 0}, Radians(mouseSensitivity * -mouseMotion.x), TransformSpace::World);
+        if (mouseMotion.x() != 0)
+            transform->rotateByAxisAngle({0, 1, 0}, Radians(mouseSensitivity * -mouseMotion.x()), TransformSpace::World);
 
-        if (mouseMotion.y != 0)
+        if (mouseMotion.y() != 0)
         {
             const auto angleToUp = transform->getLocalForward().angle({0, 1, 0}).toRawRadians();
-            auto delta = mouseSensitivity * -mouseMotion.y;
+            auto delta = mouseSensitivity * -mouseMotion.y();
             if (delta > 0)
             {
                 if (angleToUp - delta <= 0.1f)

@@ -19,14 +19,16 @@ static void registerVector2(CppBindModule<LuaBinding> &module)
 {
     auto binding = BEGIN_CLASS(module, Vector2);
     REG_CTOR(binding, float, float);
-    REG_FIELD(binding, Vector2, x);
-    REG_FIELD(binding, Vector2, y);
+    binding.addProperty("x",
+		static_cast<float(Vector2::*)()const>(&Vector2::x),
+		[](Vector2 *v, float val) { v->x() = val; });
+    binding.addProperty("y",
+		static_cast<float(Vector2::*)()const>(&Vector2::y),
+		[](Vector2 *v, float val) { v->y() = val; });
     REG_METHOD(binding, Vector2, isUnit);
     REG_METHOD(binding, Vector2, isZero);
     REG_METHOD(binding, Vector2, distance);
-    REG_METHOD(binding, Vector2, distanceSquared);
     REG_METHOD(binding, Vector2, length);
-    REG_METHOD(binding, Vector2, lengthSquared);
     REG_METHOD(binding, Vector2, normalized);
     REG_METHOD(binding, Vector2, normalize);
     REG_METHOD(binding, Vector2, angle);

@@ -134,13 +134,13 @@ void OpenGLTexture2d::setData(const void *data, bool generateMipmaps)
 {
     const auto internalFormat = toInternalFormat(this->format);
     const auto format = toFormat(this->format);
-    const auto mipLevels = generateMipmaps ? floor(log2((std::max)(dimensions.x, dimensions.y))) + 1 : 0; // TODO remove this copy-paste (from VK as well)
+    const auto mipLevels = generateMipmaps ? floor(log2((std::max)(dimensions.x(), dimensions.y()))) + 1 : 0; // TODO remove this copy-paste (from VK as well)
 
     glBindTexture(GL_TEXTURE_2D, handle);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipLevels);
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x, dimensions.y, 0, format, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x(), dimensions.y(), 0, format, GL_UNSIGNED_BYTE, data);
 
     if (generateMipmaps)
     {

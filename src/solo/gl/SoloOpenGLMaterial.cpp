@@ -43,7 +43,7 @@ void OpenGLMaterial::setVector2Parameter(const str &name, const Vector2 &value)
     {
         return [location, value](const Camera *, const Transform *)
         {
-            glUniform2f(location, value.x, value.y);
+            glUniform2f(location, value.x(), value.y());
         };
     });
 }

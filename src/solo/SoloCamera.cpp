@@ -33,14 +33,14 @@ Camera::Camera(const Node &node):
     fov(Degrees(60))
 {
     auto canvasSize = device->getCanvasSize();
-    viewport = {0, 0, canvasSize.x, canvasSize.y};
+    viewport = {0, 0, canvasSize.x(), canvasSize.y()};
 }
 
 void Camera::init()
 {
     transform = node.findComponent<Transform>();
     const auto canvasSize = device->getCanvasSize();
-    aspectRatio = canvasSize.x / canvasSize.y;
+    aspectRatio = canvasSize.x() / canvasSize.y();
     dirtyFlags |= allProjectionDirtyBits;
 }
 
@@ -110,7 +110,7 @@ auto Camera::getProjectionMatrix() const -> const Matrix
     if (dirtyFlags & projectionDirtyBit)
     {
         if (ortho)
-            projectionMatrix = Matrix::createOrthographic(orthoSize.x, orthoSize.y, zNear, zFar);
+            projectionMatrix = Matrix::createOrthographic(orthoSize.x(), orthoSize.y(), zNear, zFar);
         else
             projectionMatrix = Matrix::createPerspective(fov, aspectRatio, zNear, zFar);
         dirtyFlags &= ~projectionDirtyBit;
@@ -151,8 +151,8 @@ auto Camera::windowPointToWorldRay(const Vector2 &pt) const -> Ray
     const auto halfHeightInWorldUnits = zNear * std::tan(fov.toRawRadians() / 2);
     const auto halfWidthInWorldUnits = halfHeightInWorldUnits * aspectRatio;
     const auto canvasSize = device->getDpiIndependentCanvasSize();
-    const auto right = transform->getWorldRight() * (halfWidthInWorldUnits * (2 * pt.x / canvasSize.x - 1));
-    const auto down = transform->getWorldDown() * (halfHeightInWorldUnits * (2 * pt.y / canvasSize.y - 1));
+    const auto right = transform->getWorldRight() * (halfWidthInWorldUnits * (2 * pt.x() / canvasSize.x() - 1));
+    const auto down = transform->getWorldDown() * (halfHeightInWorldUnits * (2 * pt.y() / canvasSize.y() - 1));
     const auto pos = transform->getWorldPosition();
     const auto canvasCenter = pos + transform->getWorldForward() * zNear;
     const auto origin = canvasCenter + right + down;
