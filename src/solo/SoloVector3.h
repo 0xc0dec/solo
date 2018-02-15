@@ -15,6 +15,7 @@ namespace solo
     {
     public:
         Vector3() = default;
+		Vector3(const glm::vec3 &data);
         Vector3(float all);
         Vector3(float x, float y, float z);
 
@@ -60,7 +61,5 @@ namespace solo
 
     private:
 		glm::vec3 data;
-
-		Vector3(const glm::vec3 &data);
     };
 }

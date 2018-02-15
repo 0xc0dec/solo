@@ -83,6 +83,7 @@ bool Matrix::isIdentity() const
 
 auto Matrix::createLookAt(const Vector3 &eye, const Vector3 &target, const Vector3 &up) -> Matrix
 {
+	// TODO via glm
     const auto zaxis = (eye - target).normalized();
     const auto xaxis = up.normalized().cross(zaxis).normalized();
     const auto yaxis = zaxis.cross(xaxis).normalized();
@@ -123,104 +124,12 @@ auto Matrix::createScale(const Vector3 &scale) -> Matrix
 
 auto Matrix::createRotationFromQuaternion(const Quaternion &q) -> Matrix
 {
-    const auto x2 = q.x() + q.x();
-    const auto y2 = q.y() + q.y();
-    const auto z2 = q.z() + q.z();
-
-    const auto xx2 = q.x() * x2;
-    const auto yy2 = q.y() * y2;
-    const auto zz2 = q.z() * z2;
-    const auto xy2 = q.x() * y2;
-    const auto xz2 = q.x() * z2;
-    const auto yz2 = q.y() * z2;
-    const auto wx2 = q.w() * x2;
-    const auto wy2 = q.w() * y2;
-    const auto wz2 = q.w() * z2;
-
-    Matrix result;
-
-    result.data[0][0] = 1.0f - yy2 - zz2;
-    result.data[0][1] = xy2 + wz2;
-    result.data[0][2] = xz2 - wy2;
-    result.data[0][3] = 0.0f;
-
-    result.data[1][0] = xy2 - wz2;
-    result.data[1][1] = 1.0f - xx2 - zz2;
-    result.data[1][2] = yz2 + wx2;
-    result.data[1][3] = 0.0f;
-
-    result.data[2][0] = xz2 + wy2;
-    result.data[2][1] = yz2 - wx2;
-    result.data[2][2] = 1.0f - xx2 - yy2;
-    result.data[2][3] = 0.0f;
-
-    result.data[3][0] = 0.0f;
-    result.data[3][1] = 0.0f;
-    result.data[3][2] = 0.0f;
-    result.data[3][3] = 1.0f;
-
-    return result;
+	return glm::mat4_cast(static_cast<glm::quat>(q));
 }
 
 auto Matrix::createRotationFromAxisAngle(const Vector3 &axis, const Radians &angle) -> Matrix
 {
-    auto x = axis.x();
-    auto y = axis.y();
-    auto z = axis.z();
-
-    // Make sure the input axis is normalized
-    auto n = x * x + y * y + z * z;
-    if (n != 1.0f)
-    {
-        // Not normalized
-        n = std::sqrt(n);
-        // Prevent division too close to zero.
-        if (!math::isZero(n))
-        {
-            n = 1.0f / n;
-            x *= n;
-            y *= n;
-            z *= n;
-        }
-    }
-
-    const auto c = std::cos(angle.toRawRadians());
-    const auto s = std::sin(angle.toRawRadians());
-
-    const auto t = 1.0f - c;
-    const auto tx = t * x;
-    const auto ty = t * y;
-    const auto tz = t * z;
-    const auto txy = tx * y;
-    const auto txz = tx * z;
-    const auto tyz = ty * z;
-    const auto sx = s * x;
-    const auto sy = s * y;
-    const auto sz = s * z;
-
-    Matrix result;
-
-    result.data[0][0] = c + tx * x;
-    result.data[0][1] = txy + sz;
-    result.data[0][2] = txz - sy;
-    result.data[0][3] = 0.0f;
-
-    result.data[1][0] = txy - sz;
-    result.data[1][1] = c + ty * y;
-    result.data[1][2] = tyz + sx;
-    result.data[1][3] = 0.0f;
-
-    result.data[2][0] = txz + sy;
-    result.data[2][1] = tyz - sx;
-    result.data[2][2] = c + tz * z;
-    result.data[2][3] = 0.0f;
-
-    result.data[3][0] = 0.0f;
-    result.data[3][1] = 0.0f;
-    result.data[3][2] = 0.0f;
-    result.data[3][3] = 1.0f;
-
-    return result;
+	return glm::mat4_cast(static_cast<glm::quat>(Quaternion::createFromAxisAngle(axis, angle)));
 }
 
 auto Matrix::createTranslation(const Vector3 &translation) -> Matrix
@@ -260,20 +169,12 @@ auto Matrix::getTranslation() const -> Vector3
 
 auto Matrix::transformPoint(const Vector3 &point) const -> Vector3
 {
-    return {
-        point.x() * data[0][0] + point.y() * data[1][0] + point.z() * data[2][0] + data[3][0],
-		point.x() * data[0][1] + point.y() * data[1][1] + point.z() * data[2][1] + data[3][1],
-		point.x() * data[0][2] + point.y() * data[1][2] + point.z() * data[2][2] + data[3][2]
-    };
+	return static_cast<glm::vec3>(data * glm::vec4(static_cast<glm::vec3>(point), 1.0f));
 }
 
 auto Matrix::transformDirection(const Vector3 &dir) const -> Vector3
 {
-    return {
-        dir.x() * data[0][0] + dir.y() * data[1][0] + dir.z() * data[2][0],
-		dir.x() * data[0][1] + dir.y() * data[1][1] + dir.z() * data[2][1],
-		dir.x() * data[0][2] + dir.y() * data[1][2] + dir.z() * data[2][2]
-    };
+	return static_cast<glm::vec3>(data * glm::vec4(static_cast<glm::vec3>(dir), 0.0f));
 }
 
 auto Matrix::transformRay(const Ray &ray) const -> Ray
@@ -442,12 +343,12 @@ void Matrix::rotateByAxisAngle(const Vector3 &axis, const Radians &angle)
 
 void Matrix::scaleByVector(const Vector3 &s)
 {
-    *this *= createScale(s);
+	data = glm::scale(data, static_cast<glm::vec3>(s));
 }
 
 void Matrix::translate(const Vector3 &t)
 {
-    *this *= createTranslation(t);
+	data = glm::translate(data, static_cast<glm::vec3>(t));
 }
 
 auto Matrix::operator+(float scalar) const -> Matrix

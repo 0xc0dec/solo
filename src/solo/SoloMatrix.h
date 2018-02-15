@@ -19,6 +19,7 @@ namespace solo
     public:
         Matrix();
         Matrix(const Matrix &copy);
+		Matrix(const glm::mat4x4 &data);
         Matrix(float m11, float m12, float m13, float m14,
             float m21, float m22, float m23, float m24,
             float m31, float m32, float m33, float m34,
@@ -83,7 +84,5 @@ namespace solo
 
     private:
 		glm::mat4x4 data;
-
-		Matrix(const glm::mat4x4 &data);
     };
 }

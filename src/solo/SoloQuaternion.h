@@ -16,6 +16,7 @@ namespace solo
     {
     public:
 		Quaternion() = default;
+		Quaternion(const glm::quat &data);
         Quaternion(float x, float y, float z, float w);
         Quaternion(const Vector3 &axis, const Radians &angle);
 
@@ -50,7 +51,5 @@ namespace solo
 
     private:
 		glm::quat data;
-
-		Quaternion(const glm::quat &data);
     };
 }
