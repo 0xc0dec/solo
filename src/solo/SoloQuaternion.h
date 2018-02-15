@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include <glm/gtc/quaternion.hpp>
+
 namespace solo
 {
     struct Radians;
@@ -13,42 +15,42 @@ namespace solo
     class Quaternion final
     {
     public:
-        float x = 0;
-        float y = 0;
-        float z = 0;
-        float w = 1;
-
-        Quaternion() = default;
+		Quaternion() = default;
         Quaternion(float x, float y, float z, float w);
         Quaternion(const Vector3 &axis, const Radians &angle);
 
         static auto createFromAxisAngle(const Vector3 &axis, const Radians &angle) -> Quaternion;
         static auto lerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion;
         static auto slerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion;
-        static auto squad(const Quaternion &q1, const Quaternion &q2, const Quaternion &s1, const Quaternion &s2, float t) -> Quaternion;
+
+		auto x() -> float& { return data.x; }
+		auto x() const -> float { return data.x; }
+		auto y() -> float& { return data.y; }
+		auto y() const -> float { return data.y; }
+		auto z() -> float& { return data.z; }
+		auto z() const -> float { return data.z; }
+		auto w() -> float& { return data.w; }
+		auto w() const -> float { return data.w; }
 
         bool isIdentity() const;
         bool isZero() const;
 
         void conjugate();
-        bool inverse();
+        void invert();
 
         auto normalized() const -> Quaternion;
         void normalize();
 
         auto toAxisAngle(Vector3 &e) const -> Radians;
 
+		operator glm::quat() const { return data; }
+
         auto operator*(const Quaternion &q) const -> Quaternion;
         auto operator*=(const Quaternion &q) -> Quaternion&;
 
     private:
-        static auto slerpForSquad(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion;
-    };
+		glm::quat data;
 
-    inline auto Quaternion::operator*(const Quaternion &q) const -> Quaternion
-    {
-        auto result(*this);
-        result *= q;
-        return result;
-    }
+		Quaternion(const glm::quat &data);
+    };
 }

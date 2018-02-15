@@ -16,7 +16,7 @@ assert(q:isIdentity() ~= nil)
 assert(q:isZero() ~= nil)
 
 q:conjugate()
-q:inverse()
+q:invert()
 
 assert(q:normalized())
 q:normalize()
@@ -26,6 +26,5 @@ assert(q:toAxisAngle(v))
 
 assert(sl.Quaternion.lerp(q, q, 1))
 assert(sl.Quaternion.slerp(q, q, 1))
-assert(sl.Quaternion.squad(q, q, q, q, 1))
 
 assert(q * sl.Quaternion())

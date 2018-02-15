@@ -22,7 +22,7 @@ assert(m:isIdentity() ~= nil)
 
 assert(m:getDeterminant() ~= nil)
 
-assert(m:invert() ~= nil)
+m:invert()
 m:transpose()
 
 assert(m * sl.Matrix())

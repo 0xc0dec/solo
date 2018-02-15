@@ -137,7 +137,7 @@ void Transform::rotate(const Quaternion &rotation, TransformSpace space)
         case TransformSpace::World:
         {
             auto invWorldRotation = getWorldRotation();
-            invWorldRotation.inverse();
+            invWorldRotation.invert();
             localRotation = localRotation * invWorldRotation * normalizedRotation * getWorldRotation();
             break;
         }

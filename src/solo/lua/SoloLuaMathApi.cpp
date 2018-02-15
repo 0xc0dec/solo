@@ -102,18 +102,25 @@ static void registerQuaternion(CppBindModule<LuaBinding> &module)
 {
     auto binding = BEGIN_CLASS(module, Quaternion);
     REG_CTOR(binding);
-    REG_FIELD(binding, Quaternion, x);
-    REG_FIELD(binding, Quaternion, y);
-    REG_FIELD(binding, Quaternion, z);
-    REG_FIELD(binding, Quaternion, w);
+	binding.addProperty("x",
+		static_cast<float(Quaternion::*)()const>(&Quaternion::x),
+		[](Quaternion *v, float val) { v->x() = val; });
+	binding.addProperty("y",
+		static_cast<float(Quaternion::*)()const>(&Quaternion::y),
+		[](Quaternion *v, float val) { v->y() = val; });
+	binding.addProperty("z",
+		static_cast<float(Quaternion::*)()const>(&Quaternion::z),
+		[](Quaternion *v, float val) { v->z() = val; });
+	binding.addProperty("w",
+		static_cast<float(Quaternion::*)()const>(&Quaternion::w),
+		[](Quaternion *v, float val) { v->w() = val; });
     REG_STATIC_METHOD(binding, Quaternion, createFromAxisAngle);
     REG_STATIC_METHOD(binding, Quaternion, lerp);
     REG_STATIC_METHOD(binding, Quaternion, slerp);
-    REG_STATIC_METHOD(binding, Quaternion, squad);
     REG_METHOD(binding, Quaternion, isIdentity);
     REG_METHOD(binding, Quaternion, isZero);
     REG_METHOD(binding, Quaternion, conjugate);
-    REG_METHOD(binding, Quaternion, inverse);
+    REG_METHOD(binding, Quaternion, invert);
     REG_METHOD(binding, Quaternion, normalize);
     REG_METHOD(binding, Quaternion, normalized);
     REG_METHOD(binding, Quaternion, toAxisAngle);

@@ -123,19 +123,19 @@ auto Matrix::createScale(const Vector3 &scale) -> Matrix
 
 auto Matrix::createRotationFromQuaternion(const Quaternion &q) -> Matrix
 {
-    const auto x2 = q.x + q.x;
-    const auto y2 = q.y + q.y;
-    const auto z2 = q.z + q.z;
+    const auto x2 = q.x() + q.x();
+    const auto y2 = q.y() + q.y();
+    const auto z2 = q.z() + q.z();
 
-    const auto xx2 = q.x * x2;
-    const auto yy2 = q.y * y2;
-    const auto zz2 = q.z * z2;
-    const auto xy2 = q.x * y2;
-    const auto xz2 = q.x * z2;
-    const auto yz2 = q.y * z2;
-    const auto wx2 = q.w * x2;
-    const auto wy2 = q.w * y2;
-    const auto wz2 = q.w * z2;
+    const auto xx2 = q.x() * x2;
+    const auto yy2 = q.y() * y2;
+    const auto zz2 = q.z() * z2;
+    const auto xy2 = q.x() * y2;
+    const auto xz2 = q.x() * z2;
+    const auto yz2 = q.y() * z2;
+    const auto wx2 = q.w() * x2;
+    const auto wy2 = q.w() * y2;
+    const auto wz2 = q.w() * z2;
 
     Matrix result;
 
@@ -343,36 +343,36 @@ bool Matrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translatio
     if (trace > FLT_EPSILON)
     {
         const auto s = 0.5f / sqrt(trace);
-        rotation->w = 0.25f / s;
-        rotation->x = (yaxis.z() - zaxis.y()) * s;
-        rotation->y = (zaxis.x() - xaxis.z()) * s;
-        rotation->z = (xaxis.y() - yaxis.x()) * s;
+        rotation->w() = 0.25f / s;
+        rotation->x() = (yaxis.z() - zaxis.y()) * s;
+        rotation->y() = (zaxis.x() - xaxis.z()) * s;
+        rotation->z() = (xaxis.y() - yaxis.x()) * s;
     }
     else
     {
         if (xaxis.x() > yaxis.y() && xaxis.x() > zaxis.z())
         {
             const auto s = 0.5f / sqrt(1.0f + xaxis.x() - yaxis.y() - zaxis.z());
-            rotation->w = (yaxis.z() - zaxis.y()) * s;
-            rotation->x = 0.25f / s;
-            rotation->y = (yaxis.x() + xaxis.y()) * s;
-            rotation->z = (zaxis.x() + xaxis.z()) * s;
+            rotation->w() = (yaxis.z() - zaxis.y()) * s;
+            rotation->x() = 0.25f / s;
+            rotation->y() = (yaxis.x() + xaxis.y()) * s;
+            rotation->z() = (zaxis.x() + xaxis.z()) * s;
         }
         else if (yaxis.y() > zaxis.z())
         {
             const auto s = 0.5f / sqrt(1.0f + yaxis.y() - xaxis.x() - zaxis.z());
-            rotation->w = (zaxis.x() - xaxis.z()) * s;
-            rotation->x = (yaxis.x() + xaxis.y()) * s;
-            rotation->y = 0.25f / s;
-            rotation->z = (zaxis.y() + yaxis.z()) * s;
+            rotation->w() = (zaxis.x() - xaxis.z()) * s;
+            rotation->x() = (yaxis.x() + xaxis.y()) * s;
+            rotation->y() = 0.25f / s;
+            rotation->z() = (zaxis.y() + yaxis.z()) * s;
         }
         else
         {
             const auto s = 0.5f / sqrt(1.0f + zaxis.z() - xaxis.x() - yaxis.y());
-            rotation->w = (xaxis.y() - yaxis.x()) * s;
-            rotation->x = (zaxis.x() + xaxis.z()) * s;
-            rotation->y = (zaxis.y() + yaxis.z()) * s;
-            rotation->z = 0.25f / s;
+            rotation->w() = (xaxis.y() - yaxis.x()) * s;
+            rotation->x() = (zaxis.x() + xaxis.z()) * s;
+            rotation->y() = (zaxis.y() + yaxis.z()) * s;
+            rotation->z() = 0.25f / s;
         }
     }
 
