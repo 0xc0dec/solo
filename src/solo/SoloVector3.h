@@ -32,10 +32,10 @@ namespace solo
         auto length() const -> float;
         auto normalized() const -> Vector3;
         void normalize();
-        auto angle(const Vector3 &v) -> Radians;
+        auto angle(const Vector3 &v) const -> Radians;
         void clamp(const Vector3 &min, const Vector3 &max);
         auto dot(const Vector3 &v) const -> float;
-        auto cross(const Vector3 &v) -> Vector3;
+        auto cross(const Vector3 &v) const -> Vector3;
 
         bool operator==(const Vector3 &v) const;
 

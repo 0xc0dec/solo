@@ -67,53 +67,9 @@ auto Matrix::getDeterminant() const -> float
 	return glm::determinant(data);
 }
 
-bool Matrix::invert()
+void Matrix::invert()
 {
 	data = glm::inverse(data);
-	return true;
-//    const auto a0 = m[0] * m[5] - m[1] * m[4];
-//    const auto a1 = m[0] * m[6] - m[2] * m[4];
-//    const auto a2 = m[0] * m[7] - m[3] * m[4];
-//    const auto a3 = m[1] * m[6] - m[2] * m[5];
-//    const auto a4 = m[1] * m[7] - m[3] * m[5];
-//    const auto a5 = m[2] * m[7] - m[3] * m[6];
-//    const auto b0 = m[8] * m[13] - m[9] * m[12];
-//    const auto b1 = m[8] * m[14] - m[10] * m[12];
-//    const auto b2 = m[8] * m[15] - m[11] * m[12];
-//    const auto b3 = m[9] * m[14] - m[10] * m[13];
-//    const auto b4 = m[9] * m[15] - m[11] * m[13];
-//    const auto b5 = m[10] * m[15] - m[11] * m[14];
-//    const auto det = a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
-//
-//    // Close to zero, can't invert
-//    if (math::isZero(det))
-//        return false;
-//
-//    // Support the case where m == dst
-//    Matrix inverse;
-//    inverse.m[0] = m[5] * b5 - m[6] * b4 + m[7] * b3;
-//    inverse.m[1] = -m[1] * b5 + m[2] * b4 - m[3] * b3;
-//    inverse.m[2] = m[13] * a5 - m[14] * a4 + m[15] * a3;
-//    inverse.m[3] = -m[9] * a5 + m[10] * a4 - m[11] * a3;
-//
-//    inverse.m[4] = -m[4] * b5 + m[6] * b2 - m[7] * b1;
-//    inverse.m[5] = m[0] * b5 - m[2] * b2 + m[3] * b1;
-//    inverse.m[6] = -m[12] * a5 + m[14] * a2 - m[15] * a1;
-//    inverse.m[7] = m[8] * a5 - m[10] * a2 + m[11] * a1;
-//
-//    inverse.m[8] = m[4] * b4 - m[5] * b2 + m[7] * b0;
-//    inverse.m[9] = -m[0] * b4 + m[1] * b2 - m[3] * b0;
-//    inverse.m[10] = m[12] * a4 - m[13] * a2 + m[15] * a0;
-//    inverse.m[11] = -m[8] * a4 + m[9] * a2 - m[11] * a0;
-//
-//    inverse.m[12] = -m[4] * b3 + m[5] * b1 - m[6] * b0;
-//    inverse.m[13] = m[0] * b3 - m[1] * b1 + m[2] * b0;
-//    inverse.m[14] = -m[12] * a3 + m[13] * a1 - m[14] * a0;
-//    inverse.m[15] = m[8] * a3 - m[9] * a1 + m[10] * a0;
-//
-//    *this = inverse * (1.0f / det);
-//
-//    return true;
 }
 
 bool Matrix::isIdentity() const
@@ -127,14 +83,9 @@ bool Matrix::isIdentity() const
 
 auto Matrix::createLookAt(const Vector3 &eye, const Vector3 &target, const Vector3 &up) -> Matrix
 {
-    auto zaxis(eye - target);
-    zaxis.normalize();
-
-    auto xaxis = up.normalized().cross(zaxis);
-    xaxis.normalize();
-
-    auto yaxis = zaxis.cross(xaxis);
-    yaxis.normalize();
+    const auto zaxis = (eye - target).normalized();
+    const auto xaxis = up.normalized().cross(zaxis).normalized();
+    const auto yaxis = zaxis.cross(xaxis).normalized();
 
     // Matrix is built already transposed
     return Matrix(
@@ -167,7 +118,7 @@ auto Matrix::createScale(const Vector3 &scale) -> Matrix
     result.data[0][0] = scale.x();
     result.data[1][1] = scale.y();
     result.data[2][2] = scale.z();
-    return Matrix(result);
+    return result;
 }
 
 auto Matrix::createRotationFromQuaternion(const Quaternion &q) -> Matrix
@@ -278,7 +229,7 @@ auto Matrix::createTranslation(const Vector3 &translation) -> Matrix
     result.data[3][0] = translation.x();
     result.data[3][1] = translation.y();
     result.data[3][2] = translation.z();
-    return Matrix(result);
+    return result;
 }
 
 auto Matrix::columns() const -> const float*
@@ -318,7 +269,7 @@ auto Matrix::transformPoint(const Vector3 &point) const -> Vector3
 
 auto Matrix::transformDirection(const Vector3 &dir) const -> Vector3
 {
-    return{
+    return {
         dir.x() * data[0][0] + dir.y() * data[1][0] + dir.z() * data[2][0],
 		dir.x() * data[0][1] + dir.y() * data[1][1] + dir.z() * data[2][1],
 		dir.x() * data[0][2] + dir.y() * data[1][2] + dir.z() * data[2][2]
@@ -369,11 +320,9 @@ bool Matrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translatio
     if (rotation == nullptr)
         return true;
 
-    // Scale too close to zero, can't decompose rotation.
-    if (scaleX < FLT_EPSILON || scaleY < FLT_EPSILON || scaleZ < FLT_EPSILON) // TODO use math
+    if (math::isZero(scaleX) || math::isZero(scaleY) || math::isZero(scaleZ))
         return false;
 
-    // Factor the scale out of the matrix axes.
     auto rn = 1.0f / scaleX;
     xaxis.x() *= rn;
     xaxis.y() *= rn;
@@ -389,7 +338,6 @@ bool Matrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translatio
     zaxis.y() *= rn;
     zaxis.z() *= rn;
 
-    // Calculate the rotation from the resulting matrix (axes).
     const auto trace = xaxis.x() + yaxis.y() + zaxis.z() + 1.0f;
 
     if (trace > FLT_EPSILON)
@@ -402,8 +350,6 @@ bool Matrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translatio
     }
     else
     {
-        // Note: since xaxis, yaxis, and zaxis are normalized,
-        // we will never divide by zero in the code below.
         if (xaxis.x() > yaxis.y() && xaxis.x() > zaxis.z())
         {
             const auto s = 0.5f / sqrt(1.0f + xaxis.x() - yaxis.y() - zaxis.z());

@@ -41,7 +41,7 @@ bool Vector3::isUnit() const
            math::areEqual(z(), 1.0f);
 }
 
-auto Vector3::angle(const Vector3 &v) -> Radians
+auto Vector3::angle(const Vector3 &v) const -> Radians
 {
     return Radians(std::acosf(math::clamp(dot(v), -1, 1)));
 }
@@ -51,7 +51,7 @@ void Vector3::clamp(const Vector3 &min, const Vector3 &max)
 	data = glm::clamp(data, min.data, max.data);
 }
 
-auto Vector3::cross(const Vector3 &v) -> Vector3
+auto Vector3::cross(const Vector3 &v) const -> Vector3
 {
 	return glm::cross(data, v.data);
 }

@@ -37,7 +37,7 @@ namespace solo
 
         bool isIdentity() const;
         auto getDeterminant() const -> float;
-        bool invert();
+        void invert();
         void transpose();
 
         auto getScale() const -> Vector3;
