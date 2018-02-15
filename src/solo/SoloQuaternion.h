@@ -18,7 +18,7 @@ namespace solo
         float z = 0;
         float w = 1;
 
-        Quaternion() {}
+        Quaternion() = default;
         Quaternion(float x, float y, float z, float w);
         Quaternion(const Vector3 &axis, const Radians &angle);
 

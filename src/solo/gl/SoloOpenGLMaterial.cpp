@@ -54,7 +54,7 @@ void OpenGLMaterial::setVector3Parameter(const str &name, const Vector3 &value)
     {
         return [location, value](const Camera *, const Transform *)
         {
-            glUniform3f(location, value.x, value.y, value.z);
+            glUniform3f(location, value.x(), value.y(), value.z());
         };
     });
 }
@@ -236,7 +236,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
                     if (camera)
                     {
                         auto pos = camera->getTransform()->getWorldPosition();
-                        glUniform3f(location, pos.x, pos.y, pos.z);
+                        glUniform3f(location, pos.x(), pos.y(), pos.z());
                     }
                 };
             });

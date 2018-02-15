@@ -39,11 +39,11 @@ void Ray::normalize()
 	if (direction.isZero())
 		return;
 
-	const auto normalizeFactor = 1.0f / sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
+	const auto normalizeFactor = 1.0f / direction.length();
     if (!math::areEqual(normalizeFactor, 1.0f))
     {
-        direction.x *= normalizeFactor;
-        direction.y *= normalizeFactor;
-        direction.z *= normalizeFactor;
+        direction.x() *= normalizeFactor;
+        direction.y() *= normalizeFactor;
+        direction.z() *= normalizeFactor;
     }
 }

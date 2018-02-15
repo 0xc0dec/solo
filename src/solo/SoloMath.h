@@ -7,13 +7,14 @@
 
 #include <cmath>
 #include <cfloat>
+#include <glm/gtc/epsilon.hpp>
 
 namespace solo
 {
     namespace math
     {
-        static constexpr float Pi = 3.14159265358979323846f;
-        static constexpr float PiOver2 = 1.57079632679489661923f;
+        static constexpr float pi = 3.14159265358979323846f;
+        static constexpr float piOver2 = 1.57079632679489661923f;
 
         static bool isZero(float value);
         static bool areEqual(float first, float second);
@@ -26,12 +27,12 @@ namespace solo
 
     inline bool math::isZero(float value)
     {
-        return fabs(value) <= FLT_EPSILON;
+        return areEqual(value, 0);
     }
 
     inline bool math::areEqual(float first, float second)
     {
-        return fabs(first - second) <= FLT_EPSILON;
+        return glm::epsilonEqual(first, second, glm::epsilon<float>());
     }
 
     inline auto math::degToRad(float degrees) -> float
@@ -46,6 +47,6 @@ namespace solo
 
     inline auto math::clamp(float x, float lo, float hi) -> float
     {
-        return (x < lo) ? lo : ((x > hi) ? hi : x);
+		return glm::clamp(x, lo, hi);
     }
 }

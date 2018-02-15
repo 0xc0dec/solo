@@ -156,9 +156,9 @@ void Transform::rotateByAxisAngle(const Vector3 &axis, const Radians &angle, Tra
 
 void Transform::scaleLocal(const Vector3 &scale)
 {
-    localScale.x *= scale.x;
-    localScale.y *= scale.y;
-    localScale.z *= scale.z;
+    localScale.x() *= scale.x();
+    localScale.y() *= scale.y();
+    localScale.z() *= scale.z();
     setDirtyWithChildren(dirtyFlagAll);
 }
 

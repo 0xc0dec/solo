@@ -38,11 +38,10 @@ bool Quaternion::isZero() const
 
 auto Quaternion::createFromAxisAngle(const Vector3 &axis, const Radians &angle) -> Quaternion
 {
-    auto halfAngle = angle.toRawRadians() * 0.5f;
-    auto sinHalfAngle = sinf(halfAngle);
-    auto normal(const_cast<Vector3 &>(axis));
-    normal.normalize();
-    return {normal.x * sinHalfAngle, normal.y * sinHalfAngle, normal.z * sinHalfAngle, cosf(halfAngle)};
+    const auto halfAngle = angle.toRawRadians() * 0.5f;
+    const auto sinHalfAngle = sinf(halfAngle);
+    const auto normal = axis.normalized();
+    return {normal.x() * sinHalfAngle, normal.y() * sinHalfAngle, normal.z() * sinHalfAngle, std::cosf(halfAngle)};
 }
 
 void Quaternion::conjugate()
@@ -105,9 +104,9 @@ auto Quaternion::toAxisAngle(Vector3 &axis) const -> Radians
 {
     Quaternion q(x, y, z, w);
     q.normalize();
-    axis.x = q.x;
-    axis.y = q.y;
-    axis.z = q.z;
+    axis.x() = q.x;
+    axis.y() = q.y;
+    axis.z() = q.z;
     axis.normalize();
     return Radians(2.0f * acos(q.w));
 }

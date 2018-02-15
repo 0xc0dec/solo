@@ -146,9 +146,9 @@ auto Matrix::createLookAt(const Vector3 &eye, const Vector3 &target, const Vecto
 
     // Matrix is built already transposed
     return Matrix(Matrix(
-        xaxis.x, yaxis.x, zaxis.x, 0,
-        xaxis.y, yaxis.y, zaxis.y, 0,
-        xaxis.z, yaxis.z, zaxis.z, 0,
+        xaxis.x(), yaxis.x(), zaxis.x(), 0,
+        xaxis.y(), yaxis.y(), zaxis.y(), 0,
+        xaxis.z(), yaxis.z(), zaxis.z(), 0,
         -xaxis.dot(eye), -yaxis.dot(eye), -zaxis.dot(eye), 1
     ));
 }
@@ -157,7 +157,7 @@ auto Matrix::createPerspective(const Radians &fieldOfView, float aspectRatio, fl
 {
     const auto f_n = 1.0f / (zfar - znear);
 	const auto theta = fieldOfView.toRawRadians() * 0.5f;
-	panicIf(math::isZero(fmod(theta, math::PiOver2)));
+	panicIf(math::isZero(fmod(theta, math::piOver2)));
 
     const auto divisor = tan(theta);
     const auto factor = 1.0f / divisor;
@@ -196,9 +196,9 @@ auto Matrix::createOrthographic(float width, float height, float near, float far
 auto Matrix::createScale(const Vector3 &scale) -> Matrix
 {
     Matrix result;
-    result.m[0] = scale.x;
-    result.m[5] = scale.y;
-    result.m[10] = scale.z;
+    result.m[0] = scale.x();
+    result.m[5] = scale.y();
+    result.m[10] = scale.z();
     return Matrix(result);
 }
 
@@ -245,9 +245,9 @@ auto Matrix::createRotationFromQuaternion(const Quaternion &q) -> Matrix
 
 auto Matrix::createRotationFromAxisAngle(const Vector3 &axis, const Radians &angle) -> Matrix
 {
-    auto x = axis.x;
-    auto y = axis.y;
-    auto z = axis.z;
+    auto x = axis.x();
+    auto y = axis.y();
+    auto z = axis.z();
 
     // Make sure the input axis is normalized
     auto n = x * x + y * y + z * z;
@@ -348,9 +348,9 @@ auto Matrix::createRotationZ(const Radians &angle) -> Matrix
 auto Matrix::createTranslation(const Vector3 &translation) -> Matrix
 {
     Matrix result;
-    result.m[12] = translation.x;
-    result.m[13] = translation.y;
-    result.m[14] = translation.z;
+    result.m[12] = translation.x();
+    result.m[13] = translation.y();
+    result.m[14] = translation.z();
     return Matrix(result);
 }
 
@@ -378,18 +378,18 @@ auto Matrix::getTranslation() const -> Vector3
 auto Matrix::transformPoint(const Vector3 &point) const -> Vector3
 {
     return {
-        point.x * m[0] + point.y * m[4] + point.z * m[8] + m[12],
-        point.x * m[1] + point.y * m[5] + point.z * m[9] + m[13],
-        point.x * m[2] + point.y * m[6] + point.z * m[10] + m[14]
+        point.x() * m[0] + point.y() * m[4] + point.z() * m[8] + m[12],
+        point.x() * m[1] + point.y() * m[5] + point.z() * m[9] + m[13],
+        point.x() * m[2] + point.y() * m[6] + point.z() * m[10] + m[14]
     };
 }
 
 auto Matrix::transformDirection(const Vector3 &dir) const -> Vector3
 {
     return{
-        dir.x * m[0] + dir.y * m[4] + dir.z * m[8],
-        dir.x * m[1] + dir.y * m[5] + dir.z * m[9],
-        dir.x * m[2] + dir.y * m[6] + dir.z * m[10]
+        dir.x() * m[0] + dir.y() * m[4] + dir.z() * m[8],
+        dir.x() * m[1] + dir.y() * m[5] + dir.z() * m[9],
+        dir.x() * m[2] + dir.y() * m[6] + dir.z() * m[10]
     };
 }
 
@@ -405,9 +405,9 @@ bool Matrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translatio
 {
     if (translation)
     {
-        translation->x = m[12];
-        translation->y = m[13];
-        translation->z = m[14];
+        translation->x() = m[12];
+        translation->y() = m[13];
+        translation->z() = m[14];
     }
 
     if (scale == nullptr && rotation == nullptr)
@@ -430,71 +430,71 @@ bool Matrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translatio
 
     if (scale)
     {
-        scale->x = scaleX;
-        scale->y = scaleY;
-        scale->z = scaleZ;
+        scale->x() = scaleX;
+        scale->y() = scaleY;
+        scale->z() = scaleZ;
     }
 
     if (rotation == nullptr)
         return true;
 
     // Scale too close to zero, can't decompose rotation.
-    if (scaleX < FLT_EPSILON || scaleY < FLT_EPSILON || scaleZ < FLT_EPSILON)
+    if (scaleX < FLT_EPSILON || scaleY < FLT_EPSILON || scaleZ < FLT_EPSILON) // TODO use math
         return false;
 
     // Factor the scale out of the matrix axes.
     auto rn = 1.0f / scaleX;
-    xaxis.x *= rn;
-    xaxis.y *= rn;
-    xaxis.z *= rn;
+    xaxis.x() *= rn;
+    xaxis.y() *= rn;
+    xaxis.z() *= rn;
 
     rn = 1.0f / scaleY;
-    yaxis.x *= rn;
-    yaxis.y *= rn;
-    yaxis.z *= rn;
+    yaxis.x() *= rn;
+    yaxis.y() *= rn;
+    yaxis.z() *= rn;
 
     rn = 1.0f / scaleZ;
-    zaxis.x *= rn;
-    zaxis.y *= rn;
-    zaxis.z *= rn;
+    zaxis.x() *= rn;
+    zaxis.y() *= rn;
+    zaxis.z() *= rn;
 
     // Calculate the rotation from the resulting matrix (axes).
-    const auto trace = xaxis.x + yaxis.y + zaxis.z + 1.0f;
+    const auto trace = xaxis.x() + yaxis.y() + zaxis.z() + 1.0f;
 
     if (trace > FLT_EPSILON)
     {
         const auto s = 0.5f / sqrt(trace);
         rotation->w = 0.25f / s;
-        rotation->x = (yaxis.z - zaxis.y) * s;
-        rotation->y = (zaxis.x - xaxis.z) * s;
-        rotation->z = (xaxis.y - yaxis.x) * s;
+        rotation->x = (yaxis.z() - zaxis.y()) * s;
+        rotation->y = (zaxis.x() - xaxis.z()) * s;
+        rotation->z = (xaxis.y() - yaxis.x()) * s;
     }
     else
     {
         // Note: since xaxis, yaxis, and zaxis are normalized,
         // we will never divide by zero in the code below.
-        if (xaxis.x > yaxis.y && xaxis.x > zaxis.z)
+        if (xaxis.x() > yaxis.y() && xaxis.x() > zaxis.z())
         {
-            auto s = 0.5f / sqrt(1.0f + xaxis.x - yaxis.y - zaxis.z);
-            rotation->w = (yaxis.z - zaxis.y) * s;
+            const auto s = 0.5f / sqrt(1.0f + xaxis.x() - yaxis.y() - zaxis.z());
+            rotation->w = (yaxis.z() - zaxis.y()) * s;
             rotation->x = 0.25f / s;
-            rotation->y = (yaxis.x + xaxis.y) * s;
-            rotation->z = (zaxis.x + xaxis.z) * s;
+            rotation->y = (yaxis.x() + xaxis.y()) * s;
+            rotation->z = (zaxis.x() + xaxis.z()) * s;
         }
-        else if (yaxis.y > zaxis.z)
+        else if (yaxis.y() > zaxis.z())
         {
-            auto s = 0.5f / sqrt(1.0f + yaxis.y - xaxis.x - zaxis.z);
-            rotation->w = (zaxis.x - xaxis.z) * s;
-            rotation->x = (yaxis.x + xaxis.y) * s;
+            const auto s = 0.5f / sqrt(1.0f + yaxis.y() - xaxis.x() - zaxis.z());
+            rotation->w = (zaxis.x() - xaxis.z()) * s;
+            rotation->x = (yaxis.x() + xaxis.y()) * s;
             rotation->y = 0.25f / s;
-            rotation->z = (zaxis.y + yaxis.z) * s;
+            rotation->z = (zaxis.y() + yaxis.z()) * s;
         }
         else
         {
-            auto s = 0.5f / sqrt(1.0f + zaxis.z - xaxis.x - yaxis.y);
-            rotation->w = (xaxis.y - yaxis.x) * s;
-            rotation->x = (zaxis.x + xaxis.z) * s;
-            rotation->y = (zaxis.y + yaxis.z) * s;
+            const auto s = 0.5f / sqrt(1.0f + zaxis.z() - xaxis.x() - yaxis.y());
+            rotation->w = (xaxis.y() - yaxis.x()) * s;
+            rotation->x = (zaxis.x() + xaxis.z()) * s;
+            rotation->y = (zaxis.y() + yaxis.z()) * s;
             rotation->z = 0.25f / s;
         }
     }

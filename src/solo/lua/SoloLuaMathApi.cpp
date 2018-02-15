@@ -44,9 +44,15 @@ static void registerVector3(CppBindModule<LuaBinding> &module)
 {
     auto binding = BEGIN_CLASS(module, Vector3);
     REG_CTOR(binding, float, float, float);
-    REG_FIELD(binding, Vector3, x);
-    REG_FIELD(binding, Vector3, y);
-    REG_FIELD(binding, Vector3, z);
+	binding.addProperty("x",
+		static_cast<float(Vector3::*)()const>(&Vector3::x),
+		[](Vector3 *v, float val) { v->x() = val; });
+    binding.addProperty("y",
+		static_cast<float(Vector3::*)()const>(&Vector3::y),
+		[](Vector3 *v, float val) { v->y() = val; });
+	binding.addProperty("z",
+		static_cast<float(Vector3::*)()const>(&Vector3::z),
+		[](Vector3 *v, float val) { v->z() = val; });
     REG_METHOD(binding, Vector3, isUnit);
     REG_METHOD(binding, Vector3, isZero);
     REG_METHOD(binding, Vector3, distance);
