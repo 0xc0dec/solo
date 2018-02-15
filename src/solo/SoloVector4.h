@@ -13,21 +13,25 @@ namespace solo
     class Vector4 final
     {
     public:
-        float x = 0;
-        float y = 0;
-        float z = 0;
-        float w = 0;
-
-        Vector4() {}
+        Vector4() = default;
+		Vector4(const glm::vec4 &data);
+		Vector4(float all);
         Vector4(float x, float y, float z, float w);
+
+		auto x() -> float& { return data.x; }
+		auto x() const -> float { return data.x; }
+		auto y() -> float& { return data.y; }
+		auto y() const -> float { return data.y; }
+		auto z() -> float& { return data.z; }
+		auto z() const -> float { return data.z; }
+		auto w() -> float& { return data.w; }
+		auto w() const -> float { return data.w; }
 
         bool isZero() const;
         bool isUnit() const;
 
         auto distance(const Vector4 &v) const -> float;
-        auto distanceSquared(const Vector4 &v) const -> float;
         auto length() const -> float;
-        auto lengthSquared() const -> float;
         auto normalized() const -> Vector4;
         void normalize();
         auto angle(const Vector4 &v) -> Radians;
@@ -52,125 +56,8 @@ namespace solo
 
         auto operator/(float x) const -> Vector4;
         auto operator/=(float x) -> Vector4&;
+
+    private:
+		glm::vec4 data;
     };
-
-    inline bool Vector4::operator==(const Vector4 &v) const
-    {
-        return math::areEqual(x, v.x) && math::areEqual(y, v.y) &&
-            math::areEqual(z, v.z) && math::areEqual(w, v.w);
-    }
-
-    inline auto Vector4::operator+(float scalar) const -> Vector4
-    {
-        auto result(*this);
-        result += scalar;
-        return result;
-    }
-
-    inline auto Vector4::operator+(const Vector4 &v) const -> Vector4
-    {
-        auto result(*this);
-        result += v;
-        return result;
-    }
-
-    inline auto operator+(float scalar, const Vector4 &v) -> Vector4
-    {
-        return {v.x + scalar, v.y + scalar, v.z + scalar, v.w + scalar};
-    }
-
-    inline auto Vector4::operator+=(const Vector4 &v) -> Vector4 &
-    {
-        x += v.x;
-        y += v.y;
-        z += v.z;
-        w += v.w;
-        return *this;
-    }
-
-    inline auto Vector4::operator+=(float scalar) -> Vector4 &
-    {
-        x += scalar;
-        y += scalar;
-        z += scalar;
-        w += scalar;
-        return *this;
-    }
-
-    inline auto Vector4::operator-() const -> Vector4
-    {
-        Vector4 result;
-        result.x = -x;
-        result.y = -y;
-        result.z = -z;
-        result.w = -w;
-        return result;
-    }
-
-    inline auto Vector4::operator-(float scalar) const -> Vector4
-    {
-        auto result(*this);
-        result -= scalar;
-        return result;
-    }
-
-    inline auto Vector4::operator-(const Vector4 &v) const -> Vector4
-    {
-        auto result(*this);
-        result -= v;
-        return result;
-    }
-
-    inline auto Vector4::operator-=(float scalar) -> Vector4 &
-    {
-        x -= scalar;
-        y -= scalar;
-        z -= scalar;
-        w -= scalar;
-        return *this;
-    }
-
-    inline auto Vector4::operator-=(const Vector4 &v) -> Vector4 &
-    {
-        x -= v.x;
-        y -= v.y;
-        z -= v.z;
-        w -= v.w;
-        return *this;
-    }
-
-    inline auto Vector4::operator*(float scalar) const -> Vector4
-    {
-        auto result(*this);
-        result *= scalar;
-        return result;
-    }
-
-    inline auto operator*(float scalar, const Vector4 &v) -> Vector4
-    {
-        return {v.x * scalar, v.y * scalar, v.z * scalar, v.w * scalar};
-    }
-
-    inline auto Vector4::operator*=(float scalar) -> Vector4 &
-    {
-        x *= scalar;
-        y *= scalar;
-        z *= scalar;
-        w *= scalar;
-        return *this;
-    }
-
-    inline auto Vector4::operator/(const float scalar) const -> Vector4
-    {
-        return {this->x / scalar, this->y / scalar, this->z / scalar, this->w / scalar};
-    }
-
-    inline auto Vector4::operator/=(const float scalar) -> Vector4 &
-    {
-        x /= scalar;
-        y /= scalar;
-        z /= scalar;
-        w /= scalar;
-        return *this;
-    }
 }

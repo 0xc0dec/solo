@@ -65,7 +65,7 @@ void OpenGLMaterial::setVector4Parameter(const str &name, const Vector4 &value)
     {
         return [location, value](const Camera *, const Transform *)
         {
-            glUniform4f(location, value.x, value.y, value.z, value.w);
+            glUniform4f(location, value.x(), value.y(), value.z(), value.w());
         };
     });
 }

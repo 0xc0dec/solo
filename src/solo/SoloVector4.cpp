@@ -7,111 +7,145 @@
 
 using namespace solo;
 
+Vector4::Vector4(const glm::vec4 &data):
+	data(data)
+{
+}
+
+Vector4::Vector4(float all):
+	data(all)
+{
+}
+
 Vector4::Vector4(float x, float y, float z, float w):
-    x(x), y(y), z(z), w(w)
+    data(x, y, z, w)
 {
 }
 
 bool Vector4::isZero() const
 {
-    return math::isZero(x) &&
-           math::isZero(y) &&
-           math::isZero(z) &&
-           math::isZero(w);
+    return math::isZero(x()) &&
+           math::isZero(y()) &&
+           math::isZero(z()) &&
+           math::isZero(w());
 }
 
 bool Vector4::isUnit() const
 {
-    return math::areEqual(x, 1.0f) &&
-           math::areEqual(y, 1.0f) &&
-           math::areEqual(z, 1.0f) &&
-           math::areEqual(w, 1.0f);
+    return math::areEqual(x(), 1.0f) &&
+           math::areEqual(y(), 1.0f) &&
+           math::areEqual(z(), 1.0f) &&
+           math::areEqual(w(), 1.0f);
 }
 
 auto Vector4::angle(const Vector4 &v) -> Radians
 {
-    return Radians(acosf(math::clamp(dot(v), -1, 1)));
+    return Radians(std::acosf(math::clamp(dot(v), -1, 1)));
 }
 
 void Vector4::clamp(const Vector4 &min, const Vector4 &max)
 {
-    if (x < min.x)
-        x = min.x;
-    if (x > max.x)
-        x = max.x;
-
-    if (y < min.y)
-        y = min.y;
-    if (y > max.y)
-        y = max.y;
-
-    if (z < min.z)
-        z = min.z;
-    if (z > max.z)
-        z = max.z;
-
-    if (w < min.w)
-        w = min.w;
-    if (w > max.w)
-        w = max.w;
+	data = glm::clamp(data, min.data, max.data);
 }
 
 auto Vector4::distance(const Vector4 &v) const -> float
 {
-    auto dx = v.x - x;
-    auto dy = v.y - y;
-    auto dz = v.z - z;
-    auto dw = v.w - w;
-
-    return sqrt(dx * dx + dy * dy + dz * dz + dw * dw);
-}
-
-auto Vector4::distanceSquared(const Vector4 &v) const -> float
-{
-    auto dx = v.x - x;
-    auto dy = v.y - y;
-    auto dz = v.z - z;
-    auto dw = v.w - w;
-
-    return dx * dx + dy * dy + dz * dz + dw * dw;
+	return glm::distance(data, v.data);
 }
 
 auto Vector4::dot(const Vector4 &v) const -> float
 {
-    return x * v.x + y * v.y + z * v.z + w * v.w;
+    return glm::dot(data, v.data);
 }
 
 auto Vector4::length() const -> float
 {
-    return sqrt(x * x + y * y + z * z + w * w);
-}
-
-auto Vector4::lengthSquared() const -> float
-{
-    return x * x + y * y + z * z + w * w;
+    return glm::length(data);
 }
 
 auto Vector4::normalized() const -> Vector4
 {
-    auto result(*this);
-    result.normalize();
-    return result;
+	return glm::normalize(data);
 }
 
 void Vector4::normalize()
 {
-    auto n = x * x + y * y + z * z + w * w;
-    // Already normalized
-    if (math::areEqual(n, 1.0f))
-        return;
+	if (!isZero())
+		data = glm::normalize(data);
+}
 
-    n = sqrt(n);
-    if (math::isZero(n))
-        return;
+bool Vector4::operator==(const Vector4 &v) const
+{
+    return glm::all(glm::epsilonEqual(data, v.data, glm::epsilon<float>()));
+}
 
-    n = 1.0f / n;
-    x *= n;
-    y *= n;
-    z *= n;
-    w *= n;
+auto Vector4::operator+(float scalar) const -> Vector4
+{
+	return data + scalar;
+}
+
+auto Vector4::operator+(const Vector4 &v) const -> Vector4
+{
+	return data + v.data;
+}
+
+auto Vector4::operator+=(const Vector4 &v) -> Vector4 &
+{
+	data += v.data;
+    return *this;
+}
+
+auto Vector4::operator+=(float scalar) -> Vector4 &
+{
+	data += scalar;
+    return *this;
+}
+
+auto Vector4::operator-() const -> Vector4
+{
+	return -data;
+}
+
+auto Vector4::operator-(float scalar) const -> Vector4
+{
+	return data - scalar;
+}
+
+auto Vector4::operator-(const Vector4 &v) const -> Vector4
+{
+	return data - v.data;
+}
+
+auto Vector4::operator-=(float scalar) -> Vector4 &
+{
+	data -= scalar;
+    return *this;
+}
+
+auto Vector4::operator-=(const Vector4 &v) -> Vector4 &
+{
+	data -= v.data;
+    return *this;
+}
+
+auto Vector4::operator*(float scalar) const -> Vector4
+{
+	return data * scalar;
+}
+
+auto Vector4::operator*=(float scalar) -> Vector4 &
+{
+	data *= scalar;
+    return *this;
+}
+
+auto Vector4::operator/(const float scalar) const -> Vector4
+{
+    return data / scalar;
+}
+
+auto Vector4::operator/=(const float scalar) -> Vector4 &
+{
+	data /= scalar;
+    return *this;
 }

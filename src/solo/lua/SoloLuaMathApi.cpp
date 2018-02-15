@@ -75,16 +75,22 @@ static void registerVector4(CppBindModule<LuaBinding> &module)
 {
     auto binding = BEGIN_CLASS(module, Vector4);
     REG_CTOR(binding, float, float, float, float);
-    REG_FIELD(binding, Vector4, x);
-    REG_FIELD(binding, Vector4, y);
-    REG_FIELD(binding, Vector4, z);
-    REG_FIELD(binding, Vector4, w);
+    binding.addProperty("x",
+		static_cast<float(Vector4::*)()const>(&Vector4::x),
+		[](Vector4 *v, float val) { v->x() = val; });
+    binding.addProperty("y",
+		static_cast<float(Vector4::*)()const>(&Vector4::y),
+		[](Vector4 *v, float val) { v->y() = val; });
+	binding.addProperty("z",
+		static_cast<float(Vector4::*)()const>(&Vector4::z),
+		[](Vector4 *v, float val) { v->z() = val; });
+	binding.addProperty("w",
+		static_cast<float(Vector4::*)()const>(&Vector4::w),
+		[](Vector4 *v, float val) { v->w() = val; });
     REG_METHOD(binding, Vector4, isUnit);
     REG_METHOD(binding, Vector4, isZero);
     REG_METHOD(binding, Vector4, distance);
-    REG_METHOD(binding, Vector4, distanceSquared);
     REG_METHOD(binding, Vector4, length);
-    REG_METHOD(binding, Vector4, lengthSquared);
     REG_METHOD(binding, Vector4, normalized);
     REG_METHOD(binding, Vector4, normalize);
     REG_METHOD(binding, Vector4, angle);

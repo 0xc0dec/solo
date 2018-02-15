@@ -250,14 +250,14 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
             {
                 clearAttachments[i].aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
                 clearAttachments[i].colorAttachment = i;
-                clearAttachments[i].clearValue = {{clearColor.x, clearColor.y, clearColor.z, clearColor.w}};
+                clearAttachments[i].clearValue = {{clearColor.x(), clearColor.y(), clearColor.z(), clearColor.w()}};
             }
             vkCmdClearAttachments(currentCmdBuffer, clearAttachments.size(), clearAttachments.data(), 1, &clearRect);
         }
     }
 
     const auto viewport = currentCamera->getViewport();
-    VkViewport vp{viewport.x, viewport.y, viewport.z, viewport.w, 0, 1};
+    VkViewport vp{viewport.x(), viewport.y(), viewport.z(), viewport.w(), 0, 1};
     vkCmdSetViewport(currentCmdBuffer, 0, 1, &vp);
 
     VkRect2D scissor{{0, 0}, {vp.width, vp.height}}; // TODO proper values

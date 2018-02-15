@@ -54,14 +54,14 @@ static auto toBlendFactor(BlendFactor factor) -> GLenum
 static void clear(bool color, const Vector4 &clearColor)
 {
     if (color)
-        glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
+        glClearColor(clearColor.x(), clearColor.y(), clearColor.z(), clearColor.w());
     const GLbitfield flags = (color ? GL_COLOR_BUFFER_BIT : 0) | GL_DEPTH_BUFFER_BIT;
     glClear(flags);
 }
 
 static void setViewport(const Vector4 &viewport)
 {
-    glViewport(viewport.x, viewport.y, viewport.z, viewport.w);
+    glViewport(viewport.x(), viewport.y(), viewport.z(), viewport.w());
 }
 
 static void setDepthWrite(bool enabled)
